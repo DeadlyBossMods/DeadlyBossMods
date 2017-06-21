@@ -87,7 +87,8 @@ local timerDoomedSunderingCD		= mod:NewCDTimer(26.4, 236544, nil, nil, nil, 5)
 
 --local berserkTimer				= mod:NewBerserkTimer(300)
 
---local countdownDrawPower			= mod:NewCountdown(33, 227629)
+local countdownSunderingDoom		= mod:NewCountdown(26.1, 236542)
+local countdownDoomedSundering		= mod:NewCountdown(26.4, 236544)
 
 --Corporeal Realm
 local voiceSpearofAnguish			= mod:NewVoice(235924)--runout
@@ -216,6 +217,8 @@ function mod:SPELL_CAST_START(args)
 			specWarnSunderingDoomGather:Show(COMPACT_UNIT_FRAME_PROFILE_SORTBY_GROUP)
 			voiceSunderingDoom:Play("gathershare")
 		end
+		timerSunderingDoomCD:Start()
+		countdownSunderingDoom:Start()
 	elseif spellId == 236544 then
 		if UnitBuff("player", spiritBarrier) or UnitDebuff("player", spiritBarrier) then--Figure out which it is
 			specWarnDoomedSunderingGather:Show(COMPACT_UNIT_FRAME_PROFILE_SORTBY_GROUP)
@@ -224,6 +227,8 @@ function mod:SPELL_CAST_START(args)
 			specWarnDoomedSunderingRun:Show()
 			voiceDoomedSunderin:Play("justrun")
 		end
+		timerDoomedSunderingCD:Start()
+		countdownDoomedSundering:Start()
 	elseif spellId == 236072 then
 		self.vb.wailingSoulsCast = self.vb.wailingSoulsCast + 1
 		timerSoulbindCD:Stop()
@@ -361,6 +366,8 @@ function mod:UNIT_DIED(args)
 	
 --	elseif cid == 119940 then--Fallen Priestess
 --		timerShatteringScreamCD:Stop(args.destGUID)
+	elseif cid == 118462 then
+		timerSoulbindCD:Stop()
 	end
 end
 
@@ -387,6 +394,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		--timerCollapsingFissureCD:Start()
 	elseif spellId == 239978 then
 		self.vb.phase = 2
+		timerSunderingDoomCD:Start(7)
+		countdownSunderingDoom:Start(7)
+		timerDoomedSunderingCD:Start(28)
+		countdownDoomedSundering:Start(28)
 	end
 end
-
