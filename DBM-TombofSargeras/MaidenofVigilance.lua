@@ -64,7 +64,9 @@ local timerSpontFragmentationCD		= mod:NewNextTimer(8, 239153, nil, nil, nil, 5,
 --local berserkTimer				= mod:NewBerserkTimer(300)
 
 --Stage One: Divide and Conquer
---local countdownInfusion			= mod:NewCountdown(33, 235271)
+local countdownInfusion				= mod:NewCountdown("AltTwo", 235271)
+local countdownLightHammer			= mod:NewCountdown(18, 241635)
+local countdownFelHammer			= mod:NewCountdown("Alt18", 241636)
 
 --Stage One: Divide and Conquer
 local voiceInfusion					= mod:NewVoice(235271)--scatter
@@ -95,6 +97,7 @@ function mod:OnCombatStart(delay)
 	self.vb.massShitCount = 1
 	timerInfusionCD:Start(2-delay, 2)
 	timerLightHammerCD:Start(12-delay, 3)--12-14
+	countdownLightHammer:Start(12-delay)
 	timerMassInstabilityCD:Start(22-delay, 2)
 	timerBlowbackCD:Start(40.9-delay)
 	if self:IsMythic() then
@@ -119,18 +122,21 @@ function mod:SPELL_CAST_START(args)
 		voiceInfusion:Play("scatter")
 		if self.vb.infusionCount == 1 then
 			timerInfusionCD:Start(38, 2)
+			countdownInfusion:Start(38)
 		end
 	elseif spellId == 241635 then--Light Hammer
 		self.vb.hammerCount = self.vb.hammerCount + 1
 		specWarnLightHammer:Show(self.vb.hammerCount)
 		if self.vb.hammerCount < 4 then
 			timerFelHammerCD:Start(18, self.vb.hammerCount+1)--20 on Mythic, 18 on LFR?
+			countdownFelHammer:Start(18)
 		end
 	elseif spellId == 241636 then--Fel Hammer
 		self.vb.hammerCount = self.vb.hammerCount + 1
 		specWarnFelhammer:Show(self.vb.hammerCount)
 		if self.vb.hammerCount == 2 then
 			timerLightHammerCD:Start(18, 3)
+			countdownLightHammer:Start(18)
 		end
 	elseif spellId == 235267 then
 		self.vb.massShitCount = self.vb.massShitCount + 1
@@ -152,8 +158,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerSpontFragmentationCD:Stop()
 		timerMassInstabilityCD:Stop()
 		timerInfusionCD:Stop()
+		countdownInfusion:Cancel()
 		timerLightHammerCD:Stop()
+		countdownLightHammer:Cancel()
 		timerFelHammerCD:Stop()
+		countdownFelHammer:Cancel()
 	end
 end
 
@@ -223,6 +232,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		voiceWrathofCreators:Play("kickcast")
 		timerInfusionCD:Start(2, 1)
 		timerLightHammerCD:Start(14, 1)
+		countdownLightHammer:Start(14)
 		timerMassInstabilityCD:Start(22, 1)
 		timerBlowbackCD:Start()
 		if self:IsMythic() then
