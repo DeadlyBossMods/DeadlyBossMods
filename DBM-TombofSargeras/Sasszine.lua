@@ -33,7 +33,7 @@ mod:RegisterEventsInCombat(
 --]]
 --NOTE: 3 stage fight but all stage 3 stuff is from stage 1 and 2 (combined) so there are no new abilities to list for stage 3 HERE
 --General Stuff
-local warnHydraShot					= mod:NewTargetAnnounce(230139, 4)
+local warnHydraShot					= mod:NewTargetCountAnnounce(230139, 4)
 local warnDarkDepths				= mod:NewSpellAnnounce(230273, 2)
 local warnDreadSharkSpawn			= mod:NewSpellAnnounce(239436, 2)
 --Stage One: Ten Thousand Fangs
