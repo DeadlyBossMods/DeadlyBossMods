@@ -21,6 +21,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_PERIODIC_DAMAGE 239212",
 	"SPELL_PERIODIC_MISSED 239212",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
+	"RAID_BOSS_WHISPER",
+	"CHAT_MSG_ADDON",
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2"
 )
 
@@ -30,7 +32,6 @@ mod:RegisterEventsInCombat(
 --TODO, figure out mythic stack count to start warning. Right now it's 4
 --TODO, improve Dark Mark to match Touch of Sargeras if multiple targets, else, clean it up for 1 target
 --TODO, unbound chaos seems affected by something, possibly energy getting to boss.
---TODO, shadow blades cast not in combat log, see if way to fix it
 --TOOD, dark mark cast not in combat log, see if need to use APPIED or UNIT event
 --TODO, and again, black winds not in combat log, find way to do it besides spell damage
 --[[
@@ -42,6 +43,7 @@ mod:RegisterEventsInCombat(
 --Stage One: A Slumber Disturbed
 local warnTouchofSargeras			= mod:NewTargetAnnounce(234009, 3)
 local warnUnboundChaos				= mod:NewTargetAnnounce(234059, 3, nil, false, 2)
+local warnShadowyBlades				= mod:NewTargetAnnounce(236571, 3)
 local warnDesolate					= mod:NewStackAnnounce(236494, 3, nil, "Healer|Tank")
 local warnPhase2					= mod:NewPhaseAnnounce(2, 2)
 --Stage Two: An Avatar Awakened
@@ -58,6 +60,7 @@ local specWarnRuptureRealities		= mod:NewSpecialWarningRun(239132, nil, nil, nil
 local specWarnUnboundChaos			= mod:NewSpecialWarningMoveAway(234059, nil, nil, nil, 1, 2)
 local yellUnboundChaos				= mod:NewYell(234059, nil, false, 2)
 local specWarnShadowyBlades			= mod:NewSpecialWarningMoveAway(236571, nil, nil, nil, 1, 2)
+local yellShadowyBlades				= mod:NewYell(236571)
 local specWarnLingeringDarkness		= mod:NewSpecialWarningMove(239212, nil, nil, nil, 1, 2)
 local specWarnDesolateYou			= mod:NewSpecialWarningStack(236494, nil, 2, nil, nil, 1, 6)
 local specWarnDesolateOther			= mod:NewSpecialWarningTaunt(236494, nil, nil, nil, 1, 2)
@@ -307,6 +310,23 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 	end
 end
 
+function mod:RAID_BOSS_WHISPER(msg)
+	if msg:find("spell:236604") then
+		specWarnShadowyBlades:Show()
+		voiceShadowyBlades:Play("runout")
+	end
+end
+
+function mod:CHAT_MSG_ADDON(prefix, msg, channel, targetName)
+	if prefix ~= "Transcriptor" then return end
+	if msg:find("spell:236604") then--Rapid fire
+		targetName = Ambiguate(targetName, "none")
+		if self:AntiSpam(4, targetName) then
+			warnShadowyBlades:CombinedShow(0.5, targetName)
+		end
+	end
+end
+
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
 	if spellId == 234057 then
@@ -317,8 +337,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		warnBlackWinds:Show()
 		--timerBlackWindsCD:Start()
 	elseif spellId == 236571 then--Shadow Blades (guessed)
-		specWarnShadowyBlades:Show()
-		voiceShadowyBlades:Play("scatter")
 		timerShadowyBladesCD:Start()
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(10, nil, nil, nil, nil, 5)
