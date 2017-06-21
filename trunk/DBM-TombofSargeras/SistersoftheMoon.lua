@@ -59,7 +59,8 @@ local specWarnDiscorporate			= mod:NewSpecialWarningMoveTo(236550, nil, nil, nil
 local specWarnDiscorporateSwap		= mod:NewSpecialWarningTaunt(236550, nil, nil, nil, 1, 2)
 --Captain Yathae Moonstrike
 local specWarnCallMoontalon			= mod:NewSpecialWarningSwitch(236694, "-Healer", nil, nil, 1, 2)
-local specWarnTwilightVolley		= mod:NewSpecialWarningSpell(236442, nil, nil, nil, 2, 2)
+local specWarnTwilightVolley		= mod:NewSpecialWarningDodge(236442, nil, nil, nil, 2, 2)
+local yellTwilightVolley			= mod:NewYell(236442)
 local specWarnIncorpShot			= mod:NewSpecialWarningMoveAway(236305, nil, nil, nil, 1, 2)
 local yellIncorpShot				= mod:NewYell(236305)
 local specWarnRapidShot				= mod:NewSpecialWarningMoveAway(236596, nil, nil, nil, 1, 2)
@@ -79,12 +80,12 @@ local timerMoonGlaiveCD				= mod:NewCDTimer(13.4, 236547, nil, "Tank", nil, 5, n
 --Captain Yathae Moonstrike
 local timerIncorporealShotCD		= mod:NewCDTimer(54.7, 236305, nil, nil, nil, 3)
 local timerCallMoontalonCD			= mod:NewCDTimer(31, 236694, nil, nil, nil, 1)
-local timerTwilightVolleyCD			= mod:NewCDTimer(19.4, 236442, nil, nil, nil, 2)--Cast while inactive.
+local timerTwilightVolleyCD			= mod:NewCDTimer(15.8, 236442, nil, nil, nil, 2)--Cast while inactive.
 local timerRapidShotCD				= mod:NewCDTimer(18.2, 236596, nil, nil, nil, 3)--18.2 but sometimes 30
 --Priestess Lunaspyre
 local timerEmbraceofEclipseCD		= mod:NewCDTimer(54.3, 233264, nil, nil, nil, 5, nil, DBM_CORE_HEALER_ICON..DBM_CORE_DAMAGE_ICON)--Used while inactive
 local timerLunarBeaconCD			= mod:NewAITimer(31, 236712, nil, nil, nil, 3)
-local timerLunarFireCD				= mod:NewAITimer(31, 239264, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerLunarFireCD				= mod:NewCDTimer(11, 239264, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerMoonBurnCD				= mod:NewCDTimer(23, 236519, nil, nil, nil, 3)--Used while inactive
 
 --local berserkTimer				= mod:NewBerserkTimer(300)
@@ -100,7 +101,7 @@ local voiceTwilightGlaive			= mod:NewVoice(237561)--runout
 local voiceDiscorporate				= mod:NewVoice(236550)--changemoon/tauntboss
 --Captain Yathae Moonstrike
 local voiceCallMoontalon			= mod:NewVoice(236694, "-Healer")--killbigmob
-local voiceTwilightVolley			= mod:NewVoice(236442)--aesoon
+local voiceTwilightVolley			= mod:NewVoice(236442)--watchstep
 local voiceIncorpShot				= mod:NewVoice(236305)--targetyou
 local voiceRapidShot				= mod:NewVoice(236596)--runout
 --Priestess Lunaspyre
@@ -116,16 +117,25 @@ mod:AddInfoFrameOption(233263, true)
 mod.vb.phase = 1
 mod.vb.twilightGlaiveCount = 0
 mod.vb.eclipseCount = 0
+mod.vb.beaconCount = 0
 local astralPurge = GetSpellInfo(234998)
+
+function mod:VolleyTarget(targetname, uId)
+	if not targetname then return end
+	if targetname == UnitName("player") then
+		yellTwilightVolley:Yell()
+	end
+end
 
 function mod:OnCombatStart(delay)
 	self.vb.phase = 1
 	self.vb.twilightGlaiveCount = 0
 	self.vb.eclipseCount = 0
+	self.vb.beaconCount = 0
 	timerMoonBurnCD:Start(9.6-delay)
 	timerMoonGlaiveCD:Start(14.4-delay)--16.6 on lat mythic test
 	timerTwilightVolleyCD:Start(15.5-delay)--15.5-17
-	timerTwilightGlaiveCD:Start(18.3-delay)
+	timerTwilightGlaiveCD:Start(17.4-delay)
 	timerIncorporealShotCD:Start(48-delay)
 	timerEmbraceofEclipseCD:Start(48-delay)
 end
@@ -147,10 +157,18 @@ function mod:SPELL_CAST_START(args)
 		--timerCallMoontalonCD:Start()
 	elseif spellId == 236442 then
 		specWarnTwilightVolley:Show()
-		voiceTwilightVolley:Play("aesoon")
+		voiceTwilightVolley:Play("watchstep")
 		timerTwilightVolleyCD:Start()
+		if self.vb.phase == 2 then
+			self:BossTargetScanner(args.sourceGUID, "VolleyTarget", 0.1, 9)
+		end
 	elseif spellId == 236712 then
-		timerLunarBeaconCD:Start()
+		self.vb.beaconCount = self.vb.beaconCount + 1
+		if self.vb.beaconCount % 2 == 0 then
+			timerLunarBeaconCD:Start(21.9)
+		else
+			timerLunarBeaconCD:Start(35)
+		end
 	end
 end
 
@@ -162,11 +180,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerGlaiveStormCD:Start()
 	elseif spellId == 237561 then--^^
 		self.vb.twilightGlaiveCount = self.vb.twilightGlaiveCount + 1
-		if self.vb.twilightGlaiveCount % 2 == 0 then
-			timerTwilightGlaiveCD:Start(30)
-		else
+		--if self.vb.twilightGlaiveCount % 2 == 0 then
+		--	timerTwilightGlaiveCD:Start(30)
+		--else
 			timerTwilightGlaiveCD:Start(18.2)
-		end
+		--end
 	elseif spellId == 236547 then
 		timerMoonGlaiveCD:Start()
 	elseif spellId == 236518 then
@@ -327,10 +345,10 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		timerTwilightVolleyCD:Stop()
 		timerTwilightGlaiveCD:Stop()
 		timerIncorporealShotCD:Stop()
-		timerCallMoontalonCD:Start(3.3)
+		timerCallMoontalonCD:Start(3.3)--Review
 		timerTwilightGlaiveCD:Start(6)
-		timerTwilightVolleyCD:Start(10.9)
-		timerRapidShotCD:Start(15.8)
+		timerTwilightVolleyCD:Start(10.9)--Review
+		timerRapidShotCD:Start(15.8)--Review
 		timerGlaiveStormCD:Start(2)--Unknown, didn't get this far
 	elseif spellId == 243047 then--Lunaspyre Becomes Active Conversation (Phase 3)
 		self.vb.phase = 3
@@ -342,12 +360,11 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		timerCallMoontalonCD:Stop()
 		
 		--AI timers for now
-		timerLunarFireCD:Start(3)
-		timerLunarBeaconCD:Start(3)
-		--Can't use AI code, because it's hardcoded for phase 1-2
-		--timerMoonBurnCD:Start()
-		--timerTwilightVolleyCD:Start()
-		--timerIncorporealShotCD:Start()
+		timerLunarFireCD:Start(6)
+		timerMoonBurnCD:Start(11)
+		timerTwilightVolleyCD:Start(17)
+		timerLunarBeaconCD:Start(18)
+		--timerIncorporealShotCD:Start()--Never used in my log, maybe not used on normal
 	end
 end
 
