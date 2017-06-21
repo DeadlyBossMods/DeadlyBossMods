@@ -5,8 +5,8 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(116939)--Maiden of Valor 120437
 mod:SetEncounterID(2038)
 mod:SetZone()
---mod:SetBossHPInfoToHighest()
---mod:SetUsedIcons(1)
+mod:SetBossHPInfoToHighest()
+mod:SetUsedIcons(1, 2, 3, 4, 5, 6)
 --mod:SetHotfixNoticeRev(15581)
 mod.respawnTime = 25
 
@@ -48,7 +48,7 @@ local warnDesolate					= mod:NewStackAnnounce(236494, 3, nil, "Healer|Tank")
 local warnPhase2					= mod:NewPhaseAnnounce(2, 2)
 --Stage Two: An Avatar Awakened
 local warnDarkmark					= mod:NewTargetAnnounce(239739, 3)
-local warnBlackWinds				= mod:NewSpellAnnounce(239418, 2)
+--local warnBlackWinds				= mod:NewSpellAnnounce(239418, 2)
 
 --Stage One: A Slumber Disturbed
 local specWarnTouchofSargerasGround	= mod:NewSpecialWarningSpell(239207, nil, nil, nil, 1, 2)
@@ -65,6 +65,7 @@ local specWarnLingeringDarkness		= mod:NewSpecialWarningMove(239212, nil, nil, n
 local specWarnDesolateYou			= mod:NewSpecialWarningStack(236494, nil, 2, nil, nil, 1, 6)
 local specWarnDesolateOther			= mod:NewSpecialWarningTaunt(236494, nil, nil, nil, 1, 2)
 ----Maiden of Valor
+local specWarnCorruptedMatrix		= mod:NewSpecialWarningMoveTo(233556, "Tank", nil, nil, 1, 2)
 local specWarnCleansingProtocol		= mod:NewSpecialWarningSwitch(233856, "-Healer", nil, nil, 3, 2)
 local specWarnTaintedEssence		= mod:NewSpecialWarningStack(240728, nil, 3, nil, nil, 1, 6)
 --Stage Two: An Avatar Awakened
@@ -75,23 +76,25 @@ local yellDarkMarkFades				= mod:NewFadesYell(239739)
 local specWarnRainoftheDestroyer	= mod:NewSpecialWarningDodge(240396, nil, nil, nil, 2, 2)
 
 --Stage One: A Slumber Disturbed
-local timerTouchofSargerasCD		= mod:NewCDTimer(42.5, 239207, nil, nil, nil, 3)--42.5-50ish
+local timerTouchofSargerasCD		= mod:NewCDTimer(44, 239207, nil, nil, nil, 3)--44-46
 local timerRuptureRealitiesCD		= mod:NewCDTimer(60, 239132, nil, nil, nil, 2)
 local timerUnboundChaosCD			= mod:NewCDTimer(35, 234059, nil, nil, nil, 3)--35-43
-local timerShadowyBladesCD			= mod:NewCDTimer(42.6, 236571, nil, nil, nil, 3)--42.6-50ish
-local timerDesolateCD				= mod:NewCDTimer(12, 236494, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerShadowyBladesCD			= mod:NewCDTimer(34.1, 236571, nil, nil, nil, 3)--34.1-36
+local timerDesolateCD				= mod:NewCDTimer(11.4, 236494, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 ----Maiden of Valor
-local timerCorruptedMatrixCD		= mod:NewCastTimer(10, 233556, nil, nil, nil, 6)
+local timerCorruptedMatrixCD		= mod:NewNextTimer(40, 233556, nil, nil, nil, 5)
+local timerCorruptedMatrix			= mod:NewCastTimer(10, 233556, nil, nil, nil, 5)
 local timerTaintedMatrixCD			= mod:NewCastTimer(10, 240623, nil, nil, nil, 6)--Mythic
 --Stage Two: An Avatar Awakened
 local timerDarkMarkCD				= mod:NewCDTimer(20.5, 239739, nil, nil, nil, 3)
-local timerBlackWindsCD				= mod:NewCDTimer(31, 239418, nil, nil, nil, 3)
-local timerRainoftheDestroyerCD		= mod:NewCDTimer(44, 240396, nil, nil, nil, 3)
+--local timerBlackWindsCD				= mod:NewCDTimer(31, 239418, nil, nil, nil, 3)
+--local timerRainoftheDestroyerCD		= mod:NewCDTimer(44, 240396, nil, nil, nil, 3)
 
 --local berserkTimer				= mod:NewBerserkTimer(300)
 
 --Stage One: A Slumber Disturbed
---local countdownDrawPower			= mod:NewCountdown(33, 227629)
+local countdownRuptureRealities		= mod:NewCountdown(60, 239132)
+local countdownCorruptedMatrix		= mod:NewCountdown("Alt40", 233556)
 
 --Stage One: A Slumber Disturbed
 local voiceTouchofSargerasGround	= mod:NewVoice(239207)--helpsoak
@@ -102,17 +105,20 @@ local voiceShadowyBlades			= mod:NewVoice(236571)--scatter
 local voiceLingeringDarkness		= mod:NewVoice(239212)--runaway
 local voiceDesolate					= mod:NewVoice(236494, "Tank")--stackhigh/tauntboss
 ----Maiden of Valor
+local voiceCorruptedMatrix			= mod:NewVoice(233556, "Tank")--bossout (TEMP. bosstobeam when added)
 local voiceCleansingProtocol		= mod:NewVoice(233856, "-Healer")--targetchange
 local voiceTaintedEssence			= mod:NewVoice(240728)--stackhigh
 --Stage Two: An Avatar Awakened
 local voiceDarkMark					= mod:NewVoice(239739)--gathershare/targetyou
 local voiceRainoftheDestroyer		= mod:NewVoice(240396)--watchstep
 
+mod:AddSetIconOption("SetIconOnShadowyBlades", 236571, true)
 mod:AddSetIconOption("SetIconOnTouchofSargeras", 234009, true)
 mod:AddBoolOption("InfoFrame", true)
 mod:AddRangeFrameOption(10, 236571)
 
 mod.vb.phase = 1
+mod.vb.bladesIcon = 3
 local TouchofSargerasTargets = {}
 local playerName = UnitName("player")
 --local unboundChaos = {7, 43.7(40), 37.7(35.7), 40.1, 36.5}
@@ -150,12 +156,15 @@ end
 
 function mod:OnCombatStart(delay)
 	self.vb.phase = 1
+	self.vb.bladesIcon = 3
 	table.wipe(TouchofSargerasTargets)
 	timerUnboundChaosCD:Start(7-delay)--7
 	timerDesolateCD:Start(13-delay)--13
-	timerTouchofSargerasCD:Start(15.4-delay)--15.5
-	timerShadowyBladesCD:Start(33.9-delay)
-	timerRuptureRealitiesCD:Start(34-delay)--34-37
+	if not self:IsEasy() then
+		timerTouchofSargerasCD:Start(15.4-delay)--15.5
+	end
+	timerShadowyBladesCD:Start(20.7-delay)
+	timerRuptureRealitiesCD:Start(31.6-delay)--34-37
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(POWER_TYPE_POWER)
 		DBM.InfoFrame:Show(2, "enemypower", 2, ALTERNATE_POWER_INDEX)
@@ -181,12 +190,19 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 239132 or spellId == 235572 then
 		specWarnRuptureRealities:Show()
 		voiceRuptureRealities:Play("justrun")
-		timerRuptureRealitiesCD:Start()
+		if self.vb.phase == 2 then
+			timerRuptureRealitiesCD:Start(37)
+			countdownRuptureRealities:Start(37)
+		else
+			timerRuptureRealitiesCD:Start()
+		end
 	elseif spellId == 233856 then
 		specWarnCleansingProtocol:Show()
 		voiceCleansingProtocol:Play("targetchange")
 	elseif spellId == 233556 and self:AntiSpam(2, 2) then
-		timerCorruptedMatrixCD:Start(10)
+		specWarnCorruptedMatrix:Show(TARGET)
+		voiceCorruptedMatrix:Play("bossout")
+		timerCorruptedMatrix:Start(10)
 	elseif spellId == 240623 and self:AntiSpam(2, 3) then
 		timerTaintedMatrixCD:Start(10)
 	end
@@ -196,6 +212,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 236494 then
 		timerDesolateCD:Start()
+	elseif spellId == 233556 and self:AntiSpam(2, 4) then
+		timerCorruptedMatrixCD:Start()
+		countdownCorruptedMatrix:Start()
 	elseif spellId == 240594 then
 		self.vb.phase = 2
 		timerTouchofSargerasCD:Stop()
@@ -203,15 +222,19 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerRuptureRealitiesCD:Stop()
 		timerDesolateCD:Stop()
 		timerUnboundChaosCD:Stop()
+		timerCorruptedMatrix:Stop()
 		timerCorruptedMatrixCD:Stop()
+		countdownCorruptedMatrix:Cancel()
 		timerTaintedMatrixCD:Stop()
 		
 		warnPhase2:Show()
 		timerDesolateCD:Start(21)
 		timerDarkMarkCD:Start(23)
-		timerRainoftheDestroyerCD:Start(25)
-		timerBlackWindsCD:Start(35)
-		timerRuptureRealitiesCD:Start(35)
+		if not self:IsEasy() then
+			--timerRainoftheDestroyerCD:Start(25)--Disabled for now until it can be transcribed
+			--timerBlackWindsCD:Start(35)
+		end
+		timerRuptureRealitiesCD:Start(41)
 	end
 end
 
@@ -306,7 +329,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 	if msg:find("spell:234418") then
 		specWarnRainoftheDestroyer:Show()
 		voiceRainoftheDestroyer:Play("watchstep")
-		timerRainoftheDestroyerCD:Start()
+		--timerRainoftheDestroyerCD:Start()
 	end
 end
 
@@ -323,6 +346,10 @@ function mod:CHAT_MSG_ADDON(prefix, msg, channel, targetName)
 		targetName = Ambiguate(targetName, "none")
 		if self:AntiSpam(4, targetName) then
 			warnShadowyBlades:CombinedShow(0.5, targetName)
+			if self.Options.SetIconOnShadowyBlades then
+				self:SetIcon(targetName, self.vb.bladesIcon, 5)
+			end
+			self.vb.bladesIcon = self.vb.bladesIcon + 1
 		end
 	end
 end
@@ -334,9 +361,10 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	elseif spellId == 239739 then
 		timerDarkMarkCD:Start()
 	elseif spellId == 239418 then
-		warnBlackWinds:Show()
+		--warnBlackWinds:Show()
 		--timerBlackWindsCD:Start()
-	elseif spellId == 236571 then--Shadow Blades (guessed)
+	elseif spellId == 236571 or spellId == 236573 then--Shadow Blades
+		self.vb.bladesIcon = 3--SHOULD always fire first, fixme if it doesn't
 		timerShadowyBladesCD:Start()
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(10, nil, nil, nil, nil, 5)
