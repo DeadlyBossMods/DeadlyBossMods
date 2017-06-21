@@ -16,7 +16,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 233426 234015 239401",
 	"SPELL_CAST_SUCCESS 233431 233983 233894",
 	"SPELL_AURA_APPLIED 233430 233441 235230 233983 233894 233431",
---	"SPELL_AURA_APPLIED_DOSE",
+	"SPELL_AURA_APPLIED_DOSE 248713",
 	"SPELL_AURA_REMOVED 233441 235230 233983"
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
@@ -54,6 +54,8 @@ local yellEchoingAnguish			= mod:NewYell(233983)
 local specWarnFelSquallMelee		= mod:NewSpecialWarningRun(235230, "Melee", nil, 2, 4, 2)
 local specWarnFelSquallEveryoneElse	= mod:NewSpecialWarningReflect(235230, "-Melee", nil, nil, 1, 2)
 local specWarnTormentingBurst		= mod:NewSpecialWarningCount(234015, nil, nil, nil, 2, 2)
+--Phase
+local specWarnSoulCorruption		= mod:NewSpecialWarningStack(248713, nil, 10, nil, nil, 1, 6)--stack guessed
 
 --Atrigan
 local timerScytheSweepCD			= mod:NewCDTimer(23, 233426, nil, nil, nil, 3)
@@ -81,6 +83,8 @@ local voicePangsofGuilt				= mod:NewVoice(239401, "HasInterrupt")--kickcast
 local voiceEchoingAnguish			= mod:NewVoice(233983)--runout
 local voiceFelSquall				= mod:NewVoice(235230)--runout/stopattack
 local voiceTormentingBurst			= mod:NewVoice(234015)--aesoon
+--Phase
+local voiceSoulCorruption			= mod:NewVoice(248713)--stackhigh
 
 --mod:AddSetIconOption("SetIconOnShield", 228270, true)
 mod:AddInfoFrameOption(233104, true)
@@ -248,9 +252,15 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			warnQuills:Show(args.destName)
 		end
+	elseif spellId == 208802 then
+		local amount = args.amount or 1
+		if args:IsPlayer() and amount >= 10 then
+			specWarnSoulCorruption:Show(amount)
+			voiceSoulCorruption:Play("stackhigh")
+		end
 	end
 end
---mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
+mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
