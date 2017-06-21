@@ -41,7 +41,7 @@ mod:RegisterEventsInCombat(
 --]]
 --Stage One: A Slumber Disturbed
 local warnTouchofSargeras			= mod:NewTargetAnnounce(234009, 3)
-local warnUnboundChaos				= mod:NewTargetAnnounce(234059, 3)
+local warnUnboundChaos				= mod:NewTargetAnnounce(234059, 3, nil, false, 2)
 local warnDesolate					= mod:NewStackAnnounce(236494, 3, nil, "Healer|Tank")
 local warnPhase2					= mod:NewPhaseAnnounce(2, 2)
 --Stage Two: An Avatar Awakened
@@ -56,7 +56,7 @@ local yellTouchofSargeras			= mod:NewPosYell(234009)
 local yellTouchofSargerasFades		= mod:NewFadesYell(234009)
 local specWarnRuptureRealities		= mod:NewSpecialWarningRun(239132, nil, nil, nil, 4, 2)
 local specWarnUnboundChaos			= mod:NewSpecialWarningMoveAway(234059, nil, nil, nil, 1, 2)
-local yellUnboundChaos				= mod:NewYell(234059)
+local yellUnboundChaos				= mod:NewYell(234059, nil, false, 2)
 local specWarnShadowyBlades			= mod:NewSpecialWarningMoveAway(236571, nil, nil, nil, 1, 2)
 local specWarnLingeringDarkness		= mod:NewSpecialWarningMove(239212, nil, nil, nil, 1, 2)
 local specWarnDesolateYou			= mod:NewSpecialWarningStack(236494, nil, 2, nil, nil, 1, 6)
@@ -241,8 +241,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnUnboundChaos:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			specWarnUnboundChaos:Show()
-			voiceUnboundChaos:Play("runout")
-			voiceUnboundChaos:Schedule(1, "keepmove")
+			voiceUnboundChaos:Play("watchstep")
 			yellUnboundChaos:Yell()
 		end
 	elseif spellId == 236494 then
