@@ -41,7 +41,7 @@ local warnThunderingShock			= mod:NewTargetAnnounce(230362, 2, nil, false)
 local warnConsumingHunger			= mod:NewTargetAnnounce(230384, 2)
 --Stage Two: Terrors of the Deep
 local warnPhase2					= mod:NewPhaseAnnounce(2, 2)
-local warnSummonOssunet				= mod:NewSpellAnnounce(232756, 2)
+local warnSummonOssunet				= mod:NewSpellAnnounce(232913, 2)
 local warnBefoulingInk				= mod:NewTargetAnnounce(232916, 2, nil, false)--Optional warning if you want to know who's carrying ink
 --Stage three
 local warnPhase3					= mod:NewPhaseAnnounce(3, 2)
@@ -58,7 +58,7 @@ local specWarnThunderingShock		= mod:NewSpecialWarningDodge(230362, nil, nil, ni
 local specWarnThunderingShockDispel	= mod:NewSpecialWarningDispel(230362, "Healer", nil, nil, 1, 2)
 local specWarnConsumingHunger		= mod:NewSpecialWarningMoveTo(230384, nil, nil, nil, 1, 7)
 --Stage Two: Terrors of the Deep
-local specWarnDevouringMaw			= mod:NewSpecialWarningSpell(232745, nil, nil, nil, 2, 7)
+local specWarnDevouringMaw			= mod:NewSpecialWarningSpell(234621, nil, nil, nil, 2, 7)
 local specWarnCrashingWave			= mod:NewSpecialWarningDodge(232827, nil, nil, nil, 3, 2)
 --Mythic
 local specWarnDeliciousBufferfish	= mod:NewSpecialWarningYou(239375, nil, nil, nil, 1, 2)
@@ -68,7 +68,7 @@ local timerHydraShotCD				= mod:NewCDTimer(40, 230139, nil, nil, nil, 3)
 local timerBurdenofPainCD			= mod:NewCDTimer(28, 230201, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--28-32
 local timerFromtheAbyssCD			= mod:NewCDTimer(27, 230227, nil, nil, nil, 1)--27-31
 --Stage One: Ten Thousand Fangs
-local timerSlicingTornadoCD			= mod:NewCDTimer(45, 232722, nil, nil, nil, 3)--45-54
+local timerSlicingTornadoCD			= mod:NewCDTimer(43.2, 232722, nil, nil, nil, 3)--43.2-54
 local timerConsumingHungerCD		= mod:NewCDTimer(32, 230920, nil, nil, nil, 1)
 local timerThunderingShockCD		= mod:NewCDTimer(32.2, 230358, nil, nil, nil, 3)
 --Stage Two: Terrors of the Deep
@@ -111,11 +111,15 @@ function mod:OnCombatStart(delay)
 	self.vb.crashingWaveCount = 0
 	self.vb.hydraShotCount = 0
 	table.wipe(hydraIcons)
-	timerThunderingShockCD:Start(10-delay)
-	timerBurdenofPainCD:Start(18-delay)
+	timerThunderingShockCD:Start(10-delay)--10-11
+	timerBurdenofPainCD:Start(17.9-delay)
 	timerFromtheAbyssCD:Start(18-delay)
 	timerConsumingHungerCD:Start(20-delay)--20-23
-	timerSlicingTornadoCD:Start(30-delay)
+	if self:IsEasy() then
+		timerSlicingTornadoCD:Start(36-delay)--36
+	else
+		timerSlicingTornadoCD:Start(30-delay)
+	end
 	if not self:IsLFR() then
 		timerHydraShotCD:Start(25.4-delay, 1)
 	end
@@ -270,7 +274,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		if self:IsMythic() then
 			timerHydraShotCD:Start(30, self.vb.hydraShotCount+1)
 		else
-			timerHydraShotCD:Start(nil, self.vb.hydraShotCount+1)
+			timerHydraShotCD:Start(40, self.vb.hydraShotCount+1)
 		end
 	elseif spellId == 239423 then--Dread Shark
 		if self:IsMythic() then
@@ -312,7 +316,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 			timerDevouringMawCD:Stop()
 			timerFromtheAbyssCD:Stop()
 			
-			timerInkCD:Start(10.8)
+			timerInkCD:Start(10.2)
 			timerBurdenofPainCD:Start(26)
 			timerFromtheAbyssCD:Start(29)
 			timerCrashingWaveCD:Start(30, 1)
