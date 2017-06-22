@@ -12,8 +12,8 @@ mod.respawnTime = 40
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 230273 232722 230384 232746 232757 232756 230358 230201",
-	"SPELL_AURA_APPLIED 239375 239362 230139 230201 230362 232916 230384",
+	"SPELL_CAST_START 230273 232722 230384 234661 232746 232757 232756 230358 230201",
+	"SPELL_AURA_APPLIED 239375 239362 230139 230201 230362 232916 230384 234661",
 	"SPELL_AURA_REMOVED 239375 239362 230139",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
@@ -145,7 +145,7 @@ function mod:SPELL_CAST_START(args)
 		else
 			timerSlicingTornadoCD:Start()
 		end
-	elseif spellId == 230384 then
+	elseif spellId == 230384 or spellId == 234661 then
 		timerConsumingHungerCD:Start()
 	elseif spellId == 232746 then
 		specWarnDevouringMaw:Show()
@@ -222,7 +222,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			warnThunderingShock:CombinedShow(0.3, args.destName)
 		end
-	elseif spellId == 230384 then--230384
+	elseif spellId == 230384 or spellId == 234661 then--230384
 		warnConsumingHunger:CombinedShow(0.5, args.destName)
 		if args:IsPlayer() then
 			specWarnConsumingHunger:Show(thunderingShock)
@@ -304,7 +304,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 			timerCrashingWaveCD:Start(30, 1)
 			timerDevouringMawCD:Start(40)
 			if not self:IsLFR() then
-				timerHydraShotCD:Start(25.5, 1)
+				timerHydraShotCD:Start(17, 1)
 			end
 		elseif self.vb.phase == 3 then
 			self.vb.crashingWaveCount = 0
@@ -322,9 +322,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 			timerFromtheAbyssCD:Start(29)
 			timerCrashingWaveCD:Start(30, 1)
 			timerConsumingHungerCD:Start(39)--SUCCESS
-			timerSlicingTornadoCD:Start(52.2)
+			timerSlicingTornadoCD:Start(51)
 			if not self:IsLFR() then
-				timerHydraShotCD:Start(25.5, 1)
+				timerHydraShotCD:Start(17, 1)
 			end
 		end
 	end

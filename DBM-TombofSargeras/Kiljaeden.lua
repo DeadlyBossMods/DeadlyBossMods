@@ -50,7 +50,7 @@ local warnDarknessofStuff			= mod:NewEndAnnounce(238999, 1)
 --Stage One: The Betrayer
 local specWarnFelclaws				= mod:NewSpecialWarningStack(239932, nil, 2, nil, nil, 1, 2)
 local specWarnFelclawsOther			= mod:NewSpecialWarningTaunt(239932, nil, nil, nil, 1, 2)
-local specWarnRupturingSingularity	= mod:NewSpecialWarningMoveTo(235059, nil, nil, nil, 2, 2)
+local specWarnRupturingSingularity	= mod:NewSpecialWarningDodge(235059, nil, nil, nil, 3, 2)
 local specWarnArmageddon			= mod:NewSpecialWarningSpell(240910, nil, nil, nil, 2, 2)
 local specWarnSRWailing				= mod:NewSpecialWarningYou(236378, nil, nil, nil, 1, 2)
 local yellSRWailing					= mod:NewFadesYell(236378)
@@ -76,13 +76,13 @@ local specWarnFlamingOrbSpawn		= mod:NewSpecialWarningSpell(239253, nil, nil, ni
 
 --Stage One: The Betrayer
 local timerFelclawsCD				= mod:NewCDTimer(25, 239932, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
-local timerRupturingSingularityCD	= mod:NewCDTimer(61, 235059, nil, nil, nil, 3)--61-68?
-local timerArmageddonCD				= mod:NewCDTimer(42, 240910, nil, nil, nil, 5)--
+local timerRupturingSingularityCD	= mod:NewCDCountTimer(61, 235059, nil, nil, nil, 3)--61-68?
+local timerArmageddonCD				= mod:NewCDCountTimer(42, 240910, nil, nil, nil, 5)--
 local timerShadowReflectionCD		= mod:NewCDTimer(35, "ej15238", nil, nil, nil, 3, 236378)--Wailing icon used.
 --Intermission: Eternal Flame
 local timerTransition				= mod:NewPhaseTimer(57.9)
-local timerFocusedDreadflameCD		= mod:NewCDTimer(31, 238502, nil, nil, nil, 3)
-local timerBurstingDreadflameCD		= mod:NewCDTimer(31, 238430, nil, nil, nil, 3)
+local timerFocusedDreadflameCD		= mod:NewCDCountTimer(31, 238502, nil, nil, nil, 3)
+local timerBurstingDreadflameCD		= mod:NewCDCountTimer(31, 238430, nil, nil, nil, 3)
 --Stage Two: Reflected Souls
 local timerHopelessness				= mod:NewCastTimer(8, 237725, nil, "Healer", nil, 5, nil, DBM_CORE_HEALER_ICON)
 --Intermission: Deceiver's Veil
@@ -99,7 +99,7 @@ local timerFlamingOrbCD				= mod:NewAITimer(31, 239253, nil, nil, nil, 3)
 
 --Stage One: The Betrayer
 local voiceFelclaws					= mod:NewVoice(239932)--tauntboss
-local voiceRupturingSingularity		= mod:NewVoice(235059)--watchstep
+local voiceRupturingSingularity		= mod:NewVoice(235059)--carefly
 local voiceArmageddon				= mod:NewVoice(240910)--helpsoak
 local voiceSRWailing				= mod:NewVoice(236378)--targetyou (temp, more customized after seen)
 local voiceSRErupting				= mod:NewVoice(236710)--targetyou (temp, more customized after seen)
@@ -126,6 +126,7 @@ mod.vb.armageddonCast = 0
 mod.vb.focusedDreadCast = 0
 mod.vb.burstingDreadCast = 0
 mod.vb.burstingDreadIcon = 2
+mod.vb.singularityCount = 0
 local shelterName, gravitySqueezeBuff = GetSpellInfo(239130), GetSpellInfo(239154)
 local phase2NormalArmageddonTimers = {55, 45, 31}
 local phase2HeroicArmageddonTimers = {55, 75, 35}
@@ -168,6 +169,7 @@ function mod:OnCombatStart(delay)
 	self.vb.armageddonCast = 0
 	self.vb.focusedDreadCast = 0
 	self.vb.burstingDreadCast = 0
+	self.vb.singularityCount = 0
 	timerArmageddonCD:Start(10-delay, 1)
 	if not self:IsEasy() then
 		timerShadowReflectionCD:Start(21-delay)--Erupting
@@ -256,17 +258,19 @@ function mod:SPELL_CAST_SUCCESS(args)
 			self.vb.burstingDreadIcon = 2
 			if self.vb.phase == 1.5 then
 				if self.vb.burstingDreadCast < 2 then
-					timerBurstingDreadflameCD:Start(44)--44 on normal 47 on heroic?
+					timerBurstingDreadflameCD:Start(44, 2)--44 on normal 47 on heroic?
 				else--After second time he casts it in 1.5, he begins to land
 					self.vb.phase = 2
 					self.vb.armageddonCast = 0
 					self.vb.focusedDreadCast = 0
 					self.vb.burstingDreadCast = 0
+					self.vb.singularityCount = 0
 					warnPhase2:Schedule(5)
 					timerFelclawsCD:Start(15)
 					timerShadowReflectionCD:Start(17)--Erupting
 					timerArmageddonCD:Start(55.3, 1)
 					timerBurstingDreadflameCD:Start(57.3, 1)
+					timerRupturingSingularityCD:Start(70, 1)
 					if self:IsEasy() then
 						timerFocusedDreadflameCD:Start(81.5, 1)
 					else
@@ -397,7 +401,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 		self.vb.focusedDreadCast = self.vb.focusedDreadCast + 1
 		if self.vb.phase == 1.5 then
 			if self.vb.focusedDreadCast < 2 then
-				timerFocusedDreadflameCD:Start(12)
+				timerFocusedDreadflameCD:Start(12, 2)
 			end
 		elseif self.vb.phase == 2 then
 			local timer = self:IsHeroic() and phase2HeroicFocusedTimers[self.vb.focusedDreadCast+1]
@@ -426,9 +430,20 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 			end
 		end
 	elseif msg:find("spell:235059") then
+		self.vb.singularityCount = self.vb.singularityCount + 1
 		specWarnRupturingSingularity:Show()
-		voiceRupturingSingularity:Play("watchstep")
-		timerRupturingSingularityCD:Start()
+		voiceRupturingSingularity:Play("carefly")
+		if self.vb.phase == 1.5 then
+			if self.vb.singularityCount == 1 then
+				timerRupturingSingularityCD:Start(30, self.vb.singularityCount+1)
+			end
+		else
+			if self:IsEasy() then
+				timerRupturingSingularityCD:Start(80, self.vb.singularityCount+1)
+			else
+				timerRupturingSingularityCD:Start(55, self.vb.singularityCount+1)
+			end
+		end
 	end
 end
 
@@ -463,17 +478,21 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		self.vb.armageddonCast = 0
 		self.vb.focusedDreadCast = 0
 		self.vb.burstingDreadCast = 0
+		self.vb.singularityCount = 0
 		timerFelclawsCD:Stop()
 		timerRupturingSingularityCD:Stop()
 		timerArmageddonCD:Stop()
 		timerShadowReflectionCD:Stop()
 		timerArmageddonCD:Start(7.5, 1)
 		timerBurstingDreadflameCD:Start(8.7, 1)
+		if not self:IsEasy() then
+			timerRupturingSingularityCD:Start(14.7)
+		end
 		timerFocusedDreadflameCD:Start(24.7, 1)
 		timerTransition:Start(57.9)
 	elseif spellId == 242902 then--Kil'jaden Intro Conversation (not my typo, blizz spelled their own npc wrong)
 		
-	elseif spellId == 239254 and self:AntiSpam(5, 3) then--Flaming Orb (more likely than combat log. this spell looks like it's entirely scripted)
+	elseif spellId == 244856 and self:AntiSpam(5, 3) then--Flaming Orb (more likely than combat log. this spell looks like it's entirely scripted)
 		specWarnFlamingOrbSpawn:Show()
 		timerFlamingOrbCD:Start()
 	end
