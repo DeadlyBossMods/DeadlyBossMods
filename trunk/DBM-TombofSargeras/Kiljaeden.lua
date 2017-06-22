@@ -14,7 +14,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 237725 238999 243982 240910 241983",
-	"SPELL_CAST_SUCCESS 239932 236378 236710 237590 236498 238502 238430",
+	"SPELL_CAST_SUCCESS 239932 236378 236710 237590 236498 238502 238430 238999",
 	"SPELL_AURA_APPLIED 239932 236378 236710 237590 236498 236597 241721",
 	"SPELL_AURA_APPLIED_DOSE 239932",
 	"SPELL_AURA_REMOVED 236378 236710 237590 236498 241721",
@@ -25,21 +25,15 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3"--Illiden might cast important stuff, or adds?
 )
 
---TODO, verify scripting of armageddon, and how to better refine warning type based on role once examined thoroughly
 --TODO, fine tune reflections with appropriate functions like range, etc if needed. Custom voices with correct actions other than "targetyou"
 --TODO, verify Shadow Reflection expire times, 3 8s and a 7. one has a cast time and other 3 do not. suspicious!
---TODO, find a way to detect WHO is targetted by focused dreadflame, no clear spellid visible from journal alone. probably an emote or whisper
---TODO, more work on bursting, find that target too.
 --TODO, verify/correct event for Malignant Anguish, it's likely a channeled/buff type interrupt since spellID has no cast time.
 --TODO, if multiple hopelessness adds spawn at once, auto mark them so healers can be assigned to diff targets by raid icon
 --TODO, do we need shadow gaze warnings for player other then self?
 --TODO, how many shadowsouls? Also add a "remaining warning" for it as well.
---TODO, fix demonic obelisk if it's not in combat log. Also consider what type of warning it should be
 --TODO, buff active timer for expiring rifts? they seem to last 50 seconds based on data. So timer similar to elisande bubble timer?
---TODO, also verify cast event for tear rift. 243982 cast ID is a script and might not be combat log reliable
 --TODO, flame orb work. target of fixate after spawn. more than one spawn? if not, remove antispam
 --TODO, if above is successful, add range frame (10 yards) for fixated flame orb person.
---TODO, info frame for http://www.wowhead.com/spell=239154/gravity-squeeze
 --[[
 (ability.id = 238502 or ability.id = 237725 or ability.id = 238999 or ability.id = 243982 or ability.id = 240910 or ability.id = 241983) and type = "begincast"
  or (ability.id = 239932 or ability.id = 235059 or ability.id = 238502 or ability.id = 239785 or ability.id = 236378 or ability.id = 236710 or ability.id = 237590 or ability.id = 236498 or ability.id = 238430) and type = "cast"
@@ -51,6 +45,7 @@ local warnBurstingDreadFlame		= mod:NewTargetAnnounce(238430, 2)--Generic for no
 local warnPhase2					= mod:NewPhaseAnnounce(2, 2)
 --Stage Three: Darkness of A Thousand Souls
 local warnTearRift					= mod:NewSpellAnnounce(243982, 2)--Positive message color?
+local warnDarknessofStuff			= mod:NewEndAnnounce(238999, 1)
 
 --Stage One: The Betrayer
 local specWarnFelclaws				= mod:NewSpecialWarningStack(239932, nil, 2, nil, nil, 1, 2)
@@ -120,9 +115,9 @@ local voiceMalignantAnguish			= mod:NewVoice(236597)--kickcast
 --Stage Three: Darkness of A Thousand Souls
 local voiceDarknesofSouls			= mod:NewVoice(238999)--findshelter
 
-
 mod:AddSetIconOption("SetIconOnFocusedDread", 238502, true)
---mod:AddInfoFrameOption(227503, true)
+mod:AddSetIconOption("SetIconOnBurstingDread", 238430, true)
+mod:AddInfoFrameOption(239154, true)
 mod:AddRangeFrameOption("5/10")--238502/239253
 
 mod.vb.phase = 1
@@ -130,7 +125,8 @@ mod.vb.shadowSoulsRemaining = 5--Need real number
 mod.vb.armageddonCast = 0
 mod.vb.focusedDreadCast = 0
 mod.vb.burstingDreadCast = 0
-local shelterName = GetSpellInfo(239130)
+mod.vb.burstingDreadIcon = 2
+local shelterName, gravitySqueezeBuff = GetSpellInfo(239130), GetSpellInfo(239154)
 local phase2NormalArmageddonTimers = {55, 45, 31}
 local phase2HeroicArmageddonTimers = {55, 75, 35}
 local phase2NormalBurstingTimers = {57, 44}--Not used yet, needs more data to verify and improve
@@ -198,6 +194,10 @@ function mod:SPELL_CAST_START(args)
 		specWarnDarknessofSouls:Show(shelterName)
 		voiceDarknesofSouls:Play("findshelter")
 		timerDarknessofSoulsCD:Start()
+		if self.Options.InfoFrame then
+			DBM.InfoFrame:SetHeader(DBM_NO_DEBUFF:format(gravitySqueezeBuff))
+			DBM.InfoFrame:Show(10, "playergooddebuff", gravitySqueezeBuff)
+		end
 	elseif spellId == 243982 then
 		warnTearRift:Show()
 		timerTearRiftCD:Start()
@@ -253,6 +253,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 238430 then
 		if self:AntiSpam(2, 5) then
 			self.vb.burstingDreadCast = self.vb.burstingDreadCast + 1
+			self.vb.burstingDreadIcon = 2
 			if self.vb.phase == 1.5 then
 				if self.vb.burstingDreadCast < 2 then
 					timerBurstingDreadflameCD:Start(44)--44 on normal 47 on heroic?
@@ -283,6 +284,15 @@ function mod:SPELL_CAST_SUCCESS(args)
 			specWarnBurstingDreadflame:Show()
 			voiceBurstingDreadFlame:Play("scatter")
 			yellBurstingDreadflame:Yell()
+		end
+		if self.Options.SetIconOnBurstingDread then
+			self:SetIcon(args.destName, self.vb.burstingDreadIcon, 5)
+		end
+		self.vb.burstingDreadIcon = self.vb.burstingDreadIcon + 1
+	elseif spellId == 238999 then
+		warnDarknessofStuff:Show()
+		if self.Options.InfoFrame then
+			DBM.InfoFrame:Hide()
 		end
 	end
 end
