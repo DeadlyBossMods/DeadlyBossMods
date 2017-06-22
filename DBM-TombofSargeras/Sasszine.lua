@@ -178,7 +178,7 @@ function mod:SPELL_CAST_START(args)
 			specWarnBurdenofPain:Show()
 			voiceBurdenofPain:Play("defensive")
 		else
-			if self:AntiSpam(5, targetName) then
+			if self:AntiSpam(5, args.destName) then
 				specWarnBurdenofPainTaunt:Show(args.destName)
 				voiceBurdenofPain:Play("tauntboss")
 			end
