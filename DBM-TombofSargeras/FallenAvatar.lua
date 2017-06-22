@@ -76,10 +76,10 @@ local yellDarkMarkFades				= mod:NewFadesYell(239739)
 local specWarnRainoftheDestroyer	= mod:NewSpecialWarningDodge(240396, nil, nil, nil, 2, 2)
 
 --Stage One: A Slumber Disturbed
-local timerTouchofSargerasCD		= mod:NewCDTimer(44, 239207, nil, nil, nil, 3)--44-46
+local timerTouchofSargerasCD		= mod:NewCDTimer(42, 239207, nil, nil, nil, 3)--42+
 local timerRuptureRealitiesCD		= mod:NewCDTimer(60, 239132, nil, nil, nil, 2)
 local timerUnboundChaosCD			= mod:NewCDTimer(35, 234059, nil, nil, nil, 3)--35-43
-local timerShadowyBladesCD			= mod:NewCDTimer(34.1, 236571, nil, nil, nil, 3)--34.1-36
+local timerShadowyBladesCD			= mod:NewCDTimer(30, 236571, nil, nil, nil, 3)--34.1-36
 local timerDesolateCD				= mod:NewCDTimer(11.4, 236494, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 ----Maiden of Valor
 local timerCorruptedMatrixCD		= mod:NewNextTimer(40, 233556, nil, nil, nil, 5)
@@ -116,6 +116,18 @@ mod:AddSetIconOption("SetIconOnShadowyBlades", 236571, true)
 mod:AddSetIconOption("SetIconOnTouchofSargeras", 234009, true)
 mod:AddBoolOption("InfoFrame", true)
 mod:AddRangeFrameOption(10, 236571)
+--Not used yet, just populating until more data can verify actual sequences are better than standard lowest variance cd
+local normalTimers = {
+	[234057] = {8.5, 39.0, 36.5, 36.5, 36.6},--Unbound Chaos
+	[236573] = {20.7, 34.1, 35.4, 36.5},--Shadowy Blades
+	[239132] = {31.6, 64.5, 67.1},--Rupture Realities
+ }
+ local heroicTimers = {--Needs verification, shared by justw8t
+	[234057] = {7, 42, 35, 41, 36, 35, 43},--Unbound Chaos
+	[239207] = {15, 42.5, 55, 43, 42.5, 42.5},--Touch of Sargeras
+	[236573] = {30, 42.5, 36.5, 30, 30, 30, 33},--Shadowy Blades
+	[239132] = {37, 60.8, 60, 62},--Rupture Realities
+ }
 
 mod.vb.phase = 1
 mod.vb.bladesIcon = 3
@@ -365,7 +377,11 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		--timerBlackWindsCD:Start()
 	elseif spellId == 236571 or spellId == 236573 then--Shadow Blades
 		self.vb.bladesIcon = 3--SHOULD always fire first, fixme if it doesn't
-		timerShadowyBladesCD:Start()
+		if self:IsEasy() then
+			timerShadowyBladesCD:Start(34)
+		else
+			timerShadowyBladesCD:Start(30)
+		end
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(10, nil, nil, nil, nil, 5)
 		end

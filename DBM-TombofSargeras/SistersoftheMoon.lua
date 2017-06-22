@@ -17,7 +17,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS 236480 236547 236518 233263 237561 236672 239264",
 	"SPELL_AURA_APPLIED 234995 234996 236550 236596 233264 233263 236712 239264 236519 237561 236305",
 	"SPELL_AURA_APPLIED_DOSE 234995 234996 239264",
-	"SPELL_AURA_REMOVED 236712 233263 233264",
+	"SPELL_AURA_REMOVED 236712 233263 233264 236305",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 --	"CHAT_MSG_RAID_BOSS_EMOTE",
@@ -84,7 +84,7 @@ local timerTwilightVolleyCD			= mod:NewCDTimer(15.8, 236442, nil, nil, nil, 2)--
 local timerRapidShotCD				= mod:NewCDTimer(18.2, 236596, nil, nil, nil, 3)--18.2 but sometimes 30
 --Priestess Lunaspyre
 local timerEmbraceofEclipseCD		= mod:NewCDTimer(54.3, 233264, nil, nil, nil, 5, nil, DBM_CORE_HEALER_ICON..DBM_CORE_DAMAGE_ICON)--Used while inactive
-local timerLunarBeaconCD			= mod:NewAITimer(31, 236712, nil, nil, nil, 3)
+local timerLunarBeaconCD			= mod:NewCDTimer(31, 236712, nil, nil, nil, 3)
 local timerLunarFireCD				= mod:NewCDTimer(11, 239264, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerMoonBurnCD				= mod:NewCDTimer(23, 236519, nil, nil, nil, 3)--Used while inactive
 
@@ -110,7 +110,7 @@ local voiceLunarBeacon				= mod:NewVoice(236712)--runout
 local voiceLunarFire				= mod:NewVoice(239264)--tauntboss/stackhigh
 local voiceMoonBurn					= mod:NewVoice(236519)--changemoon
 
---mod:AddSetIconOption("SetIconOnShield", 228270, true)
+mod:AddSetIconOption("SetIconOnIncorpShot", 236305, true)
 mod:AddInfoFrameOption(233263, true)
 --mod:AddRangeFrameOption("5/8/15")
 
@@ -256,6 +256,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			warnIncorporealShot:Show(args.destName)
 		end
+		if self.Options.SetIconOnIncorpShot then
+			self:SetIcon(args.destName, 1)
+		end
 	elseif spellId == 233264 then--Dpser Embrace of the Eclipse
 		self.vb.eclipseCount = self.vb.eclipseCount + 1
 		if not self:IsHealer() then
@@ -315,6 +318,10 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.InfoFrame and self.vb.eclipseCount == 0 then
 			DBM.InfoFrame:Hide()
 		end
+	elseif spellId == 236305 then
+		if self.Options.SetIconOnIncorpShot then
+			self:SetIcon(args.destName, 1)
+		end
 	end
 end
 
@@ -347,7 +354,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		timerIncorporealShotCD:Stop()
 		timerCallMoontalonCD:Start(3.3)--Review
 		timerTwilightGlaiveCD:Start(6)
-		timerTwilightVolleyCD:Start(10.9)--Review
+		timerTwilightVolleyCD:Start(10.9)
 		timerRapidShotCD:Start(15.8)--Review
 		timerGlaiveStormCD:Start(2)--Unknown, didn't get this far
 	elseif spellId == 243047 then--Lunaspyre Becomes Active Conversation (Phase 3)
@@ -358,8 +365,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		timerEmbraceofEclipseCD:Stop()
 		timerMoonBurnCD:Stop()
 		timerCallMoontalonCD:Stop()
-		
-		--AI timers for now
 		timerLunarFireCD:Start(6)
 		timerMoonBurnCD:Start(11)
 		timerTwilightVolleyCD:Start(17)
