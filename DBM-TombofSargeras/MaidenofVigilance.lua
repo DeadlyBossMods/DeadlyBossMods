@@ -208,10 +208,11 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 236061 then
 		warnEssenceFragments:Show()
 	elseif spellId == 234891 then
+		local shieldname = GetSpellInfo(235028)
 		self.vb.shieldActive = true
 		if self.Options.InfoFrame then
-			DBM.InfoFrame:SetHeader(args.spellName)
-			DBM.InfoFrame:Show(2, "enemyabsorb", GetSpellInfo(235028))
+			DBM.InfoFrame:SetHeader(shieldname)
+			DBM.InfoFrame:Show(2, "enemyabsorb", shieldname)
 		end
 	end
 end
