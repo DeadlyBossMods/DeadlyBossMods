@@ -14,10 +14,10 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 238570 235927 236542 236544 236072",
-	"SPELL_CAST_SUCCESS 236449 235933 236138 236131 235969",
+	"SPELL_CAST_SUCCESS 236449 235933 236131 235969",
 	"SPELL_AURA_APPLIED 236459 235924 238018 236513 236138 236131 235969 236361 239923 236548 235732",
 	"SPELL_AURA_APPLIED_DOSE 236548",
-	"SPELL_AURA_REMOVED 236459 235924 236513 235969 235732",
+	"SPELL_AURA_REMOVED 236459 235924 236513 235969 235732 236072",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 	"UNIT_DIED",
@@ -75,10 +75,10 @@ local specWarnDoomedSunderingRun	= mod:NewSpecialWarningRun(236544, nil, nil, ni
 local timerSpearofAnquishCD			= mod:NewCDTimer(20, 235924, nil, nil, nil, 3)
 --local timerCollapsingFissureCD		= mod:NewAITimer(31, 235907, nil, nil, nil, 3)
 local timerTormentedCriesCD			= mod:NewCDTimer(31, 238570, nil, nil, nil, 3)
-local timerRupturingSlamCD			= mod:NewCDTimer(23, 235927, nil, nil, nil, 3)--23 seconds, per add
+--local timerRupturingSlamCD			= mod:NewCDTimer(23, 235927, nil, nil, nil, 3)--23 seconds, per add
 --Spirit Realm
 local timerSoulbindCD				= mod:NewCDCountTimer(24, 236459, nil, nil, nil, 3)
-local timerWitherCD					= mod:NewCDTimer(9.4, 236138, nil, nil, nil, 3)
+--local timerWitherCD					= mod:NewCDTimer(9.4, 236138, nil, nil, nil, 3)
 --local timerShatteringScreamCD		= mod:NewCDTimer(12, 235969, nil, nil, nil, 3)--12 seconds, per add
 local timerWailingSoulsCD			= mod:NewCDCountTimer(60, 236072, nil, nil, nil, 2)
 --The Desolate Host
@@ -116,6 +116,7 @@ local spiritRealm, corpRealm, spiritBarrier = GetSpellInfo(235621), EJ_GetSectio
 local boneArmor = GetSpellInfo(236513)
 local playersInSpirit = {}
 local playersNotInSpirit = {}
+local soulbindTimers = {25, 94, 25, 84, 15, 20, 19, 20, 20}--Still not most accurate way of doing it, but more accurate than old way.
 
 local spiritFilter, regularFilter
 local UnitDebuff = UnitDebuff
@@ -162,7 +163,7 @@ function mod:OnCombatStart(delay)
 	--timerCollapsingFissureCD:Start(9.7-delay)
 	timerSoulbindCD:Start(14.2-delay, 1)
 	timerSpearofAnquishCD:Start(22-delay)
-	timerWitherCD:Start(23-delay)
+	--timerWitherCD:Start(32-delay)
 	timerWailingSoulsCD:Start(59.4-delay, 1)
 	timerTormentedCriesCD:Start(119-delay)
 	if self.Options.NPAuraOnBonecageArmor then
@@ -208,7 +209,7 @@ function mod:SPELL_CAST_START(args)
 		--timerTormentedCriesCD:Start()
 	elseif spellId == 235927 then
 		warnRupturingSlam:Show()
-		timerRupturingSlamCD:Start(nil, args.sourceGUID)
+		--timerRupturingSlamCD:Start(nil, args.sourceGUID)
 	elseif spellId == 236542 then
 		if UnitBuff("player", spiritRealm) or UnitDebuff("player", spiritRealm) then--Figure out which it is
 			specWarnSunderingDoomRun:Show()
@@ -232,7 +233,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 236072 then
 		self.vb.wailingSoulsCast = self.vb.wailingSoulsCast + 1
 		timerSoulbindCD:Stop()
-		timerWitherCD:Stop()
+		--timerWitherCD:Stop()
 		specWarnWailingSouls:Show(self.vb.wailingSoulsCast)
 		voiceWailingSouls:Play("aesoon")
 	end
@@ -244,17 +245,14 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnCollapsingFissure:Show()
 	elseif spellId == 236449 then--Soulbind Cast
 		self.vb.soulboundCast = self.vb.soulboundCast + 1
-		--Uusally casts 2 between cries, but sometimes only 1 even when it's off cd
-		--Never seen cast a 3rd, but for time being starting 3rd timer and canceling it if wails is cast
-		if self.vb.phase == 2 then
-			timerSoulbindCD:Start(17, self.vb.soulboundCast+1)
-		else
-			timerSoulbindCD:Start(24, self.vb.soulboundCast+1)
+		local timer = soulbindTimers[self.vb.soulboundCast+1]
+		if timer then
+			timerSoulbindCD:Start(timer, self.vb.soulboundCast+1)
 		end
 	elseif spellId == 235933 then--Spear of Anquish
 		timerSpearofAnquishCD:Start()
-	elseif spellId ==  236138 or spellId == 236131 then
-		timerWitherCD:Start()
+--	elseif spellId ==  236138 or spellId == 236131 then
+		--timerWitherCD:Start()
 --	elseif spellId == 235969 then--Shattering Scream
 --		timerShatteringScreamCD:Start(nil, args.sourceGUID)
 	end
@@ -345,9 +343,8 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 235969 then--Shattering Scream
 		
 	elseif spellId == 236072 then
-		self.vb.soulboundCast = 0
-		timerSoulbindCD:Start(12, 1)
-		timerWitherCD:Start(19.7)
+		--timerSoulbindCD:Start(12, 1)
+		--timerWitherCD:Start(19.7)
 		timerWailingSoulsCD:Start(58, self.vb.wailingSoulsCast+1)
 	elseif spellId == 235732 then
 		playersNotInSpirit[#playersNotInSpirit+1] = args.destName
@@ -361,7 +358,7 @@ end
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 119938 then--Reanimated templar
-		timerRupturingSlamCD:Stop(args.destName)
+		--timerRupturingSlamCD:Stop(args.destName)
 --	elseif cid == 119939 then--Ghastly Bonewarden
 	
 --	elseif cid == 119940 then--Fallen Priestess
