@@ -211,7 +211,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.shieldActive = true
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:SetHeader(args.spellName)
-			DBM.InfoFrame:Show(2, "enemyabsorb", args.spellName)
+			DBM.InfoFrame:Show(2, "enemyabsorb", GetSpellInfo(235028))
 		end
 	end
 end
