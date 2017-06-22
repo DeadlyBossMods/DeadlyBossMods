@@ -121,12 +121,12 @@ local spiritFilter, regularFilter
 local UnitDebuff = UnitDebuff
 do
 	spiritFilter = function(uId)
-		if UnitDebuff(uId, spiritBarrier) then
+		if UnitDebuff(uId, spiritRealm) then
 			return true
 		end
 	end
 	regularFilter = function(uId)
-		if not UnitDebuff(uId, spiritBarrier) then
+		if not UnitDebuff(uId, spiritRealm) then
 			return true
 		end
 	end
@@ -170,7 +170,7 @@ function mod:OnCombatStart(delay)
 	end
 	for uId in DBM:GetGroupMembers() do
 		local name = DBM:GetUnitFullName(uId)
-		if UnitDebuff(uId, spiritBarrier) then
+		if UnitDebuff(uId, spiritRealm) then
 			playersInSpirit[#playersInSpirit+1] = name
 			if UnitIsUnit("player", uId) and self.Options.RangeFrame then
 				DBM.RangeCheck:Show(5, regularFilter)
@@ -210,7 +210,7 @@ function mod:SPELL_CAST_START(args)
 		warnRupturingSlam:Show()
 		timerRupturingSlamCD:Start(nil, args.sourceGUID)
 	elseif spellId == 236542 then
-		if UnitBuff("player", spiritBarrier) or UnitDebuff("player", spiritBarrier) then--Figure out which it is
+		if UnitBuff("player", spiritRealm) or UnitDebuff("player", spiritRealm) then--Figure out which it is
 			specWarnSunderingDoomRun:Show()
 			voiceSunderingDoom:Play("justrun")
 		else
@@ -220,7 +220,7 @@ function mod:SPELL_CAST_START(args)
 		timerSunderingDoomCD:Start()
 		countdownSunderingDoom:Start()
 	elseif spellId == 236544 then
-		if UnitBuff("player", spiritBarrier) or UnitDebuff("player", spiritBarrier) then--Figure out which it is
+		if UnitBuff("player", spiritRealm) or UnitDebuff("player", spiritRealm) then--Figure out which it is
 			specWarnDoomedSunderingGather:Show(COMPACT_UNIT_FRAME_PROFILE_SORTBY_GROUP)
 			voiceDoomedSunderin:Play("gathershare")
 		else
