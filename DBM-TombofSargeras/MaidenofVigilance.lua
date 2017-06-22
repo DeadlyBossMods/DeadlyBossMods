@@ -248,7 +248,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			self.vb.spontFragmentationCount = 0
 			--timerSpontFragmentationCD:Start(nil, 1)
 		end
-		if self.Options.InfoFrame and self.vb.unstableSoulCount > 0 then
+		if self.Options.InfoFrame then
 			local spellName = GetSpellInfo(235117)
 			DBM.InfoFrame:SetHeader(spellName)
 			DBM.InfoFrame:Show(10, "playerdebuffremaining", spellName)
