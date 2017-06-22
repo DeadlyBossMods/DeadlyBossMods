@@ -6,7 +6,7 @@ mod:SetCreatureID(115767)--116328 Vellius, 115795 Abyss Stalker, 116329/116843 S
 mod:SetEncounterID(2037)
 mod:SetZone()
 mod:SetUsedIcons(1, 2, 3, 4)
---mod:SetHotfixNoticeRev(15581)
+mod:SetHotfixNoticeRev(16282)
 mod.respawnTime = 40
 
 mod:RegisterCombat("combat")
