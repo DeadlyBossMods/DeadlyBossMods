@@ -12,8 +12,7 @@ mod.respawnTime = 40
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 230273 232722 230384 232746 232757 232756 230358",
-	"SPELL_CAST_SUCCESS 230201",
+	"SPELL_CAST_START 230273 232722 230384 232746 232757 232756 230358 230201",
 	"SPELL_AURA_APPLIED 239375 239362 230139 230201 230362 232916 230384",
 	"SPELL_AURA_REMOVED 239375 239362 230139",
 --	"SPELL_PERIODIC_DAMAGE",
@@ -34,7 +33,7 @@ mod:RegisterEventsInCombat(
 --NOTE: 3 stage fight but all stage 3 stuff is from stage 1 and 2 (combined) so there are no new abilities to list for stage 3 HERE
 --General Stuff
 local warnHydraShot					= mod:NewTargetCountAnnounce(230139, 4)
-local warnDarkDepths				= mod:NewSpellAnnounce(230273, 2)
+local warnDarkDepths				= mod:NewSpellAnnounce(230273, 2, nil, false, 2)
 local warnDreadSharkSpawn			= mod:NewSpellAnnounce(239436, 2)
 --Stage One: Ten Thousand Fangs
 local warnThunderingShock			= mod:NewTargetAnnounce(230362, 2, nil, false)
@@ -112,7 +111,7 @@ function mod:OnCombatStart(delay)
 	self.vb.hydraShotCount = 0
 	table.wipe(hydraIcons)
 	timerThunderingShockCD:Start(10-delay)--10-11
-	timerBurdenofPainCD:Start(17.9-delay)
+	timerBurdenofPainCD:Start(15.4-delay)
 	timerFromtheAbyssCD:Start(18-delay)
 	timerConsumingHungerCD:Start(20-delay)--20-23
 	if self:IsEasy() then
@@ -172,13 +171,18 @@ function mod:SPELL_CAST_START(args)
 			voiceThunderingShock:Play("watchstep")
 		end
 		timerThunderingShockCD:Start()
-	end
-end
-
-function mod:SPELL_CAST_SUCCESS(args)
-	local spellId = args.spellId
-	if spellId == 230201 then
+	elseif spellId == 230201 then
 		timerBurdenofPainCD:Start()
+		local tanking, status = UnitDetailedThreatSituation("player", "boss1")
+		if tanking or (status == 3) then
+			specWarnBurdenofPain:Show()
+			voiceBurdenofPain:Play("defensive")
+		else
+			if self:AntiSpam(5, targetName) then
+				specWarnBurdenofPainTaunt:Show(args.destName)
+				voiceBurdenofPain:Play("tauntboss")
+			end
+		end
 	end
 end
 
@@ -205,10 +209,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:SetIcon(name, count)
 		end
 	elseif spellId == 230201 then
-		if args:IsPlayer() then
-			specWarnBurdenofPain:Show()
-			voiceBurdenofPain:Play("defensive")
-		else
+		if not args:IsPlayer() and self:AntiSpam(5, args.destName) then
 			specWarnBurdenofPainTaunt:Show(args.destName)
 			voiceBurdenofPain:Play("tauntboss")
 		end
@@ -298,7 +299,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 			timerFromtheAbyssCD:Stop()
 			
 			timerInkCD:Start(10.8)
-			timerBurdenofPainCD:Start(26)
+			timerBurdenofPainCD:Start(23.5)
 			timerFromtheAbyssCD:Start(29)
 			timerCrashingWaveCD:Start(30, 1)
 			timerDevouringMawCD:Start(40)
@@ -317,7 +318,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 			timerFromtheAbyssCD:Stop()
 			
 			timerInkCD:Start(10.2)
-			timerBurdenofPainCD:Start(26)
+			timerBurdenofPainCD:Start(23.5)
 			timerFromtheAbyssCD:Start(29)
 			timerCrashingWaveCD:Start(30, 1)
 			timerConsumingHungerCD:Start(39)--SUCCESS

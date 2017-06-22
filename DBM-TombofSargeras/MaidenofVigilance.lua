@@ -5,7 +5,7 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(118289)
 mod:SetEncounterID(2052)
 mod:SetZone()
---mod:SetUsedIcons(1)
+mod:SetUsedIcons(4, 1)
 mod:SetHotfixNoticeRev(16285)
 mod.respawnTime = 30
 
@@ -76,7 +76,7 @@ local voiceUnsableSoul				= mod:NewVoice(235117)--jumpinpit
 --Stage Two
 local voiceWrathofCreators			= mod:NewVoice(234891, "HasInterrupt")--kickcast
 
---mod:AddSetIconOption("SetIconOnShield", 228270, true)
+mod:AddSetIconOption("SetIconOnInfusion", 235271, true)
 mod:AddInfoFrameOption(235117, true)
 --mod:AddRangeFrameOption("5/8/15")
 
@@ -173,10 +173,18 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnFelInfusion:Show()
 			voiceFelInfusion:Play("felinfusion")
 		end
+		local uId = DBM:GetRaidUnitId(args.destName)
+		if self.Options.SetIconOnInfusion and self:IsTanking(uId) then
+			self:SetIcon(args.destName, 4)
+		end
 	elseif spellId == 235213 then--Light Infusion
 		if args:IsPlayer() then
 			specWarnLightInfusion:Show()
 			voiceLightInfusion:Play("lightinfusion")
+		end
+		local uId = DBM:GetRaidUnitId(args.destName)
+		if self.Options.SetIconOnInfusion and self:IsTanking(uId) then
+			self:SetIcon(args.destName, 1)
 		end
 	elseif spellId == 235117 or spellId == 240209 then
 		self.vb.unstableSoulCount = self.vb.unstableSoulCount + 1
