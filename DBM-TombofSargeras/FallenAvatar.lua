@@ -184,7 +184,7 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 239207 then
 		specWarnTouchofSargerasGround:Show()
-		voiceTouchofSargerasGround:play("helpsoak")
+		voiceTouchofSargerasGround:Play("helpsoak")
 		table.wipe(TouchofSargerasTargets)
 		timerTouchofSargerasCD:Start()
 	elseif spellId == 239132 or spellId == 235572 then
