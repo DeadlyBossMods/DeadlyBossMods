@@ -182,13 +182,21 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.unstableSoulCount = self.vb.unstableSoulCount + 1
 		warnUnstableSoul:CombinedShow(1, args.destName)
 		if args:IsPlayer() then
-			specWarnUnstableSoul:Schedule(5.75, AegynnsWard)--2.5 before expire, maybe adjust to 3
+			if self:IsEasy() then
+				specWarnUnstableSoul:Schedule(5.75, AegynnsWard)--2.5 before expire, maybe adjust to 3
+			else
+				specWarnUnstableSoul:Schedule(6.75, AegynnsWard)
+			end
 			if not self:IsLFR() then
 				yellUnstableSoul:Yell(8)
 				yellUnstableSoul:Schedule(7, 1)
 				yellUnstableSoul:Schedule(6, 2)
 				yellUnstableSoul:Schedule(5, 3)
-				voiceUnsableSoul:Schedule(5.75, "jumpinpit")
+				if self:IsEasy() then
+					voiceUnsableSoul:Schedule(5.75, "jumpinpit")
+				else
+					voiceUnsableSoul:Schedule(6.75, "jumpinpit")
+				end
 			else
 				voiceUnsableSoul:Play("defensive")--Whatever, doens't matter in LFR. LFR doesn't need Aegwynn's Ward/pit
 			end
