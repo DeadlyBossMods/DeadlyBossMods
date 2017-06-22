@@ -78,13 +78,14 @@ local specWarnFlamingOrbSpawn		= mod:NewSpecialWarningSpell(239253, nil, nil, ni
 local timerFelclawsCD				= mod:NewCDTimer(25, 239932, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerRupturingSingularityCD	= mod:NewCDCountTimer(61, 235059, nil, nil, nil, 3)--61-68?
 local timerArmageddonCD				= mod:NewCDCountTimer(42, 240910, nil, nil, nil, 5)--
-local timerShadowReflectionCD		= mod:NewCDTimer(35, "ej15238", nil, nil, nil, 3, 236378)--Wailing icon used.
+local timerShadReflectionEruptingCD	= mod:NewCDTimer(35, 236710, nil, nil, nil, 3)
 --Intermission: Eternal Flame
 local timerTransition				= mod:NewPhaseTimer(57.9)
 local timerFocusedDreadflameCD		= mod:NewCDCountTimer(31, 238502, nil, nil, nil, 3)
 local timerBurstingDreadflameCD		= mod:NewCDCountTimer(31, 238430, nil, nil, nil, 3)
 --Stage Two: Reflected Souls
 local timerHopelessness				= mod:NewCastTimer(8, 237725, nil, "Healer", nil, 5, nil, DBM_CORE_HEALER_ICON)
+local timerShadReflectionWaillingCD	= mod:NewCDTimer(35, 236378, nil, nil, nil, 3)
 --Intermission: Deceiver's Veil
 local timerSightlessGaze			= mod:NewBuffActiveTimer(20, 241721, nil, nil, nil, 5)
 --Stage Three: Darkness of A Thousand Souls
@@ -172,7 +173,7 @@ function mod:OnCombatStart(delay)
 	self.vb.singularityCount = 0
 	timerArmageddonCD:Start(10-delay, 1)
 	if not self:IsEasy() then
-		timerShadowReflectionCD:Start(21-delay)--Erupting
+		timerShadReflectionEruptingCD:Start(21-delay)--Erupting
 	end
 	timerFelclawsCD:Start(26-delay)
 	timerRupturingSingularityCD:Start(58-delay)
@@ -222,7 +223,7 @@ function mod:SPELL_CAST_START(args)
 		timerFocusedDreadflameCD:Stop()
 		timerBurstingDreadflameCD:Stop()
 		timerArmageddonCD:Stop()
-		timerShadowReflectionCD:Stop()--Stop erupting and wailing when split
+		timerShadReflectionEruptingCD:Stop()--Stop erupting and wailing when split
 		self.vb.phase = 2.5
 		self.vb.shadowSoulsRemaining = 5--Normal count anyways
 		self:RegisterShortTermEvents(
@@ -239,7 +240,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		
 	elseif spellId == 236710 then--Erupting Shadow Reflection (Stage 1)
 		if self.vb.phase == 2 then
-			timerShadowReflectionCD:Start(112)--Erupting
+			timerShadReflectionEruptingCD:Start(112)--Erupting
 		end
 	elseif spellId == 237590 then--Hopeless Shadow Reflection (Stage 2)
 
@@ -267,7 +268,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 					self.vb.singularityCount = 0
 					warnPhase2:Schedule(5)
 					timerFelclawsCD:Start(15)
-					timerShadowReflectionCD:Start(17)--Erupting
+					timerShadReflectionEruptingCD:Start(17)--Erupting
 					timerArmageddonCD:Start(55.3, 1)
 					timerBurstingDreadflameCD:Start(57.3, 1)
 					timerRupturingSingularityCD:Start(70, 1)
@@ -275,6 +276,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 						timerFocusedDreadflameCD:Start(81.5, 1)
 					else
 						timerFocusedDreadflameCD:Start(35, 1)
+						timerShadReflectionWaillingCD:Start(53)--Recheck this
 					end
 				end
 			elseif self.vb.phase == 2 then
@@ -482,7 +484,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		timerFelclawsCD:Stop()
 		timerRupturingSingularityCD:Stop()
 		timerArmageddonCD:Stop()
-		timerShadowReflectionCD:Stop()
+		timerShadReflectionEruptingCD:Stop()
 		timerArmageddonCD:Start(7.5, 1)
 		timerBurstingDreadflameCD:Start(8.7, 1)
 		if not self:IsEasy() then
