@@ -349,6 +349,7 @@ function mod:RAID_BOSS_WHISPER(msg)
 	if msg:find("spell:236604") then
 		specWarnShadowyBlades:Show()
 		voiceShadowyBlades:Play("runout")
+		yellShadowyBlades:Yell()
 	end
 end
 
