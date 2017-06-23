@@ -85,7 +85,7 @@ local timerFocusedDreadflameCD		= mod:NewCDCountTimer(31, 238502, nil, nil, nil,
 local timerBurstingDreadflameCD		= mod:NewCDCountTimer(31, 238430, nil, nil, nil, 3)
 --Stage Two: Reflected Souls
 local timerHopelessness				= mod:NewCastTimer(8, 237725, nil, "Healer", nil, 5, nil, DBM_CORE_HEALER_ICON)
-local timerShadReflectionWaillingCD	= mod:NewCDTimer(35, 236378, nil, nil, nil, 3)
+local timerShadReflectionWailingCD	= mod:NewCDTimer(35, 236378, nil, nil, nil, 3)
 --Intermission: Deceiver's Veil
 local timerSightlessGaze			= mod:NewBuffActiveTimer(20, 241721, nil, nil, nil, 5)
 --Stage Three: Darkness of A Thousand Souls
@@ -223,7 +223,8 @@ function mod:SPELL_CAST_START(args)
 		timerFocusedDreadflameCD:Stop()
 		timerBurstingDreadflameCD:Stop()
 		timerArmageddonCD:Stop()
-		timerShadReflectionEruptingCD:Stop()--Stop erupting and wailing when split
+		timerShadReflectionEruptingCD:Stop()
+		timerShadReflectionWailingCD:Stop()
 		self.vb.phase = 2.5
 		self.vb.shadowSoulsRemaining = 5--Normal count anyways
 		self:RegisterShortTermEvents(
@@ -237,7 +238,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if spellId == 239932 then
 		timerFelclawsCD:Start()
 	elseif spellId == 236378 then--Wailing Shadow Reflection (Stage 1)
-		
+		timerShadReflectionWailingCD:Start(112)
 	elseif spellId == 236710 then--Erupting Shadow Reflection (Stage 1)
 		if self.vb.phase == 2 then
 			timerShadReflectionEruptingCD:Start(112)--Erupting
@@ -276,7 +277,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 						timerFocusedDreadflameCD:Start(81.5, 1)
 					else
 						timerFocusedDreadflameCD:Start(35, 1)
-						timerShadReflectionWaillingCD:Start(53)--Recheck this
+						timerShadReflectionWailingCD:Start(53)--Recheck this
 					end
 				end
 			elseif self.vb.phase == 2 then
