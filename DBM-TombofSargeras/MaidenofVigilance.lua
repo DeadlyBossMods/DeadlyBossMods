@@ -229,14 +229,20 @@ end
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 235240 then--Fel Infusion
-		local uId = DBM:GetRaidUnitId(args.destName)
-		if self.Options.SetIconOnInfusion and self:IsTanking(uId) then
-			self:SetIcon(args.destName, 0)
+		if self.Options.SetIconOnInfusion then
+			local uId = DBM:GetRaidUnitId(args.destName)
+			local currentIcon = GetRaidTargetIndex(uId) or 0
+			if self:IsTanking(uId) and currentIcon ~= 1 then--Fel infusion removed but light infusion icon is already set, don't touch it
+				self:SetIcon(args.destName, 0)
+			end
 		end
 	elseif spellId == 235213 then--Light Infusion
-		local uId = DBM:GetRaidUnitId(args.destName)
-		if self.Options.SetIconOnInfusion and self:IsTanking(uId) then
-			self:SetIcon(args.destName, 0)
+		if self.Options.SetIconOnInfusion then
+			local uId = DBM:GetRaidUnitId(args.destName)
+			local currentIcon = GetRaidTargetIndex(uId) or 0
+			if self:IsTanking(uId) and currentIcon ~= 4 then--Light infusion removed but fel infusion icon is already set, don't touch it
+				self:SetIcon(args.destName, 0)
+			end
 		end
 	elseif spellId == 235117 or spellId == 240209 then
 		self.vb.unstableSoulCount = self.vb.unstableSoulCount - 1

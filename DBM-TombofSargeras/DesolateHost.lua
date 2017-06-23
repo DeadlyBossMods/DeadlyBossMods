@@ -14,7 +14,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 238570 235927 236542 236544 236072",
-	"SPELL_CAST_SUCCESS 236449 235933 236131 235969",
+	"SPELL_CAST_SUCCESS 236449 235933 236131 235969 236542 236544",
 	"SPELL_AURA_APPLIED 236459 235924 238018 236513 236138 236131 235969 236361 239923 236548 235732",
 	"SPELL_AURA_APPLIED_DOSE 236548",
 	"SPELL_AURA_REMOVED 236459 235924 236513 235969 235732 236072 238570",
@@ -66,8 +66,10 @@ local specWarnWither				= mod:NewSpecialWarningYou(236138, nil, nil, nil, 1, 7)
 local specWarnShatteringScream		= mod:NewSpecialWarningMoveTo(235969, nil, nil, nil, 3, 2)
 local specWarnWailingSouls			= mod:NewSpecialWarningCount(236072, nil, nil, nil, 2, 2)
 --The Desolate Host
+local specWarnSunderingDoomTaunt	= mod:NewSpecialWarningTaunt(236542, nil, nil, nil, 1, 2)
 local specWarnSunderingDoomGather	= mod:NewSpecialWarningMoveTo(236542, nil, nil, nil, 1, 2)
 local specWarnSunderingDoomRun		= mod:NewSpecialWarningRun(236542, nil, nil, nil, 4, 2)
+local specWarnDoomedSunderingTaunt	= mod:NewSpecialWarningTaunt(236544, nil, nil, nil, 1, 2)
 local specWarnDoomedSunderingGather	= mod:NewSpecialWarningMoveTo(236544, nil, nil, nil, 1, 2)
 local specWarnDoomedSunderingRun	= mod:NewSpecialWarningRun(236544, nil, nil, nil, 4, 2)
 
@@ -222,7 +224,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 235927 then
 		warnRupturingSlam:Show()
 		--timerRupturingSlamCD:Start(nil, args.sourceGUID)
-	elseif spellId == 236542 then
+	elseif spellId == 236542 then--Sundering Doom (regular realm soaks)
 		if UnitBuff("player", spiritRealm) or UnitDebuff("player", spiritRealm) then--Figure out which it is
 			specWarnSunderingDoomRun:Show()
 			voiceSunderingDoom:Play("justrun")
@@ -232,7 +234,7 @@ function mod:SPELL_CAST_START(args)
 		end
 		timerSunderingDoomCD:Start()
 		countdownSunderingDoom:Start()
-	elseif spellId == 236544 then
+	elseif spellId == 236544 then--Doomed Sunering (spirit realm soaks)
 		if UnitBuff("player", spiritRealm) or UnitDebuff("player", spiritRealm) then--Figure out which it is
 			specWarnDoomedSunderingGather:Show(COMPACT_UNIT_FRAME_PROFILE_SORTBY_GROUP)
 			voiceDoomedSunderin:Play("gathershare")
@@ -264,6 +266,16 @@ function mod:SPELL_CAST_SUCCESS(args)
 		end
 	elseif spellId == 235933 then--Spear of Anquish
 		timerSpearofAnquishCD:Start()
+	elseif spellId == 236542 then--Sundering Doom Finished (doomed sundering, soaked by spirit realm is next)
+		if UnitBuff("player", spiritRealm) or UnitDebuff("player", spiritRealm) then--Figure out which it is
+			specWarnDoomedSunderingTaunt:Show(BOSS)
+			voiceDoomedSunderin:Play("tauntboss")
+		end
+	elseif spellId == 236544 then--Doomed Sundering Finished (sundring doom, soaked by regular realm is next)
+		if not (UnitBuff("player", spiritRealm) or UnitDebuff("player", spiritRealm)) then--Figure out which it is
+			specWarnSunderingDoomTaunt:Show(BOSS)
+			voiceSunderingDoom:Play("tauntboss")
+		end
 --	elseif spellId ==  236138 or spellId == 236131 then
 		--timerWitherCD:Start()
 --	elseif spellId == 235969 then--Shattering Scream
