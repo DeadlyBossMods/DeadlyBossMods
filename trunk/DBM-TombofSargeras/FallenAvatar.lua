@@ -7,7 +7,7 @@ mod:SetEncounterID(2038)
 mod:SetZone()
 mod:SetBossHPInfoToHighest()
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7)--All 7 on mythic
-mod:SetHotfixNoticeRev(16287)
+mod:SetHotfixNoticeRev(16307)
 mod.respawnTime = 25
 
 mod:RegisterCombat("combat")
