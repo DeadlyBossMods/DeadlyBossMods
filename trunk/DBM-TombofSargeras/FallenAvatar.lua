@@ -179,7 +179,7 @@ function mod:OnCombatStart(delay)
 	timerRuptureRealitiesCD:Start(31.6-delay)--34-37
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(POWER_TYPE_POWER)
-		DBM.InfoFrame:Show(2, "enemypower", 2, ALTERNATE_POWER_INDEX)
+		DBM.InfoFrame:Show(2, "enemypower", 2, 0)
 	end
 end
 
