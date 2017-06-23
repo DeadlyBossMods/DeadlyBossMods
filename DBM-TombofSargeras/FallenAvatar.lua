@@ -53,7 +53,7 @@ local specWarnRuptureRealities		= mod:NewSpecialWarningRun(239132, nil, nil, nil
 local specWarnUnboundChaos			= mod:NewSpecialWarningMoveAway(234059, nil, nil, nil, 1, 2)
 local yellUnboundChaos				= mod:NewYell(234059, nil, false, 2)
 local specWarnShadowyBlades			= mod:NewSpecialWarningMoveAway(236571, nil, nil, nil, 1, 2)
-local yellShadowyBlades				= mod:NewYell(236571)
+local yellShadowyBlades				= mod:NewPosYell(236571)
 local specWarnLingeringDarkness		= mod:NewSpecialWarningMove(239212, nil, nil, nil, 1, 2)
 local specWarnDesolateYou			= mod:NewSpecialWarningStack(236494, nil, 2, nil, nil, 1, 6)
 local specWarnDesolateOther			= mod:NewSpecialWarningTaunt(236494, nil, nil, nil, 1, 2)
@@ -305,7 +305,7 @@ function mod:RAID_BOSS_WHISPER(msg)
 	if msg:find("spell:236604") then
 		specWarnShadowyBlades:Show()
 		voiceShadowyBlades:Play("runout")
-		yellShadowyBlades:Yell()
+		--yellShadowyBlades:Yell()
 	end
 end
 
@@ -314,9 +314,13 @@ function mod:CHAT_MSG_ADDON(prefix, msg, channel, targetName)
 	if msg:find("spell:236604") then--Rapid fire
 		targetName = Ambiguate(targetName, "none")
 		if self:AntiSpam(4, targetName) then
+			local icon = self.vb.bladesIcon
 			warnShadowyBlades:CombinedShow(0.5, targetName)
 			if self.Options.SetIconOnShadowyBlades then
-				self:SetIcon(targetName, self.vb.bladesIcon, 5)
+				self:SetIcon(targetName, icon, 5)
+			end
+			if targetName == playerName then
+				yellShadowyBlades:Yell(icon, icon, icon)
 			end
 			self.vb.bladesIcon = self.vb.bladesIcon + 1
 		end
