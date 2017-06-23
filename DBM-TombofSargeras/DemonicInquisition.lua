@@ -17,10 +17,11 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS 233431 233983 233894",
 	"SPELL_AURA_APPLIED 233430 233441 235230 233983 233894 233431",
 	"SPELL_AURA_APPLIED_DOSE 248713",
-	"SPELL_AURA_REMOVED 233441 235230 233983"
+	"SPELL_AURA_REMOVED 233441 235230 233983",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 --	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2"
+	"UNIT_POWER_FREQUENT player"
 )
 
 --TODO, Handling of Confess and Cage?
@@ -56,6 +57,7 @@ local specWarnFelSquallEveryoneElse	= mod:NewSpecialWarningReflect(235230, "-Mel
 local specWarnTormentingBurst		= mod:NewSpecialWarningCount(234015, nil, nil, nil, 2, 2)
 --Phase
 local specWarnSoulCorruption		= mod:NewSpecialWarningStack(248713, nil, 10, nil, nil, 1, 6)--stack guessed
+local specWarnTorment				= mod:NewSpecialWarningStack(233104, nil, 75, nil, nil, 1, 6)
 
 --Atrigan
 local timerScytheSweepCD			= mod:NewCDTimer(23, 233426, nil, nil, nil, 3)
@@ -85,6 +87,7 @@ local voiceFelSquall				= mod:NewVoice(235230)--runout/stopattack
 local voiceTormentingBurst			= mod:NewVoice(234015)--aesoon
 --Phase
 local voiceSoulCorruption			= mod:NewVoice(248713)--stackhigh
+local voiceTorment					= mod:NewVoice(233104)--stackhigh
 
 --mod:AddSetIconOption("SetIconOnShield", 228270, true)
 mod:AddInfoFrameOption(233104, true)
@@ -276,6 +279,22 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif spellId == 235230 then
 		timerFelSquallCD:Start()
+	end
+end
+
+do
+	local warned = false
+	function mod:UNIT_POWER_FREQUENT(uId, type)
+		if type == "ALTERNATE" then
+			local playerPower = UnitPower("player", 10)
+			if not warned and playerPower >= 75 then
+				warned = true
+				specWarnTorment:Show(playerPower)
+				voiceTorment:Play("stackhigh")
+			elseif warned and playerPower < 30 then
+				warned = false
+			end
+		end
 	end
 end
 
