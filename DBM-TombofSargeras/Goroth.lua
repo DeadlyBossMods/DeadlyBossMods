@@ -43,11 +43,13 @@ local specWarnBurningArmor				= mod:NewSpecialWarningMoveAway(231363, nil, nil, 
 local specWarnBurningArmorTaunt			= mod:NewSpecialWarningTaunt(231363, nil, nil, nil, 1, 2)
 local specWarnRainofBrimstone			= mod:NewSpecialWarningMoveTo(238587, nil, nil, nil, 1, 6)
 
-local timerComboWamboCD					= mod:NewTimer(14, "timerComboWamboCD", 232249, nil, nil, 3)--Comet/Spike combined timer.
+--local timerComboWamboCD					= mod:NewTimer(14, "timerComboWamboCD", 232249, nil, nil, 3)--Comet/Spike combined timer.
 local timerInfernalBurningCD			= mod:NewNextTimer(59.9, 233062, nil, nil, nil, 2)
 local timerShatteringStarCD				= mod:NewNextCountTimer(31, 233272, nil, nil, nil, 3)
 local timerShatteringStar				= mod:NewBuffFadesTimer(6, 233272, nil, nil, nil, 5)
 local timerCrashingComet				= mod:NewBuffFadesTimer(5, 232249, nil, nil, nil, 5)
+local timerCrashingCometCD				= mod:NewCDTimer(18.3, 232249, nil, nil, nil, 3)
+local timerInfernalSpikeCD				= mod:NewCDTimer(16.7, 233055, nil, nil, nil, 3)
 local timerBurningArmorCD				= mod:NewCDTimer(24.3, 231363, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerBurningArmor					= mod:NewBuffFadesTimer(6, 231363, nil, nil, nil, 5, nil, DBM_CORE_DEADLY_ICON)
 local timerRainofBrimstoneCD			= mod:NewCDCountTimer(31, 238587, nil, nil, nil, 1, nil, DBM_CORE_HEROIC_ICON)
@@ -73,16 +75,19 @@ mod:AddRangeFrameOption("10/25")
 local infernalSpike = GetSpellInfo(233021)
 local crashingComet = GetSpellInfo(232249)
 local shatteringStarTimers = {24, 60, 60, 50}--24, 60, 60, 50, 20, 40, 20, 40, 20, 40
-local comboWamboTimers = {4, 6, 12, 12, 12, 6, 12, 6, 12, 12, 12, 6, 12, 6}--Needs more data
-local comboWamboTimersLFR = {4, 10, 6, 14, 8, 8, 14, 10, 6, 14, 8, 8, 14, 10, 6, 14, 8, 8, 14, 8, 8, 8, 10, 8, 8, 10, 8, 8, 8, 10, 8, 8, 10}
+--local comboWamboTimers = {4, 6, 12, 12, 12, 6, 12, 6, 12, 12, 12, 6, 12, 6}--Needs more data
+--local comboWamboTimersLFR = {4, 10, 6, 14, 8, 8, 14, 10, 6, 14, 8, 8, 14, 10, 6, 14, 8, 8, 14, 8, 8, 8, 10, 8, 8, 10, 8, 8, 8, 10, 8, 8, 10}
+--["232249-Crashing Comet"] = "pull:8.5, 18.3, 18.3, 18.1, 18.5, 18.3, 22.0, 18.3, 18.2, 25.6, 18.3", --Heroic
+--["233050-Infernal Spike"] = "pull:4.1, 16.7, 17.1, 23.2, 17.1, 17.1, 17.1, 16.3, 16.7, 17.0, 20.7, 17.0", --Infernal Spike
 mod.vb.shatteringStarCount = 0
 mod.vb.brimstoneCount = 0
 mod.vb.comboWamboCount = 0
 
 function mod:OnCombatStart(delay)
 	self.vb.shatteringStarCount = 0
-	self.vb.comboWamboCount = 0
-	timerComboWamboCD:Start(4-delay, 1)
+	--self.vb.comboWamboCount = 0
+	timerInfernalSpikeCD:Start(4-delay)
+	timerCrashingCometCD:Start(8.5-delay)
 	timerBurningArmorCD:Start(10.5-delay)
 	timerShatteringStarCD:Start(24-delay, 1)--34 on mythic testing
 	countdownShatteringStar:Start(24-delay)--34 on mythic testing
@@ -168,11 +173,12 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 230345 then
 		warnCrashingComet:CombinedShow(0.3, args.destName)
 		if self:AntiSpam(3, 1) then
-			self.vb.comboWamboCount = self.vb.comboWamboCount + 1
+			--[[self.vb.comboWamboCount = self.vb.comboWamboCount + 1
 			local timer = self:IsLFR() and comboWamboTimersLFR[self.vb.comboWamboCount+1] or comboWamboTimers[self.vb.comboWamboCount+1]
 			if timer then
 				timerComboWamboCD:Start(timer, self.vb.comboWamboCount+1)
-			end
+			end--]]
+			timerCrashingCometCD:Start()
 		end
 		if args:IsPlayer() then
 			specWarnCrashingComet:Show()
@@ -236,12 +242,13 @@ end
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, spellGUID)
 	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
 	if spellId == 233050 then--Infernal Spike
-		self.vb.comboWamboCount = self.vb.comboWamboCount + 1
+		--self.vb.comboWamboCount = self.vb.comboWamboCount + 1
 		warnInfernalSpike:Show()
-		local timer = self:IsLFR() and comboWamboTimersLFR[self.vb.comboWamboCount+1] or comboWamboTimers[self.vb.comboWamboCount+1]
+		--[[local timer = self:IsLFR() and comboWamboTimersLFR[self.vb.comboWamboCount+1] or comboWamboTimers[self.vb.comboWamboCount+1]
 		if timer then
 			timerComboWamboCD:Start(timer, self.vb.comboWamboCount+1)
-		end
+		end--]]
+		timerInfernalSpikeCD:Start()
 	--["233285-Rain of Brimstone"] = "pull:14.0, 24.0, 36.0, 24.0, 36.0, 24.0",
 	elseif spellId == 233285 then--Rain of Brimston
 		self.vb.brimstoneCount = self.vb.brimstoneCount + 1
