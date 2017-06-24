@@ -96,6 +96,9 @@ local timerFlamingOrbCD				= mod:NewAITimer(31, 239253, nil, nil, nil, 3)
 --local berserkTimer				= mod:NewBerserkTimer(300)
 
 --Stage One: The Betrayer
+local countdownSingularity			= mod:NewCountdown(50, 235059)
+local countdownArmageddon			= mod:NewCountdown("Alt25", 240910, false)
+local countdownFocusedDread			= mod:NewCountdown("AltTwo", 238502)
 local countdownFelclaws				= mod:NewCountdown("Alt25", 239932, "Tank", 2)
 
 --Stage One: The Betrayer
@@ -175,12 +178,14 @@ function mod:OnCombatStart(delay)
 	self.vb.singularityCount = 0
 	self.vb.lastTankHit = "None"
 	timerArmageddonCD:Start(10-delay, 1)
+	countdownArmageddon:Start(10-delay)
 	if not self:IsEasy() then
 		timerShadReflectionEruptingCD:Start(21-delay)--Erupting
 	end
 	timerFelclawsCD:Start(25-delay)
 	countdownFelclaws:Start(25-delay)
 	timerRupturingSingularityCD:Start(58-delay)
+	countdownSingularity:Start(58)
 end
 
 function mod:OnCombatEnd()
@@ -215,11 +220,13 @@ function mod:SPELL_CAST_START(args)
 		if self.vb.phase == 1.5 then
 			if self.vb.armageddonCast < 2 then
 				timerArmageddonCD:Start(28, self.vb.armageddonCast+1)
+				countdownArmageddon:Start(28)
 			end
 		elseif self.vb.phase == 2 then
 			local timer = self:IsNormal() and phase2NormalArmageddonTimers[self.vb.armageddonCast+1] or self:IsHeroic() and phase2HeroicArmageddonTimers[self.vb.armageddonCast+1]
 			if timer then
 				timerArmageddonCD:Start(timer, self.vb.armageddonCast+1)
+				countdownArmageddon:Start(timer)
 			end
 		end
 	elseif spellId == 239932 then
@@ -234,8 +241,10 @@ function mod:SPELL_CAST_START(args)
 		timerFelclawsCD:Stop()
 		countdownFelclaws:Cancel()
 		timerFocusedDreadflameCD:Stop()
+		countdownFocusedDread:Cancel()
 		timerBurstingDreadflameCD:Stop()
 		timerArmageddonCD:Stop()
+		countdownArmageddon:Cancel()
 		timerShadReflectionEruptingCD:Stop()
 		timerShadReflectionWailingCD:Stop()
 		self.vb.phase = 2.5
@@ -283,12 +292,16 @@ function mod:SPELL_CAST_SUCCESS(args)
 					countdownFelclaws:Start(14)
 					timerShadReflectionEruptingCD:Start(17)--Erupting
 					timerArmageddonCD:Start(55.3, 1)
+					countdownArmageddon:Start(55.3)
 					timerBurstingDreadflameCD:Start(57.3, 1)
 					timerRupturingSingularityCD:Start(70, 1)
+					countdownSingularity:Start(70)
 					if self:IsEasy() then
 						timerFocusedDreadflameCD:Start(81.5, 1)
+						countdownFocusedDread:Start(81.5)
 					else
 						timerFocusedDreadflameCD:Start(35, 1)
+						countdownFocusedDread:Start(35)
 						timerShadReflectionWailingCD:Start(53)--Recheck this
 					end
 				end
@@ -410,11 +423,13 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 		if self.vb.phase == 1.5 then
 			if self.vb.focusedDreadCast < 2 then
 				timerFocusedDreadflameCD:Start(12, 2)
+				countdownFocusedDread:Start(12)
 			end
 		elseif self.vb.phase == 2 then
 			local timer = self:IsHeroic() and phase2HeroicFocusedTimers[self.vb.focusedDreadCast+1]
 			if timer then
 				timerFocusedDreadflameCD:Start(timer, self.vb.focusedDreadCast+1)
+				countdownFocusedDread:Start(timer)
 			end
 		end
 		if not self:IsEasy() then--TODO, this isn't mentioned in intermission, only in phase 2+ version. Investigate
@@ -444,12 +459,15 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 		if self.vb.phase == 1.5 then
 			if self.vb.singularityCount == 1 then
 				timerRupturingSingularityCD:Start(30, self.vb.singularityCount+1)
+				countdownSingularity:Start(30)
 			end
 		else
 			if self:IsEasy() then
 				timerRupturingSingularityCD:Start(80, self.vb.singularityCount+1)
+				countdownSingularity:Start(80)
 			else
 				timerRupturingSingularityCD:Start(55, self.vb.singularityCount+1)
+				countdownSingularity:Start(55)
 			end
 		end
 	end
@@ -474,6 +492,7 @@ function mod:UNIT_TARGETABLE_CHANGED(uId)
 		timerTearRiftCD:Start(14)
 		timerBurstingDreadflameCD:Start(44, 1)
 		timerFocusedDreadflameCD:Start(80, 1)
+		countdownFocusedDread:Start(80)
 		timerFlamingOrbCD:Start(1)
 		self:UnregisterShortTermEvents()
 	end
@@ -490,14 +509,19 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		timerFelclawsCD:Stop()
 		countdownFelclaws:Cancel()
 		timerRupturingSingularityCD:Stop()
+		countdownSingularity:Cancel()
 		timerArmageddonCD:Stop()
+		countdownArmageddon:Cancel()
 		timerShadReflectionEruptingCD:Stop()
 		timerArmageddonCD:Start(7.5, 1)
+		countdownArmageddon:Start(7.5)
 		timerBurstingDreadflameCD:Start(8.7, 1)
 		if not self:IsEasy() then
 			timerRupturingSingularityCD:Start(14.7)
+			countdownSingularity:Start(14.7)
 		end
 		timerFocusedDreadflameCD:Start(24.7, 1)
+		countdownFocusedDread:Start(24.7)
 		timerTransition:Start(57.9)
 	elseif spellId == 242902 then--Kil'jaden Intro Conversation (not my typo, blizz spelled their own npc wrong)
 		
