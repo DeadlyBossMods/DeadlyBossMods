@@ -60,6 +60,10 @@ L:SetOptionLocalization({
 ---------------------------
 L= DBM:GetModLocalization(1898)
 
+L:SetOptionLocalization({
+	PingIlliden =	"Auto ping minimap when you find Illiden during dark phase"
+})
+
 -------------
 --  Trash  --
 -------------
