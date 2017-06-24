@@ -25,6 +25,7 @@ Libs\CallbackHandler-1.0\CallbackHandler-1.0.xml
 Libs\LibChatAnims\LibChatAnims.xml
 Libs\LibSharedMedia-3.0\lib.xml
 Libs\LibLatency\LibLatency.xml
+Libs\LibDurability\LibDurability.xml
 #@end-no-lib-strip@
 
 localization.en.lua
