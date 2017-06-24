@@ -134,7 +134,6 @@ mod.vb.burstingDreadCast = 0
 mod.vb.burstingDreadIcon = 2
 mod.vb.singularityCount = 0
 mod.vb.lastTankHit = "None"
-mod.vb.pingThrottle = 0
 local shelterName, gravitySqueezeBuff = GetSpellInfo(239130), GetSpellInfo(239154)
 local phase2NormalArmageddonTimers = {55, 45, 31}
 local phase2HeroicArmageddonTimers = {55, 75, 35}
@@ -180,7 +179,6 @@ function mod:OnCombatStart(delay)
 	self.vb.burstingDreadCast = 0
 	self.vb.singularityCount = 0
 	self.vb.lastTankHit = "None"
-	self.vb.pingThrottle = 0
 	timerArmageddonCD:Start(10-delay, 1)
 	countdownArmageddon:Start(10-delay)
 	if not self:IsEasy() then
@@ -379,10 +377,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 241721 and args:IsPlayer() then
 		timerSightlessGaze:Start()
-		if self.Options.PingIlliden and GetTime() - self.vb.pingThrottle > 5 then
-			Minimap:PingLocation()
-			self:SendSync("Pinged")
-		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -538,11 +532,5 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	elseif spellId == 244856 and self:AntiSpam(5, 3) then--Flaming Orb (more likely than combat log. this spell looks like it's entirely scripted)
 		specWarnFlamingOrbSpawn:Show()
 		timerFlamingOrbCD:Start()
-	end
-end
-
-function mod:OnSync(msg)
-	if msg == "Pinged" then
-		self.vb.pingThrottle = GetTime()
 	end
 end
