@@ -53,7 +53,7 @@ local warnDarknessofStuff			= mod:NewEndAnnounce(238999, 1)
 local specWarnFelclaws				= mod:NewSpecialWarningDefensive(239932, nil, nil, nil, 1, 2)
 local specWarnFelclawsOther			= mod:NewSpecialWarningTaunt(239932, nil, nil, nil, 1, 2)
 local specWarnRupturingSingularity	= mod:NewSpecialWarningSoon(235059, nil, nil, nil, 3, 2)
-local specWarnArmageddon			= mod:NewSpecialWarningSpell(240910, nil, nil, nil, 2, 2)
+local specWarnArmageddon			= mod:NewSpecialWarningCount(240910, nil, nil, nil, 2, 2)
 local specWarnSRWailing				= mod:NewSpecialWarningYou(236378, nil, nil, nil, 1, 2)
 local yellSRWailing					= mod:NewFadesYell(236378)
 local specWarnSRErupting			= mod:NewSpecialWarningYou(236710, nil, nil, nil, 1, 2)
@@ -220,7 +220,7 @@ function mod:SPELL_CAST_START(args)
 		timerTearRiftCD:Start()
 	elseif spellId == 240910 then--Armageddon.
 		self.vb.armageddonCast = self.vb.armageddonCast + 1
-		specWarnArmageddon:Show()
+		specWarnArmageddon:Show(self.vb.armageddonCast)
 		voiceArmageddon:Play("helpsoak")
 		timerArmageddon:Start()
 		if self.vb.phase == 1.5 then
