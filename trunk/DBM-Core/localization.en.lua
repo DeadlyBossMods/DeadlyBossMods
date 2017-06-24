@@ -529,6 +529,11 @@ DBM_CORE_LAG_HEADER					= "Deadly Boss Mods - Latency Results"
 DBM_CORE_LAG_ENTRY					= "%s: World delay [%d ms] / Home delay [%d ms]"
 DBM_CORE_LAG_FOOTER					= "No Response: %s"
 
+DBM_CORE_DUR_CHECKING				= "Checking raid Durability..."
+DBM_CORE_DUR_HEADER					= "Deadly Boss Mods - Durability Results"
+DBM_CORE_DUR_ENTRY					= "%s: durability [%d percent] / gear broken [%s]"
+DBM_CORE_LAG_FOOTER					= "No Response: %s"
+
 --Role Icons
 DBM_CORE_TANK_ICON = "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:20:20:0:0:255:66:6:21:7:27|t"
 DBM_CORE_HEALER_ICON = "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:20:20:0:0:255:66:70:86:7:27|t"
