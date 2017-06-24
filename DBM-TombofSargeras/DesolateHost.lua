@@ -260,9 +260,19 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 236449 then--Soulbind Cast
 		self.vb.soulboundCast = self.vb.soulboundCast + 1
 		if self.vb.phase == 2 then
-			timerSoulbindCD:Start(20, self.vb.soulboundCast+1)
+			if self:IsEasy() then
+				--["236449-Soulbind"] = "pull:12.5, 25.4, 94.7, 26.0, 75.9, 19.1, 20.3",
+				timerSoulbindCD:Start(24, self.vb.soulboundCast+1)
+			else
+				timerSoulbindCD:Start(20, self.vb.soulboundCast+1)
+			end
 		else
-			timerSoulbindCD:Start(24, self.vb.soulboundCast+1)
+			if self:IsEasy() then
+				--["236449-Soulbind"] = "pull:52.4, 84.8, 34.7, 17.4, 24.6, 24.7"
+				timerSoulbindCD:Start(34, self.vb.soulboundCast+1)
+			else
+				timerSoulbindCD:Start(24, self.vb.soulboundCast+1)
+			end
 		end
 	elseif spellId == 235933 then--Spear of Anquish
 		timerSpearofAnquishCD:Start()
