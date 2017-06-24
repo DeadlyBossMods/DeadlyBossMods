@@ -82,6 +82,7 @@ local timerFelclawsCD				= mod:NewCDTimer(25, 239932, nil, "Tank", nil, 5, nil, 
 local timerRupturingSingularityCD	= mod:NewCDCountTimer(61, 235059, nil, nil, nil, 3)--61-68?
 local timerRupturingSingularity		= mod:NewCastTimer(9.7, 235059, 206577, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)--Shortname: Comet Impact
 local timerArmageddonCD				= mod:NewCDCountTimer(42, 240910, nil, nil, nil, 5)--
+local timerArmageddon				= mod:NewCastTimer(9, 240910, 240911, nil, nil, 2)--Shortname: Armageddon Hail
 local timerShadReflectionEruptingCD	= mod:NewCDTimer(35, 236710, 243160, nil, nil, 3)--Shortname : erupting souls
 --Intermission: Eternal Flame
 local timerTransition				= mod:NewPhaseTimer(57.9)
@@ -221,6 +222,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.armageddonCast = self.vb.armageddonCast + 1
 		specWarnArmageddon:Show()
 		voiceArmageddon:Play("helpsoak")
+		timerArmageddon:Start()
 		if self.vb.phase == 1.5 then
 			if self.vb.armageddonCast < 2 then
 				timerArmageddonCD:Start(28, self.vb.armageddonCast+1)
