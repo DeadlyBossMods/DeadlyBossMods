@@ -531,7 +531,7 @@ DBM_CORE_LAG_FOOTER					= "No Response: %s"
 
 DBM_CORE_DUR_CHECKING				= "Checking raid Durability..."
 DBM_CORE_DUR_HEADER					= "Deadly Boss Mods - Durability Results"
-DBM_CORE_DUR_ENTRY					= "%s: durability [%d percent] / gear broken [%s]"
+DBM_CORE_DUR_ENTRY					= "%s: Durability [%d percent] / Gear broken [%s]"
 DBM_CORE_LAG_FOOTER					= "No Response: %s"
 
 --Role Icons
