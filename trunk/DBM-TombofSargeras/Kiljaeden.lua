@@ -13,11 +13,11 @@ mod:SetHotfixNoticeRev(16288)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 237725 238999 243982 240910 241983",
-	"SPELL_CAST_SUCCESS 239932 236378 236710 237590 236498 238502 238430 238999",
+	"SPELL_CAST_START 237725 238999 243982 240910 241983 239932",
+	"SPELL_CAST_SUCCESS 236378 236710 237590 236498 238502 238430 238999",
 	"SPELL_AURA_APPLIED 239932 236378 236710 237590 236498 236597 241721",
-	"SPELL_AURA_APPLIED_DOSE 239932",
-	"SPELL_AURA_REMOVED 236378 236710 237590 236498 241721",
+	"SPELL_AURA_APPLIED_DOSE 245509",
+	"SPELL_AURA_REMOVED 236378 236710 237590 236498 241721 239932",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 	"UNIT_DIED",
@@ -48,7 +48,7 @@ local warnTearRift					= mod:NewSpellAnnounce(243982, 2)--Positive message color
 local warnDarknessofStuff			= mod:NewEndAnnounce(238999, 1)
 
 --Stage One: The Betrayer
-local specWarnFelclaws				= mod:NewSpecialWarningStack(239932, nil, 2, nil, nil, 1, 2)
+local specWarnFelclaws				= mod:NewSpecialWarningDefensive(239932, nil, nil, nil, 1, 2)
 local specWarnFelclawsOther			= mod:NewSpecialWarningTaunt(239932, nil, nil, nil, 1, 2)
 local specWarnRupturingSingularity	= mod:NewSpecialWarningDodge(235059, nil, nil, nil, 3, 2)
 local specWarnArmageddon			= mod:NewSpecialWarningSpell(240910, nil, nil, nil, 2, 2)
@@ -96,7 +96,7 @@ local timerFlamingOrbCD				= mod:NewAITimer(31, 239253, nil, nil, nil, 3)
 --local berserkTimer				= mod:NewBerserkTimer(300)
 
 --Stage One: The Betrayer
---local countdownDrawPower			= mod:NewCountdown(33, 227629)
+local countdownFelclaws				= mod:NewCountdown("Alt25", 239932)
 
 --Stage One: The Betrayer
 local voiceFelclaws					= mod:NewVoice(239932)--tauntboss
@@ -128,6 +128,7 @@ mod.vb.focusedDreadCast = 0
 mod.vb.burstingDreadCast = 0
 mod.vb.burstingDreadIcon = 2
 mod.vb.singularityCount = 0
+mod.vb.lastTankHit = "None"
 local shelterName, gravitySqueezeBuff = GetSpellInfo(239130), GetSpellInfo(239154)
 local phase2NormalArmageddonTimers = {55, 45, 31}
 local phase2HeroicArmageddonTimers = {55, 75, 35}
@@ -135,6 +136,7 @@ local phase2NormalBurstingTimers = {57, 44}--Not used yet, needs more data to ve
 local phase2HeroicBurstingTimers = {57, 47, 55}--Not used yet, needs more data to verify and improve
 local phase2NormalFocusedTimers = {81.5}--Not used yet, needs more data to verify and improve
 local phase2HeroicFocusedTimers = {35, 45, 53, 46}
+local playerName = UnitName("player")
 
 --[[
 local debuffFilter
@@ -171,11 +173,13 @@ function mod:OnCombatStart(delay)
 	self.vb.focusedDreadCast = 0
 	self.vb.burstingDreadCast = 0
 	self.vb.singularityCount = 0
+	self.vb.lastTankHit = "None"
 	timerArmageddonCD:Start(10-delay, 1)
 	if not self:IsEasy() then
 		timerShadReflectionEruptingCD:Start(21-delay)--Erupting
 	end
-	timerFelclawsCD:Start(26-delay)
+	timerFelclawsCD:Start(25-delay)
+	countdownFelclaws:Start(25-delay)
 	timerRupturingSingularityCD:Start(58-delay)
 end
 
@@ -218,8 +222,17 @@ function mod:SPELL_CAST_START(args)
 				timerArmageddonCD:Start(timer, self.vb.armageddonCast+1)
 			end
 		end
+	elseif spellId == 239932 then
+		timerFelclawsCD:Start()
+		countdownFelclaws:Start()
+		local tanking, status = UnitDetailedThreatSituation("player", "boss1")
+		if tanking or (status == 3) then
+			specWarnFelclaws:Show()
+			voiceFelclaws:Play("defensive")
+		end
 	elseif spellId == 241983 and self.vb.phase < 2.5 then--Deceiver's Veil
 		timerFelclawsCD:Stop()
+		countdownFelclaws:Cancel()
 		timerFocusedDreadflameCD:Stop()
 		timerBurstingDreadflameCD:Stop()
 		timerArmageddonCD:Stop()
@@ -235,9 +248,7 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 239932 then
-		timerFelclawsCD:Start()
-	elseif spellId == 236378 then--Wailing Shadow Reflection (Stage 1)
+	if spellId == 236378 then--Wailing Shadow Reflection (Stage 1)
 		timerShadReflectionWailingCD:Start(112)
 	elseif spellId == 236710 then--Erupting Shadow Reflection (Stage 1)
 		if self.vb.phase == 2 then
@@ -268,7 +279,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 					self.vb.burstingDreadCast = 0
 					self.vb.singularityCount = 0
 					warnPhase2:Schedule(5)
-					timerFelclawsCD:Start(15)
+					timerFelclawsCD:Start(14)
+					countdownFelclaws:Start(14)
 					timerShadReflectionEruptingCD:Start(17)--Erupting
 					timerArmageddonCD:Start(55.3, 1)
 					timerBurstingDreadflameCD:Start(57.3, 1)
@@ -306,22 +318,10 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 239932 then
+	if spellId == 245509 then
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId) then
-			local amount = args.amount or 1
-			--timerFelclaws:Start(args.destName)
-			if amount >= 2 then
-				if args:IsPlayer() then
-					specWarnFelclaws:Show(amount)
-					voiceFelclaws:Play("stackhigh")
-				else
-					if not UnitDebuff("player", args.spellName) and not UnitIsDeadOrGhost("player") then
-						specWarnFelclawsOther:Show(args.destName)
-						voiceFelclaws:Play("tauntboss")
-					end
-				end
-			end
+			self.vb.lastTankHit = args.destName
 		end
 	elseif spellId == 236378 then--Wailing Shadow Reflection (Stage 1)
 		if args:IsPlayer() then
@@ -386,6 +386,11 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif spellId == 241721 and args:IsPlayer() then
 		timerSightlessGaze:Stop()
+	elseif spellId == 239932 then--Felclaws ended
+		if not self.vb.lastTankHit == playerName then
+			specWarnFelclawsOther:Show(self.vb.lastTankHit)
+			voiceFelclaws:Play("tauntboss")
+		end
 	end
 end
 
@@ -483,6 +488,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		self.vb.burstingDreadCast = 0
 		self.vb.singularityCount = 0
 		timerFelclawsCD:Stop()
+		countdownFelclaws:Cancel()
 		timerRupturingSingularityCD:Stop()
 		timerArmageddonCD:Stop()
 		timerShadReflectionEruptingCD:Stop()
