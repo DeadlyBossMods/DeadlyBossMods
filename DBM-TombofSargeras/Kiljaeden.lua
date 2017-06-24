@@ -17,7 +17,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS 236378 236710 237590 236498 238502 238430 238999",
 	"SPELL_AURA_APPLIED 239932 236378 236710 237590 236498 236597 241721",
 	"SPELL_AURA_APPLIED_DOSE 245509",
-	"SPELL_AURA_REMOVED 236378 236710 237590 236498 241721 239932",
+	"SPELL_AURA_REMOVED 236378 236710 237590 236498 241721 239932 241983",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 	"UNIT_DIED",
@@ -37,6 +37,7 @@ mod:RegisterEventsInCombat(
 --[[
 (ability.id = 238502 or ability.id = 237725 or ability.id = 238999 or ability.id = 243982 or ability.id = 240910 or ability.id = 241983) and type = "begincast"
  or (ability.id = 239932 or ability.id = 235059 or ability.id = 238502 or ability.id = 239785 or ability.id = 236378 or ability.id = 236710 or ability.id = 237590 or ability.id = 236498 or ability.id = 238430) and type = "cast"
+ or ability.id = 241983 and type = "removebuff"
  or ability.name = "Rupturing Singularity" and target.name = "Omegal"
  --]]
 --Intermission: Eternal Flame
@@ -44,6 +45,7 @@ local warnBurstingDreadFlame		= mod:NewTargetAnnounce(238430, 2)--Generic for no
 --Stage Two:
 local warnPhase2					= mod:NewPhaseAnnounce(2, 2)
 --Stage Three: Darkness of A Thousand Souls
+local warnPhase3					= mod:NewPhaseAnnounce(3, 2)
 local warnTearRift					= mod:NewSpellAnnounce(243982, 2)--Positive message color?
 local warnDarknessofStuff			= mod:NewEndAnnounce(238999, 1)
 
@@ -191,7 +193,6 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnCombatEnd()
-	self:UnregisterShortTermEvents()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
@@ -251,9 +252,6 @@ function mod:SPELL_CAST_START(args)
 		timerShadReflectionWailingCD:Stop()
 		self.vb.phase = 2.5
 		self.vb.shadowSoulsRemaining = 5--Normal count anyways
-		self:RegisterShortTermEvents(
-			"UNIT_TARGETABLE_CHANGED"
-		)
 	end
 end
 
@@ -406,6 +404,18 @@ function mod:SPELL_AURA_REMOVED(args)
 			specWarnFelclawsOther:Show(self.vb.lastTankHit)
 			voiceFelclaws:Play("tauntboss")
 		end
+	elseif spellId == 241983 then--Deceiver's Veil
+		self.vb.phase = 3
+		self.vb.armageddonCast = 0
+		self.vb.focusedDreadCast = 0
+		self.vb.burstingDreadCast = 0
+		--timerDarknessofSoulsCD:Start(1)--Cast intantly
+		warnPhase3:Show()
+		timerTearRiftCD:Start(14)
+		timerBurstingDreadflameCD:Start(44, 1)--Review on Heroic
+		timerFocusedDreadflameCD:Start(80, 1)
+		countdownFocusedDread:Start(80)
+		timerFlamingOrbCD:Start(1)
 	end
 end
 
@@ -484,23 +494,6 @@ function mod:UNIT_DIED(args)
 		self.vb.shadowSoulsRemaining = self.vb.shadowSoulsRemaining - 1
 	end
 end
-
-function mod:UNIT_TARGETABLE_CHANGED(uId)
-	local cid = self:GetCIDFromGUID(UnitGUID(uId))
-	if (cid == 108573) and UnitExists(uId) and self.vb.phase < 3 then--Boss becoming targetable again after illiden phase
-		self.vb.phase = 3
-		self.vb.armageddonCast = 0
-		self.vb.focusedDreadCast = 0
-		self.vb.burstingDreadCast = 0
-		--timerDarknessofSoulsCD:Start(1)--Cast intantly
-		timerTearRiftCD:Start(14)
-		timerBurstingDreadflameCD:Start(44, 1)--Review on Heroic
-		timerFocusedDreadflameCD:Start(80, 1)
-		countdownFocusedDread:Start(80)
-		timerFlamingOrbCD:Start(1)
-		self:UnregisterShortTermEvents()
-	end
-end	
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
