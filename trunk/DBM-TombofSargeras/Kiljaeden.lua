@@ -50,7 +50,7 @@ local warnDarknessofStuff			= mod:NewEndAnnounce(238999, 1)
 --Stage One: The Betrayer
 local specWarnFelclaws				= mod:NewSpecialWarningDefensive(239932, nil, nil, nil, 1, 2)
 local specWarnFelclawsOther			= mod:NewSpecialWarningTaunt(239932, nil, nil, nil, 1, 2)
-local specWarnRupturingSingularity	= mod:NewSpecialWarningDodge(235059, nil, nil, nil, 3, 2)
+local specWarnRupturingSingularity	= mod:NewSpecialWarningSoon(235059, nil, nil, nil, 3, 2)
 local specWarnArmageddon			= mod:NewSpecialWarningSpell(240910, nil, nil, nil, 2, 2)
 local specWarnSRWailing				= mod:NewSpecialWarningYou(236378, nil, nil, nil, 1, 2)
 local yellSRWailing					= mod:NewFadesYell(236378)
@@ -77,15 +77,16 @@ local specWarnFlamingOrbSpawn		= mod:NewSpecialWarningSpell(239253, nil, nil, ni
 --Stage One: The Betrayer
 local timerFelclawsCD				= mod:NewCDTimer(25, 239932, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerRupturingSingularityCD	= mod:NewCDCountTimer(61, 235059, nil, nil, nil, 3)--61-68?
+local timerRupturingSingularity		= mod:NewCastTimer(9.7, 235059, 206577, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)--Shortname: Comet Impact
 local timerArmageddonCD				= mod:NewCDCountTimer(42, 240910, nil, nil, nil, 5)--
-local timerShadReflectionEruptingCD	= mod:NewCDTimer(35, 236710, nil, nil, nil, 3)
+local timerShadReflectionEruptingCD	= mod:NewCDTimer(35, 236710, 243160, nil, nil, 3)--Shortname : erupting souls
 --Intermission: Eternal Flame
 local timerTransition				= mod:NewPhaseTimer(57.9)
 local timerFocusedDreadflameCD		= mod:NewCDCountTimer(31, 238502, nil, nil, nil, 3)
 local timerBurstingDreadflameCD		= mod:NewCDCountTimer(31, 238430, nil, nil, nil, 3)
 --Stage Two: Reflected Souls
 local timerHopelessness				= mod:NewCastTimer(8, 237725, nil, "Healer", nil, 5, nil, DBM_CORE_HEALER_ICON)
-local timerShadReflectionWailingCD	= mod:NewCDTimer(35, 236378, nil, nil, nil, 3)
+local timerShadReflectionWailingCD	= mod:NewCDTimer(35, 236378, 236075, nil, nil, 3)--Shortname : wailing souls
 --Intermission: Deceiver's Veil
 local timerSightlessGaze			= mod:NewBuffActiveTimer(20, 241721, nil, nil, nil, 5)
 --Stage Three: Darkness of A Thousand Souls
@@ -96,7 +97,7 @@ local timerFlamingOrbCD				= mod:NewAITimer(31, 239253, nil, nil, nil, 3)
 --local berserkTimer				= mod:NewBerserkTimer(300)
 
 --Stage One: The Betrayer
-local countdownSingularity			= mod:NewCountdown(50, 235059)
+local countdownSingularity			= mod:NewCountdown(50, 235059, nil, nil, 5)
 local countdownArmageddon			= mod:NewCountdown("Alt25", 240910, false)
 local countdownFocusedDread			= mod:NewCountdown("AltTwo", 238502)
 local countdownFelclaws				= mod:NewCountdown("Alt25", 239932, "Tank", 2)
@@ -185,7 +186,7 @@ function mod:OnCombatStart(delay)
 	timerFelclawsCD:Start(25-delay)
 	countdownFelclaws:Start(25-delay)
 	timerRupturingSingularityCD:Start(58-delay)
-	countdownSingularity:Start(58)
+	--countdownSingularity:Start(58)
 end
 
 function mod:OnCombatEnd()
@@ -295,7 +296,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 					countdownArmageddon:Start(55.3)
 					timerBurstingDreadflameCD:Start(57.3, 1)
 					timerRupturingSingularityCD:Start(70, 1)
-					countdownSingularity:Start(70)
+					--countdownSingularity:Start(70)
 					if self:IsEasy() then
 						timerFocusedDreadflameCD:Start(81.5, 1)
 						countdownFocusedDread:Start(81.5)
@@ -456,18 +457,20 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 		self.vb.singularityCount = self.vb.singularityCount + 1
 		specWarnRupturingSingularity:Show()
 		voiceRupturingSingularity:Play("carefly")
+		timerRupturingSingularity:Start(9.7)
+		countdownSingularity:Start(9.7)
 		if self.vb.phase == 1.5 then
 			if self.vb.singularityCount == 1 then
 				timerRupturingSingularityCD:Start(30, self.vb.singularityCount+1)
-				countdownSingularity:Start(30)
+				--countdownSingularity:Start(30)
 			end
 		else
 			if self:IsEasy() then
 				timerRupturingSingularityCD:Start(80, self.vb.singularityCount+1)
-				countdownSingularity:Start(80)
+				--countdownSingularity:Start(80)
 			else
 				timerRupturingSingularityCD:Start(55, self.vb.singularityCount+1)
-				countdownSingularity:Start(55)
+				--countdownSingularity:Start(55)
 			end
 		end
 	end
@@ -509,7 +512,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		timerFelclawsCD:Stop()
 		countdownFelclaws:Cancel()
 		timerRupturingSingularityCD:Stop()
-		countdownSingularity:Cancel()
+		--countdownSingularity:Cancel()
 		timerArmageddonCD:Stop()
 		countdownArmageddon:Cancel()
 		timerShadReflectionEruptingCD:Stop()
@@ -518,7 +521,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		timerBurstingDreadflameCD:Start(8.7, 1)
 		if not self:IsEasy() then
 			timerRupturingSingularityCD:Start(14.7)
-			countdownSingularity:Start(14.7)
+			--countdownSingularity:Start(14.7)
 		end
 		timerFocusedDreadflameCD:Start(24.7, 1)
 		countdownFocusedDread:Start(24.7)
