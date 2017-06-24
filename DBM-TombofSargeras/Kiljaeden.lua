@@ -96,7 +96,7 @@ local timerFlamingOrbCD				= mod:NewAITimer(31, 239253, nil, nil, nil, 3)
 --local berserkTimer				= mod:NewBerserkTimer(300)
 
 --Stage One: The Betrayer
-local countdownFelclaws				= mod:NewCountdown("Alt25", 239932)
+local countdownFelclaws				= mod:NewCountdown("Alt25", 239932, "Tank", 2)
 
 --Stage One: The Betrayer
 local voiceFelclaws					= mod:NewVoice(239932)--tauntboss
