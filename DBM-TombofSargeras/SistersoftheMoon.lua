@@ -202,7 +202,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if (spellId == 234995 or spellId == 234996) and args:IsPlayer() then
 		local amount = args.amount or 1
-		if amount >= 12 then
+		if amount >= 12 and amount % 2 == 0 then
 			specWarnFontofElune:Show(amount)
 			voiceFontofElune:Play("changemoon")
 		end

@@ -494,7 +494,7 @@ function mod:UNIT_TARGETABLE_CHANGED(uId)
 		self.vb.burstingDreadCast = 0
 		--timerDarknessofSoulsCD:Start(1)--Cast intantly
 		timerTearRiftCD:Start(14)
-		timerBurstingDreadflameCD:Start(44, 1)
+		timerBurstingDreadflameCD:Start(44, 1)--Review on Heroic
 		timerFocusedDreadflameCD:Start(80, 1)
 		countdownFocusedDread:Start(80)
 		timerFlamingOrbCD:Start(1)
