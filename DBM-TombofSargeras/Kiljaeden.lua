@@ -6,9 +6,9 @@ mod:SetCreatureID(108573)--121227 Illiden? 121193 Shadowsoul
 mod:SetEncounterID(2051)
 mod:SetZone()
 --mod:SetBossHPInfoToHighest()
---mod:SetUsedIcons(1)
+mod:SetUsedIcons(1, 2, 3, 4, 5, 6)
 mod:SetHotfixNoticeRev(16288)
---mod.respawnTime = 29
+mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
 
@@ -61,6 +61,7 @@ local yellSRErupting				= mod:NewFadesYell(236710)
 --Intermission: Eternal Flame
 local specWarnFocusedDreadflame		= mod:NewSpecialWarningYou(238502, nil, nil, nil, 1, 2)
 local yellFocusedDreadflame			= mod:NewYell(238502)
+local yellFocusedDreadflameFades	= mod:NewFadesYell(236498)
 local specWarnFocusedDreadflameOther= mod:NewSpecialWarningTarget(238502, nil, nil, nil, 1, 2)
 local specWarnBurstingDreadflame	= mod:NewSpecialWarningMoveAway(238430, nil, nil, nil, 1, 2)
 local yellBurstingDreadflame		= mod:NewYell(238430)
@@ -138,7 +139,7 @@ mod.vb.singularityCount = 0
 mod.vb.lastTankHit = "None"
 local shelterName, gravitySqueezeBuff = GetSpellInfo(239130), GetSpellInfo(239154)
 local phase2NormalArmageddonTimers = {55, 45, 31}
-local phase2HeroicArmageddonTimers = {55, 75, 35}
+local phase2HeroicArmageddonTimers = {55, 75, 35, 30}
 local phase2NormalBurstingTimers = {57, 44}--Not used yet, needs more data to verify and improve
 local phase2HeroicBurstingTimers = {57, 47, 55}--Not used yet, needs more data to verify and improve
 local phase2NormalFocusedTimers = {81.5}--Not used yet, needs more data to verify and improve
@@ -456,6 +457,9 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 				specWarnFocusedDreadflame:Show()
 				voiceFocusedDreadflame:Play("targetyou")
 				yellFocusedDreadflame:Yell()
+				yellFocusedDreadflame:Schedule(2, 3)
+				yellFocusedDreadflame:Schedule(3, 2)
+				yellFocusedDreadflame:Schedule(4, 1)
 			else
 				specWarnFocusedDreadflameOther:Show(target)
 				voiceFocusedDreadflame:Play("helpsoak")
