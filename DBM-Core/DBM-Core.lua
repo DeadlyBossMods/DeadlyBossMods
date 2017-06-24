@@ -1945,7 +1945,7 @@ do
 				DBM:AddMsg(DBM_CORE_UPDATE_REQUIRES_RELAUNCH)
 				return
 			end
-			LD:GetDurability()
+			LD:RequestDurability()
 			DBM:AddMsg(DBM_CORE_DUR_CHECKING)
 			C_TimerAfter(5, function() DBM:ShowDurability() end)
 		elseif cmd:sub(1, 3) == "hud" then
@@ -2309,8 +2309,8 @@ do
 			if playerColor then
 				name = ("|r|cff%.2x%.2x%.2x%s|r|cff%.2x%.2x%.2x"):format(playerColor.r * 255, playerColor.g * 255, playerColor.b * 255, name, 0.41 * 255, 0.8 * 255, 0.94 * 255)
 			end
-			if v.worldlag then
-				self:AddMsg(DBM_CORE_DUR_ENTRY:format(name, v.durpercent, v.broken), false)
+			if v.durpercent then
+				self:AddMsg(DBM_CORE_DUR_ENTRY:format(name, v.durpercent, v.durbroken), false)
 			else
 				tinsert(nodurResponse, v.name)
 			end
