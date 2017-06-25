@@ -63,7 +63,8 @@ local yellTormentingCries			= mod:NewYell(238018)
 local specWarnSoulbind				= mod:NewSpecialWarningYou(236459, nil, nil, nil, 3, 2)
 local yellSoulbind					= mod:NewYell(236459)
 local specWarnWither				= mod:NewSpecialWarningYou(236138, nil, nil, nil, 1, 7)
-local specWarnShatteringScream		= mod:NewSpecialWarningMoveTo(235969, nil, nil, nil, 3, 2)
+local specWarnShatteringScream		= mod:NewSpecialWarningMoveAway(235969, nil, nil, nil, 1, 2)
+local specWarnShatteringScreamAdd	= mod:NewSpecialWarningMoveTo(235969, nil, nil, nil, 3, 2)
 local specWarnWailingSouls			= mod:NewSpecialWarningCount(236072, nil, nil, nil, 2, 2)
 --The Desolate Host
 local specWarnSunderingDoomTaunt	= mod:NewSpecialWarningTaunt(236542, nil, nil, nil, 1, 2)
@@ -340,8 +341,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 235969 then
 		if args:IsPlayer() then
-			specWarnShatteringScream:Show(boneArmor)
-			voiceShatteringScream:Play("getboned")
+			if self.vb.boneArmorCount > 0 then
+				specWarnShatteringScreamAdd:Show(boneArmor)
+				voiceShatteringScream:Play("getboned")
+			else
+				specWarnShatteringScream:Show()
+				voiceShatteringScream:Play("scatter")
+			end
 		end
 		warnShatteringScream:CombinedShow(1, args.destName)
 	elseif spellId == 236361 or spellId == 239923 then
