@@ -91,7 +91,6 @@ local countdownCorruptedMatrix		= mod:NewCountdown("Alt40", 233556)
 
 --Stage One: A Slumber Disturbed
 local voiceTouchofSargerasGround	= mod:NewVoice(239207)--helpsoak
-local voiceTouchofSargeras			= mod:NewVoice(234009)--gathershare
 local voiceRuptureRealities			= mod:NewVoice(239132)--justrun
 local voiceUnboundChaos				= mod:NewVoice(234059)--runout/keepmove
 local voiceShadowyBlades			= mod:NewVoice(236571)--scatter
@@ -109,12 +108,19 @@ mod:AddSetIconOption("SetIconOnShadowyBlades", 236571, true)
 mod:AddSetIconOption("SetIconOnDarkMark", 239739, true)
 mod:AddBoolOption("InfoFrame", true)
 mod:AddRangeFrameOption(10, 236571)
+local abilitiesonCD = {
+	[239207] = true,--Touch of Sargeras
+	[239132] = true,--Rupture Realities
+	[234059] = true,--Unbound Chaos
+	[236571] = true--Shadowy Blades
+}
 
 mod.vb.phase = 1
 mod.vb.bladesIcon = 1
 local darkMarkTargets = {}
 local playerName = UnitName("player")
 local beamName = GetSpellInfo(238244)
+local showTouchofSarg = true
 
 local function warnDarkMarkTargets(self, spellName)
 --	table.sort(darkMarkTargets)
@@ -136,20 +142,86 @@ local function warnDarkMarkTargets(self, spellName)
 	end
 end
 
+local function setabilityStatus(self, spellId, status)
+	if status == 1 then--Ability on cooldown
+		abilitiesonCD[spellId] = true
+	else--Ability ready to use
+		abilitiesonCD[spellId] = false
+	end
+end
+
+local updateInfoFrame
+do
+	local touch, rupture, unbound, shadowy = GetSpellInfo(239207), GetSpellInfo(239132), GetSpellInfo(234059), GetSpellInfo(236571)
+	local lines = {}
+	local sortedLines = {}
+	local function addLine(key, value)
+		-- sort by insertion order
+		lines[key] = value
+		sortedLines[#sortedLines + 1] = key
+	end
+	updateInfoFrame = function()
+		table.wipe(lines)
+		table.wipe(sortedLines)
+		--Boss Powers first
+		for i = 1, 2 do
+			local uId = "boss"..i
+			if UnitExists(uId) then
+				local currentPower = UnitPower(uId) or 0
+				lines[UnitName(uId)] = currentPower
+			end
+		end
+		--Fallen Avatar Cooldowns second
+		--addLine(L.Oncooldown, "")
+		if showTouchofSarg then
+			if abilitiesonCD[239207] then--Touch of Sargeras
+				addLine(touch, "|cFF088A08"..YES.."|r")
+			else
+				addLine(touch, "|cffff0000"..NO.."|r")
+			end
+		end
+		if abilitiesonCD[239132] then--Rupture Realities
+			addLine(touch, "|cFF088A08"..YES.."|r")
+		else
+			addLine(touch, "|cffff0000"..NO.."|r")
+		end
+		if abilitiesonCD[234059] then--Unbound Chaos
+			addLine(touch, "|cFF088A08"..YES.."|r")
+		else
+			addLine(touch, "|cffff0000"..NO.."|r")
+		end
+		if abilitiesonCD[236571] then--Shadowy Blades
+			addLine(touch, "|cFF088A08"..YES.."|r")
+		else
+			addLine(touch, "|cffff0000"..NO.."|r")
+		end
+
+		return lines, sortedLines
+	end
+end
+
 function mod:OnCombatStart(delay)
 	table.wipe(darkMarkTargets)
 	self.vb.phase = 1
 	self.vb.bladesIcon = 1
 	timerUnboundChaosCD:Start(7-delay)--7
+	self:Schedule(7, abilitiesonCD, self, 234059, 0)--Unbound Chaos
 	timerDesolateCD:Start(13-delay)--13
 	if not self:IsEasy() then
+		showTouchofSarg = true
 		timerTouchofSargerasCD:Start(14.9-delay)--15.5
+		self:Schedule(14.9, abilitiesonCD, self, 239207, 0)--Touch of Sargeras
+	else
+		showTouchofSarg = false
 	end
 	timerShadowyBladesCD:Start(20.7-delay)
+	self:Schedule(20.7, abilitiesonCD, self, 236571, 0)--Shadowy Blades
 	timerRuptureRealitiesCD:Start(31-delay)--31-37
+	self:Schedule(31, abilitiesonCD, self, 239132, 0)--Ruptured Realities
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(POWER_TYPE_POWER)
-		DBM.InfoFrame:Show(2, "enemypower", 2)
+		--DBM.InfoFrame:Show(2, "enemypower", 2)
+		DBM.InfoFrame:Show(6, "function", updateInfoFrame, false, false)
 	end
 end
 
@@ -167,7 +239,10 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 239207 then
 		specWarnTouchofSargerasGround:Show()
 		voiceTouchofSargerasGround:Play("helpsoak")
-		timerTouchofSargerasCD:Start()
+		timerTouchofSargerasCD:Start()--42
+		self:Unschedule(abilitiesonCD, self, 239207)--Unschedule for good measure in case next cast start fires before timer expires (in which case have a bad timer)
+		abilitiesonCD(self, 239207, 1)--Set on Cooldown
+		self:Schedule(42, abilitiesonCD, self, 239207, 0)--Set ready to use when CD expires
 	elseif spellId == 239132 or spellId == 235572 then
 		specWarnRuptureRealities:Show()
 		voiceRuptureRealities:Play("justrun")
@@ -175,7 +250,10 @@ function mod:SPELL_CAST_START(args)
 			timerRuptureRealitiesCD:Start(37)
 			countdownRuptureRealities:Start(37)
 		else
-			timerRuptureRealitiesCD:Start()
+			timerRuptureRealitiesCD:Start()--60
+			self:Unschedule(abilitiesonCD, self, 239132)--Unschedule for good measure in case next cast start fires before timer expires (in which case have a bad timer)
+			abilitiesonCD(self, 239132, 1)--Set on cooldown
+			self:Schedule(60, abilitiesonCD, self, 239132, 0)--Set ready to use when CD expires
 		end
 	elseif spellId == 233856 then
 		specWarnCleansingProtocol:Show()
@@ -187,6 +265,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 240623 and self:AntiSpam(2, 3) then
 		timerTaintedMatrixCD:Start(10)
 	elseif spellId == 235597 then
+		self:Unschedule(abilitiesonCD)--Unschedule all
 		self.vb.phase = 2
 		timerTouchofSargerasCD:Stop()
 		timerShadowyBladesCD:Stop()
@@ -330,19 +409,23 @@ end
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
 	if spellId == 234057 then
-		timerUnboundChaosCD:Start()
+		timerUnboundChaosCD:Start()--35
+		self:Unschedule(abilitiesonCD, self, 234059)--Unschedule for good measure in case next cast start fires before timer expires (in which case have a bad timer)
+		abilitiesonCD(self, 234059, 1)--Set on cooldown
+		self:Schedule(35, abilitiesonCD, self, 234059, 0)--Set ready to use when CD expires
 	elseif spellId == 239739 or spellId == 239825 then
 		table.wipe(darkMarkTargets)
 		timerDarkMarkCD:Start()
-	elseif spellId == 239418 then
-		--warnBlackWinds:Show()
-		--timerBlackWindsCD:Start()
 	elseif spellId == 236571 or spellId == 236573 then--Shadow Blades
 		self.vb.bladesIcon = 1--SHOULD always fire first
+		self:Unschedule(abilitiesonCD, self, 236571)--Unschedule for good measure in case next cast start fires before timer expires (in which case have a bad timer)
+		abilitiesonCD(self, 236571, 1)--Set on cooldown
 		if self:IsEasy() then
 			timerShadowyBladesCD:Start(34)
+			self:Schedule(34, abilitiesonCD, self, 236571, 0)--Set ready to use when CD expires
 		else
 			timerShadowyBladesCD:Start(30)
+			self:Schedule(30, abilitiesonCD, self, 236571, 0)--Set ready to use when CD expires
 		end
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(10, nil, nil, nil, nil, 5)
