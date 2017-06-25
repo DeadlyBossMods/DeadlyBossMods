@@ -75,6 +75,7 @@ mod:AddRangeFrameOption("10/25")
 
 local infernalSpike = GetSpellInfo(233021)
 local crashingComet = GetSpellInfo(232249)
+local cometTable = {}
 local shatteringStarTimers = {24, 60, 60, 50}--24, 60, 60, 50, 20, 40, 20, 40, 20, 40
 --local comboWamboTimers = {4, 6, 12, 12, 12, 6, 12, 6, 12, 12, 12, 6, 12, 6}--Needs more data
 --local comboWamboTimersLFR = {4, 10, 6, 14, 8, 8, 14, 10, 6, 14, 8, 8, 14, 10, 6, 14, 8, 8, 14, 8, 8, 8, 10, 8, 8, 10, 8, 8, 8, 10, 8, 8, 10}
@@ -85,6 +86,7 @@ mod.vb.brimstoneCount = 0
 mod.vb.comboWamboCount = 0
 
 function mod:OnCombatStart(delay)
+	table.wipe(cometTable)
 	self.vb.shatteringStarCount = 0
 	--self.vb.comboWamboCount = 0
 	timerInfernalSpikeCD:Start(4-delay)
