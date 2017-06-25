@@ -190,7 +190,7 @@ function mod:OnCombatStart(delay)
 	end
 	timerFelclawsCD:Start(25-delay)
 	countdownFelclaws:Start(25-delay)
-	timerRupturingSingularityCD:Start(58-delay)
+	timerRupturingSingularityCD:Start(58-delay, 1)
 	--countdownSingularity:Start(58)
 end
 
@@ -520,7 +520,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		countdownArmageddon:Start(7.5)
 		timerBurstingDreadflameCD:Start(8.7, 1)
 		if not self:IsEasy() then
-			timerRupturingSingularityCD:Start(14.7)
+			timerRupturingSingularityCD:Start(14.7, 1)
 			--countdownSingularity:Start(14.7)
 		end
 		timerFocusedDreadflameCD:Start(24.7, 1)
