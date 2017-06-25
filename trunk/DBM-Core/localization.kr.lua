@@ -229,7 +229,8 @@ DBM_CORE_SLASHCMD_HELP2				= {
 	"/dbm version: 공대원의 보스 모드 버전 검사를 실시합니다. (단축 명령어: ver)",
 	"/dbm version2: 공대원 보스 모드 버전 검사 및 구버전 사용자에게 귓속말을 보냅니다. (단축 명령어: ver2)",
 	"/dbm lockout: 공대원에게 공격대 귀속 정보를 수집합니다. (단축 명령어: lockouts, ids) (승급 권한 필요)",
-	"/dbm lag: 공격대 지연시간 검사 작업을 실행합니다."
+	"/dbm lag: 공격대 지연시간 검사 작업을 실행합니다.",
+	"/dbm durability: 공대원의 내구도 검사를 실시합니다."
 }
 DBM_CORE_TIMER_USAGE	= {
 	"DBM 타이머 명령어:",
@@ -346,6 +347,7 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS.count		= "%s! (%%s)"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.stack		= "당신에게 %s (%%d중첩)"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.switch		= "%s - 대상 바꾸세요"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.switchcount	= "%s - 대상 바꾸세요 (%%s)"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.gtfo		= "바닥 - 피하세요"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.Adds		= "쫄 등장 - 대상 바꾸세요"
 
 -- Auto-generated Special Warning Localizations
@@ -378,6 +380,7 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS.count			= "$spell:%s 특수 경고 보기 (횟�
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.stack			= "당신이 $spell:%2$s %1$d중첩 이상이 된 경우 특수 경고 보기"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch			= "$spell:%s에 대상 변경 특수 경고 보기"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switchcount 		= "$spell:%s에 대상 변경 특수 경고 보기 (횟수 포함)"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.gtfo 			= "바닥 피하기 특수 경고 보기"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.Adds 			= "쫄 등장시 대상 변경 특수 경고 보기"
 
 -- Auto-generated Timer Localizations
@@ -426,6 +429,7 @@ DBM_CORE_AUTO_ARROW_OPTION_TEXT3		= "$spell:%s 특정 지점을 가리키는 DBM
 DBM_CORE_AUTO_VOICE_OPTION_TEXT			= "$spell:%s에 대한 음성 경보 듣기"
 DBM_CORE_AUTO_VOICE2_OPTION_TEXT		= "단계 전환시 음성 경보 듣기"
 DBM_CORE_AUTO_VOICE3_OPTION_TEXT		= "쫄 등장시 음성 경보 듣기"
+DBM_CORE_AUTO_VOICE4_OPTION_TEXT		= "바닥 밟았을 때 음성 경보 듣기"
 DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT		= "$spell:%s 쿨타임에 맞춰 초읽기 듣기"
 DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT2	= "$spell:%s 남은 시간 초읽기 듣기"
 DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT		= "$spell:%s 지속 시간 초읽기 듣기"
@@ -507,5 +511,10 @@ DBM_CORE_LAG_CHECKING				= "공격대의 지연시간 확인중..."
 DBM_CORE_LAG_HEADER					= "Deadly Boss Mods - 지연시간 확인 결과"
 DBM_CORE_LAG_ENTRY					= "%s: 서버 지연시간 [%d ms] / 개인 지연시간 [%d ms]"
 DBM_CORE_LAG_FOOTER					= "응답없음: %s"
+
+DBM_CORE_DUR_CHECKING				= "공격대 내구도 검사중..."
+DBM_CORE_DUR_HEADER					= "Deadly Boss Mods - 내구도 검사 결과"
+DBM_CORE_DUR_ENTRY					= "%s: 내구도 [%d 퍼센트] / 깨진 장비 [%s]"
+DBM_CORE_LAG_FOOTER					= "응답 없음: %s"
 
 end
