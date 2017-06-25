@@ -10,7 +10,7 @@ mod:SetBossHPInfoToHighest()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 198820 199143 199193",
+	"SPELL_CAST_START 198820 199143 199193 202019",
 	"SPELL_CAST_SUCCESS 198635 201733",
 	"SPELL_AURA_APPLIED 201733",
 	"SPELL_AURA_REMOVED 199193",
@@ -25,6 +25,7 @@ local specWarnDarkblast				= mod:NewSpecialWarningDodge(198820, nil, nil, nil, 2
 local specWarnGuile					= mod:NewSpecialWarningDodge(199193, nil, nil, nil, 2, 2)
 local specWarnGuileEnded			= mod:NewSpecialWarningEnd(199193, nil, nil, nil, 1, 2)
 local specWarnSwarm					= mod:NewSpecialWarningYou(201733)
+local specWarnShadowBolt			= mod:NewSpecialWarningDefensive(202019, nil, nil, nil, 3, 2)
 
 local timerDarkBlastCD				= mod:NewCDTimer(18, 198820, nil, nil, nil, 3)
 local timerUnerringShearCD			= mod:NewCDTimer(12, 198635, nil, "Tank", nil, 5)
@@ -32,19 +33,52 @@ local timerGuileCD					= mod:NewCDTimer(39, 199193, nil, nil, nil, 6)
 local timerGuile					= mod:NewBuffFadesTimer(24, 199193, nil, nil, nil, 6)
 local timerCloudCD					= mod:NewCDTimer(32.8, 199143, nil, nil, nil, 3)
 local timerSwarmCD					= mod:NewCDTimer(32.8, 201733, nil, nil, nil, 3)
+local timerShadowBoltVolleyCD		= mod:NewCDTimer(8, 202019, nil, nil, nil, 2)
 
 local countdownShear				= mod:NewCountdown(12, 198635, "Tank")
 
 local voiceDarkblast				= mod:NewVoice(198820)--watchstep
 local voiceGuile					= mod:NewVoice(199193)--watchstep/keepmove/safenow
+local voiceShadowBolt				= mod:NewVoice(202019)--defensive
 
 mod.vb.phase = 1
+mod.vb.shadowboltCount = 0
 
 function mod:OnCombatStart(delay)
 	self.vb.phase = 1
+	self.vb.shadowboltCount = 0
 	timerUnerringShearCD:Start(5.5-delay)
 	countdownShear:Start(5.5-delay)
 	timerDarkBlastCD:Start(10-delay)
+end
+
+function mod:SPELL_CAST_START(args)
+	local spellId = args.spellId
+	if spellId == 198820 then
+		if self.vb.phase == 1 then
+			specWarnDarkblast:Show()
+			voiceDarkblast:Play("watchstep")
+			timerDarkBlastCD:Start()
+		end
+	elseif spellId == 199143 then
+		warnCloud:Show()
+		timerCloudCD:Start()
+	elseif spellId == 199193 then
+		timerCloudCD:Stop()
+		timerSwarmCD:Stop()
+		timerShadowBoltVolleyCD:Stop()
+		specWarnGuile:Show()
+		voiceGuile:Play("watchstep")
+		voiceGuile:Schedule(1.5, "keepmove")
+		timerGuile:Start()
+	elseif spellId == 202019 then
+		self.vb.shadowboltCount = self.vb.shadowboltCount + 1
+		if self.vb.shadowboltCount == 1 then
+			specWarnShadowBolt:Show()
+			voiceShadowBolt:Play("defensive")
+		end
+		--timerShadowBoltVolleyCD:Start()--Not known, and probably not important
+	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
@@ -81,27 +115,6 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
-function mod:SPELL_CAST_START(args)
-	local spellId = args.spellId
-	if spellId == 198820 then
-		if self.vb.phase == 1 then
-			specWarnDarkblast:Show()
-			voiceDarkblast:Play("watchstep")
-			timerDarkBlastCD:Start()
-		end
-	elseif spellId == 199143 then
-		warnCloud:Show()
-		timerCloudCD:Start()
-	elseif spellId == 199193 then
-		timerCloudCD:Stop()
-		timerSwarmCD:Stop()
-		specWarnGuile:Show()
-		voiceGuile:Play("watchstep")
-		voiceGuile:Schedule(1.5, "keepmove")
-		timerGuile:Start()
-	end
-end
-
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 98965 then--Kur'talos Ravencrest
@@ -113,6 +126,7 @@ function mod:UNIT_DIED(args)
 			timerSwarmCD:Start(9)
 		end
 		timerCloudCD:Start(11.5)
+		timerShadowBoltVolleyCD:Start(17.5)--Not confirmed, submitted by requesting user
 		timerGuileCD:Start(24)--24-28
 	end
 end
