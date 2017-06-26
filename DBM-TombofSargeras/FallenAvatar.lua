@@ -190,19 +190,19 @@ do
 			end
 		end
 		if abilitiesonCD[239132] then--Rupture Realities
-			addLine(touch, "|cFF088A08"..YES.."|r")
+			addLine(rupture, "|cFF088A08"..YES.."|r")
 		else
-			addLine(touch, "|cffff0000"..NO.."|r")
+			addLine(rupture, "|cffff0000"..NO.."|r")
 		end
 		if abilitiesonCD[234059] then--Unbound Chaos
-			addLine(touch, "|cFF088A08"..YES.."|r")
+			addLine(unbound, "|cFF088A08"..YES.."|r")
 		else
-			addLine(touch, "|cffff0000"..NO.."|r")
+			addLine(unbound, "|cffff0000"..NO.."|r")
 		end
 		if abilitiesonCD[236571] then--Shadowy Blades
-			addLine(touch, "|cFF088A08"..YES.."|r")
+			addLine(shadowy, "|cFF088A08"..YES.."|r")
 		else
-			addLine(touch, "|cffff0000"..NO.."|r")
+			addLine(shadowy, "|cffff0000"..NO.."|r")
 		end
 
 		return lines, sortedLines
