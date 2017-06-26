@@ -28,7 +28,7 @@ mod:RegisterEventsInCombat(
 --TODO, fine tune all option defaults once what targets or doesn't target x and y is known. Fight can't have too much timer/warning spam
 --TODO, announce lunar strike? more redundancy in encounter that isn't needed IMO
 --TODO, video fight and improve timer interactions to better deal with huge variation in stuff like moon glaive timer.
---TODO, both 54 timers were 58 on mythic, see if that's new consistency
+--TODO, all 3 54 second moon specials are confusing, since inactive bosses keep using them OFF of the moon cycles? Worse, normal/heroic aren't even same behavior, so it needs a crap ton of rules (or just leave it and say fuck it)
 --[[
 (ability.id = 236694 or ability.id = 236442 or ability.id = 239379 or ability.id = 236712) and type = "begincast" or
 (ability.id = 236480 or ability.id = 237561 or ability.id = 236547 or ability.id = 236518 or ability.id = 233263 or ability.id = 239264 or ability.id = 236672) and type = "cast" or
@@ -73,16 +73,16 @@ local specWarnLunarFireOther		= mod:NewSpecialWarningTaunt(239264, nil, nil, nil
 local specWarnMoonBurn				= mod:NewSpecialWarningMoveTo(236519, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.you:format(236519), nil, 1, 7)--Add voice filter when it has a voice
 
 --Huntress Kasparian
-local timerGlaiveStormCD			= mod:NewAITimer(31, 236480, nil, nil, nil, 3)
+local timerGlaiveStormCD			= mod:NewCDTimer(54.3, 236480, nil, nil, nil, 3)--Moon change special (but also used while inactive?)
 local timerTwilightGlaiveCD			= mod:NewCDTimer(31, 237561, nil, nil, nil, 3)
 local timerMoonGlaiveCD				= mod:NewCDTimer(13.4, 236547, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--13.4-30 second variation, have fun with that
 --Captain Yathae Moonstrike
-local timerIncorporealShotCD		= mod:NewCDTimer(54.7, 236305, nil, nil, nil, 3)
+local timerIncorporealShotCD		= mod:NewCDTimer(54.3, 236305, nil, nil, nil, 3)--Moon change special (but also used while inactive?)
 local timerCallMoontalonCD			= mod:NewCDTimer(31, 236694, nil, nil, nil, 1)
 local timerTwilightVolleyCD			= mod:NewCDTimer(15.8, 236442, nil, nil, nil, 2)--Cast while inactive.
 local timerRapidShotCD				= mod:NewCDTimer(18.2, 236596, nil, nil, nil, 3)--18.2 but sometimes 30
 --Priestess Lunaspyre
-local timerEmbraceofEclipseCD		= mod:NewCDTimer(54.3, 233264, nil, nil, nil, 5, nil, DBM_CORE_HEALER_ICON..DBM_CORE_DAMAGE_ICON)--Used while inactive
+local timerEmbraceofEclipseCD		= mod:NewCDTimer(54.3, 233264, nil, nil, nil, 5, nil, DBM_CORE_HEALER_ICON..DBM_CORE_DAMAGE_ICON)--Moon change special (but also used while inactive in phase 1)
 local timerLunarBeaconCD			= mod:NewCDTimer(31, 236712, nil, nil, nil, 3)
 local timerLunarFireCD				= mod:NewCDTimer(11, 239264, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerMoonBurnCD				= mod:NewCDTimer(23, 236519, nil, nil, nil, 3)--Used while inactive
@@ -356,7 +356,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		timerTwilightGlaiveCD:Start(6)
 		timerTwilightVolleyCD:Start(10.9)
 		timerRapidShotCD:Start(15.8)--Review
-		timerGlaiveStormCD:Start(2)--Unknown, didn't get this far
+		--timerGlaiveStormCD:Start(2)--One of specials, needs figuring out
 	elseif spellId == 243047 then--Lunaspyre Becomes Active Conversation (Phase 3)
 		self.vb.phase = 3
 		warnPhase3:Show()
