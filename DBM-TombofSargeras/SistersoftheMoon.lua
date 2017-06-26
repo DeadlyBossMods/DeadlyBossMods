@@ -38,7 +38,7 @@ mod:RegisterEventsInCombat(
 --local warnTwilightGlaive			= mod:NewTargetAnnounce(237561, 3)
 --Captain Yathae Moonstrike
 local warnPhase2					= mod:NewPhaseAnnounce(2, 2)
-local warnIncorporealShot			= mod:NewTargetAnnounce(236305, 3)
+--local warnIncorporealShot			= mod:NewTargetAnnounce(236305, 3)
 local warnRapidShot					= mod:NewTargetAnnounce(236596, 3)
 --Priestess Lunaspyre
 local warnPhase3					= mod:NewPhaseAnnounce(3, 2)
@@ -61,6 +61,7 @@ local specWarnTwilightVolley		= mod:NewSpecialWarningDodge(236442, nil, nil, nil
 local yellTwilightVolley			= mod:NewYell(236442)
 local specWarnIncorpShot			= mod:NewSpecialWarningMoveAway(236305, nil, nil, nil, 1, 2)
 local yellIncorpShot				= mod:NewYell(236305)
+local specWarnIncorpShotOther		= mod:NewSpecialWarningTarget(236305, nil, nil, nil, 1, 2)
 local specWarnRapidShot				= mod:NewSpecialWarningMoveAway(236596, nil, nil, nil, 1, 2)
 local yellRapidShot					= mod:NewYell(236596)
 --Priestess Lunaspyre
@@ -252,7 +253,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			voiceIncorpShot:Play("targetyou")
 			yellIncorpShot:Yell()
 		else
-			warnIncorporealShot:Show(args.destName)
+			specWarnIncorpShotOther:Show(args.destName)
+			voiceIncorpShot:Play("helpsoak")
 		end
 		if self.Options.SetIconOnIncorpShot then
 			self:SetIcon(args.destName, 1)
