@@ -183,23 +183,23 @@ do
 		--Fallen Avatar Cooldowns third
 		--addLine(L.Oncooldown, "")
 		if showTouchofSarg then
-			if abilitiesonCD[239207] then--Touch of Sargeras
+			if setabilityStatus[239207] then--Touch of Sargeras
 				addLine(touch, "|cFF088A08"..YES.."|r")
 			else
 				addLine(touch, "|cffff0000"..NO.."|r")
 			end
 		end
-		if abilitiesonCD[239132] then--Rupture Realities
+		if setabilityStatus[239132] then--Rupture Realities
 			addLine(rupture, "|cFF088A08"..YES.."|r")
 		else
 			addLine(rupture, "|cffff0000"..NO.."|r")
 		end
-		if abilitiesonCD[234059] then--Unbound Chaos
+		if setabilityStatus[234059] then--Unbound Chaos
 			addLine(unbound, "|cFF088A08"..YES.."|r")
 		else
 			addLine(unbound, "|cffff0000"..NO.."|r")
 		end
-		if abilitiesonCD[236571] then--Shadowy Blades
+		if setabilityStatus[236571] then--Shadowy Blades
 			addLine(shadowy, "|cFF088A08"..YES.."|r")
 		else
 			addLine(shadowy, "|cffff0000"..NO.."|r")
@@ -214,19 +214,19 @@ function mod:OnCombatStart(delay)
 	self.vb.phase = 1
 	self.vb.bladesIcon = 1
 	timerUnboundChaosCD:Start(7-delay)--7
-	self:Schedule(7, abilitiesonCD, self, 234059, 0)--Unbound Chaos
+	self:Schedule(7, setabilityStatus, self, 234059, 0)--Unbound Chaos
 	timerDesolateCD:Start(13-delay)--13
 	if not self:IsEasy() then
 		showTouchofSarg = true
 		timerTouchofSargerasCD:Start(14.9-delay)--15.5
-		self:Schedule(14.9, abilitiesonCD, self, 239207, 0)--Touch of Sargeras
+		self:Schedule(14.9, setabilityStatus, self, 239207, 0)--Touch of Sargeras
 	else
 		showTouchofSarg = false
 	end
 	timerShadowyBladesCD:Start(20.7-delay)
-	self:Schedule(20.7, abilitiesonCD, self, 236571, 0)--Shadowy Blades
+	self:Schedule(20.7, setabilityStatus, self, 236571, 0)--Shadowy Blades
 	timerRuptureRealitiesCD:Start(31-delay)--31-37
-	self:Schedule(31, abilitiesonCD, self, 239132, 0)--Ruptured Realities
+	self:Schedule(31, setabilityStatus, self, 239132, 0)--Ruptured Realities
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(OVERVIEW)
 		--DBM.InfoFrame:Show(2, "enemypower", 2)
@@ -249,9 +249,9 @@ function mod:SPELL_CAST_START(args)
 		specWarnTouchofSargerasGround:Show()
 		voiceTouchofSargerasGround:Play("helpsoak")
 		timerTouchofSargerasCD:Start()--42
-		self:Unschedule(abilitiesonCD, self, 239207)--Unschedule for good measure in case next cast start fires before timer expires (in which case have a bad timer)
-		abilitiesonCD(self, 239207, 1)--Set on Cooldown
-		self:Schedule(42, abilitiesonCD, self, 239207, 0)--Set ready to use when CD expires
+		self:Unschedule(setabilityStatus, self, 239207)--Unschedule for good measure in case next cast start fires before timer expires (in which case have a bad timer)
+		setabilityStatus(self, 239207, 1)--Set on Cooldown
+		self:Schedule(42, setabilityStatus, self, 239207, 0)--Set ready to use when CD expires
 	elseif spellId == 239132 or spellId == 235572 then
 		specWarnRuptureRealities:Show()
 		voiceRuptureRealities:Play("justrun")
@@ -260,9 +260,9 @@ function mod:SPELL_CAST_START(args)
 			countdownRuptureRealities:Start(37)
 		else
 			timerRuptureRealitiesCD:Start()--60
-			self:Unschedule(abilitiesonCD, self, 239132)--Unschedule for good measure in case next cast start fires before timer expires (in which case have a bad timer)
-			abilitiesonCD(self, 239132, 1)--Set on cooldown
-			self:Schedule(60, abilitiesonCD, self, 239132, 0)--Set ready to use when CD expires
+			self:Unschedule(setabilityStatus, self, 239132)--Unschedule for good measure in case next cast start fires before timer expires (in which case have a bad timer)
+			setabilityStatus(self, 239132, 1)--Set on cooldown
+			self:Schedule(60, setabilityStatus, self, 239132, 0)--Set ready to use when CD expires
 		end
 	elseif spellId == 233856 then
 		specWarnCleansingProtocol:Show()
@@ -274,7 +274,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 240623 and self:AntiSpam(2, 3) then
 		timerTaintedMatrixCD:Start(10)
 	elseif spellId == 235597 then
-		self:Unschedule(abilitiesonCD)--Unschedule all
+		self:Unschedule(setabilityStatus)--Unschedule all
 		self.vb.phase = 2
 		timerTouchofSargerasCD:Stop()
 		timerShadowyBladesCD:Stop()
@@ -424,22 +424,22 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
 	if spellId == 234057 then
 		timerUnboundChaosCD:Start()--35
-		self:Unschedule(abilitiesonCD, self, 234059)--Unschedule for good measure in case next cast start fires before timer expires (in which case have a bad timer)
-		abilitiesonCD(self, 234059, 1)--Set on cooldown
-		self:Schedule(35, abilitiesonCD, self, 234059, 0)--Set ready to use when CD expires
+		self:Unschedule(setabilityStatus, self, 234059)--Unschedule for good measure in case next cast start fires before timer expires (in which case have a bad timer)
+		setabilityStatus(self, 234059, 1)--Set on cooldown
+		self:Schedule(35, setabilityStatus, self, 234059, 0)--Set ready to use when CD expires
 	elseif spellId == 239739 or spellId == 239825 then
 		table.wipe(darkMarkTargets)
 		timerDarkMarkCD:Start()
 	elseif spellId == 236571 or spellId == 236573 then--Shadow Blades
 		self.vb.bladesIcon = 1--SHOULD always fire first
-		self:Unschedule(abilitiesonCD, self, 236571)--Unschedule for good measure in case next cast start fires before timer expires (in which case have a bad timer)
-		abilitiesonCD(self, 236571, 1)--Set on cooldown
+		self:Unschedule(setabilityStatus, self, 236571)--Unschedule for good measure in case next cast start fires before timer expires (in which case have a bad timer)
+		setabilityStatus(self, 236571, 1)--Set on cooldown
 		if self:IsEasy() then
 			timerShadowyBladesCD:Start(34)
-			self:Schedule(34, abilitiesonCD, self, 236571, 0)--Set ready to use when CD expires
+			self:Schedule(34, setabilityStatus, self, 236571, 0)--Set ready to use when CD expires
 		else
 			timerShadowyBladesCD:Start(30)
-			self:Schedule(30, abilitiesonCD, self, 236571, 0)--Set ready to use when CD expires
+			self:Schedule(30, setabilityStatus, self, 236571, 0)--Set ready to use when CD expires
 		end
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(10, nil, nil, nil, nil, 5)
