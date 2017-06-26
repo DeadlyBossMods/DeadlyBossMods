@@ -15,11 +15,9 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 235271 241635 241636 235267",
 	"SPELL_CAST_SUCCESS 239153 237722",
 	"SPELL_AURA_APPLIED 235240 235213 235117 240209 235028 236061 234891",
---	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 235240 235213 235117 240209 235028 234891",
---	"SPELL_PERIODIC_DAMAGE",
---	"SPELL_PERIODIC_MISSED",
---	"CHAT_MSG_RAID_BOSS_EMOTE",
+	"SPELL_PERIODIC_DAMAGE 238408 238028",
+	"SPELL_PERIODIC_MISSED 238408 238028",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
@@ -49,6 +47,7 @@ local specWarnUnstableSoul			= mod:NewSpecialWarningMoveTo(235117, nil, nil, nil
 local yellUnstableSoul				= mod:NewFadesYell(235117)--While learning the fight this will be spammy, but also nessesary
 local specWarnLightHammer			= mod:NewSpecialWarningCount(241635, nil, nil, nil, 2, 2)
 local specWarnFelhammer				= mod:NewSpecialWarningCount(241636, nil, nil, nil, 2, 2)
+local specWarnGTFO					= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
 --Stage Two
 local specWarnWrathofCreators		= mod:NewSpecialWarningInterrupt(234891, "HasInterrupt", nil, nil, 1, 2)
 
@@ -73,6 +72,7 @@ local voiceInfusion					= mod:NewVoice(235271)--scatter
 local voiceFelInfusion				= mod:NewVoice(235240)--felinfusion
 local voiceLightInfusion			= mod:NewVoice(235213)--lightinfusion
 local voiceUnsableSoul				= mod:NewVoice(235117)--jumpinpit
+local voiceGTFO						= mod:NewVoice(238028, nil, DBM_CORE_AUTO_VOICE4_OPTION_TEXT)--runaway
 --Stage Two
 local voiceWrathofCreators			= mod:NewVoice(234891, "HasInterrupt")--kickcast
 
@@ -277,25 +277,10 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
---[[
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
-	if spellId == 228007 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
---		specWarnDancingBlade:Show()
---		voiceDancingBlade:Play("runaway")
+	if (spellId == 238408 or spellId == 238028) and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
+		specWarnGTFO:Show()
+		voiceGTFO:Play("runaway")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
-
-function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
-	if msg:find("spell:228162") then
-
-	end
-end
-
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
-	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
-	if spellId == 227503 then
-
-	end
-end
---]]
