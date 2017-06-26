@@ -183,23 +183,23 @@ do
 		--Fallen Avatar Cooldowns third
 		--addLine(L.Oncooldown, "")
 		if showTouchofSarg then
-			if setabilityStatus[239207] then--Touch of Sargeras
+			if abilitiesonCD[239207] then--Touch of Sargeras
 				addLine(touch, "|cFF088A08"..YES.."|r")
 			else
 				addLine(touch, "|cffff0000"..NO.."|r")
 			end
 		end
-		if setabilityStatus[239132] then--Rupture Realities
+		if abilitiesonCD[239132] then--Rupture Realities
 			addLine(rupture, "|cFF088A08"..YES.."|r")
 		else
 			addLine(rupture, "|cffff0000"..NO.."|r")
 		end
-		if setabilityStatus[234059] then--Unbound Chaos
+		if abilitiesonCD[234059] then--Unbound Chaos
 			addLine(unbound, "|cFF088A08"..YES.."|r")
 		else
 			addLine(unbound, "|cffff0000"..NO.."|r")
 		end
-		if setabilityStatus[236571] then--Shadowy Blades
+		if abilitiesonCD[236571] then--Shadowy Blades
 			addLine(shadowy, "|cFF088A08"..YES.."|r")
 		else
 			addLine(shadowy, "|cffff0000"..NO.."|r")
