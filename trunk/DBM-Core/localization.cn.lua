@@ -2,7 +2,7 @@
 -- Diablohu(diablohudream@gmail.com)
 -- yleaf(yaroot@gmail.com)
 -- Mini Dragon(projecteurs@gmail.com)
--- Last update: 2017/06/14
+-- Last update: 2017/06/27
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -25,11 +25,11 @@ DBM_CORE_LOAD_MOD_VER_MISMATCH		= "%s 模块无法被载入。 DBM核心版本�
 DBM_CORE_LOAD_MOD_DISABLED			= "%s 模块已安装但被禁用。该模块不会被载入除非启用它。"
 DBM_CORE_LOAD_MOD_DISABLED_PLURAL	= "%s 模块已安装但被禁用。这些模块不会被载入除非启用它们。"
 
-DBM_CORE_WHATS_NEW					= "为了提高更新速度，守望先锋及风暴英雄已经从主模块中移除。请单独下载 DBM-CountPack-Overwatch & DBM-CountPack-HoTS。"
+DBM_CORE_WHATS_NEW					= "为了提高更新速度，守望先锋及风暴英雄倒计时音效已经从主模块中移除。请单独下载 DBM-CountPack-Overwatch & DBM-CountPack-HoTS。"
 DBM_CORE_WHATS_NEW_LINK				= "建议配合语音包使用。 |HDBM:forumsnews|h|cff3588ff点击这里|r 获取更多信息。"
 
 --Post Patch 7.1
-DBM_CORE_NO_RANGE					= "距离雷达在副本中无法使用"
+DBM_CORE_NO_RANGE					= "距离雷达在副本中无法使用，该功能会使用文本代替"
 DBM_CORE_NO_ARROW					= "箭头在副本中无法使用"
 DBM_CORE_NO_HUD						= "HUDMap 在副本中无法使用"
 
@@ -237,7 +237,8 @@ DBM_CORE_SLASHCMD_HELP2				= {
 	"/dbm version: 进行团队范围的DBM版本检测(也可使用: ver)",
 	"/dbm version2: 进行团队范围的DBM版本检测并密语那些过期版本用户(也可使用: ver2)",
 	"/dbm lockout: 查询团队成员当前的副本锁定状态(副本CD)(也可使用: lockouts, ids)(需要队长或助理权限)。",
-	"/dbm lag: 检测全团网络延时"
+	"/dbm lag: 检测全团网络延时",
+	"/dbm durability: 检测全团装备耐久度"
 }
 DBM_CORE_TIMER_USAGE	= {
 	"DBM计时器可用命令:",
@@ -268,6 +269,7 @@ DBM_CHEST							= "奖励宝箱"
 DBM_NO_DEBUFF						= "没有%s"
 DBM_ALLY							= "队友"--Such as "Move to Ally"
 DBM_ADDS							= "小怪"--Such as "Move to Ally"
+DBM_CORE_ROOM_EDGE					= "房间边缘"
 
 DBM_CORE_BREAK_USAGE				= "休息时间不能超过60分钟。请确保你输入的是分钟而不是秒。"
 DBM_CORE_BREAK_START				= "开始休息 - %s分钟！（由 %s 发送）"
@@ -489,6 +491,10 @@ DBM_SPEED_KILL_TIMER_TEXT	= "击杀记录"
 DBM_SPEED_CLEAR_TIMER_TEXT	= "最速清除"
 DBM_COMBAT_RES_TIMER_TEXT	= "下一次可用战复"
 DBM_CORE_TIMER_RESPAWN		= "%s 刷新"
+
+DBM_CORE_DUR_CHECKING				= "全团装备耐久度检测请稍后..."
+DBM_CORE_DUR_HEADER					= "DBM - 装备耐久度检测结果"
+DBM_CORE_DUR_ENTRY					= "%s: %d 耐久度 / %s件装备损坏"
 
 DBM_REQ_INSTANCE_ID_PERMISSION		= "%s请求获取你现在副本的存档ID与进度。是否愿意向&s提交进度？\n\n注意：在接受后，他可以随时查看您当前的进度情况，直到您下线、掉线或重载用户界面。"
 DBM_ERROR_NO_RAID					= "使用该功能需要身处一个团队中。"
