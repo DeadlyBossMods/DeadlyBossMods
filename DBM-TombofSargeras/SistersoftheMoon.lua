@@ -24,9 +24,7 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3"
 )
 
---TODO, figure out which of the MANY scripts are for glaive storm
 --TODO, figure out how to actually pre warn moon glaive and give it a warning.
---TODO, is there even a point to Shadow shot?
 --TODO, fine tune all option defaults once what targets or doesn't target x and y is known. Fight can't have too much timer/warning spam
 --TODO, announce lunar strike? more redundancy in encounter that isn't needed IMO
 --TODO, video fight and improve timer interactions to better deal with huge variation in stuff like moon glaive timer.
@@ -66,7 +64,7 @@ local yellIncorpShot				= mod:NewYell(236305)
 local specWarnRapidShot				= mod:NewSpecialWarningMoveAway(236596, nil, nil, nil, 1, 2)
 local yellRapidShot					= mod:NewYell(236596)
 --Priestess Lunaspyre
-local specWarnEmbraceofEclipse		= mod:NewSpecialWarningTarget(233264, "Dps|Healer", nil, nil, 3, 2)
+local specWarnEmbraceofEclipse		= mod:NewSpecialWarningTarget(233264, "Dps|Healer", nil, nil, 3)
 local specWarnLunarBeacon			= mod:NewSpecialWarningMoveAway(236712, nil, nil, nil, 1, 2)
 local yellLunarBeacon				= mod:NewFadesYell(236712)
 local specWarnLunarFire				= mod:NewSpecialWarningStack(239264, nil, 4, nil, nil, 1, 2)
@@ -105,7 +103,7 @@ local voiceTwilightVolley			= mod:NewVoice(236442)--watchstep
 local voiceIncorpShot				= mod:NewVoice(236305)--targetyou
 local voiceRapidShot				= mod:NewVoice(236596)--runout
 --Priestess Lunaspyre
-local voiceEmbraceofEclipse			= mod:NewVoice(233264, "Dps|Healer")--targetchange/healall
+local voiceEmbraceofEclipse			= mod:NewVoice(233264, "Dps|Healer")--none/healall
 local voiceLunarBeacon				= mod:NewVoice(236712)--runout
 local voiceLunarFire				= mod:NewVoice(239264)--tauntboss/stackhigh
 local voiceMoonBurn					= mod:NewVoice(236519)--changemoon
@@ -263,7 +261,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.eclipseCount = self.vb.eclipseCount + 1
 		if not self:IsHealer() then
 			specWarnEmbraceofEclipse:Show(args.destName)
-			voiceEmbraceofEclipse:Play("targetchange")
+			--voiceEmbraceofEclipse:Play("targetchange")
 		end
 		if self.Options.InfoFrame and not DBM.InfoFrame:IsShown() then
 			DBM.InfoFrame:SetHeader(args.spellName)
