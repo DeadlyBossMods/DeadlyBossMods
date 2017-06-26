@@ -97,7 +97,7 @@ local voiceShadowyBlades			= mod:NewVoice(236571)--scatter
 local voiceLingeringDarkness		= mod:NewVoice(239212)--runaway
 local voiceDesolate					= mod:NewVoice(236494, "Tank")--stackhigh/tauntboss
 ----Maiden of Valor
-local voiceCorruptedMatrix			= mod:NewVoice(233556, "Tank")--bossout (TEMP. bosstobeam when added)
+local voiceCorruptedMatrix			= mod:NewVoice(233556, "Tank")--bosstobeam
 local voiceCleansingProtocol		= mod:NewVoice(233856, "-Healer")--targetchange
 local voiceTaintedEssence			= mod:NewVoice(240728)--stackhigh
 --Stage Two: An Avatar Awakened
