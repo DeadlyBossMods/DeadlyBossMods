@@ -15,8 +15,8 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 239207 239132 235572 233856 233556 240623 235597",
 	"SPELL_CAST_SUCCESS 239132 236494",
-	"SPELL_AURA_APPLIED 234059 236494 240728 239739",
-	"SPELL_AURA_APPLIED_DOSE 236494 240728",
+	"SPELL_AURA_APPLIED 234059 236494 240728 239739 241008",
+	"SPELL_AURA_APPLIED_DOSE 236494 240728 241008",
 	"SPELL_AURA_REMOVED 239739",
 	"SPELL_PERIODIC_DAMAGE 239212",
 	"SPELL_PERIODIC_MISSED 239212",
@@ -42,8 +42,9 @@ mod:RegisterEventsInCombat(
 local warnUnboundChaos				= mod:NewTargetAnnounce(234059, 3, nil, false, 2)
 local warnShadowyBlades				= mod:NewTargetAnnounce(236571, 3)
 local warnDesolate					= mod:NewStackAnnounce(236494, 3, nil, "Healer|Tank")
-local warnPhase2					= mod:NewPhaseAnnounce(2, 2)
+local warnCleansingEnded			= mod:NewEndAnnounce(241008, 1)
 --Stage Two: An Avatar Awakened
+local warnPhase2					= mod:NewPhaseAnnounce(2, 2)
 local warnDarkmark					= mod:NewTargetAnnounce(239739, 3)
 --local warnBlackWinds				= mod:NewSpellAnnounce(239418, 2)
 
@@ -117,6 +118,7 @@ local abilitiesonCD = {
 
 mod.vb.phase = 1
 mod.vb.bladesIcon = 1
+mod.vb.shieldActive = false
 local darkMarkTargets = {}
 local playerName = UnitName("player")
 local beamName = GetSpellInfo(238244)
@@ -152,7 +154,7 @@ end
 
 local updateInfoFrame
 do
-	local touch, rupture, unbound, shadowy = GetSpellInfo(239207), GetSpellInfo(239132), GetSpellInfo(234059), GetSpellInfo(236571)
+	local touch, rupture, unbound, shadowy, shieldName = GetSpellInfo(239207), GetSpellInfo(239132), GetSpellInfo(234059), GetSpellInfo(236571), GetSpellInfo(241008)
 	local lines = {}
 	local sortedLines = {}
 	local function addLine(key, value)
@@ -163,15 +165,22 @@ do
 	updateInfoFrame = function()
 		table.wipe(lines)
 		table.wipe(sortedLines)
-		--Boss Powers first
+		--Maiden shield amount i active first
+		if mod.vb.shieldActive then
+			local absorbAmount = select(17, UnitBuff("boss2", shieldName)) or select(17, UnitDebuff("boss2", shieldName))
+			if absorbAmount then
+				addLine(shieldName, absorbAmount)
+			end
+		end
+		--Boss Powers second
 		for i = 1, 2 do
 			local uId = "boss"..i
 			if UnitExists(uId) then
 				local currentPower = UnitPower(uId) or 0
-				lines[UnitName(uId)] = currentPower
+				addLine(UnitName(uId), currentPower)
 			end
 		end
-		--Fallen Avatar Cooldowns second
+		--Fallen Avatar Cooldowns third
 		--addLine(L.Oncooldown, "")
 		if showTouchofSarg then
 			if abilitiesonCD[239207] then--Touch of Sargeras
@@ -219,9 +228,9 @@ function mod:OnCombatStart(delay)
 	timerRuptureRealitiesCD:Start(31-delay)--31-37
 	self:Schedule(31, abilitiesonCD, self, 239132, 0)--Ruptured Realities
 	if self.Options.InfoFrame then
-		DBM.InfoFrame:SetHeader(POWER_TYPE_POWER)
+		DBM.InfoFrame:SetHeader(OVERVIEW)
 		--DBM.InfoFrame:Show(2, "enemypower", 2)
-		DBM.InfoFrame:Show(6, "function", updateInfoFrame, false, false)
+		DBM.InfoFrame:Show(7, "function", updateInfoFrame, false, false)
 	end
 end
 
@@ -348,6 +357,8 @@ function mod:SPELL_AURA_APPLIED(args)
 				voiceTaintedEssence:Play("stackhigh")
 			end
 		end
+	elseif spellId == 241008 then--Cleansing Protocol Shield
+		self.vb.shieldActive = true
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -361,6 +372,9 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.SetIconOnDarkMark then
 			self:SetIcon(args.destName, 0)
 		end
+	elseif spellId == 241008 then--Cleansing Protocol Shield
+		self.vb.shieldActive = false
+		warnCleansingEnded:Show()
 	end
 end
 
