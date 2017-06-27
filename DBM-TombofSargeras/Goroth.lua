@@ -92,12 +92,15 @@ function mod:OnCombatStart(delay)
 	timerInfernalSpikeCD:Start(4-delay)
 	timerCrashingCometCD:Start(8.5-delay)
 	timerBurningArmorCD:Start(10.5-delay)
-	timerShatteringStarCD:Start(24-delay, 1)--34 on mythic testing
-	countdownShatteringStar:Start(24-delay)--34 on mythic testing
 	timerInfernalBurningCD:Start(54-delay)
 	if self:IsMythic() then
 		self.vb.brimstoneCount = 0
 		timerRainofBrimstoneCD:Start(14-delay, 1)
+		timerShatteringStarCD:Start(34-delay, 1)
+		countdownShatteringStar:Start(34-delay)
+	else
+		timerShatteringStarCD:Start(24-delay, 1)
+		countdownShatteringStar:Start(24-delay)
 	end
 end
 
