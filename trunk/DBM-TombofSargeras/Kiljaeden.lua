@@ -15,7 +15,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 237725 238999 243982 240910 241983 239932",
 	"SPELL_CAST_SUCCESS 236378 236710 237590 236498 238502 238430 238999",
-	"SPELL_AURA_APPLIED 239932 236378 236710 237590 236498 236597 241721",
+	"SPELL_AURA_APPLIED 239932 236378 236710 237590 236498 236597 241721 245509",
 	"SPELL_AURA_APPLIED_DOSE 245509",
 	"SPELL_AURA_REMOVED 236378 236710 237590 236498 241721 239932 241983",
 --	"SPELL_PERIODIC_DAMAGE",
@@ -403,7 +403,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 241721 and args:IsPlayer() then
 		timerSightlessGaze:Stop()
 	elseif spellId == 239932 then--Felclaws ended
-		if not self.vb.lastTankHit == playerName then
+		if self.vb.lastTankHit ~= playerName then
 			specWarnFelclawsOther:Show(self.vb.lastTankHit)
 			voiceFelclaws:Play("tauntboss")
 		end
