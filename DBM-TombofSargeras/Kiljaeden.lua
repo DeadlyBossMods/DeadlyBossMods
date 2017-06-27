@@ -70,7 +70,7 @@ local specWarnBurstingDreadflame	= mod:NewSpecialWarningMoveAway(238430, nil, ni
 local yellBurstingDreadflame		= mod:NewYell(238430)
 --Stage Two: Reflected Souls
 local specWarnSRHopeless			= mod:NewSpecialWarningYou(237590, nil, nil, nil, 1, 2)
-local yellSRHopeless				= mod:NewFadesYell(237590)
+local yellSRHopeless				= mod:NewFadesYell(237590, 237724)
 local specWarnSRMalignant			= mod:NewSpecialWarningYou(236498, nil, nil, nil, 1, 2)
 local yellSRMalignant				= mod:NewFadesYell(236498)
 local specWarnMalignantAnguish		= mod:NewSpecialWarningInterrupt(236597, "HasInterrupt")
