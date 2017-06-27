@@ -96,7 +96,7 @@ local timerSightlessGaze			= mod:NewBuffActiveTimer(20, 241721, nil, nil, nil, 5
 --Stage Three: Darkness of A Thousand Souls
 local timerDarknessofSoulsCD		= mod:NewCDTimer(90, 238999, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
 local timerTearRiftCD				= mod:NewCDTimer(95, 243982, nil, nil, nil, 3)
-local timerFlamingOrbCD				= mod:NewAITimer(31, 239253, nil, nil, nil, 3)
+local timerFlamingOrbCD				= mod:NewCDTimer(30, 239253, nil, nil, nil, 3)
 
 --local berserkTimer				= mod:NewBerserkTimer(300)
 
@@ -418,10 +418,10 @@ function mod:SPELL_AURA_REMOVED(args)
 		--timerDarknessofSoulsCD:Start(1)--Cast intantly
 		warnPhase3:Show()
 		timerTearRiftCD:Start(14)
+		timerFlamingOrbCD:Start(30)
 		timerBurstingDreadflameCD:Start(44, 1)--Review on Heroic
 		timerFocusedDreadflameCD:Start(80, 1)
 		countdownFocusedDread:Start(80)
-		timerFlamingOrbCD:Start(1)
 	end
 end
 
