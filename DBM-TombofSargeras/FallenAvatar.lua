@@ -334,20 +334,20 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 236494 then
 		local amount = args.amount or 1
-		if args:IsPlayer() then
-			if amount >= 2 then
+		if amount >= 2 then
+			if args:IsPlayer() then
 				specWarnDesolateYou:Show(amount)
 				voiceDesolate:Play("stackhigh")
 			else
-				warnDesolate:Show(args.destName, amount)
+				if not UnitIsDeadOrGhost("player") and not UnitDebuff("player", args.spellName) then
+					specWarnDesolateOther:Show(args.destName)
+					voiceDesolate:Play("tauntboss")
+				else
+					warnDesolate:Show(args.destName, amount)
+				end
 			end
 		else
-			if not UnitIsDeadOrGhost("player") and not UnitDebuff("player", args.spellName) then
-				specWarnDesolateOther:Show(args.destName)
-				voiceDesolate:Play("tauntboss")
-			else
-				warnDesolate:Show(args.destName, amount)
-			end
+			warnDesolate:Show(args.destName, amount)
 		end
 	elseif spellId == 240728 then
 		if args:IsPlayer() then
