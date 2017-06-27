@@ -234,6 +234,9 @@ function mod:SPELL_CAST_START(args)
 				timerArmageddonCD:Start(timer, self.vb.armageddonCast+1)
 				countdownArmageddon:Start(timer)
 			end
+		else--Phase 1
+			timerArmageddonCD:Start(64, self.vb.armageddonCast+1)
+			countdownArmageddon:Start(64)
 		end
 	elseif spellId == 239932 then
 		timerFelclawsCD:Start()
