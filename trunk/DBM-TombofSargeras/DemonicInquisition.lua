@@ -55,8 +55,8 @@ local yellEchoingAnguish			= mod:NewYell(233983)
 local specWarnFelSquallMelee		= mod:NewSpecialWarningRun(235230, "Melee", nil, 2, 4, 2)
 local specWarnFelSquallEveryoneElse	= mod:NewSpecialWarningReflect(235230, "-Melee", nil, nil, 1, 2)
 local specWarnTormentingBurst		= mod:NewSpecialWarningCount(234015, nil, nil, nil, 2, 2)
-local specWarnPrison				= mod:NewSpecialWarningYou(236283, nil, nil, nil, 1, 7)
-local specWarnPrisonTank			= mod:NewSpecialWarningTaunt(236283, nil, nil, nil, 1, 2)
+local specWarnPrison				= mod:NewSpecialWarningYou(236283, nil, nil, nil, 1)
+--local specWarnPrisonTank			= mod:NewSpecialWarningTaunt(236283, nil, nil, nil, 1, 2)
 --Phase
 local specWarnSoulCorruption		= mod:NewSpecialWarningStack(248713, nil, 10, nil, nil, 1, 6)--stack guessed
 local specWarnTorment				= mod:NewSpecialWarningStack(233104, nil, 75, nil, nil, 1, 6)
@@ -87,7 +87,7 @@ local voicePangsofGuilt				= mod:NewVoice(239401, "HasInterrupt")--kickcast
 local voiceEchoingAnguish			= mod:NewVoice(233983)--runout
 local voiceFelSquall				= mod:NewVoice(235230)--runout/stopattack
 local voiceTormentingBurst			= mod:NewVoice(234015)--aesoon
-local voicePrison					= mod:NewVoice(236283)--switchphase
+--local voicePrison					= mod:NewVoice(236283)--switchphase
 --Phase
 local voiceSoulCorruption			= mod:NewVoice(248713)--stackhigh
 local voiceTorment					= mod:NewVoice(233104)--stackhigh
@@ -267,13 +267,13 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 236283 then
 		if args:IsPlayer() then
 			specWarnPrison:Show()
-			voicePrison:Play("switchphase")
+			--voicePrison:Play("switchphase")
 		else
-			local uId = DBM:GetRaidUnitId(args.destName)
+			--[[local uId = DBM:GetRaidUnitId(args.destName)
 			if uId and self:IsTanking(uId) and not UnitDebuff("player", args.spellName) then
 				specWarnPrisonTank:Show(args.destName)
 				voicePrison:Play("tauntboss")
-			end
+			end--]]
 		end
 	end
 end
