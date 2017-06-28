@@ -178,8 +178,9 @@ function mod:SPELL_CAST_START(args)
 			specWarnBurdenofPain:Show()
 			voiceBurdenofPain:Play("defensive")
 		else
-			if self:AntiSpam(5, args.destName) then
-				specWarnBurdenofPainTaunt:Show(args.destName)
+			local targetName = UnitName("boss1target") or DBM_CORE_UNKNOWN
+			if self:AntiSpam(5, targetName) then
+				specWarnBurdenofPainTaunt:Show(targetName)
 				voiceBurdenofPain:Play("tauntboss")
 			end
 		end

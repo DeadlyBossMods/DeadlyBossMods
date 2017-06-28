@@ -254,12 +254,12 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif spellId == 235028 then--Bulwark Removed
 		specWarnWrathofCreators:Show(args.destName)
+		voiceWrathofCreators:Play("kickcast")
 	elseif spellId == 234891 then--Wrath Interrupted
 		self.vb.shieldActive = false
 		self.vb.hammerCount = 0
 		self.vb.infusionCount = 0
 		self.vb.massShitCount = 0
-		voiceWrathofCreators:Play("kickcast")
 		timerInfusionCD:Start(2, 1)
 		timerLightHammerCD:Start(14, 1)
 		countdownLightHammer:Start(14)

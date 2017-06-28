@@ -29,6 +29,7 @@ mod:RegisterEventsInCombat(
 --TODO, announce lunar strike? more redundancy in encounter that isn't needed IMO
 --TODO, video fight and improve timer interactions to better deal with huge variation in stuff like moon glaive timer.
 --TODO, all 3 54 second moon specials are confusing, since inactive bosses keep using them OFF of the moon cycles? Worse, normal/heroic aren't even same behavior, so it needs a crap ton of rules (or just leave it and say fuck it)
+--TODO, moontalon still wonky, ["236694-Call Moontalon"] = "pull:57.2, 7.3, 57.3", ["236694-Call Moontalon"] = "pull:58.6, 62.0",
 --[[
 (ability.id = 236694 or ability.id = 236442 or ability.id = 239379 or ability.id = 236712) and type = "begincast" or
 (ability.id = 236480 or ability.id = 237561 or ability.id = 236547 or ability.id = 236518 or ability.id = 233263 or ability.id = 239264 or ability.id = 236672) and type = "cast" or
