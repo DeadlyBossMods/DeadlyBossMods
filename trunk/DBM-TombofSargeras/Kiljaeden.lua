@@ -101,7 +101,7 @@ local timerDarknessofSoulsCD		= mod:NewCDCountTimer(90, 238999, nil, nil, nil, 2
 local timerTearRiftCD				= mod:NewCDCountTimer(95, 243982, nil, nil, nil, 3)
 local timerFlamingOrbCD				= mod:NewCDCountTimer(30, 239253, nil, nil, nil, 3)
 
---local berserkTimer				= mod:NewBerserkTimer(300)
+local berserkTimer					= mod:NewBerserkTimer(600)
 
 --Stage One: The Betrayer
 local countdownSingularity			= mod:NewCountdown(50, 235059, nil, nil, 5)
@@ -206,6 +206,7 @@ function mod:OnCombatStart(delay)
 	countdownFelclaws:Start(25-delay)
 	timerRupturingSingularityCD:Start(58-delay, 1)
 	--countdownSingularity:Start(58)
+	berserkTimer:Start(600-delay)
 end
 
 function mod:OnCombatEnd()
