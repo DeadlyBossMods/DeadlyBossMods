@@ -9166,6 +9166,10 @@ do
 	function bossModPrototype:NewYell(...)
 		return newYell(self, "yell", ...)
 	end
+	
+	function bossModPrototype:NewShortYell(...)
+		return newYell(self, "shortyell", ...)
+	end
 
 	function bossModPrototype:NewCountYell(...)
 		return newYell(self, "count", ...)
@@ -9173,6 +9177,10 @@ do
 
 	function bossModPrototype:NewFadesYell(...)
 		return newYell(self, "fade", ...)
+	end
+	
+	function bossModPrototype:NewShortFadesYell(...)
+		return newYell(self, "shortfade", ...)
 	end
 	
 	function bossModPrototype:NewPosYell(...)

@@ -59,7 +59,7 @@ local specWarnDrenchingWaters		= mod:NewSpecialWarningMove(231768, nil, nil, nil
 local specWarnCommandingroar		= mod:NewSpecialWarningSwitch(232192, "-Healer", nil, nil, 1, 2)
 --Razorjaw Wavemender
 local specWarnAqueousBurst			= mod:NewSpecialWarningMoveAway(231729, nil, nil, nil, 1, 2)
-local yellAqueousBurst				= mod:NewYell(231729)
+local yellAqueousBurst				= mod:NewShortYell(231729)
 local specWarnTendWounds			= mod:NewSpecialWarningInterrupt(231904, "HasInterrupt")
 local specWarnTendWoundsDispel		= mod:NewSpecialWarningDispel(231904, "MagicDispeller")
 --Razorjaw Gladiator

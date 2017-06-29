@@ -44,7 +44,7 @@ local specWarnInfusion				= mod:NewSpecialWarningSpell(235271, nil, nil, nil, 2,
 local specWarnFelInfusion			= mod:NewSpecialWarningYou(235240, nil, nil, nil, 1, 7)
 local specWarnLightInfusion			= mod:NewSpecialWarningYou(235213, nil, nil, nil, 1, 7)
 local specWarnUnstableSoul			= mod:NewSpecialWarningMoveTo(235117, nil, nil, nil, 3, 7)
-local yellUnstableSoul				= mod:NewFadesYell(235117)--While learning the fight this will be spammy, but also nessesary
+local yellUnstableSoul				= mod:NewShortFadesYell(235117)--While learning the fight this will be spammy, but also nessesary
 local specWarnLightHammer			= mod:NewSpecialWarningCount(241635, nil, nil, nil, 2, 2)
 local specWarnFelhammer				= mod:NewSpecialWarningCount(241636, nil, nil, nil, 2, 2)
 local specWarnGTFO					= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
@@ -60,7 +60,7 @@ local timerBlowbackCD				= mod:NewNextTimer(81.1, 237722, nil, nil, nil, 6)--81-
 --Mythic
 local timerSpontFragmentationCD		= mod:NewNextTimer(8, 239153, nil, nil, nil, 5, nil, DBM_CORE_HEROIC_ICON)
 
-local berserkTimer				= mod:NewBerserkTimer(480)
+local berserkTimer					= mod:NewBerserkTimer(480)
 
 --Stage One: Divide and Conquer
 local countdownInfusion				= mod:NewCountdown("AltTwo", 235271)
