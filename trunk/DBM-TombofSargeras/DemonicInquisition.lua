@@ -68,9 +68,9 @@ local timerCalcifiedQuillsCD		= mod:NewCDTimer(20.2, 233431, nil, nil, nil, 3)--
 local timerBoneSawCD				= mod:NewCDTimer(45.4, 233441, nil, nil, nil, 2)
 local timerBoneSaw					= mod:NewBuffActiveTimer(15, 233441, nil, nil, nil, 2)
 --Belac
---local timerEchoingAnguishCD		= mod:NewAITimer(31, 233983, nil, nil, nil, 3, nil, DBM_CORE_MAGIC_ICON)
---local timerSuffocatingDarkCD		= mod:NewAITimer(30, 233894, nil, nil, nil, 3)
---local timerTormentingBurstCD		= mod:NewAITimer(31, 234015, nil, nil, nil, 2)
+local timerEchoingAnguishCD			= mod:NewCDTimer(25.5, 233983, nil, nil, nil, 3, nil, DBM_CORE_MAGIC_ICON)
+local timerSuffocatingDarkCD		= mod:NewCDTimer(26.8, 233894, nil, nil, nil, 3)
+local timerTormentingBurstCD		= mod:NewCDCountTimer(17.0, 234015, nil, nil, nil, 2)
 local timerFelSquallCD				= mod:NewCDTimer(45.7, 235230, nil, nil, nil, 2)
 local timerFelSquall				= mod:NewBuffActiveTimer(15, 235230, nil, nil, nil, 2)
 
@@ -105,9 +105,8 @@ mod.vb.scytheCount = 0
 mod.vb.pangCount = 0
 mod.vb.anguishIcon = 2
 
-local function updateAllTimers(self, ICD, ignoreBoneSaw)
---	if not DBM.Options.DebugMode then return end
-	DBM:Debug("updateAllTimers running", 3)
+local function updateAllAtriganTimers(self, ICD, ignoreBoneSaw)
+	DBM:Debug("updateAllAtriganTimers running", 3)
 	if timerScytheSweepCD:GetRemaining() < ICD then--4
 		local elapsed, total = timerScytheSweepCD:GetTime()
 		local extend = ICD - (total-elapsed)
@@ -130,6 +129,41 @@ local function updateAllTimers(self, ICD, ignoreBoneSaw)
 		timerBoneSawCD:Update(elapsed, total+extend)
 		countdownBoneSaw:Cancel()
 		countdownBoneSaw:Start(ICD)
+	end
+end
+
+local function updateAllBelacTimers(self, ICD, ignoreFelSquall)
+	DBM:Debug("updateAllBelacTimers running", 3)
+	local anguishRemaining = timerEchoingAnguishCD:GetRemaining()
+	if anguishRemaining ~= 0 and anguishRemaining < ICD then--2 (Cast START)
+		local elapsed, total = timerEchoingAnguishCD:GetTime()
+		local extend = ICD - (total-elapsed)
+		DBM:Debug("timerEchoingAnguishCD extended by: "..extend, 2)
+		timerEchoingAnguishCD:Stop()
+		timerEchoingAnguishCD:Update(elapsed, total+extend)
+	end
+	local suffocatingRemaining = timerSuffocatingDarkCD:GetRemaining()
+	if suffocatingRemaining ~= 0 and suffocatingRemaining < ICD then--No extend if dark is the cast
+		local elapsed, total = timerSuffocatingDarkCD:GetTime()
+		local extend = ICD - (total-elapsed)
+		DBM:Debug("timerSuffocatingDarkCD extended by: "..extend, 2)
+		timerSuffocatingDarkCD:Stop()
+		timerSuffocatingDarkCD:Update(elapsed, total+extend)
+	end
+	local tormentingRemaining = timerTormentingBurstCD:GetRemaining()
+	if tormentingRemaining ~= 0 and tormentingRemaining < ICD then--2 (Cast Start)
+		local elapsed, total = timerTormentingBurstCD:GetTime()
+		local extend = ICD - (total-elapsed)
+		DBM:Debug("timerTormentingBurstCD extended by: "..extend, 2)
+		timerTormentingBurstCD:Stop()
+		timerTormentingBurstCD:Update(elapsed, total+extend)
+	end
+	if not ignoreFelSquall and timerFelSquallCD:GetRemaining() < ICD then--16
+		local elapsed, total = timerFelSquallCD:GetTime()
+		local extend = ICD - (total-elapsed)
+		DBM:Debug("timerFelSquallCD extended by: "..extend, 2)
+		timerFelSquallCD:Stop()
+		timerFelSquallCD:Update(elapsed, total+extend)
 	end
 end
 
@@ -174,12 +208,13 @@ function mod:SPELL_CAST_START(args)
 		specWarnScytheSweep:Show()
 		voiceScytheSweep:Play("shockwave")
 		timerScytheSweepCD:Start()--23 unless affected by something
-		updateAllTimers(self, 4)
+		updateAllAtriganTimers(self, 4)
 	elseif spellId == 234015 then
 		self.vb.burstCount = self.vb.burstCount + 1
 		specWarnTormentingBurst:Show(self.vb.burstCount)
 		voiceTormentingBurst:Play("aesoon")
-		--timerTormentingBurstCD:Start()
+		timerTormentingBurstCD:Start(nil, self.vb.burstCount+1)
+		updateAllBelacTimers(self, 2)
 	elseif spellId == 239401 then
 		self.vb.pangCount = self.vb.pangCount + 1
 		if self.vb.pangCount == 4 then
@@ -196,6 +231,7 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 233983 then
 		self.vb.anguishIcon = 2
+		updateAllBelacTimers(self, 2)
 	end
 end
 
@@ -203,11 +239,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 233431 then
 		timerCalcifiedQuillsCD:Start()
-		updateAllTimers(self, 3)
+		updateAllAtriganTimers(self, 3)
 	elseif spellId == 233983 then
-		--timerEchoingAnguishCD:Start()
+		timerEchoingAnguishCD:Start()
 	elseif spellId == 233894 and self:AntiSpam(2, 2) then
-		--timerSuffocatingDarkCD:Start()
+		timerSuffocatingDarkCD:Start()
 	end
 end
 
@@ -235,7 +271,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			voiceBoneSaw:Schedule(1, "stopattack")
 		end
 		timerBoneSaw:Start()
-		updateAllTimers(self, 16, true)
+		updateAllAtriganTimers(self, 16, true)
 		for i = 1, 2 do
 			local bossUnitID = "boss"..i
 			if UnitExists(bossUnitID) and UnitGUID(bossUnitID) == args.sourceGUID and UnitDetailedThreatSituation("player", bossUnitID) then--We are highest threat target
@@ -254,6 +290,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			voiceFelSquall:Schedule(1, "stopattack")
 		end
 		timerFelSquall:Start()
+		updateAllBelacTimers(self, 16, true)
 	elseif spellId == 233983 then
 		warnEchoingAnguish:CombinedShow(0.3, args.destName)
 		local currentIcon = self.vb.anguishIcon
