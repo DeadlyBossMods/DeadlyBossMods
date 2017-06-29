@@ -31,7 +31,7 @@ local specWarnIncitePanicNear		= mod:NewSpecialWarningClose(233568, nil, nil, ni
 local specWarnVirulentInfection		= mod:NewSpecialWarningMove(233850, nil, nil, nil, 1, 2)
 
 local timerIncitePanicCD			= mod:NewCDTimer(14.6, 233568, nil, nil, nil, 1)
-local timerPestilenceCD				= mod:NewCDTimer(14.6, 233614, nil, nil, nil, 3)
+local timerPestilenceCD				= mod:NewCDTimer(14.2, 233614, nil, nil, nil, 3)
 local timerShadowBarrageCD			= mod:NewCDTimer(17.1, 234452, nil, nil, nil, 2)
 
 local voiceIncitePanic				= mod:NewVoice(233568)--scatter?
