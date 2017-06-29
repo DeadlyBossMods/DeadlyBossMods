@@ -81,7 +81,7 @@ local timerDrivenAssault			= mod:NewTargetTimer(10, 234016, nil, false, nil, 3)-
 local timerSplashCleaveCD			= mod:NewCDTimer(12, 234129, nil, false, nil, 5, nil, DBM_CORE_TANK_ICON)
 --Mythic
 local timerHatchingCD				= mod:NewCDTimer(40.6, 240319, nil, nil, nil, 1)--40.6-42
---local berserkTimer				= mod:NewBerserkTimer(300)
+local berserkTimer					= mod:NewBerserkTimer(360)
 
 --Harjatan
 local countdownUncheckedRage		= mod:NewCountdown(20, 231854)
@@ -126,9 +126,11 @@ function mod:OnCombatStart(delay)
 		timerCommandingRoarCD:Start(6.3-delay)
 		if self:IsMythic() then
 			timerHatchingCD:Start(30.5-delay)
+			berserkTimer:Start(360-delay)
 		end
 	else
 		timerCommandingRoarCD:Start(17.3-delay)
+		berserkTimer:Start(480-delay)--Confirm in LFR too?
 	end
 	if self.Options.NPAuraOnSicklyFixate and self:IsMythic() or self.Options.NPAuraOnDrivenAssault then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
