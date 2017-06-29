@@ -118,3 +118,4 @@ SeatofTriumvirate\Zuraal.lua
 SeatofTriumvirate\Saprish.lua
 SeatofTriumvirate\ViceroyNezhar.lua
 SeatofTriumvirate\Lura.lua
+SeatofTriumvirate\SoTTrash.lua
