@@ -42,7 +42,7 @@ local warnPrison					= mod:NewSpellAnnounce(236283, 2)
 --local warnTormentingBurst			= mod:NewCountAnnounce(234015, 2)
 
 --Atrigan
-local specWarnUnbearableTorment		= mod:NewSpecialWarningYou(233430, nil, nil, nil, 1, 2)
+--local specWarnUnbearableTorment		= mod:NewSpecialWarningYou(233430, nil, nil, nil, 1, 2)
 local specWarnUnbearableTormentTank	= mod:NewSpecialWarningTaunt(233430, nil, nil, nil, 1, 2)
 local specWarnScytheSweep			= mod:NewSpecialWarningSpell(233426, "Tank", nil, 2, 1, 2)
 local specWarnCalcifiedQuills		= mod:NewSpecialWarningRun(233431, nil, nil, nil, 1, 2)
@@ -204,7 +204,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 233430 then
 		if args:IsPlayer() then
-			specWarnUnbearableTorment:Show()
+			--specWarnUnbearableTorment:Show()
 		else
 			local uId = DBM:GetRaidUnitId(args.destName)
 			if self:IsTanking(uId) then
