@@ -1,0 +1,28 @@
+## Interface: 70300
+## X-Min-Interface: 70300
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Antorus, the Burning Throne|r
+## Author: MysticalOS
+## LoadOnDemand: 1
+## RequiredDeps: DBM-Core
+## SavedVariables: DBMAntorusBurningThrone_AllSavedVars
+## SavedVariablesPerCharacter: DBMAntorusBurningThrone_SavedStats
+## X-DBM-Mod: 1
+## X-DBM-Mod-Type: RAID
+## X-DBM-Mod-Category: LEG
+## X-DBM-Mod-Has-Mythic : 1
+## X-DBM-Mod-Sort: 051
+## X-DBM-Mod-MapID: 1712
+## X-DBM-Mod-MinCoreRevision: 14737
+localization.en.lua
+Garothi.lua
+HoundsofSargeras.lua
+AntorusWarCouncil.lua
+Eonar.lua
+Hasabel.lua
+Imonar.lua
+Kingaroth.lua
+Varimathras.lua
+ShivarraCoven.lua
+Aggramar.lua
+ArgustheUnmaker.lua
+AntorusTrash.lua
