@@ -183,7 +183,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				end
 			end
 		else
-			local _, _, _, _, _, _, expires = unitDebuff("player", tankDebuff)
+			local _, _, _, _, _, _, expires = UnitDebuff("player", tankDebuff)
 			if expires then
 				local remaining = expires-GetTime()
 				specWarnBurningArmorTaunt:Schedule(remaining, args.destName)
