@@ -58,21 +58,21 @@ local specWarnFelclawsOther			= mod:NewSpecialWarningTaunt(239932, nil, nil, nil
 local specWarnRupturingSingularity	= mod:NewSpecialWarningSoon(235059, nil, nil, nil, 3, 2)
 local specWarnArmageddon			= mod:NewSpecialWarningCount(240910, nil, nil, nil, 2, 2)
 local specWarnSRWailing				= mod:NewSpecialWarningYou(236378, nil, nil, nil, 1, 2)
-local yellSRWailing					= mod:NewFadesYell(236378, 236075)
+local yellSRWailing					= mod:NewFadesYell(236378, 236075)--Keep name in tank one for now
 local specWarnSRErupting			= mod:NewSpecialWarningYou(236710, nil, nil, nil, 1, 2)
-local yellSRErupting				= mod:NewFadesYell(236710, 243160)
+local yellSRErupting				= mod:NewShortFadesYell(236710, 243160)
 --Intermission: Eternal Flame
 local specWarnFocusedDreadflame		= mod:NewSpecialWarningYou(238502, nil, nil, nil, 1, 2)
-local yellFocusedDreadflame			= mod:NewYell(238502)
+local yellFocusedDreadflame			= mod:NewShortYell(238502)
 local yellFocusedDreadflameFades	= mod:NewFadesYell(236498)
 local specWarnFocusedDreadflameOther= mod:NewSpecialWarningTarget(238502, nil, nil, nil, 1, 2)
 local specWarnBurstingDreadflame	= mod:NewSpecialWarningMoveAway(238430, nil, nil, nil, 1, 2)
-local yellBurstingDreadflame		= mod:NewYell(238430)
+local yellBurstingDreadflame		= mod:NewPosYell(238430, DBM_CORE_AUTO_YELL_CUSTOM_POSITION)
 --Stage Two: Reflected Souls
 local specWarnSRHopeless			= mod:NewSpecialWarningYou(237590, nil, nil, nil, 1, 2)
-local yellSRHopeless				= mod:NewFadesYell(237590, 237724)
+local yellSRHopeless				= mod:NewShortFadesYell(237590, 237724)
 local specWarnSRMalignant			= mod:NewSpecialWarningYou(236498, nil, nil, nil, 1, 2)
-local yellSRMalignant				= mod:NewFadesYell(236498)
+local yellSRMalignant				= mod:NewShortFadesYell(236498)
 local specWarnMalignantAnguish		= mod:NewSpecialWarningInterrupt(236597, "HasInterrupt")
 --Intermission: Deceiver's Veil
 
@@ -360,7 +360,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if args:IsPlayer() then
 			specWarnBurstingDreadflame:Show()
 			voiceBurstingDreadFlame:Play("scatter")
-			yellBurstingDreadflame:Yell()
+			yellBurstingDreadflame:Yell(self.vb.burstingDreadIcon, args.spellName, self.vb.burstingDreadIcon)
 		end
 		if self.Options.SetIconOnBurstingDread then
 			self:SetIcon(args.destName, self.vb.burstingDreadIcon, 5)

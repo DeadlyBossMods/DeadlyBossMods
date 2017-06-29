@@ -59,7 +59,7 @@ local specWarnDiscorporateSwap		= mod:NewSpecialWarningTaunt(236550, nil, nil, n
 --Captain Yathae Moonstrike
 local specWarnCallMoontalon			= mod:NewSpecialWarningSwitch(236694, "-Healer", nil, nil, 1, 2)
 local specWarnTwilightVolley		= mod:NewSpecialWarningDodge(236442, nil, nil, nil, 2, 2)
-local yellTwilightVolley			= mod:NewYell(236442)
+local yellTwilightVolley			= mod:NewShortYell(236442)
 local specWarnIncorpShot			= mod:NewSpecialWarningMoveAway(236305, nil, nil, nil, 1, 2)
 local yellIncorpShot				= mod:NewYell(236305)
 local specWarnIncorpShotOther		= mod:NewSpecialWarningTarget(236305, nil, nil, nil, 1, 2)
