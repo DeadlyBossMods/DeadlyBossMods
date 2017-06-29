@@ -58,7 +58,7 @@ local warnTorment					= mod:NewStackAnnounce(236548, 3)
 local specWarnSpearofAnguish		= mod:NewSpecialWarningYou(235924, nil, nil, nil, 1, 2)
 local yellSpearofAnguish			= mod:NewFadesYell(235924)
 local specWarnTormentingCries		= mod:NewSpecialWarningYou(238018, nil, nil, nil, 1, 2)
-local yellTormentingCries			= mod:NewYell(238018)
+local yellTormentingCries			= mod:NewShortYell(238018)
 --Spirit Realm
 local specWarnSoulbind				= mod:NewSpecialWarningYou(236459, nil, nil, nil, 3, 2)
 local yellSoulbind					= mod:NewYell(236459)
