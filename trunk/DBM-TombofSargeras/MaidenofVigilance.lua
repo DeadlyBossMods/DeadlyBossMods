@@ -15,7 +15,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 235271 241635 241636 235267",
 	"SPELL_CAST_SUCCESS 239153 237722",
 	"SPELL_AURA_APPLIED 235240 235213 235117 240209 235028 236061 234891",
-	"SPELL_AURA_REMOVED 235240 235213 235117 240209 235028 234891",
+	"SPELL_AURA_REFRESH 235240 235213",
+	"SPELL_AURA_REMOVED 235117 240209 235028 234891",
 	"SPELL_PERIODIC_DAMAGE 238408 238028",
 	"SPELL_PERIODIC_MISSED 238408 238028",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
@@ -225,26 +226,26 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	end
 end
---mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
+mod.SPELL_AURA_REFRESH = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 235240 then--Fel Infusion
-		if self.Options.SetIconOnInfusion then
+		--[[if self.Options.SetIconOnInfusion then
 			local uId = DBM:GetRaidUnitId(args.destName)
 			local currentIcon = GetRaidTargetIndex(uId) or 0
 			if self:IsTanking(uId) and currentIcon ~= 1 then--Fel infusion removed but light infusion icon is already set, don't touch it
 				self:SetIcon(args.destName, 0)
 			end
-		end
+		end--]]
 	elseif spellId == 235213 then--Light Infusion
-		if self.Options.SetIconOnInfusion then
+		--[[if self.Options.SetIconOnInfusion then
 			local uId = DBM:GetRaidUnitId(args.destName)
 			local currentIcon = GetRaidTargetIndex(uId) or 0
 			if self:IsTanking(uId) and currentIcon ~= 4 then--Light infusion removed but fel infusion icon is already set, don't touch it
 				self:SetIcon(args.destName, 0)
 			end
-		end
+		end-]]
 	elseif spellId == 235117 or spellId == 240209 then
 		self.vb.unstableSoulCount = self.vb.unstableSoulCount - 1
 		if args:IsPlayer() then
