@@ -95,7 +95,7 @@ function mod:OnCombatStart(delay)
 	timerInfernalBurningCD:Start(54-delay)
 	if self:IsMythic() then
 		self.vb.brimstoneCount = 0
-		timerRainofBrimstoneCD:Start(14-delay, 1)
+		timerRainofBrimstoneCD:Start(12.1-delay, 1)--12.1-14
 		timerShatteringStarCD:Start(34-delay, 1)
 		countdownShatteringStar:Start(34-delay)
 	else
