@@ -121,13 +121,12 @@ local voiceBurstingDreadFlame		= mod:NewVoice(238430)--scatter
 --Stage Two: Reflected Souls
 local voiceSRHopeless				= mod:NewVoice(237590)--targetyou (temp, more customized after seen)
 local voiceSRMalignant				= mod:NewVoice(236498)--targetyou (temp, more customized after seen)
-local voiceMalignantAnguish			= mod:NewVoice(236597)--kickcast
+local voiceMalignantAnguish			= mod:NewVoice(236597, "HasInterrupt", nil, 2)--kickcast
 --Intermission: Deceiver's Veil
 
 --Stage Three: Darkness of A Thousand Souls
 local voiceDarknesofSouls			= mod:NewVoice(238999)--findshelter
 
-mod:AddBoolOption("PingIlliden")
 mod:AddSetIconOption("SetIconOnFocusedDread", 238502, true)
 mod:AddSetIconOption("SetIconOnBurstingDread", 238430, true)
 mod:AddInfoFrameOption(239154, true)
