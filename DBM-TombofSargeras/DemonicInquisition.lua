@@ -74,7 +74,7 @@ local timerBoneSaw					= mod:NewBuffActiveTimer(15, 233441, nil, nil, nil, 2)
 local timerFelSquallCD				= mod:NewCDTimer(45.7, 235230, nil, nil, nil, 2)
 local timerFelSquall				= mod:NewBuffActiveTimer(15, 235230, nil, nil, nil, 2)
 
---local berserkTimer				= mod:NewBerserkTimer(300)
+local berserkTimer					= mod:NewBerserkTimer(480)--482 in log, rounding to 8 even for now
 
 --Atrigan
 local countdownBoneSaw				= mod:NewCountdown(45, 233441)
@@ -152,9 +152,10 @@ function mod:OnCombatStart(delay)
 		DBM.InfoFrame:SetHeader(GetSpellInfo(233104))
 		DBM.InfoFrame:Show(8, "playerpower", 5, ALTERNATE_POWER_INDEX)
 	end
-	--if not self:IsLFR() then
-	--	DBM:AddMsg("In all tests, Belac had erratic timers so most Belac timers are disabled")
-	--end
+	--https://www.warcraftlogs.com/reports/JgyrYdDCB63kx8Tb#fight=38&type=summary&pins=2%24Off%24%23244F4B%24expression%24ability.id%20%3D%20248671&view=events
+	if not self:IsLFR() then
+		berserkTimer:Start(480-delay)--482 technically but 480 sounds better
+	end
 end
 
 function mod:OnCombatEnd()

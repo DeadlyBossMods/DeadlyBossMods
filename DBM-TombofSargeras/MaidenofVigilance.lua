@@ -60,7 +60,7 @@ local timerBlowbackCD				= mod:NewNextTimer(81.1, 237722, nil, nil, nil, 6)--81-
 --Mythic
 local timerSpontFragmentationCD		= mod:NewNextTimer(8, 239153, nil, nil, nil, 5, nil, DBM_CORE_HEROIC_ICON)
 
---local berserkTimer				= mod:NewBerserkTimer(300)
+local berserkTimer				= mod:NewBerserkTimer(480)
 
 --Stage One: Divide and Conquer
 local countdownInfusion				= mod:NewCountdown("AltTwo", 235271)
@@ -104,6 +104,7 @@ function mod:OnCombatStart(delay)
 		self.vb.spontFragmentationCount = 0
 		timerSpontFragmentationCD:Start(10-delay)
 	end
+	berserkTimer:Start(480-delay)--Heroic/normal confirmed, others assumed until seen
 end
 
 function mod:OnCombatEnd()
