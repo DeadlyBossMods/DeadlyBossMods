@@ -6,7 +6,7 @@ mod:SetCreatureID(116691, 116689)--Belac (116691), Atrigan (116689)
 mod:SetEncounterID(2048)
 mod:SetZone()
 mod:SetBossHPInfoToHighest()
---mod:SetUsedIcons(1)
+mod:SetUsedIcons(1, 2, 3, 4)
 mod:SetHotfixNoticeRev(16282)
 --mod.respawnTime = 29
 
