@@ -78,7 +78,7 @@ local specWarnMalignantAnguish		= mod:NewSpecialWarningInterrupt(236597, "HasInt
 
 --Stage Three: Darkness of A Thousand Souls
 local specWarnDarknessofSouls		= mod:NewSpecialWarningMoveTo(238999, nil, nil, nil, 3, 2)
-local specWarnFlamingOrbSpawn		= mod:NewSpecialWarningSpell(239253, nil, nil, nil, 1, 2)--Spawn warning (todo, another warning for fixate target if possible)
+local specWarnFlamingOrbSpawn		= mod:NewSpecialWarningDodge(239253, nil, nil, nil, 1, 2)--Spawn warning (todo, another warning for fixate target if possible)
 
 --Stage One: The Betrayer
 local timerFelclawsCD				= mod:NewCDCountTimer(25, 239932, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
@@ -122,6 +122,7 @@ local voiceBurstingDreadFlame		= mod:NewVoice(238430)--scatter
 local voiceSRHopeless				= mod:NewVoice(237590)--targetyou (temp, more customized after seen)
 local voiceSRMalignant				= mod:NewVoice(236498)--targetyou (temp, more customized after seen)
 local voiceMalignantAnguish			= mod:NewVoice(236597, "HasInterrupt", nil, 2)--kickcast
+local voiceFlameOrbSpawn			= mod:NewVoice(239253)--watchstep/runout
 --Intermission: Deceiver's Veil
 
 --Stage Three: Darkness of A Thousand Souls
@@ -576,6 +577,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	elseif spellId == 244856 and self:AntiSpam(5, 3) then--Flaming Orb (more likely than combat log. this spell looks like it's entirely scripted)
 		self.vb.orbCount = self.vb.orbCount + 1
 		specWarnFlamingOrbSpawn:Show(self.vb.orbCount)
+		voiceFlameOrbSpawn:Play("watchstep")
+		voiceFlameOrbSpawn:Schedule(1, "runout")
 		if self.vb.orbCount % 2 == 0 then
 			timerFlamingOrbCD:Start(64, self.vb.orbCount+1)
 		else
