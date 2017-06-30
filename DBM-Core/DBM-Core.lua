@@ -2471,7 +2471,7 @@ do
 		dtext:SetFontObject(ChatFontNormal)
 		dtext:SetPoint("CENTER", decline, "CENTER", 0, 5)
 		dtext:SetText(NO)
-		PlaySound("igMainMenuOpen")
+		PlaySound("igMainMenuOpen")--SOUNDKIT.IG_MAINMENU_OPEN (7.3)
 	end
 
 	local function linkHook(self, link, string, button, ...)
