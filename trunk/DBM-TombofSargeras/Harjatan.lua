@@ -241,24 +241,29 @@ function mod:SPELL_AURA_APPLIED(args)
 			DBM.Nameplate:Show(true, args.sourceGUID, spellId)
 		end
 	elseif spellId == 241600 then
+		warnSicklyFixate:CombinedShow(0.5, args.destName)
 		if args:IsPlayer() then
 			specWarnSicklyFixate:Show()
 			voiceSicklyFixate:Play("justrun")
 			voiceSicklyFixate:Schedule(1, "keepmove")
-		else
-			warnSicklyFixate:Show(args.destName)
 		end
 		if self.Options.NPAuraOnSicklyFixate then
 			DBM.Nameplate:Show(true, args.sourceGUID, spellId)
 		end
-	elseif spellId == 233429 then--Frigid Blows
+	--[[elseif spellId == 233429 then--Frigid Blows
+		timerUncheckedRageCD:Stop()
+		countdownUncheckedRage:Cancel()
+		specWarnUncheckedRage:Cancel()
+		voiceUncheckedRage:Cancel()
+		timerCommandingRoarCD:Stop()
+		timerDrawInCD:Stop()--]]
+	elseif spellId == 232061 then
 		timerUncheckedRageCD:Stop()
 		countdownUncheckedRage:Cancel()
 		specWarnUncheckedRage:Cancel()
 		voiceUncheckedRage:Cancel()
 		timerCommandingRoarCD:Stop()
 		timerDrawInCD:Stop()
-	elseif spellId == 232061 then
 		warnDrawIn:Show()
 	end
 end
