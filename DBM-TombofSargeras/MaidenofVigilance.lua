@@ -198,10 +198,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnUnstableSoul:Schedule(6.75, AegynnsWard)
 			end
 			if not self:IsLFR() then
-				yellUnstableSoul:Yell(8)
-				yellUnstableSoul:Schedule(7, 1)
-				yellUnstableSoul:Schedule(6, 2)
-				yellUnstableSoul:Schedule(5, 3)
+				yellUnstableSoul:Countdown(8)
 				if self:IsEasy() then
 					voiceUnsableSoul:Schedule(5.75, "jumpinpit")
 				else

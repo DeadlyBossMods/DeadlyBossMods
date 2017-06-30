@@ -287,9 +287,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnLunarBeacon:Show()
 			voiceLunarBeacon:Play("runout")
-			yellLunarBeacon:Schedule(5, 1)
-			yellLunarBeacon:Schedule(4, 2)
-			yellLunarBeacon:Schedule(3, 3)
+			yellLunarBeacon:Countdown(6)
 		end
 	elseif spellId == 236519 then
 		warnMoonBurn:CombinedShow(0.3, args.destName)

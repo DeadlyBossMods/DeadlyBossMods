@@ -204,7 +204,6 @@ function mod:OnCombatStart(delay)
 	timerFelclawsCD:Start(25-delay, 1)
 	countdownFelclaws:Start(25-delay)
 	timerRupturingSingularityCD:Start(58-delay, 1)
-	--countdownSingularity:Start(58)
 	berserkTimer:Start(600-delay)
 end
 
@@ -212,9 +211,9 @@ function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
---	if self.Options.InfoFrame then
---		DBM.InfoFrame:Hide()
---	end
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:Hide()
+	end
 end
 
 function mod:SPELL_CAST_START(args)
@@ -335,7 +334,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 					countdownArmageddon:Start(55)
 					timerBurstingDreadflameCD:Start(57.3, 1)
 					timerRupturingSingularityCD:Start(79, 1)
-					--countdownSingularity:Start(79)
 					if self:IsEasy() then
 						timerFocusedDreadflameCD:Start(81.5, 1)
 						countdownFocusedDread:Start(81.5)
@@ -393,9 +391,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnSRWailing:Show()
 			voiceSRWailing:Play("targetyou")
-			yellSRWailing:Schedule(4, 3)
-			yellSRWailing:Schedule(5, 2)
-			yellSRWailing:Schedule(6, 1)
+			yellSRWailing:Countdown(7)
 		else
 			warnWailingReflection:Show(args.destName)
 		end
@@ -404,25 +400,19 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnSRErupting:Show()
 			voiceSRErupting:Play("targetyou")
-			yellSRErupting:Schedule(5, 3)
-			yellSRErupting:Schedule(6, 2)
-			yellSRErupting:Schedule(7, 1)
+			yellSRErupting:Countdown(8)
 		end
 	elseif spellId == 237590 then--Hopeless Shadow Reflection (Stage 2)
 		if args:IsPlayer() then
 			specWarnSRHopeless:Show()
 			voiceSRHopeless:Play("targetyou")
-			yellSRHopeless:Schedule(5, 3)
-			yellSRHopeless:Schedule(6, 2)
-			yellSRHopeless:Schedule(7, 1)
+			yellSRHopeless:Countdown(8)
 		end
 	elseif spellId == 236498 then--Malignant Shadow Reflection (Stage 2)
 		if args:IsPlayer() then
 			specWarnSRMalignant:Show()
 			voiceSRMalignant:Play("targetyou")
-			yellSRMalignant:Schedule(5, 3)
-			yellSRMalignant:Schedule(6, 2)
-			yellSRMalignant:Schedule(7, 1)
+			yellSRMalignant:Countdown(8)
 		end
 	elseif spellId == 236597 then
 		if self:CheckInterruptFilter(args.destGUID) then
@@ -518,9 +508,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 				specWarnFocusedDreadflame:Show()
 				voiceFocusedDreadflame:Play("targetyou")
 				yellFocusedDreadflame:Yell()
-				yellFocusedDreadflame:Schedule(2, 3)
-				yellFocusedDreadflame:Schedule(3, 2)
-				yellFocusedDreadflame:Schedule(4, 1)
+				yellFocusedDreadflameFades:Countdown(5)
 			else
 				specWarnFocusedDreadflameOther:Show(target)
 				voiceFocusedDreadflame:Play("helpsoak")
@@ -538,7 +526,6 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 		if self.vb.phase == 1.5 then
 			if self.vb.singularityCount == 1 then
 				timerRupturingSingularityCD:Start(30, self.vb.singularityCount+1)
-				--countdownSingularity:Start(30)
 			end
 		elseif self.vb.phase == 2 then
 			local timer = phase2HeroicSingularityTimers[self.vb.singularityCount+1]--Split difficulties up if they aren't all same
@@ -548,10 +535,8 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 		else--Phase 1
 			if self:IsEasy() then
 				timerRupturingSingularityCD:Start(80, self.vb.singularityCount+1)
-				--countdownSingularity:Start(80)
 			else
 				timerRupturingSingularityCD:Start(55, self.vb.singularityCount+1)
-				--countdownSingularity:Start(55)
 			end
 		end
 	end
@@ -576,7 +561,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		timerFelclawsCD:Stop()
 		countdownFelclaws:Cancel()
 		timerRupturingSingularityCD:Stop()
-		--countdownSingularity:Cancel()
 		timerArmageddonCD:Stop()
 		countdownArmageddon:Cancel()
 		timerShadReflectionEruptingCD:Stop()
@@ -585,7 +569,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		timerBurstingDreadflameCD:Start(8.7, 1)
 		if not self:IsEasy() then
 			timerRupturingSingularityCD:Start(14.7, 1)
-			--countdownSingularity:Start(14.7)
 		end
 		timerFocusedDreadflameCD:Start(24.7, 1)
 		countdownFocusedDread:Start(24.7)
@@ -593,6 +576,10 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	elseif spellId == 244856 and self:AntiSpam(5, 3) then--Flaming Orb (more likely than combat log. this spell looks like it's entirely scripted)
 		self.vb.orbCount = self.vb.orbCount + 1
 		specWarnFlamingOrbSpawn:Show(self.vb.orbCount)
-		timerFlamingOrbCD:Start(nil, self.vb.orbCount+1)
+		if self.vb.orbCount % 2 == 0 then
+			timerFlamingOrbCD:Start(64, self.vb.orbCount+1)
+		else
+			timerFlamingOrbCD:Start(31, self.vb.orbCount+1)
+		end
 	end
 end

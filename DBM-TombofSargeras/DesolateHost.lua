@@ -315,9 +315,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnSpearofAnguish:Show()
 			voiceSpearofAnguish:Play("runout")
-			yellSpearofAnguish:Schedule(5, 1)
-			yellSpearofAnguish:Schedule(4, 2)
-			yellSpearofAnguish:Schedule(3, 3)
+			yellSpearofAnguish:Countdown(6)
 		end
 	elseif spellId == 238018 then
 		if args:IsPlayer() then
