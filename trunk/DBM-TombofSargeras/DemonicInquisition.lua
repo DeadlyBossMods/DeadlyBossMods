@@ -14,13 +14,13 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 233426 234015 239401 233983",
-	"SPELL_CAST_SUCCESS 233431 233983 233894",
-	"SPELL_AURA_APPLIED 233441 235230 233983 233894 233431 236283",
+	"SPELL_CAST_SUCCESS 233431 233983",
+	"SPELL_AURA_APPLIED 233441 235230 233983 233431 236283",
 	"SPELL_AURA_APPLIED_DOSE 248713",
 	"SPELL_AURA_REMOVED 233441 235230 233983 236283 233431",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
---	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2"
+	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2",
 	"UNIT_POWER_FREQUENT player"
 )
 
@@ -37,7 +37,7 @@ mod:RegisterEventsInCombat(
 local warnQuills					= mod:NewTargetAnnounce(233431, 2)
 --Belac
 local warnEchoingAnguish			= mod:NewTargetAnnounce(233983, 3)
-local warnSuffocatingDark			= mod:NewTargetAnnounce(233894, 3, nil, false)--Affects a LOT of targets
+local warnSuffocatingDark			= mod:NewSpellAnnounce(233894, 3)
 local warnPrison					= mod:NewSpellAnnounce(236283, 2)
 --local warnTormentingBurst			= mod:NewCountAnnounce(234015, 2)
 
@@ -67,8 +67,8 @@ local timerBoneSawCD				= mod:NewCDTimer(45.4, 233441, nil, nil, nil, 2)
 local timerBoneSaw					= mod:NewBuffActiveTimer(15, 233441, nil, nil, nil, 2)
 --Belac
 local timerEchoingAnguishCD			= mod:NewCDTimer(25.5, 233983, nil, nil, nil, 3, nil, DBM_CORE_MAGIC_ICON)
-local timerSuffocatingDarkCD		= mod:NewCDTimer(26.8, 233894, nil, nil, nil, 3)
-local timerTormentingBurstCD		= mod:NewCDCountTimer(17.0, 234015, nil, nil, nil, 2)
+local timerSuffocatingDarkCD		= mod:NewCDTimer(24, 233894, nil, nil, nil, 3)
+local timerTormentingBurstCD		= mod:NewCDTimer(17.0, 234015, nil, nil, nil, 2)
 local timerFelSquallCD				= mod:NewCDTimer(45.7, 235230, nil, nil, nil, 2)
 local timerFelSquall				= mod:NewBuffActiveTimer(15, 235230, nil, nil, nil, 2)
 
@@ -210,7 +210,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.burstCount = self.vb.burstCount + 1
 		specWarnTormentingBurst:Show(self.vb.burstCount)
 		voiceTormentingBurst:Play("aesoon")
-		timerTormentingBurstCD:Start(nil, self.vb.burstCount+1)
+		timerTormentingBurstCD:Start()
 		updateAllBelacTimers(self, 2)
 	elseif spellId == 239401 then
 		self.vb.pangCount = self.vb.pangCount + 1
@@ -239,8 +239,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 		updateAllAtriganTimers(self, 3)
 	elseif spellId == 233983 then
 		timerEchoingAnguishCD:Start()
-	elseif spellId == 233894 and self:AntiSpam(2, 2) then
-		timerSuffocatingDarkCD:Start()
 	end
 end
 
@@ -292,8 +290,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:SetIcon(args.destName, currentIcon)
 		end
 		self.vb.anguishIcon = self.vb.anguishIcon + 1
-	elseif spellId == 233894 then
-		warnSuffocatingDark:CombinedShow(1, args.destName)
 	elseif spellId == 233431 then
 		if args:IsPlayer() then
 			specWarnCalcifiedQuills:Show()
@@ -371,11 +367,13 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
+--]]
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
-	if spellId == 227503 then
-
+	if spellId == 233895 then
+		warnSuffocatingDark:Show()
+		timerSuffocatingDarkCD:Start()
 	end
 end
---]]
+
