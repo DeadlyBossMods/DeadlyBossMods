@@ -303,7 +303,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 		if self.Options.SetIconOnAnguish then
-			self:SetdIcon(args.destName, currentIcon)
+			self:SetIcon(args.destName, currentIcon)
 		end
 		self.vb.anguishIcon = self.vb.anguishIcon + 1
 	elseif spellId == 233894 then
