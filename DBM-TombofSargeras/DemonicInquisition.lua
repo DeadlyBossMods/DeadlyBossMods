@@ -15,7 +15,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 233426 234015 239401 233983",
 	"SPELL_CAST_SUCCESS 233431 233983 233894",
-	"SPELL_AURA_APPLIED 233430 233441 235230 233983 233894 233431 236283",
+	"SPELL_AURA_APPLIED 233441 235230 233983 233894 233431 236283",
 	"SPELL_AURA_APPLIED_DOSE 248713",
 	"SPELL_AURA_REMOVED 233441 235230 233983 236283 233431",
 --	"SPELL_PERIODIC_DAMAGE",
@@ -42,8 +42,6 @@ local warnPrison					= mod:NewSpellAnnounce(236283, 2)
 --local warnTormentingBurst			= mod:NewCountAnnounce(234015, 2)
 
 --Atrigan
-local specWarnUnbearableTorment		= mod:NewSpecialWarningYou(233430, nil, nil, nil, 1, 6)
-local specWarnUnbearableTormentTank	= mod:NewSpecialWarningTaunt(233430, nil, nil, nil, 1, 2)
 local specWarnScytheSweep			= mod:NewSpecialWarningSpell(233426, "Tank", nil, 2, 1, 2)
 local specWarnCalcifiedQuills		= mod:NewSpecialWarningMoveAway(233431, nil, nil, nil, 1, 2)
 local yellCalcifiedQuills			= mod:NewYell(233431)
@@ -80,7 +78,6 @@ local berserkTimer					= mod:NewBerserkTimer(480)--482 in log, rounding to 8 eve
 local countdownBoneSaw				= mod:NewCountdown(45, 233441)
 
 --Atrigan
-local voiceUnbearableTorment		= mod:NewVoice(233430)--stackhigh/tauntboss
 local voiceScytheSweep				= mod:NewVoice(233426, "Tank", nil, 2)--shockwave
 local voiceCalcifiedQuills			= mod:NewVoice(233431)--runout
 local voiceAttackAtrigan			= mod:NewVoice("ej14645", "Dps")--targetchange
@@ -249,18 +246,7 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 233430 then
-		if args:IsPlayer() then
-			specWarnUnbearableTorment:Show(args.destName)
-			voiceUnbearableTorment:Play("stackhigh")
-		else
-			local uId = DBM:GetRaidUnitId(args.destName)
-			if self:IsTanking(uId) then
-				specWarnUnbearableTormentTank:Show(args.destName)
-				voiceUnbearableTorment:Play("tauntboss")
-			end
-		end
-	elseif spellId == 233441 then
+	if spellId == 233441 then
 		--Redundant warnings if still on wrong boss (or tank)
 		if UnitGUID("target") == args.sourceGUID then
 			specWarnBoneSawMelee:Show()
