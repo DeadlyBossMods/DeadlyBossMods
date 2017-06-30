@@ -7,28 +7,33 @@ mod:SetZone()
 mod.isTrashMod = true
 
 mod:RegisterEvents(
-	"SPELL_CAST_START 243171",
+	"SPELL_CAST_START 243171 239810 240169",
 	"SPELL_CAST_SUCCESS 241360",
 	"SPELL_AURA_APPLIED 240735 241362",
-	"SPELL_AURA_APPLIED_DOSE"
+	"SPELL_PERIODIC_DAMAGE 240176",
+	"SPELL_PERIODIC_MISSED 240176"
 )
 
 --TODO, add jellyfish Static something, forgot to log it and don't remember name
---local warnDissonantMagic			= mod:NewStackAnnounce(240766, 2, nil, "Tank")
 local warnPolyMorphBomb				= mod:NewTargetAnnounce(240735, 3)
 local warnWateryGrave				= mod:NewTargetAnnounce(241362, 3)
 
---local specWarnDissonantMagic		= mod:NewSpecialWarningStack(240766, nil, 3, nil, nil, 1, 2)
---local specWarnDissonantMagicOther	= mod:NewSpecialWarningTaunt(240766, nil, nil, nil, 1, 2)
 local specWarnPolyMorphBomb			= mod:NewSpecialWarningMoveAway(240735, nil, nil, nil, 1, 2)
 local yellPolyMorphBomb				= mod:NewYell(240735)
 local specWarnWateryGrave			= mod:NewSpecialWarningSwitch(241360, "-Healer", nil, nil, 1, 2)
 local specWarnShadowBoltVolley		= mod:NewSpecialWarningInterrupt(243171, "HasInterrupt", nil, nil, 1, 2)
+local specWarnSeverSoul				= mod:NewSpecialWarningRun(240735, "Melee", nil, nil, 4, 2)
+local specWarnElectroShock			= mod:NewSpecialWarningRun(240169, "Melee", nil, nil, 4, 2)
+local specWarnMassiveEruption		= mod:NewSpecialWarningRun(242909, "Melee", nil, nil, 4, 2)
+local specWarnGTFO					= mod:NewSpecialWarningGTFO(240176, nil, nil, nil, 1, 2)
 
---local voiceDissonantMagic			= mod:NewVoice(240766)--tauntboss/stackhigh
 local voicePolyMorphBomb			= mod:NewVoice(240735)--runout
-local voiceWateryGrave				= mod:NewVoice(241360, "-Healer")--help?
+local voiceWateryGrave				= mod:NewVoice(241360, "-Healer")--helpme? maybe targetchange instead
 local voiceShadowBoltVolley			= mod:NewVoice(243171, "HasInterrupt")--kickcast
+local voiceSeverSoul				= mod:NewVoice(240735)--runout
+local voiceElectroShock				= mod:NewVoice(240169)--runout
+local voiceMassiveEruption			= mod:NewVoice(242909)--runout
+local voiceGTFO						= mod:NewVoice(240176, nil, DBM_CORE_AUTO_VOICE4_OPTION_TEXT)--runaway
 
 mod:RemoveOption("HealthFrame")
 
@@ -38,6 +43,15 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 243171 and self:CheckInterruptFilter(args.sourceGUID) then
 		specWarnShadowBoltVolley:Show(args.sourceName)
 		voiceShadowBoltVolley:Play("kickcast")
+	elseif spellId == 239810 and self:AntiSpam(3, 1) then
+		specWarnSeverSoul:Show()
+		voiceSeverSoul:Play("runout")
+	elseif spellId == 240169 and self:AntiSpam(3, 2) then
+		specWarnElectroShock:Show()
+		voiceElectroShock:Play("runout")
+	elseif spellId == 242909 and self:AntiSpam(3, 3) then
+		specWarnMassiveEruption:Show()
+		voiceMassiveEruption:Play("runout")
 	end
 end
 
@@ -46,7 +60,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 241360 then
 		specWarnWateryGrave:Show()
-		voiceWateryGrave:Play("help")
+		voiceWateryGrave:Play("helpme")
 	end
 end
 
@@ -63,28 +77,15 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 241362 then
 		warnWateryGrave:CombinedShow(0.3, args.destName)--Multiple targets assumed
---[[elseif spellId == 240766 then
-		local uId = DBM:GetRaidUnitId(args.destName)
-		if self:IsTanking(uId) then
-			local amount = args.amount or 1
-			if amount >= 3 then--Lasts 30 seconds, cast every 5 seconds, swapping will be at 6
-				if args:IsPlayer() then--At this point the other tank SHOULD be clear.
-					specWarnDissonantMagic:Show(amount)
-					voiceDissonantMagic:Play("stackhigh")
-				else--Taunt as soon as stacks are clear, regardless of stack count.
-					if not UnitIsDeadOrGhost("player") and not UnitDebuff("player", args.spellName) then
-						specWarnDissonantMagicOther:Show(args.destName)
-						voiceDissonantMagic:Play("tauntboss")
-					else
-						warnDissonantMagic:Show(args.destName, amount)
-					end
-				end
-			else
-				if amount % 2 == 0 then
-					warnDissonantMagic:Show(args.destName, amount)
-				end
-			end
-		end--]]
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
+
+--TODO, add more
+function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
+	if (spellId == 240176) and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
+		specWarnGTFO:Show()
+		voiceGTFO:Play("runaway")
+	end
+end
+mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
