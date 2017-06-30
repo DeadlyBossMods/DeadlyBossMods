@@ -106,6 +106,7 @@ local voiceTantrum					= mod:NewVoice(241590)--aesoon
 --mod:AddRangeFrameOption("5/8/15")
 mod:AddNamePlateOption("NPAuraOnSicklyFixate", 241600)
 mod:AddNamePlateOption("NPAuraOnDrivenAssault", 234016)
+mod:AddSetIconOption("SetIconOnWavemender", "ej14555", true, true)
 
 mod.vb.rageCount = 0
 local seenMobs = {}
@@ -319,8 +320,9 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 			local cid = self:GetCIDFromGUID(GUID)
 			if cid == 116569 then--Razorjaw Wavemender
 				--timerAqueousBurstCD:Start(1, GUID)
-			elseif cid == 117596 then--Razorjaw Gladiator
-
+				if self.Options.SetIconOnWavemender then
+					self:ScanForMobs(GUID, 0, 8, 2, 0.2, 10, "SetIconOnWavemender")
+				end
 			end
 		end
 	end
