@@ -2,7 +2,7 @@ local mod	= DBM:NewMod(1898, "DBM-TombofSargeras", nil, 875)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
-mod:SetCreatureID(108573)--121227 Illiden? 121193 Shadowsoul
+mod:SetCreatureID(117269)--121227 Illiden? 121193 Shadowsoul
 mod:SetEncounterID(2051)
 mod:SetZone()
 --mod:SetBossHPInfoToHighest()
