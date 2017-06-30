@@ -23,7 +23,6 @@ mod:RegisterEventsInCombat(
 	"SPELL_PERIODIC_MISSED 231768",
 	"UNIT_DIED",
 	"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
---	"UNIT_POWER_FREQUENT boss1",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
@@ -75,7 +74,6 @@ local timerDrawInCD					= mod:NewNextTimer(59, 232061, nil, nil, nil, 6)
 local timerCommandingRoarCD			= mod:NewNextTimer(31.8, 232192, nil, nil, nil, 1)
 --Razorjaw Wavemender
 local timerAqueousBurstCD			= mod:NewCDTimer(6, 231729, nil, false, nil, 3)--6-8
-local timerTendWoundsCD				= mod:NewAITimer(15, 231904, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
 --Razorjaw Gladiator
 local timerDrivenAssault			= mod:NewTargetTimer(10, 234016, nil, false, nil, 3)--Too many spawn, this would be spammy so off by default
 local timerSplashCleaveCD			= mod:NewCDTimer(12, 234129, nil, false, nil, 5, nil, DBM_CORE_TANK_ICON)
@@ -109,12 +107,10 @@ local voiceTantrum					= mod:NewVoice(241590)--aesoon
 mod:AddNamePlateOption("NPAuraOnSicklyFixate", 241600)
 mod:AddNamePlateOption("NPAuraOnDrivenAssault", 234016)
 
---mod.vb.rageWarned = false
 mod.vb.rageCount = 0
 local seenMobs = {}
 
 function mod:OnCombatStart(delay)
-	--self.vb.rageWarned = false
 	self.vb.rageCount = 0
 	table.wipe(seenMobs)
 	timerUncheckedRageCD:Start(-delay, 1)
@@ -161,10 +157,9 @@ function mod:SPELL_CAST_START(args)
 		voiceUncheckedRage:Play(17, "gathershare")
 		timerDrawInCD:Start()
 		if self:IsMythic() then
-			--timerHatchingCD:Start()
+			timerHatchingCD:Start(30)
 		end
 	elseif spellId == 231904 then
-		timerTendWoundsCD:Start(nil, args.sourceGUID)
 		if self:CheckInterruptFilter(args.sourceGUID) then
 			specWarnTendWounds:Show(args.sourceName)
 			voiceTendWounds:Play("kickcast")
@@ -302,7 +297,6 @@ function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 116569 then--Razorjaw Wavemender
 		timerAqueousBurstCD:Stop(args.destGUID)
-		timerTendWoundsCD:Stop(args.destGUID)
 	elseif cid == 117596 then--Razorjaw Gladiator
 		timerSplashCleaveCD:Stop(args.destGUID)
 	--elseif cid == 117522 then--Darkscale Taskmaster
@@ -325,35 +319,12 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 			local cid = self:GetCIDFromGUID(GUID)
 			if cid == 116569 then--Razorjaw Wavemender
 				--timerAqueousBurstCD:Start(1, GUID)
-				timerTendWoundsCD:Start(1, GUID)
 			elseif cid == 117596 then--Razorjaw Gladiator
 
-			--elseif cid == 117522 then--Darkscale Taskmaster
-				--timerFrostySpittleCD:Start(1, GUID)
 			end
 		end
 	end
 end
-
---[[
-function mod:UNIT_POWER_FREQUENT(uId)
-	local bossPower = UnitPower("boss1") --Get Boss Power
-	if bossPower >= 80 and not self.vb.rageWarned then--Fine tune numbers? Right now it gives 4 second warning
-		self.vb.rageWarned = true
-		self.vb.rageCount = self.vb.rageCount + 1
-		specWarnUncheckedRage:Show(self.vb.rageCount)
-		voiceUncheckedRage:Play("gathershare")
-	elseif bossPower < 10 and self.vb.rageWarned then--Should catch 0, if not, at least 1-4 will fire it but then timer may be a second or so off
-		self.vb.rageWarned = false
-	end
-end
-
-function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
-	if msg:find("spell:228162") then
-
-	end
-end
---]]
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
@@ -365,12 +336,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		specWarnHatching:Show()
 		voiceHatching:Play("killmob")
 		timerHatchingCD:Start()
---	elseif spellId == 240360 then--Red Murloc Tadpole
-	
---	elseif spellId == 241562 then--Blue Murloc Tadpole
-	
---	elseif spellId == 241563 then--Green Murloc Tadpole
-	
 	end
 end
 
