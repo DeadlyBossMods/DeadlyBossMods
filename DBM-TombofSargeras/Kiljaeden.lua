@@ -380,7 +380,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		if uId and self:IsTanking(uId) then
 			self.vb.lastTankHit = args.destName
 		end
-		self.vb.clawCount = self.vb.clawCount + 1
+		if self:AntiSpam(0.5, 6) then
+			self.vb.clawCount = self.vb.clawCount + 1
+		end
 		if self.vb.clawCount == 5 then
 			if (self.vb.lastTankHit ~= playerName) and self:AntiSpam(3, self.vb.lastTankHit) then
 				specWarnFelclawsOther:Show(self.vb.lastTankHit)
