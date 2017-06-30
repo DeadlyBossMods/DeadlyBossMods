@@ -79,8 +79,10 @@ local timerInkCD					= mod:NewCDTimer(41, 232913, nil, nil, nil, 3)
 --local berserkTimer				= mod:NewBerserkTimer(300)
 
 --General Stuff
---local countdownDrawPower			= mod:NewCountdown(33, 227629)
+local countdownHydraShot			= mod:NewCountdown(40, 230139)
+local countdownBurdenofPain			= mod:NewCountdown("Alt28", 230139, "Tank")
 --Stage One: Ten Thousand Fangs
+local countdownSlicingTorando		= mod:NewCountdown("AltTwo43", 232722)
 
 --General Stuff
 local voiceHydraShot				= mod:NewVoice(230139)--targetyou
@@ -112,15 +114,19 @@ function mod:OnCombatStart(delay)
 	table.wipe(hydraIcons)
 	timerThunderingShockCD:Start(10-delay)--10-11
 	timerBurdenofPainCD:Start(15.4-delay)
+	countdownBurdenofPain:Start(15.4-delay)
 	timerFromtheAbyssCD:Start(18-delay)
 	timerConsumingHungerCD:Start(20-delay)--20-23
 	if self:IsEasy() then
 		timerSlicingTornadoCD:Start(36-delay)--36
+		countdownSlicingTorando:Start(36-delay)
 	else
 		timerSlicingTornadoCD:Start(30-delay)
+		countdownSlicingTorando:Start(30-delay)
 	end
 	if not self:IsLFR() then
 		timerHydraShotCD:Start(25.4-delay, 1)
+		countdownHydraShot:Start(25.4-delay)
 	end
 end
 
@@ -142,8 +148,10 @@ function mod:SPELL_CAST_START(args)
 		voiceSlicingTornado:Play("watchwave")
 		if self:IsMythic() then
 			timerSlicingTornadoCD:Start(34)
+			countdownSlicingTorando:Start(34)
 		else
 			timerSlicingTornadoCD:Start()
+			countdownSlicingTorando:Start()
 		end
 	elseif spellId == 230384 or spellId == 234661 then
 		timerConsumingHungerCD:Start()
@@ -173,6 +181,7 @@ function mod:SPELL_CAST_START(args)
 		timerThunderingShockCD:Start()
 	elseif spellId == 230201 then
 		timerBurdenofPainCD:Start()
+		countdownBurdenofPain:Start()
 		local tanking, status = UnitDetailedThreatSituation("player", "boss1")
 		if tanking or (status == 3) then
 			specWarnBurdenofPain:Show()
@@ -275,8 +284,10 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		self.vb.hydraShotCount = self.vb.hydraShotCount + 1
 		if self:IsMythic() then
 			timerHydraShotCD:Start(30, self.vb.hydraShotCount+1)
+			countdownHydraShot:Start(30)
 		else
 			timerHydraShotCD:Start(40, self.vb.hydraShotCount+1)
+			countdownHydraShot:Start(40)
 		end
 	elseif spellId == 239423 then--Dread Shark
 		if self:IsMythic() then
@@ -294,18 +305,23 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 			warnPhase2:Show()
 			timerThunderingShockCD:Stop()
 			timerSlicingTornadoCD:Stop()
+			countdownSlicingTorando:Cancel()
 			timerConsumingHungerCD:Stop()
 			timerHydraShotCD:Stop()
+			countdownHydraShot:Cancel()
 			timerBurdenofPainCD:Stop()
+			countdownBurdenofPain:Cancel()
 			timerFromtheAbyssCD:Stop()
 			
 			timerInkCD:Start(10.8)
 			timerBurdenofPainCD:Start(23.5)
+			countdownBurdenofPain:Start(23.5)
 			timerFromtheAbyssCD:Start(29)
 			timerCrashingWaveCD:Start(30, 1)
 			timerDevouringMawCD:Start(40)
 			if not self:IsLFR() then
 				timerHydraShotCD:Start(17, 1)
+				countdownHydraShot:Start(17)
 			end
 		elseif self.vb.phase == 3 then
 			self.vb.crashingWaveCount = 0
@@ -314,18 +330,23 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 			timerCrashingWaveCD:Stop()
 			timerInkCD:Stop()
 			timerHydraShotCD:Stop()
+			countdownHydraShot:Cancel()
 			timerBurdenofPainCD:Stop()
+			countdownBurdenofPain:Cancel()
 			timerDevouringMawCD:Stop()
 			timerFromtheAbyssCD:Stop()
 			
 			timerInkCD:Start(10.2)
 			timerBurdenofPainCD:Start(23.5)
+			countdownBurdenofPain:Start(23.5)
 			timerFromtheAbyssCD:Start(29)
 			timerCrashingWaveCD:Start(30, 1)
 			timerConsumingHungerCD:Start(39)--SUCCESS
 			timerSlicingTornadoCD:Start(51)
+			countdownSlicingTorando:Start(51)
 			if not self:IsLFR() then
 				timerHydraShotCD:Start(17, 1)
+				countdownHydraShot:Start(17)
 			end
 		end
 	end
