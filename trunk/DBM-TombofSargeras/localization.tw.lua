@@ -6,17 +6,6 @@ local L
 ---------------------------
 L= DBM:GetModLocalization(1862)
 
-L:SetTimerLocalization({
-	timerComboWamboCD =	"下一次彗星/魔刺(%d)"
-})
-
-L:SetOptionLocalization({
-	timerComboWamboCD =	"為下一次衝擊彗星/煉獄魔刺顯示計時器"
-})
-
-L:SetMiscLocalization({
-})
-
 ---------------------------
 -- Demonic Inquisition --
 ---------------------------
