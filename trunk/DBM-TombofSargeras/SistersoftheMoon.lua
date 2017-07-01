@@ -89,8 +89,8 @@ local timerMoonBurnCD				= mod:NewCDTimer(23, 236519, nil, nil, nil, 3)--Used wh
 
 --local berserkTimer				= mod:NewBerserkTimer(300)
 
---Huntress Kasparian
---local countdownDrawPower			= mod:NewCountdown(33, 227629)
+--ALL
+local countdownSpecials				= mod:NewCountdown(54.3, 233264)
 
 --All
 local voiceFontofElune				= mod:NewVoice(236357)--changemoon
@@ -172,6 +172,7 @@ function mod:OnCombatStart(delay)
 	timerTwilightVolleyCD:Start(15.5-delay)--15.5-17
 	timerTwilightGlaiveCD:Start(17.4-delay)
 	timerIncorporealShotCD:Start(48-delay)--Primary in phase 1 in all modes
+	countdownSpecials:Start(48-delay)
 	if not self:IsEasy() then
 		timerEmbraceofEclipseCD:Start(48-delay)--Secondary special for heroic/mythic
 	end
@@ -210,6 +211,9 @@ function mod:SPELL_CAST_START(args)
 		specWarnGlaiveStorm:Show()
 		voiceGlaiveStorm:Play("watchstep")
 		timerGlaiveStormCD:Start()
+		if self:AntiSpam(2) then
+			countdownSpecials:Start()
+		end
 	end
 end
 
@@ -228,6 +232,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerMoonBurnCD:Start()
 	elseif spellId == 233263 then
 		timerEmbraceofEclipseCD:Start()
+		if self:AntiSpam(2) then
+			countdownSpecials:Start()
+		end
 	elseif spellId == 236672 then
 		timerRapidShotCD:Start()
 	elseif spellId == 239264 then
@@ -296,6 +303,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if self.Options.SetIconOnIncorpShot then
 			self:SetIcon(args.destName, 1)
+		end
+		if self:AntiSpam(2) then
+			countdownSpecials:Start()
 		end
 	elseif spellId == 233264 then--Dpser Embrace of the Eclipse
 		self.vb.eclipseCount = self.vb.eclipseCount + 1
