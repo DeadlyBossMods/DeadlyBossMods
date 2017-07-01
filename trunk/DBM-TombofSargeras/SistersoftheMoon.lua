@@ -13,8 +13,8 @@ mod.respawnTime = 14
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 236694 236442 236712",
-	"SPELL_CAST_SUCCESS 236480 236547 236518 233263 237561 236672 239264",
+	"SPELL_CAST_START 236694 236442 236712 239379",
+	"SPELL_CAST_SUCCESS 236547 236518 233263 237561 236672 239264",
 	"SPELL_AURA_APPLIED 234995 234996 236550 236596 233264 233263 236712 239264 236519 237561 236305",
 	"SPELL_AURA_APPLIED_DOSE 234995 234996 239264",
 	"SPELL_AURA_REMOVED 236712 233263 233264 236305",
@@ -31,7 +31,7 @@ mod:RegisterEventsInCombat(
 --TODO, moontalon still wonky, ["236694-Call Moontalon"] = "pull:57.2, 7.3, 57.3", ["236694-Call Moontalon"] = "pull:58.6, 62.0",
 --[[
 (ability.id = 236694 or ability.id = 236442 or ability.id = 239379 or ability.id = 236712) and type = "begincast" or
-(ability.id = 236480 or ability.id = 237561 or ability.id = 236547 or ability.id = 236518 or ability.id = 233263 or ability.id = 239264 or ability.id = 236672) and type = "cast" or
+(ability.id = 237561 or ability.id = 236547 or ability.id = 236518 or ability.id = 233263 or ability.id = 239264 or ability.id = 236672) and type = "cast" or
 (ability.id = 236305) and type = "applydebuff"
 --]]
 --Huntress Kasparian
@@ -49,7 +49,7 @@ local warnMoonBurn					= mod:NewTargetAnnounce(236519, 3)
 --All
 local specWarnFontofElune			= mod:NewSpecialWarningStack(236357, nil, 12, nil, 2, 1, 6)--Stack unknown
 --Huntress Kasparian
-local specWarnGlaiveStorm			= mod:NewSpecialWarningDodge(236480, nil, nil, nil, 2, 2)
+local specWarnGlaiveStorm			= mod:NewSpecialWarningDodge(239379, nil, nil, nil, 2, 2)
 local specWarnTwilightGlaiveOther	= mod:NewSpecialWarningTarget(237561, nil, nil, nil, 2, 2)
 local specWarnTwilightGlaive		= mod:NewSpecialWarningMoveAway(237561, nil, nil, nil, 2, 2)
 local yellTwilightGlaive			= mod:NewYell(237561)
@@ -73,7 +73,7 @@ local specWarnLunarFireOther		= mod:NewSpecialWarningTaunt(239264, nil, nil, nil
 local specWarnMoonBurn				= mod:NewSpecialWarningMoveTo(236519, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.you:format(236519), nil, 1, 7)--Add voice filter when it has a voice
 
 --Huntress Kasparian
-local timerGlaiveStormCD			= mod:NewCDTimer(54.3, 236480, nil, nil, nil, 3)--Moon change special (but also used while inactive?)
+local timerGlaiveStormCD			= mod:NewCDTimer(54.3, 239379, nil, nil, nil, 3)--Moon change special (but also used while inactive?)
 local timerTwilightGlaiveCD			= mod:NewCDTimer(31, 237561, nil, nil, nil, 3)
 local timerMoonGlaiveCD				= mod:NewCDTimer(13.4, 236547, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--13.4-30 second variation, have fun with that
 --Captain Yathae Moonstrike
@@ -95,7 +95,7 @@ local timerMoonBurnCD				= mod:NewCDTimer(23, 236519, nil, nil, nil, 3)--Used wh
 --All
 local voiceFontofElune				= mod:NewVoice(236357)--changemoon
 --Huntress Kasparian
-local voiceGlaiveStorm				= mod:NewVoice(236480)--watchstep
+local voiceGlaiveStorm				= mod:NewVoice(239379)--watchstep
 local voiceTwilightGlaive			= mod:NewVoice(237561)--runout
 local voiceDiscorporate				= mod:NewVoice(236550)--changemoon/tauntboss
 --Captain Yathae Moonstrike
@@ -206,16 +206,16 @@ function mod:SPELL_CAST_START(args)
 		else
 			timerLunarBeaconCD:Start(35)
 		end
+	elseif spellId == 239379 then
+		specWarnGlaiveStorm:Show()
+		voiceGlaiveStorm:Play("watchstep")
+		timerGlaiveStormCD:Start()
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 236480 then--Likely completely wrong, but gives me something to copy/paste later when I move it
-		specWarnGlaiveStorm:Show()
-		voiceGlaiveStorm:Play("watchstep")
-		timerGlaiveStormCD:Start()
-	elseif spellId == 237561 then--^^
+	if spellId == 237561 then--^^
 		self.vb.twilightGlaiveCount = self.vb.twilightGlaiveCount + 1
 		--if self.vb.twilightGlaiveCount % 2 == 0 then
 		--	timerTwilightGlaiveCD:Start(30)
