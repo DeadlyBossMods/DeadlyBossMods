@@ -3,6 +3,7 @@ if GetLocale() ~= "deDE" then return end
 DBM_CORE_NEED_LOCALS				= "Hey, bist du ein Programmierer oder gut in Fremdsprachen? Falls ja, benötigt DBM deine Hilfe, um in mehr Sprachen übersetzt zu werden. Falls du helfen kannst, dann besuche |HDBM:localizersneeded|h|cff3588ffunser Forum|r."
 DBM_CORE_NEED_LOGS					= "DBM benötigt Transcriptor (http://www.wowace.com/addons/transcriptor/) Logs dieser Testkämpfe um möglichst gute Mods bereitstellen zu können. Falls du helfen willst, dann zeichne diese Testkämpfe mit Transcriptor auf und poste sie in unser Forum. Es werden nur Logs von 7.0 Schlachtzügen und Dungeons benötigt."
 DBM_HOW_TO_USE_MOD					= "Willkommen bei DBM. Tippe /dbm help für eine Liste unterstützter Kommandos. Für den Zugriff auf Einstellungen tippe /dbm in den Chat um die Konfiguration zu beginnen. Lade gewünschte Zonen manuell um jegliche Boss-spezifische Einstellungen nach deinen Wünschen zu konfigurieren. DBM versucht dies für dich zu tun, indem es beim ersten Start deine Spezialisierung scannt, aber du kannst zusätzliche Einstellungen aktivieren."
+DBM_SILENT_REMINDER					= "Erinnerung: DBM befindet sich noch im Lautlos-Modus."
 
 DBM_FORUMS_MESSAGE					= "Du hast einen Bug oder einen falschen Timer gefunden? Du glaubst einige Mods würden zusätzliche Warnungen, Timer oder Spezialfeatures benötigen?\nBesuche die neuen Deadly Boss Mods Foren für Diskussionen, Fehlermeldungen und Featurewünsche: |HDBM:forums|h|cff3588ffhttp://www.deadlybossmods.com|r (Du kannst auf den Link klicken um ihn zu kopieren.)"
 DBM_FORUMS_COPY_URL_DIALOG			= "Besuche unsere Diskussions- und Support-Foren"
@@ -18,7 +19,7 @@ DBM_CORE_LOAD_MOD_VER_MISMATCH		= "%s kann nicht geladen werden, da dein DBM-Cor
 DBM_CORE_LOAD_MOD_DISABLED			= "%s ist installiert, aber derzeit nicht aktiviert. Dieses Mod wird nicht geladen, falls du es nicht aktivierst."
 DBM_CORE_LOAD_MOD_DISABLED_PLURAL	= "%s sind installiert, aber derzeit nicht aktiviert. Diese Mods werden nicht geladen, falls du sie nicht aktivierst."
 
---DBM_CORE_WHATS_NEW--translate
+--DBM_CORE_WHATS_NEW
 --DBM_CORE_WHATS_NEW_LINK
 
 --Post Patch 7.1
@@ -157,7 +158,7 @@ DBM_CORE_YOUR_VERSION_OUTDATED      = "Deine Version von Deadly Boss Mods ist ve
 DBM_CORE_VOICE_PACK_OUTDATED		= "In deinem DBM Sprachpack fehlen möglicherweise Sounds, die von dieser Version von DBM unterstützt werden. Einige Spezialwarnungssounds werden nicht unterdrückt für gesprochene Alarme, die von deiner Sprachpackversion nicht unterstützt werden. Bitte lade dir eine neuere Version des Spachpacks herunter oder kontaktiere den Autor des Sprachpacks für ein Update, welches die fehlenden Sounddateien enthält."
 DBM_CORE_VOICE_MISSING				= "Du hast einen DBM Sprachpack ausgewählt, der nicht gefunden werden konnte. Deine Auswahl wurde auf 'Kein Sprachpack' zurückgesetzt. Bitte stelle sicher, dass der Sprachpack korrekt installiert und in der Addon-Liste aktiviert wurde, falls dies ein Fehler ist."
 DBM_CORE_VOICE_DISABLED				= "Du hast derzeit mindestens einen DBM Sprachpack installiert, aber keinen aktiviert. Falls du einen Sprachpack nutzen möchtest, dann wähle ihn unter \"Gesprochene Warnungen\" aus. Ansonsten kannst du die ungenutzten Sprachpacks deinstallieren, um diese Meldung zu unterdrücken."
-DBM_CORE_VOICE_COUNT_MISSING		= "Für die Countdown-Stimme %d ist ein Sprach-/Zählpack ausgewählt, der nicht gefunden werden konnte. Die Stimme wurde auf die Standardeinstellung zurückgesetzt."
+DBM_CORE_VOICE_COUNT_MISSING		= "Für die Countdown-Stimme %d ist ein Sprach-/Zählpack ausgewählt, der nicht gefunden werden konnte. Die Stimme wurde auf die Standardeinstellung zurückgesetzt: %s."
 --DBM_BIG_WIGS
 
 DBM_CORE_UPDATEREMINDER_HEADER			= "Deine Version von Deadly Boss Mods ist veraltet.\n Version %s (r%d) ist über Curse, WoWI oder hier zum Download verfügbar:"
@@ -229,6 +230,7 @@ DBM_CORE_SLASHCMD_HELP2				= {
 	"/dbm version2: Führt eine Boss Mod Versionsprüfung durch und flüstert Nutzer mit veralteten Versionen an (Alias: ver2).",
 	"/dbm lockout: Fragt die Schlachtzugsmitglieder nach ihren derzeitigen Instanzsperren (IDs) (nur als Leiter/Assistent) (Aliase: lockouts, ids).",
 	"/dbm lag: Prüft die Latenz im gesamten Schlachtzug.",
+	"/dbm durability: Prüft die Haltbarkeit im gesamten Schlachtzug."
 }
 DBM_CORE_TIMER_USAGE	= {
 	"DBM-Timer Kommandos:",
@@ -259,6 +261,8 @@ DBM_CHEST							= "Kiste"
 DBM_NO_DEBUFF						= "Kein %s"
 DBM_ALLY							= "Verbündeten"
 DBM_ADDS							= "Adds"
+DBM_CORE_ROOM_EDGE					= "Rand des Raums"
+DBM_CORE_SAFE						= "Sicher"
 --Common Locals end
 
 DBM_CORE_BREAK_USAGE				= "Ein Pause-Timer kann nicht länger als 60 Minuten sein. Beachte bitte, dass für Pausen-Timer die Zeit in Minuten (und nicht in Sekunden) anzugeben ist."
@@ -343,6 +347,7 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS.count				= "%s! (%%s)"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.stack				= "%%d Stapel von %s auf dir"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.switch			= "%s - Ziel wechseln"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.switchcount		= "%s - Ziel wechseln (%%s)"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.gtfo				= "Schlechtes unter dir - lauf raus"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.Adds				= "Adds kommen - Ziel wechseln"
 
 -- Auto-generated Special Warning Localizations
@@ -375,6 +380,7 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS.count 			= "Spezialwarnung für $spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.stack 			= "Spezialwarnung bei >=%d Stapel von $spell:%s auf dir"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch			= "Spezialwarnung für Zielwechsel auf $spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switchcount		= "Spezialwarnung (mit Zählung) für Zielwechsel auf $spell:%s"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.gtfo 			= "Spezialwarnung zum Rauslaufen aus schlechten Dingen auf dem Boden"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.Adds			= "Spezialwarnung für Zielwechsel auf ankommende Adds"
 
 -- Auto-generated Timer Localizations
@@ -425,20 +431,24 @@ DBM_CORE_AUTO_ARROW_OPTION_TEXT3		= "Zeige DBM-Pfeil zum Hingehen zum richtigen 
 DBM_CORE_AUTO_VOICE_OPTION_TEXT			= "Spiele gesprochene Warnungen für $spell:%s"
 DBM_CORE_AUTO_VOICE2_OPTION_TEXT		= "Spiele gesprochene Warnungen für Phasenwechsel"
 DBM_CORE_AUTO_VOICE3_OPTION_TEXT		= "Spiele gesprochene Warnungen für ankommende Adds"
+DBM_CORE_AUTO_VOICE4_OPTION_TEXT		= "Spiele gesprochene Warnungen für schlechte Dinge auf dem Boden"
 DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT		= "Spiele akustischen Countdown bis $spell:%s gewirkt wird"
 DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT2	= "Spiele akustischen Countdown bis $spell:%s schwindet"
 DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT		= "Zähle akustisch die Dauer von $spell:%s"
 
-DBM_CORE_AUTO_YELL_OPTION_TEXT.yell		= "Schreie, wenn du von $spell:%s betroffen bist"
-DBM_CORE_AUTO_YELL_OPTION_TEXT.count	= "Schreie (mit Zählung), wenn du von $spell:%s betroffen bist"
-DBM_CORE_AUTO_YELL_OPTION_TEXT.fade		= "Schreie (mit Countdown), wenn $spell:%s endet"
-DBM_CORE_AUTO_YELL_OPTION_TEXT.position	= "Schreie (mit Position), wenn du von $spell:%s betroffen bist"
+DBM_CORE_AUTO_YELL_OPTION_TEXT.shortyell	= "Schreie, wenn du von $spell:%s betroffen bist"
+DBM_CORE_AUTO_YELL_OPTION_TEXT.yell			= "Schreie (mit Spielernamen), wenn du von $spell:%s betroffen bist"
+DBM_CORE_AUTO_YELL_OPTION_TEXT.count		= "Schreie (mit Zählung), wenn du von $spell:%s betroffen bist"
+DBM_CORE_AUTO_YELL_OPTION_TEXT.fade			= "Schreie (mit Countdown und Zaubernamen), wenn $spell:%s endet"
+DBM_CORE_AUTO_YELL_OPTION_TEXT.shortfade	= "Schreie (mit Countdown), wenn $spell:%s endet"
+DBM_CORE_AUTO_YELL_OPTION_TEXT.position		= "Schreie (mit Position), wenn du von $spell:%s betroffen bist"
 
-
-DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.yell	= "%s auf " .. UnitName("player") .. "!"
-DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.count	= "%s auf " .. UnitName("player") .. "! (%%d)"
-DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.fade	= "%s endet in %%d"
-DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.position = "%s %%s auf {rt%%d}"..UnitName("player").."{rt%%d}"
+DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.shortyell	= "%s"
+DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.yell		= "%s auf " .. UnitName("player") .. "!"
+DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.count		= "%s auf " .. UnitName("player") .. "! (%%d)"
+DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.fade		= "%s endet in %%d"
+DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.shortfade	= "%d"
+DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.position	= "%s %%s auf {rt%%d}"..UnitName("player").."{rt%%d}"
 
 --DBM_CORE_AUTO_YELL_CUSTOM_POSITION
 DBM_CORE_AUTO_HUD_OPTION_TEXT			= "Zeige HudMap für $spell:%s (außer Betrieb)"
@@ -510,6 +520,11 @@ DBM_INSTANCE_INFO_SHOW_RESULTS		= "Spieler die noch nicht geantwortet haben: %s\
 DBM_CORE_LAG_CHECKING				= "Prüfe Schlachtzuglatenz..."
 DBM_CORE_LAG_HEADER					= "Deadly Boss Mods - Latenzergebnisse"
 DBM_CORE_LAG_ENTRY					= "%s: %dms (Welt) / %dms (Standort)"
+DBM_CORE_LAG_FOOTER					= "Keine Antwort: %s"
+
+DBM_CORE_DUR_CHECKING				= "Prüfe Schlachtzughaltbarkeit..."
+DBM_CORE_DUR_HEADER					= "Deadly Boss Mods - Haltbarkeitergebnisse"
+DBM_CORE_DUR_ENTRY					= "%s: Haltbarkeit [%d Prozent] / Ausrüstung defekt [%s]"
 DBM_CORE_LAG_FOOTER					= "Keine Antwort: %s"
 
 --Role Icons

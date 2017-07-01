@@ -210,7 +210,7 @@ L.HUDAlphaSlider			= "Alpha: %0.1f"
 
 -- Tab: Spoken Alerts Frame
 L.Panel_SpokenAlerts		= "Gesprochene Warnungen"
-L.Area_VoiceSelection		= "Stimmenauswahl für akustische Zählungen und gesprochene Warnungen"
+L.Area_VoiceSelection		= "Stimmenauswahl für akustische Zählungen und gesprochene Warnungen (scrollbar per Mausrad)"
 L.CountdownVoice			= "Primäre Stimme für Zählungen"
 L.CountdownVoice2			= "Sekundäre Stimme für Zählungen"
 L.CountdownVoice3			= "Tertiäre Stimme für Zählungen"
@@ -248,6 +248,7 @@ L.SpamBlockNoHealthFrame	= "Zeige keine Lebensanzeige an"
 L.SpamBlockNoCountdowns		= "Spiele keine Countdown-Sounds"
 L.SpamBlockNoYells			= "Sende keine automatischen Schreie"
 L.SpamBlockNoNoteSync		= "Akzeptiere keine geteilten Notizen"
+L.SpamBlockNoReminders		= "Zeige keine Anmeldungs-, Empfehlungs-, und Aktualisierungsmeldungen (NICHT empfohlen)"
 
 L.Area_Restore				= "DBM-Wiederherstellungseinstellungen (Setzen des vorherigen Nutzerzustands nach Mod-Ende)"
 L.SpamBlockNoIconRestore	= "Setze Markierungszeichen am Kampfende nicht auf den vorherigen Zustand zurück"
@@ -272,7 +273,7 @@ L.DontShowPTNoID			= "Blockiere Pull-Timer, die nicht aus deiner derzeitigen Zon
 L.DontShowPT				= "Zeige keinen Timerbalken für Pull-/Pausen-Timer"
 L.DontShowPTText			= "Zeige keine Mitteilungen für Pull-/Pausen-Timer im Chatfenster"
 L.DontPlayPTCountdown		= "Spiele keinen akustischen Countdown für Pull-, Pausen-, Kampf- und benutzerdefinierte Timer"
-L.DontShowPTCountdownText	= "Zeige keinen optischen Countdown für Pull-, Pausen-, Kampf- und benutzerdefinierte Timer"
+L.DontShowPTCountdownText	= "Zeige keinen optischen Countdown für Pull-Timer"
 L.PT_Threshold				= "Zeige keinen opt. Countd. für Pausen-/Kampf-/Nutzer-Timer über: %d"
 
 L.Panel_HideBlizzard		= "Deaktivierung von Spielelementen"

@@ -6,17 +6,6 @@ local L
 ---------------------------
 L= DBM:GetModLocalization(1862)
 
-L:SetTimerLocalization({
-	timerComboWamboCD =	"Next Comet/Spike (%d)"--translate later
-})
-
-L:SetOptionLocalization({
-	timerComboWamboCD =	"Show timer for next Crashing Comet/Infernal Spike"--translate later
-})
-
-L:SetMiscLocalization({
-})
-
 ---------------------------
 -- Demonic Inquisition --
 ---------------------------
@@ -53,7 +42,7 @@ L= DBM:GetModLocalization(1897)
 L= DBM:GetModLocalization(1873)
 
 L:SetOptionLocalization({
-	InfoFrame =	"Show InfoFrame for boss power"--translate later
+	InfoFrame =	"Zeige Infofenster für Bossenergie"
 })
 
 ---------------------------
