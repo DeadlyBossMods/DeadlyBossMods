@@ -100,7 +100,7 @@ mod:AddRangeFrameOption(8, 233983)
 mod.vb.burstCount = 0
 mod.vb.scytheCount = 0
 mod.vb.pangCount = 0
-mod.vb.anguishIcon = 2
+mod.vb.anguishIcon = 1
 
 local function updateAllAtriganTimers(self, ICD, ignoreBoneSaw)
 	DBM:Debug("updateAllAtriganTimers running", 3)
@@ -168,7 +168,7 @@ function mod:OnCombatStart(delay)
 	self.vb.burstCount = 0
 	self.vb.scytheCount = 0
 	self.vb.pangCount = 0
-	self.vb.anguishIcon = 2
+	self.vb.anguishIcon = 1
 	timerScytheSweepCD:Start(5.2-delay)
 	if not self:IsEasy() then
 		timerCalcifiedQuillsCD:Start(8.5-delay)--8.5-11
@@ -227,7 +227,7 @@ function mod:SPELL_CAST_START(args)
 			voicePangsofGuilt:Play("kick3r")
 		end
 	elseif spellId == 233983 then
-		self.vb.anguishIcon = 2
+		self.vb.anguishIcon = 1
 		updateAllBelacTimers(self, 2)
 	end
 end
@@ -299,7 +299,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnQuills:Show(args.destName)
 		end
 		if self.Options.SetIconOnQuills then
-			self:SetIcon(args.destName, 1)
+			self:SetIcon(args.destName, 4)
 		end
 	elseif spellId == 208802 then
 		local amount = args.amount or 1
