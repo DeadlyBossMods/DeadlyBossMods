@@ -28,7 +28,6 @@ mod:RegisterEventsInCombat(
 --TODO, fine tune all option defaults once what targets or doesn't target x and y is known. Fight can't have too much timer/warning spam
 --TODO, announce lunar strike? more redundancy in encounter that isn't needed IMO
 --TODO, video fight and improve timer interactions to better deal with huge variation in stuff like moon glaive timer.
---TODO, all 3 54 second moon specials are confusing, since inactive bosses keep using them OFF of the moon cycles? Worse, normal/heroic aren't even same behavior, so it needs a crap ton of rules (or just leave it and say fuck it)
 --TODO, moontalon still wonky, ["236694-Call Moontalon"] = "pull:57.2, 7.3, 57.3", ["236694-Call Moontalon"] = "pull:58.6, 62.0",
 --[[
 (ability.id = 236694 or ability.id = 236442 or ability.id = 239379 or ability.id = 236712) and type = "begincast" or
@@ -127,6 +126,9 @@ function mod:VolleyTarget(targetname, uId)
 	end
 end
 
+--P1 Easy: Incorp Shot (P1 Heroic, Incorp and elcipse)
+--P2 Easy: Eclipse (PS heroic, Eclipse and Glaives)
+--P3 Eass: Glaives (PS heroic Glaives and Incorp)
 function mod:OnCombatStart(delay)
 	self.vb.phase = 1
 	self.vb.twilightGlaiveCount = 0
@@ -136,8 +138,10 @@ function mod:OnCombatStart(delay)
 	timerMoonGlaiveCD:Start(14.4-delay)--16.6 on lat mythic test
 	timerTwilightVolleyCD:Start(15.5-delay)--15.5-17
 	timerTwilightGlaiveCD:Start(17.4-delay)
-	timerIncorporealShotCD:Start(48-delay)
-	timerEmbraceofEclipseCD:Start(48-delay)
+	timerIncorporealShotCD:Start(48-delay)--Primary in phase 1 in all modes
+	if not self:IsEasy() then
+		timerEmbraceofEclipseCD:Start(48-delay)--Secondary special for heroic/mythic
+	end
 end
 
 function mod:OnCombatEnd()
@@ -346,29 +350,41 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	--"<177.62 17:55:28> [CHAT_MSG_MONSTER_SAY] No more dawdling, Kasparian! Victory shall be mine!#Captain Yathae Moonstrike###Omegal##0#0##0#451#nil#0#false#false#false#false", -- [3698]
 	if spellId == 243044 then--Captain Yathae Becomes Active Conversation (Phase 2)
 		self.vb.phase = 2
+		local elapsedMoon, totalMoon = timerIncorporealShotCD:GetTime()--Grab current special from phase 1 special timer first
 		warnPhase2:Show()
 		timerMoonGlaiveCD:Stop()
 		timerTwilightVolleyCD:Stop()
 		timerTwilightGlaiveCD:Stop()
-		timerIncorporealShotCD:Stop()
+		timerIncorporealShotCD:Stop()--Stop Phase 1 special timer
 		timerCallMoontalonCD:Start(3.3)--Review
 		timerTwilightGlaiveCD:Start(6)
 		timerTwilightVolleyCD:Start(10.9)
 		timerRapidShotCD:Start(15.8)--Review
-		--timerGlaiveStormCD:Start(2)--One of specials, needs figuring out
+		--Phase 2 ability: Eclipse. Next phase ability used on heroic+: Glaive
+		if self:IsEasy() then--Eclipse starts
+			timerEmbraceofEclipseCD:Update(elapsedMoon, totalMoon)
+		else--eclipse already running and glaive starts
+			timerGlaiveStormCD:Update(elapsedMoon, totalMoon)
+		end
 	elseif spellId == 243047 then--Lunaspyre Becomes Active Conversation (Phase 3)
 		self.vb.phase = 3
+		local elapsedMoon, totalMoon = timerEmbraceofEclipseCD:GetTime()--Grab current special from phase 2 special timer first
 		warnPhase3:Show()
 		timerRapidShotCD:Stop()
 		timerTwilightVolleyCD:Stop()
-		timerEmbraceofEclipseCD:Stop()
+		timerEmbraceofEclipseCD:Stop()--Stop phase 2 Special timer
 		timerMoonBurnCD:Stop()
 		timerCallMoontalonCD:Stop()
 		timerLunarFireCD:Start(6)
 		timerMoonBurnCD:Start(11)
 		timerTwilightVolleyCD:Start(17)
 		timerLunarBeaconCD:Start(18)
-		--timerIncorporealShotCD:Start()--Never used in my log, maybe not used on normal
+		--Phase 3 ability: Glaive. Next phase ability used on heroic+ (rolled around to phase 1): Incorpereal Shot
+		if self:IsEasy() then--Glaive starts
+			timerGlaiveStormCD:Start(elapsedMoon, totalMoon)
+		else
+			timerIncorporealShotCD:Start(elapsedMoon, totalMoon)
+		end
 	end
 end
 
