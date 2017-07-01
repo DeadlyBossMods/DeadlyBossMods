@@ -126,6 +126,39 @@ function mod:VolleyTarget(targetname, uId)
 	end
 end
 
+local updateInfoFrame
+do
+	local EclipseName = GetSpellInfo(233263)
+	local lines = {}
+	local sortedLines = {}
+	local function addLine(key, value)
+		-- sort by insertion order
+		lines[key] = value
+		sortedLines[#sortedLines + 1] = key
+	end
+	updateInfoFrame = function()
+		table.wipe(lines)
+		table.wipe(sortedLines)
+		for i = 1, 3 do
+			local uId = "boss"..i
+			if UnitExists(uId) then
+				local absorbAmount = select(17, UnitBuff(uId, EclipseName)) or select(17, UnitDebuff(uId, EclipseName))
+				if absorbAmount then
+					addLine(UnitName(uId), absorbAmount)
+					break
+				end
+			end
+		end
+		for uId in DBM:GetGroupMembers() do
+			local absorbAmount = select(17, UnitBuff(uId, EclipseName)) or select(17, UnitDebuff(uId, EclipseName))
+			if absorbAmount then
+				addLine(UnitName(uId), absorbAmount)
+			end
+		end
+		return lines, sortedLines
+	end
+end
+
 --P1 Easy: Incorp Shot (P1 Heroic, Incorp and elcipse)
 --P2 Easy: Eclipse (PS heroic, Eclipse and Glaives)
 --P3 Eass: Glaives (PS heroic Glaives and Incorp)
@@ -272,7 +305,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if self.Options.InfoFrame and not DBM.InfoFrame:IsShown() then
 			DBM.InfoFrame:SetHeader(args.spellName)
-			DBM.InfoFrame:Show(10, "allabsorb", args.spellName)
+			DBM.InfoFrame:Show(6, "function", updateInfoFrame)
 		end
 	elseif spellId == 233263 then--Healer Embrace of the Eclipse
 		self.vb.eclipseCount = self.vb.eclipseCount + 1
@@ -284,7 +317,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if self.Options.InfoFrame and not DBM.InfoFrame:IsShown() then
 			DBM.InfoFrame:SetHeader(args.spellName)
-			DBM.InfoFrame:Show(10, "allabsorb", args.spellName)
+			DBM.InfoFrame:Show(6, "function", updateInfoFrame)
 		end
 	elseif spellId == 236712 then
 		warnLunarBeacon:CombinedShow(0.3, args.destName)
