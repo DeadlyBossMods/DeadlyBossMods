@@ -90,8 +90,8 @@ L.Warn_Duration				= "Warnungsdauer: %ds"
 L.None						= "normal"
 L.Outline					= "mit Umriss"
 L.ThickOutline				= "mit dickem Umriss"
-L.MonochromeOutline			= "ohne Kantenglättung, mit Umriss"
-L.MonochromeThickOutline	= "ohne Kantenglättung, mit dickem Umriss"
+L.MonochromeOutline			= "ohne Glättung, mit Umriss"
+L.MonochromeThickOutline	= "ohne Glätt., mit dickem Umriss"
 L.RaidWarnSound				= "Sound für Schlachtzugwarnungen"
 
 -- Tab: Generalwarnings
