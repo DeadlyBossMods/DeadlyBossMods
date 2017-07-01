@@ -245,8 +245,13 @@ function mod:SPELL_CAST_START(args)
 		timerArmageddon:Start()
 		if self.vb.phase == 1.5 then
 			if self.vb.armageddonCast < 2 then
-				timerArmageddonCD:Start(28, self.vb.armageddonCast+1)
-				countdownArmageddon:Start(28)
+				if self:IsEasy() then
+					timerArmageddonCD:Start(28, self.vb.armageddonCast+1)
+					countdownArmageddon:Start(28)
+				else
+					timerArmageddonCD:Start(30, self.vb.armageddonCast+1)
+					countdownArmageddon:Start(30)
+				end
 			end
 		elseif self.vb.phase == 2 then
 			local timer = self:IsNormal() and phase2NormalArmageddonTimers[self.vb.armageddonCast+1] or self:IsHeroic() and phase2HeroicArmageddonTimers[self.vb.armageddonCast+1]
