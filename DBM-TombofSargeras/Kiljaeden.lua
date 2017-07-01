@@ -227,13 +227,13 @@ function mod:SPELL_CAST_START(args)
 			specWarnDarknessofSouls:Show(GROUP)
 		else--Move to rift
 			specWarnDarknessofSouls:Show(riftName)
+			if self.Options.InfoFrame then
+				DBM.InfoFrame:SetHeader(DBM_NO_DEBUFF:format(DBM_CORE_SAFE))
+				DBM.InfoFrame:Show(10, "playergooddebuff", gravitySqueezeBuff)
+			end
 		end
 		voiceDarknesofSouls:Play("findshelter")
 		timerDarknessofSoulsCD:Start(nil, self.vb.darknessCount+1)
-		if self.Options.InfoFrame then
-			DBM.InfoFrame:SetHeader(DBM_NO_DEBUFF:format(gravitySqueezeBuff))
-			DBM.InfoFrame:Show(10, "playergooddebuff", gravitySqueezeBuff)
-		end
 	elseif spellId == 243982 then
 		self.vb.riftCount = self.vb.riftCount + 1
 		warnTearRift:Show(self.vb.riftCount)
