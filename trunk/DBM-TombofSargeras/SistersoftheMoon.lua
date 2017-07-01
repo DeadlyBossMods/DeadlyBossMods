@@ -73,16 +73,16 @@ local specWarnLunarFireOther		= mod:NewSpecialWarningTaunt(239264, nil, nil, nil
 local specWarnMoonBurn				= mod:NewSpecialWarningMoveTo(236519, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.you:format(236519), nil, 1, 7)--Add voice filter when it has a voice
 
 --Huntress Kasparian
-local timerGlaiveStormCD			= mod:NewCDTimer(54.3, 239379, nil, nil, nil, 3)--Moon change special (but also used while inactive?)
+local timerGlaiveStormCD			= mod:NewNextTimer(54.3, 239379, nil, nil, nil, 3)--Moon change special (but also used while inactive?)
 local timerTwilightGlaiveCD			= mod:NewCDTimer(31, 237561, nil, nil, nil, 3)
 local timerMoonGlaiveCD				= mod:NewCDTimer(13.4, 236547, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--13.4-30 second variation, have fun with that
 --Captain Yathae Moonstrike
-local timerIncorporealShotCD		= mod:NewCDTimer(54.3, 236305, nil, nil, nil, 3)--Moon change special (but also used while inactive?)
+local timerIncorporealShotCD		= mod:NewNextTimer(54.3, 236305, nil, nil, nil, 3)--Moon change special (but also used while inactive?)
 local timerCallMoontalonCD			= mod:NewCDTimer(31, 236694, nil, nil, nil, 1)
 local timerTwilightVolleyCD			= mod:NewCDTimer(15.8, 236442, nil, nil, nil, 2)--Cast while inactive.
 local timerRapidShotCD				= mod:NewCDTimer(18.2, 236596, nil, nil, nil, 3)--18.2 but sometimes 30
 --Priestess Lunaspyre
-local timerEmbraceofEclipseCD		= mod:NewCDTimer(54.3, 233264, nil, nil, nil, 5, nil, DBM_CORE_HEALER_ICON..DBM_CORE_DAMAGE_ICON)--Moon change special (but also used while inactive in phase 1)
+local timerEmbraceofEclipseCD		= mod:NewNextTimer(54.3, 233264, nil, nil, nil, 5, nil, DBM_CORE_HEALER_ICON..DBM_CORE_DAMAGE_ICON)--Moon change special (but also used while inactive in phase 1)
 local timerLunarBeaconCD			= mod:NewCDTimer(31, 236712, nil, nil, nil, 3)
 local timerLunarFireCD				= mod:NewCDTimer(11, 239264, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerMoonBurnCD				= mod:NewCDTimer(23, 236519, nil, nil, nil, 3)--Used while inactive
