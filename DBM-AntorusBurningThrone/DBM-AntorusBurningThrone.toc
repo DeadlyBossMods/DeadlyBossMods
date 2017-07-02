@@ -2,6 +2,7 @@
 ## X-Min-Interface: 70300
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Antorus, the Burning Throne|r
 ## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Antorus, der Brennende Thron|r
+## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0안토러스 - 불타는 왕좌|r
 ## Author: MysticalOS
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
@@ -16,6 +17,7 @@
 ## X-DBM-Mod-MinCoreRevision: 14737
 localization.en.lua
 localization.de.lua
+localization.kr.lua
 Garothi.lua
 HoundsofSargeras.lua
 AntorusWarCouncil.lua
