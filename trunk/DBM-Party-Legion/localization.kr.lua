@@ -567,3 +567,35 @@ L:SetGeneralLocalization({
 	name =	"영원한 밤의 대성당 일반몹"
 })
 
+-----------------------
+-- <<<Seat of Triumvirate >>> --
+-----------------------
+-----------------------
+-- Zuraal --
+-----------------------
+L= DBM:GetModLocalization(1979)
+
+-----------------------
+-- Saprish  --
+-----------------------
+L= DBM:GetModLocalization(1980)
+
+-----------------------
+-- Viceroy Nezhar --
+-----------------------
+L= DBM:GetModLocalization(1981)
+
+-----------------------
+-- L'ura  --
+-----------------------
+L= DBM:GetModLocalization(1982)
+
+-----------------------
+--Seat of Triumvirate Trash
+-----------------------
+L = DBM:GetModLocalization("SoTTrash")
+
+L:SetGeneralLocalization({
+	name =	"삼두정의 권좌 일반몹"
+})
+
