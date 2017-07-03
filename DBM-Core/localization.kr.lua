@@ -256,6 +256,10 @@ DBM_CORE_RIGHT						= "오른쪽"
 DBM_CORE_BACK						= "뒤쪽"--BACK
 DBM_CORE_MIDDLE						= "가운데"
 DBM_CORE_FRONT						= "앞쪽"
+DBM_CORE_EAST						= "동쪽"
+DBM_CORE_WEST						= "서쪽"
+DBM_CORE_NORTH						= "북쪽"
+DBM_CORE_SOUTH						= "남쪽"
 DBM_CORE_INTERMISSION				= "사잇 단계"
 DBM_CORE_ORB						= "구슬"
 DBM_CHEST							= "상자"--As in Treasure 'Chest'. Not Chest as in body part.
@@ -350,6 +354,7 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS.switch		= "%s - 대상 바꾸세요"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.switchcount	= "%s - 대상 바꾸세요 (%%s)"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.gtfo		= "바닥 - 피하세요"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.Adds		= "쫄 등장 - 대상 바꾸세요"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.Addscustom	= "쫄 등장 - %s"
 
 -- Auto-generated Special Warning Localizations
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell			= "$spell:%s 특수 경고 보기"
@@ -383,6 +388,7 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch			= "$spell:%s에 대상 변경 특수 �
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switchcount 		= "$spell:%s에 대상 변경 특수 경고 보기 (횟수 포함)"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.gtfo 			= "바닥 피하기 특수 경고 보기"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.Adds 			= "쫄 등장시 대상 변경 특수 경고 보기"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.Addscustom		= "쫄 등장시 특수 경고 보기"
 
 -- Auto-generated Timer Localizations
 DBM_CORE_AUTO_TIMER_TEXTS.target		= "%s: %%s"
@@ -402,6 +408,7 @@ DBM_CORE_AUTO_TIMER_TEXTS.nextspecial		= "다음 특수 능력"
 DBM_CORE_AUTO_TIMER_TEXTS.achievement		= "%s"
 DBM_CORE_AUTO_TIMER_TEXTS.phase			= "다음 단계"
 DBM_CORE_AUTO_TIMER_TEXTS.adds			= "다음 쫄 등장"
+DBM_CORE_AUTO_TIMER_TEXTS.addscustom		= "쫄 등장 (%s)"
 
 DBM_CORE_AUTO_TIMER_OPTIONS.target		= "$spell:%s 디버프 타이머 바 보기"
 DBM_CORE_AUTO_TIMER_OPTIONS.cast		= "$spell:%s 시전 타이머 바 보기"
@@ -420,6 +427,7 @@ DBM_CORE_AUTO_TIMER_OPTIONS.nextspecial		= "다음 특수 능력 타이머 바 �
 DBM_CORE_AUTO_TIMER_OPTIONS.achievement		= "%s 업적의 타이머 바 보기"
 DBM_CORE_AUTO_TIMER_OPTIONS.phase		= "다음 단계 타이머 바 보기"
 DBM_CORE_AUTO_TIMER_OPTIONS.adds		= "쫄 등장 타이머 바 보기"
+DBM_CORE_AUTO_TIMER_OPTIONS.addscustom		= "쫄 등장 타이머 바 보기"
 DBM_CORE_AUTO_TIMER_OPTIONS.roleplay		= "역할 수행(롤플레이) 지속 시간 타이머 바 보기"
 
 DBM_CORE_AUTO_ICONS_OPTION_TEXT			= "$spell:%s 대상에 공격대 징표 설정"
