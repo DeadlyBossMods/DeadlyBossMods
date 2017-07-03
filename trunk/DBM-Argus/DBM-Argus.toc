@@ -18,6 +18,7 @@
 ## X-DBM-Mod-LoadCID: 
 ## X-DBM-Mod-MinCoreRevision: 14737
 localization.en.lua
+localization.cn.lua
 localization.de.lua
 Percontatum.lua
 Alluradel.lua
