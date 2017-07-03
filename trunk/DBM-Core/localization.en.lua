@@ -255,6 +255,10 @@ DBM_CORE_RIGHT						= "Right"
 DBM_CORE_BACK						= "Back"--BACK
 DBM_CORE_MIDDLE						= "Middle"
 DBM_CORE_FRONT						= "Front"
+DBM_CORE_EAST						= "East"
+DBM_CORE_WEST						= "West"
+DBM_CORE_NORTH						= "North"
+DBM_CORE_SOUTH						= "South"
 DBM_CORE_INTERMISSION				= "Intermission"--No blizz global for this, and will probably be used in most end tier fights with intermission phases
 DBM_CORE_ORB						= "Orb"
 DBM_CHEST							= "Chest"--As in Treasure 'Chest'. Not Chest as in body part.
@@ -353,7 +357,8 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 	switch			= "%s - switch targets",
 	switchcount		= "%s - switch targets (%%s)",
 	gtfo			= "Bad under you - move away",
-	Adds			= "Incoming Adds - switch targets"
+	Adds			= "Incoming Adds - switch targets",
+	Addscustom	= "Incoming Adds - %s"
 }
 
 -- Auto-generated Special Warning Localizations
@@ -388,7 +393,8 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 	switch			= "Show special warning to switch targets for $spell:%s",
 	switchcount		= "Show special warning (with count) to switch targets for $spell:%s",
 	gtfo 			= "Show special warning to move out bad stuff on ground",
-	Adds			= "Show special warning to switch targets for incoming adds"
+	Adds			= "Show special warning to switch targets for incoming adds",
+	Addscustom		= "Show special warning for incoming adds"
 }
 
 -- Auto-generated Timer Localizations
@@ -410,6 +416,7 @@ DBM_CORE_AUTO_TIMER_TEXTS = {
 	achievement	= "%s",
 	phase		= "Next Phase",
 	adds		= "Next Incoming Adds",
+	addscustom	= "Incoming Adds (%s)",
 	roleplay	= GUILD_INTEREST_RP
 }
 
@@ -431,6 +438,7 @@ DBM_CORE_AUTO_TIMER_OPTIONS = {
 	achievement	= "Show timer for %s",
 	phase		= "Show timer for next phase",
 	adds		= "Show timer for incoming adds",
+	addscustom	= "Show timer for incoming adds",
 	roleplay	= "Show timer for roleplay duration"--This does need localizing though.
 }
 
