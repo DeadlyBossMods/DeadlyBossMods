@@ -211,7 +211,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnGlaiveStorm:Show()
 		voiceGlaiveStorm:Play("watchstep")
 		timerGlaiveStormCD:Start()
-		if self:AntiSpam(2) then
+		if self:AntiSpam(5, 2) then
 			countdownSpecials:Start()
 		end
 	end
@@ -232,7 +232,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerMoonBurnCD:Start()
 	elseif spellId == 233263 then
 		timerEmbraceofEclipseCD:Start()
-		if self:AntiSpam(2) then
+		if self:AntiSpam(5, 2) then
 			countdownSpecials:Start()
 		end
 	elseif spellId == 236672 then
@@ -292,7 +292,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnRapidShot:Show(args.destName)
 		end
 	elseif spellId == 236305 then
-		timerIncorporealShotCD:Start()
+		if self:AntiSpam(5, 3) then
+			timerIncorporealShotCD:Start()
+		end
 		if args:IsPlayer() then
 			specWarnIncorpShot:Show()
 			voiceIncorpShot:Play("targetyou")
@@ -304,7 +306,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.SetIconOnIncorpShot then
 			self:SetIcon(args.destName, 1)
 		end
-		if self:AntiSpam(2) then
+		if self:AntiSpam(5, 2) then
 			countdownSpecials:Start()
 		end
 	elseif spellId == 233264 then--Dpser Embrace of the Eclipse
