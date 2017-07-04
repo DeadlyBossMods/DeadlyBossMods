@@ -4217,12 +4217,14 @@ do
 					--UGLY hack to get release version number instead of alpha one
 					if DBM.NewerVersion:find("alpha") then
 						local temp1, temp2 = string.split(" ", DBM.NewerVersion)--Strip down to just version, no alpha
-						local temp3, temp4, temp5 = string.split(".", temp1)--Strip version down to 3 numbers
-						if temp3 and temp4 and temp5 then
-							temp5 = tonumber(temp5)
-							temp5 = temp5 - 1
-							temp5 = tostring(temp5)
-							DBM.NewerVersion = temp3.."."..temp4.."."..temp5
+						if temp1 then
+							local temp3, temp4, temp5 = string.split(".", temp1)--Strip version down to 3 numbers
+							if temp3 and temp4 and temp5 then
+								temp5 = tonumber(temp5)
+								temp5 = temp5 - 1
+								temp5 = tostring(temp5)
+								DBM.NewerVersion = temp3.."."..temp4.."."..temp5
+							end
 						end
 					end
 					--Find min revision.

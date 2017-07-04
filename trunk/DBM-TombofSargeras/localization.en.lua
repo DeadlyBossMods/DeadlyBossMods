@@ -49,6 +49,10 @@ L:SetOptionLocalization({
 ---------------------------
 L= DBM:GetModLocalization(1898)
 
+L:SetMiscLocalization({
+	Obelisklasers	= "Obelisk Lasers"
+})
+
 -------------
 --  Trash  --
 -------------
