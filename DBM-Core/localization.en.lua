@@ -464,11 +464,11 @@ DBM_CORE_AUTO_YELL_OPTION_TEXT = {
 	position	= "Yell (with position) when you are affected by $spell:%s"
 }
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT = {
-	shortyell	= "%s",
+	shortyell	= "%%s",
 	yell		= "%s on " .. UnitName("player") .. "!",
 	count		= "%s on " .. UnitName("player") .. "! (%%d)",
 	fade		= "%s fading in %%d",
-	shortfade	= "%d",
+	shortfade	= "%%d",
 	position 	= "%s %%s on {rt%%d}"..UnitName("player").."{rt%%d}"
 }
 DBM_CORE_AUTO_YELL_CUSTOM_POSITION		= "{rt%d} %s {rt%d}"--Doesn't need translating. Has no strings
