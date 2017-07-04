@@ -88,7 +88,7 @@ local timerWailingSoulsCD			= mod:NewCDCountTimer(58, 236072, nil, nil, nil, 2)
 local timerSunderingDoomCD			= mod:NewCDTimer(25.4, 236542, nil, nil, nil, 5)
 local timerDoomedSunderingCD		= mod:NewCDTimer(25.2, 236544, nil, nil, nil, 5)
 
---local berserkTimer				= mod:NewBerserkTimer(300)
+local berserkTimer					= mod:NewBerserkTimer(480)
 
 local countdownSunderingDoom		= mod:NewCountdown(25.4, 236542)
 local countdownDoomedSundering		= mod:NewCountdown(25.2, 236544)
@@ -175,6 +175,9 @@ function mod:OnCombatStart(delay)
 	if not self:IsEasy() then
 		doBones = true
 		timerSpearofAnquishCD:Start(22-delay)
+		if self:IsMythic() then
+			berserkTimer:Start(480-delay)
+		end
 	else
 		doBones = false
 	end
@@ -189,12 +192,12 @@ function mod:OnCombatStart(delay)
 		if UnitDebuff(uId, spiritRealm) then
 			playersInSpirit[#playersInSpirit+1] = name
 			if UnitIsUnit("player", uId) and self.Options.RangeFrame then
-				DBM.RangeCheck:Show(5, regularFilter)
+				DBM.RangeCheck:Show(8, regularFilter)
 			end
 		else
 			playersNotInSpirit[#playersNotInSpirit+1] = name
 			if UnitIsUnit("player", uId) and self.Options.RangeFrame then
-				DBM.RangeCheck:Show(5, spiritFilter)
+				DBM.RangeCheck:Show(8, spiritFilter)
 			end
 		end
 	end
@@ -230,7 +233,7 @@ function mod:SPELL_CAST_START(args)
 			specWarnSunderingDoomRun:Show()
 			voiceSunderingDoom:Play("justrun")
 		else
-			specWarnSunderingDoomGather:Show(COMPACT_UNIT_FRAME_PROFILE_SORTBY_GROUP)
+			specWarnSunderingDoomGather:Show(BOSS)
 			voiceSunderingDoom:Play("gathershare")
 		end
 		timerSunderingDoomCD:Start()
@@ -358,7 +361,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		playersInSpirit[#playersInSpirit+1] = args.destName
 		tDeleteItem(playersNotInSpirit, args.destName)
 		if args:IsPlayer() then--Only show people not in spirit realm
-			DBM.RangeCheck:Show(5, regularFilter)
+			DBM.RangeCheck:Show(8, regularFilter)
 		end
 	end
 end
@@ -390,7 +393,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		playersNotInSpirit[#playersNotInSpirit+1] = args.destName
 		tDeleteItem(playersInSpirit, args.destName)
 		if args:IsPlayer() then--Only show people in spirit realm
-			DBM.RangeCheck:Show(5, spiritFilter)
+			DBM.RangeCheck:Show(8, spiritFilter)
 		end
 	elseif spellId == 238570 then--Tormented Cries
 		timerTormentedCriesCD:Start(58, self.vb.tormentedCriesCast+1)
