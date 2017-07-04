@@ -443,11 +443,11 @@ DBM_CORE_AUTO_YELL_OPTION_TEXT.fade			= "Schreie (mit Countdown und Zaubernamen)
 DBM_CORE_AUTO_YELL_OPTION_TEXT.shortfade	= "Schreie (mit Countdown), wenn $spell:%s endet"
 DBM_CORE_AUTO_YELL_OPTION_TEXT.position		= "Schreie (mit Position), wenn du von $spell:%s betroffen bist"
 
-DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.shortyell	= "%s"
+DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.shortyell	= "%%s"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.yell		= "%s auf " .. UnitName("player") .. "!"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.count		= "%s auf " .. UnitName("player") .. "! (%%d)"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.fade		= "%s endet in %%d"
-DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.shortfade	= "%d"
+DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.shortfade	= "%%d"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.position	= "%s %%s auf {rt%%d}"..UnitName("player").."{rt%%d}"
 
 --DBM_CORE_AUTO_YELL_CUSTOM_POSITION
