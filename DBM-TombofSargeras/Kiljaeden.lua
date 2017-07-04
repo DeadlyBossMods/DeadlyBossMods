@@ -78,13 +78,14 @@ local specWarnMalignantAnguish		= mod:NewSpecialWarningInterrupt(236597, "HasInt
 
 --Stage Three: Darkness of A Thousand Souls
 local specWarnDarknessofSouls		= mod:NewSpecialWarningMoveTo(238999, nil, nil, nil, 3, 2)
-local specWarnFlamingOrbSpawn		= mod:NewSpecialWarningDodge(239253, nil, nil, nil, 1, 2)--Spawn warning (todo, another warning for fixate target if possible)
+local specWarnObelisk				= mod:NewSpecialWarningCount(239785, nil, nil, nil, 2, 2)
+local specWarnFlamingOrbSpawn		= mod:NewSpecialWarningDodge(239253, nil, nil, nil, 2, 2)--Spawn warning
 
 --Stage One: The Betrayer
 local timerFelclawsCD				= mod:NewCDCountTimer(25, 239932, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerRupturingSingularityCD	= mod:NewCDCountTimer(61, 235059, nil, nil, nil, 3)--61-68?
 local timerRupturingSingularity		= mod:NewCastTimer(9.7, 235059, 206577, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)--Shortname: Comet Impact
-local timerArmageddonCD				= mod:NewCDCountTimer(42, 240910, nil, nil, nil, 5)--
+local timerArmageddonCD				= mod:NewCDCountTimer(42, 240910, nil, nil, nil, 5)
 local timerArmageddon				= mod:NewCastTimer(9, 234295, nil, nil, nil, 2)--Armageddon Rain
 local timerShadReflectionEruptingCD	= mod:NewCDTimer(35, 236710, 243160, nil, nil, 3)--Shortname : erupting souls
 --Intermission: Eternal Flame
@@ -100,6 +101,8 @@ local timerSightlessGaze			= mod:NewBuffActiveTimer(20, 241721, nil, nil, nil, 5
 local timerDarknessofSoulsCD		= mod:NewCDCountTimer(90, 238999, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
 local timerTearRiftCD				= mod:NewCDCountTimer(95, 243982, nil, nil, nil, 3)
 local timerFlamingOrbCD				= mod:NewCDCountTimer(30, 239253, nil, nil, nil, 3)
+local timerObeliskCD				= mod:NewCDCountTimer(42, 239785, nil, nil, nil, 3)
+local timerObelisk					= mod:NewCastTimer(13, 239785, L.Obelisklasers, nil, nil, 3)
 
 local berserkTimer					= mod:NewBerserkTimer(600)
 
@@ -122,11 +125,12 @@ local voiceBurstingDreadFlame		= mod:NewVoice(238430)--scatter
 local voiceSRHopeless				= mod:NewVoice(237590)--targetyou (temp, more customized after seen)
 local voiceSRMalignant				= mod:NewVoice(236498)--targetyou (temp, more customized after seen)
 local voiceMalignantAnguish			= mod:NewVoice(236597, "HasInterrupt", nil, 2)--kickcast
-local voiceFlameOrbSpawn			= mod:NewVoice(239253)--watchstep/runout
 --Intermission: Deceiver's Veil
 
 --Stage Three: Darkness of A Thousand Souls
 local voiceDarknesofSouls			= mod:NewVoice(238999)--findshelter
+local voiceObelisk					= mod:NewVoice(239785)--farfromline
+local voiceFlameOrbSpawn			= mod:NewVoice(239253)--watchstep/runout
 
 mod:AddSetIconOption("SetIconOnFocusedDread", 238502, true)
 mod:AddSetIconOption("SetIconOnBurstingDread", 238430, true)
@@ -146,6 +150,7 @@ mod.vb.darknessCount = 0
 mod.vb.riftCount = 0
 mod.vb.lastTankHit = "None"
 mod.vb.clawCount = 0
+mod.vb.obeliskCount = 0
 local riftName, gravitySqueezeBuff = GetSpellInfo(239130), GetSpellInfo(239154)
 local phase2NormalArmageddonTimers = {55, 45, 31}
 local phase2HeroicArmageddonTimers = {55, 75, 35, 30}
@@ -185,6 +190,19 @@ local function updateRangeFrame(self)
 end
 --]]
 
+--https://www.warcraftlogs.com/reports/CTMzhXkF6W3majct#fight=5&pins=2%24Off%24%23244F4B%24expression%24ability.name%20%3D%20%22Demonic%20Obelisk%22%20or%20ability.id%20%3D%20238999%20and%20type%20%3D%20%22begincast%22&view=events
+--https://www.warcraftlogs.com/reports/CTMzhXkF6W3majct#fight=17&pins=2%24Off%24%23244F4B%24expression%24ability.name%20%3D%20%22Demonic%20Obelisk%22%20or%20ability.id%20%3D%20238999%20and%20type%20%3D%20%22begincast%22&view=events
+local function ObeliskWarning(self)
+	self.vb.obeliskCount = self.vb.obeliskCount + 1
+	specWarnObelisk:Show(self.vb.obeliskCount)
+	voiceObelisk:Play("farfromline")
+	timerObelisk:Start()
+	if self.vb.obeliskCount % 2 == 0 then
+		timerObeliskCD:Start(36, self.vb.obeliskCount+1)
+		self:Schedule(36, ObeliskWarning, self)
+	end
+end
+
 function mod:OnCombatStart(delay)
 	self.vb.phase = 1
 	self.vb.armageddonCast = 0
@@ -197,6 +215,7 @@ function mod:OnCombatStart(delay)
 	self.vb.riftCount = 0
 	self.vb.lastTankHit = "None"
 	self.vb.clawCount = 0
+	self.vb.obeliskCount = 0
 	timerArmageddonCD:Start(10-delay, 1)
 	countdownArmageddon:Start(10-delay)
 	if not self:IsEasy() then
@@ -225,12 +244,16 @@ function mod:SPELL_CAST_START(args)
 		self.vb.darknessCount = self.vb.darknessCount + 1
 		if self.vb.darknessCount == 1 then--No rift yet, stack with group
 			specWarnDarknessofSouls:Show(GROUP)
+			self:Schedule(25, ObeliskWarning, self)
+			timerObeliskCD:Start(25, 1)
 		else--Move to rift
 			specWarnDarknessofSouls:Show(riftName)
 			if self.Options.InfoFrame then
 				DBM.InfoFrame:SetHeader(DBM_NO_DEBUFF:format(DBM_CORE_SAFE))
 				DBM.InfoFrame:Show(10, "playergooddebuff", gravitySqueezeBuff)
 			end
+			self:Schedule(28.5, ObeliskWarning, self)
+			timerObeliskCD:Start(28.5, self.vb.obeliskCount+1)
 		end
 		voiceDarknesofSouls:Play("findshelter")
 		timerDarknessofSoulsCD:Start(nil, self.vb.darknessCount+1)
