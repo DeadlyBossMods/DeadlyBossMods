@@ -66,7 +66,7 @@ local timerCalcifiedQuillsCD		= mod:NewCDTimer(20.2, 233431, nil, nil, nil, 3)--
 local timerBoneSawCD				= mod:NewCDTimer(45.4, 233441, nil, nil, nil, 2)
 local timerBoneSaw					= mod:NewBuffActiveTimer(15, 233441, nil, nil, nil, 2)
 --Belac
-local timerEchoingAnguishCD			= mod:NewCDTimer(25.5, 233983, nil, nil, nil, 3, nil, DBM_CORE_MAGIC_ICON)
+local timerEchoingAnguishCD			= mod:NewCDTimer(22.9, 233983, nil, nil, nil, 3, nil, DBM_CORE_MAGIC_ICON)
 local timerSuffocatingDarkCD		= mod:NewCDTimer(24, 233894, nil, nil, nil, 3)
 local timerTormentingBurstCD		= mod:NewCDTimer(17.0, 234015, nil, nil, nil, 2)
 local timerFelSquallCD				= mod:NewCDTimer(45.7, 235230, nil, nil, nil, 2)

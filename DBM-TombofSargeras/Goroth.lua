@@ -244,7 +244,7 @@ function mod:UNIT_AURA_UNFILTERED(uId)
 	local name = DBM:GetUnitFullName(uId)
 	if hasDebuff and not cometTable[name] and spellId == 232249 then
 		cometTable[name] = true
-		warnCrashingComet:CombinedShow(0.3, name)--Multiple targets in heroic/mythic
+		warnCrashingComet:CombinedShow(0.5, name)--Multiple targets in heroic/mythic
 		if UnitIsUnit(uId, "player") then
 			specWarnCrashingComet:Show()
 			voiceCrashingComet:Play("runout")
