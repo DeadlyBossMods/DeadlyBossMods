@@ -459,7 +459,7 @@ DBM_CORE_AUTO_YELL_OPTION_TEXT = {
 	shortyell	= "Yell when you are affected by $spell:%s",
 	yell		= "Yell (with player name) when you are affected by $spell:%s",
 	count		= "Yell (with count) when you are affected by $spell:%s",
-	fade		= "Yell (with countdown & spell name) when $spell:%s is fading",
+	fade		= "Yell (with countdown and spell name) when $spell:%s is fading",
 	shortfade	= "Yell (with countdown) when $spell:%s is fading",
 	position	= "Yell (with position) when you are affected by $spell:%s"
 }
