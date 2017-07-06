@@ -49,7 +49,7 @@ local warnDarkmark					= mod:NewTargetAnnounce(239739, 3)
 --local warnBlackWinds				= mod:NewSpellAnnounce(239418, 2)
 
 --Stage One: A Slumber Disturbed
-local specWarnTouchofSargerasGround	= mod:NewSpecialWarningSpell(239207, nil, nil, nil, 1, 2)
+local specWarnTouchofSargerasGround	= mod:NewSpecialWarningSpell(239207, "-Tank", nil, 2, 1, 2)
 local specWarnRuptureRealities		= mod:NewSpecialWarningRun(239132, nil, nil, nil, 4, 2)
 local specWarnUnboundChaos			= mod:NewSpecialWarningMoveAway(234059, nil, nil, nil, 1, 2)
 local yellUnboundChaos				= mod:NewYell(234059, nil, false, 2)
@@ -91,7 +91,7 @@ local countdownRuptureRealities		= mod:NewCountdown(60, 239132)
 local countdownCorruptedMatrix		= mod:NewCountdown("Alt40", 233556)
 
 --Stage One: A Slumber Disturbed
-local voiceTouchofSargerasGround	= mod:NewVoice(239207)--helpsoak
+local voiceTouchofSargerasGround	= mod:NewVoice(239207, "-Tank", nil, 2)--helpsoak
 local voiceRuptureRealities			= mod:NewVoice(239132)--justrun
 local voiceUnboundChaos				= mod:NewVoice(234059)--runout/keepmove
 local voiceShadowyBlades			= mod:NewVoice(236571)--scatter
@@ -218,8 +218,8 @@ function mod:OnCombatStart(delay)
 	timerDesolateCD:Start(13-delay)--13
 	if not self:IsEasy() then
 		showTouchofSarg = true
-		timerTouchofSargerasCD:Start(14.9-delay)--15.5
-		self:Schedule(14.9, setabilityStatus, self, 239207, 0)--Touch of Sargeras
+		timerTouchofSargerasCD:Start(14.5-delay)
+		self:Schedule(14.5, setabilityStatus, self, 239207, 0)--Touch of Sargeras
 	else
 		showTouchofSarg = false
 	end
