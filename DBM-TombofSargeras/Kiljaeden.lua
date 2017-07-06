@@ -17,6 +17,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS 236378 236710 237590 236498 238502 238430 238999",
 	"SPELL_AURA_APPLIED 239932 236378 236710 237590 236498 236597 241721 245509",
 	"SPELL_AURA_APPLIED_DOSE 245509",
+	"SPELL_AURA_REFRESH 241721",
 	"SPELL_AURA_REMOVED 236378 236710 237590 236498 241721 239932 241983",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
@@ -197,7 +198,7 @@ local function ObeliskWarning(self)
 	specWarnObelisk:Show(self.vb.obeliskCount)
 	voiceObelisk:Play("farfromline")
 	timerObelisk:Start()
-	if self.vb.obeliskCount % 2 == 0 then
+	if self.vb.obeliskCount % 2 == 1 then
 		timerObeliskCD:Start(36, self.vb.obeliskCount+1)
 		self:Schedule(36, ObeliskWarning, self)
 	end
@@ -453,6 +454,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
+mod.SPELL_AURA_REFRESH = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
@@ -486,6 +488,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.burstingDreadCast = 0
 		self.vb.felClawsCount = 0
 		--timerDarknessofSoulsCD:Start(1, 1)--Cast intantly
+		timerSightlessGaze:Stop()
 		warnPhase3:Show()
 		timerTearRiftCD:Start(14, 1)
 		if not self:IsEasy() then
@@ -597,7 +600,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		countdownArmageddon:Start(7.5)
 		timerBurstingDreadflameCD:Start(8.7, 1)
 		if not self:IsEasy() then
-			timerRupturingSingularityCD:Start(14.7, 1)
+			timerRupturingSingularityCD:Start(14.2, 1)
 		end
 		timerFocusedDreadflameCD:Start(24.7, 1)
 		countdownFocusedDread:Start(24.7)
