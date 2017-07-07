@@ -154,7 +154,7 @@ function mod:SPELL_CAST_START(args)
 		timerCommandingRoarCD:Start(17.1)
 		timerUncheckedRageCD:Start(21.1, 1)--21.1-23.5
 		countdownUncheckedRage:Start(21)
-		specWarnUncheckedRage:Show(17, 1)
+		specWarnUncheckedRage:Schedule(17, 1)
 		voiceUncheckedRage:Play(17, "gathershare")
 		timerDrawInCD:Start()
 		if self:IsMythic() then
@@ -246,13 +246,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.NPAuraOnSicklyFixate then
 			DBM.Nameplate:Show(true, args.sourceGUID, spellId)
 		end
-	--[[elseif spellId == 233429 then--Frigid Blows
-		timerUncheckedRageCD:Stop()
-		countdownUncheckedRage:Cancel()
-		specWarnUncheckedRage:Cancel()
-		voiceUncheckedRage:Cancel()
-		timerCommandingRoarCD:Stop()
-		timerDrawInCD:Stop()--]]
 	elseif spellId == 232061 then
 		timerUncheckedRageCD:Stop()
 		countdownUncheckedRage:Cancel()
