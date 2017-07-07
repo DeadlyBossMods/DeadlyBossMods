@@ -183,9 +183,9 @@ do
 		--Souls Active First
 		addLine(TormentedSoul, mod.vb.SoulsRemaining)
 		for uId in DBM:GetGroupMembers() do
-			local maxPower = UnitPowerMax(uId, ALTERNATE_POWER_INDEX)
-			if maxPower ~= 0 and not UnitIsDeadOrGhost(uId) and UnitPower(uId, powerType) / UnitPowerMax(uId, powerType) * 100 >= 5 then
-				addLine(UnitName(uId), UnitPower(uId, ALTERNATE_POWER_INDEX))
+			local maxPower = UnitPowerMax(uId, 10)
+			if maxPower ~= 0 and not UnitIsDeadOrGhost(uId) and UnitPower(uId, 10) / UnitPowerMax(uId, 10) * 100 >= 5 then
+				addLine(UnitName(uId), UnitPower(uId, 10))
 			end
 		end
 		return lines, sortedLines
