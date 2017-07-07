@@ -20,6 +20,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_REMOVED 233441 235230 233983 236283 233431",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
+	"UNIT_DIED",
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2",
 	"UNIT_POWER_FREQUENT player"
 )
@@ -392,7 +393,7 @@ end
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 117957 then--Shadowsoul
+	if cid == 117957 then--Tormented Soul
 		self.vb.SoulsRemaining = self.vb.SoulsRemaining - 1
 	end
 end
