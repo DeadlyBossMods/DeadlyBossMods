@@ -42,7 +42,7 @@ mod:RegisterEventsInCombat(
  or ability.id = 244834 and type = "applybuff" or (ability.id = 241983 or ability.id = 244834) and type = "removebuff"
  or ability.name = "Rupturing Singularity" and target.name = "Omegal"
  --]]
-local warnFelClaw					= mod:NewStackAnnounce(239932, 3, nil, "Tank")
+local warnFelClaw					= mod:NewCountAnnounce(239932, 3, nil, "Tank")
 local warnEruptingRelections		= mod:NewTargetAnnounce(236710, 2)
 --Intermission: Eternal Flame
 local warnBurstingDreadFlame		= mod:NewTargetAnnounce(238430, 2)--Generic for now until more known, likely something cast fairly often
@@ -408,10 +408,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if uId and self:IsTanking(uId) then
 			self.vb.lastTankHit = args.destName
-			warnFelClaw:Show(args.destName, args.amount or 1)
 		end
 		if self:AntiSpam(0.5, 6) then
 			self.vb.clawCount = self.vb.clawCount + 1
+			warnFelClaw:Show(self.vb.clawCount)
 		end
 		if self.vb.clawCount == 5 then
 			if (self.vb.lastTankHit ~= playerName) and self:AntiSpam(3, self.vb.lastTankHit) then

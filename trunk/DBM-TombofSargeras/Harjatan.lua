@@ -62,10 +62,10 @@ local yellAqueousBurst				= mod:NewShortYell(231729)
 local specWarnTendWounds			= mod:NewSpecialWarningInterrupt(231904, "HasInterrupt")
 local specWarnTendWoundsDispel		= mod:NewSpecialWarningDispel(231904, "MagicDispeller")
 --Razorjaw Gladiator
-local specWarnDrivenAssault			= mod:NewSpecialWarningRun(234016, nil, nil, nil, 4, 2)
+local specWarnDrivenAssault			= mod:NewSpecialWarningRun(234016, nil, nil, 2, 4, 2)
 --Mythic (Eggs and tadpoles)
-local specWarnHatching				= mod:NewSpecialWarningSwitch(240319, "Dps", nil, nil, 1, 2)
-local specWarnSicklyFixate			= mod:NewSpecialWarningRun(241600, nil, nil, nil, 4, 2)
+local specWarnHatching				= mod:NewSpecialWarningSwitch(240319, nil, nil, 2, 1, 2)
+local specWarnSicklyFixate			= mod:NewSpecialWarningRun(241600, nil, nil, 2, 4, 2)
 local specWarnTantrum				= mod:NewSpecialWarningSpell(241590, nil, nil, nil, 2, 2)
 
 --Harjatan
@@ -97,7 +97,7 @@ local voiceDrivenAssault			= mod:NewVoice(234016)--justrun/keepmove
 --Darkscale Taskmaster
 --local voiceTaskMaster				= mod:NewVoice("ej14725", "-Healer")--bigmob
 --Mythic (Eggs and tadpoles)
-local voiceHatching					= mod:NewVoice(240319, "Dps")--killmob
+local voiceHatching					= mod:NewVoice(240319, nil, nil, 2)--killmob
 local voiceSicklyFixate				= mod:NewVoice(241600)--justrun/keepmove
 local voiceTantrum					= mod:NewVoice(241590)--aesoon
 
