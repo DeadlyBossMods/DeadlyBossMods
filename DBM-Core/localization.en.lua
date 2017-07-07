@@ -59,7 +59,7 @@ DBM_CORE_COMBAT_STATE_RECOVERED		= "%s was engaged %s ago, recovering timers..."
 DBM_CORE_TRANSCRIPTOR_LOG_START		= "Transcriptor logging started."
 DBM_CORE_TRANSCRIPTOR_LOG_END		= "Transcriptor logging ended."
 
-DBM_CORE_MOVIE_SKIPPED				= "A cut scene has automatically been skipped."
+DBM_CORE_MOVIE_SKIPPED				= "DBM has attempted to skip a cut scene automatically."
 
 DBM_CORE_AFK_WARNING				= "You are AFK and in combat (%d percent health remaining), firing sound alert. If you are not AFK, clear your AFK flag or disable this option in 'extra features'."
 
