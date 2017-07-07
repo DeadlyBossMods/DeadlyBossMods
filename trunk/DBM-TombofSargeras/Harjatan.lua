@@ -51,7 +51,7 @@ local warnDrivenAssault				= mod:NewTargetAnnounce(234016, 3, nil, false)--Spamm
 local warnSicklyFixate				= mod:NewTargetAnnounce(241600, 4)
 
 --Harjatan
-local specWarnJaggedAbrasion		= mod:NewSpecialWarningStack(231998, nil, 6, nil, nil, 1, 2)
+local specWarnJaggedAbrasion		= mod:NewSpecialWarningStack(231998, nil, 4, nil, nil, 1, 2)
 local specWarnJaggedAbrasionOther	= mod:NewSpecialWarningTaunt(231998, nil, nil, nil, 1, 2)
 local specWarnUncheckedRage			= mod:NewSpecialWarningCount(231854, nil, nil, nil, 2, 2)
 local specWarnDrenchingWaters		= mod:NewSpecialWarningMove(231768, nil, nil, nil, 1, 2)
@@ -195,7 +195,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId) then
 			local amount = args.amount or 1
-			if amount >= 6 then--Lasts 30 seconds, cast every 5 seconds, swapping will be at 6
+			if amount >= 4 then--Lasts 30 seconds, cast every 5 seconds, swapping will be at 6
 				if args:IsPlayer() then--At this point the other tank SHOULD be clear.
 					specWarnJaggedAbrasion:Show(amount)
 					voiceJaggedAbrasion:Play("stackhigh")
