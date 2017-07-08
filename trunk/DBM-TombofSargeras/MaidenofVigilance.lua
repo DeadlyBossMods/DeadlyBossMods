@@ -58,11 +58,10 @@ local timerLightHammerCD			= mod:NewNextCountTimer(18, 241635, nil, nil, nil, 5,
 local timerFelHammerCD				= mod:NewNextCountTimer(18, 241636, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerMassInstabilityCD		= mod:NewNextCountTimer(31, 235267, nil, nil, nil, 3)
 local timerBlowbackCD				= mod:NewNextTimer(81.1, 237722, nil, nil, nil, 6)--81-82
+local berserkTimer					= mod:NewBerserkTimer(480)
 --Mythic
 mod:AddTimerLine(ENCOUNTER_JOURNAL_SECTION_FLAG12)
 local timerSpontFragmentationCD		= mod:NewCDTimer(8, 239153, nil, nil, nil, 5, nil, DBM_CORE_HEROIC_ICON)
-
-local berserkTimer					= mod:NewBerserkTimer(480)
 
 --Stage One: Divide and Conquer
 local countdownInfusion				= mod:NewCountdown("AltTwo", 235271)
