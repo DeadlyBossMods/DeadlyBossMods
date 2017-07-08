@@ -59,7 +59,8 @@ local timerFelHammerCD				= mod:NewNextCountTimer(18, 241636, nil, nil, nil, 5, 
 local timerMassInstabilityCD		= mod:NewNextCountTimer(31, 235267, nil, nil, nil, 3)
 local timerBlowbackCD				= mod:NewNextTimer(81.1, 237722, nil, nil, nil, 6)--81-82
 --Mythic
-local timerSpontFragmentationCD		= mod:NewNextTimer(8, 239153, nil, nil, nil, 5, nil, DBM_CORE_HEROIC_ICON)
+mod:AddTimerLine(ENCOUNTER_JOURNAL_SECTION_FLAG12)
+local timerSpontFragmentationCD		= mod:NewCDTimer(8, 239153, nil, nil, nil, 5, nil, DBM_CORE_HEROIC_ICON)
 
 local berserkTimer					= mod:NewBerserkTimer(480)
 

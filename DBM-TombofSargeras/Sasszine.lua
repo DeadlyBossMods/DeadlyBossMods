@@ -63,14 +63,17 @@ local specWarnCrashingWave			= mod:NewSpecialWarningDodge(232827, nil, nil, nil,
 local specWarnDeliciousBufferfish	= mod:NewSpecialWarningYou(239375, nil, nil, nil, 1, 2)
 
 --General Stuff
+mod:AddTimerLine(GENERAL)
 local timerHydraShotCD				= mod:NewCDTimer(40, 230139, nil, nil, nil, 3)
 local timerBurdenofPainCD			= mod:NewCDTimer(28, 230201, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--28-32
 local timerFromtheAbyssCD			= mod:NewCDTimer(27, 230227, nil, nil, nil, 1)--27-31
 --Stage One: Ten Thousand Fangs
+mod:AddTimerLine(SCENARIO_STAGE:format(1))
 local timerSlicingTornadoCD			= mod:NewCDTimer(43.2, 232722, nil, nil, nil, 3)--43.2-54
 local timerConsumingHungerCD		= mod:NewCDTimer(32, 230920, nil, nil, nil, 1)
 local timerThunderingShockCD		= mod:NewCDTimer(32.2, 230358, nil, nil, nil, 3)
 --Stage Two: Terrors of the Deep
+mod:AddTimerLine(SCENARIO_STAGE:format(2))
 local timerDevouringMawCD			= mod:NewCDTimer(42, 232745, nil, nil, nil, 3)
 local timerCrashingWaveCD			= mod:NewCDCountTimer(42, 232827, nil, nil, nil, 3)
 local timerInkCD					= mod:NewCDTimer(41, 232913, nil, nil, nil, 3)
