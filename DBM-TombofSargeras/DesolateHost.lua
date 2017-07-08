@@ -74,6 +74,7 @@ local specWarnDoomedSunderingTaunt	= mod:NewSpecialWarningTaunt(236544, nil, nil
 local specWarnDoomedSunderingGather	= mod:NewSpecialWarningMoveTo(236544, nil, nil, nil, 1, 2)
 local specWarnDoomedSunderingRun	= mod:NewSpecialWarningRun(236544, nil, nil, nil, 4, 2)
 
+mod:AddTimerLine(SCENARIO_STAGE:format(1))
 --Corporeal Realm
 local timerSpearofAnquishCD			= mod:NewCDTimer(20, 235924, nil, nil, nil, 3)
 --local timerCollapsingFissureCD		= mod:NewAITimer(31, 235907, nil, nil, nil, 3)
@@ -85,6 +86,7 @@ local timerSoulbindCD				= mod:NewCDCountTimer(24, 236459, nil, nil, nil, 3)
 --local timerShatteringScreamCD		= mod:NewCDTimer(12, 235969, nil, nil, nil, 3)--12 seconds, per add
 local timerWailingSoulsCD			= mod:NewCDCountTimer(58, 236072, nil, nil, nil, 2)
 --The Desolate Host
+mod:AddTimerLine(SCENARIO_STAGE:format(2))
 local timerSunderingDoomCD			= mod:NewCDTimer(25.4, 236542, nil, nil, nil, 5)
 local timerDoomedSunderingCD		= mod:NewCDTimer(25.2, 236544, nil, nil, nil, 5)
 

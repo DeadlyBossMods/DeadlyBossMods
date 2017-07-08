@@ -70,16 +70,19 @@ local yellDarkMarkFades				= mod:NewFadesYell(239739)
 local specWarnRainoftheDestroyer	= mod:NewSpecialWarningDodge(240396, nil, nil, nil, 2, 2)
 
 --Stage One: A Slumber Disturbed
+mod:AddTimerLine(SCENARIO_STAGE:format(1))
 local timerTouchofSargerasCD		= mod:NewCDTimer(42, 239207, nil, nil, nil, 3)--42+
 local timerRuptureRealitiesCD		= mod:NewCDTimer(60, 239132, nil, nil, nil, 2)
 local timerUnboundChaosCD			= mod:NewCDTimer(35, 234059, nil, nil, nil, 3)--35-60 (lovely huh?)
 local timerShadowyBladesCD			= mod:NewCDTimer(30, 236571, nil, nil, nil, 3)--30-46
 local timerDesolateCD				= mod:NewCDTimer(11.4, 236494, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 ----Maiden of Valor
+mod:AddTimerLine(EJ_GetSectionInfo(14713))
 local timerCorruptedMatrixCD		= mod:NewNextTimer(40, 233556, nil, nil, nil, 5)
 local timerCorruptedMatrix			= mod:NewCastTimer(10, 233556, nil, nil, nil, 5)
 local timerTaintedMatrixCD			= mod:NewCastTimer(10, 240623, nil, nil, nil, 6)--Mythic
 --Stage Two: An Avatar Awakened
+mod:AddTimerLine(SCENARIO_STAGE:format(2))
 local timerDarkMarkCD				= mod:NewCDTimer(34, 239739, nil, nil, nil, 3)
 --local timerBlackWindsCD				= mod:NewCDTimer(31, 239418, nil, nil, nil, 3)
 --local timerRainoftheDestroyerCD		= mod:NewCDTimer(44, 240396, nil, nil, nil, 3)

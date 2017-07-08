@@ -69,16 +69,20 @@ local specWarnSicklyFixate			= mod:NewSpecialWarningRun(241600, nil, nil, 2, 4, 
 local specWarnTantrum				= mod:NewSpecialWarningSpell(241590, nil, nil, nil, 2, 2)
 
 --Harjatan
+mod:AddTimerLine(BOSS)
 local timerUncheckedRageCD			= mod:NewNextCountTimer(20, 231854, nil, nil, nil, 2)--5 power per second heroic, 20 seconds for 100 energy
 local timerDrawInCD					= mod:NewNextTimer(59, 232061, nil, nil, nil, 6)
 local timerCommandingRoarCD			= mod:NewNextTimer(31.8, 232192, nil, nil, nil, 1)
+mod:AddTimerLine(DBM_ADDS)
 --Razorjaw Wavemender
 local timerAqueousBurstCD			= mod:NewCDTimer(6, 231729, nil, false, nil, 3)--6-8
 --Razorjaw Gladiator
 local timerDrivenAssault			= mod:NewTargetTimer(10, 234016, nil, false, nil, 3)--Too many spawn, this would be spammy so off by default
 local timerSplashCleaveCD			= mod:NewCDTimer(12, 234129, nil, false, nil, 5, nil, DBM_CORE_TANK_ICON)
 --Mythic
+mod:AddTimerLine(ENCOUNTER_JOURNAL_SECTION_FLAG12)
 local timerHatchingCD				= mod:NewNextTimer(40.6, 240319, nil, nil, nil, 1)--40.6-42
+
 local berserkTimer					= mod:NewBerserkTimer(360)
 
 --Harjatan
