@@ -15,7 +15,7 @@
 ## X-DBM-Mod-World-Boss: 1
 ## X-DBM-Mod-Sort: 056
 ## X-DBM-Mod-MapID: 1520
-## X-DBM-Mod-LoadCID: 
+## X-DBM-Mod-LoadCID: 124625,124555,123680,123761,124719
 ## X-DBM-Mod-MinCoreRevision: 14737
 localization.en.lua
 localization.cn.lua
