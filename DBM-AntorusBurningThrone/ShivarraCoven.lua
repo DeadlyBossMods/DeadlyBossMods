@@ -2,10 +2,10 @@ local mod	= DBM:NewMod(1986, "DBM-AntorusBurningThrone", nil, 946)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision: 16369 $"):sub(12, -3))
---mod:SetCreatureID(108573)
+mod:SetCreatureID(122468, 122467, 122469)--122468 Noura, 122467 Asara, 122469 Diima, 125436 Thu'raya (mythic only)
 mod:SetEncounterID(2073)
 mod:SetZone()
---mod:SetBossHPInfoToHighest()
+mod:SetBossHPInfoToHighest()
 --mod:SetUsedIcons(1, 2, 3, 4, 5, 6)
 --mod:SetHotfixNoticeRev(16350)
 --mod.respawnTime = 29
@@ -75,7 +75,11 @@ local function updateRangeFrame(self)
 end
 
 function mod:OnCombatStart(delay)
-
+	if self:IsMythic() then
+		self:SetCreatureID(122468, 122467, 122469, 125436)
+	else
+		self:SetCreatureID(122468, 122467, 122469)
+	end
 end
 
 function mod:OnCombatEnd()
