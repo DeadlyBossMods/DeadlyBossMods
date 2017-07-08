@@ -321,11 +321,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnDarkMark:Show()
 			voiceDarkMark:Play("targetyou")
-			local _, _, _, _, _, _, expires = UnitDebuff(args.destName, args.spellName)
+			local _, _, _, _, _, _, expires = UnitDebuff("player", args.spellName)
 			local remaining = expires-GetTime()
-			yellDarkMarkFades:Schedule(remaining-1, 1)
-			yellDarkMarkFades:Schedule(remaining-2, 2)
-			yellDarkMarkFades:Schedule(remaining-3, 3)
+			yellDarkMarkFades:Countdown(remaining)
 		end
 	elseif spellId == 234059 then
 		warnUnboundChaos:CombinedShow(0.3, args.destName)
