@@ -14,9 +14,9 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 235271 241635 241636 235267",
 	"SPELL_CAST_SUCCESS 239153 237722",
-	"SPELL_AURA_APPLIED 235240 235213 235117 240209 235028 236061 234891",
+	"SPELL_AURA_APPLIED 235240 235213 235117 240209 235028 236061 234891 243276",
 	"SPELL_AURA_REFRESH 235240 235213",
-	"SPELL_AURA_REMOVED 235117 240209 235028 234891",
+	"SPELL_AURA_REMOVED 235117 240209 235028 234891 243276",
 	"SPELL_PERIODIC_DAMAGE 238408 238028",
 	"SPELL_PERIODIC_MISSED 238408 238028",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
@@ -188,7 +188,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.SetIconOnInfusion and self:IsTanking(uId) then
 			self:SetIcon(args.destName, 1)
 		end
-	elseif spellId == 235117 or spellId == 240209 then
+	elseif spellId == 235117 or spellId == 240209 or spellId == 243276 then
 		self.vb.unstableSoulCount = self.vb.unstableSoulCount + 1
 		warnUnstableSoul:CombinedShow(1, args.destName)
 		if args:IsPlayer() then
@@ -243,7 +243,7 @@ function mod:SPELL_AURA_REMOVED(args)
 				self:SetIcon(args.destName, 0)
 			end
 		end-]]
-	elseif spellId == 235117 or spellId == 240209 then
+	elseif spellId == 235117 or spellId == 240209 or spellId == 243276 then
 		self.vb.unstableSoulCount = self.vb.unstableSoulCount - 1
 		if args:IsPlayer() then
 			yellUnstableSoul:Cancel()
