@@ -40,9 +40,7 @@ mod:RegisterEventsInCombat(
 --]]
 --Harjatan
 local warnJaggedAbrasion			= mod:NewStackAnnounce(231998, 2, nil, "Tank")
-local warnDrawIn					= mod:NewSpellAnnounce(232061, 2)
 local warnFrigidBlows				= mod:NewStackAnnounce(233429, 2)
-local warnFrostyDischarge			= mod:NewSpellAnnounce(232174, 2)
 --Razorjaw Wavemender
 local warnAqueousBurst				= mod:NewTargetAnnounce(231729, 2, nil, false)--Spammy
 --Razorjaw Gladiator
@@ -56,6 +54,8 @@ local specWarnJaggedAbrasionOther	= mod:NewSpecialWarningTaunt(231998, nil, nil,
 local specWarnUncheckedRage			= mod:NewSpecialWarningCount(231854, nil, nil, nil, 2, 2)
 local specWarnDrenchingWaters		= mod:NewSpecialWarningMove(231768, nil, nil, nil, 1, 2)
 local specWarnCommandingroar		= mod:NewSpecialWarningSwitch(232192, "-Healer", nil, nil, 1, 2)
+local specWarnDrawIn				= mod:NewSpecialWarningSpell(232061, nil, nil, nil, 1, 2)
+local specWarnFrostyDischarge		= mod:NewSpecialWarningSpell(232174, nil, nil, nil, 1, 2)
 --Razorjaw Wavemender
 local specWarnAqueousBurst			= mod:NewSpecialWarningMoveAway(231729, nil, nil, nil, 1, 2)
 local yellAqueousBurst				= mod:NewShortYell(231729)
@@ -93,6 +93,8 @@ local voiceJaggedAbrasion			= mod:NewVoice(231998)--tauntboss/stackhigh
 local voiceUncheckedRage			= mod:NewVoice(231854)--gathershare
 local voiceDrenchingWaters			= mod:NewVoice(231768)--runaway
 local voiceCommandingroar			= mod:NewVoice(232192, "-Healer")--killmob
+local voiceDrawIn					= mod:NewVoice(232061)--phasechange
+local voiceFrostyDischarge			= mod:NewVoice(232174)--phasechange
 --Razorjaw Wavemender
 local voiceAqueousBurst				= mod:NewVoice(231729)--runout
 local voiceTendWounds				= mod:NewVoice(231904)--kickcast/dispelnow
@@ -153,7 +155,8 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 232174 then
-		warnFrostyDischarge:Show()
+		specWarnFrostyDischarge:Show()
+		voiceFrostyDischarge:Play("phasechange")
 		self.vb.rageCount = 0
 		timerCommandingRoarCD:Start(17.1)
 		timerUncheckedRageCD:Start(21.1, 1)--21.1-23.5
@@ -257,7 +260,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		voiceUncheckedRage:Cancel()
 		timerCommandingRoarCD:Stop()
 		timerDrawInCD:Stop()
-		warnDrawIn:Show()
+		specWarnDrawIn:Show()
+		voiceDrawIn:Play("phasechange")
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
