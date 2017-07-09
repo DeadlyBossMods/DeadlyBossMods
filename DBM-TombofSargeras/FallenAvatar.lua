@@ -43,10 +43,10 @@ local warnUnboundChaos				= mod:NewTargetAnnounce(234059, 3, nil, false, 2)
 local warnShadowyBlades				= mod:NewTargetAnnounce(236571, 3)
 local warnDesolate					= mod:NewStackAnnounce(236494, 3, nil, "Healer|Tank")
 local warnCleansingEnded			= mod:NewEndAnnounce(241008, 1)
+local warnTaintedMatrix				= mod:NewCastAnnounce(240623, 3)
 --Stage Two: An Avatar Awakened
 local warnPhase2					= mod:NewPhaseAnnounce(2, 2)
 local warnDarkmark					= mod:NewTargetAnnounce(239739, 3)
---local warnBlackWinds				= mod:NewSpellAnnounce(239418, 2)
 
 --Stage One: A Slumber Disturbed
 local specWarnTouchofSargerasGround	= mod:NewSpecialWarningSpell(239207, "-Tank", nil, 2, 1, 2)
@@ -275,6 +275,7 @@ function mod:SPELL_CAST_START(args)
 		voiceCorruptedMatrix:Play("bosstobeam")
 		timerCorruptedMatrix:Start(10)
 	elseif spellId == 240623 and self:AntiSpam(2, 3) then
+		warnTaintedMatrix:Show()
 		timerTaintedMatrixCD:Start(10)
 	elseif spellId == 235597 then
 		self:Unschedule(setabilityStatus)--Unschedule all
