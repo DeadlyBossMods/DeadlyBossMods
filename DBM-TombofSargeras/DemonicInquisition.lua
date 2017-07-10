@@ -249,14 +249,16 @@ function mod:SPELL_CAST_START(args)
 		if self.vb.pangCount == 4 then
 			self.vb.pangCount = 1
 		end
-		local kickCount = self.vb.pangCount
-		specWarnPangsofGuilt:Show(args.sourceName, kickCount)
-		if kickCount == 1 then
-			voicePangsofGuilt:Play("kick1r")
-		elseif kickCount == 2 then
-			voicePangsofGuilt:Play("kick2r")
-		elseif kickCount == 3 then
-			voicePangsofGuilt:Play("kick3r")
+		if self:CheckInterruptFilter(args.sourceGUID) then
+			local kickCount = self.vb.pangCount
+			specWarnPangsofGuilt:Show(args.sourceName, kickCount)
+			if kickCount == 1 then
+				voicePangsofGuilt:Play("kick1r")
+			elseif kickCount == 2 then
+				voicePangsofGuilt:Play("kick2r")
+			elseif kickCount == 3 then
+				voicePangsofGuilt:Play("kick3r")
+			end
 		end
 	elseif spellId == 233983 then
 		self.vb.anguishIcon = 1
