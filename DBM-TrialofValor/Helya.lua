@@ -627,7 +627,7 @@ function mod:UNIT_HEALTH_FREQUENT(uId)
 	local cid = self:GetUnitCreatureId(uId)
 	if cid ~= 114537 then return end--Helya
 	local health = UnitHealth(uId) / UnitHealthMax(uId) * 100
-	local tentaclesRemaining = self:IsMythic() and floor((health-45)/2.5) or floor((health-40)/2.77)
+	local tentaclesRemaining = self:IsMythic() and math.floor((health-45)/2.5) or math.floor((health-40)/2.77)
 	if tentaclesRemaining < self.vb.lastTentacles then
 		self.vb.lastTentacles = tentaclesRemaining
 		if self.vb.lastTentacles >= 0 then
