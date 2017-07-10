@@ -212,8 +212,11 @@ function mod:OnCombatStart(delay)
 	timerFelSquallCD:Start(35-delay)--Always same, at least
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(GetSpellInfo(233104))
-		--DBM.InfoFrame:Show(8, "playerpower", 5, ALTERNATE_POWER_INDEX)
-		DBM.InfoFrame:Show(8, "function", updateInfoFrame)
+		if self:IsMythic() then
+			DBM.InfoFrame:Show(8, "function", updateInfoFrame)
+		else
+			DBM.InfoFrame:Show(8, "playerpower", 5, ALTERNATE_POWER_INDEX)
+		end
 	end
 	--https://www.warcraftlogs.com/reports/JgyrYdDCB63kx8Tb#fight=38&type=summary&pins=2%24Off%24%23244F4B%24expression%24ability.id%20%3D%20248671&view=events
 	if not self:IsLFR() then
