@@ -6,7 +6,7 @@ mod:SetCreatureID(117269)--121227 Illiden? 121193 Shadowsoul
 mod:SetEncounterID(2051)
 mod:SetZone()
 --mod:SetBossHPInfoToHighest()
-mod:SetUsedIcons(1, 2, 3, 4, 5, 6)
+mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
 mod:SetHotfixNoticeRev(16415)
 mod.respawnTime = 29
 
@@ -143,6 +143,7 @@ local voiceFlameOrbSpawn			= mod:NewVoice(239253)--watchstep/runout
 
 mod:AddSetIconOption("SetIconOnFocusedDread", 238502, true)
 mod:AddSetIconOption("SetIconOnBurstingDread", 238430, true)
+mod:AddSetIconOption("SetIconOnEruptingReflection", 236710, true)
 mod:AddInfoFrameOption(239154, true)
 mod:AddRangeFrameOption("5/10")--238502/239253
 
@@ -152,6 +153,7 @@ mod.vb.armageddonCast = 0
 mod.vb.focusedDreadCast = 0
 mod.vb.burstingDreadCast = 0
 mod.vb.burstingDreadIcon = 2
+mod.vb.eruptingReflectionIcon = 6
 mod.vb.singularityCount = 0
 mod.vb.felClawsCount = 0
 mod.vb.orbCount = 0
@@ -335,6 +337,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if spellId == 236378 then--Wailing Shadow Reflection (Stage 1)
 		timerShadReflectionWailingCD:Start(112)
 	elseif spellId == 236710 then--Erupting Shadow Reflection (Stage 1)
+		self.vb.eruptingReflectionIcon = 6
 		if self.vb.phase == 2 then
 			timerShadReflectionEruptingCD:Start(112)--Erupting
 		end
@@ -444,6 +447,10 @@ function mod:SPELL_AURA_APPLIED(args)
 			voiceSRErupting:Play("targetyou")
 			yellSRErupting:Countdown(8)
 		end
+		if self.Options.SetIconOnEruptingReflection and self:IsMythic() then
+			self:SetIcon(args.destName, self.vb.eruptingReflectionIcon)
+		end
+		self.vb.eruptingReflectionIcon = self.vb.eruptingReflectionIcon + 1
 	elseif spellId == 237590 then--Hopeless Shadow Reflection (Stage 2)
 		if args:IsPlayer() then
 			specWarnSRHopeless:Show()
@@ -486,6 +493,9 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 236710 then--Erupting Shadow Reflection (Stage 1)
 		if args:IsPlayer() then
 			yellSRErupting:Cancel()
+		end
+		if self.Options.SetIconOnEruptingReflection and self:IsMythic() then
+			self:SetIcon(args.destName, 0)
 		end
 	elseif spellId == 237590 then--Hopeless Shadow Reflection (Stage 2)
 		if args:IsPlayer() then
