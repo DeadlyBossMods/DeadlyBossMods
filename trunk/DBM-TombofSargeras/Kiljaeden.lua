@@ -15,7 +15,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 237725 238999 243982 240910 241983 239932",
 	"SPELL_CAST_SUCCESS 236378 236710 237590 236498 238502 238430 238999",
-	"SPELL_AURA_APPLIED 239932 236378 236710 237590 236498 236597 241721 245509",
+	"SPELL_AURA_APPLIED 239932 236378 236710 237590 236498 236597 241721 245509 243536",
 	"SPELL_AURA_APPLIED_DOSE 245509",
 	"SPELL_AURA_REFRESH 241721",
 	"SPELL_AURA_REMOVED 236378 236710 237590 236498 241721 239932 241983",
@@ -63,6 +63,7 @@ local specWarnSRWailing				= mod:NewSpecialWarningYou(236378, nil, nil, nil, 1, 
 local yellSRWailing					= mod:NewFadesYell(236378, 236075)--Keep name in tank one for now
 local specWarnSRErupting			= mod:NewSpecialWarningYou(236710, nil, nil, nil, 1, 2)
 local yellSRErupting				= mod:NewShortFadesYell(236710, 243160)
+local specWarnLingeringEruption		= mod:NewSpecialWarningDodge(243536, nil, nil, nil, 2, 2)
 --Intermission: Eternal Flame
 local specWarnFocusedDreadflame		= mod:NewSpecialWarningYou(238502, nil, nil, nil, 1, 2)
 local yellFocusedDreadflame			= mod:NewShortYell(238502)
@@ -125,6 +126,7 @@ local voiceRupturingSingularity		= mod:NewVoice(235059)--carefly
 local voiceArmageddon				= mod:NewVoice(240910)--helpsoak
 local voiceSRWailing				= mod:NewVoice(236378)--targetyou (temp, more customized after seen)
 local voiceSRErupting				= mod:NewVoice(236710)--targetyou (temp, more customized after seen)
+local voiceLingeringEruption		= mod:NewVoice(243536)--watchorb/keepmove
 --Intermission: Eternal Flame
 local voiceFocusedDreadflame		= mod:NewVoice(238502)--helpsoak/range5/targetyou
 local voiceBurstingDreadFlame		= mod:NewVoice(238430)--scatter
@@ -458,6 +460,15 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 241721 and args:IsPlayer() then
 		timerSightlessGaze:Start()
+	elseif spellId == 243536 and self:AntiSpam(3, 7) then
+		if args:IsPlayer() then
+			voiceLingeringEruption:Play("keepmove")
+		else
+			if self:AntiSpam(3, 7) then
+				specWarnLingeringEruption:Show()
+				voiceLingeringEruption:Play("watchorb")
+			end
+		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
