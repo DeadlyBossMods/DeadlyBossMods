@@ -233,6 +233,9 @@ function mod:OnCombatStart(delay)
 	timerFelclawsCD:Start(25-delay, 1)
 	countdownFelclaws:Start(25-delay)
 	timerRupturingSingularityCD:Start(58-delay, 1)
+	if self:IsMythic() then
+		timerShadReflectionWailingCD:Start(57)--Approx, from stream, finetune
+	end
 	berserkTimer:Start(600-delay)
 end
 
