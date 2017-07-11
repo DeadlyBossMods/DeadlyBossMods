@@ -65,6 +65,7 @@ local yellSoulbind					= mod:NewYell(236459)
 local specWarnWither				= mod:NewSpecialWarningYou(236138, nil, nil, nil, 1, 7)
 local specWarnShatteringScream		= mod:NewSpecialWarningMoveAway(235969, nil, nil, nil, 1, 2)
 local specWarnShatteringScreamAdd	= mod:NewSpecialWarningMoveTo(235969, nil, nil, nil, 3, 2)
+local yellShatteringScream			= mod:NewShortFadesYell(235969)
 local specWarnWailingSouls			= mod:NewSpecialWarningCount(236072, nil, nil, nil, 2, 2)
 --The Desolate Host
 local specWarnSunderingDoomTaunt	= mod:NewSpecialWarningTaunt(236542, nil, nil, nil, 1, 2)
@@ -351,6 +352,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnShatteringScream:Show()
 				voiceShatteringScream:Play("scatter")
 			end
+			yellShatteringScream:Countdown(5)
 		end
 		warnShatteringScream:CombinedShow(1, args.destName)
 	elseif spellId == 236361 or spellId == 239923 then
@@ -384,8 +386,8 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.NPAuraOnBonecageArmor then
 			DBM.Nameplate:Hide(true, args.destGUID, spellId)
 		end
-	elseif spellId == 235969 then--Shattering Scream
-		
+	elseif spellId == 235969 and args:IsPlayer() then--Shattering Scream
+		yellShatteringScream:Cancel()
 	elseif spellId == 236072 then--Wailing Souls
 		self.vb.soulboundCast = 0
 		--timerSoulbindCD:Start(12, 1)--5-14, too variable to start timer for first cast after souls
