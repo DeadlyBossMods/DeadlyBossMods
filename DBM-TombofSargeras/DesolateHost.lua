@@ -15,8 +15,8 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 238570 235927 236542 236544 236072",
 	"SPELL_CAST_SUCCESS 236449 235933 236131 235969 236542 236544",
-	"SPELL_AURA_APPLIED 236459 235924 238018 236513 236138 236131 235969 236361 239923 236548 235732",
-	"SPELL_AURA_APPLIED_DOSE 236548",
+	"SPELL_AURA_APPLIED 236459 235924 238018 236513 236138 236131 235969 236515 236361 239923 236548 235732",
+	"SPELL_AURA_APPLIED_DOSE 236548 236515",
 	"SPELL_AURA_REMOVED 236459 235924 236513 235969 235732 236072 238570",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
@@ -65,7 +65,7 @@ local yellSoulbind					= mod:NewYell(236459)
 local specWarnWither				= mod:NewSpecialWarningYou(236138, nil, nil, nil, 1, 7)
 local specWarnShatteringScream		= mod:NewSpecialWarningMoveAway(235969, nil, nil, nil, 1, 2)
 local specWarnShatteringScreamAdd	= mod:NewSpecialWarningMoveTo(235969, nil, nil, nil, 3, 2)
-local yellShatteringScream			= mod:NewShortFadesYell(235969)
+local yellShatteringScream			= mod:NewShortFadesYell(235969, nil, false)
 local specWarnWailingSouls			= mod:NewSpecialWarningCount(236072, nil, nil, nil, 2, 2)
 --The Desolate Host
 local specWarnSunderingDoomTaunt	= mod:NewSpecialWarningTaunt(236542, nil, nil, nil, 1, 2)
@@ -352,9 +352,10 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnShatteringScream:Show()
 				voiceShatteringScream:Play("scatter")
 			end
-			yellShatteringScream:Countdown(5)
 		end
 		warnShatteringScream:CombinedShow(1, args.destName)
+	elseif spellId == 236515 and args:IsPlayer() then
+		yellShatteringScream:Yell(args.spellName, args.amount or 1)
 	elseif spellId == 236361 or spellId == 239923 then
 		warnSpiritChains:CombinedShow(0.3, args.destName)
 	elseif spellId == 236548 then
