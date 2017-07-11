@@ -88,7 +88,7 @@ local countdownBurdenofPain			= mod:NewCountdown("Alt28", 230139, "Tank")
 local countdownSlicingTorando		= mod:NewCountdown("AltTwo43", 232722)
 
 --General Stuff
-local voiceHydraShot				= mod:NewVoice(230139)--targetyou
+local voiceHydraShot				= mod:NewVoice(230139)--targetyou/mm
 local voiceBurdenofPain				= mod:NewVoice(230201)--defensive/tauntboss
 local voiceFromtheAbyss				= mod:NewVoice(230227, "-Healer")--killmob
 --Stage One: Ten Thousand Fangs
@@ -100,6 +100,7 @@ local voiceDevouringMaw				= mod:NewVoice(232745)-- inktoshark (bring ink to sha
 local voiceCrashingWave				= mod:NewVoice(232827)--chargemove
 
 mod:AddSetIconOption("SetIconOnHydraShot", 230139, true)
+mod:AddBoolOption("TauntOnPainSuccess", false)
 --mod:AddInfoFrameOption(227503, true)
 --mod:AddRangeFrameOption("5/8/15")
 
@@ -116,8 +117,13 @@ function mod:OnCombatStart(delay)
 	self.vb.hydraShotCount = 0
 	table.wipe(hydraIcons)
 	timerThunderingShockCD:Start(10-delay)--10-11
-	timerBurdenofPainCD:Start(15.4-delay)
-	countdownBurdenofPain:Start(15.4-delay)
+	if self.Options.TauntOnPainSuccess then
+		timerBurdenofPainCD:Start(15.4-delay)
+		countdownBurdenofPain:Start(15.4-delay)
+	else
+		timerBurdenofPainCD:Start(17.9-delay)
+		countdownBurdenofPain:Start(17.9-delay)
+	end
 	timerFromtheAbyssCD:Start(18-delay)
 	timerConsumingHungerCD:Start(20-delay)--20-23
 	if self:IsEasy() then
@@ -183,17 +189,21 @@ function mod:SPELL_CAST_START(args)
 		end
 		timerThunderingShockCD:Start()
 	elseif spellId == 230201 then
-		timerBurdenofPainCD:Start()
-		countdownBurdenofPain:Start()
+		if not self.Options.TauntOnPainSuccess then
+			timerBurdenofPainCD:Start()
+			countdownBurdenofPain:Start()
+		end
 		local tanking, status = UnitDetailedThreatSituation("player", "boss1")
 		if tanking or (status == 3) then
 			specWarnBurdenofPain:Show()
 			voiceBurdenofPain:Play("defensive")
 		else
-			local targetName = UnitName("boss1target") or DBM_CORE_UNKNOWN
-			if self:AntiSpam(5, targetName) then
-				specWarnBurdenofPainTaunt:Show(targetName)
-				voiceBurdenofPain:Play("tauntboss")
+			if not self.Options.TauntOnPainSuccess then
+				local targetName = UnitName("boss1target") or DBM_CORE_UNKNOWN
+				if self:AntiSpam(5, targetName) then
+					specWarnBurdenofPainTaunt:Show(targetName)
+					voiceBurdenofPain:Play("tauntboss")
+				end
 			end
 		end
 	end
@@ -215,13 +225,21 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnHydraShot:CombinedShow(0.3, self.vb.hydraShotCount, args.destName)
 		if args:IsPlayer() then
 			specWarnHydraShot:Show()
-			voiceHydraShot:Play("targetyou")
+			if self:IsHard() then
+				voiceHydraShot:Play("mm"..count)
+			else
+				voiceHydraShot:Play("targetyou")
+			end
 			yellHydraShot:Yell(count, args.spellName, count)
 		end
 		if self.Options.SetIconOnHydraShot then
 			self:SetIcon(name, count)
 		end
 	elseif spellId == 230201 then
+		if self.Options.TauntOnPainSuccess then
+			timerBurdenofPainCD:Start()
+			countdownBurdenofPain:Start()
+		end
 		if not args:IsPlayer() and self:AntiSpam(5, args.destName) then
 			specWarnBurdenofPainTaunt:Show(args.destName)
 			voiceBurdenofPain:Play("tauntboss")
@@ -317,8 +335,13 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 			timerFromtheAbyssCD:Stop()
 			
 			timerInkCD:Start(10.8)
-			timerBurdenofPainCD:Start(23.5)
-			countdownBurdenofPain:Start(23.5)
+			if self.Options.TauntOnPainSuccess then
+				timerBurdenofPainCD:Start(26)
+				countdownBurdenofPain:Start(26)
+			else
+				timerBurdenofPainCD:Start(23.5)
+				countdownBurdenofPain:Start(23.5)
+			end
 			timerFromtheAbyssCD:Start(29)
 			timerCrashingWaveCD:Start(30, 1)
 			timerDevouringMawCD:Start(40)
@@ -340,8 +363,13 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 			timerFromtheAbyssCD:Stop()
 			
 			timerInkCD:Start(10.2)
-			timerBurdenofPainCD:Start(23.5)
-			countdownBurdenofPain:Start(23.5)
+			if self.Options.TauntOnPainSuccess then
+				timerBurdenofPainCD:Start(26)
+				countdownBurdenofPain:Start(26)
+			else
+				timerBurdenofPainCD:Start(23.5)
+				countdownBurdenofPain:Start(23.5)
+			end
 			timerFromtheAbyssCD:Start(29)
 			timerCrashingWaveCD:Start(30, 1)
 			timerConsumingHungerCD:Start(39)--SUCCESS
