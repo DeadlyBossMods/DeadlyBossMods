@@ -127,8 +127,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if self:IsMythic() then
 			--["233272-Shattering Star"] = "pull:34.8, 61.2, 60.4, 60.8, 32.9, 30.5, 29.6, 30.4",
 			if nextCount > 4 then
-				timerShatteringStarCD:Start(29.6, nextCount)
-				countdownShatteringStar:Start(29.6)
+				timerShatteringStarCD:Start(29.2, nextCount)
+				countdownShatteringStar:Start(29.2)
 			else
 				timerShatteringStarCD:Start(60, nextCount)
 				countdownShatteringStar:Start(60)
