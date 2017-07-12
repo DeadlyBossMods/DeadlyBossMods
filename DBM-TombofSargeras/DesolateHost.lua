@@ -271,7 +271,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 				--["236449-Soulbind"] = "pull:12.5, 25.4, 94.7, 26.0, 75.9, 19.1, 20.3",
 				timerSoulbindCD:Start(24, self.vb.soulboundCast+1)
 			else
-				timerSoulbindCD:Start(20, self.vb.soulboundCast+1)
+				timerSoulbindCD:Start(19.6, self.vb.soulboundCast+1)
 			end
 		else
 			if self:IsEasy() then
