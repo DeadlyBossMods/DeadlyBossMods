@@ -14,7 +14,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 238570 235927 236542 236544 236072",
-	"SPELL_CAST_SUCCESS 236449 235933 236131 235969 236542 236544",
+	"SPELL_CAST_SUCCESS 236449 236131 235969 236542 236544",
 	"SPELL_AURA_APPLIED 236459 235924 238018 236513 236138 236131 235969 236515 236361 239923 236548 235732",
 	"SPELL_AURA_APPLIED_DOSE 236548 236515",
 	"SPELL_AURA_REMOVED 236459 235924 236513 235969 235732 236072 238570",
@@ -281,8 +281,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 				timerSoulbindCD:Start(24, self.vb.soulboundCast+1)
 			end
 		end
-	elseif spellId == 235933 then--Spear of Anquish
-		timerSpearofAnquishCD:Start()
 	elseif spellId == 236542 then--Sundering Doom Finished (doomed sundering, soaked by spirit realm is next)
 		if UnitBuff("player", spiritRealm) or UnitDebuff("player", spiritRealm) then--Figure out which it is
 			specWarnDoomedSunderingTaunt:Show(BOSS)
@@ -318,6 +316,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 235924 then
 		warnSpearofAnguish:CombinedShow(0.3, args.destName)
+		timerSpearofAnquishCD:DelayedStart(0.3)
 		if args:IsPlayer() then
 			specWarnSpearofAnguish:Show()
 			voiceSpearofAnguish:Play("runout")
