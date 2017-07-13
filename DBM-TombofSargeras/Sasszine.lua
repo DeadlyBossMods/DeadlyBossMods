@@ -303,7 +303,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		--event still fires in LFR even though mechanic doesn't exist there, so LFR must be filtered for timer
 		table.wipe(hydraIcons)
 		self.vb.hydraShotCount = self.vb.hydraShotCount + 1
-		if self:IsMythic() then
+		if self:IsMythic() or self.vb.phase == 2 then
 			timerHydraShotCD:Start(30, self.vb.hydraShotCount+1)
 			countdownHydraShot:Start(30)
 		else
