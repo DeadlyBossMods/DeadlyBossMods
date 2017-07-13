@@ -62,7 +62,7 @@ local yellTwilightVolley			= mod:NewShortYell(236442)
 local specWarnIncorpShot			= mod:NewSpecialWarningYou(236305, nil, nil, nil, 1, 2)
 local yellIncorpShot				= mod:NewYell(236305)
 local specWarnIncorpShotOther		= mod:NewSpecialWarningTarget(236305, nil, nil, nil, 1, 2)
-local specWarnRapidShot				= mod:NewSpecialWarningMoveAway(236596, nil, nil, nil, 1, 2)
+local specWarnRapidShot				= mod:NewSpecialWarningYou(236596, nil, nil, nil, 1, 2)
 local yellRapidShot					= mod:NewYell(236596)
 --Priestess Lunaspyre
 local specWarnEmbraceofEclipse		= mod:NewSpecialWarningTarget(233264, "Dps|Healer", nil, nil, 3)
@@ -289,7 +289,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 236596 then
 		if args:IsPlayer() then
 			specWarnRapidShot:Show()
-			voiceRapidShot:Play("runout")
+			voiceRapidShot:Play("targetyou")
 			yellRapidShot:Yell()
 		else
 			warnRapidShot:Show(args.destName)
