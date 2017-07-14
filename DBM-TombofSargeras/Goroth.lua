@@ -241,20 +241,26 @@ end
 --]]
 
 function mod:UNIT_AURA_UNFILTERED(uId)
-	local hasDebuff, _, _, _, _, _, _, _, _, _, spellId = UnitDebuff(uId, crashingComet)
+	local hasDebuff = UnitDebuff(uId, crashingComet)
 	local name = DBM:GetUnitFullName(uId)
-	if hasDebuff and not cometTable[name] and spellId == 232249 then
-		cometTable[name] = true
-		warnCrashingComet:CombinedShow(0.5, name)--Multiple targets in heroic/mythic
-		if UnitIsUnit(uId, "player") then
-			specWarnCrashingComet:Show()
-			voiceCrashingComet:Play("runout")
-			yellCrashingComet:Yell(5)
-			yellCrashingComet:Countdown(5)
-			timerCrashingComet:Start()
-			countdownCrashingComet:Start()
-			if self.Options.RangeFrame then
-				DBM.RangeCheck:Show(10, nil, nil, nil, nil, 5)
+	if hasDebuff and not cometTable[name] then--Any version of comet
+		for i = 1, 40 do
+			local spellName, _, _, _, _, _, _, _, _, _, spellId = UnitDebuff(uId, i)
+			if spellId == 232249 then--Correct version of comet
+				cometTable[name] = true
+				warnCrashingComet:CombinedShow(0.5, name)--Multiple targets in heroic/mythic
+				if UnitIsUnit(uId, "player") then
+					specWarnCrashingComet:Show()
+					voiceCrashingComet:Play("runout")
+					yellCrashingComet:Yell(5)
+					yellCrashingComet:Countdown(5)
+					timerCrashingComet:Start()
+					countdownCrashingComet:Start()
+					if self.Options.RangeFrame then
+						DBM.RangeCheck:Show(10, nil, nil, nil, nil, 5)
+					end
+				end
+				break
 			end
 		end
 	end
