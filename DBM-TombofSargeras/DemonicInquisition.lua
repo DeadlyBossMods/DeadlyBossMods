@@ -6,7 +6,7 @@ mod:SetCreatureID(116691, 116689)--Belac (116691), Atrigan (116689)
 mod:SetEncounterID(2048)
 mod:SetZone()
 mod:SetBossHPInfoToHighest()
-mod:SetUsedIcons(1, 2, 3, 4)
+mod:SetUsedIcons(1, 2, 3, 5)
 mod:SetHotfixNoticeRev(16282)
 --mod.respawnTime = 29
 
@@ -306,7 +306,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnQuills:Show(args.destName)
 		end
 		if self.Options.SetIconOnQuills then
-			self:SetIcon(args.destName, 4)
+			self:SetIcon(args.destName, 5)
 		end
 	elseif spellId == 208802 then
 		local amount = args.amount or 1
