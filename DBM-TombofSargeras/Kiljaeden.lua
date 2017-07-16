@@ -152,8 +152,8 @@ mod.vb.shadowSoulsRemaining = 5--Need real number
 mod.vb.armageddonCast = 0
 mod.vb.focusedDreadCast = 0
 mod.vb.burstingDreadCast = 0
-mod.vb.burstingDreadIcon = 2
-mod.vb.eruptingReflectionIcon = 6
+mod.vb.burstingDreadIcon = 4
+mod.vb.eruptingReflectionIcon = 1
 mod.vb.singularityCount = 0
 mod.vb.felClawsCount = 0
 mod.vb.orbCount = 0
@@ -337,7 +337,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if spellId == 236378 then--Wailing Shadow Reflection (Stage 1)
 		timerShadReflectionWailingCD:Start(112)
 	elseif spellId == 236710 then--Erupting Shadow Reflection (Stage 1)
-		self.vb.eruptingReflectionIcon = 6
+		self.vb.eruptingReflectionIcon = 1
 		if self.vb.phase == 2 then
 			timerShadReflectionEruptingCD:Start(112)--Erupting
 		end
@@ -355,7 +355,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 238430 then
 		if self:AntiSpam(2, 5) then
 			self.vb.burstingDreadCast = self.vb.burstingDreadCast + 1
-			self.vb.burstingDreadIcon = 2
+			self.vb.burstingDreadIcon = 4
 			if self.vb.phase == 1.5 then
 				if self.vb.burstingDreadCast < 2 then
 					if self:IsEasy() then
@@ -577,7 +577,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 				voiceFocusedDreadflame:Play("helpsoak")
 			end
 			if self.Options.SetIconOnFocusedDread then
-				self:SetIcon(target, 1)
+				self:SetIcon(target, 8)
 			end
 		end
 	elseif msg:find("spell:235059") then
