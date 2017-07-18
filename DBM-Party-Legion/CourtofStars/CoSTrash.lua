@@ -11,6 +11,7 @@ mod:RegisterEvents(
 	"SPELL_CAST_START 209027 212031 209485 209410 209413 211470 211464 209404 209495 225100 211299 209378",
 	"SPELL_AURA_APPLIED 209033 209512",
 	"GOSSIP_SHOW"
+--	"CHAT_MSG_ADDON"
 )
 
 --TODO, at least 1-2 more GTFOs I forgot names of
@@ -182,6 +183,22 @@ do
 		[L.Pouch3] = "pouch",
 		[L.Pouch4] = "pouch"
 	}
+	local bwClues = {
+		[1] = "cape",
+		[2] = "no cape",
+		[3] = "pouch",
+		[4] = "potions",
+		[5] = "long sleeves",
+ 		[6] = "short sleeves",
+ 		[7] = "gloves",
+ 		[8] = "no gloves",
+ 		[9] = "male",
+ 		[10] = "female",
+ 		[11] = "light vest",
+ 		[12] = "dark vest",
+ 		[13] = "no potion",
+		[14] = "book"
+	}
 
 	local function updateInfoFrame()
 		local lines = {}
@@ -240,4 +257,26 @@ do
 			DBM.InfoFrame:Show(5, "function", updateInfoFrame)
 		end
 	end
+	function mod:OnBWSync(msg)
+		msg = tonumber(msg)
+		if msg and msg > 0 and msg < 15 then
+			DBM:Debug("Recieved BigWigs Comm:"..msg)
+			local bwClue = bwClues[msg]
+			hints[bwClue] = true
+			DBM.InfoFrame:Show(5, "function", updateInfoFrame)
+		end
+	end
+--[[	function mod:CHAT_MSG_ADDON(prefix, msg, channel, targetName)
+		if prefix ~= "BigWigs" then return end
+		local bwPrefix, bwMsg, extra = strsplit("^", msg)
+		if bwPrefix == "B" then
+			bwMsg = tonumber(bwMsg)
+			if bwMsg and bwMsg > 0 and bwMsg < 15 then
+				DBM:Debug("Recieved BigWigs Comm:"..bwMsg)
+				local bwClue = bwClues[bwMsg]
+				hints[bwClue] = true
+				DBM.InfoFrame:Show(5, "function", updateInfoFrame)
+			end
+		end
+	end--]]
 end
