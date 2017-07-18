@@ -17,7 +17,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED_DOSE 206677",
 	"SPELL_AURA_REMOVED 205344",
 	"UNIT_DIED",
-	"CHAT_MSG_ADDON",
+--	"CHAT_MSG_ADDON",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
@@ -309,6 +309,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 end
 
 --Listen for Krosus Assist on Bigwigs Comms to make compat with mod much easier for elvador
+--[[
 function mod:CHAT_MSG_ADDON(prefix, msg, channel, targetName)
 	if prefix ~= "BigWigs" then return end
 	local bwPrefix, bwMsg, extra = strsplit("^", msg)
@@ -322,11 +323,9 @@ function mod:CHAT_MSG_ADDON(prefix, msg, channel, targetName)
 		end
 	end
 end
+--]]
 
---[[
---Not funcitonal yet. Might not even be worth effort to hack a handler together for something used so rarely
 function mod:OnBWSync(msg)
-	if not self:IsInCombat() then return end
 	if msg == "firstBeamWasLeft" then
 		self.vb.firstBeam = 1
 		DBM:Debug("Recieved Left Beam Sync")
@@ -335,5 +334,4 @@ function mod:OnBWSync(msg)
 		DBM:Debug("Recieved Right Beam Sync")
 	end
 end
---]]
 	
