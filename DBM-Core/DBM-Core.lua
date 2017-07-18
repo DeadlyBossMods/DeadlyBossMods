@@ -4817,13 +4817,13 @@ do
 				elseif bwPrefix == "Q" then--Version request prefix
 					self:Unschedule(SendVersion)
 					self:Schedule(3, SendVersion)
---[[				elseif bwPrefix == "B" then--Boss Mod Sync
+				elseif bwPrefix == "B" then--Boss Mod Sync
 					for i = 1, #inCombat do
 						local mod = inCombat[i]
-						if mod:OnBWSync then
+						if mod and mod.OnBWSync then
 							mod:OnBWSync(bwMsg, extra)
 						end
-					end--]]
+					end
 				end
 			end
 		elseif prefix == "Transcriptor" and msg then
