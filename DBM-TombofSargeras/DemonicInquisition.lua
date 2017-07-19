@@ -273,8 +273,8 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 235230 then
 		--Redundant warnings if still on wrong boss (or tank)
 		if UnitGUID("target") == args.sourceGUID then
-			specWarnFelSquallMelee:Show(args.sourceName)
-			specWarnFelSquallEveryoneElse:Show()
+			specWarnFelSquallMelee:Show()
+			specWarnFelSquallEveryoneElse:Show(args.sourceName)
 			if self:IsMelee() then
 				voiceFelSquall:Play("runout")
 			end
