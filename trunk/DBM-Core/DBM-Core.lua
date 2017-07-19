@@ -4827,6 +4827,12 @@ do
 				end
 			end
 		elseif prefix == "Transcriptor" and msg then
+			for i = 1, #inCombat do
+				local mod = inCombat[i]
+				if mod and mod.OnTranscriptorSync then
+					mod:OnTranscriptorSync(msg, sender)
+				end
+			end
 			if msg:find("spell:") and (DBM.Options.DebugLevel > 2 or (Transcriptor and Transcriptor:IsLogging())) then
 				local spellId = string.match(msg, "spell:(%d+)") or DBM_CORE_UNKNOWN
 				local spellName = string.match(msg, "h%[(.-)%]|h") or DBM_CORE_UNKNOWN
