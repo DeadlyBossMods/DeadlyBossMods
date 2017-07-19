@@ -4821,7 +4821,7 @@ do
 					for i = 1, #inCombat do
 						local mod = inCombat[i]
 						if mod and mod.OnBWSync then
-							mod:OnBWSync(bwMsg, extra)
+							mod:OnBWSync(bwMsg, extra, sender)
 						end
 					end
 				end
