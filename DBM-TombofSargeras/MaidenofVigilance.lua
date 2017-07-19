@@ -42,6 +42,7 @@ local warnEssenceFragments			= mod:NewSpellAnnounce(236061, 2)
 
 --Stage One: Divide and Conquer
 local specWarnInfusion				= mod:NewSpecialWarningSpell(235271, nil, nil, nil, 2, 2)
+local yellInfusion					= mod:NewPosYell(235271, DBM_CORE_AUTO_YELL_CUSTOM_POSITION)
 local specWarnFelInfusion			= mod:NewSpecialWarningYou(235240, nil, nil, nil, 1, 7)
 local specWarnLightInfusion			= mod:NewSpecialWarningYou(235213, nil, nil, nil, 1, 7)
 local specWarnUnstableSoul			= mod:NewSpecialWarningMoveTo(235117, nil, nil, nil, 3, 7)
@@ -174,6 +175,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnFelInfusion:Show()
 			voiceFelInfusion:Play("felinfusion")
+			yellInfusion:Yell(4, "", 4)
 		end
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self.Options.SetIconOnInfusion and self:IsTanking(uId) then
@@ -183,6 +185,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnLightInfusion:Show()
 			voiceLightInfusion:Play("lightinfusion")
+			yellInfusion:Yell(1, "", 1)
 		end
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self.Options.SetIconOnInfusion and self:IsTanking(uId) then
