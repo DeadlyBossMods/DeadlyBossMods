@@ -289,6 +289,7 @@ function mod:SPELL_CAST_START(args)
 		timerCorruptedMatrixCD:Stop()
 		countdownCorruptedMatrix:Cancel()
 		timerTaintedMatrixCD:Stop()
+		timerDarkMarkCD:Stop()
 		
 		warnPhase2:Show()
 		timerDesolateCD:Start(19)
