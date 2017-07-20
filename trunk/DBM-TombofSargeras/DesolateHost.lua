@@ -252,9 +252,10 @@ function mod:SPELL_CAST_START(args)
 		timerSoulbindCD:Stop()
 		--timerWitherCD:Stop()
 		specWarnWailingSouls:Show(self.vb.wailingSoulsCast)
-		if not (UnitBuff("player", spiritRealm) or UnitDebuff("player", spiritRealm)) then
+		--In normal realm, and boss is above 35%, getting adds
+		if not (UnitBuff("player", spiritRealm) or UnitDebuff("player", spiritRealm)) and UnitHealth("boss1") / UnitHealthMax("boss1") * 100 >= 35 then
 			voiceWailingSouls:Play("killmob")
-		else
+		else--Down below, or boss not 35%, not getting adds
 			voiceWailingSouls:Play("aesoon")
 		end
 	end
