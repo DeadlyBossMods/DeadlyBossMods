@@ -575,7 +575,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			DBM.InfoFrame:Hide()
 		end
 	elseif spellId == 221336 then
-		timerChaosSeedCD:Start(10.5)
+		timerChaosSeedCD:Start(10.5, args.sourceGUID)
 	end
 end
 
@@ -783,7 +783,7 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 111070 then--Azzinoth
-		timerChaosSeedCD:Stop()
+		timerChaosSeedCD:Stop(args.destGUID)
 	elseif cid == 104154 and self:IsMythic() then--Gul'dan
 		self.vb.bossLeft = self.vb.bossLeft - 1
 		timerFlamesofSargerasCD:Stop()

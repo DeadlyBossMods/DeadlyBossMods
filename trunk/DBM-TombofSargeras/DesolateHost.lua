@@ -110,7 +110,7 @@ local voiceDoomedSunderin			= mod:NewVoice(236544)--gathershare/justrun
 
 mod:AddSetIconOption("SoulIcon", 236459, true)
 mod:AddInfoFrameOption(235621, true)
-mod:AddRangeFrameOption(8, 235621)
+mod:AddRangeFrameOption(10, 236459)
 mod:AddNamePlateOption("NPAuraOnBonecageArmor", 236513)
 
 mod.vb.soulboundCast = 0
@@ -179,7 +179,7 @@ function mod:OnCombatStart(delay)
 	timerSoulbindCD:Start(14.2-delay, 1)
 	if not self:IsEasy() then
 		doBones = true
-		timerSpearofAnquishCD:Start(22-delay)
+		timerSpearofAnquishCD:Start(20.7-delay)
 		if self:IsMythic() then
 			berserkTimer:Start(480-delay)
 		end
@@ -196,14 +196,8 @@ function mod:OnCombatStart(delay)
 		local name = DBM:GetUnitFullName(uId)
 		if UnitDebuff(uId, spiritRealm) then
 			playersInSpirit[#playersInSpirit+1] = name
-			if UnitIsUnit("player", uId) and self.Options.RangeFrame then
-				DBM.RangeCheck:Show(8, regularFilter)
-			end
 		else
 			playersNotInSpirit[#playersNotInSpirit+1] = name
-			if UnitIsUnit("player", uId) and self.Options.RangeFrame then
-				DBM.RangeCheck:Show(8, spiritFilter)
-			end
 		end
 	end
 	if self.Options.InfoFrame then
@@ -258,7 +252,11 @@ function mod:SPELL_CAST_START(args)
 		timerSoulbindCD:Stop()
 		--timerWitherCD:Stop()
 		specWarnWailingSouls:Show(self.vb.wailingSoulsCast)
-		voiceWailingSouls:Play("aesoon")
+		if self:IsTank() and not (UnitBuff("player", spiritRealm) or UnitDebuff("player", spiritRealm)) then
+			voiceWailingSouls:Play("killmob")
+		else
+			voiceWailingSouls:Play("aesoon")
+		end
 	end
 end
 
@@ -308,6 +306,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnSoulbind:Show()
 			voiceSoulbind:Play("targetyou")
 			yellSoulbind:Yell()
+			if self.Options.RangeFrame then
+				DBM.RangeCheck:Show(10)
+			end
 		end
 		if self.Options.SoulIcon then
 			self:SetIcon(args.destName, self.vb.soulIcon)
@@ -380,6 +381,9 @@ function mod:SPELL_AURA_REMOVED(args)
 	if spellId == 236459 then
 		if self.Options.SoulIcon then
 			self:SetIcon(args.destName, 0)
+		end
+		if self.Options.RangeFrame and args:IsPlayer() then
+			DBM.RangeCheck:Hide()
 		end
 	elseif spellId == 235924 then
 		if args:IsPlayer() then
