@@ -20,7 +20,7 @@ DBM_CORE_LOAD_MOD_DISABLED			= "%s已安裝但目前停用中。此模組不會�
 DBM_CORE_LOAD_MOD_DISABLED_PLURAL	= "%s已安裝但目前停用中。這些模組不會載入除非你啟用它們。"
 
 DBM_CORE_WHATS_NEW					= "鬥陣特攻和暴雪英霸倒數音效已經從DBM核心分離而且有獨立的插件包下載。想重新取得這些音效。請安裝插件DBM-CountPack-Overwatch和DBM-CountPack-HoTS。也有新功能可關閉類似更新註釋再次提示。"
-DBM_CORE_WHATS_NEW_LINK				= "推薦使用DBM加上語音包。想知道為什麼而且如何可以幫助你：|HDBM:forumsnews|h|cff3588ff點擊這裡|r"
+--DBM_CORE_WHATS_NEW_LINK				= "推薦使用DBM加上語音包。想知道為什麼而且如何可以幫助你：|HDBM:forumsnews|h|cff3588ff點擊這裡|r"
 
 --Post Patch 7.1
 DBM_CORE_NO_RANGE					= "距離雷達不能在副本中使用，使用傳統文字距離框架取代"
