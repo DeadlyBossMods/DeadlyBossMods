@@ -50,7 +50,7 @@ local warnBonecageArmor				= mod:NewTargetAnnounce(236513, 3)
 local warnSoulbind					= mod:NewTargetAnnounce(236459, 4)
 local warnWither					= mod:NewTargetAnnounce(236138, 3)
 local warnShatteringScream			= mod:NewTargetAnnounce(235969, 4)--This warning DOES need to be cross phase
-local warnSpiritChains				= mod:NewTargetAnnounce(236361, 3)
+local warnSpiritChains				= mod:NewTargetAnnounce(236361, 3, nil, false, 2)
 --Desolate Host
 local warnTorment					= mod:NewStackAnnounce(236548, 3)
 
@@ -120,6 +120,7 @@ mod.vb.tormentedCriesCast = 0
 mod.vb.boneArmorCount = 0
 mod.vb.phase = 1
 mod.vb.soulIcon = 3
+mod.vb.tankCount = 2
 local spiritRealm = GetSpellInfo(235621)
 local boneArmor = GetSpellInfo(236513)
 local doBones = true
@@ -173,6 +174,7 @@ function mod:OnCombatStart(delay)
 	self.vb.boneArmorCount = 0
 	self.vb.phase = 1
 	self.vb.soulIcon = 3
+	self.vb.tankCount = self:GetNumAliveTanks() or 2
 	--timerCollapsingFissureCD:Start(9.7-delay)
 	timerSoulbindCD:Start(14.2-delay, 1)
 	if not self:IsEasy() then
@@ -228,7 +230,7 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 238570 then--Tormented Cries
 		self.vb.tormentedCriesCast = self.vb.tormentedCriesCast + 1
 		timerSpearofAnquishCD:Stop()
-	elseif spellId == 235927 then
+	elseif spellId == 235927 and self.vb.tankCount < 3 then
 		warnRupturingSlam:Show()
 		--timerRupturingSlamCD:Start(nil, args.sourceGUID)
 	elseif spellId == 236542 then--Sundering Doom (regular realm soaks)
