@@ -252,7 +252,7 @@ function mod:SPELL_CAST_START(args)
 		timerSoulbindCD:Stop()
 		--timerWitherCD:Stop()
 		specWarnWailingSouls:Show(self.vb.wailingSoulsCast)
-		if self:IsTank() and not (UnitBuff("player", spiritRealm) or UnitDebuff("player", spiritRealm)) then
+		if not (UnitBuff("player", spiritRealm) or UnitDebuff("player", spiritRealm)) then
 			voiceWailingSouls:Play("killmob")
 		else
 			voiceWailingSouls:Play("aesoon")
