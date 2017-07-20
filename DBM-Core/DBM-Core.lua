@@ -2490,7 +2490,7 @@ do
 		elseif arg == "localizersneeded" then
 			DBM:ShowUpdateReminder(nil, nil, DBM_FORUMS_COPY_URL_DIALOG, "https://www.deadlybossmods.com/forum/viewtopic.php?f=3&t=5")
 		elseif arg1 == "forumsnews" then
-			DBM:ShowUpdateReminder(nil, nil, DBM_FORUMS_COPY_URL_DIALOG_NEWS, "https://www.deadlybossmods.com/forum/viewtopic.php?f=3&t=226&p=690#p690")
+			DBM:ShowUpdateReminder(nil, nil, DBM_FORUMS_COPY_URL_DIALOG_NEWS, "https://discord.gg/DF5mffk")
 		elseif arg1 == "forums" then
 			DBM:ShowUpdateReminder(nil, nil, DBM_FORUMS_COPY_URL_DIALOG)
 		elseif arg1 == "showRaidIdResults" then
@@ -6431,7 +6431,7 @@ do
 			--C_TimerAfter(20, function() if not self.Options.ForumsMessageShown then self.Options.ForumsMessageShown = self.ReleaseRevision self:AddMsg(DBM_FORUMS_MESSAGE) end end)
 			C_TimerAfter(25, function() if self.Options.SilentMode then self:AddMsg(DBM_SILENT_REMINDER) end end)
 			C_TimerAfter(30, function() if not self.Options.SettingsMessageShown then self.Options.SettingsMessageShown = true self:AddMsg(DBM_HOW_TO_USE_MOD) end end)
-			C_TimerAfter(40, function() if self.Options.NewsMessageShown < 10 then self.Options.NewsMessageShown = 10 self:AddMsg(DBM_CORE_WHATS_NEW) end end)
+			C_TimerAfter(40, function() if not self.Options.SettingsMessageShown and self.Options.NewsMessageShown < 11 then self.Options.NewsMessageShown = 11 self:AddMsg(DBM_CORE_WHATS_NEW_LINK) end end)
 		end
 		if type(RegisterAddonMessagePrefix) == "function" then
 			if not RegisterAddonMessagePrefix("D4") then -- main prefix for DBM4
