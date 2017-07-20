@@ -20,7 +20,7 @@ DBM_CORE_LOAD_MOD_DISABLED			= "%s|1이;가; 설치는 돼있지만 켜져있질
 DBM_CORE_LOAD_MOD_DISABLED_PLURAL	= "%s|1이;가; 설치는 돼있지만 켜져있질 않습니다. 직접 켜기 전까진 모드들이 로딩되지 않습니다."
 
 DBM_CORE_WHATS_NEW					= "오버워치와 히어로즈 오브 더 스톰 초읽기 효과음이 DBM 핵심 모듈에서 분리되어 별도의 다운로드 파일로 옮겨졌습니다. 초읽기 팩을 다시 설치하려면 DBM-CountPack-Overwatch와 DBM-CountPack-HoTS를 다운로드 받으세요. 분리 작업을 통해 이들 게임에 캐릭터가 새로 추가될 떄마다 미디어 파일이 DBM에 추가되어 번번히 다시 다운로드 받는 일이 현저히 줄어들 것입니다. 또한 지금 보시는 메시지 같은게 다시 표시되지 않도록 숨기는 설정도 추가되었습니다."
-DBM_CORE_WHATS_NEW_LINK				= "DBM은 음성팩과 함께 이용하는 걸 권장하고 있습니다. 그 이유와 사용 방법에 대한 도움말은 |HDBM:forumsnews|h|cff3588ff이곳을 클릭|r해서 알아보세요"
+--DBM_CORE_WHATS_NEW_LINK				= "DBM은 음성팩과 함께 이용하는 걸 권장하고 있습니다. 그 이유와 사용 방법에 대한 도움말은 |HDBM:forumsnews|h|cff3588ff이곳을 클릭|r해서 알아보세요"
 
 --Post Patch 7.1
 DBM_CORE_NO_RANGE					= "거리 레이더를 인스턴스 던전에서 사용할 수 없습니다. 예전의 텍스트 방식 거리창으로 대체됩니다."
