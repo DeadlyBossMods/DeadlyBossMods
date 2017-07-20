@@ -48,7 +48,7 @@ local warnRupturingSlam				= mod:NewSpellAnnounce(235927, 3)
 local warnBonecageArmor				= mod:NewTargetAnnounce(236513, 3)
 --Spirit Realm
 local warnSoulbind					= mod:NewTargetAnnounce(236459, 4)
-local warnWither					= mod:NewTargetAnnounce(236138, 3)
+local warnWither					= mod:NewTargetAnnounce(236138, 3, nil, "Healer", 2)
 local warnShatteringScream			= mod:NewTargetAnnounce(235969, 4)--This warning DOES need to be cross phase
 local warnSpiritChains				= mod:NewTargetAnnounce(236361, 3, nil, false, 2)
 --Desolate Host
@@ -354,7 +354,9 @@ function mod:SPELL_AURA_APPLIED(args)
 				voiceShatteringScream:Play("scatter")
 			end
 		end
-		warnShatteringScream:CombinedShow(1, args.destName)
+		if self.vb.boneArmorCount > 0 then
+			warnShatteringScream:CombinedShow(1, args.destName)
+		end
 	elseif spellId == 236515 and args:IsPlayer() then
 		yellShatteringScream:Yell(args.spellName, args.amount or 1)
 	elseif spellId == 236361 or spellId == 239923 then
