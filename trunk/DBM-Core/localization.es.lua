@@ -18,8 +18,8 @@ DBM_CORE_LOAD_MOD_VER_MISMATCH		= "No se ha podido cargar el módulo de %s porqu
 DBM_CORE_LOAD_MOD_DISABLED			= "%s está instalado pero se encuentra desactivado. Este módulo no se cargará hasta que lo actives."
 DBM_CORE_LOAD_MOD_DISABLED_PLURAL	= "%s están instalados pero se encuentran desactivados. Estos módulos no se cargarán hasta que los actives."
 
-DBM_CORE_WHATS_NEW					= "Novedades de esta versión: Se ha arreglado un error que mostraba avisos erróneos de versión desfasada. Ahora DBM nunca saltará las cinemáticas de la Costa Abrupta, sin importar la configuración de usuario. Se ha añadido el módulo de Invasiones demoníacas."
-DBM_CORE_WHATS_NEW_LINK				= "Recordatorio: muchas funciones de DBM que dependían de posiciones de unidades han dejado de funcionar. Para más información, haz clic |HDBM:forumsnews|h|cff3588ffaquí|r."
+--DBM_CORE_WHATS_NEW					= "Novedades de esta versión: Se ha arreglado un error que mostraba avisos erróneos de versión desfasada. Ahora DBM nunca saltará las cinemáticas de la Costa Abrupta, sin importar la configuración de usuario. Se ha añadido el módulo de Invasiones demoníacas."
+--DBM_CORE_WHATS_NEW_LINK				= "Recordatorio: muchas funciones de DBM que dependían de posiciones de unidades han dejado de funcionar. Para más información, haz clic |HDBM:forumsnews|h|cff3588ffaquí|r."
 
 --Post Patch 7.1
 DBM_CORE_NO_RANGE					= "No se puede usar el radar de distancia en estancias. Se procederá a usar el marco de distancia por texto."

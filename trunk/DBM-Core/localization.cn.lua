@@ -26,7 +26,7 @@ DBM_CORE_LOAD_MOD_DISABLED			= "%s 模块已安装但被禁用。该模块不会
 DBM_CORE_LOAD_MOD_DISABLED_PLURAL	= "%s 模块已安装但被禁用。这些模块不会被载入除非启用它们。"
 
 DBM_CORE_WHATS_NEW					= "为了提高更新速度，守望先锋及风暴英雄倒计时音效已经从主模块中移除。请单独下载 DBM-CountPack-Overwatch & DBM-CountPack-HoTS。"
-DBM_CORE_WHATS_NEW_LINK				= "建议配合语音包使用。 |HDBM:forumsnews|h|cff3588ff点击这里|r 获取更多信息。"
+--DBM_CORE_WHATS_NEW_LINK				= "建议配合语音包使用。 |HDBM:forumsnews|h|cff3588ff点击这里|r 获取更多信息。"
 
 --Post Patch 7.1
 DBM_CORE_NO_RANGE					= "距离雷达在副本中无法使用，该功能会使用文本代替"
