@@ -15,7 +15,6 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS 212887",
 	"SPELL_AURA_APPLIED 212887 212943 212852 212884",
 	"RAID_BOSS_WHISPER",
---	"CHAT_MSG_ADDON",
 	"UNIT_SPELLCAST_SUCCEEDED target focus mouseover"
 )
 
@@ -135,19 +134,6 @@ function mod:OnTranscriptorSync(msg, targetName)
 		end
 	end
 end
-
---[[
-function mod:CHAT_MSG_ADDON(prefix, msg, channel, targetName)
-	if prefix ~= "Transcriptor" then return end
-	if msg:find("spell:212841") then
-		targetName = Ambiguate(targetName, "none")
-		if self:CheckNearby(4, targetName) and self:AntiSpam(4, 1) then
-			specWarnCracklingJoltNear:Show(targetName)
-			voiceCracklingJolt:Play("watchstep")
-		end
-	end
-end
---]]
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
