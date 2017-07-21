@@ -4803,8 +4803,8 @@ do
 			handleSync(channel, sender, strsplit("\t", msg))
 		elseif prefix == "BigWigs" and msg and (channel == "PARTY" or channel == "RAID" or channel == "INSTANCE_CHAT") then
 			local bwPrefix, bwMsg, extra = strsplit("^", msg)
-			if bwPrefix and bwMsg and extra then--Nil check all 3 to avoid errors form older versions
-				if bwPrefix == "V" then--Version information prefixes
+			if bwPrefix and bwMsg then
+				if bwPrefix == "V" and extra then--Nil check "extra" to avoid error from older version
 					local verString, hash = bwMsg, extra
 					local version = tonumber(verString) or 0
 					if version == 0 then return end--Just a query
