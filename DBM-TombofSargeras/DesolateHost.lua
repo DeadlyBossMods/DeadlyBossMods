@@ -112,6 +112,7 @@ mod:AddSetIconOption("SoulIcon", 236459, true)
 mod:AddInfoFrameOption(235621, true)
 mod:AddRangeFrameOption(10, 236459)
 mod:AddNamePlateOption("NPAuraOnBonecageArmor", 236513)
+mod:AddBoolOption("IgnoreTemplarOn3Tank", true)
 
 mod.vb.soulboundCast = 0
 mod.vb.spearCast = 0
@@ -335,6 +336,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnTormentingCries:Show(args.destName)
 		end
 	elseif spellId == 236513 then
+		local cid = self:GetCIDFromGUID(args.destGUID)
+		if self.Options.IgnoreTemplarOn3Tank and (cid == 119938 or cid == 118715) and self.vb.tankCount >= 3 then return end--Reanimated templar
 		self.vb.boneArmorCount = self.vb.boneArmorCount + 1
 		warnBonecageArmor:Show(args.destName)
 		if self.Options.NPAuraOnBonecageArmor then
@@ -391,6 +394,8 @@ function mod:SPELL_AURA_REMOVED(args)
 			yellSpearofAnguish:Cancel()
 		end
 	elseif spellId == 236513 then--Bonecage Armor
+		local cid = self:GetCIDFromGUID(args.destGUID)
+		if self.Options.IgnoreTemplarOn3Tank and (cid == 119938 or cid == 118715) and self.vb.tankCount >= 3 then return end--Reanimated templar
 		self.vb.boneArmorCount = self.vb.boneArmorCount - 1
 		if self.Options.NPAuraOnBonecageArmor then
 			DBM.Nameplate:Hide(true, args.destGUID, spellId)
@@ -415,7 +420,7 @@ end
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 119938 then--Reanimated templar
+	if cid == 119938 or cid == 118715 then--Reanimated templar
 		--timerRupturingSlamCD:Stop(args.destName)
 --	elseif cid == 119939 then--Ghastly Bonewarden
 	
