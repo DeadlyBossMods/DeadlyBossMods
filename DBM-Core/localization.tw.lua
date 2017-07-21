@@ -20,7 +20,7 @@ DBM_CORE_LOAD_MOD_DISABLED			= "%s已安裝但目前停用中。此模組不會�
 DBM_CORE_LOAD_MOD_DISABLED_PLURAL	= "%s已安裝但目前停用中。這些模組不會載入除非你啟用它們。"
 
 DBM_CORE_WHATS_NEW					= "鬥陣特攻和暴雪英霸倒數音效已經從DBM核心分離而且有獨立的插件包下載。想重新取得這些音效。請安裝插件DBM-CountPack-Overwatch和DBM-CountPack-HoTS。也有新功能可關閉類似更新註釋再次提示。"
---DBM_CORE_WHATS_NEW_LINK				= "推薦使用DBM加上語音包。想知道為什麼而且如何可以幫助你：|HDBM:forumsnews|h|cff3588ff點擊這裡|r"
+DBM_CORE_WHATS_NEW_LINK				= "記得：你可以到DBM Discord裡回報臭蟲，給些回饋或是只是到這看看：|HDBM:forumsnews|h|cff3588ffDiscord連結|r"
 
 --Post Patch 7.1
 DBM_CORE_NO_RANGE					= "距離雷達不能在副本中使用，使用傳統文字距離框架取代"
@@ -60,7 +60,7 @@ DBM_CORE_COMBAT_STATE_RECOVERED		= "%s的戰鬥在%s前開始，恢復計時器�
 DBM_CORE_TRANSCRIPTOR_LOG_START		= "Transcriptor開始記錄。"
 DBM_CORE_TRANSCRIPTOR_LOG_END		= "Transcriptor結束紀錄。"
 
-DBM_CORE_MOVIE_SKIPPED				= "一個過場動畫已被自動地略過。"
+DBM_CORE_MOVIE_SKIPPED				= "DBM已嘗試自動略過場動畫。"
 
 DBM_CORE_AFK_WARNING				= "你正在AFK和戰鬥中(血量還剩餘%d百分比)所以發出警告。如果你沒在AFK，請清除AFK的標籤或是在額外功能禁用此選項。"
 
