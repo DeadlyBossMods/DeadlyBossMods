@@ -22,7 +22,6 @@ mod:RegisterEventsInCombat(
 	"SPELL_PERIODIC_MISSED 239212",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
 	"RAID_BOSS_WHISPER",
---	"CHAT_MSG_ADDON",
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2"
 )
 
@@ -419,26 +418,6 @@ function mod:OnTranscriptorSync(msg, targetName)
 		end
 	end
 end
-
---[[
-function mod:CHAT_MSG_ADDON(prefix, msg, channel, targetName)
-	if prefix ~= "Transcriptor" then return end
-	if msg:find("spell:236604") then--Rapid fire
-		targetName = Ambiguate(targetName, "none")
-		if self:AntiSpam(4, targetName) then
-			local icon = self.vb.bladesIcon
-			warnShadowyBlades:CombinedShow(0.5, targetName)
-			if self.Options.SetIconOnShadowyBlades then
-				self:SetIcon(targetName, icon, 5)
-			end
-			if targetName == playerName then
-				yellShadowyBlades:Yell(icon, icon, icon)
-			end
-			self.vb.bladesIcon = self.vb.bladesIcon + 1
-		end
-	end
-end
---]]
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)

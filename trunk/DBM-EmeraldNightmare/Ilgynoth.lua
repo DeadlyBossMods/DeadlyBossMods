@@ -24,7 +24,6 @@ mod:RegisterEventsInCombat(
 	"UNIT_DIED",
 	"RAID_BOSS_WHISPER",
 	"CHAT_MSG_RAID_BOSS_EMOTE"
---	"CHAT_MSG_ADDON"
 )
 
 --TODO, figure out voice to use for specWarnHeartPhaseBegin
@@ -647,18 +646,3 @@ function mod:OnTranscriptorSync(msg, targetName)
 		end
 	end
 end
-
---[[
-function mod:CHAT_MSG_ADDON(prefix, msg, channel, targetName)
-	if prefix ~= "Transcriptor" then return end
-	if msg:find("spell:208689") and self:AntiSpam(2, targetName) then--Ground Slam
-		targetName = Ambiguate(targetName, "none")
-		if self:CheckNearby(5, targetName) then
-			specWarnGroundSlamNear:Show(targetName)
-			voiceGroundSlam:Play("watchwave")
-		else
-			warnGroundSlam:CombinedShow(1, targetName)
-		end
-	end
-end
---]]
