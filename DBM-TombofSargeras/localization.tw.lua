@@ -21,6 +21,10 @@ L= DBM:GetModLocalization(1856)
 ---------------------------
 L= DBM:GetModLocalization(1861)
 
+L:SetOptionLocalization({
+	TauntOnPainSuccess	= "同步痛苦重擔的計時器和嘲諷警告改為施放成功而不是開始施放(為了某些傳奇戰術，否則不建議使用此選項。)"
+})
+
 ---------------------------
 -- Sisters of the Moon --
 ---------------------------
@@ -49,6 +53,10 @@ L:SetOptionLocalization({
 -- Kil'jaeden --
 ---------------------------
 L= DBM:GetModLocalization(1898)
+
+L:SetMiscLocalization({
+	Obelisklasers	= "石碑雷射"
+})
 
 -------------
 --  Trash  --
