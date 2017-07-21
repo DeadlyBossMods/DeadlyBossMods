@@ -407,7 +407,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			self:SetIcon(args.destName, self.vb.burstingDreadIcon, 5)
 		end
 		self.vb.burstingDreadIcon = self.vb.burstingDreadIcon + 1
-		if self.vb.burstingDreadIcon == 0 then self.vb.burstingDreadIcon = 1 end
+		if self.vb.burstingDreadIcon == 8 then self.vb.burstingDreadIcon = 1 end
 	elseif spellId == 238999 then
 		warnDarknessofStuffEnded:Show()
 		if self.Options.InfoFrame then
