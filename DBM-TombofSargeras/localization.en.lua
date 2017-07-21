@@ -34,6 +34,10 @@ L= DBM:GetModLocalization(1903)
 ---------------------------
 L= DBM:GetModLocalization(1896)
 
+L:SetOptionLocalization({
+	IgnoreTemplarOn3Tank	= "Ignore Reanimated Templars for Bone Armor infoframe/announces/nameplates when using 3 or more tanks (do not change this mid combat, it will break counts)"
+})
+
 ---------------------------
 -- Maiden of Vigilance --
 ---------------------------
