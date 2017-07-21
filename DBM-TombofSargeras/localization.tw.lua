@@ -35,6 +35,10 @@ L= DBM:GetModLocalization(1903)
 ---------------------------
 L= DBM:GetModLocalization(1896)
 
+L:SetOptionLocalization({
+	IgnoreTemplarOn3Tank	= "當使用三或更多坦克時忽略再活化的聖殿騎士的骨盾訊息框架/提示/名條(勿在戰鬥變更，這會打亂次數)"
+})
+
 ---------------------------
 -- Maiden of Vigilance --
 ---------------------------
