@@ -342,7 +342,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.boneArmorCount = self.vb.boneArmorCount + 1
 		warnBonecageArmor:Show(args.destName)
 		if self.Options.NPAuraOnBonecageArmor then
-			DBM.Nameplate:Show(true, args.destGUID, spellId, nil, 60)
+			DBM.Nameplate:Show(true, args.destGUID, spellId)
 		end
 	elseif (spellId ==  236138 or spellId == 236131) then
 		warnWither:CombinedShow(0.3, args.destName)
