@@ -2304,7 +2304,7 @@ local function CreateOptionsMenu()
 		-----------------------
 		-- Small Bar Options --
 		-----------------------
-		local BarSetupSmall = BarSetupPanel:CreateArea(L.AreaTitle_BarSetupSmall, nil, 160, true)
+		local BarSetupSmall = BarSetupPanel:CreateArea(L.AreaTitle_BarSetupSmall, nil, 175, true)
 
 		local smalldummybar = DBM.Bars:CreateDummyBar()
 		smalldummybar.frame:SetParent(BarSetupSmall.frame)
@@ -2330,11 +2330,26 @@ local function CreateOptionsMenu()
 		BarOffsetYSlider:SetPoint("TOPLEFT", BarOffsetXSlider, "BOTTOMLEFT", 0, -10)
 		BarOffsetYSlider:SetScript("OnShow", createDBTOnShowHandler("BarYOffset"))
 		BarOffsetYSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("BarYOffset"))
+		
+		local barResetbutton = BarSetup:CreateButton(L.SpecWarn_ResetMe, 120, 16)
+		barResetbutton:SetPoint('BOTTOMRIGHT', BarSetupSmall.frame, "BOTTOMRIGHT", -5, 5)
+		barResetbutton:SetNormalFontObject(GameFontNormalSmall)
+		barResetbutton:SetHighlightFontObject(GameFontNormalSmall)
+		barResetbutton:SetScript("OnClick", function()
+			DBM.Options.Width = DBM.DefaultOptions.Width
+			DBM.Options.Scale = DBM.DefaultOptions.Scale
+			DBM.Options.BarXOffset = DBM.DefaultOptions.BarXOffset
+			DBM.Options.BarYOffset = DBM.DefaultOptions.BarYOffset
+			createDBTOnValueChangedHandler("Width")
+			createDBTOnValueChangedHandler("Scale")
+			createDBTOnValueChangedHandler("BarXOffset")
+			createDBTOnValueChangedHandler("BarYOffset")
+		end)
 
 		-----------------------
 		-- Huge Bar Options --
 		-----------------------
-		local BarSetupHuge = BarSetupPanel:CreateArea(L.AreaTitle_BarSetupHuge, nil, 175, true)
+		local BarSetupHuge = BarSetupPanel:CreateArea(L.AreaTitle_BarSetupHuge, nil, 190, true)
 
 		local enablebar = BarSetupHuge:CreateCheckButton(L.EnableHugeBar, true, nil, nil, "HugeBarsEnabled")
 
@@ -2364,6 +2379,21 @@ local function CreateOptionsMenu()
 		HugeBarOffsetYSlider:SetPoint("TOPLEFT", HugeBarOffsetXSlider, "BOTTOMLEFT", 0, -10)
 		HugeBarOffsetYSlider:SetScript("OnShow", createDBTOnShowHandler("HugeBarYOffset"))
 		HugeBarOffsetYSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("HugeBarYOffset"))
+		
+		local hugeBarResetbutton = BarSetupHuge:CreateButton(L.SpecWarn_ResetMe, 120, 16)
+		hugeBarResetbutton:SetPoint('BOTTOMRIGHT', BarSetupHuge.frame, "BOTTOMRIGHT", -5, 5)
+		hugeBarResetbutton:SetNormalFontObject(GameFontNormalSmall)
+		hugeBarResetbutton:SetHighlightFontObject(GameFontNormalSmall)
+		hugeBarResetbutton:SetScript("OnClick", function()
+			DBM.Options.HugeWidth = DBM.DefaultOptions.HugeWidth
+			DBM.Options.HugeScale = DBM.DefaultOptions.HugeScale
+			DBM.Options.HugeBarXOffset = DBM.DefaultOptions.HugeBarXOffset
+			DBM.Options.HugeBarYOffset = DBM.DefaultOptions.HugeBarYOffset
+			createDBTOnValueChangedHandler("HugeWidth")
+			createDBTOnValueChangedHandler("HugeScale")
+			createDBTOnValueChangedHandler("HugeBarXOffset")
+			createDBTOnValueChangedHandler("HugeBarYOffset")
+		end)
 
 		BarSetupPanel:SetMyOwnHeight()
 	end
