@@ -140,7 +140,7 @@ end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
-	if spellId == 242377 then
+	if spellId == 244141 then--Enter Pod
 
 	end
 end
