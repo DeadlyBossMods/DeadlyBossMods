@@ -2263,7 +2263,13 @@ local function CreateOptionsMenu()
 					DBM.Bars:SetOption(option, self:GetValue())
 					self:SetValue(DBM.Bars:GetOption(option))
 				end
-
+			end
+		end
+		
+		local function createDBTOnValueDefaultHandler(option)
+			return function(self)
+				DBM.Bars:SetOption(option, DBM.Bars:GetDefaultOption(option))
+				self:SetValue(DBM.Bars:GetOption(option))
 			end
 		end
 
@@ -2336,14 +2342,10 @@ local function CreateOptionsMenu()
 		barResetbutton:SetNormalFontObject(GameFontNormalSmall)
 		barResetbutton:SetHighlightFontObject(GameFontNormalSmall)
 		barResetbutton:SetScript("OnClick", function()
-			DBM.Options.Width = DBM.DefaultOptions.Width
-			DBM.Options.Scale = DBM.DefaultOptions.Scale
-			DBM.Options.BarXOffset = DBM.DefaultOptions.BarXOffset
-			DBM.Options.BarYOffset = DBM.DefaultOptions.BarYOffset
-			createDBTOnValueChangedHandler("Width")
-			createDBTOnValueChangedHandler("Scale")
-			createDBTOnValueChangedHandler("BarXOffset")
-			createDBTOnValueChangedHandler("BarYOffset")
+			createDBTOnValueDefaultHandler("Width")
+			createDBTOnValueDefaultHandler("Scale")
+			createDBTOnValueDefaultHandler("BarXOffset")
+			createDBTOnValueDefaultHandler("BarYOffset")
 		end)
 
 		-----------------------
@@ -2385,14 +2387,10 @@ local function CreateOptionsMenu()
 		hugeBarResetbutton:SetNormalFontObject(GameFontNormalSmall)
 		hugeBarResetbutton:SetHighlightFontObject(GameFontNormalSmall)
 		hugeBarResetbutton:SetScript("OnClick", function()
-			DBM.Options.HugeWidth = DBM.DefaultOptions.HugeWidth
-			DBM.Options.HugeScale = DBM.DefaultOptions.HugeScale
-			DBM.Options.HugeBarXOffset = DBM.DefaultOptions.HugeBarXOffset
-			DBM.Options.HugeBarYOffset = DBM.DefaultOptions.HugeBarYOffset
-			createDBTOnValueChangedHandler("HugeWidth")
-			createDBTOnValueChangedHandler("HugeScale")
-			createDBTOnValueChangedHandler("HugeBarXOffset")
-			createDBTOnValueChangedHandler("HugeBarYOffset")
+			createDBTOnValueDefaultHandler("HugeWidth")
+			createDBTOnValueDefaultHandler("HugeScale")
+			createDBTOnValueDefaultHandler("HugeBarXOffset")
+			createDBTOnValueDefaultHandler("HugeBarYOffset")
 		end)
 
 		BarSetupPanel:SetMyOwnHeight()
