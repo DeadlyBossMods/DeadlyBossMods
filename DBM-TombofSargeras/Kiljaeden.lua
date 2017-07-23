@@ -93,7 +93,7 @@ local timerRupturingSingularityCD	= mod:NewCDCountTimer(61, 235059, nil, nil, ni
 local timerRupturingSingularity		= mod:NewCastTimer(9.7, 235059, 206577, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)--Shortname: Comet Impact
 local timerArmageddonCD				= mod:NewCDCountTimer(42, 240910, nil, nil, nil, 5)
 local timerArmageddon				= mod:NewCastTimer(9, 234295, nil, nil, nil, 2)--Armageddon Rain
-local timerShadReflectionEruptingCD	= mod:NewCDTimer(35, 236710, 243160, nil, nil, 3)--Shortname : erupting souls
+local timerShadReflectionEruptingCD	= mod:NewCDTimer(35, 236710, 243160, nil, nil, 3, nil, DBM_CORE_DAMAGE_ICON)--Shortname : erupting souls
 --Intermission: Eternal Flame
 --mod:AddTimerLine(SCENARIO_STAGE:format(1.5))
 local timerTransition				= mod:NewPhaseTimer(57.9)
@@ -102,7 +102,7 @@ local timerBurstingDreadflameCD		= mod:NewCDCountTimer(31, 238430, nil, nil, nil
 --Stage Two: Reflected Souls
 mod:AddTimerLine(SCENARIO_STAGE:format(2))
 local timerHopelessness				= mod:NewCastTimer(8, 237725, nil, "Healer", nil, 5, nil, DBM_CORE_HEALER_ICON)
-local timerShadReflectionWailingCD	= mod:NewCDTimer(35, 236378, 236075, nil, nil, 3)--Shortname : wailing souls
+local timerShadReflectionWailingCD	= mod:NewCDTimer(35, 236378, 236075, nil, nil, 3, nil, DBM_CORE_TANK_ICON)--Shortname : wailing souls
 --Intermission: Deceiver's Veil
 --mod:AddTimerLine(SCENARIO_STAGE:format(2.5))
 local timerSightlessGaze			= mod:NewBuffActiveTimer(20, 241721, nil, nil, nil, 5)
@@ -238,6 +238,7 @@ function mod:OnCombatStart(delay)
 	countdownFelclaws:Start(25-delay)
 	timerRupturingSingularityCD:Start(58-delay, 1)
 	if self:IsMythic() then
+		DBM:AddMsg("This mod has poor support for mythic difficulty. Please help improve mod by sharing logs (especially transcriptor) with MysticalOS")
 		timerShadReflectionWailingCD:Start(57)--Approx, from stream, finetune
 	end
 	berserkTimer:Start(600-delay)
