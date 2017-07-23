@@ -2266,11 +2266,9 @@ local function CreateOptionsMenu()
 			end
 		end
 		
-		local function createDBTOnValueDefaultHandler(option)
-			return function(self)
-				DBM.Bars:SetOption(option, DBM.Bars:GetDefaultOption(option))
-				self:SetValue(DBM.Bars:GetOption(option))
-			end
+		local function resetDBTValueToDefault(slider, option)
+			DBM.Bars:SetOption(option, DBM.Bars:GetDefaultOption(option))
+			slider:SetValue(DBM.Bars:GetOption(option))
 		end
 
 		local FontSizeSlider = BarSetup:CreateSlider(L.Bar_FontSize, 7, 18, 1)
@@ -2342,10 +2340,10 @@ local function CreateOptionsMenu()
 		barResetbutton:SetNormalFontObject(GameFontNormalSmall)
 		barResetbutton:SetHighlightFontObject(GameFontNormalSmall)
 		barResetbutton:SetScript("OnClick", function()
-			createDBTOnValueDefaultHandler("Width")
-			createDBTOnValueDefaultHandler("Scale")
-			createDBTOnValueDefaultHandler("BarXOffset")
-			createDBTOnValueDefaultHandler("BarYOffset")
+			resetDBTValueToDefault(BarWidthSlider, "Width")
+			resetDBTValueToDefault(BarScaleSlider, "Scale")
+			resetDBTValueToDefault(BarOffsetXSlider, "BarXOffset")
+			resetDBTValueToDefault(BarOffsetYSlider, "BarYOffset")
 		end)
 
 		-----------------------
