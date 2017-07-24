@@ -152,12 +152,7 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 239153 then
-		self.vb.spontFragmentationCount = self.vb.spontFragmentationCount + 1
-		if self.vb.spontFragmentationCount < 4 then
-			timerSpontFragmentationCD:Start(nil, self.vb.spontFragmentationCount+1)
-		end
-	elseif spellId == 237722 then--Blowback
+	if spellId == 237722 then--Blowback
 		timerSpontFragmentationCD:Stop()
 		timerMassInstabilityCD:Stop()
 		timerInfusionCD:Stop()
@@ -286,3 +281,12 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
+
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
+	if spellId == 239153 then--Kil'jaeden Take Off Sound (intermission 1)
+		self.vb.spontFragmentationCount = self.vb.spontFragmentationCount + 1
+		if self.vb.spontFragmentationCount < 4 then
+			timerSpontFragmentationCD:Start(nil, self.vb.spontFragmentationCount+1)
+		end
+	end
+end
