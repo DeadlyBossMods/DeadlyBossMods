@@ -3705,7 +3705,7 @@ do
 		timerRequestInProgress = false
 		self:Debug("LOADING_SCREEN_DISABLED fired")
 		self:Unschedule(SecondaryLoadCheck)
-		self:Schedule(1, SecondaryLoadCheck, self)
+		self:Schedule(2.5, SecondaryLoadCheck, self)
 		self:Schedule(5, SecondaryLoadCheck, self)
 		if DBM:HasMapRestrictions() then
 			DBM.Arrow:Hide()
