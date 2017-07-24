@@ -165,6 +165,8 @@ mod.vb.lastTankHit = "None"
 mod.vb.clawCount = 0
 mod.vb.obeliskCount = 0
 local riftName, gravitySqueezeBuff = GetSpellInfo(239130), GetSpellInfo(239154)
+local phase1MythicArmageddonTimers = {10, 54, 38, 46}--Incomplete
+local phase1MythicSingularityTimers = {55, 25, 25}--Incomplete
 local phase2NormalArmageddonTimers = {55, 45, 31}
 local phase2HeroicArmageddonTimers = {55, 75, 35, 30}
 local phase2NormalBurstingTimers = {57, 44}--Not used yet, needs more data to verify and improve
@@ -239,7 +241,7 @@ function mod:OnCombatStart(delay)
 	timerRupturingSingularityCD:Start(58-delay, 1)
 	if self:IsMythic() then
 		DBM:AddMsg("This mod has poor support for mythic difficulty. Please help improve mod by sharing logs (especially transcriptor) with MysticalOS")
-		timerShadReflectionWailingCD:Start(57)--Approx, from stream, finetune
+		timerShadReflectionWailingCD:Start(56)
 	end
 	berserkTimer:Start(600-delay)
 end
@@ -300,8 +302,16 @@ function mod:SPELL_CAST_START(args)
 				countdownArmageddon:Start(timer)
 			end
 		else--Phase 1
-			timerArmageddonCD:Start(64, self.vb.armageddonCast+1)
-			countdownArmageddon:Start(64)
+			if self:IsMythic() then
+				local timer = phase1MythicArmageddonTimers[self.vb.armageddonCast+1]
+				if timer then
+					timerArmageddonCD:Start(timer, self.vb.armageddonCast+1)
+					countdownArmageddon:Start(timer)
+				end
+			else
+				timerArmageddonCD:Start(64, self.vb.armageddonCast+1)
+				countdownArmageddon:Start(64)
+			end
 		end
 	elseif spellId == 239932 then
 		self.vb.clawCount = 0
@@ -343,6 +353,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.eruptingReflectionIcon = 3
 		if self.vb.phase == 2 then
 			timerShadReflectionEruptingCD:Start(112)--Erupting
+		else--Should only happen in mythic phase 1
+			timerShadReflectionEruptingCD:Start(109)
 		end
 	elseif spellId == 237590 then--Hopeless Shadow Reflection (Stage 2)
 
@@ -600,7 +612,12 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 				timerRupturingSingularityCD:Start(timer, self.vb.singularityCount+1)
 			end
 		else--Phase 1
-			if self:IsEasy() then
+			if self:IsMythic() then
+				local timer= phase1MythicSingularityTimers[self.vb.singularityCount+1]
+				if timer then
+					timerRupturingSingularityCD:Start(timer, self.vb.singularityCount+1)
+				end
+			elseif self:IsEasy() then
 				timerRupturingSingularityCD:Start(80, self.vb.singularityCount+1)
 			else
 				timerRupturingSingularityCD:Start(55, self.vb.singularityCount+1)
