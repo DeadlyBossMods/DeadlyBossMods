@@ -13,7 +13,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 235271 241635 241636 235267",
-	"SPELL_CAST_SUCCESS 239153 237722",
+	"SPELL_CAST_SUCCESS 237722",
 	"SPELL_AURA_APPLIED 235240 235213 235117 240209 235028 236061 234891 243276",
 	"SPELL_AURA_REFRESH 235240 235213",
 	"SPELL_AURA_REMOVED 235117 240209 235028 234891 243276",
@@ -264,7 +264,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerBlowbackCD:Start()
 		if self:IsMythic() then
 			self.vb.spontFragmentationCount = 0
-			--timerSpontFragmentationCD:Start(nil, 1)
+			timerSpontFragmentationCD:Start(8, 1)
 		end
 		if self.Options.InfoFrame then
 			local spellName = GetSpellInfo(235117)
