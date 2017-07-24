@@ -437,7 +437,7 @@ local floor, mhuge, mmin, mmax = math.floor, math.huge, math.min, math.max
 local GetNumGroupMembers, GetRaidRosterInfo = GetNumGroupMembers, GetRaidRosterInfo
 local UnitName, GetUnitName = UnitName, GetUnitName
 local IsInRaid, IsInGroup, IsInInstance = IsInRaid, IsInGroup, IsInInstance
-local UnitAffectingCombat, InCombatLockdown, IsEncounterInProgress, UnitPlayerOrPetInRaid, UnitPlayerOrPetInParty = UnitAffectingCombat, InCombatLockdown, IsEncounterInProgress, UnitPlayerOrPetInRaid, UnitPlayerOrPetInParty
+local UnitAffectingCombat, InCombatLockdown, IsFalling, IsEncounterInProgress, UnitPlayerOrPetInRaid, UnitPlayerOrPetInParty = UnitAffectingCombat, InCombatLockdown, IsFalling, IsEncounterInProgress, UnitPlayerOrPetInRaid, UnitPlayerOrPetInParty
 local UnitGUID, UnitHealth, UnitHealthMax, UnitBuff = UnitGUID, UnitHealth, UnitHealthMax, UnitBuff
 local UnitExists, UnitIsDead, UnitIsFriend, UnitIsUnit, UnitIsAFK = UnitExists, UnitIsDead, UnitIsFriend, UnitIsUnit, UnitIsAFK
 local GetSpellInfo, EJ_GetSectionInfo, GetSpellTexture, GetSpellCooldown = GetSpellInfo, EJ_GetSectionInfo, GetSpellTexture, GetSpellCooldown
@@ -446,8 +446,8 @@ local GetInstanceInfo = GetInstanceInfo
 local UnitPosition, GetCurrentMapDungeonLevel, GetMapInfo, GetCurrentMapZone, SetMapToCurrentZone, GetPlayerMapAreaID = UnitPosition, GetCurrentMapDungeonLevel, GetMapInfo, GetCurrentMapZone, SetMapToCurrentZone, GetPlayerMapAreaID
 local GetSpecialization, GetSpecializationInfo, GetSpecializationInfoByID = GetSpecialization, GetSpecializationInfo, GetSpecializationInfoByID
 local UnitDetailedThreatSituation = UnitDetailedThreatSituation
-local GetPartyAssignment, UnitGroupRolesAssigned, UnitIsGroupLeader, UnitIsGroupAssistant, UnitRealmRelationship = GetPartyAssignment, UnitGroupRolesAssigned, UnitIsGroupLeader, UnitIsGroupAssistant, UnitRealmRelationship
-local LoadAddOn, GetAddOnInfo, GetAddOnEnableState, GetAddOnMetadata, GetNumAddOns = LoadAddOn, GetAddOnInfo, GetAddOnEnableState, GetAddOnMetadata, GetNumAddOns
+local GetPartyAssignment, UnitGroupRolesAssigned, UnitIsGroupLeader, UnitIsGroupAssistant = GetPartyAssignment, UnitGroupRolesAssigned, UnitIsGroupLeader, UnitIsGroupAssistant
+local LoadAddOn, GetAddOnInfo, GetAddOnEnableState, GetAddOnMetadata = LoadAddOn, GetAddOnInfo, GetAddOnEnableState, GetAddOnMetadata
 local PlaySoundFile, PlaySound = PlaySoundFile, PlaySound
 local Ambiguate = Ambiguate
 local C_TimerNewTicker, C_TimerAfter = C_Timer.NewTicker, C_Timer.After
@@ -2549,7 +2549,7 @@ do
 			return
 		end
 		if not IsAddOnLoaded("DBM-GUI") then
-			if InCombatLockdown() then
+			if InCombatLockdown() or IsFalling() then
 				guiRequested = true
 				self:AddMsg(DBM_CORE_LOAD_GUI_COMBAT)
 				return
@@ -3705,7 +3705,7 @@ do
 		timerRequestInProgress = false
 		self:Debug("LOADING_SCREEN_DISABLED fired")
 		self:Unschedule(SecondaryLoadCheck)
-		self:Schedule(2.5, SecondaryLoadCheck, self)
+		self:Schedule(1.5, SecondaryLoadCheck, self)
 		self:Schedule(5, SecondaryLoadCheck, self)
 		if DBM:HasMapRestrictions() then
 			DBM.Arrow:Hide()
@@ -3766,7 +3766,7 @@ function DBM:LoadMod(mod, force)
 		end
 		return
 	end
-	if InCombatLockdown() and not UnitAffectingCombat("player") and not IsEncounterInProgress() and IsInInstance() and not noDelay then
+	if (InCombatLockdown() or IsFalling()) and not IsEncounterInProgress() and IsInInstance() and not noDelay then
 		self:Debug("LoadMod delayed do to combat")
 		if not loadDelay then--Prevent duplicate DBM_CORE_LOAD_MOD_COMBAT message.
 			self:AddMsg(DBM_CORE_LOAD_MOD_COMBAT:format(tostring(mod.name)))
@@ -3810,7 +3810,7 @@ function DBM:LoadMod(mod, force)
 				C_TimerAfter(15, function() timerRequestInProgress = false end)
 			end
 		end
-		if not InCombatLockdown() and not UnitAffectingCombat("player") then--We loaded in combat because a raid boss was in process, but lets at least delay the garbage collect so at least load mod is half as bad, to do our best to avoid "script ran too long"
+		if not InCombatLockdown() and not IsFalling() then--We loaded in combat because a raid boss was in process, but lets at least delay the garbage collect so at least load mod is half as bad, to do our best to avoid "script ran too long"
 			collectgarbage("collect")
 		end
 		if loadDelay2 == mod then
@@ -3924,7 +3924,7 @@ do
 	
 	syncHandlers["NS"] = function(sender, modid, modvar, text, abilityName)
 		if sender == playerName then return end
-		if DBM.Options.BlockNoteShare or InCombatLockdown() then return end
+		if DBM.Options.BlockNoteShare or InCombatLockdown() or IsFalling() then return end
 		if IsInGroup(LE_PARTY_CATEGORY_INSTANCE) and IsInInstance() then return end
 		--^^You are in LFR, BG, or LFG. Block note syncs. They shouldn't be sendable, but in case someone edits DBM^^
 		local mod = DBM:GetModByName(modid or "")
@@ -6799,7 +6799,7 @@ function DBM:RoleCheck(ignoreLoot)
 	if not role then return end
 	local specID = GetLootSpecialization()
 	local _, _, _, _, lootrole = GetSpecializationInfoByID(specID)
-	if not InCombatLockdown() and ((IsPartyLFG() and (difficultyIndex == 14 or difficultyIndex == 15)) or not IsPartyLFG()) then
+	if not InCombatLockdown() and not IsFalling() and ((IsPartyLFG() and (difficultyIndex == 14 or difficultyIndex == 15)) or not IsPartyLFG()) then
 		if UnitGroupRolesAssigned("player") ~= role then
 			UnitSetRole("player", role)
 		end
