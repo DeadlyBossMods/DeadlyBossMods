@@ -250,7 +250,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerMoonGlaiveCD:Start()
 	elseif spellId == 236518 then
 		if self.vb.phase == 3 then
-			timerMoonBurnCD:Start(17)
+			timerMoonBurnCD:Start(16)
 		else
 			timerMoonBurnCD:Start()
 		end

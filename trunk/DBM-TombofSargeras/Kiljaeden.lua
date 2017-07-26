@@ -291,8 +291,8 @@ function mod:SPELL_CAST_START(args)
 					timerArmageddonCD:Start(28, self.vb.armageddonCast+1)
 					countdownArmageddon:Start(28)
 				else
-					timerArmageddonCD:Start(30, self.vb.armageddonCast+1)
-					countdownArmageddon:Start(30)
+					timerArmageddonCD:Start(29.5, self.vb.armageddonCast+1)
+					countdownArmageddon:Start(29.5)
 				end
 			end
 		elseif self.vb.phase == 2 then
