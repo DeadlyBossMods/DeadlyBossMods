@@ -16,7 +16,7 @@ mod:RegisterEvents(
 
 --TODO, add jellyfish Static something, forgot to log it and don't remember name
 local warnPolyMorphBomb				= mod:NewTargetAnnounce(240735, 3)
-local warnWateryGrave				= mod:NewTargetAnnounce(241171, 3)
+local warnWateryGrave				= mod:NewTargetAnnounce(241362, 3)
 local warnLunarBomb					= mod:NewTargetAnnounce(241362, 3)
 local warnEmbraceTides				= mod:NewTargetAnnounce(240599, 2)
 
@@ -26,7 +26,7 @@ local specWarnLunarBomb				= mod:NewSpecialWarningMoveAway(241171, nil, nil, nil
 local yellLunarBomb					= mod:NewYell(241171)
 local specWarnEmbraceTides			= mod:NewSpecialWarningMoveAway(240599, nil, nil, nil, 1, 2)
 local yellEmbraceTides				= mod:NewYell(240599)
-local specWarnWateryGrave			= mod:NewSpecialWarningSwitch(241360, "-Healer", nil, nil, 1, 2)
+local specWarnWateryGrave			= mod:NewSpecialWarningSwitch(241362, "-Healer", nil, nil, 1, 2)
 local specWarnShadowBoltVolley		= mod:NewSpecialWarningInterrupt(243171, "HasInterrupt", nil, nil, 1, 2)
 local specWarnSeverSoul				= mod:NewSpecialWarningRun(239810, "Melee", nil, nil, 4, 2)
 local specWarnElectroShock			= mod:NewSpecialWarningRun(240169, "Melee", nil, nil, 4, 2)
@@ -91,7 +91,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellLunarBomb:Yell()
 		end
 	elseif spellId == 241362 then
-		warnWateryGrave:CombinedShow(0.3, args.destName)--Multiple targets assumed
+		warnWateryGrave:CombinedShow(1.5, args.destName)--Multiple targets assumed
 	elseif spellId == 240599 then
 		warnEmbraceTides:CombinedShow(1, args.destName)
 		if args:IsPlayer() then
