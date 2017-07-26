@@ -36,7 +36,7 @@ local specWarnGTFO					= mod:NewSpecialWarningGTFO(240176, nil, nil, nil, 1, 2)
 local voicePolyMorphBomb			= mod:NewVoice(240735)--runout
 local voiceLunarBomb				= mod:NewVoice(241171)--runout
 local voiceEmbraceTides				= mod:NewVoice(240599)--runout
-local voiceWateryGrave				= mod:NewVoice(241360, "-Healer")--helpme? maybe targetchange instead
+local voiceWateryGrave				= mod:NewVoice(241362, "-Healer")--helpme? maybe targetchange instead
 local voiceShadowBoltVolley			= mod:NewVoice(243171, "HasInterrupt")--kickcast
 local voiceSeverSoul				= mod:NewVoice(239810)--runout
 local voiceElectroShock				= mod:NewVoice(240169)--runout
@@ -91,7 +91,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellLunarBomb:Yell()
 		end
 	elseif spellId == 241362 then
-		warnWateryGrave:CombinedShow(1.5, args.destName)--Multiple targets assumed
+		warnWateryGrave:CombinedShow(1.5, args.destName)
 	elseif spellId == 240599 then
 		warnEmbraceTides:CombinedShow(1, args.destName)
 		if args:IsPlayer() then
