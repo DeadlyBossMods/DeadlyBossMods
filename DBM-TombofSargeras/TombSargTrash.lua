@@ -17,7 +17,7 @@ mod:RegisterEvents(
 --TODO, add jellyfish Static something, forgot to log it and don't remember name
 local warnPolyMorphBomb				= mod:NewTargetAnnounce(240735, 3)
 local warnWateryGrave				= mod:NewTargetAnnounce(241362, 3)
-local warnLunarBomb					= mod:NewTargetAnnounce(241362, 3)
+local warnLunarBomb					= mod:NewTargetAnnounce(241171, 3)
 local warnEmbraceTides				= mod:NewTargetAnnounce(240599, 2)
 
 local specWarnPolyMorphBomb			= mod:NewSpecialWarningMoveAway(240735, nil, nil, nil, 1, 2)
