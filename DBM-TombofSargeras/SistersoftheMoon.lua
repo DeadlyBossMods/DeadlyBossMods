@@ -15,7 +15,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 236442 236712 239379",
 	"SPELL_CAST_SUCCESS 236694 236547 236518 233263 237561 236672 239264 236442",
-	"SPELL_AURA_APPLIED 234995 234996 236550 236596 233264 233263 236712 239264 236519 237561 236305",
+	"SPELL_AURA_APPLIED 234995 234996 236550 236596 233264 233263 236712 239264 236519 237561 236305 243262",
 	"SPELL_AURA_APPLIED_DOSE 234995 234996 239264",
 	"SPELL_AURA_REMOVED 236712 233263 233264 236305",
 --	"SPELL_PERIODIC_DAMAGE",
@@ -46,6 +46,7 @@ local warnMoonBurn					= mod:NewTargetAnnounce(236519, 3)
 
 --All
 local specWarnFontofElune			= mod:NewSpecialWarningStack(236357, nil, 12, nil, 2, 1, 6)--Stack unknown
+local specWarnBerserk				= mod:NewSpecialWarningSpell(243262, nil, nil, nil, 3, 2)
 --Huntress Kasparian
 local specWarnGlaiveStorm			= mod:NewSpecialWarningDodge(239379, nil, nil, nil, 2, 2)
 local specWarnTwilightGlaiveOther	= mod:NewSpecialWarningTarget(237561, nil, nil, nil, 2, 2)
@@ -399,6 +400,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnTwilightGlaiveOther:Show(args.destName)
 			voiceTwilightGlaive:Play("farfromline")
 		end
+	elseif spellId == 243262 and self:AntiSpam(3, 4) then
+		specWarnBerserk:Show()
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
