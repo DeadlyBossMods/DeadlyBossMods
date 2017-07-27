@@ -81,7 +81,6 @@ mod:AddTimerLine(SCENARIO_STAGE:format(1))
 local timerSpearofAnquishCD			= mod:NewCDTimer(20, 235924, nil, nil, nil, 3)
 --local timerCollapsingFissureCD		= mod:NewAITimer(31, 235907, nil, nil, nil, 3)
 local timerTormentedCriesCD			= mod:NewCDCountTimer(58, 238570, nil, nil, nil, 6)
---local timerRupturingSlamCD			= mod:NewCDTimer(23, 235927, nil, nil, nil, 3)--23 seconds, per add
 --Spirit Realm
 local timerSoulbindCD				= mod:NewCDCountTimer(24, 236459, nil, nil, nil, 3)
 --local timerWitherCD					= mod:NewCDTimer(9.4, 236138, nil, nil, nil, 3)
@@ -89,13 +88,13 @@ local timerSoulbindCD				= mod:NewCDCountTimer(24, 236459, nil, nil, nil, 3)
 local timerWailingSoulsCD			= mod:NewCDCountTimer(58, 236072, nil, nil, nil, 2)
 --The Desolate Host
 mod:AddTimerLine(SCENARIO_STAGE:format(2))
-local timerSunderingDoomCD			= mod:NewCDTimer(25.4, 236542, nil, nil, nil, 5)
-local timerDoomedSunderingCD		= mod:NewCDTimer(25.2, 236544, nil, nil, nil, 5)
+local timerSunderingDoomCD			= mod:NewCDTimer(24.4, 236542, nil, nil, nil, 5)
+local timerDoomedSunderingCD		= mod:NewCDTimer(24.4, 236544, nil, nil, nil, 5)
 
 local berserkTimer					= mod:NewBerserkTimer(480)
 
-local countdownSunderingDoom		= mod:NewCountdown(25.4, 236542)
-local countdownDoomedSundering		= mod:NewCountdown(25.2, 236544)
+local countdownSunderingDoom		= mod:NewCountdown(24.4, 236542)
+local countdownDoomedSundering		= mod:NewCountdown(24.4, 236544)
 
 --Corporeal Realm
 local voiceSpearofAnguish			= mod:NewVoice(235924)--runout
@@ -228,7 +227,6 @@ function mod:SPELL_CAST_START(args)
 		timerSpearofAnquishCD:Stop()
 	elseif spellId == 235927 and self.vb.tankCount < 3 then
 		warnRupturingSlam:Show()
-		--timerRupturingSlamCD:Start(nil, args.sourceGUID)
 	elseif spellId == 236542 then--Sundering Doom (regular realm soaks)
 		if UnitBuff("player", spiritRealm) or UnitDebuff("player", spiritRealm) then--Figure out which it is
 			specWarnSunderingDoomRun:Show()
@@ -340,7 +338,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		local cid = self:GetCIDFromGUID(args.destGUID)
 		if self.Options.IgnoreTemplarOn3Tank and (cid == 119938 or cid == 118715) and self.vb.tankCount >= 3 then return end--Reanimated templar
 		self.vb.boneArmorCount = self.vb.boneArmorCount + 1
-		warnBonecageArmor:Show(args.destName)
+		if self:AntiSpam(2, args.destName) then
+			warnBonecageArmor:Show(args.destName)
+		end
 		if self.Options.NPAuraOnBonecageArmor then
 			DBM.Nameplate:Show(true, args.destGUID, spellId)
 		end
@@ -421,15 +421,10 @@ end
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 119938 or cid == 118715 then--Reanimated templar
-		--timerRupturingSlamCD:Stop(args.destName)
---	elseif cid == 119939 then--Ghastly Bonewarden
-	
---	elseif cid == 119940 then--Fallen Priestess
---		timerShatteringScreamCD:Stop(args.destGUID)
-	elseif cid == 118462 then
+	if cid == 118462 then
 		timerSoulbindCD:Stop()
 		timerSpearofAnquishCD:Stop()
+		berserkTimer:Cancel()
 	end
 end
 
