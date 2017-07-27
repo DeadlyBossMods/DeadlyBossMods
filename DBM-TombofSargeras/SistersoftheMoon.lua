@@ -37,6 +37,7 @@ mod:RegisterEventsInCombat(
 local warnPhase2					= mod:NewPhaseAnnounce(2, 2)
 --local warnIncorporealShot			= mod:NewTargetAnnounce(236305, 3)
 local warnRapidShot					= mod:NewTargetAnnounce(236596, 3)
+local warnTwilightVolley			= mod:NewTargetAnnounce(236442, 2)
 --Priestess Lunaspyre
 local warnPhase3					= mod:NewPhaseAnnounce(3, 2)
 local warnLunarBeacon				= mod:NewTargetAnnounce(236712, 3)
@@ -54,7 +55,8 @@ local specWarnDiscorporate			= mod:NewSpecialWarningMoveTo(236550, nil, nil, nil
 local specWarnDiscorporateSwap		= mod:NewSpecialWarningTaunt(236550, nil, nil, nil, 1, 2)
 --Captain Yathae Moonstrike
 local specWarnCallMoontalon			= mod:NewSpecialWarningSwitch(236694, "-Healer", nil, nil, 1, 2)
-local specWarnTwilightVolley		= mod:NewSpecialWarningDodge(236442, nil, nil, nil, 2, 2)
+local specWarnTwilightVolley		= mod:NewSpecialWarningClose(236442, nil, nil, nil, 2, 2)
+local specWarnTwilightVolleyYou		= mod:NewSpecialWarningYou(236442, nil, nil, nil, 1, 2)
 local yellTwilightVolley			= mod:NewShortYell(236442)
 local specWarnIncorpShot			= mod:NewSpecialWarningYou(236305, nil, nil, nil, 1, 2)
 local yellIncorpShot				= mod:NewYell(236305)
@@ -87,7 +89,7 @@ local timerLunarBeaconCD			= mod:NewCDTimer(20.6, 236712, nil, nil, nil, 3)--20.
 local timerLunarFireCD				= mod:NewCDTimer(11, 239264, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerMoonBurnCD				= mod:NewCDTimer(23, 236519, nil, nil, nil, 3)--Used while inactive
 
---local berserkTimer				= mod:NewBerserkTimer(300)
+local berserkTimer					= mod:NewBerserkTimer(660)
 
 --ALL
 local countdownSpecials				= mod:NewCountdown(54, 233264)
@@ -125,7 +127,14 @@ local astralPurge = GetSpellInfo(234998)
 function mod:VolleyTarget(targetname, uId)
 	if not targetname then return end
 	if targetname == UnitName("player") then
+		specWarnTwilightVolleyYou:Show()
+		voiceTwilightVolley:Play("runaway")
 		yellTwilightVolley:Yell()
+	elseif self:CheckNearby(10, targetname) then
+		specWarnTwilightVolley:Show(targetname)
+		voiceTwilightVolley:Play("watchstep")
+	else
+		warnTwilightVolley:Show(targetname)
 	end
 end
 
@@ -191,6 +200,9 @@ function mod:OnCombatStart(delay)
 	countdownSpecials:Start(48-delay)
 	if not self:IsEasy() then
 		timerEmbraceofEclipseCD:Start(48-delay)--Secondary special for heroic/mythic
+		if self:IsMythic() then
+			berserkTimer:Start()--11 min
+		end
 	end
 end
 
@@ -206,11 +218,9 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 236442 then
-		specWarnTwilightVolley:Show()
-		voiceTwilightVolley:Play("watchstep")
-		if self.vb.phase == 2 then
+		--if self.vb.phase == 2 then
 			self:BossTargetScanner(args.sourceGUID, "VolleyTarget", 0.1, 9)
-		end
+		--end
 	elseif spellId == 236712 then
 		self.vb.beaconCount = self.vb.beaconCount + 1
 		timerLunarBeaconCD:Start(20.7)
