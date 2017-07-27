@@ -82,7 +82,7 @@ local timerDarkMarkCD				= mod:NewCDTimer(34, 239739, nil, nil, nil, 3)
 --local timerBlackWindsCD				= mod:NewCDTimer(31, 239418, nil, nil, nil, 3)
 --local timerRainoftheDestroyerCD		= mod:NewCDTimer(44, 240396, nil, nil, nil, 3)
 
---local berserkTimer				= mod:NewBerserkTimer(300)
+local berserkTimer					= mod:NewBerserkTimer(420)
 
 --Stage One: A Slumber Disturbed
 local countdownRuptureRealities		= mod:NewCountdown(60, 239132)
@@ -229,6 +229,9 @@ function mod:OnCombatStart(delay)
 		DBM.InfoFrame:SetHeader(OVERVIEW)
 		--DBM.InfoFrame:Show(2, "enemypower", 2)
 		DBM.InfoFrame:Show(7, "function", updateInfoFrame, false, false)
+	end
+	if self:IsLFR() then--7 min in LFR
+		berserkTimer:Start(-delay)
 	end
 end
 
