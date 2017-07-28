@@ -70,7 +70,7 @@ local timerMoltenTouchCD				= mod:NewCDTimer(95.9, 244072, nil, nil, nil, 3)
 local timerEnflamedCorruptionCD			= mod:NewCDTimer(95.9, 244057, nil, nil, nil, 3)
 --Shatug
 local timerCorruptingMawCD				= mod:NewCDTimer(11, 245098, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
-local timerComsumingSphereCD			= mod:NewCDTimer(77.7, 244131, nil, nil, nil, 3)
+local timerComsumingSphereCD			= mod:NewCDTimer(76, 244131, nil, nil, nil, 3)--Verify in transcritor
 local timerWeightOfDarknessCD			= mod:NewCDTimer(77.7, 244069, nil, nil, nil, 3)
 local timerSiphonCorruptionCD			= mod:NewCDTimer(77.7, 244056, nil, nil, nil, 3)
 --General/Mythic
