@@ -15,9 +15,9 @@ mod:SetWipeTime(30)
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 206219 206220 206514 206675 206840 207938 104534 208545 209270 211152 208672 206744 206883 206221 206222 221783 211439 220957 227008 221408 221486",
 	"SPELL_CAST_SUCCESS 206222 206221 221783 212258 227008 221336 221486",
-	"SPELL_AURA_APPLIED 206219 206220 209011 206354 206384 209086 208903 211162 221891 208802 221606 221603 221785 221784 212686 227427 206516 206847 206983 206458 227009",
+	"SPELL_AURA_APPLIED 206219 206220 209011 206354 206384 209086 208903 211162 221891 208802 221606 221603 221785 221784 212686 227427 206516 206847 206983 206458 227009 206310",
 	"SPELL_AURA_APPLIED_DOSE 211162 208802",
-	"SPELL_AURA_REMOVED 209011 206354 206384 209086 221603 221785 221784 212686 221606 206847 206458",
+	"SPELL_AURA_REMOVED 209011 206354 206384 209086 221603 221785 221784 212686 221606 206847 206458 206310",
 --	"SPELL_DAMAGE",
 --	"SPELL_MISSED",
 	"UNIT_DIED",
@@ -720,9 +720,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnParasiticWound:Show()
 			voiceParasiticWound:Play("scatter")
 			yellParasiticWound:Yell()
-			yellParasiticWoundFades:Schedule(remaining-1, 1)
-			yellParasiticWoundFades:Schedule(remaining-2, 2)
-			yellParasiticWoundFades:Schedule(remaining-3, 3)
+			yellParasiticWoundFades:Countdown(remaining)
 		end
 	elseif spellId == 206983 and self:AntiSpam(2, args.destName) then
 		warnShadowyGaze:CombinedShow(0.3, args.destName)
@@ -735,6 +733,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnWounded:Show()
 		timerWounded:Start()
 		timerVisionsofDarkTitan:Stop()
+	elseif spellId == 206310 and args:IsPlayer() then
+		yellParasiticWoundFades:Cancel()
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -766,6 +766,13 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 206847 then
 		if args:IsPlayer() then
 			yellParasiticWoundFades:Cancel()
+		end
+	elseif spellId == 206310 and args:IsPlayer() then
+		local parasiteName = GetSpellInfo(206847)
+		if UnitDebuff("player", parasiteName) then
+			local _, _, _, _, _, _, expires = UnitDebuff("player", parasiteName)
+			local remaining = expires-GetTime()
+			yellParasiticWoundFades:Countdown(remaining)
 		end
 	end
 end
