@@ -68,7 +68,7 @@ local yellShockGrenadeFades				= mod:NewFadesYell(244737)
 ----Chief Engineer Ishkar
 local specWarnWarpField					= mod:NewSpecialWarningRun(244821, nil, nil, nil, 4, 2)
 ----General Erodus
-local specWarnSunderingClaws			= mod:NewSpecialWarningTaunt(244821, nil, nil, nil, 1, 2)
+local specWarnSunderingClaws			= mod:NewSpecialWarningTaunt(244892, nil, nil, nil, 1, 2)
 
 --General
 --In Pod
@@ -240,9 +240,12 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 	elseif spellId == 244892 then
-		if not args:IsPlayer() then
-			specWarnSunderingClaws:Show(args.destName)
-			voiceSunderingClaws:Play("tauntboss")
+		local uId = DBM:GetRaidUnitId(args.destName)
+		if self:IsTanking(uId) then
+			if not args:IsPlayer() then
+				specWarnSunderingClaws:Show(args.destName)
+				voiceSunderingClaws:Play("tauntboss")
+			end
 		end
 	end
 end
