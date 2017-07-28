@@ -13,8 +13,8 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 235271 241635 241636 235267",
-	"SPELL_CAST_SUCCESS 237722",
-	"SPELL_AURA_APPLIED 235240 235213 235117 240209 235028 236061 234891 243276",
+	"SPELL_CAST_SUCCESS 248812",
+	"SPELL_AURA_APPLIED 235240 235213 235117 240209 235028 236061 234891 243276 240219 240218",
 	"SPELL_AURA_REFRESH 235240 235213",
 	"SPELL_AURA_REMOVED 235117 240209 235028 234891 243276",
 	"SPELL_PERIODIC_DAMAGE 238408 238028",
@@ -31,7 +31,7 @@ mod:RegisterEventsInCombat(
 --TODO, some kind of relevant warning for Spont Fragmentation
 --[[
 (ability.id = 235267 or ability.id = 235271 or ability.id = 241635 or ability.id = 241636) and type = "begincast" or
-(ability.id = 239153 or ability.id = 237722) and type = "cast" or
+(ability.id = 239153 or ability.id = 248812) and type = "cast" or
 (ability.id = 235028 or ability.id = 234891) and (type = "applybuff" or type = "removebuff")
 --]]
 --Stage One
@@ -100,14 +100,20 @@ function mod:OnCombatStart(delay)
 	self.vb.hammerCount = 2
 	self.vb.infusionCount = 1
 	self.vb.massShitCount = 1
-	timerInfusionCD:Start(2-delay, 2)
-	timerLightHammerCD:Start(12-delay, 3)--12-14
-	countdownLightHammer:Start(12-delay)
-	timerMassInstabilityCD:Start(22-delay, 2)
-	timerBlowbackCD:Start(40.9-delay)
-	if self:IsMythic() then
-		self.vb.spontFragmentationCount = 0
-		timerSpontFragmentationCD:Start(10-delay)
+	if self:IsLFR() then
+		timerMassInstabilityCD:Start(5.9-delay, 2)--1 is still skipped in LFR< resulting in 3 casts not 4
+		timerInfusionCD:Start(40-delay, 1)
+		timerBlowbackCD:Start(47-delay)
+	else
+		timerInfusionCD:Start(2-delay, 2)
+		timerLightHammerCD:Start(12-delay, 3)--12-14
+		countdownLightHammer:Start(12-delay)
+		timerMassInstabilityCD:Start(22-delay, 2)
+		timerBlowbackCD:Start(40.9-delay)
+		if self:IsMythic() then
+			self.vb.spontFragmentationCount = 0
+			timerSpontFragmentationCD:Start(10-delay)
+		end
 	end
 	berserkTimer:Start(480-delay)--Heroic/normal confirmed, others assumed until seen
 end
@@ -156,15 +162,21 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 235267 then
 		self.vb.massShitCount = self.vb.massShitCount + 1
 		warnMassShit:Show(self.vb.massShitCount)
-		if self.vb.massShitCount == 1 then
-			timerMassInstabilityCD:Start(36, 2)
+		if self:IsLFR() then
+			if self.vb.massShitCount < 4 then
+				timerMassInstabilityCD:Start(12, self.vb.massShitCount+1)
+			end
+		else
+			if self.vb.massShitCount == 1 then
+				timerMassInstabilityCD:Start(36, 2)
+			end
 		end
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 237722 then--Blowback
+	if spellId == 248812 then--Blowback
 		timerSpontFragmentationCD:Stop()
 		timerMassInstabilityCD:Stop()
 		timerInfusionCD:Stop()
@@ -177,24 +189,28 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 235240 then--Fel Infusion
+	if spellId == 235240 or spellId == 240210 then--Fel Infusion
 		if args:IsPlayer() then
 			specWarnFelInfusion:Show()
 			voiceFelInfusion:Play("felinfusion")
-			yellInfusion:Yell(4, "", 4)
+			if spellId == 235213 then--Not LFR
+				yellInfusion:Yell(4, "", 4)
+			end
 		end
 		local uId = DBM:GetRaidUnitId(args.destName)
-		if self.Options.SetIconOnInfusion and self:IsTanking(uId) then
+		if self.Options.SetIconOnInfusion and self:IsTanking(uId) and spellId == 235240 then
 			self:SetIcon(args.destName, 4)
 		end
-	elseif spellId == 235213 then--Light Infusion
+	elseif spellId == 235213 or spellId == 240218 then--Light Infusion
 		if args:IsPlayer() then
 			specWarnLightInfusion:Show()
 			voiceLightInfusion:Play("lightinfusion")
-			yellInfusion:Yell(1, "", 1)
+			if spellId == 235213 then--Not LFR
+				yellInfusion:Yell(1, "", 1)
+			end
 		end
 		local uId = DBM:GetRaidUnitId(args.destName)
-		if self.Options.SetIconOnInfusion and self:IsTanking(uId) then
+		if self.Options.SetIconOnInfusion and self:IsTanking(uId) and spellId == 235213 then
 			self:SetIcon(args.destName, 1)
 		end
 	elseif spellId == 235117 or spellId == 240209 or spellId == 243276 then
@@ -270,14 +286,20 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.hammerCount = 0
 		self.vb.infusionCount = 0
 		self.vb.massShitCount = 0
-		timerInfusionCD:Start(2, 1)
-		timerLightHammerCD:Start(14, 1)
-		countdownLightHammer:Start(14)
-		timerMassInstabilityCD:Start(22, 1)
-		timerBlowbackCD:Start()
-		if self:IsMythic() then
-			self.vb.spontFragmentationCount = 0
-			timerSpontFragmentationCD:Start(8, 1)
+		if self:IsLFR() then
+			timerMassInstabilityCD:Start(8, 1)
+			timerInfusionCD:Start(61, 1)
+			timerBlowbackCD:Start(67)
+		else
+			timerInfusionCD:Start(2, 1)
+			timerLightHammerCD:Start(14, 1)
+			countdownLightHammer:Start(14)
+			timerMassInstabilityCD:Start(22, 1)
+			timerBlowbackCD:Start()
+			if self:IsMythic() then
+				self.vb.spontFragmentationCount = 0
+				timerSpontFragmentationCD:Start(8, 1)
+			end
 		end
 		if self.Options.InfoFrame then
 			local spellName = GetSpellInfo(235117)
