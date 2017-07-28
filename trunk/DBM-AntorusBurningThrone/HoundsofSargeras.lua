@@ -30,6 +30,10 @@ mod:RegisterEventsInCombat(
 --TODO, rework enflamed Corruption/enflamed when more is understood how it works
 --TODO, more work on siphon targetting, it too may need icons/assignments. Same with Enflamed
 --TODO, update all timers on Focused power, probably pause them all for 15 seconds
+--[[
+(ability.id = 244057 or ability.id = 244056) and type = "begincast"
+ or (ability.id = 244072 or ability.id = 251445 or ability.id = 245098 or ability.id = 251356) and type = "cast"
+--]]
 --F'harg
 local warnBurningMaw					= mod:NewSpellAnnounce(251445, 2, nil, "Tank")
 local warnMoltenTouch					= mod:NewSpellAnnounce(244072, 2)
