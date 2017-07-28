@@ -57,7 +57,7 @@ local yellEnflamed						= mod:NewYell(248815)
 --Shatug
 local specWarnComsumingSphere			= mod:NewSpecialWarningDodge(244131, nil, nil, nil, 2, 2)
 local specWarnWeightOfDarkness			= mod:NewSpecialWarningYou(244069, nil, nil, nil, 1, 2)
-local yellWeightOfDarkness				= mod:NewPoSYell(244069, DBM_CORE_AUTO_YELL_CUSTOM_POSITION)
+local yellWeightOfDarkness				= mod:NewPosYell(244069, DBM_CORE_AUTO_YELL_CUSTOM_POSITION)
 local specWarnSiphoned					= mod:NewSpecialWarningYou(248819, nil, nil, nil, 1, 2)
 local yellSiphoned						= mod:NewYell(248819)
 --Mythic
