@@ -42,6 +42,7 @@ local warnDecimation					= mod:NewTargetAnnounce(244410, 4)
 
 local specWarnLockedOn					= mod:NewSpecialWarningMoveAway(246220, nil, nil, nil, 1, 2)
 local yellLockedOn						= mod:NewFadesYell(246220)
+local specWarnLockedOnTaunt				= mod:NewSpecialWarningTaunt(246220, nil, nil, nil, 1, 2)
 local specWarnApocDrive					= mod:NewSpecialWarningSwitch(244152, nil, nil, nil, 1, 2)
 local specWarnEradication				= mod:NewSpecialWarningRun(244969, nil, nil, nil, 4, 2)
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
@@ -171,6 +172,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			voiceLockedOn:Play("runout")
 			voiceLockedOn:Schedule(5, "keepmove")
 			yellLockedOn:Countdown(5)
+		elseif self:IsTank() then
+			specWarnLockedOnTaunt:Show(args.destName)
+			voiceLockedOn:Play("tauntboss")
 		else
 			warnLockedOn:Show(args.destName)
 		end
