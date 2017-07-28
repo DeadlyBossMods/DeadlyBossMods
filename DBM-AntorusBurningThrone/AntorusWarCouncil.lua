@@ -28,6 +28,10 @@ mod:RegisterEventsInCombat(
 --TODO, verify pod transition stuff or move it to place it needs to be. if no clear events then probably UTC
 --TODO< figure out how to detect/announce correct versions of withering Fire
 --TODO, track players pods and those casts?
+--[[
+(ability.id = 244625 or ability.id = 246505 or ability.id = 253040 or ability.id = 245227 or ability.id = 125012 or ability.id = 125014 or ability.id = 126258 or ability.id = 244821) and type = "begincast"
+ or (ability.id = 245292 or ability.id = 245161 or ability.id = 245546 or ability.id = 244722 or ability.id = 244892) and type = "cast"
+--]]
 --General
 local warnInPod							= mod:NewTargetAnnounce("ej16099", 2)
 local warnOutofPod						= mod:NewTargetAnnounce("ej16098", 2)
