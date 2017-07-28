@@ -14,7 +14,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 244057 244056",
-	"SPELL_CAST_SUCCESS 244072 251445 245098 251356",
+	"SPELL_CAST_SUCCESS 244072 251445 245098 251356 244069",
 	"SPELL_AURA_APPLIED 244768 248815 244069 248819 244054 244055",
 --	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 244768 248815 244069 248819",
@@ -32,7 +32,7 @@ mod:RegisterEventsInCombat(
 --TODO, update all timers on Focused power, probably pause them all for 15 seconds
 --[[
 (ability.id = 244057 or ability.id = 244056) and type = "begincast"
- or (ability.id = 244072 or ability.id = 251445 or ability.id = 245098 or ability.id = 251356) and type = "cast"
+ or (ability.id = 244072 or ability.id = 251445 or ability.id = 245098 or ability.id = 251356 or ability.id = 244069) and type = "cast"
 --]]
 --F'harg
 local warnBurningMaw					= mod:NewTargetAnnounce(251445, 2, nil, "Tank")
@@ -66,13 +66,13 @@ local specWarnShadowtouched				= mod:NewSpecialWarningYou(244055, nil, nil, nil,
 
 --F'harg
 local timerBurningMawCD					= mod:NewCDTimer(11, 251445, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
-local timerMoltenTouchCD				= mod:NewAITimer(61, 244072, nil, nil, nil, 3)
-local timerEnflamedCorruptionCD			= mod:NewAITimer(61, 244057, nil, nil, nil, 3)
+local timerMoltenTouchCD				= mod:NewCDTimer(95.9, 244072, nil, nil, nil, 3)
+local timerEnflamedCorruptionCD			= mod:NewCDTimer(95.9, 244057, nil, nil, nil, 3)
 --Shatug
 local timerCorruptingMawCD				= mod:NewCDTimer(11, 245098, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerComsumingSphereCD			= mod:NewAITimer(25, 244131, nil, nil, nil, 3)
-local timerWeightOfDarknessCD			= mod:NewAITimer(25, 244069, nil, nil, nil, 3)
-local timerSiphonCorruptionCD			= mod:NewAITimer(61, 244056, nil, nil, nil, 3)
+local timerWeightOfDarknessCD			= mod:NewCDTimer(77.7, 244069, nil, nil, nil, 3)
+local timerSiphonCorruptionCD			= mod:NewCDTimer(77.7, 244056, nil, nil, nil, 3)
 --General/Mythic
 local timerFocusingPower				= mod:NewCastTimer(15, 251356, nil, nil, nil, 3)
 
@@ -133,13 +133,13 @@ function mod:OnCombatStart(delay)
 	self.vb.WeightDarkIcon = 1
 	--Fire doggo
 	timerBurningMawCD:Start(10.9-delay)
-	timerMoltenTouchCD:Start(1-delay)
-	timerEnflamedCorruptionCD:Start(1-delay)
+	timerMoltenTouchCD:Start(18-delay)
+	timerEnflamedCorruptionCD:Start(52.2-delay)
 	--Shadow doggo
 	timerCorruptingMawCD:Start(10.9-delay)
 	timerComsumingSphereCD:Start(1-delay)
-	timerWeightOfDarknessCD:Start(1-delay)
-	timerSiphonCorruptionCD:Start(1-delay)
+	timerSiphonCorruptionCD:Start(26.7-delay)
+	timerWeightOfDarknessCD:Start(77-delay)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(5)--Molten Touch (assumed)
 	end
@@ -179,6 +179,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 251356 then
 		warnFocusingPower:Show()
 		timerFocusingPower:Start()
+	elseif spellId == 244069 then
+		self.vb.WeightDarkIcon = 1
+		timerWeightOfDarknessCD:Start()
 	end
 end
 
@@ -213,10 +216,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 	elseif spellId == 244069 then
-		if self:AntiSpam(5, 1) then
-			self.vb.WeightDarkIcon = 1
-			timerWeightOfDarknessCD:Start()
-		end
 		warnWeightofDarkness:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			specWarnWeightOfDarkness:Show()
