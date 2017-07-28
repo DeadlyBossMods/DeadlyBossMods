@@ -90,10 +90,10 @@ local specWarnFlamingOrbSpawn		= mod:NewSpecialWarningDodge(239253, nil, nil, ni
 mod:AddTimerLine(SCENARIO_STAGE:format(1))
 local timerFelclawsCD				= mod:NewCDCountTimer(25, 239932, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerRupturingSingularityCD	= mod:NewCDCountTimer(61, 235059, nil, nil, nil, 3)--61-68?
-local timerRupturingSingularity		= mod:NewCastTimer(9.7, 235059, 206577, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)--Shortname: Comet Impact
+local timerRupturingSingularity		= mod:NewCastSourceTimer(9.7, 235059, 206577, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)--Shortname: Comet Impact
 local timerArmageddonCD				= mod:NewCDCountTimer(42, 240910, nil, nil, nil, 5)
 local timerArmageddon				= mod:NewCastTimer(9, 234295, nil, nil, nil, 2)--Armageddon Rain
-local timerShadReflectionEruptingCD	= mod:NewCDTimer(35, 236710, 243160, nil, nil, 3, nil, DBM_CORE_DAMAGE_ICON)--Shortname : erupting souls
+local timerShadReflectionEruptingCD	= mod:NewCDTimer(35, 236710, 236711, nil, nil, 3, nil, DBM_CORE_DAMAGE_ICON)--Shortname : Erupting Reflection
 --Intermission: Eternal Flame
 --mod:AddTimerLine(SCENARIO_STAGE:format(1.5))
 local timerTransition				= mod:NewPhaseTimer(57.9)
@@ -101,8 +101,9 @@ local timerFocusedDreadflameCD		= mod:NewCDCountTimer(31, 238502, nil, nil, nil,
 local timerBurstingDreadflameCD		= mod:NewCDCountTimer(31, 238430, nil, nil, nil, 3)
 --Stage Two: Reflected Souls
 mod:AddTimerLine(SCENARIO_STAGE:format(2))
+local timerShadReflectionHopelessCD	= mod:NewCDTimer(35, 237590, 237724, nil, nil, 3, nil, DBM_CORE_HEALER_ICON)--Shortname : Hopeless Reflection
 local timerHopelessness				= mod:NewCastTimer(8, 237725, nil, "Healer", nil, 5, nil, DBM_CORE_HEALER_ICON)
-local timerShadReflectionWailingCD	= mod:NewCDTimer(35, 236378, 236075, nil, nil, 3, nil, DBM_CORE_TANK_ICON)--Shortname : wailing souls
+local timerShadReflectionWailingCD	= mod:NewCDTimer(35, 236378, 236475, nil, nil, 3, nil, DBM_CORE_TANK_ICON)--Shortname : Wailing Reflection
 --Intermission: Deceiver's Veil
 --mod:AddTimerLine(SCENARIO_STAGE:format(2.5))
 local timerSightlessGaze			= mod:NewBuffActiveTimer(20, 241721, nil, nil, nil, 5)
@@ -167,6 +168,7 @@ mod.vb.obeliskCount = 0
 local riftName, gravitySqueezeBuff = GetSpellInfo(239130), GetSpellInfo(239154)
 local phase1MythicArmageddonTimers = {10, 54, 38, 46}--Incomplete
 local phase1MythicSingularityTimers = {55, 25, 25}--Incomplete
+local phase1point5MythicSingularityTimers = {15.1, 5, 13.2, 5, 5, 5, 25, 4.98}
 local phase2NormalArmageddonTimers = {55, 45, 31}
 local phase2HeroicArmageddonTimers = {55, 75, 35, 30}
 local phase2NormalBurstingTimers = {57, 44}--Not used yet, needs more data to verify and improve
@@ -287,7 +289,10 @@ function mod:SPELL_CAST_START(args)
 		timerArmageddon:Start()
 		if self.vb.phase == 1.5 then
 			if self.vb.armageddonCast < 2 then
-				if self:IsEasy() then
+				if self:IsMythic() then
+					timerArmageddonCD:Start(58.5, self.vb.armageddonCast+1)
+					countdownArmageddon:Start(58.5)
+				elseif self:IsEasy() then
 					timerArmageddonCD:Start(28, self.vb.armageddonCast+1)
 					countdownArmageddon:Start(28)
 				else
@@ -373,7 +378,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 			self.vb.burstingDreadIcon = 6
 			if self.vb.phase == 1.5 then
 				if self.vb.burstingDreadCast < 2 then
-					if self:IsEasy() then
+					if self:IsMythic() then
+						timerBurstingDreadflameCD:Start(79, 2)
+					elseif self:IsEasy() then
 						timerBurstingDreadflameCD:Start(44, 2)
 					else
 						timerBurstingDreadflameCD:Start(47, 2)--Delayed by singularity which doesn't happen on normal/LFR
@@ -386,20 +393,32 @@ function mod:SPELL_CAST_SUCCESS(args)
 					self.vb.singularityCount = 0
 					self.vb.felClawsCount = 0
 					warnPhase2:Schedule(5)
-					timerFelclawsCD:Start(14, 1)
-					countdownFelclaws:Start(14)
-					timerShadReflectionEruptingCD:Start(17)--Erupting
-					timerArmageddonCD:Start(55, 1)
-					countdownArmageddon:Start(55)
-					timerBurstingDreadflameCD:Start(57.3, 1)
-					timerRupturingSingularityCD:Start(79, 1)
-					if self:IsEasy() then
-						timerFocusedDreadflameCD:Start(81.5, 1)
-						countdownFocusedDread:Start(81.5)
+					if self:IsMythic() then
+						timerFelclawsCD:Start(17, 1)
+						timerArmageddonCD:Start(24.4, 1)
+						countdownArmageddon:Start(24.4)
+						timerRupturingSingularityCD:Start(27.7, 1)
+						timerShadReflectionHopelessCD:Start(32.9)
+						timerFocusedDreadflameCD:Start(38.4, 1)
+						countdownFocusedDread:Start(38.4)
+						timerShadReflectionWailingCD:Start(55.4)
+						timerBurstingDreadflameCD:Start(58.4, 1)
 					else
-						timerFocusedDreadflameCD:Start(35, 1)
-						countdownFocusedDread:Start(35)
-						timerShadReflectionWailingCD:Start(53)
+						timerFelclawsCD:Start(14, 1)
+						countdownFelclaws:Start(14)
+						timerShadReflectionEruptingCD:Start(17)
+						timerArmageddonCD:Start(55, 1)
+						countdownArmageddon:Start(55)
+						timerBurstingDreadflameCD:Start(57.3, 1)
+						timerRupturingSingularityCD:Start(79, 1)
+						if self:IsEasy() then
+							timerFocusedDreadflameCD:Start(81.5, 1)
+							countdownFocusedDread:Start(81.5)
+						else
+							timerFocusedDreadflameCD:Start(35, 1)
+							countdownFocusedDread:Start(35)
+							timerShadReflectionWailingCD:Start(53)
+						end
 					end
 				end
 			elseif self.vb.phase == 2 then
@@ -562,8 +581,13 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 		self.vb.focusedDreadCast = self.vb.focusedDreadCast + 1
 		if self.vb.phase == 1.5 then
 			if self.vb.focusedDreadCast < 2 then
-				timerFocusedDreadflameCD:Start(12, 2)
-				countdownFocusedDread:Start(12)
+				if self:IsMythic() then
+					timerFocusedDreadflameCD:Start(37.6, 2)
+					countdownFocusedDread:Start(37.6)
+				else
+					timerFocusedDreadflameCD:Start(12, 2)
+					countdownFocusedDread:Start(12)
+				end
 			end
 		elseif self.vb.phase == 2 then
 			local timer = self:IsHeroic() and phase2HeroicFocusedTimers[self.vb.focusedDreadCast+1]
@@ -600,11 +624,18 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 		self.vb.singularityCount = self.vb.singularityCount + 1
 		specWarnRupturingSingularity:Show()
 		voiceRupturingSingularity:Play("carefly")
-		timerRupturingSingularity:Start(9.7)
+		timerRupturingSingularity:Start(9.7, self.vb.singularityCount)
 		countdownSingularity:Start(9.7)
 		if self.vb.phase == 1.5 then
-			if self.vb.singularityCount == 1 then
-				timerRupturingSingularityCD:Start(30, self.vb.singularityCount+1)
+			if self:IsMythic() then
+				local timer = phase1point5MythicSingularityTimers[self.vb.singularityCount+1]
+				if timer then
+					timerRupturingSingularityCD:Start(timer, self.vb.singularityCount+1)
+				end
+			else
+				if self.vb.singularityCount == 1 then
+					timerRupturingSingularityCD:Start(30, self.vb.singularityCount+1)
+				end
 			end
 		elseif self.vb.phase == 2 then
 			local timer = phase2HeroicSingularityTimers[self.vb.singularityCount+1]--Split difficulties up if they aren't all same
@@ -613,7 +644,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 			end
 		else--Phase 1
 			if self:IsMythic() then
-				local timer= phase1MythicSingularityTimers[self.vb.singularityCount+1]
+				local timer = phase1MythicSingularityTimers[self.vb.singularityCount+1]
 				if timer then
 					timerRupturingSingularityCD:Start(timer, self.vb.singularityCount+1)
 				end
@@ -647,15 +678,25 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerArmageddonCD:Stop()
 		countdownArmageddon:Cancel()
 		timerShadReflectionEruptingCD:Stop()
-		timerArmageddonCD:Start(7.5, 1)
-		countdownArmageddon:Start(7.5)
-		timerBurstingDreadflameCD:Start(8.7, 1)
-		if not self:IsEasy() then
-			timerRupturingSingularityCD:Start(14.2, 1)
+		if self:IsMythic() then
+			timerArmageddonCD:Start(7.4, 1)
+			countdownArmageddon:Start(7.4)
+			timerBurstingDreadflameCD:Start(11, 1)
+			timerRupturingSingularityCD:Start(15, 1)--Approx, no cast ID so time damage - 9.7
+			timerFocusedDreadflameCD:Start(31.8, 1)
+			countdownFocusedDread:Start(31.8)
+			timerTransition:Start(95.1)
+		else
+			timerArmageddonCD:Start(7.4, 1)
+			countdownArmageddon:Start(7.4)
+			timerBurstingDreadflameCD:Start(8.7, 1)
+			if not self:IsEasy() then
+				timerRupturingSingularityCD:Start(14.2, 1)
+			end
+			timerFocusedDreadflameCD:Start(24.7, 1)
+			countdownFocusedDread:Start(24.7)
+			timerTransition:Start(57.9)
 		end
-		timerFocusedDreadflameCD:Start(24.7, 1)
-		countdownFocusedDread:Start(24.7)
-		timerTransition:Start(57.9)
 	elseif spellId == 244856 and self:AntiSpam(5, 3) then--Flaming Orb (more likely than combat log. this spell looks like it's entirely scripted)
 		self.vb.orbCount = self.vb.orbCount + 1
 		specWarnFlamingOrbSpawn:Show(self.vb.orbCount)
