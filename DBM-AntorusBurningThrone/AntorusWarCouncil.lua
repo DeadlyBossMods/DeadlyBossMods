@@ -16,7 +16,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 244625 246505 253040 245227 244821",
 	"SPELL_CAST_SUCCESS 245292 245161 245546 244722 244892",
 	"SPELL_AURA_APPLIED 244737 244892",
---	"SPELL_AURA_APPLIED_DOSE",
+	"SPELL_AURA_APPLIED_DOSE 244892",
 	"SPELL_AURA_REMOVED 244737",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
@@ -35,6 +35,7 @@ mod:RegisterEventsInCombat(
 --General
 local warnInPod							= mod:NewTargetAnnounce("ej16099", 2)
 local warnOutofPod						= mod:NewTargetAnnounce("ej16098", 2)
+local warnSunderingClaws				= mod:NewStackAnnounce(244892, 2, nil, "Tank")
 --In Pod
 ----Admiral Svirax
 --local warnWitheringFire				= mod:NewSpellAnnounce(245292, 2)
@@ -48,6 +49,7 @@ local warnShockGrenade					= mod:NewTargetAnnounce(244737, 3)
 
 --General
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
+local specWarnSunderingClaws			= mod:NewSpecialWarningTaunt(244892, nil, nil, nil, 1, 2)
 --In Pod
 ----Admiral Svirax
 local specWarnFusillade					= mod:NewSpecialWarningMoveTo(244625, nil, nil, nil, 1, 2)
@@ -68,9 +70,9 @@ local yellShockGrenadeFades				= mod:NewFadesYell(244737)
 ----Chief Engineer Ishkar
 local specWarnWarpField					= mod:NewSpecialWarningRun(244821, nil, nil, nil, 4, 2)
 ----General Erodus
-local specWarnSunderingClaws			= mod:NewSpecialWarningTaunt(244892, nil, nil, nil, 1, 2)
 
 --General
+local timerSunderingClawsCD				= mod:NewCDTimer(8, 244892, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 --In Pod
 ----Admiral Svirax
 local timerFusilladeCD					= mod:NewAITimer(61, 244625, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
@@ -86,7 +88,6 @@ local timerShockGrenadeCD				= mod:NewAITimer(61, 244722, nil, nil, nil, 3)
 ----Chief Engineer Ishkar
 local timerWarpFieldCD					= mod:NewAITimer(61, 244821, nil, nil, nil, 2)
 ----General Erodus
-local timerSunderingClawsCD				= mod:NewAITimer(25, 244892, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
 
@@ -161,7 +162,11 @@ function mod:DemonicChargeTarget(targetname, uId)
 end
 
 function mod:OnCombatStart(delay)
-
+	--In pod
+	timerEntropicMineCD:Start(1)
+	timerSummonReinforcementsCD:Start(1)
+	--Out of Pod
+	timerShockGrenadeCD:Start(1)
 end
 
 function mod:OnCombatEnd()
@@ -242,14 +247,21 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 244892 then
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId) then
-			if not args:IsPlayer() then
-				specWarnSunderingClaws:Show(args.destName)
-				voiceSunderingClaws:Play("tauntboss")
+			local amount = args.amount or 1
+			if amount >= 2 then
+				if not UnitDebuff("player", args.spellName) and not UnitIsDeadOrGhost("player") then
+					specWarnSunderingClaws:Show(args.destName)
+					voiceSunderingClaws:Play("tauntboss")
+				else
+					SunderingClaws:Show(args.destName, amount)
+				end
+			else
+				SunderingClaws:Show(args.destName, amount)
 			end
 		end
 	end
 end
---mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
+mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
