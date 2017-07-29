@@ -83,7 +83,7 @@ local timerInkCD					= mod:NewCDTimer(41, 232913, nil, nil, nil, 3)
 
 --General Stuff
 local countdownHydraShot			= mod:NewCountdown(40, 230139)
-local countdownBurdenofPain			= mod:NewCountdown("Alt28", 230139, "Tank")
+local countdownBurdenofPain			= mod:NewCountdown("Alt28", 230201, "Tank")
 --Stage One: Ten Thousand Fangs
 local countdownSlicingTorando		= mod:NewCountdown("AltTwo43", 232722)
 
