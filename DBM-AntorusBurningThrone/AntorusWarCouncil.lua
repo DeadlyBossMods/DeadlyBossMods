@@ -100,6 +100,7 @@ local timerWarpFieldCD					= mod:NewAITimer(61, 244821, nil, nil, nil, 2)
 
 --General
 --local voiceGTFO						= mod:NewVoice(238028, nil, DBM_CORE_AUTO_VOICE4_OPTION_TEXT)--runaway
+local voiceSunderingClaws				= mod:NewVoice(244892)--Tauntboss
 --In Pod
 ----Admiral Svirax
 local voiceFusillade					= mod:NewVoice(244625)--findshelter
@@ -115,7 +116,7 @@ local voiceShockGrenade					= mod:NewVoice(244722)--runout
 ----Chief Engineer Ishkar
 local voiceWarpField					= mod:NewVoice(244821)--justrun/keepmove?
 ----General Erodus
-local voiceSunderingClaws				= mod:NewVoice(244892)--Tauntboss
+
 
 --mod:AddSetIconOption("SetIconOnFocusedDread", 238502, true)
 --mod:AddInfoFrameOption(244910, true)

@@ -52,14 +52,14 @@ local warnFocusingPower					= mod:NewSpellAnnounce(251356, 2)
 local specWarnDesolateGaze				= mod:NewSpecialWarningYou(244768, nil, nil, nil, 1, 2)
 local yellDesolateGaze					= mod:NewYell(244768)
 local specWarnEnflamed					= mod:NewSpecialWarningYou(248815, nil, nil, nil, 1, 2)
-local yellEnflamed						= mod:NewYell(248815)
+local yellEnflamed						= mod:NewFadesYell(248815)
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
 --Shatug
 local specWarnComsumingSphere			= mod:NewSpecialWarningDodge(244131, nil, nil, nil, 2, 2)
 local specWarnWeightOfDarkness			= mod:NewSpecialWarningYou(244069, nil, nil, nil, 1, 2)
 local yellWeightOfDarkness				= mod:NewPosYell(244069, DBM_CORE_AUTO_YELL_CUSTOM_POSITION)
 local specWarnSiphoned					= mod:NewSpecialWarningYou(248819, nil, nil, nil, 1, 2)
-local yellSiphoned						= mod:NewYell(248819)
+local yellSiphoned						= mod:NewFadesYell(248819)
 --Mythic
 local specWarnFlameTouched				= mod:NewSpecialWarningYou(244054, nil, nil, nil, 3, 8)
 local specWarnShadowtouched				= mod:NewSpecialWarningYou(244055, nil, nil, nil, 3, 8)
@@ -137,8 +137,8 @@ function mod:OnCombatStart(delay)
 	timerEnflamedCorruptionCD:Start(52.2-delay)
 	--Shadow doggo
 	timerCorruptingMawCD:Start(10.9-delay)
-	timerComsumingSphereCD:Start(52.2-delay)
 	timerSiphonCorruptionCD:Start(26.7-delay)
+	timerComsumingSphereCD:Start(52.2-delay)
 	timerWeightOfDarknessCD:Start(77-delay)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(5)--Molten Touch (assumed)
@@ -200,7 +200,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnEnflamed:Show()
 			voiceEnflamed:Play("scatter")
-			yellEnflamed:Yell()
+			yellEnflamed:Countdown(4)
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Show(8)
 			end
@@ -210,7 +210,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnSiphoned:Show()
 			voiceSiphoned:Play("gathershare")
-			yellSiphoned:Yell()
+			yellSiphoned:Countdown(4)
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Show(8)
 			end
@@ -244,12 +244,14 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 248815 then--Enflamed
 		if args:IsPlayer() then
+			yellEnflamed:Cancel()
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Show(5)
 			end
 		end
 	elseif spellId == 248819 then--Siphoned
 		if args:IsPlayer() then
+			yellSiphoned:Cancel()
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Show(5)
 			end
