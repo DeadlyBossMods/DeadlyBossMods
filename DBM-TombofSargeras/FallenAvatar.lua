@@ -406,7 +406,7 @@ function mod:RAID_BOSS_WHISPER(msg)
 end
 
 function mod:OnTranscriptorSync(msg, targetName)
-	if msg:find("spell:236604") then--Rapid fire
+	if msg:find("spell:236604") then
 		targetName = Ambiguate(targetName, "none")
 		if self:AntiSpam(4, targetName) then
 			local icon = self.vb.bladesIcon
