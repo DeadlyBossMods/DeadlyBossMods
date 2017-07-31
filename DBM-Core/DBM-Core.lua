@@ -2885,6 +2885,10 @@ do
 		return raid[name] and raid[name].guid
 	end
 
+	function DBM:GetMyPlayerInfo()
+		return playerName, playerLevel, playerRealm
+	end
+
 	function DBM:GetUnitFullName(uId)
 		if not uId then return nil end
 		return GetUnitName(uId, true)

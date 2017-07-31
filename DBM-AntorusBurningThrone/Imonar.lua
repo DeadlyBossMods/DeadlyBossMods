@@ -216,7 +216,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 247565 then
 		warnSlumberGas:CombinedShow(0.3, args.destName)
-	elseif (spellId == 253302 or spellId == 248321) and not self:IsDestTypePlayer() then--Conflagration
+	elseif (spellId == 253302 or spellId == 248321) and not args:IsDestTypePlayer() then--Conflagration
 		--stop all timers (if this dirty method doesn't work, do em manually)
 		for i, v in ipairs(self.timers) do
 			v:Stop()
