@@ -44,6 +44,10 @@ L= DBM:GetModLocalization(2009)
 ---------------------------
 L= DBM:GetModLocalization(2004)
 
+L:SetOptionLocalization({
+	InfoFrame =	"Show InfoFrame for fight overview"
+})
+
 ---------------------------
 -- Varimathras --
 ---------------------------

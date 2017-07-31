@@ -49,7 +49,7 @@ L= DBM:GetModLocalization(1897)
 L= DBM:GetModLocalization(1873)
 
 L:SetOptionLocalization({
-	InfoFrame =	"Show InfoFrame for boss power"
+	InfoFrame =	"Show InfoFrame for fight overview"
 })
 
 ---------------------------
