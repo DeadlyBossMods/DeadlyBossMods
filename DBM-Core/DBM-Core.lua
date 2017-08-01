@@ -3587,6 +3587,7 @@ do
 end
 
 function DBM:PLAYER_REGEN_ENABLED()
+	if IsFalling() then return end--Don't attempt to load off load delay if falling oncombat end, just try next on combat end
 	if loadDelay then
 		self:Debug("loadDelay is activating LoadMod again")
 		self:LoadMod(loadDelay)
