@@ -2,7 +2,7 @@ local mod	= DBM:NewMod(1985, "DBM-AntorusBurningThrone", nil, 946)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision: 16369 $"):sub(12, -3))
-mod:SetCreatureID(124393)
+mod:SetCreatureID(122104)
 mod:SetEncounterID(2064)
 mod:SetZone()
 --mod:SetBossHPInfoToHighest()
@@ -13,7 +13,7 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 243983 244709 245504 244607 244915 246805",
+	"SPELL_CAST_START 243983 244709 245504 244607 244915 246805 244689",
 	"SPELL_CAST_SUCCESS 245050",
 	"SPELL_AURA_APPLIED 244016 244383 244613 244949 244849 245050 245118",
 	"SPELL_AURA_APPLIED_DOSE 244016",
@@ -39,7 +39,7 @@ mod:RegisterEventsInCombat(
 --TODO, an overview info frame showing the needs of portal worlds (how many shields up, how much fel miasma, how many fires in dark realm if possible)
 --Platform: Nexus
 local warnRealityTear					= mod:NewStackAnnounce(244016, 2, nil, "Tank")
-local warnTransportPortal				= mod:NewSpellAnnounce(244677, 2)
+--local warnTransportPortal				= mod:NewSpellAnnounce(244677, 2)
 --Platform: Xoroth
 local warnAegisofFlames					= mod:NewTargetAnnounce(244383, 3)
 local warnAegisofFlamesEnded			= mod:NewEndAnnounce(244383, 1)
@@ -54,13 +54,14 @@ local warnHungeringGloom				= mod:NewTargetAnnounce(245075, 2, nil, false)
 --Platform: Nexus
 local specWarnRealityTear				= mod:NewSpecialWarningStack(244016, nil, 4, nil, nil, 1, 2)
 local specWarnRealityTearOther			= mod:NewSpecialWarningTaunt(244016, nil, nil, nil, 1, 2)
+local specWarnTransportPortal			= mod:NewSpecialWarningSwitch(244677, "Dps", nil, nil, 1, 2)
 local specWarnCollapsingWorld			= mod:NewSpecialWarningSpell(243983, nil, nil, nil, 2, 2)
 local specWarnFelstormBarrage			= mod:NewSpecialWarningDodge(244000, nil, nil, nil, 2, 2)
 local specWarnFieryDetonation			= mod:NewSpecialWarningInterrupt(244709, false)
-local specWarnHowlingShadows			= mod:NewSpecialWarningInterrupt(245504, "HasInterrupt")
+local specWarnHowlingShadows			= mod:NewSpecialWarningInterrupt(245504, "HasInterrupt", nil, nil, 1, 2)
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
 --Platform: Xoroth
-local specWarnFlamesofXoroth			= mod:NewSpecialWarningInterrupt(244607, "HasInterrupt")
+local specWarnFlamesofXoroth			= mod:NewSpecialWarningInterrupt(244607, "HasInterrupt", nil, nil, 1, 2)
 local specWarnSupernova					= mod:NewSpecialWarningDodge(244598, nil, nil, nil, 2, 2)
 local specWarnEverburningFlames			= mod:NewSpecialWarningMoveTo(244613, nil, nil, nil, 1)--No voice yet
 local yellEverburningFlames				= mod:NewFadesYell(244613)
@@ -101,6 +102,7 @@ local timerHypnotizeCD					= mod:NewAITimer(61, 245050, nil, nil, nil, 3, nil, D
 
 --Platform: Nexus
 local voiceRealityTear					= mod:NewVoice(244016)--tauntboss/stackhigh
+local voiceTransportPortal				= mod:NewVoice(244677)--killmob
 local voiceCollapsingWorld				= mod:NewVoice(243983)--carefly
 local voiceFelstormBarrage				= mod:NewVoice(244000)--farfromline
 local voiceFieryDetonation				= mod:NewVoice(244709, false)--kickcast
@@ -108,6 +110,7 @@ local voiceHowlingShadows				= mod:NewVoice(245504, "HasInterrupt")--kickcast
 --local voiceGTFO						= mod:NewVoice(238028, nil, DBM_CORE_AUTO_VOICE4_OPTION_TEXT)--runaway
 --Platform: Xoroth
 local voiceFlamesofXoroth				= mod:NewVoice(244607, "HasInterrupt")--kickcast
+local voiceSuperNova					= mod:NewVoice(244598)--watchstep
 --Platform: Rancora
 local voiceFelSilkWrap					= mod:NewVoice(244949)--changetarget/targetyou
 --Platform: Nathreza
@@ -122,10 +125,10 @@ mod.vb.shieldsActive = 0
 local playerPlatform = 0
 local mindFog, aegisFlames, felMiasma = GetSpellInfo(245099), GetSpellInfo(244383), GetSpellInfo(244826)
 
---0 Nexus, 1 Xoroth, 2 Rancora, 3 Nathreza
+--0-No Filter, 1 Nexus, 2 Xoroth, 3 Rancora, 4 Nathreza
 --Global function player can access via macro or 3rd party mod like similar to krosus assist to set player platform
 function DBMSetHasabelPlatform(platform)
-	if type(platform) == "Number" and platform < 4 then--Don't allow bad input like invalid number or non numbers
+	if type(platform) == "Number" and platform < 5 then--Don't allow bad input like invalid number or non numbers
 		playerPlatform = platform
 	end
 end
@@ -153,7 +156,7 @@ end
 
 function mod:OnCombatStart(delay)
 	self.vb.shieldsActive = 0
-	playerPlatform = 0--Nexus
+	playerPlatform = 0--No Filter
 	timerRealityTearCD:Start(1-delay)
 	timerCollapsingWorldCD:Start(1-delay)
 	timerFelstormBarrageCD:Start(1-delay)
@@ -173,10 +176,10 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 243983 then
 		timerCollapsingWorldCD:Start()
---		if playerPlatform == 0 then--Actually on nexus platform
+		if playerPlatform == 0 or playerPlatform == 1 then--Actually on nexus platform
 			specWarnCollapsingWorld:Show()
 			voiceCollapsingWorld:Play("carefly")
---		end
+		end
 	elseif spellId == 244709 and self:CheckInterruptFilter(args.sourceGUID) then
 		specWarnFieryDetonation:Show(args.sourceName)
 		voiceFieryDetonation:Play("kickcast")
@@ -189,14 +192,20 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 244915 or spellId == 246805 then
 		if spellId == 244915 then--Rancora platform
 			timerLeechEssenceCD:Start()
---			if playerPlatform == 2 then--Actually on Rancora platform
+			if playerPlatform == 0 or playerPlatform == 3 then--Actually on Rancora platform
 				specWarnLeechEssence:Show()
---			end
+			end
 		else--Mythic add on nexus platform
 			--timerLeechEssenceCD:Start() enable later with appropriate add filter
---			if playerPlatform == 0 then--Actually on Nexus platform
+			if playerPlatform== 0 or playerPlatform == 1 then--Actually on Nexus platform
 				specWarnLeechEssence:Show()
---			end
+			end
+		end
+	elseif spellId == 244689 then
+		timerTransportPortalCD:Start()
+		if playerPlatform == 0 or playerPlatform == 1 then--Actually on nexus platform
+			specWarnTransportPortal:Show()
+			voiceTransportPortal:Play("killmob")
 		end
 	end
 end
@@ -279,12 +288,12 @@ function mod:SPELL_AURA_APPLIED(args)
 			voiceFelSilkWrap:Play("targetyou")
 			yellFelSilkWrap:Yell()
 		else
---			if playerPlatform == 2 then--Actually on Rancora platform
+			if playerPlatform == 0 or playerPlatform == 3 then--Actually on Rancora platform
 				specWarnFelSilkWrapOther:Show(">"..args.destName.."<")
 				if self.Options.SpecWarn244949switchcount then
 					voiceFelSilkWrap:Play("changetarget")
 				end
---			end
+			end
 		end
 	elseif spellId == 245050 then--Hypnotize
 		warnHypnotize:CombinedShow(0.3, args.destName)
@@ -355,19 +364,15 @@ end
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 244000 then--Felstorm Barrage
 		timerFelstormBarrageCD:Start()
---		if playerPlatform == 0 then--Actually on nexus platform
+		if playerPlatform == 0 or playerPlatform == 1 then--Actually on nexus platform
 			specWarnFelstormBarrage:Show()
 			voiceFelstormBarrage:Play("farfromline")
---		end
-	elseif spellId == 244677 then--Transport Portal
-		timerTransportPortalCD:Start()
---		if playerPlatform == 0 then--Actually on nexus platform
-			warnTransportPortal:Show()
---		end
+		end
 	elseif spellId == 244598 then--Supernova
 		timerSupernovaCD:Start()
---		if playerPlatform == 1 then--Actually on Xoroth platform
+		if playerPlatform == 0 or playerPlatform == 2 then--Actually on Xoroth platform
 			specWarnSupernova:Show()
---		end
+			voiceSuperNova:Play("watchstep")
+		end
 	end
 end
