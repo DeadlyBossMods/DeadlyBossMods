@@ -93,7 +93,7 @@ local voiceBurdenofPain				= mod:NewVoice(230201)--defensive/tauntboss
 local voiceFromtheAbyss				= mod:NewVoice(230227, "-Healer")--killmob
 --Stage One: Ten Thousand Fangs
 local voiceSlicingTornado			= mod:NewVoice(232722)--watchwave?
-local voiceThunderingShock			= mod:NewVoice(230362, "Healer")--helpdispel 
+local voiceThunderingShock			= mod:NewVoice(230362, nil, nil, 2)--helpdispel/movetojelly/watchstep
 local voiceConsumingHunger			= mod:NewVoice(230384)--movetojelly (move to jellyfish)
 --Stage Two: Terrors of the Deep
 local voiceDevouringMaw				= mod:NewVoice(232745)-- inktoshark (bring ink to shark) too long?
@@ -247,7 +247,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 230362 then
 		if self.Options.SpecWarn230362dispel then
 			specWarnThunderingShock:CombinedShow(0.3, args.destName)
-			if self:AntiSpam(3, 2) then
+			if self:AntiSpam(3, 2) and self:IsHealer() then
 				voiceThunderingShock:Play("helpdispel")
 			end
 		else
