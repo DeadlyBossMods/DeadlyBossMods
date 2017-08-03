@@ -86,7 +86,7 @@ local specWarnEyeofGuldan			= mod:NewSpecialWarningSwitchCount(209270, "Dps", ni
 local specWarnCarrionWave			= mod:NewSpecialWarningInterrupt(208672, "HasInterrupt", nil, nil, 1, 2)
 --Stage Three: The Master's Power
 local specWarnStormOfDestroyer		= mod:NewSpecialWarningDodge(161121, nil, nil, nil, 2, 2)
-local specWarnSoulCorrosion			= mod:NewSpecialWarningStack(208802, nil, 3, nil, nil, 1, 6)--stack guessed
+local specWarnSoulCorrosion			= mod:NewSpecialWarningStack(208802, nil, 5, nil, nil, 1, 6)--stack guessed
 local specWarnBlackHarvest			= mod:NewSpecialWarningCount(206744, nil, nil, nil, 2, 2)
 local specWarnFlamesOfSargeras		= mod:NewSpecialWarningMoveAway(221606, nil, nil, nil, 3, 2)
 local yellFlamesofSargeras			= mod:NewPosYell(221606, 15643)
@@ -614,7 +614,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnSoulSiphon:CombinedShow(0.3, args.destName)
 	elseif spellId == 208802 then
 		local amount = args.amount or 1
-		if args:IsPlayer() and amount >= 3 then
+		if args:IsPlayer() and amount >= 5 then
 			specWarnSoulCorrosion:Show(amount)
 			voiceSoulCorrosion:Play("stackhigh")
 		end

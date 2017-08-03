@@ -14,7 +14,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 243983 244709 245504 244607 244915 246805 244689",
-	"SPELL_CAST_SUCCESS 245050",
+	"SPELL_CAST_SUCCESS 245050 244073 244112 244136 244138 244146 244145",
 	"SPELL_AURA_APPLIED 244016 244383 244613 244949 244849 245050 245118",
 	"SPELL_AURA_APPLIED_DOSE 244016",
 	"SPELL_AURA_REFRESH 244016",
@@ -27,8 +27,6 @@ mod:RegisterEventsInCombat(
 )
 
 --TODO: This fight desperately needs warning filters. A preliminary global function exists for setting platform manually via macro, hopefully later an actual GUI/mod
---TODO: Fine tune Reality Tear stack warnings and evaluate if it needs a tank filter. Because it expiring blows up on entire raid, no tank filter currently used
---TODO, find out impact/cast time for collapsing World and add a cast timer
 --TODO, maybe hide timers for platforms you aren't on as well, that's a bit uglier than just filtering a warning, besides you may still want to know these timers
 --TODO, interrupt rotation helper for Flames of Xoroth?
 --TODO, portal spawns, etc
@@ -37,6 +35,7 @@ mod:RegisterEventsInCombat(
 --TODO, find a workable cast ID for corrupt and enable interrupt warning
 --TODO, timers for all interrupts? for time being, not supported to reduce timer clutter
 --TODO, an overview info frame showing the needs of portal worlds (how many shields up, how much fel miasma, how many fires in dark realm if possible)
+--TODO, timer correction off UNIT_POWER to auto correct main boss timer variances
 --Platform: Nexus
 local warnRealityTear					= mod:NewStackAnnounce(244016, 2, nil, "Tank")
 --local warnTransportPortal				= mod:NewSpellAnnounce(244677, 2)
@@ -47,7 +46,7 @@ local warnEverburningFlames				= mod:NewTargetAnnounce(244613, 2, nil, false)
 --Platform: Rancora
 local warnCausticSlime					= mod:NewTargetAnnounce(244849, 2, nil, false)
 --Platform: Nathreza
-local warnHypnotize						= mod:NewTargetAnnounce(245050, 2, nil, "Healer")
+local warnDelusions						= mod:NewTargetAnnounce(245050, 2, nil, "Healer")
 local warnCloyingShadows				= mod:NewTargetAnnounce(245118, 2, nil, false)
 local warnHungeringGloom				= mod:NewTargetAnnounce(245075, 2, nil, false)
 
@@ -74,24 +73,26 @@ local specWarnCausticSlime				= mod:NewSpecialWarningMoveTo(244849, nil, nil, ni
 local specWarnCausticSlimeLFR			= mod:NewSpecialWarningMoveAway(244849, nil, nil, nil, 1)--No voice yet
 local yellCausticSlime					= mod:NewFadesYell(244849)
 --Platform: Nathreza
-local specWarnHypnotize					= mod:NewSpecialWarningYou(245050, nil, nil, nil, 1, 2)
---local specWarnCorrupt					= mod:NewSpecialWarningInterrupt(245040, "HasInterrupt")
+local specWarnDelusions					= mod:NewSpecialWarningYou(245050, nil, nil, nil, 1, 2)
+--local specWarnCorrupt					= mod:NewSpecialWarningInterrupt(245040, "HasInterrupt", nil, nil, 1, 2)
 local specWarnCloyingShadows			= mod:NewSpecialWarningYou(245118, nil, nil, nil, 1)--No voice yet (you warning for now, since it's secondary debuff you move to fel miasma)
 local yellCloyingShadows				= mod:NewFadesYell(245118)
 local specWarnHungeringGloom			= mod:NewSpecialWarningMoveTo(245075, nil, nil, nil, 1)--No voice yet
 
 --Platform: Nexus
-local timerRealityTearCD				= mod:NewAITimer(25, 244016, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
-local timerCollapsingWorldCD			= mod:NewAITimer(61, 243983, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
-local timerFelstormBarrageCD			= mod:NewAITimer(61, 244000, nil, nil, nil, 3)
-local timerTransportPortalCD			= mod:NewAITimer(61, 244677, nil, nil, nil, 1)
+local timerRealityTearCD				= mod:NewCDTimer(12.2, 244016, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerCollapsingWorldCD			= mod:NewCDTimer(32.1, 243983, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)--32.9-41
+local timerFelstormBarrageCD			= mod:NewCDTimer(32.1, 244000, nil, nil, nil, 3)--32.9-41
+local timerTransportPortalCD			= mod:NewCDTimer(41.5, 244677, nil, nil, nil, 1)--41.5-60. most of time 50 on nose. but if comes early next one comes late to offset
 --Platform: Xoroth
-local timerSupernovaCD					= mod:NewAITimer(61, 244598, nil, nil, nil, 3)
+local timerSupernovaCD					= mod:NewCDTimer(7.3, 244598, nil, nil, nil, 3)
+local timerFlamesofXorothCD				= mod:NewCDTimer(7.3, 244607, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
 --Platform: Rancora
-local timerFelSilkWrapCD				= mod:NewAITimer(61, 244949, nil, nil, nil, 3)
-local timerLeechEssenceCD				= mod:NewAITimer(61, 244949, nil, nil, nil, 2, nil, DBM_CORE_HEALER_ICON)--Change to source timer later with support for mythic add
+local timerFelSilkWrapCD				= mod:NewCDTimer(16.6, 244949, nil, nil, nil, 3)
+local timerPoisonEssenceCD				= mod:NewCDTimer(9.4, 246316, nil, nil, nil, 2, nil, DBM_CORE_HEALER_ICON)
+local timerLeechEssenceCD				= mod:NewAITimer(61, 244915, nil, nil, nil, 2, nil, DBM_CORE_HEALER_ICON)--Change to source timer later with support for mythic add
 --Platform: Nathreza
-local timerHypnotizeCD					= mod:NewAITimer(61, 245050, nil, nil, nil, 3, nil, DBM_CORE_HEALER_ICON..DBM_CORE_MAGIC_ICON)
+local timerDelusionsCD					= mod:NewCDTimer(14.6, 245050, nil, nil, nil, 3, nil, DBM_CORE_HEALER_ICON..DBM_CORE_MAGIC_ICON)
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
 
@@ -114,24 +115,17 @@ local voiceSuperNova					= mod:NewVoice(244598)--watchstep
 --Platform: Rancora
 local voiceFelSilkWrap					= mod:NewVoice(244949)--changetarget/targetyou
 --Platform: Nathreza
-local voiceHypnotize					= mod:NewVoice(245050)--targetyou (not sure if better option)
---local voiceCorrupt						= mod:NewVoice(245040, "HasInterrupt")--kickcast
+local voiceDelusions					= mod:NewVoice(245050)--targetyou (not sure if better option)
+--local voiceCorrupt					= mod:NewVoice(245040, "HasInterrupt")--kickcast
 
 --mod:AddSetIconOption("SetIconOnFocusedDread", 238502, true)
 --mod:AddInfoFrameOption(239154, true)
 mod:AddRangeFrameOption("8/10")
 
 mod.vb.shieldsActive = 0
-local playerPlatform = 0
+local playerPlatform = 1--1 Nexus, 2 Xoroth, 3 Rancora, 4 Nathreza
 local mindFog, aegisFlames, felMiasma = GetSpellInfo(245099), GetSpellInfo(244383), GetSpellInfo(244826)
-
---0-No Filter, 1 Nexus, 2 Xoroth, 3 Rancora, 4 Nathreza
---Global function player can access via macro or 3rd party mod like similar to krosus assist to set player platform
-function DBMSetHasabelPlatform(platform)
-	if type(platform) == "Number" and platform < 5 then--Don't allow bad input like invalid number or non numbers
-		playerPlatform = platform
-	end
-end
+local nexusPlatform, xorothPlatform, rancoraPlatform, nathrezaPlatform = {}, {}, {}, {}
 
 local updateRangeFrame
 do
@@ -156,11 +150,19 @@ end
 
 function mod:OnCombatStart(delay)
 	self.vb.shieldsActive = 0
-	playerPlatform = 0--No Filter
-	timerRealityTearCD:Start(1-delay)
-	timerCollapsingWorldCD:Start(1-delay)
-	timerFelstormBarrageCD:Start(1-delay)
-	timerTransportPortalCD:Start(1-delay)
+	playerPlatform = 1--Nexus
+	table.wipe(nexusPlatform)
+	table.wipe(xorothPlatform)
+	table.wipe(rancoraPlatform)
+	table.wipe(nathrezaPlatform)
+	timerRealityTearCD:Start(6.2-delay)
+	timerCollapsingWorldCD:Start(10.8-delay)
+	timerTransportPortalCD:Start(20.5-delay)
+	timerFelstormBarrageCD:Start(29-delay)
+	for uId in DBM:GetGroupMembers() do
+		local name = DBM:GetUnitFullName(uId)
+		playersInSpirit[#playersInSpirit+1] = name
+	end
 end
 
 function mod:OnCombatEnd()
@@ -189,6 +191,9 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 244607 and self:CheckInterruptFilter(args.sourceGUID) then
 		specWarnFlamesofXoroth:Show(args.sourceName)
 		voiceFlamesofXoroth:Play("kickcast")
+		timerFlamesofXorothCD:Start()
+	elseif spellId == 246316 then--Rancora platform
+		timerPoisonEssenceCD:Start()
 	elseif spellId == 244915 or spellId == 246805 then
 		if spellId == 244915 then--Rancora platform
 			timerLeechEssenceCD:Start()
@@ -212,8 +217,44 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 245050 then--Hypnotize
-		timerHypnotizeCD:Start()
+	if spellId == 245050 then--Delusions
+		timerDelusionsCD:Start()
+	elseif spellId == 244073 then--Gateway: Xoroth (Entering)
+		xorothPlatform[#xorothPlatform+1] = args.sourceName
+		tDeleteItem(nexusPlatform, args.sourceName)
+		if args:IsPlayerSource() then
+			playerPlatform = 2--1 Nexus, 2 Xoroth, 3 Rancora, 4 Nathreza
+		end
+	elseif spellId == 244112 then--Gateway: Xoroth (Leaving)
+		nexusPlatform[#nexusPlatform+1] = args.sourceName
+		tDeleteItem(xorothPlatform, args.sourceName)
+		if args:IsPlayerSource() then
+			playerPlatform = 1--1 Nexus, 2 Xoroth, 3 Rancora, 4 Nathreza
+		end
+	elseif spellId == 244136 then--Gateway: Rancora (Entering)
+		rancoraPlatform[#rancoraPlatform+1] = args.sourceName
+		tDeleteItem(nexusPlatform, args.sourceName)
+		if args:IsPlayerSource() then
+			playerPlatform = 3--1 Nexus, 2 Xoroth, 3 Rancora, 4 Nathreza
+		end
+	elseif spellId == 244138 then--Gateway: Rancora (Leaving)
+		nexusPlatform[#nexusPlatform+1] = args.sourceName
+		tDeleteItem(rancoraPlatform, args.sourceName)
+		if args:IsPlayerSource() then
+			playerPlatform = 1--1 Nexus, 2 Xoroth, 3 Rancora, 4 Nathreza
+		end
+	elseif spellId == 244146 then--Gateway: Nathreza (Entering)
+		nathrezaPlatform[#nathrezaPlatform+1] = args.sourceName
+		tDeleteItem(nexusPlatform, args.sourceName)
+		if args:IsPlayerSource() then
+			playerPlatform = 4--1 Nexus, 2 Xoroth, 3 Rancora, 4 Nathreza
+		end
+	elseif spellId == 244145 then--Gateway: Nathreza (Leaving)
+		nexusPlatform[#nexusPlatform+1] = args.sourceName
+		tDeleteItem(nathrezaPlatform, args.sourceName)
+		if args:IsPlayerSource() then
+			playerPlatform = 1--1 Nexus, 2 Xoroth, 3 Rancora, 4 Nathreza
+		end
 	end
 end
 
@@ -295,11 +336,11 @@ function mod:SPELL_AURA_APPLIED(args)
 				end
 			end
 		end
-	elseif spellId == 245050 then--Hypnotize
-		warnHypnotize:CombinedShow(0.3, args.destName)
+	elseif spellId == 245050 then--Delusions
+		warnDelusions:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
-			specWarnHypnotize:Show()
-			voiceHypnotize:Play("targetyou")
+			specWarnDelusions:Show()
+			voiceDelusions:Play("targetyou")
 		end
 	end
 end
@@ -353,11 +394,12 @@ function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 124396 then--Baron Vulcanar (Platform: Xoroth)
 		timerSupernovaCD:Stop()
+		timerFlamesofXorothCD:Stop()
 	elseif cid == 124395 then--Lady Dacidion (Platform: Rancora)
 		timerFelSilkWrapCD:Stop()
 		timerLeechEssenceCD:Stop()--Add appropriate boss filter when mythic add support added
 	elseif cid == 124394 then--Lord Eilgar (Platform: Nathreza)
-		timerHypnotizeCD:Stop()--Add appropriate boss filter when mythic add support added
+		timerDelusionsCD:Stop()--Add appropriate boss filter when mythic add support added
 	end
 end
 
