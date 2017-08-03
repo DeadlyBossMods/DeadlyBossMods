@@ -308,7 +308,6 @@ L.AutoReplySound			= "當接收到DBM自動回覆密語時播放警告聲和閃�
 --
 L.TimerGeneral 				= "計時器選項"
 L.SKT_Enabled				= "顯示目前戰鬥的最佳紀錄勝利計時器"
-L.CRT_Enabled				= "為下一次戰復充能顯示計時器"
 L.ShowRespawn				= "在一個滅團之後顯示首領重生計時器"
 L.ShowQueuePop				= "為佇列(隨機,戰場,其他)接受時間顯示計時器"
 --

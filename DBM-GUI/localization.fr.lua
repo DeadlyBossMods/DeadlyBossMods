@@ -294,7 +294,6 @@ L.AutoReplySound			= "Jouer un son d'alerte lorsque vous recevez une réponse au
 --
 L.TimerGeneral 				= "Options des timers"
 L.SKT_Enabled				= "Afficher le timer du record pour lecombat actuel s'il est disponible"
-L.CRT_Enabled				= "Afficher le timer de la prochaine charge de resurrection en combat"
 L.ShowRespawn				= "Afficher le timer de la réapparition du boss après un wipe"
 L.ShowQueuePop				= "Afficher le timer du temps restant pour accepter l'invitation (LFG,BG,etc)"
 L.ChallengeTimerOptions		= "Réglage du timer du meilleur temps en challenge mode"

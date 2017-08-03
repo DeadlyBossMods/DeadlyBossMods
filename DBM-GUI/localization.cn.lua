@@ -312,7 +312,6 @@ L.AutoReplySound			= "当收到DBM可自动回复的信息时播放音效并闪�
 --
 L.TimerGeneral 				= "计时器选项"
 L.SKT_Enabled				= "总是显示最速胜利计时条(覆盖单独BOSS设置)"
-L.CRT_Enabled				= "显示下一次可战复CD"
 L.ShowRespawn				= "Boss战斗未完成时显示Boss刷新计时条"
 L.ShowQueuePop				= "显示随机小队/团队查找器确认计时条"
 --
