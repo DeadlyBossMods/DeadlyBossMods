@@ -47,7 +47,8 @@ local warnPhase3					= mod:NewPhaseAnnounce(3, 2)
 
 --General Stuff
 local specWarnHydraShot				= mod:NewSpecialWarningYou(230139, nil, nil, nil, 1, 2)
-local yellHydraShot					= mod:NewPosYell(230139, DBM_CORE_AUTO_YELL_CUSTOM_POSITION)
+local yellHydraShot					= mod:NewPosYell(230139, DBM_CORE_AUTO_YELL_CUSTOM_POSITION2)
+local yellHydraShotFades			= mod:NewFadesYell(230139, DBM_CORE_AUTO_YELL_CUSTOM_POSITION)
 local specWarnBurdenofPain			= mod:NewSpecialWarningYou(230201, nil, nil, nil, 1, 2)
 local specWarnBurdenofPainTaunt		= mod:NewSpecialWarningTaunt(230201, nil, nil, nil, 1, 2)
 local specWarnFromtheAbyss			= mod:NewSpecialWarningSwitch(230227, "-Healer", nil, nil, 1, 2)
@@ -110,6 +111,14 @@ mod.vb.hydraShotCount = 0
 local thunderingShock = GetSpellInfo(230358)
 local consumingHunger = GetSpellInfo(230384)
 local hydraIcons = {}
+
+--/run DBM:GetModByName("1861"):TestHydraShot(1)
+function mod:TestHydraShot(icon)
+		yellHydraShot:Yell(icon, icon, "Hydra Shot", icon, icon)
+		yellHydraShotFades:Schedule(5, icon, 1, icon)
+		yellHydraShotFades:Schedule(4, icon, 2, icon)
+		yellHydraShotFades:Schedule(3, icon, 3, icon)
+end
 
 function mod:OnCombatStart(delay)
 	self.vb.phase = 1
@@ -230,7 +239,10 @@ function mod:SPELL_AURA_APPLIED(args)
 			else
 				voiceHydraShot:Play("targetyou")
 			end
-			yellHydraShot:Yell(count, args.spellName, count)
+			yellHydraShot:Yell(count, count, args.spellName, count, count)
+			yellHydraShotFades:Schedule(5, count, 1, count)
+			yellHydraShotFades:Schedule(4, count, 2, count)
+			yellHydraShotFades:Schedule(3, count, 3, count)
 		end
 		if self.Options.SetIconOnHydraShot then
 			self:SetIcon(name, count)
@@ -309,6 +321,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		else
 			timerHydraShotCD:Start(40, self.vb.hydraShotCount+1)
 			countdownHydraShot:Start(40)
+		end
+		if args:IsPlayer() then
+			yellHydraShotFades:Cancel()
 		end
 	elseif spellId == 239423 then--Dread Shark
 		if self:IsMythic() then
