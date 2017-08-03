@@ -59,7 +59,6 @@ L.Latency_Text				= "Definir latência máxima de sincronização: %d"
 -- Tab: General Timer Options
 L.TimerGeneral 				= "Opções gerais do temporizador do DBM"
 L.SKT_Enabled				= "Sempre mostrar um temporizador de sua vitória recorde (Sobrepõe a opção do chefe específico)"
-L.CRT_Enabled				= "Mostrar um temporizador para a próxima carga de ressureição em combate(apenas nas dificuldades 6.x)"
 L.ChallengeTimerOptions		= "Colocar opção para temporizador de melhor tempo em modo desafio"
 L.ChallengeTimerPersonal	= "Pessoal"
 L.ChallengeTimerRealm		= "Reino"

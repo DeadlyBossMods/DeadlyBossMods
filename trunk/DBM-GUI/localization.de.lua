@@ -308,7 +308,6 @@ L.AFKHealthWarning			= "Spiele Alarmsound und lasse Anwendungsymbol aufblicken, 
 --
 L.TimerGeneral 				= "Allgemeine Einstellungen für Timer"
 L.SKT_Enabled				= "Zeige Timer für Rekordzeit für aktuellen Kampf (falls verfügbar)"
-L.CRT_Enabled				= "Zeige Zeit bis zur nächsten Wiederbelebungsaufladung im Kampf"
 L.ShowRespawn				= "Zeige Zeit bis zum Wiedererscheinen des Bosses nach einer Niederlage"
 L.ShowQueuePop				= "Zeige verbleibende Zeit zur Annahme einer Warteschlangeneinladung (Gruppensuche, Schlachtfelder, etc.)"
 --

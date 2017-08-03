@@ -309,7 +309,6 @@ L.AutoReplySound			= "DBM 자동 응답 귓속말을 받을 때 경고음 재생
 --
 L.TimerGeneral 				= "타이머 설정"
 L.SKT_Enabled				= "가능할 경우 현재 전투의 최고 승리 기록 타이머 표시"
-L.CRT_Enabled				= "다음 전투 부활 충전 타이머 표시"
 L.ShowRespawn				= "전멸 후 보스 재생성 타이머 표시"
 L.ShowQueuePop				= "입장 수락 남은 시간 타이머 표시 (공격대 찾기,전장 등)"
 --

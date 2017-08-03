@@ -306,7 +306,6 @@ L.AutoReplySound			= "Reproducir sonido de alerta e iluminar el icono del juego 
 --
 L.TimerGeneral 				= "Opciones de temporizadores"
 L.SKT_Enabled				= "Mostrar temporizador para batir el récord de victoria del encuentro actual"
-L.CRT_Enabled				= "Mostrar temporizador para la siguiente resurrección en combate"
 L.ShowRespawn				= "Mostrar temporizador para la reaparición de jefe tras cada derrota"
 L.ShowQueuePop				= "Mostrar temporizador para eltiempo restante para aceptar avisos del buscador"
 --

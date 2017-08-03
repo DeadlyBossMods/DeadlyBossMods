@@ -269,7 +269,6 @@ DBM.DefaultOptions = {
 	CATATWMessageShown = false,
 	MISTSTWMessageShown = false,
 	AlwaysShowSpeedKillTimer = true,
-	CRT_Enabled = false,
 	ShowRespawn = true,
 	ShowQueuePop = true,
 	HelpMessageVersion = 3,
@@ -346,7 +345,6 @@ local loadOptions
 local checkWipe
 local checkBossHealth
 local checkCustomBossHealth
-local loopCRTimer
 local fireEvent
 local playerName = UnitName("player")
 local playerLevel = UnitLevel("player")
@@ -5450,12 +5448,6 @@ function checkCustomBossHealth(self, mod)
 	self:Schedule(1, checkCustomBossHealth, self, mod)
 end
 
-function loopCRTimer(self, timer, mod)
-	local crTimer = mod:NewTimer(timer, DBM_COMBAT_RES_TIMER_TEXT, "Interface\\Icons\\Spell_Nature_Reincarnation", nil, false)
-	crTimer:Start()
-	self:Schedule(timer, loopCRTimer, self, timer, mod)
-end
-
 do
 	local statVarTable = {
 		--6.0
@@ -5613,28 +5605,6 @@ do
 					if bestTime and bestTime > 0 then
 						local speedTimer = mod:NewTimer(bestTime, DBM_SPEED_KILL_TIMER_TEXT, "Interface\\Icons\\Spell_Holy_BorrowedTime", nil, false)
 						speedTimer:Start()
-					end
-				end
-				--Combat Rez timer, if not a world boss or 5 man dungeon.
-				if self.Options.CRT_Enabled and difficultyIndex ~= 0 and difficultyIndex ~= 1 and difficultyIndex ~= 2 and difficultyIndex ~= 19 and difficultyIndex ~= 24 and not self.Options.DontShowBossTimers then
-					local charges, maxCharges, started, duration = GetSpellCharges(20484)
-					if charges then
-						local time = duration - (GetTime() - started)
-						loopCRTimer(self, time, mod)
-						self:Debug("CRT started by charges", 2)
-					elseif difficultyIndex == 14 or difficultyIndex == 15 or difficultyIndex == 17 then--Flexible difficulties
-						local time = 90/LastGroupSize
-						time = time * 60
-						loopCRTimer(self, time, mod)
-						self:Debug("CRT started by Flexible code", 2)
-					else--Fixed difficulties (LastGroupSize cannot be trusted, this INCLUDES mythic. If you underman mythic then it is NOT 90/20)
-						local realGroupSize = self:GetNumRealPlayersInZone()
-						if realGroupSize > 1 then
-							local time = 90/realGroupSize
-							time = time * 60
-							loopCRTimer(self, time, mod)
-							self:Debug("CRT started by iffy fixed size code", 2)
-						end
 					end
 				end
 				--update boss left
@@ -6010,7 +5980,6 @@ do
 				self:HideBlizzardEvents(0)
 				self:Unschedule(checkBossHealth)
 				self:Unschedule(checkCustomBossHealth)
-				self:Unschedule(loopCRTimer)
 				self.BossHealth:Hide()
 				self.Arrow:Hide(true)
 				if watchFrameRestore then
