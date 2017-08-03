@@ -471,8 +471,8 @@ DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT = {
 	shortfade		= "%%d",
 	position 		= "%s %%s on {rt%%d}"..UnitName("player").."{rt%%d}"
 }
-DBM_CORE_AUTO_YELL_CUSTOM_POSITION		= "{rt%d} %s {rt%d}"--Doesn't need translating. Has no strings
-DBM_CORE_AUTO_YELL_CUSTOM_POSITION2		= "{rt%d}{rt%d} %s {rt%d}{rt%d}"--Doesn't need translating. Has no strings
+DBM_CORE_AUTO_YELL_CUSTOM_POSITION		= "{rt%d}%s{rt%d}"--Doesn't need translating. Has no strings
+DBM_CORE_AUTO_YELL_CUSTOM_POSITION2		= "{rt%d}{rt%d}%s{rt%d}{rt%d}"--Doesn't need translating. Has no strings
 DBM_CORE_AUTO_HUD_OPTION_TEXT			= "Show HudMap for $spell:%s (Retired)"
 DBM_CORE_AUTO_HUD_OPTION_TEXT_MULTI		= "Show HudMap for various mechanics (Retired)"
 DBM_CORE_AUTO_NAMEPLATE_OPTION_TEXT		= "Show Nameplate Auras for $spell:%s"
