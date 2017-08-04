@@ -245,7 +245,7 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
-	if spellId == 248233 and not self:IsDestTypePlayer() then--Conflagration
+	if spellId == 248233 and not args:IsDestTypePlayer() then--Conflagration
 		self.vb.phase = self.vb.phase + 1
 		if self.vb.phase == 2 then
 			timerSeverCD:Start(6.6)
