@@ -15,9 +15,9 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 249121 250701",
 	"SPELL_CAST_SUCCESS 246888",
-	"SPELL_AURA_APPLIED 248333 250074",
+	"SPELL_AURA_APPLIED 248333 250074 250555",
 	"SPELL_AURA_APPLIED_DOSE",
-	"SPELL_AURA_REMOVED 248333 250074",
+	"SPELL_AURA_REMOVED 248333 250074 250555",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 --	"UNIT_DIED",
@@ -76,6 +76,7 @@ local voiceSwing						= mod:NewVoice(250701)--shockwave/defensive?
 --mod:AddSetIconOption("SetIconOnSpearofDoom", 248789, true)
 mod:AddInfoFrameOption(250030, true)
 mod:AddNamePlateOption("NPAuraOnPurification", 250074)
+mod:AddNamePlateOption("NPAuraOnFelShielding", 250555)
 mod:AddRangeFrameOption("8")
 
 mod.vb.rainOfFelCount = 0
@@ -83,35 +84,31 @@ mod.vb.warpCount = 0
 local heroicWarpTimers = {5.3, 10.0, 23.9, 20.7, 24.0, 19.0}
 local heroicRainOfFelTimers = {15.0, 24.1, 8.9, 24.2, 11.9, 19.0, 12.1}
 
---[[
-local debuffFilter
-local UnitDebuff = UnitDebuff
-local playerDebuff = nil
+local updateInfoFrame
 do
-	local spellName = GetSpellInfo(231311)
-	debuffFilter = function(uId)
-		if not playerDebuff then return true end
-		if not select(11, UnitDebuff(uId, spellName)) == playerDebuff then
-			return true
+	local lines = {}
+	local sortedLines = {}
+	local function addLine(key, value)
+		-- sort by insertion order
+		lines[key] = value
+		sortedLines[#sortedLines + 1] = key
+	end
+	updateInfoFrame = function()
+		table.wipe(lines)
+		table.wipe(sortedLines)
+		--Boss Powers first
+		if UnitExists("boss1") then
+			local currentPower = UnitPower("boss1") or 0
+			addLine(UnitName("boss1"), currentPower)
 		end
+		--Probably some "active adds" count type stuff second
+		return lines, sortedLines
 	end
 end
 
-local expelLight, stormOfJustice = GetSpellInfo(228028), GetSpellInfo(227807)
-local function updateRangeFrame(self)
-	if not self.Options.RangeFrame then return end
-	if self.vb.brandActive then
-		DBM.RangeCheck:Show(15, debuffFilter)--There are no 15 yard items that are actually 15 yard, this will round to 18 :\
-	elseif UnitDebuff("player", expelLight) or UnitDebuff("player", stormOfJustice) then
-		DBM.RangeCheck:Show(8)
-	elseif self.vb.hornCasting then--Spread for Horn of Valor
-		DBM.RangeCheck:Show(5)
-	else
-		DBM.RangeCheck:Hide()
-	end
+function mod:CustomHealthUpdate()
+	return DBM_CORE_UNKNOWN--Temp until I have a better idea what should be returned
 end
-
---]]
 
 function mod:OnCombatStart(delay)
 	self.vb.rainOfFelCount = 0
@@ -128,9 +125,10 @@ function mod:OnCombatStart(delay)
 	end
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(GetSpellInfo(250030))
-		DBM.InfoFrame:Show(2, "enemypower", 2)--Using regular power for now, if it's wrong, change to ALTERNATE
+		--DBM.InfoFrame:Show(2, "enemypower", 2)
+		DBM.InfoFrame:Show(7, "function", updateInfoFrame, false, false)
 	end
-	if self.Options.NPAuraOnPurification then
+	if self.Options.NPAuraOnPurification or self.Options.NPAuraOnFelShielding then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
 	if self.Options.RangeFrame then
@@ -145,7 +143,7 @@ function mod:OnCombatEnd()
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
 	end
-	if self.Options.NPAuraOnPurification then
+	if self.Options.NPAuraOnPurification or self.Options.NPAuraOnFelShielding then
 		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
 	end
 end
@@ -182,6 +180,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.NPAuraOnPurification then
 			DBM.Nameplate:Show(true, args.destGUID, spellId)
 		end
+	elseif spellId == 250555 then--Fel Shielding
+		if self.Options.NPAuraOnFelShielding then
+			DBM.Nameplate:Show(true, args.destGUID, spellId)
+		end
 	end
 end
 --mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -192,6 +194,10 @@ function mod:SPELL_AURA_REMOVED(args)
 		warnMeteorStorm:Show()
 	elseif spellId == 250074 then--Purification
 		if self.Options.NPAuraOnPurification then
+			DBM.Nameplate:Hide(true, args.destGUID, spellId)
+		end
+	elseif spellId == 250555 then--Fel Shielding
+		if self.Options.NPAuraOnFelShielding then
 			DBM.Nameplate:Hide(true, args.destGUID, spellId)
 		end
 	end

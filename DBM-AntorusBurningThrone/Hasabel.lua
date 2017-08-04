@@ -8,7 +8,7 @@ mod:SetZone()
 --mod:SetBossHPInfoToHighest()
 --mod:SetUsedIcons(1, 2, 3, 4, 5, 6)
 --mod:SetHotfixNoticeRev(16350)
---mod.respawnTime = 29
+mod.respawnTime = 35
 
 mod:RegisterCombat("combat")
 
@@ -71,7 +71,7 @@ local yellEverburningFlames				= mod:NewFadesYell(244613)
 --Platform: Rancora
 local specWarnFelSilkWrap				= mod:NewSpecialWarningYou(244949, nil, nil, nil, 1, 2)
 local yellFelSilkWrap					= mod:NewYell(244949)
-local specWarnFelSilkWrapOther			= mod:NewSpecialWarningSwitchCount(244949, "Dps", DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch:format(244949), nil, 1, 2)
+local specWarnFelSilkWrapOther			= mod:NewSpecialWarningSwitch(244949, "Dps", nil, nil, 1, 2)
 local specWarnLeechEssence				= mod:NewSpecialWarningSpell(244915, nil, nil, nil, 1, 2)--Don't know what to do for voice yet til strat divised
 local specWarnCausticSlime				= mod:NewSpecialWarningMoveTo(244849, nil, nil, nil, 1)--No voice yet
 local specWarnCausticSlimeLFR			= mod:NewSpecialWarningMoveAway(244849, nil, nil, nil, 1)--No voice yet
@@ -85,11 +85,11 @@ local specWarnHungeringGloom			= mod:NewSpecialWarningMoveTo(245075, nil, nil, n
 
 --Platform: Nexus
 local timerRealityTearCD				= mod:NewCDTimer(12.2, 244016, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
-local timerCollapsingWorldCD			= mod:NewCDTimer(32.1, 243983, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)--32.9-41
+local timerCollapsingWorldCD			= mod:NewCDTimer(31.9, 243983, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)--32.9-41
 local timerFelstormBarrageCD			= mod:NewCDTimer(32.1, 244000, nil, nil, nil, 3)--32.9-41
 local timerTransportPortalCD			= mod:NewCDTimer(41.5, 244677, nil, nil, nil, 1)--41.5-60. most of time 50 on nose. but if comes early next one comes late to offset
 --Platform: Xoroth
-local timerSupernovaCD					= mod:NewCDTimer(7.3, 244598, nil, nil, nil, 3)
+local timerSupernovaCD					= mod:NewCDTimer(6.1, 244598, nil, nil, nil, 3)
 local timerFlamesofXorothCD				= mod:NewCDTimer(7.3, 244607, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
 --Platform: Rancora
 local timerFelSilkWrapCD				= mod:NewCDTimer(16.6, 244949, nil, nil, nil, 3)
@@ -125,8 +125,10 @@ local voiceDelusions					= mod:NewVoice(245050)--targetyou (not sure if better o
 --mod:AddSetIconOption("SetIconOnFocusedDread", 238502, true)
 --mod:AddInfoFrameOption(239154, true)
 mod:AddRangeFrameOption("8/10")
+mod:AddBoolOption("ShowAllPlatforms", false)
 
 mod.vb.shieldsActive = 0
+mod.vb.felBarrageCast = 0
 local playerPlatform = 1--1 Nexus, 2 Xoroth, 3 Rancora, 4 Nathreza
 local mindFog, aegisFlames, felMiasma = GetSpellInfo(245099), GetSpellInfo(244383), GetSpellInfo(244826)
 local nexusPlatform, xorothPlatform, rancoraPlatform, nathrezaPlatform = {}, {}, {}, {}
@@ -154,15 +156,18 @@ end
 
 function mod:OnCombatStart(delay)
 	self.vb.shieldsActive = 0
+	self.vb.felBarrageCast = 0
 	playerPlatform = 1--Nexus
 	table.wipe(nexusPlatform)
 	table.wipe(xorothPlatform)
 	table.wipe(rancoraPlatform)
 	table.wipe(nathrezaPlatform)
 	timerRealityTearCD:Start(6.2-delay)
-	timerCollapsingWorldCD:Start(10.8-delay)
-	timerTransportPortalCD:Start(20.5-delay)
-	timerFelstormBarrageCD:Start(29-delay)
+	timerCollapsingWorldCD:Start(10.5-delay)
+	if not self:IsEasy() then
+		timerTransportPortalCD:Start(20.5-delay)
+	end
+	timerFelstormBarrageCD:Start(25.2-delay)
 	for uId in DBM:GetGroupMembers() do
 		local name = DBM:GetUnitFullName(uId)
 		nexusPlatform[#nexusPlatform+1] = name
@@ -182,7 +187,7 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 243983 then
 		timerCollapsingWorldCD:Start()
-		if playerPlatform == 0 or playerPlatform == 1 then--Actually on nexus platform
+		if self.Options.ShowAllPlatforms or playerPlatform == 1 then--Actually on nexus platform
 			specWarnCollapsingWorld:Show()
 			voiceCollapsingWorld:Play("watchstep")
 		end
@@ -201,24 +206,34 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 244915 or spellId == 246805 then
 		if spellId == 244915 then--Rancora platform
 			timerLeechEssenceCD:Start()
-			if playerPlatform == 0 or playerPlatform == 3 then--Actually on Rancora platform
+			if self.Options.ShowAllPlatforms or playerPlatform == 3 then--Actually on Rancora platform
 				specWarnLeechEssence:Show()
 			end
 		else--Mythic add on nexus platform
 			--timerLeechEssenceCD:Start() enable later with appropriate add filter
-			if playerPlatform== 0 or playerPlatform == 1 then--Actually on Nexus platform
+			if self.Options.ShowAllPlatforms or playerPlatform == 1 then--Actually on Nexus platform
 				specWarnLeechEssence:Show()
 			end
 		end
 	elseif spellId == 244689 then
 		timerTransportPortalCD:Start()
-		if playerPlatform == 0 or playerPlatform == 1 then--Actually on nexus platform
+		if self.Options.ShowAllPlatforms or playerPlatform == 1 then--Actually on nexus platform
 			specWarnTransportPortal:Show()
 			voiceTransportPortal:Play("killmob")
 		end
 	elseif spellId == 244000 then--Felstorm Barrage
-		timerFelstormBarrageCD:Start()
-		if playerPlatform == 0 or playerPlatform == 1 then--Actually on nexus platform
+		self.vb.felBarrageCast = self.vb.felBarrageCast + 1
+		if self:IsEasy() then
+			--pull:25.4, 47.5, 52.3, 47.5, 52.3, 47.5, 52.2, 47.4
+			if self.vb.felBarrageCast % 2 == 0 then
+				timerFelstormBarrageCD:Start(52)
+			else
+				timerFelstormBarrageCD:Start(47.5)
+			end
+		else
+			timerFelstormBarrageCD:Start()--32.9-41
+		end
+		if self.Options.ShowAllPlatforms or playerPlatform == 1 then--Actually on nexus platform
 			specWarnFelstormBarrage:Show()
 			voiceFelstormBarrage:Play("farfromline")
 		end
@@ -267,7 +282,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		end
 	elseif spellId == 244598 then--Supernova
 		timerSupernovaCD:Start()
-		if playerPlatform == 0 or playerPlatform == 2 then--Actually on Xoroth platform
+		if self.Options.ShowAllPlatforms or playerPlatform == 2 then--Actually on Xoroth platform
 			specWarnSupernova:Show()
 			voiceSuperNova:Play("watchstep")
 		end
@@ -345,9 +360,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			voiceFelSilkWrap:Play("targetyou")
 			yellFelSilkWrap:Yell()
 		else
-			if playerPlatform == 0 or playerPlatform == 3 then--Actually on Rancora platform
-				specWarnFelSilkWrapOther:Show(">"..args.destName.."<")
-				if self.Options.SpecWarn244949switchcount then
+			if self.Options.ShowAllPlatforms or playerPlatform == 3 then--Actually on Rancora platform
+				specWarnFelSilkWrapOther:Show()
+				if self.Options.SpecWarn244949switch then
 					voiceFelSilkWrap:Play("changetarget")
 				end
 			end
