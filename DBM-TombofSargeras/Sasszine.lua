@@ -13,6 +13,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 230273 232722 230384 234661 232746 232757 232756 230358 230201",
+	"SPELL_CAST_SUCCESS 230201 232757",
 	"SPELL_AURA_APPLIED 239375 239362 230139 230201 230362 232916 230384 234661",
 	"SPELL_AURA_REMOVED 239375 239362 230139",
 --	"SPELL_PERIODIC_DAMAGE",
@@ -76,7 +77,7 @@ local timerThunderingShockCD		= mod:NewCDTimer(32.2, 230358, nil, nil, nil, 3)
 --Stage Two: Terrors of the Deep
 mod:AddTimerLine(SCENARIO_STAGE:format(2))
 local timerDevouringMawCD			= mod:NewCDTimer(42, 232745, nil, nil, nil, 3)
-local timerCrashingWaveCD			= mod:NewCDCountTimer(42, 232827, nil, nil, nil, 3)
+local timerCrashingWaveCD			= mod:NewCDCountTimer(40, 232827, nil, nil, nil, 3)
 local timerInkCD					= mod:NewCDTimer(41, 232913, nil, nil, nil, 3)
 --Stage 3 just stage 2 shit combined
 
@@ -178,10 +179,8 @@ function mod:SPELL_CAST_START(args)
 		voiceDevouringMaw:Play("inktoshark")
 		timerDevouringMawCD:Start()
 	elseif spellId == 232757 then
-		self.vb.crashingWaveCount = self.vb.crashingWaveCount + 1
 		specWarnCrashingWave:Show()
 		voiceCrashingWave:Play("chargemove")
-		timerCrashingWaveCD:Start(nil, self.vb.crashingWaveCount+1)
 	elseif spellId == 232756 then
 		warnSummonOssunet:Show()
 		if self.vb.phase < 3 then
@@ -198,10 +197,6 @@ function mod:SPELL_CAST_START(args)
 		end
 		timerThunderingShockCD:Start()
 	elseif spellId == 230201 then
-		if not self.Options.TauntOnPainSuccess then
-			timerBurdenofPainCD:Start()
-			countdownBurdenofPain:Start(27.6)
-		end
 		local tanking, status = UnitDetailedThreatSituation("player", "boss1")
 		if tanking or (status == 3) then
 			specWarnBurdenofPain:Show()
@@ -215,6 +210,22 @@ function mod:SPELL_CAST_START(args)
 				end
 			end
 		end
+	end
+end
+
+function mod:SPELL_CAST_SUCCESS(args)
+	local spellId = args.spellId
+	if spellId == 230201 then
+		if self.Options.TauntOnPainSuccess then
+			timerBurdenofPainCD:Start()
+			countdownBurdenofPain:Start(25.1)
+		else
+			timerBurdenofPainCD:Start()
+			countdownBurdenofPain:Start(25.1)
+		end
+	elseif spellId == 232757 then
+		self.vb.crashingWaveCount = self.vb.crashingWaveCount + 1
+		timerCrashingWaveCD:Start(nil, self.vb.crashingWaveCount+1)
 	end
 end
 
@@ -248,10 +259,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:SetIcon(name, count)
 		end
 	elseif spellId == 230201 then
-		if self.Options.TauntOnPainSuccess then
-			timerBurdenofPainCD:Start()
-			countdownBurdenofPain:Start()
-		end
 		if not args:IsPlayer() and self:AntiSpam(5, args.destName) then
 			specWarnBurdenofPainTaunt:Show(args.destName)
 			voiceBurdenofPain:Play("tauntboss")
