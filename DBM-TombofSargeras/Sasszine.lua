@@ -66,7 +66,7 @@ local specWarnDeliciousBufferfish	= mod:NewSpecialWarningYou(239375, nil, nil, n
 --General Stuff
 mod:AddTimerLine(GENERAL)
 local timerHydraShotCD				= mod:NewCDTimer(40, 230139, nil, nil, nil, 3)
-local timerBurdenofPainCD			= mod:NewCDTimer(28, 230201, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--28-32
+local timerBurdenofPainCD			= mod:NewCDTimer(27.6, 230201, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--28-32
 local timerFromtheAbyssCD			= mod:NewCDTimer(27, 230227, nil, nil, nil, 1)--27-31
 --Stage One: Ten Thousand Fangs
 mod:AddTimerLine(SCENARIO_STAGE:format(1))
@@ -200,7 +200,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 230201 then
 		if not self.Options.TauntOnPainSuccess then
 			timerBurdenofPainCD:Start()
-			countdownBurdenofPain:Start()
+			countdownBurdenofPain:Start(27.6)
 		end
 		local tanking, status = UnitDetailedThreatSituation("player", "boss1")
 		if tanking or (status == 3) then
