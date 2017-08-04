@@ -285,6 +285,9 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.SetIconOnHydraShot then
 			self:SetIcon(args.destName, 0)
 		end
+		if args:IsPlayer() then
+			yellHydraShotFades:Cancel()
+		end
 	end
 end
 
@@ -321,9 +324,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		else
 			timerHydraShotCD:Start(40, self.vb.hydraShotCount+1)
 			countdownHydraShot:Start(40)
-		end
-		if args:IsPlayer() then
-			yellHydraShotFades:Cancel()
 		end
 	elseif spellId == 239423 then--Dread Shark
 		if self:IsMythic() then
