@@ -13,8 +13,8 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 243983 244709 245504 244607 244915 246805 244689",
-	"SPELL_CAST_SUCCESS 245050 244073 244112 244136 244138 244146 244145",
+	"SPELL_CAST_START 243983 244709 245504 244607 244915 246805 244689 244000",
+	"SPELL_CAST_SUCCESS 245050 244073 244112 244136 244138 244146 244145 244598",
 	"SPELL_AURA_APPLIED 244016 244383 244613 244949 244849 245050 245118",
 	"SPELL_AURA_APPLIED_DOSE 244016",
 	"SPELL_AURA_REFRESH 244016",
@@ -23,6 +23,7 @@ mod:RegisterEventsInCombat(
 --	"SPELL_PERIODIC_MISSED",
 	"UNIT_DIED",
 --	"CHAT_MSG_RAID_BOSS_EMOTE",
+	"CHAT_MSG_MONSTER_YELL",
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5"
 )
 
@@ -40,12 +41,15 @@ mod:RegisterEventsInCombat(
 local warnRealityTear					= mod:NewStackAnnounce(244016, 2, nil, "Tank")
 --local warnTransportPortal				= mod:NewSpellAnnounce(244677, 2)
 --Platform: Xoroth
+local warnXorothPortal					= mod:NewSpellAnnounce(244318, 2)
 local warnAegisofFlames					= mod:NewTargetAnnounce(244383, 3)
 local warnAegisofFlamesEnded			= mod:NewEndAnnounce(244383, 1)
 local warnEverburningFlames				= mod:NewTargetAnnounce(244613, 2, nil, false)
 --Platform: Rancora
+local warnRancoraPortal					= mod:NewSpellAnnounce(246082, 2)
 local warnCausticSlime					= mod:NewTargetAnnounce(244849, 2, nil, false)
 --Platform: Nathreza
+local warnNathrezaPortal				= mod:NewSpellAnnounce(246157, 2)
 local warnDelusions						= mod:NewTargetAnnounce(245050, 2, nil, "Healer")
 local warnCloyingShadows				= mod:NewTargetAnnounce(245118, 2, nil, false)
 local warnHungeringGloom				= mod:NewTargetAnnounce(245075, 2, nil, false)
@@ -104,7 +108,7 @@ local timerDelusionsCD					= mod:NewCDTimer(14.6, 245050, nil, nil, nil, 3, nil,
 --Platform: Nexus
 local voiceRealityTear					= mod:NewVoice(244016)--tauntboss/stackhigh
 local voiceTransportPortal				= mod:NewVoice(244677)--killmob
-local voiceCollapsingWorld				= mod:NewVoice(243983)--carefly
+local voiceCollapsingWorld				= mod:NewVoice(243983)--watchstep
 local voiceFelstormBarrage				= mod:NewVoice(244000)--farfromline
 local voiceFieryDetonation				= mod:NewVoice(244709, false)--kickcast
 local voiceHowlingShadows				= mod:NewVoice(245504, "HasInterrupt")--kickcast
@@ -180,7 +184,7 @@ function mod:SPELL_CAST_START(args)
 		timerCollapsingWorldCD:Start()
 		if playerPlatform == 0 or playerPlatform == 1 then--Actually on nexus platform
 			specWarnCollapsingWorld:Show()
-			voiceCollapsingWorld:Play("carefly")
+			voiceCollapsingWorld:Play("watchstep")
 		end
 	elseif spellId == 244709 and self:CheckInterruptFilter(args.sourceGUID) then
 		specWarnFieryDetonation:Show(args.sourceName)
@@ -211,6 +215,12 @@ function mod:SPELL_CAST_START(args)
 		if playerPlatform == 0 or playerPlatform == 1 then--Actually on nexus platform
 			specWarnTransportPortal:Show()
 			voiceTransportPortal:Play("killmob")
+		end
+	elseif spellId == 244000 then--Felstorm Barrage
+		timerFelstormBarrageCD:Start()
+		if playerPlatform == 0 or playerPlatform == 1 then--Actually on nexus platform
+			specWarnFelstormBarrage:Show()
+			voiceFelstormBarrage:Play("farfromline")
 		end
 	end
 end
@@ -254,6 +264,12 @@ function mod:SPELL_CAST_SUCCESS(args)
 		tDeleteItem(nathrezaPlatform, args.sourceName)
 		if args:IsPlayerSource() then
 			playerPlatform = 1--1 Nexus, 2 Xoroth, 3 Rancora, 4 Nathreza
+		end
+	elseif spellId == 244598 then--Supernova
+		timerSupernovaCD:Start()
+		if playerPlatform == 0 or playerPlatform == 2 then--Actually on Xoroth platform
+			specWarnSupernova:Show()
+			voiceSuperNova:Play("watchstep")
 		end
 	end
 end
@@ -390,6 +406,16 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 end
 --]]
 
+function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
+	if msg == L.Xoroth or msg:find(L.Xoroth) then
+		self:SendSync("XorothPortal")
+	elseif msg == L.Rancora or msg:find(L.Rancora) then
+		self:SendSync("RancoraPortal")
+	elseif msg == L.Nathreza or msg:find(L.Nathreza) then
+		self:SendSync("NathrezaPortal")
+	end
+end
+
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 124396 then--Baron Vulcanar (Platform: Xoroth)
@@ -403,18 +429,21 @@ function mod:UNIT_DIED(args)
 	end
 end
 
+--[[
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 244000 then--Felstorm Barrage
-		timerFelstormBarrageCD:Start()
-		if playerPlatform == 0 or playerPlatform == 1 then--Actually on nexus platform
-			specWarnFelstormBarrage:Show()
-			voiceFelstormBarrage:Play("farfromline")
-		end
-	elseif spellId == 244598 then--Supernova
-		timerSupernovaCD:Start()
-		if playerPlatform == 0 or playerPlatform == 2 then--Actually on Xoroth platform
-			specWarnSupernova:Show()
-			voiceSuperNova:Play("watchstep")
-		end
+
+	end
+end
+--]]
+
+function mod:OnSync(msg)
+	if not self:IsInCombat() then return end
+	if msg == "XorothPortal" then
+		warnXorothPortal:Show()
+	elseif msg == "RancoraPortal" then
+		warnRancoraPortal:Show()
+	elseif msg == "NathrezaPortal" then
+		warnNathrezaPortal:Show()
 	end
 end
