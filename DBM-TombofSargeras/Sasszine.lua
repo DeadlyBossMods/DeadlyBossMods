@@ -126,7 +126,7 @@ function mod:OnCombatStart(delay)
 	self.vb.hydraShotCount = 0
 	table.wipe(hydraIcons)
 	timerThunderingShockCD:Start(10-delay)--10-11
-	if self.Options.TauntOnPainSuccess then
+	if not self.Options.TauntOnPainSuccess then
 		timerBurdenofPainCD:Start(15.4-delay)
 		countdownBurdenofPain:Start(15.4-delay)
 	else
