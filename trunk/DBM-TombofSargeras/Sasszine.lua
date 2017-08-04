@@ -65,7 +65,7 @@ local specWarnDeliciousBufferfish	= mod:NewSpecialWarningYou(239375, nil, nil, n
 
 --General Stuff
 mod:AddTimerLine(GENERAL)
-local timerHydraShotCD				= mod:NewCDTimer(40, 230139, nil, nil, nil, 3)
+local timerHydraShotCD				= mod:NewCDCountTimer(40, 230139, nil, nil, nil, 3)
 local timerBurdenofPainCD			= mod:NewCDTimer(27.6, 230201, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--28-32
 local timerFromtheAbyssCD			= mod:NewCDTimer(27, 230227, nil, nil, nil, 1)--27-31
 --Stage One: Ten Thousand Fangs
