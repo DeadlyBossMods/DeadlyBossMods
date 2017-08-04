@@ -2,7 +2,7 @@ local mod	= DBM:NewMod(2025, "DBM-AntorusBurningThrone", nil, 946)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision: 16369 $"):sub(12, -3))
-mod:SetCreatureID(122500, 999999)
+mod:SetCreatureID(124445)
 mod:SetEncounterID(2075)
 mod:SetZone()
 --mod:SetBossHPInfoToHighest()
@@ -104,10 +104,6 @@ do
 		--Probably some "active adds" count type stuff second
 		return lines, sortedLines
 	end
-end
-
-function mod:CustomHealthUpdate()
-	return DBM_CORE_UNKNOWN--Temp until I have a better idea what should be returned
 end
 
 function mod:OnCombatStart(delay)
