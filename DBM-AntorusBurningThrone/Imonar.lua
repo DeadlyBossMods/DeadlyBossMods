@@ -41,7 +41,7 @@ local warnSleepCanister					= mod:NewTargetAnnounce(247552, 2)
 local warnSlumberGas					= mod:NewTargetAnnounce(247565, 3)
 --Stage Two: Contract to Kill
 local warnSever							= mod:NewStackAnnounce(247687, 2, nil, "Tank")
-local warnChargedBlasts					= mod:NewTargetAnnounce(247716, 3)
+--local warnChargedBlasts					= mod:NewTargetAnnounce(247716, 3)
 --Stage Three/Five: The Perfect Weapon
 --Intermission: On Deadly Ground
 
@@ -55,8 +55,9 @@ local specWarnSleepCanisterNear			= mod:NewSpecialWarningClose(247552, nil, nil,
 local specWarnPulseGrenade				= mod:NewSpecialWarningDodge(247376, nil, nil, nil, 1, 2)
 --Stage Two: Contract to Kill
 local specWarnSever						= mod:NewSpecialWarningTaunt(247687, nil, nil, nil, 1, 2)
-local specWarnChargedBlasts				= mod:NewSpecialWarningYou(247716, nil, nil, nil, 1, 2)
-local yellChargedBlasts					= mod:NewYell(247716)
+local specWarnChargedBlastsUnknown		= mod:NewSpecialWarningSpell(247716, nil, nil, nil, 2, 2)
+--local specWarnChargedBlasts				= mod:NewSpecialWarningYou(247716, nil, nil, nil, 1, 2)
+--local yellChargedBlasts					= mod:NewYell(247716)
 local specWarnShrapnalBlast				= mod:NewSpecialWarningDodge(247923, nil, nil, nil, 1, 2)
 --local specWarnMalignantAnguish		= mod:NewSpecialWarningInterrupt(236597, "HasInterrupt")
 --Stage Three/Five: The Perfect Weapon
@@ -160,6 +161,8 @@ function mod:SPELL_CAST_START(args)
 		voiceShrapnalBlast:Play("watchstep")
 		timerShrapnalBlastCD:Start()
 	elseif spellId == 248254 then
+		specWarnChargedBlastsUnknown:Show()
+		voiceChargedBlasts:Play("farfromline")
 		timerChargedBlastsCD:Start()
 	end
 end
@@ -167,7 +170,11 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 247367 or spellId == 250255 then
-		timerShocklanceCD:Start()
+		if spellId == 247367 then
+			timerShocklanceCD:Start()
+		else--Empowered seems less often
+			timerShocklanceCD:Start(5.9)
+		end
 	elseif spellId == 247552 then
 		timerSleepCanisterCD:Start()
 		warnSleepCanister:CombinedShow(0.3, args.destName)
@@ -246,22 +253,22 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerShrapnalBlastCD:Start(12.7)
 		elseif self.vb.phase == 3 then
 			if self:IsMythic() then
-				timerShocklanceCD:Start(3)--NOT empowered
-				timerSleepCanisterCD:Start(3)
-				timerShrapnalBlastCD:Start(3)--Empowered
+				--timerShocklanceCD:Start(3)--NOT empowered
+				--timerSleepCanisterCD:Start(3)
+				--timerShrapnalBlastCD:Start(3)--Empowered
 			else
-				timerShocklanceCD:Start(3)--Empowered
-				timerPulseGrenadeCD:Start(3)--Empowered
-				timerShrapnalBlastCD:Start(3)--Empowered
+				timerShocklanceCD:Start(5)--Empowered
+				timerPulseGrenadeCD:Start(7.6)--Empowered
+				timerShrapnalBlastCD:Start(16.2)--Empowered
 			end
 		elseif self.vb.phase == 4 then--Mythic Only
-			timerSeverCD:Start(4)
-			timerChargedBlastsCD:Start(4)
-			timerPulseGrenadeCD:Start(4)--Empowered
-		elseif self.vb.phase == 5 then--Mythic Only (Identical to non mythic 3)
-			timerShocklanceCD:Start(3)--Empowered
-			timerPulseGrenadeCD:Start(3)--Empowered
-			timerShrapnalBlastCD:Start(3)--Empowered
+			--timerSeverCD:Start(4)
+			--timerChargedBlastsCD:Start(4)
+			--timerPulseGrenadeCD:Start(4)--Empowered
+		elseif self.vb.phase == 5 then--Mythic Only (Identical to non mythic 3?)
+			timerShocklanceCD:Start(5)--Empowered
+			timerPulseGrenadeCD:Start(7.6)--Empowered
+			timerShrapnalBlastCD:Start(16.2)--Empowered
 		end
 	end
 end
@@ -291,9 +298,9 @@ end
 
 function mod:RAID_BOSS_WHISPER(msg)
 	if msg:find("spell:247716") or msg:find("spell:248254") then--Charged Blasts
-		specWarnChargedBlasts:Show()
+--		specWarnChargedBlasts:Show()
 		voiceChargedBlasts:Play("runout")
-		yellChargedBlasts:Yell()
+--		yellChargedBlasts:Yell()
 	end
 end
 
@@ -302,7 +309,7 @@ function mod:OnTranscriptorSync(msg, targetName)
 		targetName = Ambiguate(targetName, "none")
 		if self:AntiSpam(4, targetName) then
 --			local icon = self.vb.bladesIcon
-			warnChargedBlasts:CombinedShow(0.5, targetName)
+			--warnChargedBlasts:CombinedShow(0.5, targetName)
 --			if self.Options.SetIconOnShadowyBlades then
 --				self:SetIcon(targetName, icon, 5)
 --			end
@@ -316,7 +323,7 @@ end
 
 --http://ptr.wowhead.com/spell=253380/teleport-imonar-the-soulhunter
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if spellId == 248995 then--Jet Packs
+	if spellId == 248995 or spellId == 248194 then
 		--stop all timers (if this dirty method doesn't work, do em manually)
 		for i, v in ipairs(self.timers) do
 			v:Stop()
