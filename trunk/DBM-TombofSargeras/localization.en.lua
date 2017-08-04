@@ -52,6 +52,10 @@ L:SetOptionLocalization({
 	InfoFrame =	"Show InfoFrame for fight overview"
 })
 
+L:SetMiscLocalization({
+	FallenAvatarDialog	= "The husk before you was once a vessel for the might of Sargeras. But this temple itself is our prize. The means by which we will reduce your world to cinders!"
+})
+
 ---------------------------
 -- Kil'jaeden --
 ---------------------------
