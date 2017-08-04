@@ -324,9 +324,11 @@ end
 --http://ptr.wowhead.com/spell=253380/teleport-imonar-the-soulhunter
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 248995 or spellId == 248194 then
-		--stop all timers (if this dirty method doesn't work, do em manually)
-		for i, v in ipairs(self.timers) do
-			v:Stop()
-		end
+		timerSeverCD:Stop()
+		timerChargedBlastsCD:Stop()
+		timerShrapnalBlastCD:Stop()
+		timerPulseGrenadeCD:Stop()
+		timerSleepCanisterCD:Stop()
+		timerShocklanceCD:Stop()
 	end
 end

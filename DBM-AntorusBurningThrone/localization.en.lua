@@ -34,6 +34,10 @@ L= DBM:GetModLocalization(2025)
 ---------------------------
 L= DBM:GetModLocalization(1985)
 
+L:SetOptionLocalization({
+	ShowAllPlatforms =	"Show all announces regardless of player platform location"
+})
+
 L:SetMiscLocalization({
 	Xoroth = "Witness Xoroth, a world of infernal heat and scorched bones!",
 	Rancora = "Gaze upon Rancora, a landscape of festering pools and skittering death!",
