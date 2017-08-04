@@ -101,9 +101,9 @@ local timerFocusedDreadflameCD		= mod:NewCDCountTimer(31, 238502, nil, nil, nil,
 local timerBurstingDreadflameCD		= mod:NewCDCountTimer(31, 238430, nil, nil, nil, 3)
 --Stage Two: Reflected Souls
 mod:AddTimerLine(SCENARIO_STAGE:format(2))
-local timerShadReflectionHopelessCD	= mod:NewCDTimer(35, 237590, 237724, nil, nil, 3, nil, DBM_CORE_HEALER_ICON)--Shortname : Hopeless Reflection
+local timerShadReflectionHopelessCD	= mod:NewCDTimer(196, 237590, 237724, nil, nil, 3, nil, DBM_CORE_HEALER_ICON)--Shortname : Hopeless Reflection
 local timerHopelessness				= mod:NewCastTimer(8, 237725, nil, "Healer", nil, 5, nil, DBM_CORE_HEALER_ICON)
-local timerShadReflectionWailingCD	= mod:NewCDTimer(35, 236378, 236475, nil, nil, 3, nil, DBM_CORE_TANK_ICON)--Shortname : Wailing Reflection
+local timerShadReflectionWailingCD	= mod:NewCDCountTimer(35, 236378, 236475, nil, nil, 3, nil, DBM_CORE_TANK_ICON)--Shortname : Wailing Reflection
 --Intermission: Deceiver's Veil
 --mod:AddTimerLine(SCENARIO_STAGE:format(2.5))
 local timerSightlessGaze			= mod:NewBuffActiveTimer(20, 241721, nil, nil, nil, 5)
@@ -165,17 +165,22 @@ mod.vb.riftCount = 0
 mod.vb.lastTankHit = "None"
 mod.vb.clawCount = 0
 mod.vb.obeliskCount = 0
+mod.vb.wailingCount = 0
 local riftName, gravitySqueezeBuff = GetSpellInfo(239130), GetSpellInfo(239154)
 local phase1MythicArmageddonTimers = {10, 54, 38, 46}--Incomplete
 local phase1MythicSingularityTimers = {55, 25, 25}--Incomplete
 local phase1point5MythicSingularityTimers = {15.1, 5, 13.2, 5, 5, 5, 25, 4.98}
 local phase2NormalArmageddonTimers = {55, 45, 31}
 local phase2HeroicArmageddonTimers = {55, 75, 35, 30}
+local phase2MythicArmageddonTimers = {24.4, 32, 45, 33, 36, 36, 47}
 local phase2NormalBurstingTimers = {57, 44}--Not used yet, needs more data to verify and improve
 local phase2HeroicBurstingTimers = {57, 47, 55}--Not used yet, needs more data to verify and improve
+local phase2MythicBurstingTimers = {58.4, 50.0, 45.0, 48.0}
 local phase2NormalFocusedTimers = {81.5}--Not used yet, needs more data to verify and improve
 local phase2HeroicFocusedTimers = {35, 45, 53, 46}
+local phase2MythicFocusedTimers = {38.4, 44, 47, 138}
 local phase2HeroicSingularityTimers = {79, 26, 55, 44}
+local phase2MythicSingularityTimers = {27, 50, 66.9, 78}
 local playerName = UnitName("player")
 
 --[[
@@ -233,6 +238,7 @@ function mod:OnCombatStart(delay)
 	self.vb.lastTankHit = "None"
 	self.vb.clawCount = 0
 	self.vb.obeliskCount = 0
+	self.vb.wailingCount = 0
 	timerArmageddonCD:Start(10-delay, 1)
 	countdownArmageddon:Start(10-delay)
 	if not self:IsEasy() then
@@ -243,7 +249,7 @@ function mod:OnCombatStart(delay)
 	timerRupturingSingularityCD:Start(58-delay, 1)
 	if self:IsMythic() then
 		DBM:AddMsg("This mod has poor support for mythic difficulty. Please help improve mod by sharing logs (especially transcriptor) with MysticalOS")
-		timerShadReflectionWailingCD:Start(56)
+		timerShadReflectionWailingCD:Start(56, 1)
 	end
 	berserkTimer:Start(600-delay)
 end
@@ -301,7 +307,7 @@ function mod:SPELL_CAST_START(args)
 				end
 			end
 		elseif self.vb.phase == 2 then
-			local timer = self:IsNormal() and phase2NormalArmageddonTimers[self.vb.armageddonCast+1] or self:IsHeroic() and phase2HeroicArmageddonTimers[self.vb.armageddonCast+1]
+			local timer = self:IsMythic() and phase2MythicArmageddonTimers[self.vb.armageddonCast+1] or self:IsNormal() and phase2NormalArmageddonTimers[self.vb.armageddonCast+1] or self:IsHeroic() and phase2HeroicArmageddonTimers[self.vb.armageddonCast+1]
 			if timer then
 				timerArmageddonCD:Start(timer, self.vb.armageddonCast+1)
 				countdownArmageddon:Start(timer)
@@ -345,6 +351,7 @@ function mod:SPELL_CAST_START(args)
 		countdownArmageddon:Cancel()
 		timerShadReflectionEruptingCD:Stop()
 		timerShadReflectionWailingCD:Stop()
+		timerShadReflectionHopelessCD:Stop()
 		self.vb.phase = 2.5
 		self.vb.shadowSoulsRemaining = 5--Normal count anyways
 	end
@@ -353,7 +360,14 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 236378 then--Wailing Shadow Reflection (Stage 1)
-		timerShadReflectionWailingCD:Start(112)
+		self.vb.wailingCount = self.vb.wailingCount + 1
+		if self:IsMythic() and self.vb.phase == 2 then
+			if self.vb.wailingCount == 1 then--Need more data
+				timerShadReflectionWailingCD:Start(60, self.vb.wailingCount+1)
+			end
+		else
+			timerShadReflectionWailingCD:Start(112, self.vb.wailingCount+1)
+		end
 	elseif spellId == 236710 then--Erupting Shadow Reflection (Stage 1)
 		self.vb.eruptingReflectionIcon = 3
 		if self.vb.phase == 2 then
@@ -362,7 +376,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			timerShadReflectionEruptingCD:Start(109)
 		end
 	elseif spellId == 237590 then--Hopeless Shadow Reflection (Stage 2)
-
+		timerShadReflectionHopelessCD:Start()
 	elseif spellId == 236498 then--Malignant Shadow Reflection (Stage 2)
 
 	elseif spellId == 238502 then
@@ -392,6 +406,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 					self.vb.burstingDreadCast = 0
 					self.vb.singularityCount = 0
 					self.vb.felClawsCount = 0
+					self.vb.wailingCount = 0
 					warnPhase2:Schedule(5)
 					if self:IsMythic() then
 						timerFelclawsCD:Start(17, 1)
@@ -401,7 +416,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 						timerShadReflectionHopelessCD:Start(32.9)
 						timerFocusedDreadflameCD:Start(38.4, 1)
 						countdownFocusedDread:Start(38.4)
-						timerShadReflectionWailingCD:Start(55.4)
+						timerShadReflectionWailingCD:Start(55.4, 1)
 						timerBurstingDreadflameCD:Start(58.4, 1)
 					else
 						timerFelclawsCD:Start(14, 1)
@@ -417,12 +432,19 @@ function mod:SPELL_CAST_SUCCESS(args)
 						else
 							timerFocusedDreadflameCD:Start(35, 1)
 							countdownFocusedDread:Start(35)
-							timerShadReflectionWailingCD:Start(53)
+							timerShadReflectionWailingCD:Start(53, 1)
 						end
 					end
 				end
 			elseif self.vb.phase == 2 then
-				timerBurstingDreadflameCD:Start(48, self.vb.burstingDreadCast+1)
+				if self:IsMythic() then
+					local timer = phase2MythicBurstingTimers[self.vb.burstingDreadCast+1]
+					if timer then
+						timerBurstingDreadflameCD:Start(timer, self.vb.burstingDreadCast+1)
+					end
+				else
+					timerBurstingDreadflameCD:Start(48, self.vb.burstingDreadCast+1)
+				end
 			else--Phase 3, seems 25 across board here
 				if self.vb.burstingDreadCast % 2 == 0 then
 					timerBurstingDreadflameCD:Start(70, self.vb.burstingDreadCast+1)
@@ -590,7 +612,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 				end
 			end
 		elseif self.vb.phase == 2 then
-			local timer = self:IsHeroic() and phase2HeroicFocusedTimers[self.vb.focusedDreadCast+1]
+			local timer = self:IsMythic() and phase2MythicFocusedTimers[self.vb.focusedDreadCast+1] or self:IsHeroic() and phase2HeroicFocusedTimers[self.vb.focusedDreadCast+1]
 			if timer then
 				timerFocusedDreadflameCD:Start(timer, self.vb.focusedDreadCast+1)
 				countdownFocusedDread:Start(timer)
@@ -638,7 +660,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 				end
 			end
 		elseif self.vb.phase == 2 then
-			local timer = phase2HeroicSingularityTimers[self.vb.singularityCount+1]--Split difficulties up if they aren't all same
+			local timer = self:IsMythic() and phase2MythicSingularityTimers[self.vb.singularityCount+1] or phase2HeroicSingularityTimers[self.vb.singularityCount+1]--Split difficulties up if they aren't all same
 			if timer then
 				timerRupturingSingularityCD:Start(timer, self.vb.singularityCount+1)
 			end
