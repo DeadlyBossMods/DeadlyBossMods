@@ -165,7 +165,7 @@ function mod:OnCombatStart(delay)
 	timerFelstormBarrageCD:Start(29-delay)
 	for uId in DBM:GetGroupMembers() do
 		local name = DBM:GetUnitFullName(uId)
-		playersInSpirit[#playersInSpirit+1] = name
+		nexusPlatform[#nexusPlatform+1] = name
 	end
 end
 
