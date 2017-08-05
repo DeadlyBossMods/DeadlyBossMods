@@ -163,9 +163,9 @@ function mod:SPELL_CAST_START(args)
 		self.vb.lifeForceCast = self.vb.lifeForceCast + 1
 		warnLifeForce:Show(self.vb.lifeForceCast)
 		if self:IsEasy() then
-			local warpElapsed, warpTotal = timerWarpInCD:GetTime()
+			--local warpElapsed, warpTotal = timerWarpInCD:GetTime()
 			local felElapsed, felTotal = timerRainofFelCD:GetTime()
-			timerWarpInCD:Update(warpElapsed, warpTotal+24)
+			--timerWarpInCD:Update(warpElapsed, warpTotal+24)
 			timerRainofFelCD:Update(felElapsed, felTotal+24)
 		end
 	end
@@ -173,10 +173,10 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 246888 and self:AntiSpam(6, 1) then--At east 5 second antispam needed, maybe more
+	if (spellId == 246888 or spellId == 246896) and self:AntiSpam(6, 1) then--At east 5 second antispam needed, maybe more
 		self.vb.warpCount = self.vb.warpCount + 1
 		warnWarpIn:Show(self.vb.warpCount)
-		local timer = self:IsHeroic() and heroicWarpTimers[self.vb.warpCount+1] or self:IsEasy() and 23.7--(always 24 unles altered by life force)
+		local timer = self:IsHeroic() and heroicWarpTimers[self.vb.warpCount+1] or self:IsEasy() and 23.7--(always 24ish on normal)
 		if timer then
 			timerWarpInCD:Start(timer)
 		end
