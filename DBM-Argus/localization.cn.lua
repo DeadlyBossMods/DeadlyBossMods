@@ -7,17 +7,12 @@ if GetLocale() ~= "zhCN" then return end
 local L
 
 -----------------------
--- Inquisitor Percontatum --
+-- Inquisitor Meto --
 -----------------------
 L= DBM:GetModLocalization(2012)
 
 -----------------------
--- Mistress Alluradel --
------------------------
-L= DBM:GetModLocalization(2011)
-
------------------------
--- Ovetigo --
+-- Occularus --
 -----------------------
 L= DBM:GetModLocalization(2013)
 
@@ -27,22 +22,16 @@ L= DBM:GetModLocalization(2013)
 L= DBM:GetModLocalization(2014)
 
 -----------------------
+-- Mistress Alluradel --
+-----------------------
+L= DBM:GetModLocalization(2011)
+
+-----------------------
 -- Matron Folnuna --
 -----------------------
 L= DBM:GetModLocalization(2010)
 
 -----------------------
--- Keeper Aedis --
------------------------
-L= DBM:GetModLocalization(2002)
-
------------------------
--- Void-Blade Zedaat --
------------------------
-L= DBM:GetModLocalization(2003)
-
------------------------
 -- Pit Lord Vilemus --
 -----------------------
 L= DBM:GetModLocalization(2015)
-
