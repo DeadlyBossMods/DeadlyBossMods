@@ -53,7 +53,11 @@ L= DBM:GetModLocalization(1897)
 L= DBM:GetModLocalization(1873)
 
 L:SetOptionLocalization({
-	InfoFrame =	"보스 기력을 정보 창에 표시"
+	InfoFrame =	"전투의 전반적인 상황을 정보 창에 표시"
+})
+
+L:SetMiscLocalization({
+	FallenAvatarDialog	= "네 눈앞의 껍데기는 한때 살게라스의 무지막지한 힘을 담던 그릇이었다. 그러나 이 사원 자체가 우리에겐 포상이다. 이곳이 우리가 너희 세상을 잿더미로 만드는 발판이 되리라!"
 })
 
 ---------------------------
