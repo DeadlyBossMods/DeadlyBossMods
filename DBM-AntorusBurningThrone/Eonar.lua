@@ -13,8 +13,8 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 249121 250701",
-	"SPELL_CAST_SUCCESS 246888",
+	"SPELL_CAST_START 249121 250701 250048",
+	"SPELL_CAST_SUCCESS 246888 246753 254769",
 	"SPELL_AURA_APPLIED 248333 250074 250555",
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 248333 250074 250555",
@@ -33,10 +33,12 @@ mod:RegisterEventsInCombat(
 --TODO, scan for cloak & High Alert to directly announce those adds?
 --TODO, add rest of mythic stuff
 --TODO, adds more reliable and specific waves timers
---TODO, rework range frame when more debuffs detectable and activate updaterangeFinder function
+--TODO, rework range frame if more debuffs become detectable and activate updaterangeFinder function
 --The Paraxis
 local warnMeteorStorm					= mod:NewEndAnnounce(248333, 1)
 --local warnSpearofDoom					= mod:NewTargetAnnounce(248789, 3)
+local warnWarpIn						= mod:NewCountAnnounce(246888, 3)
+local warnLifeForce						= mod:NewCountAnnounce(250048, 1)
 
 --The Paraxis
 local specWarnMeteorStorm				= mod:NewSpecialWarningDodge(248333, nil, nil, nil, 2, 2)
@@ -81,7 +83,11 @@ mod:AddRangeFrameOption("8")
 
 mod.vb.rainOfFelCount = 0
 mod.vb.warpCount = 0
-local heroicWarpTimers = {5.3, 10.0, 23.9, 20.7, 24.0, 19.0}
+mod.vb.lifeForceCast = 0
+--local normalWarpTimers = {5.1, 16.0, 24.0, 23.9, 23.8, 47.8, 24.0, 48.0, 24.0, 24.0, 24.3, 23.7, 24.0}
+--						5.3, 15.7, 24.0, 23.9, 24.5, 23.7, 47.8, 24.1, 48.2, 23.7, 24.2, 23.9, 24.0
+local heroicWarpTimers = {5.3, 10.0, 23.9, 20.7, 24.0, 19.0}--Sequence timer, but stll altered by Life Force?
+local normalRainOfFelTimers = {21.1, 24.1, 23.9, 24.1, 24.0, 96.0, 12.0, 36.0, 12.0, 36.0}
 local heroicRainOfFelTimers = {15.0, 24.1, 8.9, 24.2, 11.9, 19.0, 12.1}
 
 local updateInfoFrame
@@ -109,6 +115,7 @@ end
 function mod:OnCombatStart(delay)
 	self.vb.rainOfFelCount = 0
 	self.vb.warpCount = 0
+	self.vb.lifeForceCast = 0
 	timerWarpInCD:Start(5.3)
 	timerSpearofDoomCD:Start(1-delay)
 	if not self:IsLFR() then
@@ -152,17 +159,31 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 250701 then
 		specWarnSwing:Show()
 		voiceSwing:Play("shockwave")
+	elseif spellId == 250048 then
+		self.vb.lifeForceCast = self.vb.lifeForceCast + 1
+		warnLifeForce:Show(self.vb.lifeForceCast)
+		if self:IsEasy() then
+			local warpElapsed, warpTotal = timerWarpInCD:GetTime()
+			local felElapsed, felTotal = timerRainofFelCD:GetTime()
+			timerWarpInCD:Update(warpElapsed, warpTotal+24)
+			timerRainofFelCD:Update(felElapsed, felTotal+24)
+		end
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 246888 then
+	if spellId == 246888 and self:AntiSpam(6, 1) then--At east 5 second antispam needed, maybe more
 		self.vb.warpCount = self.vb.warpCount + 1
-		local timer = heroicWarpTimers[self.vb.warpCount+1]
+		warnWarpIn:Show(self.vb.warpCount)
+		local timer = self:IsHeroic() and heroicWarpTimers[self.vb.warpCount+1] or self:IsEasy() and 23.7--(always 24 unles altered by life force)
 		if timer then
 			timerWarpInCD:Start(timer)
 		end
+	elseif spellId == 246753 then--Cloak
+	
+	elseif spellId == 254769 then--High Alert
+		
 	end
 end
 
@@ -252,13 +273,12 @@ function mod:UNIT_DIED(args)
 end
 --]]
 
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
-	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 248332 then--Rain of Fel
 		self.vb.rainOfFelCount = self.vb.rainOfFelCount + 1
 		specWarnRainofFel:Show(self.vb.rainOfFelCount)
 		voiceRainofFel:Play("scatter")
-		local timer = heroicRainOfFelTimers[self.vb.rainOfFelCount+1]
+		local timer = self:IsHeroic() and heroicRainOfFelTimers[self.vb.rainOfFelCount+1] or self:IsNormal() and normalRainOfFelTimers[self.vb.rainOfFelCount+1]
 		if timer then
 			timerRainofFelCD:Start(timer)
 		end
