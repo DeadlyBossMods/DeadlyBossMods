@@ -51,7 +51,7 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 243171 and self:CheckInterruptFilter(args.sourceGUID) then
 		specWarnShadowBoltVolley:Show(args.sourceName)
 		voiceShadowBoltVolley:Play("kickcast")
-	elseif spellId == 239810 and self:AntiSpam(3, 1) then
+	elseif spellId == 239810 and self:AntiSpam(4.5, 1) then
 		specWarnSeverSoul:Show()
 		voiceSeverSoul:Play("runout")
 	elseif spellId == 240169 and self:AntiSpam(3, 2) then
