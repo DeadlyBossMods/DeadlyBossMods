@@ -481,6 +481,15 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		else
 			timerIncorporealShotCD:Update(elapsedMoon, totalMoon)
 		end
+	elseif spellId == 61207 then--Sets all internal CDs back to 7 seconds
+		local elapsedVolley, totalVolley = timerTwilightVolleyCD:GetTime()
+		local remaining = totalVolley - elapsedVolley
+		local extend = 7 - (totalVolley-elapsedVolley)
+		if totalVolley == 0 then
+			timerTwilightVolleyCD:Start(7)
+		elseif remaining < 7 then
+			timerTwilightVolleyCD:Update(remaining, totalVolley+extend)
+		end
 	end
 end
 
