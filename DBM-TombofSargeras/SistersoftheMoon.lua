@@ -219,9 +219,7 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 236442 then
-		--if self.vb.phase == 2 then
-			self:BossTargetScanner(args.sourceGUID, "VolleyTarget", 0.1, 9)
-		--end
+		self:ScheduleMethod(0.2, "BossTargetScanner", args.sourceGUID, "VolleyTarget", 0.1, 9)
 	elseif spellId == 236712 then
 		self.vb.beaconCount = self.vb.beaconCount + 1
 		timerLunarBeaconCD:Start(20.7)
