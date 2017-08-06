@@ -84,8 +84,7 @@ mod:AddRangeFrameOption("8")
 mod.vb.rainOfFelCount = 0
 mod.vb.warpCount = 0
 mod.vb.lifeForceCast = 0
---local normalWarpTimers = {5.1, 16.0, 24.0, 23.9, 23.8, 47.8, 24.0, 48.0, 24.0, 24.0, 24.3, 23.7, 24.0}
---						5.3, 15.7, 24.0, 23.9, 24.5, 23.7, 47.8, 24.1, 48.2, 23.7, 24.2, 23.9, 24.0
+local normalWarpTimers = {5.1, 16.0}
 local heroicWarpTimers = {5.3, 10.0, 23.9, 20.7, 24.0, 19.0}--Sequence timer, but stll altered by Life Force?
 local normalRainOfFelTimers = {21.1, 24.1, 23.9, 24.1, 24.0, 96.0, 12.0, 36.0, 12.0, 36.0}
 local heroicRainOfFelTimers = {15.0, 24.1, 8.9, 24.2, 11.9, 19.0, 12.1}
@@ -116,7 +115,7 @@ function mod:OnCombatStart(delay)
 	self.vb.rainOfFelCount = 0
 	self.vb.warpCount = 0
 	self.vb.lifeForceCast = 0
-	timerWarpInCD:Start(5.3)
+	timerWarpInCD:Start(5.1)
 	timerSpearofDoomCD:Start(1-delay)
 	if not self:IsLFR() then
 		timerRainofFelCD:Start(15-delay)
@@ -176,7 +175,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if (spellId == 246888 or spellId == 246896) and self:AntiSpam(6, 1) then--At east 5 second antispam needed, maybe more
 		self.vb.warpCount = self.vb.warpCount + 1
 		warnWarpIn:Show(self.vb.warpCount)
-		local timer = self:IsHeroic() and heroicWarpTimers[self.vb.warpCount+1] or self:IsEasy() and 23.7--(always 24ish on normal)
+		local timer = self:IsHeroic() and heroicWarpTimers[self.vb.warpCount+1] or self:IsEasy() and (normalWarpTimers[self.vb.warpCount+1] or 23.7)--(always 24ish on normal)
 		if timer then
 			timerWarpInCD:Start(timer)
 		end
