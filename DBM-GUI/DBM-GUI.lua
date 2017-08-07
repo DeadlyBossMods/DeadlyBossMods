@@ -2344,6 +2344,9 @@ local function CreateOptionsMenu()
 			resetDBTValueToDefault(BarScaleSlider, "Scale")
 			resetDBTValueToDefault(BarOffsetXSlider, "BarXOffset")
 			resetDBTValueToDefault(BarOffsetYSlider, "BarYOffset")
+			--TimerX
+			--TimerY
+			--TimerPoint
 		end)
 
 		-----------------------
@@ -2389,6 +2392,9 @@ local function CreateOptionsMenu()
 			resetDBTValueToDefault(HugeBarScaleSlider, "HugeScale")
 			resetDBTValueToDefault(HugeBarOffsetXSlider, "HugeBarXOffset")
 			resetDBTValueToDefault(HugeBarOffsetYSlider, "HugeBarYOffset")
+			--HugeTimerPoint
+			--HugeTimerX
+			--HugeTimerY
 		end)
 
 		BarSetupPanel:SetMyOwnHeight()
