@@ -2547,7 +2547,7 @@ do
 			return
 		end
 		if not IsAddOnLoaded("DBM-GUI") then
-			if InCombatLockdown() or IsFalling() then
+			if InCombatLockdown() or UnitAffectingCombat("player") or IsFalling() then
 				guiRequested = true
 				self:AddMsg(DBM_CORE_LOAD_GUI_COMBAT)
 				return
@@ -3769,7 +3769,7 @@ function DBM:LoadMod(mod, force)
 		end
 		return
 	end
-	if (InCombatLockdown() or IsFalling()) and not IsEncounterInProgress() and IsInInstance() and not noDelay then
+	if (InCombatLockdown() or UnitAffectingCombat("player") or IsFalling()) and not IsEncounterInProgress() and IsInInstance() and not noDelay then
 		self:Debug("LoadMod delayed do to combat")
 		if not loadDelay then--Prevent duplicate DBM_CORE_LOAD_MOD_COMBAT message.
 			self:AddMsg(DBM_CORE_LOAD_MOD_COMBAT:format(tostring(mod.name)))
@@ -3813,7 +3813,7 @@ function DBM:LoadMod(mod, force)
 				C_TimerAfter(15, function() timerRequestInProgress = false end)
 			end
 		end
-		if not InCombatLockdown() and not IsFalling() then--We loaded in combat because a raid boss was in process, but lets at least delay the garbage collect so at least load mod is half as bad, to do our best to avoid "script ran too long"
+		if not InCombatLockdown() and not UnitAffectingCombat("player") and not IsFalling() then--We loaded in combat because a raid boss was in process, but lets at least delay the garbage collect so at least load mod is half as bad, to do our best to avoid "script ran too long"
 			collectgarbage("collect")
 		end
 		if loadDelay2 == mod then
@@ -3927,7 +3927,7 @@ do
 	
 	syncHandlers["NS"] = function(sender, modid, modvar, text, abilityName)
 		if sender == playerName then return end
-		if DBM.Options.BlockNoteShare or InCombatLockdown() or IsFalling() then return end
+		if DBM.Options.BlockNoteShare or InCombatLockdown() or UnitAffectingCombat("player") or IsFalling() then return end
 		if IsInGroup(LE_PARTY_CATEGORY_INSTANCE) and IsInInstance() then return end
 		--^^You are in LFR, BG, or LFG. Block note syncs. They shouldn't be sendable, but in case someone edits DBM^^
 		local mod = DBM:GetModByName(modid or "")
