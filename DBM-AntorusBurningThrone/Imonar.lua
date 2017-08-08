@@ -15,9 +15,9 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 247376 247923 248068 248070 248254",
 	"SPELL_CAST_SUCCESS 247367 247552 247687 250255",
-	"SPELL_AURA_APPLIED 247367 247552 247565 247687 250255 253302 248321",
+	"SPELL_AURA_APPLIED 247367 247552 247565 247687 250255",
 	"SPELL_AURA_APPLIED_DOSE 247367 247687 250255 248424",
-	"SPELL_AURA_REMOVED 248233",
+	"SPELL_AURA_REMOVED 248233 250135",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 --	"UNIT_DIED",
@@ -212,7 +212,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId) then
 			local amount = args.amount or 1
-			if amount >= 6 then
+			if amount >= 3 then
 				if not UnitDebuff("player", args.spellName) and not UnitIsDeadOrGhost("player") then
 					specWarnSever:Show(args.destName)
 					voiceSever:Play("tauntboss")
@@ -232,20 +232,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 247565 then
 		warnSlumberGas:CombinedShow(0.3, args.destName)
-	elseif (spellId == 253302 or spellId == 248321) and not args:IsDestTypePlayer() then--Conflagration
-		--stop all timers (if this dirty method doesn't work, do em manually)
-		for i, v in ipairs(self.timers) do
-			v:Stop()
-		end
-	elseif spellId == 248424 then--Gathering Power
-		
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
-	if spellId == 248233 and not args:IsDestTypePlayer() then--Conflagration
+	if (spellId == 248233 or spellId == 250135) and not args:IsDestTypePlayer() then--Conflagration
 		self.vb.phase = self.vb.phase + 1
 		if self.vb.phase == 2 then
 			timerSeverCD:Start(6.6)

@@ -245,7 +245,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.shieldActive = true
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:SetHeader(shieldname)
-			DBM.InfoFrame:Show(2, "enemyabsorb", shieldname)
+			DBM.InfoFrame:Show(2, "enemyabsorb", nil, UnitGetTotalAbsorbs("boss1"))
 		end
 	end
 end

@@ -379,12 +379,24 @@ end
 local function updateEnemyAbsorb()
 	twipe(lines)
 	local spellName = value[1]
+	local totalAbsorb = value[2]
 	for i = 1, 5 do
 		local uId = "boss"..i
 		if UnitExists(uId) then
-			local absorbAmount = select(17, UnitBuff(uId, spellName)) or select(17, UnitDebuff(uId, spellName))
+			local absorbAmount
+			if spellName then--Get specific spell absorb
+				absorbAmount = select(17, UnitBuff(uId, spellName)) or select(17, UnitDebuff(uId, spellName))
+			else--Get all of them
+				absorbAmount = UnitGetTotalAbsorbs(uId)
+			end
 			if absorbAmount then
-				lines[UnitName(uId)] = absorbAmount
+				local text
+				if totalAbsorb then
+					text = absorbAmount / totalAbsorb * 100
+				else
+					text = absorbAmount
+				end
+				lines[UnitName(uId)] = text
 			end
 		end
 	end
@@ -395,19 +407,38 @@ end
 local function updateAllAbsorb()
 	twipe(lines)
 	local spellName = value[1]
+	local totalAbsorb = value[2]
+	local totalAbsorb2 = value[3]
 	for i = 1, 5 do
 		local uId = "boss"..i
 		if UnitExists(uId) then
-			local absorbAmount = select(17, UnitBuff(uId, spellName)) or select(17, UnitDebuff(uId, spellName))
+			local absorbAmount
+			if spellName then--Get specific spell absorb
+				absorbAmount = select(17, UnitBuff(uId, spellName)) or select(17, UnitDebuff(uId, spellName))
+			else--Get all of them
+				absorbAmount = UnitGetTotalAbsorbs(uId)
+			end
 			if absorbAmount then
-				lines[UnitName(uId)] = absorbAmount
+				local text
+				if totalAbsorb then
+					text = absorbAmount / totalAbsorb * 100
+				else
+					text = absorbAmount
+				end
+				lines[UnitName(uId)] = text
 			end
 		end
 	end
 	for uId in DBM:GetGroupMembers() do
 		local absorbAmount = select(17, UnitBuff(uId, spellName)) or select(17, UnitDebuff(uId, spellName))
 		if absorbAmount then
-			lines[UnitName(uId)] = absorbAmount
+			local text
+			if totalAbsorb2 then
+				text = absorbAmount / totalAbsorb2 * 100
+			else
+				text = absorbAmount
+			end
+			lines[UnitName(uId)] = text
 		end
 	end
 	updateLines()
@@ -417,10 +448,17 @@ end
 local function updatePlayerAbsorb()
 	twipe(lines)
 	local spellName = value[1]
+	local totalAbsorb = value[2]
 	for uId in DBM:GetGroupMembers() do
 		local absorbAmount = select(17, UnitBuff(uId, spellName)) or select(17, UnitDebuff(uId, spellName))
 		if absorbAmount then
-			lines[UnitName(uId)] = absorbAmount
+			local text
+			if totalAbsorb2 then
+				text = absorbAmount / totalAbsorb2 * 100
+			else
+				text = absorbAmount
+			end
+			lines[UnitName(uId)] = text
 		end
 	end
 	updateLines()
@@ -762,7 +800,7 @@ end
 ---------------
 --  Methods  --
 ---------------
---Arg 1: spellID, health/powervalue, customfunction. Arg 2: TankIgnore, Powertype, SortFunction. Arg 3: SpellFilter, UseIcon. Arg 4: disable onUpdate
+--Arg 1: spellID, health/powervalue, customfunction. Arg 2: TankIgnore, Powertype, SortFunction, totalAbsorb. Arg 3: SpellFilter, UseIcon. Arg 4: disable onUpdate
 function infoFrame:Show(maxLines, event, ...)
 	currentMapId = select(4, UnitPosition("player"))
 	if DBM.Options.DontShowInfoFrame and (event or 0) ~= "test" then return end
