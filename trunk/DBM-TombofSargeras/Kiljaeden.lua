@@ -16,7 +16,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 237725 238999 243982 240910 241983 239932",
-	"SPELL_CAST_SUCCESS 236378 236710 237590 236498 238502 238430 238999",
+	"SPELL_CAST_SUCCESS 236378 236710 237590 236498 238502 238430 238999 241564",
 	"SPELL_AURA_APPLIED 239932 236378 236710 237590 236498 236597 241721 245509 243536",
 	"SPELL_AURA_APPLIED_DOSE 245509",
 	"SPELL_AURA_REFRESH 241721",
@@ -40,10 +40,11 @@ mod:RegisterEventsInCombat(
 --TODO, deal wih wailing if tank suicides during spell cast start (and before success fires)
 --[[
 (ability.id = 238502 or ability.id = 237725 or ability.id = 238999 or ability.id = 243982 or ability.id = 240910 or ability.id = 241983) and type = "begincast"
- or (ability.id = 239932 or ability.id = 235059 or ability.id = 238502 or ability.id = 239785 or ability.id = 236378 or ability.id = 236710 or ability.id = 237590 or ability.id = 236498 or ability.id = 238430) and type = "cast"
+ or (ability.id = 239932 or ability.id = 235059 or ability.id = 238502 or ability.id = 239785 or ability.id = 236378 or ability.id = 236710 or ability.id = 237590 or ability.id = 236498 or ability.id = 238430 or ability.id = 241564) and type = "cast"
  or ability.id = 244834 and type = "applybuff" or (ability.id = 241983 or ability.id = 244834) and type = "removebuff"
  or ability.name = "Rupturing Singularity" and target.name = "Omegal"
  --]]
+ --Stage One:
 local warnFelClaw					= mod:NewCountAnnounce(239932, 3, nil, "Tank")
 local warnEruptingRelections		= mod:NewTargetAnnounce(236710, 2)
 --Intermission: Eternal Flame
@@ -51,6 +52,7 @@ local warnBurstingDreadFlame		= mod:NewTargetAnnounce(238430, 2)--Generic for no
 --Stage Two:
 local warnPhase2					= mod:NewPhaseAnnounce(2, 2)
 local warnWailingReflection			= mod:NewTargetAnnounce(236378, 4)
+local warnSorrowfulWail				= mod:NewSpellAnnounce(241564, 4)
 --Stage Three: Darkness of A Thousand Souls
 local warnPhase3					= mod:NewPhaseAnnounce(3, 2)
 local warnTearRift					= mod:NewCountAnnounce(243982, 2)--Positive message color?
@@ -104,6 +106,7 @@ mod:AddTimerLine(SCENARIO_STAGE:format(2))
 local timerShadReflectionHopelessCD	= mod:NewCDTimer(196, 237590, 237724, nil, nil, 3, nil, DBM_CORE_HEALER_ICON)--Shortname : Hopeless Reflection
 local timerHopelessness				= mod:NewCastTimer(8, 237725, nil, "Healer", nil, 5, nil, DBM_CORE_HEALER_ICON)
 local timerShadReflectionWailingCD	= mod:NewCDCountTimer(35, 236378, 236475, nil, nil, 3, nil, DBM_CORE_TANK_ICON)--Shortname : Wailing Reflection
+local timerSorrowfulWailCD			= mod:NewCDTimer(15.5, 241564, nil, nil, nil, 2)
 --Intermission: Deceiver's Veil
 --mod:AddTimerLine(SCENARIO_STAGE:format(2.5))
 local timerSightlessGaze			= mod:NewBuffActiveTimer(20, 241721, nil, nil, nil, 5)
@@ -172,15 +175,15 @@ local phase1MythicSingularityTimers = {55, 25, 25}--Incomplete
 local phase1point5MythicSingularityTimers = {15.1, 5, 13.2, 5, 5, 5, 25, 4.98}
 local phase2NormalArmageddonTimers = {55, 45, 31}
 local phase2HeroicArmageddonTimers = {55, 75, 35, 30}
-local phase2MythicArmageddonTimers = {24.4, 32, 45, 33, 36, 36, 47}
+local phase2MythicArmageddonTimers = {24.4, 32, 45, 33, 36, 36, 47, 32, 45}
 local phase2NormalBurstingTimers = {57, 44}--Not used yet, needs more data to verify and improve
 local phase2HeroicBurstingTimers = {57, 47, 55}--Not used yet, needs more data to verify and improve
-local phase2MythicBurstingTimers = {58.4, 50.0, 45.0, 48.0}
+local phase2MythicBurstingTimers = {58.4, 50.0, 45.0, 48.0, 86}
 local phase2NormalFocusedTimers = {81.5}--Not used yet, needs more data to verify and improve
 local phase2HeroicFocusedTimers = {35, 45, 53, 46}
-local phase2MythicFocusedTimers = {38.4, 44, 47, 138}
+local phase2MythicFocusedTimers = {38.4, 44, 47, 138, 44}
 local phase2HeroicSingularityTimers = {79, 26, 55, 44}
-local phase2MythicSingularityTimers = {27, 50, 66.9, 78}
+local phase2MythicSingularityTimers = {27, 50, 66.9, 78, 84}
 local playerName = UnitName("player")
 
 --[[
@@ -248,7 +251,6 @@ function mod:OnCombatStart(delay)
 	countdownFelclaws:Start(25-delay)
 	timerRupturingSingularityCD:Start(58-delay, 1)
 	if self:IsMythic() then
-		DBM:AddMsg("This mod has poor support for mythic difficulty. Please help improve mod by sharing logs (especially transcriptor) with MysticalOS")
 		timerShadReflectionWailingCD:Start(56, 1)
 	end
 	berserkTimer:Start(600-delay)
@@ -352,8 +354,13 @@ function mod:SPELL_CAST_START(args)
 		timerShadReflectionEruptingCD:Stop()
 		timerShadReflectionWailingCD:Stop()
 		timerShadReflectionHopelessCD:Stop()
+		timerRupturingSingularityCD:Stop()
 		self.vb.phase = 2.5
 		self.vb.shadowSoulsRemaining = 5--Normal count anyways
+		self.vb.singularityCount = 0
+		if self:IsMythic() then
+			timerRupturingSingularityCD:Start(20.3, 1)
+		end
 	end
 end
 
@@ -469,6 +476,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:Hide()
 		end
+	elseif spellId == 241564 then
+		warnSorrowfulWail:Show()
+		timerSorrowfulWailCD:Start()
 	end
 end
 
@@ -544,6 +554,9 @@ mod.SPELL_AURA_REFRESH = mod.SPELL_AURA_APPLIED
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 236378 then--Wailing Shadow Reflection (Stage 1)
+		if not self:IsEasy() then
+			timerSorrowfulWailCD:Start(15.9)
+		end
 		if args:IsPlayer() then
 			yellSRWailing:Cancel()
 		end
@@ -579,12 +592,19 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerSightlessGaze:Stop()
 		warnPhase3:Show()
 		timerTearRiftCD:Start(14, 1)
-		if not self:IsEasy() then
-			timerFlamingOrbCD:Start(30, 1)
+		if self:IsMythic() then
+			timerBurstingDreadflameCD:Start(30, 1)
+			timerFlamingOrbCD:Start(40, 1)
+			timerFocusedDreadflameCD:Start(48, 1)
+			countdownFocusedDread:Start(48)
+		else
+			if not self:IsEasy() then
+				timerFlamingOrbCD:Start(30, 1)
+			end
+			timerBurstingDreadflameCD:Start(44, 1)
+			timerFocusedDreadflameCD:Start(80, 1)
+			countdownFocusedDread:Start(80)
 		end
-		timerBurstingDreadflameCD:Start(44, 1)--Review on Heroic
-		timerFocusedDreadflameCD:Start(80, 1)
-		countdownFocusedDread:Start(80)
 	end
 end
 
@@ -664,6 +684,10 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 			if timer then
 				timerRupturingSingularityCD:Start(timer, self.vb.singularityCount+1)
 			end
+		elseif self.vb.phase == 2.5 then--Second phase transition Mythic Only
+			if self.vb.singularityCount == 1 then
+				timerRupturingSingularityCD:Start(10, 2)
+			end
 		else--Phase 1
 			if self:IsMythic() then
 				local timer = phase1MythicSingularityTimers[self.vb.singularityCount+1]
@@ -684,6 +708,8 @@ function mod:UNIT_DIED(args)
 	if cid == 121193 then--Shadowsoul
 		--Do more with when 5 count confirmed in more difficulties or all normal sizes
 		self.vb.shadowSoulsRemaining = self.vb.shadowSoulsRemaining - 1
+	elseif cid == 119107 then--Tank Add
+		timerSorrowfulWailCD:Stop()
 	end
 end
 
