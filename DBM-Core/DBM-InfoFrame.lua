@@ -453,7 +453,7 @@ local function updatePlayerAbsorb()
 		local absorbAmount = select(17, UnitBuff(uId, spellName)) or select(17, UnitDebuff(uId, spellName))
 		if absorbAmount then
 			local text
-			if totalAbsorb2 then
+			if totalAbsorb then
 				text = absorbAmount / totalAbsorb2 * 100
 			else
 				text = absorbAmount
