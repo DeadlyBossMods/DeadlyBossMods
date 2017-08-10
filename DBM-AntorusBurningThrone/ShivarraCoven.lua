@@ -13,8 +13,8 @@ mod.respawnTime = 15
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 245627 245303 252861 253650 250648 250095 250335",
-	"SPELL_CAST_SUCCESS 244899 253520 245586 250757",
+	"SPELL_CAST_START 245627 245303 252861 253650 250648",
+	"SPELL_CAST_SUCCESS 244899 253520 245586 250757 250335 250333 250334 249793",
 	"SPELL_AURA_APPLIED 244899 253520 245518 245586 250757 249863",
 	"SPELL_AURA_APPLIED_DOSE 244899",
 	"SPELL_AURA_REMOVED 253520 245586 249863",
@@ -27,7 +27,7 @@ mod:RegisterEventsInCombat(
 
 --TODO, whirling saber target scanning or targetting debuff?
 --TODO, review tank swap stuff.
---TODO, activation and deactivation of sisters for correct timer start/stop. It's likely the one casting torture that's inactive
+--TODO, activation and deactivation of sisters for correct timer start/stop. Longer pull needed to see an activation through
 --TODO, auto range frame for fury of Golganneth
 --TODO, figure out more about incoming adds abilities to get all warnings gooder!
 --Noura, Mother of Flames
@@ -49,7 +49,7 @@ local specWarnFieryStrikeOther			= mod:NewSpecialWarningTaunt(244899, nil, nil, 
 local specWarnFulminatingPulse			= mod:NewSpecialWarningMoveAway(253520, nil, nil, nil, 1, 2)
 local yellFulminatingPulse				= mod:NewFadesYell(253520)
 --Asara, Mother of Night
-local specWarnTouchofDarkness			= mod:NewSpecialWarningInterrupt(245303, "HasInterrupt", nil, nil, 1, 2)
+--local specWarnTouchofDarkness			= mod:NewSpecialWarningInterrupt(245303, "HasInterrupt", nil, nil, 1, 2)
 local specWarnShadowBlades				= mod:NewSpecialWarningDodge(246329, nil, nil, nil, 2, 2)
 local specWarnStormofDarkness			= mod:NewSpecialWarningCount(252861, nil, nil, nil, 2, 2)
 --Diima, Mother of Gloom
@@ -63,14 +63,14 @@ local specWarnTouchoftheCosmos			= mod:NewSpecialWarningInterrupt(250648, "HasIn
 local specWarnCosmicGlare				= mod:NewSpecialWarningMoveAway(250757, nil, nil, nil, 1, 2)
 local yellCosmicGlare					= mod:NewYell(250757)
 --Torment of the Titans
-local specWarnTormentofTitans			= mod:NewSpecialWarningSwitch("ej16138", "-Healer", nil, nil, 1, 2)
+--local specWarnTormentofTitans			= mod:NewSpecialWarningSwitch("ej16138", "-Healer", nil, nil, 1, 2)
 
 --Noura, Mother of Flames
 local timerFieryStrikeCD				= mod:NewAITimer(25, 244899, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerWhirlingSaberCD				= mod:NewAITimer(61, 245627, nil, nil, nil, 3)
 local timerFulminatingPulseCD			= mod:NewAITimer(61, 253520, nil, nil, nil, 3)
 --Asara, Mother of Night
-local timerTouchofDarknessCD			= mod:NewAITimer(61, 245303, nil, "HasInterrupt", nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
+--local timerTouchofDarknessCD			= mod:NewAITimer(61, 245303, nil, "HasInterrupt", nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
 local timerShadowBladesCD				= mod:NewAITimer(61, 246329, nil, nil, nil, 3)
 local timerStormofDarknessCD			= mod:NewAITimer(61, 252861, nil, nil, nil, 2, nil, DBM_CORE_HEALER_ICON)
 --Diima, Mother of Gloom
@@ -81,7 +81,7 @@ local timerTouchoftheCosmosCD			= mod:NewAITimer(61, 250648, nil, "HasInterrupt"
 local timerCosmicGlareCD				= mod:NewAITimer(61, 250757, nil, nil, nil, 3)
 --Torment of the Titans
 local timerTormentofTitansCD			= mod:NewAITimer(61, "ej16138", nil, nil, nil, 6)
-local timerMachinationsofAman			= mod:NewCastTimer(20, 250095, nil, nil, nil, 3)
+--local timerMachinationsofAman			= mod:NewCastTimer(20, 250095, nil, nil, nil, 3)
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
 
@@ -98,7 +98,7 @@ local timerMachinationsofAman			= mod:NewCastTimer(20, 250095, nil, nil, nil, 3)
 local voiceFieryStrike					= mod:NewVoice(244899)--tauntboss/stackhigh
 local voiceFulminatingPulse				= mod:NewVoice(253520)--runout
 --Asara, Mother of Night
-local voiceTouchofDarkness				= mod:NewVoice(245303, "HasInterrupt")--kickcast
+--local voiceTouchofDarkness				= mod:NewVoice(245303, "HasInterrupt")--kickcast
 local voiceShadowBlades					= mod:NewVoice(246329)--watchstep?
 local voiceStormofDarkness				= mod:NewVoice(252861)--aesoon
 --Diima, Mother of Gloom
@@ -162,7 +162,7 @@ function mod:OnCombatStart(delay)
 	timerTormentofTitansCD:Start(1-delay)
 	timerFieryStrikeCD:Start(1-delay)
 	timerWhirlingSaberCD:Start(1-delay)
-	timerTouchofDarknessCD:Start(1-delay)
+--	timerTouchofDarknessCD:Start(1-delay)
 	timerShadowBladesCD:Start(1-delay)
 	if not self:IsEasy() then
 		timerFulminatingPulseCD:Start(1-delay)
@@ -191,15 +191,15 @@ function mod:SPELL_CAST_START(args)
 		warnWhirlingSaber:Show()
 		timerWhirlingSaberCD:Start()
 	elseif spellId == 245303 then
-		timerTouchofDarknessCD:Start()
+--		timerTouchofDarknessCD:Start()
 --		self.vb.pangCount = self.vb.pangCount + 1
 --		if self.vb.pangCount == 4 then
 --			self.vb.pangCount = 1
 --		end
-		if self:CheckInterruptFilter(args.sourceGUID) then
+--		if self:CheckInterruptFilter(args.sourceGUID) then
 --			local kickCount = self.vb.pangCount
-			specWarnTouchofDarkness:Show(args.sourceName)
-			voiceTouchofDarkness:Play("kickcast")
+--			specWarnTouchofDarkness:Show(args.sourceName)
+--			voiceTouchofDarkness:Play("kickcast")
 --[[		if kickCount == 1 then
 				voiceTouchofDarkness:Play("kick1r")
 			elseif kickCount == 2 then
@@ -207,7 +207,7 @@ function mod:SPELL_CAST_START(args)
 			elseif kickCount == 3 then
 				voiceTouchofDarkness:Play("kick3r")
 			end--]]
-		end
+--		end
 	elseif spellId == 252861 then
 		self.vb.stormCount = self.vb.stormCount + 1
 		specWarnStormofDarkness:Show(self.vb.stormCount)
@@ -235,12 +235,6 @@ function mod:SPELL_CAST_START(args)
 				voiceTouchoftheCosmos:Play("kick3r")
 			end--]]
 		end
-	elseif spellId == 250095 or spellId == 250335 then--Assumed move if have to use applied or channeling unit event
-		if spellId == 250335 then
-			timerMachinationsofAman:Start(90)--LFR?
-		else
-			timerMachinationsofAman:Start()
-		end
 	end
 end
 
@@ -253,21 +247,38 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 245586 then
 		timerChilledBloodCD:Start()
 		voiceChilledBlood:Play("healall")
-	elseif (spellId == 252479 or spellId == 244756 or spellId == 244733 or spellId == 244740) and self:AntiSpam(5, spellId) then
+	elseif (spellId == 250335 or spellId == 250333 or spellId == 250334 or spellId == 249793) then--Torment selections
 		self.vb.tormentCount = self.vb.tormentCount + 1
-		specWarnTormentofTitans:Show()
+		--specWarnTormentofTitans:Show()
 		timerTormentofTitansCD:Start()
-		if self.vb.tormentCount % 2 == 0 then--Should be a sister rotation
+		if self.vb.tormentCount % 2 == 1 then--Should be a sister rotation? (1, 3, 5, etc. Each one doing 2)
 			--Do shit
 		end
-		if spellId == 252479 then--Torment of Aman'Thul
+		if spellId == 250335 then--Machinations of Aman'Thul
+			--timerMachinationsofAman:Start()
+		elseif spellId == 250333 then--Flames of Khaz'goroth
 	
-		elseif spellId == 244756 then--Torment of Golganneth
-		
-		elseif spellId == 244733 then--Torment of Khaz'goroth
-		
-		elseif spellId == 244740 then--Torment of Norgannon
-		
+		elseif spellId == 250334 then--Spectral Army of Norgannon
+	
+		elseif spellId == 249793 then--Fury of Golganneth
+	
+		end
+		--Timer cancelations based on who is source of torment
+		local cid = self:GetCIDFromGUID(args.sourceGUID)
+		if cid == 122468 then--Noura
+			timerFieryStrikeCD:Stop()
+			timerWhirlingSaberCD:Stop()
+			timerFulminatingPulseCD:Stop()
+		elseif cid == 122467 then--Asara
+			--timerTouchofDarknessCD:Stop()
+			timerShadowBladesCD:Stop()
+			timerStormofDarknessCD:Stop()
+		elseif cid == 122469 then--Diima
+			timerChilledBloodCD:Stop()
+			timerOrbofFrostCD:Stop()
+		elseif cid == 125436 then--Thu'raya (mythic only)
+			timerTouchoftheCosmosCD:Stop()
+			timerCosmicGlareCD:Stop()
 		end
 	elseif spellId == 250757 then
 		timerCosmicGlareCD:Start()
@@ -378,7 +389,7 @@ end
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 125837 then--Torment of Amanthul
-		timerMachinationsofAman:Stop()
+		--timerMachinationsofAman:Stop()
 	elseif cid == 124164 then--Torment of Golganneth
 	
 	elseif cid == 124166 then--Torment of Khazgoroth
@@ -393,21 +404,5 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		specWarnShadowBlades:Show()
 		voiceShadowBlades:Play("watchstep")
 		timerShadowBladesCD:Start()
-	elseif (spellId == 252479 or spellId == 244756 or spellId == 244733 or spellId == 244740) and self:AntiSpam(5, spellId) then
-		self.vb.tormentCount = self.vb.tormentCount + 1
-		specWarnTormentofTitans:Show()
-		timerTormentofTitansCD:Start()
-		if self.vb.tormentCount % 2 == 0 then--Should be a sister rotation
-			--Do shit
-		end
-		if spellId == 252479 then--Torment of Aman'Thul
-	
-		elseif spellId == 244756 then--Torment of Golganneth
-		
-		elseif spellId == 244733 then--Torment of Khaz'goroth
-		
-		elseif spellId == 244740 then--Torment of Norgannon
-		
-		end
 	end
 end
