@@ -8,7 +8,7 @@ mod:SetZone()
 mod:SetBossHPInfoToHighest()
 --mod:SetUsedIcons(1, 2, 3, 4, 5, 6)
 --mod:SetHotfixNoticeRev(16350)
---mod.respawnTime = 29
+mod.respawnTime = 15
 
 mod:RegisterCombat("combat")
 
@@ -158,16 +158,15 @@ function mod:OnCombatStart(delay)
 	else
 		self:SetCreatureID(122468, 122467, 122469)
 	end
-	--Can't do start timers until know which two active on start
+	--Diima, Mother of Gloom is first one to go inactive
 	timerTormentofTitansCD:Start(1-delay)
---	timerFieryStrikeCD:Start(1-delay)
---	timerWhirlingSaberCD:Start(1-delay)
---	timerTouchofDarknessCD:Start(1-delay)
---	timerShadowBladesCD:Start(1-delay)
+	timerFieryStrikeCD:Start(1-delay)
+	timerWhirlingSaberCD:Start(1-delay)
+	timerTouchofDarknessCD:Start(1-delay)
+	timerShadowBladesCD:Start(1-delay)
 	if not self:IsEasy() then
---		timerFulminatingPulseCD:Start(1-delay)
---		timerStormofDarknessCD:Start(1-delay)
---		timerOrbofFrostCD:Start(1-delay)
+		timerFulminatingPulseCD:Start(1-delay)
+		timerStormofDarknessCD:Start(1-delay)
 	end
 	if self.Options.NPAuraOnVisageofTitan then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
