@@ -68,7 +68,7 @@ local yellRapidShot					= mod:NewYell(236596, nil, false, 2)
 local specWarnEmbraceofEclipse		= mod:NewSpecialWarningTarget(233264, "Dps|Healer", nil, nil, 3)
 local specWarnLunarBeacon			= mod:NewSpecialWarningMoveAway(236712, nil, nil, nil, 1, 2)
 local yellLunarBeacon				= mod:NewFadesYell(236712)
-local specWarnLunarFire				= mod:NewSpecialWarningStack(239264, nil, 4, nil, nil, 1, 2)
+local specWarnLunarFire				= mod:NewSpecialWarningStack(239264, nil, 2, nil, nil, 1, 2)
 local specWarnLunarFireOther		= mod:NewSpecialWarningTaunt(239264, nil, nil, nil, 1, 2)
 local specWarnMoonBurn				= mod:NewSpecialWarningMoveTo(236519, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.you:format(236519), nil, 1, 7)--Add voice filter when it has a voice
 
@@ -260,7 +260,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId) then
 			local amount = args.amount or 1
-			if amount >= 4 then--Lasts 30 seconds, unknown reapplication rate, fine tune!
+			if amount >= 2 then--Lasts 30 seconds, unknown reapplication rate, fine tune!
 				if args:IsPlayer() then--At this point the other tank SHOULD be clear.
 					specWarnLunarFire:Show(amount)
 					voiceLunarFire:Play("stackhigh")
@@ -273,9 +273,7 @@ function mod:SPELL_AURA_APPLIED(args)
 					end
 				end
 			else
-				if amount % 2 == 0 then
-					warnLunarFire:Show(args.destName, amount)
-				end
+				warnLunarFire:Show(args.destName, amount)
 			end
 		end
 	elseif spellId == 236550 then
