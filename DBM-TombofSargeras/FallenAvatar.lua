@@ -48,7 +48,7 @@ local warnPhase2					= mod:NewPhaseAnnounce(2, 2)
 local warnDarkmark					= mod:NewTargetAnnounce(239739, 3)
 
 --Stage One: A Slumber Disturbed
-local specWarnTouchofSargerasGround	= mod:NewSpecialWarningSpell(239207, "-Tank", nil, 2, 1, 2)
+local specWarnTouchofSargerasGround	= mod:NewSpecialWarningCount(239207, "-Tank", nil, 2, 1, 2)
 local specWarnRuptureRealities		= mod:NewSpecialWarningRun(239132, nil, nil, nil, 4, 2)
 local specWarnUnboundChaos			= mod:NewSpecialWarningMoveAway(234059, nil, nil, nil, 1, 2)
 local yellUnboundChaos				= mod:NewYell(234059, nil, false, 2)
@@ -121,6 +121,8 @@ local abilitiesonCD = {
 mod.vb.phase = 1
 mod.vb.bladesIcon = 1
 mod.vb.shieldActive = false
+mod.vb.touchCast = 0
+mod.vb.darkMarkCast = 0
 local darkMarkTargets = {}
 local playerName = UnitName("player")
 local beamName = GetSpellInfo(238244)
@@ -216,6 +218,8 @@ function mod:OnCombatStart(delay)
 	table.wipe(darkMarkTargets)
 	self.vb.phase = 1
 	self.vb.bladesIcon = 1
+	self.vb.touchCast = 0
+	self.vb.darkMarkCast = 0
 	timerUnboundChaosCD:Start(7-delay)--7
 	self:Schedule(7, setabilityStatus, self, 234059, 0)--Unbound Chaos
 	timerDesolateCD:Start(13-delay)--13
@@ -252,7 +256,8 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 239207 then
-		specWarnTouchofSargerasGround:Show()
+		self.vb.touchCast = self.vb.touchCast + 1
+		specWarnTouchofSargerasGround:Show(self.vb.touchCast)
 		voiceTouchofSargerasGround:Play("helpsoak")
 		timerTouchofSargerasCD:Start()--42
 		self:Unschedule(setabilityStatus, self, 239207)--Unschedule for good measure in case next cast start fires before timer expires (in which case have a bad timer)

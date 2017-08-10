@@ -27,7 +27,10 @@ mod:RegisterEventsInCombat(
 
 --TODO, Enable GTFO for all the flames if its something you can avoid
 --TODO, icons on necrotic embrace?
---TODO, dark fissure targets?
+--[[
+(ability.id = 243960 or ability.id = 244093 or ability.id = 243999 or ability.id = 244042) and type = "cast"
+ or (ability.id = 2243968 or ability.id = 2243977 or ability.id = 243980 or ability.id = 243973) and type = "applydebuff" and target.name = "Omegal"
+--]]
 --Torments of the Shivarra
 --local warnTormentofFlames				= mod:NewSpellAnnounce(243967, 2)
 --local warnTormentofFrost				= mod:NewSpellAnnounce(243976, 2)
