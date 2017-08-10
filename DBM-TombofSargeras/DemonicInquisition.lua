@@ -243,7 +243,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 233431 then
 		timerCalcifiedQuillsCD:Start()
-		updateAllAtriganTimers(self, 3)
+		updateAllAtriganTimers(self, 5)
 	elseif spellId == 233983 then
 		timerEchoingAnguishCD:Start()
 	end

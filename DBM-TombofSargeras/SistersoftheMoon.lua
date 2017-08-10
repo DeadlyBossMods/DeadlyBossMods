@@ -17,7 +17,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS 236694 236547 236518 233263 237561 236672 239264 236442",
 	"SPELL_AURA_APPLIED 234995 234996 236550 236596 233264 233263 236712 239264 236519 237561 236305 243262",
 	"SPELL_AURA_APPLIED_DOSE 234995 234996 239264",
-	"SPELL_AURA_REMOVED 236712 233263 233264 236305",
+	"SPELL_AURA_REMOVED 236712 233263 236305",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 --	"CHAT_MSG_RAID_BOSS_EMOTE",
@@ -314,7 +314,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			countdownSpecials:Start()
 		end
 	elseif spellId == 233264 then--Dpser Embrace of the Eclipse
-		self.vb.eclipseCount = self.vb.eclipseCount + 1
 		if not self:IsHealer() then
 			specWarnEmbraceofEclipse:Show(args.destName)
 			--voiceEmbraceofEclipse:Play("targetchange")
@@ -369,7 +368,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 236712 and args:IsPlayer() then
 		yellLunarBeacon:Cancel()
-	elseif spellId == 233263 or spellId == 233264 then--Healer & boss Embrace of the Eclipse
+	elseif spellId == 233263 then
 		self.vb.eclipseCount = self.vb.eclipseCount - 1
 		if self.Options.InfoFrame and self.vb.eclipseCount == 0 then
 			DBM.InfoFrame:Hide()
