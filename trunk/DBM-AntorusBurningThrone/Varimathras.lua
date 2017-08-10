@@ -2,19 +2,19 @@ local mod	= DBM:NewMod(1983, "DBM-AntorusBurningThrone", nil, 946)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision: 16369 $"):sub(12, -3))
-mod:SetCreatureID(125075)
+mod:SetCreatureID(122366)
 mod:SetEncounterID(2069)
 mod:SetZone()
 --mod:SetBossHPInfoToHighest()
 mod:SetUsedIcons(1)
 --mod:SetHotfixNoticeRev(16350)
---mod.respawnTime = 29
+mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 243999",
-	"SPELL_CAST_SUCCESS 243960 244093",
+--	"SPELL_CAST_START 243999",
+	"SPELL_CAST_SUCCESS 243960 244093 243999",
 	"SPELL_AURA_APPLIED 243961 244042 244094 248732",
 --	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 244042 244094",
@@ -35,6 +35,7 @@ mod:RegisterEventsInCombat(
 --local warnTormentofShadows				= mod:NewSpellAnnounce(243974, 2)
 --The Fallen Nathrezim
 local warnShadowStrike					= mod:NewSpellAnnounce(243960, 2)--Doesn't need special warning because misery should trigger special warning at same time
+local warnDarkFissure					= mod:NewTargetAnnounce(243999, 3)
 local warnMarkedPrey					= mod:NewTargetAnnounce(243974, 3)
 local warnNecroticEmbrace				= mod:NewTargetAnnounce(244094, 4)
 local warnEchoesofDoom					= mod:NewTargetAnnounce(248732, 3)
@@ -44,7 +45,8 @@ local specWarnGTFO						= mod:NewSpecialWarningGTFO(243968, nil, nil, nil, 1, 2)
 --The Fallen Nathrezim
 local specWarnMisery					= mod:NewSpecialWarningYou(243961, nil, nil, nil, 1, 2)
 local specWarnMiseryTaunt				= mod:NewSpecialWarningTaunt(243961, nil, nil, nil, 1, 2)
-local specWarnDarkFissure				= mod:NewSpecialWarningDodge(243999, nil, nil, nil, 2, 2)
+local specWarnDarkFissure				= mod:NewSpecialWarningMoveAway(243999, nil, nil, nil, 1, 2)
+local yellDarkFissure					= mod:NewYell(243999)
 local specWarnMarkedPrey				= mod:NewSpecialWarningYou(243974, nil, nil, nil, 1, 2)
 local yellMarkedPrey					= mod:NewFadesYell(243974)
 local specWarnNecroticEmbrace			= mod:NewSpecialWarningMoveAway(244094)
@@ -58,7 +60,7 @@ local yellEchoesOfDoom					= mod:NewYell(248732)
 --local timerTormentofFelCD				= mod:NewAITimer(61, 243979, nil, nil, nil, 3)
 --local timerTormentofShadowsCD			= mod:NewAITimer(61, 243974, nil, nil, nil, 3)
 --The Fallen Nathrezim
-local timerShadowStrikeCD				= mod:NewAITimer(25, 243960, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerShadowStrikeCD				= mod:NewCDTimer(9.7, 243960, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerDarkFissureCD				= mod:NewAITimer(61, 243999, nil, nil, nil, 3)
 local timerNecroticEmbraceCD			= mod:NewAITimer(61, 244093, nil, nil, nil, 3)
 
@@ -71,7 +73,7 @@ local timerNecroticEmbraceCD			= mod:NewAITimer(61, 244093, nil, nil, nil, 3)
 local voiceGTFO							= mod:NewVoice(243968, nil, DBM_CORE_AUTO_VOICE4_OPTION_TEXT)--runaway
 --The Fallen Nathrezim
 local voiceMisery						= mod:NewVoice(243961)--defensive/tauntboss
-local voiceDarkFissure					= mod:NewVoice(243999)--watchstep
+local voiceDarkFissure					= mod:NewVoice(243999)--runout
 local voiceMarkedPrey					= mod:NewVoice(243974)--targetyou?
 local voiceNecroticEmbrace				= mod:NewVoice(244094)--scatter
 local voiceEchoesOfDoom					= mod:NewVoice(248732)--runout
@@ -81,8 +83,8 @@ mod:AddSetIconOption("SetIconOnMarkedPrey", 244042, true)
 mod:AddRangeFrameOption("8/10")
 
 function mod:OnCombatStart(delay)
-	timerShadowStrikeCD:Start(1-delay)
-	timerDarkFissureCD:Start(1-delay)
+	timerShadowStrikeCD:Start(9.6-delay)
+	timerDarkFissureCD:Start(1-delay)--17.9
 	if self:IsHard() then
 		timerNecroticEmbraceCD:Start(1-delay)
 	end
@@ -100,6 +102,7 @@ function mod:OnCombatEnd()
 --	end
 end
 
+--[[
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 243999 then
@@ -108,6 +111,7 @@ function mod:SPELL_CAST_START(args)
 		timerDarkFissureCD:Start()
 	end
 end
+--]]
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
@@ -116,6 +120,14 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerShadowStrikeCD:Show()
 	elseif spellId == 244093 then--Necrotic Embrace Cast
 		timerNecroticEmbraceCD:Start()
+	elseif spellId == 243999 then
+		timerDarkFissureCD:Start()
+		warnDarkFissure:CombinedShow(0.3, args.destName)
+		if args:IsPlayer() then
+			specWarnDarkFissure:Show()
+			voiceDarkFissure:Play("runout")
+			yellDarkFissure:Yell()
+		end
 	end
 end
 
@@ -176,7 +188,7 @@ end
 
 --Dark Fissure and all the torments
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
-	if (spellId == 243968 or spellId == 243977 or spellId == 243980 or spellId == 243973 or spellId == 244005 or spellId == 248740) and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
+	if (spellId == 244005 or spellId == 248740) and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
 		specWarnGTFO:Show()
 		voiceGTFO:Play("runaway")
 	end
