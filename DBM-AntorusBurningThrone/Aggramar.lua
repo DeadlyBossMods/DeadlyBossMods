@@ -2,13 +2,13 @@ local mod	= DBM:NewMod(1984, "DBM-AntorusBurningThrone", nil, 946)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision: 16369 $"):sub(12, -3))
-mod:SetCreatureID(124691)
+mod:SetCreatureID(121975)
 mod:SetEncounterID(2063)
 mod:SetZone()
 --mod:SetBossHPInfoToHighest()
 --mod:SetUsedIcons(1, 2, 3, 4, 5, 6)
 --mod:SetHotfixNoticeRev(16350)
---mod.respawnTime = 29
+mod.respawnTime = 25
 
 mod:RegisterCombat("combat")
 
@@ -43,7 +43,7 @@ local warnFlare							= mod:NewTargetAnnounce(245923, 3)
 local warnPhase3						= mod:NewPhaseAnnounce(3, 2)
 
 --Stage One: Wrath of Aggramar
-local specWarnTaeshalachReach			= mod:NewSpecialWarningStack(245990, nil, 8, nil, nil, 1, 2)
+local specWarnTaeshalachReach			= mod:NewSpecialWarningStack(245990, nil, 12, nil, nil, 1, 2)
 local specWarnTaeshalachReachOther		= mod:NewSpecialWarningTaunt(245990, nil, nil, nil, 1, 2)
 local specWarnWakeofFlame				= mod:NewSpecialWarningDodge(244693, nil, nil, nil, 2, 2)
 local specWarnFoeBreaker				= mod:NewSpecialWarningDodge(245458, nil, nil, nil, 3, 2)
@@ -210,7 +210,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId) then
 			local amount = args.amount or 1
-			if amount >= 8 then--Lasts 12 seconds, asuming 1.5sec swing timer makes 8 stack swap
+			if amount >= 12 then--Lasts 12 seconds, asuming 1.5sec swing timer makes 8 stack swap
 				if args:IsPlayer() then--At this point the other tank SHOULD be clear.
 					specWarnTaeshalachReach:Show(amount)
 					voiceTaeshalachReach:Play("stackhigh")
@@ -223,7 +223,7 @@ function mod:SPELL_AURA_APPLIED(args)
 					end
 				end
 			else
-				if amount >= 4 and amount % 2 == 0 then
+				if amount % 4 == 0 then
 					warnTaeshalachReach:Show(args.destName, amount)
 				end
 			end
