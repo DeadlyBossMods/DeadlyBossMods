@@ -48,10 +48,10 @@ mod:RegisterEventsInCombat(
 local warnFelClaw					= mod:NewCountAnnounce(239932, 3, nil, "Tank")
 local warnEruptingRelections		= mod:NewTargetAnnounce(236710, 2)
 --Intermission: Eternal Flame
-local warnBurstingDreadFlame		= mod:NewTargetAnnounce(238430, 2)--Generic for now until more known, likely something cast fairly often
+local warnBurstingDreadFlame		= mod:NewTargetCountAnnounce(238430, 2)--Generic for now until more known, likely something cast fairly often
 --Stage Two:
 local warnPhase2					= mod:NewPhaseAnnounce(2, 2)
-local warnWailingReflection			= mod:NewTargetAnnounce(236378, 4)
+local warnWailingReflection			= mod:NewTargetCountAnnounce(236378, 4)
 local warnSorrowfulWail				= mod:NewSpellAnnounce(241564, 4)
 --Stage Three: Darkness of A Thousand Souls
 local warnPhase3					= mod:NewPhaseAnnounce(3, 2)
@@ -460,7 +460,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 				end
 			end
 		end
-		warnBurstingDreadFlame:CombinedShow(0.5, args.destName)
+		warnBurstingDreadFlame:CombinedShow(0.5, self.vb.burstingDreadCast, args.destName)
 		if args:IsPlayer() then
 			specWarnBurstingDreadflame:Show()
 			voiceBurstingDreadFlame:Play("scatter")
@@ -505,7 +505,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			voiceSRWailing:Play("targetyou")
 			yellSRWailing:Countdown(7)
 		else
-			warnWailingReflection:Show(args.destName)
+			warnWailingReflection:Show(self.vb.wailingCount, args.destName)
 		end
 	elseif spellId == 236710 then--Erupting Shadow Reflection (Stage 1)
 		warnEruptingRelections:CombinedShow(0.3, args.destName)
