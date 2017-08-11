@@ -45,7 +45,7 @@ local warnCleansingEnded			= mod:NewEndAnnounce(241008, 1)
 local warnTaintedMatrix				= mod:NewCastAnnounce(240623, 3)
 --Stage Two: An Avatar Awakened
 local warnPhase2					= mod:NewPhaseAnnounce(2, 2)
-local warnDarkmark					= mod:NewTargetAnnounce(239739, 3)
+local warnDarkmark					= mod:NewTargetCountAnnounce(239739, 3)
 
 --Stage One: A Slumber Disturbed
 local specWarnTouchofSargerasGround	= mod:NewSpecialWarningCount(239207, "-Tank", nil, 2, 1, 2)
@@ -83,7 +83,7 @@ local timerCorruptedMatrix			= mod:NewCastTimer(10, 233556, nil, nil, nil, 5)
 local timerTaintedMatrixCD			= mod:NewCastTimer(10, 240623, nil, nil, nil, 6)--Mythic
 --Stage Two: An Avatar Awakened
 mod:AddTimerLine(SCENARIO_STAGE:format(2))
-local timerDarkMarkCD				= mod:NewCDTimer(34, 239739, nil, nil, nil, 3)
+local timerDarkMarkCD				= mod:NewCDCountTimer(34, 239739, nil, nil, nil, 3)
 --local timerRainoftheDestroyerCD		= mod:NewCDTimer(44, 240396, nil, nil, nil, 3)
 
 local berserkTimer					= mod:NewBerserkTimer(420)
@@ -130,7 +130,7 @@ local showTouchofSarg = true
 
 local function warnDarkMarkTargets(self, spellName)
 --	table.sort(darkMarkTargets)
-	warnDarkmark:Show(table.concat(darkMarkTargets, "<, >"))
+	warnDarkmark:Show(self.vb.darkMarkCast, table.concat(darkMarkTargets, "<, >"))
 	--if self:IsLFR() then return end
 	for i = 1, #darkMarkTargets do
 		local icon = i == 1 and 6 or i == 2 and 4 or i == 3 and 3--Bigwigs icon compatability
@@ -301,7 +301,7 @@ function mod:SPELL_CAST_START(args)
 		
 		warnPhase2:Show()
 		timerDesolateCD:Start(19)
-		timerDarkMarkCD:Start(21)
+		timerDarkMarkCD:Start(21, 1)
 		timerRuptureRealitiesCD:Start(39)
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:Hide()
@@ -447,7 +447,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		self:Schedule(35, setabilityStatus, self, 234059, 0)--Set ready to use when CD expires
 	elseif spellId == 239739 or spellId == 239825 then
 		table.wipe(darkMarkTargets)
-		timerDarkMarkCD:Start()
+		self.vb.darkMarkCast = self.vb.darkMarkCast + 1
+		timerDarkMarkCD:Start(nil, self.vb.darkMarkCast+1)
 	elseif spellId == 236571 or spellId == 236573 then--Shadow Blades
 		self.vb.bladesIcon = 1--SHOULD always fire first
 		self:Unschedule(setabilityStatus, self, 236571)--Unschedule for good measure in case next cast start fires before timer expires (in which case have a bad timer)
