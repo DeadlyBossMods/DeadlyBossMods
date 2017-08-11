@@ -3667,7 +3667,7 @@ do
 		if LastInstanceMapID == mapID then
 			self:Debug("No action taken because mapID hasn't changed since last check", 2)
 			return
-		end--ID hasn't changed, don't waste cpu doing anything else (example situation, porting into garrosh phase 4 is a loading screen)
+		end--ID hasn't changed, don't waste cpu doing anything else (example situation, porting into garrosh stage 4 is a loading screen)
 		LastInstanceMapID = mapID
 		LastGroupSize = instanceGroupSize
 		difficultyIndex = difficulty
@@ -6716,7 +6716,7 @@ do
 		testTimer4:Start(20, "Important Interrupt")
 		testTimer5:Start(60, "Boom!")
 		testTimer6:Start(35, "Handle your Role")
-		testTimer7:Start(50, "Next Phase")
+		testTimer7:Start(50, "Next Stage")
 		testTimer8:Start(55, "Custom User Bar")
 		testCount1:Cancel()
 		testCount1:Start(43)
@@ -8711,9 +8711,9 @@ do
 			else
 				text = DBM_CORE_AUTO_ANNOUNCE_TEXTS[announceType]:format(spellName, DBM_CORE_SEC_FMT:format(tostring(preWarnTime or 5)))
 			end
-		elseif announceType == "phase" or announceType == "prephase" then
+		elseif announceType == "stage" or announceType == "prestage" then
 			text = DBM_CORE_AUTO_ANNOUNCE_TEXTS[announceType]:format(tostring(spellId))
-		elseif announceType == "phasechange" then
+		elseif announceType == "stagechange" then
 			text = DBM_CORE_AUTO_ANNOUNCE_TEXTS.spell
 		else
 			text = DBM_CORE_AUTO_ANNOUNCE_TEXTS[announceType]:format(spellName)
@@ -8820,16 +8820,16 @@ do
 		return newAnnounce(self, "prewarn", spellId, color or 1, icon, optionDefault, optionName, nil, time, noSound)
 	end
 
-	function bossModPrototype:NewPhaseAnnounce(phase, color, icon, ...)
-		return newAnnounce(self, "phase", phase, color or 1, icon or "Interface\\Icons\\Spell_Nature_WispSplode", ...)
+	function bossModPrototype:NewPhaseAnnounce(stage, color, icon, ...)
+		return newAnnounce(self, "stage", stage, color or 1, icon or "Interface\\Icons\\Spell_Nature_WispSplode", ...)
 	end
 
 	function bossModPrototype:NewPhaseChangeAnnounce(color, icon, ...)
-		return newAnnounce(self, "phasechange", 0, color or 1, icon or "Interface\\Icons\\Spell_Nature_WispSplode", ...)
+		return newAnnounce(self, "stagechange", 0, color or 1, icon or "Interface\\Icons\\Spell_Nature_WispSplode", ...)
 	end
 
-	function bossModPrototype:NewPrePhaseAnnounce(phase, color, icon, ...)
-		return newAnnounce(self, "prephase", phase, color or 1, icon or "Interface\\Icons\\Spell_Nature_WispSplode", ...)
+	function bossModPrototype:NewPrePhaseAnnounce(stage, color, icon, ...)
+		return newAnnounce(self, "prestage", stage, color or 1, icon or "Interface\\Icons\\Spell_Nature_WispSplode", ...)
 	end
 end
 
@@ -9919,7 +9919,7 @@ do
 			local timer = timer and ((timer > 0 and timer) or self.timer + timer) or self.timer
 			--AI timer api:
 			--Starting ai timer with (1) indicates it's a first timer after pull
-			--Starting timer with (2) or (3) indicates it's a phase 2 or phase 3 first timer
+			--Starting timer with (2) or (3) indicates it's a stage 2 or stage 3 first timer
 			--Starting AI timer with anything above 3 indicarets it's a regular timer and to use shortest time in between two regular casts
 			if self.type == "ai" then--A learning timer
 				if not DBM.Options.AITimer then return end
@@ -10034,9 +10034,9 @@ do
 			--msg: Timer Text
 			--timer: Raw timer value (number).
 			--Icon: Texture Path for Icon
-			--type: Timer type (Cooldowns: cd, cdcount, nextcount, nextsource, cdspecial, nextspecial, phase, ai. Durations: target, active, fades, roleplay. Casting: cast)
+			--type: Timer type (Cooldowns: cd, cdcount, nextcount, nextsource, cdspecial, nextspecial, stage, ai. Durations: target, active, fades, roleplay. Casting: cast)
 			--spellId: Raw spellid if available (most timers will have spellId or EJ ID unless it's a specific timer not tied to ability such as pull or combat start or rez timers. EJ id will be in format ej%d
-			--colorID: Type classification (1-Add, 2-Aoe, 3-targeted ability, 4-Interrupt, 5-Role, 6-Phase, 7-User(custom))
+			--colorID: Type classification (1-Add, 2-Aoe, 3-targeted ability, 4-Interrupt, 5-Role, 6-Stage, 7-User(custom))
 			--Mod ID: Encounter ID as string, or a generic string for mods that don't have encounter ID (such as trash, dummy/test mods)
 			fireEvent("DBM_TimerStart", id, msg, timer, self.icon, self.type, self.spellId, colorId, self.mod.id)
 			tinsert(self.startedTimers, id)
@@ -10209,9 +10209,9 @@ do
 		if timerType == "achievement" then
 			spellName = select(2, GetAchievementInfo(spellId))
 			icon = type(texture) == "number" and select(10, GetAchievementInfo(texture)) or texture or spellId and select(10, GetAchievementInfo(spellId))
-		elseif timerType == "cdspecial" or timerType == "nextspecial" or timerType == "phase" then
+		elseif timerType == "cdspecial" or timerType == "nextspecial" or timerType == "stage" then
 			icon = type(texture) == "number" and GetSpellTexture(texture) or texture or type(spellId) == "string" and select(4, EJ_GetSectionInfo(string.sub(spellId, 3))) ~= "" and select(4, EJ_GetSectionInfo(string.sub(spellId, 3))) or (type(spellId) == "number" and GetSpellTexture(spellId)) or "Interface\\Icons\\Spell_Nature_WispSplode"
-			if timerType == "phase" then
+			if timerType == "stage" then
 				colorType = 6
 			end
 		elseif timerType == "roleplay" then
@@ -10265,8 +10265,8 @@ do
 		-- todo: move the string creation to the GUI with SetFormattedString...
 		if timerType == "achievement" then
 			self.localization.options[id] = DBM_CORE_AUTO_TIMER_OPTIONS[timerType]:format(GetAchievementLink(spellId):gsub("%[(.+)%]", "%1"))
-		elseif timerType == "cdspecial" or timerType == "nextspecial" or timerType == "phase" or timerType == "roleplay" then--Timers without spellid, generic
-			self.localization.options[id] = DBM_CORE_AUTO_TIMER_OPTIONS[timerType]--Using more than 1 phase timer or more than 1 special timer will break this, fortunately you should NEVER use more than 1 of either in a mod
+		elseif timerType == "cdspecial" or timerType == "nextspecial" or timerType == "stage" or timerType == "roleplay" then--Timers without spellid, generic
+			self.localization.options[id] = DBM_CORE_AUTO_TIMER_OPTIONS[timerType]--Using more than 1 stage timer or more than 1 special timer will break this, fortunately you should NEVER use more than 1 of either in a mod
 		else
 			self.localization.options[id] = DBM_CORE_AUTO_TIMER_OPTIONS[timerType]:format(unparsedId)
 		end
@@ -10344,7 +10344,7 @@ do
 	end
 	
 	function bossModPrototype:NewPhaseTimer(...)
-		return newTimer(self, "phase", ...)
+		return newTimer(self, "stage", ...)
 	end
 	
 	function bossModPrototype:NewRPTimer(...)

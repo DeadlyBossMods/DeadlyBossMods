@@ -295,8 +295,8 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS.adds		= "%s verbleibend: %%d"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.cast		= "Wirkt %s: %.1f Sek"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.soon		= "%s bald"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.prewarn		= "%s in %s"
-DBM_CORE_AUTO_ANNOUNCE_TEXTS.phase		= "Phase %s"
-DBM_CORE_AUTO_ANNOUNCE_TEXTS.prephase	= "Phase %s bald"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage		= "Phase %s"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.prestage	= "Phase %s bald"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.count		= "%s (%%s)"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.stack		= "%s auf >%%s< (%%d)"
 
@@ -312,9 +312,9 @@ DBM_CORE_AUTO_ANNOUNCE_OPTIONS.adds		= "Verkünde die Anzahl der verbleibenden $
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.cast		= "Zeige Warnung, wenn $spell:%s gewirkt wird"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.soon		= prewarnOption
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.prewarn 	= prewarnOption
-DBM_CORE_AUTO_ANNOUNCE_OPTIONS.phase		= "Verkünde Phase %s"
-DBM_CORE_AUTO_ANNOUNCE_OPTIONS.phasechange	= "Verkünde Phasenwechsel"
-DBM_CORE_AUTO_ANNOUNCE_OPTIONS.prephase	= "Zeige Vorwarnung für Phase %s"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.stage		= "Verkünde Phase %s"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.stagechange	= "Verkünde Phasenwechsel"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.prestage	= "Zeige Vorwarnung für Phase %s"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.count		= "Zeige Warnung für $spell:%s (mit Zählung)"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.stack		= "Verkünde $spell:%s Stapel"
 
@@ -399,7 +399,7 @@ DBM_CORE_AUTO_TIMER_TEXTS.nextcount	= "Nächster %s (%%s)"
 DBM_CORE_AUTO_TIMER_TEXTS.nextsource	= "Nächster %s: %%s"
 DBM_CORE_AUTO_TIMER_TEXTS.nextspecial	= "Nächste Spezialfähigkeit"
 DBM_CORE_AUTO_TIMER_TEXTS.achievement	= "%s"
-DBM_CORE_AUTO_TIMER_TEXTS.phase		= "Nächste Phase"
+DBM_CORE_AUTO_TIMER_TEXTS.stage		= "Nächste Phase"
 DBM_CORE_AUTO_TIMER_TEXTS.adds		= "Nächste Adds"
 --DBM_CORE_AUTO_TIMER_TEXTS.roleplay
 
@@ -418,7 +418,7 @@ DBM_CORE_AUTO_TIMER_OPTIONS.nextcount	= "Zeit bis nächstes $spell:%s anzeigen"
 DBM_CORE_AUTO_TIMER_OPTIONS.nextsource	= "Zeit bis nächstes $spell:%s anzeigen (mit Quelle)"
 DBM_CORE_AUTO_TIMER_OPTIONS.nextspecial	= "Zeige Zeit bis nächste Spezialfähigkeit"
 DBM_CORE_AUTO_TIMER_OPTIONS.achievement	= "Zeit für %s anzeigen"
-DBM_CORE_AUTO_TIMER_OPTIONS.phase		= "Zeige Zeit bis nächste Phase"
+DBM_CORE_AUTO_TIMER_OPTIONS.stage		= "Zeige Zeit bis nächste Phase"
 DBM_CORE_AUTO_TIMER_OPTIONS.adds		= "Zeige Zeit bis Adds erscheinen"
 DBM_CORE_AUTO_TIMER_OPTIONS.roleplay	= "Dauer des Rollenspiels anzeigen"
 
