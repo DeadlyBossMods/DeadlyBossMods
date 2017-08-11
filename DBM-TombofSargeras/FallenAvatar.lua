@@ -174,7 +174,7 @@ do
 			local absorbAmount = select(17, UnitBuff("boss2", shieldName)) or select(17, UnitDebuff("boss2", shieldName))
 			if absorbAmount then
 				local percent = absorbAmount / mod.vb.shieldActive * 100
-				addLine(shieldName, percent)
+				addLine(shieldName, math.floor(percent))
 			end
 		end
 		--Boss Powers second
