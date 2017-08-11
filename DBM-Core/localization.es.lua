@@ -292,8 +292,8 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS.adds		= "%s restantes: %%d"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.cast		= "Lanzando %s en %.1f s"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.soon		= "%s en breve"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.prewarn	= "%s en %s"
-DBM_CORE_AUTO_ANNOUNCE_TEXTS.phase		= "Fase %s"
-DBM_CORE_AUTO_ANNOUNCE_TEXTS.prephase	= "Fase %s en breve"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage		= "Fase %s"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.prestage	= "Fase %s en breve"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.count		= "%s (%%s)"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.stack		= "%s en >%%s< (%%d)"
 
@@ -309,9 +309,9 @@ DBM_CORE_AUTO_ANNOUNCE_OPTIONS.adds			= "Anunciar el número de $spell:%s restan
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.cast			= "Mostrar aviso cuando se esté lanzando $spell:%s"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.soon			= prewarnOption
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.prewarn 		= prewarnOption
-DBM_CORE_AUTO_ANNOUNCE_OPTIONS.phase		= "Anunciar cambio a Fase %s"
-DBM_CORE_AUTO_ANNOUNCE_OPTIONS.phasechange	= "Anunciar cambios de fase"
-DBM_CORE_AUTO_ANNOUNCE_OPTIONS.prephase		= "Mostrar aviso previo para Fase %s"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.stage		= "Anunciar cambio a Fase %s"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.stagechange	= "Anunciar cambios de fase"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.prestage		= "Mostrar aviso previo para Fase %s"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.count		= "Mostrar aviso (con contador) para $spell:%s"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.stack		= "Anunciar acumulaciones de $spell:%s"
 
@@ -393,7 +393,7 @@ DBM_CORE_AUTO_TIMER_TEXTS.nextcount		= "Siguiente %s (%%s)"
 DBM_CORE_AUTO_TIMER_TEXTS.nextsource	= "Siguiente %s: %%s"
 DBM_CORE_AUTO_TIMER_TEXTS.nextspecial	= "Siguiente facultad especial"
 DBM_CORE_AUTO_TIMER_TEXTS.achievement	= "Logro: %s"
-DBM_CORE_AUTO_TIMER_TEXTS.phase			= "Siguiente fase"
+DBM_CORE_AUTO_TIMER_TEXTS.stage			= "Siguiente fase"
 DBM_CORE_AUTO_TIMER_TEXTS.adds			= "Siguientes esbirros"
 DBM_CORE_AUTO_TIMER_TEXTS.roleplay		= "Diálogo"
 
@@ -411,7 +411,7 @@ DBM_CORE_AUTO_TIMER_OPTIONS.nextcount	= "Mostrar temporizador (con contador) par
 DBM_CORE_AUTO_TIMER_OPTIONS.nextsource	= "Mostrar temporizador (y quién lo lanza) para el siguiente $spell:%s"
 DBM_CORE_AUTO_TIMER_OPTIONS.nextspecial	= "Mostrar temporizador para la siguiente 'Facultad especial'."
 DBM_CORE_AUTO_TIMER_OPTIONS.achievement	= "Mostrar temporizador para el logro %s"
-DBM_CORE_AUTO_TIMER_OPTIONS.phase		= "Mostrar temporizador para la siguiente fase"
+DBM_CORE_AUTO_TIMER_OPTIONS.stage		= "Mostrar temporizador para la siguiente fase"
 DBM_CORE_AUTO_TIMER_OPTIONS.adds		= "Mostrar temporizador para los siguientes esbirros"
 DBM_CORE_AUTO_TIMER_OPTIONS.roleplay	= "Mostrar temporizador para la duración del diálogo"
 

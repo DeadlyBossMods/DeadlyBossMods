@@ -271,8 +271,8 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS.adds			= "%s restantes: %%d"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.cast			= "Lançando %s: %.1f seg"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.soon			= "%s em breve"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.prewarn		= "%s em %s"
-DBM_CORE_AUTO_ANNOUNCE_TEXTS.phase			= "Fase %s"
-DBM_CORE_AUTO_ANNOUNCE_TEXTS.prephase		= "Fase %s em breve"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage			= "Fase %s"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.prestage		= "Fase %s em breve"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.count			= "%s (%%s)"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.stack			= "%s em >%%s< (%%d)"
 
@@ -284,8 +284,8 @@ DBM_CORE_AUTO_ANNOUNCE_OPTIONS.adds			= "Announce how many $spell:%s remain"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.cast			= "Exibir aviso quando $spell:%s está sendo lançado"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.soon			= prewarnOption
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.prewarn		= prewarnOption
-DBM_CORE_AUTO_ANNOUNCE_OPTIONS.phase		= "Anunciar Fase %s"
-DBM_CORE_AUTO_ANNOUNCE_OPTIONS.prephase		= "Mostrar aviso antecipado para a Fase %s"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.stage		= "Anunciar Fase %s"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.prestage		= "Mostrar aviso antecipado para a Fase %s"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.count		= "Exibir aviso para $spell:%s"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.stack		= "Anunciar empilhamento de $spell:%s"
 

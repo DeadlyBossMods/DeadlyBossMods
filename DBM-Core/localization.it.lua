@@ -161,8 +161,8 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS.adds			= "%s rimanente: %%d"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.cast			= "Lancio di %s: %.1f sec"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.soon			= "%s imminente"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.prewarn		= "%s in %s"
-DBM_CORE_AUTO_ANNOUNCE_TEXTS.phase			= "Fase %s"
-DBM_CORE_AUTO_ANNOUNCE_TEXTS.prephase		= "Fase %s imminente"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage			= "Fase %s"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.prestage		= "Fase %s imminente"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.count			= "%s (%%s)"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.stack			= "%s su >%%s< (%%d)"
 
@@ -174,8 +174,8 @@ DBM_CORE_AUTO_ANNOUNCE_OPTIONS.adds			= "Annuncia quanto rimane di $spell:%s"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.cast			= "Mostra un avviso quando sta per partire $spell:%s"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.soon			= prewarnOption
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.prewarn 		= prewarnOption
-DBM_CORE_AUTO_ANNOUNCE_OPTIONS.phase		= "Anuncia la fase %s"
-DBM_CORE_AUTO_ANNOUNCE_OPTIONS.prephase		= "Mostra un pre-Avvertimento per la Fase %s"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.stage		= "Anuncia la fase %s"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.prestage		= "Mostra un pre-Avvertimento per la Fase %s"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.count		= "Mostra un Avviso per $spell:%s"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.stack		= "Annuncia l'accumulo di $spell:%s"
 

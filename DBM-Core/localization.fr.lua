@@ -261,8 +261,8 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS.adds		= "%s restant: %%d"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.cast		= "Incantation %s: %.1f sec"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.soon		= "%s imminent"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.prewarna	= "%s de %s"
-DBM_CORE_AUTO_ANNOUNCE_TEXTS.phase		= "Phase %s"
-DBM_CORE_AUTO_ANNOUNCE_TEXTS.prephase	= "Phase %s imminente"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage		= "Phase %s"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.prestage	= "Phase %s imminente"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.count		= "%s (%%s)"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.stack		= "%s sur >%%s< (%%d)"
 
@@ -277,9 +277,9 @@ DBM_CORE_AUTO_ANNOUNCE_OPTIONS.adds		= "Alerte indiquant le nombre restant de : 
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.cast		= "Alerte lorsque $spell:%s est incanté"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.soon		= prewarnOption
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.prewarn		= prewarnOption
-DBM_CORE_AUTO_ANNOUNCE_OPTIONS.phase		= "Alerte indiquant l'arrivée de la phase %s"
-DBM_CORE_AUTO_ANNOUNCE_OPTIONS.phasechange	= "Annonce les changements de phase"
-DBM_CORE_AUTO_ANNOUNCE_OPTIONS.prephase	= "Alerte préventive indiquant l'arrivée de la phase %s"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.stage		= "Alerte indiquant l'arrivée de la phase %s"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.stagechange	= "Annonce les changements de phase"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.prestage	= "Alerte préventive indiquant l'arrivée de la phase %s"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.count		= "Alerte concernant $spell:%s"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.stack		= "Alerte indiquant les cumuls de $spell:%s"
 
@@ -352,7 +352,7 @@ DBM_CORE_AUTO_TIMER_TEXTS.nextcount	= "Proch. %s (%%s)"
 DBM_CORE_AUTO_TIMER_TEXTS.nextsource	= "Proch. %s: >%%s<"
 DBM_CORE_AUTO_TIMER_TEXTS.nextspecial	= "Abilité spéciale suivante"
 DBM_CORE_AUTO_TIMER_TEXTS.achievement	= "%s"
-DBM_CORE_AUTO_TIMER_TEXTS.phase		= "Phase Suivante"
+DBM_CORE_AUTO_TIMER_TEXTS.stage		= "Phase Suivante"
 
 DBM_CORE_AUTO_TIMER_OPTIONS.target		= "Durée d'affaiblissement de $spell:%s"
 DBM_CORE_AUTO_TIMER_OPTIONS.cast		= "Durée d'incantation de $spell:%s"
@@ -368,7 +368,7 @@ DBM_CORE_AUTO_TIMER_OPTIONS.nextcount	= "Délai avant le prochain $spell:%s"
 DBM_CORE_AUTO_TIMER_OPTIONS.nextsource	= "Délai avant le prochain $spell:%s"
 DBM_CORE_AUTO_TIMER_OPTIONS.nextspecial	= "Afficher le timer de l'abilité spéciale suivante"
 DBM_CORE_AUTO_TIMER_OPTIONS.achievement	= "Délai pour réussir %s"
-DBM_CORE_AUTO_TIMER_OPTIONS.phase		= "Afficher le timer de la phase suivante"
+DBM_CORE_AUTO_TIMER_OPTIONS.stage		= "Afficher le timer de la phase suivante"
 DBM_CORE_AUTO_TIMER_OPTIONS.roleplay	= "Afficher le timer de la durée du roleplay"--This does need localizing though.
 
 DBM_CORE_AUTO_ICONS_OPTION_TEXT			= "Placer des icônes sur les cibles de $spell:%s"
