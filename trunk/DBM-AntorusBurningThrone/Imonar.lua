@@ -40,9 +40,13 @@ local warnShocklance					= mod:NewStackAnnounce(247367, 2, nil, "Tank")
 local warnSleepCanister					= mod:NewTargetAnnounce(247552, 2)
 local warnSlumberGas					= mod:NewTargetAnnounce(247565, 3)
 --Stage Two: Contract to Kill
+local warnPhase2						= mod:NewPhaseAnnounce(2, 2)
 local warnSever							= mod:NewStackAnnounce(247687, 2, nil, "Tank")
 --local warnChargedBlasts					= mod:NewTargetAnnounce(247716, 3)
 --Stage Three/Five: The Perfect Weapon
+local warnPhase3						= mod:NewPhaseAnnounce(3, 2)
+local warnPhase4						= mod:NewPhaseAnnounce(4, 2)
+local warnPhase5						= mod:NewPhaseAnnounce(5, 2)
 --Intermission: On Deadly Ground
 
 --General
@@ -241,10 +245,12 @@ function mod:SPELL_AURA_REMOVED(args)
 	if (spellId == 248233 or spellId == 250135) and not args:IsDestTypePlayer() then--Conflagration
 		self.vb.phase = self.vb.phase + 1
 		if self.vb.phase == 2 then
+			warnPhase2:Show()
 			timerSeverCD:Start(6.6)
 			timerChargedBlastsCD:Start(9)
 			timerShrapnalBlastCD:Start(12.7)
 		elseif self.vb.phase == 3 then
+			warnPhase3:Show()
 			if self:IsMythic() then
 				--timerShocklanceCD:Start(3)--NOT empowered
 				--timerSleepCanisterCD:Start(3)
@@ -255,10 +261,12 @@ function mod:SPELL_AURA_REMOVED(args)
 				timerShrapnalBlastCD:Start(16.2)--Empowered
 			end
 		elseif self.vb.phase == 4 then--Mythic Only
+			warnPhase4:Show()
 			--timerSeverCD:Start(4)
 			--timerChargedBlastsCD:Start(4)
 			--timerPulseGrenadeCD:Start(4)--Empowered
 		elseif self.vb.phase == 5 then--Mythic Only (Identical to non mythic 3?)
+			warnPhase5:Show()
 			timerShocklanceCD:Start(5)--Empowered
 			timerPulseGrenadeCD:Start(7.6)--Empowered
 			timerShrapnalBlastCD:Start(16.2)--Empowered
