@@ -556,3 +556,35 @@ L = DBM:GetModLocalization("CoENTrash")
 L:SetGeneralLocalization({
 	name =	"永夜聖殿小怪"
 })
+
+-----------------------
+-- <<<Seat of Triumvirate >>> --
+-----------------------
+-----------------------
+-- Zuraal --
+-----------------------
+L= DBM:GetModLocalization(1979)
+
+-----------------------
+-- Saprish  --
+-----------------------
+L= DBM:GetModLocalization(1980)
+
+-----------------------
+-- Viceroy Nezhar --
+-----------------------
+L= DBM:GetModLocalization(1981)
+
+-----------------------
+-- L'ura  --
+-----------------------
+L= DBM:GetModLocalization(1982)
+
+-----------------------
+--Seat of Triumvirate Trash
+-----------------------
+L = DBM:GetModLocalization("SoTTrash")
+
+L:SetGeneralLocalization({
+	name =	"三傑議會之座小怪"
+})
