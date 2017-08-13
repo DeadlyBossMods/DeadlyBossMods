@@ -19,7 +19,7 @@ local warnFlask						= mod:NewSpellAnnounce(207815, 2)
 
 local specWarnResonantSlash			= mod:NewSpecialWarningDodge(207261, nil, nil, nil, 2, 2)
 local specWarnArcaneLockdown		= mod:NewSpecialWarningJump(207278, nil, nil, nil, 2, 6)
-local specWarnBeacon				= mod:NewSpecialWarningSwitch(207806, nil, nil, nil, 2, 2)
+local specWarnBeacon				= mod:NewSpecialWarningSwitch(207806, nil, nil, nil, 1, 2)
 
 local timerResonantSlashCD			= mod:NewCDTimer(12.1, 207261, nil, nil, nil, 3)
 local timerArcaneLockdownCD			= mod:NewCDTimer(30, 207278, nil, nil, nil, 3)

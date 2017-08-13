@@ -440,7 +440,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 						end
 					end
 				end
-			else--Phase 3, seems 25 across board here
+			else--Phase 3
 				if self.vb.burstingDreadCast % 2 == 0 then
 					timerBurstingDreadflameCD:Start(70, self.vb.burstingDreadCast+1)
 				else
