@@ -20,24 +20,18 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 239932 236378 236710 237590 236498 236597 241721 245509 243536",
 	"SPELL_AURA_APPLIED_DOSE 245509",
 	"SPELL_AURA_REFRESH 241721",
-	"SPELL_AURA_REMOVED 236378 236710 237590 236498 241721 239932 241983",
---	"SPELL_PERIODIC_DAMAGE",
---	"SPELL_PERIODIC_MISSED",
+	"SPELL_AURA_REMOVED 236378 236710 237590 236498 241721 239932 241983 244834",
 	"UNIT_DIED",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3"--Illiden might cast important stuff, or adds?
 )
 
 --TODO, fine tune reflections with appropriate functions like range, etc if needed. Custom voices with correct actions other than "targetyou"
---TODO, verify Shadow Reflection expire times, 3 8s and a 7. one has a cast time and other 3 do not. suspicious!
 --TODO, verify/correct event for Malignant Anguish, it's likely a channeled/buff type interrupt since spellID has no cast time.
 --TODO, if multiple hopelessness adds spawn at once, auto mark them so healers can be assigned to diff targets by raid icon
 --TODO, do we need shadow gaze warnings for player other then self?
 --TODO, how many shadowsouls? Also add a "remaining warning" for it as well.
---TODO, buff active timer for expiring rifts? they seem to last 50 seconds based on data. So timer similar to elisande bubble timer?
---TODO, flame orb work. target of fixate after spawn. more than one spawn? if not, remove antispam
---TODO, if above is successful, add range frame (10 yards) for fixated flame orb person.
---TODO, deal wih wailing if tank suicides during spell cast start (and before success fires)
+--TODO, deal wih wailing timer if tank suicides during spell cast start (and before success fires)
 --[[
 (ability.id = 238502 or ability.id = 237725 or ability.id = 238999 or ability.id = 243982 or ability.id = 240910 or ability.id = 241983) and type = "begincast"
  or (ability.id = 239932 or ability.id = 235059 or ability.id = 238502 or ability.id = 239785 or ability.id = 236378 or ability.id = 236710 or ability.id = 237590 or ability.id = 236498 or ability.id = 238430 or ability.id = 241564) and type = "cast"
@@ -170,21 +164,25 @@ mod.vb.clawCount = 0
 mod.vb.obeliskCount = 0
 mod.vb.wailingCount = 0
 local riftName, gravitySqueezeBuff = GetSpellInfo(239130), GetSpellInfo(239154)
+local phase1LFRArmageddonTimers = {10, 22, 42}--Incomplete
 local phase1MythicArmageddonTimers = {10, 54, 38, 46}--Incomplete
 local phase1MythicSingularityTimers = {55, 25, 25}--Incomplete
 local phase1point5MythicSingularityTimers = {15.1, 5, 13.2, 5, 5, 5, 25, 4.98}
-local phase2NormalArmageddonTimers = {55, 45, 31, 35, 31}
-local phase2HeroicArmageddonTimers = {55, 75, 35, 30}
-local phase2MythicArmageddonTimers = {24.4, 32, 45, 33, 36, 36, 47, 32, 45}
+local phase2LFRArmageddonTimers = {55.9, 27.8, 56.6, 26.6, 12.2}
+local phase2NormalArmageddonTimers = {50, 45, 31, 35, 31}
+local phase2HeroicArmageddonTimers = {50, 75, 35, 30}
+local phase2MythicArmageddonTimers = {19.4, 32, 45, 33, 36, 36, 47, 32, 45}
 --local phase2NormalBurstingTimers = {57, 48, 55}--Not used yet, needs more data to verify and improve
-local phase2HeroicBurstingTimers = {57, 47, 55}--Not used yet, needs more data to verify and improve
-local phase2MythicBurstingTimers = {58.4, 50.0, 45.0, 48.0, 86}
-local phase2NormalFocusedTimers = {76.4, 99}
-local phase2HeroicFocusedTimers = {35, 45, 53, 46}
-local phase2MythicFocusedTimers = {38.4, 44, 47, 138, 44}
-local phase2NormalSingularityTimers = {79, 81}
-local phase2HeroicSingularityTimers = {79, 26, 55, 44}
-local phase2MythicSingularityTimers = {27, 50, 66.9, 78, 84}
+local phase2HeroicBurstingTimers = {52, 47, 55}--Incomplete
+local phase2MythicBurstingTimers = {53.4, 50.0, 45.0, 48.0, 86}
+local phase15LFRBurstingTimers = {7.7, 17, 13.3, 17}
+local phase2LFRBurstingTimers = {58.2, 53.3, 61}
+local phase2NormalFocusedTimers = {71.4, 99}
+local phase2HeroicFocusedTimers = {30, 45, 53, 46}
+local phase2MythicFocusedTimers = {33.4, 44, 47, 138, 44}
+local phase2NormalSingularityTimers = {74, 81}
+local phase2HeroicSingularityTimers = {74, 26, 55, 44}
+local phase2MythicSingularityTimers = {22, 50, 66.9, 78, 84}
 local playerName = UnitName("player")
 
 --[[
@@ -250,7 +248,9 @@ function mod:OnCombatStart(delay)
 	end
 	timerFelclawsCD:Start(25-delay, 1)
 	countdownFelclaws:Start(25-delay)
-	timerRupturingSingularityCD:Start(58-delay, 1)
+	if not self:IsLFR() then
+		timerRupturingSingularityCD:Start(58-delay, 1)
+	end
 	if self:IsMythic() then
 		timerShadReflectionWailingCD:Start(56, 1)
 	end
@@ -301,7 +301,7 @@ function mod:SPELL_CAST_START(args)
 				if self:IsMythic() then
 					timerArmageddonCD:Start(58.5, self.vb.armageddonCast+1)
 					countdownArmageddon:Start(58.5)
-				elseif self:IsEasy() then
+				elseif self:IsNormal() then
 					timerArmageddonCD:Start(28, self.vb.armageddonCast+1)
 					countdownArmageddon:Start(28)
 				else
@@ -310,7 +310,7 @@ function mod:SPELL_CAST_START(args)
 				end
 			end
 		elseif self.vb.phase == 2 then
-			local timer = self:IsMythic() and phase2MythicArmageddonTimers[self.vb.armageddonCast+1] or self:IsNormal() and phase2NormalArmageddonTimers[self.vb.armageddonCast+1] or self:IsHeroic() and phase2HeroicArmageddonTimers[self.vb.armageddonCast+1]
+			local timer = self:IsMythic() and phase2MythicArmageddonTimers[self.vb.armageddonCast+1] or self:IsNormal() and phase2NormalArmageddonTimers[self.vb.armageddonCast+1] or self:IsHeroic() and phase2HeroicArmageddonTimers[self.vb.armageddonCast+1] or self:IsLFR() and phase2LFRArmageddonTimers[self.vb.armageddonCast+1]
 			if timer then
 				timerArmageddonCD:Start(timer, self.vb.armageddonCast+1)
 				countdownArmageddon:Start(timer)
@@ -318,6 +318,12 @@ function mod:SPELL_CAST_START(args)
 		else--Phase 1
 			if self:IsMythic() then
 				local timer = phase1MythicArmageddonTimers[self.vb.armageddonCast+1]
+				if timer then
+					timerArmageddonCD:Start(timer, self.vb.armageddonCast+1)
+					countdownArmageddon:Start(timer)
+				end
+			elseif self:IsLFR() then
+				local timer = phase1LFRArmageddonTimers[self.vb.armageddonCast+1]
 				if timer then
 					timerArmageddonCD:Start(timer, self.vb.armageddonCast+1)
 					countdownArmageddon:Start(timer)
@@ -399,48 +405,19 @@ function mod:SPELL_CAST_SUCCESS(args)
 			self.vb.burstingDreadCast = self.vb.burstingDreadCast + 1
 			self.vb.burstingDreadIcon = 6
 			if self.vb.phase == 1.5 then
-				if self.vb.burstingDreadCast < 2 then
-					if self:IsMythic() then
-						timerBurstingDreadflameCD:Start(79, 2)
-					elseif self:IsEasy() then
-						timerBurstingDreadflameCD:Start(44, 2)
-					else
-						timerBurstingDreadflameCD:Start(47, 2)--Delayed by singularity which doesn't happen on normal/LFR
+				if self:IsLFR() then
+					local timer = phase15LFRBurstingTimers[self.vb.burstingDreadCast+1]
+					if timer then
+						timerBurstingDreadflameCD:Start(timer, self.vb.burstingDreadCast+1)
 					end
-				else--After second time he casts it in 1.5, he begins to land
-					self.vb.phase = 2
-					self.vb.armageddonCast = 0
-					self.vb.focusedDreadCast = 0
-					self.vb.burstingDreadCast = 0
-					self.vb.singularityCount = 0
-					self.vb.felClawsCount = 0
-					self.vb.wailingCount = 0
-					warnPhase2:Schedule(5)
-					if self:IsMythic() then
-						timerFelclawsCD:Start(17, 1)
-						timerArmageddonCD:Start(24.4, 1)
-						countdownArmageddon:Start(24.4)
-						timerRupturingSingularityCD:Start(27.7, 1)
-						timerShadReflectionHopelessCD:Start(32.9)
-						timerFocusedDreadflameCD:Start(38.4, 1)
-						countdownFocusedDread:Start(38.4)
-						timerShadReflectionWailingCD:Start(55.4, 1)
-						timerBurstingDreadflameCD:Start(58.4, 1)
-					else
-						timerFelclawsCD:Start(14, 1)
-						countdownFelclaws:Start(14)
-						timerShadReflectionEruptingCD:Start(17)
-						timerArmageddonCD:Start(55, 1)
-						countdownArmageddon:Start(55)
-						timerBurstingDreadflameCD:Start(57.3, 1)
-						timerRupturingSingularityCD:Start(79, 1)
-						if self:IsEasy() then
-							timerFocusedDreadflameCD:Start(81.5, 1)
-							countdownFocusedDread:Start(81.5)
+				else
+					if self.vb.burstingDreadCast < 2 then
+						if self:IsMythic() then
+							timerBurstingDreadflameCD:Start(79, 2)
+						elseif self:IsNormal() then
+							timerBurstingDreadflameCD:Start(44, 2)
 						else
-							timerFocusedDreadflameCD:Start(35, 1)
-							countdownFocusedDread:Start(35)
-							timerShadReflectionWailingCD:Start(53, 1)
+							timerBurstingDreadflameCD:Start(47, 2)--Delayed by singularity which doesn't happen on normal/LFR
 						end
 					end
 				end
@@ -451,7 +428,17 @@ function mod:SPELL_CAST_SUCCESS(args)
 						timerBurstingDreadflameCD:Start(timer, self.vb.burstingDreadCast+1)
 					end
 				else
-					timerBurstingDreadflameCD:Start(48, self.vb.burstingDreadCast+1)
+					if self:IsLFR() then
+						local timer = phase2LFRBurstingTimers[self.vb.burstingDreadCast+1]
+						if timer then
+							timerBurstingDreadflameCD:Start(timer, self.vb.burstingDreadCast+1)
+						end
+					else
+						local timer = phase2HeroicBurstingTimers[self.vb.burstingDreadCast+1]
+						if timer then
+							timerBurstingDreadflameCD:Start(timer, self.vb.burstingDreadCast+1)
+						end
+					end
 				end
 			else--Phase 3, seems 25 across board here
 				if self.vb.burstingDreadCast % 2 == 0 then
@@ -603,21 +590,56 @@ function mod:SPELL_AURA_REMOVED(args)
 				timerFlamingOrbCD:Start(30, 1)
 			end
 			timerBurstingDreadflameCD:Start(44, 1)
-			timerFocusedDreadflameCD:Start(80, 1)
-			countdownFocusedDread:Start(80)
+			if not self:IsLFR() then
+				timerFocusedDreadflameCD:Start(80, 1)
+				countdownFocusedDread:Start(80)
+			end
+		end
+	elseif spellId == 244834 then--Nether Gale
+		self.vb.phase = 2
+		self.vb.armageddonCast = 0
+		self.vb.focusedDreadCast = 0
+		self.vb.burstingDreadCast = 0
+		self.vb.singularityCount = 0
+		self.vb.felClawsCount = 0
+		self.vb.wailingCount = 0
+		warnPhase2:Show()
+		if self:IsMythic() then
+			timerFelclawsCD:Start(12, 1)
+			timerArmageddonCD:Start(19.4, 1)
+			countdownArmageddon:Start(19.4)
+			timerRupturingSingularityCD:Start(22.7, 1)
+			timerShadReflectionHopelessCD:Start(27.9)
+			timerFocusedDreadflameCD:Start(33.4, 1)
+			countdownFocusedDread:Start(33.4)
+			timerShadReflectionWailingCD:Start(50.4, 1)
+			timerBurstingDreadflameCD:Start(53.4, 1)
+		else
+			timerFelclawsCD:Start(9, 1)
+			countdownFelclaws:Start(9)
+			timerShadReflectionEruptingCD:Start(12)
+			if self:IsLFR() then
+				timerArmageddonCD:Start(55.9, 1)
+				countdownArmageddon:Start(55.9)
+				timerBurstingDreadflameCD:Start(58.2, 1)
+			else
+				timerArmageddonCD:Start(50, 1)
+				countdownArmageddon:Start(50)
+				timerBurstingDreadflameCD:Start(52.3, 1)
+				if self:IsNormal() then
+					timerRupturingSingularityCD:Start(74, 1)
+					timerFocusedDreadflameCD:Start(76.5, 1)
+					countdownFocusedDread:Start(76.5)
+				else
+					timerFocusedDreadflameCD:Start(30, 1)
+					countdownFocusedDread:Start(30)
+					timerShadReflectionWailingCD:Start(48, 1)
+					timerRupturingSingularityCD:Start(74, 1)
+				end
+			end
 		end
 	end
 end
-
---[[
-function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
-	if spellId == 228007 and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
---		specWarnDancingBlade:Show()
---		voiceDancingBlade:Play("runaway")
-	end
-end
-mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
---]]
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 	if msg:find("spell:238502") then
@@ -736,14 +758,20 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			countdownFocusedDread:Start(31.8)
 			timerTransition:Start(95.1)
 		else
-			timerArmageddonCD:Start(7.4, 1)
-			countdownArmageddon:Start(7.4)
-			timerBurstingDreadflameCD:Start(8.7, 1)
-			if not self:IsEasy() then
-				timerRupturingSingularityCD:Start(14.2, 1)
+			if self:IsLFR() then
+				timerArmageddonCD:Start(6.4, 1)
+				countdownArmageddon:Start(6.4)
+				timerBurstingDreadflameCD:Start(7.7, 1)
+			else
+				timerArmageddonCD:Start(7.4, 1)
+				countdownArmageddon:Start(7.4)
+				timerBurstingDreadflameCD:Start(8.7, 1)
+				if not self:IsNormal() then
+					timerRupturingSingularityCD:Start(14.2, 1)
+				end
+				timerFocusedDreadflameCD:Start(24.7, 1)
+				countdownFocusedDread:Start(24.7)
 			end
-			timerFocusedDreadflameCD:Start(24.7, 1)
-			countdownFocusedDread:Start(24.7)
 			timerTransition:Start(57.9)
 		end
 	elseif spellId == 244856 and self:AntiSpam(5, 3) then--Flaming Orb (more likely than combat log. this spell looks like it's entirely scripted)
