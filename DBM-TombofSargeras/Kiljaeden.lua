@@ -173,15 +173,16 @@ local riftName, gravitySqueezeBuff = GetSpellInfo(239130), GetSpellInfo(239154)
 local phase1MythicArmageddonTimers = {10, 54, 38, 46}--Incomplete
 local phase1MythicSingularityTimers = {55, 25, 25}--Incomplete
 local phase1point5MythicSingularityTimers = {15.1, 5, 13.2, 5, 5, 5, 25, 4.98}
-local phase2NormalArmageddonTimers = {55, 45, 31}
+local phase2NormalArmageddonTimers = {55, 45, 31, 35, 31}
 local phase2HeroicArmageddonTimers = {55, 75, 35, 30}
 local phase2MythicArmageddonTimers = {24.4, 32, 45, 33, 36, 36, 47, 32, 45}
-local phase2NormalBurstingTimers = {57, 44}--Not used yet, needs more data to verify and improve
+--local phase2NormalBurstingTimers = {57, 48, 55}--Not used yet, needs more data to verify and improve
 local phase2HeroicBurstingTimers = {57, 47, 55}--Not used yet, needs more data to verify and improve
 local phase2MythicBurstingTimers = {58.4, 50.0, 45.0, 48.0, 86}
-local phase2NormalFocusedTimers = {81.5}--Not used yet, needs more data to verify and improve
+local phase2NormalFocusedTimers = {76.4, 99}
 local phase2HeroicFocusedTimers = {35, 45, 53, 46}
 local phase2MythicFocusedTimers = {38.4, 44, 47, 138, 44}
+local phase2NormalSingularityTimers = {79, 81}
 local phase2HeroicSingularityTimers = {79, 26, 55, 44}
 local phase2MythicSingularityTimers = {27, 50, 66.9, 78, 84}
 local playerName = UnitName("player")
@@ -632,7 +633,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 				end
 			end
 		elseif self.vb.phase == 2 then
-			local timer = self:IsMythic() and phase2MythicFocusedTimers[self.vb.focusedDreadCast+1] or self:IsHeroic() and phase2HeroicFocusedTimers[self.vb.focusedDreadCast+1]
+			local timer = self:IsMythic() and phase2MythicFocusedTimers[self.vb.focusedDreadCast+1] or self:IsHeroic() and phase2HeroicFocusedTimers[self.vb.focusedDreadCast+1] or self:IsNormal() and phase2NormalFocusedTimers[self.vb.focusedDreadCast+1]
 			if timer then
 				timerFocusedDreadflameCD:Start(timer, self.vb.focusedDreadCast+1)
 				countdownFocusedDread:Start(timer)
@@ -680,7 +681,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 				end
 			end
 		elseif self.vb.phase == 2 then
-			local timer = self:IsMythic() and phase2MythicSingularityTimers[self.vb.singularityCount+1] or phase2HeroicSingularityTimers[self.vb.singularityCount+1]--Split difficulties up if they aren't all same
+			local timer = self:IsMythic() and phase2MythicSingularityTimers[self.vb.singularityCount+1] or self:IsHeroic() and phase2HeroicSingularityTimers[self.vb.singularityCount+1] or self:IsNormal() and phase2NormalSingularityTimers[self.vb.singularityCount+1]
 			if timer then
 				timerRupturingSingularityCD:Start(timer, self.vb.singularityCount+1)
 			end
