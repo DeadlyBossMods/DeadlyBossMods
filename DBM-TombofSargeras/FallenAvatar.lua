@@ -104,6 +104,7 @@ local voiceCorruptedMatrix			= mod:NewVoice(233556, "Tank")--bosstobeam
 local voiceCleansingProtocol		= mod:NewVoice(233856, "-Healer")--targetchange
 local voiceTaintedEssence			= mod:NewVoice(240728)--stackhigh
 --Stage Two: An Avatar Awakened
+local voicePhaseChange				= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
 local voiceDarkMark					= mod:NewVoice(239739)--gathershare/targetyou
 local voiceRainoftheDestroyer		= mod:NewVoice(240396)--watchstep
 
@@ -300,6 +301,7 @@ function mod:SPELL_CAST_START(args)
 		timerDarkMarkCD:Stop()
 		
 		warnPhase2:Show()
+		voicePhaseChange:Play("ptwo")
 		timerDesolateCD:Start(19)
 		timerDarkMarkCD:Start(21, 1)
 		timerRuptureRealitiesCD:Start(39)

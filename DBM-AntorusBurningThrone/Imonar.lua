@@ -90,6 +90,7 @@ local berserkTimer						= mod:NewBerserkTimer(420)
 
 --General
 --local voiceGTFO						= mod:NewVoice(238028, nil, DBM_CORE_AUTO_VOICE4_OPTION_TEXT)--runaway
+local voicePhaseChange				= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
 --Stage One: Attack Force
 local voiceShocklance					= mod:NewVoice(247367)--Tauntboss
 local voiceSleepCanister				= mod:NewVoice(247552)--targetyou
@@ -331,5 +332,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerPulseGrenadeCD:Stop()
 		timerSleepCanisterCD:Stop()
 		timerShocklanceCD:Stop()
+		voicePhaseChange:Play("phasechange")
 	end
 end
