@@ -121,6 +121,7 @@ local countdownFocusedDread			= mod:NewCountdown("AltTwo", 238502)
 local countdownFelclaws				= mod:NewCountdown("Alt25", 239932, "Tank", 2)
 
 --Stage One: The Betrayer
+local voicePhaseChange				= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
 local voiceFelclaws					= mod:NewVoice(239932)--tauntboss
 local voiceRupturingSingularity		= mod:NewVoice(235059)--carefly
 local voiceArmageddon				= mod:NewVoice(240910)--helpsoak
@@ -365,6 +366,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.phase = 2.5
 		self.vb.shadowSoulsRemaining = 5--Normal count anyways
 		self.vb.singularityCount = 0
+		voicePhaseChange:Play("phasechange")
 		if self:IsMythic() then
 			timerRupturingSingularityCD:Start(20.3, 1)
 		end
@@ -579,6 +581,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		--timerDarknessofSoulsCD:Start(1, 1)--Cast intantly
 		timerSightlessGaze:Stop()
 		warnPhase3:Show()
+		voicePhaseChange:Play("pthree")
 		timerTearRiftCD:Start(14, 1)
 		if self:IsMythic() then
 			timerBurstingDreadflameCD:Start(30, 1)
@@ -604,6 +607,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.felClawsCount = 0
 		self.vb.wailingCount = 0
 		warnPhase2:Show()
+		voicePhaseChange:Play("ptwo")
 		if self:IsMythic() then
 			timerFelclawsCD:Start(12, 1)
 			timerArmageddonCD:Start(19.4, 1)
@@ -749,6 +753,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerArmageddonCD:Stop()
 		countdownArmageddon:Cancel()
 		timerShadReflectionEruptingCD:Stop()
+		voicePhaseChange:Play("phasechange")
 		if self:IsMythic() then
 			timerArmageddonCD:Start(7.4, 1)
 			countdownArmageddon:Start(7.4)
