@@ -20,8 +20,8 @@ local warnTeleport				= mod:NewSpellAnnounce(200898, 2)
 
 local specWarnSapSoul			= mod:NewSpecialWarningInterrupt(200905, "HasInterrupt", nil, nil, 1, 2)
 local specWarnSapSoulHard		= mod:NewSpecialWarningCast(200905, nil, nil, nil, 1, 2)
-local specWarnFear				= mod:NewSpecialWarningSpell(201488, nil, nil, nil, 2)
-local specWarnStare				= mod:NewSpecialWarningYou(212564, nil, nil, nil, 1)--Disable by default if spammy
+local specWarnFear				= mod:NewSpecialWarningSpell(201488, nil, nil, nil, 2, 2)
+local specWarnStare				= mod:NewSpecialWarningYou(212564, nil, nil, nil, 1, 2)--Disable by default if spammy
 
 local timerSapSoulCD			= mod:NewCDTimer(21.5, 200905, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
 local timerTormOrbCD			= mod:NewNextTimer(15, 212567, nil, nil, nil, 1)
@@ -29,6 +29,8 @@ local timerTormOrbCD			= mod:NewNextTimer(15, 212567, nil, nil, nil, 1)
 local countSapSoul				= mod:NewCountdown(21.5, 200905, true, 2)
 
 local voiceSapSoul				= mod:NewVoice(200905, true, nil, 2)--Kickcast
+local voiceFear					= mod:NewVoice(201488)--fearsoon
+local voiceStare				= mod:NewVoice(212564)--targetyou
 
 function mod:OnCombatStart(delay)
 	timerSapSoulCD:Start(13-delay)--Might be 10-13?
@@ -42,6 +44,7 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 201488 then
 		specWarnFear:Show()
+		voiceFear:Play("fearsoon")
 	elseif spellId == 200898 then
 		warnTeleport:Show()
 	end
@@ -69,6 +72,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 212564 and args:IsPlayer() and self:AntiSpam(3, 1) then
 		specWarnStare:Show()
+		voiceStare:Play("targetyou")
 	end	
 end
 
