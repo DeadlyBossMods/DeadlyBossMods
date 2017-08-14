@@ -72,6 +72,7 @@ local countdownFelHammer			= mod:NewCountdown("Alt18", 241636)
 
 --Stage One: Divide and Conquer
 --local voiceInfusion					= mod:NewVoice(235271)--specialsoon
+local voicePhaseChange				= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
 local voiceFelInfusion				= mod:NewVoice(235240)--felinfusion
 local voiceLightInfusion			= mod:NewVoice(235213)--lightinfusion
 local voiceUnsableSoul				= mod:NewVoice(235117)--jumpinpit
@@ -184,6 +185,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		countdownLightHammer:Cancel()
 		timerFelHammerCD:Stop()
 		countdownFelHammer:Cancel()
+		voicePhaseChange:Play("phasechange")
 	end
 end
 
@@ -286,6 +288,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.hammerCount = 0
 		self.vb.infusionCount = 0
 		self.vb.massShitCount = 0
+		voicePhaseChange:Play("phasechange")
 		if self:IsLFR() then
 			timerMassInstabilityCD:Start(8, 1)
 			timerInfusionCD:Start(61, 1)
