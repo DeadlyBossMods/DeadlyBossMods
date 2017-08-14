@@ -15,7 +15,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 244693 245458 245463 245301",
 --	"SPELL_CAST_SUCCESS",
-	"SPELL_AURA_APPLIED 245990 245994 244894 244903 247091 245923",
+	"SPELL_AURA_APPLIED 245990 245994 244894 244903 247091",
 	"SPELL_AURA_APPLIED_DOSE 245990",
 	"SPELL_AURA_REMOVED 244894 244903 247091",
 --	"SPELL_PERIODIC_DAMAGE 247135",
@@ -25,18 +25,22 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, Verify stack count for Tank debuff, if boss swing timer slowre, can swap lower stack.
+--TODO, Verify stack count for Tank debuff, if boss swing timer slowre, can swap lower stack. Seems mostly inconsiquencial anyways since you plan swaps around foes, not this
 --TODO, meteor swarm for intermission, right now it has no clear cast ID, 4 different script IDs and 0 debuff IDs
 --TODO, if ember energy gains are detectable with ease, use hostile nameplates to show power circle over them all fancy like
 --TODO, like fallen avatar in lat PTR, flare has two entirely different mechanics between journal and spellId toolipss, so it needs reviewing at testing.
 --TODO, empowered flare has same issue as flare. Figure out all the shit
+--[[
+(ability.id = 244693 or ability.id = 245458 or ability.id = 245463 or ability.id = 245301) and type = "begincast"
+ or ability.id = 244894 and (type = "applybuff" or type = "removebuff")
+--]]
 --Stage One: Wrath of Aggramar
 local warnTaeshalachReach				= mod:NewStackAnnounce(245990, 2, nil, "Tank")
 local warnScorchingBlaze				= mod:NewTargetAnnounce(245994, 2)
 local warnTaeshalachTech				= mod:NewSpellAnnounce(244688, 3)
 --Stage Two: Stuff
 local warnPhase2						= mod:NewPhaseAnnounce(2, 2)
-local warnFlare							= mod:NewTargetAnnounce(245923, 3)
+--local warnFlare							= mod:NewTargetAnnounce(245923, 3)
 --Stage Three: More stuff
 local warnPhase3						= mod:NewPhaseAnnounce(3, 2)
 
@@ -199,12 +203,14 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
+--[[
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 236378 then
 
 	end
 end
+--]]
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
@@ -257,8 +263,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.NPAuraOnPresence then
 			DBM.Nameplate:Show(true, args.destGUID, spellId)
 		end
-	elseif spellId == 245923 then--Debuff version of flare
-		warnFlare:CombinedShow(0.3, args.destName)
+--	elseif spellId == 245923 then--Debuff version of flare
+--		warnFlare:CombinedShow(0.3, args.destName)
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
