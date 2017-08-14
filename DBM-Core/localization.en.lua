@@ -267,6 +267,7 @@ DBM_ALLY							= "Ally"--Such as "Move to Ally"
 DBM_ADDS							= "Adds"--Such as "Move to Ally"
 DBM_CORE_ROOM_EDGE					= "Room Edge"
 DBM_CORE_SAFE						= "Safe"
+DBM_INCOMING						= "%s Incoming"
 --Common Locals end
 
 DBM_CORE_BREAK_USAGE				= "Break timer cannot be longer than 60 minutes. Make sure you're inputting time in minutes and not seconds."

@@ -68,6 +68,14 @@ L= DBM:GetModLocalization(1983)
 ---------------------------
 L= DBM:GetModLocalization(1986)
 
+L:SetTimerLocalization({
+	timerBossIncoming		= DBM_INCOMING
+})
+
+L:SetOptionLocalization({
+	timerBossIncoming		= "Show timer for next boss swap"
+})
+
 ---------------------------
 -- Aggramar --
 ---------------------------
