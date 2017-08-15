@@ -254,8 +254,10 @@ function mod:OnCombatStart(delay)
 	end
 	if self:IsMythic() then
 		timerShadReflectionWailingCD:Start(56, 1)
+		berserkTimer:Start(850-delay)--It's definitely > 14 min, some 14:07 kills with no berserk. Will try 14:10 for now
+	else
+		berserkTimer:Start(600-delay)
 	end
-	berserkTimer:Start(600-delay)
 end
 
 function mod:OnCombatEnd()
@@ -444,9 +446,17 @@ function mod:SPELL_CAST_SUCCESS(args)
 				end
 			else--Phase 3
 				if self.vb.burstingDreadCast % 2 == 0 then
-					timerBurstingDreadflameCD:Start(70, self.vb.burstingDreadCast+1)
+					if self:IsMythic() then
+						timerBurstingDreadflameCD:Start(43, self.vb.burstingDreadCast+1)
+					else
+						timerBurstingDreadflameCD:Start(70, self.vb.burstingDreadCast+1)
+					end
 				else
-					timerBurstingDreadflameCD:Start(25, self.vb.burstingDreadCast+1)
+					if self:IsMythic() then
+						timerBurstingDreadflameCD:Start(51.9, self.vb.burstingDreadCast+1)
+					else
+						timerBurstingDreadflameCD:Start(25, self.vb.burstingDreadCast+1)
+					end
 				end
 			end
 		end
@@ -665,8 +675,18 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 				countdownFocusedDread:Start(timer)
 			end
 		else--Phase 3
-			timerFocusedDreadflameCD:Start(95)
-			countdownFocusedDread:Start(95)
+			if self:IsMythic() then
+				if self.vb.focusedDreadCast % 2 == 0 then
+					timerFocusedDreadflameCD:Start(59)
+					countdownFocusedDread:Start(59)
+				else
+					timerFocusedDreadflameCD:Start(35.9)
+					countdownFocusedDread:Start(35.9)
+				end
+			else
+				timerFocusedDreadflameCD:Start(95)
+				countdownFocusedDread:Start(95)
+			end
 		end
 		if not self:IsEasy() then--TODO, this isn't mentioned in intermission, only in phase 2+ version. Investigate
 			voiceFocusedDreadflame:Schedule(1, "range5")
