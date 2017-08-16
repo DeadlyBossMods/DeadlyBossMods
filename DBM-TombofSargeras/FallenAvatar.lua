@@ -65,7 +65,7 @@ local specWarnTaintedEssence		= mod:NewSpecialWarningStack(240728, nil, 3, nil, 
 local specWarnDarkMark				= mod:NewSpecialWarningYou(239739, nil, nil, nil, 1, 2)
 local specWarnDarkMarkOther			= mod:NewSpecialWarningMoveTo(239739, nil, nil, nil, 1, 2)
 local yellDarkMark					= mod:NewPosYell(239739)
-local yellDarkMarkFades				= mod:NewShortFadesYell(239739)
+local yellDarkMarkFades				= mod:NewIconFadesYell(239739)
 local specWarnRainoftheDestroyer	= mod:NewSpecialWarningDodge(240396, nil, nil, nil, 2, 2)
 
 --Stage One: A Slumber Disturbed
@@ -138,6 +138,9 @@ local function warnDarkMarkTargets(self, spellName)
 		local name = darkMarkTargets[i]
 		if name == playerName then
 			yellDarkMark:Yell(icon, icon, icon)
+			local _, _, _, _, _, _, expires = UnitDebuff("player", spellName)
+			local remaining = expires-GetTime()
+			yellDarkMarkFades:Countdown(remaining, icon)
 		end
 		if self.Options.SetIconOnDarkMark then
 			self:SetIcon(name, icon)
@@ -336,9 +339,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnDarkMark:Show()
 			voiceDarkMark:Play("targetyou")
-			local _, _, _, _, _, _, expires = UnitDebuff("player", args.spellName)
-			local remaining = expires-GetTime()
-			yellDarkMarkFades:Countdown(remaining)
 		end
 	elseif spellId == 234059 then
 		warnUnboundChaos:CombinedShow(0.3, args.destName)
