@@ -67,7 +67,7 @@ local specWarnAnnihilation				= mod:NewSpecialWarningSpell(245807, nil, nil, nil
 local specWarnDemolish					= mod:NewSpecialWarningYou(246692, nil, nil, nil, 1, 2)
 local specWarnDemolishOther				= mod:NewSpecialWarningMoveTo(246692, nil, nil, nil, 1, 2)
 local yellDemolish						= mod:NewPosYell(246692)
-local yellDemolishFades					= mod:NewShortFadesYell(246692)
+local yellDemolishFades					= mod:NewIconFadesYell(246692)
 
 --Stage: Deployment
 local timerForgingStrikeCD				= mod:NewAITimer(25, 244312, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
@@ -135,6 +135,9 @@ local function warnDemolishTargets(self, spellName)
 		local name = DemolishTargets[i]
 		if name == playerName then
 			yellDemolish:Yell(icon, icon, icon)
+			local _, _, _, _, _, _, expires = UnitDebuff("player", spellName)
+			local remaining = expires-GetTime()
+			yellDemolishFades:Countdown(remaining, icon)
 		end
 		if self.Options.SetIconOnDemolish then
 			self:SetIcon(name, icon)
@@ -284,9 +287,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnDemolish:Show()
 			voiceDemolish:Play("targetyou")
-			local _, _, _, _, _, _, expires = UnitDebuff("player", args.spellName)
-			local remaining = expires-GetTime()
-			yellDemolishFades:Countdown(remaining)
 		end
 		if self.Options.InfoFrame then
 			if #DemolishTargets == 1 then

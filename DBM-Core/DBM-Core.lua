@@ -9189,6 +9189,10 @@ do
 		return newYell(self, "shortfade", ...)
 	end
 	
+	function bossModPrototype:NewIconFadesYell(...)
+		return newYell(self, "iconfade", ...)
+	end
+	
 	function bossModPrototype:NewPosYell(...)
 		return newYell(self, "position", ...)
 	end

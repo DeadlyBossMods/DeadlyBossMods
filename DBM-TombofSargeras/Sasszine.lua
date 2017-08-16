@@ -49,7 +49,7 @@ local warnPhase3					= mod:NewPhaseAnnounce(3, 2)
 --General Stuff
 local specWarnHydraShot				= mod:NewSpecialWarningYou(230139, nil, nil, nil, 1, 2)
 local yellHydraShot					= mod:NewPosYell(230139, DBM_CORE_AUTO_YELL_CUSTOM_POSITION2)
-local yellHydraShotFades			= mod:NewFadesYell(230139, DBM_CORE_AUTO_YELL_CUSTOM_POSITION)
+local yellHydraShotFades			= mod:NewIconFadesYell(230139)
 local specWarnBurdenofPain			= mod:NewSpecialWarningYou(230201, nil, nil, nil, 1, 2)
 local specWarnBurdenofPainTaunt		= mod:NewSpecialWarningTaunt(230201, nil, nil, nil, 1, 2)
 local specWarnFromtheAbyss			= mod:NewSpecialWarningSwitch(230227, "-Healer", nil, nil, 1, 2)
@@ -118,9 +118,7 @@ local hydraIcons = {}
 --/run DBM:GetModByName("1861"):TestHydraShot(1)
 function mod:TestHydraShot(icon)
 		yellHydraShot:Yell(icon, icon, "Hydra Shot", icon, icon)
-		yellHydraShotFades:Schedule(5, icon, 1, icon)
-		yellHydraShotFades:Schedule(4, icon, 2, icon)
-		yellHydraShotFades:Schedule(3, icon, 3, icon)
+		yellHydraShotFades:Countdown(5, icon)
 end
 
 function mod:OnCombatStart(delay)
