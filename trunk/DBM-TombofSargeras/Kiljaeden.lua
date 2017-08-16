@@ -60,7 +60,7 @@ local specWarnArmageddon			= mod:NewSpecialWarningCount(240910, nil, nil, nil, 2
 local specWarnSRWailing				= mod:NewSpecialWarningYou(236378, nil, nil, nil, 1, 2)
 local yellSRWailing					= mod:NewFadesYell(236378, 236075)--Keep name in tank one for now
 local specWarnSRErupting			= mod:NewSpecialWarningYou(236710, nil, nil, nil, 1, 2)
-local yellSRErupting				= mod:NewShortFadesYell(236710, 243160)
+local yellSRErupting				= mod:NewIconFadesYell(236710, 243160)
 local specWarnLingeringEruption		= mod:NewSpecialWarningDodge(243536, nil, nil, nil, 2, 2)
 --Intermission: Eternal Flame
 local specWarnFocusedDreadflame		= mod:NewSpecialWarningYou(238502, nil, nil, nil, 1, 2)
@@ -186,37 +186,6 @@ local phase2HeroicSingularityTimers = {74, 26, 55, 44}
 local phase2MythicSingularityTimers = {22, 50, 66.9, 78, 84}
 local playerName = UnitName("player")
 
---[[
-local debuffFilter
-local UnitDebuff = UnitDebuff
-local playerDebuff = nil
-do
-	local spellName = GetSpellInfo(231311)
-	debuffFilter = function(uId)
-		if not playerDebuff then return true end
-		if not select(11, UnitDebuff(uId, spellName)) == playerDebuff then
-			return true
-		end
-	end
-end
-
-local expelLight, stormOfJustice = GetSpellInfo(228028), GetSpellInfo(227807)
-local function updateRangeFrame(self)
-	if not self.Options.RangeFrame then return end
-	if self.vb.brandActive then
-		DBM.RangeCheck:Show(15, debuffFilter)--There are no 15 yard items that are actually 15 yard, this will round to 18 :\
-	elseif UnitDebuff("player", expelLight) or UnitDebuff("player", stormOfJustice) then
-		DBM.RangeCheck:Show(8)
-	elseif self.vb.hornCasting then--Spread for Horn of Valor
-		DBM.RangeCheck:Show(5)
-	else
-		DBM.RangeCheck:Hide()
-	end
-end
---]]
-
---https://www.warcraftlogs.com/reports/CTMzhXkF6W3majct#fight=5&pins=2%24Off%24%23244F4B%24expression%24ability.name%20%3D%20%22Demonic%20Obelisk%22%20or%20ability.id%20%3D%20238999%20and%20type%20%3D%20%22begincast%22&view=events
---https://www.warcraftlogs.com/reports/CTMzhXkF6W3majct#fight=17&pins=2%24Off%24%23244F4B%24expression%24ability.name%20%3D%20%22Demonic%20Obelisk%22%20or%20ability.id%20%3D%20238999%20and%20type%20%3D%20%22begincast%22&view=events
 local function ObeliskWarning(self)
 	self.vb.obeliskCount = self.vb.obeliskCount + 1
 	specWarnObelisk:Show(self.vb.obeliskCount)
@@ -509,13 +478,14 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 236710 then--Erupting Shadow Reflection (Stage 1)
 		warnEruptingRelections:CombinedShow(0.3, args.destName)
+		local icon = self.vb.eruptingReflectionIcon
 		if args:IsPlayer() then
 			specWarnSRErupting:Show()
 			voiceSRErupting:Play("targetyou")
-			yellSRErupting:Countdown(8)
+			yellSRErupting:Countdown(8, icon)
 		end
 		if self.Options.SetIconOnEruptingReflection and self:IsMythic() then
-			self:SetIcon(args.destName, self.vb.eruptingReflectionIcon)
+			self:SetIcon(args.destName, icon)
 		end
 		self.vb.eruptingReflectionIcon = self.vb.eruptingReflectionIcon + 1
 	elseif spellId == 237590 then--Hopeless Shadow Reflection (Stage 2)
@@ -691,7 +661,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 		if not self:IsEasy() then--TODO, this isn't mentioned in intermission, only in phase 2+ version. Investigate
 			voiceFocusedDreadflame:Schedule(1, "range5")
 			if self.Options.RangeFrame then
-				DBM.RangeCheck:Show(5)
+				DBM.RangeCheck:Show(5, nil, nil, nil, nil, 6)
 			end
 		end
 		local target = DBM:GetUnitFullName(target)
@@ -706,7 +676,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 				voiceFocusedDreadflame:Play("helpsoak")
 			end
 			if self.Options.SetIconOnFocusedDread then
-				self:SetIcon(target, 2)
+				self:SetIcon(target, 2, 6)
 			end
 		end
 	elseif msg:find("spell:235059") then
