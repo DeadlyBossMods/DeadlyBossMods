@@ -187,6 +187,7 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 236442 then
+		self:BossTargetScannerAbort(args.sourceGUID, "VolleyTarget")
 		self:ScheduleMethod(0.2, "BossTargetScanner", args.sourceGUID, "VolleyTarget", 0.1, 9, true, nil, nil, nil, true)
 	elseif spellId == 236712 then
 		self.vb.beaconCount = self.vb.beaconCount + 1
@@ -199,6 +200,12 @@ function mod:SPELL_CAST_START(args)
 		timerGlaiveStormCD:Start()
 		if self:AntiSpam(5, 2) then
 			countdownSpecials:Start()
+			for i = 1, 3 do
+	 			local unitGUID = UnitGUID("boss"..i)
+	 			if unitGUID then
+	 				self:BossTargetScannerAbort(unitGUID, "VolleyTarget")
+	 			end
+	 		end
 		end
 	end
 end
@@ -235,6 +242,12 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerEmbraceofEclipseCD:Start()
 		if self:AntiSpam(5, 2) then
 			countdownSpecials:Start()
+			for i = 1, 3 do
+	 			local unitGUID = UnitGUID("boss"..i)
+	 			if unitGUID then
+	 				self:BossTargetScannerAbort(unitGUID, "VolleyTarget")
+	 			end
+	 		end
 		end
 	elseif spellId == 236672 then
 		timerRapidShotCD:Start()
@@ -313,6 +326,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if self:AntiSpam(5, 2) then
 			countdownSpecials:Start()
+			for i = 1, 3 do
+	 			local unitGUID = UnitGUID("boss"..i)
+	 			if unitGUID then
+	 				self:BossTargetScannerAbort(unitGUID, "VolleyTarget")
+	 			end
+	 		end
 		end
 	elseif spellId == 233264 then--Dpser Embrace of the Eclipse
 		if not self:IsHealer() then
@@ -445,6 +464,12 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 			timerIncorporealShotCD:Update(elapsedMoon, totalMoon)
 		end
 	elseif spellId == 61207 then--Sets all internal CDs back to 7 seconds
+		for i = 1, 3 do
+	 		local unitGUID = UnitGUID("boss"..i)
+	 		if unitGUID then
+	 			self:BossTargetScannerAbort(unitGUID, "VolleyTarget")
+	 		end
+	 	end
 		local elapsedVolley, totalVolley = timerTwilightVolleyCD:GetTime()
 		local remaining = totalVolley - elapsedVolley
 		local extend = 7 - (totalVolley-elapsedVolley)
