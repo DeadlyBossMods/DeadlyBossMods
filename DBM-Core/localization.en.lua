@@ -471,7 +471,7 @@ DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT = {
 	count			= "%s on " .. UnitName("player") .. "! (%%d)",
 	fade			= "%s fading in %%d",
 	shortfade		= "%%d",
-	iconfade		= "{rt%%d}%%%d",
+	iconfade		= "{rt%%2$d}%%1$d",
 	position 		= "%s %%s on {rt%%d}"..UnitName("player").."{rt%%d}"
 }
 DBM_CORE_AUTO_YELL_CUSTOM_POSITION		= "{rt%d}%s{rt%d}"--Doesn't need translating. Has no strings

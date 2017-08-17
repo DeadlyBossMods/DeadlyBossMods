@@ -117,8 +117,8 @@ local hydraIcons = {}
 
 --/run DBM:GetModByName("1861"):TestHydraShot(1)
 function mod:TestHydraShot(icon)
-		yellHydraShot:Yell(icon, icon, "Hydra Shot", icon, icon)
-		yellHydraShotFades:Countdown(5, icon)
+	yellHydraShot:Yell(icon, icon, "Hydra Shot", icon, icon)
+	yellHydraShotFades:Countdown(5, nil, icon)
 end
 
 function mod:OnCombatStart(delay)
