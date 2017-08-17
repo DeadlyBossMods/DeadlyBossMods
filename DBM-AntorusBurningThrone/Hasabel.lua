@@ -27,14 +27,11 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5"
 )
 
---TODO: This fight desperately needs warning filters. A preliminary global function exists for setting platform manually via macro, hopefully later an actual GUI/mod
 --TODO, maybe hide timers for platforms you aren't on as well, that's a bit uglier than just filtering a warning, besides you may still want to know these timers
 --TODO, interrupt rotation helper for Flames of Xoroth?
---TODO, portal spawns, etc
 --TODO, Icons for the 3 debuffs you move from one portal to another?
 --TODO, voice warnings for portals maybe, have to see fight to see if timing lines up first
 --TODO, find a workable cast ID for corrupt and enable interrupt warning
---TODO, timers for all interrupts? for time being, not supported to reduce timer clutter
 --TODO, an overview info frame showing the needs of portal worlds (how many shields up, how much fel miasma, how many fires in dark realm if possible)
 --TODO, timer correction off UNIT_POWER to auto correct main boss timer variances
 --Platform: Nexus
@@ -55,9 +52,9 @@ local warnCloyingShadows				= mod:NewTargetAnnounce(245118, 2, nil, false)
 local warnHungeringGloom				= mod:NewTargetAnnounce(245075, 2, nil, false)
 
 --Platform: Nexus
-local specWarnRealityTear				= mod:NewSpecialWarningStack(244016, nil, 4, nil, nil, 1, 2)
+local specWarnRealityTear				= mod:NewSpecialWarningStack(244016, nil, 3, nil, nil, 1, 2)
 local specWarnRealityTearOther			= mod:NewSpecialWarningTaunt(244016, nil, nil, nil, 1, 2)
-local specWarnTransportPortal			= mod:NewSpecialWarningSwitch(244677, "Dps", nil, nil, 1, 2)
+local specWarnTransportPortal			= mod:NewSpecialWarningSwitch(244677, "-Healer", nil, 2, 1, 2)
 local specWarnCollapsingWorld			= mod:NewSpecialWarningSpell(243983, nil, nil, nil, 2, 2)
 local specWarnFelstormBarrage			= mod:NewSpecialWarningDodge(244000, nil, nil, nil, 2, 2)
 local specWarnFieryDetonation			= mod:NewSpecialWarningInterrupt(244709, false)
@@ -87,9 +84,9 @@ local specWarnHungeringGloom			= mod:NewSpecialWarningMoveTo(245075, nil, nil, n
 local timerRealityTearCD				= mod:NewCDTimer(12.2, 244016, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerCollapsingWorldCD			= mod:NewCDTimer(31.9, 243983, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)--32.9-41
 local timerFelstormBarrageCD			= mod:NewCDTimer(32.1, 244000, nil, nil, nil, 3)--32.9-41
-local timerTransportPortalCD			= mod:NewCDTimer(41.5, 244677, nil, nil, nil, 1)--41.5-60. most of time 50 on nose. but if comes early next one comes late to offset
+--local timerTransportPortalCD			= mod:NewCDTimer(41.5, 244677, nil, nil, nil, 1)--41.5-60. most of time 50 on nose. but if comes early next one comes late to offset
 --Platform: Xoroth
-local timerSupernovaCD					= mod:NewCDTimer(6.1, 244598, nil, nil, nil, 3)
+local timerSupernovaCD					= mod:NewCDTimer(5.2, 244598, nil, nil, nil, 3)
 local timerFlamesofXorothCD				= mod:NewCDTimer(7.3, 244607, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
 --Platform: Rancora
 local timerFelSilkWrapCD				= mod:NewCDTimer(16.6, 244949, nil, nil, nil, 3)
@@ -127,7 +124,7 @@ local voiceDelusions					= mod:NewVoice(245050)--targetyou (not sure if better o
 mod:AddRangeFrameOption("8/10")
 mod:AddBoolOption("ShowAllPlatforms", false)
 
-mod.vb.shieldsActive = 0
+--mod.vb.shieldsActive = 0
 mod.vb.felBarrageCast = 0
 local playerPlatform = 1--1 Nexus, 2 Xoroth, 3 Rancora, 4 Nathreza
 local mindFog, aegisFlames, felMiasma = GetSpellInfo(245099), GetSpellInfo(244383), GetSpellInfo(244826)
@@ -155,7 +152,7 @@ do
 end
 
 function mod:OnCombatStart(delay)
-	self.vb.shieldsActive = 0
+	--self.vb.shieldsActive = 0
 	self.vb.felBarrageCast = 0
 	playerPlatform = 1--Nexus
 	table.wipe(nexusPlatform)
@@ -165,7 +162,7 @@ function mod:OnCombatStart(delay)
 	timerRealityTearCD:Start(6.2-delay)
 	timerCollapsingWorldCD:Start(10.5-delay)
 	if not self:IsEasy() then
-		timerTransportPortalCD:Start(20.5-delay)
+--		timerTransportPortalCD:Start(20.5-delay)
 	end
 	timerFelstormBarrageCD:Start(25.2-delay)
 	for uId in DBM:GetGroupMembers() do
@@ -216,7 +213,7 @@ function mod:SPELL_CAST_START(args)
 			end
 		end
 	elseif spellId == 244689 then
-		timerTransportPortalCD:Start()
+--		timerTransportPortalCD:Start()
 		if self.Options.ShowAllPlatforms or playerPlatform == 1 then--Actually on nexus platform
 			specWarnTransportPortal:Show()
 			voiceTransportPortal:Play("killmob")
@@ -296,7 +293,7 @@ function mod:SPELL_AURA_APPLIED(args)
 --		if self:IsTanking(uId) then
 			timerRealityTearCD:Start()--Move this later
 			local amount = args.amount or 1
-			if amount >= 4 then--Lasts 30 seconds, cast every 5 seconds, swapping will be at 6
+			if amount >= 3 then
 				if args:IsPlayer() then--At this point the other tank SHOULD be clear.
 					specWarnRealityTear:Show(amount)
 					voiceRealityTear:Play("stackhigh")
@@ -309,19 +306,12 @@ function mod:SPELL_AURA_APPLIED(args)
 					end
 				end
 			else
-				if amount % 2 == 0 then
-					warnRealityTear:Show(args.destName, amount)
-				end
+				warnRealityTear:Show(args.destName, amount)
 			end
 --		end
-	elseif spellId == 244383 then--Aegis of Flames
-		self.vb.shieldsActive = self.vb.shieldsActive + 1
+	elseif spellId == 244383 and self:AntiSpam(2, args.destName) then--Aegis of Flames
+		--self.vb.shieldsActive = self.vb.shieldsActive + 1
 		warnAegisofFlames:Show(args.destName)
-		if args:GetDestCreatureID() == 124396 then--Baron Vulcanar
-			--Timers and things?
-		else--Mythic mob
-		
-		end
 	elseif spellId == 244613 then--Everburning Flames
 		warnEverburningFlames:CombinedShow(1, args.destName)
 		if args:IsPlayer() then
@@ -381,7 +371,7 @@ mod.SPELL_AURA_REFRESH = mod.SPELL_AURA_APPLIED
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 244383 then--Aegis of Flames
-		self.vb.shieldsActive = self.vb.shieldsActive - 1
+		--self.vb.shieldsActive = self.vb.shieldsActive - 1
 		warnAegisofFlamesEnded:Show()
 	elseif spellId == 244613 then--Everburning Flames
 		if args:IsPlayer() then
