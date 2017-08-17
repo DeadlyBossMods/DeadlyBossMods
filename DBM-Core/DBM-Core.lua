@@ -4238,7 +4238,7 @@ do
 					showConstantReminder = 1
 				elseif not noRaid and #newerVersionPerson == 3 and updateNotificationDisplayed < 3 then--The following code requires at least THREE people to send that higher revision. That should be more than adaquate
 					--Disable if revision grossly out of date even if not major patch.
-					if raid[newerVersionPerson[1]].revision and raid[newerVersionPerson[2]].revision and raid[newerVersionPerson[3]].revision then
+					if raid[newerVersionPerson[1]] and raid[newerVersionPerson[2]] and raid[newerVersionPerson[3]] then
 						local revDifference = mmin((raid[newerVersionPerson[1]].revision - DBM.Revision), (raid[newerVersionPerson[2]].revision - DBM.Revision), (raid[newerVersionPerson[3]].revision - DBM.Revision))
 						if revDifference > 100 then
 							if updateNotificationDisplayed < 3 then
