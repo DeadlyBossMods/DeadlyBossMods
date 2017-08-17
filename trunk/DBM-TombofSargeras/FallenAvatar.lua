@@ -140,7 +140,7 @@ local function warnDarkMarkTargets(self, spellName)
 			yellDarkMark:Yell(icon, icon, icon)
 			local _, _, _, _, _, _, expires = UnitDebuff("player", spellName)
 			local remaining = expires-GetTime()
-			yellDarkMarkFades:Countdown(remaining, icon)
+			yellDarkMarkFades:Countdown(remaining, nil, icon)
 		end
 		if self.Options.SetIconOnDarkMark then
 			self:SetIcon(name, icon)

@@ -482,7 +482,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnSRErupting:Show()
 			voiceSRErupting:Play("targetyou")
-			yellSRErupting:Countdown(8, icon)
+			yellSRErupting:Countdown(8, nil, icon)
 		end
 		if self.Options.SetIconOnEruptingReflection and self:IsMythic() then
 			self:SetIcon(args.destName, icon)
