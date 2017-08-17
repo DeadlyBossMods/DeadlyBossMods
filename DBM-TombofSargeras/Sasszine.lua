@@ -254,9 +254,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				voiceHydraShot:Play("targetyou")
 			end
 			yellHydraShot:Yell(count, count, args.spellName, count, count)
-			yellHydraShotFades:Schedule(5, count, 1, count)
-			yellHydraShotFades:Schedule(4, count, 2, count)
-			yellHydraShotFades:Schedule(3, count, 3, count)
+			yellHydraShotFades:Countdown(6, nil, icon)
 		end
 		if self.Options.SetIconOnHydraShot then
 			self:SetIcon(name, count)
