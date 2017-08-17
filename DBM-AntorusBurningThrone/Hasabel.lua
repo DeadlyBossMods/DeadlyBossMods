@@ -317,7 +317,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 244383 then--Aegis of Flames
 		self.vb.shieldsActive = self.vb.shieldsActive + 1
 		warnAegisofFlames:Show(args.destName)
-		if self:GetDestCreatureID() == 124396 then--Baron Vulcanar
+		if args:GetDestCreatureID() == 124396 then--Baron Vulcanar
 			--Timers and things?
 		else--Mythic mob
 		
