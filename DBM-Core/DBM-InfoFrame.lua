@@ -650,14 +650,11 @@ local function updateByFunction()
 	lines, presortedLines = func()
 	if sortFunc then
 		if type(sortFunc) == "function" then
-			DBM:Debug("updateByFunction custom sorting", 3)
 			updateLinesCustomSort(sortFunc)
 		else--Sort function is a bool/true
-			DBM:Debug("updateByFunction regular sorting", 3)
 			updateLines()--regular update lines with regular sort code
 		end
 	else--Nil, or bool/false
-		DBM:Debug("updateByFunction no sorting or presorting", 3)
 		updateLines(presortedLines)--Update lines with sorting if provided by the custom function
 	end
 	if useIcon then
