@@ -137,7 +137,7 @@ local function warnDemolishTargets(self, spellName)
 			yellDemolish:Yell(icon, icon, icon)
 			local _, _, _, _, _, _, expires = UnitDebuff("player", spellName)
 			local remaining = expires-GetTime()
-			yellDemolishFades:Countdown(remaining, icon)
+			yellDemolishFades:Countdown(remaining, nil, icon)
 		end
 		if self.Options.SetIconOnDemolish then
 			self:SetIcon(name, icon)
