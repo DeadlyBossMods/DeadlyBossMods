@@ -178,7 +178,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 243968 and self.vb.currentTorment ~= 1 then--Flame
 		self.vb.currentTorment = 1
 		warnTormentofFlames:Show()
-		if not self:IsEast() then--No frost or fel in normal, LFR assumed
+		if not self:IsEasy() then--No frost or fel in normal, LFR assumed
 			timerTormentofFrostCD:Start(120)
 		else
 			timerTormentofShadowsCD:Start(361)
