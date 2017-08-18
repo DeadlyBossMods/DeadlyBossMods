@@ -42,7 +42,7 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	Xoroth = "소로스를 봐라, 지옥불의 열기와 불타버린 뼈의 세계다!",
 	Rancora = "란코라를 올려다 봐라, 부패한 웅덩이와 스멀거리는 죽음의 대지다!",
-	Nathreza = "Nathreza... once a world of magic and knowledge, now a twisted landscape from which none escape."
+	Nathreza = "나스레자... 한때 마법과 지식의 세계였지만, 이제 그 누구도 벗어날 수 없는 뒤틀린 대지다."
 })
 
 ---------------------------
@@ -68,6 +68,14 @@ L= DBM:GetModLocalization(1983)
 -- The Coven of Shivarra --
 ---------------------------
 L= DBM:GetModLocalization(1986)
+
+L:SetTimerLocalization({
+	timerBossIncoming		= DBM_INCOMING
+})
+
+L:SetOptionLocalization({
+	timerBossIncoming		= "다음 보스 교대 타이머 바 보기"
+})
 
 ---------------------------
 -- Aggramar --
