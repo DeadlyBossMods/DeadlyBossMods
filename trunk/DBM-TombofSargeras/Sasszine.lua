@@ -16,8 +16,6 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS 230201 232757",
 	"SPELL_AURA_APPLIED 239375 239362 230139 230201 230362 232916 230384 234661",
 	"SPELL_AURA_REMOVED 239375 239362 230139",
---	"SPELL_PERIODIC_DAMAGE",
---	"SPELL_PERIODIC_MISSED",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
@@ -36,6 +34,7 @@ mod:RegisterEventsInCombat(
 local warnHydraShot					= mod:NewTargetCountAnnounce(230139, 4)
 local warnDarkDepths				= mod:NewSpellAnnounce(230273, 2, nil, false, 2)
 local warnDreadSharkSpawn			= mod:NewSpellAnnounce(239436, 2)
+local warnBurdenAll					= mod:NewTargetAnnounce(230214, 2)
 --Stage One: Ten Thousand Fangs
 local warnThunderingShock			= mod:NewTargetAnnounce(230362, 2, nil, false)
 local warnConsumingHunger			= mod:NewTargetAnnounce(230384, 2)
@@ -226,6 +225,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 			timerBurdenofPainCD:Start()
 			countdownBurdenofPain:Start(25.1)
 		end
+		if self:IsMythic() then
+			self:RegisterShortTermEvents(
+				"SPELL_DAMAGE 230214"
+			)
+		end
 	elseif spellId == 232757 then
 		self.vb.crashingWaveCount = self.vb.crashingWaveCount + 1
 		timerCrashingWaveCD:Start(nil, self.vb.crashingWaveCount+1)
@@ -299,22 +303,12 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
---[[
-
-function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
-	if spellId == 228007 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
---		specWarnDancingBlade:Show()
---		voiceDancingBlade:Play("runaway")
+function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
+	if spellId == 230214 then
+		self:UnregisterShortTermEvents()
+		warnBurdenAll:Show(ALL)
 	end
 end
-mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
-
-function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
-	if msg:find("spell:228162") then
-
-	end
-end
---]]
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
