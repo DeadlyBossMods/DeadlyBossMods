@@ -50,7 +50,7 @@ local warnDarkmark					= mod:NewTargetCountAnnounce(239739, 3)
 --Stage One: A Slumber Disturbed
 local specWarnTouchofSargerasGround	= mod:NewSpecialWarningCount(239207, "-Tank", nil, 2, 1, 2)
 local specWarnRuptureRealities		= mod:NewSpecialWarningRun(239132, nil, nil, nil, 4, 2)
-local specWarnUnboundChaos			= mod:NewSpecialWarningMoveAway(234059, nil, nil, nil, 1, 2)
+local specWarnUnboundChaos			= mod:NewSpecialWarningDodge(234059, nil, nil, nil, 2, 2)
 local yellUnboundChaos				= mod:NewYell(234059, nil, false, 2)
 local specWarnShadowyBlades			= mod:NewSpecialWarningMoveAway(236571, nil, nil, nil, 1, 2)
 local yellShadowyBlades				= mod:NewPosYell(236571)
@@ -343,8 +343,6 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 234059 then
 		warnUnboundChaos:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
-			specWarnUnboundChaos:Show()
-			voiceUnboundChaos:Play("watchstep")
 			yellUnboundChaos:Yell()
 		end
 	elseif spellId == 236494 then
@@ -443,6 +441,8 @@ end
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
 	if spellId == 234057 then
+		specWarnUnboundChaos:Show()
+		voiceUnboundChaos:Play("watchstep")
 		timerUnboundChaosCD:Start()--35
 		self:Unschedule(setabilityStatus, self, 234059)--Unschedule for good measure in case next cast start fires before timer expires (in which case have a bad timer)
 		setabilityStatus(self, 234059, 1)--Set on cooldown
