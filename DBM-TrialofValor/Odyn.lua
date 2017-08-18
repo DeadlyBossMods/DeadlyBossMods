@@ -52,7 +52,7 @@ local yellShieldofLightFades		= mod:NewFadesYell(228270)
 local specWarnBranded				= mod:NewSpecialWarningMoveTo(227503, nil, nil, nil, 3, 6)
 local yellBranded					= mod:NewPosYell(227490, DBM_CORE_AUTO_YELL_CUSTOM_POSITION)
 --Stage 2: Odyn immitates margok
-local specWarnOdynsTest				= mod:NewSpecialWarningCount(227626, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.stack:format(5, 159515))
+local specWarnOdynsTest				= mod:NewSpecialWarningCount(227626, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.stack:format(5, 159515), nil, 1, 2)
 local specWarnOdynsTestOther		= mod:NewSpecialWarningTaunt(227626, nil, nil, nil, 1, 2)
 local specWarnShatterSpears			= mod:NewSpecialWarningDodge(231013, false, nil, 2, 2, 2)--Every 8 seconds, so off by default
 local specWarnHyrja					= mod:NewSpecialWarningSwitch("ej14006", nil, nil, nil, 1, 2)
