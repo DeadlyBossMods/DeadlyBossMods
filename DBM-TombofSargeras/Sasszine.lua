@@ -113,6 +113,7 @@ mod.vb.hydraShotCount = 0
 local thunderingShock = GetSpellInfo(230358)
 local consumingHunger = GetSpellInfo(230384)
 local hydraIcons = {}
+local eventsRegistered = false
 
 --/run DBM:GetModByName("1861"):TestHydraShot(1)
 function mod:TestHydraShot(icon)
@@ -152,6 +153,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnCombatEnd()
+	eventsRegistered = false
 	self:UnregisterShortTermEvents()
 end
 
@@ -220,7 +222,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 			timerBurdenofPainCD:Start()
 			countdownBurdenofPain:Start(25.1)
 		end
-		if self:IsMythic() then
+		if self:IsMythic() and not eventsRegistered then
+			eventsRegistered = true
 			self:RegisterShortTermEvents(
 				"SPELL_DAMAGE 230214"
 			)
@@ -296,12 +299,14 @@ function mod:SPELL_AURA_REMOVED(args)
 			yellHydraShotFades:Cancel()
 		end
 	elseif spellId == 230201 then
+		eventsRegistered = false
 		self:UnregisterShortTermEvents()
 	end
 end
 
 function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 230214 then
+		eventsRegistered = false
 		self:UnregisterShortTermEvents()
 		warnBurdenAll:Show(ALL)
 	end
