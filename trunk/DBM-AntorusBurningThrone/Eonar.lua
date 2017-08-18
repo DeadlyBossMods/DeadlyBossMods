@@ -6,7 +6,7 @@ mod:SetCreatureID(124445)
 mod:SetEncounterID(2075)
 mod:SetZone()
 --mod:SetBossHPInfoToHighest()
---mod:SetUsedIcons(1, 2, 3, 4, 5, 6)
+mod:SetUsedIcons(1, 2, 3, 4)
 --mod:SetHotfixNoticeRev(16350)
 --mod.respawnTime = 29
 
@@ -15,9 +15,9 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 249121 250701 250048",
 	"SPELL_CAST_SUCCESS 246888 246896 246753 254769",
-	"SPELL_AURA_APPLIED 248333 250074 250555",
+	"SPELL_AURA_APPLIED 248333 250074 250555 249016 249017 249014 249015",
 	"SPELL_AURA_APPLIED_DOSE",
-	"SPELL_AURA_REMOVED 248333 250074 250555",
+	"SPELL_AURA_REMOVED 248333 250074 250555 249016 249017 249014 249015",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 --	"UNIT_DIED",
@@ -76,11 +76,14 @@ local voiceSwing						= mod:NewVoice(250701)--defensive
 --local voiceMalignantAnguish			= mod:NewVoice(236597, "HasInterrupt")--kickcast
 --local voiceGTFO						= mod:NewVoice(238028, nil, DBM_CORE_AUTO_VOICE4_OPTION_TEXT)--runaway
 
---mod:AddSetIconOption("SetIconOnSpearofDoom", 248789, true)
+mod:AddSetIconOption("SetIconOnFeedbackTargeted", 249016, true)
+mod:AddSetIconOption("SetIconOnFeedbackArcane", 249017, true)
+mod:AddSetIconOption("SetIconOnFeedbackFoul", 249014, false)
+mod:AddSetIconOption("SetIconOnFeedbackBurning", 249015, true)
 mod:AddInfoFrameOption(250030, true)
 mod:AddNamePlateOption("NPAuraOnPurification", 250074)
 mod:AddNamePlateOption("NPAuraOnFelShielding", 250555)
-mod:AddRangeFrameOption("8")
+mod:AddRangeFrameOption("8/10")
 
 mod.vb.rainOfFelCount = 0
 mod.vb.warpCount = 0
@@ -208,6 +211,27 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.NPAuraOnFelShielding then
 			DBM.Nameplate:Show(true, args.destGUID, spellId)
 		end
+	elseif spellId == 249016 then
+		if self.Options.SetIconOnFeedbackTargeted then
+			self:SetIcon(args.destName, 1)--Yellow Star for focused
+		end
+	elseif spellId == 249017 then
+		if self.Options.SetIconOnFeedbackArcane then
+			self:SetIcon(args.destName, 3)--Purple diamond for arcane
+		end
+		if args:IsPlayer() then
+			if self.Options.RangeFrame then
+				DBM.RangeCheck:Show(10)
+			end
+		end
+	elseif spellId == 249014 then
+		if self.Options.SetIconOnFeedbackFoul then
+			self:SetIcon(args.destName, 4)--Green triangle for foul
+		end
+	elseif spellId == 249015 then
+		if self.Options.SetIconOnFeedbackBurning then
+			self:SetIcon(args.destName, 2)--Orange circle for fire
+		end
 	end
 end
 --mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -223,6 +247,27 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 250555 then--Fel Shielding
 		if self.Options.NPAuraOnFelShielding then
 			DBM.Nameplate:Hide(true, args.destGUID, spellId)
+		end
+	elseif spellId == 249016 then
+		if self.Options.SetIconOnFeedbackTargeted then
+			self:SetIcon(args.destName, 0)
+		end
+	elseif spellId == 249017 then
+		if self.Options.SetIconOnFeedbackArcane then
+			self:SetIcon(args.destName, 0)
+		end
+		if args:IsPlayer() then
+			if self.Options.RangeFrame then
+				DBM.RangeCheck:Show(8)
+			end
+		end
+	elseif spellId == 249014 then
+		if self.Options.SetIconOnFeedbackFoul then
+			self:SetIcon(args.destName, 0)
+		end
+	elseif spellId == 249015 then
+		if self.Options.SetIconOnFeedbackBurning then
+			self:SetIcon(args.destName, 0)
 		end
 	end
 end
