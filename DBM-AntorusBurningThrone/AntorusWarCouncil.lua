@@ -81,7 +81,7 @@ local timerSunderingClawsCD				= mod:NewCDTimer(8.5, 244892, nil, "Tank", nil, 5
 local timerAssumeCommandCD				= mod:NewNextTimer(90, 245227, nil, nil, nil, 6)
 --In Pod
 ----Admiral Svirax
-local timerFusilladeCD					= mod:NewCDTimer(29.6, 244625, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
+local timerFusilladeCD					= mod:NewCDCountTimer(29.6, 244625, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
 --local timerWitheringFireCD				= mod:NewAITimer(61, 245292, nil, nil, nil, 3)
 ----Chief Engineer Ishkar
 local timerEntropicMineCD				= mod:NewAITimer(61, 245161, nil, nil, nil, 3)
@@ -131,6 +131,7 @@ local voiceWarpField					= mod:NewVoice(244821)--justrun/keepmove?
 mod:AddRangeFrameOption("8")
 
 local felShield = GetSpellInfo(244910)
+mod.vb.FusilladeCount = 0
 
 --[[
 local debuffFilter
@@ -176,6 +177,7 @@ function mod:DemonicChargeTarget(targetname, uId)
 end
 
 function mod:OnCombatStart(delay)
+	self.vb.FusilladeCount = 0
 	--In pod
 	timerEntropicMineCD:Start(1-delay)
 	timerSummonReinforcementsCD:Start(8-delay)
@@ -198,9 +200,10 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 244625 then
+		self.vb.FusilladeCount = self.vb.FusilladeCount + 1
 		specWarnFusillade:Show(felShield)
 		voiceFusillade:Play("findshelter")
-		timerFusilladeCD:Start()
+		timerFusilladeCD:Start(nil, self.vb.FusilladeCount+1)
 		countdownFusillade:Start(29.6)
 	elseif spellId == 246505 then
 		if self:CheckInterruptFilter(args.sourceGUID) then
@@ -221,8 +224,9 @@ function mod:SPELL_CAST_START(args)
 		elseif cid == 125014 then--General Erodus
 			--timerSummonReinforcementsCD:Start(2)
 		elseif cid == 126258 then--Admiral Svirax
+			self.vb.FusilladeCount = 0
 			timerShockGrenadeCD:Stop()
-			timerFusilladeCD:Start(18)
+			timerFusilladeCD:Start(18, 1)
 			countdownFusillade:Start(18)
 			--timerWitheringFireCD:Start(2)
 		end
