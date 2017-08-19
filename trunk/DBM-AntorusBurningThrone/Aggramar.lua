@@ -37,7 +37,7 @@ mod:RegisterEventsInCombat(
 --Stage One: Wrath of Aggramar
 local warnTaeshalachReach				= mod:NewStackAnnounce(245990, 2, nil, "Tank")
 local warnScorchingBlaze				= mod:NewTargetAnnounce(245994, 2)
-local warnTaeshalachTech				= mod:NewSpellAnnounce(244688, 3)
+local warnTaeshalachTech				= mod:NewCountAnnounce(244688, 3)
 --Stage Two: Stuff
 local warnPhase2						= mod:NewPhaseAnnounce(2, 2)
 --local warnFlare							= mod:NewTargetAnnounce(245923, 3)
@@ -66,7 +66,7 @@ local specWarnSearingTempest			= mod:NewSpecialWarningRun(245301, nil, nil, nil,
 --local specWarnGTFO						= mod:NewSpecialWarningGTFO(247135, nil, nil, nil, 1, 2)
 
 --Stage One: Wrath of Aggramar
-local timerTaeshalachTechCD				= mod:NewNextTimer(65, 244688, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerTaeshalachTechCD				= mod:NewNextCountTimer(65, 244688, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerFoeBreakerCD					= mod:NewNextCountTimer(6.1, 245458, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerFlameRendCD					= mod:NewNextCountTimer(6.1, 245463, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerTempestCD					= mod:NewNextTimer(6.1, 245301, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
@@ -98,6 +98,7 @@ mod:AddRangeFrameOption("6")
 mod:AddNamePlateOption("NPAuraOnPresence", 244903)
 
 mod.vb.phase = 1
+mod.vb.techCount = 0
 mod.vb.foeCount = 0
 mod.vb.rendCount = 0
 mod.vb.wakeOfFlameCount = 0
@@ -111,6 +112,7 @@ end
 
 function mod:OnCombatStart(delay)
 	self.vb.phase = 1
+	self.vb.techCount = 0
 	self.vb.foeCount = 0
 	self.vb.rendCount = 0
 	self.vb.wakeOfFlameCount = 0
@@ -335,10 +337,11 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	elseif spellId == 244688 then
 		self.vb.foeCount = 0
 		self.vb.rendCount = 0
+		self.vb.techCount = self.vb.techCount + 1
 		timerScorchingBlazeCD:Stop()
 		timerWakeofFlameCD:Stop()
 		countdownWakeofFlame:Cancel()
-		warnTaeshalachTech:Show()
+		warnTaeshalachTech:Show(self.vb.techCount)
 		--Foebreaker instantly so no need for timer
 		if self:IsEasy() then
 			timerFlameRendCD:Start(5, 1)
@@ -347,7 +350,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			timerFlameRendCD:Start(4, 1)
 			timerTempestCD:Start(15)
 		end
-		timerTaeshalachTechCD:Start()
+		timerTaeshalachTechCD:Start(nil, self.vb.techCount+1)
 		countdownTaeshalachTech:Start()
 	end
 end

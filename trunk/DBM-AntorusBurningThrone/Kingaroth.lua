@@ -75,7 +75,7 @@ local timerReverberatingStrikeCD		= mod:NewAITimer(61, 248475, nil, nil, nil, 3)
 --local timerDiabolicBombCD				= mod:NewAITimer(61, 246779, nil, nil, nil, 3)
 local timerRuinerCD						= mod:NewCDTimer(28.1, 246840, nil, nil, nil, 3)
 --local timerShatteringStrikeCD			= mod:NewCDTimer(30, 248375, nil, nil, nil, 2)
-local timerApocProtocolCD				= mod:NewCDTimer(77.58, 246516, nil, nil, nil, 6)
+local timerApocProtocolCD				= mod:NewCDCountTimer(77.58, 246516, nil, nil, nil, 6)
 --Stage: Construction
 --local timerCleansingProtocolCD		= mod:NewAITimer(30, 248061, nil, nil, nil, 6)
 --Reavers (or empowered boss from reaver deaths)
@@ -107,6 +107,7 @@ mod:AddRangeFrameOption(5, 248475)--?
 mod.vb.ruinerCast = 0
 mod.vb.forgingStrikeCast = 0
 mod.vb.reverbStrikeCast = 0
+mod.vb.apocProtoCount = 0
 
 local DemolishTargets = {}
 local playerName = DBM:GetMyPlayerInfo()
@@ -178,13 +179,14 @@ function mod:OnCombatStart(delay)
 	self.vb.ruinerCast = 1--only 1 cast on pull so set this to 1 to handle timer
 	self.vb.forgingStrikeCast = 2--Only 1 cast on pull, 2 already passed
 	self.vb.reverbStrikeCast = 2
+	self.vb.apocProtoCount = 0
 	table.wipe(DemolishTargets)
 	timerForgingStrikeCD:Start(3-delay)
 	--timerDiabolicBombCD:Start(6.2-delay)
 	timerReverberatingStrikeCD:Start(10.3-delay)--10-14
 	timerRuinerCD:Start(17.7-delay)--17-22
 	--timerShatteringStrikeCD:Start(1-delay)--Not cast on pull
-	timerApocProtocolCD:Start(26.2-delay)--26-31
+	timerApocProtocolCD:Start(26.2-delay, 1)--26-31
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(5)
 	end
@@ -310,12 +312,13 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.ruinerCast = 0
 		self.vb.forgingStrikeCast = 0
 		self.vb.reverbStrikeCast = 0
+		self.vb.apocProtoCount = self.vb.apocProtoCount + 1
 		--timerForgingStrikeCD:Start(1.5)--Used too fast for a timer
 		timerReverberatingStrikeCD:Start(6.5)
 		--timerDiabolicBombCD:Start(2)
 		timerRuinerCD:Start(20.2)
 		--timerShatteringStrikeCD:Start(42)
-		timerApocProtocolCD:Start()
+		timerApocProtocolCD:Start(nil, self.vb.apocProtoCount+1)
 	elseif spellId == 246698 or spellId == 252760 then
 		tDeleteItem(DemolishTargets, args.destName)
 		if args:IsPlayer() then
