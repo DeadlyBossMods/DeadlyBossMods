@@ -15,9 +15,9 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 247376 247923 248068 248070 248254",
 	"SPELL_CAST_SUCCESS 247367 247552 247687 250255",
-	"SPELL_AURA_APPLIED 247367 247552 247565 247687 250255",
+	"SPELL_AURA_APPLIED 247367 247552 247565 247687 250255 250006",
 	"SPELL_AURA_APPLIED_DOSE 247367 247687 250255 248424",
-	"SPELL_AURA_REMOVED 248233 250135",
+	"SPELL_AURA_REMOVED 248233 250135 250006",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 --	"UNIT_DIED",
@@ -26,15 +26,9 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, fine tune shock lance stacks
 --TODO, determine sleep canister counts and add icons as needed
---TODO, check pulse grenade for target scanning
---TODO, fine tune Sever stacks
---TODO, verify charged blasts, very safe bet though whisper is only way (if at all)
---TODO, empower distinction? for now it's left out as redundant
---TODO, verify phase change detection, right now it's dirty and assumed.
 --TODO, Announe stacks of Gathering Power if relevant
---TODO, announce intermission traps if relevant/clean to detect
+--TODO, icons on Empowered Pulse Grenades? Have to see live health tuning and whether or not 10 players have them
 --Stage One: Attack Force
 local warnShocklance					= mod:NewStackAnnounce(247367, 2, nil, "Tank")
 local warnSleepCanister					= mod:NewTargetAnnounce(247552, 2)
@@ -45,6 +39,7 @@ local warnSever							= mod:NewStackAnnounce(247687, 2, nil, "Tank")
 --local warnChargedBlasts					= mod:NewTargetAnnounce(247716, 3)
 --Stage Three/Five: The Perfect Weapon
 local warnPhase3						= mod:NewPhaseAnnounce(3, 2)
+local warnEmpoweredPulseGrenade			= mod:NewTargetAnnounce(248424, 3)
 local warnPhase4						= mod:NewPhaseAnnounce(4, 2)
 local warnPhase5						= mod:NewPhaseAnnounce(5, 2)
 --Intermission: On Deadly Ground
@@ -65,14 +60,15 @@ local specWarnChargedBlastsUnknown		= mod:NewSpecialWarningSpell(247716, nil, ni
 local specWarnShrapnalBlast				= mod:NewSpecialWarningDodge(247923, nil, nil, nil, 1, 2)
 --local specWarnMalignantAnguish		= mod:NewSpecialWarningInterrupt(236597, "HasInterrupt")
 --Stage Three/Five: The Perfect Weapon
---local specWarnEmpPulseGrenade			= mod:NewSpecialWarningDodge(248068, nil, nil, nil, 1, 2)--Redundant
+local specWarnEmpPulseGrenade			= mod:NewSpecialWarningMoveAway(248424, nil, nil, nil, 1, 2)
+local yellEmpPulseGrenade				= mod:NewYell(248424)
 --local specWarnEmpShrapnalBlast		= mod:NewSpecialWarningDodge(248070, nil, nil, nil, 1, 2)--Redundant
 --Intermission: On Deadly Ground
 
 --Stage One: Attack Force
-local timerShocklanceCD					= mod:NewCDTimer(4.1, 247367, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
-local timerSleepCanisterCD				= mod:NewCDTimer(10.7, 247552, nil, nil, nil, 3, nil, DBM_CORE_MAGIC_ICON)
-local timerPulseGrenadeCD				= mod:NewCDTimer(16.1, 247376, nil, nil, nil, 3)
+local timerShocklanceCD					= mod:NewCDTimer(4.1, 247367, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--4.7?
+local timerSleepCanisterCD				= mod:NewCDTimer(10.7, 247552, nil, nil, nil, 3, nil, DBM_CORE_MAGIC_ICON)--10.9?
+local timerPulseGrenadeCD				= mod:NewCDTimer(16.1, 247376, nil, nil, nil, 3)--17?
 --Stage Two: Contract to Kill
 local timerSeverCD						= mod:NewCDTimer(7.2, 247687, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerChargedBlastsCD				= mod:NewCDTimer(18.2, 247716, nil, nil, nil, 3)
@@ -80,7 +76,6 @@ local timerShrapnalBlastCD				= mod:NewCDTimer(13.3, 247923, nil, nil, nil, 3)
 --Stage Three/Five: The Perfect Weapon
 
 --Intermission: On Deadly Ground
-
 
 local berserkTimer						= mod:NewBerserkTimer(420)
 
@@ -90,7 +85,7 @@ local berserkTimer						= mod:NewBerserkTimer(420)
 
 --General
 --local voiceGTFO						= mod:NewVoice(238028, nil, DBM_CORE_AUTO_VOICE4_OPTION_TEXT)--runaway
-local voicePhaseChange				= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
+local voicePhaseChange					= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
 --Stage One: Attack Force
 local voiceShocklance					= mod:NewVoice(247367)--Tauntboss
 local voiceSleepCanister				= mod:NewVoice(247552)--targetyou
@@ -100,12 +95,13 @@ local voiceSever						= mod:NewVoice(247687)--Tauntboss
 local voiceChargedBlasts				= mod:NewVoice(247716)--runout
 local voiceShrapnalBlast				= mod:NewVoice(247923)--watchstep
 --Stage Three/Five: The Perfect Weapon
+local voiceEmpPulseGrenade				= mod:NewVoice(248424)--range5
 
 --local voiceMalignantAnguish			= mod:NewVoice(236597, "HasInterrupt")--kickcast
 
 --mod:AddSetIconOption("SetIconOnFocusedDread", 238502, true)
 --mod:AddInfoFrameOption(239154, true)
---mod:AddRangeFrameOption("5/10")
+mod:AddRangeFrameOption(5, 248424)
 
 mod.vb.phase = 1
 
@@ -140,16 +136,16 @@ end
 
 function mod:OnCombatStart(delay)
 	self.vb.phase = 1
-	timerShocklanceCD:Start(3.7-delay)
-	timerSleepCanisterCD:Start(6.2-delay)
-	timerPulseGrenadeCD:Start(12.3-delay)
+	timerShocklanceCD:Start(3.7-delay)--4.4 Mythic
+	timerSleepCanisterCD:Start(6.2-delay)--7 mythic
+	timerPulseGrenadeCD:Start(12.3-delay)--14.3 Mythic
 	berserkTimer:Start(-delay)--7min on heroic at least
 end
 
 function mod:OnCombatEnd()
---	if self.Options.RangeFrame then
---		DBM.RangeCheck:Hide()
---	end
+	if self.Options.RangeFrame then
+		DBM.RangeCheck:Hide()
+	end
 --	if self.Options.InfoFrame then
 --		DBM.InfoFrame:Hide()
 --	end
@@ -158,8 +154,10 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 247376 or spellId == 248068 then
-		specWarnPulseGrenade:Show()
-		voicePulseGrenade:Play("watchstep")
+		if spellId == 247376 then
+			specWarnPulseGrenade:Show()
+			voicePulseGrenade:Play("watchstep")
+		end
 		timerPulseGrenadeCD:Start()
 	elseif spellId == 247923 or spellId == 248070 then
 		specWarnShrapnalBlast:Show()
@@ -168,7 +166,11 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 248254 then
 		specWarnChargedBlastsUnknown:Show()
 		voiceChargedBlasts:Play("farfromline")
-		timerChargedBlastsCD:Start()
+		if self:IsMythic() then
+			timerChargedBlastsCD:Start(13.5)
+		else
+			timerChargedBlastsCD:Start()--18.2
+		end
 	end
 end
 
@@ -237,6 +239,16 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 247565 then
 		warnSlumberGas:CombinedShow(0.3, args.destName)
+	elseif spellId == 250006 then
+		warnEmpoweredPulseGrenade:CombinedShow(0.3, args.destName)
+		if args:IsPlayer() then
+			specWarnEmpPulseGrenade:Show()
+			voiceEmpPulseGrenade:Play("range5")
+			yellEmpPulseGrenade:Yell()
+			if self.Options.RangeFrame then
+				DBM.RangeCheck:Show(5)
+			end
+		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -271,6 +283,12 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerShocklanceCD:Start(5)--Empowered
 			timerPulseGrenadeCD:Start(7.6)--Empowered
 			timerShrapnalBlastCD:Start(16.2)--Empowered
+		end
+	elseif spellId == 250006 then
+		if args:IsPlayer() then
+			if self.Options.RangeFrame then
+				DBM.RangeCheck:Hide()
+			end
 		end
 	end
 end
