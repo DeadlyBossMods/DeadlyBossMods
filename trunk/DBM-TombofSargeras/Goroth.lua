@@ -48,7 +48,7 @@ local timerShatteringStar				= mod:NewBuffFadesTimer(6, 233272, nil, nil, nil, 5
 local timerCrashingComet				= mod:NewBuffFadesTimer(5, 232249, nil, nil, nil, 5)
 local timerCrashingCometCD				= mod:NewCDTimer(18.2, 232249, nil, nil, nil, 3)--18.2-24.7
 local timerInfernalSpikeCD				= mod:NewCDTimer(16.2, 233055, nil, nil, nil, 3)--16.2-20.7
-local timerBurningArmorCD				= mod:NewCDTimer(24.3, 231363, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerBurningArmorCD				= mod:NewCDCountTimer(24.3, 231363, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerBurningArmor					= mod:NewBuffFadesTimer(6, 231363, nil, nil, nil, 5, nil, DBM_CORE_DEADLY_ICON)
 mod:AddTimerLine(ENCOUNTER_JOURNAL_SECTION_FLAG12)
 local timerRainofBrimstoneCD			= mod:NewCDCountTimer(31, 238587, nil, nil, nil, 5, nil, DBM_CORE_HEROIC_ICON)
@@ -81,13 +81,15 @@ local shatteringStarTimers = {24, 60, 60, 50}--24, 60, 60, 50, 20, 40, 20, 40, 2
 --["233050-Infernal Spike"] = "pull:4.1, 16.7, 17.1, 23.2, 17.1, 17.1, 17.1, 16.3, 16.7, 17.0, 20.7, 17.0", --Infernal Spike
 mod.vb.shatteringStarCount = 0
 mod.vb.brimstoneCount = 0
+mod.vb.burningArmorCount = 0
 
 function mod:OnCombatStart(delay)
 	table.wipe(cometTable)
 	self.vb.shatteringStarCount = 0
+	self.vb.burningArmorCount = 0
 	timerInfernalSpikeCD:Start(4-delay)
 	timerCrashingCometCD:Start(8.5-delay)
-	timerBurningArmorCD:Start(10.5-delay)
+	timerBurningArmorCD:Start(10.5-delay, 1)
 	timerInfernalBurningCD:Start(54-delay)
 	if self:IsMythic() then
 		self.vb.brimstoneCount = 0
@@ -120,7 +122,8 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 231363 then
-		timerBurningArmorCD:Start()
+		self.vb.burningArmorCount = self.vb.burningArmorCount + 1
+		timerBurningArmorCD:Start(nil, self.vb.burningArmorCount+1)
 	elseif spellId == 233272 then
 		self.vb.shatteringStarCount = self.vb.shatteringStarCount + 1
 		local nextCount = self.vb.shatteringStarCount+1
