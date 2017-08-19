@@ -68,10 +68,13 @@ local timerNecroticEmbraceCD			= mod:NewCDTimer(30.3, 244093, nil, nil, nil, 3)
 local berserkTimer						= mod:NewBerserkTimer(390)
 
 --The Fallen Nathrezim
---local countdownSingularity			= mod:NewCountdown(50, 235059)
+local countdownShadowStrike				= mod:NewCountdown("Alt9", 243960, "Tank")
+local countdownMarkedPrey				= mod:NewCountdown(30, 244042)
+local countdownNecroticEmbrace			= mod:NewCountdown("AltTwo30", 244093)
 
 --Torments of the Shivarra
 local voiceGTFO							= mod:NewVoice(243968, nil, DBM_CORE_AUTO_VOICE4_OPTION_TEXT)--runaway
+local voicePhaseChange					= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
 --The Fallen Nathrezim
 local voiceMisery						= mod:NewVoice(243961)--defensive/tauntboss
 local voiceDarkFissure					= mod:NewVoice(243999)--watchstep
@@ -89,10 +92,14 @@ function mod:OnCombatStart(delay)
 	self.vb.currentTorment = 0
 	timerTormentofFlamesCD:Start(5-delay)
 	timerShadowStrikeCD:Start(9.6-delay)
+	countdownShadowStrike:Start(9.6-delay)
 	timerDarkFissureCD:Start(17.9-delay)--success
 	timerMarkedPreyCD:Start(25.7-delay)
+	countdownMarkedPrey:Start(25.7-delay)
 	if self:IsHard() then
 		timerNecroticEmbraceCD:Start(35-delay)
+		countdownNecroticEmbrace:Start(35-delay)
+		berserkTimer:Start(390-delay)--Assumed until proven otherwise
 	else
 		berserkTimer:Start(390-delay)--Confirmed on normal, 30 seconds after shadows soft enrage
 	end
@@ -126,20 +133,23 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if spellId == 243960 then
 		warnShadowStrike:Show()
 		timerShadowStrikeCD:Show()
+		countdownShadowStrike:Start(9.7)
 	elseif spellId == 244093 then--Necrotic Embrace Cast
 		timerNecroticEmbraceCD:Start()
+		countdownNecroticEmbrace:Start(30.3)
 	elseif spellId == 243999 then
 		specWarnDarkFissure:Show()
 		voiceDarkFissure:Play("watchstep")
 		timerDarkFissureCD:Start()
 	elseif spellId == 122366 then
 		timerMarkedPreyCD:Start()
+		countdownMarkedPrey:Start(30.3)
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 243961 and not self.vb.currentTorment == 4 then--If current torment is shadow, disable these warnings, Because entire raid now has misery rest of fight
+	if spellId == 243961 and self.vb.currentTorment ~= 4 then--If current torment is shadow, disable these warnings, Because entire raid now has misery rest of fight
 		if args:IsPlayer() then
 			specWarnMisery:Show()
 			voiceMisery:Play("defensive")
@@ -178,6 +188,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 243968 and self.vb.currentTorment ~= 1 then--Flame
 		self.vb.currentTorment = 1
 		warnTormentofFlames:Show()
+		voicePhaseChange:Play("phasechange")
 		if not self:IsEasy() then--No frost or fel in normal, LFR assumed
 			timerTormentofFrostCD:Start(120)
 		else
@@ -186,14 +197,17 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 243977 and self.vb.currentTorment ~= 2 then--Frost
 		self.vb.currentTorment = 2
 		warnTormentofFrost:Show()
+		voicePhaseChange:Play("phasechange")
 		timerTormentofFelCD:Start(115)--No fel or frost in normal, no reason to filter cause forst won't even happen
 	elseif spellId == 243980 and self.vb.currentTorment ~= 3 then--Fel
 		self.vb.currentTorment = 3
 		warnTormentofFel:Show()
+		voicePhaseChange:Play("phasechange")
 		timerTormentofShadowsCD:Start(121)--(361 after pull technically, same as normal). No fel or frost in normal, no reason to filter cause fel won't even happen
 	elseif spellId == 243973 and self.vb.currentTorment ~= 4 then--Shadow
 		self.vb.currentTorment = 4
 		warnTormentofShadows:Show()
+		voicePhaseChange:Play("phasechange")
 	end
 end
 --mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED

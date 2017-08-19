@@ -80,8 +80,9 @@ local timerShrapnalBlastCD				= mod:NewCDTimer(13.3, 247923, nil, nil, nil, 3)
 local berserkTimer						= mod:NewBerserkTimer(420)
 
 --Stage One: Attack Force
---local countdownSingularity			= mod:NewCountdown(50, 235059)
+local countdownPulseGrenade				= mod:NewCountdown(16.1, 247376)
 --Stage Two: Contract to Kill
+local countdownChargedBlasts			= mod:NewCountdown("AltTwo18", 247716)
 
 --General
 --local voiceGTFO						= mod:NewVoice(238028, nil, DBM_CORE_AUTO_VOICE4_OPTION_TEXT)--runaway
@@ -139,6 +140,7 @@ function mod:OnCombatStart(delay)
 	timerShocklanceCD:Start(3.7-delay)--4.4 Mythic
 	timerSleepCanisterCD:Start(6.2-delay)--7 mythic
 	timerPulseGrenadeCD:Start(12.3-delay)--14.3 Mythic
+	countdownPulseGrenade:Start(12.3-delay)
 	berserkTimer:Start(-delay)--7min on heroic at least
 end
 
@@ -159,6 +161,7 @@ function mod:SPELL_CAST_START(args)
 			voicePulseGrenade:Play("watchstep")
 		end
 		timerPulseGrenadeCD:Start()
+		countdownPulseGrenade:Start()
 	elseif spellId == 247923 or spellId == 248070 then
 		specWarnShrapnalBlast:Show()
 		voiceShrapnalBlast:Play("watchstep")
@@ -168,8 +171,10 @@ function mod:SPELL_CAST_START(args)
 		voiceChargedBlasts:Play("farfromline")
 		if self:IsMythic() then
 			timerChargedBlastsCD:Start(13.5)
+			countdownChargedBlasts:StarT(13.5)
 		else
 			timerChargedBlastsCD:Start()--18.2
+			countdownChargedBlasts:Start(18.2)
 		end
 	end
 end
@@ -261,6 +266,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			warnPhase2:Show()
 			timerSeverCD:Start(6.6)
 			timerChargedBlastsCD:Start(9)
+			countdownChargedBlasts:Start(9)
 			timerShrapnalBlastCD:Start(12.7)
 		elseif self.vb.phase == 3 then
 			warnPhase3:Show()
@@ -271,6 +277,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			else
 				timerShocklanceCD:Start(5)--Empowered
 				timerPulseGrenadeCD:Start(7.6)--Empowered
+				countdownPulseGrenade:Start(7.6)
 				timerShrapnalBlastCD:Start(16.2)--Empowered
 			end
 		elseif self.vb.phase == 4 then--Mythic Only
@@ -282,6 +289,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			warnPhase5:Show()
 			timerShocklanceCD:Start(5)--Empowered
 			timerPulseGrenadeCD:Start(7.6)--Empowered
+			countdownPulseGrenade:Start(7.6)
 			timerShrapnalBlastCD:Start(16.2)--Empowered
 		end
 	elseif spellId == 250006 then
@@ -346,8 +354,10 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 248995 or spellId == 248194 then
 		timerSeverCD:Stop()
 		timerChargedBlastsCD:Stop()
+		countdownChargedBlasts:Cancel()
 		timerShrapnalBlastCD:Stop()
 		timerPulseGrenadeCD:Stop()
+		countdownPulseGrenade:Cancel()
 		timerSleepCanisterCD:Stop()
 		timerShocklanceCD:Stop()
 		voicePhaseChange:Play("phasechange")

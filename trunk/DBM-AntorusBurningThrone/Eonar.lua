@@ -65,7 +65,10 @@ local timerFinalDoomCD					= mod:NewCDTimer(90, 249121, nil, nil, nil, 4, nil, D
 --local berserkTimer					= mod:NewBerserkTimer(600)
 
 --The Paraxis
---local countdownSingularity			= mod:NewCountdown(50, 235059)
+local countdownWarpIn					= mod:NewCountdown(50, 246888)
+local countdownRainofFel				= mod:NewCountdown("Alt60", 248332)
+--Mythic
+local countdownFinalDoom				= mod:NewCountdown("AltTwo90", 249121)
 
 --The Paraxis
 local voiceMeteorStorm					= mod:NewVoice(248333)--watchstep
@@ -90,7 +93,7 @@ mod.vb.warpCount = 0
 mod.vb.lifeForceCast = 0
 mod.vb.spearCast = 0
 local normalWarpTimers = {5.1, 16.0}
-local heroicWarpTimers = {5.3, 10.0, 23.9, 20.7, 24.0, 19.0}--Sequence timer, but stll altered by Life Force?
+local heroicWarpTimers = {5.3, 10.0, 23.9, 20.7, 24.0, 19.0}
 local mythicWarpTimers = {5.3, 9.8, 35.3, 44.8, 34.9}--Excludes the waves that don't fire warp in (obfuscators and purifiers)
 local normalRainOfFelTimers = {21.1, 24.1, 23.9, 24.1, 24.0, 96.0, 12.0, 36.0, 12.0, 36.0}
 local heroicRainOfFelTimers = {15.0, 24.1, 8.9, 24.2, 11.9, 19.0, 12.1}
@@ -125,11 +128,14 @@ function mod:OnCombatStart(delay)
 	self.vb.lifeForceCast = 0
 	self.vb.spearCast = 0
 	timerWarpInCD:Start(5.1)
+	countdownWarpIn:Start(5.1)
 	if not self:IsLFR() then
 		timerRainofFelCD:Start(15-delay)
+		countdownRainofFel:Start(15-delay)
 		if self:IsMythic() then
 			timerSpearofDoomCD:Start(35-delay)
 			timerFinalDoomCD:Start(60-delay)
+			countdownFinalDoom:Start(60-delay)
 		else
 			timerSpearofDoomCD:Start(25-delay)
 		end
@@ -165,7 +171,8 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 249121 then
 		timerFinalDoom:Start()
-		timerFinalDoomCD:Start()--Move to stop event or power event if cleaner
+		timerFinalDoomCD:Start()
+		countdownFinalDoom:Start()
 	elseif spellId == 250701 then
 		specWarnSwing:Show()
 		voiceSwing:Play("defensive")
@@ -175,8 +182,11 @@ function mod:SPELL_CAST_START(args)
 		if self:IsEasy() then
 			--local warpElapsed, warpTotal = timerWarpInCD:GetTime()
 			local felElapsed, felTotal = timerRainofFelCD:GetTime()
+			local felRemaining = felTotal - felElapsed
 			--timerWarpInCD:Update(warpElapsed, warpTotal+24)
+			countdownRainofFel:Cancel()
 			timerRainofFelCD:Update(felElapsed, felTotal+24)
+			countdownRainofFel:Start(felRemaining+24)
 		end
 	end
 end
@@ -189,6 +199,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		local timer = self:IsMythic() and mythicWarpTimers[self.vb.warpCount+1] or self:IsHeroic() and heroicWarpTimers[self.vb.warpCount+1] or self:IsEasy() and (normalWarpTimers[self.vb.warpCount+1] or 23.7)--(always 24ish on normal)
 		if timer then
 			timerWarpInCD:Start(timer)
+			countdownWarpIn:Start(timer)
 		end
 	elseif spellId == 246753 then--Cloak
 		warnWarpIn:Show(args.destName)
@@ -342,6 +353,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		local timer = self:IsMythic() and mythicRainOfFelTimers[self.vb.rainOfFelCount+1] or self:IsHeroic() and heroicRainOfFelTimers[self.vb.rainOfFelCount+1] or self:IsNormal() and normalRainOfFelTimers[self.vb.rainOfFelCount+1]
 		if timer then
 			timerRainofFelCD:Start(timer)
+			countdownRainofFel:Start(timer)
 		end
 	end
 end
