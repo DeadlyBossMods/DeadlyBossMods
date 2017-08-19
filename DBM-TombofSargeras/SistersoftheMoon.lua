@@ -74,18 +74,18 @@ local specWarnMoonBurn				= mod:NewSpecialWarningMoveTo(236519, nil, DBM_CORE_AU
 
 --Huntress Kasparian
 mod:AddTimerLine(EJ_GetSectionInfo(14992))
-local timerGlaiveStormCD			= mod:NewNextTimer(54, 239379, nil, nil, nil, 3)--Moon change special (but also used while inactive?)
+local timerGlaiveStormCD			= mod:NewNextCountTimer(54, 239379, nil, nil, nil, 3)--Moon change special (but also used while inactive?)
 --local timerTwilightGlaiveCD			= mod:NewCDTimer(7.5, 237561, nil, nil, nil, 3)--6.1-34
 local timerMoonGlaiveCD				= mod:NewCDTimer(13.4, 236547, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--13.4-30 second variation, have fun with that
 --Captain Yathae Moonstrike
 mod:AddTimerLine(EJ_GetSectionInfo(14994))
-local timerIncorporealShotCD		= mod:NewNextTimer(54, 236305, nil, nil, nil, 3)--Moon change special (but also used while inactive?)
+local timerIncorporealShotCD		= mod:NewNextCountTimer(54, 236305, nil, nil, nil, 3)--Moon change special (but also used while inactive?)
 local timerCallMoontalonCD			= mod:NewCDTimer(31, 236694, nil, nil, nil, 1)
 local timerTwilightVolleyCD			= mod:NewCDTimer(12.8, 236442, nil, nil, nil, 2)--Cast while inactive. 8.5--20
 local timerRapidShotCD				= mod:NewCDTimer(18.2, 236596, nil, nil, nil, 3)--18.2 but sometimes 30
 --Priestess Lunaspyre
 mod:AddTimerLine(EJ_GetSectionInfo(14997))
-local timerEmbraceofEclipseCD		= mod:NewNextTimer(54, 233264, nil, nil, nil, 5, nil, DBM_CORE_HEALER_ICON..DBM_CORE_DAMAGE_ICON)--Moon change special (but also used while inactive in phase 1)
+local timerEmbraceofEclipseCD		= mod:NewNextCountTimer(54, 233264, nil, nil, nil, 5, nil, DBM_CORE_HEALER_ICON..DBM_CORE_DAMAGE_ICON)--Moon change special (but also used while inactive in phase 1)
 local timerLunarBeaconCD			= mod:NewCDTimer(20.6, 236712, nil, nil, nil, 3)--20.6-31.7
 local timerLunarFireCD				= mod:NewCDTimer(11, 239264, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 --local timerMoonBurnCD				= mod:NewCDTimer(23, 236519, nil, nil, nil, 3)--Used while inactive
@@ -123,6 +123,7 @@ mod.vb.eclipseCount = 0
 mod.vb.beaconCount = 0
 mod.vb.moonTalonCount = 0
 mod.vb.pulltime = 0
+mod.vb.specialCount = 0
 mod.vb.lastBeacon = false
 local astralPurge = GetSpellInfo(234998)
 
@@ -160,15 +161,16 @@ function mod:OnCombatStart(delay)
 	self.vb.eclipseCount = 0
 	self.vb.beaconCount = 0
 	self.vb.moonTalonCount = 0
+	self.vb.specialCount = 0
 	self.vb.pulltime = GetTime()
 	--timerMoonBurnCD:Start(9.1-delay)
 	timerMoonGlaiveCD:Start(14.4-delay)--16.6 on lat mythic test
 	timerTwilightVolleyCD:Start(15.5-delay)--15.5-17
 	--timerTwilightGlaiveCD:Start(17.4-delay)
-	timerIncorporealShotCD:Start(48-delay)--Primary in phase 1 in all modes
+	timerIncorporealShotCD:Start(48-delay, 1)--Primary in phase 1 in all modes
 	countdownSpecials:Start(48-delay)
 	if not self:IsEasy() then
-		timerEmbraceofEclipseCD:Start(48-delay)--Secondary special for heroic/mythic
+		timerEmbraceofEclipseCD:Start(48-delay, 1)--Secondary special for heroic/mythic
 		if self:IsMythic() then
 			berserkTimer:Start()--11 min
 		end
@@ -197,8 +199,9 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 239379 then
 		specWarnGlaiveStorm:Show()
 		voiceGlaiveStorm:Play("watchstep")
-		timerGlaiveStormCD:Start()
+		timerGlaiveStormCD:Start(nil, self.vb.specialCount+1)
 		if self:AntiSpam(5, 2) then
+			self.vb.specialCount = self.vb.specialCount + 1
 			countdownSpecials:Start()
 			for i = 1, 3 do
 	 			local unitGUID = UnitGUID("boss"..i)
@@ -239,8 +242,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 			timerMoonBurnCD:Start()
 		end--]]
 	elseif spellId == 233263 then
-		timerEmbraceofEclipseCD:Start()
+		timerEmbraceofEclipseCD:Start(nil, self.vb.specialCount+1)
 		if self:AntiSpam(5, 2) then
+			self.vb.specialCount = self.vb.specialCount + 1
 			countdownSpecials:Start()
 			for i = 1, 3 do
 	 			local unitGUID = UnitGUID("boss"..i)
@@ -311,7 +315,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 236305 then
 		if self:AntiSpam(5, 3) then
-			timerIncorporealShotCD:Start()
+			timerIncorporealShotCD:Start(nil, self.vb.specialCount+1)
 		end
 		if args:IsPlayer() then
 			specWarnIncorpShot:Show()
@@ -325,6 +329,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:SetIcon(args.destName, 1)
 		end
 		if self:AntiSpam(5, 2) then
+			self.vb.specialCount = self.vb.specialCount + 1
 			countdownSpecials:Start()
 			for i = 1, 3 do
 	 			local unitGUID = UnitGUID("boss"..i)

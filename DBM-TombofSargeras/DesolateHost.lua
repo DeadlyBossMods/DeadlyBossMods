@@ -41,7 +41,7 @@ ability.id = 236072 and (type = "applybuff" or type = "removebuff") or
 (ability.id = 236459 or ability.id = 235969 or ability.id = 236513) and (type = "applydebuff" or type = "removedebuff" or type = "applybuff" or type = "removebuff")
 --]]
 --Corporeal Realm
-local warnSpearofAnguish			= mod:NewTargetAnnounce(235924, 3)
+local warnSpearofAnguish			= mod:NewTargetCountAnnounce(235924, 3)
 local warnCollapsingFissure			= mod:NewSpellAnnounce(235907, 3)--Upgrade to special, if needed
 local warnTormentingCries			= mod:NewTargetAnnounce(238018, 3)--Spammy? off by default?
 ----Adds
@@ -78,7 +78,7 @@ local specWarnDoomedSunderingRun	= mod:NewSpecialWarningRun(236544, nil, nil, ni
 
 mod:AddTimerLine(SCENARIO_STAGE:format(1))
 --Corporeal Realm
-local timerSpearofAnquishCD			= mod:NewCDTimer(20, 235924, nil, nil, nil, 3)
+local timerSpearofAnquishCD			= mod:NewCDCountTimer(20, 235924, nil, nil, nil, 3)
 --local timerCollapsingFissureCD		= mod:NewAITimer(31, 235907, nil, nil, nil, 3)
 local timerTormentedCriesCD			= mod:NewNextCountTimer(58, 238570, nil, nil, nil, 6)
 --Spirit Realm
@@ -180,7 +180,7 @@ function mod:OnCombatStart(delay)
 	timerSoulbindCD:Start(14.2-delay, 1)
 	if not self:IsEasy() then
 		doBones = true
-		timerSpearofAnquishCD:Start(20.7-delay)
+		timerSpearofAnquishCD:Start(20.7-delay, 1)
 		if self:IsMythic() then
 			berserkTimer:Start(480-delay)
 		end
@@ -318,8 +318,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			self.vb.soulIcon = 3
 		end
 	elseif spellId == 235924 then
-		warnSpearofAnguish:CombinedShow(0.3, args.destName)
-		timerSpearofAnquishCD:DelayedStart(0.3)
+		self.vb.spearCast = self.vb.spearCast + 1
+		warnSpearofAnguish:Show(self.vb.spearCast, args.destName)
+		timerSpearofAnquishCD:Start(nil, self.vb.spearCast+1)
 		if args:IsPlayer() then
 			specWarnSpearofAnguish:Show()
 			voiceSpearofAnguish:Play("runout")
@@ -455,7 +456,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		timerTormentedCriesCD:Stop()
 		if not self:IsEasy() then
 			timerSpearofAnquishCD:Stop()
-			timerSpearofAnquishCD:Start(8)
+			timerSpearofAnquishCD:Start(8, self.vb.spearCast+1)
 		end
 		timerSoulbindCD:Start(10)
 		--New Phase Timers
