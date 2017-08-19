@@ -53,13 +53,13 @@ local specWarnSwing						= mod:NewSpecialWarningDefensive(250701, "Tank", nil, n
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
 
 --The Paraxis
-local timerWarpInCD						= mod:NewCDTimer(30, 246888, nil, nil, nil, 1)
+local timerWarpInCD						= mod:NewCDCountTimer(30, 246888, nil, nil, nil, 1)
 local timerMeteorStormCD				= mod:NewAITimer(61, 248333, nil, nil, nil, 3)
-local timerSpearofDoomCD				= mod:NewCDTimer(61, 248789, nil, nil, nil, 3)
-local timerRainofFelCD					= mod:NewCDTimer(61, 248332, nil, nil, nil, 3)
+local timerSpearofDoomCD				= mod:NewCDCountTimer(61, 248789, nil, nil, nil, 3)
+local timerRainofFelCD					= mod:NewCDCountTimer(61, 248332, nil, nil, nil, 3)
 local timerFinalDoom					= mod:NewCastTimer(70, 249121, nil, nil, nil, 2)
 --Mythic
-local timerFinalDoomCD					= mod:NewCDTimer(90, 249121, nil, nil, nil, 4, nil, DBM_CORE_HEROIC_ICON)
+local timerFinalDoomCD					= mod:NewCDCountTimer(90, 249121, nil, nil, nil, 4, nil, DBM_CORE_HEROIC_ICON)
 --local timerFelclawsCD					= mod:NewAITimer(25, 239932, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
@@ -92,6 +92,7 @@ mod.vb.rainOfFelCount = 0
 mod.vb.warpCount = 0
 mod.vb.lifeForceCast = 0
 mod.vb.spearCast = 0
+mod.vb.finalDoomCast = 0
 local normalWarpTimers = {5.1, 16.0}
 local heroicWarpTimers = {5.3, 10.0, 23.9, 20.7, 24.0, 19.0}
 local mythicWarpTimers = {5.3, 9.8, 35.3, 44.8, 34.9}--Excludes the waves that don't fire warp in (obfuscators and purifiers)
@@ -127,17 +128,18 @@ function mod:OnCombatStart(delay)
 	self.vb.warpCount = 0
 	self.vb.lifeForceCast = 0
 	self.vb.spearCast = 0
-	timerWarpInCD:Start(5.1)
+	self.vb.finalDoomCast = 0
+	timerWarpInCD:Start(5.1, 1)
 	countdownWarpIn:Start(5.1)
 	if not self:IsLFR() then
-		timerRainofFelCD:Start(15-delay)
+		timerRainofFelCD:Start(15-delay, 1)
 		countdownRainofFel:Start(15-delay)
 		if self:IsMythic() then
-			timerSpearofDoomCD:Start(35-delay)
-			timerFinalDoomCD:Start(60-delay)
+			timerSpearofDoomCD:Start(35-delay, 1)
+			timerFinalDoomCD:Start(60-delay, 1)
 			countdownFinalDoom:Start(60-delay)
 		else
-			timerSpearofDoomCD:Start(25-delay)
+			timerSpearofDoomCD:Start(25-delay, 1)
 		end
 	else
 		timerMeteorStormCD:Start(1-delay)
@@ -170,8 +172,9 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 249121 then
+		self.vb.finalDoomCast = self.vb.finalDoomCast + 1
 		timerFinalDoom:Start()
-		timerFinalDoomCD:Start()
+		timerFinalDoomCD:Start(nil, self.vb.finalDoomCast+1)
 		countdownFinalDoom:Start()
 	elseif spellId == 250701 then
 		specWarnSwing:Show()
@@ -180,12 +183,12 @@ function mod:SPELL_CAST_START(args)
 		self.vb.lifeForceCast = self.vb.lifeForceCast + 1
 		warnLifeForce:Show(self.vb.lifeForceCast)
 		if self:IsEasy() then
-			--local warpElapsed, warpTotal = timerWarpInCD:GetTime()
-			local felElapsed, felTotal = timerRainofFelCD:GetTime()
+			--local warpElapsed, warpTotal = timerWarpInCD:GetTime(self.vb.warpCount+1)
+			local felElapsed, felTotal = timerRainofFelCD:GetTime(self.vb.rainOfFelCount+1)
 			local felRemaining = felTotal - felElapsed
 			--timerWarpInCD:Update(warpElapsed, warpTotal+24)
 			countdownRainofFel:Cancel()
-			timerRainofFelCD:Update(felElapsed, felTotal+24)
+			timerRainofFelCD:Update(felElapsed, felTotal+24, self.vb.rainOfFelCount+1)
 			countdownRainofFel:Start(felRemaining+24)
 		end
 	end
@@ -198,7 +201,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnWarpIn:Show(self.vb.warpCount)
 		local timer = self:IsMythic() and mythicWarpTimers[self.vb.warpCount+1] or self:IsHeroic() and heroicWarpTimers[self.vb.warpCount+1] or self:IsEasy() and (normalWarpTimers[self.vb.warpCount+1] or 23.7)--(always 24ish on normal)
 		if timer then
-			timerWarpInCD:Start(timer)
+			timerWarpInCD:Start(timer, self.vb.warpCount+1)
 			countdownWarpIn:Start(timer)
 		end
 	elseif spellId == 246753 then--Cloak
@@ -323,12 +326,12 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 		voiceSpearofDoom:Play("watchstep")
 		if self:IsMythic() then
 			if self.vb.spearCast % 2 == 0 then
-				timerSpearofDoomCD:Start(35)
+				timerSpearofDoomCD:Start(35, self.vb.spearCast+1)
 			else
-				timerSpearofDoomCD:Start(80)
+				timerSpearofDoomCD:Start(80, self.vb.spearCast+1)
 			end
 		else
-			timerSpearofDoomCD:Start(31)--31-33
+			timerSpearofDoomCD:Start(31, self.vb.spearCast+1)--31-33
 		end
 	end
 end
@@ -352,7 +355,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		voiceRainofFel:Play("scatter")
 		local timer = self:IsMythic() and mythicRainOfFelTimers[self.vb.rainOfFelCount+1] or self:IsHeroic() and heroicRainOfFelTimers[self.vb.rainOfFelCount+1] or self:IsNormal() and normalRainOfFelTimers[self.vb.rainOfFelCount+1]
 		if timer then
-			timerRainofFelCD:Start(timer)
+			timerRainofFelCD:Start(timer, self.vb.rainOfFelCount+1)
 			countdownRainofFel:Start(timer)
 		end
 	end
