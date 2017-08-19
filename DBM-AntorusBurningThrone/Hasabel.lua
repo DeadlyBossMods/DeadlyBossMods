@@ -98,7 +98,9 @@ local timerDelusionsCD					= mod:NewCDTimer(14.6, 245050, nil, nil, nil, 3, nil,
 --local berserkTimer					= mod:NewBerserkTimer(600)
 
 --Platform: Nexus
---local countdownSingularity			= mod:NewCountdown(50, 235059)
+local countdownCollapsingWorld			= mod:NewCountdown(50, 243983)
+local countdownRealityTear				= mod:NewCountdown("Alt12", 244016, "Tank")
+local countdownFelstormBarrage			= mod:NewCountdown("AltTwo32", 244000)
 --Platform: Xoroth
 --Platform: Rancora
 
@@ -160,11 +162,14 @@ function mod:OnCombatStart(delay)
 	table.wipe(rancoraPlatform)
 	table.wipe(nathrezaPlatform)
 	timerRealityTearCD:Start(6.2-delay)
+	countdownRealityTear:Start(6.2-delay)
 	timerCollapsingWorldCD:Start(10.5-delay)
+	countdownCollapsingWorld:Start(10.5-delay)
 	if not self:IsEasy() then
 --		timerTransportPortalCD:Start(20.5-delay)
 	end
 	timerFelstormBarrageCD:Start(25.2-delay)
+	countdownFelstormBarrage:Start(25.2-delay)
 	for uId in DBM:GetGroupMembers() do
 		local name = DBM:GetUnitFullName(uId)
 		nexusPlatform[#nexusPlatform+1] = name
@@ -184,6 +189,7 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 243983 then
 		timerCollapsingWorldCD:Start()
+		countdownCollapsingWorld:Start(31.9)
 		if self.Options.ShowAllPlatforms or playerPlatform == 1 then--Actually on nexus platform
 			specWarnCollapsingWorld:Show()
 			voiceCollapsingWorld:Play("watchstep")
@@ -224,11 +230,14 @@ function mod:SPELL_CAST_START(args)
 			--pull:25.4, 47.5, 52.3, 47.5, 52.3, 47.5, 52.2, 47.4
 			if self.vb.felBarrageCast % 2 == 0 then
 				timerFelstormBarrageCD:Start(52)
+				countdownFelstormBarrage:Start(52)
 			else
 				timerFelstormBarrageCD:Start(47.5)
+				countdownFelstormBarrage:Start(47.5)
 			end
 		else
 			timerFelstormBarrageCD:Start()--32.9-41
+			countdownFelstormBarrage:Start(32.9)--Review/improve if possible
 		end
 		if self.Options.ShowAllPlatforms or playerPlatform == 1 then--Actually on nexus platform
 			specWarnFelstormBarrage:Show()
@@ -292,6 +301,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		local uId = DBM:GetRaidUnitId(args.destName)
 --		if self:IsTanking(uId) then
 			timerRealityTearCD:Start()--Move this later
+			countdownRealityTear:Start(12.2)--Move this later
 			local amount = args.amount or 1
 			if amount >= 3 then
 				if args:IsPlayer() then--At this point the other tank SHOULD be clear.
