@@ -78,7 +78,8 @@ local timerWakeofFlameCD				= mod:NewCDTimer(24.3, 244693, nil, nil, nil, 3)
 --local berserkTimer					= mod:NewBerserkTimer(600)
 
 --Stages One: Wrath of Aggramar
---local countdownSingularity			= mod:NewCountdown(50, 235059)
+local countdownTaeshalachTech			= mod:NewCountdown(65, 244688)
+local countdownWakeofFlame				= mod:NewCountdown("AltTwo24", 244693, "-Tank")
 
 --Stage One: Wrath of Aggramar
 local voicePhaseChange					= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
@@ -115,7 +116,9 @@ function mod:OnCombatStart(delay)
 	self.vb.wakeOfFlameCount = 0
 	timerScorchingBlazeCD:Start(4.8-delay)
 	timerWakeofFlameCD:Start(5.9-delay)
+	countdownWakeofFlame:Start(5.9-delay)
 	timerTaeshalachTechCD:Start(35-delay)
+	countdownTaeshalachTech:Start(35-delay)
 	--Everyone should lose spead except tanks which should stay stacked. Maybe melee are safe too?
 	if self.Options.RangeFrame and not self:IsTank() then
 		DBM.RangeCheck:Show(6)
@@ -146,6 +149,7 @@ function mod:SPELL_CAST_START(args)
 		local techTimer = timerTaeshalachTechCD:GetRemaining()
 		if techTimer == 0 or techTimer > 24 then
 			timerWakeofFlameCD:Start()
+			countdownWakeofFlame:Start(24.3)
 		end
 		self:BossTargetScanner(args.sourceGUID, "WakeTarget", 0.1, 12, true, nil, nil, nil, true)
 	elseif spellId == 245458 then
@@ -195,6 +199,7 @@ function mod:SPELL_CAST_START(args)
 		timerScorchingBlazeCD:Start(13.7+timerAdjust)
 		if self.vb.phase == 1 then
 			timerWakeofFlameCD:Start(14.9)
+			countdownWakeofFlame:Start(14.9)
 		elseif self.vb.phase == 2 then
 	
 		else--Stage 3
@@ -249,7 +254,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.wakeOfFlameCount = 0
 		timerScorchingBlazeCD:Stop()
 		timerWakeofFlameCD:Stop()
+		countdownWakeofFlame:Cancel()
 		timerTaeshalachTechCD:Stop()
+		countdownTaeshalachTech:Cancel()
 		timerFoeBreakerCD:Stop()
 		timerFlameRendCD:Stop()
 		timerTempestCD:Stop()
@@ -330,6 +337,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		self.vb.rendCount = 0
 		timerScorchingBlazeCD:Stop()
 		timerWakeofFlameCD:Stop()
+		countdownWakeofFlame:Cancel()
 		warnTaeshalachTech:Show()
 		--Foebreaker instantly so no need for timer
 		if self:IsEasy() then
@@ -340,5 +348,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			timerTempestCD:Start(15)
 		end
 		timerTaeshalachTechCD:Start()
+		countdownTaeshalachTech:Start()
 	end
 end
