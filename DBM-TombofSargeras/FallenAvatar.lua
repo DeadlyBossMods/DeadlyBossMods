@@ -71,9 +71,9 @@ local specWarnRainoftheDestroyer	= mod:NewSpecialWarningDodge(240396, nil, nil, 
 --Stage One: A Slumber Disturbed
 local timerRP						= mod:NewRPTimer(41)
 mod:AddTimerLine(SCENARIO_STAGE:format(1))
-local timerTouchofSargerasCD		= mod:NewCDTimer(42, 239207, nil, nil, nil, 3)--42+
-local timerRuptureRealitiesCD		= mod:NewCDTimer(60, 239132, nil, nil, nil, 2)
-local timerUnboundChaosCD			= mod:NewCDTimer(35, 234059, nil, nil, nil, 3)--35-60 (lovely huh?)
+local timerTouchofSargerasCD		= mod:NewCDCountTimer(42, 239207, nil, nil, nil, 3)--42+
+local timerRuptureRealitiesCD		= mod:NewCDCountTimer(60, 239132, nil, nil, nil, 2)
+local timerUnboundChaosCD			= mod:NewCDCountTimer(35, 234059, nil, nil, nil, 3)--35-60 (lovely huh?)
 local timerShadowyBladesCD			= mod:NewCDTimer(30, 236571, nil, nil, nil, 3)--30-46
 local timerDesolateCD				= mod:NewCDTimer(11.4, 236494, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 ----Maiden of Valor
@@ -124,6 +124,8 @@ mod.vb.bladesIcon = 1
 mod.vb.shieldActive = false
 mod.vb.touchCast = 0
 mod.vb.darkMarkCast = 0
+mod.vb.chaosCount = 0
+mod.vb.realityCount = 0
 local darkMarkTargets = {}
 local playerName = UnitName("player")
 local beamName = GetSpellInfo(238244)
@@ -224,19 +226,21 @@ function mod:OnCombatStart(delay)
 	self.vb.bladesIcon = 1
 	self.vb.touchCast = 0
 	self.vb.darkMarkCast = 0
-	timerUnboundChaosCD:Start(7-delay)--7
+	self.vb.chaosCount = 0
+	self.vb.realityCount = 0
+	timerUnboundChaosCD:Start(7-delay, 1)--7
 	self:Schedule(7, setabilityStatus, self, 234059, 0)--Unbound Chaos
 	timerDesolateCD:Start(13-delay)--13
 	if not self:IsEasy() then
 		showTouchofSarg = true
-		timerTouchofSargerasCD:Start(14.5-delay)
+		timerTouchofSargerasCD:Start(14.5-delay, 1)
 		self:Schedule(14.5, setabilityStatus, self, 239207, 0)--Touch of Sargeras
 	else
 		showTouchofSarg = false
 	end
 	timerShadowyBladesCD:Start(20.7-delay)
 	self:Schedule(20.7, setabilityStatus, self, 236571, 0)--Shadowy Blades
-	timerRuptureRealitiesCD:Start(31-delay)--31-37
+	timerRuptureRealitiesCD:Start(31-delay, 1)--31-37
 	self:Schedule(31, setabilityStatus, self, 239132, 0)--Ruptured Realities
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(OVERVIEW)
@@ -263,18 +267,19 @@ function mod:SPELL_CAST_START(args)
 		self.vb.touchCast = self.vb.touchCast + 1
 		specWarnTouchofSargerasGround:Show(self.vb.touchCast)
 		voiceTouchofSargerasGround:Play("helpsoak")
-		timerTouchofSargerasCD:Start()--42
+		timerTouchofSargerasCD:Start(42, self.vb.touchCast+1)--42
 		self:Unschedule(setabilityStatus, self, 239207)--Unschedule for good measure in case next cast start fires before timer expires (in which case have a bad timer)
 		setabilityStatus(self, 239207, 1)--Set on Cooldown
 		self:Schedule(42, setabilityStatus, self, 239207, 0)--Set ready to use when CD expires
 	elseif spellId == 239132 or spellId == 235572 then
+		self.vb.realityCount = self.vb.realityCount + 1
 		specWarnRuptureRealities:Show()
 		voiceRuptureRealities:Play("justrun")
 		if self.vb.phase == 2 then
-			timerRuptureRealitiesCD:Start(37)
+			timerRuptureRealitiesCD:Start(37, self.vb.realityCount+1)
 			countdownRuptureRealities:Start(37)
 		else
-			timerRuptureRealitiesCD:Start()--60
+			timerRuptureRealitiesCD:Start(60, self.vb.realityCount+1)--60
 			self:Unschedule(setabilityStatus, self, 239132)--Unschedule for good measure in case next cast start fires before timer expires (in which case have a bad timer)
 			setabilityStatus(self, 239132, 1)--Set on cooldown
 			self:Schedule(60, setabilityStatus, self, 239132, 0)--Set ready to use when CD expires
@@ -307,7 +312,7 @@ function mod:SPELL_CAST_START(args)
 		voicePhaseChange:Play("ptwo")
 		timerDesolateCD:Start(19)
 		timerDarkMarkCD:Start(21, 1)
-		timerRuptureRealitiesCD:Start(39)
+		timerRuptureRealitiesCD:Start(39, 1)
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:Hide()
 		end
@@ -441,9 +446,10 @@ end
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
 	if spellId == 234057 then
+		self.vb.chaosCount = self.vb.chaosCount + 1
 		specWarnUnboundChaos:Show()
 		voiceUnboundChaos:Play("watchstep")
-		timerUnboundChaosCD:Start()--35
+		timerUnboundChaosCD:Start(nil, self.vb.chaosCount+1)--35
 		self:Unschedule(setabilityStatus, self, 234059)--Unschedule for good measure in case next cast start fires before timer expires (in which case have a bad timer)
 		setabilityStatus(self, 234059, 1)--Set on cooldown
 		self:Schedule(35, setabilityStatus, self, 234059, 0)--Set ready to use when CD expires
