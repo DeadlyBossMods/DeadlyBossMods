@@ -268,7 +268,7 @@ DBM.DefaultOptions = {
 	WOTLKTWMessageShown = false,
 	CATATWMessageShown = false,
 	MISTSTWMessageShown = false,
-	AlwaysShowSpeedKillTimer = true,
+	AlwaysShowSpeedKillTimer2 = false,
 	ShowRespawn = true,
 	ShowQueuePop = true,
 	HelpMessageVersion = 3,
@@ -5599,7 +5599,7 @@ do
 					mod.stats[statVarTable[savedDifficulty].."Pulls"] = mod.stats[statVarTable[savedDifficulty].."Pulls"] + 1
 				end
 				--show speed timer
-				if self.Options.AlwaysShowSpeedKillTimer and mod.stats and not mod.ignoreBestkill then
+				if self.Options.AlwaysShowSpeedKillTimer2 and mod.stats and not mod.ignoreBestkill then
 					--TODO, add code here to only pull best kull for CURRENT mythic+ rank
 					local bestTime = mod.stats[statVarTable[savedDifficulty].."BestTime"]
 					if bestTime and bestTime > 0 then
