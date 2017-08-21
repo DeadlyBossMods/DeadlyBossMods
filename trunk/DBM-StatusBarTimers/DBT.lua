@@ -982,7 +982,7 @@ function barPrototype:Update(elapsed)
 	local timerValue = self.timer
 	local totaltimeValue = self.totalTime
 	local colorCount = self.colorType
-	local enlargeHack = false
+	local enlargeHack = self.enlargeHack or false
 	if barOptions.DynamicColor and not self.color then
 		local r, g, b
 		if colorCount and colorCount >= 1 then
