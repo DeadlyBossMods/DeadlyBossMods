@@ -18,7 +18,7 @@ DBM_CORE_LOAD_MOD_VER_MISMATCH		= "%s could not be loaded because your DBM-Core 
 DBM_CORE_LOAD_MOD_DISABLED			= "%s is installed but currently disabled. This mod will not be loaded unless you enable it."
 DBM_CORE_LOAD_MOD_DISABLED_PLURAL	= "%s are installed but currently disabled. These mods will not be loaded unless you enable them."
 
-DBM_CORE_WHATS_NEW					= "The Overwatch & Heroes of the Storm countdown sounds have been split from DBM core and moved to a seperate optional downloads. To get these counts back, just install DBM-CountPack-Overwatch & DBM-CountPack-HoTS. This was done to significantly reduce the pointless redownloading of media files, especially with a LOT of additional counts having just been added. There is also a new setting to hide notes like this from ever being shown again."
+DBM_CORE_WHATS_NEW					= "'Expand Upwards' and 'Fill Bars' options can now be adjusted per bar type (small/large) instead of globally. Try it out!"
 DBM_CORE_WHATS_NEW_LINK				= "Remember: You can report bugs, give feedback, or just hang out in DBM Discord. |HDBM:forumsnews|h|cff3588ffDiscord Link|r"
 
 --Post Patch 7.1
