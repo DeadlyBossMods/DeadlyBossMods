@@ -2361,6 +2361,7 @@ local function CreateOptionsMenu()
 		hugedummybar.frame:SetPoint('BOTTOM', BarSetupHuge.frame, "TOP", 0, -50)
 		hugedummybar.frame:SetScript("OnUpdate", function(self, elapsed) hugedummybar:Update(elapsed) end)
 		hugedummybar.enlarged = true
+		hugedummybar.enlargeHack = true
 		hugedummybar:ApplyStyle()
 		
 		local ExpandUpwardsLarge = BarSetup:CreateCheckButton(L.ExpandUpwards, false, nil, nil, "ExpandUpwardsLarge")
