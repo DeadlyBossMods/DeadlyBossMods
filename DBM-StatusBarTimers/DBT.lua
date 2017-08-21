@@ -109,6 +109,10 @@ options = {
 		type = "boolean",
 		default = false,
 	},
+	ExpandUpwardsLarge = {
+		type = "boolean",
+		default = false,
+	},
 	Flash = {
 		type = "boolean",
 		default = true,
@@ -429,6 +433,10 @@ options = {
 		default = 0.125,
 	},
 	FillUpBars = {
+		type = "boolean",
+		default = true,
+	},
+	FillUpLargeBars = {
 		type = "boolean",
 		default = true,
 	},
@@ -968,6 +976,8 @@ function barPrototype:Update(elapsed)
 	local isMoving = self.moving
 	local isFadingIn = self.fadingIn
 	local isEnlarged = self.enlarged
+	local fillUpBars = isEnlarged and barOptions.FillUpLargeBars or not isEnlarged and barOptions.FillUpBars
+	local ExpandUpwards = isEnlarged and barOptions.ExpandUpwardsLarge or not isEnlarged and barOptions.ExpandUpwards
 	self.timer = self.timer - elapsed
 	local timerValue = self.timer
 	local totaltimeValue = self.totalTime
@@ -1021,7 +1031,7 @@ function barPrototype:Update(elapsed)
 	if timerValue <= 0 then
 		return self:Cancel()
 	else
-		if barOptions.FillUpBars then
+		if fillUpBars then
 			if currentStyle == "NoAnim" and isEnlarged and not enlargeHack then
 				bar:SetValue(1 - timerValue/(totaltimeValue < 11 and totaltimeValue or 11))
 			else
@@ -1082,7 +1092,7 @@ function barPrototype:Update(elapsed)
 		self.moveElapsed = melapsed + elapsed
 		local newX = self.moveOffsetX + (barOptions[isEnlarged and "HugeBarXOffset" or "BarXOffset"] - self.moveOffsetX) * (melapsed / 0.5)
 		local newY
-		if barOptions.ExpandUpwards then
+		if ExpandUpwards then
 			newY = self.moveOffsetY + (barOptions[isEnlarged and "HugeBarYOffset" or "BarYOffset"] - self.moveOffsetY) * (melapsed / 0.5)
 		else
 			newY = self.moveOffsetY + (-barOptions[isEnlarged and "HugeBarYOffset" or "BarYOffset"] - self.moveOffsetY) * (melapsed / 0.5)
@@ -1287,6 +1297,7 @@ local function updateOrientation(self)
 	end
 end
 options.ExpandUpwards.onChange = updateOrientation
+options.ExpandUpwardsLarge.onChange = updateOrientation
 options.BarYOffset.onChange = updateOrientation
 options.BarXOffset.onChange = updateOrientation
 options.HugeBarYOffset.onChange = updateOrientation
@@ -1437,11 +1448,13 @@ end
 function barPrototype:SetPosition()
 	if self.moving == "enlarge" then return end
 	local anchor = (self.prev and self.prev.frame) or (self.enlarged and self.owner.secAnchor) or self.owner.mainAnchor
+	local Enlarged = self.enlarged
+	local ExpandUpwards = Enlarged and self.owner.options.ExpandUpwardsLarge or not Enlarged and self.owner.options.ExpandUpwards
 	self.frame:ClearAllPoints()
-	if self.owner.options.ExpandUpwards then
-		self.frame:SetPoint("BOTTOM", anchor, "TOP", self.owner.options[self.enlarged and "HugeBarXOffset" or "BarXOffset"], self.owner.options[self.enlarged and "HugeBarYOffset" or "BarYOffset"])
+	if ExpandUpwards then
+		self.frame:SetPoint("BOTTOM", anchor, "TOP", self.owner.options[Enlarged and "HugeBarXOffset" or "BarXOffset"], self.owner.options[Enlarged and "HugeBarYOffset" or "BarYOffset"])
 	else
-		self.frame:SetPoint("TOP", anchor, "BOTTOM", self.owner.options[self.enlarged and "HugeBarXOffset" or "BarXOffset"], -self.owner.options[self.enlarged and "HugeBarYOffset" or "BarYOffset"])
+		self.frame:SetPoint("TOP", anchor, "BOTTOM", self.owner.options[Enlarged and "HugeBarXOffset" or "BarXOffset"], -self.owner.options[Enlarged and "HugeBarYOffset" or "BarYOffset"])
 	end
 end
 
@@ -1450,15 +1463,17 @@ function barPrototype:MoveToNextPosition()
 	local newAnchor = (self.prev and self.prev.frame) or (self.enlarged and self.owner.secAnchor) or self.owner.mainAnchor
 	local oldX = self.frame:GetRight() - self.frame:GetWidth()/2
 	local oldY = self.frame:GetTop()
+	local Enlarged = self.enlarged
+	local ExpandUpwards = Enlarged and self.owner.options.ExpandUpwardsLarge or not Enlarged and self.owner.options.ExpandUpwards
 	self.frame:ClearAllPoints()
-	if self.owner.options.ExpandUpwards then
+	if ExpandUpwards then
 		self.movePoint = "BOTTOM"
 		self.moveRelPoint = "TOP"
-		self.frame:SetPoint("BOTTOM", newAnchor, "TOP", self.owner.options[self.enlarged and "HugeBarXOffset" or "BarXOffset"], self.owner.options[self.enlarged and "HugeBarYOffset" or "BarYOffset"])
+		self.frame:SetPoint("BOTTOM", newAnchor, "TOP", self.owner.options[Enlarged and "HugeBarXOffset" or "BarXOffset"], self.owner.options[Enlarged and "HugeBarYOffset" or "BarYOffset"])
 	else
 		self.movePoint = "TOP"
 		self.moveRelPoint = "BOTTOM"
-		self.frame:SetPoint("TOP", newAnchor, "BOTTOM", self.owner.options[self.enlarged and "HugeBarXOffset" or "BarXOffset"], -self.owner.options[self.enlarged and "HugeBarYOffset" or "BarYOffset"])
+		self.frame:SetPoint("TOP", newAnchor, "BOTTOM", self.owner.options[Enlarged and "HugeBarXOffset" or "BarXOffset"], -self.owner.options[Enlarged and "HugeBarYOffset" or "BarYOffset"])
 	end
 	local newX = self.frame:GetRight() - self.frame:GetWidth()/2
 	local newY = self.frame:GetTop()
@@ -1477,15 +1492,17 @@ function barPrototype:Enlarge()
 	local newAnchor = (self.owner.hugeBars.last and self.owner.hugeBars.last.frame) or self.owner.secAnchor
 	local oldX = self.frame:GetRight() - self.frame:GetWidth()/2
 	local oldY = self.frame:GetTop()
+	local Enlarged = self.enlarged
+	local ExpandUpwards = Enlarged and self.owner.options.ExpandUpwardsLarge or not Enlarged and self.owner.options.ExpandUpwards
 	self.frame:ClearAllPoints()
-	if self.owner.options.ExpandUpwards then
+	if ExpandUpwards then
 		self.movePoint = "BOTTOM"
 		self.moveRelPoint = "TOP"
-		self.frame:SetPoint("BOTTOM", newAnchor, "TOP", self.owner.options[self.enlarged and "HugeBarXOffset" or "BarXOffset"], self.owner.options[self.enlarged and "HugeBarYOffset" or "BarYOffset"])
+		self.frame:SetPoint("BOTTOM", newAnchor, "TOP", self.owner.options[Enlarged and "HugeBarXOffset" or "BarXOffset"], self.owner.options[Enlarged and "HugeBarYOffset" or "BarYOffset"])
 	else
 		self.movePoint = "TOP"
 		self.moveRelPoint = "BOTTOM"
-		self.frame:SetPoint("TOP", newAnchor, "BOTTOM", self.owner.options[self.enlarged and "HugeBarXOffset" or "BarXOffset"], -self.owner.options[self.enlarged and "HugeBarYOffset" or "BarYOffset"])
+		self.frame:SetPoint("TOP", newAnchor, "BOTTOM", self.owner.options[Enlarged and "HugeBarXOffset" or "BarXOffset"], -self.owner.options[Enlarged and "HugeBarYOffset" or "BarYOffset"])
 	end
 	local newX = self.frame:GetRight() - self.frame:GetWidth()/2
 	local newY = self.frame:GetTop()
