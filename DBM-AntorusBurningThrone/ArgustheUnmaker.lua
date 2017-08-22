@@ -75,7 +75,7 @@ local function updateRangeFrame(self)
 end
 
 function mod:OnCombatStart(delay)
-
+	DBM:AddMsg(DBM_CORE_NEED_LOGS)
 end
 
 function mod:OnCombatEnd()

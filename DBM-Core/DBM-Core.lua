@@ -5973,6 +5973,9 @@ do
 					end
 				end
 			end
+			if testBuild then
+				self:AddMsg(DBM_CORE_NEED_LOGS)
+			end
 			if mod.OnCombatEnd then mod:OnCombatEnd(wipe) end
 			if #inCombat == 0 then--prevent error if you pulled multiple boss. (Earth, Wind and Fire)
 				statusWhisperDisabled = false
