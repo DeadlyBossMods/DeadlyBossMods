@@ -141,6 +141,7 @@ function mod:OnCombatEnd()
 	if self.Options.NPAuraOnPresence then
 		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
 	end
+	DBM:AddMsg(DBM_CORE_NEED_LOGS)
 end
 
 function mod:SPELL_CAST_START(args)
