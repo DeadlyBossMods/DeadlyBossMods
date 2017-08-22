@@ -141,6 +141,7 @@ function mod:OnCombatEnd()
 --	if self.Options.InfoFrame then
 --		DBM.InfoFrame:Hide()
 --	end
+	DBM:AddMsg(DBM_CORE_NEED_LOGS)
 end
 
 function mod:SPELL_CAST_START(args)
