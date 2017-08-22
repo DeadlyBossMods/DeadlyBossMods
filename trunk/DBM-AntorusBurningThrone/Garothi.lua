@@ -131,6 +131,7 @@ function mod:OnCombatStart(delay)
 	if self:IsMythic() then
 		timerLuringDestructionCD:Start(1-delay)
 	end
+	DBM:AddMsg(DBM_CORE_NEED_LOGS)
 end
 
 function mod:OnCombatEnd()
