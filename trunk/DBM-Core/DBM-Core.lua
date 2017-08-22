@@ -5629,7 +5629,7 @@ do
 						end
 					end
 				end
-				if testBuild and difficultyIndex == 16 then
+				if testBuild then
 					self:AddMsg(DBM_CORE_NEED_LOGS)
 				end
 				--call OnCombatStart
