@@ -128,6 +128,7 @@ function mod:OnCombatStart(delay)
 	if self.Options.NPAuraOnPresence then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
+	DBM:AddMsg(DBM_CORE_NEED_LOGS)
 end
 
 function mod:OnCombatEnd()

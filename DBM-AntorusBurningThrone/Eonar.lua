@@ -155,6 +155,7 @@ function mod:OnCombatStart(delay)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(8)
 	end
+	DBM:AddMsg(DBM_CORE_NEED_LOGS)
 end
 
 function mod:OnCombatEnd()
