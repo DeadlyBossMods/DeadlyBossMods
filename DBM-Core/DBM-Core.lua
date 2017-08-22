@@ -6406,7 +6406,7 @@ do
 			--C_TimerAfter(20, function() if not self.Options.ForumsMessageShown then self.Options.ForumsMessageShown = self.ReleaseRevision self:AddMsg(DBM_FORUMS_MESSAGE) end end)
 			C_TimerAfter(25, function() if self.Options.SilentMode then self:AddMsg(DBM_SILENT_REMINDER) end end)
 			C_TimerAfter(30, function() if not self.Options.SettingsMessageShown then self.Options.SettingsMessageShown = true self:AddMsg(DBM_HOW_TO_USE_MOD) end end)
-			C_TimerAfter(40, function() if self.Options.SettingsMessageShown and self.Options.NewsMessageShown < 12 then self.Options.NewsMessageShown = 12 self:AddMsg(DBM_CORE_WHATS_NEW_LINK) end end)
+			C_TimerAfter(40, function() if self.Options.SettingsMessageShown and self.Options.NewsMessageShown < 12 then self.Options.NewsMessageShown = 12 self:AddMsg(DBM_CORE_WHATS_NEW) end end)
 		end
 		if type(RegisterAddonMessagePrefix) == "function" then
 			if not RegisterAddonMessagePrefix("D4") then -- main prefix for DBM4
@@ -11358,8 +11358,7 @@ do
 	local defaultTimerLocalization = {
 		__index = setmetatable({
 			timer_berserk = DBM_CORE_GENERIC_TIMER_BERSERK,
-			timer_combat = DBM_CORE_GENERIC_TIMER_COMBAT,
-			TimerSpeedKill = DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL
+			timer_combat = DBM_CORE_GENERIC_TIMER_COMBAT
 		}, returnKey)
 	}
 	local defaultAnnounceLocalization = {
