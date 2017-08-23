@@ -359,7 +359,7 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 	switchcount		= "%s - switch targets (%%s)",
 	gtfo			= "Bad under you - move away",
 	Adds			= "Incoming Adds - switch targets",
-	Addscustom	= "Incoming Adds - %s"
+	Addscustom		= "Incoming Adds - %s"
 }
 
 -- Auto-generated Special Warning Localizations
