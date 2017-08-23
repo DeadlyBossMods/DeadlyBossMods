@@ -71,7 +71,7 @@ local timerFromtheAbyssCD			= mod:NewCDTimer(27, 230227, nil, nil, nil, 1)--27-3
 --Stage One: Ten Thousand Fangs
 mod:AddTimerLine(SCENARIO_STAGE:format(1))
 local timerSlicingTornadoCD			= mod:NewCDCountTimer(43.2, 232722, nil, nil, nil, 3)--43.2-54
-local timerConsumingHungerCD		= mod:NewCDTimer(32, 230920, nil, nil, nil, 1)
+local timerConsumingHungerCD		= mod:NewCDTimer(31.6, 230920, nil, nil, nil, 1)
 local timerThunderingShockCD		= mod:NewCDTimer(32.2, 230358, nil, nil, nil, 3)
 --Stage Two: Terrors of the Deep
 mod:AddTimerLine(SCENARIO_STAGE:format(2))
@@ -369,12 +369,12 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 				timerBurdenofPainCD:Start(23.5, self.vb.burdenCount+1)
 				countdownBurdenofPain:Start(23.5)
 			end
-			timerFromtheAbyssCD:Start(29)
+			timerFromtheAbyssCD:Start(28)
 			timerCrashingWaveCD:Start(30, 1)
 			timerDevouringMawCD:Start(40)
 			if not self:IsLFR() then
-				timerHydraShotCD:Start(17, 1)
-				countdownHydraShot:Start(17)
+				timerHydraShotCD:Start(15.8, 1)
+				countdownHydraShot:Start(15.8)
 			end
 		elseif self.vb.phase == 3 then
 			self.vb.crashingWaveCount = 0
@@ -398,14 +398,14 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 				timerBurdenofPainCD:Start(23.5, self.vb.burdenCount+1)
 				countdownBurdenofPain:Start(23.5)
 			end
-			timerFromtheAbyssCD:Start(29)
+			timerFromtheAbyssCD:Start(28)
 			timerCrashingWaveCD:Start(30, 1)
 			timerConsumingHungerCD:Start(39)--SUCCESS
 			timerSlicingTornadoCD:Start(51, self.vb.tornadoCount+1)
 			countdownSlicingTorando:Start(51)
 			if not self:IsLFR() then
-				timerHydraShotCD:Start(17, 1)
-				countdownHydraShot:Start(17)
+				timerHydraShotCD:Start(15.8, 1)
+				countdownHydraShot:Start(15.8)
 			end
 		end
 	end
