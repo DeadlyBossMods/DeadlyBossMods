@@ -745,8 +745,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerShadReflectionEruptingCD:Stop()
 		voicePhaseChange:Play("phasechange")
 		if self:IsMythic() then
-			timerArmageddonCD:Start(7.4, 1)
-			countdownArmageddon:Start(7.4)
+			timerArmageddonCD:Start(7.0, 1)
+			countdownArmageddon:Start(7.0)
 			timerBurstingDreadflameCD:Start(11, 1)
 			timerRupturingSingularityCD:Start(15, 1)--Approx, no cast ID so time damage - 9.7
 			timerFocusedDreadflameCD:Start(31.8, 1)
@@ -758,8 +758,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 				countdownArmageddon:Start(6.4)
 				timerBurstingDreadflameCD:Start(7.7, 1)
 			else
-				timerArmageddonCD:Start(7.4, 1)
-				countdownArmageddon:Start(7.4)
+				timerArmageddonCD:Start(7.0, 1)
+				countdownArmageddon:Start(7.0)
 				timerBurstingDreadflameCD:Start(8.7, 1)
 				if not self:IsNormal() then
 					timerRupturingSingularityCD:Start(14.2, 1)
