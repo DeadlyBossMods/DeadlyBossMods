@@ -223,7 +223,7 @@ function mod:OnCombatStart(delay)
 	end
 	if self:IsMythic() then
 		timerShadReflectionWailingCD:Start(56, 1)
-		berserkTimer:Start(850-delay)--It's definitely > 14 min, some 14:07 kills with no berserk. Will try 14:10 for now
+		berserkTimer:Start(840-delay)--apparently it's anywhere between 14:00 and 14:10 depending on RNG
 	else
 		berserkTimer:Start(600-delay)
 	end
