@@ -469,6 +469,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 			timerIncorporealShotCD:Update(elapsedMoon, totalMoon)
 		end
 	elseif spellId == 61207 then--Sets all internal CDs back to 7 seconds
+		DBM:Debug("7 second internal CD activated")
 		for i = 1, 3 do
 	 		local unitGUID = UnitGUID("boss"..i)
 	 		if unitGUID then
@@ -479,9 +480,11 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		local remaining = totalVolley - elapsedVolley
 		local extend = 7 - (totalVolley-elapsedVolley)
 		if totalVolley == 0 then
+			DBM:Debug("7 second timerTwilightVolleyCD started", 2)
 			timerTwilightVolleyCD:Start(7)
 		elseif remaining < 7 then
-			timerTwilightVolleyCD:Update(remaining, totalVolley+extend)
+			DBM:Debug(extend.." second timerTwilightVolleyCD extend activated", 2)
+			timerTwilightVolleyCD:Update(elapsedVolley, totalVolley+extend)
 		end
 	end
 end
