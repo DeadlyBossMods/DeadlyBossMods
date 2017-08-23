@@ -928,6 +928,7 @@ function barPrototype:SetElapsed(elapsed)
 	local enlargePer = self.owner.options.BarStyle ~= "NoAnim" and self.owner.options.EnlargeBarsPercent or 0
 	if (self.enlarged or self.moving == "enlarge") and not (self.timer <= enlargeTime or (self.timer/self.totalTime) <= enlargePer) then
 		self:ResetAnimations()
+		DBM:Debug("ResetAnimations firing for a a bar :Update() call", 2)
 	elseif self.owner.options.Sort and self.moving ~= "enlarge" then
 		local group = self.enlarged and self.owner.hugeBars or self.owner.smallBars
 		group:Remove(self)
