@@ -458,7 +458,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 			timerSpearofAnquishCD:Stop()
 			timerSpearofAnquishCD:Start(8, self.vb.spearCast+1)
 		end
-		timerSoulbindCD:Start(10)
+		timerSoulbindCD:Start(10, self.vb.soulboundCast+1)
 		--New Phase Timers
 		timerSunderingDoomCD:Start(7)
 		countdownSunderingDoom:Start(7)
