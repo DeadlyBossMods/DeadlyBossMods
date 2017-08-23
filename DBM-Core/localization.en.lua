@@ -124,6 +124,7 @@ DBM_CORE_OPTION_TIMER_BERSERK		= "Show timer for $spell:26662"
 DBM_CORE_GENERIC_TIMER_COMBAT		= "Combat starts"
 DBM_CORE_OPTION_TIMER_COMBAT		= "Show timer for combat start"
 DBM_CORE_OPTION_HEALTH_FRAME		= "Show boss health frame"
+DBM_CORE_BAD						= "Bad"
 
 DBM_CORE_OPTION_CATEGORY_TIMERS			= "Bars"
 DBM_CORE_OPTION_CATEGORY_WARNINGS		= "General Announces"
@@ -357,7 +358,7 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 	stack			= "%%d stacks of %s on you",
 	switch			= "%s - switch targets",
 	switchcount		= "%s - switch targets (%%s)",
-	gtfo			= "Bad under you - move away",
+	gtfo			= "%%s under you - move away",
 	Adds			= "Incoming Adds - switch targets",
 	Addscustom		= "Incoming Adds - %s"
 }
