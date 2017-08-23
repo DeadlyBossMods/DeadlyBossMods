@@ -9387,6 +9387,12 @@ do
 		if not DBM.Options.DontShowSpecialWarnings and (not self.option or self.mod.Options[self.option]) and not moving and frame then
 			if self.announceType == "taunt" and DBM.Options.FilterTankSpec and not self.mod:IsTank() then return end--Don't tell non tanks to taunt, ever.
 			local argTable = {...}
+			-- add a default parameter for move away warnings
+			if self.announceType == "gtfo" then
+				if #argTable == 0 then
+					argTable[1] = DBM_CORE_BAD
+				end
+			end
 			if #self.combinedtext > 0 then
 				--Throttle spam.
 				if DBM.Options.SWarningAlphabetical then
