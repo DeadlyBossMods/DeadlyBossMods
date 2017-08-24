@@ -234,7 +234,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 234016 then
 		timerDrivenAssault:Start(10, args.destName)
 		warnDrivenAssault:CombinedShow(1, args.destName)
-		if args:IsPlayer() then
+		if args:IsPlayer() and self:AntiSpam(3, 4) then
 			specWarnDrivenAssault:Show()
 			voiceDrivenAssault:Play("justrun")
 			voiceDrivenAssault:Schedule(1, "keepmove")
@@ -244,7 +244,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 241600 then
 		warnSicklyFixate:CombinedShow(0.5, args.destName)
-		if args:IsPlayer() then
+		if args:IsPlayer() and self:AntiSpam(3, 3) then
 			specWarnSicklyFixate:Show()
 			voiceSicklyFixate:Play("justrun")
 			voiceSicklyFixate:Schedule(1, "keepmove")

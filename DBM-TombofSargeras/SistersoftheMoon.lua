@@ -45,7 +45,7 @@ local warnLunarFire					= mod:NewStackAnnounce(239264, 2, nil, "Tank")
 local warnMoonBurn					= mod:NewTargetAnnounce(236519, 3)
 
 --All
-local specWarnFontofElune			= mod:NewSpecialWarningStack(236357, nil, 12, nil, 2, 1, 6)--Stack unknown
+local specWarnFontofElune			= mod:NewSpecialWarningStack(236357, nil, 12, nil, 2, 1, 6)
 local specWarnBerserk				= mod:NewSpecialWarningSpell(243262, nil, nil, nil, 3, 2)
 --Huntress Kasparian
 local specWarnGlaiveStorm			= mod:NewSpecialWarningDodge(239379, nil, nil, nil, 2, 2)
@@ -70,7 +70,7 @@ local specWarnLunarBeacon			= mod:NewSpecialWarningMoveAway(236712, nil, nil, ni
 local yellLunarBeacon				= mod:NewFadesYell(236712)
 local specWarnLunarFire				= mod:NewSpecialWarningStack(239264, nil, 2, nil, nil, 1, 2)
 local specWarnLunarFireOther		= mod:NewSpecialWarningTaunt(239264, nil, nil, nil, 1, 2)
-local specWarnMoonBurn				= mod:NewSpecialWarningMoveTo(236519, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.you:format(236519), nil, 1, 7)--Add voice filter when it has a voice
+local specWarnMoonBurn				= mod:NewSpecialWarningMoveTo(236519, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.you:format(236519), nil, 1, 7)
 
 --Huntress Kasparian
 mod:AddTimerLine(EJ_GetSectionInfo(14992))
