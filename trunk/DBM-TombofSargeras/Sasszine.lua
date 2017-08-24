@@ -81,7 +81,7 @@ local timerInkCD					= mod:NewCDTimer(41, 232913, nil, nil, nil, 3)
 --Stage 3 just stage 2 shit combined
 local timerBufferSpawn				= mod:NewNextTimer(20, 239362, nil, nil, nil, 5)
 
---local berserkTimer				= mod:NewBerserkTimer(300)
+local berserkTimer					= mod:NewBerserkTimer(480)
 
 --General Stuff
 local countdownHydraShot			= mod:NewCountdown(40, 230139)
@@ -153,6 +153,7 @@ function mod:OnCombatStart(delay)
 	if not self:IsLFR() then
 		timerHydraShotCD:Start(25.4-delay, 1)
 		countdownHydraShot:Start(25.4-delay)
+		berserkTimer:Start(480)
 	end
 end
 
