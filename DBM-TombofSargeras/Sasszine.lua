@@ -189,10 +189,11 @@ function mod:SPELL_CAST_START(args)
 		specWarnCrashingWave:Show()
 		voiceCrashingWave:Play("chargemove")
 	elseif spellId == 230358 then
-		specWarnThunderingShock:Show()
 		if UnitDebuff("player", consumingHunger) then
-			voiceThunderingShock:Play("movetojelly")
+			specWarnConsumingHunger:Show(thunderingShock)
+			voiceConsumingHunger:Play("movetojelly")
 		else
+			specWarnThunderingShock:Show()
 			voiceThunderingShock:Play("watchstep")
 		end
 		timerThunderingShockCD:Start()
