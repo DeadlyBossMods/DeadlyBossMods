@@ -35,6 +35,7 @@ local warnHydraShot					= mod:NewTargetCountAnnounce(230139, 4)
 local warnDarkDepths				= mod:NewSpellAnnounce(230273, 2, nil, false, 2)
 local warnDreadSharkSpawn			= mod:NewSpellAnnounce(239436, 2)
 local warnBurdenAll					= mod:NewTargetAnnounce(230214, 2)
+local warnFromtheAbyss				= mod:NewSpellAnnounce(230227, 2)
 --Stage One: Ten Thousand Fangs
 local warnThunderingShock			= mod:NewTargetAnnounce(230362, 2, nil, false)
 local warnConsumingHunger			= mod:NewTargetAnnounce(230384, 2)
@@ -52,7 +53,7 @@ local yellHydraShotFades			= mod:NewIconFadesYell(230139)
 local specWarnBurdenofPain			= mod:NewSpecialWarningYou(230201, nil, nil, nil, 1, 2)
 local specWarnBurdenofPainTaunt		= mod:NewSpecialWarningTaunt(230201, nil, nil, 2, 3, 2)
 local yellBurdenofPain				= mod:NewYell(230201, 214893)
-local specWarnFromtheAbyss			= mod:NewSpecialWarningSwitch(230227, "-Healer", nil, nil, 1, 2)
+--local specWarnFromtheAbyss			= mod:NewSpecialWarningSwitch(230227, "-Healer", nil, nil, 1, 2)
 --Stage One: Ten Thousand Fangs
 local specWarnSlicingTornado		= mod:NewSpecialWarningDodge(232722, nil, nil, nil, 2, 2)
 local specWarnThunderingShock		= mod:NewSpecialWarningDodge(230362, nil, nil, nil, 2, 7)
@@ -96,7 +97,7 @@ local countdownSlicingTorando		= mod:NewCountdown("AltTwo43", 232722)
 local voicePhaseChange				= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
 local voiceHydraShot				= mod:NewVoice(230139)--targetyou/mm
 local voiceBurdenofPain				= mod:NewVoice(230201)--defensive/tauntboss
-local voiceFromtheAbyss				= mod:NewVoice(230227, "-Healer")--killmob
+--local voiceFromtheAbyss				= mod:NewVoice(230227, "-Healer")--killmob
 --Stage One: Ten Thousand Fangs
 local voiceSlicingTornado			= mod:NewVoice(232722)--watchwave?
 local voiceThunderingShock			= mod:NewVoice(230362, nil, nil, 2)--helpdispel/movetojelly/watchstep
@@ -331,8 +332,8 @@ end
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
 	if spellId == 230227 and self:AntiSpam(3, 3) then
-		specWarnFromtheAbyss:Show()
-		voiceFromtheAbyss:Play("killmob")
+		warnFromtheAbyss:Show()
+		--voiceFromtheAbyss:Play("killmob")
 		timerFromtheAbyssCD:Start()
 	elseif spellId == 232753 and not self:IsLFR() then--Hydra Shot
 		--event still fires in LFR even though mechanic doesn't exist there, so LFR must be filtered for timer
