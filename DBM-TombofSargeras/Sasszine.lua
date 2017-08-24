@@ -12,8 +12,8 @@ mod.respawnTime = 40
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 230273 232722 230384 234661 232746 232757 232756 230358 230201",
-	"SPELL_CAST_SUCCESS 230201 232757",
+	"SPELL_CAST_START 230273 232722 230384 234661 232746 232757 230358 230201",
+	"SPELL_CAST_SUCCESS 230201 232757 232756",
 	"SPELL_AURA_APPLIED 239375 239362 230139 230201 230362 232916 230384 234661",
 	"SPELL_AURA_REMOVED 239375 239362 230139 230201",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
@@ -186,13 +186,6 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 232757 then
 		specWarnCrashingWave:Show()
 		voiceCrashingWave:Play("chargemove")
-	elseif spellId == 232756 then
-		warnSummonOssunet:Show()
-		if self.vb.phase < 3 then
-			timerInkCD:Start(42)
-		else
-			timerInkCD:Start(31)--Variable, not sequence though cause differs pull to pull. just standard variable CD
-		end
 	elseif spellId == 230358 then
 		specWarnThunderingShock:Show()
 		if UnitDebuff("player", consumingHunger) then
@@ -238,6 +231,13 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 232757 then
 		self.vb.crashingWaveCount = self.vb.crashingWaveCount + 1
 		timerCrashingWaveCD:Start(nil, self.vb.crashingWaveCount+1)
+	elseif spellId == 232756 then
+		warnSummonOssunet:Show()
+		if self.vb.phase < 3 then
+			timerInkCD:Start(41.8)
+		else
+			timerInkCD:Start(31)--Variable, not sequence though cause differs pull to pull. just standard variable CD
+		end
 	end
 end
 
@@ -362,7 +362,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 			countdownBurdenofPain:Cancel()
 			timerFromtheAbyssCD:Stop()
 			
-			timerInkCD:Start(10.8)
+			timerInkCD:Start(11.6)
 			if self.Options.TauntOnPainSuccess then
 				timerBurdenofPainCD:Start(26, self.vb.burdenCount+1)
 				countdownBurdenofPain:Start(26)
@@ -391,7 +391,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 			timerDevouringMawCD:Stop()
 			timerFromtheAbyssCD:Stop()
 			
-			timerInkCD:Start(10.2)
+			timerInkCD:Start(11.6)
 			if self.Options.TauntOnPainSuccess then
 				timerBurdenofPainCD:Start(26, self.vb.burdenCount+1)
 				countdownBurdenofPain:Start(26)
