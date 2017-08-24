@@ -76,7 +76,7 @@ local timerConsumingHungerCD		= mod:NewCDTimer(31.6, 230920, nil, nil, nil, 1)
 local timerThunderingShockCD		= mod:NewCDTimer(32.2, 230358, nil, nil, nil, 3)
 --Stage Two: Terrors of the Deep
 mod:AddTimerLine(SCENARIO_STAGE:format(2))
-local timerDevouringMawCD			= mod:NewCDTimer(42, 232745, nil, nil, nil, 3)
+local timerDevouringMawCD			= mod:NewCDTimer(42, 234621, nil, nil, nil, 3)
 local timerCrashingWaveCD			= mod:NewCDCountTimer(40, 232827, nil, nil, nil, 3)
 local timerInkCD					= mod:NewCDTimer(41, 232913, nil, nil, nil, 3)
 --Mythic
@@ -101,7 +101,7 @@ local voiceSlicingTornado			= mod:NewVoice(232722)--watchwave?
 local voiceThunderingShock			= mod:NewVoice(230362, nil, nil, 2)--helpdispel/movetojelly/watchstep
 local voiceConsumingHunger			= mod:NewVoice(230384)--movetojelly (move to jellyfish)
 --Stage Two: Terrors of the Deep
-local voiceDevouringMaw				= mod:NewVoice(232745)-- inktoshark (bring ink to shark) too long?
+local voiceDevouringMaw				= mod:NewVoice(234621)-- inktoshark (bring ink to shark) too long?
 local voiceCrashingWave				= mod:NewVoice(232827)--chargemove
 
 mod:AddSetIconOption("SetIconOnHydraShot", 230139, true)
