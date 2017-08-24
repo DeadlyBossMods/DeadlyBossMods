@@ -51,6 +51,7 @@ local yellHydraShot					= mod:NewPosYell(230139, DBM_CORE_AUTO_YELL_CUSTOM_POSIT
 local yellHydraShotFades			= mod:NewIconFadesYell(230139)
 local specWarnBurdenofPain			= mod:NewSpecialWarningYou(230201, nil, nil, nil, 1, 2)
 local specWarnBurdenofPainTaunt		= mod:NewSpecialWarningTaunt(230201, nil, nil, 2, 3, 2)
+local yellBurdenofPain				= mod:NewYell(230201, 214893)
 local specWarnFromtheAbyss			= mod:NewSpecialWarningSwitch(230227, "-Healer", nil, nil, 1, 2)
 --Stage One: Ten Thousand Fangs
 local specWarnSlicingTornado		= mod:NewSpecialWarningDodge(232722, nil, nil, nil, 2, 2)
@@ -316,11 +317,14 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
-function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
+function mod:SPELL_DAMAGE(sourceGUID, _, _, _, _, _, _, _, spellId)
 	if spellId == 230214 then
 		eventsRegistered = false
 		self:UnregisterShortTermEvents()
 		warnBurdenAll:Show(ALL)
+		if sourceGUID == UnitGUID("player") then
+			yellBurdenofPain:Yell()
+		end
 	end
 end
 
