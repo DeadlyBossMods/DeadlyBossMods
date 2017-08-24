@@ -122,7 +122,7 @@ local eventsRegistered = false
 --/run DBM:GetModByName("1861"):TestHydraShot(1)
 function mod:TestHydraShot(icon)
 	yellHydraShot:Yell(icon, "Hydra Shot", icon)
-	yellHydraShotFades:Countdown(5, nil, icon)
+	yellHydraShotFades:Countdown(5, 4, icon)
 end
 
 function mod:OnCombatStart(delay)
