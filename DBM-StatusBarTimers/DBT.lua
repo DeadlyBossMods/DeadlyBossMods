@@ -796,6 +796,9 @@ do
 			if (importantBar or (timer <= enlargeTime or huge)) and self:GetOption("HugeBarsEnabled") then -- start enlarged
 				newBar.enlarged = true
 				newBar.huge = true
+				if huge then
+					self.enlargeHack = true
+				end
 				self.hugeBars:Append(newBar)
 			else
 				newBar.huge = nil
