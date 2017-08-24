@@ -62,6 +62,7 @@ local specWarnDevouringMaw			= mod:NewSpecialWarningSpell(234621, nil, nil, nil,
 local specWarnCrashingWave			= mod:NewSpecialWarningDodge(232827, nil, nil, nil, 3, 2)
 --Mythic
 local specWarnDeliciousBufferfish	= mod:NewSpecialWarningYou(239375, nil, nil, nil, 1, 2)
+local yellDeliciousBufferfish		= mod:NewFadesYell(239375, DBM_CORE_AUTO_YELL_CUSTOM_FADE)
 
 --General Stuff
 mod:AddTimerLine(GENERAL)
@@ -78,7 +79,8 @@ mod:AddTimerLine(SCENARIO_STAGE:format(2))
 local timerDevouringMawCD			= mod:NewCDTimer(42, 232745, nil, nil, nil, 3)
 local timerCrashingWaveCD			= mod:NewCDCountTimer(40, 232827, nil, nil, nil, 3)
 local timerInkCD					= mod:NewCDTimer(41, 232913, nil, nil, nil, 3)
---Stage 3 just stage 2 shit combined
+--Mythic
+mod:AddTimerLine(ENCOUNTER_JOURNAL_SECTION_FLAG12)
 local timerBufferSpawn				= mod:NewNextTimer(20, 239362, nil, nil, nil, 5)
 
 local berserkTimer					= mod:NewBerserkTimer(480)
@@ -297,7 +299,9 @@ end
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 239375 or spellId == 239362 then--Carring Bufferfish
-
+		if args:IsPlayer() then
+			yellDeliciousBufferfish:Yell(args.spellName)
+		end
 	elseif spellId == 230139 then
 		if self.Options.SetIconOnHydraShot then
 			self:SetIcon(args.destName, 0)
