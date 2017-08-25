@@ -155,8 +155,8 @@ function mod:OnCombatStart(delay)
 		end
 	end
 	if not self:IsLFR() then
-		timerHydraShotCD:Start(25.4-delay, 1)
-		countdownHydraShot:Start(25.4-delay)
+		timerHydraShotCD:Start(25.2-delay, 1)
+		countdownHydraShot:Start(25.2-delay)
 		berserkTimer:Start(480)
 	end
 end
