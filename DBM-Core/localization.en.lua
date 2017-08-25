@@ -468,8 +468,8 @@ DBM_CORE_AUTO_YELL_OPTION_TEXT = {
 }
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT = {
 	shortyell		= "%s",
-	yell			= "%s on " .. UnitName("player") .. "!",
-	count			= "%s on " .. UnitName("player") .. "! (%%d)",
+	yell			= "%s on " .. UnitName("player"),
+	count			= "%s on " .. UnitName("player") .. " (%%d)",
 	fade			= "%s fading in %%d",
 	shortfade		= "%%d",
 	iconfade		= "{rt%%2$d}%%1$d",
