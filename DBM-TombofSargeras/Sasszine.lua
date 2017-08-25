@@ -13,7 +13,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 230273 232722 230384 234661 232746 232757 230358 230201",
-	"SPELL_CAST_SUCCESS 230201 232757 232756",
+	"SPELL_CAST_SUCCESS 230201 232757 232756 232746",
 	"SPELL_AURA_APPLIED 239375 239362 230139 230201 230362 232916 230384 234661",
 	"SPELL_AURA_REMOVED 239375 239362 230139 230201",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
@@ -29,7 +29,6 @@ mod:RegisterEventsInCombat(
 (target.id = 116329 or target.id = 116843 or target.id = 116328) and type = "death" or
 (ability.id = 239375 or ability.id = 239362 or ability.id = 230139) and type = "applydebuff"
 --]]
---NOTE: 3 stage fight but all stage 3 stuff is from stage 1 and 2 (combined) so there are no new abilities to list for stage 3 HERE
 --General Stuff
 local warnHydraShot					= mod:NewTargetCountAnnounce(230139, 4)
 local warnDarkDepths				= mod:NewSpellAnnounce(230273, 2, nil, false, 2)
@@ -53,7 +52,6 @@ local yellHydraShotFades			= mod:NewIconFadesYell(230139)
 local specWarnBurdenofPain			= mod:NewSpecialWarningYou(230201, nil, nil, nil, 1, 2)
 local specWarnBurdenofPainTaunt		= mod:NewSpecialWarningTaunt(230201, nil, nil, 2, 3, 2)
 local yellBurdenofPain				= mod:NewYell(230201, 214893)
---local specWarnFromtheAbyss			= mod:NewSpecialWarningSwitch(230227, "-Healer", nil, nil, 1, 2)
 --Stage One: Ten Thousand Fangs
 local specWarnSlicingTornado		= mod:NewSpecialWarningDodge(232722, nil, nil, nil, 2, 2)
 local specWarnThunderingShock		= mod:NewSpecialWarningDodge(230362, nil, nil, nil, 2, 7)
@@ -78,7 +76,7 @@ local timerConsumingHungerCD		= mod:NewCDTimer(31.6, 230920, nil, nil, nil, 1)
 local timerThunderingShockCD		= mod:NewCDTimer(32.2, 230358, nil, nil, nil, 3)
 --Stage Two: Terrors of the Deep
 mod:AddTimerLine(SCENARIO_STAGE:format(2))
-local timerDevouringMawCD			= mod:NewCDTimer(42, 234621, nil, nil, nil, 3)
+local timerDevouringMawCD			= mod:NewCDTimer(40.5, 234621, nil, nil, nil, 3)
 local timerCrashingWaveCD			= mod:NewCDCountTimer(40, 232827, nil, nil, nil, 3)
 local timerInkCD					= mod:NewCDTimer(41, 232913, nil, nil, nil, 3)
 --Mythic
@@ -97,7 +95,6 @@ local countdownSlicingTorando		= mod:NewCountdown("AltTwo43", 232722)
 local voicePhaseChange				= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
 local voiceHydraShot				= mod:NewVoice(230139)--targetyou/mm
 local voiceBurdenofPain				= mod:NewVoice(230201)--defensive/tauntboss
---local voiceFromtheAbyss				= mod:NewVoice(230227, "-Healer")--killmob
 --Stage One: Ten Thousand Fangs
 local voiceSlicingTornado			= mod:NewVoice(232722)--watchwave?
 local voiceThunderingShock			= mod:NewVoice(230362, nil, nil, 2)--helpdispel/movetojelly/watchstep
@@ -186,7 +183,6 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 232746 then
 		specWarnDevouringMaw:Show()
 		voiceDevouringMaw:Play("inktoshark")
-		timerDevouringMawCD:Start()
 	elseif spellId == 232757 then
 		specWarnCrashingWave:Show()
 		voiceCrashingWave:Play("chargemove")
@@ -206,10 +202,12 @@ function mod:SPELL_CAST_START(args)
 			voiceBurdenofPain:Play("defensive")
 		else
 			if not self.Options.TauntOnPainSuccess then
-				local targetName = UnitName("boss1target") or DBM_CORE_UNKNOWN
-				if self:AntiSpam(5, targetName) then
-					specWarnBurdenofPainTaunt:Show(targetName)
-					voiceBurdenofPain:Play("tauntboss")
+				local targetName = UnitName("boss1target")
+				if targetName and self:IsTanking("boss1target") then
+					if self:AntiSpam(5, targetName) then
+						specWarnBurdenofPainTaunt:Show(targetName)
+						voiceBurdenofPain:Play("tauntboss")
+					end
 				end
 			end
 		end
@@ -235,14 +233,20 @@ function mod:SPELL_CAST_SUCCESS(args)
 		end
 	elseif spellId == 232757 then
 		self.vb.crashingWaveCount = self.vb.crashingWaveCount + 1
-		timerCrashingWaveCD:Start(nil, self.vb.crashingWaveCount+1)
+		if self:IsMythic() and self.vb.phase == 3 then
+			timerCrashingWaveCD:Start(31.5, self.vb.crashingWaveCount+1)--33-45
+		else
+			timerCrashingWaveCD:Start(nil, self.vb.crashingWaveCount+1)
+		end
 	elseif spellId == 232756 then
 		warnSummonOssunet:Show()
 		if self.vb.phase < 3 then
-			timerInkCD:Start(41.8)
+			timerInkCD:Start(41.5)
 		else
 			timerInkCD:Start(31)--Variable, not sequence though cause differs pull to pull. just standard variable CD
 		end
+	elseif spellId == 232746 then
+		timerDevouringMawCD:Start()
 	end
 end
 
@@ -333,7 +337,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
 	if spellId == 230227 and self:AntiSpam(3, 3) then
 		warnFromtheAbyss:Show()
-		--voiceFromtheAbyss:Play("killmob")
 		timerFromtheAbyssCD:Start()
 	elseif spellId == 232753 and not self:IsLFR() then--Hydra Shot
 		--event still fires in LFR even though mechanic doesn't exist there, so LFR must be filtered for timer
@@ -348,8 +351,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		end
 	elseif spellId == 239423 then--Dread Shark
 		if self:IsMythic() then
-			--Every two sharks apparently
-			--although need more data to confirm, only saw up to 2 sharks in logs and first one didn't phase change 2nd did
+			--Every two sharks
 			warnDreadSharkSpawn:Show()
 			self.vb.phase = self.vb.phase + 0.5
 			timerBufferSpawn:Start(21)
