@@ -1,7 +1,7 @@
 ﻿if GetLocale() ~= "zhTW" then return end
 
 DBM_CORE_NEED_LOCALS				= "你是否擁有良好的程式開發或語言能力? 如果是的話, DBM需要你的本地化翻譯。拜訪我們的討論區|HDBM:localizersneeded|h|cff3588ffclicking here|r"
-DBM_CORE_NEED_LOGS					= "DBM需要Transcriptor (http://www.wowace.com/addons/transcriptor/) 去紀錄測試伺服器的戰鬥紀錄讓插件更加完美。如果你願意幫忙，請使用transcriptor去紀錄這些戰鬥過程然後將記錄發佈在。需要7.0的團隊和五人副本戰鬥紀錄，。"
+DBM_CORE_NEED_LOGS					= "DBM需要Transcriptor (http://www.wowace.com/addons/transcriptor/) 去紀錄此戰鬥紀錄讓插件更加完美。如果你願意幫忙，請使用transcriptor去紀錄這些戰鬥過程然後將記錄發佈在DBM討論區或discord。"
 DBM_HOW_TO_USE_MOD					= "歡迎使用DBM。在聊天頻道輸入 /dbm 打開設定開始設定。你可以載入特定區域後為任何首領設定你喜歡的特別設置。DBM會在第一次啟動時嘗試掃描你的職業天賦，但有些選項你可能想打開。"
 DBM_SILENT_REMINDER					= "提醒：DBM正處於無聲模式。"
 
@@ -125,6 +125,7 @@ DBM_CORE_OPTION_TIMER_BERSERK		= "為$spell:26662顯示計時器"
 DBM_CORE_GENERIC_TIMER_COMBAT		= "戰鬥開始"
 DBM_CORE_OPTION_TIMER_COMBAT		= "為戰鬥開始顯示計時器"
 DBM_CORE_OPTION_HEALTH_FRAME		= "顯示首領血量框架"
+DBM_CORE_BAD						= "地板技"
 
 DBM_CORE_OPTION_CATEGORY_TIMERS			= "計時器"
 DBM_CORE_OPTION_CATEGORY_WARNINGS		= "一般提示"
@@ -350,7 +351,7 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS.count			= "%s!(%%s)"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.stack			= "你中了%%d層%s"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.switch		= "%s - 快更換目標!"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.switchcount	= "%s - 快更換目標!(%%s)"
-DBM_CORE_AUTO_SPEC_WARN_TEXTS.gtfo			= "%%s 注意腳下 - 快移動"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.gtfo			= "注意%%s - 快移動"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.Adds			= "小怪來了 - 快更換目標!"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.Addscustom	= "小怪來了 - %s"
 
@@ -447,12 +448,13 @@ DBM_CORE_AUTO_YELL_OPTION_TEXT.shortfade	= "當$spell:%s正消退時大喊(倒�
 DBM_CORE_AUTO_YELL_OPTION_TEXT.iconfade	= "當$spell:%s正消退時大喊(倒數和圖示)"
 DBM_CORE_AUTO_YELL_OPTION_TEXT.position	= "當你中了$spell:%s時大喊(位置)"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.shortyell	= "%s"
-DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.yell	= "" .. UnitName("player") .. "中了%s!"
-DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.count	= "" .. UnitName("player") .. "中了%s!(%%d)"
+DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.yell	= "" .. UnitName("player") .. "中了%s"
+DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.count	= "" .. UnitName("player") .. "中了%s(%%d)"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.fade	= "%s在%%d秒後消退!"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.shortfade	= "%%d"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.iconfade	= "{rt%%2$d}%%1$d"
-DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.position = "" .. UnitName("player") .. "中了%s!(%%s)".."{rt%%d}"--Arg order is going to be a problem. any way to word differently for playername at end?
+DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.position = "" .. UnitName("player") .. "中了%s(%%s)".."{rt%%d}"--Arg order is going to be a problem. any way to word differently for playername at end?
+DBM_CORE_AUTO_YELL_CUSTOM_FADE			= "%s消退了"
 DBM_CORE_AUTO_HUD_OPTION_TEXT			= "為$spell:%s顯示HudMap(已退役)"
 DBM_CORE_AUTO_HUD_OPTION_TEXT_MULTI		= "為不同的機制顯示HudMap(已退役)"
 DBM_CORE_AUTO_NAMEPLATE_OPTION_TEXT		= "為$spell:%s顯示名條光環"
