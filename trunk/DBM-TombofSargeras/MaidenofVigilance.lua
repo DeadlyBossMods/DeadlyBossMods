@@ -44,8 +44,8 @@ local warnEssenceFragments			= mod:NewSpellAnnounce(236061, 2)
 --Stage One: Divide and Conquer
 --local specWarnInfusion				= mod:NewSpecialWarningSpell(235271, nil, nil, nil, 2, 2)
 local yellInfusion					= mod:NewPosYell(235271, DBM_CORE_AUTO_YELL_CUSTOM_POSITION)
-local specWarnFelInfusion			= mod:NewSpecialWarningYou(235240, nil, nil, nil, 1, 7)
-local specWarnLightInfusion			= mod:NewSpecialWarningYou(235213, nil, nil, nil, 1, 7)
+local specWarnFelInfusion			= mod:NewSpecialWarningYouPos(235240, nil, nil, nil, 1, 7)
+local specWarnLightInfusion			= mod:NewSpecialWarningYouPos(235213, nil, nil, nil, 1, 7)
 local specWarnUnstableSoul			= mod:NewSpecialWarningMoveTo(235117, nil, nil, nil, 3, 7)
 local yellUnstableSoul				= mod:NewShortFadesYell(235117)--While learning the fight this will be spammy, but also nessesary
 local specWarnLightHammer			= mod:NewSpecialWarningCount(241635, nil, nil, nil, 2, 2)
@@ -193,7 +193,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 235240 or spellId == 240210 then--Fel Infusion
 		if args:IsPlayer() then
-			specWarnFelInfusion:Show()
+			specWarnFelInfusion:Show(self:IconNumToTexture(4))
 			voiceFelInfusion:Play("felinfusion")
 			if spellId == 235213 then--Not LFR
 				yellInfusion:Yell(4, "", 4)
@@ -205,7 +205,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 235213 or spellId == 240218 then--Light Infusion
 		if args:IsPlayer() then
-			specWarnLightInfusion:Show()
+			specWarnLightInfusion:Show(self:IconNumToTexture(1))
 			voiceLightInfusion:Play("lightinfusion")
 			if spellId == 235213 then--Not LFR
 				yellInfusion:Yell(1, "", 1)
