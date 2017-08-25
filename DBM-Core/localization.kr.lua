@@ -1,7 +1,7 @@
 if (GetLocale() == "koKR") then
 
 DBM_CORE_NEED_LOCALS				= "프로그래밍이나 언어에 소질이 있으신가요? 그렇다면 DBM이 다른 언어를 더 지원할 수 있게 도와주세요. 저희를 돕고 싶다면 |HDBM:localizersneeded|h|cff3588ff여기를 클릭|r해서 포럼을 방문해 주세요."
-DBM_CORE_NEED_LOGS					= "DBM이 최고의 보스 알림 애드온이 되기 위해선 Transcriptor (http://www.wowace.com/addons/transcriptor/)로 집계한 전투 기록이 필요합니다. 저희를 돕고 싶다면 보스 전투를 Transcriptor로 기록한 데이터를 저희 포럼에 올려주세요. 7.0 레이드와 던전 기록만 필요합니다."
+DBM_CORE_NEED_LOGS					= "DBM은 이 보스의 Transcriptor (http://www.wowace.com/addons/transcriptor/) 로그가 있어야 최고의 모드를 만들 수 있습니다. 저희를 돕고 싶다면 이 보스의 Transcriptor 로그를 DBM 포럼이나 디스코드에 올려주세요."
 DBM_HOW_TO_USE_MOD					= "DBM을 사용해 주셔서 감사합니다. 대화창에서 /dbm help를 입력하면 사용 가능한 명령어 목록을 볼 수 있습니다. 설정을 하시려면 /dbm을 입력하세요. 보스 알림 설정을 기호에 맞게 변경하려면 해당 던전을 직접 선택해서 로딩해야 합니다. DBM은 첫 실행시 당신의 전문화를 인식해서 그에 맞게 최적화 된 설정을 제공하지만 일부 설정을 추가로 켜야할 때도 있을 겁니다."
 DBM_SILENT_REMINDER					= "알림: DBM이 아직도 조용함 모드입니다."
 
@@ -19,7 +19,7 @@ DBM_CORE_LOAD_MOD_VER_MISMATCH		= "DBM-Core가 로딩 조건과 맞지 않아 %s
 DBM_CORE_LOAD_MOD_DISABLED			= "%s|1이;가; 설치는 돼있지만 켜져있질 않습니다. 직접 켜기 전까진 모드가 로딩되지 않습니다."
 DBM_CORE_LOAD_MOD_DISABLED_PLURAL	= "%s|1이;가; 설치는 돼있지만 켜져있질 않습니다. 직접 켜기 전까진 모드들이 로딩되지 않습니다."
 
---DBM_CORE_WHATS_NEW					= "오버워치와 히어로즈 오브 더 스톰 초읽기 효과음이 DBM 핵심 모듈에서 분리되어 별도의 다운로드 파일로 옮겨졌습니다. 초읽기 팩을 다시 설치하려면 DBM-CountPack-Overwatch와 DBM-CountPack-HoTS를 다운로드 받으세요. 분리 작업을 통해 이들 게임에 캐릭터가 새로 추가될 떄마다 미디어 파일이 DBM에 추가되어 번번히 다시 다운로드 받는 일이 현저히 줄어들 것입니다. 또한 지금 보시는 메시지 같은게 다시 표시되지 않도록 숨기는 설정도 추가되었습니다."
+DBM_CORE_WHATS_NEW					= "이제 바 종류별(작은 바/큰 바)로 '위로 쌓기'와 '채워나가기' 옵션을 조정할 수 있습니다. 한번 사용해 보세요!"
 DBM_CORE_WHATS_NEW_LINK				= "정보: DBM 디스코드 채널에 오셔서 버그 제보나 피드백을 해주세요. 아니면 그냥 놀러 오셔도 됩니다. |HDBM:forumsnews|h|cff3588ff디스코드 채널 링크|r"
 
 --Post Patch 7.1
@@ -125,6 +125,7 @@ DBM_CORE_OPTION_TIMER_BERSERK		= "$spell:26662 타이머 바 보기"
 DBM_CORE_GENERIC_TIMER_COMBAT		= "전투 시작"
 DBM_CORE_OPTION_TIMER_COMBAT		= "전투 시작 타이머 바 보기"
 DBM_CORE_OPTION_HEALTH_FRAME		= "보스 체력 창 보기"
+DBM_CORE_BAD						= "바닥"
 
 DBM_CORE_OPTION_CATEGORY_TIMERS		= "바"
 DBM_CORE_OPTION_CATEGORY_WARNINGS	= "일반 알림"
@@ -450,12 +451,13 @@ DBM_CORE_AUTO_YELL_OPTION_TEXT.shortfade	= "$spell:%s 지속시간이 끝나갈 
 DBM_CORE_AUTO_YELL_OPTION_TEXT.iconfade		= "$spell:%s 지속시간이 끝나갈 때 대화로 알리기 (초읽기 및 공격대 징표 포함)"
 DBM_CORE_AUTO_YELL_OPTION_TEXT.position	= "$spell:%s 대상일 때 대화로 알리기 (위치 포함)"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.shortyell	= "%s"
-DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.yell	= UnitName("player") .. "에게 %s!"
-DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.count	= UnitName("player") .. "에게 %s! (%%d)"
-DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.fade	= "%s %%d초 후 사라짐!"
-DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.shortfade	= "%%d초"
+DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.yell	= UnitName("player") .. "에게 %s"
+DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.count	= UnitName("player") .. "에게 %s (%%d)"
+DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.fade	= "%s %%d초 후 사라짐"
+DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.shortfade	= "%%d"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.iconfade	= "{rt%%2$d}%%1$d"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.position	= "{rt%%3$d}"..UnitName("player").."{rt%%3$d}에게 %1$s %%2$s"
+DBM_CORE_AUTO_YELL_CUSTOM_FADE			= "%s 사라짐"
 DBM_CORE_AUTO_HUD_OPTION_TEXT			= "$spell:%s에 HUD 표시 (중단됨)"
 DBM_CORE_AUTO_HUD_OPTION_TEXT_MULTI		= "여러 보스 기술에 HUD 표시 (중단됨)"
 DBM_CORE_AUTO_NAMEPLATE_OPTION_TEXT		= "$spell:%s 오라를 이름표에 표시"
