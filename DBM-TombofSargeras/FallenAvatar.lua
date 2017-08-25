@@ -62,7 +62,7 @@ local specWarnCorruptedMatrix		= mod:NewSpecialWarningMoveTo(233556, "Tank", nil
 local specWarnCleansingProtocol		= mod:NewSpecialWarningSwitch(233856, "-Healer", nil, nil, 3, 2)
 local specWarnTaintedEssence		= mod:NewSpecialWarningStack(240728, nil, 3, nil, nil, 1, 6)
 --Stage Two: An Avatar Awakened
-local specWarnDarkMark				= mod:NewSpecialWarningYou(239739, nil, nil, nil, 1, 2)
+local specWarnDarkMark				= mod:NewSpecialWarningYouPos(239739, nil, nil, nil, 1, 2)
 local specWarnDarkMarkOther			= mod:NewSpecialWarningMoveTo(239739, nil, nil, nil, 1, 2)
 local yellDarkMark					= mod:NewPosYell(239739)
 local yellDarkMarkFades				= mod:NewIconFadesYell(239739)
@@ -143,6 +143,8 @@ local function warnDarkMarkTargets(self, spellName)
 			local _, _, _, _, _, _, expires = UnitDebuff("player", spellName)
 			local remaining = expires-GetTime()
 			yellDarkMarkFades:Countdown(remaining, nil, icon)
+			specWarnDarkMark:Show(self:IconNumToTexture(icon))
+			voiceDarkMark:Play("targetyou")
 		end
 		if self.Options.SetIconOnDarkMark then
 			self:SetIcon(name, icon)
@@ -341,10 +343,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			self:Schedule(0.5, warnDarkMarkTargets, self, args.spellName)--At least 0.5, maybe bigger needed if warning still splits
 		end
-		if args:IsPlayer() then
-			specWarnDarkMark:Show()
-			voiceDarkMark:Play("targetyou")
-		end
+--		if args:IsPlayer() then
+--			specWarnDarkMark:Show(self:IconNumToString())
+--			voiceDarkMark:Play("targetyou")
+--		end
 	elseif spellId == 234059 then
 		warnUnboundChaos:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then

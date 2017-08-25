@@ -59,7 +59,7 @@ local specWarnRupturingSingularity	= mod:NewSpecialWarningSoon(235059, nil, nil,
 local specWarnArmageddon			= mod:NewSpecialWarningCount(240910, nil, nil, nil, 2, 2)
 local specWarnSRWailing				= mod:NewSpecialWarningYou(236378, nil, nil, nil, 1, 2)
 local yellSRWailing					= mod:NewFadesYell(236378, 236075)--Keep name in tank one for now
-local specWarnSRErupting			= mod:NewSpecialWarningYou(236710, nil, nil, nil, 1, 2)
+local specWarnSRErupting			= mod:NewSpecialWarningYouPos(236710, nil, nil, nil, 1, 2)
 local yellSRErupting				= mod:NewIconFadesYell(236710, 243160)
 local specWarnLingeringEruption		= mod:NewSpecialWarningDodge(243536, nil, nil, nil, 2, 2)
 --Intermission: Eternal Flame
@@ -480,7 +480,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnEruptingRelections:CombinedShow(0.3, args.destName)
 		local icon = self.vb.eruptingReflectionIcon
 		if args:IsPlayer() then
-			specWarnSRErupting:Show()
+			specWarnSRErupting:Show(self:IconNumToTexture(icon))
 			voiceSRErupting:Play("targetyou")
 			yellSRErupting:Countdown(8, nil, icon)
 		end

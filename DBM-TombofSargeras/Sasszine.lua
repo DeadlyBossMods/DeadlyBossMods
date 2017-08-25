@@ -32,7 +32,6 @@ mod:RegisterEventsInCombat(
 --General Stuff
 local warnHydraShot					= mod:NewTargetCountAnnounce(230139, 4)
 local warnDarkDepths				= mod:NewSpellAnnounce(230273, 2, nil, false, 2)
-local warnDreadSharkSpawn			= mod:NewSpellAnnounce(239436, 2)
 local warnBurdenAll					= mod:NewTargetAnnounce(230214, 2)
 local warnFromtheAbyss				= mod:NewSpellAnnounce(230227, 2)
 --Stage One: Ten Thousand Fangs
@@ -46,12 +45,13 @@ local warnBefoulingInk				= mod:NewTargetAnnounce(232916, 2, nil, false)--Option
 local warnPhase3					= mod:NewPhaseAnnounce(3, 2)
 
 --General Stuff
-local specWarnHydraShot				= mod:NewSpecialWarningYou(230139, nil, nil, nil, 1, 2)
+local specWarnHydraShot				= mod:NewSpecialWarningYouPos(230139, nil, nil, nil, 1, 2)
 local yellHydraShot					= mod:NewPosYell(230139, DBM_CORE_AUTO_YELL_CUSTOM_POSITION)
 local yellHydraShotFades			= mod:NewIconFadesYell(230139)
 local specWarnBurdenofPain			= mod:NewSpecialWarningYou(230201, nil, nil, nil, 1, 2)
 local specWarnBurdenofPainTaunt		= mod:NewSpecialWarningTaunt(230201, nil, nil, 2, 3, 2)
 local yellBurdenofPain				= mod:NewYell(230201, 214893)
+local specWarnDreadShark			= mod:NewSpecialWarningDodge(239436, nil, nil, nil, 3, 2)
 --Stage One: Ten Thousand Fangs
 local specWarnSlicingTornado		= mod:NewSpecialWarningDodge(232722, nil, nil, nil, 2, 2)
 local specWarnThunderingShock		= mod:NewSpecialWarningDodge(230362, nil, nil, nil, 2, 7)
@@ -95,6 +95,7 @@ local countdownSlicingTorando		= mod:NewCountdown("AltTwo43", 232722)
 local voicePhaseChange				= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
 local voiceHydraShot				= mod:NewVoice(230139)--targetyou/mm
 local voiceBurdenofPain				= mod:NewVoice(230201)--defensive/tauntboss
+local voiceDreadShark				= mod:NewVoice(239436)--watchstep/takedamage
 --Stage One: Ten Thousand Fangs
 local voiceSlicingTornado			= mod:NewVoice(232722)--watchwave?
 local voiceThunderingShock			= mod:NewVoice(230362, nil, nil, 2)--helpdispel/movetojelly/watchstep
@@ -120,6 +121,7 @@ local eventsRegistered = false
 
 --/run DBM:GetModByName("1861"):TestHydraShot(1)
 function mod:TestHydraShot(icon)
+	specWarnHydraShot:Show(self:IconNumToTexture(icon))
 	yellHydraShot:Yell(icon, "Hydra Shot", icon)
 	yellHydraShotFades:Countdown(5, 4, icon)
 end
@@ -265,7 +267,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		local count = #hydraIcons
 		warnHydraShot:CombinedShow(0.3, self.vb.hydraShotCount, args.destName)
 		if args:IsPlayer() then
-			specWarnHydraShot:Show()
+			specWarnHydraShot:Show(self:IconNumToTexture(count))
 			if self:IsHard() then
 				voiceHydraShot:Play("mm"..count)
 			else
@@ -352,7 +354,12 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	elseif spellId == 239423 then--Dread Shark
 		if self:IsMythic() then
 			--Every two sharks
-			warnDreadSharkSpawn:Show()
+			specWarnDreadShark:Show()
+			if UnitDebuff("player", GetSpellInfo(239375)) then--Has bufferfish
+				voiceDreadShark:Play("takedamage")
+			else
+				voiceDreadShark:Play("watchstep")
+			end
 			self.vb.phase = self.vb.phase + 0.5
 			timerBufferSpawn:Start(21)
 		else

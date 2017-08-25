@@ -7207,6 +7207,9 @@ do
 	function bossModPrototype:IconNumToString(number)
 		return iconStrings[number] or number
 	end
+	function bossModPrototype:IconNumToTexture(number)
+		return "Interface\\TargetingFrame\\UI-RaidTargetingIcon_"..number..":12:12|t" or number
+	end
 end
 
 bossModPrototype.AntiSpam = DBM.AntiSpam
