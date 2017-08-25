@@ -71,17 +71,17 @@ local timerBurdenofPainCD			= mod:NewCDCountTimer(27.6, 230201, nil, "Tank", nil
 local timerFromtheAbyssCD			= mod:NewCDTimer(27, 230227, nil, nil, nil, 1)--27-31
 --Stage One: Ten Thousand Fangs
 mod:AddTimerLine(SCENARIO_STAGE:format(1))
-local timerSlicingTornadoCD			= mod:NewCDCountTimer(43.2, 232722, nil, nil, nil, 3)--43.2-54
+local timerSlicingTornadoCD			= mod:NewCDCountTimer(43.2, 232722, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)--43.2-54
 local timerConsumingHungerCD		= mod:NewCDTimer(31.6, 230920, nil, nil, nil, 1)
-local timerThunderingShockCD		= mod:NewCDTimer(32.2, 230358, nil, nil, nil, 3)
+local timerThunderingShockCD		= mod:NewCDTimer(32.2, 230358, nil, nil, nil, 3, nil, DBM_CORE_MAGIC_ICON)
 --Stage Two: Terrors of the Deep
 mod:AddTimerLine(SCENARIO_STAGE:format(2))
-local timerDevouringMawCD			= mod:NewCDTimer(40.5, 234621, nil, nil, nil, 3)
+local timerDevouringMawCD			= mod:NewCDTimer(40.5, 234621, nil, nil, nil, 3, nil, DBM_CORE_IMPORTANT_ICON)
 local timerCrashingWaveCD			= mod:NewCDCountTimer(40, 232827, nil, nil, nil, 3)
 local timerInkCD					= mod:NewCDTimer(41, 232913, nil, nil, nil, 3)
 --Mythic
 mod:AddTimerLine(ENCOUNTER_JOURNAL_SECTION_FLAG12)
-local timerBufferSpawn				= mod:NewNextTimer(20, 239362, nil, nil, nil, 5)
+local timerBufferSpawn				= mod:NewNextTimer(20, 239362, nil, nil, nil, 5, nil, DBM_CORE_HEROIC_ICON)
 
 local berserkTimer					= mod:NewBerserkTimer(480)
 
