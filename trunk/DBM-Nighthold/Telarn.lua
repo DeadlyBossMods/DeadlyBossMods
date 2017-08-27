@@ -366,7 +366,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			yellParasiticFetter:Yell()
 		end
-		if self:CheckNearby(20, args.destName) and self:AntiSpam(2, 3) then
+		if self:CheckNearby(20, args.destName) and self:AntiSpam(2, 3.5) then
 			specWarnParasiticFetter:Show(args.destName)
 			voiceParasiticFetter:Play("runaway")
 		else
@@ -513,7 +513,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			self:SetIcon(args.destName, 0)
 		end
 	elseif spellId == 218304 then
-		if self:AntiSpam(5, 2) and not UnitDebuff("player", args.spellName) then
+		if self:AntiSpam(5, 4) and not UnitDebuff("player", args.spellName) then
 			specWarnLasher:Show()
 			voiceLasher:Play("killmob")
 		end
