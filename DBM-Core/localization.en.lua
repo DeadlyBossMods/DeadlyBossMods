@@ -353,6 +353,7 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 	jump			= "%s - jump",
 	run				= "%s - run away",
 	cast			= "%s - stop casting",
+	lookaway		= "%s - look away",
 	reflect			= "%s on >%%s< - stop attacking",
 	count			= "%s! (%%s)",
 	stack			= "%%d stacks of %s on you",
@@ -389,6 +390,7 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 	jump			= "Show special warning to move to jump for $spell:%s",
 	run 			= "Show special warning to run away from $spell:%s",
 	cast 			= "Show special warning to stop casting for $spell:%s",--Spell Interrupt
+	lookaway		= "Show special warning to look away for $spell:%s",
 	reflect 		= "Show special warning to stop attacking $spell:%s",--Spell Reflect
 	count 			= "Show special warning (with count) for $spell:%s",
 	stack 			= "Show special warning when you are affected by >=%d stacks of $spell:%s",
