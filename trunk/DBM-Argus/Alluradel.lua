@@ -10,27 +10,29 @@ mod:SetZone()
 
 mod:RegisterCombat("combat")
 
---[[
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START",
-	"SPELL_CAST_SUCCESS",
-	"SPELL_AURA_APPLIED",
-	"SPELL_AURA_REMOVED",
-	"SPELL_PERIODIC_DAMAGE",
-	"SPELL_PERIODIC_MISSED",
-	"UNIT_SPELLCAST_SUCCEEDED"
+	"SPELL_CAST_START 247549 247604",
+	"SPELL_CAST_SUCCESS 247517",
+	"SPELL_AURA_APPLIED 247551 247544 247517",
+	"SPELL_AURA_APPLIED_DOSE 247544"
 )
 
---local warnAncientRageFire		= mod:NewSpellAnnounce(217563, 2)
+--TODO, fine tune tank swaps?
+local warnBeguilingCharm			= mod:NewTargetAnnounce(247549, 4)
+local warnFelLash					= mod:NewSpellAnnounce(247604, 2)
+local warnHeartBreaker				= mod:NewTargetAnnounce(247517, 2, nil, "Healer")
 
---local specBurningBomb			= mod:NewSpecialWarningYou(217877, nil, nil, nil, 1, 2)
---local yellBurningBomb			= mod:NewFadesYell(217877)
---local specWarnGTFO					= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
+local specWarnBeguilingCharm		= mod:NewSpecialWarningLookAway(247549, nil, nil, nil, 3, 2)
+local yellBeguilingCharm			= mod:NewYell(247549)
+local specWarnSadist				= mod:NewSpecialWarningCount(247544, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.stack:format(8, 159515), nil, 1, 2)
+local specWarnSadistOther			= mod:NewSpecialWarningTaunt(247544, nil, nil, nil, 1, 2)
 
---local timerBurningBombCD		= mod:NewAITimer(13.4, 217877, nil, nil, nil, 3)
+local timerBeguilingCharmCD			= mod:NewAITimer(13.4, 247549, nil, nil, nil, 2, nil, DBM_CORE_IMPORTANT_ICON)
+local timerFelLashCD				= mod:NewAITimer(13.4, 247604, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerHeartBreakerCD			= mod:NewAITimer(13.4, 247517, nil, "Healer", nil, 5, nil, DBM_CORE_HEALER_ICON)
 
---local voiceBurningBomb			= mod:NewVoice(217877)--targetyou
---local voiceGTFO						= mod:NewVoice(238028, nil, DBM_CORE_AUTO_VOICE4_OPTION_TEXT)--runaway
+local voiceBeguilingCharm			= mod:NewVoice(247549)--turnaway
+local voiceSadist					= mod:NewVoice(247544)--changemt
 
 --mod:AddReadyCheckOption(43193, false)
 --mod:AddRangeFrameOption(10, 217877)
@@ -41,51 +43,45 @@ function mod:OnCombatStart(delay, yellTriggered)
 	end
 end
 
-function mod:OnCombatEnd()
---	if self.Options.RangeFrame then
---		DBM.RangeCheck:Hide()
---	end
-end
-
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 217966 then
-
+	if spellId == 247549 then
+		specWarnBeguilingCharm:Show()
+		voiceBeguilingCharm:Play("turnaway")
+		timerBeguilingCharmCD:Start()
+	elseif spellId == 247604 then
+		warnFelLash:Show()
+		timerFelLashCD:Start()
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 217877 then
-
+	if spellId == 247517 then
+		timerHeartBreakerCD:Start()
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 217877 then
-
+	if spellId == 247551 then
+		warnBeguilingCharm:CombinedShow(0.3, args.destName)
+		if args:IsPlayer() then
+			yellBeguilingCharm:Yell()
+		end
+	elseif spellId == 247544 then
+		local amount = args.amount or 1
+		if (amount >= 8) and self:AntiSpam(4, 3) then--First warning at 8, then spam every 4 seconds above.
+			local tanking, status = UnitDetailedThreatSituation("player", "boss1")
+			if tanking or (status == 3) then
+				specWarnSadist:Show(amount)
+			else
+				specWarnSadistOther:Show(L.name)
+			end
+			voiceSadist:Play("changemt")
+		end
+	elseif spellId == 247517 then
+		warnHeartBreaker:CombinedShow(0.3, args.destName)
 	end
 end
-
-function mod:SPELL_AURA_REMOVED(args)
-	local spellId = args.spellId
-	if spellId == 217877 then
-
-	end
-end
-
-function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
-	if spellId == 217907 and destGUID == UnitGUID("player") and self:AntiSpam(2, 5) then
-		specWarnGTFO:Show()
-		voiceGTFO:Play("runaway")
-	end
-end
-mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
-
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if spellId == 217563 and self:AntiSpam(4, 1) then
-
-	end
-end
---]]
+mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
