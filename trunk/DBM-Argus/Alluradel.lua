@@ -34,9 +34,6 @@ local timerHeartBreakerCD			= mod:NewAITimer(13.4, 247517, nil, "Healer", nil, 5
 local voiceBeguilingCharm			= mod:NewVoice(247549)--turnaway
 local voiceSadist					= mod:NewVoice(247544)--changemt
 
---mod:AddReadyCheckOption(43193, false)
---mod:AddRangeFrameOption(10, 217877)
-
 function mod:OnCombatStart(delay, yellTriggered)
 	if yellTriggered then
 

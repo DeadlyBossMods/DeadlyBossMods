@@ -15,7 +15,6 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS 247318 247325",
 	"SPELL_AURA_APPLIED 247318 247330",
 	"SPELL_AURA_APPLIED_DOSE 247318"
---	"UNIT_SPELLCAST_SUCCEEDED"
 )
 
 --TODO, see if tanks tuff needs to be more complex, like Ursoc. Also adjust stacks (if it even stacks)
@@ -39,20 +38,11 @@ local voiceSearingGaze					= mod:NewVoice(247320, "HasInterrupt")--kickcast
 local voicePhantasm						= mod:NewVoice(247393)--watchorb
 local voiceEyeSore						= mod:NewVoice(247330, "Healer")--healall
 
---mod:AddReadyCheckOption(43193, false)
---mod:AddRangeFrameOption(10, 217877)
-
 function mod:OnCombatStart(delay, yellTriggered)
 	if yellTriggered then
 
 	end
 end
-
---function mod:OnCombatEnd()
---	if self.Options.RangeFrame then
---		DBM.RangeCheck:Hide()
---	end
---end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
@@ -111,11 +101,3 @@ function mod:SPELL_AURA_APPLIED(args)
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
-
---[[
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if spellId == 217563 and self:AntiSpam(4, 2) then
-
-	end
-end
---]]

@@ -14,9 +14,6 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 247698 247410",
 	"SPELL_CAST_SUCCESS 247437",
 	"SPELL_AURA_APPLIED 247444 247437",
---	"SPELL_AURA_REMOVED 247437",
---	"SPELL_PERIODIC_DAMAGE",
---	"SPELL_PERIODIC_MISSED",
 	"UNIT_SPELLCAST_SUCCEEDED"
 )
 
@@ -43,9 +40,6 @@ local voiceClovenSoul			= mod:NewVoice(247444)--tauntboss
 local voiceWakeofDestruction	= mod:NewVoice(247432)--watchwave
 local voiceSeedsofDestruction	= mod:NewVoice(247437)--Runout
 
---mod:AddReadyCheckOption(43193, false)
---mod:AddRangeFrameOption(10, 217877)
-
 local function warnWake(self)
 	if self:AntiSpam(3, 1) then
 		specWarnWakeofDestruction:Show()
@@ -58,12 +52,6 @@ function mod:OnCombatStart(delay, yellTriggered)
 
 	end
 end
-
---function mod:OnCombatEnd()
---	if self.Options.RangeFrame then
---		DBM.RangeCheck:Hide()
---	end
---end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
@@ -104,24 +92,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	end
 end
-
---[[
-function mod:SPELL_AURA_REMOVED(args)
-	local spellId = args.spellId
-	if spellId == 247437 then
-
-	end
-end
-
-function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
-	if spellId == 217907 and destGUID == UnitGUID("player") and self:AntiSpam(2, 5) then
-		specWarnGTFO:Show()
-		voiceGTFO:Play("runaway")
-	end
-end
-mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
-end
---]]
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 247415 and self:AntiSpam(3, 3) then--Sometimes does NOT show in combat log, this is only accurate way
