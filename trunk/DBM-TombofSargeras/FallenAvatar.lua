@@ -84,7 +84,7 @@ local timerTaintedMatrixCD			= mod:NewCastTimer(10, 240623, nil, nil, nil, 6)--M
 --Stage Two: An Avatar Awakened
 mod:AddTimerLine(SCENARIO_STAGE:format(2))
 local timerDarkMarkCD				= mod:NewCDCountTimer(34, 239739, nil, nil, nil, 3)
-local timerRainoftheDestroyerCD		= mod:NewCDTimer(35, 240396, nil, nil, nil, 3)
+local timerRainoftheDestroyerCD		= mod:NewAITimer(35, 240396, nil, nil, nil, 3)
 local timerRainoftheDestroyer		= mod:NewCastTimer(5.5, 240396, 206577, nil, nil, 3)--Shortname: Comet Impact
 
 local berserkTimer					= mod:NewBerserkTimer(420)
@@ -318,6 +318,9 @@ function mod:SPELL_CAST_START(args)
 		timerRuptureRealitiesCD:Start(39, 1)
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:Hide()
+		end
+		if self:IsMythic() then
+			timerRainoftheDestroyerCD:Start(2)
 		end
 	end
 end
