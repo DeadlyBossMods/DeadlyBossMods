@@ -42,7 +42,7 @@
 -------------------------------
 DBM = {
 	Revision = tonumber(("$Revision$"):sub(12, -3)),
-	DisplayVersion = "7.2.19 alpha", -- the string that is shown as version
+	DisplayVersion = "7.3 alpha", -- the string that is shown as version
 	ReleaseRevision = 16632 -- the revision of the latest stable version that is available
 }
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
@@ -354,8 +354,6 @@ local LastInstanceMapID = -1
 local LastGroupSize = 0
 local LastInstanceType = nil
 local queuedBattlefield = {}
-local loadDelay = nil
-local loadDelay2 = nil
 local noDelay = true
 local watchFrameRestore = false
 local bossHealth = {}
@@ -391,7 +389,6 @@ local fakeBWVersion, fakeBWHash = 69, "f7aadbb"
 local versionQueryString, versionResponseString = "Q^%d^%s", "V^%d^%s"
 
 local enableIcons = true -- set to false when a raid leader or a promoted player has a newer version of DBM
-local guiRequested = false
 
 local bannedMods = { -- a list of "banned" (meaning they are replaced by another mod like DBM-Battlegrounds (replaced by DBM-PvP)) boss mods, these mods will not be loaded by DBM (and they wont show up in the GUI)
 	"DBM-Battlegrounds", --replaced by DBM-PvP
@@ -1235,7 +1232,6 @@ do
 				"CHAT_MSG_ADDON",
 				"BN_CHAT_MSG_ADDON",
 				"PLAYER_REGEN_DISABLED",
-				"PLAYER_REGEN_ENABLED",
 				"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
 				"UNIT_TARGETABLE_CHANGED",
 				"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5",
@@ -2547,11 +2543,6 @@ do
 			return
 		end
 		if not IsAddOnLoaded("DBM-GUI") then
-			if InCombatLockdown() or UnitAffectingCombat("player") or IsFalling() then
-				guiRequested = true
-				self:AddMsg(DBM_CORE_LOAD_GUI_COMBAT)
-				return
-			end
 			local enabled = GetAddOnEnableState(playerName, "DBM-GUI")
 			if enabled == 0 then
 				EnableAddOn("DBM-GUI")
@@ -2567,7 +2558,9 @@ do
 			end
 			tsort(callOnLoad, function(v1, v2) return v1[2] < v2[2] end)
 			for i, v in ipairs(callOnLoad) do v[1]() end
-			collectgarbage("collect")
+			if not InCombatLockdown() and not UnitAffectingCombat("player") and not IsFalling() then--We loaded in combat but still need to avoid garbage collect in combat
+				collectgarbage("collect")
+			end
 		end
 		return DBM_GUI:ShowHide()
 	end
@@ -3584,22 +3577,6 @@ do
 	end
 end
 
-function DBM:PLAYER_REGEN_ENABLED()
-	if IsFalling() then return end--Don't attempt to load off load delay if falling oncombat end, just try next on combat end
-	if loadDelay then
-		self:Debug("loadDelay is activating LoadMod again")
-		self:LoadMod(loadDelay)
-	end
-	if loadDelay2 then
-		self:Debug("loadDelay2 is activating LoadMod again")
-		self:LoadMod(loadDelay2)
-	end
-	if guiRequested and not IsAddOnLoaded("DBM-GUI") then
-		guiRequested = false
-		self:LoadGUI()
-	end
-end
-
 function DBM:UPDATE_BATTLEFIELD_STATUS()
 	for i = 1, 2 do
 		if GetBattlefieldStatus(i) == "confirm" then
@@ -3750,11 +3727,6 @@ function DBM:ScenarioCheck()
 	end
 end
 
-	--In combat and it's not a raid boss. We'll just delay mod load until we leave combat to avoid "script ran to long errors"
-	--This should avoid most load problems (especially in LFR) When zoning in while in combat which causes the mod to fail to load/work correctly
-	--IF we are fighting a boss, we don't have much of a choice but to try and load anyways since script ran too long isn't actually a guarentee.
-	--The main place we should force a mod load in combat is for IsEncounterInProgress because i'm pretty sure blizzard waves "script ran too long" function for a small amount of time after a DC
-	--Outdoor bosses will try to ignore check, if they fail, well, then we need to try and find ways to make the mods that can't load in combat smaller or load faster.
 function DBM:LoadMod(mod, force)
 	if type(mod) ~= "table" then
 		self:Debug("LoadMod failed because mod table not valid")
@@ -3769,18 +3741,6 @@ function DBM:LoadMod(mod, force)
 		end
 		return
 	end
-	if (InCombatLockdown() or UnitAffectingCombat("player") or IsFalling()) and not IsEncounterInProgress() and IsInInstance() and not noDelay then
-		self:Debug("LoadMod delayed do to combat")
-		if not loadDelay then--Prevent duplicate DBM_CORE_LOAD_MOD_COMBAT message.
-			self:AddMsg(DBM_CORE_LOAD_MOD_COMBAT:format(tostring(mod.name)))
-		end
-		if loadDelay and loadDelay ~= mod then--Check if load delay exists, but make sure this isn't a loop of same mod before making a second load delay
-			loadDelay2 = mod
-		else
-			loadDelay = mod
-		end
-		return
-	end
 	if not currentSpecID then
 		self:SetCurrentSpecInfo()
 	end
@@ -3792,7 +3752,6 @@ function DBM:LoadMod(mod, force)
 			self:AddMsg(DBM_CORE_LOAD_MOD_ERROR:format(tostring(mod.name), tostring(_G["ADDON_"..reason or ""])))
 		else
 			self:Debug("LoadAddOn failed and did not give reason")
---			self:AddMsg(DBM_CORE_LOAD_MOD_ERROR:format(tostring(mod.name), DBM_CORE_UNKNOWN)) -- wtf, this should never happen....(but it does happen sometimes if you reload your UI in an instance...)
 		end
 		return false
 	else
@@ -3813,13 +3772,8 @@ function DBM:LoadMod(mod, force)
 				C_TimerAfter(15, function() timerRequestInProgress = false end)
 			end
 		end
-		if not InCombatLockdown() and not UnitAffectingCombat("player") and not IsFalling() then--We loaded in combat because a raid boss was in process, but lets at least delay the garbage collect so at least load mod is half as bad, to do our best to avoid "script ran too long"
+		if not InCombatLockdown() and not UnitAffectingCombat("player") and not IsFalling() then--We loaded in combat but still need to avoid garbage collect in combat
 			collectgarbage("collect")
-		end
-		if loadDelay2 == mod then
-			loadDelay2 = nil
-		elseif loadDelay == mod then
-			loadDelay = nil
 		end
 		return true
 	end
@@ -9758,6 +9712,10 @@ do
 
 	function bossModPrototype:NewSpecialWarningCast(text, optionDefault, ...)
 		return newSpecialWarning(self, "cast", text, nil, optionDefault, ...)
+	end
+	
+	function bossModPrototype:NewSpecialWarningLookAway(text, optionDefault, ...)
+		return newSpecialWarning(self, "lookaway", text, nil, optionDefault, ...)
 	end
 
 	function bossModPrototype:NewSpecialWarningReflect(text, optionDefault, ...)
