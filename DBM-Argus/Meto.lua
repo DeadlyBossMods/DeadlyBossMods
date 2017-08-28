@@ -15,8 +15,6 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS 247495",
 	"SPELL_AURA_APPLIED 247495",
 	"SPELL_AURA_APPLIED_DOSE 247495"
---	"SPELL_AURA_REMOVED",
---	"UNIT_SPELLCAST_SUCCEEDED"
 )
 
 --TODO, see if run over flowr is appropriate or i it lacks clarity, since here we want to STAND on them not run over them.
@@ -39,19 +37,10 @@ local voiceSow					= mod:NewVoice(247495)--tauntboss/stackhigh
 local voiceSeedsofChaos			= mod:NewVoice(247585, "-Tank")--169613 (run over the flower)?
 local voiceDeathField			= mod:NewVoice(247632)--shockwave (will this confuse tanks?)
 
---mod:AddReadyCheckOption(43193, false)
---mod:AddRangeFrameOption(10, 217877)
-
 function mod:OnCombatStart(delay, yellTriggered)
 	if yellTriggered then
 
 	end
-end
-
-function mod:OnCombatEnd()
---	if self.Options.RangeFrame then
---		DBM.RangeCheck:Hide()
---	end
 end
 
 function mod:SPELL_CAST_START(args)
@@ -103,26 +92,3 @@ function mod:SPELL_AURA_APPLIED(args)
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
-
---[[
-function mod:SPELL_AURA_REMOVED(args)
-	local spellId = args.spellId
-	if spellId == 217877 then
-
-	end
-end
-
-function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
-	if spellId == 217907 and destGUID == UnitGUID("player") and self:AntiSpam(2, 5) then
-		specWarnGTFO:Show()
-		voiceGTFO:Play("runaway")
-	end
-end
-mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
-
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if spellId == 217563 and self:AntiSpam(4, 1) then
-
-	end
-end
---]]
