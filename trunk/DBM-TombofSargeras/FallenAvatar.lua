@@ -411,7 +411,7 @@ end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
-	if msg:find("spell:234418") then
+	if msg:find("234418") then
 		specWarnRainoftheDestroyer:Show()
 		voiceRainoftheDestroyer:Play("watchstep")
 		timerRainoftheDestroyer:Start()
@@ -420,7 +420,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 end
 
 function mod:RAID_BOSS_WHISPER(msg)
-	if msg:find("spell:236604") then
+	if msg:find("236604") then
 		specWarnShadowyBlades:Show()
 		voiceShadowyBlades:Play("runout")
 		--yellShadowyBlades:Yell()
@@ -428,7 +428,7 @@ function mod:RAID_BOSS_WHISPER(msg)
 end
 
 function mod:OnTranscriptorSync(msg, targetName)
-	if msg:find("spell:236604") then
+	if msg:find("236604") then
 		targetName = Ambiguate(targetName, "none")
 		if self:AntiSpam(4, targetName) then
 			local icon = self.vb.bladesIcon
