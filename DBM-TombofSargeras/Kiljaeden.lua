@@ -168,7 +168,7 @@ local riftName, gravitySqueezeBuff = GetSpellInfo(239130), GetSpellInfo(239154)
 local phase1LFRArmageddonTimers = {10, 22, 42}--Incomplete
 local phase1MythicArmageddonTimers = {10, 54, 38, 46}--Incomplete
 local phase1MythicSingularityTimers = {55, 25, 25}--Incomplete
-local phase1point5MythicSingularityTimers = {15.1, 5, 13.2, 5, 5, 5, 25, 4.98}
+local phase1point5MythicSingularityTimers = {15.1, 5, 13.2, 5, 5, 5, 25, 4.98}--Timers, if all of the emotes exist. Not all of them do, DBM attempts to hack fix this
 local phase2LFRArmageddonTimers = {55.9, 27.8, 56.6, 26.6, 12.2}
 local phase2NormalArmageddonTimers = {50, 45, 31, 35, 31}
 local phase2HeroicArmageddonTimers = {50, 75, 35, 30}
@@ -553,6 +553,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			voiceFelclaws:Play("tauntboss")
 		end
 	elseif spellId == 241983 and self:IsInCombat() then--Deceiver's Veil
+		self:Unschedule(handleMissingEmote)
 		self.vb.phase = 3
 		self.vb.armageddonCast = 0
 		self.vb.focusedDreadCast = 0
@@ -579,6 +580,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			end
 		end
 	elseif spellId == 244834 then--Nether Gale
+		self:Unschedule(handleMissingEmote)
 		self.vb.phase = 2
 		self.vb.armageddonCast = 0
 		self.vb.focusedDreadCast = 0
@@ -621,6 +623,20 @@ function mod:SPELL_AURA_REMOVED(args)
 					timerRupturingSingularityCD:Start(74, 1)
 				end
 			end
+		end
+	end
+end
+
+local function handleMissingEmote(self)
+	self:Unschedule(handleMissingEmote)
+	self.vb.singularityCount = self.vb.singularityCount + 1
+	timerRupturingSingularity:Start(8.2, self.vb.singularityCount)
+	countdownSingularity:Start(8.2)
+	if self:IsMythic() then
+		local timer = phase1MythicSingularityTimers[self.vb.singularityCount+1]
+		if timer then
+			self:Schedule(timer, handleMissingEmote, self)--Already scheduled on delya
+			timerRupturingSingularityCD:Start(timer-1.5, self.vb.singularityCount+1)
 		end
 	end
 end
@@ -680,6 +696,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 			end
 		end
 	elseif msg:find("spell:235059") then
+		self:Unschedule(handleMissingEmote)
 		self.vb.singularityCount = self.vb.singularityCount + 1
 		specWarnRupturingSingularity:Show()
 		voiceRupturingSingularity:Play("carefly")
@@ -709,6 +726,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 			if self:IsMythic() then
 				local timer = phase1MythicSingularityTimers[self.vb.singularityCount+1]
 				if timer then
+					self:Schedule(timer+1.5, handleMissingEmote, self)
 					timerRupturingSingularityCD:Start(timer, self.vb.singularityCount+1)
 				end
 			elseif self:IsEasy() then
