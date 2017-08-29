@@ -1,7 +1,7 @@
 -- Mini Dragon(projecteurs@gmail.com)
 -- 夏一可
 -- Blizzard Entertainment
--- Last update: Feb 06 2017, 02:50 UTC@15833
+-- Last update: 2017/08/29
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -538,6 +538,10 @@ L= DBM:GetModLocalization(1905)
 -----------------------
 L= DBM:GetModLocalization(1906)
 
+L:SetMiscLocalization({
+	bookCase	=	"书架后面"
+})
+
 -----------------------
 -- Domatrax --
 -----------------------
@@ -555,4 +559,36 @@ L = DBM:GetModLocalization("CoENTrash")
 
 L:SetGeneralLocalization({
 	name =	"永夜大教堂小怪"
+})
+
+-----------------------
+-- <<<Seat of Triumvirate >>> --
+-----------------------
+-----------------------
+-- Zuraal --
+-----------------------
+L= DBM:GetModLocalization(1979)
+
+-----------------------
+-- Saprish  --
+-----------------------
+L= DBM:GetModLocalization(1980)
+
+-----------------------
+-- Viceroy Nezhar --
+-----------------------
+L= DBM:GetModLocalization(1981)
+
+-----------------------
+-- L'ura  --
+-----------------------
+L= DBM:GetModLocalization(1982)
+
+-----------------------
+--Seat of Triumvirate Trash
+-----------------------
+L = DBM:GetModLocalization("SoTTrash")
+
+L:SetGeneralLocalization({
+	name =	"执政团之座小怪"
 })
