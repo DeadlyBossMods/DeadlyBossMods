@@ -2,12 +2,12 @@
 -- Diablohu(diablohudream@gmail.com)
 -- yleaf(yaroot@gmail.com)
 -- Mini Dragon(projecteurs@gmail.com)
--- Last update: 2017/08/25
+-- Last update: 2017/08/29
 
 if GetLocale() ~= "zhCN" then return end
 
 DBM_CORE_NEED_LOCALS				= "如果你会编程并且英语不错，请来帮助我们完善DBM中文翻译。请|HDBM:localizersneeded|h|cff3588ff点击此处|获取更多消息。"
-DBM_CORE_NEED_LOGS					= "DBM需要战斗记录器 (http://www.wowace.com/addons/transcriptor/) 的日志来使得技能判断更准确。如果你想帮忙，请用 transcriptor 记录并上传日志文件到我们的论坛。我们现在只对7.0的数据感兴趣。"
+DBM_CORE_NEED_LOGS					= "DBM需要战斗记录器 (http://www.wowace.com/addons/transcriptor/) 的日志来使得技能判断更准确。如果你想帮忙，请用 transcriptor 记录并上传日志文件到我们的论坛。"
 DBM_HOW_TO_USE_MOD					= "欢迎使用DBM。在聊天框输入 /dbm help 以获取可用命令的帮助。输入 /dbm 可打开设置窗口，并对各个Boss模块进行设置，也可以浏览首领击杀记录。DBM 会在你第一次使用时读取你的职业和专精并做出相应设置，但是有些设置需要手动开启。"
 DBM_SILENT_REMINDER					= "提示：DBM 正处于安静模式。"
 
@@ -131,7 +131,7 @@ DBM_CORE_OPTION_TIMER_BERSERK		= "计时条：$spell:26662"
 DBM_CORE_GENERIC_TIMER_COMBAT		= "战斗开始"
 DBM_CORE_OPTION_TIMER_COMBAT		= "显示战斗开始倒计时"
 DBM_CORE_OPTION_HEALTH_FRAME		= "首领生命值窗口"
-DBM_CORE_BAD						= "损坏"
+DBM_CORE_BAD						= "必杀技"
 
 DBM_CORE_OPTION_CATEGORY_TIMERS		= "计时条"
 DBM_CORE_OPTION_CATEGORY_WARNINGS	= "警报"
@@ -256,6 +256,7 @@ DBM_ERROR_NO_PERMISSION				= "权限不足。需要队长或助理权限。"
 
 DBM_CORE_BOSSHEALTH_HIDE_FRAME		= "隐藏生命值框体"
 
+--Common Locals
 DBM_NEXT							= "下一个 %s"
 DBM_COOLDOWN						= "%s 冷却"
 DBM_CORE_UNKNOWN					= "未知"
@@ -264,13 +265,20 @@ DBM_CORE_RIGHT						= "右"
 DBM_CORE_BACK						= "后"
 DBM_CORE_MIDDLE						= "中"
 DBM_CORE_FRONT						= "前"
+DBM_CORE_EAST						= "东"
+DBM_CORE_WEST						= "西"
+DBM_CORE_NORTH						= "北"
+DBM_CORE_SOUTH						= "南"
 DBM_CORE_INTERMISSION				= "中场时间"
 DBM_CORE_ORB						= "球"
 DBM_CHEST							= "奖励宝箱"
-DBM_NO_DEBUFF						= "没有%s"
-DBM_ALLY							= "队友"--Such as "Move to Ally"
-DBM_ADDS							= "小怪"--Such as "Move to Ally"
+DBM_NO_DEBUFF						= "不是%s"
+DBM_ALLY							= "队友"
+DBM_ADDS							= "小怪"
 DBM_CORE_ROOM_EDGE					= "房间边缘"
+DBM_CORE_SAFE						= "安全"
+DBM_INCOMING						= "%s 即将到来"
+--Common Locals end
 
 DBM_CORE_BREAK_USAGE				= "休息时间不能超过60分钟。请确保你输入的是分钟而不是秒。"
 DBM_CORE_BREAK_START				= "开始休息 - %s分钟！（由 %s 发送）"
@@ -349,12 +357,13 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS.moveto			= "%s - 靠近 >%%s<"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.jump				= "%s - 快跳"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.run				= "%s - 快跑"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.cast				= "%s - 停止施法"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.lookaway			= "%s - 快转身"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.reflect			= ">%%s<中了%s - 快停手"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.count				= "%s! (%%s)"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.stack				= "你叠加了%%d层%s"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.switch			= "%s - 转换目标"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.switchcount		= "%s - 转换目标 (%%s)"
-DBM_CORE_AUTO_SPEC_WARN_TEXTS.gtfo				= "%%s 在脚下 - 快躲开"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.gtfo				= "注意%%s - 快躲开"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.Adds				= "小怪出现 - 转换目标"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.Addscustom		= "小怪出现 - %s"
 
@@ -365,7 +374,6 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS.fades			= "特殊警报：$spell:%s消失"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.soon			= "特殊警报：$spell:%s即将到来"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.prewarn 		= "特殊警报：%s秒前预警$spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.dispel			= "特殊警报：需要驱散或偷取$spell:%s"
-DBM_CORE_AUTO_SPEC_WARN_OPTIONS.reflect 		= "特殊警报：$spell:%s的施放(玩家需要停止攻击时)"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.interrupt		= "特殊警报：需要打断$spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.interruptcount	= "特殊警报：需要打断$spell:%s(带计数)"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.you				= "特殊警报：当你受到$spell:%s影响时"
@@ -382,15 +390,17 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS.dodge			= "特殊警报：当你受到$spell:%s�
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.moveaway		= "特殊警报：当你受到$spell:%s影响并需要跑开人群时"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.moveto			= "特殊警报：当他人中了$spell:%s并需要你去靠近时"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.jump			= "特殊警报：当你受到$spell:%s影响并需要跳起来时"
-DBM_CORE_AUTO_SPEC_WARN_OPTIONS.run				= "特殊警报：$spell:%s"
-DBM_CORE_AUTO_SPEC_WARN_OPTIONS.cast			= "特殊警报：$spell:%s的施放（用于打断玩家的技能）"
-DBM_CORE_AUTO_SPEC_WARN_OPTIONS.count 			= "特殊警报：$spell:%s"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.run				= "特殊警报：当你受到$spell:%s影响并需要跑开时"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.cast			= "特殊警报：当你需要打断$spell:%s时"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.lookaway		= "特殊警报：当你受到$spell:%s影响需要快转身时"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.reflect			= "特殊警报：当目标使用$spell:%s需要停止攻击时"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.count 			= "特殊警报：$spell:%s(带计数)"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.stack			= "特殊警报：当叠加了>=%d层$spell:%s时"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.stackcount		= "特殊警报：当叠加了>=%d层$spell:%s时(带计数)"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.gtfo			= "特殊警报：需要躲开地上的有害技能"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch 			= "特殊警报：针对$spell:%s需要转换目标"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.Adds			= "特殊警报：需要攻击小怪"
-DBM_CORE_AUTO_SPEC_WARN_OPTIONS.Addscustom		= "特殊警报：小怪（自定义）"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.Addscustom		= "特殊警报：小怪(自定义)"
 
 -- Auto-generated Timer Localizations
 DBM_CORE_AUTO_TIMER_TEXTS.target				= "%s: >%%s<"
@@ -450,12 +460,12 @@ DBM_CORE_AUTO_YELL_OPTION_TEXT.iconfade		= "当你身上的$spell:%s即将消失
 DBM_CORE_AUTO_YELL_OPTION_TEXT.position		= "当你受到$spell:%s影响时大喊（带位置）"
 --
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.shortyell  = "%s"
-DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.yell		= UnitName("player") .. " 中了%s!"
-DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.count		= UnitName("player") .. " 中了%s! (%%d)"
+DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.yell		= UnitName("player") .. " 中了%s"
+DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.count		= UnitName("player") .. " 中了%s (%%d)"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.fade		= "%s 于%%d秒后消失"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.shortfade	= "%%d秒"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.iconfade	= "{rt%%2$d}%%1$d秒" --应该对的吧。
-DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.position	= UnitName("player").." ({rt%%3$d})中了%1$s! (%%1$s - {rt%%2$d})" --리동윤
+DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.position	= UnitName("player").." ({rt%%3$d})中了%1$s (%%1$s - {rt%%2$d})" --리동윤
 --
 --DBM_CORE_AUTO_YELL_CUSTOM_POSITION			= "{rt%d}%s{rt%d}"--Doesn't need translating. Has no strings
 --DBM_CORE_AUTO_YELL_CUSTOM_POSITION2			= "{rt%d}{rt%d}%s{rt%d}{rt%d}"--Doesn't need translating. Has no strings
