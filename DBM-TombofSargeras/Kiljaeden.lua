@@ -197,6 +197,20 @@ local function ObeliskWarning(self)
 	end
 end
 
+local function handleMissingEmote(self)
+	self:Unschedule(handleMissingEmote)
+	self.vb.singularityCount = self.vb.singularityCount + 1
+	timerRupturingSingularity:Start(8.2, self.vb.singularityCount)
+	countdownSingularity:Start(8.2)
+	if self:IsMythic() then
+		local timer = phase1MythicSingularityTimers[self.vb.singularityCount+1]
+		if timer then
+			self:Schedule(timer, handleMissingEmote, self)--Already scheduled on delya
+			timerRupturingSingularityCD:Start(timer-1.5, self.vb.singularityCount+1)
+		end
+	end
+end
+
 function mod:OnCombatStart(delay)
 	self.vb.phase = 1
 	self.vb.armageddonCast = 0
@@ -623,20 +637,6 @@ function mod:SPELL_AURA_REMOVED(args)
 					timerRupturingSingularityCD:Start(74, 1)
 				end
 			end
-		end
-	end
-end
-
-local function handleMissingEmote(self)
-	self:Unschedule(handleMissingEmote)
-	self.vb.singularityCount = self.vb.singularityCount + 1
-	timerRupturingSingularity:Start(8.2, self.vb.singularityCount)
-	countdownSingularity:Start(8.2)
-	if self:IsMythic() then
-		local timer = phase1MythicSingularityTimers[self.vb.singularityCount+1]
-		if timer then
-			self:Schedule(timer, handleMissingEmote, self)--Already scheduled on delya
-			timerRupturingSingularityCD:Start(timer-1.5, self.vb.singularityCount+1)
 		end
 	end
 end
