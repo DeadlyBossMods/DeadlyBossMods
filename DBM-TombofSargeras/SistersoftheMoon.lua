@@ -221,7 +221,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		voiceCallMoontalon:Play("killbigmob")
 		if self.vb.moonTalonCount == 1 then
 			local remaining = GetTime() - self.vb.pulltime
-			timerCallMoontalonCD:Start(280-remaining)
+			timerCallMoontalonCD:Start(260-remaining)
 		end
 	elseif spellId == 237561 then--^^
 		self.vb.twilightGlaiveCount = self.vb.twilightGlaiveCount + 1
