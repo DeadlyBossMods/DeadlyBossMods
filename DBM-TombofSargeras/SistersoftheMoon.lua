@@ -195,7 +195,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.beaconCount = self.vb.beaconCount + 1
 		timerLunarBeaconCD:Start(20.7)
 		--["236712-Lunar Beacon"] = "pull:359.7, 31.7, 54.8, 23.1, 31.7, 23.1, 31.8, 21.9, 20.7, 29.2",
-		self:BossTargetScanner(args.sourceGUID, "BeaconTarget", 0.1, 12, true)
+		self:ScheduleMethod(0.2, "BossTargetScanner", args.sourceGUID, "BeaconTarget", 0.1, 12, true, nil, nil, nil, true)
 	elseif spellId == 239379 then
 		specWarnGlaiveStorm:Show()
 		voiceGlaiveStorm:Play("watchstep")
