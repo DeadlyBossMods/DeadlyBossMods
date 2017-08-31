@@ -23,7 +23,7 @@ mod:RegisterEventsInCombat(
 --	"SPELL_PERIODIC_MISSED",
 	"UNIT_DIED",
 --	"CHAT_MSG_RAID_BOSS_EMOTE",
-	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2"
+	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3"
 )
 
 --TODO, improve tormenting cries voice
@@ -462,7 +462,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		--New Phase Timers
 		timerSunderingDoomCD:Start(7)
 		countdownSunderingDoom:Start(7)
-		timerDoomedSunderingCD:Start(28)
-		countdownDoomedSundering:Start(28)
+		timerDoomedSunderingCD:Start(18)
+		countdownDoomedSundering:Start(18)
 	end
 end
