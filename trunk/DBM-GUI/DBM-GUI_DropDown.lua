@@ -275,6 +275,7 @@ do
 		_G[dropdown:GetName().."Text"]:SetJustifyH("LEFT")
 		_G[dropdown:GetName().."Middle"]:SetWidth(width + 30)
 		_G[dropdown:GetName().."Button"]:SetScript("OnClick", function(self)
+			DBM:PlaySound(856)
 			if TabFrame1:IsShown() then
 				TabFrame1:HideMenu()
 				TabFrame1.dropdown = nil

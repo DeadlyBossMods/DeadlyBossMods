@@ -4410,7 +4410,7 @@ do
 		syncHandlers["GCB"] = function(sender, modId, ver, difficulty)
 			if not DBM.Options.ShowGuildMessages or not difficulty then return end
 			if not ver or not (ver == "2") then return end--Ignore old versions
-			if DBM:AntiSpam(5, "GCB") then
+			if DBM:AntiSpam(10, "GCB") then
 				if IsInInstance() then return end--Simple filter, if you are inside an instance, just filter it, if not in instance, good to go.
 				local bossName = EJ_GetEncounterInfo(modId) or DBM_CORE_UNKNOWN
 				local difficultyName = DBM_CORE_UNKNOWN
