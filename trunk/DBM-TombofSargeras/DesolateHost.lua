@@ -338,7 +338,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		local cid = self:GetCIDFromGUID(args.destGUID)
 		if self.Options.IgnoreTemplarOn3Tank and (cid == 119938 or cid == 118715) and self.vb.tankCount >= 3 then return end--Reanimated templar
 		self.vb.boneArmorCount = self.vb.boneArmorCount + 1
-		if self:AntiSpam(2, args.destName) then
+		if self:AntiSpam(4, args.destName) then
 			warnBonecageArmor:Show(args.destName)
 		end
 		if self.Options.NPAuraOnBonecageArmor then
