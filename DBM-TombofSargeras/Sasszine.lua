@@ -58,7 +58,7 @@ local specWarnThunderingShock		= mod:NewSpecialWarningDodge(230362, nil, nil, ni
 local specWarnThunderingShockDispel	= mod:NewSpecialWarningDispel(230362, "Healer", nil, nil, 1, 2)
 local specWarnConsumingHunger		= mod:NewSpecialWarningMoveTo(230384, nil, nil, nil, 1, 7)
 --Stage Two: Terrors of the Deep
-local specWarnDevouringMaw			= mod:NewSpecialWarningSpell(234621, nil, nil, nil, 2, 7)
+local specWarnDevouringMaw			= mod:NewSpecialWarningCount(234621, nil, nil, nil, 2, 7)
 local specWarnCrashingWave			= mod:NewSpecialWarningDodge(232827, nil, nil, nil, 3, 2)
 --Mythic
 local specWarnDeliciousBufferfish	= mod:NewSpecialWarningYou(239375, nil, nil, nil, 1, 2)
@@ -76,7 +76,7 @@ local timerConsumingHungerCD		= mod:NewCDTimer(31.6, 230920, nil, nil, nil, 1)
 local timerThunderingShockCD		= mod:NewCDTimer(32.2, 230358, nil, nil, nil, 3, nil, DBM_CORE_MAGIC_ICON)
 --Stage Two: Terrors of the Deep
 mod:AddTimerLine(SCENARIO_STAGE:format(2))
-local timerDevouringMawCD			= mod:NewCDTimer(40.5, 234621, nil, nil, nil, 3, nil, DBM_CORE_IMPORTANT_ICON)
+local timerDevouringMawCD			= mod:NewCDCountTimer(40.5, 234621, nil, nil, nil, 3, nil, DBM_CORE_IMPORTANT_ICON)
 local timerCrashingWaveCD			= mod:NewCDCountTimer(40, 232827, nil, nil, nil, 3)
 local timerInkCD					= mod:NewCDTimer(41, 232913, nil, nil, nil, 3)
 --Mythic
@@ -114,6 +114,7 @@ mod.vb.crashingWaveCount = 0
 mod.vb.hydraShotCount = 0
 mod.vb.burdenCount = 0
 mod.vb.tornadoCount = 0
+mod.vb.mawCount = 0
 local thunderingShock = GetSpellInfo(230358)
 local consumingHunger = GetSpellInfo(230384)
 local hydraIcons = {}
@@ -132,6 +133,7 @@ function mod:OnCombatStart(delay)
 	self.vb.hydraShotCount = 0
 	self.vb.burdenCount = 0
 	self.vb.tornadoCount = 0
+	self.vb.mawCount = 0
 	table.wipe(hydraIcons)
 	timerThunderingShockCD:Start(10-delay)--10-11
 	if not self.Options.TauntOnPainSuccess then
@@ -182,10 +184,11 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 230384 or spellId == 234661 then
 		timerConsumingHungerCD:Start()
-	elseif spellId == 232746 then
-		specWarnDevouringMaw:Show()
+	elseif spellId == 232746 and self:AntiSpam(10, 5) then
+		self.vb.mawCount = self.vb.mawCount + 1
+		specWarnDevouringMaw:Show(self.vb.mawCount)
 		voiceDevouringMaw:Play("inktoshark")
-	elseif spellId == 232757 then
+	elseif spellId == 232757 and self:AntiSpam(10, 6) then
 		specWarnCrashingWave:Show()
 		voiceCrashingWave:Play("chargemove")
 	elseif spellId == 230358 then
@@ -204,12 +207,10 @@ function mod:SPELL_CAST_START(args)
 			voiceBurdenofPain:Play("defensive")
 		else
 			if not self.Options.TauntOnPainSuccess then
-				local targetName = UnitName("boss1target")
-				if targetName and self:IsTanking("boss1target") then
-					if self:AntiSpam(5, targetName) then
-						specWarnBurdenofPainTaunt:Show(targetName)
-						voiceBurdenofPain:Play("tauntboss")
-					end
+				local targetName = UnitName("boss1target") or DBM_CORE_UNKNOWN
+				if self:AntiSpam(5, targetName) then
+					specWarnBurdenofPainTaunt:Show(targetName)
+					voiceBurdenofPain:Play("tauntboss")
 				end
 			end
 		end
@@ -245,10 +246,10 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if self.vb.phase < 3 then
 			timerInkCD:Start(41.5)
 		else
-			timerInkCD:Start(31)--Variable, not sequence though cause differs pull to pull. just standard variable CD
+			timerInkCD:Start(26.7)--Variable, not sequence though cause differs pull to pull. just standard variable CD
 		end
 	elseif spellId == 232746 then
-		timerDevouringMawCD:Start()
+		timerDevouringMawCD:Start(nil, self.vb.mawCount+1)
 	end
 end
 
@@ -391,7 +392,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 			end
 			timerFromtheAbyssCD:Start(28)
 			timerCrashingWaveCD:Start(30, 1)
-			timerDevouringMawCD:Start(40)
+			timerDevouringMawCD:Start(40, 1)
 			if not self:IsLFR() then
 				timerHydraShotCD:Start(15.8, 1)
 				countdownHydraShot:Start(15.8)
