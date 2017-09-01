@@ -2465,7 +2465,7 @@ do
 		dtext:SetFontObject(ChatFontNormal)
 		dtext:SetPoint("CENTER", decline, "CENTER", 0, 5)
 		dtext:SetText(NO)
-		PlaySound("igMainMenuOpen")--SOUNDKIT.IG_MAINMENU_OPEN (7.3)
+		PlaySound(850)
 	end
 
 	local function linkHook(self, link, string, button, ...)
@@ -4369,7 +4369,7 @@ do
 			inspopuptext:SetText(DBM_REQ_INSTANCE_ID_PERMISSION:format(sender, sender))
 			buttonaccept:SetScript("OnClick", function(f) savedSender = nil DBM:Unschedule(autoDecline) accessList[sender] = true syncHandlers["IR"](sender) f:GetParent():Hide() end)
 			buttondecline:SetScript("OnClick", function(f) autoDecline(sender, 1) end)
-			PlaySound("igMainMenuOpen")
+			PlaySound(850)
 			inspopup:Show()
 		end
 
