@@ -31,7 +31,7 @@ mod:RegisterEventsInCombat(
 ability.id = 204292 and type = "summon" or
 ability.id = 204459
 --]]
-local warnBrokenShard				= mod:NewSpellAnnounce(204292, 2, nil, false)
+local warnBrokenShard				= mod:NewSpellAnnounce(204292, 2, nil, false, 2)
 local warnVulnerable				= mod:NewTargetAnnounce(204459, 1)
 local warnCallScorp					= mod:NewSpellAnnounce(204372, 3)
 local warnRed						= mod:NewSpellAnnounce(214661, 2)
