@@ -27,7 +27,7 @@ local yellBeguilingCharm			= mod:NewYell(247549)
 local specWarnSadist				= mod:NewSpecialWarningCount(247544, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.stack:format(8, 159515), nil, 1, 2)
 local specWarnSadistOther			= mod:NewSpecialWarningTaunt(247544, nil, nil, nil, 1, 2)
 
-local timerBeguilingCharmCD			= mod:NewAITimer(13.4, 247549, nil, nil, nil, 2, nil, DBM_CORE_IMPORTANT_ICON)
+local timerBeguilingCharmCD			= mod:NewAITimer(35, 247549, nil, nil, nil, 2, nil, DBM_CORE_IMPORTANT_ICON)
 local timerFelLashCD				= mod:NewAITimer(13.4, 247604, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerHeartBreakerCD			= mod:NewAITimer(13.4, 247517, nil, "Healer", nil, 5, nil, DBM_CORE_HEALER_ICON)
 
@@ -62,13 +62,13 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 247551 then
-		warnBeguilingCharm:CombinedShow(0.3, args.destName)
+		warnBeguilingCharm:CombinedShow(1, args.destName)
 		if args:IsPlayer() then
 			yellBeguilingCharm:Yell()
 		end
 	elseif spellId == 247544 then
 		local amount = args.amount or 1
-		if (amount >= 8) and self:AntiSpam(4, 3) then--First warning at 8, then spam every 4 seconds above.
+		if (amount >= 8) and self:AntiSpam(4, 4) then--First warning at 8, then spam every 4 seconds above.
 			local tanking, status = UnitDetailedThreatSituation("player", "boss1")
 			if tanking or (status == 3) then
 				specWarnSadist:Show(amount)
