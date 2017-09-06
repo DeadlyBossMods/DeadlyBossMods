@@ -304,18 +304,18 @@ L:SetMiscLocalization({
 	--
 	Gloves		= "Носит перчатки / Wears gloves",
 	NoGloves	= "Без перчаток / No gloves",
-	Cape		= "Носит накидку / Wearing a cape",
+	Cape		= "Носит плащ / Wearing a cape",
 	Nocape		= "Без плаща / No cape",
-	LightVest	= "Носит светлый жилет / Wearing light vest",
-	DarkVest	= "Носит темный жилет / Wearing dark vest",
+	LightVest	= "Светлый жилет / Light vest",
+	DarkVest	= "Темный жилет / Dark vest",
 	Female		= "Женщина / Female",
 	Male		= "Мужчина / Male",
-	ShortSleeve = "Одежда с короткими рукавами / Wears short sleeves",
-	LongSleeve	= "Одежда с длинными рукавами / Wears long sleeves",
-	Potions		= "Зелья на поясе / Potions at the belt",
-	NoPotions	= "Нет при себе зелий / Not carrying any potions",
-	Book		= "Носит с собой книгу / Carries around one book",
-	Pouch		= "Кошель на поясе / Pouch at the belt"
+	ShortSleeve = "Короткие рукава / Short sleeves",
+	LongSleeve	= "Длинные рукава / Long sleeves",
+	Potions		= "Зелья / Potions",
+	NoPotions	= "Нет зелий / No potions",
+	Book		= "Книга / Book",
+	Pouch		= "Кошель / Pouch"
 })
 
 -----------------------
