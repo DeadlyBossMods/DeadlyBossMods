@@ -1,6 +1,6 @@
 ﻿## Interface: 70300
 ## X-Min-Interface: 60000
-## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FFStatus Bar Timers|r
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FFStatus Bar Timers (REQUIRED)|r
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FF상태 바|r
 ## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FF狀態條計時器|r
 ## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FF状态条计时器|r
