@@ -365,15 +365,17 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if self:IsMythic() and self.vb.phase == 2 then
 			if self.vb.wailingCount == 1 then--Need more data
 				timerShadReflectionWailingCD:Start(60, self.vb.wailingCount+1)
+			elseif self.vb.wailingCount == 2 then
+				timerShadReflectionWailingCD:Start(169.1, self.vb.wailingCount+1)
 			end
 		else
 			timerShadReflectionWailingCD:Start(112, self.vb.wailingCount+1)
 		end
 	elseif spellId == 236710 then--Erupting Shadow Reflection (Stage 1)
 		self.vb.eruptingReflectionIcon = 3
-		if self.vb.phase == 2 then
-			timerShadReflectionEruptingCD:Start(112)--Erupting
-		else--Should only happen in mythic phase 1
+		if self.vb.phase == 2 and not self:IsMythic() then
+			timerShadReflectionEruptingCD:Start(112)
+		elseif self:IsMythic() and self.vb.phase == 1 then
 			timerShadReflectionEruptingCD:Start(109)
 		end
 	elseif spellId == 237590 then--Hopeless Shadow Reflection (Stage 2)
@@ -609,11 +611,12 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerArmageddonCD:Start(19.4, 1)
 			countdownArmageddon:Start(19.4)
 			timerRupturingSingularityCD:Start(22.7, 1)
-			timerShadReflectionHopelessCD:Start(27.9)
+			timerShadReflectionHopelessCD:Start(27)
 			timerFocusedDreadflameCD:Start(33.4, 1)
 			countdownFocusedDread:Start(33.4)
-			timerShadReflectionWailingCD:Start(50.4, 1)
+			timerShadReflectionWailingCD:Start(49.5, 1)
 			timerBurstingDreadflameCD:Start(53.4, 1)
+			timerShadReflectionEruptingCD:Start(164, 1)
 		else
 			timerFelclawsCD:Start(9, 1)
 			countdownFelclaws:Start(9)
