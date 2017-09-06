@@ -363,10 +363,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if spellId == 236378 then--Wailing Shadow Reflection (Stage 1)
 		self.vb.wailingCount = self.vb.wailingCount + 1
 		if self:IsMythic() and self.vb.phase == 2 then
-			if self.vb.wailingCount == 1 then--Need more data
-				timerShadReflectionWailingCD:Start(60, self.vb.wailingCount+1)
-			elseif self.vb.wailingCount == 2 then
+			--if self.vb.wailingCount == 1 then--Need more data
+			if self.vb.wailingCount % 2 == 0 then--Alternation assumed
 				timerShadReflectionWailingCD:Start(169.1, self.vb.wailingCount+1)
+			else
+				timerShadReflectionWailingCD:Start(60, self.vb.wailingCount+1)
 			end
 		else
 			timerShadReflectionWailingCD:Start(112, self.vb.wailingCount+1)
