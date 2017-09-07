@@ -119,7 +119,7 @@ local thunderingShock = GetSpellInfo(230358)
 local consumingHunger = GetSpellInfo(230384)
 local hydraIcons = {}
 local eventsRegistered = false
-local p3MythicCrashingWave = {32.9, 42.7, 39.0, 32.9}
+local p3MythicCrashingWave = {30.9, 30.9, 40.6, 34.0, 30.9}--All minus 2 because timer starts at SUCCESS but is for START
 
 --/run DBM:GetModByName("1861"):TestHydraShot(1)
 function mod:TestHydraShot(icon)
@@ -242,7 +242,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			if timer then
 				timerCrashingWaveCD:Start(timer, self.vb.crashingWaveCount+1)
 			else
-				timerCrashingWaveCD:Start(31.5, self.vb.crashingWaveCount+1)--31-45
+				timerCrashingWaveCD:Start(30.9, self.vb.crashingWaveCount+1)
 			end
 		else
 			timerCrashingWaveCD:Start(nil, self.vb.crashingWaveCount+1)
@@ -426,11 +426,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 				countdownBurdenofPain:Start(23.5)
 			end
 			timerFromtheAbyssCD:Start(28)
-			if self:IsMythic() then
-				timerCrashingWaveCD:Start(32.5, 1)
-			else
-				timerCrashingWaveCD:Start(30, 1)
-			end
+			timerCrashingWaveCD:Start(30, 1)--START
 			timerConsumingHungerCD:Start(39)--SUCCESS
 			timerSlicingTornadoCD:Start(51, self.vb.tornadoCount+1)
 			countdownSlicingTorando:Start(51)
