@@ -119,7 +119,7 @@ local thunderingShock = GetSpellInfo(230358)
 local consumingHunger = GetSpellInfo(230384)
 local hydraIcons = {}
 local eventsRegistered = false
-local p3MythicCrashingWave = {30.9, 30.9, 40.6, 34.0, 30.9}--All minus 2 because timer starts at SUCCESS but is for START
+local p3MythicCrashingWave = {30.9, 30.9, 40.6, 37.0, 30.9}--All minus 2 because timer starts at SUCCESS but is for START
 
 --/run DBM:GetModByName("1861"):TestHydraShot(1)
 function mod:TestHydraShot(icon)
