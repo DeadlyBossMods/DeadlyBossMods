@@ -19,7 +19,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_REMOVED 235117 240209 235028 234891 243276",
 	"SPELL_PERIODIC_DAMAGE 238408 238028",
 	"SPELL_PERIODIC_MISSED 238408 238028",
-	"RAID_BOSS_WHISPER",
+--	"RAID_BOSS_WHISPER",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
@@ -42,7 +42,7 @@ local warnInfusion					= mod:NewCastAnnounce(235271, 3)
 --Stage Two
 local warnEssenceFragments			= mod:NewSpellAnnounce(236061, 2)
 --Mythic
-local warnSpontFrag					= mod:NewTargetAnnounce(239153, 4)
+--local warnSpontFrag					= mod:NewTargetAnnounce(239153, 4)
 
 --Stage One: Divide and Conquer
 --local specWarnInfusion				= mod:NewSpecialWarningSpell(235271, nil, nil, nil, 2, 2)
@@ -57,8 +57,8 @@ local specWarnGTFO					= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
 --Stage Two
 local specWarnWrathofCreators		= mod:NewSpecialWarningInterrupt(234891, "HasInterrupt", nil, nil, 1, 2)
 --
-local specWarnSpontFrag				= mod:NewSpecialWarningYou(239153, nil, nil, nil, 1, 2)
-local yellSpontFrag					= mod:NewShortYell(239153)
+local specWarnSpontFrag				= mod:NewSpecialWarningCount(239153, false, nil, nil, 2, 2)
+--local yellSpontFrag					= mod:NewShortYell(239153)
 
 
 --Stage One: Divide and Conquer
@@ -89,7 +89,7 @@ local voiceGTFO						= mod:NewVoice(238028, nil, DBM_CORE_AUTO_VOICE4_OPTION_TEX
 --Stage Two
 local voiceWrathofCreators			= mod:NewVoice(234891, "HasInterrupt")--kickcast
 --Mythic
-local voiceSpontFrag				= mod:NewVoice(239153)--watchstep
+local voiceSpontFrag				= mod:NewVoice(239153, false)--watchstep
 
 mod:AddSetIconOption("SetIconOnInfusion", 235271, true)
 mod:AddInfoFrameOption(235117, true)
@@ -329,6 +329,7 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
+--[[
 function mod:RAID_BOSS_WHISPER(msg)
 	if msg:find("239153") then
 		specWarnSpontFrag:Show()
@@ -345,10 +346,13 @@ function mod:OnTranscriptorSync(msg, targetName)
 		end
 	end
 end
+--]]
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 239153 then
 		self.vb.spontFragmentationCount = self.vb.spontFragmentationCount + 1
+		specWarnSpontFrag:Show(self.vb.spontFragmentationCoun)
+		voiceSpontFrag:Play("watchstep")
 		if self.vb.spontFragmentationCount < 4 then
 			timerSpontFragmentationCD:Start(nil, self.vb.spontFragmentationCount+1)
 		end
