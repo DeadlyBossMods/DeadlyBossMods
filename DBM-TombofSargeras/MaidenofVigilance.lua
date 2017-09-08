@@ -19,6 +19,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_REMOVED 235117 240209 235028 234891 243276",
 	"SPELL_PERIODIC_DAMAGE 238408 238028",
 	"SPELL_PERIODIC_MISSED 238408 238028",
+	"RAID_BOSS_WHISPER",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
@@ -40,6 +41,8 @@ local warnMassShit					= mod:NewCountAnnounce(235267, 2)
 local warnInfusion					= mod:NewCastAnnounce(235271, 3)
 --Stage Two
 local warnEssenceFragments			= mod:NewSpellAnnounce(236061, 2)
+--Mythic
+local warnSpontFrag					= mod:NewTargetAnnounce(239153, 4)
 
 --Stage One: Divide and Conquer
 --local specWarnInfusion				= mod:NewSpecialWarningSpell(235271, nil, nil, nil, 2, 2)
@@ -53,6 +56,10 @@ local specWarnFelhammer				= mod:NewSpecialWarningCount(241636, nil, nil, nil, 2
 local specWarnGTFO					= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
 --Stage Two
 local specWarnWrathofCreators		= mod:NewSpecialWarningInterrupt(234891, "HasInterrupt", nil, nil, 1, 2)
+--
+local specWarnSpontFrag				= mod:NewSpecialWarningYou(239153, nil, nil, nil, 1, 2)
+local yellSpontFrag					= mod:NewYell(239153)
+
 
 --Stage One: Divide and Conquer
 local timerInfusionCD				= mod:NewNextCountTimer(37.9, 235271, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
@@ -319,6 +326,23 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
+
+function mod:RAID_BOSS_WHISPER(msg)
+	if msg:find("239153") then
+		specWarnSpontFrag:Show()
+		--voiceShadowyBlades:Play("runout")
+		yellSpontFrag:Yell()
+	end
+end
+
+function mod:OnTranscriptorSync(msg, targetName)
+	if msg:find("239153") then
+		targetName = Ambiguate(targetName, "none")
+		if self:AntiSpam(4, targetName) then
+			warnSpontFrag:CombinedShow(0.5, targetName)
+		end
+	end
+end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 239153 then
