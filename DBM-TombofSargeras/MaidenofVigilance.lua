@@ -58,7 +58,7 @@ local specWarnGTFO					= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
 local specWarnWrathofCreators		= mod:NewSpecialWarningInterrupt(234891, "HasInterrupt", nil, nil, 1, 2)
 --
 local specWarnSpontFrag				= mod:NewSpecialWarningYou(239153, nil, nil, nil, 1, 2)
-local yellSpontFrag					= mod:NewYell(239153)
+local yellSpontFrag					= mod:NewShortYell(239153)
 
 
 --Stage One: Divide and Conquer
@@ -88,6 +88,8 @@ local voiceFelHammer				= mod:NewVoice(241636)--helpsoak/shockwave
 local voiceGTFO						= mod:NewVoice(238028, nil, DBM_CORE_AUTO_VOICE4_OPTION_TEXT)--runaway
 --Stage Two
 local voiceWrathofCreators			= mod:NewVoice(234891, "HasInterrupt")--kickcast
+--Mythic
+local voiceSpontFrag				= mod:NewVoice(239153)--watchstep
 
 mod:AddSetIconOption("SetIconOnInfusion", 235271, true)
 mod:AddInfoFrameOption(235117, true)
@@ -330,7 +332,7 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 function mod:RAID_BOSS_WHISPER(msg)
 	if msg:find("239153") then
 		specWarnSpontFrag:Show()
-		--voiceShadowyBlades:Play("runout")
+		voiceSpontFrag:Play("watchstep")
 		yellSpontFrag:Yell()
 	end
 end
