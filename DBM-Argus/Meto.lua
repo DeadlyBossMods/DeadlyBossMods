@@ -37,6 +37,8 @@ local voiceSow					= mod:NewVoice(247495)--tauntboss/stackhigh
 local voiceSeedsofChaos			= mod:NewVoice(247585, "-Tank")--169613 (run over the flower)?
 local voiceDeathField			= mod:NewVoice(247632)--shockwave (will this confuse tanks?)
 
+--mod:AddReadyCheckOption(49198, false)
+
 function mod:OnCombatStart(delay, yellTriggered)
 	if yellTriggered then
 

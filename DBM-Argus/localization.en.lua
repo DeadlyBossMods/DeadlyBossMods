@@ -25,6 +25,10 @@ L= DBM:GetModLocalization(2011)
 -----------------------
 L= DBM:GetModLocalization(2010)
 
+L:SetMiscLocalization({
+	Pull				= "Yes... come closer, little ones!"
+})
+
 -----------------------
 -- Pit Lord Vilemus --
 -----------------------
