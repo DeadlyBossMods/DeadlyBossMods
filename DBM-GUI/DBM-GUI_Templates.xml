@@ -28,9 +28,9 @@
 		<Scripts>
 			<OnClick>
 				if ( self:GetChecked() ) then
-					PlaySound("igMainMenuOptionCheckBoxOn");
+					PlaySound(856);
 				else
-					PlaySound("igMainMenuOptionCheckBoxOff");
+					PlaySound(857);
 				end
 				BlizzardOptionsPanel_CheckButton_OnClick(self);
 			</OnClick>
@@ -180,7 +180,7 @@
 					<OnClick>
 						local parent = self:GetParent();
 						parent:SetValue(parent:GetValue() - (parent:GetHeight() / 2));
-						PlaySound("UChatScrollButton");
+						PlaySound(1115);
 					</OnClick>
 				</Scripts>
 			</Button>
@@ -192,7 +192,7 @@
 					<OnClick>
 						local parent = self:GetParent();
 						parent:SetValue(parent:GetValue() + (parent:GetHeight() / 2));
-						PlaySound("UChatScrollButton");
+						PlaySound(1115);
 					</OnClick>
 				</Scripts>
 			</Button>
