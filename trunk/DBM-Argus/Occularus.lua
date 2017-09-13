@@ -38,6 +38,8 @@ local voiceSearingGaze					= mod:NewVoice(247320, "HasInterrupt")--kickcast
 local voicePhantasm						= mod:NewVoice(247393)--watchorb
 local voiceEyeSore						= mod:NewVoice(247330, "Healer")--healall
 
+--mod:AddReadyCheckOption(49195, false)
+
 function mod:OnCombatStart(delay, yellTriggered)
 	if yellTriggered then
 
