@@ -34,6 +34,8 @@ local countdownBeguilingCharm		= mod:NewCountdown(34.8, 247549)
 local voiceBeguilingCharm			= mod:NewVoice(247549)--turnaway
 local voiceSadist					= mod:NewVoice(247544)--changemt
 
+--mod:AddReadyCheckOption(48620, false)
+
 function mod:OnCombatStart(delay, yellTriggered)
 	if yellTriggered then
 

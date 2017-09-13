@@ -40,6 +40,8 @@ local voiceClovenSoul			= mod:NewVoice(247444)--tauntboss
 local voiceWakeofDestruction	= mod:NewVoice(247432)--watchwave
 local voiceSeedsofDestruction	= mod:NewVoice(247437)--Runout
 
+--mod:AddReadyCheckOption(49197, false)
+
 local function warnWake(self)
 	if self:AntiSpam(3, 1) then
 		specWarnWakeofDestruction:Show()
