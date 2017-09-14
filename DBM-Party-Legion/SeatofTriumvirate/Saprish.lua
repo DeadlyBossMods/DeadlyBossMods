@@ -10,84 +10,82 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 245802 248831",
-	"SPELL_AURA_APPLIED 247145 247245",
+	"SPELL_CAST_SUCCESS 247245",
+	"SPELL_AURA_APPLIED 247245",
 --	"SPELL_AURA_REMOVED 247245",
 --	"CHAT_MSG_RAID_BOSS_EMOTE",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, target scan dark hatchet?
---TODO, figure out which void trap ID to use, doubt cast is in combat log
---TODO, verify target scanning for ravaging darkness
 --TODO, see if swoop/screech target can be identified
---TODO, swoop timer, with correct IDs
+--TODO, Fix umbral flanking timer for longer pull
+--TODO, mythic timers
 --Void Hunter
 local warnUmbralFlanking				= mod:NewTargetAnnounce(247245, 3)
-local warnRavagingDarkness				= mod:NewTargetAnnounce(245802, 3)
+local warnRavagingDarkness				= mod:NewSpellAnnounce(245802, 3)
 local warnDreadScreech					= mod:NewCastAnnounce(248831, 2)
 
-local specWarnHuntersRush				= mod:NewSpecialWarningDefensive(247145, "Tank", nil, nil, 1, 2)
+--local specWarnHuntersRush				= mod:NewSpecialWarningDefensive(247145, "Tank", nil, nil, 1, 2)
 local specWarnOverloadTrap				= mod:NewSpecialWarningDodge(247206, nil, nil, nil, 2, 2)
 local specWarnUmbralFlanking			= mod:NewSpecialWarningMoveAway(247245, nil, nil, nil, 1, 2)
 local yellUmbralFlanking				= mod:NewYell(247245)
-local specWarnRavagingDarkness			= mod:NewSpecialWarningMove(245802, nil, nil, nil, 1, 2)
-local yellRavagingDarkness				= mod:NewYell(245802)
+--local specWarnRavagingDarkness			= mod:NewSpecialWarningMove(245802, nil, nil, nil, 1, 2)
+--local yellRavagingDarkness				= mod:NewYell(245802)
 
-local timerHuntersRushCD				= mod:NewAITimer(12, 247145, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
-local timerVoidTrapCD					= mod:NewAITimer(9.7, 246026, nil, nil, nil, 3)
-local timerOverloadTrapCD				= mod:NewAITimer(9.7, 247206, nil, nil, nil, 3)
-local timerRavagingDarknessCD			= mod:NewAITimer(9.7, 245802, nil, nil, nil, 3)
+local timerVoidTrapCD					= mod:NewCDTimer(15.8, 246026, nil, nil, nil, 3)
+local timerOverloadTrapCD				= mod:NewCDTimer(20.6, 247206, nil, nil, nil, 3)
+local timerRavagingDarknessCD			= mod:NewCDTimer(8.8, 245802, nil, nil, nil, 3)
+local timerUmbralFlankingCD				= mod:NewCDTimer(8.8, 247245, nil, nil, nil, 3)
+local timerScreechCD					= mod:NewAITimer(8.8, 248831, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
 
 --local countdownBreath					= mod:NewCountdown(22, 227233)
 
-local voiceHuntersRush					= mod:NewVoice(247145)--defensive
+--local voiceHuntersRush					= mod:NewVoice(247145)--defensive
 local voiceOverloadTrap					= mod:NewVoice(247206)--watchstep
 local voiceUmbralFlanking				= mod:NewVoice(247245)--scatter
 local voiceRavagingDarkness				= mod:NewVoice(245802)--runaway
 
-function mod:RavagingDarknessTarget(targetname, uId)
-	if not targetname then
-		return
-	end
-	if targetname == UnitName("player") then
-		specWarnRavagingDarkness:Show()
-		voiceRavagingDarkness:Play("runaway")
-		yellRavagingDarkness:Yell()
-	else
-		warnRavagingDarkness:Show(targetname)
-	end
-end
-
 function mod:OnCombatStart(delay)
-	timerHuntersRushCD:Start(1-delay)
-	timerVoidTrapCD:Start(1-delay)
-	timerOverloadTrapCD:Start(1-delay)
-	timerRavagingDarknessCD:Start(1-delay)
+	timerRavagingDarknessCD:Start(5.5-delay)
+	timerVoidTrapCD:Start(8.8-delay)
+	timerOverloadTrapCD:Start(12.5-delay)
+	timerUmbralFlankingCD:Start(21.0-delay)
+	if self:IsMythic() then
+		--Stuff
+		timerScreechCD:Start(1-delay)
+	end
 end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 245802 then
+		warnRavagingDarkness:Show()
 		timerRavagingDarknessCD:Start()
-		self:BossTargetScanner(args.sourceGUID, "RavagingDarknessTarget", 0.1, 12, true)
 	elseif spellId == 248831 then
 		warnDreadScreech:Show()
+		timerScreechCD:Start()
+	end
+end
+
+function mod:SPELL_CAST_SUCCESS(args)
+	local spellId = args.spellId
+	if spellId == 247245 then
+		--timerUmbralFlankingCD:Start()
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 247145 then
-		specWarnHuntersRush:Show()
-		voiceHuntersRush:Play("defensive")
-		timerHuntersRushCD:Start()
-	elseif spellId == 247245 then
+	if spellId == 247245 then
 		warnUmbralFlanking:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			specWarnUmbralFlanking:Show()
 			voiceUmbralFlanking:Play("scatter")
 			yellUmbralFlanking:Yell()
 		end
+--	elseif spellId == 247145 then
+--		specWarnHuntersRush:Show()
+--		voiceHuntersRush:Play("defensive")
 	end
 end
 
