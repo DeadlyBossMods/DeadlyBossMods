@@ -351,7 +351,7 @@ end
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 239153 then
 		self.vb.spontFragmentationCount = self.vb.spontFragmentationCount + 1
-		specWarnSpontFrag:Show(self.vb.spontFragmentationCoun)
+		specWarnSpontFrag:Show(self.vb.spontFragmentationCount)
 		voiceSpontFrag:Play("watchstep")
 		if self.vb.spontFragmentationCount < 4 then
 			timerSpontFragmentationCD:Start(nil, self.vb.spontFragmentationCount+1)
