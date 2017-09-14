@@ -7,23 +7,23 @@ mod:SetZone()
 
 mod.isTrashMod = true
 
---[[
 mod:RegisterEvents(
-	"SPELL_CAST_START",
-	"SPELL_AURA_APPLIED"
+--	"SPELL_CAST_START",
+	"SPELL_AURA_APPLIED 245510"
 )
 
-local warnTorment				= mod:NewTargetAnnounce(202615, 3)
+local warnCorruptingVoid			= mod:NewTargetAnnounce(245510, 3)
 
-local specWarnUnleashedFury		= mod:NewSpecialWarningSpell(196799, nil, nil, nil, 1, 2)
-local specWarnNightmares		= mod:NewSpecialWarningInterrupt(193069, "HasInterrupt", nil, nil, 1, 2)
-local yellNightmares			= mod:NewYell(193069)
+local specWarnCorruptingVoid		= mod:NewSpecialWarningYou(245510, nil, nil, nil, 1, 2)
+local yellCorruptingVoid			= mod:NewYell(245510)
+--local specWarnNightmares			= mod:NewSpecialWarningInterrupt(193069, "HasInterrupt", nil, nil, 1, 2)
 
-local voiceUnleashedFury		= mod:NewVoice(196799)--aesoon
-local voiceNightmares			= mod:NewVoice(193069, "HasInterrupt")--kickcast
+local voiceCorruptingVoid			= mod:NewVoice(245510)--targetyou
+--local voiceNightmares				= mod:NewVoice(193069, "HasInterrupt")--kickcast
 
 mod:RemoveOption("HealthFrame")
 
+--[[
 function mod:SPELL_CAST_START(args)
 	if not self.Options.Enabled then return end
 	local spellId = args.spellId
@@ -34,13 +34,18 @@ function mod:SPELL_CAST_START(args)
 		voiceNightmares:Play("kickcast")
 	end
 end
+--]]
 
 function mod:SPELL_AURA_APPLIED(args)
 	if not self.Options.Enabled then return end
 	local spellId = args.spellId
-	if spellId == 202615 then
-
+	if spellId == 245510 and self:AntiSpam(3, args.destName) then
+		if args:IsPlayer() then
+			specWarnCorruptingVoid:Show()
+			voiceCorruptingVoid:Play("targetyou")
+			yellCorruptingVoid:Yell()
+		else
+			warnCorruptingVoid:Show(args.destName)
+		end
 	end
 end
-
---]]
