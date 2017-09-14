@@ -20,14 +20,15 @@ mod:RegisterEventsInCombat(
 --TODO, review throttling for fragments of despair and review adding per add timer for it maybe if it's not cast that often
 --TODO, what to do with aoe abilities like Umbral Cadence and Naaru's Lament
 --TODO, start grand shift timer on phase 2 trigger on mythic/mythic+ only
+--TODO, RP timer
 local warnBacklash						= mod:NewTargetAnnounce(247816, 1)
 
 local specWarnCalltoVoid				= mod:NewSpecialWarningSwitch(247795, nil, nil, nil, 1, 2)
 local specWarnFragmentOfDespair			= mod:NewSpecialWarningSpell(245164, nil, nil, nil, 1, 2)
 local specWarnGrandShift				= mod:NewSpecialWarningDodge(249009, nil, nil, nil, 2, 2)
 
-local timerCalltoVoidCD					= mod:NewAITimer(12, 247795, nil, nil, nil, 1)
-local timerGrandShiftCD					= mod:NewAITimer(12, 249009, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
+--local timerCalltoVoidCD					= mod:NewAITimer(12, 247795, nil, nil, nil, 1)
+--local timerGrandShiftCD					= mod:NewAITimer(12, 249009, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
 local timerBacklash						= mod:NewBuffActiveTimer(12.5, 247816, nil, nil, nil, 6)
 
 --local countdownBreath					= mod:NewCountdown(22, 227233)
@@ -40,7 +41,7 @@ mod.vb.phase = 1
 
 function mod:OnCombatStart(delay)
 	self.vb.phase = 1
-	timerCalltoVoidCD:Start(1-delay)
+	--timerCalltoVoidCD:Start(1-delay)--Done instantly
 end
 
 function mod:SPELL_CAST_START(args)
@@ -48,14 +49,14 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 247795 then
 		specWarnCalltoVoid:Show()
 		voiceCalltoVoid:Play("killmob")
-		timerCalltoVoidCD:Start()
+		--timerCalltoVoidCD:Start()
 	elseif spellId == 245164 and self:AntiSpam(3, 1) then
 		specWarnFragmentOfDespair:Show()
 		voiceFragmentOfDespair:Play("helpsoak")
 	elseif spellId == 249009 then
 		specWarnGrandShift:Show()
 		voiceGrandShift:Play("watchstep")
-		voiceGrandShift:Start()
+		--timerGrandShiftCD:Start()
 	end
 end
 
