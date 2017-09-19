@@ -8,17 +8,14 @@ mod:SetCreatureID(124555)
 mod:SetZone()
 --mod:SetMinSyncRevision(11969)
 
-mod:RegisterCombat("combat")
+mod:RegisterCombat("combat_yell", L.Pull)
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 247698 247410",
-	"SPELL_CAST_SUCCESS 247437",
-	"SPELL_AURA_APPLIED 247444 247437",
-	"UNIT_SPELLCAST_SUCCEEDED"
+	"SPELL_CAST_SUCCESS 247437 124555",
+	"SPELL_AURA_APPLIED 247444 247437"
 )
 
---More than one stack of 247444?
---TODO, see if Cavitation is in combat log. It wasn't on zakuun so assume this copy and paste is literal copy and paste on their end
 local warnSeedofDestruction		= mod:NewTargetAnnounce(247437, 4)
 
 local specSilence				= mod:NewSpecialWarningSpell(247698, nil, nil, nil, 2, 2)
@@ -29,10 +26,10 @@ local specWarnWakeofDestruction	= mod:NewSpecialWarningSpell(247432, nil, nil, n
 local specWarnSeedofDestruction	= mod:NewSpecialWarningYou(247437, nil, nil, nil, 3, 4)
 local yellSeedsofDestruction	= mod:NewYell(247437)
 
-local timerSilenceCD			= mod:NewAITimer(13.4, 247698, nil, nil, nil, 2, nil, DBM_CORE_HEALER_ICON)
-local timerSoulCleaveCD			= mod:NewAITimer(40, 247410, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
-local timerCavitationCD			= mod:NewAITimer(40, 181461, nil, nil, nil, 2)
-local timerSeedsofDestructionCD	= mod:NewAITimer(14.5, 247437, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
+local timerSilenceCD			= mod:NewCDTimer(24.4, 247698, nil, nil, nil, 2, nil, DBM_CORE_HEALER_ICON)
+local timerSoulCleaveCD			= mod:NewCDTimer(25.5, 247410, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerCavitationCD			= mod:NewCDTimer(26.7, 181461, nil, nil, nil, 2)
+local timerSeedsofDestructionCD	= mod:NewCDTimer(17.0, 247437, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
 
 local voiceSilence				= mod:NewVoice(247698)--specialsoon for now, silencesoon later
 local voiceSoulCleave			= mod:NewVoice(247410, "Melee")--179406 (soul cleave)
@@ -40,7 +37,7 @@ local voiceClovenSoul			= mod:NewVoice(247444)--tauntboss
 local voiceWakeofDestruction	= mod:NewVoice(247432)--watchwave
 local voiceSeedsofDestruction	= mod:NewVoice(247437)--Runout
 
---mod:AddReadyCheckOption(49197, false)
+mod:AddReadyCheckOption(49197, false)
 
 local function warnWake(self)
 	if self:AntiSpam(3, 1) then
@@ -72,6 +69,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 247437 then
 		timerSeedsofDestructionCD:Start()
+	elseif spellId == 124555 then
+		if self:AntiSpam(5, 2) then
+			warnWake(self)
+		end
+		timerCavitationCD:Start()
 	end
 end
 
@@ -92,14 +94,5 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self:AntiSpam(5, 2) then
 			self:Schedule(3.5, warnWake, self)
 		end
-	end
-end
-
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if spellId == 247415 and self:AntiSpam(3, 3) then--Sometimes does NOT show in combat log, this is only accurate way
-		if self:AntiSpam(5, 2) then
-			warnWake(self)
-		end
-		timerCavitationCD:Start()
 	end
 end

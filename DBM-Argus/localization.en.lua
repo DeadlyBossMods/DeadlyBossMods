@@ -15,6 +15,10 @@ L= DBM:GetModLocalization(2013)
 -----------------------
 L= DBM:GetModLocalization(2014)
 
+L:SetMiscLocalization({
+	Pull				= "Come, small ones. Die by my hand!"
+})
+
 -----------------------
 -- Mistress Alluradel --
 -----------------------
