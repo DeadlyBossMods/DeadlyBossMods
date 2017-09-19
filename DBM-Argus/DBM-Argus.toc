@@ -21,6 +21,7 @@
 localization.en.lua
 localization.cn.lua
 localization.de.lua
+localization.kr.lua
 localization.tw.lua
 Meto.lua
 Occularus.lua
