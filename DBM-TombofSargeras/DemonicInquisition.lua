@@ -115,7 +115,7 @@ local function updateAllAtriganTimers(self, ICD, ignoreBoneSaw)
 		timerScytheSweepCD:Stop()
 		timerScytheSweepCD:Update(elapsed, total+extend)
 	end
-	if timerCalcifiedQuillsCD:GetRemaining() < ICD then--3
+	if timerCalcifiedQuillsCD:GetRemaining() < ICD then--5
 		local elapsed, total = timerCalcifiedQuillsCD:GetTime()
 		local extend = ICD - (total-elapsed)
 		DBM:Debug("timerCalcifiedQuillsCD extended by: "..extend, 2)
