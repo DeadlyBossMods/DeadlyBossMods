@@ -119,6 +119,7 @@ DBM.DefaultOptions = {
 	StatusEnabled = true,
 	WhisperStats = false,
 	DisableStatusWhisper = false,
+	DisableGuildStatus = false,
 	HideBossEmoteFrame = true,
 	SpamBlockBossWhispers = true,
 	ShowMinimapButton = false,
@@ -381,6 +382,7 @@ local addsGUIDs = {}
 local targetEventsRegistered = false
 local targetMonitor = nil
 local statusWhisperDisabled = false
+local statusGuildDisabled = false
 local dbmToc = 0
 local UpdateChestTimer
 local breakTimerStart
@@ -3949,6 +3951,12 @@ do
 		statusWhisperDisabled = true
 		DBM:Debug("Raid leader has disabled status whispers")
 	end
+	
+	syncHandlers["DGP"] = function(sender)
+		if (DBM:GetRaidRank(sender) ~= 2 or not IsInGroup()) then return end--If not on group, we're probably sender, don't disable status. IF not leader, someone is trying to spoof this, block that too
+		statusGuildDisabled = true
+		DBM:Debug("Raid leader has disabled guild progress messages")
+	end
 
 	syncHandlers["IS"] = function(sender, guid, ver, optionName)
 		ver = tonumber(ver)
@@ -5456,6 +5464,9 @@ do
 				self:Debug("StartCombat called by individual mod or unknown reason. LastInstanceMapID is "..LastInstanceMapID)
 			end
 			--check completed. starting combat
+			if self.Options.DisableGuildStatus and UnitIsGroupLeader("player") then
+				sendSync("DGP")
+			end
 			tinsert(inCombat, mod)
 			if mod.inCombatOnlyEvents and not mod.inCombatOnlyEventsRegistered then
 				mod.inCombatOnlyEventsRegistered = 1
@@ -5604,7 +5615,7 @@ do
 				if not synced then
 					sendSync("C", (delay or 0).."\t"..modId.."\t"..(mod.revision or 0).."\t"..startHp.."\t"..DBM.Revision.."\t"..(mod.hotfixNoticeRev or 0))
 				end
-				if self.Options.DisableStatusWhisper and UnitIsGroupLeader("player") and (difficultyIndex == 8 or difficultyIndex == 14 or difficultyIndex == 15 or difficultyIndex == 16 or difficultyIndex == 23) then
+				if self.Options.DisableStatusWhisper and UnitIsGroupLeader("player") and (difficultyIndex == 8 or difficultyIndex == 14 or difficultyIndex == 15 or difficultyIndex == 16) then
 					sendSync("DSW")
 				end
 				--show bigbrother check
@@ -5626,7 +5637,7 @@ do
 							self:AddMsg(DBM_CORE_SCENARIO_STARTED:format(difficultyText..name))
 						else
 							self:AddMsg(DBM_CORE_COMBAT_STARTED:format(difficultyText..name))
-							if (difficultyIndex == 8 or difficultyIndex == 14 or difficultyIndex == 15 or difficultyIndex == 16) and InGuildParty() and not statusWhisperDisabled and not self.Options.DisableStatusWhisper then--Only send relevant content, not guild beating down lich king or LFR.
+							if (difficultyIndex == 8 or difficultyIndex == 14 or difficultyIndex == 15 or difficultyIndex == 16) and InGuildParty() and not statusGuildDisabled and not self.Options.DisableGuildStatus then--Only send relevant content, not guild beating down lich king or LFR.
 								SendAddonMessage("D4", "GCB\t"..modId.."\t2\t"..difficultyIndex, "GUILD")
 							end
 						end
@@ -5773,7 +5784,7 @@ do
 							self:AddMsg(DBM_CORE_SCENARIO_ENDED_AT_LONG:format(difficultyText..name, strFromTime(thisTime), totalPulls - totalKills))
 						else
 							self:AddMsg(DBM_CORE_COMBAT_ENDED_AT_LONG:format(difficultyText..name, wipeHP, strFromTime(thisTime), totalPulls - totalKills))
-							if (difficultyIndex == 8 or difficultyIndex == 14 or difficultyIndex == 15 or difficultyIndex == 16) and InGuildParty() and not statusWhisperDisabled and not self.Options.DisableStatusWhisper then--Maybe add mythic plus/CM?
+							if (difficultyIndex == 8 or difficultyIndex == 14 or difficultyIndex == 15 or difficultyIndex == 16) and InGuildParty() and not statusGuildDisabled and not self.Options.DisableGuildStatus then--Maybe add mythic plus/CM?
 								SendAddonMessage("D4", "GCE\t"..modId.."\t3\t1\t"..strFromTime(thisTime).."\t"..difficultyIndex.."\t"..wipeHP, "GUILD")
 							end
 						end
@@ -5855,7 +5866,7 @@ do
 							msg = DBM_CORE_SCENARIO_COMPLETE:format(difficultyText..name, strFromTime(thisTime))
 						else
 							msg = DBM_CORE_BOSS_DOWN:format(difficultyText..name, strFromTime(thisTime))
-							if (difficultyIndex == 8 or difficultyIndex == 14 or difficultyIndex == 15 or difficultyIndex == 16) and InGuildParty() and not statusWhisperDisabled and not self.Options.DisableStatusWhisper then
+							if (difficultyIndex == 8 or difficultyIndex == 14 or difficultyIndex == 15 or difficultyIndex == 16) and InGuildParty() and not statusGuildDisabled and not self.Options.DisableGuildStatus then
 								SendAddonMessage("D4", "GCE\t"..modId.."\t3\t0\t"..strFromTime(thisTime).."\t"..difficultyIndex, "GUILD")
 							end
 						end
@@ -5864,7 +5875,7 @@ do
 							msg = DBM_CORE_SCENARIO_COMPLETE_NR:format(difficultyText..name, strFromTime(thisTime), strFromTime(bestTime), totalKills)
 						else
 							msg = DBM_CORE_BOSS_DOWN_NR:format(difficultyText..name, strFromTime(thisTime), strFromTime(bestTime), totalKills)
-							if (difficultyIndex == 8 or difficultyIndex == 14 or difficultyIndex == 15 or difficultyIndex == 16) and InGuildParty() and not statusWhisperDisabled and not self.Options.DisableStatusWhisper then
+							if (difficultyIndex == 8 or difficultyIndex == 14 or difficultyIndex == 15 or difficultyIndex == 16) and InGuildParty() and not statusGuildDisabled and not self.Options.DisableGuildStatus then
 								SendAddonMessage("D4", "GCE\t"..modId.."\t3\t0\t"..strFromTime(thisTime).."\t"..difficultyIndex, "GUILD")
 							end
 						end
@@ -5873,7 +5884,7 @@ do
 							msg = DBM_CORE_SCENARIO_COMPLETE_L:format(difficultyText..name, strFromTime(thisTime), strFromTime(lastTime), strFromTime(bestTime), totalKills)
 						else
 							msg = DBM_CORE_BOSS_DOWN_L:format(difficultyText..name, strFromTime(thisTime), strFromTime(lastTime), strFromTime(bestTime), totalKills)
-							if (difficultyIndex == 8 or difficultyIndex == 14 or difficultyIndex == 15 or difficultyIndex == 16) and InGuildParty() and not statusWhisperDisabled and not self.Options.DisableStatusWhisper then
+							if (difficultyIndex == 8 or difficultyIndex == 14 or difficultyIndex == 15 or difficultyIndex == 16) and InGuildParty() and not statusGuildDisabled and not self.Options.DisableGuildStatus then
 								SendAddonMessage("D4", "GCE\t"..modId.."\t3\t0\t"..strFromTime(thisTime).."\t"..difficultyIndex, "GUILD")
 							end
 						end
@@ -5935,6 +5946,7 @@ do
 			if mod.OnCombatEnd then mod:OnCombatEnd(wipe) end
 			if #inCombat == 0 then--prevent error if you pulled multiple boss. (Earth, Wind and Fire)
 				statusWhisperDisabled = false
+				statusGuildDisabled = false
 				self:Schedule(10, self.StopLogging, self)--small delay to catch kill/died combatlog events
 				self:HideBlizzardEvents(0)
 				self:Unschedule(checkBossHealth)
