@@ -482,7 +482,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 end
 
 function mod:OnSync(msg, targetname)
-	if msg == "FallenAvatarRP" and self:AntiSpam(10, 6) then
+	if msg == "FallenAvatarRP" and self:AntiSpam(60, 6) then
 		timerRP:Start()
 	end
 end
