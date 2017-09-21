@@ -29,8 +29,6 @@ mod:RegisterEvents(
 	"CHAT_MSG_MONSTER_YELL"
 )
 
---TODO, figure out mythic stack count to start warning. Right now it's 4
---TODO, unbound chaos seems affected by something, possibly energy getting to boss.
 --[[
 (ability.id = 239207 or ability.id = 239132 or ability.id = 236571 or ability.id = 233856 or ability.id = 233556 or ability.id = 240623 or ability.id = 239418 or ability.id = 235597) and type = "begincast" or
 (ability.id = 236571 or ability.id = 236494 or ability.id = 239739) and type = "cast" or
