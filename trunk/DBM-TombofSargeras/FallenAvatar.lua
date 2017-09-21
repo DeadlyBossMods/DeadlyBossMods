@@ -60,7 +60,7 @@ local specWarnDesolateOther			= mod:NewSpecialWarningTaunt(236494, nil, nil, nil
 ----Maiden of Valor
 local specWarnCorruptedMatrix		= mod:NewSpecialWarningMoveTo(233556, "Tank", nil, nil, 1, 7)
 local specWarnCleansingProtocol		= mod:NewSpecialWarningSwitch(233856, "-Healer", nil, nil, 3, 2)
-local specWarnTaintedEssence		= mod:NewSpecialWarningStack(240728, nil, 3, nil, nil, 1, 6)
+local specWarnTaintedEssence		= mod:NewSpecialWarningStack(240728, nil, 6, nil, nil, 1, 6)
 --Stage Two: An Avatar Awakened
 local specWarnDarkMark				= mod:NewSpecialWarningYouPos(239739, nil, nil, nil, 1, 2)
 local specWarnDarkMarkOther			= mod:NewSpecialWarningMoveTo(239739, nil, nil, nil, 1, 2)
@@ -376,7 +376,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 240728 then
 		if args:IsPlayer() then
 			local amount = args.amount or 1
-			if amount >= 4 then
+			if amount >= 6 then
 				specWarnTaintedEssence:Show(amount)
 				voiceTaintedEssence:Play("stackhigh")
 			end
@@ -463,7 +463,15 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	elseif spellId == 239739 or spellId == 239825 then
 		table.wipe(darkMarkTargets)
 		self.vb.darkMarkCast = self.vb.darkMarkCast + 1
-		timerDarkMarkCD:Start(nil, self.vb.darkMarkCast+1)
+		if self:IsMythic() then
+			if self.vb.darkMarkCast == 1 then
+				timerDarkMarkCD:Start(25, self.vb.darkMarkCast+1)
+			else
+				timerDarkMarkCD:Start(30, self.vb.darkMarkCast+1)
+			end
+		else
+			timerDarkMarkCD:Start(nil, self.vb.darkMarkCast+1)--34
+		end
 	elseif spellId == 236571 or spellId == 236573 then--Shadow Blades
 		self.vb.bladesIcon = 1--SHOULD always fire first
 		self:Unschedule(setabilityStatus, self, 236571)--Unschedule for good measure in case next cast start fires before timer expires (in which case have a bad timer)
