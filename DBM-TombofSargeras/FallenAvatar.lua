@@ -66,7 +66,7 @@ local specWarnDarkMark				= mod:NewSpecialWarningYouPos(239739, nil, nil, nil, 1
 local specWarnDarkMarkOther			= mod:NewSpecialWarningMoveTo(239739, nil, nil, nil, 1, 2)
 local yellDarkMark					= mod:NewPosYell(239739)
 local yellDarkMarkFades				= mod:NewIconFadesYell(239739)
-local specWarnRainoftheDestroyer	= mod:NewSpecialWarningDodge(240396, nil, nil, nil, 2, 2)
+local specWarnRainoftheDestroyer	= mod:NewSpecialWarningCount(240396, nil, nil, nil, 2, 2)
 
 --Stage One: A Slumber Disturbed
 local timerRP						= mod:NewRPTimer(41)
@@ -80,11 +80,10 @@ local timerDesolateCD				= mod:NewCDTimer(11.4, 236494, nil, "Tank", nil, 5, nil
 mod:AddTimerLine(EJ_GetSectionInfo(14713))
 local timerCorruptedMatrixCD		= mod:NewNextTimer(40, 233556, nil, nil, nil, 5)
 local timerCorruptedMatrix			= mod:NewCastTimer(10, 233556, nil, nil, nil, 5)
-local timerTaintedMatrixCD			= mod:NewCastTimer(10, 240623, nil, nil, nil, 6)--Mythic
 --Stage Two: An Avatar Awakened
 mod:AddTimerLine(SCENARIO_STAGE:format(2))
-local timerDarkMarkCD				= mod:NewCDCountTimer(34, 239739, nil, nil, nil, 3)
-local timerRainoftheDestroyerCD		= mod:NewAITimer(35, 240396, nil, nil, nil, 3)
+local timerDarkMarkCD				= mod:NewNextCountTimer(34, 239739, nil, nil, nil, 3)
+local timerRainoftheDestroyerCD		= mod:NewNextCountTimer(35, 240396, nil, nil, nil, 3)
 local timerRainoftheDestroyer		= mod:NewCastTimer(5.5, 240396, 206577, nil, nil, 3)--Shortname: Comet Impact
 
 local berserkTimer					= mod:NewBerserkTimer(420)
@@ -107,7 +106,7 @@ local voiceTaintedEssence			= mod:NewVoice(240728)--stackhigh
 --Stage Two: An Avatar Awakened
 local voicePhaseChange				= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
 local voiceDarkMark					= mod:NewVoice(239739)--gathershare/targetyou
-local voiceRainoftheDestroyer		= mod:NewVoice(240396)--watchstep
+local voiceRainoftheDestroyer		= mod:NewVoice(240396)--helpsoak
 
 mod:AddSetIconOption("SetIconOnShadowyBlades", 236571, true)
 mod:AddSetIconOption("SetIconOnDarkMark", 239739, true)
@@ -127,6 +126,7 @@ mod.vb.touchCast = 0
 mod.vb.darkMarkCast = 0
 mod.vb.chaosCount = 0
 mod.vb.realityCount = 0
+mod.vb.rainCount = 0
 local darkMarkTargets = {}
 local playerName = UnitName("player")
 local beamName = GetSpellInfo(238244)
@@ -142,8 +142,10 @@ local function warnDarkMarkTargets(self, spellName)
 		if name == playerName then
 			yellDarkMark:Yell(icon, icon, icon)
 			local _, _, _, _, _, _, expires = UnitDebuff("player", spellName)
-			local remaining = expires-GetTime()
-			yellDarkMarkFades:Countdown(remaining, nil, icon)
+			if expires then
+				local remaining = expires-GetTime()
+				yellDarkMarkFades:Countdown(remaining, nil, icon)
+			end
 			specWarnDarkMark:Show(self:IconNumToTexture(icon))
 			voiceDarkMark:Play("targetyou")
 		end
@@ -231,6 +233,7 @@ function mod:OnCombatStart(delay)
 	self.vb.darkMarkCast = 0
 	self.vb.chaosCount = 0
 	self.vb.realityCount = 0
+	self.vb.rainCount = 0
 	timerUnboundChaosCD:Start(7-delay, 1)--7
 	self:Schedule(7, setabilityStatus, self, 234059, 0)--Unbound Chaos
 	timerDesolateCD:Start(13-delay)--13
@@ -296,7 +299,6 @@ function mod:SPELL_CAST_START(args)
 		timerCorruptedMatrix:Start(10)
 	elseif spellId == 240623 and self:AntiSpam(2, 3) then
 		warnTaintedMatrix:Show()
-		timerTaintedMatrixCD:Start(10)
 	elseif spellId == 235597 then
 		self:Unschedule(setabilityStatus)--Unschedule all
 		self.vb.phase = 2
@@ -308,7 +310,6 @@ function mod:SPELL_CAST_START(args)
 		timerCorruptedMatrix:Stop()
 		timerCorruptedMatrixCD:Stop()
 		countdownCorruptedMatrix:Cancel()
-		timerTaintedMatrixCD:Stop()
 		timerDarkMarkCD:Stop()
 		
 		warnPhase2:Show()
@@ -320,7 +321,7 @@ function mod:SPELL_CAST_START(args)
 			DBM.InfoFrame:Hide()
 		end
 		if self:IsMythic() then
-			timerRainoftheDestroyerCD:Start(2)
+			timerRainoftheDestroyerCD:Start(14, 1)
 		end
 	end
 end
@@ -412,10 +413,11 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 	if msg:find("234418") then
-		specWarnRainoftheDestroyer:Show()
-		voiceRainoftheDestroyer:Play("watchstep")
+		self.vb.rainCount = self.vb.rainCount + 1
+		specWarnRainoftheDestroyer:Show(self.vb.rainCount)
+		voiceRainoftheDestroyer:Play("helpsoak")
 		timerRainoftheDestroyer:Start()
-		timerRainoftheDestroyerCD:Start()
+		timerRainoftheDestroyerCD:Start(nil, self.vb.rainCount+1)
 	end
 end
 
