@@ -91,6 +91,9 @@ local berserkTimer					= mod:NewBerserkTimer(420)
 --Stage One: A Slumber Disturbed
 local countdownRuptureRealities		= mod:NewCountdown(60, 239132)
 local countdownCorruptedMatrix		= mod:NewCountdown("Alt40", 233556)
+--Stage Two
+local countdownDarkMark				= mod:NewCountdown("Alt40", 239739)
+local countdownRainofthedDestroyer	= mod:NewCountdown("AltTwo35", 240396)
 
 --Stage One: A Slumber Disturbed
 local voiceTouchofSargerasGround	= mod:NewVoice(239207, "-Tank", nil, 2)--helpsoak
@@ -293,11 +296,11 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 233856 then
 		specWarnCleansingProtocol:Show()
 		voiceCleansingProtocol:Play("targetchange")
-	elseif spellId == 233556 and self:AntiSpam(2, 2) then
+	elseif spellId == 233556 and self:AntiSpam(2, 2) and self.vb.phase == 1 then
 		specWarnCorruptedMatrix:Show(beamName)
 		voiceCorruptedMatrix:Play("bosstobeam")
 		timerCorruptedMatrix:Start(10)
-	elseif spellId == 240623 and self:AntiSpam(2, 3) then
+	elseif spellId == 240623 and self:AntiSpam(2, 3) and self.vb.phase == 1 then
 		warnTaintedMatrix:Show()
 	elseif spellId == 235597 then
 		self:Unschedule(setabilityStatus)--Unschedule all
@@ -310,18 +313,22 @@ function mod:SPELL_CAST_START(args)
 		timerCorruptedMatrix:Stop()
 		timerCorruptedMatrixCD:Stop()
 		countdownCorruptedMatrix:Cancel()
-		timerDarkMarkCD:Stop()
 		
 		warnPhase2:Show()
 		voicePhaseChange:Play("ptwo")
 		timerDesolateCD:Start(19)
-		timerDarkMarkCD:Start(21, 1)
 		timerRuptureRealitiesCD:Start(39, 1)
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:Hide()
 		end
 		if self:IsMythic() then
-			timerRainoftheDestroyerCD:Start(14, 1)
+			timerRainoftheDestroyerCD:Start(15.4, 1)
+			countdownRainofthedDestroyer:Start(15.4)
+			timerDarkMarkCD:Start(32.2, 1)
+			countdownDarkMark:Start(32.2)
+		else
+			timerDarkMarkCD:Start(21, 1)
+			countdownDarkMark:Start(21)
 		end
 	end
 end
@@ -418,6 +425,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 		voiceRainoftheDestroyer:Play("helpsoak")
 		timerRainoftheDestroyer:Start()
 		timerRainoftheDestroyerCD:Start(nil, self.vb.rainCount+1)
+		countdownRainofthedDestroyer:Start()
 	end
 end
 
@@ -468,11 +476,14 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		if self:IsMythic() then
 			if self.vb.darkMarkCast == 1 then
 				timerDarkMarkCD:Start(25, self.vb.darkMarkCast+1)
+				countdownDarkMark:Start(25)
 			else
 				timerDarkMarkCD:Start(30, self.vb.darkMarkCast+1)
+				countdownDarkMark:Start(30)
 			end
 		else
 			timerDarkMarkCD:Start(nil, self.vb.darkMarkCast+1)--34
+			countdownDarkMark:Start(34)
 		end
 	elseif spellId == 236571 or spellId == 236573 then--Shadow Blades
 		self.vb.bladesIcon = 1--SHOULD always fire first
