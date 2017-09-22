@@ -315,15 +315,15 @@ function mod:SPELL_CAST_START(args)
 		warnPhase2:Show()
 		voicePhaseChange:Play("ptwo")
 		timerDesolateCD:Start(19)
-		timerRuptureRealitiesCD:Start(39, 1)
+		timerRuptureRealitiesCD:Start(38, 1)
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:Hide()
 		end
 		if self:IsMythic() then
 			timerRainoftheDestroyerCD:Start(15.4, 1)
 			countdownRainofthedDestroyer:Start(15.4)
-			timerDarkMarkCD:Start(32.2, 1)
-			countdownDarkMark:Start(32.2)
+			timerDarkMarkCD:Start(31.6, 1)
+			countdownDarkMark:Start(31.6)
 		else
 			timerDarkMarkCD:Start(21, 1)
 			countdownDarkMark:Start(21)
@@ -476,8 +476,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 				timerDarkMarkCD:Start(25, self.vb.darkMarkCast+1)
 				countdownDarkMark:Start(25)
 			else
-				timerDarkMarkCD:Start(30, self.vb.darkMarkCast+1)
-				countdownDarkMark:Start(30)
+				timerDarkMarkCD:Start(29.1, self.vb.darkMarkCast+1)
+				countdownDarkMark:Start(29.1)
 			end
 		else
 			timerDarkMarkCD:Start(nil, self.vb.darkMarkCast+1)--34
