@@ -58,7 +58,8 @@ local specWarnDesolateOther			= mod:NewSpecialWarningTaunt(236494, nil, nil, nil
 ----Maiden of Valor
 local specWarnCorruptedMatrix		= mod:NewSpecialWarningMoveTo(233556, "Tank", nil, nil, 1, 7)
 local specWarnCleansingProtocol		= mod:NewSpecialWarningSwitch(233856, "-Healer", nil, nil, 3, 2)
-local specWarnTaintedEssence		= mod:NewSpecialWarningStack(240728, nil, 6, nil, nil, 1, 6)
+local specWarnTaintedEssence		= mod:NewSpecialWarningStack(240728, nil, 5, nil, nil, 1, 6)
+local yellTaintedEssence			= mod:NewShortell(240728)
 --Stage Two: An Avatar Awakened
 local specWarnDarkMark				= mod:NewSpecialWarningYouPos(239739, nil, nil, nil, 1, 2)
 local specWarnDarkMarkOther			= mod:NewSpecialWarningMoveTo(239739, nil, nil, nil, 1, 2)
@@ -382,9 +383,10 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 240728 then
 		if args:IsPlayer() then
 			local amount = args.amount or 1
-			if amount >= 6 then
+			if amount >= 5 then
 				specWarnTaintedEssence:Show(amount)
 				voiceTaintedEssence:Play("stackhigh")
+				yellTaintedEssence:Yell(amount)
 			end
 		end
 	elseif spellId == 241008 then--Cleansing Protocol Shield
