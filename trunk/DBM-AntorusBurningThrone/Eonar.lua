@@ -155,7 +155,10 @@ function mod:OnCombatStart(delay)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(8)
 	end
-	DBM:AddMsg(DBM_CORE_NEED_LOGS)
+	local wowTOC, testBuild = DBM:GetTOC()
+	if not testBuild then
+		DBM:AddMsg(DBM_CORE_NEED_LOGS)
+	end
 end
 
 function mod:OnCombatEnd()
@@ -168,7 +171,10 @@ function mod:OnCombatEnd()
 	if self.Options.NPAuraOnPurification or self.Options.NPAuraOnFelShielding then
 		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
 	end
-	DBM:AddMsg(DBM_CORE_NEED_LOGS)
+	local wowTOC, testBuild = DBM:GetTOC()
+	if not testBuild then
+		DBM:AddMsg(DBM_CORE_NEED_LOGS)
+	end
 end
 
 function mod:SPELL_CAST_START(args)
