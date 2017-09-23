@@ -16,6 +16,10 @@ L= DBM:GetModLocalization(2013)
 -----------------------
 L= DBM:GetModLocalization(2014)
 
+L:SetMiscLocalization({
+	Pull				= "와라, 조그만 놈들아. 내 손에 죽어라!"
+})
+
 -----------------------
 -- Mistress Alluradel --
 -----------------------
