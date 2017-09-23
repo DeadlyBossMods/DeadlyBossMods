@@ -103,12 +103,14 @@ L.ShowAllVersions	 		= "버전 검사시 대화창에 모든 파티/공격대원
 L.CombatMessages			= "전투 메시지 설정"
 L.ShowEngageMessage 		= "대화창에 전투 시작 메시지 표시"
 L.ShowDefeatMessage 		= "대화창에 처치/전멸 메시지 표시"
-L.ShowGuildMessages 		= "대화창에 길드의 전투 시작/처치/전멸 메시지 표시"
+L.ShowGuildMessages 		= "대화창에 길드 레이드 전투 시작/보스 처치/전멸 메시지 표시"
+L.ShowGuildMessagesPlus		= "길드팟 신화+ 전투 시작/보스 처치/전멸 메시지도 표시 (길드 레이드 옵션 체크 필요)"
 L.WhisperMessages			= "귓속말 메시지 설정"
 L.AutoRespond 				= "전투중 귓속말 자동 응답"
 L.EnableStatus 				= "'status' 라는 귓속말을 받으면 자동 응답"
 L.WhisperStats 				= "귓속말 응답에 처치/전멸 통계 포함"
-L.DisableStatusWhisper 		= "전체 파티/공격대의 귓속말 응답을 끕니다. (파티/공대장 권한 필요) 일반/영웅/신화 공격대 및 도전/신화 5인 던전에만 적용됩니다."
+L.DisableStatusWhisper 		= "전체 파티/공격대의 귓속말 응답을 끕니다. (파티/공대장 권한 필요) 일반/영웅/신화 레이드 및 신화+ 던전에만 적용됩니다"
+L.DisableGuildStatus 		= "길드에 진행 상황 알림 메시지를 전송하지 않습니다. (파티/공대장 권한 필요)"
 
 -- Tab: Barsetup
 L.BarSetup  				= "타이머 바 설정"

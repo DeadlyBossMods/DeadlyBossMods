@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod(1984, "DBM-AntorusBurningThrone", nil, 946)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 16369 $"):sub(12, -3))
+mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(121975)
 mod:SetEncounterID(2063)
 mod:SetZone()

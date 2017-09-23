@@ -19,6 +19,10 @@ L:SetMiscLocalization({
 ---------------------------
 L= DBM:GetModLocalization(1987)
 
+L:SetOptionLocalization({
+	SequenceTimers =	"Squence the cooldown timers off previous ability casts instead of current ability cast to reduce timer clutter at expense of minor timer accuracy (1-2sec early)"
+})
+
 ---------------------------
 -- War Council --
 ---------------------------

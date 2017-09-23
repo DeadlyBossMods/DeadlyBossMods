@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod("AntorusTrash", "DBM-AntorusBurningTomb")
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 16034 $"):sub(12, -3))
+mod:SetRevision(("$Revision$"):sub(12, -3))
 --mod:SetModelID(47785)
 mod:SetZone()
 mod.isTrashMod = true
