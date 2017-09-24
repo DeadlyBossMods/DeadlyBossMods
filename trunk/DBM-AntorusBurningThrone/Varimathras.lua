@@ -96,7 +96,7 @@ function mod:OnCombatStart(delay)
 	timerDarkFissureCD:Start(17.9-delay)--success
 	timerMarkedPreyCD:Start(25.7-delay)
 	countdownMarkedPrey:Start(25.7-delay)
-	if self:IsHard() then
+	if not self:IsEasy() then
 		timerNecroticEmbraceCD:Start(35-delay)
 		countdownNecroticEmbrace:Start(35-delay)
 		berserkTimer:Start(390-delay)--Assumed until proven otherwise
