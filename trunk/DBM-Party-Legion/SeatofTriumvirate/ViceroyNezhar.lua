@@ -35,7 +35,7 @@ local timerAddsCD						= mod:NewAddsTimer(61.9, 249336, nil, "-Healer")
 local countdownEternalTwilight			= mod:NewCountdown("AltTwo10", 248736)
 
 local voiceHowlingDark					= mod:NewVoice(244751, "HasInterrupt")--kickcast
-local voiceEntropicForce				= mod:NewVoice(246324)--keepmove
+local voiceEntropicForce				= mod:NewVoice(246324)--scatter/keepmove
 local voiceAdds							= mod:NewVoice(249336, "-Healer", DBM_CORE_AUTO_VOICE3_OPTION_TEXT)--killmob
 
 mod.vb.guardsActive = 0
@@ -54,7 +54,8 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 246324 then
 		specWarnEntropicForce:Show()
-		voiceEntropicForce:Play("keepmove")
+		voiceEntropicForce:Play("scatter")
+		voiceEntropicForce:Schedule(1, "keepmove")
 		timerEntropicForceCD:Start()
 	elseif spellId == 244751 then
 		timerHowlingDarkCD:Start()

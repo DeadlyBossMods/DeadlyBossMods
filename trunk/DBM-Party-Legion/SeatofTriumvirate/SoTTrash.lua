@@ -9,18 +9,18 @@ mod.isTrashMod = true
 
 mod:RegisterEvents(
 	"SPELL_CAST_START 248304 245585 245727 248133 248184 248227",
-	"SPELL_AURA_APPLIED 245510 240981"
+	"SPELL_AURA_APPLIED 245510 249081"
 )
 
 local warnCorruptingVoid			= mod:NewTargetAnnounce(245510, 3)
-local warnSupField					= mod:NewTargetAnnounce(240981, 3)
+local warnSupField					= mod:NewTargetAnnounce(249081, 3)
 local warnWildSummon				= mod:NewCastAnnounce(248304, 3)
 
 local specWarnCorruptingVoid		= mod:NewSpecialWarningMoveAway(245510, nil, nil, nil, 1, 2)
 local specWarnDarkMatter			= mod:NewSpecialWarningSwitch(248227, nil, nil, nil, 1, 2)
 local yellCorruptingVoid			= mod:NewYell(245510)
-local specWarnSupField				= mod:NewSpecialWarningYou(240981, nil, nil, nil, 1, 2)
-local yellSupField					= mod:NewYell(240981)
+local specWarnSupField				= mod:NewSpecialWarningYou(249081, nil, nil, nil, 1, 2)
+local yellSupField					= mod:NewYell(249081)
 local specWarnVoidDiffusion			= mod:NewSpecialWarningInterrupt(245585, "HasInterrupt", nil, nil, 1, 2)
 local specWarnConsumeEssence		= mod:NewSpecialWarningInterrupt(245727, "HasInterrupt", nil, nil, 1, 2)
 local specWarnStygianBlast			= mod:NewSpecialWarningInterrupt(248133, "HasInterrupt", nil, nil, 1, 2)
@@ -28,7 +28,7 @@ local specWarnDarkFlay				= mod:NewSpecialWarningInterrupt(248184, "HasInterrupt
 
 local voiceCorruptingVoid			= mod:NewVoice(245510)--runout
 local voiceDarkMatter				= mod:NewVoice(248227)--killmob
-local voiceSupField					= mod:NewVoice(240981)--stopmove
+local voiceSupField					= mod:NewVoice(249081)--stopmove
 local voiceVoidDiffusion			= mod:NewVoice(245585, "HasInterrupt")--kickcast
 local voiceConsumeEssence			= mod:NewVoice(245727, "HasInterrupt")--kickcast
 local voiceStygianBlast				= mod:NewVoice(248133, "HasInterrupt")--kickcast
@@ -71,7 +71,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			warnCorruptingVoid:Show(args.destName)
 		end
-	elseif spellId == 240981 and self:AntiSpam(3, args.destName) then
+	elseif spellId == 249081 and self:AntiSpam(3, args.destName) then
 		if args:IsPlayer() then
 			specWarnSupField:Show()
 			voiceSupField:Play("stopmove")
