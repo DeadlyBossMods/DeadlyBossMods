@@ -27,12 +27,12 @@ local warnUmbraShift					= mod:NewTargetAnnounce(244433, 3)
 local warnFixate						= mod:NewTargetAnnounce(244657, 3)
 local warnVoidTear						= mod:NewTargetAnnounce(244621, 1)
 
-local specWarnNullPalm					= mod:NewSpecialWarningDodge(246134, "Tank", nil, nil, 1, 2)
+local specWarnNullPalm					= mod:NewSpecialWarningDodge(246134, nil, nil, 2, 2, 2)
 local specWarnCoalescedVoid				= mod:NewSpecialWarningSwitch(244602, "Dps", nil, nil, 1, 2)
 local specWarnUmbraShift				= mod:NewSpecialWarningYou(244433, nil, nil, nil, 1, 2)
 local specWarnFixate					= mod:NewSpecialWarningRun(244657, nil, nil, nil, 4, 2)
 
-local timerNullPalmCD					= mod:NewCDTimer(10.9, 246134, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerNullPalmCD					= mod:NewCDTimer(10.9, 246134, nil, nil, nil, 3)
 local timerDeciminateCD					= mod:NewCDTimer(12.1, 244579, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerCoalescedVoidCD				= mod:NewCDTimer(12.1, 244579, nil, nil, nil, 1, nil, DBM_CORE_DAMAGER_ICON)
 local timerUmbraShiftCD					= mod:NewCDTimer(12, 244433, nil, nil, nil, 6)
@@ -40,7 +40,7 @@ local timerVoidTear						= mod:NewBuffActiveTimer(20, 244621, nil, nil, nil, 6)
 
 --local countdownBreath					= mod:NewCountdown(22, 227233)
 
-local voiceNullPalm						= mod:NewVoice(246134, "Tank")--shockwave
+local voiceNullPalm						= mod:NewVoice(246134, nil, nil, 2)--shockwave
 local voiceCoalescedVoid				= mod:NewVoice(244602)--killmob
 local voiceUmbraShift					= mod:NewVoice(244433)--teleyou
 local voiceFixate						= mod:NewVoice(244657)--justrun/keepmove
