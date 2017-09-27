@@ -5,6 +5,10 @@ local L
 -----------------------
 L= DBM:GetModLocalization(2012)
 
+L:SetMiscLocalization({
+	Pull				= "Your fate is only death!"
+})
+
 -----------------------
 -- Occularus --
 -----------------------
