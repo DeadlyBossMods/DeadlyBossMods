@@ -14,7 +14,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 239207 239132 235572 233856 233556 240623 235597",
-	"SPELL_CAST_SUCCESS 239132 236494",
+	"SPELL_CAST_SUCCESS 236494 233556",
 	"SPELL_AURA_APPLIED 234059 236494 240728 239739 241008",
 	"SPELL_AURA_APPLIED_DOSE 236494 240728 241008",
 	"SPELL_AURA_REMOVED 239739",
@@ -88,9 +88,11 @@ local timerRainoftheDestroyer		= mod:NewCastTimer(5.5, 240396, 206577, nil, nil,
 local berserkTimer					= mod:NewBerserkTimer(420)
 
 --Stage One: A Slumber Disturbed
-local countdownRuptureRealities		= mod:NewCountdown(60, 239132)
-local countdownCorruptedMatrix		= mod:NewCountdown("Alt40", 233556)
+local countdownCleansingProtocol	= mod:NewCountdownFades(18, 233856)
+local countdownDesolate				= mod:NewCountdown("Alt11", 236494, "Tank", nil, 3)--timer, spellId, optionDefault, optionName, count, textDisabled, altVoice)
+local countdownCorruptedMatrix		= mod:NewCountdown("AltTwo40", 233556)
 --Stage Two
+local countdownRuptureRealities		= mod:NewCountdown(60, 239132)
 local countdownDarkMark				= mod:NewCountdown("Alt40", 239739)
 local countdownRainofthedDestroyer	= mod:NewCountdown("AltTwo35", 240396)
 
@@ -239,6 +241,7 @@ function mod:OnCombatStart(delay)
 	timerUnboundChaosCD:Start(7-delay, 1)--7
 	self:Schedule(7, setabilityStatus, self, 234059, 0)--Unbound Chaos
 	timerDesolateCD:Start(13-delay)--13
+	countdownDesolate:Start(13-delay)
 	if not self:IsEasy() then
 		showTouchofSarg = true
 		timerTouchofSargerasCD:Start(14.5-delay, 1)
@@ -295,10 +298,15 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 233856 then
 		specWarnCleansingProtocol:Show()
 		voiceCleansingProtocol:Play("targetchange")
+		countdownCleansingProtocol:Start()
 	elseif spellId == 233556 and self:AntiSpam(2, 2) and self.vb.phase == 1 then
 		specWarnCorruptedMatrix:Show(beamName)
 		voiceCorruptedMatrix:Play("bosstobeam")
-		timerCorruptedMatrix:Start(10)
+		if self:IsMythic() then
+			timerCorruptedMatrix:Start(8)
+		else
+			timerCorruptedMatrix:Start(10)
+		end
 	elseif spellId == 240623 and self:AntiSpam(2, 3) and self.vb.phase == 1 then
 		warnTaintedMatrix:Show()
 	elseif spellId == 235597 then
@@ -308,6 +316,7 @@ function mod:SPELL_CAST_START(args)
 		timerShadowyBladesCD:Stop()
 		timerRuptureRealitiesCD:Stop()
 		timerDesolateCD:Stop()
+		countdownDesolate:Cancel()
 		timerUnboundChaosCD:Stop()
 		timerCorruptedMatrix:Stop()
 		timerCorruptedMatrixCD:Stop()
@@ -316,6 +325,7 @@ function mod:SPELL_CAST_START(args)
 		warnPhase2:Show()
 		voicePhaseChange:Play("ptwo")
 		timerDesolateCD:Start(19)
+		countdownDesolate:Start(19)
 		timerRuptureRealitiesCD:Start(38, 1)
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:Hide()
@@ -336,9 +346,15 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 236494 then
 		timerDesolateCD:Start()
+		countdownDesolate:Start(11.4)
 	elseif spellId == 233556 and self:AntiSpam(2, 4) then
-		timerCorruptedMatrixCD:Start()
-		countdownCorruptedMatrix:Start()
+		if self:IsMythic() then
+			timerCorruptedMatrixCD:Start(12)
+			countdownCorruptedMatrix:Start(12)
+		else
+			timerCorruptedMatrixCD:Start()
+			countdownCorruptedMatrix:Start()
+		end
 	end
 end
 
@@ -370,7 +386,12 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnDesolateYou:Show(amount)
 				voiceDesolate:Play("stackhigh")
 			else
-				if not UnitIsDeadOrGhost("player") and not UnitDebuff("player", args.spellName) then
+				local _, _, _, _, _, _, expireTime = UnitDebuff("player", args.spellName)
+				local remaining
+				if expireTime then
+					remaining = expireTime-GetTime()
+				end
+				if not UnitIsDeadOrGhost("player") and (not remaining or remaining and remaining < 10) then
 					specWarnDesolateOther:Show(args.destName)
 					voiceDesolate:Play("tauntboss")
 				else
@@ -407,6 +428,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 241008 then--Cleansing Protocol Shield
 		self.vb.shieldActive = false
 		warnCleansingEnded:Show()
+		countdownCleansingProtocol:Cancel()
 	end
 end
 
