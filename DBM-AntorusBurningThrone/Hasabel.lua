@@ -24,8 +24,7 @@ mod:RegisterEventsInCombat(
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 	"UNIT_DIED",
---	"CHAT_MSG_RAID_BOSS_EMOTE",
-	"CHAT_MSG_MONSTER_YELL",
+	"CHAT_MSG_RAID_BOSS_EMOTE",
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5"
 )
 
@@ -83,12 +82,12 @@ local yellCloyingShadows				= mod:NewFadesYell(245118)
 local specWarnHungeringGloom			= mod:NewSpecialWarningMoveTo(245075, nil, nil, nil, 1)--No voice yet
 
 --Platform: Nexus
-local timerRealityTearCD				= mod:NewCDTimer(12.2, 244016, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
-local timerCollapsingWorldCD			= mod:NewCDTimer(31.9, 243983, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)--32.9-41
-local timerFelstormBarrageCD			= mod:NewCDTimer(32.1, 244000, nil, nil, nil, 3)--32.9-41
---local timerTransportPortalCD			= mod:NewCDTimer(41.5, 244677, nil, nil, nil, 1)--41.5-60. most of time 50 on nose. but if comes early next one comes late to offset
+local timerRealityTearCD				= mod:NewCDTimer(12.1, 244016, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerCollapsingWorldCD			= mod:NewCDTimer(32.9, 243983, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)--32.9-41
+local timerFelstormBarrageCD			= mod:NewCDTimer(32.9, 244000, nil, nil, nil, 3)--32.9-41
+local timerTransportPortalCD			= mod:NewCDTimer(41.5, 244677, nil, nil, nil, 1)--41.5-60. most of time 50 on nose. but if comes early next one comes late to offset
 --Platform: Xoroth
-local timerSupernovaCD					= mod:NewCDTimer(5.2, 244598, nil, nil, nil, 3)
+local timerSupernovaCD					= mod:NewCDTimer(6.1, 244598, nil, nil, nil, 3)
 local timerFlamesofXorothCD				= mod:NewCDTimer(7.3, 244607, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
 --Platform: Rancora
 local timerFelSilkWrapCD				= mod:NewCDTimer(16.6, 244949, nil, nil, nil, 3)
@@ -127,6 +126,11 @@ local voiceDelusions					= mod:NewVoice(245050)--targetyou (not sure if better o
 --mod:AddInfoFrameOption(239154, true)
 mod:AddRangeFrameOption("8/10")
 mod:AddBoolOption("ShowAllPlatforms", false)
+--"Transport Portal-244689-npc:122104 = pull:60.6, 51.2, 51.2, 41.6, 61.0, 42.7, 41.6, 41.6, 61.0", -- [10]
+--"Transport Portal-244689-npc:122104 = pull:48.7, 42.5, 52.4, 50.0, 52.3, 51.1", -- [8]
+--"Transport Portal-244689-npc:122104 = pull:41.3, 51.1, 42.6, 42.5, 52.3, 51.1, 51.2", -- [7]
+--"Transport Portal-244689-npc:122104 = pull:43.1, 51.1, 51.1, 51.1, 42.6, 42.6, 52.4, 51.2, 51.1", -- [8]
+--"Transport Portal-244689-npc:122104 = pull:45.7, 51.1, 42.2, 42.0, 41.6, 52.5, 41.5, 42.6, 60.8", -- [9]
 
 --mod.vb.shieldsActive = 0
 mod.vb.felBarrageCast = 0
@@ -167,9 +171,9 @@ function mod:OnCombatStart(delay)
 	countdownRealityTear:Start(6.2-delay)
 	timerCollapsingWorldCD:Start(10.5-delay)
 	countdownCollapsingWorld:Start(10.5-delay)
-	if not self:IsEasy() then
---		timerTransportPortalCD:Start(20.5-delay)
-	end
+--	if not self:IsEasy() then
+--		timerTransportPortalCD:Start(60.5-delay)
+--	end
 	timerFelstormBarrageCD:Start(25.2-delay)
 	countdownFelstormBarrage:Start(25.2-delay)
 	for uId in DBM:GetGroupMembers() do
@@ -221,7 +225,7 @@ function mod:SPELL_CAST_START(args)
 			end
 		end
 	elseif spellId == 244689 then
---		timerTransportPortalCD:Start()
+		timerTransportPortalCD:Start()
 		if self.Options.ShowAllPlatforms or playerPlatform == 1 then--Actually on nexus platform
 			specWarnTransportPortal:Show()
 			voiceTransportPortal:Play("killmob")
@@ -423,13 +427,13 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 end
 --]]
 
-function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
-	if msg == L.Xoroth or msg:find(L.Xoroth) then
-		self:SendSync("XorothPortal")
-	elseif msg == L.Rancora or msg:find(L.Rancora) then
-		self:SendSync("RancoraPortal")
-	elseif msg == L.Nathreza or msg:find(L.Nathreza) then
-		self:SendSync("NathrezaPortal")
+function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
+	if msg:find("SPELL_MAGE_FLAMEORB") then
+		warnXorothPortal:Show()
+	elseif msg:find("ABILITY_CREATURE_POISON_02") then
+		warnRancoraPortal:Show()
+	elseif msg:find("SPELL_HOLY_CONSUMEMAGIC") then
+		warnNathrezaPortal:Show()
 	end
 end
 
@@ -453,14 +457,3 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	end
 end
 --]]
-
-function mod:OnSync(msg)
-	if not self:IsInCombat() then return end
-	if msg == "XorothPortal" then
-		warnXorothPortal:Show()
-	elseif msg == "RancoraPortal" then
-		warnRancoraPortal:Show()
-	elseif msg == "NathrezaPortal" then
-		warnNathrezaPortal:Show()
-	end
-end

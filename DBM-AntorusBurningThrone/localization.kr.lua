@@ -39,12 +39,6 @@ L:SetOptionLocalization({
 	ShowAllPlatforms =	"자신의 위치와 관계 없이 모든 공대원의 단상 위치 알림 보기"
 })
 
-L:SetMiscLocalization({
-	Xoroth = "소로스를 봐라, 지옥불의 열기와 불타버린 뼈의 세계다!",
-	Rancora = "란코라를 올려다 봐라, 부패한 웅덩이와 스멀거리는 죽음의 대지다!",
-	Nathreza = "나스레자... 한때 마법과 지식의 세계였지만, 이제 그 누구도 벗어날 수 없는 뒤틀린 대지다."
-})
-
 ---------------------------
 -- Imonar the Soulhunter --
 ---------------------------
