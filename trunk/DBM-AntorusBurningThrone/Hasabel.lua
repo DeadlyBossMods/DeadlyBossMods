@@ -8,8 +8,8 @@ mod:DisableESCombatDetection()--Remove if blizz fixes clicking portals causing t
 mod:SetZone()
 --mod:SetBossHPInfoToHighest()
 --mod:SetUsedIcons(1, 2, 3, 4, 5, 6)
---mod:SetHotfixNoticeRev(16350)
-mod:SetMinSyncRevision(15190)
+mod:SetHotfixNoticeRev(16744)
+mod:SetMinSyncRevision(16744)
 mod.respawnTime = 35
 
 mod:RegisterCombat("combat")
