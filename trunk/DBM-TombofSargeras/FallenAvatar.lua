@@ -63,7 +63,7 @@ local yellTaintedEssence			= mod:NewShortYell(240728)
 --Stage Two: An Avatar Awakened
 local specWarnDarkMark				= mod:NewSpecialWarningYouPos(239739, nil, nil, nil, 1, 2)
 local specWarnDarkMarkOther			= mod:NewSpecialWarningMoveTo(239739, nil, nil, nil, 1, 2)
-local yellDarkMark					= mod:NewPosYell(239739)
+local yellDarkMark					= mod:NewPosYell(239739, DBM_CORE_AUTO_YELL_CUSTOM_POSITION)
 local yellDarkMarkFades				= mod:NewIconFadesYell(239739)
 local specWarnRainoftheDestroyer	= mod:NewSpecialWarningCount(240396, nil, nil, 2, 3, 2)
 
@@ -144,7 +144,7 @@ local function warnDarkMarkTargets(self, spellName)
 		local icon = i == 1 and 6 or i == 2 and 4 or i == 3 and 3--Bigwigs icon compatability
 		local name = darkMarkTargets[i]
 		if name == playerName then
-			yellDarkMark:Yell(icon, icon, icon)
+			yellDarkMark:Yell(icon, spellName, icon)
 			local _, _, _, _, _, _, expires = UnitDebuff("player", spellName)
 			if expires then
 				local remaining = expires-GetTime()
@@ -496,7 +496,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		table.wipe(darkMarkTargets)
 		self.vb.darkMarkCast = self.vb.darkMarkCast + 1
 		if self:IsMythic() then
-			if self.vb.darkMarkCast == 1 then
+			if self.vb.darkMarkCast == 1 or self.vb.darkMarkCast == 4 then
 				timerDarkMarkCD:Start(25, self.vb.darkMarkCast+1)
 				countdownDarkMark:Start(25)
 			else
