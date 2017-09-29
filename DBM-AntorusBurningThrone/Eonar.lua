@@ -18,8 +18,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 248333 250074 250555 249016 249017 249014 249015",
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 248333 250074 250555 249016 249017 249014 249015",
---	"SPELL_PERIODIC_DAMAGE",
---	"SPELL_PERIODIC_MISSED",
+	"SPELL_DAMAGE 248329",
+	"SPELL_MISSED 248329",
 --	"UNIT_DIED",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
 --	"RAID_BOSS_WHISPER",
@@ -38,7 +38,8 @@ mod:RegisterEventsInCombat(
 --The Paraxis
 local warnMeteorStorm					= mod:NewEndAnnounce(248333, 1)
 --local warnSpearofDoom					= mod:NewTargetAnnounce(248789, 3)
-local warnWarpIn						= mod:NewCountAnnounce(246888, 3)
+--local warnRainofFel						= mod:NewCountAnnounce(248332, 1)
+local warnWarpIn						= mod:NewTargetAnnounce(246888, 3)
 local warnLifeForce						= mod:NewCountAnnounce(250048, 1)
 
 --The Paraxis
@@ -53,9 +54,9 @@ local specWarnSwing						= mod:NewSpecialWarningDefensive(250701, "Tank", nil, n
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
 
 --The Paraxis
-local timerWarpInCD						= mod:NewCDCountTimer(30, 246888, nil, nil, nil, 1)
+--local timerWarpInCD						= mod:NewCDCountTimer(30, 246888, nil, nil, nil, 1)
 local timerMeteorStormCD				= mod:NewAITimer(61, 248333, nil, nil, nil, 3)
-local timerSpearofDoomCD				= mod:NewCDCountTimer(61, 248789, nil, nil, nil, 3)
+local timerSpearofDoomCD				= mod:NewCDCountTimer(55, 248789, nil, nil, nil, 3)--55-69
 local timerRainofFelCD					= mod:NewCDCountTimer(61, 248332, nil, nil, nil, 3)
 local timerFinalDoom					= mod:NewCastTimer(70, 249121, nil, nil, nil, 2)
 --Mythic
@@ -97,9 +98,10 @@ local normalWarpTimers = {5.1, 16.0}
 local heroicWarpTimers = {5.3, 10.0, 23.9, 20.7, 24.0, 19.0}
 local mythicWarpTimers = {5.3, 9.8, 35.3, 44.8, 34.9}--Excludes the waves that don't fire warp in (obfuscators and purifiers)
 local normalRainOfFelTimers = {21.1, 24.1, 23.9, 24.1, 24.0, 96.0, 12.0, 36.0, 12.0, 36.0}
-local heroicRainOfFelTimers = {15.0, 24.1, 8.9, 24.2, 11.9, 19.0, 12.1}
+local heroicRainOfFelTimers = {20, 43, 10, 65, 15, 20, 20, 30}
 local mythicRainOfFelTimers = {15.1, 34.9, 45.0, 35.0}--Alternating?
 --local mythicSpearofDoomTimers = {35, 80, 35}--Alternating?
+local heroicSpearofDoomTimers = {35, 69, 55, 40}
 
 local updateInfoFrame
 do
@@ -129,17 +131,19 @@ function mod:OnCombatStart(delay)
 	self.vb.lifeForceCast = 0
 	self.vb.spearCast = 0
 	self.vb.finalDoomCast = 0
-	timerWarpInCD:Start(5.1, 1)
-	countdownWarpIn:Start(5.1)
+	--timerWarpInCD:Start(5.1, 1)
+	--countdownWarpIn:Start(5.1)
 	if not self:IsLFR() then
 		timerRainofFelCD:Start(15-delay, 1)
 		countdownRainofFel:Start(15-delay)
+		specWarnRainofFel:Schedule(10-delay, 1)
+		voiceRainofFel:Schedule(10-delay, "scatter")
 		if self:IsMythic() then
 			timerSpearofDoomCD:Start(35-delay, 1)
 			timerFinalDoomCD:Start(60-delay, 1)
 			countdownFinalDoom:Start(60-delay)
 		else
-			timerSpearofDoomCD:Start(25-delay, 1)
+			timerSpearofDoomCD:Start(34.4-delay, 1)
 		end
 	else
 		timerMeteorStormCD:Start(1-delay)
@@ -206,12 +210,12 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if (spellId == 246888 or spellId == 246896) and self:AntiSpam(6, 1) then--At east 5 second antispam needed, maybe more
 		self.vb.warpCount = self.vb.warpCount + 1
-		warnWarpIn:Show(self.vb.warpCount)
-		local timer = self:IsMythic() and mythicWarpTimers[self.vb.warpCount+1] or self:IsHeroic() and heroicWarpTimers[self.vb.warpCount+1] or self:IsEasy() and (normalWarpTimers[self.vb.warpCount+1] or 23.7)--(always 24ish on normal)
-		if timer then
-			timerWarpInCD:Start(timer, self.vb.warpCount+1)
-			countdownWarpIn:Start(timer)
-		end
+		warnWarpIn:Show(DBM_ADDS)
+		--local timer = self:IsMythic() and mythicWarpTimers[self.vb.warpCount+1] or self:IsHeroic() and heroicWarpTimers[self.vb.warpCount+1] or self:IsEasy() and (normalWarpTimers[self.vb.warpCount+1] or 23.7)--(always 24ish on normal)
+		--if timer then
+			--timerWarpInCD:Start(timer, self.vb.warpCount+1)
+			--countdownWarpIn:Start(timer)
+		--end
 	elseif spellId == 246753 then--Cloak
 		warnWarpIn:Show(args.destName)
 	elseif spellId == 254769 then--High Alert
@@ -317,15 +321,22 @@ function mod:OnTranscriptorSync(msg, targetName)
 end
 --]]
 
---[[
-function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
-	if spellId == 228007 and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
-		specWarnGTFO:Show()
-		voiceGTFO:Play("runaway")
+function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
+	if spellId == 248329 and self:AntiSpam(5, 4) then
+		self.vb.rainOfFelCount = self.vb.rainOfFelCount + 1
+		--warnRainofFel:Show(self.vb.rainOfFelCount)
+		--specWarnRainofFel:Show(self.vb.rainOfFelCount)
+		--voiceRainofFel:Play("scatter")
+		local timer = self:IsMythic() and mythicRainOfFelTimers[self.vb.rainOfFelCount+1] or self:IsHeroic() and heroicRainOfFelTimers[self.vb.rainOfFelCount+1] or self:IsNormal() and normalRainOfFelTimers[self.vb.rainOfFelCount+1]
+		if timer then
+			specWarnRainofFel:Schedule(timer-5, self.vb.rainOfFelCount+1)
+			voiceRainofFel:Schedule(timer-5, "scatter")
+			timerRainofFelCD:Start(timer-5, self.vb.rainOfFelCount+1)
+			countdownRainofFel:Start(timer-5)
+		end
 	end
 end
-mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
---]]
+mod.SPELL_MISSED = mod.SPELL_DAMAGE
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 	if msg:find("spell:248861") then
@@ -339,7 +350,10 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 				timerSpearofDoomCD:Start(80, self.vb.spearCast+1)
 			end
 		else
-			timerSpearofDoomCD:Start(31, self.vb.spearCast+1)--31-33
+			local timer = self:IsHeroic() and heroicSpearofDoomTimers[self.vb.spearCast+1]
+			if timer then
+				timerSpearofDoomCD:Start(timer, self.vb.spearCast+1)
+			end
 		end
 	end
 end
@@ -354,7 +368,6 @@ function mod:UNIT_DIED(args)
 
 	end
 end
---]]
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 248332 then--Rain of Fel
@@ -368,6 +381,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		end
 	end
 end
+--]]
 
 function mod:UNIT_SPELLCAST_CHANNEL_STOP(uId, _, _, _, spellId)
 	if spellId == 249121 then
