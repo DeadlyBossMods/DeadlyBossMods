@@ -13,9 +13,9 @@ mod:SetUsedIcons(1, 2, 3)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 244312 248475 245807 252758 246692 246833 246516",
+	"SPELL_CAST_START 244312 254926 245807 252758 246692 246833 246516",
 	"SPELL_CAST_SUCCESS 252758 246692",
-	"SPELL_AURA_APPLIED 244312 244410 245770 246687 252797 246698 252760",
+	"SPELL_AURA_APPLIED 254919 244410 245770 246687 252797 246698 252760",
 --	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 244410 245770 246687 252797 246516 246698 252760",
 --	"SPELL_PERIODIC_DAMAGE",
@@ -35,7 +35,7 @@ mod:RegisterEventsInCombat(
 --TODO, review all timers, they were adjusting his rate of energy gain throughough attempts
 --TODO, currently decimation & annihilation are only detectable via nameplate/target casts as such, it's pretty bad idea to support it unless it's really required
 --[[
-(ability.id = 244312 or ability.id = 248475 or ability.id = 245807 or ability.id = 252758 or ability.id = 246692 or ability.id = 246833 or ability.id = 246516) and type = "begincast"
+(ability.id = 244312 or ability.id = 254926 or ability.id = 245807 or ability.id = 252758 or ability.id = 246692 or ability.id = 246833 or ability.id = 246516) and type = "begincast"
  or (ability.id = 252758 or ability.id = 246692) and type = "cast"
  or (ability.id = 246516 or ability.id = 246698 or ability.id = 252760) and (type = "removebuff" or type = "removedebuff")
 --]]
@@ -52,9 +52,9 @@ local warnDemolish						= mod:NewTargetAnnounce(246692, 4)
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
 local specWarnForgingStrike				= mod:NewSpecialWarningDefensive(244312, nil, nil, nil, 1, 2)
 local specWarnForgingStrikeOther		= mod:NewSpecialWarningTaunt(244312, nil, nil, nil, 1, 2)
-local specWarnReverberatingStrike		= mod:NewSpecialWarningYou(248475, nil, nil, nil, 1, 2)
-local yellReverberatingStrike			= mod:NewYell(248475)
-local specWarnReverberatingStrikeNear	= mod:NewSpecialWarningClose(248475, nil, nil, nil, 1, 2)
+local specWarnReverberatingStrike		= mod:NewSpecialWarningYou(254926, nil, nil, nil, 1, 2)
+local yellReverberatingStrike			= mod:NewYell(254926)
+local specWarnReverberatingStrikeNear	= mod:NewSpecialWarningClose(254926, nil, nil, nil, 1, 2)
 --local specWarnDiabolicBomb				= mod:NewSpecialWarningDodge(246779, nil, nil, nil, 2, 2)
 local specWarnRuiner					= mod:NewSpecialWarningDodge(246840, nil, nil, nil, 3, 2)
 --local yellRuiner						= mod:NewPosYell(246840)
@@ -71,11 +71,12 @@ local yellDemolishFades					= mod:NewIconFadesYell(246692)
 
 --Stage: Deployment
 local timerForgingStrikeCD				= mod:NewAITimer(25, 244312, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
-local timerReverberatingStrikeCD		= mod:NewAITimer(61, 248475, nil, nil, nil, 3)
+local timerReverberatingStrikeCD		= mod:NewAITimer(61, 254926, nil, nil, nil, 3)
 --local timerDiabolicBombCD				= mod:NewAITimer(61, 246779, nil, nil, nil, 3)
 local timerRuinerCD						= mod:NewCDTimer(28.1, 246840, nil, nil, nil, 3)
 --local timerShatteringStrikeCD			= mod:NewCDTimer(30, 248375, nil, nil, nil, 2)
-local timerApocProtocolCD				= mod:NewCDCountTimer(77.58, 246516, nil, nil, nil, 6)
+local timerApocProtocolCD				= mod:NewCDCountTimer(85.8, 246516, nil, nil, nil, 6)
+local timerApocProtocol					= mod:NewCastTimer(30, 246504, nil, nil, nil, 6)
 --Stage: Construction
 --local timerCleansingProtocolCD		= mod:NewAITimer(30, 248061, nil, nil, nil, 6)
 --Reavers (or empowered boss from reaver deaths)
@@ -91,7 +92,7 @@ local timerDemolishCD					= mod:NewCDTimer(15.8, 246692, nil, nil, nil, 3)
 --Stage: Deployment
 --local voiceGTFO						= mod:NewVoice(238028, nil, DBM_CORE_AUTO_VOICE4_OPTION_TEXT)--runaway
 local voiceForgingStrike				= mod:NewVoice(244312)--defensive
-local voiceReverberatingStrike			= mod:NewVoice(248475)--watchstep
+local voiceReverberatingStrike			= mod:NewVoice(254926)--watchstep
 --local voiceDiabolicBomb					= mod:NewVoice(246779)--watchstep/watchorb?
 local voiceRuiner						= mod:NewVoice(246840)--farfromline (iffy) Maybe when it's not INVISIBLE I'll have better idea how to describe it
 local voiceInitializing					= mod:NewVoice(246504)--killmob
@@ -102,7 +103,7 @@ local voiceDemolish						= mod:NewVoice(246692)--gathershare/targetyou
 
 mod:AddSetIconOption("SetIconOnDemolish", 246692, true)
 mod:AddBoolOption("InfoFrame", true)
-mod:AddRangeFrameOption(5, 248475)--?
+mod:AddRangeFrameOption(5, 254926)--?
 
 mod.vb.ruinerCast = 0
 mod.vb.forgingStrikeCast = 0
@@ -178,15 +179,15 @@ end
 function mod:OnCombatStart(delay)
 	self.vb.ruinerCast = 1--only 1 cast on pull so set this to 1 to handle timer
 	self.vb.forgingStrikeCast = 2--Only 1 cast on pull, 2 already passed
-	self.vb.reverbStrikeCast = 2
+	self.vb.reverbStrikeCast = 2--Only 1 cast on pull, 2 already passed
 	self.vb.apocProtoCount = 0
 	table.wipe(DemolishTargets)
-	timerForgingStrikeCD:Start(3-delay)
-	--timerDiabolicBombCD:Start(6.2-delay)
-	timerReverberatingStrikeCD:Start(10.3-delay)--10-14
-	timerRuinerCD:Start(17.7-delay)--17-22
+	timerForgingStrikeCD:Start(7-delay)
+	--timerDiabolicBombCD:Start(11-delay)
+	timerReverberatingStrikeCD:Start(14.2-delay)--14-15
+	timerRuinerCD:Start(21.1-delay)
 	--timerShatteringStrikeCD:Start(1-delay)--Not cast on pull
-	timerApocProtocolCD:Start(26.2-delay, 1)--26-31
+	timerApocProtocolCD:Start(31.8-delay, 1)--31.8-35
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(5)
 	end
@@ -214,21 +215,21 @@ function mod:SPELL_CAST_START(args)
 			specWarnForgingStrike:Show()
 			voiceForgingStrike:Play("defensive")
 		end
-		--1.5, 26.9, 33.5
+		--1.5, 27.6, 30.1
 		if self.vb.forgingStrikeCast == 1 then
-			timerForgingStrikeCD:Start(26.9)
+			timerForgingStrikeCD:Start(27.9)
 		elseif self.vb.forgingStrikeCast == 2 then
-			timerForgingStrikeCD:Start(33.5)
+			timerForgingStrikeCD:Start(30)
 		end
-	elseif spellId == 248475 then
+	elseif spellId == 254926 then
 		self:BossTargetScanner(args.sourceGUID, "ReverberatingTarget", 0.1, 9)
 		if self:AntiSpam(5, 3) then--Sometimes stutter casts
-			--6.5, 22.3, 26.0
+			--4.2, 23.5, 30
 			self.vb.reverbStrikeCast = self.vb.reverbStrikeCast + 1
 			if self.vb.reverbStrikeCast == 1 then
-				timerReverberatingStrikeCD:Start(22.3)
+				timerReverberatingStrikeCD:Start(23.5)
 			elseif self.vb.reverbStrikeCast == 2 then
-				timerReverberatingStrikeCD:Start(26)
+				timerReverberatingStrikeCD:Start(30)
 			end
 		end
 	elseif spellId == 245807 then
@@ -252,6 +253,7 @@ function mod:SPELL_CAST_START(args)
 		--timerShatteringStrikeCD:Stop()
 		specWarnInitializing:Show()
 		voiceInitializing:Play("killmob")
+		timerApocProtocol:Start()
 	end
 end
 
@@ -264,7 +266,7 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 244312 and not args:IsPlayer() and not UnitDebuff("player", args.spellName) then
+	if spellId == 254919 and not args:IsPlayer() and not UnitDebuff("player", args.spellName) then
 		specWarnForgingStrikeOther:Show(args.destName)
 		voiceForgingStrike:Play("tauntboss")
 --[[	elseif (spellId == 244410 or spellId == 245770 or spellId == 246687 or spellId == 252797) and args:IsDestTypePlayer() then--244410 3 seconds, rest 5, for good measure, just pulling duration from UnitDebuff()
@@ -284,7 +286,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		--if #DemolishTargets == 3 then--(uncomment when upper camp known)
 			--warnDemolishTargets(self, args.spellName)
 		--else
-			self:Schedule(0.5, warnDemolishTargets, self, args.spellName)--At least 0.5, maybe bigger needed if warning still splits
+			self:Schedule(0.8, warnDemolishTargets, self, args.spellName)--At least 0.8, maybe bigger needed if warning still splits
 		--end
 		if args:IsPlayer() then
 			specWarnDemolish:Show()
@@ -314,9 +316,9 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.reverbStrikeCast = 0
 		self.vb.apocProtoCount = self.vb.apocProtoCount + 1
 		--timerForgingStrikeCD:Start(1.5)--Used too fast for a timer
-		timerReverberatingStrikeCD:Start(6.5)
+		timerReverberatingStrikeCD:Start(3)
 		--timerDiabolicBombCD:Start(2)
-		timerRuinerCD:Start(20.2)
+		timerRuinerCD:Start(17.6)
 		--timerShatteringStrikeCD:Start(42)
 		timerApocProtocolCD:Start(nil, self.vb.apocProtoCount+1)
 	elseif spellId == 246698 or spellId == 252760 then
