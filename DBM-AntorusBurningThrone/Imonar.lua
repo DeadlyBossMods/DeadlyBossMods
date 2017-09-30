@@ -66,8 +66,8 @@ local yellEmpPulseGrenade				= mod:NewYell(248424)
 --Intermission: On Deadly Ground
 
 --Stage One: Attack Force
-local timerShocklanceCD					= mod:NewCDTimer(4.1, 247367, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--4.7?
-local timerSleepCanisterCD				= mod:NewCDTimer(10.7, 247552, nil, nil, nil, 3, nil, DBM_CORE_MAGIC_ICON)--10.9?
+local timerShocklanceCD					= mod:NewCDTimer(4.1, 247367, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--4.1-5
+local timerSleepCanisterCD				= mod:NewCDTimer(10.7, 247552, nil, nil, nil, 3, nil, DBM_CORE_MAGIC_ICON)--10.9-13.4
 local timerPulseGrenadeCD				= mod:NewCDTimer(16.1, 247376, nil, nil, nil, 3)--17?
 --Stage Two: Contract to Kill
 local timerSeverCD						= mod:NewCDTimer(7.2, 247687, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
@@ -77,7 +77,7 @@ local timerShrapnalBlastCD				= mod:NewCDTimer(13.3, 247923, nil, nil, nil, 3)
 
 --Intermission: On Deadly Ground
 
-local berserkTimer						= mod:NewBerserkTimer(420)
+--local berserkTimer						= mod:NewBerserkTimer(420)
 
 --Stage One: Attack Force
 local countdownPulseGrenade				= mod:NewCountdown(16.1, 247376)
@@ -138,10 +138,10 @@ end
 function mod:OnCombatStart(delay)
 	self.vb.phase = 1
 	timerShocklanceCD:Start(3.7-delay)--4.4 Mythic
-	timerSleepCanisterCD:Start(6.2-delay)--7 mythic
-	timerPulseGrenadeCD:Start(12.3-delay)--14.3 Mythic
+	timerSleepCanisterCD:Start(7-delay)
+	timerPulseGrenadeCD:Start(12.3-delay)
 	countdownPulseGrenade:Start(12.3-delay)
-	berserkTimer:Start(-delay)--7min on heroic at least
+	--berserkTimer:Start(-delay)--7min on heroic at least
 end
 
 function mod:OnCombatEnd()
@@ -185,19 +185,10 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if spellId == 247367 then
 			timerShocklanceCD:Start()
 		else--Empowered seems less often
-			timerShocklanceCD:Start(5.9)
+			timerShocklanceCD:Start(9.7)
 		end
 	elseif spellId == 247552 then
 		timerSleepCanisterCD:Start()
-		warnSleepCanister:CombinedShow(0.3, args.destName)
-		if args:IsPlayer() then
-			specWarnSleepCanister:Show()
-			voiceSleepCanister:Play("runout")
-			yellSleepCanister:Yell()
-		elseif self:CheckNearby(10, args.destName) then
-			specWarnSleepCanisterNear:CombinedShow(0.3, args.destName)
-			voiceSleepCanister:Play("runaway")
-		end
 	elseif spellId == 247687 then
 		timerSeverCD:Start()
 	end
@@ -209,8 +200,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId) then
 			local amount = args.amount or 1
-			if amount >= 4 then
-				if not UnitDebuff("player", args.spellName) and not UnitIsDeadOrGhost("player") then
+			if spellId == 247367 and amount >= 4 then
+				local _, _, _, _, _, _, expireTime = UnitDebuff("player", args.spellName)
+				local remaining
+				if expireTime then
+					remaining = expireTime-GetTime()
+				end
+				if not UnitIsDeadOrGhost("player") and (not remaining or remaining and remaining < 4) then
 					specWarnShocklance:Show(args.destName)
 					voiceShocklance:Play("tauntboss")
 				else
@@ -224,8 +220,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId) then
 			local amount = args.amount or 1
-			if amount >= 3 then
-				if not UnitDebuff("player", args.spellName) and not UnitIsDeadOrGhost("player") then
+			if amount >= 2 then
+				local _, _, _, _, _, _, expireTime = UnitDebuff("player", args.spellName)
+				local remaining
+				if expireTime then
+					remaining = expireTime-GetTime()
+				end
+				if not UnitIsDeadOrGhost("player") and (not remaining or remaining and remaining < 7) then
 					specWarnSever:Show(args.destName)
 					voiceSever:Play("tauntboss")
 				else
@@ -265,9 +266,9 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.vb.phase == 2 then
 			warnPhase2:Show()
 			timerSeverCD:Start(6.6)
-			timerChargedBlastsCD:Start(9)
-			countdownChargedBlasts:Start(9)
-			timerShrapnalBlastCD:Start(12.7)
+			timerChargedBlastsCD:Start(8.7)
+			countdownChargedBlasts:Start(8.7)
+			timerShrapnalBlastCD:Start(12.4)
 		elseif self.vb.phase == 3 then
 			warnPhase3:Show()
 			if self:IsMythic() then
@@ -276,9 +277,9 @@ function mod:SPELL_AURA_REMOVED(args)
 				--timerShrapnalBlastCD:Start(3)--Empowered
 			else
 				timerShocklanceCD:Start(5)--Empowered
-				timerPulseGrenadeCD:Start(7.6)--Empowered
-				countdownPulseGrenade:Start(7.6)
-				timerShrapnalBlastCD:Start(16.2)--Empowered
+				timerPulseGrenadeCD:Start(6.9)--Empowered
+				countdownPulseGrenade:Start(6.9)
+				timerShrapnalBlastCD:Start(15.4)--Empowered
 			end
 		elseif self.vb.phase == 4 then--Mythic Only
 			warnPhase4:Show()
@@ -325,26 +326,25 @@ end
 --]]
 
 function mod:RAID_BOSS_WHISPER(msg)
-	if msg:find("spell:247716") or msg:find("spell:248254") then--Charged Blasts
---		specWarnChargedBlasts:Show()
-		voiceChargedBlasts:Play("runout")
---		yellChargedBlasts:Yell()
+	if msg:find("spell:254244") then
+		specWarnSleepCanister:Show()
+		voiceSleepCanister:Play("runout")
+		yellSleepCanister:Yell()
 	end
 end
 
-function mod:OnTranscriptorSync(msg, targetName)
-	if msg:find("spell:247716") or msg:find("spell:248254") then--Charged Blasts
-		targetName = Ambiguate(targetName, "none")
-		if self:AntiSpam(4, targetName) then
---			local icon = self.vb.bladesIcon
-			--warnChargedBlasts:CombinedShow(0.5, targetName)
---			if self.Options.SetIconOnShadowyBlades then
---				self:SetIcon(targetName, icon, 5)
---			end
---			if targetName == playerName then
---				yellShadowyBlades:Yell(icon, icon, icon)
---			end
---			self.vb.bladesIcon = self.vb.bladesIcon + 1
+do
+	local playerName = UnitName("player")
+	function mod:OnTranscriptorSync(msg, targetName)
+		if msg:find("spell:254244") then
+			targetName = Ambiguate(targetName, "none")
+			if self:AntiSpam(4, targetName) then
+				warnSleepCanister:CombinedShow(0.3, targetName)
+				if targetName ~= playerName and self:CheckNearby(10, targetName) then
+					specWarnSleepCanisterNear:CombinedShow(0.3, args.destName)
+					voiceSleepCanister:Play("runaway")
+				end
+			end
 		end
 	end
 end
