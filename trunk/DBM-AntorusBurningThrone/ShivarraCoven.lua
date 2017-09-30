@@ -78,12 +78,12 @@ local timerWhirlingSaberCD				= mod:NewCDTimer(35.3, 245627, nil, nil, nil, 3)
 local timerFulminatingPulseCD			= mod:NewCDTimer(40.5, 253520, nil, nil, nil, 3)
 --Asara, Mother of Night
 --local timerTouchofDarknessCD			= mod:NewAITimer(61, 245303, nil, "HasInterrupt", nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
-local timerShadowBladesCD				= mod:NewCDTimer(27.9, 246329, nil, nil, nil, 3)
-local timerStormofDarknessCD			= mod:NewCDTimer(51, 252861, nil, nil, nil, 2, nil, DBM_CORE_HEALER_ICON)
+local timerShadowBladesCD				= mod:NewCDTimer(27.8, 246329, nil, nil, nil, 3)
+local timerStormofDarknessCD			= mod:NewCDTimer(48.6, 252861, nil, nil, nil, 2, nil, DBM_CORE_HEALER_ICON)--48.6-52.7
 --Diima, Mother of Gloom
-local timerFlashFreezeCD				= mod:NewCDTimer(12.1, 245518, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerFlashFreezeCD				= mod:NewCDTimer(25.5, 245518, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerChilledBloodCD				= mod:NewCDTimer(25.4, 245586, nil, nil, nil, 5, nil, DBM_CORE_HEALER_ICON)
-local timerOrbofFrostCD					= mod:NewAITimer(61, 253650, nil, nil, nil, 3)
+local timerOrbofFrostCD					= mod:NewCDTimer(31.5, 253650, nil, nil, nil, 3)
 --Thu'raya, Mother of the Cosmos (Mythic)
 local timerTouchoftheCosmosCD			= mod:NewAITimer(61, 250648, nil, "HasInterrupt", nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
 local timerCosmicGlareCD				= mod:NewAITimer(61, 250757, nil, nil, nil, 3)
@@ -153,7 +153,7 @@ function mod:OnCombatStart(delay)
 	timerShadowBladesCD:Start(12.3-delay)
 	if not self:IsEasy() then
 		timerFulminatingPulseCD:Start(20.9-delay)
-		timerStormofDarknessCD:Start(29.6-delay)
+		timerStormofDarknessCD:Start(27.4-delay)
 	end
 	if self.Options.NPAuraOnVisageofTitan then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
@@ -355,7 +355,7 @@ function mod:UNIT_DIED(args)
 	end
 end
 
-function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
+function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc)
 	if msg:find("spell:250095") then--Machinations of Aman'Thul
 		self.vb.MachinationsLeft = 4
 		specWarnTormentofTitans:Show()
@@ -386,6 +386,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 			timerBossIncoming:Start(14, self.vb.lastTormentCaster)
 		end
 	end
+	DBM:Debug("CHAT_MSG_RAID_BOSS_EMOTE fired with: "..npc.."/"..self.vb.lastTormentCaster, 2)
 end
 
 --"<196.23 00:02:34> [UNIT_TARGETABLE_CHANGED] boss3#true#true#true#Diima, Mother of Gloom#Creature-0-2083-1712-12288-122469-0000111E27#elite#2150947263", -- [1436]
@@ -423,7 +424,9 @@ function mod:UNIT_TARGETABLE_CHANGED(uId)
 			DBM:Debug("UNIT_TARGETABLE_CHANGED, Boss Engaging", 2)
 			timerChilledBloodCD:Start(6.5)
 			timerFlashFreezeCD:Start(12.5)
-			timerOrbofFrostCD:Start(2)--AI timer for now
+			if not self:IsEasy() then
+				timerOrbofFrostCD:Start(30)
+			end
 		else
 			DBM:Debug("UNIT_TARGETABLE_CHANGED, Boss Leaving", 2)
 			timerFlashFreezeCD:Stop()
