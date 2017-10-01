@@ -283,6 +283,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 235117 or spellId == 240209 or spellId == 243276 then
 		self.vb.unstableSoulCount = self.vb.unstableSoulCount - 1
 		if args:IsPlayer() then
+			specWarnUnstableSoul:Cancel()
 			yellUnstableSoul:Cancel()
 			countdownBomb:Cancel()
 		end
