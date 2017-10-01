@@ -20,6 +20,10 @@ L:SetMiscLocalization({
 ---------------------------
 L= DBM:GetModLocalization(1987)
 
+L:SetOptionLocalization({
+	SequenceTimers =	"Ändere die Reihung der Timer für die Abklingzeiten der Bossfähigkeiten zugunsten der Übersichtlichkeit auf Kosten der Genauigkeit (1-2s zeitiger)"
+})
+
 ---------------------------
 -- War Council --
 ---------------------------
@@ -35,6 +39,10 @@ L= DBM:GetModLocalization(2025)
 ---------------------------
 L= DBM:GetModLocalization(1985)
 
+L:SetOptionLocalization({
+	ShowAllPlatforms =	"Zeige alle Ansagen unabhängig von der Spielerplattform"
+})
+
 ---------------------------
 -- Imonar the Soulhunter --
 ---------------------------
@@ -45,6 +53,10 @@ L= DBM:GetModLocalization(2009)
 ---------------------------
 L= DBM:GetModLocalization(2004)
 
+L:SetOptionLocalization({
+	InfoFrame =	"Zeige Infofenster für Kampfübersicht"
+})
+
 ---------------------------
 -- Varimathras --
 ---------------------------
@@ -54,6 +66,14 @@ L= DBM:GetModLocalization(1983)
 -- The Coven of Shivarra --
 ---------------------------
 L= DBM:GetModLocalization(1986)
+
+L:SetTimerLocalization({
+	timerBossIncoming		= DBM_INCOMING
+})
+
+L:SetOptionLocalization({
+	timerBossIncoming		= "Zeige Zeit bis nächsten Bosswechsel"
+})
 
 ---------------------------
 -- Aggramar --
