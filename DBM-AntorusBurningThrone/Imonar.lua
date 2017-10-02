@@ -341,7 +341,7 @@ do
 			if self:AntiSpam(4, targetName) then
 				warnSleepCanister:CombinedShow(0.3, targetName)
 				if targetName ~= playerName and self:CheckNearby(10, targetName) then
-					specWarnSleepCanisterNear:CombinedShow(0.3, args.destName)
+					specWarnSleepCanisterNear:CombinedShow(0.3, targetName)
 					voiceSleepCanister:Play("runaway")
 				end
 			end
