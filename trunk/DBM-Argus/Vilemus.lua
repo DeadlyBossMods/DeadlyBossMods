@@ -17,7 +17,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED_DOSE 247742"
 )
 
-local warnDrain					= mod:NewStackAnnounce(247742, 2, nil, "Tank")
+local warnDrain					= mod:NewStackAnnounce(247742, 2, nil, false, 2)
 local warnFelBreath				= mod:NewSpellAnnounce(247731, 2)
 
 local specWarnDrain				= mod:NewSpecialWarningStack(247742, nil, 6, nil, nil, 1, 2)--Tanking
@@ -90,7 +90,7 @@ function mod:SPELL_AURA_APPLIED(args)
 					specWarnDrain:Show(amount)
 					voiceDrain:Play("stackhigh")
 				else--Taunt as soon as stacks are clear, regardless of stack count.
-					if not UnitIsDeadOrGhost("player") and not UnitDebuff("player", args.spellName) and self:AntiSpam(5, 1) then
+					if not UnitIsDeadOrGhost("player") and not UnitDebuff("player", args.spellName) and self:AntiSpam(8, 1) then
 						specWarnDrainTaunt:Show(args.destName)
 						voiceDrain:Play("tauntboss")
 					else
