@@ -8,7 +8,7 @@ mod:SetCreatureID(124719)
 mod:SetZone()
 --mod:SetMinSyncRevision(11969)
 
-mod:RegisterCombat("combat")
+mod:RegisterCombat("combat_yell", L.Pull)
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 247731 247733",
@@ -17,25 +17,23 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED_DOSE 247742"
 )
 
---TODO, target scan fel breath? special warning?
---TODO, fine tune tank stuff
 local warnDrain					= mod:NewStackAnnounce(247742, 2, nil, "Tank")
 local warnFelBreath				= mod:NewSpellAnnounce(247731, 2)
 
-local specWarnDrain				= mod:NewSpecialWarningStack(247742, nil, 8, nil, nil, 1, 2)--Tanking
+local specWarnDrain				= mod:NewSpecialWarningStack(247742, nil, 6, nil, nil, 1, 2)--Tanking
 local specWarnDrainTaunt		= mod:NewSpecialWarningTaunt(247742, nil, nil, nil, 1, 2)--Not tanking and clear
 local specWarnStomp				= mod:NewSpecialWarningSpell(247733, nil, nil, nil, 2, 2)
 --local specWarnGTFO			= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
 
-local timerDrainCD				= mod:NewAITimer(13.4, 247739, nil, "Melee", nil, 5, nil, DBM_CORE_TANK_ICON)
-local timerFelBreathCD			= mod:NewAITimer(13.4, 247731, nil, nil, nil, 3)
-local timerStompCD				= mod:NewAITimer(13.4, 247733, nil, nil, nil, 2, nil, DBM_CORE_HEALER_ICON)
+local timerDrainCD				= mod:NewCDTimer(15.9, 247739, nil, "Melee", nil, 5, nil, DBM_CORE_TANK_ICON)--15-20
+local timerFelBreathCD			= mod:NewCDTimer(13.4, 247731, nil, nil, nil, 3)
+local timerStompCD				= mod:NewCDTimer(15.8, 247733, nil, nil, nil, 2, nil, DBM_CORE_HEALER_ICON)--15-35?
 
 local voiceDrain				= mod:NewVoice(247361)--tauntboss/runout/stackhigh
 local voiceStomp				= mod:NewVoice(247733)--carefly
 --local voiceGTFO				= mod:NewVoice(238028, nil, DBM_CORE_AUTO_VOICE4_OPTION_TEXT)--runaway
 
---mod:AddReadyCheckOption(49196, false)
+mod:AddReadyCheckOption(49196, false)
 mod:AddRangeFrameOption(8, 247739)--Mainly to ensure tanks are far enough from eachother. any dumb melee don't matter.
 
 local tankFilter
@@ -87,20 +85,19 @@ function mod:SPELL_AURA_APPLIED(args)
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId) then
 			local amount = args.amount or 1
-			if amount >= 4 then--Fine Tune
+			if amount >= 6 then--Fine Tune
 				if args:IsPlayer() then--At this point the other tank SHOULD be clear.
 					specWarnDrain:Show(amount)
 					voiceDrain:Play("stackhigh")
 				else--Taunt as soon as stacks are clear, regardless of stack count.
-					if not UnitIsDeadOrGhost("player") and not UnitDebuff("player", args.spellName) then
+					if not UnitIsDeadOrGhost("player") and not UnitDebuff("player", args.spellName) and self:AntiSpam(5, 1) then
 						specWarnDrainTaunt:Show(args.destName)
 						voiceDrain:Play("tauntboss")
 					else
-						warnDrain:Show(args.destName, amount)
+						warnDrain:Cancel()
+						warnDrain:Schedule(1.25, args.destName, amount)
 					end
 				end
-			else
-				warnDrain:Show(args.destName, amount)
 			end
 		end
 	end
