@@ -351,7 +351,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			voiceWither:Play("switchphase")
 		end
 	elseif spellId == 235969 then
-		if args:IsPlayer() then
+		if args:IsPlayer() and self:AntiSpam(5, 2) then
 			if self.vb.boneArmorCount > 0 then
 				specWarnShatteringScreamAdd:Show(boneArmor)
 				voiceShatteringScream:Play("getboned")
