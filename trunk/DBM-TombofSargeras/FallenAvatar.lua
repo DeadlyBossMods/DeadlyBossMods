@@ -93,7 +93,7 @@ local countdownDesolate				= mod:NewCountdown("Alt11", 236494, "Tank", nil, 3)--
 local countdownCorruptedMatrix		= mod:NewCountdown("AltTwo40", 233556)
 --Stage Two
 local countdownRuptureRealities		= mod:NewCountdown(60, 239132)
-local countdownDarkMark				= mod:NewCountdown("Alt40", 239739)
+local countdownDarkMark				= mod:NewCountdown("Alt40", 239739, "-Tank", 2)
 local countdownRainofthedDestroyer	= mod:NewCountdown("AltTwo35", 240396)
 
 --Stage One: A Slumber Disturbed
