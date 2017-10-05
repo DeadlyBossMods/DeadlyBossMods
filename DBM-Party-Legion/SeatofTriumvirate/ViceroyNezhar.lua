@@ -9,7 +9,8 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 246324 244751 248736",
+	"SPELL_CAST_START 244751 248736",
+	"SPELL_CAST_SUCCESS 246324",
 	"SPELL_AURA_APPLIED 248804",
 	"SPELL_AURA_REMOVED 248804",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
@@ -44,7 +45,7 @@ function mod:OnCombatStart(delay)
 	self.vb.guardsActive = 0
 	timerUmbralTentaclesCD:Start(11.8-delay)
 	timerHowlingDarkCD:Start(15.5-delay)
-	timerEntropicForceCD:Start(30-delay)
+	timerEntropicForceCD:Start(35-delay)
 	if self:IsHard() then
 		timerAddsCD:Start(53-delay)
 	end
@@ -52,11 +53,7 @@ end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 246324 then
-		specWarnEntropicForce:Show()
-		voiceEntropicForce:Play("keepmove")
-		timerEntropicForceCD:Start()
-	elseif spellId == 244751 then
+	if spellId == 244751 then
 		timerHowlingDarkCD:Start()
 		specWarnHowlingDark:Show(args.sourceName)
 		voiceHowlingDark:Play("kickcast")
@@ -64,6 +61,15 @@ function mod:SPELL_CAST_START(args)
 		warnEternalTwilight:Show()
 		timerEternalTwilight:Start()
 		countdownEternalTwilight:Start()
+	end
+end
+
+function mod:SPELL_CAST_SUCCESS(args)
+	local spellId = args.spellId
+	if spellId == 246324 then
+		specWarnEntropicForce:Show()
+		voiceEntropicForce:Play("keepmove")
+		timerEntropicForceCD:Start()
 	end
 end
 
