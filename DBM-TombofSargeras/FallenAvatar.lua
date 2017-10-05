@@ -59,7 +59,7 @@ local specWarnDesolateOther			= mod:NewSpecialWarningTaunt(236494, nil, nil, nil
 local specWarnCorruptedMatrix		= mod:NewSpecialWarningMoveTo(233556, "Tank", nil, nil, 1, 7)
 local specWarnCleansingProtocol		= mod:NewSpecialWarningSwitch(233856, "-Healer", nil, nil, 3, 2)
 local specWarnTaintedEssence		= mod:NewSpecialWarningStack(240728, nil, 4, nil, nil, 1, 6)
-local yellTaintedEssence			= mod:NewShortYell(240728)
+local yellTaintedEssence			= mod:NewShortFadesYell(240728)
 --Stage Two: An Avatar Awakened
 local specWarnDarkMark				= mod:NewSpecialWarningYouPos(239739, nil, nil, nil, 1, 2)
 local specWarnDarkMarkOther			= mod:NewSpecialWarningMoveTo(239739, nil, nil, nil, 1, 2)
