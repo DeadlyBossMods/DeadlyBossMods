@@ -232,13 +232,18 @@ function mod:OnCombatStart(delay)
 	end
 	timerFelclawsCD:Start(25-delay, 1)
 	countdownFelclaws:Start(25-delay)
-	if not self:IsLFR() then
-		timerRupturingSingularityCD:Start(58-delay, 1)
-	end
 	if self:IsMythic() then
+		timerShadReflectionEruptingCD:Start(18.5-delay)
+		timerRupturingSingularityCD:Start(55.2-delay, 1)
 		timerShadReflectionWailingCD:Start(56, 1)
 		berserkTimer:Start(840-delay)--apparently it's anywhere between 14:00 and 14:10 depending on RNG
 	else
+		if not self:IsLFR() then
+			timerRupturingSingularityCD:Start(58-delay, 1)
+			if not self:IsEasy() then
+				timerShadReflectionEruptingCD:Start(21-delay)--Erupting
+			end
+		end
 		berserkTimer:Start(600-delay)
 	end
 end
