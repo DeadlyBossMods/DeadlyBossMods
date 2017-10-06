@@ -64,6 +64,7 @@ local yellSiphoned						= mod:NewShortFadesYell(248819)
 --Mythic
 local specWarnFlameTouched				= mod:NewSpecialWarningYouPos(244054, nil, nil, nil, 3, 8)
 local specWarnShadowtouched				= mod:NewSpecialWarningYouPos(244055, nil, nil, nil, 3, 8)
+local yellTouched						= mod:NewPosYell(244054, DBM_CORE_AUTO_YELL_CUSTOM_POSITION)
 
 --F'harg
 local timerBurningMawCD					= mod:NewCDTimer(10.1, 251448, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--usually 11 but some pulls it's 10
@@ -300,13 +301,15 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.WeightDarkIcon = self.vb.WeightDarkIcon + 1
 	elseif spellId == 244054 then--Flametouched
 		if args:IsPlayer() then
-			specWarnFlameTouched:Show(self:IconNumToTexture(7))--Red x for fire (or orange circle?)
+			specWarnFlameTouched:Show(self:IconNumToTexture(2))--Orange circle for flame touched (todo, X better?)
 			voiceFlameTouched:Play("flameonyou")
+			yellTouched:Yell(2, "", 2)
 		end
 	elseif spellId == 244055 then--Shadowtouched
 		if args:IsPlayer() then
 			specWarnShadowtouched:Show(self:IconNumToTexture(3))--Purple diamond for shadow
 			voiceShadowtouched:Play("shadowonyou")
+			yellTouched:Yell(3, "", 3)
 		end
 	end
 end
