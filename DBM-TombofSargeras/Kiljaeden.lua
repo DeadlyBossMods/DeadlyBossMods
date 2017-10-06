@@ -227,9 +227,6 @@ function mod:OnCombatStart(delay)
 	self.vb.wailingCount = 0
 	timerArmageddonCD:Start(10-delay, 1)
 	countdownArmageddon:Start(10-delay)
-	if not self:IsEasy() then
-		timerShadReflectionEruptingCD:Start(21-delay)--Erupting
-	end
 	timerFelclawsCD:Start(25-delay, 1)
 	countdownFelclaws:Start(25-delay)
 	if self:IsMythic() then
