@@ -62,8 +62,8 @@ local yellWeightOfDarknessFades			= mod:NewShortFadesYell(254429)
 local specWarnSiphoned					= mod:NewSpecialWarningMoveTo(248819, nil, nil, nil, 1, 2)
 local yellSiphoned						= mod:NewShortFadesYell(248819)
 --Mythic
-local specWarnFlameTouched				= mod:NewSpecialWarningYou(244054, nil, nil, nil, 3, 8)
-local specWarnShadowtouched				= mod:NewSpecialWarningYou(244055, nil, nil, nil, 3, 8)
+local specWarnFlameTouched				= mod:NewSpecialWarningYouPos(244054, nil, nil, nil, 3, 8)
+local specWarnShadowtouched				= mod:NewSpecialWarningYouPos(244055, nil, nil, nil, 3, 8)
 
 --F'harg
 local timerBurningMawCD					= mod:NewCDTimer(10.1, 251448, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--usually 11 but some pulls it's 10
@@ -72,9 +72,9 @@ local timerEnflamedCorruptionCD			= mod:NewCDTimer(95.9, 244057, nil, nil, nil, 
 local timerDesolateGazeCD				= mod:NewCDTimer(95.9, 244064, nil, nil, nil, 3)
 --Shatug
 local timerCorruptingMawCD				= mod:NewCDTimer(10.1, 251447, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--usually 11 but some pulls it's 10
-local timerComsumingSphereCD			= mod:NewCDTimer(76, 244131, nil, nil, nil, 3)--Verify in transcritor
-local timerWeightOfDarknessCD			= mod:NewCDTimer(77.7, 254429, nil, nil, nil, 3)
-local timerSiphonCorruptionCD			= mod:NewCDTimer(77.7, 244056, nil, nil, nil, 3)
+local timerComsumingSphereCD			= mod:NewCDTimer(77, 244131, nil, nil, nil, 3)--Verify in transcritor
+local timerWeightOfDarknessCD			= mod:NewCDTimer(77, 254429, nil, nil, nil, 3)
+local timerSiphonCorruptionCD			= mod:NewCDTimer(77, 244056, nil, nil, nil, 3)
 --General/Mythic
 local timerFocusingPower				= mod:NewCastTimer(15, 251356, nil, nil, nil, 3)
 
@@ -102,6 +102,9 @@ mod:AddRangeFrameOption("5/8")
 mod:AddBoolOption("SequenceTimers", false)
 
 mod.vb.WeightDarkIcon = 1
+mod.vb.longTimer = 95.9
+mod.vb.mediumTimer = 77
+--mod.vb.shortTimer = 10.1
 
 --[[
 local debuffFilter
@@ -137,18 +140,36 @@ end
 function mod:OnCombatStart(delay)
 	self.vb.WeightDarkIcon = 1
 	--Fire doggo
-	timerBurningMawCD:Start(8.2-delay)
-	timerMoltenTouchCD:Start(18-delay)
+	timerBurningMawCD:Start(8.2-delay)--was same on heroic/mythic, or now
+	timerMoltenTouchCD:Start(18-delay)--was same on heroic/mythic, or now
 	--Shadow doggo
-	timerCorruptingMawCD:Start(10.9-delay)
-	timerSiphonCorruptionCD:Start(26.7-delay)
+	if self:IsMythic() then
+		self.vb.longTimer = 89
+		self.vb.mediumTimer = 71.9
+		timerCorruptingMawCD:Start(8.9-delay)
+		timerSiphonCorruptionCD:Start(25.5-delay)
+	else
+		self.vb.longTimer = 95.9
+		self.vb.mediumTimer = 77
+		timerCorruptingMawCD:Start(10.9-delay)
+		timerSiphonCorruptionCD:Start(26.7-delay)
+	end
 	if not self.Options.SequenceTimers then
-		--Fire doggo
-		timerEnflamedCorruptionCD:Start(51.1-delay)
-		timerDesolateGazeCD:Start(82.4-delay)
-		--Shadow doggo
-		timerComsumingSphereCD:Start(51.1-delay)
-		timerWeightOfDarknessCD:Start(77-delay)
+		if self:IsMythic() then
+			--Fire doggo
+			timerEnflamedCorruptionCD:Start(48.7-delay)
+			timerDesolateGazeCD:Start(78-delay)
+			--Shadow doggo
+			timerComsumingSphereCD:Start(48.7-delay)
+			timerWeightOfDarknessCD:Start(73.1-delay)
+		else
+			--Fire doggo
+			timerEnflamedCorruptionCD:Start(51.1-delay)
+			timerDesolateGazeCD:Start(82.4-delay)
+			--Shadow doggo
+			timerComsumingSphereCD:Start(51.1-delay)
+			timerWeightOfDarknessCD:Start(77-delay)
+		end
 	end
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(5)--Molten Touch (assumed)
@@ -177,16 +198,24 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 244057 then
 		warnEnflamedCorruption:Show()
 		if not self.Options.SequenceTimers then
-			timerEnflamedCorruptionCD:Start()
+			timerEnflamedCorruptionCD:Start(self.vb.longTimer)
 		else
-			timerDesolateGazeCD:Start(30.5)--30.5-31.7
+			if self:IsMythic() then
+				timerDesolateGazeCD:Start(29.2)
+			else
+				timerDesolateGazeCD:Start(30.5)--30.5-31.7
+			end
 		end
 	elseif spellId == 244056 then
 		warnSiphonCorruption:Show()
 		if not self.Options.SequenceTimers then
-			timerSiphonCorruptionCD:Start()
+			timerSiphonCorruptionCD:Start(self.vb.mediumTimer)
 		else
-			timerComsumingSphereCD:Start(24.4)--24.4-25.74
+			if self:IsMythic() then
+				timerComsumingSphereCD:Start(23.2)--23.2
+			else
+				timerComsumingSphereCD:Start(24.4)--24.4-25.74
+			end
 		end
 	end
 end
@@ -197,9 +226,13 @@ function mod:SPELL_CAST_SUCCESS(args)
 		specWarnMoltenTouch:Show()
 		voiceMoltenTouch:Play("watchstep")
 		if not self.Options.SequenceTimers then
-			timerMoltenTouchCD:Start()
+			timerMoltenTouchCD:Start(self.vb.longTimer)
 		else
-			timerEnflamedCorruptionCD:Start(33)--33-34.2
+			if self:IsMythic() then
+				timerEnflamedCorruptionCD:Start(30.5)
+			else
+				timerEnflamedCorruptionCD:Start(33)--33-34.2
+			end
 		end
 	elseif spellId == 251445 then
 		warnBurningMaw:Show(args.destName)
@@ -212,7 +245,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if not self.Options.SequenceTimers then
 			timerWeightOfDarknessCD:Start()
 		else
-			timerSiphonCorruptionCD:Start(26.7)--26.7-26.9
+			if self:IsMythic() then
+				timerSiphonCorruptionCD:Start(24.6)
+			else
+				timerSiphonCorruptionCD:Start(26.7)--26.7-26.9
+			end
 		end
 	end
 end
@@ -263,12 +300,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.WeightDarkIcon = self.vb.WeightDarkIcon + 1
 	elseif spellId == 244054 then--Flametouched
 		if args:IsPlayer() then
-			specWarnFlameTouched:Show()
+			specWarnFlameTouched:Show(self:IconNumToTexture(7))--Red x for fire (or orange circle?)
 			voiceFlameTouched:Play("flameonyou")
 		end
 	elseif spellId == 244055 then--Shadowtouched
 		if args:IsPlayer() then
-			specWarnShadowtouched:Show()
+			specWarnShadowtouched:Show(self:IconNumToTexture(3))--Purple diamond for shadow
 			voiceShadowtouched:Play("shadowonyou")
 		end
 	end
@@ -329,21 +366,33 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		specWarnComsumingSphere:Show()
 		voiceConsumingSphere:Play("watchorb")
 		if not self.Options.SequenceTimers then
-			timerComsumingSphereCD:Start()
+			timerComsumingSphereCD:Start(self.vb.mediumTimer)
 		else
-			timerWeightOfDarknessCD:Start(25.6)--25.6-27
+			if self:IsMythic() then
+				timerWeightOfDarknessCD:Start(24.3)
+			else
+				timerWeightOfDarknessCD:Start(25.6)--25.6-27
+			end
 		end
 	elseif spellId == 244064 then--Desolate Gaze
 		if not self.Options.SequenceTimers then
-			timerDesolateGazeCD:Start()
+			timerDesolateGazeCD:Start(self.vb.longTimer)
 		else
-			timerMoltenTouchCD:Start(31.6)--31.6-33
+			if self:IsMythic() then
+				timerMoltenTouchCD:Start(29.2)
+			else
+				timerMoltenTouchCD:Start(31.6)--31.6-33
+			end
 		end
 	elseif spellId == 244069 then--Weight of Darkness
 		if not self.Options.SequenceTimers then
-			timerWeightOfDarknessCD:Start()
+			timerWeightOfDarknessCD:Start(self.vb.mediumTimer)
 		else
-			timerSiphonCorruptionCD:Start(26.7)--26.7-26.9
+			if self:IsMythic() then
+				timerSiphonCorruptionCD:Start(24.3)
+			else
+				timerSiphonCorruptionCD:Start(26.7)--26.7-26.9
+			end
 		end
 	end
 end
