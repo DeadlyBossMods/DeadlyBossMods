@@ -301,9 +301,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.WeightDarkIcon = self.vb.WeightDarkIcon + 1
 	elseif spellId == 244054 then--Flametouched
 		if args:IsPlayer() then
-			specWarnFlameTouched:Show(self:IconNumToTexture(2))--Orange circle for flame touched (todo, X better?)
+			specWarnFlameTouched:Show(self:IconNumToTexture(7))--Red X for flame (more voted on red x than orange circle)
 			voiceFlameTouched:Play("flameonyou")
-			yellTouched:Yell(2, "", 2)
+			yellTouched:Yell(7, "", 7)
 		end
 	elseif spellId == 244055 then--Shadowtouched
 		if args:IsPlayer() then
