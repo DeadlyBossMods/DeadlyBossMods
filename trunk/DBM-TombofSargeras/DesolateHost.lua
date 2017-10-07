@@ -238,7 +238,7 @@ function mod:SPELL_CAST_START(args)
 		countdownSunderingDoom:Start()
 	elseif spellId == 236544 then--Doomed Sunering (spirit realm soaks)
 		if UnitBuff("player", spiritRealm) or UnitDebuff("player", spiritRealm) then--Figure out which it is
-			specWarnDoomedSunderingGather:Show(COMPACT_UNIT_FRAME_PROFILE_SORTBY_GROUP)
+			specWarnDoomedSunderingGather:Show(BOSS)
 			voiceDoomedSunderin:Play("gathershare")
 		else
 			specWarnDoomedSunderingRun:Show()
