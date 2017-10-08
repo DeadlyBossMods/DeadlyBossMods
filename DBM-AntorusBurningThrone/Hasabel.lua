@@ -16,7 +16,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 243983 244709 245504 244607 244915 246805 244689 244000",
-	"SPELL_CAST_SUCCESS 245050 244073 244112 244136 244138 244146 244145 244598",
+	"SPELL_CAST_SUCCESS 245050 244073 244112 244136 244138 244146 244145 244598 244016",
 	"SPELL_AURA_APPLIED 244016 244383 244613 244949 244849 245050 245118",
 	"SPELL_AURA_APPLIED_DOSE 244016",
 	"SPELL_AURA_REFRESH 244016",
@@ -35,6 +35,12 @@ mod:RegisterEventsInCombat(
 --TODO, find a workable cast ID for corrupt and enable interrupt warning
 --TODO, an overview info frame showing the needs of portal worlds (how many shields up, how much fel miasma, how many fires in dark realm if possible)
 --TODO, timer correction off UNIT_POWER to auto correct main boss timer variances
+--[[
+(ability.id = 243983 or ability.id = 244689 or ability.id = 244000) and type = "begincast"
+ or ability.id = 244016 and type = "cast"
+ or (ability.id = 244709 or ability.id = 245504 or ability.id = 244607 or ability.id = 246316 or ability.id = 244915  or ability.id = 246805) and type = "begincast"
+ or (ability.id = 245050 or ability.id = 244598) and type = "cast"
+ --]]
 --Platform: Nexus
 local warnRealityTear					= mod:NewStackAnnounce(244016, 2, nil, "Tank")
 --local warnTransportPortal				= mod:NewSpellAnnounce(244677, 2)
@@ -85,7 +91,7 @@ local specWarnHungeringGloom			= mod:NewSpecialWarningMoveTo(245075, nil, nil, n
 local timerRealityTearCD				= mod:NewCDTimer(12.1, 244016, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerCollapsingWorldCD			= mod:NewCDTimer(32.9, 243983, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)--32.9-41
 local timerFelstormBarrageCD			= mod:NewCDTimer(32.9, 244000, nil, nil, nil, 3)--32.9-41
-local timerTransportPortalCD			= mod:NewCDTimer(41.5, 244677, nil, nil, nil, 1)--41.5-60. most of time 50 on nose. but if comes early next one comes late to offset
+local timerTransportPortalCD			= mod:NewCDTimer(41.2, 244677, nil, nil, nil, 1)--41.2-60. most of time 50 on nose. but if comes early next one comes late to offset
 --Platform: Xoroth
 local timerSupernovaCD					= mod:NewCDTimer(6.1, 244598, nil, nil, nil, 3)
 local timerFlamesofXorothCD				= mod:NewCDTimer(7.3, 244607, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
@@ -172,7 +178,7 @@ function mod:OnCombatStart(delay)
 	timerCollapsingWorldCD:Start(10.5-delay)
 	countdownCollapsingWorld:Start(10.5-delay)
 --	if not self:IsEasy() then
---		timerTransportPortalCD:Start(60.5-delay)
+--		timerTransportPortalCD:Start(35-delay)
 --	end
 	timerFelstormBarrageCD:Start(25.2-delay)
 	countdownFelstormBarrage:Start(25.2-delay)
@@ -298,6 +304,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 			specWarnSupernova:Show()
 			voiceSuperNova:Play("watchstep")
 		end
+	elseif spellId == 244016 then
+		timerRealityTearCD:Start()
+		countdownRealityTear:Start(12.2)
 	end
 end
 
@@ -306,8 +315,6 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 244016 then
 		local uId = DBM:GetRaidUnitId(args.destName)
 --		if self:IsTanking(uId) then
-			timerRealityTearCD:Start()--Move this later
-			countdownRealityTear:Start(12.2)--Move this later
 			local amount = args.amount or 1
 			if amount >= 3 then
 				if args:IsPlayer() then--At this point the other tank SHOULD be clear.
