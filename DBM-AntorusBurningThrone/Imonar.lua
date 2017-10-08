@@ -14,7 +14,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 247376 247923 248068 248070 248254",
-	"SPELL_CAST_SUCCESS 247367 247552 247687 250255",
+	"SPELL_CAST_SUCCESS 247367 247552 247687 250255 254244",
 	"SPELL_AURA_APPLIED 247367 247552 247565 247687 250255 250006",
 	"SPELL_AURA_APPLIED_DOSE 247367 247687 250255 248424",
 	"SPELL_AURA_REMOVED 248233 250135 250006",
@@ -29,6 +29,12 @@ mod:RegisterEventsInCombat(
 --TODO, determine sleep canister counts and add icons as needed
 --TODO, Announe stacks of Gathering Power if relevant
 --TODO, icons on Empowered Pulse Grenades? Have to see live health tuning and whether or not 10 players have them
+--TODO, recheck timers for abilities with SLOWER cds on mythic, to see if also slower on heroic/normal/lfr
+--[[
+(abilty.id = 247376 or ability.id = 248068 or ability.id = 247923 or ability.id = 248070 or ability.id = 248254) and type = "begincast"
+ or (ability.id = 247367 or ability.id = 250255 or ability.id = 247552 or ability.id = 247687 or ability.id = 254244) and type = "cast"
+ or (ability.id = 248233 or ability.id = 250135) and (type = "applybuff" or type = "removebuff")
+--]]
 --Stage One: Attack Force
 local warnShocklance					= mod:NewStackAnnounce(247367, 2, nil, "Tank")
 local warnSleepCanister					= mod:NewTargetAnnounce(247552, 2)
@@ -160,12 +166,21 @@ function mod:SPELL_CAST_START(args)
 			specWarnPulseGrenade:Show()
 			voicePulseGrenade:Play("watchstep")
 		end
-		timerPulseGrenadeCD:Start()
-		countdownPulseGrenade:Start()
+		if self:IsMythic() then
+			timerPulseGrenadeCD:Start(26)
+			countdownPulseGrenade:Start(26)
+		else--TODO, verify if heroic is still faster or also slower like mythic
+			timerPulseGrenadeCD:Start()
+			countdownPulseGrenade:Start()
+		end
 	elseif spellId == 247923 or spellId == 248070 then
 		specWarnShrapnalBlast:Show()
 		voiceShrapnalBlast:Play("watchstep")
-		timerShrapnalBlastCD:Start()
+		if self:IsMythic() then
+			timerShrapnalBlastCD:Start(17)
+		else
+			timerShrapnalBlastCD:Start()--13
+		end
 	elseif spellId == 248254 then
 		specWarnChargedBlastsUnknown:Show()
 		voiceChargedBlasts:Play("farfromline")
@@ -187,8 +202,12 @@ function mod:SPELL_CAST_SUCCESS(args)
 		else--Empowered seems less often
 			timerShocklanceCD:Start(9.7)
 		end
-	elseif spellId == 247552 then
-		timerSleepCanisterCD:Start()
+	elseif spellId == 247552 or spellId == 254244 then
+		if self:IsMythic() then
+			timerSleepCanisterCD:Start(12)
+		else
+			timerSleepCanisterCD:Start()--10.7
+		end
 	elseif spellId == 247687 then
 		timerSeverCD:Start()
 	end
@@ -268,7 +287,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerSeverCD:Start(6.6)
 			timerChargedBlastsCD:Start(8.7)
 			countdownChargedBlasts:Start(8.7)
-			timerShrapnalBlastCD:Start(12.4)
+			timerShrapnalBlastCD:Start(12)
 		elseif self.vb.phase == 3 then
 			warnPhase3:Show()
 			if self:IsMythic() then
