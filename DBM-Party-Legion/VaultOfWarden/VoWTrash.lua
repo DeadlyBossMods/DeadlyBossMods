@@ -15,7 +15,7 @@ mod:RegisterEvents(
 local warnTorment				= mod:NewTargetAnnounce(202615, 3)
 local warnNightmares			= mod:NewTargetAnnounce(202615, 4)
 
-local specWarnUnleashedFury		= mod:NewSpecialWarningSpell(196799, nil, nil, nil, 1, 2)
+local specWarnUnleashedFury		= mod:NewSpecialWarningSpell(196799, nil, nil, nil, 2, 2)
 local specWarnNightmares		= mod:NewSpecialWarningInterrupt(193069, "HasInterrupt", nil, nil, 1, 2)
 local yellNightmares			= mod:NewYell(193069)
 local yellTorment				= mod:NewYell(202615)
@@ -30,7 +30,7 @@ mod:RemoveOption("HealthFrame")
 function mod:SPELL_CAST_START(args)
 	if not self.Options.Enabled then return end
 	local spellId = args.spellId
-	if spellId == 196799 then
+	if spellId == 196799 and self:AntiSpam(4, 1) then
 		specWarnUnleashedFury:Show()
 		voiceUnleashedFury:Play("aesoon")
 	elseif spellId == 193069 and self:CheckInterruptFilter(args.sourceGUID) then
