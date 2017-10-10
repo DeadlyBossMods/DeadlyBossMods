@@ -28,11 +28,6 @@ mod:RegisterEvents(
 	"CHAT_MSG_MONSTER_YELL"
 )
 
---TODO, if anquished spirits is important, add a timer. if not, remove warning.
---TODO, Do a bunch of stuff with well of souls? infoframe to track stacks/who should soak next?
---TODO, infoframe for TimeStop (206310) used correctly/well?
---TODO, maybe add a 'watch orb" warning to chaos seed?
---TODO, new voice "Move to time bubble" (movetimebubble)
 --[[
 (ability.id = 206219 or ability.id = 206220 or ability.id = 206514 or ability.id = 206675 or ability.id = 206840 or ability.id = 207938 or ability.id = 206883 or ability.id = 208545 or ability.id = 209270 or ability.id = 211152 or ability.id = 208672 or ability.id = 167819 or ability.id = 206939 or ability.id = 206744) and type = "begincast"
 or (ability.id = 206222 or ability.id = 206221 or ability.id = 221783 or ability.id = 212258) and type = "cast"

@@ -24,9 +24,6 @@ mod:RegisterEventsInCombat(
 )
 
 --TODO, more review on Feast of Blood
---TODO, voices similar to 184964a/b/c but for Brand of argus instead of torment. Or better. Maybe generic with no spell name just "break first" "break second" that works for similar spell in future
---TODO, determine how often tanks swap for 216024 (Volatile Wound), if at all
---TODO, figure out ring of shadow
 --TODO, redo/update LFR/Normal timers since they probably also have phase 2 and phase 3 variations
  --(ability.id = 212997 or ability.id = 213238 or ability.id = 208230 or ability.id = 213531 or ability.id = 206365) and type = "begincast"
 local warnCarrionPlague				= mod:NewTargetAnnounce(206480, 3)

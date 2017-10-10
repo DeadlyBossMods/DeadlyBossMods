@@ -22,7 +22,6 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_STOP boss1 boss2 boss3 boss4 boss5"
 )
 
---TODO, figure out how often tanks need to swap, adjust warnings accordingly
 --TODO, More data to complete sequences of timers on LFR/Heroic/Normal
 --(ability.id = 206618 or ability.id = 206610 or ability.id = 206614) and type = "cast" or ability.id = 211927
 local warnNormal					= mod:NewCountAnnounce(207012, 2)

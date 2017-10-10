@@ -23,9 +23,6 @@ mod:RegisterEventsInCombat(
 	"UNIT_HEALTH target focus mouseover"
 )
 
---TODO. see how many CoN go out and auto assign soakers for it. Redo icons accordingly, maybe some auto assigning helper stuff
---TODO, adjust 15% on stars if it's too low/high. 25% was used on algalon for reference
---TODO, auto marking spheres?
 --[[
 (target.id = 109040 or target.id = 109038 or target.id = 109041) and type = "death" or 
 (ability.id = 218438 or ability.id = 223034 or ability.id = 218774 or ability.id = 218927 or ability.id = 216830 or ability.id = 216877 or ability.id = 218148 or ability.id = 223219) and type = "begincast" 

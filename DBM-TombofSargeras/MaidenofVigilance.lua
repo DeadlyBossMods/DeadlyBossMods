@@ -23,13 +23,6 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO: range frame? seems impractical at moment, if someone shows up range frame it's already too late.
---TODO, new voices, "Fel infusion" and "Light Infusion" and "Jump In Pit"
---TODO, Better taunting system for hammers. I suspect a two camp strat with tank in appropriate camp taunting during hammer cast
---TODO, some kind of shield health tracker
---TODO, wrath of the creators stack counter for when stacks too high and about to wipe
---TODO, Mass instability is in combat log now, but not enough data to fix timers for it yet (except for first on pull)
---TODO, some kind of relevant warning for Spont Fragmentation
 --[[
 (ability.id = 235267 or ability.id = 235271 or ability.id = 241635 or ability.id = 241636) and type = "begincast" or
 (ability.id = 239153 or ability.id = 248812) and type = "cast" or
