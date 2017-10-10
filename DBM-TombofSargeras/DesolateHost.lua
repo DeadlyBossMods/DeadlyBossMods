@@ -335,14 +335,18 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnTormentingCries:Show(args.destName)
 		end
 	elseif spellId == 236513 then
+		if self.Options.NPAuraOnBonecageArmor then
+			if self:IsMythic() then
+				DBM.Nameplate:Show(true, args.destGUID, spellId, nil, 180)
+			else
+				DBM.Nameplate:Show(true, args.destGUID, spellId, nil, 60)
+			end
+		end
 		local cid = self:GetCIDFromGUID(args.destGUID)
 		if self.Options.IgnoreTemplarOn3Tank and (cid == 119938 or cid == 118715) and self.vb.tankCount >= 3 then return end--Reanimated templar
 		self.vb.boneArmorCount = self.vb.boneArmorCount + 1
 		if self:AntiSpam(4, args.destName) and self.vb.boneArmorCount == 1 then
 			warnBonecageArmor:Show(args.destName)
-		end
-		if self.Options.NPAuraOnBonecageArmor then
-			DBM.Nameplate:Show(true, args.destGUID, spellId)
 		end
 	elseif (spellId ==  236138 or spellId == 236131) then
 		warnWither:CombinedShow(0.3, args.destName)
@@ -395,12 +399,12 @@ function mod:SPELL_AURA_REMOVED(args)
 			yellSpearofAnguish:Cancel()
 		end
 	elseif spellId == 236513 then--Bonecage Armor
-		local cid = self:GetCIDFromGUID(args.destGUID)
-		if self.Options.IgnoreTemplarOn3Tank and (cid == 119938 or cid == 118715) and self.vb.tankCount >= 3 then return end--Reanimated templar
-		self.vb.boneArmorCount = self.vb.boneArmorCount - 1
 		if self.Options.NPAuraOnBonecageArmor then
 			DBM.Nameplate:Hide(true, args.destGUID, spellId)
 		end
+		local cid = self:GetCIDFromGUID(args.destGUID)
+		if self.Options.IgnoreTemplarOn3Tank and (cid == 119938 or cid == 118715) and self.vb.tankCount >= 3 then return end--Reanimated templar
+		self.vb.boneArmorCount = self.vb.boneArmorCount - 1
 	elseif spellId == 235969 and args:IsPlayer() then--Shattering Scream
 		yellShatteringScream:Cancel()
 	elseif spellId == 236072 then--Wailing Souls
