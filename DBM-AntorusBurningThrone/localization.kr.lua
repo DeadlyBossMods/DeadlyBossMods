@@ -21,7 +21,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(1987)
 
 L:SetOptionLocalization({
-	SequenceTimers =	"지금 시전할 스킬보다 이전에 시전했던 스킬의 쿨타임 타이머를 뒤로 배열합니다. 이 기능은 타이머가 뒤섞인 것의 정확도를 맞추는데 들어가는 비용을 감소시킵니다 (1-2초 빠르게 맞춰짐)"
+	SequenceTimers =	"이전에 시전한 스킬의 타이머를 삭제해서 타이머 수를 정리합니다. 대신 약간 타이머 정확도가 떨어지게 됩니다 (1-2초 빠르게 나옴)"
 })
 
 ---------------------------
