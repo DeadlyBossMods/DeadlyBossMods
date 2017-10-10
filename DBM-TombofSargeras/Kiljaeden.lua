@@ -26,9 +26,6 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3"--Illiden might cast important stuff, or adds?
 )
 
---TODO, fine tune reflections with appropriate functions like range, etc if needed. Custom voices with correct actions other than "targetyou"
---TODO, verify/correct event for Malignant Anguish, it's likely a channeled/buff type interrupt since spellID has no cast time.
---TODO, if multiple hopelessness adds spawn at once, auto mark them so healers can be assigned to diff targets by raid icon
 --TODO, do we need shadow gaze warnings for player other then self?
 --TODO, how many shadowsouls? Also add a "remaining warning" for it as well.
 --TODO, deal wih wailing timer if tank suicides during spell cast start (and before success fires)
@@ -126,7 +123,7 @@ local voiceFelclaws					= mod:NewVoice(239932)--tauntboss
 local voiceRupturingSingularity		= mod:NewVoice(235059)--carefly
 local voiceArmageddon				= mod:NewVoice(240910)--helpsoak
 local voiceSRWailing				= mod:NewVoice(236378)--targetyou (temp, more customized after seen)
-local voiceSRErupting				= mod:NewVoice(236710)--targetyou (temp, more customized after seen)
+local voiceSRErupting				= mod:NewVoice(236710)--targetyou
 local voiceLingeringEruption		= mod:NewVoice(243536)--watchorb/keepmove
 --Intermission: Eternal Flame
 local voiceFocusedDreadflame		= mod:NewVoice(238502)--helpsoak/range5/targetyou
@@ -500,7 +497,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		local icon = self.vb.eruptingReflectionIcon
 		if args:IsPlayer() then
 			specWarnSRErupting:Show(self:IconNumToTexture(icon))
-			voiceSRErupting:Play("targetyou")
+			if self:IsMythic() then
+				voiceSRErupting:Play("mm"..icon)
+			else
+				voiceSRErupting:Play("targetyou")
+			end
 			yellSRErupting:Countdown(8, nil, icon)
 		end
 		if self.Options.SetIconOnEruptingReflection and self:IsMythic() then
