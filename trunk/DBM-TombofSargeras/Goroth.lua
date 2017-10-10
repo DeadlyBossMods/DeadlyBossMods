@@ -22,8 +22,6 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO: Possibly warnings if mess up soaking brimstone?
---TODO, Fel Eruption stuff (GTFO? etc?)
 --[[
 (ability.id = 233062) and type = "begincast"
  or (ability.id = 232249 or ability.id = 231363 or ability.id = 233272) and type = "cast"

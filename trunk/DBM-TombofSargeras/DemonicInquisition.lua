@@ -25,9 +25,6 @@ mod:RegisterEventsInCombat(
 	"UNIT_POWER_FREQUENT player"
 )
 
---TODO, Handling of Confess and Cage?
---TODO, target scan Scythe Sweep? or is it always on tank and should only be tank warning?
---TODO, countdown options for relevant timers. If balac doesn't get reliable timers just put countdowns on all 3 of Atrigans spells?
 --[[
 (ability.id = 233426 or ability.id = 234015 or ability.id = 239401) and type = "begincast"or
 (ability.id = 233431 or ability.id = 233983 or ability.id = 233894) and type = "cast" or
