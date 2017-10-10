@@ -23,8 +23,6 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, do more videos with debug to determine if combat log order is valid for link partners
---TODO, annihilate timer for second Imprint
 --[[
 (ability.id = 207513 or ability.id = 206788 or ability.id = 207502 or ability.id = 214672 or ability.id = 206820) and type = "begincast" or
 (ability.id = 206560 or ability.id = 206557 or ability.id = 206559 or ability.id = 206641 or ability.id = 207630) and type = "cast" or 

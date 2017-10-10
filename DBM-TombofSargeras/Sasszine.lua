@@ -19,10 +19,6 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO: Do more with who has Buffer fish?
---TODO, automate Hydra Shot and assigning of soakers?
---TODO, target scan dark depths?
---TODO, hydra shot lowered to 30 on mythic, see if still 40 in other modes
 --[[
 (ability.id = 230273 or ability.id = 232722 or ability.id = 230384 or ability.id = 232746 or ability.id = 232757 or ability.id = 232827 or ability.id = 232756 or ability.id = 230358) and type = "begincast" or
 (ability.id = 230201 or ability.id = 232745) and type = "cast" or

@@ -24,8 +24,6 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3"
 )
 
---TODO, video fight and improve timer interactions to better deal with huge variation in stuff like moon glaive timer.
---TODO, auto timer extending around specials (which trigger 7 second spell lockout on all other abilities)
 --[[
 (ability.id = 236694 or ability.id = 236442 or ability.id = 239379 or ability.id = 236712) and type = "begincast" or
 (ability.id = 237561 or ability.id = 236547 or ability.id = 236518 or ability.id = 233263 or ability.id = 239264 or ability.id = 236672) and type = "cast" or
