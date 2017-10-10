@@ -188,7 +188,7 @@ function mod:OnCombatStart(delay)
 	timerSweepingScytheCD:Start(1-delay)
 	timerSkyandSeaCD:Start(1-delay)
 	if self.Options.InfoFrame then
-		--DBM.InfoFrame:SetHeader(7.3_ARGUS_RAID_DEATH_TITAN_ENERGY)--Validator won't accept this global so disabled for now
+		DBM.InfoFrame:SetHeader(_G["7.3_ARGUS_RAID_DEATH_TITAN_ENERGY"])--Validator won't accept this global so disabled for now
 		DBM.InfoFrame:Show(2, "enemypower", 2)
 		--DBM.InfoFrame:Show(7, "function", updateInfoFrame, false, false)
 	end
