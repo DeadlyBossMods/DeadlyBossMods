@@ -13,11 +13,11 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 248317 257296 255594 252280 257645",
-	"SPELL_CAST_SUCCESS 248165 248499 251815",
-	"SPELL_AURA_APPLIED 248499 248396 250669 251570 255199",
+	"SPELL_CAST_START 248317 257296 255594 252280 257645 252516 256542",
+	"SPELL_CAST_SUCCESS 248165 248499 258039 251815",
+	"SPELL_AURA_APPLIED 248499 248396 250669 251570 255199 253021 255496 255496 255478 252729 252616",
 --	"SPELL_AURA_APPLIED_DOSE",
-	"SPELL_AURA_REMOVED 250669 251570 255199",
+	"SPELL_AURA_REMOVED 250669 251570 255199 253021 255496 255496 255478 252616",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 --	"UNIT_DIED",
@@ -31,6 +31,10 @@ mod:RegisterEventsInCombat(
 --TODO, icons or yells or both to help Soulburst and Soulbomb apart and gotten to right place.
 --TODO, see if boss energy resets on stage change, if not, update timers for new 100 power ability on stage changes
 --TODO, custom warning to combine soulburst and bomb into single message instead of two messages, while still separating targets
+--TODO, interrupt warnings for Designates if not affected by Inevitability?
+--TODO, taunt warning and icon setting when adds get blades, to help tank pickup?
+--TODO, info frame for stage 4 (and other stages maybe) to show realms, and other stats, energy of boss and eonar's aid
+--TODO, warnings when eonar transitions from gift to withering. other titan stuff?
 --Stage One: Storm and Sky
 local warnConeofDeath				= mod:NewSpellAnnounce(248165, 2)
 local warnBlightOrb					= mod:NewSpellAnnounce(248317, 2)
@@ -43,6 +47,11 @@ local warnSoulbomb					= mod:NewTargetAnnounce(251570, 3)
 local warnAvatarofAggra				= mod:NewTargetAnnounce(255199, 1)
 --Stage Three: The Arcane Masters
 local warnPhase3					= mod:NewPhaseAnnounce(3, 2)
+local warnCosmicRay					= mod:NewTargetAnnounce(252729, 3)
+local warnCosmicBeacon				= mod:NewTargetAnnounce(252616, 2)
+local warnDiscsofNorg				= mod:NewCastAnnounce(252516, 1)
+--Stage Four: The Gift of Life, The Forge of Loss (Non Mythic)
+local warnPhase4					= mod:NewPhaseAnnounce(4, 2)
 
 --Stage One: Storm and Sky
 local specWarnTorturedRage			= mod:NewSpecialWarningCount(257296, nil, nil, nil, 2, 2)
@@ -56,12 +65,23 @@ local yellWastingPlague				= mod:NewYell(248396)
 local specWarnSoulburst				= mod:NewSpecialWarningMoveAway(250669, nil, nil, nil, 1, 2)
 local yellSoulburst					= mod:NewYell(250669)
 local yellSoulburstFades			= mod:NewFadesYell(250669)
-local specWarnSoulbomb				= mod:NewSpecialWarningMoveTo(251570, nil, nil, nil, 1, 8)
+local specWarnSoulbomb				= mod:NewSpecialWarningYou(251570, nil, nil, nil, 1, 2)
+local specWarnSoulbombMoveTo		= mod:NewSpecialWarningMoveTo(251570, nil, nil, nil, 1, 8)
 local yellSoulbomb					= mod:NewYell(251570)
 local yellSoulbombFades				= mod:NewFadesYell(251570)
 local specWarnEdgeofObliteration	= mod:NewSpecialWarningSpell(251815, nil, nil, nil, 2, 2)
 local specWarnAvatarofAggra			= mod:NewSpecialWarningYou(255199, nil, nil, nil, 1, 2)
 --Stage Three: The Arcane Masters
+local specWarnCosmicRay				= mod:NewSpecialWarningYou(252729, nil, nil, nil, 1, 2)
+local yellCosmicRay					= mod:NewYell(252729)
+local specWarnCosmicBeacon			= mod:NewSpecialWarningMoveAway(252616, nil, nil, nil, 1, 2)
+local yellCosmicBeacon				= mod:NewYell(252616)
+local yellCosmicBeaconFades			= mod:NewShortFadesYell(252616)
+--Stage Four: The Gift of Life, The Forge of Loss (Non Mythic)
+local specWarnEmberofRage			= mod:NewSpecialWarningDodge(257299, nil, nil, nil, 2, 2)
+local specWarnDeadlyScythe			= mod:NewSpecialWarningTaunt(258039, nil, nil, nil, 1, 2)
+local specWarnReorgModule			= mod:NewSpecialWarningSwitch(256389, "RangedDps", nil, nil, 1, 2)--Ranged only?
+
 
 --Stage One: Storm and Sky
 local timerSweepingScytheCD			= mod:NewAITimer(25, 248499, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
@@ -74,6 +94,12 @@ local timerVolatileSoulCD			= mod:NewAITimer(20, 252280, nil, nil, nil, 3)
 local timerEdgeofObliterationCD		= mod:NewAITimer(20, 251815, nil, nil, nil, 2)
 local timerAvatarofAggraCD			= mod:NewAITimer(20, 255199, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
 --Stage Three: The Arcane Masters
+--local timerCosmicRayCD				= mod:NewAITimer(20, 252729, nil, nil, nil, 3)--Can't use AI timer for adds, could be multiple adds up and AI doesn't support GUID yet
+local timerDiscsofNorgCD			= mod:NewCastTimer(12, 252516, nil, nil, nil, 6)
+--Stage Four: The Gift of Life, The Forge of Loss (Non Mythic)
+local timerEmberofRageCD			= mod:NewAITimer(20, 257299, nil, nil, nil, 3)
+local timerDeadlyScytheCD			= mod:NewAITimer(25, 258039, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerReorgModuleCD			= mod:NewAITimer(20, 256389, nil, nil, nil, 1)
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
 
@@ -89,14 +115,23 @@ local voiceWastingPlague				= mod:NewVoice(248396)--runout
 --local voiceGTFO						= mod:NewVoice(238028, nil, DBM_CORE_AUTO_VOICE4_OPTION_TEXT)--runaway
 --Stage Two: The Protector Redeemed
 local voiceSoulburst					= mod:NewVoice(250669)--targetyou/runout (on delay)
-local voiceSoulbomb						= mod:NewVoice(251570)--targetyou/runtotank (on delay)
+local voiceSoulbomb						= mod:NewVoice(251570)--targetyou/movetotank (on delay)
 local voiceEdgeofObliteration			= mod:NewVoice(251815)--watchwave?
 local voiceAvatarofAgrra				= mod:NewVoice(255199)--targetyou
 --Stage Three: The Arcane Masters
+local voiceCosmicRay					= mod:NewVoice(252729)--targetyou
+local voiceCosmicBeacon					= mod:NewVoice(252616)--runout
+--Stage Four: The Gift of Life, The Forge of Loss (Non Mythic)
+local voiceEmberofRage					= mod:NewVoice(257299)--watchstep
+local voiceDeadlyScythe					= mod:NewVoice(258039)--tauntboss
+local voiceReorgModule					= mod:NewVoice(256389)--killmob
 
 
 mod:AddSetIconOption("SetIconOnAvatar", 255199, true)
 mod:AddInfoFrameOption(258040, true)--Change to EJ entry since spell not localized
+mod:AddNamePlateOption("NPAuraOnInevitability", 253021)
+mod:AddNamePlateOption("NPAuraOnCosmosSword", 255496)
+mod:AddNamePlateOption("NPAuraOnEternalBlades", 255478)
 --mod:AddRangeFrameOption("5/10")
 
 local avatarOfAggramar, aggramarsBoon = GetSpellInfo(255199), GetSpellInfo(255200)
@@ -132,9 +167,15 @@ local function updateRangeFrame(self)
 end
 --]]
 
-local function delayedBoonCheck(self)
+local function delayedBoonCheck(self, stage4)
 	if not UnitBuff("player", aggramarsBoon) then
-		specWarnSoulbomb:Show(avatarOfAggramar)
+		if stage4 then
+			specWarnSoulbombMoveTo:Show(DBM_CORE_ROOM_EDGE)
+			voiceSoulbomb:Play("runtoedge")
+		else
+			specWarnSoulbombMoveTo:Show(avatarOfAggramar)
+			voiceSoulbomb:Play("movetotank")
+		end
 	end
 end
 
@@ -155,6 +196,9 @@ function mod:OnCombatStart(delay)
 	if not testBuild then
 		DBM:AddMsg(DBM_CORE_NEED_LOGS)
 	end
+	if self.Options.NPAuraOnInevitability or self.Options.NPAuraOnCosmosSword or self.Options.NPAuraOnEternalBlades then
+		DBM:FireEvent("BossMod_EnableHostileNameplates")
+	end
 end
 
 function mod:OnCombatEnd()
@@ -167,6 +211,9 @@ function mod:OnCombatEnd()
 	local wowTOC, testBuild = DBM:GetTOC()
 	if not testBuild then
 		DBM:AddMsg(DBM_CORE_NEED_LOGS)
+	end
+	if self.Options.NPAuraOnInevitability or self.Options.NPAuraOnCosmosSword or self.Options.NPAuraOnEternalBlades then
+		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
 	end
 end
 
@@ -193,6 +240,22 @@ function mod:SPELL_CAST_START(args)
 		timerVolatileSoulCD:Stop()
 		timerEdgeofObliterationCD:Stop()
 		timerAvatarofAggraCD:Stop()
+	elseif spellId == 252516 then
+		warnDiscsofNorg:Show()
+		timerDiscsofNorgCD:Start()
+	elseif spellId == 256542 then--Reap Soul
+		self.vb.phase = 4
+		warnPhase4:Show()
+		timerDiscsofNorgCD:Stop()
+		timerEmberofRageCD:Start(4)
+		timerTorturedRageCD:Start(4)
+		timerVolatileSoulCD:Start(4)
+		timerReorgModuleCD:Start(4)
+		if not self:IsHeroic() then
+			timerSweepingScytheCD:Start(4)
+		else
+			timerDeadlyScytheCD:Start(4)
+		end
 	end
 end
 
@@ -203,6 +266,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerConeofDeathCD:Start()
 	elseif spellId == 248499 then
 		timerSweepingScytheCD:Start()
+	elseif spellId == 258039 then
+		timerDeadlyScytheCD:Start()
 	elseif spellId == 251815 then
 		specWarnEdgeofObliteration:Show()
 		voiceEdgeofObliteration:Play("watchwave")
@@ -216,6 +281,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		if not args:IsPlayer() then
 			specWarnSweepingScythe:Show(args.destName)
 			voiceSweepingScythe:Play("tauntboss")
+		end
+	elseif spellId == 258039 then
+		if not args:IsPlayer() then
+			specWarnDeadlyScythe:Show(args.destName)
+			voiceDeadlyScythe:Play("tauntboss")
 		end
 	elseif spellId == 248396 then
 		warnWastingPlague:CombinedShow(0.5, args.destName)
@@ -235,9 +305,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 251570 then
 		if args:IsPlayer() then
-			specWarnSoulbomb:Show(avatarOfAggramar)
-			voiceSoulburst:Play("targetyou")
-			voiceSoulburst:Schedule(10, "runout")
+			specWarnSoulbomb:Show()
+			voiceSoulbomb:Play("targetyou")
 			self:Schedule(10, delayedBoonCheck, self)
 			yellSoulbomb:Yell()
 			yellSoulbombFades:Countdown(15)
@@ -254,6 +323,35 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.SetIconOnAvatar then
 			self:SetIcon(args.destName, 1)
 		end
+	elseif spellId == 253021 then--Inevitability
+		if self.Options.NPAuraOnInevitability then
+			DBM.Nameplate:Show(true, args.destGUID, spellId, nil, 20)
+		end
+	elseif spellId == 255496 then--Sword of the Cosmos
+		if self.Options.NPAuraOnCosmosSword then
+			DBM.Nameplate:Show(true, args.destGUID, spellId)
+		end
+	elseif spellId == 255478 then--Blades of the Eternal
+		if self.Options.NPAuraOnEternalBlades then
+			DBM.Nameplate:Show(true, args.destGUID, spellId, nil, 40)
+		end
+	elseif spellId == 252729 then
+		if args:IsPlayer() then
+			specWarnCosmicRay:Show()
+			voiceCosmicRay:Play("targetyou")
+			yellCosmicRay:Yell()
+		else
+			warnCosmicRay:CombinedShow(0.3, args.destName)
+		end
+	elseif spellId == 252616 then
+		if args:IsPlayer() then
+			specWarnCosmicBeacon:Show()
+			voiceCosmicBeacon:Play("runout")
+			yellCosmicBeacon:Yell()
+			yellCosmicBeaconFades:Countdown(8)
+		else
+			warnCosmicBeacon:CombinedShow(0.3, args.destName)
+		end
 	end
 end
 --mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -267,12 +365,28 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif spellId == 251570 then
 		if args:IsPlayer() then
-			voiceSoulburst:Cancel()
+			self:Unschedule(delayedBoonCheck)
 			yellSoulbombFades:Cancel()
 		end
 	elseif spellId == 255199 then
 		if self.Options.SetIconOnAvatar then
 			self:SetIcon(args.destName, 0)
+		end
+	elseif spellId == 253021 then--Inevitability
+		if self.Options.NPAuraOnInevitability then
+			DBM.Nameplate:Hide(true, args.destGUID, spellId)
+		end
+	elseif spellId == 255496 then--Sword of the Cosmos
+		if self.Options.NPAuraOnCosmosSword then
+			DBM.Nameplate:Hide(true, args.destGUID, spellId)
+		end
+	elseif spellId == 255478 then--Blades of the Eternal
+		if self.Options.NPAuraOnEternalBlades then
+			DBM.Nameplate:Hide(true, args.destGUID, spellId)
+		end
+	elseif spellId == 252616 then
+		if args:IsPlayer() then
+			yellCosmicBeaconFades:Cancel()
 		end
 	end
 end
@@ -314,5 +428,13 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, _, spellId)
 		timerVolatileSoulCD:Start(2)
 		timerEdgeofObliterationCD:Start(2)
 		timerAvatarofAggraCD:Start(2)
+	elseif spellId == 257300 and self:AntiSpam(5, 1) then--Ember of Rage
+		specWarnEmberofRage:Show()
+		voiceEmberofRage:Play("watchstep")
+		timerEmberofRageCD:Start()
+	elseif spellId == 253729 and self:AntiSpam(5, 2) then--Reorgination Module
+		specWarnReorgModule:Show()
+		voiceReorgModule:Play("killmob")
+		timerReorgModuleCD:Start()
 	end
 end
