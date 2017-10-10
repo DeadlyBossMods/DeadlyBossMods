@@ -267,6 +267,7 @@ DBM_NO_DEBUFF						= "Not %s"--For use in places like info frame where you put "
 DBM_ALLY							= "Ally"--Such as "Move to Ally"
 DBM_ADDS							= "Adds"--Such as "Move to Ally"
 DBM_CORE_ROOM_EDGE					= "Room Edge"
+DBM_CORE_FAR_AWAY					= "Far Away"
 DBM_CORE_SAFE						= "Safe"
 DBM_INCOMING						= "%s Incoming"
 --Common Locals end
