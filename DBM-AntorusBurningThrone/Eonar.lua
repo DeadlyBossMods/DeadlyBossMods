@@ -15,11 +15,11 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 249121 250701 250048",
 	"SPELL_CAST_SUCCESS 246888 246896 246753 254769",
-	"SPELL_AURA_APPLIED 248333 250074 250555 249016 249017 249014 249015",
+	"SPELL_AURA_APPLIED 248333 250074 250555 249016 249017 249014 249015 248332",
 	"SPELL_AURA_APPLIED_DOSE",
-	"SPELL_AURA_REMOVED 248333 250074 250555 249016 249017 249014 249015",
-	"SPELL_DAMAGE 248329",
-	"SPELL_MISSED 248329",
+	"SPELL_AURA_REMOVED 248333 250074 250555 249016 249017 249014 249015 248332",
+--	"SPELL_DAMAGE 248329",
+--	"SPELL_MISSED 248329",
 --	"UNIT_DIED",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
 --	"RAID_BOSS_WHISPER",
@@ -35,10 +35,15 @@ mod:RegisterEventsInCombat(
 --TODO, adds more reliable and specific waves timers
 --TODO, rework range frame if more debuffs become detectable and activate updaterangeFinder function
 --TODO, rework warp in timers to include cloak and high alert for waves that don't fire warp in, if blizzard doesn't fix the warpin events
+--[[
+(ability.id = 249121 or ability.id = 250048) and type = "begincast"
+ or (ability.id = 246753 or ability.id = 254769) and type = "cast"
+ or (ability.id = 248332) and type = "applydebuff"
+--]]
 --The Paraxis
 local warnMeteorStorm					= mod:NewEndAnnounce(248333, 1)
 --local warnSpearofDoom					= mod:NewTargetAnnounce(248789, 3)
---local warnRainofFel						= mod:NewCountAnnounce(248332, 1)
+local warnRainofFel						= mod:NewTargetCountAnnounce(248332, 2)
 local warnWarpIn						= mod:NewTargetAnnounce(246888, 3)
 local warnLifeForce						= mod:NewCountAnnounce(250048, 1)
 
@@ -46,7 +51,9 @@ local warnLifeForce						= mod:NewCountAnnounce(250048, 1)
 local specWarnMeteorStorm				= mod:NewSpecialWarningDodge(248333, nil, nil, nil, 2, 2)
 local specWarnSpearofDoom				= mod:NewSpecialWarningDodge(248789, nil, nil, nil, 2, 2)
 --local yellSpearofDoom					= mod:NewYell(248789)
-local specWarnRainofFel					= mod:NewSpecialWarningCount(248332, nil, nil, nil, 1, 2)
+local specWarnRainofFel					= mod:NewSpecialWarningMoveAway(248332, nil, nil, nil, 1, 2)
+local yellRainofFel						= mod:NewYell(248332)
+local yellRainofFelFades				= mod:NewShortFadesYell(248332)
 --Adds
 local specWarnSwing						= mod:NewSpecialWarningDefensive(250701, "Tank", nil, nil, 1, 2)
 --local yellBurstingDreadflame			= mod:NewPosYell(238430, DBM_CORE_AUTO_YELL_CUSTOM_POSITION)
@@ -58,7 +65,7 @@ local specWarnSwing						= mod:NewSpecialWarningDefensive(250701, "Tank", nil, n
 local timerMeteorStormCD				= mod:NewAITimer(61, 248333, nil, nil, nil, 3)
 local timerSpearofDoomCD				= mod:NewCDCountTimer(55, 248789, nil, nil, nil, 3)--55-69
 local timerRainofFelCD					= mod:NewCDCountTimer(61, 248332, nil, nil, nil, 3)
-local timerFinalDoom					= mod:NewCastTimer(70, 249121, nil, nil, nil, 2)
+local timerFinalDoom					= mod:NewCastTimer(50, 249121, nil, nil, nil, 2)
 --Mythic
 local timerFinalDoomCD					= mod:NewCDCountTimer(90, 249121, nil, nil, nil, 4, nil, DBM_CORE_HEROIC_ICON)
 --local timerFelclawsCD					= mod:NewAITimer(25, 239932, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
@@ -94,14 +101,21 @@ mod.vb.warpCount = 0
 mod.vb.lifeForceCast = 0
 mod.vb.spearCast = 0
 mod.vb.finalDoomCast = 0
-local normalWarpTimers = {5.1, 16.0}
-local heroicWarpTimers = {5.3, 10.0, 23.9, 20.7, 24.0, 19.0}
-local mythicWarpTimers = {5.3, 9.8, 35.3, 44.8, 34.9}--Excludes the waves that don't fire warp in (obfuscators and purifiers)
+--local normalWarpTimers = {5.1, 16.0}
+--local heroicWarpTimers = {5.3, 10.0, 23.9, 20.7, 24.0, 19.0}
+--local mythicWarpTimers = {5.3, 9.8, 35.3, 44.8, 34.9}--Excludes the waves that don't fire warp in (obfuscators and purifiers)
 local normalRainOfFelTimers = {21.1, 24.1, 23.9, 24.1, 24.0, 96.0, 12.0, 36.0, 12.0, 36.0}
 local heroicRainOfFelTimers = {20, 43, 10, 65, 15, 20, 20, 30}
-local mythicRainOfFelTimers = {15.1, 34.9, 45.0, 35.0}--Alternating?
---local mythicSpearofDoomTimers = {35, 80, 35}--Alternating?
+local mythicRainOfFelTimers = {6, 29, 25, 50, 5, 20, 50, 25, 49, 26}--Might still variate?
+--local mythicSpearofDoomTimers = {}
 local heroicSpearofDoomTimers = {35, 69, 55, 40}
+local finalDoomTimers = {60, 125, 100}
+
+--[[
+Mythic Adds
+deconstructor 22, 96.3, 40, 
+Obfuscator: 39.8, 157.9
+--]]
 
 local updateInfoFrame
 do
@@ -134,15 +148,15 @@ function mod:OnCombatStart(delay)
 	--timerWarpInCD:Start(5.1, 1)
 	--countdownWarpIn:Start(5.1)
 	if not self:IsLFR() then
-		timerRainofFelCD:Start(15-delay, 1)
-		countdownRainofFel:Start(15-delay)
-		specWarnRainofFel:Schedule(10-delay, 1)
-		voiceRainofFel:Schedule(10-delay, "scatter")
 		if self:IsMythic() then
-			timerSpearofDoomCD:Start(35-delay, 1)
+			timerRainofFelCD:Start(6-delay, 1)
+			countdownRainofFel:Start(6-delay)
+			--timerSpearofDoomCD:Start(35-delay, 1)
 			timerFinalDoomCD:Start(60-delay, 1)
 			countdownFinalDoom:Start(60-delay)
 		else
+			timerRainofFelCD:Start(15-delay, 1)
+			countdownRainofFel:Start(15-delay)
 			timerSpearofDoomCD:Start(34.4-delay, 1)
 		end
 	else
@@ -186,15 +200,18 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 249121 then
 		self.vb.finalDoomCast = self.vb.finalDoomCast + 1
 		timerFinalDoom:Start()
-		timerFinalDoomCD:Start(nil, self.vb.finalDoomCast+1)
-		countdownFinalDoom:Start()
+		local timer = finalDoomTimers[self.vb.finalDoomCast+1]
+		if timer then
+			timerFinalDoomCD:Start(timer, self.vb.finalDoomCast+1)
+			countdownFinalDoom:Start(timer)
+		end
 	elseif spellId == 250701 then
 		specWarnSwing:Show()
 		voiceSwing:Play("defensive")
 	elseif spellId == 250048 then
 		self.vb.lifeForceCast = self.vb.lifeForceCast + 1
 		warnLifeForce:Show(self.vb.lifeForceCast)
-		if self:IsEasy() then
+--[[		if self:IsEasy() then
 			--local warpElapsed, warpTotal = timerWarpInCD:GetTime(self.vb.warpCount+1)
 			local felElapsed, felTotal = timerRainofFelCD:GetTime(self.vb.rainOfFelCount+1)
 			local felRemaining = felTotal - felElapsed
@@ -202,7 +219,7 @@ function mod:SPELL_CAST_START(args)
 			countdownRainofFel:Cancel()
 			timerRainofFelCD:Update(felElapsed, felTotal+24, self.vb.rainOfFelCount+1)
 			countdownRainofFel:Start(felRemaining+24)
-		end
+		end--]]
 	end
 end
 
@@ -258,6 +275,22 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.SetIconOnFeedbackBurning then
 			self:SetIcon(args.destName, 2)--Orange circle for fire
 		end
+	elseif spellId == 248332 then--Rain of Fel
+		warnRainofFel:CombinedShow(0.3, self.vb.rainOfFelCount, args.destName)
+		if self:AntiSpam(5, 4) then
+			self.vb.rainOfFelCount = self.vb.rainOfFelCount + 1
+			local timer = self:IsMythic() and mythicRainOfFelTimers[self.vb.rainOfFelCount+1] or self:IsHeroic() and heroicRainOfFelTimers[self.vb.rainOfFelCount+1] or self:IsNormal() and normalRainOfFelTimers[self.vb.rainOfFelCount+1]
+			if timer then
+				timerRainofFelCD:Start(timer, self.vb.rainOfFelCount+1)
+				countdownRainofFel:Start(timer)
+			end
+		end
+		if args:IsPlayer() then
+			specWarnRainofFel:Show()
+			voiceRainofFel:Play("scatter")
+			yellRainofFel:Yell()
+			yellRainofFelFades:Countdown(5)
+		end
 	end
 end
 --mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -295,6 +328,10 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.SetIconOnFeedbackBurning then
 			self:SetIcon(args.destName, 0)
 		end
+	elseif spellId == 248332 then--Rain of Fel
+		if args:IsPlayer() then
+			yellRainofFelFades:Cancel()
+		end
 	end
 end
 
@@ -319,41 +356,23 @@ function mod:OnTranscriptorSync(msg, targetName)
 		end
 	end
 end
---]]
 
 function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 248329 and self:AntiSpam(5, 4) then
-		self.vb.rainOfFelCount = self.vb.rainOfFelCount + 1
-		--warnRainofFel:Show(self.vb.rainOfFelCount)
-		--specWarnRainofFel:Show(self.vb.rainOfFelCount)
-		--voiceRainofFel:Play("scatter")
-		local timer = self:IsMythic() and mythicRainOfFelTimers[self.vb.rainOfFelCount+1] or self:IsHeroic() and heroicRainOfFelTimers[self.vb.rainOfFelCount+1] or self:IsNormal() and normalRainOfFelTimers[self.vb.rainOfFelCount+1]
-		if timer then
-			specWarnRainofFel:Schedule(timer-5, self.vb.rainOfFelCount+1)
-			voiceRainofFel:Schedule(timer-5, "scatter")
-			timerRainofFelCD:Start(timer-5, self.vb.rainOfFelCount+1)
-			countdownRainofFel:Start(timer-5)
-		end
+
 	end
 end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE
+--]]
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 	if msg:find("spell:248861") then
 		self.vb.spearCast = self.vb.spearCast + 1
 		specWarnSpearofDoom:Show()
 		voiceSpearofDoom:Play("watchstep")
-		if self:IsMythic() then
-			if self.vb.spearCast % 2 == 0 then
-				timerSpearofDoomCD:Start(35, self.vb.spearCast+1)
-			else
-				timerSpearofDoomCD:Start(80, self.vb.spearCast+1)
-			end
-		else
-			local timer = self:IsHeroic() and heroicSpearofDoomTimers[self.vb.spearCast+1]
-			if timer then
-				timerSpearofDoomCD:Start(timer, self.vb.spearCast+1)
-			end
+		local timer = self:IsHeroic() and heroicSpearofDoomTimers[self.vb.spearCast+1]
+		if timer then
+			timerSpearofDoomCD:Start(timer, self.vb.spearCast+1)
 		end
 	end
 end
