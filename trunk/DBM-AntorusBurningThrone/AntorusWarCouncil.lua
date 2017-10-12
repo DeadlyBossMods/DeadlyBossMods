@@ -15,6 +15,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 244625 246505 253040 245227 244821",
 	"SPELL_CAST_SUCCESS 245292 244722 244892 245227 253037 245174",
+	"SPELL_SUMMON 245174",
 	"SPELL_AURA_APPLIED 244737 244892 253015",
 	"SPELL_AURA_APPLIED_DOSE 244892",
 	"SPELL_AURA_REMOVED 244737 253015",
@@ -33,7 +34,7 @@ mod:RegisterEventsInCombat(
 --TODO, boss health was reporting unknown in streams, verify/fix boss CIDs
 --[[
 (ability.id = 244625 or ability.id = 253040 or ability.id = 245227 or ability.id = 125012 or ability.id = 125014 or ability.id = 126258 or ability.id = 244821) and type = "begincast"
- or (ability.id = 245292 or ability.id = 244722 or ability.id = 244892 or ability.id = 245174) and type = "cast"
+ or (ability.id = 245292 or ability.id = 244722 or ability.id = 244892) and type = "cast" or (ability.id = 245174 or ability.id = 244947) and type = "summon"
  or ability.id = 253015
 --]]
 --General
@@ -44,8 +45,9 @@ local warnExploitWeakness				= mod:NewStackAnnounce(244892, 2, nil, "Tank")
 ----Admiral Svirax
 --local warnWitheringFire				= mod:NewSpellAnnounce(245292, 2)
 ----Chief Engineer Ishkar
+local warnEntropicMine					= mod:NewSpellAnnounce(245161, 2)
 ----General Erodus
-local warnSummonReinforcements			= mod:NewSpellAnnounce(245546, 2)
+local warnSummonReinforcements			= mod:NewSpellAnnounce(245546, 2, nil, false, 2)
 local warnDemonicCharge					= mod:NewTargetAnnounce(253040, 2, nil, false, 2)
 --Out of Pod
 ----Admiral Svirax
@@ -59,9 +61,9 @@ local specWarnExploitWeakness			= mod:NewSpecialWarningTaunt(244892, nil, nil, n
 ----Admiral Svirax
 local specWarnFusillade					= mod:NewSpecialWarningMoveTo(244625, nil, nil, nil, 1, 2)
 ----Chief Engineer Ishkar
-local specWarnEntropicMine				= mod:NewSpecialWarningDodge(245161, nil, nil, nil, 1, 2)
+--local specWarnEntropicMine				= mod:NewSpecialWarningDodge(245161, nil, nil, nil, 1, 2)
 ----General Erodus
---local specWarnSummonReinforcements		= mod:NewSpecialWarningSwitch(245546, nil, nil, nil, 1, 2)
+local specWarnSummonReinforcements		= mod:NewSpecialWarningSwitch(245546, nil, nil, nil, 1, 2)
 -------Adds
 local specWarnPyroblast					= mod:NewSpecialWarningInterrupt(246505, "HasInterrupt", nil, nil, 1, 2)
 local specWarnDemonicChargeYou			= mod:NewSpecialWarningYou(253040, nil, nil, nil, 1, 2)
@@ -78,6 +80,7 @@ local specWarnWarpField					= mod:NewSpecialWarningRun(244821, nil, nil, nil, 4,
 
 --General
 local timerExploitWeaknessCD			= mod:NewCDTimer(8.5, 244892, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerShockGrenadeCD				= mod:NewCDTimer(21, 244722, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
 local timerAssumeCommandCD				= mod:NewNextTimer(80, 245227, nil, nil, nil, 6)
 --In Pod
 ----Admiral Svirax
@@ -90,7 +93,6 @@ local timerSummonReinforcementsCD		= mod:NewCDTimer(8.4, 245546, nil, nil, nil, 
 --local timerPyroblastCD				= mod:NewAITimer(61, 246505, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
 --Out of Pod
 ----Admiral Svirax
-local timerShockGrenadeCD				= mod:NewAITimer(61, 244722, nil, nil, nil, 3)
 ----Chief Engineer Ishkar
 local timerWarpFieldCD					= mod:NewAITimer(61, 244821, nil, nil, nil, 2)
 ----General Erodus
@@ -104,7 +106,7 @@ local countdownExploitWeakness			= mod:NewCountdown("Alt8", 244892, "Tank", nil,
 ----Admiral Svirax
 local countdownFusillade				= mod:NewCountdown("AltTwo30", 244625)
 ----General Erodus
---local countdownReinforcements			= mod:NewCountdown("AltTwo25", 245546, nil, nil, 3)
+local countdownReinforcements			= mod:NewCountdown("AltTwo25", 245546, nil, nil, 3)
 
 --General
 --local voiceGTFO						= mod:NewVoice(238028, nil, DBM_CORE_AUTO_VOICE4_OPTION_TEXT)--runaway
@@ -115,7 +117,7 @@ local voiceFusillade					= mod:NewVoice(244625)--findshelter
 ----Chief Engineer Ishkar
 local voiceEntropicMine					= mod:NewVoice(245161)--watchstep
 ----General Erodus
---local voiceSummonReinforcements		= mod:NewVoice(245546)--killmob
+local voiceSummonReinforcements			= mod:NewVoice(245546)--killmob
 local voicePyroblast					= mod:NewVoice(246505, "HasInterrupt")--kickcast
 local voiceDemonicCharge				= mod:NewVoice(253040)--watchstep/runaway
 --Out of Pod
@@ -179,13 +181,20 @@ end
 function mod:OnCombatStart(delay)
 	self.vb.FusilladeCount = 0
 	--In pod
-	timerEntropicMineCD:Start(6.1-delay)
-	timerSummonReinforcementsCD:Start(8-delay)
-	--countdownReinforcements:Start(8-delay)
+	timerEntropicMineCD:Start(5.1-delay)
 	--Out of Pod
-	timerShockGrenadeCD:Start(1)
-	timerAssumeCommandCD:Start(80-delay)
-	countdownAssumeCommand:Start(80-delay)
+	if self:IsMythic() then
+		timerSummonReinforcementsCD:Start(8-delay)
+		countdownReinforcements:Start(8-delay)
+		timerShockGrenadeCD:Start(15)
+		timerAssumeCommandCD:Start(90-delay)
+		countdownAssumeCommand:Start(90-delay)
+	else
+		timerSummonReinforcementsCD:Start(12-delay)
+		countdownReinforcements:Start(12-delay)
+		timerAssumeCommandCD:Start(80-delay)
+		countdownAssumeCommand:Start(80-delay)
+	end
 end
 
 function mod:OnCombatEnd()
@@ -213,6 +222,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 253040 then
 		self:BossTargetScanner(args.sourceGUID, "DemonicChargeTarget", 0.2, 9)
 	elseif spellId == 245227 then--Assume Command (entering pod)
+		timerShockGrenadeCD:Stop()
 		timerExploitWeaknessCD:Stop()
 		countdownExploitWeakness:Cancel()
 		timerExploitWeaknessCD:Start(13)--13-14
@@ -220,15 +230,29 @@ function mod:SPELL_CAST_START(args)
 		local cid = self:GetCIDFromGUID(args.destGUID)
 		if cid == 125012 then--Chief Engineer Ishkar
 			timerWarpFieldCD:Stop()
-			timerEntropicMineCD:Start(11)
+			timerEntropicMineCD:Start(11)--TODO, find mythic value, probably 8-9
 		elseif cid == 125014 then--General Erodus
-			timerSummonReinforcementsCD:Stop()
+			timerSummonReinforcementsCD:Stop()--Stops fodder ones
+			if self:IsMythic() then
+				timerSummonReinforcementsCD:Start(11)--Starts elite ones
+				countdownReinforcements:Start(11)
+			else
+				timerSummonReinforcementsCD:Start(15)--Starts elite ones
+				countdownReinforcements:Start(15)
+			end
 		elseif cid == 126258 then--Admiral Svirax
 			self.vb.FusilladeCount = 0
-			timerShockGrenadeCD:Stop()
-			timerFusilladeCD:Start(17, 1)
-			countdownFusillade:Start(17)
+			if self:IsMythic() then
+				timerFusilladeCD:Start(15, 1)
+				countdownFusillade:Start(15)
+			else
+				timerFusilladeCD:Start(17, 1)
+				countdownFusillade:Start(17)
+			end
 			--timerWitheringFireCD:Start(2)
+		end
+		if self:IsMythic() then
+			timerShockGrenadeCD:Start(10)
 		end
 	elseif spellId == 244821 then
 		specWarnWarpField:Show()
@@ -244,14 +268,19 @@ function mod:SPELL_CAST_SUCCESS(args)
 		--warnWitheringFire:Show()
 		--timerWitheringFireCD:Start()
 	elseif spellId == 244722 then
-		timerShockGrenadeCD:Start()
+		timerShockGrenadeCD:Start()--21
 	elseif spellId == 244892 then
 		timerExploitWeaknessCD:Start()
 		countdownExploitWeakness:Start(8.5)
 	elseif spellId == 245227 then--Assume Command
 		warnInPod:Show(args.sourceName)
-		timerAssumeCommandCD:Start(80)
-		countdownAssumeCommand:Start(80)
+		if self:IsMythic() then
+			timerAssumeCommandCD:Start(90)
+			countdownAssumeCommand:Start(90)
+		else
+			timerAssumeCommandCD:Start(80)
+			countdownAssumeCommand:Start(80)
+		end
 	elseif spellId == 253037 then
 		if args:IsPlayer() then
 			specWarnDemonicChargeYou:Show()
@@ -263,12 +292,14 @@ function mod:SPELL_CAST_SUCCESS(args)
 		else
 			warnDemonicCharge:Show(args.destName)
 		end
-	elseif spellId == 245174 then
+	end
+end
+
+function mod:SPELL_SUMMON(args)
+	local spellId = args.spellId
+	if spellId == 245174 then--Minor adds
 		warnSummonReinforcements:Show()
-		--specWarnSummonReinforcements:Show()
-		--voiceSummonReinforcements:Play("killmob")
 		timerSummonReinforcementsCD:Start()
-		--countdownReinforcements:Start(9)
 	end
 end
 
@@ -300,21 +331,6 @@ function mod:SPELL_AURA_APPLIED(args)
 				warnExploitWeakness:Show(args.destName, amount)
 			end
 		end
-	--[[elseif spellId == 253015 then--Commander's Presence
-		warnOutofPod:Show(args.destName)
-		local cid = self:GetCIDFromGUID(args.destGUID)
-		if cid == 125012 then--Chief Engineer Ishkar
-			timerEntropicMineCD:Stop()
-			timerWarpFieldCD:Start(2)
-		elseif cid == 125014 then--General Erodus
-			timerSummonReinforcementsCD:Stop()
-			--countdownReinforcements:Cancel()
-		elseif cid == 126258 then--Admiral Svirax
-			timerFusilladeCD:Stop()
-			countdownFusillade:Cancel()
-			--timerWitheringFireCD:Stop()
-			timerShockGrenadeCD:Start(2)
-		end--]]
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -356,9 +372,10 @@ function mod:UNIT_DIED(args)
 end
 --]]
 
+--"<14.68 23:07:26> [UNIT_SPELLCAST_SUCCEEDED] General Erodus(??) [[boss3:Summon Reinforcements::3-2083-1712-2166-245546-00015E79FE:245546]]", -- [121]
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if spellId == 245161 and self:AntiSpam(2, 1) then
-		specWarnEntropicMine:Show()
+	if (spellId == 245161 or spellId == 245304) and self:AntiSpam(2, 1) then
+		warnEntropicMine:Show()
 		voiceEntropicMine:Play("watchstep")
 		timerEntropicMineCD:Start()
 	elseif spellId == 245785 then--Pod Spawn Transition Cosmetic Missile
@@ -370,13 +387,21 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			timerEntropicMineCD:Stop()
 			timerWarpFieldCD:Start(2)
 		elseif cid == 125014 then--General Erodus
-			timerSummonReinforcementsCD:Start(9)
-			--countdownReinforcements:Start()
+			timerSummonReinforcementsCD:Start(9)--Fodder ones
 		elseif cid == 126258 then--Admiral Svirax
 			timerFusilladeCD:Stop()
 			countdownFusillade:Cancel()
 			--timerWitheringFireCD:Stop()
-			timerShockGrenadeCD:Start(2)
+		end
+	elseif spellId == 245546 then--Summon Reinforcements (major adds)
+		specWarnSummonReinforcements:Show()
+		voiceSummonReinforcements:Play("killmob")
+		if self:IsMythic() then
+			timerSummonReinforcementsCD:Start(35)
+			countdownReinforcements:Start(35)
+		else
+			timerSummonReinforcementsCD:Start(43)--43-50
+			countdownReinforcements:Start(43)
 		end
 	end
 end
