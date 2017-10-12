@@ -785,6 +785,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerArmageddonCD:Stop()
 		countdownArmageddon:Cancel()
 		timerShadReflectionEruptingCD:Stop()
+		timerShadReflectionWailingCD:Stop()
 		voicePhaseChange:Play("phasechange")
 		if self:IsMythic() then
 			timerArmageddonCD:Start(7.0, 1)
