@@ -129,11 +129,13 @@ local voiceWarpField					= mod:NewVoice(244821)--justrun/keepmove?
 
 
 --mod:AddSetIconOption("SetIconOnFocusedDread", 238502, true)
+mod:AddSetIconOption("SetIconOnAdds", 245546, true, true)
 --mod:AddInfoFrameOption(244910, true)
 mod:AddRangeFrameOption("8")
 
 local felShield = GetSpellInfo(244910)
 mod.vb.FusilladeCount = 0
+mod.vb.lastIcon = 8
 
 --[[
 local debuffFilter
@@ -180,6 +182,7 @@ end
 
 function mod:OnCombatStart(delay)
 	self.vb.FusilladeCount = 0
+	self.vb.lastIcon = 8
 	--In pod
 	timerEntropicMineCD:Start(5.1-delay)
 	--Out of Pod
@@ -402,6 +405,14 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		else
 			timerSummonReinforcementsCD:Start(43)--43-50
 			countdownReinforcements:Start(43)
+		end
+		if self.Options.SetIconOnAdds then
+			self:ScanForMobs(122890, 0, self.vb.lastIcon, 1, 0.1, 12, "SetIconOnAdds")
+		end
+		if self.vb.lastIcon == 8 then
+			self.vb.lastIcon = 7
+		else
+			self.vb.lastIcon = 8
 		end
 	end
 end
