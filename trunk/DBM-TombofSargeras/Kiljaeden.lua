@@ -20,7 +20,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 239932 236378 236710 237590 236498 236597 241721 245509 243536 243624",
 	"SPELL_AURA_APPLIED_DOSE 245509",
 	"SPELL_AURA_REFRESH 241721",
-	"SPELL_AURA_REMOVED 236378 236710 237590 236498 241721 239932 241983 244834",
+	"SPELL_AURA_REMOVED 236378 236710 237590 236498 241721 239932 241983 244834 243536",
 	"UNIT_DIED",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3"--Illiden might cast important stuff, or adds?
@@ -61,6 +61,7 @@ local yellSRErupting				= mod:NewIconFadesYell(236710, 243160)
 local specWarnLingeringEruption		= mod:NewSpecialWarningDodge(243536, nil, nil, nil, 2, 2)
 local specWarnLingeringWail			= mod:NewSpecialWarningDefensive(243624, nil, nil, nil, 1, 2)
 local yellLingeringWail				= mod:NewShortYell(243624, nil, false)
+local specWarnSorrowfulWail			= mod:NewSpecialWarningRun(241564, "Melee", nil, nil, 4, 2)
 --Intermission: Eternal Flame
 local specWarnFocusedDreadflame		= mod:NewSpecialWarningYou(238502, nil, nil, nil, 1, 2)
 local yellFocusedDreadflame			= mod:NewShortYell(238502)
@@ -128,6 +129,7 @@ local voiceSRWailing				= mod:NewVoice(236378)--targetyou (temp, more customized
 local voiceSRErupting				= mod:NewVoice(236710)--targetyou
 local voiceLingeringEruption		= mod:NewVoice(243536)--watchorb/keepmove
 local voiceLingeringWail			= mod:NewVoice(243624)--defensive
+local voiceSorrowfulWail			= mod:NewVoice(241564)--runout
 --Intermission: Eternal Flame
 local voiceFocusedDreadflame		= mod:NewVoice(238502)--helpsoak/range5/targetyou
 local voiceBurstingDreadFlame		= mod:NewVoice(238430)--scatter
@@ -465,7 +467,12 @@ function mod:SPELL_CAST_SUCCESS(args)
 			DBM.InfoFrame:Hide()
 		end
 	elseif spellId == 241564 then
-		warnSorrowfulWail:Show()
+		if self.Options.SpecWarn241564run then
+			specWarnSorrowfulWail:Show()
+			voiceSorrowfulWail:Play("runout")
+		else
+			warnSorrowfulWail:Show()
+		end
 		timerSorrowfulWailCD:Start()
 	end
 end
@@ -563,7 +570,8 @@ function mod:SPELL_AURA_REMOVED(args)
 		if args:IsPlayer() then
 			yellSRErupting:Cancel()
 		end
-		if self.Options.SetIconOnEruptingReflection and self:IsMythic() then
+	elseif spellId == 243536 then
+		if self.Options.SetIconOnEruptingReflection then
 			self:SetIcon(args.destName, 0)
 		end
 	elseif spellId == 237590 then--Hopeless Shadow Reflection (Stage 2)
