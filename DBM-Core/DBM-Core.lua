@@ -7544,21 +7544,21 @@ do
 	end
 
 	function bossModPrototype:ShowShieldHealthBar(guid, name, absorb)
-		self:RemoveShieldHealthBar(guid, name)
-		if #activeShields == 0 then
-			frame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
-		end
-		local obj = {
-			mod = self.id,
-			name = name,
-			guid = guid,
-			absorbRemaining = absorb,
-			maxAbsorb = absorb,
-		}
-		obj.func = getShieldHPFunc(obj)
-		activeShields[#activeShields + 1] = obj
-		shieldsByGuid[guid] = obj
 		if DBM.BossHealth:IsShown() then
+			self:RemoveShieldHealthBar(guid, name)
+			if #activeShields == 0 then
+				frame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
+			end
+			local obj = {
+				mod = self.id,
+				name = name,
+				guid = guid,
+				absorbRemaining = absorb,
+				maxAbsorb = absorb,
+			}
+			obj.func = getShieldHPFunc(obj)
+			activeShields[#activeShields + 1] = obj
+			shieldsByGuid[guid] = obj
 			DBM.BossHealth:AddBoss(obj.func, name)
 		end
 	end
@@ -7589,21 +7589,21 @@ do
 	end
 
 	function bossModPrototype:ShowDamagedHealthBar(guid, name, damage)
-		self:RemoveDamagedHealthBar(guid, name)
-		if #activeShields == 0 then
-			frame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
-		end
-		local obj = {
-			mod = self.id,
-			name = name,
-			guid = guid,
-			damageRemaining = damage,
-			maxDamage = damage,
-		}
-		obj.func = getDamagedHPFunc(obj)
-		activeShields[#activeShields + 1] = obj
-		shieldsByGuid[guid] = obj
 		if DBM.BossHealth:IsShown() then
+			self:RemoveDamagedHealthBar(guid, name)
+			if #activeShields == 0 then
+				frame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
+			end
+			local obj = {
+				mod = self.id,
+				name = name,
+				guid = guid,
+				damageRemaining = damage,
+				maxDamage = damage,
+			}
+			obj.func = getDamagedHPFunc(obj)
+			activeShields[#activeShields + 1] = obj
+			shieldsByGuid[guid] = obj
 			DBM.BossHealth:AddBoss(obj.func, name)
 		end
 	end
@@ -7616,21 +7616,21 @@ do
 	end
 
 	function bossModPrototype:ShowAbsorbedHealHealthBar(guid, name, heal)
-		self:RemoveAbsorbedHealHealthBar(guid, name)
-		if #activeShields == 0 then
-			frame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
-		end
-		local obj = {
-			mod = self.id,
-			name = name,
-			guid = guid,
-			healed = 0,
-			maxHeal = heal,
-		}
-		obj.func = getHealedHPFunc(obj)
-		activeShields[#activeShields + 1] = obj
-		shieldsByGuid[guid] = obj
 		if DBM.BossHealth:IsShown() then
+			self:RemoveAbsorbedHealHealthBar(guid, name)
+			if #activeShields == 0 then
+				frame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
+			end
+			local obj = {
+				mod = self.id,
+				name = name,
+				guid = guid,
+				healed = 0,
+				maxHeal = heal,
+			}
+			obj.func = getHealedHPFunc(obj)
+			activeShields[#activeShields + 1] = obj
+			shieldsByGuid[guid] = obj
 			DBM.BossHealth:AddBoss(obj.func, name)
 		end
 	end
