@@ -13,10 +13,10 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 248317 257296 255594 252280 257645 252516 256542",
-	"SPELL_CAST_SUCCESS 248165 248499 258039 251815",
+	"SPELL_CAST_START 248165 248317 257296 255594 252280 257645 252516 256542",
+	"SPELL_CAST_SUCCESS 248499 258039 251815",
 	"SPELL_AURA_APPLIED 248499 248396 250669 251570 255199 253021 255496 255496 255478 252729 252616",
---	"SPELL_AURA_APPLIED_DOSE",
+	"SPELL_AURA_APPLIED_DOSE 248499",
 	"SPELL_AURA_REMOVED 250669 251570 255199 253021 255496 255496 255478 252616",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
@@ -25,7 +25,6 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5"
 )
 
---TODO, is cone of death tank ony? update role defaults
 --TODO, get correct spellID for p2 and don't use spell name to broad check all of them
 --TODO, death fog GTFO
 --TODO, icons or yells or both to help Soulburst and Soulbomb apart and gotten to right place.
@@ -36,9 +35,9 @@ mod:RegisterEventsInCombat(
 --TODO, info frame for stage 4 (and other stages maybe) to show realms, and other stats, energy of boss and eonar's aid
 --TODO, warnings when eonar transitions from gift to withering. other titan stuff?
 --Stage One: Storm and Sky
-local warnConeofDeath				= mod:NewSpellAnnounce(248165, 2)
+local warnSweepingScythe			= mod:NewStackAnnounce(248499, 2, nil, "Tank")
 local warnBlightOrb					= mod:NewSpellAnnounce(248317, 2)
-local warnWastingPlague				= mod:NewTargetAnnounce(248396, 1)
+local warnSoulblight				= mod:NewTargetAnnounce(248396, 1)
 local warnSkyandSea					= mod:NewSpellAnnounce(255594, 1)
 --Stage Two: The Protector Redeemed
 local warnPhase2					= mod:NewPhaseAnnounce(2, 2)
@@ -52,12 +51,15 @@ local warnCosmicBeacon				= mod:NewTargetAnnounce(252616, 2)
 local warnDiscsofNorg				= mod:NewCastAnnounce(252516, 1)
 --Stage Four: The Gift of Life, The Forge of Loss (Non Mythic)
 local warnPhase4					= mod:NewPhaseAnnounce(4, 2)
+local warnDeadlyScythe				= mod:NewStackAnnounce(258039, 2, nil, "Tank")
 
 --Stage One: Storm and Sky
 local specWarnTorturedRage			= mod:NewSpecialWarningCount(257296, nil, nil, nil, 2, 2)
-local specWarnSweepingScythe		= mod:NewSpecialWarningTaunt(248499, nil, nil, nil, 1, 2)
-local specWarnWastingPlague			= mod:NewSpecialWarningMoveAway(248396, nil, nil, nil, 1, 2)
-local yellWastingPlague				= mod:NewYell(248396)
+local specWarnSweepingScythe		= mod:NewSpecialWarningStack(248499, nil, 2, nil, nil, 1, 2)
+local specWarnSweepingScytheTaunt	= mod:NewSpecialWarningTaunt(248499, nil, nil, nil, 1, 2)
+local specWarnConeofDeath			= mod:NewSpecialWarningDodge(248165, nil, nil, nil, 1, 2)
+local specWarnSoulblight			= mod:NewSpecialWarningMoveAway(248396, nil, nil, nil, 1, 2)
+local yellSoulblight				= mod:NewYell(248396)
 --local yellBurstingDreadflame		= mod:NewPosYell(238430, DBM_CORE_AUTO_YELL_CUSTOM_POSITION)
 --local specWarnMalignantAnguish		= mod:NewSpecialWarningInterrupt(236597, "HasInterrupt")
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
@@ -79,7 +81,8 @@ local yellCosmicBeacon				= mod:NewYell(252616)
 local yellCosmicBeaconFades			= mod:NewShortFadesYell(252616)
 --Stage Four: The Gift of Life, The Forge of Loss (Non Mythic)
 local specWarnEmberofRage			= mod:NewSpecialWarningDodge(257299, nil, nil, nil, 2, 2)
-local specWarnDeadlyScythe			= mod:NewSpecialWarningTaunt(258039, nil, nil, nil, 1, 2)
+local specWarnDeadlyScythe			= mod:NewSpecialWarningStack(258039, nil, 2, nil, nil, 1, 2)
+--local specWarnDeadlyScytheTaunt		= mod:NewSpecialWarningTaunt(258039, nil, nil, nil, 1, 2)
 local specWarnReorgModule			= mod:NewSpecialWarningSwitch(256389, "RangedDps", nil, nil, 1, 2)--Ranged only?
 
 
@@ -108,9 +111,10 @@ local timerReorgModuleCD			= mod:NewAITimer(20, 256389, nil, nil, nil, 1)
 --Stage Two: The Protector Redeemed
 
 --Stage One: Storm and Sky
-local voiceTorturedRage					= mod:NewVoice(257296)--aesoon
 local voiceSweepingScythe				= mod:NewVoice(248499)--tauntboss
-local voiceWastingPlague				= mod:NewVoice(248396)--runout
+local voiceConeofDeath					= mod:NewVoice(248165)--aesoon
+local voiceTorturedRage					= mod:NewVoice(257296)--aesoon
+local voiceSoulblight					= mod:NewVoice(248396)--runout
 --local voiceMalignantAnguish			= mod:NewVoice(236597, "HasInterrupt")--kickcast
 --local voiceGTFO						= mod:NewVoice(238028, nil, DBM_CORE_AUTO_VOICE4_OPTION_TEXT)--runaway
 --Stage Two: The Protector Redeemed
@@ -219,7 +223,11 @@ end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 248317 then
+	if spellId == 248165 then
+		specWarnConeofDeath:Show()
+		voiceConeofDeath:Play("shockwave")
+		timerConeofDeathCD:Start()
+	elseif spellId == 248317 then
 		warnBlightOrb:Show()
 		timerBlightOrbCD:Start()
 	elseif spellId == 257296 then
@@ -261,10 +269,7 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 248165 then
-		warnConeofDeath:Show()
-		timerConeofDeathCD:Start()
-	elseif spellId == 248499 then
+	if spellId == 248499 then
 		timerSweepingScytheCD:Start()
 	elseif spellId == 258039 then
 		timerDeadlyScytheCD:Start()
@@ -277,22 +282,49 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 248499 then
-		if not args:IsPlayer() then
-			specWarnSweepingScythe:Show(args.destName)
-			voiceSweepingScythe:Play("tauntboss")
+	if spellId == 248499 then--Heroic/non mythic
+		local uId = DBM:GetRaidUnitId(args.destName)
+		if uId and self:IsTanking(uId) then
+			local amount = args.amount or 1
+			if amount >= 2 then
+				if args:IsPlayer() then
+					specWarnSweepingScythe:Show(amount)
+					voiceSweepingScythe:Play("stackhigh")
+				else--Taunt as soon as stacks are clear, regardless of stack count.
+					if not UnitIsDeadOrGhost("player") and not UnitDebuff("player", args.spellName) then
+						specWarnSweepingScytheTaunt:Show(args.destName)
+						voiceSweepingScythe:Play("tauntboss")
+					else
+						warnSweepingScythe:Show(args.destName, amount)
+					end
+				end
+			else
+				warnSweepingScythe:Show(args.destName, amount)
+			end
 		end
-	elseif spellId == 258039 then
-		if not args:IsPlayer() then
-			specWarnDeadlyScythe:Show(args.destName)
-			voiceDeadlyScythe:Play("tauntboss")
+	elseif spellId == 258039 then--Heroic/Mythic?
+		local uId = DBM:GetRaidUnitId(args.destName)
+		if uId and self:IsTanking(uId) then
+			local amount = args.amount or 1
+			if amount >= 2 then
+				if args:IsPlayer() then
+					specWarnDeadlyScythe:Show(amount)
+					voiceDeadlyScythe:Play("stackhigh")
+				else
+					warnDeadlyScythe:Show(args.destName, amount)
+					--specWarnDeadlyScytheTaunt:Show(args.destName)
+					--voiceDeadlyScythe:Play("tauntboss")
+				end
+			else
+				warnDeadlyScythe:Show(args.destName, amount)
+			end
 		end
 	elseif spellId == 248396 then
-		warnWastingPlague:CombinedShow(0.5, args.destName)
+		warnSoulblight:Show(args.destName)
 		if args:IsPlayer() then
-			specWarnWastingPlague:Show()
-			voiceWastingPlague:Play("runout")
-			yellWastingPlague:Yell()
+			specWarnSoulblight:Show()
+			voiceSoulblight:Play("runout")
+			yellSoulblight:Yell()
 		end
 	elseif spellId == 250669 then
 		warnSoulburst:CombinedShow(0.3, args.destName)--2 Targets
@@ -354,7 +386,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	end
 end
---mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
+mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId

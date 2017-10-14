@@ -10,19 +10,23 @@ mod.isTrashMod = true
 mod:RegisterEvents(
 --	"SPELL_CAST_START",
 --	"SPELL_CAST_SUCCESS",
-	"SPELL_AURA_APPLIED 252760",
+	"SPELL_AURA_APPLIED 252760 253600",
 --	"SPELL_AURA_APPLIED_DOSE"
 	"SPELL_AURA_REMOVED 252760"
 )
 
 local warnDemolish						= mod:NewTargetAnnounce(252760, 4)
+local warnSoulburn						= mod:NewTargetAnnounce(253600, 3)
 
 local specWarnDemolish					= mod:NewSpecialWarningYou(252760, nil, nil, nil, 1, 2)
 local yellDemolish						= mod:NewYell(252760)
 local yellDemolishFades					= mod:NewShortFadesYell(252760)
+local specWarnSoulburn					= mod:NewSpecialWarningMoveAway(253600, nil, nil, nil, 1, 2)
+local yellSoulburn						= mod:NewYell(253600)
 --local specWarnShadowBoltVolley		= mod:NewSpecialWarningInterrupt(243171, "HasInterrupt", nil, nil, 1, 2)
 
 local voiceDemolish						= mod:NewVoice(252760)--gathershare/targetyou
+local voiceSoulburn						= mod:NewVoice(253600)--runout
 --local voiceShadowBoltVolley			= mod:NewVoice(243171, "HasInterrupt")--kickcast
 
 mod:RemoveOption("HealthFrame")
@@ -58,6 +62,13 @@ function mod:SPELL_AURA_APPLIED(args)
 			local _, _, _, _, _, _, expires = UnitDebuff("player", args.spellName)
 			local remaining = expires-GetTime()
 			yellDemolishFades:Countdown(remaining)
+		end
+	elseif spellId == 253600 then
+		warnSoulburn:CombinedShow(0.3, args.destName)
+		if args:IsPlayer() then
+			specWarnSoulburn:Show()
+			voiceSoulburn:Play("runout")
+			yellSoulburn:Yell()
 		end
 	end
 end
