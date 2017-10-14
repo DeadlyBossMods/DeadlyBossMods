@@ -91,9 +91,9 @@ local specWarnHungeringGloom			= mod:NewSpecialWarningMoveTo(245075, nil, nil, n
 local timerRealityTearCD				= mod:NewCDTimer(12.1, 244016, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerCollapsingWorldCD			= mod:NewCDTimer(32.9, 243983, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)--32.9-41
 local timerFelstormBarrageCD			= mod:NewCDTimer(32.9, 244000, nil, nil, nil, 3)--32.9-41
-local timerTransportPortalCD			= mod:NewCDTimer(41.2, 244677, nil, nil, nil, 1)--41.2-60. most of time 50 on nose. but if comes early next one comes late to offset
+local timerTransportPortalCD			= mod:NewCDTimer(41.2, 244677, nil, nil, nil, 1)--41.2-60. most of time 42 on nose. but if comes early next one comes late to offset
 --Platform: Xoroth
-local timerSupernovaCD					= mod:NewCDTimer(6.1, 244598, nil, nil, nil, 3)
+--local timerSupernovaCD					= mod:NewCDTimer(6.1, 244598, nil, nil, nil, 3)
 local timerFlamesofXorothCD				= mod:NewCDTimer(7.3, 244607, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
 --Platform: Rancora
 local timerFelSilkWrapCD				= mod:NewCDTimer(16.6, 244949, nil, nil, nil, 3)
@@ -200,8 +200,13 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 243983 then
-		timerCollapsingWorldCD:Start()
-		countdownCollapsingWorld:Start(31.9)
+		if self:IsEasy() then
+			timerCollapsingWorldCD:Start(37.7)--37-43, mostly 42 but have to use 37
+			countdownCollapsingWorld:Start(37.8)
+		else
+			timerCollapsingWorldCD:Start()
+			countdownCollapsingWorld:Start(31.9)
+		end
 		if self.Options.ShowAllPlatforms or playerPlatform == 1 then--Actually on nexus platform
 			specWarnCollapsingWorld:Show()
 			voiceCollapsingWorld:Play("watchstep")
@@ -239,14 +244,8 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 244000 then--Felstorm Barrage
 		self.vb.felBarrageCast = self.vb.felBarrageCast + 1
 		if self:IsEasy() then
-			--pull:25.4, 47.5, 52.3, 47.5, 52.3, 47.5, 52.2, 47.4
-			if self.vb.felBarrageCast % 2 == 0 then
-				timerFelstormBarrageCD:Start(52)
-				countdownFelstormBarrage:Start(52)
-			else
-				timerFelstormBarrageCD:Start(47.5)
-				countdownFelstormBarrage:Start(47.5)
-			end
+			timerFelstormBarrageCD:Start(37.8)--37.8-43.8
+			countdownFelstormBarrage:Start(37.8)
 		else
 			timerFelstormBarrageCD:Start()--32.9-41
 			countdownFelstormBarrage:Start(32.9)--Review/improve if possible
@@ -298,8 +297,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if args:IsPlayerSource() then
 			playerPlatform = 1--1 Nexus, 2 Xoroth, 3 Rancora, 4 Nathreza
 		end
-	elseif spellId == 244598 then--Supernova
-		timerSupernovaCD:Start()
+	elseif spellId == 244598 and self:AntiSpam(5, 1) then--Supernova
+		--timerSupernovaCD:Start()
 		if self.Options.ShowAllPlatforms or playerPlatform == 2 then--Actually on Xoroth platform
 			specWarnSupernova:Show()
 			voiceSuperNova:Play("watchstep")
@@ -447,7 +446,7 @@ end
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 124396 then--Baron Vulcanar (Platform: Xoroth)
-		timerSupernovaCD:Stop()
+		--timerSupernovaCD:Stop()
 		timerFlamesofXorothCD:Stop()
 	elseif cid == 124395 then--Lady Dacidion (Platform: Rancora)
 		timerFelSilkWrapCD:Stop()
