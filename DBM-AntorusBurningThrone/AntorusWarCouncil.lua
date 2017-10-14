@@ -109,7 +109,7 @@ local countdownExploitWeakness			= mod:NewCountdown("Alt8", 244892, "Tank", nil,
 ----Admiral Svirax
 local countdownFusillade				= mod:NewCountdown("AltTwo30", 244625)
 ----General Erodus
-local countdownReinforcements			= mod:NewCountdown("AltTwo25", 245546, nil, nil, 3)
+local countdownReinforcements			= mod:NewCountdown("Alt25", 245546)
 
 --General
 --local voiceGTFO						= mod:NewVoice(238028, nil, DBM_CORE_AUTO_VOICE4_OPTION_TEXT)--runaway
@@ -227,8 +227,8 @@ function mod:SPELL_CAST_START(args)
 		timerShockGrenadeCD:Stop()
 		timerExploitWeaknessCD:Stop()
 		countdownExploitWeakness:Cancel()
-		timerExploitWeaknessCD:Start(13)--13-14
-		countdownExploitWeakness:Start(13)
+		timerExploitWeaknessCD:Start(12)--12-14
+		countdownExploitWeakness:Start(12)
 		local cid = self:GetCIDFromGUID(args.sourceGUID)
 		if cid == 122369 then--Chief Engineer Ishkar
 			timerWarpFieldCD:Stop()
@@ -395,11 +395,15 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		local GUID = UnitGUID(uId)
 		warnOutofPod:Show(name)
 		local cid = self:GetCIDFromGUID(GUID)
-		if cid == 122369 then--Chief Engineer Ishkar 122369, 122333, 122367
+		if cid == 122369 then--Chief Engineer Ishkar
 			timerEntropicMineCD:Stop()
 			timerWarpFieldCD:Start(2)
 		elseif cid == 122333 then--General Erodus
-			timerSummonReinforcementsCD:Start(9)--Fodder ones
+			timerSummonReinforcementsCD:Stop()--Elite ones
+			countdownReinforcements:Cancel()
+			if not self:IsEasy() then
+				timerSummonReinforcementsCD:Start(9)--Fodder ones
+			end
 		elseif cid == 122367 then--Admiral Svirax
 			timerFusilladeCD:Stop()
 			countdownFusillade:Cancel()
