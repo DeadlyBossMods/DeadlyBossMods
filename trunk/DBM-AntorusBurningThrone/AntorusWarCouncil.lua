@@ -176,7 +176,7 @@ function mod:DemonicChargeTarget(targetname, uId)
 		specWarnDemonicChargeYou:Show()
 		voiceDemonicCharge:Play("runaway")
 		yellDemonicCharge:Yell()
-	elseif self:CheckNearby(10, targetname) then
+	elseif self:CheckNearby(10, targetname) and self:AntiSpam(3, 2) then
 		specWarnDemonicCharge:Show(targetname)
 		voiceDemonicCharge:Play("watchstep")
 	else
@@ -237,6 +237,7 @@ function mod:SPELL_CAST_START(args)
 			countdownFusillade:Cancel()
 			timerFusilladeCD:Start(15.9, 1)--Start Updated Fusillade
 			countdownFusillade:Start(15.9)
+			--TODO, reinforcements fix
 		elseif cid == 122333 then--General Erodus
 			timerSummonReinforcementsCD:Stop()--Stops fodder ones
 			timerSummonReinforcementsCD:Start(11)--Starts elite ones
@@ -385,7 +386,7 @@ end
 
 --"<14.68 23:07:26> [UNIT_SPELLCAST_SUCCEEDED] General Erodus(??) [[boss3:Summon Reinforcements::3-2083-1712-2166-245546-00015E79FE:245546]]", -- [121]
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if (spellId == 245161 or spellId == 245304) and self:AntiSpam(2, 1) then
+	if (spellId == 245161 or spellId == 245304) and self:AntiSpam(5, 1) then
 		warnEntropicMine:Show()
 		voiceEntropicMine:Play("watchstep")
 		timerEntropicMineCD:Start()
