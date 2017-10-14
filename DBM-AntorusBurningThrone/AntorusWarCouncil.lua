@@ -6,7 +6,7 @@ mod:SetCreatureID(122369, 122333, 122367)--Chief Engineer Ishkar, General Erodus
 mod:SetEncounterID(2070)
 mod:SetZone()
 mod:SetBossHPInfoToHighest()
---mod:SetUsedIcons(1, 2, 3, 4, 5, 6)
+mod:SetUsedIcons(7, 8)
 mod:SetHotfixNoticeRev(16744)
 mod.respawnTime = 29
 
