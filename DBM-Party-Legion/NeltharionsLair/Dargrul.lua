@@ -10,15 +10,18 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 200732 200551 200637 200700 200404",
+	"SPELL_AURA_APPLIED 200154",
 	"CHAT_MSG_RAID_BOSS_EMOTE"
 )
 
 local warnCrystalSpikes				= mod:NewSpellAnnounce(200551, 2)
+local warnBurningHatred				= mod:NewTargetAnnounce(200154, 2)
 
 local specWarnMoltenCrash			= mod:NewSpecialWarningDefensive(200732, "Tank", nil, nil, 3, 2)
 local specWarnLandSlide				= mod:NewSpecialWarningSpell(200700, "Tank", nil, nil, 1, 2)
 local specWarnMagmaSculptor			= mod:NewSpecialWarningSwitch(200637, "Dps", nil, nil, 1, 2)
 local specWarnMagmaWave				= mod:NewSpecialWarningMoveTo(200404, nil, nil, nil, 2, 2)
+local specWarnBurningHatred			= mod:NewSpecialWarningYou(200154, nil, nil, nil, 1, 2)
 
 local timerMoltenCrashCD			= mod:NewCDTimer(16.5, 200732, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--16.5-23
 local timerLandSlideCD				= mod:NewCDTimer(16.5, 200700, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--16.5-27
@@ -33,6 +36,7 @@ local voiceMoltenCrash				= mod:NewVoice(200732, "Tank")--defensive
 local voiceLandSlide				= mod:NewVoice(200700, "Tank")--shockwave
 local voiceMagmaSculptor			= mod:NewVoice(200637, "Dps")--killbigmob
 local voiceMagmaWave				= mod:NewVoice(200404)--findshelter
+local voiceBurningHatred			= mod:NewVoice(200154)--targetyou
 
 function mod:OnCombatStart(delay)
 	timerMagmaSculptorCD:Start(7.3-delay)
@@ -65,6 +69,18 @@ function mod:SPELL_CAST_START(args)
 		voiceMagmaWave:Play("findshelter")
 		timerMagmaWaveCD:Start()
 		countdownMagmaWave:Start()
+	end
+end
+
+function mod:SPELL_AURA_APPLIED(args)
+	local spellId = args.spellId
+	if spellId == 200732 then
+		if args:IsPlayer() then
+			specWarnBurningHatred:Show()
+			voiceBurningHatred:Play("targetyou")
+		else
+			warnBurningHatred:Show(args.destName)
+		end
 	end
 end
 
