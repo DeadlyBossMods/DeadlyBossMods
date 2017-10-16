@@ -44,7 +44,7 @@ local voiceHolyShock				= mod:NewVoice(227800, "HasInterrupt")--kickcast
 local voiceHolyWrath				= mod:NewVoice(227823, "HasInterrupt")--kickcast
 
 mod:AddRangeFrameOption(8, 227809)--TODO, keep looking for a VALID 6 yard item/spell
-mod:AddBoolOption("HealthFrame", true)
+mod:AddInfoFrameOption(227817, true)
 
 function mod:OnCombatStart(delay)
 	timerSacredGroundCD:Start(10.9)
@@ -58,6 +58,9 @@ end
 function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
+	end
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:Hide()
 	end
 end
 
@@ -81,18 +84,23 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 227817 and DBM.BossHealth:IsShown() then
-		self:ShowShieldHealthBar(args.destGUID, args.spellName, 4680000)
+	if spellId == 227817 then
+		if self.Options.InfoFrame then
+			DBM.InfoFrame:SetHeader(args.spellName)
+			DBM.InfoFrame:Show(2, "enemyabsorb", nil, 4680000)
+		end
 	end
 end
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 227817 then
-		self:RemoveShieldHealthBar(args.destGUID)
 		if UnitCastingInfo("boss1") then
 			specWarnHolyWrath:Show(L.name)
 			voiceHolyWrath:Play("kickcast")
+		end
+		if self.Options.InfoFrame then
+			DBM.InfoFrame:Hide()
 		end
 	end
 end
