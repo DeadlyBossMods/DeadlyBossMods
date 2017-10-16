@@ -38,7 +38,7 @@ local warnEmpoweredArms				= mod:NewTargetAnnounce(227616, 3)
 local specWarnCoatCheck				= mod:NewSpecialWarningDefensive(227832, nil, nil, nil, 1, 2)
 local specWarnCoatCheckHealer		= mod:NewSpecialWarningDispel(227832, "Healer", nil, nil, 1, 2)
 --Lord Crispin Ference
-local specWarnWillBreaker			= mod:NewSpecialWarningSpell(227832, "Tank", nil, nil, 1, 2)
+local specWarnWillBreaker			= mod:NewSpecialWarningSpell(227672, "Tank", nil, nil, 1, 2)
 
 --Moroes
 local timerCoatCheckCD				= mod:NewNextTimer(33.8, 227832, nil, "Tank|Healer", nil, 5)
@@ -55,7 +55,7 @@ local timerWillBreakerCD			= mod:NewAITimer(40, 227672, nil, "Tank", nil, 5)
 --Moroes
 local voiceCoatCheck				= mod:NewVoice(227832)--defensive/dispelnow
 --Lord Crispin Ference
-local voiceWillBreaker				= mod:NewVoice(227832, "Tank")--shockwave
+local voiceWillBreaker				= mod:NewVoice(227672, "Tank")--shockwave
 
 --mod:AddSetIconOption("SetIconOnCharge", 198006, true)
 mod:AddInfoFrameOption(227909, true)
