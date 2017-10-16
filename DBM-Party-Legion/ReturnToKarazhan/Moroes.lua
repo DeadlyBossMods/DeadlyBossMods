@@ -14,7 +14,7 @@ mod.noNormal = true
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 227672 227578 227545 227736",
+	"SPELL_CAST_START 227672 227578 227545 227736 227672",
 	"SPELL_CAST_SUCCESS 227872",
 	"SPELL_AURA_APPLIED 227832 227616",
 --	"SPELL_AURA_REMOVED",
@@ -46,7 +46,7 @@ local timerVanishCD					= mod:NewNextTimer(20.5, 227737, nil, nil, nil, 3)
 --Lady Lady Catriona Von'Indi
 local timerHealingStreamCD			= mod:NewAITimer(40, 227578, nil, nil, nil, 0)--Interruptable via stun?
 --Lord Crispin Ference
-local timerWillBreakerCD			= mod:NewAITimer(40, 227832, nil, "Tank", nil, 5)
+local timerWillBreakerCD			= mod:NewAITimer(40, 227672, nil, "Tank", nil, 5)
 
 --local berserkTimer					= mod:NewBerserkTimer(300)
 
