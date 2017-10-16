@@ -7497,6 +7497,7 @@ do
 end
 
 do
+	--TODO, depricate this entire function and use infoframe for this instead. Support bars in infoframe?
 	local frame = CreateFrame("Frame", "DBMShields") -- frame for CLEU events, we don't want to run all *_MISSED events through the whole DBM event system...
 
 	local activeShields = {}
@@ -7537,16 +7538,19 @@ do
 		end
 	end)
 
-	local function getShieldHPFunc(info)
+	local function getShieldHPFunc(info, unitID)
 		return function()
+			if unitID then--Passed with unitID, use UnitGetTotalAbsorbs not CLEU and save CPU
+				info.absorbRemaining = UnitGetTotalAbsorbs(unitID)
+			end
 			return mmax(1, floor(info.absorbRemaining / info.maxAbsorb * 100))
 		end
 	end
 
-	function bossModPrototype:ShowShieldHealthBar(guid, name, absorb)
+	function bossModPrototype:ShowShieldHealthBar(guid, name, absorb, unitID)
 		if DBM.BossHealth:IsShown() then
 			self:RemoveShieldHealthBar(guid, name)
-			if #activeShields == 0 then
+			if #activeShields == 0 and not unitID then
 				frame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
 			end
 			local obj = {
@@ -7556,7 +7560,7 @@ do
 				absorbRemaining = absorb,
 				maxAbsorb = absorb,
 			}
-			obj.func = getShieldHPFunc(obj)
+			obj.func = getShieldHPFunc(obj, unitID)
 			activeShields[#activeShields + 1] = obj
 			shieldsByGuid[guid] = obj
 			DBM.BossHealth:AddBoss(obj.func, name)
