@@ -33,7 +33,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(2011)
 
 L:SetMiscLocalization({
---	Pull				= "All worlds will burn in felfire!"
+	Pull				= "New playthings? How irresistible!"
 })
 
 -----------------------
