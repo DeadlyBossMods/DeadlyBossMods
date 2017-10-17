@@ -8,7 +8,7 @@ mod:SetEncounterID(2083)
 mod:SetZone()
 --mod:SetMinSyncRevision(11969)
 
-mod:RegisterCombat("combat")
+mod:RegisterCombat("combat_yell", L.Pull)
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 247549 247604",
@@ -25,20 +25,23 @@ local specWarnBeguilingCharm		= mod:NewSpecialWarningLookAway(247549, nil, nil, 
 local specWarnSadist				= mod:NewSpecialWarningCount(247544, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.stack:format(12, 159515), nil, 1, 2)
 local specWarnSadistOther			= mod:NewSpecialWarningTaunt(247544, nil, nil, nil, 1, 2)
 
-local timerBeguilingCharmCD			= mod:NewCDTimer(34.8, 247549, nil, nil, nil, 2, nil, DBM_CORE_IMPORTANT_ICON)
+local timerBeguilingCharmCD			= mod:NewCDTimer(34.1, 247549, nil, nil, nil, 2, nil, DBM_CORE_IMPORTANT_ICON)
 local timerFelLashCD				= mod:NewCDTimer(31.1, 247604, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerHeartBreakerCD			= mod:NewCDTimer(21.2, 247517, nil, "Healer", nil, 5, nil, DBM_CORE_HEALER_ICON)
 
-local countdownBeguilingCharm		= mod:NewCountdown(34.8, 247549)
+local countdownBeguilingCharm		= mod:NewCountdown(34.1, 247549)
 
 local voiceBeguilingCharm			= mod:NewVoice(247549)--turnaway
 local voiceSadist					= mod:NewVoice(247544)--changemt
 
---mod:AddReadyCheckOption(48620, false)
+mod:AddReadyCheckOption(48620, false)
 
 function mod:OnCombatStart(delay, yellTriggered)
 	if yellTriggered then
-
+		timerHeartBreakerCD:Star(5-delay)
+		timerFelLashCD:Start(15-delay)
+		timerBeguilingCharmCD:Start(30-delay)
+		countdownBeguilingCharm:Start(30-delay)
 	end
 end
 
