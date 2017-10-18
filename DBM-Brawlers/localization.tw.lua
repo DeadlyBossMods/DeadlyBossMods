@@ -178,5 +178,5 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization("BrawlRumble")
 
 L:SetGeneralLocalization({
-	name = "鬥陣俱樂部: Rumble"
+	name = "鬥陣俱樂部:格鬥"
 })
