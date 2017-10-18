@@ -331,6 +331,9 @@ function mod:SPELL_CAST_START(args)
 		if self.vb.phase == 3 and self.vb.felClawsCount == 4 then
 			timerFelclawsCD:Start(20, self.vb.felClawsCount+1)
 			countdownFelclaws:Start(20)
+		elseif self.vb.phase == 2 and self:IsMythic() and self.vb.felClawsCount == 2 then--Only sub 24 niche case?
+			timerFelclawsCD:Start(22.9, self.vb.felClawsCount+1)
+			countdownFelclaws:Start(22.9)
 		else
 			timerFelclawsCD:Start(24, self.vb.felClawsCount+1)
 			countdownFelclaws:Start()
@@ -561,7 +564,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 236378 then--Wailing Shadow Reflection (Stage 1)
 		if not self:IsEasy() then
-			timerSorrowfulWailCD:Start(15.9)
+			timerSorrowfulWailCD:Start(15.2)
 		end
 		if args:IsPlayer() then
 			yellSRWailing:Cancel()
@@ -628,15 +631,15 @@ function mod:SPELL_AURA_REMOVED(args)
 		warnPhase2:Show()
 		voicePhaseChange:Play("ptwo")
 		if self:IsMythic() then
-			timerFelclawsCD:Start(12, 1)
+			timerFelclawsCD:Start(10.4, 1)
 			timerArmageddonCD:Start(18.2, 1)
 			countdownArmageddon:Start(18.2)
 			timerRupturingSingularityCD:Start(21.5, 1)
 			timerShadReflectionHopelessCD:Start(27)
-			timerFocusedDreadflameCD:Start(33.4, 1)
-			countdownFocusedDread:Start(33.4)
+			timerFocusedDreadflameCD:Start(32.4, 1)
+			countdownFocusedDread:Start(32.4)
 			timerShadReflectionWailingCD:Start(49.5, 1)
-			timerBurstingDreadflameCD:Start(53.4, 1)
+			timerBurstingDreadflameCD:Start(52.6, 1)
 			timerShadReflectionEruptingCD:Start(164, 1)
 		else
 			timerFelclawsCD:Start(9, 1)
