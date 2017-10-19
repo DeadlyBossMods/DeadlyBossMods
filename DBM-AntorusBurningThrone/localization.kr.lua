@@ -34,6 +34,11 @@ L= DBM:GetModLocalization(1997)
 ---------------------------
 L= DBM:GetModLocalization(2025)
 
+L:SetMiscLocalization({
+	Obfuscators =	"혼란자",
+	Destructors =	"파괴자"
+})
+
 ---------------------------
 -- Portal Keeper Hasabel --
 ---------------------------

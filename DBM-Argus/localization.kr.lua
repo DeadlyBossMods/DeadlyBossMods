@@ -16,7 +16,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(2013)
 
 L:SetMiscLocalization({
---	Pull				= "온 세계가 지옥불에 탈 것이다!"
+	Pull				= "네 영혼의 나약함이 보이는구나!"
 })
 
 -----------------------
@@ -34,7 +34,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(2011)
 
 L:SetMiscLocalization({
---	Pull				= "온 세계가 지옥불에 탈 것이다!"
+	Pull				= "새 노리개네? 예쁘기도 하지!"
 })
 
 -----------------------
