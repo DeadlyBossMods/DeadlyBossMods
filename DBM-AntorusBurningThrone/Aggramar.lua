@@ -15,9 +15,9 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 244693 245458 245463 245301",
 --	"SPELL_CAST_SUCCESS",
-	"SPELL_AURA_APPLIED 245990 245994 244894 244903 247091",
+	"SPELL_AURA_APPLIED 245990 245994 244894 244903 247091 254452",
 	"SPELL_AURA_APPLIED_DOSE 245990",
-	"SPELL_AURA_REMOVED 244894 244903 247091",
+	"SPELL_AURA_REMOVED 244894 244903 247091 254452",
 --	"SPELL_PERIODIC_DAMAGE 247135",
 --	"SPELL_PERIODIC_MISSED 247135",
 --	"UNIT_DIED",
@@ -37,6 +37,8 @@ mod:RegisterEventsInCombat(
 --Stage One: Wrath of Aggramar
 local warnTaeshalachReach				= mod:NewStackAnnounce(245990, 2, nil, "Tank")
 local warnScorchingBlaze				= mod:NewTargetAnnounce(245994, 2)
+local warnRavenousBlaze					= mod:NewTargetAnnounce(254452, 2)
+local warnRavenousBlazeCount			= mod:NewCountAnnounce(254452, 4)
 local warnTaeshalachTech				= mod:NewCountAnnounce(244688, 3)
 --Stage Two: Stuff
 local warnPhase2						= mod:NewPhaseAnnounce(2, 2)
@@ -49,6 +51,8 @@ local specWarnTaeshalachReach			= mod:NewSpecialWarningStack(245990, nil, 12, ni
 local specWarnTaeshalachReachOther		= mod:NewSpecialWarningTaunt(245990, nil, nil, nil, 1, 2)
 local specWarnScorchingBlaze			= mod:NewSpecialWarningMoveAway(245994, nil, nil, nil, 1, 2)
 local yellScorchingBlaze				= mod:NewYell(245994)
+local specWarnRavenousBlaze				= mod:NewSpecialWarningYouPos(254452, nil, nil, nil, 1, 2)--or NewSpecialWarningMoveAway?
+local yellRavenousBlaze					= mod:NewPosYell(254452, DBM_CORE_AUTO_YELL_CUSTOM_POSITION)
 local specWarnWakeofFlame				= mod:NewSpecialWarningDodge(244693, nil, nil, nil, 2, 2)
 local yellWakeofFlame					= mod:NewYell(244693)
 --local specWarnFoeBreaker				= mod:NewSpecialWarningDodge(245458, nil, nil, nil, 3, 2)
@@ -60,7 +64,6 @@ local specWarnSearingTempest			= mod:NewSpecialWarningRun(245301, nil, nil, nil,
 --local specWarnMeteorSwarm				= mod:NewSpecialWarningDodge(245920, nil, nil, nil, 1, 2)
 --Stage Two: Champion of Sargeras
 
-
 --local yellBurstingDreadflame			= mod:NewPosYell(238430, DBM_CORE_AUTO_YELL_CUSTOM_POSITION)
 --local specWarnMalignantAnguish		= mod:NewSpecialWarningInterrupt(236597, "HasInterrupt")
 --local specWarnGTFO						= mod:NewSpecialWarningGTFO(247135, nil, nil, nil, 1, 2)
@@ -71,6 +74,7 @@ local timerFoeBreakerCD					= mod:NewNextCountTimer(6.1, 245458, nil, nil, nil, 
 local timerFlameRendCD					= mod:NewNextCountTimer(6.1, 245463, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerTempestCD					= mod:NewNextTimer(6.1, 245301, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
 local timerScorchingBlazeCD				= mod:NewCDTimer(6.1, 245994, nil, nil, nil, 3)
+local timerRavenousBlazeCD				= mod:NewCDTimer(23.2, 254452, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
 local timerWakeofFlameCD				= mod:NewCDTimer(24.3, 244693, nil, nil, nil, 3)
 --Stage Two: Champion of Sargeras
 --local timerFlareCD						= mod:NewAITimer(61, 245923, nil, nil, nil, 3)
@@ -85,6 +89,7 @@ local countdownWakeofFlame				= mod:NewCountdown("AltTwo24", 244693, "-Tank")
 local voicePhaseChange					= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
 local voiceTaeshalachReach				= mod:NewVoice(245990)--tauntboss/stackhigh
 local voiceScorchingBlaze				= mod:NewVoice(245994)--scatter
+local voiceRavenousBlaze				= mod:NewVoice(254452)--scatter
 local voiceWakeofFlame					= mod:NewVoice(244693)--watchwave
 local voiceFoeBreaker					= mod:NewVoice(245458)--shockwave/tauntboss/defensive
 local voiceFlameRend					= mod:NewVoice(245463)--gathershare/shareone/sharetwo
@@ -92,7 +97,7 @@ local voiceSearingTempest				= mod:NewVoice(245301)--watchstep
 --local voiceMalignantAnguish			= mod:NewVoice(236597, "HasInterrupt")--kickcast
 --local voiceGTFO							= mod:NewVoice(247135, nil, DBM_CORE_AUTO_VOICE4_OPTION_TEXT)--runaway
 
---mod:AddSetIconOption("SetIconOnFocusedDread", 238502, true)
+mod:AddSetIconOption("SetIconOnBlaze", 254452, true)
 --mod:AddInfoFrameOption(239154, true)
 mod:AddRangeFrameOption("6")
 mod:AddNamePlateOption("NPAuraOnPresence", 244903)
@@ -102,6 +107,7 @@ mod.vb.techCount = 0
 mod.vb.foeCount = 0
 mod.vb.rendCount = 0
 mod.vb.wakeOfFlameCount = 0
+mod.vb.blazeIcon = 1
 
 function mod:WakeTarget(targetname, uId)
 	if not targetname then return end
@@ -116,11 +122,20 @@ function mod:OnCombatStart(delay)
 	self.vb.foeCount = 0
 	self.vb.rendCount = 0
 	self.vb.wakeOfFlameCount = 0
-	timerScorchingBlazeCD:Start(4.8-delay)
-	timerWakeofFlameCD:Start(5.9-delay)
-	countdownWakeofFlame:Start(5.9-delay)
-	timerTaeshalachTechCD:Start(35-delay)
-	countdownTaeshalachTech:Start(35-delay)
+	self.vb.blazeIcon = 1
+	if self:IsMythic() then
+		timerRavenousBlazeCD:Start(4.4-delay)
+		timerWakeofFlameCD:Start(10.7-delay)--Health based?
+		countdownWakeofFlame:Start(10.7-delay)
+		timerTaeshalachTechCD:Start(14.3-delay)--Health based?
+		countdownTaeshalachTech:Start(14.3-delay)
+	else
+		timerScorchingBlazeCD:Start(4.8-delay)
+		timerWakeofFlameCD:Start(5.9-delay)
+		countdownWakeofFlame:Start(5.9-delay)
+		timerTaeshalachTechCD:Start(35-delay, 1)
+		countdownTaeshalachTech:Start(35-delay)
+	end
 	--Everyone should lose spead except tanks which should stay stacked. Maybe melee are safe too?
 	if self.Options.RangeFrame and not self:IsTank() then
 		DBM.RangeCheck:Show(6)
@@ -152,7 +167,7 @@ end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 244693 then
+	if spellId == 244693 and self:AntiSpam(4, 1) then--Antispam because boss recasts itif target dies while casting
 		self.vb.wakeOfFlameCount = self.vb.wakeOfFlameCount + 1
 		specWarnWakeofFlame:Show()
 		voiceWakeofFlame:Play("watchwave")
@@ -175,7 +190,7 @@ function mod:SPELL_CAST_START(args)
 				voiceFoeBreaker:Play("tauntboss")
 			end
 		end
-		if self.vb.foeCount == 1 then
+		if self.vb.foeCount == 1 and not self:IsMythic() then
 			if self:IsEasy() then
 				timerFoeBreakerCD:Start(10, 2)
 			else
@@ -194,7 +209,7 @@ function mod:SPELL_CAST_START(args)
 		else
 			voiceFlameRend:Play("gathershare")
 		end
-		if self.vb.rendCount == 1 then
+		if self.vb.rendCount == 1 and not self:IsMythic() then
 			if self:IsEasy() then
 				timerFlameRendCD:Start(10, 2)
 			else
@@ -204,17 +219,6 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 245301 then
 		specWarnSearingTempest:Show()
 		voiceSearingTempest:Play("runout")
-		--Combo Ended
-		local timerAdjust = self:IsEasy() and 1 or 0--Or could just move it to spell cast success, but using this for now
-		timerScorchingBlazeCD:Start(13.7+timerAdjust)
-		if self.vb.phase == 1 then
-			timerWakeofFlameCD:Start(14.9)
-			countdownWakeofFlame:Start(14.9)
-		elseif self.vb.phase == 2 then
-	
-		else--Stage 3
-	
-		end
 	end
 end
 
@@ -258,6 +262,22 @@ function mod:SPELL_AURA_APPLIED(args)
 			voiceScorchingBlaze:Play("scatter")
 			yellScorchingBlaze:Yell()
 		end
+	elseif spellId == 254452 then
+		warnRavenousBlaze:CombinedShow(0.3, args.destName)
+		local icon = self.vb.blazeIcon
+		if args:IsPlayer() then
+			specWarnRavenousBlaze:Show(self:IconNumToTexture(icon))
+			voiceRavenousBlaze:Play("scatter")
+			yellRavenousBlaze:Yell(icon, args.spellName, icon)
+			warnRavenousBlazeCount:Schedule(2, 5)
+			warnRavenousBlazeCount:Schedule(4, 10)
+			warnRavenousBlazeCount:Schedule(6, 15)
+			warnRavenousBlazeCount:Schedule(8, 20)
+		end
+		if self.Options.SetIconOnBlaze then
+			self:SetIcon(name, icon)
+		end
+		self.vb.blazeIcon = self.vb.blazeIcon + 1
 	elseif spellId == 244894 then--Corrupt Aegis
 		voicePhaseChange:Play("phasechange")
 		self.vb.phase = self.vb.phase + 0.5
@@ -310,6 +330,13 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.NPAuraOnPresence then
 			DBM.Nameplate:Hide(true, args.destGUID, spellId)
 		end
+	elseif spellId == 254452 then
+		if args:IsPlayer() then
+			warnRavenousBlazeCount:Cancel()
+		end
+		if self.Options.SetIconOnBlaze then
+			self:SetIcon(name, 0)
+		end
 	end
 end
 
@@ -342,23 +369,51 @@ end
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 245993 then--Scorching Blaze
 		timerScorchingBlazeCD:Start()
-	elseif spellId == 244688 then
+	elseif spellId == 254451 then--Ravenous Blaze (mythic replacement for Scorching Blaze)
+		self.vb.blazeIcon = 1
+		timerRavenousBlazeCD:Start()--Unknown at this time
+	elseif spellId == 244688 then--Taeshalach Technique
 		self.vb.foeCount = 0
 		self.vb.rendCount = 0
 		self.vb.techCount = self.vb.techCount + 1
 		timerScorchingBlazeCD:Stop()
+		timerRavenousBlazeCD:Stop()
 		timerWakeofFlameCD:Stop()
 		countdownWakeofFlame:Cancel()
 		warnTaeshalachTech:Show(self.vb.techCount)
-		--Foebreaker instantly so no need for timer
-		if self:IsEasy() then
-			timerFlameRendCD:Start(5, 1)
-			timerTempestCD:Start(20)
-		else
-			timerFlameRendCD:Start(4, 1)
-			timerTempestCD:Start(15)
-		end
 		timerTaeshalachTechCD:Start(nil, self.vb.techCount+1)
 		countdownTaeshalachTech:Start()
+		if self:IsMythic() then
+			--Random Sequence, todo, stuff?
+		else
+			--Set sequence
+			--Foebreaker instantly so no need for timer
+			if self:IsEasy() then
+				timerFlameRendCD:Start(5, 1)
+				timerTempestCD:Start(20)
+			else
+				timerFlameRendCD:Start(4, 1)
+				timerTempestCD:Start(15)
+			end
+		end
+	elseif spellId == 244792 then--Burning Will of Taeshalach (technique ended)
+		if self:IsMythic() then
+			timerRavenousBlazeCD:Start(4.2)
+		else
+			timerScorchingBlazeCD:Start(5)
+		end
+		if self.vb.phase == 1 then
+			if self:IsMythic() then
+				timerWakeofFlameCD:Start(10.3)
+				countdownWakeofFlame:Start(10.3)
+			else
+				timerWakeofFlameCD:Start(7)
+				countdownWakeofFlame:Start(7)
+			end
+		elseif self.vb.phase == 2 then
+	
+		else--Stage 3
+	
+		end
 	end
 end
