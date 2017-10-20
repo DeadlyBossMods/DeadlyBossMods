@@ -105,11 +105,7 @@ function mod:OnCombatStart(delay)
 	self.vb.orbCount = 0
 	self.vb.pitchCount = 0
 	self.vb.firstBeam = 0
-	warnSlamSoon:Schedule(85, 5)
-	warnSlamSoon:Schedule(86, 4)
-	warnSlamSoon:Schedule(87, 3)
-	warnSlamSoon:Schedule(88, 2)
-	warnSlamSoon:Schedule(89, 1)
+	warnSlamSoon:Countdown(90)
 	timerSlamCD:Start(-delay, 1)
 	countdownBigSlam:Start(-delay)
 	berserkTimer:Start(-delay)
@@ -216,11 +212,7 @@ function mod:SPELL_CAST_START(args)
 			specWarnSlam:Show()
 			voiceSlam:Play("justrun")
 			countdownBigSlam:Start()
-			warnSlamSoon:Schedule(85, 5)
-			warnSlamSoon:Schedule(86, 4)
-			warnSlamSoon:Schedule(87, 3)
-			warnSlamSoon:Schedule(88, 2)
-			warnSlamSoon:Schedule(89, 1)
+			warnSlamSoon:Countdown(90)
 		else
 			warnSlam:Show(self.vb.slamCount)
 			if self:IsTank() then
