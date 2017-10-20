@@ -10,7 +10,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 192094",
-	"SPELL_CAST_START 192072 192073 196563 197502"
+	"SPELL_CAST_START 192072 192073 196563 197502 191900"
 )
 
 --Notes: Boss always casts 191900 (Crashing wave) few seconds before impaling spear. It doesn't really need it's own warning
@@ -18,6 +18,7 @@ mod:RegisterEventsInCombat(
 local warnImpalingSpear				= mod:NewTargetAnnounce(192094, 4)
 
 local specWarnReinforcements		= mod:NewSpecialWarningSwitch(196563, "Tank", nil, nil, 1, 2)
+local specWarnCrashingwave			= mod:NewSpecialWarningDodge(191900, nil, nil, nil, 2, 2)
 local specWarnImpalingSpear			= mod:NewSpecialWarningMoveTo(192094, nil, nil, nil, 3, 6)
 local yellImpalingSpear				= mod:NewYell(192094)
 local specWarnRestoration			= mod:NewSpecialWarningInterrupt(197502, "HasInterrupt", nil, nil, 1, 2)
@@ -26,6 +27,7 @@ local timerHatecoilCD				= mod:NewCDTimer(28, 192072, nil, nil, nil, 1)--Review 
 local timerSpearCD					= mod:NewCDTimer(28, 192094, nil, nil, nil, 3)
 
 local voiceReinforcements			= mod:NewVoice(196563)--bigmobsoon
+local voiceCrashingwave				= mod:NewVoice(191900)--chargemove
 local voiceImpalingSpear			= mod:NewVoice(192094)--192094 (run behind add)
 local voiceRestoration				= mod:NewVoice(197502, "HasInterrupt")--kickcast
 
@@ -65,5 +67,8 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 197502 then
 		specWarnRestoration:Show(args.sourceName)
 		voiceRestoration:Play("kickcast")
+	elseif spellId == 191900 then
+		specWarnCrashingwave:Show()
+		voiceCrashingwave:Play("chargemove")
 	end
 end

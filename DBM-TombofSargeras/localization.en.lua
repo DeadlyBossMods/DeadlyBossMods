@@ -61,6 +61,14 @@ L:SetMiscLocalization({
 ---------------------------
 L= DBM:GetModLocalization(1898)
 
+L:SetWarningLocalization({
+	warnSingularitySoon		= "Knockback in %ds"
+})
+
+L:SetOptionLocalization({
+	warnSingularitySoon		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.soon:format(235059)
+})
+
 L:SetMiscLocalization({
 	Obelisklasers	= "Obelisk Lasers"
 })
