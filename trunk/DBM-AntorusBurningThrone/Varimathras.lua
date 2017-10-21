@@ -175,7 +175,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnNecroticEmbrace:Show()
 			voiceNecroticEmbrace:Play("scatter")
-			yellNecroticEmbrace:Countdown(4, 4)
+			yellNecroticEmbrace:Countdown(6, 4)
 		else
 			warnNecroticEmbrace:CombinedShow(0.3, args.destName)--Combined message because even if it starts on 1, people are gonna fuck it up
 		end
