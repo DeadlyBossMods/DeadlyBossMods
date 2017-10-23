@@ -14,7 +14,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 --	"SPELL_CAST_START 243999",
-	"SPELL_CAST_SUCCESS 243960 244093 243999",
+	"SPELL_CAST_SUCCESS 243960 244093 243999 257644",
 	"SPELL_AURA_APPLIED 243961 244042 244094 248732 243968 243977 243980 243973",
 --	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 244042 244094",
@@ -26,7 +26,7 @@ mod:RegisterEventsInCombat(
 --TODO, icons on necrotic embrace?
 --TODO, on phase changes most ability CDs extended by 2+ seconds, but NOT ALWAYS so difficult to hard code a rule for it right now
 --[[
-(ability.id = 243960 or ability.id = 244093 or ability.id = 243999 or ability.id = 244042) and type = "cast"
+(ability.id = 243960 or ability.id = 244093 or ability.id = 243999 or ability.id = 244042 or ability.id = 257644) and type = "cast"
  or (ability.id = 243968 or ability.id = 243977 or ability.id = 243980 or ability.id = 243973) and type = "applydebuff" and target.name = "Omegal"
  or ability.id = 26662
 --]]
@@ -131,7 +131,7 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 243960 then
+	if spellId == 243960 or spellId == 257644 then--257644 LFR shadow strike
 		warnShadowStrike:Show()
 		timerShadowStrikeCD:Show()
 		countdownShadowStrike:Start(9.7)
