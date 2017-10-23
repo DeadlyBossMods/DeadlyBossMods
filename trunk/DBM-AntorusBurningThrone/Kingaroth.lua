@@ -13,10 +13,10 @@ mod:SetUsedIcons(1, 2, 3)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 244312 254926 245807 252758 246692 246833 246516",
+	"SPELL_CAST_START 244312 254926 245807 252758 246692 246833 246516 257978",
 	"SPELL_CAST_SUCCESS 252758 246692",
-	"SPELL_AURA_APPLIED 254919 244410 245770 246687 252797 246698 252760",
---	"SPELL_AURA_APPLIED_DOSE",
+	"SPELL_AURA_APPLIED 254919 257978 244410 245770 246687 252797 246698 252760",
+	"SPELL_AURA_APPLIED_DOSE 257978",
 	"SPELL_AURA_REMOVED 244410 245770 246687 252797 246516 246698 252760",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
@@ -33,9 +33,10 @@ mod:RegisterEventsInCombat(
 --TODO, workin http://ptr.wowhead.com/spell=246629/apocalypse-blast
 --TODO, more work on infoframe for fel reaver construction status, etc.
 --TODO, review all timers, they were adjusting his rate of energy gain throughough attempts
+--TODO, review timers even more cause they keep tweaking them
 --TODO, currently decimation & annihilation are only detectable via nameplate/target casts as such, it's pretty bad idea to support it unless it's really required
 --[[
-(ability.id = 244312 or ability.id = 254926 or ability.id = 245807 or ability.id = 252758 or ability.id = 246692 or ability.id = 246833 or ability.id = 246516) and type = "begincast"
+(ability.id = 244312 or ability.id = 254926 or ability.id = 245807 or ability.id = 252758 or ability.id = 246692 or ability.id = 246833 or ability.id = 246516 or ability.id = 257997 or ability.id = 257978) and type = "begincast"
  or (ability.id = 252758 or ability.id = 246692) and type = "cast"
  or (ability.id = 246516 or ability.id = 246698 or ability.id = 252760) and (type = "removebuff" or type = "removedebuff")
 --]]
@@ -70,10 +71,10 @@ local yellDemolish						= mod:NewPosYell(246692)
 local yellDemolishFades					= mod:NewIconFadesYell(246692)
 
 --Stage: Deployment
-local timerForgingStrikeCD				= mod:NewAITimer(25, 244312, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
-local timerReverberatingStrikeCD		= mod:NewAITimer(61, 254926, nil, nil, nil, 3)
+local timerForgingStrikeCD				= mod:NewCDTimer(25, 244312, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerReverberatingStrikeCD		= mod:NewCDTimer(61, 254926, nil, nil, nil, 3)
 --local timerDiabolicBombCD				= mod:NewAITimer(61, 246779, nil, nil, nil, 3)
-local timerRuinerCD						= mod:NewCDTimer(28.1, 246840, nil, nil, nil, 3)
+local timerRuinerCD						= mod:NewCDCountTimer(28.1, 246840, nil, nil, nil, 3)
 --local timerShatteringStrikeCD			= mod:NewCDTimer(30, 248375, nil, nil, nil, 2)
 local timerApocProtocolCD				= mod:NewCDCountTimer(85.8, 246516, nil, nil, nil, 6)
 local timerApocProtocol					= mod:NewCastTimer(30, 246504, nil, nil, nil, 6)
@@ -185,7 +186,7 @@ function mod:OnCombatStart(delay)
 	timerForgingStrikeCD:Start(7-delay)
 	--timerDiabolicBombCD:Start(11-delay)
 	timerReverberatingStrikeCD:Start(14.2-delay)--14-15
-	timerRuinerCD:Start(21.1-delay)
+	timerRuinerCD:Start(21.1-delay, 1)
 	--timerShatteringStrikeCD:Start(1-delay)--Not cast on pull
 	timerApocProtocolCD:Start(31.8-delay, 1)--31.8-35
 	if self.Options.RangeFrame then
@@ -208,7 +209,7 @@ end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 244312 then
+	if spellId == 244312 or spellId == 257978 then
 		self.vb.forgingStrikeCast = self.vb.forgingStrikeCast + 1
 		local tanking, status = UnitDetailedThreatSituation("player", "boss1")
 		if tanking or (status == 3) then--Player is current target
@@ -216,20 +217,37 @@ function mod:SPELL_CAST_START(args)
 			voiceForgingStrike:Play("defensive")
 		end
 		--1.5, 27.6, 30.1
-		if self.vb.forgingStrikeCast == 1 then
-			timerForgingStrikeCD:Start(27.9)
-		elseif self.vb.forgingStrikeCast == 2 then
-			timerForgingStrikeCD:Start(30)
+		if self:IsLFR() then
+			timerForgingStrikeCD:Start(8.5)
+		else
+			if self.vb.forgingStrikeCast == 1 then
+				timerForgingStrikeCD:Start(27.9)
+			elseif self.vb.forgingStrikeCast == 2 then
+				timerForgingStrikeCD:Start(30)
+			end
 		end
-	elseif spellId == 254926 then
+	elseif spellId == 254926 or spellId == 257997 then
 		self:BossTargetScanner(args.sourceGUID, "ReverberatingTarget", 0.1, 9)
 		if self:AntiSpam(5, 3) then--Sometimes stutter casts
-			--4.2, 23.5, 30
 			self.vb.reverbStrikeCast = self.vb.reverbStrikeCast + 1
-			if self.vb.reverbStrikeCast == 1 then
-				timerReverberatingStrikeCD:Start(23.5)
-			elseif self.vb.reverbStrikeCast == 2 then
-				timerReverberatingStrikeCD:Start(30)
+			if self.vb.apocProtoCount % 2 == 1 then--Reverb, ruiner, reverb, ruiner, reverb
+				--4.2, 23.5, 30
+				local short, long
+				if self:IsLFR() then
+					short, long = 26, 33
+				else
+					short, long = 22, 28
+				end
+				if self.vb.reverbStrikeCast == 1 then
+					timerReverberatingStrikeCD:Start(short)--26 LFR
+				elseif self.vb.reverbStrikeCast == 2 then
+					timerReverberatingStrikeCD:Start(long)--33 LFR
+				end
+			else----Ruiner, reverb, ruiner, reverb, ruiner
+				--17, 30
+				if self.vb.reverbStrikeCast == 1 then
+					timerReverberatingStrikeCD:Start(long)--33 LFR
+				end
 			end
 		end
 	elseif spellId == 245807 then
@@ -242,18 +260,26 @@ function mod:SPELL_CAST_START(args)
 		specWarnRuiner:Show()
 		voiceRuiner:Play("farfromline")
 		voiceRuiner:Schedule(1, "keepmove")
-		if self.vb.ruinerCast == 1 then
-			timerRuinerCD:Start()
+		if self.vb.apocProtoCount % 2 == 0 and self.vb.ruinerCast < 2 or self.vb.ruinerCast == 1 then
+			timerRuinerCD:Start(nil, self.vb.ruinerCast+1)--28-30 depending on difficulty
+		end
+		if self:IsLFR() then
+			timerForgingStrikeCD:Stop()
+			timerForgingStrikeCD:Start(10)
 		end
 	elseif spellId == 246516 then--Apocolypse Protocol
 		timerForgingStrikeCD:Stop()
 		timerReverberatingStrikeCD:Stop()
-		--timerDiabolicBombCD:Stop()
 		timerRuinerCD:Stop()
+		--timerDiabolicBombCD:Stop()
 		--timerShatteringStrikeCD:Stop()
 		specWarnInitializing:Show()
 		voiceInitializing:Play("killmob")
-		timerApocProtocol:Start()
+		if self:IsLFR() then
+			timerApocProtocol:Start(42)
+		else
+			timerApocProtocol:Start()--30
+		end
 	end
 end
 
@@ -266,9 +292,22 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 254919 and not args:IsPlayer() and not UnitDebuff("player", args.spellName) then
+	if spellId == 254919 and not args:IsPlayer() and not UnitDebuff("player", args.spellName) then--Always swap after each cast
 		specWarnForgingStrikeOther:Show(args.destName)
 		voiceForgingStrike:Play("tauntboss")
+	elseif spellId == 257978 then--LFR special edition, swap at 2 stacks
+		local amount = args.amount or 1
+		if amount >= 2 and not args:IsPlayer() then
+			local _, _, _, _, _, _, expireTime = UnitDebuff("player", args.spellName)
+			local remaining
+			if expireTime then
+				remaining = expireTime-GetTime()
+			end
+			if not UnitIsDeadOrGhost("player") and (not remaining or remaining and remaining < 8.5) then
+				specWarnForgingStrikeOther:Show(args.destName)
+				voiceForgingStrike:Play("tauntboss")
+			end
+		end
 --[[	elseif (spellId == 244410 or spellId == 245770 or spellId == 246687 or spellId == 252797) and args:IsDestTypePlayer() then--244410 3 seconds, rest 5, for good measure, just pulling duration from UnitDebuff()
 		warnDecimation:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
@@ -302,7 +341,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	end
 end
---mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
+mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
@@ -316,9 +355,24 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.reverbStrikeCast = 0
 		self.vb.apocProtoCount = self.vb.apocProtoCount + 1
 		--timerForgingStrikeCD:Start(1.5)--Used too fast for a timer
-		timerReverberatingStrikeCD:Start(3)
+		if self.vb.apocProtoCount % 2 == 1 then--Reverb, ruiner, reverb, ruiner, reverb
+			if self:IsLFR() then
+				timerReverberatingStrikeCD:Start(3)
+				timerRuinerCD:Start(17.6, 1)
+			else
+				timerReverberatingStrikeCD:Start(5)
+				timerRuinerCD:Start(18.4, 1)
+			end
+		else
+			if self:IsLFR() then--Ruiner, reverb, ruiner, reverb, ruiner
+				timerRuinerCD:Start(4.8, 1)
+				timerReverberatingStrikeCD:Start(17)
+			else--Ruiner, reverb, ruiner, reverb, ruiner, reverb
+				--Ruiner is instant
+				timerReverberatingStrikeCD:Start(7.5)
+			end
+		end
 		--timerDiabolicBombCD:Start(2)
-		timerRuinerCD:Start(17.6)
 		--timerShatteringStrikeCD:Start(42)
 		timerApocProtocolCD:Start(nil, self.vb.apocProtoCount+1)
 	elseif spellId == 246698 or spellId == 252760 then

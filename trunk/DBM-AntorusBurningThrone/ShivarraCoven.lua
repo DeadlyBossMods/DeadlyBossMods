@@ -73,15 +73,15 @@ local specWarnTormentofTitans			= mod:NewSpecialWarningSwitch("ej16138", nil, ni
 --General
 local timerBossIncoming					= mod:NewTimer(61, "timerBossIncoming", nil, nil, nil, 1)
 --Noura, Mother of Flames
-local timerFieryStrikeCD				= mod:NewCDTimer(12.1, 244899, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
-local timerWhirlingSaberCD				= mod:NewCDTimer(35.3, 245627, nil, nil, nil, 3)
+local timerFieryStrikeCD				= mod:NewCDTimer(11, 244899, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerWhirlingSaberCD				= mod:NewCDTimer(35.3, 245627, nil, nil, nil, 3)--35-45
 local timerFulminatingPulseCD			= mod:NewCDTimer(40.5, 253520, nil, nil, nil, 3)
 --Asara, Mother of Night
 --local timerTouchofDarknessCD			= mod:NewAITimer(61, 245303, nil, "HasInterrupt", nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
 local timerShadowBladesCD				= mod:NewCDTimer(27.8, 246329, nil, nil, nil, 3)
 local timerStormofDarknessCD			= mod:NewCDTimer(48.6, 252861, nil, nil, nil, 2, nil, DBM_CORE_HEALER_ICON)--48.6-52.7
 --Diima, Mother of Gloom
-local timerFlashFreezeCD				= mod:NewCDTimer(25.5, 245518, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerFlashFreezeCD				= mod:NewCDTimer(11, 245518, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerChilledBloodCD				= mod:NewCDTimer(25.4, 245586, nil, nil, nil, 5, nil, DBM_CORE_HEALER_ICON)
 local timerOrbofFrostCD					= mod:NewCDTimer(31.5, 253650, nil, nil, nil, 3)
 --Thu'raya, Mother of the Cosmos (Mythic)
@@ -148,9 +148,9 @@ function mod:OnCombatStart(delay)
 	end
 	--Diima, Mother of Gloom is first one to go inactive
 	timerWhirlingSaberCD:Start(8-delay)
-	timerFieryStrikeCD:Start(12.3-delay)
+	timerFieryStrikeCD:Start(11.4-delay)
 --	timerTouchofDarknessCD:Start(1-delay)
-	timerShadowBladesCD:Start(12.3-delay)
+	timerShadowBladesCD:Start(12-delay)
 	if not self:IsEasy() then
 		timerFulminatingPulseCD:Start(20.9-delay)
 		timerStormofDarknessCD:Start(27.4-delay)
