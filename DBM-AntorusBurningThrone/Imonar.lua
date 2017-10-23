@@ -145,8 +145,10 @@ function mod:OnCombatStart(delay)
 	self.vb.phase = 1
 	timerShocklanceCD:Start(3.7-delay)--4.4 Mythic
 	timerSleepCanisterCD:Start(7-delay)
-	timerPulseGrenadeCD:Start(12.3-delay)
-	countdownPulseGrenade:Start(12.3-delay)
+	if not self:IsLFR() then--Don't seem to be in LFR
+		timerPulseGrenadeCD:Start(12.3-delay)
+		countdownPulseGrenade:Start(12.3-delay)
+	end
 	--berserkTimer:Start(-delay)--7min on heroic at least
 end
 
@@ -310,7 +312,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerShocklanceCD:Start(5)--Empowered
 			timerPulseGrenadeCD:Start(7.6)--Empowered
 			countdownPulseGrenade:Start(7.6)
-			timerShrapnalBlastCD:Start(16.2)--Empowered
+			timerShrapnalBlastCD:Start(15)--Empowered
 		end
 	elseif spellId == 250006 then
 		if args:IsPlayer() then
