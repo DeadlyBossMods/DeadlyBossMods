@@ -99,6 +99,7 @@ mod:AddRangeFrameOption("8/10")
 mod.vb.rainOfFelCount = 0
 mod.vb.warpCount = 0
 mod.vb.lifeForceCast = 0
+mod.vb.lifeRequired = 5
 mod.vb.spearCast = 0
 mod.vb.finalDoomCast = 0
 mod.vb.destructors = 0
@@ -118,8 +119,10 @@ Mythic Adds
 destructor 22, 96.3, 40, 
 Obfuscator: 39.8, 157.9
 Normal Adds
-"Cloak-246753-npc:124207 = pull:195.6, 37.3", -- [2]
-"High Alert-254769-npc:123760 = pull:17.1, 45.5, 35.3, 51.1, 133.9, 51.1, 50.3", -- [3]
+"Obfuscator-246753-npc:124207 = pull:195.6, 37.3", -- [2]
+"destructor-254769-npc:123760 = pull:17.1, 45.5, 35.3, 51.1, 133.9, 51.1, 50.3", -- [3]
+LFR Adds
+destructor: 17, 48.3, 41.4, 65.3, 43.13, 23.4, 50, 43.4
 --]]
 
 local updateInfoFrame
@@ -140,7 +143,7 @@ do
 			local currentPower = UnitPower("boss1", 10) or 0
 			addLine(UnitName("boss1"), currentPower)
 		end
-		addLine(lifeForceName, mod.vb.lifeForceCast.."/5")
+		addLine(lifeForceName, mod.vb.lifeForceCast.."/"..mod.vb.lifeRequired)
 		if mod.vb.obfuscators > 0 then
 			addLine(L.Obfuscators, mod.vb.obfuscators)
 		end
@@ -162,6 +165,7 @@ function mod:OnCombatStart(delay)
 	--timerWarpInCD:Start(5.1, 1)
 	--countdownWarpIn:Start(5.1)
 	if not self:IsLFR() then
+		self.vb.lifeRequired = 5
 		if self:IsMythic() then
 			timerRainofFelCD:Start(6-delay, 1)
 			countdownRainofFel:Start(6-delay)
@@ -176,6 +180,7 @@ function mod:OnCombatStart(delay)
 			end
 		end
 	else
+		self.vb.lifeRequired = 3
 		timerMeteorStormCD:Start(1-delay)
 	end
 	if self.Options.InfoFrame then
