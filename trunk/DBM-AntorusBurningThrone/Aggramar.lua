@@ -275,7 +275,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnRavenousBlazeCount:Schedule(8, 20)
 		end
 		if self.Options.SetIconOnBlaze then
-			self:SetIcon(name, icon)
+			self:SetIcon(args.destName, icon)
 		end
 		self.vb.blazeIcon = self.vb.blazeIcon + 1
 	elseif spellId == 244894 then--Corrupt Aegis
@@ -335,7 +335,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			warnRavenousBlazeCount:Cancel()
 		end
 		if self.Options.SetIconOnBlaze then
-			self:SetIcon(name, 0)
+			self:SetIcon(args.destName, 0)
 		end
 	end
 end

@@ -230,14 +230,14 @@ function mod:SPELL_CAST_START(args)
 		self:BossTargetScanner(args.sourceGUID, "ReverberatingTarget", 0.1, 9)
 		if self:AntiSpam(5, 3) then--Sometimes stutter casts
 			self.vb.reverbStrikeCast = self.vb.reverbStrikeCast + 1
+			local short, long
+			if self:IsLFR() then
+				short, long = 26, 33
+			else
+				short, long = 22, 28
+			end
 			if self.vb.apocProtoCount % 2 == 1 then--Reverb, ruiner, reverb, ruiner, reverb
 				--4.2, 23.5, 30
-				local short, long
-				if self:IsLFR() then
-					short, long = 26, 33
-				else
-					short, long = 22, 28
-				end
 				if self.vb.reverbStrikeCast == 1 then
 					timerReverberatingStrikeCD:Start(short)--26 LFR
 				elseif self.vb.reverbStrikeCast == 2 then
