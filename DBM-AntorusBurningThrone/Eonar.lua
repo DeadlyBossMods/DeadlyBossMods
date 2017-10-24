@@ -127,7 +127,7 @@ destructor: 17, 48.3, 41.4, 65.3, 43.13, 23.4, 50, 43.4
 
 local updateInfoFrame
 do
-	lifeForceName = GetSpellInfo(250048)
+	local lifeForceName = GetSpellInfo(250048)
 	local lines = {}
 	local sortedLines = {}
 	local function addLine(key, value)
