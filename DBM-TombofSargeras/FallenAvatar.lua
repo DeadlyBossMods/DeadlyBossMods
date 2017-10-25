@@ -249,8 +249,8 @@ function mod:OnCombatStart(delay)
 	else
 		showTouchofSarg = false
 	end
-	timerShadowyBladesCD:Start(20.7-delay)
-	self:Schedule(20.7, setabilityStatus, self, 236571, 0)--Shadowy Blades
+	timerShadowyBladesCD:Start(27-delay)
+	self:Schedule(27, setabilityStatus, self, 236571, 0)--Shadowy Blades
 	timerRuptureRealitiesCD:Start(31-delay, 1)--31-37
 	self:Schedule(31, setabilityStatus, self, 239132, 0)--Ruptured Realities
 	if self.Options.InfoFrame then
@@ -524,8 +524,13 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 			timerShadowyBladesCD:Start(34)
 			self:Schedule(34, setabilityStatus, self, 236571, 0)--Set ready to use when CD expires
 		else
-			timerShadowyBladesCD:Start(30)
-			self:Schedule(30, setabilityStatus, self, 236571, 0)--Set ready to use when CD expires
+			if self:IsMythic() then
+				timerShadowyBladesCD:Start(35)
+				self:Schedule(35, setabilityStatus, self, 236571, 0)--Set ready to use when CD expires
+			else
+				timerShadowyBladesCD:Start(30)
+				self:Schedule(30, setabilityStatus, self, 236571, 0)--Set ready to use when CD expires
+			end
 		end
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(10, nil, nil, nil, nil, 5)
