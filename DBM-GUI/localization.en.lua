@@ -268,7 +268,6 @@ L.SpamBlockNoRangeRestore	= "Do not restore range frame to previous state when m
 L.Area_SpamFilter			= "Spam Filter Options"
 L.DontShowFarWarnings		= "Do not show announces/timers for events that are far away"
 L.StripServerName			= "Strip realm name in warnings and timers"
-L.SpamBlockBossWhispers		= "Filter &lt;DBM&gt; warning whispers while fighting"
 L.BlockVersionUpdateNotice	= "Show more frequent 'out of date' notifications in chat frame instead of a popup."
 
 L.Area_SpecFilter			= "Role Filter Options"
@@ -295,7 +294,6 @@ L.HideGuildChallengeUpdates	= "Hide guild challenge toasts during boss fights"
 L.HideQuestTooltips			= "Hide quest objectives from tooltips during boss fights"
 L.HideTooltips				= "Completely hide tooltips during boss fights"
 L.DisableSFX				= "Disable sound effects channel during boss fights"
-L.SpamBlockSayYell			= "Hide chat bubbles announces from the chat frame"
 L.DisableCinematics			= "Hide in-game cinematics"
 L.AfterFirst				= "After each movie has played once"
 L.Always					= ALWAYS

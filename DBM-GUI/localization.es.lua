@@ -254,7 +254,6 @@ L.Panel_SpamFilter			= "Filtros de avisos"
 L.Area_SpamFilter			= "Opciones de filtros de avisos"
 L.DontShowFarWarnings		= "Ocultar anuncios y temporizadores de eventos que estén demasiado lejos"
 L.StripServerName			= "Omitir nombre del reino en avisos y temporizadores"
-L.SpamBlockBossWhispers		= "Bloquear susurros automáticos de estado de encuentro"
 L.BlockVersionUpdateNotice	= "Mostrar notificaciones de actualización en el chat en lugar de en ventana emergente"
 
 L.Area_SpecFilter			= "Opciones de filtros de rol"
@@ -282,7 +281,6 @@ L.HideGuildChallengeUpdates	= "Ocultar botón de desafíos de hermandad en jefes
 L.HideQuestTooltips			= "Ocultar objetivos de misión en en descripciones emergentes durante Hide quest objectives from tooltips during boss fights"
 L.HideTooltips				= "Ocultar por completo las descripciones emergentes en encuentros"
 L.DisableSFX				= "Desactivar el canal de efectos de sonido en encuentros"
-L.SpamBlockSayYell			= "Ocultar bocadillos de chat"
 L.DisableCinematics			= "Saltar cinemáticas automáticamente"
 L.AfterFirst				= "Tras ver la cinemática por primera vez"
 L.Always					= ALWAYS

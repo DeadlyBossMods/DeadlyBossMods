@@ -260,7 +260,6 @@ L.SpamBlockNoRangeRestore	= "Setze das Abstandsfenster nicht auf den vorherigen 
 L.Area_SpamFilter			= "Spam-Filter"
 L.DontShowFarWarnings		= "Zeige keine Mitteilungen/Timer für weit entfernte Ereignisse"
 L.StripServerName			= "Entferne den Realmnamen der Spieler in Warnungen und Timern"
-L.SpamBlockBossWhispers		= "Aktiviere Filter für &lt;DBM&gt;-Flüstermitteilungen im Kampf"
 L.BlockVersionUpdateNotice	= "Zeige häufigere Meldungen zur Aktualisierung einer veralteten DBM-Version im Chatfenster statt als Pop-up"
 
 L.Area_SpecFilter			= "Filtereinstellungen für Rollen"
@@ -287,7 +286,6 @@ L.HideGuildChallengeUpdates	= "Verberge Gildenerfolgsmeldungen während Bosskäm
 L.HideQuestTooltips			= "Verberge Questziele in Tooltips während Bosskämpfen"
 L.HideTooltips				= "Verberge Tooltips vollständig während Bosskämpfen"
 L.DisableSFX				= "Deaktiviere Soundeffekte während Bosskämpfen"
-L.SpamBlockSayYell			= "Sprechblasen-Ansagen im Chatfenster ausblenden"
 L.DisableCinematics			= "Verberge Videosequenzen"
 L.AfterFirst				= "Nach jeweils einmaligem Abspielen"
 L.Always					= ALWAYS

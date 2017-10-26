@@ -261,7 +261,6 @@ L.SpamBlockNoRangeRestore	= "모드가 '숨김' 명령을 내렸을 때 이전 �
 L.Area_SpamFilter			= "스팸 필터 설정"
 L.DontShowFarWarnings		= "멀리 떨어진 곳의 이벤트에 대한 알림 및 바 표시 안함"
 L.StripServerName			= "경고와 타이머에서 서버명 지우기"
-L.SpamBlockBossWhispers		= "전투중 &lt;DBM&gt; 귓속말 안봄"
 L.BlockVersionUpdateNotice	= "팝업창 대신 대화창에 '업데이트 필요' 알림 더 자주 표시"
 
 L.Area_SpecFilter			= "역할 필터 설정"
@@ -288,7 +287,6 @@ L.HideGuildChallengeUpdates	= "보스 전투중 길드 도전 과제 알림 숨�
 L.HideQuestTooltips			= "보스 전투중 툴팁에서 퀘스트 정보 숨기기"
 L.HideTooltips				= "보스 전투중 모든 툴팁 숨기기"
 L.DisableSFX				= "보스 전투중 소리 채널 (효과음) 끄기"
-L.SpamBlockSayYell			= "말풍선 알림 숨기기"
 L.DisableCinematics			= "게임 내 영상 끄기"
 L.AfterFirst				= "1회 이상 본 영상만"
 L.Always					= "항상 끄기"
