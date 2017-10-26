@@ -62,6 +62,10 @@ L:SetMiscLocalization({
 ---------------------------
 L= DBM:GetModLocalization(1898)
 
+L:SetWarningLocalization({
+	warnSingularitySoon		= "%d秒後擊退"
+})
+
 L:SetMiscLocalization({
 	Obelisklasers	= "石碑雷射"
 })
