@@ -34,7 +34,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(2011)
 
 L:SetMiscLocalization({
-	Pull				= "New playthings? How irresistible!"
+	Pull				= "新的玩具嗎？真是難以抗拒啊！"
 })
 
 -----------------------
@@ -43,7 +43,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(2010)
 
 L:SetMiscLocalization({
-	Pull				= "Yes... come closer, little ones!"
+	Pull				= "對…小傢伙，靠近一點！"
 })
 
 -----------------------
