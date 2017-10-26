@@ -362,7 +362,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.singularityCount = 0
 		voicePhaseChange:Play("phasechange")
 		if self:IsMythic() then
-			timerRupturingSingularityCD:Start(20.3, 1)
+			timerRupturingSingularityCD:Start(19.3, 1)
 		end
 	end
 end

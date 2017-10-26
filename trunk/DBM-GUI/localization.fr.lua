@@ -247,7 +247,6 @@ L.SpamBlockNoRangeRestore	= "Ne pas restaurer le radar de portée quand les addo
 L.Area_SpamFilter			= "Options des filtres de spam"
 L.DontShowFarWarnings		= "Ne pas afficher les annonces/timers pour les événements distants"
 L.StripServerName			= "Ne pas afficher le royaume sur les alertes et les timers"
-L.SpamBlockBossWhispers		= "Filtrer les chuchotements d'alerte &lt;DBM&gt; pendant les rencontres"
 L.BlockVersionUpdateNotice	= "Désactiver le popup de notification de mise à jour"
 
 L.Area_SpecFilter			= "Options du filtre de Spécialisation"
@@ -273,7 +272,6 @@ L.HideGarrisonUpdates		= "Masque les notifications de fief pendant les combats d
 L.HideGuildChallengeUpdates	= "Masque les notifications de défis de guilde pendant les combats de boss"
 L.HideTooltips				= "Masquer le cadre d'information pendant les combats contre un boss"
 L.DisableSFX				= "Désactive le canal des effets sonores pendant les boss" --was missing
-L.SpamBlockSayYell			= "Masquer les annonces des onglets de chat de la fenêtre de discussion pendant les combats contre un boss"
 L.DisableCinematics			= "Désactiver les cinématiques en jeu"
 L.AfterFirst				= "Après que la cinématique ait été jouée une fois"
 L.Always					= "Toujours"
