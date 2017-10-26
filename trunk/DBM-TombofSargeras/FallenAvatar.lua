@@ -278,10 +278,15 @@ function mod:SPELL_CAST_START(args)
 		self.vb.touchCast = self.vb.touchCast + 1
 		specWarnTouchofSargerasGround:Show(self.vb.touchCast)
 		voiceTouchofSargerasGround:Play("helpsoak")
-		timerTouchofSargerasCD:Start(42, self.vb.touchCast+1)--42
 		self:Unschedule(setabilityStatus, self, 239207)--Unschedule for good measure in case next cast start fires before timer expires (in which case have a bad timer)
 		setabilityStatus(self, 239207, 1)--Set on Cooldown
-		self:Schedule(42, setabilityStatus, self, 239207, 0)--Set ready to use when CD expires
+		if self:IsMythic() then
+			timerTouchofSargerasCD:Start(60, self.vb.touchCast+1)--42
+			self:Schedule(60, setabilityStatus, self, 239207, 0)--Set ready to use when CD expires
+		else
+			timerTouchofSargerasCD:Start(42, self.vb.touchCast+1)--42
+			self:Schedule(42, setabilityStatus, self, 239207, 0)--Set ready to use when CD expires
+		end
 	elseif spellId == 239132 or spellId == 235572 then
 		self.vb.realityCount = self.vb.realityCount + 1
 		specWarnRuptureRealities:Show()
