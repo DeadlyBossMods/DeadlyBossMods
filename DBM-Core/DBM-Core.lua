@@ -121,7 +121,6 @@ DBM.DefaultOptions = {
 	DisableStatusWhisper = false,
 	DisableGuildStatus = false,
 	HideBossEmoteFrame2 = true,
-	SpamBlockBossWhispers = true,
 	ShowMinimapButton = false,
 	ShowFlashFrame = true,
 	SWarningAlphabetical = true,
@@ -278,7 +277,6 @@ DBM.DefaultOptions = {
 	MoviesSeen = {},
 	MovieFilter = "AfterFirst",
 	LastRevision = 0,
-	FilterSayAndYell = false,
 	DebugMode = false,
 	DebugLevel = 1,
 	RoleSpecAlert = true,
@@ -6518,46 +6516,6 @@ do
 		local presenceId = select(12, ...) -- srsly?
 		return onWhisper(msg, presenceId, true)
 	end
-end
-
--------------------
---  Chat Filter  --
--------------------
-do
-	local function filterOutgoing(self, event, ...)
-		local msg = ...
-		if not msg and self then -- compatibility mode!
-			-- we also check if self exists to prevent a possible freeze if the function is called without arguments at all
-			-- as this would be even worse than the issue with missing whisper messages ;)
-			return filterOutgoing(nil, nil, self, event)
-		end
-		return msg:sub(1, chatPrefix:len()) == chatPrefix or msg:sub(1, chatPrefixShort:len()) == chatPrefixShort, ...
-	end
-
-	local function filterIncoming(self, event, ...)
-		local msg = ...
-		if not msg and self then -- compatibility mode!
-			return filterIncoming(nil, nil, self, event)
-		end
-		if DBM.Options.SpamBlockBossWhispers then
-			return #inCombat > 0 and (msg == "status" or msg:sub(1, chatPrefix:len()) == chatPrefix or msg:sub(1, chatPrefixShort:len()) == chatPrefixShort), ...
-		else
-			return msg == "status" and #inCombat > 0, ...
-		end
-	end
-
-	local function filterSayYell(self, event, ...)
-		return DBM.Options.FilterSayAndYell and #inCombat > 0, ...
-	end
-
-	--This is the source of the taints. As well as function DBM:AddMsg(text, prefix) function
-	--Which is why we embed libchatanims to fix those taints.
-	ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER_INFORM", filterOutgoing)
-	ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_WHISPER_INFORM", filterOutgoing)
-	ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER", filterIncoming)
-	ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_WHISPER", filterIncoming)
-	ChatFrame_AddMessageEventFilter("CHAT_MSG_SAY", filterSayYell)
-	ChatFrame_AddMessageEventFilter("CHAT_MSG_YELL", filterSayYell)
 end
 
 --This completely unregisteres or registers distruptive events so they don't obstruct combat
