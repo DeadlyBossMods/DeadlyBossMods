@@ -2472,7 +2472,7 @@ do
 		PlaySound(850)
 	end
 
---[[	local function linkHook(self, link, string, button, ...)
+	local function linkHook(self, link, string, button, ...)
 		local linkType, arg1, arg2, arg3, arg4, arg5, arg6 = strsplit(":", link)
 		if linkType ~= "DBM" then
 			return
@@ -2510,10 +2510,9 @@ do
 			_G["ChatFrame" .. i]:HookScript("OnHyperlinkClick", linkHook)
 		end
 		i = i + 1
-	end--]]
+	end
 end
 
---[[
 do
 	local old = ItemRefTooltip.SetHyperlink -- we have to hook this function since the default ChatFrame code assumes that all links except for player and channel links are valid arguments for this function
 	function ItemRefTooltip:SetHyperlink(link, ...)
@@ -2523,7 +2522,6 @@ do
 		return old(self, link, ...)
 	end
 end
---]]
 
 
 -----------------
