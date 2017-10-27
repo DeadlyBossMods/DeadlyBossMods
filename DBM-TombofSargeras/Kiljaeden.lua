@@ -331,8 +331,8 @@ function mod:SPELL_CAST_START(args)
 		--Special snow flake (https://www.warcraftlogs.com/reports/xntG1J4r7MmwAPqB#fight=3&type=summary&pins=2%24Off%24%23244F4B%24expression%24(ability.id%20%3D%20238502%20or%20ability.id%20%3D%20237725%20or%20ability.id%20%3D%20238999%20or%20ability.id%20%3D%20243982%20or%20ability.id%20%3D%20240910%20or%20ability.id%20%3D%20241983)%20and%20type%20%3D%20%22begincast%22%0A%20or%20(ability.id%20%3D%20239932%20or%20ability.id%20%3D%20235059%20or%20ability.id%20%3D%20238502%20or%20ability.id%20%3D%20239785%20or%20ability.id%20%3D%20236378%20or%20ability.id%20%3D%20236710%20or%20ability.id%20%3D%20237590%20or%20ability.id%20%3D%20236498%20or%20ability.id%20%3D%20238430)%20and%20type%20%3D%20%22cast%22%0A%20or%20ability.id%20%3D%20244834%20and%20type%20%3D%20%22applybuff%22%20or%20(ability.id%20%3D%20241983%20or%20ability.id%20%3D%20244834)%20and%20type%20%3D%20%22removebuff%22%0A%20or%20ability.name%20%3D%20%22Rupturing%20Singularity%22%20and%20target.name%20%3D%20%22Omegal%22&view=events)
 		--TODO, see if this happens more than once (8th claw, etc)
 		if self.vb.phase == 3 and self.vb.felClawsCount == 4 then
-			timerFelclawsCD:Start(20, self.vb.felClawsCount+1)
-			countdownFelclaws:Start(20)
+			timerFelclawsCD:Start(16, self.vb.felClawsCount+1)
+			countdownFelclaws:Start(16)
 		elseif self.vb.phase == 2 and self:IsMythic() and self.vb.felClawsCount == 2 then--Only sub 24 niche case?
 			timerFelclawsCD:Start(22.9, self.vb.felClawsCount+1)
 			countdownFelclaws:Start(22.9)
