@@ -839,10 +839,18 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		specWarnFlamingOrbSpawn:Show(self.vb.orbCount)
 		voiceFlameOrbSpawn:Play("watchstep")
 		voiceFlameOrbSpawn:Schedule(1, "runout")
-		if self.vb.orbCount % 2 == 0 then
-			timerFlamingOrbCD:Start(64, self.vb.orbCount+1)
+		if self:IsMythic() then
+			if self.vb.orbCount < 3 then
+				timerFlamingOrbCD:Start(15, self.vb.orbCount+1)
+			else
+				timerFlamingOrbCD:Start(64, self.vb.orbCount+1)
+			end
 		else
-			timerFlamingOrbCD:Start(31, self.vb.orbCount+1)
+			if self.vb.orbCount % 2 == 0 then
+				timerFlamingOrbCD:Start(64, self.vb.orbCount+1)
+			else
+				timerFlamingOrbCD:Start(31, self.vb.orbCount+1)
+			end
 		end
 	end
 end
