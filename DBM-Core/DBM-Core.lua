@@ -2418,6 +2418,7 @@ function DBM:ShowPizzaInfo(id, sender)
 	end
 end
 
+--[[
 ------------------
 --  Hyperlinks  --
 ------------------
@@ -2522,7 +2523,7 @@ do
 		return old(self, link, ...)
 	end
 end
-
+--]]
 
 -----------------
 --  GUI Stuff  --

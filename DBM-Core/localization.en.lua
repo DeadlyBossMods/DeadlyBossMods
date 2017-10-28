@@ -19,7 +19,7 @@ DBM_CORE_LOAD_MOD_DISABLED			= "%s is installed but currently disabled. This mod
 DBM_CORE_LOAD_MOD_DISABLED_PLURAL	= "%s are installed but currently disabled. These mods will not be loaded unless you enable them."
 
 DBM_CORE_WHATS_NEW					= "'Expand Upwards' and 'Fill Bars' options can now be adjusted per bar type (small/large) instead of globally. Try it out!"
-DBM_CORE_WHATS_NEW_LINK				= "Remember: You can report bugs, give feedback, or just hang out in DBM Discord. |HDBM:forumsnews|h|cff3588ffDiscord Link|r"
+--DBM_CORE_WHATS_NEW_LINK				= "Remember: You can report bugs, give feedback, or just hang out in DBM Discord. |HDBM:forumsnews|h|cff3588ffDiscord Link|r"
 
 --Post Patch 7.1
 DBM_CORE_NO_RANGE					= "Range Radar can not be used in instances. Legacy text range frame used instead"
@@ -178,7 +178,8 @@ DBM_CORE_OUT_OF_DATE_NAG				= "Your version of Deadly Boss Mods is out-of-date. 
 
 DBM_CORE_MOVABLE_BAR				= "Drag me!"
 
-DBM_PIZZA_SYNC_INFO					= "|Hplayer:%1$s|h[%1$s]|h sent you a DBM timer: '%2$s'\n|HDBM:cancel:%2$s:nil|h|cff3588ff[Cancel this timer]|r|h  |HDBM:ignore:%2$s:%1$s|h|cff3588ff[Ignore timers from %1$s]|r|h"
+--DBM_PIZZA_SYNC_INFO					= "|Hplayer:%1$s|h[%1$s]|h sent you a DBM timer: '%2$s'\n|HDBM:cancel:%2$s:nil|h|cff3588ff[Cancel this timer]|r|h  |HDBM:ignore:%2$s:%1$s|h|cff3588ff[Ignore timers from %1$s]|r|h"
+DBM_PIZZA_SYNC_INFO					= "|Hplayer:%1$s|h[%1$s]|h sent you a DBM timer"
 DBM_PIZZA_CONFIRM_IGNORE			= "Do you really want to ignore DBM timers from %s for this session?"
 DBM_PIZZA_ERROR_USAGE				= "Usage: /dbm [broadcast] timer <time> <text>. <time> must be greater than 1."
 
@@ -545,7 +546,8 @@ DBM_INSTANCE_INFO_STATS_DENIED		= "Denied the request: %s"
 DBM_INSTANCE_INFO_STATS_AWAY		= "Away: %s"
 DBM_INSTANCE_INFO_STATS_NO_RESPONSE	= "No recent DBM version installed: %s"
 DBM_INSTANCE_INFO_RESULTS			= "Instance ID scan results. Note that instances might show up more than once if there are players with localized WoW clients in your raid."
-DBM_INSTANCE_INFO_SHOW_RESULTS		= "Players yet to respond: %s\n|HDBM:showRaidIdResults|h|cff3588ff[Show results now]|r|h"
+--DBM_INSTANCE_INFO_SHOW_RESULTS		= "Players yet to respond: %s\n|HDBM:showRaidIdResults|h|cff3588ff[Show results now]|r|h"
+DBM_INSTANCE_INFO_SHOW_RESULTS		= "Players yet to respond: %s"
 
 DBM_CORE_LAG_CHECKING				= "Checking raid Latency..."
 DBM_CORE_LAG_HEADER					= "Deadly Boss Mods - Latency Results"
