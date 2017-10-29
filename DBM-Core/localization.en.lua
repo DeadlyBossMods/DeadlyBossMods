@@ -87,7 +87,6 @@ DBM_CORE_MPROFILE_DELETE_SELF_ERROR	= "Cannot delete mod settings currently in u
 DBM_CORE_MPROFILE_DELETE_S_ERROR	= "Source is corrupted. Settings not deleted or partly deleted. Delete failed."
 
 DBM_CORE_NOTE_SHARE_SUCCESS			= "%s has shared their note for %s"
-DBM_CORE_NOTE_SHARE_LINK			= "Click Here to Open Note"
 DBM_CORE_NOTE_SHARE_FAIL			= "%s attempted to share note text with you for %s. However, mod associated with this ability is not uninstalled or is not loaded. If you need this note, make sure you load the mod they are sharing notes for and ask them to share again"
 
 DBM_CORE_NOTEHEADER					= "Enter your note text here for %s. Enclosing a players name with >< class colors it. For alerts with multiple notes, separate notes with '/'"
