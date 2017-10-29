@@ -3886,7 +3886,7 @@ do
 	
 	syncHandlers["NS"] = function(sender, modid, modvar, text, abilityName)
 		if sender == playerName then return end
-		if DBM.Options.BlockNoteShare or InCombatLockdown() or UnitAffectingCombat("player") or IsFalling() then return end
+		if DBM.Options.BlockNoteShare or InCombatLockdown() or UnitAffectingCombat("player") or IsFalling() or DBM:GetRaidRank(sender) == 0 then return end
 		if IsInGroup(LE_PARTY_CATEGORY_INSTANCE) and IsInInstance() then return end
 		--^^You are in LFR, BG, or LFG. Block note syncs. They shouldn't be sendable, but in case someone edits DBM^^
 		local mod = DBM:GetModByName(modid or "")
@@ -3895,7 +3895,8 @@ do
 			if DBM:AntiSpam(5, modvar) then--Don't allow calling same note more than once per 5 seconds
 				DBM:AddMsg(DBM_CORE_NOTE_SHARE_SUCCESS:format(sender, abilityName))
 				--Need to use modid in URL because we cannot insert a mod table into one
-				DBM:AddMsg(("|HDBM:noteshare:%s:%s:%s:%s:%s|h|cff3588ff[%s]"):format(modid, modvar, ability, text, sender, DBM_CORE_NOTE_SHARE_LINK))
+				--DBM:AddMsg(("|HDBM:noteshare:%s:%s:%s:%s:%s|h|cff3588ff[%s]"):format(modid, modvar, ability, text, sender, DBM_CORE_NOTE_SHARE_LINK))
+				DBM:ShowNoteEditor(mod, modvar, ability, text, sender)
 			else
 				DBM:Debug(sender.." is attempting to send too many notes so notes are being throttled")
 			end
