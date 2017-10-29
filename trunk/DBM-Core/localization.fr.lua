@@ -75,7 +75,6 @@ DBM_CORE_MPROFILE_DELETE_SELF_ERROR	= "Impossible de supprimer les paramètres d
 DBM_CORE_MPROFILE_DELETE_S_ERROR	= "La source est corrompue. Les paramètres n'ont pas été supprimés ou supprimés partiellement. Echec de la suppression."
 
 DBM_CORE_NOTE_SHARE_SUCCESS			= "%s a partagé sa note pour %s"
-DBM_CORE_NOTE_SHARE_LINK			= "Cliquez ici pour ouvrir les notes"
 DBM_CORE_NOTE_SHARE_FAIL			= "%s a essayé de partager un texte de note pour %s. Malheureusement, le mod associé avec cette note n'est pas installé ou activé. Si vous avez besoin de celle-ci, Assurez vous d'avoir activé le mod pour lequel cette note est destinée."
 
 DBM_CORE_NOTEHEADER					= "Entrez votre texte de note ici pour %s. Entourer le nom d'un joueur avec >< affichera la couleur associée. Pour les alertes vaec des notes multiples, séparez les par '/'"

@@ -88,7 +88,6 @@ DBM_CORE_MPROFILE_DELETE_SELF_ERROR	= "사용중에는 모드를 삭제할 수 �
 DBM_CORE_MPROFILE_DELETE_S_ERROR	= "원본이 손상되었습니다. 설정이 삭제되지 않거나 일부만 삭제됩니다. 삭제에 실패했습니다."
 
 DBM_CORE_NOTE_SHARE_SUCCESS			= "%s|1이;가; %s에 대한 메모를 공유했습니다."
-DBM_CORE_NOTE_SHARE_LINK			= "메모를 확인하려면 여기를 클릭하세요"
 DBM_CORE_NOTE_SHARE_FAIL			= "%s|1이;가; %s에 대한 메모 공유를 시도했습니다. 하지만 해당 보스 스킬에 관련된 모드를 설치하지 않았거나 로딩하지 않은 상태입니다. 이 메모가 필요하다면 해당 모드를 로딩했는지 확인 후 공유를 다시 요청하세요."
 
 DBM_CORE_NOTEHEADER					= "%s에 대한 메모를 여기에 입력하세요. 캐릭터명을 >< 로 감싸면 직업 색상으로 표시됩니다. 여러개의 메모가 필요한 경우 '/'로 분리하세요."
