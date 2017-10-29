@@ -20,7 +20,6 @@ DBM_CORE_LOAD_MOD_DISABLED			= "%s|1이;가; 설치는 돼있지만 켜져있질
 DBM_CORE_LOAD_MOD_DISABLED_PLURAL	= "%s|1이;가; 설치는 돼있지만 켜져있질 않습니다. 직접 켜기 전까진 모드들이 로딩되지 않습니다."
 
 DBM_CORE_WHATS_NEW					= "이제 바 종류별(작은 바/큰 바)로 '위로 쌓기'와 '채워나가기' 옵션을 조정할 수 있습니다. 한번 사용해 보세요!"
-DBM_CORE_WHATS_NEW_LINK				= "정보: DBM 디스코드 채널에 오셔서 버그 제보나 피드백을 해주세요. 아니면 그냥 놀러 오셔도 됩니다. |HDBM:forumsnews|h|cff3588ff디스코드 채널 링크|r"
 
 --Post Patch 7.1
 DBM_CORE_NO_RANGE					= "거리 레이더를 인스턴스 던전에서 사용할 수 없습니다. 예전의 텍스트 방식 거리창으로 대체됩니다."
