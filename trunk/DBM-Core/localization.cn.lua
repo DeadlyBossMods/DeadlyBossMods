@@ -26,7 +26,6 @@ DBM_CORE_LOAD_MOD_DISABLED			= "%s 模块已安装但被禁用。该模块不会
 DBM_CORE_LOAD_MOD_DISABLED_PLURAL	= "%s 模块已安装但被禁用。这些模块不会被载入除非启用它们。"
 
 DBM_CORE_WHATS_NEW					= "'快消失的计时条在上'和'填充计时条'选项可以分别对大型和小型计时条独立设置了。試試看！"
-DBM_CORE_WHATS_NEW_LINK				= "記得：你可以到DBM Discord裡回報bug，給些回饋或是到這走走：|HDBM:forumsnews|h|cff3588ffDiscord连接|r"
 
 --Post Patch 7.1
 DBM_CORE_NO_RANGE					= "距离雷达在副本中无法使用，该功能会使用文本代替"
