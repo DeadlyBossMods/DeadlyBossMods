@@ -349,30 +349,6 @@ do
 		GameTooltip:SetPoint("BOTTOMLEFT", nil, "BOTTOMLEFT", x + 5, y + 2)
 	end
 
-	--[[local function onHyperlinkClick(self, data, link)
-		if IsShiftKeyDown() then
-			local msg = link:gsub("|h(.*)|h", "|h[%1]|h")
-			local chatWindow = ChatEdit_GetActiveWindow()
-			if chatWindow then
-				chatWindow:Insert(msg)
-			end
-		elseif not IsShiftKeyDown() then
-			local linkType = strsplit(":", data)
-			if linkType == "http" then
-				local ChatFrameEditBox = ChatEdit_ChooseBoxForSend()
-				if (not ChatFrameEditBox:IsShown()) then
-					ChatEdit_ActivateChat(ChatFrameEditBox)
-				end
-				ChatFrameEditBox:Insert(data)
-				ChatFrameEditBox:HighlightText()
-				return
-			end
-			if cursorInHitBox(self:GetParent()) then
-				self:GetParent():Click()
-			end
-		end
-	end--]]
-
 	local function onHyperlinkEnter(self, data, link)
 		GameTooltip:SetOwner(self, "ANCHOR_NONE") -- I want to anchor BOTTOMLEFT of the tooltip to the cursor... (not BOTTOM as in ANCHOR_CURSOR)
 		local linkType = strsplit(":", data)
@@ -533,7 +509,6 @@ do
 			html = _G[buttonName.."Text"]
 			html:SetFontObject("GameFontNormal")
 			html:SetHyperlinksEnabled(true)
-			--html:SetScript("OnHyperlinkClick", onHyperlinkClick)
 			html:SetScript("OnHyperlinkEnter", onHyperlinkEnter)
 			html:SetScript("OnHyperlinkLeave", onHyperlinkLeave)
 			html:SetHeight(25)
@@ -673,7 +648,6 @@ function PanelPrototype:CreateScrollingMessageFrame(width, height, insertmode, f
 	scrollframe:EnableMouse(true)
 	scrollframe:EnableMouseWheel(1)
 
-	--scrollframe:SetScript("OnHyperlinkClick", ChatFrame_OnHyperlinkShow)
 	scrollframe:SetScript("OnMouseWheel", function(self, delta)
 		if delta == 1 then
 			self:ScrollUp()
