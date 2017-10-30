@@ -172,6 +172,14 @@ function mod:OnCombatEnd()
 	end
 end
 
+function mod:OnTimerRecovery()
+	if self:IsMythic() then
+		self:SetCreatureID(122468, 122467, 122469, 125436)
+	else
+		self:SetCreatureID(122468, 122467, 122469)
+	end
+end
+
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 245627 then
