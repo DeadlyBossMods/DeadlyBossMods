@@ -5547,6 +5547,9 @@ do
 				end
 			else
 				self:AddMsg(DBM_CORE_COMBAT_STATE_RECOVERED:format(difficultyText..name, strFromTime(delay)))
+				if mod.OnTimerRecovery then
+					mod:OnTimerRecovery()
+				end
 			end
 			if savedDifficulty == "worldboss" and not mod.noWBEsync then
 				if lastBossEngage[modId..playerRealm] and (GetTime() - lastBossEngage[modId..playerRealm] < 30) then return end--Someone else synced in last 10 seconds so don't send out another sync to avoid needless sync spam.
