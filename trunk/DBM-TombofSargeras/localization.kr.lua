@@ -65,6 +65,14 @@ L:SetMiscLocalization({
 ---------------------------
 L= DBM:GetModLocalization(1898)
 
+L:SetWarningLocalization({
+	warnSingularitySoon		= "%d초 후 넉백"
+})
+
+L:SetOptionLocalization({
+	warnSingularitySoon		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.soon:format(235059)
+})
+
 L:SetMiscLocalization({
 	Obelisklasers	= "방첨탑 레이저"
 })
