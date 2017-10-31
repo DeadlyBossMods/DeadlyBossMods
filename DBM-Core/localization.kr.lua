@@ -1,11 +1,11 @@
 if (GetLocale() == "koKR") then
 
-DBM_CORE_NEED_LOCALS				= "프로그래밍이나 언어에 소질이 있으신가요? 그렇다면 DBM이 다른 언어를 더 지원할 수 있게 도와주세요. 저희를 돕고 싶다면 |HDBM:localizersneeded|h|cff3588ff여기를 클릭|r해서 포럼을 방문해 주세요."
+DBM_CORE_NEED_LOCALS				= "프로그래밍 혹은 어학 능력이 출중하신가요? 그렇다면 DBM은 더 많은 언어를 지원하기 위해 당신의 도움이 필요합니다. 저희를 돕고 싶다면 DBM 포럼 또는 DBM 디스코드 서버를 방문하시거나 MysticalOS에게 직접 연락을 취해주세요."
 DBM_CORE_NEED_LOGS					= "DBM은 이 보스의 Transcriptor (http://www.wowace.com/addons/transcriptor/) 로그가 있어야 최고의 모드를 만들 수 있습니다. 저희를 돕고 싶다면 이 보스의 Transcriptor 로그를 DBM 포럼이나 디스코드에 올려주세요."
-DBM_HOW_TO_USE_MOD					= "DBM을 사용해 주셔서 감사합니다. 대화창에서 /dbm help를 입력하면 사용 가능한 명령어 목록을 볼 수 있습니다. 설정을 하시려면 /dbm을 입력하세요. 보스 알림 설정을 기호에 맞게 변경하려면 해당 던전을 직접 선택해서 로딩해야 합니다. DBM은 첫 실행시 당신의 전문화를 인식해서 그에 맞게 최적화 된 설정을 제공하지만 일부 설정을 추가로 켜야할 때도 있을 겁니다."
+DBM_HOW_TO_USE_MOD					= "DBM을 사용해 주셔서 감사합니다. 대화창에서 /dbm help를 입력하면 사용 가능한 명령어 목록을 볼 수 있습니다. 설정을 하시려면 /dbm을 입력하세요. 보스 알림 설정을 기호에 맞게 변경하려면 해당 던전을 직접 선택해서 로딩해야 합니다. DBM이 당신의 현재 전문화에 맞는 기본값을 설정하겠지만 일부 옵션은 직접 조정을 할 필요도 있습니다."
 DBM_SILENT_REMINDER					= "알림: DBM이 아직도 조용함 모드입니다."
 
-DBM_FORUMS_MESSAGE					= "버그를 발견했거나 타이머가 맞지 않나요? 경고, 타이머, 특수 기능이 더 추가됐으면 하는 보스 모드가 있나요?\n그렇다면 새 Deadly Boss Mods 토론장(|HDBM:forums|h|cff3588ffhttp://www.deadlybossmods.com|r)을 방문해서 버그를 제보하고 새 기능을 요청해 보세요. (링크를 클릭하면 주소를 복사할 수 있습니다)"
+DBM_FORUMS_MESSAGE					= "버그를 발견했거나 타이머가 맞지 않나요? 경보, 타이머, 특수 기능이 더 추가됐으면 하는 보스 모드가 있나요?\nDBM 포럼이나 DBM 디스코드 서버에 오셔서 피드백을 보내주세요."
 DBM_FORUMS_COPY_URL_DIALOG			= "토론장과 사용자 지원 포럼을 방문해 보세요"
 DBM_FORUMS_COPY_URL_DIALOG_NEWS		= "새로운 기능과 작동 방식을 알고 싶으시다면 저희 포럼을 방문해 주세요"
 
@@ -19,7 +19,7 @@ DBM_CORE_LOAD_MOD_VER_MISMATCH		= "DBM-Core가 로딩 조건과 맞지 않아 %s
 DBM_CORE_LOAD_MOD_DISABLED			= "%s|1이;가; 설치는 돼있지만 켜져있질 않습니다. 직접 켜기 전까진 모드가 로딩되지 않습니다."
 DBM_CORE_LOAD_MOD_DISABLED_PLURAL	= "%s|1이;가; 설치는 돼있지만 켜져있질 않습니다. 직접 켜기 전까진 모드들이 로딩되지 않습니다."
 
-DBM_CORE_WHATS_NEW					= "이제 바 종류별(작은 바/큰 바)로 '위로 쌓기'와 '채워나가기' 옵션을 조정할 수 있습니다. 한번 사용해 보세요!"
+DBM_CORE_WHATS_NEW					= "대화창 Taint 문제로 인해 몇가지 대화창과 링크 Hook 기능이 삭제되었으며 이로 인해 일부 기능들이 삭제되거나 변경되었습니다 (사실 저는 UI Taint를 재현할 수 없었습니다. 따라서 이러한 변경 사항은 일단 그냥 시도만 해보는 것입니다)"
 
 --Post Patch 7.1
 DBM_CORE_NO_RANGE					= "거리 레이더를 인스턴스 던전에서 사용할 수 없습니다. 예전의 텍스트 방식 거리창으로 대체됩니다."
@@ -34,7 +34,7 @@ DBM_CORE_LOOT_SPEC_REMINDER			= "현재 전문화는 %s입니다. 현재 지정�
 
 DBM_CORE_BIGWIGS_ICON_CONFLICT		= "DBM이 BigWigs와 DBM 모두 공격대 징표 기능을 사용하고 있음을 감지했습니다. 충돌을 방지하기 위해 공대장이 두 애드온중 하나의 징표 설정을 비활성화해야 합니다."
 
-DBM_CORE_MOD_AVAILABLE				= "본 콘텐트에서 %s|1을;를; 사용할 수 있습니다. |HDBM:forums|h|cff3588ffdeadlybossmods.com|r 또는 Curse에서 다운로드 받으실 수 있습니다. 이 메시지는 한 번만 표시됩니다."
+DBM_CORE_MOD_AVAILABLE				= "본 콘텐트에서 %s|1을;를; 사용할 수 있습니다. deadlybossmods.com 또는 Curse에서 다운로드 받으실 수 있습니다. 이 메시지는 다음부턴 나오지 않습니다."
 
 DBM_CORE_COMBAT_STARTED				= "%s 전투 시작. 행운을 빕니다! :)";
 DBM_CORE_COMBAT_STARTED_IN_PROGRESS	= "%s 전투 진행 도중 참가했습니다. 행운을 빕니다! :)"
@@ -177,7 +177,8 @@ DBM_CORE_OUT_OF_DATE_NAG				= "현재 사용중인 Deadly Boss Mods 버전이 �
 
 DBM_CORE_MOVABLE_BAR				= "드래그 하세요!"
 
-DBM_PIZZA_SYNC_INFO					= "|Hplayer:%1$s|h[%1$s]|h|1이;가; 당신에게 DBM 타이머 전송: '%2$s'\n|HDBM:cancel:%2$s:nil|h|cff3588ff[타이머 취소]|r|h  |HDBM:ignore:%2$s:%1$s|h|cff3588ff[%1$s의 타이머 차단]|r|h"
+--DBM_PIZZA_SYNC_INFO					= "|Hplayer:%1$s|h[%1$s]|h|1이;가; 당신에게 DBM 타이머 전송: '%2$s'\n|HDBM:cancel:%2$s:nil|h|cff3588ff[타이머 취소]|r|h  |HDBM:ignore:%2$s:%1$s|h|cff3588ff[%1$s의 타이머 차단]|r|h"
+DBM_PIZZA_SYNC_INFO					= "|Hplayer:%1$s|h[%1$s]|h1이;가; 당신에게 DBM 타이머를 전송했습니다"
 DBM_PIZZA_CONFIRM_IGNORE			= "정말 %s의 DBM 타이머를 차단하시겠습니까? 이 공격대에 있는 동안에만 적용됩니다."
 DBM_PIZZA_ERROR_USAGE				= "사용법: /dbm [broadcast] timer <시간> <텍스트>. <시간>은 1초 이상이어야 합니다."
 
@@ -523,7 +524,8 @@ DBM_INSTANCE_INFO_STATS_DENIED		= "확인 요청 거부: %s"
 DBM_INSTANCE_INFO_STATS_AWAY		= "자리 비움: %s"
 DBM_INSTANCE_INFO_STATS_NO_RESPONSE	= "최근 버전 DBM 미설치: %s"
 DBM_INSTANCE_INFO_RESULTS			= "인스턴스 ID 검사가 끝났습니다. 다른 언어의 WoW 클라이언트를 사용 중인 공격대원이 있다면 같은 인스턴스가 여러개 보일 수 있습니다."
-DBM_INSTANCE_INFO_SHOW_RESULTS		= "응답 안한 플레이어: %s\n|HDBM:showRaidIdResults|h|cff3588ff[지금 결과 보기]|r|h"
+--DBM_INSTANCE_INFO_SHOW_RESULTS		= "응답 안한 플레이어: %s\n|HDBM:showRaidIdResults|h|cff3588ff[지금 결과 보기]|r|h"
+DBM_INSTANCE_INFO_SHOW_RESULTS		= "응답 안한 플레이어: %s"
 
 DBM_CORE_LAG_CHECKING				= "공격대의 지연시간 확인중..."
 DBM_CORE_LAG_HEADER					= "Deadly Boss Mods - 지연시간 확인 결과"
