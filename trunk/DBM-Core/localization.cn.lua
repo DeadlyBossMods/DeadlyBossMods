@@ -2,16 +2,16 @@
 -- Diablohu(diablohudream@gmail.com)
 -- yleaf(yaroot@gmail.com)
 -- Mini Dragon(projecteurs@gmail.com)
--- Last update: 2017/08/29
+-- Last update: 2017/11/01
 
 if GetLocale() ~= "zhCN" then return end
 
-DBM_CORE_NEED_LOCALS				= "如果你会编程并且英语不错，请来帮助我们完善DBM中文翻译。请|HDBM:localizersneeded|h|cff3588ff点击此处|获取更多消息。"
-DBM_CORE_NEED_LOGS					= "DBM需要战斗记录器 (http://www.wowace.com/addons/transcriptor/) 的日志来使得技能判断更准确。如果你想帮忙，请用 transcriptor 记录并上传日志文件到我们的论坛。"
-DBM_HOW_TO_USE_MOD					= "欢迎使用DBM。在聊天框输入 /dbm help 以获取可用命令的帮助。输入 /dbm 可打开设置窗口，并对各个Boss模块进行设置，也可以浏览首领击杀记录。DBM 会在你第一次使用时读取你的职业和专精并做出相应设置，但是有些设置需要手动开启。"
+DBM_CORE_NEED_LOCALS				= "如果你会编程并且英语不错，请来帮助我们完善DBM中文翻译。你可以访问DBM论坛，或是在DBM Discord中联系MysticalOS。"
+DBM_CORE_NEED_LOGS					= "DBM需要战斗记录器 (http://www.wowace.com/addons/transcriptor/) 的日志来使得技能判断更准确。如果你想帮忙，请用 transcriptor 记录并上传日志文件到我们的论坛或Discord。"
+DBM_HOW_TO_USE_MOD					= "欢迎使用DBM。在聊天框输入 /dbm help 以获取可用命令的帮助。输入 /dbm 可打开设置窗口，并对各个Boss模块进行设置，也可以浏览首领击杀记录。DBM 会自动按你的专精做出相应配置，但是你可以进行微调。"
 DBM_SILENT_REMINDER					= "提示：DBM 正处于安静模式。"
 
-DBM_FORUMS_MESSAGE					= "发现BUG或错误的计时条?你希望要让某些模组有新的警告，计时器或是特别功能?\n拜访新的Deadly Boss Mods |HDBM:forums|h|cff3588ffhttp://www.deadlybossmods.com|r (你可以点击链接复制网址)"
+DBM_FORUMS_MESSAGE					= "发现BUG或错误的计时条?你希望要让某些模组有新的警告，计时器或是特别功能?\n请前往DBM论坛或到DBM Discord频道给些反馈。"
 DBM_FORUMS_COPY_URL_DIALOG			= "拜访我们的讨论与支持论坛"
 DBM_FORUMS_COPY_URL_DIALOG_NEWS		= "想知道更多关于新功能的信息请拜访我们的论坛"
 
@@ -25,7 +25,7 @@ DBM_CORE_LOAD_MOD_VER_MISMATCH		= "%s 模块无法被载入。 DBM核心版本�
 DBM_CORE_LOAD_MOD_DISABLED			= "%s 模块已安装但被禁用。该模块不会被载入除非启用它。"
 DBM_CORE_LOAD_MOD_DISABLED_PLURAL	= "%s 模块已安装但被禁用。这些模块不会被载入除非启用它们。"
 
-DBM_CORE_WHATS_NEW					= "'快消失的计时条在上'和'填充计时条'选项可以分别对大型和小型计时条独立设置了。試試看！"
+DBM_CORE_WHATS_NEW					= "一些窗口中的链接被移除了防止bug。"
 
 --Post Patch 7.1
 DBM_CORE_NO_RANGE					= "距离雷达在副本中无法使用，该功能会使用文本代替"
@@ -40,7 +40,7 @@ DBM_CORE_LOOT_SPEC_REMINDER			= "你当前的人物专精为 %s。你当前的�
 
 DBM_CORE_BIGWIGS_ICON_CONFLICT		= "DBM检测到你同时开启了Bigwigs,请关闭自动标记以避免冲突。"
 
-DBM_CORE_MOD_AVAILABLE				= "DBM已经为%s制作了相关模块。你可以在 |HDBM:forums|h|cff3588ffdeadlybossmods.com|r 或Curse上找到新版本。本消息只显示一次。"
+DBM_CORE_MOD_AVAILABLE				= "DBM已经为%s制作了相关模块。你可以在 deadlybossmods.com 或Curse上找到新版本。本消息只显示一次。"
 
 DBM_CORE_COMBAT_STARTED				= "%s作战开始，祝你走运 :)"
 DBM_CORE_COMBAT_STARTED_IN_PROGRESS	= "已进行的战斗-%s正在作战。祝你走运 :)"
@@ -183,7 +183,7 @@ DBM_CORE_OUT_OF_DATE_NAG				= "你的DBM已经过期并且你决定不弹出升�
 
 DBM_CORE_MOVABLE_BAR				= "拖动我！"
 
-DBM_PIZZA_SYNC_INFO					= "|Hplayer:%1$s|h[%1$s]|h向你发送了一个DBM计时条：'%2$s'\n|HDBM:cancel:%2$s:nil|h|cff3588ff[取消该计时]|r|h  |HDBM:ignore:%2$s:%1$s|h|cff3588ff[忽略来自%1$s的计时条]|r|h"
+DBM_PIZZA_SYNC_INFO					= "|Hplayer:%1$s|h[%1$s]|h向你发送了一个DBM计时条"
 DBM_PIZZA_CONFIRM_IGNORE			= "是否要在该次游戏连接中屏蔽来自%s的计时条？"
 DBM_PIZZA_ERROR_USAGE				= "命令：/dbm [broadcast] timer <时间（秒）> <文本>"
 
@@ -417,6 +417,8 @@ DBM_CORE_AUTO_TIMER_TEXTS.nextspecial			= "下一次特殊技能"
 DBM_CORE_AUTO_TIMER_TEXTS.achievement 			= "%s"
 DBM_CORE_AUTO_TIMER_TEXTS.stage					= "下一阶段"
 DBM_CORE_AUTO_TIMER_TEXTS.adds					= "下一波小怪"
+DBM_CORE_AUTO_TIMER_TEXTS.addscustom			= "小怪 (%s)"
+DBM_CORE_AUTO_TIMER_TEXTS.roleplay				= GUILD_INTEREST_RP
 
 DBM_CORE_AUTO_TIMER_OPTIONS.target				= "计时条：$spell:%s减益效果持续时间"
 DBM_CORE_AUTO_TIMER_OPTIONS.cast				= "计时条：$spell:%s施法时间"
@@ -431,9 +433,10 @@ DBM_CORE_AUTO_TIMER_OPTIONS.next				= "计时条：下一次$spell:%s"
 DBM_CORE_AUTO_TIMER_OPTIONS.nextcount			= "计时条：下一次$spell:%s"
 DBM_CORE_AUTO_TIMER_OPTIONS.nextsource			= "计时条：下一次$spell:%s以及来源"
 DBM_CORE_AUTO_TIMER_OPTIONS.nextspecial			= "计时条：下一次特殊技能"
-DBM_CORE_AUTO_TIMER_OPTIONS.achievement			= "计时条：成就%s"
+DBM_CORE_AUTO_TIMER_OPTIONS.achievement			= "计时条：成就-%s"
 DBM_CORE_AUTO_TIMER_OPTIONS.stage				= "计时条：下一阶段"
 DBM_CORE_AUTO_TIMER_OPTIONS.adds				= "计时条：下一波小怪"
+DBM_CORE_AUTO_TIMER_OPTIONS.addscustom			= "计时条：下一波小怪"
 DBM_CORE_AUTO_TIMER_OPTIONS.roleplay			= "计时条：剧情"
 
 DBM_CORE_AUTO_ICONS_OPTION_TEXT				= "为$spell:%s的目标添加团队标记"
@@ -528,7 +531,7 @@ DBM_INSTANCE_INFO_STATS_DENIED		= "拒绝请求：%s"
 DBM_INSTANCE_INFO_STATS_AWAY		= "暂离：%s"
 DBM_INSTANCE_INFO_STATS_NO_RESPONSE	= "未安装DBM：%s"
 DBM_INSTANCE_INFO_RESULTS			= "副本进度扫描结果。" --Note that instances might show up more than once if there are players with localized WoW clients in your raid.
-DBM_INSTANCE_INFO_SHOW_RESULTS		= "回复请求的玩家：%s\n|HDBM:showRaidIdResults|h|cff3588ff[点击显示结果]|r|h"
+DBM_INSTANCE_INFO_SHOW_RESULTS		= "仍未回复的玩家: %s"
 
 DBM_CORE_LAG_CHECKING				= "延时检测请稍后..."
 DBM_CORE_LAG_HEADER					= "DBM - 延时检测"
