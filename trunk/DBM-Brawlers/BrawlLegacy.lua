@@ -9,7 +9,7 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED 129888 133286 141396 141401 39945 134789",
 	"SPELL_AURA_APPLIED_DOSE 141396 141401 126209 134789 133015 133018",
 	"SPELL_AURA_REMOVED 126209",
-	"SPELL_CAST_START 134740 133607 134777 135621 133346 134743 133286 141104 124860 124935 134795 125212 133465 133017 138845 142621 142583 142795 142788 142769 141189 141190 141192",
+	"SPELL_CAST_START 134740 133607 134777 135621 133346 134743 133286 141104 124860 124935 134795 125212 133465 133017 138845 142621 142583 142795 142788 142769 246120 246121 246127",
 	"SPELL_CAST_SUCCESS 133208 140894 140912",
 	"UNIT_SPELLCAST_INTERRUPTED target focus",
 	"UNIT_SPELLCAST_SUCCEEDED target focus"
@@ -33,9 +33,9 @@ local warnMinesSpawning			= mod:NewSpellAnnounce(133015, 4)--Battletron
 local warnEightChomps				= mod:NewSpellAnnounce(142788, 4)--Mecha-Bruce
 local warnBetterStrongerFaster		= mod:NewSpellAnnounce(142795, 2)--Mecha-Bruce
 local warnStasisBeam				= mod:NewSpellAnnounce(142769, 3)--Mecha-Bruce
-local warnBlindStrike				= mod:NewSpellAnnounce(141189, 3)--Blind Hero
-local warnSwiftStrike				= mod:NewCountAnnounce(141190, 3)--Blind Hero
-local warnBlindCleave				= mod:NewSpellAnnounce(141192, 4)--Blind Hero
+local warnBlindStrike				= mod:NewSpellAnnounce(246120, 3)--Blind Hero
+local warnSwiftStrike				= mod:NewCountAnnounce(246121, 3)--Blind Hero
+local warnBlindCleave				= mod:NewSpellAnnounce(246127, 4)--Blind Hero
 local warnBoomingBoogaloo			= mod:NewSpellAnnounce(140894, 3)--Master Boom Boom
 local warnDeployBoom				= mod:NewSpellAnnounce(140912, 4)--Master Boom Boom
 local warnEvilGlare					= mod:NewSpellAnnounce(133208, 4)--Zen'shar
@@ -60,7 +60,7 @@ local specWarnShadowbolt		= mod:NewSpecialWarningSpell(125212, false)--Let you c
 local specWarnGhost				= mod:NewSpecialWarningSpell(133465, false)--Dark Summoner
 local specWarnMinesSpawning		= mod:NewSpecialWarningSpell(133015)--Battletron
 local specWarnEightChomps			= mod:NewSpecialWarningDodge(142788)--Mecha-Bruce
-local specWarnBlindCleave			= mod:NewSpecialWarningRun(141192, nil, nil, 2, 4)--Blind Hero
+local specWarnBlindCleave			= mod:NewSpecialWarningRun(246127, nil, nil, 2, 4)--Blind Hero
 local specWarnBoomingBoogaloo		= mod:NewSpecialWarningSpell(140894, nil, nil, nil, 2)--Master Boom Boom
 local specWarnDeployBoom			= mod:NewSpecialWarningSpell(140912, nil, nil, nil, 3)--Master Boom Boom
 local specWarnEvilGlare				= mod:NewSpecialWarningMove(133208)--Zen'shar
@@ -84,9 +84,9 @@ local timerGhostCD				= mod:NewNextTimer(13, 133465, nil, nil, nil, 1)--Dark Sum
 local timerEightChompsCD			= mod:NewCDTimer(9.5, 142788, nil, nil, nil, 3)--Mecha-Bruce
 local timerBetterStrongerFasterCD	= mod:NewCDTimer(20, 142795)--Mecha-Bruce
 local timerStasisBeamCD				= mod:NewCDTimer(20, 142769, nil, nil, nil, 3)--Mecha-Bruce
-local timerBlindStrikeCD			= mod:NewNextTimer(2.5, 141189)--Blind Hero
-local timerSwiftStrikeCD			= mod:NewNextTimer(2.4, 141190, nil, false)--May help some but off by default so it doesn't detour focus from the most important one, blind cleave(Blind Hero)
-local timerBlindCleaveD				= mod:NewNextTimer(13, 141192)--Blind Hero
+local timerBlindStrikeCD			= mod:NewNextTimer(2.5, 246120)--Blind Hero
+local timerSwiftStrikeCD			= mod:NewNextTimer(2.4, 246121, nil, false)--May help some but off by default so it doesn't detour focus from the most important one, blind cleave(Blind Hero)
+local timerBlindCleaveD				= mod:NewNextTimer(13, 246127)--Blind Hero
 --local timerStaticChargeCD			= mod:NewCDTimer(24, 135621, nil, nil, nil, 4)--Master Boom Boom
 local timerDarkZoneCD				= mod:NewNextTimer(29, 133346)--Fjoll
 local timerChargingCD				= mod:NewCDTimer(20, 133253)--Crush
@@ -209,26 +209,26 @@ function mod:SPELL_CAST_START(args)
 	elseif args.spellId == 142769 then
 		warnStasisBeam:Show()
 		timerStasisBeamCD:Start()
-	elseif args.spellId == 141189 then
+	elseif args.spellId == 246120 then
 		swiftStrike = 0--Start of a combo. A combo is Blind strike, swift strike x 4, blind cleave. This repeats over and over
 		warnBlindStrike:Show()
 		timerSwiftStrikeCD:Start()
 		timerBlindCleaveD:Start()
-	elseif args.spellId == 141190 then
+	elseif args.spellId == 246121 then
 		swiftStrike = swiftStrike + 1
 		warnSwiftStrike:Show(swiftStrike)
 		if swiftStrike < 4 then
 			timerSwiftStrikeCD:Start()
-		else
-			if brawlersMod:PlayerFighting() then
-				specWarnBlindCleave:Show()
-			end
 		end
 		if brawlersMod:PlayerFighting() and self.Options.SpeakOutStrikes then
 			DBM:PlayCountSound(swiftStrike)
 		end
-	elseif args.spellId == 141192 then
-		warnBlindCleave:Show()
+	elseif args.spellId == 246127 then
+		if brawlersMod:PlayerFighting() then
+			specWarnBlindCleave:Show()
+		else
+		    warnBlindCleave:Show()
+		end
 		timerBlindStrikeCD:Start()
 	end
 end
