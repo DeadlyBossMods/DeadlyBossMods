@@ -512,11 +512,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnEruptingRelections:CombinedShow(0.3, args.destName)
 		local icon = self.vb.eruptingReflectionIcon
 		if args:IsPlayer() then
-			specWarnSRErupting:Show(self:IconNumToTexture(icon))
+			
 			if self:IsMythic() then
+				specWarnSRErupting:Show(self:IconNumToTexture(icon))
 				voiceSRErupting:Play("mm"..icon)
 			else
-				voiceSRErupting:Play("targetyou")
+				specWarnSRErupting:Show(BOSS)
+				voiceSRErupting:Play("gathershare")
 			end
 			yellSRErupting:Countdown(8, nil, icon)
 		end
