@@ -204,13 +204,13 @@ end
 local function handleMissingEmote(self)
 	self:Unschedule(handleMissingEmote)
 	self.vb.singularityCount = self.vb.singularityCount + 1
-	timerRupturingSingularity:Start(8.2, self.vb.singularityCount)
-	countdownSingularity:Start(8.2)
+	timerRupturingSingularity:Start(7.7, self.vb.singularityCount)
+	countdownSingularity:Start(7.7)
 	if self:IsMythic() then
 		local timer = phase1point5MythicSingularityTimers[self.vb.singularityCount+1]
 		if timer then
 			self:Schedule(timer, handleMissingEmote, self)--Already scheduled on delya
-			timerRupturingSingularityCD:Start(timer-1.5, self.vb.singularityCount+1)
+			timerRupturingSingularityCD:Start(timer-2, self.vb.singularityCount+1)
 		end
 	end
 end
@@ -742,7 +742,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 				end
 				local timer = phase1point5MythicSingularityTimers[self.vb.singularityCount+1]
 				if timer then
-					self:Schedule(timer+1.5, handleMissingEmote, self)
+					self:Schedule(timer+2, handleMissingEmote, self)
 					timerRupturingSingularityCD:Start(timer, self.vb.singularityCount+1)
 				end
 			else
