@@ -4921,11 +4921,19 @@ do
 			else
 				local msg = modid.."\t"..modvar.."\t"..syncText.."\t"..abilityName
 				if IsInRaid() then
-					SendAddonMessage("D4", "NS\t" .. msg, "RAID")
-					DBM:AddMsg(DBM_CORE_NOTESHARED)
+					if DBM:GetRaidRank(playerName) == 0 then
+						DBM:AddMsg(DBM_ERROR_NO_PERMISSION)
+					else
+						SendAddonMessage("D4", "NS\t" .. msg, "RAID")
+						DBM:AddMsg(DBM_CORE_NOTESHARED)
+					end
 				elseif IsInGroup(LE_PARTY_CATEGORY_HOME) then
-					SendAddonMessage("D4", "NS\t" .. msg, "PARTY")
-					DBM:AddMsg(DBM_CORE_NOTESHARED)
+					if DBM:GetRaidRank(playerName) == 0 then
+						DBM:AddMsg(DBM_ERROR_NO_PERMISSION)
+					else
+						SendAddonMessage("D4", "NS\t" .. msg, "PARTY")
+						DBM:AddMsg(DBM_CORE_NOTESHARED)
+					end
 				else--Solo
 					DBM:AddMsg(DBM_CORE_NOTESHAREERRORSOLO)
 				end
