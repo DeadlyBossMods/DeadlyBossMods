@@ -843,7 +843,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		voiceFlameOrbSpawn:Schedule(1, "runout")
 		if self:IsMythic() then
 			--"Flaming Orb-244856-npc:117269 = pull:20.1, 15.0, 16.0, 64.0, 15.0, 16.0", -- [1]
-			if self.vb.orbCount == 3 then
+			if self.vb.orbCount % 3 == 0 then
 				timerFlamingOrbCD:Start(64, self.vb.orbCount+1)
 			else
 				timerFlamingOrbCD:Start(15, self.vb.orbCount+1)--15-16
