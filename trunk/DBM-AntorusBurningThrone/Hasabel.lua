@@ -59,7 +59,7 @@ local warnCloyingShadows				= mod:NewTargetAnnounce(245118, 2, nil, false)
 local warnHungeringGloom				= mod:NewTargetAnnounce(245075, 2, nil, false)
 
 --Platform: Nexus
-local specWarnRealityTear				= mod:NewSpecialWarningStack(244016, nil, 3, nil, nil, 1, 2)
+local specWarnRealityTear				= mod:NewSpecialWarningStack(244016, nil, 3, nil, nil, 1, 6)
 local specWarnRealityTearOther			= mod:NewSpecialWarningTaunt(244016, nil, nil, nil, 1, 2)
 local specWarnTransportPortal			= mod:NewSpecialWarningSwitch(244677, "-Healer", nil, 2, 1, 2)
 local specWarnCollapsingWorld			= mod:NewSpecialWarningSpell(243983, nil, nil, nil, 2, 2)
