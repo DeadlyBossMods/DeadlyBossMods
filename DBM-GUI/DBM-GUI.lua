@@ -2491,7 +2491,7 @@ local function CreateOptionsMenu()
 				if firstshow then firstshow = false return end
 				DBM.Options.SpecialWarningFontSize2 = self:GetValue()
 				DBM:UpdateSpecialWarningOptions()
-				DBM:ShowTestSpecialWarning()--Pass with no sound, disabling both flash and sound play. This is a font slider so it only needs font
+				--DBM:ShowTestSpecialWarning()--Pass with no sound, disabling both flash and sound play. This is a font slider so it only needs font
 			end)
 		end
 
@@ -2507,7 +2507,7 @@ local function CreateOptionsMenu()
 				if firstshow then firstshow = false return end
 				DBM.Options.SpecialWarningDuration2 = self:GetValue()
 				DBM:UpdateSpecialWarningOptions()
-				DBM:ShowTestSpecialWarning()--Pass with no sound, disabling both flash and sound play. This is a duration slider so it only needs font
+				--DBM:ShowTestSpecialWarning()--Pass with no sound, disabling both flash and sound play. This is a duration slider so it only needs font
 			end)
 		end
 
@@ -2698,7 +2698,7 @@ local function CreateOptionsMenu()
 				if firstshow then firstshow = false return end
 				DBM.Options.SpecialWarningFlashDura1 = self:GetValue()
 				--DBM:UpdateSpecialWarningOptions()
-				DBM:ShowTestSpecialWarning(nil, 1, true)--Pass with flash but no sound
+				--DBM:ShowTestSpecialWarning(nil, 1, true)--Pass with flash but no sound
 			end)
 		end
 
@@ -2714,7 +2714,7 @@ local function CreateOptionsMenu()
 				if firstshow then firstshow = false return end
 				DBM.Options.SpecialWarningFlashAlph1 = self:GetValue()
 				--DBM:UpdateSpecialWarningOptions()
-				DBM:ShowTestSpecialWarning(nil, 1, true)--Pass with flash but no sound
+				--DBM:ShowTestSpecialWarning(nil, 1, true)--Pass with flash but no sound
 			end)
 		end
 
@@ -2737,7 +2737,7 @@ local function CreateOptionsMenu()
 				if firstshow then firstshow = false return end
 				DBM.Options.SpecialWarningFlashDura2 = self:GetValue()
 				--DBM:UpdateSpecialWarningOptions()
-				DBM:ShowTestSpecialWarning(nil, 2, true)--Pass with flash but no sound
+				--DBM:ShowTestSpecialWarning(nil, 2, true)--Pass with flash but no sound
 			end)
 		end
 
@@ -2753,7 +2753,7 @@ local function CreateOptionsMenu()
 				if firstshow then firstshow = false return end
 				DBM.Options.SpecialWarningFlashAlph2 = self:GetValue()
 				--DBM:UpdateSpecialWarningOptions()
-				DBM:ShowTestSpecialWarning(nil, 2, true)--Pass with flash but no sound
+				--DBM:ShowTestSpecialWarning(nil, 2, true)--Pass with flash but no sound
 			end)
 		end
 
@@ -2776,7 +2776,7 @@ local function CreateOptionsMenu()
 				if firstshow then firstshow = false return end
 				DBM.Options.SpecialWarningFlashDura3 = self:GetValue()
 				--DBM:UpdateSpecialWarningOptions()
-				DBM:ShowTestSpecialWarning(nil, 3, true)--Pass with flash but no sound
+				--DBM:ShowTestSpecialWarning(nil, 3, true)--Pass with flash but no sound
 			end)
 		end
 
@@ -2792,7 +2792,7 @@ local function CreateOptionsMenu()
 				if firstshow then firstshow = false return end
 				DBM.Options.SpecialWarningFlashAlph3 = self:GetValue()
 				--DBM:UpdateSpecialWarningOptions()
-				DBM:ShowTestSpecialWarning(nil, 3, true)--Pass with flash but no sound
+				--DBM:ShowTestSpecialWarning(nil, 3, true)--Pass with flash but no sound
 			end)
 		end
 
@@ -2815,7 +2815,7 @@ local function CreateOptionsMenu()
 				if firstshow then firstshow = false return end
 				DBM.Options.SpecialWarningFlashDura4 = self:GetValue()
 				--DBM:UpdateSpecialWarningOptions()
-				DBM:ShowTestSpecialWarning(nil, 4, true)--Pass with flash but no sound
+				--DBM:ShowTestSpecialWarning(nil, 4, true)--Pass with flash but no sound
 			end)
 		end
 
@@ -2831,7 +2831,7 @@ local function CreateOptionsMenu()
 				if firstshow then firstshow = false return end
 				DBM.Options.SpecialWarningFlashAlph4 = self:GetValue()
 				--DBM:UpdateSpecialWarningOptions()
-				DBM:ShowTestSpecialWarning(nil, 4, true)--Pass with flash but no sound
+				--DBM:ShowTestSpecialWarning(nil, 4, true)--Pass with flash but no sound
 			end)
 		end
 		
@@ -2854,7 +2854,7 @@ local function CreateOptionsMenu()
 				if firstshow then firstshow = false return end
 				DBM.Options.SpecialWarningFlashDura5 = self:GetValue()
 				--DBM:UpdateSpecialWarningOptions()
-				DBM:ShowTestSpecialWarning(nil, 5, true)--Pass with flash but no sound
+				--DBM:ShowTestSpecialWarning(nil, 5, true)--Pass with flash but no sound
 			end)
 		end
 
@@ -2870,7 +2870,7 @@ local function CreateOptionsMenu()
 				if firstshow then firstshow = false return end
 				DBM.Options.SpecialWarningFlashAlph5 = self:GetValue()
 				--DBM:UpdateSpecialWarningOptions()
-				DBM:ShowTestSpecialWarning(nil, 5, true)--Pass with flash but no sound
+				--DBM:ShowTestSpecialWarning(nil, 5, true)--Pass with flash but no sound
 			end)
 		end
 
