@@ -1,7 +1,3 @@
---Known issues (because blizzards nameplate code is such utter shite)
---*It obviously won't work if nameplates aren't enabled. So it can be a clusterfuck in raids unless you run custom nameplate mod that can shrink/invisible player nameplates (without hiding them)
---DBMs internal code needs to handle multiple textures, which will require a bit more work. Will probably put off for now, but at very least when using KUI multiple will be supported via callback
-
 -- globals
 DBM.Nameplate = {}
 -- locals
@@ -194,7 +190,7 @@ end)
 -----------------
 --  Functions  --
 -----------------
---/run DBM.Nameplate:Show(true, UnitGUID("target"), 227723)--Mana tracking, easy to find in Dalaran
+--/run DBM.Nameplate:Show(true, UnitGUID("target"), 227723)--Mana tracking, easy to find in Legion Dalaran
 --/run DBM.Nameplate:Show(true, UnitGUID("target"), 186406)--Sign of the Critter
 --/run DBM.Nameplate:Show(false, GetUnitName("target", true), 227723)--Mana tracking, easy to find in Dalaran
 --/run DBM.Nameplate:Hide(true, nil, nil, nil, true)
