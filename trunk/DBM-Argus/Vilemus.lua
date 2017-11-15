@@ -9,6 +9,7 @@ mod:SetZone()
 --mod:SetMinSyncRevision(11969)
 
 mod:RegisterCombat("combat_yell", L.Pull)
+mod:SetWipeTime(90)
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 247731 247733",
@@ -27,7 +28,7 @@ local specWarnStomp				= mod:NewSpecialWarningSpell(247733, nil, nil, nil, 2, 2)
 
 local timerDrainCD				= mod:NewCDTimer(15.9, 247739, nil, "Melee", nil, 5, nil, DBM_CORE_TANK_ICON)--15-20
 local timerFelBreathCD			= mod:NewCDTimer(13.4, 247731, nil, nil, nil, 3)
-local timerStompCD				= mod:NewCDTimer(15.8, 247733, nil, nil, nil, 2, nil, DBM_CORE_HEALER_ICON)--15-35?
+local timerStompCD				= mod:NewCDTimer(14.6, 247733, nil, nil, nil, 2, nil, DBM_CORE_HEALER_ICON)--15-35?
 
 local voiceDrain				= mod:NewVoice(247361)--tauntboss/runout/stackhigh
 local voiceStomp				= mod:NewVoice(247733)--carefly
@@ -90,7 +91,7 @@ function mod:SPELL_AURA_APPLIED(args)
 					specWarnDrain:Show(amount)
 					voiceDrain:Play("stackhigh")
 				else--Taunt as soon as stacks are clear, regardless of stack count.
-					if not UnitIsDeadOrGhost("player") and not UnitDebuff("player", args.spellName) and self:AntiSpam(8, 1) then
+					if not UnitIsDeadOrGhost("player") and not UnitDebuff("player", args.spellName) and self:AntiSpam(1.5, 1) then
 						specWarnDrainTaunt:Show(args.destName)
 						voiceDrain:Play("tauntboss")
 					else
