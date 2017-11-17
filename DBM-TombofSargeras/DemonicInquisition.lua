@@ -60,16 +60,16 @@ local specWarnTorment				= mod:NewSpecialWarningStack(233104, nil, 75, nil, nil,
 
 --Atrigan
 mod:AddTimerLine(EJ_GetSectionInfo(14645))
-local timerScytheSweepCD			= mod:NewCDTimer(23, 233426, nil, "Tank", 2, 5, nil, DBM_CORE_TANK_ICON)
+local timerScytheSweepCD			= mod:NewCDCountTimer(23, 233426, nil, "Tank", 2, 5, nil, DBM_CORE_TANK_ICON)
 local timerCalcifiedQuillsCD		= mod:NewCDTimer(20.2, 233431, nil, nil, nil, 3)--20.2-20.5 unless delayed by scythe, or bone saw
-local timerBoneSawCD				= mod:NewCDTimer(45.4, 233441, nil, nil, nil, 2)
+local timerBoneSawCD				= mod:NewCDCountTimer(45.4, 233441, nil, nil, nil, 2)
 local timerBoneSaw					= mod:NewBuffActiveTimer(15, 233441, nil, nil, nil, 2)
 --Belac
 mod:AddTimerLine(EJ_GetSectionInfo(14646))
 local timerEchoingAnguishCD			= mod:NewCDTimer(22.9, 233983, nil, nil, nil, 3, nil, DBM_CORE_MAGIC_ICON)
 local timerSuffocatingDarkCD		= mod:NewCDTimer(24, 233894, nil, nil, nil, 3)
-local timerTormentingBurstCD		= mod:NewCDTimer(17.0, 234015, nil, nil, nil, 2)
-local timerFelSquallCD				= mod:NewCDTimer(45.7, 235230, nil, nil, nil, 2)
+local timerTormentingBurstCD		= mod:NewCDCountTimer(17.0, 234015, nil, nil, nil, 2)
+local timerFelSquallCD				= mod:NewCDCountTimer(45.7, 235230, nil, nil, nil, 2)
 local timerFelSquall				= mod:NewBuffActiveTimer(15, 235230, nil, nil, nil, 2)
 
 local berserkTimer					= mod:NewBerserkTimer(720)--482 in log, rounding to 8 even for now
@@ -107,12 +107,12 @@ mod.vb.BonesawCount = 0
 
 local function updateAllAtriganTimers(self, ICD, ignoreBoneSaw)
 	DBM:Debug("updateAllAtriganTimers running", 3)
-	if timerScytheSweepCD:GetRemaining() < ICD then--4
-		local elapsed, total = timerScytheSweepCD:GetTime()
+	if timerScytheSweepCD:GetRemaining(self.vb.scytheCount+1) < ICD then--4
+		local elapsed, total = timerScytheSweepCD:GetTime(self.vb.scytheCount+1)
 		local extend = ICD - (total-elapsed)
 		DBM:Debug("timerScytheSweepCD extended by: "..extend, 2)
 		timerScytheSweepCD:Stop()
-		timerScytheSweepCD:Update(elapsed, total+extend)
+		timerScytheSweepCD:Update(elapsed, total+extend, self.vb.scytheCount+1)
 	end
 	if timerCalcifiedQuillsCD:GetRemaining() < ICD then--5
 		local elapsed, total = timerCalcifiedQuillsCD:GetTime()
@@ -150,13 +150,13 @@ local function updateAllBelacTimers(self, ICD, ignoreFelSquall)
 		timerSuffocatingDarkCD:Stop()
 		timerSuffocatingDarkCD:Update(elapsed, total+extend)
 	end
-	local tormentingRemaining = timerTormentingBurstCD:GetRemaining()
+	local tormentingRemaining = timerTormentingBurstCD:GetRemaining(self.vb.burstCount+1)
 	if tormentingRemaining ~= 0 and tormentingRemaining < ICD then--2 (Cast Start)
-		local elapsed, total = timerTormentingBurstCD:GetTime()
+		local elapsed, total = timerTormentingBurstCD:GetTime(self.vb.burstCount+1)
 		local extend = ICD - (total-elapsed)
 		DBM:Debug("timerTormentingBurstCD extended by: "..extend, 2)
 		timerTormentingBurstCD:Stop()
-		timerTormentingBurstCD:Update(elapsed, total+extend)
+		timerTormentingBurstCD:Update(elapsed, total+extend, self.vb.burstCount+1)
 	end
 	if not ignoreFelSquall and timerFelSquallCD:GetRemaining(self.vb.squallCount+1) < ICD then--16
 		local elapsed, total = timerFelSquallCD:GetTime(self.vb.squallCount+1)
@@ -175,7 +175,7 @@ function mod:OnCombatStart(delay)
 	self.vb.SoulsRemaining = 0
 	self.vb.squallCount = 0
 	self.vb.BonesawCount = 0
-	timerScytheSweepCD:Start(5.2-delay)
+	timerScytheSweepCD:Start(5.2-delay, 1)
 	if not self:IsEasy() then
 		timerCalcifiedQuillsCD:Start(8.5-delay)--8.5-11
 	end
@@ -183,7 +183,7 @@ function mod:OnCombatStart(delay)
 	countdownBoneSaw:Start(64.5-delay)
 --	timerEchoingAnguishCD:Start(1-delay)--6-20
 --	timerSuffocatingDarkCD:Start(1-delay)--13-48
---	timerTormentingBurstCD:Start(1-delay)--8-20
+--	timerTormentingBurstCD:Start(1-delay, 1)--8-20
 	timerFelSquallCD:Start(35-delay, 1)--Always same, at least
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(GetSpellInfo(233104))
@@ -210,13 +210,13 @@ function mod:SPELL_CAST_START(args)
 		self.vb.scytheCount = self.vb.scytheCount + 1
 		specWarnScytheSweep:Show()
 		voiceScytheSweep:Play("shockwave")
-		timerScytheSweepCD:Start()--23 unless affected by something
+		timerScytheSweepCD:Start(nil, self.vb.scytheCount+1)--23 unless affected by something
 		updateAllAtriganTimers(self, 4)
 	elseif spellId == 234015 then
 		self.vb.burstCount = self.vb.burstCount + 1
 		specWarnTormentingBurst:Show(self.vb.burstCount)
 		voiceTormentingBurst:Play("aesoon")
-		timerTormentingBurstCD:Start()
+		timerTormentingBurstCD:Start(nil, self.vb.burstCount+1)
 		updateAllBelacTimers(self, 2)
 	elseif spellId == 239401 then
 		self.vb.pangCount = self.vb.pangCount + 1
