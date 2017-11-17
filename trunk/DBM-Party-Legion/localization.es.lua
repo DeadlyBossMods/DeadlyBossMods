@@ -633,3 +633,35 @@ L:SetGeneralLocalization({
 	name =	"Enemigos menores"
 })
 
+---------------------------
+-- Trono del Triunvirato --
+---------------------------
+-------------------------
+-- Zuraal el Ascendido --
+-------------------------
+L= DBM:GetModLocalization(1979)
+
+-------------
+-- Saprish --
+-------------
+L= DBM:GetModLocalization(1980)
+
+-------------------
+-- Virrey Nezhar --
+-------------------
+L= DBM:GetModLocalization(1981)
+
+-----------
+-- L'ura --
+-----------
+L= DBM:GetModLocalization(1982)
+
+----------------------
+-- Enemigos menores --
+----------------------
+L = DBM:GetModLocalization("SoTTrash")
+
+L:SetGeneralLocalization({
+	name =	"Enemigos menores"
+})
+
