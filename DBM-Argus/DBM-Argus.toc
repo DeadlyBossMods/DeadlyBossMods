@@ -23,6 +23,7 @@ localization.cn.lua
 localization.de.lua
 localization.kr.lua
 localization.tw.lua
+localization.es.lua
 Meto.lua
 Occularus.lua
 Sotanathor.lua

@@ -3,6 +3,7 @@ if GetLocale() ~= "esES" and GetLocale() ~= "esMX" then return end
 DBM_CORE_NEED_LOCALS				= "¿Se te da bien la programación o los idiomas? Si es así, el equipo de DBM necesita tu ayuda para localizar DBM a más idiomas. Si crees que puedes ayudar, visita nuestro foro |HDBM:localizersneeded|h|cff3588ffhaciendo clic aquí|r."
 DBM_CORE_NEED_LOGS					= "DBM necesita registros de Transcriptor (http://www.wowace.com/addons/transcriptor/) de varios encuentros para que los módulos queden lo mejor posible. Si quieres ayudar, publica los registros de Transcriptor en nuestro foro. Por ahora solo estamos interesados en registors de mazmorra y banda de la alfa de Legion."
 DBM_HOW_TO_USE_MOD					= "Bienvenido a DBM. Escribe '/dbm help' para ver la lista de comandos. Para acceder a la configuración no tienes más que escribir '/dbm'."
+DBM_SILENT_REMINDER					= "Recordatorio: DBM sigue en modo silencioso."
 
 DBM_FORUMS_MESSAGE					= "¿Has encontrado un error o un temporizador que no funciona correctamente? ¿Crees que un módulo necesita un aviso, temporizador o función adicional?\nVisita nuestros foros de debate, comunicación de errores y petición de características en |HDBM:forums|h|cff3588ffhttp://www.deadlybossmods.com|r (haz clic para copiar la URL)."
 DBM_FORUMS_COPY_URL_DIALOG			= "Visita nuestros foros de debate y asistencia técnica."
@@ -18,7 +19,7 @@ DBM_CORE_LOAD_MOD_VER_MISMATCH		= "No se ha podido cargar el módulo de %s porqu
 DBM_CORE_LOAD_MOD_DISABLED			= "%s está instalado pero se encuentra desactivado. Este módulo no se cargará hasta que lo actives."
 DBM_CORE_LOAD_MOD_DISABLED_PLURAL	= "%s están instalados pero se encuentran desactivados. Estos módulos no se cargarán hasta que los actives."
 
---DBM_CORE_WHATS_NEW					= "Novedades de esta versión: Se ha arreglado un error que mostraba avisos erróneos de versión desfasada. Ahora DBM nunca saltará las cinemáticas de la Costa Abrupta, sin importar la configuración de usuario. Se ha añadido el módulo de Invasiones demoníacas."
+DBM_CORE_WHATS_NEW					= "Se ha eliminado o modificado algunas características para evitar ciertos problemas con la ventana de chat. No soluciona el problema de '/logout', ya que es un bug de Blizzard, pero debería arreglar el resto."
 
 --Post Patch 7.1
 DBM_CORE_NO_RANGE					= "No se puede usar el radar de distancia en estancias. Se procederá a usar el marco de distancia por texto."
@@ -122,6 +123,7 @@ DBM_CORE_OPTION_TIMER_BERSERK		= "Mostrar tiempo restante para $spell:26662"
 DBM_CORE_GENERIC_TIMER_COMBAT		= "Comienza el encuentro"
 DBM_CORE_OPTION_TIMER_COMBAT		= "Mostrar temporizador para el inicio del encuentro"
 DBM_CORE_OPTION_HEALTH_FRAME		= "Mostrar marco de salud del jefe"
+DBM_CORE_BAD						= "Daño"
 
 DBM_CORE_OPTION_CATEGORY_TIMERS			= "Barras"
 DBM_CORE_OPTION_CATEGORY_WARNINGS		= "Anuncios generales"
@@ -175,6 +177,7 @@ DBM_CORE_OUT_OF_DATE_NAG				= "Tu versión de Deadly Boss Mods está desfasada p
 
 DBM_CORE_MOVABLE_BAR				= "¡Muéveme!"
 
+--DBM_PIZZA_SYNC_INFO					= "|Hplayer:%1$s|h[%1$s]|h ha compartido un temporizador de DBM: '%2$s'\n|HDBM:cancel:%2$s:nil|h|cff3588ff[Cancelar este temporizador]|r|h  |HDBM:ignore:%2$s:%1$s|h|cff3588ff[Ignorar temporizadores de %1$s]|r|h"
 DBM_PIZZA_SYNC_INFO					= "|Hplayer:%1$s|h[%1$s]|h ha compartido un temporizador de DBM: '%2$s'\n|HDBM:cancel:%2$s:nil|h|cff3588ff[Cancelar este temporizador]|r|h  |HDBM:ignore:%2$s:%1$s|h|cff3588ff[Ignorar temporizadores de %1$s]|r|h"
 DBM_PIZZA_CONFIRM_IGNORE			= "¿Seguro que quieres ignorar los temporizadores de %s para esta sesión?"
 DBM_PIZZA_ERROR_USAGE				= "Uso: /dbm [broadcast] timer <seg> <texto>. <seg> debe ser mayor que 1."
@@ -226,7 +229,8 @@ DBM_CORE_SLASHCMD_HELP2				= {
 	"/dbm version: Realiza una comprobación de versión de DBM a toda la banda (alias: ver).",
 	"/dbm version2: Realiza una comprobación de versión de DBM que también susurra a los jugadores con versiones desfasadas (alias: ver2).",
 	"/dbm lockout: Realiza una comprobación de registros de banda a toda la banda (requiere líder o ayudante) (alias: lockouts, ids).",
-	"/dbm lag: Realiza una comprobación de latencia a toda la banda."
+	"/dbm lag: Realiza una comprobación de latencia a toda la banda.",
+	"/dbm durability: Realiza una comprobación de durabilidad a toda la banda."
 }
 DBM_CORE_TIMER_USAGE	= {
 	"DBM timer commands:",
@@ -252,12 +256,20 @@ DBM_CORE_RIGHT						= "Derecha"
 DBM_CORE_BACK						= "Detrás"--BACK
 DBM_CORE_MIDDLE						= "En medio"
 DBM_CORE_FRONT						= "Delante"
+DBM_CORE_EAST						= "Este"
+DBM_CORE_WEST						= "Oeste"
+DBM_CORE_NORTH						= "Norte"
+DBM_CORE_SOUTH						= "Sur"
 DBM_CORE_INTERMISSION				= "Interfase"--No blizz global for this, and will probably be used in most end tier fights with intermission phases
 DBM_CORE_ORB						= "Orbe"
 DBM_CHEST							= "Cofre"--As in Treasure 'Chest'. Not Chest as in body part.
 DBM_NO_DEBUFF						= "Sin %s"--For use in places like info frame where you put "Not Spellname"
 DBM_ALLY							= "un aliado"--Such as "Move to Ally"
 DBM_ADDS							= "esbirros"--Such as "Move to Ally"
+DBM_CORE_ROOM_EDGE					= "los bordes de la sala"
+DBM_CORE_FAR_AWAY					= "alejarte"
+DBM_CORE_SAFE						= "una zona segura"
+DBM_INCOMING						= "%s en breve"
 --Common Locals end
 
 DBM_CORE_BREAK_USAGE				= "El temporizador de descanso no puede durar más de 60 minutos. Asegúrate de que has escrito el tiempo en minutos y no en segundos."
@@ -337,12 +349,15 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS.moveto		= "%s - ¡ve a >%%s<!"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.jump			= "%s - ¡salta!"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.run			= "%s - ¡huye!"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.cast			= "%s - ¡deja de canalizar!"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.lookaway		= "%s - ¡date la vuelta!"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.reflect		= "%s en >%%s< - ¡no ataques!"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.count			= "¡%s! (%%s)"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.stack			= "%%d acumulaciones de %s en ti"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.switch		= "%s - ¡cambia de objetivo!"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.switchcount	= "%s - ¡cambia de objetivo! (%%s)"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.gtfo			= "%%s a tus pies - ¡apártate!"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.Adds			= "Esbirros en breve - ¡cambia de objetivo!"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.Addscustom	= "Esbirros en breve - %s"
 
 -- Auto-generated Special Warning Localizations
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell 			= "Mostrar aviso especial para $spell:%s"
@@ -365,20 +380,24 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS.close 			= "Mostrar aviso especial cuando $spell
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.move 			= "Mostrar aviso especial para salir de $spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.dodge 			= "Mostrar aviso especial para esquivar $spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.moveaway		= "Mostrar aviso especial para alejarse de los demás jugadores durante $spell:%s"
-DBM_CORE_AUTO_SPEC_WARN_OPTIONS.moveto			= "Mostrar aviso especial para juntarse con los jugadores afectados por $spell:%s"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.moveto			= "Mostrar aviso especial para juntarse con alguien o ir a algún sitio para $spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.jump			= "Mostrar aviso especial para saltar para $spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.run 			= "Mostrar aviso especial para huir de $spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.cast 			= "Mostrar aviso especial para dejar de canalizar durante $spell:%s"--Spell Interrupt
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.lookaway		= "Mostrar aviso especial para darte la vuelta para $spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.reflect 		= "Mostrar aviso especial para dejar de atacar durante $spell:%s"--Spell Reflect
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.count 			= "Mostrar aviso especial (con contador) para $spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.stack 			= "Mostrar aviso especial cuando tengas %d ó más acumulaciones de $spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch			= "Mostrar aviso especial para cambiar de objetivo a $spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switchcount		= "Mostrar aviso especial (con contador) para cambiar de objetivo a $spell:%s"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.gtfo 			= "Mostrar aviso especial para apartarte de áreas de daño en el suelo"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.Adds			= "Mostrar aviso especial para cambiar de objetivo cuando falte poco para que aparezcan esbirros"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.Addscustom		= "Mostrar aviso especial cuando falte poco para que aparezcan esbirros"
 
 -- Auto-generated Timer Localizations
 DBM_CORE_AUTO_TIMER_TEXTS.target		= "%s: %%s"
 DBM_CORE_AUTO_TIMER_TEXTS.cast			= "%s"
+DBM_CORE_AUTO_TIMER_TEXTS.castsource	= "%s: %%s"
 DBM_CORE_AUTO_TIMER_TEXTS.active		= "%s termina"--Buff/Debuff/event on boss
 DBM_CORE_AUTO_TIMER_TEXTS.fades			= "%s expira"--Buff/Debuff on players
 DBM_CORE_AUTO_TIMER_TEXTS.ai			= "IA de %s"
@@ -392,11 +411,13 @@ DBM_CORE_AUTO_TIMER_TEXTS.nextsource	= "Siguiente %s: %%s"
 DBM_CORE_AUTO_TIMER_TEXTS.nextspecial	= "Siguiente facultad especial"
 DBM_CORE_AUTO_TIMER_TEXTS.achievement	= "Logro: %s"
 DBM_CORE_AUTO_TIMER_TEXTS.stage			= "Siguiente fase"
-DBM_CORE_AUTO_TIMER_TEXTS.adds			= "Siguientes esbirros"
+DBM_CORE_AUTO_TIMER_TEXTS.adds			= "Esbirros"
+DBM_CORE_AUTO_TIMER_TEXTS.addscustom	= "Esbirros (%s)"
 DBM_CORE_AUTO_TIMER_TEXTS.roleplay		= "Diálogo"
 
 DBM_CORE_AUTO_TIMER_OPTIONS.target		= "Mostrar temporizador para la duración del perjuicio de $spell:%s"
 DBM_CORE_AUTO_TIMER_OPTIONS.cast		= "Mostrar temporizador para el lanzamiento de $spell:%s"
+DBM_CORE_AUTO_TIMER_OPTIONS.castsource	= "Mostrar temporizador (y quién lo lanza) para el lanzamiento de $spell:%s"
 DBM_CORE_AUTO_TIMER_OPTIONS.active		= "Mostrar temporizador para la duración de $spell:%s"
 DBM_CORE_AUTO_TIMER_OPTIONS.fades		= "Mostrar temporizador para el tiempo restante del perjuicio de $spell:%s en los jugadores"
 DBM_CORE_AUTO_TIMER_OPTIONS.ai			= "Mostrar temporizador inteligente para el tiempo de reutilización de $spell:%s"
@@ -410,7 +431,8 @@ DBM_CORE_AUTO_TIMER_OPTIONS.nextsource	= "Mostrar temporizador (y quién lo lanz
 DBM_CORE_AUTO_TIMER_OPTIONS.nextspecial	= "Mostrar temporizador para la siguiente 'Facultad especial'."
 DBM_CORE_AUTO_TIMER_OPTIONS.achievement	= "Mostrar temporizador para el logro %s"
 DBM_CORE_AUTO_TIMER_OPTIONS.stage		= "Mostrar temporizador para la siguiente fase"
-DBM_CORE_AUTO_TIMER_OPTIONS.adds		= "Mostrar temporizador para los siguientes esbirros"
+DBM_CORE_AUTO_TIMER_OPTIONS.adds		= "Mostrar temporizador para la siguiente aparición de esbirros"
+DBM_CORE_AUTO_TIMER_OPTIONS.addscustom	= "Mostrar temporizador para la siguiente aparición de esbirros"
 DBM_CORE_AUTO_TIMER_OPTIONS.roleplay	= "Mostrar temporizador para la duración del diálogo"
 
 DBM_CORE_AUTO_ICONS_OPTION_TEXT			= "Poner iconos en los objetivos de $spell:%s"
@@ -421,17 +443,27 @@ DBM_CORE_AUTO_ARROW_OPTION_TEXT3		= "Mostrar flecha indicadora para ir a una ubi
 DBM_CORE_AUTO_VOICE_OPTION_TEXT			= "Reproducir alertas de voz para $spell:%s"
 DBM_CORE_AUTO_VOICE2_OPTION_TEXT		= "Reproducir alertas de voz para los cambios de fase"
 DBM_CORE_AUTO_VOICE3_OPTION_TEXT		= "Reproducir alertas de voz cuando falte poco para que aparezcan esbirros"
+DBM_CORE_AUTO_VOICE4_OPTION_TEXT		= "Reproducir alertas de voz para apartarte de áreas de daño en el suelo"
 DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT		= "Reproducir sonido de cuenta atrás para el tiempo de reutilización de $spell:%s"
 DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT2	= "Reproducir sonido de cuenta atrás para la duración restante de $spell:%s"
 DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT		= "Reproducir sonido de contador para la duración de $spell:%s"
-DBM_CORE_AUTO_YELL_OPTION_TEXT.yell		= "Gritar cuando te afecte $spell:%s"
+DBM_CORE_AUTO_YELL_OPTION_TEXT.shortyell		= "Gritar cuando te afecte $spell:%s"
+DBM_CORE_AUTO_YELL_OPTION_TEXT.yell		= "Gritar (con tu nombre) cuando te afecte $spell:%s"
 DBM_CORE_AUTO_YELL_OPTION_TEXT.count	= "Gritar (con contador) cuando te afecte $spell:%s"
-DBM_CORE_AUTO_YELL_OPTION_TEXT.fade		= "Gritar (con duración restante) cuando $spell:%s esté a punto de expirar"
+DBM_CORE_AUTO_YELL_OPTION_TEXT.fade		= "Gritar (con duración restante y tu nombre) cuando $spell:%s esté a punto de expirar"
+DBM_CORE_AUTO_YELL_OPTION_TEXT.shortfade		= "Gritar (con duración restante) cuando $spell:%s esté a punto de expirar"
+DBM_CORE_AUTO_YELL_OPTION_TEXT.iconfade		= "Gritar (con duración restante e icono) cuando $spell:%s esté a punto de expirar"
 DBM_CORE_AUTO_YELL_OPTION_TEXT.position	= "Gritar (con posición) cuando te afecte $spell:%s"
+DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.shortyell		= "%s"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.yell		= "¡%s en " .. UnitName("player") .. "!"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.count		= "¡%s en " .. UnitName("player") .. "! (%%d)"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.fade		= "%s expirando en %%d"
+DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.shortfade		= "%%d"
+DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.iconfade		= "{rt%%2$d}%%1$d"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.position 	= "%s %%s en {rt%%d}"..UnitName("player").."{rt%%d}"
+DBM_CORE_AUTO_YELL_CUSTOM_POSITION		= "{rt%d}%s{rt%d}"
+DBM_CORE_AUTO_YELL_CUSTOM_POSITION2		= "{rt%d}{rt%d}%s{rt%d}{rt%d}"
+DBM_CORE_AUTO_YELL_CUSTOM_FADE			= "%s ha expirado"
 DBM_CORE_AUTO_HUD_OPTION_TEXT			= "Mostrar indicador en pantalla para $spell:%s"
 DBM_CORE_AUTO_HUD_OPTION_TEXT_MULTI		= "Mostrar indicadores en pantalla para varias mecánicas"
 DBM_CORE_AUTO_NAMEPLATE_OPTION_TEXT		= "Mostrar auras en placas de nombres para $spell:%s"
@@ -496,9 +528,15 @@ DBM_INSTANCE_INFO_STATS_DENIED		= "Petición rechazada: %s"
 DBM_INSTANCE_INFO_STATS_AWAY		= "Ausente: %s"
 DBM_INSTANCE_INFO_STATS_NO_RESPONSE	= "Sin versión de DBM compatible: %s"
 DBM_INSTANCE_INFO_RESULTS			= "Resultados de la comprobación de registros de estancia. Ten en cuenta que una misma estancia puede salir varias veces si hay jugadores en tu banda con el cliente de juego en un idioma distinto."
-DBM_INSTANCE_INFO_SHOW_RESULTS		= "Jugadores que todavía no han respondido:: %s\n|HDBM:showRaidIdResults|h|cff3588ff[Mostrar resultados]|r|h"
+--DBM_INSTANCE_INFO_SHOW_RESULTS		= "Jugadores que todavía no han respondido: %s\n|HDBM:showRaidIdResults|h|cff3588ff[Mostrar resultados]|r|h"
+DBM_INSTANCE_INFO_SHOW_RESULTS		= "Jugadores que todavía no han respondido: %s"
 
 DBM_CORE_LAG_CHECKING				= "Comprobando latencia de la banda..."
 DBM_CORE_LAG_HEADER					= "Deadly Boss Mods - Resultados de latencia"
 DBM_CORE_LAG_ENTRY					= "%s: Latencia de mundo [%d ms] / Latencia de hogar [%d ms]"
+DBM_CORE_LAG_FOOTER					= "Sin respuesta: %s"
+
+DBM_CORE_DUR_CHECKING				= "Comprobando durabilidad de la banda..."
+DBM_CORE_DUR_HEADER					= "Deadly Boss Mods - Resultados de durabilidad"
+DBM_CORE_DUR_ENTRY					= "%s: Durabilidad [%d%%] / Piezas rotas [%s]"
 DBM_CORE_LAG_FOOTER					= "Sin respuesta: %s"
