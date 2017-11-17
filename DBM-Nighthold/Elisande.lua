@@ -119,7 +119,7 @@ local voiceExpedite					= mod:NewVoice(209617, "HasInterrupt")--kickcast
 --Time Layer 1
 local voiceArcaneticRing			= mod:NewVoice(208807)--watchorb
 local voiceAblation					= mod:NewVoice(209615)--tauntboss
-local voiceSpanningSingularity		= mod:NewVoice(209168)--watchstep/runaway
+local voiceSpanningSingularity		= mod:NewVoice(209168)--watchstep/runtoedge
 --Time Layer 2
 local voiceDelphuricBeam			= mod:NewVoice(214278)--targetyou
 local voiceEpochericOrb				= mod:NewVoice(210022, "-Tank", nil, 2)--161612(catch balls)
