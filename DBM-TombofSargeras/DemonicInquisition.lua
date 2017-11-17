@@ -102,6 +102,8 @@ mod.vb.scytheCount = 0
 mod.vb.pangCount = 0
 mod.vb.anguishIcon = 1
 mod.vb.SoulsRemaining = 0
+mod.vb.squallCount = 0
+mod.vb.BonesawCount = 0
 
 local function updateAllAtriganTimers(self, ICD, ignoreBoneSaw)
 	DBM:Debug("updateAllAtriganTimers running", 3)
@@ -119,12 +121,12 @@ local function updateAllAtriganTimers(self, ICD, ignoreBoneSaw)
 		timerCalcifiedQuillsCD:Stop()
 		timerCalcifiedQuillsCD:Update(elapsed, total+extend)
 	end
-	if not ignoreBoneSaw and timerBoneSawCD:GetRemaining() < ICD then--16
-		local elapsed, total = timerBoneSawCD:GetTime()
+	if not ignoreBoneSaw and timerBoneSawCD:GetRemaining(self.vb.BonesawCount+1) < ICD then--16
+		local elapsed, total = timerBoneSawCD:GetTime(self.vb.BonesawCount+1)
 		local extend = ICD - (total-elapsed)
 		DBM:Debug("timerBoneSawCD extended by: "..extend, 2)
 		timerBoneSawCD:Stop()
-		timerBoneSawCD:Update(elapsed, total+extend)
+		timerBoneSawCD:Update(elapsed, total+extend, self.vb.BonesawCount+1)
 		countdownBoneSaw:Cancel()
 		countdownBoneSaw:Start(ICD)
 	end
@@ -156,12 +158,12 @@ local function updateAllBelacTimers(self, ICD, ignoreFelSquall)
 		timerTormentingBurstCD:Stop()
 		timerTormentingBurstCD:Update(elapsed, total+extend)
 	end
-	if not ignoreFelSquall and timerFelSquallCD:GetRemaining() < ICD then--16
-		local elapsed, total = timerFelSquallCD:GetTime()
+	if not ignoreFelSquall and timerFelSquallCD:GetRemaining(self.vb.squallCount+1) < ICD then--16
+		local elapsed, total = timerFelSquallCD:GetTime(self.vb.squallCount+1)
 		local extend = ICD - (total-elapsed)
 		DBM:Debug("timerFelSquallCD extended by: "..extend, 2)
 		timerFelSquallCD:Stop()
-		timerFelSquallCD:Update(elapsed, total+extend)
+		timerFelSquallCD:Update(elapsed, total+extend, self.vb.squallCount+1)
 	end
 end
 
@@ -171,16 +173,18 @@ function mod:OnCombatStart(delay)
 	self.vb.pangCount = 0
 	self.vb.anguishIcon = 1
 	self.vb.SoulsRemaining = 0
+	self.vb.squallCount = 0
+	self.vb.BonesawCount = 0
 	timerScytheSweepCD:Start(5.2-delay)
 	if not self:IsEasy() then
 		timerCalcifiedQuillsCD:Start(8.5-delay)--8.5-11
 	end
-	timerBoneSawCD:Start(64.5-delay)
+	timerBoneSawCD:Start(64.5-delay, 1)
 	countdownBoneSaw:Start(64.5-delay)
 --	timerEchoingAnguishCD:Start(1-delay)--6-20
 --	timerSuffocatingDarkCD:Start(1-delay)--13-48
 --	timerTormentingBurstCD:Start(1-delay)--8-20
-	timerFelSquallCD:Start(35-delay)--Always same, at least
+	timerFelSquallCD:Start(35-delay, 1)--Always same, at least
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(GetSpellInfo(233104))
 		DBM.InfoFrame:Show(8, "playerpower", 5, ALTERNATE_POWER_INDEX)
@@ -249,6 +253,7 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 233441 then
+		self.vb.BonesawCount = self.vb.BonesawCount + 1
 		--Redundant warnings if still on wrong boss (or tank)
 		if UnitGUID("target") == args.sourceGUID then
 			specWarnBoneSawMelee:Show()
@@ -258,7 +263,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 			voiceBoneSaw:Schedule(1, "stopattack")
 		end
-		timerBoneSaw:Start()
+		timerBoneSaw:Start(nil, self.vb.BonesawCount+1)
 		updateAllAtriganTimers(self, 16, true)
 		for i = 1, 2 do
 			local bossUnitID = "boss"..i
@@ -268,6 +273,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 	elseif spellId == 235230 then
+		self.vb.squallCount = self.vb.squallCount + 1
 		--Redundant warnings if still on wrong boss (or tank)
 		if UnitGUID("target") == args.sourceGUID then
 			specWarnFelSquallMelee:Show()
@@ -277,7 +283,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 			voiceFelSquall:Schedule(1, "stopattack")
 		end
-		timerFelSquall:Start()
+		timerFelSquall:Start(nil, self.vb.squallCount+1)
 		updateAllBelacTimers(self, 16, true)
 	elseif spellId == 233983 then
 		warnEchoingAnguish:CombinedShow(0.3, args.destName)
