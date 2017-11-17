@@ -21,6 +21,7 @@ localization.cn.lua
 localization.de.lua
 localization.kr.lua
 localization.tw.lua
+localization.es.lua
 Garothi.lua
 HoundsofSargeras.lua
 AntorusWarCouncil.lua

@@ -21,7 +21,8 @@ L:SetOptionLocalization({
 	specWarnYourNext	= "Mostrar aviso especial cuando seas el primero en cola",
 	specWarnYourTurn	= "Mostrar aviso especial cuando sea tu turno",
 	SpectatorMode		= "Mostrar avisos y temporizadores al espectar combates (tus avisos especiales personales no se mostrarán a los espectadores)",
-	SpeakOutQueue		= "Anunciar tu número en la cola cuando esta se actualice"
+	SpeakOutQueue		= "Anunciar tu número en la cola cuando esta se actualice",
+	NormalizeVolume		= "Normalizar automáticamente el volumen del canal de sonido de diálogos para que coincida con el del canal de efectos de sonido mientras estés en la arena, de forma que los ánimos y aplausos no suenen tan alto."
 })
 
 L:SetMiscLocalization({
@@ -113,6 +114,7 @@ L:SetGeneralLocalization({
 	name = "Rango 7"
 })
 
+--[[
 -------------
 -- Rango 8 --
 -------------
@@ -130,6 +132,7 @@ L= DBM:GetModLocalization("BrawlRank9")
 L:SetGeneralLocalization({
 	name = "Rango 9"
 })
+--]]
 
 ------------
 -- Legado --
@@ -166,4 +169,13 @@ L:SetMiscLocalization({
 	rock			= "Piedra",
 	paper			= "Papel",
 	scissors		= "Tijeras"
+})
+
+--------------
+-- Reyertas --
+--------------
+L= DBM:GetModLocalization("BrawlRumble")
+
+L:SetGeneralLocalization({
+	name = "Reyertas"
 })
