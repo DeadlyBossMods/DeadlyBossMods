@@ -98,7 +98,7 @@ local voiceDreaming						= mod:NewVoice(205843)--stepring
 local voiceNightmareBlades				= mod:NewVoice(206656)--runout
 local voiceCorruptionHorror				= mod:NewVoice("ej12973", "-Healer")--bigmob
 local voiceCorruptingNova				= mod:NewVoice(207830, "HasInterrupt")--kickcast
-local voiceDarkeningSoul				= mod:NewVoice(206651, "Tank")--tauntboss
+local voiceDarkeningSoul				= mod:NewVoice(206651)--stackhigh/tauntboss
 local voiceTormentingFixation			= mod:NewVoice(205771)--targetyou (iffy, is there no voice that says fixate, run?)
 --Stage Two: From the Shadows
 local voiceBondsOfTerror				= mod:NewVoice(209034)--linegather
