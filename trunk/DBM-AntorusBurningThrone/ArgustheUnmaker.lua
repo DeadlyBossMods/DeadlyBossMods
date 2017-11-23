@@ -54,7 +54,7 @@ local warnDeadlyScythe				= mod:NewStackAnnounce(258039, 2, nil, "Tank")
 
 --Stage One: Storm and Sky
 local specWarnTorturedRage			= mod:NewSpecialWarningCount(257296, nil, nil, nil, 2, 2)
-local specWarnSweepingScythe		= mod:NewSpecialWarningStack(248499, nil, 2, nil, nil, 1, 2)
+local specWarnSweepingScythe		= mod:NewSpecialWarningStack(248499, nil, 2, nil, nil, 1, 6)
 local specWarnSweepingScytheTaunt	= mod:NewSpecialWarningTaunt(248499, nil, nil, nil, 1, 2)
 local specWarnConeofDeath			= mod:NewSpecialWarningDodge(248165, nil, nil, nil, 1, 2)
 local specWarnSoulblight			= mod:NewSpecialWarningMoveAway(248396, nil, nil, nil, 1, 2)

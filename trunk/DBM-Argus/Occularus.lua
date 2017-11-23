@@ -20,7 +20,7 @@ mod:RegisterEventsInCombat(
 local warnGushingWound					= mod:NewStackAnnounce(247318, 2, nil, "Tank")
 local warnLash							= mod:NewSpellAnnounce(247325, 2, nil, "Tank")
 
-local specWarnGushingWound				= mod:NewSpecialWarningStack(247318, nil, 3, nil, nil, 1, 2)
+local specWarnGushingWound				= mod:NewSpecialWarningStack(247318, nil, 3, nil, nil, 1, 6)
 local specWarnGushingWoundOther			= mod:NewSpecialWarningTaunt(247318, nil, nil, nil, 1, 2)
 local specWarnSearingGaze				= mod:NewSpecialWarningInterrupt(247320, "HasInterrupt", nil, nil, 1, 2)
 local specWarnPhantasm					= mod:NewSpecialWarningDodge(247393, nil, nil, nil, 2, 2)

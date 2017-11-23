@@ -39,7 +39,7 @@ local warnViolentWinds				= mod:NewTargetAnnounce(218124, 4)
 --Spider Form
 local specWarnFeedingTime			= mod:NewSpecialWarningSwitch(212364, "-Healer", nil, nil, 1, 2)
 local specWarnVenomousPool			= mod:NewSpecialWarningMove(213124, nil, nil, nil, 1, 2)
-local specWarnWebWrap				= mod:NewSpecialWarningStack(212512, nil, 5)
+local specWarnWebWrap				= mod:NewSpecialWarningStack(212512, nil, 5, nil, nil, 1, 6)
 local specWarnNecroticVenom			= mod:NewSpecialWarningMoveAway(218831, nil, nil, nil, 1, 2)
 local yellNecroticVenom				= mod:NewFadesYell(218831)
 local specWarnWebofPain				= mod:NewSpecialWarning("specWarnWebofPain")--No voice. Tech doesn't really exist yet to filter special warning sounds on generics. Plus how you handle this may differ between groups
@@ -85,6 +85,7 @@ local countdownNecroticVenom		= mod:NewCountdown("AltTwo21", 215443)
 local voiceFeedingTime				= mod:NewVoice(212364, "-Healer")--killmob
 local voiceNecroticVenom			= mod:NewVoice(218831)--runout
 local voiceVenomousPool				= mod:NewVoice(213124)--runaway
+local voiceWebWrap					= mod:NewVoice(212512)--stackhigh
 --Roc Form
 local voiceTwistingShadows			= mod:NewVoice(210864)--runout/runaway
 local voiceGatheringClouds			= mod:NewVoice(212707)--aesoon
@@ -287,6 +288,7 @@ function mod:SPELL_AURA_APPLIED_DOSE(args)
 		local amount = args.amount or 1
 		if amount >= 5 then
 			specWarnWebWrap:Show(amount)
+			voiceWebWrap:Play("stackhigh")
 		end
 	end
 end
