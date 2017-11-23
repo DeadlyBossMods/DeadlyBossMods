@@ -356,7 +356,7 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS.switch		= "%s - 대상 바꾸세요"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.switchcount	= "%s - 대상 바꾸세요 (%%s)"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.gtfo		= "%%s 깔림 - 피하세요"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.Adds		= "쫄 등장 - 대상 바꾸세요"
-DBM_CORE_AUTO_SPEC_WARN_TEXTS.Addscustom	= "쫄 등장 - %s"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.Addscustom	= "쫄 등장 - %%s"
 
 -- Auto-generated Special Warning Localizations
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell			= "$spell:%s 특수 경고 보기"
@@ -411,7 +411,7 @@ DBM_CORE_AUTO_TIMER_TEXTS.nextspecial		= "다음 특수 능력"
 DBM_CORE_AUTO_TIMER_TEXTS.achievement		= "%s"
 DBM_CORE_AUTO_TIMER_TEXTS.stage			= "다음 단계"
 DBM_CORE_AUTO_TIMER_TEXTS.adds			= "다음 쫄 등장"
-DBM_CORE_AUTO_TIMER_TEXTS.addscustom		= "쫄 등장 (%s)"
+DBM_CORE_AUTO_TIMER_TEXTS.addscustom		= "쫄 등장 (%%s)"
 
 DBM_CORE_AUTO_TIMER_OPTIONS.target		= "$spell:%s 디버프 타이머 바 보기"
 DBM_CORE_AUTO_TIMER_OPTIONS.cast		= "$spell:%s 시전 타이머 바 보기"
