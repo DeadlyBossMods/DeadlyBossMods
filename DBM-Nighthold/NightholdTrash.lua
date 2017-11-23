@@ -47,7 +47,7 @@ local specWarnOozingRush			= mod:NewSpecialWarningRun(223655, nil, nil, nil, 4, 
 local yellOozingRush				= mod:NewYell(223655)
 local specWarnFelGlare				= mod:NewSpecialWarningMoveAway(224982, nil, nil, nil, 1, 2)
 local yellFelGlareh					= mod:NewYell(224982)
-local specWarnSearingWounds			= mod:NewSpecialWarningStack(222079, nil, 4, nil, 2, 1, 2)--Lets go with 4 for now
+local specWarnSearingWounds			= mod:NewSpecialWarningStack(222079, nil, 4, nil, 2, 1, 6)--Lets go with 4 for now
 local specWarnSearingWoundsOther	= mod:NewSpecialWarningTaunt(222079, nil, nil, nil, 1, 2)
 local specWarnNightwellDischarge	= mod:NewSpecialWarningDodge(231737, nil, nil, nil, 1, 2)
 

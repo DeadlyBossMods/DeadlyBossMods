@@ -46,7 +46,7 @@ local warnCursedBlood				= mod:NewTargetAnnounce(215128, 3)
 local specWarnNightmareCorruption	= mod:NewSpecialWarningMove(212886, nil, nil, nil, 1, 2)
 local specWarnFixate				= mod:NewSpecialWarningMoveTo(210099, nil, nil, nil, 1, 2)
 local specWarnNightmareHorror		= mod:NewSpecialWarningSwitch("ej13188", "-Healer", nil, nil, 1, 2)--spellId for summon 210289
-local specWarnEyeOfFate				= mod:NewSpecialWarningStack(210984, nil, 2)
+local specWarnEyeOfFate				= mod:NewSpecialWarningStack(210984, nil, 2, nil, nil, 1, 6)
 local specWarnEyeOfFateOther		= mod:NewSpecialWarningTaunt(210984, nil, nil, nil, 1, 2)
 local specWarnMindFlay				= mod:NewSpecialWarningInterrupt(208697, "HasInterrupt", nil, 2, 1, 2)
 --local specWarnCorruptorTentacle		= mod:NewSpecialWarningSwitch("ej13191", false, nil, nil, 1)
@@ -462,6 +462,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			if amount >= 2 then
 				if args:IsPlayer() then--At this point the other tank SHOULD be clear.
 					specWarnEyeOfFate:Show(amount)
+					voiceEyeOfFate:Play("stackhigh")
 				else--Taunt as soon as stacks are clear, regardless of stack count.
 					local _, _, _, _, _, _, expireTime = UnitDebuff("player", args.spellName)
 					if not UnitIsDeadOrGhost("player") and (not expireTime or expireTime and expireTime-GetTime() < 10) then
