@@ -44,7 +44,7 @@ local warnDrivenAssault				= mod:NewTargetAnnounce(234016, 3, nil, false)--Spamm
 local warnSicklyFixate				= mod:NewTargetAnnounce(241600, 4)
 
 --Harjatan
-local specWarnJaggedAbrasion		= mod:NewSpecialWarningStack(231998, nil, 4, nil, nil, 1, 2)
+local specWarnJaggedAbrasion		= mod:NewSpecialWarningStack(231998, nil, 4, nil, nil, 1, 6)
 local specWarnJaggedAbrasionOther	= mod:NewSpecialWarningTaunt(231998, nil, nil, nil, 1, 2)
 local specWarnUncheckedRage			= mod:NewSpecialWarningCount(231854, nil, nil, nil, 2, 2)
 local specWarnDrenchingWaters		= mod:NewSpecialWarningMove(231768, nil, nil, nil, 1, 2)

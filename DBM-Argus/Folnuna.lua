@@ -20,7 +20,7 @@ local warnInfectedClaws					= mod:NewStackAnnounce(247361, 2, nil, "Tank")
 local warnSlumberingGasp				= mod:NewTargetAnnounce(247389, 2, nil, false)
 local warnGrotesqueSpawn				= mod:NewSpellAnnounce(247443, 2)
 
-local specWarnInfectedClaws				= mod:NewSpecialWarningStack(247361, nil, 6, nil, nil, 1, 2)
+local specWarnInfectedClaws				= mod:NewSpecialWarningStack(247361, nil, 6, nil, nil, 1, 6)
 local specWarnInfectedClawsOther		= mod:NewSpecialWarningTaunt(247361, nil, nil, nil, 1, 2)
 local specWarnSlumberingGasp			= mod:NewSpecialWarningDodge(247379, nil, nil, nil, 2, 2)
 
