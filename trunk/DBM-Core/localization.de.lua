@@ -354,7 +354,7 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS.switch			= "%s - Ziel wechseln"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.switchcount		= "%s - Ziel wechseln (%%s)"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.gtfo				= "%%s unter dir - lauf raus"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.Adds				= "Adds kommen - Ziel wechseln"
-DBM_CORE_AUTO_SPEC_WARN_TEXTS.Addscustom		= "Adds kommen - %s"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.Addscustom		= "Adds kommen - %%s"
 
 -- Auto-generated Special Warning Localizations
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell 			= "Spezialwarnung für $spell:%s"
@@ -409,7 +409,7 @@ DBM_CORE_AUTO_TIMER_TEXTS.nextspecial	= "Nächste Spezialfähigkeit"
 DBM_CORE_AUTO_TIMER_TEXTS.achievement	= "%s"
 DBM_CORE_AUTO_TIMER_TEXTS.stage		= "Nächste Phase"
 DBM_CORE_AUTO_TIMER_TEXTS.adds		= "Nächste Adds"
-DBM_CORE_AUTO_TIMER_TEXTS.addscustom	= "Nächste Adds (%s)"
+DBM_CORE_AUTO_TIMER_TEXTS.addscustom	= "Nächste Adds (%%s)"
 --DBM_CORE_AUTO_TIMER_TEXTS.roleplay
 
 DBM_CORE_AUTO_TIMER_OPTIONS.target		= "Dauer des Debuffs $spell:%s anzeigen"

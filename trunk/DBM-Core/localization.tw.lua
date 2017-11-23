@@ -354,7 +354,7 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS.switch		= "%s - 快更換目標!"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.switchcount	= "%s - 快更換目標!(%%s)"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.gtfo			= "注意%%s - 快移動"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.Adds			= "小怪來了 - 快更換目標!"
-DBM_CORE_AUTO_SPEC_WARN_TEXTS.Addscustom	= "小怪來了 - %s"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.Addscustom	= "小怪來了 - %%s"
 
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell		= "為$spell:%s顯示特別警告"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.ends 		= "為$spell:%s結束顯示特別警告"
@@ -407,7 +407,7 @@ DBM_CORE_AUTO_TIMER_TEXTS.nextspecial		= "下一次特別技能"
 DBM_CORE_AUTO_TIMER_TEXTS.achievement		= "%s"
 DBM_CORE_AUTO_TIMER_TEXTS.stage				= "下一個階段"
 DBM_CORE_AUTO_TIMER_TEXTS.adds				= "下一次小怪到來"
-DBM_CORE_AUTO_TIMER_TEXTS.addscustom  		= "小怪到來(%s)"
+DBM_CORE_AUTO_TIMER_TEXTS.addscustom  		= "小怪到來(%%s)"
 DBM_CORE_AUTO_TIMER_TEXTS.roleplay			= GUILD_INTEREST_RP
 
 DBM_CORE_AUTO_TIMER_OPTIONS.target			= "為$spell:%s顯示減益計時器"

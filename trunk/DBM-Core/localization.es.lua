@@ -357,7 +357,7 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS.switch		= "%s - ¡cambia de objetivo!"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.switchcount	= "%s - ¡cambia de objetivo! (%%s)"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.gtfo			= "%%s a tus pies - ¡apártate!"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.Adds			= "Esbirros en breve - ¡cambia de objetivo!"
-DBM_CORE_AUTO_SPEC_WARN_TEXTS.Addscustom	= "Esbirros en breve - %s"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.Addscustom	= "Esbirros en breve - %%s"
 
 -- Auto-generated Special Warning Localizations
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell 			= "Mostrar aviso especial para $spell:%s"
@@ -412,7 +412,7 @@ DBM_CORE_AUTO_TIMER_TEXTS.nextspecial	= "Siguiente facultad especial"
 DBM_CORE_AUTO_TIMER_TEXTS.achievement	= "Logro: %s"
 DBM_CORE_AUTO_TIMER_TEXTS.stage			= "Siguiente fase"
 DBM_CORE_AUTO_TIMER_TEXTS.adds			= "Esbirros"
-DBM_CORE_AUTO_TIMER_TEXTS.addscustom	= "Esbirros (%s)"
+DBM_CORE_AUTO_TIMER_TEXTS.addscustom	= "Esbirros (%%s)"
 DBM_CORE_AUTO_TIMER_TEXTS.roleplay		= "Diálogo"
 
 DBM_CORE_AUTO_TIMER_OPTIONS.target		= "Mostrar temporizador para la duración del perjuicio de $spell:%s"

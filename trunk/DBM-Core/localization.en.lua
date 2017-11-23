@@ -361,7 +361,7 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 	switchcount		= "%s - switch targets (%%s)",
 	gtfo			= "%%s under you - move away",
 	Adds			= "Incoming Adds - switch targets",
-	Addscustom		= "Incoming Adds - %s"
+	Addscustom		= "Incoming Adds - %%s"
 }
 
 -- Auto-generated Special Warning Localizations
@@ -420,7 +420,7 @@ DBM_CORE_AUTO_TIMER_TEXTS = {
 	achievement	= "%s",
 	stage		= "Next Stage",
 	adds		= "Next Incoming Adds",
-	addscustom	= "Incoming Adds (%s)",
+	addscustom	= "Incoming Adds (%%s)",
 	roleplay	= GUILD_INTEREST_RP
 }
 
