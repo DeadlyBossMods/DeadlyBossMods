@@ -7,7 +7,7 @@ local L
 L= DBM:GetModLocalization(2012)
 
 L:SetMiscLocalization({
-	Pull				= "Your fate is only death!"
+	Pull				= "你注定會死！"
 })
 
 -----------------------
@@ -16,7 +16,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(2013)
 
 L:SetMiscLocalization({
-	Pull				= "I see the weakness in your soul!"
+	Pull				= "我看到你靈魂的弱點了！"
 })
 
 -----------------------
@@ -25,7 +25,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(2014)
 
 L:SetMiscLocalization({
-	Pull				= "Come, small ones. Die by my hand!"
+	Pull				= "來吧，小傢伙，讓我殺了你們！"
 })
 
 -----------------------
@@ -52,5 +52,5 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(2015)
 
 L:SetMiscLocalization({
-	Pull				= "All worlds will burn in felfire!"
+	Pull				= "魔火會燒盡所有世界！"
 })
