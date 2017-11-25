@@ -138,9 +138,9 @@ local voiceDeadlyScythe					= mod:NewVoice(258039)--tauntboss
 local voiceReorgModule					= mod:NewVoice(256389)--killmob
 
 
-mod:AddSetIconOption("SetIconOnAvatar", 255199, true)
-mod:AddSetIconOption("SetIconOnSoulBomb", 251570, true)
-mod:AddSetIconOption("SetIconOnSoulBurst", 250669, true)
+mod:AddSetIconOption("SetIconOnAvatar", 255199, true)--4
+mod:AddSetIconOption("SetIconOnSoulBomb", 251570, true)--3 and 7
+mod:AddSetIconOption("SetIconOnSoulBurst", 250669, true)--2
 mod:AddInfoFrameOption(258040, true)--Change to EJ entry since spell not localized
 mod:AddNamePlateOption("NPAuraOnInevitability", 253021)
 mod:AddNamePlateOption("NPAuraOnCosmosSword", 255496)
@@ -150,7 +150,7 @@ mod:AddNamePlateOption("NPAuraOnEternalBlades", 255478)
 local avatarOfAggramar, aggramarsBoon = GetSpellInfo(255199), GetSpellInfo(255200)
 mod.vb.phase = 1
 mod.vb.TorturedRage = 0
-mod.vb.soulBurstIcon = 1
+mod.vb.soulBurstIcon = 3
 
 --[[
 local debuffFilter
@@ -196,7 +196,7 @@ end
 function mod:OnCombatStart(delay)
 	self.vb.phase = 1
 	self.vb.TorturedRage = 0
-	self.vb.soulBurstIcon = 1
+	self.vb.soulBurstIcon = 3
 	timerSweepingScytheCD:Start(5.8-delay)
 	timerSkyandSeaCD:Start(10.8-delay)
 	timerTorturedRageCD:Start(12-delay)
@@ -374,7 +374,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.SetIconOnSoulBurst then
 			self:SetIcon(args.destName, icon)
 		end
-		self.vb.soulBurstIcon = self.vb.soulBurstIcon + 1
+		self.vb.soulBurstIcon = self.vb.soulBurstIcon + 4--Icons 3 and 7 used to match BW
 	elseif spellId == 251570 then
 		if args:IsPlayer() then
 			specWarnSoulbomb:Show()
@@ -386,7 +386,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnSoulbomb:Show(args.destName)
 		end
 		if self.Options.SetIconOnSoulBomb then
-			self:SetIcon(args.destName, 3)
+			self:SetIcon(args.destName, 2)
 		end
 	elseif spellId == 255199 then
 		if args:IsPlayer() then
@@ -506,6 +506,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, _, spellId)
 		--timerReorgModuleCD:Start()
 	elseif spellId == 252280 then--Volatile Soul
 		timerVolatileSoulCD:Start()
+		self.vb.soulBurstIcon = 3
 	elseif spellId == 258042 then--Argus P2 Energy Controller (16 seconds after Fury)
 		--Alternate and valid timer start point
 		--timerAvatarofAggraCD:Start(5)
