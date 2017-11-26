@@ -29,7 +29,6 @@ mod:RegisterEventsInCombat(
 --TODO, figure out who sphere is chasing with a constant threat/aggro monitor while it's out?
 --TODO, more work on siphon targetting, it too may need icons/assignments. Same with Enflamed
 --TODO, update all timers on Focused power, probably pause them all for 15 seconds
---TODO, cleanup timers same way as flame chick in foundry. Sequence the timers instead of CD them all
 --[[
 (ability.id = 244057 or ability.id = 244056) and type = "begincast"
  or (ability.id = 244072 or ability.id = 251445 or ability.id = 245098 or ability.id = 251356 or ability.id = 254429) and type = "cast"
