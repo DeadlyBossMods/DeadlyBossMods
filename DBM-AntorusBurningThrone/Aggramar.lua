@@ -42,12 +42,11 @@ local warnRavenousBlazeCount			= mod:NewCountAnnounce(254452, 4)
 local warnTaeshalachTech				= mod:NewCountAnnounce(244688, 3)
 --Stage Two: Stuff
 local warnPhase2						= mod:NewPhaseAnnounce(2, 2)
---local warnFlare							= mod:NewTargetAnnounce(245923, 3)
 --Stage Three: More stuff
 local warnPhase3						= mod:NewPhaseAnnounce(3, 2)
 
 --Stage One: Wrath of Aggramar
-local specWarnTaeshalachReach			= mod:NewSpecialWarningStack(245990, nil, 12, nil, nil, 1, 6)
+local specWarnTaeshalachReach			= mod:NewSpecialWarningStack(245990, nil, 8, nil, nil, 1, 6)
 local specWarnTaeshalachReachOther		= mod:NewSpecialWarningTaunt(245990, nil, nil, nil, 1, 2)
 local specWarnScorchingBlaze			= mod:NewSpecialWarningMoveAway(245994, nil, nil, nil, 1, 2)
 local yellScorchingBlaze				= mod:NewYell(245994)
@@ -63,6 +62,7 @@ local specWarnSearingTempest			= mod:NewSpecialWarningRun(245301, nil, nil, nil,
 --Intermission
 --local specWarnMeteorSwarm				= mod:NewSpecialWarningDodge(245920, nil, nil, nil, 1, 2)
 --Stage Two: Champion of Sargeras
+local specWarnFlare						= mod:NewSpecialWarningDodge(245923, nil, nil, nil, 2, 2)
 
 --local yellBurstingDreadflame			= mod:NewPosYell(238430, DBM_CORE_AUTO_YELL_CUSTOM_POSITION)
 --local specWarnMalignantAnguish		= mod:NewSpecialWarningInterrupt(236597, "HasInterrupt")
@@ -77,7 +77,7 @@ local timerScorchingBlazeCD				= mod:NewCDTimer(6.1, 245994, nil, nil, nil, 3)
 local timerRavenousBlazeCD				= mod:NewCDTimer(23.2, 254452, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
 local timerWakeofFlameCD				= mod:NewCDTimer(24.3, 244693, nil, nil, nil, 3)
 --Stage Two: Champion of Sargeras
---local timerFlareCD						= mod:NewAITimer(61, 245923, nil, nil, nil, 3)
+local timerFlareCD						= mod:NewCDTimer(15.8, 245923, nil, nil, nil, 3)
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
 
@@ -94,6 +94,8 @@ local voiceWakeofFlame					= mod:NewVoice(244693)--watchwave
 local voiceFoeBreaker					= mod:NewVoice(245458)--shockwave/tauntboss/defensive
 local voiceFlameRend					= mod:NewVoice(245463)--gathershare/shareone/sharetwo
 local voiceSearingTempest				= mod:NewVoice(245301)--watchstep
+--Stage Two: Champion of Sargeras
+local voiceFlare						= mod:NewVoice(245923)--watchstep
 --local voiceMalignantAnguish			= mod:NewVoice(236597, "HasInterrupt")--kickcast
 --local voiceGTFO							= mod:NewVoice(247135, nil, DBM_CORE_AUTO_VOICE4_OPTION_TEXT)--runaway
 
@@ -237,7 +239,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId) then
 			local amount = args.amount or 1
-			if amount >= 12 then--Lasts 12 seconds, asuming 1.5sec swing timer makes 8 stack swap
+			if amount >= 8 and self:AntiSpam(3, 2) then--Lasts 12 seconds, asuming 1.5sec swing timer makes 8 stack swap
 				if args:IsPlayer() then--At this point the other tank SHOULD be clear.
 					specWarnTaeshalachReach:Show(amount)
 					voiceTaeshalachReach:Play("stackhigh")
@@ -284,6 +286,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.wakeOfFlameCount = 0
 		timerScorchingBlazeCD:Stop()
 		timerWakeofFlameCD:Stop()
+		timerFlareCD:Stop()
 		countdownWakeofFlame:Cancel()
 		timerTaeshalachTechCD:Stop()
 		countdownTaeshalachTech:Cancel()
@@ -309,7 +312,7 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 244894 then--Corrupt Aegis
-		self.vb.phase = self.vb.phase + 0.5
+		self.vb.phase = self.vb.phase + 1
 		self.vb.wakeOfFlameCount = 0
 		--timerScorchingBlazeCD:Start(3)--Unknown
 		--timerTaeshalachTechCD:Start()--Unknown
@@ -379,6 +382,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerScorchingBlazeCD:Stop()
 		timerRavenousBlazeCD:Stop()
 		timerWakeofFlameCD:Stop()
+		timerFlareCD:Stop()
 		countdownWakeofFlame:Cancel()
 		warnTaeshalachTech:Show(self.vb.techCount)
 		timerTaeshalachTechCD:Start(nil, self.vb.techCount+1)
@@ -411,9 +415,13 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 				countdownWakeofFlame:Start(7)
 			end
 		elseif self.vb.phase == 2 then
-	
+			timerFlareCD:Start(8.6)
 		else--Stage 3
-	
+			timerFlareCD:Start(10)
 		end
+	elseif spellId == 245983 or spellId == 246037 then--Flare
+		specWarnFlare:Show()
+		voiceFlare:Play("watchstep")
+		timerFlareCD:Start()
 	end
 end

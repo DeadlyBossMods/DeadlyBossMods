@@ -317,7 +317,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self:IsTanking(uId) then
 			local amount = args.amount or 1
 			if amount >= 2 then
-				if not UnitDebuff("player", args.spellName) and not UnitIsDeadOrGhost("player") then
+				local _, _, _, _, _, _, expireTime = UnitDebuff("player", args.spellName)
+				local remaining
+				if expireTime then
+					remaining = expireTime-GetTime()
+				end
+				if not UnitIsDeadOrGhost("player") and (not remaining or remaining and remaining < 8) then
 					specWarnExploitWeakness:Show(args.destName)
 					voiceExploitWeakness:Play("tauntboss")
 				else
