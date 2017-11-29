@@ -24,7 +24,7 @@ mod:RegisterEventsInCombat(
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 	"UNIT_DIED",
-	"CHAT_MSG_RAID_BOSS_EMOTE",
+--	"CHAT_MSG_RAID_BOSS_EMOTE",
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5"
 )
 
@@ -428,7 +428,6 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 
 	end
 end
---]]
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	if msg:find("SPELL_MAGE_FLAMEORB") then
@@ -439,6 +438,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 		warnNathrezaPortal:Show()
 	end
 end
+--]]
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
@@ -453,10 +453,12 @@ function mod:UNIT_DIED(args)
 	end
 end
 
---[[
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if spellId == 244000 then--Felstorm Barrage
-
+	if spellId == 257939 then
+		warnXorothPortal:Show()
+	elseif spellId == 257941 then
+		warnRancoraPortal:Show()
+	elseif spellId == 257942 then
+		warnNathrezaPortal:Show()
 	end
 end
---]]

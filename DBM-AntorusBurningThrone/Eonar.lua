@@ -118,7 +118,7 @@ local finalDoomTimers = {60, 125, 100}
 Mythic Adds
 destructor 22, 96.3, 40, 
 Obfuscator: 39.8, 157.9
-Normal Adds
+Normal Adds?
 "Obfuscator-246753-npc:124207 = pull:195.6, 37.3", -- [2]
 "destructor-254769-npc:123760 = pull:17.1, 45.5, 35.3, 51.1, 133.9, 51.1, 50.3", -- [3]
 LFR Adds
@@ -165,19 +165,22 @@ function mod:OnCombatStart(delay)
 	--timerWarpInCD:Start(5.1, 1)
 	--countdownWarpIn:Start(5.1)
 	if not self:IsLFR() then
-		self.vb.lifeRequired = 5
 		if self:IsMythic() then
+			self.vb.lifeRequired = 5
 			timerRainofFelCD:Start(6-delay, 1)
 			countdownRainofFel:Start(6-delay)
 			--timerSpearofDoomCD:Start(35-delay, 1)
 			timerFinalDoomCD:Start(60-delay, 1)
 			countdownFinalDoom:Start(60-delay)
-		else
+		elseif self:IsHeroic() then
+			self.vb.lifeRequired = 5
 			timerRainofFelCD:Start(30-delay, 1)
 			countdownRainofFel:Start(30-delay)
-			if self:IsHeroic() then
-				timerSpearofDoomCD:Start(34.4-delay, 1)
-			end
+			timerSpearofDoomCD:Start(34.4-delay, 1)
+		else
+			self.vb.lifeRequired = 4
+			timerRainofFelCD:Start(30-delay, 1)
+			countdownRainofFel:Start(30-delay)
 		end
 	else
 		self.vb.lifeRequired = 3
