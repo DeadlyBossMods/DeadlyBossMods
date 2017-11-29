@@ -64,7 +64,7 @@ local specWarnSwing						= mod:NewSpecialWarningDefensive(250701, "Tank", nil, n
 --local timerWarpInCD						= mod:NewCDCountTimer(30, 246888, nil, nil, nil, 1)
 local timerMeteorStormCD				= mod:NewAITimer(61, 248333, nil, nil, nil, 3)
 local timerSpearofDoomCD				= mod:NewCDCountTimer(55, 248789, nil, nil, nil, 3)--55-69
-local timerRainofFelCD					= mod:NewCDCountTimer(61, 248332, nil, nil, nil, 3)
+--local timerRainofFelCD					= mod:NewCDCountTimer(61, 248332, nil, nil, nil, 3)
 local timerFinalDoom					= mod:NewCastTimer(50, 249121, nil, nil, nil, 2)
 --Mythic
 local timerFinalDoomCD					= mod:NewCDCountTimer(90, 249121, nil, nil, nil, 4, nil, DBM_CORE_HEROIC_ICON)
@@ -73,8 +73,8 @@ local timerFinalDoomCD					= mod:NewCDCountTimer(90, 249121, nil, nil, nil, 4, n
 --local berserkTimer					= mod:NewBerserkTimer(600)
 
 --The Paraxis
-local countdownWarpIn					= mod:NewCountdown(50, 246888)
-local countdownRainofFel				= mod:NewCountdown("Alt60", 248332)
+--local countdownWarpIn					= mod:NewCountdown(50, 246888)
+--local countdownRainofFel				= mod:NewCountdown("Alt60", 248332)
 --Mythic
 local countdownFinalDoom				= mod:NewCountdown("AltTwo90", 249121)
 
@@ -167,20 +167,20 @@ function mod:OnCombatStart(delay)
 	if not self:IsLFR() then
 		if self:IsMythic() then
 			self.vb.lifeRequired = 5
-			timerRainofFelCD:Start(6-delay, 1)
-			countdownRainofFel:Start(6-delay)
+			--timerRainofFelCD:Start(6-delay, 1)
+			--countdownRainofFel:Start(6-delay)
 			--timerSpearofDoomCD:Start(35-delay, 1)
 			timerFinalDoomCD:Start(60-delay, 1)
 			countdownFinalDoom:Start(60-delay)
 		elseif self:IsHeroic() then
 			self.vb.lifeRequired = 5
-			timerRainofFelCD:Start(30-delay, 1)
-			countdownRainofFel:Start(30-delay)
+			--timerRainofFelCD:Start(30-delay, 1)
+			--countdownRainofFel:Start(30-delay)
 			timerSpearofDoomCD:Start(34.4-delay, 1)
 		else
 			self.vb.lifeRequired = 4
-			timerRainofFelCD:Start(30-delay, 1)
-			countdownRainofFel:Start(30-delay)
+			--timerRainofFelCD:Start(30-delay, 1)
+			--countdownRainofFel:Start(30-delay)
 		end
 	else
 		self.vb.lifeRequired = 3
@@ -305,11 +305,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnRainofFel:CombinedShow(1, self.vb.rainOfFelCount, args.destName)
 		if self:AntiSpam(5, 4) then
 			self.vb.rainOfFelCount = self.vb.rainOfFelCount + 1
-			local timer = self:IsMythic() and mythicRainOfFelTimers[self.vb.rainOfFelCount+1] or self:IsHeroic() and heroicRainOfFelTimers[self.vb.rainOfFelCount+1] or self:IsNormal() and normalRainOfFelTimers[self.vb.rainOfFelCount+1]
-			if timer then
-				timerRainofFelCD:Start(timer, self.vb.rainOfFelCount+1)
-				countdownRainofFel:Start(timer)
-			end
+			--local timer = self:IsMythic() and mythicRainOfFelTimers[self.vb.rainOfFelCount+1] or self:IsHeroic() and heroicRainOfFelTimers[self.vb.rainOfFelCount+1] or self:IsNormal() and normalRainOfFelTimers[self.vb.rainOfFelCount+1]
+			--if timer then
+			--	timerRainofFelCD:Start(timer, self.vb.rainOfFelCount+1)
+			--	countdownRainofFel:Start(timer)
+			--end
 		end
 		if args:IsPlayer() then
 			specWarnRainofFel:Show()
