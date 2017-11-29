@@ -30,9 +30,6 @@ mod:RegisterEventsInCombat(
 local annihilator = EJ_GetSectionInfo(15917)
 local Decimator = EJ_GetSectionInfo(15915)
 --TODO, work in range frame to include searing barrage, for ranged
---TODO, improve luring destruction if draw in needs specific action
---TODO, see how apoc drives affect other timers and impliment
---TODO, annilation have targetting? does mythic version have a cast ID? could only find one cast start ID
 --[[
 (ability.id = 244969 or ability.id = 246408 or ability.id = 247044) and type = "begincast"
  or abiity.id = 246220 and type = "cast"

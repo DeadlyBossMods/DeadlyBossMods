@@ -315,7 +315,8 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.phase = self.vb.phase + 1
 		self.vb.wakeOfFlameCount = 0
 		--timerScorchingBlazeCD:Start(3)--Unknown
-		--timerTaeshalachTechCD:Start()--Unknown
+		timerTaeshalachTechCD:Start(37)--Veriy with more data
+		countdownTaeshalachTech:Start(37)
 		if self.vb.phase == 2 then
 			warnPhase2:Show()
 			voicePhaseChange:Play("ptwo")
