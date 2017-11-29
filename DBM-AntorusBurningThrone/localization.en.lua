@@ -35,7 +35,8 @@ L= DBM:GetModLocalization(2025)
 
 L:SetMiscLocalization({
 	Obfuscators =	"Obfuscators",
-	Destructors =	"Destructors"
+	Destructors =	"Destructors",
+	Purifiers 	=	"Purifiers"
 })
 
 ---------------------------
