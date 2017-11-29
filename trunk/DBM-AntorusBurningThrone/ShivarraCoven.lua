@@ -16,7 +16,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 245627 245303 252861 253650 250648 250095",
 	"SPELL_CAST_SUCCESS 244899 253520 245532 250757 250335 250333 250334 249793 245518 246329",
 	"SPELL_AURA_APPLIED 244899 253520 245518 245586 250757 249863",
-	"SPELL_AURA_APPLIED_DOSE 244899",
+	"SPELL_AURA_APPLIED_DOSE 244899 245518",
 	"SPELL_AURA_REMOVED 253520 245586 249863",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
@@ -42,6 +42,7 @@ local warnFulminatingPulse				= mod:NewTargetAnnounce(253520, 3)
 --Asara, Mother of Night
 --Diima, Mother of Gloom
 local warnChilledBlood					= mod:NewTargetAnnounce(245586, 2)
+local warnFlashFreeze					= mod:NewStackAnnounce(245518, 2, nil, "Tank")
 --Thu'raya, Mother of the Cosmos (Mythic)
 local warnCosmicGlare					= mod:NewTargetAnnounce(250757, 3)
 --Torment of the Titans
@@ -58,7 +59,7 @@ local yellFulminatingPulse				= mod:NewFadesYell(253520)
 local specWarnShadowBlades				= mod:NewSpecialWarningDodge(246329, nil, nil, nil, 2, 2)
 local specWarnStormofDarkness			= mod:NewSpecialWarningCount(252861, nil, nil, nil, 2, 2)
 --Diima, Mother of Gloom
-local specWarnFlashfreeze				= mod:NewSpecialWarningYou(245518, nil, nil, nil, 1, 2)
+local specWarnFlashfreeze				= mod:NewSpecialWarningStack(245518, nil, 3, nil, nil, 1, 6)
 local specWarnFlashfreezeOther			= mod:NewSpecialWarningTaunt(245518, nil, nil, nil, 1, 2)
 local yellFlashfreeze					= mod:NewYell(245518, nil, false)
 local specWarnChilledBlood				= mod:NewSpecialWarningTarget(245586, "Healer", nil, nil, 1, 2)
@@ -74,7 +75,7 @@ local specWarnTormentofTitans			= mod:NewSpecialWarningSwitch("ej16138", nil, ni
 local timerBossIncoming					= mod:NewTimer(61, "timerBossIncoming", nil, nil, nil, 1)
 --Noura, Mother of Flames
 local timerFieryStrikeCD				= mod:NewCDTimer(11, 244899, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
-local timerWhirlingSaberCD				= mod:NewCDTimer(35.3, 245627, nil, nil, nil, 3)--35-45
+local timerWhirlingSaberCD				= mod:NewCDTimer(35.1, 245627, nil, nil, nil, 3)--35-45
 local timerFulminatingPulseCD			= mod:NewCDTimer(40.5, 253520, nil, nil, nil, 3)
 --Asara, Mother of Night
 --local timerTouchofDarknessCD			= mod:NewAITimer(61, 245303, nil, "HasInterrupt", nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
@@ -284,13 +285,21 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 245518 then
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId) then
-			if args:IsPlayer() then--At this point the other tank SHOULD be clear.
-				specWarnFlashfreeze:Show()
-				voiceFlashfreeze:Play("targetyou")
-				yellFlashfreeze:Yell()
+			local amount = args.amount or 1
+			if amount >= 3 then--Lasts 30 seconds, unknown reapplication rate, fine tune!
+				if args:IsPlayer() then--At this point the other tank SHOULD be clear.
+					specWarnFlashfreeze:Show(amount)
+					voiceFlashfreeze:Play("stackhigh")
+				else--Taunt as soon as stacks are clear, regardless of stack count.
+					if not UnitIsDeadOrGhost("player") and not UnitDebuff("player", args.spellName) then
+						specWarnFlashfreezeOther:Show(args.destName)
+						voiceFlashfreeze:Play("tauntboss")
+					else
+						warnFlashFreeze:Show(args.destName, amount)
+					end
+				end
 			else
-				specWarnFlashfreezeOther:Show(args.destName)
-				voiceFlashfreeze:Play("tauntboss")
+				warnFlashFreeze:Show(args.destName, amount)
 			end
 		end
 	elseif spellId == 245586 then
