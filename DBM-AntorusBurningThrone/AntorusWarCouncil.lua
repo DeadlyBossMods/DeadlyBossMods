@@ -103,13 +103,13 @@ local timerWarpFieldCD					= mod:NewAITimer(61, 244821, nil, nil, nil, 2)
 --local berserkTimer					= mod:NewBerserkTimer(600)
 
 --General
-local countdownAssumeCommand			= mod:NewCountdown(50, 245227)
+local countdownAssumeCommand			= mod:NewCountdown("Alt50", 245227)
 local countdownExploitWeakness			= mod:NewCountdown("Alt8", 244892, "Tank", nil, 3)
 --In Pod
 ----Admiral Svirax
 local countdownFusillade				= mod:NewCountdown("AltTwo30", 244625)
 ----General Erodus
-local countdownReinforcements			= mod:NewCountdown("Alt25", 245546)
+local countdownReinforcements			= mod:NewCountdown(25, 245546)
 
 --General
 --local voiceGTFO						= mod:NewVoice(238028, nil, DBM_CORE_AUTO_VOICE4_OPTION_TEXT)--runaway
