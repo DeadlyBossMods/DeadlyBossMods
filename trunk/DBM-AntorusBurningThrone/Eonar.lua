@@ -206,7 +206,7 @@ function mod:OnCombatStart(delay)
 			self.vb.lifeRequired = 4
 			timerRainofFelCD:Start(9.3-delay, 1)
 			--countdownRainofFel:Start(9.3-delay)
-			timerDestructorCD:Start(15.7, DBM_CORE_MIDDLE)
+			timerDestructorCD:Start(8, DBM_CORE_MIDDLE)
 			timerSpearofDoomCD:Start(34.4-delay, 1)
 			timerObfuscatorCD:Start(81.8, DBM_CORE_TOP)
 			timerPurifierCD:Start(125, 1)
@@ -305,7 +305,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			local timer = self:IsHeroic() and heroicDestructors[self.vb.destructorCast+1] or self:IsNormal() and normalDestructors[self.vb.destructorCast+1]
 			if timer then
 				local text = self:IsHeroic() and addCountToLocationHeroic["Dest"][self.vb.destructorCast+1] or self:IsNormal() and addCountToLocationNormal["Dest"][self.vb.destructorCast+1] or self:IsMythic() and addCountToLocationMythic["Dest"][self.vb.destructorCast+1] or self.vb.destructorCast+1
-				timerDestructorCD:Start(timer, text)
+				timerDestructorCD:Start(timer-9, text)--High alert fires about 9 seconds after spawn so using it as a trigger has a -9 adjustment
 			end
 		end
 	end
