@@ -12,7 +12,7 @@ L= DBM:GetModLocalization(1992)
 L= DBM:GetModLocalization(1987)
 
 L:SetOptionLocalization({
-	SequenceTimers =	"序列的冷卻計時器關閉先前的技能施放而不是當前的技能，以減少計時器雜亂，這犧牲計時器的準確性。(快1-2秒)"
+	SequenceTimers =	"在英雄/傳奇難度下序列的冷卻計時器關閉先前的技能施放而不是當前的技能，以減少計時器雜亂，這犧牲計時器的準確性。(快1-2秒)"
 })
 
 ---------------------------
