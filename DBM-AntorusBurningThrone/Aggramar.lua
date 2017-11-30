@@ -62,7 +62,7 @@ local specWarnSearingTempest			= mod:NewSpecialWarningRun(245301, nil, nil, nil,
 --Intermission
 --local specWarnMeteorSwarm				= mod:NewSpecialWarningDodge(245920, nil, nil, nil, 1, 2)
 --Stage Two: Champion of Sargeras
-local specWarnFlare						= mod:NewSpecialWarningDodge(245923, nil, nil, nil, 2, 2)
+local specWarnFlare						= mod:NewSpecialWarningDodge(245983, nil, nil, nil, 2, 2)
 
 --local yellBurstingDreadflame			= mod:NewPosYell(238430, DBM_CORE_AUTO_YELL_CUSTOM_POSITION)
 --local specWarnMalignantAnguish		= mod:NewSpecialWarningInterrupt(236597, "HasInterrupt")
@@ -77,7 +77,7 @@ local timerScorchingBlazeCD				= mod:NewCDTimer(6.1, 245994, nil, nil, nil, 3)
 local timerRavenousBlazeCD				= mod:NewCDTimer(23.2, 254452, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
 local timerWakeofFlameCD				= mod:NewCDTimer(24.3, 244693, nil, nil, nil, 3)
 --Stage Two: Champion of Sargeras
-local timerFlareCD						= mod:NewCDTimer(15.8, 245923, nil, nil, nil, 3)
+local timerFlareCD						= mod:NewCDTimer(15.8, 245983, nil, nil, nil, 3)
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
 
@@ -95,7 +95,7 @@ local voiceFoeBreaker					= mod:NewVoice(245458)--shockwave/tauntboss/defensive
 local voiceFlameRend					= mod:NewVoice(245463)--gathershare/shareone/sharetwo
 local voiceSearingTempest				= mod:NewVoice(245301)--watchstep
 --Stage Two: Champion of Sargeras
-local voiceFlare						= mod:NewVoice(245923)--watchstep
+local voiceFlare						= mod:NewVoice(245983)--watchstep
 --local voiceMalignantAnguish			= mod:NewVoice(236597, "HasInterrupt")--kickcast
 --local voiceGTFO							= mod:NewVoice(247135, nil, DBM_CORE_AUTO_VOICE4_OPTION_TEXT)--runaway
 
