@@ -223,12 +223,11 @@ function mod:OnCombatEnd()
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
 	end
-	local wowTOC, testBuild = DBM:GetTOC()
-	if not testBuild then
-		DBM:AddMsg(DBM_CORE_NEED_LOGS)
-	end
 	if self.Options.NPAuraOnInevitability or self.Options.NPAuraOnCosmosSword or self.Options.NPAuraOnEternalBlades or self.Options.NPAuraOnVulnerability then
 		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
+	end
+	if self:IsMythic() then
+		DBM:AddMsg(DBM_CORE_NEED_LOGS)
 	end
 end
 
