@@ -26,8 +26,9 @@ L= DBM:GetModLocalization(1997)
 L= DBM:GetModLocalization(2025)
 
 L:SetMiscLocalization({
-	Obfuscators =	"Obfuscators",
-	Destructors =	"Destructors"
+	Obfuscators =	"魔能匿蹤者",
+	Destructors =	"魔能毀滅者",
+	Purifiers 	=	"魔能淨化者"
 })
 
 ---------------------------
