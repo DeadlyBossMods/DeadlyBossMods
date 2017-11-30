@@ -212,7 +212,7 @@ function mod:OnCombatStart(delay)
 			timerPurifierCD:Start(125, 1)
 		else--Normal
 			self.vb.lifeRequired = 4
-			timerDestructorCD:Start(17, DBM_CORE_MIDDLE)
+			timerDestructorCD:Start(8, DBM_CORE_MIDDLE)
 			timerObfuscatorCD:Start(174, 1)
 			--timerRainofFelCD:Start(30-delay, 1)
 			--countdownRainofFel:Start(30-delay)
