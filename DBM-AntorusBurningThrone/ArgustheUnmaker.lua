@@ -428,14 +428,14 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnCosmicBeacon:CombinedShow(0.3, args.destName)
 		end
 	elseif spellId == 258647 then--Gift of Sea
-		warnSkyandSea:CombinedShow(0.3)
+		warnSkyandSea:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			specWarnGiftofSea:Show()
 			voiceGiftofSea:Play("targetyou")
 			yellGiftofSea:Yell()
 		end
 	elseif spellId == 258646 then--Gift of Sky
-		warnSkyandSea:CombinedShow(0.3)
+		warnSkyandSea:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			specWarnGiftofSky:Show()
 			voiceGiftofSky:Play("targetyou")
