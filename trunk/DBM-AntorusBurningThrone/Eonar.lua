@@ -320,7 +320,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			self.vb.purifierCast = self.vb.purifierCast + 1
 			local timer = self:IsHeroic() and heroicPurifiers[self.vb.purifierCast+1]
 			if timer then
-				timerPurifierCD:Start(timer, self.vb.purifierCast+1)
+				local text = self:IsHeroic() and addCountToLocationHeroic["Pur"][self.vb.purifierCast+1] or self:IsNormal() and addCountToLocationNormal["Pur"][self.vb.purifierCast+1] or self:IsMythic() and addCountToLocationMythic["Pur"][self.vb.purifierCast+1] or self.vb.purifierCast+1
+				timerPurifierCD:Start(timer, text)
 			end
 		end
 	elseif spellId == 250074 then--Purification (buff on enemies near purifier)
