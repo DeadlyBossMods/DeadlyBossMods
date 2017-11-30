@@ -73,7 +73,7 @@ local timerTaeshalachTechCD				= mod:NewNextCountTimer(61, 244688, nil, nil, nil
 local timerFoeBreakerCD					= mod:NewNextCountTimer(6.1, 245458, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerFlameRendCD					= mod:NewNextCountTimer(6.1, 245463, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerTempestCD					= mod:NewNextTimer(6.1, 245301, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
-local timerScorchingBlazeCD				= mod:NewCDTimer(6.1, 245994, nil, nil, nil, 3)
+local timerScorchingBlazeCD				= mod:NewCDTimer(7.3, 245994, nil, nil, nil, 3)
 local timerRavenousBlazeCD				= mod:NewCDTimer(23.2, 254452, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
 local timerWakeofFlameCD				= mod:NewCDTimer(24.3, 244693, nil, nil, nil, 3)
 --Stage Two: Champion of Sargeras
@@ -397,7 +397,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		if self:IsMythic() then
 			timerRavenousBlazeCD:Start(4.2)
 		else
-			timerScorchingBlazeCD:Start(5)
+			timerScorchingBlazeCD:Start(4.2)
 		end
 		if self.vb.phase == 1 then
 			if self:IsMythic() then
@@ -408,13 +408,13 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 				countdownWakeofFlame:Start(7)
 			end
 		elseif self.vb.phase == 2 then
-			timerFlareCD:Start(8.6)
+			timerFlareCD:Start(8.6)--Might be wrong here
 		else--Stage 3
-			timerFlareCD:Start(10)
+			timerFlareCD:Start(10)--Might be wrong here
 		end
 	elseif spellId == 245983 or spellId == 246037 then--Flare
 		specWarnFlare:Show()
 		voiceFlare:Play("watchstep")
-		timerFlareCD:Start()
+		timerFlareCD:Start()--Might be wrong here
 	end
 end

@@ -14,6 +14,9 @@ mod:RegisterEvents(
 	"SPELL_AURA_REMOVED 252760 254122"
 )
 
+--TODO, these
+				--"Annihilation-252740-npc:127230 = pull:9.5", -- [1]
+				--"Decimation-252793-npc:127231 = pull:10.9, 0.0", -- [2]
 local warnDemolish						= mod:NewTargetAnnounce(252760, 4)
 local warnCloudofConfuse					= mod:NewTargetAnnounce(254122, 4)
 local warnSoulburn						= mod:NewTargetAnnounce(253600, 3)
