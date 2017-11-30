@@ -84,7 +84,7 @@ local timerStormofDarknessCD			= mod:NewCDTimer(48.6, 252861, nil, nil, nil, 2, 
 --Diima, Mother of Gloom
 local timerFlashFreezeCD				= mod:NewCDTimer(11, 245518, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerChilledBloodCD				= mod:NewCDTimer(25.4, 245586, nil, nil, nil, 5, nil, DBM_CORE_HEALER_ICON)
-local timerOrbofFrostCD					= mod:NewCDTimer(31.5, 253650, nil, nil, nil, 3)
+local timerOrbofFrostCD					= mod:NewCDTimer(30.4, 253650, nil, nil, nil, 3)
 --Thu'raya, Mother of the Cosmos (Mythic)
 local timerTouchoftheCosmosCD			= mod:NewAITimer(61, 250648, nil, "HasInterrupt", nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
 local timerCosmicGlareCD				= mod:NewAITimer(61, 250757, nil, nil, nil, 3)
