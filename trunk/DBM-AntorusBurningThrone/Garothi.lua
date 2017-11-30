@@ -202,14 +202,21 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnDecimation:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			local _, _, _, _, _, _, expires = UnitDebuff("player", args.spellName)
-			local remaining = expires-GetTime()
+			local remaining
+			if expires then 
+				remaining = expires-GetTime()
+			end
 			if spellId == 246920 then--Mythic rules
 				specWarnDecimationStun:Show()
-				yellDecimationStun:Countdown(remaining)
+				if remaining then
+					yellDecimationStun:Countdown(remaining)
+				end
 				voiceDecimationStun:Play("targetyou")
 			else
 				specWarnDecimation:Show()
-				yellDecimation:Countdown(remaining)
+				if remaining then
+					yellDecimation:Countdown(remaining)
+				end
 				voiceDecimation:Play("runout")
 			end
 		end
