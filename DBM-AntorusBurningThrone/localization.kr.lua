@@ -21,7 +21,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(1987)
 
 L:SetOptionLocalization({
-	SequenceTimers =	"이전에 시전한 스킬의 타이머를 삭제해서 타이머 수를 정리합니다. 대신 약간 타이머 정확도가 떨어지게 됩니다 (1-2초 빠르게 나옴)"
+	SequenceTimers =	"영웅/신화 난이도일 때 이전에 시전한 스킬의 타이머를 삭제해서 타이머 수를 정리합니다. 대신 약간 타이머 정확도가 떨어지게 됩니다 (1-2초 빠르게 나옴)"
 })
 
 ---------------------------
@@ -36,7 +36,8 @@ L= DBM:GetModLocalization(2025)
 
 L:SetMiscLocalization({
 	Obfuscators =	"혼란자",
-	Destructors =	"파괴자"
+	Destructors =	"파괴자",
+	Purifiers 	=	"정화자"
 })
 
 ---------------------------
