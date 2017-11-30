@@ -14,8 +14,8 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 249121 250701 250048",
-	"SPELL_CAST_SUCCESS 246888 246896 246753 254769",
-	"SPELL_AURA_APPLIED 248333 250074 250555 249016 249017 249014 249015 248332",
+	"SPELL_CAST_SUCCESS 246753 254769",
+	"SPELL_AURA_APPLIED 248333 250074 250555 249016 249017 249014 249015 248332 250073",
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 248333 250074 250555 249016 249017 249014 249015 248332",
 --	"SPELL_DAMAGE 248329",
@@ -39,6 +39,7 @@ mod:RegisterEventsInCombat(
 (ability.id = 249121 or ability.id = 250048) and type = "begincast"
  or (ability.id = 246753 or ability.id = 254769) and type = "cast"
  or (ability.id = 248332) and type = "applydebuff"
+ or (ability.id = 250073) and type = "applybuff"
 --]]
 --The Paraxis
 local warnMeteorStorm					= mod:NewEndAnnounce(248333, 1)
@@ -61,14 +62,13 @@ local specWarnSwing						= mod:NewSpecialWarningDefensive(250701, "Tank", nil, n
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
 
 --The Paraxis
---local timerWarpInCD						= mod:NewCDCountTimer(30, 246888, nil, nil, nil, 1)
 local timerMeteorStormCD				= mod:NewAITimer(61, 248333, nil, nil, nil, 3)
 local timerSpearofDoomCD				= mod:NewCDCountTimer(55, 248789, nil, nil, nil, 3)--55-69
---local timerRainofFelCD					= mod:NewCDCountTimer(61, 248332, nil, nil, nil, 3)
+local timerRainofFelCD					= mod:NewCDCountTimer(61, 248332, nil, nil, nil, 3)
 local timerFinalDoom					= mod:NewCastTimer(50, 249121, nil, nil, nil, 2)
 local timerDestructorCD					= mod:NewCDCountTimer(90, "ej16501", nil, nil, nil, 1, 254769)
 local timerObfuscatorCD					= mod:NewCDCountTimer(90, "ej16502", nil, nil, nil, 1, 246753)
---local timerPurifierCD					= mod:NewCDCountTimer(90, "ej16500", nil, nil, nil, 1)
+local timerPurifierCD					= mod:NewCDCountTimer(90, "ej16500", nil, nil, nil, 1)
 --Mythic
 local timerFinalDoomCD					= mod:NewCDCountTimer(90, 249121, nil, nil, nil, 4, nil, DBM_CORE_HEROIC_ICON)
 --local timerFelclawsCD					= mod:NewAITimer(25, 239932, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
@@ -76,8 +76,7 @@ local timerFinalDoomCD					= mod:NewCDCountTimer(90, 249121, nil, nil, nil, 4, n
 --local berserkTimer					= mod:NewBerserkTimer(600)
 
 --The Paraxis
---local countdownWarpIn					= mod:NewCountdown(50, 246888)
---local countdownRainofFel				= mod:NewCountdown("Alt60", 248332)
+--local countdownRainofFel				= mod:NewCountdown("Alt60", 248332)--Not accurate enough yet. not until timer correction is added to handle speed of raids dps affecting sequence
 --Mythic
 local countdownFinalDoom				= mod:NewCountdown("AltTwo90", 249121)
 
@@ -100,7 +99,6 @@ mod:AddNamePlateOption("NPAuraOnFelShielding", 250555)
 mod:AddRangeFrameOption("8/10")
 
 mod.vb.rainOfFelCount = 0
-mod.vb.warpCount = 0
 mod.vb.lifeForceCast = 0
 mod.vb.lifeRequired = 5
 mod.vb.spearCast = 0
@@ -115,19 +113,32 @@ mod.vb.purifierCast = 0
 --local normalWarpTimers = {5.1, 16.0}
 --local heroicWarpTimers = {5.3, 10.0, 23.9, 20.7, 24.0, 19.0}
 --local mythicWarpTimers = {5.3, 9.8, 35.3, 44.8, 34.9}--Excludes the waves that don't fire warp in (obfuscators and purifiers)
---local normalRainOfFelTimers = {30.3, 37.3, 42, 55.4, 80.1, 49.4, 20.1, 50.3, 35.3}--PTR, recheck
---local heroicRainOfFelTimers = {20, 43, 10, 65, 15, 20, 20, 30}--PTR, recheck
---local mythicRainOfFelTimers = {6, 29, 25, 50, 5, 20, 50, 25, 49, 26}--PTR, recheck
+local normalRainOfFelTimers = {}--PTR, recheck
+local heroicRainOfFelTimers = {9.3, 44, 10, 43, 35, 19, 20, 30, 45, 35, 99}--Live, Nov 29
+local mythicRainOfFelTimers = {}--PTR, recheck
 --local mythicSpearofDoomTimers = {}
-local heroicSpearofDoomTimers = {35, 69, 55, 40}--PTR, recheck
+local heroicSpearofDoomTimers = {35, 59.2, 64.3, 40, 85.6, 34.1, 65.2}--Live, Nov 29
 local finalDoomTimers = {60, 125, 100}--PTR, recheck
 local normalDestructors = {17, 39.4, 28, 44.2, 92.4, 41.3, 50, 53.4, 48.1}
-local heroicDestructors = {15.7, 36.1, 40.6, 104.6, 134.7, 99.6}
+local heroicDestructors = {15.7, 35.3, 40.6, 104.6, 134.7, 99.6}
 local normalObfuscators = {174}
 local heroicObfuscators = {81.8, 149.2, 94.7, 99.9}
---local heroicPurifiers = {166, 34.6, 42.8}--Probably wrong, needs more work
+local heroicPurifiers = {125, 66.1, 30.6}
 local warnedAdds = {}
-
+local addCountToLocationMythic = {
+	["Dest"] = {DBM_CORE_MIDDLE},
+	["Obfu"] = {},
+	["Pur"] = {}
+}
+local addCountToLocationHeroic = {
+	["Dest"] = {DBM_CORE_MIDDLE, DBM_CORE_BOTTOM, DBM_CORE_TOP, DBM_CORE_BOTTOM, DBM_CORE_MIDDLE.."/"..DBM_CORE_TOP},
+	["Obfu"] = {DBM_CORE_TOP, DBM_CORE_MIDDLE, DBM_CORE_BOTTOM},
+	["Pur"] = {DBM_CORE_MIDDLE, DBM_CORE_BOTTOM, DBM_CORE_MIDDLE}
+}
+local addCountToLocationNormal = {
+	["Dest"] = {DBM_CORE_MIDDLE},
+	["Obfu"] = {}
+}
 --[[
 Old Data from PTR
 Mythic Adds
@@ -172,7 +183,6 @@ end
 
 function mod:OnCombatStart(delay)
 	self.vb.rainOfFelCount = 0
-	self.vb.warpCount = 0
 	self.vb.destructors = 0
 	self.vb.obfuscators = 0
 	self.vb.purifiers = 0
@@ -194,11 +204,16 @@ function mod:OnCombatStart(delay)
 			countdownFinalDoom:Start(60-delay)
 		elseif self:IsHeroic() then
 			self.vb.lifeRequired = 4
-			--timerRainofFelCD:Start(30-delay, 1)
-			--countdownRainofFel:Start(30-delay)
+			timerRainofFelCD:Start(9.3-delay, 1)
+			--countdownRainofFel:Start(9.3-delay)
+			timerDestructorCD:Start(15.7, DBM_CORE_MIDDLE)
 			timerSpearofDoomCD:Start(34.4-delay, 1)
-		else
+			timerObfuscatorCD:Start(81.8, DBM_CORE_TOP)
+			timerPurifierCD:Start(125, 1)
+		else--Normal
 			self.vb.lifeRequired = 4
+			timerDestructorCD:Start(17, DBM_CORE_MIDDLE)
+			timerObfuscatorCD:Start(174, 1)
 			--timerRainofFelCD:Start(30-delay, 1)
 			--countdownRainofFel:Start(30-delay)
 		end
@@ -257,7 +272,6 @@ function mod:SPELL_CAST_START(args)
 		self.vb.lifeForceCast = self.vb.lifeForceCast + 1
 		warnLifeForce:Show(self.vb.lifeForceCast)
 --[[		if self:IsEasy() then
-			--local warpElapsed, warpTotal = timerWarpInCD:GetTime(self.vb.warpCount+1)
 			local felElapsed, felTotal = timerRainofFelCD:GetTime(self.vb.rainOfFelCount+1)
 			local felRemaining = felTotal - felElapsed
 			--timerWarpInCD:Update(warpElapsed, warpTotal+24)
@@ -270,48 +284,28 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if (spellId == 246888 or spellId == 246896) and self:AntiSpam(6, 5) then--At east 5 second antispam needed, maybe more
-		self.vb.warpCount = self.vb.warpCount + 1
-		warnWarpIn:Show(DBM_ADDS)
-		--local timer = self:IsMythic() and mythicWarpTimers[self.vb.warpCount+1] or self:IsHeroic() and heroicWarpTimers[self.vb.warpCount+1] or self:IsEasy() and (normalWarpTimers[self.vb.warpCount+1] or 23.7)--(always 24ish on normal)
-		--if timer then
-			--timerWarpInCD:Start(timer, self.vb.warpCount+1)
-			--countdownWarpIn:Start(timer)
-		--end
-	elseif spellId == 246753 and not warnedAdds[args.sourceGUID] then--Cloak
+	if spellId == 246753 and not warnedAdds[args.sourceGUID] then--Cloak
 		warnedAdds[args.sourceGUID] = true
 		self.vb.obfuscators = self.vb.obfuscators + 1
-		warnWarpIn:Show(args.sourceName)
-		if self:AntiSpam(5, 1) then
+		if self:AntiSpam(5, args.sourceName) then
+			warnWarpIn:Show(args.sourceName)
 			self.vb.obfuscatorCast = self.vb.obfuscatorCast + 1
 			local timer = self:IsHeroic() and heroicObfuscators[self.vb.obfuscatorCast+1] or self:IsNormal() and normalObfuscators[self.vb.obfuscatorCast+1]
 			if timer then
-				timerObfuscatorCD:Start(timer, self.vb.obfuscatorCast+1)
+				local text = self:IsHeroic() and addCountToLocationHeroic["Obfu"][self.vb.obfuscatorCast+1] or self:IsNormal() and addCountToLocationNormal["Obfu"][self.vb.obfuscatorCast+1] or self:IsMythic() and addCountToLocationMythic["Obfu"][self.vb.obfuscatorCast+1] or self.vb.obfuscatorCast+1
+				timerObfuscatorCD:Start(timer, text)
 			end
 		end
-	elseif spellId == 254769 and not warnedAdds[args.sourceGUID] then--High Alert
+	elseif spellId == 254769 and args:GetSrcCreatureID() == 123760 and not warnedAdds[args.sourceGUID] then--High Alert
 		warnedAdds[args.sourceGUID] = true
-		--if self:AntiSpam(5, args.sourceName) then
+		self.vb.destructors = self.vb.destructors + 1
+		if self:AntiSpam(5, args.sourceName) then
 			warnWarpIn:Show(args.sourceName)
-		--end
-		local cid = self:GetCIDFromGUID(args.sourceGUID)
-		if cid == 123726 then
-			self.vb.purifiers = self.vb.purifiers + 1
-			--[[if self:AntiSpam(5, 2) then
-				self.vb.purifierCast = self.vb.purifierCast + 1
-				local timer = self:IsHeroic() and heroicPurifiers[self.vb.purifierCast+1] or self:IsNormal() and normalPurifiers[self.vb.purifierCast+1]
-				if timer then
-					timerPurifierCD:Start(timer, self.vb.purifierCast+1)
-				end
-			end--]]
-		elseif cid == 123760 then
-			self.vb.destructors = self.vb.destructors + 1
-			if self:AntiSpam(5, 3) then
-				self.vb.destructorCast = self.vb.destructorCast + 1
-				local timer = self:IsHeroic() and heroicDestructors[self.vb.destructorCast+1] or self:IsNormal() and normalDestructors[self.vb.destructorCast+1]
-				if timer then
-					timerDestructorCD:Start(timer, self.vb.destructorCast+1)
-				end
+			self.vb.destructorCast = self.vb.destructorCast + 1
+			local timer = self:IsHeroic() and heroicDestructors[self.vb.destructorCast+1] or self:IsNormal() and normalDestructors[self.vb.destructorCast+1]
+			if timer then
+				local text = self:IsHeroic() and addCountToLocationHeroic["Dest"][self.vb.destructorCast+1] or self:IsNormal() and addCountToLocationNormal["Dest"][self.vb.destructorCast+1] or self:IsMythic() and addCountToLocationMythic["Dest"][self.vb.destructorCast+1] or self.vb.destructorCast+1
+				timerDestructorCD:Start(timer, text)
 			end
 		end
 	end
@@ -323,7 +317,18 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnMeteorStorm:Show()
 		voiceMeteorStorm:Play("watchstep")
 		timerMeteorStormCD:Start()
-	elseif spellId == 250074 then--Purification
+	elseif spellId == 250073 and not warnedAdds[args.sourceGUID] then--Purification (buff on purifier)
+		warnedAdds[args.sourceGUID] = true
+		self.vb.purifiers = self.vb.purifiers + 1
+		if self:AntiSpam(5, 2) then
+			warnWarpIn:Show(args.sourceName)
+			self.vb.purifierCast = self.vb.purifierCast + 1
+			local timer = self:IsHeroic() and heroicPurifiers[self.vb.purifierCast+1]
+			if timer then
+				timerPurifierCD:Start(timer, self.vb.purifierCast+1)
+			end
+		end
+	elseif spellId == 250074 then--Purification (buff on enemies near purifier)
 		if self.Options.NPAuraOnPurification then
 			DBM.Nameplate:Show(true, args.destGUID, spellId)
 		end
@@ -356,11 +361,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnRainofFel:CombinedShow(1, self.vb.rainOfFelCount, args.destName)
 		if self:AntiSpam(5, 4) then
 			self.vb.rainOfFelCount = self.vb.rainOfFelCount + 1
-			--local timer = self:IsMythic() and mythicRainOfFelTimers[self.vb.rainOfFelCount+1] or self:IsHeroic() and heroicRainOfFelTimers[self.vb.rainOfFelCount+1] or self:IsNormal() and normalRainOfFelTimers[self.vb.rainOfFelCount+1]
-			--if timer then
-			--	timerRainofFelCD:Start(timer, self.vb.rainOfFelCount+1)
-			--	countdownRainofFel:Start(timer)
-			--end
+			local timer = self:IsMythic() and mythicRainOfFelTimers[self.vb.rainOfFelCount+1] or self:IsHeroic() and heroicRainOfFelTimers[self.vb.rainOfFelCount+1] or self:IsNormal() and normalRainOfFelTimers[self.vb.rainOfFelCount+1]
+			if timer then
+				timerRainofFelCD:Start(timer, self.vb.rainOfFelCount+1)
+				--countdownRainofFel:Start(timer)
+			end
 		end
 		if args:IsPlayer() then
 			specWarnRainofFel:Show()
@@ -473,19 +478,6 @@ function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 121193 then
 
-	end
-end
-
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if spellId == 248332 then--Rain of Fel
-		self.vb.rainOfFelCount = self.vb.rainOfFelCount + 1
-		specWarnRainofFel:Show(self.vb.rainOfFelCount)
-		voiceRainofFel:Play("scatter")
-		local timer = self:IsMythic() and mythicRainOfFelTimers[self.vb.rainOfFelCount+1] or self:IsHeroic() and heroicRainOfFelTimers[self.vb.rainOfFelCount+1] or self:IsNormal() and normalRainOfFelTimers[self.vb.rainOfFelCount+1]
-		if timer then
-			timerRainofFelCD:Start(timer, self.vb.rainOfFelCount+1)
-			countdownRainofFel:Start(timer)
-		end
 	end
 end
 --]]
