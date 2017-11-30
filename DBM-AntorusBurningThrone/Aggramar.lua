@@ -69,7 +69,7 @@ local specWarnFlare						= mod:NewSpecialWarningDodge(245983, nil, nil, nil, 2, 
 --local specWarnGTFO						= mod:NewSpecialWarningGTFO(247135, nil, nil, nil, 1, 2)
 
 --Stage One: Wrath of Aggramar
-local timerTaeshalachTechCD				= mod:NewNextCountTimer(65, 244688, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerTaeshalachTechCD				= mod:NewNextCountTimer(61, 244688, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerFoeBreakerCD					= mod:NewNextCountTimer(6.1, 245458, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerFlameRendCD					= mod:NewNextCountTimer(6.1, 245463, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerTempestCD					= mod:NewNextTimer(6.1, 245301, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
@@ -82,7 +82,7 @@ local timerFlareCD						= mod:NewCDTimer(15.8, 245983, nil, nil, nil, 3)
 --local berserkTimer					= mod:NewBerserkTimer(600)
 
 --Stages One: Wrath of Aggramar
-local countdownTaeshalachTech			= mod:NewCountdown(65, 244688)
+local countdownTaeshalachTech			= mod:NewCountdown(61, 244688)
 local countdownWakeofFlame				= mod:NewCountdown("AltTwo24", 244693, "-Tank")
 
 --Stage One: Wrath of Aggramar
