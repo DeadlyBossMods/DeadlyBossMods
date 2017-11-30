@@ -2,7 +2,7 @@ local mod	= DBM:NewMod(2031, "DBM-AntorusBurningThrone", nil, 946)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
-mod:SetCreatureID(125111)--or 124828
+mod:SetCreatureID(124828)--or 124828
 mod:SetEncounterID(2092)
 mod:SetZone()
 --mod:SetBossHPInfoToHighest()
@@ -35,7 +35,7 @@ mod:RegisterEventsInCombat(
 --Stage One: Storm and Sky
 local warnSweepingScythe			= mod:NewStackAnnounce(248499, 2, nil, "Tank")
 local warnBlightOrb					= mod:NewSpellAnnounce(248317, 2)
-local warnSoulblight				= mod:NewTargetAnnounce(248396, 1)
+local warnSoulblight				= mod:NewTargetAnnounce(248396, 2, nil, false, 2)
 local warnSkyandSea					= mod:NewTargetAnnounce(255594, 1)
 --Stage Two: The Protector Redeemed
 local warnPhase2					= mod:NewPhaseAnnounce(2, 2)
@@ -88,14 +88,13 @@ local specWarnDeadlyScythe			= mod:NewSpecialWarningStack(258039, nil, 2, nil, n
 --local specWarnDeadlyScytheTaunt		= mod:NewSpecialWarningTaunt(258039, nil, nil, nil, 1, 2)
 local specWarnReorgModule			= mod:NewSpecialWarningSwitch(256389, "RangedDps", nil, nil, 1, 2)--Ranged only?
 
-
 local timerNextPhase				= mod:NewPhaseTimer(74)
 --Stage One: Storm and Sky
 mod:AddTimerLine(SCENARIO_STAGE:format(1))
 local timerSweepingScytheCD			= mod:NewCDTimer(5.6, 248499, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--5.6-15.7
 local timerConeofDeathCD			= mod:NewCDTimer(20, 248165, nil, nil, nil, 3)--20-24
 local timerBlightOrbCD				= mod:NewCDTimer(22, 248317, nil, nil, nil, 3)--22-32
-local timerTorturedRageCD			= mod:NewCDTimer(13.5, 257296, nil, nil, nil, 2, nil, DBM_CORE_HEALER_ICON)--13-16
+local timerTorturedRageCD			= mod:NewCDTimer(13, 257296, nil, nil, nil, 2, nil, DBM_CORE_HEALER_ICON)--13-16
 local timerSkyandSeaCD				= mod:NewCDTimer(25.9, 255594, nil, nil, nil, 5)--25.9-27.8
 --Stage Two: The Protector Redeemed
 mod:AddTimerLine(SCENARIO_STAGE:format(2))

@@ -72,7 +72,7 @@ local yellDemolishFades					= mod:NewIconFadesYell(246692)
 
 --Stage: Deployment
 local timerForgingStrikeCD				= mod:NewCDTimer(14.3, 244312, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
-local timerReverberatingStrikeCD		= mod:NewCDCountTimer(61, 254926, nil, nil, nil, 3)
+local timerReverberatingStrikeCD		= mod:NewCDCountTimer(28, 254926, nil, nil, nil, 3)
 --local timerDiabolicBombCD				= mod:NewAITimer(61, 246779, nil, nil, nil, 3)
 local timerRuinerCD						= mod:NewCDCountTimer(29.1, 246840, nil, nil, nil, 3)
 --local timerShatteringStrikeCD			= mod:NewCDTimer(30, 248375, nil, nil, nil, 2)
