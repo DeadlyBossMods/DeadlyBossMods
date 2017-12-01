@@ -7,7 +7,8 @@ mod:SetEncounterID(2092)
 mod:SetZone()
 --mod:SetBossHPInfoToHighest()
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7)
---mod:SetHotfixNoticeRev(16350)
+mod:SetHotfixNoticeRev(16895)
+mod:SetMinSyncRevision(16895)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
@@ -209,6 +210,7 @@ function mod:OnCombatStart(delay)
 	timerTorturedRageCD:Start(12-delay)
 	timerConeofDeathCD:Start(30.9-delay)
 	timerBlightOrbCD:Start(35.2-delay)
+	--berserkTimer:Start(-delay)
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(_G["7.3_ARGUS_RAID_DEATH_TITAN_ENERGY"])--Validator won't accept this global so disabled for now
 		DBM.InfoFrame:Show(2, "enemypower", 2)
@@ -361,6 +363,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 250669 then
 		warnSoulburst:CombinedShow(0.3, args.destName)--2 Targets
+		if self.vb.soulBurstIcon > 7 then
+			self.vb.soulBurstIcon = 3
+		end
 		local icon = self.vb.soulBurstIcon
 		if args:IsPlayer() then
 			specWarnSoulburst:Show()
@@ -543,7 +548,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, _, spellId)
 		--timerReorgModuleCD:Start()
 	elseif spellId == 252280 then--Volatile Soul
 		timerVolatileSoulCD:Start()
-		self.vb.soulBurstIcon = 3
 	elseif spellId == 258042 then--Argus P2 Energy Controller (16 seconds after Fury)
 		--Alternate and valid timer start point
 		--timerAvatarofAggraCD:Start(5)
@@ -559,8 +563,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, _, spellId)
 			timerDeadlyScytheCD:Start(5)
 		end
 		--timerEmberofRageCD:Start(4)--used instantly
+		timerReorgModuleCD:Start(9)
 		timerTorturedRageCD:Start(10)
-		timerReorgModuleCD:Start(13.4)
 		timerVolatileSoulCD:Start(17.5)
 	elseif spellId == 258104 then--Argus Mythic Transform
 		
