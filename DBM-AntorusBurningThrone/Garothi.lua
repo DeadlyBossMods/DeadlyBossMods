@@ -6,7 +6,7 @@ mod:SetCreatureID(122450)
 mod:SetEncounterID(2076)
 mod:SetZone()
 --mod:SetBossHPInfoToHighest()
---mod:SetUsedIcons(1, 2, 3, 4, 5, 6)
+mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7)
 mod:SetHotfixNoticeRev(16736)
 mod:SetMinSyncRevision(16736)
 --mod.respawnTime = 29
@@ -84,6 +84,7 @@ local voiceAnnihilation					= mod:NewVoice(247044)--helpsoak
 local voiceLuringDestruction			= mod:NewVoice(247159)--aesoon
 
 mod:AddSetIconOption("SetIconOnDecimation", 244410, true)
+mod:AddSetIconOption("SetIconOnBombardment", 246220, true)
 --mod:AddInfoFrameOption(239154, true)
 mod:AddRangeFrameOption("7/17")
 
@@ -186,6 +187,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnFelBombardment:Show(args.destName)
 		end
 		updateRangeFrame(self)
+		if self.Options.SetIconOnBombardment then
+			self:SetIcon(args.destName, 7, 13)
+		end
 	elseif spellId == 247159 then
 		specWarnLuringDestruction:Show()
 		voiceLuringDestruction:Play("aesoon")
@@ -240,6 +244,9 @@ function mod:SPELL_AURA_REMOVED(args)
 			yellFelBombardment:Cancel()
 		end
 		updateRangeFrame(self)
+		--if self.Options.SetIconOnBombardment then
+			--self:SetIcon(args.destName, 0)
+		--end
 	elseif spellId == 244152 then--Apocolypse Drive
 		timerApocDriveCast:Stop()
 		--Probably start other timers too
