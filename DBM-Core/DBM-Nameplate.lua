@@ -216,7 +216,7 @@ function nameplateFrame:Show(isGUID, unit, spellId, texture, duration, desaturat
     -- Supported by nameplate mod, passing to their handler;
     if self:SupportedNPMod() then
         DBM:FireEvent("BossMod_ShowNameplateAura", isGUID, unit, currentTexture, duration, desaturate)
-        DBM:Debug("DBM.Nameplate Found supported NP mod, only sending Show callbacks", 2)
+        DBM:Debug("DBM.Nameplate Found supported NP mod, only sending Show callbacks", 3)
         return
     end
 
@@ -258,7 +258,7 @@ function nameplateFrame:Hide(isGUID, unit, spellId, texture, force, isHostile, i
     local currentTexture = texture or GetSpellTexture(spellId)
 
     if self:SupportedNPMod() then
-        DBM:Debug("DBM.Nameplate Found supported NP mod, only sending Hide callbacks", 2)
+        DBM:Debug("DBM.Nameplate Found supported NP mod, only sending Hide callbacks", 3)
 
         if force then
         	if isFriendly then
