@@ -177,8 +177,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnFelBombardment:Show()
 			voiceFelBombardment:Play("runout")
-			voiceFelBombardment:Schedule(5, "keepmove")
-			yellFelBombardment:Countdown(5)
+			voiceFelBombardment:Schedule(7, "keepmove")
+			yellFelBombardment:Countdown(7)
 		elseif self:IsTank() then
 			specWarnFelBombardmentTaunt:Show(args.destName)
 			voiceFelBombardment:Play("tauntboss")
