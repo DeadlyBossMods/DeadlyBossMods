@@ -199,7 +199,7 @@ end)
 
 --Add more nameplate mods as they gain support
 function nameplateFrame:SupportedNPMod()
-    if KuiNameplates or TidyPlatesThreat then return true end
+    if KuiNameplates then return true end--TidyPlatesThreat
     return false
 end
 
