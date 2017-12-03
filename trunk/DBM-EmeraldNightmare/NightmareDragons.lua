@@ -153,6 +153,7 @@ local function whoDatUpThere(self)
 	end
 end
 
+--Probably broken with recent infoframe changes, needs code review
 local updateInfoFrame
 do
 --	local playerName = UnitName("player")
