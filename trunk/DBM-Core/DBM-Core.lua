@@ -6638,6 +6638,13 @@ function DBM:GetTOC()
 	return wowTOC, testBuild
 end
 
+function DBM:InCombat()
+	if #inCombat > 0 then
+		return true
+	end
+	return false
+end
+
 function DBM:FlashClientIcon()
 	if self:AntiSpam(5, "FLASH") then
 		FlashClientIcon()
