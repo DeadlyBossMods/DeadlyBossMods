@@ -599,8 +599,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, _, spellId)
 		end
 		if remainingPercent then
 			timerReorgModuleCD:Start(48.1*remainingPercent)
-			timerTorturedRageCD:Start(13*remainingPercent)
+			--timerTorturedRageCD:Start(13*remainingPercent)
 		end
+		timerTorturedRageCD:Start(10)
 		timerSoulBurstCD:Start(50.4, 1)--First one is only burst, afterwards it's bomb and burst then burst only again
 		timerSoulBombCD:Start(100.7)
 	elseif spellId == 258104 then--Argus Mythic Transform
