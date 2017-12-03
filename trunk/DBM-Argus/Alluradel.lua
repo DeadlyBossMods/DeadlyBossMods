@@ -38,7 +38,7 @@ mod:AddReadyCheckOption(48620, false)
 
 function mod:OnCombatStart(delay, yellTriggered)
 	if yellTriggered then
-		timerHeartBreakerCD:Star(5-delay)
+		timerHeartBreakerCD:Start(5-delay)
 		timerFelLashCD:Start(15-delay)
 		timerBeguilingCharmCD:Start(30-delay)
 		countdownBeguilingCharm:Start(30-delay)
