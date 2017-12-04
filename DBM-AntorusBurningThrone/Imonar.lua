@@ -83,7 +83,7 @@ local timerShrapnalBlastCD				= mod:NewCDTimer(13.3, 247923, nil, nil, nil, 3)
 
 --Intermission: On Deadly Ground
 
---local berserkTimer						= mod:NewBerserkTimer(420)
+--local berserkTimer					= mod:NewBerserkTimer(420)
 
 --Stage One: Attack Force
 local countdownPulseGrenade				= mod:NewCountdown(17, 247376)

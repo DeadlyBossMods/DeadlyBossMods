@@ -76,7 +76,7 @@ local timerReverberatingStrikeCD		= mod:NewCDCountTimer(28, 254926, nil, nil, ni
 --local timerDiabolicBombCD				= mod:NewAITimer(61, 246779, nil, nil, nil, 3)
 local timerRuinerCD						= mod:NewCDCountTimer(29.1, 246840, nil, nil, nil, 3)
 --local timerShatteringStrikeCD			= mod:NewCDTimer(30, 248375, nil, nil, nil, 2)
-local timerApocProtocolCD				= mod:NewCDCountTimer(85.8, 246516, nil, nil, nil, 6)
+local timerApocProtocolCD				= mod:NewCDCountTimer(77, 246516, nil, nil, nil, 6)
 local timerApocProtocol					= mod:NewCastTimer(30, 246504, nil, nil, nil, 6)
 --Stage: Construction
 --local timerCleansingProtocolCD		= mod:NewAITimer(30, 248061, nil, nil, nil, 6)
@@ -88,7 +88,9 @@ local timerDemolishCD					= mod:NewCDTimer(15.8, 246692, nil, nil, nil, 3)
 --local berserkTimer					= mod:NewBerserkTimer(600)
 
 --Stage: Deployment
---local countdownSingularity			= mod:NewCountdown(50, 235059)
+local countdownApocProtocol				= mod:NewCountdown(77, 246516)
+local countdownForgingStrike			= mod:NewCountdown("Alt14", 244312, "Tank", nil, 3)
+local countdownRuiner					= mod:NewCountdown("AltTwo29", 246840)
 
 --Stage: Deployment
 --local voiceGTFO						= mod:NewVoice(238028, nil, DBM_CORE_AUTO_VOICE4_OPTION_TEXT)--runaway
@@ -190,11 +192,14 @@ function mod:OnCombatStart(delay)
 	self.vb.forgingTimeLeft = 0
 	table.wipe(DemolishTargets)
 	timerForgingStrikeCD:Start(6-delay, 1)--6-7
+	countdownForgingStrike:Start(6-delay)
 	--timerDiabolicBombCD:Start(11-delay)
 	timerReverberatingStrikeCD:Start(14.2-delay, 1)--14-15
 	timerRuinerCD:Start(21.1-delay, 1)--21-25
+	countdownRuiner:Start(21.1-delay)
 	--timerShatteringStrikeCD:Start(1-delay)--Not cast on pull
 	timerApocProtocolCD:Start(31.8-delay, 1)--31.8-36.5
+	countdownApocProtocol:Start(31.8)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(5)
 	end
@@ -227,6 +232,7 @@ function mod:SPELL_CAST_START(args)
 			timerForgingStrikeCD:Start(8.5, self.vb.forgingStrikeCast+1)
 		else
 			timerForgingStrikeCD:Start(14.6, self.vb.forgingStrikeCast+1)
+			countdownForgingStrike:Start(14.6)
 		end
 	elseif spellId == 254926 or spellId == 257997 then
 		self:BossTargetScanner(args.sourceGUID, "ReverberatingTarget", 0.1, 9)
@@ -251,15 +257,20 @@ function mod:SPELL_CAST_START(args)
 		voiceRuiner:Play("farfromline")
 		voiceRuiner:Schedule(1, "keepmove")
 		timerRuinerCD:Start(nil, self.vb.ruinerCast+1)--28-30 depending on difficulty
+		countdownRuiner:Start(29.1)
 		timerForgingStrikeCD:Stop()
+		countdownForgingStrike:Cancel()
 		timerForgingStrikeCD:Start(10, self.vb.forgingStrikeCast+1)
+		countdownForgingStrike:Start()
 	elseif spellId == 246516 then--Apocolypse Protocol
 		self.vb.ruinerTimeLeft = timerRuinerCD:GetRemaining(self.vb.ruinerCast+1)
 		self.vb.reverbTimeLeft = timerReverberatingStrikeCD:GetRemaining(self.vb.reverbStrikeCast+1)
 		self.vb.forgingTimeLeft = timerForgingStrikeCD:GetRemaining(self.vb.forgingStrikeCast+1)
 		timerForgingStrikeCD:Stop()
+		countdownForgingStrike:Cancel()
 		timerReverberatingStrikeCD:Stop()
 		timerRuinerCD:Stop()
+		countdownRuiner:Cancel()
 		--timerDiabolicBombCD:Stop()
 		--timerShatteringStrikeCD:Stop()
 		specWarnInitializing:Show()
@@ -366,13 +377,16 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 		if self.vb.ruinerTimeLeft > 0 then
 			timerRuinerCD:Start(self.vb.ruinerTimeLeft, 1)
+			countdownRuiner:Start(self.vb.ruinerTimeLeft)
 		end
 		if self.vb.forgingTimeLeft > 0 then
 			timerForgingStrikeCD:Start(self.vb.forgingTimeLeft, 1)
+			countdownForgingStrike:Start(self.vb.forgingTimeLeft)
 		end
 		--timerDiabolicBombCD:Start(2)
 		--timerShatteringStrikeCD:Start(42)
 		timerApocProtocolCD:Start(77, self.vb.apocProtoCount+1)--77
+		countdownApocProtocol:Start(77)
 	elseif spellId == 246698 or spellId == 252760 then
 		tDeleteItem(DemolishTargets, args.destName)
 		if args:IsPlayer() then

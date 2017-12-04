@@ -81,7 +81,7 @@ local timerFocusingPower				= mod:NewCastTimer(15, 251356, nil, nil, nil, 3)
 --local berserkTimer					= mod:NewBerserkTimer(600)
 
 --F'harg
---local countdownSingularity			= mod:NewCountdown(50, 235059)
+--local countdownSingularity			= mod:NewCountdown(50, 235059)--Maybe test 1 countdown per dog (for all abilities)
 
 --F'harg
 local voiceMoltenTouch					= mod:NewVoice(244072)--watchstep

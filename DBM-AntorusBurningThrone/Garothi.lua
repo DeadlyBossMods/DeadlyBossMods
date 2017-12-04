@@ -68,7 +68,8 @@ local timerLuringDestructionCD			= mod:NewAITimer(61, 247159, nil, nil, nil, 2)
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
 
---local countdownSingularity			= mod:NewCountdown(50, 235059)
+local countdownChooseCannon				= mod:NewCountdown(15, 245124)
+local countdownFelBombardment			= mod:NewCountdown("Alt20", 246220, "Tank")
 
 local voiceFelBombardment				= mod:NewVoice(246220)--runout/keepmove
 local voiceApocDrive					= mod:NewVoice(244152)--targetchange
@@ -129,7 +130,9 @@ function mod:OnCombatStart(delay)
 	self.vb.lastCannon = 0
 	self.vb.phase = 1
 	timerSpecialCD:Start(8.5-delay)--First one random.
+	countdownChooseCannon:Start(8.5-delay)
 	timerFelBombardmentCD:Start(9.7-delay)
+	countdownFelBombardment:Start(9.7-delay)
 	if self:IsMythic() then
 		timerLuringDestructionCD:Start(1-delay)
 	end
@@ -159,6 +162,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		--Only cannon up, handle at cannon event
 		if self.vb.phase > 1 and not self:IsMythic() then
 			timerDecimationCD:Start(15.8)
+			countdownChooseCannon:Start(15.8)
 		end
 	elseif spellId == 244294 then
 		--self.vb.lastCannon = 1
@@ -167,6 +171,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		--Only cannon up, start timer at cannon event
 		if self.vb.phase > 1 and not self:IsMythic() then
 			timerAnnihilationCD:Start(15.8)
+			countdownChooseCannon:Start(15.8)
 		end
 	end
 end
@@ -197,6 +202,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 244152 then--Apocolypse Drive
 		timerDecimationCD:Stop()
 		timerFelBombardmentCD:Stop()
+		countdownFelBombardment:Cancel()
 		timerAnnihilationCD:Stop()
 		specWarnApocDrive:Show()
 		voiceApocDrive:Play("targetchange")
@@ -232,6 +238,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.phase = self.vb.phase + 1
 		timerSpecialCD:Start(22.5)--Verify it's same a non mythic
 		timerFelBombardmentCD:Start(23.6)
+		countdownFelBombardment:Start(23.6)
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -292,11 +299,14 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		if self.vb.phase == 2 and not self:IsMythic() then
 			if spellId == 245515 then--decimator-cannon-eject
 				timerAnnihilationCD:Start(22.5)
+				countdownChooseCannon:Start(22.5)
 			else--245527 (annihilator-cannon-eject)
 				timerDecimationCD:Start(22.5)
+				countdownChooseCannon:Start(22.5)
 			end
 		end
 		timerFelBombardmentCD:Start(23.6)
+		countdownFelBombardment:Start(23.6)
 	elseif spellId == 247044 or spellId == 247572 then--TODO, see if 247044 is even used
 		--self.vb.lastCannon = 1
 		specWarnAnnihilation:Show()
@@ -304,12 +314,15 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		--Only cannon up, start timer at cannon event
 		if self.vb.phase > 1 and not self:IsMythic() then
 			timerAnnihilationCD:Start(15.8)
+			countdownChooseCannon:Start(15.8)
 		end
 	elseif spellId == 244150 then--Fel Bombardment
 		timerFelBombardmentCD:Start()
+		countdownFelBombardment:Start(20.7)
 	elseif spellId == 245124 then--Cannon Chooser
 		--Both cannons are up, handle alternation
 		if self.vb.phase == 1 or self:IsMythic() then
+			countdownChooseCannon:Start(15.8)
 			if self.vb.lastCannon == 1 then--annihilator
 				self.vb.lastCannon = 2
 				timerDecimationCD:Start(15.8)
