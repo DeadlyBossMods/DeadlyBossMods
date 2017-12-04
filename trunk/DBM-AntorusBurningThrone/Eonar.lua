@@ -419,7 +419,7 @@ function mod:UNIT_DIED(args)
 		self.vb.obfuscators = self.vb.obfuscators - 1
 	elseif cid == 123760 and self.vb.destructors > 0 then--Fel-Infused Destructor
 		self.vb.destructors = self.vb.destructors - 1
-	elseif cid == 123726 and self.vb.purifiers > 0 then
+	elseif cid == 123726 and self.vb.purifiers > 0 then--Fel-Infused Purifier
 		self.vb.purifiers = self.vb.purifiers - 1
 	end
 end
@@ -465,18 +465,6 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 		end
 	end
 end
-
---[[
---http://ptr.wowhead.com/npc=123726/fel-powered-purifier
---http://ptr.wowhead.com/npc=123760/fel-infused-destructor
---http://ptr.wowhead.com/npc=124207/fel-charged-obfuscator
-function mod:UNIT_DIED(args)
-	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 121193 then
-
-	end
-end
---]]
 
 function mod:UNIT_SPELLCAST_CHANNEL_STOP(uId, _, _, _, spellId)
 	if spellId == 249121 then
