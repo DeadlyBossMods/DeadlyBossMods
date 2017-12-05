@@ -325,7 +325,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 249863 then
 		if self.Options.NPAuraOnVisageofTitan then
-			DBM.Nameplate:Show(true, args.destGUID, spellId)
+			DBM.Nameplate:Show(true, args.destGUID, spellId, nil, 30)
 		end
 	end
 end
