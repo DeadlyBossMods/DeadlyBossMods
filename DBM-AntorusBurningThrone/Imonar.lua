@@ -83,7 +83,7 @@ local timerShrapnalBlastCD				= mod:NewCDTimer(13.3, 247923, nil, nil, nil, 3)
 
 --Intermission: On Deadly Ground
 
---local berserkTimer					= mod:NewBerserkTimer(420)
+local berserkTimer						= mod:NewBerserkTimer(420)
 
 --Stage One: Attack Force
 local countdownPulseGrenade				= mod:NewCountdown(17, 247376)
@@ -149,7 +149,9 @@ function mod:OnCombatStart(delay)
 		timerPulseGrenadeCD:Start(14.2-delay)--14.2
 		countdownPulseGrenade:Start(14.2-delay)
 	end
-	--berserkTimer:Start(-delay)--7min on heroic at least
+	if self:IsMythic() then
+		berserkTimer:Start(480-delay)--8min
+	end
 end
 
 function mod:OnCombatEnd()

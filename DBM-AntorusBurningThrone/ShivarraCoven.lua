@@ -77,7 +77,7 @@ local timerFulminatingPulseCD			= mod:NewNextTimer(40.5, 253520, nil, nil, nil, 
 --Asara, Mother of Night
 --local timerTouchofDarknessCD			= mod:NewAITimer(61, 245303, nil, "HasInterrupt", nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
 local timerShadowBladesCD				= mod:NewCDTimer(27.8, 246329, nil, nil, nil, 3)
-local timerStormofDarknessCD			= mod:NewNextCountTimer(57, 252861, nil, nil, nil, 2, nil, DBM_CORE_HEALER_ICON)--48.6-52.7
+local timerStormofDarknessCD			= mod:NewNextCountTimer(57, 252861, nil, nil, nil, 2, nil, DBM_CORE_HEALER_ICON)--57+
 --Diima, Mother of Gloom
 local timerFlashFreezeCD				= mod:NewCDTimer(11, 245518, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerChilledBloodCD				= mod:NewNextTimer(25.4, 245586, nil, nil, nil, 5, nil, DBM_CORE_HEALER_ICON)
@@ -195,7 +195,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.stormCount = self.vb.stormCount + 1
 		specWarnStormofDarkness:Show(self.vb.stormCount)
 		voiceStormofDarkness:Play("aesoon")
-		timerStormofDarknessCD:Start(nil, self.vb.stormCount+1)
+		timerStormofDarknessCD:Start(57, self.vb.stormCount+1)
 		countdownStormofDarkness:Start(57)
 	elseif spellId == 253650 then
 		specWarnOrbofFrost:Show()
