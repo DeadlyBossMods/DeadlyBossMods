@@ -66,7 +66,7 @@ local specWarnTouchoftheCosmos			= mod:NewSpecialWarningInterrupt(250648, "HasIn
 local specWarnCosmicGlare				= mod:NewSpecialWarningMoveAway(250757, nil, nil, nil, 1, 2)
 local yellCosmicGlare					= mod:NewYell(250757)
 --Torment of the Titans
-local specWarnTormentofTitans			= mod:NewSpecialWarningSpell("ej16138", nil, nil, nil, 1, 2)
+local specWarnTormentofTitans			= mod:NewSpecialWarningSpell("ej16138", nil, nil, nil, 1, 7)
 
 --General
 local timerBossIncoming					= mod:NewTimer(61, "timerBossIncoming", nil, nil, nil, 1)
@@ -122,7 +122,7 @@ local voicOrbofFrost					= mod:NewVoice(253650)--161411 (run away from ice orb)
 local voiceTouchoftheCosmos				= mod:NewVoice(250648, "HasInterrupt")--kickcast
 local voiceCosmicGlare					= mod:NewVoice(250757)--runout
 --Torment of the Titans
-local voiceTormentofTitans				= mod:NewVoice("ej16138")--killmob
+local voiceTormentofTitans				= mod:NewVoice("ej16138")--killmob/runtoedge/scatter/watchstep
 
 --mod:AddSetIconOption("SetIconOnFocusedDread", 238502, true)
 mod:AddInfoFrameOption(245586, true)
@@ -386,7 +386,8 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc)
 		end
 	elseif msg:find("spell:245671") then--Flames of Khaz'goroth
 		specWarnTormentofTitans:Show()
-		voiceTormentofTitans:Play("killmob")
+		voiceTormentofTitans:Play("runtoedge")
+		voiceTormentofTitans:Schedule(1, "killmob")
 		self.vb.tormentCount = self.vb.tormentCount + 1
 		if self.vb.tormentCount % 2 == 0 then
 			timerBossIncoming:Start(14, self.vb.lastTormentCaster)
