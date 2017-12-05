@@ -6,7 +6,7 @@ mod:SetCreatureID(122468, 122467, 122469)--122468 Noura, 122467 Asara, 122469 Di
 mod:SetEncounterID(2073)
 mod:SetZone()
 mod:SetBossHPInfoToHighest()
---mod:SetUsedIcons(1, 2, 3, 4, 5, 6)
+mod:SetUsedIcons(1, 2, 3)
 --mod:SetHotfixNoticeRev(16350)
 mod.respawnTime = 15
 
@@ -124,7 +124,7 @@ local voiceCosmicGlare					= mod:NewVoice(250757)--runout
 --Torment of the Titans
 local voiceTormentofTitans				= mod:NewVoice("ej16138")--killmob/runtoedge/scatter/watchstep
 
---mod:AddSetIconOption("SetIconOnFocusedDread", 238502, true)
+mod:AddSetIconOption("SetIconOnFulminatingPulse", 253520, true)
 mod:AddInfoFrameOption(245586, true)
 --mod:AddRangeFrameOption("5/10")
 mod:AddNamePlateOption("NPAuraOnVisageofTitan", 249863)
@@ -133,6 +133,7 @@ mod.vb.stormCount = 0
 mod.vb.chilledCount = 0
 mod.vb.tormentCount = 0
 mod.vb.MachinationsLeft = 0
+mod.vb.fpIcon = 1
 mod.vb.lastTormentCaster = DBM_CORE_UNKNOWN
 
 function mod:OnCombatStart(delay)
@@ -140,6 +141,7 @@ function mod:OnCombatStart(delay)
 	self.vb.chilledCount = 0
 	self.vb.tormentCount = 0
 	self.vb.MachinationsLeft = 0
+	self.vb.fpIcon = 1
 	self.vb.lastTormentCaster = DBM_CORE_UNKNOWN
 	if self:IsMythic() then
 		self:SetCreatureID(122468, 122467, 122469, 125436)
@@ -285,6 +287,13 @@ function mod:SPELL_AURA_APPLIED(args)
 			voiceFulminatingPulse:Play("runout")
 			yellFulminatingPulse:Countdown(10)
 		end
+		if self.Options.SetIconOnFulminatingPulse then
+			self:SetIcon(args.destName, self.vb.fpIcon)
+		end
+		self.vb.fpIcon = self.vb.fpIcon + 1
+		if self.vb.fpIcon == 4 then
+			self.vb.fpIcon = 1
+		end
 	elseif spellId == 245518 then
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId) then
@@ -336,6 +345,9 @@ function mod:SPELL_AURA_REMOVED(args)
 	if spellId == 253520 then
 		if args:IsPlayer() then
 			yellFulminatingPulse:Cancel()
+		end
+		if self.Options.SetIconOnFulminatingPulse then
+			self:SetIcon(args.destName, 0)
 		end
 	elseif spellId == 245586 then
 		self.vb.chilledCount = self.vb.chilledCount - 1
