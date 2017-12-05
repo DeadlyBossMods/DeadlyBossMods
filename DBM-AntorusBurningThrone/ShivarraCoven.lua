@@ -66,7 +66,7 @@ local specWarnTouchoftheCosmos			= mod:NewSpecialWarningInterrupt(250648, "HasIn
 local specWarnCosmicGlare				= mod:NewSpecialWarningMoveAway(250757, nil, nil, nil, 1, 2)
 local yellCosmicGlare					= mod:NewYell(250757)
 --Torment of the Titans
-local specWarnTormentofTitans			= mod:NewSpecialWarningSwitch("ej16138", nil, nil, nil, 1, 2)
+local specWarnTormentofTitans			= mod:NewSpecialWarningSpell("ej16138", nil, nil, nil, 1, 2)
 
 --General
 local timerBossIncoming					= mod:NewTimer(61, "timerBossIncoming", nil, nil, nil, 1)
@@ -87,10 +87,10 @@ local timerTouchoftheCosmosCD			= mod:NewAITimer(61, 250648, nil, "HasInterrupt"
 local timerCosmicGlareCD				= mod:NewAITimer(61, 250757, nil, nil, nil, 3)
 --Torment of the Titans
 ----Activations timers
-local timerMachinationsofAmanThulCD		= mod:NewCastTimer(80, 250335, nil, nil, nil, 6)
-local timerFlamesofKhazgorothCD			= mod:NewCastTimer(80, 250333, nil, nil, nil, 6)
-local timerSpectralArmyofNorgannonCD	= mod:NewCastTimer(80, 250334, nil, nil, nil, 6)
-local timerFuryofGolgannethCD			= mod:NewCastTimer(80, 249793, nil, nil, nil, 6)
+local timerMachinationsofAmanThulCD		= mod:NewCastTimer(85, 250335, nil, nil, nil, 6)
+local timerFlamesofKhazgorothCD			= mod:NewCastTimer(85, 250333, nil, nil, nil, 6)
+local timerSpectralArmyofNorgannonCD	= mod:NewCastTimer(85, 250334, nil, nil, nil, 6)
+local timerFuryofGolgannethCD			= mod:NewCastTimer(85, 249793, nil, nil, nil, 6)
 ----Actual phase stuff
 local timerMachinationsofAman			= mod:NewCastTimer(20, 250095, nil, nil, nil, 5, nil, DBM_CORE_DAMAGE_ICON)
 
@@ -393,14 +393,15 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc)
 		end
 	elseif msg:find("spell:245910") then--Spectral Army of Norgannon
 		specWarnTormentofTitans:Show()
-		voiceTormentofTitans:Play("killmob")
+		voiceTormentofTitans:Play("watchstep")
 		self.vb.tormentCount = self.vb.tormentCount + 1
 		if self.vb.tormentCount % 2 == 0 then
 			timerBossIncoming:Start(14, self.vb.lastTormentCaster)
 		end
 	elseif msg:find("spell:246763") then--Fury of Golganneth
 		specWarnTormentofTitans:Show()
-		voiceTormentofTitans:Play("killmob")
+		voiceTormentofTitans:Play("scatter")
+		voiceTormentofTitans:Schedule(1, "killmob")
 		self.vb.tormentCount = self.vb.tormentCount + 1
 		if self.vb.tormentCount % 2 == 0 then
 			timerBossIncoming:Start(14, self.vb.lastTormentCaster)
