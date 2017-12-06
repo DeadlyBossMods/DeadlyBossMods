@@ -6,7 +6,7 @@ mod:SetCreatureID(122468, 122467, 122469)--122468 Noura, 122467 Asara, 122469 Di
 mod:SetEncounterID(2073)
 mod:SetZone()
 mod:SetBossHPInfoToHighest()
-mod:SetUsedIcons(1, 2, 3)
+mod:SetUsedIcons(1, 2, 3, 4, 5, 6)
 --mod:SetHotfixNoticeRev(16350)
 mod.respawnTime = 25
 
@@ -125,6 +125,7 @@ local voiceCosmicGlare					= mod:NewVoice(250757)--runout
 local voiceTormentofTitans				= mod:NewVoice("ej16138")--killmob/runtoedge/scatter/watchstep
 
 mod:AddSetIconOption("SetIconOnFulminatingPulse", 253520, true)
+mod:AddSetIconOption("SetIconOnChilledBlood", 245586, true)
 mod:AddInfoFrameOption(245586, true)
 --mod:AddRangeFrameOption("5/10")
 mod:AddNamePlateOption("NPAuraOnVisageofTitan", 249863)
@@ -134,6 +135,7 @@ mod.vb.chilledCount = 0
 mod.vb.tormentCount = 0
 mod.vb.MachinationsLeft = 0
 mod.vb.fpIcon = 1
+mod.vb.chilledIcon = 4
 mod.vb.lastTormentCaster = DBM_CORE_UNKNOWN
 
 function mod:OnCombatStart(delay)
@@ -142,6 +144,7 @@ function mod:OnCombatStart(delay)
 	self.vb.tormentCount = 0
 	self.vb.MachinationsLeft = 0
 	self.vb.fpIcon = 1
+	self.vb.chilledIcon = 4
 	self.vb.lastTormentCaster = DBM_CORE_UNKNOWN
 	if self:IsMythic() then
 		self:SetCreatureID(122468, 122467, 122469, 125436)
@@ -325,6 +328,13 @@ function mod:SPELL_AURA_APPLIED(args)
 			DBM.InfoFrame:SetHeader(args.spellName)
 			DBM.InfoFrame:Show(6, "playerabsorb", args.spellName, select(17, UnitDebuff(args.destName, args.spellName)))
 		end
+		if self.Options.SetIconOnChilledBlood then
+			self:SetIcon(args.destName, self.vb.chilledIcon)
+		end
+		self.vb.chilledIcon = self.vb.chilledIcon + 1
+		if self.vb.chilledIcon == 7 then
+			self.vb.chilledIcon = 4
+		end
 	elseif spellId == 250757 then
 		warnCosmicGlare:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
@@ -353,6 +363,9 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.chilledCount = self.vb.chilledCount - 1
 		if self.Options.InfoFrame and self.vb.chilledCount == 0 then
 			DBM.InfoFrame:Hide()
+		end
+		if self.Options.SetIconOnChilledBlood then
+			self:SetIcon(args.destName, 0)
 		end
 	elseif spellId == 249863 then--Bonecage Armor
 		if self.Options.NPAuraOnVisageofTitan then
