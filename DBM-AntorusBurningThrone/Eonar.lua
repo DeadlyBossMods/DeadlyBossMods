@@ -66,9 +66,9 @@ local timerMeteorStormCD				= mod:NewAITimer(61, 248333, nil, nil, nil, 3)
 local timerSpearofDoomCD				= mod:NewCDCountTimer(55, 248789, nil, nil, nil, 3)--55-69
 local timerRainofFelCD					= mod:NewCDCountTimer(61, 248332, nil, nil, nil, 3)
 local timerFinalDoom					= mod:NewCastTimer(50, 249121, nil, nil, nil, 2)
-local timerDestructorCD					= mod:NewCDCountTimer(90, "ej16501", nil, nil, nil, 1, 254769)
-local timerObfuscatorCD					= mod:NewCDCountTimer(90, "ej16502", nil, nil, nil, 1, 246753)
-local timerPurifierCD					= mod:NewCDCountTimer(90, "ej16500", nil, nil, nil, 1)
+local timerDestructorCD					= mod:NewTimer(90, "timerObfuscator", 254769, nil, nil, 1)
+local timerObfuscatorCD					= mod:NewTimer(90, "timerDestructor", 246753, nil, nil, 1)
+local timerPurifierCD					= mod:NewTimer(90, "timerPurifier", 250074, nil, nil, 1)
 --Mythic
 local timerFinalDoomCD					= mod:NewCDCountTimer(90, 249121, nil, nil, nil, 4, nil, DBM_CORE_HEROIC_ICON)
 --local timerFelclawsCD					= mod:NewAITimer(25, 239932, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
@@ -283,7 +283,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnedAdds[args.sourceGUID] = true
 		self.vb.obfuscators = self.vb.obfuscators + 1
 		if self:AntiSpam(5, args.sourceName) then
-			warnWarpIn:Show(args.sourceName)
+			warnWarpIn:Show(L.Obfuscators)
 			self.vb.obfuscatorCast = self.vb.obfuscatorCast + 1
 			local timer = self:IsHeroic() and heroicObfuscators[self.vb.obfuscatorCast+1] or self:IsNormal() and normalObfuscators[self.vb.obfuscatorCast+1]
 			if timer then
@@ -295,7 +295,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnedAdds[args.sourceGUID] = true
 		self.vb.destructors = self.vb.destructors + 1
 		if self:AntiSpam(5, args.sourceName) then
-			warnWarpIn:Show(args.sourceName)
+			warnWarpIn:Show(L.Destructors)
 			self.vb.destructorCast = self.vb.destructorCast + 1
 			local timer = self:IsHeroic() and heroicDestructors[self.vb.destructorCast+1] or self:IsNormal() and normalDestructors[self.vb.destructorCast+1]
 			if timer then
@@ -316,7 +316,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnedAdds[args.sourceGUID] = true
 		self.vb.purifiers = self.vb.purifiers + 1
 		if self:AntiSpam(5, 2) then
-			warnWarpIn:Show(args.sourceName)
+			warnWarpIn:Show(L.Purifiers)
 			self.vb.purifierCast = self.vb.purifierCast + 1
 			local timer = self:IsHeroic() and heroicPurifiers[self.vb.purifierCast+1]
 			if timer then
