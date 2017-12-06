@@ -909,6 +909,7 @@ function barPrototype:ResetAnimations()
 	self.enlarged = nil
 	self.moving = nil
 	self.owner.smallBars:Append(self)
+	self:ApplyStyle()
 end
 
 function barPrototype:Pause()

@@ -134,29 +134,6 @@ local function updateRangeFrame(self)
 end
 --]]
 
---/run DBM:GetModByName("1987"):Test(0)
-function mod:Test(testNumber)
-	if testNumber == 1 then
-		--Fire Doggo
-		timerMoltenTouchCD:AddTime(15)
-		timerEnflamedCorruptionCD:AddTime(15)
-		timerDesolateGazeCD:AddTime(15)
-		--Shadow Doggo
-		timerComsumingSphereCD:AddTime(15)
-		timerWeightOfDarknessCD:AddTime(15)
-		timerSiphonCorruptionCD:AddTime(15)
-	else
-		--Fire Doggo
-		timerMoltenTouchCD:Start(15)
-		timerEnflamedCorruptionCD:Start(15)
-		timerDesolateGazeCD:Start(15)
-		--Shadow Doggo
-		timerComsumingSphereCD:Start(15)
-		timerWeightOfDarknessCD:Start(15)
-		timerSiphonCorruptionCD:Start(15)
-	end
-end
-
 local function UpdateAllTimers(self)
 	--Experimental Code
 	--Fire Doggo
@@ -167,44 +144,6 @@ local function UpdateAllTimers(self)
 	timerComsumingSphereCD:AddTime(15)
 	timerWeightOfDarknessCD:AddTime(15)
 	timerSiphonCorruptionCD:AddTime(15)
-	--Uglier but more less experimental code
-	--Fire Doggo
---[[	local moltelapsed, molttotal = timerMoltenTouchCD:GetTime()
-	local moltremaining = molttotal - moltelapsed
-	if (moltremaining > 0) then
-		timerMoltenTouchCD:Update(moltelapsed, molttotal+15)
-	end
-	
-	local enflamedelapsed, enflamedtotal = timerEnflamedCorruptionCD:GetTime()
-	local enflamedremaining = enflamedtotal - enflamedelapsed
-	if (enflamedremaining > 0) then
-		timerEnflamedCorruptionCD:Update(enflamedelapsed, enflamedtotal+15)
-	end
-	
-	local Desolateelapsed, Desolatetotal = timerDesolateGazeCD:GetTime()
-	local Desolateremaining = Desolatetotal - Desolateelapsed
-	if (Desolateremaining > 0) then
-		timerDesolateGazeCD:Update(Desolateelapsed, Desolatetotal+15)
-	end
-	
-	--Shadow Doggo
-	local Sphereelapsed, Spheretotal = timerComsumingSphereCD:GetTime()
-	local Sphereremaining = Spheretotal - Sphereelapsed
-	if (Sphereremaining > 0) then
-		timerComsumingSphereCD:Update(Sphereelapsed, Spheretotal+15)
-	end
-	
-	local Weightelapsed, Weighttotal = timerWeightOfDarknessCD:GetTime()
-	local enflamedremaining = Weighttotal - Weightelapsed
-	if (Weightremaining > 0) then
-		timerWeightOfDarknessCD:Update(Weightelapsed, Weighttotal+15)
-	end
-	
-	local Siphonelapsed, Siphontotal = timerSiphonCorruptionCD:GetTime()
-	local Siphonremaining = Siphontotal - Siphonelapsed
-	if (Siphonremaining > 0) then
-		timerSiphonCorruptionCD:Update(Siphonelapsed, Siphontotal+15)
-	end--]]
 end
 
 function mod:OnCombatStart(delay)
