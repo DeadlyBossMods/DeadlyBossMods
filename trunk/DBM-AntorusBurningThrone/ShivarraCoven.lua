@@ -97,7 +97,7 @@ local timerMachinationsofAman			= mod:NewCastTimer(20, 250095, nil, nil, nil, 5,
 --local berserkTimer					= mod:NewBerserkTimer(600)
 
 --Noura, Mother of Flames
-local countdownTitans					= mod:NewCountdown(80, "ej16138")
+local countdownTitans					= mod:NewCountdown(85, "ej16138")
 local countdownFulminatingPulse			= mod:NewCountdown("Alt57", 253520, "Healer")
 --Asara, Mother of Night
 local countdownStormofDarkness			= mod:NewCountdown("AltTwo57", 252861)

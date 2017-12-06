@@ -90,11 +90,11 @@ local specWarnHungeringGloom			= mod:NewSpecialWarningMoveTo(245075, nil, nil, n
 --Platform: Nexus
 local timerRealityTearCD				= mod:NewCDTimer(12.1, 244016, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerCollapsingWorldCD			= mod:NewCDTimer(32.9, 243983, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)--32.9-41
-local timerFelstormBarrageCD			= mod:NewCDTimer(32.9, 244000, nil, nil, nil, 3)--32.9-41
+local timerFelstormBarrageCD			= mod:NewCDTimer(32.2, 244000, nil, nil, nil, 3)--32.9-41
 local timerTransportPortalCD			= mod:NewCDTimer(41.2, 244677, nil, nil, nil, 1)--41.2-60. most of time 42 on nose.
 --Platform: Xoroth
 --local timerSupernovaCD					= mod:NewCDTimer(6.1, 244598, nil, nil, nil, 3)
-local timerFlamesofXorothCD				= mod:NewCDTimer(7.3, 244607, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
+local timerFlamesofXorothCD				= mod:NewCDTimer(6.9, 244607, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
 --Platform: Rancora
 local timerFelSilkWrapCD				= mod:NewCDTimer(16.6, 244949, nil, nil, nil, 3)
 local timerPoisonEssenceCD				= mod:NewCDTimer(9.4, 246316, nil, nil, nil, 2, nil, DBM_CORE_HEALER_ICON)
@@ -245,7 +245,7 @@ function mod:SPELL_CAST_START(args)
 			countdownFelstormBarrage:Start(37.8)
 		else
 			timerFelstormBarrageCD:Start()--32.9-41
-			countdownFelstormBarrage:Start(32.9)--Review/improve if possible
+			countdownFelstormBarrage:Start(32.2)--Review/improve if possible
 		end
 		if self.Options.ShowAllPlatforms or playerPlatform == 1 then--Actually on nexus platform
 			specWarnFelstormBarrage:Show()
