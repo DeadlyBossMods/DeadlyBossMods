@@ -20,7 +20,7 @@ mod:RegisterEvents(
 				--"Decimation-252793-npc:127231 = pull:10.9, 0.0", -- [2]
 local warnDemolish						= mod:NewTargetAnnounce(252760, 4)
 local warnCloudofConfuse				= mod:NewTargetAnnounce(254122, 4)
-local warnFlamesofReorig				= mod:NewTargetAnnounce(249297, 4)--Can be spammy if handled poorly
+local warnFlamesofReorig				= mod:NewTargetAnnounce(249297, 4, nil, false, 2)--Can be spammy if handled poorly
 local warnSoulburn						= mod:NewTargetAnnounce(253600, 3)
 
 local specWarnDemolish					= mod:NewSpecialWarningYou(252760, nil, nil, nil, 1, 2)
