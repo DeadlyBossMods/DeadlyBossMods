@@ -152,14 +152,14 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 244399 or spellId == 245294 then
-		--self.vb.lastCannon = 2
+		self.vb.lastCannon = 2
 		--Only cannon up, handle at cannon event
 		if self.vb.phase > 1 and not self:IsMythic() then
 			timerDecimationCD:Start(15.8)
 			countdownChooseCannon:Start(15.8)
 		end
 	elseif spellId == 244294 then
-		--self.vb.lastCannon = 1
+		self.vb.lastCannon = 1
 		specWarnAnnihilation:Show()
 		voiceAnnihilation:Play("helpsoak")
 		--Only cannon up, start timer at cannon event
@@ -300,15 +300,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		end
 		timerFelBombardmentCD:Start(23.6)
 		countdownFelBombardment:Start(23.6)
-	elseif spellId == 247044 or spellId == 247572 then--TODO, see if 247044 is even used
-		--self.vb.lastCannon = 1
-		specWarnAnnihilation:Show()
-		voiceAnnihilation:Play("helpsoak")
-		--Only cannon up, start timer at cannon event
-		if self.vb.phase > 1 and not self:IsMythic() then
-			timerAnnihilationCD:Start(15.8)
-			countdownChooseCannon:Start(15.8)
-		end
 	elseif spellId == 244150 then--Fel Bombardment
 		timerFelBombardmentCD:Start()
 		countdownFelBombardment:Start(20.7)
