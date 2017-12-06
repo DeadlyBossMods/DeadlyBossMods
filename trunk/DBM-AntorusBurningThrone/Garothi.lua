@@ -63,9 +63,6 @@ local timerDecimationCD					= mod:NewNextTimer(31.6, 244410, nil, nil, nil, 3)
 mod:AddTimerLine(annihilator)
 local timerAnnihilationCD				= mod:NewNextTimer(31.6, 247044, nil, nil, nil, 3)
 
-mod:AddTimerLine(ENCOUNTER_JOURNAL_SECTION_FLAG12)
-local timerLuringDestructionCD			= mod:NewAITimer(61, 247159, nil, nil, nil, 2)
-
 --local berserkTimer					= mod:NewBerserkTimer(600)
 
 local countdownChooseCannon				= mod:NewCountdown(15, 245124)
@@ -133,9 +130,6 @@ function mod:OnCombatStart(delay)
 	countdownChooseCannon:Start(8.5-delay)
 	timerFelBombardmentCD:Start(9.7-delay)
 	countdownFelBombardment:Start(9.7-delay)
-	if self:IsMythic() then
-		timerLuringDestructionCD:Start(1-delay)
-	end
 end
 
 function mod:OnCombatEnd()
@@ -198,7 +192,6 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 247159 and self:AntiSpam(5, 1) then
 		specWarnLuringDestruction:Show()
 		voiceLuringDestruction:Play("aesoon")
-		timerLuringDestructionCD:Start()
 	elseif spellId == 244152 then--Apocolypse Drive
 		timerDecimationCD:Stop()
 		timerFelBombardmentCD:Stop()
