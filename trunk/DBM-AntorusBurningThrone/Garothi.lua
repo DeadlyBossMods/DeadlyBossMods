@@ -195,7 +195,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.SetIconOnBombardment then
 			self:SetIcon(args.destName, 7, 13)
 		end
-	elseif spellId == 247159 then
+	elseif spellId == 247159 and self:AntiSpam(5, 1) then
 		specWarnLuringDestruction:Show()
 		voiceLuringDestruction:Play("aesoon")
 		timerLuringDestructionCD:Start()
