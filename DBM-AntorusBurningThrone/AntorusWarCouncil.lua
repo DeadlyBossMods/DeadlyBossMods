@@ -215,7 +215,9 @@ function mod:SPELL_CAST_START(args)
 		specWarnFusillade:Show(felShield)
 		voiceFusillade:Play("findshelter")
 		timerFusilladeCD:Start(nil, self.vb.FusilladeCount+1)
-		countdownFusillade:Start(29.6)
+		if not self:IsLFR() then
+			countdownFusillade:Start(29.6)
+		end
 	elseif spellId == 246505 then
 		if self:CheckInterruptFilter(args.sourceGUID) then
 			specWarnPyroblast:Show(args.sourceName)
