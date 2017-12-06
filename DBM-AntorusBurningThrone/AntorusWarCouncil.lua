@@ -83,7 +83,7 @@ local specWarnWarpField					= mod:NewSpecialWarningRun(244821, nil, nil, nil, 4,
 
 --General
 local timerExploitWeaknessCD			= mod:NewCDTimer(8.5, 244892, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
-local timerShockGrenadeCD				= mod:NewCDTimer(21, 244722, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
+local timerShockGrenadeCD				= mod:NewCDTimer(14.7, 244722, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
 local timerAssumeCommandCD				= mod:NewNextTimer(90, 245227, nil, nil, nil, 6)
 --In Pod
 ----Admiral Svirax
@@ -255,7 +255,7 @@ function mod:SPELL_CAST_START(args)
 			--timerWitheringFireCD:Start(2)
 		end
 		if self:IsMythic() then
-			timerShockGrenadeCD:Start(10)
+			timerShockGrenadeCD:Start(9.7)
 		end
 	elseif spellId == 244821 then
 		specWarnWarpField:Show()
