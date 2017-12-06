@@ -122,7 +122,7 @@ local finalDoomTimers = {60, 125, 100}--PTR, recheck
 local normalDestructors = {17, 39.4, 28, 44.2, 92.4, 41.3, 50, 53.4, 48.1}
 local heroicDestructors = {15.7, 35.3, 40.6, 104.6, 134.7, 99.6}
 local normalObfuscators = {174}
-local heroicObfuscators = {81.8, 149.2, 94.7, 99.9}
+local heroicObfuscators = {80.6, 148.5, 94.7, 99.9}
 local heroicPurifiers = {125, 66.1, 30.6}
 local warnedAdds = {}
 local addCountToLocationMythic = {
@@ -208,7 +208,7 @@ function mod:OnCombatStart(delay)
 			--countdownRainofFel:Start(9.3-delay)
 			timerDestructorCD:Start(8, DBM_CORE_MIDDLE)
 			timerSpearofDoomCD:Start(34.4-delay, 1)
-			timerObfuscatorCD:Start(81.8, DBM_CORE_TOP)
+			timerObfuscatorCD:Start(80.6, DBM_CORE_TOP)
 			timerPurifierCD:Start(125, 1)
 		else--Normal
 			self.vb.lifeRequired = 4
