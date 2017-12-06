@@ -149,7 +149,7 @@ end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 244969 then
+	if spellId == 244969 and self:AntiSpam(5, 1) then
 		specWarnEradication:Show()
 		voiceEradication:Play("justrun")
 	end
