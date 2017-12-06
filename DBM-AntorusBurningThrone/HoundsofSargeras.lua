@@ -134,6 +134,29 @@ local function updateRangeFrame(self)
 end
 --]]
 
+--/run DBM:GetModByName("1987"):Test(0)
+function mod:Test(testNumber)
+	if testNumber == 1 then
+		--Fire Doggo
+		timerMoltenTouchCD:AddTime(15)
+		timerEnflamedCorruptionCD:AddTime(15)
+		timerDesolateGazeCD:AddTime(15)
+		--Shadow Doggo
+		timerComsumingSphereCD:AddTime(15)
+		timerWeightOfDarknessCD:AddTime(15)
+		timerSiphonCorruptionCD:AddTime(15)
+	else
+		--Fire Doggo
+		timerMoltenTouchCD:Start(15)
+		timerEnflamedCorruptionCD:Start(15)
+		timerDesolateGazeCD:Start(15)
+		--Shadow Doggo
+		timerComsumingSphereCD:Start(15)
+		timerWeightOfDarknessCD:Start(15)
+		timerSiphonCorruptionCD:Start(15)
+	end
+end
+
 local function UpdateAllTimers(self)
 	--Experimental Code
 	--Fire Doggo
