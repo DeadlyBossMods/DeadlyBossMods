@@ -25,6 +25,12 @@ L= DBM:GetModLocalization(1997)
 ---------------------------
 L= DBM:GetModLocalization(2025)
 
+L:SetTimerLocalization({
+	timerObfuscator		=	"下一次魔能匿蹤者(%s)",
+	timerDestructor 	=	"下一次魔能毀滅者(%s)",
+	timerPurifier 		=	"下一次魔能淨化者(%s)"
+})
+
 L:SetMiscLocalization({
 	Obfuscators =	"魔能匿蹤者",
 	Destructors =	"魔能毀滅者",
