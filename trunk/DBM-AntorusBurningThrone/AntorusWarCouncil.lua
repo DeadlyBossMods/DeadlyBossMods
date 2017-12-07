@@ -309,7 +309,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnShockGrenade:Show()
 			voiceShockGrenade:Play("runout")
 			yellShockGrenade:Yell()
-			yellShockGrenadeFades:Countdown(5)
+			yellShockGrenadeFades:Countdown(5, 3)
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Show(8)
 			end
