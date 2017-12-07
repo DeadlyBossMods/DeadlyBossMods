@@ -214,7 +214,7 @@ function mod:OnCombatStart(delay)
 			timerDestructorCD:Start(8, DBM_CORE_MIDDLE)
 			timerSpearofDoomCD:Start(34.4-delay, 1)
 			timerObfuscatorCD:Start(80.6, DBM_CORE_TOP)
-			timerPurifierCD:Start(125, 1)
+			timerPurifierCD:Start(125, DBM_CORE_MIDDLE)
 		else--Normal
 			timerDestructorCD:Start(8, DBM_CORE_MIDDLE)
 			timerObfuscatorCD:Start(174, 1)
