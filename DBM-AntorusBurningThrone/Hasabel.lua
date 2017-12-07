@@ -59,7 +59,7 @@ local warnCloyingShadows				= mod:NewTargetAnnounce(245118, 2, nil, false)
 local warnHungeringGloom				= mod:NewTargetAnnounce(245075, 2, nil, false)
 
 --Platform: Nexus
-local specWarnRealityTear				= mod:NewSpecialWarningStack(244016, nil, 3, nil, nil, 1, 6)
+local specWarnRealityTear				= mod:NewSpecialWarningStack(244016, nil, 2, nil, nil, 1, 6)
 local specWarnRealityTearOther			= mod:NewSpecialWarningTaunt(244016, nil, nil, nil, 1, 2)
 local specWarnTransportPortal			= mod:NewSpecialWarningSwitch(244677, "-Healer", nil, 2, 1, 2)
 local specWarnCollapsingWorld			= mod:NewSpecialWarningSpell(243983, nil, nil, nil, 2, 2)
@@ -175,7 +175,7 @@ function mod:OnCombatStart(delay)
 	table.wipe(nathrezaPlatform)
 	timerRealityTearCD:Start(6.2-delay)
 	countdownRealityTear:Start(6.2-delay)
-	timerCollapsingWorldCD:Start(10.5-delay)
+	timerCollapsingWorldCD:Start(10.5-delay)--Still variable, 10.5-18
 	countdownCollapsingWorld:Start(10.5-delay)
 	timerFelstormBarrageCD:Start(25.2-delay)
 	countdownFelstormBarrage:Start(25.2-delay)
@@ -200,6 +200,9 @@ function mod:SPELL_CAST_START(args)
 		if self:IsEasy() then
 			timerCollapsingWorldCD:Start(37.7)--37-43, mostly 42 but have to use 37
 			countdownCollapsingWorld:Start(37.8)
+		elseif self:IsMythic() then
+			timerCollapsingWorldCD:Start(27.9)
+			countdownCollapsingWorld:Start(27.9)
 		else
 			timerCollapsingWorldCD:Start()
 			countdownCollapsingWorld:Start(31.9)
@@ -233,7 +236,11 @@ function mod:SPELL_CAST_START(args)
 			end
 		end
 	elseif spellId == 244689 then
-		timerTransportPortalCD:Start()
+		if self:IsMythic() then
+			timerTransportPortalCD:Start(36.5)
+		else
+			timerTransportPortalCD:Start()--40 minimum but still quite variable
+		end
 		if self.Options.ShowAllPlatforms or playerPlatform == 1 then--Actually on nexus platform
 			specWarnTransportPortal:Show()
 			voiceTransportPortal:Play("killmob")
@@ -243,6 +250,9 @@ function mod:SPELL_CAST_START(args)
 		if self:IsEasy() then
 			timerFelstormBarrageCD:Start(37.8)--37.8-43.8
 			countdownFelstormBarrage:Start(37.8)
+		elseif self:IsMythic() then
+			timerFelstormBarrageCD:Start(28)
+			countdownFelstormBarrage:Start(28)
 		else
 			timerFelstormBarrageCD:Start()--32.9-41
 			countdownFelstormBarrage:Start(32.2)--Review/improve if possible
@@ -312,12 +322,17 @@ function mod:SPELL_AURA_APPLIED(args)
 		local uId = DBM:GetRaidUnitId(args.destName)
 --		if self:IsTanking(uId) then
 			local amount = args.amount or 1
-			if amount >= 3 then
+			if amount >= 2 then
 				if args:IsPlayer() then--At this point the other tank SHOULD be clear.
 					specWarnRealityTear:Show(amount)
 					voiceRealityTear:Play("stackhigh")
 				else--Taunt as soon as stacks are clear, regardless of stack count.
-					if not UnitIsDeadOrGhost("player") and not UnitDebuff("player", args.spellName) then
+					local _, _, _, _, _, _, expireTime = UnitDebuff("player", args.spellName)
+					local remaining
+					if expireTime then
+						remaining = expireTime-GetTime()
+					end
+					if not UnitIsDeadOrGhost("player") and (not remaining or remaining and remaining < 12) then
 						specWarnRealityTearOther:Show(args.destName)
 						voiceRealityTear:Play("tauntboss")
 					else

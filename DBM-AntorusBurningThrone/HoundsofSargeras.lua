@@ -14,7 +14,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 244057 244056",
-	"SPELL_CAST_SUCCESS 244072 251445 245098 254429",
+	"SPELL_CAST_SUCCESS 244072 251445 245098",
 	"SPELL_AURA_APPLIED 244768 248815 254429 248819 244054 244055 251356",
 --	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 244768 248815 254429 248819 251356",
@@ -96,12 +96,12 @@ local voiceSiphoned						= mod:NewVoice(248819)--gathershare?/killmob on mythic?
 local voiceFlameTouched					= mod:NewVoice(244054)--flameonyou
 local voiceShadowtouched				= mod:NewVoice(244055)--shadowonyou
 
---mod:AddSetIconOption("SetIconOnWeightofDarkness", 254429, true)
+mod:AddSetIconOption("SetIconOnWeightofDarkness2", 254429, false)
 --mod:AddInfoFrameOption(239154, true)
 mod:AddRangeFrameOption("5/8")
 mod:AddBoolOption("SequenceTimers", false)
 
---mod.vb.WeightDarkIcon = 1
+mod.vb.WeightDarkIcon = 1
 mod.vb.longTimer = 95.9
 mod.vb.mediumTimer = 77
 
@@ -150,14 +150,14 @@ function mod:OnCombatStart(delay)
 	if self:AntiSpam(10, 1) then
 		--Do nothing, it just disables UpdateAllTimers/Focused Power from firing on pull
 	end
-	--self.vb.WeightDarkIcon = 1
+	self.vb.WeightDarkIcon = 1
 	--Fire doggo
 	timerBurningMawCD:Start(8.2-delay)--was same on heroic/mythic, or now
 	timerCorruptingMawCD:Start(8.9-delay)--was same on heroic/normal, for now
 	--Shadow doggo
 	if self:IsMythic() then
 		self.vb.longTimer = 89
-		self.vb.mediumTimer = 71.9
+		self.vb.mediumTimer = 71.7--71.7-73
 		timerMoltenTouchCD:Start(18-delay)--was same on heroic/mythic, or now
 		timerSiphonCorruptionCD:Start(25.5-delay)
 	elseif self:IsHeroic() then
@@ -252,21 +252,14 @@ function mod:SPELL_CAST_SUCCESS(args)
 		end
 	elseif spellId == 251445 then
 		warnBurningMaw:Show(args.destName)
-		timerBurningMawCD:Start()
+		if self:IsMythic() then
+			timerBurningMawCD:Start(9.7)
+		else
+			timerBurningMawCD:Start()
+		end
 	elseif spellId == 245098 then
 		warnCorruptingMaw:Show(args.destName)
 		timerCorruptingMawCD:Start()
-	elseif spellId == 254429 then
-		--self.vb.WeightDarkIcon = 1
-		if not self.Options.SequenceTimers or self:IsEasy() then
-			timerWeightOfDarknessCD:Start()
-		else
-			if self:IsMythic() then
-				timerSiphonCorruptionCD:Start(24.6)
-			else
-				timerSiphonCorruptionCD:Start(26.7)--26.7-26.9
-			end
-		end
 	end
 end
 
@@ -311,10 +304,10 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellWeightOfDarkness:Yell()
 			yellWeightOfDarknessFades:Countdown(5)
 		end
-		--if self.Options.SetIconOnWeightofDarkness then
-			--self:SetIcon(args.destName, self.vb.WeightDarkIcon)
-		--end
-		--self.vb.WeightDarkIcon = self.vb.WeightDarkIcon + 1
+		if self.Options.SetIconOnWeightofDarkness2 then
+			self:SetIcon(args.destName, self.vb.WeightDarkIcon)
+		end
+		self.vb.WeightDarkIcon = self.vb.WeightDarkIcon + 1
 	elseif spellId == 244054 then--Flametouched
 		if args:IsPlayer() then
 			specWarnFlameTouched:Show(self:IconNumToTexture(7))--Red X for flame (more voted on red x than orange circle)
@@ -348,9 +341,9 @@ function mod:SPELL_AURA_REMOVED(args)
 			end
 		end
 	elseif spellId == 254429 then
-		--if self.Options.SetIconOnWeightofDarkness then
-			--self:SetIcon(args.destName, 0)
-		--end
+		if self.Options.SetIconOnWeightofDarkness2 then
+			self:SetIcon(args.destName, 0)
+		end
 		if args:IsPlayer() then
 			yellWeightOfDarknessFades:Cancel()
 		end
@@ -404,6 +397,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			end
 		end
 	elseif spellId == 244069 then--Weight of Darkness
+		self.vb.WeightDarkIcon = 1
 		if not self.Options.SequenceTimers or self:IsEasy() then
 			timerWeightOfDarknessCD:Start(self.vb.mediumTimer)
 		else
