@@ -49,9 +49,9 @@ local specWarnMiseryTaunt				= mod:NewSpecialWarningTaunt(243961, nil, nil, nil,
 local specWarnDarkFissure				= mod:NewSpecialWarningDodge(243999, nil, nil, nil, 2, 2)
 local specWarnMarkedPrey				= mod:NewSpecialWarningYou(244042, nil, nil, nil, 1, 2)
 local yellMarkedPrey					= mod:NewFadesYell(244042)
-local specWarnNecroticEmbrace			= mod:NewSpecialWarningMoveAway(244094)
+local specWarnNecroticEmbrace			= mod:NewSpecialWarningMoveAway(244094, nil, nil, nil, 1, 2)
 local yellNecroticEmbrace				= mod:NewFadesYell(244094)
-local specWarnEchoesOfDoom				= mod:NewSpecialWarningMoveAway(248732)
+local specWarnEchoesOfDoom				= mod:NewSpecialWarningMoveAway(248732, nil, nil, nil, 1, 2)
 local yellEchoesOfDoom					= mod:NewYell(248732)
 
 --Torments of the Shivarra
@@ -152,8 +152,10 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 243961 and self.vb.currentTorment ~= 4 then--If current torment is shadow, disable these warnings, Because entire raid now has misery rest of fight
 		if args:IsPlayer() then
-			specWarnMisery:Show()
-			voiceMisery:Play("defensive")
+			if self:AntiSpam(4, 2) then
+				specWarnMisery:Show()
+				voiceMisery:Play("defensive")
+			end
 		else
 			local uId = DBM:GetRaidUnitId(args.destName)
 			--Applied to a tank that's not you and you don't have it, taunt
