@@ -113,7 +113,7 @@ local voiceFulminatingPulse				= mod:NewVoice(253520)--runout
 --Asara, Mother of Night
 --local voiceTouchofDarkness				= mod:NewVoice(245303, "HasInterrupt")--kickcast
 local voiceShadowBlades					= mod:NewVoice(246329)--watchstep?
-local voiceStormofDarkness				= mod:NewVoice(252861)--aesoon
+local voiceStormofDarkness				= mod:NewVoice(252861)--findshelter
 --Diima, Mother of Gloom
 local voiceFlashfreeze					= mod:NewVoice(245518)--tauntboss
 local voiceChilledBlood					= mod:NewVoice(245586, "Healer")--healall?
@@ -197,7 +197,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 252861 then
 		self.vb.stormCount = self.vb.stormCount + 1
 		specWarnStormofDarkness:Show(self.vb.stormCount)
-		voiceStormofDarkness:Play("aesoon")
+		voiceStormofDarkness:Play("findshelter")
 		timerStormofDarknessCD:Start(57, self.vb.stormCount+1)
 		countdownStormofDarkness:Start(57)
 	elseif spellId == 253650 then
