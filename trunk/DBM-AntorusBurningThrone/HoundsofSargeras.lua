@@ -166,10 +166,12 @@ function mod:OnCombatStart(delay)
 		timerMoltenTouchCD:Start(18-delay)--was same on heroic/mythic, or now
 		timerSiphonCorruptionCD:Start(26.7-delay)
 	else
-		self.vb.longTimer = 104.7
+		self.vb.longTimer = 104.5
 		self.vb.mediumTimer = 85
 		--Molten touch not even cast
-		timerSiphonCorruptionCD:Start(29.4-delay)
+		if not self:IsLFR() then
+			timerSiphonCorruptionCD:Start(29.4-delay)
+		end
 	end
 	if not self.Options.SequenceTimers then
 		if self:IsMythic() then
@@ -188,8 +190,10 @@ function mod:OnCombatStart(delay)
 			timerWeightOfDarknessCD:Start(77-delay)
 		else--Normal confirmed, LFR assumed
 			--Fire doggo
-			timerEnflamedCorruptionCD:Start(55.2-delay)
-			timerDesolateGazeCD:Start(89.3-delay)
+			if not self:IsLFR() then
+				timerEnflamedCorruptionCD:Start(55.2-delay)
+			end
+			timerDesolateGazeCD:Start(88.8-delay)
 			--Shadow doggo
 			timerComsumingSphereCD:Start(55.2-delay)
 			--Weight not even cast
