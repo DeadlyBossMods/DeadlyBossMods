@@ -373,7 +373,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			DBM:Debug("Ruiner first", 2)
 		end
 		if self.vb.reverbTimeLeft > 0 then
-			timerReverberatingStrikeCD:Start(self.vb.reverbTimeLeft, 1)
+			timerReverberatingStrikeCD:Start(self.vb.reverbTimeLeft-1, 1)
 		end
 		if self.vb.ruinerTimeLeft > 0 then
 			timerRuinerCD:Start(self.vb.ruinerTimeLeft, 1)
