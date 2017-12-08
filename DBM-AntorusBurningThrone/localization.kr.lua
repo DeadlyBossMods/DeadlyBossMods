@@ -34,6 +34,12 @@ L= DBM:GetModLocalization(1997)
 ---------------------------
 L= DBM:GetModLocalization(2025)
 
+L:SetTimerLocalization({
+	timerObfuscator		=	"다음 혼란자 (%s)",
+	timerDestructor 	=	"다음 파괴자 (%s)",
+	timerPurifier 		=	"다음 정화자 (%s)"
+})
+
 L:SetMiscLocalization({
 	Obfuscators =	"혼란자",
 	Destructors =	"파괴자",
@@ -72,10 +78,6 @@ L= DBM:GetModLocalization(1983)
 -- The Coven of Shivarra --
 ---------------------------
 L= DBM:GetModLocalization(1986)
-
-L:SetTimerLocalization({
-	timerBossIncoming		= DBM_INCOMING
-})
 
 L:SetOptionLocalization({
 	timerBossIncoming		= "다음 보스 교대 타이머 바 보기"
