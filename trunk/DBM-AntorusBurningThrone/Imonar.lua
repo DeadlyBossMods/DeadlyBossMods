@@ -211,7 +211,7 @@ function mod:SPELL_CAST_START(args)
 		voiceChargedBlasts:Play("farfromline")
 		if self:IsMythic() and self.vb.phase < 4 then
 			timerChargedBlastsCD:Start(13.4)
-			countdownChargedBlasts:StarT(13.4)
+			countdownChargedBlasts:Start(13.4)
 		else
 			timerChargedBlastsCD:Start()--18.2
 			countdownChargedBlasts:Start(18.2)
