@@ -1,7 +1,7 @@
 -- Mini Dragon(projecteurs@gmail.com)
 -- 夏一可
 -- Blizzard Entertainment
--- Last update: 2017/11/01
+-- Last update: 2017/12/07
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -39,10 +39,16 @@ L= DBM:GetModLocalization(1997)
 ---------------------------
 L= DBM:GetModLocalization(2025)
 
+L:SetTimerLocalization({
+	timerObfuscator		=	"下一个 邪能干扰器 (%s)",
+	timerDestructor 	=	"下一个 注邪毁灭者 (%s)",
+	timerPurifier 		=	"下一个 邪能净化者 (%s)"
+})
+
 L:SetMiscLocalization({
 	Obfuscators =	"邪能干扰器", --需要T
-	Destructors =	"注邪毁灭者" --减速
-	--邪能净化者
+	Destructors =	"注邪毁灭者", --减速
+	Purifiers	=	"邪能净化者"
 })
 
 ---------------------------
