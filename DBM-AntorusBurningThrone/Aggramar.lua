@@ -13,7 +13,7 @@ mod.respawnTime = 25
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 244693 245458 245463 245301",
+	"SPELL_CAST_START 244693 245458 245463 245301 255058",
 --	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED 245990 245994 244894 244903 247091 254452",
 	"SPELL_AURA_APPLIED_DOSE 245990",
@@ -31,8 +31,9 @@ mod:RegisterEventsInCombat(
 --TODO, like fallen avatar in lat PTR, flare has two entirely different mechanics between journal and spellId toolipss, so it needs reviewing at testing.
 --TODO, empowered flare has same issue as flare. Figure out all the shit
 --[[
-(ability.id = 244693 or ability.id = 245458 or ability.id = 245463 or ability.id = 245301) and type = "begincast"
+(ability.id = 244693 or ability.id = 245458 or ability.id = 245463 or ability.id = 245301 or ability.id = 255058) and type = "begincast"
  or ability.id = 244894 and (type = "applybuff" or type = "removebuff")
+ or (ability.id = 245994 or ability.id = 254452) and type = "applydebuff"
 --]]
 --Stage One: Wrath of Aggramar
 local warnTaeshalachReach				= mod:NewStackAnnounce(245990, 2, nil, "Tank")
@@ -194,10 +195,10 @@ function mod:SPELL_CAST_START(args)
 				timerFoeBreakerCD:Start(7.5, 2)
 			end
 		end
-	elseif spellId == 245463 then
+	elseif spellId == 245463 or spellId == 255058 then
 		self.vb.rendCount = self.vb.rendCount + 1
 		specWarnFlameRend:Show(self.vb.rendCount)
-		if self:IsMythic() then
+		if spellId == 255058 then--Empowered/Mythic Version
 			if self.vb.rendCount == 1 then
 				voiceFlameRend:Play("shareone")
 			else
