@@ -7,7 +7,7 @@ mod:SetEncounterID(2082)
 mod:SetZone()
 --mod:SetBossHPInfoToHighest()
 --mod:SetUsedIcons(1, 2, 3, 4, 5, 6)
---mod:SetHotfixNoticeRev(16350)
+mod:SetHotfixNoticeRev(16961)
 mod.respawnTime = 35
 
 mod:RegisterCombat("combat")
