@@ -13,7 +13,7 @@ mod.respawnTime = 25
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 244693 245458 245463 245301 255058",
+	"SPELL_CAST_START 244693 245458 245463 245301 255058 255061 255059",
 --	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED 245990 245994 244894 244903 247091 254452",
 	"SPELL_AURA_APPLIED_DOSE 245990",
@@ -31,7 +31,7 @@ mod:RegisterEventsInCombat(
 --TODO, like fallen avatar in lat PTR, flare has two entirely different mechanics between journal and spellId toolipss, so it needs reviewing at testing.
 --TODO, empowered flare has same issue as flare. Figure out all the shit
 --[[
-(ability.id = 244693 or ability.id = 245458 or ability.id = 245463 or ability.id = 245301 or ability.id = 255058) and type = "begincast"
+(ability.id = 244693 or ability.id = 245458 or ability.id = 245463 or ability.id = 245301 or ability.id = 255058 or ability.id = 255061 or ability.id = 255059) and type = "begincast"
  or ability.id = 244894 and (type = "applybuff" or type = "removebuff")
  or (ability.id = 245994 or ability.id = 254452) and type = "applydebuff"
 --]]
@@ -175,7 +175,7 @@ function mod:SPELL_CAST_START(args)
 			countdownWakeofFlame:Start(24.3)
 		end
 		self:BossTargetScanner(args.sourceGUID, "WakeTarget", 0.1, 12, true, nil, nil, nil, true)
-	elseif spellId == 245458 then
+	elseif spellId == 245458 or spellId == 255059 then
 		self.vb.foeCount = self.vb.foeCount + 1
 		if self:IsTank() then
 			local tanking, status = UnitDetailedThreatSituation("player", "boss1")
@@ -214,7 +214,7 @@ function mod:SPELL_CAST_START(args)
 				timerFlameRendCD:Start(7.5, 2)
 			end
 		end
-	elseif spellId == 245301 then
+	elseif spellId == 245301 or spellId == 255061 then
 		specWarnSearingTempest:Show()
 		voiceSearingTempest:Play("runout")
 	end
