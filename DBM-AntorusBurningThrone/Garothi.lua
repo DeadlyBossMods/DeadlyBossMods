@@ -17,7 +17,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 244969 240277",
 	"SPELL_CAST_SUCCESS 246220 244399 245294 246919",
-	"SPELL_AURA_APPLIED 246220 244410 246919 246897 246965",
+	"SPELL_AURA_APPLIED 246220 244410 246919 246965",--246897
 --	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 246220 244410 246919",
 --	"SPELL_PERIODIC_DAMAGE",
@@ -83,6 +83,8 @@ mod:AddRangeFrameOption("7/17")
 mod.vb.deciminationActive = 0
 mod.vb.FelBombardmentActive = 0
 mod.vb.phase = 1
+mod.vb.lastCannon = 1--Anniilator 1 decimator 2
+mod.vb.annihilatorHaywire = false
 
 local debuffFilter
 local updateRangeFrame
@@ -117,6 +119,8 @@ end
 function mod:OnCombatStart(delay)
 	self.vb.deciminationActive = 0
 	self.vb.FelBombardmentActive = 0
+	self.vb.lastCannon = 1--Anniilator 1 decimator 2
+	self.vb.annihilatorHaywire = false
 	self.vb.phase = 1
 	timerSpecialCD:Start(8.5-delay)--First one random.
 	countdownChooseCannon:Start(8.5-delay)
@@ -155,20 +159,24 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 244399 or spellId == 245294 or spellId == 246919 then--Decimation
-		countdownChooseCannon:Start(15.8)
+		self.vb.lastCannon = 2--Anniilator 1 decimator 2
 		if self.vb.phase == 1 or self:IsMythic() then
 			timerAnnihilationCD:Start(15.8)
 		elseif self.vb.phase > 1 and not self:IsMythic() then
 			timerDecimationCD:Start(15.8)
 		end
 	elseif spellId == 244294 then--Annihilation
-		specWarnAnnihilation:Show()
-		voiceAnnihilation:Play("helpsoak")
-		countdownChooseCannon:Start(15.8)
-		if self.vb.phase == 1 or self:IsMythic() then
-			timerDecimationCD:Start(15.8)
-		elseif self.vb.phase > 1 and not self:IsMythic() then
-			timerAnnihilationCD:Start(15.8)
+		if self.vb.annihilatorHaywire then
+			DBM:AddMsg("Blizzard fixed haywire Annihilator, tell DBM author")
+		else
+			self.vb.lastCannon = 1--Annihilation 1 Decimation 2
+			specWarnAnnihilation:Show()
+			voiceAnnihilation:Play("helpsoak")
+				if self.vb.phase == 1 or self:IsMythic() then
+				timerDecimationCD:Start(15.8)
+			elseif self.vb.phase > 1 and not self:IsMythic() then
+				timerAnnihilationCD:Start(15.8)
+			end
 		end
 	end
 end
@@ -222,12 +230,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:SetIcon(args.destName, self.vb.deciminationActive)
 		end
 		updateRangeFrame(self)
---[[	elseif spellId == 246897 or spellId == 246965 then--Haywire (Decimator, Annihilator)
-		self.vb.phase = self.vb.phase + 1
-		timerApocDriveCast:Stop()
-		timerSpecialCD:Start(22.5)--Verify it's same a non mythic
-		timerFelBombardmentCD:Start(23.6)
-		countdownFelBombardment:Start(23.6)--]]
+	elseif spellId == 246965 then--Haywire (Annihilator)
+		self.vb.annihilatorHaywire = true
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -303,6 +307,18 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		else
 			timerFelBombardmentCD:Start(20.7)
 			countdownFelBombardment:Start(20.7)
+		end
+	elseif spellId == 245124 then
+		countdownChooseCannon:Start(15.8)
+		if self.vb.annihilatorHaywire and self.vb.lastCannon == 2 then 
+			self.vb.lastCannon = 1
+			specWarnAnnihilation:Show()
+			voiceAnnihilation:Play("helpsoak")
+			if self.vb.phase == 1 or self:IsMythic() then
+				timerDecimationCD:Start(15.8)
+			elseif self.vb.phase > 1 and not self:IsMythic() then
+				timerAnnihilationCD:Start(15.8)
+			end
 		end
 	end
 end
