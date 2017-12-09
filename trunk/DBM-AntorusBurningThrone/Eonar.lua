@@ -172,8 +172,18 @@ do
 		table.wipe(sortedLines)
 		--Boss Powers first
 		if UnitExists("boss1") then
-			local currentPower = UnitPower("boss1", 10) or 0
-			addLine(UnitName("boss1"), currentPower)
+			local cid = mod:GetUnitCreatureId("boss1")
+			if cid ~= 124445 then--Filter Paraxxus
+				local currentPower = UnitPower("boss1", 10) or 0
+				addLine(UnitName("boss1"), currentPower)
+			end
+		end
+		if UnitExists("boss2") then
+			local cid = mod:GetUnitCreatureId("boss2")
+			if cid ~= 124445 then--Filter Paraxxus
+				local currentPower = UnitPower("boss2", 10) or 0
+				addLine(UnitName("boss2"), currentPower)
+			end
 		end
 		addLine(lifeForceName, mod.vb.lifeForceCast.."/"..mod.vb.lifeRequired)
 		if mod.vb.obfuscators > 0 then
@@ -439,8 +449,10 @@ function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 124207 and self.vb.obfuscators > 0 then--Fel-Charged Obfuscator
 		self.vb.obfuscators = self.vb.obfuscators - 1
-	elseif cid == 123760 and self.vb.destructors > 0 then--Fel-Infused Destructor
-		self.vb.destructors = self.vb.destructors - 1
+	elseif cid == 123760 then 
+		if warnedAdds[args.destGUID] and self.vb.destructors > 0 then--Fel-Infused Destructor
+			self.vb.destructors = self.vb.destructors - 1
+		end
 	elseif cid == 123726 and self.vb.purifiers > 0 then--Fel-Infused Purifier
 		self.vb.purifiers = self.vb.purifiers - 1
 	end
