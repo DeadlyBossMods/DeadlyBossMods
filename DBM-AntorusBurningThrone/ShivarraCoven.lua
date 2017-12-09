@@ -496,7 +496,7 @@ function mod:UNIT_TARGETABLE_CHANGED(uId)
 	local cid = self:GetCIDFromGUID(UnitGUID(uId))
 	if cid == 122468 then--Noura
 		if UnitExists(uId) then
-			warnActivated(UnitName(uId))
+			warnActivated:Show(UnitName(uId))
 			DBM:Debug("UNIT_TARGETABLE_CHANGED, Boss Engaging", 2)
 			timerWhirlingSaberCD:Start(9)
 			timerFieryStrikeCD:Start(12.1)
@@ -513,7 +513,7 @@ function mod:UNIT_TARGETABLE_CHANGED(uId)
 		end
 	elseif cid == 122467 then--Asara
 		if UnitExists(uId) then
-			warnActivated(UnitName(uId))
+			warnActivated:Show(UnitName(uId))
 			DBM:Debug("UNIT_TARGETABLE_CHANGED, Boss Engaging", 2)
 			--TODO, timers, never saw her leave so never saw her return
 		else
@@ -525,7 +525,7 @@ function mod:UNIT_TARGETABLE_CHANGED(uId)
 		end
 	elseif cid == 122469 then--Diima
 		if UnitExists(uId) then
-			warnActivated(UnitName(uId))
+			warnActivated:Show(UnitName(uId))
 			DBM:Debug("UNIT_TARGETABLE_CHANGED, Boss Engaging", 2)
 			timerChilledBloodCD:Start(6.5)
 			timerFlashFreezeCD:Start(12.5)
@@ -540,7 +540,7 @@ function mod:UNIT_TARGETABLE_CHANGED(uId)
 		end
 	elseif cid == 125436 then--Thu'raya (mythic only)
 		if UnitExists(uId) then
-			warnActivated(UnitName(uId))
+			warnActivated:Show(UnitName(uId))
 			DBM:Debug("UNIT_TARGETABLE_CHANGED, Boss Engaging", 2)
 			timerCosmicGlareCD:Start(6)
 		else
