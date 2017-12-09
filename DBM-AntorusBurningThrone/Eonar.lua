@@ -129,7 +129,7 @@ local heroicDestructors = {15.7, 35.3, 40.6, 104.6, 134.7, 99.6}
 local mythicDestructors = {23, 23.1, 87.4, 288.4, 20, 79}
 local normalObfuscators = {193}--Live, Dec 01
 local heroicObfuscators = {80.6, 148.5, 94.7, 99.9}
-local mythicObfuscators = {46, 245.5, 43.8, 90.8}
+local mythicObfuscators = {46, 243, 43.8, 90.8}
 local heroicPurifiers = {125, 66.1, 30.6}
 local mythicPurifiers = {65.7, 82.6, 66.9, 145.7}
 local warnedAdds = {}
@@ -210,7 +210,7 @@ function mod:OnCombatStart(delay)
 			timerRainofFelCD:Start(6-delay, 1)
 			--countdownRainofFel:Start(6-delay)
 			--timerSpearofDoomCD:Start(35-delay, 1)
-			timerDestructorCD:Start(8, DBM_CORE_MIDDLE)
+			timerDestructorCD:Start(12, DBM_CORE_MIDDLE)
 			timerObfuscatorCD:Start(46, DBM_CORE_BOTTOM)
 			timerPurifierCD:Start(65.7, DBM_CORE_MIDDLE)
 			timerFinalDoomCD:Start(60-delay, 1)
@@ -308,7 +308,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			local timer = self:IsMythic() and mythicDestructors[self.vb.destructorCast+1] or self:IsHeroic() and heroicDestructors[self.vb.destructorCast+1] or self:IsNormal() and normalDestructors[self.vb.destructorCast+1]
 			if timer then
 				local text = self:IsHeroic() and addCountToLocationHeroic["Dest"][self.vb.destructorCast+1] or self:IsNormal() and addCountToLocationNormal["Dest"][self.vb.destructorCast+1] or self:IsMythic() and addCountToLocationMythic["Dest"][self.vb.destructorCast+1] or self.vb.destructorCast+1
-				timerDestructorCD:Start(timer-9, text)--High alert fires about 9 seconds after spawn so using it as a trigger has a -9 adjustment
+				timerDestructorCD:Start(timer-10, text)--High alert fires about 9 seconds after spawn so using it as a trigger has a -10 adjustment
 			end
 		end
 	end
