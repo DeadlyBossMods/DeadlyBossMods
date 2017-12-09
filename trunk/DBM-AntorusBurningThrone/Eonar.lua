@@ -124,10 +124,10 @@ local mythicRainOfFelTimers = {6, 29, 25, 50, 25, 49.3, 15, 50, 24, 49.2, 25, 50
 --local mythicSpearofDoomTimers = {}
 local heroicSpearofDoomTimers = {35, 59.2, 64.3, 40, 85.6, 34.1, 65.2}--Live, Nov 29
 local finalDoomTimers = {60, 125, 99.5, 104.6, 99.6}--Live, Dec 5
-local normalDestructors = {17, 39.4, 28, 44.2, 92.4, 41.3, 50, 53.4, 48.1}
+local normalDestructors = {17, 46.2, 32, 52.4, 93.7, 40.9, 50.2, 55.4, 49.2}--Live, Dec 01. Old 17, 39.4, 28, 44.2, 92.4, 41.3, 50, 53.4, 48.1
 local heroicDestructors = {15.7, 35.3, 40.6, 104.6, 134.7, 99.6}
 local mythicDestructors = {23, 23.1, 87.4, 288.4, 20, 79}
-local normalObfuscators = {174}
+local normalObfuscators = {193}--Live, Dec 01
 local heroicObfuscators = {80.6, 148.5, 94.7, 99.9}
 local mythicObfuscators = {46, 245.5, 43.8, 90.8}
 local heroicPurifiers = {125, 66.1, 30.6}
@@ -139,23 +139,14 @@ local addCountToLocationMythic = {
 	["Pur"] = {DBM_CORE_MIDDLE, DBM_CORE_MIDDLE, DBM_CORE_BOTTOM, DBM_CORE_TOP}
 }
 local addCountToLocationHeroic = {
-	["Dest"] = {DBM_CORE_MIDDLE, DBM_CORE_BOTTOM, DBM_CORE_TOP, DBM_CORE_BOTTOM, DBM_CORE_MIDDLE.."/"..DBM_CORE_TOP},
-	["Obfu"] = {DBM_CORE_TOP, DBM_CORE_MIDDLE, DBM_CORE_BOTTOM},
+	["Dest"] = {DBM_CORE_MIDDLE, DBM_CORE_BOTTOM, DBM_CORE_TOP, DBM_CORE_BOTTOM, DBM_CORE_MIDDLE.."/"..DBM_CORE_TOP, DBM_CORE_MIDDLE.."/"..DBM_CORE_TOP},
+	["Obfu"] = {DBM_CORE_TOP, DBM_CORE_MIDDLE, DBM_CORE_BOTTOM, DBM_CORE_BOTTOM},
 	["Pur"] = {DBM_CORE_MIDDLE, DBM_CORE_BOTTOM, DBM_CORE_MIDDLE}
 }
 local addCountToLocationNormal = {
-	["Dest"] = {DBM_CORE_MIDDLE},
-	["Obfu"] = {}
+	["Dest"] = {DBM_CORE_MIDDLE, DBM_CORE_BOTTOM, DBM_CORE_MIDDLE, DBM_CORE_TOP, DBM_CORE_BOTTOM, DBM_CORE_TOP, DBM_CORE_MIDDLE, DBM_CORE_TOP, DBM_CORE_MIDDLE},
+	["Obfu"] = {DBM_CORE_MIDDLE}
 }
---[[
-Old Data from PTR
-Mythic Adds
-destructor 22, 96.3, 40, 
-Obfuscator: 39.8, 157.9
-Obfuscator: 81.8, 149.2, 94.7, 99.9
-LFR Adds
-destructor: 17, 48.3, 41.4, 65.3, 43.13, 23.4, 50, 43.4
---]]
 
 local updateInfoFrame
 do
