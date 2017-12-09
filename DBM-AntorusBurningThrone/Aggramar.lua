@@ -111,6 +111,7 @@ mod.vb.foeCount = 0
 mod.vb.rendCount = 0
 mod.vb.wakeOfFlameCount = 0
 mod.vb.blazeIcon = 1
+mod.vb.techActive = false
 
 function mod:WakeTarget(targetname, uId)
 	if not targetname then return end
@@ -126,11 +127,12 @@ function mod:OnCombatStart(delay)
 	self.vb.rendCount = 0
 	self.vb.wakeOfFlameCount = 0
 	self.vb.blazeIcon = 1
+	self.vb.techActive = false
 	if self:IsMythic() then
 		timerRavenousBlazeCD:Start(4.4-delay)
 		timerWakeofFlameCD:Start(10.7-delay)--Health based?
 		countdownWakeofFlame:Start(10.7-delay)
-		timerTaeshalachTechCD:Start(14.3-delay)--Health based?
+		timerTaeshalachTechCD:Start(14.3-delay, 1)--Health based?
 		countdownTaeshalachTech:Start(14.3-delay)
 	else
 		timerScorchingBlazeCD:Start(4.8-delay)
@@ -169,7 +171,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.wakeOfFlameCount = self.vb.wakeOfFlameCount + 1
 		specWarnWakeofFlame:Show()
 		voiceWakeofFlame:Play("watchwave")
-		local techTimer = timerTaeshalachTechCD:GetRemaining()
+		local techTimer = timerTaeshalachTechCD:GetRemaining(self.vb.techCount+1)
 		if techTimer == 0 or techTimer > 24 then
 			timerWakeofFlameCD:Start()
 			countdownWakeofFlame:Start(24.3)
@@ -278,8 +280,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.blazeIcon = self.vb.blazeIcon + 1
 	elseif spellId == 244894 then--Corrupt Aegis
 		voicePhaseChange:Play("phasechange")
-		self.vb.phase = self.vb.phase + 0.5
 		self.vb.wakeOfFlameCount = 0
+		self.vb.techActive = false
 		timerScorchingBlazeCD:Stop()
 		timerWakeofFlameCD:Stop()
 		timerFlareCD:Stop()
@@ -289,9 +291,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerFoeBreakerCD:Stop()
 		timerFlameRendCD:Stop()
 		timerTempestCD:Stop()
---		if self.vb.phase == 2.5 then
---			timerWakeofFlameCD:Start(3)
---		end
 	if self.Options.RangeFrame and not self:IsTank() then
 		DBM.RangeCheck:Hide()
 	end
@@ -311,17 +310,21 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.phase = self.vb.phase + 1
 		self.vb.wakeOfFlameCount = 0
 		--timerScorchingBlazeCD:Start(3)--Unknown
-		timerTaeshalachTechCD:Start(37)--Veriy with more data
+		timerTaeshalachTechCD:Start(37, self.vb.techCount+1)
 		countdownTaeshalachTech:Start(37)
+		if self:IsMythic() then
+			timerRavenousBlazeCD:Start(23)
+		else
+			timerScorchingBlazeCD:Start(5.9)
+		end
 		if self.vb.phase == 2 then
 			warnPhase2:Show()
 			voicePhaseChange:Play("ptwo")
-			--timerFlareCD:Start(2)--Unknown
+			timerFlareCD:Start(10)
 		elseif self.vb.phase == 3 then
 			warnPhase3:Show()
 			voicePhaseChange:Play("pthree")
-			--timerWakeofFlameCD:Start(4)--Unknown
-			--timerFlareCD:Start(3)--Unknown
+			timerFlareCD:Start(10)
 		end
 		if self.Options.RangeFrame and not self:IsTank() then
 			DBM.RangeCheck:Show(6)
@@ -373,6 +376,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		self.vb.blazeIcon = 1
 		timerRavenousBlazeCD:Start()--Unknown at this time
 	elseif spellId == 244688 then--Taeshalach Technique
+		self.vb.techActive = true
 		self.vb.foeCount = 0
 		self.vb.rendCount = 0
 		self.vb.techCount = self.vb.techCount + 1
@@ -397,7 +401,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 				timerTempestCD:Start(15)
 			end
 		end
-	elseif spellId == 244792 then--Burning Will of Taeshalach (technique ended)
+	elseif spellId == 244792 and self.vb.techActive then--Burning Will of Taeshalach (technique ended)
+		self.vb.techActive = false
 		if self:IsMythic() then
 			timerRavenousBlazeCD:Start(4.2)
 		else
