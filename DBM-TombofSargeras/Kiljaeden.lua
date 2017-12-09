@@ -216,7 +216,7 @@ local function handleMissingEmote(self)
 	if self:IsMythic() then
 		local timer = phase1point5MythicSingularityTimers[self.vb.singularityCount+1]
 		if timer then
-			self:Schedule(timer, handleMissingEmote, self)--Already scheduled on delya
+			self:Schedule(timer, handleMissingEmote, self)--Already scheduled on delay
 			timerRupturingSingularityCD:Start(timer-2, self.vb.singularityCount+1)
 		end
 	end
