@@ -16,7 +16,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 247376 247923 248068 248070 248254",
 	"SPELL_CAST_SUCCESS 247367 247552 247687 250255 254244",
 	"SPELL_AURA_APPLIED 247367 247552 247565 247687 250255 250006",
-	"SPELL_AURA_APPLIED_DOSE 247367 247687 250255 248424",
+	"SPELL_AURA_APPLIED_DOSE 247367 247687 250255",
 	"SPELL_AURA_REMOVED 248233 250135 250006",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
@@ -43,7 +43,7 @@ local warnSever							= mod:NewStackAnnounce(247687, 2, nil, "Tank")
 --local warnChargedBlasts					= mod:NewTargetAnnounce(247716, 3)
 --Stage Three/Five: The Perfect Weapon
 local warnPhase3						= mod:NewPhaseAnnounce(3, 2)
-local warnEmpoweredPulseGrenade			= mod:NewTargetAnnounce(248424, 3)
+local warnEmpoweredPulseGrenade			= mod:NewTargetAnnounce(250006, 3)
 local warnPhase4						= mod:NewPhaseAnnounce(4, 2)
 local warnPhase5						= mod:NewPhaseAnnounce(5, 2)
 --Intermission: On Deadly Ground
@@ -64,8 +64,8 @@ local specWarnChargedBlastsUnknown		= mod:NewSpecialWarningSpell(247716, nil, ni
 local specWarnShrapnalBlast				= mod:NewSpecialWarningDodge(247923, nil, nil, nil, 1, 2)
 --local specWarnMalignantAnguish		= mod:NewSpecialWarningInterrupt(236597, "HasInterrupt")
 --Stage Three/Five: The Perfect Weapon
-local specWarnEmpPulseGrenade			= mod:NewSpecialWarningMoveAway(248424, nil, nil, nil, 1, 2)
-local yellEmpPulseGrenade				= mod:NewYell(248424)
+local specWarnEmpPulseGrenade			= mod:NewSpecialWarningMoveAway(250006, nil, nil, nil, 1, 2)
+local yellEmpPulseGrenade				= mod:NewYell(250006)
 --local specWarnEmpShrapnalBlast		= mod:NewSpecialWarningDodge(248070, nil, nil, nil, 1, 2)--Redundant
 --Intermission: On Deadly Ground
 
@@ -100,13 +100,13 @@ local voiceSever						= mod:NewVoice(247687)--Tauntboss
 local voiceChargedBlasts				= mod:NewVoice(247716)--runout
 local voiceShrapnalBlast				= mod:NewVoice(247923)--watchstep
 --Stage Three/Five: The Perfect Weapon
-local voiceEmpPulseGrenade				= mod:NewVoice(248424)--range5
+local voiceEmpPulseGrenade				= mod:NewVoice(250006)--range5
 
 --local voiceMalignantAnguish			= mod:NewVoice(236597, "HasInterrupt")--kickcast
 
 --mod:AddSetIconOption("SetIconOnFocusedDread", 238502, true)
 --mod:AddInfoFrameOption(239154, true)
-mod:AddRangeFrameOption(5, 248424)
+mod:AddRangeFrameOption(5, 250006)
 
 mod.vb.phase = 1
 mod.vb.shrapnalCast = 0
