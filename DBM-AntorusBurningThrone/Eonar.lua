@@ -134,9 +134,9 @@ local heroicPurifiers = {125, 66.1, 30.6}
 local mythicPurifiers = {65.7, 82.6, 66.9, 145.7}
 local warnedAdds = {}
 local addCountToLocationMythic = {
-	["Dest"] = {DBM_CORE_MIDDLE, DBM_CORE_TOP},
-	["Obfu"] = {},
-	["Pur"] = {}
+	["Dest"] = {DBM_CORE_MIDDLE, DBM_CORE_TOP, DBM_CORE_BOTTOM},
+	["Obfu"] = {DBM_CORE_BOTTOM},
+	["Pur"] = {DBM_CORE_MIDDLE, DBM_CORE_MIDDLE, DBM_CORE_BOTTOM}
 }
 local addCountToLocationHeroic = {
 	["Dest"] = {DBM_CORE_MIDDLE, DBM_CORE_BOTTOM, DBM_CORE_TOP, DBM_CORE_BOTTOM, DBM_CORE_MIDDLE.."/"..DBM_CORE_TOP},
@@ -210,8 +210,8 @@ function mod:OnCombatStart(delay)
 			--countdownRainofFel:Start(6-delay)
 			--timerSpearofDoomCD:Start(35-delay, 1)
 			timerDestructorCD:Start(8, DBM_CORE_MIDDLE)
-			timerObfuscatorCD:Start(46, 1)
-			timerPurifierCD:Start(65.7, 1)
+			timerObfuscatorCD:Start(46, DBM_CORE_BOTTOM)
+			timerPurifierCD:Start(65.7, DBM_CORE_MIDDLE)
 			timerFinalDoomCD:Start(60-delay, 1)
 			countdownFinalDoom:Start(60-delay)
 		elseif self:IsHeroic() then
