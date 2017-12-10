@@ -2672,7 +2672,7 @@ local function CreateOptionsMenu()
 		-- SpecialWarn Sound Interface\\AddOns\\DBM-Core\\sounds\\ClassicSupport\\incredible.ogg
 		local Sounds = MixinSharedMedia3("sound", {
 			{	text	= L.NoSound,			value	= "" },
-			{	text	= "Default",			value 	= "Sound\\Spells\\PVPFlagTaken.ogg", 		sound=true },
+			{	text	= "PvP Flag",			value 	= "Sound\\Spells\\PVPFlagTaken.ogg", 		sound=true },
 			{	text	= "Blizzard",			value 	= "Sound\\interface\\UI_RaidBossWhisperWarning.ogg", 		sound=true },
 			{	text	= "Beware!",			value 	= "Sound\\Creature\\AlgalonTheObserver\\UR_Algalon_BHole01.ogg", 		sound=true },
 			{	text	= "AirHorn",			value 	= "Interface\\AddOns\\DBM-Core\\sounds\\AirHorn.ogg", 		sound=true },
