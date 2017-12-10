@@ -16,7 +16,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 248165 248317 257296 255594 257645 252516 256542 255648 257619 255935",
 	"SPELL_CAST_SUCCESS 248499 258039 252729 252616 256388",
-	"SPELL_AURA_APPLIED 248499 248396 250669 251570 255199 253021 255496 255496 255478 252729 252616 255433 255430 255429 255425 255422 255419 255418 258647 258646",
+	"SPELL_AURA_APPLIED 248499 248396 250669 251570 255199 253021 255496 255496 255478 252729 252616 255433 255430 255429 255425 255422 255419 255418 258647 258646 257869 257931",
 	"SPELL_AURA_APPLIED_DOSE 248499 258039",
 	"SPELL_AURA_REMOVED 250669 251570 255199 253021 255496 255496 255478 252616 255433 255430 255429 255425 255422 255419 255418 258039",
 --	"SPELL_PERIODIC_DAMAGE",
@@ -32,10 +32,11 @@ mod:RegisterEventsInCombat(
 --TODO, taunt warning and icon setting when adds get blades, to help tank pickup?
 --TODO, info frame for stage 4 (and other stages maybe) to show realms, and other stats, energy of boss and eonar's aid
 --TODO, warnings when eonar transitions from gift to withering. other titan stuff?
+--TODO, http://www.wowhead.com/spell=246057/sargeras-blessing, http://www.wowhead.com/spell=257961/chains-of-sargeras, http://www.wowhead.com/spell=257966/sentence-of-sargeras
 --[[
 (ability.id = 256544 or ability.id = 255826 or ability.id = 248165 or ability.id = 248317 or ability.id = 257296 or ability.id = 255594 or ability.id = 252516 or ability.id = 255648 or ability.id = 257645 or ability.id = 256542 or ability.id = 257619 or ability.id = 255935) and type = "begincast"
  or (ability.id = 248499 or ability.id = 258039 or ability.id = 252729 or ability.id = 252616 or ability.id = 256388) and type = "cast"
- or (ability.id = 250669 or ability.id = 251570 or ability.id = 255199) and type = "applydebuff" or type = "interrupt" and target.id = 124828
+ or (ability.id = 250669 or ability.id = 251570 or ability.id = 255199 or ability.id = 257931 or ability.id = 257869) and type = "applydebuff" or type = "interrupt" and target.id = 124828
 --]]
 --Stage One: Storm and Sky
 local warnTorturedRage				= mod:NewCountAnnounce(257296, 2)
@@ -43,6 +44,9 @@ local warnSweepingScythe			= mod:NewStackAnnounce(248499, 2, nil, "Tank")
 local warnBlightOrb					= mod:NewSpellAnnounce(248317, 2)
 local warnSoulblight				= mod:NewTargetAnnounce(248396, 2, nil, false, 2)
 local warnSkyandSea					= mod:NewTargetAnnounce(255594, 1)
+--Stage one Mythic
+local warnSargRage					= mod:NewTargetAnnounce(257869, 3)
+local warnSargFear					= mod:NewTargetAnnounce(257931, 3)
 --Stage Two: The Protector Redeemed
 local warnPhase2					= mod:NewPhaseAnnounce(2, 2)
 local warnSoulburst					= mod:NewTargetAnnounce(250669, 2)
@@ -69,6 +73,11 @@ local specWarnGiftofSea				= mod:NewSpecialWarningYou(258647, nil, nil, nil, 1, 
 local yellGiftofSea					= mod:NewYell(258647)
 local specWarnGiftofSky				= mod:NewSpecialWarningYou(258646, nil, nil, nil, 1, 2)
 local yellGiftofSky					= mod:NewYell(258646)
+--Mythic P1
+local specWarnSargRage				= mod:NewSpecialWarningMoveAway(257869, nil, nil, nil, 3, 2)
+local yellSargRage					= mod:NewYell(257869)
+local specWarnSargFear				= mod:NewSpecialWarningMoveTo(257931, nil, nil, nil, 3, 2)
+local yellSargFear					= mod:NewYell(257931)
 --local yellBurstingDreadflame		= mod:NewPosYell(238430, DBM_CORE_AUTO_YELL_CUSTOM_POSITION)
 --local specWarnMalignantAnguish		= mod:NewSpecialWarningInterrupt(236597, "HasInterrupt")
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
@@ -98,10 +107,12 @@ local timerNextPhase				= mod:NewPhaseTimer(74)
 --Stage One: Storm and Sky
 mod:AddTimerLine(SCENARIO_STAGE:format(1))
 local timerSweepingScytheCD			= mod:NewCDTimer(5.6, 248499, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--5.6-15.7
-local timerConeofDeathCD			= mod:NewCDTimer(19.6, 248165, nil, nil, nil, 3)--19.6-24
+local timerConeofDeathCD			= mod:NewCDTimer(19.4, 248165, nil, nil, nil, 3)--19.4-24
 local timerBlightOrbCD				= mod:NewCDTimer(22, 248317, nil, nil, nil, 3)--22-32
 local timerTorturedRageCD			= mod:NewCDTimer(13, 257296, nil, nil, nil, 2, nil, DBM_CORE_HEALER_ICON)--13-16
-local timerSkyandSeaCD				= mod:NewCDTimer(25.6, 255594, nil, nil, nil, 5)--25.6-27.8
+local timerSkyandSeaCD				= mod:NewCDTimer(25.1, 255594, nil, nil, nil, 5)--25.1-27.8
+mod:AddTimerLine(ENCOUNTER_JOURNAL_SECTION_FLAG12)--Mythic Stage 1
+local timerSargGazeCD				= mod:NewCDTimer(35.2, 258068, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
 --Stage Two: The Protector Redeemed
 mod:AddTimerLine(SCENARIO_STAGE:format(2))
 local timerSoulBombCD				= mod:NewCDTimer(42, 251570, nil, nil, nil, 3, nil, DBM_CORE_TANK_ICON)
@@ -137,6 +148,8 @@ local voiceConeofDeath				= mod:NewVoice(248165)--aesoon
 local voiceSoulblight				= mod:NewVoice(248396)--runout
 local voiceGiftofSea				= mod:NewVoice(258647)--targetyou
 local voiceGiftofSky				= mod:NewVoice(258646)--targetyou
+local voiceSargRage					= mod:NewVoice(257869)--scatter
+local voiceSargFear					= mod:NewVoice(257931)--gathershare
 --local voiceMalignantAnguish		= mod:NewVoice(236597, "HasInterrupt")--kickcast
 --local voiceGTFO					= mod:NewVoice(238028, nil, DBM_CORE_AUTO_VOICE4_OPTION_TEXT)--runaway
 --Stage Two: The Protector Redeemed
@@ -221,9 +234,11 @@ function mod:OnCombatStart(delay)
 	timerTorturedRageCD:Start(12-delay)
 	timerConeofDeathCD:Start(30.3-delay)
 	timerBlightOrbCD:Start(35.2-delay)
-	--berserkTimer:Start(-delay)
+	if self:IsMythic() then
+		timerSargGazeCD:Start(8.5-delay)
+	end
 	if self.Options.InfoFrame then
-		DBM.InfoFrame:SetHeader(_G["7.3_ARGUS_RAID_DEATH_TITAN_ENERGY"])--Validator won't accept this global so disabled for now
+		DBM.InfoFrame:SetHeader(_G["7.3_ARGUS_RAID_DEATH_TITAN_ENERGY"])
 		DBM.InfoFrame:Show(2, "enemypower", 2)
 		--DBM.InfoFrame:Show(7, "function", updateInfoFrame, false, false)
 	end
@@ -274,6 +289,7 @@ function mod:SPELL_CAST_START(args)
 		timerTorturedRageCD:Stop()
 		timerSweepingScytheCD:Stop()
 		timerSkyandSeaCD:Stop()
+		timerSargGazeCD:Stop()
 		timerNextPhase:Start(16)
 		timerSweepingScytheCD:Start(17.3)
 		--timerTorturedRageCD:Start(2)--No longer used in P2?
@@ -499,6 +515,20 @@ function mod:SPELL_AURA_APPLIED(args)
 				self:ScanForMobs(args.destGUID, 2, 7, 1, 0.2, 15)
 			end
 		end
+	elseif spellId == 257869 then
+		warnSargRage:CombinedShow(0.3, args.destName)
+		if args:IsPlayer() then
+			specWarnSargRage:Show()
+			voiceSargRage:Play("scatter")
+			yellSargRage:Yell()
+		end
+	elseif spellId == 257931 then
+		warnSargFear:CombinedShow(0.3, args.destName)
+		if args:IsPlayer() then
+			specWarnSargFear:Show(DBM_ALLY)
+			voiceSargFear:Play("gathershare")
+			yellSargFear:Yell()
+		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -620,6 +650,15 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, _, spellId)
 		timerSoulBombCD:Start(100.7)
 		countdownSoulbomb:Start(100.7)
 	elseif spellId == 258104 then--Argus Mythic Transform
-		
+		--Might be redundant, but adding here for now just in case temporal blast doesn't fire
+		timerSweepingScytheCD:Stop()
+		timerTorturedRageCD:Stop()
+		timerSoulBombCD:Stop()
+		countdownSoulbomb:Cancel()
+		timerSoulBurstCD:Stop()
+		timerEdgeofObliterationCD:Stop()
+		timerAvatarofAggraCD:Stop()
+	elseif spellId == 258068 then--Sargeras' Gaze
+		timerSargGazeCD:Start()
 	end
 end

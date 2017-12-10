@@ -61,7 +61,7 @@ local timerTormentofFrostCD				= mod:NewNextTimer(61, 243976, nil, nil, nil, 6)
 local timerTormentofFelCD				= mod:NewNextTimer(61, 243979, nil, nil, nil, 6)
 local timerTormentofShadowsCD			= mod:NewNextTimer(61, 243974, nil, nil, nil, 6)
 --The Fallen Nathrezim
-local timerShadowStrikeCD				= mod:NewCDTimer(9, 243960, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--9-14
+local timerShadowStrikeCD				= mod:NewCDTimer(9, 243960, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--9-14 (most of time it's 9.7 or more, but sometimes it's 9.0-9.4 so 9.0 has to be used
 local timerDarkFissureCD				= mod:NewCDTimer(32, 243999, nil, nil, nil, 3)--32-33
 local timerMarkedPreyCD					= mod:NewCDTimer(30.3, 244042, nil, nil, nil, 3)
 local timerNecroticEmbraceCD			= mod:NewCDTimer(30.3, 244093, nil, nil, nil, 3)
@@ -137,7 +137,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if spellId == 243960 or spellId == 257644 then--257644 LFR shadow strike
 		warnShadowStrike:Show()
 		timerShadowStrikeCD:Show()
-		countdownShadowStrike:Start(9.7)
+		countdownShadowStrike:Start(9)
 	elseif spellId == 244093 then--Necrotic Embrace Cast
 		timerNecroticEmbraceCD:Start()
 		countdownNecroticEmbrace:Start(30.3)
