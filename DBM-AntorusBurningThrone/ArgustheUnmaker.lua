@@ -15,7 +15,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 248165 248317 257296 255594 257645 252516 256542 255648 257619 255935",
-	"SPELL_CAST_SUCCESS 248499 258039 252729 252616 256388",
+	"SPELL_CAST_SUCCESS 248499 258039 258838 252729 252616 256388",
 	"SPELL_AURA_APPLIED 248499 248396 250669 251570 255199 253021 255496 255496 255478 252729 252616 255433 255430 255429 255425 255422 255419 255418 258647 258646 257869 257931",
 	"SPELL_AURA_APPLIED_DOSE 248499 258039",
 	"SPELL_AURA_REMOVED 250669 251570 255199 253021 255496 255496 255478 252616 255433 255430 255429 255425 255422 255419 255418 258039",
@@ -35,7 +35,7 @@ mod:RegisterEventsInCombat(
 --TODO, http://www.wowhead.com/spell=246057/sargeras-blessing, http://www.wowhead.com/spell=257961/chains-of-sargeras, http://www.wowhead.com/spell=257966/sentence-of-sargeras
 --[[
 (ability.id = 256544 or ability.id = 255826 or ability.id = 248165 or ability.id = 248317 or ability.id = 257296 or ability.id = 255594 or ability.id = 252516 or ability.id = 255648 or ability.id = 257645 or ability.id = 256542 or ability.id = 257619 or ability.id = 255935) and type = "begincast"
- or (ability.id = 248499 or ability.id = 258039 or ability.id = 252729 or ability.id = 252616 or ability.id = 256388) and type = "cast"
+ or (ability.id = 248499 or ability.id = 258039 or ability.id = 252729 or ability.id = 252616 or ability.id = 256388 or ability.id = 258838) and type = "cast"
  or (ability.id = 250669 or ability.id = 251570 or ability.id = 255199 or ability.id = 257931 or ability.id = 257869) and type = "applydebuff" or type = "interrupt" and target.id = 124828
 --]]
 --Stage One: Storm and Sky
@@ -63,7 +63,6 @@ local warnPhase4					= mod:NewPhaseAnnounce(4, 2)
 local warnDeadlyScythe				= mod:NewStackAnnounce(258039, 2, nil, "Tank")
 
 --Stage One: Storm and Sky
---local specWarnTorturedRage			= mod:NewSpecialWarningCount(257296, nil, nil, nil, 2, 2)
 local specWarnSweepingScythe		= mod:NewSpecialWarningStack(248499, nil, 3, nil, nil, 1, 6)
 local specWarnSweepingScytheTaunt	= mod:NewSpecialWarningTaunt(248499, nil, nil, nil, 1, 2)
 local specWarnConeofDeath			= mod:NewSpecialWarningDodge(248165, nil, nil, nil, 1, 2)
@@ -117,7 +116,7 @@ local timerSargGazeCD				= mod:NewCDTimer(35.2, 258068, nil, nil, nil, 3, nil, D
 mod:AddTimerLine(SCENARIO_STAGE:format(2))
 local timerSoulBombCD				= mod:NewCDTimer(42, 251570, nil, nil, nil, 3, nil, DBM_CORE_TANK_ICON)
 local timerSoulBurstCD				= mod:NewCDCountTimer("d42", 250669, nil, nil, nil, 3)
-local timerEdgeofObliterationCD		= mod:NewCDTimer(30.5, 255826, nil, nil, nil, 2)
+local timerEdgeofObliterationCD		= mod:NewCDTimer(34, 255826, nil, nil, nil, 2)
 local timerAvatarofAggraCD			= mod:NewCDTimer(59.9, 255199, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
 --Stage Three: The Arcane Masters
 mod:AddTimerLine(SCENARIO_STAGE:format(3))
@@ -126,6 +125,8 @@ local timerCosmicBeaconCD			= mod:NewCDTimer(19.9, 252616, nil, nil, nil, 3)--Al
 --local timerCosmicPowerCD			= mod:NewCDTimer(19.9, 255935, nil, nil, nil, 3)--All adds seem to cast it at same time, so one timer for all
 local timerDiscsofNorgCD			= mod:NewCDTimer(12, 252516, nil, nil, nil, 6)
 local timerDiscsofNorg				= mod:NewCastTimer(12, 252516, nil, nil, nil, 6)
+mod:AddTimerLine(ENCOUNTER_JOURNAL_SECTION_FLAG12)--Mythic 3
+local timerSouldrendingScytheCD		= mod:NewAITimer(5.6, 258838, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 --Stage Four: The Gift of Life, The Forge of Loss (Non Mythic)
 mod:AddTimerLine(SCENARIO_STAGE:format(4))
 local timerDeadlyScytheCD			= mod:NewCDTimer(5.5, 258039, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
@@ -298,6 +299,9 @@ function mod:SPELL_CAST_START(args)
 		timerSoulBombCD:Start(30.8)
 		countdownSoulbomb:Start(30.8)
 		timerSoulBurstCD:Start(30.8, 1)
+		if self:IsMythic() then
+			timerSargGazeCD:Start(28.4)
+		end
 	elseif spellId == 257645 then--Temporal Blast (Stage 3)
 		self.vb.phase = 3
 		warnPhase3:Show()
@@ -335,6 +339,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 258039 then
 		timerDeadlyScytheCD:Start()
 		countdownDeadlyScythe:Start(5.5)
+	elseif spellId == 258838 then--Mythic Scythe
+		timerSouldrendingScytheCD:Start()
 	elseif spellId == 255826 then
 		specWarnEdgeofObliteration:Show()
 		voiceEdgeofObliteration:Play("watchstep")
@@ -659,6 +665,10 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, _, spellId)
 		timerEdgeofObliterationCD:Stop()
 		timerAvatarofAggraCD:Stop()
 	elseif spellId == 258068 then--Sargeras' Gaze
-		timerSargGazeCD:Start()
+		if self.vb.phase == 2 then
+			timerSargGazeCD:Start(60)
+		else
+			timerSargGazeCD:Start(35.2)
+		end
 	end
 end
