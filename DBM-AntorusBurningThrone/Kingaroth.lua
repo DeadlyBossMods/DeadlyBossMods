@@ -8,6 +8,7 @@ mod:SetZone()
 --mod:SetBossHPInfoToHighest()
 mod:SetUsedIcons(1, 2, 3)
 mod:SetHotfixNoticeRev(16945)
+mod:SetMinSyncRevision(16975)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
@@ -270,11 +271,11 @@ function mod:SPELL_CAST_START(args)
 		countdownForgingStrike:Cancel()
 		countdownRuiner:Cancel()
 		if self.Options.UseAddTime then
-			timerForgingStrikeCD:AddTime(42.3)
-			countdownForgingStrike:Start(self.vb.forgingTimeLeft+42.3)
-			timerReverberatingStrikeCD:AddTime(42.3)
-			timerRuinerCD:AddTime(42.3)
+			timerRuinerCD:AddTime(42.3, self.vb.ruinerCast+1)
 			countdownRuiner:Start(self.vb.ruinerTimeLeft+42.3)
+			timerReverberatingStrikeCD:AddTime(42.3, self.vb.reverbStrikeCast+1)
+			timerForgingStrikeCD:AddTime(42.3, self.vb.forgingStrikeCast+1)
+			countdownForgingStrike:Start(self.vb.forgingTimeLeft+42.3)
 		else--times are stored in variables so can stop timers now
 			timerForgingStrikeCD:Stop()
 			timerReverberatingStrikeCD:Stop()
@@ -368,9 +369,6 @@ function mod:SPELL_AURA_REMOVED(args)
 			--yellDecimation:Cancel()
 		end
 	elseif spellId == 246516 then--Apocolypse Protocol
-		self.vb.ruinerCast = 0
-		self.vb.forgingStrikeCast = 0
-		self.vb.reverbStrikeCast = 0
 		self.vb.apocProtoCount = self.vb.apocProtoCount + 1
 		if self.vb.apocProtoCount % 2 == 1 then
 			DBM:Debug("Reverb first", 2)
@@ -379,15 +377,15 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 		if not self.Options.UseAddTime then
 			--Restore timers with stored times
-			if self.vb.reverbTimeLeft > 0 then
-				timerReverberatingStrikeCD:Start(self.vb.reverbTimeLeft-1, 1)
-			end
 			if self.vb.ruinerTimeLeft > 0 then
-				timerRuinerCD:Start(self.vb.ruinerTimeLeft, 1)
+				timerRuinerCD:Start(self.vb.ruinerTimeLeft, self.vb.ruinerCast+1)
 				countdownRuiner:Start(self.vb.ruinerTimeLeft)
 			end
+			if self.vb.reverbTimeLeft > 0 then
+				timerReverberatingStrikeCD:Start(self.vb.reverbTimeLeft-1, self.vb.reverbStrikeCast+1)
+			end
 			if self.vb.forgingTimeLeft > 0 then
-				timerForgingStrikeCD:Start(self.vb.forgingTimeLeft, 1)
+				timerForgingStrikeCD:Start(self.vb.forgingTimeLeft, self.vb.forgingStrikeCast+1)
 				countdownForgingStrike:Start(self.vb.forgingTimeLeft)
 			end
 		end
