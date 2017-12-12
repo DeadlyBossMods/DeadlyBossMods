@@ -78,7 +78,7 @@ local timerReverberatingStrikeCD		= mod:NewCDCountTimer(28, 254926, nil, nil, ni
 local timerRuinerCD						= mod:NewCDCountTimer(29.1, 246840, nil, nil, nil, 3)
 --local timerShatteringStrikeCD			= mod:NewCDTimer(30, 248375, nil, nil, nil, 2)
 local timerApocProtocolCD				= mod:NewCDCountTimer(77, 246516, nil, nil, nil, 6)
-local timerApocProtocol					= mod:NewCastTimer(30, 246504, nil, nil, nil, 6)
+local timerInitializing					= mod:NewCastTimer(30, 246504, nil, nil, nil, 6)
 --Stage: Construction
 --local timerCleansingProtocolCD		= mod:NewAITimer(30, 248061, nil, nil, nil, 6)
 --Reavers (or empowered boss from reaver deaths)
@@ -285,7 +285,11 @@ function mod:SPELL_CAST_START(args)
 		--timerShatteringStrikeCD:Stop()
 		specWarnInitializing:Show()
 		voiceInitializing:Play("killmob")
-		timerApocProtocol:Start(42.3)
+		if self:IsLFR() then
+			timerInitializing:Start(42.3)
+		else
+			timerInitializing:Start(32.3)
+		end
 	end
 end
 
