@@ -16,9 +16,9 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 244312 254926 245807 252758 246692 246833 246516 257978 254919",
 	"SPELL_CAST_SUCCESS 252758 246692",
-	"SPELL_AURA_APPLIED 254919 257978 244410 245770 246687 252797 246698 252760",
-	"SPELL_AURA_APPLIED_DOSE 257978",
-	"SPELL_AURA_REMOVED 244410 245770 246687 252797 246516 246698 252760",
+	"SPELL_AURA_APPLIED 254919 257978 246687 249680 246698 252760",
+	"SPELL_AURA_APPLIED_DOSE 254919 257978",
+	"SPELL_AURA_REMOVED 246687 249680 246516 246698 252760",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 	"UNIT_DIED",
@@ -47,7 +47,7 @@ local warnShatteringStrike				= mod:NewSpellAnnounce(248375, 2)
 local warnDiabolicBomb					= mod:NewSpellAnnounce(246779, 3)
 local warnReverberatingStrike			= mod:NewTargetAnnounce(246692, 3)
 --Reavers (or empowered boss from reaver deaths)
---local warnDecimation					= mod:NewTargetAnnounce(244410, 4)
+local warnDecimation					= mod:NewTargetAnnounce(246687, 4)
 local warnDemolish						= mod:NewTargetAnnounce(246692, 4)
 
 --Stage: Deployment
@@ -63,8 +63,8 @@ local specWarnRuiner					= mod:NewSpecialWarningDodge(246840, nil, nil, nil, 3, 
 --Stage: Construction
 local specWarnInitializing				= mod:NewSpecialWarningSwitch(246504, nil, nil, nil, 1, 2)
 --Reavers (or empowered boss from reaver deaths)
-local specWarnDecimation				= mod:NewSpecialWarningSpell(244410, nil, nil, nil, 1, 2)
---local yellDecimation					= mod:NewShortFadesYell(244410)
+local specWarnDecimation				= mod:NewSpecialWarningMoveAway(246687, nil, nil, nil, 1, 2)
+local yellDecimation					= mod:NewShortFadesYell(246687)
 local specWarnAnnihilation				= mod:NewSpecialWarningSpell(245807, nil, nil, nil, 2, 2)
 local specWarnDemolish					= mod:NewSpecialWarningYou(246692, nil, nil, nil, 1, 2)
 local specWarnDemolishOther				= mod:NewSpecialWarningMoveTo(246692, nil, nil, nil, 1, 2)
@@ -82,7 +82,7 @@ local timerInitializing					= mod:NewCastTimer(30, 246504, nil, nil, nil, 6)
 --Stage: Construction
 --local timerCleansingProtocolCD		= mod:NewAITimer(30, 248061, nil, nil, nil, 6)
 --Reavers (or empowered boss from reaver deaths)
-local timerDecimationCD					= mod:NewCDTimer(15.1, 244410, nil, nil, nil, 3)
+local timerDecimationCD					= mod:NewCDTimer(15.1, 246687, nil, nil, nil, 3)
 local timerAnnihilationCD				= mod:NewCDTimer(15.4, 245807, nil, nil, nil, 3)
 local timerDemolishCD					= mod:NewCDTimer(15.8, 246692, nil, nil, nil, 3)
 
@@ -101,7 +101,7 @@ local voiceReverberatingStrike			= mod:NewVoice(254926)--watchstep
 local voiceRuiner						= mod:NewVoice(246840)--farfromline (iffy) Maybe when it's not INVISIBLE I'll have better idea how to describe it
 local voiceInitializing					= mod:NewVoice(246504)--killmob
 --Reavers (or empowered boss from reaver deaths)
-local voiceDecimation					= mod:NewVoice(244410)--scatter
+local voiceDecimation					= mod:NewVoice(246687)--scatter
 local voiceAnnihilation					= mod:NewVoice(245807)--helpsoak
 local voiceDemolish						= mod:NewVoice(246692)--gathershare/targetyou
 
@@ -331,15 +331,17 @@ function mod:SPELL_AURA_APPLIED(args)
 				end
 			end
 		end
---[[	elseif (spellId == 244410 or spellId == 245770 or spellId == 246687 or spellId == 252797) and args:IsDestTypePlayer() then--244410 3 seconds, rest 5, for good measure, just pulling duration from UnitDebuff()
+	elseif spellId == 246687 or spellId == 249680 then
 		warnDecimation:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			specWarnDecimation:Show()
 			voiceDecimation:Play("runout")
 			local _, _, _, _, _, _, expires = UnitDebuff("player", args.spellName)
-			local remaining = expires-GetTime()
-			yellDecimation:Countdown(remaining)
-		end--]]
+			if expires then
+				local remaining = expires-GetTime()
+				yellDecimation:Countdown(remaining)
+			end
+		end
 	elseif spellId == 246698 or spellId == 252760 then
 		if not tContains(DemolishTargets, args.destName) then
 			DemolishTargets[#DemolishTargets+1] = args.destName
@@ -368,9 +370,9 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
-	if (spellId == 244410 or spellId == 245770 or spellId == 246687 or spellId == 252797) and args:IsDestTypePlayer() then
+	if spellId == 246687 or spellId == 249680 then
 		if args:IsPlayer() then
-			--yellDecimation:Cancel()
+			yellDecimation:Cancel()
 		end
 	elseif spellId == 246516 then--Apocolypse Protocol
 		self.vb.apocProtoCount = self.vb.apocProtoCount + 1
@@ -474,8 +476,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	elseif spellId == 248319 then--Consume Energy 100% (reaver fully charged and activated)
 		--Info Frame usage situation?
 	elseif spellId == 246686 then--Decimation (ignore 246691 I'm pretty sure)
-		specWarnDecimation:Show()
-		voiceDecimation:Play("scatter")
+		--specWarnDecimation:Show()
+		--voiceDecimation:Play("scatter")
 		timerDecimationCD:Start(nil, UnitGUID(uId))
 	elseif spellId == 246657 then--Annihilation
 		specWarnAnnihilation:Show()
