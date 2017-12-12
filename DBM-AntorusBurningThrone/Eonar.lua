@@ -47,7 +47,7 @@ local warnLifeForce						= mod:NewCountAnnounce(250048, 1)
 local specWarnMeteorStorm				= mod:NewSpecialWarningDodge(248333, nil, nil, nil, 2, 2)
 local specWarnSpearofDoom				= mod:NewSpecialWarningDodge(248789, nil, nil, nil, 2, 2)
 --local yellSpearofDoom					= mod:NewYell(248789)
-local specWarnRainofFel					= mod:NewSpecialWarningMoveAway(248332, nil, nil, nil, 1, 2)
+local specWarnRainofFel					= mod:NewSpecialWarningMoveAway(248332, nil, nil, 2, 1, 2)
 local yellRainofFel						= mod:NewYell(248332)
 local yellRainofFelFades				= mod:NewShortFadesYell(248332)
 --Adds
