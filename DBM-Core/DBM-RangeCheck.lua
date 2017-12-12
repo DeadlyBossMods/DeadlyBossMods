@@ -709,7 +709,7 @@ end)
 -----------------------
 --  Check functions  --
 -----------------------
-local getDistanceBetween
+local getDistanceBetween, getDistanceBetweenALL
 do
 	local function itsBCAgain(uId)
 		if IsItemInRange(37727, uId) then return 5
@@ -726,7 +726,37 @@ do
 		elseif IsItemInRange(35278, uId) then return 80
 		else return 1000 end--Just so it has a numeric value, even if it's unknown to protect from nil errors
 	end
-	--TODO, add some check in 7.1 to return before calling UnitPosition, if in restricted area.
+	
+	function getDistanceBetweenALL(range)
+		for uId in DBM:GetGroupMembers() do
+			if UnitExists(uId) and not UnitIsUnit(uId, "player") and not UnitIsDeadOrGhost(uId) and UnitIsConnected(uId) and UnitInPhase(uId) then
+				if DBM:HasMapRestrictions() then--API restrictions are in play, so pretend we're back in BC
+					--Start at bottom and work way up.
+					--Definitely not most efficient way of doing it. Refactor later when 7.1 hits PTR
+					if IsItemInRange(37727, uId) then range = 5--Ruby Acorn
+					elseif IsItemInRange(63427, uId) then range = 8--Worgsaw
+					elseif CheckInteractDistance(uId, 3) then range = 10
+					elseif CheckInteractDistance(uId, 2) then range = 11
+					elseif IsItemInRange(32321, uId) then range = 13--reports 12 but actual range tested is 13
+					elseif IsItemInRange(6450, uId) then range = 18--Bandages. (despite popular sites saying it's 15 yards, it's actually 18 yards verified by UnitDistanceSquared
+					elseif IsItemInRange(21519, uId) then range = 22--Item says 20, returns true until 22.
+					elseif CheckInteractDistance(uId, 1) then range = 30
+					elseif UnitInRange(uId) then range = 43
+					elseif IsItemInRange(116139, uId)  then range = 50
+					elseif IsItemInRange(32825, uId) then range = 60
+					elseif IsItemInRange(35278, uId) then range = 80
+					else range = 1000 end--Just so it has a numeric value, even if it's unknown to protect from nil errors
+				else
+					range = UnitDistanceSquared(uId) ^ 0.5
+				end
+				if range < (activeRange+0.5) then
+					return true--return and end once anyone found
+				end
+			end
+		end
+		return false--No one was foundi nrnage
+	end
+	
 	function getDistanceBetween(uId, x, y)
 		local restrictionsActive = DBM:HasMapRestrictions()
 		if not x then--If only one arg then 2nd arg is always assumed to be player
@@ -884,4 +914,8 @@ end
 -- GetDistance(uId, uId2) -- distance between the two uIds
 function rangeCheck:GetDistance(...)
 	return getDistanceBetween(...)
+end
+
+function rangeCheck:GetDistanceAll(...)
+	return getDistanceBetweenALL(...)
 end
