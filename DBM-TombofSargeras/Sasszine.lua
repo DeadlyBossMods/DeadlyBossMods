@@ -117,13 +117,6 @@ local hydraIcons = {}
 local eventsRegistered = false
 local p3MythicCrashingWave = {30.9, 30.9, 40.6, 35.8, 30.9}--All minus 2 because timer starts at SUCCESS but is for START
 
---/run DBM:GetModByName("1861"):TestHydraShot(1)
-function mod:TestHydraShot(icon)
-	specWarnHydraShot:Show(self:IconNumToTexture(icon))
-	yellHydraShot:Yell(icon, "Hydra Shot", icon)
-	yellHydraShotFades:Countdown(5, 4, icon)
-end
-
 function mod:OnCombatStart(delay)
 	self.vb.phase = 1
 	self.vb.crashingWaveCount = 0
