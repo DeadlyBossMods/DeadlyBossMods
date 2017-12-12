@@ -114,13 +114,6 @@ mod.vb.phase = 1
 mod.vb.shrapnalCast = 0
 local mythicP5ShrapnalTimers = {15, 15.8, 14.5, 12, 10}
 
---/run DBM:GetModByName("1861"):Test(10)
-function mod:Test(range)
-	if self:CheckNearby(range or 10) then
-		yellSlumberGas:Yell()
-	end
-end
-
 function mod:OnCombatStart(delay)
 	self.vb.phase = 1
 	self.vb.shrapnalCast = 0
