@@ -727,29 +727,16 @@ do
 		else return 1000 end--Just so it has a numeric value, even if it's unknown to protect from nil errors
 	end
 	
-	function getDistanceBetweenALL(range)
+	function getDistanceBetweenALL(checkrange)
+		local range = 1000
 		for uId in DBM:GetGroupMembers() do
 			if UnitExists(uId) and not UnitIsUnit(uId, "player") and not UnitIsDeadOrGhost(uId) and UnitIsConnected(uId) and UnitInPhase(uId) then
 				if DBM:HasMapRestrictions() then--API restrictions are in play, so pretend we're back in BC
-					--Start at bottom and work way up.
-					--Definitely not most efficient way of doing it. Refactor later when 7.1 hits PTR
-					if IsItemInRange(37727, uId) then range = 5--Ruby Acorn
-					elseif IsItemInRange(63427, uId) then range = 8--Worgsaw
-					elseif CheckInteractDistance(uId, 3) then range = 10
-					elseif CheckInteractDistance(uId, 2) then range = 11
-					elseif IsItemInRange(32321, uId) then range = 13--reports 12 but actual range tested is 13
-					elseif IsItemInRange(6450, uId) then range = 18--Bandages. (despite popular sites saying it's 15 yards, it's actually 18 yards verified by UnitDistanceSquared
-					elseif IsItemInRange(21519, uId) then range = 22--Item says 20, returns true until 22.
-					elseif CheckInteractDistance(uId, 1) then range = 30
-					elseif UnitInRange(uId) then range = 43
-					elseif IsItemInRange(116139, uId)  then range = 50
-					elseif IsItemInRange(32825, uId) then range = 60
-					elseif IsItemInRange(35278, uId) then range = 80
-					else range = 1000 end--Just so it has a numeric value, even if it's unknown to protect from nil errors
+					range = itsBCAgain(uId)
 				else
 					range = UnitDistanceSquared(uId) ^ 0.5
 				end
-				if range < (activeRange+0.5) then
+				if checkrange < (range+0.5) then
 					return true--return and end once anyone found
 				end
 			end
