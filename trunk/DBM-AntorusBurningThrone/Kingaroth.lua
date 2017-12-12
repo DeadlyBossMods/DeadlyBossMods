@@ -106,6 +106,7 @@ local voiceDemolish						= mod:NewVoice(246692)--gathershare/targetyou
 
 mod:AddSetIconOption("SetIconOnDemolish", 246692, true)
 mod:AddBoolOption("InfoFrame", true)
+mod:AddBoolOption("UseAddTime", true)
 mod:AddRangeFrameOption(5, 254926)--?
 
 mod.vb.ruinerCast = 0
@@ -266,20 +267,24 @@ function mod:SPELL_CAST_START(args)
 		self.vb.ruinerTimeLeft = timerRuinerCD:GetRemaining(self.vb.ruinerCast+1)
 		self.vb.reverbTimeLeft = timerReverberatingStrikeCD:GetRemaining(self.vb.reverbStrikeCast+1)
 		self.vb.forgingTimeLeft = timerForgingStrikeCD:GetRemaining(self.vb.forgingStrikeCast+1)
-		timerForgingStrikeCD:Stop()
 		countdownForgingStrike:Cancel()
-		timerReverberatingStrikeCD:Stop()
-		timerRuinerCD:Stop()
 		countdownRuiner:Cancel()
+		if self.Options.UseAddTime then
+			timerForgingStrikeCD:AddTime(42.3)
+			countdownForgingStrike:Start(self.vb.forgingTimeLeft+42.3)
+			timerReverberatingStrikeCD:AddTime(42.3)
+			timerRuinerCD:AddTime(42.3)
+			countdownRuiner:Start(self.vb.ruinerTimeLeft+42.3)
+		else--times are stored in variables so can stop timers now
+			timerForgingStrikeCD:Stop()
+			timerReverberatingStrikeCD:Stop()
+			timerRuinerCD:Stop()
+		end
 		--timerDiabolicBombCD:Stop()
 		--timerShatteringStrikeCD:Stop()
 		specWarnInitializing:Show()
 		voiceInitializing:Play("killmob")
-		if self:IsLFR() then
-			timerApocProtocol:Start(42)
-		else
-			timerApocProtocol:Start()--30
-		end
+		timerApocProtocol:Start(42.3)
 	end
 end
 
@@ -372,16 +377,19 @@ function mod:SPELL_AURA_REMOVED(args)
 		else
 			DBM:Debug("Ruiner first", 2)
 		end
-		if self.vb.reverbTimeLeft > 0 then
-			timerReverberatingStrikeCD:Start(self.vb.reverbTimeLeft-1, 1)
-		end
-		if self.vb.ruinerTimeLeft > 0 then
-			timerRuinerCD:Start(self.vb.ruinerTimeLeft, 1)
-			countdownRuiner:Start(self.vb.ruinerTimeLeft)
-		end
-		if self.vb.forgingTimeLeft > 0 then
-			timerForgingStrikeCD:Start(self.vb.forgingTimeLeft, 1)
-			countdownForgingStrike:Start(self.vb.forgingTimeLeft)
+		if not self.Options.UseAddTime then
+			--Restore timers with stored times
+			if self.vb.reverbTimeLeft > 0 then
+				timerReverberatingStrikeCD:Start(self.vb.reverbTimeLeft-1, 1)
+			end
+			if self.vb.ruinerTimeLeft > 0 then
+				timerRuinerCD:Start(self.vb.ruinerTimeLeft, 1)
+				countdownRuiner:Start(self.vb.ruinerTimeLeft)
+			end
+			if self.vb.forgingTimeLeft > 0 then
+				timerForgingStrikeCD:Start(self.vb.forgingTimeLeft, 1)
+				countdownForgingStrike:Start(self.vb.forgingTimeLeft)
+			end
 		end
 		--timerDiabolicBombCD:Start(2)
 		--timerShatteringStrikeCD:Start(42)
