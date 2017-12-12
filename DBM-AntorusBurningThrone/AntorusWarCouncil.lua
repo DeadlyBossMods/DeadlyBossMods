@@ -53,7 +53,7 @@ local warnSummonReinforcements			= mod:NewSpellAnnounce(245546, 2, nil, false, 2
 local warnDemonicCharge					= mod:NewTargetAnnounce(253040, 2, nil, false, 2)
 --Out of Pod
 ----Admiral Svirax
-local warnShockGrenade					= mod:NewTargetAnnounce(244737, 3)
+local warnShockGrenade					= mod:NewTargetAnnounce(244737, 3, nil, false, 2)
 ----Chief Engineer Ishkar
 
 --General
