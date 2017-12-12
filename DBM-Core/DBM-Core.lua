@@ -7257,11 +7257,15 @@ do
 end
 
 function bossModPrototype:CheckNearby(range, targetname)
-	local uId = DBM:GetRaidUnitId(targetname)
-	if uId and not UnitIsUnit("player", uId) then
-		local inRange = DBM.RangeCheck:GetDistance(uId)
-		if inRange and inRange < range then
-			return true
+	if not targetname and DBM.RangeCheck:GetDistanceAll(range) then
+		return true--No target name means check if anyone is near self, period
+	else
+		local uId = DBM:GetRaidUnitId(targetname)
+		if uId and not UnitIsUnit("player", uId) then
+			local inRange = DBM.RangeCheck:GetDistance(uId)
+			if inRange and inRange < range then
+				return true
+			end
 		end
 	end
 	return false

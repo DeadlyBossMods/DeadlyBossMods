@@ -15,7 +15,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 247376 247923 248068 248070 248254",
 	"SPELL_CAST_SUCCESS 247367 247552 247687 250255 254244",
-	"SPELL_AURA_APPLIED 247367 247552 247565 247687 250255 250006",
+	"SPELL_AURA_APPLIED 247367 247552 247565 247687 250255 250006 247641",
 	"SPELL_AURA_APPLIED_DOSE 247367 247687 250255",
 	"SPELL_AURA_REMOVED 248233 250135 250006",
 --	"SPELL_PERIODIC_DAMAGE",
@@ -54,8 +54,10 @@ local warnPhase5						= mod:NewPhaseAnnounce(5, 2)
 local specWarnShocklance				= mod:NewSpecialWarningTaunt(247367, nil, nil, nil, 1, 2)
 local specWarnSleepCanister				= mod:NewSpecialWarningYou(247552, nil, nil, nil, 1, 2)
 local yellSleepCanister					= mod:NewYell(247552)
+local yellSlumberGas					= mod:NewYell(247565, L.DispelMe, false)--Auto yell when safe to dispel (no players within 10 yards)
 local specWarnSleepCanisterNear			= mod:NewSpecialWarningClose(247552, nil, nil, nil, 1, 2)
 local specWarnPulseGrenade				= mod:NewSpecialWarningDodge(247376, nil, nil, nil, 1, 2)
+local yellStasisTrap					= mod:NewYell(247641, L.DispelMe)
 --Stage Two: Contract to Kill
 local specWarnSever						= mod:NewSpecialWarningTaunt(247687, nil, nil, nil, 1, 2)
 local specWarnChargedBlastsUnknown		= mod:NewSpecialWarningSpell(247716, nil, nil, nil, 2, 2)
@@ -289,6 +291,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 247565 then
 		warnSlumberGas:CombinedShow(0.3, args.destName)
+		if args:IsPlayer() and not self:CheckNearby(10) then
+			yellSlumberGas:Yell()
+		end
 	elseif spellId == 250006 then
 		warnEmpoweredPulseGrenade:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
@@ -299,6 +304,8 @@ function mod:SPELL_AURA_APPLIED(args)
 				DBM.RangeCheck:Show(5)
 			end
 		end
+	elseif spellId == 247641 and args:IsPlayer() and self:IsTank() then
+		yellStasisTrap:Yell()
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
