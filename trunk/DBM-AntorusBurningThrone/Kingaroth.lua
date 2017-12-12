@@ -42,7 +42,6 @@ mod:RegisterEventsInCombat(
  or (ability.id = 246516 or ability.id = 246698 or ability.id = 252760) and (type = "removebuff" or type = "removedebuff")
 --]]
 --Stage: Deployment
---local warnRuiner						= mod:NewTargetAnnounce(246840, 3)
 local warnShatteringStrike				= mod:NewSpellAnnounce(248375, 2)
 local warnDiabolicBomb					= mod:NewSpellAnnounce(246779, 3)
 local warnReverberatingStrike			= mod:NewTargetAnnounce(246692, 3)
@@ -59,7 +58,6 @@ local yellReverberatingStrike			= mod:NewYell(254926)
 local specWarnReverberatingStrikeNear	= mod:NewSpecialWarningClose(254926, nil, nil, nil, 1, 2)
 --local specWarnDiabolicBomb				= mod:NewSpecialWarningDodge(246779, nil, nil, nil, 2, 2)
 local specWarnRuiner					= mod:NewSpecialWarningDodge(246840, nil, nil, nil, 3, 2)
---local yellRuiner						= mod:NewPosYell(246840)
 --Stage: Construction
 local specWarnInitializing				= mod:NewSpecialWarningSwitch(246504, nil, nil, nil, 1, 2)
 --Reavers (or empowered boss from reaver deaths)
@@ -257,7 +255,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.ruinerCast = self.vb.ruinerCast + 1
 		specWarnRuiner:Show()
 		voiceRuiner:Play("farfromline")
-		voiceRuiner:Schedule(1, "keepmove")
+		voiceRuiner:Schedule(1.5, "keepmove")
 		timerRuinerCD:Start(nil, self.vb.ruinerCast+1)--28-30 depending on difficulty
 		countdownRuiner:Start(29.1)
 		timerForgingStrikeCD:Stop()
@@ -439,34 +437,6 @@ function mod:UNIT_DIED(args)
 		timerAnnihilationCD:Stop(args.destGUID)
 	end
 end
-
---[[
-function mod:RAID_BOSS_WHISPER(msg)
-	if msg:find("spell:246840") then
-		specWarnRuiner:Show()
-		voiceRuiner:Play("runout")
-		voiceRuiner:Schedule(1, "keepmove")
-		yellRuiner:Yell()
-	end
-end
-
-function mod:OnTranscriptorSync(msg, targetName)
-	if msg:find("spell:246840") then
-		targetName = Ambiguate(targetName, "none")
-		if self:AntiSpam(4, targetName) then
-			--local icon = self.vb.bladesIcon
-			warnRuiner:CombinedShow(0.5, targetName)
-			--if self.Options.SetIconOnRuiner then
-			--	self:SetIcon(targetName, icon, 5)
-			--end
-			--if targetName == playerName then
-			--	yellRuiner:Yell(icon, icon, icon)
-			--end
-			--self.vb.bladesIcon = self.vb.bladesIcon + 1
-		end
-	end
-end
---]]
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if (spellId == 246779 or spellId == 248214) and self:AntiSpam(3, 1) then--Diabolic Bomb
