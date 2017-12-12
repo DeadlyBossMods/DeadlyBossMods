@@ -284,7 +284,7 @@ function mod:SPELL_CAST_START(args)
 			timerFinalDoomCD:Start(timer, self.vb.finalDoomCast+1)
 			countdownFinalDoom:Start(timer)
 		end
-	elseif spellId == 250701 then
+	elseif spellId == 250701 and self:CheckInterruptFilter(args.sourceGUID, true) then
 		specWarnSwing:Show()
 		voiceSwing:Play("defensive")
 	elseif spellId == 250048 then
