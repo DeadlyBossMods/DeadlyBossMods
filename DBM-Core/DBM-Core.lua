@@ -7957,7 +7957,10 @@ function bossModPrototype:IsHealer(uId)
 	end
 end
 
-function bossModPrototype:IsTanking(unit, boss)
+function bossModPrototype:IsTanking(unit, boss, isName)
+	if isName then--Passed combat log name, so pull unit ID
+		unit = DBM:GetRaidUnitId(unit)
+	end
 	if not unit then
 		DBM:Debug("IsTanking passed with invalid unit", 2)
 		return false
