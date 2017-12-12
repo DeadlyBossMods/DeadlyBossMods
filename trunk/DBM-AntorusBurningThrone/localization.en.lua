@@ -65,6 +65,10 @@ L:SetOptionLocalization({
 ---------------------------
 L= DBM:GetModLocalization(2009)
 
+L:SetMiscLocalization({
+	DispelMe =		"Dispel Me!"
+})
+
 ---------------------------
 -- Kin'garoth --
 ---------------------------
