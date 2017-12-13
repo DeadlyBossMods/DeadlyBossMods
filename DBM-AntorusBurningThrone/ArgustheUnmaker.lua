@@ -15,10 +15,11 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 248165 248317 257296 255594 257645 252516 256542 255648 257619 255935",
-	"SPELL_CAST_SUCCESS 248499 258039 258838 252729 252616 256388",
-	"SPELL_AURA_APPLIED 248499 248396 250669 251570 255199 253021 255496 255496 255478 252729 252616 255433 255430 255429 255425 255422 255419 255418 258647 258646 257869 257931",
+	"SPELL_CAST_SUCCESS 248499 258039 258838 252729 252616 256388 258029",
+	"SPELL_AURA_APPLIED 248499 248396 250669 251570 255199 253021 255496 255496 255478 252729 252616 255433 255430 255429 255425 255422 255419 255418 258647 258646 257869 257931 257966",
 	"SPELL_AURA_APPLIED_DOSE 248499 258039",
-	"SPELL_AURA_REMOVED 250669 251570 255199 253021 255496 255496 255478 252616 255433 255430 255429 255425 255422 255419 255418 258039",
+	"SPELL_AURA_REMOVED 250669 251570 255199 253021 255496 255496 255478 252616 255433 255430 255429 255425 255422 255419 255418 258039 257966",
+	"SPELL_INTERRUPT",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 --	"UNIT_DIED",
@@ -35,8 +36,8 @@ mod:RegisterEventsInCombat(
 --TODO, http://www.wowhead.com/spell=246057/sargeras-blessing, http://www.wowhead.com/spell=257961/chains-of-sargeras, http://www.wowhead.com/spell=257966/sentence-of-sargeras
 --[[
 (ability.id = 256544 or ability.id = 255826 or ability.id = 248165 or ability.id = 248317 or ability.id = 257296 or ability.id = 255594 or ability.id = 252516 or ability.id = 255648 or ability.id = 257645 or ability.id = 256542 or ability.id = 257619 or ability.id = 255935) and type = "begincast"
- or (ability.id = 248499 or ability.id = 258039 or ability.id = 252729 or ability.id = 252616 or ability.id = 256388 or ability.id = 258838) and type = "cast"
- or (ability.id = 250669 or ability.id = 251570 or ability.id = 255199 or ability.id = 257931 or ability.id = 257869) and type = "applydebuff" or type = "interrupt" and target.id = 124828
+ or (ability.id = 248499 or ability.id = 258039 or ability.id = 252729 or ability.id = 252616 or ability.id = 256388 or ability.id = 258838 or ability.id = 258029) and type = "cast"
+ or (ability.id = 250669 or ability.id = 251570 or ability.id = 255199 or ability.id = 257931 or ability.id = 257869 or ability.id = 257966) and type = "applydebuff" or type = "interrupt" and target.id = 124828
 --]]
 --Stage One: Storm and Sky
 local warnTorturedRage				= mod:NewCountAnnounce(257296, 2)
@@ -57,6 +58,8 @@ local warnPhase3					= mod:NewPhaseAnnounce(3, 2)
 local warnCosmicRay					= mod:NewTargetAnnounce(252729, 3)
 local warnCosmicBeacon				= mod:NewTargetAnnounce(252616, 2)
 local warnDiscsofNorg				= mod:NewCastAnnounce(252516, 1)
+--Stage Three Mythic
+local warnSargSentence				= mod:NewTargetAnnounce(257966, 3)
 --Stage Four: The Gift of Life, The Forge of Loss (Non Mythic)
 local warnGiftOfLifebinder			= mod:NewCastAnnounce(257619, 1)
 local warnPhase4					= mod:NewPhaseAnnounce(4, 2)
@@ -96,6 +99,11 @@ local yellCosmicRay					= mod:NewYell(252729)
 local specWarnCosmicBeacon			= mod:NewSpecialWarningMoveAway(252616, nil, nil, nil, 1, 2)
 local yellCosmicBeacon				= mod:NewYell(252616)
 local yellCosmicBeaconFades			= mod:NewShortFadesYell(252616)
+--Stage Three Mythic
+local specWarnSargSentence			= mod:NewSpecialWarningYou(257966, nil, nil, nil, 1, 2)
+local yellSargSentence				= mod:NewYell(257966)
+local yellSargSentenceFades			= mod:NewShortFadesYell(257966)
+local specWarnApocModule			= mod:NewSpecialWarningSwitch(258029, "Dps", nil, nil, 3, 2)--EVERYONE
 --Stage Four: The Gift of Life, The Forge of Loss (Non Mythic)
 local specWarnEmberofRage			= mod:NewSpecialWarningDodge(257299, nil, nil, nil, 2, 2)
 local specWarnDeadlyScythe			= mod:NewSpecialWarningStack(258039, nil, 2, nil, nil, 1, 2)
@@ -126,7 +134,8 @@ local timerCosmicBeaconCD			= mod:NewCDTimer(19.9, 252616, nil, nil, nil, 3)--Al
 local timerDiscsofNorgCD			= mod:NewCDTimer(12, 252516, nil, nil, nil, 6)
 local timerDiscsofNorg				= mod:NewCastTimer(12, 252516, nil, nil, nil, 6)
 mod:AddTimerLine(ENCOUNTER_JOURNAL_SECTION_FLAG12)--Mythic 3
-local timerSouldrendingScytheCD		= mod:NewAITimer(5.6, 258838, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerSoulrendingScytheCD		= mod:NewCDTimer(8.5, 258838, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerSargSentenceCD			= mod:NewCDTimer(35.2, 257966, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
 --Stage Four: The Gift of Life, The Forge of Loss (Non Mythic)
 mod:AddTimerLine(SCENARIO_STAGE:format(4))
 local timerDeadlyScytheCD			= mod:NewCDTimer(5.5, 258039, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
@@ -161,10 +170,13 @@ local voiceAvatarofAgrra			= mod:NewVoice(255199)--targetyou
 --Stage Three: The Arcane Masters
 local voiceCosmicRay				= mod:NewVoice(252729)--targetyou
 local voiceCosmicBeacon				= mod:NewVoice(252616)--runout
+--Stage Three Mythic
+local voiceSargSentence				= mod:NewVoice(257966)--targetyou
+local voiceApocModule				= mod:NewVoice(258029, "Dps")--killmob
 --Stage Four: The Gift of Life, The Forge of Loss (Non Mythic)
 local voiceEmberofRage				= mod:NewVoice(257299)--watchstep
 local voiceDeadlyScythe				= mod:NewVoice(258039)--tauntboss
-local voiceReorgModule				= mod:NewVoice(256389)--killmob
+local voiceReorgModule				= mod:NewVoice(256389, "RangedDps", nil, 2)--killmob
 
 
 mod:AddSetIconOption("SetIconOnAvatar", 255199, true)--4
@@ -312,18 +324,24 @@ function mod:SPELL_CAST_START(args)
 		timerSoulBurstCD:Stop()
 		timerEdgeofObliterationCD:Stop()
 		timerAvatarofAggraCD:Stop()
-		timerDiscsofNorgCD:Start(15)
-		timerCosmicRayCD:Start(30)
-		--timerCosmicPowerCD:Start(36.5)
-		timerCosmicBeaconCD:Start(40)
+		--timerSargGazeCD:Stop()
+		if not self:IsMythic() then
+			timerDiscsofNorgCD:Start(15)
+			timerCosmicRayCD:Start(30)
+			--timerCosmicPowerCD:Start(36.5)
+			timerCosmicBeaconCD:Start(40)
+		end
 	elseif spellId == 256542 then--Reap Soul
-		self.vb.phase = 4
-		warnPhase4:Show()
+		if not self:IsMythic() then
+			self.vb.phase = 4
+			warnPhase4:Show()
+		end
 		timerCosmicRayCD:Stop()
 		--timerCosmicPowerCD:Stop()
 		timerCosmicBeaconCD:Stop()
 		timerDiscsofNorg:Stop()
 		timerDiscsofNorgCD:Stop()
+		timerSargGazeCD:Stop()
 		timerNextPhase:Start(35)--or 53.8
 	elseif spellId == 257619 then--Gift of the Lifebinder (p4)
 		warnGiftOfLifebinder:Show()
@@ -340,7 +358,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerDeadlyScytheCD:Start()
 		countdownDeadlyScythe:Start(5.5)
 	elseif spellId == 258838 then--Mythic Scythe
-		timerSouldrendingScytheCD:Start()
+		timerSoulrendingScytheCD:Start()
 	elseif spellId == 255826 then
 		specWarnEdgeofObliteration:Show()
 		voiceEdgeofObliteration:Play("watchstep")
@@ -354,6 +372,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 		voiceReorgModule:Play("killmob")
 		timerReorgModuleCD:Start()
 		countdownReorgModule:Start()
+	elseif spellId == 258029 and self:AntiSpam(5, 7) then--Initialization Sequence (Mythic)
+		specWarnApocModule:Show()
+		voiceApocModule:Play("killmob")
+		--timerReorgModuleCD:Start()
+		--countdownReorgModule:Start()
 	end
 end
 
@@ -433,10 +456,10 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:SetIcon(args.destName, 2)
 		end
 		if self.vb.phase == 4 then
-			timerSoulBurstCD:Start(50, 2)
-			timerSoulBombCD:Start(100)
-			countdownSoulbomb:Start(100)
-			timerSoulBurstCD:Start(100, 1)
+			timerSoulBurstCD:Start(40, 2)
+			timerSoulBombCD:Start(80)
+			countdownSoulbomb:Start(80)
+			timerSoulBurstCD:Start(80, 1)
 		else
 			timerSoulBurstCD:Start(19.8, 2)
 			timerSoulBombCD:Start(42)
@@ -535,6 +558,17 @@ function mod:SPELL_AURA_APPLIED(args)
 			voiceSargFear:Play("gathershare")
 			yellSargFear:Yell()
 		end
+	elseif spellId == 257966 then--Sentence of Sargeras
+		if self:AntiSpam(5, 6) then
+			--timerSargSentenceCD:Start()
+		end
+		warnSargSentence:CombinedShow(0.3, args.destName)
+		if args:IsPlayer() then
+			specWarnSargSentence:Show()
+			voiceSargSentence:Play("targetyou")
+			yellSargSentence:Yell()
+			yellSargSentenceFades:Countdown(30)
+		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -592,6 +626,43 @@ function mod:SPELL_AURA_REMOVED(args)
 				voiceDeadlyScythe:Play("tauntboss")
 			end
 		end
+	elseif spellId == 257966 then--Sentence of Sargeras
+		if args:IsPlayer() then
+			yellSargSentenceFades:Cancel()
+		end
+	end
+end
+
+function mod:SPELL_INTERRUPT(args)
+	if type(args.extraSpellId) == "number" and args.extraSpellId == 256544 then
+		if self:IsMythic() then
+			timerSoulrendingScytheCD:Start(3.5)
+			timerSargGazeCD:Start(23)
+			--timerReorgModuleCD:Start(31.4)
+			--countdownReorgModule:Start(31.4)
+			timerTorturedRageCD:Start(40)
+			timerSargSentenceCD:Start(53)
+		else
+			if not self:IsHeroic() then
+				timerSweepingScytheCD:Start(5)
+			else
+				timerDeadlyScytheCD:Start(5)
+			end
+			local currentPowerPercent = UnitPower("boss1")/UnitPowerMax("boss1")
+			local remainingPercent
+			if currentPowerPercent then
+				remainingPercent = 1.0 - currentPowerPercent
+			end
+			if remainingPercent then
+				timerReorgModuleCD:Start(48.1*remainingPercent)
+				countdownReorgModule:Start(48.1*remainingPercent)
+				--timerTorturedRageCD:Start(13*remainingPercent)
+			end
+			timerTorturedRageCD:Start(10)
+			timerSoulBurstCD:Start(20, 1)--First one is only burst, afterwards it's bomb and burst then burst only again
+			timerSoulBombCD:Start(20)
+			countdownSoulbomb:Start(20)
+		end
 	end
 end
 
@@ -622,10 +693,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, _, spellId)
 	if spellId == 257300 and self:AntiSpam(5, 1) then--Ember of Rage
 		specWarnEmberofRage:Show()
 		voiceEmberofRage:Play("watchstep")
-	--elseif spellId == 256389 and self:AntiSpam(5, 2) then--Reorgination Module
-		--specWarnReorgModule:Show()
-		--voiceReorgModule:Play("killmob")
-		--timerReorgModuleCD:Start()
 	elseif spellId == 258042 then--Argus P2 Energy Controller (16 seconds after Fury)
 		--Alternate and valid timer start point
 		--timerAvatarofAggraCD:Start(5)
@@ -635,35 +702,10 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, _, spellId)
 	--elseif spellId == 34098 then--ClearAllDebuffs (12 before Tempoeral Blast)
 	
 	elseif spellId == 258044 then--Argus P4 Energy Controller (54 seconds after Reap Soul, 27 seconds after Gift of the Lifebinder)
-		--timerDiscsofNorgCD:Stop()
-		if not self:IsHeroic() then
-			timerSweepingScytheCD:Start(5)
-		else
-			timerDeadlyScytheCD:Start(5)
-		end
-		local currentPowerPercent = UnitPower("boss1")/UnitPowerMax("boss1")
-		local remainingPercent
-		if currentPowerPercent then
-			remainingPercent = 1.0 - currentPowerPercent
-		end
-		if remainingPercent then
-			timerReorgModuleCD:Start(48.1*remainingPercent)
-			countdownReorgModule:Start(48.1*remainingPercent)
-			--timerTorturedRageCD:Start(13*remainingPercent)
-		end
-		timerTorturedRageCD:Start(10)
-		timerSoulBurstCD:Start(50.4, 1)--First one is only burst, afterwards it's bomb and burst then burst only again
-		timerSoulBombCD:Start(100.7)
-		countdownSoulbomb:Start(100.7)
+		--Old P4 controller, might still revert to it if I don't like SPELL_INTERRUPT
 	elseif spellId == 258104 then--Argus Mythic Transform
-		--Might be redundant, but adding here for now just in case temporal blast doesn't fire
-		timerSweepingScytheCD:Stop()
-		timerTorturedRageCD:Stop()
-		timerSoulBombCD:Stop()
-		countdownSoulbomb:Cancel()
-		timerSoulBurstCD:Stop()
-		timerEdgeofObliterationCD:Stop()
-		timerAvatarofAggraCD:Stop()
+		--Stop timer earlier than Reap Soul
+		timerSargGazeCD:Stop()
 	elseif spellId == 258068 then--Sargeras' Gaze
 		if self.vb.phase == 2 then
 			timerSargGazeCD:Start(60)
