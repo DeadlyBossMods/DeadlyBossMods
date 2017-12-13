@@ -16,7 +16,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 244969 240277",
-	"SPELL_CAST_SUCCESS 246220 244399 245294 246919",
+	"SPELL_CAST_SUCCESS 246220 244399 245294 246919 244294",
 	"SPELL_AURA_APPLIED 246220 244410 246919 246965",--246897
 --	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 246220 244410 246919",
@@ -50,7 +50,7 @@ local yellDecimation					= mod:NewFadesYell(244410)
 local specWarnDecimationStun			= mod:NewSpecialWarningYou(246919, nil, nil, nil, 1, 2)--Mythic
 local yellDecimationStun				= mod:NewFadesYell(246919)--Mythic
 --Annihilator
-local specWarnAnnihilation				= mod:NewSpecialWarningSpell(247044, nil, nil, nil, 1, 2)
+local specWarnAnnihilation				= mod:NewSpecialWarningSpell(244294, nil, nil, nil, 1, 2)
 
 local timerFelBombardmentCD				= mod:NewNextTimer(20.7, 246220, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerApocDriveCast				= mod:NewCastTimer(30, 244152, nil, nil, nil, 6)
@@ -58,7 +58,7 @@ local timerSpecialCD					= mod:NewNextSpecialTimer(20)--When cannon unknown
 mod:AddTimerLine(Decimator)
 local timerDecimationCD					= mod:NewNextTimer(31.6, 244410, nil, nil, nil, 3)
 mod:AddTimerLine(annihilator)
-local timerAnnihilationCD				= mod:NewNextTimer(31.6, 247044, nil, nil, nil, 3)
+local timerAnnihilationCD				= mod:NewNextTimer(31.6, 244294, nil, nil, nil, 3)
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
 
@@ -73,7 +73,7 @@ local voiceEradication					= mod:NewVoice(244969)--justrun
 local voiceDecimation					= mod:NewVoice(244410)--runout
 local voiceDecimationStun				= mod:NewVoice(246919)--targetyou
 --Annihilator
-local voiceAnnihilation					= mod:NewVoice(247044)--helpsoak
+local voiceAnnihilation					= mod:NewVoice(244294)--helpsoak
 
 mod:AddSetIconOption("SetIconOnDecimation", 244410, true)
 mod:AddSetIconOption("SetIconOnBombardment", 246220, true)
@@ -172,7 +172,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			self.vb.lastCannon = 1--Annihilation 1 Decimation 2
 			specWarnAnnihilation:Show()
 			voiceAnnihilation:Play("helpsoak")
-				if self.vb.phase == 1 or self:IsMythic() then
+			if self.vb.phase == 1 or self:IsMythic() then
 				timerDecimationCD:Start(15.8)
 			elseif self.vb.phase > 1 and not self:IsMythic() then
 				timerAnnihilationCD:Start(15.8)
