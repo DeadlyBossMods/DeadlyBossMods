@@ -183,6 +183,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnNecroticEmbrace:Show()
 			voiceNecroticEmbrace:Play("scatter")
 			yellNecroticEmbrace:Countdown(6, 3)
+			if self.Options.RangeFrame then
+				DBM.RangeCheck:Show(10)
+			end
 		else
 			warnNecroticEmbrace:CombinedShow(0.5, args.destName)--Combined message because even if it starts on 1, people are gonna fuck it up
 		end
@@ -245,6 +248,9 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.totalEmbrace = self.vb.totalEmbrace - 1
 		if args:IsPlayer() then
 			yellNecroticEmbrace:Cancel()
+			if self.Options.RangeFrame then
+				DBM.RangeCheck:Show(8)
+			end
 		end
 		if self.Options.SetIconEmbrace then
 			self:SetIcon(args.destName, 0)
