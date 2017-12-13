@@ -50,7 +50,7 @@ local yellDecimation					= mod:NewFadesYell(244410)
 local specWarnDecimationStun			= mod:NewSpecialWarningYou(246919, nil, nil, nil, 1, 2)--Mythic
 local yellDecimationStun				= mod:NewFadesYell(246919)--Mythic
 --Annihilator
-local specWarnAnnihilation				= mod:NewSpecialWarningSpell(244294, nil, nil, nil, 1, 2)
+local specWarnAnnihilation				= mod:NewSpecialWarningSpell(244761, nil, nil, nil, 1, 2)
 
 local timerFelBombardmentCD				= mod:NewNextTimer(20.7, 246220, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerApocDriveCast				= mod:NewCastTimer(30, 244152, nil, nil, nil, 6)
@@ -58,7 +58,7 @@ local timerSpecialCD					= mod:NewNextSpecialTimer(20)--When cannon unknown
 mod:AddTimerLine(Decimator)
 local timerDecimationCD					= mod:NewNextTimer(31.6, 244410, nil, nil, nil, 3)
 mod:AddTimerLine(annihilator)
-local timerAnnihilationCD				= mod:NewNextTimer(31.6, 244294, nil, nil, nil, 3)
+local timerAnnihilationCD				= mod:NewNextTimer(31.6, 244761, nil, nil, nil, 3)
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
 
@@ -73,7 +73,7 @@ local voiceEradication					= mod:NewVoice(244969)--justrun
 local voiceDecimation					= mod:NewVoice(244410)--runout
 local voiceDecimationStun				= mod:NewVoice(246919)--targetyou
 --Annihilator
-local voiceAnnihilation					= mod:NewVoice(244294)--helpsoak
+local voiceAnnihilation					= mod:NewVoice(244761)--helpsoak
 
 mod:AddSetIconOption("SetIconOnDecimation", 244410, true)
 mod:AddSetIconOption("SetIconOnBombardment", 246220, true)
