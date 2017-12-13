@@ -87,12 +87,12 @@ local timerShockGrenadeCD				= mod:NewCDTimer(14.7, 244722, nil, nil, nil, 3, ni
 local timerAssumeCommandCD				= mod:NewNextTimer(90, 245227, nil, nil, nil, 6)
 --In Pod
 ----Admiral Svirax
-local timerFusilladeCD					= mod:NewCDCountTimer(29.6, 244625, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
+local timerFusilladeCD					= mod:NewNextCountTimer(29.6, 244625, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
 --local timerWitheringFireCD			= mod:NewAITimer(61, 245292, nil, nil, nil, 3)
 ----Chief Engineer Ishkar
 local timerEntropicMineCD				= mod:NewCDTimer(10, 245161, nil, nil, nil, 3)
 ----General Erodus
-local timerSummonReinforcementsCD		= mod:NewCDTimer(8.4, 245546, nil, nil, nil, 1)
+local timerSummonReinforcementsCD		= mod:NewNextTimer(8.4, 245546, nil, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON)
 --local timerPyroblastCD				= mod:NewAITimer(61, 246505, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
 --Out of Pod
 ----Admiral Svirax
