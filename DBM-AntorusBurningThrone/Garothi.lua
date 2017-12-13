@@ -160,6 +160,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 244399 or spellId == 245294 or spellId == 246919 then--Decimation
 		self.vb.lastCannon = 2--Anniilator 1 decimator 2
+		countdownChooseCannon:Start(15.8)
 		if self.vb.phase == 1 or self:IsMythic() then
 			timerAnnihilationCD:Start(15.8)
 		elseif self.vb.phase > 1 and not self:IsMythic() then
@@ -172,6 +173,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			self.vb.lastCannon = 1--Annihilation 1 Decimation 2
 			specWarnAnnihilation:Show()
 			voiceAnnihilation:Play("helpsoak")
+			countdownChooseCannon:Start(15.8)
 			if self.vb.phase == 1 or self:IsMythic() then
 				timerDecimationCD:Start(15.8)
 			elseif self.vb.phase > 1 and not self:IsMythic() then
@@ -309,15 +311,16 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			countdownFelBombardment:Start(20.7)
 		end
 	elseif spellId == 245124 then
-		countdownChooseCannon:Start(15.8)
 		if self.vb.annihilatorHaywire and self.vb.lastCannon == 2 then 
 			self.vb.lastCannon = 1
 			specWarnAnnihilation:Show()
 			voiceAnnihilation:Play("helpsoak")
 			if self.vb.phase == 1 or self:IsMythic() then
 				timerDecimationCD:Start(15.8)
+				countdownChooseCannon:Start(15.8)
 			elseif self.vb.phase > 1 and not self:IsMythic() then
 				timerAnnihilationCD:Start(15.8)
+				countdownChooseCannon:Start(15.8)
 			end
 		end
 	end
