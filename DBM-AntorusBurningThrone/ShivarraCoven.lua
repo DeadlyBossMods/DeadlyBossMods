@@ -83,7 +83,7 @@ local timerFulminatingPulseCD			= mod:NewNextTimer(40.5, 253520, nil, nil, nil, 
 local timerShadowBladesCD				= mod:NewCDTimer(27.8, 246329, nil, nil, nil, 3)
 local timerStormofDarknessCD			= mod:NewNextCountTimer(57, 252861, nil, nil, nil, 2, nil, DBM_CORE_HEALER_ICON)--57+
 --Diima, Mother of Gloom
-local timerFlashFreezeCD				= mod:NewCDTimer(11, 245518, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerFlashFreezeCD				= mod:NewCDTimer(10.1, 245518, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerChilledBloodCD				= mod:NewNextTimer(25.4, 245586, nil, nil, nil, 5, nil, DBM_CORE_HEALER_ICON)
 local timerOrbofFrostCD					= mod:NewNextTimer(30.4, 253650, nil, nil, nil, 3)
 --Thu'raya, Mother of the Cosmos (Mythic)
