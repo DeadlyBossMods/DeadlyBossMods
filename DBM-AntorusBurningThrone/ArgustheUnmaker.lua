@@ -122,8 +122,8 @@ mod:AddTimerLine(ENCOUNTER_JOURNAL_SECTION_FLAG12)--Mythic Stage 1
 local timerSargGazeCD				= mod:NewCDTimer(35.2, 258068, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
 --Stage Two: The Protector Redeemed
 mod:AddTimerLine(SCENARIO_STAGE:format(2))
-local timerSoulBombCD				= mod:NewCDTimer(42, 251570, nil, nil, nil, 3, nil, DBM_CORE_TANK_ICON)
-local timerSoulBurstCD				= mod:NewCDCountTimer("d42", 250669, nil, nil, nil, 3)
+local timerSoulBombCD				= mod:NewNextTimer(42, 251570, nil, nil, nil, 3, nil, DBM_CORE_TANK_ICON)
+local timerSoulBurstCD				= mod:NewNextCountTimer("d42", 250669, nil, nil, nil, 3)
 local timerEdgeofObliterationCD		= mod:NewCDTimer(34, 255826, nil, nil, nil, 2)
 local timerAvatarofAggraCD			= mod:NewCDTimer(59.9, 255199, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
 --Stage Three: The Arcane Masters
