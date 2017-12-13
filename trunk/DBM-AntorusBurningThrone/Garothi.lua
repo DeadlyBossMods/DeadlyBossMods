@@ -151,6 +151,7 @@ function mod:SPELL_CAST_START(args)
 		countdownFelBombardment:Cancel()
 		timerAnnihilationCD:Stop()
 		specWarnApocDrive:Show()
+		countdownChooseCannon:Cancel()
 		voiceApocDrive:Play("targetchange")
 		timerApocDriveCast:Start()
 	end
