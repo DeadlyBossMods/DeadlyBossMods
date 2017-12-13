@@ -15,7 +15,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 244625 246505 253040 245227 244821",
 	"SPELL_CAST_SUCCESS 245292 244722 244892 245227 253037 245174",
-	"SPELL_SUMMON 245174",
+--	"SPELL_SUMMON 245174",
 	"SPELL_AURA_APPLIED 244737 244892 253015",
 	"SPELL_AURA_APPLIED_DOSE 244892",
 	"SPELL_AURA_REMOVED 244737 253015",
@@ -49,7 +49,7 @@ local warnPsychicAssault				= mod:NewTargetAnnounce(244172, 4)
 ----Chief Engineer Ishkar
 local warnEntropicMine					= mod:NewSpellAnnounce(245161, 2)
 ----General Erodus
-local warnSummonReinforcements			= mod:NewSpellAnnounce(245546, 2, nil, false, 2)
+--local warnSummonReinforcements			= mod:NewSpellAnnounce(245546, 2, nil, false, 2)
 local warnDemonicCharge					= mod:NewTargetAnnounce(253040, 2, nil, false, 2)
 --Out of Pod
 ----Admiral Svirax
@@ -241,7 +241,7 @@ function mod:SPELL_CAST_START(args)
 			countdownFusillade:Start(15.9)
 			--TODO, reinforcements fix
 		elseif cid == 122333 then--General Erodus
-			timerSummonReinforcementsCD:Stop()--Stops fodder ones
+			--timerSummonReinforcementsCD:Stop()--Stops fodder ones
 			timerSummonReinforcementsCD:Start(11)--Starts elite ones
 			countdownReinforcements:Start(11)
 		elseif cid == 122367 then--Admiral Svirax
@@ -293,13 +293,15 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
+--[[
 function mod:SPELL_SUMMON(args)
 	local spellId = args.spellId
 	if spellId == 245174 then--Minor adds
-		warnSummonReinforcements:Show()
-		timerSummonReinforcementsCD:Start()
+		--warnSummonReinforcements:Show()
+		--timerSummonReinforcementsCD:Start()
 	end
 end
+--]]
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
@@ -408,9 +410,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		elseif cid == 122333 then--General Erodus
 			timerSummonReinforcementsCD:Stop()--Elite ones
 			countdownReinforcements:Cancel()
-			if not self:IsEasy() then
-				timerSummonReinforcementsCD:Start(9)--Fodder ones
-			end
+			--if not self:IsEasy() then
+				--timerSummonReinforcementsCD:Start(9)--Fodder ones
+			--end
 		elseif cid == 122367 then--Admiral Svirax
 			timerFusilladeCD:Stop()
 			countdownFusillade:Cancel()
