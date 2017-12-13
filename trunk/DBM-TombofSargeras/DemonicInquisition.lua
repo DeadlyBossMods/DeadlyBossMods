@@ -59,13 +59,13 @@ local specWarnSoulCorruption		= mod:NewSpecialWarningStack(248713, nil, 10, nil,
 local specWarnTorment				= mod:NewSpecialWarningStack(233104, nil, 75, nil, nil, 1, 6)
 
 --Atrigan
-mod:AddTimerLine(EJ_GetSectionInfo(14645))
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(14645))
 local timerScytheSweepCD			= mod:NewCDCountTimer(23, 233426, nil, "Tank", 2, 5, nil, DBM_CORE_TANK_ICON)
 local timerCalcifiedQuillsCD		= mod:NewCDTimer(20.2, 233431, nil, nil, nil, 3)--20.2-20.5 unless delayed by scythe, or bone saw
 local timerBoneSawCD				= mod:NewCDCountTimer(45.4, 233441, nil, nil, nil, 2)
 local timerBoneSaw					= mod:NewBuffActiveTimer(15, 233441, nil, nil, nil, 2)
 --Belac
-mod:AddTimerLine(EJ_GetSectionInfo(14646))
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(14646))
 local timerEchoingAnguishCD			= mod:NewCDTimer(22.9, 233983, nil, nil, nil, 3, nil, DBM_CORE_MAGIC_ICON)
 local timerSuffocatingDarkCD		= mod:NewCDTimer(24, 233894, nil, nil, nil, 3)
 local timerTormentingBurstCD		= mod:NewCDCountTimer(17.0, 234015, nil, nil, nil, 2)

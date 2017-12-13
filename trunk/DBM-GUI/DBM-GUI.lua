@@ -72,7 +72,7 @@ end
 --------------------------------------------------------
 --  Cache frequently used global variables in locals  --
 --------------------------------------------------------
-local GetSpellInfo, EJ_GetSectionInfo = GetSpellInfo, EJ_GetSectionInfo
+local GetSpellInfo = GetSpellInfo
 local tinsert, tremove, tsort, twipe = table.insert, table.remove, table.sort, table.wipe
 local mfloor, mmax = math.floor, math.max
 
@@ -361,7 +361,7 @@ do
 		else -- "journal:contentType:contentID:difficulty"
 			local _, contentType, contentID = strsplit(":", data)
 			if contentType == "2" then -- EJ section
-				local name, description = EJ_GetSectionInfo(tonumber(contentID))
+				local name, description = DBM:EJ_GetSectionInfo(tonumber(contentID))
 				GameTooltip:AddLine(name or DBM_CORE_UNKNOWN, 255, 255, 255, 0)
 				GameTooltip:AddLine(" ")
 				GameTooltip:AddLine(description or DBM_CORE_UNKNOWN, NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, 1)
@@ -396,11 +396,11 @@ do
 	end
 
 	local function replaceJournalLinks(id)
-		local check = EJ_GetSectionInfo(tonumber(id))
+		local check = DBM:EJ_GetSectionInfo(tonumber(id))
 		if not check then
 			DBM:Debug("Journal ID does not exist: "..id)
 		end
-		local link = select(9, EJ_GetSectionInfo(tonumber(id))) or DBM_CORE_UNKNOWN
+		local link = select(9, DBM:EJ_GetSectionInfo(tonumber(id))) or DBM_CORE_UNKNOWN
 		return link:gsub("|h%[(.*)%]|h", "|h%1|h")
 	end
 
@@ -450,7 +450,7 @@ do
 		if name:find("%$journal:") then
 			if not isTimer and modvar then
 				local spellId = string.match(name, "journal:(%d+)")
-				noteSpellName = EJ_GetSectionInfo(spellId)
+				noteSpellName = DBM:EJ_GetSectionInfo(spellId)
 			end
 			name = name:gsub("%$journal:(%d+)", replaceJournalLinks)
 		end
