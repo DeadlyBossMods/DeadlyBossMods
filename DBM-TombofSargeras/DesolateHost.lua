@@ -138,7 +138,7 @@ end
 
 local updateInfoFrame
 do
-	local corpRealm = EJ_GetSectionInfo(14856)
+	local corpRealm = DBM:EJ_GetSectionInfo(14856)
 	local lines = {}
 	local sortedLines = {}
 	local function addLine(key, value)

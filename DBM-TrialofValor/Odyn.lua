@@ -28,8 +28,8 @@ mod:RegisterEventsInCombat(
 --TODO, phase 3 storms (area of affect). not in combat log or even transcriptor. appears every 30 seconds give or take. verify in more attempts and add scheduler for it
 --TODO, Cleansing flame timers/target announces?
 --Stage 1: Halls of Valor was merely a set back
-local hymdall = EJ_GetSectionInfo(14005)
-local hyrja = EJ_GetSectionInfo(14006)
+local hymdall = DBM:EJ_GetSectionInfo(14005)
+local hyrja = DBM:EJ_GetSectionInfo(14006)
 
 local warnDancingBlade				= mod:NewCountAnnounce(228003, 3)--Change if target scanning works, but considering it doesn't in 5 man version of this spell, omitting for now
 local warnRevivify					= mod:NewCastAnnounce(228171, 4)

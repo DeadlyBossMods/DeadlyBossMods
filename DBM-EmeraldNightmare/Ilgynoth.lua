@@ -114,7 +114,7 @@ mod.vb.IchorCount = 0
 mod.vb.DeathglareSpawn = 0
 mod.vb.CorruptorSpawn = 0
 local UnitExists, UnitGUID, UnitDetailedThreatSituation = UnitExists, UnitGUID, UnitDetailedThreatSituation
-local eyeName = EJ_GetSectionInfo(13185)
+local eyeName = DBM:EJ_GetSectionInfo(13185)
 local addsTable = {}
 local phase1EasyDeathglares = {26, 62, 85, 55}--Normal/LFR OCT 16
 local phase1HeroicDeathglares = {21, 51.5, 51}--VERIFIED Nov 18
@@ -152,7 +152,7 @@ do
 		lines[key] = value
 		sortedLines[#sortedLines + 1] = key
 	end
-	local DominatorTentacle, CorruptorTentacle, DeathglareTentacle, NightmareHorror, NightmareIchor = EJ_GetSectionInfo(13189), EJ_GetSectionInfo(13191), EJ_GetSectionInfo(13190), EJ_GetSectionInfo(13188), EJ_GetSectionInfo(13186)
+	local DominatorTentacle, CorruptorTentacle, DeathglareTentacle, NightmareHorror, NightmareIchor = DBM:EJ_GetSectionInfo(13189), DBM:EJ_GetSectionInfo(13191), DBM:EJ_GetSectionInfo(13190), DBM:EJ_GetSectionInfo(13188), DBM:EJ_GetSectionInfo(13186)
 	updateInfoFrame = function()
 		table.wipe(lines)
 		table.wipe(sortedLines)
@@ -615,7 +615,7 @@ end
 
 do
 	--This method is still 4 seconds faster than using Seeping Corruption
-	local NightmareHorror = EJ_GetSectionInfo(13188)
+	local NightmareHorror = DBM:EJ_GetSectionInfo(13188)
 	function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, targetname)
 		if targetname == NightmareHorror then
 			specWarnNightmareHorror:Show()

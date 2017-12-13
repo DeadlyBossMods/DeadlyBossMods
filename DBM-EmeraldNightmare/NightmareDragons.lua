@@ -23,10 +23,10 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5"
 )
 
-local Ysondre = EJ_GetSectionInfo(12768)
-local Emeriss = EJ_GetSectionInfo(12770)
-local Lethon = EJ_GetSectionInfo(12772)
-local Taerar = EJ_GetSectionInfo(12774)
+local Ysondre = DBM:EJ_GetSectionInfo(12768)
+local Emeriss = DBM:EJ_GetSectionInfo(12770)
+local Lethon = DBM:EJ_GetSectionInfo(12772)
+local Taerar = DBM:EJ_GetSectionInfo(12774)
 
 --(type = "begincast" or type = "cast" or type = "applybuff") and (source.name = "Taerar" or source.name = "Ysondre" or source.name = "Emeriss" or source.name = "Lethon")
 --TODO, if only one volatile infection goes out at a time, hide general alert if player affected
@@ -239,7 +239,7 @@ function mod:OnCombatStart(delay)
 		self:Schedule(2, whoDatUpThere, self)
 	end
 	if self.Options.InfoFrame and not self:IsLFR() then
-		DBM.InfoFrame:SetHeader(EJ_GetSectionInfo(12809))
+		DBM.InfoFrame:SetHeader(DBM:EJ_GetSectionInfo(12809))
 		DBM.InfoFrame:Show(5, "function", updateInfoFrame)
 	end
 end
