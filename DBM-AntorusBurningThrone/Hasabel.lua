@@ -288,7 +288,7 @@ function mod:SPELL_CAST_START(args)
 			countdownFelstormBarrage:Start(27.1)
 		else
 			timerFelstormBarrageCD:Start()--32.9-41
-			countdownFelstormBarrage:Start(32.2)--Review/improve if possible
+			countdownFelstormBarrage:Start(32.2)
 		end
 		if self.Options.ShowAllPlatforms or playerPlatform == 1 then--Actually on nexus platform
 			specWarnFelstormBarrage:Show()

@@ -141,7 +141,7 @@ mod:AddTimerLine(SCENARIO_STAGE:format(4))
 local timerDeadlyScytheCD			= mod:NewCDTimer(5.5, 258039, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerReorgModuleCD			= mod:NewCDTimer(48.1, 256389, nil, nil, nil, 1)
 
---local berserkTimer				= mod:NewBerserkTimer(600)
+local berserkTimer					= mod:NewBerserkTimer(600)
 
 --Stage One: Storm and Sky
 local countdownSoulbomb				= mod:NewCountdown(50, 251570)
@@ -249,6 +249,9 @@ function mod:OnCombatStart(delay)
 	timerBlightOrbCD:Start(35.2-delay)
 	if self:IsMythic() then
 		timerSargGazeCD:Start(8.5-delay)
+		berserkTimer:Start(660-delay)
+	else
+		berserkTimer:Start(720-delay)
 	end
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(_G["7.3_ARGUS_RAID_DEATH_TITAN_ENERGY"])
