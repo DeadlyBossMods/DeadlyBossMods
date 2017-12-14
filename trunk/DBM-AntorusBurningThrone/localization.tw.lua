@@ -28,13 +28,15 @@ L= DBM:GetModLocalization(2025)
 L:SetTimerLocalization({
 	timerObfuscator		=	"下一次魔能匿蹤者(%s)",
 	timerDestructor 	=	"下一次魔能毀滅者(%s)",
-	timerPurifier 		=	"下一次魔能淨化者(%s)"
+	timerPurifier 		=	"下一次魔能淨化者(%s)",
+	timerBats	 		=	"下一次風掣魔蝠(%s)"
 })
 
 L:SetMiscLocalization({
 	Obfuscators =	"魔能匿蹤者",
 	Destructors =	"魔能毀滅者",
-	Purifiers 	=	"魔能淨化者"
+	Purifiers 	=	"魔能淨化者",
+	Bats 		=	"風掣魔蝠"
 })
 
 ---------------------------
@@ -51,13 +53,18 @@ L:SetOptionLocalization({
 ---------------------------
 L= DBM:GetModLocalization(2009)
 
+L:SetMiscLocalization({
+	DispelMe =		"快驅散我！"
+})
+
 ---------------------------
 -- Kin'garoth --
 ---------------------------
 L= DBM:GetModLocalization(2004)
 
 L:SetOptionLocalization({
-	InfoFrame =	"為戰鬥總覽顯示訊息框架"
+	InfoFrame =	"為戰鬥總覽顯示訊息框架",
+	UseAddTime = "當首領離開初始階段時總是顯示計時器而非隱藏計時器。(如停用，正確的計時器會在首領活動時恢復，但可能缺少剩餘1-2秒的警告)"
 })
 
 ---------------------------
