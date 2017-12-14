@@ -56,22 +56,24 @@ local specWarnSwing						= mod:NewSpecialWarningDodge(250701, "MeleeDps", nil, n
 --local specWarnMalignantAnguish		= mod:NewSpecialWarningInterrupt(236597, "HasInterrupt")
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
 --Mythic
+local specWarnFinalDoom					= mod:NewSpecialWarningCount(249121, "-Tank", nil, nil, 1, 2)
 local specWarnArcaneBuildup				= mod:NewSpecialWarningMoveAway(250693, nil, nil, nil, 1, 2)
 local yellArcaneBuildup					= mod:NewYell(250693)
 local yellArcaneBuildupFades			= mod:NewShortFadesYell(250693)
 local specWarnBurningEmbers				= mod:NewSpecialWarningMoveAway(250691, nil, nil, nil, 1, 2)
 local yellBurningEmbers					= mod:NewYell(250691)
 local yellBurningEmbersFades			= mod:NewShortFadesYell(250691)
-local specWarnFoulSteps					= mod:NewSpecialWarningStack(250140, nil, 9, nil, nil, 1, 6)--Fine tune
+local specWarnFoulSteps					= mod:NewSpecialWarningStack(250140, nil, 12, nil, nil, 1, 6)--Fine tune
 
 --The Paraxis
 local timerMeteorStormCD				= mod:NewAITimer(61, 248333, nil, nil, nil, 3)
 local timerSpearofDoomCD				= mod:NewCDCountTimer(55, 248789, nil, nil, nil, 3)--55-69
 local timerRainofFelCD					= mod:NewCDCountTimer(61, 248332, nil, nil, nil, 3)
-local timerFinalDoom					= mod:NewCastTimer(50, 249121, nil, nil, nil, 2)
-local timerDestructorCD					= mod:NewTimer(90, "timerDestructor", 254769, nil, nil, 1)
-local timerObfuscatorCD					= mod:NewTimer(90, "timerObfuscator", 246753, nil, nil, 1)
-local timerPurifierCD					= mod:NewTimer(90, "timerPurifier", 250074, nil, nil, 1)
+local timerFinalDoom					= mod:NewCastTimer(50, 249121, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
+local timerDestructorCD					= mod:NewTimer(90, "timerDestructor", 254769, nil, nil, 1, nil, DBM_CORE_TANK_ICON)
+local timerObfuscatorCD					= mod:NewTimer(90, "timerObfuscator", 246753, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON)
+local timerPurifierCD					= mod:NewTimer(90, "timerPurifier", 250074, nil, nil, 1, nil, DBM_CORE_TANK_ICON)
+local timerBatsCD						= mod:NewTimer(90, "timerBats", 242080, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON)
 --Mythic
 local timerFinalDoomCD					= mod:NewCDCountTimer(90, 249121, nil, nil, nil, 4, nil, DBM_CORE_HEROIC_ICON)
 --local timerFelclawsCD					= mod:NewAITimer(25, 239932, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
@@ -92,11 +94,12 @@ local voiceSwing						= mod:NewVoice(250701, "MeleeDps", nil, 2)--watchstep
 --local voiceMalignantAnguish			= mod:NewVoice(236597, "HasInterrupt")--kickcast
 --local voiceGTFO						= mod:NewVoice(238028, nil, DBM_CORE_AUTO_VOICE4_OPTION_TEXT)--runaway
 --Mythic
+local voiceFinalDoom					= mod:NewVoice(249121, "-Tank")--specialsoon (temp until Group1-5 voices done)
 local voiceArcaneBuildup				= mod:NewVoice(250693)--runout
 local voiceBurningEmbers				= mod:NewVoice(250691)--runout
 local voiceFoulSteps					= mod:NewVoice(250140)--stackhigh
 
-mod:AddSetIconOption("SetIconOnFeedbackTargeted", 249016, true)
+mod:AddSetIconOption("SetIconOnFeedbackTargeted2", 249016, false)
 mod:AddInfoFrameOption(250030, true)
 mod:AddNamePlateOption("NPAuraOnPurification", 250074)
 mod:AddNamePlateOption("NPAuraOnFelShielding", 250555)
@@ -114,24 +117,26 @@ mod.vb.purifiers = 0
 mod.vb.destructorCast = 0
 mod.vb.obfuscatorCast = 0
 mod.vb.purifierCast = 0
+mod.vb.batCast = 0
 mod.vb.targetedIcon = 1
 --local normalWarpTimers = {5.1, 16.0}
 --local heroicWarpTimers = {5.3, 10.0, 23.9, 20.7, 24.0, 19.0}
 --local mythicWarpTimers = {5.3, 9.8, 35.3, 44.8, 34.9}--Excludes the waves that don't fire warp in (obfuscators and purifiers)
 local normalRainOfFelTimers = {}--PTR, recheck
 local heroicRainOfFelTimers = {9.3, 44, 10, 43, 35, 19, 20, 30, 45, 35, 99}--Live, Nov 29
-local mythicRainOfFelTimers = {6, 29, 25, 50, 25, 49.3, 15, 50, 24, 49.2, 25, 50, 50}--Live, Dec 5
+local mythicRainOfFelTimers = {6, 23.1, 25, 49.2, 25, 49.3, 15, 50, 24, 49.2, 25, 50, 50}--Live, Dec 5
 --local mythicSpearofDoomTimers = {}
 local heroicSpearofDoomTimers = {35, 59.2, 64.3, 40, 85.6, 34.1, 65.2}--Live, Nov 29
-local finalDoomTimers = {60, 125, 99.5, 104.6, 99.6}--Live, Dec 5
+local finalDoomTimers = {59.3, 122.7, 99.5, 104.6, 99.6}--Live, Dec 5
 local normalDestructors = {17, 46.2, 32, 52.4, 93.7, 40.9, 50.2, 55.4, 49.2}--Live, Dec 01. Old 17, 39.4, 28, 44.2, 92.4, 41.3, 50, 53.4, 48.1
 local heroicDestructors = {15.7, 35.3, 40.6, 104.6, 134.7, 99.6}
-local mythicDestructors = {23, 23.1, 87.4, 288.4, 20, 79}
+local mythicDestructors = {27, 18, 87.4, 288.4, 20, 79}--Changed Dec 12th
 local normalObfuscators = {193}--Live, Dec 01
 local heroicObfuscators = {80.6, 148.5, 94.7, 99.9}
 local mythicObfuscators = {46, 243, 43.8, 90.8}
 local heroicPurifiers = {125, 66.1, 30.6}
 local mythicPurifiers = {65.7, 82.6, 66.9, 145.7}
+local mythicBats = {200, 79.9, 100, 100}--200, 280, 380, 480
 local warnedAdds = {}
 local addCountToLocationMythic = {
 	["Dest"] = {DBM_CORE_MIDDLE, DBM_CORE_TOP, DBM_CORE_BOTTOM, DBM_CORE_MIDDLE, DBM_CORE_TOP, DBM_CORE_MIDDLE},
@@ -191,16 +196,31 @@ do
 end
 
 --This is backup for fixing timers if destructors die before they ever cast high alert, such as massively overgearing encounter and able to burn it down in less than 10 seconds
-local function checkForDeadDestructor(self)
+local function checkForDeadDestructor(self, forceStart)
 	self:Unschedule(checkForDeadDestructor)
 	self.vb.destructorCast = self.vb.destructorCast + 1
 	local timer = self:IsMythic() and mythicDestructors[self.vb.destructorCast+1] or self:IsHeroic() and heroicDestructors[self.vb.destructorCast+1] or self:IsNormal() and normalDestructors[self.vb.destructorCast+1]
-	if timer then
+	if forceStart then
+		DBM:Debug("checkForDeadDestructor ran with forceStart arg for "..self.vb.destructorCast, 2)
+		local text = self:IsHeroic() and addCountToLocationHeroic["Dest"][self.vb.destructorCast+1] or self:IsNormal() and addCountToLocationNormal["Dest"][self.vb.destructorCast+1] or self:IsMythic() and addCountToLocationMythic["Dest"][self.vb.destructorCast+1] or self.vb.destructorCast+1
+		timerDestructorCD:Start(forceStart, text)--Minus 10 for being 10 seconds after high alert, and minus 10 for wanting when it spawns not high alert cast
+		self:Schedule(forceStart+20, checkForDeadDestructor, self)--10 seconds after high alert
+	elseif timer then
 		local text = self:IsHeroic() and addCountToLocationHeroic["Dest"][self.vb.destructorCast+1] or self:IsNormal() and addCountToLocationNormal["Dest"][self.vb.destructorCast+1] or self:IsMythic() and addCountToLocationMythic["Dest"][self.vb.destructorCast+1] or self.vb.destructorCast+1
 		timerDestructorCD:Start(timer-20, text)--Minus 10 for being 10 seconds after high alert, and minus 10 for wanting when it spawns not high alert cast
 		self:Schedule(timer, checkForDeadDestructor, self)--10 seconds after high alert
 	end
 	DBM:Debug("checkForDeadDestructor ran, which means a destructor died before casting high alert, or DBM has a timer error near: "..self.vb.destructorCast, 2)
+end
+
+local function startBatsStuff(self)
+	self.vb.batCast = self.vb.batCast + 1
+	warnWarpIn:Show(L.Bats)
+	local timer = self:IsMythic() and mythicBats[self.vb.batCast+1]
+	if timer then
+		timerBatsCD:Start(timer, self.vb.batCast+1)
+		self:Schedule(timer, startBatsStuff, self)
+	end
 end
 
 function mod:OnCombatStart(delay)
@@ -211,24 +231,25 @@ function mod:OnCombatStart(delay)
 	self.vb.destructorCast = 0
 	self.vb.obfuscatorCast = 0
 	self.vb.purifierCast = 0
+	self.vb.batCast = 0
 	self.vb.lifeForceCast = 0
 	self.vb.spearCast = 0
 	self.vb.finalDoomCast = 0
 	self.vb.targetedIcon = 1
-	--timerWarpInCD:Start(5.1, 1)
-	--countdownWarpIn:Start(5.1)
 	if not self:IsLFR() then
 		self.vb.lifeRequired = 4
 		if self:IsMythic() then
 			timerRainofFelCD:Start(6-delay, 1)
 			--countdownRainofFel:Start(6-delay)
 			--timerSpearofDoomCD:Start(35-delay, 1)
-			timerDestructorCD:Start(12, DBM_CORE_MIDDLE)
-			self:Schedule(32, checkForDeadDestructor, self)
+			timerDestructorCD:Start(17, DBM_CORE_MIDDLE)
+			self:Schedule(30, checkForDeadDestructor, self, 5)
 			timerObfuscatorCD:Start(46, DBM_CORE_BOTTOM)
 			timerPurifierCD:Start(65.7, DBM_CORE_MIDDLE)
-			timerFinalDoomCD:Start(60-delay, 1)
-			countdownFinalDoom:Start(60-delay)
+			timerFinalDoomCD:Start(59.3-delay, 1)
+			countdownFinalDoom:Start(59.3-delay)
+			timerBatsCD:Start(200, 1)
+			self:Schedule(200, startBatsStuff, self)
 		elseif self:IsHeroic() then
 			timerRainofFelCD:Start(9.3-delay, 1)
 			--countdownRainofFel:Start(9.3-delay)
@@ -269,15 +290,14 @@ function mod:OnCombatEnd()
 	if self.Options.NPAuraOnPurification or self.Options.NPAuraOnFelShielding then
 		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
 	end
-	if self:IsMythic() then
-		DBM:AddMsg(DBM_CORE_NEED_LOGS)
-	end
 end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 249121 then
 		self.vb.finalDoomCast = self.vb.finalDoomCast + 1
+		specWarnFinalDoom:Show(self.vb.finalDoomCast)
+		voiceFinalDoom:Play("specialsoon")
 		timerFinalDoom:Start()
 		local timer = finalDoomTimers[self.vb.finalDoomCast+1]
 		if timer then
@@ -293,7 +313,6 @@ function mod:SPELL_CAST_START(args)
 --[[		if self:IsEasy() then
 			local felElapsed, felTotal = timerRainofFelCD:GetTime(self.vb.rainOfFelCount+1)
 			local felRemaining = felTotal - felElapsed
-			--timerWarpInCD:Update(warpElapsed, warpTotal+24)
 			countdownRainofFel:Cancel()
 			timerRainofFelCD:Update(felElapsed, felTotal+24, self.vb.rainOfFelCount+1)
 			countdownRainofFel:Start(felRemaining+24)
@@ -359,7 +378,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			DBM.Nameplate:Show(true, args.destGUID, spellId)
 		end
 	elseif spellId == 249016 then
-		if self.Options.SetIconOnFeedbackTargeted then
+		if self.Options.SetIconOnFeedbackTargeted2 then
 			self:SetIcon(args.destName, self.vb.targetedIcon)
 		end
 		self.vb.targetedIcon = self.vb.targetedIcon + 1
@@ -405,7 +424,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 250140 then--Foul Steps
 		if args:IsPlayer() then
 			local amount = args.amount or 1
-			if amount >= 9 and amount % 3 == 0 then
+			if amount >= 12 and amount % 4 == 0 then
 				specWarnFoulSteps:Show(amount)
 				voiceFoulSteps:Play("stackhigh")
 			end
@@ -427,7 +446,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			DBM.Nameplate:Hide(true, args.destGUID, spellId)
 		end
 	elseif spellId == 249016 then
-		if self.Options.SetIconOnFeedbackTargeted then
+		if self.Options.SetIconOnFeedbackTargeted2 then
 			self:SetIcon(args.destName, 0)
 		end
 	elseif spellId == 248332 then--Rain of Fel

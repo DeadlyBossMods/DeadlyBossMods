@@ -156,8 +156,8 @@ function mod:OnCombatStart(delay)
 	timerCorruptingMawCD:Start(8.9-delay)--was same on heroic/normal, for now
 	--Shadow doggo
 	if self:IsMythic() then
-		self.vb.longTimer = 89
-		self.vb.mediumTimer = 71.7--71.7-73
+		self.vb.longTimer = 88.3--88.3-89
+		self.vb.mediumTimer = 71.4--71.4-73
 		timerMoltenTouchCD:Start(18-delay)--was same on heroic/mythic, or now
 		timerSiphonCorruptionCD:Start(25.5-delay)
 	elseif self:IsHeroic() then
