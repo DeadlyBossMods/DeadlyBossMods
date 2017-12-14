@@ -36,19 +36,22 @@ L= DBM:GetModLocalization(2025)
 L:SetTimerLocalization({
 	timerObfuscator		=	"Next Obfuscator (%s)",
 	timerDestructor 	=	"Next Destructor (%s)",
-	timerPurifier 		=	"Next Purifier (%s)"
+	timerPurifier 		=	"Next Purifier (%s)",
+	timerBats	 		=	"Next Bats (%s)"
 })
 
 L:SetOptionLocalization({
 	timerObfuscator		=	DBM_CORE_AUTO_TIMER_OPTIONS["cdcount"]:format("ej16501"),
 	timerDestructor 	=	DBM_CORE_AUTO_TIMER_OPTIONS["cdcount"]:format("ej16502"),
-	timerPurifier 		=	DBM_CORE_AUTO_TIMER_OPTIONS["cdcount"]:format("ej16500")
+	timerPurifier 		=	DBM_CORE_AUTO_TIMER_OPTIONS["cdcount"]:format("ej16500"),
+	timerBats	 		=	DBM_CORE_AUTO_TIMER_OPTIONS["cdcount"]:format("ej17039")
 })
 
 L:SetMiscLocalization({
 	Obfuscators =	"Obfuscator",
 	Destructors =	"Destructor",
-	Purifiers 	=	"Purifier"
+	Purifiers 	=	"Purifier",
+	Bats 		=	"Bats"
 })
 
 ---------------------------

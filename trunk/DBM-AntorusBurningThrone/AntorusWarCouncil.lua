@@ -229,8 +229,8 @@ function mod:SPELL_CAST_START(args)
 		timerShockGrenadeCD:Stop()
 		timerExploitWeaknessCD:Stop()
 		countdownExploitWeakness:Cancel()
-		timerExploitWeaknessCD:Start(12)--12-14
-		countdownExploitWeakness:Start(12)
+		timerExploitWeaknessCD:Start(10.2)--10.2-14
+		countdownExploitWeakness:Start(10.2)
 		local cid = self:GetCIDFromGUID(args.sourceGUID)
 		if cid == 122369 then--Chief Engineer Ishkar
 			timerWarpFieldCD:Stop()
