@@ -84,12 +84,12 @@ local yellSargFear					= mod:NewYell(257931)
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
 --Stage Two: The Protector Redeemed
 local specWarnSoulburst				= mod:NewSpecialWarningMoveAway(250669, nil, nil, nil, 1, 2)
-local yellSoulburst					= mod:NewPosYell(250669)
-local yellSoulburstFades			= mod:NewShortFadesYell(250669)
+local yellSoulburst					= mod:NewPosYell(250669, DBM_CORE_AUTO_YELL_CUSTOM_POSITION)
+local yellSoulburstFades			= mod:NewIconFadesYell(250669)
 local specWarnSoulbomb				= mod:NewSpecialWarningYou(251570, nil, nil, nil, 1, 2)
 local specWarnSoulbombMoveTo		= mod:NewSpecialWarningMoveTo(251570, nil, nil, nil, 1, 7)
-local yellSoulbomb					= mod:NewYell(251570)
-local yellSoulbombFades				= mod:NewShortFadesYell(251570)
+local yellSoulbomb					= mod:NewPosYell(251570, DBM_CORE_AUTO_YELL_CUSTOM_POSITION)
+local yellSoulbombFades				= mod:NewIconFadesYell(251570)
 local specWarnEdgeofObliteration	= mod:NewSpecialWarningSpell(255826, nil, nil, nil, 2, 2)
 local specWarnAvatarofAggra			= mod:NewSpecialWarningYou(255199, nil, nil, nil, 1, 2)
 --Stage Three: The Arcane Masters
@@ -416,13 +416,13 @@ end
 
 do
 	--Stupid work around for upvale limit within SPELL_AURA_APPLIED
-	local function handleBomb(self, targetName)
+	local function handleBomb(self, targetName, spellName)
 		if targetName == UnitName("player") then
 			specWarnSoulbomb:Show()
 			voiceSoulbomb:Play("targetyou")
 			self:Schedule(7, delayedBoonCheck, self)
-			yellSoulbomb:Yell()
-			yellSoulbombFades:Countdown(15)
+			yellSoulbomb:Yell(2, spellName, 2)
+			yellSoulbombFades:Countdown(15, nil, 2)
 		elseif playerAvatar then
 			specWarnSoulbombMoveTo:Show(targetName)
 			voiceSoulbomb:Play("helpsoak")
@@ -497,15 +497,15 @@ do
 				specWarnSoulburst:Show()
 				voiceSoulburst:Play("targetyou")
 				voiceSoulburst:Schedule(10, "runout")
-				yellSoulburst:Yell(icon, icon, icon)
-				yellSoulburstFades:Countdown(15)
+				yellSoulburst:Yell(icon, args.spellName, icon)
+				yellSoulburstFades:Countdown(15, nil, icon)
 			end
 			if self.Options.SetIconOnSoulBurst then
 				self:SetIcon(args.destName, icon)
 			end
 			self.vb.soulBurstIcon = self.vb.soulBurstIcon + 4--Icons 3 and 7 used to match BW
 		elseif spellId == 251570 then
-			handleBomb(self, args.destName)
+			handleBomb(self, args.destName, args.spellName)
 		elseif spellId == 255199 then
 			if self.vb.phase == 2 then--Sometime gets cast once in p3, don't want to start timer if it does
 				timerAvatarofAggraCD:Start()
