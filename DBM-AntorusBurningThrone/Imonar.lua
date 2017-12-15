@@ -272,7 +272,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				DBM.RangeCheck:Show(5)
 			end
 		end
-	elseif spellId == 247641 and args:IsPlayer() and self:IsTank() then
+	elseif spellId == 247641 and args:IsPlayer() and (self:IsTank() or self:UnitClass() == "ROGUE") then
 		yellStasisTrap:Yell()
 	end
 end
