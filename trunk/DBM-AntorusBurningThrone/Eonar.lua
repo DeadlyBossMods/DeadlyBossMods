@@ -174,13 +174,13 @@ do
 				addLine(UnitName("boss1"), currentPower)
 			end
 		end
-		if UnitExists("boss2") then
+		--if UnitExists("boss2") then
 			local cid = mod:GetUnitCreatureId("boss2")
 			if cid ~= 124445 then--Filter Paraxxus
 				local currentPower = UnitPower("boss2", 10) or 0
 				addLine(UnitName("boss2"), currentPower)
 			end
-		end
+		--end
 		addLine(lifeForceName, mod.vb.lifeForceCast.."/"..mod.vb.lifeRequired)
 		if mod.vb.obfuscators > 0 then
 			addLine(L.Obfuscators, mod.vb.obfuscators)
