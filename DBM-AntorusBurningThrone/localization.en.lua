@@ -51,7 +51,9 @@ L:SetMiscLocalization({
 	Obfuscators =	"Obfuscator",
 	Destructors =	"Destructor",
 	Purifiers 	=	"Purifier",
-	Bats 		=	"Bats"
+	Bats 		=	"Bats",
+	EonarHealth	= 	"Eonar Health",
+	EonarPower	= 	"Eonar Power"
 })
 
 ---------------------------
