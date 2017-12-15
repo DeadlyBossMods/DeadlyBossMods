@@ -167,22 +167,20 @@ do
 		table.wipe(lines)
 		table.wipe(sortedLines)
 		--Boss Powers first
-		if UnitExists("boss1") then
-			local cid = mod:GetUnitCreatureId("boss1")
-			if cid ~= 124445 then--Filter Paraxxus
-				local currentPower = UnitPower("boss1", 10) or 0
-				addLine(UnitName("boss1"), currentPower)
-			end
+		local cid = mod:GetUnitCreatureId("boss1") or 0
+		if cid ~= 124445 then--Filter Paraxus
+			local currentPower = UnitPower("boss1", 10) or 0
+			local currentHealth = UnitHealth("boss1")/UnitHealthMax("boss1") * 100 or 100
+			addLine(L.EonarHealth, math.floor(currentHealth).."%")
+			addLine(L.EonarPower, currentPower)
 		end
-		--if UnitExists("boss2") then
-			local cid = mod:GetUnitCreatureId("boss2")
-			if cid ~= 124445 then--Filter Paraxxus
-				local currentPower = UnitPower("boss2", 10) or 0
-				local currentHealth = UnitHealth("boss2")/UnitHealthMax("boss2")*100 or 100
-				addLine(L.EonarHealth, math.floor(currentHealth).."%")
-				addLine(L.EonarPower, currentPower)
-			end
-		--end
+		local cid2 = mod:GetUnitCreatureId("boss2") or 0
+		if cid2 ~= 124445 then--Filter Paraxus
+			local currentPower = UnitPower("boss2", 10) or 0
+			local currentHealth = UnitHealth("boss2")/UnitHealthMax("boss2") * 100 or 100
+			addLine(L.EonarHealth, math.floor(currentHealth).."%")
+			addLine(L.EonarPower, currentPower)
+		end
 		addLine(lifeForceName, mod.vb.lifeForceCast.."/"..mod.vb.lifeRequired)
 		if mod.vb.obfuscators > 0 then
 			addLine(L.Obfuscators, mod.vb.obfuscators)
