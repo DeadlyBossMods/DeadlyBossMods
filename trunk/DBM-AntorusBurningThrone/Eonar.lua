@@ -178,7 +178,7 @@ do
 			local cid = mod:GetUnitCreatureId("boss2")
 			if cid ~= 124445 then--Filter Paraxxus
 				local currentPower = UnitPower("boss2", 10) or 0
-				addLine(UnitName("boss2"), currentPower)
+				addLine(UnitName("boss2") or "Eonar", currentPower)
 			end
 		--end
 		addLine(lifeForceName, mod.vb.lifeForceCast.."/"..mod.vb.lifeRequired)
@@ -248,8 +248,8 @@ function mod:OnCombatStart(delay)
 			timerPurifierCD:Start(65.7, DBM_CORE_MIDDLE)
 			timerFinalDoomCD:Start(59.3-delay, 1)
 			countdownFinalDoom:Start(59.3-delay)
-			timerBatsCD:Start(200, 1)
-			self:Schedule(200, startBatsStuff, self)
+			timerBatsCD:Start(195, 1)
+			self:Schedule(195, startBatsStuff, self)
 		elseif self:IsHeroic() then
 			timerRainofFelCD:Start(9.3-delay, 1)
 			--countdownRainofFel:Start(9.3-delay)
