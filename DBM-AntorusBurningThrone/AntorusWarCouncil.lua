@@ -74,7 +74,7 @@ local specWarnDemonicCharge				= mod:NewSpecialWarningClose(253040, nil, nil, ni
 local yellDemonicCharge					= mod:NewYell(253040)
 --Out of Pod
 ----Admiral Svirax
-local specWarnShockGrenade				= mod:NewSpecialWarningMoveAway(253040, nil, nil, nil, 1, 2)
+local specWarnShockGrenade				= mod:NewSpecialWarningMoveAway(244737, nil, nil, nil, 1, 2)
 local yellShockGrenade					= mod:NewShortYell(244737)
 local yellShockGrenadeFades				= mod:NewShortFadesYell(244737)
 ----Chief Engineer Ishkar
@@ -126,7 +126,7 @@ local voicePyroblast					= mod:NewVoice(246505, "HasInterrupt")--kickcast
 local voiceDemonicCharge				= mod:NewVoice(253040)--watchstep/runaway
 --Out of Pod
 ----Admiral Svirax
-local voiceShockGrenade					= mod:NewVoice(244722)--runout
+local voiceShockGrenade					= mod:NewVoice(244737)--runout
 ----Chief Engineer Ishkar
 local voiceWarpField					= mod:NewVoice(244821)--justrun/keepmove?
 ----General Erodus
