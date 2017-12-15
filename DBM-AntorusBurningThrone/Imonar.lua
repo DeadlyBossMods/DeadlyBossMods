@@ -72,7 +72,7 @@ local yellEmpPulseGrenade				= mod:NewYell(250006)
 --Intermission: On Deadly Ground
 
 --Stage One: Attack Force
-local timerShocklanceCD					= mod:NewCDTimer(4.4, 247367, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--4.4-5.1
+local timerShocklanceCD					= mod:NewCDTimer(4, 247367, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--4-5.1
 local timerSleepCanisterCD				= mod:NewCDTimer(11.3, 247552, nil, nil, nil, 3, nil, DBM_CORE_MAGIC_ICON)--11.3-13.4
 local timerPulseGrenadeCD				= mod:NewCDTimer(17, 247376, nil, nil, nil, 3)--17?
 --Stage Two: Contract to Kill
@@ -107,16 +107,43 @@ local voiceEmpPulseGrenade				= mod:NewVoice(250006)--range5
 --local voiceMalignantAnguish			= mod:NewVoice(236597, "HasInterrupt")--kickcast
 
 --mod:AddSetIconOption("SetIconOnFocusedDread", 238502, true)
---mod:AddInfoFrameOption(239154, true)
+--mod:AddInfoFrameOption(250006, true)
 mod:AddRangeFrameOption(5, 250006)
 
 mod.vb.phase = 1
 mod.vb.shrapnalCast = 0
+mod.vb.empoweredPulseActive = 0
 local mythicP5ShrapnalTimers = {15, 15.8, 14.5, 12, 10}
+
+local debuffFilter
+local UnitDebuff = UnitDebuff
+local playerSleepDebuff = false
+local empoweredPulse = GetSpellInfo(250006)--Empowered Pulse Grenade
+do
+	debuffFilter = function(uId)
+		if UnitDebuff(uId, empoweredPulse) then
+			return true
+		end
+	end
+end
+
+local function updateRangeFrame(self)
+	if not self.Options.RangeFrame then return end
+	if playerSleepDebuff then
+		DBM.RangeCheck:Show(10)--There are no 15 yard items that are actually 15 yard, this will round to 18 :\
+	elseif UnitDebuff("player", empoweredPulse) then
+		DBM.RangeCheck:Show(5)
+	elseif self.vb.empoweredPulseActive > 0 then--Spread for Horn of Valor
+		DBM.RangeCheck:Show(5, debuffFilter)
+	else
+		DBM.RangeCheck:Hide()
+	end
+end
 
 function mod:OnCombatStart(delay)
 	self.vb.phase = 1
 	self.vb.shrapnalCast = 0
+	self.vb.empoweredPulseActive = 0
 	timerShocklanceCD:Start(4.2-delay)--4.4 Mythic, 4.3 normal, 4.2 heroic
 	timerSleepCanisterCD:Start(7-delay)
 	if not self:IsLFR() then--Don't seem to be in LFR
@@ -150,8 +177,8 @@ function mod:SPELL_CAST_START(args)
 				timerPulseGrenadeCD:Start(13.3)
 				countdownPulseGrenade:Start(13.3)
 			else
-				timerPulseGrenadeCD:Start(26)
-				countdownPulseGrenade:Start(26)
+				timerPulseGrenadeCD:Start(25.5)
+				countdownPulseGrenade:Start(25.5)
 			end
 		end
 	elseif spellId == 247923 or spellId == 248070 then
@@ -259,19 +286,22 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 247565 then
 		warnSlumberGas:CombinedShow(0.3, args.destName)
-		if args:IsPlayer() and not self:CheckNearby(10) then
-			yellSlumberGas:Yell()
+		if args:IsPlayer() then
+			playerSleepDebuff = false
+			updateRangeFrame(self)
+			if self:CheckNearby(10) then
+				yellSlumberGas:Yell()
+			end
 		end
 	elseif spellId == 250006 then
+		self.vb.empoweredPulseActive = self.vb.empoweredPulseActive + 1
 		warnEmpoweredPulseGrenade:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			specWarnEmpPulseGrenade:Show()
 			voiceEmpPulseGrenade:Play("range5")
 			yellEmpPulseGrenade:Yell()
-			if self.Options.RangeFrame then
-				DBM.RangeCheck:Show(5)
-			end
 		end
+		updateRangeFrame(self)
 	elseif spellId == 247641 and args:IsPlayer() and (self:IsTank() or self:UnitClass() == "ROGUE") then
 		yellStasisTrap:Yell()
 	end
@@ -318,11 +348,8 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerShrapnalBlastCD:Start(15.5)--Empowered
 		end
 	elseif spellId == 250006 then
-		if args:IsPlayer() then
-			if self.Options.RangeFrame then
-				DBM.RangeCheck:Hide()
-			end
-		end
+		self.vb.empoweredPulseActive = self.vb.empoweredPulseActive - 1
+		updateRangeFrame(self)
 	end
 end
 
@@ -354,6 +381,8 @@ function mod:RAID_BOSS_WHISPER(msg)
 		specWarnSleepCanister:Show()
 		voiceSleepCanister:Play("runout")
 		yellSleepCanister:Yell()
+		playerSleepDebuff = true
+		updateRangeFrame(self)
 	end
 end
 
