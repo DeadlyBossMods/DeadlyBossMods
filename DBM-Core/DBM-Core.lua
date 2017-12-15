@@ -60,9 +60,9 @@ if IsTestBuild() then
 end
 
 -- dual profile setup
-local _, class = UnitClass("player")
+local _, playerClass = UnitClass("player")
 DBM_UseDualProfile = true
-if class == "MAGE" or class == "WARLOCK" and class == "ROGUE" then
+if playerClass == "MAGE" or playerClass == "WARLOCK" and playerClass == "ROGUE" then
 	DBM_UseDualProfile = false
 end
 DBM_CharSavedRevision = 2
@@ -2567,7 +2567,7 @@ do
 				raid[playerName].shortname = playerName
 				raid[playerName].guid = UnitGUID("player")
 				raid[playerName].rank = 0
-				raid[playerName].class = class
+				raid[playerName].class = playerClass
 				raid[playerName].id = "player"
 				raid[playerName].groupId = 0
 				raid[playerName].revision = DBM.Revision
@@ -2706,7 +2706,7 @@ do
 			raid[playerName].shortname = playerName
 			raid[playerName].guid = UnitGUID("player")
 			raid[playerName].rank = 0
-			raid[playerName].class = class
+			raid[playerName].class = playerClass
 			raid[playerName].id = "player"
 			raid[playerName].groupId = 0
 			raid[playerName].revision = DBM.Revision
@@ -3347,7 +3347,7 @@ do
 
 		-- force enable dual profile (change default)
 		if DBM_CharSavedRevision < 12976 then
-			if class ~= "MAGE" and class ~= "WARLOCK" and class ~= "ROGUE" then
+			if playerClass ~= "MAGE" and playerClass ~= "WARLOCK" and playerClass ~= "ROGUE" then
 				DBM_UseDualProfile = true
 			end
 		end
@@ -7922,6 +7922,14 @@ do
 			return false
 		end
 	end
+end
+
+function bossModPrototype:UnitClass(uId)
+	if uId then--Return unit requested
+		local _, class = UnitClass(uId)
+		return class
+	end
+	return playerClass--else return "player"
 end
 
 function bossModPrototype:IsTank()
