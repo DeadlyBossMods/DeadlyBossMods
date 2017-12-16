@@ -6,7 +6,7 @@ mod:SetCreatureID(124158)--or 124158 or 125692
 mod:SetEncounterID(2082)
 mod:SetZone()
 --mod:SetBossHPInfoToHighest()
---mod:SetUsedIcons(1, 2, 3, 4, 5, 6)
+mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
 mod:SetHotfixNoticeRev(16961)
 mod.respawnTime = 35
 
@@ -106,14 +106,15 @@ local voiceEmpPulseGrenade				= mod:NewVoice(250006)--range5
 
 --local voiceMalignantAnguish			= mod:NewVoice(236597, "HasInterrupt")--kickcast
 
---mod:AddSetIconOption("SetIconOnFocusedDread", 238502, true)
---mod:AddInfoFrameOption(250006, true)
-mod:AddRangeFrameOption(5, 250006)
+mod:AddSetIconOption("SetIconOnEmpPulse", 250006, true)
+mod:AddInfoFrameOption(250006, true)
+mod:AddRangeFrameOption("5/10")
 
 mod.vb.phase = 1
 mod.vb.shrapnalCast = 0
 mod.vb.empoweredPulseActive = 0
 local mythicP5ShrapnalTimers = {15, 15.8, 14.5, 12, 10}
+local empoweredPulseTargets = {}
 
 local debuffFilter
 local UnitDebuff = UnitDebuff
@@ -140,7 +141,31 @@ local function updateRangeFrame(self)
 	end
 end
 
+local updateInfoFrame
+do
+	local lines = {}
+	local sortedLines = {}
+	local function addLine(key, value)
+		-- sort by insertion order
+		lines[key] = value
+		sortedLines[#sortedLines + 1] = key
+	end
+	updateInfoFrame = function()
+		table.wipe(lines)
+		table.wipe(sortedLines)
+		for i = 1, #empoweredPulseTargets do
+			local name = empoweredPulseTargets[i]
+			addLine(name, i)
+		end
+		if #empoweredPulseTargets == 0 then--None found, hide infoframe because all broke
+			DBM.InfoFrame:Hide()
+		end
+		return lines, sortedLines
+	end
+end
+
 function mod:OnCombatStart(delay)
+	table.wipe(empoweredPulseTargets)
 	self.vb.phase = 1
 	self.vb.shrapnalCast = 0
 	self.vb.empoweredPulseActive = 0
@@ -159,8 +184,12 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnCombatEnd()
+	table.wipe(empoweredPulseTargets)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
+	end
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:Hide()
 	end
 end
 
@@ -302,6 +331,20 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellEmpPulseGrenade:Yell()
 		end
 		updateRangeFrame(self)
+		if not tContains(empoweredPulseTargets, args.destName) then
+			table.insert(empoweredPulseTargets, args.destName)
+		end
+		if self.Options.InfoFrame then
+			if #empoweredPulseTargets == 1 then
+				DBM.InfoFrame:SetHeader(args.spellName)
+				DBM.InfoFrame:Show(5, "function", updateInfoFrame, false, true, true)--No sort function, use icons, no onupdate
+			else
+				DBM.InfoFrame:Update()
+			end
+		end
+		if self.Options.SetIconOnEmpPulse and #empoweredPulseTargets < 9 then
+			self:SetIcon(args.destName, #empoweredPulseTargets)
+		end
 	elseif spellId == 247641 and args:IsPlayer() and (self:IsTank() or self:UnitClass() == "ROGUE") then
 		yellStasisTrap:Yell()
 	end
@@ -349,7 +392,14 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif spellId == 250006 then
 		self.vb.empoweredPulseActive = self.vb.empoweredPulseActive - 1
+		tDeleteItem(empoweredPulseTargets, args.destName)
 		updateRangeFrame(self)
+		if self.Options.InfoFrame then
+			DBM.InfoFrame:Update()
+		end
+		if self.Options.SetIconOnEmpPulse then
+			self:SetIcon(args.destName, 0)
+		end
 	end
 end
 
