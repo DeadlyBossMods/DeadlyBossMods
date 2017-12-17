@@ -1262,6 +1262,7 @@ do
 				"LFG_PROPOSAL_SUCCEEDED",
 				"READY_CHECK",
 				"UPDATE_BATTLEFIELD_STATUS",
+				"PLAY_MOVIE",
 				"CINEMATIC_START",
 				"PLAYER_LEVEL_UP",
 				"PLAYER_SPECIALIZATION_CHANGED",
@@ -6712,31 +6713,33 @@ do
 		[489] = true, -- Unknown, currently encrypted
 		[490] = true, -- Unknown, currently encrypted
 	}
-	MovieFrame:HookScript("OnEvent", function(self, event, id)
-		if event == "PLAY_MOVIE" and id and not neverFilter[id] then
+	function DBM:PLAY_MOVIE(id)
+		if id and not neverFilter[id] then
 			DBM:Debug("PLAY_MOVIE fired for ID: "..id, 2)
 			local isInstance, instanceType = IsInInstance()
 			if not isInstance or C_Garrison:IsOnGarrisonMap() or instanceType == "scenario" or DBM.Options.MovieFilter == "Never" then return end
 			if DBM.Options.MovieFilter == "Block" or DBM.Options.MovieFilter == "AfterFirst" and DBM.Options.MoviesSeen[id] then
-				MovieFrame_OnMovieFinished(self)
+				--MovieFrame_OnMovieFinished(self)--Calling this in combat triggers taints now
+				MovieFrame:Hide()--can only just hide movie frame safely now, which means can't stop audio anymore :\
 				DBM:AddMsg(DBM_CORE_MOVIE_SKIPPED)
 			else
 				DBM.Options.MoviesSeen[id] = true
 			end
 		end
-	end)
+	end
 
 	function DBM:CINEMATIC_START()
 		self:Debug("CINEMATIC_START fired", 2)
 		local isInstance, instanceType = IsInInstance()
 		if not isInstance or C_Garrison:IsOnGarrisonMap() or instanceType == "scenario" or self.Options.MovieFilter == "Never" then return end
 		SetMapToCurrentZone()
+		local currentMapID = GetCurrentMapAreaID()
 		local currentFloor = GetCurrentMapDungeonLevel() or 0
-		if self.Options.MovieFilter == "Block" or self.Options.MovieFilter == "AfterFirst" and self.Options.MoviesSeen[LastInstanceMapID..currentFloor] then
+		if self.Options.MovieFilter == "Block" or self.Options.MovieFilter == "AfterFirst" and self.Options.MoviesSeen[currentMapID..currentFloor] then
 			CinematicFrame_CancelCinematic()
 			self:AddMsg(DBM_CORE_MOVIE_SKIPPED)
 		else
-			self.Options.MoviesSeen[LastInstanceMapID..currentFloor] = true
+			self.Options.MoviesSeen[currentMapID..currentFloor] = true
 		end
 	end
 end
