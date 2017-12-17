@@ -75,6 +75,7 @@ local timerObfuscatorCD					= mod:NewTimer(90, "timerObfuscator", 246753, nil, n
 local timerPurifierCD					= mod:NewTimer(90, "timerPurifier", 250074, nil, nil, 1, nil, DBM_CORE_TANK_ICON)
 local timerBatsCD						= mod:NewTimer(90, "timerBats", 242080, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON)
 --Mythic
+mod:AddTimerLine(ENCOUNTER_JOURNAL_SECTION_FLAG12)
 local timerFinalDoomCD					= mod:NewCDCountTimer(90, 249121, nil, nil, nil, 4, nil, DBM_CORE_HEROIC_ICON)
 --local timerFelclawsCD					= mod:NewAITimer(25, 239932, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 
