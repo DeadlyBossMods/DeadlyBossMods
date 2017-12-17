@@ -44,7 +44,7 @@ mod:RegisterEventsInCombat(
 --Stage: Deployment
 local warnShatteringStrike				= mod:NewSpellAnnounce(248375, 2)
 local warnDiabolicBomb					= mod:NewSpellAnnounce(246779, 3)
-local warnReverberatingStrike			= mod:NewTargetAnnounce(246692, 3)
+local warnReverberatingStrike			= mod:NewTargetAnnounce(254926, 3)
 --Reavers (or empowered boss from reaver deaths)
 local warnDecimation					= mod:NewTargetAnnounce(246687, 4)
 local warnDemolish						= mod:NewTargetAnnounce(246692, 4)
