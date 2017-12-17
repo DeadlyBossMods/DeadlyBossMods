@@ -129,7 +129,6 @@ mod:AddTimerLine(SCENARIO_STAGE:format(3))
 local timerCosmicRayCD				= mod:NewCDTimer(19.9, 252729, nil, nil, nil, 3)--All adds seem to cast it at same time, so one timer for all
 local timerCosmicBeaconCD			= mod:NewCDTimer(19.9, 252616, nil, nil, nil, 3)--All adds seem to cast it at same time, so one timer for all
 --local timerCosmicPowerCD			= mod:NewCDTimer(19.9, 255935, nil, nil, nil, 3)--All adds seem to cast it at same time, so one timer for all
-local timerDiscsofNorgCD			= mod:NewCDTimer(12, 252516, nil, nil, nil, 6)
 local timerDiscsofNorg				= mod:NewCastTimer(12, 252516, nil, nil, nil, 6)
 mod:AddTimerLine(ENCOUNTER_JOURNAL_SECTION_FLAG12)--Mythic 3
 local timerSoulrendingScytheCD		= mod:NewCDTimer(8.5, 258838, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
@@ -271,8 +270,8 @@ function mod:OnCombatStart(delay)
 		berserkTimer:Start(720-delay)
 	end
 	if self.Options.InfoFrame then
-		DBM.InfoFrame:SetHeader(_G["7.3_ARGUS_RAID_DEATH_TITAN_ENERGY"])
-		DBM.InfoFrame:Show(2, "enemypower", 2)
+		--DBM.InfoFrame:SetHeader(_G["7.3_ARGUS_RAID_DEATH_TITAN_ENERGY"])
+		DBM.InfoFrame:Show(4, "enemypower", 2)
 		--DBM.InfoFrame:Show(7, "function", updateInfoFrame, false, false)
 	end
 	if self.Options.NPAuraOnInevitability or self.Options.NPAuraOnCosmosSword or self.Options.NPAuraOnEternalBlades or self.Options.NPAuraOnVulnerability then
@@ -356,7 +355,6 @@ function mod:SPELL_CAST_START(args)
 		timerAvatarofAggraCD:Stop()
 		--timerSargGazeCD:Stop()
 		if not self:IsMythic() then
-			timerDiscsofNorgCD:Start(15)
 			timerCosmicRayCD:Start(30)
 			--timerCosmicPowerCD:Start(36.5)
 			timerCosmicBeaconCD:Start(40)
@@ -370,7 +368,6 @@ function mod:SPELL_CAST_START(args)
 		--timerCosmicPowerCD:Stop()
 		timerCosmicBeaconCD:Stop()
 		timerDiscsofNorg:Stop()
-		timerDiscsofNorgCD:Stop()
 		timerSargGazeCD:Stop()
 		timerNextPhase:Start(35)--or 53.8
 	elseif spellId == 257619 then--Gift of the Lifebinder (p4)
