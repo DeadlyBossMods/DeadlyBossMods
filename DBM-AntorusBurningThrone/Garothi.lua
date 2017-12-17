@@ -46,9 +46,8 @@ local specWarnEradication				= mod:NewSpecialWarningRun(244969, nil, nil, nil, 4
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
 --Decimator
 local specWarnDecimation				= mod:NewSpecialWarningMoveAway(244410, nil, nil, nil, 1, 2)
-local yellDecimation					= mod:NewFadesYell(244410)
-local specWarnDecimationStun			= mod:NewSpecialWarningYou(246919, nil, nil, nil, 1, 2)--Mythic
-local yellDecimationStun				= mod:NewFadesYell(246919)--Mythic
+local yellDecimation					= mod:NewShortYell(244410)
+local yellDecimationFades				= mod:NewShortFadesYell(244410)
 --Annihilator
 local specWarnAnnihilation				= mod:NewSpecialWarningSpell(244761, nil, nil, nil, 1, 2)
 
@@ -71,7 +70,6 @@ local voiceEradication					= mod:NewVoice(244969)--justrun
 --local voiceGTFO						= mod:NewVoice(238028, nil, DBM_CORE_AUTO_VOICE4_OPTION_TEXT)--runaway
 --Decimator
 local voiceDecimation					= mod:NewVoice(244410)--runout
-local voiceDecimationStun				= mod:NewVoice(246919)--targetyou
 --Annihilator
 local voiceAnnihilation					= mod:NewVoice(244761)--helpsoak
 
@@ -210,24 +208,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.deciminationActive = self.vb.deciminationActive + 1
 		warnDecimation:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
-			local _, _, _, _, _, _, expires = UnitDebuff("player", args.spellName)
-			local remaining
-			if expires then 
-				remaining = expires-GetTime()
+			specWarnDecimation:Show()
+			yellDecimation:Yell()
+			if spellId ~= 246919 then
+				yellDecimationFades:Countdown(5, 3)
 			end
-			if spellId == 246919 then--Mythic rules
-				specWarnDecimationStun:Show()
-				if remaining then
-					yellDecimationStun:Countdown(remaining)
-				end
-				voiceDecimationStun:Play("targetyou")
-			else
-				specWarnDecimation:Show()
-				if remaining then
-					yellDecimation:Countdown(remaining)
-				end
-				voiceDecimation:Play("runout")
-			end
+			voiceDecimation:Play("runout")
 		end
 		if self.Options.SetIconOnDecimation then
 			self:SetIcon(args.destName, self.vb.deciminationActive)
@@ -253,8 +239,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 244410 or spellId == 246919 then
 		self.vb.deciminationActive = self.vb.deciminationActive - 1
 		if args:IsPlayer() then
-			yellDecimationStun:Cancel()
-			yellDecimation:Cancel()
+			yellDecimationFades:Cancel()
 		end
 		if self.Options.SetIconOnDecimation then
 			self:SetIcon(args.destName, 0)
