@@ -53,7 +53,7 @@ local warnPhase5						= mod:NewPhaseAnnounce(5, 2)
 --Stage One: Attack Force
 local specWarnShocklance				= mod:NewSpecialWarningTaunt(247367, nil, nil, nil, 1, 2)
 local specWarnSleepCanister				= mod:NewSpecialWarningYou(247552, nil, nil, nil, 1, 2)
-local yellSleepCanister					= mod:NewYell(247552)
+local yellSleepCanister					= mod:NewPosYell(247552, DBM_CORE_AUTO_YELL_CUSTOM_POSITION)
 local yellSlumberGas					= mod:NewYell(247565, L.DispelMe)--Auto yell when safe to dispel (no players within 10 yards)
 local specWarnSleepCanisterNear			= mod:NewSpecialWarningClose(247552, nil, nil, nil, 1, 2)
 local specWarnPulseGrenade				= mod:NewSpecialWarningDodge(247376, nil, nil, nil, 1, 2)
@@ -437,7 +437,6 @@ function mod:RAID_BOSS_WHISPER(msg)
 	if msg:find("spell:254244") then
 		specWarnSleepCanister:Show()
 		voiceSleepCanister:Play("runout")
-		yellSleepCanister:Yell()
 		playerSleepDebuff = true
 		updateRangeFrame(self)
 	end
@@ -445,24 +444,26 @@ end
 
 do
 	local playerName = UnitName("player")
+	local spellName = GetSpellInfo(254244)
 	function mod:OnTranscriptorSync(msg, targetName)
 		if msg:find("spell:254244") then
 			targetName = Ambiguate(targetName, "none")
 			if self:AntiSpam(4, targetName) then
 				warnSleepCanister:CombinedShow(0.3, targetName)
-				if targetName ~= playerName and self:CheckNearby(10, targetName) then
+				if targetName == playerName then
+					local icon = self.vb.sleepCanisterIcon
+					yellSleepCanister:Yell(icon, spellName, icon)
+				elseif self:CheckNearby(10, targetName) then
 					specWarnSleepCanisterNear:CombinedShow(0.3, targetName)
 					voiceSleepCanister:Play("runaway")
 				end
 			end
-			if not tContains(empoweredPulseTargets, targetName) and self.Options.SetIconOnEmpPulse2 then--Already marked for Empowered pulse, don't change mark
-				if self.Options.SetIconOnSleepCanister then
-					self:SetIcon(targetName, self.vb.sleepCanisterIcon)
-				end
-				self.vb.sleepCanisterIcon = self.vb.sleepCanisterIcon + 1
-				if self.vb.sleepCanisterIcon == 3 then
-					self.vb.sleepCanisterIcon = 1
-				end
+			if self.Options.SetIconOnSleepCanister then
+				self:SetIcon(targetName, self.vb.sleepCanisterIcon)
+			end
+			self.vb.sleepCanisterIcon = self.vb.sleepCanisterIcon + 1
+			if self.vb.sleepCanisterIcon == 3 then
+				self.vb.sleepCanisterIcon = 1
 			end
 		end
 	end
