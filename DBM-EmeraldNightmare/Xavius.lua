@@ -525,7 +525,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	elseif spellId == 226194 then--Writhing Deep
 		warnNightmareTentacles:Show()
 		timerNightmareTentacleCD:Start()
-	elseif spellId == 205843 then
+	elseif spellId == 205843 and self:IsMythic() then
 		self.vb.dreamCount = self.vb.dreamCount + 1
 		local count = self.vb.dreamCount
 		specWarnDreaming:Show(count)
