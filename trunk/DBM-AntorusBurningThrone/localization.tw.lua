@@ -36,7 +36,9 @@ L:SetMiscLocalization({
 	Obfuscators =	"魔能匿蹤者",
 	Destructors =	"魔能毀滅者",
 	Purifiers 	=	"魔能淨化者",
-	Bats 		=	"風掣魔蝠"
+	Bats 		=	"風掣魔蝠",
+	EonarHealth	= 	"伊歐娜體力",
+	EonarPower	= 	"伊歐娜能量"
 })
 
 ---------------------------
