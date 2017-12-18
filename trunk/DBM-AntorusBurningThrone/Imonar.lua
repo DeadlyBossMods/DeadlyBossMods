@@ -17,7 +17,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS 247367 247552 247687 250255 254244",
 	"SPELL_AURA_APPLIED 247367 247552 247565 247687 250255 250006 247641",
 	"SPELL_AURA_APPLIED_DOSE 247367 247687 250255",
-	"SPELL_AURA_REMOVED 248233 250135 250006",
+	"SPELL_AURA_REMOVED 248233 250135 250006 247565",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 --	"UNIT_DIED",
@@ -106,13 +106,15 @@ local voiceEmpPulseGrenade				= mod:NewVoice(250006)--range5
 
 --local voiceMalignantAnguish			= mod:NewVoice(236597, "HasInterrupt")--kickcast
 
-mod:AddSetIconOption("SetIconOnEmpPulse", 250006, true)
+mod:AddSetIconOption("SetIconOnSleepCanister", 247552, true)
+mod:AddSetIconOption("SetIconOnEmpPulse2", 250006, false)
 mod:AddInfoFrameOption(250006, true)
 mod:AddRangeFrameOption("5/10")
 
 mod.vb.phase = 1
 mod.vb.shrapnalCast = 0
 mod.vb.empoweredPulseActive = 0
+mod.vb.sleepCanisterIcon = 1
 local mythicP5ShrapnalTimers = {15, 15.8, 14.5, 12, 10}
 local empoweredPulseTargets = {}
 
@@ -169,6 +171,7 @@ function mod:OnCombatStart(delay)
 	self.vb.phase = 1
 	self.vb.shrapnalCast = 0
 	self.vb.empoweredPulseActive = 0
+	self.vb.sleepCanisterIcon = 1
 	timerShocklanceCD:Start(4.2-delay)--4.4 Mythic, 4.3 normal, 4.2 heroic
 	timerSleepCanisterCD:Start(7-delay)
 	if not self:IsLFR() then--Don't seem to be in LFR
@@ -342,8 +345,8 @@ function mod:SPELL_AURA_APPLIED(args)
 				DBM.InfoFrame:Update()
 			end
 		end
-		if self.Options.SetIconOnEmpPulse and #empoweredPulseTargets < 9 then
-			self:SetIcon(args.destName, #empoweredPulseTargets)
+		if self.Options.SetIconOnEmpPulse2 and #empoweredPulseTargets < 7 then
+			self:SetIcon(args.destName, #empoweredPulseTargets+2)
 		end
 	elseif spellId == 247641 and args:IsPlayer() and (self:IsTank() or self:UnitClass() == "ROGUE") then
 		yellStasisTrap:Yell()
@@ -397,7 +400,11 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:Update()
 		end
-		if self.Options.SetIconOnEmpPulse then
+		if self.Options.SetIconOnEmpPulse2 then
+			self:SetIcon(args.destName, 0)
+		end
+	elseif spellId == 247565 then
+		if self.Options.SetIconOnSleepCanister then
 			self:SetIcon(args.destName, 0)
 		end
 	end
@@ -446,6 +453,15 @@ do
 				if targetName ~= playerName and self:CheckNearby(10, targetName) then
 					specWarnSleepCanisterNear:CombinedShow(0.3, targetName)
 					voiceSleepCanister:Play("runaway")
+				end
+			end
+			if not tContains(empoweredPulseTargets, targetName) and self.Options.SetIconOnEmpPulse2 then--Already marked for Empowered pulse, don't change mark
+				if self.Options.SetIconOnSleepCanister then
+					self:SetIcon(targetName, self.vb.sleepCanisterIcon)
+				end
+				self.vb.sleepCanisterIcon = self.vb.sleepCanisterIcon + 1
+				if self.vb.sleepCanisterIcon == 3 then
+					self.vb.sleepCanisterIcon = 1
 				end
 			end
 		end
