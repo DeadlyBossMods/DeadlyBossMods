@@ -15,9 +15,9 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 247376 247923 248068 248070 248254",
 	"SPELL_CAST_SUCCESS 247367 247552 247687 250255 254244",
-	"SPELL_AURA_APPLIED 247367 247552 247565 247687 250255 250006 247641",
+	"SPELL_AURA_APPLIED 247367 247565 247687 250255 250006 247641 255029",
 	"SPELL_AURA_APPLIED_DOSE 247367 247687 250255",
-	"SPELL_AURA_REMOVED 248233 250135 250006 247565",
+	"SPELL_AURA_REMOVED 248233 250135 250006",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 --	"UNIT_DIED",
@@ -54,7 +54,7 @@ local warnPhase5						= mod:NewPhaseAnnounce(5, 2)
 local specWarnShocklance				= mod:NewSpecialWarningTaunt(247367, nil, nil, nil, 1, 2)
 local specWarnSleepCanister				= mod:NewSpecialWarningYou(247552, nil, nil, nil, 1, 2)
 local yellSleepCanister					= mod:NewPosYell(247552, DBM_CORE_AUTO_YELL_CUSTOM_POSITION)
-local yellSlumberGas					= mod:NewYell(247565, L.DispelMe)--Auto yell when safe to dispel (no players within 10 yards)
+local yellSleepCanisterStun				= mod:NewYell(255029, L.DispelMe)--Auto yell when safe to dispel (no players within 10 yards)
 local specWarnSleepCanisterNear			= mod:NewSpecialWarningClose(247552, nil, nil, nil, 1, 2)
 local specWarnPulseGrenade				= mod:NewSpecialWarningDodge(247376, nil, nil, nil, 1, 2)
 local yellStasisTrap					= mod:NewYell(247641, L.DispelMe)
@@ -309,9 +309,11 @@ function mod:SPELL_AURA_APPLIED(args)
 				warnSever:Show(args.destName, amount)
 			end
 		end
-	elseif spellId == 247552 then--Sleep Canister Stun Effect
+	elseif spellId == 255029 then--Sleep Canister Stun Effect
 		if args:IsPlayer() then
-			--Nothing, player aleady warned
+			if self:CheckNearby(10) then
+				yellSleepCanisterStun:Yell()
+			end
 		elseif self:CheckNearby(10, args.destName) then--Warn nearby again
 			specWarnSleepCanisterNear:CombinedShow(0.3, args.destName)
 			voiceSleepCanister:Play("runaway")
@@ -321,9 +323,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			playerSleepDebuff = false
 			updateRangeFrame(self)
-			if self:CheckNearby(10) then
-				yellSlumberGas:Yell()
-			end
 		end
 	elseif spellId == 250006 then
 		self.vb.empoweredPulseActive = self.vb.empoweredPulseActive + 1
@@ -403,7 +402,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.SetIconOnEmpPulse2 then
 			self:SetIcon(args.destName, 0)
 		end
-	elseif spellId == 247565 then
+	elseif spellId == 255029 then
 		if self.Options.SetIconOnSleepCanister then
 			self:SetIcon(args.destName, 0)
 		end
