@@ -37,13 +37,17 @@ L= DBM:GetModLocalization(2025)
 L:SetTimerLocalization({
 	timerObfuscator		=	"다음 혼란자 (%s)",
 	timerDestructor 	=	"다음 파괴자 (%s)",
-	timerPurifier 		=	"다음 정화자 (%s)"
+	timerPurifier 		=	"다음 정화자 (%s)",
+	timerBats	 		=	"다음 박쥐 (%s)"
 })
 
 L:SetMiscLocalization({
 	Obfuscators =	"혼란자",
 	Destructors =	"파괴자",
-	Purifiers 	=	"정화자"
+	Purifiers 	=	"정화자",
+	Bats 		=	"박쥐",
+	EonarHealth	= 	"이오나 생명력",
+	EonarPower	= 	"이오나 기력"
 })
 
 ---------------------------
