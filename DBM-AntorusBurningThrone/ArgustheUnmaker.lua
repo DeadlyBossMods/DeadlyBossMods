@@ -200,10 +200,10 @@ mod.vb.EdgeofObliteration = 0
 mod.vb.sentenceCount = 0
 mod.vb.gazeCount = 0
 --P3 Mythic Timers
-local torturedRage = {40, 40}
-local sargSentence = {53, 56.9}
---local apocModule = {31, 47.8, 48.2}
-local sargGaze = {31, 75}
+local torturedRage = {40, 40, 50, 30, 35, 10, 8, 35, 10}
+local sargSentence = {53, 56.9, 60, 53}
+local apocModule = {31, 47, 48.2, 46.6, 53}--Some variation detected in logs do to delay in combat log between spawn and cast
+local sargGaze = {23, 75, 70, 53}
 
 --[[
 local debuffFilter
@@ -405,9 +405,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.moduleCount = self.vb.moduleCount + 1
 		specWarnApocModule:Show(self.vb.moduleCount)
 		voiceApocModule:Play("killmob")
-		--local timer = apocModule[self.vb.moduleCount+1]
-		timerReorgModuleCD:Start(47.8, self.vb.moduleCount+1)
-		countdownReorgModule:Start(47.8)
+		local timer = apocModule[self.vb.moduleCount+1] or 46.6
+		timerReorgModuleCD:Start(timer, self.vb.moduleCount+1)
+		countdownReorgModule:Start(timer)
 	end
 end
 
