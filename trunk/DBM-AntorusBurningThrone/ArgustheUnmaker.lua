@@ -59,6 +59,7 @@ local warnCosmicBeacon				= mod:NewTargetAnnounce(252616, 2)
 local warnDiscsofNorg				= mod:NewCastAnnounce(252516, 1)
 --Stage Three Mythic
 local warnSargSentence				= mod:NewTargetAnnounce(257966, 3)
+local warnEdgeofAnni				= mod:NewCountAnnounce(258834, 4)
 --Stage Four: The Gift of Life, The Forge of Loss (Non Mythic)
 local warnGiftOfLifebinder			= mod:NewCastAnnounce(257619, 1)
 local warnPhase4					= mod:NewPhaseAnnounce(4, 2)
@@ -102,6 +103,7 @@ local specWarnSargSentence			= mod:NewSpecialWarningYou(257966, nil, nil, nil, 1
 local yellSargSentence				= mod:NewYell(257966)
 local yellSargSentenceFades			= mod:NewShortFadesYell(257966)
 local specWarnApocModule			= mod:NewSpecialWarningSwitchCount(258029, "Dps", nil, nil, 3, 2)--EVERYONE
+local specWarnEdgeofAnni			= mod:NewSpecialWarningDodge(258834, nil, nil, nil, 2, 2)
 --Stage Four: The Gift of Life, The Forge of Loss (Non Mythic)
 local specWarnEmberofRage			= mod:NewSpecialWarningDodge(257299, nil, nil, nil, 2, 2)
 local specWarnDeadlyScythe			= mod:NewSpecialWarningStack(258039, nil, 2, nil, nil, 1, 2)
@@ -133,6 +135,7 @@ local timerDiscsofNorg				= mod:NewCastTimer(12, 252516, nil, nil, nil, 6)
 mod:AddTimerLine(ENCOUNTER_JOURNAL_SECTION_FLAG12)--Mythic 3
 local timerSoulrendingScytheCD		= mod:NewCDTimer(8.5, 258838, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerSargSentenceCD			= mod:NewCDCountTimer(35.2, 257966, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
+local timerEdgeofAnniCD				= mod:NewCDTimer(5.5, 258834, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
 --Stage Four: The Gift of Life, The Forge of Loss (Non Mythic)
 mod:AddTimerLine(SCENARIO_STAGE:format(4))
 local timerDeadlyScytheCD			= mod:NewCDTimer(5.5, 258039, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
@@ -200,10 +203,11 @@ mod.vb.EdgeofObliteration = 0
 mod.vb.sentenceCount = 0
 mod.vb.gazeCount = 0
 --P3 Mythic Timers
-local torturedRage = {40, 40, 50, 30, 35, 10, 8, 35, 10}
-local sargSentence = {53, 56.9, 60, 53}
-local apocModule = {31, 47, 48.2, 46.6, 53}--Some variation detected in logs do to delay in combat log between spawn and cast
-local sargGaze = {23, 75, 70, 53}
+local torturedRage = {40, 40, 50, 30, 35, 10, 8, 35, 10, 8, 35}--3 timers from method video not logs, verify by logs to improve accuracy
+local sargSentence = {53, 56.9, 60, 53, 53}--1 timer from method video not logs, verify by logs to improve accuracy
+local apocModule = {31, 47, 48.2, 46.6, 53, 53}--Some variation detected in logs do to delay in combat log between spawn and cast (one timer from method video)
+local sargGaze = {23, 75, 70, 53, 53}--1 timer from method video not logs, verify by logs to improve accuracy
+local edgeofAnni = {5, 5, 90, 5, 45, 5}--All timers from method video (6:05 P3 start, 6:10, 6:15, 7:45, 7:50, 8:35, 8:40)
 
 --[[
 local debuffFilter
@@ -233,6 +237,31 @@ local function updateRangeFrame(self)
 	end
 end
 --]]
+
+local function startAnnihilationStuff(self, quiet)
+	self.vb.EdgeofObliteration = self.vb.EdgeofObliteration + 1
+	if quiet then--Second cast within 5 second period, do a quiet 2nd warn
+		warnEdgeofAnni:Show(self.vb.EdgeofObliteration)
+	else--Special warning
+		specWarnEdgeofAnni:Show(self.vb.EdgeofObliteration)
+	end
+	local timer = edgeofAnni[self.vb.EdgeofObliteration+1]
+	if timer then
+		timerEdgeofAnniCD:Start(timer, self.vb.EdgeofObliteration+1)
+		self:Schedule(timer, startAnnihilationStuff, self, timer < 6)
+	end
+end
+
+local function checkForMissingSentence(self)
+	self:Unschedule(checkForMissingSentence)
+	self.vb.sentenceCount = self.vb.sentenceCount + 1
+	local timer = sargSentence[self.vb.sentenceCount+1]
+	if timer then
+		timerSargSentenceCD:Start(timer-10, self.vb.sentenceCount+1)--Timer minus 10 or next expected sentence cast
+		self:Schedule(timer, checkForMissingSentence, self)--10 seconds after expected sentence cast
+	end
+	DBM:Debug("checkForMissingSentence ran, which means means all senence immuned", 2)
+end
 
 local function delayedBoonCheck(self, stage4)
 	if not UnitBuff("player", aggramarsBoon) then
@@ -602,10 +631,12 @@ do
 			end
 		elseif spellId == 257966 then--Sentence of Sargeras
 			if self:AntiSpam(5, 6) then
+				self:Unschedule(checkForMissingSentence)
 				self.vb.sentenceCount = self.vb.sentenceCount + 1
 				local timer = sargSentence[self.vb.sentenceCount+1]
 				if timer then
 					timerSargSentenceCD:Start(timer, self.vb.sentenceCount+1)
+					self:Schedule(timer+10, checkForMissingSentence, self)--Check for missing sentence event 10 seconds after expected to recover timer if all immuned
 				end
 			end
 			warnSargSentence:CombinedShow(0.3, args.destName)
@@ -689,7 +720,10 @@ function mod:SPELL_INTERRUPT(args)
 		self.vb.TorturedRage = 0
 		if self:IsMythic() then
 			self.vb.gazeCount = 0
+			self.vb.EdgeofObliteration = 0
 			timerSoulrendingScytheCD:Start(3.5)
+			timerEdgeofAnniCD:Start(5, 1)
+			self:Schedule(5, startAnnihilationStuff, self)
 			timerSargGazeCD:Start(23, 1)
 			timerReorgModuleCD:Start(31.3, 1)
 			countdownReorgModule:Start(31.3)
