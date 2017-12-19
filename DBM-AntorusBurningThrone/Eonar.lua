@@ -35,6 +35,7 @@ mod:RegisterEventsInCombat(
  or (ability.id = 246753 or ability.id = 254769) and type = "cast"
  or (ability.id = 248332) and type = "applydebuff"
  or (ability.id = 250073) and type = "applybuff"
+ or target.name = "Volant Kerapteron"
 --]]
 --The Paraxis
 local warnMeteorStorm					= mod:NewEndAnnounce(248333, 1)
@@ -137,7 +138,7 @@ local heroicObfuscators = {80.6, 148.5, 94.7, 99.9}
 local mythicObfuscators = {46, 243, 43.8, 90.8}
 local heroicPurifiers = {125, 66.1, 30.6}
 local mythicPurifiers = {65.7, 82.6, 66.9, 145.7}
-local heroicBats = {}
+local heroicBats = {170, 125, 105, 105}--170, 295, 405, 510 (probably way off for 3rd and 4th because the heroic logs with long pulls are shit showa of terrible and unware dps that don't hit bats until they are in middle of path)
 local mythicBats = {195, 79.9, 100, 100}--195, 275, 375, 475
 local warnedAdds = {}
 local addCountToLocationMythic = {
@@ -218,7 +219,7 @@ end
 local function startBatsStuff(self)
 	self.vb.batCast = self.vb.batCast + 1
 	warnWarpIn:Show(L.Bats)
-	local timer = self:IsMythic() and mythicBats[self.vb.batCast+1]
+	local timer = self:IsMythic() and mythicBats[self.vb.batCast+1] or self:IsHeroic() and heroicBats[self.vb.batCast+1]
 	if timer then
 		timerBatsCD:Start(timer, self.vb.batCast+1)
 		self:Schedule(timer, startBatsStuff, self)
@@ -260,6 +261,8 @@ function mod:OnCombatStart(delay)
 			timerSpearofDoomCD:Start(34.4-delay, 1)
 			timerObfuscatorCD:Start(80.6, DBM_CORE_TOP)
 			timerPurifierCD:Start(125, DBM_CORE_MIDDLE)
+			timerBatsCD:Start(170, 1)
+			self:Schedule(170, startBatsStuff, self)
 		else--Normal
 			timerDestructorCD:Start(7, DBM_CORE_MIDDLE)
 			self:Schedule(27, checkForDeadDestructor, self)
