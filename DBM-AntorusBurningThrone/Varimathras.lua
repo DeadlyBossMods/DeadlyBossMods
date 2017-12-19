@@ -103,10 +103,8 @@ function mod:OnCombatStart(delay)
 	if not self:IsEasy() then
 		timerNecroticEmbraceCD:Start(35-delay)
 		countdownNecroticEmbrace:Start(35-delay)
-		berserkTimer:Start(390-delay)--Assumed until proven otherwise
-	else
-		berserkTimer:Start(390-delay)--Confirmed on normal, 30 seconds after shadows soft enrage
 	end
+	berserkTimer:Start(310-delay)--Confirmed normal/heroic/mythic
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(8)
 	end
@@ -204,32 +202,20 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnTormentofFlames:Show()
 		voicePhaseChange:Play("phasechange")
 		if not self:IsEasy() then
-			if self:IsMythic() then
-				timerTormentofFrostCD:Start(100)
-			else
-				timerTormentofFrostCD:Start(120)
-			end
+			timerTormentofFrostCD:Start(100)
 		else--No frost or fel in normal, LFR assumed
-			timerTormentofShadowsCD:Start(361)
+			timerTormentofShadowsCD:Start(290)
 		end
 	elseif spellId == 243977 and self.vb.currentTorment ~= 2 then--Frost
 		self.vb.currentTorment = 2
 		warnTormentofFrost:Show()
 		voicePhaseChange:Play("phasechange")
-		if self:IsMythic() then
-			timerTormentofFelCD:Start(99)
-		else
-			timerTormentofFelCD:Start(115)--No fel or frost in normal, no reason to filter cause forst won't even happen
-		end
+		timerTormentofFelCD:Start(99)
 	elseif spellId == 243980 and self.vb.currentTorment ~= 3 then--Fel
 		self.vb.currentTorment = 3
 		warnTormentofFel:Show()
 		voicePhaseChange:Play("phasechange")
-		if self:IsMythic() then
-			timerTormentofShadowsCD:Start(90)
-		else
-			timerTormentofShadowsCD:Start(121)--(361 after pull technically, same as normal). No fel or frost in normal
-		end
+		timerTormentofShadowsCD:Start(90)
 	elseif spellId == 243973 and self.vb.currentTorment ~= 4 then--Shadow
 		self.vb.currentTorment = 4
 		warnTormentofShadows:Show()
