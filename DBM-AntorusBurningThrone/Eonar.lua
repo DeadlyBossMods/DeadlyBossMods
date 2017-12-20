@@ -182,7 +182,7 @@ do
 			local currentPower = UnitPower("boss2", 10) or 0
 			local currentHealth = UnitHealth("boss2")/UnitHealthMax("boss2") * 100 or 100
 			addLine(L.EonarHealth, math.floor(currentHealth).."%")
-			addLine(L.EonarPower, currentPower)
+			addLine(L.EonarPower, currentPower.."%")
 		end
 		addLine(lifeForceName, mod.vb.lifeForceCast.."/"..mod.vb.lifeRequired)
 		if mod.vb.obfuscators > 0 then
