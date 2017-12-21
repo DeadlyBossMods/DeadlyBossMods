@@ -11043,7 +11043,7 @@ do
 	end
 
 	local mobUids = {"mouseover", "target", "boss1", "boss2", "boss3", "boss4", "boss5"}
-	function bossModPrototype:ScanForMobs(creatureID, iconSetMethod, mobIcon, maxIcon, scanInterval, scanningTime, optionName, isFriendly, secondCreatureID)
+	function bossModPrototype:ScanForMobs(creatureID, iconSetMethod, mobIcon, maxIcon, scanInterval, scanningTime, optionName, isFriendly, secondCreatureID, skipMarked)
 		if not optionName then optionName = self.findFastestComputer[1] end
 		if canSetIcons[optionName] then
 			--Declare variables.
@@ -11076,8 +11076,9 @@ do
 				local cid2 = self:GetCIDFromGUID(guid2)
 				local isEnemy = UnitIsEnemy("player", unitid2) or true--If api returns nil, assume it's an enemy
 				local isFiltered = false
-				if not isFriendly and not isEnemy then
+				if (not isFriendly and not isEnemy) or (skipMarked and not GetRaidTargetIndex(unitid2)) then
 					isFiltered = true
+					DBM:Debug("ScanForMobs aborting because filtered mob", 2)
 				end
 				if not isFiltered then
 					if guid2 and type(creatureID) == "table" and creatureID[cid2] and not addsGUIDs[guid2] then
@@ -11131,9 +11132,9 @@ do
 				local cid = self:GetCIDFromGUID(guid)
 				local isEnemy = UnitIsEnemy("player", unitid) or true--If api returns nil, assume it's an enemy
 				local isFiltered = false
-				if not isFriendly and not isEnemy then
+				if (not isFriendly and not isEnemy) or (skipMarked and not GetRaidTargetIndex(unitid)) then
 					isFiltered = true
-					DBM:Debug("ScanForMobs aborting because friendly mob", 2)
+					DBM:Debug("ScanForMobs aborting because filtered mob", 2)
 				end
 				if not isFiltered then
 					if guid and type(creatureID) == "table" and creatureID[cid] and not addsGUIDs[guid] then
