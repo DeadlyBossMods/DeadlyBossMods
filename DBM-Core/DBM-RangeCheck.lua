@@ -531,7 +531,7 @@ do
 				local _, class = UnitClass(uId)
 				local icon = GetRaidTargetIndex(uId)
 				dot.class = class
-				if icon then
+				if icon and icon < 9 then
 					dot.icon = icon
 					dot:SetTexture(format("Interface\\TargetingFrame\\UI-RaidTargetingIcon_%d", icon))
 					dot:SetTexCoord(0, 1, 0, 1)

@@ -192,7 +192,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 248732 then
 		warnEchoesofDoom:CombinedShow(0.5, args.destName)--In case multiple shadows up
-		if args:IsPlayer() then
+		if args:IsPlayer() and self:AntiSpam(3, 1) then
 			specWarnEchoesOfDoom:Show()
 			voiceEchoesOfDoom:Play("runout")
 			yellEchoesOfDoom:Yell()
