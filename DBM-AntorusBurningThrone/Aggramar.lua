@@ -6,7 +6,7 @@ mod:SetCreatureID(121975)
 mod:SetEncounterID(2063)
 mod:SetZone()
 --mod:SetBossHPInfoToHighest()
---mod:SetUsedIcons(1, 2, 3, 4, 5, 6)
+mod:SetUsedIcons(1, 2, 3, 4, 5)
 mod:SetHotfixNoticeRev(16964)
 mod.respawnTime = 25
 
@@ -14,14 +14,12 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 244693 245458 245463 245301 255058 255061 255059",
---	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED 245990 245994 244894 244903 247091 254452",
 	"SPELL_AURA_APPLIED_DOSE 245990",
 	"SPELL_AURA_REMOVED 244894 244903 247091 254452",
 --	"SPELL_PERIODIC_DAMAGE 247135",
 --	"SPELL_PERIODIC_MISSED 247135",
 --	"UNIT_DIED",
---	"CHAT_MSG_RAID_BOSS_EMOTE",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
@@ -51,8 +49,8 @@ local specWarnTaeshalachReach			= mod:NewSpecialWarningStack(245990, nil, 8, nil
 local specWarnTaeshalachReachOther		= mod:NewSpecialWarningTaunt(245990, nil, nil, nil, 1, 2)
 local specWarnScorchingBlaze			= mod:NewSpecialWarningMoveAway(245994, nil, nil, nil, 1, 2)
 local yellScorchingBlaze				= mod:NewYell(245994)
-local specWarnRavenousBlaze				= mod:NewSpecialWarningYouPos(254452, nil, nil, nil, 1, 2)--or NewSpecialWarningMoveAway?
-local yellRavenousBlaze					= mod:NewPosYell(254452, DBM_CORE_AUTO_YELL_CUSTOM_POSITION)
+local specWarnRavenousBlaze				= mod:NewSpecialWarningMoveAway(254452, nil, nil, nil, 1, 2)
+local yellRavenousBlaze					= mod:NewYell(254452, DBM_CORE_AUTO_YELL_CUSTOM_POSITION)
 local specWarnWakeofFlame				= mod:NewSpecialWarningDodge(244693, nil, nil, nil, 2, 2)
 local yellWakeofFlame					= mod:NewYell(244693)
 --local specWarnFoeBreaker				= mod:NewSpecialWarningDodge(245458, nil, nil, nil, 3, 2)
@@ -100,7 +98,8 @@ local voiceFlare						= mod:NewVoice(245983)--watchstep
 --local voiceMalignantAnguish			= mod:NewVoice(236597, "HasInterrupt")--kickcast
 --local voiceGTFO							= mod:NewVoice(247135, nil, DBM_CORE_AUTO_VOICE4_OPTION_TEXT)--runaway
 
-mod:AddSetIconOption("SetIconOnBlaze", 254452, true)
+mod:AddSetIconOption("SetIconOnBlaze2", 254452, false)--Both off by default, both conflit with one another
+mod:AddSetIconOption("SetIconOnAdds", 244903, false, true)--Both off by default, both conflit with one another
 mod:AddInfoFrameOption(244688, true)
 mod:AddRangeFrameOption("6")
 mod:AddNamePlateOption("NPAuraOnPresence", 244903)
@@ -388,7 +387,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnRavenousBlazeCount:Schedule(6, 15)
 			warnRavenousBlazeCount:Schedule(8, 20)
 		end
-		if self.Options.SetIconOnBlaze then
+		if self.Options.SetIconOnBlaze2 then
 			self:SetIcon(args.destName, icon)
 		end
 		self.vb.blazeIcon = self.vb.blazeIcon + 1
@@ -405,6 +404,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerFoeBreakerCD:Stop()
 		timerFlameRendCD:Stop()
 		timerTempestCD:Stop()
+		if self.Options.SetIconOnAdds then
+			self:ScheduleMethod(2, "ScanForMobs", 122532, 1, 1, 5, 0.1, 12, "SetIconOnAdds", nil, nil, true)
+		end
 	if self.Options.RangeFrame and not self:IsTank() then
 		DBM.RangeCheck:Hide()
 	end
@@ -451,7 +453,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		if args:IsPlayer() then
 			warnRavenousBlazeCount:Cancel()
 		end
-		if self.Options.SetIconOnBlaze then
+		if self.Options.SetIconOnBlaze2 then
 			self:SetIcon(args.destName, 0)
 		end
 	end
