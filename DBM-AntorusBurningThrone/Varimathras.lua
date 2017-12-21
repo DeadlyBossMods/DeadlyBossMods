@@ -69,7 +69,7 @@ local timerNecroticEmbraceCD			= mod:NewNextTimer(30.3, 244093, nil, nil, nil, 3
 local berserkTimer						= mod:NewBerserkTimer(390)
 
 --The Fallen Nathrezim
-local countdownShadowStrike				= mod:NewCountdown("Alt9", 243960, "Tank")
+local countdownShadowStrike				= mod:NewCountdown("Alt9", 243960, "Tank", nil, 3)
 local countdownMarkedPrey				= mod:NewCountdown(30, 244042)
 local countdownNecroticEmbrace			= mod:NewCountdown("AltTwo30", 244093)
 
