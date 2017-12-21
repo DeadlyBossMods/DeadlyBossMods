@@ -79,7 +79,7 @@ local voicePhaseChange					= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_
 --The Fallen Nathrezim
 local voiceMisery						= mod:NewVoice(243961)--defensive/tauntboss
 local voiceDarkFissure					= mod:NewVoice(243999)--watchstep
-local voiceMarkedPrey					= mod:NewVoice(243974)--targetyou
+local voiceMarkedPrey					= mod:NewVoice(244042)--targetyou
 local voiceNecroticEmbrace				= mod:NewVoice(244094)--scatter
 local voiceEchoesOfDoom					= mod:NewVoice(248732)--runout
 
