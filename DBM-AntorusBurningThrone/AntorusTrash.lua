@@ -7,12 +7,11 @@ mod:SetZone()
 mod.isTrashMod = true
 
 mod:RegisterEvents(
-	"SPELL_CAST_START 246209 245807 249297",
+	"SPELL_CAST_START 246209 245807",
 --	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED 252760 253600 254122 249297",
 --	"SPELL_AURA_APPLIED_DOSE"
-	"SPELL_AURA_REMOVED 252760 254122",
-	"UNIT_DIED"
+	"SPELL_AURA_REMOVED 252760 254122 249297"
 )
 
 --TODO, these
@@ -60,8 +59,6 @@ function mod:SPELL_CAST_START(args)
 	--elseif spellId == 246209 and self:CheckInterruptFilter(args.sourceGUID) then
 		--specWarnShadowBoltVolley:Show(args.sourceName)
 		--voiceShadowBoltVolley:Play("kickcast")
-	elseif spellId == 249297 and self.Options.RangeFrame and not DBM.RangeCheck:IsShown() then
-		DBM.RangeCheck:Show(10)
 	end
 end
 
@@ -111,6 +108,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnFlamesofReorig:Show()
 			voiceFlamesofReorig:Play("runout")
 			yellFlamesofReorig:Yell()
+			if self.Options.RangeFrame then
+				DBM.RangeCheck:Show(10)
+			end
 		end
 	end
 end
@@ -127,14 +127,8 @@ function mod:SPELL_AURA_REMOVED(args)
 		if args:IsPlayer() then
 			yellCloudofConfuseFades:Cancel()
 		end
-	end
-end
-
-function mod:UNIT_DIED(args)
-	if not self.Options.Enabled then return end
-	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 123533 then--Tarneth <Keeper of Fire>
-		if self.Options.RangeFrame then
+	elseif spellId == 249297 then
+		if args:IsPlayer() and self.Options.RangeFrame then
 			DBM.RangeCheck:Hide()
 		end
 	end
