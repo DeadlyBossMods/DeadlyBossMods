@@ -101,7 +101,7 @@ local voiceFlare						= mod:NewVoice(245983)--watchstep
 --local voiceGTFO							= mod:NewVoice(247135, nil, DBM_CORE_AUTO_VOICE4_OPTION_TEXT)--runaway
 
 mod:AddSetIconOption("SetIconOnBlaze", 254452, true)
---mod:AddInfoFrameOption(239154, true)
+mod:AddInfoFrameOption(244688, true)
 mod:AddRangeFrameOption("6")
 mod:AddNamePlateOption("NPAuraOnPresence", 244903)
 
@@ -112,6 +112,91 @@ mod.vb.rendCount = 0
 mod.vb.wakeOfFlameCount = 0
 mod.vb.blazeIcon = 1
 mod.vb.techActive = false
+mod.vb.firstCombo = nil
+mod.vb.secondCombo = nil
+mod.vb.comboCount = 0
+
+local updateInfoFrame
+do
+	local lines = {}
+	local sortedLines = {}
+	local function addLine(key, value)
+		-- sort by insertion order
+		lines[key] = value
+		sortedLines[#sortedLines + 1] = key
+	end
+	updateInfoFrame = function()
+		table.wipe(lines)
+		table.wipe(sortedLines)
+		if mod:IsMythic() then
+			if mod.vb.comboCount == 1 and mod.vb.firstCombo then
+				if mod.vb.firstCombo == "Foe" then--L.Foe, L.Tempest, L.Rend, L.Foe, L.Rend or L.Foe, L.Rend, L.Tempest, L.Foe, L.Rend
+					addLine(mod.vb.comboCount+1, L.Rend.."/"..L.Tempest)
+					addLine(mod.vb.comboCount+2, L.Rend.."/"..L.Tempest)
+				elseif mod.vb.firstCombo == "Rend" then----L.Rend, L.Tempest, L.Foe, L.Foe, L.Rend or L.Rend, L.Foe, L.Foe, L.Tempest, L.Rend
+					addLine(mod.vb.comboCount+1, L.Foe.."/"..L.Tempest)
+					addLine(mod.vb.comboCount+2, L.Foe.."/"..L.Tempest)
+				end
+				addLine(mod.vb.comboCount+3, L.Foe.."(2)/"..L.Tempest)
+				addLine(mod.vb.comboCount+4, L.Rend.."(2)")
+			elseif mod.vb.comboCount == 2 and mod.vb.secondCombo then
+					if mod.vb.secondCombo == "Tempest" then
+				if mod.vb.firstCombo == "Foe" then--L.Foe, L.Tempest, L.Rend, L.Foe, L.Rend
+						addLine(mod.vb.comboCount+1, L.Rend)
+					elseif mod.vb.firstCombo == "Rend" then--L.Rend, L.Tempest, L.Foe, L.Foe, L.Rend
+						addLine(mod.vb.comboCount+1, L.Foe)
+					end
+					--Same in both combos
+					addLine(mod.vb.comboCount+2, L.Foe.."(2)")
+				elseif mod.vb.secondCombo == "Foe" then--L.Rend, L.Foe, L.Foe, L.Tempest, L.Rend
+					addLine(mod.vb.comboCount+1, L.Foe.."(2)")
+					addLine(mod.vb.comboCount+2, L.Tempest)
+				elseif mod.vb.secondCombo == "Rend" then--L.Foe, L.Rend, L.Tempest, L.Foe, L.Rend
+					addLine(mod.vb.comboCount+1, L.Tempest)
+					addLine(mod.vb.comboCount+2, L.Foe.."(2)")
+				end
+				--Rend always last
+				addLine(mod.vb.comboCount+3, L.Rend.."(2)")
+			elseif mod.vb.comboCount == 3 and mod.vb.secondCombo then
+				if mod.vb.secondCombo == "Tempest" then
+					--Same in both combos
+					addLine(mod.vb.comboCount+1, L.Foe.."(2)")
+					addLine(mod.vb.comboCount+2, L.Rend.."(2)")
+				elseif mod.vb.secondCombo == "Foe" then--L.Rend, L.Foe, L.Foe, L.Tempest, L.Rend
+					addLine(mod.vb.comboCount+1, L.Tempest)
+					addLine(mod.vb.comboCount+2, L.Rend.."(2)")
+				elseif mod.vb.secondCombo == "Rend" then--L.Foe, L.Rend, L.Tempest, L.Foe, L.Rend
+					addLine(mod.vb.comboCount+1, L.Foe.."(2)")
+					addLine(mod.vb.comboCount+2, L.Rend.."(2)")
+				end
+			elseif mod.vb.comboCount == 4 then
+				--rend always last
+				addLine(mod.vb.comboCount+1, L.Rend.."(2)")
+			else
+				DBM.InfoFrame:Hide()
+			end
+		else--Not Mythic
+			if mod.vb.comboCount == 1 then
+				addLine(mod.vb.comboCount+1, L.Rend)
+				addLine(mod.vb.comboCount+2, L.Foe.."(2)")
+				addLine(mod.vb.comboCount+3, L.Rend.."(2)")
+				addLine(mod.vb.comboCount+4, L.Tempest)
+			elseif mod.vb.comboCount == 2 then
+				addLine(mod.vb.comboCount+1, L.Foe.."(2)")
+				addLine(mod.vb.comboCount+2, L.Rend.."(2)")
+				addLine(mod.vb.comboCount+3, L.Tempest)
+			elseif mod.vb.comboCount == 3 then
+				addLine(mod.vb.comboCount+1, L.Rend.."(2)")
+				addLine(mod.vb.comboCount+2, L.Tempest)
+			elseif mod.vb.comboCount == 4 then
+				addLine(mod.vb.comboCount+1, L.Tempest)
+			else
+				DBM.InfoFrame:Hide()
+			end
+		end
+		return lines, sortedLines
+	end
+end
 
 function mod:WakeTarget(targetname, uId)
 	if not targetname then return end
@@ -155,9 +240,9 @@ function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
---	if self.Options.InfoFrame then
---		DBM.InfoFrame:Hide()
---	end
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:Hide()
+	end
 	if self.Options.NPAuraOnPresence then
 		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
 	end
@@ -176,6 +261,14 @@ function mod:SPELL_CAST_START(args)
 		end
 		self:BossTargetScanner(args.sourceGUID, "WakeTarget", 0.1, 12, true, nil, nil, nil, true)
 	elseif spellId == 245458 or spellId == 255059 then
+		if self:IsMythic() then
+			self.vb.comboCount = self.vb.comboCount + 1
+			if not self.vb.firstCombo then
+				self.vb.firstCombo = "Foe"
+			elseif not self.vb.secondCombo then
+				self.vb.secondCombo = "Foe"
+			end
+		end
 		self.vb.foeCount = self.vb.foeCount + 1
 		if self:IsTank() then
 			local tanking, status = UnitDetailedThreatSituation("player", "boss1")
@@ -195,7 +288,18 @@ function mod:SPELL_CAST_START(args)
 				timerFoeBreakerCD:Start(7.5, 2)
 			end
 		end
+		if self.Options.InfoFrame then
+			DBM.InfoFrame:Update()
+		end
 	elseif spellId == 245463 or spellId == 255058 then
+		if self:IsMythic() then
+			self.vb.comboCount = self.vb.comboCount + 1
+			if not self.vb.firstCombo then
+				self.vb.firstCombo = "Rend"
+			elseif not self.vb.secondCombo then
+				self.vb.secondCombo = "Rend"
+			end
+		end
 		self.vb.rendCount = self.vb.rendCount + 1
 		specWarnFlameRend:Show(self.vb.rendCount)
 		if spellId == 255058 then--Empowered/Mythic Version
@@ -214,9 +318,21 @@ function mod:SPELL_CAST_START(args)
 				timerFlameRendCD:Start(7.5, 2)
 			end
 		end
+		if self.Options.InfoFrame then
+			DBM.InfoFrame:Update()
+		end
 	elseif spellId == 245301 or spellId == 255061 then
+		if self:IsMythic() then
+			self.vb.comboCount = self.vb.comboCount + 1
+			if not self.vb.secondCombo then
+				self.vb.secondCombo = "Tempest"
+			end
+		end
 		specWarnSearingTempest:Show()
 		voiceSearingTempest:Play("runout")
+		if self.Options.InfoFrame then
+			DBM.InfoFrame:Update()
+		end
 	end
 end
 
@@ -374,6 +490,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		self.vb.blazeIcon = 1
 		timerRavenousBlazeCD:Start()--Unknown at this time
 	elseif spellId == 244688 then--Taeshalach Technique
+		self.vb.comboCount = 0
+		self.vb.firstCombo = nil
+		self.vb.secondCombo = nil
 		self.vb.techActive = true
 		self.vb.foeCount = 0
 		self.vb.rendCount = 0
@@ -387,7 +506,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerTaeshalachTechCD:Start(nil, self.vb.techCount+1)
 		countdownTaeshalachTech:Start()
 		if self:IsMythic() then
-			--Random Sequence, todo, stuff?
+			--Nothing special!
 		else
 			--Set sequence
 			--Foebreaker instantly so no need for timer
@@ -398,6 +517,10 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 				timerFlameRendCD:Start(4, 1)
 				timerTempestCD:Start(15)
 			end
+		end
+		if self.Options.InfoFrame then
+			DBM.InfoFrame:SetHeader(GetSpellInfo(244688))
+			DBM.InfoFrame:Show(5, "function", updateInfoFrame, false, false, true)
 		end
 	elseif spellId == 244792 and self.vb.techActive then--Burning Will of Taeshalach (technique ended)
 		self.vb.techActive = false
