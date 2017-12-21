@@ -50,7 +50,8 @@ local specWarnDarkFissure				= mod:NewSpecialWarningDodge(243999, nil, nil, nil,
 local specWarnMarkedPrey				= mod:NewSpecialWarningYou(244042, nil, nil, nil, 1, 2)
 local yellMarkedPrey					= mod:NewFadesYell(244042)
 local specWarnNecroticEmbrace			= mod:NewSpecialWarningMoveAway(244094, nil, nil, nil, 1, 2)
-local yellNecroticEmbrace				= mod:NewShortFadesYell(244094)
+local yellNecroticEmbrace				= mod:NewPosYell(244094, DBM_CORE_AUTO_YELL_CUSTOM_POSITION)
+local yellNecroticEmbraceFades			= mod:NewIconFadesYell(244094)
 local specWarnEchoesOfDoom				= mod:NewSpecialWarningMoveAway(248732, nil, nil, nil, 1, 2)
 local yellEchoesOfDoom					= mod:NewYell(248732)
 
@@ -176,11 +177,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 244094 then
 		self.vb.totalEmbrace = self.vb.totalEmbrace + 1
-		if self.vb.totalEmbrace >= 4 then return end--Once it's beyond 4 players, consider it a wipe and throttle messages
+		if self.vb.totalEmbrace >= 3 then return end--Once it's beyond 2 players, consider it a wipe and throttle messages
 		if args:IsPlayer() then
 			specWarnNecroticEmbrace:Show()
 			voiceNecroticEmbrace:Play("scatter")
-			yellNecroticEmbrace:Countdown(6, 3)
+			local icon = self.vb.totalEmbrace+2
+			yellNecroticEmbrace:Yell(icon, args.spellName, icon)
+			yellNecroticEmbraceFades:Countdown(6, 3, self.vb.totalEmbrace+2)
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Show(10)
 			end
@@ -233,7 +236,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 244094 then
 		self.vb.totalEmbrace = self.vb.totalEmbrace - 1
 		if args:IsPlayer() then
-			yellNecroticEmbrace:Cancel()
+			yellNecroticEmbraceFades:Cancel()
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Show(8)
 			end
