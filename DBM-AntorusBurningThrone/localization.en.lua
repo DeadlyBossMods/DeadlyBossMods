@@ -107,6 +107,12 @@ L:SetOptionLocalization({
 ---------------------------
 L= DBM:GetModLocalization(1984)
 
+L:SetMiscLocalization({
+	Foe			=	"Foe",
+	Rend		=	"Rend",
+	Tempest 	=	"Tempest"
+})
+
 ---------------------------
 -- Argus the Unmaker --
 ---------------------------
