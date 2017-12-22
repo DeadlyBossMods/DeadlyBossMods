@@ -52,7 +52,7 @@ local specWarnExploitWeakness			= mod:NewSpecialWarningTaunt(244892, nil, nil, n
 local specWarnPsychicAssault			= mod:NewSpecialWarningYou(244172, nil, nil, nil, 3, 2)
 --In Pod
 ----Admiral Svirax
-local specWarnFusillade					= mod:NewSpecialWarningMoveTo(244625, nil, nil, nil, 1, 2)
+local specWarnFusillade					= mod:NewSpecialWarningMoveTo(244625, nil, nil, nil, 1, 5)
 ----Chief Engineer Ishkar
 --local specWarnEntropicMine				= mod:NewSpecialWarningDodge(245161, nil, nil, nil, 1, 2)
 ----General Erodus
@@ -105,7 +105,7 @@ local voicePsychicAssault				= mod:NewVoice(244172)--otherout ("player out")
 local voiceExploitWeakness				= mod:NewVoice(244892)--Tauntboss
 --In Pod
 ----Admiral Svirax
-local voiceFusillade					= mod:NewVoice(244625)--findshelter
+local voiceFusillade					= mod:NewVoice(244625)--findshield
 ----Chief Engineer Ishkar
 local voiceEntropicMine					= mod:NewVoice(245161)--watchstep
 ----General Erodus
@@ -166,7 +166,7 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 244625 then
 		self.vb.FusilladeCount = self.vb.FusilladeCount + 1
 		specWarnFusillade:Show(felShield)
-		voiceFusillade:Play("findshelter")
+		voiceFusillade:Play("findshield")
 		timerFusilladeCD:Start(nil, self.vb.FusilladeCount+1)
 		if not self:IsLFR() then
 			countdownFusillade:Start(29.6)
