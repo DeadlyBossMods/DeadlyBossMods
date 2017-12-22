@@ -88,6 +88,12 @@ L:SetOptionLocalization({
 ---------------------------
 L= DBM:GetModLocalization(1984)
 
+L:SetMiscLocalization({
+	Foe			=	"碎敵者",
+	Rend		=	"烈焰撕裂",
+	Tempest 	=	"灼燒風暴"
+})
+
 ---------------------------
 -- Argus the Unmaker --
 ---------------------------
