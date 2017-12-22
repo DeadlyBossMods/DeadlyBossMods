@@ -90,6 +90,7 @@ local countdownFinalDoom				= mod:NewCountdown("AltTwo90", 249121)
 local voiceMeteorStorm					= mod:NewVoice(248333)--watchstep
 local voiceSpearofDoom					= mod:NewVoice(248789)--watchstep
 local voiceRainofFel					= mod:NewVoice(248332)--scatter
+local voiceAdds							= mod:NewVoice(246888, "-Healer", DBM_CORE_AUTO_VOICE3_OPTION_TEXT)--killmob
 --Adds
 local voiceSwing						= mod:NewVoice(250701, "MeleeDps", nil, 2)--watchstep
 --local voiceMalignantAnguish			= mod:NewVoice(236597, "HasInterrupt")--kickcast
@@ -215,6 +216,7 @@ end
 local function startBatsStuff(self)
 	self.vb.batCast = self.vb.batCast + 1
 	warnWarpIn:Show(L.Bats)
+	voiceAdds:Play("killmob")
 	local timer = self:IsMythic() and mythicBats[self.vb.batCast+1] or self:IsHeroic() and heroicBats[self.vb.batCast+1]
 	if timer then
 		timerBatsCD:Start(timer, self.vb.batCast+1)
@@ -328,6 +330,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.obfuscators = self.vb.obfuscators + 1
 		if self:AntiSpam(5, args.sourceName) then
 			warnWarpIn:Show(L.Obfuscators)
+			voiceAdds:Play("bigmob")
 			self.vb.obfuscatorCast = self.vb.obfuscatorCast + 1
 			local timer = self:IsMythic() and mythicObfuscators[self.vb.obfuscatorCast+1] or self:IsHeroic() and heroicObfuscators[self.vb.obfuscatorCast+1] or self:IsNormal() and normalObfuscators[self.vb.obfuscatorCast+1]
 			if timer then
@@ -341,6 +344,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.destructors = self.vb.destructors + 1
 		if self:AntiSpam(5, args.sourceName) then
 			warnWarpIn:Show(L.Destructors)
+			voiceAdds:Play("bigmob")
 			self.vb.destructorCast = self.vb.destructorCast + 1
 			local timer = self:IsMythic() and mythicDestructors[self.vb.destructorCast+1] or self:IsHeroic() and heroicDestructors[self.vb.destructorCast+1] or self:IsNormal() and normalDestructors[self.vb.destructorCast+1]
 			if timer then
@@ -363,6 +367,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.purifiers = self.vb.purifiers + 1
 		if self:AntiSpam(5, 2) then
 			warnWarpIn:Show(L.Purifiers)
+			voiceAdds:Play("bigmob")
 			self.vb.purifierCast = self.vb.purifierCast + 1
 			local timer = self:IsMythic() and mythicPurifiers[self.vb.purifierCast+1] or self:IsHeroic() and heroicPurifiers[self.vb.purifierCast+1]
 			if timer then
