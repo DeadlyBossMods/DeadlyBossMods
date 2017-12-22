@@ -303,7 +303,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 255029 then--Sleep Canister Stun Effect
 		if args:IsPlayer() then
-			if self:CheckNearby(10) then
+			if self:CheckNearby(11) then
 				yellSleepCanisterStun:Yell()
 			end
 		elseif self:CheckNearby(10, args.destName) then--Warn nearby again
