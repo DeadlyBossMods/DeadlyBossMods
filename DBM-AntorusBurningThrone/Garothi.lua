@@ -18,12 +18,9 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 244969 240277",
 	"SPELL_CAST_SUCCESS 246220 244399 245294 246919 244294",
 	"SPELL_AURA_APPLIED 246220 244410 246919 246965",--246897
---	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 246220 244410 246919",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
---	"UNIT_DIED",
---	"CHAT_MSG_RAID_BOSS_EMOTE",
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3"--Assuming cannons are unique boss unitID
 )
 
@@ -75,7 +72,6 @@ local voiceAnnihilation					= mod:NewVoice(244761)--helpsoak
 
 mod:AddSetIconOption("SetIconOnDecimation", 244410, true)
 mod:AddSetIconOption("SetIconOnBombardment", 246220, true)
---mod:AddInfoFrameOption(239154, true)
 mod:AddRangeFrameOption("7/17")
 
 mod.vb.deciminationActive = 0
@@ -130,9 +126,6 @@ function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
---	if self.Options.InfoFrame then
---		DBM.InfoFrame:Hide()
---	end
 end
 
 function mod:SPELL_CAST_START(args)
@@ -201,9 +194,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.SetIconOnBombardment then
 			self:SetIcon(args.destName, 7, 13)
 		end
---	elseif spellId == 247159 and self:AntiSpam(5, 1) then
---		specWarnLuringDestruction:Show()
---		voiceLuringDestruction:Play("justrun")
 	elseif spellId == 244410 or spellId == 246919 then
 		self.vb.deciminationActive = self.vb.deciminationActive + 1
 		warnDecimation:CombinedShow(0.3, args.destName)
@@ -256,19 +246,6 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
-
-function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
-	if msg:find("spell:238502") then
-
-	end
-end
-
-function mod:UNIT_DIED(args)
-	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 121193 then
-
-	end
-end
 --]]
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)

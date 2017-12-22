@@ -16,9 +16,9 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 248165 248317 257296 255594 257645 252516 256542 255648 257619 255935",
 	"SPELL_CAST_SUCCESS 248499 258039 258838 252729 252616 256388 258029",
-	"SPELL_AURA_APPLIED 248499 248396 250669 251570 255199 253021 255496 255496 255478 252729 252616 255433 255430 255429 255425 255422 255419 255418 258647 258646 257869 257931 257966",
-	"SPELL_AURA_APPLIED_DOSE 248499 258039",
-	"SPELL_AURA_REMOVED 250669 251570 255199 253021 255496 255496 255478 255433 255430 255429 255425 255422 255419 255418 258039 257966 258647 258646",
+	"SPELL_AURA_APPLIED 248499 248396 250669 251570 255199 253021 255496 255496 255478 252729 252616 255433 255430 255429 255425 255422 255419 255418 258647 258646 257869 257931 257966 258838",
+	"SPELL_AURA_APPLIED_DOSE 248499 258039 258838",
+	"SPELL_AURA_REMOVED 250669 251570 255199 253021 255496 255496 255478 255433 255430 255429 255425 255422 255419 255418 258039 257966 258647 258646 258838",
 	"SPELL_INTERRUPT",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
@@ -60,6 +60,7 @@ local warnDiscsofNorg				= mod:NewCastAnnounce(252516, 1)
 --Stage Three Mythic
 local warnSargSentence				= mod:NewTargetAnnounce(257966, 3)
 local warnEdgeofAnni				= mod:NewCountAnnounce(258834, 4)
+local warnSoulRendingScythe			= mod:NewStackAnnounce(258838, 2, nil, "Tank")
 --Stage Four: The Gift of Life, The Forge of Loss (Non Mythic)
 local warnGiftOfLifebinder			= mod:NewCastAnnounce(257619, 1)
 local warnPhase4					= mod:NewPhaseAnnounce(4, 2)
@@ -104,6 +105,8 @@ local yellSargSentence				= mod:NewYell(257966)
 local yellSargSentenceFades			= mod:NewShortFadesYell(257966)
 local specWarnApocModule			= mod:NewSpecialWarningSwitchCount(258029, "Dps", nil, nil, 3, 2)--EVERYONE
 local specWarnEdgeofAnni			= mod:NewSpecialWarningDodge(258834, nil, nil, nil, 2, 2)
+local specWarnSoulrendingScythe		= mod:NewSpecialWarningStack(258838, nil, 2, nil, nil, 1, 2)
+local specWarnSoulrendingScytheTaunt= mod:NewSpecialWarningTaunt(258838, nil, nil, nil, 1, 2)
 --Stage Four: The Gift of Life, The Forge of Loss (Non Mythic)
 local specWarnEmberofRage			= mod:NewSpecialWarningDodge(257299, nil, nil, nil, 2, 2)
 local specWarnDeadlyScythe			= mod:NewSpecialWarningStack(258039, nil, 2, nil, nil, 1, 2)
@@ -173,9 +176,10 @@ local voiceCosmicBeacon				= mod:NewVoice(252616)--runout
 --Stage Three Mythic
 local voiceSargSentence				= mod:NewVoice(257966)--targetyou
 local voiceApocModule				= mod:NewVoice(258029, "Dps")--killmob
+local voiceSoulrendingScythe		= mod:NewVoice(258838)--tauntboss/stackhigh
 --Stage Four: The Gift of Life, The Forge of Loss (Non Mythic)
 local voiceEmberofRage				= mod:NewVoice(257299)--watchstep
-local voiceDeadlyScythe				= mod:NewVoice(258039)--tauntboss
+local voiceDeadlyScythe				= mod:NewVoice(258039)--tauntboss/stackhigh
 local voiceReorgModule				= mod:NewVoice(256389, "RangedDps", nil, 2)--killmob
 
 mod:AddSetIconOption("SetIconGift", 255594, true)--5 and 6
@@ -299,7 +303,6 @@ function mod:OnCombatStart(delay)
 		berserkTimer:Start(720-delay)
 	end
 	if self.Options.InfoFrame then
-		--DBM.InfoFrame:SetHeader(_G["7.3_ARGUS_RAID_DEATH_TITAN_ENERGY"])
 		DBM.InfoFrame:Show(4, "enemypower", 2)
 		--DBM.InfoFrame:Show(7, "function", updateInfoFrame, false, false)
 	end
@@ -503,6 +506,19 @@ do
 					end
 				end
 			end
+		elseif spellId == 258838 then--Mythic
+			local uId = DBM:GetRaidUnitId(args.destName)
+			if uId and self:IsTanking(uId) then
+				local amount = args.amount or 1
+				if amount >= 2 then
+					if args:IsPlayer() then
+						specWarnSoulrendingScythe:Show(amount)
+						voiceSoulrendingScythe:Play("stackhigh")
+					else
+						warnSoulRendingScythe:Show(args.destName, amount)
+					end
+				end
+			end
 		elseif spellId == 248396 then
 			warnSoulblight:Show(args.destName)
 			if args:IsPlayer() then
@@ -697,12 +713,20 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.NPAuraOnVulnerability then
 			DBM.Nameplate:Hide(true, args.destGUID, spellId)
 		end
-	elseif spellId == 258039 then--Heroic/Mythic?
+	elseif spellId == 258039 then--Heroic
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if uId and self:IsTanking(uId) then
 			if not args:IsPlayer() then--Removed from tank that's not you (only time it's removed is on death)
 				specWarnDeadlyScytheTaunt:Show(args.destName)
 				voiceDeadlyScythe:Play("tauntboss")
+			end
+		end
+	elseif spellId == 258838 then--Mythic
+		local uId = DBM:GetRaidUnitId(args.destName)
+		if uId and self:IsTanking(uId) then
+			if not args:IsPlayer() then--Removed from tank that's not you (only time it's removed is on death)
+				specWarnSoulrendingScytheTaunt:Show(args.destName)
+				voiceSoulrendingScythe:Play("tauntboss")
 			end
 		end
 	elseif spellId == 257966 then--Sentence of Sargeras

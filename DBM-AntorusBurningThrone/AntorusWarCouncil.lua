@@ -14,28 +14,20 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 244625 246505 253040 245227 244821",
-	"SPELL_CAST_SUCCESS 245292 244722 244892 245227 253037 245174",
---	"SPELL_SUMMON 245174",
+	"SPELL_CAST_SUCCESS 244722 244892 245227 253037 245174",
 	"SPELL_AURA_APPLIED 244737 244892 253015",
 	"SPELL_AURA_APPLIED_DOSE 244892",
 	"SPELL_AURA_REMOVED 244737 253015",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
---	"UNIT_DIED",
---	"CHAT_MSG_RAID_BOSS_EMOTE",
 	"RAID_BOSS_WHISPER",
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3"
 )
 
---TODO, Shock Grenade doesn't existin combat log? or maybe doesn't exist at all on heroic?
---TODO, Figure out mine spawns which aren't in combat log either, but DO exist
---TODO, figure out warp field which wasn't in combat log at all
---TODO, figure out how to detect/announce correct versions of withering Fire
---TODO, track players pods and those casts?
 --TODO, boss health was reporting unknown in streams, verify/fix boss CIDs
 --[[
 (ability.id = 244625 or ability.id = 253040 or ability.id = 245227 or ability.id = 125012 or ability.id = 125014 or ability.id = 126258 or ability.id = 244821) and type = "begincast"
- or (ability.id = 245292 or ability.id = 244722 or ability.id = 244892) and type = "cast" or (ability.id = 245174 or ability.id = 244947) and type = "summon"
+ or (ability.id = 244722 or ability.id = 244892) and type = "cast" or (ability.id = 245174 or ability.id = 244947) and type = "summon"
  or ability.id = 253015
 --]]
 --General
@@ -44,8 +36,6 @@ local warnOutofPod						= mod:NewTargetAnnounce("ej16098", 2, 244141)
 local warnExploitWeakness				= mod:NewStackAnnounce(244892, 2, nil, "Tank")
 local warnPsychicAssault				= mod:NewTargetAnnounce(244172, 4)
 --In Pod
-----Admiral Svirax
---local warnWitheringFire				= mod:NewSpellAnnounce(245292, 2)
 ----Chief Engineer Ishkar
 local warnEntropicMine					= mod:NewSpellAnnounce(245161, 2)
 ----General Erodus
@@ -88,12 +78,10 @@ local timerAssumeCommandCD				= mod:NewNextTimer(90, 245227, nil, nil, nil, 6)
 --In Pod
 ----Admiral Svirax
 local timerFusilladeCD					= mod:NewNextCountTimer(29.6, 244625, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
---local timerWitheringFireCD			= mod:NewAITimer(61, 245292, nil, nil, nil, 3)
 ----Chief Engineer Ishkar
 local timerEntropicMineCD				= mod:NewCDTimer(10, 245161, nil, nil, nil, 3)
 ----General Erodus
 local timerSummonReinforcementsCD		= mod:NewNextTimer(8.4, 245546, nil, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON)
---local timerPyroblastCD				= mod:NewAITimer(61, 246505, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
 --Out of Pod
 ----Admiral Svirax
 ----Chief Engineer Ishkar
@@ -131,44 +119,12 @@ local voiceShockGrenade					= mod:NewVoice(244737)--runout
 local voiceWarpField					= mod:NewVoice(244821)--justrun/keepmove?
 ----General Erodus
 
-
---mod:AddSetIconOption("SetIconOnFocusedDread", 238502, true)
 mod:AddSetIconOption("SetIconOnAdds", 245546, true, true)
---mod:AddInfoFrameOption(244910, true)
 mod:AddRangeFrameOption("8")
 
 local felShield = GetSpellInfo(244910)
 mod.vb.FusilladeCount = 0
 mod.vb.lastIcon = 8
-
---[[
-local debuffFilter
-local UnitDebuff = UnitDebuff
-local playerDebuff = nil
-do
-	local spellName = GetSpellInfo(231311)
-	debuffFilter = function(uId)
-		if not playerDebuff then return true end
-		if not select(11, UnitDebuff(uId, spellName)) == playerDebuff then
-			return true
-		end
-	end
-end
-
-local expelLight, stormOfJustice = GetSpellInfo(228028), GetSpellInfo(227807)
-local function updateRangeFrame(self)
-	if not self.Options.RangeFrame then return end
-	if self.vb.brandActive then
-		DBM.RangeCheck:Show(15, debuffFilter)--There are no 15 yard items that are actually 15 yard, this will round to 18 :\
-	elseif UnitDebuff("player", expelLight) or UnitDebuff("player", stormOfJustice) then
-		DBM.RangeCheck:Show(8)
-	elseif self.vb.hornCasting then--Spread for Horn of Valor
-		DBM.RangeCheck:Show(5)
-	else
-		DBM.RangeCheck:Hide()
-	end
-end
---]]
 
 function mod:DemonicChargeTarget(targetname, uId)
 	if not targetname then return end
@@ -203,9 +159,6 @@ function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
---	if self.Options.InfoFrame then
---		DBM.InfoFrame:Hide()
---	end
 end
 
 function mod:SPELL_CAST_START(args)
@@ -241,7 +194,6 @@ function mod:SPELL_CAST_START(args)
 			countdownFusillade:Start(15.9)
 			--TODO, reinforcements fix
 		elseif cid == 122333 then--General Erodus
-			--timerSummonReinforcementsCD:Stop()--Stops fodder ones
 			timerSummonReinforcementsCD:Start(11)--Starts elite ones
 			countdownReinforcements:Start(11)
 		elseif cid == 122367 then--Admiral Svirax
@@ -252,7 +204,6 @@ function mod:SPELL_CAST_START(args)
 			countdownReinforcements:Cancel()
 			timerSummonReinforcementsCD:Start(16)--Start updated reinforcements timer
 			countdownReinforcements:Start(16)
-			--timerWitheringFireCD:Start(2)
 		end
 		if self:IsMythic() then
 			timerShockGrenadeCD:Start(9.7)
@@ -267,10 +218,7 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 245292 then
-		--warnWitheringFire:Show()
-		--timerWitheringFireCD:Start()
-	elseif spellId == 244722 then
+	if spellId == 244722 then
 		timerShockGrenadeCD:Start()--21
 	elseif spellId == 244892 then
 		timerExploitWeaknessCD:Start()
@@ -292,16 +240,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 		end
 	end
 end
-
---[[
-function mod:SPELL_SUMMON(args)
-	local spellId = args.spellId
-	if spellId == 245174 then--Minor adds
-		--warnSummonReinforcements:Show()
-		--timerSummonReinforcementsCD:Start()
-	end
-end
---]]
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
@@ -362,19 +300,6 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
-
-function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
-	if msg:find("spell:238502") then
-
-	end
-end
-
-function mod:UNIT_DIED(args)
-	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 121193 then
-
-	end
-end
 --]]
 
 function mod:RAID_BOSS_WHISPER(msg)
@@ -410,13 +335,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		elseif cid == 122333 then--General Erodus
 			timerSummonReinforcementsCD:Stop()--Elite ones
 			countdownReinforcements:Cancel()
-			--if not self:IsEasy() then
-				--timerSummonReinforcementsCD:Start(9)--Fodder ones
-			--end
 		elseif cid == 122367 then--Admiral Svirax
 			timerFusilladeCD:Stop()
 			countdownFusillade:Cancel()
-			--timerWitheringFireCD:Stop()
 		end
 	elseif spellId == 245546 then--Summon Reinforcements (major adds)
 		specWarnSummonReinforcements:Show()

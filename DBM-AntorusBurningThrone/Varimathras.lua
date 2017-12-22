@@ -13,17 +13,14 @@ mod.respawnTime = 29
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
---	"SPELL_CAST_START 243999",
 	"SPELL_CAST_SUCCESS 243960 244093 243999 257644",
 	"SPELL_AURA_APPLIED 243961 244042 244094 248732 243968 243977 243980 243973",
---	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 244042 244094",
 	"SPELL_PERIODIC_DAMAGE 244005 248740",
 	"SPELL_PERIODIC_MISSED 244005 248740",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, icons on necrotic embrace?
 --TODO, on phase changes most ability CDs extended by 2+ seconds, but NOT ALWAYS so difficult to hard code a rule for it right now
 --[[
 (ability.id = 243960 or ability.id = 244093 or ability.id = 243999 or ability.id = 244042 or ability.id = 257644) and type = "cast"
@@ -56,7 +53,6 @@ local specWarnEchoesOfDoom				= mod:NewSpecialWarningMoveAway(248732, nil, nil, 
 local yellEchoesOfDoom					= mod:NewYell(248732)
 
 --Torments of the Shivarra
---local timerTormentsCD					= mod:NewAITimer(61, "ej15778", nil, nil, nil, 6)--Temp, until order and actual cds of each torment are known and can be hardcoded
 local timerTormentofFlamesCD			= mod:NewNextTimer(5, 243967, nil, nil, nil, 6)
 local timerTormentofFrostCD				= mod:NewNextTimer(61, 243976, nil, nil, nil, 6)
 local timerTormentofFelCD				= mod:NewNextTimer(61, 243979, nil, nil, nil, 6)
@@ -119,17 +115,6 @@ function mod:OnCombatEnd()
 --		DBM.InfoFrame:Hide()
 --	end
 end
-
---[[
-function mod:SPELL_CAST_START(args)
-	local spellId = args.spellId
-	if spellId == 243999 then
-		specWarnDarkFissure:Show()
-		voiceDarkFissure:Play("watchstep")
-		timerDarkFissureCD:Start()
-	end
-end
---]]
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
@@ -225,7 +210,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		voicePhaseChange:Play("phasechange")
 	end
 end
---mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
@@ -255,17 +239,3 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
-
---[[
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if spellId == 243967 then--Torment of Flames
-		--warnTormentofFlames:Show()
-	elseif spellId == 243976 then--Torment of Frost
-		--warnTormentofFrost:Show()
-	elseif spellId == 243979 then--Torment of Fel
-		--warnTormentofFel:Show()
-	elseif spellId == 243974 then--Torment of Shadows
-		--warnTormentofShadows:Show()
-	end
-end
---]]

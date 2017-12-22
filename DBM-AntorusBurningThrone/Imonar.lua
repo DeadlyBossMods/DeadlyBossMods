@@ -20,14 +20,11 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_REMOVED 248233 250135 250006",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
---	"UNIT_DIED",
---	"CHAT_MSG_RAID_BOSS_EMOTE",
 	"RAID_BOSS_WHISPER",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
 --TODO, Announce stacks of Gathering Power if relevant
---TODO, icons on Empowered Pulse Grenades? Have to see live health tuning and whether or not > 8 players can have them
 --[[
 (ability.id = 247376 or ability.id = 248068 or ability.id = 247923 or ability.id = 248070 or ability.id = 248254) and type = "begincast"
  or (ability.id = 247367 or ability.id = 250255 or ability.id = 247552 or ability.id = 247687 or ability.id = 254244) and type = "cast"
@@ -40,13 +37,11 @@ local warnSlumberGas					= mod:NewTargetAnnounce(247565, 3)
 --Stage Two: Contract to Kill
 local warnPhase2						= mod:NewPhaseAnnounce(2, 2)
 local warnSever							= mod:NewStackAnnounce(247687, 2, nil, "Tank")
---local warnChargedBlasts					= mod:NewTargetAnnounce(247716, 3)
 --Stage Three/Five: The Perfect Weapon
 local warnPhase3						= mod:NewPhaseAnnounce(3, 2)
 local warnEmpoweredPulseGrenade			= mod:NewTargetAnnounce(250006, 3)
 local warnPhase4						= mod:NewPhaseAnnounce(4, 2)
 local warnPhase5						= mod:NewPhaseAnnounce(5, 2)
---Intermission: On Deadly Ground
 
 --General
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
@@ -61,14 +56,11 @@ local yellStasisTrap					= mod:NewYell(247641, L.DispelMe)
 --Stage Two: Contract to Kill
 local specWarnSever						= mod:NewSpecialWarningTaunt(247687, nil, nil, nil, 1, 2)
 local specWarnChargedBlastsUnknown		= mod:NewSpecialWarningSpell(247716, nil, nil, nil, 2, 2)
---local specWarnChargedBlasts				= mod:NewSpecialWarningYou(247716, nil, nil, nil, 1, 2)
---local yellChargedBlasts					= mod:NewYell(247716)
 local specWarnShrapnalBlast				= mod:NewSpecialWarningDodge(247923, nil, nil, nil, 1, 2)
 --local specWarnMalignantAnguish		= mod:NewSpecialWarningInterrupt(236597, "HasInterrupt")
 --Stage Three/Five: The Perfect Weapon
 local specWarnEmpPulseGrenade			= mod:NewSpecialWarningMoveAway(250006, nil, nil, nil, 1, 2)
 local yellEmpPulseGrenade				= mod:NewYell(250006)
---local specWarnEmpShrapnalBlast		= mod:NewSpecialWarningDodge(248070, nil, nil, nil, 1, 2)--Redundant
 --Intermission: On Deadly Ground
 
 --Stage One: Attack Force
@@ -172,7 +164,7 @@ function mod:OnCombatStart(delay)
 	self.vb.shrapnalCast = 0
 	self.vb.empoweredPulseActive = 0
 	self.vb.sleepCanisterIcon = 1
-	timerShocklanceCD:Start(4.2-delay)--4.4 Mythic, 4.3 normal, 4.2 heroic
+	timerShocklanceCD:Start(4.2-delay)
 	timerSleepCanisterCD:Start(7-delay)
 	if not self:IsLFR() then--Don't seem to be in LFR
 		if self:IsMythic() then
@@ -417,19 +409,6 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
-
-function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
-	if msg:find("spell:238502") then
-
-	end
-end
-
-function mod:UNIT_DIED(args)
-	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 121193 then
-
-	end
-end
 --]]
 
 function mod:RAID_BOSS_WHISPER(msg)
@@ -468,7 +447,6 @@ do
 	end
 end
 
---http://ptr.wowhead.com/spell=253380/teleport-imonar-the-soulhunter
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 248995 or spellId == 248194 then
 		timerSeverCD:Stop()
