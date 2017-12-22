@@ -16,19 +16,12 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 244057 244056",
 	"SPELL_CAST_SUCCESS 244072 251445 245098",
 	"SPELL_AURA_APPLIED 244768 248815 254429 248819 244054 244055 251356",
---	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 244768 248815 254429 248819 251356",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
---	"UNIT_DIED",
---	"CHAT_MSG_RAID_BOSS_EMOTE",
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2"
 )
 
---TODO, work the breath warnings to special warnings pre warnings for tanks?
---TODO, figure out who sphere is chasing with a constant threat/aggro monitor while it's out?
---TODO, more work on siphon targetting, it too may need icons/assignments. Same with Enflamed
---TODO, update all timers on Focused power, probably pause them all for 15 seconds
 --[[
 (ability.id = 244057 or ability.id = 244056) and type = "begincast"
  or (ability.id = 244072 or ability.id = 251445 or ability.id = 245098 or ability.id = 251356 or ability.id = 254429) and type = "cast"
@@ -105,37 +98,7 @@ mod.vb.WeightDarkIcon = 1
 mod.vb.longTimer = 95.9
 mod.vb.mediumTimer = 77
 
---[[
-local debuffFilter
-local UnitDebuff = UnitDebuff
-local playerDebuff = nil
-do
-	local spellName = GetSpellInfo(231311)
-	debuffFilter = function(uId)
-		if not playerDebuff then return true end
-		if not select(11, UnitDebuff(uId, spellName)) == playerDebuff then
-			return true
-		end
-	end
-end
-
-local expelLight, stormOfJustice = GetSpellInfo(228028), GetSpellInfo(227807)
-local function updateRangeFrame(self)
-	if not self.Options.RangeFrame then return end
-	if self.vb.brandActive then
-		DBM.RangeCheck:Show(15, debuffFilter)--There are no 15 yard items that are actually 15 yard, this will round to 18 :\
-	elseif UnitDebuff("player", expelLight) or UnitDebuff("player", stormOfJustice) then
-		DBM.RangeCheck:Show(8)
-	elseif self.vb.hornCasting then--Spread for Horn of Valor
-		DBM.RangeCheck:Show(5)
-	else
-		DBM.RangeCheck:Hide()
-	end
-end
---]]
-
 local function UpdateAllTimers(self)
-	--Experimental Code
 	--Fire Doggo
 	timerMoltenTouchCD:AddTime(15)
 	timerEnflamedCorruptionCD:AddTime(15)
@@ -326,7 +289,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	end
 end
---mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
@@ -365,13 +327,6 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 	if msg:find("spell:238502") then
-
-	end
-end
-
-function mod:UNIT_DIED(args)
-	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 121193 then
 
 	end
 end
