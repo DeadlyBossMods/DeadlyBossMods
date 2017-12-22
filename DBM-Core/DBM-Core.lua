@@ -237,6 +237,7 @@ DBM.DefaultOptions = {
 	ArrowPoint = "TOP",
 	-- global boss mod settings (overrides mod-specific settings for some options)
 	DontShowBossAnnounces = false,
+	DontShowTargetAnnounces = false,
 	DontShowSpecialWarnings = false,
 	DontShowBossTimers = false,
 	DontShowUserTimers = false,
@@ -8431,6 +8432,7 @@ do
 	function announcePrototype:Show(...) -- todo: reduce amount of unneeded strings
 		if not self.option or self.mod.Options[self.option] then
 			if DBM.Options.DontShowBossAnnounces then return end	-- don't show the announces if the spam filter option is set
+			if DBM.Options.DontShowTargetAnnounces and self.announceType == "target" then return end--don't show announces that are generic target announces
 			local argTable = {...}
 			local colorCode = ("|cff%.2x%.2x%.2x"):format(self.color.r * 255, self.color.g * 255, self.color.b * 255)
 			if #self.combinedtext > 0 then
