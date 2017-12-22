@@ -39,7 +39,6 @@ mod:RegisterEventsInCombat(
  --]]
 --Platform: Nexus
 local warnRealityTear					= mod:NewStackAnnounce(244016, 2, nil, "Tank")
---local warnTransportPortal				= mod:NewSpellAnnounce(244677, 2)
 --Platform: Xoroth
 local warnXorothPortal					= mod:NewSpellAnnounce(244318, 2)
 local warnAegisofFlames					= mod:NewTargetAnnounce(244383, 3)
@@ -478,9 +477,12 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 257939 then
 		self.vb.firstPortal = true
 		warnXorothPortal:Show()
+		voiceTransportPortal:Play("newportal")
 	elseif spellId == 257941 then
 		warnRancoraPortal:Show()
+		voiceTransportPortal:Play("newportal")
 	elseif spellId == 257942 then
 		warnNathrezaPortal:Show()
+		voiceTransportPortal:Play("newportal")
 	end
 end
