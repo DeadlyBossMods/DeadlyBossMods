@@ -105,6 +105,13 @@ mod.vb.firstCombo = nil
 mod.vb.secondCombo = nil
 mod.vb.comboCount = 0
 
+local comboUsed = {
+	[1] = false,--L.Foe, L.Tempest, L.Rend, L.Foe, L.Rend
+	[2] = false,--L.Foe, L.Rend, L.Tempest, L.Foe, L.Rend
+	[3] = false,--L.Rend, L.Tempest, L.Foe, L.Foe, L.Rend
+	[4] = false--L.Rend, L.Foe, L.Foe, L.Tempest, L.Rend
+}
+
 local updateInfoFrame
 do
 	local lines = {}
@@ -122,29 +129,52 @@ do
 				--Filler
 			elseif mod.vb.comboCount == 1 and mod.vb.firstCombo then
 				if mod.vb.firstCombo == "Foe" then--L.Foe, L.Tempest, L.Rend, L.Foe, L.Rend or L.Foe, L.Rend, L.Tempest, L.Foe, L.Rend
-					addLine(mod.vb.comboCount+1, DBM_CORE_IMPORTANT_ICON..L.Rend.."/"..DBM_CORE_DEADLY_ICON..L.Tempest)
-					addLine(mod.vb.comboCount+2, DBM_CORE_IMPORTANT_ICON..L.Rend.."/"..DBM_CORE_DEADLY_ICON..L.Tempest)
+					if comboUsed[1] then--It's L.Foe, L.Rend, L.Tempest, L.Foe, L.Rend (combo 2) for sure
+						addLine(mod.vb.comboCount+1, DBM_CORE_IMPORTANT_ICON..L.Rend)
+						addLine(mod.vb.comboCount+2, DBM_CORE_DEADLY_ICON..L.Tempest)
+					elseif comboUsed[2] then--It's L.Foe, L.Tempest, L.Rend, L.Foe, L.Rend (Combo 1) for sure
+						addLine(mod.vb.comboCount+1, DBM_CORE_DEADLY_ICON..L.Tempest)
+						addLine(mod.vb.comboCount+2, DBM_CORE_IMPORTANT_ICON..L.Rend)
+					else--Could be either one
+						addLine(mod.vb.comboCount+1, DBM_CORE_IMPORTANT_ICON..L.Rend.."/"..DBM_CORE_DEADLY_ICON..L.Tempest)
+						addLine(mod.vb.comboCount+2, DBM_CORE_IMPORTANT_ICON..L.Rend.."/"..DBM_CORE_DEADLY_ICON..L.Tempest)
+					end
+					addLine(mod.vb.comboCount+3, DBM_CORE_TANK_ICON..L.Foe.."(2)")
 				elseif mod.vb.firstCombo == "Rend" then----L.Rend, L.Tempest, L.Foe, L.Foe, L.Rend or L.Rend, L.Foe, L.Foe, L.Tempest, L.Rend
-					addLine(mod.vb.comboCount+1, DBM_CORE_TANK_ICON..L.Foe.."/"..DBM_CORE_DEADLY_ICON..L.Tempest)
-					addLine(mod.vb.comboCount+2, DBM_CORE_TANK_ICON..L.Foe.."/"..DBM_CORE_DEADLY_ICON..L.Tempest)
+					if comboUsed[3] then--It's L.Rend, L.Foe, L.Foe, L.Tempest, L.Rend (combo 4) for sure
+						addLine(mod.vb.comboCount+1, DBM_CORE_TANK_ICON..L.Foe)
+						addLine(mod.vb.comboCount+2, DBM_CORE_TANK_ICON..L.Foe.."(2)")
+						addLine(mod.vb.comboCount+3, DBM_CORE_DEADLY_ICON..L.Tempest)
+					elseif comboUsed[4] then--It's L.Rend, L.Tempest, L.Foe, L.Foe, L.Rend (combo 3) for sure
+						addLine(mod.vb.comboCount+1, DBM_CORE_DEADLY_ICON..L.Tempest)
+						addLine(mod.vb.comboCount+2, DBM_CORE_TANK_ICON..L.Foe)
+						addLine(mod.vb.comboCount+3, DBM_CORE_TANK_ICON..L.Foe.."(2)")
+					else
+						addLine(mod.vb.comboCount+1, DBM_CORE_TANK_ICON..L.Foe.."/"..DBM_CORE_DEADLY_ICON..L.Tempest)
+						addLine(mod.vb.comboCount+2, DBM_CORE_TANK_ICON..L.Foe.."/"..DBM_CORE_TANK_ICON..L.Foe.."(2)")
+						addLine(mod.vb.comboCount+3, DBM_CORE_TANK_ICON..L.Foe.."(2)/"..DBM_CORE_DEADLY_ICON..L.Tempest)
+					end
 				end
-				addLine(mod.vb.comboCount+3, DBM_CORE_TANK_ICON..L.Foe.."(2)/"..DBM_CORE_DEADLY_ICON..L.Tempest)
 				addLine(mod.vb.comboCount+4, DBM_CORE_IMPORTANT_ICON..L.Rend.."(2)")
 			elseif mod.vb.comboCount == 2 and mod.vb.secondCombo then
-					if mod.vb.secondCombo == "Tempest" then
-				if mod.vb.firstCombo == "Foe" then--L.Foe, L.Tempest, L.Rend, L.Foe, L.Rend
+				if mod.vb.secondCombo == "Tempest" then
+					if mod.vb.firstCombo == "Foe" then--L.Foe, L.Tempest, L.Rend, L.Foe, L.Rend
 						addLine(mod.vb.comboCount+1, DBM_CORE_IMPORTANT_ICON..L.Rend)
+						comboUsed[1] = true
 					elseif mod.vb.firstCombo == "Rend" then--L.Rend, L.Tempest, L.Foe, L.Foe, L.Rend
 						addLine(mod.vb.comboCount+1, DBM_CORE_TANK_ICON..L.Foe)
+						comboUsed[3] = true
 					end
 					--Same in both combos
 					addLine(mod.vb.comboCount+2, DBM_CORE_TANK_ICON..L.Foe.."(2)")
 				elseif mod.vb.secondCombo == "Foe" then--L.Rend, L.Foe, L.Foe, L.Tempest, L.Rend
 					addLine(mod.vb.comboCount+1, DBM_CORE_TANK_ICON..L.Foe.."(2)")
 					addLine(mod.vb.comboCount+2, DBM_CORE_DEADLY_ICON..L.Tempest)
+					comboUsed[4] = true
 				elseif mod.vb.secondCombo == "Rend" then--L.Foe, L.Rend, L.Tempest, L.Foe, L.Rend
 					addLine(mod.vb.comboCount+1, DBM_CORE_DEADLY_ICON..L.Tempest)
 					addLine(mod.vb.comboCount+2, DBM_CORE_TANK_ICON..L.Foe.."(2)")
+					comboUsed[2] = true
 				end
 				--Rend always last
 				addLine(mod.vb.comboCount+3, DBM_CORE_IMPORTANT_ICON..L.Rend.."(2)")
@@ -205,6 +235,10 @@ function mod:OnCombatStart(delay)
 	self.vb.blazeIcon = 1
 	self.vb.techActive = false
 	if self:IsMythic() then
+		comboUsed[1] = false
+		comboUsed[2] = false
+		comboUsed[3] = false
+		comboUsed[4] = false
 		timerRavenousBlazeCD:Start(4.4-delay)
 		timerWakeofFlameCD:Start(10.7-delay)--Health based?
 		countdownWakeofFlame:Start(10.7-delay)
@@ -483,10 +517,15 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerFlareCD:Stop()
 		countdownWakeofFlame:Cancel()
 		warnTaeshalachTech:Show(self.vb.techCount)
-		timerTaeshalachTechCD:Start(nil, self.vb.techCount+1)
-		countdownTaeshalachTech:Start()
 		if self:IsMythic() then
-			--Nothing special!
+			--Reset combo and tech count if needed
+			if self.vb.techCount == 5 then
+				self.vb.techCount = 1
+				comboUsed[1] = false
+				comboUsed[2] = false
+				comboUsed[3] = false
+				comboUsed[4] = false
+			end
 		else
 			--Set sequence
 			--Foebreaker instantly so no need for timer
@@ -498,6 +537,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 				timerTempestCD:Start(15)
 			end
 		end
+		timerTaeshalachTechCD:Start(nil, self.vb.techCount+1)
+		countdownTaeshalachTech:Start()
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:SetHeader(GetSpellInfo(244688))
 			DBM.InfoFrame:Show(5, "function", updateInfoFrame, false, false, true)
