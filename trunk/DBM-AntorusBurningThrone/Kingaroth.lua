@@ -27,15 +27,12 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5"
 )
 
---TODO, see if Reverberating Strike can be on anyone or just another tank only mechanic (determines what kind of range frame we need)
 --TODO, how does mythic reverberating decimatino work (18 yard spread?)
 --TODO, analyze DiabolicBomb
 --TODO, how to detect http://ptr.wowhead.com/spell=249920/weapons-upgrade
 --TODO, workin http://ptr.wowhead.com/spell=246629/apocalypse-blast
 --TODO, more work on infoframe for fel reaver construction status, etc.
---TODO, review all timers, they were adjusting his rate of energy gain throughough attempts
---TODO, review timers even more cause they keep tweaking them
---TODO, currently decimation & annihilation are only detectable via nameplate/target casts as such, it's pretty bad idea to support it unless it's really required
+--TODO, currently annihilation are only detectable via nameplate/target casts as such, it's pretty bad idea to support it unless it's really required
 --[[
 (ability.id = 244312 or ability.id = 254926 or ability.id = 245807 or ability.id = 252758 or ability.id = 246692 or ability.id = 246833 or ability.id = 246516 or ability.id = 257997 or ability.id = 257978 or ability.id = 254919) and type = "begincast"
  or (ability.id = 252758 or ability.id = 246692) and type = "cast"
@@ -419,12 +416,6 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
-
-function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
-	if msg:find("spell:238502") then
-
-	end
-end
 --]]
 
 function mod:UNIT_DIED(args)

@@ -29,7 +29,6 @@ mod:RegisterEventsInCombat(
 )
 
 --TODO, verify Meteor Storm in LFR
---TODO, verify interrupt for Final Doom
 --[[
 (ability.id = 249121 or ability.id = 250048) and type = "begincast"
  or (ability.id = 246753 or ability.id = 254769) and type = "cast"
@@ -121,9 +120,6 @@ mod.vb.obfuscatorCast = 0
 mod.vb.purifierCast = 0
 mod.vb.batCast = 0
 mod.vb.targetedIcon = 1
---local normalWarpTimers = {5.1, 16.0}
---local heroicWarpTimers = {5.3, 10.0, 23.9, 20.7, 24.0, 19.0}
---local mythicWarpTimers = {5.3, 9.8, 35.3, 44.8, 34.9}--Excludes the waves that don't fire warp in (obfuscators and purifiers)
 local normalRainOfFelTimers = {}--PTR, recheck
 local heroicRainOfFelTimers = {9.3, 44, 10, 43, 35, 19, 20, 30, 45, 35, 99}--Live, Nov 29
 local mythicRainOfFelTimers = {6, 23.1, 24.1, 49.2, 25, 49.3, 15, 46.2, 24, 49.2, 24.1, 49.2, 50}--Live, Dec 14
@@ -492,27 +488,6 @@ function mod:UNIT_DIED(args)
 end
 
 --[[
-function mod:RAID_BOSS_WHISPER(msg)
-	if msg:find("spell:248861") or msg:find("spell:248789") then
-		specWarnSpearofDoom:Show()
-		voiceSpearofDoom:Play("runout")
-		yellSpearofDoom:Yell()
-	end
-end
-
-function mod:OnTranscriptorSync(msg, targetName)
-	if msg:find("spell:248861") or msg:find("spell:248789") then
-		targetName = Ambiguate(targetName, "none")
-		if self:AntiSpam(4, targetName) then
-			local icon = self.vb.bladesIcon
-			warnSpearofDoom:CombinedShow(0.5, targetName)
-			if self.Options.SetIconOnSpearofDoom then
-				--self:SetIcon(targetName, icon, 5)
-			end
-		end
-	end
-end
-
 function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 248329 and self:AntiSpam(5, 4) then
 
