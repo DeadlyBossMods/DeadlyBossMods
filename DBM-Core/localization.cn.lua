@@ -2,7 +2,7 @@
 -- Diablohu(diablohudream@gmail.com)
 -- yleaf(yaroot@gmail.com)
 -- Mini Dragon(projecteurs@gmail.com)
--- Last update: 2017/11/01
+-- Last update: 2017/12/22 X-mas
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -25,7 +25,7 @@ DBM_CORE_LOAD_MOD_VER_MISMATCH		= "%s 模块无法被载入。 DBM核心版本�
 DBM_CORE_LOAD_MOD_DISABLED			= "%s 模块已安装但被禁用。该模块不会被载入除非启用它。"
 DBM_CORE_LOAD_MOD_DISABLED_PLURAL	= "%s 模块已安装但被禁用。这些模块不会被载入除非启用它们。"
 
-DBM_CORE_WHATS_NEW					= "一些窗口中的链接被移除了防止bug。"
+DBM_CORE_WHATS_NEW					= "总结一下就是一些link的点击bug被移除."
 
 --Post Patch 7.1
 DBM_CORE_NO_RANGE					= "距离雷达在副本中无法使用，该功能会使用文本代替"
@@ -463,7 +463,7 @@ DBM_CORE_AUTO_YELL_OPTION_TEXT.position		= "当你受到$spell:%s影响时大喊
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.shortyell  = "%s"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.yell		= UnitName("player") .. " 中了%s"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.count		= UnitName("player") .. " 中了%s (%%d)"
-DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.fade		= "%s 于%%d秒后消失"
+DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.fade		= "%s 剩%%d秒"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.shortfade	= "%%d秒"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.iconfade	= "{rt%%2$d}%%1$d秒" --应该对的吧。
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.position	= UnitName("player").." ({rt%%3$d})中了%1$s (%%1$s - {rt%%2$d})" --리동윤
