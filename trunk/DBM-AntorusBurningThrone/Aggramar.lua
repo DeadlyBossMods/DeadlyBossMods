@@ -396,6 +396,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.wakeOfFlameCount = 0
 		self.vb.techActive = false
 		timerScorchingBlazeCD:Stop()
+		timerRavenousBlazeCD:Stop()
 		timerWakeofFlameCD:Stop()
 		timerFlareCD:Stop()
 		countdownWakeofFlame:Cancel()
