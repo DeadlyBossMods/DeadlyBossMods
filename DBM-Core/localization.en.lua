@@ -415,14 +415,14 @@ DBM_CORE_AUTO_TIMER_TEXTS = {
 	cd			= "%s CD",
 	cdcount		= "%s CD (%%s)",
 	cdsource	= "%s CD: >%%s<",
-	cdspecial	= "Special Ability CD",
+	cdspecial	= "Special CD",
 	next		= "Next %s",
 	nextcount	= "Next %s (%%s)",
 	nextsource	= "Next %s: %%s",
-	nextspecial	= "Next Special Ability",
+	nextspecial	= "Next Special",
 	achievement	= "%s",
 	stage		= "Next Stage",
-	adds		= "Next Incoming Adds",
+	adds		= "Incoming Adds",
 	addscustom	= "Incoming Adds (%%s)",
 	roleplay	= GUILD_INTEREST_RP
 }
