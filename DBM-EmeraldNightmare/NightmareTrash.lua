@@ -45,7 +45,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 221028 then
 		warnUnstableDecay:CombinedShow(0.5, args.destName)
-		if args:IsPlayer() then--TODO, maybe give it a delay, it does take a while
+		if args:IsPlayer() and self:AntiSpam(4, 1) then
 			specWarnUnstableDecay:Show()
 			voiceUnstableDecay:Play("runout")
 			yellUnstableDecay:Yell()
