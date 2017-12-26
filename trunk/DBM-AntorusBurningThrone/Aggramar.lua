@@ -197,7 +197,9 @@ do
 				DBM.InfoFrame:Hide()
 			end
 		else--Not Mythic
-			if mod.vb.comboCount == 1 then
+			if mod.vb.comboCount == 0 then
+				--Filler
+			elseif mod.vb.comboCount == 1 then
 				addLine(mod.vb.comboCount+1, DBM_CORE_IMPORTANT_ICON..L.Rend)
 				addLine(mod.vb.comboCount+2, DBM_CORE_TANK_ICON..L.Foe.."(2)")
 				addLine(mod.vb.comboCount+3, DBM_CORE_IMPORTANT_ICON..L.Rend.."(2)")
