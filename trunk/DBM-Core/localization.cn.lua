@@ -6,14 +6,9 @@
 
 if GetLocale() ~= "zhCN" then return end
 
-DBM_CORE_NEED_LOCALS				= "如果你会编程并且英语不错，请来帮助我们完善DBM中文翻译。你可以访问DBM论坛，或是在DBM Discord中联系MysticalOS。"
 DBM_CORE_NEED_LOGS					= "DBM需要战斗记录器 (http://www.wowace.com/addons/transcriptor/) 的日志来使得技能判断更准确。如果你想帮忙，请用 transcriptor 记录并上传日志文件到我们的论坛或Discord。"
 DBM_HOW_TO_USE_MOD					= "欢迎使用DBM。在聊天框输入 /dbm help 以获取可用命令的帮助。输入 /dbm 可打开设置窗口，并对各个Boss模块进行设置，也可以浏览首领击杀记录。DBM 会自动按你的专精做出相应配置，但是你可以进行微调。"
 DBM_SILENT_REMINDER					= "提示：DBM 正处于安静模式。"
-
-DBM_FORUMS_MESSAGE					= "发现BUG或错误的计时条?你希望要让某些模组有新的警告，计时器或是特别功能?\n请前往DBM论坛或到DBM Discord频道给些反馈。"
-DBM_FORUMS_COPY_URL_DIALOG			= "拜访我们的讨论与支持论坛"
-DBM_FORUMS_COPY_URL_DIALOG_NEWS		= "想知道更多关于新功能的信息请拜访我们的论坛"
 
 DBM_CORE_LOAD_MOD_ERROR				= "读取%s模块时发生错误：%s"
 DBM_CORE_LOAD_MOD_SUCCESS			= "'%s' 模块已加载。在聊天框输入 /dbm 可设置自定义语音或注记等选项。"
@@ -24,8 +19,6 @@ DBM_CORE_BAD_LOAD					= "DBM检测到由于你在战斗过程中载入模块，�
 DBM_CORE_LOAD_MOD_VER_MISMATCH		= "%s 模块无法被载入。 DBM核心版本过旧。请升级DBM。"
 DBM_CORE_LOAD_MOD_DISABLED			= "%s 模块已安装但被禁用。该模块不会被载入除非启用它。"
 DBM_CORE_LOAD_MOD_DISABLED_PLURAL	= "%s 模块已安装但被禁用。这些模块不会被载入除非启用它们。"
-
-DBM_CORE_WHATS_NEW					= "总结一下就是一些link的点击bug被移除."
 
 --Post Patch 7.1
 DBM_CORE_NO_RANGE					= "距离雷达在副本中无法使用，该功能会使用文本代替"

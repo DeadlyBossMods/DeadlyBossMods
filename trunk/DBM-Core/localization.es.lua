@@ -1,13 +1,8 @@
 if GetLocale() ~= "esES" and GetLocale() ~= "esMX" then return end
 
-DBM_CORE_NEED_LOCALS				= "¿Se te da bien la programación o los idiomas? Si es así, el equipo de DBM necesita tu ayuda para localizar DBM a más idiomas. Si crees que puedes ayudar, visita nuestro foro |HDBM:localizersneeded|h|cff3588ffhaciendo clic aquí|r."
 DBM_CORE_NEED_LOGS					= "DBM necesita registros de Transcriptor (http://www.wowace.com/addons/transcriptor/) de varios encuentros para que los módulos queden lo mejor posible. Si quieres ayudar, publica los registros de Transcriptor en nuestro foro. Por ahora solo estamos interesados en registors de mazmorra y banda de la alfa de Legion."
 DBM_HOW_TO_USE_MOD					= "Bienvenido a DBM. Escribe '/dbm help' para ver la lista de comandos. Para acceder a la configuración no tienes más que escribir '/dbm'."
 DBM_SILENT_REMINDER					= "Recordatorio: DBM sigue en modo silencioso."
-
-DBM_FORUMS_MESSAGE					= "¿Has encontrado un error o un temporizador que no funciona correctamente? ¿Crees que un módulo necesita un aviso, temporizador o función adicional?\nVisita nuestros foros de debate, comunicación de errores y petición de características en |HDBM:forums|h|cff3588ffhttp://www.deadlybossmods.com|r (haz clic para copiar la URL)."
-DBM_FORUMS_COPY_URL_DIALOG			= "Visita nuestros foros de debate y asistencia técnica."
-DBM_FORUMS_COPY_URL_DIALOG_NEWS		= "Para aprender más sobre esta característica y cómo funciona, visita nuestro foro."
 
 DBM_CORE_LOAD_MOD_ERROR				= "Error al cargar el módulo de %s: %s"
 DBM_CORE_LOAD_MOD_SUCCESS			= "Módulo de '%s' cargado. Para más opciones, como alertas de sonido o notas de aviso personalizadas, escribe '/dbm'."
@@ -18,8 +13,6 @@ DBM_CORE_BAD_LOAD					= "DBM ha detectado que no se ha podido cargar el módulo 
 DBM_CORE_LOAD_MOD_VER_MISMATCH		= "No se ha podido cargar el módulo de %s porque tu módulo de DBM-Core no cumple los requisitos necesarios. Se necesita una versión más reciente."
 DBM_CORE_LOAD_MOD_DISABLED			= "%s está instalado pero se encuentra desactivado. Este módulo no se cargará hasta que lo actives."
 DBM_CORE_LOAD_MOD_DISABLED_PLURAL	= "%s están instalados pero se encuentran desactivados. Estos módulos no se cargarán hasta que los actives."
-
-DBM_CORE_WHATS_NEW					= "Se ha eliminado o modificado algunas características para evitar ciertos problemas con la ventana de chat. No soluciona el problema de '/logout', ya que es un bug de Blizzard, pero debería arreglar el resto."
 
 --Post Patch 7.1
 DBM_CORE_NO_RANGE					= "No se puede usar el radar de distancia en estancias. Se procederá a usar el marco de distancia por texto."
