@@ -50,7 +50,7 @@ local yellMarkedPreyFades				= mod:NewShortFadesYell(244042)
 local specWarnNecroticEmbrace			= mod:NewSpecialWarningMoveAway(244094, nil, nil, 2, 1, 2)
 local yellNecroticEmbrace				= mod:NewPosYell(244094)
 local yellNecroticEmbraceFades			= mod:NewIconFadesYell(244094)
-local specWarnEchoesOfDoom				= mod:NewSpecialWarningMoveAway(248732, nil, nil, nil, 1, 2)
+local specWarnEchoesOfDoom				= mod:NewSpecialWarningYou(248732, nil, nil, nil, 1, 2)
 local yellEchoesOfDoom					= mod:NewYell(248732)
 
 --Torments of the Shivarra
@@ -183,7 +183,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnEchoesofDoom:CombinedShow(0.5, args.destName)--In case multiple shadows up
 		if args:IsPlayer() and self:AntiSpam(3, 1) then
 			specWarnEchoesOfDoom:Show()
-			voiceEchoesOfDoom:Play("runout")
+			voiceEchoesOfDoom:Play("targetyou")
 			yellEchoesOfDoom:Yell()
 		end
 	elseif spellId == 243968 and self.vb.currentTorment ~= 1 then--Flame
