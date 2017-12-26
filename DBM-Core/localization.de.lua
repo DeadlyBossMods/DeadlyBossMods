@@ -1,13 +1,8 @@
 if GetLocale() ~= "deDE" then return end
 
-DBM_CORE_NEED_LOCALS				= "Hey, bist du ein Programmierer oder gut in Fremdsprachen? Falls ja, benötigt DBM deine Hilfe, um in mehr Sprachen übersetzt zu werden. Falls du helfen kannst, dann besuche |HDBM:localizersneeded|h|cff3588ffunser Forum|r."
 DBM_CORE_NEED_LOGS					= "DBM benötigt Transcriptor (http://www.wowace.com/addons/transcriptor/) Logs dieses Kampfes um möglichst gute Mods bereitstellen zu können. Falls du helfen willst, dann zeichne diesen Kampf mit Transcriptor auf und poste das Log in unser Forum oder auf Discord."
 DBM_HOW_TO_USE_MOD					= "Willkommen bei DBM. Tippe /dbm help für eine Liste unterstützter Kommandos. Für den Zugriff auf Einstellungen tippe /dbm in den Chat um die Konfiguration zu beginnen. Lade gewünschte Zonen manuell um jegliche Boss-spezifische Einstellungen nach deinen Wünschen zu konfigurieren. DBM versucht dies für dich zu tun, indem es beim ersten Start deine Spezialisierung scannt, aber du kannst zusätzliche Einstellungen aktivieren."
 DBM_SILENT_REMINDER					= "Erinnerung: DBM befindet sich noch im Lautlos-Modus."
-
-DBM_FORUMS_MESSAGE					= "Du hast einen Bug oder einen falschen Timer gefunden? Du glaubst einige Mods würden zusätzliche Warnungen, Timer oder Spezialfeatures benötigen?\nBesuche die neuen Deadly Boss Mods Foren für Diskussionen, Fehlermeldungen und Featurewünsche: |HDBM:forums|h|cff3588ffhttp://www.deadlybossmods.com|r (Du kannst auf den Link klicken um ihn zu kopieren.)"
-DBM_FORUMS_COPY_URL_DIALOG			= "Besuche unsere Diskussions- und Support-Foren"
-DBM_FORUMS_COPY_URL_DIALOG_NEWS		= "Besuche unser Forum um mehr über dieses Feature und seine Verwendung zu erfahren"
 
 DBM_CORE_LOAD_MOD_ERROR				= "Fehler beim Laden der Boss Mods für %s: %s"
 DBM_CORE_LOAD_MOD_SUCCESS			= "Boss Mods für '%s' geladen. Für weitere Einstellungen wie benutzerdefinierte Sounds und individuelle Warnnotizen /dbm eingeben."
@@ -18,8 +13,6 @@ DBM_CORE_BAD_LOAD					= "Dein Boss Mod für diese Instanz konnte nicht vollstän
 DBM_CORE_LOAD_MOD_VER_MISMATCH		= "%s kann nicht geladen werden, da dein DBM-Core die Voraussetzungen nicht erfüllt. Es wird eine aktualisierte Version benötigt."
 DBM_CORE_LOAD_MOD_DISABLED			= "%s ist installiert, aber derzeit nicht aktiviert. Dieses Mod wird nicht geladen, falls du es nicht aktivierst."
 DBM_CORE_LOAD_MOD_DISABLED_PLURAL	= "%s sind installiert, aber derzeit nicht aktiviert. Diese Mods werden nicht geladen, falls du sie nicht aktivierst."
-
---DBM_CORE_WHATS_NEW
 
 --Post Patch 7.1
 DBM_CORE_NO_RANGE					= "Das Abstandsradar kann in Instanzen nicht genutzt werden. Es wird stattdessen die alte textbasierte Abstandsanzeige verwendet."

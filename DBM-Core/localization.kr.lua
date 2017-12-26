@@ -1,13 +1,8 @@
 if (GetLocale() == "koKR") then
 
-DBM_CORE_NEED_LOCALS				= "프로그래밍 혹은 어학 능력이 출중하신가요? 그렇다면 DBM은 더 많은 언어를 지원하기 위해 당신의 도움이 필요합니다. 저희를 돕고 싶다면 DBM 포럼 또는 DBM 디스코드 서버를 방문하시거나 MysticalOS에게 직접 연락을 취해주세요."
 DBM_CORE_NEED_LOGS					= "DBM은 이 보스의 Transcriptor (http://www.wowace.com/addons/transcriptor/) 로그가 있어야 최고의 모드를 만들 수 있습니다. 저희를 돕고 싶다면 이 보스의 Transcriptor 로그를 DBM 포럼이나 디스코드에 올려주세요."
 DBM_HOW_TO_USE_MOD					= "DBM을 사용해 주셔서 감사합니다. 대화창에서 /dbm help를 입력하면 사용 가능한 명령어 목록을 볼 수 있습니다. 설정을 하시려면 /dbm을 입력하세요. 보스 알림 설정을 기호에 맞게 변경하려면 해당 던전을 직접 선택해서 로딩해야 합니다. DBM이 당신의 현재 전문화에 맞는 기본값을 설정하겠지만 일부 옵션은 직접 조정을 할 필요도 있습니다."
 DBM_SILENT_REMINDER					= "알림: DBM이 아직도 조용함 모드입니다."
-
-DBM_FORUMS_MESSAGE					= "버그를 발견했거나 타이머가 맞지 않나요? 경보, 타이머, 특수 기능이 더 추가됐으면 하는 보스 모드가 있나요?\nDBM 포럼이나 DBM 디스코드 서버에 오셔서 피드백을 보내주세요."
-DBM_FORUMS_COPY_URL_DIALOG			= "토론장과 사용자 지원 포럼을 방문해 보세요"
-DBM_FORUMS_COPY_URL_DIALOG_NEWS		= "새로운 기능과 작동 방식을 알고 싶으시다면 저희 포럼을 방문해 주세요"
 
 DBM_CORE_LOAD_MOD_ERROR				= "%s 보스 모드 로딩중 오류 발생: %s"
 DBM_CORE_LOAD_MOD_SUCCESS			= "'%s' 모드가 로딩됐습니다. 사용자 지정 경고 효과음을 설정하거나 개인적으로 메모를 적어놓고 싶다면 /dbm을 입력하세요."
@@ -18,8 +13,6 @@ DBM_CORE_BAD_LOAD					= "DBM이 전투로 인해 현재 인스턴스의 모드�
 DBM_CORE_LOAD_MOD_VER_MISMATCH		= "DBM-Core가 로딩 조건과 맞지 않아 %s|1을;를; 로딩하지 못했습니다. 최신 버전을 설치하세요"
 DBM_CORE_LOAD_MOD_DISABLED			= "%s|1이;가; 설치는 돼있지만 켜져있질 않습니다. 직접 켜기 전까진 모드가 로딩되지 않습니다."
 DBM_CORE_LOAD_MOD_DISABLED_PLURAL	= "%s|1이;가; 설치는 돼있지만 켜져있질 않습니다. 직접 켜기 전까진 모드들이 로딩되지 않습니다."
-
-DBM_CORE_WHATS_NEW					= "대화창 프레임에 문제를 일으킬 수 있는 관계로 일부 대화창 및 링크 Hook가 삭제되었습니다. 이러한 조치에도 '/접속종료' 문제는 블리자드 자체 버그이므로 고쳐지진 않으나, 적어도 DBM의 문제가 아니라는건 명확하게 드러나게 되었습니다."
 
 --Post Patch 7.1
 DBM_CORE_NO_RANGE					= "거리 레이더를 인스턴스 던전에서 사용할 수 없습니다. 예전의 텍스트 방식 거리창으로 대체됩니다."
