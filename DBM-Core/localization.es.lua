@@ -1,6 +1,5 @@
 if GetLocale() ~= "esES" and GetLocale() ~= "esMX" then return end
 
-DBM_CORE_NEED_LOGS					= "DBM necesita registros de Transcriptor (http://www.wowace.com/addons/transcriptor/) de varios encuentros para que los módulos queden lo mejor posible. Si quieres ayudar, publica los registros de Transcriptor en nuestro foro. Por ahora solo estamos interesados en registors de mazmorra y banda de la alfa de Legion."
 DBM_HOW_TO_USE_MOD					= "Bienvenido a DBM. Escribe '/dbm help' para ver la lista de comandos. Para acceder a la configuración no tienes más que escribir '/dbm'."
 DBM_SILENT_REMINDER					= "Recordatorio: DBM sigue en modo silencioso."
 

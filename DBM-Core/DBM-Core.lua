@@ -1796,7 +1796,6 @@ do
 			local time, text = msg:match("^%w+ ([%d:]+) (.+)$")
 			if not (time and text) then
 				for i, v in ipairs(DBM_CORE_TIMER_USAGE) do DBM:AddMsg(v) end
-				--DBM:AddMsg(DBM_PIZZA_ERROR_USAGE)
 				return
 			end
 			local min, sec = string.split(":", time)
@@ -5503,9 +5502,6 @@ do
 						end
 					end
 				end
-				if testBuild then
-					self:AddMsg(DBM_CORE_NEED_LOGS)
-				end
 				--call OnCombatStart
 				if mod.OnCombatStart then
 					mod:OnCombatStart(delay or 0, event == "PLAYER_REGEN_DISABLED_AND_MESSAGE" or event == "SPELL_CAST_SUCCESS")
@@ -5841,9 +5837,6 @@ do
 						end
 					end
 				end
-			end
-			if testBuild then
-				self:AddMsg(DBM_CORE_NEED_LOGS)
 			end
 			if mod.OnCombatEnd then mod:OnCombatEnd(wipe) end
 			if #inCombat == 0 then--prevent error if you pulled multiple boss. (Earth, Wind and Fire)
