@@ -1,5 +1,4 @@
 
-DBM_CORE_NEED_LOGS					= "DBM needs Transcriptor (http://www.wowace.com/addons/transcriptor/) log of this fight to make best mods possible. If you want to help, log this fight with transcriptor and post them to DBM forums or discord"
 DBM_HOW_TO_USE_MOD					= "Welcome to DBM. Type /dbm help for a list of supported commands. To access options type /dbm in your chat to begin configuration. Load specific zones manually to configure any boss specific settings to your liking as well. DBM will setup defaults for your spec, but you may want to fine tune these."
 DBM_SILENT_REMINDER					= "Reminder: DBM is still in silent mode."
 
