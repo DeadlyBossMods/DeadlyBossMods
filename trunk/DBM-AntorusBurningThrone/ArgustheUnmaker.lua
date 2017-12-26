@@ -207,7 +207,7 @@ mod.vb.EdgeofObliteration = 0
 mod.vb.sentenceCount = 0
 mod.vb.gazeCount = 0
 mod.vb.scytheCastCount = 0
-mod.vs.firstscytheSwap = false
+mod.vb.firstscytheSwap = false
 --P3 Mythic Timers
 local torturedRage = {40, 40, 50, 30, 35, 10, 8, 35, 10, 8, 35}--3 timers from method video not logs, verify by logs to improve accuracy
 local sargSentence = {53, 56.9, 60, 53, 53}--1 timer from method video not logs, verify by logs to improve accuracy
@@ -294,7 +294,7 @@ function mod:OnCombatStart(delay)
 	self.vb.sentenceCount = 0
 	self.vb.gazeCount = 0
 	self.vb.scytheCastCount = 0
-	self.vs.firstscytheSwap = false
+	self.vb.firstscytheSwap = false
 	timerSweepingScytheCD:Start(5.8-delay, 1)
 	timerSkyandSeaCD:Start(10.8-delay, 1)
 	timerTorturedRageCD:Start(12-delay, 1)
@@ -359,7 +359,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 255648 then--Golganneth's Wrath
 		self.vb.phase = 2
 		self.vb.scytheCastCount = 0
-		self.vs.firstscytheSwap = false
+		self.vb.firstscytheSwap = false
 		warnPhase2:Show()
 		timerConeofDeathCD:Stop()
 		timerBlightOrbCD:Stop()
@@ -417,7 +417,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if spellId == 248499 then
 		self.vb.scytheCastCount = self.vb.scytheCastCount + 1
 		if self.vb.scytheCastCount == 3 then
-			self.vs.firstscytheSwap = true
+			self.vb.firstscytheSwap = true
 		end
 		timerSweepingScytheCD:Start(nil, self.vb.scytheCastCount+1)
 	elseif spellId == 258039 then
@@ -487,7 +487,7 @@ do
 			local uId = DBM:GetRaidUnitId(args.destName)
 			if uId and self:IsTanking(uId) then
 				local amount = args.amount or 1
-				local swapAmount = (self:IsLFR() or not self.vs.firstscytheSwap) and 3 or 2
+				local swapAmount = (self:IsLFR() or not self.vb.firstscytheSwap) and 3 or 2
 				if amount >= swapAmount then
 					if args:IsPlayer() then
 						specWarnSweepingScythe:Show(amount)
