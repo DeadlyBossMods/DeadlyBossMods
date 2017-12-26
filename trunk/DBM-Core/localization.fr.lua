@@ -1,5 +1,4 @@
 ﻿if GetLocale() ~= "frFR" then return end
-DBM_CORE_NEED_LOGS					= "DBM a besoin de Transcriptor (http://www.wowace.com/addons/transcriptor/) logs de ces combats de test pour s'améliorer. Si vous voulez aider, enregistrez ces combats avec Transcriptor et postez les sur nos forums. Ceci est valable uniquement pour les raids et donjons 7.0."
 DBM_HOW_TO_USE_MOD					= "Bienvenue sur DBM. Tapez /dbm help pour une liste des commandes supportées. Pour accédez aux options, tapez /dbm dans la fenêtre de discussion pour commencer la configuration. Chargez des zones spécifiques manuellement pour configurer tous les paramètres spécifiques aux boss selon vos envies. DBM essaie de le faire pour vous en analysant votre spécialisation au premier lancement, mais nous savons que de toute façon certaines personnes souhaitant activer d'autres options."
 
 DBM_CORE_LOAD_MOD_ERROR				= "Erreur lors du chargement des modules %s: %s"

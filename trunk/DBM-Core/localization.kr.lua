@@ -1,6 +1,5 @@
 if (GetLocale() == "koKR") then
 
-DBM_CORE_NEED_LOGS					= "DBM은 이 보스의 Transcriptor (http://www.wowace.com/addons/transcriptor/) 로그가 있어야 최고의 모드를 만들 수 있습니다. 저희를 돕고 싶다면 이 보스의 Transcriptor 로그를 DBM 포럼이나 디스코드에 올려주세요."
 DBM_HOW_TO_USE_MOD					= "DBM을 사용해 주셔서 감사합니다. 대화창에서 /dbm help를 입력하면 사용 가능한 명령어 목록을 볼 수 있습니다. 설정을 하시려면 /dbm을 입력하세요. 보스 알림 설정을 기호에 맞게 변경하려면 해당 던전을 직접 선택해서 로딩해야 합니다. DBM이 당신의 현재 전문화에 맞는 기본값을 설정하겠지만 일부 옵션은 직접 조정을 할 필요도 있습니다."
 DBM_SILENT_REMINDER					= "알림: DBM이 아직도 조용함 모드입니다."
 
