@@ -160,7 +160,7 @@ function mod:OnCombatStart(delay)
 	timerWhirlingSaberCD:Start(8-delay)
 	timerFieryStrikeCD:Start(11-delay)
 --	timerTouchofDarknessCD:Start(1-delay)
-	timerShadowBladesCD:Start(11.8-delay)
+	timerShadowBladesCD:Start(10.9-delay)
 	if not self:IsEasy() then
 		timerFulminatingPulseCD:Start(20.3-delay)
 		countdownFulminatingPulse:Start(20.3-delay)

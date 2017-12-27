@@ -122,10 +122,10 @@ mod.vb.purifierCast = 0
 mod.vb.batCast = 0
 mod.vb.targetedIcon = 1
 local normalRainOfFelTimers = {}--PTR, recheck
-local heroicRainOfFelTimers = {9.3, 44, 10, 43, 35, 19, 20, 30, 45, 35, 99}--Live, Nov 29
+local heroicRainOfFelTimers = {9.3, 43, 10, 43, 20, 19, 20, 30, 45, 25, 99}--Live, Dec 26
 local mythicRainOfFelTimers = {6, 23.1, 24.1, 49.2, 25, 49.3, 15, 46.2, 24, 49.2, 24.1, 49.2, 50}--Live, Dec 14
 --local mythicSpearofDoomTimers = {}
-local heroicSpearofDoomTimers = {35, 59.2, 64.3, 40, 85.6, 34.1, 65.2}--Live, Nov 29
+local heroicSpearofDoomTimers = {35, 59.2, 64.3, 40, 85.1, 34.1, 65.2}--Live, Nov 29
 local finalDoomTimers = {59.3, 122.7, 99.5, 104.6, 99.6}--Live, Dec 5
 local normalDestructors = {17, 46.2, 32, 52.4, 93.7, 40.9, 50.2, 55.4, 49.2}--Live, Dec 01. Old 17, 39.4, 28, 44.2, 92.4, 41.3, 50, 53.4, 48.1
 local heroicDestructors = {15.7, 35.3, 40.6, 104.6, 134.7, 99.6}
@@ -256,7 +256,7 @@ function mod:OnCombatStart(delay)
 			--countdownRainofFel:Start(9.3-delay)
 			timerDestructorCD:Start(7, DBM_CORE_MIDDLE)
 			self:Schedule(27, checkForDeadDestructor, self)
-			timerSpearofDoomCD:Start(34.4-delay, 1)
+			timerSpearofDoomCD:Start(34-delay, 1)
 			timerObfuscatorCD:Start(80.6, DBM_CORE_TOP)
 			timerPurifierCD:Start(125, DBM_CORE_MIDDLE)
 			timerBatsCD:Start(170, 1)

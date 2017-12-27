@@ -181,8 +181,8 @@ function mod:SPELL_CAST_START(args)
 		timerShockGrenadeCD:Stop()
 		timerExploitWeaknessCD:Stop()
 		countdownExploitWeakness:Cancel()
-		timerExploitWeaknessCD:Start(8.7)--8.7-14 (basically depends how fast you get there) If you heroic leap and are super fast. it's cast pretty much instantly on mob activation
-		countdownExploitWeakness:Start(8.7)
+		timerExploitWeaknessCD:Start(8)--8-14 (basically depends how fast you get there) If you heroic leap and are super fast. it's cast pretty much instantly on mob activation
+		countdownExploitWeakness:Start(8)
 		local cid = self:GetCIDFromGUID(args.sourceGUID)
 		if cid == 122369 then--Chief Engineer Ishkar
 			timerWarpFieldCD:Stop()

@@ -59,7 +59,7 @@ local timerTormentofFrostCD				= mod:NewNextTimer(61, 243976, nil, nil, nil, 6)
 local timerTormentofFelCD				= mod:NewNextTimer(61, 243979, nil, nil, nil, 6)
 local timerTormentofShadowsCD			= mod:NewNextTimer(61, 243974, nil, nil, nil, 6)
 --The Fallen Nathrezim
-local timerShadowStrikeCD				= mod:NewCDTimer(9, 243960, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--9-14 (most of time it's 9.7 or more, but sometimes it's 9.0-9.4 so 9.0 has to be used
+local timerShadowStrikeCD				= mod:NewCDTimer(8.5, 243960, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--8.5-14 (most of time it's 9.7 or more, But lowest has to be used
 local timerDarkFissureCD				= mod:NewCDTimer(32, 243999, nil, nil, nil, 3)--32-33
 local timerMarkedPreyCD					= mod:NewNextTimer(30.3, 244042, nil, nil, nil, 3)
 local timerNecroticEmbraceCD			= mod:NewNextTimer(30.3, 244093, nil, nil, nil, 3)
