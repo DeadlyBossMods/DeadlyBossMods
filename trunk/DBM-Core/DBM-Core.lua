@@ -237,7 +237,7 @@ DBM.DefaultOptions = {
 	ArrowPoint = "TOP",
 	-- global boss mod settings (overrides mod-specific settings for some options)
 	DontShowBossAnnounces = false,
-	DontShowTargetAnnounces = false,
+	DontShowTargetAnnounces = true,
 	DontShowSpecialWarnings = false,
 	DontShowBossTimers = false,
 	DontShowUserTimers = false,
