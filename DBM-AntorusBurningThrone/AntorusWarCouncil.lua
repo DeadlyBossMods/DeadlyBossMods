@@ -31,7 +31,6 @@ mod:RegisterEventsInCombat(
  or ability.id = 253015
 --]]
 --General
-local warnInPod							= mod:NewTargetAnnounce("ej16099", 2, 244141)
 local warnOutofPod						= mod:NewTargetAnnounce("ej16098", 2, 244141)
 local warnExploitWeakness				= mod:NewStackAnnounce(244892, 2, nil, "Tank")
 local warnPsychicAssault				= mod:NewTargetAnnounce(244172, 4)
@@ -224,7 +223,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerExploitWeaknessCD:Start()
 		countdownExploitWeakness:Start(8.5)
 	elseif spellId == 245227 then--Assume Command
-		warnInPod:Show(args.sourceName)
 		timerAssumeCommandCD:Start(90)
 		countdownAssumeCommand:Start(90)
 	elseif spellId == 253037 then
@@ -287,8 +285,6 @@ function mod:SPELL_AURA_REMOVED(args)
 				DBM.RangeCheck:Hide()
 			end
 		end
-	--elseif spellId == 253015 then--Commanders Presence
-		--warnInPod:Show(args.destName)
 	end
 end
 
