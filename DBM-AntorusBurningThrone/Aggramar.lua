@@ -288,8 +288,8 @@ function mod:SPELL_CAST_START(args)
 		end
 		self:BossTargetScanner(args.sourceGUID, "WakeTarget", 0.1, 12, true, nil, nil, nil, true)
 	elseif spellId == 245458 or spellId == 255059 then
+		self.vb.comboCount = self.vb.comboCount + 1
 		if self:IsMythic() then
-			self.vb.comboCount = self.vb.comboCount + 1
 			if not self.vb.firstCombo then
 				self.vb.firstCombo = "Foe"
 			elseif not self.vb.secondCombo then
@@ -319,8 +319,8 @@ function mod:SPELL_CAST_START(args)
 			DBM.InfoFrame:Update()
 		end
 	elseif spellId == 245463 or spellId == 255058 then
+		self.vb.comboCount = self.vb.comboCount + 1
 		if self:IsMythic() then
-			self.vb.comboCount = self.vb.comboCount + 1
 			if not self.vb.firstCombo then
 				self.vb.firstCombo = "Rend"
 			elseif not self.vb.secondCombo then
@@ -349,8 +349,8 @@ function mod:SPELL_CAST_START(args)
 			DBM.InfoFrame:Update()
 		end
 	elseif spellId == 245301 or spellId == 255061 then
+		self.vb.comboCount = self.vb.comboCount + 1
 		if self:IsMythic() then
-			self.vb.comboCount = self.vb.comboCount + 1
 			if not self.vb.secondCombo then
 				self.vb.secondCombo = "Tempest"
 			end
