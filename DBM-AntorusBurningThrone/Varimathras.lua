@@ -169,7 +169,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			voiceNecroticEmbrace:Play("scatter")
 			local icon = self.vb.totalEmbrace+2
 			yellNecroticEmbrace:Yell(self.vb.totalEmbrace, icon, icon)
-			yellNecroticEmbraceFades:Countdown(6, 3, self.vb.totalEmbrace+2)
+			yellNecroticEmbraceFades:Countdown(6, 3, icon)
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Show(10)
 			end
