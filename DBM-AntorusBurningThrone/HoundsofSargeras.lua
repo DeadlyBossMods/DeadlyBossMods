@@ -69,7 +69,7 @@ local timerComsumingSphereCD			= mod:NewCDTimer(77, 244131, nil, nil, nil, 3)--V
 local timerWeightOfDarknessCD			= mod:NewCDTimer(77, 254429, nil, nil, nil, 3)
 local timerSiphonCorruptionCD			= mod:NewCDTimer(77, 244056, nil, nil, nil, 3)
 --General/Mythic
-local timerFocusingPower				= mod:NewCastTimer(15, 251356, nil, nil, nil, 3)
+local timerFocusingPower				= mod:NewCastTimer(15, 251356, nil, nil, nil, 6)
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
 
