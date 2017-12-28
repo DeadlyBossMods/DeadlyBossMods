@@ -739,9 +739,10 @@ function onUpdate(frame)
 			frame:Hide()--Force close infoframe so it doesn't keep throwing 100s of errors onupdate. If leftText is broken the frame needs to be shut down
 			return
 		elseif leftText and type(leftText) ~= "string" then
-			error("DBM InfoFrame: leftText must be string, Notify DBM author. Infoframe force shutting down ", 2)
-			frame:Hide()--Force close infoframe so it doesn't keep throwing 100s of errors onupdate. If leftText is broken the frame needs to be shut down
-			return
+			tostring(leftText)
+			--error("DBM InfoFrame: leftText must be string, Notify DBM author. Infoframe force shutting down ", 2)
+			--frame:Hide()--Force close infoframe so it doesn't keep throwing 100s of errors onupdate. If leftText is broken the frame needs to be shut down
+			--return
 		end
 		local rightText = lines[leftText]
 		local icon = icons[leftText] and icons[leftText]..leftText
