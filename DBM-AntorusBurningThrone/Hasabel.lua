@@ -41,7 +41,7 @@ mod:RegisterEventsInCombat(
 local warnRealityTear					= mod:NewStackAnnounce(244016, 2, nil, "Tank")
 --Platform: Xoroth
 local warnXorothPortal					= mod:NewSpellAnnounce(244318, 2)
-local warnAegisofFlames					= mod:NewTargetAnnounce(244383, 3)
+local warnAegisofFlames					= mod:NewTargetAnnounce(244383, 3, nil, nil, nil, nil, nil, nil, true)
 local warnAegisofFlamesEnded			= mod:NewEndAnnounce(244383, 1)
 local warnEverburningFlames				= mod:NewTargetAnnounce(244613, 2, nil, false)
 --Platform: Rancora

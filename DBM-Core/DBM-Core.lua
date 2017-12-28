@@ -8419,7 +8419,7 @@ do
 	function announcePrototype:Show(...) -- todo: reduce amount of unneeded strings
 		if not self.option or self.mod.Options[self.option] then
 			if DBM.Options.DontShowBossAnnounces then return end	-- don't show the announces if the spam filter option is set
-			if DBM.Options.DontShowTargetAnnouncements and (self.announceType == "target" or self.announceType == "targetcount") then return end--don't show announces that are generic target announces
+			if DBM.Options.DontShowTargetAnnouncements and (self.announceType == "target" or self.announceType == "targetcount") and not self.extraArg then return end--don't show announces that are generic target announces
 			local argTable = {...}
 			local colorCode = ("|cff%.2x%.2x%.2x"):format(self.color.r * 255, self.color.g * 255, self.color.b * 255)
 			if #self.combinedtext > 0 then
@@ -8551,7 +8551,7 @@ do
 	end
 
 	-- new constructor (auto-localized warnings and options, yay!)
-	local function newAnnounce(self, announceType, spellId, color, icon, optionDefault, optionName, castTime, preWarnTime, noSound)
+	local function newAnnounce(self, announceType, spellId, color, icon, optionDefault, optionName, castTime, preWarnTime, noSound, extraArg)
 		if not spellId then
 			error("newAnnounce: you must provide spellId", 2)
 			return
@@ -8604,6 +8604,7 @@ do
 				sound = not noSound,
 				type = announceType,
 				spellId = unparsedId,
+				extraArg = extraArg,
 			},
 			mt
 		)
