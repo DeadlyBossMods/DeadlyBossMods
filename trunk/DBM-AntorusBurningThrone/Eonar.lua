@@ -38,9 +38,8 @@ mod:RegisterEventsInCombat(
 --]]
 --The Paraxis
 local warnMeteorStorm					= mod:NewEndAnnounce(248333, 1)
---local warnSpearofDoom					= mod:NewTargetAnnounce(248789, 3)
 local warnRainofFel						= mod:NewTargetCountAnnounce(248332, 2)
-local warnWarpIn						= mod:NewTargetAnnounce(246888, 3)
+local warnWarpIn						= mod:NewTargetAnnounce(246888, 3, nil, nil, nil, nil, nil, nil, true)
 local warnLifeForce						= mod:NewCountAnnounce(250048, 1)
 
 --The Paraxis

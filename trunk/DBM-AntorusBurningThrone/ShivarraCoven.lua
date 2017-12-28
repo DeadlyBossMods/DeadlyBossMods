@@ -35,7 +35,7 @@ mod:RegisterEventsInCombat(
  or ability.id = 250757 and type = "applydebuff"
 --]]
 --All
-local warnActivated						= mod:NewTargetAnnounce(118212, 3, 78740)
+local warnActivated						= mod:NewTargetAnnounce(118212, 3, 78740, nil, nil, nil, nil, nil, true)
 --Noura, Mother of Flames
 local warnFieryStrike					= mod:NewStackAnnounce(244899, 2, nil, "Tank")
 local warnWhirlingSaber					= mod:NewSpellAnnounce(245627, 2)
