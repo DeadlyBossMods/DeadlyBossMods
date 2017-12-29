@@ -20,8 +20,8 @@ local warnVengeance					= mod:NewSpellAnnounce(205004, 4)
 
 local specWarnKick					= mod:NewSpecialWarningSpell(197251, "Tank", nil, nil, 3, 2)
 local specWarnDeepeningShadows		= mod:NewSpecialWarningMoveTo(213583, nil, nil, nil, 3, 6)
-local specWarnHiddenStarted			= mod:NewSpecialWarningSpell(192750, nil, nil, nil, 2)
-local specWarnHiddenOver			= mod:NewSpecialWarningEnd(192750)
+local specWarnHiddenStarted			= mod:NewSpecialWarningSpell(192750, nil, nil, nil, 2, 2)
+local specWarnHiddenOver			= mod:NewSpecialWarningEnd(192750, nil, nil, nil, 1, 2)
 local specWarnCreepingDoom			= mod:NewSpecialWarningDodge(197422, nil, nil, nil, 2)
 local specWarnVengeance				= mod:NewSpecialWarningMoveTo(205004, nil, nil, nil, 3, 6)
 
@@ -33,6 +33,7 @@ local timerVengeanceCD				= mod:NewCDTimer(35, 205004, nil, nil, nil, 1)--35-40
 local voiceKick						= mod:NewVoice(197251, "Tank")--carefly
 local voiceDeepeningShadows			= mod:NewVoice(213576)--"213576"--New Voice
 local voiceVengeance				= mod:NewVoice(205004)--"205004"--New Voice
+local voiceHidden					= mod:NewVoice(192750)--phasechange
 local voiceCreepingDoom				= mod:NewVoice(197422)--stilldanger, keepmove
 
 function mod:OnCombatStart(delay)
@@ -84,6 +85,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 206567 then
 		specWarnHiddenOver:Show()
+		voiceHidden:Play("phasechange")
 		--timerVengeanceCD:Start(14)
 		timerKickCD:Start(15.5)--15-20
 		timerDeepeningShadowsCD:Start(20)--20-25
@@ -99,5 +101,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		timerDeepeningShadowsCD:Stop()
 		timerKickCD:Stop()
 		specWarnHiddenStarted:Show()
+		voiceHidden:Play("phasechange")
 	end
 end
