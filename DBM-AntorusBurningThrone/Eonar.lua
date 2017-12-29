@@ -15,9 +15,9 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 249121 250701 250048",
 	"SPELL_CAST_SUCCESS 246753 254769",
-	"SPELL_AURA_APPLIED 248333 250074 250555 249016 248332 250073 250693 250691 250140",
+	"SPELL_AURA_APPLIED 250074 250555 249016 248332 250073 250693 250691 250140",
 	"SPELL_AURA_APPLIED_DOSE 250140",
-	"SPELL_AURA_REMOVED 248333 250074 250555 249016 248332 250693 250691",
+	"SPELL_AURA_REMOVED 250074 250555 249016 248332 250693 250691",
 --	"SPELL_DAMAGE 248329",
 --	"SPELL_MISSED 248329",
 	"UNIT_DIED",
@@ -37,13 +37,11 @@ mod:RegisterEventsInCombat(
  or target.name = "Volant Kerapteron"
 --]]
 --The Paraxis
-local warnMeteorStorm					= mod:NewEndAnnounce(248333, 1)
 local warnRainofFel						= mod:NewTargetCountAnnounce(248332, 2)
 local warnWarpIn						= mod:NewTargetAnnounce(246888, 3, nil, nil, nil, nil, nil, nil, true)
 local warnLifeForce						= mod:NewCountAnnounce(250048, 1)
 
 --The Paraxis
-local specWarnMeteorStorm				= mod:NewSpecialWarningDodge(248333, nil, nil, nil, 2, 2)
 local specWarnSpearofDoom				= mod:NewSpecialWarningDodge(248789, nil, nil, nil, 2, 2)
 --local yellSpearofDoom					= mod:NewYell(248789)
 local specWarnRainofFel					= mod:NewSpecialWarningMoveAway(248332, nil, nil, 2, 1, 2)
@@ -65,7 +63,6 @@ local yellBurningEmbersFades			= mod:NewShortFadesYell(250691)
 local specWarnFoulSteps					= mod:NewSpecialWarningStack(250140, nil, 12, nil, nil, 1, 6)--Fine tune
 
 --The Paraxis
-local timerMeteorStormCD				= mod:NewAITimer(61, 248333, nil, nil, nil, 3)
 local timerSpearofDoomCD				= mod:NewCDCountTimer(55, 248789, nil, nil, nil, 3)--55-69
 local timerRainofFelCD					= mod:NewCDCountTimer(61, 248332, nil, nil, nil, 3)
 local timerFinalDoom					= mod:NewCastTimer(50, 249121, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
@@ -86,7 +83,6 @@ local timerFinalDoomCD					= mod:NewCDCountTimer(90, 249121, nil, nil, nil, 4, n
 local countdownFinalDoom				= mod:NewCountdown("AltTwo90", 249121)
 
 --The Paraxis
-local voiceMeteorStorm					= mod:NewVoice(248333)--watchstep
 local voiceSpearofDoom					= mod:NewVoice(248789)--watchstep
 local voiceRainofFel					= mod:NewVoice(248332)--scatter
 local voiceAdds							= mod:NewVoice(246888, "-Healer", DBM_CORE_AUTO_VOICE3_OPTION_TEXT)--killmob
@@ -126,6 +122,7 @@ local mythicRainOfFelTimers = {6, 23.1, 24.1, 49.2, 25, 49.3, 15, 46.2, 24, 49.2
 --local mythicSpearofDoomTimers = {}
 local heroicSpearofDoomTimers = {35, 59.2, 64.3, 40, 85.1, 34.1, 65.2}--Live, Nov 29
 local finalDoomTimers = {59.3, 122.7, 99.5, 104.6, 99.6}--Live, Dec 5
+local lfrDestructors = {21.5, 51.9, 50.3, 64.3, 107.2, 58.2, 44.1, 46.2, 44.2}
 local normalDestructors = {17, 46.2, 32, 52.4, 93.7, 40.9, 50.2, 55.4, 49.2}--Live, Dec 01. Old 17, 39.4, 28, 44.2, 92.4, 41.3, 50, 53.4, 48.1
 local heroicDestructors = {15.7, 35.3, 40.6, 104.6, 134.7, 99.6}
 local mythicDestructors = {27, 18, 87.4, 288.4, 20, 79}--Changed Dec 12th
@@ -150,6 +147,9 @@ local addCountToLocationHeroic = {
 local addCountToLocationNormal = {
 	["Dest"] = {DBM_CORE_MIDDLE, DBM_CORE_BOTTOM, DBM_CORE_MIDDLE, DBM_CORE_TOP, DBM_CORE_BOTTOM, DBM_CORE_TOP, DBM_CORE_MIDDLE, DBM_CORE_TOP, DBM_CORE_MIDDLE},
 	["Obfu"] = {DBM_CORE_MIDDLE}
+}
+local addCountToLocationLFR = {
+	["Dest"] = {DBM_CORE_MIDDLE, DBM_CORE_BOTTOM, DBM_CORE_TOP, DBM_CORE_MIDDLE, DBM_CORE_BOTTOM, DBM_CORE_TOP,DBM_CORE_BOTTOM, DBM_CORE_TOP, DBM_CORE_BOTTOM},
 }
 
 local updateInfoFrame
@@ -198,14 +198,14 @@ end
 local function checkForDeadDestructor(self, forceStart)
 	self:Unschedule(checkForDeadDestructor)
 	self.vb.destructorCast = self.vb.destructorCast + 1
-	local timer = self:IsMythic() and mythicDestructors[self.vb.destructorCast+1] or self:IsHeroic() and heroicDestructors[self.vb.destructorCast+1] or self:IsNormal() and normalDestructors[self.vb.destructorCast+1]
+	local timer = self:IsMythic() and mythicDestructors[self.vb.destructorCast+1] or self:IsHeroic() and heroicDestructors[self.vb.destructorCast+1] or self:IsNormal() and normalDestructors[self.vb.destructorCast+1] or self:IsLFR() and lfrDestructors[self.vb.destructorCast+1]
 	if forceStart then
 		DBM:Debug("checkForDeadDestructor ran with forceStart arg for "..self.vb.destructorCast, 2)
-		local text = self:IsHeroic() and addCountToLocationHeroic["Dest"][self.vb.destructorCast+1] or self:IsNormal() and addCountToLocationNormal["Dest"][self.vb.destructorCast+1] or self:IsMythic() and addCountToLocationMythic["Dest"][self.vb.destructorCast+1] or self.vb.destructorCast+1
+		local text = self:IsHeroic() and addCountToLocationHeroic["Dest"][self.vb.destructorCast+1] or self:IsNormal() and addCountToLocationNormal["Dest"][self.vb.destructorCast+1] or self:IsMythic() and addCountToLocationMythic["Dest"][self.vb.destructorCast+1] or self:IsLFR() and addCountToLocationLFR["Dest"][self.vb.destructorCast+1] or self.vb.destructorCast+1
 		timerDestructorCD:Start(forceStart, text)--Minus 10 for being 10 seconds after high alert, and minus 10 for wanting when it spawns not high alert cast
 		self:Schedule(forceStart+20, checkForDeadDestructor, self)--10 seconds after high alert
 	elseif timer then
-		local text = self:IsHeroic() and addCountToLocationHeroic["Dest"][self.vb.destructorCast+1] or self:IsNormal() and addCountToLocationNormal["Dest"][self.vb.destructorCast+1] or self:IsMythic() and addCountToLocationMythic["Dest"][self.vb.destructorCast+1] or self.vb.destructorCast+1
+		local text = self:IsHeroic() and addCountToLocationHeroic["Dest"][self.vb.destructorCast+1] or self:IsNormal() and addCountToLocationNormal["Dest"][self.vb.destructorCast+1] or self:IsMythic() and addCountToLocationMythic["Dest"][self.vb.destructorCast+1] or self:IsLFR() and addCountToLocationLFR["Dest"][self.vb.destructorCast+1] or self.vb.destructorCast+1
 		timerDestructorCD:Start(timer-20, text)--Minus 10 for being 10 seconds after high alert, and minus 10 for wanting when it spawns not high alert cast
 		self:Schedule(timer, checkForDeadDestructor, self)--10 seconds after high alert
 	end
@@ -269,7 +269,7 @@ function mod:OnCombatStart(delay)
 		end
 	else
 		self.vb.lifeRequired = 3
-		timerMeteorStormCD:Start(1-delay)
+		timerDestructorCD:Start(11, DBM_CORE_MIDDLE)
 	end
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(GetSpellInfo(250030))
@@ -345,9 +345,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 			warnWarpIn:Show(L.Destructors)
 			voiceAdds:Play("bigmob")
 			self.vb.destructorCast = self.vb.destructorCast + 1
-			local timer = self:IsMythic() and mythicDestructors[self.vb.destructorCast+1] or self:IsHeroic() and heroicDestructors[self.vb.destructorCast+1] or self:IsNormal() and normalDestructors[self.vb.destructorCast+1]
+			local timer = self:IsMythic() and mythicDestructors[self.vb.destructorCast+1] or self:IsHeroic() and heroicDestructors[self.vb.destructorCast+1] or self:IsNormal() and normalDestructors[self.vb.destructorCast+1] or self:IsLFR() and lfrDestructors[self.vb.destructorCast+1]
 			if timer then
-				local text = self:IsHeroic() and addCountToLocationHeroic["Dest"][self.vb.destructorCast+1] or self:IsNormal() and addCountToLocationNormal["Dest"][self.vb.destructorCast+1] or self:IsMythic() and addCountToLocationMythic["Dest"][self.vb.destructorCast+1] or self.vb.destructorCast+1
+				local text = self:IsHeroic() and addCountToLocationHeroic["Dest"][self.vb.destructorCast+1] or self:IsNormal() and addCountToLocationNormal["Dest"][self.vb.destructorCast+1] or self:IsMythic() and addCountToLocationMythic["Dest"][self.vb.destructorCast+1] or self:IsLFR() and addCountToLocationLFR["Dest"][self.vb.destructorCast+1] or self.vb.destructorCast+1
 				timerDestructorCD:Start(timer-10, text)--High alert fires about 9 seconds after spawn so using it as a trigger has a -10 adjustment
 				self:Schedule(timer+10, checkForDeadDestructor, self)
 			end
@@ -357,11 +357,7 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 248333 then
-		specWarnMeteorStorm:Show()
-		voiceMeteorStorm:Play("watchstep")
-		timerMeteorStormCD:Start()
-	elseif spellId == 250073 and not warnedAdds[args.sourceGUID] then--Purification (buff on purifier)
+	if spellId == 250073 and not warnedAdds[args.sourceGUID] then--Purification (buff on purifier)
 		warnedAdds[args.sourceGUID] = true
 		self.vb.purifiers = self.vb.purifiers + 1
 		if self:AntiSpam(5, 2) then
@@ -440,9 +436,7 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
-	if spellId == 248333 then
-		warnMeteorStorm:Show()
-	elseif spellId == 250074 then--Purification
+	if spellId == 250074 then--Purification
 		if self.Options.NPAuraOnPurification then
 			DBM.Nameplate:Hide(true, args.destGUID, spellId)
 		end
