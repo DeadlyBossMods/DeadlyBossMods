@@ -31,7 +31,7 @@ mod:RegisterEventsInCombat(
  or ability.id = 253015
 --]]
 --General
-local warnOutofPod						= mod:NewTargetAnnounce("ej16098", 2, 244141, nil, nil, nil, nil, nil, true)
+local warnOutofPod						= mod:NewTargetNoFilterAnnounce("ej16098", 2, 244141)
 local warnExploitWeakness				= mod:NewStackAnnounce(244892, 2, nil, "Tank")
 local warnPsychicAssault				= mod:NewTargetAnnounce(244172, 4)
 --In Pod
