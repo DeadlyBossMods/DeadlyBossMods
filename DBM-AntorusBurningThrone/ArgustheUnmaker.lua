@@ -38,6 +38,7 @@ mod:RegisterEventsInCombat(
  or (ability.id = 248499 or ability.id = 258039 or ability.id = 252729 or ability.id = 252616 or ability.id = 256388 or ability.id = 258838 or ability.id = 258029) and type = "cast"
  or (ability.id = 250669 or ability.id = 251570 or ability.id = 255199 or ability.id = 257931 or ability.id = 257869 or ability.id = 257966) and type = "applydebuff" or type = "interrupt" and target.id = 124828
 --]]
+local warnPhase						= mod:NewPhaseChangeAnnounce()
 --Stage One: Storm and Sky
 local warnTorturedRage				= mod:NewCountAnnounce(257296, 2)
 local warnSweepingScythe			= mod:NewStackAnnounce(248499, 2, nil, "Tank")
@@ -48,12 +49,10 @@ local warnSkyandSea					= mod:NewTargetAnnounce(255594, 1)
 local warnSargRage					= mod:NewTargetAnnounce(257869, 3)
 local warnSargFear					= mod:NewTargetAnnounce(257931, 3)
 --Stage Two: The Protector Redeemed
-local warnPhase2					= mod:NewPhaseAnnounce(2, 2)
 local warnSoulburst					= mod:NewTargetAnnounce(250669, 2)
 local warnSoulbomb					= mod:NewTargetAnnounce(251570, 3)
 local warnAvatarofAggra				= mod:NewTargetAnnounce(255199, 1)
 --Stage Three: The Arcane Masters
-local warnPhase3					= mod:NewPhaseAnnounce(3, 2)
 local warnCosmicRay					= mod:NewTargetAnnounce(252729, 3)
 local warnCosmicBeacon				= mod:NewTargetAnnounce(252616, 2)
 local warnDiscsofNorg				= mod:NewCastAnnounce(252516, 1)
@@ -63,7 +62,6 @@ local warnEdgeofAnni				= mod:NewCountAnnounce(258834, 4)
 local warnSoulRendingScythe			= mod:NewStackAnnounce(258838, 2, nil, "Tank")
 --Stage Four: The Gift of Life, The Forge of Loss (Non Mythic)
 local warnGiftOfLifebinder			= mod:NewCastAnnounce(257619, 1)
-local warnPhase4					= mod:NewPhaseAnnounce(4, 2)
 local warnDeadlyScythe				= mod:NewStackAnnounce(258039, 2, nil, "Tank")
 
 --Stage One: Storm and Sky
@@ -331,7 +329,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.phase = 2
 		self.vb.scytheCastCount = 0
 		self.vb.firstscytheSwap = false
-		warnPhase2:Show()
+		warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(2))
 		timerConeofDeathCD:Stop()
 		timerBlightOrbCD:Stop()
 		timerTorturedRageCD:Stop()
@@ -351,7 +349,7 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 257645 then--Temporal Blast (Stage 3)
 		self.vb.phase = 3
-		warnPhase3:Show()
+		warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(3))
 		timerSweepingScytheCD:Stop()
 		timerTorturedRageCD:Stop()
 		timerSoulBombCD:Stop()
@@ -368,7 +366,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 256542 then--Reap Soul
 		if not self:IsMythic() then
 			self.vb.phase = 4
-			warnPhase4:Show()
+			warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(4))
 		end
 		timerCosmicRayCD:Stop()
 		--timerCosmicPowerCD:Stop()
