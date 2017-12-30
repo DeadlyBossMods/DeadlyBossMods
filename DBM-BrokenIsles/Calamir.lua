@@ -25,8 +25,8 @@ local warnAncientRageFire		= mod:NewSpellAnnounce(217563, 2)
 local warnBurningBomb			= mod:NewSpellAnnounce(217877, 3)
 local warnAncientRageFrost		= mod:NewSpellAnnounce(217831, 2)
 local warnHowlingGale			= mod:NewSpellAnnounce(217966, 2)
-local warnIcyComet				= mod:NewSpellAnnounce(217919, 2)
-local warnAncientRageArcane		= mod:NewTargetAnnounce(217834, 2)
+local warnIcyComet				= mod:NewSpellAnnounce(217925, 2)
+local warnAncientRageArcane		= mod:NewSpellAnnounce(217834, 2)
 
 local specBurningBomb			= mod:NewSpecialWarningYou(217877, nil, nil, nil, 1, 2)--You warning because you don't have to run out unless healer is afk. However still warn in case they are
 local yellBurningBomb			= mod:NewFadesYell(217877)
