@@ -63,17 +63,18 @@ local yellBurningEmbersFades			= mod:NewShortFadesYell(250691)
 local specWarnFoulSteps					= mod:NewSpecialWarningStack(250140, nil, 12, nil, nil, 1, 6)--Fine tune
 
 --The Paraxis
+mod:AddTimerLine(GENERAL)
 local timerSpearofDoomCD				= mod:NewCDCountTimer(55, 248789, nil, nil, nil, 3)--55-69
 local timerRainofFelCD					= mod:NewCDCountTimer(61, 248332, nil, nil, nil, 3)
-local timerFinalDoom					= mod:NewCastTimer(50, 249121, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
+mod:AddTimerLine(DBM_ADDS)
 local timerDestructorCD					= mod:NewTimer(90, "timerDestructor", 254769, nil, nil, 1, nil, DBM_CORE_TANK_ICON)
 local timerObfuscatorCD					= mod:NewTimer(90, "timerObfuscator", 246753, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON)
 local timerPurifierCD					= mod:NewTimer(90, "timerPurifier", 250074, nil, nil, 1, nil, DBM_CORE_TANK_ICON)
 local timerBatsCD						= mod:NewTimer(90, "timerBats", 242080, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON)
 --Mythic
 mod:AddTimerLine(ENCOUNTER_JOURNAL_SECTION_FLAG12)
+local timerFinalDoom					= mod:NewCastTimer(50, 249121, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
 local timerFinalDoomCD					= mod:NewCDCountTimer(90, 249121, nil, nil, nil, 4, nil, DBM_CORE_HEROIC_ICON)
---local timerFelclawsCD					= mod:NewAITimer(25, 239932, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
 
