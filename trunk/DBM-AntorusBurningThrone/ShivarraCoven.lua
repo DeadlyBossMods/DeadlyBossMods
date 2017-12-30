@@ -26,6 +26,12 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5"
 )
 
+local Noura = DBM:EJ_GetSectionInfo(15967)
+local Asara = DBM:EJ_GetSectionInfo(15968)
+local Diima = DBM:EJ_GetSectionInfo(15969)
+local Thuraya = DBM:EJ_GetSectionInfo(16398)
+local torment = DBM:EJ_GetSectionInfo(16138)
+
 --TODO, auto range frame for fury of Golganneth?
 --TODO, verify timerBossIncoming on all difficulties
 --TODO, transcribe/video and tweak some timers for activation especially timerStormofDarknessCD which had some timer refreshed debug
@@ -76,21 +82,26 @@ local specWarnTormentofTitans			= mod:NewSpecialWarningSpell("ej16138", nil, nil
 --General
 local timerBossIncoming					= mod:NewTimer(61, "timerBossIncoming", nil, nil, nil, 1)
 --Noura, Mother of Flames
+mod:AddTimerLine(Noura)
 local timerFieryStrikeCD				= mod:NewCDTimer(10.5, 244899, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerWhirlingSaberCD				= mod:NewNextTimer(35.1, 245627, nil, nil, nil, 3)--35-45
 local timerFulminatingPulseCD			= mod:NewNextTimer(40.5, 253520, nil, nil, nil, 3)
 --Asara, Mother of Night
+mod:AddTimerLine(Asara)
 --local timerTouchofDarknessCD			= mod:NewAITimer(61, 245303, nil, "HasInterrupt", nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
 local timerShadowBladesCD				= mod:NewCDTimer(27.8, 246329, nil, nil, nil, 3)
 local timerStormofDarknessCD			= mod:NewNextCountTimer(56.8, 252861, nil, nil, nil, 2, nil, DBM_CORE_HEALER_ICON)--57+
 --Diima, Mother of Gloom
+mod:AddTimerLine(Diima)
 local timerFlashFreezeCD				= mod:NewCDTimer(10.1, 245518, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerChilledBloodCD				= mod:NewNextTimer(25.4, 245586, nil, nil, nil, 5, nil, DBM_CORE_HEALER_ICON)
 local timerOrbofFrostCD					= mod:NewNextTimer(30, 253650, nil, nil, nil, 3)
 --Thu'raya, Mother of the Cosmos (Mythic)
+mod:AddTimerLine(Thuraya)
 --local timerTouchoftheCosmosCD			= mod:NewAITimer(61, 250648, nil, "HasInterrupt", nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
 local timerCosmicGlareCD				= mod:NewCDTimer(17, 250757, nil, nil, nil, 3)
 --Torment of the Titans
+mod:AddTimerLine(torment)
 ----Activations timers
 local timerMachinationsofAmanThulCD		= mod:NewCastTimer(85, 250335, nil, nil, nil, 6)
 local timerFlamesofKhazgorothCD			= mod:NewCastTimer(85, 250333, nil, nil, nil, 6)
