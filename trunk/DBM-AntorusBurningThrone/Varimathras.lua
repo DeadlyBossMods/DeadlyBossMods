@@ -71,15 +71,8 @@ local countdownShadowStrike				= mod:NewCountdown("Alt9", 243960, "Tank", nil, 3
 local countdownMarkedPrey				= mod:NewCountdown(30, 244042)
 local countdownNecroticEmbrace			= mod:NewCountdown("AltTwo30", 244093)
 
---Torments of the Shivarra
-local voiceGTFO							= mod:NewVoice(243968, nil, DBM_CORE_AUTO_VOICE4_OPTION_TEXT)--runaway
+--General
 local voicePhaseChange					= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
---The Fallen Nathrezim
-local voiceMisery						= mod:NewVoice(243961)--defensive/tauntboss
-local voiceDarkFissure					= mod:NewVoice(243999)--watchstep
-local voiceMarkedPrey					= mod:NewVoice(244042)--targetyou
-local voiceNecroticEmbrace				= mod:NewVoice(244094)--scatter
-local voiceEchoesOfDoom					= mod:NewVoice(248732)--runout
 
 mod:AddSetIconOption("SetIconOnMarkedPrey", 244042, true)
 mod:AddSetIconOption("SetIconEmbrace", 244094, true)
@@ -128,7 +121,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		countdownNecroticEmbrace:Start(30.3)
 	elseif spellId == 243999 then
 		specWarnDarkFissure:Show()
-		voiceDarkFissure:Play("watchstep")
+		specWarnDarkFissure:Play("watchstep")
 		timerDarkFissureCD:Start()
 	elseif spellId == 122366 then
 		timerMarkedPreyCD:Start()
@@ -142,20 +135,20 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			if self:AntiSpam(4, 2) then
 				specWarnMisery:Show()
-				voiceMisery:Play("defensive")
+				specWarnMisery:Play("defensive")
 			end
 		else
 			local uId = DBM:GetRaidUnitId(args.destName)
 			--Applied to a tank that's not you and you don't have it, taunt
 			if uId and self:IsTanking(uId) and self:CheckNearby(8, args.destName) and not UnitDebuff("player", args.spellName) then
 				specWarnMiseryTaunt:Show(args.destName)
-				voiceMisery:Play("tauntboss")
+				specWarnMiseryTaunt:Play("tauntboss")
 			end
 		end
 	elseif spellId == 244042 then
 		if args:IsPlayer() then
 			specWarnMarkedPrey:Show()
-			voiceMarkedPrey:Play("targetyou")
+			specWarnMarkedPrey:Play("targetyou")
 			yellMarkedPrey:Yell()
 			yellMarkedPreyFades:Countdown(5)
 		else
@@ -166,7 +159,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.vb.totalEmbrace >= 3 then return end--Once it's beyond 2 players, consider it a wipe and throttle messages
 		if args:IsPlayer() then
 			specWarnNecroticEmbrace:Show()
-			voiceNecroticEmbrace:Play("scatter")
+			specWarnNecroticEmbrace:Play("scatter")
 			local icon = self.vb.totalEmbrace+2
 			yellNecroticEmbrace:Yell(self.vb.totalEmbrace, icon, icon)
 			yellNecroticEmbraceFades:Countdown(6, 3, icon)
@@ -183,13 +176,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnEchoesofDoom:CombinedShow(0.5, args.destName)--In case multiple shadows up
 		if args:IsPlayer() and self:AntiSpam(3, 1) then
 			specWarnEchoesOfDoom:Show()
-			voiceEchoesOfDoom:Play("targetyou")
+			specWarnEchoesOfDoom:Play("targetyou")
 			yellEchoesOfDoom:Yell()
 		end
 	elseif spellId == 243968 and self.vb.currentTorment ~= 1 then--Flame
 		self.vb.currentTorment = 1
 		warnTormentofFlames:Show()
-		voicePhaseChange:Play("phasechange")
+		warnTormentofFlames:Play("phasechange")
 		if not self:IsEasy() then
 			timerTormentofFrostCD:Start(100)
 		else--No frost or fel in normal, LFR assumed
@@ -236,7 +229,7 @@ end
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if (spellId == 244005 or spellId == 248740) and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
 		specWarnGTFO:Show()
-		voiceGTFO:Play("runaway")
+		specWarnGTFO:Play("runaway")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE

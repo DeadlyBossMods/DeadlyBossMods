@@ -34,10 +34,6 @@ local timerBacklash						= mod:NewBuffActiveTimer(12.5, 247816, nil, nil, nil, 6
 
 --local countdownBreath					= mod:NewCountdown(22, 227233)
 
-local voiceCalltoVoid					= mod:NewVoice(247795)--killmob
-local voiceFragmentOfDespair			= mod:NewVoice(245164)--helpsoak
-local voiceGrandShift					= mod:NewVoice(249009)--watchstep
-
 mod.vb.phase = 1
 
 function mod:OnCombatStart(delay)
@@ -49,14 +45,14 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 247795 then
 		specWarnCalltoVoid:Show()
-		voiceCalltoVoid:Play("killmob")
+		specWarnCalltoVoid:Play("killmob")
 		--timerCalltoVoidCD:Start()
 	elseif spellId == 245164 and self:AntiSpam(3, 1) then
 		specWarnFragmentOfDespair:Show()
-		voiceFragmentOfDespair:Play("helpsoak")
+		specWarnFragmentOfDespair:Play("helpsoak")
 	elseif spellId == 249009 then
 		specWarnGrandShift:Show()
-		voiceGrandShift:Play("watchstep")
+		specWarnGrandShift:Play("watchstep")
 		timerGrandShiftCD:Start()
 	end
 end

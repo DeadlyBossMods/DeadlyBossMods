@@ -113,25 +113,6 @@ local countdownOozeExplosions		= mod:NewCountdown(20.5, 227992)
 --Stage Two: From the Mists (65%)
 --Stage Three: Helheim's Last Stand
 
---Stage One: Low Tide
-local voiceOrbofCorruption			= mod:NewVoice(229119)--orbrun
-local voiceTaintOfSea				= mod:NewVoice(228088)--targetyou/watchstep
-local voiceBilewaterBreath			= mod:NewVoice(227967)--breathsoon
-local voiceBilewaterRedox			= mod:NewVoice(227982)--tauntboss
-local voiceBilewaterCorrosion		= mod:NewVoice(227998)--runaway
-local voiceBilewaterSlimes			= mod:NewVoice("ej14217", "Dps")--killmob
---Stage Two: From the Mists (65%)
-----Grimelord
-local voiceGrimeLord				= mod:NewVoice("ej14263", "Tank")--bigmob
-local voiceFetidRot					= mod:NewVoice(193367)--range5
-local voiceSludgeNova				= mod:NewVoice(228390, "Melee")--runout
-local voiceAnchorSlam				= mod:NewVoice(228519)--tauntboss (maybe change to "changemt" if this add can be up with boss)
-----Night Watch Mariner
-local voiceLanternofDarkness		= mod:NewVoice(228619)--range5
-local voiceGiveNoQuarter			= mod:NewVoice(228633)--watchstep
---Stage Three: Helheim's Last Stand (45%)
-local voiceOrbofCorrosion			= mod:NewVoice(230267)--orbrun
-
 mod:AddRangeFrameOption(5, 193367)
 mod:AddSetIconOption("SetIconOnTaint", 228088, false)
 mod:AddSetIconOption("SetIconOnOrbs", 229119, true)--Healer (Star), Tank (Circle), Deeps (Diamond)
@@ -221,7 +202,7 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 227967 then
 		self.vb.breathCount = self.vb.breathCount + 1
 		specWarnBilewaterBreath:Show(self.vb.breathCount)
-		voiceBilewaterBreath:Play("breathsoon")
+		specWarnBilewaterBreath:Play("breathsoon")
 		if self:IsNormal() then
 			timerBilewaterBreathCD:Start(57, self.vb.breathCount+1)
 		elseif self:IsMythic() then
@@ -233,12 +214,12 @@ function mod:SPELL_CAST_START(args)
 		timerExplodingOozes:Start()
 		countdownOozeExplosions:Start()
 		specWarnBilewaterSlimes:Schedule(3)
-		voiceBilewaterSlimes:Schedule(3, "killmob")
+		specWarnBilewaterSlimes:ScheduleVoice(3, "killmob")
 	elseif spellId == 228390 then
 		if self:CheckTankDistance(args.sourceGUID, 18) then--18 has to be used because of limitations in 7.1 distance APIs
 			--Only warn if you are near the person tanking this
 			specWarnSludgeNova:Show()
-			voiceSludgeNova:Play("runout")
+			specWarnSludgeNova:Play("runout")
 		end
 		timerSludgeNovaCD:Start()
 	elseif spellId == 228565 then
@@ -306,7 +287,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnLanternofDarkness:Show()
 	elseif spellId == 228633 then
 		specWarnGiveNoQuarter:Show()
-		voiceGiveNoQuarter:Play("watchstep")
+		specWarnGiveNoQuarter:Play("watchstep")
 		if self:IsEasy() then
 			timerGiveNoQuarterCD:Start(9.7)
 		else
@@ -368,7 +349,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			local uId = DBM:GetRaidUnitId(args.destName)
 			if self:IsTanking(uId) then--Filter numties standing in front of boss that shouldn't be
 				specWarnBilewaterRedox:Show(args.destName)
-				voiceBilewaterRedox:Play("tauntboss")
+				specWarnBilewaterRedox:Play("tauntboss")
 			end
 		end
 	elseif spellId == 228519 then
@@ -378,7 +359,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			--Also filter tanks that are too far away to taunt from (mythic split)
 			if self:IsTanking(uId) and self:CheckNearby(18, args.destName) then
 				specWarnAnchorSlam:Show(args.destName)
-				voiceAnchorSlam:Play("tauntboss")
+				specWarnAnchorSlam:Play("tauntboss")
 			end
 		end
 	elseif spellId == 193367 then
@@ -386,7 +367,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnFetidRot:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			specWarnFetidRot:Show()
-			voiceFetidRot:Play("range5")
+			specWarnFetidRot:Play("range5")
 			if self:IsMythic() then--yell on applied as well, it starts spreading MUCH sooner
 				yellFetidRot:Yell(15)
 			end
@@ -442,7 +423,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if args:IsPlayer() then
 			specWarnTaintofSeaPre:Show()
-			voiceTaintOfSea:Play("targetyou")
+			specWarnTaintofSeaPre:Play("targetyou")
 			yellTaint:Yell(self.vb.taintIcon, "", self.vb.taintIcon)
 			yellTaint:Schedule(2, self.vb.taintIcon, "", self.vb.taintIcon)
 		end
@@ -483,7 +464,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 228054 then
 		if args:IsPlayer() then
 			specWarnTaintofSea:Show()
-			voiceTaintOfSea:Play("watchstep")
+			specWarnTaintofSea:Play("watchstep")
 		end
 		if self.Options.SetIconOnTaint then
 			self:SetIcon(args.destName, 0)
@@ -494,7 +475,7 @@ end
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 227998 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
 		specWarnBilewaterCorrosion:Show()
-		voiceBilewaterCorrosion:Play("runaway")
+		specWarnBilewaterCorrosion:Play("runaway")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
@@ -521,7 +502,7 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 			local cid = self:GetCIDFromGUID(GUID)
 			if cid == 114709 then--GrimeLord
 				specWarnGrimeLord:Show()
-				voiceGrimeLord:Play("bigmob")
+				specWarnGrimeLord:Play("bigmob")
 				timerFetidRotCD:Start(7, GUID)
 				if not self:IsLFR() then
 					timerAnchorSlamCD:Start(13.7, GUID)
@@ -598,7 +579,7 @@ end
 function mod:RAID_BOSS_WHISPER(msg)
 	if msg:find("spell:227920") then
 		specWarnOrbOfCorruption:Show()
-		voiceOrbofCorruption:Play("orbrun")
+		specWarnOrbOfCorruption:Play("orbrun")
 		if self:IsTank() then
 			yellOrbOfCorruption:Yell(2, DBM_CORE_ORB, 2)
 		elseif self:IsHealer() then--LFR/Normal doesn't choose a healer, just tank/damage
@@ -608,7 +589,7 @@ function mod:RAID_BOSS_WHISPER(msg)
 		end
 	elseif msg:find("spell:228058") then
 		specWarnOrbOfCorrosion:Show()
-		voiceOrbofCorrosion:Play("orbrun")
+		specWarnOrbOfCorrosion:Play("orbrun")
 		if self:IsTank() then
 			yellOrbOfCorrosion:Yell(2, DBM_CORE_ORB, 2)
 		elseif self:IsHealer() then--LFR/Normal doesn't choose a healer, just tank/damage

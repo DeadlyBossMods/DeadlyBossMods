@@ -25,10 +25,6 @@ local timerResonantSlashCD			= mod:NewCDTimer(12.1, 207261, nil, nil, nil, 3)
 local timerArcaneLockdownCD			= mod:NewCDTimer(30, 207278, nil, nil, nil, 3)
 local timerSignalBeaconCD			= mod:NewCDTimer(20, 207806, nil, nil, nil, 1)
 
-local voiceResonantSlash			= mod:NewVoice(207261)--watchstep
-local voiceArcaneLockdown			= mod:NewVoice(207278)--keepjump
-local voiceBeacon					= mod:NewVoice(207806)--mobsoon
-
 mod.vb.phase = 1
 
 function mod:OnCombatStart(delay)
@@ -42,7 +38,7 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 207261 then
 		specWarnResonantSlash:Show()
-		voiceResonantSlash:Play("watchstep")
+		specWarnResonantSlash:Play("watchstep")
 		if self.vb.phase == 2 then
 			timerResonantSlashCD:Start(10)
 		else
@@ -53,7 +49,7 @@ function mod:SPELL_CAST_START(args)
 		warnFlask:Show()
 	elseif spellId == 207806 then
 		specWarnBeacon:Show()
-		voiceBeacon:Play("mobsoon")
+		specWarnBeacon:Play("mobsoon")
 	end
 end
 
@@ -61,7 +57,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 207278 then--Success since jumping on cast start too early
 		specWarnArcaneLockdown:Show()
-		voiceArcaneLockdown:Play("keepjump")
+		specWarnArcaneLockdown:Play("keepjump")
 		timerArcaneLockdownCD:Start()
 	end
 end

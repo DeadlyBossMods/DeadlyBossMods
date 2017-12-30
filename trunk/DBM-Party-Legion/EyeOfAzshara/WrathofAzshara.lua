@@ -28,9 +28,6 @@ local timerMassiveDelugeCD			= mod:NewCDTimer(50, 192617, nil, "Tank", nil, 5, n
 local timerArcaneBomb				= mod:NewTargetTimer(15, 192706, nil, "Healer", nil, 5, nil, DBM_CORE_HEALER_ICON)--Magic dispel for healer to dispel at correct time
 local timerArcaneBombCD				= mod:NewCDTimer(23, 192706, nil, nil, nil, 3)--23-37
 
-local voiceMassiveDeluge			= mod:NewVoice(192617, "Tank")--shockwave
-local voiceArcaneBomb				= mod:NewVoice(192706)--runout
-
 mod:AddRangeFrameOption(10, 192706)
 
 mod.vb.phase = 1
@@ -82,7 +79,7 @@ function mod:SPELL_CAST_START(args)
 		serpMod:UpdateWinds()--At present it may not actually reset here. Just in case though
 	elseif spellId == 192617 then
 		specWarnMassiveDeluge:Show()
-		voiceMassiveDeluge:Play("shockwave")
+		specWarnMassiveDeluge:Play("shockwave")
 		if self.vb.phase == 2 then
 			timerMassiveDelugeCD:Start(35)
 		else
@@ -97,7 +94,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, targetname)
 		timerArcaneBombCD:Start()
 		if targetname == UnitName("player") then
 			specWarnArcaneBomb:Show()
-			voiceArcaneBomb:Play("runout")
+			specWarnArcaneBomb:Play("runout")
 			yellArcaneBomb:Yell()
 		else
 			warnArcaneBomb:Show(targetname)

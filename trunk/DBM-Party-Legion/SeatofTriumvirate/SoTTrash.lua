@@ -26,16 +26,7 @@ local specWarnConsumeEssence		= mod:NewSpecialWarningInterrupt(245727, "HasInter
 local specWarnStygianBlast			= mod:NewSpecialWarningInterrupt(248133, "HasInterrupt", nil, nil, 1, 2)
 local specWarnDarkFlay				= mod:NewSpecialWarningInterrupt(248184, "HasInterrupt", nil, nil, 1, 2)
 
-local voiceCorruptingVoid			= mod:NewVoice(245510)--runout
-local voiceDarkMatter				= mod:NewVoice(248227)--killmob
-local voiceSupField					= mod:NewVoice(249081)--stopmove
-local voiceVoidDiffusion			= mod:NewVoice(245585, "HasInterrupt")--kickcast
-local voiceConsumeEssence			= mod:NewVoice(245727, "HasInterrupt")--kickcast
-local voiceStygianBlast				= mod:NewVoice(248133, "HasInterrupt")--kickcast
-local voiceDarkFlay					= mod:NewVoice(248184, "HasInterrupt")--kickcast
-
 mod:RemoveOption("HealthFrame")
-
 
 function mod:SPELL_CAST_START(args)
 	if not self.Options.Enabled then return end
@@ -44,19 +35,19 @@ function mod:SPELL_CAST_START(args)
 		warnWildSummon:Show()
 	elseif spellId == 245585 and self:CheckInterruptFilter(args.sourceGUID) then
 		specWarnVoidDiffusion:Show(args.sourceName)
-		voiceVoidDiffusion:Play("kickcast")
+		specWarnVoidDiffusion:Play("kickcast")
 	elseif spellId == 245727 and self:CheckInterruptFilter(args.sourceGUID) then
 		specWarnConsumeEssence:Show(args.sourceName)
-		voiceConsumeEssence:Play("kickcast")
+		specWarnConsumeEssence:Play("kickcast")
 	elseif spellId == 248133 and self:CheckInterruptFilter(args.sourceGUID) then
 		specWarnStygianBlast:Show(args.sourceName)
-		voiceStygianBlast:Play("kickcast")
+		specWarnStygianBlast:Play("kickcast")
 	elseif spellId == 248184 and self:CheckInterruptFilter(args.sourceGUID) then
 		specWarnDarkFlay:Show(args.sourceName)
-		voiceDarkFlay:Play("kickcast")
+		specWarnDarkFlay:Play("kickcast")
 	elseif spellId == 248227 then
 		specWarnDarkMatter:Show()
-		voiceDarkMatter:Play("killmob")
+		specWarnDarkMatter:Play("killmob")
 	end
 end
 
@@ -66,7 +57,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 249077 and self:AntiSpam(3, args.destName) then
 		if args:IsPlayer() then
 			specWarnCorruptingVoid:Show()
-			voiceCorruptingVoid:Play("runout")
+			specWarnCorruptingVoid:Play("runout")
 			yellCorruptingVoid:Yell()
 		else
 			warnCorruptingVoid:Show(args.destName)
@@ -74,7 +65,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 249081 and self:AntiSpam(3, args.destName) then
 		if args:IsPlayer() then
 			specWarnSupField:Show()
-			voiceSupField:Play("stopmove")
+			specWarnSupField:Play("stopmove")
 			yellSupField:Yell()
 		else
 			warnSupField:Show(args.destName)

@@ -86,16 +86,6 @@ local countdownDeathBlossom			= mod:NewCountdown("AltTwo15", 218415)
 --Stage Two: The Heart of Corruption
 local countdownDarkRecon			= mod:NewCountdown("Alt50", 210781, nil, nil, 10)
 
---Stage One: The Ruined Ground
-local voiceNightmareCorruption		= mod:NewVoice(212886)--runaway
-local voiceFixate					= mod:NewVoice(210099)--targetyou
-local voiceNightmareHorror			= mod:NewVoice("ej13188", "-Healer")--bigmob
-local voiceEyeOfFate				= mod:NewVoice(210984)--changemt
-local voiceMindFlay					= mod:NewVoice(208697, "HasInterrupt", nil, 2)--kickcast
-local voiceSpewCorruption			= mod:NewVoice(208929)--runout
-local voiceNightmarishFury			= mod:NewVoice(210984)--defensive
-local voiceGroundSlam				= mod:NewVoice(208689)--targetyou/watchwave
-
 mod:AddSetIconOption("SetIconOnSpew", 208929, false)
 mod:AddSetIconOption("SetIconOnOoze", "ej13186", false)
 mod:AddBoolOption("SetIconOnlyOnce2", true)
@@ -314,7 +304,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 208697 then
 		if self:CheckInterruptFilter(args.sourceGUID) then
 			specWarnMindFlay:Show(args.sourceName)
-			voiceMindFlay:Play("kickcast")
+			specWarnMindFlay:Play("kickcast")
 		end
 		if not addsTable[args.sourceGUID] and not self.vb.insideActive then
 			addsTable[args.sourceGUID] = true
@@ -412,7 +402,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnSpewCorruption:CombinedShow(0.5, args.destName)
 		if args:IsPlayer() then
 			specWarnSpewCorruption:Show()
-			voiceSpewCorruption:Play("runout")
+			specWarnSpewCorruption:Play("runout")
 			yellSpewCorruption:Yell()
 		end
 		if self.Options.SetIconOnSpew then
@@ -442,7 +432,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnFixate:CombinedShow(1, args.destName)
 		if args:IsPlayer() then
 			specWarnFixate:Show(eyeName)
-			voiceFixate:Play("targetyou")
+			specWarnFixate:Play("targetyou")
 		end
 		if not addsTable[args.sourceGUID] then
 			addsTable[args.sourceGUID] = true
@@ -462,12 +452,12 @@ function mod:SPELL_AURA_APPLIED(args)
 			if amount >= 2 then
 				if args:IsPlayer() then--At this point the other tank SHOULD be clear.
 					specWarnEyeOfFate:Show(amount)
-					voiceEyeOfFate:Play("stackhigh")
+					specWarnEyeOfFate:Play("stackhigh")
 				else--Taunt as soon as stacks are clear, regardless of stack count.
 					local _, _, _, _, _, _, expireTime = UnitDebuff("player", args.spellName)
 					if not UnitIsDeadOrGhost("player") and (not expireTime or expireTime and expireTime-GetTime() < 10) then
 						specWarnEyeOfFateOther:Show(args.destName)
-						voiceEyeOfFate:Play("changemt")
+						specWarnEyeOfFateOther:Play("changemt")
 					else
 						warnEyeOfFate:Show(args.destName, amount)
 					end
@@ -485,7 +475,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			local bossUnitID = "boss"..i
 			if UnitExists(bossUnitID) and UnitGUID(bossUnitID) == args.sourceGUID and UnitDetailedThreatSituation("player", bossUnitID) then--We are highest threat target
 				specWarnNightmarishFury:Show()
-				voiceNightmarishFury:Play("defensive")
+				specWarnNightmarishFury:Play("defensive")
 				break
 			end
 		end
@@ -505,7 +495,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 212886 and args:IsPlayer() and self:AntiSpam(2, 1) then
 		specWarnNightmareCorruption:Show()
-		voiceNightmareCorruption:Play("runaway")
+		specWarnNightmareCorruption:Play("runaway")
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -533,7 +523,7 @@ end
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 212886 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
 		specWarnNightmareCorruption:Show()
-		voiceNightmareCorruption:Play("runaway")
+		specWarnNightmareCorruption:Play("runaway")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
@@ -561,7 +551,7 @@ function mod:RAID_BOSS_WHISPER(msg)
 	if msg:find("spell:208689") then
 		specWarnGroundSlam:Show()
 		yellGroundSlam:Yell()
-		voiceGroundSlam:Play("targetyou")
+		specWarnGroundSlam:Play("targetyou")
 	end
 end
 
@@ -619,7 +609,7 @@ do
 	function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, targetname)
 		if targetname == NightmareHorror then
 			specWarnNightmareHorror:Show()
-			voiceNightmareHorror:Play("bigmob")
+			specWarnNightmareHorror:Play("bigmob")
 			if self:IsMythic() then
 				timerNightmareHorrorCD:Start(250)
 			else
@@ -639,7 +629,7 @@ function mod:OnTranscriptorSync(msg, targetName)
 		targetName = Ambiguate(targetName, "none")
 		if self:CheckNearby(5, targetName) then
 			specWarnGroundSlamNear:Show(targetName)
-			voiceGroundSlam:Play("watchwave")
+			specWarnGroundSlamNear:Play("watchwave")
 		else
 			warnGroundSlam:CombinedShow(1, targetName)
 		end

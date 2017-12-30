@@ -34,10 +34,6 @@ local timerTorrentCD					= mod:NewCDTimer(9.7, 198495, nil, nil, nil, 4, nil, DB
 
 local countdownBreath					= mod:NewCountdown(22, 227233)
 
-local voiceBrackwaterBarrage			= mod:NewVoice(202088)--breathsoon
-local voiceBreath						= mod:NewVoice(227233)--breathsoon
-local voiceTorrent						= mod:NewVoice(198495, "HasInterrupt")--kickcast
-
 mod.vb.phase = 1
 
 function mod:OnCombatStart(delay)
@@ -49,19 +45,19 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 227233 then
 		specWarnBreath:Show()
-		voiceBreath:Play("breathsoon")
+		specWarnBreath:Play("breathsoon")
 		timerBreathCD:Start()
 		countdownBreath:Start()
 	elseif spellId == 202088 then
 		specWarnBrackwaterBarrage:Show()
-		voiceBrackwaterBarrage:Play("breathsoon")
+		specWarnBrackwaterBarrage:Play("breathsoon")
 		--timerBreathCD:Start()
 		--countdownBreath:Start()
 	elseif spellId == 198495 then
 		timerTorrentCD:Start()
 		if self:CheckInterruptFilter(args.sourceGUID) then
 			specWarnTorrent:Show(args.sourceName)
-			voiceTorrent:Play("kickcast")
+			specWarnTorrent:Play("kickcast")
 		end
 	end
 end

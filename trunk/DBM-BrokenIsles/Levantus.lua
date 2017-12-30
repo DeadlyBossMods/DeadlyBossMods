@@ -26,9 +26,6 @@ local timerRendingWhirlCD		= mod:NewCDTimer(48.5, 217235, nil, nil, nil, 2)
 local timerElectrifyCD			= mod:NewCDTimer(33, 217344, nil, nil, nil, 2)
 local timerMassiveSpoutCD		= mod:NewCDTimer(66, 217249, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
 
-local voiceMassiveSpout			= mod:NewVoice(217249)--watchwave
-local voiceElectrify			= mod:NewVoice(217352, "Healer")--helpdispel
-
 --mod:AddReadyCheckOption(37460, false)
 
 function mod:OnCombatStart(delay, yellTriggered)
@@ -44,7 +41,7 @@ function mod:SPELL_CAST_START(args)
 		timerRendingWhirlCD:Start()
 	elseif spellId == 217249 then
 		specWarnMassiveSpout:Show()
-		voiceMassiveSpout:Play("watchwave")
+		specWarnMassiveSpout:Play("watchwave")
 		timerMassiveSpoutCD:Start()
 	elseif spellId == 217344 then
 		warnElectrify:Show()
@@ -57,7 +54,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 217352 then
 		specWarnElectrifyDispel:CombinedShow(0.5, args.destName)
 		if self:AntiSpam(3, 1) then
-			voiceElectrify:Play("helpdispel")
+			specWarnElectrifyDispel:Play("helpdispel")
 		end
 	end
 end

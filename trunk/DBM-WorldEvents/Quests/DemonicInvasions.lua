@@ -14,10 +14,6 @@ local specWarnBombardment			= mod:NewSpecialWarningDodge(235085, nil, nil, nil, 
 local specWarnCataclysmicForceNova	= mod:NewSpecialWarningDodge(238005, nil, nil, nil, 4, 2)
 local specWarnDreadBeam				= mod:NewSpecialWarningDodge(234660, nil, nil, nil, 4, 2)
 
-local voiceBombardment				= mod:NewVoice(235085)--watchstep
-local voiceCataclysmicForceNova		= mod:NewVoice(238005)--runout
-local voiceDreadBeam				= mod:NewVoice(234660)--shockwave
-
 mod:RemoveOption("HealthFrame")
 
 function mod:SPELL_CAST_START(args)
@@ -25,15 +21,16 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 238005 then
 		specWarnCataclysmicForceNova:Show()
-		voiceCataclysmicForceNova:Play("runout")
+		specWarnCataclysmicForceNova:Play("runout")
 	elseif spellId == 234660 then
 		specWarnDreadBeam:Show()
-		voiceDreadBeam:Play("shockwave")
+		specWarnDreadBeam:Play("shockwave")
 	end
 end
+
 function mod:RAID_BOSS_WHISPER(msg)
 	if msg:find("spell:235085") then
 		specWarnBombardment:Show()
-		voiceBombardment:Play("watchstep")
+		specWarnBombardment:Play("watchstep")
 	end
 end

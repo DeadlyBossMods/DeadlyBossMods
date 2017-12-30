@@ -35,7 +35,7 @@ local warnPhase3					= mod:NewPhaseAnnounce(3, 2)
 local specWarnReverbShadows			= mod:NewSpecialWarningInterruptCount(229307, "HasInterrupt", nil, nil, 1, 3)
 local specWarnCharredEarth			= mod:NewSpecialWarningMove(228808, nil, nil, nil, 1, 2)
 local specWarnIgniteSoul			= mod:NewSpecialWarningMoveTo(228796, nil, nil, nil, 3, 2)
-local yellIgniteSoul				= mod:NewFadesYell(228796)
+local yellIgniteSoul				= mod:NewShortFadesYell(228796)
 local specWarnFear					= mod:NewSpecialWarningSpell(228837, nil, nil, nil, 2, 2)
 
 local timerReverbShadowsCD			= mod:NewCDTimer(12, 229307, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)--12-16
@@ -49,12 +49,6 @@ local timerFearCD					= mod:NewCDTimer(43, 228837, nil, nil, nil, 2)--43-46
 --local berserkTimer				= mod:NewBerserkTimer(300)
 
 local countdownIngiteSoul			= mod:NewCountdownFades("AltTwo9", 228796)
-
-local voiceReverbShadows			= mod:NewVoice(229307, "HasInterrupt")--kickcast
-local voiceCharredEarth				= mod:NewVoice(228808)--runaway
-local voiceIgniteSoul				= mod:NewVoice(228796)--targetyou (maybe something better?)
-
-local voiceFear						= mod:NewVoice(228837)--fearsoon
 
 mod:AddSetIconOption("SetIconOnIgnite", 228796, true)
 mod:AddInfoFrameOption(228829, true)
@@ -96,7 +90,7 @@ function mod:SPELL_CAST_START(args)
 		timerBreathCD:Stop()
 	elseif spellId == 228837 then
 		specWarnFear:Show()
-		voiceFear:Play("fearsoon")
+		specWarnFear:Play("fearsoon")
 		timerFearCD:Start()
 	elseif spellId == 228785 then
 		warnBreath:Show()
@@ -106,9 +100,9 @@ function mod:SPELL_CAST_START(args)
 		timerReverbShadowsCD:Start()
 		specWarnReverbShadows:Show(args.sourceName, self.vb.interruptCount)
 		if self.vb.interruptCount == 1 then
-			voiceReverbShadows:Play("kick1r")
+			specWarnReverbShadows:Play("kick1r")
 		elseif self.vb.interruptCount == 2 then
-			voiceReverbShadows:Play("kick2r")
+			specWarnReverbShadows:Play("kick2r")
 			self.vb.interruptCount = 0
 		end
 	end
@@ -129,13 +123,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		countdownIngiteSoul:Start()
 		if args:IsPlayer() then
 			specWarnIgniteSoul:Show(charredEarth)
-			voiceIgniteSoul:Play("targetyou")
+			specWarnIgniteSoul:Play("targetyou")
 			--Yes a 5 count (not typical 3). This debuff is pretty much EVERYTHING
-			yellIgniteSoul:Schedule(1, 8)
-			yellIgniteSoul:Schedule(2, 7)
-			yellIgniteSoul:Schedule(3, 6)
-			yellIgniteSoul:Schedule(4, 5)
-			yellIgniteSoul:Schedule(5, 4)
+			yellIgniteSoul:Countdown(9, 5)
 		else
 			warnIgniteSoul:Show(args.destName)
 		end
@@ -163,7 +153,7 @@ do
 	function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 		if spellId == 228808 and destGUID == UnitGUID("player") and not UnitDebuff("player", filteredDebuff) and self:AntiSpam(2, 1) then
 			specWarnCharredEarth:Show()
-			voiceCharredEarth:Play("runaway")
+			specWarnCharredEarth:Play("runaway")
 		end
 	end
 	mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE

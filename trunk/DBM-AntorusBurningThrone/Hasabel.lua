@@ -28,7 +28,6 @@ mod:RegisterEventsInCombat(
 )
 
 --TODO, interrupt rotation helper for Flames of Xoroth?
---TODO, voice warnings for portals maybe, have to see fight to see if timing lines up first
 --TODO, find a workable cast ID for corrupt and enable interrupt warning
 --TODO, an overview info frame showing the needs of portal worlds (how many shields up, how much fel miasma, how many fires in dark realm if possible)
 --[[
@@ -107,21 +106,7 @@ local countdownFelstormBarrage			= mod:NewCountdown("AltTwo32", 244000, nil, nil
 --Platform: Rancora
 
 --Platform: Nexus
-local voiceRealityTear					= mod:NewVoice(244016)--tauntboss/stackhigh
 local voiceTransportPortal				= mod:NewVoice(244677)--killmob
-local voiceCollapsingWorld				= mod:NewVoice(243983)--watchstep
-local voiceFelstormBarrage				= mod:NewVoice(244000)--farfromline
-local voiceFieryDetonation				= mod:NewVoice(244709, "HasInterrupt", nil, 2)--kickcast
-local voiceHowlingShadows				= mod:NewVoice(245504, "HasInterrupt")--kickcast
---local voiceGTFO						= mod:NewVoice(238028, nil, DBM_CORE_AUTO_VOICE4_OPTION_TEXT)--runaway
---Platform: Xoroth
-local voiceFlamesofXoroth				= mod:NewVoice(244607, "HasInterrupt")--kickcast
-local voiceSuperNova					= mod:NewVoice(244598)--watchstep
---Platform: Rancora
-local voiceFelSilkWrap					= mod:NewVoice(244949)--changetarget/targetyou
---Platform: Nathreza
-local voiceDelusions					= mod:NewVoice(245050)--targetyou (not sure if better option)
---local voiceCorrupt					= mod:NewVoice(245040, "HasInterrupt")--kickcast
 
 --mod:AddSetIconOption("SetIconOnFocusedDread", 238502, true)
 --mod:AddInfoFrameOption(239154, true)
@@ -227,18 +212,18 @@ function mod:SPELL_CAST_START(args)
 		end
 		if self.Options.ShowAllPlatforms or playerPlatform == 1 then--Actually on nexus platform
 			specWarnCollapsingWorld:Show()
-			voiceCollapsingWorld:Play("watchstep")
+			specWarnCollapsingWorld:Play("watchstep")
 		end
 		updateAllTimers(self, 9.7)
 	elseif spellId == 244709 and self:CheckInterruptFilter(args.sourceGUID) then
 		specWarnFieryDetonation:Show(args.sourceName)
-		voiceFieryDetonation:Play("kickcast")
+		specWarnFieryDetonation:Play("kickcast")
 	elseif spellId == 245504 and self:CheckInterruptFilter(args.sourceGUID) then
 		specWarnHowlingShadows:Show(args.sourceName)
-		voiceHowlingShadows:Play("kickcast")
+		specWarnHowlingShadows:Play("kickcast")
 	elseif spellId == 244607 and self:CheckInterruptFilter(args.sourceGUID) then
 		specWarnFlamesofXoroth:Show(args.sourceName)
-		voiceFlamesofXoroth:Play("kickcast")
+		specWarnFlamesofXoroth:Play("kickcast")
 		timerFlamesofXorothCD:Start()
 	elseif spellId == 246316 then--Rancora platform
 		timerPoisonEssenceCD:Start()
@@ -255,7 +240,7 @@ function mod:SPELL_CAST_START(args)
 		end
 		if self.Options.ShowAllPlatforms or playerPlatform == 1 then--Actually on nexus platform
 			specWarnTransportPortal:Show()
-			voiceTransportPortal:Play("killmob")
+			specWarnTransportPortal:Play("killmob")
 		end
 		updateAllTimers(self, 8.5)
 	elseif spellId == 244000 then--Felstorm Barrage
@@ -272,7 +257,7 @@ function mod:SPELL_CAST_START(args)
 		end
 		if self.Options.ShowAllPlatforms or playerPlatform == 1 then--Actually on nexus platform
 			specWarnFelstormBarrage:Show()
-			voiceFelstormBarrage:Play("farfromline")
+			specWarnFelstormBarrage:Play("farfromline")
 		end
 		updateAllTimers(self, 9.7)
 	end
@@ -320,9 +305,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 		end
 	elseif spellId == 244598 and self:AntiSpam(5, 1) then--Supernova
 		if self.Options.ShowAllPlatforms or playerPlatform == 2 then--Actually on Xoroth platform
-			--timerSupernovaCD:Start()
 			specWarnSupernova:Show()
-			voiceSuperNova:Play("watchstep")
+			specWarnSupernova:Play("watchstep")
 		end
 	elseif spellId == 244016 then
 		timerRealityTearCD:Start()
@@ -339,7 +323,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			if amount >= 2 then
 				if args:IsPlayer() then--At this point the other tank SHOULD be clear.
 					specWarnRealityTear:Show(amount)
-					voiceRealityTear:Play("stackhigh")
+					specWarnRealityTear:Play("stackhigh")
 				else--Taunt as soon as stacks are clear, regardless of stack count.
 					local _, _, _, _, _, _, expireTime = UnitDebuff("player", args.spellName)
 					local remaining
@@ -348,7 +332,7 @@ function mod:SPELL_AURA_APPLIED(args)
 					end
 					if not UnitIsDeadOrGhost("player") and (not remaining or remaining and remaining < 12) then
 						specWarnRealityTearOther:Show(args.destName)
-						voiceRealityTear:Play("tauntboss")
+						specWarnRealityTearOther:Play("tauntboss")
 					else
 						warnRealityTear:Show(args.destName, amount)
 					end
@@ -394,14 +378,14 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 244949 then--Felsilk Wrap
 		if args:IsPlayer() then
 			specWarnFelSilkWrap:Show()
-			voiceFelSilkWrap:Play("targetyou")
+			specWarnRealityTearOther:Play("targetyou")
 			yellFelSilkWrap:Yell()
 		else
 			if self.Options.ShowAllPlatforms or playerPlatform == 3 then--Actually on Rancora platform
 				timerFelSilkWrapCD:Start()
 				specWarnFelSilkWrapOther:Show()
 				if self.Options.SpecWarn244949switch then
-					voiceFelSilkWrap:Play("changetarget")
+					specWarnFelSilkWrapOther:Play("changetarget")
 				end
 			end
 		end
@@ -409,7 +393,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnDelusions:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			specWarnDelusions:Show()
-			voiceDelusions:Play("targetyou")
+			specWarnDelusions:Play("targetyou")
 		end
 	end
 end
@@ -447,7 +431,7 @@ end
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 228007 and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
 		specWarnGTFO:Show()
-		voiceGTFO:Play("runaway")
+		specWarnGTFO:Play("runaway")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE

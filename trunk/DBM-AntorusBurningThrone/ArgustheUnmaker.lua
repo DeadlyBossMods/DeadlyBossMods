@@ -154,34 +154,6 @@ local countdownSoulbomb				= mod:NewCountdown(50, 251570)
 local countdownDeadlyScythe			= mod:NewCountdown("Alt5", 258039, false, nil, 3)--Off by default since it'd be almost non stop, so users can elect into this one
 local countdownReorgModule			= mod:NewCountdown("AltTwo48", 256389, "-Tank")
 
---Stage One: Storm and Sky
-local voiceSweepingScythe			= mod:NewVoice(248499)--tauntboss
-local voiceConeofDeath				= mod:NewVoice(248165)--aesoon
---local voiceTorturedRage				= mod:NewVoice(257296)--aesoon
-local voiceSoulblight				= mod:NewVoice(248396)--runout
-local voiceGiftofSea				= mod:NewVoice(258647)--targetyou
-local voiceGiftofSky				= mod:NewVoice(258646)--targetyou
-local voiceSargRage					= mod:NewVoice(257869)--scatter
-local voiceSargFear					= mod:NewVoice(257931)--gathershare
---local voiceMalignantAnguish		= mod:NewVoice(236597, "HasInterrupt")--kickcast
---local voiceGTFO					= mod:NewVoice(238028, nil, DBM_CORE_AUTO_VOICE4_OPTION_TEXT)--runaway
---Stage Two: The Protector Redeemed
-local voiceSoulburst				= mod:NewVoice(250669)--targetyou/runout (on delay)
-local voiceSoulbomb					= mod:NewVoice(251570)--targetyou/movetotank (on delay)
-local voiceEdgeofObliteration		= mod:NewVoice(255826)--watchstep
-local voiceAvatarofAgrra			= mod:NewVoice(255199)--targetyou
---Stage Three: The Arcane Masters
-local voiceCosmicRay				= mod:NewVoice(252729)--targetyou
-local voiceCosmicBeacon				= mod:NewVoice(252616)--runout
---Stage Three Mythic
-local voiceSargSentence				= mod:NewVoice(257966)--targetyou
-local voiceApocModule				= mod:NewVoice(258029, "Dps")--killmob
-local voiceSoulrendingScythe		= mod:NewVoice(258838)--tauntboss/stackhigh
---Stage Four: The Gift of Life, The Forge of Loss (Non Mythic)
-local voiceEmberofRage				= mod:NewVoice(257299)--watchstep
-local voiceDeadlyScythe				= mod:NewVoice(258039)--tauntboss/stackhigh
-local voiceReorgModule				= mod:NewVoice(256389, "RangedDps", nil, 2)--killmob
-
 mod:AddSetIconOption("SetIconGift", 255594, true)--5 and 6
 mod:AddSetIconOption("SetIconOnAvatar", 255199, true)--4
 mod:AddSetIconOption("SetIconOnSoulBomb", 251570, true)--3 and 7
@@ -273,10 +245,10 @@ local function delayedBoonCheck(self, stage4)
 	if not UnitBuff("player", aggramarsBoon) then
 		if stage4 then
 			specWarnSoulbombMoveTo:Show(DBM_CORE_ROOM_EDGE)
-			voiceSoulbomb:Play("runtoedge")
+			specWarnSoulbombMoveTo:Play("runtoedge")
 		else
 			specWarnSoulbombMoveTo:Show(avatarOfAggramar)
-			voiceSoulbomb:Play("movetotank")
+			specWarnSoulbombMoveTo:Play("movetotank")
 		end
 	end
 end
@@ -332,7 +304,7 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 248165 then
 		self.vb.coneCount = self.vb.coneCount + 1
 		specWarnConeofDeath:Show()
-		voiceConeofDeath:Play("shockwave")
+		specWarnConeofDeath:Play("shockwave")
 		timerConeofDeathCD:Start(nil, self.vb.coneCount+1)
 	elseif spellId == 248317 then
 		self.vb.blightOrbCount = self.vb.blightOrbCount + 1
@@ -341,7 +313,6 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 257296 then
 		self.vb.TorturedRage = self.vb.TorturedRage + 1
 		warnTorturedRage:Show(self.vb.TorturedRage)
-		--voiceTorturedRage:Play("aesoon")
 		if self:IsMythic() and self.vb.phase == 3 then
 			local timer = torturedRage[self.vb.TorturedRage+1]
 			if timer then
@@ -428,7 +399,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 255826 then
 		self.vb.EdgeofObliteration = self.vb.EdgeofObliteration + 1
 		specWarnEdgeofObliteration:Show()
-		voiceEdgeofObliteration:Play("watchstep")
+		specWarnEdgeofObliteration:Play("watchstep")
 		timerEdgeofObliterationCD:Start(nil, self.vb.EdgeofObliteration+1)
 	elseif spellId == 252729 and self:AntiSpam(5, 3) then
 		timerCosmicRayCD:Start()
@@ -437,13 +408,13 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 256388 and self:AntiSpam(5, 5) then--Initialization Sequence
 		self.vb.moduleCount = self.vb.moduleCount + 1
 		specWarnReorgModule:Show(self.vb.moduleCount)
-		voiceReorgModule:Play("killmob")
+		specWarnReorgModule:Play("killmob")
 		timerReorgModuleCD:Start(nil, self.vb.moduleCount+1)
 		countdownReorgModule:Start()
 	elseif spellId == 258029 and self:AntiSpam(5, 7) then--Initialization Sequence (Mythic)
 		self.vb.moduleCount = self.vb.moduleCount + 1
 		specWarnApocModule:Show(self.vb.moduleCount)
-		voiceApocModule:Play("killmob")
+		specWarnApocModule:Play("killmob")
 		local timer = apocModule[self.vb.moduleCount+1] or 46.6
 		timerReorgModuleCD:Start(timer, self.vb.moduleCount+1)
 		countdownReorgModule:Start(timer)
@@ -455,13 +426,13 @@ do
 	local function handleBomb(self, targetName, spellName)
 		if targetName == UnitName("player") then
 			specWarnSoulbomb:Show()
-			voiceSoulbomb:Play("targetyou")
+			specWarnSoulbomb:Play("targetyou")
 			self:Schedule(7, delayedBoonCheck, self)
 			yellSoulbomb:Yell(2, spellName, 2)
 			yellSoulbombFades:Countdown(self:IsMythic() and 12 or 15, nil, 2)
 		elseif playerAvatar then
 			specWarnSoulbombMoveTo:Show(targetName)
-			voiceSoulbomb:Play("helpsoak")
+			specWarnSoulbombMoveTo:Play("helpsoak")
 		else
 			warnSoulbomb:Show(targetName)
 		end
@@ -491,11 +462,11 @@ do
 				if amount >= swapAmount then
 					if args:IsPlayer() then
 						specWarnSweepingScythe:Show(amount)
-						voiceSweepingScythe:Play("stackhigh")
+						specWarnSweepingScythe:Play("stackhigh")
 					else--Taunt as soon as stacks are clear, regardless of stack count.
 						if not UnitIsDeadOrGhost("player") and not UnitDebuff("player", args.spellName) then
 							specWarnSweepingScytheTaunt:Show(args.destName)
-							voiceSweepingScythe:Play("tauntboss")
+							specWarnSweepingScytheTaunt:Play("tauntboss")
 						else
 							warnSweepingScythe:Show(args.destName, amount)
 						end
@@ -511,7 +482,7 @@ do
 				if amount >= 2 then
 					if args:IsPlayer() then
 						specWarnDeadlyScythe:Show(amount)
-						voiceDeadlyScythe:Play("stackhigh")
+						specWarnDeadlyScythe:Play("stackhigh")
 					else
 						warnDeadlyScythe:Show(args.destName, amount)
 					end
@@ -524,7 +495,7 @@ do
 				if amount >= 2 then
 					if args:IsPlayer() then
 						specWarnSoulrendingScythe:Show(amount)
-						voiceSoulrendingScythe:Play("stackhigh")
+						specWarnSoulrendingScythe:Play("stackhigh")
 					else
 						warnSoulRendingScythe:Show(args.destName, amount)
 					end
@@ -534,7 +505,7 @@ do
 			warnSoulblight:Show(args.destName)
 			if args:IsPlayer() then
 				specWarnSoulblight:Show()
-				voiceSoulblight:Play("runout")
+				specWarnSoulblight:Play("runout")
 				yellSoulblight:Yell()
 			end
 		elseif spellId == 250669 then
@@ -545,8 +516,8 @@ do
 			local icon = self.vb.soulBurstIcon
 			if args:IsPlayer() then
 				specWarnSoulburst:Show()
-				voiceSoulburst:Play("targetyou")
-				voiceSoulburst:Schedule(10, "runout")
+				specWarnSoulburst:Play("targetyou")
+				specWarnSoulburst:ScheduleVoice(self:IsMythic() and 7 or 10, "runout")
 				yellSoulburst:Yell(icon == 7 and 2 or 1, icon, icon)
 				yellSoulburstFades:Countdown(self:IsMythic() and 12 or 15, nil, icon)
 			end
@@ -562,7 +533,7 @@ do
 			end
 			if args:IsPlayer() then
 				specWarnAvatarofAggra:Show()
-				voiceAvatarofAgrra:Play("targetyou")
+				specWarnAvatarofAggra:Play("targetyou")
 				playerAvatar = true
 			else
 				warnAvatarofAggra:Show(args.destName)
@@ -585,7 +556,7 @@ do
 		elseif spellId == 252729 then
 			if args:IsPlayer() then
 				specWarnCosmicRay:Show()
-				voiceCosmicRay:Play("targetyou")
+				specWarnCosmicRay:Play("targetyou")
 				yellCosmicRay:Yell()
 			else
 				warnCosmicRay:CombinedShow(0.3, args.destName)
@@ -593,7 +564,7 @@ do
 		elseif spellId == 252616 then
 			if args:IsPlayer() then
 				specWarnCosmicBeacon:Show()
-				voiceCosmicBeacon:Play("runout")
+				specWarnCosmicBeacon:Play("runout")
 				yellCosmicBeacon:Yell()
 			else
 				warnCosmicBeacon:CombinedShow(0.3, args.destName)
@@ -602,7 +573,7 @@ do
 			warnSkyandSea:CombinedShow(0.3, args.destName)
 			if args:IsPlayer() then
 				specWarnGiftofSea:Show()
-				voiceGiftofSea:Play("targetyou")
+				specWarnGiftofSea:Play("targetyou")
 				yellGiftofSea:Yell(6, args.spellName, 6)
 			end
 			if self.Options.SetIconGift then
@@ -612,7 +583,7 @@ do
 			warnSkyandSea:CombinedShow(0.3, args.destName)
 			if args:IsPlayer() then
 				specWarnGiftofSky:Show()
-				voiceGiftofSky:Play("targetyou")
+				specWarnGiftofSky:Play("targetyou")
 				yellGiftofSky:Yell(5, args.spellName, 5)
 			end
 			if self.Options.SetIconGift then
@@ -643,14 +614,14 @@ do
 			warnSargRage:CombinedShow(0.3, args.destName)
 			if args:IsPlayer() then
 				specWarnSargRage:Show()
-				voiceSargRage:Play("scatter")
+				specWarnSargRage:Play("scatter")
 				yellSargRage:Yell()
 			end
 		elseif spellId == 257931 then
 			warnSargFear:CombinedShow(0.3, args.destName)
 			if args:IsPlayer() then
 				specWarnSargFear:Show(DBM_ALLY)
-				voiceSargFear:Play("gathershare")
+				specWarnSargFear:Play("gathershare")
 				yellSargFear:Yell()
 			end
 		elseif spellId == 257966 then--Sentence of Sargeras
@@ -666,7 +637,7 @@ do
 			warnSargSentence:CombinedShow(0.3, args.destName)
 			if args:IsPlayer() then
 				specWarnSargSentence:Show()
-				voiceSargSentence:Play("targetyou")
+				specWarnSargSentence:Play("targetyou")
 				yellSargSentence:Yell()
 				yellSargSentenceFades:Countdown(30)
 			end
@@ -680,7 +651,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	if spellId == 250669 then
 		if args:IsPlayer() then
 			yellSoulburstFades:Cancel()
-			voiceSoulburst:Cancel()
+			specWarnSoulburst:CancelVoice()
 		end
 		if self.Options.SetIconOnSoulBurst then
 			self:SetIcon(args.destName, 0)
@@ -729,7 +700,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		if uId and self:IsTanking(uId) then
 			if not args:IsPlayer() then--Removed from tank that's not you (only time it's removed is on death)
 				specWarnDeadlyScytheTaunt:Show(args.destName)
-				voiceDeadlyScythe:Play("tauntboss")
+				specWarnDeadlyScytheTaunt:Play("tauntboss")
 			end
 		end
 	elseif spellId == 258838 then--Mythic
@@ -737,7 +708,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		if uId and self:IsTanking(uId) then
 			if not args:IsPlayer() then--Removed from tank that's not you (only time it's removed is on death)
 				specWarnSoulrendingScytheTaunt:Show(args.destName)
-				voiceSoulrendingScythe:Play("tauntboss")
+				specWarnSoulrendingScytheTaunt:Play("tauntboss")
 			end
 		end
 	elseif spellId == 257966 then--Sentence of Sargeras
@@ -788,7 +759,7 @@ end
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 228007 and destGUID == UnitGUID("player") and self:AntiSpam(2, 5) then
 		specWarnGTFO:Show()
-		voiceGTFO:Play("runaway")
+		specWarnGTFO:Play("runaway")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
@@ -810,7 +781,7 @@ end
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, _, spellId)
 	if spellId == 257300 and self:AntiSpam(5, 1) then--Ember of Rage
 		specWarnEmberofRage:Show()
-		voiceEmberofRage:Play("watchstep")
+		specWarnEmberofRage:Play("watchstep")
 	elseif spellId == 258042 then--Argus P2 Energy Controller (16 seconds after Fury)
 		--Alternate and valid timer start point
 		--timerAvatarofAggraCD:Start(5)

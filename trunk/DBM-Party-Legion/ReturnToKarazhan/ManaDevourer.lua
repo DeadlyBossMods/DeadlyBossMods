@@ -30,9 +30,6 @@ local timerCoalescePowerCD			= mod:NewNextTimer(30, 227297, nil, nil, nil, 1)
 
 local countdownCoalescePower		= mod:NewCountdown(30, 227297)
 
-local voiceDecimatingEssence		= mod:NewVoice(227507)--aesoon (is there a voice file for "you fucked up and are going to die"?)
-local voiceColaescePower			= mod:NewVoice(227297)--helpsoak
-
 mod:AddInfoFrameOption(227502, true)
 
 function mod:OnCombatStart(delay)
@@ -55,7 +52,7 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 227507 then
 		specWarnDecimatingEssence:Show()
-		voiceDecimatingEssence:Play("aesoon")
+		specWarnDecimatingEssence:Play("aesoon")
 	end
 end
 
@@ -73,7 +70,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 227297 then
 		specWarnCoalescePower:Show(GetSpellInfo(227296))
-		voiceColaescePower:Play("helpsoak")
+		specWarnCoalescePower:Play("helpsoak")
 		timerCoalescePowerCD:Start()
 		countdownCoalescePower:Start()
 	end

@@ -32,10 +32,6 @@ local timerMightySmashCD		= mod:NewCDTimer(50, 202328, nil, nil, nil, 2)--50-57
 local timerSeedsCD				= mod:NewCDTimer(21.8, 210879, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)--22-40
 local timerExecute				= mod:NewTargetTimer(20, 205233, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)--22-40
 
-local voiceFelSlash				= mod:NewVoice(203641)--shockwave
-local voiceMightySmash			= mod:NewVoice(202328)--carefly
-local voiceSeedsofDestruction	= mod:NewVoice(210879)--Runout
-
 mod:AddSetIconOption("SetIconOnSeeds", 210879, true)
 
 function mod:SlashTarget(targetname, uId)
@@ -61,7 +57,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnSeedofDestruction:Show()
 			yellSeedsofDestruction:Yell()
-			voiceSeedsofDestruction:Play("runout")
+			specWarnSeedofDestruction:Play("runout")
 		end
 		if self.Options.SetIconOnSeeds then
 			self:SetAlphaIcon(0.5, args.destName)
@@ -91,12 +87,12 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 203641 then
 		specWarnFelSlash:Show()
-		voiceFelSlash:Play("shockwave")
+		specWarnFelSlash:Play("shockwave")
 		self:BossUnitTargetScanner("boss1", "SlashTarget", 3)
 		--timerFelSlashCD:Start()
 	elseif spellId == 202328 then
 		specWarnMightySmash:Show()
-		voiceMightySmash:Play("carefly")
+		specWarnMightySmash:Play("carefly")
 		timerMightySmashCD:Start()
 	end
 end

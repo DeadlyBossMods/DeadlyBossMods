@@ -39,10 +39,6 @@ local timerWrathfulFlamesCD		= mod:NewCDTimer(13.4, 217907, nil, nil, nil, 2)
 local timerHowlingGaleCD		= mod:NewCDTimer(13.8, 217966, nil, nil, nil, 2)
 local timerArcaneDesolationCD	= mod:NewCDTimer(12.2, 217986, nil, nil, nil, 2)
 
-local voiceBurningBomb			= mod:NewVoice(217877)--targetyou
-local voiceWrathfulFlames		= mod:NewVoice(217907)--watchstep/runaway
-local voiceArcaneDesolation		= mod:NewVoice(217986)--carefly
-
 mod:AddReadyCheckOption(43193, false)
 mod:AddRangeFrameOption(10, 217877)
 
@@ -72,13 +68,13 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 217986 then
 		self.vb.specialCast = self.vb.specialCast + 1
 		specArcaneDesolation:Show()
-		voiceArcaneDesolation:Play("carefly")
+		specArcaneDesolation:Play("carefly")
 		if self.vb.specialCast == 1 then
 			timerArcaneDesolationCD:Start()
 		end
 	elseif spellId == 217893 then
 		specWrathfulFlames:Show()
-		voiceWrathfulFlames:Play("watchstep")
+		specWrathfulFlames:Play("watchstep")
 	end
 end
 
@@ -98,7 +94,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnBurningBomb:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			specBurningBomb:Show()
-			voiceBurningBomb:Play("targetyou")
+			specBurningBomb:Play("targetyou")
 			yellBurningBomb:Schedule(7, 1)
 			yellBurningBomb:Schedule(6, 2)
 			yellBurningBomb:Schedule(5, 3)
@@ -124,7 +120,7 @@ end
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 217907 and destGUID == UnitGUID("player") and self:AntiSpam(2, 5) then
 		specWrathfulFlamesGTFO:Show()
-		voiceWrathfulFlames:Play("runaway")
+		specWrathfulFlamesGTFO:Play("runaway")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE

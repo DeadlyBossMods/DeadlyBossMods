@@ -27,14 +27,6 @@ local specWarnWhirlOfFlame			= mod:NewSpecialWarningDodge(221634, nil, nil, nil,
 local specWarnOverDetonation		= mod:NewSpecialWarningRun(221688, nil, nil, nil, 4, 2)
 local specWarnDarkMending			= mod:NewSpecialWarningInterrupt(225573, "HasInterrupt", nil, nil, 1, 2)
 
-local voiceCoupdeGrace				= mod:NewVoice(214003, "Tank")--shockwave
-local voiceBonebreakingStrike		= mod:NewVoice(200261, "Tank")--shockwave
-local voiceSoulEchos				= mod:NewVoice(194966)--runaway/keepmove
-local voiceArrowBarrage				= mod:NewVoice(200343)--stilldanger (best one i could come up with)
-local voiceWhirlOfFlame				= mod:NewVoice(221634)--watchstep
-local voiceOverDetonation			= mod:NewVoice(221688)--runout
-local voiceDarkMending				= mod:NewVoice(225573, "HasInterrupt")--kickcast
-
 mod:RemoveOption("HealthFrame")
 
 function mod:SPELL_CAST_START(args)
@@ -42,19 +34,19 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 200261 and self:AntiSpam(2, 1) then
 		specWarnBonebreakingStrike:Show()
-		voiceBonebreakingStrike:Play("shockwave")
+		specWarnBonebreakingStrike:Play("shockwave")
 	elseif spellId == 221634 then
 		specWarnWhirlOfFlame:Show()
-		voiceWhirlOfFlame:Play("watchstep")
+		specWarnWhirlOfFlame:Play("watchstep")
 	elseif spellId == 221688 then
 		specWarnOverDetonation:Show()
-		voiceOverDetonation:Play("runout")
+		specWarnOverDetonation:Play("runout")
 	elseif spellId == 225573 and self:CheckInterruptFilter(args.sourceGUID) then
 		specWarnDarkMending:Show(args.sourceName)
-		voiceDarkMending:Play("kickcast")
+		specWarnDarkMending:Play("kickcast")
 	elseif spellId == 214003 and self:AntiSpam(3, 4) then
 		specWarnCoupdeGrace:Show()
-		voiceCoupdeGrace:Play("defensive")
+		specWarnCoupdeGrace:Play("defensive")
 	end
 end
 
@@ -64,8 +56,8 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 194966 then
 		if args:IsPlayer() then
 			specWarnSoulEchos:Show()
-			voiceSoulEchos:Play("runaway")
-			voiceSoulEchos:Schedule(1, "keepmove")
+			specWarnSoulEchos:Play("runaway")
+			specWarnSoulEchos:ScheduleVoice(1, "keepmove")
 		else
 			warnSoulEchoes:Show(args.destName)
 		end
@@ -78,7 +70,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if spellId == 200343 then
 		if self:AntiSpam(3, 2) then
 			specWarnArrowBarrage:Show(args.destName)
-			voiceArrowBarrage:Play("stilldanger")
+			specWarnArrowBarrage:Play("stilldanger")
 		end
 		if args:IsPlayer() and self:AntiSpam(3, 3) then
 			yellArrowBarrage:Yell()

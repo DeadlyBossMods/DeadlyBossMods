@@ -41,11 +41,6 @@ local timerGoBangStarts			= mod:NewTargetTimer(12, 216817, nil, "Tank", nil, 5, 
 
 local countdownBangEnds			= mod:NewCountdown("Alt12", 216817)
 
-local voiceFireBoom				= mod:NewVoice(216428)--runout
-local voiceIceFist				= mod:NewVoice(216428)--runout
-local voiceStomp				= mod:NewVoice(216430)--carefly
-local voiceGoBank				= mod:NewVoice(216817)--runout/tauntboss
-
 --mod:AddReadyCheckOption(37460, false)
 mod:AddRangeFrameOption(8, 216432)
 
@@ -53,11 +48,11 @@ function mod:BoomTarget(targetname, uId)
 	if not targetname then return end
 	if targetname == UnitName("player") then
 		specWarnFireBoom:Show()
-		voiceFireBoom:Play("runout")
+		specWarnFireBoom:Play("runout")
 		yellFireBoom:Yell()
 	elseif self:CheckNearby(10, targetname) then
 		specWarnFireBoomNear:Show(targetname)
-		voiceFireBoom:Play("watchstep")
+		specWarnFireBoomNear:Play("watchstep")
 	else
 		warnFireBoom:Show(targetname)
 	end
@@ -67,7 +62,7 @@ function mod:IceFists(targetname, uId)
 	if not targetname then return end
 	if targetname == UnitName("player") then
 		specWarnIceFist:Show()
-		voiceIceFist:Play("runout")
+		specWarnIceFist:Play("runout")
 		yellIceFist:Yell()
 	else
 		warnIceFist:Show(targetname)
@@ -96,7 +91,7 @@ function mod:SPELL_CAST_START(args)
 		self:BossTargetScanner(args.sourceGUID, "BoomTarget", 0.1, 14, nil, nil, nil, nil, true)
 	elseif spellId == 216430 then
 		specWarnStomp:Show()
-		voiceStomp:Play("carefly")
+		specWarnStomp:Play("carefly")
 		timerStompCD:Start()
 	elseif spellId == 216432 then
 		self:BossTargetScanner(args.sourceGUID, "IceFists", 0.1, 9, nil, nil, nil, nil, true)
@@ -120,7 +115,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerGoBangStarts:Start(args.destName)
 		if args:IsPlayer() then
 			specWarnGoBangYou:Show()
-			voiceGoBank:Play("runout")
+			specWarnGoBangYou:Play("runout")
 			yellGoBang:Schedule(11, 1)
 			yellGoBang:Schedule(10, 2)
 			yellGoBang:Schedule(9, 3)
@@ -130,7 +125,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		else
 			specWarnGoBangSwap:Show(args.destName)
-			voiceGoBank:Play("tauntboss")
+			specWarnGoBangSwap:Play("tauntboss")
 		end
 	end
 end

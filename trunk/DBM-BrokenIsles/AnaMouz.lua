@@ -31,10 +31,6 @@ local timerImpishFlamesCD		= mod:NewCDTimer(23, 218888, nil, "Tank", nil, 5)
 local timerMothersEmbraceCD		= mod:NewCDTimer(62, 219045, nil, nil, nil, 3)
 local timerGaseousBreathCD		= mod:NewCDTimer(30, 219254, nil, nil, nil, 1)
 
-local voiceFelGeyser			= mod:NewVoice(218823)--watchstep
-local voiceImpishFlames			= mod:NewVoice(218888, "Tank")--breathsoon
-local voiceMothersEmbrace		= mod:NewVoice(219045, "Healer")--helpdispel
-
 --mod:AddReadyCheckOption(37460, false)
 
 function mod:OnCombatStart(delay, yellTriggered)
@@ -51,11 +47,11 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 218823 then
 		specWarnFelGeyser:Show()
-		voiceFelGeyser:Play("watchstep")
+		specWarnFelGeyser:Play("watchstep")
 		timerFelGeyserCD:Start()
 	elseif spellId == 218888 then
 		specWarnImpishFlames:Show()
-		voiceImpishFlames:Play("breathsoon")
+		specWarnImpishFlames:Play("breathsoon")
 		timerImpishFlamesCD:Start()
 	elseif spellId == 219045 then
 		timerMothersEmbraceCD:Start()
@@ -74,7 +70,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnMothersEmbrace:CombinedShow(0.3, args.destName)
 		end
 		if self:AntiSpam(3, 1) then
-			voiceMothersEmbrace:Play("helpdispel")
+			specWarnMothersEmbrace:Play("helpdispel")
 		end
 	elseif spellId == 219068 then--Dispel failure.
 		warnMothersEmbraceFail:CombinedShow(0.3, args.destName)

@@ -37,13 +37,6 @@ local timerSporesCD					= mod:NewCDTimer(20.5, 236524, nil, nil, nil, 2)
 
 local countdownTimberSmash			= mod:NewCountdown("Alt21", 235751, "Tank")
 
-local voiceTimberSmash				= mod:NewVoice(235751, "Tank")--carefly
-local voiceChokingVine				= mod:NewVoice(238598)--runaway
-local voiceSucculentSecretion		= mod:NewVoice(240065)--runaway
-local voiceFulminatingLashers		= mod:NewVoice(236527, "-Healer")--killmob
-local voiceSucculentLashers			= mod:NewVoice(236639, "-Healer")--killmob
-local voiceFixate					= mod:NewVoice(238674)--justrun/keepmove
-
 function mod:OnCombatStart(delay)
 	timerTimberSmashCD:Start(6-delay)
 	countdownTimberSmash:Start(6-delay)
@@ -59,7 +52,7 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 235751 then
 		specWarnTimberSmash:Show()
-		voiceTimberSmash:Play("carefly")
+		specWarnTimberSmash:Play("carefly")
 		timerTimberSmashCD:Start()
 		countdownTimberSmash:Start()
 	end
@@ -69,11 +62,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 236527 then
 		specWarnFulminatingLashers:Show()
-		voiceFulminatingLashers:Play("killmob")
+		specWarnFulminatingLashers:Play("killmob")
 		--timerFulminatingLashersCD:Start()
 	elseif spellId == 236639 then
 		specWarnSucculentLashers:Show()
-		voiceSucculentLashers:Play("killmob")
+		specWarnSucculentLashers:Play("killmob")
 		--timerSucculentLashersCD:Start()
 	elseif spellId == 236524 then
 		warnSpores:Show()
@@ -85,14 +78,14 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 238598 and args:IsPlayer() then
 		specWarnChokingVine:Show()
-		voiceChokingVine:Play("runaway")
+		specWarnChokingVine:Play("runaway")
 	end
 end
 
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 240065 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
 		specWarnSucculentSecretion:Show()
-		voiceSucculentSecretion:Play("runaway")
+		specWarnSucculentSecretion:Play("runaway")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
@@ -100,8 +93,8 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 function mod:RAID_BOSS_WHISPER(msg)
 	if msg:find("spell:238674") then
 		specWarnFixate:Show()
-		voiceFixate:Play("justrun")
-		voiceFixate:Schedule(1, "keepmove")
+		specWarnFixate:Play("justrun")
+		specWarnFixate:ScheduleVoice(1, "keepmove")
 		yellFixate:Yell()
 	end
 end

@@ -27,8 +27,6 @@ local timerNightstableEnergyCD		= mod:NewAITimer(16, 223689, nil, nil, nil, 1)
 local timerNightshiftBoltsCD		= mod:NewAITimer(16, 223623, nil, nil, nil, 3)
 local timerResonanceCD				= mod:NewAITimer(16, 223614, nil, nil, nil, 6)
 
-local voiceNightshiftBolts			= mod:NewVoice(223623)--watchstep
-
 --mod:AddReadyCheckOption(37460, false)
 
 function mod:OnCombatStart(delay, yellTriggered)
@@ -52,7 +50,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 223623 then
 		specWarnNightshiftBolts:Show()
-		voiceNightshiftBolts:Play("watchstep")
+		specWarnNightshiftBolts:Play("watchstep")
 		timerNightshiftBoltsCD:Start()
 	elseif spellId == 223614 then
 		warnResonance:Show(args.destName)

@@ -28,9 +28,6 @@ local timerSunderCD					= mod:NewCDTimer(7.5, 198496, nil, "Tank", nil, 5, nil, 
 local timerStrikeCD					= mod:NewCDTimer(15, 216290, nil, nil, nil, 3)
 local timerStanceOfMountainCD		= mod:NewCDTimer(119.5, 216249, nil, nil, nil, 6)
 
-local voiceSunder					= mod:NewVoice(198496, "Tank", nil, 2)--defensive
-local voiceStrikeofMountain			= mod:NewVoice(216290)--targetyou
-
 function mod:OnCombatStart(delay)
 	timerSunderCD:Start(7-delay)
 	timerStrikeCD:Start(15.8-delay)
@@ -41,7 +38,7 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 198496 then
 		specWarnSunder:Show()
-		voiceSunder:Play("defensive")
+		specWarnSunder:Play("defensive")
 		timerSunderCD:Start()
 	elseif spellId == 216290 then
 		timerStrikeCD:Start()
@@ -55,7 +52,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if spellId == 216290 then
 		if args:IsPlayer() then
 			specWarnStrikeofMountain:Show()
-			voiceStrikeofMountain:Play("targetyou")
+			specWarnStrikeofMountain:Play("targetyou")
 			yellStrikeofMountain:Yell()
 		else
 			warnStrikeofMountain:Show(args.destName)

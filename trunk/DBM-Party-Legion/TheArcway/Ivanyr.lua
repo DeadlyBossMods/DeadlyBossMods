@@ -33,10 +33,6 @@ local timerVolatileMagicCD			= mod:NewCDTimer(32, 196562, nil, nil, nil, 3)--Rev
 local timerNetherLinkCD				= mod:NewCDTimer(30, 196804, nil, nil, nil, 3)
 local timerOverchargeManaCD			= mod:NewCDTimer(50, 196392, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
 
-local voiceVolatileMagic			= mod:NewVoice(196562)--runout
-local voiceNetherLink				= mod:NewVoice(196805)--targetyou/runaway
-local voiceOverchargeMana			= mod:NewVoice(196392, "HasInterrupt")--kickcast
-
 mod:AddRangeFrameOption(8, 196562)
 
 function mod:OnCombatStart(delay)
@@ -58,7 +54,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnVolatileMagic:CombinedShow(0.5, args.destName)
 		if args:IsPlayer() then
 			specWarnVolatileMagic:Show()
-			voiceVolatileMagic:Play("runout")
+			specWarnVolatileMagic:Play("runout")
 			yellVolatileMagic:Yell()
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Show(8)
@@ -68,7 +64,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnNetherLink:CombinedShow(0.5, args.destName)
 		if args:IsPlayer() then
 			specWarnNetherLink:Show()
-			voiceNetherLink:Play("targetyou")
+			specWarnNetherLink:Play("targetyou")
 		end
 	end
 end
@@ -88,7 +84,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerNetherLinkCD:Start()
 	elseif spellId == 196392 then
 		specWarnOverchargeMana:Show(args.sourceName)
-		voiceOverchargeMana:Play("kickcast")
+		specWarnOverchargeMana:Play("kickcast")
 		timerOverchargeManaCD:Start()
 	end
 end
@@ -96,7 +92,7 @@ end
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 196824 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
 		specWarnNetherLinkGTFO:Show()
-		voiceNetherLink:Play("runaway")
+		specWarnNetherLinkGTFO:Play("runaway")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE

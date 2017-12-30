@@ -31,12 +31,6 @@ local timerShatterSpearsCD			= mod:NewCDTimer(56, 198077, nil, nil, nil, 2)
 local timerRunicBrandCD				= mod:NewCDCountTimer(56, 197961, nil, nil, nil, 3)
 local timerAddCD					= mod:NewCDTimer(54, 201221, nil, nil, nil, 1, 201215)--54-58
 
-local voiceTempest					= mod:NewVoice(198263)--runout
-local voiceShatterSpears			= mod:NewVoice(198077)--watchorb
-local voiceRunicBrand				= mod:NewVoice(197961)--locations
-local voiceAdd						= mod:NewVoice(201221, "-Healer")--killmob
-local voiceSurge					= mod:NewVoice(198750, "HasInterrupt")--kickcast
-
 --Boss has (at least) three timer modes, cannot determine which one on pull so on fly figuring out is used
 local tempestTimers = {
 	[1] = {8, 56, 72},
@@ -76,19 +70,19 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 197963 and args:IsPlayer() then--Purple K (NE)
 		specWarnRunicBrand:Show("|TInterface\\Icons\\Boss_OdunRunes_Purple.blp:12:12|tNE|TInterface\\Icons\\Boss_OdunRunes_Purple.blp:12:12|t")
-		voiceRunicBrand:Play("frontright")
+		specWarnRunicBrand:Play("frontright")
 	elseif spellId == 197964 and args:IsPlayer() then--Orange N (SE)
 		specWarnRunicBrand:Show("|TInterface\\Icons\\Boss_OdunRunes_Orange.blp:12:12|tSE|TInterface\\Icons\\Boss_OdunRunes_Orange.blp:12:12|t")
-		voiceRunicBrand:Play("backright")
+		specWarnRunicBrand:Play("backright")
 	elseif spellId == 197965 and args:IsPlayer() then--Yellow H (SW)
 		specWarnRunicBrand:Show("|TInterface\\Icons\\Boss_OdunRunes_Yellow.blp:12:12|tSW|TInterface\\Icons\\Boss_OdunRunes_Yellow.blp:12:12|t")
-		voiceRunicBrand:Play("backleft")
+		specWarnRunicBrand:Play("backleft")
 	elseif spellId == 197966 and args:IsPlayer() then--Blue fishies (NW)
 		specWarnRunicBrand:Show("|TInterface\\Icons\\Boss_OdunRunes_Blue.blp:12:12|tNW|TInterface\\Icons\\Boss_OdunRunes_Blue.blp:12:12|t")
-		voiceRunicBrand:Play("frontleft")
+		specWarnRunicBrand:Play("frontleft")
 	elseif spellId == 197967 and args:IsPlayer() then--Green box (N)
 		specWarnRunicBrand:Show("|TInterface\\Icons\\Boss_OdunRunes_Green.blp:12:12|tN|TInterface\\Icons\\Boss_OdunRunes_Green.blp:12:12|t")
-		voiceRunicBrand:Play("frontcenter")--Does not exist yet
+		specWarnRunicBrand:Play("frontcenter")--Does not exist yet
 	end
 end
 
@@ -99,7 +93,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 198263 then
 		self.vb.tempestCount = self.vb.tempestCount + 1
 		specWarnTempest:Show(self.vb.tempestCount)
-		voiceTempest:Play("runout")
+		specWarnTempest:Play("runout")
 --		timerSpearCD:Start(12)
 		local timers = tempestTimers[self.vb.temptestMode]
 		if timers then
@@ -110,11 +104,11 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 198077 then
 		specWarnShatterSpears:Show()
-		voiceShatterSpears:Play("watchorb")
+		specWarnShatterSpears:Play("watchorb")
 		timerShatterSpearsCD:Start()
 	elseif spellId == 198750 and self:CheckInterruptFilter(args.sourceGUID) then
 		specWarnSurge:Show(args.sourceName)
-		voiceSurge:Play("kickcast")
+		specWarnSurge:Play("kickcast")
 	end
 end
 
@@ -136,7 +130,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		warnSpear:Show()
 	elseif spellId == 201221 then--Summon Stormforged
 		specWarnAdd:Show()
-		voiceAdd:Play("killmob")
+		specWarnAdd:Play("killmob")
 		timerAddCD:Start()
 	end
 end

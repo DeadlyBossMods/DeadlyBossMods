@@ -111,26 +111,6 @@ local countdownFelNova				= mod:NewCountdown(25, 206517, nil, nil, 5)
 --Stage Four: Inevitable Fate
 local countWorldDevouringForce		= mod:NewCountdown(15, 216909, nil, nil, 6)
 
---Base abilities
-local voiceConjunction				= mod:NewVoice(205408)--scatter/find <type>
-local voiceGravPull					= mod:NewVoice(205984)--targetyou/tauntboss
---Stage One: The Dome of Observation
-local voiceCoronalEjection			= mod:NewVoice(206464)--runout
---Stage Two: Absolute Zero
-local voiceIcyEjection				= mod:NewVoice(206936)--runout
-local voiceFrigidNova				= mod:NewVoice(206949)--gathershare
---Stage Three: A Shattered World
-local voiceFelEjection				= mod:NewVoice(205649)--runout/keepmove
-local voiceFelnova					= mod:NewVoice(206517)--justrun
-local voiceFelFlame					= mod:NewVoice(206398)--runaway
---Stage Four: Inevitable Fate
-local voiceThing					= mod:NewVoice("ej13057", "-Healer")--bigmob
-local voiceWitnessVoid				= mod:NewVoice(207720)--turnaway
-local voiceVoidEjection				= mod:NewVoice(207143)--runout
-local voiceVoidNova					= mod:NewVoice(207439)--aesoon
-local voiceWorldDevouringForce		= mod:NewVoice(216909)--farfromline
-
-
 mod:AddRangeFrameOption("5/8")
 mod:AddInfoFrameOption(205408)--really needs a "various" option
 mod:AddBoolOption("ConjunctionYellFilter", true)
@@ -320,7 +300,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.conActive = true
 		C_Timer.After(19, function() self.vb.conActive = false end)
 		specWarnConjunction:Show()
-		voiceConjunction:Play("scatter")
+		specWarnConjunction:Play("scatter")
 		local timers
 		if self.vb.phase == 1 then
 			timers = ps1Grand[self.vb.grandConCount+1]
@@ -344,13 +324,13 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 206949 then
 		self.vb.frostNovaCount = self.vb.frostNovaCount + 1
 		specWarnFrigidNova:Show()
-		voiceFrigidNova:Play("gathershare")
+		specWarnFrigidNova:Play("gathershare")
 		timerFrigidNovaCD:Start(nil, self.vb.frostNovaCount+1)
 		countdownFrigidNova:Start()
 	elseif spellId == 206517 then
 		self.vb.felNovaCount = self.vb.felNovaCount + 1
 		specWarnFelNova:Show()
-		voiceFelnova:Play("justrun")
+		specWarnFelNova:Play("justrun")
 		if self.vb.felNovaCount < 3 then
 			timerFelNovaCD:Start(44, self.vb.felNovaCount+1)
 			countdownFelNova:Start(44)
@@ -360,7 +340,7 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 207720 then
 		specWarnWitnessVoid:Show()
-		voiceWitnessVoid:Play("turnaway")
+		specWarnWitnessVoid:Play("turnaway")
 		timerWitnessVoid:Start(nil, args.sourceGUID)
 		if self:IsMythic() then
 			timerWitnessVoidCD:Start(13, args.sourceGUID)
@@ -370,12 +350,12 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 207439 then
 		self.vb.voidNovaCount = self.vb.voidNovaCount + 1
 		specWarnVoidNova:Show()
-		voiceVoidNova:Play("aesoon")
+		specWarnVoidNova:Play("aesoon")
 		timerVoidNovaCD:Start(nil, self.vb.voidNovaCount+1)
 	elseif spellId == 216909 then
 		self.vb.worldDestroyingCount = self.vb.worldDestroyingCount + 1
 		specWarnWorldDevouringForce:Show()
-		voiceWorldDevouringForce:Play("farfromline")
+		specWarnWorldDevouringForce:Play("farfromline")
 		local timer = worldDestroyingTimers[self.vb.worldDestroyingCount+1]
 		if timer then
 			timerWorldDevouringForceCD:Start(timer, self.vb.worldDestroyingCount+1)
@@ -418,10 +398,10 @@ function mod:SPELL_CAST_SUCCESS(args)
 		end
 		if args:IsPlayer() then
 			specWarnGravitationalPull:Show()
-			voiceGravPull:Play("targetyou")
+			specWarnGravitationalPull:Play("targetyou")
 		elseif self:IsTank() then
 			specWarnGravitationalPullOther:Show(args.destName)
-			voiceGravPull:Play("tauntboss")
+			specWarnGravitationalPullOther:Play("tauntboss")
 		else
 			warnGravitationalPull:Show(args.destName)
 		end
@@ -434,7 +414,7 @@ function mod:SPELL_SUMMON(args)
 	local spellId = args.spellId
 	if spellId == 207813 then
 		specWarnThing:Show()
-		voiceThing:Play("bigmob")
+		specWarnThing:Play("bigmob")
 		timerWitnessVoidCD:Start(10, args.destGUID)
 	end
 end
@@ -449,7 +429,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnConjunctionSign:Show(args.spellName)
 				yellConjunctionSign:Yell(2, "", 2)--Orange Circle
 				self:Schedule(2, updateConjunctionYell, self, args.spellName, 2)
-				voiceConjunction:Play("205408c")
+				specWarnConjunctionSign:Play("205408c")
 				countdownConjunctionFades:Start()
 				timerConjunction:Start()
 				playerAffected = true
@@ -460,7 +440,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnConjunctionSign:Show(args.spellName)
 				yellConjunctionSign:Yell(6, "", 6)--Blue Square
 				self:Schedule(2, updateConjunctionYell, self, args.spellName, 6)
-				voiceConjunction:Play("205408d")
+				specWarnConjunctionSign:Play("205408d")
 				countdownConjunctionFades:Start()
 				timerConjunction:Start()
 				playerAffected = true
@@ -471,7 +451,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnConjunctionSign:Show(args.spellName)
 				yellConjunctionSign:Yell(4, "", 4)--Green Triangle
 				self:Schedule(2, updateConjunctionYell, self, args.spellName, 4)
-				voiceConjunction:Play("205408h")
+				specWarnConjunctionSign:Play("205408h")
 				countdownConjunctionFades:Start()
 				timerConjunction:Start()
 				playerAffected = true
@@ -482,7 +462,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnConjunctionSign:Show(args.spellName)
 				yellConjunctionSign:Yell(7, "", 7)--Red Cross
 				self:Schedule(2, updateConjunctionYell, self, args.spellName, 7)
-				voiceConjunction:Play("205408w")
+				specWarnConjunctionSign:Play("205408w")
 				countdownConjunctionFades:Start()
 				timerConjunction:Start()
 				playerAffected = true
@@ -498,7 +478,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnCoronalEjection:CombinedShow(0.5, args.destName)
 		if args:IsPlayer() then
 			specWarnCoronalEjection:Show()
-			voiceCoronalEjection:Play("runout")
+			specWarnCoronalEjection:Play("runout")
 			updateRangeFrame(self)
 		end
 	elseif spellId == 205984 or spellId == 214335 or spellId == 214167 then
@@ -520,7 +500,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnIcyEjection:CombinedShow(0.5, args.destName)--If only one, move this to else rule to filter from player
 		if args:IsPlayer() then
 			specWarnIcyEjection:Show()
-			voiceIcyEjection:Play("runout")
+			specWarnIcyEjection:Play("runout")
 			updateRangeFrame(self)
 			if self.Options.ConjunctionYellFilter and self.vb.conActive then return end--No ejection yells during conjunction
 			yellIcyEjection:Schedule(9, 1)
@@ -531,8 +511,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnFelEjection:CombinedShow(0.5, args.destName)
 		if args:IsPlayer() then
 			specWarnFelEjection:Show()
-			voiceFelEjection:Play("runout")
-			voiceFelEjection:Schedule(1, "keepmove")
+			specWarnFelEjection:Play("runout")
+			specWarnFelEjection:ScheduleVoice(1, "keepmove")
 			warnFelEjectionPuddle:Schedule(2, 3)
 			warnFelEjectionPuddle:Schedule(4, 2)
 			warnFelEjectionPuddle:Schedule(6, 1)
@@ -547,7 +527,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		--warnVoidEjection:CombinedShow(0.5, args.destName)
 		if args:IsPlayer() then
 			specWarnVoidEjection:Show()
-			voiceVoidEjection:Play("runout")
+			specWarnVoidEjection:Play("runout")
 		end
 	elseif spellId == 206398 and args:IsPlayer() and self:AntiSpam(2, 1) and not UnitDebuff("Player", gravPullDebuff) then
 		specWarnFelFlame:Show()
@@ -609,7 +589,7 @@ end
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 206398 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) and not UnitDebuff("Player", gravPullDebuff) then
 		specWarnFelFlame:Show()
-		voiceFelFlame:Play("runaway")
+		specWarnFelFlame:Play("runaway")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
@@ -707,7 +687,7 @@ do
 		if hasDebuff and not voidWarned then
 			voidWarned = true
 			specWarnVoidEjection:Show()
-			voiceVoidEjection:Play("runout")
+			specWarnVoidEjection:Play("runout")
 			--yellScornedTouch:Yell()
 			--if self.Options.RangeFrame then
 			--	DBM.RangeCheck:Show(8)

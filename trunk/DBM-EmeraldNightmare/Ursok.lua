@@ -48,13 +48,6 @@ local countdownRendFlesh			= mod:NewCountdown("Alt20", 198006, "Tank")
 local countdownOverwhelm			= mod:NewCountdown("AltTwo10", 197943, "Tank", nil, 3)
 local countdownFocusedGaze			= mod:NewCountdownFades(6, 198006)
 
-local voiceFocusedGaze				= mod:NewVoice(198006, "-Tank")--targetyou/share
-local voiceRendFlesh				= mod:NewVoice(197942)--defensive/tauntboss
-local voiceOverwhelm				= mod:NewVoice(197943)--tauntboss
-local voiceMiasma					= mod:NewVoice(205611)--runaway
-local voiceBloodFrenzy				= mod:NewVoice(198388)
-local voiceRoaringCacophony			= mod:NewVoice(197969)--aesoon
-
 mod:AddSetIconOption("SetIconOnCharge", 198006, true)
 mod:AddInfoFrameOption(198108, false)
 mod:AddBoolOption("NoAutoSoaking2", true)
@@ -92,9 +85,9 @@ do
 				if UnitIsUnit("player", unitID) then
 					specWarnFocusedGazeOther:Show(targetName)
 					if count == 2 then
-						voiceFocusedGaze:Play("sharetwo")
+						specWarnFocusedGazeOther:Play("sharetwo")
 					else
-						voiceFocusedGaze:Play("shareone")
+						specWarnFocusedGazeOther:Play("shareone")
 					end
 				end
 				if soakers == soakerHalf then break end--Got enough soakers, stop
@@ -145,21 +138,21 @@ function mod:SPELL_CAST_START(args)
 		local tanking, status = UnitDetailedThreatSituation("player", "boss1")
 		if tanking or (status == 3) then
 			specWarnRendFlesh:Show()
-			voiceRendFlesh:Play("defensive")
+			specWarnRendFlesh:Play("defensive")
 		else
 			--Other tank has overwhelm stacks and is about to die to rend flesh, TAUNT NOW!
 			if UnitExists("boss1target") and not UnitIsUnit("player", "boss1target") then
 				local _, _, _, _, _, _, expireTimeTarget = UnitDebuff("boss1target", GetSpellInfo(197943)) -- Overwhelm
 				if expireTimeTarget and expireTimeTarget-GetTime() >= 2 then
 					specWarnRendFleshOther:Show(UnitName("boss1target"))
-					voiceRendFlesh:Play("tauntboss")
+					specWarnRendFleshOther:Play("tauntboss")
 				end
 			end
 		end
 	elseif spellId == 197969 then
 		self.vb.roarCount = self.vb.roarCount + 1
 		specWarnRoaringCacophony:Show(self.vb.roarCount)
-		voiceRoaringCacophony:Play("aesoon")
+		specWarnRoaringCacophony:Play("aesoon")
 		if self:IsLFR() then
 			--No echos, just every 40 seconds
 			timerRoaringCacophonyCD:Start(40, self.vb.roarCount + 1)
@@ -214,7 +207,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnFocusedGaze:Show()
 			yellFocusedGaze:Yell(icon, icon, icon)
-			voiceFocusedGaze:Play("targetyou")
+			specWarnFocusedGaze:Play("targetyou")
 		end
 		if self.Options.SetIconOnCharge then
 			self:SetIcon(args.destName, icon)
@@ -230,18 +223,18 @@ function mod:SPELL_AURA_APPLIED(args)
 			local _, _, _, _, _, _, expireTime = UnitDebuff("player", GetSpellInfo(204859))
 			if rendCooldown > 10 and (not expireTime or expireTime and expireTime-GetTime() < 10) then
 				specWarnOverwhelmOther:Show(args.destName)
-				voiceOverwhelm:Play("tauntboss")
+				specWarnOverwhelmOther:Play("tauntboss")
 			end
 		end
 	elseif spellId == 198388 then
 		warnBloodFrenzy:Show()
-		voiceBloodFrenzy:Play("frenzy")
+		warnBloodFrenzy:Play("frenzy")
 	elseif spellId == 205611 and args:IsPlayer() and self:AntiSpam(2, 1) then
 		specWarnMiasma:Show()
-		voiceMiasma:Play("runaway")
+		specWarnMiasma:Play("runaway")
 	elseif spellId == 204859 and not args:IsPlayer() then
 		specWarnRendFleshOther:Show(args.destName)
-		voiceRendFlesh:Play("tauntboss")
+		specWarnRendFleshOther:Play("tauntboss")
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -258,7 +251,7 @@ end
 function mod:SPELL_DAMAGE(_, _, _, _, destGUID, destName, _, _, spellId)
 	if spellId == 205611 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
 		specWarnMiasma:Show()
-		voiceMiasma:Play("runaway")
+		specWarnMiasma:Play("runaway")
 	end
 end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE

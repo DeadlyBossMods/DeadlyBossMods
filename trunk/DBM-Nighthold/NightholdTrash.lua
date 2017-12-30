@@ -53,29 +53,6 @@ local specWarnNightwellDischarge	= mod:NewSpecialWarningDodge(231737, nil, nil, 
 
 local timerSearingWounds			= mod:NewTargetTimer(20, 222079, nil, "Tank", nil, 5)
 
-local voiceCrushingStomp			= mod:NewVoice(224440)--justrun
-local voiceAnnihilatingOrb			= mod:NewVoice(221344)--runout
-local voiceFulminate				= mod:NewVoice(221164, "Melee")--runout
-local voiceCracklingSlice			= mod:NewVoice(224510, "Tank")--shockwave
-local voiceArcaneEmanations			= mod:NewVoice(231005, "Tank")--shockwave
-local voiceProtectiveShield			= mod:NewVoice(225389)--bossout
-local voiceRoilingFlame				= mod:NewVoice(222111)--runaway
-local voiceDisruptingEnergy			= mod:NewVoice(224572)--runaway
-local voiceStellarDust				= mod:NewVoice(225390)--runaway
-local voiceToxicChit				= mod:NewVoice(204744)--runaway
-local voiceInfiniteAbyss			= mod:NewVoice(224978)--runaway
-local voicePoisonBrambles			= mod:NewVoice(225856)--runaway
-local voiceArcWell					= mod:NewVoice(224246)--killtotem
-local voiceCelestialBrand			= mod:NewVoice(224560)--runout
-local voiceArcaneRelease			= mod:NewVoice(225105)--runout
-local voiceArcaneBlast				= mod:NewVoice(143807, "HasInterrupt")--kickcast
-local voiceHeavenlyCrash			= mod:NewVoice(224632)--gathershare
-local voiceChosenFate				= mod:NewVoice(225845)--stopattack
-local voiceOozingRush				= mod:NewVoice(223655)--runaway/keepmove
-local voiceFelGlare					= mod:NewVoice(224982)--runout/keepmove
-local voiceSearingWounds			= mod:NewVoice(222079)--changemt
-local voiceNightwellDischarge		= mod:NewVoice(231737)--watchorb
-
 mod:RemoveOption("HealthFrame")
 
 function mod:SPELL_CAST_START(args)
@@ -83,22 +60,22 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 221164 and self:AntiSpam(5, 1) then
 		specWarnFulminate:Show()
-		voiceFulminate:Play("runout")
+		specWarnFulminate:Play("runout")
 	elseif spellId == 224510 and self:AntiSpam(3, 2) then
 		specWarnCracklingSlice:Show()
-		voiceCracklingSlice:Play("shockwave")
+		specWarnCracklingSlice:Play("shockwave")
 	elseif spellId == 231005 then
 		specWarnArcaneEmanations:Show()
-		voiceArcaneEmanations:Play("shockwave")
+		specWarnArcaneEmanations:Play("shockwave")
 	elseif spellId == 143807 and self:CheckInterruptFilter(args.sourceGUID) then
 		specWarnArcaneBlast:Show(args.sourceName)
-		voiceArcaneBlast:Play("kickcast")
+		specWarnArcaneBlast:Play("kickcast")
 	elseif spellId == 231737 and self:AntiSpam(4, 4) then
 		specWarnNightwellDischarge:Show()
-		voiceNightwellDischarge:Play("watchorb")
+		specWarnNightwellDischarge:Play("watchorb")
 	elseif spellId == 224440 then
 		specWarnCrushingStomp:Show()
-		voiceCrushingStomp:Play("justrun")
+		specWarnCrushingStomp:Play("justrun")
 	end
 end
 
@@ -107,10 +84,10 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 225389 and self:AntiSpam(3, 3) then
 		specWarnProtectiveShield:Show()
-		voiceProtectiveShield:Play("runout")
+		specWarnProtectiveShield:Play("runout")
 	elseif spellId == 224246 then
 		specWarnArcWell:Show()
-		voiceArcWell:Play("killtotem")
+		specWarnArcWell:Play("killtotem")
 	end
 end
 
@@ -120,56 +97,54 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 221344 then
 		if args:IsPlayer() then
 			specWarnAnnihilatingOrb:Show()
-			voiceAnnihilatingOrb:Play("runout")
+			specWarnAnnihilatingOrb:Play("runout")
 			yellAnnihilatingOrb:Yell()
 		else
 			warnAnnihilatingOrb:Show(args.destName)
 		end
 	elseif spellId == 222111 and args:IsPlayer() then
 		specWarnRoilingFlame:Show()
-		voiceRoilingFlame:Play("runaway")
+		specWarnRoilingFlame:Play("runaway")
 	elseif spellId == 224572 and args:IsPlayer() then
 		specWarnDisruptingEnergy:Show()
-		voiceDisruptingEnergy:Play("runaway")
+		specWarnDisruptingEnergy:Play("runaway")
 	elseif spellId == 225390 and args:IsPlayer() then
 		specWarnStellarDust:Show()
-		voiceStellarDust:Play("runaway")
+		specWarnStellarDust:Play("runaway")
 	elseif spellId == 204744 and args:IsPlayer() then
 		specWarnToxicChit:Show()
-		voiceToxicChit:Play("runaway")
+		specWarnToxicChit:Play("runaway")
 	elseif spellId == 224978 and args:IsPlayer() then
 		specWarnInfiniteAbyss:Show()
-		voiceInfiniteAbyss:Play("runaway")
+		specWarnInfiniteAbyss:Play("runaway")
 	elseif spellId == 225856 and args:IsPlayer() then
 		specWarnPoisonBrambles:Show()
-		voicePoisonBrambles:Play("runaway")
+		specWarnPoisonBrambles:Play("runaway")
 	elseif spellId == 224632 then
 		specWarnHeavenlyCrash:Show(args.destName)
-		voiceHeavenlyCrash:Play("gathershare")
+		specWarnHeavenlyCrash:Play("gathershare")
 		if args:IsPlayer() then
-			yellHeavenlyCrash:Schedule(4, 1)
-			yellHeavenlyCrash:Schedule(3, 2)
-			yellHeavenlyCrash:Schedule(2, 3)
+			yellHeavenlyCrash:Countdown(5)
 		end
 	elseif spellId == 224560 then
 		warnCelestialBrand:CombinedShow(0.5, args.destName)
 		if args:IsPlayer() then
 			specWarnCelestialBrand:Show()
-			voiceCelestialBrand:Play("runout")
+			specWarnCelestialBrand:Play("runout")
 			yellCelestialBrand:Yell()
 		end
 	elseif spellId == 225105 then
 		warnArcaneRelease:CombinedShow(0.5, args.destName)
 		if args:IsPlayer() then
 			specWarnArcaneRelease:Show()
-			voiceArcaneRelease:Play("runout")
+			specWarnArcaneRelease:Play("runout")
 			yellArcaneRelease:Yell()
 		end
 	elseif spellId == 223655 then
 		if args:IsPlayer() then
 			specWarnOozingRush:Show()
-			voiceOozingRush:Play("runaway")
-			voiceOozingRush:Schedule(1, "keepmove")
+			specWarnOozingRush:Play("runaway")
+			specWarnOozingRush:ScheduleVoice(1, "keepmove")
 			yellOozingRush:Yell()
 		else
 			warnOozingRush:Show(args.destName)
@@ -177,8 +152,8 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 224982 then
 		if args:IsPlayer() then
 			specWarnFelGlare:Show()
-			voiceFelGlare:Play("runout")
-			voiceFelGlare:Schedule(1, "keepmove")
+			specWarnFelGlare:Play("runout")
+			specWarnFelGlare:ScheduleVoice(1, "keepmove")
 			yellFelGlareh:Yell()
 		else
 			warnFelGlare:Show(args.destName)
@@ -187,7 +162,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnChosenFate:CombinedShow(1, args.destName)
 		if args:IsPlayer() then
 			specWarnChosenFate:Show()
-			voiceChosenFate:Play("stopattack")
+			specWarnChosenFate:Play("stopattack")
 		end
 	elseif spellId == 222079 then
 		local uId = DBM:GetRaidUnitId(args.destName)
@@ -198,12 +173,12 @@ function mod:SPELL_AURA_APPLIED(args)
 				if args:IsPlayer() then
 					if amount >= 4 then
 						specWarnSearingWounds:Show(amount)
-						voiceSearingWounds:Play("stackhigh")
+						specWarnSearingWounds:Play("stackhigh")
 					end
 				else
 					if not UnitDebuff("player", args.spellName) and not UnitIsDeadOrGhost("player") then
 						specWarnSearingWoundsOther:Show(args.destName)
-						voiceSearingWounds:Play("changemt")
+						specWarnSearingWoundsOther:Play("changemt")
 					end
 				end
 			end

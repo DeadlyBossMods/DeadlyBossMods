@@ -24,8 +24,6 @@ local timerLavaWreathCD				= mod:NewCDTimer(42.5, 192631, nil, nil, nil, 3)--42 
 local timerFissureCD				= mod:NewCDTimer(42.5, 192522, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)--42 unless delayed by brittle
 
 local voiceVolcano					= mod:NewVoice(192621)--mobsoon
-local voiceWreath					= mod:NewVoice(192631)--watchstep
-local voiceFissure					= mod:NewVoice(192522, "Tank")--shockwave
 
 function mod:OnCombatStart(delay)
 	timerVolcanoCD:Start(10-delay)
@@ -37,11 +35,11 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 192522 then
 		specWarnFissure:Show()
-		voiceFissure:Play("shockwave")
+		specWarnFissure:Play("shockwave")
 		timerFissureCD:Start()
 	elseif spellId == 192631 then
 		specWarnLavaWreath:Show()
-		voiceWreath:Play("watchstep")
+		specWarnLavaWreath:Play("watchstep")
 		timerLavaWreathCD:Start()
 	elseif spellId == 192621 then
 		warnVolcano:Show()

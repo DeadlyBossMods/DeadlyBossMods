@@ -31,9 +31,6 @@ local timerHeartBreakerCD			= mod:NewCDTimer(21.2, 247517, nil, "Healer", nil, 5
 
 local countdownBeguilingCharm		= mod:NewCountdown(34.1, 247549)
 
-local voiceBeguilingCharm			= mod:NewVoice(247549)--turnaway
-local voiceSadist					= mod:NewVoice(247544)--changemt
-
 mod:AddReadyCheckOption(48620, false)
 
 function mod:OnCombatStart(delay, yellTriggered)
@@ -49,7 +46,7 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 247549 then
 		specWarnBeguilingCharm:Show()
-		voiceBeguilingCharm:Play("turnaway")
+		specWarnBeguilingCharm:Play("turnaway")
 		timerBeguilingCharmCD:Start()
 		countdownBeguilingCharm:Start()
 	elseif spellId == 247604 then
@@ -75,10 +72,11 @@ function mod:SPELL_AURA_APPLIED(args)
 			local tanking, status = UnitDetailedThreatSituation("player", "boss1")
 			if tanking or (status == 3) then
 				specWarnSadist:Show(amount)
+				specWarnSadist:Play("changemt")
 			else
 				specWarnSadistOther:Show(L.name)
+				specWarnSadistOther:Play("changemt")
 			end
-			voiceSadist:Play("changemt")
 		end
 	elseif spellId == 247517 then
 		warnHeartBreaker:CombinedShow(0.3, args.destName)

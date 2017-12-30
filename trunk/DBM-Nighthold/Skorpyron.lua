@@ -56,13 +56,6 @@ local countdownShockwave			= mod:NewCountdown(58.3, 204316)
 local countdownCallofScorpid		= mod:NewCountdown("Alt20", 204372)
 local countdownFocusedBlast			= mod:NewCountdown("AltTwo30.4", 204471)
 
-local voiceTether					= mod:NewVoice(204531)-- "180880" for "break chain"
-local voiceArcanoslash				= mod:NewVoice(204275, "Tank")--defensive
-local voiceCallScorp				= mod:NewVoice(204372)--killmob
-local voiceShockwave				= mod:NewVoice(204316)--findshelter/safenow
-local voiceFocusedBlast				= mod:NewVoice(204471)--"watchstep". "shockwave" makes more sense, but may confuse users because boss has an actual ability called "shockwave"
-local voiceToxicChit				= mod:NewVoice(204744)--runaway
-
 mod:AddSetIconOption("SetIconOnVolatileScorpion", 204697, true, true)
 mod:AddInfoFrameOption(204284)
 
@@ -96,7 +89,7 @@ function mod:SPELL_CAST_START(args)
 		local tanking, status = UnitDetailedThreatSituation("player", "boss1")
 		if tanking or (status == 3) then--Player is current target
 			specWarnArcanoslash:Show()
-			voiceArcanoslash:Play("defensive")
+			specWarnArcanoslash:Play("defensive")
 		end
 		timerArcanoslashCD:Start()
 	elseif spellId == 204372 then
@@ -104,13 +97,13 @@ function mod:SPELL_CAST_START(args)
 		countdownCallofScorpid:Start()
 		if self.Options.SpecWarn204372switch and self:AntiSpam(3.5, 2) then--Even if enabled, only special warn once every 3.5 seconds
 			specWarnCallofScorp:Show()
-			voiceCallScorp:Play("killmob")
+			specWarnCallofScorp:Play("killmob")
 		end
 	elseif spellId == 204316 then
 		specWarnShockwave:Show(shardName)
-		voiceShockwave:Play("findshelter")
-		--voiceShockwave:Cancel()--In case boss stutter cases or starts cast over
-		--voiceShockwave:Schedule(3.5, "safenow")
+		specWarnShockwave:Play("findshelter")
+		--specWarnShockwave:CancelVoice()--In case boss stutter cases or starts cast over
+		--specWarnShockwave:ScheduleVoice(3.5, "safenow")
 		timerShockwaveCD:Start()
 		countdownShockwave:Start()
 		local scorptAdjust = 11
@@ -152,7 +145,7 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 204471 then
 		specWarnFocusedBlast:Show()
-		voiceFocusedBlast:Play("watchstep")
+		specWarnFocusedBlast:Play("watchstep")
 		timerFocusedBlastCD:Start()
 		countdownFocusedBlast:Start()
 	end
@@ -177,7 +170,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 204531 then
 		if args:IsPlayer() then
 			specWarnTether:Show()
-			voiceTether:Play("180880")
+			specWarnTether:Play("180880")
 		end
 	elseif spellId == 204459 then
 		if self.Options.SpecWarn204459switch then
@@ -211,7 +204,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 204697 then--Red scorpion
 		if self.Options.SpecWarn204372switch and self:AntiSpam(3.5, 2) then--Even if enabled, only special warn once every 3.5 seconds
 			specWarnCallofScorp:Show()
-			voiceCallScorp:Play("killmob")
+			specWarnCallofScorp:Play("killmob")
 		end
 		self.vb.volatileScorpCount = self.vb.volatileScorpCount + 1
 		if self.Options.SetIconOnVolatileScorpion then
@@ -220,7 +213,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 204744 and args:IsPlayer() and self:AntiSpam(2, 3) then
 		specWarnToxicChit:Show()
-		voiceToxicChit:Play("runaway")
+		specWarnToxicChit:Play("runaway")
 	end
 end
 
@@ -236,7 +229,7 @@ end
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 204744 and destGUID == UnitGUID("player") and self:AntiSpam(2, 3) then
 		specWarnToxicChit:Show()
-		voiceToxicChit:Play("runaway")
+		specWarnToxicChit:Play("runaway")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
