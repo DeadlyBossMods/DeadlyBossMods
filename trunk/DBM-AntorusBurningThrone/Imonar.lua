@@ -30,18 +30,15 @@ mod:RegisterEventsInCombat(
  or (ability.id = 247367 or ability.id = 250255 or ability.id = 247552 or ability.id = 247687 or ability.id = 254244) and type = "cast"
  or (ability.id = 248233 or ability.id = 250135) and (type = "applybuff" or type = "removebuff")
 --]]
+local warnPhase							= mod:NewPhaseChangeAnnounce()
 --Stage One: Attack Force
 local warnShocklance					= mod:NewStackAnnounce(247367, 2, nil, "Tank")
 local warnSleepCanister					= mod:NewTargetAnnounce(247552, 2)
 local warnSlumberGas					= mod:NewTargetAnnounce(247565, 3)
 --Stage Two: Contract to Kill
-local warnPhase2						= mod:NewPhaseAnnounce(2, 2)
 local warnSever							= mod:NewStackAnnounce(247687, 2, nil, "Tank")
 --Stage Three/Five: The Perfect Weapon
-local warnPhase3						= mod:NewPhaseAnnounce(3, 2)
 local warnEmpoweredPulseGrenade			= mod:NewTargetAnnounce(250006, 3)
-local warnPhase4						= mod:NewPhaseAnnounce(4, 2)
-local warnPhase5						= mod:NewPhaseAnnounce(5, 2)
 
 --General
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
@@ -337,14 +334,13 @@ function mod:SPELL_AURA_REMOVED(args)
 	if (spellId == 248233 or spellId == 250135) and not args:IsDestTypePlayer() then--Conflagration
 		self.vb.phase = self.vb.phase + 1
 		self.vb.shrapnalCast = 0
+		warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(self.vb.phase))
 		if self.vb.phase == 2 then
-			warnPhase2:Show()
 			timerSeverCD:Start(6.6)--6.6-8.2
 			timerChargedBlastsCD:Start(8.4)
 			countdownChargedBlasts:Start(8.4)
 			timerShrapnalBlastCD:Start(12, 1)
 		elseif self.vb.phase == 3 then
-			warnPhase3:Show()
 			if self:IsMythic() then
 				timerShocklanceCD:Start(4)--NOT empowered
 				timerSleepCanisterCD:Start(7.9)
@@ -358,13 +354,11 @@ function mod:SPELL_AURA_REMOVED(args)
 				timerShrapnalBlastCD:Start(15.4, 1)--Empowered
 			end
 		elseif self.vb.phase == 4 then--Mythic Only
-			warnPhase4:Show()
 			timerSeverCD:Start(7.5)
 			timerChargedBlastsCD:Start(9)
 			timerSleepCanisterCD:Start(12.5)
 			timerShrapnalBlastCD:Start(12.7, 1)--Empowered
 		elseif self.vb.phase == 5 then--Mythic Only (Identical to non mythic 3?)
-			warnPhase5:Show()
 			timerShocklanceCD:Start(5)--Empowered
 			timerPulseGrenadeCD:Start(7)--Empowered
 			countdownPulseGrenade:Start(7)
