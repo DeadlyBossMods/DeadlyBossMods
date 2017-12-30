@@ -24,8 +24,8 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3"--Assuming cannons are unique boss unitID
 )
 
-local annihilator = EJ_GetSectionInfo(15917)
-local Decimator = EJ_GetSectionInfo(15915)
+local annihilator = DBM:EJ_GetSectionInfo(15917)
+local Decimator = DBM:EJ_GetSectionInfo(15915)
 --TODO, work in range frame to include searing barrage, for ranged
 --[[
 (ability.id = 244969 or ability.id = 240277) and type = "begincast"

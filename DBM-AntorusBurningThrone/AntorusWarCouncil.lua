@@ -13,7 +13,7 @@ mod.respawnTime = 29
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 244625 246505 253040 245227 244821",
+	"SPELL_CAST_START 244625 246505 253040 245227",
 	"SPELL_CAST_SUCCESS 244722 244892 245227 253037 245174",
 	"SPELL_AURA_APPLIED 244737 244892 253015",
 	"SPELL_AURA_APPLIED_DOSE 244892",
@@ -24,9 +24,12 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3"
 )
 
+local Svirax = DBM:EJ_GetSectionInfo(16126)
+local Ishkar = DBM:EJ_GetSectionInfo(16128)
+local Erodus = DBM:EJ_GetSectionInfo(16130)
 --TODO, boss health was reporting unknown in streams, verify/fix boss CIDs
 --[[
-(ability.id = 244625 or ability.id = 253040 or ability.id = 245227 or ability.id = 125012 or ability.id = 125014 or ability.id = 126258 or ability.id = 244821) and type = "begincast"
+(ability.id = 244625 or ability.id = 253040 or ability.id = 245227 or ability.id = 125012 or ability.id = 125014 or ability.id = 126258) and type = "begincast"
  or (ability.id = 244722 or ability.id = 244892) and type = "cast" or (ability.id = 245174 or ability.id = 244947) and type = "summon"
  or ability.id = 253015
 --]]
@@ -66,26 +69,22 @@ local yellDemonicCharge					= mod:NewYell(253040)
 local specWarnShockGrenade				= mod:NewSpecialWarningMoveAway(244737, nil, nil, nil, 1, 2)
 local yellShockGrenade					= mod:NewShortYell(244737)
 local yellShockGrenadeFades				= mod:NewShortFadesYell(244737)
-----Chief Engineer Ishkar
-local specWarnWarpField					= mod:NewSpecialWarningRun(244821, nil, nil, nil, 4, 2)
-----General Erodus
 
 --General
+mod:AddTimerLine(GENERAL)
 local timerExploitWeaknessCD			= mod:NewCDTimer(8.5, 244892, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerShockGrenadeCD				= mod:NewCDTimer(14.7, 244722, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
 local timerAssumeCommandCD				= mod:NewNextTimer(90, 245227, nil, nil, nil, 6)
 --In Pod
 ----Admiral Svirax
+mod:AddTimerLine(Svirax)
 local timerFusilladeCD					= mod:NewNextCountTimer(29.6, 244625, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
 ----Chief Engineer Ishkar
+mod:AddTimerLine(Ishkar)
 local timerEntropicMineCD				= mod:NewCDTimer(10, 245161, nil, nil, nil, 3)
 ----General Erodus
+mod:AddTimerLine(Erodus)
 local timerSummonReinforcementsCD		= mod:NewNextTimer(8.4, 245546, nil, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON)
---Out of Pod
-----Admiral Svirax
-----Chief Engineer Ishkar
-local timerWarpFieldCD					= mod:NewAITimer(61, 244821, nil, nil, nil, 2)
-----General Erodus
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
 
@@ -165,7 +164,6 @@ function mod:SPELL_CAST_START(args)
 		countdownExploitWeakness:Start(8)
 		local cid = self:GetCIDFromGUID(args.sourceGUID)
 		if cid == 122369 then--Chief Engineer Ishkar
-			timerWarpFieldCD:Stop()
 			timerEntropicMineCD:Start(8)
 			timerFusilladeCD:Stop()--Seems this timer resets too
 			countdownFusillade:Cancel()
@@ -187,11 +185,6 @@ function mod:SPELL_CAST_START(args)
 		if self:IsMythic() then
 			timerShockGrenadeCD:Start(9.7)
 		end
-	elseif spellId == 244821 then
-		specWarnWarpField:Show()
-		specWarnWarpField:Play("justrun")
-		--specWarnWarpField:Schedule(1, "keepmove")
-		timerWarpFieldCD:Start()
 	end
 end
 
@@ -307,7 +300,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		local cid = self:GetCIDFromGUID(GUID)
 		if cid == 122369 then--Chief Engineer Ishkar
 			timerEntropicMineCD:Stop()
-			timerWarpFieldCD:Start(2)
 		elseif cid == 122333 then--General Erodus
 			timerSummonReinforcementsCD:Stop()--Elite ones
 			countdownReinforcements:Cancel()
