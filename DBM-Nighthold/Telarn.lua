@@ -56,7 +56,7 @@ local specWarnParasiticFetter		= mod:NewSpecialWarningClose(218304, nil, nil, ni
 local specWarnParasiticFixate		= mod:NewSpecialWarningRun(218342, nil, nil, nil, 4, 2)
 local specWarnSolarCollapse			= mod:NewSpecialWarningDodge(218148, nil, nil, nil, 2, 2)
 --Stage 2: Nightosis
-local specwarnStarLow				= mod:NewSpecialWarning("warnStarLow", "Tank|Healer", nil, nil, 2)--aesoon?
+local specwarnStarLow				= mod:NewSpecialWarning("warnStarLow", "Tank|Healer", nil, nil, 2, 2)--aesoon?
 --Stage 3: Pure Forms
 local specWarnGraceOfNature			= mod:NewSpecialWarningMove(218927, "Tank", nil, nil, 3, 2)
 local specWarnCoN					= mod:NewSpecialWarningYouPos(218809, nil, nil, nil, 1, 5)
@@ -527,5 +527,6 @@ function mod:OnSync(msg, guid)
 	if msg == "lowhealth" and guid and not warnedLowHP[guid] then
 		warnedLowHP[guid] = true
 		specwarnStarLow:Show()
+		specwarnStarLow:Play("aesoon")
 	end
 end
