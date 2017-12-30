@@ -25,7 +25,7 @@ local warnCallBlood					= mod:NewSpellAnnounce(203381, 2)
 
 local specWarnEssenceoftheBloodQueen= mod:NewSpecialWarningYou(202779)
 local specWarnBloodthirst			= mod:NewSpecialWarningYou(202792, nil, nil, nil, 3)
-local yellBloodThirst				= mod:NewFadesYell(202792)
+local yellBloodThirst				= mod:NewShortFadesYell(202792)
 
 local timerHunger					= mod:NewBuffFadesTimer(20, 202792, nil, nil, nil, 5, nil, DBM_CORE_DEADLY_ICON)
 local timerBloodCallCD				= mod:NewNextTimer(30, 203381, nil, nil, nil, 1, nil, DBM_CORE_HEROIC_ICON)

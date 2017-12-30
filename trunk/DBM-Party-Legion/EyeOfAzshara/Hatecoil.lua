@@ -28,7 +28,7 @@ local warnCurseofWitch				= mod:NewTargetAnnounce(193698, 3)
 local specWarnStaticNova			= mod:NewSpecialWarning("specWarnStaticNova", nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.dodge:format(193597), nil, 3, 2)
 local specWarnFocusedLightning		= mod:NewSpecialWarning("specWarnFocusedLightning", nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.soon:format(193611), nil, 1)
 local specWarnAdds					= mod:NewSpecialWarningSwitch(193682, "Tank", nil, nil, 1, 2)
-local yellCurseofWitch				= mod:NewFadesYell(193698)
+local yellCurseofWitch				= mod:NewShortFadesYell(193698)
 
 local timerAddsCD					= mod:NewCDTimer(47, 193682, nil, nil, nil, 1)--47-51
 local timerStaticNovaCD				= mod:NewCDTimer(34, 193597, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
