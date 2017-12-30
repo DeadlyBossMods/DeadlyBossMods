@@ -30,10 +30,6 @@ local timerDrainCD				= mod:NewCDTimer(15.9, 247739, nil, "Melee", nil, 5, nil, 
 local timerFelBreathCD			= mod:NewCDTimer(13.4, 247731, nil, nil, nil, 3)
 local timerStompCD				= mod:NewCDTimer(14.6, 247733, nil, nil, nil, 2, nil, DBM_CORE_HEALER_ICON)--15-35?
 
-local voiceDrain				= mod:NewVoice(247361)--tauntboss/runout/stackhigh
-local voiceStomp				= mod:NewVoice(247733)--carefly
---local voiceGTFO				= mod:NewVoice(238028, nil, DBM_CORE_AUTO_VOICE4_OPTION_TEXT)--runaway
-
 mod:AddReadyCheckOption(49196, false)
 mod:AddRangeFrameOption(8, 247739)--Mainly to ensure tanks are far enough from eachother. any dumb melee don't matter.
 
@@ -68,7 +64,7 @@ function mod:SPELL_CAST_START(args)
 		timerFelBreathCD:Start()
 	elseif spellId == 247733 then
 		specWarnStomp:Show()
-		voiceStomp:Play("carefly")
+		specWarnStomp:Play("carefly")
 		timerStompCD:Start()
 	end
 end
@@ -89,11 +85,11 @@ function mod:SPELL_AURA_APPLIED(args)
 			if amount >= 6 then--Fine Tune
 				if args:IsPlayer() then--At this point the other tank SHOULD be clear.
 					specWarnDrain:Show(amount)
-					voiceDrain:Play("stackhigh")
+					specWarnDrain:Play("stackhigh")
 				else--Taunt as soon as stacks are clear, regardless of stack count.
 					if not UnitIsDeadOrGhost("player") and not UnitDebuff("player", args.spellName) and self:AntiSpam(1.5, 1) then
 						specWarnDrainTaunt:Show(args.destName)
-						voiceDrain:Play("tauntboss")
+						specWarnDrainTaunt:Play("tauntboss")
 					else
 						warnDrain:Cancel()
 						warnDrain:Schedule(1.25, args.destName, amount)

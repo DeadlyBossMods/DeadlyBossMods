@@ -28,10 +28,6 @@ local timerPulvCrudgelCD			= mod:NewCDTimer(34.2, 237276, nil, nil, nil, 2, nil,
 local timerScornfulGazeCD			= mod:NewCDTimer(36.5, 237726, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
 local timerHeaveCrudCD				= mod:NewCDTimer(36.5, 243124, nil, nil, nil, 3)
 
-local voiceMindControl				= mod:NewVoice(238484)--findmc
-local voicePulvCrudgel				= mod:NewVoice(237276)--runout
-local voiceScornfulGaze				= mod:NewVoice(237726)--findshelter
-
 function mod:OnCombatStart(delay)
 	timerPulvCrudgelCD:Start(6-delay)
 	timerHeaveCrudCD:Start(15.5-delay)
@@ -50,16 +46,16 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnMindControl:Show(args.destName)
 		if args:IsPlayer() then
 			--Add a yell?
-			voiceMindControl:Play("targetyou")
+			specWarnMindControl:Play("targetyou")
 		else
-			voiceMindControl:Play("findmc")
+			specWarnMindControl:Play("findmc")
 		end
 	elseif spellId == 237726 then
 		timerScornfulGazeCD:Start()
 		if args:IsPlayer() then
 			specWarnScornfulGaze:Show(L.bookCase)
 			yellScornfulGaze:Yell()
-			voiceScornfulGaze:Play("findshelter")
+			specWarnScornfulGaze:Play("findshelter")
 		else
 			warnScornfulGaze:Show(args.destName)
 		end
@@ -70,7 +66,7 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 237276 then
 		specWarnPulvCrudgel:Show()
-		voicePulvCrudgel:Play("runout")
+		specWarnPulvCrudgel:Play("runout")
 		timerPulvCrudgelCD:Start()
 	end
 end

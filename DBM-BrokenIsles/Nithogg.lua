@@ -37,18 +37,12 @@ local timerLightningStormCD			= mod:NewCDTimer(30.5, 212867, nil, nil, nil, 3)
 local timerStaticChargeCD			= mod:NewCDTimer(40.2, 212887, nil, "-Tank", nil, 3)
 local timerStormBreathCD			= mod:NewCDTimer(23.1, 212852, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 
-local voiceCracklingJolt			= mod:NewVoice(212841)--watchstep
-local voiceStaticCharge				= mod:NewVoice(212887)--runout
-local voiceLightingRod				= mod:NewVoice(212943)--runaway
-local voiceBreath					= mod:NewVoice(212852)--defensive/tauntboss
-local voiceStorm					= mod:NewVoice(212884)--runaway
-
 --mod:AddReadyCheckOption(37460, false)
 
 local function checkTankSwap(self, targetName, spellName)
 	if not UnitDebuff("player", spellName) then
 		specWarnBreathSwap:Show(targetName)
-		voiceBreath:Play("tauntboss")
+		specWarnBreathSwap:Play("tauntboss")
 	end
 end
 
@@ -66,7 +60,7 @@ function mod:SPELL_CAST_START(args)
 		local _, unitID = self:GetCurrentTank(args.sourceGUID)
 		if unitID and UnitIsUnit("player", unitID) then
 			specWarnBreath:Show()
-			voiceBreath:Play("defensive")
+			specWarnBreath:Play("defensive")
 		end
 	end
 end
@@ -83,7 +77,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 212887 then
 		if args:IsPlayer() then
 			specWarnStaticCharge:Show()
-			voiceStaticCharge:Play("runout")
+			specWarnStaticCharge:Play("runout")
 			yellStaticCharge:Schedule(2, 3)
 			yellStaticCharge:Schedule(3, 2)
 			yellStaticCharge:Schedule(4, 1)
@@ -94,7 +88,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnLightningRod:CombinedShow(0.5, args.destName)
 		if args:IsPlayer() then
 			specWarnLightningRod:Show()
-			voiceLightingRod:Play("runaway")
+			specWarnLightningRod:Play("runaway")
 		end
 	elseif spellId == 212852 then
 		local uId = DBM:GetRaidUnitId(args.destName)
@@ -104,7 +98,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 212884 and args:IsPlayer() then
 		specWarnStorm:Show()
-		voiceStorm:Play("runaway")
+		specWarnStorm:Play("runaway")
 	end
 end
 
@@ -121,7 +115,7 @@ function mod:RAID_BOSS_WHISPER(msg)
 	if msg:find("spell:212841") then
 		specWarnCracklingJolt:Show()
 		yellCracklingJolt:Yell()
-		voiceCracklingJolt:Play("watchstep")
+		specWarnCracklingJolt:Play("watchstep")
 	end
 end
 
@@ -130,7 +124,7 @@ function mod:OnTranscriptorSync(msg, targetName)
 		targetName = Ambiguate(targetName, "none")
 		if self:CheckNearby(4, targetName) and self:AntiSpam(4, 1) then
 			specWarnCracklingJoltNear:Show(targetName)
-			voiceCracklingJolt:Play("watchstep")
+			specWarnCracklingJoltNear:Play("watchstep")
 		end
 	end
 end

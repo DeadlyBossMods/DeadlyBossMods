@@ -83,20 +83,7 @@ local countdownPulseGrenade				= mod:NewCountdown(17, 247376)
 local countdownChargedBlasts			= mod:NewCountdown("AltTwo18", 247716)
 
 --General
---local voiceGTFO						= mod:NewVoice(238028, nil, DBM_CORE_AUTO_VOICE4_OPTION_TEXT)--runaway
 local voicePhaseChange					= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
---Stage One: Attack Force
-local voiceShocklance					= mod:NewVoice(247367)--Tauntboss
-local voiceSleepCanister				= mod:NewVoice(247552)--targetyou
-local voicePulseGrenade					= mod:NewVoice(247376)--watchstep
---Stage Two: Contract to Kill
-local voiceSever						= mod:NewVoice(247687)--Tauntboss
-local voiceChargedBlasts				= mod:NewVoice(247716)--runout
-local voiceShrapnalBlast				= mod:NewVoice(247923)--watchstep
---Stage Three/Five: The Perfect Weapon
-local voiceEmpPulseGrenade				= mod:NewVoice(250006)--range5
-
---local voiceMalignantAnguish			= mod:NewVoice(236597, "HasInterrupt")--kickcast
 
 mod:AddSetIconOption("SetIconOnSleepCanister", 247552, true)
 mod:AddSetIconOption("SetIconOnEmpPulse2", 250006, false)
@@ -193,7 +180,7 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 247376 or spellId == 248068 then
 		if spellId == 247376 then--Non Empowered
 			specWarnPulseGrenade:Show()
-			voicePulseGrenade:Play("watchstep")
+			specWarnPulseGrenade:Play("watchstep")
 			timerPulseGrenadeCD:Start()
 			countdownPulseGrenade:Start()
 		else--Empowered
@@ -208,7 +195,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 247923 or spellId == 248070 then
 		self.vb.shrapnalCast = self.vb.shrapnalCast + 1
 		specWarnShrapnalBlast:Show()
-		voiceShrapnalBlast:Play("watchstep")
+		specWarnShrapnalBlast:Play("watchstep")
 		if self:IsMythic() then
 			if self.vb.phase == 2 then
 				timerShrapnalBlastCD:Start(17, self.vb.shrapnalCast+1)
@@ -229,7 +216,7 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 248254 then
 		specWarnChargedBlastsUnknown:Show()
-		voiceChargedBlasts:Play("farfromline")
+		specWarnChargedBlastsUnknown:Play("farfromline")
 		if self:IsMythic() and self.vb.phase < 4 then
 			timerChargedBlastsCD:Start(13.4)
 			countdownChargedBlasts:Start(13.4)
@@ -273,7 +260,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				end
 				if not UnitIsDeadOrGhost("player") and (not remaining or remaining and remaining < 4) then
 					specWarnShocklance:Show(args.destName)
-					voiceShocklance:Play("tauntboss")
+					specWarnShocklance:Play("tauntboss")
 				else
 					warnShocklance:Show(args.destName, amount)
 				end
@@ -293,7 +280,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				end
 				if not UnitIsDeadOrGhost("player") and (not remaining or remaining and remaining < 7) then
 					specWarnSever:Show(args.destName)
-					voiceSever:Play("tauntboss")
+					specWarnSever:Play("tauntboss")
 				else
 					warnSever:Show(args.destName, amount)
 				end
@@ -308,7 +295,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		elseif self:CheckNearby(10, args.destName) then--Warn nearby again
 			specWarnSleepCanisterNear:CombinedShow(0.3, args.destName)
-			voiceSleepCanister:Play("runaway")
+			specWarnSleepCanisterNear:Play("runaway")
 		end
 	elseif spellId == 247565 then
 		warnSlumberGas:CombinedShow(0.3, args.destName)
@@ -321,7 +308,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnEmpoweredPulseGrenade:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			specWarnEmpPulseGrenade:Show()
-			voiceEmpPulseGrenade:Play("range5")
+			specWarnEmpPulseGrenade:Play("range5")
 			yellEmpPulseGrenade:Yell()
 		end
 		updateRangeFrame(self)
@@ -405,7 +392,7 @@ end
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 228007 and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
 		specWarnGTFO:Show()
-		voiceGTFO:Play("runaway")
+		specWarnGTFO:Play("runaway")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
@@ -414,7 +401,7 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 function mod:RAID_BOSS_WHISPER(msg)
 	if msg:find("spell:254244") then
 		specWarnSleepCanister:Show()
-		voiceSleepCanister:Play("runout")
+		specWarnSleepCanister:Play("runout")
 		playerSleepDebuff = true
 		updateRangeFrame(self)
 	end
@@ -433,7 +420,7 @@ do
 					yellSleepCanister:Yell(icon, spellName, icon)
 				elseif self:CheckNearby(10, targetName) then
 					specWarnSleepCanisterNear:CombinedShow(0.3, targetName)
-					voiceSleepCanister:Play("runaway")
+					specWarnSleepCanisterNear:Play("runaway")
 				end
 			end
 			if self.Options.SetIconOnSleepCanister then

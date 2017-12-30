@@ -22,12 +22,6 @@ local specWarnSpraySand			= mod:NewSpecialWarningDodge(196127, "Tank", nil, nil,
 local specWarnArcaneBomb		= mod:NewSpecialWarningMoveAway(192706, nil, nil, nil, 3, 2)
 local yellArcaneBomb			= mod:NewYell(192706)
 
-local voiceStorm				= mod:NewVoice(196870, "HasInterrupt")--kickcast
-local voiceRejuvWaters			= mod:NewVoice(195046, "HasInterrupt")--kickcast
-local voiceUndertow				= mod:NewVoice(195284, "HasInterrupt")--kickcast
-local voiceSpraySand			= mod:NewVoice(196127, "Tank")--shockwave
-local voiceArcaneBomb			= mod:NewVoice(192706)--runout
-
 mod:RemoveOption("HealthFrame")
 
 function mod:SPELL_CAST_START(args)
@@ -35,13 +29,13 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 196870 and self:CheckInterruptFilter(args.sourceGUID) then
 		specWarnStorm:Show(args.sourceName)
-		voiceStorm:Play("kickcast")
+		specWarnStorm:Play("kickcast")
 	elseif spellId == 195046 and self:CheckInterruptFilter(args.sourceGUID) then
 		specWarnRejuvWaters:Show(args.sourceName)
-		voiceRejuvWaters:Play("kickcast")
+		specWarnRejuvWaters:Play("kickcast")
 	elseif spellId == 195284 and self:CheckInterruptFilter(args.sourceGUID) then
 		specWarnUndertow:Show(args.sourceName)
-		voiceUndertow:Play("kickcast")
+		specWarnUndertow:Play("kickcast")
 	end
 end
 
@@ -50,11 +44,11 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 196127 then
 		specWarnSpraySand:Show()
-		voiceSpraySand:Play("shockwave")
+		specWarnSpraySand:Play("shockwave")
 	elseif spellId == 192706 then
 		if args:IsPlayer() then
 			specWarnArcaneBomb:Show()
-			voiceArcaneBomb:Play("runout")
+			specWarnArcaneBomb:Play("runout")
 			yellArcaneBomb:Yell()
 		else
 			warnArcaneBomb:Show(args.destName)

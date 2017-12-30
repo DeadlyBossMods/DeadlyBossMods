@@ -28,10 +28,6 @@ local timerFrigidWindsCD			= mod:NewNextTimer(61, 202062, nil, nil, nil, 3, nil,
 local timerIceBombCD				= mod:NewNextTimer(61, 201960, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
 local timerFrostBreathCD			= mod:NewNextTimer(61, 201379, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 
-local voiceRelentlessStorm			= mod:NewVoice(201672)--watchstep
-local voiceFrigidWinds				= mod:NewVoice(201672)--scatter
-local voiceIceBomb					= mod:NewVoice(201960)--findshelter
-
 mod:AddRangeFrameOption(8, 202062)
 
 mod.vb.stormCount = 0
@@ -73,7 +69,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 202062 and args:IsPlayer() then
 		specWarnFrigidWinds:Show()
-		voiceFrigidWinds:Play("scatter")
+		specWarnFrigidWinds:Play("scatter")
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(8)
 		end
@@ -92,7 +88,7 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 201672 then
 		self.vb.stormCount = self.vb.stormCount + 1
 		specWarnRelentlessStorm:Show()
-		voiceRelentlessStorm:Play("watchstep")
+		specWarnRelentlessStorm:Play("watchstep")
 		if self.vb.stormCount % 2 == 0 then
 			timerRelentlessStormCD:Start(47)
 		else
@@ -100,7 +96,7 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 201960 then
 		specWarnIceBomb:Show()
-		voiceIceBomb:Play("findshelter")
+		specWarnIceBomb:Play("findshelter")
 		timerIceBombCD:Start()
 	end
 end

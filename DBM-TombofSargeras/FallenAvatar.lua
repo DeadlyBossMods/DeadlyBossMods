@@ -89,28 +89,14 @@ local berserkTimer					= mod:NewBerserkTimer(420)
 
 --Stage One: A Slumber Disturbed
 local countdownCleansingProtocol	= mod:NewCountdownFades(18, 233856)
-local countdownDesolate				= mod:NewCountdown("Alt11", 236494, "Tank", nil, 3)--timer, spellId, optionDefault, optionName, count, textDisabled, altVoice)
+local countdownDesolate				= mod:NewCountdown("Alt11", 236494, "Tank", nil, 3)
 local countdownCorruptedMatrix		= mod:NewCountdown("AltTwo40", 233556)
 --Stage Two
 local countdownRuptureRealities		= mod:NewCountdown(60, 239132)
 local countdownDarkMark				= mod:NewCountdown("Alt40", 239739, "-Tank", 2)
 local countdownRainofthedDestroyer	= mod:NewCountdown("AltTwo35", 240396)
 
---Stage One: A Slumber Disturbed
-local voiceTouchofSargerasGround	= mod:NewVoice(239207, "-Tank", nil, 2)--helpsoak
-local voiceRuptureRealities			= mod:NewVoice(239132)--justrun
-local voiceUnboundChaos				= mod:NewVoice(234059)--runout/keepmove
-local voiceShadowyBlades			= mod:NewVoice(236571)--scatter
-local voiceLingeringDarkness		= mod:NewVoice(239212)--runaway
-local voiceDesolate					= mod:NewVoice(236494, "Tank")--stackhigh/tauntboss
-----Maiden of Valor
-local voiceCorruptedMatrix			= mod:NewVoice(233556, "Tank")--bosstobeam
-local voiceCleansingProtocol		= mod:NewVoice(233856, "-Healer")--targetchange
-local voiceTaintedEssence			= mod:NewVoice(240728)--stackhigh
---Stage Two: An Avatar Awakened
 local voicePhaseChange				= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
-local voiceDarkMark					= mod:NewVoice(239739)--gathershare/targetyou
-local voiceRainoftheDestroyer		= mod:NewVoice(240396)--helpsoak
 
 mod:AddSetIconOption("SetIconOnShadowyBlades", 236571, true)
 mod:AddSetIconOption("SetIconOnDarkMark", 239739, true)
@@ -151,7 +137,7 @@ local function warnDarkMarkTargets(self, spellName)
 				yellDarkMarkFades:Countdown(remaining, nil, icon)
 			end
 			specWarnDarkMark:Show(self:IconNumToTexture(icon))
-			voiceDarkMark:Play("targetyou")
+			specWarnDarkMark:Play("targetyou")
 		end
 		if self.Options.SetIconOnDarkMark then
 			self:SetIcon(name, icon)
@@ -159,7 +145,7 @@ local function warnDarkMarkTargets(self, spellName)
 	end
 	if not UnitDebuff("player", spellName) then
 		specWarnDarkMarkOther:Show(DBM_ALLY)
-		voiceDarkMark:Play("gathershare")
+		specWarnDarkMarkOther:Play("gathershare")
 	end
 end
 
@@ -277,7 +263,7 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 239207 then
 		self.vb.touchCast = self.vb.touchCast + 1
 		specWarnTouchofSargerasGround:Show(self.vb.touchCast)
-		voiceTouchofSargerasGround:Play("helpsoak")
+		specWarnTouchofSargerasGround:Play("helpsoak")
 		self:Unschedule(setabilityStatus, self, 239207)--Unschedule for good measure in case next cast start fires before timer expires (in which case have a bad timer)
 		setabilityStatus(self, 239207, 1)--Set on Cooldown
 		if self:IsMythic() then
@@ -290,7 +276,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 239132 or spellId == 235572 then
 		self.vb.realityCount = self.vb.realityCount + 1
 		specWarnRuptureRealities:Show()
-		voiceRuptureRealities:Play("justrun")
+		specWarnRuptureRealities:Play("justrun")
 		if self.vb.phase == 2 then
 			timerRuptureRealitiesCD:Start(37, self.vb.realityCount+1)
 			countdownRuptureRealities:Start(37)
@@ -316,11 +302,11 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 233856 then
 		specWarnCleansingProtocol:Show()
-		voiceCleansingProtocol:Play("targetchange")
+		specWarnCleansingProtocol:Play("targetchange")
 		countdownCleansingProtocol:Start()
 	elseif spellId == 233556 and self:AntiSpam(2, 2) and self.vb.phase == 1 then
 		specWarnCorruptedMatrix:Show(beamName)
-		voiceCorruptedMatrix:Play("bosstobeam")
+		specWarnCorruptedMatrix:Play("bosstobeam")
 		if self:IsMythic() then
 			timerCorruptedMatrix:Start(8)
 		else
@@ -391,7 +377,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 --		if args:IsPlayer() then
 --			specWarnDarkMark:Show(self:IconNumToString())
---			voiceDarkMark:Play("targetyou")
+--			specWarnDarkMark:Play("targetyou")
 --		end
 	elseif spellId == 234059 then
 		warnUnboundChaos:CombinedShow(0.3, args.destName)
@@ -403,7 +389,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if amount >= 2 then
 			if args:IsPlayer() then
 				specWarnDesolateYou:Show(amount)
-				voiceDesolate:Play("stackhigh")
+				specWarnDesolateYou:Play("stackhigh")
 			else
 				local _, _, _, _, _, _, expireTime = UnitDebuff("player", args.spellName)
 				local remaining
@@ -412,7 +398,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				end
 				if not UnitIsDeadOrGhost("player") and (not remaining or remaining and remaining < 10) then
 					specWarnDesolateOther:Show(args.destName)
-					voiceDesolate:Play("tauntboss")
+					specWarnDesolateOther:Play("tauntboss")
 				else
 					warnDesolate:Show(args.destName, amount)
 				end
@@ -425,7 +411,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			local amount = args.amount or 1
 			if amount >= 6 then
 				specWarnTaintedEssence:Show(amount)
-				voiceTaintedEssence:Play("stackhigh")
+				specWarnTaintedEssence:Play("stackhigh")
 				yellTaintedEssence:Yell(amount)
 			end
 		end
@@ -454,7 +440,7 @@ end
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 239212 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
 		specWarnLingeringDarkness:Show()
-		voiceLingeringDarkness:Play("runaway")
+		specWarnLingeringDarkness:Play("runaway")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
@@ -463,7 +449,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 	if msg:find("234418") then
 		self.vb.rainCount = self.vb.rainCount + 1
 		specWarnRainoftheDestroyer:Show(self.vb.rainCount)
-		voiceRainoftheDestroyer:Play("helpsoak")
+		specWarnRainoftheDestroyer:Play("helpsoak")
 		timerRainoftheDestroyer:Start()
 		timerRainoftheDestroyerCD:Start(nil, self.vb.rainCount+1)
 		countdownRainofthedDestroyer:Start()
@@ -473,7 +459,7 @@ end
 function mod:RAID_BOSS_WHISPER(msg)
 	if msg:find("236604") then
 		specWarnShadowyBlades:Show()
-		voiceShadowyBlades:Play("runout")
+		specWarnShadowyBlades:Play("runout")
 		--yellShadowyBlades:Yell()
 	end
 end
@@ -506,7 +492,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	if spellId == 234057 then
 		self.vb.chaosCount = self.vb.chaosCount + 1
 		specWarnUnboundChaos:Show()
-		voiceUnboundChaos:Play("watchstep")
+		specWarnUnboundChaos:Play("watchstep")
 		timerUnboundChaosCD:Start(nil, self.vb.chaosCount+1)--35
 		self:Unschedule(setabilityStatus, self, 234059)--Unschedule for good measure in case next cast start fires before timer expires (in which case have a bad timer)
 		setabilityStatus(self, 234059, 1)--Set on cooldown

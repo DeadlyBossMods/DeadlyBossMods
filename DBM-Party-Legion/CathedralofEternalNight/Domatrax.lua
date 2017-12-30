@@ -31,10 +31,6 @@ local timerApproachingDoom			= mod:NewCastTimer(20, 241622, nil, nil, nil, 1)
 
 local countdownChaosEnergy			= mod:NewCountdown(5, 234107)
 
-local voiceFelsoulCleave			= mod:NewVoice(236543)--shockwave (review)
-local voiceChaoticEnergy			= mod:NewVoice(234107)--findshield
-local voiceAdds						= mod:NewVoice(200597, "-Healer", DBM_CORE_AUTO_VOICE3_OPTION_TEXT)--killmob
-
 mod:AddInfoFrameOption(238410, true)
 
 local shield = GetSpellInfo(238410)
@@ -58,11 +54,11 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 236543 then
 		specWarnFelsoulCleave:Show()
-		voiceFelsoulCleave:Play("shockwave")
+		specWarnFelsoulCleave:Play("shockwave")
 		timerFelsoulCleaveCD:Start()
 	elseif spellId == 234107 then
 		specWarnChaoticEnergy:Show(shield)
-		voiceChaoticEnergy:Play("findshield")
+		specWarnChaoticEnergy:Play("findshield")
 		countdownChaosEnergy:Start()
 	elseif spellId == 241622 then
 		if self:AntiSpam(2, 1) then
@@ -90,6 +86,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
 	if spellId == 235822 or spellId == 235862 then--Start Wave 01/Start Wave 02
 		specWarnAdds:Show()
-		voiceAdds:Play("killmob")
+		specWarnAdds:Play("killmob")
 	end
 end

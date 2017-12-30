@@ -76,19 +76,6 @@ local timerFocusingPower				= mod:NewCastTimer(15, 251356, nil, nil, nil, 6)
 --F'harg
 --local countdownSingularity			= mod:NewCountdown(50, 235059)--Maybe test 1 countdown per dog (for all abilities)
 
---F'harg
-local voiceMoltenTouch					= mod:NewVoice(244072)--watchstep
-local voiceDesolateGaze					= mod:NewVoice(244768)--runout?
-local voiceEnflamed						= mod:NewVoice(248815)--scatter
---local voiceGTFO						= mod:NewVoice(238028, nil, DBM_CORE_AUTO_VOICE4_OPTION_TEXT)--runaway
---Shatug
-local voiceConsumingSphere				= mod:NewVoice(244131)--watchorb
-local voiceWeightOfDarkness				= mod:NewVoice(254429)--targetyou
-local voiceSiphoned						= mod:NewVoice(248819)--gathershare?/killmob on mythic?
---Mythic
-local voiceFlameTouched					= mod:NewVoice(244054)--flameonyou
-local voiceShadowtouched				= mod:NewVoice(244055)--shadowonyou
-
 mod:AddSetIconOption("SetIconOnWeightofDarkness2", 254429, false)
 --mod:AddInfoFrameOption(239154, true)
 mod:AddRangeFrameOption("5/8")
@@ -207,7 +194,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 244072 then
 		specWarnMoltenTouch:Show()
-		voiceMoltenTouch:Play("watchstep")
+		specWarnMoltenTouch:Play("watchstep")
 		if not self.Options.SequenceTimers or self:IsEasy() then
 			timerMoltenTouchCD:Start(self.vb.longTimer)
 		else
@@ -236,7 +223,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnDesolateGaze:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			specWarnDesolateGaze:Show()
-			voiceDesolateGaze:Play("runout")
+			specWarnDesolateGaze:Play("runout")
 			yellDesolateGaze:Yell()
 		end
 	elseif spellId == 251356 and self:AntiSpam(10, 1) then
@@ -247,7 +234,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnEnflamed:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			specWarnEnflamed:Show()
-			voiceEnflamed:Play("scatter")
+			specWarnEnflamed:Play("scatter")
 			yellEnflamed:Countdown(4)
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Show(8)
@@ -257,7 +244,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnSiphoned:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			specWarnSiphoned:Show(DBM_ALLY)
-			voiceSiphoned:Play("gathershare")
+			specWarnSiphoned:Play("gathershare")
 			yellSiphoned:Countdown(4)
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Show(8)
@@ -267,7 +254,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnWeightofDarkness:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			specWarnWeightOfDarkness:Show(DBM_ALLY)
-			voiceWeightOfDarkness:Play("gathershare")
+			specWarnWeightOfDarkness:Play("gathershare")
 			yellWeightOfDarkness:Yell()
 			yellWeightOfDarknessFades:Countdown(5)
 		end
@@ -278,13 +265,13 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 244054 then--Flametouched
 		if args:IsPlayer() then
 			specWarnFlameTouched:Show(self:IconNumToTexture(7))--Red X for flame (more voted on red x than orange circle)
-			voiceFlameTouched:Play("flameonyou")
+			specWarnFlameTouched:Play("flameonyou")
 			yellTouched:Yell(7, "", 7)
 		end
 	elseif spellId == 244055 then--Shadowtouched
 		if args:IsPlayer() then
 			specWarnShadowtouched:Show(self:IconNumToTexture(3))--Purple diamond for shadow
-			voiceShadowtouched:Play("shadowonyou")
+			specWarnShadowtouched:Play("shadowonyou")
 			yellTouched:Yell(3, "", 3)
 		end
 	end
@@ -320,7 +307,7 @@ end
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 228007 and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
 		specWarnGTFO:Show()
-		voiceGTFO:Play("runaway")
+		specWarnGTFO:Play("runaway")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
@@ -335,7 +322,7 @@ end
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 244159 then--Consuming Sphere
 		specWarnComsumingSphere:Show()
-		voiceConsumingSphere:Play("watchorb")
+		specWarnComsumingSphere:Play("watchorb")
 		if not self.Options.SequenceTimers or self:IsEasy() then
 			timerComsumingSphereCD:Start(self.vb.mediumTimer)
 		else

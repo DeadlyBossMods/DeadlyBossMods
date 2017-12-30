@@ -33,16 +33,6 @@ local specWarnElectroShock			= mod:NewSpecialWarningRun(240169, "Melee", nil, ni
 local specWarnMassiveEruption		= mod:NewSpecialWarningRun(242909, "Melee", nil, nil, 4, 2)
 local specWarnGTFO					= mod:NewSpecialWarningGTFO(240176, nil, nil, nil, 1, 2)
 
-local voicePolyMorphBomb			= mod:NewVoice(240735)--runout
-local voiceLunarBomb				= mod:NewVoice(241171)--runout
-local voiceEmbraceTides				= mod:NewVoice(240599)--runout
-local voiceWateryGrave				= mod:NewVoice(241362, "-Healer")--helpme? maybe targetchange instead
-local voiceShadowBoltVolley			= mod:NewVoice(243171, "HasInterrupt")--kickcast
-local voiceSeverSoul				= mod:NewVoice(239810)--runout
-local voiceElectroShock				= mod:NewVoice(240169)--runout
-local voiceMassiveEruption			= mod:NewVoice(242909)--runout
-local voiceGTFO						= mod:NewVoice(240176, nil, DBM_CORE_AUTO_VOICE4_OPTION_TEXT)--runaway
-
 mod:RemoveOption("HealthFrame")
 
 function mod:SPELL_CAST_START(args)
@@ -50,16 +40,16 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 243171 and self:CheckInterruptFilter(args.sourceGUID) then
 		specWarnShadowBoltVolley:Show(args.sourceName)
-		voiceShadowBoltVolley:Play("kickcast")
+		specWarnShadowBoltVolley:Play("kickcast")
 	elseif spellId == 239810 and self:AntiSpam(4.5, 1) then
 		specWarnSeverSoul:Show()
-		voiceSeverSoul:Play("runout")
+		specWarnSeverSoul:Play("runout")
 	elseif spellId == 240169 and self:AntiSpam(3, 2) then
 		specWarnElectroShock:Show()
-		voiceElectroShock:Play("runout")
+		specWarnElectroShock:Play("runout")
 	elseif spellId == 242909 and self:AntiSpam(3, 3) then
 		specWarnMassiveEruption:Show()
-		voiceMassiveEruption:Play("runout")
+		specWarnMassiveEruption:Play("runout")
 	end
 end
 
@@ -68,7 +58,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 241360 then
 		specWarnWateryGrave:Show()
-		voiceWateryGrave:Play("helpme")
+		specWarnWateryGrave:Play("helpme")
 	end
 end
 
@@ -78,7 +68,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 240735 then
 		if args:IsPlayer() then
 			specWarnPolyMorphBomb:Show()
-			voicePolyMorphBomb:Play("runout")
+			specWarnPolyMorphBomb:Play("runout")
 			yellPolyMorphBomb:Yell()
 		else
 			warnPolyMorphBomb:Show(args.destName)
@@ -87,7 +77,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnLunarBomb:CombinedShow(1, args.destName)
 		if args:IsPlayer() then
 			specWarnLunarBomb:Show()
-			voiceLunarBomb:Play("runout")
+			specWarnLunarBomb:Play("runout")
 			yellLunarBomb:Yell()
 		end
 	elseif spellId == 241362 then
@@ -96,7 +86,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnEmbraceTides:CombinedShow(1, args.destName)
 		if args:IsPlayer() then
 			specWarnEmbraceTides:Show()
-			voiceEmbraceTides:Play("runout")
+			specWarnEmbraceTides:Play("runout")
 			yellEmbraceTides:Yell()
 		end
 	end
@@ -107,7 +97,7 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
 	if (spellId == 240176) and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
 		specWarnGTFO:Show(spellName)
-		voiceGTFO:Play("runaway")
+		specWarnGTFO:Play("runaway")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE

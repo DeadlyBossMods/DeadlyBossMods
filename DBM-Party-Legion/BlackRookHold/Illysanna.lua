@@ -44,12 +44,6 @@ local timerVengefulShearCD			= mod:NewCDTimer(11, 197418, nil, "Tank", nil, 5, n
 local timerDarkRushCD				= mod:NewCDTimer(30, 197478, nil, nil, nil, 3)
 local timerEyeBeamCD				= mod:NewNextTimer(15.5, 197687, nil, nil, nil, 3)
 
-local voiceBrutalGlaive				= mod:NewVoice(197546)--runout
-local voiceVengefulShear			= mod:NewVoice(197418, "Tank")--defensive
-local voiceDarkRush					= mod:NewVoice(197478)--targetyou (changed from gather, because that may not be everyones strat)
-local voiceEyeBeam					= mod:NewVoice(197687)--laserrun
-local voiceBonebreakingStrike		= mod:NewVoice(197974, "Tank")--shockwave
-
 mod:AddSetIconOption("SetIconOnDarkRush", 197478, true)
 --mod:AddRangeFrameOption(5, 197546)--Range not given for Brutal Glaive
 
@@ -60,7 +54,7 @@ function mod:BrutalGlaiveTarget(targetname, uId)
 	end
 	if targetname == UnitName("player") then
 		specWarnBrutalGlaive:Show()
-		voiceBrutalGlaive:Play("runout")
+		specWarnBrutalGlaive:Play("runout")
 		yellBrutalGlaive:Yell()
 	else
 		warnBrutalGlaive:Show(targetname)
@@ -88,7 +82,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if args:IsPlayer() then
 			specWarnEyeBeam:Show()
 			yellEyeBeam:Yell()
-			voiceEyeBeam:Play("laserrun")
+			specWarnEyeBeam:Play("laserrun")
 		else
 			warnEyeBeam:Show(args.destName)
 		end
@@ -101,7 +95,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnDarkRush:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			specWarnDarkRush:Show()
-			voiceDarkRush:Play("targetyou")
+			specWarnDarkRush:Play("targetyou")
 		end
 		if self.Options.SetIconOnDarkRush then
 			self:SetAlphaIcon(0.5, args.destName, 3)
@@ -120,14 +114,14 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 197418 then
 		specWarnVengefulShear:Show()
-		voiceVengefulShear:Play("defensive")
+		specWarnVengefulShear:Play("defensive")
 		timerVengefulShearCD:Start()
 	elseif spellId == 197546 then
 		timerBrutalGlaiveCD:Start()
 		self:BossTargetScanner(98696, "BrutalGlaiveTarget", 0.1, 10, true)
 	elseif spellId == 197974 then
 		specWarnBonebreakingStrike:Show()
-		voiceBonebreakingStrike:Play("shockwave")
+		specWarnBonebreakingStrike:Play("shockwave")
 	end
 end
 

@@ -32,12 +32,6 @@ local timerMagmaWaveCD				= mod:NewCDTimer(60, 200404, nil, nil, nil, 2, nil, DB
 local countdownMagmaWave			= mod:NewCountdown(60, 200404)
 --local countdownMoltenCrash		= mod:NewCountdown("Alt28", 200732, "Tank")
 
-local voiceMoltenCrash				= mod:NewVoice(200732, "Tank")--defensive
-local voiceLandSlide				= mod:NewVoice(200700, "Tank")--shockwave
-local voiceMagmaSculptor			= mod:NewVoice(200637, "Dps")--killbigmob
-local voiceMagmaWave				= mod:NewVoice(200404)--findshelter
-local voiceBurningHatred			= mod:NewVoice(200154)--targetyou
-
 function mod:OnCombatStart(delay)
 	timerMagmaSculptorCD:Start(7.3-delay)
 	timerLandSlideCD:Start(15.8-delay)
@@ -51,22 +45,22 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 200732 then
 		specWarnMoltenCrash:Show()
-		voiceMoltenCrash:Play("defensive")
+		specWarnMoltenCrash:Play("defensive")
 		timerMoltenCrashCD:Start()
 	elseif spellId == 200551 then
 		warnCrystalSpikes:Show()
 		timerCrystalSpikesCD:Start()
 	elseif spellId == 200637 then
 		specWarnMagmaSculptor:Show()
-		voiceMagmaSculptor:Play("killbigmob")
+		specWarnMagmaSculptor:Play("killbigmob")
 		timerMagmaSculptorCD:Start()
 	elseif spellId == 200700 then
 		specWarnLandSlide:Show()
-		voiceLandSlide:Play("shockwave")
+		specWarnLandSlide:Play("shockwave")
 		timerLandSlideCD:Start()
 	elseif spellId == 200404 and self:AntiSpam(3, 1) then
 		specWarnMagmaWave:Show(GetSpellInfo(200551))
-		voiceMagmaWave:Play("findshelter")
+		specWarnMagmaWave:Play("findshelter")
 		timerMagmaWaveCD:Start()
 		countdownMagmaWave:Start()
 	end
@@ -77,7 +71,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 200732 then
 		if args:IsPlayer() then
 			specWarnBurningHatred:Show()
-			voiceBurningHatred:Play("targetyou")
+			specWarnBurningHatred:Play("targetyou")
 		else
 			warnBurningHatred:Show(args.destName)
 		end
@@ -88,7 +82,7 @@ end
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	if msg:find("spell:200404") and self:AntiSpam(3, 1) then
 		specWarnMagmaWave:Show(GetSpellInfo(200551))
-		voiceMagmaWave:Play("findshelter")
+		specWarnMagmaWave:Play("findshelter")
 		timerMagmaWaveCD:Start()
 		countdownMagmaWave:Start()
 	end

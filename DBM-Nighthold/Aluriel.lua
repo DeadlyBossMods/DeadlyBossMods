@@ -113,28 +113,6 @@ local countdownAnnihilate			= mod:NewCountdown("Alt30", 212492, "Tank")
 local countdownArmageddon			= mod:NewCountdown("AltTwo33", 213568)
 
 local voicePhaseChange				= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
-local voiceAnnihilate				= mod:NewVoice(212492, "Tank")--defensive/tauntboss
---Debuffs
-local voiceMarkOfFrost				= mod:NewVoice(212531)--scatter/??? (??? not used yet, need to determine stacks for grouping up to clear then make voice maybe that says "stand near another mark of frost" maybe?)
-local voiceFrostbitten				= mod:NewVoice(212647)--stackhigh
-local voiceSearingBrand				= mod:NewVoice(213148)--scatter/farfromline
-local voiceArcaneOrb				= mod:NewVoice(213519)--watchorb
---Detonates
-local voiceFrostDetonate			= mod:NewVoice(212735)--runout
-local voiceFireDetonate				= mod:NewVoice(213275)--runout
-local voiceArcaneDetonate			= mod:NewVoice(213390)--watchorb
---GTFOs
-local voicePoolOfFrost				= mod:NewVoice(212736)--runaway
-local voiceBurningGround			= mod:NewVoice(213278)--runaway
-local voiceArcaneFog				= mod:NewVoice(213504)--runaway
-local voiceFelStomp					= mod:NewVoice(230414)--runaway
---Animates
-local voiceAnimateFrost				= mod:NewVoice(213853)--mobsoon
-local voiceAnimateFire				= mod:NewVoice(213567)--mobsoon
-local voiceAnimateArcane			= mod:NewVoice(213564)--mobsoon
---Mythic
-local voiceDecimate					= mod:NewVoice(230504)--carefly
-local voiceFelLash					= mod:NewVoice(230403)--gathershare
 
 mod:AddRangeFrameOption("8")
 mod:AddSetIconOption("SetIconOnFrozenTempest", 213083, true, true)
@@ -170,7 +148,7 @@ end
 local function findSearingMark(self)
 	if UnitDebuff("player", SearingBrandDebuff) then
 		specWarnFireDetonate:Show()
-		voiceFireDetonate:Play("runout")
+		specWarnFireDetonate:Play("runout")
 		yellFireDetonate:Yell()
 	end
 	table.wipe(searingDetonateIcons)
@@ -218,24 +196,24 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 213853 then--Mark of Frost (Animate)
 		specWarnAnimateFrost:Show()
-		voiceAnimateFrost:Play("mobsoon")--using this trigger, mobsoon
+		specWarnAnimateFrost:Play("mobsoon")--using this trigger, mobsoon
 	elseif spellId == 213567 then--Animate: Searing Brand
 		specWarnAnimateFire:Show()
-		voiceAnimateFire:Play("mobsoon")
+		specWarnAnimateFire:Play("mobsoon")
 	elseif spellId == 213564 then--Animate: Arcane Orb
 		specWarnAnimateArcane:Show()
-		voiceAnimateArcane:Play("mobsoon")
+		specWarnAnimateArcane:Play("mobsoon")
 		if not self:IsEasy() then
 			timerArmageddon:Start()
 			countdownArmageddon:Start()
 		end
 	elseif spellId == 213852 then--Replicate: Arcane Orb
 		specWarnArcaneOrb:Show()
-		voiceArcaneOrb:Play("watchorb")
+		specWarnArcaneOrb:Play("watchorb")
 	elseif spellId == 212735 then--Detonate: Mark of Frost
 		if UnitDebuff("player", MarkOfFrostDebuff) then
 			specWarnFrostdetonate:Show()
-			voiceFrostDetonate:Play("runout")
+			specWarnFrostdetonate:Play("runout")
 			yellFrostDetonate:Yell()
 		end
 	elseif spellId == 213083 then--Frozen Tempest
@@ -248,7 +226,7 @@ function mod:SPELL_CAST_START(args)
 		local tanking, status = UnitDetailedThreatSituation("player", bossuid)
 		if tanking or (status == 3) then--Player is current target
 			specWarnAnnihilate:Show(self.vb.annihilateCount+1)
-			voiceAnnihilate:Play("defensive")
+			specWarnAnnihilate:Play("defensive")
 		end
 	elseif spellId == 230504 then
 		local targetName, uId, bossuid = self:GetBossTarget(115905)
@@ -256,7 +234,7 @@ function mod:SPELL_CAST_START(args)
 			local tanking, status = UnitDetailedThreatSituation("player", bossuid)
 			if tanking or (status == 3) then--Player is current target
 				specWarnDecimate:Show()
-				voiceDecimate:Play("carefly")
+				specWarnDecimate:Play("carefly")
 			end
 		end
 		if self.vb.lastPhase == 3 then
@@ -274,7 +252,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		local timer = felLashTimers[self.vb.felLashCount+1]
 		if timer then
 			specWarnFelLash:Schedule(timer-3)
-			voiceFelLash:Schedule(timer-3, "gathershare")
+			specWarnFelLash:ScheduleVoice(timer-3, "gathershare")
 			timerFelLashCD:Start(timer, self.vb.felLashCount+1)
 			countdownFelLash:Start(timer)
 		end
@@ -371,12 +349,12 @@ function mod:SPELL_AURA_APPLIED(args)
 			--Arcane orb not started here, started somewhere else so timer is actually useful
 			timerArcaneOrbRepCD:Start(15)
 			specWarnFelLash:Schedule(18)
-			voiceFelLash:Schedule(18, "gathershare")
+			specWarnFelLash:ScheduleVoice(18, "gathershare")
 			timerFelLashCD:Start(21, 1)
 			countdownFelLash:Start(21)
 			timerArcaneOrbDetonateCD:Start(35)--Not in combat log, So difficult to fix until transcriptor. Needs verification
 			specWarnArcaneDetonate:Schedule(35)--^^
-			voiceArcaneDetonate:Schedule(35, "watchorb")--^^
+			specWarnArcaneDetonate:ScheduleVoice(35, "watchorb")--^^
 			timerAnimateArcaneCD:Start(55)--Oddly slightly longer on mythic than others
 			timerFrostPhaseCD:Start(70)
 		else
@@ -384,7 +362,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			timerArcaneOrbRepCD:Start(15)
 			timerArcaneOrbDetonateCD:Start(35)--Not in combat log, but this is when yell occurs
 			specWarnArcaneDetonate:Schedule(35)
-			voiceArcaneDetonate:Schedule(35, "watchorb")
+			specWarnArcaneDetonate:ScheduleVoice(35, "watchorb")
 			timerAnimateArcaneCD:Start(51.9)
 			timerFrostPhaseCD:Start(70)
 		end
@@ -397,7 +375,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnMarkOfFrostChosen:CombinedShow(0.5, args.destName)
 		if args:IsPlayer() then
 			specWarnMarkOfFrost:Show()
-			voiceMarkOfFrost:Play("targetyou")
+			specWarnMarkOfFrost:Play("targetyou")
 			countdownMarkOfFrost:Start(5)
 			self:AntiSpam(7, args.destName)
 			yellMarkofFrost:Yell()
@@ -405,14 +383,14 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 212587 then
 		if args:IsPlayer() and self:AntiSpam(7, args.destName) then
 			specWarnMarkOfFrost:Show()
-			voiceMarkOfFrost:Play("targetyou")
+			specWarnMarkOfFrost:Play("targetyou")
 			yellMarkofFrost:Yell()
 		end
 	elseif spellId == 213148 then--Searing Brand (5sec Targetting Debuff)
 		warnSearingBrandChosen:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			specWarnSearingBrand:Show()
-			voiceSearingBrand:Play("scatter")
+			specWarnSearingBrand:Play("scatter")
 			countdownSearingBrand:Start()
 		end
 	elseif spellId == 213569 then--Armageddon Applied to mobs
@@ -431,14 +409,14 @@ function mod:SPELL_AURA_APPLIED(args)
 		local amount = args.amount or 1
 		if args:IsPlayer() and amount % 2 == 0 and amount >= 6 and amount ~= 8 then
 			specWarnFrostbitten:Show(amount)
-			voiceFrostbitten:Play("stackhigh")
+			specWarnFrostbitten:Play("stackhigh")
 		end
 	elseif spellId == 215458 then
 		local amount = args.amount or 1
 		if amount >= 2 then
 			if not UnitDebuff("player", args.spellName) and not args:IsPlayer() then
 				specWarnAnnihilateOther:Show(args.destName)
-				voiceAnnihilate:Play("tauntboss")
+				specWarnAnnihilateOther:Play("tauntboss")
 			else
 				warnAnnihilate:Show(args.destName, amount)
 			end
@@ -475,16 +453,16 @@ do
 	function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 		if spellId == 212736 and destGUID == playerGUID and self:AntiSpam(2, 1) then
 			specWarnPoolOfFrost:Show()
-			voicePoolOfFrost:Play("runaway")
+			specWarnPoolOfFrost:Play("runaway")
 		elseif spellId == 213278 and destGUID == playerGUID and self:AntiSpam(2, 2) then
 			specWarnBurningGround:Show()
-			voiceBurningGround:Play("runaway")
+			specWarnBurningGround:Play("runaway")
 		elseif spellId == 213504 and destGUID == playerGUID and self:AntiSpam(2, 3) then
 			specWarnArcaneFog:Show()
-			voiceArcaneFog:Play("runaway")
+			specWarnArcaneFog:Play("runaway")
 		elseif spellId == 230414 and destGUID == playerGUID and self:AntiSpam(2, 4) then
 			specWarnFelStomp:Show()
-			voiceFelStomp:Play("runaway")
+			specWarnFelStomp:Play("runaway")
 		end
 	end
 	mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
@@ -492,7 +470,7 @@ do
 	function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 		if spellId == 213520 and destGUID == playerGUID and self:AntiSpam(2, 1) then
 			specWarnArcaneFog:Show()
-			voiceArcaneFog:Play("runaway")
+			specWarnArcaneFog:Play("runaway")
 		end
 	end
 	mod.SPELL_MISSED = mod.SPELL_DAMAGE
@@ -518,10 +496,10 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
 	if spellId == 215455 then--Arcane Orb
 		specWarnArcaneOrb:Show()
-		voiceArcaneOrb:Play("watchorb")
+		specWarnArcaneOrb:Play("watchorb")
 	elseif spellId == 213390 then--Detonate: Arcane Orb (still missing from combat log, although this event is 3 seconds slower than scheduling or using yell)
 		self:ScheduleMethod(15, "ScanForMobs", 107287, 0, 8, 8, 0.1, 12, "SetIconOnBurstOfMagic")
 --		specWarnArcaneDetonate:Show()
---		voiceArcaneDetonate:Play("watchorb")
+--		specWarnArcaneDetonate:Play("watchorb")
 	end
 end

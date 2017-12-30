@@ -80,19 +80,6 @@ local countdownModes				= mod:NewCountdown(40, 206560)--All modes
 local countdownAnnihilation			= mod:NewCountdown("AltTwo20", 207630)
 local countdownArcaneSlash			= mod:NewCountdown("Alt20", 206641, "Tank")
 
-local voiceArcaneSeepage			= mod:NewVoice(206488)--runaway
-local voiceArcaneSlash				= mod:NewVoice(206641, "Tank", nil, 2)--tauntboss
---Cleaner
-local voiceSterilize				= mod:NewVoice(208499)--scatter (runout better?)
-local voiceCleansingRage			= mod:NewVoice(206820)--aesoon
---Maniac
-local voiceArcingBonds				= mod:NewVoice(208915)--linegather
-local voiceAnnihilation				= mod:NewVoice(207630)--stilldanger
-local voiceEchoDuder				= mod:NewVoice(214880)--bigmob
-
---Caretaker
-local voiceTidyUp					= mod:NewVoice(207513)--mobsoon/watchstep
-
 mod:AddRangeFrameOption(12, 208506)
 mod:AddInfoFrameOption(214573, false)
 mod:AddNamePlateOption("NPAuraOnCleansing", 207327)
@@ -157,19 +144,19 @@ function mod:SPELL_CAST_START(args)
 		timerToxicSliceCD:Start(17, "echo")
 	elseif spellId == 207513 then--Tidy Up (Caretaker Mode)
 		specWarnTidyUp:Show()
-		voiceTidyUp:Play("mobsoon")
-		voiceTidyUp:Schedule(1.5, "watchstep")
+		specWarnTidyUp:Play("mobsoon")
+		specWarnTidyUp:ScheduleVoice(1.5, "watchstep")
 	elseif spellId == 207502 then--Succulent Feast (Caretaker Mode)
 		warnSucculentFeast:Show()
 	elseif spellId == 206641 then
 		specWarnArcanoSlash:Show()
-		voiceArcaneSlash:Play("defensive")
+		specWarnArcanoSlash:Play("defensive")
 	elseif spellId == 214672 then--Imprint Annihilation
 		specWarnAnnihilation:Show()
-		voiceAnnihilation:Play("stilldanger")
+		specWarnAnnihilation:Play("stilldanger")
 	elseif spellId == 206820 then
 		specWarnCleansingRage:Show()
-		voiceCleansingRage:Play("aesoon")
+		specWarnCleansingRage:Play("aesoon")
 	end
 end
 
@@ -231,7 +218,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnSterilize:CombinedShow(0.5, args.destName)
 		if args:IsPlayer() then
 			specWarnSterilize:Show()
-			voiceSterilize:Play("scatter")
+			specWarnSterilize:Play("scatter")
 			yellSterilize:Yell()
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Show(12)
@@ -241,7 +228,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnArcingBonds:CombinedShow(0.5, args.destName)
 		if args:IsPlayer() then
 			specWarnArcingBonds:Show()
-			voiceArcingBonds:Play("linegather")
+			specWarnArcingBonds:Play("linegather")
 		end
 	elseif spellId == 206641 then
 		local amount = args.amount or 1
@@ -260,7 +247,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				end
 				if warnPlayer then
 					specWarnArcanoSlashTaunt:Show(args.destName)
-					voiceArcaneSlash:Play("tauntboss")
+					specWarnArcanoSlashTaunt:Play("tauntboss")
 				end
 			end
 		else
@@ -294,7 +281,7 @@ end
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 206488 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
 		specWarnArcaneSeepage:Show()
-		voiceArcaneSeepage:Play("runaway")
+		specWarnArcaneSeepage:Play("runaway")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
@@ -309,11 +296,11 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 			if cid == 108144 then--Maniac Imprint
 				local name = GetSpellInfo(206557)
 				specWarnEchoDuder:Show(name)
-				voiceEchoDuder:Play("bigmob")
+				specWarnEchoDuder:Play("bigmob")
 			elseif cid == 108303 then--Caretaker Imprint
 				local name = GetSpellInfo(206560)
 				specWarnEchoDuder:Show(name)
-				voiceEchoDuder:Play("bigmob")
+				specWarnEchoDuder:Play("bigmob")
 				timerToxicSliceCD:Start(16, "echo")
 			end
 		end
@@ -333,7 +320,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
 	if spellId == 207620 then--Annihilation pre cast, faster than combat log
 		specWarnAnnihilation:Show()
-		voiceAnnihilation:Play("farfromline")
+		specWarnAnnihilation:Play("farfromline")
 		timerArcaneSlashCD:Stop()
 		countdownArcaneSlash:Cancel()
 	end

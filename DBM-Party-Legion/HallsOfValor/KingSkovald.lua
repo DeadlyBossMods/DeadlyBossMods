@@ -31,10 +31,6 @@ local timerRushCD					= mod:NewCDTimer(11, 193659, nil, nil, nil, 3)--11-13 unle
 local timerSavageBladeCD			= mod:NewCDTimer(19, 193668, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--23 unless delayed by claim aegis or ragnarok
 local timerRagnarokCD				= mod:NewCDTimer(51, 193826, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)--60 now? or maybe health based?
 
-local voiceSavageBlade				= mod:NewVoice(193668, "Tank")--defensive
-local voiceRagnarok					= mod:NewVoice(193826)--findshield
-local voiceFlames					= mod:NewVoice(193702)--runaway
-
 function mod:FelblazeRushTarget(targetname, uId)
 	if not targetname then return end
 	warnFelblazeRush:Show(targetname)
@@ -86,7 +82,7 @@ function mod:SPELL_CAST_START(args)
 		--end
 	elseif spellId == 193668 then
 		specWarnSavageBlade:Show()
-		voiceSavageBlade:Play("defensive")
+		specWarnSavageBlade:Play("defensive")
 		local elapsed, total = timerRagnarokCD:GetTime()
 		local remaining = total - elapsed
 		if remaining < 20 then
@@ -96,7 +92,7 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 193826 then
 		specWarnRagnarok:Show(SHIELDSLOT)
-		voiceRagnarok:Play("findshield")
+		specWarnRagnarok:Play("findshield")
 		timerRushCD:Stop()
 		timerSavageBladeCD:Stop()
 		timerSavageBladeCD:Start(12)
@@ -108,7 +104,7 @@ end
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 193702 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
 		specWarnFlames:Show()
-		voiceFlames:Play("runaway")
+		specWarnFlames:Play("runaway")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE

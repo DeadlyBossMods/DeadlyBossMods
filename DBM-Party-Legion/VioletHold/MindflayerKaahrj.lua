@@ -26,10 +26,6 @@ local specWarnEternalDarkness		= mod:NewSpecialWarningSwitch(201153, "-Healer", 
 --local timerShadowCrashCD			= mod:NewCDTimer(8.7, 201920, nil, nil, nil, 3)--8-23 second variation, no thank you.
 --local timerEternalDarknessCD		= mod:NewCDTimer(37.5, 201153, nil, nil, nil, 1)
 
-local voiceDoom						= mod:NewVoice(201148, "Tank")--defensive
-local voiceHysteria					= mod:NewVoice(201146, "Healer")--dispelnow
-local voiceEternalDarkness			= mod:NewVoice(201153, "-Healer")--mobkill
-
 function mod:OnCombatStart(delay)
 --	timerEternalDarknessCD:Start(14-delay)--Maybe not a timer?
 end
@@ -38,7 +34,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 201146 then
 		specWarnHysteria:Show(args.destName)
-		voiceHysteria:Play("dispelnow")
+		specWarnHysteria:Play("dispelnow")
 	end
 end
 
@@ -49,10 +45,10 @@ function mod:SPELL_CAST_START(args)
 --		timerShadowCrashCD:Start()
 	elseif spellId == 201153 then
 		specWarnEternalDarkness:Show()
-		voiceEternalDarkness:Play("mobkill")
+		specWarnEternalDarkness:Play("mobkill")
 --		timerEternalDarknessCD:Start()
 	elseif spellId == 201148 then
 		specWarnDoom:Show()
-		voiceDoom:Play("defensive")
+		specWarnDoom:Play("defensive")
 	end
 end

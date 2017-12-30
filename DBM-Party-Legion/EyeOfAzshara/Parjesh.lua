@@ -26,11 +26,6 @@ local specWarnRestoration			= mod:NewSpecialWarningInterrupt(197502, "HasInterru
 local timerHatecoilCD				= mod:NewCDTimer(28, 192072, nil, nil, nil, 1)--Review more for sequence
 local timerSpearCD					= mod:NewCDTimer(28, 192094, nil, nil, nil, 3)
 
-local voiceReinforcements			= mod:NewVoice(196563)--bigmobsoon
-local voiceCrashingwave				= mod:NewVoice(191900)--chargemove
-local voiceImpalingSpear			= mod:NewVoice(192094)--192094 (run behind add)
-local voiceRestoration				= mod:NewVoice(197502, "HasInterrupt")--kickcast
-
 function mod:OnCombatStart(delay)
 	timerHatecoilCD:Start(3-delay)
 	timerSpearCD:Start(28-delay)
@@ -43,7 +38,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnImpalingSpear:Show(DBM_ADDS)
 			yellImpalingSpear:Yell()
-			voiceImpalingSpear:Play("192094")
+			specWarnImpalingSpear:Play("192094")
 		else
 			warnImpalingSpear:Show(args.destName)
 		end
@@ -54,21 +49,21 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 192073 and self:IsNormal() then--Caster mob
 		specWarnReinforcements:Show()
-		voiceReinforcements:Play("bigmobsoon")
+		specWarnReinforcements:Play("bigmobsoon")
 		timerHatecoilCD:Start(20)
 	elseif spellId == 192072 and self:IsNormal() then--Melee mob
 		specWarnReinforcements:Show()
-		voiceReinforcements:Play("bigmobsoon")
+		specWarnReinforcements:Play("bigmobsoon")
 		timerHatecoilCD:Start(33)
 	elseif spellId == 196563 then--Both of them (heroic+)
 		specWarnReinforcements:Show()
-		voiceReinforcements:Play("bigmobsoon")
+		specWarnReinforcements:Play("bigmobsoon")
 		timerHatecoilCD:Start()
 	elseif spellId == 197502 then
 		specWarnRestoration:Show(args.sourceName)
-		voiceRestoration:Play("kickcast")
+		specWarnRestoration:Play("kickcast")
 	elseif spellId == 191900 then
 		specWarnCrashingwave:Show()
-		voiceCrashingwave:Play("chargemove")
+		specWarnCrashingwave:Play("chargemove")
 	end
 end

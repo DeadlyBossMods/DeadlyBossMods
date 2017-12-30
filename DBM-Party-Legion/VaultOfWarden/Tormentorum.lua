@@ -28,10 +28,6 @@ local timerTormOrbCD			= mod:NewNextTimer(15, 212567, nil, nil, nil, 1)
 
 local countSapSoul				= mod:NewCountdown(21.5, 200905, true, 2)
 
-local voiceSapSoul				= mod:NewVoice(200905, true, nil, 2)--Kickcast
-local voiceFear					= mod:NewVoice(201488)--fearsoon
-local voiceStare				= mod:NewVoice(212564)--targetyou
-
 function mod:OnCombatStart(delay)
 	timerSapSoulCD:Start(13-delay)--Might be 10-13?
 	countSapSoul:Start(13-delay)
@@ -44,7 +40,7 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 201488 then
 		specWarnFear:Show()
-		voiceFear:Play("fearsoon")
+		specWarnFear:Play("fearsoon")
 	elseif spellId == 200898 then
 		warnTeleport:Show()
 	end
@@ -56,12 +52,12 @@ function mod:SPELL_CAST_SUCCESS(args)
 		countSapSoul:Cancel()--Just in case
 		if self:IsHard() then--Mythic and mythic + only
 			specWarnSapSoulHard:Show()
-			voiceSapSoul:Play("stopcast")
+			specWarnSapSoulHard:Play("stopcast")
 			timerSapSoulCD:Start(15.4)
 			countSapSoul:Start(15.4)
 		else--Everything else
 			specWarnSapSoul:Show(args.sourceName)
-			voiceSapSoul:Play("kickcast")
+			specWarnSapSoul:Play("kickcast")
 			timerSapSoulCD:Start()
 			countSapSoul:Start()
 		end
@@ -72,7 +68,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 212564 and args:IsPlayer() and self:AntiSpam(3, 1) then
 		specWarnStare:Show()
-		voiceStare:Play("targetyou")
+		specWarnStare:Play("targetyou")
 	end	
 end
 

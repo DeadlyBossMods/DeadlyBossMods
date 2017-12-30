@@ -77,16 +77,7 @@ local countdownSpearOfNightmares	= mod:NewCountdown("Alt18", 214529, "Melee", 2)
 ----Forces of Nightmare
 
 --Cenarius
-local voiceCreepingNightmares		= mod:NewVoice(210279)--stackhigh
-local voiceNightmareBrambles		= mod:NewVoice(210290)--runout/watchstep
 local voicePhaseChange				= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
-local voiceForcesOfNightmare		= mod:NewVoice(212726)--mobsoon
-local voiceNightmareBlast			= mod:NewVoice(213162, "Tank")--defensive/tauntboss
-local voiceSpearOfNightmares		= mod:NewVoice(214529, "Melee", nil, 2)--defensive/tauntboss
-local voiceBeasts					= mod:NewVoice(214876)--watchstep
-----Forces of Nightmare
-local voiceTouchOfLife				= mod:NewVoice(211368)--kickcast/dispelnow
-local voiceScornedTouch				= mod:NewVoice(211471)--runout
 
 mod:AddRangeFrameOption(8, 211471)
 mod:AddSetIconOption("SetIconOnWisps", "ej13348", false, true)
@@ -146,7 +137,7 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 212726 then
 		self.vb.addsCount = self.vb.addsCount + 1
 		specWarnForcesOfNightmare:Show(self.vb.addsCount)
-		voiceForcesOfNightmare:Play("mobsoon")
+		specWarnForcesOfNightmare:Play("mobsoon")
 		timerForcesOfNightmareCD:Start(nil, self.vb.addsCount+1)
 		countdownForcesOfNightmare:Start()
 	elseif spellId == 212630 or spellId == 214249 then--214249 is phase 2
@@ -161,7 +152,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 211368 then
 		if self:CheckInterruptFilter(args.sourceGUID) then
 			specWarnTouchofLife:Show(args.sourceName)
-			voiceTouchOfLife:Play("kickcast")
+			specWarnTouchofLife:Play("kickcast")
 		end
 		if self:IsEasy() then
 			timerTouchofLifeCD:Start(15, args.sourceGUID)
@@ -175,11 +166,11 @@ function mod:SPELL_CAST_START(args)
 		local tanking, status = UnitDetailedThreatSituation("player", bossuid)
 		if tanking or (status == 3) then--Player is current target
 			specWarnSpearOfNightmares:Show()
-			voiceSpearOfNightmares:Play("defensive")
+			specWarnSpearOfNightmares:Play("defensive")
 		end
 		if self:IsMeleeDps() and self:IsMythic() then
 			specWarnSpearOfNightmaresMelee:Show()
-			voiceSpearOfNightmares:Play("runout")
+			specWarnSpearOfNightmaresMelee:Play("runout")
 		end
 	elseif spellId == 213162 then
 		timerNightmareBlastCD:Start()
@@ -188,11 +179,11 @@ function mod:SPELL_CAST_START(args)
 		local tanking, status = UnitDetailedThreatSituation("player", bossuid)
 		if tanking or (status == 3) then--Player is current target
 			specWarnNightmareBlast:Show()
-			voiceNightmareBlast:Play("defensive")
+			specWarnNightmareBlast:Play("defensive")
 		else
 			if self:GetNumAliveTanks() >= 3 and not self:CheckNearby(30, targetName) then return end--You are not near current tank, you're probably 3rd tank on Adds that never taunts nightmare blast
 			specWarnNightmareBlastOther:Schedule(2, targetName)
-			voiceNightmareBlast:Schedule(2, "tauntboss")
+			specWarnNightmareBlastOther:ScheduleVoice(2, "tauntboss")
 		end
 	end
 end
@@ -202,7 +193,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if spellId == 214529 and not args:IsPlayer() then
 		if self:GetNumAliveTanks() >= 3 and not self:CheckNearby(21, args.destName) then return end--You are not near current tank, you're probably 3rd tank on Adds that never taunts nightmare blast
 		specWarnSpearOfNightmaresOther:Show(args.destName)
-		voiceSpearOfNightmares:Play("tauntboss")
+		specWarnSpearOfNightmaresOther:Play("tauntboss")
 	elseif spellId == 211471 and self:AntiSpam(5, 1) then
 		timerScornedTouchCD:Start(nil, args.sourceGUID)
 	elseif spellId == 212726 then
@@ -217,11 +208,11 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 210346 then
 --		specWarnDreadThorns:Show()
---		voiceDreadThorns:Play("bossout")
+--		specWarnDreadThorns:Play("bossout")
 	elseif spellId == 211368 then
 		specWarnTouchofLifeDispel:Show(args.destName)
 		if self.Options.SpecWarn211368dispel then
-			voiceTouchOfLife:Play("dispelnow")
+			specWarnTouchofLifeDispel:Play("dispelnow")
 		end
 	elseif spellId == 211471 then--Original casts only. Jumps can't be warned this way as of 04-01-16 Testing
 		warnScornedTouch:CombinedShow(0.5, args.destName)
@@ -235,7 +226,7 @@ function mod:SPELL_AURA_APPLIED_DOSE(args)
 		if amount % 4 == 0 then--Every 4
 			if amount >= 16 then--Starting at 16
 				specWarnCreepingNightmares:Show(amount)
-				voiceCreepingNightmares:Play("stackhigh")
+				specWarnCreepingNightmares:Play("stackhigh")
 			end
 		end
 	end
@@ -300,10 +291,10 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		if UnitIsUnit("player", uId.."target") then
 			specWarnNightmareBramblesNear:Show(YOU)
 			yellNightmareBrambles:Yell()
-			voiceNightmareBrambles:Play("runout")
+			specWarnNightmareBramblesNear:Play("runout")
 		elseif self:CheckNearby(8, targetName) then
 			specWarnNightmareBramblesNear:Show(targetName)
-			voiceNightmareBrambles:Play("watchstep")
+			specWarnNightmareBramblesNear:Play("watchstep")
 		else
 			warnNightmareBrambles:Show(targetName)
 		end
@@ -332,7 +323,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		timerEntanglingNightmareCD:Start()
 	elseif spellId == 214876 then
 		specWarnBeastsOfNightmare:Show()
-		voiceBeasts:Play("watchstep")
+		specWarnBeastsOfNightmare:Play("watchstep")
 		timerBeastsOfNightmareCD:Start()
 	end
 end
@@ -345,7 +336,7 @@ do
 		local hasDebuff = UnitDebuff("player", debuffName)
 		if hasDebuff and not scornedWarned then
 			specWarnScornedTouch:Show()
-			voiceScornedTouch:Play("runout")
+			specWarnScornedTouch:Play("runout")
 			yellScornedTouch:Yell()
 			scornedWarned = true
 			if self.Options.RangeFrame then

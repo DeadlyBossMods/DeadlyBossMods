@@ -106,28 +106,6 @@ local countdownTitans					= mod:NewCountdown(85, "ej16138")
 local countdownFulminatingPulse			= mod:NewCountdown("Alt57", 253520, "Healer")
 --Asara, Mother of Night
 local countdownStormofDarkness			= mod:NewCountdown("AltTwo57", 252861)
---Diima, Mother of Gloom
---Thu'raya, Mother of the Cosmos (Mythic)
---Torment of the Titans
-
---General
---local voiceGTFO						= mod:NewVoice(238028, nil, DBM_CORE_AUTO_VOICE4_OPTION_TEXT)--runaway
---Noura, Mother of Flames
-local voiceFieryStrike					= mod:NewVoice(244899)--tauntboss/stackhigh
-local voiceFulminatingPulse				= mod:NewVoice(253520)--runout
---Asara, Mother of Night
---local voiceTouchofDarkness				= mod:NewVoice(245303, "HasInterrupt")--kickcast
-local voiceShadowBlades					= mod:NewVoice(246329)--watchstep?
-local voiceStormofDarkness				= mod:NewVoice(252861)--findshelter
---Diima, Mother of Gloom
-local voiceFlashfreeze					= mod:NewVoice(245518)--tauntboss
-local voiceChilledBlood					= mod:NewVoice(245586, "Healer")--healall?
-local voicOrbofFrost					= mod:NewVoice(253650)--161411 (run away from ice orb)
---Thu'raya, Mother of the Cosmos (Mythic)
-local voiceTouchoftheCosmos				= mod:NewVoice(250648, "HasInterrupt")--kickcast
-local voiceCosmicGlare					= mod:NewVoice(250757)--runout
---Torment of the Titans
-local voiceTormentofTitans				= mod:NewVoice("ej16138")--killmob/runtoedge/scatter/watchstep
 
 mod:AddSetIconOption("SetIconOnFulminatingPulse2", 253520, false)
 mod:AddSetIconOption("SetIconOnChilledBlood2", 245586, false)
@@ -203,12 +181,12 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 252861 then
 		self.vb.stormCount = self.vb.stormCount + 1
 		specWarnStormofDarkness:Show(self.vb.stormCount)
-		voiceStormofDarkness:Play("findshelter")
+		specWarnStormofDarkness:Play("findshelter")
 		timerStormofDarknessCD:Start(56.8, self.vb.stormCount+1)
 		countdownStormofDarkness:Start(56.8)
 	elseif spellId == 253650 then
 		specWarnOrbofFrost:Show()
-		voicOrbofFrost:Play("161411")
+		specWarnOrbofFrost:Play("161411")
 		timerOrbofFrostCD:Start()
 	elseif spellId == 250095 and self:AntiSpam(3, 1) then
 		timerMachinationsofAman:Start()
@@ -221,13 +199,13 @@ function mod:SPELL_CAST_START(args)
 		if self:CheckInterruptFilter(args.sourceGUID) then
 --			local kickCount = self.vb.pangCount
 			specWarnTouchoftheCosmos:Show(args.sourceName)
-			voiceTouchoftheCosmos:Play("kickcast")
+			specWarnTouchoftheCosmos:Play("kickcast")
 --[[		if kickCount == 1 then
-				voiceTouchoftheCosmos:Play("kick1r")
+				specWarnTouchoftheCosmos:Play("kick1r")
 			elseif kickCount == 2 then
-				voiceTouchoftheCosmos:Play("kick2r")
+				specWarnTouchoftheCosmos:Play("kick2r")
 			elseif kickCount == 3 then
-				voiceTouchoftheCosmos:Play("kick3r")
+				specWarnTouchoftheCosmos:Play("kick3r")
 			end--]]
 		end
 	end
@@ -244,7 +222,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		countdownFulminatingPulse:Start(40.5)
 	elseif spellId == 245532 and self:AntiSpam(3, 2) then
 		timerChilledBloodCD:Start()
-		voiceChilledBlood:Play("healall")
+		specWarnChilledBlood:Play("healall")
 	elseif (spellId == 250335 or spellId == 250333 or spellId == 250334 or spellId == 249793) then--Torment selections
 		countdownTitans:Start()
 		if spellId == 250335 then--Machinations of Aman'Thul
@@ -258,7 +236,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		end
 	elseif spellId == 246329 then--Shadow Blades
 		specWarnShadowBlades:Show()
-		voiceShadowBlades:Play("watchstep")
+		specWarnShadowBlades:Play("watchstep")
 		timerShadowBladesCD:Start()
 	end
 end
@@ -272,11 +250,11 @@ function mod:SPELL_AURA_APPLIED(args)
 			if amount >= 3 then--Lasts 30 seconds, unknown reapplication rate, fine tune!
 				if args:IsPlayer() then--At this point the other tank SHOULD be clear.
 					specWarnFieryStrike:Show(amount)
-					voiceFieryStrike:Play("stackhigh")
+					specWarnFieryStrike:Play("stackhigh")
 				else--Taunt as soon as stacks are clear, regardless of stack count.
 					if not UnitIsDeadOrGhost("player") and not UnitDebuff("player", args.spellName) then
 						specWarnFieryStrikeOther:Show(args.destName)
-						voiceFieryStrike:Play("tauntboss")
+						specWarnFieryStrikeOther:Play("tauntboss")
 					else
 						warnFieryStrike:Show(args.destName, amount)
 					end
@@ -289,7 +267,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnFulminatingPulse:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			specWarnFulminatingPulse:Show()
-			voiceFulminatingPulse:Play("runout")
+			specWarnFulminatingPulse:Play("runout")
 			yellFulminatingPulse:Countdown(10)
 		end
 		if self.Options.SetIconOnFulminatingPulse2 then
@@ -306,11 +284,11 @@ function mod:SPELL_AURA_APPLIED(args)
 			if amount >= 3 then--Lasts 30 seconds, unknown reapplication rate, fine tune!
 				if args:IsPlayer() then--At this point the other tank SHOULD be clear.
 					specWarnFlashfreeze:Show(amount)
-					voiceFlashfreeze:Play("stackhigh")
+					specWarnFlashfreeze:Play("stackhigh")
 				else--Taunt as soon as stacks are clear, regardless of stack count.
 					if not UnitIsDeadOrGhost("player") and not UnitDebuff("player", args.spellName) then
 						specWarnFlashfreezeOther:Show(args.destName)
-						voiceFlashfreeze:Play("tauntboss")
+						specWarnFlashfreezeOther:Play("tauntboss")
 					else
 						warnFlashFreeze:Show(args.destName, amount)
 					end
@@ -343,7 +321,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnCosmicGlare:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			specWarnCosmicGlare:Show()
-			voiceCosmicGlare:Play("runout")
+			specWarnCosmicGlare:Play("runout")
 			yellCosmicGlare:Yell()
 			yellCosmicGlareFades:Countdown(4)
 		end
@@ -397,7 +375,7 @@ end
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 228007 and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
 		specWarnGTFO:Show()
-		voiceGTFO:Play("runaway")
+		specWarnGTFO:Play("runaway")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
@@ -428,15 +406,15 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		specWarnTormentofTitans:Show()
 		if spellId == 259068 then--Torment of Aman'Thul
 			self.vb.MachinationsLeft = 4
-			voiceTormentofTitans:Play("killmob")
+			specWarnTormentofTitans:Play("killmob")
 		elseif spellId == 259066 then--Torment of Khaz'goroth
-			voiceTormentofTitans:Play("runtoedge")
-			voiceTormentofTitans:Schedule(1, "killmob")
+			specWarnTormentofTitans:Play("runtoedge")
+			specWarnTormentofTitans:ScheduleVoice(1, "killmob")
 		elseif spellId == 259069 then--Torment of Norgannon
-			voiceTormentofTitans:Play("watchstep")
+			specWarnTormentofTitans:Play("watchstep")
 		elseif spellId == 259070 then--Torment of Golganneth
-			voiceTormentofTitans:Play("scatter")
-			voiceTormentofTitans:Schedule(1, "killmob")
+			specWarnTormentofTitans:Play("scatter")
+			specWarnTormentofTitans:ScheduleVoice(1, "killmob")
 		end
 		if not titanCount[name] then
 			titanCount[name] = 1

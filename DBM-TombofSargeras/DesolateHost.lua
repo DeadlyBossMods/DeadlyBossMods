@@ -89,18 +89,6 @@ local berserkTimer					= mod:NewBerserkTimer(480)
 local countdownSunderingDoom		= mod:NewCountdown(24.4, 236542)
 local countdownDoomedSundering		= mod:NewCountdown(24.4, 236544)
 
---Corporeal Realm
-local voiceSpearofAnguish			= mod:NewVoice(235924)--runout
-local voiceTormentingCries			= mod:NewVoice(238018)--targetyou (another generic until I know what to do with these). Might be a "keepmove" event
---Spirit Realm
-local voiceSoulbind					= mod:NewVoice(236459)--targetyou (should give at least one of the players "switchphase" but not both of them)
-local voiceWither					= mod:NewVoice(236138)--switchphase
-local voiceShatteringScream			= mod:NewVoice(235969)--getboned (kinda close enough? maybe custom new one later)
-local voiceWailingSouls				= mod:NewVoice(236072)--aesoon
-
-local voiceSunderingDoom			= mod:NewVoice(236542)--gathershare/justrun
-local voiceDoomedSunderin			= mod:NewVoice(236544)--gathershare/justrun
-
 mod:AddSetIconOption("SoulIcon", 236459, true)
 mod:AddInfoFrameOption(235621, true)
 mod:AddRangeFrameOption(10, 236459)
@@ -222,20 +210,20 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 236542 then--Sundering Doom (regular realm soaks)
 		if UnitBuff("player", spiritRealm) or UnitDebuff("player", spiritRealm) then--Figure out which it is
 			specWarnSunderingDoomRun:Show()
-			voiceSunderingDoom:Play("justrun")
+			specWarnSunderingDoomRun:Play("justrun")
 		else
 			specWarnSunderingDoomGather:Show(BOSS)
-			voiceSunderingDoom:Play("gathershare")
+			specWarnSunderingDoomGather:Play("gathershare")
 		end
 		timerSunderingDoomCD:Start()
 		countdownSunderingDoom:Start()
 	elseif spellId == 236544 then--Doomed Sunering (spirit realm soaks)
 		if UnitBuff("player", spiritRealm) or UnitDebuff("player", spiritRealm) then--Figure out which it is
 			specWarnDoomedSunderingGather:Show(BOSS)
-			voiceDoomedSunderin:Play("gathershare")
+			specWarnDoomedSunderingGather:Play("gathershare")
 		else
 			specWarnDoomedSunderingRun:Show()
-			voiceDoomedSunderin:Play("justrun")
+			specWarnDoomedSunderingRun:Play("justrun")
 		end
 		timerDoomedSunderingCD:Start()
 		countdownDoomedSundering:Start()
@@ -246,9 +234,9 @@ function mod:SPELL_CAST_START(args)
 		specWarnWailingSouls:Show(self.vb.wailingSoulsCast)
 		--In normal realm, and boss is above 35%, getting adds
 		if not (UnitBuff("player", spiritRealm) or UnitDebuff("player", spiritRealm)) and UnitHealth("boss1") / UnitHealthMax("boss1") * 100 >= 35 then
-			voiceWailingSouls:Play("killmob")
+			specWarnWailingSouls:Play("killmob")
 		else--Down below, or boss not 35%, not getting adds
-			voiceWailingSouls:Play("aesoon")
+			specWarnWailingSouls:Play("aesoon")
 		end
 	end
 end
@@ -277,12 +265,12 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 236542 then--Sundering Doom Finished (doomed sundering, soaked by spirit realm is next)
 		if UnitBuff("player", spiritRealm) or UnitDebuff("player", spiritRealm) then--Figure out which it is
 			specWarnDoomedSunderingTaunt:Show(BOSS)
-			voiceDoomedSunderin:Play("tauntboss")
+			specWarnDoomedSunderingTaunt:Play("tauntboss")
 		end
 	elseif spellId == 236544 then--Doomed Sundering Finished (sundring doom, soaked by regular realm is next)
 		if not (UnitBuff("player", spiritRealm) or UnitDebuff("player", spiritRealm)) then--Figure out which it is
 			specWarnSunderingDoomTaunt:Show(BOSS)
-			voiceSunderingDoom:Play("tauntboss")
+			specWarnSunderingDoomTaunt:Play("tauntboss")
 		end
 --	elseif spellId ==  236138 or spellId == 236131 then
 		--timerWitherCD:Start()
@@ -297,7 +285,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnSoulbind:CombinedShow(0.5, args.destName)
 		if args:IsPlayer() then
 			specWarnSoulbind:Show()
-			voiceSoulbind:Play("targetyou")
+			specWarnSoulbind:Play("targetyou")
 			yellSoulbind:Yell()
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Show(10)
@@ -316,13 +304,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerSpearofAnquishCD:Start(nil, self.vb.spearCast+1)
 		if args:IsPlayer() then
 			specWarnSpearofAnguish:Show()
-			voiceSpearofAnguish:Play("runout")
+			specWarnSpearofAnguish:Play("runout")
 			yellSpearofAnguish:Countdown(6)
 		end
 	elseif spellId == 238018 then
 		if args:IsPlayer() then
 			specWarnTormentingCries:Show()
-			voiceTormentingCries:Play("targetyou")
+			specWarnTormentingCries:Play("targetyou")
 			yellTormentingCries:Yell()
 		else
 			warnTormentingCries:Show(args.destName)
@@ -345,16 +333,16 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnWither:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			specWarnWither:Show()
-			voiceWither:Play("switchphase")
+			specWarnWither:Play("switchphase")
 		end
 	elseif spellId == 235969 then
 		if args:IsPlayer() and self:AntiSpam(5, 2) then
 			if self.vb.boneArmorCount > 0 then
 				specWarnShatteringScreamAdd:Show(boneArmor)
-				voiceShatteringScream:Play("getboned")
+				specWarnShatteringScreamAdd:Play("getboned")
 			else
 				specWarnShatteringScream:Show()
-				voiceShatteringScream:Play("scatter")
+				specWarnShatteringScream:Play("scatter")
 			end
 		end
 		if self.vb.boneArmorCount > 0 then
@@ -424,22 +412,6 @@ function mod:UNIT_DIED(args)
 		berserkTimer:Cancel()
 	end
 end
-
---[[
-function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
-	if spellId == 228007 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
---		specWarnDancingBlade:Show()
---		voiceDancingBlade:Play("runaway")
-	end
-end
-mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
-
-function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
-	if msg:find("spell:228162") then
-
-	end
-end
---]]
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)

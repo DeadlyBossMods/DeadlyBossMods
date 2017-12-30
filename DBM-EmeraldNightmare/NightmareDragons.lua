@@ -44,7 +44,6 @@ local warnEssenceOfCorruption		= mod:NewSpellAnnounce(205298, 2)
 --Lethon
 local warnGloom						= mod:NewSpellAnnounce(205329, 2)
 local warnShadowBurst				= mod:NewTargetAnnounce(204040, 3)
---Taerar
 
 --All
 local specWarnMark					= mod:NewSpecialWarningStack("ej12809", nil, 7, nil, 2, 1, 6)
@@ -90,30 +89,8 @@ local timerShadesOfTaerarCD			= mod:NewNextTimer(48.5, 204100, nil, "-Healer", n
 local timerSeepingFogCD				= mod:NewCDTimer(15.5, 205341, nil, false, 2, 3, 24814)--Spawn pretty often, and timers don't help dodge, so now off by default
 local timerBellowingRoarCD			= mod:NewCDTimer(44.5, 204078, 118699, nil, nil, 2)--Air
 
---Ysondre
---local countdownMagicFire			= mod:NewCountdownFades(11.5, 162185)
---Emeriss
---Lethon
 --Taerar
 local countdownShadesOfTaerar		= mod:NewCountdown(48.5, 204100, "Tank")
-
---All
-local voiceMark						= mod:NewVoice("ej12809")--stackhigh
---Ysondre
---local voiceNightmareBlast			= mod:NewVoice(203153)--169613 (run over theh flower?)
---local voiceDefiledSpirit			= mod:NewVoice(207573)--watchstep
-local voiceDefiledVines				= mod:NewVoice(207573, "Healer")--helpdispel
-local voiceLumberingMindgorger		= mod:NewVoice("ej13460", "-Dps")--bigmob
-local voiceCollapsingNightmare		= mod:NewVoice(214540, "HasInterrupt")--kickcast
---Emeriss
-local voiceVolatileInfection		= mod:NewVoice(203787)--scatter
-local voiceCorruption				= mod:NewVoice(205300, "HasInterrupt")--kickcast
-local voiceCorruptedBurst			= mod:NewVoice(203817, "Melee")--watchstep
---Lethon
-local voiceSiphonSpirit				= mod:NewVoice(203817, "Dps")--killspirit
---Taerar
-local voiceShadesOfTaerar			= mod:NewVoice(203817, "Tank")--mobsoon
-local voiceBellowingRoar			= mod:NewVoice(204078)--fearsoon
 
 mod:AddRangeFrameOption(10, 203787)
 mod:AddSetIconOption("SetIconOnInfection", 203787, false)
@@ -274,24 +251,24 @@ function mod:SPELL_CAST_START(args)
 		self:SendSync("DefiledSpirit")
 	elseif spellId == 205300 and self:CheckInterruptFilter(args.sourceGUID) then
 		specWarnCorruption:Show(args.sourceName)
-		voiceCorruption:Play("kickcast")
+		specWarnCorruption:Play("kickcast")
 	elseif spellId == 214540 and self:CheckInterruptFilter(args.sourceGUID) then
 		specWarnCollapsingNightmare:Show(args.sourceName)
-		voiceCollapsingNightmare:Play("kickcast")
+		specWarnCollapsingNightmare:Play("kickcast")
 	elseif spellId == 203817 and self:AntiSpam(5, 6) then
 		specWarnCorruptedBurst:Show()
-		voiceCorruptedBurst:Play("watchstep")
+		specWarnCorruptedBurst:Play("watchstep")
 	elseif spellId == 203888 then
 		specWarnSiphonSpirit:Show()
-		voiceSiphonSpirit:Play("killspirit")
+		specWarnSiphonSpirit:Play("killspirit")
 		self:SendSync("SiphonSpirit")
 	elseif spellId == 204100 then
 		specWarnShadesOfTaerar:Show()
-		voiceShadesOfTaerar:Play("mobsoon")
+		specWarnShadesOfTaerar:Play("mobsoon")
 		self:SendSync("Shades")
 	elseif spellId == 204078 then
 		specWarnBellowingRoar:Show()
-		voiceBellowingRoar:Play("fearsoon")
+		specWarnBellowingRoar:Play("fearsoon")
 		self:SendSync("Fear")
 	end
 end
@@ -324,7 +301,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		local amount = args.amount or 1
 		if amount >= 7 then
 			specWarnMark:Show(amount)
-			voiceMark:Play("stackhigh")
+			specWarnMark:Play("stackhigh")
 		end
 		if self:AntiSpam(5, 2) then
 			if self:IsMythic() then
@@ -342,14 +319,14 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 203770 then
 		specWarnDefiledVines:CombinedShow(0.5, args.destName)
 		if self:AntiSpam(2, 1) then
-			voiceDefiledVines:Play("helpdispel")
+			specWarnDefiledVines:Play("helpdispel")
 		end
 	elseif spellId == 203787 then
 		warnVolatileInfection:CombinedShow(0.5, args.destName)
 		if args:IsPlayer() then
 			specWarnVolatileInfection:Show()
 			yellVolatileInfection:Yell()
-			voiceVolatileInfection:Play("scatter")
+			specWarnVolatileInfection:Play("scatter")
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Show(10)
 			end
@@ -430,7 +407,7 @@ end
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, targetname)
 	if msg:find("sha_ability_rogue_envelopingshadows_nightmare") then
 		specWarnLumberingMindgorger:Show()
-		voiceLumberingMindgorger:Play("bigmob")
+		specWarnLumberingMindgorger:Play("bigmob")
 	end
 end
 
@@ -455,7 +432,7 @@ end
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 205611 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
 --		specWarnMiasma:Show()
---		voiceMiasma:Play("runaway")
+--		specWarnMiasma:Play("runaway")
 	end
 end
 mod.SPELL_ABSORBED = mod.SPELL_PERIODIC_DAMAGE

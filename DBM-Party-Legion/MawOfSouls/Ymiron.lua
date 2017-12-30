@@ -25,11 +25,6 @@ local timerWindsCD					= mod:NewCDTimer(24, 193977, nil, nil, nil, 2)
 local timerBaneCD					= mod:NewCDTimer(49.5, 193460, nil, nil, nil, 2)
 local timerAriseFallenCD			= mod:NewCDTimer(18, 193566, nil, nil, nil, 1, nil, DBM_CORE_HEROIC_ICON)
 
-local voiceDarkSlash				= mod:NewVoice(193211, "Tank")--defensive
-local voiceScreams					= mod:NewVoice(193364, "Melee")--runout
-local voiceWinds					= mod:NewVoice(193977)--carefly
-local voiceAriseFallen				= mod:NewVoice(193566, "-Healer")--mobkill
-
 function mod:OnCombatStart(delay)
 	timerDarkSlashCD:Start(3.5-delay)
 	timerScreamsCD:Start(5.9-delay)
@@ -41,15 +36,15 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 193211 then
 		specWarnDarkSlash:Show()
-		voiceDarkSlash:Play("defensive")
+		specWarnDarkSlash:Play("defensive")
 		timerDarkSlashCD:Start()
 	elseif spellId == 193364 then
 		specWarnScreams:Show()
-		voiceScreams:Play("runout")
+		specWarnScreams:Play("runout")
 		timerScreamsCD:Start()
 	elseif spellId == 193977 then
 		specWarnWinds:Show()
-		voiceWinds:Play("carefly")
+		specWarnWinds:Play("carefly")
 		timerWindsCD:Start()
 	elseif spellId == 193460 then
 		warnBane:Show()
@@ -59,6 +54,6 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 193566 then
 		specAriseFallen:Show()
-		voiceAriseFallen:Play("mobkill")
+		specAriseFallen:Play("mobkill")
 	end
 end

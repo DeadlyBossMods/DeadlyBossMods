@@ -24,11 +24,6 @@ local timerCallSeasCD				= mod:NewNextTimer(30, 193051, nil, nil, nil, 2)
 local timerGroundSlamCD				= mod:NewCDTimer(18.2, 193093, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--18.2-30
 local timerBubblesCD				= mod:NewNextTimer(32, 193018, nil, "-Tank", nil, 3, nil, DBM_CORE_DEADLY_ICON)
 
-local voiceQuake					= mod:NewVoice(193152)--range5
-local voiceCallSeas					= mod:NewVoice(193051)--watchstep
-local voiceGroundSlam				= mod:NewVoice(193093, "Tank")--shockwave
-local voiceBubbles					= mod:NewVoice(193018, "-Tank")--takedamage
-
 mod:AddRangeFrameOption(5, 193152)
 
 function mod:OnCombatStart(delay)
@@ -48,18 +43,18 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 193152 then
 		specWarnQuake:Show()
-		voiceQuake:Play("range5")
+		specWarnQuake:Play("range5")
 		timerQuakeCD:Start()
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(5, nil, nil, nil, nil, 5.5)
 		end
 	elseif spellId == 193093 then
 		specWarnGroundSlam:Show()
-		voiceGroundSlam:Play("shockwave")
+		specWarnGroundSlam:Play("shockwave")
 		timerGroundSlamCD:Start()
 	elseif spellId == 193018 then
 		specWarnBubbles:Show()
-		voiceBubbles:Play("takedamage")
+		specWarnBubbles:Play("takedamage")
 		timerBubblesCD:Start()
 	end
 end
@@ -68,7 +63,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 193051 then
 		specWarnCallSeas:Show()
-		voiceCallSeas:Play("watchstep")
+		specWarnCallSeas:Play("watchstep")
 		timerCallSeasCD:Start()
 	end
 end

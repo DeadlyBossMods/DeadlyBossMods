@@ -32,11 +32,6 @@ local timerSearingGazeCD				= mod:NewCDTimer(7.3, 247320, nil, nil, nil, 4, nil,
 local timerPhantasmCD					= mod:NewCDTimer(31.9, 247393, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
 local timerEyeSoreCD					= mod:NewCDTimer(23.0, 247330, nil, "Healer", nil, 3, nil, DBM_CORE_HEALER_ICON)
 
-local voiceGushingWound					= mod:NewVoice(247318)--tauntboss/stackhigh
-local voiceSearingGaze					= mod:NewVoice(247320, "HasInterrupt")--kickcast
-local voicePhantasm						= mod:NewVoice(247393)--watchorb
-local voiceEyeSore						= mod:NewVoice(247330, "Healer")--healall
-
 mod:AddReadyCheckOption(49195, false)
 
 function mod:OnCombatStart(delay, yellTriggered)
@@ -51,11 +46,11 @@ function mod:SPELL_CAST_START(args)
 		timerSearingGazeCD:Start()
 		if self:CheckInterruptFilter(args.sourceGUID) then
 			specWarnSearingGaze:Show(args.sourceName)
-			voiceSearingGaze:Play("kickcast")
+			specWarnSearingGaze:Play("kickcast")
 		end
 	elseif spellId == 247393 then
 		specWarnPhantasm:Show()
-		voicePhantasm:Play("watchorb")
+		specWarnPhantasm:Play("watchorb")
 		timerPhantasmCD:Start()
 	end
 end
@@ -79,11 +74,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		if amount >= 3 then--Lasts 20 seconds, cast every 8 seconds, swapping will be at 3
 			if args:IsPlayer() then--At this point the other tank SHOULD be clear.
 				specWarnGushingWound:Show(amount)
-				voiceGushingWound:Play("stackhigh")
+				specWarnGushingWound:Play("stackhigh")
 			else--Taunt as soon as stacks are clear, regardless of stack count.
 				if not UnitIsDeadOrGhost("player") and not UnitDebuff("player", args.spellName) then
 					specWarnGushingWoundOther:Show(args.destName)
-					voiceGushingWound:Play("tauntboss")
+					specWarnGushingWoundOther:Play("tauntboss")
 				else
 					warnGushingWound:Show(args.destName, amount)
 				end
@@ -94,7 +89,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 247330 then
 		specWarnEyeSore:CombinedShow(0.3, args.destName)
 		if self:AntiSpam(4, 1) then
-			voiceEyeSore:Play("healall")
+			specWarnEyeSore:Play("healall")
 		end
 	end
 end

@@ -31,10 +31,6 @@ local timerSupressionCD				= mod:NewNextTimer(46, 196070, nil, nil, nil, 3)
 local timerQuarantineCD				= mod:NewNextTimer(46, 195804, nil, nil, nil, 3)
 local timerCleansingCD				= mod:NewNextTimer(46, 196115, nil, nil, nil, 2)
 
-local voiceSupression				= mod:NewVoice(196070)--runout/keeprun
-local voiceQuarantine				= mod:NewVoice(195804)--readyrescue
-local voiceCleansing				= mod:NewVoice(196115)--aesoon
-
 mod:AddSetIconOption("SetIconOnQuarantine", 195791)
 
 function mod:OnCombatStart(delay)
@@ -49,14 +45,14 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnSupression:Show(args.destName)
 		if args:IsPlayer() then
 			specWarnSupression:Show()
-			voiceSupression:Play("runout")
-			voiceSupression:Schedule(1, "keeprun")
+			specWarnSupression:Play("runout")
+			specWarnSupression:ScheduleVoice(1, "keeprun")
 			yellSupression:Yell()
 		end
 	elseif spellId == 195804 then
 		if self.Options.SpecWarn196115target then
 			specWarnQuarantine:Show(args.destName)
-			voiceQuarantine:Play("readyrescue")
+			specWarnQuarantine:Play("readyrescue")
 		else
 			warnQuarantine:Show(args.destName)
 		end
@@ -82,7 +78,7 @@ function mod:SPELL_CAST_START(args)
 		timerSupressionCD:Start()
 	elseif spellId == 196115 then
 		specWarnCleansing:Show()
-		voiceCleansing:Play("aesoon")
+		specWarnCleansing:Play("aesoon")
 		timerCleansingCD:Start()
 	end
 end

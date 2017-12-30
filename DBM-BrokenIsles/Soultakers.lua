@@ -47,14 +47,6 @@ local timerMaraudingMistsCD			= mod:NewCDTimer(10.8, 213665, nil, nil, nil, 2)--
 local timerExpelSoulCD				= mod:NewCDTimer(8.5, 213625, nil, nil, 2, 3)
 --local timerSoulRendCD				= mod:NewAITimer(51, 213606, nil, nil, nil, 3)
 
---Captain Hring 
-local voiceCursedCrew				= mod:NewVoice(213522, "-Healer")--killmob
---Reaver Jdorn
-local voiceMaraudingMists			= mod:NewVoice(213665)--runout
---Soultrapper Mevra
-local voiceExpelSoul				= mod:NewVoice(213625)--runout
-local voiceSoulRend					= mod:NewVoice(213606)--watchstep
-
 --mod:AddReadyCheckOption(37462, false)--Unknown quest flag
 mod:AddRangeFrameOption(8, 213665)
 
@@ -77,19 +69,19 @@ function mod:SPELL_CAST_START(args)
 		timerTentacleBashCD:Start()
 	elseif spellId == 213522 then
 		specWarnCursedCrew:Show()
-		voiceCursedCrew:Play("killmob")
+		specWarnCursedCrew:Play("killmob")
 --		timerCursedCrewCD:Start()
 	elseif spellId == 213532 then
 		warnShatterCrew:Show()
 --		timerShatterCrew:Start()
 	elseif spellId == 213665 and self:CheckInterruptFilter(args.sourceGUID, true) then
 		specWarnMaraudingMists:Show()
-		voiceMaraudingMists:Play("runout")
+		specWarnMaraudingMists:Play("runout")
 	elseif spellId == 213625 then
 		timerExpelSoulCD:Start()
 	elseif spellId == 213606 then
 		specWarnSoulRend:Show()
-		voiceSoulRend:Play("watchstep")
+		specWarnSoulRend:Play("watchstep")
 --		timerSoulRendCD:Start()
 	end
 end
@@ -103,7 +95,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 213625 and args:IsPlayer() then
 		specWarnExpelSoul:Show()
-		voiceExpelSoul:Play("runout")
+		specWarnExpelSoul:Play("runout")
 		yellExpelSoul:Yell()
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(8)

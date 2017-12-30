@@ -31,18 +31,12 @@ local timerSoulCleaveCD			= mod:NewCDTimer(25.5, 247410, nil, nil, nil, 5, nil, 
 local timerCavitationCD			= mod:NewCDTimer(26.7, 181461, nil, nil, nil, 2)
 local timerSeedsofDestructionCD	= mod:NewCDTimer(17.0, 247437, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
 
-local voiceSilence				= mod:NewVoice(247698)--specialsoon for now, silencesoon later
-local voiceSoulCleave			= mod:NewVoice(247410, "Melee")--179406 (soul cleave)
-local voiceClovenSoul			= mod:NewVoice(247444)--tauntboss
-local voiceWakeofDestruction	= mod:NewVoice(247432)--watchwave
-local voiceSeedsofDestruction	= mod:NewVoice(247437)--Runout
-
 mod:AddReadyCheckOption(49197, false)
 
 local function warnWake(self)
 	if self:AntiSpam(3, 1) then
 		specWarnWakeofDestruction:Show()
-		voiceWakeofDestruction:Play("watchwave")
+		specWarnWakeofDestruction:Play("watchwave")
 	end
 end
 
@@ -56,11 +50,11 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 247698 then
 		specSilence:Show()
-		voiceSilence:Play("specialsoon")
+		specSilence:Play("specialsoon")
 		timerSilenceCD:Start()
 	elseif spellId == 247410 then
 		specWarnSoulCleave:Show()
-		voiceSoulCleave:Play("179406")
+		specWarnSoulCleave:Play("179406")
 		timerSoulCleaveCD:Start()
 	end
 end
@@ -82,13 +76,13 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 247444 then
 		if not args:IsPlayer() and not UnitDebuff("player", args.spellName) then
 			specWarnClovenSoul:Show(args.destName)
-			voiceClovenSoul:Play("tauntboss")
+			specWarnSoulCleave:Play("tauntboss")
 		end
 	elseif spellId == 247437 then
 		warnSeedofDestruction:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			specWarnSeedofDestruction:Show()
-			voiceSeedsofDestruction:Play("runout")
+			specWarnSeedofDestruction:Play("runout")
 			yellSeedsofDestruction:Yell()
 		end
 		if self:AntiSpam(5, 2) then

@@ -26,11 +26,6 @@ local timerFissureCD				= mod:NewCDTimer(23, 197776, nil, nil, nil, 3)--Maybe 23
 local timerSlashCD					= mod:NewCDTimer(25, 212030, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)--25-30
 local timerSlamCD					= mod:NewCDTimer(47, 197810, nil, nil, nil, 2)--Possibly 40 but delayed by ICD triggering
 
-local voiceBat						= mod:NewVoice("ej12489", "Tank")--mobsoon
-local voiceFissure					= mod:NewVoice(197776)--watchstep
-local voiceSlash					= mod:NewVoice(212030)--watchwave
-local voiceSlam						= mod:NewVoice(197810)--carefly
-
 --Boss seems to have intenal 6 second ICD and cannot cast any two spells within 6 seconds of another (minus summon bats)
 --[[
 local function updateAlltimers(ICD)
@@ -62,7 +57,7 @@ end
 --"<25.11 00:06:30> [CLEU] SPELL_DAMAGE#Creature-0-3887-1516-9671-100393-00005B6FAC#Dread Felbat#Player-1169-07BF1788#Orlene-CenarionCircle#197788#Bombardment#389587#-1", --
 local function blizzardHatesBossMods(self)
 	specWarnBat:Show()
-	voiceBat:Play("mobsoon")
+	specWarnBat:Play("mobsoon")
 	timerBatCD:Start()
 	self:Schedule(31, blizzardHatesBossMods, self)
 end
@@ -79,17 +74,17 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 197776 then
 		specWarnFissure:Show()
-		voiceFissure:Play("watchstep")
+		specWarnFissure:Play("watchstep")
 		timerFissureCD:Start()
 		--updateAlltimers(6)
 	elseif spellId == 212030 then
 		specWarnSlash:Show()
-		voiceSlash:Play("watchwave")
+		specWarnSlash:Play("watchwave")
 		timerSlashCD:Start()
 		--updateAlltimers(6)
 	elseif spellId == 197810 then
 		specWarnSlam:Show()
-		voiceSlam:Play("carefly")
+		specWarnSlam:Play("carefly")
 		timerSlamCD:Start()
 		--updateAlltimers(7)--Verify is actually 7 and not 6 like others
 	end

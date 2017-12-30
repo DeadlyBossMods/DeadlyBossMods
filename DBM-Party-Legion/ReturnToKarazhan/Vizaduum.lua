@@ -51,12 +51,6 @@ local timerBombardmentCD			= mod:NewCDTimer(25, 229284, 229287, nil, nil, 3)
 
 --local countdownFocusedGazeCD		= mod:NewCountdown(40, 198006)
 
---ALL
-local voiceChaoticShadows			= mod:NewVoice(229159)--runout
-local voiceBurningBlast				= mod:NewVoice(229083)--kick1r/kick2r
---Phase 1
-local voiceFelBeam					= mod:NewVoice(229242)--justrun/keepmove
-
 mod:AddSetIconOption("SetIconOnShadows", 229159, true)
 mod:AddRangeFrameOption(6, 230066)
 --mod:AddInfoFrameOption(198108, false)
@@ -100,9 +94,9 @@ function mod:SPELL_CAST_START(args)
 		local kickCount = self.vb.kickCount
 		specWarnBurningBlast:Show(args.sourceName, kickCount)
 		if kickCount == 1 then
-			voiceBurningBlast:Play("kick1r")
+			specWarnBurningBlast:Play("kick1r")
 		elseif kickCount == 2 then
-			voiceBurningBlast:Play("kick2r")
+			specWarnBurningBlast:Play("kick2r")
 		end
 	end
 end
@@ -153,7 +147,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if args:IsPlayer() then
 			specWarnChaoticShadows:Show()
-			voiceChaoticShadows:Play("runout")
+			specWarnChaoticShadows:Play("runout")
 			yellChaoticShadows:Yell(count, args.spellName, count)
 		end
 		if self.Options.SetIconOnShadows then
@@ -163,8 +157,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerFelBeamCD:Start()
 		if args:IsPlayer() then
 			specWarnFelBeam:Show()
-			voiceFelBeam:Play("justrun")
-			voiceFelBeam:Schedule(1, "keepmove")
+			specWarnFelBeam:Play("justrun")
+			specWarnFelBeam:ScheduleVoice(1, "keepmove")
 		else
 			warnFelBeam:Show(args.destName)
 		end
@@ -179,23 +173,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	end
 end
-
---[[
-function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
-	if spellId == 205611 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
---		specWarnMiasma:Show()
---		voiceMiasma:Play("runaway")
-	end
-end
-mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
-
-function mod:UNIT_DIED(args)
-	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 103695 then
-
-	end
-end
---]]
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)

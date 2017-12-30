@@ -95,21 +95,6 @@ local countdownSpecials				= mod:NewCountdown(54, 233264)
 
 --All
 local voicePhaseChange				= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
-local voiceFontofElune				= mod:NewVoice(236357)--changemoon
---Huntress Kasparian
-local voiceGlaiveStorm				= mod:NewVoice(239379)--watchstep
-local voiceTwilightGlaive			= mod:NewVoice(237561)--runout
-local voiceDiscorporate				= mod:NewVoice(236550)--changemoon/tauntboss
---Captain Yathae Moonstrike
-local voiceCallMoontalon			= mod:NewVoice(236694, "-Healer")--killbigmob
-local voiceTwilightVolley			= mod:NewVoice(236442)--watchstep
-local voiceIncorpShot				= mod:NewVoice(236305)--targetyou
-local voiceRapidShot				= mod:NewVoice(236596)--runout
---Priestess Lunaspyre
-local voiceEmbraceofEclipse			= mod:NewVoice(233264, "Dps|Healer")--none/healall
-local voiceLunarBeacon				= mod:NewVoice(236712)--runout
-local voiceLunarFire				= mod:NewVoice(239264)--tauntboss/stackhigh
-local voiceMoonBurn					= mod:NewVoice(236519)--changemoon
 
 mod:AddSetIconOption("SetIconOnIncorpShot", 236305, true)
 mod:AddInfoFrameOption(233263, true)
@@ -129,11 +114,11 @@ function mod:VolleyTarget(targetname, uId)
 	if not targetname then return end
 	if targetname == UnitName("player") then
 		specWarnTwilightVolleyYou:Show()
-		voiceTwilightVolley:Play("runaway")
+		specWarnTwilightVolleyYou:Play("runaway")
 		yellTwilightVolley:Yell()
 	elseif self:CheckNearby(10, targetname) then
 		specWarnTwilightVolley:Show(targetname)
-		voiceTwilightVolley:Play("watchstep")
+		specWarnTwilightVolley:Play("watchstep")
 	else
 		warnTwilightVolley:Show(targetname)
 	end
@@ -144,7 +129,7 @@ function mod:BeaconTarget(targetname, uId)
 	self.vb.lastBeacon = true
 	if targetname == UnitName("player") then
 		specWarnLunarBeacon:Show()
-		voiceLunarBeacon:Play("runout")
+		specWarnLunarBeacon:Play("runout")
 	else
 		warnLunarBeacon:Show(targetname)
 	end
@@ -196,7 +181,7 @@ function mod:SPELL_CAST_START(args)
 		self:ScheduleMethod(0.2, "BossTargetScanner", args.sourceGUID, "BeaconTarget", 0.1, 12, true, nil, nil, nil, true)
 	elseif spellId == 239379 then
 		specWarnGlaiveStorm:Show()
-		voiceGlaiveStorm:Play("watchstep")
+		specWarnGlaiveStorm:Play("watchstep")
 		timerGlaiveStormCD:Start(nil, self.vb.specialCount+1)
 		if self:AntiSpam(5, 2) then
 			self.vb.specialCount = self.vb.specialCount + 1
@@ -216,7 +201,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if spellId == 236694 then
 		self.vb.moonTalonCount = self.vb.moonTalonCount + 1
 		specWarnCallMoontalon:Show()
-		voiceCallMoontalon:Play("killbigmob")
+		specWarnCallMoontalon:Play("killbigmob")
 		if self.vb.moonTalonCount == 1 then
 			local remaining = GetTime() - self.vb.pulltime
 			timerCallMoontalonCD:Start(260-remaining)
@@ -267,9 +252,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		if amount >= 12 and amount % 4 == 0 then
 			specWarnFontofElune:Show(amount)
 			if self:IsMythic() then
-				voiceFontofElune:Play("stackhigh")
+				specWarnFontofElune:Play("stackhigh")
 			else
-				voiceFontofElune:Play("changemoon")
+				specWarnFontofElune:Play("changemoon")
 			end
 		end
 	elseif spellId == 239264 then
@@ -279,11 +264,11 @@ function mod:SPELL_AURA_APPLIED(args)
 			if amount >= 2 then--Lasts 30 seconds, unknown reapplication rate, fine tune!
 				if args:IsPlayer() then--At this point the other tank SHOULD be clear.
 					specWarnLunarFire:Show(amount)
-					voiceLunarFire:Play("stackhigh")
+					specWarnLunarFire:Play("stackhigh")
 				else--Taunt as soon as stacks are clear, regardless of stack count.
 					if not UnitIsDeadOrGhost("player") and not UnitDebuff("player", args.spellName) then
 						specWarnLunarFireOther:Show(args.destName)
-						voiceLunarFire:Play("tauntboss")
+						specWarnLunarFireOther:Play("tauntboss")
 					else
 						warnLunarFire:Show(args.destName, amount)
 					end
@@ -297,16 +282,16 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self:IsTanking(uId) then
 			if args:IsPlayer() then
 				specWarnDiscorporate:Show(astralPurge)
-				voiceDiscorporate:Play("changemoon")
+				specWarnDiscorporate:Play("changemoon")
 			else
 				specWarnDiscorporateSwap:Show(args.destName)
-				voiceDiscorporate:Play("tauntboss")
+				specWarnDiscorporateSwap:Play("tauntboss")
 			end
 		end
 	elseif spellId == 236596 then
 		if args:IsPlayer() then
 			specWarnRapidShot:Show()
-			voiceRapidShot:Play("targetyou")
+			specWarnRapidShot:Play("targetyou")
 			yellRapidShot:Yell()
 		else
 			warnRapidShot:Show(args.destName)
@@ -317,11 +302,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if args:IsPlayer() then
 			specWarnIncorpShot:Show()
-			voiceIncorpShot:Play("targetyou")
+			specWarnIncorpShot:Play("targetyou")
 			yellIncorpShot:Yell()
 		else
 			specWarnIncorpShotOther:Show(args.destName)
-			voiceIncorpShot:Play("helpsoak")
+			specWarnIncorpShotOther:Play("helpsoak")
 		end
 		if self.Options.SetIconOnIncorpShot then
 			self:SetIcon(args.destName, 1)
@@ -339,14 +324,14 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 233264 then--Dpser Embrace of the Eclipse
 		if not self:IsHealer() then
 			specWarnEmbraceofEclipse:Show(args.destName)
-			--voiceEmbraceofEclipse:Play("targetchange")
+			--specWarnEmbraceofEclipse:Play("targetchange")
 		end
 	elseif spellId == 233263 then--Healer Embrace of the Eclipse
 		self.vb.eclipseCount = self.vb.eclipseCount + 1
 		if self:IsHealer() then
 			if self:AntiSpam(3, 1) then
 				specWarnEmbraceofEclipse:Show(ALL)
-				voiceEmbraceofEclipse:Play("healall")
+				specWarnEmbraceofEclipse:Play("healall")
 			end
 		end
 		if self.Options.InfoFrame and not DBM.InfoFrame:IsShown() then
@@ -357,7 +342,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			if not self.vb.lastBeacon then
 				specWarnLunarBeacon:Show()
-				voiceLunarBeacon:Play("runout")
+				specWarnLunarBeacon:Play("runout")
 			end
 			yellLunarBeacon:Countdown(6)
 		else
@@ -370,16 +355,16 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnMoonBurn:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			specWarnMoonBurn:Show(astralPurge)
-			voiceMoonBurn:Play("changemoon")
+			specWarnMoonBurn:Play("changemoon")
 		end
 	elseif spellId == 237561 then
 		if args:IsPlayer() then
 			specWarnTwilightGlaive:Show()
-			voiceTwilightGlaive:Play("runout")
+			specWarnTwilightGlaive:Play("runout")
 			yellTwilightGlaive:Yell()
 		else
 			specWarnTwilightGlaiveOther:Show(args.destName)
-			voiceTwilightGlaive:Play("farfromline")
+			specWarnTwilightGlaiveOther:Play("farfromline")
 		end
 	elseif spellId == 243262 and self:AntiSpam(3, 4) then
 		specWarnBerserk:Show()
@@ -402,22 +387,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	end
 end
-
---[[
-function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
-	if spellId == 228007 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
---		specWarnDancingBlade:Show()
---		voiceDancingBlade:Play("runaway")
-	end
-end
-mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
-
-function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
-	if msg:find("spell:228162") then
-
-	end
-end
---]]
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)

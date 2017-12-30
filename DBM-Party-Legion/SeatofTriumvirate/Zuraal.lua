@@ -40,11 +40,6 @@ local timerVoidTear						= mod:NewBuffActiveTimer(20, 244621, nil, nil, nil, 6)
 
 --local countdownBreath					= mod:NewCountdown(22, 227233)
 
-local voiceNullPalm						= mod:NewVoice(246134, nil, nil, 2)--shockwave
-local voiceCoalescedVoid				= mod:NewVoice(244602)--killmob
-local voiceUmbraShift					= mod:NewVoice(244433)--teleyou
-local voiceFixate						= mod:NewVoice(244657)--justrun/keepmove
-
 mod:AddSetIconOption("SetIconOnFixate", 244657, true)
 
 function mod:OnCombatStart(delay)
@@ -58,7 +53,7 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 246134 then
 		specWarnNullPalm:Show()
-		voiceNullPalm:Play("shockwave")
+		specWarnNullPalm:Play("shockwave")
 		timerNullPalmCD:Start()
 	elseif spellId == 244579 then
 		timerDeciminateCD:Start()
@@ -69,7 +64,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 244602 then
 		specWarnCoalescedVoid:Show()
-		voiceCoalescedVoid:Play("killmob")
+		specWarnCoalescedVoid:Play("killmob")
 		--timerCoalescedVoidCD:Start()
 	end
 end
@@ -79,8 +74,8 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 244657 then
 		if args:IsPlayer() then
 			specWarnFixate:Show()
-			voiceFixate:Play("justrun")
-			voiceFixate:Schedule(1, "keepmove")
+			specWarnFixate:Play("justrun")
+			specWarnFixate:ScheduleVoice(1, "keepmove")
 		else
 			warnFixate:Show(args.destName)
 		end
@@ -117,7 +112,7 @@ function mod:SPELL_DAMAGE(_, _, _, destName, destGUID, _, _, _, spellId)
 	if spellId == 244433 then
 		if destGUID == UnitGUID("player") then
 			specWarnUmbraShift:Show()
-			voiceUmbraShift:Play("teleyou")
+			specWarnUmbraShift:Play("teleyou")
 		else
 			warnUmbraShift:Show(destName)
 		end

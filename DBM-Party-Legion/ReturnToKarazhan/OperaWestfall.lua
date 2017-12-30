@@ -42,13 +42,6 @@ local timerWashAwayCD				= mod:NewAITimer(40, 227783, nil, nil, nil, 3)
 
 --local countdownFocusedGazeCD		= mod:NewCountdown(40, 198006)
 
---Stage One: Defias Brotherhood
-local voiceLegSweep					= mod:NewVoice(227568, "Melee")--runout
---Stage Two: The Fins
-local voiceThunderRitual			= mod:NewVoice(227777)--range5
-local voiceBubbleBlast				= mod:NewVoice(227420, "HasInterrupt")--kickcast
-local voiceWashAway					= mod:NewVoice(227783)--watchwave
-
 --mod:AddSetIconOption("SetIconOnCharge", 198006, true)
 --mod:AddInfoFrameOption(198108, false)
 mod:AddRangeFrameOption(5, 227777)
@@ -69,13 +62,13 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 227568 then
 		specWarnLegSweep:Show()
-		voiceLegSweep:Play("runout")
+		specWarnLegSweep:Play("runout")
 	elseif spellId == 227420 and self:CheckInterruptFilter(args.sourceGUID) then
 		specWarnBubbleBlast:Show(args.sourceName)
-		voiceBubbleBlast:Play("kickcast")
+		specWarnBubbleBlast:Play("kickcast")
 	elseif spellId == 227783 then
 		specWarnWashAway:Show()
-		voiceWashAway:Play("watchwave")
+		specWarnWashAway:Play("watchwave")
 		timerWashAwayCD:Start()
 	end
 end
@@ -92,7 +85,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 227777 then
 		if args:IsPlayer() then
 			specWarnThunderRitual:Show()
-			voiceThunderRitual:Play("range5")
+			specWarnThunderRitual:Play("range5")
 			yellThunderRitual:Yell()
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Show(5)
@@ -100,34 +93,3 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	end
 end
-
---[[
-function mod:SPELL_AURA_REMOVED(args)
-	local spellId = args.spellId
-	if spellId == 227777 and args:IsPlayer() then
-		DBM.RangeCheck:Hide()
-	end
-end
-
-function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
-	if spellId == 205611 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
---		specWarnMiasma:Show()
---		voiceMiasma:Play("runaway")
-	end
-end
-mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
-
-function mod:UNIT_DIED(args)
-	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 103695 then
-
-	end
-end
-
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
-	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
-	if spellId == 206341 then
-	
-	end
-end
---]]

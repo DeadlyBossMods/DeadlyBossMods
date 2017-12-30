@@ -27,9 +27,6 @@ local timerSwirlingScytheCD			= mod:NewCDTimer(20.5, 195254, nil, nil, nil, 3)--
 local timerSoulEchoesCD				= mod:NewNextTimer(27.5, 194966, nil, nil, nil, 3)
 local timerReapSoulCD				= mod:NewNextTimer(13, 194956, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON..DBM_CORE_DEADLY_ICON)
 
-local voiceSwirlingScythe			= mod:NewVoice(195254)--runaway
-local voiceSoulEchos				= mod:NewVoice(194966)--runaway/keepmove
-
 --mod:AddRangeFrameOption(5, 194966)
 
 function mod:ScytheTarget(targetname, uId)
@@ -39,11 +36,11 @@ function mod:ScytheTarget(targetname, uId)
 	end
 	if targetname == UnitName("player") then
 		specWarnSwirlingScythe:Show()
-		voiceSwirlingScythe:Play("runaway")
+		specWarnSwirlingScythe:Play("runaway")
 		yellSwirlingScythe:Yell()
 	elseif self:CheckNearby(6, targetname) then
 		specWarnSwirlingScytheNear:Show(targetname)
-		voiceSwirlingScythe:Play("runaway")
+		specWarnSwirlingScytheNear:Play("runaway")
 	else
 		warnSwirlingScythe:Show(targetname)
 	end
@@ -56,8 +53,8 @@ function mod:SoulTarget(targetname, uId)
 	if self:AntiSpam(3, targetname) then
 		if targetname == UnitName("player") then
 			specWarnSoulEchos:Show()
-			voiceSoulEchos:Play("runaway")
-			voiceSoulEchos:Schedule(1, "keepmove")
+			specWarnSoulEchos:Play("runaway")
+			specWarnSoulEchos:ScheduleVoice(1, "keepmove")
 		else
 			warnSoulEchoes:Show(targetname)
 		end
@@ -81,8 +78,8 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 194966 and self:AntiSpam(3, args.destName) then--Backup Soul echos warning that's 2 seconds slower than target scan
 		if args:IsPlayer() then
 			specWarnSoulEchos:Show()
-			voiceSoulEchos:Play("runaway")
-			voiceSoulEchos:Schedule(1, "keepmove")
+			specWarnSoulEchos:Play("runaway")
+			specWarnSoulEchos:ScheduleVoice(1, "keepmove")
 		else
 			warnSoulEchoes:Show(args.destName)
 		end

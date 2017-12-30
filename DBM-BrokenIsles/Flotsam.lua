@@ -27,21 +27,17 @@ local specWarnJetsamNear		= mod:NewSpecialWarningClose(220295, nil, nil, nil, 1,
 local timerGetsamCD				= mod:NewCDTimer(53, 220340, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerYaksamCD				= mod:NewCDTimer(50, 223373, nil, nil, nil, 1)--50-55
 
-local voiceGetsam				= mod:NewVoice(220340, "Tank")--shockwave
-local voiceBreakSam				= mod:NewVoice(223317, "Melee")--carefly
-local voiceJetsam				= mod:NewVoice(220295)--runout/watchstep
-
 --mod:AddReadyCheckOption(37460, false)
 
 function mod:JetsamTarget(targetname, uId)
 	if not targetname then return end
 	if targetname == UnitName("player") then
 		specWarnJetsam:Show()
-		voiceJetsam:Play("runout")
+		specWarnJetsam:Play("runout")
 		yellJetsam:Yell()
 	elseif self:CheckNearby(10, targetname) then
 		specWarnJetsamNear:Show(targetname)
-		voiceJetsam:Play("watchstep")
+		specWarnJetsamNear:Play("watchstep")
 	else
 		warnJetsam:Show(targetname)
 	end
@@ -62,10 +58,10 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 223317 then
 		specWarnBreakSam:Show()
-		voiceBreakSam:Play("carefly")
+		specWarnBreakSam:Play("carefly")
 	elseif spellId == 220340 then
 		specWarnGetsam:Show()
-		voiceGetsam:Play("shockwave")
+		specWarnGetsam:Play("shockwave")
 		timerGetsamCD:Start()
 	elseif spellId == 223373 then
 		warnYaksam:Show()
