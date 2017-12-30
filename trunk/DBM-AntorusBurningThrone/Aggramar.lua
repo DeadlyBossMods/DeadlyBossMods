@@ -28,16 +28,13 @@ mod:RegisterEventsInCombat(
  or ability.id = 244894 and (type = "applybuff" or type = "removebuff")
  or (ability.id = 245994 or ability.id = 254452) and type = "applydebuff"
 --]]
+local warnPhase							= mod:NewPhaseChangeAnnounce()
 --Stage One: Wrath of Aggramar
 local warnTaeshalachReach				= mod:NewStackAnnounce(245990, 2, nil, "Tank")
 local warnScorchingBlaze				= mod:NewTargetAnnounce(245994, 2)
 local warnRavenousBlaze					= mod:NewTargetAnnounce(254452, 2)
 local warnRavenousBlazeCount			= mod:NewCountAnnounce(254452, 4)
 local warnTaeshalachTech				= mod:NewCountAnnounce(244688, 3)
---Stage Two: Stuff
-local warnPhase2						= mod:NewPhaseAnnounce(2, 2)
---Stage Three: More stuff
-local warnPhase3						= mod:NewPhaseAnnounce(3, 2)
 
 --Stage One: Wrath of Aggramar
 local specWarnTaeshalachReach			= mod:NewSpecialWarningStack(245990, nil, 8, nil, nil, 1, 6)
@@ -442,12 +439,11 @@ function mod:SPELL_AURA_REMOVED(args)
 		else
 			timerScorchingBlazeCD:Start(5.9)
 		end
+		warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(self.vb.phase))
 		if self.vb.phase == 2 then
-			warnPhase2:Show()
 			voicePhaseChange:Play("ptwo")
 			timerFlareCD:Start(10)
 		elseif self.vb.phase == 3 then
-			warnPhase3:Show()
 			voicePhaseChange:Play("pthree")
 			timerFlareCD:Start(10)
 		end
