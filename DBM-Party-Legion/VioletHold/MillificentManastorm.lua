@@ -27,8 +27,6 @@ mod:RegisterEventsInCombat(
 
 --local timerCurtainOfFlameCD			= mod:NewNextTimer(20, 153396, nil, nil, nil, 3)
 
---local voiceCurtainOfFlame			= mod:NewVoice(153392)
-
 --mod:AddRangeFrameOption(5, 153396)
 
 function mod:OnCombatStart(delay)

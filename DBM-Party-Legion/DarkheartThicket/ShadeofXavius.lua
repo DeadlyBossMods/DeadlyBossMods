@@ -35,9 +35,6 @@ local timerNightmareCD				= mod:NewCDTimer(17, 200243, nil, nil, nil, 3)--17-25
 local timerParanoiaCD				= mod:NewCDTimer(18, 200359, nil, nil, nil, 3)--18-28
 --local timerApocNightmareCD			= mod:NewCDTimer(18, 200050, nil, nil, nil, 2)
 
-local voiceNightmare				= mod:NewVoice(200243)--Gathershare
-local voiceParanoia					= mod:NewVoice(200243)--scatter
-
 mod:AddSetIconOption("SetIconOnNightmare", 200243)
 
 mod.vb.nightmareIcon = 1
@@ -67,7 +64,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 200243 then
 		if args:IsPlayer() then
 			specWarnNightmare:Show()
-			voiceNightmare:Play("gathershare")
+			specWarnNightmare:Play("gathershare")
 			yellNightmare:Yell()
 		else
 			warnNightmare:Show(args.destName)
@@ -84,7 +81,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 200289 then
 		if args:IsPlayer() then
 			specWarnParanoia:Show()
-			voiceParanoia:Play("scatter")
+			specWarnParanoia:Play("scatter")
 			yellParanoia:Yell()
 		else
 			warnParanoia:Show(args.destName)

@@ -34,12 +34,6 @@ local specWarnUnstableMana			= mod:NewSpecialWarningMove(203176, nil, nil, nil, 
 local timerForceBombD				= mod:NewCDTimer(31.8, 202974, nil, nil, nil, 2)
 local timerEvent					= mod:NewBuffFadesTimer(124, 203914, nil, nil, nil, 6)
 
-local voicetimeSplit				= mod:NewVoice(203833)--runaway
-local voiceForceBomb				= mod:NewVoice(202974)--157349 (force nova)
-local voiceBlast					= mod:NewVoice(203176, "HasInterrupt", nil, 2)--kickNr/dispelboss
-local voicetimeLock					= mod:NewVoice(203957, "HasInterrupt", nil, 2)--kickcast
-local voiceUnstableMana				= mod:NewVoice(203176)--runout/keepmove
-
 local countdownEvent				= mod:NewCountdownFades(124, 203914, nil, nil, 10)
 
 mod.vb.interruptCount = 0
@@ -57,13 +51,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnTimeLock:CombinedShow(0.5, args.destName)
 		if self:AntiSpam(3, 2) then
 			specWarnTimeLock:Show(args.sourceName)
-			voicetimeLock:Play("kickcast")
+			specWarnTimeLock:Play("kickcast")
 		end
 	elseif spellId == 220871 then
 		if args:IsPlayer() then
 			specWarnUnstableMana:Show()
-			voiceUnstableMana:Play("runout")
-			voiceUnstableMana:Schedule(1, "keepmove")
+			specWarnUnstableMana:Play("runout")
+			specWarnUnstableMana:ScheduleVoice(1, "keepmove")
 		else
 			warnUnstableMana:Show(args.destName)
 		end
@@ -75,7 +69,7 @@ function mod:SPELL_AURA_APPLIED_DOSE(args)
 	if spellId == 203176 then
 		if args.amount >= 5 then
 			specWarnBlastStacks:Show(args.destName)
-			voiceBlast:Play("dispelboss")
+			specWarnBlastStacks:Play("dispelboss")
 		end
 	end
 end
@@ -84,7 +78,7 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 202974 then
 		specWarnForceBomb:Show()
-		voiceForceBomb:Play("157349")
+		specWarnForceBomb:Play("157349")
 		timerForceBombD:Start()
 	elseif spellId == 203882 then
 		timerForceBombD:Cancel()
@@ -99,11 +93,11 @@ function mod:SPELL_CAST_START(args)
 		--3 count still makes sense for 2 though because you know which cast to skip to maintain order. Kick 1-2, skip 3, easy
 		--A group with only one interruptor won't be able to prevent his stacks and need to use dispels on boss instead
 		if kickCount == 1 then
-			voiceBlast:Play("kick1r")
+			specWarnBlast:Play("kick1r")
 		elseif kickCount == 2 then
-			voiceBlast:Play("kick2r")
+			specWarnBlast:Play("kick2r")
 		elseif kickCount == 3 then
-			voiceBlast:Play("kick3r")
+			specWarnBlast:Play("kick3r")
 		end
 	end
 end
@@ -111,7 +105,7 @@ end
 function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 203833 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
 		specWarnTimeSplit:Show()
-		voicetimeSplit:Play("runaway")
+		specWarnTimeSplit:Play("runaway")
 	end
 end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE

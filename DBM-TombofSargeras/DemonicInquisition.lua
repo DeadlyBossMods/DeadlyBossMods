@@ -77,21 +77,6 @@ local berserkTimer					= mod:NewBerserkTimer(720)--482 in log, rounding to 8 eve
 --Atrigan
 local countdownBoneSaw				= mod:NewCountdown(45, 233441)
 
---Atrigan
-local voiceScytheSweep				= mod:NewVoice(233426, "Tank", nil, 2)--shockwave
-local voiceCalcifiedQuills			= mod:NewVoice(233431)--runout
-local voiceAttackAtrigan			= mod:NewVoice("ej14645", "Dps")--targetchange
-local voiceBoneSaw					= mod:NewVoice(233441)--runout/keepmove
---Belac
-local voicePangsofGuilt				= mod:NewVoice(239401, "HasInterrupt")--kickcast
-local voiceEchoingAnguish			= mod:NewVoice(233983)--runout
-local voiceAttackBelac				= mod:NewVoice("ej14646", "Dps")--targetchange
-local voiceFelSquall				= mod:NewVoice(235230)--runout/stopattack
-local voiceTormentingBurst			= mod:NewVoice(234015)--aesoon
---Phase
-local voiceSoulCorruption			= mod:NewVoice(248713)--stackhigh
-local voiceTorment					= mod:NewVoice(233104)--stackhigh
-
 mod:AddSetIconOption("SetIconOnQuills", 233431, true)
 mod:AddSetIconOption("SetIconOnAnguish", 233983, true)
 mod:AddInfoFrameOption(233104, true)
@@ -209,13 +194,13 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 233426 then
 		self.vb.scytheCount = self.vb.scytheCount + 1
 		specWarnScytheSweep:Show()
-		voiceScytheSweep:Play("shockwave")
+		specWarnScytheSweep:Play("shockwave")
 		timerScytheSweepCD:Start(nil, self.vb.scytheCount+1)--23 unless affected by something
 		updateAllAtriganTimers(self, 4)
 	elseif spellId == 234015 then
 		self.vb.burstCount = self.vb.burstCount + 1
 		specWarnTormentingBurst:Show(self.vb.burstCount)
-		voiceTormentingBurst:Play("aesoon")
+		specWarnTormentingBurst:Play("aesoon")
 		timerTormentingBurstCD:Start(nil, self.vb.burstCount+1)
 		updateAllBelacTimers(self, 2)
 	elseif spellId == 239401 then
@@ -227,11 +212,11 @@ function mod:SPELL_CAST_START(args)
 			local kickCount = self.vb.pangCount
 			specWarnPangsofGuilt:Show(args.sourceName, kickCount)
 			if kickCount == 1 then
-				voicePangsofGuilt:Play("kick1r")
+				specWarnPangsofGuilt:Play("kick1r")
 			elseif kickCount == 2 then
-				voicePangsofGuilt:Play("kick2r")
+				specWarnPangsofGuilt:Play("kick2r")
 			elseif kickCount == 3 then
-				voicePangsofGuilt:Play("kick3r")
+				specWarnPangsofGuilt:Play("kick3r")
 			end
 		end
 	elseif spellId == 233983 then
@@ -259,16 +244,16 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnBoneSawMelee:Show()
 			specWarnBoneSawEveryoneElse:Show(args.sourceName)
 			if self:IsMelee() then
-				voiceBoneSaw:Play("runout")
+				specWarnBoneSawMelee:Play("runout")
 			end
-			voiceBoneSaw:Schedule(1, "stopattack")
+			specWarnBoneSawEveryoneElse:ScheduleVoice(1, "stopattack")
 		end
 		timerBoneSaw:Start(nil, self.vb.BonesawCount+1)
 		updateAllAtriganTimers(self, 16, true)
 		for i = 1, 2 do
 			local bossUnitID = "boss"..i
 			if UnitExists(bossUnitID) and UnitGUID(bossUnitID) == args.sourceGUID and UnitDetailedThreatSituation("player", bossUnitID) then--We are highest threat target
-				voiceBoneSaw:Schedule(2, "keepmove")--The active tank doesn't just run out, they keep kiting
+				specWarnBoneSawMelee:Schedule(2, "keepmove")--The active tank doesn't just run out, they keep kiting
 				break
 			end
 		end
@@ -279,9 +264,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnFelSquallMelee:Show()
 			specWarnFelSquallEveryoneElse:Show(args.sourceName)
 			if self:IsMelee() then
-				voiceFelSquall:Play("runout")
+				specWarnFelSquallMelee:Play("runout")
 			end
-			voiceFelSquall:Schedule(1, "stopattack")
+			specWarnFelSquallEveryoneElse:ScheduleVoice(1, "stopattack")
 		end
 		timerFelSquall:Start(nil, self.vb.squallCount+1)
 		updateAllBelacTimers(self, 16, true)
@@ -290,7 +275,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		local currentIcon = self.vb.anguishIcon
 		if args:IsPlayer() then
 			specWarnEchoingAnguish:Show()
-			voiceEchoingAnguish:Play("runout")
+			specWarnEchoingAnguish:Play("runout")
 			yellEchoingAnguish:Yell(currentIcon, args.spellName, currentIcon)
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Show(8)
@@ -303,7 +288,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 233431 then
 		if args:IsPlayer() then
 			specWarnCalcifiedQuills:Show()
-			voiceCalcifiedQuills:Play("runout")
+			specWarnCalcifiedQuills:Play("runout")
 			yellCalcifiedQuills:Yell()
 		else
 			warnQuills:Show(args.destName)
@@ -315,7 +300,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		local amount = args.amount or 1
 		if args:IsPlayer() and amount >= 10 then
 			specWarnSoulCorruption:Show(amount)
-			voiceSoulCorruption:Play("stackhigh")
+			specWarnSoulCorruption:Play("stackhigh")
 		end
 	elseif spellId == 236283 then
 		if args:IsPlayer() then
@@ -329,7 +314,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 233441 then--Bone Saw
 		specWarnAttackAtrigan:Show()
-		voiceAttackAtrigan:Play("targetchange")
+		specWarnAttackAtrigan:Play("targetchange")
 		timerBoneSaw:Stop()
 		timerBoneSawCD:Start()
 		countdownBoneSaw:Start()
@@ -344,7 +329,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif spellId == 235230 then
 		specWarnAttackBelac:Show()
-		voiceAttackBelac:Play("targetchange")
+		specWarnAttackBelac:Play("targetchange")
 		timerFelSquallCD:Start()
 	elseif spellId == 233431 then
 		if self.Options.SetIconOnQuills then
@@ -363,7 +348,7 @@ do
 			if not warned and playerPower >= 75 then
 				warned = true
 				specWarnTorment:Show(playerPower)
-				voiceTorment:Play("stackhigh")
+				specWarnTorment:Play("stackhigh")
 			elseif warned and playerPower < 30 then
 				warned = false
 			end
@@ -377,17 +362,6 @@ function mod:UNIT_DIED(args)
 		self.vb.SoulsRemaining = self.vb.SoulsRemaining - 1
 	end
 end
-
-
---[[
-function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
-	if spellId == 228007 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
---		specWarnDancingBlade:Show()
---		voiceDancingBlade:Play("runaway")
-	end
-end
-mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
---]]
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)

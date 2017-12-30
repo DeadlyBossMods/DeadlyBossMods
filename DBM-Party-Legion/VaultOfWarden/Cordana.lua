@@ -30,12 +30,6 @@ local timerDeepeningShadowsCD		= mod:NewCDTimer(30.5, 213576, nil, nil, nil, 3)
 local timerCreepingDoom				= mod:NewBuffActiveTimer(35, 197422, nil, nil, nil, 6)--35-40
 local timerVengeanceCD				= mod:NewCDTimer(35, 205004, nil, nil, nil, 1)--35-40
 
-local voiceKick						= mod:NewVoice(197251, "Tank")--carefly
-local voiceDeepeningShadows			= mod:NewVoice(213576)--"213576"--New Voice
-local voiceVengeance				= mod:NewVoice(205004)--"205004"--New Voice
-local voiceHidden					= mod:NewVoice(192750)--phasechange
-local voiceCreepingDoom				= mod:NewVoice(197422)--stilldanger, keepmove
-
 function mod:OnCombatStart(delay)
 	timerKickCD:Start(8.3-delay)
 	--timerDeepeningShadowsCD:Start(10.5-delay)
@@ -46,26 +40,26 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 213576 or spellId == 213583 then
 		if ExtraActionBarFrame:IsShown() then--Has light
 			specWarnDeepeningShadows:Show(args.spellName)
-			voiceDeepeningShadows:Play("213576")
+			specWarnDeepeningShadows:Play("213576")
 		else
 			warnDeepeningShadows:Show()
 		end
 		timerDeepeningShadowsCD:Start()
 	elseif spellId == 197251 then
 		specWarnKick:Show()
-		voiceKick:Play("carefly")
+		specWarnKick:Play("carefly")
 		timerKickCD:Start()
 	elseif spellId == 197422 then--First creeping doom
 		specWarnCreepingDoom:Show()
-		voiceCreepingDoom:Play("stilldanger")
-		voiceCreepingDoom:Schedule(2, "keepmove")
+		specWarnCreepingDoom:Play("stilldanger")
+		specWarnCreepingDoom:ScheduleVoice(2, "keepmove")
 		timerKickCD:Stop()
 		timerDeepeningShadowsCD:Stop()
 		timerCreepingDoom:Start()
 	elseif spellId == 213685 then--Second creeping doom
 		specWarnCreepingDoom:Show()
-		voiceCreepingDoom:Play("stilldanger")
-		voiceCreepingDoom:Schedule(2, "keepmove")
+		specWarnCreepingDoom:Play("stilldanger")
+		specWarnCreepingDoom:ScheduleVoice(2, "keepmove")
 	end
 end
 
@@ -73,7 +67,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 205004 then
 		if ExtraActionBarFrame:IsShown() then--Has light
 			specWarnVengeance:Show(args.spellName)
-			voiceVengeance:Play(205004)
+			specWarnVengeance:Play(205004)
 		else
 			warnVengeance:Show()
 		end
@@ -85,7 +79,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 206567 then
 		specWarnHiddenOver:Show()
-		voiceHidden:Play("phasechange")
+		specWarnHiddenOver:Play("phasechange")
 		--timerVengeanceCD:Start(14)
 		timerKickCD:Start(15.5)--15-20
 		timerDeepeningShadowsCD:Start(20)--20-25
@@ -101,6 +95,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		timerDeepeningShadowsCD:Stop()
 		timerKickCD:Stop()
 		specWarnHiddenStarted:Show()
-		voiceHidden:Play("phasechange")
+		specWarnHiddenStarted:Play("phasechange")
 	end
 end

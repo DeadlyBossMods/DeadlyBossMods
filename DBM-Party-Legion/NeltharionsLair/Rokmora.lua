@@ -23,9 +23,6 @@ local specWarnGas					= mod:NewSpecialWarningMove(192800, nil, nil, nil, 1, 2)
 local timerShatterCD				= mod:NewCDTimer(24.2, 188114, nil, nil, nil, 2)
 local timerRazorShardsCD			= mod:NewCDTimer(25, 188169, nil, "Tank", nil, 5)--29?
 
-local voiceRazorShards				= mod:NewVoice(188169, "Tank")--shockwave
-local voiceGas						= mod:NewVoice(192800)--runaway
-
 function mod:OnCombatStart(delay)
 	timerShatterCD:Start(20-delay)
 	timerRazorShardsCD:Start(25-delay)--27?
@@ -35,7 +32,7 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 188169 then
 		specWarnRazorShards:Show()
-		voiceRazorShards:Play("shockwave")
+		specWarnRazorShards:Play("shockwave")
 		timerRazorShardsCD:Start()
 	elseif spellId == 188114 then
 		warnShatter:Show()
@@ -46,7 +43,7 @@ end
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 192800 and destGUID == UnitGUID("player") and self:AntiSpam(2.5, 1) then
 		specWarnGas:Show()
-		voiceGas:Play("runaway")
+		specWarnGas:Play("runaway")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE

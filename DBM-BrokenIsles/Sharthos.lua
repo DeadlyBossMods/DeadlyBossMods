@@ -24,10 +24,6 @@ local specWarnFear				= mod:NewSpecialWarningSpell(216044, nil, nil, nil, 2, 2)
 local timerBreathCD				= mod:NewCDTimer(18.4, 215821, nil, "Tank", 2, 5, nil, DBM_CORE_TANK_ICON)--18.4-23
 local timerFearCD				= mod:NewCDTimer(34.3, 216044, nil, nil, nil, 1)--34.3-65
 
-local voiceBreath				= mod:NewVoice(215821, "Tank")--breathsoon
-local voiceBurningEarth			= mod:NewVoice(215876)--runaway
-local voiceFear					= mod:NewVoice(216044)
-
 --mod:AddReadyCheckOption(37460, false)
 mod:AddRangeFrameOption(5, 216043)--Range unknown, journal nor spell tooltip say.
 
@@ -51,11 +47,11 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 215821 then
 		specWarnBreath:Show()
-		voiceBreath:Play("breathsoon")
+		specWarnBreath:Play("breathsoon")
 		timerBreathCD:Start()
 	elseif spellId == 216044 then
 		specWarnFear:Show()
-		voiceFear:Play("fearsoon")
+		specWarnFear:Play("fearsoon")
 		timerFearCD:Start()
 	end
 end
@@ -64,7 +60,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 215821 then
 		specWarnBreath:Show()
-		voiceBreath:Play("breathsoon")
+		specWarnBreath:Play("breathsoon")
 		timerBreathCD:Start()
 	end
 end
@@ -72,7 +68,7 @@ end
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 215876 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
 		specWarnBurningEarth:Show()
-		voiceBurningEarth:Play("runaway")
+		specWarnBurningEarth:Play("runaway")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE

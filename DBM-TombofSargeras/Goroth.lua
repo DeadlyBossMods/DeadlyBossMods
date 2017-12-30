@@ -60,12 +60,6 @@ local countdownShatteringStarFades		= mod:NewCountdownFades("AltTwo6", 233272)
 local countdownCrashingComet			= mod:NewCountdownFades("Alt5", 232249)--Assume for now tank will never get comets and dps will never get burning armor
 local countdownBurningArmor				= mod:NewCountdownFades("Alt6", 231363)--^^
 
-local voiceInfernalBurning				= mod:NewVoice(233062)--findshelter
-local voiceShatteringStar				= mod:NewVoice(233272)--runout (maybe custom voice that says "kite through spikes"?)
-local voiceCrashingComet				= mod:NewVoice(232249)--runout
-local voiceBurningArmor					= mod:NewVoice(231363)--runout/tauntboss
-local voiceRainofBrimstone				= mod:NewVoice(238587, "-Tank", nil, 2)--helpsoak
-
 --mod:AddSetIconOption("SetIconOnShield", 228270, true)
 --mod:AddInfoFrameOption(227503, true)
 mod:AddRangeFrameOption("10/25")
@@ -110,8 +104,8 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 233062 then
 		specWarnInfernalBurning:Show(infernalSpike)
-		voiceInfernalBurning:Play("findshelter")
-		--voiceInfernalBurning:Schedule(3.5, "safenow")
+		specWarnInfernalBurning:Play("findshelter")
+		--specWarnInfernalBurning:ScheduleVoice(3.5, "safenow")
 		timerInfernalBurningCD:Start()
 		countdownInfernalBurning:Start()
 	end
@@ -157,7 +151,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 233272 then
 		if args:IsPlayer() then--Still do yell and range frame here, in case DK
 			specWarnShatteringStar:Show(infernalSpike)
-			voiceShatteringStar:Play("runout")
+			specWarnShatteringStar:Play("runout")
 			yellShatteringStar:Yell(6)
 			yellShatteringStar:Schedule(5, 1)
 			yellShatteringStar:Schedule(4, 2)
@@ -170,7 +164,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 231363 then
 		if args:IsPlayer() then
 			specWarnBurningArmor:Show()
-			voiceBurningArmor:Play("runout")
+			specWarnBurningArmor:Play("runout")
 			if self:IsTank() then
 				countdownBurningArmor:Start()
 			end
@@ -189,10 +183,10 @@ function mod:SPELL_AURA_APPLIED(args)
 			if expires then
 				local remaining = expires-GetTime()
 				specWarnBurningArmorTaunt:Schedule(remaining, args.destName)
-				voiceBurningArmor:Schedule(remaining, "tauntboss")
+				specWarnBurningArmorTaunt:Schedule(remaining, "tauntboss")
 			else
 				specWarnBurningArmorTaunt:Show(args.destName)
-				voiceBurningArmor:Play("tauntboss")
+				specWarnBurningArmorTaunt:Play("tauntboss")
 			end
 		end
 	end
@@ -225,22 +219,6 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
---[[
-function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
-	if spellId == 228007 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
---		specWarnDancingBlade:Show()
---		voiceDancingBlade:Play("runaway")
-	end
-end
-mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
-
-function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
-	if msg:find("spell:228162") then
-
-	end
-end
---]]
-
 function mod:UNIT_AURA_UNFILTERED(uId)
 	local hasDebuff = UnitDebuff(uId, crashingComet)
 	local name = DBM:GetUnitFullName(uId)
@@ -252,7 +230,7 @@ function mod:UNIT_AURA_UNFILTERED(uId)
 				warnCrashingComet:CombinedShow(0.5, name)--Multiple targets in heroic/mythic
 				if UnitIsUnit(uId, "player") then
 					specWarnCrashingComet:Show()
-					voiceCrashingComet:Play("runout")
+					specWarnCrashingComet:Play("runout")
 					yellCrashingComet:Yell(5)
 					yellCrashingComet:Countdown(5)
 					timerCrashingComet:Start()
@@ -276,7 +254,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, spellGUID)
 		self.vb.brimstoneCount = self.vb.brimstoneCount + 1
 		local nextCount = self.vb.brimstoneCount+1
 		specWarnRainofBrimstone:Show(spellName)
-		voiceRainofBrimstone:Play("helpsoak")
+		specWarnRainofBrimstone:Play("helpsoak")
 		--["233285-Rain of Brimstone"] = "pull:12.1, 60.4, 60.8, 60.8, 68.2, 60.0",
 		--["233285-Rain of Brimstone"] = "pull:12.2, 60.8, 60.8, 60.5, 68.5",
 		--["233285-Rain of Brimstone"] = "pull:12.5, 60.8, 60.8, 60.8, 67.2",

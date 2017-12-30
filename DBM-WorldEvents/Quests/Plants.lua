@@ -19,7 +19,7 @@ local warnAberration			= mod:NewSpellAnnounce(92228, 3)
 local warnAbomination			= mod:NewSpellAnnounce(92606, 4)
 local warnTotalAdds				= mod:NewAnnounce("warnTotalAdds", 2)
 
-local specWarnWave				= mod:NewSpecialWarning("specWarnWave", nil, nil, nil, 2)
+local specWarnWave				= mod:NewSpecialWarning("specWarnWave", nil, nil, nil, 2, 2)
 
 --local timerWave					= mod:NewTimer(170, "timerWave")
 
@@ -54,6 +54,7 @@ function mod:RAID_BOSS_WHISPER(msg)
 		warnTotalAdds:Show(addCount)
 		addCount = 0
 		specWarnWave:Show()
+		specWarnWave:Play("mobsoon")
 		--Need more data to confirm this, timing may be based off something else more accurate
 --[[		if wave == 1 then
 			timerWave:Start(298)

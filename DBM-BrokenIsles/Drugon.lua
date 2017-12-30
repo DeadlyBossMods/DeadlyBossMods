@@ -32,10 +32,6 @@ local timerAvalancheCD			= mod:NewCDTimer(42.6, 219542, nil, nil, nil, 3)--May n
 local timerSnowCrashCD			= mod:NewCDTimer(19.4, 219493, nil, "Melee", nil, 2)--Seems to alternate 19.4 and 23.2 but world bosses can't be this complicated since they are often engaged in progress
 local timerSnowPlowCD			= mod:NewCDTimer(47.4, 219602, nil, nil, nil, 3)
 
-local voiceAvalanche			= mod:NewVoice(219542)--runaway
-local voiceSnowCrash			= mod:NewVoice(219493)--shockwave
-local voiceSnowPlow				= mod:NewVoice(219602)--runaway/keepmove/safenow
-
 mod:AddReadyCheckOption(43448, false)
 
 function mod:AvaTarget(targetname, uId)
@@ -45,7 +41,7 @@ function mod:AvaTarget(targetname, uId)
 	end
 	if targetname == UnitName("player") then
 		specWarnAvalanche:Show()
-		voiceAvalanche:Play("runaway")
+		specWarnAvalanche:Play("runaway")
 		yellAvalanche:Yell()
 	else
 		warnAvalanche:Show(targetname)
@@ -65,7 +61,7 @@ function mod:SPELL_CAST_START(args)
 		self:BossTargetScanner(args.sourceGUID, "AvaTarget", 0.2, 9)
 	elseif spellId == 219493 then
 		specWarnSnowCrash:Show()
-		voiceSnowCrash:Play("shockwave")
+		specWarnSnowCrash:Play("shockwave")
 		timerSnowCrashCD:Start()
 	end
 end
@@ -82,8 +78,8 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 219602 and args:IsDestTypePlayer() then
 		if args:IsPlayer() then
 			specWarnSnowPlow:Show()
-			voiceSnowPlow:Play("runaway")
-			voiceSnowPlow:Schedule(1, "keepmove")
+			specWarnSnowPlow:Play("runaway")
+			specWarnSnowPlow:ScheduleVoice(1, "keepmove")
 		else
 			warnSnowPlow:Show(args.destName)
 		end
@@ -94,6 +90,6 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 219602 and args:IsPlayer() then
 		specWarnSnowPlowOver:Show()
-		voiceSnowPlow:Play("safenow")
+		specWarnSnowPlowOver:Play("safenow")
 	end
 end

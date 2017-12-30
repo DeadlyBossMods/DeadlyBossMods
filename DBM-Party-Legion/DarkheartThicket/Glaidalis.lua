@@ -28,9 +28,6 @@ local timerLeapCD				= mod:NewCDTimer(14, 196346, nil, nil, nil, 3)
 local timerRampageCD			= mod:NewCDTimer(15.8, 198379, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerNightfallCD			= mod:NewCDTimer(14.5, 198401, nil, nil, nil, 3)
 
-local voiceNightFall			= mod:NewVoice(198408)--runaway
-local voiceRampage				= mod:NewVoice(198379, "Tank")--defensive
-
 function mod:LeapTarget(targetname, uId)
 	if not targetname then
 		warnLeap:Show(DBM_CORE_UNKNOWN)
@@ -65,7 +62,7 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 198379 then
 		specWarnRampage:Show()
-		voiceRampage:Play("defensive")
+		specWarnRampage:Play("defensive")
 		timerRampageCD:Start()
 	end
 end
@@ -73,7 +70,7 @@ end
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 198408 and destGUID == UnitGUID("player") and self:AntiSpam(2, 2) then
 		specWarnNightfall:Show()
-		voiceNightFall:Play("runaway")
+		specWarnNightfall:Play("runaway")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE

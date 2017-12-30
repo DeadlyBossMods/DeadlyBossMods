@@ -37,8 +37,6 @@ local timerEvo						= mod:NewBuffActiveTimer(20, 227254, nil, nil, nil, 6)
 
 local countdownEvo					= mod:NewCountdown(70, 227254)
 
-local voicePowerDischarge			= mod:NewVoice(227465)--runaway
-
 function mod:OnCombatStart(delay)
 	timerSummonAddCD:Start(6-delay)
 	timerPowerDischargeCD:Start(13.5)
@@ -81,7 +79,7 @@ end
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 227465 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
 		specWarnPowerDischarge:Show()
-		voicePowerDischarge:Play("runaway")
+		specWarnPowerDischarge:Play("runaway")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE

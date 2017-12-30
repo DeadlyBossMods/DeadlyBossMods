@@ -58,19 +58,6 @@ local timerDinnerBellCD				= mod:NewCDTimer(10.9, 227987, nil, nil, nil, 4, nil,
 
 --local countdownFocusedGazeCD		= mod:NewCountdown(40, 198006)
 
---Luminore
-local voiceBurningBlaze				= mod:NewVoice(228193)--targetyou/share
-local voiceHeatWave					= mod:NewVoice(228025, "HasInterrupt")--kickcast
---Mrs.Cauldrons
-local voiceLeftovers				= mod:NewVoice(228019, "HasInterrupt")--kickcast
---Babblet
-local voiceSevereDusting			= mod:NewVoice(228221)--justrun/keepmove
-local voiceSultryheat				= mod:NewVoice(228225, "MagicDispeller")--dispelnow
---Coggleston
-local voiceDentArmor				= mod:NewVoice(227985)--defensive
-local voiceDinnerBell				= mod:NewVoice(227987, "HasInterrupt")--kickcast
-
-
 mod:AddSetIconOption("SetIconOnDusting", 228221, true)
 --mod:AddInfoFrameOption(198108, false)
 
@@ -92,19 +79,19 @@ function mod:SPELL_CAST_START(args)
 		timerHeatWaveCD:Start()
 		if self:CheckInterruptFilter(args.sourceGUID) then
 			specWarnHeatWave:Show(args.sourceName)
-			voiceHeatWave:Play("kickcast")
+			specWarnHeatWave:Play("kickcast")
 		end
 	elseif spellId == 228019 then
 		timerLeftoversCD:Start()
 		if self:CheckInterruptFilter(args.sourceGUID) then
 			specWarnLeftovers:Show(args.sourceName)
-			voiceLeftovers:Play("kickcast")
+			specWarnLeftovers:Play("kickcast")
 		end
 	elseif spellId == 227987 then
 		timerDinnerBellCD:Start()
 		if self:CheckInterruptFilter(args.sourceGUID) then
 			specWarnDinnerBell:Show(args.sourceName)
-			voiceDinnerBell:Play("kickcast")
+			specWarnDinnerBell:Play("kickcast")
 		end
 	elseif spellId == 232153 then
 		warnKaraKazham:Show()
@@ -121,8 +108,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerSevereDustingCD:Start()
 		if args:IsPlayer() then
 			specWarnSevereDusting:Show()
-			voiceSevereDusting:Play("justrun")
-			voiceSevereDusting:Schedule(1, "keepmove")
+			specWarnSevereDusting:Play("justrun")
+			specWarnSevereDusting:ScheduleVoice(1, "keepmove")
 		else
 			warnSevereDusting:Show(args.destName)
 		end
@@ -131,12 +118,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 228225 and not args:IsDestTypePlayer() then
 		specWarnSultryheat:Show(args.destName)
-		voiceSultryheat:Play("dispelnow")
+		specWarnSultryheat:Play("dispelnow")
 	elseif spellId == 227985 then
 		timerDentArmorCD:Start()
 		if args:IsPlayer() then
 			specWarnDentArmor:Show()
-			voiceDentArmor:Play("defensive")
+			specWarnDentArmor:Play("defensive")
 		end
 	end
 end
@@ -155,7 +142,7 @@ end
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 228200 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
 		specWarnBurningBlaze:Show()
-		voiceBurningBlaze:Play("runaway")
+		specWarnBurningBlaze:Play("runaway")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE

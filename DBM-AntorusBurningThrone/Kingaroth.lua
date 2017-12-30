@@ -88,18 +88,6 @@ local countdownApocProtocol				= mod:NewCountdown(77, 246516)
 local countdownForgingStrike			= mod:NewCountdown("Alt14", 244312, "Tank", nil, 3)
 local countdownRuiner					= mod:NewCountdown("AltTwo29", 246840)
 
---Stage: Deployment
---local voiceGTFO						= mod:NewVoice(238028, nil, DBM_CORE_AUTO_VOICE4_OPTION_TEXT)--runaway
-local voiceForgingStrike				= mod:NewVoice(244312)--defensive
-local voiceReverberatingStrike			= mod:NewVoice(254926)--watchstep
---local voiceDiabolicBomb					= mod:NewVoice(246779)--watchstep/watchorb?
-local voiceRuiner						= mod:NewVoice(246840)--farfromline (iffy) Maybe when it's not INVISIBLE I'll have better idea how to describe it
-local voiceInitializing					= mod:NewVoice(246504)--killmob
---Reavers (or empowered boss from reaver deaths)
-local voiceDecimation					= mod:NewVoice(246687)--scatter
-local voiceAnnihilation					= mod:NewVoice(245807)--helpsoak
-local voiceDemolish						= mod:NewVoice(246692)--gathershare/targetyou
-
 mod:AddSetIconOption("SetIconOnDemolish", 246692, true)
 mod:AddBoolOption("InfoFrame", true)
 mod:AddBoolOption("UseAddTime", true)
@@ -120,11 +108,11 @@ function mod:ReverberatingTarget(targetname, uId)
 	if not targetname then return end
 	if targetname == UnitName("player") then
 		specWarnReverberatingStrike:Show()
-		voiceReverberatingStrike:Play("runaway")
+		specWarnReverberatingStrike:Play("runaway")
 		yellReverberatingStrike:Yell()
 	elseif self:CheckNearby(5, targetname) then
 		specWarnReverberatingStrikeNear:Show(targetname)
-		voiceReverberatingStrike:Play("watchstep")
+		specWarnReverberatingStrikeNear:Play("watchstep")
 	else
 		warnReverberatingStrike:Show(targetname)
 	end
@@ -150,7 +138,7 @@ local function warnDemolishTargets(self, spellName)
 	end
 	if not UnitDebuff("player", spellName) then
 		specWarnDemolishOther:Show(DBM_ALLY)
-		voiceDemolish:Play("gathershare")
+		specWarnDemolishOther:Play("gathershare")
 	end
 end
 
@@ -222,7 +210,7 @@ function mod:SPELL_CAST_START(args)
 		local tanking, status = UnitDetailedThreatSituation("player", "boss1")
 		if tanking or (status == 3) then--Player is current target
 			specWarnForgingStrike:Show()
-			voiceForgingStrike:Play("defensive")
+			specWarnForgingStrike:Play("defensive")
 		end
 		--1.5, 27.6, 30.1
 		if self:IsLFR() then
@@ -245,14 +233,14 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 245807 then
 		specWarnAnnihilation:Show()
-		voiceAnnihilation:Play("helpsoak")
+		specWarnAnnihilation:Play("helpsoak")
 	elseif spellId == 252758 or spellId == 246692 then
 		table.wipe(DemolishTargets)
 	elseif spellId == 246833 then--Ruiner
 		self.vb.ruinerCast = self.vb.ruinerCast + 1
 		specWarnRuiner:Show()
-		voiceRuiner:Play("farfromline")
-		voiceRuiner:Schedule(1.5, "keepmove")
+		specWarnRuiner:Play("farfromline")
+		specWarnRuiner:ScheduleVoice(1.5, "keepmove")
 		timerRuinerCD:Start(nil, self.vb.ruinerCast+1)--28-30 depending on difficulty
 		countdownRuiner:Start(29.1)
 		timerForgingStrikeCD:Stop()
@@ -279,7 +267,7 @@ function mod:SPELL_CAST_START(args)
 		--timerDiabolicBombCD:Stop()
 		--timerShatteringStrikeCD:Stop()
 		specWarnInitializing:Show()
-		voiceInitializing:Play("killmob")
+		specWarnInitializing:Play("killmob")
 		if self:IsLFR() then
 			timerInitializing:Start(42.3)
 		else
@@ -307,7 +295,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 			if not UnitIsDeadOrGhost("player") and (not remaining or remaining and remaining < 14) then
 				specWarnForgingStrikeOther:Show(args.destName)
-				voiceForgingStrike:Play("changemt")
+				specWarnForgingStrikeOther:Play("changemt")
 			end
 		end
 	elseif spellId == 257978 then--LFR special edition, swap at 2 stacks
@@ -322,7 +310,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				end
 				if not UnitIsDeadOrGhost("player") and (not remaining or remaining and remaining < 8.5) then
 					specWarnForgingStrikeOther:Show(args.destName)
-					voiceForgingStrike:Play("tauntboss")
+					specWarnForgingStrikeOther:Play("tauntboss")
 				end
 			end
 		end
@@ -330,7 +318,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnDecimation:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			specWarnDecimation:Show()
-			voiceDecimation:Play("runout")
+			specWarnDecimation:Play("runout")
 			local _, _, _, _, _, _, expires = UnitDebuff("player", args.spellName)
 			if expires then
 				local remaining = expires-GetTime()
@@ -349,7 +337,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		--end
 		if args:IsPlayer() then
 			specWarnDemolish:Show()
-			voiceDemolish:Play("targetyou")
+			specWarnDemolish:Play("targetyou")
 		end
 		if self.Options.InfoFrame then
 			if #DemolishTargets == 1 then
@@ -412,7 +400,7 @@ end
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 228007 and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
 		specWarnGTFO:Show()
-		voiceGTFO:Play("runaway")
+		specWarnGTFO:Play("runaway")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
@@ -432,17 +420,16 @@ end
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if (spellId == 246779 or spellId == 248214) and self:AntiSpam(3, 1) then--Diabolic Bomb
 		warnDiabolicBomb:Show()
-		--voiceDiabolicBomb:Play("watchstep")
 		--timerDiabolicBombCD:Start()
 	elseif spellId == 248319 then--Consume Energy 100% (reaver fully charged and activated)
 		--Info Frame usage situation?
 	elseif spellId == 246686 then--Decimation (ignore 246691 I'm pretty sure)
 		--specWarnDecimation:Show()
-		--voiceDecimation:Play("scatter")
+		--specWarnDecimation:Play("scatter")
 		timerDecimationCD:Start(nil, UnitGUID(uId))
 	elseif spellId == 246657 then--Annihilation
 		specWarnAnnihilation:Show()
-		voiceAnnihilation:Play("helpsoak")
+		specWarnAnnihilation:Play("helpsoak")
 		timerAnnihilationCD:Start(nil, UnitGUID(uId))
 	elseif spellId == 248375 and self:AntiSpam(5, 2) then--Shattering Strike
 		warnShatteringStrike:Show()

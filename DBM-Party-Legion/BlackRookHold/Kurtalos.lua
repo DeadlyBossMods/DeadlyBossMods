@@ -37,10 +37,6 @@ local timerShadowBoltVolleyCD		= mod:NewCDTimer(8, 202019, nil, nil, nil, 2)
 
 local countdownShear				= mod:NewCountdown(12, 198635, "Tank")
 
-local voiceDarkblast				= mod:NewVoice(198820)--watchstep
-local voiceGuile					= mod:NewVoice(199193)--watchstep/keepmove/safenow
-local voiceShadowBolt				= mod:NewVoice(202019)--defensive
-
 mod.vb.phase = 1
 mod.vb.shadowboltCount = 0
 
@@ -57,7 +53,7 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 198820 then
 		if self.vb.phase == 1 then
 			specWarnDarkblast:Show()
-			voiceDarkblast:Play("watchstep")
+			specWarnDarkblast:Play("watchstep")
 			timerDarkBlastCD:Start()
 		end
 	elseif spellId == 199143 then
@@ -68,14 +64,14 @@ function mod:SPELL_CAST_START(args)
 		timerSwarmCD:Stop()
 		timerShadowBoltVolleyCD:Stop()
 		specWarnGuile:Show()
-		voiceGuile:Play("watchstep")
-		voiceGuile:Schedule(1.5, "keepmove")
+		specWarnGuile:Play("watchstep")
+		specWarnGuile:ScheduleVoice(1.5, "keepmove")
 		timerGuile:Start()
 	elseif spellId == 202019 then
 		self.vb.shadowboltCount = self.vb.shadowboltCount + 1
 		if self.vb.shadowboltCount == 1 then
 			specWarnShadowBolt:Show()
-			voiceShadowBolt:Play("defensive")
+			specWarnShadowBolt:Play("defensive")
 		end
 		--timerShadowBoltVolleyCD:Start()--Not known, and probably not important
 	end
@@ -106,7 +102,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 199193 then
 		specWarnGuileEnded:Show()
-		voiceGuile:Play("safenow")
+		specWarnGuileEnded:Play("safenow")
 		timerCloudCD:Start(3)
 		if not self:IsNormal() then
 			timerSwarmCD:Start(10.5)

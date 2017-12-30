@@ -26,9 +26,6 @@ local timerBreathCD					= mod:NewCDTimer(26.5, 204667, nil, "Tank", nil, 5, nil,
 
 local countdownThrow				= mod:NewCountdown("Alt28", 204658, "Tank")
 
-local voiceRoots					= mod:NewVoice(204574)--watchstep
-local voiceBreath					= mod:NewVoice(204667, "Tank")--Defensive
-
 --AKA Crushing Grip
 function mod:ThrowTarget(targetname, uId)
 	if not targetname then
@@ -67,11 +64,11 @@ function mod:SPELL_CAST_START(args)
 		timerShatteredEarthCD:Start()
 	elseif spellId == 204574 then
 		specWarnRoots:Show()
-		voiceRoots:Play("watchstep")
+		specWarnRoots:Play("watchstep")
 		timerRootsCD:Start()
 	elseif spellId == 204667 then
 		specWarnBreath:Show()
-		voiceBreath:Play("defensive")
+		specWarnBreath:Play("defensive")
 		timerBreathCD:Start()
 	end
 end

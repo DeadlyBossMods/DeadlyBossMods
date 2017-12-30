@@ -33,17 +33,13 @@ local timerImpaleCD					= mod:NewCDTimer(22.8, 202341, nil, nil, nil, 3)
 local timerSwarmCD					= mod:NewCDTimer(22.8, 201863, nil, nil, nil, 1)
 local timerFixateCD					= mod:NewCDTimer(15.5, 202480, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
 
-local voiceMandibleStrike			= mod:NewVoice(202217, "Tank")--defensive
-local voiceImpale					= mod:NewVoice(202341)--runout
-local voiceOozeGTFO					= mod:NewVoice(202485)--runaway
-
 local bugsSeen = {}
 
 function mod:ImpaleTarget(targetname, uId)
 	if not targetname then return end
 	if targetname == UnitName("player") then
 		specWarnImpale:Show()
-		voiceImpale:Play("runout")
+		specWarnImpale:Play("runout")
 		yellImpale:Yell()
 	else
 		warnImpale:Show(targetname)
@@ -64,7 +60,7 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 202217 then
 		specWarnMandibleStrike:Show()
-		voiceMandibleStrike:Play("defensive")
+		specWarnMandibleStrike:Play("defensive")
 		timerMandibleStrikeCD:Start()
 	elseif spellId == 202341 then
 		self:BossUnitTargetScanner("boss1", "ImpaleTarget", 3.4)
@@ -89,7 +85,7 @@ end
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 202485 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
 		specWarnOozeGTFO:Show()
-		voiceOozeGTFO:Play("runaway")
+		specWarnMandibleStrike:Play("runaway")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE

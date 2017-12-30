@@ -52,11 +52,6 @@ local timerWillBreakerCD			= mod:NewAITimer(40, 227672, nil, "Tank", nil, 5)
 
 --local countdownFocusedGazeCD		= mod:NewCountdown(40, 198006)
 
---Moroes
-local voiceCoatCheck				= mod:NewVoice(227832)--defensive/dispelnow
---Lord Crispin Ference
-local voiceWillBreaker				= mod:NewVoice(227672, "Tank")--shockwave
-
 --mod:AddSetIconOption("SetIconOnCharge", 198006, true)
 mod:AddInfoFrameOption(227909, true)
 
@@ -112,7 +107,7 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 227672 then
 		specWarnWillBreaker:Show()
-		voiceWillBreaker:Play("shockwave")
+		specWarnWillBreaker:Play("shockwave")
 		timerWillBreakerCD:Start()
 	elseif spellId == 227578 then
 		warnHealingStream:Show()
@@ -141,26 +136,17 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerCoatCheckCD:Start()
 		if args:IsPlayer() then
 			specWarnCoatCheck:Show()
-			voiceCoatCheck:Play("defensive")
+			specWarnCoatCheck:Play("defensive")
 		else
 			specWarnCoatCheckHealer:Show(args.destName)
 			if self.Options.SpecWarn227832dispel then
-				voiceCoatCheck:Play("dispelnow")
+				specWarnCoatCheckHealer:Play("dispelnow")
 			end
 		end
 	elseif spellId == 227616 then
 		warnEmpoweredArms:Show(args.destName)
 	end
 end
-
---[[
-function mod:SPELL_AURA_REMOVED(args)
-	local spellId = args.spellId
-	if spellId == 198006 then
-
-	end
-end
---]]
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
@@ -178,20 +164,3 @@ function mod:UNIT_DIED(args)
 		timerWillBreakerCD:Stop()
 	end
 end
-
---[[
-function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
-	if spellId == 205611 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
---		specWarnMiasma:Show()
---		voiceMiasma:Play("runaway")
-	end
-end
-mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
-
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
-	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
-	if spellId == 206341 then
-	
-	end
-end
---]]

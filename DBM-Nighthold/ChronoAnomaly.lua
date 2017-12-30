@@ -53,12 +53,6 @@ local timerNextPhase				= mod:NewPhaseTimer(74)--Used anywhere phase change is N
 local countdownBigAdd				= mod:NewCountdown(30, 206700)--Switch to waning time particle when section info known
 local countdownTimeBomb				= mod:NewCountdownFades("AltTwo30", 206617)
 
-local voiceTemporalOrbs				= mod:NewVoice(219815)--watchstep
-local voicePowerOverwhelming		= mod:NewVoice(211927)--aesoon
-local voiceTimeBomb					= mod:NewVoice(206617)--runout
-local voiceWarp						= mod:NewVoice(207228, "HasInterrupt")--kickcast
-local voiceBigAdd					= mod:NewVoice(206700, "-Healer")
-local voiceSmallAdd					= mod:NewVoice(206699, "Tank")
 mod:AddRangeFrameOption(10, 206617)
 mod:AddInfoFrameOption(206610)
 mod:AddDropdownOption("InfoFrameBehavior", {"TimeRelease", "TimeBomb"}, "TimeRelease", "misc")
@@ -74,13 +68,13 @@ local function updateTimeBomb(self)
 	local _, _, _, _, _, _, expires = UnitDebuff("player", timeBombDebuff)
 	if expires then
 		specWarnTimeBomb:Cancel()
-		voiceTimeBomb:Cancel()
+		specWarnTimeBomb:CancelVoice()
 		timerTimeBomb:Stop()
 		countdownTimeBomb:Cancel()
 		yellTimeBomb:Cancel()
 		local debuffTime = expires - GetTime()
 		specWarnTimeBomb:Schedule(debuffTime - 5)	-- Show "move away" warning 5secs before explode
-		voiceTimeBomb:Schedule(debuffTime - 5, "runout")
+		specWarnTimeBomb:ScheduleVoice(debuffTime - 5, "runout")
 		timerTimeBomb:Start(debuffTime)
 		countdownTimeBomb:Start(debuffTime)
 		yellTimeBomb:Schedule(debuffTime-1, 1)
@@ -117,10 +111,10 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 211927 then
 		timerChronoPartCD:Stop()--Will be used immediately when this ends.
 		specWarnPowerOverwhelming:Show()
-		voicePowerOverwhelming:Play("aesoon")
+		specWarnPowerOverwhelming:Play("aesoon")
 	elseif spellId == 207228 and self:CheckInterruptFilter(args.sourceGUID) then
 		specWarnWarp:Show(args.sourceName)
-		voiceWarp:Play("kickcast")
+		specWarnWarp:Play("kickcast")
 	end
 end
 
@@ -128,7 +122,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 219815 then
 		specWarnTemporalOrbs:Show()
-		voiceTemporalOrbs:Play("watchstep")
+		specWarnTemporalOrbs:Play("watchstep")
 	end
 end
 
@@ -166,7 +160,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.timeBombDebuffCount = self.vb.timeBombDebuffCount - 1
 		if args:IsPlayer() then
 			specWarnTimeBomb:Cancel()
-			voiceTimeBomb:Cancel()
+			specWarnTimeBomb:CancelVoice()
 			timerTimeBomb:Stop()
 			countdownTimeBomb:Cancel()
 			yellTimeBomb:Cancel()
@@ -466,10 +460,10 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		self:Schedule(5, updateTimeBomb, self)
 	elseif spellId == 206699 then--Summon Haste Add (Small Adds)
 		specWarnSmallAdd:Show()
-		voiceSmallAdd:Play("mobsoon")
+		specWarnSmallAdd:Play("mobsoon")
 	elseif spellId == 206700 then--Summon Slow Add (Big Adds)
 		specWarnBigAdd:Show()
-		voiceBigAdd:Play("bigmobsoon")
+		specWarnBigAdd:Play("bigmobsoon")
 	elseif spellId == 207972 then--Full Power, he's just gonna run in circles aoeing the raid and stop using abilities
 		timerBigAddCD:Stop()
 		countdownBigAdd:Cancel()

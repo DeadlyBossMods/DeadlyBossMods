@@ -75,18 +75,8 @@ local berserkTimer						= mod:NewBerserkTimer(600)
 local countdownTaeshalachTech			= mod:NewCountdown(61, 244688)
 local countdownWakeofFlame				= mod:NewCountdown("AltTwo24", 244693, "-Tank")
 
---Stage One: Wrath of Aggramar
+--General
 local voicePhaseChange					= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
-local voiceTaeshalachReach				= mod:NewVoice(245990)--tauntboss/stackhigh
-local voiceScorchingBlaze				= mod:NewVoice(245994)--scatter
-local voiceRavenousBlaze				= mod:NewVoice(254452)--scatter
-local voiceWakeofFlame					= mod:NewVoice(244693)--watchwave
-local voiceFoeBreaker					= mod:NewVoice(245458)--shockwave/tauntboss/defensive
-local voiceFlameRend					= mod:NewVoice(245463)--gathershare/shareone/sharetwo
-local voiceSearingTempest				= mod:NewVoice(245301)--watchstep
---Stage Two: Champion of Sargeras
-local voiceFlare						= mod:NewVoice(245983, "-Melee", nil, 2)--watchstep
---local voiceGTFO							= mod:NewVoice(247135, nil, DBM_CORE_AUTO_VOICE4_OPTION_TEXT)--runaway
 
 mod:AddSetIconOption("SetIconOnBlaze2", 254452, false)--Both off by default, both conflit with one another
 mod:AddSetIconOption("SetIconOnAdds", 244903, false, true)--Both off by default, both conflit with one another
@@ -280,7 +270,7 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 244693 and self:AntiSpam(4, 1) then--Antispam because boss recasts itif target dies while casting
 		self.vb.wakeOfFlameCount = self.vb.wakeOfFlameCount + 1
 		specWarnWakeofFlame:Show()
-		voiceWakeofFlame:Play("watchwave")
+		specWarnWakeofFlame:Play("watchwave")
 		local techTimer = timerTaeshalachTechCD:GetRemaining(self.vb.techCount+1)
 		if techTimer == 0 or techTimer > 24 then
 			timerWakeofFlameCD:Start()
@@ -301,11 +291,10 @@ function mod:SPELL_CAST_START(args)
 			local tanking, status = UnitDetailedThreatSituation("player", "boss1")
 			if tanking or (status == 3) then--Player is current target
 				specWarnFoeBreakerDefensive:Show()
-				--voiceFoeBreaker:Play("faceaway")
-				voiceFoeBreaker:Play("defensive")
+				specWarnFoeBreakerDefensive:Play("defensive")
 			elseif not UnitDebuff("player", args.spellName) and self.vb.foeCount == 2 then--Second cast and you didn't take first
 				specWarnFoeBreakerTaunt:Show(BOSS)
-				voiceFoeBreaker:Play("tauntboss")
+				specWarnFoeBreakerTaunt:Play("tauntboss")
 			end
 		end
 		if self.vb.foeCount == 1 and not self:IsMythic() then
@@ -331,12 +320,12 @@ function mod:SPELL_CAST_START(args)
 		specWarnFlameRend:Show(self.vb.rendCount)
 		if spellId == 255058 then--Empowered/Mythic Version
 			if self.vb.rendCount == 1 then
-				voiceFlameRend:Play("shareone")
+				specWarnFlameRend:Play("shareone")
 			else
-				voiceFlameRend:Play("sharetwo")
+				specWarnFlameRend:Play("sharetwo")
 			end
 		else
-			voiceFlameRend:Play("gathershare")
+			specWarnFlameRend:Play("gathershare")
 		end
 		if self.vb.rendCount == 1 and not self:IsMythic() then
 			if self:IsEasy() then
@@ -356,7 +345,7 @@ function mod:SPELL_CAST_START(args)
 			end
 		end
 		specWarnSearingTempest:Show()
-		voiceSearingTempest:Play("runout")
+		specWarnSearingTempest:Play("runout")
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:Update()
 		end
@@ -372,11 +361,11 @@ function mod:SPELL_AURA_APPLIED(args)
 			if amount >= 8 and self:AntiSpam(3, 2) then--Lasts 12 seconds, asuming 1.5sec swing timer makes 8 stack swap
 				if args:IsPlayer() then--At this point the other tank SHOULD be clear.
 					specWarnTaeshalachReach:Show(amount)
-					voiceTaeshalachReach:Play("stackhigh")
+					specWarnTaeshalachReach:Play("stackhigh")
 				else--Taunt as soon as stacks are clear, regardless of stack count.
 					if not UnitIsDeadOrGhost("player") and not UnitDebuff("player", args.spellName) then
 						specWarnTaeshalachReachOther:Show(args.destName)
-						voiceTaeshalachReach:Play("tauntboss")
+						specWarnTaeshalachReachOther:Play("tauntboss")
 					else
 						warnTaeshalachReach:Show(args.destName, amount)
 					end
@@ -391,7 +380,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnScorchingBlaze:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			specWarnScorchingBlaze:Show()
-			voiceScorchingBlaze:Play("scatter")
+			specWarnScorchingBlaze:Play("scatter")
 			yellScorchingBlaze:Yell()
 		end
 	elseif spellId == 254452 then
@@ -399,7 +388,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		local icon = self.vb.blazeIcon
 		if args:IsPlayer() then
 			specWarnRavenousBlaze:Show(self:IconNumToTexture(icon))
-			voiceRavenousBlaze:Play("scatter")
+			specWarnRavenousBlaze:Play("scatter")
 			yellRavenousBlaze:Yell(icon, args.spellName, icon)
 			warnRavenousBlazeCount:Schedule(2, 5)
 			warnRavenousBlazeCount:Schedule(4, 10)
@@ -483,7 +472,7 @@ end
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 247135 and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
 		specWarnGTFO:Show()
-		voiceGTFO:Play("runaway")
+		specWarnGTFO:Play("runaway")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
@@ -567,7 +556,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		end
 	elseif spellId == 245983 or spellId == 246037 then--Flare
 		specWarnFlare:Show()
-		voiceFlare:Play("watchstep")
+		specWarnFlare:Play("watchstep")
 		timerFlareCD:Start()
 	end
 end

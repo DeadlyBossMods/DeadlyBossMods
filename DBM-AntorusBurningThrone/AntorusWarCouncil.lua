@@ -98,26 +98,6 @@ local countdownFusillade				= mod:NewCountdown("AltTwo30", 244625)
 ----General Erodus
 local countdownReinforcements			= mod:NewCountdown(25, 245546)
 
---General
---local voiceGTFO						= mod:NewVoice(238028, nil, DBM_CORE_AUTO_VOICE4_OPTION_TEXT)--runaway
-local voicePsychicAssault				= mod:NewVoice(244172)--otherout ("player out")
-local voiceExploitWeakness				= mod:NewVoice(244892)--Tauntboss
---In Pod
-----Admiral Svirax
-local voiceFusillade					= mod:NewVoice(244625)--findshield
-----Chief Engineer Ishkar
-local voiceEntropicMine					= mod:NewVoice(245161)--watchstep
-----General Erodus
-local voiceSummonReinforcements			= mod:NewVoice(245546)--killmob
-local voicePyroblast					= mod:NewVoice(246505, "HasInterrupt")--kickcast
-local voiceDemonicCharge				= mod:NewVoice(253040)--watchstep/runaway
---Out of Pod
-----Admiral Svirax
-local voiceShockGrenade					= mod:NewVoice(244737)--runout
-----Chief Engineer Ishkar
-local voiceWarpField					= mod:NewVoice(244821)--justrun/keepmove?
-----General Erodus
-
 mod:AddSetIconOption("SetIconOnAdds", 245546, true, true)
 mod:AddRangeFrameOption("8")
 
@@ -129,11 +109,11 @@ function mod:DemonicChargeTarget(targetname, uId)
 	if not targetname then return end
 	if targetname == UnitName("player") then
 		specWarnDemonicChargeYou:Show()
-		voiceDemonicCharge:Play("runaway")
+		specWarnDemonicChargeYou:Play("runaway")
 		yellDemonicCharge:Yell()
 	elseif self:CheckNearby(10, targetname) and self:AntiSpam(3, 2) then
 		specWarnDemonicCharge:Show(targetname)
-		voiceDemonicCharge:Play("watchstep")
+		specWarnDemonicCharge:Play("watchstep")
 	else
 		warnDemonicCharge:Show(targetname)
 	end
@@ -165,7 +145,7 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 244625 then
 		self.vb.FusilladeCount = self.vb.FusilladeCount + 1
 		specWarnFusillade:Show(felShield)
-		voiceFusillade:Play("findshield")
+		specWarnFusillade:Play("findshield")
 		timerFusilladeCD:Start(nil, self.vb.FusilladeCount+1)
 		if not self:IsLFR() then
 			countdownFusillade:Start(29.6)
@@ -173,7 +153,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 246505 then
 		if self:CheckInterruptFilter(args.sourceGUID) then
 			specWarnPyroblast:Show(args.sourceName)
-			voicePyroblast:Play("kickcast")
+			specWarnPyroblast:Play("kickcast")
 		end
 	elseif spellId == 253040 then
 		self:BossTargetScanner(args.sourceGUID, "DemonicChargeTarget", 0.2, 9)
@@ -209,8 +189,8 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 244821 then
 		specWarnWarpField:Show()
-		voiceWarpField:Play("justrun")
-		--voiceWarpField:Schedule(1, "keepmove")
+		specWarnWarpField:Play("justrun")
+		--specWarnWarpField:Schedule(1, "keepmove")
 		timerWarpFieldCD:Start()
 	end
 end
@@ -228,11 +208,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 253037 then
 		if args:IsPlayer() then
 			specWarnDemonicChargeYou:Show()
-			voiceDemonicCharge:Play("runaway")
+			specWarnDemonicChargeYou:Play("runaway")
 			yellDemonicCharge:Yell()
 		elseif self:CheckNearby(10, args.destName) then
 			specWarnDemonicCharge:Show(args.destName)
-			voiceDemonicCharge:Play("watchstep")
+			specWarnDemonicCharge:Play("watchstep")
 		else
 			warnDemonicCharge:Show(args.destName)
 		end
@@ -245,7 +225,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnShockGrenade:CombinedShow(1, args.destName)
 		if args:IsPlayer() then
 			specWarnShockGrenade:Show()
-			voiceShockGrenade:Play("runout")
+			specWarnShockGrenade:Play("runout")
 			yellShockGrenade:Yell()
 			yellShockGrenadeFades:Countdown(5, 3)
 			if self.Options.RangeFrame then
@@ -264,7 +244,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				end
 				if not UnitIsDeadOrGhost("player") and (not remaining or remaining and remaining < 8) then
 					specWarnExploitWeakness:Show(args.destName)
-					voiceExploitWeakness:Play("tauntboss")
+					specWarnExploitWeakness:Play("tauntboss")
 				else
 					warnExploitWeakness:Show(args.destName, amount)
 				end
@@ -292,7 +272,7 @@ end
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 228007 and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
 		specWarnGTFO:Show()
-		voiceGTFO:Play("runaway")
+		specWarnGTFO:Play("runaway")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
@@ -301,7 +281,7 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 function mod:RAID_BOSS_WHISPER(msg)
 	if msg:find("244172") then
 		specWarnPsychicAssault:Show()
-		voicePsychicAssault:Play("otherout")
+		specWarnPsychicAssault:Play("otherout")
 	end
 end
 
@@ -318,7 +298,7 @@ end
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if (spellId == 245161 or spellId == 245304) and self:AntiSpam(5, 1) then
 		warnEntropicMine:Show()
-		voiceEntropicMine:Play("watchstep")
+		warnEntropicMine:Play("watchstep")
 		timerEntropicMineCD:Start()
 	elseif spellId == 245785 then--Pod Spawn Transition Cosmetic Missile
 		local name = UnitName(uId)
@@ -337,7 +317,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		end
 	elseif spellId == 245546 then--Summon Reinforcements (major adds)
 		specWarnSummonReinforcements:Show()
-		voiceSummonReinforcements:Play("killmob")
+		specWarnSummonReinforcements:Play("killmob")
 		timerSummonReinforcementsCD:Start(35)
 		countdownReinforcements:Start(35)
 		if self.Options.SetIconOnAdds then

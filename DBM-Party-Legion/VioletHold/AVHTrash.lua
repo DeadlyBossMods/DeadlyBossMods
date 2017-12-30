@@ -34,13 +34,6 @@ local yellFelPrison					= mod:NewYell(204608)
 local timerPortal					= mod:NewTimer(122, "TimerPortal", 57687, nil, nil, 6)
 --local timerShieldDestruction		= mod:NewNextTimer(12.5, 202312, nil, nil, nil, 1)--Time between boss yell and shield coming down.
 
-local voiceShadowBomb				= mod:NewVoice(204962)--runout
-local voiceShadowBoltVolley			= mod:NewVoice(204963, "HasInterrupt")--kickcast
-local voiceHellfire					= mod:NewVoice(205088, "HasInterrupt")--kickcast
-local voiceFelSlam					= mod:NewVoice(205090, "Tank")--shockwave
-local voiceFelEnergy				= mod:NewVoice(204762)--runaway
-local voiceFelPrison				= mod:NewVoice(204608, "Dps")--helpme
-
 mod:RemoveOption("HealthFrame")
 
 function mod:SPELL_CAST_START(args)
@@ -50,10 +43,10 @@ function mod:SPELL_CAST_START(args)
 		warnSummonBeasts:Show()
 	elseif spellId == 204963 and self:CheckInterruptFilter(args.sourceGUID) then
 		specWarnShadowBoltVolley:Show(args.sourceName)
-		voiceShadowBoltVolley:Play("kickcast")
+		specWarnShadowBoltVolley:Play("kickcast")
 	elseif spellId == 205090 then
 		specWarnFelSlam:Show()
-		voiceFelSlam:Play("shockwave")
+		specWarnFelSlam:Play("shockwave")
 	end
 end
 
@@ -63,19 +56,19 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 204962 then
 		if args:IsPlayer() then
 			specWarnShadowBomb:Show()
-			voiceShadowBomb:Play("runout")
+			specWarnShadowBomb:Play("runout")
 		else
 			warnShadowBomb:CombinedShow(0.3, args.destName)
 		end
 	elseif spellId == 205088 and self:CheckInterruptFilter(args.sourceGUID) then
 		specWarnHellfire:Show(args.sourceName)
-		voiceHellfire:Play("kickcast")
+		specWarnHellfire:Play("kickcast")
 	elseif spellId == 204608 then
 		if args:IsPlayer() then
 			yellFelPrison:Yell()
 		else
 			specWarnFelPrison:Show()
-			voiceFelPrison:Play("helpme")
+			specWarnFelPrison:Play("helpme")
 		end
 	end
 end
@@ -85,7 +78,7 @@ function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if not self.Options.Enabled then return end
 	if spellId == 204762 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
 		specWarnFelEnergy:Show()
-		voiceFelEnergy:Play("runaway")
+		specWarnFelEnergy:Play("runaway")
 	end
 end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE

@@ -25,10 +25,6 @@ local timerSurgeCD					= mod:NewCDTimer(17, 209602, nil, nil, nil, 3)
 local timerMaelstromCD				= mod:NewCDTimer(17, 209676, nil, nil, nil, 3)
 local timerGaleCD					= mod:NewCDTimer(17, 209628, nil, nil, nil, 2)
 
-local voiceSurge					= mod:NewVoice(209602)--targetyou
-local voiceMaelstrom				= mod:NewVoice(209676)--aesoon
-local voiceGale						= mod:NewVoice(209676)--watchstep
-
 local trashmod = DBM:GetModByName("CoSTrash")
 
 function mod:SurgeTarget(targetname, uId)
@@ -38,7 +34,7 @@ function mod:SurgeTarget(targetname, uId)
 	end
 	if targetname == UnitName("player") then
 		specWarnSurge:Show()
-		voiceSurge:Play("targetyou")
+		specWarnSurge:Play("targetyou")
 		yellSurge:Yell()
 	else
 		warnSurge:Show(targetname)
@@ -65,11 +61,11 @@ function mod:SPELL_CAST_START(args)
 		self:BossTargetScanner(104218, "SurgeTarget", 0.1, 16, true, nil, nil, nil, true)
 	elseif spellId == 209676 then
 		specWarnSlicingMaelstrom:Show()
-		voiceMaelstrom:Play("aesoon")
+		specWarnSlicingMaelstrom:Play("aesoon")
 		timerMaelstromCD:Start()
 	elseif spellId == 209628 and self:AntiSpam(5, 1) then
 		specWarnGale:Show()
-		voiceGale:Play("watchstep")
+		specWarnGale:Play("watchstep")
 		timerGaleCD:Start()
 	end
 end

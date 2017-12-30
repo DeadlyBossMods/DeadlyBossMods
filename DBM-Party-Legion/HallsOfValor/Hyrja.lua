@@ -37,11 +37,6 @@ local timerSpecialCD				= mod:NewNextTimer(30, 200736, nil, nil, nil, 2, 200901,
 local countdownSpecial				= mod:NewCountdown(30, 200736)
 local countdownShieldOfLight		= mod:NewCountdown("Alt28", 192018, "Tank")
 
-local voiceEyeofStorm				= mod:NewVoice(200901)--findshelter
-local voiceShieldOfLight			= mod:NewVoice(192018, "Tank")--defensive
-local voiceSanctify					= mod:NewVoice(192158)--watchorb
-local voiceExpelLight				= mod:NewVoice(192048)--runout
-local voiceSearingLight				= mod:NewVoice(192288, "HasInterrupt")--kickcast
 local voicePhaseChange				= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
 
 mod:AddRangeFrameOption(8, 192048)
@@ -64,7 +59,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 192048 then
 		if args:IsPlayer() then
 			specWarnExpelLight:Show()
-			voiceExpelLight:Play("runout")
+			specWarnExpelLight:Play("runout")
 			yellExpelLight:Yell()
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Hide()
@@ -86,7 +81,7 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 192158 or spellId == 192307 then
 		specWarnSanctify:Show()
-		voiceSanctify:Play("watchorb")
+		specWarnSanctify:Play("watchorb")
 		if spellId == 192307 then
 			timerSpecialCD:Start()
 			countdownSpecial:Cancel()
@@ -94,12 +89,12 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 192018 then
 		specWarnShieldOfLight:Show()
-		voiceShieldOfLight:Play("defensive")
+		specWarnShieldOfLight:Play("defensive")
 		timerShieldOfLightCD:Start()
 		countdownShieldOfLight:Start()
 	elseif spellId == 200901 then
 		specWarnEyeofStorm:Show(eyeShortName)
-		voiceEyeofStorm:Play("findshelter")
+		specWarnEyeofStorm:Play("findshelter")
 		if self.vb.phase == 2 then
 			timerSpecialCD:Start()
 			countdownSpecial:Cancel()
@@ -107,7 +102,7 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 192288 and self:CheckInterruptFilter(args.sourceGUID) then
 		specWarnSearingLight:Show(args.sourceName)
-		voiceSearingLight:Play("kickcast")
+		specWarnSearingLight:Play("kickcast")
 	end
 end
 

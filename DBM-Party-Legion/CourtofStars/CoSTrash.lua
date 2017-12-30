@@ -29,21 +29,6 @@ local specWarnSealMagic				= mod:NewSpecialWarningRun(209404, false, nil, 2, 4, 
 local specWarnDisruptingEnergy		= mod:NewSpecialWarningMove(209512, nil, nil, nil, 1, 2)
 local specWarnWhirlingBlades		= mod:NewSpecialWarningRun(209378, "Melee", nil, nil, 4, 2)
 
-local voiceFortification			= mod:NewVoice(209033, "MagicDispeller")--dispelnow
-local voiceQuellingStrike			= mod:NewVoice(209027, "Tank")--shockwave
-local voiceChargedBlast				= mod:NewVoice(212031, "Tank")--shockwave
-local voiceChargedSmash				= mod:NewVoice(209495, "Tank")--chargemove
-local voiceDrainMagic				= mod:NewVoice(209485, "HasInterrupt")--kickcast
-local voiceNightfallOrb				= mod:NewVoice(209410, "HasInterrupt")--kickcast
-local voiceSuppress					= mod:NewVoice(209413, "HasInterrupt")--kickcast
-local voiceBewitch					= mod:NewVoice(211470, "HasInterrupt")--kickcast
-local voiceChargingStation			= mod:NewVoice(225100, "HasInterrupt")--kickcast
-local voiceSearingGlare				= mod:NewVoice(211299, "HasInterrupt")--kickcast
-local voiceFelDetonation			= mod:NewVoice(211464, false, nil, 2)--aesoon
-local voiceSealMagic				= mod:NewVoice(209404, false, nil, 2)--runout
-local voiceDisruptingEnergy			= mod:NewVoice(209512)--runaway
-local voiceWhirlingBlades			= mod:NewVoice(209378, "Melee")--runout
-
 mod:RemoveOption("HealthFrame")
 mod:AddBoolOption("SpyHelper", true)
 
@@ -52,41 +37,41 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 209027 and self:AntiSpam(2, 1) then
 		specWarnQuellingStrike:Show()
-		voiceQuellingStrike:Play("shockwave")
+		specWarnQuellingStrike:Play("shockwave")
 	elseif spellId == 212031 and self:AntiSpam(2, 2) then
 		specWarnChargedBlast:Show()
-		voiceChargedBlast:Play("shockwave")
+		specWarnChargedBlast:Play("shockwave")
 	elseif spellId == 209485 and self:CheckInterruptFilter(args.sourceGUID) then
 		specWarnDrainMagic:Show(args.sourceName)
-		voiceDrainMagic:Play("kickcast")
+		specWarnDrainMagic:Play("kickcast")
 	elseif spellId == 209410 and self:CheckInterruptFilter(args.sourceGUID) then
 		specWarnNightfallOrb:Show(args.sourceName)
-		voiceNightfallOrb:Play("kickcast")
+		specWarnNightfallOrb:Play("kickcast")
 	elseif spellId == 209413 and self:CheckInterruptFilter(args.sourceGUID) then
 		specWarnSuppress:Show(args.sourceName)
-		voiceSuppress:Play("kickcast")
+		specWarnSuppress:Play("kickcast")
 	elseif spellId == 211470 and self:CheckInterruptFilter(args.sourceGUID) then
 		specWarnBewitch:Show(args.sourceName)
-		voiceBewitch:Play("kickcast")
+		specWarnBewitch:Play("kickcast")
 	elseif spellId == 225100 and self:CheckInterruptFilter(args.sourceGUID) then
 		specWarnChargingStation:Show(args.sourceName)
-		voiceChargingStation:Play("kickcast")
+		specWarnChargingStation:Play("kickcast")
 	elseif spellId == 211299 and self:CheckInterruptFilter(args.sourceGUID) then
 		specWarnSearingGlare:Show(args.sourceName)
-		voiceSearingGlare:Play("kickcast")
+		specWarnSearingGlare:Play("kickcast")
 	elseif spellId == 211464 then
 		specWarnFelDetonation:Show()
-		voiceFelDetonation:Play("aesoon")
+		specWarnFelDetonation:Play("aesoon")
 	elseif spellId == 209404 then
 		specWarnSealMagic:Show()
-		voiceSealMagic:Play("runout")
+		specWarnSealMagic:Play("runout")
 	elseif spellId == 209495 then
 		--Don't want to move too early, just be moving already as cast is finishing
 		specWarnChargedSmash:Schedule(1.2)
-		voiceChargedSmash:Schedule(1.2, "chargemove")
+		specWarnChargedSmash:ScheduleVoice(1.2, "chargemove")
 	elseif spellId == 209378 then
 		specWarnWhirlingBlades:Show()
-		voiceWhirlingBlades:Play("runout")
+		specWarnWhirlingBlades:Play("runout")
 	end
 end
 
@@ -95,10 +80,10 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 209033 and not args:IsDestTypePlayer() then
 		specWarnFortification:Show(args.destName)
-		voiceFortification:Play("dispelnow")
+		specWarnFortification:Play("dispelnow")
 	elseif spellId == 209512 and args:IsPlayer() then
 		specWarnDisruptingEnergy:Show()
-		voiceDisruptingEnergy:Play("runaway")
+		specWarnDisruptingEnergy:Play("runaway")
 	end
 end
 

@@ -24,10 +24,6 @@ local specWarnVoidSnap			= mod:NewSpecialWarningInterrupt(194266, "HasInterrupt"
 local timerFragmentCD			= mod:NewCDTimer(30, 194327, nil, nil, nil, 3)
 local timerServitorCD			= mod:NewCDTimer(23, 194231, nil, nil, nil, 1)--23-30
 
-local voiceFragment				= mod:NewVoice(194327, "Dps")--mobkill
-local voiceServitor				= mod:NewVoice(194231, "-Healer")--bigmob
-local voiceVoidSnap				= mod:NewVoice(194266, "HasInterrupt")--kickcast
-
 function mod:OnCombatStart(delay)
 	timerServitorCD:Start(7-delay)
 	timerFragmentCD:Start(19-delay)
@@ -44,7 +40,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 194327 then
 		warnFragment:Show(args.destName)
 		specWarnFragment:Show()
-		voiceFragment:Play("mobkill")
+		specWarnFragment:Play("mobkill")
 	end
 end
 
@@ -61,11 +57,11 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 194231 then
 		specWarnServitor:Show()
-		voiceServitor:Play("bigmob")
+		specWarnServitor:Play("bigmob")
 		timerServitorCD:Start()
 	elseif spellId == 194266 and self:CheckInterruptFilter(args.sourceGUID) then
 		specWarnVoidSnap:Show(args.sourceName)
-		voiceVoidSnap:Play("kickcast")
+		specWarnVoidSnap:Play("kickcast")
 	end
 end
 

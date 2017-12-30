@@ -104,23 +104,6 @@ local countdownStormforgedSpear		= mod:NewCountdown("Alt11", 228918, "Tank")
 --Mythic
 local countdownRunicBrand			= mod:NewCountdown(35, 231297)
 
---Stage 1: Halls of Valor was merely a set back
-local voiceDancingBlade				= mod:NewVoice(228003)--runaway
-local voiceHornOfValor				= mod:NewVoice(228012)--scatter
-local voiceExpelLight				= mod:NewVoice(228028)--runout
-local voiceShieldofLight			= mod:NewVoice(228270)--targetyou
-local voiceBranded					= mod:NewVoice(227503)--mmX (will be changed to mmc when supported)
---Stage 2: Odyn immitates margok
-local voiceOdynsTest				= mod:NewVoice(227626)--changemt
-local voiceShatterSpears			= mod:NewVoice(231013)--watchorb (on by default unlike screen warning since it's not as spammy)
-local voiceHyrja					= mod:NewVoice("ej14006")--bigmob
-local voiceHymdall					= mod:NewVoice("ej14005")--bigmob
---Stage 3: Odyn immitates lei shen
-local voiceStormofJustice			= mod:NewVoice(227807)--runout
-local voiceStormforgedSpear			= mod:NewVoice(228918)--justrun
-local voiceCleansingFlame			= mod:NewVoice(228683)--runaway
-local voiceRunicBrand				= mod:NewVoice(231297)--mmX (will be changed to mmc when supported)
-
 mod:AddSetIconOption("SetIconOnShield", 228270, true)
 mod:AddInfoFrameOption(227503, true)
 mod:AddRangeFrameOption("5/8/15")
@@ -299,7 +282,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.hornCasting = true
 		self.vb.hornCast = self.vb.hornCast + 1
 		specWarnHornOfValor:Show()
-		voiceHornOfValor:Play("scatter")
+		specWarnHornOfValor:Play("scatter")
 		if self.vb.phase == 1 then
 			if self:IsMythic() then
 				local timer = hornTimers[self.vb.hornCast+1]
@@ -332,7 +315,7 @@ function mod:SPELL_CAST_START(args)
 		warnRevivify:Show()
 	elseif spellId == 231013 then
 		specWarnShatterSpears:Show()
-		voiceShatterSpears:Play("watchorb")
+		specWarnHornOfValor:Play("watchorb")
 	end
 end
 
@@ -383,7 +366,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnExpelLight:CombinedShow(0.3, args.destName)--TODO: Confirm can be more than one target
 		if args:IsPlayer() then
 			specWarnExpelLight:Show()
-			voiceExpelLight:Play("runout")
+			specWarnExpelLight:Play("runout")
 			yellExpelLight:Yell()
 			updateRangeFrame(self)
 		end
@@ -391,7 +374,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnStormofJustice:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			specWarnStormofJustice:Show()
-			voiceStormofJustice:Play("runout")
+			specWarnStormofJustice:Play("runout")
 			yellStormofJustice:Yell()
 			updateRangeFrame(self)
 		end
@@ -401,20 +384,21 @@ function mod:SPELL_AURA_APPLIED(args)
 			local tanking, status = UnitDetailedThreatSituation("player", "boss1")
 			if tanking or (status == 3) then
 				specWarnOdynsTest:Show(amount)
+				specWarnOdynsTest:Play("changemt")
 			else
 				specWarnOdynsTestOther:Show(L.name)
+				specWarnOdynsTestOther:Play("changemt")
 			end
-			voiceOdynsTest:Play("changemt")
 		end
 	elseif spellId == 228918 then
 		timerStormforgedSpearCD:Start()--If this can miss, move it to a success event.
 		countdownStormforgedSpear:Start()
 		if args:IsPlayer() then
 			specWarnStormforgedSpear:Show()
-			voiceStormforgedSpear:Play("justrun")
+			specWarnStormforgedSpear:Play("justrun")
 		else
 			specWarnStormforgedSpearOther:Show(args.destName)
-			voiceStormforgedSpear:Play("tauntboss")
+			specWarnStormforgedSpearOther:Play("tauntboss")
 		end
 	elseif spellId == 227490 or spellId == 227491 or spellId == 227498 or spellId == 227499 or spellId == 227500 then--Branded (Draw Power Runes)
 		drawTable[spellId] = args.destName
@@ -423,23 +407,23 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if spellId == 227490 and args:IsPlayer() then--Purple K (NE)
 			specWarnBranded:Show("|TInterface\\Icons\\Boss_OdunRunes_Purple.blp:12:12|tNE|TInterface\\Icons\\Boss_OdunRunes_Purple.blp:12:12|t")
-			voiceBranded:Play("mm3")
+			specWarnBranded:Play("mm3")
 			yellBranded:Yell(3, args.spellName, 3)
 		elseif spellId == 227491 and args:IsPlayer() then--Orange N (SE)
 			specWarnBranded:Show("|TInterface\\Icons\\Boss_OdunRunes_Orange.blp:12:12|tSE|TInterface\\Icons\\Boss_OdunRunes_Orange.blp:12:12|t")
-			voiceBranded:Play("mm2")
+			specWarnBranded:Play("mm2")
 			yellBranded:Yell(2, args.spellName, 2)
 		elseif spellId == 227498 and args:IsPlayer() then--Yellow H (SW)
 			specWarnBranded:Show("|TInterface\\Icons\\Boss_OdunRunes_Yellow.blp:12:12|tSW|TInterface\\Icons\\Boss_OdunRunes_Yellow.blp:12:12|t")
-			voiceBranded:Play("mm1")
+			specWarnBranded:Play("mm1")
 			yellBranded:Yell(1, args.spellName, 1)
 		elseif spellId == 227499 and args:IsPlayer() then--Blue fishies (NW)
 			specWarnBranded:Show("|TInterface\\Icons\\Boss_OdunRunes_Blue.blp:12:12|tNW|TInterface\\Icons\\Boss_OdunRunes_Blue.blp:12:12|t")
-			voiceBranded:Play("mm6")
+			specWarnBranded:Play("mm6")
 			yellBranded:Yell(6, args.spellName, 6)
 		elseif spellId == 227500 and args:IsPlayer() then--Green box (N)
 			specWarnBranded:Show("|TInterface\\Icons\\Boss_OdunRunes_Green.blp:12:12|tN|TInterface\\Icons\\Boss_OdunRunes_Green.blp:12:12|t")
-			voiceBranded:Play("mm4")
+			specWarnBranded:Play("mm4")
 			yellBranded:Yell(4, args.spellName, 4)
 		end
 		if self.Options.InfoFrame and not DBM.InfoFrame:IsShown() then
@@ -452,42 +436,42 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 229579 or spellId == 229580 or spellId == 229581 or spellId == 229582 or spellId == 229583 then--Branded (Mythic Phase 1/2 non fixate rune debuffs)
 		if spellId == 229579 and args:IsPlayer() then--Purple K (NE)
 			specWarnBranded:Show("|TInterface\\Icons\\Boss_OdunRunes_Purple.blp:12:12|tNE|TInterface\\Icons\\Boss_OdunRunes_Purple.blp:12:12|t")
-			voiceBranded:Play("mm3")
+			specWarnBranded:Play("mm3")
 		elseif spellId == 229580 and args:IsPlayer() then--Orange N (SE)
 			specWarnBranded:Show("|TInterface\\Icons\\Boss_OdunRunes_Orange.blp:12:12|tSE|TInterface\\Icons\\Boss_OdunRunes_Orange.blp:12:12|t")
-			voiceBranded:Play("mm2")
+			specWarnBranded:Play("mm2")
 		elseif spellId == 229581 and args:IsPlayer() then--Yellow H (SW)
 			specWarnBranded:Show("|TInterface\\Icons\\Boss_OdunRunes_Yellow.blp:12:12|tSW|TInterface\\Icons\\Boss_OdunRunes_Yellow.blp:12:12|t")
-			voiceBranded:Play("mm1")
+			specWarnBranded:Play("mm1")
 		elseif spellId == 229582 and args:IsPlayer() then--Blue fishies (NW)
 			specWarnBranded:Show("|TInterface\\Icons\\Boss_OdunRunes_Blue.blp:12:12|tNW|TInterface\\Icons\\Boss_OdunRunes_Blue.blp:12:12|t")
-			voiceBranded:Play("mm6")
+			specWarnBranded:Play("mm6")
 		elseif spellId == 229583 and args:IsPlayer() then--Green box (N)
 			specWarnBranded:Show("|TInterface\\Icons\\Boss_OdunRunes_Green.blp:12:12|tN|TInterface\\Icons\\Boss_OdunRunes_Green.blp:12:12|t")
-			voiceBranded:Play("mm4")
+			specWarnBranded:Play("mm4")
 		end
 	elseif spellId == 231311 or spellId == 231342 or spellId == 231344 or spellId == 231345 or spellId == 231346 then--Runic Brand (Phase 3 Mythic)
 		if args:IsPlayer() then
 			playerDebuff = spellId
 			if spellId == 231311 then--Purple K (NE)
 				specWarnRunicBrand:Show("|TInterface\\Icons\\Boss_OdunRunes_Purple.blp:12:12|t")
-				voiceRunicBrand:Play("mm3")
+				specWarnRunicBrand:Play("mm3")
 				yellRunicBrand:Yell(3, args.spellName, 3)
 			elseif spellId == 231342 then--Orange N (SE)
 				specWarnRunicBrand:Show("|TInterface\\Icons\\Boss_OdunRunes_Orange.blp:12:12|t")
-				voiceRunicBrand:Play("mm2")
+				specWarnRunicBrand:Play("mm2")
 				yellRunicBrand:Yell(2, args.spellName, 2)
 			elseif spellId == 231344 then--Yellow H (SW)
 				specWarnRunicBrand:Show("|TInterface\\Icons\\Boss_OdunRunes_Yellow.blp:12:12|t")
-				voiceRunicBrand:Play("mm1")
+				specWarnRunicBrand:Play("mm1")
 				yellRunicBrand:Yell(1, args.spellName, 1)
 			elseif spellId == 231345 then--Blue fishies (NW)
 				specWarnRunicBrand:Show("|TInterface\\Icons\\Boss_OdunRunes_Blue.blp:12:12|t")
-				voiceRunicBrand:Play("mm6")
+				specWarnRunicBrand:Play("mm6")
 				yellRunicBrand:Yell(6, args.spellName, 6)
 			elseif spellId == 231346 then--Green box (N)
 				specWarnRunicBrand:Show("|TInterface\\Icons\\Boss_OdunRunes_Green.blp:12:12|t")
-				voiceRunicBrand:Play("mm4")
+				specWarnRunicBrand:Play("mm4")
 				yellRunicBrand:Yell(4, args.spellName, 4)
 			end
 			updateRangeFrame(self)
@@ -537,10 +521,10 @@ end
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 228007 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
 		specWarnDancingBlade:Show()
-		voiceDancingBlade:Play("runaway")
+		specWarnDancingBlade:Play("runaway")
 	elseif spellId == 228683 and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
 		specWarnCleansingFlame:Show()
-		voiceCleansingFlame:Play("runaway")
+		specWarnCleansingFlame:Play("runaway")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
@@ -573,7 +557,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 		if targetname then
 			if targetname == UnitName("player") then
 				specWarnShieldofLight:Show()
-				voiceShieldofLight:Play("targetyou")
+				specWarnShieldofLight:Play("targetyou")
 				yellShieldofLightFades:Schedule(2.8, 1)
 				yellShieldofLightFades:Schedule(1.8, 2)
 				yellShieldofLightFades:Schedule(0.8, 3)
@@ -589,7 +573,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 		if npc == hyrja then
 			self.vb.shieldCast = 0
 			specWarnHyrja:Show()
-			voiceHyrja:Play("bigmob")
+			specWarnHyrja:Play("bigmob")
 			timerExpelLightCD:Start(4.7)
 			timerShieldofLightCD:Start(9.7)
 			countdownShield:Start(9.7)
@@ -601,7 +585,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 		elseif npc == hymdall then
 			self.vb.hornCast = 0
 			specWarnHymall:Show()
-			voiceHymdall:Play("bigmob")
+			specWarnHymall:Play("bigmob")
 			timerDancingBladeCD:Start(5)
 			timerHornOfValorCD:Start(9.5, 1)
 			countdownHorn:Start(9.5)
@@ -696,7 +680,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 			timerSpearCD:Start()
 		end
 		specWarnShatterSpears:Show()
-		voiceShatterSpears:Play("watchorb")
+		specWarnShatterSpears:Play("watchorb")
 	--"<487.37 21:38:02> [CHAT_MSG_MONSTER_YELL] It seems I have been too gentle. Have at thee!#Odyn#####0#0##0#191#nil#0#false#false#false#false", -- [2839]
 	--"<489.60 21:38:04> [UNIT_SPELLCAST_SUCCEEDED] Odyn(??) [[boss1:Spear Transition - Thunder::3-2012-1648-3815-228740-00058AC2FC:228740]]", -- [2940]
 	--"<489.60 21:38:04> [UNIT_SPELLCAST_SUCCEEDED] Odyn(??) [[boss1:Arcing Storm::3-2012-1648-3815-229254-00060AC2FC:229254]]", -- [2941]

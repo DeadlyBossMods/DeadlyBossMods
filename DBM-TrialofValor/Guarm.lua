@@ -60,11 +60,6 @@ local berserkTimer					= mod:NewBerserkTimer(300)
 local countdownBreath				= mod:NewCountdown(20.5, 228187)
 local countdownFangs				= mod:NewCountdown("Alt20", 227514, "Tank")
 
-local voiceBreath					= mod:NewVoice(228187)--breathsoon
-local voiceCharge					= mod:NewVoice(227816)--chargemove
-local voiceFlameLick				= mod:NewVoice(228228)--runout
-local voiceFrostLick				= mod:NewVoice(228248)--helpdispel
-
 mod:AddSetIconOption("SetIconOnFoam", "ej14535", true)
 mod:AddBoolOption("YellActualRaidIcon", false)
 mod:AddBoolOption("FilterSameColor", true)
@@ -183,7 +178,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		end
 	elseif spellId == 227816 then
 		specWarnCharge:Show()
-		voiceCharge:Play("chargemove")
+		specWarnCharge:Play("chargemove")
 	elseif spellId == 228824 then
 		self.vb.foamCast = self.vb.foamCast + 1
 		if self.vb.foamCast < 3 then
@@ -290,7 +285,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 228228 then
 		if args:IsPlayer() then
 			specWarnFlameLick:Show()
-			voiceFlameLick:Play("runout")
+			specWarnFlameLick:Play("runout")
 			yellFlameLick:Yell()
 		end
 	elseif spellId == 228253 then
@@ -303,7 +298,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.specwarn228248dispel then
 			specWarnFrostLickDispel:CombinedShow(0.3, args.destName)
 			if self:AntiSpam(3, 1) then
-				voiceFrostLick:Play("helpdispel")
+				specWarnFrostLickDispel:Play("helpdispel")
 			end
 		else
 			warnFrostLick:CombinedShow(0.3, args.destName)
@@ -348,7 +343,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	if spellId == 227573 then--Guardian's Breath (pre cast used for all 6 versions of breath. Not a bad guess for my drycode huh? :) )
 		self.vb.breathCast = self.vb.breathCast + 1
 		specWarnBreath:Show(self.vb.breathCast)
-		voiceBreath:Play("breathsoon")
+		specWarnBreath:Play("breathsoon")
 		if self.vb.breathCast == 1 then
 			timerBreathCD:Start(nil, 2)
 			countdownBreath:Start()

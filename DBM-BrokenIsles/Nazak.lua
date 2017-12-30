@@ -26,10 +26,6 @@ local timerCorrodingSprayCD		= mod:NewCDTimer(23.2, 219349, nil, nil, nil, 5, ni
 local timerFoundatoinCD			= mod:NewAITimer(90, 219591, nil, nil, nil, 6)
 local timerWebWrapCD			= mod:NewCDTimer(36.9, 219865, nil, nil, nil, 3)
 
---local voiceFoundation			= mod:NewVoice(219591)--no voice ideas at all. Maybe needs new one
---local voiceWebWrap				= mod:NewVoice(219865, "Dps")--Maybe time for a "freeallies" or "freeplayers" voice?
-
-
 --mod:AddReadyCheckOption(37460, false)
 
 function mod:OnCombatStart(delay, yellTriggered)
@@ -61,7 +57,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 219591 then
 		specWarnFoundation:Show()
---		voiceFoundation:Play("")
+--		specWarnFoundation:Play("")
 		timerFoundatoinCD:start()
 	elseif spellId == 219865 then
 		warnWebWrap:CombinedShow(0.3, args.destName)

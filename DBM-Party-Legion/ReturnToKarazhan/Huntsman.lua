@@ -33,29 +33,22 @@ local timerSharedSufferingCD		= mod:NewNextTimer(19, 228852, nil, nil, nil, 3)
 
 local countdownSharedSuffering		= mod:NewCountdown(19, 228852)
 
-local voiceMightyStomp				= mod:NewVoice(227363, "SpellCaster")--stopcast
-local voiceSpectralcharge			= mod:NewVoice(227365)--watchstep
---On Foot
-local voiceMezair					= mod:NewVoice(227339)--chargemove
-local voiceMortalStrike				= mod:NewVoice(227493, "Tank")--defensive
-local voiceSharedSuffering			= mod:NewVoice(228852)--defensive
-
 mod:AddSetIconOption("SetIconOnSharedSuffering", 228852, true)
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 227363 then
 		specWarnMightyStomp:Show()
-		voiceMightyStomp:Play("stopcast")
+		specWarnMightyStomp:Play("stopcast")
 	elseif spellId == 227365 then
 		specWarnSpectralCharge:Show()
-		voiceSpectralcharge:Play("watchstep")
+		specWarnSpectralCharge:Play("watchstep")
 	elseif spellId == 227339 then
 		specWarnMezair:Show()
-		voiceMezair:Play("chargemove")
+		specWarnMezair:Play("chargemove")
 	elseif spellId == 227493 then
 		specWarnMortalStrike:Show()
-		voiceMortalStrike:Play("defensive")
+		specWarnMortalStrike:Play("defensive")
 	elseif spellId == 228852 then
 		local targetName = TANK
 		local unitIsPlayer = false
@@ -75,41 +68,10 @@ function mod:SPELL_CAST_START(args)
 			yellSharedSuffering:Yell()
 		else
 			specWarnSharedSuffering:Show(targetName)
-			voiceSharedSuffering:Play("gathershare")
+			specWarnSharedSuffering:Play("gathershare")
 		end
 	end
 end
---[[
-
-function mod:SPELL_AURA_APPLIED(args)
-	local spellId = args.spellId
-	if spellId == 198006 then
-
-	end
-end
-
-function mod:SPELL_AURA_REMOVED(args)
-	local spellId = args.spellId
-	if spellId == 198006 then
-
-	end
-end
-
-function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
-	if spellId == 205611 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
---		specWarnMiasma:Show()
---		voiceMiasma:Play("runaway")
-	end
-end
-mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
-
-function mod:UNIT_DIED(args)
-	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 103695 then
-
-	end
-end
---]]
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)

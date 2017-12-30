@@ -36,14 +36,6 @@ local specWarnPunishingFlame			= mod:NewSpecialWarningRun(246209, "Melee", nil, 
 local specWarnAnnihilation				= mod:NewSpecialWarningSpell(245807, nil, nil, nil, 2, 2)
 --local specWarnShadowBoltVolley		= mod:NewSpecialWarningInterrupt(243171, "HasInterrupt", nil, nil, 1, 2)
 
-local voiceDemolish						= mod:NewVoice(252760)--gathershare/targetyou
-local voiceCloudofConfuse				= mod:NewVoice(254122)--runout
-local voiceFlamesofReorig				= mod:NewVoice(249297)--scatter
-local voiceSoulburn						= mod:NewVoice(253600)--runout
-local voicePunishingFlame				= mod:NewVoice(246209, "Melee")--justrun
-local voiceAnnihilation					= mod:NewVoice(245807)--helpsoak
---local voiceShadowBoltVolley			= mod:NewVoice(243171, "HasInterrupt")--kickcast
-
 mod:RemoveOption("HealthFrame")
 mod:AddRangeFrameOption(10, 249297)
 
@@ -52,13 +44,13 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 246209 then
 		specWarnPunishingFlame:Show()
-		voicePunishingFlame:Play("justrun")
+		specWarnPunishingFlame:Play("justrun")
 	elseif spellId == 245807 and self:AntiSpam(5, 1) then
 		specWarnAnnihilation:Show()
-		voiceAnnihilation:Play("helpsoak")
+		specWarnAnnihilation:Play("helpsoak")
 	--elseif spellId == 246209 and self:CheckInterruptFilter(args.sourceGUID) then
 		--specWarnShadowBoltVolley:Show(args.sourceName)
-		--voiceShadowBoltVolley:Play("kickcast")
+		--specWarnShadowBoltVolley:Play("kickcast")
 	end
 end
 
@@ -79,7 +71,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnDemolish:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			specWarnDemolish:Show()
-			voiceDemolish:Play("targetyou")
+			specWarnDemolish:Play("targetyou")
 			yellDemolish:Yell()
 			local _, _, _, _, _, _, expires = UnitDebuff("player", args.spellName)
 			local remaining = expires-GetTime()
@@ -89,7 +81,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnCloudofConfuse:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			specWarnCloudofConfuse:Show()
-			voiceCloudofConfuse:Play("runout")
+			specWarnDemolish:Play("runout")
 			yellCloudofConfuse:Yell()
 			local _, _, _, _, _, _, expires = UnitDebuff("player", args.spellName)
 			local remaining = expires-GetTime()
@@ -99,14 +91,14 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnSoulburn:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			specWarnSoulburn:Show()
-			voiceSoulburn:Play("runout")
+			specWarnSoulburn:Play("runout")
 			yellSoulburn:Yell()
 		end
 	elseif spellId == 249297 then
 		warnFlamesofReorig:CombinedShow(0.5, args.destName)
 		if args:IsPlayer() then
 			specWarnFlamesofReorig:Show()
-			voiceFlamesofReorig:Play("runout")
+			specWarnFlamesofReorig:Play("runout")
 			yellFlamesofReorig:Yell()
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Show(10)

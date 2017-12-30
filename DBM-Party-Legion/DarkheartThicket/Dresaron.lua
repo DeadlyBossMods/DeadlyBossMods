@@ -28,10 +28,6 @@ local timerBreathCD					= mod:NewCDTimer(15, 199332, nil, "Tank", nil, 5)--15/20
 local timerEarthShakerCD			= mod:NewCDTimer(21, 199389, nil, nil, nil, 3)
 local timerDownDraftCD				= mod:NewCDTimer(29, 199345, nil, nil, nil, 2)--38-42 (health based or varaible?)
 
-local voiceDownDraft				= mod:NewVoice(199345)--keepmove
-local voiceBreath					= mod:NewVoice(199332, "Tank")--breathsoon
-local voiceFallingRocks				= mod:NewVoice(199460)--runaway
-
 function mod:OnCombatStart(delay)
 	timerBreathCD:Start(8-delay)
 	timerEarthShakerCD:Start(15-delay)
@@ -44,14 +40,14 @@ function mod:SPELL_CAST_START(args)
 		warnRoar:Show()
 	elseif spellId == 199345 then
 		specWarnDownDraft:Show()
-		voiceDownDraft:Play("keepmove")
+		specWarnDownDraft:Play("keepmove")
 	end
 end
 
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 199460 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
 		specWarnFallingRocks:Show()
-		voiceFallingRocks:Play("runaway")
+		specWarnFallingRocks:Play("runaway")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
@@ -60,7 +56,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
 	if spellId == 199332 then--Even with this scanner, it's abougt 50/50 hit or miss you can grab a target at all
 		specWarnBreath:Show()
-		voiceBreath:Play("breathsoon")
+		specWarnBreath:Play("breathsoon")
 		timerBreathCD:Start()
 	end
 end

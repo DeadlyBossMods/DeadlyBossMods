@@ -20,12 +20,6 @@ local specWarnOozePuddle			= mod:NewSpecialWarningMove(194006, nil, nil, nil, 1,
 local specWarnColapsingRift			= mod:NewSpecialWarningMove(210750, nil, nil, nil, 1, 2)
 local specWarnFelStrike				= mod:NewSpecialWarningMove(211745, nil, nil, nil, 1, 2)
 
-local voiceArgusPortal				= mod:NewVoice(211757, "HasInterrupt")--kickcast
-local voiceArcaneReconstitution		= mod:NewVoice(226206, "HasInterrupt")--kickcast
-local voiceOozePuddle				= mod:NewVoice(194006)--runaway
-local voiceColapsingRift			= mod:NewVoice(210750)--runaway
-local voiceFelStrike				= mod:NewVoice(211745)--runaway
-
 mod:RemoveOption("HealthFrame")
 
 function mod:SPELL_CAST_START(args)
@@ -33,10 +27,10 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 211757 and self:CheckInterruptFilter(args.sourceGUID) then
 		specWarnArgusPortal:Show(args.sourceName)
-		voiceArgusPortal:Play("kickcast")
+		specWarnArgusPortal:Play("kickcast")
 	elseif spellId == 226206 and self:CheckInterruptFilter(args.sourceGUID) then
 		specWarnArcaneReconstitution:Show(args.sourceName)
-		voiceArcaneReconstitution:Play("kickcast")
+		specWarnArcaneReconstitution:Play("kickcast")
 	end
 end
 
@@ -45,12 +39,12 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 194006 and args:IsPlayer() then
 		specWarnOozePuddle:Show()
-		voiceOozePuddle:Play("runaway")
+		specWarnOozePuddle:Play("runaway")
 	elseif spellId == 210750 and args:IsPlayer() then
 		specWarnColapsingRift:Show()
-		voiceColapsingRift:Play("runaway")
+		specWarnColapsingRift:Play("runaway")
 	elseif spellId == 211745 and args:IsPlayer() then
 		specWarnFelStrike:Show()
-		voiceFelStrike:Play("runaway")
+		specWarnFelStrike:Play("runaway")
 	end
 end

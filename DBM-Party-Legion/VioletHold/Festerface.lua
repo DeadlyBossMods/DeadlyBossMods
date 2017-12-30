@@ -25,10 +25,6 @@ local timerOozesCD					= mod:NewNextTimer(51, 201598, nil, nil, nil, 1)
 
 local countdownOozes				= mod:NewCountdown(51, 201598)
 
-local voiceOozes					= mod:NewVoice("ej12646")--mobsoon
-local voiceBlackBile				= mod:NewVoice("ej12651")--mobsoon (maybe use a diff one?)
-local voiceOozeGTFO					= mod:NewVoice(202266)--runaway
-
 function mod:OnCombatStart(delay)
 --	timerOozesCD:Start(3.7-delay)--Too variable on pull, 3-6, pretty much right away anyways so no need for timer
 end
@@ -37,19 +33,19 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 201598 then
 		specWarnOozes:Show()
-		voiceOozes:Play("mobsoon")
+		specWarnOozes:Play("mobsoon")
 		timerOozesCD:Start()
 		countdownOozes:Start()
 	elseif spellId == 201729 then
 		specWarnBlackBile:Show()
-		voiceBlackBile:Play("mobsoon")
+		specWarnBlackBile:Play("mobsoon")
 	end
 end
 
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 202266 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
 		specWarnOozeGTFO:Show()
-		voiceOozeGTFO:Play("runaway")
+		specWarnOozeGTFO:Play("runaway")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE

@@ -83,18 +83,7 @@ local timerFinalDoomCD					= mod:NewCDCountTimer(90, 249121, nil, nil, nil, 4, n
 local countdownFinalDoom				= mod:NewCountdown("AltTwo90", 249121)
 
 --The Paraxis
-local voiceSpearofDoom					= mod:NewVoice(248789)--watchstep
-local voiceRainofFel					= mod:NewVoice(248332)--scatter
 local voiceAdds							= mod:NewVoice(246888, "-Healer", DBM_CORE_AUTO_VOICE3_OPTION_TEXT)--killmob
---Adds
-local voiceSwing						= mod:NewVoice(250701, "MeleeDps", nil, 2)--watchstep
---local voiceMalignantAnguish			= mod:NewVoice(236597, "HasInterrupt")--kickcast
---local voiceGTFO						= mod:NewVoice(238028, nil, DBM_CORE_AUTO_VOICE4_OPTION_TEXT)--runaway
---Mythic
-local voiceFinalDoom					= mod:NewVoice(249121, "-Tank")--specialsoon (temp until Group1-5 voices done)
-local voiceArcaneBuildup				= mod:NewVoice(250693)--runout
-local voiceBurningEmbers				= mod:NewVoice(250691)--runout
-local voiceFoulSteps					= mod:NewVoice(250140)--stackhigh
 
 mod:AddSetIconOption("SetIconOnFeedbackTargeted2", 249016, false)
 mod:AddInfoFrameOption(250030, true)
@@ -149,7 +138,7 @@ local addCountToLocationNormal = {
 	["Obfu"] = {DBM_CORE_MIDDLE}
 }
 local addCountToLocationLFR = {
-	["Dest"] = {DBM_CORE_MIDDLE, DBM_CORE_BOTTOM, DBM_CORE_TOP, DBM_CORE_MIDDLE, DBM_CORE_BOTTOM, DBM_CORE_TOP,DBM_CORE_BOTTOM, DBM_CORE_TOP, DBM_CORE_BOTTOM},
+	["Dest"] = {DBM_CORE_MIDDLE, DBM_CORE_BOTTOM, DBM_CORE_TOP, DBM_CORE_MIDDLE, DBM_CORE_BOTTOM, DBM_CORE_TOP,DBM_CORE_BOTTOM, DBM_CORE_TOP, DBM_CORE_BOTTOM}
 }
 
 local updateInfoFrame
@@ -299,7 +288,7 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 249121 then
 		self.vb.finalDoomCast = self.vb.finalDoomCast + 1
 		specWarnFinalDoom:Show(self.vb.finalDoomCast)
-		voiceFinalDoom:Play("specialsoon")
+		specWarnFinalDoom:Play("specialsoon")
 		timerFinalDoom:Start()
 		local timer = finalDoomTimers[self.vb.finalDoomCast+1]
 		if timer then
@@ -308,7 +297,7 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 250701 and self:CheckInterruptFilter(args.sourceGUID, true) then
 		specWarnSwing:Show()
-		voiceSwing:Play("watchstep")
+		specWarnSwing:Play("watchstep")
 	elseif spellId == 250048 then
 		self.vb.lifeForceCast = self.vb.lifeForceCast + 1
 		warnLifeForce:Show(self.vb.lifeForceCast)
@@ -395,7 +384,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if args:IsPlayer() then
 			specWarnRainofFel:Show()
-			voiceRainofFel:Play("scatter")
+			specWarnRainofFel:Play("scatter")
 			yellRainofFel:Yell()
 			yellRainofFelFades:Countdown(5)
 			if self.Options.RangeFrame then
@@ -405,7 +394,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 250693 then--Arcane Buildup
 		if args:IsPlayer() then
 			specWarnArcaneBuildup:Show()
-			voiceArcaneBuildup:Play("runout")
+			specWarnArcaneBuildup:Play("runout")
 			yellArcaneBuildup:Yell()
 			yellArcaneBuildupFades:Countdown(5, 4)
 			if self.Options.RangeFrame then
@@ -415,7 +404,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 250691 then --Burning Embers
 		if args:IsPlayer() then
 			specWarnBurningEmbers:Show()
-			voiceBurningEmbers:Play("runout")
+			specWarnBurningEmbers:Play("runout")
 			yellBurningEmbers:Yell()
 			yellBurningEmbersFades:Countdown(5, 4)
 			if self.Options.RangeFrame then
@@ -427,7 +416,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			local amount = args.amount or 1
 			if amount >= 12 and amount % 4 == 0 then
 				specWarnFoulSteps:Show(amount)
-				voiceFoulSteps:Play("stackhigh")
+				specWarnFoulSteps:Play("stackhigh")
 			end
 		end
 	end
@@ -498,7 +487,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 	if msg:find("spell:248861") then
 		self.vb.spearCast = self.vb.spearCast + 1
 		specWarnSpearofDoom:Show()
-		voiceSpearofDoom:Play("watchstep")
+		specWarnSpearofDoom:Play("watchstep")
 		local timer = self:IsHeroic() and heroicSpearofDoomTimers[self.vb.spearCast+1]
 		if timer then
 			timerSpearofDoomCD:Start(timer, self.vb.spearCast+1)

@@ -18,10 +18,6 @@ local specWarnBurningHatred		= mod:NewSpecialWarningYou(200154, nil, nil, nil, 1
 local specWarnAcidSplatter		= mod:NewSpecialWarningMove(183407, nil, nil, nil, 1, 2)
 local specWarnAvalanche			= mod:NewSpecialWarningDodge(183088, "Tank", nil, nil, 1, 2)
 
-local voiceBurningHatred		= mod:NewVoice(200154)--targetyou
-local voiceAcidSplatter			= mod:NewVoice(183407)--runaway
-local voiceAvalanche			= mod:NewVoice(183088, "Tank")--shockwave
-
 mod:RemoveOption("HealthFrame")
 
 function mod:SPELL_CAST_START(args)
@@ -29,7 +25,7 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 183088 then
 		specWarnAvalanche:Show()
-		voiceAvalanche:Play("shockwave")
+		specWarnAvalanche:Play("shockwave")
 	end
 end
 
@@ -39,12 +35,12 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 200154 then
 		if args:IsPlayer() then
 			specWarnBurningHatred:Show()
-			voiceBurningHatred:Play("targetyou")
+			specWarnBurningHatred:Play("targetyou")
 		else
 			warnBurningHatred:Show(args.destName)
 		end
 	elseif spellId == 183407 and args:IsPlayer() and self:AntiSpam(3, 1) then
 		specWarnAcidSplatter:Show()
-		voiceAcidSplatter:Play("runaway")
+		specWarnAcidSplatter:Play("runaway")
 	end
 end
