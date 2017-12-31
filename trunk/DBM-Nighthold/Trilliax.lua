@@ -61,16 +61,16 @@ local specWarnEchoDuder				= mod:NewSpecialWarningSwitchCount(214880, nil, nil, 
 local timerArcaneSlashCD			= mod:NewCDTimer(9, 206641, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerPhaseChange				= mod:NewNextTimer(45, 155005, nil, nil, nil, 6)
 --Cleaner
-mod:AddTimerLine(GetSpellInfo(206560))
+mod:AddTimerLine(DBM:GetSpellInfo(206560))
 local timerToxicSliceCD				= mod:NewCDTimer(18, 206788, nil, nil, nil, 3)
 --local timerSterilizeCD				= mod:NewNextTimer(3, 208499, nil, nil, nil, 3)
 local timerCleansingRageCD			= mod:NewNextTimer(10, 206820, nil, nil, nil, 2)
 --Maniac
-mod:AddTimerLine(GetSpellInfo(206557))
+mod:AddTimerLine(DBM:GetSpellInfo(206557))
 local timerArcingBondsCD			= mod:NewCDTimer(5, 208924, nil, nil, nil, 3)--5.7-8
 local timerAnnihilationCD			= mod:NewCDTimer(20.3, 207630, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
 --Caretaker
-mod:AddTimerLine(GetSpellInfo(206559))
+mod:AddTimerLine(DBM:GetSpellInfo(206559))
 local timerTidyUpCD					= mod:NewNextTimer(10, 207513, nil, nil, nil, 1)
 local timerSucculentFeastCD			= mod:NewNextTimer(4.5, 207502, nil, nil, nil, 3)
 mod:AddTimerLine(ENCOUNTER_JOURNAL_SECTION_FLAG12)
@@ -106,7 +106,7 @@ function mod:OnCombatStart(delay)
 	countdownModes:Start(45)
 	--On combat start he starts in a custom cleaner mode (206570) that doesn't have sterilize or cleansing rage abilities but casts cake and ArcaneSlashs more often
 	if self.Options.InfoFrame then
-		local spellName = GetSpellInfo(214573)
+		local spellName = DBM:GetSpellInfo(214573)
 		DBM.InfoFrame:SetHeader(DBM_NO_DEBUFF:format(spellName))
 		DBM.InfoFrame:Show(10, "playergooddebuff", spellName, true)
 	end
@@ -294,11 +294,11 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 			seenMobs[GUID] = true
 			local cid = self:GetCIDFromGUID(GUID)
 			if cid == 108144 then--Maniac Imprint
-				local name = GetSpellInfo(206557)
+				local name = DBM:GetSpellInfo(206557)
 				specWarnEchoDuder:Show(name)
 				specWarnEchoDuder:Play("bigmob")
 			elseif cid == 108303 then--Caretaker Imprint
-				local name = GetSpellInfo(206560)
+				local name = DBM:GetSpellInfo(206560)
 				specWarnEchoDuder:Show(name)
 				specWarnEchoDuder:Play("bigmob")
 				timerToxicSliceCD:Start(16, "echo")

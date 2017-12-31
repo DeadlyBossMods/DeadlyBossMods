@@ -37,7 +37,7 @@ function mod:OnCombatStart(delay)
 	timerCoalescePowerCD:Start(30-delay)
 	countdownCoalescePower:Start(30-delay)
 	if self.Options.InfoFrame then
-		DBM.InfoFrame:SetHeader(GetSpellInfo(227502))
+		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(227502))
 		DBM.InfoFrame:Show(5, "playerdebuffstacks", 227502)
 	end
 end
@@ -69,7 +69,7 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 227297 then
-		specWarnCoalescePower:Show(GetSpellInfo(227296))
+		specWarnCoalescePower:Show(DBM:GetSpellInfo(227296))
 		specWarnCoalescePower:Play("helpsoak")
 		timerCoalescePowerCD:Start()
 		countdownCoalescePower:Start()

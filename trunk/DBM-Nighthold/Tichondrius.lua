@@ -91,7 +91,7 @@ local P3SharedCastTimers = {0, 25.6, 36.1, 22.5}--Seeker, Brand, Feast
 --Normal/LFR HAD different timers. Normal now matches heroic so assume LFR also does for now
 --local sharedCastTimersFaster = {0, 15, 25, 14.5}--Carrion Plague, feast of blood, Seeker Swarm (faster on normal/LFR since no brand of argus)
 local argusTargets = {}
-local carrionDebuff = GetSpellInfo(206480)
+local carrionDebuff = DBM:GetSpellInfo(206480)
 mod.vb.phase = 1
 mod.vb.darkPhase = false
 mod.vb.carrionPlagueCast = 0
@@ -107,7 +107,7 @@ mod.vb.CarrionPlagueCount = 0
 
 local updateInfoFrame, breakMarks
 do
-	local argusDebuff, batsName, essenceOfNightDebuff = GetSpellInfo(212794), DBM:EJ_GetSectionInfo(13528), GetSpellInfo(206466)
+	local argusDebuff, batsName, essenceOfNightDebuff = DBM:GetSpellInfo(212794), DBM:EJ_GetSectionInfo(13528), DBM:GetSpellInfo(206466)
 	local lines = {}
 	local sortedLines = {}
 	local function addLine(key, value)

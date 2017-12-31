@@ -171,7 +171,7 @@ function mod:OnCombatStart(delay)
 --	timerTormentingBurstCD:Start(1-delay, 1)--8-20
 	timerFelSquallCD:Start(35-delay, 1)--Always same, at least
 	if self.Options.InfoFrame then
-		DBM.InfoFrame:SetHeader(GetSpellInfo(233104))
+		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(233104))
 		DBM.InfoFrame:Show(8, "playerpower", 5, ALTERNATE_POWER_INDEX)
 	end
 	--https://www.warcraftlogs.com/reports/JgyrYdDCB63kx8Tb#fight=38&type=summary&pins=2%24Off%24%23244F4B%24expression%24ability.id%20%3D%20248671&view=events
