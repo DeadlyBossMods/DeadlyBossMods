@@ -419,23 +419,94 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
-do
-	--Stupid work around for upvale limit within SPELL_AURA_APPLIED
-	local function handleBomb(self, targetName, spellName)
-		if targetName == UnitName("player") then
+function mod:SPELL_AURA_APPLIED(args)
+	local spellId = args.spellId
+	if spellId == 248499 then--Heroic/non mythic
+		local uId = DBM:GetRaidUnitId(args.destName)
+		if uId and self:IsTanking(uId) then
+			local amount = args.amount or 1
+			local swapAmount = (self:IsLFR() or not self.vb.firstscytheSwap) and 3 or 2
+			if amount >= swapAmount then
+				if args:IsPlayer() then
+					specWarnSweepingScythe:Show(amount)
+					specWarnSweepingScythe:Play("stackhigh")
+				else--Taunt as soon as stacks are clear, regardless of stack count.
+					if not UnitIsDeadOrGhost("player") and not UnitDebuff("player", args.spellName) then
+						specWarnSweepingScytheTaunt:Show(args.destName)
+						specWarnSweepingScytheTaunt:Play("tauntboss")
+					else
+						warnSweepingScythe:Show(args.destName, amount)
+					end
+				end
+			else
+				warnSweepingScythe:Show(args.destName, amount)
+			end
+		end
+	elseif spellId == 258039 then--Heroic
+		local uId = DBM:GetRaidUnitId(args.destName)
+		if uId and self:IsTanking(uId) then
+			local amount = args.amount or 1
+			if amount >= 2 then
+				if args:IsPlayer() then
+					specWarnDeadlyScythe:Show(amount)
+					specWarnDeadlyScythe:Play("stackhigh")
+				else
+					warnDeadlyScythe:Show(args.destName, amount)
+				end
+			end
+		end
+	elseif spellId == 258838 then--Mythic
+		local uId = DBM:GetRaidUnitId(args.destName)
+		if uId and self:IsTanking(uId) then
+			local amount = args.amount or 1
+			if amount >= 2 then
+				if args:IsPlayer() then
+					specWarnSoulrendingScythe:Show(amount)
+					specWarnSoulrendingScythe:Play("stackhigh")
+				else
+					warnSoulRendingScythe:Show(args.destName, amount)
+				end
+			end
+		end
+	elseif spellId == 248396 then
+		warnSoulblight:Show(args.destName)
+		if args:IsPlayer() then
+			specWarnSoulblight:Show()
+			specWarnSoulblight:Play("runout")
+			yellSoulblight:Yell()
+		end
+	elseif spellId == 250669 then
+		warnSoulburst:CombinedShow(0.3, args.destName)--2 Targets
+		if self.vb.soulBurstIcon > 7 then
+			self.vb.soulBurstIcon = 3
+		end
+		local icon = self.vb.soulBurstIcon
+		if args:IsPlayer() then
+			specWarnSoulburst:Show()
+			specWarnSoulburst:Play("targetyou")
+			specWarnSoulburst:ScheduleVoice(self:IsMythic() and 7 or 10, "runout")
+			yellSoulburst:Yell(icon == 7 and 2 or 1, icon, icon)
+			yellSoulburstFades:Countdown(self:IsMythic() and 12 or 15, nil, icon)
+		end
+		if self.Options.SetIconOnSoulBurst then
+			self:SetIcon(args.destName, icon)
+		end
+		self.vb.soulBurstIcon = self.vb.soulBurstIcon + 4--Icons 3 and 7 used to match BW
+	elseif spellId == 251570 then
+		if args:IsPlayer() then
 			specWarnSoulbomb:Show()
 			specWarnSoulbomb:Play("targetyou")
 			self:Schedule(7, delayedBoonCheck, self)
-			yellSoulbomb:Yell(2, spellName, 2)
+			yellSoulbomb:Yell(2, args.spellName, 2)
 			yellSoulbombFades:Countdown(self:IsMythic() and 12 or 15, nil, 2)
 		elseif playerAvatar then
-			specWarnSoulbombMoveTo:Show(targetName)
+			specWarnSoulbombMoveTo:Show(args.destName)
 			specWarnSoulbombMoveTo:Play("helpsoak")
 		else
-			warnSoulbomb:Show(targetName)
+			warnSoulbomb:Show(args.destName)
 		end
 		if self.Options.SetIconOnSoulBomb then
-			self:SetIcon(targetName, 2)
+			self:SetIcon(args.destName, 2)
 		end
 		if self.vb.phase == 4 then
 			timerSoulBurstCD:Start(40, 2)
@@ -448,201 +519,123 @@ do
 			countdownSoulbomb:Start(42)
 			timerSoulBurstCD:Start(42, 1)
 		end
-	end
-
-	function mod:SPELL_AURA_APPLIED(args)
-		local spellId = args.spellId
-		if spellId == 248499 then--Heroic/non mythic
-			local uId = DBM:GetRaidUnitId(args.destName)
-			if uId and self:IsTanking(uId) then
-				local amount = args.amount or 1
-				local swapAmount = (self:IsLFR() or not self.vb.firstscytheSwap) and 3 or 2
-				if amount >= swapAmount then
-					if args:IsPlayer() then
-						specWarnSweepingScythe:Show(amount)
-						specWarnSweepingScythe:Play("stackhigh")
-					else--Taunt as soon as stacks are clear, regardless of stack count.
-						if not UnitIsDeadOrGhost("player") and not UnitDebuff("player", args.spellName) then
-							specWarnSweepingScytheTaunt:Show(args.destName)
-							specWarnSweepingScytheTaunt:Play("tauntboss")
-						else
-							warnSweepingScythe:Show(args.destName, amount)
-						end
-					end
-				else
-					warnSweepingScythe:Show(args.destName, amount)
-				end
-			end
-		elseif spellId == 258039 then--Heroic
-			local uId = DBM:GetRaidUnitId(args.destName)
-			if uId and self:IsTanking(uId) then
-				local amount = args.amount or 1
-				if amount >= 2 then
-					if args:IsPlayer() then
-						specWarnDeadlyScythe:Show(amount)
-						specWarnDeadlyScythe:Play("stackhigh")
-					else
-						warnDeadlyScythe:Show(args.destName, amount)
-					end
-				end
-			end
-		elseif spellId == 258838 then--Mythic
-			local uId = DBM:GetRaidUnitId(args.destName)
-			if uId and self:IsTanking(uId) then
-				local amount = args.amount or 1
-				if amount >= 2 then
-					if args:IsPlayer() then
-						specWarnSoulrendingScythe:Show(amount)
-						specWarnSoulrendingScythe:Play("stackhigh")
-					else
-						warnSoulRendingScythe:Show(args.destName, amount)
-					end
-				end
-			end
-		elseif spellId == 248396 then
-			warnSoulblight:Show(args.destName)
-			if args:IsPlayer() then
-				specWarnSoulblight:Show()
-				specWarnSoulblight:Play("runout")
-				yellSoulblight:Yell()
-			end
-		elseif spellId == 250669 then
-			warnSoulburst:CombinedShow(0.3, args.destName)--2 Targets
-			if self.vb.soulBurstIcon > 7 then
-				self.vb.soulBurstIcon = 3
-			end
-			local icon = self.vb.soulBurstIcon
-			if args:IsPlayer() then
-				specWarnSoulburst:Show()
-				specWarnSoulburst:Play("targetyou")
-				specWarnSoulburst:ScheduleVoice(self:IsMythic() and 7 or 10, "runout")
-				yellSoulburst:Yell(icon == 7 and 2 or 1, icon, icon)
-				yellSoulburstFades:Countdown(self:IsMythic() and 12 or 15, nil, icon)
-			end
-			if self.Options.SetIconOnSoulBurst then
-				self:SetIcon(args.destName, icon)
-			end
-			self.vb.soulBurstIcon = self.vb.soulBurstIcon + 4--Icons 3 and 7 used to match BW
-		elseif spellId == 251570 then
-			handleBomb(self, args.destName, args.spellName)
-		elseif spellId == 255199 then
-			if self.vb.phase == 2 then--Sometime gets cast once in p3, don't want to start timer if it does
-				timerAvatarofAggraCD:Start()
-			end
-			if args:IsPlayer() then
-				specWarnAvatarofAggra:Show()
-				specWarnAvatarofAggra:Play("targetyou")
-				playerAvatar = true
-			else
-				warnAvatarofAggra:Show(args.destName)
-			end
-			if self.Options.SetIconOnAvatar then
-				self:SetIcon(args.destName, 4)
-			end
-		elseif spellId == 253021 then--Inevitability
-			if self.Options.NPAuraOnInevitability then
-				DBM.Nameplate:Show(true, args.destGUID, spellId, nil, 20)
-			end
-		elseif spellId == 255496 then--Sword of the Cosmos
-			if self.Options.NPAuraOnCosmosSword then
-				DBM.Nameplate:Show(true, args.destGUID, spellId)
-			end
-		elseif spellId == 255478 then--Blades of the Eternal
-			if self.Options.NPAuraOnEternalBlades then
-				DBM.Nameplate:Show(true, args.destGUID, spellId, nil, 40)
-			end
-		elseif spellId == 252729 then
-			if args:IsPlayer() then
-				specWarnCosmicRay:Show()
-				specWarnCosmicRay:Play("targetyou")
-				yellCosmicRay:Yell()
-			else
-				warnCosmicRay:CombinedShow(0.3, args.destName)
-			end
-		elseif spellId == 252616 then
-			if args:IsPlayer() then
-				specWarnCosmicBeacon:Show()
-				specWarnCosmicBeacon:Play("runout")
-				yellCosmicBeacon:Yell()
-			else
-				warnCosmicBeacon:CombinedShow(0.3, args.destName)
-			end
-		elseif spellId == 258647 then--Gift of Sea
-			warnSkyandSea:CombinedShow(0.3, args.destName)
-			if args:IsPlayer() then
-				specWarnGiftofSea:Show()
-				specWarnGiftofSea:Play("targetyou")
-				yellGiftofSea:Yell(6, args.spellName, 6)
-			end
-			if self.Options.SetIconGift then
-				self.SetIcon(args.destName, 6)
-			end
-		elseif spellId == 258646 then--Gift of Sky
-			warnSkyandSea:CombinedShow(0.3, args.destName)
-			if args:IsPlayer() then
-				specWarnGiftofSky:Show()
-				specWarnGiftofSky:Play("targetyou")
-				yellGiftofSky:Yell(5, args.spellName, 5)
-			end
-			if self.Options.SetIconGift then
-				self.SetIcon(args.destName, 5)
-			end
-		elseif spellId == 255433 or spellId == 255430 or spellId == 255429 or spellId == 255425 or spellId == 255422 or spellId == 255419 or spellId == 255418 then--Vulnerability
-			if self.Options.NPAuraOnVulnerability then
-				DBM.Nameplate:Show(true, args.destGUID, spellId)
-			end
-			if self.Options.SetIconOnVulnerability then
-				if spellId == 255433 then--Arcane
-					self:ScanForMobs(args.destGUID, 2, 5, 1, 0.2, 15)
-				elseif spellId == 255430 then--Shadow
-					self:ScanForMobs(args.destGUID, 2, 3, 1, 0.2, 15)
-				elseif spellId == 255429 then--Fire
-					self:ScanForMobs(args.destGUID, 2, 2, 1, 0.2, 15)
-				elseif spellId == 255425 then--Frost
-					self:ScanForMobs(args.destGUID, 2, 6, 1, 0.2, 15)
-				elseif spellId == 255422 then--Nature
-					self:ScanForMobs(args.destGUID, 2, 4, 1, 0.2, 15)
-				elseif spellId == 255419 then--Holy
-					self:ScanForMobs(args.destGUID, 2, 1, 1, 0.2, 15)
-				elseif spellId == 255418 then--Melee
-					self:ScanForMobs(args.destGUID, 2, 7, 1, 0.2, 15)
-				end
-			end
-		elseif spellId == 257869 then
-			warnSargRage:CombinedShow(0.3, args.destName)
-			if args:IsPlayer() then
-				specWarnSargRage:Show()
-				specWarnSargRage:Play("scatter")
-				yellSargRage:Yell()
-			end
-		elseif spellId == 257931 then
-			warnSargFear:CombinedShow(0.3, args.destName)
-			if args:IsPlayer() then
-				specWarnSargFear:Show(DBM_ALLY)
-				specWarnSargFear:Play("gathershare")
-				yellSargFear:Yell()
-			end
-		elseif spellId == 257966 then--Sentence of Sargeras
-			if self:AntiSpam(5, 6) then
-				self:Unschedule(checkForMissingSentence)
-				self.vb.sentenceCount = self.vb.sentenceCount + 1
-				local timer = sargSentence[self.vb.sentenceCount+1]
-				if timer then
-					timerSargSentenceCD:Start(timer, self.vb.sentenceCount+1)
-					self:Schedule(timer+10, checkForMissingSentence, self)--Check for missing sentence event 10 seconds after expected to recover timer if all immuned
-				end
-			end
-			warnSargSentence:CombinedShow(0.3, args.destName)
-			if args:IsPlayer() then
-				specWarnSargSentence:Show()
-				specWarnSargSentence:Play("targetyou")
-				yellSargSentence:Yell()
-				yellSargSentenceFades:Countdown(30)
+	elseif spellId == 255199 then
+		if self.vb.phase == 2 then--Sometime gets cast once in p3, don't want to start timer if it does
+			timerAvatarofAggraCD:Start()
+		end
+		if args:IsPlayer() then
+			specWarnAvatarofAggra:Show()
+			specWarnAvatarofAggra:Play("targetyou")
+			playerAvatar = true
+		else
+			warnAvatarofAggra:Show(args.destName)
+		end
+		if self.Options.SetIconOnAvatar then
+			self:SetIcon(args.destName, 4)
+		end
+	elseif spellId == 253021 then--Inevitability
+		if self.Options.NPAuraOnInevitability then
+			DBM.Nameplate:Show(true, args.destGUID, spellId, nil, 20)
+		end
+	elseif spellId == 255496 then--Sword of the Cosmos
+		if self.Options.NPAuraOnCosmosSword then
+			DBM.Nameplate:Show(true, args.destGUID, spellId)
+		end
+	elseif spellId == 255478 then--Blades of the Eternal
+		if self.Options.NPAuraOnEternalBlades then
+			DBM.Nameplate:Show(true, args.destGUID, spellId, nil, 40)
+		end
+	elseif spellId == 252729 then
+		if args:IsPlayer() then
+			specWarnCosmicRay:Show()
+			specWarnCosmicRay:Play("targetyou")
+			yellCosmicRay:Yell()
+		else
+			warnCosmicRay:CombinedShow(0.3, args.destName)
+		end
+	elseif spellId == 252616 then
+		if args:IsPlayer() then
+			specWarnCosmicBeacon:Show()
+			specWarnCosmicBeacon:Play("runout")
+			yellCosmicBeacon:Yell()
+		else
+			warnCosmicBeacon:CombinedShow(0.3, args.destName)
+		end
+	elseif spellId == 258647 then--Gift of Sea
+		warnSkyandSea:CombinedShow(0.3, args.destName)
+		if args:IsPlayer() then
+			specWarnGiftofSea:Show()
+			specWarnGiftofSea:Play("targetyou")
+			yellGiftofSea:Yell(6, args.spellName, 6)
+		end
+		if self.Options.SetIconGift then
+			self.SetIcon(args.destName, 6)
+		end
+	elseif spellId == 258646 then--Gift of Sky
+		warnSkyandSea:CombinedShow(0.3, args.destName)
+		if args:IsPlayer() then
+			specWarnGiftofSky:Show()
+			specWarnGiftofSky:Play("targetyou")
+			yellGiftofSky:Yell(5, args.spellName, 5)
+		end
+		if self.Options.SetIconGift then
+			self.SetIcon(args.destName, 5)
+		end
+	elseif spellId == 255433 or spellId == 255430 or spellId == 255429 or spellId == 255425 or spellId == 255422 or spellId == 255419 or spellId == 255418 then--Vulnerability
+		if self.Options.NPAuraOnVulnerability then
+			DBM.Nameplate:Show(true, args.destGUID, spellId)
+		end
+		if self.Options.SetIconOnVulnerability then
+			if spellId == 255433 then--Arcane
+				self:ScanForMobs(args.destGUID, 2, 5, 1, 0.2, 15)
+			elseif spellId == 255430 then--Shadow
+				self:ScanForMobs(args.destGUID, 2, 3, 1, 0.2, 15)
+			elseif spellId == 255429 then--Fire
+				self:ScanForMobs(args.destGUID, 2, 2, 1, 0.2, 15)
+			elseif spellId == 255425 then--Frost
+				self:ScanForMobs(args.destGUID, 2, 6, 1, 0.2, 15)
+			elseif spellId == 255422 then--Nature
+				self:ScanForMobs(args.destGUID, 2, 4, 1, 0.2, 15)
+			elseif spellId == 255419 then--Holy
+				self:ScanForMobs(args.destGUID, 2, 1, 1, 0.2, 15)
+			elseif spellId == 255418 then--Melee
+				self:ScanForMobs(args.destGUID, 2, 7, 1, 0.2, 15)
 			end
 		end
+	elseif spellId == 257869 then
+		warnSargRage:CombinedShow(0.3, args.destName)
+		if args:IsPlayer() then
+			specWarnSargRage:Show()
+			specWarnSargRage:Play("scatter")
+			yellSargRage:Yell()
+		end
+	elseif spellId == 257931 then
+		warnSargFear:CombinedShow(0.3, args.destName)
+		if args:IsPlayer() then
+			specWarnSargFear:Show(DBM_ALLY)
+			specWarnSargFear:Play("gathershare")
+			yellSargFear:Yell()
+		end
+	elseif spellId == 257966 then--Sentence of Sargeras
+		if self:AntiSpam(5, 6) then
+			self:Unschedule(checkForMissingSentence)
+			self.vb.sentenceCount = self.vb.sentenceCount + 1
+			local timer = sargSentence[self.vb.sentenceCount+1]
+			if timer then
+				timerSargSentenceCD:Start(timer, self.vb.sentenceCount+1)
+				self:Schedule(timer+10, checkForMissingSentence, self)--Check for missing sentence event 10 seconds after expected to recover timer if all immuned
+			end
+		end
+		warnSargSentence:CombinedShow(0.3, args.destName)
+		if args:IsPlayer() then
+			specWarnSargSentence:Show()
+			specWarnSargSentence:Play("targetyou")
+			yellSargSentence:Yell()
+			yellSargSentenceFades:Countdown(30)
+		end
 	end
-	mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 end
+mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
