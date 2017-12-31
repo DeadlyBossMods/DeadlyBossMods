@@ -783,7 +783,7 @@ do
 		for i = 1, select("#", ...) do
 			local event = select(i, ...)
 			-- spell events with special care.
-			if event:sub(0, 6) == "SPELL_" or event:sub(0, 6) == "RANGE_" then
+			if event:sub(0, 6) == "SPELL_" and event ~= "SPELL_NAME_UPDATE" or event:sub(0, 6) == "RANGE_" then
 				registerCLEUEvent(self, event)
 			else
 				local eventWithArgs = event
@@ -1132,10 +1132,6 @@ do
 			self.Bars:LoadOptions("DBM")
 			self.Arrow:LoadPosition()
 			if not self.Options.ShowMinimapButton then self:HideMinimapButton() end
---[[			local soundChannels = tonumber(GetCVar("Sound_NumChannels")) or 24--if set to 24, may return nil, Defaults usually do
-			if soundChannels < 64 then
-				SetCVar("Sound_NumChannels", 64)
-			end--]]
 			self.AddOns = {}
 			self.Voices = { {text = "None",value  = "None"}, }--Create voice table, with default "None" value
 			self.VoiceVersions = {}
@@ -1268,7 +1264,8 @@ do
 				"PLAYER_SPECIALIZATION_CHANGED",
 				"PARTY_INVITE_REQUEST",
 				"LOADING_SCREEN_DISABLED",
-				"SCENARIO_CRITERIA_UPDATE"
+				"SCENARIO_CRITERIA_UPDATE",
+				"SPELL_NAME_UPDATE"
 			)
 			if RolePollPopup:IsEventRegistered("ROLE_POLL_BEGIN") then
 				RolePollPopup:UnregisterEvent("ROLE_POLL_BEGIN")
@@ -6089,15 +6086,47 @@ function DBM:EJ_GetSectionInfo(sectionID)
 	end
 end
 
---Dirty handling of spell request feature of 7.3.5, cleanere solution probably to follow to be handled more correctly in core without double requests.
-function DBM:GetSpellInfo(spellId)
-	local name, rank, icon, castingTime, minRange, maxRange, spellID = GetSpellInfo(spellId)
-	if not name then
-		DBM:Debug("Invalid call to GetSpellInfo for spellID: "..spellId)
-	elseif name == "" then--7.3.5 PTR returned blank, spell not yet cached
-		name, rank, icon, castingTime, minRange, maxRange, spellID = GetSpellInfo(spellId)--Call again, should be cached on second attempt?
+do
+	local requestedSpellIDs = {}
+	--[[local function delayedSpellRequest(self, spellId)
+		if type(requestedSpellIDs[spellId]) == "string" then
+			return requestedSpellIDs[spellId]
+		else--Wait longer
+			self:Schedule(0.1, delayedSpellRequest, self, spellId)
+		end
+	end--]]
+	
+	function DBM:SPELL_NAME_UPDATE(spellId, spellName)
+		if requestedSpellIDs[spellId] then--Should be a true bool if requested
+			requestedSpellIDs[spellId] = spellName
+		end
 	end
-	return name, rank, icon, castingTime, minRange, maxRange, spellID
+
+	--Handle new spell name requesting in 7.3.5
+	function DBM:GetSpellInfo(spellId)
+		local name, rank, icon, castingTime, minRange, maxRange, returnedSpellId = GetSpellInfo(spellId)
+		if not name then
+			DBM:Debug("Invalid call to GetSpellInfo for spellID: "..spellId)
+		elseif name == "" then--7.3.5 PTR returned blank, spell not yet cached and must be requested
+			requestedSpellIDs[spellId] = true
+			--Useless until find a way to loop this on a timer until below is true
+			--repeat
+				-- wait that freezes wow, so not a valid wait
+			--until type(requestedSpellIDs[spellId]) == "string"
+			--name = delayedSpellRequest(self, spellId)--Useless, cause below runs even before ths finishes
+			--while type(requestedSpellIDs[spellId]) ~= "string" do
+				-- wait that freezes wow, so not a valid wait
+			--end
+			--Will never fire cause without a wait this always runs before SPELL_NAME_UPDATE finishes
+			if type(requestedSpellIDs[spellId]) == "string" then
+				name = requestedSpellIDs[spellId]
+				requestedSpellIDs[spellId] = nil
+				return name, rank, icon, castingTime, minRange, maxRange, returnedSpellId
+			end
+		else--Good request, return now
+			return name, rank, icon, castingTime, minRange, maxRange, returnedSpellId
+		end
+	end
 end
 
 function DBM:PlaySound(path)

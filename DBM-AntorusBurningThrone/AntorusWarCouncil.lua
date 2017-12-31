@@ -97,6 +97,8 @@ local countdownFusillade				= mod:NewCountdown("AltTwo30", 244625)
 ----General Erodus
 local countdownReinforcements			= mod:NewCountdown(25, 245546)
 
+local voiceEntropicMine					= mod:NewVoice(245161)
+
 mod:AddSetIconOption("SetIconOnAdds", 245546, true, true)
 mod:AddRangeFrameOption("8")
 
@@ -291,7 +293,7 @@ end
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if (spellId == 245161 or spellId == 245304) and self:AntiSpam(5, 1) then
 		warnEntropicMine:Show()
-		warnEntropicMine:Play("watchstep")
+		voiceEntropicMine:Play("watchstep")
 		timerEntropicMineCD:Start()
 	elseif spellId == 245785 then--Pod Spawn Transition Cosmetic Missile
 		local name = UnitName(uId)
