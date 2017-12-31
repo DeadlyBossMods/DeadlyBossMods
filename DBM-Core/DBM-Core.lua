@@ -6121,8 +6121,10 @@ do
 			if type(requestedSpellIDs[spellId]) == "string" then
 				name = requestedSpellIDs[spellId]
 				requestedSpellIDs[spellId] = nil
+			else
+				name = spellId--Failed to get a valid name, insert spellID instead of blank ""
 			end
-			--Always return even if name is "" so at least other args are passed.
+			--Always return something, to avoid nil returns
 			return name, rank, icon, castingTime, minRange, maxRange, returnedSpellId
 		else--Good request, return now
 			return name, rank, icon, castingTime, minRange, maxRange, returnedSpellId
