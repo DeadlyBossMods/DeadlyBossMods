@@ -6074,14 +6074,16 @@ end
 
 --Future proofing EJ_GetSectionInfo compat layer to make it easier updatable. EJ_GetSectionInfo won't be depricated functions forever.
 function DBM:EJ_GetSectionInfo(sectionID)
-	local info = C_EncounterJournal.GetSectionInfo(sectionID);
-	if info then--7.3.5
-		local flag1, flag2, flag3, flag4;
-		local flags = C_EncounterJournal.GetSectionIconFlags(sectionID);
-		if flags then
-			flag1, flag2, flag3, flag4 = unpack(flags);
+	if C_EncounterJournal then
+		local info = C_EncounterJournal.GetSectionInfo(sectionID);
+		if info then--7.3.5
+			local flag1, flag2, flag3, flag4;
+			local flags = C_EncounterJournal.GetSectionIconFlags(sectionID);
+			if flags then
+				flag1, flag2, flag3, flag4 = unpack(flags);
+			end
+			return	info.title, info.description, info.headerType, info.abilityIcon, info.creatureDisplayID, info.siblingSectionID, info.firstChildSectionID, info.filteredByDifficulty, info.link, info.startsOpen, flag1, flag2, flag3, flag4
 		end
-		return	info.title, info.description, info.headerType, info.abilityIcon, info.creatureDisplayID, info.siblingSectionID, info.firstChildSectionID, info.filteredByDifficulty, info.link, info.startsOpen, flag1, flag2, flag3, flag4
 	else
 		return EJ_GetSectionInfo(sectionID)
 	end
