@@ -1264,8 +1264,7 @@ do
 				"PLAYER_SPECIALIZATION_CHANGED",
 				"PARTY_INVITE_REQUEST",
 				"LOADING_SCREEN_DISABLED",
-				"SCENARIO_CRITERIA_UPDATE",
-				"SPELL_NAME_UPDATE"
+				"SCENARIO_CRITERIA_UPDATE"
 			)
 			if RolePollPopup:IsEventRegistered("ROLE_POLL_BEGIN") then
 				RolePollPopup:UnregisterEvent("ROLE_POLL_BEGIN")
@@ -6087,6 +6086,8 @@ function DBM:EJ_GetSectionInfo(sectionID)
 end
 
 do
+	local spellRequestFrame = CreateFrame("Frame", "DBMSpellRequestFrame")
+	spellRequestFrame:Hide()
 	local requestedSpellIDs = {}
 	--[[local function delayedSpellRequest(self, spellId)
 		if type(requestedSpellIDs[spellId]) == "string" then
@@ -6096,9 +6097,14 @@ do
 		end
 	end--]]
 	
-	function DBM:SPELL_NAME_UPDATE(spellId, spellName)
+	function DBMSpellRequestFrame:SPELL_NAME_UPDATE(spellId, spellName)
 		if requestedSpellIDs[spellId] then--Should be a true bool if requested
 			requestedSpellIDs[spellId] = spellName
+		end
+		if #requestedSpellIDs == 0 then
+			self:SetScript("OnUpdate", nil)
+			self:UnregisterEvent("SPELL_NAME_UPDATE")
+			self:Hide()
 		end
 	end
 
@@ -6109,6 +6115,11 @@ do
 			DBM:Debug("Invalid call to GetSpellInfo for spellID: "..spellId)
 		elseif name == "" then--7.3.5 PTR returned blank, spell not yet cached and must be requested
 			requestedSpellIDs[spellId] = true
+			if not DBMSpellRequestFrame:IsShown() then
+				DBMSpellRequestFrame:Show()
+				DBMSpellRequestFrame:SetScript("OnUpdate", onUpdate)
+				DBMSpellRequestFrame:RegisterEvent("SPELL_NAME_UPDATE")
+			end
 			--Useless until find a way to loop this on a timer until below is true
 			--repeat
 				-- wait that freezes wow, so not a valid wait
