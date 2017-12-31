@@ -262,8 +262,6 @@ function mod:OnCombatStart(delay)
 		timerDestructorCD:Start(11, DBM_CORE_MIDDLE)
 	end
 	if self.Options.InfoFrame then
-		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(250030))
-		--DBM.InfoFrame:Show(2, "enemypower", 2)
 		DBM.InfoFrame:Show(7, "function", updateInfoFrame, false, false)
 	end
 	if self.Options.NPAuraOnPurification or self.Options.NPAuraOnFelShielding then
