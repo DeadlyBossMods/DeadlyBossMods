@@ -6074,7 +6074,7 @@ end
 
 --Future proofing EJ_GetSectionInfo compat layer to make it easier updatable. EJ_GetSectionInfo won't be depricated functions forever.
 function DBM:EJ_GetSectionInfo(sectionID)
-	if C_EncounterJournal then
+	if C_EncounterJournal.GetSectionInfo then
 		local info = C_EncounterJournal.GetSectionInfo(sectionID);
 		if info then--7.3.5
 			local flag1, flag2, flag3, flag4;
