@@ -125,9 +125,9 @@ mod.vb.annihilateCount = 0
 mod.vb.armageddonAdds = 0
 mod.vb.felLashCount = 0
 mod.vb.lastPhase = 1
-local MarkOfFrostDebuff = GetSpellInfo(212587)
-local SearingBrandDebuff = GetSpellInfo(213166)
-local annihilatedDebuff = GetSpellInfo(215458)
+local MarkOfFrostDebuff = DBM:GetSpellInfo(212587)
+local SearingBrandDebuff = DBM:GetSpellInfo(213166)
+local annihilatedDebuff = DBM:GetSpellInfo(215458)
 local rangeShowAll = false
 local chargeTable = {}
 local annihilateTimers = {8.0, 45.0, 40.0, 44.0, 38.0, 37.0, 33.0, 47.0, 41.0, 44.0, 38.0, 37.0, 33.0}--Need longer pulls/more data. However this pattern did prove to always be same
@@ -312,7 +312,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			DBM.RangeCheck:Show(8, debuffFilter)
 		end
 		if self.Options.InfoFrame and not self:IsLFR() then
-			DBM.InfoFrame:SetHeader(GetSpellInfo(212647))
+			DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(212647))
 			DBM.InfoFrame:Show(6, "playerdebuffstacks", 212647)
 		end
 	elseif spellId == 213867 then--Fiery Enchantment

@@ -100,7 +100,7 @@ local countdownReinforcements			= mod:NewCountdown(25, 245546)
 mod:AddSetIconOption("SetIconOnAdds", 245546, true, true)
 mod:AddRangeFrameOption("8")
 
-local felShield = GetSpellInfo(244910)
+local felShield = DBM:GetSpellInfo(244910)
 mod.vb.FusilladeCount = 0
 mod.vb.lastIcon = 8
 

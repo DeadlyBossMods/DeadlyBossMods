@@ -164,7 +164,7 @@ mod:AddNamePlateOption("NPAuraOnEternalBlades", 255478)
 mod:AddNamePlateOption("NPAuraOnVulnerability", 255418)
 --mod:AddRangeFrameOption("5/10")
 
-local avatarOfAggramar, aggramarsBoon = GetSpellInfo(255199), GetSpellInfo(255200)
+local avatarOfAggramar, aggramarsBoon = DBM:GetSpellInfo(255199), DBM:GetSpellInfo(255200)
 local playerAvatar = false
 mod.vb.phase = 1
 mod.vb.coneCount = 0
@@ -190,7 +190,7 @@ local debuffFilter
 local UnitDebuff = UnitDebuff
 local playerDebuff = nil
 do
-	local spellName = GetSpellInfo(231311)
+	local spellName = DBM:GetSpellInfo(231311)
 	debuffFilter = function(uId)
 		if not playerDebuff then return true end
 		if not select(11, UnitDebuff(uId, spellName)) == playerDebuff then
@@ -199,7 +199,7 @@ do
 	end
 end
 
-local expelLight, stormOfJustice = GetSpellInfo(228028), GetSpellInfo(227807)
+local expelLight, stormOfJustice = DBM:GetSpellInfo(228028), DBM:GetSpellInfo(227807)
 local function updateRangeFrame(self)
 	if not self.Options.RangeFrame then return end
 	if self.vb.brandActive then

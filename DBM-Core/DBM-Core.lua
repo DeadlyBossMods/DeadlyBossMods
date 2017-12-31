@@ -437,7 +437,7 @@ local IsInRaid, IsInGroup, IsInInstance = IsInRaid, IsInGroup, IsInInstance
 local UnitAffectingCombat, InCombatLockdown, IsFalling, IsEncounterInProgress, UnitPlayerOrPetInRaid, UnitPlayerOrPetInParty = UnitAffectingCombat, InCombatLockdown, IsFalling, IsEncounterInProgress, UnitPlayerOrPetInRaid, UnitPlayerOrPetInParty
 local UnitGUID, UnitHealth, UnitHealthMax, UnitBuff = UnitGUID, UnitHealth, UnitHealthMax, UnitBuff
 local UnitExists, UnitIsDead, UnitIsFriend, UnitIsUnit, UnitIsAFK = UnitExists, UnitIsDead, UnitIsFriend, UnitIsUnit, UnitIsAFK
-local GetSpellInfo, EJ_GetSectionInfo, GetSpellTexture, GetSpellCooldown = GetSpellInfo, C_EncounterJournal.GetSectionInfo or EJ_GetSectionInfo, GetSpellTexture, GetSpellCooldown
+local GetSpellInfo, EJ_GetSectionInfo, GetSpellTexture, GetSpellCooldown = GetSpellInfo, EJ_GetSectionInfo, GetSpellTexture, GetSpellCooldown
 local EJ_GetEncounterInfo, EJ_GetCreatureInfo, GetDungeonInfo = EJ_GetEncounterInfo, EJ_GetCreatureInfo, GetDungeonInfo
 local GetInstanceInfo = GetInstanceInfo
 local UnitPosition, GetCurrentMapDungeonLevel, GetMapInfo, GetCurrentMapZone, SetMapToCurrentZone, GetPlayerMapAreaID = UnitPosition, GetCurrentMapDungeonLevel, GetMapInfo, GetCurrentMapZone, SetMapToCurrentZone, GetPlayerMapAreaID
@@ -694,7 +694,7 @@ do
 			if type(spellId) == "string" then--Something is screwed up, like SPELL_AURA_APPLIED DOSE
 				DBM:AddMsg("DBM RegisterEvents Error: "..spellId.." is not a number!")
 			end
-			if spellId and not GetSpellInfo(spellId) then
+			if spellId and not DBM:GetSpellInfo(spellId) then
 				DBM:AddMsg("DBM RegisterEvents Error: "..spellId.." spell id does not exist!")
 				return
 			end
@@ -6072,16 +6072,30 @@ function DBM:PlaySoundFile(path, ignoreSFX)
 	end
 end
 
---TEMP 7.3.5 Compatability Layer. Should be a DBM function anyways in case of future changes that need this, so all BOSS mods won't need updating any time they change this function
+--Future proofing EJ_GetSectionInfo compat layer to make it easier updatable. EJ_GetSectionInfo won't be depricated functions forever.
 function DBM:EJ_GetSectionInfo(sectionID)
-	local title, description, headerType, abilityIcon, displayInfo, nextSectionID, childSectionID, filteredByDifficulty, link, startsOpen
-	if C_EncounterJournal.GetSectionInfo then--7.3.5
-		local tempTable = EJ_GetSectionInfo(sectionID)
-		title, description, headerType, abilityIcon, displayInfo, nextSectionID, childSectionID, filteredByDifficulty, link, startsOpen = tempTable.title, tempTable.description, tempTable.headerType, tempTable.abilityIcon, tempTable.ceatureDisplayID, tempTable.siblingSectionID, tempTable.firstChildSectionID, tempTable.filteredByDifficulty, tempTable.link, tempTable.startsOpen
+	local info = C_EncounterJournal.GetSectionInfo(sectionID);
+	if info then--7.3.5
+		local flag1, flag2, flag3, flag4;
+		local flags = C_EncounterJournal.GetSectionIconFlags(sectionID);
+		if flags then
+			flag1, flag2, flag3, flag4 = unpack(flags);
+		end
+		return	info.title, info.description, info.headerType, info.abilityIcon, info.creatureDisplayID, info.siblingSectionID, info.firstChildSectionID, info.filteredByDifficulty, info.link, info.startsOpen, flag1, flag2, flag3, flag4
 	else
-		title, description, headerType, abilityIcon, displayInfo, nextSectionID, childSectionID, filteredByDifficulty, link, startsOpen =  EJ_GetSectionInfo(sectionID)
+		return EJ_GetSectionInfo(sectionID)
 	end
-	return title, description, headerType, abilityIcon, displayInfo, nextSectionID, childSectionID, filteredByDifficulty, link, startsOpen
+end
+
+--Dirty handling of spell request feature of 7.3.5, cleanere solution probably to follow to be handled more correctly in core without double requests.
+function DBM:GetSpellInfo(spellId)
+	local name, rank, icon, castingTime, minRange, maxRange, spellID = GetSpellInfo(spellId)
+	if not name then
+		DBM:Debug("Invalid call to GetSpellInfo for spellID: "..spellId)
+	elseif name == "" then--7.3.5 PTR returned blank, spell not yet cached
+		name, rank, icon, castingTime, minRange, maxRange, spellID = GetSpellInfo(spellId)--Call again, should be cached on second attempt?
+	end
+	return name, rank, icon, castingTime, minRange, maxRange, spellID
 end
 
 function DBM:PlaySound(path)
@@ -8577,13 +8591,13 @@ do
 			spellId = string.sub(spellId, 3)
 			spellName = DBM:EJ_GetSectionInfo(spellId) or DBM_CORE_UNKNOWN
 		else
-			spellName = GetSpellInfo(spellId) or DBM_CORE_UNKNOWN
+			spellName = DBM:GetSpellInfo(spellId) or DBM_CORE_UNKNOWN
 		end
 		icon = icon or unparsedId
 		local text
 		if announceType == "cast" then
-			local spellHaste = select(4, GetSpellInfo(53142)) / 10000 -- 53142 = Dalaran Portal, should have 10000 ms cast time
-			local timer = (select(4, GetSpellInfo(spellId)) or 1000) / spellHaste
+			local spellHaste = select(4, DBM:GetSpellInfo(53142)) / 10000 -- 53142 = Dalaran Portal, should have 10000 ms cast time
+			local timer = (select(4, DBM:GetSpellInfo(spellId)) or 1000) / spellHaste
 			text = DBM_CORE_AUTO_ANNOUNCE_TEXTS[announceType]:format(spellName, castTime or (timer / 1000))
 		elseif announceType == "prewarn" then
 			if type(preWarnTime) == "string" then
@@ -8982,7 +8996,7 @@ end
 --  Yell Object  --
 --------------------
 do
-	local voidForm = GetSpellInfo(194249)
+	local voidForm = DBM:GetSpellInfo(194249)
 	local yellPrototype = {}
 	local mt = { __index = yellPrototype }
 	local function newYell(self, yellType, spellId, yellText, optionDefault, optionName, chatType)
@@ -9004,13 +9018,13 @@ do
 			if type(spellId) == "string" and spellId:match("ej%d+") then
 				displayText = DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT[yellType]:format(DBM:EJ_GetSectionInfo(string.sub(spellId, 3)) or DBM_CORE_UNKNOWN)
 			else
-				displayText = DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT[yellType]:format(GetSpellInfo(spellId) or DBM_CORE_UNKNOWN)
+				displayText = DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT[yellType]:format(DBM:GetSpellInfo(spellId) or DBM_CORE_UNKNOWN)
 			end
 		end
 		--Passed spellid as yellText.
 		--Auto localize spelltext using yellText instead
 		if yellText and type(yellText) == "number" then
-			displayText = DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT[yellType]:format(GetSpellInfo(yellText) or DBM_CORE_UNKNOWN)
+			displayText = DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT[yellType]:format(DBM:GetSpellInfo(yellText) or DBM_CORE_UNKNOWN)
 		end
 		local obj = setmetatable(
 			{
@@ -9507,7 +9521,7 @@ do
 		if type(spellId) == "string" and spellId:match("ej%d+") then
 			spellName = DBM:EJ_GetSectionInfo(string.sub(spellId, 3)) or DBM_CORE_UNKNOWN
 		else
-			spellName = GetSpellInfo(spellId) or DBM_CORE_UNKNOWN
+			spellName = DBM:GetSpellInfo(spellId) or DBM_CORE_UNKNOWN
 		end
 		local text
 		if announceType == "prewarn" then
@@ -10157,7 +10171,7 @@ do
 			if type(spellId) == "string" and spellId:match("ej%d+") then
 				spellName = DBM:EJ_GetSectionInfo(string.sub(spellId, 3)) or ""
 			else
-				spellName = GetSpellInfo(spellId or 0)
+				spellName = DBM:GetSpellInfo(spellId or 0)
 			end
 			if spellName then
 				icon = type(texture) == "number" and GetSpellTexture(texture) or texture or type(spellId) == "string" and select(4, DBM:EJ_GetSectionInfo(string.sub(spellId, 3))) ~= "" and select(4, DBM:EJ_GetSectionInfo(string.sub(spellId, 3))) or (type(spellId) == "number" and GetSpellTexture(spellId))
@@ -10221,8 +10235,8 @@ do
 	function bossModPrototype:NewCastTimer(timer, ...)
 		if tonumber(timer) and timer > 1000 then -- hehe :) best hack in DBM. This makes the first argument optional, so we can omit it to use the cast time from the spell id ;)
 			local spellId = timer
-			timer = select(4, GetSpellInfo(spellId)) or 1000 -- GetSpellInfo takes YOUR spell haste into account...WTF?
-			local spellHaste = select(4, GetSpellInfo(53142)) / 10000 -- 53142 = Dalaran Portal, should have 10000 ms cast time
+			timer = select(4, DBM:GetSpellInfo(spellId)) or 1000 -- GetSpellInfo takes YOUR spell haste into account...WTF?
+			local spellHaste = select(4, DBM:GetSpellInfo(53142)) / 10000 -- 53142 = Dalaran Portal, should have 10000 ms cast time
 			timer = timer / spellHaste -- calculate the real cast time of the spell...
 			return self:NewCastTimer(timer / 1000, spellId, ...)
 		end
@@ -10232,8 +10246,8 @@ do
 	function bossModPrototype:NewCastSourceTimer(timer, ...)
 		if tonumber(timer) and timer > 1000 then -- hehe :) best hack in DBM. This makes the first argument optional, so we can omit it to use the cast time from the spell id ;)
 			local spellId = timer
-			timer = select(4, GetSpellInfo(spellId)) or 1000 -- GetSpellInfo takes YOUR spell haste into account...WTF?
-			local spellHaste = select(4, GetSpellInfo(53142)) / 10000 -- 53142 = Dalaran Portal, should have 10000 ms cast time
+			timer = select(4, DBM:GetSpellInfo(spellId)) or 1000 -- GetSpellInfo takes YOUR spell haste into account...WTF?
+			local spellHaste = select(4, DBM:GetSpellInfo(53142)) / 10000 -- 53142 = Dalaran Portal, should have 10000 ms cast time
 			timer = timer / spellHaste -- calculate the real cast time of the spell...
 			return self:NewCastSourceTimer(timer / 1000, spellId, ...)
 		end
@@ -10303,7 +10317,7 @@ do
 		elseif type(spellId) == "string" and spellId:match("ej%d+") then
 			spellName = DBM:EJ_GetSectionInfo(string.sub(spellId, 3))
 		else
-			spellName = GetSpellInfo(spellId)
+			spellName = DBM:GetSpellInfo(spellId)
 		end
 		return pformat(DBM_CORE_AUTO_TIMER_TEXTS[timerType], spellName)
 	end

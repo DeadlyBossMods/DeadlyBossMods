@@ -128,7 +128,7 @@ local debuffFilter
 local UnitDebuff = UnitDebuff
 local playerDebuff = nil
 do
-	local spellName = GetSpellInfo(231311)
+	local spellName = DBM:GetSpellInfo(231311)
 	debuffFilter = function(uId)
 		if not playerDebuff then return true end
 		if not select(11, UnitDebuff(uId, spellName)) == playerDebuff then
@@ -137,7 +137,7 @@ do
 	end
 end
 
-local expelLight, stormOfJustice = GetSpellInfo(228028), GetSpellInfo(227807)
+local expelLight, stormOfJustice = DBM:GetSpellInfo(228028), DBM:GetSpellInfo(227807)
 local function updateRangeFrame(self)
 	if not self.Options.RangeFrame then return end
 	if self.vb.brandActive then
@@ -153,7 +153,7 @@ end
 
 local updateInfoFrame
 do
-	local protected = GetSpellInfo(229584)
+	local protected = DBM:GetSpellInfo(229584)
 	local lines = {}
 	local sortedLines = {}
 	local function addLine(key, value)

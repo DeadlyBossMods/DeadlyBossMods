@@ -70,7 +70,7 @@ local playerHasTen = false
 
 local debuffFilter
 do
-	local debuffName = GetSpellInfo(204463)
+	local debuffName = DBM:GetSpellInfo(204463)
 	debuffFilter = function(uId)
 		if UnitDebuff(uId, debuffName) then
 			return true
@@ -96,7 +96,7 @@ function mod:OnCombatStart(delay)
 		berserkTimer:Start(480-delay)
 	end
 	if self.Options.InfoFrame and self:IsMythic() then
-		DBM.InfoFrame:SetHeader(GetSpellInfo(204506))
+		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(204506))
 		DBM.InfoFrame:Show(8, "playerdebuffstacks", 204506)
 	end
 	if self:IsMythic() then

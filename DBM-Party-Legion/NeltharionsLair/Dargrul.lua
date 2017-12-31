@@ -59,7 +59,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnLandSlide:Play("shockwave")
 		timerLandSlideCD:Start()
 	elseif spellId == 200404 and self:AntiSpam(3, 1) then
-		specWarnMagmaWave:Show(GetSpellInfo(200551))
+		specWarnMagmaWave:Show(DBM:GetSpellInfo(200551))
 		specWarnMagmaWave:Play("findshelter")
 		timerMagmaWaveCD:Start()
 		countdownMagmaWave:Start()
@@ -81,7 +81,7 @@ end
 --1 second faster than combat log. 1 second slower than Unit event callout but that's no longer reliable.
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	if msg:find("spell:200404") and self:AntiSpam(3, 1) then
-		specWarnMagmaWave:Show(GetSpellInfo(200551))
+		specWarnMagmaWave:Show(DBM:GetSpellInfo(200551))
 		specWarnMagmaWave:Play("findshelter")
 		timerMagmaWaveCD:Start()
 		countdownMagmaWave:Start()

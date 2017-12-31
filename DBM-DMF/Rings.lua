@@ -21,7 +21,7 @@ local countdownGame	= mod:NewCountdownFades(10, 170820)
 
 mod:RemoveOption("HealthFrame")
 
-local wingsName = GetSpellInfo(170820)
+local wingsName = DBM:GetSpellInfo(170820)
 local UnitBuff = UnitBuff
 
 local function checkBuff()

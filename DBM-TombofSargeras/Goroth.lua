@@ -64,9 +64,9 @@ local countdownBurningArmor				= mod:NewCountdownFades("Alt6", 231363)--^^
 --mod:AddInfoFrameOption(227503, true)
 mod:AddRangeFrameOption("10/25")
 
-local infernalSpike = GetSpellInfo(233021)
-local crashingComet = GetSpellInfo(232249)
-local tankDebuff = GetSpellInfo(234264)
+local infernalSpike = DBM:GetSpellInfo(233021)
+local crashingComet = DBM:GetSpellInfo(232249)
+local tankDebuff = DBM:GetSpellInfo(234264)
 local cometTable = {}
 local shatteringStarTimers = {24, 60, 60, 50}--24, 60, 60, 50, 20, 40, 20, 40, 20, 40
 --["232249-Crashing Comet"] = "pull:8.5, 18.3, 18.3, 18.1, 18.5, 18.3, 22.0, 18.3, 18.2, 25.6, 18.3", --Heroic

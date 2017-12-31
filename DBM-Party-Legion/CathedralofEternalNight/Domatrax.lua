@@ -33,7 +33,7 @@ local countdownChaosEnergy			= mod:NewCountdown(5, 234107)
 
 mod:AddInfoFrameOption(238410, true)
 
-local shield = GetSpellInfo(238410)
+local shield = DBM:GetSpellInfo(238410)
 
 function mod:OnCombatStart(delay)
 	timerFelsoulCleaveCD:Start(8.2-delay)

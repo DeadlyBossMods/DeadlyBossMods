@@ -72,7 +72,6 @@ end
 --------------------------------------------------------
 --  Cache frequently used global variables in locals  --
 --------------------------------------------------------
-local GetSpellInfo = GetSpellInfo
 local tinsert, tremove, tsort, twipe = table.insert, table.remove, table.sort, table.wipe
 local mfloor, mmax = math.floor, math.max
 
@@ -387,7 +386,7 @@ do
 
 	local function replaceSpellLinks(id)
 		local spellId = tonumber(id)
-		local spellName = GetSpellInfo(spellId)
+		local spellName = DBM:GetSpellInfo(spellId)
 		if not spellName then
 			spellName = DBM_CORE_UNKNOWN
 			DBM:Debug("Spell ID does not exist: "..spellId)
@@ -443,7 +442,7 @@ do
 		if name:find("%$spell:") then
 			if not isTimer and modvar then
 				local spellId = string.match(name, "spell:(%d+)")
-				noteSpellName = GetSpellInfo(spellId)
+				noteSpellName = DBM:GetSpellInfo(spellId)
 			end
 			name = name:gsub("%$spell:(%d+)", replaceSpellLinks)
 		end

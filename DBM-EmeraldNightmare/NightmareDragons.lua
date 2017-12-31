@@ -135,7 +135,7 @@ local updateInfoFrame
 do
 --	local playerName = UnitName("player")
 	local lines = {}
-	local spellName1, spellName2, spellName3, spellName4 = GetSpellInfo(203102), GetSpellInfo(203125), GetSpellInfo(203124), GetSpellInfo(203121)
+	local spellName1, spellName2, spellName3, spellName4 = DBM:GetSpellInfo(203102), DBM:GetSpellInfo(203125), DBM:GetSpellInfo(203124), DBM:GetSpellInfo(203121)
 	local UnitDebuff, floor = UnitDebuff, math.floor
 	updateInfoFrame = function()
 		table.wipe(lines)

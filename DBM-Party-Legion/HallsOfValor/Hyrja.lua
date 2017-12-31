@@ -41,7 +41,7 @@ local voicePhaseChange				= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_T
 
 mod:AddRangeFrameOption(8, 192048)
 
-local eyeShortName = GetSpellInfo(91320)--Inner Eye
+local eyeShortName = DBM:GetSpellInfo(91320)--Inner Eye
 mod.vb.phase = 1
 
 function mod:OnCombatStart(delay)

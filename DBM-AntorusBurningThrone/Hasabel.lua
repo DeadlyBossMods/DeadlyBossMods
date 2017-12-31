@@ -126,12 +126,12 @@ mod.vb.shieldsActive = false
 mod.vb.felBarrageCast = 0
 mod.vb.firstPortal = false
 local playerPlatform = 1--1 Nexus, 2 Xoroth, 3 Rancora, 4 Nathreza
-local mindFog, aegisFlames, felMiasma = GetSpellInfo(245099), GetSpellInfo(244383), GetSpellInfo(244826)
+local mindFog, aegisFlames, felMiasma = DBM:GetSpellInfo(245099), DBM:GetSpellInfo(244383), DBM:GetSpellInfo(244826)
 local nexusPlatform, xorothPlatform, rancoraPlatform, nathrezaPlatform = {}, {}, {}, {}
 
 local updateRangeFrame
 do
-	local everBurningFlames, causticSlime, CloyingShadows, hungeringGloom = GetSpellInfo(244613), GetSpellInfo(244849), GetSpellInfo(245118), GetSpellInfo(245075)
+	local everBurningFlames, causticSlime, CloyingShadows, hungeringGloom = DBM:GetSpellInfo(244613), DBM:GetSpellInfo(244849), DBM:GetSpellInfo(245118), DBM:GetSpellInfo(245075)
 	local UnitDebuff = UnitDebuff
 	local function debuffFilter(uId)
 		if UnitDebuff(uId, everBurningFlames) or UnitDebuff(uId, hungeringGloom) or UnitDebuff(uId, causticSlime) then

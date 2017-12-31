@@ -38,7 +38,7 @@ mod:AddRangeFrameOption(8, 233568)
 local debuffFilter
 do
 	local UnitDebuff = UnitDebuff
-	local PanicDebuff = GetSpellInfo(233568)
+	local PanicDebuff = DBM:GetSpellInfo(233568)
 	debuffFilter = function(uId)
 		if UnitDebuff(uId, PanicDebuff) then
 			return true
