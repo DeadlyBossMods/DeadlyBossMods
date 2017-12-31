@@ -97,7 +97,7 @@ local empoweredPulseTargets = {}
 local debuffFilter
 local UnitDebuff = UnitDebuff
 local playerSleepDebuff = false
-local empoweredPulse = GetSpellInfo(250006)--Empowered Pulse Grenade
+local empoweredPulse = DBM:GetSpellInfo(250006)--Empowered Pulse Grenade
 do
 	debuffFilter = function(uId)
 		if UnitDebuff(uId, empoweredPulse) then
@@ -403,7 +403,7 @@ end
 
 do
 	local playerName = UnitName("player")
-	local spellName = GetSpellInfo(254244)
+	local spellName = DBM:GetSpellInfo(254244)
 	function mod:OnTranscriptorSync(msg, targetName)
 		if msg:find("spell:254244") then
 			targetName = Ambiguate(targetName, "none")

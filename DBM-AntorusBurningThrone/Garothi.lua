@@ -74,7 +74,7 @@ mod.vb.annihilatorHaywire = false
 local debuffFilter
 local updateRangeFrame
 do
-	local decimination, mythicDecimination, FelBombardment = GetSpellInfo(244410), GetSpellInfo(246919), GetSpellInfo(246220)
+	local decimination, mythicDecimination, FelBombardment = DBM:GetSpellInfo(244410), DBM:GetSpellInfo(246919), DBM:GetSpellInfo(246220)
 	local UnitDebuff = UnitDebuff
 	debuffFilter = function(uId)
 		if UnitDebuff(uId, decimination) or UnitDebuff(uId, mythicDecimination) or UnitDebuff(uId, FelBombardment) then

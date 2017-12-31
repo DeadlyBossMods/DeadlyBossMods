@@ -144,7 +144,7 @@ local addCountToLocationLFR = {
 
 local updateInfoFrame
 do
-	local lifeForceName = GetSpellInfo(250048)
+	local lifeForceName = DBM:GetSpellInfo(250048)
 	local lines = {}
 	local sortedLines = {}
 	local function addLine(key, value)
@@ -262,7 +262,7 @@ function mod:OnCombatStart(delay)
 		timerDestructorCD:Start(11, DBM_CORE_MIDDLE)
 	end
 	if self.Options.InfoFrame then
-		DBM.InfoFrame:SetHeader(GetSpellInfo(250030))
+		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(250030))
 		--DBM.InfoFrame:Show(2, "enemypower", 2)
 		DBM.InfoFrame:Show(7, "function", updateInfoFrame, false, false)
 	end

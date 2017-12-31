@@ -50,7 +50,7 @@ mod:AddRangeFrameOption(5, 206351)
 mod:AddSetIconOption("SetIconOnAdds", "ej12914", true, true)
 mod:AddArrowOption("ArrowOnBeam3", 205368, true)
 
-local burningPitchDebuff = GetSpellInfo(215944)
+local burningPitchDebuff = DBM:GetSpellInfo(215944)
 local mobGUIDs = {}
 --Beams (205370/205368 Combined)
 local lolBeamTimers = {5, 15, 30, 30, 23, 27, 30, 44, 14, 16, 14, 16, 22, 60}--LFR & Normal

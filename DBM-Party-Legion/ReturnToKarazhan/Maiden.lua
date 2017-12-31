@@ -68,7 +68,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnHolyShock:Show(args.sourceName)
 		specWarnHolyShock:Play("kickcast")
 	elseif spellId == 227508 then
-		specWarnRepentance:Show(GetSpellInfo(227789))
+		specWarnRepentance:Show(DBM:GetSpellInfo(227789))
 		timerRepentanceCD:Start()
 	elseif spellId == 227823 then
 		warnHolyWrath:Show()

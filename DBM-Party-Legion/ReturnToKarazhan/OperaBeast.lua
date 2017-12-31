@@ -102,7 +102,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 228013 then
 		if args:IsPlayer() then
-			specWarnDrenched:Show(GetSpellInfo(228193))
+			specWarnDrenched:Show(DBM:GetSpellInfo(228193))
 		end
 	elseif spellId == 228221 then
 		timerSevereDustingCD:Start()

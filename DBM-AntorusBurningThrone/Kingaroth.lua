@@ -144,7 +144,7 @@ end
 
 local updateInfoFrame
 do
-	local demolishDebuff = GetSpellInfo(246692)
+	local demolishDebuff = DBM:GetSpellInfo(246692)
 	local lines = {}
 	local sortedLines = {}
 	local function addLine(key, value)

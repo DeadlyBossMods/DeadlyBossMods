@@ -101,8 +101,8 @@ mod.vb.hydraShotCount = 0
 mod.vb.burdenCount = 0
 mod.vb.tornadoCount = 0
 mod.vb.mawCount = 0
-local thunderingShock = GetSpellInfo(230358)
-local consumingHunger = GetSpellInfo(230384)
+local thunderingShock = DBM:GetSpellInfo(230358)
+local consumingHunger = DBM:GetSpellInfo(230384)
 local hydraIcons = {}
 local eventsRegistered = false
 local p3MythicCrashingWave = {30.9, 30.9, 40.6, 35.8, 30.9}--All minus 2 because timer starts at SUCCESS but is for START
@@ -341,7 +341,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		if self:IsMythic() then
 			--Every two sharks
 			specWarnDreadShark:Show()
-			if UnitDebuff("player", GetSpellInfo(239375)) then--Has bufferfish
+			if UnitDebuff("player", DBM:GetSpellInfo(239375)) then--Has bufferfish
 				specWarnDreadShark:Play("takedamage")
 			else
 				specWarnDreadShark:Play("watchstep")

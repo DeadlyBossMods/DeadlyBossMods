@@ -63,7 +63,7 @@ mod.vb.slowCount = 0
 mod.vb.currentPhase = 2
 mod.vb.interruptCount = 0
 mod.vb.timeBombDebuffCount = 0
-local timeBombDebuff = GetSpellInfo(206617)
+local timeBombDebuff = DBM:GetSpellInfo(206617)
 local function updateTimeBomb(self)
 	local _, _, _, _, _, _, expires = UnitDebuff("player", timeBombDebuff)
 	if expires then
@@ -91,7 +91,7 @@ function mod:OnCombatStart(delay)
 	self.vb.slowCount = 0
 	self.vb.timeBombDebuffCount = 0
 	if self.Options.InfoFrame and self.Options.InfoFrameBehavior == "TimeRelease" then
-		local timeRelease = GetSpellInfo(206610)
+		local timeRelease = DBM:GetSpellInfo(206610)
 		DBM.InfoFrame:SetHeader(timeRelease)
 		DBM.InfoFrame:Show(10, "playerabsorb", timeRelease)
 	end

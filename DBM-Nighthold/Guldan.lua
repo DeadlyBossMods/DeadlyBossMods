@@ -143,7 +143,7 @@ local timerVisionsofDarkTitanCD		= mod:NewCDCountTimer(9, 227008, nil, nil, nil,
 local timerFlameCrashCD				= mod:NewCDCountTimer(20, 227071, nil, nil, nil, 3)
 local timerSummonNightorbCD			= mod:NewCDCountTimer(10.9, 227283, nil, nil, nil, 1, 225133)
 --Shard
-mod:AddTimerLine(GetSpellInfo(221149))
+mod:AddTimerLine(DBM:GetSpellInfo(221149))
 local timerManifestAzzinothCD		= mod:NewCDCountTimer(10.9, 221149, nil, nil, nil, 1, 236237)
 local timerChaosSeedCD				= mod:NewCDTimer(10.9, 221336, nil, nil, nil, 3)
 local timerBulwarkofAzzinothCD		= mod:NewCDTimer(10.9, 221408, nil, nil, nil, 6)
@@ -203,7 +203,7 @@ local p3EmpoweredEyeTimers = {39.1, 62.5, 62.5, 25, 100}--100 is confirmed
 local p3EmpoweredEyeTimersMythic = {35.1, 52.6, 53.3, 20.4, 84.2, 52.6}--Credit to JustWait
 local bondsIcons = {}
 local flamesIcons = {}
-local timeStopBuff = GetSpellInfo(206310)
+local timeStopBuff = DBM:GetSpellInfo(206310)
 
 local function upValueCapsAreStupid(self)
 	self.vb.phase = 3
@@ -737,7 +737,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			yellParasiticWoundFades:Cancel()
 		end
 	elseif spellId == 206310 and args:IsPlayer() then
-		local parasiteName = GetSpellInfo(206847)
+		local parasiteName = DBM:GetSpellInfo(206847)
 		if UnitDebuff("player", parasiteName) then
 			local _, _, _, _, _, _, expires = UnitDebuff("player", parasiteName)
 			local remaining = expires-GetTime()

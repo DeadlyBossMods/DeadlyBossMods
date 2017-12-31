@@ -61,7 +61,7 @@ mod:AddInfoFrameOption(204284)
 
 mod.vb.volatileScorpCount = 0
 
-local shardName = GetSpellInfo(204292)
+local shardName = DBM:GetSpellInfo(204292)
 
 function mod:OnCombatStart(delay)
 	self.vb.volatileScorpCount = 0
@@ -140,7 +140,7 @@ function mod:SPELL_CAST_START(args)
 			end
 		end
 		if self.Options.InfoFrame then
-			DBM.InfoFrame:SetHeader(DBM_NO_DEBUFF:format(GetSpellInfo(204284)))
+			DBM.InfoFrame:SetHeader(DBM_NO_DEBUFF:format(DBM:GetSpellInfo(204284)))
 			DBM.InfoFrame:Show(5, "playergooddebuff", 204284)
 		end
 	elseif spellId == 204471 then

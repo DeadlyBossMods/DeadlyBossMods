@@ -145,9 +145,9 @@ local ps1Grand = {15, 12.2}
 local ps2Grand = {27, 43.9, 58.3}
 local ps3Grand = {58.7, 43, 41.4}
 local ps4Grand = {46.5, 61.6, 51.2}
-local abZeroDebuff, chilledDebuff, gravPullDebuff = GetSpellInfo(206585), GetSpellInfo(206589), GetSpellInfo(205984)
-local icyEjectionDebuff, coronalEjectionDebuff, voidEjectionDebuff = GetSpellInfo(206936), GetSpellInfo(206464), GetSpellInfo(207143)
-local crabDebuff, dragonDebuff, hunterDebuff, wolfDebuff = GetSpellInfo(205429), GetSpellInfo(216344), GetSpellInfo(216345), GetSpellInfo(205445)
+local abZeroDebuff, chilledDebuff, gravPullDebuff = DBM:GetSpellInfo(206585), DBM:GetSpellInfo(206589), DBM:GetSpellInfo(205984)
+local icyEjectionDebuff, coronalEjectionDebuff, voidEjectionDebuff = DBM:GetSpellInfo(206936), DBM:GetSpellInfo(206464), DBM:GetSpellInfo(207143)
+local crabDebuff, dragonDebuff, hunterDebuff, wolfDebuff = DBM:GetSpellInfo(205429), DBM:GetSpellInfo(216344), DBM:GetSpellInfo(216345), DBM:GetSpellInfo(205445)
 local crabs = {}
 local dragons = {}
 local hunters = {}
@@ -681,7 +681,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 end
 
 do
-	local debuffName = GetSpellInfo(207143)
+	local debuffName = DBM:GetSpellInfo(207143)
 	function mod:UNIT_AURA(uId)
 		local hasDebuff = UnitDebuff("player", debuffName)
 		if hasDebuff and not voidWarned then
