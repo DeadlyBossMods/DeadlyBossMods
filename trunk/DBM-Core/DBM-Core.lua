@@ -360,7 +360,7 @@ local watchFrameRestore = false
 local bossHealth = {}
 local bossHealthuIdCache = {}
 local bossuIdCache = {}
-local savedDifficulty, difficultyText, difficultyIndex
+local savedDifficulty, difficultyText, difficultyIndex, difficultyModifier
 local lastBossEngage = {}
 local lastBossDefeat = {}
 local bossuIdFound = false
@@ -1092,7 +1092,7 @@ do
 			SendAddonMessage("D4", "GH", "GUILD")
 		end
 		if not savedDifficulty or not difficultyText or not difficultyIndex then--prevent error if savedDifficulty or difficultyText is nil
-			savedDifficulty, difficultyText, difficultyIndex = self:GetCurrentInstanceDifficulty()
+			savedDifficulty, difficultyText, difficultyIndex, LastGroupSize, difficultyModifier = self:GetCurrentInstanceDifficulty()
 		end
 	end
 
@@ -4305,7 +4305,7 @@ do
 			end
 		end
 
-		syncHandlers["GCB"] = function(sender, modId, ver, difficulty)
+		syncHandlers["GCB"] = function(sender, modId, ver, difficulty, difficultyModifier)
 			if not DBM.Options.ShowGuildMessages or not difficulty then return end
 			if not ver or not (ver == "2") then return end--Ignore old versions
 			if DBM:AntiSpam(10, "GCB") then
@@ -4315,7 +4315,11 @@ do
 				local bossName = EJ_GetEncounterInfo(modId) or DBM_CORE_UNKNOWN
 				local difficultyName = DBM_CORE_UNKNOWN
 				if difficulty == 8 then
-					difficultyName = PLAYER_DIFFICULTY6.."+"
+					if difficultyModifier and difficultyModifier ~= 0 then
+						difficultyName = PLAYER_DIFFICULTY6.."+ ("..difficultyModifier..")"
+					else
+						difficultyName = PLAYER_DIFFICULTY6.."+"
+					end
 				elseif difficulty == 16 then
 					difficultyName = PLAYER_DIFFICULTY6
 				elseif difficulty == 15 then
@@ -4327,7 +4331,7 @@ do
 			end
 		end
 		
-		syncHandlers["GCE"] = function(sender, modId, ver, wipe, time, difficulty, wipeHP)
+		syncHandlers["GCE"] = function(sender, modId, ver, wipe, time, difficulty, wipeHP, difficultyModifier)
 			if not DBM.Options.ShowGuildMessages or not difficulty then return end
 			if not ver or not (ver == "3") then return end--Ignore old versions
 			if DBM:AntiSpam(5, "GCE") then
@@ -4337,7 +4341,11 @@ do
 				local bossName = EJ_GetEncounterInfo(modId) or DBM_CORE_UNKNOWN
 				local difficultyName = DBM_CORE_UNKNOWN
 				if difficulty == 8 then
-					difficultyName = PLAYER_DIFFICULTY6.."+"
+					if difficultyModifier and difficultyModifier ~= 0 then
+						difficultyName = PLAYER_DIFFICULTY6.."+ ("..difficultyModifier..")"
+					else
+						difficultyName = PLAYER_DIFFICULTY6.."+"
+					end
 				elseif difficulty == 16 then
 					difficultyName = PLAYER_DIFFICULTY6
 				elseif difficulty == 15 then
@@ -5239,7 +5247,7 @@ end
 function checkWipe(self, confirm)
 	if #inCombat > 0 then
 		if not savedDifficulty or not difficultyText or not difficultyIndex then--prevent error if savedDifficulty or difficultyText is nil
-			savedDifficulty, difficultyText, difficultyIndex = self:GetCurrentInstanceDifficulty()
+			savedDifficulty, difficultyText, difficultyIndex, LastGroupSize, difficultyModifier = self:GetCurrentInstanceDifficulty()
 		end
 		--hack for no iEEU information is provided.
 		if not bossuIdFound then
@@ -5374,7 +5382,7 @@ do
 				delay = delay + select(4, GetNetStats()) / 1000
 			end
 			--set mod default info
-			savedDifficulty, difficultyText, difficultyIndex, LastGroupSize = self:GetCurrentInstanceDifficulty()
+			savedDifficulty, difficultyText, difficultyIndex, LastGroupSize, difficultyModifier = self:GetCurrentInstanceDifficulty()
 			local name = mod.combatInfo.name
 			local modId = mod.id
 			if C_Scenario.IsInScenario() and (mod.addon.type == "SCENARIO") then
@@ -5529,7 +5537,7 @@ do
 						else
 							self:AddMsg(DBM_CORE_COMBAT_STARTED:format(difficultyText..name))
 							if (difficultyIndex == 8 or difficultyIndex == 14 or difficultyIndex == 15 or difficultyIndex == 16) and InGuildParty() and not statusGuildDisabled and not self.Options.DisableGuildStatus then--Only send relevant content, not guild beating down lich king or LFR.
-								SendAddonMessage("D4", "GCB\t"..modId.."\t2\t"..difficultyIndex, "GUILD")
+								SendAddonMessage("D4", "GCB\t"..modId.."\t2\t"..difficultyIndex.."\t"..difficultyModifier, "GUILD")
 							end
 						end
 					end
@@ -5638,7 +5646,7 @@ do
 				end
 			end
 			if not savedDifficulty or not difficultyText or not difficultyIndex then--prevent error if savedDifficulty or difficultyText is nil
-				savedDifficulty, difficultyText, difficultyIndex = DBM:GetCurrentInstanceDifficulty()
+				savedDifficulty, difficultyText, difficultyIndex, LastGroupSize, difficultyModifier = DBM:GetCurrentInstanceDifficulty()
 			end
 			if not mod.stats then--This will be nil if the mod for this intance failed to load fully because "script ran too long" (it tried to load in combat and failed)
 				self:AddMsg(DBM_CORE_BAD_LOAD)--Warn user that they should reload ui soon as they leave combat to get their mod to load correctly as soon as possible
@@ -5679,7 +5687,7 @@ do
 						else
 							self:AddMsg(DBM_CORE_COMBAT_ENDED_AT_LONG:format(difficultyText..name, wipeHP, strFromTime(thisTime), totalPulls - totalKills))
 							if (difficultyIndex == 8 or difficultyIndex == 14 or difficultyIndex == 15 or difficultyIndex == 16) and InGuildParty() and not statusGuildDisabled and not self.Options.DisableGuildStatus then--Maybe add mythic plus/CM?
-								SendAddonMessage("D4", "GCE\t"..modId.."\t3\t1\t"..strFromTime(thisTime).."\t"..difficultyIndex.."\t"..wipeHP, "GUILD")
+								SendAddonMessage("D4", "GCE\t"..modId.."\t3\t1\t"..strFromTime(thisTime).."\t"..difficultyIndex.."\t"..wipeHP.."\t"..difficultyModifier, "GUILD")
 							end
 						end
 					end
@@ -5725,12 +5733,11 @@ do
 					else
 						if difficultyIndex == 8 then--Mythic+/Challenge Mode
 							--TODO, figure out how to get current mythic plus rank, compare to our best rank.
-							local currentMPRank = C_ChallengeMode.GetActiveKeystoneInfo() or 0
 							local bestMPRank = mod.stats.challengeBestRank or 0
-							if mod.stats.challengeBestRank > currentMPRank then--Don't save time stats at all
+							if mod.stats.challengeBestRank > difficultyModifier then--Don't save time stats at all
 								--DO nothing
-							elseif mod.stats.challengeBestRank < currentMPRank then--Update best time and best rank, even if best time is lower (for a lower rank)
-								mod.stats.challengeBestRank = currentMPRank--Update best rank
+							elseif mod.stats.challengeBestRank < difficultyModifier then--Update best time and best rank, even if best time is lower (for a lower rank)
+								mod.stats.challengeBestRank = difficultyModifier--Update best rank
 								mod.stats[statVarTable[savedDifficulty].."BestTime"] = thisTime--Write this time no matter what.
 							else--Best rank must match current rank, so update time normally
 								mod.stats[statVarTable[savedDifficulty].."BestTime"] = mmin(bestTime or mhuge, thisTime)
@@ -5988,53 +5995,53 @@ end
 
 function DBM:GetCurrentInstanceDifficulty()
 	local _, instanceType, difficulty, difficultyName, _, _, _, _, instanceGroupSize = GetInstanceInfo()
+	local keystoneLevel = C_ChallengeMode.GetActiveKeystoneInfo() or 0
 	if difficulty == 0 or (difficulty == 1 and instanceType == "none") or C_Garrison:IsOnGarrisonMap() then--draenor field returns 1, causing world boss mod bug.
-		return "worldboss", RAID_INFO_WORLD_BOSS.." - ", difficulty
+		return "worldboss", RAID_INFO_WORLD_BOSS.." - ", difficulty, instanceGroupSize, keystoneLevel
 	elseif difficulty == 1 then
-		return "normal5", difficultyName.." - ", difficulty, instanceGroupSize
+		return "normal5", difficultyName.." - ", difficulty, instanceGroupSize, keystoneLevel
 	elseif difficulty == 2 then
-		return "heroic5", difficultyName.." - ", difficulty, instanceGroupSize
+		return "heroic5", difficultyName.." - ", difficulty, instanceGroupSize, keystoneLevel
 	elseif difficulty == 3 then
-		return "normal10", difficultyName.." - ", difficulty, instanceGroupSize
+		return "normal10", difficultyName.." - ", difficulty, instanceGroupSize, keystoneLevel
 	elseif difficulty == 4 then
-		return "normal25", difficultyName.." - ", difficulty, instanceGroupSize
+		return "normal25", difficultyName.." - ", difficulty, instanceGroupSize, keystoneLevel
 	elseif difficulty == 5 then
-		return "heroic10", difficultyName.." - ", difficulty, instanceGroupSize
+		return "heroic10", difficultyName.." - ", difficulty, instanceGroupSize, keystoneLevel
 	elseif difficulty == 6 then
-		return "heroic25", difficultyName.." - ", difficulty, instanceGroupSize
+		return "heroic25", difficultyName.." - ", difficulty, instanceGroupSize, keystoneLevel
 	elseif difficulty == 7 then--Fixed LFR (ie pre WoD zones)
-		return "lfr25", difficultyName.." - ", difficulty, instanceGroupSize
+		return "lfr25", difficultyName.." - ", difficulty, instanceGroupSize, keystoneLevel
 	elseif difficulty == 8 then
-		local currentMPRank = C_ChallengeMode.GetActiveKeystoneInfo() or 0
-		return "challenge5", PLAYER_DIFFICULTY6.."+ ("..currentMPRank..") - ", difficulty, instanceGroupSize
+		return "challenge5", PLAYER_DIFFICULTY6.."+ ("..difficultyModifier..") - ", difficulty, instanceGroupSize, keystoneLevel
 	elseif difficulty == 9 then--40 man raids have their own difficulty now, no longer returned as normal 10man raids
-		return "normal10", difficultyName.." - ",difficulty, instanceGroupSize--Just use normal10 anyways, since that's where we been saving 40 man stuff for so long anyways, no reason to change it now, not like any 40 mans can be toggled between 10 and 40 where we NEED to tell the difference.
+		return "normal10", difficultyName.." - ",difficulty, instanceGroupSize, keystoneLevel--Just use normal10 anyways, since that's where we been saving 40 man stuff for so long anyways, no reason to change it now, not like any 40 mans can be toggled between 10 and 40 where we NEED to tell the difference.
 	elseif difficulty == 11 then
-		return "heroic5", difficultyName.." - ", difficulty, instanceGroupSize
+		return "heroic5", difficultyName.." - ", difficulty, instanceGroupSize, keystoneLevel
 	elseif difficulty == 12 then
-		return "normal5", difficultyName.." - ", difficulty, instanceGroupSize
+		return "normal5", difficultyName.." - ", difficulty, instanceGroupSize, keystoneLevel
 	elseif difficulty == 14 then
-		return "normal", difficultyName.." - ", difficulty, instanceGroupSize
+		return "normal", difficultyName.." - ", difficulty, instanceGroupSize, keystoneLevel
 	elseif difficulty == 15 then
-		return "heroic", difficultyName.." - ", difficulty, instanceGroupSize
+		return "heroic", difficultyName.." - ", difficulty, instanceGroupSize, keystoneLevel
 	elseif difficulty == 16 then
-		return "mythic", difficultyName.." - ", difficulty, instanceGroupSize
+		return "mythic", difficultyName.." - ", difficulty, instanceGroupSize, keystoneLevel
 	elseif difficulty == 17 then--Variable LFR (ie post WoD zones)
-		return "lfr", difficultyName.." - ", difficulty, instanceGroupSize
+		return "lfr", difficultyName.." - ", difficulty, instanceGroupSize, keystoneLevel
 	elseif difficulty == 18 then
-		return "event40", difficultyName.." - ", difficulty, instanceGroupSize
+		return "event40", difficultyName.." - ", difficulty, instanceGroupSize, keystoneLevel
 	elseif difficulty == 19 then
-		return "event5", difficultyName.." - ", difficulty, instanceGroupSize
+		return "event5", difficultyName.." - ", difficulty, instanceGroupSize, keystoneLevel
 	elseif difficulty == 20 then
-		return "event20", difficultyName.." - ", difficulty, instanceGroupSize
+		return "event20", difficultyName.." - ", difficulty, instanceGroupSize, keystoneLevel
 	elseif difficulty == 23 then
-		return "mythic", difficultyName.." - ", difficulty, instanceGroupSize
+		return "mythic", difficultyName.." - ", difficulty, instanceGroupSize, keystoneLevel
 	elseif difficulty == 24 or difficulty == 33 then
-		return "timewalker", difficultyName.." - ", difficulty, instanceGroupSize
+		return "timewalker", difficultyName.." - ", difficulty, instanceGroupSize, keystoneLevel
 --	elseif difficulty == 25 then--Used by Ashran in 7.x.
---		return "pvpscenario", difficultyName.." - ", difficulty, instanceGroupSize
+--		return "pvpscenario", difficultyName.." - ", difficulty, instanceGroupSize, keystoneLevel
 	else--failsafe
-		return "normal5", "", difficulty, instanceGroupSize
+		return "normal5", "", difficulty, instanceGroupSize, keystoneLevel
 	end
 end
 
@@ -6044,6 +6051,10 @@ end
 
 function DBM:GetGroupSize()
 	return LastGroupSize
+end
+
+function DBM:GetKeyStoneLevel()
+	return difficultyModifier
 end
 
 function DBM:HasMapRestrictions()
@@ -6424,7 +6435,7 @@ do
 			DBM:PlaySoundFile("sound\\creature\\aggron1\\VO_60_HIGHMAUL_AGGRON_1_AGGRO_1.ogg")
 		elseif msg == "status" and #inCombat > 0 and DBM.Options.StatusEnabled then
 			if not difficultyText then -- prevent error when timer recovery function worked and etc (StartCombat not called)
-				difficultyText = select(2, DBM:GetCurrentInstanceDifficulty())
+				savedDifficulty, difficultyText, difficultyIndex, LastGroupSize, difficultyModifier = DBM:GetCurrentInstanceDifficulty()
 			end
 			local mod
 			for i, v in ipairs(inCombat) do
@@ -6444,7 +6455,7 @@ do
 			sendWhisper(sender, chatPrefix..DBM_CORE_STATUS_WHISPER:format(difficultyText..(mod.combatInfo.name or ""), hpText, IsInInstance() and getNumRealAlivePlayers() or getNumAlivePlayers(), DBM:GetNumRealGroupMembers()))
 		elseif #inCombat > 0 and DBM.Options.AutoRespond and (isRealIdMessage and (not isOnSameServer(sender) or not DBM:GetRaidUnitId(select(5, BNGetFriendInfoByID(sender)))) or not isRealIdMessage and not DBM:GetRaidUnitId(sender)) then
 			if not difficultyText then -- prevent error when timer recovery function worked and etc (StartCombat not called)
-				difficultyText = select(2, DBM:GetCurrentInstanceDifficulty())
+				savedDifficulty, difficultyText, difficultyIndex, LastGroupSize, difficultyModifier = DBM:GetCurrentInstanceDifficulty()
 			end
 			local mod
 			for i, v in ipairs(inCombat) do
