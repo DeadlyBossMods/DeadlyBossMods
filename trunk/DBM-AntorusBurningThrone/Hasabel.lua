@@ -210,7 +210,7 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 243983 then
 		if self:IsEasy() then
-			timerCollapsingWorldCD:Start(37.7)--37-43, mostly 42 but have to use 37
+			timerCollapsingWorldCD:Start(37.7)--37, but offen delayed by ICD
 			countdownCollapsingWorld:Start(37.8)
 		elseif self:IsMythic() then
 			timerCollapsingWorldCD:Start(27.1)
