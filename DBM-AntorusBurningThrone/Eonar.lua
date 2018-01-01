@@ -22,7 +22,6 @@ mod:RegisterEventsInCombat(
 --	"SPELL_MISSED 248329",
 	"UNIT_DIED",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
---	"RAID_BOSS_WHISPER",
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5",
 	"UNIT_SPELLCAST_CHANNEL_STOP boss1 boss2 boss3 boss4 boss5",
 	"UNIT_SPELLCAST_STOP boss1 boss2 boss3 boss4 boss5"
@@ -35,6 +34,14 @@ mod:RegisterEventsInCombat(
  or (ability.id = 248332) and type = "applydebuff"
  or (ability.id = 250073) and type = "applybuff"
  or target.name = "Volant Kerapteron"
+ or type = "death" and target.id = 123760
+ 
+4 Life Force LFR Logs, and slower add spawn rates:
+https://www.warcraftlogs.com/reports/bWwmdJ8gCkcP1BYF#fight=1&type=summary&view=events&pins=2%24Off%24%23244F4B%24expression%24(ability.id%20%3D%20249121%20or%20ability.id%20%3D%20250048)%20and%20type%20%3D%20%22begincast%22%20%20or%20(ability.id%20%3D%20246753%20or%20ability.id%20%3D%20254769)%20and%20type%20%3D%20%22cast%22%20%20or%20(ability.id%20%3D%20248332)%20and%20type%20%3D%20%22applydebuff%22%20%20or%20(ability.id%20%3D%20250073)%20and%20type%20%3D%20%22applybuff%22%20%20or%20target.name%20%3D%20%22Volant%20Kerapteron%22
+https://www.warcraftlogs.com/reports/RcjbYJQHWNCt41Fm#fight=24&type=summary&pins=2%24Off%24%23244F4B%24expression%24(ability.id%20%3D%20249121%20or%20ability.id%20%3D%20250048)%20and%20type%20%3D%20%22begincast%22%20%20or%20(ability.id%20%3D%20246753%20or%20ability.id%20%3D%20254769)%20and%20type%20%3D%20%22cast%22%20%20or%20(ability.id%20%3D%20248332)%20and%20type%20%3D%20%22applydebuff%22%20%20or%20(ability.id%20%3D%20250073)%20and%20type%20%3D%20%22applybuff%22%20%20or%20target.name%20%3D%20%22Volant%20Kerapteron%22&view=events
+3 Life Force LFR Logs, with faster add spawn rates:
+https://www.warcraftlogs.com/reports/9xkDgRXYLtzb1Bnq#fight=2&type=summary&view=events&pins=2%24Off%24%23244F4B%24expression%24(ability.id%20%3D%20249121%20or%20ability.id%20%3D%20250048)%20and%20type%20%3D%20%22begincast%22%20%20or%20(ability.id%20%3D%20246753%20or%20ability.id%20%3D%20254769)%20and%20type%20%3D%20%22cast%22%20%20or%20(ability.id%20%3D%20248332)%20and%20type%20%3D%20%22applydebuff%22%20%20or%20(ability.id%20%3D%20250073)%20and%20type%20%3D%20%22applybuff%22%20%20or%20target.name%20%3D%20%22Volant%20Kerapteron%22
+https://www.warcraftlogs.com/reports/V1dPgAZtFLwq2HDz#fight=8&type=summary&view=events&pins=2%24Off%24%23244F4B%24expression%24(ability.id%20%3D%20249121%20or%20ability.id%20%3D%20250048)%20and%20type%20%3D%20%22begincast%22%20%20or%20(ability.id%20%3D%20246753%20or%20ability.id%20%3D%20254769)%20and%20type%20%3D%20%22cast%22%20%20or%20(ability.id%20%3D%20248332)%20and%20type%20%3D%20%22applydebuff%22%20%20or%20(ability.id%20%3D%20250073)%20and%20type%20%3D%20%22applybuff%22%20%20or%20target.name%20%3D%20%22Volant%20Kerapteron%22
 --]]
 --The Paraxis
 local warnRainofFel						= mod:NewTargetCountAnnounce(248332, 2)
@@ -109,7 +116,8 @@ local mythicRainOfFelTimers = {6, 23.1, 24.1, 49.2, 25, 49.3, 15, 46.2, 24, 49.2
 --local mythicSpearofDoomTimers = {}
 local heroicSpearofDoomTimers = {35, 59.2, 64.3, 40, 85.1, 34.1, 65.2}--Live, Nov 29
 local finalDoomTimers = {59.3, 122.7, 99.5, 104.6, 99.6}--Live, Dec 5
-local lfrDestructors = {21.5, 51.9, 50.3, 64.3, 107.2, 58.2, 44.1, 46.2, 44.2}
+local lfrDestructors = {21.5, 51.9, 50.3, 64.3, 107.2, 58.2, 44.1, 46.2, 44.2}--4 Life Force LFR Version
+local lfrDestructors2 = {21.2, 43.8, 39.0, 51.1, 37.0, 53.0, 43.6, 45.2, 43.2}--3 Life force LFR version
 local normalDestructors = {17, 46.2, 32, 52.4, 93.7, 40.9, 50.2, 55.4, 49.2}--Live, Dec 01. Old 17, 39.4, 28, 44.2, 92.4, 41.3, 50, 53.4, 48.1
 local heroicDestructors = {15.7, 35.3, 40.6, 104.6, 134.7, 99.6}
 local mythicDestructors = {27, 18, 87.4, 288.4, 20, 79}--Changed Dec 12th
@@ -168,6 +176,12 @@ do
 			addLine(L.EonarPower, currentPower.."%")
 		end
 		addLine(lifeForceName, mod.vb.lifeForceCast.."/"..mod.vb.lifeRequired)
+		if mod:IsLFR() then
+			local nextLocation = addCountToLocationLFR["Dest"][mod.vb.destructorCast+1]
+			if nextLocation then
+				addLine(L.NextLoc, nextLocation)
+			end
+		end
 		if mod.vb.obfuscators > 0 then
 			addLine(L.Obfuscators, mod.vb.obfuscators)
 		end
@@ -185,7 +199,7 @@ end
 local function checkForDeadDestructor(self, forceStart)
 	self:Unschedule(checkForDeadDestructor)
 	self.vb.destructorCast = self.vb.destructorCast + 1
-	local timer = self:IsMythic() and mythicDestructors[self.vb.destructorCast+1] or self:IsHeroic() and heroicDestructors[self.vb.destructorCast+1] or self:IsNormal() and normalDestructors[self.vb.destructorCast+1] or self:IsLFR() and lfrDestructors[self.vb.destructorCast+1]
+	local timer = self:IsMythic() and mythicDestructors[self.vb.destructorCast+1] or self:IsHeroic() and heroicDestructors[self.vb.destructorCast+1] or self:IsNormal() and normalDestructors[self.vb.destructorCast+1] or self:IsLFR() and lfrDestructors2[self.vb.destructorCast+1]
 	if forceStart then
 		DBM:Debug("checkForDeadDestructor ran with forceStart arg for "..self.vb.destructorCast, 2)
 		local text = self:IsHeroic() and addCountToLocationHeroic["Dest"][self.vb.destructorCast+1] or self:IsNormal() and addCountToLocationNormal["Dest"][self.vb.destructorCast+1] or self:IsMythic() and addCountToLocationMythic["Dest"][self.vb.destructorCast+1] or self:IsLFR() and addCountToLocationLFR["Dest"][self.vb.destructorCast+1] or self.vb.destructorCast+1
@@ -256,7 +270,7 @@ function mod:OnCombatStart(delay)
 		end
 	else
 		self.vb.lifeRequired = 3
-		timerDestructorCD:Start(11, DBM_CORE_MIDDLE)
+		timerDestructorCD:Start(12, DBM_CORE_MIDDLE)
 	end
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Show(7, "function", updateInfoFrame, false, false)
@@ -330,11 +344,15 @@ function mod:SPELL_CAST_SUCCESS(args)
 			warnWarpIn:Show(L.Destructors)
 			warnWarpIn:Play("bigmob")
 			self.vb.destructorCast = self.vb.destructorCast + 1
-			local timer = self:IsMythic() and mythicDestructors[self.vb.destructorCast+1] or self:IsHeroic() and heroicDestructors[self.vb.destructorCast+1] or self:IsNormal() and normalDestructors[self.vb.destructorCast+1] or self:IsLFR() and lfrDestructors[self.vb.destructorCast+1]
+			local timer = self:IsMythic() and mythicDestructors[self.vb.destructorCast+1] or self:IsHeroic() and heroicDestructors[self.vb.destructorCast+1] or self:IsNormal() and normalDestructors[self.vb.destructorCast+1] or self:IsLFR() and lfrDestructors2[self.vb.destructorCast+1]
 			if timer then
 				local text = self:IsHeroic() and addCountToLocationHeroic["Dest"][self.vb.destructorCast+1] or self:IsNormal() and addCountToLocationNormal["Dest"][self.vb.destructorCast+1] or self:IsMythic() and addCountToLocationMythic["Dest"][self.vb.destructorCast+1] or self:IsLFR() and addCountToLocationLFR["Dest"][self.vb.destructorCast+1] or self.vb.destructorCast+1
+				if not self:IsLFR() then--This work around doesn't work in LFR because if dps is slow LFR massively slows down spawns to help out
+					self:Schedule(timer+10, checkForDeadDestructor, self)
+				else
+					timerDestructorCD:Stop()--Because of way LFR works, we need to do timer cleanup if they come earlier than expected
+				end
 				timerDestructorCD:Start(timer-10, text)--High alert fires about 9 seconds after spawn so using it as a trigger has a -10 adjustment
-				self:Schedule(timer+10, checkForDeadDestructor, self)
 			end
 		end
 	end
