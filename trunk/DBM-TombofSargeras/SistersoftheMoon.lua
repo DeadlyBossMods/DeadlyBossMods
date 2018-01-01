@@ -32,12 +32,12 @@ mod:RegisterEventsInCombat(
 --Huntress Kasparian
 --local warnTwilightGlaive			= mod:NewTargetAnnounce(237561, 3)
 --Captain Yathae Moonstrike
-local warnPhase2					= mod:NewPhaseAnnounce(2, 2)
+local warnPhase2					= mod:NewPhaseAnnounce(2, 2, nil, nil, nil, nil, nil, 2)
 --local warnIncorporealShot			= mod:NewTargetAnnounce(236305, 3)
 local warnRapidShot					= mod:NewTargetAnnounce(236596, 3)
 local warnTwilightVolley			= mod:NewTargetAnnounce(236442, 2)
 --Priestess Lunaspyre
-local warnPhase3					= mod:NewPhaseAnnounce(3, 2)
+local warnPhase3					= mod:NewPhaseAnnounce(3, 2, nil, nil, nil, nil, nil, 2)
 local warnLunarBeacon				= mod:NewTargetAnnounce(236712, 3)
 local warnLunarFire					= mod:NewStackAnnounce(239264, 2, nil, "Tank")
 local warnMoonBurn					= mod:NewTargetAnnounce(236519, 3)
@@ -92,9 +92,6 @@ local berserkTimer					= mod:NewBerserkTimer(660)
 
 --ALL
 local countdownSpecials				= mod:NewCountdown(54, 233264)
-
---All
-local voicePhaseChange				= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
 
 mod:AddSetIconOption("SetIconOnIncorpShot", 236305, true)
 mod:AddInfoFrameOption(233263, true)
@@ -396,7 +393,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		self.vb.phase = 2
 		local elapsedMoon, totalMoon = timerIncorporealShotCD:GetTime()--Grab current special from phase 1 special timer first
 		warnPhase2:Show()
-		voicePhaseChange:Play("ptwo")
+		warnPhase2:Play("ptwo")
 		timerMoonGlaiveCD:Stop()
 		timerTwilightVolleyCD:Stop()
 		--timerTwilightGlaiveCD:Stop()
@@ -416,7 +413,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		self.vb.phase = 3
 		local elapsedMoon, totalMoon = timerEmbraceofEclipseCD:GetTime()--Grab current special from phase 2 special timer first
 		warnPhase3:Show()
-		voicePhaseChange:Play("pthree")
+		warnPhase3:Play("pthree")
 		timerRapidShotCD:Stop()
 		timerTwilightVolleyCD:Stop()
 		timerEmbraceofEclipseCD:Stop()--Stop phase 2 Special timer

@@ -24,7 +24,7 @@ mod:RegisterEventsInCombat(
 
 --Cenarius
 local warnNightmareBrambles			= mod:NewTargetAnnounce(210290, 2)
-local warnPhase2					= mod:NewPhaseAnnounce(2, 2)
+local warnPhase2					= mod:NewPhaseAnnounce(2, 2, nil, nil, nil, nil, nil, 2)
 ----Forces of Nightmare
 local warnDesiccatingStomp			= mod:NewCastAnnounce(211073, 3, nil, nil, true, 2)--Basic warning for now, will change to special if needed
 local warnRottenBreath				= mod:NewTargetAnnounce(211192, 2)
@@ -75,9 +75,6 @@ local countdownNightmareBrambles	= mod:NewCountdown("AltTwo30", 210290, "Ranged"
 local countdownNightmareBlast		= mod:NewCountdown("Alt32", 213162, "Tank")
 local countdownSpearOfNightmares	= mod:NewCountdown("Alt18", 214529, "Melee", 2)
 ----Forces of Nightmare
-
---Cenarius
-local voicePhaseChange				= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
 
 mod:AddRangeFrameOption(8, 211471)
 mod:AddSetIconOption("SetIconOnWisps", "ej13348", false, true)
@@ -302,7 +299,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	elseif spellId == 217368 then--Overwhelming Nightmare (Phase 2)
 		self.vb.phase = 2
 		warnPhase2:Show()
-		voicePhaseChange:Play("ptwo")
+		warnPhase2:Play("ptwo")
 		timerForcesOfNightmareCD:Stop()
 		timerNightmareBlastCD:Stop()
 		countdownNightmareBlast:Cancel()

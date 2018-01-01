@@ -28,10 +28,10 @@ mod:RegisterEventsInCombat(
  or ability.id = 26662
 --]]
 --Torments of the Shivarra
-local warnTormentofFlames				= mod:NewSpellAnnounce(243967, 2)
-local warnTormentofFrost				= mod:NewSpellAnnounce(243976, 2)
-local warnTormentofFel					= mod:NewSpellAnnounce(243979, 2)
-local warnTormentofShadows				= mod:NewSpellAnnounce(243974, 2)
+local warnTormentofFlames				= mod:NewSpellAnnounce(243967, 2, nil, nil, nil, nil, nil, 2)
+local warnTormentofFrost				= mod:NewSpellAnnounce(243976, 2, nil, nil, nil, nil, nil, 2)
+local warnTormentofFel					= mod:NewSpellAnnounce(243979, 2, nil, nil, nil, nil, nil, 2)
+local warnTormentofShadows				= mod:NewSpellAnnounce(243974, 2, nil, nil, nil, nil, nil, 2)
 --The Fallen Nathrezim
 local warnShadowStrike					= mod:NewSpellAnnounce(243960, 2, nil, "Tank", 2)--Doesn't need special warning because misery should trigger special warning at same time
 local warnMarkedPrey					= mod:NewTargetAnnounce(244042, 3)
@@ -70,9 +70,6 @@ local berserkTimer						= mod:NewBerserkTimer(390)
 local countdownShadowStrike				= mod:NewCountdown("Alt9", 243960, "Tank", nil, 3)
 local countdownMarkedPrey				= mod:NewCountdown(30, 244042)
 local countdownNecroticEmbrace			= mod:NewCountdown("AltTwo30", 244093)
-
---General
-local voicePhaseChange					= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
 
 mod:AddSetIconOption("SetIconOnMarkedPrey", 244042, true)
 mod:AddSetIconOption("SetIconEmbrace", 244094, true)
@@ -191,17 +188,17 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 243977 and self.vb.currentTorment ~= 2 then--Frost
 		self.vb.currentTorment = 2
 		warnTormentofFrost:Show()
-		voicePhaseChange:Play("phasechange")
+		warnTormentofFrost:Play("phasechange")
 		timerTormentofFelCD:Start(99)
 	elseif spellId == 243980 and self.vb.currentTorment ~= 3 then--Fel
 		self.vb.currentTorment = 3
 		warnTormentofFel:Show()
-		voicePhaseChange:Play("phasechange")
+		warnTormentofFel:Play("phasechange")
 		timerTormentofShadowsCD:Start(90)
 	elseif spellId == 243973 and self.vb.currentTorment ~= 4 then--Shadow
 		self.vb.currentTorment = 4
 		warnTormentofShadows:Show()
-		voicePhaseChange:Play("phasechange")
+		warnTormentofShadows:Play("phasechange")
 	end
 end
 

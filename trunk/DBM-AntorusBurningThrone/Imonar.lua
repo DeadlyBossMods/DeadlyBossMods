@@ -30,7 +30,7 @@ mod:RegisterEventsInCombat(
  or (ability.id = 247367 or ability.id = 250255 or ability.id = 247552 or ability.id = 247687 or ability.id = 254244) and type = "cast"
  or (ability.id = 248233 or ability.id = 250135) and (type = "applybuff" or type = "removebuff")
 --]]
-local warnPhase							= mod:NewPhaseChangeAnnounce()
+local warnPhase							= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
 --Stage One: Attack Force
 local warnShocklance					= mod:NewStackAnnounce(247367, 2, nil, "Tank")
 local warnSleepCanister					= mod:NewTargetAnnounce(247552, 2)
@@ -78,9 +78,6 @@ local berserkTimer						= mod:NewBerserkTimer(420)
 local countdownPulseGrenade				= mod:NewCountdown(17, 247376)
 --Stage Two: Contract to Kill
 local countdownChargedBlasts			= mod:NewCountdown("AltTwo18", 247716)
-
---General
-local voicePhaseChange					= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
 
 mod:AddSetIconOption("SetIconOnSleepCanister", 247552, true)
 mod:AddSetIconOption("SetIconOnEmpPulse2", 250006, false)
@@ -336,11 +333,13 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.shrapnalCast = 0
 		warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(self.vb.phase))
 		if self.vb.phase == 2 then
+			warnPhase:Play("ptwo")
 			timerSeverCD:Start(6.6)--6.6-8.2
 			timerChargedBlastsCD:Start(8.4)
 			countdownChargedBlasts:Start(8.4)
 			timerShrapnalBlastCD:Start(12, 1)
 		elseif self.vb.phase == 3 then
+			warnPhase:Play("pthree")
 			if self:IsMythic() then
 				timerShocklanceCD:Start(4)--NOT empowered
 				timerSleepCanisterCD:Start(7.9)
@@ -354,11 +353,13 @@ function mod:SPELL_AURA_REMOVED(args)
 				timerShrapnalBlastCD:Start(15.4, 1)--Empowered
 			end
 		elseif self.vb.phase == 4 then--Mythic Only
+			warnPhase:Play("pfour")
 			timerSeverCD:Start(7.5)
 			timerChargedBlastsCD:Start(9)
 			timerSleepCanisterCD:Start(12.5)
 			timerShrapnalBlastCD:Start(12.7, 1)--Empowered
 		elseif self.vb.phase == 5 then--Mythic Only (Identical to non mythic 3?)
+			warnPhase:Play("pfive")
 			timerShocklanceCD:Start(5)--Empowered
 			timerPulseGrenadeCD:Start(7)--Empowered
 			countdownPulseGrenade:Start(7)
@@ -438,6 +439,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		countdownPulseGrenade:Cancel()
 		timerSleepCanisterCD:Stop()
 		timerShocklanceCD:Stop()
-		voicePhaseChange:Play("phasechange")
+		warnPhase:Play("phasechange")
 	end
 end

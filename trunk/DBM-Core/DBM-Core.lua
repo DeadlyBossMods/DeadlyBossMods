@@ -6086,9 +6086,23 @@ function DBM:EJ_GetSectionInfo(sectionID)
 end
 
 do
-	local spellRequestFrame = CreateFrame("Frame", "DBMSpellRequestFrame")
-	spellRequestFrame:Hide()
+	local DBMSpellRequestFrame = CreateFrame("Frame", "DBMSpellRequestFrame")
+	DBMSpellRequestFrame:Hide()
+	
 	local requestedSpellIDs = {}
+	local function onEvent(self, event, ...)
+		if event == "SPELL_NAME_UPDATE" then
+			local spellId, spellName = ...
+			if requestedSpellIDs[spellId] then--Should be a true bool if requested
+				requestedSpellIDs[spellId] = spellName
+			end
+			if #requestedSpellIDs == 0 then
+				DBMSpellRequestFrame:SetScript("OnUpdate", nil)
+				DBMSpellRequestFrame:UnregisterEvent("SPELL_NAME_UPDATE")
+				DBMSpellRequestFrame:Hide()
+			end
+		end
+	end
 	--[[local function delayedSpellRequest(self, spellId)
 		if type(requestedSpellIDs[spellId]) == "string" then
 			return requestedSpellIDs[spellId]
@@ -6096,17 +6110,6 @@ do
 			self:Schedule(0.1, delayedSpellRequest, self, spellId)
 		end
 	end--]]
-	
-	function DBMSpellRequestFrame:SPELL_NAME_UPDATE(spellId, spellName)
-		if requestedSpellIDs[spellId] then--Should be a true bool if requested
-			requestedSpellIDs[spellId] = spellName
-		end
-		if #requestedSpellIDs == 0 then
-			self:SetScript("OnUpdate", nil)
-			self:UnregisterEvent("SPELL_NAME_UPDATE")
-			self:Hide()
-		end
-	end
 
 	--Handle new spell name requesting in 7.3.5
 	function DBM:GetSpellInfo(spellId)
@@ -6117,7 +6120,7 @@ do
 			requestedSpellIDs[spellId] = true
 			if not DBMSpellRequestFrame:IsShown() then
 				DBMSpellRequestFrame:Show()
-				DBMSpellRequestFrame:SetScript("OnUpdate", onUpdate)
+				DBMSpellRequestFrame:SetScript("OnEvent", onEvent)
 				DBMSpellRequestFrame:RegisterEvent("SPELL_NAME_UPDATE")
 			end
 			--Useless until find a way to loop this on a timer until below is true
@@ -8542,8 +8545,11 @@ do
 				end
 				self.mod:AddMsg(text, nil)
 			end
-			if self.sound then
-				DBM:PlaySoundFile(DBM.Options.RaidWarningSound)
+			if self.sound > 0 then
+				if self.sound > 1 and DBM.Options.ChosenVoicePack ~= "None" and self.sound <= SWFilterDisabed then return end
+				if not self.option or self.mod.Options[self.option.."SWSound"] ~= "None" then
+					DBM:PlaySoundFile(DBM.Options.RaidWarningSound)
+				end
 			end
 			--Message: Full message text
 			--Icon: Texture path for icon
@@ -8585,12 +8591,39 @@ do
 	function announcePrototype:Cancel(...)
 		return unschedule(self.Show, self.mod, self, ...)
 	end
+	
+	function announcePrototype:Play(name, customPath)
+		local voice = DBM.Options.ChosenVoicePack
+		if voice == "None" then return end
+		local always = DBM.Options.AlwaysPlayVoice
+		if DBM.Options.DontShowTargetAnnouncements and (self.announceType == "target" or self.announceType == "targetcount") and not self.noFilter and not always then return end--don't show announces that are generic target announces
+		if not DBM.Options.DontShowBossAnnounces and (not self.option or self.mod.Options[self.option]) or always then
+			--Filter tank specific voice alerts for non tanks if tank filter enabled
+			--But still allow AlwaysPlayVoice to play as well.
+			if (name == "changemt" or name == "tauntboss") and DBM.Options.FilterTankSpec and not self.mod:IsTank() and not always then return end
+			local path = customPath or "Interface\\AddOns\\DBM-VP"..voice.."\\"..name..".ogg"
+			DBM:PlaySoundFile(path)
+		end
+	end
+	
+	function announcePrototype:ScheduleVoice(t, ...)
+		if DBM.Options.ChosenVoicePack == "None" then return end
+		return schedule(t, self.Play, self.mod, self, ...)
+	end
+
+	function announcePrototype:CancelVoice(...)
+		if DBM.Options.ChosenVoicePack == "None" then return end
+		return unschedule(self.Play, self.mod, self, ...)
+	end
 
 	-- old constructor (no auto-localize)
-	function bossModPrototype:NewAnnounce(text, color, icon, optionDefault, optionName, noSound)
+	function bossModPrototype:NewAnnounce(text, color, icon, optionDefault, optionName, soundOption)
 		if not text then
 			error("NewAnnounce: you must provide announce text", 2)
 			return
+		end
+		if soundOption and type(soundOption) == "bool" then
+			soundOption = 0--No Sound
 		end
 		local obj = setmetatable(
 			{
@@ -8598,7 +8631,7 @@ do
 				combinedtext = {},
 				combinedcount = 0,
 				color = DBM.Options.WarningColors[color or 1] or DBM.Options.WarningColors[1],
-				sound = not noSound,
+				sound = soundOption or 1,
 				mod = self,
 				icon = (type(icon) == "string" and icon:match("ej%d+") and select(4, DBM:EJ_GetSectionInfo(string.sub(icon, 3))) ~= "" and select(4, DBM:EJ_GetSectionInfo(string.sub(icon, 3)))) or (type(icon) == "number" and GetSpellTexture(icon)) or icon or "Interface\\Icons\\Spell_Nature_WispSplode",
 			},
@@ -8616,7 +8649,7 @@ do
 	end
 
 	-- new constructor (auto-localized warnings and options, yay!)
-	local function newAnnounce(self, announceType, spellId, color, icon, optionDefault, optionName, castTime, preWarnTime, noSound, noFilter)
+	local function newAnnounce(self, announceType, spellId, color, icon, optionDefault, optionName, castTime, preWarnTime, soundOption, noFilter)
 		if not spellId then
 			error("newAnnounce: you must provide spellId", 2)
 			return
@@ -8625,6 +8658,9 @@ do
 		if type(optionName) == "number" then
 			optionVersion = optionName
 			optionName = nil
+		end
+		if soundOption and type(soundOption) == "bool" then
+			soundOption = 0--No Sound
 		end
 		if type(spellId) == "string" and spellId:match("OptionVersion") then
 			print("newAnnounce for "..color.." is using OptionVersion hack. this is depricated")
@@ -8666,7 +8702,7 @@ do
 				color = DBM.Options.WarningColors[color or 1] or DBM.Options.WarningColors[1],
 				mod = self,
 				icon = (type(icon) == "string" and icon:match("ej%d+") and select(4, DBM:EJ_GetSectionInfo(string.sub(icon, 3))) ~= "" and select(4, DBM:EJ_GetSectionInfo(string.sub(icon, 3)))) or (type(icon) == "number" and GetSpellTexture(icon)) or icon or "Interface\\Icons\\Spell_Nature_WispSplode",
-				sound = not noSound,
+				sound = soundOption or 1,
 				type = announceType,
 				spellId = unparsedId,
 				noFilter = noFilter,
@@ -8854,12 +8890,12 @@ do
 	--If no file at path, it should silenty fail. However, I want to try to only add NewVoice to mods for files that already exist.
 	function soundPrototype2:Play(name, customPath)
 		local voice = DBM.Options.ChosenVoicePack
-		local always = DBM.Options.AlwaysPlayVoice
 		if voice == "None" then return end
-		--Filter tank specific voice alerts for non tanks if tank filter enabled
-		--But still allow AlwaysPlayVoice to play as well.
-		if (name == "changemt" or name == "tauntboss") and DBM.Options.FilterTankSpec and not self.mod:IsTank() and not always then return end
+		local always = DBM.Options.AlwaysPlayVoice
 		if not self.option or self.mod.Options[self.option] or always then
+			--Filter tank specific voice alerts for non tanks if tank filter enabled
+			--But still allow AlwaysPlayVoice to play as well.
+			if (name == "changemt" or name == "tauntboss") and DBM.Options.FilterTankSpec and not self.mod:IsTank() and not always then return end
 			local path = customPath or "Interface\\AddOns\\DBM-VP"..voice.."\\"..name..".ogg"
 			DBM:PlaySoundFile(path)
 		end
@@ -9483,10 +9519,10 @@ do
 	end
 
 	function specialWarningPrototype:Play(name, customPath)
+		local always = DBM.Options.AlwaysPlayVoice
 		local voice = DBM.Options.ChosenVoicePack
 		if voice == "None" then return end
-		local always = DBM.Options.AlwaysPlayVoice
-		if not DBM.Options.DontShowSpecialWarnings and (not self.option or self.mod.Options[self.option]) and not moving and frame then
+		if not DBM.Options.DontShowSpecialWarnings and (not self.option or self.mod.Options[self.option]) or always then
 			--Filter tank specific voice alerts for non tanks if tank filter enabled
 			--But still allow AlwaysPlayVoice to play as well.
 			if (name == "changemt" or name == "tauntboss") and DBM.Options.FilterTankSpec and not self.mod:IsTank() and not always then return end

@@ -35,12 +35,12 @@ local warnNightmareBlades				= mod:NewTargetAnnounce(206656, 2)
 local warnDarkeningSoul					= mod:NewStackAnnounce(206651, 3, nil, "Healer|Tank")
 local warnTormentingFixation			= mod:NewTargetAnnounce(205771, 4)
 --Stage Two: From the Shadows
-local warnPhase2						= mod:NewPhaseAnnounce(2, 2)
+local warnPhase2						= mod:NewPhaseAnnounce(2, 2, nil, nil, nil, nil, nil, 2)
 local warnBlackeningSoul				= mod:NewStackAnnounce(209158, 3, nil, "Healer|Tank")
 local warnNightmareInfusion				= mod:NewSpellAnnounce(209443, 4, nil, "Tank")
 local warnBondsOfTerror					= mod:NewTargetAnnounce(209034, 2)
 --Stage Three: Darkness and stuff
-local warnPhase3						= mod:NewPhaseAnnounce(3, 2)
+local warnPhase3						= mod:NewPhaseAnnounce(3, 2, nil, nil, nil, nil, nil, 2)
 local warnNightmareTentacles			= mod:NewSpellAnnounce("ej12977", 3, 93708)
 
 local specWarnDescentIntoMadness		= mod:NewSpecialWarningYou(208431)
@@ -89,8 +89,6 @@ local countdownCorruptionHorror			= mod:NewCountdown(82.5, 210264)
 local countdownCallOfNightmares			= mod:NewCountdown(40, 205588)
 local countdownNightmareInfusion		= mod:NewCountdown("Alt61", 209443, "Tank")
 local countdownMeteor					= mod:NewCountdown("AltTwo28", 206308, "-Tank")
-
-local voicePhaseChange					= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
 
 mod:AddInfoFrameOption("ej12970")
 mod:AddBoolOption("InfoFrameFilterDream", true)
@@ -469,7 +467,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	elseif spellId == 226193 then--Xavius Energize Phase 2
 		self.vb.phase = 2
 		warnPhase2:Show()
-		voicePhaseChange:Play("ptwo")
+		warnPhase2:Play("ptwo")
 		timerNightmareBladesCD:Stop()
 		timerLurkingEruptionCD:Stop()
 		timerCorruptionHorrorCD:Stop()
@@ -489,7 +487,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	elseif spellId == 226185 then--Xavius Energize Phase 3
 		self.vb.phase = 3
 		warnPhase3:Show()
-		voicePhaseChange:Play("pthree")
+		warnPhase3:Play("pthree")
 		timerBlackeningSoulCD:Stop()
 		timerBondsOfTerrorCD:Stop()
 		timerCallOfNightmaresCD:Stop()

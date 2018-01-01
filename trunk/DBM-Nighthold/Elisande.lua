@@ -37,11 +37,11 @@ local warnCompressedTime			= mod:NewSpellAnnounce(209590, 3)
 --Time Layer 1
 local warnAblation					= mod:NewStackAnnounce(209615, 2, nil, "Tank")
 --Time Layer 2
-local warnPhase2					= mod:NewPhaseAnnounce(2, 2)
+local warnPhase2					= mod:NewPhaseAnnounce(2, 2, nil, nil, nil, nil, nil, 2)
 local warnDelphuricBeam				= mod:NewTargetAnnounce(214278, 3)
 local warnAblatingExplosion			= mod:NewTargetAnnounce(209973, 3)
 --Time Layer 3
-local warnPhase3					= mod:NewPhaseAnnounce(3, 2)
+local warnPhase3					= mod:NewPhaseAnnounce(3, 2, nil, nil, nil, nil, nil, 2)
 local warnPermaliativeTorment		= mod:NewTargetAnnounce(210387, 3, nil, "Healer")
 local warnConflexiveBurst			= mod:NewTargetAnnounce(209598, 4)
 
@@ -106,9 +106,6 @@ local countdownSpanningSingularity	= mod:NewCountdown(30, 209168, "Ranged")--Myt
 local countdownOrbs					= mod:NewCountdown("Alt6", 210022, "Ranged")
 --Time Layer 3
 local countdownConflexiveBurst		= mod:NewCountdown("AltTwo6", 209597)
-
---Base
-local voicePhaseChange				= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
 
 mod:AddRangeFrameOption(8, 209973)
 mod:AddInfoFrameOption(209598)
@@ -455,7 +452,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		end
 		if self.vb.phase == 2 then
 			warnPhase2:Show()
-			voicePhaseChange:Play("ptwo")
+			warnPhase2:Play("ptwo")
 			timerAblatingExplosionCD:Start(22)--Verfied unchanged Dec 13 Heroic
 			if self:IsMythic() then--TODO: Fine tune these as they may be hit or miss by some seconds Hard to measure precise phase changes from WCL
 				timerEpochericOrbCD:Start(23.8, 1)
@@ -481,7 +478,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 			end
 		elseif self.vb.phase == 3 then
 			warnPhase3:Show()
-			voicePhaseChange:Play("pthree")
+			warnPhase3:Play("pthree")
 			self.vb.burstCastCount = 0
 			timerAblatingExplosionCD:Stop()
 			yellAblatingExplosion:Cancel()
