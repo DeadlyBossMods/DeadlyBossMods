@@ -28,7 +28,7 @@ mod:RegisterEventsInCombat(
  or ability.id = 244894 and (type = "applybuff" or type = "removebuff")
  or (ability.id = 245994 or ability.id = 254452) and type = "applydebuff"
 --]]
-local warnPhase							= mod:NewPhaseChangeAnnounce()
+local warnPhase							= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
 --Stage One: Wrath of Aggramar
 local warnTaeshalachReach				= mod:NewStackAnnounce(245990, 2, nil, "Tank")
 local warnScorchingBlaze				= mod:NewTargetAnnounce(245994, 2)
@@ -71,9 +71,6 @@ local berserkTimer						= mod:NewBerserkTimer(600)
 --Stages One: Wrath of Aggramar
 local countdownTaeshalachTech			= mod:NewCountdown(61, 244688)
 local countdownWakeofFlame				= mod:NewCountdown("AltTwo24", 244693, "-Tank")
-
---General
-local voicePhaseChange					= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
 
 mod:AddSetIconOption("SetIconOnBlaze2", 254452, false)--Both off by default, both conflit with one another
 mod:AddSetIconOption("SetIconOnAdds", 244903, false, true)--Both off by default, both conflit with one another
@@ -397,7 +394,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		self.vb.blazeIcon = self.vb.blazeIcon + 1
 	elseif spellId == 244894 then--Corrupt Aegis
-		voicePhaseChange:Play("phasechange")
+		warnPhase:Play("phasechange")
 		self.vb.wakeOfFlameCount = 0
 		self.vb.techActive = false
 		timerScorchingBlazeCD:Stop()
@@ -441,10 +438,10 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 		warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(self.vb.phase))
 		if self.vb.phase == 2 then
-			voicePhaseChange:Play("ptwo")
+			warnPhase:Play("ptwo")
 			timerFlareCD:Start(10)
 		elseif self.vb.phase == 3 then
-			voicePhaseChange:Play("pthree")
+			warnPhase:Play("pthree")
 			timerFlareCD:Start(10)
 		end
 		if self.Options.RangeFrame and not self:IsTank() then

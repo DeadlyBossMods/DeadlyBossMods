@@ -16,7 +16,7 @@ mod:RegisterEventsInCombat(
 )
 
 --Honestly I think all his stuff is health based. timers are useless
-local warnBreath					= mod:NewSpellAnnounce(193235, 3)
+local warnBreath					= mod:NewSpellAnnounce(193235, 3, nil, nil, nil, nil, nil, 2)
 local warnDancingBlade				= mod:NewSpellAnnounce(193235, 3)
 local warnSweep						= mod:NewSpellAnnounce(193092, 2, nil, "Tank")
 
@@ -26,8 +26,6 @@ local yellDancingBlade				= mod:NewYell(193235)
 
 --local timerDancingBladeCD			= mod:NewCDTimer(10, 193235, nil, nil, nil, 3)--10-15
 --local timerHornCD					= mod:NewCDTimer(31, 191284, nil, nil, nil, 3)--31-36, Very confident it's health based.
-
-local voiceBreath					= mod:NewVoice(188404)--watchstep? or breathsoon?
 
 function mod:OnCombatStart(delay)
 --	timerHornCD:Start(5.5-delay)
@@ -46,7 +44,7 @@ function mod:SPELL_CAST_START(args)
 		warnDancingBlade:Show()
 	elseif spellId == 188404 and self:AntiSpam(5, 2) then
 		warnBreath:Show()
-		voiceBreath:Play("watchstep")
+		warnBreath:Play("watchstep")
 	end
 end
 

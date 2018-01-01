@@ -33,9 +33,9 @@ ability.id = 230403 and type = "cast" or
 ability.id = 230951 and type = "removebuff" or ability.id = 230414
 --]]
 --Phases/General
-local warnFrostPhase				= mod:NewSpellAnnounce(213864, 2)
-local warnFirePhase					= mod:NewSpellAnnounce(213867, 2)
-local warnArcanePhase				= mod:NewSpellAnnounce(213869, 2)
+local warnFrostPhase				= mod:NewSpellAnnounce(213864, 2, nil, nil, nil, nil, nil, 2)
+local warnFirePhase					= mod:NewSpellAnnounce(213867, 2, nil, nil, nil, nil, nil, 2)
+local warnArcanePhase				= mod:NewSpellAnnounce(213869, 2, nil, nil, nil, nil, nil, 2)
 local warnAnnihilate				= mod:NewStackAnnounce(212492, 2, nil, "Tank")
 --Debuffs
 local warnMarkOfFrostChosen			= mod:NewTargetAnnounce(212531, 3)
@@ -111,8 +111,6 @@ local countdownMarkOfFrost			= mod:NewCountdown("Alt30", 212531, nil, nil, 3)
 local countdownSearingBrand			= mod:NewCountdown("Alt30", 213148, nil, nil, 3)
 local countdownAnnihilate			= mod:NewCountdown("Alt30", 212492, "Tank")
 local countdownArmageddon			= mod:NewCountdown("AltTwo33", 213568)
-
-local voicePhaseChange				= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
 
 mod:AddRangeFrameOption("8")
 mod:AddSetIconOption("SetIconOnFrozenTempest", 213083, true, true)
@@ -279,7 +277,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 213864 or spellId == 216389 then--Icy enchantment
 		self.vb.lastPhase = 1
 		warnFrostPhase:Show()
-		voicePhaseChange:Play("phasechange")
+		warnFrostPhase:Play("phasechange")
 		if spellId == 216389 then--First icy
 			timerMarkOfFrostCD:Start(18)
 			if self:IsMythic() then
@@ -318,7 +316,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 213867 then--Fiery Enchantment
 		self.vb.lastPhase = 2
 		warnFirePhase:Show()
-		voicePhaseChange:Play("phasechange")
+		warnFirePhase:Play("phasechange")
 		if self:IsMythic() then
 			timerFelSoulCD:Start(15)
 			timerSearingBrandCD:Start(17.8)
@@ -342,7 +340,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 213869 then--Magic Enchantment
 		self.vb.lastPhase = 3
 		warnArcanePhase:Show()
-		voicePhaseChange:Play("phasechange")
+		warnArcanePhase:Play("phasechange")
 		if self:IsMythic() then
 			self.vb.felLashCount = 0
 			timerFelSoulCD:Start(12)

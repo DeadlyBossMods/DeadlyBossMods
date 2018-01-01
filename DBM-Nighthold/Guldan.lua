@@ -49,12 +49,12 @@ local warnShadowblink				= mod:NewSpellAnnounce(207938, 2)
 local warnSoulVortex				= mod:NewTargetAnnounce(206883, 3)
 local warnAnguishedSpirits			= mod:NewSpellAnnounce(208545, 2)
 --Stage Two: The Ritual of Aman'thul
-local warnPhase2					= mod:NewPhaseAnnounce(2, 2)
+local warnPhase2					= mod:NewPhaseAnnounce(2, 2, nil, nil, nil, nil, nil, 2)
 local warnBondsofFel				= mod:NewTargetAnnounce(206222, 3)
 local warnEmpBondsofFel				= mod:NewTargetAnnounce(209086, 4)
 --Stage Three: The Master's Power
 local warnPhase3Soon				= mod:NewPrePhaseAnnounce(3, 2)
-local warnPhase3					= mod:NewPhaseAnnounce(3, 2)
+local warnPhase3					= mod:NewPhaseAnnounce(3, 2, nil, nil, nil, nil, nil, 2)
 local warnSoulSiphon				= mod:NewTargetAnnounce(221891, 3, nil, "Healer")
 local warnFlamesofSargeras			= mod:NewTargetAnnounce(221606, 4)
 --Mythic Only
@@ -159,8 +159,6 @@ local countdownBlackHarvest			= mod:NewCountdown("AltTwo50", 206744)
 local countdownVisions				= mod:NewCountdown(50, 227008, nil, nil, 6)
 local countdownSoulSever			= mod:NewCountdown("Alt36", 220957, "Tank", nil, 6)
 local countdownFlameCrash			= mod:NewCountdown("AltTwo36", 227071, "Tank", nil, 6)
-
-local voicePhaseChange				= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
 
 mod:AddRangeFrameOption(8, 221606)
 mod:AddSetIconOption("SetIconOnBondsOfFlames", 221783, true)
@@ -654,7 +652,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self:IsMythic() then
 			self.vb.phase = 2
 			warnPhase2:Show()
-			voicePhaseChange:Play("ptwo")
+			warnPhase2:Play("ptwo")
 			timerDzorykxCD:Stop()
 			timerFelLordKurazCD:Stop()
 			timerFlamesofSargerasCD:Start(24.5, "1-1")
@@ -666,7 +664,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			self.vb.phase = 3
 			warnPhase3:Show()
-			voicePhaseChange:Play("pthree")
+			warnPhase3:Play("pthree")
 			timerBlackHarvestCD:Start(self:IsLFR() and 73 or 63, 1)
 			countdownBlackHarvest:Start(self:IsLFR() and 73 or 63)
 			if self:IsEasy() then
@@ -843,7 +841,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 				self.vb.phase = 2
 				self.vb.liquidHellfireCast = 0
 				warnPhase2:Show()
-				voicePhaseChange:Play("ptwo")
+				warnPhase2:Play("ptwo")
 				timerLiquidHellfireCD:Stop()
 				countdownLiquidHellfire:Cancel()
 				timerFelEffluxCD:Stop()

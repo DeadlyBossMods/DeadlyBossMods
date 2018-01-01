@@ -21,7 +21,7 @@ mod:RegisterEventsInCombat(
 --["192044-Expel Light"] = "pull:79.7, 26.6, 30.3, 24.3, 30.3",
 --Maybe add a searing light interrupt helper if it matters enough on mythic+
 local warnExpelLight				= mod:NewTargetAnnounce(192048, 3)
-local warnPhase2					= mod:NewPhaseAnnounce(2, 2)
+local warnPhase2					= mod:NewPhaseAnnounce(2, 2, nil, nil, nil, nil, nil, 2)
 
 local specWarnShieldOfLight			= mod:NewSpecialWarningDefensive(192018, "Tank", nil, nil, 3, 2)--Journal lies, this is NOT dodgable
 local specWarnSanctify				= mod:NewSpecialWarningDodge(192158, nil, nil, nil, 2, 5)
@@ -36,8 +36,6 @@ local timerSpecialCD				= mod:NewNextTimer(30, 200736, nil, nil, nil, 2, 200901,
 
 local countdownSpecial				= mod:NewCountdown(30, 200736)
 local countdownShieldOfLight		= mod:NewCountdown("Alt28", 192018, "Tank")
-
-local voicePhaseChange				= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
 
 mod:AddRangeFrameOption(8, 192048)
 
@@ -111,7 +109,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	if spellId == 192130 then
 		self.vb.phase = 2
 		warnPhase2:Show()
-		voicePhaseChange:Play("ptwo")
+		warnPhase2:Play("ptwo")
 		timerSpecialCD:Start(8.5)
 		countdownSpecial:Start(8.5)
 		timerShieldOfLightCD:Start(24)

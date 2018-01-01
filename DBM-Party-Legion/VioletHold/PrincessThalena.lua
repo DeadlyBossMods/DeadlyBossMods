@@ -30,8 +30,6 @@ local yellBloodThirst				= mod:NewShortFadesYell(202792)
 local timerHunger					= mod:NewBuffFadesTimer(20, 202792, nil, nil, nil, 5, nil, DBM_CORE_DEADLY_ICON)
 local timerBloodCallCD				= mod:NewNextTimer(30, 203381, nil, nil, nil, 1, nil, DBM_CORE_HEROIC_ICON)
 
---local voiceCurtainOfFlame			= mod:NewVoice(153392)
-
 function mod:OnCombatStart(delay)
 	if not self:IsNormal() then
 		timerBloodCallCD:Start(-delay)

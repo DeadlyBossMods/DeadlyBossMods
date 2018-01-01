@@ -38,7 +38,7 @@ mod:RegisterEventsInCombat(
 --]]
 --The Paraxis
 local warnRainofFel						= mod:NewTargetCountAnnounce(248332, 2)
-local warnWarpIn						= mod:NewTargetAnnounce(246888, 3, nil, nil, nil, nil, nil, nil, true)
+local warnWarpIn						= mod:NewTargetAnnounce(246888, 3, nil, nil, nil, nil, nil, 2, true)
 local warnLifeForce						= mod:NewCountAnnounce(250048, 1)
 
 --The Paraxis
@@ -82,9 +82,6 @@ local timerFinalDoomCD					= mod:NewCDCountTimer(90, 249121, nil, nil, nil, 4, n
 --local countdownRainofFel				= mod:NewCountdown("Alt60", 248332)--Not accurate enough yet. not until timer correction is added to handle speed of raids dps affecting sequence
 --Mythic
 local countdownFinalDoom				= mod:NewCountdown("AltTwo90", 249121)
-
---The Paraxis
-local voiceAdds							= mod:NewVoice(246888, "-Healer", DBM_CORE_AUTO_VOICE3_OPTION_TEXT)--killmob
 
 mod:AddSetIconOption("SetIconOnFeedbackTargeted2", 249016, false)
 mod:AddInfoFrameOption(250030, true)
@@ -205,7 +202,7 @@ end
 local function startBatsStuff(self)
 	self.vb.batCast = self.vb.batCast + 1
 	warnWarpIn:Show(L.Bats)
-	voiceAdds:Play("killmob")
+	warnWarpIn:Play("killmob")
 	local timer = self:IsMythic() and mythicBats[self.vb.batCast+1] or self:IsHeroic() and heroicBats[self.vb.batCast+1]
 	if timer then
 		timerBatsCD:Start(timer, self.vb.batCast+1)
@@ -317,7 +314,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.obfuscators = self.vb.obfuscators + 1
 		if self:AntiSpam(5, args.sourceName) then
 			warnWarpIn:Show(L.Obfuscators)
-			voiceAdds:Play("bigmob")
+			warnWarpIn:Play("bigmob")
 			self.vb.obfuscatorCast = self.vb.obfuscatorCast + 1
 			local timer = self:IsMythic() and mythicObfuscators[self.vb.obfuscatorCast+1] or self:IsHeroic() and heroicObfuscators[self.vb.obfuscatorCast+1] or self:IsNormal() and normalObfuscators[self.vb.obfuscatorCast+1]
 			if timer then
@@ -331,7 +328,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.destructors = self.vb.destructors + 1
 		if self:AntiSpam(5, args.sourceName) then
 			warnWarpIn:Show(L.Destructors)
-			voiceAdds:Play("bigmob")
+			warnWarpIn:Play("bigmob")
 			self.vb.destructorCast = self.vb.destructorCast + 1
 			local timer = self:IsMythic() and mythicDestructors[self.vb.destructorCast+1] or self:IsHeroic() and heroicDestructors[self.vb.destructorCast+1] or self:IsNormal() and normalDestructors[self.vb.destructorCast+1] or self:IsLFR() and lfrDestructors[self.vb.destructorCast+1]
 			if timer then
@@ -350,7 +347,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.purifiers = self.vb.purifiers + 1
 		if self:AntiSpam(5, 2) then
 			warnWarpIn:Show(L.Purifiers)
-			voiceAdds:Play("bigmob")
+			warnWarpIn:Play("bigmob")
 			self.vb.purifierCast = self.vb.purifierCast + 1
 			local timer = self:IsMythic() and mythicPurifiers[self.vb.purifierCast+1] or self:IsHeroic() and heroicPurifiers[self.vb.purifierCast+1]
 			if timer then

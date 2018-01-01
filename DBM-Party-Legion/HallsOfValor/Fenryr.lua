@@ -19,7 +19,7 @@ mod:RegisterEventsInCombat(
 
 --TODO, Keep checking/fixing timers
 local warnLeap							= mod:NewTargetAnnounce(197556, 2)
-local warnPhase2						= mod:NewPhaseAnnounce(2, 2)
+local warnPhase2						= mod:NewPhaseAnnounce(2, 2, nil, nil, nil, nil, nil, 2)
 local warnFixate						= mod:NewTargetAnnounce(196838, 3)
 local warnClawFrenzy					= mod:NewSpellAnnounce(196512, 2, nil, "Tank")
 
@@ -35,8 +35,6 @@ local timerLeapCD						= mod:NewCDTimer(31, 197556, nil, nil, nil, 3)--31-36
 local timerHowlCD						= mod:NewCDTimer(31.5, 196543, nil, "SpellCaster", nil, 2)--Poor data
 local timerFixateCD						= mod:NewCDTimer(36, 196838, nil, nil, nil, 3)--Poor data
 local timerWolvesCD						= mod:NewCDTimer(35, "ej12600", nil, nil, nil, 1, 199184)
-
-local voicePhaseChange					= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
 
 mod:AddRangeFrameOption(10, 197556)
 
@@ -141,7 +139,7 @@ function mod:ENCOUNTER_START(encounterID)
 --		self:SetWipeTime(5)
 --		self:UnregisterShortTermEvents()
 		warnPhase2:Show()
-		voicePhaseChange:Play("ptwo")
+		warnPhase2:Play("ptwo")
 		--timerWolvesCD:Start(5)
 		--timerHowlCD:Start(5)--2-6, useless timer
 		--timerFixateCD:Start(9.3)--7-20, useless timer
