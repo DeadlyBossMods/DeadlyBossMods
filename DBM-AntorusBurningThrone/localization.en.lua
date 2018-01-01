@@ -53,7 +53,8 @@ L:SetMiscLocalization({
 	Purifiers 	=	"Purifier",
 	Bats 		=	"Bats",
 	EonarHealth	= 	"Eonar Health",
-	EonarPower	= 	"Eonar Power"
+	EonarPower	= 	"Eonar Power",
+	NextLoc		=	"Next:"
 })
 
 ---------------------------

@@ -204,7 +204,7 @@ function mod:SPELL_CAST_START(args)
 				end
 			end
 		elseif spellId == 248070 then--Empowered (p3)
-			timerShrapnalBlastCD:Start(19, self.vb.shrapnalCast+1)--19-23
+			timerShrapnalBlastCD:Start(17, self.vb.shrapnalCast+1)--17-23
 		else
 			timerShrapnalBlastCD:Start(nil, self.vb.shrapnalCast+1)--13
 		end
