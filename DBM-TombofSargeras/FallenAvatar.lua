@@ -42,7 +42,7 @@ local warnDesolate					= mod:NewStackAnnounce(236494, 3, nil, "Healer|Tank")
 local warnCleansingEnded			= mod:NewEndAnnounce(241008, 1)
 local warnTaintedMatrix				= mod:NewCastAnnounce(240623, 3)
 --Stage Two: An Avatar Awakened
-local warnPhase2					= mod:NewPhaseAnnounce(2, 2)
+local warnPhase2					= mod:NewPhaseAnnounce(2, 2, nil, nil, nil, nil, nil, 2)
 local warnDarkmark					= mod:NewTargetCountAnnounce(239739, 3)
 
 --Stage One: A Slumber Disturbed
@@ -95,8 +95,6 @@ local countdownCorruptedMatrix		= mod:NewCountdown("AltTwo40", 233556)
 local countdownRuptureRealities		= mod:NewCountdown(60, 239132)
 local countdownDarkMark				= mod:NewCountdown("Alt40", 239739, "-Tank", 2)
 local countdownRainofthedDestroyer	= mod:NewCountdown("AltTwo35", 240396)
-
-local voicePhaseChange				= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
 
 mod:AddSetIconOption("SetIconOnShadowyBlades", 236571, true)
 mod:AddSetIconOption("SetIconOnDarkMark", 239739, true)
@@ -328,7 +326,7 @@ function mod:SPELL_CAST_START(args)
 		countdownCorruptedMatrix:Cancel()
 		
 		warnPhase2:Show()
-		voicePhaseChange:Play("ptwo")
+		warnPhase2:Play("ptwo")
 		timerDesolateCD:Start(19)
 		countdownDesolate:Start(19)
 		timerRuptureRealitiesCD:Start(38, 1)

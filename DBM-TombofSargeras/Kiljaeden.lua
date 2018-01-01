@@ -42,11 +42,11 @@ local warnSingularitySoon			= mod:NewAnnounce("warnSingularitySoon", 4, 235059, 
 --Intermission: Eternal Flame
 local warnBurstingDreadFlame		= mod:NewTargetCountAnnounce(238430, 2)--Generic for now until more known, likely something cast fairly often
 --Stage Two:
-local warnPhase2					= mod:NewPhaseAnnounce(2, 2)
+local warnPhase2					= mod:NewPhaseAnnounce(2, 2, nil, nil, nil, nil, nil, 2)
 local warnWailingReflection			= mod:NewTargetCountAnnounce(236378, 4)
 local warnSorrowfulWail				= mod:NewSpellAnnounce(241564, 4)
 --Stage Three: Darkness of A Thousand Souls
-local warnPhase3					= mod:NewPhaseAnnounce(3, 2)
+local warnPhase3					= mod:NewPhaseAnnounce(3, 2, nil, nil, nil, nil, nil, 2)
 local warnTearRift					= mod:NewCountAnnounce(243982, 2)--Positive message color?
 local warnDarknessofStuffEnded		= mod:NewEndAnnounce(238999, 1)
 
@@ -122,9 +122,6 @@ local countdownArmageddon			= mod:NewCountdown("Alt25", 240910, false)
 local countdownFocusedDread			= mod:NewCountdown("AltTwo", 238502)
 local countdownFelclaws				= mod:NewCountdown("Alt25", 239932, "Tank", 2)
 local countdownObelisk				= mod:NewCountdown(12, 239785, nil, nil, 5)
-
---Stage One: The Betrayer
-local voicePhaseChange				= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
 
 mod:AddSetIconOption("SetIconOnFocusedDread", 238502, true)
 mod:AddSetIconOption("SetIconOnBurstingDread", 238430, false)
@@ -346,7 +343,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.phase = 2.5
 		self.vb.shadowSoulsRemaining = 5--Normal count anyways
 		self.vb.singularityCount = 0
-		voicePhaseChange:Play("phasechange")
+		warnPhase3:Play("phasechange")
 		if self:IsMythic() then
 			timerRupturingSingularityCD:Start(19.3, 1)
 		end
@@ -593,7 +590,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		--timerDarknessofSoulsCD:Start(1, 1)--Cast intantly
 		timerSightlessGaze:Stop()
 		warnPhase3:Show()
-		voicePhaseChange:Play("pthree")
+		warnPhase3:Play("pthree")
 		timerTearRiftCD:Start(14, 1)
 		if self:IsMythic() then
 			timerBurstingDreadflameCD:Start(30, 1)
@@ -620,7 +617,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.felClawsCount = 0
 		self.vb.wailingCount = 0
 		warnPhase2:Show()
-		voicePhaseChange:Play("ptwo")
+		warnPhase2:Play("ptwo")
 		if self:IsMythic() then
 			timerFelclawsCD:Start(10.4, 1)
 			timerArmageddonCD:Start(18.2, 1)
@@ -796,7 +793,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		countdownArmageddon:Cancel()
 		timerShadReflectionEruptingCD:Stop()
 		timerShadReflectionWailingCD:Stop()
-		voicePhaseChange:Play("phasechange")
+		warnPhase2:Play("phasechange")
 		if self:IsMythic() then
 			timerArmageddonCD:Start(6.7, 1)
 			countdownArmageddon:Start(6.7)

@@ -34,11 +34,11 @@ local warnFromtheAbyss				= mod:NewSpellAnnounce(230227, 2)
 local warnThunderingShock			= mod:NewTargetAnnounce(230362, 2, nil, false)
 local warnConsumingHunger			= mod:NewTargetAnnounce(230384, 2)
 --Stage Two: Terrors of the Deep
-local warnPhase2					= mod:NewPhaseAnnounce(2, 2)
+local warnPhase2					= mod:NewPhaseAnnounce(2, 2, nil, nil, nil, nil, nil, 2)
 local warnSummonOssunet				= mod:NewSpellAnnounce(232913, 2)
 local warnBefoulingInk				= mod:NewTargetAnnounce(232916, 2, nil, false)--Optional warning if you want to know who's carrying ink
 --Stage three
-local warnPhase3					= mod:NewPhaseAnnounce(3, 2)
+local warnPhase3					= mod:NewPhaseAnnounce(3, 2, nil, nil, nil, nil, nil, 2)
 
 --General Stuff
 local specWarnHydraShot				= mod:NewSpecialWarningYouPos(230139, nil, nil, nil, 1, 2)
@@ -86,9 +86,6 @@ local countdownHydraShot			= mod:NewCountdown(40, 230139)
 local countdownBurdenofPain			= mod:NewCountdown("Alt28", 230201, "Tank")
 --Stage One: Ten Thousand Fangs
 local countdownSlicingTorando		= mod:NewCountdown("AltTwo43", 232722)
-
---General Stuff
-local voicePhaseChange				= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
 
 mod:AddSetIconOption("SetIconOnHydraShot", 230139, true)
 mod:AddBoolOption("TauntOnPainSuccess", false)
@@ -356,7 +353,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 			self.vb.crashingWaveCount = 0
 			self.vb.hydraShotCount = 0
 			warnPhase2:Show()
-			voicePhaseChange:Play("ptwo")
+			warnPhase2:Play("ptwo")
 			timerThunderingShockCD:Stop()
 			timerSlicingTornadoCD:Stop()
 			countdownSlicingTorando:Cancel()
@@ -386,7 +383,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 			self.vb.crashingWaveCount = 0
 			self.vb.hydraShotCount = 0
 			warnPhase3:Show()
-			voicePhaseChange:Play("pthree")
+			warnPhase3:Play("pthree")
 			timerCrashingWaveCD:Stop()
 			timerInkCD:Stop()
 			timerHydraShotCD:Stop()
