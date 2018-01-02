@@ -6118,6 +6118,7 @@ do
 		if type(requestedSpellIDs[spellId]) == "string" then
 			local name = requestedSpellIDs[spellId]
 			requestedSpellIDs[spellId] = nil
+			print("returning", name)
 			return name, rank, icon, castingTime, minRange, maxRange, returnedSpellId
 		else--Wait longer
 			self:Schedule(0.1, delayedSpellRequest, self, spellId, rank, icon, castingTime, minRange, maxRange, returnedSpellId)
@@ -6127,9 +6128,9 @@ do
 	--Handle new spell name requesting in 7.3.5
 	function DBM:GetSpellInfo(spellId)
 		local name, rank, icon, castingTime, minRange, maxRange, returnedSpellId = GetSpellInfo(spellId)
-		if not name then
+		if not returnedSpellId then--Bad request all together
 			DBM:Debug("Invalid call to GetSpellInfo for spellID: "..spellId)
-		elseif name == "" then--7.3.5 PTR returned blank, spell not yet cached and must be requested
+		elseif not name or name == "" then--7.3.5 PTR returned blank/nil name, name not yet cached and must be requested
 			requestedSpellIDs[spellId] = true
 			if not DBMSpellRequestFrame:IsShown() then
 				DBMSpellRequestFrame:Show()
