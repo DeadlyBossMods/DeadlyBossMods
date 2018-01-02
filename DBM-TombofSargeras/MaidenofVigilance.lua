@@ -82,10 +82,10 @@ mod.vb.infusionCount = 0
 mod.vb.spontFragmentationCount = 0
 mod.vb.massShitCount = 0
 mod.vb.shieldActive = false
-local AegynnsWard = DBM:GetSpellInfo(236420)
-local felDebuff, lightDebuff = DBM:GetSpellInfo(235240), DBM:GetSpellInfo(235213)
+local AegynnsWard, felDebuff, lightDebuff, shieldname = DBM:GetSpellInfo(236420), DBM:GetSpellInfo(235240), DBM:GetSpellInfo(235213), DBM:GetSpellInfo(235028)
 
 function mod:OnCombatStart(delay)
+	AegynnsWard, felDebuff, lightDebuff, shieldname = DBM:GetSpellInfo(236420), DBM:GetSpellInfo(235240), DBM:GetSpellInfo(235213), DBM:GetSpellInfo(235028)
 	self.vb.shieldActive = false
 	self.vb.unstableSoulCount = 0
 	self.vb.hammerCount = 2
@@ -232,7 +232,6 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 236061 then
 		warnEssenceFragments:Show()
 	elseif spellId == 234891 then
-		local shieldname = DBM:GetSpellInfo(235028)
 		self.vb.shieldActive = true
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:SetHeader(shieldname)
@@ -295,9 +294,8 @@ function mod:SPELL_AURA_REMOVED(args)
 			end
 		end
 		if self.Options.InfoFrame then
-			local spellName = DBM:GetSpellInfo(235117)
-			DBM.InfoFrame:SetHeader(spellName)
-			DBM.InfoFrame:Show(10, "playerdebuffremaining", spellName)
+			DBM.InfoFrame:SetHeader(shieldname)
+			DBM.InfoFrame:Show(10, "playerdebuffremaining", shieldname)
 		end
 	end
 end

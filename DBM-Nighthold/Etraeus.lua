@@ -267,6 +267,9 @@ local function updateConjunctionYell(self, spellName, icon)
 end
 
 function mod:OnCombatStart(delay)
+	abZeroDebuff, chilledDebuff, gravPullDebuff = DBM:GetSpellInfo(206585), DBM:GetSpellInfo(206589), DBM:GetSpellInfo(205984)
+	icyEjectionDebuff, coronalEjectionDebuff, voidEjectionDebuff = DBM:GetSpellInfo(206936), DBM:GetSpellInfo(206464), DBM:GetSpellInfo(207143)
+	crabDebuff, dragonDebuff, hunterDebuff, wolfDebuff = DBM:GetSpellInfo(205429), DBM:GetSpellInfo(216344), DBM:GetSpellInfo(216345), DBM:GetSpellInfo(205445)
 	voidWarned = false
 	playerAffected = false
 	self.vb.StarSigns = 0
@@ -681,9 +684,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 end
 
 do
-	local debuffName = DBM:GetSpellInfo(207143)
 	function mod:UNIT_AURA(uId)
-		local hasDebuff = UnitDebuff("player", debuffName)
+		local hasDebuff = UnitDebuff("player", voidEjectionDebuff)
 		if hasDebuff and not voidWarned then
 			voidWarned = true
 			specWarnVoidEjection:Show()

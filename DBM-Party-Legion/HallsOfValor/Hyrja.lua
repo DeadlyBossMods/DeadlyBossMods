@@ -43,6 +43,7 @@ local eyeShortName = DBM:GetSpellInfo(91320)--Inner Eye
 mod.vb.phase = 1
 
 function mod:OnCombatStart(delay)
+	eyeShortName = DBM:GetSpellInfo(91320)
 	self.vb.phase = 1
 end
 

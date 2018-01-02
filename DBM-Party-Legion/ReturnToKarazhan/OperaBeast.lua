@@ -53,7 +53,6 @@ local timerSevereDustingCD			= mod:NewCDTimer(12, 228221, nil, nil, nil, 3)
 local timerDentArmorCD				= mod:NewCDTimer(20, 227985, nil, "Tank|Healer", nil, 5)
 local timerDinnerBellCD				= mod:NewCDTimer(10.9, 227987, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
 
-
 --local berserkTimer				= mod:NewBerserkTimer(300)
 
 --local countdownFocusedGazeCD		= mod:NewCountdown(40, 198006)
@@ -62,8 +61,10 @@ mod:AddSetIconOption("SetIconOnDusting", 228221, true)
 --mod:AddInfoFrameOption(198108, false)
 
 mod.vb.phase = 1
+local burningBlaze = DBM:GetSpellInfo(228193)
 
 function mod:OnCombatStart(delay)
+	burningBlaze = DBM:GetSpellInfo(228193)
 	self.vb.phase = 1
 	timerLeftoversCD:Start(7.3-delay)
 	timerHeatWaveCD:Start(31.6-delay)
@@ -102,7 +103,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 228013 then
 		if args:IsPlayer() then
-			specWarnDrenched:Show(DBM:GetSpellInfo(228193))
+			specWarnDrenched:Show(burningBlaze)
 		end
 	elseif spellId == 228221 then
 		timerSevereDustingCD:Start()
