@@ -119,6 +119,7 @@ function mod:DemonicChargeTarget(targetname, uId)
 end
 
 function mod:OnCombatStart(delay)
+	felShield = DBM:GetSpellInfo(244910)
 	self.vb.FusilladeCount = 0
 	self.vb.lastIcon = 8
 	--In pod

@@ -56,6 +56,7 @@ mod.vb.roarCount = 0
 mod.vb.chargeCount = 0
 mod.vb.tankCount = 2
 mod.vb.rendCount = 0
+local unbalancedName, focusedGazeName, rendFlesh, overWhelm, momentum = DBM:GetSpellInfo(198108), DBM:GetSpellInfo(198006), DBM:GetSpellInfo(204859), DBM:GetSpellInfo(197943), DBM:GetSpellInfo(198108)
 
 --Doesn't assign a soaker who'll die from it.
 --Doesn't assign tanks or the targeted player themselves.
@@ -69,7 +70,6 @@ do
 	local soakTable = {}
 	local UnitDebuff, UnitIsUnit = UnitDebuff, UnitIsUnit
 	local playerName = UnitName("player")
-	local unbalancedName, focusedGazeName = DBM:GetSpellInfo(198108), DBM:GetSpellInfo(198006)
 	GenerateSoakAssignment = function(self, count, targetName)
 		table.wipe(soakTable)
 		local soakers = 0
@@ -101,6 +101,7 @@ do
 end
 
 function mod:OnCombatStart(delay)
+	unbalancedName, focusedGazeName, rendFlesh, overWhelm, momentum = DBM:GetSpellInfo(198108), DBM:GetSpellInfo(198006), DBM:GetSpellInfo(204859), DBM:GetSpellInfo(197943), DBM:GetSpellInfo(198108)
 	self.vb.roarCount = 0
 	self.vb.chargeCount = 0
 	self.vb.rendCount = 0
@@ -118,7 +119,7 @@ function mod:OnCombatStart(delay)
 	end
 	berserkTimer:Start(-delay)
 	if self.Options.InfoFrame then
-		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(198108))
+		DBM.InfoFrame:SetHeader(momentum)
 		DBM.InfoFrame:Show(15, "reverseplayerbaddebuff", 198108)
 	end
 end
@@ -142,7 +143,7 @@ function mod:SPELL_CAST_START(args)
 		else
 			--Other tank has overwhelm stacks and is about to die to rend flesh, TAUNT NOW!
 			if UnitExists("boss1target") and not UnitIsUnit("player", "boss1target") then
-				local _, _, _, _, _, _, expireTimeTarget = UnitDebuff("boss1target", DBM:GetSpellInfo(197943)) -- Overwhelm
+				local _, _, _, _, _, _, expireTimeTarget = UnitDebuff("boss1target", overWhelm) -- Overwhelm
 				if expireTimeTarget and expireTimeTarget-GetTime() >= 2 then
 					specWarnRendFleshOther:Show(UnitName("boss1target"))
 					specWarnRendFleshOther:Play("tauntboss")
@@ -220,7 +221,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if not args:IsPlayer() then--Overwhelm Applied to someone that isn't you
 			--Taunting is safe now because your rend flesh will vanish (or is already gone), and not be cast again, before next overwhelm
 			local rendCooldown = timerRendFleshCD:GetRemaining(self.vb.rendCount+1) or 0
-			local _, _, _, _, _, _, expireTime = UnitDebuff("player", DBM:GetSpellInfo(204859))
+			local _, _, _, _, _, _, expireTime = UnitDebuff("player", rendFlesh)
 			if rendCooldown > 10 and (not expireTime or expireTime and expireTime-GetTime() < 10) then
 				specWarnOverwhelmOther:Show(args.destName)
 				specWarnOverwhelmOther:Play("tauntboss")

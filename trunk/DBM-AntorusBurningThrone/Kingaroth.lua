@@ -142,9 +142,9 @@ local function warnDemolishTargets(self, spellName)
 	end
 end
 
+local demolishDebuff = DBM:GetSpellInfo(246692)
 local updateInfoFrame
 do
-	local demolishDebuff = DBM:GetSpellInfo(246692)
 	local lines = {}
 	local sortedLines = {}
 	local function addLine(key, value)
@@ -168,6 +168,7 @@ do
 end
 
 function mod:OnCombatStart(delay)
+	demolishDebuff = DBM:GetSpellInfo(246692)
 	self.vb.ruinerCast = 0
 	self.vb.forgingStrikeCast = 0
 	self.vb.reverbStrikeCast = 0

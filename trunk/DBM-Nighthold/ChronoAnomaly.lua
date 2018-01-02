@@ -84,6 +84,7 @@ local function updateTimeBomb(self)
 end
 
 function mod:OnCombatStart(delay)
+	timeBombDebuff = DBM:GetSpellInfo(206617)
 	self.vb.currentPhase = 2
 	self.vb.interruptCount = 0
 	self.vb.normCount = 0

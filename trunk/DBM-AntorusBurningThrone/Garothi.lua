@@ -73,8 +73,8 @@ mod.vb.annihilatorHaywire = false
 
 local debuffFilter
 local updateRangeFrame
+local decimination, mythicDecimination, FelBombardment = DBM:GetSpellInfo(244410), DBM:GetSpellInfo(246919), DBM:GetSpellInfo(246220)
 do
-	local decimination, mythicDecimination, FelBombardment = DBM:GetSpellInfo(244410), DBM:GetSpellInfo(246919), DBM:GetSpellInfo(246220)
 	local UnitDebuff = UnitDebuff
 	debuffFilter = function(uId)
 		if UnitDebuff(uId, decimination) or UnitDebuff(uId, mythicDecimination) or UnitDebuff(uId, FelBombardment) then
@@ -102,6 +102,7 @@ do
 end
 
 function mod:OnCombatStart(delay)
+	decimination, mythicDecimination, FelBombardment = DBM:GetSpellInfo(244410), DBM:GetSpellInfo(246919), DBM:GetSpellInfo(246220)
 	self.vb.deciminationActive = 0
 	self.vb.FelBombardmentActive = 0
 	self.vb.lastCannon = 1--Anniilator 1 decimator 2

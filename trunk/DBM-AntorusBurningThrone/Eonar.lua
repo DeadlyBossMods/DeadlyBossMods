@@ -147,9 +147,9 @@ local addCountToLocationLFR = {
 	["Dest"] = {DBM_CORE_MIDDLE, DBM_CORE_BOTTOM, DBM_CORE_TOP, DBM_CORE_MIDDLE, DBM_CORE_BOTTOM, DBM_CORE_TOP,DBM_CORE_BOTTOM, DBM_CORE_TOP, DBM_CORE_BOTTOM}
 }
 
+local lifeForceName = DBM:GetSpellInfo(250048)
 local updateInfoFrame
 do
-	local lifeForceName = DBM:GetSpellInfo(250048)
 	local lines = {}
 	local sortedLines = {}
 	local function addLine(key, value)
@@ -225,6 +225,7 @@ local function startBatsStuff(self)
 end
 
 function mod:OnCombatStart(delay)
+	lifeForceName = DBM:GetSpellInfo(250048)
 	self.vb.rainOfFelCount = 0
 	self.vb.destructors = 0
 	self.vb.obfuscators = 0

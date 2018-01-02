@@ -32,7 +32,10 @@ local timerMagmaWaveCD				= mod:NewCDTimer(60, 200404, nil, nil, nil, 2, nil, DB
 local countdownMagmaWave			= mod:NewCountdown(60, 200404)
 --local countdownMoltenCrash		= mod:NewCountdown("Alt28", 200732, "Tank")
 
+local shelterName = DBM:GetSpellInfo(200551)
+
 function mod:OnCombatStart(delay)
+	shelterName = DBM:GetSpellInfo(200551)
 	timerMagmaSculptorCD:Start(7.3-delay)
 	timerLandSlideCD:Start(15.8-delay)
 	timerMoltenCrashCD:Start(19-delay)
@@ -59,7 +62,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnLandSlide:Play("shockwave")
 		timerLandSlideCD:Start()
 	elseif spellId == 200404 and self:AntiSpam(3, 1) then
-		specWarnMagmaWave:Show(DBM:GetSpellInfo(200551))
+		specWarnMagmaWave:Show(shelterName)
 		specWarnMagmaWave:Play("findshelter")
 		timerMagmaWaveCD:Start()
 		countdownMagmaWave:Start()
@@ -81,7 +84,7 @@ end
 --1 second faster than combat log. 1 second slower than Unit event callout but that's no longer reliable.
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	if msg:find("spell:200404") and self:AntiSpam(3, 1) then
-		specWarnMagmaWave:Show(DBM:GetSpellInfo(200551))
+		specWarnMagmaWave:Show(shelterName)
 		specWarnMagmaWave:Play("findshelter")
 		timerMagmaWaveCD:Start()
 		countdownMagmaWave:Start()
