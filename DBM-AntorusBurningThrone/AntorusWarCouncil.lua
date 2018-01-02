@@ -110,7 +110,7 @@ function mod:DemonicChargeTarget(targetname, uId)
 		specWarnDemonicChargeYou:Show()
 		specWarnDemonicChargeYou:Play("runaway")
 		yellDemonicCharge:Yell()
-	elseif self:CheckNearby(10, targetname) and self:AntiSpam(3, 2) then
+	elseif self:CheckNearby(10, targetname) and self:AntiSpam(3.5, 2) then
 		specWarnDemonicCharge:Show(targetname)
 		specWarnDemonicCharge:Play("watchstep")
 	else
@@ -150,7 +150,7 @@ function mod:SPELL_CAST_START(args)
 			countdownFusillade:Start(29.6)
 		end
 	elseif spellId == 246505 then
-		if self:CheckInterruptFilter(args.sourceGUID) then
+		if self:CheckInterruptFilter(args.sourceGUID) and self:AntiSpam(3, 3) then
 			specWarnPyroblast:Show(args.sourceName)
 			specWarnPyroblast:Play("kickcast")
 		end
