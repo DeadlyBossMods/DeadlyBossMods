@@ -6114,13 +6114,15 @@ do
 			end
 		end
 	end
-	--[[local function delayedSpellRequest(self, spellId)
+	local function delayedSpellRequest(self, spellId, rank, icon, castingTime, minRange, maxRange, returnedSpellId)
 		if type(requestedSpellIDs[spellId]) == "string" then
-			return requestedSpellIDs[spellId]
+			local name = requestedSpellIDs[spellId]
+			requestedSpellIDs[spellId] = nil
+			return name, rank, icon, castingTime, minRange, maxRange, returnedSpellId
 		else--Wait longer
-			self:Schedule(0.1, delayedSpellRequest, self, spellId)
+			self:Schedule(0.1, delayedSpellRequest, self, spellId, rank, icon, castingTime, minRange, maxRange, returnedSpellId)
 		end
-	end--]]
+	end
 
 	--Handle new spell name requesting in 7.3.5
 	function DBM:GetSpellInfo(spellId)
@@ -6134,23 +6136,7 @@ do
 				DBMSpellRequestFrame:SetScript("OnEvent", onEvent)
 				DBMSpellRequestFrame:RegisterEvent("SPELL_NAME_UPDATE")
 			end
-			--Useless until find a way to loop this on a timer until below is true
-			--repeat
-				-- wait that freezes wow, so not a valid wait
-			--until type(requestedSpellIDs[spellId]) == "string"
-			--name = delayedSpellRequest(self, spellId)--Useless, cause below runs even before ths finishes
-			--while type(requestedSpellIDs[spellId]) ~= "string" do
-				-- wait that freezes wow, so not a valid wait
-			--end
-			--Will never fire cause without a wait this always runs before SPELL_NAME_UPDATE finishes
-			if type(requestedSpellIDs[spellId]) == "string" then
-				name = requestedSpellIDs[spellId]
-				requestedSpellIDs[spellId] = nil
-			else
-				name = spellId--Failed to get a valid name, insert spellID instead of blank ""
-			end
-			--Always return something, to avoid nil returns
-			return name, rank, icon, castingTime, minRange, maxRange, returnedSpellId
+			return delayedSpellRequest(self, spellId, rank, icon, castingTime, minRange, maxRange, returnedSpellId)
 		else--Good request, return now
 			return name, rank, icon, castingTime, minRange, maxRange, returnedSpellId
 		end
@@ -10404,12 +10390,14 @@ do
 
 	function bossModPrototype:GetLocalizedTimerText(timerType, spellId)
 		local spellName
-		if timerType == "achievement" then
-			spellName = select(2, GetAchievementInfo(spellId))
-		elseif type(spellId) == "string" and spellId:match("ej%d+") then
-			spellName = DBM:EJ_GetSectionInfo(string.sub(spellId, 3))
-		else
-			spellName = DBM:GetSpellInfo(spellId)
+		if spellId then
+			if timerType == "achievement" then
+				spellName = select(2, GetAchievementInfo(spellId))
+			elseif type(spellId) == "string" and spellId:match("ej%d+") then
+				spellName = DBM:EJ_GetSectionInfo(string.sub(spellId, 3))
+			else
+				spellName = DBM:GetSpellInfo(spellId)
+			end
 		end
 		return pformat(DBM_CORE_AUTO_TIMER_TEXTS[timerType], spellName)
 	end
