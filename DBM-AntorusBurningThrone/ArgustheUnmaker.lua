@@ -223,6 +223,7 @@ local function delayedBoonCheck(self, stage4)
 end
 
 function mod:OnCombatStart(delay)
+	avatarOfAggramar, aggramarsBoon = DBM:GetSpellInfo(255199), DBM:GetSpellInfo(255200)
 	playerAvatar = false
 	self.vb.phase = 1
 	self.vb.coneCount = 0

@@ -90,6 +90,7 @@ function DBMUpdateKrosusBeam(wasLeft)
 end
 
 function mod:OnCombatStart(delay)
+	burningPitchDebuff = DBM:GetSpellInfo(215944)
 	table.wipe(mobGUIDs)
 	self.vb.burningEmbers = 0
 	self.vb.slamCount = 0

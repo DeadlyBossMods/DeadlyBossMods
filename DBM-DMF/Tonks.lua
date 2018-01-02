@@ -26,8 +26,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName)
-	if spellName == DBM:GetSpellInfo(102178) then
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
+	if spellId == 102178 then
 		timerGame:Start()
 		countdownGame:Start(60)
 	end

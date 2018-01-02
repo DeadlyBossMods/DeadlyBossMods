@@ -98,13 +98,12 @@ mod:AddSetIconOption("SetIconOnMeteor", 206308)
 
 local lurkingTimers = {17, 20.5, 41, 20.5, 20.5}--{13.6, 26.3, 47.4, 20.7, 25.9} old. TODO, get more data, if all but one are 20.5, just code smarter without table
 local corruptionName = DBM:EJ_GetSectionInfo(12970)
-local darkSoul, blackSoul = DBM:GetSpellInfo(206651), DBM:GetSpellInfo(209158)
+local darkSoul, blackSoul, dreamDebuff, blackened = DBM:GetSpellInfo(206651), DBM:GetSpellInfo(209158), DBM:GetSpellInfo(206005), DBM:GetSpellInfo(205612)
 local bladesTarget = {}
 local gatherTarget = {}
 local playerName = UnitName("player")
 local UnitDebuff = UnitDebuff
 local playerHasDream = false
-local dreamDebuff = DBM:GetSpellInfo(206005)
 mod.vb.phase = 1
 mod.vb.lurkingCount = 0
 mod.vb.corruptionHorror = 0
@@ -149,6 +148,7 @@ local function bondsWarning(self)
 end
 
 function mod:OnCombatStart(delay)
+	darkSoul, blackSoul, dreamDebuff, blackened = DBM:GetSpellInfo(206651), DBM:GetSpellInfo(209158), DBM:GetSpellInfo(206005), DBM:GetSpellInfo(205612)
 	self.vb.phase = 1
 	self.vb.lurkingCount = 0
 	self.vb.corruptionHorror = 0
@@ -311,7 +311,7 @@ function mod:SPELL_AURA_APPLIED(args)
 						end
 					end
 				end
-				if not filterWarning and not UnitDebuff("player", DBM:GetSpellInfo(205612)) then
+				if not filterWarning and not UnitDebuff("player", blackened) then
 					specWarnBlackeningSoulOther:Show(args.destName)
 					specWarnBlackeningSoulOther:Play("tauntboss")
 				end

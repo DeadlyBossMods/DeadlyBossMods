@@ -94,7 +94,7 @@ local empoweredPulseTargets = {}
 local debuffFilter
 local UnitDebuff = UnitDebuff
 local playerSleepDebuff = false
-local empoweredPulse = DBM:GetSpellInfo(250006)--Empowered Pulse Grenade
+local empoweredPulse, sleepCanister = DBM:GetSpellInfo(250006), DBM:GetSpellInfo(254244)
 do
 	debuffFilter = function(uId)
 		if UnitDebuff(uId, empoweredPulse) then
@@ -140,6 +140,7 @@ do
 end
 
 function mod:OnCombatStart(delay)
+	empoweredPulse, sleepCanister = DBM:GetSpellInfo(250006), DBM:GetSpellInfo(254244)
 	table.wipe(empoweredPulseTargets)
 	self.vb.phase = 1
 	self.vb.shrapnalCast = 0
@@ -404,7 +405,6 @@ end
 
 do
 	local playerName = UnitName("player")
-	local spellName = DBM:GetSpellInfo(254244)
 	function mod:OnTranscriptorSync(msg, targetName)
 		if msg:find("spell:254244") then
 			targetName = Ambiguate(targetName, "none")
@@ -412,7 +412,7 @@ do
 				warnSleepCanister:CombinedShow(0.3, targetName)
 				if targetName == playerName then
 					local icon = self.vb.sleepCanisterIcon
-					yellSleepCanister:Yell(icon, spellName, icon)
+					yellSleepCanister:Yell(icon, sleepCanister, icon)
 				elseif self:CheckNearby(10, targetName) then
 					specWarnSleepCanisterNear:CombinedShow(0.3, targetName)
 					specWarnSleepCanisterNear:Play("runaway")
