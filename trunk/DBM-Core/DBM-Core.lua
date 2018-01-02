@@ -6107,11 +6107,6 @@ do
 			if requestedSpellIDs[spellId] then--Should be a true bool if requested
 				requestedSpellIDs[spellId] = spellName
 			end
-			if #requestedSpellIDs == 0 then
-				DBMSpellRequestFrame:SetScript("OnEvent", nil)
-				DBMSpellRequestFrame:UnregisterEvent("SPELL_NAME_UPDATE")
-				DBMSpellRequestFrame:Hide()
-			end
 		end
 	end
 	local function delayedSpellRequest(self, spellId, rank, icon, castingTime, minRange, maxRange, returnedSpellId)
@@ -6119,9 +6114,14 @@ do
 			local name = requestedSpellIDs[spellId]
 			requestedSpellIDs[spellId] = nil
 			print("returning", name)
+			if #requestedSpellIDs == 0 then
+				DBMSpellRequestFrame:SetScript("OnEvent", nil)
+				DBMSpellRequestFrame:UnregisterEvent("SPELL_NAME_UPDATE")
+				DBMSpellRequestFrame:Hide()
+			end
 			return name, rank, icon, castingTime, minRange, maxRange, returnedSpellId
 		else--Wait longer
-			self:Schedule(0.1, delayedSpellRequest, self, spellId, rank, icon, castingTime, minRange, maxRange, returnedSpellId)
+			self:Schedule(0.025, delayedSpellRequest, self, spellId, rank, icon, castingTime, minRange, maxRange, returnedSpellId)
 		end
 	end
 
