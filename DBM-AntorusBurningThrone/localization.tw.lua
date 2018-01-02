@@ -26,19 +26,20 @@ L= DBM:GetModLocalization(1997)
 L= DBM:GetModLocalization(2025)
 
 L:SetTimerLocalization({
-	timerObfuscator		=	"下一次魔能匿蹤者(%s)",
-	timerDestructor 	=	"下一次魔能毀滅者(%s)",
-	timerPurifier 		=	"下一次魔能淨化者(%s)",
+	timerObfuscator		=	"下一次匿蹤者(%s)",
+	timerDestructor 	=	"下一次毀滅者(%s)",
+	timerPurifier 		=	"下一次淨化者(%s)",
 	timerBats	 		=	"下一次風掣魔蝠(%s)"
 })
 
 L:SetMiscLocalization({
-	Obfuscators =	"魔能匿蹤者",
-	Destructors =	"魔能毀滅者",
-	Purifiers 	=	"魔能淨化者",
+	Obfuscators =	"匿蹤者",
+	Destructors =	"毀滅者",
+	Purifiers 	=	"淨化者",
 	Bats 		=	"風掣魔蝠",
 	EonarHealth	= 	"伊歐娜體力",
-	EonarPower	= 	"伊歐娜能量"
+	EonarPower	= 	"伊歐娜能量",
+	NextLoc		=	"下一次:"
 })
 
 ---------------------------
