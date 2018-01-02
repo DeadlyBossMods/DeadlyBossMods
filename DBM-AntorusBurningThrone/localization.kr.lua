@@ -47,7 +47,8 @@ L:SetMiscLocalization({
 	Purifiers 	=	"정화자",
 	Bats 		=	"박쥐",
 	EonarHealth	= 	"이오나 생명력",
-	EonarPower	= 	"이오나 기력"
+	EonarPower	= 	"이오나 기력",
+	NextLoc		=	"다음 위치:"
 })
 
 ---------------------------
