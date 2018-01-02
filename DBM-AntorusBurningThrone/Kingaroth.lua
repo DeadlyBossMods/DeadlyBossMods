@@ -136,7 +136,7 @@ local function warnDemolishTargets(self, spellName)
 			self:SetIcon(name, icon)
 		end
 	end
-	if not UnitDebuff("player", spellName) then
+	if not UnitDebuff("player", spellName) and not self:IsTank() then
 		specWarnDemolishOther:Show(DBM_ALLY)
 		specWarnDemolishOther:Play("gathershare")
 	end
