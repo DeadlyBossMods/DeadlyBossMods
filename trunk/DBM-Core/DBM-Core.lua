@@ -6113,7 +6113,6 @@ do
 		if type(requestedSpellIDs[spellId]) == "string" then
 			local name = requestedSpellIDs[spellId]
 			requestedSpellIDs[spellId] = nil
-			print("returning", name)
 			if #requestedSpellIDs == 0 then
 				DBMSpellRequestFrame:SetScript("OnEvent", nil)
 				DBMSpellRequestFrame:UnregisterEvent("SPELL_NAME_UPDATE")
@@ -6130,14 +6129,17 @@ do
 		local name, rank, icon, castingTime, minRange, maxRange, returnedSpellId = GetSpellInfo(spellId)
 		if not returnedSpellId then--Bad request all together
 			DBM:Debug("Invalid call to GetSpellInfo for spellID: "..spellId)
+			return nil
 		elseif not name or name == "" then--7.3.5 PTR returned blank/nil name, name not yet cached and must be requested
-			requestedSpellIDs[spellId] = true
+			--Doesn't work
+			--[[requestedSpellIDs[spellId] = true
 			if not DBMSpellRequestFrame:IsShown() then
 				DBMSpellRequestFrame:Show()
 				DBMSpellRequestFrame:SetScript("OnEvent", onEvent)
 				DBMSpellRequestFrame:RegisterEvent("SPELL_NAME_UPDATE")
 			end
-			return delayedSpellRequest(self, spellId, rank, icon, castingTime, minRange, maxRange, returnedSpellId)
+			return delayedSpellRequest(self, spellId, rank, icon, castingTime, minRange, maxRange, returnedSpellId)--]]
+			return spellId, rank, icon, castingTime, minRange, maxRange, returnedSpellId
 		else--Good request, return now
 			return name, rank, icon, castingTime, minRange, maxRange, returnedSpellId
 		end
