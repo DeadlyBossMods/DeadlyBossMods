@@ -6139,7 +6139,7 @@ do
 				DBMSpellRequestFrame:RegisterEvent("SPELL_NAME_UPDATE")
 			end
 			return delayedSpellRequest(self, spellId, rank, icon, castingTime, minRange, maxRange, returnedSpellId)--]]
-			return spellId, rank, icon, castingTime, minRange, maxRange, returnedSpellId
+			return "ReloadUI To Fix", rank, icon, castingTime, minRange, maxRange, returnedSpellId
 		else--Good request, return now
 			return name, rank, icon, castingTime, minRange, maxRange, returnedSpellId
 		end
