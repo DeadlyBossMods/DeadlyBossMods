@@ -6108,7 +6108,7 @@ do
 				requestedSpellIDs[spellId] = spellName
 			end
 			if #requestedSpellIDs == 0 then
-				DBMSpellRequestFrame:SetScript("OnUpdate", nil)
+				DBMSpellRequestFrame:SetScript("OnEvent", nil)
 				DBMSpellRequestFrame:UnregisterEvent("SPELL_NAME_UPDATE")
 				DBMSpellRequestFrame:Hide()
 			end
