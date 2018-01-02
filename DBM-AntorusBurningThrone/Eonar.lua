@@ -13,8 +13,8 @@ mod:SetHotfixNoticeRev(16960)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 249121 250701 250048",
-	"SPELL_CAST_SUCCESS 246753 254769",
+	"SPELL_CAST_START 249121 250701",
+	"SPELL_CAST_SUCCESS 246753 254769 250048",
 	"SPELL_AURA_APPLIED 250074 250555 249016 248332 250073 250693 250691 250140",
 	"SPELL_AURA_APPLIED_DOSE 250140",
 	"SPELL_AURA_REMOVED 250074 250555 249016 248332 250693 250691",
@@ -30,11 +30,11 @@ mod:RegisterEventsInCombat(
 --TODO, verify Meteor Storm in LFR
 --[[
 (ability.id = 249121 or ability.id = 250048) and type = "begincast"
- or (ability.id = 246753 or ability.id = 254769) and type = "cast"
+ or (ability.id = 246753 or ability.id = 254769 or ability.id = 250048) and type = "cast"
  or (ability.id = 248332) and type = "applydebuff"
  or (ability.id = 250073) and type = "applybuff"
  or target.name = "Volant Kerapteron"
- or type = "death" and target.id = 123760
+ or target.id = 124445 and ability.id = 250030
  
 4 Life Force LFR Logs, and slower add spawn rates:
 https://www.warcraftlogs.com/reports/bWwmdJ8gCkcP1BYF#fight=1&type=summary&view=events&pins=2%24Off%24%23244F4B%24expression%24(ability.id%20%3D%20249121%20or%20ability.id%20%3D%20250048)%20and%20type%20%3D%20%22begincast%22%20%20or%20(ability.id%20%3D%20246753%20or%20ability.id%20%3D%20254769)%20and%20type%20%3D%20%22cast%22%20%20or%20(ability.id%20%3D%20248332)%20and%20type%20%3D%20%22applydebuff%22%20%20or%20(ability.id%20%3D%20250073)%20and%20type%20%3D%20%22applybuff%22%20%20or%20target.name%20%3D%20%22Volant%20Kerapteron%22
@@ -308,16 +308,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 250701 and self:CheckInterruptFilter(args.sourceGUID, true) then
 		specWarnSwing:Show()
 		specWarnSwing:Play("watchstep")
-	elseif spellId == 250048 then
-		self.vb.lifeForceCast = self.vb.lifeForceCast + 1
-		warnLifeForce:Show(self.vb.lifeForceCast)
---[[		if self:IsEasy() then
-			local felElapsed, felTotal = timerRainofFelCD:GetTime(self.vb.rainOfFelCount+1)
-			local felRemaining = felTotal - felElapsed
-			countdownRainofFel:Cancel()
-			timerRainofFelCD:Update(felElapsed, felTotal+24, self.vb.rainOfFelCount+1)
-			countdownRainofFel:Start(felRemaining+24)
-		end--]]
+
 	end
 end
 
