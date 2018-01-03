@@ -15,12 +15,11 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 244625 246505 253040 245227",
 	"SPELL_CAST_SUCCESS 244722 244892 245227 253037 245174",
-	"SPELL_AURA_APPLIED 244737 244892 253015",
-	"SPELL_AURA_APPLIED_DOSE 244892",
+	"SPELL_AURA_APPLIED 244737 244892 253015 244172",
+	"SPELL_AURA_APPLIED_DOSE 244892 244172",
 	"SPELL_AURA_REMOVED 244737 253015",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
-	"RAID_BOSS_WHISPER",
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3"
 )
 
@@ -36,7 +35,7 @@ local Erodus = DBM:EJ_GetSectionInfo(16130)
 --General
 local warnOutofPod						= mod:NewTargetNoFilterAnnounce("ej16098", 2, 244141)
 local warnExploitWeakness				= mod:NewStackAnnounce(244892, 2, nil, "Tank")
-local warnPsychicAssault				= mod:NewTargetAnnounce(244172, 4)
+local warnPsychicAssault				= mod:NewStackAnnounce(244172, 3, nil, "-Tank", 2)
 --In Pod
 ----Chief Engineer Ishkar
 local warnEntropicMine					= mod:NewSpellAnnounce(245161, 2, nil, nil, nil, nil, nil, 2)
@@ -51,7 +50,8 @@ local warnShockGrenade					= mod:NewTargetAnnounce(244737, 3, nil, false, 2)
 --General
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
 local specWarnExploitWeakness			= mod:NewSpecialWarningTaunt(244892, nil, nil, nil, 1, 2)
-local specWarnPsychicAssault			= mod:NewSpecialWarningYou(244172, nil, nil, nil, 3, 2)
+local specWarnPsychicAssaultStack		= mod:NewSpecialWarningStack(244172, nil, 10, nil, nil, 1, 6)
+local specWarnPsychicAssault			= mod:NewSpecialWarningMove(244172, nil, nil, nil, 3, 2)--Two diff warnings cause we want to upgrade to high priority at 19+ stacks
 --In Pod
 ----Admiral Svirax
 local specWarnFusillade					= mod:NewSpecialWarningMoveTo(244625, nil, nil, nil, 1, 5)
@@ -248,6 +248,23 @@ function mod:SPELL_AURA_APPLIED(args)
 				warnExploitWeakness:Show(args.destName, amount)
 			end
 		end
+	elseif spellId == 244172 then
+		local amount = args.amount or 1
+		if args:IsPlayer() then
+			if amount == 10 or amount == 15 then
+				if amount >= 19 then--High priority
+					specWarnPsychicAssault:Show()
+					specWarnPsychicAssault:Play("otherout")
+				else--Just a basic stack warning
+					specWarnPsychicAssaultStack:Show(amount)
+					specWarnPsychicAssaultStack:Play("stackhigh")
+				end
+			end
+		else
+			if amount >= 10 and amount % 5 == 0 then
+				warnPsychicAssault:Show(args.destName, amount)
+			end
+		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -273,22 +290,6 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 --]]
-
-function mod:RAID_BOSS_WHISPER(msg)
-	if msg:find("244172") then
-		specWarnPsychicAssault:Show()
-		specWarnPsychicAssault:Play("otherout")
-	end
-end
-
-function mod:OnTranscriptorSync(msg, targetName)
-	if msg:find("244172") then
-		targetName = Ambiguate(targetName, "none")
-		if self:AntiSpam(4, targetName) then
-			warnPsychicAssault:Show(targetName)
-		end
-	end
-end
 
 --"<14.68 23:07:26> [UNIT_SPELLCAST_SUCCEEDED] General Erodus(??) [[boss3:Summon Reinforcements::3-2083-1712-2166-245546-00015E79FE:245546]]", -- [121]
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
