@@ -9152,7 +9152,7 @@ do
 	end
 
 	function yellPrototype:Countdown(time, numAnnounces, ...)
-		if not UnitBuff("player", voidForm) then
+		if not UnitBuff("player", DBM:GetSpellInfo(194249)) then
 			scheduleCountdown(time, numAnnounces, self.Yell, self.mod, self, ...)
 		end
 	end
