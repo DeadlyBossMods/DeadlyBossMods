@@ -49,7 +49,7 @@ local warnAegisofFlames					= mod:NewTargetAnnounce(244383, 3, nil, nil, nil, ni
 local warnAegisofFlamesEnded			= mod:NewEndAnnounce(244383, 1)
 local warnEverburningFlames				= mod:NewTargetAnnounce(244613, 2, nil, false)
 --Platform: Rancora
-local warnRancoraPortal					= mod:NewSpellAnnounce(246082, 2), nil, nil, nil, nil, nil, 2
+local warnRancoraPortal					= mod:NewSpellAnnounce(246082, 2, nil, nil, nil, nil, nil, 2)
 local warnCausticSlime					= mod:NewTargetAnnounce(244849, 2, nil, false)
 --Platform: Nathreza
 local warnNathrezaPortal				= mod:NewSpellAnnounce(246157, 2, nil, nil, nil, nil, nil, 2)
