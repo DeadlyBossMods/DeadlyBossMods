@@ -347,6 +347,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 				timerDestructorCD:Start(timer-10, text)--High alert fires about 9 seconds after spawn so using it as a trigger has a -10 adjustment
 			end
 		end
+	elseif spellId == 250048 then
+		self.vb.lifeForceCast = self.vb.lifeForceCast + 1
+		warnLifeForce:Show(self.vb.lifeForceCast)
 	end
 end
 
