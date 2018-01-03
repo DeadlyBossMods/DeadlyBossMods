@@ -8657,7 +8657,7 @@ do
 			error("NewAnnounce: you must provide announce text", 2)
 			return
 		end
-		if soundOption and type(soundOption) == "bool" then
+		if soundOption and type(soundOption) == "boolean" then
 			soundOption = 0--No Sound
 		end
 		local obj = setmetatable(
@@ -8694,7 +8694,7 @@ do
 			optionVersion = optionName
 			optionName = nil
 		end
-		if soundOption and type(soundOption) == "bool" then
+		if soundOption and type(soundOption) == "boolean" then
 			soundOption = 0--No Sound
 		end
 		if type(spellId) == "string" and spellId:match("OptionVersion") then
