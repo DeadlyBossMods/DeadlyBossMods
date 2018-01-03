@@ -44,15 +44,15 @@ local Nathreza = DBM:EJ_GetSectionInfo(15802)
 --Platform: Nexus
 local warnRealityTear					= mod:NewStackAnnounce(244016, 2, nil, "Tank")
 --Platform: Xoroth
-local warnXorothPortal					= mod:NewSpellAnnounce(244318, 2)
+local warnXorothPortal					= mod:NewSpellAnnounce(244318, 2, nil, nil, nil, nil, nil, 2)
 local warnAegisofFlames					= mod:NewTargetAnnounce(244383, 3, nil, nil, nil, nil, nil, nil, true)
 local warnAegisofFlamesEnded			= mod:NewEndAnnounce(244383, 1)
 local warnEverburningFlames				= mod:NewTargetAnnounce(244613, 2, nil, false)
 --Platform: Rancora
-local warnRancoraPortal					= mod:NewSpellAnnounce(246082, 2)
+local warnRancoraPortal					= mod:NewSpellAnnounce(246082, 2), nil, nil, nil, nil, nil, 2
 local warnCausticSlime					= mod:NewTargetAnnounce(244849, 2, nil, false)
 --Platform: Nathreza
-local warnNathrezaPortal				= mod:NewSpellAnnounce(246157, 2)
+local warnNathrezaPortal				= mod:NewSpellAnnounce(246157, 2, nil, nil, nil, nil, nil, 2)
 local warnDelusions						= mod:NewTargetAnnounce(245050, 2, nil, "Healer")
 local warnCloyingShadows				= mod:NewTargetAnnounce(245118, 2, nil, false)
 local warnHungeringGloom				= mod:NewTargetAnnounce(245075, 2, nil, false)
@@ -111,14 +111,7 @@ local timerDelusionsCD					= mod:NewCDTimer(14.6, 245050, nil, nil, nil, 3, nil,
 local countdownCollapsingWorld			= mod:NewCountdown(50, 243983, nil, nil, 3)
 local countdownRealityTear				= mod:NewCountdown("Alt12", 244016, "Tank")
 local countdownFelstormBarrage			= mod:NewCountdown("AltTwo32", 244000, nil, nil, 3)
---Platform: Xoroth
---Platform: Rancora
 
---Platform: Nexus
-local voiceTransportPortal				= mod:NewVoice(244677)--killmob
-
---mod:AddSetIconOption("SetIconOnFocusedDread", 238502, true)
---mod:AddInfoFrameOption(239154, true)
 mod:AddRangeFrameOption("8/10")
 mod:AddBoolOption("ShowAllPlatforms", false)
 
@@ -465,12 +458,12 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 257939 then
 		self.vb.firstPortal = true
 		warnXorothPortal:Show()
-		voiceTransportPortal:Play("newportal")
+		warnXorothPortal:Play("newportal")
 	elseif spellId == 257941 then
 		warnRancoraPortal:Show()
-		voiceTransportPortal:Play("newportal")
+		warnRancoraPortal:Play("newportal")
 	elseif spellId == 257942 then
 		warnNathrezaPortal:Show()
-		voiceTransportPortal:Play("newportal")
+		warnNathrezaPortal:Play("newportal")
 	end
 end
