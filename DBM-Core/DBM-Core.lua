@@ -6097,7 +6097,7 @@ function DBM:EJ_GetSectionInfo(sectionID)
 end
 
 do
-	local DBMSpellRequestFrame = CreateFrame("Frame", "DBMSpellRequestFrame")
+--[[	local DBMSpellRequestFrame = CreateFrame("Frame", "DBMSpellRequestFrame")
 	DBMSpellRequestFrame:Hide()
 	
 	local requestedSpellIDs = {}
@@ -6122,7 +6122,7 @@ do
 		else--Wait longer
 			self:Schedule(0.025, delayedSpellRequest, self, spellId, rank, icon, castingTime, minRange, maxRange, returnedSpellId)
 		end
-	end
+	end--]]
 
 	--Handle new spell name requesting in 7.3.5
 	function DBM:GetSpellInfo(spellId)
@@ -6130,7 +6130,7 @@ do
 		if not returnedSpellId then--Bad request all together
 			DBM:Debug("Invalid call to GetSpellInfo for spellID: "..spellId)
 			return nil
-		elseif not name or name == "" then--7.3.5 PTR returned blank/nil name, name not yet cached and must be requested
+		elseif not name or name == "" then--7.3.5 PTR returned blank/nil name, name not yet cached and will only be available after next SPELL_NAME_UPDATE event
 			--Doesn't work
 			--[[requestedSpellIDs[spellId] = true
 			if not DBMSpellRequestFrame:IsShown() then
