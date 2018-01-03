@@ -107,10 +107,12 @@ mod.vb.lastIcon = 8
 function mod:DemonicChargeTarget(targetname, uId)
 	if not targetname then return end
 	if targetname == UnitName("player") then
-		specWarnDemonicChargeYou:Show()
-		specWarnDemonicChargeYou:Play("runaway")
-		yellDemonicCharge:Yell()
-	elseif self:CheckNearby(10, targetname) and self:AntiSpam(3.5, 2) then
+		if self:AntiSpam(3, 5) then
+			specWarnDemonicChargeYou:Show()
+			specWarnDemonicChargeYou:Play("runaway")
+			yellDemonicCharge:Yell()
+		end
+	elseif self:AntiSpam(3.5, 2) and self:CheckNearby(10, targetname) then
 		specWarnDemonicCharge:Show(targetname)
 		specWarnDemonicCharge:Play("watchstep")
 	else
