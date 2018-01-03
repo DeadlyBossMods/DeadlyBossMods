@@ -114,69 +114,69 @@ do
 			elseif mod.vb.comboCount == 1 and mod.vb.firstCombo then
 				if mod.vb.firstCombo == "Foe" then--L.Foe, L.Tempest, L.Rend, L.Foe, L.Rend or L.Foe, L.Rend, L.Tempest, L.Foe, L.Rend
 					if comboUsed[1] then--It's L.Foe, L.Rend, L.Tempest, L.Foe, L.Rend (combo 2) for sure
-						addLine(mod.vb.comboCount+1, DBM_CORE_IMPORTANT_ICON..L.Rend)
-						addLine(mod.vb.comboCount+2, DBM_CORE_DEADLY_ICON..L.Tempest)
+						addLine(mod.vb.comboCount+1, DBM_CORE_IMPORTANT_ICON_SMALL..L.Rend)
+						addLine(mod.vb.comboCount+2, DBM_CORE_DEADLY_ICON_SMALL..L.Tempest)
 					elseif comboUsed[2] then--It's L.Foe, L.Tempest, L.Rend, L.Foe, L.Rend (Combo 1) for sure
-						addLine(mod.vb.comboCount+1, DBM_CORE_DEADLY_ICON..L.Tempest)
-						addLine(mod.vb.comboCount+2, DBM_CORE_IMPORTANT_ICON..L.Rend)
+						addLine(mod.vb.comboCount+1, DBM_CORE_DEADLY_ICON_SMALL..L.Tempest)
+						addLine(mod.vb.comboCount+2, DBM_CORE_IMPORTANT_ICON_SMALL..L.Rend)
 					else--Could be either one
-						addLine(mod.vb.comboCount+1, DBM_CORE_IMPORTANT_ICON..L.Rend.."/"..DBM_CORE_DEADLY_ICON..L.Tempest)
-						addLine(mod.vb.comboCount+2, DBM_CORE_IMPORTANT_ICON..L.Rend.."/"..DBM_CORE_DEADLY_ICON..L.Tempest)
+						addLine(mod.vb.comboCount+1, DBM_CORE_IMPORTANT_ICON_SMALL..L.Rend.."/"..DBM_CORE_DEADLY_ICON_SMALL..L.Tempest)
+						addLine(mod.vb.comboCount+2, DBM_CORE_IMPORTANT_ICON_SMALL..L.Rend.."/"..DBM_CORE_DEADLY_ICON_SMALL..L.Tempest)
 					end
-					addLine(mod.vb.comboCount+3, DBM_CORE_TANK_ICON..L.Foe.."(2)")
+					addLine(mod.vb.comboCount+3, DBM_CORE_TANK_ICON_SMALL..L.Foe.."(2)")
 				elseif mod.vb.firstCombo == "Rend" then----L.Rend, L.Tempest, L.Foe, L.Foe, L.Rend or L.Rend, L.Foe, L.Foe, L.Tempest, L.Rend
 					if comboUsed[3] then--It's L.Rend, L.Foe, L.Foe, L.Tempest, L.Rend (combo 4) for sure
-						addLine(mod.vb.comboCount+1, DBM_CORE_TANK_ICON..L.Foe)
-						addLine(mod.vb.comboCount+2, DBM_CORE_TANK_ICON..L.Foe.."(2)")
-						addLine(mod.vb.comboCount+3, DBM_CORE_DEADLY_ICON..L.Tempest)
+						addLine(mod.vb.comboCount+1, DBM_CORE_TANK_ICON_SMALL..L.Foe)
+						addLine(mod.vb.comboCount+2, DBM_CORE_TANK_ICON_SMALL..L.Foe.."(2)")
+						addLine(mod.vb.comboCount+3, DBM_CORE_DEADLY_ICON_SMALL..L.Tempest)
 					elseif comboUsed[4] then--It's L.Rend, L.Tempest, L.Foe, L.Foe, L.Rend (combo 3) for sure
-						addLine(mod.vb.comboCount+1, DBM_CORE_DEADLY_ICON..L.Tempest)
-						addLine(mod.vb.comboCount+2, DBM_CORE_TANK_ICON..L.Foe)
-						addLine(mod.vb.comboCount+3, DBM_CORE_TANK_ICON..L.Foe.."(2)")
+						addLine(mod.vb.comboCount+1, DBM_CORE_DEADLY_ICON_SMALL..L.Tempest)
+						addLine(mod.vb.comboCount+2, DBM_CORE_TANK_ICON_SMALL..L.Foe)
+						addLine(mod.vb.comboCount+3, DBM_CORE_TANK_ICON_SMALL..L.Foe.."(2)")
 					else
-						addLine(mod.vb.comboCount+1, DBM_CORE_TANK_ICON..L.Foe.."/"..DBM_CORE_DEADLY_ICON..L.Tempest)
-						addLine(mod.vb.comboCount+2, DBM_CORE_TANK_ICON..L.Foe.."/"..DBM_CORE_TANK_ICON..L.Foe.."(2)")
-						addLine(mod.vb.comboCount+3, DBM_CORE_TANK_ICON..L.Foe.."(2)/"..DBM_CORE_DEADLY_ICON..L.Tempest)
+						addLine(mod.vb.comboCount+1, DBM_CORE_TANK_ICON_SMALL..L.Foe.."/"..DBM_CORE_DEADLY_ICON_SMALL..L.Tempest)
+						addLine(mod.vb.comboCount+2, DBM_CORE_TANK_ICON_SMALL..L.Foe.."/"..DBM_CORE_TANK_ICON_SMALL..L.Foe.."(2)")
+						addLine(mod.vb.comboCount+3, DBM_CORE_TANK_ICON_SMALL..L.Foe.."(2)/"..DBM_CORE_DEADLY_ICON_SMALL..L.Tempest)
 					end
 				end
-				addLine(mod.vb.comboCount+4, DBM_CORE_IMPORTANT_ICON..L.Rend.."(2)")
+				addLine(mod.vb.comboCount+4, DBM_CORE_IMPORTANT_ICON_SMALL..L.Rend.."(2)")
 			elseif mod.vb.comboCount == 2 and mod.vb.secondCombo then
 				if mod.vb.secondCombo == "Tempest" then
 					if mod.vb.firstCombo == "Foe" then--L.Foe, L.Tempest, L.Rend, L.Foe, L.Rend
-						addLine(mod.vb.comboCount+1, DBM_CORE_IMPORTANT_ICON..L.Rend)
+						addLine(mod.vb.comboCount+1, DBM_CORE_IMPORTANT_ICON_SMALL..L.Rend)
 						comboUsed[1] = true
 					elseif mod.vb.firstCombo == "Rend" then--L.Rend, L.Tempest, L.Foe, L.Foe, L.Rend
-						addLine(mod.vb.comboCount+1, DBM_CORE_TANK_ICON..L.Foe)
+						addLine(mod.vb.comboCount+1, DBM_CORE_TANK_ICON_SMALL..L.Foe)
 						comboUsed[3] = true
 					end
 					--Same in both combos
-					addLine(mod.vb.comboCount+2, DBM_CORE_TANK_ICON..L.Foe.."(2)")
+					addLine(mod.vb.comboCount+2, DBM_CORE_TANK_ICON_SMALL..L.Foe.."(2)")
 				elseif mod.vb.secondCombo == "Foe" then--L.Rend, L.Foe, L.Foe, L.Tempest, L.Rend
-					addLine(mod.vb.comboCount+1, DBM_CORE_TANK_ICON..L.Foe.."(2)")
-					addLine(mod.vb.comboCount+2, DBM_CORE_DEADLY_ICON..L.Tempest)
+					addLine(mod.vb.comboCount+1, DBM_CORE_TANK_ICON_SMALL..L.Foe.."(2)")
+					addLine(mod.vb.comboCount+2, DBM_CORE_DEADLY_ICON_SMALL..L.Tempest)
 					comboUsed[4] = true
 				elseif mod.vb.secondCombo == "Rend" then--L.Foe, L.Rend, L.Tempest, L.Foe, L.Rend
-					addLine(mod.vb.comboCount+1, DBM_CORE_DEADLY_ICON..L.Tempest)
-					addLine(mod.vb.comboCount+2, DBM_CORE_TANK_ICON..L.Foe.."(2)")
+					addLine(mod.vb.comboCount+1, DBM_CORE_DEADLY_ICON_SMALL..L.Tempest)
+					addLine(mod.vb.comboCount+2, DBM_CORE_TANK_ICON_SMALL..L.Foe.."(2)")
 					comboUsed[2] = true
 				end
 				--Rend always last
-				addLine(mod.vb.comboCount+3, DBM_CORE_IMPORTANT_ICON..L.Rend.."(2)")
+				addLine(mod.vb.comboCount+3, DBM_CORE_IMPORTANT_ICON_SMALL..L.Rend.."(2)")
 			elseif mod.vb.comboCount == 3 and mod.vb.secondCombo then
 				if mod.vb.secondCombo == "Tempest" then
 					--Same in both combos
-					addLine(mod.vb.comboCount+1, DBM_CORE_TANK_ICON..L.Foe.."(2)")
-					addLine(mod.vb.comboCount+2, DBM_CORE_IMPORTANT_ICON..L.Rend.."(2)")
+					addLine(mod.vb.comboCount+1, DBM_CORE_TANK_ICON_SMALL..L.Foe.."(2)")
+					addLine(mod.vb.comboCount+2, DBM_CORE_IMPORTANT_ICON_SMALL..L.Rend.."(2)")
 				elseif mod.vb.secondCombo == "Foe" then--L.Rend, L.Foe, L.Foe, L.Tempest, L.Rend
-					addLine(mod.vb.comboCount+1, DBM_CORE_DEADLY_ICON..L.Tempest)
-					addLine(mod.vb.comboCount+2, DBM_CORE_IMPORTANT_ICON..L.Rend.."(2)")
+					addLine(mod.vb.comboCount+1, DBM_CORE_DEADLY_ICON_SMALL..L.Tempest)
+					addLine(mod.vb.comboCount+2, DBM_CORE_IMPORTANT_ICON_SMALL..L.Rend.."(2)")
 				elseif mod.vb.secondCombo == "Rend" then--L.Foe, L.Rend, L.Tempest, L.Foe, L.Rend
-					addLine(mod.vb.comboCount+1, DBM_CORE_TANK_ICON..L.Foe.."(2)")
-					addLine(mod.vb.comboCount+2, DBM_CORE_IMPORTANT_ICON..L.Rend.."(2)")
+					addLine(mod.vb.comboCount+1, DBM_CORE_TANK_ICON_SMALL..L.Foe.."(2)")
+					addLine(mod.vb.comboCount+2, DBM_CORE_IMPORTANT_ICON_SMALL..L.Rend.."(2)")
 				end
 			elseif mod.vb.comboCount == 4 then
 				--rend always last
-				addLine(mod.vb.comboCount+1, DBM_CORE_IMPORTANT_ICON..L.Rend.."(2)")
+				addLine(mod.vb.comboCount+1, DBM_CORE_IMPORTANT_ICON_SMALL..L.Rend.."(2)")
 			else
 				DBM.InfoFrame:Hide()
 			end
@@ -184,19 +184,19 @@ do
 			if mod.vb.comboCount == 0 then
 				--Filler
 			elseif mod.vb.comboCount == 1 then
-				addLine(mod.vb.comboCount+1, DBM_CORE_IMPORTANT_ICON..L.Rend)
-				addLine(mod.vb.comboCount+2, DBM_CORE_TANK_ICON..L.Foe.."(2)")
-				addLine(mod.vb.comboCount+3, DBM_CORE_IMPORTANT_ICON..L.Rend.."(2)")
-				addLine(mod.vb.comboCount+4, DBM_CORE_DEADLY_ICON..L.Tempest)
+				addLine(mod.vb.comboCount+1, DBM_CORE_IMPORTANT_ICON_SMALL..L.Rend)
+				addLine(mod.vb.comboCount+2, DBM_CORE_TANK_ICON_SMALL..L.Foe.."(2)")
+				addLine(mod.vb.comboCount+3, DBM_CORE_IMPORTANT_ICON_SMALL..L.Rend.."(2)")
+				addLine(mod.vb.comboCount+4, DBM_CORE_DEADLY_ICON_SMALL..L.Tempest)
 			elseif mod.vb.comboCount == 2 then
-				addLine(mod.vb.comboCount+1, DBM_CORE_TANK_ICON..L.Foe.."(2)")
-				addLine(mod.vb.comboCount+2, DBM_CORE_IMPORTANT_ICON..L.Rend.."(2)")
-				addLine(mod.vb.comboCount+3, DBM_CORE_DEADLY_ICON..L.Tempest)
+				addLine(mod.vb.comboCount+1, DBM_CORE_TANK_ICON_SMALL..L.Foe.."(2)")
+				addLine(mod.vb.comboCount+2, DBM_CORE_IMPORTANT_ICON_SMALL..L.Rend.."(2)")
+				addLine(mod.vb.comboCount+3, DBM_CORE_DEADLY_ICON_SMALL..L.Tempest)
 			elseif mod.vb.comboCount == 3 then
-				addLine(mod.vb.comboCount+1, DBM_CORE_IMPORTANT_ICON..L.Rend.."(2)")
-				addLine(mod.vb.comboCount+2, DBM_CORE_DEADLY_ICON..L.Tempest)
+				addLine(mod.vb.comboCount+1, DBM_CORE_IMPORTANT_ICON_SMALL..L.Rend.."(2)")
+				addLine(mod.vb.comboCount+2, DBM_CORE_DEADLY_ICON_SMALL..L.Tempest)
 			elseif mod.vb.comboCount == 4 then
-				addLine(mod.vb.comboCount+1, DBM_CORE_DEADLY_ICON..L.Tempest)
+				addLine(mod.vb.comboCount+1, DBM_CORE_DEADLY_ICON_SMALL..L.Tempest)
 			else
 				DBM.InfoFrame:Hide()
 			end
@@ -410,9 +410,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.SetIconOnAdds then
 			self:ScheduleMethod(2, "ScanForMobs", 122532, 1, 1, 5, 0.1, 12, "SetIconOnAdds", nil, nil, true)
 		end
-	if self.Options.RangeFrame and not self:IsTank() then
-		DBM.RangeCheck:Hide()
-	end
+		if self.Options.RangeFrame and not self:IsTank() then
+			DBM.RangeCheck:Hide()
+		end
+		if self.Options.InfoFrame then
+			DBM.InfoFrame:Hide()
+		end
 	elseif spellId == 244903 or spellId == 247091 then--Purification/Catalyzed
 		if self.Options.NPAuraOnPresence then
 			DBM.Nameplate:Show(true, args.destGUID, spellId)
@@ -428,6 +431,11 @@ function mod:SPELL_AURA_REMOVED(args)
 	if spellId == 244894 then--Corrupt Aegis
 		self.vb.phase = self.vb.phase + 1
 		self.vb.wakeOfFlameCount = 0
+		self.vb.comboCount = 0
+		self.vb.firstCombo = nil
+		self.vb.secondCombo = nil
+		self.vb.foeCount = 0
+		self.vb.rendCount = 0
 		--timerScorchingBlazeCD:Start(3)--Unknown
 		timerTaeshalachTechCD:Start(37, self.vb.techCount+1)
 		countdownTaeshalachTech:Start(37)
