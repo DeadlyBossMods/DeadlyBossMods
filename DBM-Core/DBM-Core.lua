@@ -4958,6 +4958,9 @@ do
 		fontstringFooter:SetText(DBM_CORE_NOTEFOOTER)
 		self.Noteframe.mod = mod
 		self.Noteframe.modvar = modvar
+		if abilityName and type(abilityName) == "number" then--Still a spellID
+			abilityName = DBM:EJ_GetSectionInfo(abilityName)
+		end
 		self.Noteframe.abilityName = abilityName
 		if syncText then
 			button3:Hide()--Don't show share button in shared notes
