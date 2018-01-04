@@ -142,7 +142,7 @@ function mod:SPELL_CAST_START(args)
 		end
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:SetHeader(DBM_NO_DEBUFF:format(goodDebuff))
-			DBM.InfoFrame:Show(5, "playergooddebuff", 204284)
+			DBM.InfoFrame:Show(5, "playergooddebuff", goodDebuff)
 		end
 	elseif spellId == 204471 then
 		specWarnFocusedBlast:Show()

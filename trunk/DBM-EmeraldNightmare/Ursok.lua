@@ -120,7 +120,7 @@ function mod:OnCombatStart(delay)
 	berserkTimer:Start(-delay)
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(momentum)
-		DBM.InfoFrame:Show(15, "reverseplayerbaddebuff", 198108)
+		DBM.InfoFrame:Show(15, "reverseplayerbaddebuff", momentum)
 	end
 end
 
