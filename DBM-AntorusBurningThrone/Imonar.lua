@@ -318,7 +318,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				DBM.InfoFrame:SetHeader(args.spellName)
 				DBM.InfoFrame:Show(5, "function", updateInfoFrame, false, true, true)--No sort function, use icons, no onupdate
 			else
-				DBM.InfoFrame:Update()
+				DBM.InfoFrame:Update(0.5)
 			end
 		end
 	elseif spellId == 247641 and args:IsPlayer() and (self:IsTank() or self:UnitClass() == "ROGUE") then
@@ -375,7 +375,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			self:SetIcon(args.destName, 0)
 		end
 		if self.Options.InfoFrame then
-			DBM.InfoFrame:Update()
+			DBM.InfoFrame:Update(0.5)
 		end
 	elseif spellId == 255029 then
 		if self.Options.SetIconOnSleepCanister then
