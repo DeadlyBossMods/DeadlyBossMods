@@ -132,6 +132,7 @@ local phase2DeathBlossom = {80, 75}--VERIFIED Oct 16
 local autoMarkScannerActive = false
 local autoMarkBlocked = false
 local autoMarkFilter = {}
+local infoFrameSpell = DBM:GetSpellInfo(210099)
 
 local updateInfoFrame
 do
@@ -264,8 +265,9 @@ function mod:OnCombatStart(delay)
 	end
 	if self.Options.InfoFrame then
 		if self.Options.InfoFrameBehavior == "Fixates" then
-			--DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(210099))
-			DBM.InfoFrame:Show(10, "playerbaddebuff", 210099)
+			infoFrameSpell = DBM:GetSpellInfo(210099)
+			DBM.InfoFrame:SetHeader(infoFrameSpell)
+			DBM.InfoFrame:Show(10, "playerbaddebuff", infoFrameSpell)
 		else
 			DBM.InfoFrame:SetHeader(UNIT_NAMEPLATES_SHOW_ENEMY_MINIONS)
 			DBM.InfoFrame:Show(5, "function", updateInfoFrame, false, false, true)

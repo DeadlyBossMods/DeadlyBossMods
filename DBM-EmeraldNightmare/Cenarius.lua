@@ -85,7 +85,7 @@ mod.vb.addsCount = 0
 mod.vb.sisterCount = 0
 local scornedWarned = false
 local seenMobs = {}
-local debuffName = DBM:GetSpellInfo(211471)
+local debuffName, infoframeName = DBM:GetSpellInfo(211471), DBM:GetSpellInfo(210279)
 
 function mod:BreathTarget(targetname, uId)
 	if not targetname then return end
@@ -96,7 +96,7 @@ function mod:BreathTarget(targetname, uId)
 end
 
 function mod:OnCombatStart(delay)
-	debuffName = DBM:GetSpellInfo(211471)
+	debuffName, infoframeName = DBM:GetSpellInfo(211471), DBM:GetSpellInfo(210279)
 	scornedWarned = false
 	table.wipe(seenMobs)
 	self.vb.phase = 1
@@ -115,8 +115,8 @@ function mod:OnCombatStart(delay)
 		"INSTANCE_ENCOUNTER_ENGAGE_UNIT"
 	)
 	if self.Options.InfoFrame and not self:IsLFR() then
-		--DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(210279))
-		DBM.InfoFrame:Show(8, "playerdebuffstacks", 210279)
+		DBM.InfoFrame:SetHeader(infoframeName)
+		DBM.InfoFrame:Show(8, "playerdebuffstacks", infoframeName)
 	end
 end
 
