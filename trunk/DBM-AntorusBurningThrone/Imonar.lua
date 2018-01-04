@@ -21,6 +21,7 @@ mod:RegisterEventsInCombat(
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 	"RAID_BOSS_WHISPER",
+	"RAID_TARGET_UPDATE",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
@@ -318,7 +319,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				DBM.InfoFrame:SetHeader(args.spellName)
 				DBM.InfoFrame:Show(5, "function", updateInfoFrame, false, true, true)--No sort function, use icons, no onupdate
 			else
-				DBM.InfoFrame:Update(0.5)
+				DBM.InfoFrame:Update()
 			end
 		end
 	elseif spellId == 247641 and args:IsPlayer() and (self:IsTank() or self:UnitClass() == "ROGUE") then
@@ -375,7 +376,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			self:SetIcon(args.destName, 0)
 		end
 		if self.Options.InfoFrame then
-			DBM.InfoFrame:Update(0.5)
+			DBM.InfoFrame:Update()
 		end
 	elseif spellId == 255029 then
 		if self.Options.SetIconOnSleepCanister then
@@ -400,6 +401,12 @@ function mod:RAID_BOSS_WHISPER(msg)
 		specWarnSleepCanister:Play("runout")
 		playerSleepDebuff = true
 		updateRangeFrame(self)
+	end
+end
+
+function mod:RAID_TARGET_UPDATE()
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:Update()
 	end
 end
 
