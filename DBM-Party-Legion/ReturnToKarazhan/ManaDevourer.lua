@@ -41,7 +41,7 @@ function mod:OnCombatStart(delay)
 	countdownCoalescePower:Start(30-delay)
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(unstableMana)
-		DBM.InfoFrame:Show(5, "playerdebuffstacks", 227502)
+		DBM.InfoFrame:Show(5, "playerdebuffstacks", unstableMana)
 	end
 end
 

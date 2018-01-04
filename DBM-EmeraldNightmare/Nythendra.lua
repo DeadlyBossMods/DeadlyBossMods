@@ -99,7 +99,7 @@ function mod:OnCombatStart(delay)
 	end
 	if self.Options.InfoFrame and self:IsMythic() then
 		DBM.InfoFrame:SetHeader(stackDebuff)
-		DBM.InfoFrame:Show(8, "playerdebuffstacks", 204506)
+		DBM.InfoFrame:Show(8, "playerdebuffstacks", stackDebuff)
 	end
 	if self:IsMythic() then
 		playerHasTen = false

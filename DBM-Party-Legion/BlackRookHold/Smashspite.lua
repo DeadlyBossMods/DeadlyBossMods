@@ -35,13 +35,15 @@ mod:AddInfoFrameOption(198080)
 mod:AddSetIconOption("SetIconOnHatefulGaze", 198079, true)
 
 local superWarned = false
+local infoFrameDebuff = DBM:GetSpellInfo(198080)
 
 function mod:OnCombatStart(delay)
 	if not self:IsNormal() then
 		timerHatefulGazeCD:Start(5-delay)
 		if self.Options.InfoFrame then
-			--DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(198080))
-			DBM.InfoFrame:Show(5, "reverseplayerbaddebuff", 198080)
+			infoFrameDebuff = DBM:GetSpellInfo(198080)
+			DBM.InfoFrame:SetHeader(infoFrameDebuff)
+			DBM.InfoFrame:Show(5, "reverseplayerbaddebuff", infoFrameDebuff)
 		end
 	end
 	timerStompCD:Start(12-delay)
