@@ -101,7 +101,8 @@ L= DBM:GetModLocalization(1984)
 L:SetMiscLocalization({
 	Foe			=	"적 해체",
 	Rend		=	"분쇄",
-	Tempest 	=	"폭풍"
+	Tempest 	=	"폭풍",
+	Current		=	"현재 스킬:"
 })
 
 ---------------------------
