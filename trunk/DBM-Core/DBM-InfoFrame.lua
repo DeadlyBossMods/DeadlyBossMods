@@ -850,10 +850,14 @@ function infoFrame:RegisterCallback(cb)
 	updateCallbacks[#updateCallbacks + 1] = cb
 end
 
-function infoFrame:Update()
+function infoFrame:Update(time)
 	frame = frame or createFrame()
 	if frame:IsShown() then
-		onUpdate(frame)
+		if time then
+			C_Timer.After(time, function() onUpdate(frame) end)
+		else
+			onUpdate(frame)
+		end
 	end
 end
 
