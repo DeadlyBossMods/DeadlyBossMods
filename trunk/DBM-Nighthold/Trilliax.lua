@@ -61,16 +61,16 @@ local specWarnEchoDuder				= mod:NewSpecialWarningSwitchCount(214880, nil, nil, 
 local timerArcaneSlashCD			= mod:NewCDTimer(9, 206641, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerPhaseChange				= mod:NewNextTimer(45, 155005, nil, nil, nil, 6)
 --Cleaner
---mod:AddTimerLine(DBM:GetSpellInfo(206560))
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(13285))
 local timerToxicSliceCD				= mod:NewCDTimer(18, 206788, nil, nil, nil, 3)
 --local timerSterilizeCD				= mod:NewNextTimer(3, 208499, nil, nil, nil, 3)
 local timerCleansingRageCD			= mod:NewNextTimer(10, 206820, nil, nil, nil, 2)
 --Maniac
---mod:AddTimerLine(DBM:GetSpellInfo(206557))
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(13281))
 local timerArcingBondsCD			= mod:NewCDTimer(5, 208924, nil, nil, nil, 3)--5.7-8
 local timerAnnihilationCD			= mod:NewCDTimer(20.3, 207630, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
 --Caretaker
---mod:AddTimerLine(DBM:GetSpellInfo(206559))
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(13282))
 local timerTidyUpCD					= mod:NewNextTimer(10, 207513, nil, nil, nil, 1)
 local timerSucculentFeastCD			= mod:NewNextTimer(4.5, 207502, nil, nil, nil, 3)
 mod:AddTimerLine(ENCOUNTER_JOURNAL_SECTION_FLAG12)
