@@ -310,6 +310,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		if not tContains(empoweredPulseTargets, args.destName) then
 			table.insert(empoweredPulseTargets, args.destName)
 		end
+		if self.Options.SetIconOnEmpPulse2 and #empoweredPulseTargets < 7 then
+			self:SetIcon(args.destName, #empoweredPulseTargets+2)
+		end
 		if self.Options.InfoFrame then
 			if #empoweredPulseTargets == 1 then
 				DBM.InfoFrame:SetHeader(args.spellName)
@@ -317,9 +320,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			else
 				DBM.InfoFrame:Update()
 			end
-		end
-		if self.Options.SetIconOnEmpPulse2 and #empoweredPulseTargets < 7 then
-			self:SetIcon(args.destName, #empoweredPulseTargets+2)
 		end
 	elseif spellId == 247641 and args:IsPlayer() and (self:IsTank() or self:UnitClass() == "ROGUE") then
 		yellStasisTrap:Yell()
@@ -371,11 +371,11 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.empoweredPulseActive = self.vb.empoweredPulseActive - 1
 		tDeleteItem(empoweredPulseTargets, args.destName)
 		updateRangeFrame(self)
-		if self.Options.InfoFrame then
-			DBM.InfoFrame:Update()
-		end
 		if self.Options.SetIconOnEmpPulse2 then
 			self:SetIcon(args.destName, 0)
+		end
+		if self.Options.InfoFrame then
+			DBM.InfoFrame:Update()
 		end
 	elseif spellId == 255029 then
 		if self.Options.SetIconOnSleepCanister then
