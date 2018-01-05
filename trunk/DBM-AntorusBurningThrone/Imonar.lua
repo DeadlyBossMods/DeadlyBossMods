@@ -8,7 +8,7 @@ mod:SetZone()
 --mod:SetBossHPInfoToHighest()
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
 mod:SetHotfixNoticeRev(16961)
-mod.respawnTime = 35
+mod.respawnTime = 34.5
 
 mod:RegisterCombat("combat")
 
@@ -194,7 +194,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnShrapnalBlast:Play("watchstep")
 		if self:IsMythic() then
 			if self.vb.phase == 2 then
-				timerShrapnalBlastCD:Start(17, self.vb.shrapnalCast+1)
+				timerShrapnalBlastCD:Start(16.4, self.vb.shrapnalCast+1)
 			elseif self.vb.phase == 3 then
 				timerShrapnalBlastCD:Start(14, self.vb.shrapnalCast+1)--14-15.8
 			elseif self.vb.phase == 4 then
@@ -233,7 +233,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		end
 	elseif spellId == 247552 or spellId == 254244 then
 		if self:IsMythic() then
-			timerSleepCanisterCD:Start(12)
+			timerSleepCanisterCD:Start(11.3)
 		else
 			timerSleepCanisterCD:Start()--10.7
 		end
