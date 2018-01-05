@@ -366,7 +366,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		if args:IsPlayer() then
 			yellDecimation:Cancel()
 		end
-	elseif spellId == 246516 then--Apocolypse Protocol
+	elseif spellId == 246516 and self:IsInCombat() then--Apocolypse Protocol
 		self.vb.apocProtoCount = self.vb.apocProtoCount + 1
 		if self.vb.apocProtoCount % 2 == 1 then
 			DBM:Debug("Reverb first", 2)
