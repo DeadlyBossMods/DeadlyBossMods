@@ -10158,6 +10158,10 @@ do
 	end
 	
 	function timerPrototype:AddTime(extendAmount, ...)
+		if DBM.Options.DontShowBossTimers then return end
+		if self:GetTime(...) == 0 then
+			self:Start(extendAmount, ...)
+		end
 		local id = self.id..pformat((("\t%s"):rep(select("#", ...))), ...)
 		local bar = DBM.Bars:GetBar(id)
 		if bar then
