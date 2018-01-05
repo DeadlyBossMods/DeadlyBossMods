@@ -92,13 +92,19 @@ L= DBM:GetModLocalization(1984)
 L:SetMiscLocalization({
 	Foe			=	"碎敵者",
 	Rend		=	"烈焰撕裂",
-	Tempest 	=	"灼燒風暴"
+	Tempest 	=	"灼燒風暴",
+	Current		=	"正在施放："
 })
 
 ---------------------------
 -- Argus the Unmaker --
 ---------------------------
 L= DBM:GetModLocalization(2031)
+
+L:SetMiscLocalization({
+	SeaText =		"{rt6}加速臨機",
+	SkyText =		"{rt5}爆擊精通"
+})
 
 -------------
 --  Trash  --
