@@ -240,13 +240,13 @@ function mod:SPELL_CAST_START(args)
 		table.wipe(DemolishTargets)
 	elseif spellId == 246833 then--Ruiner
 		self.vb.ruinerCast = self.vb.ruinerCast + 1
+		timerForgingStrikeCD:Stop()
+		countdownForgingStrike:Cancel()
 		specWarnRuiner:Show()
 		specWarnRuiner:Play("farfromline")
 		specWarnRuiner:ScheduleVoice(1.5, "keepmove")
 		timerRuinerCD:Start(nil, self.vb.ruinerCast+1)--28-30 depending on difficulty
 		countdownRuiner:Start(29.1)
-		timerForgingStrikeCD:Stop()
-		countdownForgingStrike:Cancel()
 		timerForgingStrikeCD:Start(10, self.vb.forgingStrikeCast+1)
 		countdownForgingStrike:Start()
 	elseif spellId == 246516 then--Apocolypse Protocol
