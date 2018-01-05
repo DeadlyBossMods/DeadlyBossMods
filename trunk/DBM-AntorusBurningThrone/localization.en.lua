@@ -120,6 +120,11 @@ L:SetMiscLocalization({
 ---------------------------
 L= DBM:GetModLocalization(2031)
 
+L:SetMiscLocalization({
+	SeaText =		"{rt6} Haste/Vers",
+	SkyText =		"{rt5} Crit/Mast"
+})
+
 -------------
 --  Trash  --
 -------------
