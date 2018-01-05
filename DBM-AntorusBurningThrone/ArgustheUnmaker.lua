@@ -71,9 +71,9 @@ local specWarnConeofDeath			= mod:NewSpecialWarningDodge(248165, nil, nil, nil, 
 local specWarnSoulblight			= mod:NewSpecialWarningMoveAway(248396, nil, nil, nil, 1, 2)
 local yellSoulblight				= mod:NewYell(248396)
 local specWarnGiftofSea				= mod:NewSpecialWarningYou(258647, nil, nil, nil, 1, 2)
-local yellGiftofSea					= mod:NewPosYell(258647, DBM_CORE_AUTO_YELL_CUSTOM_POSITION)
+local yellGiftofSea					= mod:NewPosYell(258647, L.SeaText)
 local specWarnGiftofSky				= mod:NewSpecialWarningYou(258646, nil, nil, nil, 1, 2)
-local yellGiftofSky					= mod:NewPosYell(258646, DBM_CORE_AUTO_YELL_CUSTOM_POSITION)
+local yellGiftofSky					= mod:NewPosYell(258646, L.SkyText)
 --Mythic P1
 local specWarnSargRage				= mod:NewSpecialWarningMoveAway(257869, nil, nil, nil, 3, 2)
 local yellSargRage					= mod:NewYell(257869)
@@ -538,7 +538,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnGiftofSea:Show()
 			specWarnGiftofSea:Play("targetyou")
-			yellGiftofSea:Yell(6, args.spellName, 6)
+			yellGiftofSea:Yell()
 		end
 		if self.Options.SetIconGift then
 			self.SetIcon(args.destName, 6)
@@ -548,7 +548,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnGiftofSky:Show()
 			specWarnGiftofSky:Play("targetyou")
-			yellGiftofSky:Yell(5, args.spellName, 5)
+			yellGiftofSky:Yell()
 		end
 		if self.Options.SetIconGift then
 			self.SetIcon(args.destName, 5)
