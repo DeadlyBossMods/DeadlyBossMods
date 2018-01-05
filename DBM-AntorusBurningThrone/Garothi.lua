@@ -255,8 +255,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		elseif self:IsMythic() then
 			timerSpecialCD:Start(22)--Random cannon
 		end
-		timerFelBombardmentCD:Start(23.3)
-		countdownFelBombardment:Start(23.3)
+		timerFelBombardmentCD:Start(23)
+		countdownFelBombardment:Start(23)
 	elseif spellId == 244150 then--Fel Bombardment
 		if self:IsMythic() then
 			timerFelBombardmentCD:Start(15.7)
