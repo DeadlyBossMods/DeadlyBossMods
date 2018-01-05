@@ -128,10 +128,10 @@ function mod:OnCombatStart(delay)
 	if not self.Options.SequenceTimers then
 		if self:IsMythic() then
 			--Fire doggo
-			timerEnflamedCorruptionCD:Start(48.7-delay)
+			timerEnflamedCorruptionCD:Start(48.3-delay)
 			timerDesolateGazeCD:Start(78-delay)
 			--Shadow doggo
-			timerComsumingSphereCD:Start(48.7-delay)
+			timerComsumingSphereCD:Start(48.3-delay)
 			timerWeightOfDarknessCD:Start(73.1-delay)
 		elseif self:IsHeroic() then
 			--Fire doggo
