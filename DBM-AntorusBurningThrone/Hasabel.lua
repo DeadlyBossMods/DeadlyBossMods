@@ -108,8 +108,8 @@ local timerDelusionsCD					= mod:NewCDTimer(14.6, 245050, nil, nil, nil, 3, nil,
 --local berserkTimer					= mod:NewBerserkTimer(600)
 
 --Platform: Nexus
-local countdownCollapsingWorld			= mod:NewCountdown(50, 243983, nil, nil, 3)
-local countdownRealityTear				= mod:NewCountdown("Alt12", 244016, "Tank")
+local countdownCollapsingWorld			= mod:NewCountdown(50, 243983, false, 2, 3)
+local countdownRealityTear				= mod:NewCountdown("Alt12", 244016, "Tank", nil, 3)
 local countdownFelstormBarrage			= mod:NewCountdown("AltTwo32", 244000, nil, nil, 3)
 
 mod:AddRangeFrameOption("8/10")
