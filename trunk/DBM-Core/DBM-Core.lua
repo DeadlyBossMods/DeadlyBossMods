@@ -6016,7 +6016,7 @@ function DBM:GetCurrentInstanceDifficulty()
 	elseif difficulty == 7 then--Fixed LFR (ie pre WoD zones)
 		return "lfr25", difficultyName.." - ", difficulty, instanceGroupSize, keystoneLevel
 	elseif difficulty == 8 then
-		return "challenge5", PLAYER_DIFFICULTY6.."+ ("..difficultyModifier..") - ", difficulty, instanceGroupSize, keystoneLevel
+		return "challenge5", PLAYER_DIFFICULTY6.."+ ("..keystoneLevel..") - ", difficulty, instanceGroupSize, keystoneLevel
 	elseif difficulty == 9 then--40 man raids have their own difficulty now, no longer returned as normal 10man raids
 		return "normal10", difficultyName.." - ",difficulty, instanceGroupSize, keystoneLevel--Just use normal10 anyways, since that's where we been saving 40 man stuff for so long anyways, no reason to change it now, not like any 40 mans can be toggled between 10 and 40 where we NEED to tell the difference.
 	elseif difficulty == 11 then
