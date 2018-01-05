@@ -249,7 +249,7 @@ function mod:SPELL_CAST_START(args)
 		countdownRuiner:Start(29.1)
 		timerForgingStrikeCD:Start(10, self.vb.forgingStrikeCast+1)
 		countdownForgingStrike:Start()
-	elseif spellId == 246516 then--Apocolypse Protocol
+	elseif spellId == 246516 and self:IsInCombat() then--Apocolypse Protocol
 		self.vb.ruinerTimeLeft = timerRuinerCD:GetRemaining(self.vb.ruinerCast+1)
 		self.vb.reverbTimeLeft = timerReverberatingStrikeCD:GetRemaining(self.vb.reverbStrikeCast+1)
 		self.vb.forgingTimeLeft = timerForgingStrikeCD:GetRemaining(self.vb.forgingStrikeCast+1)
