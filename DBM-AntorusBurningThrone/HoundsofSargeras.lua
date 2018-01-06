@@ -76,7 +76,9 @@ local timerSiphonCorruptionCD			= mod:NewCDTimer(77, 244056, nil, nil, nil, 3)
 --local berserkTimer					= mod:NewBerserkTimer(600)
 
 --F'harg
---local countdownSingularity			= mod:NewCountdown(50, 235059)--Maybe test 1 countdown per dog (for all abilities)
+local countdownBurningMaw				= mod:NewCountdown("Alt10", 251448, "Tank", nil, 3)
+--Shatug
+local countdownCorruptingMaw			= mod:NewCountdown("Alt10", 251447, "Tank", nil, 3)
 
 mod:AddSetIconOption("SetIconOnWeightofDarkness2", 254429, false)
 --mod:AddInfoFrameOption(239154, true)
@@ -88,11 +90,15 @@ mod.vb.longTimer = 95.9
 mod.vb.mediumTimer = 77
 
 local function UpdateAllTimers(self)
+	countdownBurningMaw:Cancel()
+	countdownCorruptingMaw:Cancel()
 	--Fire Doggo
+	timerBurningMawCD:Stop()
 	timerMoltenTouchCD:AddTime(15)
 	timerEnflamedCorruptionCD:AddTime(15)
 	timerDesolateGazeCD:AddTime(15)
 	--Shadow Doggo
+	timerCorruptingMawCD:Stop()
 	timerComsumingSphereCD:AddTime(15)
 	timerWeightOfDarknessCD:AddTime(15)
 	timerSiphonCorruptionCD:AddTime(15)
@@ -105,7 +111,9 @@ function mod:OnCombatStart(delay)
 	self.vb.WeightDarkIcon = 1
 	--Fire doggo
 	timerBurningMawCD:Start(8.2-delay)--was same on heroic/mythic, or now
+	countdownBurningMaw:Start(8.2-delay)
 	timerCorruptingMawCD:Start(8.9-delay)--was same on heroic/normal, for now
+	countdownCorruptingMaw:Start(8.9-delay)
 	--Shadow doggo
 	if self:IsMythic() then
 		self.vb.longTimer = 88.3--88.3-89
@@ -210,12 +218,15 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnBurningMaw:Show(args.destName)
 		if self:IsMythic() then
 			timerBurningMawCD:Start(9.7)
+			countdownBurningMaw:Start(9.7)
 		else
 			timerBurningMawCD:Start()
+			countdownBurningMaw:Start()
 		end
 	elseif spellId == 245098 then
 		warnCorruptingMaw:Show(args.destName)
 		timerCorruptingMawCD:Start()
+		countdownCorruptingMaw:Start()
 	end
 end
 
