@@ -26,7 +26,7 @@ local warnToxicWound				= mod:NewTargetAnnounce(191855, 2)
 local warnWinds						= mod:NewSpellAnnounce(191798, 2)
 
 local specWarnToxicWound			= mod:NewSpecialWarningRun(191855, nil, nil, nil, 1, 2)
-local specWarnSubmerge				= mod:NewSpecialWarningSpell(191873, nil, nil, nil, 2)
+local specWarnSubmerge				= mod:NewSpecialWarningSpell(191873, nil, nil, nil, 2, 2)
 local specWarnToxicPool				= mod:NewSpecialWarningMove(191858, nil, nil, nil, 1, 2)
 local specWarnBlazingNova			= mod:NewSpecialWarningInterrupt(192003, false, nil, nil, 1, 2)
 local specWarnArcaneBlast			= mod:NewSpecialWarningInterrupt(192005, false, nil, nil, 1, 2)
@@ -100,5 +100,6 @@ mod.SPELL_MISSED = mod.SPELL_DAMAGE
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	if msg:find("spell:191873") then
 		specWarnSubmerge:Show()
+		specWarnSubmerge:Play("phasechange")
 	end
 end
