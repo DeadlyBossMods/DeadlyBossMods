@@ -19,11 +19,10 @@ mod:RegisterEventsInCombat(
 --TODO, see if swoop/screech target can be identified
 --Void Hunter
 local warnUmbralFlanking				= mod:NewTargetAnnounce(247245, 3)
---local warnRavagingDarkness				= mod:NewSpellAnnounce(245802, 3)
+local warnVoidTrap						= mod:NewSpellAnnounce(246026, 3, nil, nil, nil, nil, nil, 2)
 --local warnDreadScreech					= mod:NewCastAnnounce(248831, 2)
 
 --local specWarnHuntersRush				= mod:NewSpecialWarningDefensive(247145, "Tank", nil, nil, 1, 2)
-local specWarnVoidTrap					= mod:NewSpecialWarningDodge(246026, nil, nil, nil, 2, 2)
 local specWarnOverloadTrap				= mod:NewSpecialWarningDodge(247206, nil, nil, nil, 2, 2)
 local specWarnUmbralFlanking			= mod:NewSpecialWarningMoveAway(247245, nil, nil, nil, 1, 2)
 local yellUmbralFlanking				= mod:NewYell(247245)
@@ -101,8 +100,8 @@ end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 247175 then--Void Trap
-		specWarnVoidTrap:Show()
-		specWarnVoidTrap:Play("watchstep")
+		warnVoidTrap:Show()
+		warnVoidTrap:Play("watchstep")
 		timerVoidTrapCD:Start()
 	elseif spellId == 247206 then--Overload Trap
 		specWarnOverloadTrap:Show()
