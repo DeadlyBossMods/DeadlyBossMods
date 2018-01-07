@@ -541,7 +541,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellGiftofSea:Yell()
 		end
 		if self.Options.SetIconGift then
-			self.SetIcon(args.destName, 6)
+			self:SetIcon(args.destName, 6)
 		end
 	elseif spellId == 258646 then--Gift of Sky
 		warnSkyandSea:CombinedShow(0.3, args.destName)
@@ -551,7 +551,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellGiftofSky:Yell()
 		end
 		if self.Options.SetIconGift then
-			self.SetIcon(args.destName, 5)
+			self:SetIcon(args.destName, 5)
 		end
 	elseif spellId == 255433 or spellId == 255430 or spellId == 255429 or spellId == 255425 or spellId == 255422 or spellId == 255419 or spellId == 255418 then--Vulnerability
 		if self.Options.NPAuraOnVulnerability then
@@ -636,11 +636,11 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif spellId == 258647 then--Gift of Sea
 		if self.Options.SetIconGift then
-			self.SetIcon(args.destName, 0)
+			self:SetIcon(args.destName, 0)
 		end
 	elseif spellId == 258646 then--Gift of Sky
 		if self.Options.SetIconGift then
-			self.SetIcon(args.destName, 0)
+			self:SetIcon(args.destName, 0)
 		end
 	elseif spellId == 253021 then--Inevitability
 		if self.Options.NPAuraOnInevitability then
