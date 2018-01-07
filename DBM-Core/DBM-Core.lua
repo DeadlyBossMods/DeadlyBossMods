@@ -5013,7 +5013,6 @@ do
 		end
 	end
 
-
 	local function checkForPull(mob, combatInfo)
 		healthCombatInitialized = false
 		--This just can't be avoided, tryig to save cpu by using C_TimerAfter broke this
@@ -5063,7 +5062,6 @@ do
 
 	local function isBossEngaged(cId)
 		-- note that this is designed to work with any number of bosses, but it might be sufficient to check the first 5 unit ids
-		-- TODO: check if the client supports more than 5 boss unit IDs...just because the default boss health frame is limited to 5 doesn't mean there can't be more
 		local i = 1
 		repeat
 			local bossUnitId = "boss"..i
@@ -5480,8 +5478,16 @@ do
 				end
 				--show speed timer
 				if self.Options.AlwaysShowSpeedKillTimer2 and mod.stats and not mod.ignoreBestkill then
-					--TODO, add code here to only pull best kull for CURRENT mythic+ rank
-					local bestTime = mod.stats[statVarTable[savedDifficulty].."BestTime"]
+					local bestTime
+					if difficultyIndex == 8 then--Mythic+/Challenge Mode
+						local bestMPRank = mod.stats.challengeBestRank or 0
+						if bestMPRank == difficultyModifier then
+							--Don't show speed kill timer if not our highest rank. DBM only stores highest rank
+							bestTime = mod.stats[statVarTable[savedDifficulty].."BestTime"]
+						end
+					else
+						bestTime = mod.stats[statVarTable[savedDifficulty].."BestTime"]
+					end
 					if bestTime and bestTime > 0 then
 						local speedTimer = mod:NewTimer(bestTime, DBM_SPEED_KILL_TIMER_TEXT, "Interface\\Icons\\Spell_Holy_BorrowedTime", nil, false)
 						speedTimer:Start()
@@ -5735,7 +5741,6 @@ do
 						mod.stats[statVarTable[savedDifficulty].."BestTime"] = thisTime
 					else
 						if difficultyIndex == 8 then--Mythic+/Challenge Mode
-							--TODO, figure out how to get current mythic plus rank, compare to our best rank.
 							local bestMPRank = mod.stats.challengeBestRank or 0
 							if mod.stats.challengeBestRank > difficultyModifier then--Don't save time stats at all
 								--DO nothing
@@ -6099,53 +6104,16 @@ function DBM:EJ_GetSectionInfo(sectionID)
 	end
 end
 
-do
---[[	local DBMSpellRequestFrame = CreateFrame("Frame", "DBMSpellRequestFrame")
-	DBMSpellRequestFrame:Hide()
-	
-	local requestedSpellIDs = {}
-	local function onEvent(self, event, ...)
-		if event == "SPELL_NAME_UPDATE" then
-			local spellId, spellName = ...
-			if requestedSpellIDs[spellId] then--Should be a true bool if requested
-				requestedSpellIDs[spellId] = spellName
-			end
-		end
-	end
-	local function delayedSpellRequest(self, spellId, rank, icon, castingTime, minRange, maxRange, returnedSpellId)
-		if type(requestedSpellIDs[spellId]) == "string" then
-			local name = requestedSpellIDs[spellId]
-			requestedSpellIDs[spellId] = nil
-			if #requestedSpellIDs == 0 then
-				DBMSpellRequestFrame:SetScript("OnEvent", nil)
-				DBMSpellRequestFrame:UnregisterEvent("SPELL_NAME_UPDATE")
-				DBMSpellRequestFrame:Hide()
-			end
-			return name, rank, icon, castingTime, minRange, maxRange, returnedSpellId
-		else--Wait longer
-			self:Schedule(0.025, delayedSpellRequest, self, spellId, rank, icon, castingTime, minRange, maxRange, returnedSpellId)
-		end
-	end--]]
-
-	--Handle new spell name requesting in 7.3.5
-	function DBM:GetSpellInfo(spellId)
-		local name, rank, icon, castingTime, minRange, maxRange, returnedSpellId = GetSpellInfo(spellId)
-		if not returnedSpellId then--Bad request all together
-			DBM:Debug("Invalid call to GetSpellInfo for spellID: "..spellId)
-			return nil
-		elseif not name or name == "" then--7.3.5 PTR returned blank/nil name, name not yet cached and will only be available after next SPELL_NAME_UPDATE event
-			--Doesn't work
-			--[[requestedSpellIDs[spellId] = true
-			if not DBMSpellRequestFrame:IsShown() then
-				DBMSpellRequestFrame:Show()
-				DBMSpellRequestFrame:SetScript("OnEvent", onEvent)
-				DBMSpellRequestFrame:RegisterEvent("SPELL_NAME_UPDATE")
-			end
-			return delayedSpellRequest(self, spellId, rank, icon, castingTime, minRange, maxRange, returnedSpellId)--]]
-			return "ReloadUI To Fix", rank, icon, castingTime, minRange, maxRange, returnedSpellId
-		else--Good request, return now
-			return name, rank, icon, castingTime, minRange, maxRange, returnedSpellId
-		end
+--Handle new spell name requesting in 7.3.5
+function DBM:GetSpellInfo(spellId)
+	local name, rank, icon, castingTime, minRange, maxRange, returnedSpellId = GetSpellInfo(spellId)
+	if not returnedSpellId then--Bad request all together
+		DBM:Debug("Invalid call to GetSpellInfo for spellID: "..spellId)
+		return nil
+	elseif not name or name == "" then--7.3.5 PTR returned blank/nil name, name not yet cached and will only be available after next SPELL_NAME_UPDATE event
+		return "ReloadUI To Fix", rank, icon, castingTime, minRange, maxRange, returnedSpellId
+	else--Good request, return now
+		return name, rank, icon, castingTime, minRange, maxRange, returnedSpellId
 	end
 end
 
