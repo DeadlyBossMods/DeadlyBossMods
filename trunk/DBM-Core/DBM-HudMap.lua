@@ -293,7 +293,6 @@ function mod:Enable()
 	DBM:Debug("HudMap Activating", 2)
 	self.currentMap = select(8, GetInstanceInfo())
 	mainFrame:Show()
---	mainFrame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
 	mainFrame:RegisterEvent("LOADING_SCREEN_DISABLED")
 	self.canvas:Show()
 	self.canvas:SetAlpha(1)
@@ -345,15 +344,6 @@ do
 			mod:OnInitialize()
 			--mod:Enable()
 			mainFrame:UnregisterEvent("ADDON_LOADED")
---[[		elseif event == "COMBAT_LOG_EVENT_UNFILTERED" then
-			local timestamp, clevent, hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellID = ...
-			if clevent == "UNIT_DIED" then
-				for k, v in pairs(followedUnits) do
-					if sourceName and k and UnitIsUnit(sourceName, k) and not v.persist then
-						v:Free()
-					end
-				end
-			end--]]
 		elseif event == "LOADING_SCREEN_DISABLED" then
 			mod.currentMap = select(8, GetInstanceInfo())
 		end
