@@ -10083,7 +10083,6 @@ do
 	function timerPrototype:Stop(...)
 		if select("#", ...) == 0 then
 			for i = #self.startedTimers, 1, -1 do
-				--This callback sucks, it needs useful information for external mods to listen to it better, such as mod and spellid
 				fireEvent("DBM_TimerStop", self.startedTimers[i])
 				DBM.Bars:CancelBar(self.startedTimers[i])
 				self.startedTimers[i] = nil
@@ -10092,7 +10091,6 @@ do
 			local id = self.id..pformat((("\t%s"):rep(select("#", ...))), ...)
 			for i = #self.startedTimers, 1, -1 do
 				if self.startedTimers[i] == id then
-					--This callback sucks, it needs useful information for external mods to listen to it better, such as mod and spellid
 					fireEvent("DBM_TimerStop", id)
 					DBM.Bars:CancelBar(id)
 					tremove(self.startedTimers, i)
@@ -10134,6 +10132,7 @@ do
 			self:Start(totalTime, ...)
 		end
 		local id = self.id..pformat((("\t%s"):rep(select("#", ...))), ...)
+		fireEvent("DBM_TimerUpdate", id, elapsed, totalTime)
 		return DBM.Bars:UpdateBar(id, elapsed, totalTime)
 	end
 	
@@ -10147,6 +10146,7 @@ do
 		if bar then
 			local elapsed, total = (bar.totalTime - bar.timer), bar.totalTime
 			if elapsed and total then
+				fireEvent("DBM_TimerUpdate", id, elapsed, total+extendAmount)
 				return DBM.Bars:UpdateBar(id, elapsed, total+extendAmount)
 			end
 		end
