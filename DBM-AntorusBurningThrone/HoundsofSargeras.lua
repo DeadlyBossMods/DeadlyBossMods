@@ -111,9 +111,9 @@ function mod:OnCombatStart(delay)
 	self.vb.WeightDarkIcon = 1
 	--Fire doggo
 	timerBurningMawCD:Start(8.2-delay)--was same on heroic/mythic, or now
-	countdownBurningMaw:Start(8.2-delay)
+	--countdownBurningMaw:Start(8.2-delay)
 	timerCorruptingMawCD:Start(8.9-delay)--was same on heroic/normal, for now
-	countdownCorruptingMaw:Start(8.9-delay)
+	--countdownCorruptingMaw:Start(8.9-delay)
 	--Shadow doggo
 	if self:IsMythic() then
 		self.vb.longTimer = 88.3--88.3-89
@@ -218,15 +218,21 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnBurningMaw:Show(args.destName)
 		if self:IsMythic() then
 			timerBurningMawCD:Start(9.7)
-			countdownBurningMaw:Start(9.7)
+			if self:CheckInterruptFilter(args.sourceGUID, true) then
+				countdownBurningMaw:Start(9.7)
+			end
 		else
 			timerBurningMawCD:Start()
-			countdownBurningMaw:Start()
+			if self:CheckInterruptFilter(args.sourceGUID, true) then
+				countdownBurningMaw:Start()
+			end
 		end
 	elseif spellId == 245098 then
 		warnCorruptingMaw:Show(args.destName)
 		timerCorruptingMawCD:Start()
-		countdownCorruptingMaw:Start()
+		if self:CheckInterruptFilter(args.sourceGUID, true) then
+			countdownCorruptingMaw:Start()
+		end
 	end
 end
 
