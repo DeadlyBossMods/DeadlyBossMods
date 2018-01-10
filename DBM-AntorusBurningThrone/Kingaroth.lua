@@ -167,6 +167,14 @@ do
 	end
 end
 
+--/run DBM:GetModByName("2004"):TestFunction(20)
+function mod:TestFunction(time)
+	timerForgingStrikeCD:AddTime(time, 1)
+	timerDiabolicBombCD:AddTime(time)
+	timerRuinerCD:AddTime(time, self.vb.ruinerCast+1)
+	timerReverberatingStrikeCD:AddTime(time, 1)
+end
+
 function mod:OnCombatStart(delay)
 	demolishDebuff = DBM:GetSpellInfo(246692)
 	self.vb.ruinerCast = 0
