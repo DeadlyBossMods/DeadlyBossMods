@@ -10138,18 +10138,17 @@ do
 	
 	function timerPrototype:AddTime(extendAmount, ...)
 		if DBM.Options.DontShowBossTimers then return end
-		local id = self.id..pformat((("\t%s"):rep(select("#", ...))), ...)
-		local bar = DBM.Bars:GetBar(id)
-		if bar then
-			local elapsed, total = (bar.totalTime - bar.timer), bar.totalTime
-			if elapsed and total then
-				fireEvent("DBM_TimerUpdate", id, elapsed, total+extendAmount)
-				return DBM.Bars:UpdateBar(id, elapsed, total+extendAmount)
-			else
-				--TODO, more fixes cause right now this is a mess for callbacks
-				self:Start(extendAmount, ...)
-				fireEvent("DBM_TimerUpdate", id, elapsed, total+extendAmount)
-				return DBM.Bars:UpdateBar(id, 0, extendAmount)
+		if self:GetTime(...) == 0 then
+			return self:Start(extendAmount, ...)
+		else
+			local id = self.id..pformat((("\t%s"):rep(select("#", ...))), ...)
+			local bar = DBM.Bars:GetBar(id)
+			if bar then
+				local elapsed, total = (bar.totalTime - bar.timer), bar.totalTime
+				if elapsed and total then
+					fireEvent("DBM_TimerUpdate", id, elapsed, total+extendAmount)
+					return DBM.Bars:UpdateBar(id, elapsed, total+extendAmount)
+				end
 			end
 		end
 	end
