@@ -320,25 +320,35 @@ function mod:SPELL_CAST_START(args)
 			timerSargGazeCD:Start(28.4, 1)
 		end
 	elseif spellId == 257645 then--Temporal Blast (Stage 3)
-		self.vb.phase = 3
-		warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(3))
-		timerSweepingScytheCD:Stop()
-		timerTorturedRageCD:Stop()
-		timerSoulBombCD:Stop()
-		countdownSoulbomb:Cancel()
-		timerSoulBurstCD:Stop()
-		timerEdgeofObliterationCD:Stop()
-		timerAvatarofAggraCD:Stop()
-		--timerSargGazeCD:Stop()
-		if not self:IsMythic() then
-			timerCosmicRayCD:Start(30)
-			--timerCosmicPowerCD:Start(36.5)
-			timerCosmicBeaconCD:Start(40)
+		timerAvatarofAggraCD:Stop()--Always cancel this here, it's not canceled by argus becoming inactive and can still be cast during argus inactive transition phase
+		if self.vb.phase < 3 then
+			self.vb.phase = 3
+			warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(3))
+			timerSweepingScytheCD:Stop()
+			timerTorturedRageCD:Stop()
+			timerSoulBombCD:Stop()
+			countdownSoulbomb:Cancel()
+			timerSoulBurstCD:Stop()
+			timerEdgeofObliterationCD:Stop()
+			timerAvatarofAggraCD:Stop()
+			timerSargGazeCD:Stop()
+			if not self:IsMythic() then
+				timerCosmicRayCD:Start(30)
+				--timerCosmicPowerCD:Start(36.5)
+				timerCosmicBeaconCD:Start(40)
+				if self.Options.InfoFrame then
+					DBM.InfoFrame:Hide()
+				end
+			end
 		end
 	elseif spellId == 256542 then--Reap Soul
 		if not self:IsMythic() then
 			self.vb.phase = 4
 			warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(4))
+			if self.Options.InfoFrame then
+				DBM.InfoFrame:Show(4, "enemypower", 2)
+				--DBM.InfoFrame:Show(7, "function", updateInfoFrame, false, false)
+			end
 		end
 		timerCosmicRayCD:Stop()
 		--timerCosmicPowerCD:Stop()
@@ -346,7 +356,7 @@ function mod:SPELL_CAST_START(args)
 		timerDiscsofNorg:Stop()
 		timerSargGazeCD:Stop()
 		timerNextPhase:Start(35)--or 53.8
-	elseif spellId == 257619 then--Gift of the Lifebinder (p4)
+	elseif spellId == 257619 then--Gift of the Lifebinder (p4/p3mythic)
 		warnGiftOfLifebinder:Show()
 	elseif spellId == 255935 then
 		--timerCosmicPowerCD:Start()
@@ -751,13 +761,29 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, _, spellId)
 		--timerEdgeofObliterationCD:Start(6.2)
 		--timerSoulBombCD:Start(20.8)
 		--timerSoulBurstCD:Start(20.8, 1)
-	--elseif spellId == 34098 then--ClearAllDebuffs (12 before Tempoeral Blast)
-	
+	elseif spellId == 34098 and self.vb.phase == 2 then--ClearAllDebuffs (12 before Tempoeral Blast)
+		self.vb.phase = 3
+		warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(3))
+		timerSweepingScytheCD:Stop()
+		timerTorturedRageCD:Stop()
+		timerSoulBombCD:Stop()
+		countdownSoulbomb:Cancel()
+		timerSoulBurstCD:Stop()
+		timerEdgeofObliterationCD:Stop()
+		timerSargGazeCD:Stop()
+		if not self:IsMythic() then
+			timerCosmicRayCD:Start(42)
+			--timerCosmicPowerCD:Start(36.5)
+			timerCosmicBeaconCD:Start(52)
+			if self.Options.InfoFrame then
+				DBM.InfoFrame:Hide()
+			end
+		end
 	elseif spellId == 258044 then--Argus P4 Energy Controller (54 seconds after Reap Soul, 27 seconds after Gift of the Lifebinder)
 		--Old P4 controller, might still revert to it if I don't like SPELL_INTERRUPT
 	elseif spellId == 258104 then--Argus Mythic Transform
 		--Stop timer earlier than Reap Soul
-		timerSargGazeCD:Stop()
+		--timerSargGazeCD:Stop()
 	elseif spellId == 258068 then--Sargeras' Gaze
 		self.vb.gazeCount = self.vb.gazeCount + 1
 		if self.vb.phase == 2 then
