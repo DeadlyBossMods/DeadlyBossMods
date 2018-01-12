@@ -246,7 +246,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self:IsTanking(uId) then
 			local amount = args.amount or 1
 			local tauntStack = 3
-			if self:IsMythioc() and self.Options.TauntBehavior == "TwoMythicThreeNon" or self.Options.TauntBehavior == "TwoAlways" then
+			if self:IsMythic() and self.Options.TauntBehavior == "TwoMythicThreeNon" or self.Options.TauntBehavior == "TwoAlways" then
 				tauntStack = 2
 			end
 			if amount >= tauntStack then--Lasts 30 seconds, unknown reapplication rate, fine tune!
