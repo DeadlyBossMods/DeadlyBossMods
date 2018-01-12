@@ -53,8 +53,9 @@ local warnCosmicGlare					= mod:NewTargetAnnounce(250757, 3)
 
 --General
 local specWarnGTFO						= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
+local specWarnActivated					= mod:NewSpecialWarningSwitchCount(118212, "Tank", nil, nil, 1, 2)
 --Noura, Mother of Flames
-local specWarnFieryStrike				= mod:NewSpecialWarningStack(244899, nil, 3, nil, nil, 1, 6)
+local specWarnFieryStrike				= mod:NewSpecialWarningStack(244899, nil, 2, nil, nil, 1, 6)
 local specWarnFieryStrikeOther			= mod:NewSpecialWarningTaunt(244899, nil, nil, nil, 1, 2)
 local specWarnFulminatingPulse			= mod:NewSpecialWarningMoveAway(253520, nil, nil, nil, 1, 2)
 local yellFulminatingPulse				= mod:NewFadesYell(253520)
@@ -62,7 +63,7 @@ local yellFulminatingPulse				= mod:NewFadesYell(253520)
 local specWarnShadowBlades				= mod:NewSpecialWarningDodge(246329, nil, nil, nil, 2, 2)
 local specWarnStormofDarkness			= mod:NewSpecialWarningCount(252861, nil, nil, nil, 2, 2)
 --Diima, Mother of Gloom
-local specWarnFlashfreeze				= mod:NewSpecialWarningStack(245518, nil, 3, nil, nil, 1, 6)
+local specWarnFlashfreeze				= mod:NewSpecialWarningStack(245518, nil, 2, nil, nil, 1, 6)
 local specWarnFlashfreezeOther			= mod:NewSpecialWarningTaunt(245518, nil, nil, nil, 1, 2)
 local yellFlashfreeze					= mod:NewYell(245518, nil, false)
 local specWarnChilledBlood				= mod:NewSpecialWarningTarget(245586, "Healer", nil, nil, 1, 2)
@@ -243,7 +244,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId) then
 			local amount = args.amount or 1
-			if amount >= 3 then--Lasts 30 seconds, unknown reapplication rate, fine tune!
+			if amount >= 2 then--Lasts 30 seconds, unknown reapplication rate, fine tune!
 				if args:IsPlayer() then--At this point the other tank SHOULD be clear.
 					specWarnFieryStrike:Show(amount)
 					specWarnFieryStrike:Play("stackhigh")
@@ -277,7 +278,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId) then
 			local amount = args.amount or 1
-			if amount >= 3 then--Lasts 30 seconds, unknown reapplication rate, fine tune!
+			if amount >= 2 then--Lasts 30 seconds, unknown reapplication rate, fine tune!
 				if args:IsPlayer() then--At this point the other tank SHOULD be clear.
 					specWarnFlashfreeze:Show(amount)
 					specWarnFlashfreeze:Play("stackhigh")
@@ -411,7 +412,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		end
 		if titanCount[name] == 2 then
 			titanCount[name] = 0
-			timerBossIncoming:Start(14, name)
+			timerBossIncoming:Start(8.7, name)
 		end
 		DBM:Debug("UNIT_SPELLCAST_SUCCEEDED fired with: "..name, 2)
 	end
@@ -425,7 +426,12 @@ function mod:UNIT_TARGETABLE_CHANGED(uId)
 	local cid = self:GetCIDFromGUID(UnitGUID(uId))
 	if cid == 122468 then--Noura
 		if UnitExists(uId) then
-			warnActivated:Show(UnitName(uId))
+			if self.Options.SpecWarn118212switch then
+				specWarnActivated:Show(UnitName(uId))
+				specWarnActivated:Play("changetarget")
+			else
+				warnActivated:Show(UnitName(uId))
+			end
 			DBM:Debug("UNIT_TARGETABLE_CHANGED, Boss Engaging", 2)
 			timerWhirlingSaberCD:Start(9)
 			timerFieryStrikeCD:Start(12.1)
