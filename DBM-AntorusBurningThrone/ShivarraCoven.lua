@@ -82,7 +82,7 @@ local timerBossIncoming					= mod:NewTimer(61, "timerBossIncoming", nil, nil, ni
 mod:AddTimerLine(Noura)
 local timerFieryStrikeCD				= mod:NewCDTimer(10.5, 244899, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerWhirlingSaberCD				= mod:NewNextTimer(35.1, 245627, nil, nil, nil, 3)--35-45
-local timerFulminatingPulseCD			= mod:NewNextTimer(40.5, 253520, nil, nil, nil, 3)
+local timerFulminatingPulseCD			= mod:NewNextTimer(40.1, 253520, nil, nil, nil, 3)
 --Asara, Mother of Night
 mod:AddTimerLine(Asara)
 local timerShadowBladesCD				= mod:NewCDTimer(27.8, 246329, nil, nil, nil, 3)
@@ -94,7 +94,7 @@ local timerChilledBloodCD				= mod:NewNextTimer(25.4, 245586, nil, nil, nil, 5, 
 local timerOrbofFrostCD					= mod:NewNextTimer(30, 253650, nil, nil, nil, 3)
 --Thu'raya, Mother of the Cosmos (Mythic)
 mod:AddTimerLine(Thuraya)
-local timerCosmicGlareCD				= mod:NewCDTimer(17, 250757, nil, nil, nil, 3)
+local timerCosmicGlareCD				= mod:NewCDTimer(15.8, 250757, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
 --Torment of the Titans
 mod:AddTimerLine(torment)
 ----Activations timers
@@ -109,7 +109,7 @@ local timerMachinationsofAman			= mod:NewCastTimer(20, 250095, nil, nil, nil, 5,
 
 --Noura, Mother of Flames
 local countdownTitans					= mod:NewCountdown(85, "ej16138")
-local countdownFulminatingPulse			= mod:NewCountdown("Alt57", 253520, "Healer")
+local countdownFulminatingPulse			= mod:NewCountdown("Alt40", 253520, "Healer")
 --Asara, Mother of Night
 local countdownStormofDarkness			= mod:NewCountdown("AltTwo57", 252861)
 
@@ -118,6 +118,7 @@ mod:AddSetIconOption("SetIconOnChilledBlood2", 245586, false)
 mod:AddSetIconOption("SetIconOnCosmicGlare", 250757, false)
 mod:AddInfoFrameOption(245586, true)
 mod:AddNamePlateOption("NPAuraOnVisageofTitan", 249863)
+mod:AddDropdownOption("TauntBehavior", {"TwoMythicThreeNon", "TwoAlways", "ThreeAlways"}, "TwoMythicThreeNon", "misc")
 
 local titanCount = {}
 mod.vb.stormCount = 0
@@ -216,7 +217,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerFlashFreezeCD:Start()
 	elseif spellId == 253520 and self:AntiSpam(3, 3) then
 		timerFulminatingPulseCD:Start()
-		countdownFulminatingPulse:Start(40.5)
+		countdownFulminatingPulse:Start(40.1)
 	elseif spellId == 245532 and self:AntiSpam(3, 2) then
 		timerChilledBloodCD:Start()
 		specWarnChilledBlood:Play("healall")
@@ -244,12 +245,21 @@ function mod:SPELL_AURA_APPLIED(args)
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId) then
 			local amount = args.amount or 1
-			if amount >= 2 then--Lasts 30 seconds, unknown reapplication rate, fine tune!
+			local tauntStack = 3
+			if self:IsMythioc() and self.Options.TauntBehavior == "TwoMythicThreeNon" or self.Options.TauntBehavior == "TwoAlways" then
+				tauntStack = 2
+			end
+			if amount >= tauntStack then--Lasts 30 seconds, unknown reapplication rate, fine tune!
 				if args:IsPlayer() then--At this point the other tank SHOULD be clear.
 					specWarnFieryStrike:Show(amount)
 					specWarnFieryStrike:Play("stackhigh")
 				else--Taunt as soon as stacks are clear, regardless of stack count.
-					if not UnitIsDeadOrGhost("player") and not UnitDebuff("player", args.spellName) then
+					local _, _, _, _, _, _, expireTime = UnitDebuff("player", args.spellName)
+					local remaining
+					if expireTime then
+						remaining = expireTime-GetTime()
+					end
+					if not UnitIsDeadOrGhost("player") and (not remaining or remaining and remaining < 10) then
 						specWarnFieryStrikeOther:Show(args.destName)
 						specWarnFieryStrikeOther:Play("tauntboss")
 					else
@@ -283,7 +293,12 @@ function mod:SPELL_AURA_APPLIED(args)
 					specWarnFlashfreeze:Show(amount)
 					specWarnFlashfreeze:Play("stackhigh")
 				else--Taunt as soon as stacks are clear, regardless of stack count.
-					if not UnitIsDeadOrGhost("player") and not UnitDebuff("player", args.spellName) then
+					local _, _, _, _, _, _, expireTime = UnitDebuff("player", args.spellName)
+					local remaining
+					if expireTime then
+						remaining = expireTime-GetTime()
+					end
+					if not UnitIsDeadOrGhost("player") and (not remaining or remaining and remaining < 9.6) then
 						specWarnFlashfreezeOther:Show(args.destName)
 						specWarnFlashfreezeOther:Play("tauntboss")
 					else
@@ -415,6 +430,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			timerBossIncoming:Start(8.7, name)
 		end
 		DBM:Debug("UNIT_SPELLCAST_SUCCEEDED fired with: "..name, 2)
+	elseif spellId == 250752 then--Cosmic Glare
+		timerCosmicGlareCD:Start()
 	end
 end
 
@@ -423,10 +440,10 @@ end
 --"<196.23 00:02:34> [UNIT_TARGETABLE_CHANGED] boss2#false#false#true#Noura, Mother of Flames#Creature-0-2083-1712-12288-122468-0000111E27#elite#2150947229", -- [1438]
 --"<198.19 00:02:36> [UNIT_SPELLCAST_SUCCEEDED] Noura, Mother of Flames(??) [[boss2:Spectral Army of Norgannon::3-2083-1712-12288-250334-000B1120DC:250334]]", -- [1456]
 function mod:UNIT_TARGETABLE_CHANGED(uId)
-	local cid = self:GetCIDFromGUID(UnitGUID(uId))
+	local cid = self:GetUnitCreatureId(uId)
 	if cid == 122468 then--Noura
 		if UnitExists(uId) then
-			if self.Options.SpecWarn118212switch then
+			if self.Options.SpecWarn118212switchcount then
 				specWarnActivated:Show(UnitName(uId))
 				specWarnActivated:Play("changetarget")
 			else
@@ -434,7 +451,7 @@ function mod:UNIT_TARGETABLE_CHANGED(uId)
 			end
 			DBM:Debug("UNIT_TARGETABLE_CHANGED, Boss Engaging", 2)
 			timerWhirlingSaberCD:Start(9)
-			timerFieryStrikeCD:Start(12.1)
+			timerFieryStrikeCD:Start(11.8)
 			if not self:IsEasy() then
 				timerFulminatingPulseCD:Start(20.6)
 				countdownFulminatingPulse:Start(20.6)
@@ -448,7 +465,12 @@ function mod:UNIT_TARGETABLE_CHANGED(uId)
 		end
 	elseif cid == 122467 then--Asara
 		if UnitExists(uId) then
-			warnActivated:Show(UnitName(uId))
+			if self.Options.SpecWarn118212switchcount then
+				specWarnActivated:Show(UnitName(uId))
+				specWarnActivated:Play("changetarget")
+			else
+				warnActivated:Show(UnitName(uId))
+			end
 			DBM:Debug("UNIT_TARGETABLE_CHANGED, Boss Engaging", 2)
 			--TODO, timers, never saw her leave so never saw her return
 		else
@@ -459,10 +481,15 @@ function mod:UNIT_TARGETABLE_CHANGED(uId)
 		end
 	elseif cid == 122469 then--Diima
 		if UnitExists(uId) then
-			warnActivated:Show(UnitName(uId))
+			if self.Options.SpecWarn118212switchcount then
+				specWarnActivated:Show(UnitName(uId))
+				specWarnActivated:Play("changetarget")
+			else
+				warnActivated:Show(UnitName(uId))
+			end
 			DBM:Debug("UNIT_TARGETABLE_CHANGED, Boss Engaging", 2)
 			timerChilledBloodCD:Start(6.5)
-			timerFlashFreezeCD:Start(12.5)
+			timerFlashFreezeCD:Start(10.1)
 			if not self:IsEasy() then
 				timerOrbofFrostCD:Start(30)
 			end
@@ -475,9 +502,14 @@ function mod:UNIT_TARGETABLE_CHANGED(uId)
 	elseif cid == 125436 then--Thu'raya (mythic only)
 		if UnitExists(uId) then
 			self.vb.touchCosmosCast = 0
-			warnActivated:Show(UnitName(uId))
+			if self.Options.SpecWarn118212switchcount then
+				specWarnActivated:Show(UnitName(uId))
+				specWarnActivated:Play("changetarget")
+			else
+				warnActivated:Show(UnitName(uId))
+			end
 			DBM:Debug("UNIT_TARGETABLE_CHANGED, Boss Engaging", 2)
-			timerCosmicGlareCD:Start(6)
+			timerCosmicGlareCD:Start(5)
 		else
 			DBM:Debug("UNIT_TARGETABLE_CHANGED, Boss Leaving", 2)
 			timerCosmicGlareCD:Stop()
