@@ -4953,7 +4953,7 @@ do
 		end)
 	end
 
-	function DBM:ShowNoteEditor(mod, modvar, abilityName, syncText, sender)
+	function DBM:ShowNoteEditor(mod, modvar, abilityName, syncText, sender, rawspellId)
 		if not frame then
 			createFrame()
 			self.Noteframe = frame
@@ -4967,8 +4967,12 @@ do
 		fontstringFooter:SetText(DBM_CORE_NOTEFOOTER)
 		self.Noteframe.mod = mod
 		self.Noteframe.modvar = modvar
-		if abilityName and type(abilityName) == "number" then--Still a spellID
-			abilityName = DBM:EJ_GetSectionInfo(abilityName)
+		if abilityName then
+			if type(abilityName) == "number" then--Still a dungeonID
+				abilityName = DBM:EJ_GetSectionInfo(abilityName)
+			elseif rawspellId and abilityName == "ReloadUI To Fix" then--Refresh spell name
+				abilityName = DBM:GetSpellInfo(rawspellId)
+			end
 		end
 		self.Noteframe.abilityName = abilityName
 		if syncText then
