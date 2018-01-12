@@ -195,16 +195,14 @@ function mod:SPELL_CAST_START(args)
 		if self.vb.touchCosmosCast == 4 then
 			self.vb.touchCosmosCast = 1
 		end
-		if self:CheckInterruptFilter(args.sourceGUID) then
-			local kickCount = self.vb.touchCosmosCast
-			specWarnTouchoftheCosmos:Show(args.sourceName, kickCount)
-			if kickCount == 1 then
-				specWarnTouchoftheCosmos:Play("kick1r")
-			elseif kickCount == 2 then
-				specWarnTouchoftheCosmos:Play("kick2r")
-			elseif kickCount == 3 then
-				specWarnTouchoftheCosmos:Play("kick3r")
-			end
+		local kickCount = self.vb.touchCosmosCast
+		specWarnTouchoftheCosmos:Show(args.sourceName, kickCount)
+		if kickCount == 1 then
+			specWarnTouchoftheCosmos:Play("kick1r")
+		elseif kickCount == 2 then
+			specWarnTouchoftheCosmos:Play("kick2r")
+		elseif kickCount == 3 then
+			specWarnTouchoftheCosmos:Play("kick3r")
 		end
 	end
 end
