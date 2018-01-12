@@ -4340,9 +4340,9 @@ do
 			end
 		end
 		
-		syncHandlers["GCE"] = function(sender, modId, ver, wipe, time, difficulty, wipeHP, difficultyModifier)
+		syncHandlers["GCE"] = function(sender, modId, ver, wipe, time, difficulty, difficultyModifier, wipeHP)
 			if not DBM.Options.ShowGuildMessages or not difficulty then return end
-			if not ver or not (ver == "3") then return end--Ignore old versions
+			if not ver or not (ver == "4") then return end--Ignore old versions
 			if DBM:AntiSpam(5, "GCE") then
 				if IsInInstance() then return end--Simple filter, if you are inside an instance, just filter it, if not in instance, good to go.
 				difficulty = tonumber(difficulty)
@@ -5711,7 +5711,7 @@ do
 						else
 							self:AddMsg(DBM_CORE_COMBAT_ENDED_AT_LONG:format(difficultyText..name, wipeHP, strFromTime(thisTime), totalPulls - totalKills))
 							if (difficultyIndex == 8 or difficultyIndex == 14 or difficultyIndex == 15 or difficultyIndex == 16) and InGuildParty() and not statusGuildDisabled and not self.Options.DisableGuildStatus then--Maybe add mythic plus/CM?
-								SendAddonMessage("D4", "GCE\t"..modId.."\t3\t1\t"..strFromTime(thisTime).."\t"..difficultyIndex.."\t"..wipeHP.."\t"..difficultyModifier, "GUILD")
+								SendAddonMessage("D4", "GCE\t"..modId.."\t4\t1\t"..strFromTime(thisTime).."\t"..difficultyIndex.."\t"..difficultyModifier.."\t"..wipeHP, "GUILD")
 							end
 						end
 					end
@@ -5791,7 +5791,7 @@ do
 						else
 							msg = DBM_CORE_BOSS_DOWN:format(difficultyText..name, strFromTime(thisTime))
 							if (difficultyIndex == 8 or difficultyIndex == 14 or difficultyIndex == 15 or difficultyIndex == 16) and InGuildParty() and not statusGuildDisabled and not self.Options.DisableGuildStatus then
-								SendAddonMessage("D4", "GCE\t"..modId.."\t3\t0\t"..strFromTime(thisTime).."\t"..difficultyIndex, "GUILD")
+								SendAddonMessage("D4", "GCE\t"..modId.."\t4\t0\t"..strFromTime(thisTime).."\t"..difficultyIndex.."\t"..difficultyModifier, "GUILD")
 							end
 						end
 					elseif thisTime < (bestTime or mhuge) then
@@ -5800,7 +5800,7 @@ do
 						else
 							msg = DBM_CORE_BOSS_DOWN_NR:format(difficultyText..name, strFromTime(thisTime), strFromTime(bestTime), totalKills)
 							if (difficultyIndex == 8 or difficultyIndex == 14 or difficultyIndex == 15 or difficultyIndex == 16) and InGuildParty() and not statusGuildDisabled and not self.Options.DisableGuildStatus then
-								SendAddonMessage("D4", "GCE\t"..modId.."\t3\t0\t"..strFromTime(thisTime).."\t"..difficultyIndex, "GUILD")
+								SendAddonMessage("D4", "GCE\t"..modId.."\t4\t0\t"..strFromTime(thisTime).."\t"..difficultyIndex.."\t"..difficultyModifier, "GUILD")
 							end
 						end
 					else
@@ -5809,7 +5809,7 @@ do
 						else
 							msg = DBM_CORE_BOSS_DOWN_L:format(difficultyText..name, strFromTime(thisTime), strFromTime(lastTime), strFromTime(bestTime), totalKills)
 							if (difficultyIndex == 8 or difficultyIndex == 14 or difficultyIndex == 15 or difficultyIndex == 16) and InGuildParty() and not statusGuildDisabled and not self.Options.DisableGuildStatus then
-								SendAddonMessage("D4", "GCE\t"..modId.."\t3\t0\t"..strFromTime(thisTime).."\t"..difficultyIndex, "GUILD")
+								SendAddonMessage("D4", "GCE\t"..modId.."\t4\t0\t"..strFromTime(thisTime).."\t"..difficultyIndex.."\t"..difficultyModifier, "GUILD")
 							end
 						end
 					end

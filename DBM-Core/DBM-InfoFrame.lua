@@ -395,7 +395,7 @@ local function updateEnemyAbsorb()
 				else
 					text = absorbAmount
 				end
-				lines[UnitName(uId)] = mfloor(text)
+				lines[UnitName(uId)] = mfloor(text).."%"
 			end
 		end
 	end
@@ -424,7 +424,7 @@ local function updateAllAbsorb()
 				else
 					text = absorbAmount
 				end
-				lines[UnitName(uId)] = mfloor(text)
+				lines[UnitName(uId)] = mfloor(text).."%"
 			end
 		end
 	end
@@ -437,7 +437,7 @@ local function updateAllAbsorb()
 			else
 				text = absorbAmount
 			end
-			lines[UnitName(uId)] = mfloor(text)
+			lines[UnitName(uId)] = mfloor(text).."%"
 		end
 	end
 	updateLines()
@@ -457,7 +457,7 @@ local function updatePlayerAbsorb()
 			else
 				text = absorbAmount
 			end
-			lines[UnitName(uId)] = mfloor(text)
+			lines[UnitName(uId)] = mfloor(text).."%"
 		end
 	end
 	updateLines()
