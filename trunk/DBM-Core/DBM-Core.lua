@@ -5339,7 +5339,7 @@ end
 
 do
 	local statVarTable = {
-		--6.0
+		--6.0+
 		["event5"] = "normal",
 		["event20"] = "lfr25",
 		["event40"] = "lfr25",
