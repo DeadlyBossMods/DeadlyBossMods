@@ -56,9 +56,10 @@ mod:AddInfoFrameOption(228829, true)
 mod.vb.phase = 1
 mod.vb.interruptCount = 0
 
-local charredEarth = GetSpellInfo(228808)
+local charredEarth, burningBones, filteredDebuff = DBM:GetSpellInfo(228808), DBM:GetSpellInfo(228829), DBM:GetSpellInfo(228796)
 
 function mod:OnCombatStart(delay)
+	charredEarth, burningBones, filteredDebuff = DBM:GetSpellInfo(228808), DBM:GetSpellInfo(228829), DBM:GetSpellInfo(228796)
 	self.vb.phase = 1
 	self.vb.interruptCount = 0
 	timerBreathCD:Start(8.5-delay)
@@ -67,8 +68,8 @@ function mod:OnCombatStart(delay)
 	timerBurningBonesCD:Start(19.4-delay)
 	timerIgniteSoulCD:Start(20-delay)
 	if self.Options.InfoFrame then
-		DBM.InfoFrame:SetHeader(GetSpellInfo(228829))
-		DBM.InfoFrame:Show(5, "playerdebuffstacks", 228829)
+		DBM.InfoFrame:SetHeader(burningBones)
+		DBM.InfoFrame:Show(5, "playerdebuffstacks", burningBones)
 	end
 end
 
@@ -148,16 +149,13 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
-do
-	local filteredDebuff = GetSpellInfo(228796)--Don't tell you to move out of charred earth if you are losing health on purpose
-	function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
-		if spellId == 228808 and destGUID == UnitGUID("player") and not UnitDebuff("player", filteredDebuff) and self:AntiSpam(2, 1) then
-			specWarnCharredEarth:Show()
-			specWarnCharredEarth:Play("runaway")
-		end
+function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
+	if spellId == 228808 and destGUID == UnitGUID("player") and not UnitDebuff("player", filteredDebuff) and self:AntiSpam(2, 1) then
+		specWarnCharredEarth:Show()
+		specWarnCharredEarth:Play("runaway")
 	end
-	mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 end
+mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
