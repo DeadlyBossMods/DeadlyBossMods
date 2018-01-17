@@ -151,7 +151,7 @@ DBM_CORE_VOICE_MISSING				= "선택한 DBM 음성팩을 찾을 수 없습니다.
 DBM_CORE_VOICE_DISABLED				= "현재 DBM 음성팩이 한 개 이상 설치되어 있지만 사용하고 있는게 없습니다. 음성팩을 사용하려면 '음성 경보' 항목에서 음성팩이 지정되어 있는지 확인하세요. 음성팩을 사용할 의사가 없으면 음성팩을 삭제하시면 이 메시지는 더이상 출력되지 않습니다"
 DBM_CORE_VOICE_COUNT_MISSING		= "초읽기 음성 %d번으로 설정된 음성/초읽기 팩을 찾을 수 없습니다. 기본 설정으로 초기화 되었습니다: %s"
 
-DBM_CORE_UPDATEREMINDER_HEADER			= "사용중인 Deadly Boss Mods 버전이 사용 기한을 지났습니다.\n Curse, WoWI나 다음 주소에서 %s (r%d) 버전을 다운로드 할 수 있습니다:"
+DBM_CORE_UPDATEREMINDER_HEADER			= "사용중인 Deadly Boss Mods 버전이 사용 기한을 지났습니다.\n Curse/Twitch, WoWI나 다음 주소에서 %s (r%d) 버전을 다운로드 할 수 있습니다:"
 DBM_CORE_UPDATEREMINDER_HEADER_ALPHA	= "사용중인 Deadly Boss Mods ALPHA 버전이 사용 기한을 지났습니다.\n 적어도 %d 테스트 버전 이상은 사용해야 합니다. ALPHA 버전을 선택한 DBM 이용자는 최신 ALPHA 버전을 실행하는걸 권장합니다. 아니면 최신 RELEASE 버전을 사용하는 것도 좋습니다. 오래된 ALPHA 버전은 개발용인 관계로 버전 검사 기능이 제한되어 있기 때문입니다."
 DBM_CORE_UPDATEREMINDER_FOOTER			= (IsMacClient() and "Cmd-C" or "Ctrl-C").. "를 누르면 주소를 복사할 수 있습니다."
 DBM_CORE_UPDATEREMINDER_FOOTER_GENERIC	= (IsMacClient() and "Cmd-C" or "Ctrl-C").. "를 누르면 주소를 복사할 수 있습니다."
