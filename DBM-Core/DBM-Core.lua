@@ -437,7 +437,7 @@ local IsInRaid, IsInGroup, IsInInstance = IsInRaid, IsInGroup, IsInInstance
 local UnitAffectingCombat, InCombatLockdown, IsFalling, IsEncounterInProgress, UnitPlayerOrPetInRaid, UnitPlayerOrPetInParty = UnitAffectingCombat, InCombatLockdown, IsFalling, IsEncounterInProgress, UnitPlayerOrPetInRaid, UnitPlayerOrPetInParty
 local UnitGUID, UnitHealth, UnitHealthMax, UnitBuff = UnitGUID, UnitHealth, UnitHealthMax, UnitBuff
 local UnitExists, UnitIsDead, UnitIsFriend, UnitIsUnit, UnitIsAFK = UnitExists, UnitIsDead, UnitIsFriend, UnitIsUnit, UnitIsAFK
-local GetSpellInfo, EJ_GetSectionInfo, GetSpellTexture, GetSpellCooldown = GetSpellInfo, EJ_GetSectionInfo, GetSpellTexture, GetSpellCooldown
+local GetSpellInfo, EJ_GetSectionInfo, GetSectionIconFlags, GetSpellTexture, GetSpellCooldown = GetSpellInfo, C_EncounterJournal.GetSectionInfo, C_EncounterJournal.GetSectionIconFlags, GetSpellTexture, GetSpellCooldown
 local EJ_GetEncounterInfo, EJ_GetCreatureInfo, GetDungeonInfo = EJ_GetEncounterInfo, EJ_GetCreatureInfo, GetDungeonInfo
 local GetInstanceInfo = GetInstanceInfo
 local UnitPosition, GetCurrentMapDungeonLevel, GetMapInfo, GetCurrentMapZone, SetMapToCurrentZone, GetPlayerMapAreaID = UnitPosition, GetCurrentMapDungeonLevel, GetMapInfo, GetCurrentMapZone, SetMapToCurrentZone, GetPlayerMapAreaID
@@ -6109,19 +6109,13 @@ end
 
 --Future proofing EJ_GetSectionInfo compat layer to make it easier updatable. EJ_GetSectionInfo won't be depricated functions forever.
 function DBM:EJ_GetSectionInfo(sectionID)
-	if C_EncounterJournal.GetSectionInfo then
-		local info = C_EncounterJournal.GetSectionInfo(sectionID);
-		if info then--7.3.5
-			local flag1, flag2, flag3, flag4;
-			local flags = C_EncounterJournal.GetSectionIconFlags(sectionID);
-			if flags then
-				flag1, flag2, flag3, flag4 = unpack(flags);
-			end
-			return	info.title, info.description, info.headerType, info.abilityIcon, info.creatureDisplayID, info.siblingSectionID, info.firstChildSectionID, info.filteredByDifficulty, info.link, info.startsOpen, flag1, flag2, flag3, flag4
-		end
-	else
-		return EJ_GetSectionInfo(sectionID)
+	local info = EJ_GetSectionInfo(sectionID);
+	local flag1, flag2, flag3, flag4;
+	local flags = GetSectionIconFlags(sectionID);
+	if flags then
+		flag1, flag2, flag3, flag4 = unpack(flags);
 	end
+	return	info.title, info.description, info.headerType, info.abilityIcon, info.creatureDisplayID, info.siblingSectionID, info.firstChildSectionID, info.filteredByDifficulty, info.link, info.startsOpen, flag1, flag2, flag3, flag4
 end
 
 --Handle new spell name requesting in 7.3.5
