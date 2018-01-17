@@ -10039,15 +10039,15 @@ do
 				return false, "error" -- creating the timer failed somehow, maybe hit the hard-coded timer limit of 15
 			end
 			local msg = ""
-			if self.Name and self.Name == "ReloadUI To Fix" then
+			if self.name and self.name == "ReloadUI To Fix" then
 				--Fix stored spell name if it's wrong in start object
-				self.Name = DBM:GetSpellInfo(self.spellId)
+				self.name = DBM:GetSpellInfo(self.spellId)
 			end
 			if self.type and not self.text then
-				msg = pformat(self.mod:GetLocalizedTimerText(self.type, self.spellId, self.Name), ...)
+				msg = pformat(self.mod:GetLocalizedTimerText(self.type, self.spellId, self.name), ...)
 			else
 				if type(self.text) == "number" then
-					msg = pformat(self.mod:GetLocalizedTimerText(self.type, self.text, self.Name), ...)
+					msg = pformat(self.mod:GetLocalizedTimerText(self.type, self.text, self.name), ...)
 				else
 					msg = pformat(self.text, ...)
 				end
