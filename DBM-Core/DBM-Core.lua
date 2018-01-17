@@ -10045,11 +10045,15 @@ do
 				return false, "error" -- creating the timer failed somehow, maybe hit the hard-coded timer limit of 15
 			end
 			local msg = ""
+			if self.Name and self.Name == "ReloadUI To Fix" then
+				--Fix stored spell name if it's wrong in start object
+				self.Name = DBM:GetSpellInfo(self.spellId)
+			end
 			if self.type and not self.text then
-				msg = pformat(self.mod:GetLocalizedTimerText(self.type, self.spellId), ...)
+				msg = pformat(self.mod:GetLocalizedTimerText(self.type, self.spellId, self.Name), ...)
 			else
 				if type(self.text) == "number" then
-					msg = pformat(self.mod:GetLocalizedTimerText(self.type, self.text), ...)
+					msg = pformat(self.mod:GetLocalizedTimerText(self.type, self.text, self.Name), ...)
 				else
 					msg = pformat(self.text, ...)
 				end
@@ -10288,6 +10292,7 @@ do
 				text = timerTextValue,
 				type = timerType,
 				spellId = spellId,
+				name = spellName,
 				timer = timer,
 				id = id,
 				icon = icon,
@@ -10405,9 +10410,12 @@ do
 		return newTimer(self, "ai", ...)
 	end
 
-	function bossModPrototype:GetLocalizedTimerText(timerType, spellId)
+	function bossModPrototype:GetLocalizedTimerText(timerType, spellId, Name)
 		local spellName
-		if spellId then
+		if Name and Name ~= "ReloadUI To Fix" then
+			spellName = Name--Pull from name stored in object
+		elseif spellId then
+			DBM:Debug("GetLocalizedTimerText fallback, this should not happen and is a bug. this fallback should be deleted if this message is never seen")
 			if timerType == "achievement" then
 				spellName = select(2, GetAchievementInfo(spellId))
 			elseif type(spellId) == "string" and spellId:match("ej%d+") then
