@@ -201,7 +201,7 @@ do
 				addLine(L.Current, DBM_CORE_IMPORTANT_ICON_SMALL..L.Rend.."(2)")
 			end
 		else--Not Mythic
-			if self:IsLFR() then
+			if mod:IsLFR() then
 				if mod.vb.comboCount == 0 then
 					--Filler
 				elseif mod.vb.comboCount == 1 then
