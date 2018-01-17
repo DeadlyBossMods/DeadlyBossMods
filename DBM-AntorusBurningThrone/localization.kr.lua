@@ -90,7 +90,11 @@ L= DBM:GetModLocalization(1983)
 L= DBM:GetModLocalization(1986)
 
 L:SetOptionLocalization({
-	timerBossIncoming		= "다음 보스 교대 타이머 바 보기"
+	timerBossIncoming		= "다음 보스 교대 타이머 바 보기",
+	TauntBehavior		= "탱커 교대 도발 알림 설정",
+	TwoMythicThreeNon	= "신화에선 2중첩, 그 외 난이도에선 3중첩",--Default
+	TwoAlways			= "난이도 관계없이 2중첩",
+	ThreeAlways			= "난이도 관계없이 3중첩"
 })
 
 ---------------------------
