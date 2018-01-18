@@ -81,7 +81,11 @@ L= DBM:GetModLocalization(1983)
 L= DBM:GetModLocalization(1986)
 
 L:SetOptionLocalization({
-	timerBossIncoming		= "為下一次交換首領顯示計時器"
+	timerBossIncoming	= "為下一次交換首領顯示計時器",
+	TauntBehavior		= "為坦克換坦設置嘲諷行為",
+	TwoMythicThreeNon	= "傳奇模式下兩層換坦，其他難度三層換坦",--Default
+	TwoAlways			= "無論任何難度皆兩層換坦",
+	ThreeAlways			= "無論任何難度皆三層換坦"
 })
 
 ---------------------------
