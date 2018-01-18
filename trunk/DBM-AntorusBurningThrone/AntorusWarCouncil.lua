@@ -38,7 +38,7 @@ local warnExploitWeakness				= mod:NewStackAnnounce(244892, 2, nil, "Tank")
 local warnPsychicAssault				= mod:NewStackAnnounce(244172, 3, nil, "-Tank", 2)
 --In Pod
 ----Chief Engineer Ishkar
-local warnEntropicMine					= mod:NewSpellAnnounce(245161, 2, nil, nil, nil, nil, nil, 2)
+local warnEntropicMine					= mod:NewSpellAnnounce(245161, 2)
 ----General Erodus
 --local warnSummonReinforcements			= mod:NewSpellAnnounce(245546, 2, nil, false, 2)
 local warnDemonicCharge					= mod:NewTargetAnnounce(253040, 2, nil, false, 2)
@@ -295,7 +295,7 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if (spellId == 245161 or spellId == 245304) and self:AntiSpam(5, 1) then
 		warnEntropicMine:Show()
-		warnEntropicMine:Play("watchstep")
+		--warnEntropicMine:Play("watchstep")
 		timerEntropicMineCD:Start()
 	elseif spellId == 245785 then--Pod Spawn Transition Cosmetic Missile
 		local name = UnitName(uId)
