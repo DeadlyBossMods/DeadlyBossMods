@@ -409,7 +409,8 @@ function mod:SPELL_AURA_APPLIED(args)
 					specWarnTaeshalachReach:Show(amount)
 					specWarnTaeshalachReach:Play("stackhigh")
 				else--Taunt as soon as stacks are clear, regardless of stack count.
-					if not UnitIsDeadOrGhost("player") and not UnitDebuff("player", args.spellName) then
+					local techTimer = timerTaeshalachTechCD:GetRemaining(self.vb.techCount+1)
+					if not UnitIsDeadOrGhost("player") and not UnitDebuff("player", args.spellName) and (techTimer == 0 or techTimer >= 4) then
 						specWarnTaeshalachReachOther:Show(args.destName)
 						specWarnTaeshalachReachOther:Play("tauntboss")
 					else
