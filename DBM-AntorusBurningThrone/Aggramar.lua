@@ -285,8 +285,8 @@ function mod:OnCombatStart(delay)
 		berserkTimer:Start(540-delay)
 	else
 		timerScorchingBlazeCD:Start(4.8-delay)
-		timerWakeofFlameCD:Start(5.9-delay)
-		countdownWakeofFlame:Start(5.9-delay)
+		timerWakeofFlameCD:Start(5.1-delay)
+		countdownWakeofFlame:Start(5.1-delay)
 		timerTaeshalachTechCD:Start(35-delay, 1)
 		countdownTaeshalachTech:Start(35-delay)
 	end
