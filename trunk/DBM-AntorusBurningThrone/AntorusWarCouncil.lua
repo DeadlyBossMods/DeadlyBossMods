@@ -78,7 +78,7 @@ local timerAssumeCommandCD				= mod:NewNextTimer(90, 245227, nil, nil, nil, 6)
 --In Pod
 ----Admiral Svirax
 mod:AddTimerLine(Svirax)
-local timerFusilladeCD					= mod:NewNextCountTimer(29.6, 244625, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
+local timerFusilladeCD					= mod:NewNextCountTimer(29.3, 244625, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
 ----Chief Engineer Ishkar
 mod:AddTimerLine(Ishkar)
 local timerEntropicMineCD				= mod:NewCDTimer(10, 245161, nil, nil, nil, 3)
@@ -150,7 +150,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnFusillade:Play("findshield")
 		timerFusilladeCD:Start(nil, self.vb.FusilladeCount+1)
 		if not self:IsLFR() then
-			countdownFusillade:Start(29.6)
+			countdownFusillade:Start(29.3)
 		end
 	elseif spellId == 246505 then
 		if self:CheckInterruptFilter(args.sourceGUID) and self:AntiSpam(3, 3) then
