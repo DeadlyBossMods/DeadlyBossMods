@@ -19,7 +19,6 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_REMOVED 235117 240209 235028 234891 243276",
 	"SPELL_PERIODIC_DAMAGE 238408 238028",
 	"SPELL_PERIODIC_MISSED 238408 238028",
---	"RAID_BOSS_WHISPER",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
@@ -74,7 +73,6 @@ local voicePhaseChange				= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_T
 
 mod:AddSetIconOption("SetIconOnInfusion", 235271, true)
 mod:AddInfoFrameOption(235117, true)
---mod:AddRangeFrameOption("5/8/15")
 
 mod.vb.unstableSoulCount = 0
 mod.vb.hammerCount = 0
@@ -110,9 +108,6 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnCombatEnd()
---	if self.Options.RangeFrame then
---		DBM.RangeCheck:Hide()
---	end
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
 	end
@@ -243,23 +238,7 @@ mod.SPELL_AURA_REFRESH = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
-	if spellId == 235240 then--Fel Infusion
-		--[[if self.Options.SetIconOnInfusion then
-			local uId = DBM:GetRaidUnitId(args.destName)
-			local currentIcon = GetRaidTargetIndex(uId) or 0
-			if self:IsTanking(uId) and currentIcon ~= 1 then--Fel infusion removed but light infusion icon is already set, don't touch it
-				self:SetIcon(args.destName, 0)
-			end
-		end--]]
-	elseif spellId == 235213 then--Light Infusion
-		--[[if self.Options.SetIconOnInfusion then
-			local uId = DBM:GetRaidUnitId(args.destName)
-			local currentIcon = GetRaidTargetIndex(uId) or 0
-			if self:IsTanking(uId) and currentIcon ~= 4 then--Light infusion removed but fel infusion icon is already set, don't touch it
-				self:SetIcon(args.destName, 0)
-			end
-		end-]]
-	elseif spellId == 235117 or spellId == 240209 or spellId == 243276 then
+	if spellId == 235117 or spellId == 240209 or spellId == 243276 then
 		self.vb.unstableSoulCount = self.vb.unstableSoulCount - 1
 		if args:IsPlayer() then
 			specWarnUnstableSoul:Cancel()
