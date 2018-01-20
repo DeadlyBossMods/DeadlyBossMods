@@ -6,7 +6,7 @@ L.MainFrame	= "Deadly Boss Mods"
 
 L.TranslationByPrefix		= "翻譯:"
 L.TranslationBy 			= "Imbav@聖光之願"
-L.Website					= "在discord上拜訪我們:|cFF73C2FBhttps://discord.gg/DF5mffk|r。請在推特上關注@deadlybossmods或@MysticalOS"
+L.Website					= "在discord上拜訪我們:|cFF73C2FBhttps://discord.gg/deadlybossmods|r。請在推特上關注@deadlybossmods或@MysticalOS"
 L.WebsiteButton				= "論壇"
 
 L.OTabBosses	= "首領模組"
