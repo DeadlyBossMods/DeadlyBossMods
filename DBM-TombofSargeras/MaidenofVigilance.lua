@@ -82,10 +82,10 @@ mod.vb.infusionCount = 0
 mod.vb.spontFragmentationCount = 0
 mod.vb.massShitCount = 0
 mod.vb.shieldActive = false
-local AegynnsWard, felDebuff, lightDebuff, shieldname = DBM:GetSpellInfo(236420), DBM:GetSpellInfo(235240), DBM:GetSpellInfo(235213), DBM:GetSpellInfo(235028)
+local AegynnsWard, felDebuff, lightDebuff, shieldname, unstableSoul = DBM:GetSpellInfo(236420), DBM:GetSpellInfo(235240), DBM:GetSpellInfo(235213), DBM:GetSpellInfo(235028), DBM:GetSpellInfo(235117)
 
 function mod:OnCombatStart(delay)
-	AegynnsWard, felDebuff, lightDebuff, shieldname = DBM:GetSpellInfo(236420), DBM:GetSpellInfo(235240), DBM:GetSpellInfo(235213), DBM:GetSpellInfo(235028)
+	AegynnsWard, felDebuff, lightDebuff, shieldname, unstableSoul = DBM:GetSpellInfo(236420), DBM:GetSpellInfo(235240), DBM:GetSpellInfo(235213), DBM:GetSpellInfo(235028), DBM:GetSpellInfo(235117)
 	self.vb.shieldActive = false
 	self.vb.unstableSoulCount = 0
 	self.vb.hammerCount = 2
@@ -272,8 +272,16 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 235028 then--Bulwark Removed
 		specWarnWrathofCreators:Show(args.destName)
 		specWarnWrathofCreators:Play("kickcast")
-	elseif spellId == 234891 then--Wrath Interrupted
 		self.vb.shieldActive = false
+		if self.Options.InfoFrame then
+			if self.vb.unstableSoulCount > 0 then
+				DBM.InfoFrame:SetHeader(unstableSoul)
+				DBM.InfoFrame:Show(10, "playerdebuffremaining", unstableSoul)
+			else
+				DBM.InfoFrame:Hide()
+			end
+		end
+	elseif spellId == 234891 then--Wrath Interrupted
 		self.vb.hammerCount = 0
 		self.vb.infusionCount = 0
 		self.vb.massShitCount = 0
@@ -292,10 +300,6 @@ function mod:SPELL_AURA_REMOVED(args)
 				self.vb.spontFragmentationCount = 0
 				timerSpontFragmentationCD:Start(8, 1)
 			end
-		end
-		if self.Options.InfoFrame then
-			DBM.InfoFrame:SetHeader(shieldname)
-			DBM.InfoFrame:Show(10, "playerdebuffremaining", shieldname)
 		end
 	end
 end
