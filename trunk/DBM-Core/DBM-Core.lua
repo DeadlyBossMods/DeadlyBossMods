@@ -2026,23 +2026,8 @@ do
 						DBM:AddMsg(DBM_CORE_HUD_INVALID_ICON)
 						return
 					end
-					if icon == 8 then
-						DBMHudMap:RegisterRangeMarkerOnPartyMember(12345, "skull", UnitName(uId), 3.5, hudDuration, 1, 1, 1, 0.5, nil, false):Pulse(0.5, 0.5)
-					elseif icon == 7 then
-						DBMHudMap:RegisterRangeMarkerOnPartyMember(12345, "cross", UnitName(uId), 3.5, hudDuration, 1, 1, 1, 0.5, nil, false):Pulse(0.5, 0.5)
-					elseif icon == 6 then
-						DBMHudMap:RegisterRangeMarkerOnPartyMember(12345, "square", UnitName(uId), 3.5, hudDuration, 1, 1, 1, 0.5, nil, false):Pulse(0.5, 0.5)
-					elseif icon == 5 then
-						DBMHudMap:RegisterRangeMarkerOnPartyMember(12345, "moon", UnitName(uId), 3.5, hudDuration, 1, 1, 1, 0.5, nil, false):Pulse(0.5, 0.5)
-					elseif icon == 4 then
-						DBMHudMap:RegisterRangeMarkerOnPartyMember(12345, "triangle", UnitName(uId), 3.5, hudDuration, 1, 1, 1, 0.5, nil, false):Pulse(0.5, 0.5)
-					elseif icon == 3 then
-						DBMHudMap:RegisterRangeMarkerOnPartyMember(12345, "diamond", UnitName(uId), 3.5, hudDuration, 1, 1, 1, 0.5, nil, false):Pulse(0.5, 0.5)
-					elseif icon == 2 then
-						DBMHudMap:RegisterRangeMarkerOnPartyMember(12345, "circle", UnitName(uId), 3.5, hudDuration, 1, 1, 1, 0.5, nil, false):Pulse(0.5, 0.5)
-					elseif icon == 1 then
-						DBMHudMap:RegisterRangeMarkerOnPartyMember(12345, "star", UnitName(uId), 3.5, hudDuration, 1, 1, 1, 0.5, nil, false):Pulse(0.5, 0.5)
-					end
+					local iconString = DBM:IconNumToString(icon):lower()
+					DBMHudMap:RegisterRangeMarkerOnPartyMember(12345, iconString, UnitName(uId), 3.5, hudDuration, 1, 1, 1, 0.5, nil, false):Pulse(0.5, 0.5)
 					success = true
 				else
 					DBM:AddMsg(DBM_CORE_HUD_INVALID_TYPE)
@@ -3523,6 +3508,9 @@ do
 			elseif LastInstanceMapID == 564 and not self.Options.BCTWMessageShown and not GetAddOnInfo("DBM-BlackTemple") then
 				self.Options.BCTWMessageShown = true
 				AddMsg(self, DBM_CORE_MOD_AVAILABLE:format("DBM-BlackTemple"))
+			elseif LastInstanceMapID == 603 and not self.Options.WOTLKTWMessageShown and not GetAddOnInfo("DBM-Ulduar") then
+				self.Options.WOTLKTWMessageShown = true
+				AddMsg(self, DBM_CORE_MOD_AVAILABLE:format("DBM-Ulduar"))
 			elseif (LastInstanceMapID == 619 or LastInstanceMapID == 601 or LastInstanceMapID == 595 or LastInstanceMapID == 600 or LastInstanceMapID == 604 or LastInstanceMapID == 602 or LastInstanceMapID == 599 or LastInstanceMapID == 576 or LastInstanceMapID == 578 or LastInstanceMapID == 574 or LastInstanceMapID == 575 or LastInstanceMapID == 608 or LastInstanceMapID == 658 or LastInstanceMapID == 632 or LastInstanceMapID == 668 or LastInstanceMapID == 650) and not self.Options.WOTLKTWMessageShown and not GetAddOnInfo("DBM-Party-WotLK") then
 				self.Options.WOTLKTWMessageShown = true
 				AddMsg(self, DBM_CORE_MOD_AVAILABLE:format("DBM-Party-WotLK"))
@@ -6705,6 +6693,16 @@ function DBM:FlashClientIcon()
 	end
 end
 
+do
+	local iconStrings = {[1] = RAID_TARGET_1, [2] = RAID_TARGET_2, [3] = RAID_TARGET_3, [4] = RAID_TARGET_4, [5] = RAID_TARGET_5, [6] = RAID_TARGET_6, [7] = RAID_TARGET_7, [8] = RAID_TARGET_8,}
+	function DBM:IconNumToString(number)
+		return iconStrings[number] or number
+	end
+	function DBM:IconNumToTexture(number)
+		return "|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_"..number..".blp:12:12|t" or number
+	end
+end
+
 --To speed up creating new mods.
 function DBM:FindDungeonIDs()
 	for i=1, 2000 do
@@ -7096,16 +7094,8 @@ function bossModPrototype:CheckBigWigs(name)
 	end
 end
 
-do
-	local iconStrings = {[1] = RAID_TARGET_1, [2] = RAID_TARGET_2, [3] = RAID_TARGET_3, [4] = RAID_TARGET_4, [5] = RAID_TARGET_5, [6] = RAID_TARGET_6, [7] = RAID_TARGET_7, [8] = RAID_TARGET_8,}
-	function bossModPrototype:IconNumToString(number)
-		return iconStrings[number] or number
-	end
-	function bossModPrototype:IconNumToTexture(number)
-		return "|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_"..number..".blp:12:12|t" or number
-	end
-end
-
+bossModPrototype.IconNumToString = DBM.IconNumToString
+bossModPrototype.IconNumToTexture = DBM.IconNumToTexture
 bossModPrototype.AntiSpam = DBM.AntiSpam
 bossModPrototype.HasMapRestrictions = DBM.HasMapRestrictions
 bossModPrototype.GetUnitCreatureId = DBM.GetUnitCreatureId
@@ -9471,18 +9461,11 @@ do
 				if noteHasName then
 					local repeatCount = DBM.Options.SpecialWarningFlashRepeat5 and DBM.Options.SpecialWarningFlashRepeatAmount or 0
 					DBM.Flash:Show(DBM.Options.SpecialWarningFlashCol5[1],DBM.Options.SpecialWarningFlashCol5[2], DBM.Options.SpecialWarningFlashCol5[3], DBM.Options.SpecialWarningFlashDura5, DBM.Options.SpecialWarningFlashAlph5, repeatCount)
-				elseif self.flash == 1 then
-					local repeatCount = DBM.Options.SpecialWarningFlashRepeat1 and DBM.Options.SpecialWarningFlashRepeatAmount or 0
-					DBM.Flash:Show(DBM.Options.SpecialWarningFlashCol1[1],DBM.Options.SpecialWarningFlashCol1[2], DBM.Options.SpecialWarningFlashCol1[3], DBM.Options.SpecialWarningFlashDura1, DBM.Options.SpecialWarningFlashAlph1, repeatCount)
-				elseif self.flash == 2 then
-					local repeatCount = DBM.Options.SpecialWarningFlashRepeat2 and DBM.Options.SpecialWarningFlashRepeatAmount or 0
-					DBM.Flash:Show(DBM.Options.SpecialWarningFlashCol2[1],DBM.Options.SpecialWarningFlashCol2[2], DBM.Options.SpecialWarningFlashCol2[3], DBM.Options.SpecialWarningFlashDura2, DBM.Options.SpecialWarningFlashAlph2, repeatCount)
-				elseif self.flash == 3 then
-					local repeatCount = DBM.Options.SpecialWarningFlashRepeat3 and DBM.Options.SpecialWarningFlashRepeatAmount or 0
-					DBM.Flash:Show(DBM.Options.SpecialWarningFlashCol3[1],DBM.Options.SpecialWarningFlashCol3[2], DBM.Options.SpecialWarningFlashCol3[3], DBM.Options.SpecialWarningFlashDura3, DBM.Options.SpecialWarningFlashAlph3, repeatCount)
-				elseif self.flash == 4 then
-					local repeatCount = DBM.Options.SpecialWarningFlashRepeat4 and DBM.Options.SpecialWarningFlashRepeatAmount or 0
-					DBM.Flash:Show(DBM.Options.SpecialWarningFlashCol4[1],DBM.Options.SpecialWarningFlashCol4[2], DBM.Options.SpecialWarningFlashCol4[3], DBM.Options.SpecialWarningFlashDura4, DBM.Options.SpecialWarningFlashAlph3, repeatCount)
+				else
+					local number = self.flash
+					local repeatCount = DBM.Options["SpecialWarningFlashRepeat"..number] and DBM.Options.SpecialWarningFlashRepeatAmount or 0
+					local flashcolor = DBM.Options["SpecialWarningFlashCol"..number]
+					DBM.Flash:Show(flashcolor[1], flashcolor[2], flashcolor[3], DBM.Options["SpecialWarningFlashDura"..number], DBM.Options["SpecialWarningFlashAlph"..number], repeatCount)
 				end
 			end
 			--Text: Full message text
@@ -9869,22 +9852,9 @@ do
 			self:PlaySpecialWarningSound(number)
 		end
 		if self.Options.ShowFlashFrame and number then
-			if number == 1 then
-				local repeatCount = self.Options.SpecialWarningFlashRepeat1 and self.Options.SpecialWarningFlashRepeatAmount or 0
-				self.Flash:Show(self.Options.SpecialWarningFlashCol1[1],self.Options.SpecialWarningFlashCol1[2], self.Options.SpecialWarningFlashCol1[3], self.Options.SpecialWarningFlashDura1, self.Options.SpecialWarningFlashAlph1, repeatCount)
-			elseif number == 2 then
-				local repeatCount = self.Options.SpecialWarningFlashRepeat2 and self.Options.SpecialWarningFlashRepeatAmount or 0
-				self.Flash:Show(self.Options.SpecialWarningFlashCol2[1],self.Options.SpecialWarningFlashCol2[2], self.Options.SpecialWarningFlashCol2[3], self.Options.SpecialWarningFlashDura2, self.Options.SpecialWarningFlashAlph2, repeatCount)
-			elseif number == 3 then
-				local repeatCount = self.Options.SpecialWarningFlashRepeat3 and self.Options.SpecialWarningFlashRepeatAmount or 0
-				self.Flash:Show(self.Options.SpecialWarningFlashCol3[1],self.Options.SpecialWarningFlashCol3[2], self.Options.SpecialWarningFlashCol3[3], self.Options.SpecialWarningFlashDura3, self.Options.SpecialWarningFlashAlph3, repeatCount)
-			elseif number == 4 then
-				local repeatCount = self.Options.SpecialWarningFlashRepeat4 and self.Options.SpecialWarningFlashRepeatAmount or 0
-				self.Flash:Show(self.Options.SpecialWarningFlashCol4[1],self.Options.SpecialWarningFlashCol4[2], self.Options.SpecialWarningFlashCol4[3], self.Options.SpecialWarningFlashDura4, self.Options.SpecialWarningFlashAlph4, repeatCount)
-			elseif number == 5 then
-				local repeatCount = self.Options.SpecialWarningFlashRepeat5 and self.Options.SpecialWarningFlashRepeatAmount or 0
-				self.Flash:Show(self.Options.SpecialWarningFlashCol5[1],self.Options.SpecialWarningFlashCol5[2], self.Options.SpecialWarningFlashCol5[3], self.Options.SpecialWarningFlashDura5, self.Options.SpecialWarningFlashAlph5, repeatCount)
-			end
+			local flashColor = self.Options["SpecialWarningFlashCol"..number]
+			local repeatCount = self.Options["SpecialWarningFlashRepeat"..number] and self.Options.SpecialWarningFlashRepeatAmount or 0
+			self.Flash:Show(flashColor[1], flashColor[2], flashColor[3], self.Options["SpecialWarningFlashDura"..number], self.Options["SpecialWarningFlashAlph"..number], repeatCount)
 		end
 	end
 	
@@ -9944,27 +9914,17 @@ do
 			if self.type == "ai" then--A learning timer
 				if not DBM.Options.AITimer then return end
 				if timer > 4 then--Normal behavior.
-					if self.firstCastTimer and type(self.firstCastTimer) == "string" then--This is first cast of spell, we need to generate self.firstPullTimer
-						self.firstCastTimer = tonumber(self.firstCastTimer)
-						self.firstCastTimer = GetTime() - self.firstCastTimer--We have generated a self.firstCastTimer! Next pull, DBM should know timer for first cast next pull. FANCY!
-						DBM:Debug("AI timer learned a first timer for pull of "..self.firstCastTimer, 2)
+					local newPhase = false
+					for i = 1, 4 do
+						--Check for any phase timers that are strings, if a string it means last cast of this ability was first case of a given stage
+						if self["phase"..i.."CastTimer"] and type(self["phase"..i.."CastTimer"]) == "string" then--This is first cast of spell, we need to generate self.firstPullTimer
+							self["phase"..i.."CastTimer"] = tonumber(self["phase"..i.."CastTimer"])
+							self["phase"..i.."CastTimer"] = GetTime() - self["phase"..i.."CastTimer"]--We have generated a self.phase1CastTimer! Next pull, DBM should know timer for first cast next pull. FANCY!
+							DBM:Debug("AI timer learned a first timer for current phase of "..self["phase"..i.."CastTimer"], 2)
+							newPhase = true
+						end
 					end
-					if self.phase4CastTimer and type(self.phase4CastTimer) == "string" then--This is first cast of spell after a phase transition, we need to generate self.phaseCastTimer
-						self.phase4CastTimer = tonumber(self.phase4CastTimer)
-						self.phase4CastTimer = GetTime() - self.phase4CastTimer--We have generated a self.phaseCastTimer!
-						DBM:Debug("AI timer learned a first timer for phase of "..self.phase4CastTimer, 2)
-					end
-					if self.phase3CastTimer and type(self.phase3CastTimer) == "string" then--This is first cast of spell after a phase transition, we need to generate self.phaseCastTimer
-						self.phase3CastTimer = tonumber(self.phase3CastTimer)
-						self.phase3CastTimer = GetTime() - self.phase3CastTimer--We have generated a self.phaseCastTimer!
-						DBM:Debug("AI timer learned a first timer for phase of "..self.phase3CastTimer, 2)
-					end
-					if self.phase2CastTimer and type(self.phase2CastTimer) == "string" then--This is first cast of spell after a phase transition, we need to generate self.phaseCastTimer
-						self.phase2CastTimer = tonumber(self.phase2CastTimer)
-						self.phase2CastTimer = GetTime() - self.phase2CastTimer--We have generated a self.phaseCastTimer!
-						DBM:Debug("AI timer learned a first timer for phase of "..self.phase2CastTimer, 2)
-					end
-					if self.lastCast then--We have a GetTime() on last cast
+					if self.lastCast and not newPhase then--We have a GetTime() on last cast and it's not affected by a phase change
 						local timeLastCast = GetTime() - self.lastCast--Get time between current cast and last cast
 						if timeLastCast > 4 then--Prevent infinite loop cpu hang. Plus anything shorter than 5 seconds doesn't need a timer
 							if not self.lowestSeenCast or (self.lowestSeenCast and self.lowestSeenCast > timeLastCast) then--Always use lowest seen cast for a timer
@@ -9979,33 +9939,12 @@ do
 					else
 						return--Don't start the bogus timer shoved into timer field in the mod
 					end
-				elseif timer == 4 then
-					if self.phase4CastTimer and type(self.phase4CastTimer) == "number" then
-						timer = self.phase4CastTimer
+				else--AI timer passed with 4 or less is indicating phase change, with timer as phase number
+					if self["phase"..timer.."CastTimer"] and type(self["phase"..timer.."CastTimer"]) == "number" then
+						timer = self["phase"..timer.."CastTimer"]
 					else--No first pull timer generated yet, set it to GetTime, as a string
-						self.phase4CastTimer = tostring(GetTime())
-						return--Don't start the 4 second timer
-					end
-				elseif timer == 3 then
-					if self.phase3CastTimer and type(self.phase3CastTimer) == "number" then
-						timer = self.phase3CastTimer
-					else--No first pull timer generated yet, set it to GetTime, as a string
-						self.phase3CastTimer = tostring(GetTime())
-						return--Don't start the 3 second timer
-					end
-				elseif timer == 2 then
-					if self.phase2CastTimer and type(self.phase2CastTimer) == "number" then
-						timer = self.phase2CastTimer
-					else--No first pull timer generated yet, set it to GetTime, as a string
-						self.phase2CastTimer = tostring(GetTime())
-						return--Don't start the 2 second timer
-					end
-				else--1 was sent, trigger a first Cast timer
-					if self.firstCastTimer and type(self.firstCastTimer) == "number" then
-						timer = self.firstCastTimer
-					else--No first pull timer generated yet, set it to GetTime, as a string
-						self.firstCastTimer = tostring(GetTime())
-						return--Don't start the 1 second timer
+						self["phase"..timer.."CastTimer"] = tostring(GetTime())
+						return--Don't start the x second timer
 					end
 				end
 			end
@@ -10101,6 +10040,16 @@ do
 					fireEvent("DBM_TimerStop", id)
 					DBM.Bars:CancelBar(id)
 					tremove(self.startedTimers, i)
+				end
+			end
+		end
+		if self.type == "ai" then--A learning timer
+			if not DBM.Options.AITimer then return end
+			for i = 1, 4 do
+				--Check for any phase timers that are strings and never got a chance to become AI timers, then wipe them
+				if self["phase"..i.."CastTimer"] and type(self["phase"..i.."CastTimer"]) == "string" then
+					self["phase"..i.."CastTimer"] = nil
+					DBM:Debug("Wiping incomplete new timer of stage "..i, 2)
 				end
 			end
 		end
@@ -10409,7 +10358,7 @@ do
 		if Name and Name ~= "ReloadUI To Fix" then
 			spellName = Name--Pull from name stored in object
 		elseif spellId then
-			DBM:Debug("GetLocalizedTimerText fallback, this should not happen and is a bug. this fallback should be deleted if this message is never seen")
+			DBM:Debug("GetLocalizedTimerText fallback, this should not happen and is a bug. this fallback should be deleted if this message is never seen after async code is live")
 			if timerType == "achievement" then
 				spellName = select(2, GetAchievementInfo(spellId))
 			elseif type(spellId) == "string" and spellId:match("ej%d+") then
