@@ -199,13 +199,7 @@ function mod:SPELL_CAST_START(args)
 		end
 		local kickCount = self.vb.touchCosmosCast
 		specWarnTouchoftheCosmos:Show(args.sourceName, kickCount)
-		if kickCount == 1 then
-			specWarnTouchoftheCosmos:Play("kick1r")
-		elseif kickCount == 2 then
-			specWarnTouchoftheCosmos:Play("kick2r")
-		elseif kickCount == 3 then
-			specWarnTouchoftheCosmos:Play("kick3r")
-		end
+		specWarnTouchoftheCosmos:Play("kick"..kickCount.."r")
 	end
 end
 
