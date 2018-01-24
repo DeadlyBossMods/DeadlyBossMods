@@ -77,7 +77,7 @@ local specWarnSargFear				= mod:NewSpecialWarningMoveTo(257931, nil, nil, nil, 3
 local yellSargFear					= mod:NewYell(257931)
 local specWarnGTFO					= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
 --Stage Two: The Protector Redeemed
-local specWarnSoulburst				= mod:NewSpecialWarningMoveAway(250669, nil, nil, nil, 1, 2)
+local specWarnSoulburst				= mod:NewSpecialWarningYou(250669, nil, nil, nil, 1, 2)
 local yellSoulburst					= mod:NewPosYell(250669)
 local yellSoulburstFades			= mod:NewIconFadesYell(250669)
 local specWarnSoulbomb				= mod:NewSpecialWarningYou(251570, nil, nil, nil, 1, 2)
