@@ -614,6 +614,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, _, spellId)
 	elseif spellId == 245983 or spellId == 246037 then--Flare
 		specWarnFlare:Show()
 		specWarnFlare:Play("watchstep")
-		timerFlareCD:Start()
+		if not self:IsMythic() then
+			timerFlareCD:Start()
+		end
 	end
 end
