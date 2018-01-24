@@ -449,7 +449,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnSoulburst:Show()
 			specWarnSoulburst:Play("targetyou")
-			specWarnSoulburst:ScheduleVoice(self:IsMythic() and 7 or 10, "runout")
+			--specWarnSoulburst:ScheduleVoice(self:IsMythic() and 7 or 10, "runout")
 			yellSoulburst:Yell(icon == 7 and 2 or 1, icon, icon)
 			yellSoulburstFades:Countdown(self:IsMythic() and 12 or 15, nil, icon)
 		end
