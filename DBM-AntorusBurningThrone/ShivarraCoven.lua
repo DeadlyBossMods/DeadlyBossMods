@@ -115,7 +115,7 @@ local countdownStormofDarkness			= mod:NewCountdown("AltTwo57", 252861)
 
 mod:AddSetIconOption("SetIconOnFulminatingPulse2", 253520, false)
 mod:AddSetIconOption("SetIconOnChilledBlood2", 245586, false)
-mod:AddSetIconOption("SetIconOnCosmicGlare", 250757, false)
+mod:AddSetIconOption("SetIconOnCosmicGlare", 250757, true)
 mod:AddInfoFrameOption(245586, true)
 mod:AddNamePlateOption("NPAuraOnVisageofTitan", 249863)
 mod:AddDropdownOption("TauntBehavior", {"TwoMythicThreeNon", "TwoAlways", "ThreeAlways"}, "TwoMythicThreeNon", "misc")
@@ -228,7 +228,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		end
 	elseif spellId == 246329 then--Shadow Blades
 		specWarnShadowBlades:Show()
-		specWarnShadowBlades:Play("watchstep")
+		specWarnShadowBlades:Play("watchwave")
 		timerShadowBladesCD:Start()
 	end
 end
