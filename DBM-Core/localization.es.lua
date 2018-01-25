@@ -246,7 +246,9 @@ DBM_CORE_UNKNOWN					= "Desconocido"--UNKNOWN which is "Unknown" (does u vs U ma
 DBM_CORE_LEFT						= "Izquierda"
 DBM_CORE_RIGHT						= "Derecha"
 DBM_CORE_BACK						= "Detrás"--BACK
-DBM_CORE_MIDDLE						= "En medio"
+DBM_CORE_TOP						= "Arriba"
+DBM_CORE_BOTTOM						= "Abajo"
+DBM_CORE_MIDDLE						= "Medio"
 DBM_CORE_FRONT						= "Delante"
 DBM_CORE_EAST						= "Este"
 DBM_CORE_WEST						= "Oeste"
@@ -261,6 +263,7 @@ DBM_ADDS							= "esbirros"--Such as "Move to Ally"
 DBM_CORE_ROOM_EDGE					= "los bordes de la sala"
 DBM_CORE_FAR_AWAY					= "alejarte"
 DBM_CORE_SAFE						= "una zona segura"
+DBM_CORE_SHIELD						= "un escudo"
 DBM_INCOMING						= "%s en breve"
 --Common Locals end
 
