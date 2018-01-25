@@ -34,9 +34,28 @@ L= DBM:GetModLocalization(1997)
 ----------------------------------
 L= DBM:GetModLocalization(2025)
 
+L:SetTimerLocalization({
+	timerObfuscator		=	"Ofuscador (%s)",
+	timerDestructor 	=	"Destructor (%s)",
+	timerPurifier 		=	"Purificador (%s)",
+	timerBats	 		=	"Murciélagos (%s)"
+})
+
+L:SetOptionLocalization({
+	timerObfuscator		=	DBM_CORE_AUTO_TIMER_OPTIONS["cdcount"]:format("ej16501"),
+	timerDestructor 	=	DBM_CORE_AUTO_TIMER_OPTIONS["cdcount"]:format("ej16502"),
+	timerPurifier 		=	DBM_CORE_AUTO_TIMER_OPTIONS["cdcount"]:format("ej16500"),
+	timerBats	 		=	DBM_CORE_AUTO_TIMER_OPTIONS["cdcount"]:format("ej17039")
+})
+
 L:SetMiscLocalization({
-	Obfuscators =	"Ofuscadores",
-	Destructors =	"Destructores"
+	Obfuscators =	"Ofuscador",
+	Destructors =	"Destructor",
+	Purifiers 	=	"Purificador",
+	Bats 		=	"Murciélagos",
+	EonarHealth	= 	"Salud de Eonar",
+	EonarPower	= 	"Energía de Eonar",
+	NextLoc		=	"Siguiente:"
 })
 
 ---------------------------------
@@ -57,13 +76,18 @@ L:SetOptionLocalization({
 --------------------------------
 L= DBM:GetModLocalization(2009)
 
+L:SetMiscLocalization({
+	DispelMe =		"¡Disipadme!"
+})
+
 ----------------
 -- Kin'garoth --
 ----------------
 L= DBM:GetModLocalization(2004)
 
 L:SetOptionLocalization({
-	InfoFrame =	"Mostrar marco de información con una vista general del combate"
+	InfoFrame =	"Mostrar marco de información con una vista general del combate",
+	UseAddTime = "Mostrar temporizadores de la fase de despligue durante la fase de construcción"
 })
 
 -----------------
@@ -76,12 +100,20 @@ L= DBM:GetModLocalization(1983)
 ------------------------
 L= DBM:GetModLocalization(1986)
 
+L:SetOptionLocalization({
+	SetLighting				= "Bajar automáticamente la calidad de iluminación a bajo al iniciar el combate (se restaurará a su configuración anterior al terminar el combate; no funciona en Mac)"
+})
+
 L:SetTimerLocalization({
 	timerBossIncoming		= DBM_INCOMING
 })
 
 L:SetOptionLocalization({
-	timerBossIncoming		= "Mostrar temporizador para el siguiente cambio de jefe"
+	timerBossIncoming	= "Mostrar temporizador para el siguiente cambio de jefe",
+	TauntBehavior		= "Patrón de avisos para el cambio de tanque",
+	TwoMythicThreeNon	= "Cambiar a dos acumulaciones en mítico, tres en otras dificultades",--Default
+	TwoAlways			= "Cambiar a dos acumulaciones en todas las dificultades",
+	ThreeAlways			= "Cambiar a tres acumulaciones en todas las dificultades"
 })
 
 --------------
@@ -89,10 +121,22 @@ L:SetOptionLocalization({
 --------------
 L= DBM:GetModLocalization(1984)
 
+L:SetMiscLocalization({
+	Foe			=	"Doma",
+	Rend		=	"Desgarro",
+	Tempest 	=	"Tempestad",
+	Current		=	"Actual:"
+})
+
 --------------------------
 -- Argus el Aniquilador --
 --------------------------
 L= DBM:GetModLocalization(2031)
+
+L:SetMiscLocalization({
+	SeaText =		"{rt6} Celeridad/Versatilidad",
+	SkyText =		"{rt5} Crítico/Maestría"
+})
 
 ----------------------
 -- Enemigos menores --
