@@ -95,6 +95,10 @@ L= DBM:GetModLocalization(1983)
 ---------------------------
 L= DBM:GetModLocalization(1986)
 
+L:SetOptionLocalization({
+	SetLighting				= "Automatically turn lighting setting to low when coven is engaged and restore on combat end (Not supported in mac client since mac client doesn't support low lighting)"
+})
+
 L:SetTimerLocalization({
 	timerBossIncoming		= DBM_INCOMING
 })
