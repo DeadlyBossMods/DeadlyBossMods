@@ -66,6 +66,7 @@ local specWarnSweepingScytheTaunt	= mod:NewSpecialWarningTaunt(248499, nil, nil,
 local specWarnConeofDeath			= mod:NewSpecialWarningDodge(248165, nil, nil, nil, 1, 2)
 local specWarnSoulblight			= mod:NewSpecialWarningMoveAway(248396, nil, nil, nil, 1, 2)
 local yellSoulblight				= mod:NewYell(248396)
+local yellSoulblightFades			= mod:NewShortFadesYell(248396)
 local specWarnGiftofSea				= mod:NewSpecialWarningYou(258647, nil, nil, nil, 1, 2)
 local yellGiftofSea					= mod:NewPosYell(258647, L.SeaText)
 local specWarnGiftofSky				= mod:NewSpecialWarningYou(258646, nil, nil, nil, 1, 2)
@@ -439,6 +440,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnSoulblight:Show()
 			specWarnSoulblight:Play("runout")
 			yellSoulblight:Yell()
+			yellSoulblightFades:Countdown(8)
 		end
 	elseif spellId == 250669 then
 		warnSoulburst:CombinedShow(0.3, args.destName)--2 Targets
