@@ -252,7 +252,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self:IsTanking(uId) then
 			local amount = args.amount or 1
 			local tauntStack = 3
-			if (self:IsMythic() and self.Options.TauntBehavior == "TwoMythicThreeNon") or self.Options.TauntBehavior == "TwoAlways" then
+			if self:IsMythic() and self.Options.TauntBehavior == "TwoMythicThreeNon" or self.Options.TauntBehavior == "TwoAlways" then
 				tauntStack = 2
 			end
 			if amount >= tauntStack then
@@ -294,7 +294,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId) then
 			local amount = args.amount or 1
-			if amount >= 2 then--Lasts 30 seconds, unknown reapplication rate, fine tune!
+			local tauntStack = 3
+			if self:IsMythic() and self.Options.TauntBehavior == "TwoMythicThreeNon" or self.Options.TauntBehavior == "TwoAlways" then
+				tauntStack = 2
+			end
+			if amount >= tauntStack then--Lasts 30 seconds, unknown reapplication rate, fine tune!
 				if args:IsPlayer() then--At this point the other tank SHOULD be clear.
 					specWarnFlashfreeze:Show(amount)
 					specWarnFlashfreeze:Play("stackhigh")
