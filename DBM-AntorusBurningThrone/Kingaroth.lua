@@ -108,11 +108,11 @@ function mod:ReverberatingTarget(targetname, uId)
 	if not targetname then return end
 	if targetname == UnitName("player") then
 		specWarnReverberatingStrike:Show()
-		specWarnReverberatingStrike:Play("runaway")
+		specWarnReverberatingStrike:Play("targetyou")
 		yellReverberatingStrike:Yell()
 	elseif self:CheckNearby(5, targetname) then
 		specWarnReverberatingStrikeNear:Show(targetname)
-		specWarnReverberatingStrikeNear:Play("watchstep")
+		specWarnReverberatingStrikeNear:Play("runaway")
 	else
 		warnReverberatingStrike:Show(targetname)
 	end
