@@ -118,6 +118,7 @@ mod:AddSetIconOption("SetIconOnChilledBlood2", 245586, false)
 mod:AddSetIconOption("SetIconOnCosmicGlare", 250757, true)
 mod:AddInfoFrameOption(245586, true)
 mod:AddNamePlateOption("NPAuraOnVisageofTitan", 249863)
+mod:AddBoolOption("SetLighting", true)
 mod:AddDropdownOption("TauntBehavior", {"TwoMythicThreeNon", "TwoAlways", "ThreeAlways"}, "TwoMythicThreeNon", "misc")
 
 local titanCount = {}
