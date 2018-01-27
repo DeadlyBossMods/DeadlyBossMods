@@ -235,14 +235,6 @@ L.SWFAll					= "when special warnings use any sound"
 L.SpecWarn_AlwaysVoice		= "Always play all spoken alerts (Overrides boss-specific options. Useful for RL)"
 --TODO, maybe add URLS right to GUI panel on where to acquire 3rd party voice packs?
 
--- Tab: HealthFrame
-L.Panel_HPFrame				= "Health Frame"
-L.Area_HPFrame				= "Health Frame Options"
-L.HP_Enabled				= "Always show health frame (Overrides boss-specific option)"
-L.HP_GrowUpwards			= "Expand health frame upward"
-L.HP_ShowDemo				= "Show HP frame"
-L.BarWidth					= "Bar width: %d"
-
 -- Tab: Global Filter
 L.Panel_SpamFilter			= "DBM Global Disables & Filters"
 L.Area_SpamFilter_Outgoing	= "DBM Global Disable & Filter Options"
@@ -256,7 +248,6 @@ L.SpamBlockNoRangeFrame		= "Do not show range frame"
 L.SpamBlockNoInfoFrame		= "Do not show info frame"
 L.SpamBlockNoHudMap			= "Do not show HudMap"
 L.SpamBlockNoNameplate		= "Do not show Nameplate Auras"
-L.SpamBlockNoHealthFrame	= "Do not show health frame"
 L.SpamBlockNoCountdowns		= "Do not play countdown sounds"
 L.SpamBlockNoYells			= "Do not send chat yells"
 L.SpamBlockNoNoteSync		= "Do not accept shared notes"

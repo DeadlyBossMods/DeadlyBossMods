@@ -126,7 +126,6 @@ DBM.DefaultOptions = {
 	SWarningAlphabetical = true,
 	SWarnNameInNote = true,
 	CustomSounds = 0,
-	AlwaysShowHealthFrame = false,
 	ShowBigBrotherOnCombatStart = false,
 	FilterTankSpec = true,
 	FilterInterrupt = true,
@@ -229,9 +228,6 @@ DBM.DefaultOptions = {
 	HUDTexture2 = "highlight",
 	HUDTexture3 = "highlight",
 	HUDTexture4 = "highlight",
-	HealthFrameGrowUp = false,
-	HealthFrameLocked = false,
-	HealthFrameWidth = 200,
 	ArrowPosX = 0,
 	ArrowPosY = -150,
 	ArrowPoint = "TOP",
@@ -249,7 +245,6 @@ DBM.DefaultOptions = {
 	DontShowInfoFrame = false,
 	DontShowHudMap2 = false,
 	DontShowNameplateIcons = false,
-	DontShowHealthFrame = false,
 	DontPlayCountdowns = false,
 	DontSendYells = false,
 	BlockNoteShare = false,
@@ -1690,10 +1685,6 @@ function DBM:RepositionFrames()
 	self:UpdateWarningOptions()
 	self:UpdateSpecialWarningOptions()
 	self.Arrow:LoadPosition()
-	if DBMBossHealth then
-		DBMBossHealth:ClearAllPoints()
-		DBMBossHealth:SetPoint(self.Options.HPFramePoint, UIParent, self.Options.HPFramePoint, self.Options.HPFrameX, self.Options.HPFrameY)
-	end
 	if DBMRangeCheck then
 		DBMRangeCheck:ClearAllPoints()
 		DBMRangeCheck:SetPoint(self.Options.RangeFramePoint, UIParent, self.Options.RangeFramePoint, self.Options.RangeFrameX, self.Options.RangeFrameY)
@@ -2758,6 +2749,25 @@ do
 
 	function DBM:GetRaidUnitId(name)
 		return raid[name] and raid[name].id
+	end
+	
+	function DBM:GetEnemyUnitIdByGUID(guid)
+		for i = 1, 5 do
+			local unitId = "boss"..i
+			local guid2 = UnitGUID(unitId)
+			if guid == guid2 then
+				return unitId
+			end
+		end
+		local idType = (IsInRaid() and "raid") or "party"
+		for i = 0, GetNumGroupMembers() do
+			local unitId = ((i == 0) and "target") or idType..i.."target"
+			local guid2 = UnitGUID(unitId)
+			if guid == guid2 then
+				return unitId
+			end
+		end
+		return DBM_CORE_UNKNOWN
 	end
 	
 	function DBM:GetPlayerGUIDByName(name)
@@ -5427,7 +5437,6 @@ do
 					self:Unschedule(self.RequestTimers)
 				end
 			end
-			--show health frame
 			if not mod.inScenario then
 				if self.Options.HideTooltips then
 					--Better or cleaner way?
@@ -5437,33 +5446,6 @@ do
 				if self.Options.DisableSFX and GetCVar("Sound_EnableSFX") == "1" then
 					self.Options.sfxDisabled = true
 					SetCVar("Sound_EnableSFX", 0)
-				end
-				if (self.Options.AlwaysShowHealthFrame or mod.Options.HealthFrame) then
-					if not self.BossHealth:IsShown() then
-						self.BossHealth:Show(mod.localization.general.name)
-					else-- pulled other boss during combat, set header text.
-						self.BossHealth:SetHeaderText(BOSS)
-					end
-					if mod.bossHealthInfo then
-						if mod.bossHealthInfo[2] and type(mod.bossHealthInfo[2]) == "number" then
-							for i = 1, #mod.bossHealthInfo do--boss name gets from UnitName
-								self.BossHealth:AddBoss(mod.bossHealthInfo[i])
-							end
-						else
-							for i = 1, #mod.bossHealthInfo, 2 do
-								self.BossHealth:AddBoss(mod.bossHealthInfo[i], mod.bossHealthInfo[i + 1])
-							end
-						end
-					else
-						self.BossHealth:AddBoss(mod.combatInfo.mob, mod.localization.general.name)
-					end
-				--boss health info update scheduler if boss health frame is not enabled.
-				elseif not mod.CustomHealthUpdate then
-					self:Schedule(1, checkBossHealth, self)
-				end
-				--this function must be scheduled if boss health frame enabled.
-				if mod.CustomHealthUpdate then
-					self:Schedule(1, checkCustomBossHealth, self, mod)
 				end
 			end
 			--process global options
@@ -5866,7 +5848,6 @@ do
 				self:HideBlizzardEvents(0)
 				self:Unschedule(checkBossHealth)
 				self:Unschedule(checkCustomBossHealth)
-				self.BossHealth:Hide()
 				self.Arrow:Hide(true)
 				if watchFrameRestore then
 					ObjectiveTrackerFrame:Show()
@@ -5896,20 +5877,6 @@ do
 				eeSyncReceived = 0
 				targetMonitor = nil
 				self:CreatePizzaTimer(time, "", nil, nil, nil, nil, true)--Auto Terminate infinite loop timers on combat end
-			elseif self.BossHealth:IsShown() then
-				if mod.bossHealthInfo then
-					if mod.bossHealthInfo[2] and type(mod.bossHealthInfo[2]) == "number" then
-						for i = 1, #mod.bossHealthInfo do
-							self.BossHealth:RemoveBoss(mod.bossHealthInfo[i])
-						end
-					else
-						for i = 1, #mod.bossHealthInfo, 2 do
-							self.BossHealth:RemoveBoss(mod.bossHealthInfo[i])
-						end
-					end
-				else
-					self.BossHealth:RemoveBoss(mod.combatInfo.mob)
-				end
 			end
 		end
 	end
@@ -5926,7 +5893,6 @@ function DBM:OnMobKill(cId, synced)
 				sendSync("K", cId)
 			end
 			v.combatInfo.killMobs[cId] = false
-			self.BossHealth:RemoveBoss(cId)
 			if v.numBoss then
 				v.vb.bossLeft = (v.vb.bossLeft or v.numBoss) - 1
 				self:Debug("Boss left - "..v.vb.bossLeft.."/"..v.numBoss, 2)
@@ -6868,7 +6834,6 @@ do
 			tinsert(self.ModLists[modId], name)
 		end
 		modsById[name] = obj
-		obj:AddBoolOption("HealthFrame", false, "misc")
 		obj:SetZone()
 		return obj
 	end
@@ -7991,10 +7956,6 @@ function DBM:GetBossHPByUnitID(uId)
 		return hp, uId, UnitName(uId)
 	end
 	return nil
-end
-
-function bossModPrototype:SetBossHealthInfo(...)
-	self.bossHealthInfo = {...}
 end
 
 function bossModPrototype:SetMainBossID(cid)
@@ -11204,7 +11165,6 @@ do
 		__index = setmetatable({
 			timer_berserk = DBM_CORE_OPTION_TIMER_BERSERK,
 			timer_combat = DBM_CORE_OPTION_TIMER_COMBAT,
-			HealthFrame = DBM_CORE_OPTION_HEALTH_FRAME,
 		}, returnKey)
 	}
 	local defaultMiscLocalization = {

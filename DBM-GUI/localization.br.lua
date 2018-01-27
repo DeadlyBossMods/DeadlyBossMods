@@ -197,15 +197,6 @@ L.SpecWarn_AlwaysVoice		= "Sempre tocar todos os avisos falados (Substitui opç�
 --TODO, maybe add URLS right to GUI panel on where to acquire 3rd party voice packs? talvez ...
 
 
--- Tab: HealthFrame
-L.Panel_HPFrame				= "Quadro de Vida"
-L.Area_HPFrame				= "Opções do Quadro de Vida"
-L.HP_Enabled				= "Sempre exibir quadro de vida (Sobrepõe opção específica por chefe)"
-L.HP_GrowUpwards			= "Expandir quadro de vida para cima"
-L.HP_ShowDemo				= "Exibir quadro de vida"
-L.BarWidth					= "Largura da barra: %d"
-
-
 -- Tab: Global Filter
 L.Panel_SpamFilter			= "DBM Desligamentos globais & filtros"
 L.Area_SpamFilter_Outgoing	= "DBM opções de desligamentos globais & filtros"
@@ -214,7 +205,6 @@ L.SpamBlockNoSetIcon		= "Não marcar jogadores com ícones"
 L.SpamBlockNoRangeFrame		= "Não exibir quadro de distancia"
 L.SpamBlockNoInfoFrame		= "Não exibir quadro de informação"
 L.SpamBlockNoHudMap			= "Não mostrar mapas HudMap (heads up display Map)"
-L.SpamBlockNoHealthFrame	= "Não exibir quadros de vida"
 L.SpamBlockNoCountdowns		= "Não tocar sons de contagem regressiva"
 L.SpamBlockNoIconRestore	= "Não guardar estado dos ícones e restaura-los ao fim do combate"
 L.SpamBlockNoRangeRestore	= "Não restaurar o quadro de distancia para o estado anterior ( show/hide ) quando a mod pedir hide'"

@@ -27,7 +27,6 @@ DBM_CORE_OK							= "Ok"
 DBM_CORE_GENERIC_WARNING_BERSERK	= "Furia in %s %s"
 DBM_CORE_GENERIC_TIMER_BERSERK		= "Furia"
 DBM_CORE_OPTION_TIMER_BERSERK		= "Visualizza Timer per $spell:26662"
-DBM_CORE_OPTION_HEALTH_FRAME		= "Visualizza il frame della Vita del Boss"
 
 DBM_CORE_OPTION_CATEGORY_TIMERS		= "Barre"
 DBM_CORE_OPTION_CATEGORY_WARNINGS	= "Annunci"
@@ -103,8 +102,6 @@ DBM_CORE_SLASHCMD_HELP				= {
 }
 
 DBM_ERROR_NO_PERMISSION				= "Non hai i permessi per eseguire questo comando."
-
-DBM_CORE_BOSSHEALTH_HIDE_FRAME		= "Chiudi Finestra della Vita"
 
 DBM_CORE_ALLIANCE					= "Alleanza"
 DBM_CORE_HORDE						= "Orda"
