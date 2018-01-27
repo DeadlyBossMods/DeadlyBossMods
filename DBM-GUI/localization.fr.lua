@@ -215,14 +215,6 @@ L.SWFAll					= "quand les alertes spéciales jouent n'importe quel son"
 L.SpecWarn_AlwaysVoice		= "Toujours jouer toutes les alertes vocales (Outrepasse les options par boss. Utile pour les RL)"
 --TODO, maybe add URLS right to GUI panel on where to acquire 3rd party voice packs?
 
--- Tab: HealthFrame
-L.Panel_HPFrame				= "Cadre des vies"
-L.Area_HPFrame				= "Options du cadre des vies"
-L.HP_Enabled				= "Toujours afficher le cadre (Outrepasse l'option par boss)"
-L.HP_GrowUpwards			= "Décaler vers le haut"
-L.HP_ShowDemo				= "Aff. le cadre"
-L.BarWidth					= "Longueur des barres : %d"
-
 -- Tab: Global Filter
 L.Panel_SpamFilter			= "Filtres globaux et de spam"
 L.Area_SpamFilter_Outgoing	= "Options des filtres globaux"
@@ -234,7 +226,6 @@ L.SpamBlockNoSetIcon		= "Ne pas placer d'icônes sur les cibles"
 L.SpamBlockNoRangeFrame		= "Ne pas afficher le cadre des portées"
 L.SpamBlockNoInfoFrame		= "Ne pas afficher le cadre d'information"
 L.SpamBlockNoHudMap			= "Do not show HudMap"
-L.SpamBlockNoHealthFrame	= "Ne pas afficher le cadre des vies"
 L.SpamBlockNoCountdowns		= "Ne pas jouer le son du compte à rebours"
 L.SpamBlockNoYells			= "Ne pas envoyer de cris dans le chat"
 L.SpamBlockNoNoteSync		= "Ne pas accepter les notes partagées"

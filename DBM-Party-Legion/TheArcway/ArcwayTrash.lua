@@ -20,8 +20,6 @@ local specWarnOozePuddle			= mod:NewSpecialWarningMove(194006, nil, nil, nil, 1,
 local specWarnColapsingRift			= mod:NewSpecialWarningMove(210750, nil, nil, nil, 1, 2)
 local specWarnFelStrike				= mod:NewSpecialWarningMove(211745, nil, nil, nil, 1, 2)
 
-mod:RemoveOption("HealthFrame")
-
 function mod:SPELL_CAST_START(args)
 	if not self.Options.Enabled then return end
 	local spellId = args.spellId

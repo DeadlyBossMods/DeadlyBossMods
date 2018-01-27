@@ -139,14 +139,6 @@ L.SpecWarn_FontColor		= "Colore Carattere"
 L.SpecWarn_FontType			= "Seleziona Carattere"
 L.SpecWarn_ResetMe			= "Ripristina impostazioni di default"
 
--- Tab: HealthFrame
-L.Panel_HPFrame				= "Frame della Vita"
-L.Area_HPFrame				= "Frame della Vita - Opzioni"
-L.HP_Enabled				= "Visualizza sempre il frame della vita (sovrascive l'impostazione specifica dei boss)"
-L.HP_GrowUpwards			= "Espandi il frame della vita verso l'altro"
-L.HP_ShowDemo				= "Visualizza il frame della Vita"
-L.BarWidth					= "Larghezza Barra: %d"
-
 -- Tab: Spam Filter
 L.Panel_SpamFilter				= "Filtri globali e di Spam"
 L.Area_SpamFilter				= "Filtri di Spam - Opzioni"

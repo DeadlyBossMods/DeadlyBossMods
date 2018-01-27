@@ -113,7 +113,6 @@ DBM_CORE_GENERIC_TIMER_BERSERK		= "Berserk"
 DBM_CORE_OPTION_TIMER_BERSERK		= "Show timer for $spell:26662"
 DBM_CORE_GENERIC_TIMER_COMBAT		= "Combat starts"
 DBM_CORE_OPTION_TIMER_COMBAT		= "Show timer for combat start"
-DBM_CORE_OPTION_HEALTH_FRAME		= "Show boss health frame"
 DBM_CORE_BAD						= "Bad"
 
 DBM_CORE_OPTION_CATEGORY_TIMERS			= "Bars"
@@ -235,8 +234,6 @@ DBM_CORE_TIMER_USAGE	= {
 }
 
 DBM_ERROR_NO_PERMISSION				= "You don't have the required permission to do this."
-
-DBM_CORE_BOSSHEALTH_HIDE_FRAME		= "Close health frame"
 
 --Common Locals
 DBM_NEXT							= "Next %s"

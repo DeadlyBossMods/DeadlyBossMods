@@ -13,8 +13,6 @@ mod:RegisterEvents(
 
 local specWarnPrimalRampage			= mod:NewSpecialWarningDodge(198379, "Melee", nil, nil, 1, 2)
 
-mod:RemoveOption("HealthFrame")
-
 function mod:SPELL_CAST_START(args)
 	if not self.Options.Enabled then return end
 	local spellId = args.spellId

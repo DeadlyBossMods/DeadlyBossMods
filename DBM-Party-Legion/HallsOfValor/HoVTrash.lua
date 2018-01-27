@@ -18,8 +18,6 @@ local yellCrackle					= mod:NewYell(199805)
 local specWarnCleansingFlame		= mod:NewSpecialWarningInterrupt(192563, "HasInterrupt", nil, nil, 1, 2)
 local specWarnUnrulyYell			= mod:NewSpecialWarningInterrupt(199726, "HasInterrupt", nil, nil, 1, 2)
 
-mod:RemoveOption("HealthFrame")
-
 function mod:CrackleTarget(targetname, uId)
 	if not targetname then
 		warnCrackle:Show(DBM_CORE_UNKNOWN)

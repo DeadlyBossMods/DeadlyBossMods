@@ -11,8 +11,6 @@ mod:RegisterEvents(
 
 --TODO, do stuff?
 
-mod:RemoveOption("HealthFrame")
-
 local brawlersMod = DBM:GetModByName("Brawlers")
 
 --[[

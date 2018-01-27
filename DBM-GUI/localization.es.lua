@@ -222,14 +222,6 @@ L.SWFAll					= "Cuando los avisos especiales usen cualquier sonido"
 L.SpecWarn_AlwaysVoice		= "Reproducir siempre todas las alertas de voz (ignora las opciones de jefe; útil para líderes de banda)"
 --TODO, maybe add URLS right to GUI panel on where to acquire 3rd party voice packs?
 
--- Tab: HealthFrame
-L.Panel_HPFrame				= "Barras de vida"
-L.Area_HPFrame				= "Opciones de barras de vida"
-L.HP_Enabled				= "Mostrar siempre las barras de vida (ignora las opciones de jefe)"
-L.HP_GrowUpwards			= "Expandir barras de vida hacia arriba"
-L.HP_ShowDemo				= "Mostrar barras de vida"
-L.BarWidth					= "Ancho: %d"
-
 -- Tab: Global Filter
 L.Panel_SpamFilter			= "Filtros globales"
 L.Area_SpamFilter_Outgoing	= "Opciones de filtros globales"
@@ -242,7 +234,6 @@ L.SpamBlockNoRangeFrame		= "Ocultar marcos de distancia"
 L.SpamBlockNoInfoFrame		= "Ocultar marcos de información"
 L.SpamBlockNoHudMap			= "Ocultar indicadores"
 L.SpamBlockNoNameplate		= "Ocultar auras de placas de nombres"
-L.SpamBlockNoHealthFrame	= "Ocultar barras de vida"
 L.SpamBlockNoCountdowns		= "Desactivar sonidos de cuenta atrás"
 L.SpamBlockNoYells			= "Desactivar envío automático de mensajes en el chat"
 L.SpamBlockNoNoteSync		= "Rechazar automáticamente notas compartidas"

@@ -93,7 +93,6 @@ DBM_CORE_GENERIC_TIMER_BERSERK		= "Frenético"
 DBM_CORE_OPTION_TIMER_BERSERK		= "Exibir cronógrafo para $spell:26662"
 DBM_CORE_GENERIC_TIMER_COMBAT		= "Combate começou"
 DBM_CORE_OPTION_TIMER_COMBAT		= "Exibir cronógrafo para começo do combate"
-DBM_CORE_OPTION_HEALTH_FRAME		= "Exibir quadro de vida do chefe"
 
 DBM_CORE_OPTION_CATEGORY_TIMERS		= "Barras"
 DBM_CORE_OPTION_CATEGORY_WARNINGS	= "Categoria de anúncios"
@@ -209,8 +208,6 @@ DBM_CORE_TIMER_USAGE	= {
 }
 
 DBM_ERROR_NO_PERMISSION				= "Você não tem as permissões necessárias para fazer isso."
-
-DBM_CORE_BOSSHEALTH_HIDE_FRAME		= "Esconder quadro de vida"
 
 DBM_CORE_ALLIANCE					= "Aliança"
 DBM_CORE_HORDE						= "Horda"

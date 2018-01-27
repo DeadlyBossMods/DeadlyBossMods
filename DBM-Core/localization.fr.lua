@@ -101,7 +101,6 @@ DBM_CORE_GENERIC_TIMER_BERSERK		= "Enrage"
 DBM_CORE_OPTION_TIMER_BERSERK		= "Montrer les chronos pour $spell:26662"
 DBM_CORE_GENERIC_TIMER_COMBAT		= "Le combat débute dans"
 DBM_CORE_OPTION_TIMER_COMBAT		= "Montre le timer avant le début du combat"
-DBM_CORE_OPTION_HEALTH_FRAME		= "Afficher le cadre de vie des Boss"
 
 DBM_CORE_OPTION_CATEGORY_TIMERS			= "Barres"
 DBM_CORE_OPTION_CATEGORY_WARNINGS		= "Avertissements"
@@ -213,8 +212,6 @@ DBM_CORE_TIMER_USAGE	= {
 }
 
 DBM_ERROR_NO_PERMISSION				= "Vous n'avez pas la permission requise pour faire cela."
-
-DBM_CORE_BOSSHEALTH_HIDE_FRAME		= "Fermer le cadre des vies"
 
 DBM_CORE_UNKNOWN					= "inconnu"
 DBM_CORE_LEFT						= "Gauche"

@@ -19,8 +19,6 @@ local timerGame		= mod:NewBuffActiveTimer(10, 170820)
 
 local countdownGame	= mod:NewCountdownFades(10, 170820)
 
-mod:RemoveOption("HealthFrame")
-
 local wingsName = DBM:GetSpellInfo(170820)
 local UnitBuff = UnitBuff
 

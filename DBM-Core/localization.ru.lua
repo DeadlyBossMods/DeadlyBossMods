@@ -111,7 +111,6 @@ DBM_CORE_GENERIC_TIMER_BERSERK		= "Берсерк"
 DBM_CORE_OPTION_TIMER_BERSERK		= "Отсчет времени до $spell:26662"
 DBM_CORE_GENERIC_TIMER_COMBAT		= "Бой начинается"
 DBM_CORE_OPTION_TIMER_COMBAT		= "Отсчет времени до начала боя"
-DBM_CORE_OPTION_HEALTH_FRAME		= "Отображать здоровье босса"
 
 DBM_CORE_OPTION_CATEGORY_TIMERS			= "Индикаторы"
 DBM_CORE_OPTION_CATEGORY_WARNINGS		= "Общие предупреждения"
@@ -226,8 +225,6 @@ DBM_CORE_TIMER_USAGE	= {
 }
 
 DBM_ERROR_NO_PERMISSION				= "У вас недостаточно прав для выполнения этой операции."
-
-DBM_CORE_BOSSHEALTH_HIDE_FRAME		= "Скрыть"
 
 DBM_CORE_UNKNOWN					= "неизвестно"
 DBM_CORE_LEFT						= "Налево"

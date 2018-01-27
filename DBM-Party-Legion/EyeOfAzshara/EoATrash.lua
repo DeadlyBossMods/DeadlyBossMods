@@ -22,8 +22,6 @@ local specWarnSpraySand			= mod:NewSpecialWarningDodge(196127, "Tank", nil, nil,
 local specWarnArcaneBomb		= mod:NewSpecialWarningMoveAway(192706, nil, nil, nil, 3, 2)
 local yellArcaneBomb			= mod:NewYell(192706)
 
-mod:RemoveOption("HealthFrame")
-
 function mod:SPELL_CAST_START(args)
 	if not self.Options.Enabled then return end
 	local spellId = args.spellId

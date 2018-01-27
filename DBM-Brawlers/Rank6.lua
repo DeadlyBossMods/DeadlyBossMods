@@ -18,8 +18,6 @@ local specWarnDinoDash		= mod:NewSpecialWarningDodge(232252)--Millie Watt
 
 local timerPolymorphCD		= mod:NewCDTimer(35, 133362, nil, nil, nil, 3)--Millie Watt
 
-mod:RemoveOption("HealthFrame")
-
 local brawlersMod = DBM:GetModByName("Brawlers")
 
 function mod:SPELL_CAST_START(args)
