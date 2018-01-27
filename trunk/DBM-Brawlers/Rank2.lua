@@ -27,8 +27,6 @@ local timerZenOrb				= mod:NewTargetTimer(15, 229884)--Master Paku
 
 local countdownZenOrb			= mod:NewCountdown(15, 229884)
 
-mod:RemoveOption("HealthFrame")
-
 local brawlersMod = DBM:GetModByName("Brawlers")
 
 function mod:SPELL_CAST_START(args)

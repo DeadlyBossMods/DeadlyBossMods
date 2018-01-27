@@ -29,8 +29,6 @@ local specWarnTomeSilence		= mod:NewSpecialWarningSwitch(239161, "-Healer", nil,
 local specWarnFelblazeOrb		= mod:NewSpecialWarningDodge(239320, nil, nil, nil, 1, 2)
 local specWarnVenomStorm		= mod:NewSpecialWarningDodge(239266, nil, nil, nil, 1, 2)
 
-mod:RemoveOption("HealthFrame")
-
 function mod:FelStrikeTarget(targetname, uId)
 	if not targetname then
 		warnFelStrike:Show(DBM_CORE_UNKNOWN)

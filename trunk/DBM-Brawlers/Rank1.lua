@@ -17,8 +17,6 @@ local specWarnShotgunRoar		= mod:NewSpecialWarningDodge(234489)--Oso
 
 local timerShotgunRoarCD		= mod:NewAITimer(17, 234489, nil, nil, nil, 3)--Oso
 
-mod:RemoveOption("HealthFrame")
-
 local brawlersMod = DBM:GetModByName("Brawlers")
 
 function mod:SPELL_CAST_START(args)

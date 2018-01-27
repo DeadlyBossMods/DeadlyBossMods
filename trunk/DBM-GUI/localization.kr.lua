@@ -227,14 +227,6 @@ L.SWFAll					= "특수 경고가 모든 효과음을 사용할 때"
 L.SpecWarn_AlwaysVoice		= "모든 음성 경보 재생 (보스마다 지정된 설정을 무시합니다. 공대장에게 유용합니다.)"
 --TODO, maybe add URLS right to GUI panel on where to acquire 3rd party voice packs?
 
--- Tab: HealthFrame
-L.Panel_HPFrame				= "체력 창"
-L.Area_HPFrame				= "체력 창 설정"
-L.HP_Enabled				= "항상 체력 창 표시 (보스마다 지정된 설정 무시)"
-L.HP_GrowUpwards			= "체력 창 위로 확장"
-L.HP_ShowDemo				= "체력 창 보기"
-L.BarWidth					= "바 너비: %d"
-
 -- Tab: Global Filter
 L.Panel_SpamFilter			= "DBM 전역 기능 끄기 및 필터"
 L.Area_SpamFilter_Outgoing	= "DBM 전역 기능 끄기 및 필터 설정"
@@ -248,7 +240,6 @@ L.SpamBlockNoRangeFrame		= "거리 창 표시 안함"
 L.SpamBlockNoInfoFrame		= "정보 창 표시 안함"
 L.SpamBlockNoHudMap			= "HUD 표시 안함"
 L.SpamBlockNoNameplate		= "이름표 오라 표시 안함"
-L.SpamBlockNoHealthFrame	= "보스 체력 창 표시 안함"
 L.SpamBlockNoCountdowns		= "초읽기 효과음 재생 안함"
 L.SpamBlockNoYells			= "대화 알림 사용 안함"
 L.SpamBlockNoNoteSync		= "메모 공유 수락 안함"

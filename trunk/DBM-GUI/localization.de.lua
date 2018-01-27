@@ -226,14 +226,6 @@ L.SWFAll					= "Spezialwarnungen eingestellt auf irgendeinen Sound"
 L.SpecWarn_AlwaysVoice		= "Spiele immer alle gesprochenen Warnungen (ignoriert Boss-spezifische Einstellung, nützlich für Schlachtzugsleiter)"
 
 
--- Tab: HealthFrame
-L.Panel_HPFrame				= "Lebensanzeige"
-L.Area_HPFrame				= "Einstellungen für die Lebensanzeige"
-L.HP_Enabled				= "Lebensanzeige immer anzeigen (ignoriert Boss-spezifische Einstellung)"
-L.HP_GrowUpwards			= "Erweitere Lebensanzeige nach oben"
-L.HP_ShowDemo				= "Anzeigen"
-L.BarWidth					= "Balkenbreite: %d"
-
 -- Tab: Global Filter
 L.Panel_SpamFilter			= "Deaktivierung von DBM-Funktionen"
 L.Area_SpamFilter_Outgoing	= "Globale Deaktivierungs- und Filtereinstellungen für DBM"
@@ -246,7 +238,6 @@ L.SpamBlockNoRangeFrame		= "Zeige kein Abstandsfenster/-radar an"
 L.SpamBlockNoInfoFrame		= "Zeige kein Infofenster an"
 L.SpamBlockNoHudMap			= "Zeige keine HudMap"
 L.SpamBlockNoNameplate		= "Zeige keine Namensplakettenauras"
-L.SpamBlockNoHealthFrame	= "Zeige keine Lebensanzeige an"
 L.SpamBlockNoCountdowns		= "Spiele keine Countdown-Sounds"
 L.SpamBlockNoYells			= "Sende keine automatischen Schreie"
 L.SpamBlockNoNoteSync		= "Akzeptiere keine geteilten Notizen"

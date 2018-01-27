@@ -14,8 +14,6 @@ local specWarnBombardment			= mod:NewSpecialWarningDodge(235085, nil, nil, nil, 
 local specWarnCataclysmicForceNova	= mod:NewSpecialWarningDodge(238005, nil, nil, nil, 4, 2)
 local specWarnDreadBeam				= mod:NewSpecialWarningDodge(234660, nil, nil, nil, 4, 2)
 
-mod:RemoveOption("HealthFrame")
-
 function mod:SPELL_CAST_START(args)
 	if not self.Options.Enabled then return end
 	local spellId = args.spellId

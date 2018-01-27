@@ -114,7 +114,6 @@ DBM_CORE_GENERIC_TIMER_BERSERK		= "Berserker"
 DBM_CORE_OPTION_TIMER_BERSERK		= "Zeige Zeit bis $spell:26662"
 DBM_CORE_GENERIC_TIMER_COMBAT		= "Kampfbeginn"
 DBM_CORE_OPTION_TIMER_COMBAT		= "Zeige Zeit bis Kampfbeginn"
-DBM_CORE_OPTION_HEALTH_FRAME		= "Zeige Lebensanzeige"
 DBM_CORE_BAD						= "Schlechtes"
 
 DBM_CORE_OPTION_CATEGORY_TIMERS			= "Timer"
@@ -234,8 +233,6 @@ DBM_CORE_TIMER_USAGE	= {
 }
 
 DBM_ERROR_NO_PERMISSION				= "Du hast nicht die benötigte Berechtigung für diesen Befehl!"
-
-DBM_CORE_BOSSHEALTH_HIDE_FRAME		= "Verstecken"
 
 --Common Locals
 DBM_NEXT							= "Nächste %s"

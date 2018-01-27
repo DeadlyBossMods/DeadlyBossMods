@@ -22,7 +22,6 @@ local timerRockets				= mod:NewBuffActiveTimer(9, 133212)--Max Megablast (GG Eng
 
 local countdownWaterShield		= mod:NewCountdownFades(15, 228981)
 
-mod:RemoveOption("HealthFrame")
 --mod:AddBoolOption("SetIconOnDominika", true)--Dominika the Illusionist 
 
 local brawlersMod = DBM:GetModByName("Brawlers")

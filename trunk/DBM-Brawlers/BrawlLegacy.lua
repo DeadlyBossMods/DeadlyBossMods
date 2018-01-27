@@ -95,7 +95,6 @@ local timerSolarBeamCD				= mod:NewCDTimer(18.5, 129888)--Leona Earthwind
 local timerHeatedPokers				= mod:NewBuffActiveTimer(8, 133286)--Dungeon Master Vishas
 local timerHeatedPokersCD			= mod:NewCDTimer(29, 133286)--Dungeon Master Vishas
 
-mod:RemoveOption("HealthFrame")
 mod:AddBoolOption("SpeakOutStrikes", true)--Blind Hero
 
 local brawlersMod = DBM:GetModByName("Brawlers")

@@ -26,8 +26,6 @@ local countdownGame				= mod:NewCountdownFades(60, 101612)
 local gameEarnedPoints = 0
 local gameMaxPoints = 0
 
-mod:RemoveOption("HealthFrame")
-
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 101612 and args:IsPlayer() then
 		gameEarnedPoints = 0

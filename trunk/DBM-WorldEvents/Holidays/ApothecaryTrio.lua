@@ -19,8 +19,6 @@ mod:RegisterEventsInCombat(
 	"SPELL_MISSED"
 )
 
-mod:SetBossHealthInfo(36296, 36565, 36272)
-
 local warnChainReaction			= mod:NewCastAnnounce(68821, 3, nil, nil, "Melee", 2)
 
 local specWarnPerfumeSpill		= mod:NewSpecialWarningMove(68927)
