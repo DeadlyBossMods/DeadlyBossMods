@@ -252,14 +252,14 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self:IsTanking(uId) then
 			local amount = args.amount or 1
 			local tauntStack = 3
-			if self:IsMythic() and self.Options.TauntBehavior == "TwoMythicThreeNon" or self.Options.TauntBehavior == "TwoAlways" then
+			if (self:IsMythic() and self.Options.TauntBehavior == "TwoMythicThreeNon") or self.Options.TauntBehavior == "TwoAlways" then
 				tauntStack = 2
 			end
-			if amount >= tauntStack then--Lasts 30 seconds, unknown reapplication rate, fine tune!
+			if amount >= tauntStack then
 				if args:IsPlayer() then--At this point the other tank SHOULD be clear.
 					specWarnFieryStrike:Show(amount)
 					specWarnFieryStrike:Play("stackhigh")
-				else--Taunt as soon as stacks are clear, regardless of stack count.
+				else
 					local _, _, _, _, _, _, expireTime = UnitDebuff("player", args.spellName)
 					local remaining
 					if expireTime then
