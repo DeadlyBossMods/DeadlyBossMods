@@ -1,7 +1,7 @@
 -- Mini Dragon(projecteurs@gmail.com)
 -- 夏一可
 -- Blizzard Entertainment
--- Last update: 2017/12/22
+-- Last update: 2018/01/28
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -52,7 +52,8 @@ L:SetMiscLocalization({
 	Purifiers	=	"邪能净化者",
 	Bats 		=	"蝙蝠",
 	EonarHealth	= 	"艾欧娜尔生命值",
-	EonarPower	= 	"艾欧娜尔能量值"
+	EonarPower	= 	"艾欧娜尔能量值",
+	NextLoc		=	"下一波:"
 })
 
 ---------------------------
@@ -98,7 +99,11 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	timerBossIncoming		= "为下一次Boss交换显示计时条"
+	timerBossIncoming		= "为下一次Boss交换显示计时条",
+	TauntBehavior			= "设置换坦提示模式",
+	TwoMythicThreeNon		= "M难度下2层换, 其他难度3层换",--Default
+	TwoAlways				= "总是2层换",
+	ThreeAlways				= "总是3层换"
 })
 
 ---------------------------
@@ -116,6 +121,11 @@ L:SetMiscLocalization({
 -- Argus the Unmaker --
 ---------------------------
 L= DBM:GetModLocalization(2031)
+
+L:SetMiscLocalization({
+	SeaText =		"{rt6} 急速/全能",
+	SkyText =		"{rt5} 暴击/精通"
+})
 
 -------------
 --  Trash  --
