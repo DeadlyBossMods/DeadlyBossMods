@@ -14,7 +14,7 @@
 ## X-DBM-Mod-Category: LEG
 ## X-DBM-Mod-Has-Single-Format: 1
 ## X-DBM-Mod-World-Boss: 1
-## X-DBM-Mod-Sort: 056
+## X-DBM-Mod-Sort: 502
 ## X-DBM-Mod-MapID: 1779
 ## X-DBM-Mod-LoadCID: 124625,124555,124719,124592,124492,124514
 ## X-DBM-Mod-MinCoreRevision: 14737

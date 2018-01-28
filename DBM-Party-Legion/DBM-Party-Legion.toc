@@ -28,7 +28,7 @@
 ## X-DBM-Mod-Name-zhTW: 隊伍首領 (軍臨天下)
 ## X-DBM-Mod-Name-zhCN: 队伍首领(军团再临)
 ## X-DBM-Mod-Name-koKR: 5인 던전 (군단)
-## X-DBM-Mod-Sort: 060
+## X-DBM-Mod-Sort: 515
 ## X-DBM-Mod-MapID: 1501, 1466, 1456, 1477, 1458, 1516, 1571, 1492, 1544, 1493, 1651, 1677, 1753
 ## X-DBM-Mod-MinCoreRevision: 14737
 localization.en.lua
