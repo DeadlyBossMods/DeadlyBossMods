@@ -1282,28 +1282,11 @@ end
 edge_mt.__index = Edge
 point_mt.__index = Point
 
-function mod:PlaceRangeMarker(texture, x, y, radius, duration, r, g, b, a, blend, priority)
-	local red, green, blue = r, g, b
-	local size, alpha, graphic = radius, a, texture
-	if priority then
-		if DBM.Options.HUDColorOverride then
-			local colors = priority == 1 and DBM.Options.HUDColor1 or priority == 2 and DBM.Options.HUDColor2 or priority == 3 and DBM.Options.HUDColor3 or priority == 4 and DBM.Options.HUDColor4
-			red, green, blue = colors[1], colors[2], colors[3]
-		end
-		if DBM.Options.HUDSizeOverride then
-			size = priority == 1 and DBM.Options.HUDSize1 or priority == 2 and DBM.Options.HUDSize2 or priority == 3 and DBM.Options.HUDSize3 or priority == 4 and DBM.Options.HUDSize4
-		end
-		if DBM.Options.HUDAlphaOverride then
-			alpha = priority == 1 and DBM.Options.HUDAlpha1 or priority == 2 and DBM.Options.HUDAlpha2 or priority == 3 and DBM.Options.HUDAlpha3 or priority == 4 and DBM.Options.HUDAlpha4
-		end
-		if DBM.Options.HUDTextureOverride then
-			graphic = priority == 1 and DBM.Options.HUDTexture1 or priority == 2 and DBM.Options.HUDTexture2 or priority == 3 and DBM.Options.HUDTexture3 or priority == 4 and DBM.Options.HUDTexture4
-		end
-	end
-	return Point:New(self.currentMap, x, y, nil, duration, graphic, size, blend, red, green, blue, alpha)
+function mod:PlaceRangeMarker(texture, x, y, radius, duration, r, g, b, a, blend)
+	return Point:New(self.currentMap, x, y, nil, duration, texture, radius, blend, r, g, b, a)
 end
 
-function mod:PlaceStaticMarkerOnPartyMember(texture, person, radius, duration, r, g, b, a, blend, priority)
+function mod:PlaceStaticMarkerOnPartyMember(texture, person, radius, duration, r, g, b, a, blend)
 	if not r and person then--Auto generate class color if colors were left nil
 		local _, cls = UnitClass(person)
 		if cls and RAID_CLASS_COLORS[cls] then
@@ -1311,30 +1294,13 @@ function mod:PlaceStaticMarkerOnPartyMember(texture, person, radius, duration, r
 		else
 			DBM:Debug("HudMap Marker failed, no color defined and no unit class")
 			return--Should not happen, but prevent error if it does
-		end
-	end
-	local red, green, blue = r, g, b
-	local size, alpha, graphic = radius, a, texture
-	if priority then
-		if DBM.Options.HUDColorOverride then
-			local colors = priority == 1 and DBM.Options.HUDColor1 or priority == 2 and DBM.Options.HUDColor2 or priority == 3 and DBM.Options.HUDColor3 or priority == 4 and DBM.Options.HUDColor4
-			red, green, blue = colors[1], colors[2], colors[3]
-		end
-		if DBM.Options.HUDSizeOverride then
-			size = priority == 1 and DBM.Options.HUDSize1 or priority == 2 and DBM.Options.HUDSize2 or priority == 3 and DBM.Options.HUDSize3 or priority == 4 and DBM.Options.HUDSize4
-		end
-		if DBM.Options.HUDAlphaOverride then
-			alpha = priority == 1 and DBM.Options.HUDAlpha1 or priority == 2 and DBM.Options.HUDAlpha2 or priority == 3 and DBM.Options.HUDAlpha3 or priority == 4 and DBM.Options.HUDAlpha4
-		end
-		if DBM.Options.HUDTextureOverride then
-			graphic = priority == 1 and DBM.Options.HUDTexture1 or priority == 2 and DBM.Options.HUDTexture2 or priority == 3 and DBM.Options.HUDTexture3 or priority == 4 and DBM.Options.HUDTexture4
 		end
 	end
 	local x, y = self:GetUnitPosition(person)
-	return Point:New(self.currentMap, x, y, nil, duration, graphic, size, blend, red, green, blue, alpha)
+	return Point:New(self.currentMap, x, y, nil, duration, texture, radius, blend, r, g, b, a)
 end
 
-function mod:PlaceRangeMarkerOnPartyMember(texture, person, radius, duration, r, g, b, a, blend, priority)
+function mod:PlaceRangeMarkerOnPartyMember(texture, person, radius, duration, r, g, b, a, blend)
 	if not r and person then--Auto generate class color if colors were left nil
 		local _, cls = UnitClass(person)
 		if cls and RAID_CLASS_COLORS[cls] then
@@ -1344,24 +1310,7 @@ function mod:PlaceRangeMarkerOnPartyMember(texture, person, radius, duration, r,
 			return--Should not happen, but prevent error if it does
 		end
 	end
-	local red, green, blue = r, g, b
-	local size, alpha, graphic = radius, a, texture
-	if priority then
-		if DBM.Options.HUDColorOverride then
-			local colors = priority == 1 and DBM.Options.HUDColor1 or priority == 2 and DBM.Options.HUDColor2 or priority == 3 and DBM.Options.HUDColor3 or priority == 4 and DBM.Options.HUDColor4
-			red, green, blue = colors[1], colors[2], colors[3]
-		end
-		if DBM.Options.HUDSizeOverride then
-			size = priority == 1 and DBM.Options.HUDSize1 or priority == 2 and DBM.Options.HUDSize2 or priority == 3 and DBM.Options.HUDSize3 or priority == 4 and DBM.Options.HUDSize4
-		end
-		if DBM.Options.HUDAlphaOverride then
-			alpha = priority == 1 and DBM.Options.HUDAlpha1 or priority == 2 and DBM.Options.HUDAlpha2 or priority == 3 and DBM.Options.HUDAlpha3 or priority == 4 and DBM.Options.HUDAlpha4
-		end
-		if DBM.Options.HUDTextureOverride then
-			graphic = priority == 1 and DBM.Options.HUDTexture1 or priority == 2 and DBM.Options.HUDTexture2 or priority == 3 and DBM.Options.HUDTexture3 or priority == 4 and DBM.Options.HUDTexture4
-		end
-	end
-	return Point:New(nil, nil, nil, person, duration, graphic, size, blend, red, green, blue, alpha)
+	return Point:New(nil, nil, nil, person, duration, texture, radius, blend, r, g, b, a)
 end
 
 function mod:RegisterEncounterMarker(spellid, name, marker)
@@ -1375,32 +1324,15 @@ function mod:RegisterEncounterMarker(spellid, name, marker)
 	marker.RegisterCallback(self, "Free", "FreeEncounterMarker", key)
 end
 
-function mod:RegisterPositionMarker(spellid, name, texture, x, y, radius, duration, r, g, b, a, blend, priority)
-	local red, green, blue = r, g, b
-	local size, alpha, graphic = radius, a, texture
-	if priority then
-		if DBM.Options.HUDColorOverride then
-			local colors = priority == 1 and DBM.Options.HUDColor1 or priority == 2 and DBM.Options.HUDColor2 or priority == 3 and DBM.Options.HUDColor3 or priority == 4 and DBM.Options.HUDColor4
-			red, green, blue = colors[1], colors[2], colors[3]
-		end
-		if DBM.Options.HUDSizeOverride then
-			size = priority == 1 and DBM.Options.HUDSize1 or priority == 2 and DBM.Options.HUDSize2 or priority == 3 and DBM.Options.HUDSize3 or priority == 4 and DBM.Options.HUDSize4
-		end
-		if DBM.Options.HUDAlphaOverride then
-			alpha = priority == 1 and DBM.Options.HUDAlpha1 or priority == 2 and DBM.Options.HUDAlpha2 or priority == 3 and DBM.Options.HUDAlpha3 or priority == 4 and DBM.Options.HUDAlpha4
-		end
-		if DBM.Options.HUDTextureOverride then
-			graphic = priority == 1 and DBM.Options.HUDTexture1 or priority == 2 and DBM.Options.HUDTexture2 or priority == 3 and DBM.Options.HUDTexture3 or priority == 4 and DBM.Options.HUDTexture4
-		end
-	end
+function mod:RegisterPositionMarker(spellid, name, texture, x, y, radius, duration, r, g, b, a, blend)
 	local marker = encounterMarkers[spellid..name]
 	if marker ~= nil then return marker end
-	marker = Point:New(self.currentMap, x, y, nil, duration, graphic, size, blend, red, green, blue, alpha)
+	marker = Point:New(self.currentMap, x, y, nil, duration, texture, radius, blend, r, g, b, a)
 	self:RegisterEncounterMarker(spellid, name, marker)
 	return marker
 end
 
-function mod:RegisterStaticMarkerOnPartyMember(spellid, texture, person, radius, duration, r, g, b, a, blend, canFilterSelf, priority)
+function mod:RegisterStaticMarkerOnPartyMember(spellid, texture, person, radius, duration, r, g, b, a, blend, canFilterSelf)
 	if DBM.Options.FilterSelfHud and canFilterSelf and UnitIsUnit("player", person) then a = 0 end
 	if not r and person then--Auto generate class color if colors were left nil
 		local _, cls = UnitClass(person)
@@ -1409,34 +1341,17 @@ function mod:RegisterStaticMarkerOnPartyMember(spellid, texture, person, radius,
 		else
 			DBM:Debug("HudMap Marker failed, no color defined and no unit class")
 			return--Should not happen, but prevent error if it does
-		end
-	end
-	local red, green, blue = r, g, b
-	local size, alpha, graphic = radius, a, texture
-	if priority and a ~= 0 then
-		if DBM.Options.HUDColorOverride then
-			local colors = priority == 1 and DBM.Options.HUDColor1 or priority == 2 and DBM.Options.HUDColor2 or priority == 3 and DBM.Options.HUDColor3 or priority == 4 and DBM.Options.HUDColor4
-			red, green, blue = colors[1], colors[2], colors[3]
-		end
-		if DBM.Options.HUDSizeOverride then
-			size = priority == 1 and DBM.Options.HUDSize1 or priority == 2 and DBM.Options.HUDSize2 or priority == 3 and DBM.Options.HUDSize3 or priority == 4 and DBM.Options.HUDSize4
-		end
-		if DBM.Options.HUDAlphaOverride then
-			alpha = priority == 1 and DBM.Options.HUDAlpha1 or priority == 2 and DBM.Options.HUDAlpha2 or priority == 3 and DBM.Options.HUDAlpha3 or priority == 4 and DBM.Options.HUDAlpha4
-		end
-		if DBM.Options.HUDTextureOverride then
-			graphic = priority == 1 and DBM.Options.HUDTexture1 or priority == 2 and DBM.Options.HUDTexture2 or priority == 3 and DBM.Options.HUDTexture3 or priority == 4 and DBM.Options.HUDTexture4
 		end
 	end
 	local marker = encounterMarkers[spellid..person]
 	if marker ~= nil then return marker end
 	local x, y = self:GetUnitPosition(person)
-	marker = Point:New(self.currentMap, x, y, nil, duration, graphic, size, blend, red, green, blue, alpha)
+	marker = Point:New(self.currentMap, x, y, nil, duration, texture, radius, blend, r, g, b, a)
 	self:RegisterEncounterMarker(spellid, person, marker)
 	return marker
 end
 
-function mod:RegisterRangeMarkerOnPartyMember(spellid, texture, person, radius, duration, r, g, b, a, blend, canFilterSelf, priority)
+function mod:RegisterRangeMarkerOnPartyMember(spellid, texture, person, radius, duration, r, g, b, a, blend, canFilterSelf)
 	if DBM.Options.FilterSelfHud and canFilterSelf and UnitIsUnit("player", person) then a = 0 end
 	if not r and person then--Auto generate class color if colors were left nil
 		local _, cls = UnitClass(person)
@@ -1447,26 +1362,9 @@ function mod:RegisterRangeMarkerOnPartyMember(spellid, texture, person, radius, 
 			return--Should not happen, but prevent error if it does
 		end
 	end
-	local red, green, blue = r, g, b
-	local size, alpha, graphic = radius, a, texture
-	if priority and a ~= 0 then
-		if DBM.Options.HUDColorOverride then
-			local colors = priority == 1 and DBM.Options.HUDColor1 or priority == 2 and DBM.Options.HUDColor2 or priority == 3 and DBM.Options.HUDColor3 or priority == 4 and DBM.Options.HUDColor4
-			red, green, blue = colors[1], colors[2], colors[3]
-		end
-		if DBM.Options.HUDSizeOverride then
-			size = priority == 1 and DBM.Options.HUDSize1 or priority == 2 and DBM.Options.HUDSize2 or priority == 3 and DBM.Options.HUDSize3 or priority == 4 and DBM.Options.HUDSize4
-		end
-		if DBM.Options.HUDAlphaOverride then
-			alpha = priority == 1 and DBM.Options.HUDAlpha1 or priority == 2 and DBM.Options.HUDAlpha2 or priority == 3 and DBM.Options.HUDAlpha3 or priority == 4 and DBM.Options.HUDAlpha4
-		end
-		if DBM.Options.HUDTextureOverride then
-			graphic = priority == 1 and DBM.Options.HUDTexture1 or priority == 2 and DBM.Options.HUDTexture2 or priority == 3 and DBM.Options.HUDTexture3 or priority == 4 and DBM.Options.HUDTexture4
-		end
-	end
 	local marker = encounterMarkers[spellid..person]
 	if marker ~= nil then return marker end
-	marker = Point:New(nil, nil, nil, person, duration, graphic, size, blend, red, green, blue, alpha)
+	marker = Point:New(nil, nil, nil, person, duration, texture, radius, blend, r, g, b, a)
 	self:RegisterEncounterMarker(spellid, person, marker)
 	return marker
 end

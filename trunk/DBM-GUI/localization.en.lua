@@ -204,21 +204,6 @@ L.SpecialWarnSound3			= "Set default sound for VERY important special warnings"
 L.SpecialWarnSound4			= "Set default sound for run away special warnings"
 L.SpecialWarnSound5			= "Set default sound for special warnings with notes containing your name"
 
--- Tab: Heads Up Display Frame
-L.Panel_HUD					= "Heads Up Display"
-L.Area_HUDOptions			= "HUD Options"
-L.HUDColorOverride			= "Override mod chosen colors for HUD"
-L.HUDSizeOverride			= "Override mod chosen sizes for HUD"
-L.HUDAlphaOverride			= "Override mod chosen alpha (transparency) for HUD"
-L.HUDTextureOverride		= "Override mod chosen textures for HUD (does not apply to 'icon' texture options)"
-L.HUDColorSelect			= "HUD color %d"
-L.HUDTextureSelect1			= "Set texture for primary HUD"
-L.HUDTextureSelect2			= "Set texture for secondary HUD"
-L.HUDTextureSelect3			= "Set texture for tertiary HUD"
-L.HUDTextureSelect4			= "Set texture for 'run to' HUD"
-L.HUDSizeSlider				= "Circle Radius: %0.1f"
-L.HUDAlphaSlider			= "Alpha: %0.1f"
-
 -- Tab: Spoken Alerts Frame
 L.Panel_SpokenAlerts		= "Spoken Alerts"
 L.Area_VoiceSelection		= "Voice Selections (scroll selection menus with mouse wheel)"

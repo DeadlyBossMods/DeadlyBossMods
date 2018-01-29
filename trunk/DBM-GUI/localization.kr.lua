@@ -196,21 +196,6 @@ L.SpecialWarnSound3			= "매우 중요한 특수 경고의 기본 효과음 설�
 L.SpecialWarnSound4			= "도망 특수 경고의 기본 효과음 설정"
 L.SpecialWarnSound5			= "메모에 이름이 있을때 특수 경고의 기본 효과음 설정"
 
--- Tab: Heads Up Display Frame
-L.Panel_HUD					= "HUD (헤드 업 디스플레이)"
-L.Area_HUDOptions			= "HUD 설정"
-L.HUDColorOverride			= "모드에서 지정된 색상을 무시"
-L.HUDSizeOverride			= "모드에서 지정된 크기를 무시"
-L.HUDAlphaOverride			= "모드에서 지정된 투명도를 무시"
-L.HUDTextureOverride		= "모드에서 지정된 텍스쳐를 무시 (공격대 징표 텍스쳐 설정엔 적용 안됨)"
-L.HUDColorSelect			= "HUD 색상 %d"
-L.HUDTextureSelect1			= "1순위 HUD 텍스쳐"
-L.HUDTextureSelect2			= "2순위 HUD 텍스쳐"
-L.HUDTextureSelect3			= "3순위 HUD 텍스쳐"
-L.HUDTextureSelect4			= "'여기로 이동'을 가리키는 HUD 텍스쳐"
-L.HUDSizeSlider				= "원 반지름: %0.1f"
-L.HUDAlphaSlider			= "투명도: %0.1f"
-
 -- Tab: Spoken Alerts Frame
 L.Panel_SpokenAlerts		= "음성 경보"
 L.Area_VoiceSelection		= "음성 선택 (마우스 휠로 메뉴 스크롤)"
