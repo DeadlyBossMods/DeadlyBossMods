@@ -200,21 +200,6 @@ L.SpecialWarnSound3			= "针对非常重要事件(灭团点)的特殊警报播�
 L.SpecialWarnSound4			= "特殊警报: 快跑啊 小女孩"
 L.SpecialWarnSound5			= "使用自定义注记特殊警报的声音"
 
--- Tab: Heads Up Display Frame
-L.Panel_HUD					= "抬头显示设置(HUD)"
-L.Area_HUDOptions			= "HUD 选项"
-L.HUDColorOverride			= "全局HUD颜色"
-L.HUDSizeOverride			= "全局HUD大小"
-L.HUDAlphaOverride			= "全局HUD透明度"
-L.HUDTextureOverride		= "全局HUD材质 (当团队标记作为材质时不适用)"
-L.HUDColorSelect			= "HUD 颜色 %d"
-L.HUDTextureSelect1			= "选择主要HUD材质"
-L.HUDTextureSelect2			= "选择次要HUD材质"
-L.HUDTextureSelect3			= "选择第三HUD材质"
-L.HUDTextureSelect4			= "选择'跑向'HUD材质"
-L.HUDSizeSlider				= "圆环半径 %0.1f."
-L.HUDAlphaSlider			= "透明度: %0.1f"
-
 -- Tab: Spoken Alerts Frame
 L.Panel_SpokenAlerts		= "语音警告"
 L.Area_VoiceSelection		= "语音选择"

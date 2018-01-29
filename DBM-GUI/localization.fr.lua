@@ -184,21 +184,6 @@ L.SpecialWarnSound3			= "Son des alertes spéciales TRES IMPORTANTES"
 L.SpecialWarnSound4			= "Son des alertes spéciales de fuite"
 L.SpecialWarnSound5			= "Son des alertes spéciales avec des notes contenant votre nom"
 
--- Tab: Heads Up Display Frame
-L.Panel_HUD					= "Affichages tête haute(HUD)"
-L.Area_HUDOptions			= "Options du HUD"
-L.HUDColorOverride			= "Outrepasser les paramètres de couleurs du mod pour le HUD"
-L.HUDSizeOverride			= "Outrepasser les paramètres de tailles du mod pour le HUD"
-L.HUDAlphaOverride			= "Outrepasser les paramètres de transparence du mod pour le HUD"
-L.HUDTextureOverride		= "Outrepasser les paramètres de textures du mod pour le HUD (ne s'applique pas aux icônes)"
-L.HUDColorSelect			= "Couleur du HUD %d"
-L.HUDTextureSelect1			= "Texture du 1er HUD"
-L.HUDTextureSelect2			= "Texture du 2e HUD"
-L.HUDTextureSelect3			= "Texture du 3e HUD"
-L.HUDTextureSelect4			= "Texture de l'HUD 'courir vers'"
-L.HUDSizeSlider				= "Rayon du cercle: %0.1f"
-L.HUDAlphaSlider			= "Transparence: %0.1f"
-
 -- Tab: Spoken Alerts Frame
 L.Panel_SpokenAlerts		= "Alertes Vocales"
 L.Area_VoiceSelection		= "Sélection des voix"

@@ -195,21 +195,6 @@ L.SpecialWarnSound3			= "設定作用於極度重要的特別警告音效"
 L.SpecialWarnSound4			= "設定作用於快跑啊小女孩的特別警告音效"
 L.SpecialWarnSound5			= "設定作用於註記包含你的名字的特別警告音效"
 
--- Tab: Heads Up Display Frame
-L.Panel_HUD					= "HUD提醒顯示"
-L.Area_HUDOptions			= "HUD選項"
-L.HUDColorOverride			= "為HUD替換模組顏色"
-L.HUDSizeOverride			= "為HUD替換模組大小"
-L.HUDAlphaOverride			= "為HUD替換模組透明度"
-L.HUDTextureOverride		= "為HUD替換模組材質(這不套用到'圖示'材質選項)"
-L.HUDColorSelect			= "HUD顏色%d"
-L.HUDTextureSelect1			= "為主要HUD設定材質"
-L.HUDTextureSelect2			= "為次要HUD設定材質"
-L.HUDTextureSelect3			= "為第三HUD設定材質"
-L.HUDTextureSelect4			= "為'跑至某處'HUD設定材質"
-L.HUDSizeSlider				= "圓形半徑:%0.1f"
-L.HUDAlphaSlider			= "透明度:%0.1f"
-
 -- Tab: Spoken Alerts Frame
 L.Panel_SpokenAlerts		= "語音警告"
 L.Area_VoiceSelection		= "語音選擇"
