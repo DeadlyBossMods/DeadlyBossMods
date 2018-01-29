@@ -191,21 +191,6 @@ L.SpecialWarnSound3			= "Sonido por defecto para avisos especiales MUY important
 L.SpecialWarnSound4			= "Sonido por defecto para avisos especiales de movimiento"
 L.SpecialWarnSound5			= "Sonido por defecto para avisos especiales con notas que te mencionen"
 
--- Tab: Heads Up Display Frame
-L.Panel_HUD					= "Indicadores"
-L.Area_HUDOptions			= "Opciones de indicadores"
-L.HUDColorOverride			= "Ignorar colores del módulo"
-L.HUDSizeOverride			= "Ignorar tamaños del módulo"
-L.HUDAlphaOverride			= "Ignorar transparencias del módulo"
-L.HUDTextureOverride		= "Ignorar texturas del módulo (no se aplica a las opciones de textura de iconos)"
-L.HUDColorSelect			= "Indicador %d"
-L.HUDTextureSelect1			= "Textura del indicador principal"
-L.HUDTextureSelect2			= "Textura del indicador secundario"
-L.HUDTextureSelect3			= "Textura del indicador terciario"
-L.HUDTextureSelect4			= "Textura del indicador de ubicación objetivo"
-L.HUDSizeSlider				= "Radio: %0.1f"
-L.HUDAlphaSlider			= "Transparencia: %0.1f"
-
 -- Tab: Spoken Alerts Frame
 L.Panel_SpokenAlerts		= "Alertas de voz"
 L.Area_VoiceSelection		= "Selección de voces"
