@@ -224,7 +224,7 @@ L.VEMDownload				= "|cFF73C2FBhttps://wow.curseforge.com/projects/dbm-voicepack-
 L.Area_BrowseOtherVP		= "Browse other voice packs on curse"
 L.BrowseOtherVPs			= "|cFF73C2FBhttps://wow.curseforge.com/search?search=dbm+voice|r"
 L.Area_BrowseOtherCT		= "Browse countdown packs on curse"
-L.BrowseOtherVPs			= "|cFF73C2FBhttps://wow.curseforge.com/search?search=dbm+voice|r"
+L.BrowseOtherCTs			= "|cFF73C2FBhttps://wow.curseforge.com/search?search=dbm+count+pack|r"
 
 -- Tab: Global Filter
 L.Panel_SpamFilter			= "DBM Global Disables & Filters"
