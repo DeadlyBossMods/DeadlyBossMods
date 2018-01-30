@@ -162,8 +162,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			if UnitDebuff("player", args.spellName) then return end--Don't warn agian or schedule double yells, especially if tank soaking 2
 			specWarnNecroticEmbrace:Show()
-			specWarnNecroticEmbrace:Play("scatter")
 			local icon = self.vb.totalEmbrace+2
+			if self:IsMythic() and not self:IsTank() then
+				specWarnNecroticEmbrace:Play("mm"..icon)
+			else
+				specWarnNecroticEmbrace:Play("targetyou")
+			end
 			yellNecroticEmbrace:Yell(self.vb.totalEmbrace, icon, icon)
 			yellNecroticEmbraceFades:Countdown(6, 3, icon)
 			if self.Options.RangeFrame then
