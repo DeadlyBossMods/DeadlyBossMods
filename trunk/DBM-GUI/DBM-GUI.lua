@@ -2986,8 +2986,13 @@ local function CreateOptionsMenu()
 			DBM.Options.VoiceOverSpecW2 = value
 		end)
 		SWFilterDropDown:SetPoint("TOPLEFT", VPF1, "TOPLEFT", 0, -45)
-
-		--spokenGeneralArea:AutoSetDimension()
+		
+		local VPDownloadUrl1 = voiceFilterArea:CreateText(L.VEMDownload, 405, nil, nil, "LEFT")
+		VPDownloadUrl1:SetPoint("TOPLEFT", voiceFilterArea.frame, "TOPLEFT", 20, -110)
+		
+		local VPDownloadUrl2 = voiceFilterArea:CreateText(L.BrowseOtherVPs, 405, nil, nil, "LEFT")
+		VPDownloadUrl2:SetPoint("TOPLEFT", VPDownloadUrl1, "TOPLEFT", 0, -45)
+		
 		spokenAlertsPanel:SetMyOwnHeight()
 	end
 
