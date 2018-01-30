@@ -7,7 +7,7 @@ L.MainFrame = "Deadly Boss Mods"
 L.TranslationByPrefix		= "Translated by "
 L.TranslationBy 			= nil -- your name here, localizers!
 L.Website					= "Visit us on discord at |cFF73C2FBhttps://discord.gg/deadlybossmods|r. Follow on twitter @deadlybossmods or @MysticalOS"
-L.WebsiteButton				= "Forums"
+L.WebsiteButton				= "Discord"
 
 L.OTabBosses	= "Bosses"
 L.OTabOptions	= GAMEOPTIONS_MENU
@@ -219,6 +219,8 @@ L.SWFDefaultOnly			= "when special warnings use default sounds. (Allows custom s
 L.SWFAll					= "when special warnings use any sound"
 L.SpecWarn_AlwaysVoice		= "Always play all spoken alerts (Overrides boss-specific options. Useful for RL)"
 --TODO, maybe add URLS right to GUI panel on where to acquire 3rd party voice packs?
+L.VEMDownload				= "Get latest version of VEM voicepack at |cFF73C2FBhttps://wow.curseforge.com/projects/dbm-voicepack-vem|r"
+L.BrowseOtherVPs			= "Browse other voice packs on curse at |cFF73C2FBhttps://wow.curseforge.com/search?search=dbm+voice|r"
 
 -- Tab: Global Filter
 L.Panel_SpamFilter			= "DBM Global Disables & Filters"
