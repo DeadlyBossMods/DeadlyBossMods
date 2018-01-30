@@ -156,7 +156,11 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 244094 then
 		self.vb.totalEmbrace = self.vb.totalEmbrace + 1
 		if self.vb.totalEmbrace >= 3 then return end--Once it's beyond 2 players, consider it a wipe and throttle messages
+		if self.Options.SetIconEmbrace then
+			self:SetIcon(args.destName, self.vb.totalEmbrace+2)--Should be BW compatible, for most part.
+		end
 		if args:IsPlayer() then
+			if UnitDebuff("player", args.spellName) then return end--Don't warn agian or schedule double yells, especially if tank soaking 2
 			specWarnNecroticEmbrace:Show()
 			specWarnNecroticEmbrace:Play("scatter")
 			local icon = self.vb.totalEmbrace+2
@@ -167,9 +171,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		else
 			warnNecroticEmbrace:CombinedShow(0.5, args.destName)--Combined message because even if it starts on 1, people are gonna fuck it up
-		end
-		if self.Options.SetIconEmbrace then
-			self:SetIcon(args.destName, self.vb.totalEmbrace+2)--Should be BW compatible, for most part.
 		end
 	elseif spellId == 248732 then
 		warnEchoesofDoom:CombinedShow(0.5, args.destName)--In case multiple shadows up
