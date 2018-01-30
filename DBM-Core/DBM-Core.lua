@@ -358,7 +358,7 @@ local UpdateChestTimer
 local breakTimerStart
 local AddMsg
 
-local fakeBWVersion, fakeBWHash = 86, "2adc318"
+local fakeBWVersion, fakeBWHash = 87, "299b522"
 local versionQueryString, versionResponseString = "Q^%d^%s", "V^%d^%s"
 
 local enableIcons = true -- set to false when a raid leader or a promoted player has a newer version of DBM
@@ -366,8 +366,8 @@ local enableIcons = true -- set to false when a raid leader or a promoted player
 local bannedMods = { -- a list of "banned" (meaning they are replaced by another mod like DBM-Battlegrounds (replaced by DBM-PvP)) boss mods, these mods will not be loaded by DBM (and they wont show up in the GUI)
 	"DBM-Battlegrounds", --replaced by DBM-PvP
 	-- ZG and ZA are now part of the party mods for Cataclysm
-	"DBM-ZulAman",
-	"DBM-ZG",
+	"DBM-ZulAman",--Remove restriction in 8.0 classic wow
+	"DBM-ZG",--Remove restriction in 8.0 classic wow
 	"DBM-SiegeOfOrgrimmar",--Block legacy version. New version is "DBM-SiegeOfOrgrimmarV2"
 	"DBM-HighMail",
 	"DBM-ProvingGrounds-MoP",--Renamed to DBM-ProvingGrounds in 6.0 version since blizzard updated content for WoD
@@ -1727,7 +1727,11 @@ do
 			end
 		end
 		if not success then
-			DBM:AddMsg(DBM_ARROW_WAY_USAGE)
+			if DBM.Arrow:IsShown() then
+				DBM.Arrow:Hide()--Hide
+			else--error
+				DBM:AddMsg(DBM_ARROW_WAY_USAGE)
+			end
 		else
 			DBM:AddMsg(DBM_ARROW_WAY_SUCCESS)
 		end
