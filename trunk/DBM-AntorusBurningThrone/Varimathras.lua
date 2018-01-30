@@ -47,7 +47,7 @@ local specWarnDarkFissure				= mod:NewSpecialWarningDodge(243999, nil, nil, nil,
 local specWarnMarkedPrey				= mod:NewSpecialWarningYou(244042, nil, nil, 2, 1, 2)
 local yellMarkedPrey					= mod:NewYell(244042)
 local yellMarkedPreyFades				= mod:NewShortFadesYell(244042)
-local specWarnNecroticEmbrace			= mod:NewSpecialWarningMoveAway(244094, nil, nil, 2, 1, 2)
+local specWarnNecroticEmbrace			= mod:NewSpecialWarningYouPos(244094, nil, nil, 2, 1, 2)
 local yellNecroticEmbrace				= mod:NewPosYell(244094)
 local yellNecroticEmbraceFades			= mod:NewIconFadesYell(244094)
 local specWarnEchoesOfDoom				= mod:NewSpecialWarningYou(248732, nil, nil, nil, 1, 2)
@@ -161,8 +161,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if args:IsPlayer() then
 			if UnitDebuff("player", args.spellName) then return end--Don't warn agian or schedule double yells, especially if tank soaking 2
-			specWarnNecroticEmbrace:Show()
 			local icon = self.vb.totalEmbrace+2
+			specWarnNecroticEmbrace:Show(self:IconNumToTexture(count))
 			if self:IsMythic() and not self:IsTank() then
 				specWarnNecroticEmbrace:Play("mm"..icon)
 			else
