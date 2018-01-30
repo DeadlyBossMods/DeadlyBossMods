@@ -2987,11 +2987,15 @@ local function CreateOptionsMenu()
 		end)
 		SWFilterDropDown:SetPoint("TOPLEFT", VPF1, "TOPLEFT", 0, -45)
 		
-		local VPDownloadUrl1 = voiceFilterArea:CreateText(L.VEMDownload, 405, nil, nil, "LEFT")
-		VPDownloadUrl1:SetPoint("TOPLEFT", voiceFilterArea.frame, "TOPLEFT", 20, -110)
+		local VPUrlArea1		= spokenAlertsPanel:CreateArea(L.Area_GetVEM, nil, 35, true)
+		local VPDownloadUrl1	= VPUrlArea1:CreateText(L.VEMDownload, 405, nil, nil, "LEFT")
+		VPDownloadUrl1:SetPoint("TOPLEFT", VPUrlArea1.frame, "TOPLEFT", 20, -10)
+		VPUrlArea1.frame:SetScript("OnMouseUp", function(...) DBM:ShowUpdateReminder(nil, nil, DBM_COPY_URL_DIALOG, "https://wow.curseforge.com/projects/dbm-voicepack-vem") end)
 		
-		local VPDownloadUrl2 = voiceFilterArea:CreateText(L.BrowseOtherVPs, 405, nil, nil, "LEFT")
-		VPDownloadUrl2:SetPoint("TOPLEFT", VPDownloadUrl1, "TOPLEFT", 0, -45)
+		local VPUrlArea2		= spokenAlertsPanel:CreateArea(L.Area_BrowseOtherVP, nil, 35, true)
+		local VPDownloadUrl2	= VPUrlArea2:CreateText(L.BrowseOtherVPs, 405, nil, nil, "LEFT")
+		VPDownloadUrl2:SetPoint("TOPLEFT", VPUrlArea2.frame, "TOPLEFT", 20, -10)
+		VPUrlArea2.frame:SetScript("OnMouseUp", function(...) DBM:ShowUpdateReminder(nil, nil, DBM_COPY_URL_DIALOG, "https://wow.curseforge.com/search?search=dbm+voice") end)
 		
 		spokenAlertsPanel:SetMyOwnHeight()
 	end
@@ -3270,7 +3274,7 @@ local function CreateOptionsMenu()
 	DBM_GUI_OptionsFrameWebsite:SetText(L.Website)
 	local frame = CreateFrame("Frame", nil, DBM_GUI_OptionsFrame)
 	frame:SetAllPoints(DBM_GUI_OptionsFrameWebsite)
-	frame:SetScript("OnMouseUp", function(...) DBM:ShowUpdateReminder(nil, nil, DBM_FORUMS_COPY_URL_DIALOG) end)
+	frame:SetScript("OnMouseUp", function(...) DBM:ShowUpdateReminder(nil, nil, DBM_COPY_URL_DIALOG, "https://discord.gg/deadlybossmods") end)
 end
 DBM:RegisterOnGuiLoadCallback(CreateOptionsMenu, 1)
 
