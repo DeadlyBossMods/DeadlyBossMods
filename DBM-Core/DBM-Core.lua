@@ -5427,6 +5427,12 @@ do
 					self.Options.sfxDisabled = true
 					SetCVar("Sound_EnableSFX", 0)
 				end
+				--boss health info update scheduler if boss health frame is not enabled.
+				if not mod.CustomHealthUpdate then
+					self:Schedule(1, checkBossHealth, self)
+				else
+					self:Schedule(1, checkCustomBossHealth, self, mod)
+				end
 			end
 			--process global options
 			self:HideBlizzardEvents(1)
