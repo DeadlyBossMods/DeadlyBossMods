@@ -80,10 +80,12 @@ mod:AddRangeFrameOption("8/10")
 
 mod.vb.currentTorment = 0--Can't antispam, cause it'll just break if someone dies and gets brezzed
 mod.vb.totalEmbrace = 0
+local playerAffected = false
 
 function mod:OnCombatStart(delay)
 	self.vb.currentTorment = 0
 	self.vb.totalEmbrace = 0
+	playerAffected = false
 	timerTormentofFlamesCD:Start(5-delay)
 	timerShadowStrikeCD:Start(9.3-delay)
 	countdownShadowStrike:Start(9.3-delay)
@@ -160,7 +162,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:SetIcon(args.destName, self.vb.totalEmbrace+2)--Should be BW compatible, for most part.
 		end
 		if args:IsPlayer() then
-			if self:AntiSpam(2, 5) then
+			if not playerAffected then
+				playerAffected = true
 				local icon = self.vb.totalEmbrace+2
 				specWarnNecroticEmbrace:Show(self:IconNumToTexture(count))
 				if self:IsMythic() and not self:IsTank() then
@@ -219,6 +222,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 244094 then
 		self.vb.totalEmbrace = self.vb.totalEmbrace - 1
 		if args:IsPlayer() then
+			playerAffected = false
 			yellNecroticEmbraceFades:Cancel()
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Show(8)
