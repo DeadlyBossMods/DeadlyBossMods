@@ -5427,7 +5427,7 @@ do
 					self.Options.sfxDisabled = true
 					SetCVar("Sound_EnableSFX", 0)
 				end
-				--boss health info update scheduler if boss health frame is not enabled.
+				--boss health info scheduler
 				if not mod.CustomHealthUpdate then
 					self:Schedule(1, checkBossHealth, self)
 				else
@@ -7871,13 +7871,14 @@ function DBM:GetBossHP(cId)
 		return hp, "focus", UnitName("focus")
 	else
 		for i = 1, 5 do
-			local guid = UnitGUID("boss"..i)
-			if self:GetCIDFromGUID(guid) == cId and UnitHealthMax("boss"..i) ~= 0 then
-				if bossHealth[cId] and (UnitHealth("boss"..i) == 0 and not UnitIsDead("boss"..i)) then return bossHealth[cId], "boss"..i, UnitName("boss"..i) end--Return last non 0 value if value is 0, since it's last valid value we had.
-				local hp = UnitHealth("boss"..i) / UnitHealthMax("boss"..i) * 100
+			local unitID = "boss"..i
+			local guid = UnitGUID(unitID)
+			if self:GetCIDFromGUID(guid) == cId and UnitHealthMax(unitID) ~= 0 then
+				if bossHealth[cId] and (UnitHealth(unitID) == 0 and not UnitIsDead(unitID)) then return bossHealth[cId], unitID, UnitName(unitID) end--Return last non 0 value if value is 0, since it's last valid value we had.
+				local hp = UnitHealth(unitID) / UnitHealthMax(unitID) * 100
 				bossHealth[cId] = hp
-				bossHealthuIdCache[cId] = "boss"..i
-				return hp, "boss"..i, UnitName("boss"..i)
+				bossHealthuIdCache[cId] = unitID
+				return hp, unitID, UnitName(unitID)
 			end
 		end
 		local idType = (IsInRaid() and "raid") or "party"
@@ -7910,13 +7911,14 @@ function DBM:GetBossHPByGUID(guid)
 		return hp, "focus", UnitName("focus")
 	else
 		for i = 1, 5 do
-			local guid2 = UnitGUID("boss"..i)
-			if guid == guid2 and UnitHealthMax("boss"..i) ~= 0 then
-				if bossHealth[guid] and (UnitHealth("boss"..i) == 0 and not UnitIsDead("boss"..i)) then return bossHealth[guid], "boss"..i, UnitName("boss"..i) end--Return last non 0 value if value is 0, since it's last valid value we had.
-				local hp = UnitHealth("boss"..i) / UnitHealthMax("boss"..i) * 100
+			local unitID = "boss"..i
+			local guid2 = UnitGUID(unitID)
+			if guid == guid2 and UnitHealthMax(unitID) ~= 0 then
+				if bossHealth[guid] and (UnitHealth(unitID) == 0 and not UnitIsDead(unitID)) then return bossHealth[guid], unitID, UnitName(unitID) end--Return last non 0 value if value is 0, since it's last valid value we had.
+				local hp = UnitHealth(unitID) / UnitHealthMax(unitID) * 100
 				bossHealth[guid] = hp
-				bossHealthuIdCache[guid] = "boss"..i
-				return hp, "boss"..i, UnitName("boss"..i)
+				bossHealthuIdCache[guid] = unitID
+				return hp, unitID, UnitName(unitID)
 			end
 		end
 		local idType = (IsInRaid() and "raid") or "party"
