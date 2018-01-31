@@ -159,8 +159,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.SetIconEmbrace then
 			self:SetIcon(args.destName, self.vb.totalEmbrace+2)--Should be BW compatible, for most part.
 		end
-		if args:IsPlayer() then
-			if UnitDebuff("player", args.spellName) then return end--Don't warn agian or schedule double yells, especially if tank soaking 2
+		if args:IsPlayer() and self:AntiSpam(2, 5) then
 			local icon = self.vb.totalEmbrace+2
 			specWarnNecroticEmbrace:Show(self:IconNumToTexture(count))
 			if self:IsMythic() and not self:IsTank() then
