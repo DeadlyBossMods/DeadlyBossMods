@@ -95,7 +95,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 249297 then
 		warnFlamesofReorig:CombinedShow(0.5, args.destName)
-		if args:IsPlayer() and not UnitDebuff("player", args.spellName) then
+		if args:IsPlayer() and self:AntiSpam(5, 2) then
 			specWarnFlamesofReorig:Show()
 			specWarnFlamesofReorig:Play("runout")
 			yellFlamesofReorig:Yell()
