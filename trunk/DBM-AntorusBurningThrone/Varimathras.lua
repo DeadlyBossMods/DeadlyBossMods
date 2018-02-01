@@ -165,7 +165,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			if not playerAffected then
 				playerAffected = true
 				local icon = self.vb.totalEmbrace+2
-				specWarnNecroticEmbrace:Show(self:IconNumToTexture(count))
+				specWarnNecroticEmbrace:Show(self:IconNumToTexture(icon))
 				if self:IsMythic() and not self:IsTank() then
 					specWarnNecroticEmbrace:Play("mm"..icon)
 				else
