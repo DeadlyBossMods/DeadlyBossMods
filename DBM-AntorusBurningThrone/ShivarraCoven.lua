@@ -173,9 +173,9 @@ function mod:OnCombatEnd()
 		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
 	end
 	if CVAR1 or CVAR2 then
-		CVAR1, CVAR2 = nil, nil
 		SetCVar("graphicsLightingQuality", CVAR1)
 		SetCVar("raidGraphicsLightingQuality", CVAR2)
+		CVAR1, CVAR2 = nil, nil
 	end
 end
 
