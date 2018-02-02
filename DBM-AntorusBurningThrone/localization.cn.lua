@@ -1,7 +1,7 @@
 -- Mini Dragon(projecteurs@gmail.com)
 -- 夏一可
 -- Blizzard Entertainment
--- Last update: 2018/01/28
+-- Last update: 2018/02/02
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -99,6 +99,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	SetLighting				= "开战后自动调整光照质量为低, 结束后恢复之前设置(Mac不支持)",
 	timerBossIncoming		= "为下一次Boss交换显示计时条",
 	TauntBehavior			= "设置换坦提示模式",
 	TwoMythicThreeNon		= "M难度下2层换, 其他难度3层换",--Default

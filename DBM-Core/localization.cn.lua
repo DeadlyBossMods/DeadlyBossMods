@@ -2,7 +2,7 @@
 -- Diablohu(diablohudream@gmail.com)
 -- yleaf(yaroot@gmail.com)
 -- Mini Dragon(projecteurs@gmail.com)
--- Last update: 2017/12/22 X-mas
+-- Last update: 2018/02/02
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -18,6 +18,8 @@ DBM_CORE_BAD_LOAD					= "DBM检测到由于你在战斗过程中载入模块，�
 DBM_CORE_LOAD_MOD_VER_MISMATCH		= "%s 模块无法被载入。 DBM核心版本过旧。请升级DBM。"
 DBM_CORE_LOAD_MOD_DISABLED			= "%s 模块已安装但被禁用。该模块不会被载入除非启用它。"
 DBM_CORE_LOAD_MOD_DISABLED_PLURAL	= "%s 模块已安装但被禁用。这些模块不会被载入除非启用它们。"
+
+DBM_COPY_URL_DIALOG					= "复制网址"
 
 --Post Patch 7.1
 DBM_CORE_NO_RANGE					= "距离雷达在副本中无法使用，该功能会使用文本代替"
