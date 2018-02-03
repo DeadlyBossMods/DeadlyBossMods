@@ -172,6 +172,9 @@ function mod:OnCombatEnd()
 	if self.Options.NPAuraOnVisageofTitan then
 		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
 	end
+end
+
+function mod:OnLeavingCombat()
 	if CVAR1 or CVAR2 then
 		SetCVar("graphicsLightingQuality", CVAR1)
 		SetCVar("raidGraphicsLightingQuality", CVAR2)
