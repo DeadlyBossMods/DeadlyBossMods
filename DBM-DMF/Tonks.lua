@@ -12,7 +12,7 @@ mod:RegisterEvents(
 )
 mod.noStatistics = true
 
-local specWarnMarked			= mod:NewSpecialWarningRun(102341, nil, nil, 2, 4)
+local specWarnMarked			= mod:NewSpecialWarningRun(102341, nil, nil, 2, 4, 2)
 
 local timerGame					= mod:NewBuffActiveTimer(60, 102178)
 
@@ -21,6 +21,7 @@ local countdownGame				= mod:NewCountdownFades(60, 102178)
 function mod:SPELL_CAST_SUCCESS(args)
 	if args.spellId == 102341 and UnitGUID("pet") == args.destGUID and self:AntiSpam() then
 		specWarnMarked:Show()
+		specWarnMarked:Play("justrun")
 	end
 end
 

@@ -15,7 +15,7 @@ mod.noStatistics = true
 
 local warnRings		= mod:NewCountAnnounce(170823, 1, nil, false)--Spammy, so off by default, but requested because blizz bug, ring does not always make sound when passing through so this alert can serve as confirmation sound
 
-local timerGame		= mod:NewBuffActiveTimer(10, 170820)
+local timerGame		= mod:NewBuffActiveTimer(10, 170820, nil, nil, nil, 5)
 
 local countdownGame	= mod:NewCountdownFades(10, 170820)
 

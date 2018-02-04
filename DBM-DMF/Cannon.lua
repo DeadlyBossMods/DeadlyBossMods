@@ -10,7 +10,7 @@ mod:RegisterEvents(
 )
 mod.noStatistics = true
 
-local timerMagicWings				= mod:NewBuffFadesTimer(8.5, 102116)
+local timerMagicWings				= mod:NewBuffFadesTimer(8.5, 102116, nil, nil, nil, 5)
 
 local MagicWingsCountdown			= mod:NewCountdownFades(7.5, 102116)
 

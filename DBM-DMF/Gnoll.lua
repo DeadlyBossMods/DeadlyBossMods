@@ -19,7 +19,7 @@ local warnGnoll					= mod:NewAnnounce("warnGnoll", 2, nil, false)
 
 local specWarnHogger			= mod:NewSpecialWarning("specWarnHogger")
 
-local timerGame					= mod:NewBuffActiveTimer(60, 101612)
+local timerGame					= mod:NewBuffActiveTimer(60, 101612, nil, nil, nil, 6)
 
 local countdownGame				= mod:NewCountdownFades(60, 101612)
 

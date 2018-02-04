@@ -12,7 +12,7 @@ mod:RegisterEvents(
 )
 mod.noStatistics = true
 
-local timerGame		= mod:NewBuffActiveTimer(60, 101871)
+local timerGame		= mod:NewBuffActiveTimer(60, 101871, nil, nil, nil, 6)
 
 local countdownGame	= mod:NewCountdownFades(60, 101871)
 
