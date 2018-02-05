@@ -85,7 +85,8 @@ L:SetOptionLocalization({
 	TauntBehavior		= "為坦克換坦設置嘲諷行為",
 	TwoMythicThreeNon	= "傳奇模式下兩層換坦，其他難度三層換坦",--Default
 	TwoAlways			= "無論任何難度皆兩層換坦",
-	ThreeAlways			= "無論任何難度皆三層換坦"
+	ThreeAlways			= "無論任何難度皆三層換坦",
+	SetLighting			= "開戰後自動調整打光品質為低，戰鬥結束後恢復設定值(不支援Mac用戶)"
 })
 
 ---------------------------
