@@ -6447,6 +6447,7 @@ do
 				DisableEvent(RaidBossEmoteFrame, "RAID_BOSS_EMOTE")
 				DisableEvent(RaidBossEmoteFrame, "RAID_BOSS_WHISPER")
 				DisableEvent(RaidBossEmoteFrame, "CLEAR_BOSS_EMOTES")
+				SOUNDKIT.UI_RAID_BOSS_WHISPER_WARNING = 999999--Since blizzard are dicks and still play the sound via RaidBossEmoteFrame_OnEvent (line 148) NO MATTER FUCKING WHAT, lets just erase the damn sound
 			end
 			if self.Options.HideGarrisonToasts or custom then
 				DisableEvent(AlertFrame, "GARRISON_MISSION_FINISHED")
@@ -6463,6 +6464,7 @@ do
 				EnableEvent(RaidBossEmoteFrame, "RAID_BOSS_EMOTE")
 				EnableEvent(RaidBossEmoteFrame, "RAID_BOSS_WHISPER")
 				EnableEvent(RaidBossEmoteFrame, "CLEAR_BOSS_EMOTES")
+				SOUNDKIT.UI_RAID_BOSS_WHISPER_WARNING = 37666--restore it
 			end
 			if self.Options.HideGarrisonToasts then
 				EnableEvent(AlertFrame, "GARRISON_MISSION_FINISHED")
