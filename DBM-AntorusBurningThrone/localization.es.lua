@@ -100,10 +100,6 @@ L= DBM:GetModLocalization(1983)
 ------------------------
 L= DBM:GetModLocalization(1986)
 
-L:SetOptionLocalization({
-	SetLighting				= "Bajar automáticamente la calidad de iluminación a bajo al iniciar el combate (se restaurará a su configuración anterior al terminar el combate; no funciona en Mac)"
-})
-
 L:SetTimerLocalization({
 	timerBossIncoming		= DBM_INCOMING
 })

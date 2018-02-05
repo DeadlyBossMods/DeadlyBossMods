@@ -118,7 +118,6 @@ mod:AddSetIconOption("SetIconOnChilledBlood2", 245586, false)
 mod:AddSetIconOption("SetIconOnCosmicGlare", 250757, true)
 mod:AddInfoFrameOption(245586, true)
 mod:AddNamePlateOption("NPAuraOnVisageofTitan", 249863)
-mod:AddBoolOption("SetLighting", true)
 mod:AddDropdownOption("TauntBehavior", {"TwoMythicThreeNon", "TwoAlways", "ThreeAlways"}, "TwoMythicThreeNon", "misc")
 
 local titanCount = {}
@@ -129,7 +128,6 @@ mod.vb.fpIcon = 6
 mod.vb.chilledIcon = 1
 mod.vb.glareIcon = 4
 mod.vb.touchCosmosCast = 0
-local CVAR1, CVAR2 = nil, nil
 
 function mod:OnCombatStart(delay)
 	self.vb.stormCount = 0
@@ -157,11 +155,6 @@ function mod:OnCombatStart(delay)
 	if self.Options.NPAuraOnVisageofTitan then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
-	if self.Options.SetLighting and not IsMacClient() then--Mac client doesn't support low (1) setting for lighting (and not InCombatLockdown() needed?)
-		CVAR1, CVAR2 = GetCVarBool("graphicsLightingQuality") or 3, GetCVarBool("raidGraphicsLightingQuality") or 2--Non raid cvar is nil if 3 (default) and raid one is nil if 2 (default)
-		SetCVar("graphicsLightingQuality", 1)
-		SetCVar("raidGraphicsLightingQuality", 1)
-	end
 end
 
 function mod:OnCombatEnd()
@@ -171,14 +164,6 @@ function mod:OnCombatEnd()
 	end
 	if self.Options.NPAuraOnVisageofTitan then
 		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
-	end
-end
-
-function mod:OnLeavingCombat()
-	if CVAR1 or CVAR2 then
-		SetCVar("graphicsLightingQuality", CVAR1)
-		SetCVar("raidGraphicsLightingQuality", CVAR2)
-		CVAR1, CVAR2 = nil, nil
 	end
 end
 
