@@ -10,6 +10,8 @@ mod:DisableWBEngageSync()
 
 mod:RegisterCombat("combat")
 
+--TODO, why is this disabled again?
+--[[
 mod:RegisterEvents(
 	"ZONE_CHANGED_NEW_AREA"
 )
@@ -37,7 +39,6 @@ function mod:ZONE_CHANGED_NEW_AREA()
 
 end
 
---[[
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 104903 then

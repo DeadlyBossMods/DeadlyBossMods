@@ -67,8 +67,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	specWarnBrew		= "Mostrar aviso especial para $spell:47376",
-	specWarnBrewStun	= "Mostrar aviso especial para $spell:47340",
-	YellOnBarrel		= "Gritar para $spell:51413"
+	specWarnBrewStun	= "Mostrar aviso especial para $spell:47340"
 })
 
 L:SetMiscLocalization({
