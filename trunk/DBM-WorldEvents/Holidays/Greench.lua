@@ -24,12 +24,12 @@ local warnSnowman				= mod:NewSpellAnnounce(101910, 2)
 local warnSnowCrash				= mod:NewCastAnnounce(101907, 3)
 local warnTree					= mod:NewSpellAnnounce(101938, 2)--Needs a custom icon, i'll find one soon.
 
-local specWarnShrinkHeart		= mod:NewSpecialWarningMove(101860)
+local specWarnShrinkHeart		= mod:NewSpecialWarningMove(101860, nil, nil, nil, 1, 2)
 
-local timerShrinkHeartCD		= mod:NewCDTimer(32.5, 101873)
+local timerShrinkHeartCD		= mod:NewCDTimer(32.5, 101873, nil, nil, nil, 2)
 local timerSnowmanCD			= mod:NewCDTimer(10, 101910, nil, nil, nil, 3)--He alternates these
 local timerTreeCD				= mod:NewCDTimer(10, 101938, nil, nil, nil, 3)
-local timerCrushCD				= mod:NewCDTimer(5, 101885)--Used 5 seconds after tree casts (on the tree itself). Right before stomp he stops targeting tank. He has no target during stomp, usable for cast trigger? Only trigger in log is the stomp landing.
+local timerCrushCD				= mod:NewCDTimer(5, 101885, nil, nil, nil, 3)--Used 5 seconds after tree casts (on the tree itself). Right before stomp he stops targeting tank. He has no target during stomp, usable for cast trigger? Only trigger in log is the stomp landing.
 local timerSnowCrash			= mod:NewCastTimer(5, 101907)
 
 function mod:OnCombatStart(delay)
@@ -53,6 +53,7 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 101860 and args:IsPlayer() and self:AntiSpam(2) then
 		specWarnShrinkHeart:Show()
+		specWarnShrinkHeart:Play("keepmove")
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
