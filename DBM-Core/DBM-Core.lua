@@ -357,7 +357,6 @@ local dbmToc = 0
 local UpdateChestTimer
 local breakTimerStart
 local AddMsg
-local delayedFunction
 
 local fakeBWVersion, fakeBWHash = 87, "299b522"
 local versionQueryString, versionResponseString = "Q^%d^%s", "V^%d^%s"
@@ -1211,7 +1210,6 @@ do
 				"CHAT_MSG_ADDON",
 				"BN_CHAT_MSG_ADDON",
 				"PLAYER_REGEN_DISABLED",
-				"PLAYER_REGEN_ENABLED",
 				"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
 				"UNIT_TARGETABLE_CHANGED",
 				"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5",
@@ -5058,13 +5056,6 @@ do
 			end
 		end
 	end
-	
-	function DBM:PLAYER_REGEN_ENABLED()
-		if delayedFunction then--Will throw error if not a function, purposely not doing and type(delayedFunction) == "function" for now to make sure code works though  cause it always should be function
-			delayedFunction()
-			delayedFunction = nil
-		end
-	end
 
 	local function isBossEngaged(cId)
 		-- note that this is designed to work with any number of bosses, but it might be sufficient to check the first 5 unit ids
@@ -5836,7 +5827,6 @@ do
 				end
 			end
 			if mod.OnCombatEnd then mod:OnCombatEnd(wipe) end
-			if mod.OnLeavingCombat then delayedFunction = mod.OnLeavingCombat end
 			if #inCombat == 0 then--prevent error if you pulled multiple boss. (Earth, Wind and Fire)
 				statusWhisperDisabled = false
 				statusGuildDisabled = false
