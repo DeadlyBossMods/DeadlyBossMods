@@ -172,8 +172,15 @@ function mod:OnCombatEnd()
 	if self.Options.NPAuraOnVisageofTitan then
 		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
 	end
+	--Attempt restore right away
+	if (CVAR1 or CVAR2) and not InCombatLockdown() then
+		SetCVar("graphicsLightingQuality", CVAR1)
+		SetCVar("raidGraphicsLightingQuality", CVAR2)
+		CVAR1, CVAR2 = nil, nil
+	end
 end
 
+--Backup check on leaving combat if OnCombatEnd wasn't successful
 function mod:OnLeavingCombat()
 	if CVAR1 or CVAR2 then
 		SetCVar("graphicsLightingQuality", CVAR1)
