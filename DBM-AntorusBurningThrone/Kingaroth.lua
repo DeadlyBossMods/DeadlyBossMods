@@ -76,7 +76,7 @@ local timerApocProtocolCD				= mod:NewCDCountTimer(77, 246516, nil, nil, nil, 6)
 --Stage: Construction
 mod:AddTimerLine(DBM_ADDS)
 local timerInitializing					= mod:NewCastTimer(30, 246504, nil, nil, nil, 6)
-local timerDecimationCD					= mod:NewCDTimer(15.1, 246687, nil, nil, nil, 3)
+local timerDecimationCD					= mod:NewCDTimer(10.9, 246687, nil, nil, nil, 3)
 local timerAnnihilationCD				= mod:NewCDTimer(15.4, 245807, nil, nil, nil, 3)
 local timerDemolishCD					= mod:NewCDTimer(15.8, 246692, nil, nil, nil, 3)
 
