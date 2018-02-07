@@ -248,7 +248,7 @@ function mod:SPELL_CAST_START(args)
 		table.wipe(DemolishTargets)
 	elseif spellId == 246833 then--Ruiner
 		self.vb.ruinerCast = self.vb.ruinerCast + 1
-		timerForgingStrikeCD:Stop()
+		timerForgingStrikeCD:Cancel()
 		countdownForgingStrike:Cancel()
 		specWarnRuiner:Show()
 		specWarnRuiner:Play("farfromline")
