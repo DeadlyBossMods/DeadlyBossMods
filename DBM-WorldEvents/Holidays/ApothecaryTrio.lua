@@ -15,8 +15,8 @@ mod:RegisterEvents(
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 68821",
-	"SPELL_DAMAGE 68927 68934",
-	"SPELL_MISSED 68927 68934"
+	"SPELL_DAMAGE 68927 68934 68641 68947",
+	"SPELL_MISSED 68927 68934 68641 68947"
 )
 
 local warnChainReaction			= mod:NewCastAnnounce(68821, 3, nil, nil, "Melee", 2)
@@ -24,8 +24,8 @@ local warnChainReaction			= mod:NewCastAnnounce(68821, 3, nil, nil, "Melee", 2)
 local specWarnGTFO				= mod:NewSpecialWarningGTFO(68927, nil, nil, nil, 1, 2)
 
 local timerHummel				= mod:NewTimer(10.5, "HummelActive", "Interface\\Icons\\ability_warrior_offensivestance", nil, false, "TrioActiveTimer")
-local timerBaxter				= mod:NewTimer(18.5, "BaxterActive", "Interface\\Icons\\ability_warrior_offensivestance", nil, false, "TrioActiveTimer")
-local timerFrye					= mod:NewTimer(26.5, "FryeActive", "Interface\\Icons\\ability_warrior_offensivestance", nil, false, "TrioActiveTimer")
+local timerBaxter				= mod:NewTimer(17.5, "BaxterActive", "Interface\\Icons\\ability_warrior_offensivestance", nil, false, "TrioActiveTimer")
+local timerFrye					= mod:NewTimer(25.5, "FryeActive", "Interface\\Icons\\ability_warrior_offensivestance", nil, false, "TrioActiveTimer")
 mod:AddBoolOption("TrioActiveTimer", true, "timer", nil, 1)
 local timerChainReaction		= mod:NewCastTimer(3, 68821, nil, "Melee")
 
@@ -37,7 +37,7 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
-	if (spellId == 68927 or spellId == 68934) and destGUID == UnitGUID("player") and self:AntiSpam() then
+	if (spellId == 68927 or spellId == 68934 or spellId == 68641 or spellId == 68947) and destGUID == UnitGUID("player") and self:AntiSpam() then
 		specWarnGTFO:Show(spellName)
 		specWarnGTFO:Play("runaway")
 	end
