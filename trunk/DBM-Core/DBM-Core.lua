@@ -995,9 +995,6 @@ do
 				args.sourceName = args.destName
 				args.sourceGUID = args.destGUID
 				args.sourceFlags = args.destFlags
-				if wowVersionString == "8.0.1" then
-					self:UNIT_DIED(args)
-				end
 			elseif event == "ENVIRONMENTAL_DAMAGE" then
 				args.environmentalType, args.amount, args.overkill, args.school, args.resisted, args.blocked, args.absorbed, args.critical, args.glancing, args.crushing = ...
 				if wowVersionString == "8.0.1" then
