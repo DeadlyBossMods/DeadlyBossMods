@@ -755,7 +755,7 @@ do
 		for i = 1, select("#", ...) do
 			local event = select(i, ...)
 			-- spell events with special care.
-			if event:sub(0, 6) == "SPELL_" and event ~= "SPELL_NAME_UPDATE" or event:sub(0, 6) == "RANGE_" then
+			if event:sub(0, 6) == "SPELL_" and event ~= "SPELL_NAME_UPDATE" or event:sub(0, 6) == "RANGE_" or wowVersionString == "8.0.1" and (event == "UNIT_DIED" or event == "UNIT_DESTROYED") then
 				registerCLEUEvent(self, event)
 			else
 				local eventWithArgs = event
@@ -979,6 +979,9 @@ do
 				args.sourceName = args.destName
 				args.sourceGUID = args.destGUID
 				args.sourceFlags = args.destFlags
+				if wowVersionString == "8.0.1" then
+					self:UNIT_DIED(args)
+				end
 			elseif event == "ENVIRONMENTAL_DAMAGE" then
 				args.environmentalType, args.amount, args.overkill, args.school, args.resisted, args.blocked, args.absorbed, args.critical, args.glancing, args.crushing = ...
 			end
