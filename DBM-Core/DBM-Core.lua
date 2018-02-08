@@ -3631,6 +3631,9 @@ function DBM:LoadMod(mod, force)
 	if not currentSpecID then
 		self:SetCurrentSpecInfo()
 	end
+	if not difficultyIndex then -- prevent error in EJ_SetDifficulty if not yet set
+		savedDifficulty, difficultyText, difficultyIndex, LastGroupSize, difficultyModifier = DBM:GetCurrentInstanceDifficulty()
+	end
 	EJ_SetDifficulty(difficultyIndex)--Work around blizzard crash bug where other mods (like Boss) screw with Ej difficulty value, which makes EJ_GetSectionInfo crash the game when called with invalid difficulty index set.
 	self:Debug("LoadAddOn should have fired for "..mod.name, 2)
 	local loaded, reason = LoadAddOn(mod.modId)
