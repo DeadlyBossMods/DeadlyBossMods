@@ -755,12 +755,12 @@ do
 		for i = 1, select("#", ...) do
 			local event = select(i, ...)
 			-- spell events with special care.
-			if event:sub(0, 6) == "SPELL_" and event ~= "SPELL_NAME_UPDATE" or event:sub(0, 6) == "RANGE_" or wowVersionString == "8.0.1" and (event == "UNIT_DIED" or event == "UNIT_DESTROYED") then
+			if event:sub(0, 6) == "SPELL_" and event ~= "SPELL_NAME_UPDATE" or event:sub(0, 6) == "RANGE_" or event == "UNIT_DIED" or event == "UNIT_DESTROYED" then
 				registerCLEUEvent(self, event)
 			else
 				local eventWithArgs = event
 				-- unit events need special care
-				if event:sub(0, 5) == "UNIT_" and event ~= "UNIT_DIED" and event ~= "UNIT_DESTROYED" then
+				if event:sub(0, 5) == "UNIT_" then
 					-- unit events are limited to 8 "parameters", as there is no good reason to ever use more than 5 (it's just that the code old code supported 8 (boss1-5, target, focus))
 					local arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8
 					event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8 = strsplit(" ", event)
@@ -931,25 +931,20 @@ do
 		SPELL_LEECH = true,
 		SPELL_CAST_FAILED = true
 	}
-	--C_CombatLog, CombatLogGetCurrentEventInfo(), GetCurrentCombatTextEventInfo() (8.x)
-	function DBM:COMBAT_LOG_EVENT_UNFILTERED(timestamp, event, hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, ...)
-		local extraArg1, extraArg2, extraArg3, extraArg4, extraArg5, extraArg6, extraArg7, extraArg8, extraArg9, extraArg10
-		if wowVersionString == "8.0.1" then
+	function DBM:COMBAT_LOG_EVENT_UNFILTERED(timestamp, event, hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, extraArg1, extraArg2, extraArg3, extraArg4, extraArg5, extraArg6, extraArg7, extraArg8, extraArg9, extraArg10, ...)
+		if wowVersionString == "8.0.1" then--In 8.x+, CLEU is just an event with no args, all args must be requested via CombatLogGetCurrentEventInfo
 			timestamp, event, hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, extraArg1, extraArg2, extraArg3, extraArg4, extraArg5, extraArg6, extraArg7, extraArg8, extraArg9, extraArg10 = CombatLogGetCurrentEventInfo()
 		end
 		if not registeredEvents[event] then return end
 		local eventSub6 = event:sub(0, 6)
 		if (eventSub6 == "SPELL_" or eventSub6 == "RANGE_") and not unfilteredCLEUEvents[event] then
-			local spellId = ...
-			if wowVersionString == "8.0.1" then
-				spellId = extraArg1
-			end
+			spellId = extraArg1
 			if not registeredSpellIds[event][spellId] then return end
 		end
 		-- process some high volume events without building the whole table which is somewhat faster
 		-- this prevents work-around with mods that used to have their own event handler to prevent this overhead
 		if noArgTableEvents[event] then
-			return handleEvent(nil, event, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, ...)
+			return handleEvent(nil, event, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, extraArg1, extraArg2, extraArg3, extraArg4, extraArg5, extraArg6, extraArg7, extraArg8, extraArg9, extraArg10, ...)
 		else
 			twipe(args)
 			args.timestamp = timestamp
@@ -963,10 +958,7 @@ do
 			args.destFlags = destFlags
 			args.destRaidFlags = destRaidFlags
 			if eventSub6 == "SPELL_" then
-				args.spellId, args.spellName = ...
-				if wowVersionString == "8.0.1" then
-					args.spellId, args.spellName = extraArg1, extraArg2
-				end
+				args.spellId, args.spellName = extraArg1, extraArg2
 				if event == "SPELL_AURA_APPLIED" or event == "SPELL_AURA_REFRESH" or event == "SPELL_AURA_REMOVED" then
 					if not args.sourceName then
 						args.sourceName = args.destName
@@ -974,32 +966,21 @@ do
 						args.sourceFlags = args.destFlags
 					end
 				elseif event == "SPELL_AURA_APPLIED_DOSE" or event == "SPELL_AURA_REMOVED_DOSE" then
-					local _
-					_, _, _, _, args.amount = ...
-					if wowVersionString == "8.0.1" then
-						args.amount = extraArg6
-					end
+					args.amount = extraArg6
 					if not args.sourceName then
 						args.sourceName = args.destName
 						args.sourceGUID = args.destGUID
 						args.sourceFlags = args.destFlags
 					end
 				elseif event == "SPELL_INTERRUPT" or event == "SPELL_DISPEL" or event == "SPELL_DISPEL_FAILED" or event == "SPELL_AURA_STOLEN" then
-					local _
-					_, _, _, args.extraSpellId, args.extraSpellName = ...
-					if wowVersionString == "8.0.1" then
-						args.extraSpellId, args.extraSpellName = extraArg5, extraArg6
-					end
+					args.extraSpellId, args.extraSpellName = extraArg5, extraArg6
 				end
 			elseif event == "UNIT_DIED" or event == "UNIT_DESTROYED" then
 				args.sourceName = args.destName
 				args.sourceGUID = args.destGUID
 				args.sourceFlags = args.destFlags
 			elseif event == "ENVIRONMENTAL_DAMAGE" then
-				args.environmentalType, args.amount, args.overkill, args.school, args.resisted, args.blocked, args.absorbed, args.critical, args.glancing, args.crushing = ...
-				if wowVersionString == "8.0.1" then
-					args.environmentalType, args.amount, args.overkill, args.school, args.resisted, args.blocked, args.absorbed, args.critical, args.glancing, args.crushing = extraArg1, extraArg2, extraArg3, extraArg4, extraArg5, extraArg6, extraArg7, extraArg8, extraArg9, extraArg10
-				end
+				args.environmentalType, args.amount, args.overkill, args.school, args.resisted, args.blocked, args.absorbed, args.critical, args.glancing, args.crushing = extraArg1, extraArg2, extraArg3, extraArg4, extraArg5, extraArg6, extraArg7, extraArg8, extraArg9, extraArg10
 			end
 			return handleEvent(nil, event, args)
 		end
