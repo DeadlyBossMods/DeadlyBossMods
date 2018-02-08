@@ -938,8 +938,7 @@ do
 		if not registeredEvents[event] then return end
 		local eventSub6 = event:sub(0, 6)
 		if (eventSub6 == "SPELL_" or eventSub6 == "RANGE_") and not unfilteredCLEUEvents[event] then
-			spellId = extraArg1
-			if not registeredSpellIds[event][spellId] then return end
+			if not registeredSpellIds[event][extraArg1] then return end
 		end
 		-- process some high volume events without building the whole table which is somewhat faster
 		-- this prevents work-around with mods that used to have their own event handler to prevent this overhead
