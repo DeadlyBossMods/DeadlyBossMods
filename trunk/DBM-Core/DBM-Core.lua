@@ -6692,7 +6692,7 @@ end
 
 --To speed up creating new mods.
 function DBM:FindDungeonIDs()
-	for i=1, 2000 do
+	for i=1, 3000 do
 		local dungeon = GetRealZoneText(i)
 		if dungeon and dungeon ~= "" then
 			self:AddMsg(i..": "..dungeon)
@@ -6701,7 +6701,7 @@ function DBM:FindDungeonIDs()
 end
 
 function DBM:FindInstanceIDs()
-	for i=1, 2000 do
+	for i=1, 3000 do
 		local instance = EJ_GetInstanceInfo(i)
 		if instance then
 			self:AddMsg(i..": "..instance)
@@ -6709,9 +6709,10 @@ function DBM:FindInstanceIDs()
 	end
 end
 
---/run DBM:FindEncounterIDs(822)--Broken Isles
---/run DBM:FindEncounterIDs(875)--Tomb of Sargeras
---/run DBM:FindEncounterIDs(900, 23)--Cathedral of Eternal Night
+--/run DBM:FindEncounterIDs(1028)--Kul Tiras
+--/run DBM:FindEncounterIDs(1029)--Zandalar
+--/run DBM:FindEncounterIDs(1031)--Uldir
+--/run DBM:FindEncounterIDs(1001, 23)--Dungeon Template (mythic difficulty)
 function DBM:FindEncounterIDs(instanceID, diff)
 	if not instanceID then
 		self:AddMsg("Error: Function requires instanceID be provided")
