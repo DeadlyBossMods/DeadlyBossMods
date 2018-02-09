@@ -114,7 +114,7 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(1984)
 
 L:SetOptionLocalization({
-	ignoreRendThreeTank	= "Don't show/play Rend special warning when using 3 or more tanks (since DBM can't determine exact tanking rotation in this setup)"
+	ignoreThreeTank	= "Filter Rend/Foe Taunt special warnings when using 3 or more tanks (since DBM can't determine exact tanking rotation in this setup). If any tanks die and it drops to 2, filter auto disables"
 })
 
 L:SetMiscLocalization({
