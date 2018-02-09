@@ -15,8 +15,8 @@ mod:RegisterEvents(
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 68821",
-	"SPELL_DAMAGE 68927 68934 68641 68947",
-	"SPELL_MISSED 68927 68934 68641 68947"
+	"SPELL_PERIODIC_DAMAGE 68927 68934",
+	"SPELL_PERIODIC_MISSED 68927 68934"
 )
 
 local warnChainReaction			= mod:NewCastAnnounce(68821, 3, nil, nil, "Melee", 2)
@@ -36,13 +36,13 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
-function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
-	if (spellId == 68927 or spellId == 68934 or spellId == 68641 or spellId == 68947) and destGUID == UnitGUID("player") and self:AntiSpam() then
+function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
+	if (spellId == 68927 or spellId == 68934) and destGUID == UnitGUID("player") and self:AntiSpam() then
 		specWarnGTFO:Show(spellName)
 		specWarnGTFO:Play("runaway")
 	end
 end
-mod.SPELL_MISSED = mod.SPELL_DAMAGE
+mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
 function mod:CHAT_MSG_MONSTER_SAY(msg)
 	if msg == L.SayCombatStart or msg:find(L.SayCombatStart) then
