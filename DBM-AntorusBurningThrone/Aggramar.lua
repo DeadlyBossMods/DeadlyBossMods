@@ -79,7 +79,7 @@ mod:AddSetIconOption("SetIconOnAdds", 244903, false, true)--Both off by default,
 mod:AddInfoFrameOption(244688, true)
 mod:AddRangeFrameOption("6")
 mod:AddNamePlateOption("NPAuraOnPresence", 244903)
-mod:AddBoolOption("ignoreRendThreeTank", true)
+mod:AddBoolOption("ignoreThreeTank", true)
 
 mod.vb.phase = 1
 mod.vb.techCount = 0
@@ -343,9 +343,12 @@ function mod:SPELL_CAST_START(args)
 			if tanking or (status == 3) then--Player is current target
 				specWarnFoeBreakerDefensive:Show()
 				specWarnFoeBreakerDefensive:Play("defensive")
-			elseif not UnitDebuff("player", args.spellName) and self.vb.foeCount == 2 and self:AntiSpam(2, 6) then--Second cast and you didn't take first and didn't get a flame rend taunt warning in last 2 seconds
-				specWarnFoeBreakerTaunt:Show(BOSS)
-				specWarnFoeBreakerTaunt:Play("tauntboss")
+			elseif not UnitDebuff("player", args.spellName) and self.vb.foeCount == 2 then
+				if self.Options.ignoreThreeTank and self:GetNumAliveTanks() >= 3 then return end
+				if self:AntiSpam(2, 6) then--Second cast and you didn't take first and didn't get a flame rend taunt warning in last 2 seconds
+					specWarnFoeBreakerTaunt:Show(BOSS)
+					specWarnFoeBreakerTaunt:Play("tauntboss")
+				end
 			end
 		end
 		if self.vb.foeCount == 1 and not self:IsMythic() then
@@ -406,7 +409,7 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 247079 or spellId == 244033 then--Special cast Ids that show the primary target of the flame rend, not all the people hit by it
-		if self.Options.ignoreRendThreeTank and self:GetNumAliveTanks() >= 3 then return end
+		if self.Options.ignoreThreeTank and self:GetNumAliveTanks() >= 3 then return end
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId) then--For good measure, filter non tanks on wipes or LFR trolls
 			if not args:IsPlayer() and (self:IsMythic() and self.vb.rendCount == 2 or not UnitDebuff("player", foeBreaker1) and not UnitDebuff("player", foeBreaker2)) then
