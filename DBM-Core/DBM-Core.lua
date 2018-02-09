@@ -965,14 +965,14 @@ do
 						args.sourceFlags = args.destFlags
 					end
 				elseif event == "SPELL_AURA_APPLIED_DOSE" or event == "SPELL_AURA_REMOVED_DOSE" then
-					args.amount = extraArg6
+					args.amount = extraArg5
 					if not args.sourceName then
 						args.sourceName = args.destName
 						args.sourceGUID = args.destGUID
 						args.sourceFlags = args.destFlags
 					end
 				elseif event == "SPELL_INTERRUPT" or event == "SPELL_DISPEL" or event == "SPELL_DISPEL_FAILED" or event == "SPELL_AURA_STOLEN" then
-					args.extraSpellId, args.extraSpellName = extraArg5, extraArg6
+					args.extraSpellId, args.extraSpellName = extraArg4, extraArg5
 				end
 			elseif event == "UNIT_DIED" or event == "UNIT_DESTROYED" then
 				args.sourceName = args.destName
