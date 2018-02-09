@@ -105,13 +105,17 @@ L:SetOptionLocalization({
 	TwoMythicThreeNon	= "Swap at 2 stacks on mythic, 3 stacks on other difficulties",--Default
 	TwoAlways			= "Always swap at 2 stacks regardless of difficulty",
 	ThreeAlways			= "Always swap at 3 stacks regardless of difficulty",
-	SetLighting				= "Automatically turn lighting setting to low when coven is engaged and restore on combat end (Not supported in mac client since mac client doesn't support low lighting)"
+	SetLighting			= "Automatically turn lighting setting to low when coven is engaged and restore on combat end (Not supported in mac client since mac client doesn't support low lighting)"
 })
 
 ---------------------------
 -- Aggramar --
 ---------------------------
 L= DBM:GetModLocalization(1984)
+
+L:SetOptionLocalization({
+	ignoreRendThreeTank	= "Don't show/play Rend special warning when using 3 or more tanks (since DBM can't determine exact tanking rotation in this setup)"
+})
 
 L:SetMiscLocalization({
 	Foe			=	"Foe",
