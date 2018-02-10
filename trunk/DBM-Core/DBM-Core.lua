@@ -408,19 +408,25 @@ local UnitName, GetUnitName = UnitName, GetUnitName
 local IsInRaid, IsInGroup, IsInInstance = IsInRaid, IsInGroup, IsInInstance
 local UnitAffectingCombat, InCombatLockdown, IsFalling, IsEncounterInProgress, UnitPlayerOrPetInRaid, UnitPlayerOrPetInParty = UnitAffectingCombat, InCombatLockdown, IsFalling, IsEncounterInProgress, UnitPlayerOrPetInRaid, UnitPlayerOrPetInParty
 local UnitGUID, UnitHealth, UnitHealthMax, UnitBuff = UnitGUID, UnitHealth, UnitHealthMax, UnitBuff
-local UnitExists, UnitIsDead, UnitIsFriend, UnitIsUnit, UnitIsAFK = UnitExists, UnitIsDead, UnitIsFriend, UnitIsUnit, UnitIsAFK
+local UnitExists, UnitIsDead, UnitIsFriend, UnitIsUnit = UnitExists, UnitIsDead, UnitIsFriend, UnitIsUnit
 local GetSpellInfo, EJ_GetSectionInfo, GetSectionIconFlags, GetSpellTexture, GetSpellCooldown = GetSpellInfo, C_EncounterJournal.GetSectionInfo, C_EncounterJournal.GetSectionIconFlags, GetSpellTexture, GetSpellCooldown
 local EJ_GetEncounterInfo, EJ_GetCreatureInfo, GetDungeonInfo = EJ_GetEncounterInfo, EJ_GetCreatureInfo, GetDungeonInfo
 local GetInstanceInfo = GetInstanceInfo
-local UnitPosition, GetCurrentMapDungeonLevel, GetMapInfo, GetCurrentMapZone, SetMapToCurrentZone, GetPlayerMapAreaID = UnitPosition, GetCurrentMapDungeonLevel, GetMapInfo, GetCurrentMapZone, SetMapToCurrentZone, GetPlayerMapAreaID
+local GetCurrentMapDungeonLevel, SetMapToCurrentZone, GetPlayerMapAreaID = GetCurrentMapDungeonLevel, SetMapToCurrentZone, GetPlayerMapAreaID
 local GetSpecialization, GetSpecializationInfo, GetSpecializationInfoByID = GetSpecialization, GetSpecializationInfo, GetSpecializationInfoByID
 local UnitDetailedThreatSituation = UnitDetailedThreatSituation
-local GetPartyAssignment, UnitGroupRolesAssigned, UnitIsGroupLeader, UnitIsGroupAssistant = GetPartyAssignment, UnitGroupRolesAssigned, UnitIsGroupLeader, UnitIsGroupAssistant
-local LoadAddOn, GetAddOnInfo, GetAddOnEnableState, GetAddOnMetadata = LoadAddOn, GetAddOnInfo, GetAddOnEnableState, GetAddOnMetadata
+local UnitIsGroupLeader, UnitIsGroupAssistant = UnitIsGroupLeader, UnitIsGroupAssistant
 local PlaySoundFile, PlaySound = PlaySoundFile, PlaySound
 local Ambiguate = Ambiguate
 local C_TimerNewTicker, C_TimerAfter = C_Timer.NewTicker, C_Timer.After
-local BNGetGameAccountInfo = BNGetGameAccountInfo
+
+--TODO, remove RegisterAddonMessagePrefix upvalue in 8.x, this is only a temp live/beta work around
+local RegisterAddonMessagePrefix, SendAddonMessage
+if C_ChatInfo then--8.x chat functions moved to C_ChatInfo
+	RegisterAddonMessagePrefix, SendAddonMessage = C_ChatInfo.RegisterAddonMessagePrefix, C_ChatInfo.SendAddonMessage
+else
+	RegisterAddonMessagePrefix, SendAddonMessage = RegisterAddonMessagePrefix, SendAddonMessage
+end
 
 -- for Phanx' Class Colors
 local RAID_CLASS_COLORS = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS
