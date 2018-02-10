@@ -103,6 +103,10 @@ L:SetOptionLocalization({
 ---------------------------
 L= DBM:GetModLocalization(1984)
 
+L:SetOptionLocalization({
+	ignoreThreeTank	= "3탱 이상 구성일 땐 분쇄/적 해체 도발 특수 경고를 표시하지 않습니다. (이런 구성에선 DBM이 정확한 탱킹 로테이션을 감지할 수 없음) 탱커가 죽어서 2명으로 줄어들면 꺼졌던 도발 알림이 다시 작동합니다"
+})
+
 L:SetMiscLocalization({
 	Foe			=	"적 해체",
 	Rend		=	"분쇄",
