@@ -11,7 +11,8 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 250585",
 	"SPELL_CAST_START 250258",
-	"SPELL_CAST_SUCCESS 250368 259572"
+	"SPELL_CAST_SUCCESS 250368 259572",
+	"UNIT_DIED"
 )
 
 --ability.id = 250258 and type = "begincast" or (ability.id = 250368 or ability.id = 259572 or ability.id = 250241) and type = "cast" or target.id = 125977 and type = "death"
@@ -81,6 +82,8 @@ function mod:UNIT_DIED(args)
 		if self.vb.totemRemaining > 0 then
 			warnTotemsLeft:Show(self.vb.totemRemaining)
 		else--Stage 2
+			timerNoxiousStenchCD:Stop()
+			timerLeapCD:Stop()
 			warnPhase2:Show()
 			warnPhase2:Play("ptwo")
 		end

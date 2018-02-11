@@ -8925,7 +8925,7 @@ do
 	end
 
 	function yellPrototype:Yell(...)
-		if DBM.Options.DontSendYells or self.yellType and self.yellType == "position" and UnitBuff("player", DBM:GetSpellInfo(194249)) then return end
+		if DBM.Options.DontSendYells or self.yellType and self.yellType == "position" and UnitBuff("player", DBM:GetSpellInfo(194249)) or ScriptsDisallowedForBeta() then return end
 		if not self.option or self.mod.Options[self.option] then
 			SendChatMessage(pformat(self.text, ...), self.chatType or "SAY")
 		end
@@ -8937,9 +8937,7 @@ do
 	end
 
 	function yellPrototype:Countdown(time, numAnnounces, ...)
-		if not UnitBuff("player", DBM:GetSpellInfo(194249)) then
-			scheduleCountdown(time, numAnnounces, self.Yell, self.mod, self, ...)
-		end
+		scheduleCountdown(time, numAnnounces, self.Yell, self.mod, self, ...)
 	end
 
 	function yellPrototype:Cancel(...)
