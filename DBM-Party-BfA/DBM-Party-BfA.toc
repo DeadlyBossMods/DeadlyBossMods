@@ -39,7 +39,7 @@ Boralus\Ashvane.lua
 Boralus\BoralusTrash.lua
 TempleofSethraliss\AdderisandAspix.lua
 TempleofSethraliss\Merektha.lua
-TempleofSethraliss\LightingElemental.lua
+TempleofSethraliss\Galvazzt.lua
 TempleofSethraliss\AvatarofSethraliss.lua
 TempleofSethraliss\SethralissTrash.lua
 TheUndermine\CrowdPummeler.lua
