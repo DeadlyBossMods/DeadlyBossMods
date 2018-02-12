@@ -10,20 +10,24 @@ mod:SetZone()
 
 mod:RegisterCombat("combat")
 
---[[
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START",
-	"SPELL_CAST_SUCCESS",
-	"SPELL_AURA_APPLIED"
+	"SPELL_CAST_START 260908 261467",
+--	"SPELL_CAST_SUCCESS",
+	"SPELL_AURA_APPLIED 261092 261509"
 )
 
 --local warnMothersEmbrace			= mod:NewTargetAnnounce(219045, 3)
 
---local specWarnFelGeyser			= mod:NewSpecialWarningDodge(218823, nil, nil, nil, 2, 2)
---local yellSwirlingScythe			= mod:NewYell(195254)
+local specWarnWingBuffet			= mod:NewSpecialWarningSpell(260908, nil, nil, nil, 2, 2)
+local specWarnHurricaneCrash		= mod:NewSpecialWarningRun(261088, nil, nil, nil, 4, 2)
+local specWarnMatriarchsCall		= mod:NewSpecialWarningSwitch(261467, nil, nil, nil, 1, 2)
+local specWarnClutch				= mod:NewSpecialWarningYou(261509, nil, nil, nil, 1, 2)
+local yellClutch					= mod:NewYell(261509)
 --local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
 
---local timerFelGeyserCD			= mod:NewAITimer(16, 218823, nil, nil, nil, 2)
+local timerWingBuffetCD				= mod:NewAITimer(16, 260908, nil, nil, nil, 2)
+local timerHurricaneCrashCD			= mod:NewAITimer(16, 261088, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
+local timerMatriarchCallCD			= mod:NewAITimer(16, 261467, nil, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON)
 
 --mod:AddRangeFrameOption(5, 194966)
 --mod:AddReadyCheckOption(37460, false)
@@ -42,25 +46,32 @@ end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 218823 then
-
-	end
-end
-
-function mod:SPELL_CAST_SUCCESS(args)
-	local spellId = args.spellId
-	if spellId == 218823 then
-
+	if spellId == 260908 then
+		specWarnWingBuffet:Show()
+		specWarnWingBuffet:Play("aesoon")
+		timerWingBuffetCD:Start()
+	elseif spellId == 261467 then
+		specWarnMatriarchsCall:Show()
+		timerMatriarchCallCD:Start()
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 219045 then
-
+	if spellId == 261092 then
+		specWarnHurricaneCrash:Show()
+		specWarnHurricaneCrash:Play("justrun")
+		timerHurricaneCrashCD:Start()
+	elseif spellId == 261509 and args:IsDestTypePlayer() then
+		if args:IsPlayer() then
+			specWarnClutch:Show()
+			specWarnClutch:Play("targetyou")
+			yellClutch:Yell()
+		end
 	end
 end
 
+--[[
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 228007 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
 		specWarnGTFO:Show()
