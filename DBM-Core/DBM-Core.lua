@@ -669,6 +669,7 @@ do
 		function registerSpellId(event, spellId)
 			if type(spellId) == "string" then--Something is screwed up, like SPELL_AURA_APPLIED DOSE
 				DBM:AddMsg("DBM RegisterEvents Error: "..spellId.." is not a number!")
+				return
 			end
 			if spellId and not DBM:GetSpellInfo(spellId) then
 				DBM:AddMsg("DBM RegisterEvents Error: "..spellId.." spell id does not exist!")
@@ -941,7 +942,7 @@ do
 		end
 		if not registeredEvents[event] then return end
 		local eventSub6 = event:sub(0, 6)
-		if (eventSub6 == "SPELL_" or eventSub6 == "RANGE_") and not unfilteredCLEUEvents[event] then
+		if (eventSub6 == "SPELL_" or eventSub6 == "RANGE_") and not unfilteredCLEUEvents[event] and registeredSpellIds[event] then
 			if not registeredSpellIds[event][extraArg1] then return end
 		end
 		-- process some high volume events without building the whole table which is somewhat faster
