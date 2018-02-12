@@ -3634,9 +3634,7 @@ function DBM:LoadMod(mod, force)
 		return
 	end
 	if mod.minExpansion > GetExpansionLevel() then
-		if self:AntiSpam(60, "VER_MISMATCH") then--Throttle message in case person keeps trying to load mod (or it's a world boss player keeps targeting
-			self:AddMsg(DBM_CORE_LOAD_MOD_EXP_MISMATCH:format(mod.name))
-		end
+		self:AddMsg(DBM_CORE_LOAD_MOD_EXP_MISMATCH:format(mod.name))
 		return
 	end
 	if not currentSpecID then
