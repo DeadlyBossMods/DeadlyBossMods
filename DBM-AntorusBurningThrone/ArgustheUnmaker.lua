@@ -235,7 +235,7 @@ end
 
 function mod:OnCombatStart(delay)
 	avatarOfAggramar, aggramarsBoon = DBM:GetSpellInfo(255199), DBM:GetSpellInfo(255200)
-	burstShortName, bombShortName, chainsShortName = DBM:GetSpellInfo(240443), DBM:GetSpellInfo(155188), DBM:GetSpellInfo(241803)
+	bombShortName, chainsShortName = DBM:GetSpellInfo(155188), DBM:GetSpellInfo(241803)
 	soulBurst, soulBomb, sargSentence, soulBlight, sargFear = DBM:GetSpellInfo(250669), DBM:GetSpellInfo(251570), DBM:GetSpellInfo(257966), DBM:GetSpellInfo(248396), DBM:GetSpellInfo(257931)
 	playerAvatar = false
 	self.vb.phase = 1
@@ -473,7 +473,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnSoulburst:Show()
 			specWarnSoulburst:Play("targetyou")
 			specWarnSoulburst:ScheduleVoice(self:IsMythic() and 7 or 10, "bombnow")
-			yellSoulburst:Yell(icon, burstShortName, icon)
+			yellSoulburst:Yell(icon, L.Burst, icon)
 			yellSoulburstFades:Countdown(self:IsMythic() and 12 or 15, nil, icon)
 			fearCheck(self)
 		end
