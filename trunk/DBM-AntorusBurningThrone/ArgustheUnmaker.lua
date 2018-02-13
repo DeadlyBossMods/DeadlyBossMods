@@ -83,7 +83,7 @@ local specWarnSoulburst				= mod:NewSpecialWarningYou(250669, nil, nil, nil, 1, 
 local yellSoulburst					= mod:NewPosYell(250669, DBM_CORE_AUTO_YELL_CUSTOM_POSITION)
 local yellSoulburstFades			= mod:NewIconFadesYell(250669, 240443)
 local specWarnSoulbomb				= mod:NewSpecialWarningYou(251570, nil, nil, nil, 1, 2)
-local specWarnSoulbombMoveTo		= mod:NewSpecialWarningMoveTo(251570, nil, nil, nil, 1, 7)
+local specWarnSoulbombMoveTo		= mod:NewSpecialWarningMoveTo(251570, nil, nil, nil, 1, 2)
 local yellSoulbomb					= mod:NewPosYell(251570, DBM_CORE_AUTO_YELL_CUSTOM_POSITION)
 local yellSoulbombFades				= mod:NewIconFadesYell(251570, 155188)
 local specWarnEdgeofObliteration	= mod:NewSpecialWarningSpell(255826, nil, nil, nil, 2, 2)
@@ -230,7 +230,7 @@ end
 
 local function delayedBoonCheck(self)
 	specWarnSoulbombMoveTo:Show(DBM_CORE_ROOM_EDGE)
-	specWarnSoulbombMoveTo:Play("runtoedge")
+	specWarnSoulbombMoveTo:Play("bombnow")--Detonate Soon makes more sense than "run to edge" which is still too assumptive
 end
 
 function mod:OnCombatStart(delay)
@@ -472,7 +472,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnSoulburst:Show()
 			specWarnSoulburst:Play("targetyou")
-			--specWarnSoulburst:ScheduleVoice(self:IsMythic() and 7 or 10, "runout")
+			specWarnSoulburst:ScheduleVoice(self:IsMythic() and 7 or 10, "bombnow")
 			yellSoulburst:Yell(icon, burstShortName, icon)
 			yellSoulburstFades:Countdown(self:IsMythic() and 12 or 15, nil, icon)
 			fearCheck(self)
@@ -484,7 +484,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 251570 then
 		if args:IsPlayer() then
 			specWarnSoulbomb:Show()
-			specWarnSoulbomb:Play("targetyou")
+			specWarnSoulbomb:Play("targetyou")--Would be better if bombrun was "bomb on you" and not "bomb on you, run". Since Don't want to give misinformation, generic it is
 			self:Schedule(self:IsMythic() and 5 or 8, delayedBoonCheck, self)
 			yellSoulbomb:Yell(2, bombShortName, 2)
 			yellSoulbombFades:Countdown(self:IsMythic() and 12 or 15, nil, 2)
