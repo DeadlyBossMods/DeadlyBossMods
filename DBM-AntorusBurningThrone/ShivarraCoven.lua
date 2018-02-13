@@ -52,7 +52,7 @@ local warnFlashFreeze					= mod:NewStackAnnounce(245518, 2, nil, "Tank")
 local warnCosmicGlare					= mod:NewTargetAnnounce(250757, 3)
 
 --General
-local specWarnGTFO						= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
+local specWarnGTFO						= mod:NewSpecialWarningGTFO(245634, nil, nil, nil, 1, 2)
 local specWarnActivated					= mod:NewSpecialWarningSwitchCount(118212, "Tank", nil, nil, 1, 2)
 --Noura, Mother of Flames
 local specWarnFieryStrike				= mod:NewSpecialWarningStack(244899, nil, 2, nil, nil, 1, 6)
