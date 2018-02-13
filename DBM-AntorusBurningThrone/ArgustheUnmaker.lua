@@ -177,7 +177,7 @@ local apocModule = {31, 47, 48.2, 46.6, 53, 53}--Some variation detected in logs
 local sargGaze = {23, 75, 70, 53, 53}--1 timer from method video not logs, verify by logs to improve accuracy
 local edgeofAnni = {5, 5, 90, 5, 45, 5}--All timers from method video (6:05 P3 start, 6:10, 6:15, 7:45, 7:50, 8:35, 8:40)
 --Both of these should be in fearCheck object for efficiency but with uncertainty of async, I don't want to come back and fix this later. Doing it this way ensures without a doubt it'll work by calling on load and again on combatstart
-local burstShortName, bombShortName, chainsShortName, blightShortName = DBM:GetSpellInfo(240443), DBM:GetSpellInfo(155188), DBM:GetSpellInfo(241803), DBM:GetSpellInfo(59285)
+local burstShortName, bombShortName, chainsShortName = DBM:GetSpellInfo(240443), DBM:GetSpellInfo(155188), DBM:GetSpellInfo(241803), DBM:GetSpellInfo(59285)
 local soulBurst, soulBomb, sargSentence, soulBlight, sargFear = DBM:GetSpellInfo(250669), DBM:GetSpellInfo(251570), DBM:GetSpellInfo(257966), DBM:GetSpellInfo(248396), DBM:GetSpellInfo(257931)
 
 local function fearCheck(self)
@@ -194,7 +194,7 @@ local function fearCheck(self)
 			yellSargFearCombo:Yell(chainsShortName)
 			comboActive = true
 		elseif UnitDebuff("player", soulBlight) then
-			yellSargFearCombo:Yell(blightShortName)
+			yellSargFearCombo:Yell(L.Blight)
 			comboActive = true
 		end
 		if comboActive then
@@ -235,7 +235,7 @@ end
 
 function mod:OnCombatStart(delay)
 	avatarOfAggramar, aggramarsBoon = DBM:GetSpellInfo(255199), DBM:GetSpellInfo(255200)
-	burstShortName, bombShortName, chainsShortName, blightShortName = DBM:GetSpellInfo(240443), DBM:GetSpellInfo(155188), DBM:GetSpellInfo(241803), DBM:GetSpellInfo(59285)
+	burstShortName, bombShortName, chainsShortName = DBM:GetSpellInfo(240443), DBM:GetSpellInfo(155188), DBM:GetSpellInfo(241803), DBM:GetSpellInfo(59285)
 	soulBurst, soulBomb, sargSentence, soulBlight, sargFear = DBM:GetSpellInfo(250669), DBM:GetSpellInfo(251570), DBM:GetSpellInfo(257966), DBM:GetSpellInfo(248396), DBM:GetSpellInfo(257931)
 	playerAvatar = false
 	self.vb.phase = 1
