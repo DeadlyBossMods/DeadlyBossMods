@@ -94,6 +94,10 @@ L:SetOptionLocalization({
 ---------------------------
 L= DBM:GetModLocalization(1984)
 
+L:SetOptionLocalization({
+	ignoreThreeTank	= "當使用三或更多的坦克時過濾烈焰撕裂/碎敵者嘲諷特別警告(在此設定DBM無法得知確實的坦克循環)。如果坦克因死亡而數量降到2時。過濾會自動停用。"
+})
+
 L:SetMiscLocalization({
 	Foe			=	"碎敵者",
 	Rend		=	"烈焰撕裂",
