@@ -472,7 +472,7 @@ DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT = {
 	shortfade		= "%%d",
 	iconfade		= "{rt%%2$d}%%1$d",
 	position 		= "%s %%s on {rt%%d}"..UnitName("player").."{rt%%d}",
-	combo			= "%s + %s"
+	combo			= "%s + %s"--Spell name (from option, plus spellname given in arg)
 }
 DBM_CORE_AUTO_YELL_CUSTOM_POSITION		= "{rt%d}%s{rt%d}"--Doesn't need translating. Has no strings
 DBM_CORE_AUTO_YELL_CUSTOM_POSITION2		= "{rt%d}{rt%d}%s{rt%d}{rt%d}"--Doesn't need translating. Has no strings
