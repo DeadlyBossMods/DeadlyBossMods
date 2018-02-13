@@ -8977,6 +8977,10 @@ do
 	function bossModPrototype:NewPosYell(...)
 		return newYell(self, "position", ...)
 	end
+	
+	function bossModPrototype:NewComboYell(...)
+		return newYell(self, "combo", ...)
+	end
 end
 
 ------------------------------
