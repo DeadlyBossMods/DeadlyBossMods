@@ -81,7 +81,7 @@ local specWarnGTFO					= mod:NewSpecialWarningGTFO(248167, nil, nil, nil, 1, 2)
 --Stage Two: The Protector Redeemed
 local specWarnSoulburst				= mod:NewSpecialWarningYou(250669, nil, nil, nil, 1, 2)
 local yellSoulburst					= mod:NewPosYell(250669, DBM_CORE_AUTO_YELL_CUSTOM_POSITION)
-local yellSoulburstFades			= mod:NewIconFadesYell(250669, 240443)
+local yellSoulburstFades			= mod:NewIconFadesYell(250669)
 local specWarnSoulbomb				= mod:NewSpecialWarningYou(251570, nil, nil, nil, 1, 2)
 local specWarnSoulbombMoveTo		= mod:NewSpecialWarningMoveTo(251570, nil, nil, nil, 1, 2)
 local yellSoulbomb					= mod:NewPosYell(251570, DBM_CORE_AUTO_YELL_CUSTOM_POSITION)
@@ -177,7 +177,7 @@ local apocModule = {31, 47, 48.2, 46.6, 53, 53}--Some variation detected in logs
 local sargGaze = {23, 75, 70, 53, 53}--1 timer from method video not logs, verify by logs to improve accuracy
 local edgeofAnni = {5, 5, 90, 5, 45, 5}--All timers from method video (6:05 P3 start, 6:10, 6:15, 7:45, 7:50, 8:35, 8:40)
 --Both of these should be in fearCheck object for efficiency but with uncertainty of async, I don't want to come back and fix this later. Doing it this way ensures without a doubt it'll work by calling on load and again on combatstart
-local burstShortName, bombShortName, chainsShortName = DBM:GetSpellInfo(240443), DBM:GetSpellInfo(155188), DBM:GetSpellInfo(241803), DBM:GetSpellInfo(59285)
+local bombShortName, chainsShortName = DBM:GetSpellInfo(155188), DBM:GetSpellInfo(241803)
 local soulBurst, soulBomb, sargSentence, soulBlight, sargFear = DBM:GetSpellInfo(250669), DBM:GetSpellInfo(251570), DBM:GetSpellInfo(257966), DBM:GetSpellInfo(248396), DBM:GetSpellInfo(257931)
 
 local function fearCheck(self)
@@ -185,7 +185,7 @@ local function fearCheck(self)
 	if UnitDebuff("player", sargFear) then
 		local comboActive = false
 		if UnitDebuff("player", soulBurst) then
-			yellSargFearCombo:Yell(burstShortName)
+			yellSargFearCombo:Yell(L.Burst)
 			comboActive = true
 		elseif UnitDebuff("player", soulBomb) then
 			yellSargFearCombo:Yell(bombShortName)
@@ -235,7 +235,7 @@ end
 
 function mod:OnCombatStart(delay)
 	avatarOfAggramar, aggramarsBoon = DBM:GetSpellInfo(255199), DBM:GetSpellInfo(255200)
-	burstShortName, bombShortName, chainsShortName = DBM:GetSpellInfo(240443), DBM:GetSpellInfo(155188), DBM:GetSpellInfo(241803), DBM:GetSpellInfo(59285)
+	burstShortName, bombShortName, chainsShortName = DBM:GetSpellInfo(240443), DBM:GetSpellInfo(155188), DBM:GetSpellInfo(241803)
 	soulBurst, soulBomb, sargSentence, soulBlight, sargFear = DBM:GetSpellInfo(250669), DBM:GetSpellInfo(251570), DBM:GetSpellInfo(257966), DBM:GetSpellInfo(248396), DBM:GetSpellInfo(257931)
 	playerAvatar = false
 	self.vb.phase = 1
