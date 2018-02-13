@@ -711,6 +711,7 @@ function mod:SPELL_INTERRUPT(args)
 			countdownReorgModule:Start(31.3)
 			timerTorturedRageCD:Start(40, 1)
 			timerSargSentenceCD:Start(53, 1)
+			self:Schedule(63, checkForMissingSentence, self)
 		else
 			if not self:IsHeroic() then
 				timerSweepingScytheCD:Start(5, 1)
