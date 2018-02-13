@@ -461,7 +461,8 @@ DBM_CORE_AUTO_YELL_OPTION_TEXT = {
 	fade			= "Yell (with countdown and spell name) when $spell:%s is fading",
 	shortfade		= "Yell (with countdown) when $spell:%s is fading",
 	iconfade		= "Yell (with countdown and icon) when $spell:%s is fading",
-	position		= "Yell (with position) when you are affected by $spell:%s"
+	position		= "Yell (with position) when you are affected by $spell:%s",
+	combo			= "Yell (with custom text) when you are affected by $spell:%s and other spells at same time"
 }
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT = {
 	shortyell		= "%s",
@@ -470,7 +471,8 @@ DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT = {
 	fade			= "%s fading in %%d",
 	shortfade		= "%%d",
 	iconfade		= "{rt%%2$d}%%1$d",
-	position 		= "%s %%s on {rt%%d}"..UnitName("player").."{rt%%d}"
+	position 		= "%s %%s on {rt%%d}"..UnitName("player").."{rt%%d}",
+	combo			= "%s + %s"
 }
 DBM_CORE_AUTO_YELL_CUSTOM_POSITION		= "{rt%d}%s{rt%d}"--Doesn't need translating. Has no strings
 DBM_CORE_AUTO_YELL_CUSTOM_POSITION2		= "{rt%d}{rt%d}%s{rt%d}{rt%d}"--Doesn't need translating. Has no strings
