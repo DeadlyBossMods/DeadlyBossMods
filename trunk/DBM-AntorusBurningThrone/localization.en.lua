@@ -129,10 +129,6 @@ L:SetMiscLocalization({
 ---------------------------
 L= DBM:GetModLocalization(2031)
 
-L:SetOptionLocalization({
-	DoCustomYells	= "Do custom repeating yells when affected by $spell:257931 and something else at same time"
-})
-
 L:SetMiscLocalization({
 	SeaText		=	"{rt6} Haste/Vers",
 	SkyText		=	"{rt5} Crit/Mast"
