@@ -111,8 +111,10 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(2031)
 
 L:SetMiscLocalization({
-	SeaText =		"{rt6}加速臨機",
-	SkyText =		"{rt5}爆擊精通"
+	SeaText =	"{rt6}加速臨機",
+	SkyText =	"{rt5}爆擊精通",
+	Blight	=	"靈魂之疫",
+	Burst	=	"靈魂驟發"
 })
 
 -------------
