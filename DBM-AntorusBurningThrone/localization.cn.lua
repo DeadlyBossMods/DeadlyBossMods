@@ -1,7 +1,7 @@
 -- Mini Dragon(projecteurs@gmail.com)
 -- 夏一可
 -- Blizzard Entertainment
--- Last update: 2018/02/02
+-- Last update: 2018/02/14
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -112,10 +112,15 @@ L:SetOptionLocalization({
 ---------------------------
 L= DBM:GetModLocalization(1984)
 
+L:SetOptionLocalization({
+	ignoreThreeTank	= "当用三坦的时候, 过滤掉破坏者和灼热的特殊警告, 倒坦自动取消"
+})
+
 L:SetMiscLocalization({
 	Foe			=	"破坏者",
 	Rend		=	"烈焰撕裂",
-	Tempest 	=	"灼热风暴"
+	Tempest 	=	"灼热风暴",
+	Current		=	"当前:"
 })
 
 ---------------------------
@@ -125,7 +130,9 @@ L= DBM:GetModLocalization(2031)
 
 L:SetMiscLocalization({
 	SeaText =		"{rt6} 急速/全能",
-	SkyText =		"{rt5} 暴击/精通"
+	SkyText =		"{rt5} 暴击/精通",
+	Blight	=		"灵魂凋零宝珠",
+	Burst	=		"灵魂炸弹"
 })
 
 -------------
