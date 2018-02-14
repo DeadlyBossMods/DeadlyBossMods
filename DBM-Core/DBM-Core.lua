@@ -421,10 +421,7 @@ local Ambiguate = Ambiguate
 local C_TimerNewTicker, C_TimerAfter = C_Timer.NewTicker, C_Timer.After
 
 --TODO, remove RegisterAddonMessagePrefix upvalue in 8.x, this is only a temp live/beta work around
-local RegisterAddonMessagePrefix, SendAddonMessage = RegisterAddonMessagePrefix or nil, SendAddonMessage or nil
-if C_ChatInfo then--8.x chat functions moved to C_ChatInfo
-	RegisterAddonMessagePrefix, SendAddonMessage = C_ChatInfo.RegisterAddonMessagePrefix, C_ChatInfo.SendAddonMessage
-end
+local RegisterAddonMessagePrefix, SendAddonMessage = RegisterAddonMessagePrefix or C_ChatInfo.RegisterAddonMessagePrefix, SendAddonMessage or C_ChatInfo.SendAddonMessage
 
 -- for Phanx' Class Colors
 local RAID_CLASS_COLORS = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS
