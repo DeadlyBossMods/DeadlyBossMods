@@ -20,6 +20,7 @@
 ## X-DBM-Mod-MinExpansion: 7
 localization.en.lua
 localization.kr.lua
+localization.cn.lua
 AtalDazar\Alunza.lua
 AtalDazar\Volkaal.lua
 AtalDazar\Rezan.lua
