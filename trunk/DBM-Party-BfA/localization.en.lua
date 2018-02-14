@@ -272,17 +272,17 @@ L:SetGeneralLocalization({
 -- <<<Waycrest Manor>>> --
 -----------------------
 -----------------------
--- Witch Council --
+-- Heartsbane Triad --
 -----------------------
 L= DBM:GetModLocalization(2125)
 
 -----------------------
--- Wicker Goliath --
+-- Soulbound Goliath --
 -----------------------
 L= DBM:GetModLocalization(2126)
 
 -----------------------
--- Gluttony --
+-- Raal the Gluttonous --
 -----------------------
 L= DBM:GetModLocalization(2127)
 
@@ -292,7 +292,7 @@ L= DBM:GetModLocalization(2127)
 L= DBM:GetModLocalization(2128)
 
 -----------------------
--- Drust King --
+-- Gorak Tul --
 -----------------------
 L= DBM:GetModLocalization(2129)
 
