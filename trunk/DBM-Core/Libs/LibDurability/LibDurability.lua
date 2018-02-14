@@ -25,6 +25,11 @@ local next, type, error, tonumber, format, match = next, type, error, tonumber, 
 local Ambiguate, GetTime, GetInventoryItemDurability, IsInGroup, IsInRaid, SendAddonMessage = Ambiguate, GetTime, GetInventoryItemDurability, IsInGroup, IsInRaid, SendAddonMessage
 local pName = UnitName("player")
 
+local RegisterAddonMessagePrefix, SendAddonMessage = RegisterAddonMessagePrefix or nil, SendAddonMessage or nil
+if C_ChatInfo then--8.x chat functions moved to C_ChatInfo
+	RegisterAddonMessagePrefix, SendAddonMessage = C_ChatInfo.RegisterAddonMessagePrefix, C_ChatInfo.SendAddonMessage
+end
+
 local function GetDurability()
 	local curTotal, maxTotal, broken = 0, 0, 0
 	for i = 1, 18 do
