@@ -72,6 +72,7 @@ local berserkTimer						= mod:NewBerserkTimer(600)
 
 --Stages One: Wrath of Aggramar
 local countdownTaeshalachTech			= mod:NewCountdown(61, 244688)
+local countdownFlare					= mod:NewCountdown("Alt15", 245983, "-Tank")
 local countdownWakeofFlame				= mod:NewCountdown("AltTwo24", 244693, "-Tank")
 
 mod:AddSetIconOption("SetIconOnBlaze2", 254452, false)--Both off by default, both conflit with one another
@@ -481,6 +482,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerRavenousBlazeCD:Stop()
 		timerWakeofFlameCD:Stop()
 		timerFlareCD:Stop()
+		countdownFlare:Cancel()
 		countdownWakeofFlame:Cancel()
 		timerTaeshalachTechCD:Stop()
 		countdownTaeshalachTech:Cancel()
@@ -527,10 +529,16 @@ function mod:SPELL_AURA_REMOVED(args)
 		warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(self.vb.phase))
 		if self.vb.phase == 2 then
 			warnPhase:Play("ptwo")
-			timerFlareCD:Start(10)
+			timerFlareCD:Start(self:IsMythic() and 8 or 10)
+			if self:IsMythic() then
+				countdownFlare:Start(8)
+			end
 		elseif self.vb.phase == 3 then
 			warnPhase:Play("pthree")
-			timerFlareCD:Start(10)
+			timerFlareCD:Start(self:IsMythic() and 8 or 10)
+			if self:IsMythic() then
+				countdownFlare:Start(8)
+			end
 		end
 		if self.Options.RangeFrame and not self:IsTank() then
 			DBM.RangeCheck:Show(6)
@@ -587,6 +595,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, _, spellId)
 		timerRavenousBlazeCD:Stop()
 		timerWakeofFlameCD:Stop()
 		timerFlareCD:Stop()
+		countdownFlare:Cancel()
 		countdownWakeofFlame:Cancel()
 		warnTaeshalachTech:Show(self.vb.techCount)
 		if self:IsMythic() then
@@ -618,7 +627,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, _, spellId)
 	elseif spellId == 244792 and self.vb.techActive then--Burning Will of Taeshalach (technique ended)
 		self.vb.techActive = false
 		if self:IsMythic() then
-			timerRavenousBlazeCD:Start(4.2)
+			timerRavenousBlazeCD:Start(self.vb.phase == 1 and 4.2 or 21.3)
 		else
 			timerScorchingBlazeCD:Start(4.2)
 		end
@@ -631,9 +640,15 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, _, spellId)
 				countdownWakeofFlame:Start(7)
 			end
 		elseif self.vb.phase == 2 then
-			timerFlareCD:Start(8.6)--Might be wrong here
+			timerFlareCD:Start(self:IsMythic() and 6.6 or 8.6)
+			if self:IsMythic() then
+				countdownFlare:Start(6.6)
+			end
 		else--Stage 3
-			timerFlareCD:Start(10)--Might be wrong here
+			timerFlareCD:Start(self:IsMythic() and 8 or 10)
+			if self:IsMythic() then
+				countdownFlare:Start(8)
+			end
 		end
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:Hide()
@@ -643,6 +658,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, _, spellId)
 		specWarnFlare:Play("watchstep")
 		if not self:IsMythic() then
 			timerFlareCD:Start()
+			--No countdown on non mythic on purpose
 		end
 	end
 end
