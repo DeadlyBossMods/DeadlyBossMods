@@ -597,7 +597,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, _, spellId)
 		timerFlareCD:Stop()
 		countdownFlare:Cancel()
 		countdownWakeofFlame:Cancel()
-		warnTaeshalachTech:Show(self.vb.techCount)
 		if self:IsMythic() then
 			--Reset combo and tech count if needed
 			if self.vb.techCount == 5 then
@@ -618,6 +617,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, _, spellId)
 				timerTempestCD:Start(15)
 			end
 		end
+		warnTaeshalachTech:Show(self.vb.techCount)
 		timerTaeshalachTechCD:Start(nil, self.vb.techCount+1)
 		countdownTaeshalachTech:Start()
 		if self.Options.InfoFrame then
