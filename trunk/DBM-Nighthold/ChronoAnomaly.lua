@@ -37,8 +37,7 @@ local specWarnPowerOverwhelming		= mod:NewSpecialWarningSpell(211927, nil, nil, 
 local specWarnTimeBomb				= mod:NewSpecialWarningMoveAway(206617, nil, nil, 2, 3, 2)--When close to expiring, not right away
 local yellTimeBomb					= mod:NewFadesYell(206617)
 local specWarnWarp					= mod:NewSpecialWarningInterrupt(207228, "HasInterrupt", nil, nil, 1, 2)
-local specWarnBigAdd				= mod:NewSpecialWarningSwitch(206700, "-Healer", nil, nil, 1, 2)--Switch to waning time particle when section info known
-local specWarnSmallAdd				= mod:NewSpecialWarningSwitch(206699, "Tank", nil, nil, 1, 2)
+local specWarnBigAdd				= mod:NewSpecialWarningSwitch("ej13022", "-Healer", nil, nil, 1, 2)--Switch to waning time particle when section info known
 
 local timerTemporalOrbsCD			= mod:NewNextCountTimer(30, 219815, nil, nil, nil, 2)
 local timerPowerOverwhelmingCD		= mod:NewNextCountTimer(60, 211927, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
@@ -460,9 +459,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		updateTimeBomb(self)
 		self:Schedule(2, updateTimeBomb, self)
 		self:Schedule(5, updateTimeBomb, self)
-	elseif spellId == 206699 then--Summon Haste Add (Small Adds)
-		specWarnSmallAdd:Show()
-		specWarnSmallAdd:Play("mobsoon")
 	elseif spellId == 206700 then--Summon Slow Add (Big Adds)
 		specWarnBigAdd:Show()
 		specWarnBigAdd:Play("bigmobsoon")
