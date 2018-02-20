@@ -172,8 +172,8 @@ mod.vb.scytheCastCount = 0
 mod.vb.firstscytheSwap = false
 --P3 Mythic Timers
 local torturedRage = {40, 40, 50, 30, 35, 10, 8, 35, 10, 8, 35}--3 timers from method video not logs, verify by logs to improve accuracy
-local sargSentence = {53, 56.9, 60, 53, 53}--1 timer from method video not logs, verify by logs to improve accuracy
-local apocModule = {31, 47, 48.2, 46.6, 53, 53}--Some variation detected in logs do to delay in combat log between spawn and cast (one timer from method video)
+local sargSentenceTimers = {53, 56.9, 60, 53, 53}--1 timer from method video not logs, verify by logs to improve accuracy
+local apocModuleTimers = {31, 47, 48.2, 46.6, 53, 53}--Some variation detected in logs do to delay in combat log between spawn and cast (one timer from method video)
 local sargGaze = {23, 75, 70, 53, 53}--1 timer from method video not logs, verify by logs to improve accuracy
 local edgeofAnni = {5, 5, 90, 5, 45, 5}--All timers from method video (6:05 P3 start, 6:10, 6:15, 7:45, 7:50, 8:35, 8:40)
 --Both of these should be in fearCheck object for efficiency but with uncertainty of async, I don't want to come back and fix this later. Doing it this way ensures without a doubt it'll work by calling on load and again on combatstart
@@ -220,7 +220,7 @@ end
 local function checkForMissingSentence(self)
 	self:Unschedule(checkForMissingSentence)
 	self.vb.sentenceCount = self.vb.sentenceCount + 1
-	local timer = sargSentence[self.vb.sentenceCount+1]
+	local timer = sargSentenceTimers[self.vb.sentenceCount+1]
 	if timer then
 		timerSargSentenceCD:Start(timer-10, self.vb.sentenceCount+1)--Timer minus 10 or next expected sentence cast
 		self:Schedule(timer, checkForMissingSentence, self)--10 seconds after expected sentence cast
@@ -399,7 +399,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.moduleCount = self.vb.moduleCount + 1
 		specWarnApocModule:Show(self.vb.moduleCount)
 		specWarnApocModule:Play("killmob")
-		local timer = apocModule[self.vb.moduleCount+1] or 46.6
+		local timer = apocModuleTimers[self.vb.moduleCount+1] or 46.6
 		timerReorgModuleCD:Start(timer, self.vb.moduleCount+1)
 		countdownReorgModule:Start(timer)
 	end
@@ -605,7 +605,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self:AntiSpam(5, 6) then
 			self:Unschedule(checkForMissingSentence)
 			self.vb.sentenceCount = self.vb.sentenceCount + 1
-			local timer = sargSentence[self.vb.sentenceCount+1]
+			local timer = sargSentenceTimers[self.vb.sentenceCount+1]
 			if timer then
 				timerSargSentenceCD:Start(timer, self.vb.sentenceCount+1)
 				self:Schedule(timer+10, checkForMissingSentence, self)--Check for missing sentence event 10 seconds after expected to recover timer if all immuned
