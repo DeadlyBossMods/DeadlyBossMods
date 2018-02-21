@@ -417,7 +417,12 @@ function mod:SPELL_AURA_APPLIED(args)
 					specWarnSweepingScythe:Show(amount)
 					specWarnSweepingScythe:Play("stackhigh")
 				else--Taunt as soon as stacks are clear, regardless of stack count.
-					if not UnitIsDeadOrGhost("player") and not UnitDebuff("player", args.spellName) then
+					local _, _, _, _, _, _, expireTime = UnitDebuff("player", args.spellName)
+					local remaining
+					if expireTime then
+						remaining = expireTime-GetTime()
+					end
+					if not UnitIsDeadOrGhost("player") and (not remaining or remaining and remaining < 5.6) then
 						specWarnSweepingScytheTaunt:Show(args.destName)
 						specWarnSweepingScytheTaunt:Play("tauntboss")
 					else
