@@ -22,6 +22,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_INTERRUPT",
 	"SPELL_PERIODIC_DAMAGE 248167",
 	"SPELL_PERIODIC_MISSED 248167",
+	"CHAT_MSG_RAID_BOSS_EMOTE",
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5"
 )
 
@@ -176,7 +177,7 @@ mod.vb.firstscytheSwap = false
 local torturedRage = {40, 40, 50, 30, 35, 10, 8, 35, 10, 8, 35}--3 timers from method video not logs, verify by logs to improve accuracy
 local sargSentenceTimers = {53, 56.9, 60, 53, 53}--1 timer from method video not logs, verify by logs to improve accuracy
 local apocModuleTimers = {31, 47, 48.2, 46.6, 53, 53}--Some variation detected in logs do to delay in combat log between spawn and cast (one timer from method video)
-local sargGaze = {23, 75, 70, 53, 53}--1 timer from method video not logs, verify by logs to improve accuracy
+local sargGazeTimers = {23, 75, 70, 53, 53}--1 timer from method video not logs, verify by logs to improve accuracy
 local edgeofAnni = {5, 5, 90, 5, 45, 5}--All timers from method video (6:05 P3 start, 6:10, 6:15, 7:45, 7:50, 8:35, 8:40)
 --Both of these should be in fearCheck object for efficiency but with uncertainty of async, I don't want to come back and fix this later. Doing it this way ensures without a doubt it'll work by calling on load and again on combatstart
 local bombShortName, chainsShortName = DBM:GetSpellInfo(155188), DBM:GetSpellInfo(241803)
@@ -762,6 +763,25 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spell
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
+function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
+	if msg:find("spell:258068") then
+		self.vb.gazeCount = self.vb.gazeCount + 1
+		if self.vb.phase == 2 then
+			timerSargGazeCD:Start(60, self.vb.gazeCount+1)
+			countdownSargGaze:Start(60)
+		elseif self.vb.phase == 3 then
+			local timer = sargGazeTimers[self.vb.gazeCount+1]
+			if timer then
+				timerSargGazeCD:Start(timer, self.vb.gazeCount+1)
+				countdownSargGaze:Start(timer)
+			end
+		else--Stage 1
+			timerSargGazeCD:Start(35.2, self.vb.gazeCount+1)
+			countdownSargGaze:Start(35.2)
+		end
+	end
+end
+
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, _, spellId)
 	if spellId == 257300 and self:AntiSpam(5, 1) then--Ember of Rage
 		specWarnEmberofRage:Show()
@@ -784,21 +804,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, _, spellId)
 			if self.Options.InfoFrame then
 				DBM.InfoFrame:Hide()
 			end
-		end
-	elseif spellId == 258068 then--Sargeras' Gaze
-		self.vb.gazeCount = self.vb.gazeCount + 1
-		if self.vb.phase == 2 then
-			timerSargGazeCD:Start(60, self.vb.gazeCount+1)
-			countdownSargGaze:Start(60)
-		elseif self.vb.phase == 3 then
-			local timer = sargGaze[self.vb.gazeCount+1]
-			if timer then
-				timerSargGazeCD:Start(timer, self.vb.gazeCount+1)
-				countdownSargGaze:Start(timer)
-			end
-		else--Stage 1
-			timerSargGazeCD:Start(35.2, self.vb.gazeCount+1)
-			countdownSargGaze:Start(35.2)
 		end
 	end
 end
