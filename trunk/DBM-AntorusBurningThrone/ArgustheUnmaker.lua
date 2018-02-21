@@ -74,9 +74,9 @@ local specWarnGiftofSky				= mod:NewSpecialWarningYou(258646, nil, nil, nil, 1, 
 local yellGiftofSky					= mod:NewPosYell(258646, L.SkyText)
 --Mythic P1
 local specWarnSargRage				= mod:NewSpecialWarningMoveAway(257869, nil, nil, nil, 3, 2)
-local yellSargRage					= mod:NewYell(257869, 6612)
+local yellSargRage					= mod:NewShortYell(257869, 6612)
 local specWarnSargFear				= mod:NewSpecialWarningMoveTo(257931, nil, nil, nil, 3, 2)
-local yellSargFear					= mod:NewYell(257931, 5782)
+local yellSargFear					= mod:NewShortYell(257931, 5782)
 local yellSargFearCombo				= mod:NewComboYell(257931, 5782)
 local specWarnGTFO					= mod:NewSpecialWarningGTFO(248167, nil, nil, nil, 1, 2)
 --Stage Two: The Protector Redeemed
@@ -94,7 +94,7 @@ local specWarnCosmicRay				= mod:NewSpecialWarningYou(252729, nil, nil, nil, 1, 
 local yellCosmicRay					= mod:NewYell(252729)
 --Stage Three Mythic
 local specWarnSargSentence			= mod:NewSpecialWarningYou(257966, nil, nil, nil, 1, 2)
-local yellSargSentence				= mod:NewYell(257966, 241803)
+local yellSargSentence				= mod:NewShortYell(257966, 241803)
 local yellSargSentenceFades			= mod:NewShortFadesYell(257966, 241803)
 local specWarnApocModule			= mod:NewSpecialWarningSwitchCount(258029, "Dps", nil, nil, 3, 2)--EVERYONE
 local specWarnEdgeofAnni			= mod:NewSpecialWarningDodge(258834, nil, nil, nil, 2, 2)
