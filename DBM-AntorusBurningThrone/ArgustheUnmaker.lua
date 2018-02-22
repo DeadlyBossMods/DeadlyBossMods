@@ -94,8 +94,8 @@ local specWarnCosmicRay				= mod:NewSpecialWarningYou(252729, nil, nil, nil, 1, 
 local yellCosmicRay					= mod:NewYell(252729)
 --Stage Three Mythic
 local specWarnSargSentence			= mod:NewSpecialWarningYou(257966, nil, nil, nil, 1, 2)
-local yellSargSentence				= mod:NewShortYell(257966, 241803)
-local yellSargSentenceFades			= mod:NewShortFadesYell(257966, 241803)
+local yellSargSentence				= mod:NewShortYell(257966, L.Sentence)
+local yellSargSentenceFades			= mod:NewShortFadesYell(257966)
 local specWarnApocModule			= mod:NewSpecialWarningSwitchCount(258029, "Dps", nil, nil, 3, 2)--EVERYONE
 local specWarnEdgeofAnni			= mod:NewSpecialWarningDodge(258834, nil, nil, nil, 2, 2)
 local specWarnSoulrendingScythe		= mod:NewSpecialWarningStack(258838, nil, 2, nil, nil, 1, 2)
@@ -180,7 +180,6 @@ local apocModuleTimers = {31, 47, 48.2, 46.6, 53, 53}--Some variation detected i
 local sargGazeTimers = {23, 75, 70, 53, 53}--1 timer from method video not logs, verify by logs to improve accuracy
 local edgeofAnni = {5, 5, 90, 5, 45, 5}--All timers from method video (6:05 P3 start, 6:10, 6:15, 7:45, 7:50, 8:35, 8:40)
 --Both of these should be in fearCheck object for efficiency but with uncertainty of async, I don't want to come back and fix this later. Doing it this way ensures without a doubt it'll work by calling on load and again on combatstart
-local bombShortName, chainsShortName = DBM:GetSpellInfo(155188), DBM:GetSpellInfo(241803)
 local soulBurst, soulBomb, sargSentence, soulBlight, sargFear = DBM:GetSpellInfo(250669), DBM:GetSpellInfo(251570), DBM:GetSpellInfo(257966), DBM:GetSpellInfo(248396), DBM:GetSpellInfo(257931)
 
 local function fearCheck(self)
@@ -191,10 +190,10 @@ local function fearCheck(self)
 			yellSargFearCombo:Yell(L.Burst)
 			comboActive = true
 		elseif UnitDebuff("player", soulBomb) then
-			yellSargFearCombo:Yell(bombShortName)
+			yellSargFearCombo:Yell(L.Bomb)
 			comboActive = true
 		elseif UnitDebuff("player", sargSentence) then
-			yellSargFearCombo:Yell(chainsShortName)
+			yellSargFearCombo:Yell(L.Sentence)
 			comboActive = true
 		elseif UnitDebuff("player", soulBlight) then
 			yellSargFearCombo:Yell(L.Blight)
@@ -238,7 +237,6 @@ end
 
 function mod:OnCombatStart(delay)
 	avatarOfAggramar, aggramarsBoon = DBM:GetSpellInfo(255199), DBM:GetSpellInfo(255200)
-	bombShortName, chainsShortName = DBM:GetSpellInfo(155188), DBM:GetSpellInfo(241803)
 	soulBurst, soulBomb, sargSentence, soulBlight, sargFear = DBM:GetSpellInfo(250669), DBM:GetSpellInfo(251570), DBM:GetSpellInfo(257966), DBM:GetSpellInfo(248396), DBM:GetSpellInfo(257931)
 	playerAvatar = false
 	self.vb.phase = 1
@@ -504,7 +502,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnSoulbomb:Show()
 			specWarnSoulbomb:Play("targetyou")--Would be better if bombrun was "bomb on you" and not "bomb on you, run". Since Don't want to give misinformation, generic it is
 			self:Schedule(self:IsMythic() and 5 or 8, delayedBoonCheck, self)
-			yellSoulbomb:Yell(2, bombShortName, 2)
+			yellSoulbomb:Yell(2, L.Bomb, 2)
 			yellSoulbombFades:Countdown(self:IsMythic() and 12 or 15, nil, 2)
 			fearCheck(self)
 		elseif playerAvatar then
