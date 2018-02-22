@@ -325,17 +325,17 @@ function mod:SPELL_CAST_START(args)
 		timerSargGazeCD:Stop()
 		countdownSargGaze:Cancel()
 		timerNextPhase:Start(16)
-		timerSweepingScytheCD:Start(17.3, 1)
-		countdownSweapingScythe:Start(17.3)
+		timerSweepingScytheCD:Start(16.8, 1)
+		countdownSweapingScythe:Start(16.8)
 		timerAvatarofAggraCD:Start(20.9)
 		timerEdgeofObliterationCD:Start(21, 1)
-		timerSoulBombCD:Start(30.8)
-		countdownSoulbomb:Start(30.8)
-		timerSoulBurstCD:Start(30.8, 1)
+		timerSoulBombCD:Start(30.3)
+		countdownSoulbomb:Start(30.3)
+		timerSoulBurstCD:Start(30.3, 1)
 		if self:IsMythic() then
 			self.vb.gazeCount = 0
-			timerSargGazeCD:Start(28.4, 1)
-			countdownSargGaze:Start(28.4)
+			timerSargGazeCD:Start(27.2, 1)
+			countdownSargGaze:Start(27.2)
 		end
 	elseif spellId == 257645 then--Temporal Blast (Stage 3)
 		timerAvatarofAggraCD:Stop()--Always cancel this here, it's not canceled by argus becoming inactive and can still be cast during argus inactive transition phase
@@ -767,8 +767,8 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	if msg:find("spell:258068") then
 		self.vb.gazeCount = self.vb.gazeCount + 1
 		if self.vb.phase == 2 then
-			timerSargGazeCD:Start(60, self.vb.gazeCount+1)
-			countdownSargGaze:Start(60)
+			timerSargGazeCD:Start(59.7, self.vb.gazeCount+1)
+			countdownSargGaze:Start(59.7)
 		elseif self.vb.phase == 3 then
 			local timer = sargGazeTimers[self.vb.gazeCount+1]
 			if timer then
