@@ -129,6 +129,14 @@ L:SetMiscLocalization({
 ---------------------------
 L= DBM:GetModLocalization(2031)
 
+L:SetTimerLocalization({
+	timerSargSentenceCD	= "Sentence CD (%s)"
+})
+
+L:SetOptionLocalization({
+	timerSargSentenceCD		=	DBM_CORE_AUTO_TIMER_OPTIONS["cdcount"]:format(257966)
+})
+
 L:SetMiscLocalization({
 	SeaText		=	"{rt6} Haste/Vers",
 	SkyText		=	"{rt5} Crit/Mast",
