@@ -114,7 +114,9 @@ L:SetMiscLocalization({
 	SeaText =	"{rt6}加速臨機",
 	SkyText =	"{rt5}爆擊精通",
 	Blight	=	"靈魂之疫",
-	Burst	=	"靈魂驟發"
+	Burst	=	"靈魂驟發",
+	Sentence	=	"薩格拉斯的判決",
+	Bomb	=	"靈魂炸彈"
 })
 
 -------------
