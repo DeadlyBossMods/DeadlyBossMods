@@ -113,7 +113,7 @@ local timerSweepingScytheCD			= mod:NewCDCountTimer(5.6, 248499, nil, "Tank", ni
 local timerConeofDeathCD			= mod:NewCDCountTimer(19.4, 248165, nil, nil, nil, 3)--19.4-24
 local timerBlightOrbCD				= mod:NewCDCountTimer(22, 248317, nil, nil, nil, 3)--22-32
 local timerTorturedRageCD			= mod:NewCDCountTimer(13, 257296, nil, nil, nil, 2, nil, DBM_CORE_HEALER_ICON)--13-16
-local timerSkyandSeaCD				= mod:NewCDCountTimer(25.1, 255594, nil, nil, nil, 5)--25.1-27.8
+local timerSkyandSeaCD				= mod:NewCDCountTimer(24.9, 255594, nil, nil, nil, 5)--24.9-27.8
 mod:AddTimerLine(ENCOUNTER_JOURNAL_SECTION_FLAG12)--Mythic Stage 1
 local timerSargGazeCD				= mod:NewCDCountTimer(35.2, 258068, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
 --Stage Two: The Protector Redeemed
@@ -521,9 +521,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			timerSoulBurstCD:Start(80, 1)
 		else
 			timerSoulBurstCD:Start(19.8, 2)
-			timerSoulBombCD:Start(42)
-			countdownSoulbomb:Start(42)
-			timerSoulBurstCD:Start(42, 1)
+			timerSoulBombCD:Start(41.3)
+			countdownSoulbomb:Start(41.3)
+			timerSoulBurstCD:Start(41.3, 1)
 		end
 	elseif spellId == 255199 then
 		if self.vb.phase == 2 then--Sometime gets cast once in p3, don't want to start timer if it does
@@ -722,8 +722,8 @@ function mod:SPELL_INTERRUPT(args)
 			timerSoulrendingScytheCD:Start(3.5)
 			timerEdgeofAnniCD:Start(5, 1)
 			self:Schedule(5, startAnnihilationStuff, self)
-			timerSargGazeCD:Start(23, 1)
-			countdownSargGaze:Start(23)
+			timerSargGazeCD:Start(20.2, 1)
+			countdownSargGaze:Start(20.2)
 			timerReorgModuleCD:Start(31.3, 1)
 			countdownReorgModule:Start(31.3)
 			timerTorturedRageCD:Start(40, 1)
