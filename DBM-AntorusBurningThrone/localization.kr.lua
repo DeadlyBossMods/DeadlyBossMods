@@ -119,11 +119,21 @@ L:SetMiscLocalization({
 ---------------------------
 L= DBM:GetModLocalization(2031)
 
+L:SetTimerLocalization({
+	timerSargSentenceCD	= "선고 쿨타임 (%s)"
+})
+
+L:SetOptionLocalization({
+	timerSargSentenceCD		=	DBM_CORE_AUTO_TIMER_OPTIONS["cdcount"]:format(257966)
+})
+
 L:SetMiscLocalization({
-	SeaText =		"{rt6} 가속/유연",
-	SkyText =		"{rt5} 치명/특화",
-	Blight	=		"역병",--Does not auto localize correctly
-	Burst	=   	"분출"
+	SeaText		=	"{rt6} 가속/유연",
+	SkyText		=	"{rt5} 치명/특화",
+	Blight		=	"역병",
+	Burst		=   	"분출",
+	Sentence	=	"선고",
+	Bomb		=	"폭탄"
 })
 
 -------------
