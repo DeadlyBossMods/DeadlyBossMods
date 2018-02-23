@@ -12,8 +12,6 @@
 ## X-DBM-Mod-Category: BFA
 ## X-DBM-Mod-Has-Single-Format: 1
 ## X-DBM-Mod-World-Boss: 1
-## X-DBM-Mod-Name: Zandalar
-## X-DBM-Mod-Name-koKR: 잔달라
 ## X-DBM-Mod-Sort: 410
 ## X-DBM-Mod-MapID: 1642
 ## X-DBM-Mod-LoadCID: 132701,132253
