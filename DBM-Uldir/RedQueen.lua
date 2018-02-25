@@ -3,7 +3,7 @@ local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 --mod:SetCreatureID(122104)
---mod:SetEncounterID(2064)
+mod:SetEncounterID(2141)
 --mod:DisableESCombatDetection()
 mod:SetZone()
 --mod:SetBossHPInfoToHighest()
