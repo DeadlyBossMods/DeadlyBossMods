@@ -9960,6 +9960,11 @@ do
 	function bossModPrototype:NewTimer(timer, name, icon, optionDefault, optionName, colorType, inlineIcon, r, g, b)
 		if r and type(r) == "string" then
 			DBM:Debug("r probably has inline icon in it and needs to be fixed"..r)
+			r = nil--Fix it for users
+		end
+		if inlineIcon and type(inlineIcon) == "number" then
+			DBM:Debug("spellID texture path is in inlineIcon field and needs to be fixed"..inlineIcon)
+			inlineIcon = nil--Fix it for users
 		end
 		local icon = (type(icon) == "string" and icon:match("ej%d+") and select(4, DBM:EJ_GetSectionInfo(string.sub(icon, 3))) ~= "" and select(4, DBM:EJ_GetSectionInfo(string.sub(icon, 3)))) or (type(icon) == "number" and GetSpellTexture(icon)) or icon or "Interface\\Icons\\Spell_Nature_WispSplode"
 		local obj = setmetatable(
