@@ -6082,7 +6082,7 @@ end
 function DBM:GetSpellInfo(spellId)
 	local name, rank, icon, castingTime, minRange, maxRange, returnedSpellId = GetSpellInfo(spellId)
 	if not returnedSpellId then--Bad request all together
-		DBM:Debug("Invalid call to GetSpellInfo for spellID: "..spellId)
+		DBM:Debug("|cffff0000Invalid call to GetSpellInfo for spellID: |r"..spellId)
 		return nil
 	elseif not name or name == "" then--7.3.5 PTR returned blank/nil name, name not yet cached and will only be available after next SPELL_NAME_UPDATE event
 		return "ReloadUI To Fix", rank, icon, castingTime, minRange, maxRange, returnedSpellId
@@ -8756,7 +8756,7 @@ do
 			if timer <= count then count = floor(timer) end
 			if DBM.Options.DontPlayCountdowns then return end
 			if not path1 or not path2 or not path3 then
-				DBM:Debug("Voice cache not built at time of countdownProtoType:Start. On fly caching.")
+				DBM:Debug("Voice cache not built at time of countdownProtoType:Start. On fly caching.", 3)
 				DBM:BuildVoiceCountdownCache()
 			end
 			local voice, maxCount, path
@@ -9963,11 +9963,11 @@ do
 
 	function bossModPrototype:NewTimer(timer, name, icon, optionDefault, optionName, colorType, inlineIcon, r, g, b)
 		if r and type(r) == "string" then
-			DBM:Debug("r probably has inline icon in it and needs to be fixed"..r)
+			DBM:Debug("|cffff0000r probably has inline icon in it and needs to be fixed for |r"..name..r)
 			r = nil--Fix it for users
 		end
 		if inlineIcon and type(inlineIcon) == "number" then
-			DBM:Debug("spellID texture path is in inlineIcon field and needs to be fixed"..inlineIcon)
+			DBM:Debug("|cffff0000spellID texture path is in inlineIcon field and needs to be fixed for |r"..inlineIcon)
 			inlineIcon = nil--Fix it for users
 		end
 		local icon = (type(icon) == "string" and icon:match("ej%d+") and select(4, DBM:EJ_GetSectionInfo(string.sub(icon, 3))) ~= "" and select(4, DBM:EJ_GetSectionInfo(string.sub(icon, 3)))) or (type(icon) == "number" and GetSpellTexture(icon)) or icon or "Interface\\Icons\\Spell_Nature_WispSplode"
@@ -9996,11 +9996,11 @@ do
 	-- note that the function might look unclear because it needs to handle different timer types, especially achievement timers need special treatment
 	local function newTimer(self, timerType, timer, spellId, timerText, optionDefault, optionName, colorType, texture, inlineIcon, r, g, b)
 		if type(timer) == "string" and timer:match("OptionVersion") then
-			DBM:Debug("OptionVersion hack depricated, remove it from: "..spellId)
+			DBM:Debug("|cffff0000OptionVersion hack depricated, remove it from: |r"..spellId)
 			return
 		end
 		if type(colorType) == "number" and colorType > 6 then
-			DBM:Debug("texture is in the colorType arg for: "..spellId)
+			DBM:Debug("|cffff0000texture is in the colorType arg for: |r"..spellId)
 		end
 		--Use option optionName for optionVersion as well, no reason to split.
 		--This ensures that remaining arg positions match for auto generated and regular NewTimer
@@ -10179,7 +10179,7 @@ do
 		if Name and Name ~= "ReloadUI To Fix" then
 			spellName = Name--Pull from name stored in object
 		elseif spellId then
-			DBM:Debug("GetLocalizedTimerText fallback, this should not happen and is a bug. this fallback should be deleted if this message is never seen after async code is live")
+			DBM:Debug("|cffff0000GetLocalizedTimerText fallback, this should not happen and is a bug. this fallback should be deleted if this message is never seen after async code is live|r")
 			if timerType == "achievement" then
 				spellName = select(2, GetAchievementInfo(spellId))
 			elseif type(spellId) == "string" and spellId:match("ej%d+") then
@@ -10781,7 +10781,7 @@ do
 		end
 		self:UnscheduleMethod("SetIcon", target)
 		if type(icon) ~= "number" or type(target) ~= "string" then--icon/target probably backwards.
-			DBM:Debug("SetIcon is being used impropperly. Check icon/target order")
+			DBM:Debug("|cffff0000SetIcon is being used impropperly. Check icon/target order|r")
 			return--Fail silently instead of spamming icon lua errors if we screw up
 		end
 		icon = icon and icon >= 0 and icon <= 8 and icon or 8
@@ -10823,7 +10823,7 @@ do
 			for i = 1, #iconSortTable do
 				local target = iconSortTable[i]
 				if i > 8 then 
-					DBM:Debug("Too many players to set icons, reconsider where using icons", 2)
+					DBM:Debug("|cffff0000Too many players to set icons, reconsider where using icons|r", 2)
 					return
 				end
 				if not self.iconRestore[target] then
