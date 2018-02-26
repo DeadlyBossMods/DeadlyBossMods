@@ -8445,6 +8445,10 @@ do
 			error("NewAnnounce: you must provide announce text", 2)
 			return
 		end
+		if type(optionName) == "number" then
+			DBM:Debug("Non auto localized optionNames cannot be numbers, fix this for "..text)
+			optionName = nil
+		end
 		if soundOption and type(soundOption) == "boolean" then
 			soundOption = 0--No Sound
 		end
