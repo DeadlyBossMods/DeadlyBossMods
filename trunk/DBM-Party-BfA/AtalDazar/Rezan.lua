@@ -11,7 +11,8 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 257407",
 	"SPELL_CAST_START 255371 257407",
-	"SPELL_CAST_SUCCESS 255434"
+	"SPELL_CAST_SUCCESS 255434",
+	"CHAT_MSG_RAID_BOSS_EMOTE"
 )
 
 --TODO, relog fight, when logging fight doesn't cause client to crash, then use real timers not AI timers
@@ -35,7 +36,7 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 257407 then
+	if spellId == 257407 and self:AntiSpam(5, args.destName) then--Backup if CHAT_MSG_RAID_BOSS_EMOTE doesn't work
 		if args:IsPlayer() then
 			specWarnPursuit:Show()
 			specWarnPursuit:Play("justrun")
@@ -63,6 +64,21 @@ function mod:SPELL_CAST_SUCCESS(args)
 		specWarnTeeth:Show()
 		specWarnTeeth:Play("defensive")
 		timerTeethCD:Start()
+	end
+end
+
+--Same time as SPELL_CAST_START but has target information on normal
+function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, targetname)
+	if msg:find("spell:257407") then
+		if targetname and self:AntiSpam(5, targetname) then
+			if targetname == UnitName("player") then
+				specWarnPursuit:Show()
+				specWarnPursuit:Play("justrun")
+				yellPursuit:Yell()
+			else
+				warnPursuit:Show(targetname)
+			end
+		end
 	end
 end
 
