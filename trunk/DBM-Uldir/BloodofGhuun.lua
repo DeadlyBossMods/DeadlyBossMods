@@ -2,7 +2,7 @@ local mod	= DBM:NewMod(2166, "DBM-Uldir", nil, 1031)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
---mod:SetCreatureID(122104)
+mod:SetCreatureID(134442)
 mod:SetEncounterID(2134)
 --mod:DisableESCombatDetection()
 mod:SetZone()

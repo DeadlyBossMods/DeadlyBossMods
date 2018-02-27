@@ -102,7 +102,7 @@ function mod:OnCombatStart(delay)
 	timerVanishCD:Start(8.2-delay)
 	timerCoatCheckCD:Start(33-delay)
 	if self.Options.InfoFrame then
-		DBM.InfoFrame:SetHeader(GetSpellInfo(227909))
+		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(227909))
 		DBM.InfoFrame:Show(5, "function", updateInfoFrame, false, true)
 	end
 end
