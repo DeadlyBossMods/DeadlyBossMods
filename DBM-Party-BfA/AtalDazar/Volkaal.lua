@@ -18,7 +18,7 @@ mod:RegisterEventsInCombat(
 --ability.id = 250258 and type = "begincast" or (ability.id = 250368 or ability.id = 259572 or ability.id = 250241) and type = "cast" or target.id = 125977 and type = "death"
 --TODO, stench says it's interruptable but cannot verify this. When I determine what to do with it, improve warning
 local warnPhase2					= mod:NewPhaseAnnounce(195254, 2, nil, nil, nil, nil, nil, 2)
-local warnTotemsLeft				= mod:NewAddsLeftAnnounce("ej14309", 2, 250192)
+local warnTotemsLeft				= mod:NewAddsLeftAnnounce(250190, 2, 250192)
 local warnNoxiousStench				= mod:NewSpellAnnounce(250368, 3)
 
 local specWarnLeap					= mod:NewSpecialWarningDodge(250258, nil, nil, nil, 2, 2)
