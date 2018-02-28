@@ -38,7 +38,7 @@ KingsRest\Dazar.lua
 KingsRest\KingsRestTrash
 ShrineoftheStorm\Agusirr.lua
 ShrineoftheStorm\TidesageCouncil.lua
-ShrineoftheStorm\Priest.lua
+ShrineoftheStorm\Stormsong.lua
 ShrineoftheStorm\Volzith.lua
 ShrineoftheStorm\SotSTrash.lua
 SiegeofBoralus\Lockwood.lua
