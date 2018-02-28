@@ -8387,6 +8387,9 @@ do
 	end
 
 	function announcePrototype:CombinedShow(delay, ...)
+		if self.option and not self.mod.Options[self.option] then return end
+		if DBM.Options.DontShowBossAnnounces then return end	-- don't show the announces if the spam filter option is set
+		if DBM.Options.DontShowTargetAnnouncements and (self.announceType == "target" or self.announceType == "targetcount") and not self.noFilter then return end--don't show announces that are generic target announces
 		local argTable = {...}
 		for i = 1, #argTable do
 			if type(argTable[i]) == "string" then
@@ -9311,6 +9314,8 @@ do
 	end
 
 	function specialWarningPrototype:CombinedShow(delay, ...)
+		if DBM.Options.DontShowSpecialWarnings then return end
+		if self.option and not self.mod.Options[self.option] then return end
 		local argTable = {...}
 		for i = 1, #argTable do
 			if type(argTable[i]) == "string" then
