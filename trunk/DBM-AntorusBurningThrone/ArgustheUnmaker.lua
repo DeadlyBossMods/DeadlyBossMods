@@ -48,7 +48,7 @@ local warnSargFear					= mod:NewTargetAnnounce(257931, 3)
 --Stage Two: The Protector Redeemed
 local warnSoulburst					= mod:NewTargetAnnounce(250669, 2)
 local warnSoulbomb					= mod:NewTargetAnnounce(251570, 3)
-local warnAvatarofAggra				= mod:NewTargetAnnounce(255199, 1)
+local warnAvatarofAggra				= mod:NewTargetNoFilterAnnounce(255199, 1)
 --Stage Three: The Arcane Masters
 local warnCosmicRay					= mod:NewTargetAnnounce(252729, 3)
 local warnCosmicBeacon				= mod:NewTargetAnnounce(252616, 2)
@@ -332,8 +332,8 @@ function mod:SPELL_CAST_START(args)
 		timerSoulBurstCD:Start(30.3, 1)
 		if self:IsMythic() then
 			self.vb.gazeCount = 0
-			timerSargGazeCD:Start(27.2, 1)
-			countdownSargGaze:Start(27.2)
+			timerSargGazeCD:Start(25.7, 1)
+			countdownSargGaze:Start(25.7)
 		end
 	elseif spellId == 257645 then--Temporal Blast (Stage 3)
 		timerAvatarofAggraCD:Stop()--Always cancel this here, it's not canceled by argus becoming inactive and can still be cast during argus inactive transition phase
