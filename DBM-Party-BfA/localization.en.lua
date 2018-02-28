@@ -110,7 +110,7 @@ L= DBM:GetModLocalization(2153)
 L= DBM:GetModLocalization(2154)
 
 -----------------------
--- Priest --
+-- Lord Stormsong --
 -----------------------
 L= DBM:GetModLocalization(2155)
 
