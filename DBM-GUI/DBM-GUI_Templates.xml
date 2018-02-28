@@ -739,7 +739,7 @@
 			</OnClick>
 		</Scripts>
 		<Frames>
-			<Button name="$parentToggle" inherits="InterfaceOptionsToggleButtonTemplate">
+			<Button name="$parentToggle" inherits="UIPanelButtonTemplate">
 				<Size>
 					<AbsDimension x="14" y="14"/>
 				</Size>
