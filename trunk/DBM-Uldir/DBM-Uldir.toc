@@ -16,7 +16,7 @@
 ## X-DBM-Mod-MinExpansion: 7
 localization.en.lua
 Hezrel.lua
-RedQueen.lua
+Mother.lua
 FetidDevourer.lua
 TitanDiscs.lua
 BloodofGhuun.lua

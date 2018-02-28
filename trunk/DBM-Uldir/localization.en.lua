@@ -18,7 +18,7 @@ L:SetMiscLocalization({
 })
 
 ---------------------------
--- Red Queen --
+-- MOTHER --
 ---------------------------
 L= DBM:GetModLocalization(2167)
 
