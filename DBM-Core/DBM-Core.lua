@@ -8271,8 +8271,7 @@ do
 	-- TODO: is there a good reason that this is a weak table?
 	local cachedColorFunctions = setmetatable({}, {__mode = "kv"})
 	
-	local function setText(announceType, spellId, icon, castTime, preWarnTime)
-		local unparsedId = spellId
+	local function setText(announceType, spellId, castTime, preWarnTime)
 		local spellName
 		if type(spellId) == "string" and spellId:match("ej%d+") then
 			spellId = string.sub(spellId, 3)
@@ -8280,7 +8279,6 @@ do
 		else
 			spellName = DBM:GetSpellInfo(spellId) or DBM_CORE_UNKNOWN
 		end
-		icon = icon or unparsedId
 		local text
 		if announceType == "cast" then
 			local spellHaste = select(4, DBM:GetSpellInfo(53142)) / 10000 -- 53142 = Dalaran Portal, should have 10000 ms cast time
@@ -8329,7 +8327,7 @@ do
 			end
 			--Repair spell name on first announce through cpu inefficient and ugly hack
 			if self.spellName and self.spellName == "ReloadUI To Fix" then
-				self.text, self.spellName = setText(self.announceType, self.spellId, self.icon, self.castTime, self.preWarnTime)
+				self.text, self.spellName = setText(self.announceType, self.spellId, self.castTime, self.preWarnTime)
 			end
 			local message = pformat(self.text, unpack(argTable))
 			local text = ("%s%s%s|r%s"):format(
@@ -8497,6 +8495,7 @@ do
 			return
 		end
 		local text, spellName = setText(announceType, spellId, icon, castTime, preWarnTime)
+		icon = icon or spellId
 		local obj = setmetatable( -- todo: fix duplicate code
 			{
 				text = text,
