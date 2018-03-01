@@ -140,9 +140,9 @@ local berserkTimer					= mod:NewBerserkTimer(600)
 
 --Stage One: Storm and Sky
 local countdownSweapingScythe		= mod:NewCountdown("Alt5", 248499, false, nil, 3)--Off by default since it'd be almost non stop, so users can elect into this one
-local countdownSoulbomb				= mod:NewCountdown("AltTwo50", 251570)
 local countdownSargGaze				= mod:NewCountdown(35, 258068)
 --Stage Two: The Protector Redeemed
+local countdownSoulbomb				= mod:NewCountdown("AltTwo50", 251570)
 
 --Stage Four
 local countdownDeadlyScythe			= mod:NewCountdown("Alt5", 258039, false, nil, 3)--Off by default since it'd be almost non stop, so users can elect into this one
