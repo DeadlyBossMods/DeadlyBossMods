@@ -490,7 +490,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnSoulburst:Play("targetyou")
 			specWarnSoulburst:ScheduleVoice(self:IsMythic() and 7 or 10, "bombnow")
 			yellSoulburst:Yell(icon, L.Burst, icon)
-			yellSoulburstFades:Countdown(self:IsMythic() and 12 or 15, nil, icon)
+			yellSoulburstFades:Countdown(self:IsMythic() and 12 or 15, 5, icon)
 			fearCheck(self)
 		end
 		if self.Options.SetIconOnSoulBurst then
@@ -503,7 +503,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnSoulbomb:Play("targetyou")--Would be better if bombrun was "bomb on you" and not "bomb on you, run". Since Don't want to give misinformation, generic it is
 			self:Schedule(self:IsMythic() and 5 or 8, delayedBoonCheck, self)
 			yellSoulbomb:Yell(2, L.Bomb, 2)
-			yellSoulbombFades:Countdown(self:IsMythic() and 12 or 15, nil, 2)
+			yellSoulbombFades:Countdown(self:IsMythic() and 12 or 15, 5, 2)
 			fearCheck(self)
 		elseif playerAvatar then
 			specWarnSoulbombMoveTo:Show(args.destName)
