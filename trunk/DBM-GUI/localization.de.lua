@@ -303,14 +303,6 @@ L.FakeBW					= "Bei Versionsprüfungen als \"BigWigs\" ausgeben, statt als DBM (
 L.AITimer					= "Erzeuge automatisch Timer für unbekannte Kämpfe mit der in DBM eingebauten Timer-KI (nützlich beim erstmaligen Pullen eines Test-Bosses, etwa auf Beta- oder PTR-Servern) Hinweis: Dies funktioniert nicht richtig bei mehreren Gegnern mit derselben Fähigkeit."
 L.AutoCorrectTimer			= "Korrigiere automatisch zu lange Timer (nützlich für Gilden, die Kämpfe im topaktuellen \"End-Content\" bestreiten, für die noch keine aktualisierten Boss Mods verfügbar sind) Hinweis: Diese Einstellung kann auch einige Timer verschlechtern, falls bei Phasenwechseln, deren Behandlung in DBM bislang noch nicht geeignet programmiert wurde, Timerrücksetzungen stattfinden."
 
-L.PizzaTimer_Headline 		= 'Erstelle einen "Pizza-Timer"'
-L.PizzaTimer_Title			= 'Name (z.B. "Pizza!")'
-L.PizzaTimer_Hours 			= "Stunden"
-L.PizzaTimer_Mins 			= "Min"
-L.PizzaTimer_Secs 			= "Sek"
-L.PizzaTimer_ButtonStart 	= "Starte Timer"
-L.PizzaTimer_BroadCast		= "Anderen Schlachtzugspielern anzeigen"
-
 L.Panel_Profile				= "Profile"
 L.Area_CreateProfile		= "Profilerzeugung für DBM Core Einstellungen"
 L.EnterProfileName			= "Profilnamen eingeben"

@@ -302,14 +302,6 @@ L.FakeBW					= "Camuflar DBM como si fuera BigWigs en comprobaciones de versión
 L.AITimer					= "Generar temporizadores automáticamente para encuentros no vistos anteriormente mediante la IA de temporizadores interna de DBM (útil para probar jefes por primera vez en el RPP). No funciona correctamente en encuentros con múltiples esbirros que comparten la misma facultad."
 L.AutoCorrectTimer			= "Corregir automáticamente temporizadores que son demasiado largos (útil para contenido nuevo para el que DBM todavía no está actualizado). Nota: esta opción puede empeorar algunos temporizadores si el encuentro los reinicia en cambios de fase para los que DBM todavía no está preparado."
 
-L.PizzaTimer_Headline 		= 'Crear una cuenta atrás para la pizza'
-L.PizzaTimer_Title			= 'Nombre (ej. "¡Pizza!")'
-L.PizzaTimer_Hours 			= "Horas"
-L.PizzaTimer_Mins 			= "Min"
-L.PizzaTimer_Secs 			= "Seg"
-L.PizzaTimer_ButtonStart 	= "Iniciar temporizador"
-L.PizzaTimer_BroadCast		= "Transmitir a la banda"
-
 L.Panel_Profile				= "Perfiles"
 L.Area_CreateProfile		= "Creación de perfiles para opciones generales de DBM"
 L.EnterProfileName			= "Nombre del perfil"

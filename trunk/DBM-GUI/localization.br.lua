@@ -267,15 +267,6 @@ L.AutoAcceptGuildInvite		= "Aceitar convites de membros da guilda automaticament
 L.Area_Advanced				= "Opções avançadas"
 L.FakeBW					= "Fingir ser BigWigs em checagens de versão ao invés de ser DBM ( útil para guildas que forçam o uso de BigWigs )"
 
-L.PizzaTimer_Headline 		= 'Criar um "Cronógrafo para Pizza"'
-L.PizzaTimer_Title			= 'Nome (e.g. "Pizza!")'
-L.PizzaTimer_Hours 			= "Horas"
-L.PizzaTimer_Mins 			= "Min"
-L.PizzaTimer_Secs 			= "Seg"
-L.PizzaTimer_ButtonStart 	= "Iniciar cronógrafo"
-L.PizzaTimer_BroadCast		= "Transmitir para raid"
-
-
 L.Panel_Profile				= "Perfil"
 L.Area_CreateProfile		= "Criação de perfil"
 L.EnterProfileName			= "entre com o nome do perfil"

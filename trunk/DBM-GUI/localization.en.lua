@@ -226,6 +226,18 @@ L.BrowseOtherVPs			= "|cFF73C2FBhttps://wow.curseforge.com/search?search=dbm+voi
 L.Area_BrowseOtherCT		= "Browse countdown packs on curse"
 L.BrowseOtherCTs			= "|cFF73C2FBhttps://wow.curseforge.com/search?search=dbm+count+pack|r"
 
+-- Tab: Event Sounds
+L.Panel_EventSounds			= "Event Sounds"
+L.Area_SoundSelection		= "Sound Selections (scroll selection menus with mouse wheel)"
+L.EventVictorySound			= "Set sound played for encounter victory"
+L.EventWipeSound			= "Set sound played for encounter wipe"
+L.EventEngageSound			= "Set sound played for encounter engage"
+L.EventEngageMusic			= "Set music played during encounters"
+L.Area_EventSoundsExtras	= "Event Sound Options"
+L.EventRandomVictory		= "Play Random Victory sounds, instead of chosen"
+L.EventRandomDefeat			= "Play Random Defeat sounds, instead of chosen"
+L.EventRandomMusic			= "Play Random Music, instead of chosen"
+
 -- Tab: Global Filter
 L.Panel_SpamFilter			= "DBM Global Disables & Filters"
 L.Area_SpamFilter_Outgoing	= "DBM Global Disable & Filter Options"
@@ -318,14 +330,6 @@ L.Area_Advanced				= "Advanced Options"
 L.FakeBW					= "Pretend to be BigWigs in version checks instead of DBM (Useful for guilds that force using BigWigs)"
 L.AITimer					= "Automatically generate timers for never before seen fights using DBM's built in timer AI (Useful for pulling a test boss for the very first time such as beta or PTR). Note: This won't work properly for multiple adds with same ability."
 L.AutoCorrectTimer			= "Automatically correct timers that are too long (Useful for guilds pulling cutting edge content that boss mods aren't updated for yet). Note: This option may also make some timers worse if boss resets timers on phase changes that DBM isn't coded to handle properly yet."
-
-L.PizzaTimer_Headline 		= 'Create a "Pizza Timer"'
-L.PizzaTimer_Title			= 'Name (e.g. "Pizza!")'
-L.PizzaTimer_Hours 			= "Hours"
-L.PizzaTimer_Mins 			= "Min"
-L.PizzaTimer_Secs 			= "Sec"
-L.PizzaTimer_ButtonStart 	= "Start timer"
-L.PizzaTimer_BroadCast		= "Broadcast to raid"
 
 L.Panel_Profile				= "Profiles"
 L.Area_CreateProfile		= "Profile Creation for DBM Core Options"

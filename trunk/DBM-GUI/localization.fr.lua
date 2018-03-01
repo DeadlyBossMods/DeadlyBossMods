@@ -291,14 +291,6 @@ L.FakeBW					= "Prétendre être BigWigs lors des vérifications de versions au 
 L.AITimer					= "Utiliser un générateur automatique de timers pour des nouveaux combats utilisant l'IA intégrée de DBM (Utile pout engager les boss jamais vus sur la beta). Note: ceci ne fonctionnera pas correctement s'il y a plusieurs adds avec la même abilité"
 L.AutoCorrectTimer			= "Corriger automatiquement les timers trop longs (Utile pour les guildes sur le contenu haut niveau pour lequel les bossmods ne sont pas encore mis à jour)"
 
-L.PizzaTimer_Headline 		= 'Création d\'un "délai pizza"'
-L.PizzaTimer_Title			= 'Nom (par ex. : "Pizza !")'
-L.PizzaTimer_Hours 			= "Hrs"
-L.PizzaTimer_Mins 			= "Min"
-L.PizzaTimer_Secs 			= "Sec"
-L.PizzaTimer_ButtonStart 	= "Lancer le délai"
-L.PizzaTimer_BroadCast		= "Diffuser au raid"
-
 L.Panel_Profile				= "Profils"
 L.Area_CreateProfile		= "Création de Profil"
 L.EnterProfileName			= "Entrer un nom de profil"

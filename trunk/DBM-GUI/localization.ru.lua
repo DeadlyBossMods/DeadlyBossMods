@@ -299,14 +299,6 @@ L.FakeBW					= "Притворяться BigWigs вместо DBM при при�
 L.AITimer					= "Automatically generate timers for never before seen fights using DBM's built in timer AI (Useful for pulling a test boss for the very first time such as beta or PTR). Note: This won't work properly for multiple adds with same ability."
 L.AutoCorrectTimer			= "Automatically correct timers that are too long (Useful for guilds pulling cutting edge content that boss mods aren't updated for yet). Note: This option may also make some timers worse if boss resets timers on phase changes that DBM isn't coded to handle properly yet."
 
-L.PizzaTimer_Headline 		= 'Создать "Pizza Timer"'
-L.PizzaTimer_Title			= 'Название (например, "Pizza!")'
-L.PizzaTimer_Hours 			= "час."
-L.PizzaTimer_Mins 			= "мин."
-L.PizzaTimer_Secs 			= "сек."
-L.PizzaTimer_ButtonStart 	= "Начать отсчет"
-L.PizzaTimer_BroadCast		= "Транслировать рейду"
-
 L.Panel_Profile				= "Профили"
 L.Area_CreateProfile		= "Создание профиля настроек DBM Core"
 L.EnterProfileName			= "Введите имя профиля"
