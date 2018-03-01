@@ -101,6 +101,13 @@ DBM.DefaultOptions = {
 	ChosenVoicePack = "None",
 	VoiceOverSpecW2 = "DefaultOnly",
 	AlwaysPlayVoice = false,
+	EventVictorySound = "Interface\\AddOns\\DBM-Core\\sounds\\BlakbyrdAlerts\\bbvictory.ogg",
+	EventWipeSound = "None",
+	EventEngageSound = "",
+	EventEngageMusic = "None",
+	EventRandomVictory = false,
+	EventRandomDefeat = false,
+	EventRandomMusic = false,
 	Enabled = true,
 	ShowWarningsInChat = true,
 	ShowSWarningsInChat = true,
@@ -275,6 +282,17 @@ DBM.Counts = {
 	{	text	= "Anshlun (ptBR Male)",value = "Anshlun", path = "Interface\\AddOns\\DBM-Core\\Sounds\\Anshlun\\", max = 10},
 	{	text	= "Neryssa (ptBR Female)",value = "Neryssa", path = "Interface\\AddOns\\DBM-Core\\Sounds\\Neryssa\\", max = 10},
 }
+DBM.Victory = {
+	{text = "None",value  = "None"},
+	{text = "Blakbyrd: FF Victory (NYI)",value = "Interface\\AddOns\\DBM-Core\\sounds\\BlakbyrdAlerts\\bbvictory.ogg",},
+}
+DBM.Defeat = {
+	{text = "None",value  = "None"},
+	{text = "Kologarn: You Fail",value = "Sound\\Creature\\Kologarn\\UR_Kologarn_Slay02.ogg"},
+	{text = "Alizabal: Incompetent Raiders",value = "Sound\\Creature\\ALIZABAL\\VO_BH_ALIZABAL_RESET_01.ogg"},
+	{text = "Hodir: Tragic",value = "Sound\\Creature\\Hodir\\UR_Hodir_Slay01.ogg"},
+}
+DBM.Music = {{text = "None",value  = "None"},}
 
 ------------------------
 -- Global Identifiers --
@@ -1197,6 +1215,48 @@ do
 						local loaded = LoadAddOn(addonName)
 						local voiceGlobal = GetAddOnMetadata(i, "X-DBM-CountPack-GlobalName")
 						local insertFunction = _G[voiceGlobal]
+						if loaded and insertFunction then
+							insertFunction()
+						else
+							DBM:Debug(addonName.." failed to load at time CountPack function ran", 2)
+						end
+					end
+				end
+				if GetAddOnMetadata(i, "X-DBM-VictoryPack") and enabled ~= 0 then
+					if checkEntry(bannedMods, addonName) then
+						AddMsg(self, "The mod " .. addonName .. " is deprecated and will not be available. Please remove the folder " .. addonName .. " from your Interface" .. (IsWindowsClient() and "\\" or "/") .. "AddOns folder to get rid of this message. Check for an updated version of " .. addonName .. " that is compatible with your game version.")
+					else
+						local loaded = LoadAddOn(addonName)
+						local victoryGlobal = GetAddOnMetadata(i, "X-DBM-VictoryPack-GlobalName")
+						local insertFunction = _G[victoryGlobal]
+						if loaded and insertFunction then
+							insertFunction()
+						else
+							DBM:Debug(addonName.." failed to load at time CountPack function ran", 2)
+						end
+					end
+				end
+				if GetAddOnMetadata(i, "X-DBM-DefeatPack") and enabled ~= 0 then
+					if checkEntry(bannedMods, addonName) then
+						AddMsg(self, "The mod " .. addonName .. " is deprecated and will not be available. Please remove the folder " .. addonName .. " from your Interface" .. (IsWindowsClient() and "\\" or "/") .. "AddOns folder to get rid of this message. Check for an updated version of " .. addonName .. " that is compatible with your game version.")
+					else
+						local loaded = LoadAddOn(addonName)
+						local defeatGlobal = GetAddOnMetadata(i, "X-DBM-DefeatPack-GlobalName")
+						local insertFunction = _G[defeatGlobal]
+						if loaded and insertFunction then
+							insertFunction()
+						else
+							DBM:Debug(addonName.." failed to load at time CountPack function ran", 2)
+						end
+					end
+				end
+				if GetAddOnMetadata(i, "X-DBM-MusicPack") and enabled ~= 0 then
+					if checkEntry(bannedMods, addonName) then
+						AddMsg(self, "The mod " .. addonName .. " is deprecated and will not be available. Please remove the folder " .. addonName .. " from your Interface" .. (IsWindowsClient() and "\\" or "/") .. "AddOns folder to get rid of this message. Check for an updated version of " .. addonName .. " that is compatible with your game version.")
+					else
+						local loaded = LoadAddOn(addonName)
+						local musicGlobal = GetAddOnMetadata(i, "X-DBM-MusicPack-GlobalName")
+						local insertFunction = _G[musicGlobal]
 						if loaded and insertFunction then
 							insertFunction()
 						else
@@ -5557,6 +5617,26 @@ do
 				if BigWigs and BigWigs.db.profile.raidicon and not self.Options.DontSetIcons and self:GetRaidRank() > 0 then--Both DBM and bigwigs have raid icon marking turned on.
 					self:AddMsg(DBM_CORE_BIGWIGS_ICON_CONFLICT)--Warn that one of them should be turned off to prevent conflict (which they turn off is obviously up to raid leaders preference, dbm accepts either or turned off to stop this alert)
 				end
+				if self.Options.EventEngageSound and self.Options.EventEngageSound ~= "" and self.Options.EventEngageSound ~= "None" then
+					self:PlaySoundFile(self.Options.EventEngageSound)
+				end
+				if self.Options.EventEngageMusic and self.Options.EventEngageMusic ~= "None" and self.Options.EventEngageMusic ~= "" then
+					self.Options.tempMusicSetting = tonumber(GetCVar("Sound_EnableMusic"))
+					if self.Options.tempMusicSetting == 0 then
+						SetCVar("Sound_EnableMusic", 1)
+					else
+						self.Options.tempMusicSetting = nil--Don't actually need it
+					end
+					local path = "MISSING"
+					if self.Options.EventRandomMusic then
+						local random = fastrandom(2, #DBM.Music)
+						path = DBM.Music[random].value
+					else
+						path = self.Options.EventEngageMusic
+					end
+					PlayMusic(path)
+					DBM:Debug("Starting combat music with file: "..path)
+				end
 			else
 				self:AddMsg(DBM_CORE_COMBAT_STATE_RECOVERED:format(difficultyText..name, strFromTime(delay)))
 				if mod.OnTimerRecovery then
@@ -5720,6 +5800,14 @@ do
 					sendWhisper(k, msg)
 				end
 				fireEvent("wipe", mod)
+				if self.Options.EventWipeSound and self.Options.EventWipeSound ~= "None" and self.Options.EventWipeSound ~= "" then
+					if self.Options.EventRandomDefeat then
+						local random = fastrandom(2, #DBM.Defeat)
+						self:PlaySoundFile(DBM.Defeat[random].value)
+					else
+						self:PlaySoundFile(self.Options.EventWipeSound)
+					end
+				end
 			else
 				mod.lastKillTime = GetTime()
 				local thisTime = GetTime() - (mod.combatInfo.pull or 0)
@@ -5843,6 +5931,14 @@ do
 						end
 					end
 				end
+				if self.Options.EventVictorySound and self.Options.EventVictorySound ~= "" then
+					if self.Options.EventRandomVictory then
+						local random = fastrandom(2, #DBM.Victory)
+						self:PlaySoundFile(DBM.Victory[random].value)
+					else
+						self:PlaySoundFile(self.Options.EventVictorySound)
+					end
+				end
 			end
 			if mod.OnCombatEnd then mod:OnCombatEnd(wipe) end
 			if mod.OnLeavingCombat then delayedFunction = mod.OnLeavingCombat end
@@ -5882,6 +5978,14 @@ do
 				eeSyncReceived = 0
 				targetMonitor = nil
 				self:CreatePizzaTimer(time, "", nil, nil, nil, nil, true)--Auto Terminate infinite loop timers on combat end
+				if self.Options.EventEngageMusic and self.Options.EventEngageMusic ~= "None" then
+					if self.Options.tempMusicSetting then
+						SetCVar("Sound_EnableMusic", self.Options.tempMusicSetting)
+						self.Options.tempMusicSetting = nil
+					end
+					DBM:Debug("Stopping combat music")
+					StopMusic()
+				end
 			end
 		end
 	end
