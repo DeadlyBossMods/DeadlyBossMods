@@ -476,7 +476,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnSoulblight:Show()
 			specWarnSoulblight:Play("runout")
 			yellSoulblight:Yell()
-			yellSoulblightFades:Countdown(8)
+			yellSoulblightFades:Countdown(8, 4)
 			fearCheck(self)
 		end
 	elseif spellId == 250669 then
