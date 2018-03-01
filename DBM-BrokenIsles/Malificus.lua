@@ -30,7 +30,7 @@ local specWarnVirulentInfection		= mod:NewSpecialWarningMove(233850, nil, nil, n
 
 local timerIncitePanicCD			= mod:NewCDTimer(14.6, 233568, nil, nil, nil, 1)
 local timerPestilenceCD				= mod:NewCDTimer(14.2, 233614, nil, nil, nil, 3)
-local timerShadowBarrageCD			= mod:NewCDTimer(17.1, 234452, nil, nil, nil, 2)
+local timerShadowBarrageCD			= mod:NewCDTimer(16.7, 234452, nil, nil, nil, 2)
 
 --mod:AddReadyCheckOption(37460, false)
 mod:AddRangeFrameOption(8, 233568)
