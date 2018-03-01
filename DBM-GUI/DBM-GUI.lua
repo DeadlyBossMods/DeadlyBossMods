@@ -2660,7 +2660,6 @@ local function CreateOptionsMenu()
 			end)
 		end
 
-		-- SpecialWarn Sound Interface\\AddOns\\DBM-Core\\sounds\\ClassicSupport\\incredible.ogg
 		local Sounds = MixinSharedMedia3("sound", {
 			{	text	= L.NoSound,			value	= "" },
 			{	text	= "PvP Flag",			value 	= "Sound\\Spells\\PVPFlagTaken.ogg", 		sound=true },
@@ -3004,6 +3003,47 @@ local function CreateOptionsMenu()
 		
 		spokenAlertsPanel:SetMyOwnHeight()
 	end
+	
+	do
+		local Sounds = MixinSharedMedia3("sound", {
+			{	text	= L.NoSound,						value	= "" },
+			{	text	= "Muradin: Charge",				value 	= "Sound\\Creature\\MuradinBronzebeard\\IC_Muradin_Saurfang02.ogg", 		sound=true },
+		})
+
+		local eventSoundsPanel	 	= DBM_GUI_Frame:CreateNewPanel(L.Panel_EventSounds, "option")
+		local eventSoundsGeneralArea	= eventSoundsPanel:CreateArea(L.Area_SoundSelection, nil, 105, true)
+
+		local VictorySoundDropdown = eventSoundsGeneralArea:CreateDropdown(L.EventVictorySound, DBM.Victory, "DBM", "EventVictorySound", function(value)
+			DBM.Options.EventVictorySound = value
+			DBM:PlaySoundFile(DBM.Options.EventVictorySound)
+		end)
+		VictorySoundDropdown:SetPoint("TOPLEFT", eventSoundsGeneralArea.frame, "TOPLEFT", 0, -20)
+		
+		local VictorySoundDropdown2 = eventSoundsGeneralArea:CreateDropdown(L.EventWipeSound, DBM.Defeat, "DBM", "EventWipeSound", function(value)
+			DBM.Options.EventWipeSound = value
+			DBM:PlaySoundFile(DBM.Options.EventWipeSound)
+		end)
+		VictorySoundDropdown2:SetPoint("LEFT", VictorySoundDropdown, "RIGHT", 50, 0)
+
+		local VictorySoundDropdown3 = eventSoundsGeneralArea:CreateDropdown(L.EventEngageSound, Sounds, "DBM", "EventEngageSound", function(value)
+			DBM.Options.EventEngageSound = value
+			DBM:PlaySoundFile(DBM.Options.EventEngageSound)
+		end)
+		VictorySoundDropdown3:SetPoint("TOPLEFT", VictorySoundDropdown, "TOPLEFT", 0, -45)
+		
+		local MusicDropDown = eventSoundsGeneralArea:CreateDropdown(L.EventEngageMusic, DBM.Music, "DBM", "EventEngageMusic", function(value)
+			DBM.Options.EventEngageMusic = value
+		end)
+		MusicDropDown:SetPoint("TOPLEFT", VictorySoundDropdown2, "TOPLEFT", 0, -45)
+		
+		local eventSoundsExtrasArea	= eventSoundsPanel:CreateArea(L.Area_EventSoundsExtras, nil, 97, true)
+		local randomVictory			= eventSoundsExtrasArea:CreateCheckButton(L.EventRandomVictory, true, nil, "EventRandomVictory")
+		local randomDefeat			= eventSoundsExtrasArea:CreateCheckButton(L.EventRandomDefeat, true, nil, "EventRandomDefeat")
+		local randomMusic			= eventSoundsExtrasArea:CreateCheckButton(L.EventRandomMusic, true, nil, "EventRandomMusic")
+		
+		eventSoundsPanel:SetMyOwnHeight()
+	end
+	
 
 	do
 		local spamPanel = DBM_GUI_Frame:CreateNewPanel(L.Panel_SpamFilter, "option")
@@ -3127,46 +3167,6 @@ local function CreateOptionsMenu()
 		local AITimers				= advancedArea:CreateCheckButton(L.AITimer, true, nil, "AITimer")
 		local ACTimers				= advancedArea:CreateCheckButton(L.AutoCorrectTimer, true, nil, "AutoCorrectTimer")
 
-		-- Pizza Timer (create your own timer menu)
-		local pizzaarea = extraFeaturesPanel:CreateArea(L.PizzaTimer_Headline, nil, 85, true)
-
-		local textbox = pizzaarea:CreateEditBox(L.PizzaTimer_Title, "Pizza!", 175)
-		local hourbox = pizzaarea:CreateEditBox(L.PizzaTimer_Hours, "0", 25)
-		local minbox  = pizzaarea:CreateEditBox(L.PizzaTimer_Mins, "15", 25)
-		local secbox  = pizzaarea:CreateEditBox(L.PizzaTimer_Secs, "0", 25)
-
-		textbox:SetMaxLetters(17)
-		textbox:SetPoint('TOPLEFT', 30, -25)
-		hourbox:SetNumeric()
-		hourbox:SetMaxLetters(2)
-		hourbox:SetPoint('TOPLEFT', textbox, "TOPRIGHT", 20, 0)
-		minbox:SetNumeric()
-		minbox:SetMaxLetters(2)
-		minbox:SetPoint('TOPLEFT', hourbox, "TOPRIGHT", 20, 0)
-		secbox:SetNumeric()
-		secbox:SetMaxLetters(2)
-		secbox:SetPoint('TOPLEFT', minbox, "TOPRIGHT", 20, 0)
-
-		local BcastTimer = pizzaarea:CreateCheckButton(L.PizzaTimer_BroadCast)
-		local okbttn  = pizzaarea:CreateButton(L.PizzaTimer_ButtonStart)
-		okbttn:SetPoint('TOPLEFT', textbox, "BOTTOMLEFT", -7, -8)
-		BcastTimer:SetPoint("TOPLEFT", okbttn, "TOPRIGHT", 10, 3)
-
-		pizzaarea.frame:SetScript("OnShow", function(self)
-			if DBM:GetRaidRank() == 0 then
-				BcastTimer:Hide()
-			else
-				BcastTimer:Show()
-			end
-		end)
-
-		okbttn:SetScript("OnClick", function()
-			local time = (hourbox:GetNumber() * 60*60) + (minbox:GetNumber() * 60) + secbox:GetNumber()
-			if textbox:GetText() and time > 0 then
-				DBM:CreatePizzaTimer(time,  textbox:GetText(), BcastTimer:GetChecked())
-			end
-		end)
-		-- END Pizza Timer
 		chatAlertsArea:AutoSetDimension()
 		soundAlertsArea:AutoSetDimension()
 		generaltimeroptions:AutoSetDimension()
