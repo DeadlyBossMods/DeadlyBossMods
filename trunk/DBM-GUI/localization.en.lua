@@ -237,6 +237,8 @@ L.Area_EventSoundsExtras	= "Event Sound Options"
 L.EventRandomVictory		= "Play Random Victory sounds, instead of chosen"
 L.EventRandomDefeat			= "Play Random Defeat sounds, instead of chosen"
 L.EventRandomMusic			= "Play Random Music, instead of chosen"
+L.Area_EventSoundsFilters	= "Event Sound Filter Conditions"
+L.EventFilterMythicMusic	= "Do not play music on Mythic/Mythic+ difficulty"
 
 -- Tab: Global Filter
 L.Panel_SpamFilter			= "DBM Global Disables & Filters"

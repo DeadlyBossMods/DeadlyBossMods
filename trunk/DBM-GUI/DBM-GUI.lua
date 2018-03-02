@@ -3041,6 +3041,9 @@ local function CreateOptionsMenu()
 		local randomDefeat			= eventSoundsExtrasArea:CreateCheckButton(L.EventRandomDefeat, true, nil, "EventRandomDefeat")
 		local randomMusic			= eventSoundsExtrasArea:CreateCheckButton(L.EventRandomMusic, true, nil, "EventRandomMusic")
 		
+		local eventSoundsFiltersArea= eventSoundsPanel:CreateArea(L.Area_EventSoundsFilters, nil, 30, true)
+		local musicMythicFilter		= eventSoundsFiltersArea:CreateCheckButton(L.EventFilterMythicMusic, true, nil, "EventFilterMythicMusic")
+		
 		eventSoundsPanel:SetMyOwnHeight()
 	end
 	
