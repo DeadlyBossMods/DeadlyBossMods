@@ -27,9 +27,7 @@ mod:RegisterEventsInCombat(
 )
 
 --TODO, custom warning to combine soulburst and bomb into single message instead of two messages, while still separating targets
---TODO, interrupt warnings for Designates if not affected by Inevitability?
 --TODO, More info on InfoFrame?
---TODO, warnings when eonar transitions from gift to withering. other titan stuff?
 --[[
 (ability.id = 256544 or ability.id = 255826 or ability.id = 248165 or ability.id = 248317 or ability.id = 257296 or ability.id = 255594 or ability.id = 252516 or ability.id = 255648 or ability.id = 257645 or ability.id = 256542 or ability.id = 257619 or ability.id = 255935) and type = "begincast"
  or (ability.id = 248499 or ability.id = 258039 or ability.id = 252729 or ability.id = 252616 or ability.id = 256388 or ability.id = 258838 or ability.id = 258029) and type = "cast"
