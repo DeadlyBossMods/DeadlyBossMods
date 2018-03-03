@@ -215,6 +215,20 @@ L.Area_GetVEM				= "VEM 음성팩 받기"
 L.Area_BrowseOtherVP		= "Curse에 올라와있는 다른 음성팩 보기"
 L.Area_BrowseOtherCT		= "Curse에 올라와있는 카운트다운 팩 보기"
 
+-- Tab: Event Sounds
+L.Panel_EventSounds			= "이벤트 효과음"
+L.Area_SoundSelection		= "효과음 선택 (마우스 휠로 스크롤)"
+L.EventVictorySound			= "보스를 잡았을 때 재생할 효과음 설정"
+L.EventWipeSound			= "전멸했을 때 재생할 효과음 설정"
+L.EventEngageSound			= "보스 전투 시작시 재생할 효과음 설정"
+L.EventEngageMusic			= "보스 전투 도중 재생할 음악 설정"
+L.Area_EventSoundsExtras	= "이벤트 효과음 설정"
+L.EventRandomVictory		= "선택한 효과음 대신 승리 효과음 무작위 재생"
+L.EventRandomDefeat			= "선택한 효과음 대신 전멸 효과음 무작위 재생"
+L.EventRandomMusic			= "선택한 음악 대신 무작위 음악 재생"
+L.Area_EventSoundsFilters	= "이벤트 효과음 필터 적용 조건"
+L.EventFilterMythicMusic	= "신화/신화+ 난이도에선 음악을 재생하지 않음"
+
 -- Tab: Global Filter
 L.Panel_SpamFilter			= "DBM 전역 기능 끄기 및 필터"
 L.Area_SpamFilter_Outgoing	= "DBM 전역 기능 끄기 및 필터 설정"
