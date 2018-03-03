@@ -285,7 +285,7 @@ DBM.Counts = {
 }
 DBM.Victory = {
 	{text = "None",value  = "None"},
-	{text = "Blakbyrd: FF Victory (NYI)",value = "Interface\\AddOns\\DBM-Core\\sounds\\BlakbyrdAlerts\\bbvictory.ogg",},
+	{text = "Blakbyrd: FF Fanfare (temp version)",value = "Interface\\AddOns\\DBM-Core\\sounds\\BlakbyrdAlerts\\bbvictory.ogg",},
 }
 DBM.Defeat = {
 	{text = "None",value  = "None"},
