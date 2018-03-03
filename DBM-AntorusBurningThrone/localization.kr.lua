@@ -123,10 +123,6 @@ L:SetTimerLocalization({
 	timerSargSentenceCD	= "선고 쿨타임 (%s)"
 })
 
-L:SetOptionLocalization({
-	timerSargSentenceCD		=	DBM_CORE_AUTO_TIMER_OPTIONS["cdcount"]:format(257966)
-})
-
 L:SetMiscLocalization({
 	SeaText		=	"{rt6} 가속/유연",
 	SkyText		=	"{rt5} 치명/특화",

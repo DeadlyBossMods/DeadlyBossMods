@@ -18,5 +18,6 @@
 ## X-DBM-Mod-MinCoreRevision: 17286
 ## X-DBM-Mod-MinExpansion: 7
 localization.en.lua
+localization.kr.lua
 Tzane.lua
 Jiarak.lua
