@@ -243,13 +243,6 @@ DBM.DefaultOptions = {
 	BigBrotherAnnounceToRaid = false,
 	SettingsMessageShown = false,
 	ForumsMessageShown = false,
-	PGMessageShown2 = false,
-	MCMessageShown = false,
-	BCTWMessageShown = false,
-	WOTLKTWMessageShown = false,
-	CATATWMessageShown = false,
-	MISTSTWMessageShown = false,
-	WODMessageShown = false,
 	AlwaysShowSpeedKillTimer2 = false,
 	ShowRespawn = true,
 	ShowQueuePop = true,
@@ -3568,23 +3561,18 @@ do
 	local challengeScenarios = {[1148]=true,[1698]=true,[1710]=true,[1703]=true,[1702]=true,[1684]=true,[1673]=true,[1616]=true}
 	function DBM:CheckAvailableMods()
 		if BigWigs then return end--If they are running two boss mods at once, lets assume they are only using DBM for a specific feature and not nag
-		if (classicZones[LastInstanceMapID] or bcZones[LastInstanceMapID]) and (not self.Options.BCTWMessageShown or playerLevel < 71) and not GetAddOnInfo("DBM-BlackTemple") then
-			self.Options.BCTWMessageShown = true
+		local timeWalking = difficultyIndex == 24 or difficultyIndex == 33 or false
+		if (classicZones[LastInstanceMapID] or bcZones[LastInstanceMapID]) and (timeWalking or playerLevel < 71) and not GetAddOnInfo("DBM-BlackTemple") then
 			AddMsg(self, DBM_CORE_MOD_AVAILABLE:format("DBM BC/Vanilla mods"))
-		elseif wrathZones[LastInstanceMapID] and (not self.Options.WOTLKTWMessageShown or playerLevel < 81) and not GetAddOnInfo("DBM-Ulduar") then
-			self.Options.WOTLKTWMessageShown = true
+		elseif wrathZones[LastInstanceMapID] and (timeWalking or playerLevel < 81) and not GetAddOnInfo("DBM-Ulduar") then
 			AddMsg(self, DBM_CORE_MOD_AVAILABLE:format("DBM Wrath of the Lich King mods"))
-		elseif cataZones[LastInstanceMapID] and (not self.Options.CATATWMessageShown or playerLevel < 86) and not GetAddOnInfo("DBM-Party-Cataclysm") then
-			self.Options.CATATWMessageShown = true
+		elseif cataZones[LastInstanceMapID] and (timeWalking or playerLevel < 86) and not GetAddOnInfo("DBM-Party-Cataclysm") then
 			AddMsg(self, DBM_CORE_MOD_AVAILABLE:format("DBM Cataclysm mods"))
-		elseif mopZones[LastInstanceMapID] and (not self.Options.MISTSTWMessageShown or playerLevel < 91) and not GetAddOnInfo("DBM-Party-MoP") then
-			self.Options.MISTSTWMessageShown = true
+		elseif mopZones[LastInstanceMapID] and (timeWalking or playerLevel < 91) and not GetAddOnInfo("DBM-Party-MoP") then
 			AddMsg(self, DBM_CORE_MOD_AVAILABLE:format("DBM Mists of Pandaria mods"))
-		elseif wodZones[LastInstanceMapID] and (not self.Options.WODMessageShown or playerLevel < 101) and not GetAddOnInfo("DBM-MC") then
-			self.Options.WODMessageShown = true
+		elseif wodZones[LastInstanceMapID] and (timeWalking or playerLevel < 101) and not GetAddOnInfo("DBM-MC") then
 			AddMsg(self, DBM_CORE_MOD_AVAILABLE:format("DBM Warlords of Draenor mods"))
-		elseif challengeScenarios[LastInstanceMapID] and not self.Options.PGMessageShown2 and not GetAddOnInfo("DBM-Challenges") then
-			self.Options.PGMessageShown2 = true
+		elseif challengeScenarios[LastInstanceMapID] and not GetAddOnInfo("DBM-Challenges") then
 			AddMsg(self, DBM_CORE_MOD_AVAILABLE:format("DBM-Challenges"))
 		end
 	end
