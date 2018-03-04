@@ -293,6 +293,8 @@ DBM.Defeat = {
 	{text = "Kologarn: You Fail",value = "Sound\\Creature\\Kologarn\\UR_Kologarn_Slay02.ogg"},
 	{text = "Alizabal: Incompetent Raiders",value = "Sound\\Creature\\ALIZABAL\\VO_BH_ALIZABAL_RESET_01.ogg"},
 	{text = "Hodir: Tragic",value = "Sound\\Creature\\Hodir\\UR_Hodir_Slay01.ogg"},
+	{text = "Thorim: Failures",value = "Sound\\Creature\\horim\\UR_Thorim_P1Wipe01.ogg"},
+	{text = "Valithria: Failures",value = "Sound\\Creature\\ValithriaDreamwalker\\IC_Valithria_Berserk01.ogg"},
 }
 DBM.Music = {{text = "None",value  = "None"},}
 
