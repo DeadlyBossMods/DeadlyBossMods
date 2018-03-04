@@ -217,6 +217,19 @@ L.BrowseOtherVPs			= "|cFF73C2FBhttps://wow.curseforge.com/search?search=dbm+voi
 L.Area_BrowseOtherCT		= "在Curse上瀏覽倒數包"
 L.BrowseOtherCTs			= "|cFF73C2FBhttps://wow.curseforge.com/search?search=dbm+count+pack|r"
 
+-- Tab: Event Sounds
+L.Panel_EventSounds			= "事件音效"
+L.Area_SoundSelection		= "音效選項(使用滑鼠滾輪滾動)"
+L.EventVictorySound			= "設置戰鬥勝利時的音效"
+L.EventWipeSound			= "設置戰鬥滅團時的音效"
+L.EventEngageSound			= "設置戰鬥開戰時的音效"
+L.EventEngageMusic			= "設置戰鬥中的音樂"
+L.Area_EventSoundsExtras	= "事件音效選項"
+L.EventRandomVictory		= "播放隨機的勝利音效而非選擇的"
+L.EventRandomDefeat			= "播放隨機的預設音效而非選擇的"
+L.EventRandomMusic			= "播放隨機的音樂而非選擇的"
+L.Area_EventSoundsFilters	= "事件音效過濾條件"
+L.EventFilterMythicMusic	= "不要在傳奇/傳奇+的難度中播放音樂"
 
 -- Tab: Global Filter
 L.Panel_SpamFilter			= "DBM全局禁用及過濾"
