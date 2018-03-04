@@ -110,6 +110,10 @@ L:SetMiscLocalization({
 ---------------------------
 L= DBM:GetModLocalization(2031)
 
+L:SetTimerLocalization({
+	timerSargSentenceCD	= "薩格拉斯的判決冷卻(%s)"
+})
+
 L:SetMiscLocalization({
 	SeaText =	"{rt6}加速臨機",
 	SkyText =	"{rt5}爆擊精通",
