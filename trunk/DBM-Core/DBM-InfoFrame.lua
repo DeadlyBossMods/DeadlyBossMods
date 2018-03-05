@@ -797,7 +797,7 @@ end
 ---------------
 --  Methods  --
 ---------------
---Arg 1: spellID, health/powervalue, customfunction. Arg 2: TankIgnore, Powertype, SortFunction, totalAbsorb. Arg 3: SpellFilter, UseIcon. Arg 4: disable onUpdate
+--Arg 1: spellName, health/powervalue, customfunction. Arg 2: TankIgnore, Powertype, SortFunction, totalAbsorb. Arg 3: SpellFilter, UseIcon. Arg 4: disable onUpdate
 function infoFrame:Show(maxLines, event, ...)
 	currentMapId = select(4, UnitPosition("player"))
 	if DBM.Options.DontShowInfoFrame and (event or 0) ~= "test" then return end
@@ -817,6 +817,10 @@ function infoFrame:Show(maxLines, event, ...)
 		sortMethod = 3
 	elseif event == "health" or event == "playerdebuffremaining" then
 		sortMethod = 2	-- Sort lowest first
+	elseif event == "playerdebuffstacks" then
+		if type(value[2]) == "number" then
+			sortMethod = value[2]
+		end
 	else
 		sortMethod = 1
 	end
