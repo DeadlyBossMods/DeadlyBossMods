@@ -817,7 +817,7 @@ function infoFrame:Show(maxLines, event, ...)
 		sortMethod = 3
 	elseif event == "health" or event == "playerdebuffremaining" then
 		sortMethod = 2	-- Sort lowest first
-	elseif event == "playerdebuffstacks" then
+	elseif event == "playerdebuffstacks" and value[2] then
 		if type(value[2]) == "number" then
 			sortMethod = value[2]
 		end
