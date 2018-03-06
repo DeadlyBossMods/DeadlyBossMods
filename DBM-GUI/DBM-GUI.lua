@@ -3013,26 +3013,26 @@ local function CreateOptionsMenu()
 		local eventSoundsPanel	 	= DBM_GUI_Frame:CreateNewPanel(L.Panel_EventSounds, "option")
 		local eventSoundsGeneralArea	= eventSoundsPanel:CreateArea(L.Area_SoundSelection, nil, 105, true)
 
-		local VictorySoundDropdown = eventSoundsGeneralArea:CreateDropdown(L.EventVictorySound, DBM.Victory, "DBM", "EventVictorySound", function(value)
-			DBM.Options.EventVictorySound = value
-			DBM:PlaySoundFile(DBM.Options.EventVictorySound)
+		local VictorySoundDropdown = eventSoundsGeneralArea:CreateDropdown(L.EventVictorySound, DBM.Victory, "DBM", "EventSoundVictory", function(value)
+			DBM.Options.EventSoundVictory = value
+			DBM:PlaySoundFile(DBM.Options.EventSoundVictory)
 		end)
 		VictorySoundDropdown:SetPoint("TOPLEFT", eventSoundsGeneralArea.frame, "TOPLEFT", 0, -20)
 		
-		local VictorySoundDropdown2 = eventSoundsGeneralArea:CreateDropdown(L.EventWipeSound, DBM.Defeat, "DBM", "EventWipeSound", function(value)
-			DBM.Options.EventWipeSound = value
-			DBM:PlaySoundFile(DBM.Options.EventWipeSound)
+		local VictorySoundDropdown2 = eventSoundsGeneralArea:CreateDropdown(L.EventWipeSound, DBM.Defeat, "DBM", "EventSoundWipe", function(value)
+			DBM.Options.EventSoundWipe = value
+			DBM:PlaySoundFile(DBM.Options.EventSoundWipe)
 		end)
 		VictorySoundDropdown2:SetPoint("LEFT", VictorySoundDropdown, "RIGHT", 50, 0)
 
-		local VictorySoundDropdown3 = eventSoundsGeneralArea:CreateDropdown(L.EventEngageSound, Sounds, "DBM", "EventEngageSound", function(value)
-			DBM.Options.EventEngageSound = value
-			DBM:PlaySoundFile(DBM.Options.EventEngageSound)
+		local VictorySoundDropdown3 = eventSoundsGeneralArea:CreateDropdown(L.EventEngageSound, Sounds, "DBM", "EventSoundEngage", function(value)
+			DBM.Options.EventSoundEngage = value
+			DBM:PlaySoundFile(DBM.Options.EventSoundEngage)
 		end)
 		VictorySoundDropdown3:SetPoint("TOPLEFT", VictorySoundDropdown, "TOPLEFT", 0, -45)
 		
-		local MusicDropDown = eventSoundsGeneralArea:CreateDropdown(L.EventEngageMusic, DBM.Music, "DBM", "EventEngageMusic", function(value)
-			DBM.Options.EventEngageMusic = value
+		local MusicDropDown = eventSoundsGeneralArea:CreateDropdown(L.EventEngageMusic, DBM.Music, "DBM", "EventSoundMusic", function(value)
+			DBM.Options.EventSoundMusic = value
 		end)
 		MusicDropDown:SetPoint("TOPLEFT", VictorySoundDropdown2, "TOPLEFT", 0, -45)
 		
