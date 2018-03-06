@@ -279,7 +279,7 @@ DBM.Counts = {
 }
 DBM.Victory = {
 	{text = "None",value  = "None"},
-	{text = "SmoothMcGroove: FF Fanfare",value = "Interface\\AddOns\\DBM-Core\\sounds\\Victory\\SmoothMcGroove_Fanfare.ogg",},
+	{text = "SMG: FF Fanfare",value = "Interface\\AddOns\\DBM-Core\\sounds\\Victory\\SmoothMcGroove_Fanfare.ogg",},
 	{text = "Blakbyrd: FF Fanfare (temp version)",value = "Interface\\AddOns\\DBM-Core\\sounds\\Victory\\bbvictory.ogg",},
 }
 DBM.Defeat = {
