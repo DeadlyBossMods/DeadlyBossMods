@@ -1078,6 +1078,10 @@ do
 				self.Options.tempBreak2 = nil
 			end
 		end
+		if self.Options.tempMusicSetting then
+			SetCVar("Sound_EnableMusic", self.Options.tempMusicSetting)
+			self.Options.tempMusicSetting = nil
+		end
 		if IsInGuild() then
 			SendAddonMessage("D4", "GH", "GUILD")
 		end
