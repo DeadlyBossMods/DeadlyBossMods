@@ -468,6 +468,11 @@
 				<Scripts>
 					<OnClick>
 						self:GetParent():Hide()
+						if DBM.Options.tempMusicSetting then
+							SetCVar("Sound_EnableMusic", DBM.Options.tempMusicSetting)
+							DBM.Options.tempMusicSetting = nil
+						end
+						StopMusic()
 					</OnClick>
 				</Scripts>
 			</Button>
