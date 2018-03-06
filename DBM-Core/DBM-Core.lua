@@ -101,10 +101,10 @@ DBM.DefaultOptions = {
 	ChosenVoicePack = "None",
 	VoiceOverSpecW2 = "DefaultOnly",
 	AlwaysPlayVoice = false,
-	EventVictorySound = "Interface\\AddOns\\DBM-Core\\sounds\\BlakbyrdAlerts\\bbvictory.ogg",
-	EventWipeSound = "None",
-	EventEngageSound = "",
-	EventEngageMusic = "None",
+	EventSoundVictory = "Interface\\AddOns\\DBM-Core\\sounds\\Victory\\SmoothMcGroove_Fanfare.ogg",
+	EventSoundWipe = "None",
+	EventSoundEngage = "",
+	EventSoundMusic = "None",
 	EventRandomVictory = false,
 	EventRandomDefeat = true,
 	EventRandomMusic = false,
@@ -279,7 +279,8 @@ DBM.Counts = {
 }
 DBM.Victory = {
 	{text = "None",value  = "None"},
-	{text = "Blakbyrd: FF Fanfare (temp version)",value = "Interface\\AddOns\\DBM-Core\\sounds\\BlakbyrdAlerts\\bbvictory.ogg",},
+	{text = "SmoothMcGroove: FF Fanfare",value = "Interface\\AddOns\\DBM-Core\\sounds\\Victory\\SmoothMcGroove_Fanfare.ogg",},
+	{text = "Blakbyrd: FF Fanfare (temp version)",value = "Interface\\AddOns\\DBM-Core\\sounds\\Victory\\bbvictory.ogg",},
 }
 DBM.Defeat = {
 	{text = "None",value  = "None"},
@@ -374,7 +375,7 @@ local breakTimerStart
 local AddMsg
 local delayedFunction
 
-local fakeBWVersion, fakeBWHash = 88, "5a0d494"
+local fakeBWVersion, fakeBWHash = 89, "e601bae"
 local versionQueryString, versionResponseString = "Q^%d^%s", "V^%d^%s"
 
 local enableIcons = true -- set to false when a raid leader or a promoted player has a newer version of DBM
@@ -5612,10 +5613,10 @@ do
 				if BigWigs and BigWigs.db.profile.raidicon and not self.Options.DontSetIcons and self:GetRaidRank() > 0 then--Both DBM and bigwigs have raid icon marking turned on.
 					self:AddMsg(DBM_CORE_BIGWIGS_ICON_CONFLICT)--Warn that one of them should be turned off to prevent conflict (which they turn off is obviously up to raid leaders preference, dbm accepts either or turned off to stop this alert)
 				end
-				if self.Options.EventEngageSound and self.Options.EventEngageSound ~= "" and self.Options.EventEngageSound ~= "None" then
-					self:PlaySoundFile(self.Options.EventEngageSound)
+				if self.Options.EventSoundEngage and self.Options.EventSoundEngage ~= "" and self.Options.EventSoundEngage ~= "None" then
+					self:PlaySoundFile(self.Options.EventSoundEngage)
 				end
-				if self.Options.EventEngageMusic and self.Options.EventEngageMusic ~= "None" and self.Options.EventEngageMusic ~= "" and not (self.Options.EventMusicMythicFilter and (savedDifficulty == "Mythic" or savedDifficulty == "Challenge")) then
+				if self.Options.EventSoundMusic and self.Options.EventSoundMusic ~= "None" and self.Options.EventSoundMusic ~= "" and not (self.Options.EventMusicMythicFilter and (savedDifficulty == "Mythic" or savedDifficulty == "Challenge")) then
 					self.Options.tempMusicSetting = tonumber(GetCVar("Sound_EnableMusic"))
 					if self.Options.tempMusicSetting == 0 then
 						SetCVar("Sound_EnableMusic", 1)
@@ -5627,7 +5628,7 @@ do
 						local random = fastrandom(2, #DBM.Music)
 						path = DBM.Music[random].value
 					else
-						path = self.Options.EventEngageMusic
+						path = self.Options.EventSoundMusic
 					end
 					PlayMusic(path)
 					DBM:Debug("Starting combat music with file: "..path)
@@ -5795,12 +5796,12 @@ do
 					sendWhisper(k, msg)
 				end
 				fireEvent("wipe", mod)
-				if self.Options.EventWipeSound and self.Options.EventWipeSound ~= "None" and self.Options.EventWipeSound ~= "" then
+				if self.Options.EventSoundWipe and self.Options.EventSoundWipe ~= "None" and self.Options.EventSoundWipe ~= "" then
 					if self.Options.EventRandomDefeat then
 						local random = fastrandom(2, #DBM.Defeat)
 						self:PlaySoundFile(DBM.Defeat[random].value)
 					else
-						self:PlaySoundFile(self.Options.EventWipeSound)
+						self:PlaySoundFile(self.Options.EventSoundWipe)
 					end
 				end
 			else
@@ -5926,12 +5927,12 @@ do
 						end
 					end
 				end
-				if self.Options.EventVictorySound and self.Options.EventVictorySound ~= "" then
+				if self.Options.EventSoundVictory and self.Options.EventSoundVictory ~= "" then
 					if self.Options.EventRandomVictory then
 						local random = fastrandom(2, #DBM.Victory)
 						self:PlaySoundFile(DBM.Victory[random].value)
 					else
-						self:PlaySoundFile(self.Options.EventVictorySound)
+						self:PlaySoundFile(self.Options.EventSoundVictory)
 					end
 				end
 			end
@@ -5973,7 +5974,7 @@ do
 				eeSyncReceived = 0
 				targetMonitor = nil
 				self:CreatePizzaTimer(time, "", nil, nil, nil, nil, true)--Auto Terminate infinite loop timers on combat end
-				if self.Options.EventEngageMusic and self.Options.EventEngageMusic ~= "None" then
+				if self.Options.EventSoundMusic and self.Options.EventSoundMusic ~= "None" then
 					if self.Options.tempMusicSetting then
 						SetCVar("Sound_EnableMusic", self.Options.tempMusicSetting)
 						self.Options.tempMusicSetting = nil
