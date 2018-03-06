@@ -3033,6 +3033,13 @@ local function CreateOptionsMenu()
 		
 		local MusicDropDown = eventSoundsGeneralArea:CreateDropdown(L.EventEngageMusic, DBM.Music, "DBM", "EventSoundMusic", function(value)
 			DBM.Options.EventSoundMusic = value
+			DBM.Options.tempMusicSetting = tonumber(GetCVar("Sound_EnableMusic"))
+			if DBM.Options.tempMusicSetting == 0 then
+				SetCVar("Sound_EnableMusic", 1)
+			else
+				DBM.Options.tempMusicSetting = nil--Don't actually need it
+			end
+			PlayMusic(value)
 		end)
 		MusicDropDown:SetPoint("TOPLEFT", VictorySoundDropdown2, "TOPLEFT", 0, -45)
 		
