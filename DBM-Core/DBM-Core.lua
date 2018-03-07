@@ -5620,7 +5620,7 @@ do
 				if self.Options.EventSoundEngage and self.Options.EventSoundEngage ~= "" and self.Options.EventSoundEngage ~= "None" then
 					self:PlaySoundFile(self.Options.EventSoundEngage)
 				end
-				if self.Options.EventSoundMusic and self.Options.EventSoundMusic ~= "None" and self.Options.EventSoundMusic ~= "" and not (self.Options.EventMusicMythicFilter and (savedDifficulty == "Mythic" or savedDifficulty == "Challenge")) then
+				if self.Options.EventSoundMusic and self.Options.EventSoundMusic ~= "None" and self.Options.EventSoundMusic ~= "" and not (self.Options.EventMusicMythicFilter and (savedDifficulty == "mythic" or savedDifficulty == "challenge")) then
 					self.Options.tempMusicSetting = tonumber(GetCVar("Sound_EnableMusic"))
 					if self.Options.tempMusicSetting == 0 then
 						SetCVar("Sound_EnableMusic", 1)
