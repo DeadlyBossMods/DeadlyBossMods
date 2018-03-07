@@ -11,7 +11,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 194327",
 --	"SPELL_AURA_REMOVED 194327",
-	"SPELL_CAST_START 194231 194266",
+	"SPELL_CAST_START 194231 194266 194216",
 	"SPELL_CAST_SUCCESS 194325"
 )
 
@@ -20,6 +20,7 @@ local warnFragment				= mod:NewTargetAnnounce(194327, 3)
 local specWarnFragment			= mod:NewSpecialWarningSwitch(194327, "Dps", nil, nil, 1, 2)
 local specWarnServitor			= mod:NewSpecialWarningSwitch(194231, "-Healer", nil, nil, 1, 2)
 local specWarnVoidSnap			= mod:NewSpecialWarningInterrupt(194266, "HasInterrupt", nil, nil, 1, 2)
+local specWarnScythe			= mod:NewSpecialWarningDodge(194216, nil, nil, nil, 2, 2)
 
 local timerFragmentCD			= mod:NewCDTimer(30, 194327, nil, nil, nil, 3)
 local timerServitorCD			= mod:NewCDTimer(23, 194231, nil, nil, nil, 1)--23-30
@@ -62,6 +63,9 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 194266 and self:CheckInterruptFilter(args.sourceGUID) then
 		specWarnVoidSnap:Show(args.sourceName)
 		specWarnVoidSnap:Play("kickcast")
+	elseif spellId == 194216 then
+		specWarnScythe:Show()
+		specWarnScythe:Play("shockwave")
 	end
 end
 
