@@ -209,6 +209,7 @@ local function startAnnihilationStuff(self, quiet)
 		warnEdgeofAnni:Show(self.vb.EdgeofObliteration)
 	else--Special warning
 		specWarnEdgeofAnni:Show(self.vb.EdgeofObliteration)
+		specWarnEdgeofAnni:Play("watchstep")
 	end
 	local timer = edgeofAnni[self.vb.EdgeofObliteration+1]
 	if timer then
