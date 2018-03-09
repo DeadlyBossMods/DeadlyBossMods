@@ -390,6 +390,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		countdownDeadlyScythe:Start(5.5)
 	elseif spellId == 258838 then--Mythic Scythe
 		timerSoulrendingScytheCD:Start()
+		countdownDeadlyScythe:Start(8.5)
 	elseif spellId == 255826 then
 		self.vb.EdgeofObliteration = self.vb.EdgeofObliteration + 1
 		specWarnEdgeofObliteration:Show()
@@ -719,6 +720,7 @@ function mod:SPELL_INTERRUPT(args)
 			self.vb.gazeCount = 0
 			self.vb.EdgeofObliteration = 0
 			timerSoulrendingScytheCD:Start(3.5)
+			countdownDeadlyScythe:Start(3.5)
 			timerEdgeofAnniCD:Start(5, 1)
 			self:Schedule(5, startAnnihilationStuff, self)
 			timerSargGazeCD:Start(20.2, 1)
