@@ -2160,6 +2160,8 @@ do
 		elseif cmd:sub(1, 6) == "silent" then
 			DBM.Options.SilentMode = DBM.Options.SilentMode == false and true or false
 			DBM:AddMsg("SilentMode is " .. (DBM.Options.SilentMode and "ON" or "OFF"))
+		elseif cmd:sub(1, 8) == "musicnow" then
+			DBM:TransitionToDungeonBGM(true)
 		else
 			DBM:LoadGUI()
 		end
