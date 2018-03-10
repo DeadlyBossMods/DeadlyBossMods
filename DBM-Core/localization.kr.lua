@@ -29,7 +29,7 @@ DBM_CORE_LOOT_SPEC_REMINDER			= "현재 전문화는 %s입니다. 현재 지정�
 
 DBM_CORE_BIGWIGS_ICON_CONFLICT		= "DBM이 BigWigs와 DBM 모두 공격대 징표 기능을 사용하고 있음을 감지했습니다. 충돌을 방지하기 위해 공대장이 두 애드온중 하나의 징표 설정을 비활성화해야 합니다."
 
-DBM_CORE_MOD_AVAILABLE				= "본 콘텐트에서 %s|1을;를; 사용할 수 있습니다. deadlybossmods.com 또는 Curse에서 다운로드 받으실 수 있습니다. 이 메시지는 다음부턴 나오지 않습니다."
+DBM_CORE_MOD_AVAILABLE				= "이 지역/보스에서 %s|1을;를; 사용할 수 있습니다. Curse/WoWI 또는 deadlybossmods.com에서 다운로드 받으실 수 있습니다."
 
 DBM_CORE_COMBAT_STARTED				= "%s 전투 시작. 행운을 빕니다! :)";
 DBM_CORE_COMBAT_STARTED_IN_PROGRESS	= "%s 전투 진행 도중 참가했습니다. 행운을 빕니다! :)"
@@ -142,8 +142,6 @@ DBM_CORE_WHISPER_SCENARIO_END_WIPE			= "%s님이 %s 시나리오를 완료하지
 DBM_CORE_WHISPER_SCENARIO_END_WIPE_STATS	= "%s님이 %s 시나리오를 완료하지 못했습니다. 이 난이도를 총 %d회 실패했습니다."
 
 DBM_CORE_VERSIONCHECK_HEADER		= "보스 모드 - 버전"
---DBM_CORE_VERSIONCHECK_ENTRY			= "%s: %s (%s) %s"--One Boss mod
---DBM_CORE_VERSIONCHECK_ENTRY_TWO		= "%s: %s (%s) & %s (%s)"--Two Boss mods
 DBM_CORE_VERSIONCHECK_ENTRY_NO_DBM	= "%s: 설치된 보스 모드 없음"
 DBM_CORE_VERSIONCHECK_FOOTER		= "DBM을 설치한 플레이어 %d명과 Bigwigs를 설치한 플레이어 %d명을 발견했습니다."
 DBM_CORE_VERSIONCHECK_OUTDATED		= "다음 %d명의 플레이어가 구버전 보스 모드를 사용중: %s"
@@ -171,7 +169,6 @@ DBM_CORE_OUT_OF_DATE_NAG				= "현재 사용중인 Deadly Boss Mods 버전이 �
 
 DBM_CORE_MOVABLE_BAR				= "드래그 하세요!"
 
---DBM_PIZZA_SYNC_INFO					= "|Hplayer:%1$s|h[%1$s]|h|1이;가; 당신에게 DBM 타이머 전송: '%2$s'\n|HDBM:cancel:%2$s:nil|h|cff3588ff[타이머 취소]|r|h  |HDBM:ignore:%2$s:%1$s|h|cff3588ff[%1$s의 타이머 차단]|r|h"
 DBM_PIZZA_SYNC_INFO					= "|Hplayer:%1$s|h[%1$s]|h1이;가; 당신에게 DBM 타이머를 전송했습니다"
 DBM_PIZZA_CONFIRM_IGNORE			= "정말 %s의 DBM 타이머를 차단하시겠습니까? 이 공격대에 있는 동안에만 적용됩니다."
 DBM_PIZZA_ERROR_USAGE				= "사용법: /dbm [broadcast] timer <시간> <텍스트>. <시간>은 1초 이상이어야 합니다."
@@ -195,7 +192,7 @@ DBM_CORE_RANGECHECK_OPTION_TEXT		= "텍스트 창 표시"
 DBM_CORE_RANGECHECK_OPTION_BOTH		= "모두 표시"
 DBM_CORE_RANGERADAR_HEADER			= "거리:%d, 플레이어:%d"
 DBM_CORE_RANGERADAR_IN_RANGE_TEXT	= "%d명 (거리 %dm)"
-DBM_CORE_RANGERADAR_IN_RANGE_TEXTONE= "%s (%0.1fm)"--One target
+DBM_CORE_RANGERADAR_IN_RANGE_TEXTONE	= "%s (%0.1fm)"--One target
 
 DBM_CORE_INFOFRAME_SHOW_SELF		= "내 자원 항상 보기"		-- Always show your own power value even if you are below the threshold
 DBM_CORE_INFOFRAME_SETLINES			= "최대 줄 갯수 지정"
@@ -289,7 +286,6 @@ DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL = "업적"--BATTLE_PET_SOURCE_6
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.you			= "당신에게 %s"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.target			= "%s: >%%s<"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.targetcount	= "%s (%%s): >%%s<"
---DBM_CORE_AUTO_ANNOUNCE_TEXTS.spell			= "%s"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.ends			= "%s 종료"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.endtarget		= "%s 종료: >%%s<"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.fades			= "%s 사라짐"
@@ -299,7 +295,6 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS.soon			= "곧 %s"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.prewarn		= "%2$s 후 %1$s"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage			= "%s단계"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.prestage		= "곧 %s단계"
---DBM_CORE_AUTO_ANNOUNCE_TEXTS.count			= "%s (%%s)"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.stack			= "%s: >%%s< (%%d)"
 
 local prewarnOption = "$spell:%s 이전에 경고 보기"
@@ -320,7 +315,6 @@ DBM_CORE_AUTO_ANNOUNCE_OPTIONS.prestage		= "%s단계로 넘어가기 전 경고 
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.count		= "$spell:%s 경고 보기 (횟수 포함)"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.stack		= "$spell:%s 중첩 알림"
 
---DBM_CORE_AUTO_SPEC_WARN_TEXTS.spell		= "%s!"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.ends		= "%s 종료!"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.fades		= "%s 사라짐!"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.soon		= "곧 %s"
@@ -346,7 +340,6 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS.run		= "%s - 도망치세요"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.cast		= "%s - 주문 시전 중지"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.lookaway		= "%s - 고개 돌리세요"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.reflect		= "%s: >%%s< - 공격 중지"
---DBM_CORE_AUTO_SPEC_WARN_TEXTS.count		= "%s! (%%s)"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.stack		= "당신에게 %s (%%d중첩)"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.switch		= "%s - 대상 바꾸세요"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.switchcount	= "%s - 대상 바꾸세요 (%%s)"
@@ -390,9 +383,6 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS.Adds 			= "쫄 등장시 대상 변경 특수 �
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.Addscustom		= "쫄 등장시 특수 경고 보기"
 
 -- Auto-generated Timer Localizations
---DBM_CORE_AUTO_TIMER_TEXTS.target		= "%s: %%s"
---DBM_CORE_AUTO_TIMER_TEXTS.cast			= "%s"
---DBM_CORE_AUTO_TIMER_TEXTS.castsource		= "%s: %%s"
 DBM_CORE_AUTO_TIMER_TEXTS.active		= "%s 종료"--Buff/Debuff/event on boss
 DBM_CORE_AUTO_TIMER_TEXTS.fades			= "%s 사라짐"--Buff/Debuff on players
 DBM_CORE_AUTO_TIMER_TEXTS.ai				= "%s AI 예상"
@@ -404,7 +394,6 @@ DBM_CORE_AUTO_TIMER_TEXTS.next			= "다음 %s"
 DBM_CORE_AUTO_TIMER_TEXTS.nextcount		= "다음 %s (%%s)"
 DBM_CORE_AUTO_TIMER_TEXTS.nextsource		= "다음 %s: %%s"
 DBM_CORE_AUTO_TIMER_TEXTS.nextspecial		= "다음 특수 능력"
---DBM_CORE_AUTO_TIMER_TEXTS.achievement		= "%s"
 DBM_CORE_AUTO_TIMER_TEXTS.stage			= "다음 단계"
 DBM_CORE_AUTO_TIMER_TEXTS.adds			= "쫄 등장"
 DBM_CORE_AUTO_TIMER_TEXTS.addscustom		= "쫄 등장 (%%s)"
@@ -449,12 +438,9 @@ DBM_CORE_AUTO_YELL_OPTION_TEXT.shortfade	= "$spell:%s 지속시간이 끝나갈 
 DBM_CORE_AUTO_YELL_OPTION_TEXT.iconfade		= "$spell:%s 지속시간이 끝나갈 때 대화로 알리기 (초읽기 및 공격대 징표 포함)"
 DBM_CORE_AUTO_YELL_OPTION_TEXT.position	= "$spell:%s 대상일 때 대화로 알리기 (위치 포함)"
 DBM_CORE_AUTO_YELL_OPTION_TEXT.combo		= "$spell:%s|1과;와; 다른 디버프가 같이 걸렸을 때 대화로 알리기 (사용자 지정 문자 포함)"
---DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.shortyell	= "%s"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.yell	= UnitName("player") .. "에게 %s"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.count	= UnitName("player") .. "에게 %s (%%d)"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.fade	= "%s %%d초 후 사라짐"
---DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.shortfade	= "%%d"
---DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.iconfade	= "{rt%%2$d}%%1$d"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.position	= "{rt%%3$d}"..UnitName("player").."{rt%%3$d}에게 %1$s %%2$s"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.combo		= "%s랑 %%s 걸림"
 DBM_CORE_AUTO_YELL_CUSTOM_FADE			= "%s 사라짐"
@@ -522,7 +508,6 @@ DBM_INSTANCE_INFO_STATS_DENIED		= "확인 요청 거부: %s"
 DBM_INSTANCE_INFO_STATS_AWAY		= "자리 비움: %s"
 DBM_INSTANCE_INFO_STATS_NO_RESPONSE	= "최근 버전 DBM 미설치: %s"
 DBM_INSTANCE_INFO_RESULTS			= "인스턴스 ID 검사가 끝났습니다. 다른 언어의 WoW 클라이언트를 사용 중인 공격대원이 있다면 같은 인스턴스가 여러개 보일 수 있습니다."
---DBM_INSTANCE_INFO_SHOW_RESULTS		= "응답 안한 플레이어: %s\n|HDBM:showRaidIdResults|h|cff3588ff[지금 결과 보기]|r|h"
 DBM_INSTANCE_INFO_SHOW_RESULTS		= "응답 안한 플레이어: %s"
 
 DBM_CORE_LAG_CHECKING				= "공격대의 지연시간 확인중..."
