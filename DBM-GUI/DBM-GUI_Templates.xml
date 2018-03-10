@@ -472,7 +472,10 @@
 							SetCVar("Sound_EnableMusic", DBM.Options.tempMusicSetting)
 							DBM.Options.tempMusicSetting = nil
 						end
-						StopMusic()
+						if DBM.Options.musicPlaying then
+							StopMusic()
+							DBM.Options.musicPlaying = nil
+						end
 					</OnClick>
 				</Scripts>
 			</Button>
