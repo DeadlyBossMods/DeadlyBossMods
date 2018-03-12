@@ -807,3 +807,12 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, _, spellId)
 		end
 	end
 end
+
+--RL can run this macro to auto release everyone in raid any time they hit it
+--/run DBM:GetModByName("2031"):SendSync("Release")
+function mod:OnSync(msg, sender)
+	if not self:IsInCombat() then return end
+	if msg == "Release" and DBM:GetRaidRank(sender) == 2 then
+		RepopMe()
+	end
+end
