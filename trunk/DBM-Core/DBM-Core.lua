@@ -280,7 +280,7 @@ DBM.Counts = {
 DBM.Victory = {
 	{text = "None",value  = "None"},
 	{text = "Random",value  = "Random"},
-	{text = "Blakbyrd: FF Fanfare (temp version)",value = "Interface\\AddOns\\DBM-Core\\sounds\\Victory\\bbvictory.ogg", length=4},
+	{text = "Blakbyrd: FF Fanfare",value = "Interface\\AddOns\\DBM-Core\\sounds\\Victory\\bbvictory.ogg", length=4},
 	{text = "SMG: FF Fanfare",value = "Interface\\AddOns\\DBM-Core\\sounds\\Victory\\SmoothMcGroove_Fanfare.ogg", length=4},
 }
 DBM.Defeat = {
@@ -3619,9 +3619,11 @@ do
 				self.Options.musicPlaying = nil
 				DBM:Debug("Stopping music")
 			end
+			fireEvent("DBM_MusicStop", "ZoneOrCombatEndTransition")
 			return
 		end
 		if LastInstanceType ~= "raid" and LastInstanceType ~= "party" and not force then return end
+		fireEvent("DBM_MusicStart", "RaidOrDungeon")
 		if self.Options.EventSoundDungeonBGM and self.Options.EventSoundDungeonBGM ~= "None" and self.Options.EventSoundDungeonBGM ~= "" and not (self.Options.EventDungMusicMythicFilter and (savedDifficulty == "mythic" or savedDifficulty == "challenge")) then
 			if not self.Options.tempMusicSetting then
 				self.Options.tempMusicSetting = tonumber(GetCVar("Sound_EnableMusic"))
@@ -5685,6 +5687,7 @@ do
 				if self.Options.EventSoundEngage and self.Options.EventSoundEngage ~= "" and self.Options.EventSoundEngage ~= "None" then
 					self:PlaySoundFile(self.Options.EventSoundEngage)
 				end
+				fireEvent("DBM_MusicStart", "BossEncounter")
 				if self.Options.EventSoundMusic and self.Options.EventSoundMusic ~= "None" and self.Options.EventSoundMusic ~= "" and not (self.Options.EventMusicMythicFilter and (savedDifficulty == "mythic" or savedDifficulty == "challenge")) then
 					if not self.Options.tempMusicSetting then
 						self.Options.tempMusicSetting = tonumber(GetCVar("Sound_EnableMusic"))
