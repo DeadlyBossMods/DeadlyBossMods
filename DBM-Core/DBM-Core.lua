@@ -3087,7 +3087,7 @@ function DBM:LoadModOptions(modId, inCombat, first)
 			stats.timewalkerPulls = stats.timewalkerPulls or 0
 			mod.stats = stats
 			--run OnInitialize function
-			if mod.OnInitialize then mod:OnInitialize() end
+			if mod.OnInitialize then mod:OnInitialize(mod) end
 		end
 	end
 	--clean unused saved variables (do not work on combat load)
