@@ -101,7 +101,7 @@ DBM.DefaultOptions = {
 	ChosenVoicePack = "None",
 	VoiceOverSpecW2 = "DefaultOnly",
 	AlwaysPlayVoice = false,
-	EventSoundVictory = "Interface\\AddOns\\DBM-Core\\sounds\\Victory\\SmoothMcGroove_Fanfare.ogg",
+	EventSoundVictory2 = "None",
 	EventSoundWipe = "None",
 	EventSoundEngage = "",
 	EventSoundMusic = "None",
@@ -6003,12 +6003,12 @@ do
 						end
 					end
 				end
-				if self.Options.EventSoundVictory and self.Options.EventSoundVictory ~= "" then
-					if self.Options.EventSoundVictory == "Random" then
+				if self.Options.EventSoundVictory2 and self.Options.EventSoundVictory2 ~= "" then
+					if self.Options.EventSoundVictory2 == "Random" then
 						local random = fastrandom(3, #DBM.Victory)
 						self:PlaySoundFile(DBM.Victory[random].value)
 					else
-						self:PlaySoundFile(self.Options.EventSoundVictory)
+						self:PlaySoundFile(self.Options.EventSoundVictory2)
 					end
 				end
 			end
