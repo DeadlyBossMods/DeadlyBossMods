@@ -2,7 +2,7 @@
 -- yleaf(yaroot@gmail.com)
 -- sunlcy@NGA
 -- Mini Dragon(projecteurs@gmail.com)
--- Last update: 2018/02/02
+-- Last update: 2018/03/13
 
 if GetLocale() ~= "zhCN" then return end
 if not DBM_GUI_Translations then DBM_GUI_Translations = {} end
@@ -114,7 +114,8 @@ L.WhisperMessages			= "密语信息设置"
 L.AutoRespond 				= "在战斗中自动回复私聊"
 L.EnableStatus 				= "回复“status”私聊当前战斗信息"
 L.WhisperStats 				= "在回复的私聊中包含击杀或灭团次数统计信息"
-L.DisableStatusWhisper 		= "屏蔽全团成员的自动回复私聊(需要团长权限)。只对普通/英雄/神话团队和挑战/神话五人小队有效。"
+L.DisableStatusWhisper 		= "屏蔽全团成员的status私聊(需要团长权限)。只对普通/英雄/神话团队和挑战/神话五人小队有效。"
+L.DisableGuildStatus 		= "屏蔽通报团队进度信息到工会(需要团长权限)。"
 
 -- Tab: Barsetup
 L.BarSetup   				= "计时条设置"
@@ -223,6 +224,20 @@ L.BrowseOtherVPs			= "|cFF73C2FBhttps://wow.curseforge.com/search?search=dbm+voi
 L.Area_BrowseOtherCT		= "获取其他倒计时语音包"
 L.BrowseOtherCTs			= "|cFF73C2FBhttps://wow.curseforge.com/search?search=dbm+count+pack|r"
 
+-- Tab: Event Sounds
+L.Panel_EventSounds			= "事件音效"
+L.Area_SoundSelection		= "音效选择(使用鼠标滚轮滚动选择)"
+L.EventVictorySound			= "设置战斗胜利音效"
+L.EventWipeSound			= "设置灭团音效"
+L.EventEngageSound			= "设置开战音效"
+L.EventDungeonMusic			= "设置在副本内播放的音乐"
+L.EventEngageMusic			= "设置战斗过程中的音乐"
+L.Area_EventSoundsExtras	= "事件音效选项"
+L.EventMusicCombined		= "允许在副本内播放在影月选项中播放全部音效(需要reload)"
+L.Area_EventSoundsFilters	= "事件音效过滤条件"
+L.EventFilterDungMythicMusic= "不要在M/M+难度下播放副本音乐"
+L.EventFilterMythicMusic	= "不要在M/M+难度下播放战斗音乐"
+
 -- Tab: Global Filter
 L.Panel_SpamFilter			= "DBM全局过滤"
 L.Area_SpamFilter_Outgoing	= "DBM全局过滤设置"
@@ -237,7 +252,7 @@ L.SpamBlockNoInfoFrame		= "不显示信息框体"
 L.SpamBlockNoHudMap			= "不显示HudMap"
 L.SpamBlockNoNameplate		= "不要显示姓名面板高亮"
 L.SpamBlockNoCountdowns		= "不要播放倒计时语音"
-L.SpamBlockNoYells			= "不要再战斗中大喊我中了..."
+L.SpamBlockNoYells			= "不要再战斗中大喊"
 L.SpamBlockNoNoteSync		= "不接受别人分享的自定义注记"
 L.SpamBlockNoReminders		= "不显示任何登陆, 过期信息(不推荐)"
 
