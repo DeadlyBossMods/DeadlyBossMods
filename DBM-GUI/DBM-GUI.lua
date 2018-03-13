@@ -3013,8 +3013,8 @@ local function CreateOptionsMenu()
 		local eventSoundsPanel	 	= DBM_GUI_Frame:CreateNewPanel(L.Panel_EventSounds, "option")
 		local eventSoundsGeneralArea	= eventSoundsPanel:CreateArea(L.Area_SoundSelection, nil, 145, true)
 
-		local VictorySoundDropdown = eventSoundsGeneralArea:CreateDropdown(L.EventVictorySound, DBM.Victory, "DBM", "EventSoundVictory", function(value)
-			DBM.Options.EventSoundVictory = value
+		local VictorySoundDropdown = eventSoundsGeneralArea:CreateDropdown(L.EventVictorySound, DBM.Victory, "DBM", "EventSoundVictory2", function(value)
+			DBM.Options.EventSoundVictory2 = value
 			if value ~= "Random" then
 				DBM:PlaySoundFile(value)
 			end
