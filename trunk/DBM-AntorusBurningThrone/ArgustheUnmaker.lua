@@ -175,7 +175,7 @@ mod.vb.firstscytheSwap = false
 --P3 Mythic Timers
 local torturedRage = {40, 40, 50, 30, 35, 10, 8, 35, 10, 8, 35}--3 timers from method video not logs, verify by logs to improve accuracy
 local sargSentenceTimers = {53, 56.9, 60, 53, 53}--1 timer from method video not logs, verify by logs to improve accuracy
-local apocModuleTimers = {31, 47, 48.2, 46.6, 53, 53}--Some variation detected in logs do to delay in combat log between spawn and cast (one timer from method video)
+local apocModuleTimers = {31, 47, 47, 46.6, 53, 53}--Some variation detected in logs do to delay in combat log between spawn and cast (one timer from method video)
 local sargGazeTimers = {23, 75, 70, 53, 53}--1 timer from method video not logs, verify by logs to improve accuracy
 local edgeofAnni = {5, 5, 90, 5, 45, 5}--All timers from method video (6:05 P3 start, 6:10, 6:15, 7:45, 7:50, 8:35, 8:40)
 --Both of these should be in fearCheck object for efficiency but with uncertainty of async, I don't want to come back and fix this later. Doing it this way ensures without a doubt it'll work by calling on load and again on combatstart
