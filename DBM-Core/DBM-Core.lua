@@ -42,8 +42,8 @@
 -------------------------------
 DBM = {
 	Revision = tonumber(("$Revision$"):sub(12, -3)),
-	DisplayVersion = "7.3.25 alpha", -- the string that is shown as version
-	ReleaseRevision = 17376 -- the revision of the latest stable version that is available
+	DisplayVersion = "7.3.25", -- the string that is shown as version
+	ReleaseRevision = 17402 -- the revision of the latest stable version that is available
 }
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
@@ -3649,7 +3649,7 @@ do
 	local function SecondaryLoadCheck(self)
 		local _, instanceType, difficulty, _, _, _, _, mapID, instanceGroupSize = GetInstanceInfo()
 		if not savedDifficulty then
-			savedDifficulty, difficultyText = self:GetCurrentInstanceDifficulty()
+			savedDifficulty, difficultyText = DBM:GetCurrentInstanceDifficulty()
 		end
 		self:Debug("Instance Check fired with mapID "..mapID.." and difficulty "..difficulty, 2)
 		if LastInstanceMapID == mapID then
