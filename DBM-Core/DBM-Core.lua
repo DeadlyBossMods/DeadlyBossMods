@@ -3472,6 +3472,8 @@ function DBM:READY_CHECK()
 			self:PlaySoundFile("Sound\\interface\\levelup2.ogg", true)--Because regular sound uses SFX channel which is too low of volume most of time
 		end
 	end
+	self:TransitionToDungeonBGM(false, true)
+	self:Schedule(4, self.TransitionToDungeonBGM, self)
 end
 
 function DBM:PLAYER_SPECIALIZATION_CHANGED()
