@@ -3473,7 +3473,7 @@ function DBM:READY_CHECK()
 		end
 	end
 	self:TransitionToDungeonBGM(false, true)
-	self:Schedule(4, self.TransitionToDungeonBGM, self)
+	self:Schedule(4, self.TransitionToDungeonBGM)
 end
 
 function DBM:PLAYER_SPECIALIZATION_CHANGED()
@@ -6056,7 +6056,7 @@ do
 				targetMonitor = nil
 				self:CreatePizzaTimer(time, "", nil, nil, nil, nil, true)--Auto Terminate infinite loop timers on combat end
 				self:TransitionToDungeonBGM(false, true)
-				self:Schedule(22, self.TransitionToDungeonBGM, self)--
+				self:Schedule(22, self.TransitionToDungeonBGM)--
 			end
 		end
 	end
