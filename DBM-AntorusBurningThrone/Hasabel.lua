@@ -61,7 +61,7 @@ local warnHungeringGloom				= mod:NewTargetAnnounce(245075, 2, nil, false)
 local specWarnRealityTear				= mod:NewSpecialWarningStack(244016, nil, 2, nil, nil, 1, 6)
 local specWarnRealityTearOther			= mod:NewSpecialWarningTaunt(244016, nil, nil, nil, 1, 2)
 local specWarnTransportPortal			= mod:NewSpecialWarningSwitch(244677, "-Healer", nil, 2, 1, 2)
-local specWarnCollapsingWorld			= mod:NewSpecialWarningSpell(243983, nil, nil, nil, 2, 2)
+local specWarnCollapsingWorld			= mod:NewSpecialWarningCount(243983, nil, nil, nil, 2, 2)
 local specWarnFelstormBarrage			= mod:NewSpecialWarningDodge(244000, nil, nil, nil, 2, 2)
 local specWarnFieryDetonation			= mod:NewSpecialWarningInterrupt(244709, "HasInterrupt", nil, 2, 1, 2)
 local specWarnHowlingShadows			= mod:NewSpecialWarningInterrupt(245504, "HasInterrupt", nil, nil, 1, 2)
@@ -117,6 +117,7 @@ mod:AddBoolOption("ShowAllPlatforms", false)
 
 mod.vb.shieldsActive = false
 mod.vb.felBarrageCast = 0
+mod.vb.worldCount = 0
 mod.vb.firstPortal = false
 local playerPlatform = 1--1 Nexus, 2 Xoroth, 3 Rancora, 4 Nathreza
 local mindFog, aegisFlames, felMiasma = DBM:GetSpellInfo(245099), DBM:GetSpellInfo(244383), DBM:GetSpellInfo(244826)
@@ -178,6 +179,7 @@ function mod:OnCombatStart(delay)
 	self.vb.shieldsActive = false
 	self.vb.firstPortal = false
 	self.vb.felBarrageCast = 0
+	self.vb.worldCount = 0
 	playerPlatform = 1--Nexus
 	table.wipe(nexusPlatform)
 	table.wipe(xorothPlatform)
@@ -204,6 +206,7 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 243983 then
+		self.vb.worldCount = self.vb.worldCount + 1
 		if self:IsEasy() then
 			timerCollapsingWorldCD:Start(37.7)--37, but offen delayed by ICD
 			countdownCollapsingWorld:Start(37.8)
@@ -215,7 +218,7 @@ function mod:SPELL_CAST_START(args)
 			countdownCollapsingWorld:Start(31.9)
 		end
 		if self.Options.ShowAllPlatforms or playerPlatform == 1 then--Actually on nexus platform
-			specWarnCollapsingWorld:Show()
+			specWarnCollapsingWorld:Show(self.vb.worldCount)
 			specWarnCollapsingWorld:Play("watchstep")
 		end
 		updateAllTimers(self, 9.7)
