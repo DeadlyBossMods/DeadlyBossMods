@@ -400,7 +400,7 @@ local breakTimerStart
 local AddMsg
 local delayedFunction
 
-local fakeBWVersion, fakeBWHash = 89, "e601bae"
+local fakeBWVersion, fakeBWHash = 91, "571062d"
 local versionQueryString, versionResponseString = "Q^%d^%s", "V^%d^%s"
 
 local enableIcons = true -- set to false when a raid leader or a promoted player has a newer version of DBM
