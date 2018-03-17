@@ -49,6 +49,7 @@ local warnSoulbomb					= mod:NewTargetAnnounce(251570, 3)
 local warnAvatarofAggra				= mod:NewTargetNoFilterAnnounce(255199, 1)
 --Stage Three: The Arcane Masters
 local warnCosmicRay					= mod:NewTargetAnnounce(252729, 3)
+local warnCosmicBeaconCast			= mod:NewCastAnnounce(252616, 2)
 local warnCosmicBeacon				= mod:NewTargetAnnounce(252616, 2)
 local warnDiscsofNorg				= mod:NewCastAnnounce(252516, 1)
 --Stage Three Mythic
@@ -123,7 +124,7 @@ local timerAvatarofAggraCD			= mod:NewCDTimer(59.9, 255199, nil, nil, nil, 5, ni
 --Stage Three: The Arcane Masters
 mod:AddTimerLine(SCENARIO_STAGE:format(3))
 local timerCosmicRayCD				= mod:NewCDTimer(19.9, 252729, nil, nil, nil, 3)--All adds seem to cast it at same time, so one timer for all
-local timerCosmicBeaconCD			= mod:NewCDTimer(19.9, 252616, nil, nil, nil, 3)--All adds seem to cast it at same time, so one timer for all
+local timerCosmicBeaconCD			= mod:NewCDTimer(19.9, 252616, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)--All adds seem to cast it at same time, so one timer for all
 local timerDiscsofNorg				= mod:NewCastTimer(12, 252516, nil, nil, nil, 6)
 mod:AddTimerLine(ENCOUNTER_JOURNAL_SECTION_FLAG12)--Mythic 3
 local timerSoulrendingScytheCD		= mod:NewCDTimer(8.5, 258838, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
@@ -400,6 +401,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 252729 and self:AntiSpam(5, 3) then
 		timerCosmicRayCD:Start()
 	elseif spellId == 252616 and self:AntiSpam(5, 4) then
+		warnCosmicBeaconCast:Show()
 		timerCosmicBeaconCD:Start()
 	elseif spellId == 256388 and self:AntiSpam(5, 8) then--Initialization Sequence
 		self.vb.moduleCount = self.vb.moduleCount + 1
