@@ -304,7 +304,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnCleansingProtocol:Show()
 		specWarnCleansingProtocol:Play("targetchange")
 		countdownCleansingProtocol:Start()
-	elseif spellId == 233556 and self:AntiSpam(2, 2) and self.vb.phase == 1 then
+	elseif spellId == 233556 and self:AntiSpam(2, 2) and self.vb.phase == 1 and not self:IsLFR() then
 		specWarnCorruptedMatrix:Show(beamName)
 		specWarnCorruptedMatrix:Play("bosstobeam")
 		if self:IsMythic() then
