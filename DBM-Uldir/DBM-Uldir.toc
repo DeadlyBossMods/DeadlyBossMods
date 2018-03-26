@@ -20,7 +20,7 @@ localization.kr.lua
 Hezrel.lua
 Mother.lua
 FetidDevourer.lua
-TitanDiscs.lua
+Zekvhozj.lua
 BloodofGhuun.lua
 Ghuun.lua
 UldirTrash.lua
