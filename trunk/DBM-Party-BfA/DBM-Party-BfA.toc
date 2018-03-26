@@ -51,11 +51,11 @@ TempleofSethraliss\Merektha.lua
 TempleofSethraliss\Galvazzt.lua
 TempleofSethraliss\AvatarofSethraliss.lua
 TempleofSethraliss\SethralissTrash.lua
-TheUndermine\CrowdPummeler.lua
-TheUndermine\Tikali.lua
-TheUndermine\RixxaFluxflame.lua
-TheUndermine\MogulRazzdunk.lua
-TheUndermine\UndermineTrash.lua
+TheMotherload\CrowdPummeler.lua
+TheMotherload\Tikali.lua
+TheMotherload\RixxaFluxflame.lua
+TheMotherload\MogulRazzdunk.lua
+TheMotherload\UndermineTrash.lua
 TheUnderrot\ElderLeaxa.lua
 TheUnderrot\InfestedCrawg.lua
 TheUnderrot\SporecallerZancha.lua
