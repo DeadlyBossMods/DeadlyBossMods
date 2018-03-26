@@ -18,6 +18,11 @@ L:SetMiscLocalization({
 })
 
 ---------------------------
+-- Taloc the Corrupted --
+---------------------------
+L= DBM:GetModLocalization(2168)
+
+---------------------------
 -- MOTHER --
 ---------------------------
 L= DBM:GetModLocalization(2167)
@@ -28,7 +33,7 @@ L= DBM:GetModLocalization(2167)
 L= DBM:GetModLocalization(2146)
 
 ---------------------------
--- Titan Discs --
+-- Zek'vhozj --
 ---------------------------
 L= DBM:GetModLocalization(2169)
 
