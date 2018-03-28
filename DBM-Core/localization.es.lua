@@ -10,8 +10,11 @@ DBM_CORE_LOAD_GUI_ERROR				= "No se ha podido cargar la interfaz: %s"
 DBM_CORE_LOAD_GUI_COMBAT			= "La interfaz no se puede cargar en combate. Se cargará la interfaz al salir de combate. Una vez cargada, podrás iniciar la interfaz en combate."
 DBM_CORE_BAD_LOAD					= "DBM ha detectado que no se ha podido cargar el módulo de esta estancia porque estás en combate. Por favor, escribe '/console reloadui' nada más salir de combate."
 DBM_CORE_LOAD_MOD_VER_MISMATCH		= "No se ha podido cargar el módulo de %s porque tu módulo de DBM-Core no cumple los requisitos necesarios. Se necesita una versión más reciente."
+DBM_CORE_LOAD_MOD_EXP_MISMATCH		= "No se ha podido cargar el módulo de %s porque está diseñado para una expansión que aún no se encuentra disponible. Este módulo se habilitará automáticamente cuando salga la nueva expansión."
 DBM_CORE_LOAD_MOD_DISABLED			= "%s está instalado pero se encuentra desactivado. Este módulo no se cargará hasta que lo actives."
 DBM_CORE_LOAD_MOD_DISABLED_PLURAL	= "%s están instalados pero se encuentran desactivados. Estos módulos no se cargarán hasta que los actives."
+
+DBM_COPY_URL_DIALOG					= "Copiar vínculo"
 
 --Post Patch 7.1
 DBM_CORE_NO_RANGE					= "No se puede usar el radar de distancia en estancias. Se procederá a usar el marco de distancia por texto."
@@ -446,6 +449,7 @@ DBM_CORE_AUTO_YELL_OPTION_TEXT.fade		= "Gritar (con duración restante y tu nomb
 DBM_CORE_AUTO_YELL_OPTION_TEXT.shortfade		= "Gritar (con duración restante) cuando $spell:%s esté a punto de expirar"
 DBM_CORE_AUTO_YELL_OPTION_TEXT.iconfade		= "Gritar (con duración restante e icono) cuando $spell:%s esté a punto de expirar"
 DBM_CORE_AUTO_YELL_OPTION_TEXT.position	= "Gritar (con posición) cuando te afecte $spell:%s"
+DBM_CORE_AUTO_YELL_OPTION_TEXT.combo			= "Gritar (con texto personalizado) cuando te afecten $spell:%s y otro(s) hechizo(s) a la vez"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.shortyell		= "%s"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.yell		= "¡%s en " .. UnitName("player") .. "!"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.count		= "¡%s en " .. UnitName("player") .. "! (%%d)"
@@ -453,6 +457,7 @@ DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.fade		= "%s expirando en %%d"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.shortfade		= "%%d"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.iconfade		= "{rt%%2$d}%%1$d"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.position 	= "%s %%s en {rt%%d}"..UnitName("player").."{rt%%d}"
+DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.combo			= "%s y %%s"--Spell name (from option, plus spellname given in arg)
 DBM_CORE_AUTO_YELL_CUSTOM_POSITION		= "{rt%d}%s{rt%d}"
 DBM_CORE_AUTO_YELL_CUSTOM_POSITION2		= "{rt%d}{rt%d}%s{rt%d}{rt%d}"
 DBM_CORE_AUTO_YELL_CUSTOM_FADE			= "%s ha expirado"
