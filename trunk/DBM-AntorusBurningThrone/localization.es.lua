@@ -118,6 +118,10 @@ L:SetOptionLocalization({
 --------------
 L= DBM:GetModLocalization(1984)
 
+L:SetOptionLocalization({
+	ignoreThreeTank	= "Deshabilitar avisos especiales de provocar para Domaenemigos y Desgarro de llamas cuando haya tres o más tanques en el grupo de banda (DBM no puede determinar una rotación exacta con esa composición). Si muere uno de los tanques, los avisos se rehabilitan automáticamente."
+})
+
 L:SetMiscLocalization({
 	Foe			=	"Doma",
 	Rend		=	"Desgarro",
@@ -130,9 +134,21 @@ L:SetMiscLocalization({
 --------------------------
 L= DBM:GetModLocalization(2031)
 
+L:SetTimerLocalization({
+	timerSargSentenceCD	= "Sentencia TdR (%s)"
+})
+
+L:SetOptionLocalization({
+	timerSargSentenceCD		=	DBM_CORE_AUTO_TIMER_OPTIONS["cdcount"]:format(257966)
+})
+
 L:SetMiscLocalization({
-	SeaText =		"{rt6} Celeridad/Versatilidad",
-	SkyText =		"{rt5} Crítico/Maestría"
+	SeaText		=	"{rt6} Celeridad/Versatilidad",
+	SkyText		=	"{rt5} Crítico/Maestría",
+	Blight		=	"Añublo",
+	Burst		=	"Ráfaga",
+	Sentence	=	"Sentencia",
+	Bomb		=	"Bomba"
 })
 
 ----------------------

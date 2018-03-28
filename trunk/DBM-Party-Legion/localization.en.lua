@@ -300,6 +300,7 @@ L:SetMiscLocalization({
 	Pouch2		= "A friend said the spy loves gold and a belt pouch filled with it.",
 	Pouch3		= "I heard the spy's belt pouch is filled with gold to show off extravagance.",
 	Pouch4		= "I heard the spy's belt pouch is lined with fancy threading.",
+	Found		= "Now now, let's not get hasty",
 	--
 	Gloves		= "gloves",
 	NoGloves	= "no gloves",
