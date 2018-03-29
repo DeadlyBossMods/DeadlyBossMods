@@ -250,11 +250,12 @@ do
 			self:ResetGossipState()
 		end
 	end
-	function mod:OnBWSync(msg)
-		msg = tonumber(msg)
-		if msg and msg > 0 and msg < 15 then
-			DBM:Debug("Recieved BigWigs Comm:"..msg)
-			local bwClue = bwClues[msg]
+	function mod:OnBWSync(msg, extra)
+		if msg ~= "clue" then return end
+		extra = tonumber(extra)
+		if extra and extra > 0 and extra < 15 then
+			DBM:Debug("Recieved BigWigs Comm:"..extra)
+			local bwClue = bwClues[extra]
 			hints[bwClue] = true
 			DBM.InfoFrame:Show(5, "function", updateInfoFrame)
 		end
