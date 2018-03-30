@@ -200,7 +200,9 @@ end
 
 local function show(runAway, x, y, distance, time, legacy)
 	if DBM:HasMapRestrictions() then return end
-	DBM:AddMsg(DBM_CORE_ARROW_SUMMONED)
+	if not frame:IsShown() then
+		DBM:AddMsg(DBM_CORE_ARROW_SUMMONED)
+	end
 	local player
 	if type(x) == "string" then
 		player, hideDistance, hideTime = x, y, hideDistance
