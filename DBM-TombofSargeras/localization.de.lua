@@ -62,6 +62,10 @@ L:SetMiscLocalization({
 ---------------------------
 L= DBM:GetModLocalization(1898)
 
+L:SetWarningLocalization({
+	warnSingularitySoon		= "Rückstoß in %ds"
+})
+
 L:SetMiscLocalization({
 	Obelisklasers	= "Obeliskenlaser"
 })

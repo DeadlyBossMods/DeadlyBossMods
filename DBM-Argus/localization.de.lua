@@ -15,6 +15,10 @@ L:SetMiscLocalization({
 -----------------------
 L= DBM:GetModLocalization(2013)
 
+L:SetMiscLocalization({
+	Pull				= "I see the weakness in your soul!"--translate (trigger)
+})
+
 -----------------------
 -- Sotanathor --
 -----------------------
@@ -29,6 +33,10 @@ L:SetMiscLocalization({
 -----------------------
 L= DBM:GetModLocalization(2011)
 
+L:SetMiscLocalization({
+	Pull				= "New playthings? How irresistible!"--translate (trigger)
+})
+
 -----------------------
 -- Matron Folnuna --
 -----------------------
@@ -42,3 +50,7 @@ L:SetMiscLocalization({
 -- Pit Lord Vilemus --
 -----------------------
 L= DBM:GetModLocalization(2015)
+
+L:SetMiscLocalization({
+	Pull				= "All worlds will burn in felfire!"--translate (trigger)
+})
