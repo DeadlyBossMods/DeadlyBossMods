@@ -7,7 +7,7 @@ L.MainFrame = "Deadly Boss Mods"
 L.TranslationByPrefix		= "Übersetzt von "
 L.TranslationBy 			= "Ebmor@EU-Malorne"
 L.Website					= "Besuche uns auf Discord: |cFF73C2FBhttps://discord.gg/deadlybossmods|r. Folge auf Twitter: @deadlybossmods oder @MysticalOS"
-L.WebsiteButton				= "Foren"
+L.WebsiteButton				= "Webseite"
 
 L.OTabBosses	= "Bosse"
 L.OTabOptions	= GAMEOPTIONS_MENU
@@ -88,6 +88,7 @@ L.Warn_FontShadow			= "Schatten"
 L.Warn_FontSize				= "Schriftgröße: %d"
 L.Warn_Duration				= "Warnungsdauer: %0.1fs"
 L.None						= "normal"
+L.Random					= "Zufall"
 L.Outline					= "mit Umriss"
 L.ThickOutline				= "mit dickem Umriss"
 L.MonochromeOutline			= "ohne Glättung, mit Umriss"
@@ -210,11 +211,32 @@ L.SWFDefaultOnly			= "Spezialwarnungen eingestellt auf den Standardsound (spielt
 L.SWFAll					= "Spezialwarnungen eingestellt auf irgendeinen Sound"
 L.SpecWarn_AlwaysVoice		= "Spiele immer alle gesprochenen Warnungen (ignoriert Boss-spezifische Einstellung, nützlich für Schlachtzugsleiter)"
 
+L.Area_GetVEM				= "Hole VEM Sprachpack"
+--L.VEMDownload
+L.Area_BrowseOtherVP		= "Suche andere Sprachpacks auf Curse"
+--L.BrowseOtherVPs
+L.Area_BrowseOtherCT		= "Suche Countdownpacks auf Curse"
+--L.BrowseOtherCTs
+
+-- Tab: Event Sounds
+L.Panel_EventSounds			= "Ereignisklänge"
+L.Area_SoundSelection		= "Soundauswahl (scrollbar per Mausrad)"
+L.EventVictorySound			= "Sound gespielt nach Sieg im Kampf"
+L.EventWipeSound			= "Sound gespielt nach Niederlage im Kampf"
+L.EventEngageSound			= "Sound gespielt bei Kampfbeginn"
+L.EventDungeonMusic			= "Musik gepielt innerhalb Dungeons/SZs"
+L.EventEngageMusic			= "Musik gepielt während Kämpfen"
+L.Area_EventSoundsExtras	= "Einstellungen für Ereignisklänge"
+L.EventMusicCombined		= "Alle Musikauswahlmöglichkeiten für Dungeons und Kämpfe zulassen (Änderungen dieser Einstellung werden erst nach \"/reload\" sichtbar.)"
+L.Area_EventSoundsFilters	= "Filter für Ereignisklänge"
+L.EventFilterDungMythicMusic= "Spiele keine Dungeonmusik auf Schwierigkeitsgrad Mythisch/Mythisch+"
+L.EventFilterMythicMusic	= "Spiele keine Kampfmusik auf Schwierigkeitsgrad Mythisch/Mythisch+"
 
 -- Tab: Global Filter
 L.Panel_SpamFilter			= "Deaktivierung von DBM-Funktionen"
 L.Area_SpamFilter_Outgoing	= "Globale Deaktivierungs- und Filtereinstellungen für DBM"
-L.SpamBlockNoShowAnnounce	= "Zeige keine Mitteilungen und spiele keine Warnungssounds"
+L.SpamBlockNoShowAnnounce	= "Zeige keinen Text und spiele keine Sounds für JEGLICHE allgemeine Meldungen"
+L.SpamBlockNoShowTgtAnnounce= "Zeige keinen Text und spiele keine Sounds für allgemeine ZIEL-Meldungen (wird durch obigen Filter überschrieben)"
 L.SpamBlockNoSpecWarn		= "Zeige keine Spezialwarnungen und spiele keine Spezialwarnungssounds"
 L.SpamBlockNoShowTimers		= "Zeige keine Mod-Timer (Boss Mod/Herausforderungsmodus/Gruppensuche/Wiedererscheinen)"
 L.SpamBlockNoShowUTimers	= "Zeige keine von anderen gesendeten Timer (benutzerdefiniert/Pull/Pause)"

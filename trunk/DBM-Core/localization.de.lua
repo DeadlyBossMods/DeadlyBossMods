@@ -1,6 +1,6 @@
 if GetLocale() ~= "deDE" then return end
 
-DBM_HOW_TO_USE_MOD					= "Willkommen bei DBM. Tippe /dbm help für eine Liste unterstützter Kommandos. Für den Zugriff auf Einstellungen tippe /dbm in den Chat um die Konfiguration zu beginnen. Lade gewünschte Zonen manuell um jegliche Boss-spezifische Einstellungen nach deinen Wünschen zu konfigurieren. DBM versucht dies für dich zu tun, indem es beim ersten Start deine Spezialisierung scannt, aber du kannst zusätzliche Einstellungen aktivieren."
+DBM_HOW_TO_USE_MOD					= "Willkommen bei DBM. Tippe /dbm help für eine Liste unterstützter Kommandos. Für den Zugriff auf Einstellungen tippe /dbm in den Chat um die Konfiguration zu beginnen. Lade gewünschte Zonen manuell um jegliche Boss-spezifische Einstellungen nach deinen Wünschen zu konfigurieren. DBM setzt Standardeinstellungen für deine Spezialisierung, die du aber noch genauer anpassen kannst."
 DBM_SILENT_REMINDER					= "Erinnerung: DBM befindet sich noch im Lautlos-Modus."
 
 DBM_CORE_LOAD_MOD_ERROR				= "Fehler beim Laden der Boss Mods für %s: %s"
@@ -10,12 +10,16 @@ DBM_CORE_LOAD_GUI_ERROR				= "Konnte die grafische Benutzeroberfläche nicht lad
 DBM_CORE_LOAD_GUI_COMBAT			= "Die grafische Benutzeroberfläche kann nicht im Kampf geladen werden. Zur Vornahme von Einstellungen bitte diese zunächst außerhalb des Kampfes laden. Danach steht sie auch im Kampf zur Verfügung."
 DBM_CORE_BAD_LOAD					= "Dein Boss Mod für diese Instanz konnte nicht vollständig korrekt im Kampf geladen werden. Bitte führe baldmöglichst nach Kampfende /reload aus."
 DBM_CORE_LOAD_MOD_VER_MISMATCH		= "%s kann nicht geladen werden, da dein DBM-Core die Voraussetzungen nicht erfüllt. Es wird eine aktualisierte Version benötigt."
+DBM_CORE_LOAD_MOD_EXP_MISMATCH		= "%s kann nicht geladen werden, da es für eine WoW Erweiterung entwickelt wurde, die derzeit nicht verfügbar ist. Mit Verfügbarkeit der neuen Erweiterung wird dieses Mod automatisch funktionieren."
 DBM_CORE_LOAD_MOD_DISABLED			= "%s ist installiert, aber derzeit nicht aktiviert. Dieses Mod wird nicht geladen, falls du es nicht aktivierst."
 DBM_CORE_LOAD_MOD_DISABLED_PLURAL	= "%s sind installiert, aber derzeit nicht aktiviert. Diese Mods werden nicht geladen, falls du sie nicht aktivierst."
+
+DBM_COPY_URL_DIALOG					= "Kopiere URL"
 
 --Post Patch 7.1
 DBM_CORE_NO_RANGE					= "Das Abstandsradar kann in Instanzen nicht genutzt werden. Es wird stattdessen die alte textbasierte Abstandsanzeige verwendet."
 DBM_CORE_NO_ARROW					= "Der Pfeil kann in Instanzen nicht genutzt werden."
+DBM_CORE_ARROW_SUMMONED				= "Der Pfeil wurde aktiviert. Falls du das nicht manuell gemacht hast, dann hast du ein Addon eines Drittanbieters so konfiguriert, dass es den Pfeil für dich aktiviert."
 DBM_CORE_NO_HUD						= "Die HudMap kann in Instanzen nicht genutzt werden."
 
 DBM_CORE_DYNAMIC_DIFFICULTY_CLUMP	= "DBM hat das dynamische Abstandsfenster für diesen Kampf deaktiviert, da nicht genügend Informationen vorliegen, auf wieviel versammelte Spieler bei deiner Gruppengröße geprüft werden muss."
@@ -26,7 +30,7 @@ DBM_CORE_LOOT_SPEC_REMINDER			= "Deine aktuelle Spezialisierung ist %s. Deine ak
 
 DBM_CORE_BIGWIGS_ICON_CONFLICT		= "DBM hat festgestellt, dass du das Setzen von Schlachtzugzeichen in \"BigWigs\" und in \"DBM\" aktiviert hast. Bitte deaktiviere das Setzen von Zeichen in einem der beiden Addons um Konflikte zu vermeiden."
 
-DBM_CORE_MOD_AVAILABLE				= "Das Mod \"%s\" ist für diesen Spielinhalt verfügbar. Du kannst es auf |HDBM:forums|h|cff3588ffdeadlybossmods.com|r oder Curse finden. Dieser Hinweis wird nur einmal angezeigt."
+DBM_CORE_MOD_AVAILABLE				= "Das Mod \"%s\" ist für diese Zone/Boss verfügbar. Du kannst es von Curse/WoWI oder deadlybossmods.com herunterladen."
 
 DBM_CORE_COMBAT_STARTED				= "Kampf gegen %s hat begonnen. Viel Glück! :)";
 DBM_CORE_COMBAT_STARTED_IN_PROGRESS	= "Du wurdest in den laufenden Kampf gegen %s verwickelt. Viel Glück! :)"
@@ -151,7 +155,7 @@ DBM_CORE_VOICE_DISABLED				= "Du hast derzeit mindestens einen DBM Sprachpack in
 DBM_CORE_VOICE_COUNT_MISSING		= "Für die Countdown-Stimme %d ist ein Sprach-/Zählpack ausgewählt, der nicht gefunden werden konnte. Die Stimme wurde auf die Standardeinstellung zurückgesetzt: %s."
 --DBM_BIG_WIGS
 
-DBM_CORE_UPDATEREMINDER_HEADER			= "Deine Version von Deadly Boss Mods ist veraltet.\n Version %s (r%d) ist über Curse, WoWI oder hier zum Download verfügbar:"
+DBM_CORE_UPDATEREMINDER_HEADER			= "Deine Version von Deadly Boss Mods ist veraltet.\n Version %s (r%d) kann über Curse/Twitch, WoWI oder von deadlybossmods.com heruntergeladen werden."
 DBM_CORE_UPDATEREMINDER_HEADER_ALPHA	= "Deine ALPHA-Version von Deadly Boss Mods ist veraltet.\nDu liegst mindestens %d Revisionen zurück. Es wird empfohlen bei einer Entscheidung für ALPHA-Versionen immer die neueste ALPHA-Version zu nutzen. Ansonsten sollte die neueste RELEASE-Version genutzt werden. ALPHA-Versionen haben eine strengere Versionsprüfung, da diese Entwicklungsversionen von DBM sind."
 DBM_CORE_UPDATEREMINDER_FOOTER			= "Drücke " .. (IsMacClient() and "Cmd-C" or "Strg+C")  ..  " um den Downloadlink in die Zwischenablage zu kopieren."
 DBM_CORE_UPDATEREMINDER_FOOTER_GENERIC	= "Drücke " .. (IsMacClient() and "Cmd-C" or "Strg+C")  ..  " um den Link in die Zwischenablage zu kopieren."
@@ -168,7 +172,8 @@ DBM_CORE_OUT_OF_DATE_NAG				= "Deine Version von Deadly Boss Mods ist veraltet. 
 
 DBM_CORE_MOVABLE_BAR				= "Zieh mich!"
 
-DBM_PIZZA_SYNC_INFO					= "|Hplayer:%1$s|h[%1$s]|h hat dir einen DBM-Timer geschickt: '%2$s'\n|HDBM:cancel:%2$s:nil|h|cff3588ff[Diesen Timer abbrechen]|r|h  |HDBM:ignore:%2$s:%1$s|h|cff3588ff[Timer von %1$s ignorieren]|r|h"
+--DBM_PIZZA_SYNC_INFO					= "|Hplayer:%1$s|h[%1$s]|h hat dir einen DBM-Timer geschickt: '%2$s'\n|HDBM:cancel:%2$s:nil|h|cff3588ff[Diesen Timer abbrechen]|r|h  |HDBM:ignore:%2$s:%1$s|h|cff3588ff[Timer von %1$s ignorieren]|r|h"
+DBM_PIZZA_SYNC_INFO					= "|Hplayer:%1$s|h[%1$s]|h hat dir einen DBM-Timer geschickt"
 DBM_PIZZA_CONFIRM_IGNORE			= "Willst du wirklich DBM-Timer von %s für diese Sitzung ignorieren?"
 DBM_PIZZA_ERROR_USAGE				= "Benutzung: /dbm [broadcast] timer <Sekunden> <Text>. <Sekunden> muss größer als 1 sein."
 
@@ -241,6 +246,8 @@ DBM_CORE_UNKNOWN					= "unbekannt"
 DBM_CORE_LEFT						= "Links"
 DBM_CORE_RIGHT						= "Rechts"
 DBM_CORE_BACK						= "Hinten"
+DBM_CORE_TOP						= "Oben"
+DBM_CORE_BOTTOM						= "Unten"
 DBM_CORE_MIDDLE						= "Mitte"
 DBM_CORE_FRONT						= "Vorne"
 DBM_CORE_EAST						= "Osten"
@@ -254,7 +261,9 @@ DBM_NO_DEBUFF						= "Kein %s"
 DBM_ALLY							= "Verbündeten"
 DBM_ADDS							= "Adds"
 DBM_CORE_ROOM_EDGE					= "Rand des Raums"
+DBM_CORE_FAR_AWAY					= "Weit weg"
 DBM_CORE_SAFE						= "Sicher"
+DBM_CORE_SHIELD						= "Schutzschild"
 DBM_INCOMING						= "%s kommt"
 --Common Locals end
 
@@ -390,11 +399,11 @@ DBM_CORE_AUTO_TIMER_TEXTS.ai			= "%s KI"
 DBM_CORE_AUTO_TIMER_TEXTS.cd			= "%s CD"
 DBM_CORE_AUTO_TIMER_TEXTS.cdcount		= "%s CD (%%s)"
 DBM_CORE_AUTO_TIMER_TEXTS.cdsource	= "%s CD: >%%s<"
-DBM_CORE_AUTO_TIMER_TEXTS.cdspecial	= "Spezialfähigkeit CD"
+DBM_CORE_AUTO_TIMER_TEXTS.cdspecial	= "Spezial CD"
 DBM_CORE_AUTO_TIMER_TEXTS.next		= "Nächster %s"
 DBM_CORE_AUTO_TIMER_TEXTS.nextcount	= "Nächster %s (%%s)"
 DBM_CORE_AUTO_TIMER_TEXTS.nextsource	= "Nächster %s: %%s"
-DBM_CORE_AUTO_TIMER_TEXTS.nextspecial	= "Nächste Spezialfähigkeit"
+DBM_CORE_AUTO_TIMER_TEXTS.nextspecial	= "Nächste Spezial"
 DBM_CORE_AUTO_TIMER_TEXTS.achievement	= "%s"
 DBM_CORE_AUTO_TIMER_TEXTS.stage		= "Nächste Phase"
 DBM_CORE_AUTO_TIMER_TEXTS.adds		= "Nächste Adds"
@@ -442,6 +451,7 @@ DBM_CORE_AUTO_YELL_OPTION_TEXT.fade			= "Schreie (mit Countdown und Zaubernamen)
 DBM_CORE_AUTO_YELL_OPTION_TEXT.shortfade	= "Schreie (mit Countdown), wenn $spell:%s endet"
 DBM_CORE_AUTO_YELL_OPTION_TEXT.iconfade		= "Schreie (mit Countdown und Zeichen), wenn $spell:%s endet"
 DBM_CORE_AUTO_YELL_OPTION_TEXT.position		= "Schreie (mit Position), wenn du von $spell:%s betroffen bist"
+DBM_CORE_AUTO_YELL_OPTION_TEXT.combo		= "Schreie (mit angepasstem Text), wenn du gleichzeitig von $spell:%s und einem weiteren Zauber betroffen bist"
 
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.shortyell	= "%s"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.yell		= "%s auf " .. UnitName("player")
@@ -450,6 +460,7 @@ DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.fade		= "%s endet in %%d"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.shortfade	= "%%d"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.iconfade	= "{rt%%2$d}%%1$d"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.position	= "%s %%s auf {rt%%d}"..UnitName("player").."{rt%%d}"
+DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.combo		= "%s und %%s"
 
 --DBM_CORE_AUTO_YELL_CUSTOM_POSITION
 DBM_CORE_AUTO_YELL_CUSTOM_FADE			= "%s beendet"
@@ -517,7 +528,8 @@ DBM_INSTANCE_INFO_STATS_DENIED		= "Anfrage abgelehnt: %s"
 DBM_INSTANCE_INFO_STATS_AWAY		= "Abwesend: %s"
 DBM_INSTANCE_INFO_STATS_NO_RESPONSE	= "Keine aktuelle DBM-Version installiert: %s"
 DBM_INSTANCE_INFO_RESULTS			= "Ergebnis des Instanzsperren-Scans (IDs). Bitte beachte, dass Instanzen mehrmals angezeigt werden, wenn sich Spieler mit anderssprachigen WoW-Klienten im Schlachtzug befinden."
-DBM_INSTANCE_INFO_SHOW_RESULTS		= "Spieler die noch nicht geantwortet haben: %s\n|HDBM:showRaidIdResults|h|cff3588ff[Ergebnisse jetzt anzeigen]|r|h"
+--DBM_INSTANCE_INFO_SHOW_RESULTS		= "Spieler die noch nicht geantwortet haben: %s\n|HDBM:showRaidIdResults|h|cff3588ff[Ergebnisse jetzt anzeigen]|r|h"
+DBM_INSTANCE_INFO_SHOW_RESULTS		= "Spieler die noch nicht geantwortet haben: %s"
 
 DBM_CORE_LAG_CHECKING				= "Prüfe Schlachtzuglatenz..."
 DBM_CORE_LAG_HEADER					= "Deadly Boss Mods - Latenzergebnisse"
@@ -529,18 +541,3 @@ DBM_CORE_DUR_HEADER					= "Deadly Boss Mods - Haltbarkeitergebnisse"
 DBM_CORE_DUR_ENTRY					= "%s: Haltbarkeit [%d Prozent] / Ausrüstung defekt [%s]"
 DBM_CORE_LAG_FOOTER					= "Keine Antwort: %s"
 
---Role Icons
---DBM_CORE_TANK_ICON
---DBM_CORE_HEALER_ICON
---DBM_CORE_DAMAGE_ICON
---Importance Icons
---DBM_CORE_HEROIC_ICON
---DBM_CORE_DEADLY_ICON
---DBM_CORE_IMPORTANT_ICON
---Type Icons
---DBM_CORE_INTERRUPT_ICON
---DBM_CORE_MAGIC_ICON
---DBM_CORE_POISON_ICON
---DBM_CORE_DISEASE_ICON
---DBM_CORE_CURSE_ICON
---DBM_CORE_ENRAGE_ICON
