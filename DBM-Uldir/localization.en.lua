@@ -1,9 +1,9 @@
 local L
 
 ---------------
--- Titan Keeper Hezrel --
+-- Mythrax the Unraveler --
 ---------------
-L= DBM:GetModLocalization(2168)
+L= DBM:GetModLocalization(2194)
 
 L:SetWarningLocalization({
 })
@@ -16,6 +16,11 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 })
+
+---------------------------
+-- Zul --
+---------------------------
+L= DBM:GetModLocalization(2195)
 
 ---------------------------
 -- Taloc the Corrupted --
