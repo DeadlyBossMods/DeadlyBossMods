@@ -5235,8 +5235,9 @@ do
 		end
 	end
 
-	function DBM:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, spellGUID, spellId)
-		--local correctSpellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
+	function DBM:UNIT_SPELLCAST_SUCCEEDED(uId, _, bfaSpellId, _, legacySpellId)
+		local spellId = legacySpellId or bfaSpellId
+		local spellName = DBM:GetSpellInfo(spellId)
 		self:Debug("UNIT_SPELLCAST_SUCCEEDED fired: "..UnitName(uId).."'s "..spellName.."("..spellId..")", 3)
 	end
 
@@ -6253,13 +6254,18 @@ function DBM:EJ_GetSectionInfo(sectionID)
 	return	info.title, info.description, info.headerType, info.abilityIcon, info.creatureDisplayID, info.siblingSectionID, info.firstChildSectionID, info.filteredByDifficulty, info.link, info.startsOpen, flag1, flag2, flag3, flag4
 end
 
---Handle new spell name requesting in 7.3.5
-function DBM:GetSpellInfo(spellId)
-	local name, rank, icon, castingTime, minRange, maxRange, returnedSpellId = GetSpellInfo(spellId)
+--Handle new spell name requesting in 8.x
+function DBM:GetSpellInfo(spellId, isLoad)
+	local name, rank, icon, castingTime, minRange, maxRange, returnedSpellId 
+	if C_Spell and isLoad then--isLoad only true if GetSpellInfo used on mod load, such as DBM-GUI or loading of boss mods
+		name, rank, icon, castingTime, minRange, maxRange, returnedSpellId = C_Spell.RequestLoadSpellData(spellId)
+	else
+		name, rank, icon, castingTime, minRange, maxRange, returnedSpellId = GetSpellInfo(spellId)
+	end
 	if not returnedSpellId then--Bad request all together
 		DBM:Debug("|cffff0000Invalid call to GetSpellInfo for spellID: |r"..spellId)
 		return nil
-	elseif not name or name == "" then--7.3.5 PTR returned blank/nil name, name not yet cached and will only be available after next SPELL_NAME_UPDATE event
+	elseif not name or name == "" then--8.x returned blank/nil name, name not yet cached and will only be available after next SPELL_TEXT_UPDATE event
 		return "ReloadUI To Fix", rank, icon, castingTime, minRange, maxRange, returnedSpellId
 	else--Good request, return now
 		return name, rank, icon, castingTime, minRange, maxRange, returnedSpellId
@@ -9058,7 +9064,7 @@ end
 --  Yell Object  --
 --------------------
 do
---	local voidForm = DBM:GetSpellInfo(194249)
+--	local voidForm = DBM:GetSpellInfo(194249, true)
 	local yellPrototype = {}
 	local mt = { __index = yellPrototype }
 	local function newYell(self, yellType, spellId, yellText, optionDefault, optionName, chatType)
