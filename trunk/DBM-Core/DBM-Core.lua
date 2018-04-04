@@ -5076,7 +5076,7 @@ do
 		end)
 	end
 
-	function DBM:ShowNoteEditor(mod, modvar, abilityName, syncText, sender, rawspellId)
+	function DBM:ShowNoteEditor(mod, modvar, abilityName, syncText, sender)
 		if not frame then
 			createFrame()
 			self.Noteframe = frame
@@ -5090,13 +5090,6 @@ do
 		fontstringFooter:SetText(DBM_CORE_NOTEFOOTER)
 		self.Noteframe.mod = mod
 		self.Noteframe.modvar = modvar
-		if abilityName then
-			if type(abilityName) == "number" then--Still a dungeonID
-				abilityName = DBM:EJ_GetSectionInfo(abilityName)
-			elseif rawspellId and abilityName == "ReloadUI To Fix" then--Refresh spell name
-				abilityName = DBM:GetSpellInfo(rawspellId)
-			end
-		end
 		self.Noteframe.abilityName = abilityName
 		if syncText then
 			button3:Hide()--Don't show share button in shared notes
@@ -6255,19 +6248,12 @@ function DBM:EJ_GetSectionInfo(sectionID)
 	return	info.title, info.description, info.headerType, info.abilityIcon, info.creatureDisplayID, info.siblingSectionID, info.firstChildSectionID, info.filteredByDifficulty, info.link, info.startsOpen, flag1, flag2, flag3, flag4
 end
 
---Handle new spell name requesting in 8.x
-function DBM:GetSpellInfo(spellId, isLoad)
-	local name, rank, icon, castingTime, minRange, maxRange, returnedSpellId 
-	if C_Spell and isLoad then--isLoad only true if GetSpellInfo used on mod load, such as DBM-GUI or loading of boss mods
-		name, rank, icon, castingTime, minRange, maxRange, returnedSpellId = C_Spell.RequestLoadSpellData(spellId)
-	else
-		name, rank, icon, castingTime, minRange, maxRange, returnedSpellId = GetSpellInfo(spellId)
-	end
+--Handle new spell name requesting with wrapper, to make api changes easier to handle
+function DBM:GetSpellInfo(spellId)
+	local name, rank, icon, castingTime, minRange, maxRange, returnedSpellId  = GetSpellInfo(spellId)
 	if not returnedSpellId then--Bad request all together
 		DBM:Debug("|cffff0000Invalid call to GetSpellInfo for spellID: |r"..spellId)
 		return nil
-	elseif not name or name == "" then--8.x returned blank/nil name, name not yet cached and will only be available after next SPELL_TEXT_UPDATE event
-		return "ReloadUI To Fix", rank, icon, castingTime, minRange, maxRange, returnedSpellId
 	else--Good request, return now
 		return name, rank, icon, castingTime, minRange, maxRange, returnedSpellId
 	end
@@ -8507,10 +8493,6 @@ do
 					end
 				end
 			end
-			--Repair spell name on first announce through cpu inefficient and ugly hack
-			if self.spellName and self.spellName == "ReloadUI To Fix" then
-				self.text, self.spellName = setText(self.announceType, self.spellId, self.castTime, self.preWarnTime)
-			end
 			local message = pformat(self.text, unpack(argTable))
 			local text = ("%s%s%s|r%s"):format(
 				(DBM.Options.WarningIconLeft and self.icon and textureCode:format(self.icon)) or "",
@@ -9065,7 +9047,7 @@ end
 --  Yell Object  --
 --------------------
 do
---	local voidForm = DBM:GetSpellInfo(194249, true)
+	local voidForm = DBM:GetSpellInfo(194249)
 	local yellPrototype = {}
 	local mt = { __index = yellPrototype }
 	local function newYell(self, yellType, spellId, yellText, optionDefault, optionName, chatType)
@@ -9116,7 +9098,7 @@ do
 	end
 
 	function yellPrototype:Yell(...)
-		if DBM.Options.DontSendYells or self.yellType and self.yellType == "position" and UnitBuff("player", DBM:GetSpellInfo(194249)) or ScriptsDisallowedForBeta() then return end
+		if DBM.Options.DontSendYells or ScriptsDisallowedForBeta() or self.yellType and self.yellType == "position" and UnitBuff("player", voidForm) then return end
 		if not self.option or self.mod.Options[self.option] then
 			if self.yellType == "combo" then
 				SendChatMessage(pformat(self.text, ...), self.chatType or "YELL")
@@ -9400,10 +9382,6 @@ do
 						argTable[i] = combinedText
 					end
 				end
-			end
-			--CPU inefficient hack to fix spell name text on fly in first warning
-			if self.spellName and self.spellName == "ReloadUI To Fix" then
-				self.text, self.spellName = setText(self.announceType, self.spellId, self.stacks)
 			end
 			local message = pformat(self.text, unpack(argTable))
 			local text = ("%s%s%s"):format(
@@ -9977,10 +9955,6 @@ do
 				return false, "error" -- creating the timer failed somehow, maybe hit the hard-coded timer limit of 15
 			end
 			local msg = ""
-			if self.name and self.name == "ReloadUI To Fix" then
-				--Fix stored spell name if it's wrong in start object
-				self.name = DBM:GetSpellInfo(self.spellId)
-			end
 			if self.type and not self.text then
 				msg = pformat(self.mod:GetLocalizedTimerText(self.type, self.spellId, self.name), ...)
 			else
@@ -10362,7 +10336,7 @@ do
 
 	function bossModPrototype:GetLocalizedTimerText(timerType, spellId, Name)
 		local spellName
-		if Name and Name ~= "ReloadUI To Fix" then
+		if Name then
 			spellName = Name--Pull from name stored in object
 		elseif spellId then
 			DBM:Debug("|cffff0000GetLocalizedTimerText fallback, this should not happen and is a bug. this fallback should be deleted if this message is never seen after async code is live|r")
