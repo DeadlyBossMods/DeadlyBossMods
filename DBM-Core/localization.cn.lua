@@ -2,7 +2,7 @@
 -- Diablohu(diablohudream@gmail.com)
 -- yleaf(yaroot@gmail.com)
 -- Mini Dragon(projecteurs@gmail.com)
--- Last update: 2018/02/14
+-- Last update: 2018/04/04
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -25,6 +25,7 @@ DBM_COPY_URL_DIALOG					= "复制网址"
 --Post Patch 7.1
 DBM_CORE_NO_RANGE					= "距离雷达在副本中无法使用，该功能会使用文本代替"
 DBM_CORE_NO_ARROW					= "箭头在副本中无法使用"
+DBM_CORE_ARROW_SUMMONED				= "DBM箭头被启用了. 如果不是你启用的, 说明有一个第三方插件调用了DBM箭头."
 DBM_CORE_NO_HUD						= "HUDMap 在副本中无法使用"
 
 DBM_CORE_DYNAMIC_DIFFICULTY_CLUMP	= "由于玩家数量不足，DBM 无法开启动态距离检测。"
@@ -395,6 +396,7 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS.Addscustom		= "特殊警报：小怪(自定义)"
 -- Auto-generated Timer Localizations
 DBM_CORE_AUTO_TIMER_TEXTS.target				= "%s: >%%s<"
 DBM_CORE_AUTO_TIMER_TEXTS.cast					= "%s"
+DBM_CORE_AUTO_TIMER_TEXTS.castsource			= "%s: %%s"
 DBM_CORE_AUTO_TIMER_TEXTS.active				= "%s结束"--Buff/Debuff/event on boss
 DBM_CORE_AUTO_TIMER_TEXTS.fades					= "%s消失"--Buff/Debuff on players
 DBM_CORE_AUTO_TIMER_TEXTS.ai					= "%s人工智能计时冷却"
@@ -414,6 +416,7 @@ DBM_CORE_AUTO_TIMER_TEXTS.roleplay				= GUILD_INTEREST_RP
 
 DBM_CORE_AUTO_TIMER_OPTIONS.target				= "计时条：$spell:%s减益效果持续时间"
 DBM_CORE_AUTO_TIMER_OPTIONS.cast				= "计时条：$spell:%s施法时间"
+DBM_CORE_AUTO_TIMER_OPTIONS.castsource			= "计时条：$spell:%s施法时间(带来源)"
 DBM_CORE_AUTO_TIMER_OPTIONS.active				= "计时条：$spell:%s效果持续时间"
 DBM_CORE_AUTO_TIMER_OPTIONS.fades				= "计时条：$spell:%s何时从玩家身上消失"
 DBM_CORE_AUTO_TIMER_OPTIONS.ai					= "计时条：$spell:%s人工智能冷却时间"
@@ -467,8 +470,9 @@ DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.combo		= "%s, %%s"
 --DBM_CORE_AUTO_YELL_CUSTOM_POSITION			= "{rt%d}%s{rt%d}"--Doesn't need translating. Has no strings
 --DBM_CORE_AUTO_YELL_CUSTOM_POSITION2			= "{rt%d}{rt%d}%s{rt%d}{rt%d}"--Doesn't need translating. Has no strings
 DBM_CORE_AUTO_YELL_CUSTOM_FADE				= "%s 消失"
-DBM_CORE_AUTO_HUD_OPTION_TEXT				= "为$spell:%s显示HudMap"
-DBM_CORE_AUTO_HUD_OPTION_TEXT_MULTI			= "为多个机制显示HudMap"
+DBM_CORE_AUTO_HUD_OPTION_TEXT				= "为$spell:%s显示HudMap(退休了)"
+DBM_CORE_AUTO_HUD_OPTION_TEXT_MULTI			= "为多个机制显示HudMap(退休了)"
+DBM_CORE_AUTO_NAMEPLATE_OPTION_TEXT			= "为$spell:%s显示姓名面板光环"
 DBM_CORE_AUTO_RANGE_OPTION_TEXT				= "距离监视(%s码)：$spell:%s"--string used for range so we can use things like "5/2" as a value for that field
 DBM_CORE_AUTO_RANGE_OPTION_TEXT_SHORT		= "距离监视(%s码)"--For when a range frame is just used for more than one thing
 DBM_CORE_AUTO_RRANGE_OPTION_TEXT			= "反转距离监视(%s码)：$spell:%s"--Reverse range frame (green when players in range, red when not)
