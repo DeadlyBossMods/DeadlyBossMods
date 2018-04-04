@@ -118,7 +118,7 @@ function mod:UNIT_DIED(args)
 end
 --]]
 
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 257453 or spellId == 257304 then--Cannon Barrage (Stage 1), Cannon Barrage (Stage 2/3)
 		timerCannonBarrageCD:Start()
 	end
