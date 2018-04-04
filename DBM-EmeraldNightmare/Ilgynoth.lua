@@ -176,7 +176,7 @@ end
 
 local autoMarkOozes
 do
-	local UnitHealth, UnitHealthMax, UnitGUID, UnitCastingInfo, UnitIsUnit = UnitHealth, UnitHealthMax, UnitGUID, UnitCastingInfo, UnitIsUnit
+	local UnitHealth, UnitHealthMax, UnitGUID, UnitIsUnit = UnitHealth, UnitHealthMax, UnitGUID, UnitIsUnit
 	autoMarkOozes = function(self)
 		self:Unschedule(autoMarkOozes)
 		if self.vb.IchorCount == 0 then
