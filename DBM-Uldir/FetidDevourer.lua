@@ -78,6 +78,8 @@ do
 				if cid == 133492 then
 					local unitHealth = UnitHealth(UnitID) / UnitHealthMax(UnitID)
 					local _, _, _, _, startTime, endTime = UnitCastingInfo(UnitID)
+					--8.0 FIXME
+					--local _, _, _, startTime, endTime = UnitCastingInfo(UnitID)
 					local time = ((endTime or 0) - (startTime or 0)) / 1000
 					if time then
 						lines[floor(unitHealth).."%"] = floor(time)
