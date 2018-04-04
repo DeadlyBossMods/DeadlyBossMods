@@ -17,7 +17,9 @@
 ## X-DBM-Mod-MinExpansion: 7
 localization.en.lua
 localization.kr.lua
-Hezrel.lua
+Mythrax.lua
+Zul.lua
+Taloc.lua
 Mother.lua
 FetidDevourer.lua
 Zekvhozj.lua

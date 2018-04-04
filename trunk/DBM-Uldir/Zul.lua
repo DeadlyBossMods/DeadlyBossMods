@@ -1,9 +1,9 @@
-local mod	= DBM:NewMod(2168, "DBM-Uldir", nil, 1031)
+local mod	= DBM:NewMod(2195, "DBM-Uldir", nil, 1031)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
---mod:SetCreatureID(122104)--6 CIDs, need to wait to add
---mod:SetEncounterID(2064)
+--mod:SetCreatureID(122104)
+mod:SetEncounterID(2145)
 --mod:DisableESCombatDetection()
 mod:SetZone()
 --mod:SetBossHPInfoToHighest()
