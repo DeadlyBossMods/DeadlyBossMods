@@ -2,9 +2,9 @@ if GetLocale() ~= "koKR" then return end
 local L
 
 ---------------
--- Titan Keeper Hezrel --
+-- Mythrax the Unraveler --
 ---------------
-L= DBM:GetModLocalization(2168)
+L= DBM:GetModLocalization(2194)
 
 L:SetWarningLocalization({
 })
@@ -19,6 +19,16 @@ L:SetMiscLocalization({
 })
 
 ---------------------------
+-- Zul --
+---------------------------
+L= DBM:GetModLocalization(2195)
+
+---------------------------
+-- Taloc the Corrupted --
+---------------------------
+L= DBM:GetModLocalization(2168)
+
+---------------------------
 -- MOTHER --
 ---------------------------
 L= DBM:GetModLocalization(2167)
@@ -29,7 +39,7 @@ L= DBM:GetModLocalization(2167)
 L= DBM:GetModLocalization(2146)
 
 ---------------------------
--- Titan Discs --
+-- Zek'vhozj --
 ---------------------------
 L= DBM:GetModLocalization(2169)
 
