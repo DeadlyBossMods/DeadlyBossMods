@@ -1,7 +1,7 @@
 -- Mini Dragon(projecteurs@gmail.com)
 -- 夏一可
 -- Blizzard Entertainment
--- Last update: 2017/08/29
+-- Last update: 2018/04/04
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -305,6 +305,7 @@ L:SetMiscLocalization({ --神坑
 	Pouch2		= "一个朋友说，那个密探喜欢黄金，所以在腰包里装满了金币。",
 	Pouch3		= "我听说那个密探的腰包里装满了摆阔用的金币。",
 	Pouch4		= "我听说那个密探的腰包上绣着精美的丝线。",
+	Found		= "喂喂，别急着下结论", --给s大大疯狂打电话
 	--
 	Gloves		= "手套",
 	NoGloves	= "没手套",
