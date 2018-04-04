@@ -602,6 +602,7 @@ local function updateBadPlayerDebuffsBySpellID()
 end
 
 --Debuffs that are bad to have, but we want to show players who do NOT have them
+local spiritofRedemption = DBM:GetSpellInfo(27827)
 local function updateReverseBadPlayerDebuffs()
 	twipe(lines)
 	local spellName = value[1]
@@ -609,7 +610,7 @@ local function updateReverseBadPlayerDebuffs()
 	for uId in DBM:GetGroupMembers() do
 		if tankIgnored and (UnitGroupRolesAssigned(uId) == "TANK" or GetPartyAssignment("MAINTANK", uId, 1)) then
 		else
-			if not UnitDebuff(uId, spellName) and not UnitIsDeadOrGhost(uId) and not UnitDebuff(uId, DBM:GetSpellInfo(27827)) then--27827 Spirit of Redemption. This particular info frame wants to ignore this
+			if not UnitDebuff(uId, spellName) and not UnitIsDeadOrGhost(uId) and not UnitDebuff(uId, spiritofRedemption) then--27827 Spirit of Redemption. This particular info frame wants to ignore this
 				lines[UnitName(uId)] = ""
 			end
 		end
@@ -865,8 +866,7 @@ function infoFrame:Show(maxLines, event, ...)
 	--If spellId is given as value one, convert to spell name on show instead of in every onupdate
 	--this also allows spell name to be given by mod, since value 1 verifies it's a number
 	if type(value[1]) == "number" and event ~= "health" and event ~= "function" and event ~= "playertargets" and event ~= "playeraggro" and event ~= "playerpower" and event ~= "enemypower" and event ~= "test" then
-		--value[1] = DBM:GetSpellInfo(value[1])
-		error("DBM-InfoFrame: Must pass spell NAME, not ID number. Report boss and this error to DBM author (MysticalOS)", 2)
+		value[1] = DBM:GetSpellInfo(value[1])
 	end
 
 	if events[currentEvent] then

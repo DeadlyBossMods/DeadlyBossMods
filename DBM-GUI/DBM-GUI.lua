@@ -439,11 +439,9 @@ do
 		if name:find("%$spell:ej") then -- it is in fact a journal link :-)
 			name = name:gsub("%$spell:ej(%d+)", "$journal:%1")
 		end
-		local rawSpellId = 0
 		if name:find("%$spell:") then
 			if not isTimer and modvar then
 				local spellId = string.match(name, "spell:(%d+)")
-				rawSpellId = spellId
 				noteSpellName = DBM:GetSpellInfo(spellId)
 			end
 			name = name:gsub("%$spell:(%d+)", replaceSpellLinks)
@@ -485,7 +483,7 @@ do
 						if noteText then
 							DBM:Debug(tostring(noteText), 2)--Debug only
 						end
-						DBM:ShowNoteEditor(mod, modvar, noteSpellName, nil, nil, rawSpellId)
+						DBM:ShowNoteEditor(mod, modvar, noteSpellName)
 					end)
 				end
 			end
