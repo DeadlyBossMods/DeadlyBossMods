@@ -9047,7 +9047,7 @@ end
 --  Yell Object  --
 --------------------
 do
-	local voidForm = DBM:GetSpellInfo(194249)
+	local voidForm = GetSpellInfo(194249)
 	local yellPrototype = {}
 	local mt = { __index = yellPrototype }
 	local function newYell(self, yellType, spellId, yellText, optionDefault, optionName, chatType)
