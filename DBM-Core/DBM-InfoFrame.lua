@@ -602,7 +602,7 @@ local function updateBadPlayerDebuffsBySpellID()
 end
 
 --Debuffs that are bad to have, but we want to show players who do NOT have them
-local spiritofRedemption = DBM:GetSpellInfo(27827)
+local spiritofRedemption = GetSpellInfo(27827)
 local function updateReverseBadPlayerDebuffs()
 	twipe(lines)
 	local spellName = value[1]
