@@ -198,9 +198,14 @@ local function MapToWorldCoords(x, y)
 	return x, y
 end
 
+local recentlyHidden = false
+local function clearVariable()
+	recentlyHidden = false
+end
+
 local function show(runAway, x, y, distance, time, legacy)
 	if DBM:HasMapRestrictions() then return end
-	if not frame:IsShown() then
+	if not frame:IsShown() and not recentlyHidden then
 		DBM:AddMsg(DBM_CORE_ARROW_SUMMONED)
 	end
 	local player
@@ -255,7 +260,10 @@ function arrowFrame:IsShown()
 end
 
 function arrowFrame:Hide(autoHide)
+	recentlyHidden = true
 	frame:Hide()
+	DBM:Unschedule(clearVariable)
+	DBM:Schedule(10, clearVariable)
 end
 
 local function endMove()
