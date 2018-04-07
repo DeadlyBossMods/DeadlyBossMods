@@ -66,7 +66,7 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 212564 and args:IsPlayer() and self:AntiSpam(3, 1) then
+	if spellId == 212564 and args:IsPlayer() and self:AntiSpam(4, 1) then
 		specWarnStare:Show()
 		specWarnStare:Play("targetyou")
 	end	
