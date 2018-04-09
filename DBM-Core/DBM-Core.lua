@@ -332,6 +332,7 @@ local dbmIsEnabled = true
 local lastCombatStarted = GetTime()
 local loadcIds = {}
 local inCombat = {}
+local oocBWComms = {}
 local combatInfo = {}
 local bossIds = {}
 local updateFunctions = {}
@@ -4822,6 +4823,12 @@ do
 				elseif bwPrefix == "B" then--Boss Mod Sync
 					for i = 1, #inCombat do
 						local mod = inCombat[i]
+						if mod and mod.OnBWSync then
+							mod:OnBWSync(bwMsg, extra, sender)
+						end
+					end
+					for i = 1, #oocBWComms do
+						local mod = oocBWComms[i]
 						if mod and mod.OnBWSync then
 							mod:OnBWSync(bwMsg, extra, sender)
 						end
@@ -10832,6 +10839,10 @@ end
 function bossModPrototype:SetReCombatTime(t, t2)--T1, after kill. T2 after wipe
 	self.reCombatTime = t
 	self.reCombatTime2 = t2
+end
+
+function bossModPrototype:SetOOCBWComms()
+	tinsert(oocBWComms, self)
 end
 
 -----------------------

@@ -66,6 +66,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		warnStanceofMountain:Show()
 		timerSunderCD:Stop()
 		timerStrikeCD:Stop()
+		--timerStanceOfMountainCD:Stop()
 		--timerStanceOfMountainCD:Start()--Only seems to do it once now
 	elseif spellId == 198631 then--Stance of mountain ending
 		timerSunderCD:Start(3)
