@@ -4,6 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 --mod:SetModelID(47785)
 mod:SetZone()
+mod:SetOOCBWComms()
 
 mod.isTrashMod = true
 
