@@ -31,7 +31,7 @@ local timerStanceOfMountainCD		= mod:NewCDTimer(119.5, 216249, nil, nil, nil, 6)
 function mod:OnCombatStart(delay)
 	timerSunderCD:Start(7-delay)
 	timerStrikeCD:Start(15.8-delay)
-	timerStanceOfMountainCD:Start(26.7-delay)
+	--timerStanceOfMountainCD:Start(26.7-delay)
 end
 
 function mod:SPELL_CAST_START(args)
