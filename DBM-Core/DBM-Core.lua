@@ -9105,7 +9105,7 @@ do
 	end
 
 	function yellPrototype:Yell(...)
-		if DBM.Options.DontSendYells or ScriptsDisallowedForBeta() or self.yellType and self.yellType == "position" and UnitBuff("player", voidForm) then return end
+		if DBM.Options.DontSendYells or wowVersionString == "8.0.1" or self.yellType and self.yellType == "position" and UnitBuff("player", voidForm) then return end
 		if not self.option or self.mod.Options[self.option] then
 			if self.yellType == "combo" then
 				SendChatMessage(pformat(self.text, ...), self.chatType or "YELL")
@@ -10947,7 +10947,7 @@ do
 
 	function bossModPrototype:SetIcon(target, icon, timer)
 		if not target then return end--Fix a rare bug where target becomes nil at last second (end combat fires and clears targets)
-		if DBM.Options.DontSetIcons or not enableIcons or DBM:GetRaidRank(playerName) == 0 then
+		if DBM.Options.DontSetIcons or wowVersionString == "8.0.1" or not enableIcons or DBM:GetRaidRank(playerName) == 0 then
 			return
 		end
 		self:UnscheduleMethod("SetIcon", target)
