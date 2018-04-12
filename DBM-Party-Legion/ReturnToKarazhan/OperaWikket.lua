@@ -36,7 +36,6 @@ local countdownMagicMagnificent		= mod:NewCountdown(46.1, 198006)
 local defyGravity = DBM:GetSpellInfo(227405)
 
 function mod:OnCombatStart(delay)
-	defyGravity = DBM:GetSpellInfo(227405)
 	timerWondrousRadianceCD:Start(8.3-delay)
 	timerSummonAddsCD:Start(30-delay)
 	timerMagicMagnificentCD:Start(47-delay)

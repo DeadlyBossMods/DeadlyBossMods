@@ -5238,7 +5238,7 @@ do
 
 	function DBM:UNIT_SPELLCAST_SUCCEEDED(uId, _, bfaSpellId, _, legacySpellId)
 		local spellId = legacySpellId or bfaSpellId
-		local spellName = DBM:GetSpellInfo(spellId)
+		local spellName = self:GetSpellInfo(spellId)
 		self:Debug("UNIT_SPELLCAST_SUCCEEDED fired: "..UnitName(uId).."'s "..spellName.."("..spellId..")", 3)
 	end
 

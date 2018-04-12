@@ -46,7 +46,6 @@ mod:AddInfoFrameOption(227817, true)
 local sacredGround = DBM:GetSpellInfo(227789)
 
 function mod:OnCombatStart(delay)
-	sacredGround = DBM:GetSpellInfo(227789)
 	timerSacredGroundCD:Start(10.9)
 	timerHolyShockCD:Start(15.8-delay)
 	timerRepentanceCD:Start(48.5-delay)

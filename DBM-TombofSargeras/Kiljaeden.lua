@@ -199,7 +199,6 @@ local function handleMissingEmote(self)
 end
 
 function mod:OnCombatStart(delay)
-	riftName, gravitySqueezeBuff = DBM:GetSpellInfo(239130), DBM:GetSpellInfo(239154)
 	self.vb.phase = 1
 	self.vb.armageddonCast = 0
 	self.vb.focusedDreadCast = 0

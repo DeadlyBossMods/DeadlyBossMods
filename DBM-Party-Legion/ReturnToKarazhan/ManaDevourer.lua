@@ -35,7 +35,6 @@ mod:AddInfoFrameOption(227502, true)
 local unstableMana, looseMana = DBM:GetSpellInfo(227502), DBM:GetSpellInfo(227296)
 
 function mod:OnCombatStart(delay)
-	unstableMana, looseMana = DBM:GetSpellInfo(227502), DBM:GetSpellInfo(227296)
 	timerEnergyVoidCD:Start(14.5-delay)
 	timerCoalescePowerCD:Start(30-delay)
 	countdownCoalescePower:Start(30-delay)

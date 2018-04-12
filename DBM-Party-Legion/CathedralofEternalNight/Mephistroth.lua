@@ -45,7 +45,6 @@ local demonicUpheavalTable = {}
 local addsTable = {}
 
 function mod:OnCombatStart(delay)
-	demonicUpheaval, darkSolitude = DBM:GetSpellInfo(233963), DBM:GetSpellInfo(234217)
 	table.wipe(addsTable)
 	timerDemonicUpheavalCD:Start(3.2-delay)--Cast Start
 	timerDarkSolitudeCD:Start(8.1-delay)

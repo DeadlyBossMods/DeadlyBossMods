@@ -160,7 +160,6 @@ local function findSearingMark(self)
 end
 
 function mod:OnCombatStart(delay)
-	MarkOfFrostDebuff, SearingBrandDebuff, annihilatedDebuff, frostBitten = DBM:GetSpellInfo(212587), DBM:GetSpellInfo(213166), DBM:GetSpellInfo(215458), DBM:GetSpellInfo(212647)
 	self.vb.annihilateCount = 0
 	self.vb.armageddonAdds = 0
 	self.vb.lastPhase = 1

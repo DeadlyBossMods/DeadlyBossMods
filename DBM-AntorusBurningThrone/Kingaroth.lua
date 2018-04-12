@@ -175,7 +175,6 @@ function mod:TestFunction(time)
 end
 
 function mod:OnCombatStart(delay)
-	demolishDebuff = DBM:GetSpellInfo(246692)
 	self.vb.ruinerCast = 0
 	self.vb.forgingStrikeCast = 0
 	self.vb.reverbStrikeCast = 0

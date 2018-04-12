@@ -36,7 +36,6 @@ mod:AddInfoFrameOption(238410, true)
 local shield = DBM:GetSpellInfo(238410)
 
 function mod:OnCombatStart(delay)
-	shield = DBM:GetSpellInfo(238410)
 	timerFelsoulCleaveCD:Start(8.2-delay)
 	timerChaoticEnergyCD:Start(32.5-delay)
 	if self.Options.InfoFrame then
