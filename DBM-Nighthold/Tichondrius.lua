@@ -153,7 +153,6 @@ do
 end
 
 function mod:OnCombatStart(delay)
-	carrionDebuff, argusDebuff, batsName, essenceOfNightDebuff = DBM:GetSpellInfo(206480), DBM:GetSpellInfo(212794), DBM:EJ_GetSectionInfo(13528), DBM:GetSpellInfo(206466)
 	self.vb.phase = 1
 	self.vb.darkPhase = false
 	self.vb.carrionPlagueCast = 0

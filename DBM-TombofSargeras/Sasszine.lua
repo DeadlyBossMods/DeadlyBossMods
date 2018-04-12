@@ -104,7 +104,6 @@ local eventsRegistered = false
 local p3MythicCrashingWave = {30.9, 30.9, 40.6, 35.8, 30.9}--All minus 2 because timer starts at SUCCESS but is for START
 
 function mod:OnCombatStart(delay)
-	thunderingShock, consumingHunger, bufferFish = DBM:GetSpellInfo(230358), DBM:GetSpellInfo(230384), DBM:GetSpellInfo(239375)
 	self.vb.phase = 1
 	self.vb.crashingWaveCount = 0
 	self.vb.hydraShotCount = 0

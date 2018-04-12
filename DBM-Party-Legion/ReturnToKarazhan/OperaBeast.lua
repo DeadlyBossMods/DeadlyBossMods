@@ -64,7 +64,6 @@ mod.vb.phase = 1
 local burningBlaze = DBM:GetSpellInfo(228193)
 
 function mod:OnCombatStart(delay)
-	burningBlaze = DBM:GetSpellInfo(228193)
 	self.vb.phase = 1
 	timerLeftoversCD:Start(7.3-delay)
 	timerHeatWaveCD:Start(31.6-delay)

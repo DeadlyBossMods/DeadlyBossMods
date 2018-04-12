@@ -214,8 +214,6 @@ do
 end
 
 function mod:OnCombatStart(delay)
-	beamName = DBM:GetSpellInfo(238244)
-	touch, rupture, unbound, shadowy, shieldName = DBM:GetSpellInfo(239207), DBM:GetSpellInfo(239132), DBM:GetSpellInfo(234059), DBM:GetSpellInfo(236571), DBM:GetSpellInfo(241008)
 	table.wipe(darkMarkTargets)
 	self.vb.phase = 1
 	self.vb.bladesIcon = 1

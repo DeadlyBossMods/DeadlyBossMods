@@ -80,7 +80,6 @@ do
 end
 
 function mod:OnCombatStart(delay)
-	debuffName, stackDebuff = DBM:GetSpellInfo(204463), DBM:GetSpellInfo(204506)
 	self.vb.breathCount = 0
 	self.vb.rotCast = 0
 	self.vb.volatileRotCast = 0

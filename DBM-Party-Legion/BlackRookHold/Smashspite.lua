@@ -41,7 +41,6 @@ function mod:OnCombatStart(delay)
 	if not self:IsNormal() then
 		timerHatefulGazeCD:Start(5-delay)
 		if self.Options.InfoFrame then
-			infoFrameDebuff = DBM:GetSpellInfo(198080)
 			DBM.InfoFrame:SetHeader(infoFrameDebuff)
 			DBM.InfoFrame:Show(5, "reverseplayerbaddebuff", infoFrameDebuff)
 		end

@@ -90,15 +90,6 @@ do
 end
 
 function mod:OnCombatStart(delay)
-	ccList = {
-		[1] = DBM:GetSpellInfo(227909),--Trap included with fight
-		[2] = DBM:GetSpellInfo(6770),--Rogue Sap
-		[3] = DBM:GetSpellInfo(9484),--Priest Shackle
-		[4] = DBM:GetSpellInfo(20066),--Paladin Repentance
-		[5] = DBM:GetSpellInfo(118),--Mage Polymorph
-		[6] = DBM:GetSpellInfo(51514),--Shaman Hex
-		[7] = DBM:GetSpellInfo(3355),--Hunter Freezing Trap
-	}
 	timerVanishCD:Start(8.2-delay)
 	timerCoatCheckCD:Start(33-delay)
 	if self.Options.InfoFrame then

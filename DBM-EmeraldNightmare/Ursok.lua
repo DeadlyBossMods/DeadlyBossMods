@@ -101,7 +101,6 @@ do
 end
 
 function mod:OnCombatStart(delay)
-	unbalancedName, focusedGazeName, rendFlesh, overWhelm, momentum = DBM:GetSpellInfo(198108), DBM:GetSpellInfo(198006), DBM:GetSpellInfo(204859), DBM:GetSpellInfo(197943), DBM:GetSpellInfo(198108)
 	self.vb.roarCount = 0
 	self.vb.chargeCount = 0
 	self.vb.rendCount = 0

@@ -59,7 +59,6 @@ mod.vb.interruptCount = 0
 local charredEarth, burningBones, filteredDebuff = DBM:GetSpellInfo(228808), DBM:GetSpellInfo(228829), DBM:GetSpellInfo(228796)
 
 function mod:OnCombatStart(delay)
-	charredEarth, burningBones, filteredDebuff = DBM:GetSpellInfo(228808), DBM:GetSpellInfo(228829), DBM:GetSpellInfo(228796)
 	self.vb.phase = 1
 	self.vb.interruptCount = 0
 	timerBreathCD:Start(8.5-delay)

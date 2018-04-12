@@ -46,7 +46,6 @@ mod.vb.imagesActive = false
 local frostBiteName, flameWreathName = DBM:GetSpellInfo(227592), DBM:GetSpellInfo(228261)
 
 function mod:OnCombatStart(delay)
-	frostBiteName, flameWreathName = DBM:GetSpellInfo(227592), DBM:GetSpellInfo(228261)
 	self.vb.playersFrozen = 0
 	self.vb.imagesActive = false
 	timerSpecialCD:Start(33.5)

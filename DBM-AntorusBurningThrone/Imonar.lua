@@ -140,7 +140,6 @@ do
 end
 
 function mod:OnCombatStart(delay)
-	empoweredPulse, sleepCanister = DBM:GetSpellInfo(250006), DBM:GetSpellInfo(254244)
 	table.wipe(empoweredPulseTargets)
 	self.vb.phase = 1
 	self.vb.shrapnalCast = 0

@@ -225,7 +225,6 @@ local function startBatsStuff(self)
 end
 
 function mod:OnCombatStart(delay)
-	lifeForceName = DBM:GetSpellInfo(250048)
 	self.vb.rainOfFelCount = 0
 	self.vb.destructors = 0
 	self.vb.obfuscators = 0

@@ -227,7 +227,6 @@ local function upValueCapsAreStupid(self)
 end
 
 function mod:OnCombatStart(delay)
-	timeStopBuff, parasiteName = DBM:GetSpellInfo(206310), DBM:GetSpellInfo(206847)
 	self.vb.phase = 1
 	self.vb.addsDied = 0
 	self.vb.liquidHellfireCast = 0

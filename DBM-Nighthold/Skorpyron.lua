@@ -64,7 +64,6 @@ mod.vb.volatileScorpCount = 0
 local shardName, goodDebuff = DBM:GetSpellInfo(204292), DBM:GetSpellInfo(204284)
 
 function mod:OnCombatStart(delay)
-	shardName, goodDebuff = DBM:GetSpellInfo(204292), DBM:GetSpellInfo(204284)
 	self.vb.volatileScorpCount = 0
 	timerArcanoslashCD:Start(5-delay)
 	timerFocusedBlastCD:Start(13-delay)

@@ -107,7 +107,6 @@ function mod:OnCombatStart(delay)
 	countdownModes:Start(45)
 	--On combat start he starts in a custom cleaner mode (206570) that doesn't have sterilize or cleansing rage abilities but casts cake and ArcaneSlashs more often
 	if self.Options.InfoFrame then
-		spellName = DBM:GetSpellInfo(214573)
 		DBM.InfoFrame:SetHeader(DBM_NO_DEBUFF:format(spellName))
 		DBM.InfoFrame:Show(10, "playergooddebuff", spellName, true)
 	end
