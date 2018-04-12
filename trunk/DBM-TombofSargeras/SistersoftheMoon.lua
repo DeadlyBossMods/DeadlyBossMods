@@ -136,7 +136,6 @@ end
 --P2 Easy: Eclipse (PS heroic, Eclipse and Glaives)
 --P3 Eass: Glaives (PS heroic Glaives and Incorp)
 function mod:OnCombatStart(delay)
-	astralPurge = DBM:GetSpellInfo(234998)
 	self.vb.phase = 1
 	self.vb.twilightGlaiveCount = 0
 	self.vb.eclipseCount = 0

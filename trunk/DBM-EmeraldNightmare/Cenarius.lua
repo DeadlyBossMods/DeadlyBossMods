@@ -96,7 +96,6 @@ function mod:BreathTarget(targetname, uId)
 end
 
 function mod:OnCombatStart(delay)
-	debuffName, infoframeName = DBM:GetSpellInfo(211471), DBM:GetSpellInfo(210279)
 	scornedWarned = false
 	table.wipe(seenMobs)
 	self.vb.phase = 1
@@ -267,7 +266,7 @@ function mod:UNIT_DIED(args)
 		self.vb.sisterCount = self.vb.sisterCount - 1
 		timerTouchofLifeCD:Stop(args.destGUID)
 		timerScornedTouchCD:Stop(args.destGUID)
-		if self.Options.RangeFrame and self.vb.sisterCount == 0 and not UnitDebuff("player", DBM:GetSpellInfo(211471)) then--Do to shitty spellInfo code, it'll fail to hide first time
+		if self.Options.RangeFrame and self.vb.sisterCount == 0 and not UnitDebuff("player", debuffName) then--Do to shitty spellInfo code, it'll fail to hide first time
 			DBM.RangeCheck:Hide()
 		end
 	elseif cid == 105494 then--Rotten Drake

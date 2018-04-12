@@ -277,7 +277,6 @@ function mod:OnCombatStart(delay)
 	self.vb.wakeOfFlameCount = 0
 	self.vb.blazeIcon = 1
 	self.vb.techActive = false
-	foeBreaker1, foeBreaker2 = DBM:GetSpellInfo(245458), DBM:GetSpellInfo(255059)
 	if self:IsMythic() then
 		comboUsed[1] = false
 		comboUsed[2] = false

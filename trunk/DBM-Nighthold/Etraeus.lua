@@ -267,9 +267,6 @@ local function updateConjunctionYell(self, spellName, icon)
 end
 
 function mod:OnCombatStart(delay)
-	abZeroDebuff, chilledDebuff, gravPullDebuff = DBM:GetSpellInfo(206585), DBM:GetSpellInfo(206589), DBM:GetSpellInfo(205984)
-	icyEjectionDebuff, coronalEjectionDebuff, voidEjectionDebuff = DBM:GetSpellInfo(206936), DBM:GetSpellInfo(206464), DBM:GetSpellInfo(207143)
-	crabDebuff, dragonDebuff, hunterDebuff, wolfDebuff = DBM:GetSpellInfo(205429), DBM:GetSpellInfo(216344), DBM:GetSpellInfo(216345), DBM:GetSpellInfo(205445)
 	voidWarned = false
 	playerAffected = false
 	self.vb.StarSigns = 0

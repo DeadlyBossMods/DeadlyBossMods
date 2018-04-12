@@ -35,7 +35,6 @@ local countdownMagmaWave			= mod:NewCountdown(60, 200404)
 local shelterName = DBM:GetSpellInfo(200551)
 
 function mod:OnCombatStart(delay)
-	shelterName = DBM:GetSpellInfo(200551)
 	timerMagmaSculptorCD:Start(7.3-delay)
 	timerLandSlideCD:Start(15.8-delay)
 	timerMoltenCrashCD:Start(19-delay)

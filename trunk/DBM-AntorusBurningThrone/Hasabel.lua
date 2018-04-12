@@ -16,7 +16,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 243983 244709 245504 244607 244915 246805 244689 244000",
-	"SPELL_CAST_SUCCESS 245050 244073 244112 244136 244138 244146 244145 244598 244016",
+	"SPELL_CAST_SUCCESS 245050 244598 244016",
 	"SPELL_AURA_APPLIED 244016 244383 244613 244949 244849 245050 245118",
 	"SPELL_AURA_APPLIED_DOSE 244016",
 	"SPELL_AURA_REFRESH 244016",
@@ -24,7 +24,7 @@ mod:RegisterEventsInCombat(
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 	"UNIT_DIED",
-	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5"
+	"UNIT_SPELLCAST_SUCCEEDED boss1 player"
 )
 
 local Nexus = DBM:EJ_GetSectionInfo(15799)
@@ -122,7 +122,6 @@ mod.vb.firstPortal = false
 local playerPlatform = 1--1 Nexus, 2 Xoroth, 3 Rancora, 4 Nathreza
 local mindFog, aegisFlames, felMiasma = DBM:GetSpellInfo(245099), DBM:GetSpellInfo(244383), DBM:GetSpellInfo(244826)
 local everBurningFlames, causticSlime, CloyingShadows, hungeringGloom = DBM:GetSpellInfo(244613), DBM:GetSpellInfo(244849), DBM:GetSpellInfo(245118), DBM:GetSpellInfo(245075)
-local nexusPlatform, xorothPlatform, rancoraPlatform, nathrezaPlatform = {}, {}, {}, {}
 
 local updateRangeFrame
 do
@@ -174,27 +173,17 @@ local function updateAllTimers(self, ICD)
 end
 
 function mod:OnCombatStart(delay)
-	mindFog, aegisFlames, felMiasma = DBM:GetSpellInfo(245099), DBM:GetSpellInfo(244383), DBM:GetSpellInfo(244826)
-	everBurningFlames, causticSlime, CloyingShadows, hungeringGloom = DBM:GetSpellInfo(244613), DBM:GetSpellInfo(244849), DBM:GetSpellInfo(245118), DBM:GetSpellInfo(245075)
 	self.vb.shieldsActive = false
 	self.vb.firstPortal = false
 	self.vb.felBarrageCast = 0
 	self.vb.worldCount = 0
 	playerPlatform = 1--Nexus
-	table.wipe(nexusPlatform)
-	table.wipe(xorothPlatform)
-	table.wipe(rancoraPlatform)
-	table.wipe(nathrezaPlatform)
 	timerRealityTearCD:Start(6.2-delay)
 	countdownRealityTear:Start(6.2-delay)
 	timerCollapsingWorldCD:Start(10.5-delay)--Still variable, 10.5-18
 	countdownCollapsingWorld:Start(10.5-delay)
 	timerFelstormBarrageCD:Start(25.2-delay)
 	countdownFelstormBarrage:Start(25.2-delay)
-	for uId in DBM:GetGroupMembers() do
-		local name = DBM:GetUnitFullName(uId)
-		nexusPlatform[#nexusPlatform+1] = name
-	end
 end
 
 function mod:OnCombatEnd()
@@ -274,42 +263,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 245050 then--Delusions
 		timerDelusionsCD:Start()
-	elseif spellId == 244073 then--Gateway: Xoroth (Entering)
-		xorothPlatform[#xorothPlatform+1] = args.sourceName
-		tDeleteItem(nexusPlatform, args.sourceName)
-		if args:IsPlayerSource() then
-			playerPlatform = 2--1 Nexus, 2 Xoroth, 3 Rancora, 4 Nathreza
-		end
-	elseif spellId == 244112 then--Gateway: Xoroth (Leaving)
-		nexusPlatform[#nexusPlatform+1] = args.sourceName
-		tDeleteItem(xorothPlatform, args.sourceName)
-		if args:IsPlayerSource() then
-			playerPlatform = 1--1 Nexus, 2 Xoroth, 3 Rancora, 4 Nathreza
-		end
-	elseif spellId == 244136 then--Gateway: Rancora (Entering)
-		rancoraPlatform[#rancoraPlatform+1] = args.sourceName
-		tDeleteItem(nexusPlatform, args.sourceName)
-		if args:IsPlayerSource() then
-			playerPlatform = 3--1 Nexus, 2 Xoroth, 3 Rancora, 4 Nathreza
-		end
-	elseif spellId == 244138 then--Gateway: Rancora (Leaving)
-		nexusPlatform[#nexusPlatform+1] = args.sourceName
-		tDeleteItem(rancoraPlatform, args.sourceName)
-		if args:IsPlayerSource() then
-			playerPlatform = 1--1 Nexus, 2 Xoroth, 3 Rancora, 4 Nathreza
-		end
-	elseif spellId == 244146 then--Gateway: Nathreza (Entering)
-		nathrezaPlatform[#nathrezaPlatform+1] = args.sourceName
-		tDeleteItem(nexusPlatform, args.sourceName)
-		if args:IsPlayerSource() then
-			playerPlatform = 4--1 Nexus, 2 Xoroth, 3 Rancora, 4 Nathreza
-		end
-	elseif spellId == 244145 then--Gateway: Nathreza (Leaving)
-		nexusPlatform[#nexusPlatform+1] = args.sourceName
-		tDeleteItem(nathrezaPlatform, args.sourceName)
-		if args:IsPlayerSource() then
-			playerPlatform = 1--1 Nexus, 2 Xoroth, 3 Rancora, 4 Nathreza
-		end
 	elseif spellId == 244598 and self:AntiSpam(5, 1) then--Supernova
 		if self.Options.ShowAllPlatforms or playerPlatform == 2 then--Actually on Xoroth platform
 			specWarnSupernova:Show()
@@ -468,5 +421,13 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	elseif spellId == 257942 then
 		warnNathrezaPortal:Show()
 		warnNathrezaPortal:Play("newportal")
+	elseif spellId == 244455 then--Platform: Xoroth
+		playerPlatform = 2
+	elseif spellId == 244512 then--Platform: Rancora
+		playerPlatform = 3
+	elseif spellId == 244513 then--Platform: Nathreza
+		playerPlatform = 4
+	elseif spellId == 244450 then--Platform: Nexus
+		playerPlatform = 1
 	end
 end

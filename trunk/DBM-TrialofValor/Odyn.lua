@@ -194,7 +194,6 @@ do
 end
 
 function mod:OnCombatStart(delay)
-	spellName, protected, expelLight, stormOfJustice = DBM:GetSpellInfo(231311), DBM:GetSpellInfo(229584), DBM:GetSpellInfo(228028), DBM:GetSpellInfo(227807)
 	self.vb.phase = 1
 	self.vb.hornCasting = false
 	self.vb.hornCast = 0

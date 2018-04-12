@@ -198,7 +198,6 @@ do
 end
 
 function mod:OnCombatStart(delay)
-	spellName1, spellName2, spellName3, spellName4 = DBM:GetSpellInfo(203102), DBM:GetSpellInfo(203125), DBM:GetSpellInfo(203124), DBM:GetSpellInfo(203121)
 	self.vb.volatileInfectionIcon = 1
 	self.vb.alternateOozes = false
 	table.wipe(activeBossGUIDS)

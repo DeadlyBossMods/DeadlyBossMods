@@ -148,7 +148,6 @@ local function bondsWarning(self)
 end
 
 function mod:OnCombatStart(delay)
-	darkSoul, blackSoul, dreamDebuff, blackened = DBM:GetSpellInfo(206651), DBM:GetSpellInfo(209158), DBM:GetSpellInfo(206005), DBM:GetSpellInfo(205612)
 	self.vb.phase = 1
 	self.vb.lurkingCount = 0
 	self.vb.corruptionHorror = 0

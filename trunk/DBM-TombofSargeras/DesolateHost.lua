@@ -146,7 +146,6 @@ do
 end
 
 function mod:OnCombatStart(delay)
-	spiritRealm, boneArmor = DBM:GetSpellInfo(235621), DBM:GetSpellInfo(236513)
 	table.wipe(playersInSpirit)
 	table.wipe(playersNotInSpirit)
 	self.vb.soulboundCast = 0

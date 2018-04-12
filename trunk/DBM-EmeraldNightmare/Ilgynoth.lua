@@ -265,7 +265,6 @@ function mod:OnCombatStart(delay)
 	end
 	if self.Options.InfoFrame then
 		if self.Options.InfoFrameBehavior == "Fixates" then
-			infoFrameSpell = DBM:GetSpellInfo(210099)
 			DBM.InfoFrame:SetHeader(infoFrameSpell)
 			DBM.InfoFrame:Show(10, "playerbaddebuff", infoFrameSpell)
 		else
