@@ -2770,9 +2770,13 @@ do
 		end
 	end
 
-	function DBM:GROUP_ROSTER_UPDATE()
+	function DBM:GROUP_ROSTER_UPDATE(force)
 		self:Unschedule(updateAllRoster)
-		self:Schedule(1.5, updateAllRoster, self)
+		if force then
+			updateAllRoster(self)
+		else
+			self:Schedule(1.5, updateAllRoster, self)
+		end
 	end
 	
 	function DBM:INSTANCE_GROUP_SIZE_CHANGED()
@@ -3795,6 +3799,7 @@ function DBM:LoadMod(mod, force)
 				self:Schedule(10, self.RequestTimers, self, 2)
 				self:Schedule(13, self.RequestTimers, self, 3)
 				C_TimerAfter(15, function() timerRequestInProgress = false end)
+				self:GROUP_ROSTER_UPDATE(true)
 			end
 		end
 		if not InCombatLockdown() and not UnitAffectingCombat("player") and not IsFalling() then--We loaded in combat but still need to avoid garbage collect in combat
@@ -4767,7 +4772,7 @@ do
 	end
 
 	whisperSyncHandlers["TI"] = function(sender, mod, timeLeft, totalTime, id, ...)
-		if not DBM:GetRaidUnitId(sender) then return end
+		if not DBM:GetRaidUnitId(sender) then return end--This can't be checked fast enough on timer recovery, so it causes it to fail
 		mod = DBM:GetModByName(mod or "")
 		timeLeft = tonumber(timeLeft or 0)
 		totalTime = tonumber(totalTime or 0)
@@ -4777,7 +4782,7 @@ do
 	end
 
 	whisperSyncHandlers["VI"] = function(sender, mod, name, value)
-		if not DBM:GetRaidUnitId(sender) then return end
+		if not DBM:GetRaidUnitId(sender) then return end--This can't be checked fast enough on timer recovery, so it causes it to fail
 		mod = DBM:GetModByName(mod or "")
 		value = tonumber(value) or value
 		if mod and name and value then
