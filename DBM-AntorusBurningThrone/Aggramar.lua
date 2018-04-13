@@ -229,7 +229,6 @@ do
 					addLine(mod.vb.comboCount+1, DBM_CORE_DEADLY_ICON_SMALL..L.Tempest)
 				else
 					addLine(L.Current, DBM_CORE_DEADLY_ICON_SMALL..L.Tempest)
-					--DBM.InfoFrame:Hide()
 				end
 			else
 				if mod.vb.comboCount == 0 then
@@ -254,7 +253,6 @@ do
 					addLine(mod.vb.comboCount+1, DBM_CORE_DEADLY_ICON_SMALL..L.Tempest)
 				else
 					addLine(L.Current, DBM_CORE_DEADLY_ICON_SMALL..L.Tempest)
-					--DBM.InfoFrame:Hide()
 				end
 			end
 		end
@@ -531,6 +529,11 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerFlareCD:Start(self:IsMythic() and 8 or 10)
 			if self:IsMythic() then
 				countdownFlare:Start(8)
+				if comboUsed[1] then--Foe, Tempest doesn't count as Foe, Empoweed Tempest. This seems to be only time this bug occurs
+					--Roll back this combo used and tech count
+					comboUsed[1] = false
+					self.vb.techCount = self.vb.techCount - 1
+				end
 			end
 		elseif self.vb.phase == 3 then
 			warnPhase:Play("pthree")
