@@ -532,7 +532,7 @@ function mod:SPELL_AURA_REMOVED(args)
 				if comboUsed[1] then--Foe, Tempest doesn't count as Foe, Empoweed Tempest. This seems to be only time this bug occurs
 					--Roll back this combo used and tech count
 					comboUsed[1] = false
-					self.vb.techCount = self.vb.techCount - 1
+					--self.vb.techCount = self.vb.techCount - 1
 				end
 			end
 		elseif self.vb.phase == 3 then
