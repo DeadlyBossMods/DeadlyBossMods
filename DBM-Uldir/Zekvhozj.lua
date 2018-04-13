@@ -43,7 +43,7 @@ local warnCorruptorsPact				= mod:NewTargetAnnounce(265662, 2)
 local warnWillofCorruptor				= mod:NewTargetAnnounce(265646, 4, nil, false)
 
 --General
-local specWarnSurgingDarkness			= mod:NewSpecialWarningDodge(265451, nil, nil, nil, 2, 2)
+local specWarnSurgingDarkness			= mod:NewSpecialWarningDodge(265451, nil, nil, nil, 3, 2)
 local specWarnVoidLash					= mod:NewSpecialWarningStack(265264, nil, 2, nil, nil, 1, 6)
 --local specWarnVoidLashTaunt			= mod:NewSpecialWarningTaunt(265264, nil, nil, nil, 1, 2)
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
@@ -64,7 +64,7 @@ local specWarnWillofCorruptor			= mod:NewSpecialWarningSwitch(265646, "RangedDps
 local specWarnEntropicBlast				= mod:NewSpecialWarningInterrupt(270620, "HasInterrupt", nil, nil, 1, 2)
 
 mod:AddTimerLine(GENERAL)
-local timerSurgingDarknessCD			= mod:NewAITimer(12.1, 265451, nil, "Melee", nil, 2, nil, DBM_CORE_DEADLY_ICON)
+local timerSurgingDarknessCD			= mod:NewAITimer(12.1, 265451, nil, "Melee", nil, 2, nil, DBM_CORE_DEADLY_ICON)--60 based on energy math
 local timerMightofVoidCD				= mod:NewAITimer(12.1, 267312, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 mod:AddTimerLine(SCENARIO_STAGE:format(1))
 local timerEyeBeamCD					= mod:NewAITimer(12.1, 264382, nil, nil, nil, 3)
@@ -93,7 +93,7 @@ function mod:OnCombatStart(delay)
 	self.vb.phase = 1
 	self.vb.orbCount = 0
 	timerMightofVoidCD:Start(1-delay)
-	timerSurgingDarknessCD:Start(1-delay)
+	timerSurgingDarknessCD:Start(1-delay)--30 based on energy math
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Show(4, "enemypower", 2)
 	end
