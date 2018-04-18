@@ -196,10 +196,6 @@ function mod:OnCombatStart(delay)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(5)
 	end
---[[	if self.Options.InfoFrame then
-		DBM.InfoFrame:SetHeader(OVERVIEW)
-		DBM.InfoFrame:Show(8, "function", updateInfoFrame, false, false, true)
-	end--]]
 end
 
 function mod:OnCombatEnd()
