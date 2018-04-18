@@ -341,7 +341,7 @@ function mod:SPELL_CAST_START(args)
 			if tanking or (status == 3) then--Player is current target
 				specWarnFoeBreakerDefensive:Show()
 				specWarnFoeBreakerDefensive:Play("defensive")
-			elseif not UnitDebuff("player", args.spellName) and self.vb.foeCount == 2 then
+			elseif not UnitDebuff("player", foeBreaker1) and not UnitDebuff("player", foeBreaker2) and self.vb.foeCount == 2 then
 				if self.Options.ignoreThreeTank and self:GetNumAliveTanks() >= 3 then return end
 				if self:AntiSpam(2, 6) then--Second cast and you didn't take first and didn't get a flame rend taunt warning in last 2 seconds
 					specWarnFoeBreakerTaunt:Show(BOSS)
