@@ -17,10 +17,10 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 245990 245994 244894 244903 247091 254452",
 	"SPELL_AURA_APPLIED_DOSE 245990",
 	"SPELL_AURA_REMOVED 244894 244903 247091 254452",
+	"UNIT_DIED",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, if ember energy gains are detectable with ease, use hostile nameplates to show power circle over them all fancy like
 --[[
 (ability.id = 244693 or ability.id = 245458 or ability.id = 245463 or ability.id = 245301 or ability.id = 255058 or ability.id = 255061 or ability.id = 255059) and type = "begincast"
  or ability.id = 244894 and (type = "applybuff" or type = "removebuff")
@@ -89,6 +89,7 @@ mod.vb.comboCount = 0
 local foeBreaker1, foeBreaker2 = DBM:GetSpellInfo(245458), DBM:GetSpellInfo(255059)
 local comboDebug = {}
 local comboDebugCounter = 0
+local unitTracked = {}
 
 local comboUsed = {
 	[1] = false,--L.Foe, L.Tempest, L.Rend, L.Foe, L.Rend
@@ -279,6 +280,7 @@ function mod:OnCombatStart(delay)
 	self.vb.wakeOfFlameCount = 0
 	self.vb.blazeIcon = 1
 	self.vb.techActive = false
+	table.wipe(unitTracked)
 	if self:IsMythic() then
 		comboUsed[1] = false
 		comboUsed[2] = false
@@ -299,12 +301,34 @@ function mod:OnCombatStart(delay)
 		timerTaeshalachTechCD:Start(35-delay, 1)
 		countdownTaeshalachTech:Start(35-delay)
 	end
-	--Everyone should lose spead except tanks which should stay stacked. Maybe melee are safe too?
+	--Everyone should lose spread except tanks which should stay stacked. Maybe melee are safe too?
 	if self.Options.RangeFrame and not self:IsTank() then
 		DBM.RangeCheck:Show(6)
 	end
 	if self.Options.NPAuraOnPresence then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
+		self:RegisterOnUpdateHandler(function(self)
+			for i = 1, 40 do
+				local UnitID = "nameplate"..i
+				local GUID = UnitGUID(UnitID)
+				local cid = self:GetCIDFromGUID(GUID)
+				if cid == 122532 then
+					local unitPower = UnitPower(UnitID)
+					if not unitTracked[GUID] then unitTracked[GUID] = "None" end
+					if unitPower < 33 and not unitTracked[GUID] == "Green" then
+						unitTracked[GUID] = "Green"
+						DBM.Nameplate:Show(true, GUID, 244912, 574574)
+					elseif unitPower < 66 and not unitTracked[GUID] == "Yellow" then
+						unitTracked[GUID] = "Yellow"
+						DBM.Nameplate:Show(true, GUID, 244912, 450954)
+					elseif unitPower < 100 and not unitTracked[GUID] == "Red" then
+						unitTracked[GUID] = "Red"
+						DBM.Nameplate:Show(true, GUID, 244912, 463282)
+					end
+					--Green 219964 (574574), Yellow 219965 (450954), Red 219966 (463282)
+				end
+			end
+		end, 1)
 	end
 end
 
@@ -560,6 +584,13 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.SetIconOnBlaze2 then
 			self:SetIcon(args.destName, 0)
 		end
+	end
+end
+
+function mod:UNIT_DIED(args)
+	local cid = self:GetCIDFromGUID(args.destGUID)
+	if cid == 122532 then
+		DBM.Nameplate:Hide(true, args.destGUID, 244912)
 	end
 end
 
