@@ -323,13 +323,13 @@ function mod:OnCombatStart(delay)
 					elseif (unitPower < 66) then
 						if unitTracked[GUID] ~= "Yellow" then
 							unitTracked[GUID] = "Yellow"
-							DBM.Nameplate:Hide(true, GUID, 244912)
+							DBM.Nameplate:Hide(true, GUID, 244912, 463281)
 							DBM.Nameplate:Show(true, GUID, 244912, 460954)
 						end
 					elseif (unitPower < 100) then
 						if unitTracked[GUID] ~= "Red" then
 							unitTracked[GUID] = "Red"
-							DBM.Nameplate:Hide(true, GUID, 244912)
+							DBM.Nameplate:Hide(true, GUID, 244912, 460954)
 							DBM.Nameplate:Show(true, GUID, 244912, 463282)
 						end
 					end
@@ -598,7 +598,7 @@ end
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 122532 then
-		DBM.Nameplate:Hide(true, args.destGUID, 244912)
+		DBM.Nameplate:Hide(true, args.destGUID)
 	end
 end
 
