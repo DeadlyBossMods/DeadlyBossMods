@@ -315,25 +315,30 @@ function mod:OnCombatStart(delay)
 				if cid == 122532 then
 					local unitPower = UnitPower(UnitID)
 					if not unitTracked[GUID] then unitTracked[GUID] = "None" end
-					if (unitPower < 33) then
+					if (unitPower < 30) then
 						if unitTracked[GUID] ~= "Green" then
 							unitTracked[GUID] = "Green"
 							DBM.Nameplate:Show(true, GUID, 244912, 463281)
 						end
-					elseif (unitPower < 66) then
+					elseif (unitPower < 60) then
 						if unitTracked[GUID] ~= "Yellow" then
 							unitTracked[GUID] = "Yellow"
 							DBM.Nameplate:Hide(true, GUID, 244912, 463281)
 							DBM.Nameplate:Show(true, GUID, 244912, 460954)
 						end
-					elseif (unitPower < 100) then
+					elseif (unitPower < 90) then
 						if unitTracked[GUID] ~= "Red" then
 							unitTracked[GUID] = "Red"
 							DBM.Nameplate:Hide(true, GUID, 244912, 460954)
 							DBM.Nameplate:Show(true, GUID, 244912, 463282)
 						end
+					elseif (unitPower < 100) then
+						if unitTracked[GUID] ~= "Critical" then
+							unitTracked[GUID] = "Critical"
+							DBM.Nameplate:Hide(true, GUID, 244912, 463282)
+							DBM.Nameplate:Show(true, GUID, 244912, 1029718)
+						end
 					end
-					--Green 219964 (463281), Yellow 219965 (460954), Red 219966 (463282)
 				end
 			end
 		end, 1)
@@ -550,6 +555,8 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 244894 then--Corrupt Aegis
 		self.vb.phase = self.vb.phase + 1
+		comboDebugCounter = comboDebugCounter + 1
+		comboDebug[comboDebugCounter] = "Phase: "..self.vb.phase
 		self.vb.wakeOfFlameCount = 0
 		self.vb.comboCount = 0
 		self.vb.firstCombo = nil
