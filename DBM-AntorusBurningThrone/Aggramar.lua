@@ -315,17 +315,23 @@ function mod:OnCombatStart(delay)
 				if cid == 122532 then
 					local unitPower = UnitPower(UnitID)
 					if not unitTracked[GUID] then unitTracked[GUID] = "None" end
-					if (unitPower < 33) and unitTracked[GUID] ~= "Green" then
-						unitTracked[GUID] = "Green"
-						DBM.Nameplate:Show(true, GUID, 244912, 463281)
-					elseif (unitPower < 66) and unitTracked[GUID] ~= "Yellow" then
-						unitTracked[GUID] = "Yellow"
-						DBM.Nameplate:Hide(true, GUID, 244912)
-						DBM.Nameplate:Show(true, GUID, 244912, 460954)
-					elseif (unitPower < 100) and unitTracked[GUID] ~= "Red" then
-						unitTracked[GUID] = "Red"
-						DBM.Nameplate:Hide(true, GUID, 244912)
-						DBM.Nameplate:Show(true, GUID, 244912, 463282)
+					if (unitPower < 33) then
+						if unitTracked[GUID] ~= "Green" then
+							unitTracked[GUID] = "Green"
+							DBM.Nameplate:Show(true, GUID, 244912, 463281)
+						end
+					elseif (unitPower < 66) then
+						if unitTracked[GUID] ~= "Yellow" then
+							unitTracked[GUID] = "Yellow"
+							DBM.Nameplate:Hide(true, GUID, 244912)
+							DBM.Nameplate:Show(true, GUID, 244912, 460954)
+						end
+					elseif (unitPower < 100) then
+						if unitTracked[GUID] ~= "Red" then
+							unitTracked[GUID] = "Red"
+							DBM.Nameplate:Hide(true, GUID, 244912)
+							DBM.Nameplate:Show(true, GUID, 244912, 463282)
+						end
 					end
 					--Green 219964 (463281), Yellow 219965 (460954), Red 219966 (463282)
 				end
