@@ -320,9 +320,11 @@ function mod:OnCombatStart(delay)
 						DBM.Nameplate:Show(true, GUID, 244912, 574574)
 					elseif unitPower < 66 and not unitTracked[GUID] == "Yellow" then
 						unitTracked[GUID] = "Yellow"
+						DBM.Nameplate:Hide(true, args.destGUID, 244912)
 						DBM.Nameplate:Show(true, GUID, 244912, 450954)
 					elseif unitPower < 100 and not unitTracked[GUID] == "Red" then
 						unitTracked[GUID] = "Red"
+						DBM.Nameplate:Hide(true, args.destGUID, 244912)
 						DBM.Nameplate:Show(true, GUID, 244912, 463282)
 					end
 					--Green 219964 (574574), Yellow 219965 (450954), Red 219966 (463282)
