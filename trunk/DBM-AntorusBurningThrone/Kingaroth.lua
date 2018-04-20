@@ -120,7 +120,6 @@ end
 local function warnDemolishTargets(self, spellName)
 --	table.sort(DemolishTargets)
 	warnDemolish:Show(table.concat(DemolishTargets, "<, >"))
-	--if self:IsLFR() then return end
 	for i = 1, #DemolishTargets do
 		--local icon = i == 1 and 6 or i == 2 and 4 or i == 3 and 3--Because I'm sure bigwigs will do something funky with icons
 		local icon = i
@@ -217,23 +216,13 @@ function mod:SPELL_CAST_START(args)
 			specWarnForgingStrike:Play("defensive")
 		end
 		--1.5, 27.6, 30.1
-		if self:IsLFR() then
-			timerForgingStrikeCD:Start(8.5, self.vb.forgingStrikeCast+1)
-		else
-			timerForgingStrikeCD:Start(14.6, self.vb.forgingStrikeCast+1)
-			countdownForgingStrike:Start(14.6)
-		end
+		timerForgingStrikeCD:Start(14.6, self.vb.forgingStrikeCast+1)
+		countdownForgingStrike:Start(14.6)
 	elseif spellId == 254926 or spellId == 257997 then
 		self:BossTargetScanner(args.sourceGUID, "ReverberatingTarget", 0.1, 9)
 		if self:AntiSpam(5, 3) then--Sometimes stutter casts
 			self.vb.reverbStrikeCast = self.vb.reverbStrikeCast + 1
-			local cooldown = 28
-			if self:IsLFR() then
-				cooldown = 26
-			else
-				cooldown = 28--28-30
-			end
-			timerReverberatingStrikeCD:Start(cooldown, self.vb.reverbStrikeCast+1)--More work needed
+			timerReverberatingStrikeCD:Start(28, self.vb.reverbStrikeCast+1)--More work needed
 		end
 	elseif spellId == 245807 then
 		specWarnAnnihilation:Show()
@@ -296,7 +285,7 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 254919 then--Always swap after each cast
+	if spellId == 254919 or spellId == 257978 then--Always swap after each cast
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if uId and self:IsTanking(uId) and not args:IsPlayer() then
 			local _, _, _, _, _, _, expireTime = UnitDebuff("player", args.spellName)
@@ -307,22 +296,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			if not UnitIsDeadOrGhost("player") and (not remaining or remaining and remaining < 14) then
 				specWarnForgingStrikeOther:Show(args.destName)
 				specWarnForgingStrikeOther:Play("changemt")
-			end
-		end
-	elseif spellId == 257978 then--LFR special edition, swap at 2 stacks
-		local uId = DBM:GetRaidUnitId(args.destName)
-		if uId and self:IsTanking(uId) then
-			local amount = args.amount or 1
-			if amount >= 2 and not args:IsPlayer() then
-				local _, _, _, _, _, _, expireTime = UnitDebuff("player", args.spellName)
-				local remaining
-				if expireTime then
-					remaining = expireTime-GetTime()
-				end
-				if not UnitIsDeadOrGhost("player") and (not remaining or remaining and remaining < 8.5) then
-					specWarnForgingStrikeOther:Show(args.destName)
-					specWarnForgingStrikeOther:Play("tauntboss")
-				end
 			end
 		end
 	elseif spellId == 246687 or spellId == 249680 then
