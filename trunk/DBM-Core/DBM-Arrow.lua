@@ -205,6 +205,11 @@ end
 
 local function show(runAway, x, y, distance, time, legacy)
 	if DBM:HasMapRestrictions() then return end
+	local wowToC = DBM:GetTOC()
+	if legacy and wowToC == 80000 then
+		DBM:AddMsg("Not Currently Supported")
+		return
+	end 
 	if not frame:IsShown() and not recentlyHidden then
 		DBM:AddMsg(DBM_CORE_ARROW_SUMMONED)
 	end
