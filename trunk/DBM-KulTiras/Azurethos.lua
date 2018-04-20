@@ -59,7 +59,6 @@ function mod:SPELL_AURA_APPLIED(args)
 	end
 end
 
---[[
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 228007 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
 		specWarnGTFO:Show()
