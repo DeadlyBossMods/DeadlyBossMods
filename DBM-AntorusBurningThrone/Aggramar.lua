@@ -72,7 +72,7 @@ local countdownWakeofFlame				= mod:NewCountdown("AltTwo24", 244693, "-Tank")
 mod:AddSetIconOption("SetIconOnBlaze2", 254452, false)--Both off by default, both conflit with one another
 mod:AddSetIconOption("SetIconOnAdds", 244903, false, true)--Both off by default, both conflit with one another
 mod:AddInfoFrameOption(244688, true)
-mod:AddRangeFrameOption("6", "Ranged")
+mod:AddRangeFrameOption("6", nil, "Ranged")
 mod:AddNamePlateOption("NPAuraOnPresence", 244903)
 mod:AddBoolOption("ignoreThreeTank", true)
 
