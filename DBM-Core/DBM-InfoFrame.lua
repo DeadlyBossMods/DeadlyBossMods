@@ -658,9 +658,13 @@ end
 local function updatePlayerAggro()
 	twipe(lines)
 	local aggroType = value[1]
+	local tankIgnored = value[2]
 	for uId in DBM:GetGroupMembers() do
-		if UnitThreatSituation(uId) == aggroType then
-			lines[UnitName(uId)] = ""
+		if tankIgnored and (UnitGroupRolesAssigned(uId) == "TANK" or GetPartyAssignment("MAINTANK", uId, 1)) then
+		else
+			if UnitThreatSituation(uId) >= aggroType then
+				lines[UnitName(uId)] = ""
+			end
 		end
 	end
 	updateLines()
