@@ -1,5 +1,34 @@
 local L
 
+---------------------------
+-- Taloc the Corrupted --
+---------------------------
+L= DBM:GetModLocalization(2168)
+
+L:SetMiscLocalization({
+	Aggro	 =	"Has Aggro"
+})
+
+---------------------------
+-- MOTHER --
+---------------------------
+L= DBM:GetModLocalization(2167)
+
+---------------------------
+-- Fetid Devourer --
+---------------------------
+L= DBM:GetModLocalization(2146)
+
+---------------------------
+-- Zek'vhozj --
+---------------------------
+L= DBM:GetModLocalization(2169)
+
+---------------------------
+-- Blood of G'huun --
+---------------------------
+L= DBM:GetModLocalization(2166)
+
 ---------------
 -- Mythrax the Unraveler --
 ---------------
@@ -21,31 +50,6 @@ L:SetMiscLocalization({
 -- Zul --
 ---------------------------
 L= DBM:GetModLocalization(2195)
-
----------------------------
--- Taloc the Corrupted --
----------------------------
-L= DBM:GetModLocalization(2168)
-
----------------------------
--- MOTHER --
----------------------------
-L= DBM:GetModLocalization(2167)
-
----------------------------
--- Fetid Devourer --
----------------------------
-L= DBM:GetModLocalization(2146)
-
----------------------------
--- Zek'vhozj --
----------------------------
-L= DBM:GetModLocalization(2169)
-
----------------------------
--- Blood of G'huun --
----------------------------
-L= DBM:GetModLocalization(2166)
 
 ------------------
 -- G'huun --
