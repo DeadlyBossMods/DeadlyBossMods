@@ -37,7 +37,7 @@ KingsRest\GoldenSerpent.lua
 KingsRest\MummificationConstruct.lua
 KingsRest\WarringWarlords.lua
 KingsRest\Dazar.lua
-KingsRest\KingsRestTrash
+KingsRest\KingsRestTrash.lua
 ShrineoftheStorm\Agusirr.lua
 ShrineoftheStorm\TidesageCouncil.lua
 ShrineoftheStorm\Stormsong.lua
