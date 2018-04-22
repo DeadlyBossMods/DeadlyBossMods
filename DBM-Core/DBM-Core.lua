@@ -2972,17 +2972,41 @@ function DBM:IsCreatureGUID(guid)
 	return false
 end
 
-function DBM:GetBossUnitId(name)
+function DBM:GetBossUnitId(name, bossOnly)
+	local returnUnitID
 	for i = 1, 5 do
 		if UnitName("boss" .. i) == name then
-			return "boss" .. i
+			returnUnitID = "boss"..i
 		end
 	end
-	for uId in self:GetGroupMembers() do
-		if UnitName(uId .. "target") == name and not UnitIsPlayer(uId .. "target") then
-			return uId .. "target"
+	if not returnUnitID and not bossOnly then
+		for uId in self:GetGroupMembers() do
+			if UnitName(uId .. "target") == name and not UnitIsPlayer(uId .. "target") then
+				returnUnitID = uId.."target"
+			end
 		end
 	end
+	return returnUnitID
+end
+
+function DBM:GetUnitIdFromGUID(guid, bossOnly)
+	local returnUnitID
+	for i = 1, 5 do
+		local unitId = "boss"..i
+		local bossGUID = UnitGUID(unitId)
+		if bossGUID == guid then
+			returnUnitID = bossGUID
+		end
+	end
+	--Didn't find valid unitID from boss units, scan raid targets
+	if not returnUnitID and not bossOnly then
+		for uId in self:GetGroupMembers() do
+			if UnitGUID(uId .. "target") == guid then
+				returnUnitID = uId.."target"
+			end
+		end
+	end
+	return returnUnitID
 end
 
 ---------------
@@ -7255,6 +7279,7 @@ bossModPrototype.HasMapRestrictions = DBM.HasMapRestrictions
 bossModPrototype.GetUnitCreatureId = DBM.GetUnitCreatureId
 bossModPrototype.GetCIDFromGUID = DBM.GetCIDFromGUID
 bossModPrototype.IsCreatureGUID = DBM.IsCreatureGUID
+bossModPrototype.GetUnitIdFromGUID = DBM.GetUnitIdFromGUID
 
 do
 	local bossTargetuIds = {
