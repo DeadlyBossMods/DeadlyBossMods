@@ -17,7 +17,7 @@ local warnSwirlingScythe			= mod:NewTargetAnnounce(195254, 2)
 local warnSoulEchoes				= mod:NewTargetAnnounce(194966, 2)
 local warnCallSouls					= mod:NewSpellAnnounce(196078, 2)--Change to important warning if it becomes more relevant.
 
-local specWarnReapSoul				= mod:NewSpecialWarningDodge(194956, "Tank", nil, nil, 3)
+local specWarnReapSoul				= mod:NewSpecialWarningDodge(194956, "Tank", nil, nil, 3, 2)
 local specWarnSoulEchos				= mod:NewSpecialWarningRun(194966, nil, nil, nil, 1, 2)
 local specWarnSwirlingScythe		= mod:NewSpecialWarningDodge(195254, nil, nil, nil, 1, 2)
 local yellSwirlingScythe			= mod:NewYell(195254)
@@ -96,6 +96,7 @@ function mod:SPELL_CAST_START(args)
 		self:BossTargetScanner(98542, "SoulTarget", 0.1, 20, true, nil, nil, nil, true)--Always filter tank, because if scan fails debuff will be used.
 	elseif spellId == 194956 then
 		specWarnReapSoul:Show()
+		specWarnReapSoul:Play("shockwave")
 		timerReapSoulCD:Start()
 	elseif spellId == 196078 then
 		warnCallSouls:Show()
