@@ -316,6 +316,11 @@ L= DBM:GetModLocalization(2128)
 -----------------------
 L= DBM:GetModLocalization(2129)
 
+L:SetMiscLocalization({
+	fireYell = "Hurry! Set them aflame before the Drust King resurrects them!"
+})
+
+
 ---------
 --Trash--
 ---------
