@@ -109,15 +109,14 @@ local playersInSpirit = {}
 local playersNotInSpirit = {}
 
 local spiritFilter, regularFilter
-local UnitDebuff = UnitDebuff
 do
 	spiritFilter = function(uId)
-		if UnitDebuff(uId, spiritRealm) then
+		if DBM:UnitDebuff(uId, spiritRealm) then
 			return true
 		end
 	end
 	regularFilter = function(uId)
-		if not UnitDebuff(uId, spiritRealm) then
+		if not DBM:UnitDebuff(uId, spiritRealm) then
 			return true
 		end
 	end
@@ -175,7 +174,7 @@ function mod:OnCombatStart(delay)
 	end
 	for uId in DBM:GetGroupMembers() do
 		local name = DBM:GetUnitFullName(uId)
-		if UnitDebuff(uId, spiritRealm) then
+		if DBM:UnitDebuff(uId, spiritRealm) then
 			playersInSpirit[#playersInSpirit+1] = name
 		else
 			playersNotInSpirit[#playersNotInSpirit+1] = name
@@ -207,7 +206,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 235927 and self.vb.tankCount < 3 then
 		warnRupturingSlam:Show()
 	elseif spellId == 236542 then--Sundering Doom (regular realm soaks)
-		if UnitBuff("player", spiritRealm) or UnitDebuff("player", spiritRealm) then--Figure out which it is
+		if DBM:UnitBuff("player", spiritRealm) or DBM:UnitDebuff("player", spiritRealm) then--Figure out which it is
 			specWarnSunderingDoomRun:Show()
 			specWarnSunderingDoomRun:Play("justrun")
 		else
@@ -217,7 +216,7 @@ function mod:SPELL_CAST_START(args)
 		timerSunderingDoomCD:Start()
 		countdownSunderingDoom:Start()
 	elseif spellId == 236544 then--Doomed Sunering (spirit realm soaks)
-		if UnitBuff("player", spiritRealm) or UnitDebuff("player", spiritRealm) then--Figure out which it is
+		if DBM:UnitBuff("player", spiritRealm) or DBM:UnitDebuff("player", spiritRealm) then--Figure out which it is
 			specWarnDoomedSunderingGather:Show(BOSS)
 			specWarnDoomedSunderingGather:Play("gathershare")
 		else
@@ -232,7 +231,7 @@ function mod:SPELL_CAST_START(args)
 		--timerWitherCD:Stop()
 		specWarnWailingSouls:Show(self.vb.wailingSoulsCast)
 		--In normal realm, and boss is above 35%, getting adds
-		if not (UnitBuff("player", spiritRealm) or UnitDebuff("player", spiritRealm)) and UnitHealth("boss1") / UnitHealthMax("boss1") * 100 >= 35 then
+		if not (DBM:UnitBuff("player", spiritRealm) or DBM:UnitDebuff("player", spiritRealm)) and UnitHealth("boss1") / UnitHealthMax("boss1") * 100 >= 35 then
 			specWarnWailingSouls:Play("killmob")
 		else--Down below, or boss not 35%, not getting adds
 			specWarnWailingSouls:Play("aesoon")
@@ -262,12 +261,12 @@ function mod:SPELL_CAST_SUCCESS(args)
 			end
 		end
 	elseif spellId == 236542 then--Sundering Doom Finished (doomed sundering, soaked by spirit realm is next)
-		if UnitBuff("player", spiritRealm) or UnitDebuff("player", spiritRealm) then--Figure out which it is
+		if DBM:UnitBuff("player", spiritRealm) or DBM:UnitDebuff("player", spiritRealm) then--Figure out which it is
 			specWarnDoomedSunderingTaunt:Show(BOSS)
 			specWarnDoomedSunderingTaunt:Play("tauntboss")
 		end
 	elseif spellId == 236544 then--Doomed Sundering Finished (sundring doom, soaked by regular realm is next)
-		if not (UnitBuff("player", spiritRealm) or UnitDebuff("player", spiritRealm)) then--Figure out which it is
+		if not (DBM:UnitBuff("player", spiritRealm) or DBM:UnitDebuff("player", spiritRealm)) then--Figure out which it is
 			specWarnSunderingDoomTaunt:Show(BOSS)
 			specWarnSunderingDoomTaunt:Play("tauntboss")
 		end

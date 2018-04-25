@@ -232,7 +232,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self:IsTanking(uId) then
 			local amount = args.amount or 1
 			if amount >= 2 then
-				local _, _, _, _, _, _, expireTime = UnitDebuff("player", args.spellName)
+				local _, _, _, _, _, _, expireTime = DBM:UnitDebuff("player", args.spellName)
 				local remaining
 				if expireTime then
 					remaining = expireTime-GetTime()

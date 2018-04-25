@@ -23,7 +23,7 @@ local encounterMarkers = {}
 
 local GetNumGroupMembers, GetNumSubgroupMembers, IsInRaid = GetNumGroupMembers, GetNumSubgroupMembers, IsInRaid
 local GetTime, WorldFrame = GetTime, WorldFrame
-local UnitExists, UnitIsUnit, UnitPosition, UnitDebuff, UnitIsConnected, GetPlayerFacing = UnitExists, UnitIsUnit, UnitPosition, UnitDebuff, UnitIsConnected, GetPlayerFacing
+local UnitExists, UnitIsUnit, UnitPosition, UnitIsConnected, GetPlayerFacing = UnitExists, UnitIsUnit, UnitPosition, UnitIsConnected, GetPlayerFacing
 local GetInstanceInfo = GetInstanceInfo
 
 local RAID_CLASS_COLORS = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS
@@ -972,13 +972,13 @@ do
 
 			local alert = false
 			if type(self.shouldUpdateRange) == "string" and self.shouldUpdateRange ~= "all" then--Spellname passed, debuff filter
-				if not UnitDebuff("player", self.shouldUpdateRange) then--Debuff faded from player, auto switch to "all" type
+				if not DBM:UnitDebuff("player", self.shouldUpdateRange) then--Debuff faded from player, auto switch to "all" type
 					self.shouldUpdateRange = true
 					self:UpdateAlerts(self)
 					return
 				end
 				for index, unit in group() do
-					if not UnitDebuff(unit, self.shouldUpdateRange) and not UnitIsDead(unit) then
+					if not DBM:UnitDebuff(unit, self.shouldUpdateRange) and not UnitIsDead(unit) then
 						alert = mod:DistanceToPoint(unit, x, y) < self.radius
 						if alert then break end
 					end

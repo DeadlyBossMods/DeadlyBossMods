@@ -120,19 +120,19 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if spellId == 260741 then
 		--Prevent timer from starting if Cast start started before transfer of power, but Iris sister changed by time fast finished
 		local bossUnitID = self:GetUnitIdFromGUID(args.sourceGUID)
-		if bossUnitID and not UnitBuff(bossUnitID, IrisBuff) and not UnitDebuff(bossUnitID, IrisBuff) then
+		if bossUnitID and not DBM:UnitBuff(bossUnitID, IrisBuff) and not DBM:UnitDebuff(bossUnitID, IrisBuff) then
 			timerJaggedNettlesCD:Start()
 		end
 	--[[elseif spellId == 260907 then
 		--Prevent timer from starting if Cast start started before transfer of power, but Iris sister changed by time fast finished
 		local bossUnitID = self:GetUnitIdFromGUID(args.sourceGUID)
-		if bossUnitID and not UnitBuff(bossUnitID, IrisBuff) and not UnitDebuff(bossUnitID, IrisBuff) then
+		if bossUnitID and not DBM:UnitBuff(bossUnitID, IrisBuff) and not DBM:UnitDebuff(bossUnitID, IrisBuff) then
 			timerSoulManipulationCD:Start()
 		end--]]
 	elseif spellId == 260703 then
 		--Prevent timer from starting if Cast start started before transfer of power, but Iris sister changed by time fast finished
 		local bossUnitID = self:GetUnitIdFromGUID(args.sourceGUID)
-		if bossUnitID and not UnitBuff(bossUnitID, IrisBuff) and not UnitDebuff(bossUnitID, IrisBuff) then
+		if bossUnitID and not DBM:UnitBuff(bossUnitID, IrisBuff) and not DBM:UnitDebuff(bossUnitID, IrisBuff) then
 			timerJaggedNettlesCD:Start()
 		end
 	end

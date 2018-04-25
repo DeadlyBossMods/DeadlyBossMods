@@ -187,18 +187,18 @@ local soulBurst, soulBomb, sargSentence, soulBlight, sargFear, sargRage = DBM:Ge
 
 local function fearCheck(self)
 	self:Unschedule(fearCheck)
-	if UnitDebuff("player", sargFear) then
+	if DBM:UnitDebuff("player", sargFear) then
 		local comboActive = false
-		if UnitDebuff("player", soulBurst) then
+		if DBM:UnitDebuff("player", soulBurst) then
 			yellSargFearCombo:Yell(L.Burst)
 			comboActive = true
-		elseif UnitDebuff("player", soulBomb) then
+		elseif DBM:UnitDebuff("player", soulBomb) then
 			yellSargFearCombo:Yell(L.Bomb)
 			comboActive = true
-		elseif UnitDebuff("player", sargSentence) then
+		elseif DBM:UnitDebuff("player", sargSentence) then
 			yellSargFearCombo:Yell(L.Sentence)
 			comboActive = true
-		elseif UnitDebuff("player", soulBlight) then
+		elseif DBM:UnitDebuff("player", soulBlight) then
 			yellSargFearCombo:Yell(L.Blight)
 			comboActive = true
 		end
@@ -216,7 +216,7 @@ local function ToggleRangeFinder(self, hide)
 		DBM.RangeCheck:Show(8)
 		self.vb.rangeCheckNoTouchy = true--Prevent SPELL_AURA_REMOVED of revious rage closing range finder during window we're expecting next rage
 	end
-	if hide and not UnitDebuff("player", sargRage) then
+	if hide and not DBM:UnitDebuff("player", sargRage) then
 		DBM.RangeCheck:Hide()
 		self.vb.rangeCheckNoTouchy = false
 	end
@@ -455,7 +455,7 @@ function mod:SPELL_AURA_APPLIED(args)
 					specWarnSweepingScythe:Show(amount)
 					specWarnSweepingScythe:Play("stackhigh")
 				else--Taunt as soon as stacks are clear, regardless of stack count.
-					local _, _, _, _, _, _, expireTime = UnitDebuff("player", args.spellName)
+					local _, _, _, _, _, _, expireTime = DBM:UnitDebuff("player", args.spellName)
 					local remaining
 					if expireTime then
 						remaining = expireTime-GetTime()

@@ -75,22 +75,21 @@ local debuffFilter
 local updateRangeFrame
 local decimination, mythicDecimination, FelBombardment = DBM:GetSpellInfo(244410), DBM:GetSpellInfo(246919), DBM:GetSpellInfo(246220)
 do
-	local UnitDebuff = UnitDebuff
 	debuffFilter = function(uId)
-		if UnitDebuff(uId, decimination) or UnitDebuff(uId, mythicDecimination) or UnitDebuff(uId, FelBombardment) then
+		if DBM:UnitDebuff(uId, decimination) or DBM:UnitDebuff(uId, mythicDecimination) or DBM:UnitDebuff(uId, FelBombardment) then
 			return true
 		end
 	end
 	updateRangeFrame = function(self)
 		if not self.Options.RangeFrame then return end
 		if self.vb.deciminationActive > 0 then
-			if UnitDebuff("player", decimination) or UnitDebuff("player", mythicDecimination) then
+			if DBM:UnitDebuff("player", decimination) or DBM:UnitDebuff("player", mythicDecimination) then
 				DBM.RangeCheck:Show(17)--Show Everyone
 			else
 				DBM.RangeCheck:Show(17, debuffFilter)--Show only those affected by debuff
 			end
 		elseif self.vb.FelBombardmentActive > 0 then
-			if UnitDebuff("player", FelBombardment) then
+			if DBM:UnitDebuff("player", FelBombardment) then
 				DBM.RangeCheck:Show(7)--Will round to 8
 			else
 				DBM.RangeCheck:Show(7, debuffFilter)
