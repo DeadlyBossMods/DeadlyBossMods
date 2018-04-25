@@ -79,26 +79,25 @@ mod.vb.three = "None"
 local updateInfoFrame
 local fireFoam, frostFoam, shadowFoam = DBM:GetSpellInfo(228744), DBM:GetSpellInfo(228810), DBM:GetSpellInfo(228818)
 local fireDebuff, frostDebuff, shadowDebuff = DBM:GetSpellInfo(227539), DBM:GetSpellInfo(227566), DBM:GetSpellInfo(227570)
-local UnitDebuff = UnitDebuff
 do
 	local lines = {}
 	updateInfoFrame = function()
 		table.wipe(lines)
 		for uId in DBM:GetGroupMembers() do
-			if UnitDebuff(uId, fireFoam) then
-				if mod.Options.FilterSameColor and UnitDebuff(uId, fireDebuff) then
+			if DBM:UnitDebuff(uId, fireFoam) then
+				if mod.Options.FilterSameColor and DBM:UnitDebuff(uId, fireDebuff) then
 					--Do nothing
 				else
 					lines[UnitName(uId)] = "|cffff0000"..STRING_SCHOOL_FIRE.."|r"
 				end
-			elseif UnitDebuff(uId, frostFoam) then
-				if mod.Options.FilterSameColor and UnitDebuff(uId, frostDebuff) then
+			elseif DBM:UnitDebuff(uId, frostFoam) then
+				if mod.Options.FilterSameColor and DBM:UnitDebuff(uId, frostDebuff) then
 					--Do nothing
 				else
 					lines[UnitName(uId)] = "|cff0000ff"..STRING_SCHOOL_FROST.."|r"
 				end
-			elseif UnitDebuff(uId, shadowFoam) then
-				if mod.Options.FilterSameColor and UnitDebuff(uId, shadowDebuff) then
+			elseif DBM:UnitDebuff(uId, shadowFoam) then
+				if mod.Options.FilterSameColor and DBM:UnitDebuff(uId, shadowDebuff) then
 					--Do nothing
 				else
 					lines[UnitName(uId)] = "|cFF9932CD"..STRING_SCHOOL_SHADOW.."|r"
@@ -206,7 +205,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 		if spellId == 228744 or spellId == 228794 then
-			if self.Options.FilterSameColor and UnitDebuff(uId, fireDebuff) then
+			if self.Options.FilterSameColor and DBM:UnitDebuff(uId, fireDebuff) then
 				if icon == 1 then
 					self.vb.one = "None"
 				elseif icon == 2 then
@@ -230,7 +229,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				self:SetIcon(args.destName, icon)
 			end
 		elseif spellId == 228810 or spellId == 228811 then
-			if self.Options.FilterSameColor and UnitDebuff(uId, frostDebuff) then
+			if self.Options.FilterSameColor and DBM:UnitDebuff(uId, frostDebuff) then
 				if icon == 1 then
 					self.vb.one = "None"
 				elseif icon == 2 then
@@ -254,7 +253,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				self:SetIcon(args.destName, icon)
 			end
 		elseif spellId == 228818 or spellId == 228819 then
-			if self.Options.FilterSameColor and UnitDebuff(uId, shadowDebuff) then
+			if self.Options.FilterSameColor and DBM:UnitDebuff(uId, shadowDebuff) then
 				if icon == 1 then
 					self.vb.one = "None"
 				elseif icon == 2 then
@@ -314,7 +313,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if (spellId == 228744 or spellId == 228794 or spellId == 228810 or spellId == 228811 or spellId == 228818 or spellId == 228819) and args:IsDestTypePlayer() then
 		local uId = DBM:GetRaidUnitId(args.destName)
-		if self.Options.SetIconOnFoam and not (UnitDebuff(uId, fireFoam) or UnitDebuff(uId, frostFoam) or UnitDebuff(uId, shadowFoam)) then
+		if self.Options.SetIconOnFoam and not (DBM:UnitDebuff(uId, fireFoam) or DBM:UnitDebuff(uId, frostFoam) or DBM:UnitDebuff(uId, shadowFoam)) then
 			if args.destName == self.vb.one then
 				self.vb.one = "None"
 			elseif args.destName == self.vb.two then

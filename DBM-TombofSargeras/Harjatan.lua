@@ -182,7 +182,7 @@ function mod:SPELL_AURA_APPLIED(args)
 					specWarnJaggedAbrasion:Show(amount)
 					specWarnJaggedAbrasion:Play("stackhigh")
 				else--Taunt as soon as stacks are clear, regardless of stack count.
-					if not UnitIsDeadOrGhost("player") and not UnitDebuff("player", args.spellName) then
+					if not UnitIsDeadOrGhost("player") and not DBM:UnitDebuff("player", args.spellName) then
 						specWarnJaggedAbrasionOther:Show(args.destName)
 						specWarnJaggedAbrasionOther:Play("tauntboss")
 					else

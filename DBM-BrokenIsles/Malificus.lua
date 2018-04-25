@@ -38,9 +38,8 @@ local PanicDebuff = DBM:GetSpellInfo(233568)
 
 local debuffFilter
 do
-	local UnitDebuff = UnitDebuff
 	debuffFilter = function(uId)
-		if UnitDebuff(uId, PanicDebuff) then
+		if DBM:UnitDebuff(uId, PanicDebuff) then
 			return true
 		end
 	end
@@ -88,7 +87,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnIncitePanic:Show()
 			specWarnIncitePanic:Play("scatter")
 			yellIncitePanic:Yell()
-		elseif self:CheckNearby(10, args.destName) and not UnitDebuff("player", args.spellName) then
+		elseif self:CheckNearby(10, args.destName) and not DBM:UnitDebuff("player", args.spellName) then
 			specWarnIncitePanicNear:CombinedShow(0.5, args.destName)
 			if self:AntiSpam(3, 1) then
 				specWarnIncitePanicNear:Play("scatter")

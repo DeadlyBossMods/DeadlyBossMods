@@ -74,7 +74,7 @@ function mod:SPELL_AURA_APPLIED(args)
 					specWarnSow:Show(amount)
 					specWarnSow:Play("stackhigh")
 				elseif self:AntiSpam(3, 1) then--Taunt as soon as stacks are clear, regardless of stack count.
-					if not UnitIsDeadOrGhost("player") and not UnitDebuff("player", args.spellName) then
+					if not UnitIsDeadOrGhost("player") and not DBM:UnitDebuff("player", args.spellName) then
 						specWarnSowOther:Show(args.destName)
 						specWarnSowOther:Play("tauntboss")
 					else

@@ -76,7 +76,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnGushingWound:Show(amount)
 				specWarnGushingWound:Play("stackhigh")
 			else--Taunt as soon as stacks are clear, regardless of stack count.
-				if not UnitIsDeadOrGhost("player") and not UnitDebuff("player", args.spellName) then
+				if not UnitIsDeadOrGhost("player") and not DBM:UnitDebuff("player", args.spellName) then
 					specWarnGushingWoundOther:Show(args.destName)
 					specWarnGushingWoundOther:Play("tauntboss")
 				else

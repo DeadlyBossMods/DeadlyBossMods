@@ -371,7 +371,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			if self:IsMythic() then--yell on applied as well, it starts spreading MUCH sooner
 				yellFetidRot:Yell(15)
 			end
-			local _, _, _, _, _, duration, expires, _, _ = UnitDebuff("player", args.spellName)
+			local _, _, _, _, _, duration, expires, _, _ = DBM:UnitDebuff("player", args.spellName)
 			if expires then
 				local remaining = expires-GetTime()
 				yellFetidRot:Schedule(remaining-1, 1)

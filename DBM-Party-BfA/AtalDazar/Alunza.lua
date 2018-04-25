@@ -40,7 +40,7 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 255577 then
 		timerTransfusionCD:Start()
-		local _, _, _, _, _, expireTime = UnitDebuff("player", taintedBlood)
+		local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", taintedBlood)
 		local remaining
 		if expireTime then
 			remaining = expireTime-GetTime()

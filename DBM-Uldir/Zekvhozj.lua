@@ -151,7 +151,7 @@ function mod:SPELL_AURA_APPLIED(args)
 					specWarnVoidLash:Show(amount)
 					specWarnVoidLash:Play("stackhigh")
 				else
-				--[[	local _, _, _, _, _, expireTime = UnitDebuff("player", args.spellName)
+				--[[	local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", args.spellName)
 					local remaining
 					if expireTime then
 						remaining = expireTime-GetTime()
@@ -200,7 +200,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 265646 then
 		warnWillofCorruptor:CombinedShow(0.5, args.destName)
-		if not UnitDebuff("player", args.spellName) then
+		if not DBM:UnitDebuff("player", args.spellName) then
 			specWarnWillofCorruptor:Show()
 			specWarnWillofCorruptor:Play("findmc")
 		end

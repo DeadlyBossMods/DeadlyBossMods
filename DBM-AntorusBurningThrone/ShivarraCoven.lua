@@ -270,7 +270,7 @@ function mod:SPELL_AURA_APPLIED(args)
 					specWarnFieryStrike:Show(amount)
 					specWarnFieryStrike:Play("stackhigh")
 				else
-					local _, _, _, _, _, _, expireTime = UnitDebuff("player", args.spellName)
+					local _, _, _, _, _, _, expireTime = DBM:UnitDebuff("player", args.spellName)
 					local remaining
 					if expireTime then
 						remaining = expireTime-GetTime()
@@ -313,7 +313,7 @@ function mod:SPELL_AURA_APPLIED(args)
 					specWarnFlashfreeze:Show(amount)
 					specWarnFlashfreeze:Play("stackhigh")
 				else--Taunt as soon as stacks are clear, regardless of stack count.
-					local _, _, _, _, _, _, expireTime = UnitDebuff("player", args.spellName)
+					local _, _, _, _, _, _, expireTime = DBM:UnitDebuff("player", args.spellName)
 					local remaining
 					if expireTime then
 						remaining = expireTime-GetTime()
@@ -338,7 +338,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if self.Options.InfoFrame and not DBM.InfoFrame:IsShown() then
 			DBM.InfoFrame:SetHeader(args.spellName)
-			DBM.InfoFrame:Show(6, "playerabsorb", args.spellName, select(17, UnitDebuff(args.destName, args.spellName)))
+			DBM.InfoFrame:Show(6, "playerabsorb", args.spellName, select(17, DBM:UnitDebuff(args.destName, args.spellName)))
 		end
 		if self.Options.SetIconOnChilledBlood2 then
 			self:SetIcon(args.destName, self.vb.chilledIcon)
