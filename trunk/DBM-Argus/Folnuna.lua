@@ -61,7 +61,7 @@ function mod:SPELL_AURA_APPLIED(args)
 						specWarnInfectedClaws:Show(amount)
 						specWarnInfectedClaws:Play("stackhigh")
 					else--Taunt as soon as stacks are clear, regardless of stack count.
-						if not UnitIsDeadOrGhost("player") and not UnitDebuff("player", args.spellName) then
+						if not UnitIsDeadOrGhost("player") and not DBM:UnitDebuff("player", args.spellName) then
 							specWarnInfectedClawsOther:Show(args.destName)
 							specWarnInfectedClawsOther:Play("tauntboss")
 						else

@@ -174,7 +174,7 @@ function mod:SPELL_AURA_APPLIED(args)
 						specWarnSearingWounds:Play("stackhigh")
 					end
 				else
-					if not UnitDebuff("player", args.spellName) and not UnitIsDeadOrGhost("player") then
+					if not DBM:UnitDebuff("player", args.spellName) and not UnitIsDeadOrGhost("player") then
 						specWarnSearingWoundsOther:Show(args.destName)
 						specWarnSearingWoundsOther:Play("changemt")
 					end

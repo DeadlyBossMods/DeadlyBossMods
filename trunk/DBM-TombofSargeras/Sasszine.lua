@@ -168,7 +168,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnCrashingWave:Show()
 		specWarnCrashingWave:Play("chargemove")
 	elseif spellId == 230358 then
-		if UnitDebuff("player", consumingHunger) then
+		if DBM:UnitDebuff("player", consumingHunger) then
 			specWarnConsumingHunger:Show(thunderingShock)
 			specWarnConsumingHunger:Play("movetojelly")
 		else
@@ -337,7 +337,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		if self:IsMythic() then
 			--Every two sharks
 			specWarnDreadShark:Show()
-			if UnitDebuff("player", bufferFish) then--Has bufferfish
+			if DBM:UnitDebuff("player", bufferFish) then--Has bufferfish
 				specWarnDreadShark:Play("takedamage")
 			else
 				specWarnDreadShark:Play("watchstep")

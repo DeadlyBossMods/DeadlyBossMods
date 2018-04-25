@@ -74,7 +74,7 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 247444 then
-		if not args:IsPlayer() and not UnitDebuff("player", args.spellName) then
+		if not args:IsPlayer() and not DBM:UnitDebuff("player", args.spellName) then
 			specWarnClovenSoul:Show(args.destName)
 			specWarnSoulCleave:Play("tauntboss")
 		end

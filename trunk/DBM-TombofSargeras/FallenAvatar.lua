@@ -130,7 +130,7 @@ local function warnDarkMarkTargets(self, spellName)
 		local name = darkMarkTargets[i]
 		if name == playerName then
 			yellDarkMark:Yell(icon, spellName, icon)
-			local _, _, _, _, _, _, expires = UnitDebuff("player", spellName)
+			local _, _, _, _, _, _, expires = DBM:UnitDebuff("player", spellName)
 			if expires then
 				local remaining = expires-GetTime()
 				yellDarkMarkFades:Countdown(remaining, nil, icon)
@@ -142,7 +142,7 @@ local function warnDarkMarkTargets(self, spellName)
 			self:SetIcon(name, icon)
 		end
 	end
-	if not UnitDebuff("player", spellName) then
+	if not DBM:UnitDebuff("player", spellName) then
 		specWarnDarkMarkOther:Show(DBM_ALLY)
 		specWarnDarkMarkOther:Play("gathershare")
 	end
@@ -170,7 +170,7 @@ do
 		table.wipe(sortedLines)
 		--Maiden shield amount i active first
 		if mod.vb.shieldActive then
-			local absorbAmount = select(17, UnitBuff("boss2", shieldName)) or select(17, UnitDebuff("boss2", shieldName))
+			local absorbAmount = select(17, DBM:UnitBuff("boss2", shieldName)) or select(17, DBM:UnitDebuff("boss2", shieldName))
 			if absorbAmount then
 				local percent = absorbAmount / mod.vb.shieldActive * 100
 				addLine(shieldName, math.floor(percent))
@@ -389,7 +389,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnDesolateYou:Show(amount)
 				specWarnDesolateYou:Play("stackhigh")
 			else
-				local _, _, _, _, _, _, expireTime = UnitDebuff("player", args.spellName)
+				local _, _, _, _, _, _, expireTime = DBM:UnitDebuff("player", args.spellName)
 				local remaining
 				if expireTime then
 					remaining = expireTime-GetTime()

@@ -263,7 +263,7 @@ function mod:SPELL_AURA_APPLIED(args)
 					specWarnLunarFire:Show(amount)
 					specWarnLunarFire:Play("stackhigh")
 				else--Taunt as soon as stacks are clear, regardless of stack count.
-					if not UnitIsDeadOrGhost("player") and not UnitDebuff("player", args.spellName) then
+					if not UnitIsDeadOrGhost("player") and not DBM:UnitDebuff("player", args.spellName) then
 						specWarnLunarFireOther:Show(args.destName)
 						specWarnLunarFireOther:Play("tauntboss")
 					else
@@ -333,7 +333,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if self.Options.InfoFrame and not DBM.InfoFrame:IsShown() then
 			DBM.InfoFrame:SetHeader(args.spellName)
-			DBM.InfoFrame:Show(6, "playerabsorb", args.spellName, select(17, UnitDebuff(args.destName, args.spellName)))
+			DBM.InfoFrame:Show(6, "playerabsorb", args.spellName, select(17, DBM:UnitDebuff(args.destName, args.spellName)))
 		end
 	elseif spellId == 236712 then
 		if args:IsPlayer() then

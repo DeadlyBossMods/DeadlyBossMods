@@ -449,7 +449,7 @@ local GetNumGroupMembers, GetRaidRosterInfo = GetNumGroupMembers, GetRaidRosterI
 local UnitName, GetUnitName = UnitName, GetUnitName
 local IsInRaid, IsInGroup, IsInInstance = IsInRaid, IsInGroup, IsInInstance
 local UnitAffectingCombat, InCombatLockdown, IsFalling, IsEncounterInProgress, UnitPlayerOrPetInRaid, UnitPlayerOrPetInParty = UnitAffectingCombat, InCombatLockdown, IsFalling, IsEncounterInProgress, UnitPlayerOrPetInRaid, UnitPlayerOrPetInParty
-local UnitGUID, UnitHealth, UnitHealthMax, UnitBuff = UnitGUID, UnitHealth, UnitHealthMax, UnitBuff
+local UnitGUID, UnitHealth, UnitHealthMax, UnitBuff, UnitDebuff = UnitGUID, UnitHealth, UnitHealthMax, UnitBuff, UnitDebuff
 local UnitExists, UnitIsDead, UnitIsFriend, UnitIsUnit = UnitExists, UnitIsDead, UnitIsFriend, UnitIsUnit
 local GetSpellInfo, EJ_GetSectionInfo, GetSectionIconFlags, GetSpellTexture, GetSpellCooldown = GetSpellInfo, C_EncounterJournal.GetSectionInfo, C_EncounterJournal.GetSectionIconFlags, GetSpellTexture, GetSpellCooldown
 local EJ_GetEncounterInfo, EJ_GetCreatureInfo, GetDungeonInfo = EJ_GetEncounterInfo, EJ_GetCreatureInfo, GetDungeonInfo
@@ -6294,6 +6294,34 @@ function DBM:GetSpellInfo(spellId)
 	end
 end
 
+function DBM:UnitDebuff(uId, spellName)
+	if wowTOC == 80000 then
+		for i = 1, 40 do
+			local bfaspellName = UnitDebuff(uId, i)
+			if not bfaspellName then return end
+			if spellName == bfaspellName then
+				return UnitDebuff(uId, i)
+			end
+		end
+	else
+		return UnitDebuff(uId, spellName)
+	end
+end
+
+function DBM:UnitBuff(uId, spellName)
+	if wowTOC == 80000 then
+		for i = 1, 40 do
+			local bfaspellName = UnitBuff(uId, i)
+			if not bfaspellName then return end
+			if spellName == bfaspellName then
+				return UnitBuff(uId, i)
+			end
+		end
+	else
+		return UnitBuff(uId, spellName)
+	end
+end
+
 function DBM:PlaySound(path)
 	if self.Options.SilentMode then return end
 	local soundSetting = self.Options.UseSoundChannel
@@ -9135,7 +9163,7 @@ do
 	end
 
 	function yellPrototype:Yell(...)
-		if DBM.Options.DontSendYells or self.yellType and self.yellType == "position" and UnitBuff("player", voidForm) then return end
+		if DBM.Options.DontSendYells or self.yellType and self.yellType == "position" and DBM:UnitBuff("player", voidForm) then return end
 		if not self.option or self.mod.Options[self.option] then
 			if self.yellType == "combo" then
 				SendChatMessage(pformat(self.text, ...), self.chatType or "YELL")

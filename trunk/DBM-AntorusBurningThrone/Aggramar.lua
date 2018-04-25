@@ -391,7 +391,7 @@ function mod:SPELL_CAST_START(args)
 			if tanking or (status == 3) then--Player is current target
 				specWarnFoeBreakerDefensive:Show()
 				specWarnFoeBreakerDefensive:Play("defensive")
-			elseif not UnitDebuff("player", foeBreaker1) and not UnitDebuff("player", foeBreaker2) and self.vb.foeCount == 2 then
+			elseif not DBM:UnitDebuff("player", foeBreaker1) and not DBM:UnitDebuff("player", foeBreaker2) and self.vb.foeCount == 2 then
 				if self.Options.ignoreThreeTank and self:GetNumAliveTanks() >= 3 then return end
 				if self:AntiSpam(2, 6) then--Second cast and you didn't take first and didn't get a flame rend taunt warning in last 2 seconds
 					specWarnFoeBreakerTaunt:Show(BOSS)
@@ -460,7 +460,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if self.Options.ignoreThreeTank and self:GetNumAliveTanks() >= 3 then return end
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId) then--For good measure, filter non tanks on wipes or LFR trolls
-			if not args:IsPlayer() and (self:IsMythic() and self.vb.rendCount == 2 or not UnitDebuff("player", foeBreaker1) and not UnitDebuff("player", foeBreaker2)) then
+			if not args:IsPlayer() and (self:IsMythic() and self.vb.rendCount == 2 or not DBM:UnitDebuff("player", foeBreaker1) and not DBM:UnitDebuff("player", foeBreaker2)) then
 				--Will warn if Rend count 2 and mythic, combo has ended and tank that didn't get hit should taunt boss to keep him still
 				--Will warn if Flame did not hit you and you do NOT have foebreaker debuff yet, should taunt to keep boss from moving, you're the next foe soaker in this case.
 				--Will NOT warn if Using 3+ tank strat and 3 tank filter enabled. If using 3+ tank strat, none of the two above can be safely assumed who should taunt boss, so we do nothing
@@ -485,7 +485,7 @@ function mod:SPELL_AURA_APPLIED(args)
 					specWarnTaeshalachReach:Play("stackhigh")
 				else--Taunt as soon as stacks are clear, regardless of stack count.
 					local techTimer = timerTaeshalachTechCD:GetRemaining(self.vb.techCount+1)
-					if not UnitIsDeadOrGhost("player") and not UnitDebuff("player", args.spellName) and (techTimer == 0 or techTimer >= 4) then
+					if not UnitIsDeadOrGhost("player") and not DBM:UnitDebuff("player", args.spellName) and (techTimer == 0 or techTimer >= 4) then
 						specWarnTaeshalachReachOther:Show(args.destName)
 						specWarnTaeshalachReachOther:Play("tauntboss")
 					else
