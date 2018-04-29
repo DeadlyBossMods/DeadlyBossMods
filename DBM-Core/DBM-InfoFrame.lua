@@ -602,6 +602,22 @@ end
 
 --Debuffs that are bad to have, but we want to show players who do NOT have them
 local spiritofRedemption = GetSpellInfo(27827)
+local function updateReverseBadPlayerDebuffsBySpellID()
+	twipe(lines)
+	local spellName = value[1]
+	local tankIgnored = value[2]
+	for uId in DBM:GetGroupMembers() do
+		if tankIgnored and (UnitGroupRolesAssigned(uId) == "TANK" or GetPartyAssignment("MAINTANK", uId, 1)) then
+		else
+			local spellId = betaCompat and select(10, DBM:UnitDebuff(uId, spellName)) or select(11, DBM:UnitDebuff(uId, spellName))
+			if spellId == value[1] and not UnitIsDeadOrGhost(uId) and not DBM:UnitDebuff(uId, spiritofRedemption) then
+				lines[UnitName(uId)] = ""
+			end
+		end
+	end
+	updateLines()
+	updateIcons()
+end
 local function updateReverseBadPlayerDebuffs()
 	twipe(lines)
 	local spellName = value[1]
@@ -726,6 +742,7 @@ local events = {
 	["playerbuffremaining"] = updatePlayerBuffRemaining,
 	["playerbaddebuffbyspellid"] = updateBadPlayerDebuffsBySpellID,
 	["reverseplayerbaddebuff"] = updateReverseBadPlayerDebuffs,
+	["reverseplayerbaddebuffbyspellid"] = updateReverseBadPlayerDebuffsBySpellID,
 	["playeraggro"] = updatePlayerAggro,
 	["playerbuffstacks"] = updatePlayerBuffStacks,
 	["playerdebuffstacks"] = updatePlayerDebuffStacks,
@@ -748,6 +765,7 @@ local friendlyEvents = {
 	["playerbuffremaining"] = true,
 	["playerbaddebuffbyspellid"] = true,
 	["reverseplayerbaddebuff"] = true,
+	["reverseplayerbaddebuffbyspellid"] = true,
 	["playeraggro"] = true,
 	["playerbuffstacks"] = true,
 	["playerdebuffstacks"] = true,
@@ -868,7 +886,7 @@ function infoFrame:Show(maxLines, event, ...)
 	
 	--If spellId is given as value one, convert to spell name on show instead of in every onupdate
 	--this also allows spell name to be given by mod, since value 1 verifies it's a number
-	if type(value[1]) == "number" and event ~= "health" and event ~= "function" and event ~= "playertargets" and event ~= "playeraggro" and event ~= "playerpower" and event ~= "enemypower" and event ~= "test" then
+	if type(value[1]) == "number" and event ~= "health" and event ~= "function" and event ~= "playertargets" and event ~= "playeraggro" and event ~= "playerpower" and event ~= "enemypower" and event ~= "test" and event ~= "playerbaddebuffbyspellid" and event ~= "reverseplayerbaddebuffbyspellid" then
 		value[1] = DBM:GetSpellInfo(value[1])
 	end
 
