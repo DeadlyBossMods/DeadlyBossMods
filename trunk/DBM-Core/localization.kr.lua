@@ -59,7 +59,7 @@ DBM_CORE_MOVIE_SKIPPED				= "DBM이 동영상 자동 생략 기능을 작동시�
 
 DBM_CORE_AFK_WARNING				= "자리 비움 상태에서 전투에 돌입하여 (남은 생명력 %d퍼센트) 경고음을 재생중입니다. 자리를 비우고 있는게 아니라면 자리 비움 상태를 해제하거나 '기타 기능' 항목에서 해당 설정을 비활성화 해주세요."
 
-DBM_CORE_COMBAT_STARTED_AI_TIMER	= "내 CPU는 신경망 프로세서를 탑재한 자동학습 컴퓨터. (이 전투에선 새로운 타이머 인공지능 기능을 사용해서 예상 타이머 바를 생성합니다)"
+DBM_CORE_COMBAT_STARTED_AI_TIMER	= "내 CPU는 신경망 프로세서. 기계학습형 컴퓨터 (이 전투에선 새로운 타이머 인공지능 기능을 사용해서 예상 타이머 바를 생성합니다)"
 
 DBM_CORE_PROFILE_NOT_FOUND			= "<DBM> 현재 설정된 프로필이 손상되었습니다. DBM이 'Default' 프로필을 로딩할 것입니다."
 DBM_CORE_PROFILE_CREATED			= "'%s' 프로필을 생성했습니다."
@@ -174,7 +174,6 @@ DBM_PIZZA_SYNC_INFO					= "|Hplayer:%1$s|h[%1$s]|h1이;가; 당신에게 DBM 타
 DBM_PIZZA_CONFIRM_IGNORE			= "정말 %s의 DBM 타이머를 차단하시겠습니까? 이 공격대에 있는 동안에만 적용됩니다."
 DBM_PIZZA_ERROR_USAGE				= "사용법: /dbm [broadcast] timer <시간> <텍스트>. <시간>은 1초 이상이어야 합니다."
 
---DBM_CORE_MINIMAP_TOOLTIP_HEADER (Same as English locales)
 DBM_CORE_MINIMAP_TOOLTIP_FOOTER		= "Shift+클릭 또는 우클릭한 상태로 움직이세요.\nAlt+Shift+클릭으로 움직이면 자유롭게 드래그해서 배치할 수 있습니다."
 
 DBM_CORE_RANGECHECK_HEADER			= "탐지 거리 (%dm)"
@@ -260,6 +259,7 @@ DBM_ALLY							= "공대원"--Such as "Move to Ally"
 DBM_ADDS							= "쫄"--Such as "Move to Ally"
 DBM_CORE_ROOM_EDGE					= "구석"
 DBM_CORE_FAR_AWAY					= "먼 곳"
+DBM_CORE_BREAK_LOS					= "시야를 가리는 곳"
 DBM_CORE_SAFE						= "안전함"
 DBM_CORE_SHIELD						= "보호막"
 DBM_INCOMING						= "%s 등장"
@@ -308,8 +308,6 @@ DBM_CORE_AUTO_ANNOUNCE_OPTIONS.endtarget	= "$spell:%s 종료시 경고 보기"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.fades		= "$spell:%s|1이;가; 사라졌을 때 경고 보기"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.adds			= "$spell:%s의 남은 수 알림 보기"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.cast			= "$spell:%s 시전시 경고 보기"
---DBM_CORE_AUTO_ANNOUNCE_OPTIONS.soon			= prewarnOption
---DBM_CORE_AUTO_ANNOUNCE_OPTIONS.prewarn		= prewarnOption
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.stage		= "%s단계 알림"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.stagechange	= "단계 전환 알림"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.prestage		= "%s단계로 넘어가기 전 경고 보기"
@@ -448,9 +446,9 @@ DBM_CORE_AUTO_YELL_CUSTOM_FADE			= "%s 사라짐"
 DBM_CORE_AUTO_HUD_OPTION_TEXT			= "$spell:%s에 HUD 표시 (중단됨)"
 DBM_CORE_AUTO_HUD_OPTION_TEXT_MULTI		= "여러 보스 기술에 HUD 표시 (중단됨)"
 DBM_CORE_AUTO_NAMEPLATE_OPTION_TEXT		= "$spell:%s 오라를 이름표에 표시"
-DBM_CORE_AUTO_RANGE_OPTION_TEXT			= "$spell:%2$s 거리 창 보기 (%1$sm)"
+DBM_CORE_AUTO_RANGE_OPTION_TEXT			= "$spell:%2$s 범위에 대한 거리 창 보기 (%1$sm)"
 DBM_CORE_AUTO_RANGE_OPTION_TEXT_SHORT	= "거리 창 보기 (%sm)"
-DBM_CORE_AUTO_RRANGE_OPTION_TEXT		= "$spell:%2$s 반전 거리 창 보기 (%1$sm)"
+DBM_CORE_AUTO_RRANGE_OPTION_TEXT		= "$spell:%2$s 범위에 대한 반전 거리 창 보기 (%1$sm)"
 DBM_CORE_AUTO_RRANGE_OPTION_TEXT_SHORT	= "반전 거리 창 보기 (%sm)"
 DBM_CORE_AUTO_INFO_FRAME_OPTION_TEXT	= "$spell:%s 정보 창 보기"
 DBM_CORE_AUTO_READY_CHECK_OPTION_TEXT	= "보스가 풀링되면 전투 준비 효과음 듣기 (보스를 대상으로 잡지 않아도 재생)"
