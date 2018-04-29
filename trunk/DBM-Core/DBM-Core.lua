@@ -6294,31 +6294,31 @@ function DBM:GetSpellInfo(spellId)
 	end
 end
 
-function DBM:UnitDebuff(uId, spellName)
+function DBM:UnitDebuff(uId, spellInput)
 	if wowTOC == 80000 then
 		for i = 1, 40 do
-			local bfaspellName = UnitDebuff(uId, i)
-			if not bfaspellName then return end
-			if spellName == bfaspellName then
-				return UnitDebuff(uId, i)
+			local spellName, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, nameplateShowPersonal, spellId, canApplyAura, isBossDebuff, nameplateShowAll, timeMod, value1, value2, value3 = UnitDebuff(uId, i)
+			if not spellName then return end
+			if spellInput == spellName or spellInput == spellId then
+				return spellName, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, nameplateShowPersonal, spellId, canApplyAura, isBossDebuff, nameplateShowAll, timeMod, value1, value2, value3
 			end
 		end
 	else
-		return UnitDebuff(uId, spellName)
+		return UnitDebuff(uId, spellInput)
 	end
 end
 
-function DBM:UnitBuff(uId, spellName)
+function DBM:UnitBuff(uId, spellInput)
 	if wowTOC == 80000 then
 		for i = 1, 40 do
-			local bfaspellName = UnitBuff(uId, i)
-			if not bfaspellName then return end
-			if spellName == bfaspellName then
-				return UnitBuff(uId, i)
+			local spellName, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, nameplateShowPersonal, spellId, canApplyAura, isBossDebuff, nameplateShowAll, timeMod, value1, value2, value3 = UnitBuff(uId, i)
+			if not spellName then return end
+			if spellInput == spellName or spellInput == spellId then
+				return spellName, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, nameplateShowPersonal, spellId, canApplyAura, isBossDebuff, nameplateShowAll, timeMod, value1, value2, value3
 			end
 		end
 	else
-		return UnitBuff(uId, spellName)
+		return UnitBuff(uId, spellInput)
 	end
 end
 

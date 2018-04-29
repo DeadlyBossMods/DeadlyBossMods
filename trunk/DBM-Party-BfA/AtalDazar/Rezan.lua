@@ -20,7 +20,7 @@ mod:RegisterEventsInCombat(
 local warnPursuit				= mod:NewTargetAnnounce(257407, 2)
 
 local specWarnTeeth				= mod:NewSpecialWarningDefensive(255434, "Tank", nil, nil, 1, 2)
-local specWarnFear				= mod:NewSpecialWarningDodge(255371, nil, nil, nil, 3, 2)--Dodge warning on purpose, you dodge it by LOS behind pillar
+local specWarnFear				= mod:NewSpecialWarningMoveTo(255371, nil, nil, nil, 3, 2)--Dodge warning on purpose, you dodge it by LOS behind pillar
 local yellPursuit				= mod:NewYell(257407)
 local specWarnPursuit			= mod:NewSpecialWarningRun(257407, nil, nil, nil, 4, 2)
 
@@ -50,7 +50,7 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 255371 then
-		specWarnFear:Show()
+		specWarnFear:Show(DBM_CORE_BREAK_LOS)
 		specWarnFear:Play("findshelter")
 		timerFearCD:Start()
 	elseif spellId == 257407 then
