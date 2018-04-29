@@ -73,6 +73,21 @@ L:SetGeneralLocalization({
 -----------------------
 L= DBM:GetModLocalization(2165)
 
+-----------------------
+-- Mummification Construct --
+-----------------------
+L= DBM:GetModLocalization(2171)
+
+-----------------------
+-- The Warring Warlords --
+-----------------------
+L= DBM:GetModLocalization(2170)
+
+-----------------------
+-- Dazar, The First King --
+-----------------------
+L= DBM:GetModLocalization(2172)
+
 ---------
 --Trash--
 ---------
@@ -91,17 +106,17 @@ L:SetGeneralLocalization({
 L= DBM:GetModLocalization(2153)
 
 -----------------------
--- Council --
+-- Tidesage Council --
 -----------------------
 L= DBM:GetModLocalization(2154)
 
 -----------------------
--- Priest --
+-- Lord Stormsong --
 -----------------------
 L= DBM:GetModLocalization(2155)
 
 -----------------------
--- Faceless --
+-- Vol'zith the Whisperer --
 -----------------------
 L= DBM:GetModLocalization(2156)
 
@@ -118,6 +133,11 @@ L:SetGeneralLocalization({
 -- <<<Siege of Boralus >>> --
 -----------------------
 -----------------------
+-- Dread Captain Lockwood --
+-----------------------
+L= DBM:GetModLocalization(2173)
+
+-----------------------
 -- Chopper Redhook --
 -----------------------
 L= DBM:GetModLocalization(2132)
@@ -128,7 +148,7 @@ L= DBM:GetModLocalization(2132)
 L= DBM:GetModLocalization(2134)
 
 -----------------------
--- Lady Ashvane --
+-- Kraken --
 -----------------------
 L= DBM:GetModLocalization(2140)
 
@@ -273,17 +293,17 @@ L:SetGeneralLocalization({
 -- <<<Waycrest Manor>>> --
 -----------------------
 -----------------------
--- Witch Council --
+-- Heartsbane Triad --
 -----------------------
 L= DBM:GetModLocalization(2125)
 
 -----------------------
--- Wicker Goliath --
+-- Soulbound Goliath --
 -----------------------
 L= DBM:GetModLocalization(2126)
 
 -----------------------
--- Gluttony --
+-- Raal the Gluttonous --
 -----------------------
 L= DBM:GetModLocalization(2127)
 
@@ -293,9 +313,14 @@ L= DBM:GetModLocalization(2127)
 L= DBM:GetModLocalization(2128)
 
 -----------------------
--- Drust King --
+-- Gorak Tul --
 -----------------------
 L= DBM:GetModLocalization(2129)
+
+L:SetMiscLocalization({
+	fireYell = "Hurry! Set them aflame before the Drust King resurrects them!"
+})
+
 
 ---------
 --Trash--
