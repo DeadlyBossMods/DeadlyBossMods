@@ -131,7 +131,7 @@ function mod:SPELL_AURA_APPLIED(args)
 					yellMutagenicPathogen:Cancel()
 					yellMutagenicPathogen:Countdown(12)
 				else
-					local _, _, _, _, _, expireTime = UnitDebuff("player", args.spellName)
+					local _, _, _, _, _, expireTime = UnitDebuff("player", spellId)
 					local remaining
 					if expireTime then
 						remaining = expireTime-GetTime()
