@@ -21,7 +21,7 @@ Taloc.lua
 Mother.lua
 FetidDevourer.lua
 Zekvhozj.lua
-BloodofGhuun.lua
+Vectis.lua
 Zul.lua
 Mythrax.lua
 Ghuun.lua
