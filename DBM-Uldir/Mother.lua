@@ -96,7 +96,7 @@ function mod:SPELL_AURA_APPLIED(args)
 					specWarnSunderingScalpel:Show(amount)
 					specWarnSunderingScalpel:Play("stackhigh")
 				else
-					local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", args.spellName)
+					local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", spellId)
 					local remaining
 					if expireTime then
 						remaining = expireTime-GetTime()
