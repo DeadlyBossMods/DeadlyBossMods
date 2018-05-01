@@ -6296,7 +6296,7 @@ end
 
 function DBM:UnitDebuff(uId, spellInput)
 	if wowTOC == 80000 then
-		for i = 1, 40 do
+		for i = 1, 60 do
 			local spellName, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, nameplateShowPersonal, spellId, canApplyAura, isBossDebuff, nameplateShowAll, timeMod, value1, value2, value3 = UnitDebuff(uId, i)
 			if not spellName then return end
 			if spellInput == spellName or spellInput == spellId then
@@ -6310,7 +6310,7 @@ end
 
 function DBM:UnitBuff(uId, spellInput)
 	if wowTOC == 80000 then
-		for i = 1, 40 do
+		for i = 1, 60 do
 			local spellName, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, nameplateShowPersonal, spellId, canApplyAura, isBossDebuff, nameplateShowAll, timeMod, value1, value2, value3 = UnitBuff(uId, i)
 			if not spellName then return end
 			if spellInput == spellName or spellInput == spellId then
