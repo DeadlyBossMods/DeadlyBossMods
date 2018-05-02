@@ -34,7 +34,7 @@ mod:RegisterEventsInCombat(
 --TODO, N'raqi Destroyer come out with visions? tank mob?
 --Stage One: Oblivion's Call
 --local warnXorothPortal				= mod:NewSpellAnnounce(244318, 2, nil, nil, nil, nil, nil, 7)
-local warnImminentRuin					= mod:NewTargetAnnounce(272536, 2)
+--local warnImminentRuin					= mod:NewTargetAnnounce(272536, 2)
 local warnPhase2						= mod:NewPhaseAnnounce(2, 2, nil, nil, nil, nil, nil, 2)
 
 --Stage One: Oblivion's Call
@@ -181,12 +181,12 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnImminentRuin:Play("runout")
 			yellImminentRuin:Yell()
 			yellImminentRuinFades:Countdown(8)
-		elseif self:CheckNearby(12, args.destName) then
+		elseif self:CheckNearby(12, args.destName) and not DBM:UnitDebuff("player", spellId) then
 			specWarnImminentRuinNear:CombinedShow(0.3, args.destName)--Combined show to prevent warning spam if multiple targets near you
 			specWarnImminentRuinNear:CancelVoice()--Avoid spam
 			specWarnImminentRuinNear:ScheduleVoice(0.3, "runaway")
-		else
-			warnImminentRuin:CombinedShow(0.3, args.destName)
+		--else
+			--warnImminentRuin:CombinedShow(0.3, args.destName)
 		end
 	elseif spellId == 272115 then
 		
