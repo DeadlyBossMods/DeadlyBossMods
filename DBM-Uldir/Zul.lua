@@ -91,6 +91,7 @@ mod.vb.poolCount = 0
 local unitTracked = {}
 
 function mod:OnCombatStart(delay)
+	DBM:AddMsg("There is no Dana, only Zul")
 	self.vb.poolCount = 0
 	timerDarkRevolationCD:Start(1-delay)
 	timerPoolofDarknessCD:Start(1-delay)
