@@ -361,13 +361,32 @@ local function updateEnemyPower()
 	twipe(lines)
 	local threshold = value[1]
 	local powerType = value[2]
-	for i = 1, 5 do
-		local uId = "boss"..i
-		if UnitExists(uId) then
+	if powerType then--Only do power type defined
+		for i = 1, 5 do
+			local uId = "boss"..i
 			local currentPower, maxPower = UnitPower(uId, powerType), UnitPowerMax(uId, powerType)
-			if maxPower == 0 then return end--Prevent division by 0
-			if currentPower / maxPower * 100 >= threshold then
-				lines[UnitName(uId)] = currentPower
+			if maxPower and maxPower ~= 0 then--Prevent division by 0 in addition to filtering non existing units that may still return false on UnitExists()
+				if currentPower / maxPower * 100 >= threshold then
+					lines[UnitName(uId)] = currentPower
+				end
+			end
+		end
+	else--Check primary power type and alternate power types together. This should only be used if BOTH power types exist on same boss, else fix your shit MysticalOS
+		for i = 1, 5 do
+			local uId = "boss"..i
+			--Primary Power
+			local currentPower, maxPower = UnitPower(uId), UnitPowerMax(uId)
+			if maxPower and maxPower ~= 0 then--Prevent division by 0 in addition to filtering non existing units that may still return false on UnitExists()
+				if currentPower / maxPower * 100 >= threshold then
+					lines[UnitName(uId)] = DBM_CORE_INFOFRAME_MAIN..currentPower
+				end
+			end
+			--Alternate Power
+			local currentAltPower, maxAltPower = UnitPower(uId, 10), UnitPowerMax(uId, 10)
+			if maxAltPower and maxAltPower ~= 0 then--Prevent division by 0 in addition to filtering non existing units that may still return false on UnitExists()
+				if currentAltPower / maxAltPower * 100 >= threshold then
+					lines[UnitName(uId)] = DBM_CORE_INFOFRAME_ALT..currentAltPower
+				end
 			end
 		end
 	end
