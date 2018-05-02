@@ -573,7 +573,7 @@ do
 			radarFrame.text:SetText(DBM_CORE_RANGERADAR_HEADER:format(activeRange, mainFrame.redCircleNumPlayers))
 		end
 
-		local playerMapId = GetPlayerMapAreaID("player") or 0
+		local playerMapId = C_Map and C_Map.GetCurrentMapID("player") or GetPlayerMapAreaID("player") or 0
 		if not restricted then
 			rotation = pi2 - (GetPlayerFacing() or 0)
 		end
