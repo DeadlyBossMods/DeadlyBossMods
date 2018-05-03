@@ -2155,12 +2155,12 @@ do
 		elseif cmd:sub(1, 8) == "whereiam" or cmd:sub(1, 8) == "whereami" then
 			if DBM:HasMapRestrictions() then
 				local _, _, _, map = UnitPosition("player")
-				local mapID = C_Map and C_Map.GetCurrentMapID() or GetCurrentMapAreaID()
+				local mapID = C_Map and C_Map.GetBestMapForUnit("player") or GetCurrentMapAreaID()
 				DBM:AddMsg(("Location Information\nYou are at zone %u (%s).\nLocal Map ID %u (%s)"):format(map, GetRealZoneText(map), mapID, GetZoneText()))
 			else
 				local x, y, _, map = UnitPosition("player")
 				SetMapToCurrentZone()
-				local mapID = C_Map and C_Map.GetCurrentMapID() or GetCurrentMapAreaID()
+				local mapID = C_Map and C_Map.GetBestMapForUnit("player") or GetCurrentMapAreaID()
 				local mapx, mapy = GetPlayerMapPosition("player")
 				DBM:AddMsg(("Location Information\nYou are at zone %u (%s): x=%f, y=%f.\nLocal Map ID %u (%s): x=%f, y=%f"):format(map, GetRealZoneText(map), x, y, mapID, GetZoneText(), mapx, mapy))
 			end
@@ -6979,7 +6979,7 @@ do
 		local isInstance, instanceType = IsInInstance()
 		if not isInstance or C_Garrison:IsOnGarrisonMap() or instanceType == "scenario" or self.Options.MovieFilter == "Never" then return end
 		SetMapToCurrentZone()
-		local currentMapID = C_Map and C_Map.GetCurrentMapID() or GetCurrentMapAreaID()
+		local currentMapID = C_Map and C_Map.GetBestMapForUnit("player") or GetCurrentMapAreaID()
 		local currentFloor = GetCurrentMapDungeonLevel and GetCurrentMapDungeonLevel() or 0--REMOVE In 8.x
 		if self.Options.MovieFilter == "Block" or self.Options.MovieFilter == "AfterFirst" and self.Options.MoviesSeen[currentMapID..currentFloor] then
 			CinematicFrame_CancelCinematic()
