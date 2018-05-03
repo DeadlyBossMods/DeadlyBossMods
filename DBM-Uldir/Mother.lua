@@ -41,8 +41,8 @@ local timerCleansingFlameCD				= mod:NewCastSourceTimer(180, 268089, nil, nil, n
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
 
-local countdownPurifyingFlame			= mod:NewCountdown(50, 267795, true, 3, 3)
-local countdownSunderingScalpel			= mod:NewCountdown("Alt23", 267787, "Tank", 2, 3)
+local countdownPurifyingFlame			= mod:NewCountdown(50, 267795, true, nil, 3)
+local countdownSunderingScalpel			= mod:NewCountdown("Alt23", 267787, "Tank", nil, 3)
 local countdownSurgicalBeam				= mod:NewCountdown("AltTwo30", 269827, nil, nil, 4)
 
 mod:AddInfoFrameOption(268095, true)
