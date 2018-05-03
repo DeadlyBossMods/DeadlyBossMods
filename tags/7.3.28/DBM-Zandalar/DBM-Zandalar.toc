@@ -1,0 +1,23 @@
+## Interface: 70300
+## X-Min-Interface: 70300
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Zandalar|r
+## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0잔달라|r
+## Author: MysticalOS
+## LoadOnDemand: 1
+## RequiredDeps: DBM-Core
+## SavedVariables: DBMZandalar_AllSavedVars
+## SavedVariablesPerCharacter: DBMZandalar_SavedStats
+## X-DBM-Mod: 1
+## X-DBM-Mod-Type: RAID
+## X-DBM-Mod-Category: BFA
+## X-DBM-Mod-Has-Single-Format: 1
+## X-DBM-Mod-World-Boss: 1
+## X-DBM-Mod-Sort: 410
+## X-DBM-Mod-MapID: 1642
+## X-DBM-Mod-LoadCID: 132701,132253
+## X-DBM-Mod-MinCoreRevision: 17286
+## X-DBM-Mod-MinExpansion: 7
+localization.en.lua
+localization.kr.lua
+Tzane.lua
+Jiarak.lua
