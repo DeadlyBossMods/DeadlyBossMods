@@ -20,7 +20,7 @@ mod:RegisterEventsInCombat(
 
 --TODO, if tanks are still able to dodge scalpel in next test, refactor warning to be a shockwave/dodge instead of tank swap mechanic
 --local warnXorothPortal				= mod:NewSpellAnnounce(244318, 2, nil, nil, nil, nil, nil, 7)
-local warnSunderingScalpelCast			= mod:NewCastAnnounce(267787, 2, nil, "Tank")
+local warnSunderingScalpelCast			= mod:NewCastAnnounce(267787, 2, nil, nil, "Tank")
 local warnSunderingScalpel				= mod:NewStackAnnounce(267787, 2, nil, "Tank")
 local warnWindTunnel					= mod:NewSpellAnnounce(267945, 2)
 local warnDepletedEnergy				= mod:NewSpellAnnounce(274205, 1)
