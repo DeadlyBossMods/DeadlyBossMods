@@ -6979,7 +6979,13 @@ do
 		local isInstance, instanceType = IsInInstance()
 		if not isInstance or C_Garrison:IsOnGarrisonMap() or instanceType == "scenario" or self.Options.MovieFilter == "Never" then return end
 		SetMapToCurrentZone()
-		local currentMapID = C_Map and C_Map.GetBestMapForUnit("player") or GetCurrentMapAreaID()
+		local currentMapID
+		if C_Map then
+			currentMapID = C_Map.GetBestMapForUnit("player")
+		else
+			currentMapID = GetCurrentMapAreaID()
+		end
+		if not currentMapID then return end--Protection from map failures in zones that have no maps yet
 		local currentFloor = GetCurrentMapDungeonLevel and GetCurrentMapDungeonLevel() or 0--REMOVE In 8.x
 		if self.Options.MovieFilter == "Block" or self.Options.MovieFilter == "AfterFirst" and self.Options.MoviesSeen[currentMapID..currentFloor] then
 			CinematicFrame_CancelCinematic()
