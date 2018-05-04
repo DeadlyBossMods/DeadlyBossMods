@@ -16,7 +16,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 271296 271728",
-	"SPELL_AURA_APPLIED 271225 271965",
+	"SPELL_AURA_APPLIED 271224 271965",
 --	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 271225 271965",
 	"SPELL_PERIODIC_DAMAGE 270290",
@@ -97,7 +97,7 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 271225 then
+	if spellId == 271224 then
 		warnPlastmaDischarge:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			specWarnPlasmaDischarge:Show()
