@@ -593,7 +593,6 @@ do
 		for i = 1, numPlayers do
 			local uId = unitList[i]
 			local dot = dots[i]
-			local mapId = C_Map and C_Map.GetBestMapForUnit(uId) or GetPlayerMapAreaID(uId) or playerMapId
 			local mapId
 			if C_Map then
 				mapId = C_Map.GetBestMapForUnit(uId) or 0
