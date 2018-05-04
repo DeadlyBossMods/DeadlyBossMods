@@ -36,14 +36,14 @@ local warnPlastmaDischarge				= mod:NewTargetAnnounce(271225, 2)
 local specWarnPlasmaDischarge			= mod:NewSpecialWarningMoveAway(271225, nil, nil, nil, 3, 2)
 local yellPlasmaDischarge				= mod:NewYell(271225)
 local specWarnCudgelofGore				= mod:NewSpecialWarningMoveTo(271296, nil, nil, nil, 3, 2)
-local specWarnCudgelofGoreTaunt			= mod:NewSpecialWarningTaunt(271296, nil, nil, nil, 1, 2)
+local specWarnCudgelofGoreEveryone		= mod:NewSpecialWarningRun(271296, nil, nil, nil, 4, 2)
 local specWarnRetrieveCudgel			= mod:NewSpecialWarningDodge(271728, nil, nil, nil, 2, 2)
 local specWarnSanguineStatic			= mod:NewSpecialWarningDodge(272582, nil, nil, nil, 2, 2)
 local specWarnGTFO						= mod:NewSpecialWarningGTFO(270290, nil, nil, nil, 1, 2)
 
 mod:AddTimerLine(BOSS)
 local timerPlasmaDischargeCD			= mod:NewAITimer(12.1, 271225, nil, nil, nil, 3)--Change to count later
-local timerCudgelOfGoreCD				= mod:NewAITimer(12.1, 271296, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerCudgelOfGoreCD				= mod:NewAITimer(12.1, 271296, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerSanguineStaticCD				= mod:NewAITimer(12.1, 272582, nil, nil, nil, 3)
 mod:AddTimerLine(DBM:GetSpellInfo(271965))
 local timerPoweredDown					= mod:NewBuffActiveTimer(90, 271965, nil, nil, nil, 6)
@@ -85,9 +85,8 @@ function mod:SPELL_CAST_START(args)
 			specWarnCudgelofGore:Show(bloodStorm)
 			specWarnCudgelofGore:Play("targetyou")--Better voice maybe, or custom voice
 		else
-			--Taunt boss now?
-			--specWarnCudgelofGoreTaunt:Show()
-			--specWarnCudgelofGoreTaunt:Play("tauntboss")
+			specWarnCudgelofGoreEveryone:Show()
+			specWarnCudgelofGoreEveryone:Play("justrun")
 		end
 	elseif spellId == 271728 then
 		specWarnRetrieveCudgel:Show()
