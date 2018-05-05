@@ -258,7 +258,6 @@ L.SpamBlockNoRangeRestore	= "Setze das Abstandsfenster nicht auf den vorherigen 
 L.Area_SpamFilter			= "Spam-Filter"
 L.DontShowFarWarnings		= "Zeige keine Mitteilungen/Timer für weit entfernte Ereignisse"
 L.StripServerName			= "Entferne den Realmnamen der Spieler in Warnungen und Timern"
-L.BlockVersionUpdateNotice	= "Zeige häufigere Meldungen zur Aktualisierung einer veralteten DBM-Version im Chatfenster statt als Pop-up"
 
 L.Area_SpecFilter			= "Filtereinstellungen für Rollen"
 L.FilterTankSpec			= "Unterdrücke Warnungen für Tanks, falls deine aktuelle Spezialisierung keine \"Schutz\"-Spezialisierung ist (Hinweis: Diese Filterung sollte normalerweise nicht deaktiviert werden, da alle individuellen \"Spott\"-Warnungen nun standardmäßig aktiviert sind.)"
