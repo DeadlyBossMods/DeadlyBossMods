@@ -9545,7 +9545,7 @@ do
 	end
 
 	function specialWarningPrototype:CombinedShow(delay, ...)
-		if DBM.Options.DontShowSpecialWarnings then return end
+		if DBM.Options.DontShowSpecialWarnings or DBM.Options.DontShowSpecialWarningText then return end
 		if self.option and not self.mod.Options[self.option] then return end
 		local argTable = {...}
 		for i = 1, #argTable do
