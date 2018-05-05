@@ -55,6 +55,14 @@ L:SetMiscLocalization({
 ---------------------------
 L= DBM:GetModLocalization(2195)
 
+L:SetTimerLocalization({
+	timerAddIncoming		= DBM_INCOMING
+})
+
+L:SetOptionLocalization({
+	timerAddIncoming		= "Show timer for when incoming add is attackable"
+})
+
 ------------------
 -- G'huun --
 ------------------
