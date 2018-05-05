@@ -41,6 +41,7 @@ function mod:OnCombatStart(delay)
 	timerSwiftnessWardCD:Start(16.7-delay)
 	timerReinforcingWardCD:Start(30.1-delay)
 	if self.Options.InfoFrame then
+		DBM.InfoFrame:SetHeader(DBM_CORE_INFOFRAME_POWER)
 		DBM.InfoFrame:Show(3, "enemypower", 2)
 	end
 end

@@ -42,6 +42,7 @@ local IrisBuff = DBM:GetSpellInfo(260805)
 function mod:OnCombatStart(delay)
 	self.vb.activeTriad = nil
 	if self.Options.InfoFrame then
+		DBM.InfoFrame:SetHeader(DBM_CORE_INFOFRAME_POWER)
 		DBM.InfoFrame:Show(3, "enemypower", 2)
 	end
 end

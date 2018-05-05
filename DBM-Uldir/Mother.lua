@@ -54,6 +54,7 @@ function mod:OnCombatStart(delay)
 	countdownPurifyingFlame:Start(10.8-delay)
 	timerWindTunnelCD:Start(20.6-delay)
 	if self.Options.InfoFrame then
+		DBM.InfoFrame:SetHeader(DBM_CORE_INFOFRAME_POWER)
 		DBM.InfoFrame:Show(4, "enemypower", 1)
 	end
 end
