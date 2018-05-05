@@ -95,6 +95,7 @@ function mod:OnCombatStart(delay)
 	timerMightofVoidCD:Start(1-delay)
 	timerSurgingDarknessCD:Start(1-delay)--30 based on energy math
 	if self.Options.InfoFrame then
+		DBM.InfoFrame:SetHeader(DBM_CORE_INFOFRAME_POWER)
 		DBM.InfoFrame:Show(4, "enemypower", 2)
 	end
 end
