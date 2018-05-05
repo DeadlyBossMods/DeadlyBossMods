@@ -219,6 +219,7 @@ DBM.DefaultOptions = {
 	DontShowBossAnnounces = false,
 	DontShowTargetAnnouncements = true,
 	DontShowSpecialWarnings = false,
+	DontShowSpecialWarningText = false,
 	DontShowBossTimers = false,
 	DontShowUserTimers = false,
 	DontShowFarWarnings = true,
@@ -9427,7 +9428,7 @@ do
 	end
 
 	function specialWarningPrototype:Show(...)
-		if not DBM.Options.DontShowSpecialWarnings and (not self.option or self.mod.Options[self.option]) and not moving and frame then
+		if not DBM.Options.DontShowSpecialWarnings and not DBM.Options.DontShowSpecialWarningText and (not self.option or self.mod.Options[self.option]) and not moving and frame then
 			if self.announceType == "taunt" and DBM.Options.FilterTankSpec and not self.mod:IsTank() then return end--Don't tell non tanks to taunt, ever.
 			local argTable = {...}
 			-- add a default parameter for move away warnings

@@ -256,7 +256,6 @@ L.SpamBlockNoRangeRestore	= "모드가 '숨김' 명령을 내렸을 때 이전 �
 L.Area_SpamFilter			= "스팸 필터 설정"
 L.DontShowFarWarnings		= "멀리 떨어진 곳의 이벤트에 대한 알림 및 바 표시 안함"
 L.StripServerName			= "경고와 타이머에서 서버명 지우기"
-L.BlockVersionUpdateNotice	= "팝업창 대신 대화창에 '업데이트 필요' 알림 더 자주 표시"
 
 L.Area_SpecFilter			= "역할 필터 설정"
 L.FilterTankSpec			= "방어 전담이 아닐땐 방어 전담용 경고 보지 않기 (참고: '도발' 경고는 현재 전부 기본값으로 켜짐 상태이기 때문에 대부분의 이용자는 설정을 끄지 않는 것을 권장합니다.)"

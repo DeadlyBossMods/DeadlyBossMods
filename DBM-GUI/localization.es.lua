@@ -255,7 +255,6 @@ L.Panel_SpamFilter			= "Filtros de avisos"
 L.Area_SpamFilter			= "Opciones de filtros de avisos"
 L.DontShowFarWarnings		= "Ocultar anuncios y temporizadores de eventos que estén demasiado lejos"
 L.StripServerName			= "Omitir nombre del reino en avisos y temporizadores"
-L.BlockVersionUpdateNotice	= "Mostrar notificaciones de actualización en el chat en lugar de en ventana emergente"
 
 L.Area_SpecFilter			= "Opciones de filtros de rol"
 L.FilterTankSpec			= "Ocultar avisos designados para tanques cuando no sea tu rol"
