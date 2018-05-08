@@ -117,7 +117,7 @@ function mod:ReverberatingTarget(targetname, uId)
 	end
 end
 
-local function warnDemolishTargets(self, spellName)
+local function warnDemolishTargets(self, spellId)
 --	table.sort(DemolishTargets)
 	warnDemolish:Show(table.concat(DemolishTargets, "<, >"))
 	for i = 1, #DemolishTargets do
@@ -126,7 +126,7 @@ local function warnDemolishTargets(self, spellName)
 		local name = DemolishTargets[i]
 		if name == playerName then
 			yellDemolish:Yell(icon, icon, icon)
-			local _, _, _, _, _, _, expires = DBM:UnitDebuff("player", spellName)
+			local _, _, _, _, _, _, expires = DBM:UnitDebuff("player", spellId)
 			local remaining = expires-GetTime()
 			yellDemolishFades:Countdown(remaining, nil, icon)
 		end
@@ -134,7 +134,7 @@ local function warnDemolishTargets(self, spellName)
 			self:SetIcon(name, icon)
 		end
 	end
-	if not DBM:UnitDebuff("player", spellName) and not self:IsTank() then
+	if not DBM:UnitDebuff("player", spellId) and not self:IsTank() then
 		specWarnDemolishOther:Show(DBM_ALLY)
 		specWarnDemolishOther:Play("gathershare")
 	end
@@ -288,7 +288,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 254919 or spellId == 257978 then--Always swap after each cast
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if uId and self:IsTanking(uId) and not args:IsPlayer() then
-			local _, _, _, _, _, _, expireTime = DBM:UnitDebuff("player", args.spellName)
+			local _, _, _, _, _, _, expireTime = DBM:UnitDebuff("player", spellId)
 			local remaining
 			if expireTime then
 				remaining = expireTime-GetTime()
@@ -303,7 +303,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnDecimation:Show()
 			specWarnDecimation:Play("runout")
-			local _, _, _, _, _, _, expires = DBM:UnitDebuff("player", args.spellName)
+			local _, _, _, _, _, _, expires = DBM:UnitDebuff("player", spellId)
 			if expires then
 				local remaining = expires-GetTime()
 				yellDecimation:Countdown(remaining)
@@ -317,7 +317,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		--if #DemolishTargets == 3 then--(uncomment when upper camp known)
 			--warnDemolishTargets(self, args.spellName)
 		--else
-			self:Schedule(0.8, warnDemolishTargets, self, args.spellName)--At least 0.8, maybe bigger needed if warning still splits
+			self:Schedule(0.8, warnDemolishTargets, self, spellId)--At least 0.8, maybe bigger needed if warning still splits
 		--end
 		if args:IsPlayer() then
 			specWarnDemolish:Show()
