@@ -18,7 +18,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS 248499 258039 258838 252729 252616 256388 258029",
 	"SPELL_AURA_APPLIED 248499 248396 250669 251570 255199 253021 255496 255496 255478 252729 252616 255433 255430 255429 255425 255422 255419 255418 258647 258646 257869 257931 257966 258838",
 	"SPELL_AURA_APPLIED_DOSE 248499 258039 258838",
-	"SPELL_AURA_REMOVED 250669 251570 255199 253021 255496 255496 255478 255433 255430 255429 255425 255422 255419 255418 258039 257966 258647 258646 258838 248396 257869",
+	"SPELL_AURA_REMOVED 250669 251570 255199 253021 255496 255496 255478 255433 255430 255429 255425 255422 255419 255418 248499 258039 257966 258647 258646 258838 248396 257869",
 	"SPELL_INTERRUPT",
 	"SPELL_PERIODIC_DAMAGE 248167",
 	"SPELL_PERIODIC_MISSED 248167",
@@ -184,6 +184,7 @@ local sargGazeTimers = {23, 75, 70, 53, 53}--1 timer from method video not logs,
 local edgeofAnni = {5, 5, 90, 5, 45, 5}--All timers from method video (6:05 P3 start, 6:10, 6:15, 7:45, 7:50, 8:35, 8:40)
 --Both of these should be in fearCheck object for efficiency but with uncertainty of async, I don't want to come back and fix this later. Doing it this way ensures without a doubt it'll work by calling on load and again on combatstart
 local soulBurst, soulBomb, sargSentence, soulBlight, sargFear, sargRage = DBM:GetSpellInfo(250669), DBM:GetSpellInfo(251570), DBM:GetSpellInfo(257966), DBM:GetSpellInfo(248396), DBM:GetSpellInfo(257931), DBM:GetSpellInfo(257869)
+local tankStacks = {}
 
 local function fearCheck(self)
 	self:Unschedule(fearCheck)
@@ -237,6 +238,7 @@ local function startAnnihilationStuff(self, quiet)
 	end
 end
 
+--[[
 local function checkForMissingSentence(self)
 	self:Unschedule(checkForMissingSentence)
 	self.vb.sentenceCount = self.vb.sentenceCount + 1
@@ -247,10 +249,52 @@ local function checkForMissingSentence(self)
 	end
 	DBM:Debug("checkForMissingSentence ran, which means all sentence immuned", 2)
 end
+--]]
 
 local function delayedBoonCheck(self)
 	specWarnSoulbombMoveTo:Show(DBM_CORE_ROOM_EDGE)
 	specWarnSoulbombMoveTo:Play("bombnow")--Detonate Soon makes more sense than "run to edge" which is still too assumptive
+end
+
+local updateInfoFrame
+do
+	local lines = {}
+	local sortedLines = {}
+	local function addLine(key, value)
+		-- sort by insertion order
+		lines[key] = value
+		sortedLines[#sortedLines + 1] = key
+	end
+	updateInfoFrame = function()
+		table.wipe(lines)
+		table.wipe(sortedLines)
+		--Boss Powers first
+		for i = 1, 5 do
+			local uId = "boss"..i
+			--Primary Power
+			local currentPower, maxPower = UnitPower(uId), UnitPowerMax(uId)
+			if maxPower and maxPower ~= 0 then--Prevent division by 0 in addition to filtering non existing units that may still return false on UnitExists()
+				if currentPower / maxPower * 100 >= 1 then
+					addLine(UnitName(uId), currentPower)
+				end
+			end
+			--Alternate Power
+			local currentAltPower, maxAltPower = UnitPower(uId, 10), UnitPowerMax(uId, 10)
+			if maxAltPower and maxAltPower ~= 0 then--Prevent division by 0 in addition to filtering non existing units that may still return false on UnitExists()
+				if currentAltPower / maxAltPower * 100 >= 1 then
+					addLine(UnitName(uId), currentAltPower)
+				end
+			end
+		end
+		--Tank Debuffs
+		if #tankStacks > 0 then
+			for k, v in pairs(tankStacks) do
+				--addLine(k, v)
+				addLine(tankStacks[k], v)
+			end
+		end
+		return lines, sortedLines
+	end
 end
 
 function mod:OnCombatStart(delay)
@@ -283,7 +327,7 @@ function mod:OnCombatStart(delay)
 		berserkTimer:Start(720-delay)
 	end
 	if self.Options.InfoFrame then
-		DBM.InfoFrame:Show(4, "enemypower", 2)
+		DBM.InfoFrame:Show(6, "function", updateInfoFrame, false, false)
 	end
 	if self.Options.NPAuraOnInevitability or self.Options.NPAuraOnCosmosSword or self.Options.NPAuraOnEternalBlades or self.Options.NPAuraOnVulnerability then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
@@ -387,7 +431,7 @@ function mod:SPELL_CAST_START(args)
 			self.vb.phase = 4
 			warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(4))
 			if self.Options.InfoFrame then
-				DBM.InfoFrame:Show(4, "enemypower", 2)
+				DBM.InfoFrame:Show(6, "function", updateInfoFrame, false, false)
 			end
 		end
 		timerCosmicRayCD:Stop()
@@ -449,6 +493,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if uId and self:IsTanking(uId) then
 			local amount = args.amount or 1
+			tankStacks[args.destName] = amount
 			local swapAmount = (self:IsLFR() or not self.vb.firstscytheSwap) and 3 or 2
 			if amount >= swapAmount then
 				if args:IsPlayer() then
@@ -475,6 +520,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if uId and self:IsTanking(uId) then
 			local amount = args.amount or 1
+			tankStacks[args.destName] = amount
 			if amount >= 2 then
 				if args:IsPlayer() then
 					specWarnDeadlyScythe:Show(amount)
@@ -488,6 +534,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if uId and self:IsTanking(uId) then
 			local amount = args.amount or 1
+			tankStacks[args.destName] = amount
 			if amount >= 2 then
 				if args:IsPlayer() then
 					specWarnSoulrendingScythe:Show(amount)
@@ -646,12 +693,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 257966 then--Sentence of Sargeras
 		if self:AntiSpam(5, 6) then
-			self:Unschedule(checkForMissingSentence)
+			--self:Unschedule(checkForMissingSentence)
 			self.vb.sentenceCount = self.vb.sentenceCount + 1
 			local timer = sargSentenceTimers[self.vb.sentenceCount+1]
 			if timer then
 				timerSargSentenceCD:Start(timer, self.vb.sentenceCount+1)
-				self:Schedule(timer+10, checkForMissingSentence, self)--Check for missing sentence event 10 seconds after expected to recover timer if all immuned
+				--self:Schedule(timer+10, checkForMissingSentence, self)--Check for missing sentence event 10 seconds after expected to recover timer if all immuned
 			end
 		end
 		warnSargSentence:CombinedShow(0.3, args.destName)
@@ -715,7 +762,10 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.NPAuraOnVulnerability then
 			DBM.Nameplate:Hide(true, args.destGUID, spellId)
 		end
+	elseif spellId == 248499 then
+		tankStacks[args.destName] = nil
 	elseif spellId == 258039 then--Heroic
+		tankStacks[args.destName] = nil
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if uId and self:IsTanking(uId) then
 			if not args:IsPlayer() then--Removed from tank that's not you (only time it's removed is on death)
@@ -724,6 +774,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			end
 		end
 	elseif spellId == 258838 then--Mythic
+		tankStacks[args.destName] = nil
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if uId and self:IsTanking(uId) then
 			if not args:IsPlayer() then--Removed from tank that's not you (only time it's removed is on death)
@@ -762,7 +813,7 @@ function mod:SPELL_INTERRUPT(args)
 			countdownReorgModule:Start(31.3)
 			timerTorturedRageCD:Start(40, 1)
 			timerSargSentenceCD:Start(53, 1)
-			self:Schedule(63, checkForMissingSentence, self)
+			--self:Schedule(63, checkForMissingSentence, self)
 		else
 			if not self:IsHeroic() then
 				timerSweepingScytheCD:Start(5, 1)
