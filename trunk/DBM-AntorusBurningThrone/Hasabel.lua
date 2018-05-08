@@ -121,20 +121,19 @@ mod.vb.worldCount = 0
 mod.vb.firstPortal = false
 local playerPlatform = 1--1 Nexus, 2 Xoroth, 3 Rancora, 4 Nathreza
 local mindFog, aegisFlames, felMiasma = DBM:GetSpellInfo(245099), DBM:GetSpellInfo(244383), DBM:GetSpellInfo(244826)
-local everBurningFlames, causticSlime, CloyingShadows, hungeringGloom = DBM:GetSpellInfo(244613), DBM:GetSpellInfo(244849), DBM:GetSpellInfo(245118), DBM:GetSpellInfo(245075)
 
 local updateRangeFrame
 do
 	local function debuffFilter(uId)
-		if DBM:UnitDebuff(uId, everBurningFlames) or DBM:UnitDebuff(uId, hungeringGloom) or DBM:UnitDebuff(uId, causticSlime) then
+		if DBM:UnitDebuff(uId, 244613, 245075, 244849) then
 			return true
 		end
 	end
 	updateRangeFrame = function(self)
 		if not self.Options.RangeFrame then return end
-		if DBM:UnitDebuff("player", causticSlime) then
+		if DBM:UnitDebuff("player", 244849) then
 			DBM.RangeCheck:Show(10)
-		elseif DBM:UnitDebuff("player", everBurningFlames) or DBM:UnitDebuff("player", CloyingShadows) or DBM:UnitDebuff("player", hungeringGloom) then
+		elseif DBM:UnitDebuff("player", 244613, 245118, 245075) then
 			DBM.RangeCheck:Show(8)
 		else
 			DBM.RangeCheck:Show(10, debuffFilter)
@@ -284,7 +283,7 @@ function mod:SPELL_AURA_APPLIED(args)
 					specWarnRealityTear:Show(amount)
 					specWarnRealityTear:Play("stackhigh")
 				else--Taunt as soon as stacks are clear, regardless of stack count.
-					local _, _, _, _, _, _, expireTime = DBM:UnitDebuff("player", args.spellName)
+					local _, _, _, _, _, _, expireTime = DBM:UnitDebuff("player", spellId)
 					local remaining
 					if expireTime then
 						remaining = expireTime-GetTime()
