@@ -198,6 +198,9 @@ DBM_CORE_INFOFRAME_SHOW_SELF		= "내 자원 항상 보기"		-- Always show your 
 DBM_CORE_INFOFRAME_SETLINES			= "최대 줄 갯수 지정"
 DBM_CORE_INFOFRAME_LINESDEFAULT		= "모드 기본값"
 DBM_CORE_INFOFRAME_LINES_TO			= "줄 %d개"
+DBM_CORE_INFOFRAME_POWER			= "기력"
+DBM_CORE_INFOFRAME_MAIN				= "주 기력:"--Main power
+DBM_CORE_INFOFRAME_ALT				= "부 기력:"--Alternate Power
 
 DBM_LFG_INVITE						= "파티찾기 입장"
 
@@ -256,7 +259,8 @@ DBM_CORE_ORB						= "구슬"
 DBM_CHEST							= "상자"--As in Treasure 'Chest'. Not Chest as in body part.
 DBM_NO_DEBUFF						= "%s 없음"--For use in places like info frame where you put "Not Spellname"
 DBM_ALLY							= "공대원"--Such as "Move to Ally"
-DBM_ADDS							= "쫄"--Such as "Move to Ally"
+DBM_ADD								= "쫄"--A fight Add as in "boss spawned extra adds"
+DBM_ADDS							= "쫄"
 DBM_CORE_ROOM_EDGE					= "구석"
 DBM_CORE_FAR_AWAY					= "먼 곳"
 DBM_CORE_BREAK_LOS					= "시야를 가리는 곳"

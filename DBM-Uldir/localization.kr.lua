@@ -26,9 +26,13 @@ L= DBM:GetModLocalization(2146)
 L= DBM:GetModLocalization(2169)
 
 ---------------------------
--- Blood of G'huun --
+-- Vectis --
 ---------------------------
 L= DBM:GetModLocalization(2166)
+
+L:SetOptionLocalization({
+	ShowHighestFirst	 =	"중첩이 높은 순서대로 정보 프레임에 끈질긴 감염 대상자 정렬 (중첩 낮은순 대신)"
+})
 
 ---------------
 -- Mythrax the Unraveler --
@@ -51,6 +55,14 @@ L:SetMiscLocalization({
 -- Zul --
 ---------------------------
 L= DBM:GetModLocalization(2195)
+
+L:SetTimerLocalization({
+	timerAddIncoming		= DBM_INCOMING
+})
+
+L:SetOptionLocalization({
+	timerAddIncoming		= "쫄이 공격 가능해지면 타이머 바 보기"
+})
 
 ------------------
 -- G'huun --
