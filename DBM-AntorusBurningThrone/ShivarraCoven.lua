@@ -53,7 +53,7 @@ local warnCosmicGlare					= mod:NewTargetAnnounce(250757, 3)
 
 --General
 local specWarnGTFO						= mod:NewSpecialWarningGTFO(245634, nil, nil, nil, 1, 2)
-local specWarnActivated					= mod:NewSpecialWarningSwitchCount(118212, "Tank", nil, nil, 1, 2)
+local specWarnActivated					= mod:NewSpecialWarningSwitchCount(118212, "Tank", nil, 2, 3, 2)
 --Noura, Mother of Flames
 local specWarnFieryStrike				= mod:NewSpecialWarningStack(244899, nil, 2, nil, nil, 1, 6)
 local specWarnFieryStrikeOther			= mod:NewSpecialWarningTaunt(244899, nil, nil, nil, 1, 2)
@@ -119,7 +119,9 @@ mod:AddSetIconOption("SetIconOnCosmicGlare", 250757, true)
 mod:AddInfoFrameOption(245586, true)
 mod:AddNamePlateOption("NPAuraOnVisageofTitan", 249863)
 mod:AddBoolOption("SetLighting", true)
+mod:AddBoolOption("IgnoreFirstKick", false)
 mod:AddDropdownOption("TauntBehavior", {"TwoMythicThreeNon", "TwoAlways", "ThreeAlways"}, "TwoMythicThreeNon", "misc")
+mod:AddDropdownOption("InterruptBehavior", {"Three", "Four", "Five"}, "Three", "misc")
 
 local titanCount = {}
 mod.vb.stormCount = 0
@@ -129,6 +131,9 @@ mod.vb.fpIcon = 6
 mod.vb.chilledIcon = 1
 mod.vb.glareIcon = 4
 mod.vb.touchCosmosCast = 0
+mod.vb.interruptBehavior = "Three"
+mod.vb.ignoreFirstInterrupt = false
+mod.vb.firstCastHappend = false
 local CVAR1, CVAR2 = nil, nil
 
 function mod:OnCombatStart(delay)
@@ -139,6 +144,9 @@ function mod:OnCombatStart(delay)
 	self.vb.chilledIcon = 1
 	self.vb.glareIcon = 4
 	self.vb.touchCosmosCast = 0
+	self.vb.interruptBehavior = "Three"
+	self.vb.ignoreFirstInterrupt = false
+	self.vb.firstCastHappend = false
 	if self:IsMythic() then
 		self:SetCreatureID(122468, 122467, 122469, 125436)
 	else
@@ -161,6 +169,15 @@ function mod:OnCombatStart(delay)
 		CVAR1, CVAR2 = GetCVar("graphicsLightingQuality") or 3, GetCVar("raidGraphicsLightingQuality") or 2--Non raid cvar is nil if 3 (default) and raid one is nil if 2 (default)
 		SetCVar("graphicsLightingQuality", 1)
 		SetCVar("raidGraphicsLightingQuality", 1)
+	end
+	if UnitIsGroupLeader("player") and not self:IsLFR() then
+		if self.Options.InterruptBehavior == "Three" then
+			self:SendSync("Three", self.Options.IgnoreFirstKick)
+		elseif self.Options.InterruptBehavior == "Four" then
+			self:SendSync("Four", self.Options.IgnoreFirstKick)
+		elseif self.Options.InterruptBehavior == "Five" then
+			self:SendSync("Five", self.Options.IgnoreFirstKick)
+		end
 	end
 end
 
@@ -215,13 +232,20 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 250095 and self:AntiSpam(3, 1) then
 		timerMachinationsofAman:Start()
 	elseif spellId == 250648 then
-		self.vb.touchCosmosCast = self.vb.touchCosmosCast + 1
-		if self.vb.touchCosmosCast == 4 then
-			self.vb.touchCosmosCast = 1
+		if self.vb.firstCastHappend or not self.vb.ignoreFirstInterrupt then
+			self.vb.touchCosmosCast = self.vb.touchCosmosCast + 1
+		end
+		if (self.vb.interruptBehavior == "Three" and self.vb.touchCosmosCast == 4) or (self.vb.interruptBehavior == "Four" and self.vb.touchCosmosCast == 5) or (self.vb.interruptBehavior == "Five" and self.vb.touchCosmosCast == 6) then
+			self.vb.touchCosmosCast = 0
 		end
 		local kickCount = self.vb.touchCosmosCast
 		specWarnTouchoftheCosmos:Show(args.sourceName, kickCount)
-		specWarnTouchoftheCosmos:Play("kick"..kickCount.."r")
+		if kickCount == 0 then
+			specWarnTouchoftheCosmos:Play("kickcast")
+		else
+			specWarnTouchoftheCosmos:Play("kick"..kickCount.."r")
+		end
+		if not self.vb.firstCastHappend then self.vb.firstCastHappend = true end
 	end
 end
 
@@ -535,4 +559,18 @@ function mod:UNIT_TARGETABLE_CHANGED(uId)
 			timerCosmicGlareCD:Stop()
 		end
 	end
-end	
+end
+
+function mod:OnSync(msg, firstInterrupt)
+	if self:IsLFR() then return end
+	if msg == "Three" then
+		self.vb.interruptBehavior = "Three"
+	elseif msg == "Four" then
+		self.vb.interruptBehavior = "Four"
+	elseif msg == "Five" then
+		self.vb.interruptBehavior = "Five"
+	end	
+	if firstInterrupt then
+		self.vb.ignoreFirstInterrupt = firstInterrupt == "true" and true or false
+	end
+end
