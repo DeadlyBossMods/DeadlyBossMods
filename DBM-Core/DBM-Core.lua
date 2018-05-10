@@ -10737,6 +10737,10 @@ function bossModPrototype:AddTimerLine(text)
 	return self:AddOptionLine(text, "timer")
 end
 
+function bossModPrototype:AddMiscLine(text)
+	return self:AddOptionLine(text, "misc")
+end
+
 function bossModPrototype:RemoveOption(name)
 	self.Options[name] = nil
 	for i, options in pairs(self.optionCategories) do
