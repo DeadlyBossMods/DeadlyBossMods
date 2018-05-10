@@ -52,6 +52,7 @@ local warnShockGrenade					= mod:NewTargetAnnounce(244737, 3, nil, false, 2)
 local specWarnExploitWeakness			= mod:NewSpecialWarningTaunt(244892, nil, nil, nil, 1, 2)
 local specWarnPsychicAssaultStack		= mod:NewSpecialWarningStack(244172, nil, 10, nil, nil, 1, 6)
 local specWarnPsychicAssault			= mod:NewSpecialWarningMove(244172, nil, nil, nil, 3, 2)--Two diff warnings cause we want to upgrade to high priority at 19+ stacks
+local specWarnAssumeCommand				= mod:NewSpecialWarningSwitch(253040, "Tank", nil, nil, 1, 2)
 --In Pod
 ----Admiral Svirax
 local specWarnFusillade					= mod:NewSpecialWarningMoveTo(244625, nil, nil, nil, 1, 5)
@@ -159,6 +160,8 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 253040 then
 		self:BossTargetScanner(args.sourceGUID, "DemonicChargeTarget", 0.2, 9)
 	elseif spellId == 245227 then--Assume Command (entering pod)
+		specWarnAssumeCommand:Show()
+		specWarnAssumeCommand:Play("targetchange")
 		timerShockGrenadeCD:Stop()
 		timerExploitWeaknessCD:Stop()
 		countdownExploitWeakness:Cancel()
