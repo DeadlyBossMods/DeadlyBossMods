@@ -1,0 +1,24 @@
+## Interface: 70300
+## X-Min-Interface: 70300
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Kul Tiras|r
+## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0쿨 티라스|r
+## Author: MysticalOS
+## LoadOnDemand: 1
+## RequiredDeps: DBM-Core
+## SavedVariables: DBMKulTiras_AllSavedVars
+## SavedVariablesPerCharacter: DBMKulTiras_SavedStats
+## X-DBM-Mod: 1
+## X-DBM-Mod-Type: RAID
+## X-DBM-Mod-Category: BFA
+## X-DBM-Mod-Has-Single-Format: 1
+## X-DBM-Mod-World-Boss: 1
+## X-DBM-Mod-Sort: 411
+## X-DBM-Mod-MapID: 1643
+## X-DBM-Mod-LoadCID: 136385,140163,140252
+## X-DBM-Mod-MinCoreRevision: 17286
+## X-DBM-Mod-MinExpansion: 7
+localization.en.lua
+localization.kr.lua
+HailstoneConstruct.lua
+Azurethos.lua
+Yenajz.lua
