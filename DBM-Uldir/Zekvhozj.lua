@@ -45,7 +45,7 @@ local warnWillofCorruptor				= mod:NewTargetAnnounce(265646, 4, nil, false)
 --General
 local specWarnSurgingDarkness			= mod:NewSpecialWarningDodge(265451, nil, nil, nil, 3, 2)
 local specWarnVoidLash					= mod:NewSpecialWarningStack(265264, nil, 2, nil, nil, 1, 6)
---local specWarnVoidLashTaunt			= mod:NewSpecialWarningTaunt(265264, nil, nil, nil, 1, 2)
+local specWarnVoidLashTaunt				= mod:NewSpecialWarningTaunt(265264, nil, nil, nil, 1, 2)
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
 --Stage One: Chaos
 local specWarnEyeBeam					= mod:NewSpecialWarningMoveAway(264382, nil, nil, nil, 1, 2)
@@ -152,17 +152,12 @@ function mod:SPELL_AURA_APPLIED(args)
 					specWarnVoidLash:Show(amount)
 					specWarnVoidLash:Play("stackhigh")
 				else
-				--[[	local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", spellId)
-					local remaining
-					if expireTime then
-						remaining = expireTime-GetTime()
-					end
-					if not UnitIsDeadOrGhost("player") and (not remaining or remaining and remaining < 8) then
+					if not UnitIsDeadOrGhost("player") then
 						specWarnVoidLashTaunt:Show(args.destName)
 						specWarnVoidLashTaunt:Play("tauntboss")
-					else--]]
+					else
 						warnVoidLash:Show(args.destName, amount)
-					--end
+					end
 				end
 			else
 				warnVoidLash:Show(args.destName, amount)
