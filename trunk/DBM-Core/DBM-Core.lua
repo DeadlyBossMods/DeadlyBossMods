@@ -10647,7 +10647,11 @@ function bossModPrototype:AddInfoFrameOption(spellId, default)
 	end
 	self.Options["InfoFrame"] = (default == nil) or default
 	self:SetOptionCategory("InfoFrame", "misc")
-	self.localization.options["InfoFrame"] = DBM_CORE_AUTO_INFO_FRAME_OPTION_TEXT:format(spellId)
+	if spellId then
+		self.localization.options["InfoFrame"] = DBM_CORE_AUTO_INFO_FRAME_OPTION_TEXT:format(spellId)
+	else
+		self.localization.options["InfoFrame"] = DBM_CORE_AUTO_INFO_FRAME_OPTION_TEXT2
+	end
 end
 
 function bossModPrototype:AddReadyCheckOption(questId, default)
