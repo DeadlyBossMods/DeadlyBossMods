@@ -348,7 +348,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			yellParasiticFetter:Yell()
 		end
-		if self:CheckNearby(20, args.destName) and self:AntiSpam(2, 3.5) then
+		if self:CheckNearby(20, args.destName) and self:AntiSpam(3.5, 2) then
 			specWarnParasiticFetter:Show(args.destName)
 			specWarnParasiticFetter:Play("runaway")
 		else

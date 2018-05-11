@@ -154,7 +154,7 @@ mod:AddSetIconOption("SetIconOnAvatar", 255199, true)--4
 mod:AddSetIconOption("SetIconOnSoulBomb", 251570, true)--3 and 7
 mod:AddSetIconOption("SetIconOnSoulBurst", 250669, true)--2
 mod:AddSetIconOption("SetIconOnVulnerability", 255418, true, true)--1-7
-mod:AddInfoFrameOption(258040, true)--Change to EJ entry since spell not localized
+mod:AddInfoFrameOption(nil, true)--Change to EJ entry since spell not localized
 mod:AddRangeFrameOption(8, 257869)
 mod:AddNamePlateOption("NPAuraOnInevitability", 253021)
 mod:AddNamePlateOption("NPAuraOnCosmosSword", 255496)
