@@ -107,9 +107,9 @@ L:SetOptionLocalization({
 	ThreeAlways			= "Always swap at 3 stacks regardless of difficulty",
 	SetLighting			= "Automatically turn lighting setting to low when coven is engaged and restore on combat end (Not supported in mac client since mac client doesn't support low lighting)",
 	InterruptBehavior	= "Set interrupt behavior for raid (Requires raid leader)",
-	Three				= "3 person rotation",--Default
-	Four				= "4 person rotation",
-	Five				= "5 person rotation",
+	Three				= "3 person rotation ",--Default
+	Four				= "4 person rotation ",
+	Five				= "5 person rotation ",
 	IgnoreFirstKick		= "With this option, very first interrupt is excluded in rotation (Requires raid leader)"
 })
 

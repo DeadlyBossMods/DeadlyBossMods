@@ -130,7 +130,7 @@ local spellName, protected, expelLight, stormOfJustice = DBM:GetSpellInfo(231311
 do
 	debuffFilter = function(uId)
 		if not playerDebuff then return true end
-		if not select(11, DBM:UnitDebuff(uId, spellName)) == playerDebuff then
+		if not DBM:UnitDebuff(uId, playerDebuff) then
 			return true
 		end
 	end

@@ -857,16 +857,24 @@ function onUpdate(frame)
 				end
 			end
 		else
+			local color2 = NORMAL_FONT_COLOR--Only custom into frames will have chance of putting player names on right side
 			local unitId = DBM:GetRaidUnitId(DBM:GetUnitFullName(leftText))
-			if unitId then
-				--Class color names in custom functions too, IF unitID exists
+			local unitId2 = DBM:GetRaidUnitId(DBM:GetUnitFullName(rightText))
+			--Class color names in custom functions too, IF unitID exists
+			if unitId then--Check left text
 				local _, class = UnitClass(unitId)
 				if class then
 					color = RAID_CLASS_COLORS[class]
 				end
 			end
+			if unitId2 then--Check right text
+				local _, class = UnitClass(unitId2)
+				if class then
+					color2 = RAID_CLASS_COLORS[class]
+				end
+			end
 			linesShown = linesShown + 1
-			frame:AddDoubleLine(icon or leftText, rightText, color.r, color.g, color.b, 255, 255, 255)
+			frame:AddDoubleLine(icon or leftText, rightText, color.r, color.g, color.b, color2.r, color2.g, color2.b)
 		end
 	end
 	frame:Show()
