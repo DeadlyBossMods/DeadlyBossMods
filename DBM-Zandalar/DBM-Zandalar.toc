@@ -19,5 +19,6 @@
 ## X-DBM-Mod-MinExpansion: 7
 localization.en.lua
 localization.kr.lua
+localization.cn.lua
 Tzane.lua
 Jiarak.lua
