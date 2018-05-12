@@ -17,6 +17,7 @@
 ## X-DBM-Mod-MinExpansion: 7
 localization.en.lua
 localization.kr.lua
+localization.ru.lua
 Taloc.lua
 Mother.lua
 FetidDevourer.lua

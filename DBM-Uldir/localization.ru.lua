@@ -1,3 +1,4 @@
+if GetLocale() ~= "ruRU" then return end
 local L
 
 ---------------------------
@@ -25,9 +26,9 @@ L= DBM:GetModLocalization(2146)
 L= DBM:GetModLocalization(2169)
 
 L:SetMiscLocalization({
-	CThunDisc	 =	"Disc accessed. C'thun data loading.",
-	YoggDisc	 =	"Disc accessed. Yogg-Saron data loading.",
-	CorruptedDisc =	"Disc accessed. Corrupted data loading."
+	CThunDisc		=	"Доступ получен. Загрузка данных К'Туна.",
+	YoggDisc		=	"Доступ получен. Загрузка данных Йогг-Сарона.",
+	CorruptedDisc	=	"Доступ получен. Загрузка поврежденных данных."
 })
 
 ---------------------------
