@@ -2,7 +2,7 @@
 -- Diablohu(diablohudream@gmail.com)
 -- yleaf(yaroot@gmail.com)
 -- Mini Dragon(projecteurs@gmail.com)
--- Last update: 2018/04/04
+-- Last update: 2018/05/12
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -209,6 +209,9 @@ DBM_CORE_INFOFRAME_SHOW_SELF		= "总是显示你的能量"		-- Always show your 
 DBM_CORE_INFOFRAME_SETLINES			= "设置最大行数"
 DBM_CORE_INFOFRAME_LINESDEFAULT		= "由模组设置"
 DBM_CORE_INFOFRAME_LINES_TO			= "%d行"
+DBM_CORE_INFOFRAME_POWER			= "能量"
+DBM_CORE_INFOFRAME_MAIN				= "主能量:"--Main power
+DBM_CORE_INFOFRAME_ALT				= "次能量:"--Alternate Power
 
 DBM_LFG_INVITE						= "随机副本确认"
 
@@ -265,9 +268,13 @@ DBM_CORE_ORB						= "球"
 DBM_CHEST							= "奖励宝箱"
 DBM_NO_DEBUFF						= "不是%s"
 DBM_ALLY							= "队友"
+DBM_ADD								= "小怪"
 DBM_ADDS							= "小怪"
 DBM_CORE_ROOM_EDGE					= "房间边缘"
+DBM_CORE_FAR_AWAY					= "远离"
+DBM_CORE_BREAK_LOS					= "卡视角"
 DBM_CORE_SAFE						= "安全"
+DBM_CORE_SHIELD						= "护盾"
 DBM_INCOMING						= "%s 即将到来"
 --Common Locals end
 
@@ -478,6 +485,7 @@ DBM_CORE_AUTO_RANGE_OPTION_TEXT_SHORT		= "距离监视(%s码)"--For when a range
 DBM_CORE_AUTO_RRANGE_OPTION_TEXT			= "反转距离监视(%s码)：$spell:%s"--Reverse range frame (green when players in range, red when not)
 DBM_CORE_AUTO_RRANGE_OPTION_TEXT_SHORT		= "反转距离监视(%s码)"
 DBM_CORE_AUTO_INFO_FRAME_OPTION_TEXT		= "信息框：$spell:%s"
+DBM_CORE_AUTO_INFO_FRAME_OPTION_TEXT2		= "信息框：战斗总览"
 DBM_CORE_AUTO_READY_CHECK_OPTION_TEXT		= "当首领开打时播放准备检查的音效（即使没有选定目标）"
 
 -- New special warnings

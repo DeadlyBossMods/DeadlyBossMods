@@ -1,8 +1,11 @@
 -- Mini Dragon(projecteurs@gmail.com)
--- Last update: 2018/02/14
+-- 夏一可
+-- Blizzard Entertainment
+-- Last update: 2018/05/12
 
 if GetLocale() ~= "zhCN" then return end
 local L
+
 -----------------------
 -- <<<Atal'Dazar >>> --
 -----------------------
@@ -204,7 +207,7 @@ L= DBM:GetModLocalization(2116)
 L = DBM:GetModLocalization("UndermineTrash")
 
 L:SetGeneralLocalization({
-	name =	"The Undermine Trash"
+	name =	"安德麦小怪"
 })
 
 -----------------------
@@ -295,10 +298,13 @@ L= DBM:GetModLocalization(2127)
 L= DBM:GetModLocalization(2128)
 
 -----------------------
--- Drust King --
+-- Gorak Tul --
 -----------------------
 L= DBM:GetModLocalization(2129)
 
+L:SetMiscLocalization({
+	fireYell = "Hurry! Set them aflame before the Drust King resurrects them!"
+})
 ---------
 --Trash--
 ---------
