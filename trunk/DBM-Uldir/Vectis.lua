@@ -33,7 +33,7 @@ local warnGestate							= mod:NewTargetAnnounce(265212, 3)
 local warnHypergenesis						= mod:NewSpellAnnounce(266926, 3)
 local warnContagion							= mod:NewCountAnnounce(267242, 3)
 
-local specWarnMutagenicPathogen				= mod:NewSpecialWarningStack(265178, nil, 6, nil, nil, 1, 6)
+--local specWarnMutagenicPathogen				= mod:NewSpecialWarningStack(265178, nil, 6, nil, nil, 1, 6)
 --local specWarnMutagenicPathogenOther		= mod:NewSpecialWarningTaunt(265178, nil, nil, nil, 1, 2)
 local yellMutagenicPathogen					= mod:NewShortFadesYell(265178)
 local specWarnOmegaVector					= mod:NewSpecialWarningYou(265129, nil, nil, nil, 1, 2)
@@ -42,7 +42,7 @@ local yellOmegaVectorFades					= mod:NewShortFadesYell(265129)
 local specWarnGestate						= mod:NewSpecialWarningYou(265212, nil, nil, nil, 1, 2)
 local yellGestate							= mod:NewYell(265212)
 local specWarnGestateNear					= mod:NewSpecialWarningClose(265212, nil, nil, nil, 1, 2)
-local specWarnAmalgam						= mod:NewSpecialWarningSwitch("ej18007", "Dps", nil, nil, 1, 2)
+local specWarnAmalgam						= mod:NewSpecialWarningSwitch("ej18007", "-Healer", nil, 2, 1, 2)
 local specWarnSpawnParasite					= mod:NewSpecialWarningSwitch(275055, "Dps", nil, nil, 1, 2)--Mythic
 --local specWarnContagion						= mod:NewSpecialWarningCount(267242, nil, nil, nil, 2, 2)
 local specWarnLiquefy						= mod:NewSpecialWarningRun(265217, nil, nil, nil, 4, 2)
@@ -147,16 +147,17 @@ function mod:SPELL_AURA_APPLIED(args)
 			local amount = args.amount or 1
 			if amount >= 6 then
 				if args:IsPlayer() then
-					specWarnMutagenicPathogen:Show(amount)
-					specWarnMutagenicPathogen:Play("stackhigh")
+					warnMutagenicPathogen:Show(args.destName, amount)
+					--specWarnMutagenicPathogen:Show(amount)
+					--specWarnMutagenicPathogen:Play("stackhigh")
 					yellMutagenicPathogen:Cancel()
 					yellMutagenicPathogen:Countdown(12)
 				else
-					local _, _, _, _, _, expireTime = UnitDebuff("player", spellId)
-					local remaining
-					if expireTime then
-						remaining = expireTime-GetTime()
-					end
+					--local _, _, _, _, _, expireTime = UnitDebuff("player", spellId)
+					--local remaining
+					--if expireTime then
+					--	remaining = expireTime-GetTime()
+					--end
 					--if not UnitIsDeadOrGhost("player") and (not remaining or remaining and remaining < 8) then
 					--	specWarnMutagenicPathogenOther:Show(args.destName)
 					--	specWarnMutagenicPathogenOther:Play("tauntboss")

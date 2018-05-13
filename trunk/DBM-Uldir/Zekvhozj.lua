@@ -17,7 +17,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 267180 267239 270620 265231 265530",
 	"SPELL_CAST_SUCCESS 264382",
-	"SPELL_AURA_APPLIED 265264 265360 265662 265646",
+	"SPELL_AURA_APPLIED 265264 265360 265662 265646 265237",
 	"SPELL_AURA_APPLIED_DOSE 265264",
 	"SPELL_AURA_REMOVED 265360 265662",
 --	"SPELL_PERIODIC_DAMAGE",
@@ -46,7 +46,7 @@ local warnWillofCorruptor				= mod:NewTargetAnnounce(265646, 4, nil, false)
 --General
 local specWarnSurgingDarkness			= mod:NewSpecialWarningDodge(265451, nil, nil, nil, 3, 2)
 local specWarnMightofVoid				= mod:NewSpecialWarningDefensive(267312, nil, nil, nil, 1, 2)
-local specWarnVoidLashTaunt				= mod:NewSpecialWarningTaunt(265264, nil, nil, nil, 1, 2)
+local specWarnShatter					= mod:NewSpecialWarningTaunt(265237, nil, nil, nil, 1, 2)
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
 --Stage One: Chaos
 local specWarnEyeBeam					= mod:NewSpecialWarningMoveAway(264382, nil, nil, nil, 1, 2)
@@ -164,21 +164,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId) then
 			local amount = args.amount or 1
-			if amount >= 2 then
-				if args:IsPlayer() then
-					warnVoidLash:Show(args.destName, amount)
-				else
-					if not UnitIsDeadOrGhost("player") then
-						specWarnVoidLashTaunt:Show(args.destName)
-						specWarnVoidLashTaunt:Play("tauntboss")
-					else
-						warnVoidLash:Show(args.destName, amount)
-					end
-				end
-			else
-				warnVoidLash:Show(args.destName, amount)
-			end
+			warnVoidLash:Show(args.destName, amount)
 		end
+	elseif spellId == 265237 then
+		specWarnShatter:Schedule(4.5, args.destName)
+		specWarnShatter:ScheduleVoice(4.5, "tauntboss")
 	elseif spellId == 265360 then
 		if args:IsPlayer() then
 			specWarnRoilingDeceit:Show(DBM_CORE_ROOM_EDGE)
