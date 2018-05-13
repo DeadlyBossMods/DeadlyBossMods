@@ -25,6 +25,12 @@ L= DBM:GetModLocalization(2146)
 ---------------------------
 L= DBM:GetModLocalization(2169)
 
+L:SetMiscLocalization({
+	CThunDisc	 =	"Disc accessed. C'thun data loading.",
+	YoggDisc	 =	"Disc accessed. Yogg-Saron data loading.",
+	CorruptedDisc =	"Disc accessed. Corrupted data loading."
+})
+
 ---------------------------
 -- Vectis --
 ---------------------------
@@ -38,18 +44,6 @@ L:SetOptionLocalization({
 -- Mythrax the Unraveler --
 ---------------
 L= DBM:GetModLocalization(2194)
-
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
-
-L:SetOptionLocalization({
-})
-
-L:SetMiscLocalization({
-})
 
 ---------------------------
 -- Zul --

@@ -126,6 +126,7 @@ DBM_CORE_OPTION_CATEGORY_WARNINGS_YOU	= "개인 알림"
 DBM_CORE_OPTION_CATEGORY_WARNINGS_OTHER	= "대상 관련 알림"
 DBM_CORE_OPTION_CATEGORY_WARNINGS_ROLE	= "역할 관련 알림"
 DBM_CORE_OPTION_CATEGORY_SOUNDS		= "음성"
+DBM_CORE_OPTION_CATEGORY_DROPDOWNS		= "드롭다운 옵션"
 
 DBM_CORE_AUTO_RESPONDED						= "귓속말에 자동응답 메시지를 보냈습니다."
 DBM_CORE_STATUS_WHISPER						= "%s: %s, %d/%d 생존"
@@ -455,6 +456,7 @@ DBM_CORE_AUTO_RANGE_OPTION_TEXT_SHORT	= "거리 창 보기 (%sm)"
 DBM_CORE_AUTO_RRANGE_OPTION_TEXT		= "$spell:%2$s 범위에 대한 반전 거리 창 보기 (%1$sm)"
 DBM_CORE_AUTO_RRANGE_OPTION_TEXT_SHORT	= "반전 거리 창 보기 (%sm)"
 DBM_CORE_AUTO_INFO_FRAME_OPTION_TEXT	= "$spell:%s 정보 창 보기"
+DBM_CORE_AUTO_INFO_FRAME_OPTION_TEXT2	= "전투 전반에 대한 정보 창 보기"
 DBM_CORE_AUTO_READY_CHECK_OPTION_TEXT	= "보스가 풀링되면 전투 준비 효과음 듣기 (보스를 대상으로 잡지 않아도 재생)"
 
 -- New special warnings
