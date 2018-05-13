@@ -20,14 +20,15 @@ mod:RegisterEventsInCombat(
 
 --TODO, if tanks are still able to dodge scalpel in next test, refactor warning to be a shockwave/dodge instead of tank swap mechanic
 --local warnXorothPortal				= mod:NewSpellAnnounce(244318, 2, nil, nil, nil, nil, nil, 7)
-local warnSunderingScalpelCast			= mod:NewCastAnnounce(267787, 2, nil, nil, "Tank")
-local warnSunderingScalpel				= mod:NewStackAnnounce(267787, 2, nil, "Tank")
+--local warnSunderingScalpelCast			= mod:NewCastAnnounce(267787, 2, nil, nil, "Tank")
+local warnSunderingScalpel				= mod:NewStackAnnounce(267787, 3, nil, "Tank")
 local warnWindTunnel					= mod:NewSpellAnnounce(267945, 2)
 local warnDepletedEnergy				= mod:NewSpellAnnounce(274205, 1)
 local warnCleansingPurgeFinish			= mod:NewTargetNoFilterAnnounce(268089, 4)
 
-local specWarnSunderingScalpel			= mod:NewSpecialWarningStack(267787, nil, 2, nil, nil, 1, 6)
-local specWarnSunderingScalpelOther		= mod:NewSpecialWarningTaunt(267787, nil, nil, nil, 1, 2)
+local specWarnSunderingScalpel			= mod:NewSpecialWarningDodge(267787, nil, nil, nil, 1, 2)
+--local specWarnSunderingScalpel			= mod:NewSpecialWarningStack(267787, nil, 2, nil, nil, 1, 6)
+--local specWarnSunderingScalpelOther		= mod:NewSpecialWarningTaunt(267787, nil, nil, nil, 1, 2)
 local specWarnPurifyingFlame			= mod:NewSpecialWarningDodge(267787, nil, nil, nil, 2, 2)
 local specWarnClingingCorruption		= mod:NewSpecialWarningInterrupt(268198, "HasInterrupt", nil, nil, 1, 2)
 local specWarnSurgicalBeam				= mod:NewSpecialWarningDodge(269827, nil, nil, nil, 3, 2)
@@ -68,7 +69,11 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 267787 then
-		warnSunderingScalpelCast:Show()
+		local tanking, status = UnitDetailedThreatSituation("player", "boss1")
+		if tanking or (status == 3) then
+			specWarnSunderingScalpel:Show()
+			specWarnSunderingScalpel:Play("shockwave")
+		end
 		timerSunderingScalpelCD:Start()
 		countdownSunderingScalpel:Start()
 	elseif spellId == 268198 and self:CheckInterruptFilter(args.sourceGUID) then
@@ -120,7 +125,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId) then
 			local amount = args.amount or 1
-			if amount >= 2 then
+			warnSunderingScalpel:Show(args.destName, amount)
+			--[[if amount >= 2 then
 				if args:IsPlayer() then
 					specWarnSunderingScalpel:Show(amount)
 					specWarnSunderingScalpel:Play("stackhigh")
@@ -139,7 +145,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				end
 			else
 				warnSunderingScalpel:Show(args.destName, amount)
-			end
+			end--]]
 		end
 	elseif spellId == 274205 then
 		warnDepletedEnergy:Show()
