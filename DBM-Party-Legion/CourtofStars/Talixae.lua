@@ -30,16 +30,10 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 208165 then
-		--if self:CheckInterruptFilter(args.sourceGUID) then
-			--specWarnWitheringSoul:Show(args.sourceName)
-		--end
 		timerWitheringSoulCD:Start()
 	elseif spellId == 207881 then
 		specWarnInfernalEruption:Show()
 		specWarnInfernalEruption:Play("watchstep")
 		timerInfernalEruptionCD:Start()
---	elseif spellId == 207980 and self:CheckInterruptFilter(args.sourceGUID) then
-		--specWarnDisintegrationBeam:Show(args.sourceName)
-		--specWarnDisintegrationBeam:Play("kickcast")
 	end
 end

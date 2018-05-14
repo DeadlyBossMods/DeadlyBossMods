@@ -119,7 +119,7 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 267180 then
 		--timerVoidBoltCD:Start(args.sourceGUID)
-		if self:CheckInterruptFilter(args.sourceGUID) then
+		if self:CheckInterruptFilter(args.sourceGUID, false, true) then
 			specWarnVoidbolt:Show(args.sourceName)
 			specWarnVoidbolt:Play("kickcast")
 		end
@@ -128,7 +128,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnOrbOfCorruption:Show(self.vb.orbCount)
 		specWarnOrbOfCorruption:Play("161612")--catch balls
 		timerOrbofCorruptionCD:Start()
-	elseif spellId == 270620 and self:CheckInterruptFilter(args.sourceGUID) then
+	elseif spellId == 270620 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnEntropicBlast:Show(args.sourceName)
 		specWarnEntropicBlast:Play("kickcast")
 	elseif spellId == 265231 then--First Void Lash

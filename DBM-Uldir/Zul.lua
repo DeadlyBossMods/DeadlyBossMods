@@ -210,7 +210,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnCongealBlood:Show()
 		specWarnCongealBlood:Play("targetchange")
 		timerCongealBloodCD:Start(23, args.sourceGUID)
-	elseif spellId == 273350 and self:CheckInterruptFilter(args.sourceGUID) then
+	elseif spellId == 273350 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnBloodshard:Show(args.sourceName)
 		specWarnBloodshard:Play("kickcast")
 	end

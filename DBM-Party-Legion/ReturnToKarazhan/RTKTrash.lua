@@ -42,22 +42,22 @@ local timerAchieve					= mod:NewBuffActiveTimer(480, 229074)
 function mod:SPELL_CAST_START(args)
 	if not self.Options.Enabled then return end
 	local spellId = args.spellId
-	if spellId == 228255 and self:CheckInterruptFilter(args.sourceGUID) then
+	if spellId == 228255 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnSoulLeech:Show(args.sourceName)
 		specWarnSoulLeech:Play("kickcast")
-	elseif spellId == 228239 and self:CheckInterruptFilter(args.sourceGUID) then
+	elseif spellId == 228239 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnTerrifyingWail:Show(args.sourceName)
 		specWarnTerrifyingWail:Play("kickcast")
-	elseif spellId == 227917 and self:CheckInterruptFilter(args.sourceGUID) then
+	elseif spellId == 227917 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnPoetrySlam:Show(args.sourceName)
 		specWarnPoetrySlam:Play("kickcast")
-	elseif spellId == 228625 and self:CheckInterruptFilter(args.sourceGUID) then
+	elseif spellId == 228625 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnBansheeWail:Show(args.sourceName)
 		specWarnBansheeWail:Play("kickcast")
-	elseif spellId == 228606 and self:CheckInterruptFilter(args.sourceGUID) then
+	elseif spellId == 228606 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnHealingTouch:Show(args.sourceName)
 		specWarnHealingTouch:Play("kickcast")
-	elseif spellId == 229714 and self:CheckInterruptFilter(args.sourceGUID) then
+	elseif spellId == 229714 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnConsumeMagic:Show(args.destName)
 		specWarnConsumeMagic:Play("kickcast")
 	elseif spellId == 227925 and self:AntiSpam(3, 1) then

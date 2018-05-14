@@ -153,7 +153,7 @@ function mod:SPELL_CAST_START(args)
 			countdownFusillade:Start(29.3)
 		end
 	elseif spellId == 246505 then
-		if self:CheckInterruptFilter(args.sourceGUID) and self:AntiSpam(3, 3) then
+		if self:CheckInterruptFilter(args.sourceGUID, false, true) then
 			specWarnPyroblast:Show(args.sourceName)
 			specWarnPyroblast:Play("kickcast")
 		end

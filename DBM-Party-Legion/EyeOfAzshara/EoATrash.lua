@@ -25,13 +25,13 @@ local yellArcaneBomb			= mod:NewYell(192706)
 function mod:SPELL_CAST_START(args)
 	if not self.Options.Enabled then return end
 	local spellId = args.spellId
-	if spellId == 196870 and self:CheckInterruptFilter(args.sourceGUID) then
+	if spellId == 196870 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnStorm:Show(args.sourceName)
 		specWarnStorm:Play("kickcast")
-	elseif spellId == 195046 and self:CheckInterruptFilter(args.sourceGUID) then
+	elseif spellId == 195046 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnRejuvWaters:Show(args.sourceName)
 		specWarnRejuvWaters:Play("kickcast")
-	elseif spellId == 195284 and self:CheckInterruptFilter(args.sourceGUID) then
+	elseif spellId == 195284 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnUndertow:Show(args.sourceName)
 		specWarnUndertow:Play("kickcast")
 	end

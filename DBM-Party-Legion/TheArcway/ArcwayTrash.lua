@@ -23,10 +23,10 @@ local specWarnFelStrike				= mod:NewSpecialWarningMove(211745, nil, nil, nil, 1,
 function mod:SPELL_CAST_START(args)
 	if not self.Options.Enabled then return end
 	local spellId = args.spellId
-	if spellId == 211757 and self:CheckInterruptFilter(args.sourceGUID) then
+	if spellId == 211757 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnArgusPortal:Show(args.sourceName)
 		specWarnArgusPortal:Play("kickcast")
-	elseif spellId == 226206 and self:CheckInterruptFilter(args.sourceGUID) then
+	elseif spellId == 226206 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnArcaneReconstitution:Show(args.sourceName)
 		specWarnArcaneReconstitution:Play("kickcast")
 	end

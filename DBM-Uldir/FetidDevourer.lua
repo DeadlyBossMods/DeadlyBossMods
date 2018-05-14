@@ -115,9 +115,14 @@ function mod:OnCombatStart(delay)
 	table.wipe(trackedAdds)
 	timerThrashCD:Start(6.7-delay)
 	countdownThrash:Start(6.7-delay)
-	timerShockwaveStompCD:Start(26.6-delay)
-	timerRottingRegurgCD:Start(42-delay)
-	countdownRottingRegurg:Start(42-delay)
+	if not self:IsEasy() then
+		timerShockwaveStompCD:Start(26.6-delay)
+		timerRottingRegurgCD:Start(42-delay)
+		countdownRottingRegurg:Start(42-delay)
+	else
+		timerRottingRegurgCD:Start(31.4-delay)
+		countdownRottingRegurg:Start(31.4-delay)
+	end
 	timerAddsCD:Start(55.1-delay)
 	countdownAdds:Start(55.1-delay)
 	berserkTimer:Start()
@@ -140,8 +145,13 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 262292 then
 		specWarnRottingRegurg:Show()
 		specWarnRottingRegurg:Play("shockwave")
-		timerRottingRegurgCD:Start()
-		countdownRottingRegurg:Start()
+		if not self:IsEasy() then
+			timerRottingRegurgCD:Start()
+			countdownRottingRegurg:Start()
+		else
+			timerRottingRegurgCD:Start(30.3)
+			countdownRottingRegurg:Start(30.3)
+		end
 	elseif spellId == 262288 then
 		specWarnShockwaveStomp:Show()
 		specWarnShockwaveStomp:Play("carefly")
@@ -157,8 +167,13 @@ function mod:SPELL_CAST_START(args)
 		if self:AntiSpam(10, 1) then
 			specWarnAdds:Show()
 			specWarnAdds:Play("killmob")
-			timerAddsCD:Start()
-			countdownAdds:Start(54.8)
+			if not self:IsEasy() then
+				timerAddsCD:Start()
+				countdownAdds:Start(54.8)
+			else
+				timerAddsCD:Start(59.8)
+				countdownAdds:Start(59.8)
+			end
 		end
 	elseif spellId == 262277 then
 		timerThrashCD:Start()
@@ -169,15 +184,16 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 262370 then--Consume Corruption
-		--2.5 energy per second, spell every 40 seconds there abouts (blizz energy formula still has standard variation)
-		--This basically means every add that's eaten add takes 8 seconds off timer
+		--2.5/3 energy per second, spell every 40/30 seconds there abouts (blizz energy formula still has standard variation)
+		--This basically means every add that's eaten add takes 8/6 seconds off timer
 		local elapsed, total = timerRottingRegurgCD:GetTime()--Grab current timer
-		elapsed = elapsed + 8
+		local adjustAmount = self:IsEasy() and 6 or 8
+		elapsed = elapsed + adjustAmount
+		local remaining = total-elapsed
 		countdownRottingRegurg:Cancel()
 		timerRottingRegurgCD:Stop()--Trash old timer
-		if elapsed < 39 then--It's worth showing timer, if elapsed greater than 39 it means this power gain is going to make him cast it immediately
+		if remaining >= 3 then--It's worth showing updated timer
 			timerRottingRegurgCD:Start(elapsed, total)--Construct new timer with adjustment
-			local remaining = total-elapsed
 			countdownRottingRegurg:Start(remaining)
 		end
 	end

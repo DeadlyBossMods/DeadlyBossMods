@@ -308,7 +308,6 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 250701 and self:CheckInterruptFilter(args.sourceGUID, true) then
 		specWarnSwing:Show()
 		specWarnSwing:Play("watchstep")
-
 	end
 end
 

@@ -37,10 +37,10 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 199805 then
 		self:BossTargetScanner(args.sourceGUID, "CrackleTarget", 0.1, 9)
-	elseif spellId == 192563 and self:CheckInterruptFilter(args.sourceGUID) then
+	elseif spellId == 192563 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnCleansingFlame:Show(args.sourceName)
 		specWarnCleansingFlame:Play("kickcast")
-	elseif spellId == 199726 and self:CheckInterruptFilter(args.sourceGUID) then
+	elseif spellId == 199726 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnUnrulyYell:Show(args.sourceName)
 		specWarnUnrulyYell:Play("kickcast")
 	end

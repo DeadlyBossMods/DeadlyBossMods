@@ -42,22 +42,22 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 212031 and self:AntiSpam(2, 2) then
 		specWarnChargedBlast:Show()
 		specWarnChargedBlast:Play("shockwave")
-	elseif spellId == 209485 and self:CheckInterruptFilter(args.sourceGUID) then
+	elseif spellId == 209485 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnDrainMagic:Show(args.sourceName)
 		specWarnDrainMagic:Play("kickcast")
-	elseif spellId == 209410 and self:CheckInterruptFilter(args.sourceGUID) then
+	elseif spellId == 209410 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnNightfallOrb:Show(args.sourceName)
 		specWarnNightfallOrb:Play("kickcast")
-	elseif spellId == 209413 and self:CheckInterruptFilter(args.sourceGUID) then
+	elseif spellId == 209413 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnSuppress:Show(args.sourceName)
 		specWarnSuppress:Play("kickcast")
-	elseif spellId == 211470 and self:CheckInterruptFilter(args.sourceGUID) then
+	elseif spellId == 211470 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnBewitch:Show(args.sourceName)
 		specWarnBewitch:Play("kickcast")
-	elseif spellId == 225100 and self:CheckInterruptFilter(args.sourceGUID) then
+	elseif spellId == 225100 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnChargingStation:Show(args.sourceName)
 		specWarnChargingStation:Play("kickcast")
-	elseif spellId == 211299 and self:CheckInterruptFilter(args.sourceGUID) then
+	elseif spellId == 211299 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnSearingGlare:Show(args.sourceName)
 		specWarnSearingGlare:Play("kickcast")
 	elseif spellId == 211464 then

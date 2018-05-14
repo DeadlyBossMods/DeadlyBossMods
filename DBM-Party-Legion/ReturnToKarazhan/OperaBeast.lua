@@ -77,19 +77,19 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 228025 then
 		timerHeatWaveCD:Start()
-		if self:CheckInterruptFilter(args.sourceGUID) then
+		if self:CheckInterruptFilter(args.sourceGUID, false, true) then
 			specWarnHeatWave:Show(args.sourceName)
 			specWarnHeatWave:Play("kickcast")
 		end
 	elseif spellId == 228019 then
 		timerLeftoversCD:Start()
-		if self:CheckInterruptFilter(args.sourceGUID) then
+		if self:CheckInterruptFilter(args.sourceGUID, false, true) then
 			specWarnLeftovers:Show(args.sourceName)
 			specWarnLeftovers:Play("kickcast")
 		end
 	elseif spellId == 227987 then
 		timerDinnerBellCD:Start()
-		if self:CheckInterruptFilter(args.sourceGUID) then
+		if self:CheckInterruptFilter(args.sourceGUID, false, true) then
 			specWarnDinnerBell:Show(args.sourceName)
 			specWarnDinnerBell:Play("kickcast")
 		end

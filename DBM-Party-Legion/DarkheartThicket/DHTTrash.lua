@@ -19,8 +19,5 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 198379 then
 		specWarnPrimalRampage:Show()
 		specWarnPrimalRampage:Play("chargemove")
---[[	elseif spellId == 195046 and self:CheckInterruptFilter(args.sourceGUID) then
-		specWarnStorm:Show(args.sourceName)
-		specWarnRejuvWaters:Play("kickcast")--]]
 	end
 end

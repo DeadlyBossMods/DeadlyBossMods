@@ -209,13 +209,13 @@ function mod:SPELL_CAST_START(args)
 			specWarnCollapsingWorld:Play("watchstep")
 		end
 		updateAllTimers(self, 9.7)
-	elseif spellId == 244709 and self:CheckInterruptFilter(args.sourceGUID) then
+	elseif spellId == 244709 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnFieryDetonation:Show(args.sourceName)
 		specWarnFieryDetonation:Play("kickcast")
-	elseif spellId == 245504 and self:CheckInterruptFilter(args.sourceGUID) then
+	elseif spellId == 245504 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnHowlingShadows:Show(args.sourceName)
 		specWarnHowlingShadows:Play("kickcast")
-	elseif spellId == 244607 and self:CheckInterruptFilter(args.sourceGUID) then
+	elseif spellId == 244607 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnFlamesofXoroth:Show(args.sourceName)
 		specWarnFlamesofXoroth:Play("kickcast")
 		timerFlamesofXorothCD:Start()

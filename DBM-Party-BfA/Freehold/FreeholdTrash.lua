@@ -26,19 +26,19 @@ local specWarnShatteringBellow			= mod:NewSpecialWarningCast(257732, "SpellCaste
 function mod:SPELL_CAST_START(args)
 	if not self.Options.Enabled then return end
 	local spellId = args.spellId
-	if spellId == 257397 and self:CheckInterruptFilter(args.sourceGUID) then
+	if spellId == 257397 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnHealingBalm:Show()
 		specWarnHealingBalm:Play("kickcast")
-	elseif spellId == 257899 and self:CheckInterruptFilter(args.sourceGUID) then
+	elseif spellId == 257899 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnPainfulMotivation:Show()
 		specWarnPainfulMotivation:Play("kickcast")
-	elseif spellId == 257736 and self:CheckInterruptFilter(args.sourceGUID) then
+	elseif spellId == 257736 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnThunderingSquall:Show()
 		specWarnThunderingSquall:Play("kickcast")
-	elseif spellId == 258777 and self:CheckInterruptFilter(args.sourceGUID) then
+	elseif spellId == 258777 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnSeaSpout:Show()
 		specWarnSeaSpout:Play("kickcast")
-	elseif spellId == 257784 and self:CheckInterruptFilter(args.sourceGUID) then
+	elseif spellId == 257784 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnFrostBlast:Show()
 		specWarnFrostBlast:Play("kickcast")
 	elseif spellId == 257732 then
