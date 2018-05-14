@@ -98,7 +98,7 @@ function mod:SPELL_CAST_START(args)
 			countdownSpecial:Cancel()
 			countdownSpecial:Start()
 		end
-	elseif spellId == 192288 and self:CheckInterruptFilter(args.sourceGUID) then
+	elseif spellId == 192288 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnSearingLight:Show(args.sourceName)
 		specWarnSearingLight:Play("kickcast")
 	end

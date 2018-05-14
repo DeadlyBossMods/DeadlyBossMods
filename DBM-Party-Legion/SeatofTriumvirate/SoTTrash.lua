@@ -31,16 +31,16 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 248304 then
 		warnWildSummon:Show()
-	elseif spellId == 245585 and self:CheckInterruptFilter(args.sourceGUID) then
+	elseif spellId == 245585 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnVoidDiffusion:Show(args.sourceName)
 		specWarnVoidDiffusion:Play("kickcast")
-	elseif spellId == 245727 and self:CheckInterruptFilter(args.sourceGUID) then
+	elseif spellId == 245727 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnConsumeEssence:Show(args.sourceName)
 		specWarnConsumeEssence:Play("kickcast")
-	elseif spellId == 248133 and self:CheckInterruptFilter(args.sourceGUID) then
+	elseif spellId == 248133 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnStygianBlast:Show(args.sourceName)
 		specWarnStygianBlast:Play("kickcast")
-	elseif spellId == 248184 and self:CheckInterruptFilter(args.sourceGUID) then
+	elseif spellId == 248184 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnDarkFlay:Show(args.sourceName)
 		specWarnDarkFlay:Play("kickcast")
 	elseif spellId == 248227 then

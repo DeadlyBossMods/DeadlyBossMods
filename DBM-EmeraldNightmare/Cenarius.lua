@@ -148,7 +148,7 @@ function mod:SPELL_CAST_START(args)
 			timerDisiccatingStompCD:Start(nil, args.SourceGUID)
 		end
 	elseif spellId == 211368 then
-		if self:CheckInterruptFilter(args.sourceGUID) then
+		if self:CheckInterruptFilter(args.sourceGUID, false, true) then
 			specWarnTouchofLife:Show(args.sourceName)
 			specWarnTouchofLife:Play("kickcast")
 		end

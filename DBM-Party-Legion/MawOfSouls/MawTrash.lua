@@ -17,7 +17,7 @@ local specWarnDefiantStrike		= mod:NewSpecialWarningDodge(195031, nil, nil, nil,
 function mod:SPELL_CAST_START(args)
 	if not self.Options.Enabled then return end
 	local spellId = args.spellId
-	if spellId == 198405 and self:CheckInterruptFilter(args.sourceGUID) then
+	if spellId == 198405 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnScream:Show(args.sourceName)
 		specWarnScream:Play("kickcast")
 	elseif spellId == 195031 and self:AntiSpam(3, 1) then

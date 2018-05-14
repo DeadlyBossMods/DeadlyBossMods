@@ -133,7 +133,7 @@ function mod:SPELL_CAST_START(args)
 		timerSwarm:Start()
 	elseif spellId == 202977 then
 		DBM:Debug("CLEU event for breath, pruned. If you see this message it was unpruned!")
-	elseif spellId == 205070 and self:CheckInterruptFilter(args.sourceGUID) then
+	elseif spellId == 205070 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnSpreadInfestation:Show(args.sourceName)
 		specWarnSpreadInfestation:Play("kickcast")
 	elseif spellId == 225943 then

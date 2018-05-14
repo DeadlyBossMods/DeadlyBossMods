@@ -47,9 +47,6 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 245807 and self:AntiSpam(5, 1) then
 		specWarnAnnihilation:Show()
 		specWarnAnnihilation:Play("helpsoak")
-	--elseif spellId == 246209 and self:CheckInterruptFilter(args.sourceGUID) then
-		--specWarnShadowBoltVolley:Show(args.sourceName)
-		--specWarnShadowBoltVolley:Play("kickcast")
 	end
 end
 

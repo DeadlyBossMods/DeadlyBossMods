@@ -65,7 +65,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 231005 then
 		specWarnArcaneEmanations:Show()
 		specWarnArcaneEmanations:Play("shockwave")
-	elseif spellId == 143807 and self:CheckInterruptFilter(args.sourceGUID) then
+	elseif spellId == 143807 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnArcaneBlast:Show(args.sourceName)
 		specWarnArcaneBlast:Play("kickcast")
 	elseif spellId == 231737 and self:AntiSpam(4, 4) then

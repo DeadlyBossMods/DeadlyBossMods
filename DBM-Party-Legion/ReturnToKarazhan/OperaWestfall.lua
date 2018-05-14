@@ -63,7 +63,7 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 227568 then
 		specWarnLegSweep:Show()
 		specWarnLegSweep:Play("runout")
-	elseif spellId == 227420 and self:CheckInterruptFilter(args.sourceGUID) then
+	elseif spellId == 227420 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnBubbleBlast:Show(args.sourceName)
 		specWarnBubbleBlast:Play("kickcast")
 	elseif spellId == 227783 then

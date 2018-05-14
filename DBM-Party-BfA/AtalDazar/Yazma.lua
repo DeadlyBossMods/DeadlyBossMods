@@ -53,7 +53,7 @@ function mod:SPELL_CAST_START(args)
 		timerSoulrendCD:Start()
 	elseif spellId == 250096 then
 		timerWrackingPainCD:Start()
-		if self:CheckInterruptFilter(args.sourceGUID) then
+		if self:CheckInterruptFilter(args.sourceGUID, false, true) then
 			specWarnWrackingPain:Show(args.sourceName)
 			specWarnWrackingPain:Play("kickcast")
 		end

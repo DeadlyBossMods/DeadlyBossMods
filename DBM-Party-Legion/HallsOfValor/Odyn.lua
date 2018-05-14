@@ -106,7 +106,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnShatterSpears:Show()
 		specWarnShatterSpears:Play("watchorb")
 		timerShatterSpearsCD:Start()
-	elseif spellId == 198750 and self:CheckInterruptFilter(args.sourceGUID) then
+	elseif spellId == 198750 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnSurge:Show(args.sourceName)
 		specWarnSurge:Play("kickcast")
 	end

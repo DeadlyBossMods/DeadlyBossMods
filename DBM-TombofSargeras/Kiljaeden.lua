@@ -522,7 +522,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellSRMalignant:Countdown(8)
 		end
 	elseif spellId == 236597 then
-		if self:CheckInterruptFilter(args.destGUID) then
+		if self:CheckInterruptFilter(args.destGUID, false, true) then
 			specWarnMalignantAnguish:Show(args.destName)
 			specWarnMalignantAnguish:Play("kickcast")
 		end

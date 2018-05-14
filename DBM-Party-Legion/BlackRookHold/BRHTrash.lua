@@ -39,7 +39,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 221688 then
 		specWarnOverDetonation:Show()
 		specWarnOverDetonation:Play("runout")
-	elseif spellId == 225573 and self:CheckInterruptFilter(args.sourceGUID) then
+	elseif spellId == 225573 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnDarkMending:Show(args.sourceName)
 		specWarnDarkMending:Play("kickcast")
 	elseif spellId == 214003 and self:AntiSpam(3, 4) then

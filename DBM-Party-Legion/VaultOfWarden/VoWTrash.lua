@@ -27,7 +27,7 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 196799 and self:AntiSpam(4, 1) then
 		specWarnUnleashedFury:Show()
 		specWarnUnleashedFury:Play("aesoon")
-	elseif spellId == 193069 and self:CheckInterruptFilter(args.sourceGUID) then
+	elseif spellId == 193069 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnNightmares:Show(args.sourceName)
 		specWarnNightmares:Play("kickcast")
 	elseif spellId == 196249 then
