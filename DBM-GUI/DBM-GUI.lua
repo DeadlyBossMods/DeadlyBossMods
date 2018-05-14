@@ -3106,10 +3106,19 @@ local function CreateOptionsMenu()
 
 		local spamSpecArea = spamPanel:CreateArea(L.Area_SpecFilter, nil, 120, true)
 		spamSpecArea:CreateCheckButton(L.FilterTankSpec, true, nil, "FilterTankSpec")
-		spamSpecArea:CreateCheckButton(L.FilterInterrupts, true, nil, "FilterInterrupt")
-		spamSpecArea:CreateCheckButton(L.FilterInterruptNoteName, true, nil, "FilterInterruptNoteName")
 		spamSpecArea:CreateCheckButton(L.FilterDispels, true, nil, "FilterDispel")
-		spamSpecArea:CreateCheckButton(L.FilterSelfHud, true, nil, "FilterSelfHud")
+		local FilterInterruptNote = spamSpecArea:CreateCheckButton(L.FilterInterruptNoteName, true, nil, "FilterInterruptNoteName")
+		
+		local interruptOptions = {
+			{	text	= L.SWFNever,			value 	= "None"},
+			{	text	= L.FilterInterrupts,	value 	= "onlyTandF"},
+			{	text	= L.FilterInterrupts2,	value 	= "TandFandBossCooldown"},
+			{	text	= L.FilterInterrupts3,	value 	= "TandFandAllCooldown"},
+		}
+		local interruptDropDown		= spamSpecArea:CreateDropdown(L.FilterInterruptsHeader, interruptOptions, "DBM", "FilterInterrupt2", function(value)
+			DBM.Options.FilterInterrupt2 = value
+		end)
+		interruptDropDown:SetPoint("TOPLEFT", FilterInterruptNote, "TOPLEFT", 0, -45)
 
 		local spamPTArea = spamPanel:CreateArea(L.Area_PullTimer, nil, 180, true)
 		spamPTArea:CreateCheckButton(L.DontShowPTNoID, true, nil, "DontShowPTNoID")

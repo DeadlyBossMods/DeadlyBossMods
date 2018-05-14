@@ -1333,7 +1333,7 @@ function mod:RegisterPositionMarker(spellid, name, texture, x, y, radius, durati
 end
 
 function mod:RegisterStaticMarkerOnPartyMember(spellid, texture, person, radius, duration, r, g, b, a, blend, canFilterSelf)
-	if DBM.Options.FilterSelfHud and canFilterSelf and UnitIsUnit("player", person) then a = 0 end
+	--if DBM.Options.FilterSelfHud and canFilterSelf and UnitIsUnit("player", person) then a = 0 end
 	if not r and person then--Auto generate class color if colors were left nil
 		local _, cls = UnitClass(person)
 		if cls and RAID_CLASS_COLORS[cls] then
@@ -1352,7 +1352,7 @@ function mod:RegisterStaticMarkerOnPartyMember(spellid, texture, person, radius,
 end
 
 function mod:RegisterRangeMarkerOnPartyMember(spellid, texture, person, radius, duration, r, g, b, a, blend, canFilterSelf)
-	if DBM.Options.FilterSelfHud and canFilterSelf and UnitIsUnit("player", person) then a = 0 end
+	--if DBM.Options.FilterSelfHud and canFilterSelf and UnitIsUnit("player", person) then a = 0 end
 	if not r and person then--Auto generate class color if colors were left nil
 		local _, cls = UnitClass(person)
 		if cls and RAID_CLASS_COLORS[cls] then
