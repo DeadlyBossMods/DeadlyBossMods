@@ -246,10 +246,10 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 207573 then
 		warnCallDefiledSpirit:Show()
 		self:SendSync("DefiledSpirit")
-	elseif spellId == 205300 and self:CheckInterruptFilter(args.sourceGUID) then
+	elseif spellId == 205300 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnCorruption:Show(args.sourceName)
 		specWarnCorruption:Play("kickcast")
-	elseif spellId == 214540 and self:CheckInterruptFilter(args.sourceGUID) then
+	elseif spellId == 214540 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnCollapsingNightmare:Show(args.sourceName)
 		specWarnCollapsingNightmare:Play("kickcast")
 	elseif spellId == 203817 and self:AntiSpam(5, 6) then

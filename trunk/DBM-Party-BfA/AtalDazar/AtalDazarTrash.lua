@@ -23,10 +23,10 @@ local specWarnTerrifyingScreech		= mod:NewSpecialWarningInterrupt(255041, "HasIn
 function mod:SPELL_CAST_START(args)
 	if not self.Options.Enabled then return end
 	local spellId = args.spellId
-	if spellId == 253562 and self:CheckInterruptFilter(args.sourceGUID) then
+	if spellId == 253562 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnWildFire:Show()
 		specWarnWildFire:Play("kickcast")
-	elseif spellId == 255041 and self:CheckInterruptFilter(args.sourceGUID) then
+	elseif spellId == 255041 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnTerrifyingScreech:Show()
 		specWarnTerrifyingScreech:Play("kickcast")
 	end

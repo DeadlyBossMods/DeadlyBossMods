@@ -44,7 +44,7 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 247320 then
 		timerSearingGazeCD:Start()
-		if self:CheckInterruptFilter(args.sourceGUID) then
+		if self:CheckInterruptFilter(args.sourceGUID, false, true) then
 			specWarnSearingGaze:Show(args.sourceName)
 			specWarnSearingGaze:Play("kickcast")
 		end

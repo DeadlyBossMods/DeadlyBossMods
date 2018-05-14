@@ -71,10 +71,10 @@ end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 192003 and self:CheckInterruptFilter(args.sourceGUID) then--Blazing Nova
+	if spellId == 192003 and self:CheckInterruptFilter(args.sourceGUID, false, true) then--Blazing Nova
 		specWarnBlazingNova:Show(args.sourceName)
 		specWarnBlazingNova:Play("kickcast")
-	elseif spellId == 192005 and self:CheckInterruptFilter(args.sourceGUID) then
+	elseif spellId == 192005 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnArcaneBlast:Show(args.sourceName)
 		specWarnArcaneBlast:Play("kickcast")
 	elseif spellId == 191848 then

@@ -177,7 +177,7 @@ function mod:SPELL_CAST_START(args)
 		if timers then
 			timerBurningPitchCD:Start(timers, nextCount)
 		end
-	elseif spellId == 209017 and self:CheckInterruptFilter(args.sourceGUID) then
+	elseif spellId == 209017 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnFelBlast:Show(args.sourceName)
 		specWarnFelBlast:Play("kickcast")
 	elseif spellId == 206351 then
@@ -191,7 +191,7 @@ function mod:SPELL_CAST_START(args)
 				self:ScanForMobs(args.sourceGUID, 0, 8, 8, 0.1, 15, "SetIconOnAdds")
 			end
 		end
-		if self:CheckInterruptFilter(args.sourceGUID) then
+		if self:CheckInterruptFilter(args.sourceGUID, false, true) then
 			specWarnFelBurst:Show(args.sourceName)
 			specWarnFelBurst:Play("kickcast")
 		end

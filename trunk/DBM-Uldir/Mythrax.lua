@@ -148,7 +148,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnVisionsofMadness:Show()
 		specWarnVisionsofMadness:Play("killmob")
 		timerVisionsoMadnessCD:Start()
-	elseif spellId == 274019 and self:CheckInterruptFilter(args.sourceGUID) then
+	elseif spellId == 274019 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnMindFlay:Show(args.sourceName)
 		specWarnMindFlay:Play("kickcast")
 	end

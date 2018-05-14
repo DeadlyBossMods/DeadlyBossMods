@@ -55,7 +55,7 @@ function mod:SPELL_CAST_START(args)
 		--countdownBreath:Start()
 	elseif spellId == 198495 then
 		timerTorrentCD:Start()
-		if self:CheckInterruptFilter(args.sourceGUID) then
+		if self:CheckInterruptFilter(args.sourceGUID, false, true) then
 			specWarnTorrent:Show(args.sourceName)
 			specWarnTorrent:Play("kickcast")
 		end

@@ -291,7 +291,7 @@ function mod:SPELL_CAST_START(args)
 		countdownNightPhase:Start()
 		timerCarrionNightmare:Start(6, 1)
 		countdownCarrionNightmare:Start(6)
-	elseif spellId == 216034 and self:CheckInterruptFilter(args.sourceGUID) then
+	elseif spellId == 216034 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnBlastNova:Show(args.sourceName)
 		specWarnBlastNova:Play("kickcast")
 	elseif spellId == 216723 then

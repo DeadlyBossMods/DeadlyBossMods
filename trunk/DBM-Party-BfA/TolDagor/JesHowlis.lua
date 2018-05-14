@@ -68,7 +68,7 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 257791 then
-		if self:CheckInterruptFilter(args.sourceGUID) then
+		if self:CheckInterruptFilter(args.sourceGUID, false, true) then
 			specWarnHowlingFear:Show(args.sourceName)
 			specWarnHowlingFear:Play("kickcast")
 		end

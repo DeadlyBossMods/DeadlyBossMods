@@ -14,13 +14,11 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 271296 271728 271895",
+	"SPELL_CAST_SUCCESS 271224",
 	"SPELL_AURA_APPLIED 271224 271965 275270",
---	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 271225 271965",
 	"SPELL_PERIODIC_DAMAGE 270290",
-	"SPELL_PERIODIC_MISSED 270290",
---	"UNIT_DIED",
-	"UNIT_SPELLCAST_SUCCEEDED boss1"
+	"SPELL_PERIODIC_MISSED 270290"
 )
 
 local warnPoweringDown					= mod:NewSpellAnnounce(271965, 2, nil, nil, nil, nil, nil, 2)
@@ -46,7 +44,7 @@ local timerPoweredDown					= mod:NewBuffActiveTimer(88.6, 271965, nil, nil, nil,
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
 
---local countdownCollapsingWorld			= mod:NewCountdown(50, 243983, true, 3, 3)
+--local countdownCudgelofGore				= mod:NewCountdown(57.4, 271296, true, 3, 3)
 --local countdownRealityTear				= mod:NewCountdown("Alt12", 244016, false, 2, 3)
 --local countdownFelstormBarrage			= mod:NewCountdown("AltTwo32", 244000, nil, nil, 3)
 
@@ -97,6 +95,13 @@ function mod:SPELL_CAST_START(args)
 		specWarnSanguineStatic:Show()
 		specWarnSanguineStatic:Play("watchwave")
 		timerSanguineStaticCD:Start()
+	end
+end
+
+function mod:SPELL_CAST_SUCCESS(args)
+	local spellId = args.spellId
+	if spellId == 271224 and self:AntiSpam(3, 1) then
+		timerPlasmaDischargeCD:Start()
 	end
 end
 
@@ -166,10 +171,3 @@ function mod:UNIT_DIED(args)
 	end
 end
 --]]
-
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 271222 then--Plastma Discharge
-		timerPlasmaDischargeCD:Start()
-	end
-end
-

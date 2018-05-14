@@ -111,7 +111,7 @@ function mod:SPELL_CAST_START(args)
 		timerChronoPartCD:Stop()--Will be used immediately when this ends.
 		specWarnPowerOverwhelming:Show()
 		specWarnPowerOverwhelming:Play("aesoon")
-	elseif spellId == 207228 and self:CheckInterruptFilter(args.sourceGUID) then
+	elseif spellId == 207228 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnWarp:Show(args.sourceName)
 		specWarnWarp:Play("kickcast")
 	end

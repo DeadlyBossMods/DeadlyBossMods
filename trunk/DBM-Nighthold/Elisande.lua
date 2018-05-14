@@ -222,28 +222,23 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 209590 then
 		warnCompressedTime:Show()
 	elseif spellId == 209620 then
-		if self:CheckInterruptFilter(args.sourceGUID) then
+		if self:CheckInterruptFilter(args.sourceGUID, false, true) then
 			specWarnRecursion:Show(args.sourceName)
 			specWarnRecursion:Play("kickcast")
 		end
 	elseif spellId == 221864 then
-		if self:CheckInterruptFilter(args.sourceGUID) then
+		if self:CheckInterruptFilter(args.sourceGUID, false, true) then
 			specWarnBlast:Show(args.sourceName)
 			specWarnBlast:Play("kickcast")
 		end
---[[	elseif spellId == 209568 then
-		if self:CheckInterruptFilter(args.sourceGUID) then
-			specWarnExoRelease:Show(args.sourceName)
-			specWarnExoRelease:Play("kickcast")
-		end--]]
 	elseif spellId == 209617 then
-		if self:CheckInterruptFilter(args.sourceGUID) then
+		if self:CheckInterruptFilter(args.sourceGUID, false, true) then
 			specWarnExpedite:Show(args.sourceName)
 			specWarnExpedite:Play("kickcast")
 		end
 	elseif spellId == 209971 then
 		--timerAblativePulseCD:Start()
-		if self:CheckInterruptFilter(args.sourceGUID) then
+		if self:CheckInterruptFilter(args.sourceGUID, false, true) then
 			specWarnAblativePulse:Show(args.sourceName)
 			specWarnAblativePulse:Play("kickcast")
 		end

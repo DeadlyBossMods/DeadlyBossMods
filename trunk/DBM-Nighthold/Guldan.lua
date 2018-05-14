@@ -391,7 +391,7 @@ function mod:SPELL_CAST_START(args)
 			end
 		end
 	elseif spellId == 208672 then
-		if self:CheckInterruptFilter(args.sourceGUID) then
+		if self:CheckInterruptFilter(args.sourceGUID, false, true) then
 			specWarnCarrionWave:Show(args.sourceName)
 			specWarnCarrionWave:Play("kickcast")
 		end
