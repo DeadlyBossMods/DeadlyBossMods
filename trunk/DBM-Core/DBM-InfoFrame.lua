@@ -604,13 +604,12 @@ end
 --needed when specific spellid must be checked because spellname for more than 1 spell
 local function updateBadPlayerDebuffsBySpellID()
 	twipe(lines)
-	local spellName = value[1]
+	local spellInput = value[1]
 	local tankIgnored = value[2]
 	for uId in DBM:GetGroupMembers() do
 		if tankIgnored and (UnitGroupRolesAssigned(uId) == "TANK" or GetPartyAssignment("MAINTANK", uId, 1)) then
 		else
-			local spellId = betaCompat and select(10, DBM:UnitDebuff(uId, spellName)) or select(11, DBM:UnitDebuff(uId, spellName))
-			if spellId == value[1] and not UnitIsDeadOrGhost(uId) then
+			if DBM:UnitDebuff(uId, spellInput) and not UnitIsDeadOrGhost(uId) then
 				lines[UnitName(uId)] = ""
 			end
 		end
@@ -620,16 +619,14 @@ local function updateBadPlayerDebuffsBySpellID()
 end
 
 --Debuffs that are bad to have, but we want to show players who do NOT have them
-local spiritofRedemption = GetSpellInfo(27827)
 local function updateReverseBadPlayerDebuffsBySpellID()
 	twipe(lines)
-	local spellName = value[1]
+	local spellInput = value[1]
 	local tankIgnored = value[2]
 	for uId in DBM:GetGroupMembers() do
 		if tankIgnored and (UnitGroupRolesAssigned(uId) == "TANK" or GetPartyAssignment("MAINTANK", uId, 1)) then
 		else
-			local spellId = betaCompat and select(10, DBM:UnitDebuff(uId, spellName)) or select(11, DBM:UnitDebuff(uId, spellName))
-			if spellId == value[1] and not UnitIsDeadOrGhost(uId) and not DBM:UnitDebuff(uId, spiritofRedemption) then
+			if DBM:UnitDebuff(uId, spellInput) and not UnitIsDeadOrGhost(uId) and not DBM:UnitDebuff(uId, 27827) then
 				lines[UnitName(uId)] = ""
 			end
 		end
@@ -644,7 +641,7 @@ local function updateReverseBadPlayerDebuffs()
 	for uId in DBM:GetGroupMembers() do
 		if tankIgnored and (UnitGroupRolesAssigned(uId) == "TANK" or GetPartyAssignment("MAINTANK", uId, 1)) then
 		else
-			if not DBM:UnitDebuff(uId, spellName) and not UnitIsDeadOrGhost(uId) and not DBM:UnitDebuff(uId, spiritofRedemption) then--27827 Spirit of Redemption. This particular info frame wants to ignore this
+			if not DBM:UnitDebuff(uId, spellName) and not UnitIsDeadOrGhost(uId) and not DBM:UnitDebuff(uId, 27827) then--27827 Spirit of Redemption. This particular info frame wants to ignore this
 				lines[UnitName(uId)] = ""
 			end
 		end
