@@ -285,12 +285,6 @@ do
 			end
 		end
 		--Tank Debuffs
-		--[[if #tankStacks > 0 then
-			for k, v in pairs(tankStacks) do
-				--addLine(k, v)
-				addLine(tankStacks[k], v)
-			end
-		end--]]
 		for i = 1, #tankStacks do
 			local name = tankStacks[i]
 			local uId = DBM:GetRaidUnitId(name)

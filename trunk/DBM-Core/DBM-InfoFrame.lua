@@ -725,9 +725,7 @@ local events = {
 	["playerbaddebuff"] = updateBadPlayerDebuffs,
 	["playerdebuffremaining"] = updatePlayerDebuffRemaining,
 	["playerbuffremaining"] = updatePlayerBuffRemaining,
-	["playerbaddebuffbyspellid"] = updateBadPlayerDebuffs,--Mapped to combined function now
 	["reverseplayerbaddebuff"] = updateReverseBadPlayerDebuffs,
-	["reverseplayerbaddebuffbyspellid"] = updateReverseBadPlayerDebuffs,--Mapped to combined function now
 	["playeraggro"] = updatePlayerAggro,
 	["playerbuffstacks"] = updatePlayerBuffStacks,
 	["playerdebuffstacks"] = updatePlayerDebuffStacks,
@@ -748,9 +746,7 @@ local friendlyEvents = {
 	["playerbaddebuff"] = true,
 	["playerdebuffremaining"] = true,
 	["playerbuffremaining"] = true,
-	["playerbaddebuffbyspellid"] = true,
 	["reverseplayerbaddebuff"] = true,
-	["reverseplayerbaddebuffbyspellid"] = true,
 	["playeraggro"] = true,
 	["playerbuffstacks"] = true,
 	["playerdebuffstacks"] = true,
@@ -798,7 +794,7 @@ function onUpdate(frame)
 				end
 				linesShown = linesShown + 1
 				if leftText == playerName then--It's player.
-					if currentEvent == "health" or currentEvent == "playerpower" or currentEvent == "playerabsorb" or currentEvent == "playerbuff" or currentEvent == "playergooddebuff" or currentEvent == "playerbaddebuff" or currentEvent == "playerdebuffremaining" or currentEvent == "playerbuffremaining" or currentEvent == "playerbaddebuffbyspellid" or currentEvent == "playertargets" or (currentEvent == "playeraggro" and value[1] == 3) then--Red
+					if currentEvent == "health" or currentEvent == "playerpower" or currentEvent == "playerabsorb" or currentEvent == "playerbuff" or currentEvent == "playergooddebuff" or currentEvent == "playerbaddebuff" or currentEvent == "playerdebuffremaining" or currentEvent == "playerbuffremaining" or currentEvent == "playertargets" or (currentEvent == "playeraggro" and value[1] == 3) then--Red
 						frame:AddDoubleLine(icon or leftText, rightText, 255, 0, 0, 255, 255, 255)-- (leftText, rightText, left.R, left.G, left.B, right.R, right.G, right.B)
 					else--Green
 						frame:AddDoubleLine(icon or leftText, rightText, 0, 255, 0, 255, 255, 255)
@@ -877,11 +873,14 @@ function infoFrame:Show(maxLines, event, ...)
 		sortMethod = 1
 	end
 	
-	--If spellId is given as value one, convert to spell name on show instead of in every onupdate
+	--Orders event to use spellID no matter what and not spell name
+	if event:find("byspellid") then
+		event:gsub("byspellid", "")--just strip off the byspellid, it served it's purpose, it simply told infoframe to not convert to spellName
+	--If spellId is given as value one and it's not a byspellid event, convert to spellname
 	--this also allows spell name to be given by mod, since value 1 verifies it's a number
-	if type(value[1]) == "number" and event ~= "health" and event ~= "function" and event ~= "playertargets" and event ~= "playeraggro" and event ~= "playerpower" and event ~= "enemypower" and event ~= "test" and event ~= "playerbaddebuffbyspellid" and event ~= "reverseplayerbaddebuffbyspellid" then
-		--Outside of "byspellid" functions, typical frames will still use spell NAME matching not spellID. Same functinos will handle both.
-		--This just determines if we convert the spell input to a spell Name or not so we auto control how functions handle matching
+	elseif type(value[1]) == "number" and event ~= "health" and event ~= "function" and event ~= "playertargets" and event ~= "playeraggro" and event ~= "playerpower" and event ~= "enemypower" and event ~= "test" then
+		--Outside of "byspellid" functions, typical frames will still use spell NAME matching not spellID.
+		--This just determines if we convert the spell input to a spell Name, if a spellId was provided for a non byspellid infoframe
 		value[1] = DBM:GetSpellInfo(value[1])
 	end
 
