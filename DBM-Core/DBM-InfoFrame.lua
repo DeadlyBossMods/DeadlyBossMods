@@ -876,6 +876,10 @@ function infoFrame:Show(maxLines, event, ...)
 	--Orders event to use spellID no matter what and not spell name
 	if event:find("byspellid") then
 		event = event:gsub("byspellid", "")--just strip off the byspellid, it served it's purpose, it simply told infoframe to not convert to spellName
+		if type(value[1]) ~= "number" then
+			error("DBM-InfoFrame: byspellid method must use spellId", 2)
+			return
+		end
 	--If spellId is given as value one and it's not a byspellid event, convert to spellname
 	--this also allows spell name to be given by mod, since value 1 verifies it's a number
 	elseif type(value[1]) == "number" and event ~= "health" and event ~= "function" and event ~= "playertargets" and event ~= "playeraggro" and event ~= "playerpower" and event ~= "enemypower" and event ~= "test" then
