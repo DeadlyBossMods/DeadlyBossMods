@@ -31,7 +31,7 @@ local specWarnOverchargeMana		= mod:NewSpecialWarningInterrupt(196392, "HasInter
 
 local timerVolatileMagicCD			= mod:NewCDTimer(32, 196562, nil, nil, nil, 3)--Review, Might be health based? or just really variable
 local timerNetherLinkCD				= mod:NewCDTimer(30, 196804, nil, nil, nil, 3)
-local timerOverchargeManaCD			= mod:NewCDTimer(50, 196392, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
+local timerOverchargeManaCD			= mod:NewCDTimer(40, 196392, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
 
 mod:AddRangeFrameOption(8, 196562)
 
