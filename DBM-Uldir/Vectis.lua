@@ -8,7 +8,7 @@ mod:SetZone()
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
 --mod:SetHotfixNoticeRev(16950)
 --mod:SetMinSyncRevision(16950)
---mod.respawnTime = 35
+mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
 
@@ -33,9 +33,9 @@ local warnGestate							= mod:NewTargetAnnounce(265212, 3)
 local warnHypergenesis						= mod:NewSpellAnnounce(266926, 3)
 local warnContagion							= mod:NewCountAnnounce(267242, 3)
 
---local specWarnMutagenicPathogen				= mod:NewSpecialWarningStack(265178, nil, 6, nil, nil, 1, 6)
---local specWarnMutagenicPathogenOther		= mod:NewSpecialWarningTaunt(265178, nil, nil, nil, 1, 2)
-local yellMutagenicPathogen					= mod:NewShortFadesYell(265178)
+local specWarnMutagenicPathogen				= mod:NewSpecialWarningStack(265178, nil, 2, nil, nil, 1, 6)
+local specWarnMutagenicPathogenOther		= mod:NewSpecialWarningTaunt(265178, nil, nil, nil, 1, 2)
+--local yellMutagenicPathogen					= mod:NewShortFadesYell(265178)
 local specWarnOmegaVector					= mod:NewSpecialWarningYou(265129, nil, nil, nil, 1, 2)
 local yellOmegaVector						= mod:NewYell(265129)
 local yellOmegaVectorFades					= mod:NewShortFadesYell(265129)
@@ -145,25 +145,25 @@ function mod:SPELL_AURA_APPLIED(args)
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId) then
 			local amount = args.amount or 1
-			if amount >= 6 then
+			if amount >= 2 then
 				if args:IsPlayer() then
 					warnMutagenicPathogen:Show(args.destName, amount)
-					--specWarnMutagenicPathogen:Show(amount)
-					--specWarnMutagenicPathogen:Play("stackhigh")
-					yellMutagenicPathogen:Cancel()
-					yellMutagenicPathogen:Countdown(12)
+					specWarnMutagenicPathogen:Show(amount)
+					specWarnMutagenicPathogen:Play("stackhigh")
+					--yellMutagenicPathogen:Cancel()
+					--yellMutagenicPathogen:Countdown(12)
 				else
-					--local _, _, _, _, _, expireTime = UnitDebuff("player", spellId)
-					--local remaining
-					--if expireTime then
-					--	remaining = expireTime-GetTime()
-					--end
-					--if not UnitIsDeadOrGhost("player") and (not remaining or remaining and remaining < 8) then
-					--	specWarnMutagenicPathogenOther:Show(args.destName)
-					--	specWarnMutagenicPathogenOther:Play("tauntboss")
-					--else
+					local _, _, _, _, _, expireTime = UnitDebuff("player", spellId)
+					local remaining
+					if expireTime then
+						remaining = expireTime-GetTime()
+					end
+					if not UnitIsDeadOrGhost("player") and (not remaining or remaining and remaining < 8) then
+						specWarnMutagenicPathogenOther:Show(args.destName)
+						specWarnMutagenicPathogenOther:Play("tauntboss")
+					else
 						warnMutagenicPathogen:Show(args.destName, amount)
-					--end
+					end
 				end
 			else
 				warnMutagenicPathogen:Show(args.destName, amount)
@@ -222,7 +222,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 265178 then
 		if args:IsPlayer() then
-			yellMutagenicPathogen:Cancel()
+			--yellMutagenicPathogen:Cancel()
 		end
 	elseif spellId == 265129 then
 		if args:IsPlayer() then
