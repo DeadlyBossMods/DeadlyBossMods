@@ -170,7 +170,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 	elseif spellId == 265129 then
-		if args:IsPlayer() then
+		if args:IsPlayer() and self:AntiSpam(1.5, 2) then
 			specWarnOmegaVector:Show()
 			specWarnOmegaVector:Play("targetyou")
 			yellOmegaVector:Yell()
