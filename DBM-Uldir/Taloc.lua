@@ -169,7 +169,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnEnlargedHeart:Show()
 			specWarnEnlargedHeart:Play("runout")
 			yellEnlargedHeart:Yell()
-			yellEnlargedHeartFades:Countdown(8)
+			yellEnlargedHeartFades:Countdown(6)
 		else
 			specWarnEnlargedHeartOther:Show(args.destName)
 			specWarnEnlargedHeartOther:Play("helpsoak")
