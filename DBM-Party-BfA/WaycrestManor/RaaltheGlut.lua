@@ -24,7 +24,7 @@ local specWarnGTFO					= mod:NewSpecialWarningGTFO(264698, nil, nil, nil, 1, 2)
 
 --local timerServantCD				= mod:NewNextTimer(13, 264931, nil, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON)
 local timerTenderizeCD				= mod:NewNextTimer(29.2, 264923, nil, nil, nil, 3)--Timer for first in each set of 3
-local timerRottenExpulsionCD		= mod:NewNextTimer(26.8, 264694, nil, nil, nil, 3)
+local timerRottenExpulsionCD		= mod:NewCDTimer(14.6, 264694, nil, nil, nil, 3)--14.6--26 (health based?)
 
 --mod:AddRangeFrameOption(5, 194966)
 
@@ -33,7 +33,7 @@ mod.vb.tenderizeCount = 0
 function mod:OnCombatStart(delay)
 	self.vb.tenderizeCount = 0
 	--timerServantCD:Start(43.7-delay)--Verify not health based
-	timerRottenExpulsionCD:Start(19.4-delay)
+	timerRottenExpulsionCD:Start(6-delay)
 	timerTenderizeCD:Start(-delay)--Also 29.2
 end
 
