@@ -14,6 +14,10 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS 268896 269131"
 )
 
+mod:RegisterEvents(
+	"CHAT_MSG_MONSTER_YELL"
+)
+
 --local warnSwirlingScythe			= mod:NewTargetAnnounce(195254, 2)
 
 local specWarnVoidBolt				= mod:NewSpecialWarningInterruptCount(268347, "HasInterrupt", nil, nil, 1, 2)
@@ -23,6 +27,7 @@ local specWarnAncientMindbender		= mod:NewSpecialWarningSwitch(269131, nil, nil,
 local yellAncientMindbender			= mod:NewYell(269131)
 --local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
 
+local timerRP						= mod:NewRPTimer(68)
 local timerVoidBoltCD				= mod:NewCDTimer(8.4, 268347, nil, "HasInterrupt", nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
 local timerMindRendCD				= mod:NewAITimer(8.4, 268896, nil, nil, nil, 3, nil, DBM_CORE_HEALER_ICON..DBM_CORE_MAGIC_ICON)
 local timerWakentheVoidCD			= mod:NewCDTimer(52.3, 269097, nil, nil, nil, 3)--IFFY, could be health based
@@ -86,6 +91,20 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerMindRendCD:Start()
 	elseif spellId == 269131 then
 		timerAncientMindbenderCD:Start()
+	end
+end
+
+function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
+	--"<5.12 02:26:06> [CHAT_MSG_MONSTER_SAY] It would seem you have guests, Lord Stormsong.#Queen Azshara###Omegal##0#0##0#979#nil#0#false#false#false#false", -- [11]
+	--"<34.74 02:26:36> [ENCOUNTER_START] ENCOUNTER_START#2132#Lord Stormsong#1#5", -- [20]
+	if (msg == L.openingRP or msg:find(L.openingRP)) and self:LatencyCheck() then
+		self:SendSync("openingRP")
+	end
+end
+
+function mod:OnSync(msg, targetname)
+	if msg == "openingRP" and self:AntiSpam(10, 6) then
+		timerRP:Start(19.6)
 	end
 end
 

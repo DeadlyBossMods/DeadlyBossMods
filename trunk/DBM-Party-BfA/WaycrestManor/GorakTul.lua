@@ -10,14 +10,12 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 --	"SPELL_AURA_APPLIED",
-	"SPELL_CAST_START 266225 266266 266181",
-	"CHAT_MSG_MONSTER_YELL"
+	"SPELL_CAST_START 266225 266266 266181"
 )
 
 --TODO, re-transcribe fight to see what UNIT events exist so maybe yell isn't needed
 --TODO, verify iffy timers from such a short short pull
 --TODO, heroic stuff (grim portal, dread lense). Too many spellIds to just guess/drycode
-local warnAlchFire					= mod:NewSpellAnnounce(266198, 1)
 
 local specWarnSummonSlaver			= mod:NewSpecialWarningSwitch(266266, "-Healer", nil, nil, 1, 2)
 local specWarnDreadEssence			= mod:NewSpecialWarningSpell(266181, nil, nil, nil, 2, 2)
@@ -25,15 +23,15 @@ local specWarnDreadEssence			= mod:NewSpecialWarningSpell(266181, nil, nil, nil,
 --local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
 
 local timerDarkenedLightningCD		= mod:NewCDTimer(14.5, 266225, nil, nil, nil, 3)--Has interrupt spell icon but it's not actually interruptable
-local timerSummonSlaverCD			= mod:NewCDTimer(29.1, 266266, nil, nil, nil, 1)
-local timerDreadEssenceCD			= mod:NewCDTimer(29.1, 266181, nil, nil, nil, 2)
+local timerSummonSlaverCD			= mod:NewCDTimer(28, 266266, nil, nil, nil, 1)
+local timerDreadEssenceCD			= mod:NewCDTimer(28, 266181, nil, nil, nil, 2)
 
 mod:AddRangeFrameOption(6, 266225)--Range guessed, can't find spell data for it
 
 function mod:OnCombatStart(delay)
-	timerDarkenedLightningCD:Start(16.5-delay)
-	timerSummonSlaverCD:Start(21.4-delay)
-	timerDreadEssenceCD:Start(34.7-delay)
+	timerDarkenedLightningCD:Start(8-delay)
+	timerSummonSlaverCD:Start(13-delay)
+	timerDreadEssenceCD:Start(25-delay)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(6)
 	end
@@ -67,18 +65,6 @@ function mod:SPELL_CAST_START(args)
 		specWarnDreadEssence:Show()
 		specWarnDreadEssence:Play("aesoon")
 		--timerDreadEssenceCD:Start()
-	end
-end
-
-function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
-	if (msg == L.fireYell or msg:find(L.fireYell)) then
-		self:SendSync("FireSpawn")
-	end
-end
-
-function mod:OnSync(msg, targetname)
-	if msg == "FireSpawn" and self:AntiSpam(10, 6) then
-		warnAlchFire:Show()
 	end
 end
 
