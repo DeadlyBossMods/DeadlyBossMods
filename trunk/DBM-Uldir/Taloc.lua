@@ -15,8 +15,8 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 271296 271728 271895",
 	"SPELL_CAST_SUCCESS 271224",
-	"SPELL_AURA_APPLIED 271224 271965 275270",
-	"SPELL_AURA_REMOVED 271225 271965",
+	"SPELL_AURA_APPLIED 271224 271965 275270 275189 275205",
+	"SPELL_AURA_REMOVED 271225 271965 275189 275205",
 	"SPELL_PERIODIC_DAMAGE 270290",
 	"SPELL_PERIODIC_MISSED 270290"
 )
@@ -33,12 +33,22 @@ local specWarnCudgelofGoreEveryone		= mod:NewSpecialWarningRun(271296, nil, nil,
 local specWarnRetrieveCudgel			= mod:NewSpecialWarningDodge(271728, nil, nil, nil, 2, 2)
 local specWarnSanguineStatic			= mod:NewSpecialWarningDodge(272582, nil, nil, nil, 2, 2)
 local specWarnFixate					= mod:NewSpecialWarningYou(275270, nil, nil, nil, 1, 2)
+local specWarnCloggedArteries			= mod:NewSpecialWarningMoveAway(275189, nil, nil, nil, 1, 2)
+local yellCloggedArteries				= mod:NewYell(275189)
+local yellCloggedArteriesFades			= mod:NewFadesYell(275189)
+local specWarnCloggedArteriesNear		= mod:NewSpecialWarningClose(275189, nil, nil, nil, 1, 2)
+local specWarnEnlargedHeart				= mod:NewSpecialWarningYou(275205, nil, nil, nil, 1, 2)
+local yellEnlargedHeart					= mod:NewYell(275205)
+local yellEnlargedHeartFades			= mod:NewFadesYell(275205)
+local specWarnEnlargedHeartOther		= mod:NewSpecialWarningMoveTo(275205, "-Tank", nil, nil, 1, 2)
 local specWarnGTFO						= mod:NewSpecialWarningGTFO(270290, nil, nil, nil, 1, 2)
 
 mod:AddTimerLine(BOSS)
 local timerPlasmaDischargeCD			= mod:NewCDTimer(30.4, 271225, nil, nil, nil, 3)--30.4-42
 local timerCudgelOfGoreCD				= mod:NewCDTimer(57.4, 271296, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)--57.4-63
 local timerSanguineStaticCD				= mod:NewCDTimer(57.4, 272582, nil, nil, nil, 3)--57.4-63
+local timerCloggedArteriesCD			= mod:NewAITimer(57.4, 275189, nil, nil, nil, 3)
+local timerEnlargedHeartCD				= mod:NewAITimer(57.4, 275205, nil, nil, nil, 3)
 mod:AddTimerLine(DBM:GetSpellInfo(271965))
 local timerPoweredDown					= mod:NewBuffActiveTimer(88.6, 271965, nil, nil, nil, 6)
 
@@ -60,6 +70,8 @@ function mod:OnCombatStart(delay)
 	timerPlasmaDischargeCD:Start(5.9-delay)
 	timerCudgelOfGoreCD:Start(31.6-delay)
 	timerSanguineStaticCD:Start(20.6-delay)
+	timerEnlargedHeartCD:Start(1-delay)
+	timerCloggedArteriesCD:Start(1-delay)
 	ignoreGTFO = false
 end
 
@@ -123,6 +135,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerPlasmaDischargeCD:Stop()
 		timerCudgelOfGoreCD:Stop()
 		timerSanguineStaticCD:Stop()
+		timerCloggedArteriesCD:Stop()
+		timerEnlargedHeartCD:Stop()
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(275270))
 			DBM.InfoFrame:Show(5, "playerbaddebuff", 275270)
@@ -133,6 +147,31 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnFixate:Play("targetyou")
 		else
 			warnFixate:Show(args.destName)
+		end
+	elseif spellId == 275189 then
+		if self:AntiSpam(3, 3) then
+			timerCloggedArteriesCD:Start()
+		end
+		if args:IsPlayer() then
+			specWarnCloggedArteries:Show()
+			specWarnCloggedArteries:Play("runout")
+			yellCloggedArteries:Yell()
+			yellCloggedArteriesFades:Countdown(8)
+		elseif self:CheckNearby(8, args.destName) and not DBM:UnitDebuff("player", spellId) then
+			specWarnCloggedArteriesNear:CombinedShow(0.3, args.destName)
+			specWarnCloggedArteriesNear:CancelVoice()--Avoid spam
+			specWarnCloggedArteriesNear:ScheduleVoice(0.3, "runaway")
+		end
+	elseif spellId == 275205 then
+		timerEnlargedHeartCD:Start()
+		if args:IsPlayer() then
+			specWarnEnlargedHeart:Show()
+			specWarnEnlargedHeart:Play("runout")
+			yellEnlargedHeart:Yell()
+			yellEnlargedHeartFades:Countdown(8)
+		else
+			specWarnEnlargedHeartOther:Show(args.destName)
+			specWarnEnlargedHeartOther:Play("helpsoak")
 		end
 	end
 end
@@ -149,8 +188,18 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerPlasmaDischargeCD:Start(6)
 		timerSanguineStaticCD:Start(20.7)
 		timerCudgelOfGoreCD:Start(30.5)
+		timerEnlargedHeartCD:Start(2)
+		timerCloggedArteriesCD:Start(2)
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:Hide()
+		end
+	elseif spellId == 275189 then
+		if args:IsPlayer() then
+			yellCloggedArteriesFades:Cancel()
+		end
+	elseif spellId == 275205 then
+		if args:IsPlayer() then
+			yellEnlargedHeartFades:Cancel()
 		end
 	end
 end
