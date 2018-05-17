@@ -40,6 +40,7 @@ local specWarnCloggedArteriesNear		= mod:NewSpecialWarningClose(275189, nil, nil
 local specWarnEnlargedHeart				= mod:NewSpecialWarningYou(275205, nil, nil, nil, 1, 2)
 local yellEnlargedHeart					= mod:NewYell(275205)
 local yellEnlargedHeartFades			= mod:NewFadesYell(275205)
+local specWarnEnlargedHeartTaunt		= mod:NewSpecialWarningTaunt(275205, "Tank", nil, nil, 1, 2)
 local specWarnEnlargedHeartOther		= mod:NewSpecialWarningMoveTo(275205, "-Tank", nil, nil, 1, 2)
 local specWarnGTFO						= mod:NewSpecialWarningGTFO(270290, nil, nil, nil, 1, 2)
 
@@ -172,6 +173,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			specWarnEnlargedHeartOther:Show(args.destName)
 			specWarnEnlargedHeartOther:Play("helpsoak")
+			specWarnEnlargedHeartTaunt:Show(args.destName)
+			specWarnEnlargedHeartTaunt:Play("tauntboss")
 		end
 	end
 end
