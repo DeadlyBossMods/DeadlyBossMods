@@ -144,7 +144,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			timerCleansingFlameCD:Start(180, 1)
 		elseif cid == 137022 then
 			timerCleansingFlameCD:Start(180, 2)
-		else
+		elseif cid == 137023 then
 			timerCleansingFlameCD:Start(180, 3)
 		end
 	elseif spellId == 268089 then--End Cast of Cleansing Purge
