@@ -171,8 +171,10 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellEnlargedHeart:Yell()
 			yellEnlargedHeartFades:Countdown(6)
 		else
-			specWarnEnlargedHeartOther:Show(args.destName)
-			specWarnEnlargedHeartOther:Play("helpsoak")
+			if not DBM:UnitDebuff("player", 275189) then
+				specWarnEnlargedHeartOther:Show(args.destName)
+				specWarnEnlargedHeartOther:Play("helpsoak")
+			end
 			specWarnEnlargedHeartTaunt:Show(args.destName)
 			specWarnEnlargedHeartTaunt:Play("tauntboss")
 		end
