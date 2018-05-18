@@ -51,6 +51,10 @@ L= DBM:GetModLocalization(2093)
 -----------------------
 L= DBM:GetModLocalization(2094)
 
+L:SetMiscLocalization({
+	openingRP = "Gather 'round and place yer bets! We got a new set of vict-- uh... competitors! Take it away, Gurthok and Wodin!"
+})
+
 -----------------------
 -- Harlan Sweete --
 -----------------------
@@ -316,7 +320,6 @@ L= DBM:GetModLocalization(2128)
 -- Gorak Tul --
 -----------------------
 L= DBM:GetModLocalization(2129)
-
 
 ---------
 --Trash--
