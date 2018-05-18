@@ -7691,21 +7691,21 @@ do
 		["Tank"] = true,
 		["Dps"] = true,
 		["Healer"] = true,
-		["Melee"] = true,
+		["Melee"] = true,--ANY melee, including tanks
 		["MeleeDps"] = true,
 		["Physical"] = true,
-		["Ranged"] = true,
-		["RangedDps"] = true,
+		["Ranged"] = true,--ANY ranged, healer and dps included
+		["RangedDps"] = true,--Only ranged dps
 		["ManaUser"] = true,--Affected by things like mana drains, or mana detonation, etc
 		["SpellCaster"] = true,--Has channeled casts, can be interrupted/spell locked by roars, etc, include healers. Use CasterDps if dealing with reflect
 		["CasterDps"] = true,--Ranged dps that uses spells, relevant for spell reflect type abilities that only reflect spells but not ranged physical such as hunters
 		["RaidCooldown"] = true,
-		["RemovePoison"] = true,
-		["RemoveDisease"] = true,
+		["RemovePoison"] = true,--from ally
+		["RemoveDisease"] = true,--from ally
 		["RemoveEnrage"] = true,--Unused, no one can remove enrage anymore, returning in classic/8.x!
-		["RemoveCurse"] = true,
-		["MagicDispeller"] = true--Buffs on targets, not debuffs on players
-		["HasInterrupt"] = true,--Has an interrupt that is 24 seconds or less CD.
+		["RemoveCurse"] = true,--from ally
+		["MagicDispeller"] = true--from ENEMY, not debuffs on players. use "Healer" for ally magic dispels. ALL healers can do that.
+		["HasInterrupt"] = true,--Has an interrupt that is 24 seconds or less CD that is BASELINE (not a talent)
 	}]]
 
 	local specRoleTable = {
@@ -7932,8 +7932,8 @@ do
 			["HasInterrupt"] = true,
 		},
 	}
-	specRoleTable[63] = specRoleTable[62]--Frost Mage as arcane
-	specRoleTable[64] = specRoleTable[62]--Fire Mage as arcane
+	specRoleTable[63] = specRoleTable[62]--Frost Mage same as arcane
+	specRoleTable[64] = specRoleTable[62]--Fire Mage same as arcane
 	specRoleTable[72] = specRoleTable[71]--Fury Warrior same as Arms
 	specRoleTable[252] = specRoleTable[251]--Unholy DK same as frost
 	specRoleTable[254] = specRoleTable[253]--Markmanship Hunter same as beast
