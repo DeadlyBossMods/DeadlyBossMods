@@ -3753,7 +3753,8 @@ do
 		timerRequestInProgress = false
 		self:Debug("LOADING_SCREEN_DISABLED fired")
 		self:Unschedule(SecondaryLoadCheck)
-		SecondaryLoadCheck(self)
+		--SecondaryLoadCheck(self)
+		self:Schedule(1, SecondaryLoadCheck, self)--Now delayed by one second to work around an issue on beta where spec info isn't available yet on reloadui
 		self:TransitionToDungeonBGM(false, true)
 		self:Schedule(5, SecondaryLoadCheck, self)
 		if DBM:HasMapRestrictions() then
@@ -7701,7 +7702,7 @@ do
 		["RaidCooldown"] = true,
 		["RemovePoison"] = true,
 		["RemoveDisease"] = true,
-		["RemoveEnrage"] = true,--Depricated, no one can remove enrage anymore, returning in classic!
+		["RemoveEnrage"] = true,--Unused, no one can remove enrage anymore, returning in classic/8.x!
 		["RemoveCurse"] = true,
 		["MagicDispeller"] = true--Buffs on targets, not debuffs on players
 		["HasInterrupt"] = true,--Has an interrupt that is 24 seconds or less CD.
@@ -7759,6 +7760,7 @@ do
 			["Melee"] = true,
 			["Physical"] = true,
 			["HasInterrupt"] = true,
+			--["RaidCooldown"] = true,--Rallying Cry (in 8.x)
 		},
 		[102] = {	--Balance Druid
 			["Dps"] = true,
@@ -7828,7 +7830,7 @@ do
 			["Ranged"] = true,
 			["ManaUser"] = true,
 			["SpellCaster"] = true,
-			["CasterDps"] = true,--Iffy
+			["CasterDps"] = true,--Iffy. Technically yes, but this can't be used to determine eligable target for dps only debuffs
 			["RaidCooldown"] = true,--Power Word: Barrier(Discipline) / Divine Hymn (Holy)
 			["RemoveDisease"] = true,
 			["MagicDispeller"] = true,
@@ -7930,16 +7932,16 @@ do
 			["HasInterrupt"] = true,
 		},
 	}
-	specRoleTable[63] = specRoleTable[62]--Frost Mage
-	specRoleTable[64] = specRoleTable[62]--Fire Mage
-	specRoleTable[72] = specRoleTable[71]--Fury Warrior
-	specRoleTable[252] = specRoleTable[251]--Unholy DK
-	specRoleTable[254] = specRoleTable[253]--Markmanship Hunter
-	specRoleTable[257] = specRoleTable[256]--Holy Priest
-	specRoleTable[260] = specRoleTable[259]--Combat Rogue
-	specRoleTable[261] = specRoleTable[259]--Subtlety Rogue
-	specRoleTable[266] = specRoleTable[265]--Demonology Warlock
-	specRoleTable[267] = specRoleTable[265]--Destruction Warlock
+	specRoleTable[63] = specRoleTable[62]--Frost Mage as arcane
+	specRoleTable[64] = specRoleTable[62]--Fire Mage as arcane
+	specRoleTable[72] = specRoleTable[71]--Fury Warrior same as Arms
+	specRoleTable[252] = specRoleTable[251]--Unholy DK same as frost
+	specRoleTable[254] = specRoleTable[253]--Markmanship Hunter same as beast
+	specRoleTable[257] = specRoleTable[256]--Holy Priest same as disc
+	specRoleTable[260] = specRoleTable[259]--Combat Rogue same as Assassination
+	specRoleTable[261] = specRoleTable[259]--Subtlety Rogue same as Assassination
+	specRoleTable[266] = specRoleTable[265]--Demonology Warlock same as Affliction
+	specRoleTable[267] = specRoleTable[265]--Destruction Warlock same as Affliction
 
 	--[[function bossModPrototype:GetRoleFlagValue(flag)
 		if not flag then return false end
@@ -9833,6 +9835,10 @@ do
 	
 	function bossModPrototype:NewSpecialWarningDodge(text, optionDefault, ...)
 		return newSpecialWarning(self, "dodge", text, nil, optionDefault, ...)
+	end
+	
+	function bossModPrototype:NewSpecialWarningDodgeLoc(text, optionDefault, ...)
+		return newSpecialWarning(self, "dodgeloc", text, nil, optionDefault, ...)
 	end
 	
 	function bossModPrototype:NewSpecialWarningMoveAway(text, optionDefault, ...)
