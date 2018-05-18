@@ -7,7 +7,7 @@ mod:SetEncounterID(2145)
 mod:DisableESCombatDetection()--ES fires moment you throw out CC, so it can't be trusted for combatstart
 mod:SetZone()
 --mod:SetBossHPInfoToHighest()
---mod:SetUsedIcons(1, 2, 3, 4, 5, 6)
+mod:SetUsedIcons(8)
 --mod:SetHotfixNoticeRev(16950)
 --mod:SetMinSyncRevision(16950)
 --mod.respawnTime = 35
@@ -23,6 +23,7 @@ mod:RegisterEventsInCombat(
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 	"UNIT_DIED",
+	"UNIT_TARGET_UNFILTERED",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
@@ -36,6 +37,7 @@ mod:RegisterEventsInCombat(
 --local warnXorothPortal				= mod:NewSpellAnnounce(244318, 2, nil, nil, nil, nil, nil, 7)
 --Stage One: The Forces of Blood
 local warnPoolofDarkness				= mod:NewCountAnnounce(273361, 4)--Generic warning since you want to be aware of it but not emphesized unless you're an assigned soaker
+local warnActiveDecay					= mod:NewTargetNoFilterAnnounce(276434, 1)
 --Stage Two: Zul, Awakened
 local warnPhase2						= mod:NewPhaseAnnounce(2, 2, nil, nil, nil, nil, nil, 2)
 local warnRupturingBlood				= mod:NewStackAnnounce(273365, 2, nil, "Tank")
@@ -92,15 +94,17 @@ mod:AddNamePlateOption("NPAuraOnThrumming", 273288)
 mod:AddNamePlateOption("NPAuraOnBoundbyShadow", 273432)
 mod:AddNamePlateOption("NPAuraOnEngorgedBurst", 276299)
 mod:AddNamePlateOption("NPAuraOnDecayingFlesh", 276434)
+mod:AddSetIconOption("SetIconOnDecay", 276434, true, true)
 
 mod.vb.phase = 1
 mod.vb.poolCount = 0
 mod.vb.CrawgSpawnCount = 0
 mod.vb.HexerSpawnCount = 0
 mod.vb.CrusherSpawnCount = 0
+mod.vb.activeDecay = nil
 local unitTracked = {}
 --P1 Add Timers (heroic)
-local CrawgTimers = {35, 43.9, 46.6, 47.2}
+local CrawgTimers = {35, 42, 46.6, 47.2}
 local HexerTimers = {51, 62.4, 62.9}
 local CrusherTimers = {70, 63.6}
 local CrawgName, HexerName, CrusherName = DBM:EJ_GetSectionInfo(18541), DBM:EJ_GetSectionInfo(18540), DBM:EJ_GetSectionInfo(18539)
@@ -149,6 +153,7 @@ function mod:OnCombatStart(delay)
 	self.vb.CrawgSpawnCount = 0
 	self.vb.HexerSpawnCount = 0
 	self.vb.CrusherSpawnCount = 0
+	self.vb.activeDecay = nil
 	timerPoolofDarknessCD:Start(20.5-delay, 1)
 	timerDarkRevolationCD:Start(30-delay)
 	timerCallofCrawgCD:Start(35, 1)--35-38
@@ -361,6 +366,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			DBM.Nameplate:Show(true, args.destGUID, spellId)
 		end
 	elseif spellId == 276434 then--Decaying Flesh
+		self.vb.activeDecay = args.destGUID
+		warnActiveDecay:Show(args.destName)
 		if self.Options.NPAuraOnDecayingFlesh then
 			DBM.Nameplate:Show(true, args.destGUID, spellId)
 		end
@@ -436,6 +443,28 @@ function mod:UNIT_DIED(args)
 		timerCongealBloodCD:Stop(args.destGUID)
 	elseif cid == 139059 then--Bloodthirsty Crawg
 		DBM.Nameplate:Hide(true, args.destGUID)
+	end
+end
+
+do
+	local function TrySetTarget(self)
+		if DBM:GetRaidRank() >= 1 then
+			for uId in DBM:GetGroupMembers() do
+				if UnitGUID(uId.."target") == self.vb.activeDecay then
+					self.vb.activeDecay = nil
+					SetRaidTarget(uId.."target", 8)
+				end
+				if not (self.vb.activeDecay) then
+					break
+				end
+			end
+		end
+	end
+
+	function mod:UNIT_TARGET_UNFILTERED()
+		if self.Options.SetIconOnDecay and self.vb.activeDecay then
+			TrySetTarget(self)
+		end
 	end
 end
 
