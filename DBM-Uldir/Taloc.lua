@@ -190,7 +190,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	end
 end
 --mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
-
+ 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 271225 then--Used later with icon feature
