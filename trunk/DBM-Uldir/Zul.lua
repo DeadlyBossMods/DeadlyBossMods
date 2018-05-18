@@ -17,9 +17,9 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 273889 274098 274119 273316 273451 273350",
 	"SPELL_CAST_SUCCESS 273360 273365 271640 274358 274168",
-	"SPELL_AURA_APPLIED 273365 271640 273434 276093 273288 274358 274271 273432",
+	"SPELL_AURA_APPLIED 273365 271640 273434 276093 273288 274358 274271 273432 276434",
 	"SPELL_AURA_APPLIED_DOSE 274358",
-	"SPELL_AURA_REMOVED 273365 271640 276093 273288 274358 274271 273432",
+	"SPELL_AURA_REMOVED 273365 271640 276093 273288 274358 274271 273432 276434",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 	"UNIT_DIED",
@@ -91,6 +91,7 @@ mod:AddNamePlateOption("NPAuraOnPresence", 276093)
 mod:AddNamePlateOption("NPAuraOnThrumming", 273288)
 mod:AddNamePlateOption("NPAuraOnBoundbyShadow", 273432)
 mod:AddNamePlateOption("NPAuraOnEngorgedBurst", 276299)
+mod:AddNamePlateOption("NPAuraOnDecayingFlesh", 276434)
 
 mod.vb.phase = 1
 mod.vb.poolCount = 0
@@ -103,6 +104,43 @@ local CrawgTimers = {35, 43.9, 46.6, 47.2}
 local HexerTimers = {51, 62.4, 62.9}
 local CrusherTimers = {70, 63.6}
 local CrawgName, HexerName, CrusherName = DBM:EJ_GetSectionInfo(18541), DBM:EJ_GetSectionInfo(18540), DBM:EJ_GetSectionInfo(18539)
+
+local updateInfoFrame
+do
+	local lines = {}
+	local sortedLines = {}
+	local function addLine(key, value)
+		-- sort by insertion order
+		lines[key] = value
+		sortedLines[#sortedLines + 1] = key
+	end
+	updateInfoFrame = function()
+		table.wipe(lines)
+		table.wipe(sortedLines)
+		--Boss Powers first
+		for i = 1, 5 do
+			local uId = "boss"..i
+			--Primary Power
+			local currentPower, maxPower = UnitPower(uId), UnitPowerMax(uId)
+			if maxPower and maxPower ~= 0 then
+				if currentPower / maxPower * 100 >= 1 then
+					addLine(UnitName(uId), currentPower)
+				end
+			end
+		end
+		--Player personal checks
+		local spellName3, _, _, _, _, expireTime = DBM:UnitDebuff("player", 276672)
+		if spellName3 and expireTime then--Personal Unleashed Shadow
+			local remaining = expireTime-GetTime()
+			addLine(spellName3, remaining)
+		end
+		local spellName4, _, currentStack = DBM:UnitDebuff("player", 274195)
+		if spellName4 and currentStack then--Personal Corrupted Blood
+			addLine(spellName4, currentStack)
+		end
+		return lines, sortedLines
+	end
+end
 
 function mod:OnCombatStart(delay)
 	DBM:AddMsg("There is no Dana, only Zul")
@@ -117,11 +155,11 @@ function mod:OnCombatStart(delay)
 	timerCallofHexerCD:Start(51.3, 1)--51-54
 	timerCallofCrusherCD:Start(70, 1)--70-73
 	if self.Options.InfoFrame then
-		DBM.InfoFrame:SetHeader(DBM_CORE_INFOFRAME_POWER)
-		DBM.InfoFrame:Show(4, "enemypower", 1)
+		--DBM.InfoFrame:SetHeader(DBM_CORE_INFOFRAME_POWER)
+		DBM.InfoFrame:Show(8, "function", updateInfoFrame, false, false)
 	end
 	table.wipe(unitTracked)
-	if self.Options.NPAuraOnPresence or self.Options.NPAuraOnThrumming or self.Options.NPAuraOnBoundbyShadow or self.Options.NPAuraOnEngorgedBurst then
+	if self.Options.NPAuraOnPresence or self.Options.NPAuraOnThrumming or self.Options.NPAuraOnBoundbyShadow or self.Options.NPAuraOnEngorgedBurst or self.Options.NPAuraOnDecayingFlesh then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 		if self.Options.NPAuraOnEngorgedBurst then
 			self:RegisterOnUpdateHandler(function(self)
@@ -170,7 +208,7 @@ function mod:OnCombatEnd()
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
 	end
-	if self.Options.NPAuraOnPresence or self.Options.NPAuraOnThrumming or self.Options.NPAuraOnBoundbyShadow or self.Options.NPAuraOnEngorgedBurst then
+	if self.Options.NPAuraOnPresence or self.Options.NPAuraOnThrumming or self.Options.NPAuraOnBoundbyShadow or self.Options.NPAuraOnEngorgedBurst or self.Options.NPAuraOnDecayingFlesh then
 		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
 	end
 end
@@ -322,6 +360,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.NPAuraOnBoundbyShadow then
 			DBM.Nameplate:Show(true, args.destGUID, spellId)
 		end
+	elseif spellId == 276434 then--Decaying Flesh
+		if self.Options.NPAuraOnDecayingFlesh then
+			DBM.Nameplate:Show(true, args.destGUID, spellId)
+		end
 	elseif spellId == 274271 then
 		if self:AntiSpam(5, 4) then
 			timerDeathwishCD:Start()
@@ -359,6 +401,10 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif spellId == 273432 then--Bound by Shadow
 		if self.Options.NPAuraOnBoundbyShadow then
+			DBM.Nameplate:Hide(true, args.destGUID, spellId)
+		end
+	elseif spellId == 276434 then--Decaying Flesh
+		if self.Options.NPAuraOnDecayingFlesh then
 			DBM.Nameplate:Hide(true, args.destGUID, spellId)
 		end
 	elseif spellId == 274358 then
