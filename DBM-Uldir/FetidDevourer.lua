@@ -116,9 +116,9 @@ function mod:OnCombatStart(delay)
 	timerThrashCD:Start(6.7-delay)
 	countdownThrash:Start(6.7-delay)
 	if not self:IsEasy() then
-		timerShockwaveStompCD:Start(26.6-delay)
-		timerRottingRegurgCD:Start(42-delay)
-		countdownRottingRegurg:Start(42-delay)
+		timerShockwaveStompCD:Start(26.1-delay)
+		timerRottingRegurgCD:Start(40-delay)
+		countdownRottingRegurg:Start(40-delay)
 	else
 		timerRottingRegurgCD:Start(31.4-delay)
 		countdownRottingRegurg:Start(31.4-delay)
@@ -146,13 +146,18 @@ function mod:SPELL_CAST_START(args)
 		specWarnRottingRegurg:Show()
 		specWarnRottingRegurg:Play("shockwave")
 		if not self:IsEasy() then
-			timerRottingRegurgCD:Start()
-			countdownRottingRegurg:Start()
+			if self:IsMythic() then
+				timerRottingRegurgCD:Start(37)--37
+				countdownRottingRegurg:Start(37)--37
+			else
+				timerRottingRegurgCD:Start()--40
+				countdownRottingRegurg:Start()--40
+			end
 		else
 			timerRottingRegurgCD:Start(30.3)
 			countdownRottingRegurg:Start(30.3)
 		end
-	elseif spellId == 262288 then
+	elseif spellId == 262288 and self:AntiSpam(5, 1) then
 		specWarnShockwaveStomp:Show()
 		specWarnShockwaveStomp:Play("carefly")
 		timerShockwaveStompCD:Start()
@@ -164,10 +169,10 @@ function mod:SPELL_CAST_START(args)
 			DBM.InfoFrame:SetHeader(args.spellName)
 			DBM.InfoFrame:Show(5, "function", updateInfoFrame, false, true)
 		end
-		if self:AntiSpam(10, 1) then
+		if self:AntiSpam(10, 2) then
 			specWarnAdds:Show()
 			specWarnAdds:Play("killmob")
-			if not self:IsEasy() then
+			if self:IsEasy() then
 				timerAddsCD:Start()
 				countdownAdds:Start(54.8)
 			else
@@ -187,7 +192,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		--2.5/3 energy per second, spell every 40/30 seconds there abouts (blizz energy formula still has standard variation)
 		--This basically means every add that's eaten add takes 8/6 seconds off timer
 		local elapsed, total = timerRottingRegurgCD:GetTime()--Grab current timer
-		local adjustAmount = self:IsEasy() and 6 or 8
+		local adjustAmount = self:IsEasy() and 6 or self:IsMythic() and 7.4 or 8
 		elapsed = elapsed + adjustAmount
 		local remaining = total-elapsed
 		countdownRottingRegurg:Cancel()
