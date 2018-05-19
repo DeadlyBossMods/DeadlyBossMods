@@ -855,24 +855,10 @@ function infoFrame:Show(maxLines, event, ...)
 	else
 		maxlines = maxLines or 5
 	end
-	currentEvent = event
 	for i = 1, select("#", ...) do
 		value[i] = select(i, ...)
 	end
 	frame = frame or createFrame()
-
-	if event == "playerbuff" or event == "playerbaddebuff" or event == "playergooddebuff" then
-		sortMethod = 3
-	elseif event == "health" or event == "playerdebuffremaining" then
-		sortMethod = 2	-- Sort lowest first
-	elseif event == "playerdebuffstacks" and value[2] then
-		if type(value[2]) == "number" then
-			sortMethod = value[2]
-		end
-	else
-		sortMethod = 1
-	end
-	
 	--Orders event to use spellID no matter what and not spell name
 	if event:find("byspellid") then
 		event = event:gsub("byspellid", "")--just strip off the byspellid, it served it's purpose, it simply told infoframe to not convert to spellName
@@ -887,14 +873,24 @@ function infoFrame:Show(maxLines, event, ...)
 		--This just determines if we convert the spell input to a spell Name, if a spellId was provided for a non byspellid infoframe
 		value[1] = DBM:GetSpellInfo(value[1])
 	end
-
+	currentEvent = event
+	if event == "playerbuff" or event == "playerbaddebuff" or event == "playergooddebuff" then
+		sortMethod = 3
+	elseif event == "health" or event == "playerdebuffremaining" then
+		sortMethod = 2	-- Sort lowest first
+	elseif event == "playerdebuffstacks" and value[2] then
+		if type(value[2]) == "number" then
+			sortMethod = value[2]
+		end
+	else
+		sortMethod = 1
+	end
 	if events[currentEvent] then
 		events[currentEvent]()
 	else
 		error("DBM-InfoFrame: Unsupported event", 2)
 		return
 	end
-
 	if not friendlyEvents[currentEvent] then
 		twipe(icons)
 	end
