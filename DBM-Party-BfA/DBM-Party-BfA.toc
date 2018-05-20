@@ -34,8 +34,8 @@ Freehold\RingofBooty.lua
 Freehold\HarlanSweete.lua
 Freehold\FreeholdTrash.lua
 KingsRest\GoldenSerpent.lua
-KingsRest\MummificationConstruct.lua
-KingsRest\WarringWarlords.lua
+KingsRest\Mchimba.lua
+KingsRest\CouncilofTribes.lua
 KingsRest\Dazar.lua
 KingsRest\KingsRestTrash.lua
 ShrineoftheStorm\Agusirr.lua
