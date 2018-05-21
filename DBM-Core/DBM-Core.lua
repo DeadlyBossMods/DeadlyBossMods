@@ -7707,6 +7707,7 @@ do
 		["RemoveCurse"] = true,--from ally
 		["MagicDispeller"] = true--from ENEMY, not debuffs on players. use "Healer" for ally magic dispels. ALL healers can do that.
 		["HasInterrupt"] = true,--Has an interrupt that is 24 seconds or less CD that is BASELINE (not a talent)
+		["HasImmunity"] = true,--Has an immunity that can prevent or remove a spell effect (not just one that reduces damage like turtle or dispursion)
 	}]]
 
 	local specRoleTable = {
@@ -7719,6 +7720,7 @@ do
 			["CasterDps"] = true,
 			["MagicDispeller"] = true,
 			["HasInterrupt"] = true,
+			["HasImmunity"] = true,
 		},
 		[65] = {	--Holy Paladin
 			["Healer"] = true,
@@ -7728,6 +7730,7 @@ do
 			["RaidCooldown"] = true,--Devotion Aura
 			["RemovePoison"] = true,
 			["RemoveDisease"] = true,
+			["HasImmunity"] = true,
 		},
 		[66] = {	--Protection Paladin
 			["Tank"] = true,
@@ -7737,6 +7740,7 @@ do
 			["RemovePoison"] = true,
 			["RemoveDisease"] = true,
 			["HasInterrupt"] = true,
+			["HasImmunity"] = true,
 		},
 		[70] = {	--Retribution Paladin
 			["Dps"] = true,
@@ -7747,6 +7751,7 @@ do
 			["RemovePoison"] = true,
 			["RemoveDisease"] = true,
 			["HasInterrupt"] = true,
+			["HasImmunity"] = true,
 		},
 		[71] = {	--Arms Warrior
 			["Dps"] = true,
@@ -7851,6 +7856,7 @@ do
 			["MeleeDps"] = true,
 			["Physical"] = true,
 			["HasInterrupt"] = true,
+			["HasImmunity"] = true,
 		},
 		[262] = {	--Elemental Shaman
 			["Dps"] = true,
