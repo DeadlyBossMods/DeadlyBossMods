@@ -53,8 +53,7 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 262004 then
 		timerCrushingSlamCD:Start()
 		if UnitExists("target") then
-			local tanking, status = UnitDetailedThreatSituation("player", "target")
-			if tanking or (status == 3) then--Player is current target
+			if self:IsTanking("player", "target", nil, true) then
 				specWarnCrushingSlam:Show()
 				specWarnCrushingSlam:Play("defensive")
 			end

@@ -106,8 +106,7 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 273282 then
-		local tanking, status = UnitDetailedThreatSituation("player", "boss1")
-		if not (tanking or (status == 3)) and DBM:UnitDebuff("player", 274693) then
+		if not self:IsTanking("player", "boss1", nil, true) and DBM:UnitDebuff("player", 274693) then
 			specWarnEssenceShearDodge:Show()
 			specWarnEssenceShearDodge:Play("shockwave")
 		end

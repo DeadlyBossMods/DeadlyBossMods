@@ -252,7 +252,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		updateAllAtriganTimers(self, 16, true)
 		for i = 1, 2 do
 			local bossUnitID = "boss"..i
-			if UnitExists(bossUnitID) and UnitGUID(bossUnitID) == args.sourceGUID and UnitDetailedThreatSituation("player", bossUnitID) then--We are highest threat target
+			if UnitExists(bossUnitID) and UnitGUID(bossUnitID) == args.sourceGUID and self:IsTanking("player", bossUnitID, nil, true) then--We are highest threat target
 				specWarnBoneSawMelee:Schedule(2, "keepmove")--The active tank doesn't just run out, they keep kiting
 				break
 			end

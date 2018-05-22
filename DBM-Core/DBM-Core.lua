@@ -8133,7 +8133,7 @@ function bossModPrototype:IsHealer(uId)
 	end
 end
 
-function bossModPrototype:IsTanking(unit, boss, isName)
+function bossModPrototype:IsTanking(unit, boss, isName, onlyRequested)
 	if isName then--Passed combat log name, so pull unit ID
 		unit = DBM:GetRaidUnitId(unit)
 	end
@@ -8142,27 +8142,29 @@ function bossModPrototype:IsTanking(unit, boss, isName)
 		return false
 	end
 	--Prefer threat target first
-	if boss and UnitExists(boss) then--Only checking one bossID as requested
+	if boss then--Only checking one bossID as requested
 		local tanking, status = UnitDetailedThreatSituation(unit, boss)
 		if tanking or (status == 3) then
 			return true
 		end
 	else--Check all of them if one isn't defined
 		for i = 1, 5 do
-			if UnitExists("boss"..i) then
+			--if UnitExists("boss"..i) then
 				local tanking, status = UnitDetailedThreatSituation(unit, "boss"..i)
 				if tanking or (status == 3) then
 					return true
 				end
-			end
+			--end
 		end
 	end
-	--Use these as fallback if threat target not found
-	if GetPartyAssignment("MAINTANK", unit, 1) then
-		return true
-	end
-	if UnitGroupRolesAssigned(unit) == "TANK" then
-		return true
+	if not onlyRequested then
+		--Use these as fallback if threat target not found
+		if GetPartyAssignment("MAINTANK", unit, 1) then
+			return true
+		end
+		if UnitGroupRolesAssigned(unit) == "TANK" then
+			return true
+		end
 	end
 	return false
 end

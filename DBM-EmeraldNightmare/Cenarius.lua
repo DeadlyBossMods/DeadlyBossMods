@@ -161,8 +161,7 @@ function mod:SPELL_CAST_START(args)
 		timerSpearOfNightmaresCD:Start()
 		countdownSpearOfNightmares:Start(18.2)
 		local targetName, uId, bossuid = self:GetBossTarget(104636, true)
-		local tanking, status = UnitDetailedThreatSituation("player", bossuid)
-		if tanking or (status == 3) then--Player is current target
+		if self:IsTanking("player", bossuid, nil, true) then
 			specWarnSpearOfNightmares:Show()
 			specWarnSpearOfNightmares:Play("defensive")
 		end
@@ -174,8 +173,7 @@ function mod:SPELL_CAST_START(args)
 		timerNightmareBlastCD:Start()
 		countdownNightmareBlast:Start(32.8)
 		local targetName, uId, bossuid = self:GetBossTarget(104636, true)
-		local tanking, status = UnitDetailedThreatSituation("player", bossuid)
-		if tanking or (status == 3) then--Player is current target
+		if self:IsTanking("player", bossuid, nil, true) then
 			specWarnNightmareBlast:Show()
 			specWarnNightmareBlast:Play("defensive")
 		else

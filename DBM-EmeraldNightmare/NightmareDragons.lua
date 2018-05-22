@@ -236,8 +236,7 @@ function mod:SPELL_CAST_START(args)
 			DBM:Debug("GetBossTarget failed, no bossuid")
 			return
 		end
-		local tanking, status = UnitDetailedThreatSituation("player", bossuid)
-		if tanking or (status == 3) then--Player is current target
+		if self:IsTanking("player", bossuid, nil, true) then
 			warnBreath:Show()
 		end
 		if args:GetSrcCreatureID() ~= 103145 then--Filter shades
