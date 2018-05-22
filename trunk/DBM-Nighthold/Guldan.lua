@@ -332,8 +332,7 @@ function mod:SPELL_CAST_START(args)
 			timerShatterEssenceCD:Start()
 		end
 		local targetName, uId, bossuid = self:GetBossTarget(104537)--Add true if it has a boss unitID
-		local tanking, status = UnitDetailedThreatSituation("player", bossuid)
-		if tanking or (status == 3) then--Player is current target
+		if self:IsTanking("player", bossuid, nil, true) then--Player is current target
 			specWarnShatterEssence:Show()
 			specWarnShatterEssence:Play("defensive")
 		end
@@ -350,8 +349,7 @@ function mod:SPELL_CAST_START(args)
 			timerSoulVortexCD:Start(21)
 		else
 			local targetName, uId, bossuid = self:GetBossTarget(104534, true)
-			local tanking, status = UnitDetailedThreatSituation("player", bossuid)
-			if tanking or (status == 3) then--Player is current target
+			if self:IsTanking("player", bossuid, nil, true) then--Player is current target
 				specWarnSoulVortex:Show()
 				specWarnSoulVortex:Play("runout")
 				yellSoulVortex:Yell()
@@ -413,8 +411,7 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 206222 or spellId == 206221 then
 		table.wipe(bondsIcons)
-		local tanking, status = UnitDetailedThreatSituation("player", "boss1")
-		if tanking or (status == 3) then
+		if self:IsTanking("player", "boss1", nil, true) then
 			if spellId == 206221 then
 				specWarnBondsofFel:Play("carefly")
 			end
@@ -565,7 +562,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellBondsofFel:Yell(count, count, count)
 		else
 			local uId = DBM:GetRaidUnitId(name)
-			if self:IsTanking(uId, "boss1") and not UnitDetailedThreatSituation("player", "boss1") then
+			if self:IsTank() and not self:IsTanking("player", "boss1", nil, true) then
 				--secondary warning, in case first one didn't go through
 				if self:AntiSpam(5, name) then
 					specWarnBondsofFelTank:Show(name)

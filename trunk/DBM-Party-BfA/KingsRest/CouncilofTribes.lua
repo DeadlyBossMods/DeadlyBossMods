@@ -52,13 +52,13 @@ local function whoDat(self)
 		if UnitExists(bossUID) then--if they are in Urn they won't exist.
 			local cid = self:GetUnitCreatureId(bossUID)
 			if cid == 135475 then -- Kula the Butcher
-				timerWhirlingAxesCD:Start(1-delay)
+				timerWhirlingAxesCD:Start(1)
 			elseif cid == 135470 then -- Aka'ali the Conqueror
-				timerBarrelThroughCD:Start(1-delay)
-				timerDebilitatingBackhandCD:Start(1-delay)
+				timerBarrelThroughCD:Start(1)
+				timerDebilitatingBackhandCD:Start(1)
 			elseif cid == 135472 then -- Zanazal the Wise
-				timerPoisonNovaCD:Start(1-delay)
-				timerTotemsCD:Start(1-delay)
+				timerPoisonNovaCD:Start(1)
+				timerTotemsCD:Start(1)
 			end
 		end
 	end
