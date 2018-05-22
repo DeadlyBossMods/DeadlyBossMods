@@ -94,7 +94,7 @@ local yellParasiticWoundFades		= mod:NewFadesYell(206847, 36469)
 --local specWarnShearedSoul			= mod:NewSpecialWarningYou(206458, nil, nil, nil, 1)
 local specWarnSoulsever				= mod:NewSpecialWarningCount(220957, nil, nil, nil, 3, 2)--Needs voice, but what?
 local specWarnVisionsofDarkTitan	= mod:NewSpecialWarningMoveTo(227008, nil, nil, nil, 3, 7)
-local specWarnSummonNightorb		= mod:NewSpecialWarningSwitchCount(227283, "-Healer", nil, nil, 1, 2)
+local specWarnSummonNightorb		= mod:NewSpecialWarningCount(227283, "Dps", nil, nil, 1, 2)
 --Shard
 local specWarnManifestAzzinoth		= mod:NewSpecialWarningSwitchCount(221149, "-Healer", nil, nil, 1, 2)
 local specWarnBulwarkofAzzinoth		= mod:NewSpecialWarningSpell(221408, nil, nil, nil, 1)--Needs voice, but what?
@@ -888,7 +888,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	elseif spellId == 227283 then -- Nightorb
 		self.vb.orbCastCount = self.vb.orbCastCount + 1
 		specWarnSummonNightorb:Show(self.vb.orbCastCount)
-		specWarnSummonNightorb:Play("killmob")
+		specWarnSummonNightorb:Play("mobsoon")
 		if self.vb.orbCastCount ~= 4 then
 			if self.vb.orbCastCount == 2 then
 				timerSummonNightorbCD:Start(60, self.vb.orbCastCount+1)
