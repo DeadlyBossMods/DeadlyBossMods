@@ -67,8 +67,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnSerpentine:Show()
 		specWarnSerpentine:Play("justrun")
 	elseif spellId == 265910 then
-		local tanking, status = UnitDetailedThreatSituation("player", "boss1")
-		if tanking or (status == 3) then
+		if self:IsTanking("player", "boss1", nil, true) then
 			specWarnTailThrash:Show()
 			specWarnTailThrash:Play("defensive")
 		end

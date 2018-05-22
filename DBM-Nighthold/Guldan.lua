@@ -436,8 +436,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 220957 then
 		self.vb.severCastCount = self.vb.severCastCount + 1
 		local _, _, bossuid = self:GetBossTarget(111022, true)
-		local tanking, status = UnitDetailedThreatSituation("player", bossuid)
-		if tanking or (status == 3) then--Player is current target
+		if self:IsTanking("player", bossuid, nil, true) then
 			specWarnSoulsever:Show(self.vb.severCastCount)
 			specWarnSoulsever:Play("defensive")
 		end

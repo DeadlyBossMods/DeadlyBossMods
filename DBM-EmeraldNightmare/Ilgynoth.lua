@@ -474,7 +474,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		--Hopefully this has a boss unitID
 		for i = 1, 5 do
 			local bossUnitID = "boss"..i
-			if UnitExists(bossUnitID) and UnitGUID(bossUnitID) == args.sourceGUID and UnitDetailedThreatSituation("player", bossUnitID) then--We are highest threat target
+			if UnitExists(bossUnitID) and UnitGUID(bossUnitID) == args.sourceGUID and self:IsTanking("player", bossUnitID, nil, true) then--We are highest threat target
 				specWarnNightmarishFury:Show()
 				specWarnNightmarishFury:Play("defensive")
 				break

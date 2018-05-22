@@ -235,8 +235,7 @@ function mod:SPELL_AURA_REMOVED_DOSE(args)
 	if spellId == 262256 then
 		local amount = args.amount or 0
 		if amount == 1 then
-			local tanking, status = UnitDetailedThreatSituation("player", "boss1")
-			if tanking or (status == 3) then--Not thrash target
+			if self:IsTanking("player", "boss1", nil, true) then
 				warnThrashNotTanking:Show()
 			else
 				specWarnThrash:Show()

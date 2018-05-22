@@ -275,7 +275,7 @@ function mod:SPELL_AURA_APPLIED(args)
 					for i = 1, 5 do
 						--Check if tanking a big add
 						local bossUnitID = "boss"..i
-						if UnitExists(bossUnitID) and UnitDetailedThreatSituation("player", bossUnitID) and self:GetCIDFromGUID(UnitGUID(bossUnitID)) == 103695 then
+						if UnitExists(bossUnitID) and self:IsTanking("player", bossUnitID, nil, true) and self:GetCIDFromGUID(UnitGUID(bossUnitID)) == 103695 then
 							filterWarning = true--Tanking big add, in 3 tank strat means this tank has nothing to do with boss swapping.
 							break
 						end

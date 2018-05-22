@@ -169,8 +169,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 215582 then
 		self.vb.talonsCast = self.vb.talonsCast + 1
 		local targetName, uId, bossuid = self:GetBossTarget(106087, true)
-		local tanking, status = UnitDetailedThreatSituation("player", bossuid)
-		if tanking or (status == 3) then--Player is current target
+		if self:IsTanking("player", bossuid, nil, true) then
 			specWarnRakingTalon:Show()
 			specWarnRakingTalon:Play("defensive")
 		end

@@ -386,8 +386,7 @@ function mod:SPELL_CAST_START(args)
 		end
 		self.vb.foeCount = self.vb.foeCount + 1
 		if self:IsTank() then
-			local tanking, status = UnitDetailedThreatSituation("player", "boss1")
-			if tanking or (status == 3) then--Player is current target
+			if self:IsTanking("player", "boss1", nil, true) then
 				specWarnFoeBreakerDefensive:Show()
 				specWarnFoeBreakerDefensive:Play("defensive")
 			elseif not DBM:UnitDebuff("player", 245458, 255059) and self.vb.foeCount == 2 then
