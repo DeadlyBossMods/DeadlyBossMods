@@ -135,8 +135,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.rendCount = self.vb.rendCount + 1
 		timerRendFleshCD:Start(nil, self.vb.rendCount+1)
 		countdownRendFlesh:Start()
-		local tanking, status = UnitDetailedThreatSituation("player", "boss1")
-		if tanking or (status == 3) then
+		if self:IsTanking("player", "boss1", nil, true) then
 			specWarnRendFlesh:Show()
 			specWarnRendFlesh:Play("defensive")
 		else

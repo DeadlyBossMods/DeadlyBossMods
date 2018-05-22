@@ -94,8 +94,7 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 271296 then
 		timerCudgelOfGoreCD:Start()
 		countdownCudgelofGore:Start()
-		local tanking, status = UnitDetailedThreatSituation("player", "boss1")
-		if tanking or (status == 3) then
+		if self:IsTanking("player", "boss1", nil, true) then
 			specWarnCudgelofGore:Show(bloodStorm)
 			specWarnCudgelofGore:Play("targetyou")--Better voice maybe, or custom voice
 		else

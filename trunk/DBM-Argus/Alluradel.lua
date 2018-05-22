@@ -69,8 +69,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 247544 then
 		local amount = args.amount or 1
 		if (amount >= 12) and self:AntiSpam(4, 4) then--First warning at 12, then spam every 4 seconds above.
-			local tanking, status = UnitDetailedThreatSituation("player", "boss1")
-			if tanking or (status == 3) then
+			if self:IsTanking("player", "boss1", nil, true) then
 				specWarnSadist:Show(amount)
 				specWarnSadist:Play("changemt")
 			else

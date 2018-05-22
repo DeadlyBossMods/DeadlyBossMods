@@ -219,19 +219,15 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 212492 then--Annihilate
 		local targetName, uId, bossuid = self:GetBossTarget(104881, true)
-		local tanking, status = UnitDetailedThreatSituation("player", bossuid)
-		if tanking or (status == 3) then--Player is current target
+		if bossuid and self:IsTanking("player", bossuid, nil, true) then
 			specWarnAnnihilate:Show(self.vb.annihilateCount+1)
 			specWarnAnnihilate:Play("defensive")
 		end
 	elseif spellId == 230504 then
 		local targetName, uId, bossuid = self:GetBossTarget(115905)
-		if bossuid then
-			local tanking, status = UnitDetailedThreatSituation("player", bossuid)
-			if tanking or (status == 3) then--Player is current target
-				specWarnDecimate:Show()
-				specWarnDecimate:Play("carefly")
-			end
+		if bossuid and self:IsTanking("player", bossuid, nil, true) then
+			specWarnDecimate:Show()
+			specWarnDecimate:Play("carefly")
 		end
 		if self.vb.lastPhase == 3 then
 			timerDecimateCD:Start(17)

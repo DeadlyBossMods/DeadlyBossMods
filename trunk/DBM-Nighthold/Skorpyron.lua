@@ -86,8 +86,7 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 204275 and self:AntiSpam(5, 1) then
-		local tanking, status = UnitDetailedThreatSituation("player", "boss1")
-		if tanking or (status == 3) then--Player is current target
+		if self:IsTanking("player", "boss1", nil, true) then
 			specWarnArcanoslash:Show()
 			specWarnArcanoslash:Play("defensive")
 		end
