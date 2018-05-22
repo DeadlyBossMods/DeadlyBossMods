@@ -1149,17 +1149,17 @@ do
 			onLoadCallbacks = nil
 			loadOptions(self)
 			if GetAddOnEnableState(playerName, "VEM-Core") >= 1 then
-				self:Disable()
+				self:Disable(true)
 				C_TimerAfter(15, function() AddMsg(self, DBM_CORE_VEM) end)
 				return
 			end
 			if GetAddOnEnableState(playerName, "DBM-Profiles") >= 1 then
-				self:Disable()
+				self:Disable(true)
 				C_TimerAfter(15, function() AddMsg(self, DBM_CORE_3RDPROFILES) end)
 				return
 			end
 			if GetAddOnEnableState(playerName, "DPMCore") >= 1 then
-				self:Disable()
+				self:Disable(true)
 				C_TimerAfter(15, function() AddMsg(self, DBM_CORE_DPMCORE) end)
 				return
 			end
@@ -4283,14 +4283,14 @@ do
 							if updateNotificationDisplayed < 3 then
 								updateNotificationDisplayed = 3
 								AddMsg(DBM, DBM_CORE_UPDATEREMINDER_DISABLE)
-								DBM:Disable()
+								DBM:Disable(true)
 							end
 						end
 					--Disable if out of date and it's a major patch.
 					elseif not testBuild and dbmToc < wowTOC then
 						updateNotificationDisplayed = 3
 						AddMsg(DBM, DBM_CORE_UPDATEREMINDER_MAJORPATCH)
-						DBM:Disable()
+						DBM:Disable(true)
 					end
 				end
 			end
@@ -4305,7 +4305,7 @@ do
 				if testBuild and revDifference > 5 then
 					updateNotificationDisplayed = 3
 					AddMsg(DBM, DBM_CORE_UPDATEREMINDER_DISABLE)
-					DBM:Disable()
+					DBM:Disable(true)
 				else
 					updateNotificationDisplayed = 2
 					AddMsg(DBM, DBM_CORE_UPDATEREMINDER_HEADER_ALPHA:format(revDifference))
@@ -6767,17 +6767,23 @@ end
 --------------------------
 --  Enable/Disable DBM  --
 --------------------------
-function DBM:Disable()
-	unscheduleAll()
-	dbmIsEnabled = false
-end
+do
+	local forceDisabled = false
+	function DBM:Disable(forceDisable)
+		unscheduleAll()
+		dbmIsEnabled = false
+		forceDisabled = forceDisable
+	end
 
-function DBM:Enable()
-	dbmIsEnabled = true
-end
+	function DBM:Enable()
+		if not forceDisabled then
+			dbmIsEnabled = true
+		end
+	end
 
-function DBM:IsEnabled()
-	return dbmIsEnabled
+	function DBM:IsEnabled()
+		return dbmIsEnabled
+	end
 end
 
 -----------------------
