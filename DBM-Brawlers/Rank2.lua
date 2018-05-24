@@ -16,7 +16,7 @@ mod:RegisterEvents(
 local warnPyroblast				= mod:NewCastAnnounce(33975, 3)--Sanoriak
 local warnFireWall				= mod:NewSpellAnnounce(132666, 4)--Sanoriak
 local warnBoomBroom				= mod:NewSpellAnnounce(236458, 4)--Bill the Janitor
-local warnZenOrb				= mod:NewTargetAnnounce(229884, 1)--Master Paku
+local warnZenOrb				= mod:NewTargetNoFilterAnnounce(229884, 1)--Master Paku
 
 local specWarnFireWall			= mod:NewSpecialWarningSpell(132666)--Sanoriak
 local specWarnBoomBroom			= mod:NewSpecialWarningRun(236458, nil, nil, nil, 4)--Bill the Janitor
