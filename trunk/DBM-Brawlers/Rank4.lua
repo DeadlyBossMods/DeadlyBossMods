@@ -14,7 +14,7 @@ mod:RegisterEvents(
 )
 
 --TODO, stickes stack warning for Aura of Rot
-local warnWaterShield			= mod:NewTargetAnnounce(228981, 1)--Burnstachio
+local warnWaterShield			= mod:NewTargetNoFilterAnnounce(228981, 1)--Burnstachio
 local warnRockets				= mod:NewCastAnnounce(133212, 4)--Max Megablast (GG Engineering)
 
 local timerWaterShield			= mod:NewTargetTimer(15, 228981)--Burnstachio

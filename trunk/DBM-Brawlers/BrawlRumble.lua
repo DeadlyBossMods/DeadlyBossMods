@@ -12,8 +12,8 @@ mod:RegisterEvents(
 
 --Todo, fixates probably switch targets when someone dies, so it's probably not workable to have a Cd timer, maybe a target timer instead?
 --TODO, mind break spellid?
-local warnMooseRun			= mod:NewTargetAnnounce(228855, 4)--Grief Warden
-local warnHippoFixate		= mod:NewTargetAnnounce(229593, 4)--Senya
+local warnMooseRun			= mod:NewTargetNoFilterAnnounce(228855, 4)--Grief Warden
+local warnHippoFixate		= mod:NewTargetNoFilterAnnounce(229593, 4)--Senya
 
 local specWarnMooseRun		= mod:NewSpecialWarningRun(228855)--Grief Warden
 local specWarnHippoFixate	= mod:NewSpecialWarningRun(229593)--Senya
