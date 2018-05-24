@@ -268,9 +268,12 @@ do
 		local currentQueueRank = select(17, DBM:UnitBuff("player", QueuedBuff))
 		if currentQueueRank and currentQueueRank ~= lastRank then
 			lastRank = currentQueueRank
-			warnQueuePosition:Show(currentQueueRank)
-			if currentQueueRank == 1 then
-				specWarnYourNext:Show()
+			if currentQueueRank ~= 0 then
+				if currentQueueRank == 1 then
+					specWarnYourNext:Show()
+				else
+					warnQueuePosition:Show(currentQueueRank)
+				end
 			end
 			if self.Options.SpeakOutQueue then
 				DBM:PlayCountSound(currentQueueRank)
