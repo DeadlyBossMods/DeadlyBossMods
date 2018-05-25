@@ -17,8 +17,8 @@ mod:RegisterEvents(
 local warnWaterShield			= mod:NewTargetNoFilterAnnounce(228981, 1)--Burnstachio
 local warnRockets				= mod:NewCastAnnounce(133212, 4)--Max Megablast (GG Engineering)
 
-local timerWaterShield			= mod:NewTargetTimer(15, 228981)--Burnstachio
-local timerRockets				= mod:NewBuffActiveTimer(9, 133212)--Max Megablast (GG Engineering)
+local timerWaterShield			= mod:NewTargetTimer(15, 228981, nil, nil, nil, 5)--Burnstachio
+local timerRockets				= mod:NewBuffActiveTimer(9, 133212, nil, nil, nil, 3)--Max Megablast (GG Engineering)
 
 local countdownWaterShield		= mod:NewCountdownFades(15, 228981)
 
