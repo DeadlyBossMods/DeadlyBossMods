@@ -25,7 +25,7 @@ local brawlersMod = DBM:GetModByName("Brawlers")
 
 function mod:SPELL_AURA_APPLIED(args)
 	if not brawlersMod.Options.SpectatorMode and not brawlersMod:PlayerFighting() then return end
-	if args.spellId == 228855 then
+	if args.spellId == 228855 and args:IsDestTypePlayer() then
 		--timerMooseRunCD:Start()
 		if args:IsPlayer() then
 			specWarnMooseRun:Show()
