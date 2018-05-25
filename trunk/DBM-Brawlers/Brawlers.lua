@@ -166,7 +166,6 @@ end
 function mod:ZONE_CHANGED_NEW_AREA()
 	currentZoneID = select(8, GetInstanceInfo())
 	if currentZoneID == 369 or currentZoneID == 1043 then
-		QueuedBuff = DBM:GetSpellInfo(132639)
 		playerIsFighting = false
 		currentFighter = nil
 		currentRank = 0
