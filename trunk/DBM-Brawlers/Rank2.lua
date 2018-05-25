@@ -21,9 +21,9 @@ local warnZenOrb				= mod:NewTargetNoFilterAnnounce(229884, 1)--Master Paku
 local specWarnFireWall			= mod:NewSpecialWarningSpell(132666)--Sanoriak
 local specWarnBoomBroom			= mod:NewSpecialWarningRun(236458, nil, nil, nil, 4)--Bill the Janitor
 
-local timerFirewallCD			= mod:NewCDTimer(17, 132666)--Sanoriak
-local timerBoomBoomCD			= mod:NewAITimer(17, 236458)--Bill the Janitor
-local timerZenOrb				= mod:NewTargetTimer(15, 229884)--Master Paku
+local timerFirewallCD			= mod:NewCDTimer(17, 132666, nil, nil, nil, 3)--Sanoriak
+local timerBoomBoomCD			= mod:NewAITimer(17, 236458, nil, nil, nil, 1)--Bill the Janitor
+local timerZenOrb				= mod:NewTargetTimer(15, 229884, nil, nil, nil, 5)--Master Paku
 
 local countdownZenOrb			= mod:NewCountdown(15, 229884)
 
