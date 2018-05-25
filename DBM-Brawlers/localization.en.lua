@@ -28,6 +28,7 @@ L:SetMiscLocalization({
 	Bizmo			= "Bizmo",--Alliance
 	Bazzelflange	= "Boss Bazzelflange",--Horde
 	BizmoIgnored	= "We Don't have all night. Hurry it up already!",
+	BizmoIgnored2	= "Do you smell smoke?",
 	--I wish there was a better way to do this....so much localizing. :(
 	Rank1			= "Rank 1",
 	Rank2			= "Rank 2",

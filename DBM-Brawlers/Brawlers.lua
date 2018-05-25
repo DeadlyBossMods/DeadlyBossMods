@@ -118,7 +118,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 	elseif msg:find(L.Rank10, 1, true) then
 		currentFighter = target
 		currentRank = 10
-	elseif currentFighter and (target == currentFighter) and not (msg:find(L.BizmoIgnored) or msg == L.BizmoIgnored) then--He's targeting current fighter but it's not a match begin yell, the only other time this happens is on match end.
+	elseif currentFighter and (target == currentFighter) and not (msg:find(L.BizmoIgnored) or msg == L.BizmoIgnored or msg:find(L.BizmoIgnored2) or msg == L.BizmoIgnored2) then--He's targeting current fighter but it's not a match begin yell, the only other time this happens is on match end.
 		self:SendSync("MatchEnd")
 		isMatchBegin = false
 	else
