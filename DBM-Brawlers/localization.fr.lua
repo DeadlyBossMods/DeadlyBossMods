@@ -14,13 +14,13 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warnQueuePosition	= "Vous êtes %d dans la file",
+	warnQueuePosition2	= "Vous êtes %d dans la file",
 	specWarnYourNext	= "Vous êtes le prochain !",
 	specWarnYourTurn	= "C'est à votre tour !"
 })
 
 L:SetOptionLocalization({
-	warnQueuePosition	= "Annoncer votre place dans la file à chaque changement",
+	warnQueuePosition2	= "Annoncer votre place dans la file à chaque changement",
 	specWarnYourNext	= "Afficher une alerte spéciale quand vous êtes le prochain",
 	specWarnYourTurn	= "Alerte spéciale quand c'est à vous de combattre",
 	SpectatorMode		= "Voir les alertes/délais lorsque vous êtes en mode spectateur<br/>(Les \"Alerte spécial\" personnelle, ne sont pas affichées aux spectateurs)",
