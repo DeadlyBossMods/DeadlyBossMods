@@ -31,7 +31,7 @@ local timerSwiftnessWardCD			= mod:NewCDTimer(36.4, 267891, nil, nil, nil, 5)--M
 local timerHinderingCleaveCD		= mod:NewCDTimer(17, 267899, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 
 --mod:AddRangeFrameOption(5, 194966)
-mod:AddInfoFrameOption(267905, true)
+--mod:AddInfoFrameOption(267905, true)
 
 mod.vb.interruptCount = 0
 
@@ -40,19 +40,19 @@ function mod:OnCombatStart(delay)
 	timerHinderingCleaveCD:Start(5.8-delay)
 	timerSwiftnessWardCD:Start(16.7-delay)
 	timerReinforcingWardCD:Start(30.1-delay)
-	if self.Options.InfoFrame then
-		DBM.InfoFrame:SetHeader(DBM_CORE_INFOFRAME_POWER)
-		DBM.InfoFrame:Show(3, "enemypower", 2)
-	end
+--	if self.Options.InfoFrame then
+--		DBM.InfoFrame:SetHeader(DBM_CORE_INFOFRAME_POWER)
+--		DBM.InfoFrame:Show(3, "enemypower", 2)
+--	end
 end
 
 function mod:OnCombatEnd()
 --	if self.Options.RangeFrame then
 --		DBM.RangeCheck:Hide()
 --	end
-	if self.Options.InfoFrame then
-		DBM.InfoFrame:Hide()
-	end
+--	if self.Options.InfoFrame then
+--		DBM.InfoFrame:Hide()
+--	end
 end
 
 --[[
