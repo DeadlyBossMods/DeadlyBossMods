@@ -15,7 +15,7 @@ local warnShotgunRoar			= mod:NewCastAnnounce(234489, 3)--Oso
 
 local specWarnShotgunRoar		= mod:NewSpecialWarningDodge(234489)--Oso
 
-local timerShotgunRoarCD		= mod:NewAITimer(17, 234489, nil, nil, nil, 3)--Oso
+local timerShotgunRoarCD		= mod:NewCDTimer(11, 234489, nil, nil, nil, 3)--Oso
 
 local brawlersMod = DBM:GetModByName("Brawlers")
 

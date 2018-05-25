@@ -12,13 +12,13 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warnQueuePosition	= "Ваша позиция в очереди: %d",
+	warnQueuePosition2	= "Ваша позиция в очереди: %d",
 	specWarnYourNext	= "Вы следующие!",
 	specWarnYourTurn	= "Ваш выход!"
 })
 
 L:SetOptionLocalization({
-	warnQueuePosition	= "Показывать вашу текущию позицию в очереди",
+	warnQueuePosition2	= "Показывать вашу текущию позицию в очереди",
 	specWarnYourNext	= "Спец-предупреждение, когда подходит ваша очередь сражаться",
 	specWarnYourTurn	= "Спец-предупреждение о начале вашего боя",
 	SpectatorMode		= "Отображать предупреждения/таймеры во время просмотра боев<br/>(Персональные 'спец-предупреждения' зрителям не отображаются)",

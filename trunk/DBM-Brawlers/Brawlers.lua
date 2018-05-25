@@ -11,12 +11,12 @@ mod:RegisterEvents(
 	"CHAT_MSG_MONSTER_YELL"
 )
 
-local warnQueuePosition		= mod:NewAnnounce("warnQueuePosition", 2, 132639, false)
+local warnQueuePosition		= mod:NewAnnounce("warnQueuePosition2", 2, 132639, true)
 local warnOrgPortal			= mod:NewCastAnnounce(135385, 1)--These are rare casts and linked to achievement.
 local warnStormPortal		= mod:NewCastAnnounce(135386, 1)--So warn for them being cast
 
-local specWarnOrgPortal		= mod:NewSpecialWarningSpell(135385)
-local specWarnStormPortal	= mod:NewSpecialWarningSpell(135386)
+local specWarnOrgPortal		= mod:NewSpecialWarningSpell(135385, nil, nil, nil, 1, 7)
+local specWarnStormPortal	= mod:NewSpecialWarningSpell(135386, nil, nil, nil, 1, 7)
 local specWarnYourNext		= mod:NewSpecialWarning("specWarnYourNext")
 local specWarnYourTurn		= mod:NewSpecialWarning("specWarnYourTurn")
 
@@ -73,12 +73,14 @@ function mod:SPELL_CAST_START(args)
 	if args.spellId == 135385 then
 		if not playerIsFighting then--Do not distract player in arena with special warning
 			specWarnOrgPortal:Show()
+			specWarnOrgPortal:Play("newportal")
 		else
 			warnOrgPortal:Show()
 		end
 	elseif args.spellId == 135386 then
 		if not playerIsFighting then--Do not distract player in arena with special warning
 			specWarnStormPortal:Show()
+			specWarnStormPortal:Play("newportal")
 		else
 			warnStormPortal:Show()
 		end
@@ -118,7 +120,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 	elseif msg:find(L.Rank10, 1, true) then
 		currentFighter = target
 		currentRank = 10
-	elseif currentFighter and (target == currentFighter) and not (msg:find(L.BizmoIgnored) or msg == L.BizmoIgnored or msg:find(L.BizmoIgnored2) or msg == L.BizmoIgnored2) then--He's targeting current fighter but it's not a match begin yell, the only other time this happens is on match end.
+	elseif currentFighter and (target == currentFighter) and not (msg:find(L.BizmoIgnored) or msg == L.BizmoIgnored or msg:find(L.BizmoIgnored2) or msg == L.BizmoIgnored2 or msg:find(L.BizmoIgnored3) or msg == L.BizmoIgnored3) then--He's targeting current fighter but it's not a match begin yell, the only other time this happens is on match end.
 		self:SendSync("MatchEnd")
 		isMatchBegin = false
 	else

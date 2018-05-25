@@ -18,8 +18,8 @@ local warnFireWall				= mod:NewSpellAnnounce(132666, 4)--Sanoriak
 local warnBoomBroom				= mod:NewSpellAnnounce(236458, 4)--Bill the Janitor
 local warnZenOrb				= mod:NewTargetNoFilterAnnounce(229884, 1)--Master Paku
 
-local specWarnFireWall			= mod:NewSpecialWarningSpell(132666)--Sanoriak
-local specWarnBoomBroom			= mod:NewSpecialWarningRun(236458, nil, nil, nil, 4)--Bill the Janitor
+local specWarnFireWall			= mod:NewSpecialWarningSpell(132666, nil, nil, nil, 2, 2)--Sanoriak
+local specWarnBoomBroom			= mod:NewSpecialWarningRun(236458, nil, nil, nil, 4, 2)--Bill the Janitor
 
 local timerFirewallCD			= mod:NewCDTimer(17, 132666, nil, nil, nil, 3)--Sanoriak
 local timerBoomBoomCD			= mod:NewAITimer(17, 236458, nil, nil, nil, 1)--Bill the Janitor
@@ -37,6 +37,7 @@ function mod:SPELL_CAST_START(args)
 		timerFirewallCD:Start()--First one is 5 seconds after combat start
 		if brawlersMod:PlayerFighting() then
 			specWarnFireWall:Show()
+			specWarnFireWall:Play("watchstep")
 		else
 			warnFireWall:Show()
 		end
@@ -71,6 +72,7 @@ function mod:SPELL_SUMMON(args)
 		timerBoomBoomCD:Start()
 		if brawlersMod:PlayerFighting() then--Only give special warnings if you're in arena though.
 			specWarnBoomBroom:Show()
+			specWarnBoomBroom:Play("justrun")
 		else
 			warnBoomBroom:Show()
 		end

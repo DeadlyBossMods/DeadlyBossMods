@@ -11,13 +11,13 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warnQueuePosition	= "대기 순번 %d번 입니다",
+	warnQueuePosition2	= "대기 순번 %d번 입니다",
 	specWarnYourNext	= "다음이 당신 차례입니다!",
 	specWarnYourTurn	= "당신 차례입니다!"
 })
 
 L:SetOptionLocalization({
-	warnQueuePosition	= "대기 순번 변경시 몇번째 대기열에 있는지 알림 보기",
+	warnQueuePosition2	= "대기 순번 변경시 몇번째 대기열에 있는지 알림 보기",
 	specWarnYourNext	= "다음 차례일 때 특수 경고 보기",
 	specWarnYourTurn	= "당신 차례가 되면 특수 경고 보기",
 	SpectatorMode		= "관전할때도 경고/타이머 바 보기<br/>(개인별로 나오는 '특수 경고' 메시지는 관전자에겐 보이지 않습니다)",
