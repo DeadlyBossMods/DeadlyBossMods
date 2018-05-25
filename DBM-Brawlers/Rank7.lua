@@ -17,9 +17,9 @@ local warnSpitAcid				= mod:NewSpellAnnounce(141013, 4)--Nibbleh
 local warnBlueCrush				= mod:NewSpellAnnounce(133262, 4)--Epicus Maximus
 local warnDestructolaser		= mod:NewSpellAnnounce(133250, 4)--Epicus Maximus
 
-local specWarnSpitAcid			= mod:NewSpecialWarningSpell(141013)--Nibbleh
-local specWarnBlueCrush			= mod:NewSpecialWarningInterrupt(133262)--Epicus Maximus
-local specWarnDestructolaser	= mod:NewSpecialWarningMove(133250)--Epicus Maximus
+local specWarnSpitAcid			= mod:NewSpecialWarningSpell(141013, nil, nil, nil, 1, 2)--Nibbleh
+local specWarnBlueCrush			= mod:NewSpecialWarningInterrupt(133262, nil, nil, nil, 1, 2)--Epicus Maximus
+local specWarnDestructolaser	= mod:NewSpecialWarningMove(133250, nil, nil, nil, 2, 1)--Epicus Maximus
 
 local timerSpitAcidCD			= mod:NewNextTimer(20, 141013)--Nibbleh
 local timerBlueCrushCD			= mod:NewCDTimer(21.9, 133262, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)--Epicus Maximus
@@ -33,6 +33,7 @@ function mod:SPELL_CAST_START(args)
 		timerBlueCrushCD:Start()
 		if brawlersMod:PlayerFighting() then
 			specWarnBlueCrush:Show(args.sourceName)
+			specWarnBlueCrush:Play("kickcast")
 		else
 			warnBlueCrush:Show()
 		end
@@ -45,6 +46,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerDestructolaserCD:Start()
 		if brawlersMod:PlayerFighting() then
 			specWarnDestructolaser:Show()
+			specWarnDestructolaser:Play("watchstep")
 		else
 			warnDestructolaser:Show()
 		end
@@ -52,6 +54,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerSpitAcidCD:Start()
 		if brawlersMod:PlayerFighting() then
 			specWarnSpitAcid:Show()
+			specWarnSpitAcid:Play("watchstep")
 		else
 			warnSpitAcid:Show()
 		end

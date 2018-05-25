@@ -11,13 +11,13 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warnQueuePosition	= "Estás en el puesto %d de la cola",
+	warnQueuePosition2	= "Estás en el puesto %d de la cola",
 	specWarnYourNext	= "¡Te toca el siguiente!",
 	specWarnYourTurn	= "¡Te toca!"
 })
 
 L:SetOptionLocalization({
-	warnQueuePosition	= "Anunciar tu puesto en la cola cada vez que cambie",
+	warnQueuePosition2	= "Anunciar tu puesto en la cola cada vez que cambie",
 	specWarnYourNext	= "Mostrar aviso especial cuando seas el primero en cola",
 	specWarnYourTurn	= "Mostrar aviso especial cuando sea tu turno",
 	SpectatorMode		= "Mostrar avisos y temporizadores al espectar combates (tus avisos especiales personales no se mostrarán a los espectadores)",

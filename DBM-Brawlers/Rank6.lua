@@ -13,8 +13,8 @@ mod:RegisterEvents(
 local warnPolymorph			= mod:NewSpellAnnounce(133362, 4)--Millie Watt
 local warnDinoDash			= mod:NewSpellAnnounce(232252, 4)--Topps
 
-local specWarnPolymorph		= mod:NewSpecialWarningSpell(133362)--Millie Watt
-local specWarnDinoDash		= mod:NewSpecialWarningDodge(232252)--Millie Watt
+local specWarnPolymorph		= mod:NewSpecialWarningSpell(133362, nil, nil, nil, 1, 2)--Millie Watt
+local specWarnDinoDash		= mod:NewSpecialWarningDodge(232252, nil, nil, nil, 1, 2)--Millie Watt
 
 local timerPolymorphCD		= mod:NewCDTimer(35, 133362, nil, nil, nil, 3)--Millie Watt
 
@@ -26,12 +26,14 @@ function mod:SPELL_CAST_START(args)
 		timerPolymorphCD:Start()
 		if brawlersMod:PlayerFighting() then
 			specWarnPolymorph:Show()
+			specWarnPolymorph:Play("targetyou")
 		else
 			warnPolymorph:Show()
 		end
 	elseif args.spellId == 232252 then
 		if brawlersMod:PlayerFighting() then
 			specWarnDinoDash:Show()
+			specWarnDinoDash:Play("chargemove")
 		else
 			warnDinoDash:Show()
 		end

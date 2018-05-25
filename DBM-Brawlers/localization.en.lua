@@ -10,13 +10,13 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warnQueuePosition	= "You're %d in queue",
+	warnQueuePosition2	= "You're %d in queue",
 	specWarnYourNext	= "You're next!",
 	specWarnYourTurn	= "You're up!"
 })
 
 L:SetOptionLocalization({
-	warnQueuePosition	= "Announce your current position in queue whenever it changes",
+	warnQueuePosition2	= "Announce your current position in queue whenever it changes",
 	specWarnYourNext	= "Show special warning when you're next in line",
 	specWarnYourTurn	= "Show special warning when it's your match",
 	SpectatorMode		= "Show warnings/timers when spectating fights<br/>(Personal 'Special Warning' messages not shown to spectators)",
@@ -29,6 +29,7 @@ L:SetMiscLocalization({
 	Bazzelflange	= "Boss Bazzelflange",--Horde
 	BizmoIgnored	= "We Don't have all night. Hurry it up already!",
 	BizmoIgnored2	= "Do you smell smoke?",
+	BizmoIgnored3	= "I think it's about time to call this fight.",
 	--I wish there was a better way to do this....so much localizing. :(
 	Rank1			= "Rank 1",
 	Rank2			= "Rank 2",
