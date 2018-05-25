@@ -30,6 +30,7 @@ L:SetMiscLocalization({
 	BizmoIgnored	= "We Don't have all night. Hurry it up already!",
 	BizmoIgnored2	= "Do you smell smoke?",
 	BizmoIgnored3	= "I think it's about time to call this fight.",
+	BizmoIgnored4	= "Is it getting hot in here? Or is it just me?",
 	--I wish there was a better way to do this....so much localizing. :(
 	Rank1			= "Rank 1",
 	Rank2			= "Rank 2",

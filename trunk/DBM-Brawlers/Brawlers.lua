@@ -120,7 +120,8 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 	elseif msg:find(L.Rank10, 1, true) then
 		currentFighter = target
 		currentRank = 10
-	elseif currentFighter and (target == currentFighter) and not (msg:find(L.BizmoIgnored) or msg == L.BizmoIgnored or msg:find(L.BizmoIgnored2) or msg == L.BizmoIgnored2 or msg:find(L.BizmoIgnored3) or msg == L.BizmoIgnored3) then--He's targeting current fighter but it's not a match begin yell, the only other time this happens is on match end.
+	--He's targeting current fighter but it's not a match begin yell, the only other time this happens is on match end and 10 second pre berserk warning. This tries to filter pre berserk warnings then pass match end
+	elseif currentFighter and (target == currentFighter) and not (msg:find(L.BizmoIgnored) or msg == L.BizmoIgnored or msg:find(L.BizmoIgnored2) or msg == L.BizmoIgnored2 or msg:find(L.BizmoIgnored3) or msg == L.BizmoIgnored3 or msg:find(L.BizmoIgnored4) or msg == L.BizmoIgnored4) then
 		self:SendSync("MatchEnd")
 		isMatchBegin = false
 	else
@@ -173,7 +174,7 @@ function mod:ZONE_CHANGED_NEW_AREA()
 		modsStopped = false
 		eventsRegistered = true
 		self:RegisterShortTermEvents(
-			"SPELL_CAST_START",
+			"SPELL_CAST_START 135385 135386",
 			"PLAYER_REGEN_ENABLED",
 			"UNIT_DIED",
 			"UNIT_AURA player"
@@ -224,7 +225,7 @@ function mod:OnSync(msg)
 		if not eventsRegistered then
 			eventsRegistered = true
 			self:RegisterShortTermEvents(
-				"SPELL_CAST_START",
+				"SPELL_CAST_START 135385 135386",
 				"PLAYER_REGEN_ENABLED",
 				"UNIT_DIED",
 				"UNIT_AURA player"
