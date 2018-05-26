@@ -12,6 +12,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 --	"SPELL_AURA_APPLIED",
 	"SPELL_CAST_START 267818 267905 267891 267899",
+	"SPELL_CAST_SUCCESS 267901",
 	"UNIT_DIED"
 )
 
@@ -23,12 +24,14 @@ local specWarnSwiftnessWardT		= mod:NewSpecialWarningMove(267891, nil, nil, nil,
 local specWarnSwiftnessWard			= mod:NewSpecialWarningMoveTo(267891, nil, nil, nil, 1, 2)
 local specWarnSlicingBlast			= mod:NewSpecialWarningInterruptCount(267818, "HasInterrupt", nil, nil, 1, 2)
 local specWarnHinderingCleave		= mod:NewSpecialWarningDefensive(267899, "Tank", nil, nil, 1, 2)
+local specWarnBlessingofIronsides	= mod:NewSpecialWarningRun(267901, nil, nil, nil, 4, 2)
 --local yellSwirlingScythe			= mod:NewYell(195254)
 --local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
 
 local timerReinforcingWardCD		= mod:NewCDTimer(30.3, 267905, nil, nil, nil, 5, nil, DBM_CORE_IMPORTANT_ICON)
 local timerSwiftnessWardCD			= mod:NewCDTimer(36.4, 267891, nil, nil, nil, 5)--More data needed
 local timerHinderingCleaveCD		= mod:NewCDTimer(17, 267899, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerBlessingofIronsidesCD	= mod:NewAITimer(17, 267901, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 
 --mod:AddRangeFrameOption(5, 194966)
 --mod:AddInfoFrameOption(267905, true)
@@ -40,6 +43,7 @@ function mod:OnCombatStart(delay)
 	timerHinderingCleaveCD:Start(5.8-delay)
 	timerSwiftnessWardCD:Start(16.7-delay)
 	timerReinforcingWardCD:Start(30.1-delay)
+	timerBlessingofIronsidesCD:Start(1-delay)
 --	if self.Options.InfoFrame then
 --		DBM.InfoFrame:SetHeader(DBM_CORE_INFOFRAME_POWER)
 --		DBM.InfoFrame:Show(3, "enemypower", 2)
@@ -101,6 +105,15 @@ function mod:SPELL_CAST_START(args)
 		specWarnHinderingCleave:Show()
 		specWarnHinderingCleave:Play("defensive")
 		timerHinderingCleaveCD:Start()
+	end
+end
+
+function mod:SPELL_CAST_SUCCESS(args)
+	local spellId = args.spellId
+	if spellId == 267901 then
+		specWarnBlessingofIronsides:Show()
+		specWarnBlessingofIronsides:Play("justrun")
+		timerBlessingofIronsidesCD:Start()
 	end
 end
 
