@@ -30,7 +30,7 @@ local specWarnBlessingofIronsides	= mod:NewSpecialWarningRun(267901, nil, nil, n
 
 local timerReinforcingWardCD		= mod:NewCDTimer(30.3, 267905, nil, nil, nil, 5, nil, DBM_CORE_IMPORTANT_ICON)
 local timerSwiftnessWardCD			= mod:NewCDTimer(36.4, 267891, nil, nil, nil, 5)--More data needed
-local timerHinderingCleaveCD		= mod:NewCDTimer(17, 267899, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerHinderingCleaveCD		= mod:NewCDTimer(17, 267899, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerBlessingofIronsidesCD	= mod:NewAITimer(17, 267901, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 
 --mod:AddRangeFrameOption(5, 194966)
