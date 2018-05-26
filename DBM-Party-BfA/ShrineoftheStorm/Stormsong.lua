@@ -24,6 +24,7 @@ local specWarnVoidBolt				= mod:NewSpecialWarningInterruptCount(268347, "HasInte
 local specWarnMindRend				= mod:NewSpecialWarningDispel(268896, "Healer", nil, nil, 1, 2)
 local specWarnWakentheVoid			= mod:NewSpecialWarningDodge(269097, nil, nil, nil, 2, 2)
 local specWarnAncientMindbender		= mod:NewSpecialWarningSwitch(269131, nil, nil, nil, 1, 2)
+local specWarnAncientMindbenderYou	= mod:NewSpecialWarningMoveTo(269131, nil, nil, nil, 1, 2)
 local yellAncientMindbender			= mod:NewYell(269131)
 --local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
 
@@ -56,10 +57,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnMindRend:Show(args.destName)
 		specWarnMindRend:Play("helpdispel")
 	elseif spellId == 269131 then
-		specWarnAncientMindbender:Show()
-		specWarnAncientMindbender:Play("findmc")
 		if args:IsPlayer() then
+			specWarnAncientMindbenderYou:Show(DBM_CORE_ORB)
+			specWarnAncientMindbenderYou:Play("takedamage")
 			yellAncientMindbender:Yell()
+		else
+			specWarnAncientMindbender:Show()
+			specWarnAncientMindbender:Play("findmc")
 		end
 	end
 end
