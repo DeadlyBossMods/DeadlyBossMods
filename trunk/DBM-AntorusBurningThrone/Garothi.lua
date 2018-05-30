@@ -250,7 +250,12 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 				countdownChooseCannon:Start(22)
 			end
 		elseif self:IsMythic() then
-			timerSpecialCD:Start(22)--Random cannon
+			if self.vb.lastCannon == 1 then--Annihilator Cannon
+				timerDecimationCD:Start(22)
+			else
+				timerAnnihilationCD:Start(22)
+			end
+			--timerSpecialCD:Start(22)--Random cannon
 		end
 		timerFelBombardmentCD:Start(23)
 		countdownFelBombardment:Start(23)

@@ -2,7 +2,7 @@ local mod	= DBM:NewMod(1835, "DBM-Party-Legion", 11, 860)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
-mod:SetCreatureID(114262)
+mod:SetCreatureID(114262, 114264)--114264 midnight
 mod:SetEncounterID(1960)--Verify
 mod:SetZone()
 mod:SetUsedIcons(1)
@@ -28,6 +28,7 @@ local specWarnMortalStrike			= mod:NewSpecialWarningDefensive(227493, "Tank", ni
 local specWarnSharedSuffering		= mod:NewSpecialWarningMoveTo(228852, nil, nil, nil, 3, 2)
 local yellSharedSuffering			= mod:NewYell(228852)
 
+local timerPresenceCD				= mod:NewAITimer(11, 227404, nil, "Healer", nil, 5, nil, DBM_CORE_HEALER_ICON)--FIXME, one day
 local timerMortalStrikeCD			= mod:NewNextTimer(11, 227493, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerSharedSufferingCD		= mod:NewNextTimer(19, 228852, nil, nil, nil, 3)
 
@@ -76,6 +77,7 @@ end
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
 	if spellId == 227338 then--Riderless
+		timerPresenceCD:Stop()
 		timerMortalStrikeCD:Start()
 		timerSharedSufferingCD:Start()
 		countdownSharedSuffering:Start()
@@ -83,6 +85,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		timerMortalStrikeCD:Stop()
 		timerSharedSufferingCD:Stop()
 		countdownSharedSuffering:Cancel()
+		timerPresenceCD:Start(2)
+	elseif spellId == 227404 then--Intangible Presence
+		timerPresenceCD:Start()
 	end
 end
 
