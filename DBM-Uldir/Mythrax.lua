@@ -28,7 +28,8 @@ mod:RegisterEventsInCombat(
 
 --TODO, verify and enable tank stuff if assumptions are correct.
 --TODO, add massive claw? "Massive Claw-274772-npc:134546 = pull:6.2, 11.1, 9.0, 11.0, 9.0, 11.1, 9.0, 11.1, 9.0, 11.0, 9.0, 11.0, 9.0, 11.0, 9.0, 11.0, 9.0, 11.1, 9.1, 10.9, 8.9, 11.0, 9.0, 11.0, 9.0
---TODO, detect Obliteration Beam target?
+--TODO, detect Obliteration Blast target?
+--TODO, move timerObliterationBlastCD to success?
 --Stage One: Oblivion's Call
 --local warnXorothPortal				= mod:NewSpellAnnounce(244318, 2, nil, nil, nil, nil, nil, 7)
 --local warnImminentRuin					= mod:NewTargetAnnounce(272536, 2)
@@ -54,7 +55,7 @@ local specWarnMindFlay					= mod:NewSpecialWarningInterrupt(274019, "HasInterrup
 
 mod:AddTimerLine(SCENARIO_STAGE:format(1))
 local timerEssenceShearCD				= mod:NewNextSourceTimer(19.9, 274693, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--All timers generlaly 20 but 19.9 can happen and DBM has to use lost known time
-local timerObliterationBlastCD			= mod:NewNextTimer(19.9, 273538, nil, nil, nil, 3)
+local timerObliterationBlastCD			= mod:NewNextSourceTimer(19.9, 273538, nil, nil, nil, 3)
 local timerOblivionSphereCD				= mod:NewNextCountTimer(19.9, 272407, nil, nil, nil, 3, nil, DBM_CORE_DAMAGE_ICON)
 local timerImminentRuinCD				= mod:NewNextTimer(19.9, 272536, nil, nil, nil, 3)
 mod:AddTimerLine(SCENARIO_STAGE:format(2))
@@ -82,9 +83,9 @@ function mod:OnCombatStart(delay)
 	self.vb.phase = 1
 	self.vb.ruinCast = 0
 	self.vb.sphereCast = 0
-	timerEssenceShearCD:Start(3.2-delay, BOSS)--START
-	countdownEssenceShear:Start(3.2-delay)
-	timerObliterationBlastCD:Start(9.2-delay)
+	--timerEssenceShearCD:Start(3.2-delay, BOSS)--START
+	--countdownEssenceShear:Start(3.2-delay)
+	timerObliterationBlastCD:Start(9.2-delay, BOSS)
 	timerOblivionSphereCD:Start(20-delay, 1)
 	countdownOblivionSphere:Start(20-delay)
 	--timerImminentRuinCD:Start(1-delay)--Cast instantly on pull
@@ -117,10 +118,18 @@ function mod:SPELL_CAST_START(args)
 		else--Big Adds (cid==139381)
 			timerEssenceShearCD:Start(22.5, DBM_ADD, args.sourceGUID)
 		end
-	elseif spellId == 273538 and self:AntiSpam(6, 1) then--Antispammed since he casts double on mythic
-		specWarnObliterationBlast:Show()
-		specWarnObliterationBlast:Play("watchwave")
-		timerObliterationBlastCD:Start()
+	elseif spellId == 273538 then--Antispammed since he casts double on mythic
+		if self:AntiSpam(3, 1) then
+			specWarnObliterationBlast:Show()
+			specWarnObliterationBlast:Play("watchwave")
+		end
+		local cid = self:GetCIDFromGUID(args.sourceGUID)
+		if cid == 134546 then--Main boss
+			timerObliterationBlastCD:Start(19.9, BOSS, args.sourceGUID)
+			countdownEssenceShear:Start(19.9)
+		else--Big Adds (cid==139381)
+			--timerObliterationBlastCD:Start(22.5, DBM_ADD, args.sourceGUID)
+		end
 	elseif spellId == 273810 then
 		self.vb.phase = 2
 		self.vb.beamCast = 0
