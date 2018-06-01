@@ -57,7 +57,7 @@ mod:AddTimerLine(SCENARIO_STAGE:format(1))
 local timerEssenceShearCD				= mod:NewNextSourceTimer(19.9, 274693, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--All timers generlaly 20 but 19.9 can happen and DBM has to use lost known time
 local timerObliterationBlastCD			= mod:NewNextSourceTimer(19.9, 273538, nil, nil, nil, 3)
 local timerOblivionSphereCD				= mod:NewNextCountTimer(19.9, 272407, nil, nil, nil, 3, nil, DBM_CORE_DAMAGE_ICON)
-local timerImminentRuinCD				= mod:NewNextTimer(19.9, 272536, nil, nil, nil, 3)
+local timerImminentRuinCD				= mod:NewNextCountTimer(19.9, 272536, nil, nil, nil, 3)
 mod:AddTimerLine(SCENARIO_STAGE:format(2))
 local timerVeil							= mod:NewBuffActiveTimer(60, 274230, nil, nil, nil, 6)
 local timerObliterationbeamCD			= mod:NewCDCountTimer(12.1, 272115, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
@@ -88,7 +88,7 @@ function mod:OnCombatStart(delay)
 	timerObliterationBlastCD:Start(9.2-delay, BOSS)
 	timerOblivionSphereCD:Start(20-delay, 1)
 	countdownOblivionSphere:Start(20-delay)
-	--timerImminentRuinCD:Start(1-delay)--Cast instantly on pull
+	--timerImminentRuinCD:Start(1-delay, 1)--Cast instantly on pull
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(272146))
 		DBM.InfoFrame:Show(5, "playerdebuffstacks", 272146, 1)
@@ -125,10 +125,10 @@ function mod:SPELL_CAST_START(args)
 		end
 		local cid = self:GetCIDFromGUID(args.sourceGUID)
 		if cid == 134546 then--Main boss
-			timerObliterationBlastCD:Start(19.9, BOSS, args.sourceGUID)
+			timerObliterationBlastCD:Start(19.9, BOSS)
 			countdownEssenceShear:Start(19.9)
 		else--Big Adds (cid==139381)
-			--timerObliterationBlastCD:Start(22.5, DBM_ADD, args.sourceGUID)
+			--timerObliterationBlastCD:Start(22.5, DBM_ADD)
 		end
 	elseif spellId == 273810 then
 		self.vb.phase = 2
@@ -250,13 +250,14 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif spellId == 274230 then--Boss active again
 		self.vb.sphereCast = 0--Does this reset? does it follow same rules? 40 seconds after each multiple of 3?
+		self.vb.ruinCast = 0--Does this reset? does it follow same rules?
 		timerVeil:Stop()
 		timerObliterationbeamCD:Stop()--Not sure it stops, didn't get far enough
 		timerVisionsoMadnessCD:Stop()--Not sure it stops, didn't get far enough
 		timerEssenceShearCD:Start(3, BOSS)--START
 		countdownEssenceShear:Start(3)
-		timerObliterationBlastCD:Start(9)
-		timerImminentRuinCD:Start(17)--SUCCESS
+		timerObliterationBlastCD:Start(9, BOSS)
+		timerImminentRuinCD:Start(17, 1)--SUCCESS
 		countdownImminentRuin:Start(17)
 		timerOblivionSphereCD:Start(20, 1)
 		countdownOblivionSphere:Start(20)
