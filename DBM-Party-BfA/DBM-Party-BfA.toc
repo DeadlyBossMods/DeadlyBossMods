@@ -44,7 +44,7 @@ ShrineoftheStorm\Stormsong.lua
 ShrineoftheStorm\Volzith.lua
 ShrineoftheStorm\SotSTrash.lua
 SiegeofBoralus\Lockwood.lua
-SiegeofBoralus\Redhook.lua
+SiegeofBoralus\Redhook_Bainbridge.lua
 SiegeofBoralus\Darkfathom.lua
 SiegeofBoralus\Kraken.lua
 SiegeofBoralus\BoralusTrash.lua
