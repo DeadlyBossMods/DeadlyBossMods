@@ -1,9 +1,19 @@
-local mod	= DBM:NewMod(2132, "DBM-Party-BfA", 5, 1001)
+local mod
+if UnitFactionGroup("player") == "Alliance" then
+	mod	= DBM:NewMod(2132, "DBM-Party-BfA", 5, 1001)
+else
+	mod	= DBM:NewMod(2133, "DBM-Party-BfA", 5, 1001)
+end
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
---mod:SetCreatureID(98542)
-mod:SetEncounterID(2098)
+if UnitFactionGroup("player") == "Alliance" then
+	mod:SetCreatureID(128650)--Redhook
+	mod:SetEncounterID(2098)
+else
+	mod:SetCreatureID(130834)--Bainbridge
+	mod:SetEncounterID(2097)
+end
 mod:SetZone()
 
 mod:RegisterCombat("combat")
