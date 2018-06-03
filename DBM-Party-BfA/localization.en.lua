@@ -141,9 +141,11 @@ L:SetGeneralLocalization({
 L= DBM:GetModLocalization(2173)
 
 -----------------------
--- Chopper Redhook --
+-- Chopper Redhook / Sergeant Bainbridge --
 -----------------------
 L= DBM:GetModLocalization(2132)
+
+L= DBM:GetModLocalization(2133)
 
 -----------------------
 -- Hadal Darkfathom --

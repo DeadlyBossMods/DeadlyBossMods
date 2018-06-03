@@ -146,6 +146,8 @@ L= DBM:GetModLocalization(2173)
 -----------------------
 L= DBM:GetModLocalization(2132)
 
+L= DBM:GetModLocalization(2133)
+
 -----------------------
 -- Hadal Darkfathom --
 -----------------------
