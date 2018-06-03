@@ -49,7 +49,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 --	elseif args.spellId == 133129 then
 --		DominikaGUID = args.destGUID
-	elseif spellId == 236155 and args:IsPlayer() then
+	elseif args.spellId == 236155 and args:IsPlayer() then
 		local amount = args.amount or 1
 		if amount >= 8 then
 			specWarnAuraofRot:Show(amount)
