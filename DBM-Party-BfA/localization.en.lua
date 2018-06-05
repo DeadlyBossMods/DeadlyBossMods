@@ -118,6 +118,10 @@ L= DBM:GetModLocalization(2154)
 -----------------------
 L= DBM:GetModLocalization(2155)
 
+L:SetMiscLocalization({
+	openingRP	= "It would seem you have guests, Lord Stormsong."
+})
+
 -----------------------
 -- Vol'zith the Whisperer --
 -----------------------
