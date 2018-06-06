@@ -211,7 +211,7 @@ local function ToggleRangeFinder(self, hide)
 	if self:IsTank() or not self.Options.RangeFrame then return end--Tanks don't get rage
 	if not hide then
 		specWarnSargGaze:Show()
-		specWarnSargGaze:Play("scatter")
+		specWarnSargGaze:Play("range5")
 		DBM.RangeCheck:Show(5)
 		self.vb.rangeCheckNoTouchy = true--Prevent SPELL_AURA_REMOVED of revious rage closing range finder during window we're expecting next rage
 	end
