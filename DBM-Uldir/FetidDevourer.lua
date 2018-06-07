@@ -21,6 +21,9 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
+--[[
+(ability.id = 262292 or ability.id = 262288 or ability.id = 262364) and type = "begincast"
+--]]
 local warnFrenzy						= mod:NewSpellAnnounce(262378, 3)
 local warnThrashNotTanking				= mod:NewSpellAnnounce(262277, 3, nil, "Tank|Healer")
 
