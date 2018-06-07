@@ -42,6 +42,11 @@ mod:RegisterEventsInCombat(
 --TODO, timers for Mind Numbing Chatter?
 --TODO, P3 timers, well timers in general and how they are reset on phase changes or boss stuns
 --TODO, detecting cores that FAIL to deposit and get destroyed instead (to determin when next core timer is)
+--[[
+(ability.id = 272505 or ability.id = 267509 or ability.id = 273406 or ability.id = 273405 or ability.id = 267409 or ability.id = 267579 or ability.id = 263482 or ability.id = 263503 or ability.id = 276839 or ability.id = 270373 or ability.id = 275160) and type = "begincast"
+ or (ability.id = 263235 or ability.id = 263482 or ability.id = 263503 or ability.id = 263373) and type = "cast"
+ or (ability.id = 267427 or ability.id = 267462 or ability.id = 267412) and type = "begincast"
+--]]
 --Arena Floor
 --local warnXorothPortal				= mod:NewSpellAnnounce(244318, 2, nil, nil, nil, nil, nil, 7)
 local warnBloodHost						= mod:NewTargetAnnounce(267813, 3)--Mythic

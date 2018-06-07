@@ -30,9 +30,12 @@ mod:RegisterEventsInCombat(
 --TODO, add massive claw? "Massive Claw-274772-npc:134546 = pull:6.2, 11.1, 9.0, 11.0, 9.0, 11.1, 9.0, 11.1, 9.0, 11.0, 9.0, 11.0, 9.0, 11.0, 9.0, 11.0, 9.0, 11.1, 9.1, 10.9, 8.9, 11.0, 9.0, 11.0, 9.0
 --TODO, detect Obliteration Blast target?
 --TODO, move timerObliterationBlastCD to success?
+--[[
+(ability.id = 273282 or ability.id = 273538 or ability.id = 273810 or ability.id = 272115 or ability.id = 273949) and type = "begincast"
+ or ability.id = 272533 and type = "cast"
+ or ability.id = 274019 and type = "begincast"
+--]]
 --Stage One: Oblivion's Call
---local warnXorothPortal				= mod:NewSpellAnnounce(244318, 2, nil, nil, nil, nil, nil, 7)
---local warnImminentRuin					= mod:NewTargetAnnounce(272536, 2)
 local warnPhase2						= mod:NewPhaseAnnounce(2, 2, nil, nil, nil, nil, nil, 2)
 
 --Stage One: Oblivion's Call
