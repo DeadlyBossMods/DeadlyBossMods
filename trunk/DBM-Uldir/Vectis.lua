@@ -27,6 +27,11 @@ mod:RegisterEventsInCombat(
 
 --TODO, determine highest tolerable tank stacks. Need a better idea of raid numbers/tuning. Was wildly variable between 4 and 11 in testing, so leaving at 6 for now
 --TODO, Immunosuppression Timer for big adds??
+--[[
+(ability.id = 267242 or ability.id = 265217 or ability.id = 265212) and type = "begincast"
+ or (ability.id = 265178 or ability.id = 266459) and type = "cast"
+ or ability.id = 265217 and type = "removebuff"
+--]]
 --local warnXorothPortal					= mod:NewSpellAnnounce(244318, 2, nil, nil, nil, nil, nil, 7)
 local warnMutagenicPathogen					= mod:NewStackAnnounce(265178, 2, nil, "Tank")
 local warnGestate							= mod:NewTargetAnnounce(265212, 3)

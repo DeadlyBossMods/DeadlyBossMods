@@ -34,6 +34,12 @@ mod:RegisterEventsInCombat(
 --TODO, check if all blood triggers associated with correct mobs, it was hard to see from video
 --TODO, minion of zul fixate detection?
 --TODO, maybe switch warning for minions of zul, or detectable spawns, show on a custom infoframe number of adds up (each type)
+--[[
+(ability.id = 273889 or ability.id = 274098 or ability.id = 274119) and type = "begincast"
+ or (ability.id = 274358 or ability.id = 274168 or ability.id = 273365 or ability.id = 271640 or ability.id = 273360) and type = "cast"
+ or (ability.id = 273889 or ability.id = 274098 or ability.id = 274119) and type = "cast"
+ or (ability.id = 273316 or ability.id = 273451) and type = "begincast"
+--]]
 --local warnXorothPortal				= mod:NewSpellAnnounce(244318, 2, nil, nil, nil, nil, nil, 7)
 --Stage One: The Forces of Blood
 local warnPoolofDarkness				= mod:NewCountAnnounce(273361, 4)--Generic warning since you want to be aware of it but not emphesized unless you're an assigned soaker
