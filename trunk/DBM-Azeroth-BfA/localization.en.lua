@@ -21,6 +21,16 @@ L= DBM:GetModLocalization(2197)
 L= DBM:GetModLocalization(2199)
 
 -----------------------
+-- Doom's Howl --
+-----------------------
+L= DBM:GetModLocalization(2213)
+
+-----------------------
 -- Warbringer Yenajz --
 -----------------------
 L= DBM:GetModLocalization(2198)
+
+-----------------------
+-- Dunegorger Kraulok --
+-----------------------
+L= DBM:GetModLocalization(2210)
