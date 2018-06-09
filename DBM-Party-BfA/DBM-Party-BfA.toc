@@ -61,7 +61,7 @@ TheMotherload\UndermineTrash.lua
 TheUnderrot\ElderLeaxa.lua
 TheUnderrot\InfestedCrawg.lua
 TheUnderrot\SporecallerZancha.lua
-TheUnderrot\Taloc.lua
+TheUnderrot\Unbound.lua
 TheUnderrot\UnderrotTrash.lua
 TolDagor\TheSandQueen.lua
 TolDagor\JesHowlis.lua

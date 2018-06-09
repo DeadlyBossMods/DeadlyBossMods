@@ -231,7 +231,7 @@ L= DBM:GetModLocalization(2131)
 L= DBM:GetModLocalization(2130)
 
 -----------------------
--- Taloc the Corrupted --
+-- Unbound Monstrosity --
 -----------------------
 L= DBM:GetModLocalization(2158)
 
