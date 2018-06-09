@@ -29,16 +29,16 @@ local timerBloodMirrorCD			= mod:NewAITimer(13, 264603, nil, nil, nil, 1, nil, D
 mod:AddInfoFrameOption(260685, "Healer")
 
 function mod:OnCombatStart(delay)
-	if self.Options.InfoFrame then
-		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(260685))
-		DBM.InfoFrame:Show(8, "playerdebuffstacks", 260685, 1)
-	end
-	if not self:IsNormal() then--Exclude normal, but allow heroic/mythic/mythic+
-		timerSanguineFeastCD:Start(1-delay)
-	end
 	timerBloodBoltCD:Start(1-delay)
 	timerCreepingRotCD:Start(1-delay)
 	timerBloodMirrorCD:Start(1-delay)
+	if not self:IsNormal() then--Exclude normal, but allow heroic/mythic/mythic+
+		timerSanguineFeastCD:Start(1-delay)
+	end
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(260685))
+		DBM.InfoFrame:Show(5, "playerdebuffstacks", 260685, 1)
+	end
 end
 
 function mod:OnCombatEnd()
