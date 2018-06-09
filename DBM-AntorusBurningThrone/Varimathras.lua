@@ -141,7 +141,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			local uId = DBM:GetRaidUnitId(args.destName)
 			--Applied to a tank that's not you and you don't have it, taunt
-			if uId and self:IsTanking(uId) and self:CheckNearby(8, args.destName) and not DBM:UnitDebuff("player", spellId) then
+			if uId and self:IsTanking(uId) and (self:CheckNearby(8, args.destName) or self:GetNumAliveTanks() < 3) and not DBM:UnitDebuff("player", spellId) then
 				specWarnMiseryTaunt:Show(args.destName)
 				specWarnMiseryTaunt:Play("tauntboss")
 			end
