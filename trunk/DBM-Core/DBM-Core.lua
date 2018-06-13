@@ -4079,9 +4079,8 @@ do
 	local dummyMod -- dummy mod for the pull timer
 	syncHandlers["PT"] = function(sender, timer, lastMapID, target)
 		if DBM.Options.DontShowUserTimers then return end
-		local LFGTankException = IsPartyLFG() and ((UnitGroupRolesAssigned(sender) == "TANK") or (UnitGroupRolesAssigned(sender..playerRealm) == "TANK"))
-		local hasPermission = (DBM:GetRaidRank(sender) == 0) or (DBM:GetRaidRank(sender..playerRealm) == 0)--Handle when Ambiguate fails to work properly (cause yes, when dealing with blizzard, need redundancies like this)
-		if (hasPermission and IsInGroup() and not LFGTankException) or select(2, IsInInstance()) == "pvp" or IsEncounterInProgress() then
+		local LFGTankException = IsPartyLFG() and UnitGroupRolesAssigned(sender) == "TANK"
+		if (DBM:GetRaidRank(sender) == 0 and IsInGroup() and not LFGTankException) or select(2, IsInInstance()) == "pvp" or IsEncounterInProgress() then
 			return
 		end
 		if (lastMapID and tonumber(lastMapID) ~= LastInstanceMapID) or (not lastMapID and DBM.Options.DontShowPTNoID) then return end
