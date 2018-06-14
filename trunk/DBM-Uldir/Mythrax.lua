@@ -191,27 +191,16 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 274693 then
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId) then
-			--local amount = args.amount or 1
-			--if amount >= 2 then
-				if args:IsPlayer() then
-					specWarnEssenceShear:Show()
-					specWarnEssenceShear:Play("defensive")
-				else
-					--local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", spellId)
-					--local remaining
-					--if expireTime then
-					--	remaining = expireTime-GetTime()
-					--end
-					--if not UnitIsDeadOrGhost("player") and (not remaining or remaining and remaining < 12) then
-						specWarnEssenceShearOther:Show(args.destName)
-						specWarnEssenceShearOther:Play("tauntboss")
-					--else
-					--	warnEssenceShear:Show(args.destName, amount)
-					--end
+			if args:IsPlayer() then
+				specWarnEssenceShear:Show()
+				specWarnEssenceShear:Play("defensive")
+			else
+				local cid = self:GetCIDFromGUID(args.sourceGUID)
+				if cid == 134546 then--Main boss
+					specWarnEssenceShearOther:Show(args.destName)
+					specWarnEssenceShearOther:Play("tauntboss")
 				end
-			--else
-				--warnEssenceShear:Show(args.destName, amount)
-			--end
+			end
 		end
 	elseif spellId == 272407 then--Purple Ball Lovin
 		
