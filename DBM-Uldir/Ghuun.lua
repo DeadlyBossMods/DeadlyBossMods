@@ -126,6 +126,7 @@ local p2HeroicMatrix = {54.95}
 
 local updateInfoFrame
 do
+	local matrixSpellName, bloodFeastName = DBM:GetSpellInfo(263372), DBM:GetSpellInfo(263235)
 	local lines = {}
 	local sortedLines = {}
 	local function addLine(key, value)
@@ -138,6 +139,7 @@ do
 		table.wipe(sortedLines)
 		--Boss Powers first
 		--TODO, eliminate main or alternate if it's not needed (drycode checking both to ensure everything is covered)
+		--TODO, eliminate worthless tentacles and stuff
 		for i = 1, 5 do
 			local uId = "boss"..i
 			--Primary Power
@@ -160,19 +162,13 @@ do
 			local name = matrixTargets[i]
 			local uId = DBM:GetRaidUnitId(name)
 			if not uId then break end
-			local spellName = DBM:UnitDebuff(uId, 263372)
-			if spellName then
-				addLine(spellName, UnitName(uId))
-			end
+			addLine(matrixSpellName, UnitName(uId))
 		end
 		for i=1, #bloodFeastTarget do
 			local name = bloodFeastTarget[i]
 			local uId = DBM:GetRaidUnitId(name)
 			if not uId then break end
-			local spellName = DBM:UnitDebuff(uId, 263235)
-			if spellName then
-				addLine(spellName, UnitName(uId))
-			end
+			addLine(bloodFeastName, UnitName(uId))
 		end
 		--Player personal checks
 		local spellName3, _, _, _, _, expireTime = DBM:UnitDebuff("player", 263436)
