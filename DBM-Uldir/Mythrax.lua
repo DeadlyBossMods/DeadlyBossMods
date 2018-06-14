@@ -145,6 +145,8 @@ function mod:SPELL_CAST_START(args)
 		countdownOblivionSphere:Cancel()
 		timerImminentRuinCD:Stop()
 		countdownImminentRuin:Cancel()
+		timerOblivionSphereCD:Start(7)--Resets to 7
+		countdownOblivionSphere:Start(7)
 		timerVisionsoMadnessCD:Start(11.5)
 		timerObliterationbeamCD:Start(20, 1)
 	elseif spellId == 272115 then
