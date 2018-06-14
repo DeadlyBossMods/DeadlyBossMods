@@ -178,7 +178,7 @@ do
 		local spellName3, _, _, _, _, expireTime = DBM:UnitDebuff("player", 263436)
 		if spellName3 and expireTime then--Personal Imperfect Physiology
 			local remaining = expireTime-GetTime()
-			addLine(spellName3, remaining)
+			addLine(spellName3, math.floor(remaining))
 		end
 		local spellName4, _, currentStack = DBM:UnitDebuff("player", 263227, 263420)
 		if spellName4 and currentStack then--Personal Putrid Blood count
@@ -187,12 +187,12 @@ do
 		local spellName5, _, _, _, _, expireTime2 = DBM:UnitDebuff("player", 277007)
 		if spellName5 and expireTime2 then--Personal Bursting Boil
 			local remaining2 = expireTime2-GetTime()
-			addLine(spellName5, remaining2)
+			addLine(spellName5, math.floor(remaining2))
 		end
 		local spellName6, _, _, _, _, expireTime3 = DBM:UnitDebuff("player", 273405, 267409)
 		if spellName6 and expireTime3 then--Personal Dark Bargain
 			local remaining3 = expireTime3-GetTime()
-			addLine(spellName6, remaining3)
+			addLine(spellName6, math.floor(remaining3))
 		end
 		return lines, sortedLines
 	end
