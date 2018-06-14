@@ -32,7 +32,7 @@ mod:RegisterEventsInCombat(
 --TODO, move timerObliterationBlastCD to success?
 --[[
 (ability.id = 273282 or ability.id = 273538 or ability.id = 273810 or ability.id = 272115 or ability.id = 273949) and type = "begincast"
- or ability.id = 272533 and type = "cast"
+ or (ability.id = 272533 or ability.id = 272404) and type = "cast"
  or ability.id = 274019 and type = "begincast"
 --]]
 --Stage One: Oblivion's Call
@@ -57,10 +57,10 @@ local specWarnVisionsofMadness			= mod:NewSpecialWarningSwitch(273949, "-Healer"
 local specWarnMindFlay					= mod:NewSpecialWarningInterrupt(274019, "HasInterrupt", nil, nil, 1, 2)
 
 mod:AddTimerLine(SCENARIO_STAGE:format(1))
-local timerEssenceShearCD				= mod:NewNextSourceTimer(19.9, 274693, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--All timers generlaly 20 but 19.9 can happen and DBM has to use lost known time
-local timerObliterationBlastCD			= mod:NewNextSourceTimer(19.9, 273538, nil, nil, nil, 3)
-local timerOblivionSphereCD				= mod:NewNextCountTimer(19.9, 272407, nil, nil, nil, 3, nil, DBM_CORE_DAMAGE_ICON)
-local timerImminentRuinCD				= mod:NewNextCountTimer(19.9, 272536, nil, nil, nil, 3)
+local timerEssenceShearCD				= mod:NewNextSourceTimer(19.5, 274693, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--All timers generlaly 20 but 19.9 can happen and DBM has to use lost known time
+local timerObliterationBlastCD			= mod:NewNextSourceTimer(14.9, 273538, nil, nil, nil, 3)
+local timerOblivionSphereCD				= mod:NewNextCountTimer(14.9, 272407, nil, nil, nil, 3, nil, DBM_CORE_DAMAGE_ICON)
+local timerImminentRuinCD				= mod:NewNextCountTimer(14.9, 272536, nil, nil, nil, 3)
 mod:AddTimerLine(SCENARIO_STAGE:format(2))
 local timerVeil							= mod:NewBuffActiveTimer(60, 274230, nil, nil, nil, 6)
 local timerObliterationbeamCD			= mod:NewCDCountTimer(12.1, 272115, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
@@ -86,12 +86,12 @@ function mod:OnCombatStart(delay)
 	self.vb.phase = 1
 	self.vb.ruinCast = 0
 	self.vb.sphereCast = 0
-	--timerEssenceShearCD:Start(3.2-delay, BOSS)--START
-	--countdownEssenceShear:Start(3.2-delay)
-	timerObliterationBlastCD:Start(9.2-delay, BOSS)
-	timerOblivionSphereCD:Start(20-delay, 1)
-	countdownOblivionSphere:Start(20-delay)
-	--timerImminentRuinCD:Start(1-delay, 1)--Cast instantly on pull
+	timerImminentRuinCD:Start(4.9-delay, 1)
+	timerOblivionSphereCD:Start(9-delay, 1)
+	countdownOblivionSphere:Start(9-delay)
+	timerObliterationBlastCD:Start(14.9-delay, BOSS)
+	timerEssenceShearCD:Start(19-delay, BOSS)--START
+	countdownEssenceShear:Start(19-delay)
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(272146))
 		DBM.InfoFrame:Show(5, "playerdebuffstacks", 272146, 1)
@@ -116,8 +116,8 @@ function mod:SPELL_CAST_START(args)
 		end
 		local cid = self:GetCIDFromGUID(args.sourceGUID)
 		if cid == 134546 then--Main boss
-			timerEssenceShearCD:Start(19.9, BOSS, args.sourceGUID)
-			countdownEssenceShear:Start(19.9)
+			timerEssenceShearCD:Start(19.5, BOSS, args.sourceGUID)
+			countdownEssenceShear:Start(19.5)
 		else--Big Adds (cid==139381)
 			timerEssenceShearCD:Start(22.5, DBM_ADD, args.sourceGUID)
 		end
@@ -128,8 +128,8 @@ function mod:SPELL_CAST_START(args)
 		end
 		local cid = self:GetCIDFromGUID(args.sourceGUID)
 		if cid == 134546 then--Main boss
-			timerObliterationBlastCD:Start(19.9, BOSS)
-			countdownEssenceShear:Start(19.9)
+			timerObliterationBlastCD:Start(14.9, BOSS)
+			countdownEssenceShear:Start(14.9)
 		else--Big Adds (cid==139381)
 			--timerObliterationBlastCD:Start(22.5, DBM_ADD)
 		end
@@ -146,7 +146,7 @@ function mod:SPELL_CAST_START(args)
 		timerImminentRuinCD:Stop()
 		countdownImminentRuin:Cancel()
 		timerVisionsoMadnessCD:Start(11.5)
-		timerObliterationbeamCD:Start(20)
+		timerObliterationbeamCD:Start(20, 1)
 	elseif spellId == 272115 then
 		self.vb.beamCast = self.vb.beamCast + 1
 		specWarnObliterationbeam:Show()
@@ -169,13 +169,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 272533 then
 		self.vb.ruinCast = self.vb.ruinCast + 1
-		if self.vb.ruinCast == 1 then
-			timerImminentRuinCD:Start(15, self.vb.ruinCast+1)--Cast instantly on pull, and then second one is 15 seconds after first
-			countdownImminentRuin:Start(15)
-		else--Rest are all 20
-			timerImminentRuinCD:Start(20, self.vb.ruinCast+1)
-			countdownImminentRuin:Start(20)
-		end
+		timerImminentRuinCD:Start(15, self.vb.ruinCast+1)
+		countdownImminentRuin:Start(15)
 	--[[elseif spellId == 272404 and self:AntiSpam(10, 1) then--Use if for some reason the UNIT event disappears
 		self.vb.sphereCast = self.vb.sphereCast + 1
 		specWarnOblivionSphere:Show()
@@ -294,13 +289,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		self.vb.sphereCast = self.vb.sphereCast + 1
 		specWarnOblivionSphere:Show()
 		specWarnOblivionSphere:Play("killmob")
-		if self.vb.sphereCast % 3 == 0 then--3, 6, 9, etc
-			--Oblivion Sphere-272177-npc:134546 = pull:20.1, 20.0, 20.0, 40.1, 20.0, 20.0, 40.0, 20.0, 20.0, 40.0
-			timerOblivionSphereCD:Start(40, self.vb.sphereCast+1)
-			countdownOblivionSphere:Start(40)
-		else
-			timerOblivionSphereCD:Start(20, self.vb.sphereCast+1)
-			countdownOblivionSphere:Start(20)
-		end
+		timerOblivionSphereCD:Start(15, self.vb.sphereCast+1)
+		countdownOblivionSphere:Start(15)
 	end
 end
