@@ -34,6 +34,7 @@ mod:RegisterEventsInCombat(
 (ability.id = 273282 or ability.id = 273538 or ability.id = 273810 or ability.id = 272115 or ability.id = 273949) and type = "begincast"
  or (ability.id = 272533 or ability.id = 272404) and type = "cast"
  or ability.id = 274019 and type = "begincast"
+ or ability.id = 274230 and type = "removebuff"
 --]]
 --Stage One: Oblivion's Call
 local warnPhase2						= mod:NewPhaseAnnounce(2, 2, nil, nil, nil, nil, nil, 2)
@@ -80,7 +81,7 @@ mod.vb.phase = 1
 mod.vb.ruinCast = 0
 mod.vb.sphereCast = 0
 mod.vb.beamCast = 0
-local beamTimers = {20, 14, 10, 12}
+local beamTimers = {20, 12, 12, 12, 12}--20, 14, 10, 12 (old) (if it remains 12 repeating, table should be eliminated)
 
 function mod:OnCombatStart(delay)
 	self.vb.phase = 1
@@ -119,7 +120,7 @@ function mod:SPELL_CAST_START(args)
 			timerEssenceShearCD:Start(19.5, BOSS, args.sourceGUID)
 			countdownEssenceShear:Start(19.5)
 		else--Big Adds (cid==139381)
-			timerEssenceShearCD:Start(22.5, DBM_ADD, args.sourceGUID)
+			timerEssenceShearCD:Start(19.5, DBM_ADD, args.sourceGUID)
 		end
 	elseif spellId == 273538 then--Antispammed since he casts double on mythic
 		if self:AntiSpam(3, 1) then
@@ -241,15 +242,15 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.sphereCast = 0--Does this reset? does it follow same rules? 40 seconds after each multiple of 3?
 		self.vb.ruinCast = 0--Does this reset? does it follow same rules?
 		timerVeil:Stop()
-		timerObliterationbeamCD:Stop()--Not sure it stops, didn't get far enough
-		timerVisionsoMadnessCD:Stop()--Not sure it stops, didn't get far enough
-		timerEssenceShearCD:Start(3, BOSS)--START
-		countdownEssenceShear:Start(3)
-		timerObliterationBlastCD:Start(9, BOSS)
-		timerImminentRuinCD:Start(17, 1)--SUCCESS
-		countdownImminentRuin:Start(17)
-		timerOblivionSphereCD:Start(20, 1)
-		countdownOblivionSphere:Start(20)
+		timerObliterationbeamCD:Stop()
+		timerVisionsoMadnessCD:Stop()
+		timerImminentRuinCD:Start(7.5, 1)--SUCCESS
+		countdownImminentRuin:Start(7.5)
+		timerOblivionSphereCD:Start(9, 1)
+		countdownOblivionSphere:Start(9)
+		timerObliterationBlastCD:Start(15, BOSS)
+		timerEssenceShearCD:Start(20, BOSS)--START
+		countdownEssenceShear:Start(20)
 	end
 end
 
