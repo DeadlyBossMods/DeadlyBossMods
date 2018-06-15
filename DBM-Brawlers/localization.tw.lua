@@ -28,6 +28,10 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	Bizmo			= "畢茲摩",--Alliance
 	Bazzelflange	= "老闆貝索佛蘭吉",--Horde
+	BizmoIgnored	= "We Don't have all night. Hurry it up already!", --動作快一點啊!
+	BizmoIgnored2	= "Do you smell smoke?",
+	BizmoIgnored3	= "I think it's about time to call this fight.", --快沒時間了!
+	BizmoIgnored4	= "Is it getting hot in here? Or is it just me?",
 	--I wish there was a better way to do this....so much localizing. :(
 	Rank1			= "第1階",
 	Rank2			= "第2階",
