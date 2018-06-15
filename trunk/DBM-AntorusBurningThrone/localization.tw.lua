@@ -86,7 +86,12 @@ L:SetOptionLocalization({
 	TwoMythicThreeNon	= "傳奇模式下兩層換坦，其他難度三層換坦",--Default
 	TwoAlways			= "無論任何難度皆兩層換坦",
 	ThreeAlways			= "無論任何難度皆三層換坦",
-	SetLighting			= "開戰後自動調整打光品質為低，戰鬥結束後恢復設定值(不支援Mac用戶)"
+	SetLighting			= "開戰後自動調整打光品質為低，戰鬥結束後恢復設定值(不支援Mac用戶)",
+	InterruptBehavior	= "為團隊設置中斷行為(需要團隊隊長)",
+	Three				= "三人輪替",--Default
+	Four				= "四人輪替",
+	Five				= "五人輪替",
+	IgnoreFirstKick		= "開啟此選項，頭一次中斷會被排除在輪替之外(需要團隊隊長)"
 })
 
 ---------------------------
