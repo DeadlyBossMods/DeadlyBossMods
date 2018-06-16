@@ -361,6 +361,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnPowerMatrix:Show()
 			specWarnPowerMatrix:Play("matrixyou")
+			yellPowerMatrix:Yell()
 		else
 			if self:IsMythic() then
 				warnPowerMatrix:CombinedShow(1, args.destName)
