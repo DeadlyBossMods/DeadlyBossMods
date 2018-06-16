@@ -19,6 +19,7 @@ localization.en.lua
 localization.kr.lua
 localization.ru.lua
 localization.cn.lua
+localization.es.lua
 Taloc.lua
 Mother.lua
 FetidDevourer.lua
