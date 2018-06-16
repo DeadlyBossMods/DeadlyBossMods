@@ -110,7 +110,12 @@ L:SetOptionLocalization({
 	TwoMythicThreeNon	= "Cambiar a dos acumulaciones en mítico, tres en otras dificultades",--Default
 	TwoAlways			= "Cambiar a dos acumulaciones en todas las dificultades",
 	ThreeAlways			= "Cambiar a tres acumulaciones en todas las dificultades",
-	SetLighting				= "Bajar automáticamente la calidad de iluminación a bajo al iniciar el combate (se restaurará a su configuración anterior al terminar el combate; no funciona en Mac)"
+	SetLighting			= "Bajar automáticamente la calidad de iluminación a bajo al iniciar el combate (se restaurará a su configuración anterior al terminar el combate; no funciona en Mac)",
+	InterruptBehavior	= "Patrón de interrupcionesS (requiere ser líder de banda)",
+	Three				= "Rotación de tres jugadores",--Default
+	Four				= "Rotación de cuatro jugadores",
+	Five				= "Rotación de cinco jugadores",
+	IgnoreFirstKick		= "Excluir la primera interrupción de la rotación (requiere ser líder de banda)"
 })
 
 --------------

@@ -19,6 +19,7 @@ DBM_COPY_URL_DIALOG					= "Copiar vínculo"
 --Post Patch 7.1
 DBM_CORE_NO_RANGE					= "No se puede usar el radar de distancia en estancias. Se procederá a usar el marco de distancia por texto."
 DBM_CORE_NO_ARROW					= "No se puede usar la flecha en estancias."
+DBM_CORE_ARROW_SUMMONED				= "Flecha activada. SiArrow has been activated. If you did not do this manually, you have a 3rd party addon configured to activated it for you"
 DBM_CORE_NO_HUD						= "No se puede usar el indicador en pantalla en estancias."
 
 DBM_CORE_DYNAMIC_DIFFICULTY_CLUMP	= "DBM ha desactivado el marco de distancia dinámico para este combate debido a la falta de información sobre las diferencias según el número de jugadores."
@@ -29,18 +30,18 @@ DBM_CORE_LOOT_SPEC_REMINDER			= "Tu especialización es %s. Tu especialización 
 
 DBM_CORE_BIGWIGS_ICON_CONFLICT		= "DBM ha detectado que tienes habilitados los iconos de banda en BigWigs y DBM. Por favor, desactívalos en uno de los dos addons para evitar conflictos con la configuración de tu líder de banda."
 
-DBM_CORE_MOD_AVAILABLE				= "El módulo de %s está disponible para este contenido. Puedes descargarlo en |HDBM:forums|h|cff3588ffdeadlybossmods.com|r o a través de Curse. Este mensaje solo se mostrará una vez."
+DBM_CORE_MOD_AVAILABLE				= "El módulo de %s está disponible para este contenido. Puedes descargarlo a través de Curse, WoWInterface o deadlybossmods.com."
 
 DBM_CORE_COMBAT_STARTED				= "Encuentro de %s iniciado. ¡Buena suerte!"
 DBM_CORE_COMBAT_STARTED_IN_PROGRESS	= "Te has unido al encuentro de %s mientras estaba en curso. ¡Buena suerte!"
-DBM_CORE_GUILD_COMBAT_STARTED		= "La hermandad ha iniciado el encuentro de %s."
+DBM_CORE_GUILD_COMBAT_STARTED		= "Tu hermandad ha iniciado el encuentro de %s."
 DBM_CORE_SCENARIO_STARTED			= "Iniciando la gesta %s. ¡Buena suerte!"
 DBM_CORE_SCENARIO_STARTED_IN_PROGRESS	= "Te has unido a la gesta %s mientras estaba en curso. ¡Buena suerte!"
 DBM_CORE_BOSS_DOWN					= "¡%s ha sido derrotado en %s!"
 DBM_CORE_BOSS_DOWN_I				= "¡%s ha sido derrotado! Tienes %d victorias en total."
 DBM_CORE_BOSS_DOWN_L				= "¡%s ha sido derrotado en %s! Tu última victoria fue en %s, y tu récord actual es %s. Tienes %d victorias en total."
 DBM_CORE_BOSS_DOWN_NR				= "¡%s ha sido derrotado en %s! ¡Es un nuevo récord! (El anterior era %s). Tienes %d victorias en total."
-DBM_CORE_GUILD_BOSS_DOWN			= "¡%s ha sido derrotado por la hermandad en %s!"
+DBM_CORE_GUILD_BOSS_DOWN			= "¡%s ha sido derrotado por tu hermandad en %s!"
 DBM_CORE_SCENARIO_COMPLETE			= "¡%s ha sido completada en %s!"
 DBM_CORE_SCENARIO_COMPLETE_I		= "¡%s ha sido completada! La has completado %d veces en total."
 DBM_CORE_SCENARIO_COMPLETE_L		= "¡%s ha sido completada en %s! La última vez tardaste %s y tu récord es %s. La has completado %d veces en total."
@@ -125,6 +126,7 @@ DBM_CORE_OPTION_CATEGORY_WARNINGS_YOU	= "Anuncios personales"
 DBM_CORE_OPTION_CATEGORY_WARNINGS_OTHER	= "Anuncios de objetivos"
 DBM_CORE_OPTION_CATEGORY_WARNINGS_ROLE	= "Anuncios de rol"
 DBM_CORE_OPTION_CATEGORY_SOUNDS			= "Sonidos"
+DBM_CORE_OPTION_CATEGORY_DROPDOWNS		= "Menús desplegables"
 
 DBM_CORE_AUTO_RESPONDED				= "Respondido automáticamente."
 DBM_CORE_STATUS_WHISPER				= "%s: %s, %d/%d jugadores vivos."
@@ -154,7 +156,7 @@ DBM_CORE_VOICE_DISABLED				= "Tienes al menos un paquete de voces de DBM instala
 DBM_CORE_VOICE_COUNT_MISSING		= "La voz de cuenta atrás %d está asignada a un paquete de voces que no se ha podido encontrar. Se ha restaurado a la configuración por defecto."
 DBM_BIG_WIGS						= "BigWigs"
 
-DBM_CORE_UPDATEREMINDER_HEADER			= "Tu versión de Deadly Boss Mods está desfasada.\nPuedes descargar la versión %s (r%d) a través de Curse, WoWInterface o aquí:"
+DBM_CORE_UPDATEREMINDER_HEADER			= "Tu versión de Deadly Boss Mods está desfasada.\nPuedes descargar la versión %s (r%d) a través de Curse/Twitch, WoWInterface o deadlybossmods.com."
 DBM_CORE_UPDATEREMINDER_HEADER_ALPHA	= "Tu versión alfa de Deadly Boss Mods está desfasada.\nEstás por lo menos %d versiones por detrás. Se recomienda a los usuarios que usen siempre la última versión alfa. De lo contrario, sería más recomendable usar la última versión oficial. Las versiones alfa tienen una comprobación de versión mucho más estricta porque son versiones de desarrollo de DBM."
 DBM_CORE_UPDATEREMINDER_FOOTER			= "Pulsa " .. (IsMacClient() and "Cmd-C" or "Ctrl-C")  ..  " para copiar el enlace de descarga en tu portapapeles."
 DBM_CORE_UPDATEREMINDER_FOOTER_GENERIC	= "Pulsa " .. (IsMacClient() and "Cmd-C" or "Ctrl-C")  ..  " para copiar el enlace en tu portapapeles."
@@ -201,6 +203,9 @@ DBM_CORE_INFOFRAME_SHOW_SELF		= "Mostrar siempre tu información"		-- Always sho
 DBM_CORE_INFOFRAME_SETLINES			= "Líneas máximas"
 DBM_CORE_INFOFRAME_LINESDEFAULT		= "Por defecto"
 DBM_CORE_INFOFRAME_LINES_TO			= "%d"
+DBM_CORE_INFOFRAME_POWER			= "Recurso"
+DBM_CORE_INFOFRAME_MAIN				= "Principal:"--Main power
+DBM_CORE_INFOFRAME_ALT				= "Secundario:"--Alternate Power
 
 DBM_LFG_INVITE						= "Invitación del buscador"
 
@@ -246,6 +251,7 @@ DBM_CORE_UNKNOWN					= "Desconocido"--UNKNOWN which is "Unknown" (does u vs U ma
 DBM_CORE_LEFT						= "Izquierda"
 DBM_CORE_RIGHT						= "Derecha"
 DBM_CORE_BACK						= "Detrás"--BACK
+DBM_CORE_SIDE						= "Lado"
 DBM_CORE_TOP						= "Arriba"
 DBM_CORE_BOTTOM						= "Abajo"
 DBM_CORE_MIDDLE						= "Medio"
@@ -259,9 +265,11 @@ DBM_CORE_ORB						= "Orbe"
 DBM_CHEST							= "Cofre"--As in Treasure 'Chest'. Not Chest as in body part.
 DBM_NO_DEBUFF						= "Sin %s"--For use in places like info frame where you put "Not Spellname"
 DBM_ALLY							= "un aliado"--Such as "Move to Ally"
-DBM_ADDS							= "esbirros"--Such as "Move to Ally"
+DBM_ADD								= "un esbirro"--A fight Add as in "boss spawned extra adds" - must check
+DBM_ADDS							= "esbirros"
 DBM_CORE_ROOM_EDGE					= "los bordes de la sala"
 DBM_CORE_FAR_AWAY					= "alejarte"
+DBM_CORE_BREAK_LOS					= "romper la línea de mira" --must check
 DBM_CORE_SAFE						= "una zona segura"
 DBM_CORE_SHIELD						= "un escudo"
 DBM_INCOMING						= "%s en breve"
@@ -374,6 +382,7 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS.taunt 			= "Mostrar aviso especial para provocar
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.close 			= "Mostrar aviso especial cuando $spell:%s afecte a un jugador cercano"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.move 			= "Mostrar aviso especial para salir de $spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.dodge 			= "Mostrar aviso especial para esquivar $spell:%s"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.dodgeloc		= "Mostrar aviso especial (con ubicación) para esquivar $spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.moveaway		= "Mostrar aviso especial para alejarse de los demás jugadores durante $spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.moveto			= "Mostrar aviso especial para juntarse con alguien o ir a algún sitio para $spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.jump			= "Mostrar aviso especial para saltar para $spell:%s"
@@ -469,6 +478,7 @@ DBM_CORE_AUTO_RANGE_OPTION_TEXT_SHORT	= "Mostrar marco de distancia (%s m)"--For
 DBM_CORE_AUTO_RRANGE_OPTION_TEXT		= "Mostrar marco de distancia inverso (%s m) para $spell:%s"--Reverse range frame (green when players in range, red when not)
 DBM_CORE_AUTO_RRANGE_OPTION_TEXT_SHORT	= "Mostrar marco de distancia inverso (%s m)"
 DBM_CORE_AUTO_INFO_FRAME_OPTION_TEXT	= "Mostrar marco de información para $spell:%s"
+DBM_CORE_AUTO_INFO_FRAME_OPTION_TEXT2	= "Mostrar marco de información con una vista general del encuentro"
 DBM_CORE_AUTO_READY_CHECK_OPTION_TEXT	= "Reproducir sonido de comprobación de banda cuando se inicie el encuentro (aunque no lo tengas como objetivo)"
 
 -- New special warnings
