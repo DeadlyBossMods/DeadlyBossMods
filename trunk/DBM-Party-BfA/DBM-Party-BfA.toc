@@ -23,6 +23,7 @@
 localization.en.lua
 localization.kr.lua
 localization.cn.lua
+localization.es.lua
 AtalDazar\Alunza.lua
 AtalDazar\Volkaal.lua
 AtalDazar\Rezan.lua
