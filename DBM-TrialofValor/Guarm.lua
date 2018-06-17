@@ -337,8 +337,8 @@ Might be inversed depending on perspective.
 --]]
 
 --Better to just assume things aren't in cobmat log anymore, then switch if they actually are.
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
-	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, bfaSpellId, _, legacySpellId)
+	local spellId = legacySpellId or bfaSpellId
 	if spellId == 227573 then--Guardian's Breath (pre cast used for all 6 versions of breath. Not a bad guess for my drycode huh? :) )
 		self.vb.breathCast = self.vb.breathCast + 1
 		specWarnBreath:Show(self.vb.breathCast)

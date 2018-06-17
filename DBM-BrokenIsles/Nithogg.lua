@@ -129,8 +129,8 @@ function mod:OnTranscriptorSync(msg, targetName)
 	end
 end
 
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
-	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, bfaSpellId, _, legacySpellId)
+	local spellId = legacySpellId or bfaSpellId
 	if spellId == 212837 and self:AntiSpam(4, 2) then--Only event. not targetting boss no timer sorry!
 		--Could sync, but I don't want to spam comms for this, that's just stupid.
 		timerCracklingJoltCD:Start()

@@ -127,7 +127,8 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 end
 --]]
 
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, bfaSpellId, _, legacySpellId)
+	local spellId = legacySpellId or bfaSpellId
 	if spellId == 247576 then--Umbra Shift
 		--timerUmbraShiftCD:Start()
 	end
