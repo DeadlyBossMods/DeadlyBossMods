@@ -279,8 +279,8 @@ function mod:UNIT_DIED(args)
 	end
 end
 
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
-	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, bfaSpellId, _, legacySpellId)
+	local spellId = legacySpellId or bfaSpellId
 	if spellId == 205383 then--Fel Beam (fires for left and right) Does not fire for double beams
 		DBM:Debug("Single Beam", 2)
 	elseif spellId == 215961 then--Double Beam (fires for the double beam sequence where you get both beams back to back. Only fires at start of it not each beam*)

@@ -26,21 +26,22 @@ local specWarnWave				= mod:NewSpecialWarning("specWarnWave", nil, nil, nil, 2, 
 local wave = 0
 local addCount = 0
 
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellID)
-	if spellID == 92816 then--Create Battery (Game Start)
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, bfaSpellId, _, legacySpellId)
+	local spellId = legacySpellId or bfaSpellId
+	if spellId == 92816 then--Create Battery (Game Start)
 --		timerWave:Start(285)
 		wave = 0
 		addCount = 0
-	elseif spellID == 91739 then--Zombie
+	elseif spellId == 91739 then--Zombie
 		addCount = addCount + 1
 		warnZombie:Show()
-	elseif spellID == 91834 then--Ghoul
+	elseif spellId == 91834 then--Ghoul
 		addCount = addCount + 1
 		warnGhoul:Show()
-	elseif spellID == 92228 then--Aberration
+	elseif spellId == 92228 then--Aberration
 		addCount = addCount + 1
 		warnAberration:Show()
-	elseif spellID == 92606 then--Abomination
+	elseif spellId == 92606 then--Abomination
 		addCount = addCount + 1
 		warnAbomination:Show()
 	end

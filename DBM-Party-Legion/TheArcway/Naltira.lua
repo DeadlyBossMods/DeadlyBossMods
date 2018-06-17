@@ -91,8 +91,8 @@ end
 
 --UNIT_SPELLCAST_CHANNEL_STOP method dropped, not because it wasn't returning a valid target, but because DBMs target scanner methods don't work well with pets and fail to announce all strikes because of it
 --This method doesn't require target scanning but is 0.6 seconds slower, but won't have a chance to fail if boss targets stupid things like army or spirit beast.
-function mod:UNIT_SPELLCAST_CHANNEL_START(uId, _, _, spellGUID)
-	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
+function mod:UNIT_SPELLCAST_CHANNEL_START(uId, _, bfaSpellId, _, legacySpellId)
+	local spellId = legacySpellId or bfaSpellId
 	if spellId == 199811 then--Blink Strikes Channel ending
 		self.vb.blinkCount = self.vb.blinkCount + 1
 		local targetname = UnitExists("boss1target") and UnitName("boss1target")

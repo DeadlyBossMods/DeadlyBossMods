@@ -243,15 +243,15 @@ function mod:UNIT_AURA_UNFILTERED(uId)
 	end
 end
 
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, spellGUID)
-	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, bfaSpellId, _, legacySpellId)
+	local spellId = legacySpellId or bfaSpellId
 	if spellId == 233050 then--Infernal Spike
 		warnInfernalSpike:Show()
 		timerInfernalSpikeCD:Start()
 	elseif spellId == 233285 then--Rain of Brimston
 		self.vb.brimstoneCount = self.vb.brimstoneCount + 1
 		local nextCount = self.vb.brimstoneCount+1
-		specWarnRainofBrimstone:Show(spellName)
+		specWarnRainofBrimstone:Show(DBM:GetSpellInfo(spellId))
 		specWarnRainofBrimstone:Play("helpsoak")
 		--["233285-Rain of Brimstone"] = "pull:12.1, 60.4, 60.8, 60.8, 68.2, 60.0",
 		--["233285-Rain of Brimstone"] = "pull:12.2, 60.8, 60.8, 60.5, 68.5",

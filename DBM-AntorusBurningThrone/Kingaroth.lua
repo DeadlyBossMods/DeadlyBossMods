@@ -403,7 +403,8 @@ function mod:UNIT_DIED(args)
 	end
 end
 
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, bfaSpellId, _, legacySpellId)
+	local spellId = legacySpellId or bfaSpellId
 	if spellId == 248319 then--Consume Energy 100% (reaver fully charged and activated)
 		--Info Frame usage situation?
 	elseif spellId == 246686 then--Decimation (ignore 246691 I'm pretty sure)
