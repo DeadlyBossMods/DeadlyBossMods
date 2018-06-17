@@ -124,7 +124,8 @@ function mod:UNIT_AURA_UNFILTERED(uId)
 end
 
 --TODO, syncing maybe do to size and spread in room, not all nameplates will be caught by one person
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID, spellId)
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, bfaSpellId, _, legacySpellId)
+	local spellId = legacySpellId or bfaSpellId
 	--"<51.81 19:21:30> [UNIT_SPELLCAST_SUCCEEDED] Unknown(??) [[nameplate1:Shadow of Mephistroth Cosmetic::3-3020-1677-21626-234034-00025D92FA:234034]]", -- [308]
 	if spellId == 234034 then--Only will trigger if nameplate is in range
 		local guid = UnitGUID(uId)

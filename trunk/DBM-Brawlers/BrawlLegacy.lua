@@ -309,7 +309,8 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
-function mod:UNIT_SPELLCAST_INTERRUPTED(uId, _, _, _, spellId)
+function mod:UNIT_SPELLCAST_INTERRUPTED(uId, _, bfaSpellId, _, legacySpellId)
+	local spellId = legacySpellId or bfaSpellId
 	if not brawlersMod.Options.SpectatorMode and not brawlersMod:PlayerFighting() then return end--Spectator mode is disabled, do nothing.
 	if spellId == 133346 and self:AntiSpam() then
 		timerDarkZoneCD:Start(4)--Interrupting dark zone does not put it on cd, he will recast it 4 seconds later
@@ -317,7 +318,8 @@ function mod:UNIT_SPELLCAST_INTERRUPTED(uId, _, _, _, spellId)
 end
 
 --It is however the ONLY event you can detect this spell using.
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, bfaSpellId, _, legacySpellId)
+	local spellId = legacySpellId or bfaSpellId
 	if not brawlersMod.Options.SpectatorMode and not brawlersMod:PlayerFighting() then return end--Spectator mode is disabled, do nothing.
 	if spellId == 133253 and self:AntiSpam() then
 		warnCharging:Show()

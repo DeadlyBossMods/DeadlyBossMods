@@ -614,7 +614,8 @@ function mod:UNIT_DIED(args)
 	end
 end
 
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, _, spellId)
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, bfaSpellId, _, legacySpellId)
+	local spellId = legacySpellId or bfaSpellId
 	if spellId == 245993 then--Scorching Blaze
 		timerScorchingBlazeCD:Start()
 	elseif spellId == 254451 then--Ravenous Blaze (mythic replacement for Scorching Blaze)
@@ -658,7 +659,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, _, spellId)
 		timerTaeshalachTechCD:Start(nil, self.vb.techCount+1)
 		countdownTaeshalachTech:Start()
 		if self.Options.InfoFrame then
-			DBM.InfoFrame:SetHeader(spellName)
+			DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(spellId))
 			DBM.InfoFrame:Show(5, "function", updateInfoFrame, false, false, true)
 		end
 	elseif spellId == 244792 and self.vb.techActive then--Burning Will of Taeshalach (technique ended)
