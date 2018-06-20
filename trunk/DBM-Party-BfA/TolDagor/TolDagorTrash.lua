@@ -25,7 +25,7 @@ local specWarnWateryDome			= mod:NewSpecialWarningDispel(258153, "MagicDispeller
 function mod:SPELL_CAST_START(args)
 	if not self.Options.Enabled then return end
 	local spellId = args.spellId
-	if spellId == 259711 then
+	if spellId == 259711 and self:IsValidWarning(args.sourceGUID) then
 		specWarnLockdown:Show()
 		specWarnLockdown:Play("watchstep")
 	end

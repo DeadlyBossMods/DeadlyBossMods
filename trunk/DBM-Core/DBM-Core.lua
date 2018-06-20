@@ -7322,6 +7322,14 @@ function bossModPrototype:IsTrivial(level)
 	return false
 end
 
+function bossModPrototype:IsValidWarning(sourceGUID)
+	for uId in DBM:GetGroupMembers() do
+		local target = uId.."target"
+		if UnitExists(target) and UnitGUID(target) == sourceGUID and UnitAffectingCombat(target) then return true end
+	end
+	return false
+end
+
 --Skip param is used when CheckInterruptFilter is actually being used for a simpe target/focus check and nothing more.
 --checkCooldown should never be passed with skip or COUNT interrupt warnings. It should be passed with any other interrupt filter
 function bossModPrototype:CheckInterruptFilter(sourceGUID, skip, checkCooldown)
