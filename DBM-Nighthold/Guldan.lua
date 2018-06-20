@@ -562,7 +562,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellBondsofFel:Yell(count, count, count)
 		else
 			local uId = DBM:GetRaidUnitId(name)
-			if self:IsTank() and not self:IsTanking("player", "boss1", nil, true) then
+			if self:IsTanking(uId, "boss1") and not self:IsTanking("player", "boss1", nil, true) then
 				--secondary warning, in case first one didn't go through
 				if self:AntiSpam(5, name) then
 					specWarnBondsofFelTank:Show(name)
