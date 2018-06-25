@@ -55,7 +55,7 @@ TempleofSethraliss\Galvazzt.lua
 TempleofSethraliss\AvatarofSethraliss.lua
 TempleofSethraliss\SethralissTrash.lua
 TheMotherload\CrowdPummeler.lua
-TheMotherload\Tikali.lua
+TheMotherload\Azerokk.lua
 TheMotherload\RixxaFluxflame.lua
 TheMotherload\MogulRazzdunk.lua
 TheMotherload\UndermineTrash.lua

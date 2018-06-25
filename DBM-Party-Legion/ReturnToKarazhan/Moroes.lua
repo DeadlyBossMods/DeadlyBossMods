@@ -55,18 +55,17 @@ local timerWillBreakerCD			= mod:NewAITimer(40, 227672, nil, "Tank", nil, 5)
 --mod:AddSetIconOption("SetIconOnCharge", 198006, true)
 mod:AddInfoFrameOption(227909, true)
 
-local ccList = {
-	[1] = DBM:GetSpellInfo(227909),--Trap included with fight
-	[2] = DBM:GetSpellInfo(6770),--Rogue Sap
-	[3] = DBM:GetSpellInfo(9484),--Priest Shackle
-	[4] = DBM:GetSpellInfo(20066),--Paladin Repentance
-	[5] = DBM:GetSpellInfo(118),--Mage Polymorph
-	[6] = DBM:GetSpellInfo(51514),--Shaman Hex
-	[7] = DBM:GetSpellInfo(3355),--Hunter Freezing Trap
-}
-
 local updateInfoFrame
 do
+	local ccList = {
+		[1] = DBM:GetSpellInfo(227909),--Trap included with fight
+		[2] = DBM:GetSpellInfo(6770),--Rogue Sap
+		[3] = DBM:GetSpellInfo(9484),--Priest Shackle
+		[4] = DBM:GetSpellInfo(20066),--Paladin Repentance
+		[5] = DBM:GetSpellInfo(118),--Mage Polymorph
+		[6] = DBM:GetSpellInfo(51514),--Shaman Hex
+		[7] = DBM:GetSpellInfo(3355),--Hunter Freezing Trap
+	}
 	local lines = {}
 	local UnitDebuff, floor = UnitDebuff, math.floor
 	updateInfoFrame = function()
@@ -74,9 +73,9 @@ do
 		for i = 1, 5 do
 			local uId = "boss"..i
 			if UnitExists(uId) then
-				for s = 1, 7 do
+				for s = 1, #ccList do
 					local spellName = ccList[s]
-					local _, _, _, _, _, _, expires = UnitDebuff(uId, spellName)
+					local _, _, _, _, _, _, expires = DBM:UnitDebuff(uId, spellName)
 					if expires then
 						local debuffTime = expires - GetTime()
 						lines[UnitName(uId)] = floor(debuffTime)
