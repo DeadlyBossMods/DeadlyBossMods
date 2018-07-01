@@ -21,7 +21,7 @@ local specWarnAvalanche			= mod:NewSpecialWarningDodge(183088, "Tank", nil, nil,
 function mod:SPELL_CAST_START(args)
 	if not self.Options.Enabled then return end
 	local spellId = args.spellId
-	if spellId == 183088 then
+	if spellId == 183088 and self:AntiSpam(2, 2) then
 		specWarnAvalanche:Show()
 		specWarnAvalanche:Play("shockwave")
 	end
