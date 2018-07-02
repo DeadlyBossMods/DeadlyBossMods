@@ -99,7 +99,12 @@ L:SetOptionLocalization({
 	TwoMythicThreeNon	= "Wechsel bei 2 Stacks (mythisch) bzw. 3 Stacks (andere Schwierigkeitsgrade)",
 	TwoAlways			= "Wechsel immer bei 2 Stacks (unabhängig vom Schwierigkeitsgrad)",
 	ThreeAlways			= "Wechsel immer bei 3 Stacks (unabhängig vom Schwierigkeitsgrad)",
-	SetLighting			= "Grafikeinstellung 'Beleuchtungsqualität' automat. auf 'Niedrig' setzen (wird nach dem Kampfende auf die vorherige Einstellung zurückgesetzt)"
+	SetLighting			= "Grafikeinstellung 'Beleuchtungsqualität' automat. auf 'Niedrig' setzen (wird nach dem Kampfende auf die vorherige Einstellung zurückgesetzt)",
+	InterruptBehavior	= "Setze Unterbrechungsverhalten für Schlachtzug (nur als Schlachtzugsleiter)",
+	Three				= "3-Personen-Rotation",
+	Four				= "4-Personen-Rotation",
+	Five				= "5-Personen-Rotation",
+	IgnoreFirstKick		= "Allererste Unterbrechung bei der Rotation nicht berücksichtigen (nur als Schlachtzugsleiter)"
 })
 
 ---------------------------

@@ -131,6 +131,10 @@ L= DBM:GetModLocalization(1487)
 -----------------------
 L= DBM:GetModLocalization(1488)
 
+L:SetMiscLocalization({
+	SkovaldRP		= "Nein! Auch ich habe mich bewiesen, Odyn. Ich bin Gottkönig Skovald! Diese Sterblichen werden mir die Aegis nicht streitig machen!"
+})
+
 -----------------------
 -- Odyn --
 -----------------------
@@ -301,7 +305,7 @@ L:SetMiscLocalization({
 	Pouch2			= "Ein Freund behauptet, dass der Spion Gold liebt und einen Gürtelbeutel voll davon hat.",
 	Pouch3			= "Ich hörte, dass der Gürtelbeutel des Spions mit ausgefallenem Garn gesäumt wurde.",
 	Pouch4			= "Mir ist zu Ohren gekommen, dass der Gürtelbeutel des Spions mit Gold gefüllt ist, um besonders extravagant zu erscheinen.",
-	Found			= "Now now, let's not get hasty",--translate (trigger)
+	Found			= "Now now, let's not be hasty",--translate (trigger)
 	--
 	Gloves			= "Handschuhe",
 	NoGloves		= "keine Handschuhe",

@@ -28,6 +28,10 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	Bizmo			= "Bizmo",--Alliance
 	Bazzelflange	= "Boss Nobelflansch",--Horde
+	BizmoIgnored	= "We Don't have all night. Hurry it up already!",--translate (trigger)
+	BizmoIgnored2	= "Do you smell smoke?",--translate (trigger)
+	BizmoIgnored3	= "I think it's about time to call this fight.",--translate (trigger)
+	BizmoIgnored4	= "Is it getting hot in here? Or is it just me?",--translate (trigger)
 	--I wish there was a better way to do this....so much localizing. :(
 	Rank1			= "ersten Ranges",
 	Rank2			= "zweiten Ranges",
