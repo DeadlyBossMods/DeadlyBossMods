@@ -6625,7 +6625,7 @@ do
 			SetMapToCurrentZone()
 			currentMapId = C_Map and C_Map.GetCurrentMapID("player") or GetCurrentMapAreaID()
 		end
-		local currentMapName = C_Map and C_Map.GetMapInfo(currentMapId) or GetMapNameByID(currentMapId)
+		local currentMapName = C_Map and C_Map.GetMapInfo(currentMapId) or GetMapNameByID and GetMapNameByID(currentMapId) or DBM_CORE_UNKNOWN
 		if IsInRaid() then
 			for i = 1, GetNumGroupMembers() do
 				if isInInstance and select(4, UnitPosition("raid"..i)) == currentMapId or select(7, GetRaidRosterInfo(i)) == currentMapName then
