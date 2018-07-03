@@ -29,9 +29,9 @@ local timerFearCD				 mod:NewAITimer(13, 255371, nil, nil, nil, 2)
 local timerPursuitCD			 mod:NewAITimer(13, 257407, nil, nil, nil, 3)
 
 function mod:OnCombatStart(delay)
-	timerTeethCD:Start(1)
-	timerFearCD:Start(1)
-	timerPursuitCD:Start(1)
+	timerTeethCD:Start(1-delay)
+	timerFearCD:Start(1-delay)
+	timerPursuitCD:Start(1-delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
