@@ -32,7 +32,7 @@ local timerFlashingDaggerCD			= mod:NewCDTimer(31.6, 257785, nil, nil, nil, 2, n
 --mod:AddRangeFrameOption(5, 194966)
 
 function mod:OnCombatStart(delay)
-	timerCripShivCD:start(7.2-delay)--SUCCESS
+	timerCripShivCD:Start(7.2-delay)--SUCCESS
 	timerHowlingFearCD:Start(8.5-delay)
 	timerFlashingDaggerCD:Start(12.2-delay)
 end
