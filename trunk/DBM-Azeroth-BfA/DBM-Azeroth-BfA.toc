@@ -25,4 +25,5 @@ Tzane.lua
 Jiarak.lua
 HailstoneConstruct.lua
 Azurethos.lua
+DoomsHowl.lua
 Yenajz.lua
