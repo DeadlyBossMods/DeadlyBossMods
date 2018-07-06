@@ -1,9 +1,15 @@
-local mod	= DBM:NewMod(2213, "DBM-Azeroth-BfA", nil, 1028)
+local dungeonID, creatureID
+if UnitFactionGroup("player") == "Alliance" then
+	dungeonID, creatureID = 2213, 138122--Dooms Howl
+else
+	dungeonID, creatureID = 2212, 137374--Lion's Roar
+end
+local mod	= DBM:NewMod(dungeonID, "DBM-Azeroth-BfA", nil, 1028)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
-mod:SetCreatureID(138122)
---mod:SetEncounterID(1880)
+mod:SetCreatureID(creatureID)--Dooms Howl 138122, Lion's Roar 137374
+--mod:SetEncounterID(encounterID)
 mod:SetReCombatTime(20)
 mod:SetZone()
 --mod:SetMinSyncRevision(11969)
