@@ -2,7 +2,7 @@
 -- Diablohu(diablohudream@gmail.com)
 -- yleaf(yaroot@gmail.com)
 -- Mini Dragon(projecteurs@gmail.com)
--- Last update: 2018/05/12
+-- Last update: 2018/07/10
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -257,6 +257,7 @@ DBM_CORE_UNKNOWN					= "未知"
 DBM_CORE_LEFT						= "左"
 DBM_CORE_RIGHT						= "右"
 DBM_CORE_BACK						= "后"
+DBM_CORE_SIDE						= "旁边"
 DBM_CORE_MIDDLE						= "中"
 DBM_CORE_FRONT						= "前"
 DBM_CORE_EAST						= "东"
@@ -350,6 +351,7 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS.taunt				= ">%%s<中了%s - 快嘲讽"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.close				= "你附近的>%%s<中了%s"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.move				= "%s - 快躲开"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.dodge				= "%s - 躲开攻击"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.dodgeloc			= "%s - 躲开%%s边"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.moveaway			= "%s - 离开人群"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.moveto			= "%s - 靠近 >%%s<"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.jump				= "%s - 快跳"
@@ -385,6 +387,7 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS.taunt 			= "特殊警报：当另外一个T中�
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.close			= "特殊警报：当你附近有人受到$spell:%s影响时"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.move			= "特殊警报：当你受到$spell:%s影响时"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.dodge			= "特殊警报：当你受到$spell:%s影响并需要躲开攻击"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.dodgeloc		= "特殊警报：当你受到$spell:%s影响并需要朝某个方向躲开攻击"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.moveaway		= "特殊警报：当你受到$spell:%s影响并需要跑开人群时"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.moveto			= "特殊警报：当他人中了$spell:%s并需要你去靠近时"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.jump			= "特殊警报：当你受到$spell:%s影响并需要跳起来时"

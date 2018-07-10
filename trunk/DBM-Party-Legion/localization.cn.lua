@@ -135,6 +135,10 @@ L= DBM:GetModLocalization(1487)
 -----------------------
 L= DBM:GetModLocalization(1488)
 
+L:SetMiscLocalization({
+	SkovaldRP		= 	"不！我也证明了自己，奥丁。我是神王斯科瓦尔德！这些凡人休想抢走我的圣盾！"
+})
+
 -----------------------
 -- Odyn --
 -----------------------
