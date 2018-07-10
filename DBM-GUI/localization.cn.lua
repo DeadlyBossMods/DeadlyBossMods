@@ -2,7 +2,7 @@
 -- yleaf(yaroot@gmail.com)
 -- sunlcy@NGA
 -- Mini Dragon(projecteurs@gmail.com)
--- Last update: 2018/05/12
+-- Last update: 2018/07/10
 
 if GetLocale() ~= "zhCN" then return end
 if not DBM_GUI_Translations then DBM_GUI_Translations = {} end
@@ -244,8 +244,8 @@ L.Panel_SpamFilter			= "DBM全局过滤"
 L.Area_SpamFilter_Outgoing	= "DBM全局过滤设置"
 L.SpamBlockNoShowAnnounce	= "不显示警报或播放警报音效"
 L.SpamBlockNoShowTgtAnnounce= "不显示针对目标类型的警报或播放警报音效(上面那个优先级比这个高)"
-L.SpamBlockNoSpecWarn		= "不要显示特殊特殊警报和特殊警报音效"
-L.SpamBlockNoSpecWarnText	= "Do not show special warning text, but still allow voice packs (above filter overrides this one)"
+L.SpamBlockNoSpecWarn		= "不要显示特殊警报和特殊警报音效"
+L.SpamBlockNoSpecWarnText	= "不要显示特殊警报，但允许语音包(上面那个优先级比这个高)"
 L.SpamBlockNoShowTimers		= "不显示DBM原装计时条"
 L.SpamBlockNoShowUTimers	= "不显示用户自定生成的计时条"
 L.SpamBlockNoSetIcon		= "不在目标上设定标记"
@@ -269,7 +269,10 @@ L.StripServerName			= "警告和计时器中不显示服务器名"
 
 L.Area_SpecFilter			= "角色过滤选项"
 L.FilterTankSpec			= "当非坦克专精时，过滤掉给予坦克的专用信息"
-L.FilterInterrupts			= "当目标没有被选中或设置为焦点时，过滤掉打断提示 (注意: 这对那些不打断就灭团的技能无效)"
+L.FilterInterruptsHeader	= "基于行为偏好的打断技能提示过滤"
+L.FilterInterrupts			= "如果被打断对象不是当前目标/焦点(总是)"
+L.FilterInterrupts2			= "如果被打断对象不是当前目标/焦点(总是)或者打断技能正在冷却(限Boss)"
+L.FilterInterrupts3			= "如果被打断对象不是当前目标/焦点(总是)或者打断技能正在冷却(Boss和小怪)"
 L.FilterInterruptNoteName	= "当自定义注记内没有包含你的名字的时候，过滤掉打断提示 (带计数)"
 L.FilterDispels				= "当驱散技能在冷却时, 过滤掉驱散提示"
 L.FilterSelfHud				= "把自己从HudMap中过滤掉 (不包括和距离有关的功能)"
