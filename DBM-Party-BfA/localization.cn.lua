@@ -1,7 +1,7 @@
 -- Mini Dragon(projecteurs@gmail.com)
 -- 夏一可
 -- Blizzard Entertainment
--- Last update: 2018/05/12
+-- Last update: 2018/07/12
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -56,6 +56,10 @@ L= DBM:GetModLocalization(2093)
 -----------------------
 L= DBM:GetModLocalization(2094)
 
+L:SetMiscLocalization({
+	openingRP = "来来来，下注了！又来了一群受害——呃，参赛者！交给你们了，古尔戈索克和伍迪！" --official
+})
+
 -----------------------
 -- Harlan Sweete --
 -----------------------
@@ -78,6 +82,21 @@ L:SetGeneralLocalization({
 -----------------------
 L= DBM:GetModLocalization(2165)
 
+-----------------------
+-- Mummification Construct --
+-----------------------
+L= DBM:GetModLocalization(2171)
+
+-----------------------
+-- The Warring Warlords --
+-----------------------
+L= DBM:GetModLocalization(2170)
+
+-----------------------
+-- Dazar, The First King --
+-----------------------
+L= DBM:GetModLocalization(2172)
+
 ---------
 --Trash--
 ---------
@@ -96,17 +115,21 @@ L:SetGeneralLocalization({
 L= DBM:GetModLocalization(2153)
 
 -----------------------
--- Council --
+-- Tidesage Council --
 -----------------------
 L= DBM:GetModLocalization(2154)
 
 -----------------------
--- Priest --
+-- Lord Stormsong --
 -----------------------
 L= DBM:GetModLocalization(2155)
 
+L:SetMiscLocalization({
+	openingRP	= "看来你有客人来了，斯托颂勋爵。" --official
+})
+
 -----------------------
--- Faceless --
+-- Vol'zith the Whisperer --
 -----------------------
 L= DBM:GetModLocalization(2156)
 
@@ -123,7 +146,12 @@ L:SetGeneralLocalization({
 -- <<<Siege of Boralus >>> --
 -----------------------
 -----------------------
--- Chopper Redhook --
+-- Dread Captain Lockwood --
+-----------------------
+L= DBM:GetModLocalization(2173)
+
+-----------------------
+-- Chopper Redhook / Sergeant Bainbridge --
 -----------------------
 L= DBM:GetModLocalization(2132)
 
@@ -280,17 +308,17 @@ L:SetGeneralLocalization({
 -- <<<Waycrest Manor>>> --
 -----------------------
 -----------------------
--- Witch Council --
+-- Heartsbane Triad --
 -----------------------
 L= DBM:GetModLocalization(2125)
 
 -----------------------
--- Wicker Goliath --
+-- Soulbound Goliath --
 -----------------------
 L= DBM:GetModLocalization(2126)
 
 -----------------------
--- Gluttony --
+-- Raal the Gluttonous --
 -----------------------
 L= DBM:GetModLocalization(2127)
 
