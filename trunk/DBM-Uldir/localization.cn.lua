@@ -1,7 +1,7 @@
 -- Mini Dragon(projecteurs@gmail.com)
 -- 夏一可
 -- Blizzard Entertainment
--- Last update: 2018/05/12
+-- Last update: 2018/07/12
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -31,9 +31,9 @@ L= DBM:GetModLocalization(2146)
 L= DBM:GetModLocalization(2169)
 
 L:SetMiscLocalization({
-	CThunDisc	 =	"Disc accessed. C'thun data loading.",
-	YoggDisc	 =	"Disc accessed. Yogg-Saron data loading.",
-	CorruptedDisc =	"Disc accessed. Corrupted data loading."
+	CThunDisc 			= 	"检索圆盘成功。正在读取克苏恩数据。",
+	YoggDisc 			= 	"检索圆盘成功。正在读取尤格-萨隆数据。",
+	CorruptedDisc 		= 	"检索圆盘成功。正在读取损坏数据。"  --official
 })
 
 ---------------------------
