@@ -128,7 +128,7 @@ do
 		for i = 1, #argusTargets do
 			local name = argusTargets[i]
 			local uId = DBM:GetRaidUnitId(name)
-			if uId and UnitDebuff(uId, argusDebuff) then
+			if uId and DBM:UnitDebuff(uId, argusDebuff) then
 				addLine(name, i)
 			end
 		end
@@ -250,7 +250,7 @@ function mod:SPELL_CAST_START(args)
 			timerSeekerSwarmCD:Start(timer, self.vb.seekerSwarmCast+1)
 			countdownSeekerSwarm:Start(timer)
 		end
-		if UnitDebuff("player", carrionDebuff) then
+		if DBM:UnitDebuff("player", carrionDebuff) then
 			yellSeekerSwarm:Yell()
 			specWarnSeekerSwarm:Play("targetyou")
 		else

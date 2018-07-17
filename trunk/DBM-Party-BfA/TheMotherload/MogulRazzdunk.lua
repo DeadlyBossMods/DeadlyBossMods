@@ -78,7 +78,7 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 260280 then
 		specWarnGatlingGun:Show()
 		specWarnGatlingGun:Play("shockwave")
-		specWarnGatlingGun:Start()
+		timerGatlingGunCD:Start()
 	elseif spellId == 260811 then
 		specWarnHomingMissile:Show()
 		--specWarnHomingMissile:Play("")

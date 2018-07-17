@@ -22,7 +22,6 @@ mod:RegisterEventsInCombat(
 --	"SPELL_MISSED 248329",
 	"UNIT_DIED",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
-	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5",
 	"UNIT_SPELLCAST_CHANNEL_STOP boss1 boss2 boss3 boss4 boss5",
 	"UNIT_SPELLCAST_STOP boss1 boss2 boss3 boss4 boss5"
 )
@@ -502,8 +501,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 	end
 end
 
-function mod:UNIT_SPELLCAST_CHANNEL_STOP(uId, _, bfaSpellId, _, legacySpellId)
-	local spellId = legacySpellId or bfaSpellId
+function mod:UNIT_SPELLCAST_CHANNEL_STOP(uId, _, spellId)
 	if spellId == 249121 then
 		timerFinalDoom:Stop()
 	end

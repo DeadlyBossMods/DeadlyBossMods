@@ -47,7 +47,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 193698 then
 		warnCurseofWitch:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
-			local _, _, _, _, _, _, expires = DBM:UnitDebuff("player", args.spellName)
+			local _, _, _, _, _, expires = DBM:UnitDebuff("player", args.spellName)
 			local debuffTime = expires - GetTime()
 			yellCurseofWitch:Schedule(debuffTime-1, 1)
 			yellCurseofWitch:Schedule(debuffTime-2, 2)

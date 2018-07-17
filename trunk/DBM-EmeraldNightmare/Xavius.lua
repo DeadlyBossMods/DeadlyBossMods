@@ -102,7 +102,6 @@ local darkSoul, blackSoul, dreamDebuff, blackened = DBM:GetSpellInfo(206651), DB
 local bladesTarget = {}
 local gatherTarget = {}
 local playerName = UnitName("player")
-local UnitDebuff = UnitDebuff
 local playerHasDream = false
 mod.vb.phase = 1
 mod.vb.lurkingCount = 0
@@ -114,13 +113,13 @@ mod.vb.dreamCount = 0
 
 local function updateRangeFrame(self)
 	if not self.Options.RangeFrame then return end
-	if UnitDebuff("player", darkSoul) then
+	if DBM:UnitDebuff("player", darkSoul) then
 		if self:IsEasy() then
 			DBM.RangeCheck:Show(15)
 		else
 			DBM.RangeCheck:Show(25)
 		end
-	elseif UnitDebuff("player", blackSoul) then
+	elseif DBM:UnitDebuff("player", blackSoul) then
 		DBM.RangeCheck:Show(10)--10 for tainted discharge?
 	elseif self.vb.phase == 1 then--Maybe only show for ranged?
 		DBM.RangeCheck:Show(6)--Will be rounded up by 7.1 restrictions in 
@@ -205,7 +204,7 @@ function mod:SPELL_CAST_START(args)
 			warnNightmareInfusion:Show()
 		else
 			--Player has dream buff and current tank does NOT so TAUNT warning.
-			if playerHasDream and not UnitDebuff(uId, dreamDebuff) then
+			if playerHasDream and not DBM:UnitDebuff(uId, dreamDebuff) then
 				specWarnNightmareInfusionOther:Show(targetName)
 				specWarnNightmareInfusionOther:Play("tauntboss")
 			end
@@ -309,7 +308,7 @@ function mod:SPELL_AURA_APPLIED(args)
 						end
 					end
 				end
-				if not filterWarning and not UnitDebuff("player", blackened) then
+				if not filterWarning and not DBM:UnitDebuff("player", blackened) then
 					specWarnBlackeningSoulOther:Show(args.destName)
 					specWarnBlackeningSoulOther:Play("tauntboss")
 				end

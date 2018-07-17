@@ -235,7 +235,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if amount >= 2 then
 			if not args:IsPlayer() and not UnitIsDeadOrGhost("player") then
 				local warnPlayer = false
-				local _, _, _, _, _, _, expireTime = DBM:UnitDebuff("player", args.spellName)
+				local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", args.spellName)
 				if expireTime then--Debuff, make sure it'll be gone before next slash
 					local remainingDebuff = expireTime-GetTime()
 					local arcaneSlashRemaining = timerArcaneSlashCD:GetRemaining() or 0
