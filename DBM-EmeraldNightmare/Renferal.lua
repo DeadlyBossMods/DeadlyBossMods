@@ -102,14 +102,14 @@ local function findDebuff(self, spellName, spellId)
 	local found = 0
 	for uId in DBM:GetGroupMembers() do
 		local name = DBM:GetUnitFullName(uId)
-		if UnitDebuff(uId, spellName) then
+		if DBM:UnitDebuff(uId, spellName) then
 			found = found + 1
 			if spellId == 210864 then
 				warnTwistingShadows:CombinedShow(0.1, self.vb.twistedCast, name)
 				if name == UnitName("player") then
 					specWarnTwistingShadows:Show()
 					specWarnTwistingShadows:Play("runout")
-					local _, _, _, _, _, _, expires = UnitDebuff("Player", spellName)
+					local _, _, _, _, _, expires = DBM:UnitDebuff("Player", spellName)
 					local debuffTime = expires - GetTime()
 					if debuffTime then
 						yellTwistingShadows:Schedule(debuffTime-1, 1)
@@ -122,7 +122,7 @@ local function findDebuff(self, spellName, spellId)
 				if name == UnitName("player") then
 					specWarnNecroticVenom:Show()
 					specWarnNecroticVenom:Play("runout")
-					local _, _, _, _, _, _, expires = UnitDebuff("Player", spellName)
+					local _, _, _, _, _, expires = DBM:UnitDebuff("Player", spellName)
 					local debuffTime = expires - GetTime()
 					if debuffTime then
 						yellNecroticVenom:Schedule(debuffTime - 1, 1)

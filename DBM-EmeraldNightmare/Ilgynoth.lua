@@ -455,7 +455,7 @@ function mod:SPELL_AURA_APPLIED(args)
 					specWarnEyeOfFate:Show(amount)
 					specWarnEyeOfFate:Play("stackhigh")
 				else--Taunt as soon as stacks are clear, regardless of stack count.
-					local _, _, _, _, _, _, expireTime = DBM:UnitDebuff("player", args.spellName)
+					local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", args.spellName)
 					if not UnitIsDeadOrGhost("player") and (not expireTime or expireTime and expireTime-GetTime() < 10) then
 						specWarnEyeOfFateOther:Show(args.destName)
 						specWarnEyeOfFateOther:Play("changemt")

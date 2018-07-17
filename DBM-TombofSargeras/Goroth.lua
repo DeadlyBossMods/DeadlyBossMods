@@ -177,7 +177,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				end
 			end
 		else
-			local _, _, _, _, _, _, expires = DBM:UnitDebuff("player", tankDebuff)
+			local _, _, _, _, _, expires = DBM:UnitDebuff("player", tankDebuff)
 			if expires then
 				local remaining = expires-GetTime()
 				specWarnBurningArmorTaunt:Schedule(remaining, args.destName)
@@ -222,8 +222,7 @@ function mod:UNIT_AURA_UNFILTERED(uId)
 	local name = DBM:GetUnitFullName(uId)
 	if hasDebuff and not cometTable[name] then--Any version of comet
 		for i = 1, 40 do
-			local spellName, _, _, _, _, _, _, _, _, _, spellId = DBM:UnitDebuff(uId, i)
-			if spellId == 232249 then--Correct version of comet
+			if DBM:UnitDebuff(uId, 232249) then--Correct version of comet
 				cometTable[name] = true
 				warnCrashingComet:CombinedShow(0.5, name)--Multiple targets in heroic/mythic
 				if UnitIsUnit(uId, "player") then

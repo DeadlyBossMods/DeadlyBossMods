@@ -46,7 +46,7 @@ do
 		[7] = DBM:GetSpellInfo(3355),--Hunter Freezing Trap
 	}
 	local lines = {}
-	local UnitDebuff, floor = UnitDebuff, math.floor
+	local floor = math.floor
 	updateInfoFrame = function()
 		table.wipe(lines)
 		for i = 1, 5 do
