@@ -108,7 +108,7 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 function mod:UNIT_AURA_UNFILTERED(uId)
-	local hasDebuff = UnitDebuff(uId, demonicUpheaval)
+	local hasDebuff = DBM:UnitDebuff(uId, demonicUpheaval)
 	local name = DBM:GetUnitFullName(uId)
 	if not hasDebuff and demonicUpheavalTable[name] then
 		demonicUpheavalTable[name] = nil

@@ -99,7 +99,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnInfernoBoltMoveTo:Show(frostBiteName)
 				specWarnInfernoBoltMoveTo:Play("gather")
 			end
-		elseif self:CheckNearby(8, args.destName) and not UnitDebuff("player", frostBiteName) and not UnitDebuff("player", flameWreathName) then
+		elseif self:CheckNearby(8, args.destName) and not DBM:UnitDebuff("player", frostBiteName) and not DBM:UnitDebuff("player", flameWreathName) then
 			specWarnInfernoBoltNear:Show(args.destName)
 			specWarnInfernoBoltNear:Play("scatter")
 		else

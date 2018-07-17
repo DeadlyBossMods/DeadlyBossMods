@@ -153,12 +153,11 @@ local dragons = {}
 local hunters = {}
 local wolves = {}
 local playerAffected = false
-local UnitDebuff = UnitDebuff
 local voidWarned = false
 local chilledFilter, tankFilter
 do
 	chilledFilter = function(uId)
-		if UnitDebuff(uId, chilledDebuff) then
+		if DBM:UnitDebuff(uId, chilledDebuff) then
 			return true
 		end
 	end
@@ -177,25 +176,25 @@ do
 		local infoNeeded = false
 		--Star Signs Helper
 		--If player has debuff, find and show other players with same debuff as player
-		if UnitDebuff("player", crabDebuff) then
+		if DBM:UnitDebuff("player", crabDebuff) then
 			infoNeeded = true
 			for i = 1, #crabs do
 				local name = crabs[i]
 				lines[name] = ""
 			end
-		elseif UnitDebuff("player", dragonDebuff) then
+		elseif DBM:UnitDebuff("player", dragonDebuff) then
 			infoNeeded = true
 			for i = 1, #dragons do
 				local name = dragons[i]
 				lines[name] = ""
 			end
-		elseif UnitDebuff("player", hunterDebuff) then
+		elseif DBM:UnitDebuff("player", hunterDebuff) then
 			infoNeeded = true
 			for i = 1, #hunters do
 				local name = hunters[i]
 				lines[name] = ""
 			end
-		elseif UnitDebuff("player", wolfDebuff) then
+		elseif DBM:UnitDebuff("player", wolfDebuff) then
 			infoNeeded = true
 			for i = 1, #wolves do
 				local name = wolves[i]
@@ -230,13 +229,13 @@ end
 
 local function updateRangeFrame(self, force)
 	if not self.Options.RangeFrame then return end
-	if UnitDebuff("player", icyEjectionDebuff) or UnitDebuff("player", coronalEjectionDebuff) then
+	if DBM:UnitDebuff("player", icyEjectionDebuff) or DBM:UnitDebuff("player", coronalEjectionDebuff) then
 		DBM.RangeCheck:Show(8)
 	elseif self.vb.phase == 2 and self:IsTank() then--Spread for iceburst
 		DBM.RangeCheck:Show(6)
-	elseif UnitDebuff("Player", gravPullDebuff) or UnitDebuff("player", voidEjectionDebuff) or force or self.vb.StarSigns > 0 then
+	elseif DBM:UnitDebuff("Player", gravPullDebuff) or DBM:UnitDebuff("player", voidEjectionDebuff) or force or self.vb.StarSigns > 0 then
 		DBM.RangeCheck:Show(5)
-	elseif UnitDebuff("player", abZeroDebuff) then
+	elseif DBM:UnitDebuff("player", abZeroDebuff) then
 		DBM.RangeCheck:Show(8, chilledFilter)
 	elseif self.vb.phase == 2 and self:IsMelee() then--Avoid tanks iceburst
 		DBM.RangeCheck:Show(6, tankFilter)
@@ -247,20 +246,20 @@ end
 
 --This function went from pretty to ugly but it should work
 local function showConjunction(self)
-	if UnitDebuff("player", crabDebuff) then
+	if DBM:UnitDebuff("player", crabDebuff) then
 		warnStarSignCrab:Show(table.concat(crabs, "<, >"))
-	elseif UnitDebuff("player", dragonDebuff) then
+	elseif DBM:UnitDebuff("player", dragonDebuff) then
 		warnStarSignDragon:Show(table.concat(dragons, "<, >"))
-	elseif UnitDebuff("player", hunterDebuff) then
+	elseif DBM:UnitDebuff("player", hunterDebuff) then
 		warnStarSignHunter:Show(table.concat(hunters, "<, >"))
-	elseif UnitDebuff("player", wolfDebuff) then
+	elseif DBM:UnitDebuff("player", wolfDebuff) then
 		warnStarSignWolf:Show(table.concat(wolves, "<, >"))
 	end
 end
 
 local function updateConjunctionYell(self, spellName, icon)
 	if not self.Options.ConjunctionYellFilter then return end
-	if UnitDebuff("player", spellName) then
+	if DBM:UnitDebuff("player", spellName) then
 		yellConjunctionSign:Yell(icon, "", icon)
 		self:Schedule(2, updateConjunctionYell, self, spellName, icon)
 	end
@@ -484,7 +483,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 205984 or spellId == 214335 or spellId == 214167 then
 		if args:IsPlayer() then
 			updateRangeFrame(self)
-			local _, _, _, _, _, duration, expires, _, _ = UnitDebuff("player", args.spellName)
+			local _, _, _, _, duration, expires = DBM:UnitDebuff("player", args.spellName)
 			if expires then
 				local remaining = expires-GetTime()
 				countdownGravPull:Start(remaining)
@@ -529,7 +528,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnVoidEjection:Show()
 			specWarnVoidEjection:Play("runout")
 		end
-	elseif spellId == 206398 and args:IsPlayer() and self:AntiSpam(2, 1) and not UnitDebuff("Player", gravPullDebuff) then
+	elseif spellId == 206398 and args:IsPlayer() and self:AntiSpam(2, 1) and not DBM:UnitDebuff("Player", gravPullDebuff) then
 		specWarnFelFlame:Show()
 	end
 end
@@ -587,7 +586,7 @@ end
 
 --[[
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
-	if spellId == 206398 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) and not UnitDebuff("Player", gravPullDebuff) then
+	if spellId == 206398 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) and not DBM:UnitDebuff("Player", gravPullDebuff) then
 		specWarnFelFlame:Show()
 		specWarnFelFlame:Play("runaway")
 	end
@@ -682,7 +681,7 @@ end
 
 do
 	function mod:UNIT_AURA(uId)
-		local hasDebuff = UnitDebuff("player", voidEjectionDebuff)
+		local hasDebuff = DBM:UnitDebuff("player", voidEjectionDebuff)
 		if hasDebuff and not voidWarned then
 			voidWarned = true
 			specWarnVoidEjection:Show()

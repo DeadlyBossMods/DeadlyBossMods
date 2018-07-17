@@ -167,7 +167,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 205420 then
 		self.vb.pitchCount = self.vb.pitchCount+ 1
 		specWarnBurningPitch:Show(self.vb.pitchCount)
-		if UnitDebuff("player", burningPitchDebuff) then
+		if DBM:UnitDebuff("player", burningPitchDebuff) then
 			specWarnBurningPitch:Play("watchstep")
 		else
 			specWarnBurningPitch:Play("helpsoak")
@@ -235,7 +235,7 @@ function mod:SPELL_AURA_APPLIED(args)
 						specWarnSearingBrand:Play("stackhigh")
 					end
 				else
-					if not UnitDebuff("player", args.spellName) and not UnitIsDeadOrGhost("player") then
+					if not DBM:UnitDebuff("player", args.spellName) and not UnitIsDeadOrGhost("player") then
 						specWarnSearingBrandOther:Show(args.destName)
 						specWarnSearingBrandOther:Play("tauntboss")
 					end

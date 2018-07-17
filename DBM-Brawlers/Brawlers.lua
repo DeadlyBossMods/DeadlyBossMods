@@ -267,7 +267,7 @@ end
 
 do
 	function mod:UNIT_AURA(uId)
-		local currentQueueRank = select(17, DBM:UnitBuff("player", QueuedBuff))
+		local currentQueueRank = select(16, DBM:UnitBuff("player", QueuedBuff))
 		if currentQueueRank and currentQueueRank ~= lastRank then
 			lastRank = currentQueueRank
 			if currentQueueRank ~= 0 then

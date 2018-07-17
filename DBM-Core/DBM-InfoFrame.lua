@@ -80,7 +80,6 @@ local twipe = table.wipe
 local select, tonumber = select, tonumber
 local mfloor = math.floor
 local getGroupId = DBM.GetGroupId
-local betaCompat = false
 
 -- for Phanx' Class Colors
 local RAID_CLASS_COLORS = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS
@@ -403,11 +402,7 @@ local function updateEnemyAbsorb()
 		if UnitExists(uId) then
 			local absorbAmount
 			if spellName then--Get specific spell absorb
-				if betaCompat then
-					absorbAmount = select(16, DBM:UnitBuff(uId, spellName)) or select(16, DBM:UnitDebuff(uId, spellName))
-				else
-					absorbAmount = select(17, DBM:UnitBuff(uId, spellName)) or select(17, DBM:UnitDebuff(uId, spellName))
-				end
+				absorbAmount = select(16, DBM:UnitBuff(uId, spellName)) or select(16, DBM:UnitDebuff(uId, spellName))
 			else--Get all of them
 				absorbAmount = UnitGetTotalAbsorbs(uId)
 			end
@@ -436,11 +431,7 @@ local function updateAllAbsorb()
 		if UnitExists(uId) then
 			local absorbAmount
 			if spellName then--Get specific spell absorb
-				if betaCompat then
-					absorbAmount = select(16, DBM:UnitBuff(uId, spellName)) or select(16, DBM:UnitDebuff(uId, spellName))
-				else
-					absorbAmount = select(17, DBM:UnitBuff(uId, spellName)) or select(17, DBM:UnitDebuff(uId, spellName))
-				end
+				absorbAmount = select(16, DBM:UnitBuff(uId, spellName)) or select(16, DBM:UnitDebuff(uId, spellName))
 			else--Get all of them
 				absorbAmount = UnitGetTotalAbsorbs(uId)
 			end
@@ -456,12 +447,7 @@ local function updateAllAbsorb()
 		end
 	end
 	for uId in DBM:GetGroupMembers() do
-		local absorbAmount
-		if betaCompat then
-			absorbAmount = select(16, DBM:UnitBuff(uId, spellName)) or select(16, DBM:UnitDebuff(uId, spellName))
-		else
-			absorbAmount = select(17, DBM:UnitBuff(uId, spellName)) or select(17, DBM:UnitDebuff(uId, spellName))
-		end
+		local absorbAmount = select(16, DBM:UnitBuff(uId, spellName)) or select(16, DBM:UnitDebuff(uId, spellName))
 		if absorbAmount then
 			local text
 			if totalAbsorb2 then
@@ -481,12 +467,7 @@ local function updatePlayerAbsorb()
 	local spellName = value[1]
 	local totalAbsorb = value[2]
 	for uId in DBM:GetGroupMembers() do
-		local absorbAmount
-		if betaCompat then
-			absorbAmount = select(16, DBM:UnitBuff(uId, spellName)) or select(16, DBM:UnitDebuff(uId, spellName))
-		else
-			absorbAmount = select(17, DBM:UnitBuff(uId, spellName)) or select(17, DBM:UnitDebuff(uId, spellName))
-		end
+		local absorbAmount = select(16, DBM:UnitBuff(uId, spellName)) or select(16, DBM:UnitDebuff(uId, spellName))
 		if absorbAmount then
 			local text
 			if totalAbsorb then
@@ -558,12 +539,7 @@ local function updatePlayerDebuffRemaining()
 	twipe(lines)
 	local spellInput = value[1]
 	for uId in DBM:GetGroupMembers() do
-		local expires
-		if betaCompat then
-			expires = select(6, DBM:UnitDebuff(uId, spellInput))
-		else
-			expires = select(7, DBM:UnitDebuff(uId, spellInput))
-		end
+		local expires = select(6, DBM:UnitDebuff(uId, spellInput))
 		if expires then
 			if expires == 0 then
 				lines[UnitName(uId)] = 9000--Force sorting the unknowns under the ones we do know.
@@ -582,12 +558,7 @@ local function updatePlayerBuffRemaining()
 	twipe(lines)
 	local spellInput = value[1]
 	for uId in DBM:GetGroupMembers() do
-		local expires
-		if betaCompat then
-			expires = select(6, DBM:UnitBuff(uId, spellInput))
-		else
-			expires = select(7, DBM:UnitBuff(uId, spellInput))
-		end
+		local expires = select(6, DBM:UnitBuff(uId, spellInput))
 		if expires then
 			if expires == 0 then
 				lines[UnitName(uId)] = 9000--Force sorting the unknowns under the ones we do know.
@@ -623,12 +594,7 @@ local function updatePlayerBuffStacks()
 	twipe(lines)
 	local spellInput = value[1]
 	for uId in DBM:GetGroupMembers() do
-		local spellName, _, count
-		if betaCompat then
-			spellName, _, count = DBM:UnitBuff(uId, spellInput)
-		else
-			spellName, _, _, count = DBM:UnitBuff(uId, spellInput)
-		end
+		local spellName, _, count = DBM:UnitBuff(uId, spellInput)
 		if spellName and count then
 			lines[UnitName(uId)] = count
 		end
@@ -641,12 +607,7 @@ local function updatePlayerDebuffStacks()
 	twipe(lines)
 	local spellInput = value[1]
 	for uId in DBM:GetGroupMembers() do
-		local spellName, _, count
-		if betaCompat then
-			spellName, _, count = DBM:UnitDebuff(uId, spellInput)
-		else
-			spellName, _, _, count = DBM:UnitDebuff(uId, spellInput)
-		end
+		local spellName, _, count = DBM:UnitDebuff(uId, spellInput)
 		if spellName and count then
 			lines[UnitName(uId)] = count
 		end
@@ -901,9 +862,6 @@ function infoFrame:Show(maxLines, event, ...)
 		frame.ticker = C_Timer.NewTicker(0.5, function() onUpdate(frame) end)
 	end
 	local wowToc, testBuild, wowVersionString = DBM:GetTOC()
-	if wowVersionString == "8.0.1" then
-		betaCompat = true
-	end
 end
 
 function infoFrame:RegisterCallback(cb)
@@ -937,7 +895,6 @@ function infoFrame:Hide()
 	end
 	currentEvent = nil
 	sortMethod = 1
-	betaCompat = false
 end
 
 function infoFrame:IsShown()

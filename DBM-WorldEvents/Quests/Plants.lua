@@ -26,8 +26,7 @@ local specWarnWave				= mod:NewSpecialWarning("specWarnWave", nil, nil, nil, 2, 
 local wave = 0
 local addCount = 0
 
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, bfaSpellId, _, legacySpellId)
-	local spellId = legacySpellId or bfaSpellId
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 92816 then--Create Battery (Game Start)
 --		timerWave:Start(285)
 		wave = 0

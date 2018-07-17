@@ -23,7 +23,7 @@ local wingsName = DBM:GetSpellInfo(170820)
 
 local function checkBuff()
 	wingsName = DBM:GetSpellInfo(170820)
-	local name, _, _, _, _, duration, expires, _, _, _, spellId = DBM:UnitBuff("player", wingsName)
+	local name, _, _, _, duration, expires, _, _, _, spellId = DBM:UnitBuff("player", wingsName)
 	if name and spellId == 170820 then
 		local time = expires-GetTime()
 		timerGame:Start(time)

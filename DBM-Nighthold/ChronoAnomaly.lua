@@ -65,7 +65,7 @@ mod.vb.timeBombDebuffCount = 0
 local timeBombDebuff = DBM:GetSpellInfo(206617)
 local timeRelease = DBM:GetSpellInfo(206610)
 local function updateTimeBomb(self)
-	local _, _, _, _, _, _, expires = UnitDebuff("player", timeBombDebuff)
+	local _, _, _, _, _, expires = UnitDebuff("player", timeBombDebuff)
 	if expires then
 		specWarnTimeBomb:Cancel()
 		specWarnTimeBomb:CancelVoice()
