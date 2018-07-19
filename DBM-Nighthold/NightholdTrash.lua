@@ -7,7 +7,7 @@ mod:SetZone()
 mod.isTrashMod = true
 
 mod:RegisterEvents(
-	"SPELL_CAST_START 221164 224510 224246 231005 143807 231737 224440",
+	"SPELL_CAST_START 221164 224510 224246 231005 231737 224440",
 	"SPELL_CAST_SUCCESS 225389",
 	"SPELL_AURA_APPLIED 221344 222111 224572 225390 224632 224560 204744 224978 225856 223655 224982 225105 222079 225845",
 	"SPELL_AURA_APPLIED_DOSE 222079"
@@ -38,7 +38,7 @@ local specWarnArcWell				= mod:NewSpecialWarningSwitch(224246, "Dps", nil, nil, 
 local specWarnCelestialBrand		= mod:NewSpecialWarningMoveAway(224560, nil, nil, nil, 1, 2)
 local yellCelestialBrand			= mod:NewYell(224560)
 local specWarnArcaneRelease			= mod:NewSpecialWarningMoveAway(225105, nil, nil, nil, 1, 2)
-local specWarnArcaneBlast			= mod:NewSpecialWarningInterrupt(143807, "HasInterrupt", nil, 2, 3, 2)
+--local specWarnArcaneBlast			= mod:NewSpecialWarningInterrupt(143807, "HasInterrupt", nil, 2, 3, 2)
 local yellArcaneRelease				= mod:NewYell(225105)
 local specWarnHeavenlyCrash			= mod:NewSpecialWarningMoveTo(224632, nil, nil, nil, 1, 2)
 local yellHeavenlyCrash				= mod:NewFadesYell(224632)--VERIFY duration
@@ -65,9 +65,9 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 231005 then
 		specWarnArcaneEmanations:Show()
 		specWarnArcaneEmanations:Play("shockwave")
-	elseif spellId == 143807 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
-		specWarnArcaneBlast:Show(args.sourceName)
-		specWarnArcaneBlast:Play("kickcast")
+--	elseif spellId == 143807 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
+--		specWarnArcaneBlast:Show(args.sourceName)
+--		specWarnArcaneBlast:Play("kickcast")
 	elseif spellId == 231737 and self:AntiSpam(4, 4) then
 		specWarnNightwellDischarge:Show()
 		specWarnNightwellDischarge:Play("watchorb")
