@@ -75,7 +75,7 @@ do
 			if UnitExists(uId) then
 				for s = 1, #ccList do
 					local spellName = ccList[s]
-					local _, _, _, _, _, _, expires = DBM:UnitDebuff(uId, spellName)
+					local _, _, _, _, _, expires = DBM:UnitDebuff(uId, spellName)
 					if expires then
 						local debuffTime = expires - GetTime()
 						lines[UnitName(uId)] = floor(debuffTime)
