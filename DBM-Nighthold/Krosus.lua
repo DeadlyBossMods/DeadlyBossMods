@@ -65,6 +65,7 @@ local mythicOrbTimers = {13, 62, 27, 25, 14.9, 15, 15, 30, 55.1, 38, 30, 12, 18}
 local lolBurningPitchTimers = {38.0, 102.0, 85.0, 90.0}--LFR and Normal
 local heroicBurningPitchTimers = {49.8, 85.0, 90.0, 94}--Verified Dec 7
 local mythicBurningPitchTimers = {45.0, 90, 93.9, 78}
+local minAmount, maxAmount = 2, 4
 mod.vb.burningEmbers = 0
 mod.vb.slamCount = 0
 mod.vb.beamCount = 0
@@ -90,6 +91,15 @@ function DBMUpdateKrosusBeam(wasLeft)
 end
 
 function mod:OnCombatStart(delay)
+	if self:IsTrivial(120) or self:IsLFR() then
+		minAmount, maxAmount = 8, 16
+	elseif self:IsNormal() then
+		minAmount, maxAmount = 4, 8
+	elseif self:IsHeroic() then
+		minAmount, maxAmount = 3, 6
+	else--Mythic
+		minAmount, maxAmount = 2, 4
+	end
 	table.wipe(mobGUIDs)
 	self.vb.burningEmbers = 0
 	self.vb.slamCount = 0
@@ -227,16 +237,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId) then
 			local amount = args.amount or 1
-			local minAmount, maxAmount = 2, 4
-			if self:IsMythic() then
-				minAmount, maxAmount = 2, 4
-			elseif self:IsHeroic() then
-				minAmount, maxAmount = 3, 6
-			elseif self:IsNormal() then
-				minAmount, maxAmount = 4, 8
-			else
-				minAmount, maxAmount = 8, 16
-			end
 			timerSearingBrand:Start(args.destName)
 			if amount >= minAmount then
 				if args:IsPlayer() then
