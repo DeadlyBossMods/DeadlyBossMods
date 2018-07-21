@@ -227,10 +227,20 @@ function mod:SPELL_AURA_APPLIED(args)
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId) then
 			local amount = args.amount or 1
+			local minAmount, maxAmount = 2, 4
+			if self:IsMythic() then
+				minAmount, maxAmount = 2, 4
+			elseif self:IsHeroic() then
+				minAmount, maxAmount = 3, 6
+			elseif self:IsNormal() then
+				minAmount, maxAmount = 4, 8
+			else
+				minAmount, maxAmount = 8, 16
+			end
 			timerSearingBrand:Start(args.destName)
-			if amount >= 2 then
+			if amount >= minAmount then
 				if args:IsPlayer() then
-					if amount >= 4 then
+					if amount >= maxAmount then
 						specWarnSearingBrand:Show(amount)
 						specWarnSearingBrand:Play("stackhigh")
 					end
