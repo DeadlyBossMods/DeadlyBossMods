@@ -46,7 +46,7 @@ function mod:OnCombatStart(delay)
 	timerBlessingofIronsidesCD:Start(1-delay)
 --	if self.Options.InfoFrame then
 --		DBM.InfoFrame:SetHeader(DBM_CORE_INFOFRAME_POWER)
---		DBM.InfoFrame:Show(3, "enemypower", 2)
+--		DBM.InfoFrame:Show(3, "enemypower", 10)
 --	end
 end
 
