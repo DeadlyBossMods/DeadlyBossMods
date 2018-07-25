@@ -360,7 +360,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 263372 then
 		if args:IsPlayer() then
 			specWarnPowerMatrix:Show()
-			specWarnPowerMatrix:Play("matrixyou")
+			specWarnPowerMatrix:Play("newmatrix")
 			yellPowerMatrix:Yell()
 		else
 			if self:IsMythic() then
