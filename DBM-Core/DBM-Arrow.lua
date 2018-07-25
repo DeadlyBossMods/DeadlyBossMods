@@ -166,38 +166,6 @@ end
 ----------------------
 --  Public Methods  --
 ----------------------
-local function MapToWorldCoords(x, y)
-	SetMapToCurrentZone()
-
-	local isMapDungeon = true
-	local _, a, b, c, d = GetCurrentMapDungeonLevel()
-	--local floorIndex, minX, minY, maxX, maxY = GetCurrentMapDungeonLevel()
-
-	if not (a and b and c and d) then
-		isMapDungeon = false
-		_, a, b, c, d = GetCurrentMapZone()
-		--local zoneIndex, locLeft, locTop, locRight, locBottom = GetCurrentMapZone()
-	end
-
-	if not (a and b and c and d) then
-		return x, y
-	end
-
-	local h, w = c - a, d - b
-	local dx, dy = x / 100, y / 100
-
-	if isMapDungeon then
-		x = d - w * dy
-		y = c - h * dx
-	else
-		x = b + w * dy
-		y = a + h * dx
-	end
-
-	--print("x=" .. x .. ", y=" .. y)
-	return x, y
-end
-
 local recentlyHidden = false
 local function clearVariable()
 	recentlyHidden = false
@@ -205,11 +173,6 @@ end
 
 local function show(runAway, x, y, distance, time, legacy, dwayed)
 	if DBM:HasMapRestrictions() then return end
-	local wowToC = DBM:GetTOC()
-	if legacy and wowToC == 80000 then
-		DBM:AddMsg("Not Currently Supported in BfA")
-		return
-	end 
 	if not frame:IsShown() and not recentlyHidden then
 		DBM:AddMsg(DBM_CORE_ARROW_SUMMONED)
 	end
@@ -231,7 +194,10 @@ local function show(runAway, x, y, distance, time, legacy, dwayed)
 	else
 		targetType = "fixed"
 		if legacy and x >= 0 and x <= 100 and y >= 0 and y <= 100 then
-			x, y = MapToWorldCoords(x, y)
+			local localMap = C_Map.GetBestMapForUnit("player")
+			local vector = CreateVector2D(x, y)
+			local _, temptable = C_Map.GetWorldPosFromMapPos(localMap, vector)
+			x, y = temptable.x, temptable.y
 		end
 		targetX, targetY = x, y
 	end
