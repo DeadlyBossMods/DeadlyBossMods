@@ -195,7 +195,7 @@ local function show(runAway, x, y, distance, time, legacy, dwayed)
 		targetType = "fixed"
 		if legacy and x >= 0 and x <= 100 and y >= 0 and y <= 100 then
 			local localMap = C_Map.GetBestMapForUnit("player")
-			local vector = CreateVector2D(x, y)
+			local vector = CreateVector2D(x/100, y/100)
 			local _, temptable = C_Map.GetWorldPosFromMapPos(localMap, vector)
 			x, y = temptable.x, temptable.y
 		end
