@@ -170,7 +170,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			local amount = args.amount or 1
 			warnVoidLash:Show(args.destName, amount)
 		end
-	elseif spellId == 265237 then
+	elseif spellId == 265237 and not args:IsPlayer() then
 		specWarnShatter:Schedule(4.5, args.destName)
 		specWarnShatter:ScheduleVoice(4.5, "tauntboss")
 	elseif spellId == 265360 then
