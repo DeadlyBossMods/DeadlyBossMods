@@ -23,6 +23,7 @@ mod:RegisterEventsInCombat(
 
 --[[
 (ability.id = 262292 or ability.id = 262288 or ability.id = 262364) and type = "begincast"
+ or ability.id = 262370 and type = "cast"
 --]]
 local warnFrenzy						= mod:NewSpellAnnounce(262378, 3)
 local warnThrashNotTanking				= mod:NewSpellAnnounce(262277, 3, nil, "Tank|Healer")
@@ -126,8 +127,8 @@ function mod:OnCombatStart(delay)
 		timerRottingRegurgCD:Start(31.4-delay)
 		countdownRottingRegurg:Start(31.4-delay)
 	end
-	timerAddsCD:Start(55.1-delay)
-	countdownAdds:Start(55.1-delay)
+	timerAddsCD:Start(55-delay)
+	countdownAdds:Start(55-delay)
 	berserkTimer:Start()
 	if self:IsMythic() then
 		updateRangeFrame(self)
@@ -175,13 +176,8 @@ function mod:SPELL_CAST_START(args)
 		if self:AntiSpam(10, 2) then
 			specWarnAdds:Show()
 			specWarnAdds:Play("killmob")
-			if self:IsEasy() then
-				timerAddsCD:Start()
-				countdownAdds:Start(54.8)
-			else
-				timerAddsCD:Start(59.8)
-				countdownAdds:Start(59.8)
-			end
+			timerAddsCD:Start()
+			countdownAdds:Start(54.8)
 		end
 	elseif spellId == 262277 then
 		timerThrashCD:Start()
