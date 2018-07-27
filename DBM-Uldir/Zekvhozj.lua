@@ -35,6 +35,7 @@ mod:RegisterEventsInCombat(
 --[[
 (ability.id = 267239 or ability.id = 265231 or ability.id = 265530) and type = "begincast"
  or ability.id = 264382 and type = "cast"
+ or ability.id = 265360 and type = "applydebuff"
  or (ability.id = 267180 or ability.id = 270620) and type = "begincast"
 --]]
 --local warnXorothPortal					= mod:NewSpellAnnounce(244318, 2, nil, nil, nil, nil, nil, 7)
@@ -75,19 +76,19 @@ local timerMightofVoidCD				= mod:NewCDTimer(37.6, 267312, nil, "Tank", nil, 5, 
 local timerTitanSparkCD					= mod:NewCDTimer(37.6, 264954, nil, "Healer", nil, 2)
 mod:AddTimerLine(SCENARIO_STAGE:format(1))
 local timerQirajiWarriorCD				= mod:NewCDTimer(60, "ej18071", nil, nil, nil, 1, 31700)--UNKNOWN, TODO
-local timerEyeBeamCD					= mod:NewCDTimer(96, 264382, nil, nil, nil, 3)--UNKNOWN, TODO
+local timerEyeBeamCD					= mod:NewCDTimer(40, 264382, nil, nil, nil, 3)
 mod:AddTimerLine(SCENARIO_STAGE:format(2))
-local timerAnubarCasterCD				= mod:NewCDTimer(60, "ej18397", nil, nil, nil, 1, 31700)
-local timerRoilingDeceitCD				= mod:NewCDTimer(45, 265360, nil, nil, nil, 3)
+local timerAnubarCasterCD				= mod:NewCDTimer(60, "ej18397", nil, nil, nil, 1, 31700)--82
+local timerRoilingDeceitCD				= mod:NewCDTimer(45, 265360, nil, nil, nil, 3)--61
 --local timerVoidBoltCD					= mod:NewAITimer(19.9, 267180, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
 mod:AddTimerLine(SCENARIO_STAGE:format(3))
-local timerOrbofCorruptionCD			= mod:NewCDTimer(90, 267239, nil, nil, nil, 5)--Make count timer when not AI
+local timerOrbofCorruptionCD			= mod:NewCDCountTimer(50, 267239, nil, nil, nil, 5)
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
 
---local countdownCollapsingWorld			= mod:NewCountdown(50, 243983, true, 3, 3)
---local countdownVoidLash					= mod:NewCountdown("Alt12", 244016, false, 2, 3)
---local countdownFelstormBarrage			= mod:NewCountdown("AltTwo32", 244000, nil, nil, 3)
+local countdownSurgingDarkness			= mod:NewCountdown(64, 265451, true, nil, 3)
+local countdownMightofVoid				= mod:NewCountdown("Alt37", 267312, "Tank", nil, 3)
+--local countdownFelstormBarrage		= mod:NewCountdown("AltTwo32", 244000, nil, nil, 3)
 
 --mod:AddSetIconOption("SetIconGift", 265360, true)
 --mod:AddRangeFrameOption("8/10")
@@ -102,8 +103,10 @@ function mod:OnCombatStart(delay)
 	self.vb.orbCount = 0
 	timerTitanSparkCD:Start(10-delay)
 	timerMightofVoidCD:Start(15-delay)
-	timerSurgingDarknessCD:Start(30-delay)
-	timerQirajiWarriorCD:Start(70-delay)--Despite what journal says, boss starts in P2 not P1, this is always 70 regardless
+	countdownMightofVoid:Start(15-delay)
+	timerSurgingDarknessCD:Start(25-delay)
+	countdownSurgingDarkness:Start(25)
+	timerQirajiWarriorCD:Start(70-delay)--Despite what journal says, this is always 70 regardless
 	--timerEyeBeamCD:Start(96-delay)--Iffy
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(DBM_CORE_INFOFRAME_POWER)
@@ -132,12 +135,13 @@ function mod:SPELL_CAST_START(args)
 		self.vb.orbCount = self.vb.orbCount + 1
 		specWarnOrbOfCorruption:Show(self.vb.orbCount)
 		specWarnOrbOfCorruption:Play("161612")--catch balls
-		timerOrbofCorruptionCD:Start()
+		timerOrbofCorruptionCD:Start(50, self.vb.orbCount+1)
 	elseif spellId == 270620 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnEntropicBlast:Show(args.sourceName)
 		specWarnEntropicBlast:Play("kickcast")
 	elseif spellId == 265231 then--First Void Lash
 		timerMightofVoidCD:Start()
+		countdownMightofVoid:Start()
 		if self:IsTanking("player", "boss1", nil, true) then
 			specWarnMightofVoid:Show()
 			specWarnMightofVoid:Play("defensive")
@@ -145,7 +149,13 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 265530 then
 		specWarnSurgingDarkness:Show()
 		specWarnSurgingDarkness:Play("watchstep")
-		timerSurgingDarknessCD:Start()
+		if not self:IsMythic() then
+			timerSurgingDarknessCD:Start(84)
+			countdownSurgingDarkness:Start(84)
+		else
+			timerSurgingDarknessCD:Start()
+			countdownSurgingDarkness:Start(64)
+		end
 	end
 end
 
@@ -253,9 +263,9 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 		self.vb.orbCount = self.vb.orbCount + 1
 		specWarnOrbOfCorruption:Show(self.vb.orbCount)
 		specWarnOrbOfCorruption:Play("161612")--catch balls
-		timerOrbofCorruptionCD:Start()
+		timerOrbofCorruptionCD:Start(50, self.vb.orbCount+1)
 	elseif msg:find("spell:264382") then
-		--timerEyeBeamCD:Start()
+		timerEyeBeamCD:Start()
 	end
 end
 
@@ -265,7 +275,12 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	elseif spellId == 267192 then--Spawn Anub'ar Caster
 		timerAnubarCasterCD:Start()
 	elseif spellId == 265437 then--Roiling Deceit
-		timerRoilingDeceitCD:Start()--here because this spell ID fires at beginning of each set ONCE
+		--here because this spell ID fires at beginning of each set ONCE
+		if self:IsMythic() then
+			timerRoilingDeceitCD:Start()--45
+		else
+			timerRoilingDeceitCD:Start(60)
+		end
 	elseif spellId == 267019 then--Titan Spark
 		if self:IsMythic() and self.vb.phase < 2 or self.vb.phase < 3 then
 			timerTitanSparkCD:Start(20)
@@ -296,6 +311,6 @@ function mod:OnSync(msg, targetname)
 		else
 			self.vb.phase = 2
 		end
-		timerOrbofCorruptionCD:Start(14.1)
+		timerOrbofCorruptionCD:Start(14.1, 1)
 	end
 end
