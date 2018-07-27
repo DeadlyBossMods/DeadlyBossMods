@@ -44,7 +44,7 @@ local timerCleansingFlameCD				= mod:NewCastSourceTimer(180, 268095, nil, nil, n
 
 local countdownPurifyingFlame			= mod:NewCountdown(23, 267795, true, nil, 3)
 local countdownSunderingScalpel			= mod:NewCountdown("Alt23", 267787, "Tank", nil, 3)
-local countdownSurgicalBeam				= mod:NewCountdown("AltTwo30", 269827, nil, nil, 4)
+local countdownSurgicalBeam				= mod:NewCountdown("AltTwo30", 269827, nil, nil, 3)
 
 mod:AddInfoFrameOption(268095, true)
 
@@ -138,13 +138,15 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if spellId == 277961 or spellId == 277742 then--Top
 			specWarnSurgicalBeam:Show(DBM_CORE_TOP)
 			timerSurgicalBeamCD:Start(40, DBM_CORE_TOP)--40-47
+			countdownSurgicalBeam:Start(40)
 		elseif spellId == 277973 then--Sides
 			specWarnSurgicalBeam:Show(DBM_CORE_SIDE)
 			timerSurgicalBeamCD:Start(40, DBM_CORE_SIDE)--40-47
-		else--Middle (chamber 3)
+			countdownSurgicalBeam:Start(40)
+		else--Middle (chamber 3) (269827)
 			specWarnSurgicalBeam:Show(DBM_CORE_MIDDLE)
 			timerSurgicalBeamCD:Start(30, DBM_CORE_MIDDLE)--30-?
-			countdownSurgicalBeam:Start()
+			countdownSurgicalBeam:Start(30)
 			specWarnSurgicalBeam:ScheduleVoice(1.5, "keepmove")
 		end
 		specWarnSurgicalBeam:Play("laserrun")
