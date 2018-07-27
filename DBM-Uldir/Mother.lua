@@ -13,7 +13,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 267787 268198",
-	"SPELL_CAST_SUCCESS 267795 267945 267885 267878 269827 268089 277973 277961",
+	"SPELL_CAST_SUCCESS 267795 267945 267885 267878 269827 268089 277973 277961 277742",
 	"SPELL_AURA_APPLIED 267787 274205 269051",
 	"SPELL_AURA_APPLIED_DOSE 267787"
 )
@@ -21,7 +21,7 @@ mod:RegisterEventsInCombat(
 --More mythic timer work
 --[[
 ability.id = 267787 and type = "begincast"
- or (ability.id = 267795 or ability.id = 267945 or ability.id = 269827 or ability.id = 277973 or ability.id = 277961 or ability.id = 268089) and type = "cast"
+ or (ability.id = 267795 or ability.id = 267945 or ability.id = 269827 or ability.id = 277973 or ability.id = 277961 or ability.id = 268089 or ability.id = 277742) and type = "cast"
 --]]
 local warnSunderingScalpel				= mod:NewStackAnnounce(267787, 3, nil, "Tank")
 local warnWindTunnel					= mod:NewSpellAnnounce(267945, 2)
@@ -42,7 +42,7 @@ local timerCleansingFlameCD				= mod:NewCastSourceTimer(180, 268095, nil, nil, n
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
 
-local countdownPurifyingFlame			= mod:NewCountdown(50, 267795, true, nil, 3)
+local countdownPurifyingFlame			= mod:NewCountdown(23, 267795, true, nil, 3)
 local countdownSunderingScalpel			= mod:NewCountdown("Alt23", 267787, "Tank", nil, 3)
 local countdownSurgicalBeam				= mod:NewCountdown("AltTwo30", 269827, nil, nil, 4)
 
@@ -134,8 +134,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 267945 then--Global Id for winds
 		warnWindTunnel:Show()
 		timerWindTunnelCD:Show()--40-47
-	elseif spellId == 269827 or spellId == 277973 or spellId == 277961 then
-		if spellId == 277961 then--Top
+	elseif spellId == 269827 or spellId == 277973 or spellId == 277961 or spellId == 277742 then
+		if spellId == 277961 or spellId == 277742 then--Top
 			specWarnSurgicalBeam:Show(DBM_CORE_TOP)
 			timerSurgicalBeamCD:Start(40, DBM_CORE_TOP)--40-47
 		elseif spellId == 277973 then--Sides
@@ -171,7 +171,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			timerCleansingFlameCD:Start(time, 1)
 		elseif cid == 137022 then
 			timerCleansingFlameCD:Start(time, 2)
-			--if self:IsMythic() then
+			--if self:IsHard() then
 			--	timerSurgicalBeamCD:Start(10, DBM_CORE_SIDE)--10-18, need more work to get this better if possible
 			--	timerSurgicalBeamCD:Start(33, DBM_CORE_TOP)--33-41
 			--end
