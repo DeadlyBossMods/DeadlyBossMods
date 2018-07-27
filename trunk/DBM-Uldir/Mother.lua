@@ -92,6 +92,9 @@ function mod:OnCombatStart(delay)
 		DBM.InfoFrame:SetHeader(DBM_CORE_INFOFRAME_POWER)
 		DBM.InfoFrame:Show(5, "function", updateInfoFrame, false, false)
 	end
+	if self:AntiSpam(3, 1) then
+		--Do nothing
+	end
 end
 
 function mod:OnCombatEnd()
@@ -145,7 +148,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			specWarnSurgicalBeam:ScheduleVoice(1.5, "keepmove")
 		end
 		specWarnSurgicalBeam:Play("laserrun")
-	elseif spellId == 268089 then--End Cast of Cleansing Purge
+	elseif spellId == 268089 and self:AntiSpam(3, 1) then--End Cast of Cleansing Purge
 		warnCleansingPurgeFinish:Show(args.sourceName)
 	end
 end
