@@ -3628,16 +3628,12 @@ function DBM:SCENARIO_CRITERIA_UPDATE()
 	end
 end
 
-function DBM:SCENARIO_COMPLETED(rewardQuestID, xp, money)
+function DBM:SCENARIO_COMPLETED()
 	if #inCombat > 0 and C_Scenario.IsInScenario() then
 		for i = #inCombat, 1, -1 do
 			local v = inCombat[i]
 			if v.inScenario then
-				if( ( xp and xp > 0 and UnitLevel("player") < MAX_PLAYER_LEVEL ) or ( money and money > 0 ) ) then--A reward given, so it was actually a win
-					self:EndCombat(v)
-				else--no reward, wipe?
-					self:EndCombat(v, true)
-				end
+				self:EndCombat(v)
 			end
 		end
 	end
