@@ -1347,7 +1347,8 @@ do
 				"PLAYER_SPECIALIZATION_CHANGED",
 				"PARTY_INVITE_REQUEST",
 				"LOADING_SCREEN_DISABLED",
-				"SCENARIO_CRITERIA_UPDATE"
+				"SCENARIO_CRITERIA_UPDATE",
+				"SCENARIO_COMPLETED"
 			)
 			if RolePollPopup:IsEventRegistered("ROLE_POLL_BEGIN") then
 				RolePollPopup:UnregisterEvent("ROLE_POLL_BEGIN")
@@ -3622,6 +3623,21 @@ function DBM:SCENARIO_CRITERIA_UPDATE()
 			local v = inCombat[i]
 			if v.inScenario then
 				self:EndCombat(v)
+			end
+		end
+	end
+end
+
+function DBM:SCENARIO_COMPLETED(rewardQuestID, xp, money)
+	if #inCombat > 0 and C_Scenario.IsInScenario() then
+		for i = #inCombat, 1, -1 do
+			local v = inCombat[i]
+			if v.inScenario then
+				if( ( xp and xp > 0 and UnitLevel("player") < MAX_PLAYER_LEVEL ) or ( money and money > 0 ) ) then--A reward given, so it was actually a win
+					self:EndCombat(v)
+				else--no reward, wipe?
+					self:EndCombat(v, true)
+				end
 			end
 		end
 	end
