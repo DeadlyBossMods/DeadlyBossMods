@@ -1347,7 +1347,6 @@ do
 				"PLAYER_SPECIALIZATION_CHANGED",
 				"PARTY_INVITE_REQUEST",
 				"LOADING_SCREEN_DISABLED",
-				"SCENARIO_CRITERIA_UPDATE",
 				"SCENARIO_COMPLETED"
 			)
 			if RolePollPopup:IsEventRegistered("ROLE_POLL_BEGIN") then
@@ -3612,18 +3611,6 @@ function DBM:UPDATE_BATTLEFIELD_STATUS()
 			self.Bars:CancelBar(queuedBattlefield[i])
 			fireEvent("DBM_TimerStop", "DBMBFSTimer")
 			queuedBattlefield[i] = nil
-		end
-	end
-end
-
-function DBM:SCENARIO_CRITERIA_UPDATE()
-	local _, currentStage, numStages = C_Scenario.GetInfo()
-	if #inCombat > 0 and currentStage > numStages and C_Scenario.IsInScenario() then
-		for i = #inCombat, 1, -1 do
-			local v = inCombat[i]
-			if v.inScenario then
-				self:EndCombat(v)
-			end
 		end
 	end
 end
