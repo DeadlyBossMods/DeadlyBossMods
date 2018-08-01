@@ -452,15 +452,19 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, bfaSpellId, _, legacySpellId)
 			if self:IsMythic() then--TODO: Fine tune these as they may be hit or miss by some seconds Hard to measure precise phase changes from WCL
 				timerEpochericOrbCD:Start(23.8, 1)
 				countdownOrbs:Start(23.8)
-				timerArcaneticRing:Start(41.9, 1)--Verified Jan 18
-				countdownArcaneticRing:Start(41.9)
+				if self.vb.ringCastCount > 0 then
+					timerArcaneticRing:Start(41.9, 1)--Verified Jan 18
+					countdownArcaneticRing:Start(41.9)
+				end
 				timerDelphuricBeamCD:Start(67, 1)--Cast SUCCESS
 				countdownSpanningSingularity:Start(10)
 			elseif self:IsHeroic() then
 				timerEpochericOrbCD:Start(27, 1)
 				countdownOrbs:Start(27)
-				timerArcaneticRing:Start(45.7, 1)--Verified Jan 18
-				countdownArcaneticRing:Start(45.7)
+				if self.vb.ringCastCount > 0 then
+					timerArcaneticRing:Start(45.7, 1)--Verified Jan 18
+					countdownArcaneticRing:Start(45.7)
+				end
 				timerDelphuricBeamCD:Start(72, 1)--Cast SUCCESS
 			--LFR and Normal have no rings. LFR has no beams
 			elseif self:IsLFR() then
@@ -480,23 +484,31 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, bfaSpellId, _, legacySpellId)
 			--timerAblativePulseCD:Start(20.5)
 			if self:IsMythic() then
 				countdownSpanningSingularity:Start(10)
-				timerEpochericOrbCD:Start(24, 1)
-				countdownOrbs:Start(24)
-				specWarnEpochericOrb:Schedule(24)--Spawning isn't in combat log in phase 3, only landing, so need to use schedule for warnings
-				specWarnEpochericOrb:ScheduleVoice(24, "161612")
-				timerArcaneticRing:Start(42, 1)--Verified Jan 18
-				countdownArcaneticRing:Start(42)
+				if self.vb.orbCastCount > 0 then
+					timerEpochericOrbCD:Start(24, 1)
+					countdownOrbs:Start(24)
+					specWarnEpochericOrb:Schedule(24)--Spawning isn't in combat log in phase 3, only landing, so need to use schedule for warnings
+					specWarnEpochericOrb:ScheduleVoice(24, "161612")
+				end
+				if self.vb.ringCastCount > 0 then
+					timerArcaneticRing:Start(42, 1)--Verified Jan 18
+					countdownArcaneticRing:Start(42)
+				end
 				timerConflexiveBurstCD:Start(48, 1)
 				countdownConflexiveBurst:Start(48)
 				timerPermaliativeTormentCD:Start(73.7, 1)--Updated April 21 Mythic
 			elseif self:IsHeroic() then
-				timerEpochericOrbCD:Start(27, 1)
-				countdownOrbs:Start(27)
-				specWarnEpochericOrb:Schedule(27)--Spawning isn't in combat log in phase 3, only landing, so need to use schedule for warnings
-				specWarnEpochericOrb:ScheduleVoice(27, "161612")
+				if self.vb.orbCastCount > 0 then
+					timerEpochericOrbCD:Start(27, 1)
+					countdownOrbs:Start(27)
+					specWarnEpochericOrb:Schedule(27)--Spawning isn't in combat log in phase 3, only landing, so need to use schedule for warnings
+					specWarnEpochericOrb:ScheduleVoice(27, "161612")
+				end
 				timerPermaliativeTormentCD:Start(33, 1)
-				timerArcaneticRing:Start(45.7, 1)--Verified Jan 18
-				countdownArcaneticRing:Start(45.7)
+				if self.vb.ringCastCount > 0 then
+					timerArcaneticRing:Start(45.7, 1)--Verified Jan 18
+					countdownArcaneticRing:Start(45.7)
+				end
 				timerConflexiveBurstCD:Start(57.7, 1)
 				countdownConflexiveBurst:Start(57.7)
 			elseif self:IsLFR() then
