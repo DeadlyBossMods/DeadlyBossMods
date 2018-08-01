@@ -53,7 +53,7 @@ local warnCosmicBeaconCast			= mod:NewCastAnnounce(252616, 2)
 local warnCosmicBeacon				= mod:NewTargetAnnounce(252616, 2)
 local warnDiscsofNorg				= mod:NewCastAnnounce(252516, 1)
 --Stage Three Mythic
-local warnSargSentence				= mod:NewTargetAnnounce(257966, 3)
+local warnSargSentence				= mod:NewTargetNoFilterAnnounce(257966, 3)
 local warnEdgeofAnni				= mod:NewCountAnnounce(258834, 4)
 local warnSoulRendingScythe			= mod:NewStackAnnounce(258838, 2, nil, "Tank")
 --Stage Four: The Gift of Life, The Forge of Loss (Non Mythic)
