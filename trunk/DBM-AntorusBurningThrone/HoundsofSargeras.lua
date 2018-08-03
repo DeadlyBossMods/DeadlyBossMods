@@ -284,13 +284,13 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 244054 then--Flametouched
 		if args:IsPlayer() then
 			specWarnFlameTouched:Show(self:IconNumToTexture(7))--Red X for flame (more voted on red x than orange circle)
-			specWarnFlameTouched:Play("flameonyou")
+			specWarnFlameTouched:Play("firerun")
 			yellTouched:Yell(7, "", 7)
 		end
 	elseif spellId == 244055 then--Shadowtouched
 		if args:IsPlayer() then
 			specWarnShadowtouched:Show(self:IconNumToTexture(3))--Purple diamond for shadow
-			specWarnShadowtouched:Play("shadowonyou")
+			specWarnShadowtouched:Play("shadowrun")
 			yellTouched:Yell(3, "", 3)
 		end
 	end
