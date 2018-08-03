@@ -60,7 +60,7 @@ local specWarnCallofCrusher				= mod:NewSpecialWarningSwitchCount("ej18539", "-H
 local specWarnMinionofZul				= mod:NewSpecialWarningSwitch("ej18530", "MagicDispeller", nil, nil, 1, 2)
 ----Forces of Blood
 local specWarnCongealBlood				= mod:NewSpecialWarningSwitch(273451, "Dps", nil, nil, 3, 2)
-local specWarnBloodshard				= mod:NewSpecialWarningInterrupt(273350, false, nil, 2, 1, 2)--Spam cast, so opt in, not opt out
+local specWarnBloodshard				= mod:NewSpecialWarningInterrupt(273350, "HasInterrupt", nil, 3, 1, 2)--Spam cast, so opt in, not opt out
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
 --Stage Two: Zul, Awakened
 local specWarnRupturingBlood			= mod:NewSpecialWarningStack(274358, nil, 3, nil, nil, 1, 6)
