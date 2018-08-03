@@ -195,7 +195,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				end
 			end
 		end
-	elseif spellId == 265212 then
+	elseif spellId == 265212 and self:AntiSpam(4, args.destName) then
 		if args:IsPlayer() then
 			specWarnGestate:Show()
 			specWarnGestate:Play("targetyou")
