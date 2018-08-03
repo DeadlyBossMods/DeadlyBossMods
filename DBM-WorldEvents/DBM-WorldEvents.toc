@@ -16,7 +16,7 @@
 ## SavedVariablesPerCharacter: DBMWorldEvents_SavedStats
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Type: OTHER
-## X-DBM-Mod-Category: LEG
+## X-DBM-Mod-Category: BFA
 ## X-DBM-Mod-Has-Single-Format: 1
 ## X-DBM-Mod-World-Boss: 1
 ## X-DBM-Mod-SubCategories: Holidays,Quests
@@ -39,7 +39,7 @@
 ## X-DBM-Mod-Name-ptBR: Eventos Mundiais
 ## X-DBM-Mod-Name-frFR: Évènements Mondiaux
 ## X-DBM-Mod-MapID: 230,189,33,547,1004,1,0,1704,1705,1706,1707
-## X-DBM-Mod-Sort: 554
+## X-DBM-Mod-Sort: 454
 ## X-DBM-Mod-LoadCID: 55003,54499,15467,15466,49687,15664,23558,27215,23486,24710,24484
 ## X-DBM-Mod-MinCoreRevision: 12473
 localization.en.lua
