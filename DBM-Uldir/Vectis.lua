@@ -50,7 +50,7 @@ local specWarnGestateNear					= mod:NewSpecialWarningClose(265212, nil, nil, nil
 local specWarnAmalgam						= mod:NewSpecialWarningSwitch("ej18007", "-Healer", nil, 2, 1, 2)
 local specWarnSpawnParasite					= mod:NewSpecialWarningSwitch(275055, "Dps", nil, nil, 1, 2)--Mythic
 --local specWarnContagion						= mod:NewSpecialWarningCount(267242, nil, nil, nil, 2, 2)
-local specWarnLiquefy						= mod:NewSpecialWarningRun(265217, nil, nil, nil, 4, 2)
+local specWarnLiquefy						= mod:NewSpecialWarningSpell(265217, nil, nil, nil, 2, 2)
 --local specWarnGTFO						= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
 
 --mod:AddTimerLine(Nexus)
@@ -109,7 +109,7 @@ function mod:SPELL_CAST_START(args)
 		timerContagionCD:Start(nil, self.vb.ContagionCount+1)
 	elseif spellId == 265217 then
 		specWarnLiquefy:Show()
-		specWarnLiquefy:Play("justrun")
+		specWarnLiquefy:Play("phasechange")
 		self.vb.ContagionCount = 0
 		self.vb.hyperGenesisCount = 0
 		timerGestateCD:Stop()
