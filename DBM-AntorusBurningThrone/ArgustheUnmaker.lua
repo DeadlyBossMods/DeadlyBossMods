@@ -552,6 +552,9 @@ function mod:SPELL_AURA_APPLIED(args)
 					specWarnSoulrendingScythe:Play("stackhigh")
 				else
 					warnSoulRendingScythe:Show(args.destName, amount)
+					if amount >= 4 then
+						warnSoulRendingScythe:Play("swapsoon")
+					end
 				end
 			end
 		end
