@@ -74,9 +74,9 @@ local specWarnDeathwishNear				= mod:NewSpecialWarningClose(274271, nil, nil, ni
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(18527))
 local timerDarkRevolationCD				= mod:NewCDTimer(45, 273365, nil, nil, nil, 3)
 local timerPoolofDarknessCD				= mod:NewCDCountTimer(30.6, 273361, nil, nil, nil, 5, nil, DBM_CORE_DEADLY_ICON)
-local timerCallofCrawgCD				= mod:NewNextCountTimer(14, "ej18541", nil, nil, nil, 1, 273889, DBM_CORE_DAMAGE_ICON)--Spawn trigger
-local timerCallofHexerCD				= mod:NewNextCountTimer(14, "ej18540", nil, nil, nil, 1, 273889, DBM_CORE_DAMAGE_ICON)--Spawn trigger
-local timerCallofCrusherCD				= mod:NewNextCountTimer(14, "ej18539", nil, nil, nil, 1, 273889, DBM_CORE_DAMAGE_ICON)--Spawn trigger
+local timerCallofCrawgCD				= mod:NewTimer(14, "timerCallofCrawgCD", 273889, nil, nil, 1, DBM_CORE_DAMAGE_ICON)--Spawn trigger
+local timerCallofHexerCD				= mod:NewTimer(14, "timerCallofHexerCD", 273889, nil, nil, 1, DBM_CORE_DAMAGE_ICON)--Spawn trigger
+local timerCallofCrusherCD				= mod:NewTimer(14, "timerCallofCrusherCD", 273889, nil, nil, 1, DBM_CORE_DAMAGE_ICON)--Spawn trigger
 local timerAddIncoming					= mod:NewTimer(12, "timerAddIncoming", 273889, nil, nil, 1, DBM_CORE_DAMAGE_ICON)--Even if you push the boss before add appears, if this timer has started, add IS coming
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(18538))
 local timerBloodyCleaveCD				= mod:NewCDTimer(13.4, 273316, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
@@ -113,7 +113,6 @@ local unitTracked = {}
 local CrawgTimers = {35, 42, 46.6, 47.2}
 local HexerTimers = {51, 62.4, 62.9}
 local CrusherTimers = {70, 63.6}
-local CrawgName, HexerName, CrusherName = DBM:EJ_GetSectionInfo(18541), DBM:EJ_GetSectionInfo(18540), DBM:EJ_GetSectionInfo(18539)
 
 local updateInfoFrame
 do
@@ -293,11 +292,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 		end
 		timerPoolofDarknessCD:Start(nil, self.vb.poolCount+1)
 	elseif spellId == 273889 then--Bloodthirsty Crawg
-		timerAddIncoming:Start(12, CrawgName)
+		timerAddIncoming:Start(12, L.Crawg)
 	elseif spellId == 274098 then--nazmani-bloodhexer
-		timerAddIncoming:Start(12, HexerName)
+		timerAddIncoming:Start(12, L.Bloodhexer)
 	elseif spellId == 274119 then--nazmani-crusher
-		timerAddIncoming:Start(12, CrusherName)
+		timerAddIncoming:Start(12, L.Crusher)
 	end
 end
 
