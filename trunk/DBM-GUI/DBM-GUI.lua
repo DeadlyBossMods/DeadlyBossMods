@@ -241,6 +241,7 @@ local function MixinSharedMedia3(mediatype, mediatable)
 		soundsRegistered = true
 		LSM:Register("sound", "Jaina: Beware", [[Interface\AddOns\DBM-Core\sounds\beware.ogg]])
 		LSM:Register("sound", "Jaina: Beware (reverb)", [[Interface\AddOns\DBM-Core\sounds\beware_with_reverb.ogg]])
+		LSM:Register("sound", "Saurfang: Don't Die", [[Interface\AddOns\DBM-Core\sounds\dontdie.ogg]])
 		LSM:Register("sound", "Headless Horseman: Laugh", [[Sound\Creature\HeadlessHorseman\Horseman_Laugh_01.ogg]])
 		LSM:Register("sound", "Yogg Saron: Laugh", [[Sound\Creature\YoggSaron\UR_YoggSaron_Slay01.ogg]])
 		LSM:Register("sound", "Loatheb: I see you", [[Sound\Creature\Loathstare\Loa_Naxx_Aggro02.ogg]])
