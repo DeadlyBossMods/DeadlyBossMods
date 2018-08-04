@@ -611,6 +611,7 @@ function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 122532 then
 		DBM.Nameplate:Hide(true, args.destGUID)
+		unitTracked[args.destGUID] = nil
 	end
 end
 
