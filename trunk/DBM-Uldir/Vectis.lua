@@ -14,7 +14,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 267242 265217",
-	"SPELL_CAST_SUCCESS 265178 265212 266459",
+	"SPELL_CAST_SUCCESS 265178 265212 266459 265209",
 	"SPELL_AURA_APPLIED 265178 265129 265212",
 	"SPELL_AURA_APPLIED_DOSE 265178 265127",
 	"SPELL_AURA_REMOVED 265178 265129 265212 265217",
@@ -28,19 +28,19 @@ mod:RegisterEventsInCombat(
 --TODO, determine highest tolerable tank stacks. Need a better idea of raid numbers/tuning. Was wildly variable between 4 and 11 in testing, so leaving at 6 for now
 --TODO, Immunosuppression Timer for big adds??
 --[[
-(ability.id = 267242 or ability.id = 265217 or ability.id = 265212) and type = "begincast"
- or (ability.id = 265178 or ability.id = 266459) and type = "cast"
+(ability.id = 267242 or ability.id = 265217) and type = "begincast"
+ or (ability.id = 265178 or ability.id = 266459 or ability.id = 265212 or ability.id = 265209) and type = "cast"
  or ability.id = 265217 and type = "removebuff"
 --]]
 --local warnXorothPortal					= mod:NewSpellAnnounce(244318, 2, nil, nil, nil, nil, nil, 7)
-local warnMutagenicPathogen					= mod:NewStackAnnounce(265178, 2, nil, "Tank")
+local warnEvolvingAffliction				= mod:NewStackAnnounce(265178, 2, nil, "Tank")
 local warnGestate							= mod:NewTargetAnnounce(265212, 3)
 local warnHypergenesis						= mod:NewSpellAnnounce(266926, 3)
 local warnContagion							= mod:NewCountAnnounce(267242, 3)
 
-local specWarnMutagenicPathogen				= mod:NewSpecialWarningStack(265178, nil, 2, nil, nil, 1, 6)
-local specWarnMutagenicPathogenOther		= mod:NewSpecialWarningTaunt(265178, nil, nil, nil, 1, 2)
---local yellMutagenicPathogen					= mod:NewShortFadesYell(265178)
+local specWarnEvolvingAffliction			= mod:NewSpecialWarningStack(265178, nil, 2, nil, nil, 1, 6)
+local specWarnEvolvingAfflictionOther		= mod:NewSpecialWarningTaunt(265178, nil, nil, nil, 1, 2)
+--local yellEvolvingAffliction				= mod:NewShortFadesYell(265178)
 local specWarnOmegaVector					= mod:NewSpecialWarningYou(265129, nil, nil, nil, 1, 2)
 local yellOmegaVector						= mod:NewYell(265129)
 local yellOmegaVectorFades					= mod:NewShortFadesYell(265129)
@@ -49,21 +49,21 @@ local yellGestate							= mod:NewYell(265212)
 local specWarnGestateNear					= mod:NewSpecialWarningClose(265212, nil, nil, nil, 1, 2)
 local specWarnAmalgam						= mod:NewSpecialWarningSwitch("ej18007", "-Healer", nil, 2, 1, 2)
 local specWarnSpawnParasite					= mod:NewSpecialWarningSwitch(275055, "Dps", nil, nil, 1, 2)--Mythic
---local specWarnContagion						= mod:NewSpecialWarningCount(267242, nil, nil, nil, 2, 2)
+--local specWarnContagion					= mod:NewSpecialWarningCount(267242, nil, nil, nil, 2, 2)
 local specWarnLiquefy						= mod:NewSpecialWarningSpell(265217, nil, nil, nil, 2, 2)
 --local specWarnGTFO						= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
 
 --mod:AddTimerLine(Nexus)
-local timerMutagenicPathogenCD				= mod:NewCDTimer(8.5, 265178, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
-local timerGestateCD						= mod:NewCDTimer(30.4, 265212, nil, nil, nil, 3)
-local timerContagionCD						= mod:NewCDCountTimer(13.4, 267242, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
+local timerEvolvingAfflictionCD				= mod:NewCDTimer(8.5, 265178, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerGestateCD						= mod:NewCDTimer(25.5, 265212, nil, nil, nil, 3)
+local timerContagionCD						= mod:NewCDCountTimer(23, 267242, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
 local timerLiquefyCD						= mod:NewCDTimer(90.9, 265217, nil, nil, nil, 6)
 local timerHypergenesisCD					= mod:NewCDCountTimer(11.4, 266459, nil, nil, nil, 5)--11.4 or 12.2, not sure which one blizz decided on, find out later
 
 --local berserkTimer						= mod:NewBerserkTimer(600)
 
-local countdownGestate						= mod:NewCountdown(30, 265212, true, nil, 4)
---local countdownMutagenicPathogen			= mod:NewCountdown("Alt12", 265178, "Tank", 2, 3)
+local countdownGestate						= mod:NewCountdown(25.5, 265212, true, nil, 3)
+--local countdownEvolvingAffliction			= mod:NewCountdown("Alt12", 265178, "Tank", 2, 3)
 local countdownLiquefy						= mod:NewCountdown("AltTwo90", 265217, nil, nil, 3)
 
 mod:AddSetIconOption("SetIconVector", 265129, true)
@@ -79,12 +79,12 @@ local playerHasTen = false
 function mod:OnCombatStart(delay)
 	self.vb.ContagionCount = 0
 	availableRaidIcons = {[1] = true, [2] = true, [3] = true, [4] = true, [5] = true, [6] = true, [7] = true, [8] = true}
-	--timerMutagenicPathogenCD:Start(1-delay)--Instantly on engage
-	timerContagionCD:Start(10.7-delay, 1)
-	timerGestateCD:Start(14.3-delay)--Start
-	countdownGestate:Start(17.3-delay)
-	timerLiquefyCD:Start(91-delay)
-	countdownLiquefy:Start(91-delay)
+	timerEvolvingAfflictionCD:Start(4.7-delay)--Instantly on engage
+	timerGestateCD:Start(10-delay)--SUCCESS
+	countdownGestate:Start(10-delay)
+	timerContagionCD:Start(20.5-delay, 1)
+	timerLiquefyCD:Start(90.8-delay)
+	countdownLiquefy:Start(90.8-delay)
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(265127))
 		DBM.InfoFrame:Show(8, "playerdebuffstacks", 265127, self.Options.ShowHighestFirst and 1 or 2)
@@ -114,25 +114,25 @@ function mod:SPELL_CAST_START(args)
 		self.vb.hyperGenesisCount = 0
 		timerGestateCD:Stop()
 		countdownGestate:Cancel()
-		timerMutagenicPathogenCD:Stop()
+		timerEvolvingAfflictionCD:Stop()
 		timerContagionCD:Stop()
 		timerHypergenesisCD:Start(9.8, 1)
-	elseif spellId == 265212 then
-		timerGestateCD:Start()
-		countdownGestate:Start()
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 265178 then
-		timerMutagenicPathogenCD:Start()
+		timerEvolvingAfflictionCD:Start()
 	elseif spellId == 266459 then
 		self.vb.hyperGenesisCount = self.vb.hyperGenesisCount + 1
 		warnHypergenesis:Show(self.vb.hyperGenesisCount)
 		if self.vb.hyperGenesisCount == 1 then
 			timerHypergenesisCD:Start(nil, 2)
 		end
+	elseif spellId == 265212 or spellId == 265209 then
+		timerGestateCD:Start()
+		countdownGestate:Start()
 	end
 end
 
@@ -152,11 +152,11 @@ function mod:SPELL_AURA_APPLIED(args)
 			local amount = args.amount or 1
 			if amount >= 2 then
 				if args:IsPlayer() then
-					warnMutagenicPathogen:Show(args.destName, amount)
-					specWarnMutagenicPathogen:Show(amount)
-					specWarnMutagenicPathogen:Play("stackhigh")
-					--yellMutagenicPathogen:Cancel()
-					--yellMutagenicPathogen:Countdown(12)
+					warnEvolvingAffliction:Show(args.destName, amount)
+					specWarnEvolvingAffliction:Show(amount)
+					specWarnEvolvingAffliction:Play("stackhigh")
+					--yellEvolvingAffliction:Cancel()
+					--yellEvolvingAffliction:Countdown(12)
 				else
 					local _, _, _, _, expireTime = DBM:UnitDebuff("player", spellId)
 					local remaining
@@ -164,14 +164,14 @@ function mod:SPELL_AURA_APPLIED(args)
 						remaining = expireTime-GetTime()
 					end
 					if not UnitIsDeadOrGhost("player") and (not remaining or remaining and remaining < 8) then
-						specWarnMutagenicPathogenOther:Show(args.destName)
-						specWarnMutagenicPathogenOther:Play("tauntboss")
+						specWarnEvolvingAfflictionOther:Show(args.destName)
+						specWarnEvolvingAfflictionOther:Play("tauntboss")
 					else
-						warnMutagenicPathogen:Show(args.destName, amount)
+						warnEvolvingAffliction:Show(args.destName, amount)
 					end
 				end
 			else
-				warnMutagenicPathogen:Show(args.destName, amount)
+				warnEvolvingAffliction:Show(args.destName, amount)
 			end
 		end
 	elseif spellId == 265129 then
@@ -227,7 +227,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 265178 then
 		if args:IsPlayer() then
-			--yellMutagenicPathogen:Cancel()
+			--yellEvolvingAffliction:Cancel()
 		end
 	elseif spellId == 265129 then
 		if args:IsPlayer() then
@@ -254,12 +254,12 @@ function mod:SPELL_AURA_REMOVED(args)
 			end
 		end
 	elseif spellId == 265217 then
-		timerLiquefyCD:Start()
-		countdownLiquefy:Start()
-		timerMutagenicPathogenCD:Start(6)
-		timerContagionCD:Start(15.5, 1)
-		timerGestateCD:Start(19.1)--Start
-		countdownGestate:Start(19.1)
+		timerEvolvingAfflictionCD:Start(8.5)
+		timerGestateCD:Start(14.6)--SUCCESS
+		countdownGestate:Start(14.6)
+		timerContagionCD:Start(24.3, 1)
+		timerLiquefyCD:Start(94.8)
+		countdownLiquefy:Start(94.8)
 	end
 end
 

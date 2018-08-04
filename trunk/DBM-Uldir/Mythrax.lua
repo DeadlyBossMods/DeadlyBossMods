@@ -15,8 +15,8 @@ mod:SetBossHPInfoToHighest()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 273282 273538 273810 272115 273949 274019",
-	"SPELL_CAST_SUCCESS 272533",
+	"SPELL_CAST_START 273282 273538 273810 272115 274019",
+	"SPELL_CAST_SUCCESS 272533 273949",
 	"SPELL_AURA_APPLIED 274693 272407 272536 274230",
 --	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 272407 272536 274230",
@@ -31,8 +31,8 @@ mod:RegisterEventsInCombat(
 --TODO, detect Obliteration Blast target?
 --TODO, move timerObliterationBlastCD to success?
 --[[
-(ability.id = 273282 or ability.id = 273538 or ability.id = 273810 or ability.id = 272115 or ability.id = 273949) and type = "begincast"
- or (ability.id = 272533 or ability.id = 272404) and type = "cast"
+(ability.id = 273282 or ability.id = 273538 or ability.id = 273810 or ability.id = 272115) and type = "begincast"
+ or (ability.id = 272533 or ability.id = 272404 or ability.id = 273949) and type = "cast"
  or ability.id = 274019 and type = "begincast"
  or ability.id = 274230 and type = "removebuff"
 --]]
@@ -81,12 +81,15 @@ mod.vb.phase = 1
 mod.vb.ruinCast = 0
 mod.vb.sphereCast = 0
 mod.vb.beamCast = 0
+mod.vb.destroyersRemaining = 2
 local beamTimers = {20, 12, 12, 12, 12}--20, 14, 10, 12 (old) (if it remains 12 repeating, table should be eliminated)
 
 function mod:OnCombatStart(delay)
 	self.vb.phase = 1
 	self.vb.ruinCast = 0
 	self.vb.sphereCast = 0
+	self.vb.beamCast = 0
+	self.vb.destroyersRemaining = 2
 	timerImminentRuinCD:Start(4.9-delay, 1)
 	timerOblivionSphereCD:Start(9-delay, 1)
 	countdownOblivionSphere:Start(9-delay)
@@ -120,10 +123,12 @@ function mod:SPELL_CAST_START(args)
 			timerEssenceShearCD:Start(19.5, BOSS, args.sourceGUID)
 			countdownEssenceShear:Start(19.5)
 		else--Big Adds (cid==139381)
-			timerEssenceShearCD:Start(19.5, DBM_ADD, args.sourceGUID)
+			if self:AntiSpam(3, 1) then
+				timerEssenceShearCD:Start(19.5, DBM_ADD)
+			end
 		end
 	elseif spellId == 273538 then--Antispammed since he casts double on mythic
-		if self:AntiSpam(3, 1) then
+		if self:AntiSpam(3, 2) then
 			specWarnObliterationBlast:Show()
 			specWarnObliterationBlast:Play("watchwave")
 		end
@@ -137,6 +142,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 273810 then
 		self.vb.phase = 2
 		self.vb.beamCast = 0
+		self.vb.destroyersRemaining = 2
 		warnPhase2:Show()
 		warnPhase2:Play("ptwo")
 		timerEssenceShearCD:Stop()
@@ -150,6 +156,7 @@ function mod:SPELL_CAST_START(args)
 		countdownOblivionSphere:Start(7)
 		timerVisionsoMadnessCD:Start(11.5)
 		timerObliterationbeamCD:Start(20, 1)
+		timerEssenceShearCD:Start(29.1, DBM_ADD)
 	elseif spellId == 272115 then
 		self.vb.beamCast = self.vb.beamCast + 1
 		specWarnObliterationbeam:Show()
@@ -158,10 +165,6 @@ function mod:SPELL_CAST_START(args)
 		if timer then
 			timerObliterationbeamCD:Start(timer, self.vb.beamCast+1)
 		end
-	elseif spellId == 273949 then
-		specWarnVisionsofMadness:Show()
-		specWarnVisionsofMadness:Play("killmob")
-		timerVisionsoMadnessCD:Start()
 	elseif spellId == 274019 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnMindFlay:Show(args.sourceName)
 		specWarnMindFlay:Play("kickcast")
@@ -174,7 +177,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.ruinCast = self.vb.ruinCast + 1
 		timerImminentRuinCD:Start(15, self.vb.ruinCast+1)
 		countdownImminentRuin:Start(15)
-	--[[elseif spellId == 272404 and self:AntiSpam(10, 1) then--Use if for some reason the UNIT event disappears
+	elseif spellId == 273949 then
+		specWarnVisionsofMadness:Show()
+		specWarnVisionsofMadness:Play("killmob")
+		timerVisionsoMadnessCD:Start()
+--[[elseif spellId == 272404 and self:AntiSpam(10, 3) then--Use if for some reason the UNIT event disappears
 		self.vb.sphereCast = self.vb.sphereCast + 1
 		specWarnOblivionSphere:Show()
 		specWarnOblivionSphere:Play("killmob")
@@ -271,8 +278,11 @@ function mod:UNIT_DIED(args)
 	elseif cid == 139487 then--Vision of Madness
 		--TODO, infoframe add tracking
 	elseif cid == 139381 then--N'raqi Destroyer
+		self.vb.destroyersRemaining = self.vb.destroyersRemaining - 1
 		--TODO, infoframe add tracking
-		timerEssenceShearCD:Stop(DBM_ADD, args.destGUID)
+		if self.vb.destroyersRemaining == 0 then
+			timerEssenceShearCD:Stop(DBM_ADD)
+		end
 	end
 end
 
