@@ -221,9 +221,6 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerEnlargedHeartCD:Start(25.7)
 			countdownEnlargedHeart:Start(25.7)
 		end
-		if self.Options.InfoFrame then
-			DBM.InfoFrame:Hide()
-		end
 	elseif spellId == 275189 then
 		if args:IsPlayer() then
 			yellCloggedArteriesFades:Cancel()
