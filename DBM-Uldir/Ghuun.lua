@@ -18,7 +18,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS 263235 263482 263503 263373 270373 276839 274582",
 	"SPELL_AURA_APPLIED 268074 267813 277079 272506 274262 263372 270447 263235 270443",
 	"SPELL_AURA_APPLIED_DOSE 270447",
-	"SPELL_AURA_REMOVED 268074 267813 277079 272506 274262 263235",
+	"SPELL_AURA_REMOVED 268074 267813 277079 272506 274262 263235 263372",
 	"SPELL_PERIODIC_DAMAGE 270287",
 	"SPELL_PERIODIC_MISSED 270287",
 --	"SPELL_DAMAGE 263326",
@@ -138,7 +138,7 @@ do
 		--Boss Powers first
 		--TODO, eliminate main or alternate if it's not needed (drycode checking both to ensure everything is covered)
 		--TODO, eliminate worthless tentacles and stuff
-		for i = 1, 5 do
+		for i = 1, 2 do
 			local uId = "boss"..i
 			--Primary Power
 			local currentPower, maxPower = UnitPower(uId), UnitPowerMax(uId)

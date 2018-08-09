@@ -72,6 +72,8 @@ mod:AddInfoFrameOption(275270, true)
 
 local bloodStorm = DBM:GetSpellInfo(270290)
 local ignoreGTFO = false
+mod.vb.plasmaCast = 0
+mod.vb.phase = 1
 
 function mod:StaticTarget(targetname, uId)
 	if not targetname then return end
@@ -81,6 +83,8 @@ function mod:StaticTarget(targetname, uId)
 end
 
 function mod:OnCombatStart(delay)
+	self.vb.plasmaCast = 0
+	self.vb.phase = 1
 	timerPlasmaDischargeCD:Start(5.9-delay)
 	timerSanguineStaticCD:Start(18-delay)
 	timerCudgelOfGoreCD:Start(35-delay)
@@ -132,7 +136,22 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if (spellId == 271224 or spellId == 278888) and self:AntiSpam(3, 1) then
-		timerPlasmaDischargeCD:Start()
+		self.vb.plasmaCast = self.vb.plasmaCast + 1
+		if self.vb.phase == 1 then
+			if self.vb.plasmaCast == 1 then
+				timerPlasmaDischargeCD:Start(41)
+			else
+				timerPlasmaDischargeCD:Start(35)
+			end
+		else
+			if self.vb.plasmaCast == 1 then
+				timerPlasmaDischargeCD:Start(40)
+			elseif self.vb.plasmaCast == 2 then
+				timerPlasmaDischargeCD:Start(35)
+			else
+				timerPlasmaDischargeCD:Start(30)
+			end
+		end
 	elseif spellId == 275205 then
 		timerEnlargedHeartCD:Start()
 		countdownEnlargedHeart:Start(60.4)
@@ -209,10 +228,12 @@ function mod:SPELL_AURA_REMOVED(args)
 	if spellId == 271225 then--Used later with icon feature
 
 	elseif spellId == 271965 then
+		self.vb.plasmaCast = 0
+		self.vb.phase = 2
 		warnPoweringDownOver:Show()
 		warnPoweringDownOver:Play("phasechange")
 		timerPoweredDown:Stop()
-		timerPlasmaDischargeCD:Start(13)--6
+		timerPlasmaDischargeCD:Start(12.8)--6
 		timerSanguineStaticCD:Start(27)--18
 		timerCudgelOfGoreCD:Start(37)--35
 		countdownCudgelofGore:Start(37)--35
