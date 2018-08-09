@@ -174,7 +174,7 @@ do
 			local remaining = expireTime-GetTime()
 			addLine(spellName3, math.floor(remaining))
 		end
-		local spellName4, _, currentStack = DBM:UnitDebuff("player", 263227, 263420)
+		local spellName4, _, currentStack = DBM:UnitDebuff("player", 263227, 269301)
 		if spellName4 and currentStack then--Personal Putrid Blood count
 			addLine(spellName4, currentStack)
 		end
@@ -438,17 +438,17 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
-function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
+function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
 	if spellId == 270287 and destGUID == UnitGUID("player") and self:AntiSpam(2, 6) then
-		specWarnGTFO:Show()
+		specWarnGTFO:Show(spellName)
 		specWarnGTFO:Play("runaway")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
-function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
+function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
 	if spellId == 263326 and destGUID == UnitGUID("player") and self:AntiSpam(2, 6) then
-		specWarnGTFO:Show()
+		specWarnGTFO:Show(spellName)
 		specWarnGTFO:Play("runaway")
 	end
 end
