@@ -528,4 +528,16 @@ DBM_CORE_DUR_HEADER					= "Deadly Boss Mods - 내구도 검사 결과"
 DBM_CORE_DUR_ENTRY					= "%s: 내구도 [%d 퍼센트] / 깨진 장비 [%s]"
 DBM_CORE_LAG_FOOTER					= "응답 없음: %s"
 
+--LDB
+DBM_LDB_TOOLTIP_HELP1	= "<왼쪽-클릭> DBM 불러오기"
+DBM_LDB_TOOLTIP_HELP2	= "<오른쪽-클릭> 설정 메뉴"
+
+DBM_LDB_LOAD_MODS		= "우두머리 경보 불러오기"
+
+DBM_LDB_CAT_OTHER		= "기타 보스 경보"
+
+DBM_LDB_CAT_GENERAL		= "일반"
+DBM_LDB_ENABLE_BOSS_MOD	= "우두머리 경보 사용"
+DBM_LDB_ANNOUN_BOSS_MOD = "공격대 경보로 알리기(공격대장 권한 필요)"
+
 end

@@ -250,3 +250,15 @@ DBM_INSTANCE_INFO_STATS_AWAY		= "In pausa: %s"
 DBM_INSTANCE_INFO_STATS_NO_RESPONSE	= "Nessuna versione di DBM installata: %s"
 DBM_INSTANCE_INFO_RESULTS			= "Risultati della Scansione ID di Incursione. Guarda che le istanze potrebbero essere riportate piu' volte se ci sono dei client di gioco localizzati nella tua incursione."
 DBM_INSTANCE_INFO_SHOW_RESULTS		= "Players yet to respond: %s\n|HDBM:showRaidIdResults|h|cff3588ff[Show results now]|r|h"
+
+--LDB
+DBM_LDB_TOOLTIP_HELP1	= "Click per aprire DBM"
+DBM_LDB_TOOLTIP_HELP2	= "Click-DX per aprire il menu'"
+
+DBM_LDB_LOAD_MODS		= "Carica i Moduli dei Boss"
+
+DBM_LDB_CAT_OTHER		= "Altri Boss Mods"
+
+DBM_LDB_CAT_GENERAL		= "Generale"
+DBM_LDB_ENABLE_BOSS_MOD	= "Abilita Modulo Boss"
+DBM_LDB_ANNOUN_BOSS_MOD = "Annuncia in Incursione"
