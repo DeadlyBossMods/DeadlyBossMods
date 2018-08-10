@@ -538,6 +538,5 @@ DBM_LDB_CAT_OTHER		= "기타 보스 경보"
 
 DBM_LDB_CAT_GENERAL		= "일반"
 DBM_LDB_ENABLE_BOSS_MOD	= "우두머리 경보 사용"
-DBM_LDB_ANNOUN_BOSS_MOD = "공격대 경보로 알리기(공격대장 권한 필요)"
 
 end
