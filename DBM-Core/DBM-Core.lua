@@ -129,7 +129,6 @@ DBM.DefaultOptions = {
 	DisableStatusWhisper = false,
 	DisableGuildStatus = false,
 	HideBossEmoteFrame2 = true,
-	ShowMinimapButton = false,
 	ShowFlashFrame = true,
 	SWarningAlphabetical = true,
 	SWarnNameInNote = true,
@@ -401,6 +400,7 @@ local UpdateChestTimer
 local breakTimerStart
 local AddMsg
 local delayedFunction
+local dataBroker
 
 local fakeBWVersion, fakeBWHash = 102, "4dc3d9c"
 local versionQueryString, versionResponseString = "Q^%d^%s", "V^%d^%s"
@@ -1163,7 +1163,11 @@ do
 			end
 			self.Bars:LoadOptions("DBM")
 			self.Arrow:LoadPosition()
-			if not self.Options.ShowMinimapButton then self:HideMinimapButton() end
+			-- LibDBIcon setup
+			if type(DBM_MinimapIcon) ~= "table" then
+				DBM_MinimapIcon = {}
+			end
+			LibStub("LibDBIcon-1.0"):Register("DBM", dataBroker, DBM_MinimapIcon)
 			--[[local soundChannels = tonumber(GetCVar("Sound_NumChannels")) or 24--if set to 24, may return nil, Defaults usually do
 			--If this messes with your fps, stop raiding with a toaster. It's only fix for addon sound ducking.
 			if soundChannels < 64 then
@@ -2543,79 +2547,30 @@ end
 --  Minimap Button  --
 ----------------------
 do
-	local dragMode = nil
-
-	local function moveButton(self)
-		if dragMode == "free" then
-			local centerX, centerY = Minimap:GetCenter()
-			local x, y = GetCursorPosition()
-			x, y = x / self:GetEffectiveScale() - centerX, y / self:GetEffectiveScale() - centerY
-			self:ClearAllPoints()
-			self:SetPoint("CENTER", x, y)
-		else
-			local centerX, centerY = Minimap:GetCenter()
-			local x, y = GetCursorPosition()
-			x, y = x / self:GetEffectiveScale() - centerX, y / self:GetEffectiveScale() - centerY
-			centerX, centerY = math.abs(x), math.abs(y)
-			centerX, centerY = (centerX / math.sqrt(centerX^2 + centerY^2)) * 80, (centerY / sqrt(centerX^2 + centerY^2)) * 80
-			centerX = x < 0 and -centerX or centerX
-			centerY = y < 0 and -centerY or centerY
-			self:ClearAllPoints()
-			self:SetPoint("CENTER", centerX, centerY)
-		end
-	end
-
-	local button = CreateFrame("Button", "DBMMinimapButton", Minimap)
-	button:SetHeight(32)
-	button:SetWidth(32)
-	button:SetFrameStrata("MEDIUM")
-	button:SetPoint("CENTER", -65.35, -38.8)
-	button:SetMovable(true)
-	button:SetUserPlaced(true)
-	button:SetNormalTexture("Interface\\AddOns\\DBM-Core\\textures\\Minimap-Button-Up")
-	button:SetPushedTexture("Interface\\AddOns\\DBM-Core\\textures\\Minimap-Button-Down")
-	button:SetHighlightTexture("Interface\\Minimap\\UI-Minimap-ZoomButton-Highlight")
-
-	button:SetScript("OnMouseDown", function(self, button)
-		if IsShiftKeyDown() and IsAltKeyDown() then
-			dragMode = "free"
-			self:SetScript("OnUpdate", moveButton)
-		elseif IsShiftKeyDown() or button == "RightButton" then
-			dragMode = nil
-			self:SetScript("OnUpdate", moveButton)
-		end
-	end)
-	button:SetScript("OnMouseUp", function(self)
-		self:SetScript("OnUpdate", nil)
-	end)
-	button:SetScript("OnClick", function(self, button)
-		if IsShiftKeyDown() or button == "RightButton" then return end
-		DBM:LoadGUI()
-	end)
-	button:SetScript("OnEnter", function(self)
-		GameTooltip_SetDefaultAnchor(GameTooltip, self)
-		GameTooltip:SetText(DBM_CORE_MINIMAP_TOOLTIP_HEADER, 1, 1, 1)
-		GameTooltip:AddLine(ver, NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, 1)
-		GameTooltip:AddLine(" ")
-		GameTooltip:AddLine(DBM_CORE_MINIMAP_TOOLTIP_FOOTER, RAID_CLASS_COLORS.MAGE.r, RAID_CLASS_COLORS.MAGE.g, RAID_CLASS_COLORS.MAGE.b, 1)
-		GameTooltip:Show()
-	end)
-	button:SetScript("OnLeave", function(self)
-		GameTooltip:Hide()
-	end)
-
-	function DBM:ToggleMinimapButton()
-		self.Options.ShowMinimapButton = not self.Options.ShowMinimapButton
-		if self.Options.ShowMinimapButton then
-			button:Show()
-		else
-			button:Hide()
-		end
-	end
-
-	function DBM:HideMinimapButton()
-		return button:Hide()
-	end
+    dataBroker = LibStub("LibDataBroker-1.1"):NewDataObject("DBM",
+        {type = "launcher", label = "DBM", icon = "Interface\\AddOns\\DBM-Core\\textures\\Minimap-Button-Up"}
+    )
+ 
+    function dataBroker.OnClick(self, button)
+        if IsShiftKeyDown() or button == "RightButton" then return end
+        DBM:LoadGUI()
+    end
+ 
+    function dataBroker.OnTooltipShow(GameTooltip)
+        GameTooltip:SetText(DBM_CORE_MINIMAP_TOOLTIP_HEADER, 1, 1, 1)
+        GameTooltip:AddLine(ver, NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, 1)
+        GameTooltip:AddLine(" ")
+        GameTooltip:AddLine(DBM_CORE_MINIMAP_TOOLTIP_FOOTER, RAID_CLASS_COLORS.MAGE.r, RAID_CLASS_COLORS.MAGE.g, RAID_CLASS_COLORS.MAGE.b, 1)
+    end
+ 
+    function DBM:ToggleMinimapButton()
+        DBM_MinimapIcon.hide = not DBM_MinimapIcon.hide
+        if DBM_MinimapIcon.hide then
+            LibStub("LibDBIcon-1.0"):Hide("DBM")
+        else
+            LibStub("LibDBIcon-1.0"):Show("DBM")
+        end
+    end
 end
 
 -------------------------------------------------
