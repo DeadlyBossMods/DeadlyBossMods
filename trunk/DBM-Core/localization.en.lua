@@ -167,6 +167,7 @@ DBM_CORE_UPDATEREMINDER_TESTVERSION		= "WARNING: You are using a version of Dead
 DBM_CORE_VEM							= "WARNING: You are running both Deadly Boss Mods and Voice Encounter Mods. DBM will not run in this configuration and therefore will not be loaded."
 DBM_CORE_3RDPROFILES					= "WARNING: DBM-Profiles not compatible with this version of DBM. It must be removed before DBM can proceed, to avoid conflict."
 DBM_CORE_DPMCORE						= "WARNING: Deadly PvP mods is discontinued and not compatible with this version of DBM. It must be removed before DBM can proceed, to avoid conflict."
+DBM_CORE_DBMLDB							= "WARNING: DBM-LDB is now built into DBM-Core. While it won't do any harm, it's recommended to remove 'DBM-LDB' from your addons folder"
 DBM_CORE_UPDATE_REQUIRES_RELAUNCH		= "WARNING: This DBM update will not work correctly if you don't fully restart your game client. This update contains new files or .toc file changes that cannot be loaded via ReloadUI. You may encounter broken functionality or errors if you continue without a client restart."
 DBM_CORE_OUT_OF_DATE_NAG				= "Your version of Deadly Boss Mods is out-of-date. It is recommended you update for this fight so you are not missing an important alert or timer or a yell rest of raid is expecting to see from you."
 
@@ -178,7 +179,7 @@ DBM_PIZZA_CONFIRM_IGNORE			= "Do you really want to ignore DBM timers from %s fo
 DBM_PIZZA_ERROR_USAGE				= "Usage: /dbm [broadcast] timer <time> <text>. <time> must be greater than 1."
 
 DBM_CORE_MINIMAP_TOOLTIP_HEADER		= "Deadly Boss Mods"
-DBM_CORE_MINIMAP_TOOLTIP_FOOTER		= "Shift+click or right-click to move\nAlt+shift+click for free drag and drop"
+DBM_CORE_MINIMAP_TOOLTIP_FOOTER		= "Hold shift and drag to move"
 
 DBM_CORE_RANGECHECK_HEADER			= "Range Check (%dyd)"
 DBM_CORE_RANGECHECK_SETRANGE		= "Set range"
@@ -588,3 +589,22 @@ DBM_CORE_POISON_ICON		= "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:20:20:0:
 DBM_CORE_DISEASE_ICON		= "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:20:20:0:0:255:66:70:86:40:58|t"
 DBM_CORE_CURSE_ICON			= "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:20:20:0:0:255:66:6:21:40:58|t"
 DBM_CORE_ENRAGE_ICON		= "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:20:20:0:0:255:66:102:118:40:58|t"
+
+--LDB
+DBM_LDB_TOOLTIP_HELP1	= "Left-click to open DBM"
+DBM_LDB_TOOLTIP_HELP2	= "Right-click to open config menu"
+
+DBM_LDB_LOAD_MODS		= "Load boss mods"
+
+DBM_LDB_CAT_BFA			= EXPANSION_NAME7
+DBM_LDB_CAT_LEG			= EXPANSION_NAME6
+DBM_LDB_CAT_WOD			= EXPANSION_NAME5
+DBM_LDB_CAT_MOP			= EXPANSION_NAME4
+DBM_LDB_CAT_CATA		= EXPANSION_NAME3
+DBM_LDB_CAT_WOTLK		= EXPANSION_NAME2
+DBM_LDB_CAT_BC			= EXPANSION_NAME1
+DBM_LDB_CAT_CLASSIC 	= EXPANSION_NAME0
+DBM_LDB_CAT_OTHER		= "Other Boss Mods"
+
+DBM_LDB_CAT_GENERAL		= "General"
+DBM_LDB_ENABLE_BOSS_MOD	= "Enable boss mod"

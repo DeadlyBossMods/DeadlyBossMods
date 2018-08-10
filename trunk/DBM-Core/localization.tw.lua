@@ -538,3 +538,16 @@ DBM_CORE_LAG_CHECKING				= "檢測團隊成員的網路延遲中..."
 DBM_CORE_LAG_HEADER					= "Deadly Boss Mods - 網路延遲結果"
 DBM_CORE_LAG_ENTRY					= "%s:世界延遲[%d毫秒]/家延遲[%d毫秒]"
 DBM_CORE_LAG_FOOTER					= "無回應:%s"
+
+--LDB
+DBM_LDB_TOOLTIP_HELP1	= "左鍵開啟DBM"
+DBM_LDB_TOOLTIP_HELP2	= "右鍵開啟設置"
+
+DBM_LDB_LOAD_MODS		= "載入首領模組"
+
+DBM_LDB_CAT_OTHER		= "其他首領"
+
+DBM_LDB_CAT_GENERAL		= "一般"
+DBM_LDB_ENABLE_BOSS_MOD	= "啟用首領模組"
+DBM_LDB_ANNOUN_BOSS_MOD = "通告到團隊"
+
