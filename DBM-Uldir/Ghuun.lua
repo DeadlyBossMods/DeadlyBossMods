@@ -15,7 +15,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 272505 267509 267427 267412 273406 273405 267409 267462 267579 263482 263503 263307 275160",
-	"SPELL_CAST_SUCCESS 263235 263482 263503 263373 270373 276839 274582",
+	"SPELL_CAST_SUCCESS 263235 263482 263503 263373 270373 270428 276839 274582",
 	"SPELL_AURA_APPLIED 268074 267813 277079 272506 274262 263372 270447 263235 270443",
 	"SPELL_AURA_APPLIED_DOSE 270447",
 	"SPELL_AURA_REMOVED 268074 267813 277079 272506 274262 263235 263372",
@@ -39,11 +39,11 @@ mod:RegisterEventsInCombat(
 --TODO, timers for Mind Numbing Chatter?
 --TODO, detecting cores that FAIL to deposit and get destroyed instead (to determin when next core timer is)
 --[[
-(ability.id = 272505 or ability.id = 267509 or ability.id = 273406 or ability.id = 273405 or ability.id = 267409 or ability.id = 267579 or ability.id = 263482 or ability.id = 263503 or ability.id = 275160) and type = "begincast"
- or (ability.id = 263235 or ability.id = 263482 or ability.id = 263503 or ability.id = 263373 or ability.id = 270373 or ability.id = 276839 or ability.id = 274582) and type = "cast"
- or (ability.id = 267462 or ability.id = 267412) and type = "begincast"
+(ability.id = 272505 or ability.id = 267509 or ability.id = 273406 or ability.id = 273405 or ability.id = 267579 or ability.id = 263482 or ability.id = 263503 or ability.id = 275160) and type = "begincast"
+ or (ability.id = 263235 or ability.id = 263482 or ability.id = 263503 or ability.id = 263373 or ability.id = 270373 or ability.id = 270428 or ability.id = 276839 or ability.id = 274582) and type = "cast"
  or ability.id = 270443
  or ability.name = "Wave of Corruption"
+ or (ability.id = 267462 or ability.id = 267412 or ability.id = 267409) and type = "begincast"
 --]]
 --Arena Floor
 --local warnXorothPortal				= mod:NewSpellAnnounce(244318, 2, nil, nil, nil, nil, nil, 7)
@@ -92,8 +92,8 @@ local timerThousandMawsCD				= mod:NewCDCountTimer(23.9, 267509, nil, nil, nil, 
 local timerMassiveSmashCD				= mod:NewCDTimer(9.7, 267412, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerDarkBargainCD				= mod:NewCDTimer(23.1, 267409, nil, nil, nil, 3, nil, DBM_CORE_DAMAGE_ICON)
 mod:AddTimerLine(SCENARIO_STAGE:format(2))
-local timerWaveofCorruptionCD			= mod:NewCDCountTimer(20, 270373, nil, nil, nil, 3)
-local timerBloodFeastCD					= mod:NewCDTimer(20, 263235, nil, nil, nil, 2)
+local timerWaveofCorruptionCD			= mod:NewCDCountTimer(15, 270373, nil, nil, nil, 3)
+local timerBloodFeastCD					= mod:NewCDTimer(15, 263235, nil, nil, nil, 2)
 mod:AddTimerLine(SCENARIO_STAGE:format(3))
 local timerMalignantGrowthCD			= mod:NewCDTimer(20.5, 274582, nil, nil, nil, 3)
 local timerGazeofGhuunCD				= mod:NewCDTimer(21.9, 275160, nil, nil, nil, 2)
@@ -227,7 +227,7 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 272505 then
 		self.vb.explosiveCount = self.vb.explosiveCount + 1
-		timerExplosiveCorruptionCD:Start(nil, self.vb.explosiveCount+1)
+		timerExplosiveCorruptionCD:Start(13, self.vb.explosiveCount+1)
 	elseif spellId == 267509 then
 		self.vb.mawCastCount = self.vb.mawCastCount + 1
 		specWarnThousandMaws:Show()
@@ -277,7 +277,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 263235 then--Blood Feast
 		self.vb.waveCast = 0
-		timerWaveofCorruptionCD:Start(20.5, 1)--Wave of corruption is next, not blood Feast
+		timerWaveofCorruptionCD:Start(16, 1)--Wave of corruption is next, not blood Feast
 	elseif (spellId == 263482 or spellId == 263503) then
 		self.vb.matrixCount = 0
 		timerReOrgBlast:Start()
@@ -290,19 +290,17 @@ function mod:SPELL_CAST_SUCCESS(args)
 			timerDarkBargainCD:Stop()--Technically should AddTime(25) each add, but honestly, if the adds don't die in this 25 second window you done fucked up
 			timerExplosiveCorruptionCD:Start(25, 1)--Casts it instantly on stun end
 		else
-			--Extend existing timers by 50 (only happens in P2, no drive in P3 so no P3 timer checks needed)
-			--TODO, change to 25 if blizzard fixes it lasting double duration
 			if self.vb.waveCast == 2 then--Current timer is blood feast
-				timerBloodFeastCD:AddTime(50)
+				timerBloodFeastCD:AddTime(24)
 			else--Current timer is wave of corruption
-				timerWaveofCorruptionCD:AddTime(50, self.vb.waveCast+1)
+				timerWaveofCorruptionCD:AddTime(24, self.vb.waveCast+1)
 			end
-			timerExplosiveCorruptionCD:AddTime(50, self.vb.explosiveCount+1)
+			timerExplosiveCorruptionCD:AddTime(24, self.vb.explosiveCount+1)
 		end
 	elseif spellId == 263373 then
 		timerMatrixCD:Stop()
 		timerMatrixCD:Start(11.5, self.vb.matrixCount+1)
-	elseif spellId == 270373 then--Wave of Corruption
+	elseif spellId == 270373 or spellId == 270428 then--Wave of Corruption
 		DBM:Debug("Wave of corruptino back in combat log")
 	elseif spellId == 276839 then
 		self.vb.phase = 3
@@ -313,10 +311,10 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerBloodFeastCD:Stop()
 		timerWaveofCorruptionCD:Stop()
 		timerExplosiveCorruptionCD:Stop()
-		timerExplosiveCorruptionCD:Start(27.9, 1)
-		timerWaveofCorruptionCD:Start(30.9, 1)
-		timerMalignantGrowthCD:Start(34)
-		timerGazeofGhuunCD:Start(43.7)
+		timerExplosiveCorruptionCD:Start(27.6, 1)
+		timerMalignantGrowthCD:Start(33.7)
+		timerWaveofCorruptionCD:Start(37, 1)--30
+		timerGazeofGhuunCD:Start(43.3)
 	end
 end
 
@@ -398,7 +396,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 270443 then
 		--Start wave timer when boss activates, vs when he's first stunned.
 		self.vb.waveCast = 0
-		timerWaveofCorruptionCD:Start(10, 1)
+		timerWaveofCorruptionCD:Start(15, 1)--10
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(5)
 		end
@@ -489,16 +487,16 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		
 	--elseif spellId == 274318 then--Spell Picker (Wave of Corruption & Blood Feast alternating)
 	
-	elseif spellId == 270373 then--Wave of Corruption (since blizzard decided to remove it from combat log)
+	elseif spellId == 270373 or spellId == 270428 then--Wave of Corruption (since blizzard decided to remove it from combat log) 270428
 		self.vb.waveCast = self.vb.waveCast + 1
 		if self.vb.phase == 2 then
 			if self.vb.waveCast == 1 then
-				timerWaveofCorruptionCD:Start(20.5, 2)
+				timerWaveofCorruptionCD:Start(15, 2)
 			else
-				timerBloodFeastCD:Start(20.5)
+				timerBloodFeastCD:Start(15)
 			end
 		else--No more blood feast, only waves
-			timerWaveofCorruptionCD:Start(20.5, self.vb.waveCast+1)
+			timerWaveofCorruptionCD:Start(17, self.vb.waveCast+1)
 		end
 	end
 end
