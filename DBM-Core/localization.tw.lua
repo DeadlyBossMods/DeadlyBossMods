@@ -549,5 +549,4 @@ DBM_LDB_CAT_OTHER		= "其他首領"
 
 DBM_LDB_CAT_GENERAL		= "一般"
 DBM_LDB_ENABLE_BOSS_MOD	= "啟用首領模組"
-DBM_LDB_ANNOUN_BOSS_MOD = "通告到團隊"
 
