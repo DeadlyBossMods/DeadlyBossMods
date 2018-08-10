@@ -261,4 +261,3 @@ DBM_LDB_CAT_OTHER		= "Altri Boss Mods"
 
 DBM_LDB_CAT_GENERAL		= "Generale"
 DBM_LDB_ENABLE_BOSS_MOD	= "Abilita Modulo Boss"
-DBM_LDB_ANNOUN_BOSS_MOD = "Annuncia in Incursione"

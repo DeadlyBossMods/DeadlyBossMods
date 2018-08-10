@@ -558,4 +558,3 @@ DBM_LDB_CAT_OTHER		= "Otros Boss Mods"
 
 DBM_LDB_CAT_GENERAL		= "General"
 DBM_LDB_ENABLE_BOSS_MOD	= "habilitar boss mod"
-DBM_LDB_ANNOUN_BOSS_MOD = "Anunciar a la raid"

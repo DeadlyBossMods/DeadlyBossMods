@@ -561,4 +561,3 @@ DBM_LDB_CAT_OTHER		= "Sonstige Boss Mods"
 
 DBM_LDB_CAT_GENERAL		= "Allgemein"
 DBM_LDB_ENABLE_BOSS_MOD	= "Aktiviere Boss Mod"
-DBM_LDB_ANNOUN_BOSS_MOD = "Verkünde zum Schlachtzug"
