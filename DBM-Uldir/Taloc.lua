@@ -126,7 +126,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnRetrieveCudgel:Show()
 		specWarnRetrieveCudgel:Play("chargemove")
 	elseif spellId == 271895 then--Sanguine Static
-		self:BossUnitTargetScanner(uId, "StaticTarget")
+		self:BossUnitTargetScanner("boss1", "StaticTarget")
 		specWarnSanguineStatic:Show()
 		specWarnSanguineStatic:Play("watchwave")
 		timerSanguineStaticCD:Start()

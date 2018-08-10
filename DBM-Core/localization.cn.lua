@@ -555,3 +555,15 @@ DBM_CORE_DUR_CHECKING				= "全团装备耐久度检测请稍后..."
 DBM_CORE_DUR_HEADER					= "DBM - 装备耐久度检测结果"
 DBM_CORE_DUR_ENTRY					= "%s: %d 耐久度 / %s件装备损坏"
 DBM_CORE_DUR_FOOTER					= "未反馈此次检测的团员:%s"
+
+--LDB
+DBM_LDB_TOOLTIP_HELP1	= "左键 打开DBM"
+DBM_LDB_TOOLTIP_HELP2	= "右键 打开设置"
+
+DBM_LDB_LOAD_MODS		= "载入首领模块"
+
+DBM_LDB_CAT_OTHER		= "其他首领"
+
+DBM_LDB_CAT_GENERAL		= "常规"
+DBM_LDB_ENABLE_BOSS_MOD	= "启用首领模块"
+DBM_LDB_ANNOUN_BOSS_MOD = "通告到团队"

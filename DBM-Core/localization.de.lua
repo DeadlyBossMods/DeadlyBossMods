@@ -551,3 +551,14 @@ DBM_CORE_DUR_HEADER					= "Deadly Boss Mods - Haltbarkeitergebnisse"
 DBM_CORE_DUR_ENTRY					= "%s: Haltbarkeit [%d Prozent] / Ausrüstung defekt [%s]"
 DBM_CORE_LAG_FOOTER					= "Keine Antwort: %s"
 
+--LDB
+DBM_LDB_TOOLTIP_HELP1	= "Links-Klick, um DBM zu öffnen."
+DBM_LDB_TOOLTIP_HELP2	= "Rechts-Klick, um das Konfigurationsmenü zu öffnen."
+
+DBM_LDB_LOAD_MODS		= "Lade Boss Mod"
+
+DBM_LDB_CAT_OTHER		= "Sonstige Boss Mods"
+
+DBM_LDB_CAT_GENERAL		= "Allgemein"
+DBM_LDB_ENABLE_BOSS_MOD	= "Aktiviere Boss Mod"
+DBM_LDB_ANNOUN_BOSS_MOD = "Verkünde zum Schlachtzug"

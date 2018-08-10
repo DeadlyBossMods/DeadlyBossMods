@@ -547,3 +547,15 @@ DBM_CORE_DUR_CHECKING				= "Comprobando durabilidad de la banda..."
 DBM_CORE_DUR_HEADER					= "Deadly Boss Mods - Resultados de durabilidad"
 DBM_CORE_DUR_ENTRY					= "%s: Durabilidad [%d%%] / Piezas rotas [%s]"
 DBM_CORE_LAG_FOOTER					= "Sin respuesta: %s"
+
+--LDB
+DBM_LDB_TOOLTIP_HELP1	= "Click izquierdo para abrir DBM"
+DBM_LDB_TOOLTIP_HELP2	= "Click derecho para el menú de configuración"
+
+DBM_LDB_LOAD_MODS		= "Cargar boss mods"
+
+DBM_LDB_CAT_OTHER		= "Otros Boss Mods"
+
+DBM_LDB_CAT_GENERAL		= "General"
+DBM_LDB_ENABLE_BOSS_MOD	= "habilitar boss mod"
+DBM_LDB_ANNOUN_BOSS_MOD = "Anunciar a la raid"
