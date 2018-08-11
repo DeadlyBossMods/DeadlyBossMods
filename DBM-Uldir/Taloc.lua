@@ -36,6 +36,7 @@ local yellPlasmaDischarge				= mod:NewYell(271225)
 local specWarnCudgelofGore				= mod:NewSpecialWarningMoveTo(271296, nil, nil, nil, 3, 2)
 local specWarnCudgelofGoreEveryone		= mod:NewSpecialWarningRun(271296, nil, nil, nil, 4, 2)
 local specWarnRetrieveCudgel			= mod:NewSpecialWarningDodge(271728, nil, nil, nil, 2, 2)
+local specWarnSanguineStaticYou			= mod:NewSpecialWarningYou(272582, nil, nil, nil, 1, 2)
 local specWarnSanguineStatic			= mod:NewSpecialWarningDodge(272582, nil, nil, nil, 2, 2)
 local yellSanguineStatic				= mod:NewYell(272582)
 local specWarnFixate					= mod:NewSpecialWarningYou(275270, nil, nil, nil, 1, 2)
@@ -78,7 +79,12 @@ mod.vb.phase = 1
 function mod:StaticTarget(targetname, uId)
 	if not targetname then return end
 	if targetname == UnitName("player") then
+		specWarnSanguineStaticYou:Show()
+		specWarnSanguineStaticYou:Play("targetyou")
 		yellSanguineStatic:Yell()
+	else
+		specWarnSanguineStatic:Show()
+		specWarnSanguineStatic:Play("watchwave")
 	end
 end
 
@@ -127,8 +133,6 @@ function mod:SPELL_CAST_START(args)
 		specWarnRetrieveCudgel:Play("chargemove")
 	elseif spellId == 271895 then--Sanguine Static
 		self:BossUnitTargetScanner("boss1", "StaticTarget")
-		specWarnSanguineStatic:Show()
-		specWarnSanguineStatic:Play("watchwave")
 		timerSanguineStaticCD:Start()
 	end
 end
