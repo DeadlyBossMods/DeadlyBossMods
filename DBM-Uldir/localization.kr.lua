@@ -51,11 +51,19 @@ L= DBM:GetModLocalization(2194)
 L= DBM:GetModLocalization(2195)
 
 L:SetTimerLocalization({
-	timerAddIncoming		= DBM_INCOMING
+	timerCallofCrawgCD		= "다음 크로그 (%s)",
+	timerCallofHexerCD 		= "다음 혈사술사 (%s)",
+	timerCallofCrusherCD	= "다음 분쇄자 (%s)",
 })
 
 L:SetOptionLocalization({
 	timerAddIncoming		= "쫄이 공격 가능해지면 타이머 바 보기"
+})
+
+L:SetMiscLocalization({
+	Crusher			=	"분쇄자",
+	Bloodhexer		=	"혈사술사",
+	Crawg			=	"크로그"
 })
 
 ------------------
