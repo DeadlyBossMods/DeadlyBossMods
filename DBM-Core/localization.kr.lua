@@ -166,6 +166,7 @@ DBM_CORE_UPDATEREMINDER_TESTVERSION		= "경고: 현재 게임 버전과 맞지 �
 DBM_CORE_VEM							= "경고: Deadly Boss Mods와 Voice Encounter Mods를 함께 사용중입니다. 현재 설정으로는 DBM이 작동하지 않으며 로딩도 되지 않을 것입니다."
 DBM_CORE_3RDPROFILES					= "경고: DBM-Profiles가 이 버전의 DBM과 호환되지 않습니다. DBM이 읽기 전에 삭제해야 충돌을 방지할 수 있습니다."
 DBM_CORE_DPMCORE						= "경고: Deadly PvP 모드는 더이상 개발되지 않으며 본 DBM 버전과 호환되지 않습니다. DBM이 읽기 전에 삭제해야 충돌을 방지할 수 있습니다."
+DBM_CORE_DBMLDB							= "경고: DBM-LDB는 이제 DBM-Core에 편입되었습니다. 같이 사용해도 문제가 생기는건 아니지만 가급적 애드온 폴더에서 'DBM-LDB' 폴더를 삭제하는걸 권장합니다"
 DBM_CORE_UPDATE_REQUIRES_RELAUNCH		= "경고: 지금 업데이트한 DBM은 게임 클라이언트를 완전히 재시작하기 전까진 정상 작동하지 않습니다. 이 업데이트엔 새 파일이 포함되어 있거나 UI 재시작으로는 로딩할 수 없는 .toc 파일의 변경 사항이 있습니다. 클라이언트 재시작 없이 사용할 경우 오류가 발생하거나 작동하지 않을 수 있습니다."
 DBM_CORE_OUT_OF_DATE_NAG				= "현재 사용중인 Deadly Boss Mods 버전이 오래되었습니다. 업데이트를 해야 이 전투의 중요한 알림이나 타이머 그리고 공격대원 모두가 보는 외침 등이 빠지지 않게 나옵니다."
 
@@ -175,7 +176,7 @@ DBM_PIZZA_SYNC_INFO					= "|Hplayer:%1$s|h[%1$s]|h1이;가; 당신에게 DBM 타
 DBM_PIZZA_CONFIRM_IGNORE			= "정말 %s의 DBM 타이머를 차단하시겠습니까? 이 공격대에 있는 동안에만 적용됩니다."
 DBM_PIZZA_ERROR_USAGE				= "사용법: /dbm [broadcast] timer <시간> <텍스트>. <시간>은 1초 이상이어야 합니다."
 
-DBM_CORE_MINIMAP_TOOLTIP_FOOTER		= "Shift+클릭 또는 우클릭한 상태로 움직이세요.\nAlt+Shift+클릭으로 움직이면 자유롭게 드래그해서 배치할 수 있습니다."
+DBM_CORE_MINIMAP_TOOLTIP_FOOTER		= "쉬프트 누르고 드래그로 이동"
 
 DBM_CORE_RANGECHECK_HEADER			= "탐지 거리 (%dm)"
 DBM_CORE_RANGECHECK_SETRANGE		= "거리 설정"
@@ -529,14 +530,14 @@ DBM_CORE_DUR_ENTRY					= "%s: 내구도 [%d 퍼센트] / 깨진 장비 [%s]"
 DBM_CORE_LAG_FOOTER					= "응답 없음: %s"
 
 --LDB
-DBM_LDB_TOOLTIP_HELP1	= "<왼쪽-클릭> DBM 불러오기"
-DBM_LDB_TOOLTIP_HELP2	= "<오른쪽-클릭> 설정 메뉴"
+DBM_LDB_TOOLTIP_HELP1	= "왼쪽 클릭으로 DBM 열기"
+DBM_LDB_TOOLTIP_HELP2	= "오른쪽 클릭으로 설정 메뉴 열기"
 
-DBM_LDB_LOAD_MODS		= "우두머리 경보 불러오기"
+DBM_LDB_LOAD_MODS		= "보스 모드 로드"
 
-DBM_LDB_CAT_OTHER		= "기타 보스 경보"
+DBM_LDB_CAT_OTHER		= "그 외 보스 모드"
 
 DBM_LDB_CAT_GENERAL		= "일반"
-DBM_LDB_ENABLE_BOSS_MOD	= "우두머리 경보 사용"
+DBM_LDB_ENABLE_BOSS_MOD	= "보스 모드 사용"
 
 end
