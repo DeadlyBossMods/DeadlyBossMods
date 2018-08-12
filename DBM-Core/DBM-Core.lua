@@ -2683,7 +2683,7 @@ do
 						info = UIDropDownMenu_CreateInfo()
 						info.text = v.name
 						info.notCheckable = true
-						info.func = function() DBM:LoadMod(v) CloseDropDownMenus() end
+						info.func = function() DBM:LoadMod(v, true) CloseDropDownMenus() end
 						UIDropDownMenu_AddButton(info, 3)
 					end
 				end
