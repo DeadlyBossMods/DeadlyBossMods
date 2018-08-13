@@ -10,55 +10,75 @@ mod:SetZone()
 
 mod:RegisterCombat("combat")
 
---[[
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START",
---	"SPELL_CAST_SUCCESS",
-	"SPELL_AURA_APPLIED"
+	"SPELL_CAST_START 275175 275200 276046",
+	"SPELL_AURA_REMOVED 275200"
 )
 
---local warnMothersEmbrace			= mod:NewTargetAnnounce(219045, 3)
+--TODO: Can Sonic Bellow be dodged by tank?
+--TODO: Which script is right script for Earth spike.
+local warnPrimalRage				= mod:NewSpellAnnounce(275200, 3)
 
---local specWarnWingBuffet			= mod:NewSpecialWarningSpell(260908, nil, nil, nil, 2, 2)
---local specWarnHurricaneCrash		= mod:NewSpecialWarningRun(261088, nil, nil, nil, 4, 2)
---local specWarnMatriarchsCall		= mod:NewSpecialWarningSwitch(261467, nil, nil, nil, 1, 2)
+local specWarnSonicBellow			= mod:NewSpecialWarningDodge(275175, nil, nil, nil, 2, 2)
+local specWarnShakeLoose			= mod:NewSpecialWarningSwitch(276046, nil, nil, nil, 1, 2)
 --local specWarnClutch				= mod:NewSpecialWarningYou(261509, nil, nil, nil, 1, 2)
 --local yellClutch					= mod:NewYell(261509)
 --local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
 
---local timerWingBuffetCD				= mod:NewAITimer(16, 260908, nil, nil, nil, 2)
---local timerHurricaneCrashCD			= mod:NewAITimer(16, 261088, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
---local timerMatriarchCallCD			= mod:NewAITimer(16, 261467, nil, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON)
+local timerSonicBellowCD				= mod:NewAITimer(16, 275175, nil, nil, nil, 3)
+--local timerEarthSpikeCD				= mod:NewAITimer(16, 275194, nil, nil, nil, 3)
+local timerShakeLooseCD					= mod:NewAITimer(16, 276046, nil, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON)
 
---mod:AddRangeFrameOption(5, 194966)
+mod:AddRangeFrameOption(5, 275194)
 --mod:AddReadyCheckOption(37460, false)
 
 function mod:OnCombatStart(delay, yellTriggered)
 	if yellTriggered then
-
+		--timerSonicBellowCD:Start(1-delay)
+		--timerEarthSpikeCD:Start(1-delay)
+		--timerShakeLooseCD:Start(1-delay)
+	end
+	if self.Options.RangeFrame then
+		DBM.RangeCheck:Show(5)
 	end
 end
 
 function mod:OnCombatEnd()
---	if self.Options.RangeFrame then
---		DBM.RangeCheck:Hide()
---	end
+	if self.Options.RangeFrame then
+		DBM.RangeCheck:Hide()
+	end
 end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 260908 then
-
+	if spellId == 275175 then
+		specWarnSonicBellow:Show()
+		specWarnSonicBellow:Play("shockwave")
+		timerSonicBellowCD:Start()
+	elseif spellId == 275200 then
+		warnPrimalRage:Show()
+		timerSonicBellowCD:Stop()
+		--timerEarthSpikeCD:Stop()
+		timerSonicBellowCD:Start(2)
+		--timerEarthSpikeCD:Start(2)
+	elseif spellId == 276046 then
+		specWarnShakeLoose:Show()
+		specWarnShakeLoose:Play("killmob")
+		timerShakeLooseCD:Start()
 	end
 end
 
-function mod:SPELL_AURA_APPLIED(args)
+function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
-	if spellId == 261092 then
-
+	if spellId == 275200 then--Primal Rage
+		timerSonicBellowCD:Stop()
+		--timerEarthSpikeCD:Stop()
+		timerSonicBellowCD:Start(3)
+		--timerEarthSpikeCD:Start(3)
 	end
 end
 
+--[[
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 228007 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
 		specWarnGTFO:Show()

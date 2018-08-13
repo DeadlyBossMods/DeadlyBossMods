@@ -10,32 +10,29 @@ mod:SetZone()
 
 mod:RegisterCombat("combat")
 
---[[
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START",
---	"SPELL_CAST_SUCCESS",
-	"SPELL_AURA_APPLIED"
+	"SPELL_CAST_START 274839 274829 274832"
 )
 
+--TODO, see if can detect gale force teleport target
 --local warnMothersEmbrace			= mod:NewTargetAnnounce(219045, 3)
 
---local specWarnWingBuffet			= mod:NewSpecialWarningSpell(260908, nil, nil, nil, 2, 2)
---local specWarnHurricaneCrash		= mod:NewSpecialWarningRun(261088, nil, nil, nil, 4, 2)
---local specWarnMatriarchsCall		= mod:NewSpecialWarningSwitch(261467, nil, nil, nil, 1, 2)
---local specWarnClutch				= mod:NewSpecialWarningYou(261509, nil, nil, nil, 1, 2)
---local yellClutch					= mod:NewYell(261509)
---local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
+local specWarnAzurethosFury			= mod:NewSpecialWarningRun(274839, nil, nil, nil, 4, 2)
+local specWarnGaleForce				= mod:NewSpecialWarningDodge(274829, nil, nil, nil, 2, 2)
+local specWarnWingBuffet			= mod:NewSpecialWarningDodge(274832, nil, nil, nil, 1, 2)
 
---local timerWingBuffetCD				= mod:NewAITimer(16, 260908, nil, nil, nil, 2)
---local timerHurricaneCrashCD			= mod:NewAITimer(16, 261088, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
---local timerMatriarchCallCD			= mod:NewAITimer(16, 261467, nil, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON)
+local timerAzurethosFuryCD			= mod:NewAITimer(16, 274839, nil, nil, nil, 2)
+local timerGaleForceCD				= mod:NewAITimer(16, 274829, nil, nil, nil, 3)
+local timerWingBuffetCD				= mod:NewAITimer(16, 274832, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 
 --mod:AddRangeFrameOption(5, 194966)
 --mod:AddReadyCheckOption(37460, false)
 
 function mod:OnCombatStart(delay, yellTriggered)
 	if yellTriggered then
-
+		--timerAzurethosFuryCD:Start(1-delay)
+		--timerGaleForceCD:Start(1-delay)
+		--timerWingBuffetCD:Start(1-delay)
 	end
 end
 
@@ -47,18 +44,22 @@ end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 260908 then
-
+	if spellId == 274839 then
+		specWarnAzurethosFury:Show()
+		specWarnAzurethosFury:Play("justrun")
+		timerAzurethosFuryCD:Start()
+	elseif spellId == 274829 then
+		specWarnGaleForce:Show()
+		specWarnGaleForce:Play("shockwave")
+		timerGaleForceCD:Start()
+	elseif spellId == 274832 then
+		specWarnWingBuffet:Show()
+		specWarnWingBuffet:Play("shockwave")
+		timerWingBuffetCD:Start()
 	end
 end
 
-function mod:SPELL_AURA_APPLIED(args)
-	local spellId = args.spellId
-	if spellId == 261092 then
-
-	end
-end
-
+--[[
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 228007 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
 		specWarnGTFO:Show()

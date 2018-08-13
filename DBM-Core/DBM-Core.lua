@@ -434,7 +434,7 @@ end
 local LD
 if LibStub("LibDurability", true) then
 	LD = LibStub("LibDurability")
-end 
+end
 
 
 --------------------------------------------------------
@@ -1171,7 +1171,9 @@ do
 			if type(DBM_MinimapIcon) ~= "table" then
 				DBM_MinimapIcon = {}
 			end
-			LibStub("LibDBIcon-1.0"):Register("DBM", dataBroker, DBM_MinimapIcon)
+			if LibStub("LibDBIcon-1.0", true) then
+				LibStub("LibDBIcon-1.0"):Register("DBM", dataBroker, DBM_MinimapIcon)
+			end
 			--[[local soundChannels = tonumber(GetCVar("Sound_NumChannels")) or 24--if set to 24, may return nil, Defaults usually do
 			--If this messes with your fps, stop raiding with a toaster. It's only fix for addon sound ducking.
 			if soundChannels < 64 then

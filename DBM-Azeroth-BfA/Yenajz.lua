@@ -10,32 +10,28 @@ mod:SetZone()
 
 mod:RegisterCombat("combat")
 
---[[
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START",
---	"SPELL_CAST_SUCCESS",
-	"SPELL_AURA_APPLIED"
+	"SPELL_CAST_START 274842 274932"
 )
 
+--TODO, Reality Tear cast Id/event
 --local warnMothersEmbrace			= mod:NewTargetAnnounce(219045, 3)
 
---local specWarnWingBuffet			= mod:NewSpecialWarningSpell(260908, nil, nil, nil, 2, 2)
---local specWarnHurricaneCrash		= mod:NewSpecialWarningRun(261088, nil, nil, nil, 4, 2)
---local specWarnMatriarchsCall		= mod:NewSpecialWarningSwitch(261467, nil, nil, nil, 1, 2)
---local specWarnClutch				= mod:NewSpecialWarningYou(261509, nil, nil, nil, 1, 2)
---local yellClutch					= mod:NewYell(261509)
---local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
+local specWarnVoidNova				= mod:NewSpecialWarningSpell(274842, nil, nil, nil, 2, 2)
+--local specWarnRealityTear			= mod:NewSpecialWarningDodge(274842, nil, nil, nil, 2, 2)
+local specWarnEndlessAbyss			= mod:NewSpecialWarningRun(274932, nil, nil, nil, 4, 2)
 
---local timerWingBuffetCD				= mod:NewAITimer(16, 260908, nil, nil, nil, 2)
---local timerHurricaneCrashCD			= mod:NewAITimer(16, 261088, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
---local timerMatriarchCallCD			= mod:NewAITimer(16, 261467, nil, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON)
+local timerVoidNovaCD				= mod:NewAITimer(16, 274842, nil, nil, nil, 2)
+--local timerRealityTearCD			= mod:NewAITimer(16, 274904, nil, nil, nil, 3, nil, DBM_CORE_MAGIC_ICON)
+local timerEndlessAbyssCD			= mod:NewAITimer(16, 274932, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
 
 --mod:AddRangeFrameOption(5, 194966)
 --mod:AddReadyCheckOption(37460, false)
 
 function mod:OnCombatStart(delay, yellTriggered)
 	if yellTriggered then
-
+		--timerVoidNovaCD:Start(1-delay)
+		--timerEndlessAbyssCD:Start(1-delay)
 	end
 end
 
@@ -47,18 +43,18 @@ end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 260908 then
-
+	if spellId == 274842 then
+		specWarnVoidNova:Show()
+		specWarnVoidNova:Play("aesoon")
+		timerVoidNovaCD:Start()
+	elseif spellId == 274932 then
+		specWarnEndlessAbyss:Show()
+		specWarnEndlessAbyss:Play("justrun")
+		timerEndlessAbyssCD:Start()
 	end
 end
 
-function mod:SPELL_AURA_APPLIED(args)
-	local spellId = args.spellId
-	if spellId == 261092 then
-
-	end
-end
-
+--[[
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 228007 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
 		specWarnGTFO:Show()
