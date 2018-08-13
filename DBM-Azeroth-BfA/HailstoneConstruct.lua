@@ -10,32 +10,34 @@ mod:SetZone()
 
 mod:RegisterCombat("combat")
 
---[[
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START",
---	"SPELL_CAST_SUCCESS",
+	"SPELL_CAST_START 274896 274891 274895",
+	"SPELL_CAST_SUCCESS 274888",
 	"SPELL_AURA_APPLIED"
 )
 
---local warnMothersEmbrace			= mod:NewTargetAnnounce(219045, 3)
+--TODO, target scan permafrost spike?
+local warnIcerimedFists				= mod:NewSpellAnnounce(274888, 3, nil, "Tank")
+local warnPermafrostSpike			= mod:NewSpellAnnounce(274896, 2)
 
---local specWarnWingBuffet			= mod:NewSpecialWarningSpell(260908, nil, nil, nil, 2, 2)
---local specWarnHurricaneCrash		= mod:NewSpecialWarningRun(261088, nil, nil, nil, 4, 2)
---local specWarnMatriarchsCall		= mod:NewSpecialWarningSwitch(261467, nil, nil, nil, 1, 2)
---local specWarnClutch				= mod:NewSpecialWarningYou(261509, nil, nil, nil, 1, 2)
---local yellClutch					= mod:NewYell(261509)
---local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
+local specWarnGlacialBreath			= mod:NewSpecialWarningDodge(274891, nil, nil, nil, 2, 2)
+local specWarnFreezingTempest		= mod:NewSpecialWarningMoveTo(274895, nil, nil, nil, 4, 2)
 
---local timerWingBuffetCD				= mod:NewAITimer(16, 260908, nil, nil, nil, 2)
---local timerHurricaneCrashCD			= mod:NewAITimer(16, 261088, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
---local timerMatriarchCallCD			= mod:NewAITimer(16, 261467, nil, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON)
+local timerIcerimedFistsCD			= mod:NewAITimer(16, 274888, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerPermafrostSpikeCD		= mod:NewAITimer(16, 274896, nil, nil, nil, 3)
+local timerGlacialBreathCD			= mod:NewAITimer(16, 274891, nil, nil, nil, 3)
+local timerFreezingTempestCD		= mod:NewAITimer(16, 274895, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
 
 --mod:AddRangeFrameOption(5, 194966)
 --mod:AddReadyCheckOption(37460, false)
+local spikeName = DBM:GetSpellInfo(274896)
 
 function mod:OnCombatStart(delay, yellTriggered)
 	if yellTriggered then
-
+		--timerIcerimedFistsCD:Start(1-delay)
+		--timerPermafrostSpikeCD:Start(1-delay)
+		--timerGlacialBreathCD:Start(1-delay)
+		--timerFreezingTempestCD:Start(1-delay)
 	end
 end
 
@@ -47,35 +49,24 @@ end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 260908 then
-
+	if spellId == 274896 then
+		warnPermafrostSpike:Show()
+		timerPermafrostSpikeCD:Start()
+	elseif spellId == 274891 then
+		specWarnGlacialBreath:Show()
+		specWarnGlacialBreath:Play("breathsoon")
+		timerGlacialBreathCD:Start()
+	elseif spellId == 274895 then
+		specWarnFreezingTempest:Show(spikeName)
+		specWarnFreezingTempest:Play("findshelter")
+		timerFreezingTempestCD:Start()
 	end
 end
 
-function mod:SPELL_AURA_APPLIED(args)
+function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 261092 then
-
+	if spellId == 274888 then
+		warnIcerimedFists:Show()
+		timerIcerimedFistsCD:Start()
 	end
 end
-
-function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
-	if spellId == 228007 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
-		specWarnGTFO:Show()
-		specWarnGTFO:Play("runaway")
-	end
-end
-mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
-
-function mod:UNIT_DIED(args)
-	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 124396 then
-		
-	end
-end
-
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 257939 then
-	end
-end
---]]
