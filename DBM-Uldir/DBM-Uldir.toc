@@ -2,6 +2,7 @@
 ## X-Min-Interface: 80000
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Uldir|r
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0울디르|r
+## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0奧迪爾|r
 ## Author: MysticalOS
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
@@ -20,6 +21,7 @@ localization.kr.lua
 localization.ru.lua
 localization.cn.lua
 localization.es.lua
+localization.tw.lua
 Taloc.lua
 Mother.lua
 FetidDevourer.lua

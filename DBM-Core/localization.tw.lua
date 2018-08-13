@@ -167,6 +167,7 @@ DBM_CORE_UPDATEREMINDER_TESTVERSION		= "警告:你使用的DBM版本和遊戲版
 DBM_CORE_VEM							= "警告:你同時使用DBM和VEM。DBM將停用而無法執行。"
 DBM_CORE_3RDPROFILES					= "警告:DBM-Profiles不相容此版本DBM。請移除避免衝突。"
 DBM_CORE_DPMCORE						= "警告:Deadly PvP 模組已經停止更新而且不相容此版本的DBM。請移除避免衝突。"
+DBM_CORE_DBMLDB							= "警告:DBM-LDB已經內建在DBM-Core，建議從你的addons資料夾中移除DBM-LDB。"
 DBM_CORE_UPDATE_REQUIRES_RELAUNCH		= "警告:如果你沒有重啟你的遊戲，這次DBM更新可能無法正確運作。這次更新包含了新的檔案或是.toc檔更新而不能使用ReloadUI載入。如果沒有將遊戲完全重啟可能會導致錯誤或功能不完整。"
 DBM_CORE_OUT_OF_DATE_NAG				= "你的DBM版本已經過期你設定忽略彈出更新提示。還是建議你更新避免缺少一些重要的警告或是計時器，而其他人也看不到從你發出的大喊警告。"
 
@@ -178,7 +179,7 @@ DBM_PIZZA_CONFIRM_IGNORE			= "是否要在該次遊戲連結中忽略來自%s的
 DBM_PIZZA_ERROR_USAGE				= "命令：/dbm [broadcast] timer <時間（秒）> <文字>。<時間>必須大於1"
 
 --DBM_CORE_MINIMAP_TOOLTIP_HEADER (Same as English locales)
-DBM_CORE_MINIMAP_TOOLTIP_FOOTER		= "Shift+左鍵或右鍵點擊即可移動，Alt+Shift+點擊即可拖放"
+DBM_CORE_MINIMAP_TOOLTIP_FOOTER		= "按住shift即可拖放移動"
 
 DBM_CORE_RANGECHECK_HEADER			= "距離監視(%d碼)"
 DBM_CORE_RANGECHECK_SETRANGE		= "設置距離"
