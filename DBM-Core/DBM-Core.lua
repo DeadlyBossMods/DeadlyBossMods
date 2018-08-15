@@ -1163,7 +1163,6 @@ do
 			end
 			if GetAddOnEnableState(playerName, "DBM-LDB") >= 1 then
 				C_TimerAfter(15, function() AddMsg(self, DBM_CORE_DBMLDB) end)
-				return
 			end
 			self.Bars:LoadOptions("DBM")
 			self.Arrow:LoadPosition()
