@@ -34,7 +34,7 @@ local timerFlashingDaggerCD			= mod:NewCDTimer(31.6, 257785, nil, nil, nil, 2, n
 function mod:OnCombatStart(delay)
 	timerCripShivCD:Start(7.2-delay)--SUCCESS
 	timerHowlingFearCD:Start(8.5-delay)
-	timerFlashingDaggerCD:Start(12.2-delay)
+	timerFlashingDaggerCD:Start(12.1-delay)
 end
 
 function mod:OnCombatEnd()
