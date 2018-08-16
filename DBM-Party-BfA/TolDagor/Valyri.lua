@@ -30,9 +30,9 @@ local timerIgnitionCD				= mod:NewCDTimer(32.7, 256970, nil, nil, nil, 5)
 --mod:AddRangeFrameOption(5, 194966)
 
 function mod:OnCombatStart(delay)
-	timerIgnitionCD:Start(7-delay)
-	timerFuselighterCD:Start(15.1-delay)
-	timerCinderflameCD:Start(19.4-delay)
+	timerIgnitionCD:Start(6.1-delay)
+	timerFuselighterCD:Start(14.2-delay)--SUCCESS
+	timerCinderflameCD:Start(18.2-delay)--START
 end
 
 function mod:OnCombatEnd()
