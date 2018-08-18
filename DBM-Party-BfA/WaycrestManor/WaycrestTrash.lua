@@ -7,27 +7,31 @@ mod:SetZone()
 
 mod.isTrashMod = true
 
---[[
 mod:RegisterEvents(
-	"SPELL_CAST_START",
-	"SPELL_AURA_APPLIED",
-	"SPELL_CAST_SUCCESS"
+	"SPELL_CAST_START 263959 265881"
+--	"SPELL_AURA_APPLIED",
+--	"SPELL_CAST_SUCCESS"
 )
 
 --local warnSoulEchoes				= mod:NewTargetAnnounce(194966, 2)
 
 --local yellArrowBarrage				= mod:NewYell(200343)
---local specWarnWhirlOfFlame			= mod:NewSpecialWarningDodge(221634, nil, nil, nil, 2, 2)
---local specWarnDarkMending			= mod:NewSpecialWarningInterrupt(225573, "HasInterrupt", nil, nil, 1, 2)
+local specWarnSoulVolley			= mod:NewSpecialWarningInterrupt(263959, "HasInterrupt", nil, nil, 1, 2)
+local specWarnDecayingTouch			= mod:NewSpecialWarningSpell(265881, "Tank", nil, nil, 1, 2)
 
 function mod:SPELL_CAST_START(args)
 	if not self.Options.Enabled then return end
 	local spellId = args.spellId
-	if spellId == 200261 then
-	
+	if spellId == 263959 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
+		specWarnSoulVolley:Show(args.sourceName)
+		specWarnSoulVolley:Play("kickcast")
+	elseif spellId == 265881 then
+		specWarnDecayingTouch:Show()
+		specWarnDecayingTouch:Play("defensive")
 	end
 end
 
+--[[
 function mod:SPELL_AURA_APPLIED(args)
 	if not self.Options.Enabled then return end
 	local spellId = args.spellId
