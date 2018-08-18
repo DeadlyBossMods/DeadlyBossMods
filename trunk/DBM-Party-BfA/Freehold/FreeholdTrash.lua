@@ -8,7 +8,7 @@ mod:SetZone()
 mod.isTrashMod = true
 
 mod:RegisterEvents(
-	"SPELL_CAST_START 257732 257397 257899 257736 258777 257784",
+	"SPELL_CAST_START 257732 257397 257899 257736 258777 257784 257756 274860",
 	"SPELL_AURA_APPLIED 257274"
 --	"SPELL_CAST_SUCCESS"
 )
@@ -21,6 +21,8 @@ local specWarnThunderingSquall			= mod:NewSpecialWarningInterrupt(257736, "HasIn
 local specWarnSeaSpout					= mod:NewSpecialWarningInterrupt(258779, "HasInterrupt", nil, nil, 1, 2)--258777 has no tooltip yet so using damage ID for now
 local specWarnFrostBlast				= mod:NewSpecialWarningInterrupt(257784, "HasInterrupt", nil, nil, 1, 2)--Might prune or disable by default if it conflicts with higher priority interrupts in area
 local specWarnShatteringBellow			= mod:NewSpecialWarningCast(257732, "SpellCaster", nil, nil, 1, 2)
+local specWarnGoinBan					= mod:NewSpecialWarningRun(257756, "Melee", nil, nil, 4, 2)
+local specWarnShatteringToss			= mod:NewSpecialWarningSpell(274860, "Tank", nil, nil, 3, 2)
 --local yellArrowBarrage				= mod:NewYell(200343)
 local specWarnGTFO						= mod:NewSpecialWarningGTFO(257274, nil, nil, nil, 1, 2)
 
@@ -45,6 +47,12 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 257732 and self:AntiSpam(3, 1) then
 		specWarnShatteringBellow:Show()
 		specWarnShatteringBellow:Play("stopcasting")
+	elseif spellId == 257756 and self:AntiSpam(3, 3) then
+		specWarnGoinBan:Show()
+		specWarnGoinBan:Play("justrun")
+	elseif spellId == 274860 and self:AntiSpam(3, 4) then
+		specWarnShatteringToss:Show()
+		specWarnShatteringToss:Play("carefly.ogg")--"toss coming" would be better but i can't remember media file
 	end
 end
 

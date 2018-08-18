@@ -2,7 +2,7 @@ local mod	= DBM:NewMod(2115, "DBM-Party-BfA", 7, 1001)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
-mod:SetCreatureID(139273)
+mod:SetCreatureID(129231)
 mod:SetEncounterID(2107)
 mod:SetZone()
 
@@ -15,29 +15,33 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2"
 )
 
---TODO, why two diff duration spellIDs for Catalyst and Propellant Blast, are both used?
---TODO, get correct spellId for GTFO for flames on ground
---TODO, verify GushingCatalyst id/event and unit ID
+--TODO, video fight to figure out whats going on with azerite and gushing and what makes them diff.
+--TODO, more work on blast timings, two casts isn't enough to establish a timer
 local warnAxeriteCatalyst			= mod:NewSpellAnnounce(259022, 2)--Cast often, so general warning not special
 
 local specWarnChemBurn				= mod:NewSpecialWarningDispel(259853, "Healer", nil, nil, 1, 2)
 local specWarnPoropellantBlast		= mod:NewSpecialWarningDodge(259940, nil, nil, nil, 2, 2)
 --local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
 
-local timerAxeriteCatalystCD		= mod:NewAITimer(13, 259022, nil, nil, nil, 3)
-local timerChemBurnCD				= mod:NewAITimer(13, 259853, nil, "Healer", nil, 5, nil, DBM_CORE_HEALER_ICON..DBM_CORE_MAGIC_ICON)
-local timerPropellantBlastCD		= mod:NewAITimer(13, 259940, nil, nil, nil, 3)
-local timerGushingCatalystCD		= mod:NewAITimer(13, 275992, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
+local timerAxeriteCatalystCD		= mod:NewCDTimer(13, 259022, nil, nil, nil, 3)
+local timerChemBurnCD				= mod:NewCDTimer(13, 259853, nil, "Healer", nil, 5, nil, DBM_CORE_HEALER_ICON..DBM_CORE_MAGIC_ICON)
+--local timerPropellantBlastCD		= mod:NewCDTimer(13, 259940, nil, nil, nil, 3)--Longer pull/more data needed (32.5, 6.0, 36.1)
+--local timerGushingCatalystCD		= mod:NewCDTimer(13, 275992, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
 
 --mod:AddRangeFrameOption(5, 194966)
 
+mod.vb.chemBurnCast = 0
+mod.vb.azeriteCataCast = 0
+
 function mod:OnCombatStart(delay)
-	timerAxeriteCatalystCD:Start(1-delay)
-	timerChemBurnCD:Start(1-delay)
-	timerPropellantBlastCD:Start(1-delay)
-	if not self:IsNormal() then
-		timerGushingCatalystCD:Start(1-delay)
-	end
+	self.vb.chemBurnCast = 0
+	self.vb.azeriteCataCast = 0
+	timerAxeriteCatalystCD:Start(4-delay)
+	timerChemBurnCD:Start(12-delay)
+	--timerPropellantBlastCD:Start(31-delay)
+--	if not self:IsNormal() then
+--		timerGushingCatalystCD:Start(1-delay)
+--	end
 end
 
 function mod:OnCombatEnd()
@@ -53,7 +57,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnChemBurn:CancelVoice()
 		specWarnChemBurn:ScheduleVoice(1, "dispelnow")
 		if self:AntiSpam(5, 1) then
-			timerChemBurnCD:Start()
+			self.vb.chemBurnCast = self.vb.chemBurnCast + 1
+			if self.vb.chemBurnCast % 2 == 0 then
+				timerChemBurnCD:Start(27)
+			else
+				timerChemBurnCD:Start(15)
+			end
 		end
 	end
 end
@@ -64,7 +73,7 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 260669 or spellId == 259940 then
 		specWarnPoropellantBlast:Show()
 		specWarnPoropellantBlast:Play("watchstep")
-		timerPropellantBlastCD:Start()
+		--timerPropellantBlastCD:Start()
 	end
 end
 
@@ -94,8 +103,14 @@ end
 --]]
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 275992 then
+	if spellId == 270028 then
+		self.vb.azeriteCataCast = self.vb.azeriteCataCast + 1
 		warnAxeriteCatalyst:Show()
-		timerGushingCatalystCD:Start()
+		--timerGushingCatalystCD:Start()
+		if self.vb.azeriteCataCast % 2 == 0 then
+			timerAxeriteCatalystCD:Start(27)
+		else
+			timerAxeriteCatalystCD:Start(15)
+		end
 	end
 end
