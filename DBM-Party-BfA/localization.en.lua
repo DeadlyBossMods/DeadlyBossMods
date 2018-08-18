@@ -51,7 +51,7 @@ L= DBM:GetModLocalization(2093)
 L= DBM:GetModLocalization(2094)
 
 L:SetMiscLocalization({
-	openingRP = "Gather 'round and place yer bets! We got a new set of vict-- uh... competitors! Take it away, Gurthok and Wodin!"
+	openingRP = "Gather 'round and place yer bets! We got a new set of vict-- uh... competitors! Take it away, Gurgthok and Wodin!"
 })
 
 -----------------------
@@ -203,7 +203,7 @@ L:SetGeneralLocalization({
 })
 
 -----------------------
--- <<<The Undermine>>> --
+-- <<<MOTHERLOAD>>> --
 -----------------------
 -----------------------
 -- Coin-operated Crowd Pummeler --
@@ -231,7 +231,7 @@ L= DBM:GetModLocalization(2116)
 L = DBM:GetModLocalization("UndermineTrash")
 
 L:SetGeneralLocalization({
-	name =	"The Undermine Trash"
+	name =	"The MOTHERLODE!! Trash"
 })
 
 -----------------------
