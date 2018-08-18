@@ -71,7 +71,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnShockingClaw:Show()
 		specWarnShockingClaw:Play("shockwave")
 		timerShockingClawCD:Start()
-	elseif spellId == 271784 then
+	elseif spellId == 271784 and self:AntiSpam(5, 1) then
 		specWarnThrowCoins:Show()
 		specWarnThrowCoins:Play("moveboss")
 		timerThrowCoinsCD:Start()

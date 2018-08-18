@@ -4,9 +4,11 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(135358, 135359, 135360)
 mod:SetEncounterID(2113)
+mod:DisableESCombatDetection()--ES fires For entryway trash pull sometimes, for some reason.
 mod:SetZone()
 mod:SetUsedIcons(8)
 mod:SetBossHPInfoToHighest()
+mod:SetMinSyncRevision(17703)
 
 mod:RegisterCombat("combat")
 
