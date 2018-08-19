@@ -50,7 +50,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnCapacitance:Show(args.amount or 1)
 	elseif spellId == 266923 and args:IsPlayer() then
 		local amount = args.amount or 1
-		if amount >= 5 then
+		if (amount >= 5) and self:AntiSpam(3, 1) then
 			specWarnElectroshock:Show(amount)
 			specWarnElectroshock:Play("stackhigh")
 		end
