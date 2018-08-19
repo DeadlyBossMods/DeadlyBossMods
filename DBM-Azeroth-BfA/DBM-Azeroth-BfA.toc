@@ -13,6 +13,7 @@
 ## X-DBM-Mod-Category: BFA
 ## X-DBM-Mod-Has-Single-Format: 1
 ## X-DBM-Mod-Name: Azeroth (BfA)
+## X-DBM-Mod-Name-koKR: 아제로스 (격전의 아제로스)
 ## X-DBM-Mod-Name-zhTW: 艾澤拉斯 (決戰艾澤拉斯)
 ## X-DBM-Mod-World-Boss: 1
 ## X-DBM-Mod-Sort: 410
