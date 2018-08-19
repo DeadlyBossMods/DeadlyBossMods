@@ -22,7 +22,7 @@ local specWarnReinforcingWardT		= mod:NewSpecialWarningMove(267905, nil, nil, ni
 local specWarnReinforcingWard		= mod:NewSpecialWarningMoveTo(267905, nil, nil, nil, 1, 2)
 local specWarnSwiftnessWardT		= mod:NewSpecialWarningMove(267891, nil, nil, nil, 1, 2)
 local specWarnSwiftnessWard			= mod:NewSpecialWarningMoveTo(267891, nil, nil, nil, 1, 2)
-local specWarnSlicingBlast			= mod:NewSpecialWarningInterruptCount(267818, "HasInterrupt", nil, nil, 1, 2)
+local specWarnSlicingBlast			= mod:NewSpecialWarningInterrupt(267818, false, nil, 2, 1, 2)--Interrupting causes more tornados to spawn, so some recommend no interrupting, so this optino now OPT in
 local specWarnHinderingCleave		= mod:NewSpecialWarningDefensive(267899, "Tank", nil, nil, 1, 2)
 local specWarnBlessingofIronsides	= mod:NewSpecialWarningRun(267901, nil, nil, nil, 4, 2)
 --local yellSwirlingScythe			= mod:NewYell(195254)
@@ -36,10 +36,7 @@ local timerBlessingofIronsidesCD	= mod:NewAITimer(17, 267901, nil, "Tank", nil, 
 --mod:AddRangeFrameOption(5, 194966)
 --mod:AddInfoFrameOption(267905, true)
 
-mod.vb.interruptCount = 0
-
 function mod:OnCombatStart(delay)
-	self.vb.interruptCount = 0
 	timerHinderingCleaveCD:Start(5.8-delay)
 	timerSwiftnessWardCD:Start(16.7-delay)
 	timerReinforcingWardCD:Start(30.1-delay)
@@ -90,17 +87,8 @@ function mod:SPELL_CAST_START(args)
 			specWarnSwiftnessWard:Play("findshield")
 		end
 	elseif spellId == 267818 then
-		if self.vb.interruptCount == 3 then self.vb.interruptCount = 0 end
-		self.vb.interruptCount = self.vb.interruptCount + 1
-		local kickCount = self.vb.interruptCount
-		specWarnSlicingBlast:Show(args.sourceName, kickCount)
-		if kickCount == 1 then
-			specWarnSlicingBlast:Play("kick1r")
-		elseif kickCount == 2 then
-			specWarnSlicingBlast:Play("kick2r")
-		elseif kickCount == 3 then
-			specWarnSlicingBlast:Play("kick3r")
-		end
+		specWarnSlicingBlast:Show(args.sourceName)
+		specWarnSlicingBlast:Play("kickcast")
 	elseif spellId == 267899 then
 		specWarnHinderingCleave:Show()
 		specWarnHinderingCleave:Play("defensive")
