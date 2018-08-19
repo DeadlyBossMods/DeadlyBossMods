@@ -276,7 +276,7 @@ L.FilterInterrupts2			= "if caster is not current target/focus (Always) or inter
 L.FilterInterrupts3			= "if caster is not current target/focus (Always) or interrupt on CD (Boss & Trash)"
 L.FilterInterruptNoteName	= "Filter warnings for interruptable spells (with count) if warning does not contain your name in the custom note"
 L.FilterDispels				= "Filter warnings for dispelable spells if your dispel is on cooldown"
-L.FilterSelfHud				= "Filter yourself from HudMap (Excludes range based Hud functions)"
+L.FilterTrashWarnings		= "Filter all trash mob warnings in normal & heroic dungeons"
 
 L.Area_PullTimer			= "Pull, Break, Combat, & Custom Timer Filter Options"
 L.DontShowPTNoID			= "Block Pull Timer if not sent from same zone as you"
