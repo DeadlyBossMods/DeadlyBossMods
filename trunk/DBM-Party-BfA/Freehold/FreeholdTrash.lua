@@ -52,7 +52,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnGoinBan:Play("justrun")
 	elseif spellId == 274860 and self:AntiSpam(3, 4) then
 		specWarnShatteringToss:Show()
-		specWarnShatteringToss:Play("carefly.ogg")--"toss coming" would be better but i can't remember media file
+		specWarnShatteringToss:Play("carefly")--"toss coming" would be better but i can't remember media file
 	end
 end
 
