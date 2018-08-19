@@ -52,7 +52,7 @@ L= DBM:GetModLocalization(2093)
 L= DBM:GetModLocalization(2094)
 
 L:SetMiscLocalization({
-	openingRP = "Gather 'round and place yer bets! We got a new set of vict-- uh... competitors! Take it away, Gurthok and Wodin!"
+	openingRP = "자, 다들 판돈을 거십시오! 여기 새로운 호구... 아니, 선수가 등장했습니다! 굴그토크, 우딘, 시작해!"
 })
 
 -----------------------
@@ -98,7 +98,7 @@ L= DBM:GetModLocalization(2172)
 L = DBM:GetModLocalization("KingsRestTrash")
 
 L:SetGeneralLocalization({
-	name =	"왕의 안식처 일반몹"
+	name =	"왕들의 안식처 일반몹"
 })
 
 -----------------------
@@ -120,7 +120,7 @@ L= DBM:GetModLocalization(2154)
 L= DBM:GetModLocalization(2155)
 
 L:SetMiscLocalization({
-	openingRP	= "It would seem you have guests, Lord Stormsong."
+	openingRP	= "손님이 있는 것 같군, 스톰송 군주."
 })
 
 -----------------------
@@ -134,7 +134,7 @@ L= DBM:GetModLocalization(2156)
 L = DBM:GetModLocalization("SotSTrash")
 
 L:SetGeneralLocalization({
-	name =	"폭풍의 제단 일반몹"
+	name =	"폭풍의 사원 일반몹"
 })
 
 -----------------------
@@ -168,7 +168,7 @@ L= DBM:GetModLocalization(2140)
 L = DBM:GetModLocalization("BoralusTrash")
 
 L:SetGeneralLocalization({
-	name =	"보랄러스의 공성 일반몹"
+	name =	"보랄러스 공성전 일반몹"
 })
 
 -----------------------
@@ -204,7 +204,7 @@ L:SetGeneralLocalization({
 })
 
 -----------------------
--- <<<The Undermine>>> --
+-- <<<MOTHERLOAD>>> --
 -----------------------
 -----------------------
 -- Coin-operated Crowd Pummeler --
@@ -232,7 +232,7 @@ L= DBM:GetModLocalization(2116)
 L = DBM:GetModLocalization("UndermineTrash")
 
 L:SetGeneralLocalization({
-	name =	"언더마인 일반몹"
+	name =	"왕노다지 광산!! 일반몹"
 })
 
 -----------------------
@@ -333,5 +333,5 @@ L= DBM:GetModLocalization(2129)
 L = DBM:GetModLocalization("WaycrestTrash")
 
 L:SetGeneralLocalization({
-	name =	"웨이크레스트 장원 일반몹"
+	name =	"웨이크레스트 저택 일반몹"
 })
