@@ -29,11 +29,11 @@ local timerCleansingLightCD			= mod:NewAITimer(13, 269310, nil, nil, nil, 5)
 
 mod:AddInfoFrameOption(269301, "Healer")
 
-mod.vb.remainingAdds = 10--Assumed based on 10% per link
+mod.vb.remainingAdds = 6
 local vileExpulsion = DBM:GetSpellInfo(269843)
 
 function mod:OnCombatStart(delay)
-	self.vb.remainingAdds = 10
+	self.vb.remainingAdds = 6
 	timerVileExpulsionCD:Start(1-delay)
 	timerCleansingLightCD:Start(1-delay)
 	if self.Options.InfoFrame then
