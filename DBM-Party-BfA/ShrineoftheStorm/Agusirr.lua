@@ -47,6 +47,7 @@ end
 function mod:OnCombatStart(delay)
 	timerChokingBrineCD:Start(10.5-delay)--SUCCESS
 	timerSurgingRushCD:Start(17-delay)
+	timerUndertowCD:Start(30-delay)
 end
 
 function mod:OnCombatEnd()

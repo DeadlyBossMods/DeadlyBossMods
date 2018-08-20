@@ -32,7 +32,7 @@ local specWarnPlague				= mod:NewSpecialWarningDispel(269686, "RemoveDisease", n
 --local timerRainofToadsCD			= mod:NewAITimer(20, 269688, nil, nil, nil, 1)--More work needed
 local timerPlague					= mod:NewTargetTimer(10, 269686, nil, "RemoveDisease", nil, 5, nil, DBM_CORE_DISEASE_ICON)
 local timerPulseCD					= mod:NewCDTimer(15, 268024, nil, "Healer", nil, 5, nil, DBM_CORE_HEALER_ICON)
-local timerLifeForce				= mod:NewBuffActiveTimer(20, 274149, nil, nil, nil, 6, nil, DBM_CORE_HEALER_ICON)
+--local timerLifeForce				= mod:NewBuffActiveTimer(20, 274149, nil, nil, nil, 6, nil, DBM_CORE_HEALER_ICON)
 
 --mod:AddRangeFrameOption(5, 194966)
 mod:AddNamePlateOption("NPAuraOnSnakeCharm", 268008)
@@ -97,7 +97,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 274149 then
 		timerPulseCD:Stop()
 		warnLifeForce:Show()
-		timerLifeForce:Start()
+		--timerLifeForce:Start()
 		timerPulseCD:Start(30)
 	end
 end
