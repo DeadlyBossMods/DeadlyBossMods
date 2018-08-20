@@ -28,8 +28,8 @@ local warnBurrow					= mod:NewSpellAnnounce(264206, 2, nil, nil, nil, nil, nil, 
 local specWarnHadotoxinOther		= mod:NewSpecialWarningDispel(263957, "RemovePoison", nil, nil, 1, 2)
 local specWarnNoxiousBreath			= mod:NewSpecialWarningDodge(272657, nil, nil, nil, 2, 2)
 local specWarnBlindingSand			= mod:NewSpecialWarningLookAway(263914, nil, nil, nil, 2, 2)
-local specWarnKnotofSnakes			= mod:NewSpecialWarningSwitch(263914, "-Healer", nil, nil, 1, 2)
-local specWarnKnotofSnakesYou		= mod:NewSpecialWarningYou(263914, nil, nil, nil, 1, 2)
+local specWarnKnotofSnakes			= mod:NewSpecialWarningSwitch(263958, "-Healer", nil, nil, 1, 2)
+local specWarnKnotofSnakesYou		= mod:NewSpecialWarningYou(263958, nil, nil, nil, 1, 2)
 local yellKnotofSnakes				= mod:NewYell(263958)
 local specWarnGTFO					= mod:NewSpecialWarningGTFO(263927, nil, nil, nil, 1, 2)
 
@@ -91,7 +91,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.NPAuraOnObscured then
 			DBM.Nameplate:Hide(true, args.destGUID, spellId)
 		end
-	elseif spellId == 263958 then
+	--elseif spellId == 263958 then
 		
 	end
 end
