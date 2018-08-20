@@ -11,23 +11,27 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 267907",
 	"SPELL_CAST_START 260508",
-	"SPELL_CAST_SUCCESS 267907"
+	"SPELL_CAST_SUCCESS 267907",
+	"RAID_BOSS_WHISPER"
 )
 
---TODO, wildfire/burning bush stuff for heroic+
+--TODO, review wildfire/burning bush stuff for heroic+ to see if blizzards warning is good enough.
 --local warnSwirlingScythe			= mod:NewTargetAnnounce(195254, 2)
 
 local specWarnCrush					= mod:NewSpecialWarningDefensive(260508, "Tank", nil, nil, 1, 2)
 local specWarnThorns				= mod:NewSpecialWarningSwitch(267907, "Dps", nil, nil, 1, 2)
 local yellThorns					= mod:NewYell(267907)
+local specWarnSoulHarvest			= mod:NewSpecialWarningMoveTo(260512, "Tank", nil, nil, 3, 2)
 --local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
 
-local timerCrushCD					= mod:NewCDTimer(21.9, 260508, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
-local timerThornsCD					= mod:NewNextTimer(21.9, 267907, nil, nil, nil, 3, nil, DBM_CORE_DAMAGE_ICON)
+local timerCrushCD					= mod:NewCDTimer(17, 260508, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--17-26
+local timerThornsCD					= mod:NewNextTimer(21.8, 267907, nil, nil, nil, 3, nil, DBM_CORE_DAMAGE_ICON)
 
 --mod:AddRangeFrameOption(5, 194966)
 
 mod.vb.crushCount = 0
+
+local wildfire = DBM:GetSpellInfo(260569)
 
 function mod:OnCombatStart(delay)
 	self.vb.crushCount = 0
@@ -74,6 +78,13 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 267907 then
 		timerThornsCD:Start()
+	end
+end
+
+function mod:RAID_BOSS_WHISPER(msg)
+	if msg:find("260512") then
+		specWarnSoulHarvest:Show(wildfire)
+		specWarnSoulHarvest:Play("moveboss")
 	end
 end
 

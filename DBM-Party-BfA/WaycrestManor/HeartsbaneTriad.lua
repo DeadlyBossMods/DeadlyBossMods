@@ -14,18 +14,20 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 260805 260703 260741 260900",
+	"SPELL_AURA_REMOVED 260805 268088",
 	"SPELL_CAST_START 260773",
-	"SPELL_CAST_SUCCESS 260741 260907 260703",
+	"SPELL_CAST_SUCCESS 260741 260907 260703 268088",
 	"UNIT_TARGET_UNFILTERED"
 )
 
---TODO: keep moving alert for Aura of Dread (heroic+) or stop attack warning for thorns aura
 local warnActiveTriad				= mod:NewTargetNoFilterAnnounce(260805, 2)
 local warnUnstableMark				= mod:NewTargetAnnounce(260703, 2)
+local warnAuraofDreadOver			= mod:NewEndAnnounce(268088, 1)
 
 local specWarnRitual				= mod:NewSpecialWarningSpell(260773, nil, nil, nil, 2, 2)
 local specWarnUnstableMark			= mod:NewSpecialWarningMoveAway(260703, nil, nil, nil, 1, 2)
 local yellUnstableMark				= mod:NewYell(260703)
+local specWarnAuraofDread			= mod:NewSpecialWarningMove(268088, nil, nil, nil, 1, 2)
 local specWarnJaggedNettles			= mod:NewSpecialWarningTarget(260703, "Healer", nil, nil, 1, 2)
 local specWarnSoulManipulation		= mod:NewSpecialWarningSwitch(260907, nil, nil, nil, 1, 2)
 --local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
@@ -107,6 +109,8 @@ function mod:SPELL_AURA_REMOVED(args)
 				DBM.RangeCheck:Hide()
 			end
 		end
+	elseif spellId == 268088 then
+		warnAuraofDreadOver:Show()
 	end
 end
 
@@ -138,6 +142,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if bossUnitID and not DBM:UnitBuff(bossUnitID, IrisBuff) and not DBM:UnitDebuff(bossUnitID, IrisBuff) then
 			timerJaggedNettlesCD:Start()
 		end
+	elseif spellId == specWarnAuraofDread then
+		specWarnAuraofDread:Show()
+		specWarnAuraofDread:Play("keepmove")
 	end
 end
 

@@ -27,16 +27,16 @@ local specWarnSkewer				= mod:NewSpecialWarningDefensive(249919, "Tank", nil, ni
 local specWarnEchoes				= mod:NewSpecialWarningDodge(250050, nil, nil, nil, 2, 2)
 local specWarnGTFO					= mod:NewSpecialWarningGTFO(250036, nil, nil, nil, 1, 2)
 
-local timerSoulrendCD				= mod:NewCDTimer(26, 249923, nil, nil, nil, 3, nil, DBM_CORE_DAMAGE_ICON)
-local timerWrackingPainCD			= mod:NewCDTimer(11, 250096, nil, "HasInterrupt", nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
-local timerSkewerCD					= mod:NewCDTimer(25, 249919, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--25-30 or health based
-local timerEchoesCD					= mod:NewCDTimer(26.8, 250050, nil, nil, nil, 3)
+local timerSoulrendCD				= mod:NewCDTimer(41.4, 249923, nil, nil, nil, 3, nil, DBM_CORE_DAMAGE_ICON)
+local timerWrackingPainCD			= mod:NewCDTimer(17, 250096, nil, "HasInterrupt", nil, 4, nil, DBM_CORE_INTERRUPT_ICON)--17-23
+local timerSkewerCD					= mod:NewCDTimer(12, 249919, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerEchoesCD					= mod:NewCDTimer(32.8, 250050, nil, nil, nil, 3)
 
 function mod:OnCombatStart(delay)
 	timerWrackingPainCD:Start(3.5-delay)
-	timerSoulrendCD:Start(6-delay)
-	timerEchoesCD:Start(22.9-delay)
-	timerSkewerCD:Start(28.9-delay)
+	timerSkewerCD:Start(5-delay)
+	timerSoulrendCD:Start(10-delay)
+	timerEchoesCD:Start(16.9-delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
@@ -70,7 +70,7 @@ end
 
 --Same time as SPELL_CAST_START but has target information on normal
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, targetname)
-	if msg:find("spell:249923") then
+	if msg:find("spell:249924") then
 		if targetname then--Normal, only one person affected, name in emote
 			if targetname == UnitName("player") then
 				specWarnSoulRend:Show()

@@ -25,12 +25,12 @@ local specWarnVirulentPathogen		= mod:NewSpecialWarningMoveAway(261440, nil, nil
 local yellVirulentPathogen			= mod:NewShortYell(261440)
 --local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
 
-local timerWastingStrikeCD			= mod:NewNextTimer(15.7, 261438, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
-local timerVirulentPathogenCD		= mod:NewNextTimer(15.7, 261440, nil, nil, nil, 3, nil, DBM_CORE_DISEASE_ICON)
---local timerDiscordantCadenzaCD		= mod:NewNextTimer(16, 268306, nil, nil, nil, 3)--pull:16.1, 3.6, 19.4, 17.0
+local timerWastingStrikeCD			= mod:NewCDTimer(16.5, 261438, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--16.5-17.1
+local timerVirulentPathogenCD		= mod:NewCDTimer(15.4, 261440, nil, nil, nil, 3, nil, DBM_CORE_DISEASE_ICON)--15.4-17
+local timerDiscordantCadenzaCD		= mod:NewCDTimer(22.6, 268306, nil, nil, nil, 3)--pull:16.1, 3.6, 19.4, 17.0
 
 local countdownWastingStrike		= mod:NewCountdown("Alt15", 261438, "Tank", nil, 3)
-local countdownVirulentPathogen		= mod:NewCountdown(15.8, 261440, nil, nil, 3)
+local countdownVirulentPathogen		= mod:NewCountdown(15.4, 261440, nil, nil, 3)
 
 mod:AddRangeFrameOption(6, 261440)
 
@@ -39,6 +39,7 @@ function mod:OnCombatStart(delay)
 	countdownWastingStrike:Start(6-delay)
 	timerVirulentPathogenCD:Start(10.5-delay)
 	countdownVirulentPathogen:Start(10.5-delay)
+	timerDiscordantCadenzaCD:Start(16-delay)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(6)
 	end
@@ -68,6 +69,7 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 268306 and self:AntiSpam(6, 1) then--Antispam in case she interrupts cast to cast transfer, then casts it a second time
 		specWarnDiscordantCadenza:Show()
 		specWarnDiscordantCadenza:Play("watchstep")
+		timerDiscordantCadenzaCD:Start()
 	elseif spellId == 261440 then
 		timerVirulentPathogenCD:Start()
 		countdownVirulentPathogen:Start()

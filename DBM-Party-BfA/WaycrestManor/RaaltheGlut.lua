@@ -94,6 +94,7 @@ function mod:UNIT_DIED(args)
 	end
 end
 
+--Tenderize Aura-280030-npc:131863 = pull:25.1
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 257939 then
 	end
