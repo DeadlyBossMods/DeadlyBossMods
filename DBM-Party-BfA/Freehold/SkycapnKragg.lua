@@ -10,7 +10,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 256016 256060",
-	"SPELL_CAST_START 255952 256106",
+	"SPELL_CAST_START 255952 256106 272046",
 	"SPELL_CAST_SUCCESS 256005",
 	"SPELL_PERIODIC_DAMAGE 256016",
 	"SPELL_PERIODIC_MISSED 256016",
@@ -24,15 +24,17 @@ local warnPhase2					= mod:NewPhaseAnnounce(2, 2, nil, nil, nil, nil, nil, 2)
 local warnVilebombardment			= mod:NewSpellAnnounce(256005, 2, nil, false)--Every 6 seconds so off by default
 
 local specWarnCharge				= mod:NewSpecialWarningDodge(255952, nil, nil, nil, 2, 2)
+local specWarnDiveBomb				= mod:NewSpecialWarningDodge(272046, nil, nil, nil, 2, 2)
 local specWarnPowderShot			= mod:NewSpecialWarningSpell(256106, nil, nil, nil, 2, 2)--Dodge?
 --local yellSwirlingScythe			= mod:NewYell(195254)
 local specWarnBrew					= mod:NewSpecialWarningInterrupt(256016, "HasInterrupt", nil, nil, 1, 2)
 local specWarnGTFO					= mod:NewSpecialWarningGTFO(256016, nil, nil, nil, 1, 2)
 
 local timerChargeCD					= mod:NewCDTimer(8.4, 255952, nil, nil, nil, 3)
-local timerPowderShotCD				= mod:NewCDTimer(13.2, 256106, nil, nil, nil, 3)
-local timerVilebombardmentCD		= mod:NewCDTimer(6, 256005, nil, nil, nil, 3)
-local timerBrewCD					= mod:NewCDTimer(27.5, 256060, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
+local timerDiveBombCD				= mod:NewCDTimer(17, 272046, nil, nil, nil, 3)
+local timerPowderShotCD				= mod:NewCDTimer(10.8, 256106, nil, nil, nil, 3)
+local timerVilebombardmentCD		= mod:NewCDTimer(5.9, 256005, nil, nil, nil, 3)
+local timerBrewCD					= mod:NewCDTimer(20.6, 256060, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
 
 function mod:OnCombatStart(delay)
 	timerChargeCD:Start(4.7-delay)
@@ -60,6 +62,10 @@ function mod:SPELL_CAST_START(args)
 		specWarnPowderShot:Show()
 		specWarnPowderShot:Play("shockwave")--Review, I barely remember fight it died so fast
 		timerPowderShotCD:Start()
+	elseif spellId == 272046 then
+		specWarnDiveBomb:Show()
+		specWarnDiveBomb:Play("watchstep")
+		timerDiveBombCD:Start()
 	end
 end
 
@@ -84,8 +90,11 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		timerChargeCD:Stop()
 		warnPhase2:Show()
 		warnPhase2:Play("ptwo")
-		timerPowderShotCD:Start(5.4)--7.3
 		timerVilebombardmentCD:Start(6.2)
-		timerBrewCD:Start(15.8)
+		timerPowderShotCD:Start(7.3)--5.4 (old)
+		timerBrewCD:Start(20.6)--15.8 (old)
+		if not self:IsNormal() then
+			timerDiveBombCD:Start(17.7)
+		end
 	end
 end

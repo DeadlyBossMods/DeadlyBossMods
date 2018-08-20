@@ -11,7 +11,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 250585",
 	"SPELL_CAST_START 250258",
-	"SPELL_CAST_SUCCESS 250368 259572",
+	"SPELL_CAST_SUCCESS 250368 259572 250241",
 	"UNIT_DIED"
 )
 
@@ -25,15 +25,15 @@ local specWarnLeap					= mod:NewSpecialWarningDodge(250258, nil, nil, nil, 2, 2)
 --local yellSwirlingScythe			= mod:NewYell(195254)--Use if leap target scanning possible
 local specWarnGTFO					= mod:NewSpecialWarningGTFO(250585, nil, nil, nil, 1, 2)
 
-local timerLeapCD					= mod:NewNextTimer(6, 250258, nil, nil, nil, 3)--6 uness delayed by stentch, then 8
-local timerNoxiousStenchCD			= mod:NewNextTimer(13, 250368, nil, nil, nil, 3, nil, DBM_CORE_DISEASE_ICON)
+local timerLeapCD					= mod:NewCDTimer(6, 250258, nil, nil, nil, 3)--6 uness delayed by stentch, then 8
+local timerNoxiousStenchCD			= mod:NewCDTimer(18.2, 250368, nil, nil, nil, 3, nil, DBM_CORE_DISEASE_ICON)
 
 mod.vb.totemRemaining = 3
 
 function mod:OnCombatStart(delay)
 	self.vb.totemRemaining = 3
 	timerLeapCD:Start(2-delay)
-	timerNoxiousStenchCD:Start(7-delay)
+	timerNoxiousStenchCD:Start(6-delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
@@ -62,6 +62,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnNoxiousStench:Show()
 		timerNoxiousStenchCD:Start(20)
 		timerLeapCD:AddTime(2)--Consistent with early alpha, might use more complex code if this becomes inconsistent
+	elseif spellId == 250241 then
+		timerNoxiousStenchCD:Stop()
+		timerLeapCD:Stop()
+		warnPhase2:Show()
+		warnPhase2:Play("ptwo")
 	end
 end
 
@@ -81,11 +86,6 @@ function mod:UNIT_DIED(args)
 		self.vb.totemRemaining = self.vb.totemRemaining - 1
 		if self.vb.totemRemaining > 0 then
 			warnTotemsLeft:Show(self.vb.totemRemaining)
-		else--Stage 2
-			timerNoxiousStenchCD:Stop()
-			timerLeapCD:Stop()
-			warnPhase2:Show()
-			warnPhase2:Play("ptwo")
 		end
 	end
 end

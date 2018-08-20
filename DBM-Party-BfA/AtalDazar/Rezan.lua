@@ -10,7 +10,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 257407",
-	"SPELL_CAST_START 255371 257407",
+	"SPELL_CAST_START 255371 257407 260683",
 	"SPELL_CAST_SUCCESS 255434",
 	"CHAT_MSG_RAID_BOSS_EMOTE"
 )
@@ -23,15 +23,16 @@ local specWarnTeeth				= mod:NewSpecialWarningDefensive(255434, "Tank", nil, nil
 local specWarnFear				= mod:NewSpecialWarningMoveTo(255371, nil, nil, nil, 3, 2)--Dodge warning on purpose, you dodge it by LOS behind pillar
 local yellPursuit				= mod:NewYell(257407)
 local specWarnPursuit			= mod:NewSpecialWarningRun(257407, nil, nil, nil, 4, 2)
+local specWarnBoneQuake			= mod:NewSpecialWarningSpell(260683, nil, nil, nil, 2, 2)
 
-local timerTeethCD				= mod:NewAITimer(13, 255434, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
-local timerFearCD				= mod:NewAITimer(13, 255371, nil, nil, nil, 2)
-local timerPursuitCD			= mod:NewAITimer(13, 257407, nil, nil, nil, 3)
+local timerTeethCD				= mod:NewCDTimer(38, 255434, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--38-43.7?
+local timerFearCD				= mod:NewCDTimer(40.9, 255371, nil, nil, nil, 2)
+local timerPursuitCD			= mod:NewNextTimer(41.2, 257407, nil, nil, nil, 3)
 
 function mod:OnCombatStart(delay)
-	timerTeethCD:Start(1-delay)
-	timerFearCD:Start(1-delay)
-	timerPursuitCD:Start(1-delay)
+	timerTeethCD:Start(6-delay)
+	timerFearCD:Start(12.4-delay)
+	timerPursuitCD:Start(21.8-delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
@@ -55,6 +56,9 @@ function mod:SPELL_CAST_START(args)
 		timerFearCD:Start()
 	elseif spellId == 257407 then
 		timerPursuitCD:Start()
+	elseif spellId == 260683 then
+		specWarnBoneQuake:Show()
+		specWarnBoneQuake:Play("mobsoon")
 	end
 end
 
@@ -69,7 +73,7 @@ end
 
 --Same time as SPELL_CAST_START but has target information on normal
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, targetname)
-	if msg:find("spell:257407") then
+	if msg:find("spell:255421") then
 		if targetname and self:AntiSpam(5, targetname) then
 			if targetname == UnitName("player") then
 				specWarnPursuit:Show()
