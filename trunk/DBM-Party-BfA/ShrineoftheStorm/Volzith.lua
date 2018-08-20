@@ -24,8 +24,8 @@ local specWarnGrasp					= mod:NewSpecialWarningSpell(267360, nil, nil, nil, 2, 2
 --local yellSwirlingScythe			= mod:NewYell(195254)
 --local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
 
-local timerYawningGateCD			= mod:NewCDTimer(13, 269399, nil, nil, nil, 2)
-local timerCalltheAbyssCD			= mod:NewAITimer(13, 267299, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerYawningGateCD			= mod:NewCDTimer(21, 269399, nil, nil, nil, 3)
+local timerCalltheAbyssCD			= mod:NewNextTimer(90, 267299, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerGraspCD					= mod:NewNextTimer(50, 267360, nil, nil, nil, 6)
 
 local countdownGrasp				= mod:NewCountdown(50, 267360)
@@ -33,13 +33,12 @@ local countdownGrasp				= mod:NewCountdown(50, 267360)
 --mod:AddRangeFrameOption(5, 194966)
 
 function mod:OnCombatStart(delay)
-	if not self:IsNormal() then
-		timerCalltheAbyssCD:Start(1-delay)
-	else
-		timerYawningGateCD:Start(13-delay)
-	end
+	timerYawningGateCD:Start(13-delay)
 	timerGraspCD:Start(20.5-delay)
 	countdownGrasp:Start(20.5-delay)
+	--if not self:IsNormal() then
+		--timerCalltheAbyssCD:Start(73-delay)
+	--end
 end
 
 function mod:OnCombatEnd()
@@ -52,10 +51,9 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 267444 then
 		if not self:IsNormal() then
-			timerCalltheAbyssCD:Start(2)
-		else
-			timerYawningGateCD:Start(8.1)
+			timerCalltheAbyssCD:Start(5.5)
 		end
+		timerYawningGateCD:Start(16.3)
 		timerGraspCD:Start()
 		countdownGrasp:Start()
 	end
@@ -67,7 +65,7 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 269399 then
 		specWarnYawningGate:Show()
 		specWarnYawningGate:Play("justrun")
-		--timerYawningGateCD:Start()
+		timerYawningGateCD:Start()
 	elseif spellId == 267299 then
 		specWarnCalltheAbyss:Show()
 		specWarnCalltheAbyss:Play("moveboss")

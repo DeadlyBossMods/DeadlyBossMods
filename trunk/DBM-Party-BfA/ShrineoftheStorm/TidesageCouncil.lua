@@ -28,19 +28,19 @@ local specWarnBlessingofIronsides	= mod:NewSpecialWarningRun(267901, nil, nil, n
 --local yellSwirlingScythe			= mod:NewYell(195254)
 --local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
 
-local timerReinforcingWardCD		= mod:NewCDTimer(30.3, 267905, nil, nil, nil, 5, nil, DBM_CORE_IMPORTANT_ICON)
+local timerReinforcingWardCD		= mod:NewCDTimer(30.2, 267905, nil, nil, nil, 5, nil, DBM_CORE_IMPORTANT_ICON)
 local timerSwiftnessWardCD			= mod:NewCDTimer(36.4, 267891, nil, nil, nil, 5)--More data needed
-local timerHinderingCleaveCD		= mod:NewCDTimer(17, 267899, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
-local timerBlessingofIronsidesCD	= mod:NewAITimer(17, 267901, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerHinderingCleaveCD		= mod:NewCDTimer(18.2, 267899, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerBlessingofIronsidesCD	= mod:NewCDTimer(32.4, 267901, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 
 --mod:AddRangeFrameOption(5, 194966)
 --mod:AddInfoFrameOption(267905, true)
 
 function mod:OnCombatStart(delay)
+	timerBlessingofIronsidesCD:Start(5-delay)
 	timerHinderingCleaveCD:Start(5.8-delay)
-	timerSwiftnessWardCD:Start(16.7-delay)
+	timerSwiftnessWardCD:Start(16.1-delay)
 	timerReinforcingWardCD:Start(30.1-delay)
-	timerBlessingofIronsidesCD:Start(1-delay)
 --	if self.Options.InfoFrame then
 --		DBM.InfoFrame:SetHeader(DBM_CORE_INFOFRAME_POWER)
 --		DBM.InfoFrame:Show(3, "enemypower", 10)
