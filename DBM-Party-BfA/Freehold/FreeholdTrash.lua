@@ -47,7 +47,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 257732 and self:AntiSpam(3, 1) then
 		specWarnShatteringBellow:Show()
 		specWarnShatteringBellow:Play("stopcasting")
-	elseif spellId == 257756 and self:AntiSpam(3, 3) then
+	elseif spellId == 257756 and self:AntiSpam(5, 3) then
 		specWarnGoinBan:Show()
 		specWarnGoinBan:Play("justrun")
 	elseif spellId == 274860 and self:AntiSpam(3, 4) then
