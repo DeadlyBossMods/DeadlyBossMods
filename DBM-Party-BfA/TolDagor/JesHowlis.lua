@@ -26,7 +26,7 @@ local specWarnFlashingDagger		= mod:NewSpecialWarningMoveTo(257785, nil, nil, ni
 --local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
 
 local timerCripShivCD				= mod:NewCDTimer(16.1, 257777, nil, "Healer|RemovePoison", nil, 5, nil, DBM_CORE_HEALER_ICON..DBM_CORE_POISON_ICON)
-local timerHowlingFearCD			= mod:NewCDTimer(14.6, 257791, nil, "HasInterrupt", nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
+local timerHowlingFearCD			= mod:NewCDTimer(13.4, 257791, nil, "HasInterrupt", nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
 local timerFlashingDaggerCD			= mod:NewCDTimer(31.6, 257785, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
 
 --mod:AddRangeFrameOption(5, 194966)

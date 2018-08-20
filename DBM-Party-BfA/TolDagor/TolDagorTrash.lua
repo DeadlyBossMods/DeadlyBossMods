@@ -8,7 +8,7 @@ mod:SetZone()
 mod.isTrashMod = true
 
 mod:RegisterEvents(
-	"SPELL_CAST_START 259711",
+	"SPELL_CAST_START 259711 258128",
 	"SPELL_AURA_APPLIED 258153"
 --	"SPELL_CAST_SUCCESS"
 )
@@ -20,7 +20,7 @@ mod:RegisterEvents(
 --local yellArrowBarrage				= mod:NewYell(200343)
 local specWarnLockdown				= mod:NewSpecialWarningDodge(259711, nil, nil, nil, 2, 2)
 local specWarnWateryDome			= mod:NewSpecialWarningDispel(258153, "MagicDispeller", nil, nil, 1, 2)
---local specWarnDarkMending			= mod:NewSpecialWarningInterrupt(225573, "HasInterrupt", nil, nil, 1, 2)
+local specWarnDebilitatingShout		= mod:NewSpecialWarningInterrupt(258128, "HasInterrupt", nil, nil, 1, 2)
 
 function mod:SPELL_CAST_START(args)
 	if not self.Options.Enabled then return end
@@ -28,6 +28,9 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 259711 and self:IsValidWarning(args.sourceGUID) then
 		specWarnLockdown:Show()
 		specWarnLockdown:Play("watchstep")
+	elseif spellId == 258128 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
+		specWarnDebilitatingShout:Show(args.sourceName)
+		specWarnDebilitatingShout:Play("kickcast")
 	end
 end
 

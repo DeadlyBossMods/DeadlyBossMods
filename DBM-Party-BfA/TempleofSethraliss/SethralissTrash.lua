@@ -7,27 +7,31 @@ mod:SetZone()
 
 mod.isTrashMod = true
 
---[[
 mod:RegisterEvents(
-	"SPELL_CAST_START",
-	"SPELL_AURA_APPLIED",
-	"SPELL_CAST_SUCCESS"
+	"SPELL_CAST_START 265968 272657"
+--	"SPELL_AURA_APPLIED",
+--	"SPELL_CAST_SUCCESS"
 )
 
 --local warnSoulEchoes				= mod:NewTargetAnnounce(194966, 2)
 
---local yellArrowBarrage				= mod:NewYell(200343)
---local specWarnWhirlOfFlame			= mod:NewSpecialWarningDodge(221634, nil, nil, nil, 2, 2)
---local specWarnDarkMending			= mod:NewSpecialWarningInterrupt(225573, "HasInterrupt", nil, nil, 1, 2)
+--local yellArrowBarrage			= mod:NewYell(200343)
+local specWarnNoxiousBreath			= mod:NewSpecialWarningDodge(272657, "Tank", nil, nil, 1, 2)
+local specWarnHealingSurge			= mod:NewSpecialWarningInterrupt(265968, "HasInterrupt", nil, nil, 1, 2)
 
 function mod:SPELL_CAST_START(args)
 	if not self.Options.Enabled then return end
 	local spellId = args.spellId
-	if spellId == 200261 then
-	
+	if spellId == 265968 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
+		specWarnHealingSurge:Show(args.sourceName)
+		specWarnHealingSurge:Play("kickcast")
+	elseif spellId == 272657 then
+		specWarnNoxiousBreath:Show()
+		specWarnNoxiousBreath:Play("shockwave")
 	end
 end
 
+--[[
 function mod:SPELL_AURA_APPLIED(args)
 	if not self.Options.Enabled then return end
 	local spellId = args.spellId

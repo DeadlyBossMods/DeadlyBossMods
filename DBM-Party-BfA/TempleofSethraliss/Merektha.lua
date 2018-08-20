@@ -11,17 +11,17 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 267050 263957 263958",
 	"SPELL_AURA_REMOVED 267050 263958",
-	"SPELL_CAST_START 272657 263914 264239",
-	"SPELL_CAST_SUCCESS 263957 264206",
+	"SPELL_CAST_START 272657 263914 264239 264233",
+	"SPELL_CAST_SUCCESS 263957",
 	"SPELL_PERIODIC_DAMAGE 263927",
-	"SPELL_PERIODIC_MISSED 263927"
+	"SPELL_PERIODIC_MISSED 263927",
+	"UNIT_SPELLCAST_SUCCEEDED boss1" 
 )
 
---TODO, breath a tank only target or any target?
 --TODO, can eggs be attacked during hatch to reduce add spawns? if so change to special switch warning
---TODO, verify burrow event/fix it
 --TODO, remove hatch nameplate aura if they don't have nameplates
 --TODO, add new class info for "HasStun" so can be used on specWarnKnotofSnakes
+--TODO, timers for breath and blind are inconsistent with burrows. 
 local warnHatch						= mod:NewCastAnnounce(264239, 3)
 local warnBurrow					= mod:NewSpellAnnounce(264206, 2, nil, nil, nil, nil, nil, nil, true)
 
@@ -34,10 +34,10 @@ local yellKnotofSnakes				= mod:NewYell(263958)
 local specWarnGTFO					= mod:NewSpecialWarningGTFO(263927, nil, nil, nil, 1, 2)
 
 local timerHadotoxinCD				= mod:NewAITimer(13, 263957, nil, "Tank|Healer|RemovePoison", nil, 5, nil, DBM_CORE_TANK_ICON..DBM_CORE_POISON_ICON)
-local timerNoxiousBreathCD			= mod:NewAITimer(13, 272657, nil, nil, nil, 3)
-local timerBlindingSandCD			= mod:NewAITimer(13, 263914, nil, nil, nil, 2)
-local timerHatchCD					= mod:NewAITimer(13, 264239, nil, nil, nil, 1)--even need a CD bar or just cast bar?
-local timerBurrowCD					= mod:NewAITimer(13, 264206, nil, nil, nil, 6)
+local timerNoxiousBreathCD			= mod:NewCDTimer(89.3, 272657, nil, nil, nil, 3)
+--local timerBlindingSandCD			= mod:NewCDTimer(51, 263914, nil, nil, nil, 2)
+--local timerHatchCD					= mod:NewCDTimer(43.9, 264239, nil, nil, nil, 1)--even need a CD bar or just cast bar?
+local timerBurrowCD					= mod:NewCDTimer(13, 264206, nil, nil, nil, 6)
 --local timerBurrowEnds				= mod:NewBuffActiveTimer(13, 264206, nil, nil, nil, 6)
 
 --mod:AddRangeFrameOption(5, 194966)
@@ -47,10 +47,8 @@ mod:AddNamePlateOption("NPAuraOnHatch", 264233)
 
 function mod:OnCombatStart(delay)
 	timerHadotoxinCD:Start(1-delay)
-	timerNoxiousBreathCD:Start(1-delay)
-	timerBlindingSandCD:Start(1-delay)
-	timerHatchCD:Start(1-delay)
-	timerBurrowCD:Start(1-delay)
+	timerNoxiousBreathCD:Start(6-delay)
+	timerBurrowCD:Start(15.2-delay)
 	if self.Options.NPAuraOnObscured or self.Options.NPAuraOnHatch then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
@@ -103,18 +101,18 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 272657 then
 		specWarnNoxiousBreath:Show()
 		specWarnNoxiousBreath:Play("watchstep")
-		timerNoxiousBreathCD:Start()
+		--timerNoxiousBreathCD:Start()
 	elseif spellId == 263914 then
 		specWarnBlindingSand:Show()
 		specWarnBlindingSand:Play("turnaway")
-		timerBlindingSandCD:Start()
-	elseif spellId == 264239 then--Hatch
+	elseif (spellId == 264239 or spellId == 264233) then--Hatch
 		if self.Options.NPAuraOnHatch then
 			DBM.Nameplate:Show(true, args.sourceGUID, spellId, nil, 35)
 		end
 		if self:AntiSpam(3, 1) then
-			warnHatch:Show()
-			timerHatchCD:Start()
+			warnHatch:Show()--Cast instantly when burrow ends
+			--timerBlindingSandCD:Start(6)
+			timerBurrowCD:Start(18)
 		end
 	end
 end
@@ -123,13 +121,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 263957 then
 		timerHadotoxinCD:Start()
-	elseif spellId == 264206 then
-		timerHadotoxinCD:Stop()
-		timerNoxiousBreathCD:Stop()
-		timerBlindingSandCD:Stop()
-		warnBurrow:Show()
-		warnBurrow:Play("phasechange")
-		timerBurrowCD:Start()--move to ended event
 	end
 end
 
@@ -150,9 +141,14 @@ function mod:UNIT_DIED(args)
 		
 	end
 end
+--]]
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 257939 then
+	if spellId == 264172 then--Summon (cast when he burrows)
+		timerHadotoxinCD:Stop()
+		timerNoxiousBreathCD:Stop()
+		--timerBlindingSandCD:Stop()
+		warnBurrow:Show()
+		warnBurrow:Play("phasechange")
 	end
 end
---]]
