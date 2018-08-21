@@ -22,7 +22,7 @@ local specWarnSeaSpout					= mod:NewSpecialWarningInterrupt(258779, "HasInterrup
 local specWarnFrostBlast				= mod:NewSpecialWarningInterrupt(257784, "HasInterrupt", nil, nil, 1, 2)--Might prune or disable by default if it conflicts with higher priority interrupts in area
 local specWarnShatteringBellow			= mod:NewSpecialWarningCast(257732, "SpellCaster", nil, nil, 1, 2)
 local specWarnGoinBan					= mod:NewSpecialWarningRun(257756, "Melee", nil, nil, 4, 2)
-local specWarnShatteringToss			= mod:NewSpecialWarningSpell(274860, "Tank", nil, nil, 3, 2)
+local specWarnShatteringToss			= mod:NewSpecialWarningSpell(274860, "Tank", nil, nil, 1, 2)
 --local yellArrowBarrage				= mod:NewYell(200343)
 local specWarnGTFO						= mod:NewSpecialWarningGTFO(257274, nil, nil, nil, 1, 2)
 
