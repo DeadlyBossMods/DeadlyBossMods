@@ -56,7 +56,9 @@ function mod:SPELL_CAST_START(args)
 		specWarnCleartheDeck:Play("shockwave")
 		timerCleartheDeckCD:Start()
 	elseif spellId == 268230 then
-		warnCrimsonSwipe:Show()
+		if self:AntiSpam(3, 1) then
+			warnCrimsonSwipe:Show()
+		end
 		timerCrimsonSwipeCD:Start(nil, args.sourceGUID)
 	elseif spellId == 268260 and self:AntiSpam(3, 1) then
 		warnBroadside:Show()
