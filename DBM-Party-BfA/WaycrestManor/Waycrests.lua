@@ -39,7 +39,7 @@ function mod:OnCombatStart(delay)
 	countdownWastingStrike:Start(6-delay)
 	timerVirulentPathogenCD:Start(10.5-delay)
 	countdownVirulentPathogen:Start(10.5-delay)
-	timerDiscordantCadenzaCD:Start(16-delay)
+	timerDiscordantCadenzaCD:Start(15.5-delay)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(6)
 	end
