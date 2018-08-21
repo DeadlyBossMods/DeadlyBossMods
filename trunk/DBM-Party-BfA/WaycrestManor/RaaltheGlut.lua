@@ -33,7 +33,7 @@ mod.vb.tenderizeCount = 0
 function mod:OnCombatStart(delay)
 	self.vb.tenderizeCount = 0
 	--timerServantCD:Start(43.7-delay)--Verify not health based
-	timerRottenExpulsionCD:Start(6-delay)
+	timerRottenExpulsionCD:Start(5-delay)
 	timerTenderizeCD:Start(-delay)--Also 29.2
 end
 
