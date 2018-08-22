@@ -142,7 +142,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if bossUnitID and not DBM:UnitBuff(bossUnitID, IrisBuff) and not DBM:UnitDebuff(bossUnitID, IrisBuff) then
 			timerJaggedNettlesCD:Start()
 		end
-	elseif spellId == specWarnAuraofDread then
+	elseif spellId == 268088 then
 		specWarnAuraofDread:Show()
 		specWarnAuraofDread:Play("keepmove")
 	end
