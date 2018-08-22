@@ -16,7 +16,7 @@ mod:RegisterEventsInCombat(
 --TODO, re-transcribe fight to see what UNIT events exist so maybe yell isn't needed
 --TODO, verify iffy timers from such a short short pull
 --TODO, heroic stuff (grim portal, dread lense). Too many spellIds to just guess/drycode
-local warnDeathlens					= mod:NewTargetNoFilterAnnounce(268202, 5)
+local warnDeathlens					= mod:NewTargetNoFilterAnnounce(268202, 4)
 
 local specWarnSummonSlaver			= mod:NewSpecialWarningSwitch(266266, "-Healer", nil, nil, 1, 2)
 local specWarnDreadEssence			= mod:NewSpecialWarningSpell(266181, nil, nil, nil, 2, 2)
@@ -48,7 +48,7 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 268202 then
-		warnDeathlens:Show(args.destName)
+		warnDeathlens:CombinedShow(0.3, args.destName)
 	end
 end
 --mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
