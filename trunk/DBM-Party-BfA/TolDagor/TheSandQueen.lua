@@ -14,6 +14,7 @@ mod:RegisterEventsInCombat(
 	"CHAT_MSG_RAID_BOSS_EMOTE"
 )
 
+--TODO, figure out why cast time for upheavel isn't honoring 5 second pre coded
 local warnUpheavel					= mod:NewTargetAnnounce(257617, 2)
 local warnUpheavelCast				= mod:NewCastAnnounce(257617, 2, 5)--Cast time until we have a target
 
