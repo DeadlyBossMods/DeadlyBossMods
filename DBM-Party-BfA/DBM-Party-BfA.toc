@@ -7,8 +7,8 @@
 ## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf05人小队-争霸艾泽拉斯|r
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
-## SavedVariables: DBMPartyBfa_AllSavedVars
-## SavedVariablesPerCharacter: DBMPartyBfa_SavedStats
+## SavedVariables: DBMPartyBfA_AllSavedVars
+## SavedVariablesPerCharacter: DBMPartyBfA_SavedStats
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Type: PARTY
 ## X-DBM-Mod-Category: BFA
