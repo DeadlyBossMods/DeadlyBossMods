@@ -24,7 +24,7 @@ local specWarnTrample				= mod:NewSpecialWarningDodge(272874, nil, nil, nil, 2, 
 function mod:SPELL_CAST_START(args)
 	if not self.Options.Enabled then return end
 	local spellId = args.spellId
-	if spellId == 275826 and self:AntiSpam(4, 1) then
+	if spellId == 275826 and self:IsValidWarning(args.sourceGUID) and self:AntiSpam(4, 1) then
 		specWarnBolsteringShout:Show()
 		specWarnBolsteringShout:Play("moveboss")
 	end
@@ -51,7 +51,9 @@ end
 --Not in combat log what so ever, so this relies on unit event off a users target or nameplate unit IDs, then syncing to group
 function mod:UNIT_SPELLCAST_START(uId, _, spellId)
 	if spellId == 272874 then
-		self:SendSync("Trample")
+		if self:IsValidWarning(args.sourceGUID, uId) then
+			self:SendSync("Trample")
+		end
 	end
 end
 

@@ -7398,10 +7398,14 @@ function bossModPrototype:IsTrivial(level)
 	return false
 end
 
-function bossModPrototype:IsValidWarning(sourceGUID)
-	for uId in DBM:GetGroupMembers() do
-		local target = uId.."target"
-		if UnitExists(target) and UnitGUID(target) == sourceGUID and UnitAffectingCombat(target) then return true end
+function bossModPrototype:IsValidWarning(sourceGUID, customunitID)
+	if customunitID then
+		if UnitExists(customunitID) and UnitGUID(customunitID) == sourceGUID and UnitAffectingCombat(customunitID) then return true end
+	else
+		for uId in DBM:GetGroupMembers() do
+			local target = uId.."target"
+			if UnitExists(target) and UnitGUID(target) == sourceGUID and UnitAffectingCombat(target) then return true end
+		end
 	end
 	return false
 end
