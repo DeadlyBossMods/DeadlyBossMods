@@ -1,7 +1,7 @@
 -- Mini Dragon(projecteurs@gmail.com)
 -- 夏一可
 -- Blizzard Entertainment
--- Last update: 2018/07/12
+-- Last update: 2018/08/23
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -103,7 +103,7 @@ L= DBM:GetModLocalization(2172)
 L = DBM:GetModLocalization("KingsRestTrash")
 
 L:SetGeneralLocalization({
-	name =	"国王之眠小怪"
+	name =	"诸王之眠小怪"
 })
 
 -----------------------
@@ -205,11 +205,11 @@ L= DBM:GetModLocalization(2145)
 L = DBM:GetModLocalization("SethralissTrash")
 
 L:SetGeneralLocalization({
-	name =	"塞塔里斯神殿小怪"
+	name =	"塞塔里斯神庙小怪"
 })
 
 -----------------------
--- <<<The Undermine>>> --
+-- <<<MOTHERLOAD>>> --
 -----------------------
 -----------------------
 -- Coin-operated Crowd Pummeler --
@@ -237,7 +237,7 @@ L= DBM:GetModLocalization(2116)
 L = DBM:GetModLocalization("UndermineTrash")
 
 L:SetGeneralLocalization({
-	name =	"安德麦小怪"
+	name =	"暴富矿区小怪"
 })
 
 -----------------------
