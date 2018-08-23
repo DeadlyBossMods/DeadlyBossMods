@@ -11,7 +11,8 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 269029 268230 268260",
 	"SPELL_CAST_SUCCESS 268752",
-	"UNIT_DIED"
+	"UNIT_DIED",
+	"UNIT_SPELLCAST_START boss2 boss3 boss4 boss5"--Adds
 )
 
 --TODO, cannons remaining, who's carrying ordinance, etc
@@ -20,6 +21,7 @@ local warnCrimsonSwipe				= mod:NewSpellAnnounce(268230, 2, nil, "Tank")
 local warnBroadside					= mod:NewSpellAnnounce(268260, 2)
 
 local specWarnCleartheDeck			= mod:NewSpecialWarningDodge(269029, "Tank", nil, nil, 3, 2)
+local specWarnHeavySlash			= mod:NewSpecialWarningDodge(257288, "Tank", nil, nil, 1, 2)
 --local specWarnBroadside			= mod:NewSpecialWarningDodge(268260, nil, nil, nil, 2, 2)
 --local yellSwirlingScythe			= mod:NewYell(195254)
 --local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
@@ -90,9 +92,10 @@ function mod:UNIT_DIED(args)
 	end
 end
 
---[[
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 257939 then
+--Not in combat log what so ever
+function mod:UNIT_SPELLCAST_START(uId, _, spellId)
+	if spellId == 257288 and self:AntiSpam(3, 1) then
+		specWarnHeavySlash:Show()
+		specWarnHeavySlash:Play("shockwave")
 	end
 end
---]]

@@ -19,19 +19,21 @@ mod:RegisterEventsInCombat(
 --TODO, stench says it's interruptable but cannot verify this. When I determine what to do with it, improve warning
 local warnPhase2					= mod:NewPhaseAnnounce(2, 2, nil, nil, nil, nil, nil, 2)
 local warnTotemsLeft				= mod:NewAddsLeftAnnounce(250190, 2, 250192)
-local warnNoxiousStench				= mod:NewSpellAnnounce(250368, 3)
+--local warnNoxiousStench				= mod:NewSpellAnnounce(250368, 3)
 
 local specWarnLeap					= mod:NewSpecialWarningDodge(250258, nil, nil, nil, 2, 2)
---local yellSwirlingScythe			= mod:NewYell(195254)--Use if leap target scanning possible
+local specWarnNoxiousStench			= mod:NewSpecialWarningInterrupt(250368, "HasInterrupt", nil, nil, 1, 2)
 local specWarnGTFO					= mod:NewSpecialWarningGTFO(250585, nil, nil, nil, 1, 2)
 
 local timerLeapCD					= mod:NewCDTimer(6, 250258, nil, nil, nil, 3)--6 uness delayed by stentch, then 8
-local timerNoxiousStenchCD			= mod:NewCDTimer(18.2, 250368, nil, nil, nil, 3, nil, DBM_CORE_DISEASE_ICON)
+local timerNoxiousStenchCD			= mod:NewCDTimer(18.2, 250368, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON..DBM_CORE_DISEASE_ICON)
 
 mod.vb.totemRemaining = 3
+mod.vb.phase = 1
 
 function mod:OnCombatStart(delay)
 	self.vb.totemRemaining = 3
+	self.vb.phase = 1
 	timerLeapCD:Start(2-delay)
 	timerNoxiousStenchCD:Start(6-delay)
 end
@@ -55,14 +57,19 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 250368 then--Stage 2
-		warnNoxiousStench:Show()
-		timerNoxiousStenchCD:Start(18)
-	elseif spellId == 259572 then--Stage 1
-		warnNoxiousStench:Show()
-		timerNoxiousStenchCD:Start(20)
-		timerLeapCD:AddTime(2)--Consistent with early alpha, might use more complex code if this becomes inconsistent
+	if spellId == 250368 or spellId == 259572 then
+		if self:CheckInterruptFilter(args.sourceGUID, false, true) then
+			specWarnNoxiousStench:Show(args.sourceName)
+			specWarnNoxiousStench:Play("kickcast")
+		end
+		if self.vb.phase == 2 then
+			timerNoxiousStenchCD:Start(18.2)
+		else
+			timerNoxiousStenchCD:Start(20.6)
+			timerLeapCD:AddTime(2)--Consistent with early alpha, might use more complex code if this becomes inconsistent
+		end
 	elseif spellId == 250241 then
+		self.vb.phase = 2
 		timerNoxiousStenchCD:Stop()
 		timerLeapCD:Stop()
 		warnPhase2:Show()

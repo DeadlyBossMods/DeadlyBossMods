@@ -9,7 +9,7 @@ mod.isTrashMod = true
 
 
 mod:RegisterEvents(
-	"SPELL_CAST_START 272609 266106 265019 265089 265091 265433 265540",
+	"SPELL_CAST_START 272609 266106 265019 265089 265091 265433 265540 272183 278961",
 	"SPELL_AURA_APPLIED 265568 266107",
 	"SPELL_CAST_SUCCESS"
 )
@@ -26,6 +26,8 @@ local specWarnSonicScreech			= mod:NewSpecialWarningInterrupt(266106, "HasInterr
 local specWarnDarkReconstituion		= mod:NewSpecialWarningInterrupt(265089, "HasInterrupt", nil, nil, 1, 2)
 local specWarnGiftofGhuun			= mod:NewSpecialWarningInterrupt(265091, "HasInterrupt", nil, nil, 1, 2)
 local specWarnWitheringCurse		= mod:NewSpecialWarningInterrupt(265433, "HasInterrupt", nil, nil, 1, 2)
+local specWarnRaiseDead				= mod:NewSpecialWarningInterrupt(272183, "HasInterrupt", nil, nil, 1, 2)
+local specWarnDecayingMind			= mod:NewSpecialWarningInterrupt(278961, "HasInterrupt", nil, nil, 1, 2)
 
 function mod:SPELL_CAST_START(args)
 	if not self.Options.Enabled then return end
@@ -51,6 +53,12 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 265433 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnWitheringCurse:Show(args.sourceName)
 		specWarnWitheringCurse:Play("kickcast")
+	elseif spellId == 272183 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
+		specWarnRaiseDead:Show(args.sourceName)
+		specWarnRaiseDead:Play("kickcast")
+	elseif spellId == 278961 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
+		specWarnDecayingMind:Show(args.sourceName)
+		specWarnDecayingMind:Play("kickcast")
 	end
 end
 
