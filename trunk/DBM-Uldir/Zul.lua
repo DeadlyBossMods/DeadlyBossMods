@@ -451,7 +451,10 @@ do
 			for uId in DBM:GetGroupMembers() do
 				if UnitGUID(uId.."target") == self.vb.activeDecay then
 					self.vb.activeDecay = nil
-					SetRaidTarget(uId.."target", 8)
+					local icon = GetRaidTargetIndex(uId)
+					if not icon then
+						SetRaidTarget(uId.."target", 8)
+					end
 				end
 				if not (self.vb.activeDecay) then
 					break
