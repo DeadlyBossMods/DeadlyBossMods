@@ -25,7 +25,7 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 268709 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnEarthShield:Show(args.sourceName)
 		specWarnEarthShield:Play("kickcast")
-	elseif spellId == 263275 then
+	elseif spellId == 263275 and self:IsValidWarning(args.sourceGUID) then
 		specWarnCover:Show()
 		specWarnCover:Play("moveboss")
 	end
