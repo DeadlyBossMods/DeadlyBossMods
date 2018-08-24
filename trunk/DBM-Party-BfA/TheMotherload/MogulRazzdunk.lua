@@ -20,7 +20,7 @@ mod:RegisterEventsInCombat(
 --TODO, video this boss to track faster way to drill smash
 local warnDrill						= mod:NewStackAnnounce(260189, 2)
 local warnHomingMissile				= mod:NewTargetAnnounce(260811, 3)
-local warnDrillSmashCast				= mod:NewCastAnnounce(271456, 2)
+local warnDrillSmashCast			= mod:NewCastAnnounce(271456, 2)
 local warnDrillSmash				= mod:NewTargetNoFilterAnnounce(271456, 2)
 local warnSummonBooma				= mod:NewSpellAnnounce(276212, 2)
 
