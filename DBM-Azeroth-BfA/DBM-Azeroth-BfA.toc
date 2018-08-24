@@ -6,8 +6,8 @@
 ## Author: MysticalOS
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
-## SavedVariables: DBMAzerothBfa_AllSavedVars
-## SavedVariablesPerCharacter: DBMAzerothBfa_SavedStats
+## SavedVariables: DBMAzerothBfA_AllSavedVars
+## SavedVariablesPerCharacter: DBMAzerothBfA_SavedStats
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Type: RAID
 ## X-DBM-Mod-Category: BFA
