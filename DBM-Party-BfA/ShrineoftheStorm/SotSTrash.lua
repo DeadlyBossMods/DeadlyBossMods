@@ -23,7 +23,7 @@ local warnCarvedFlesh				= mod:NewTargetAnnounce(268214, 2)
 
 --local yellArrowBarrage				= mod:NewYell(200343)
 local specWarnWashAway				= mod:NewSpecialWarningDodge(267973, nil, nil, nil, 2, 2)
-local specWarnMentalAssault			= mod:NewSpecialWarningDodge(268391, nil, nil, nil, 1, 2)
+local specWarnMentalAssault			= mod:NewSpecialWarningDodge(268391, "Tank", nil, 2, 1, 2)
 local specWarnShipbreakerStorm		= mod:NewSpecialWarningSpell(268239, nil, nil, nil, 2, 2)--Can be interrupted by stuns, but not interrupts
 local specWarnDetectThoughts		= mod:NewSpecialWarningDispel(268375, "MagicDispeller", nil, nil, 1, 2)
 local specWarnTouchofDrowned		= mod:NewSpecialWarningDispel(268375, "Healer", nil, nil, 1, 2)
