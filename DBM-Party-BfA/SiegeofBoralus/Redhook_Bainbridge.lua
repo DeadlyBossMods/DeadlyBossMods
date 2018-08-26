@@ -15,9 +15,10 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_AURA_APPLIED 257459 260954 261428",
-	"SPELL_CAST_START 257459 275107 257326 279761 261428 260924",
-	"UNIT_DIED"
+	"SPELL_AURA_APPLIED 257459 260954 261428 256709",
+	"SPELL_CAST_START 257459 275107 257326 261428 260924",
+	"UNIT_DIED",
+	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
 --TODO, cannon barrage detection
@@ -39,25 +40,29 @@ local yellIronGaze					= mod:NewYell(260954)
 local specWarnHangmansNoose			= mod:NewSpecialWarningRun(261428, nil, nil, nil, 4, 2)
 local specWarnSteelTempest			= mod:NewSpecialWarningDodge(260924, nil, nil, nil, 2, 2)
 --local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
+--BOTH
+local specWarnCannonBarrage			= mod:NewSpecialWarningDodge(257540, nil, nil, nil, 2, 2)
+local specWarnAdds					= mod:NewSpecialWarningAdds(257649, "-Healer", nil, nil, 1, 2)
 
 --Chopper Redhook
-local timerOntheHookCD				= mod:NewAITimer(13, 257459, nil, nil, nil, 3)
-local timerGoreCrashCD				= mod:NewAITimer(13, 257326, nil, nil, nil, 3)
-local timerHeavySlashCD				= mod:NewAITimer(13, 279761, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--Shared
+--local timerOntheHookCD				= mod:NewAITimer(13, 257459, nil, nil, nil, 3)
+--local timerGoreCrashCD				= mod:NewAITimer(13, 257326, nil, nil, nil, 3)--24.9, 43.3
+--local timerHeavySlashCD				= mod:NewAITimer(13, 279761, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--Shared
 --Sergeant Bainbridge
-local timerIronGazeCD				= mod:NewAITimer(13, 260954, nil, nil, nil, 3)
-local timerSteelTempestCD			= mod:NewAITimer(13, 260924, nil, nil, nil, 3)
+--local timerIronGazeCD				= mod:NewAITimer(13, 260954, nil, nil, nil, 3)
+--local timerSteelTempestCD			= mod:NewAITimer(13, 260924, nil, nil, nil, 3)
 --local timerHangmansNooseCD			= mod:NewAITimer(13, 261428, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
+--local timerAddsCD					= mod:NewAddsTimer(25, 257649, nil, "-Healer")
 
 --mod:AddRangeFrameOption(5, 194966)
 
 function mod:OnCombatStart(delay)
 	if dungeonID == 2132 then--Redhook
-		timerOntheHookCD:Start(1-delay)
-		timerGoreCrashCD:Start(1-delay)
+		--timerOntheHookCD:Start(1-delay)
+		--timerGoreCrashCD:Start(1-delay)
 	else--Bainbridge
-		timerIronGazeCD:Start(1-delay)
-		timerSteelTempestCD:Start(1-delay)
+		--timerIronGazeCD:Start(1-delay)
+		--timerSteelTempestCD:Start(1-delay)
 	end
 end
 
@@ -100,25 +105,21 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 257459 then
-		timerOntheHookCD:Start()
+		--timerOntheHookCD:Start()
 	elseif spellId == 275107 then
 		warnMeatHook:Show()
 	elseif spellId == 257326 then
 		specWarnGoreCrash:Show()
 		specWarnGoreCrash:Play("watchstep")
-		timerGoreCrashCD:Start()
+		--timerGoreCrashCD:Start()
 	elseif spellId == 260924 then
 		specWarnSteelTempest:Show()
 		specWarnSteelTempest:Play("watchstep")
-		timerSteelTempestCD:Start()
-	elseif spellId == 279761 then
-		specWarnHeavySlash:Show()
-		specWarnHeavySlash:Play("shockwave")
-		timerHeavySlashCD:Start(nil, args.sourceGUID)
+		--timerSteelTempestCD:Start()
 	elseif spellId == 261428 then
 		--timerHangmansNooseCD:Start()
 	elseif spellId == 260954 then
-		timerIronGazeCD:Start()
+		--timerIronGazeCD:Start()
 	end
 end
 
@@ -130,18 +131,30 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
---]]
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 129996 or cid == 138019 then--Irontide Cleaver/Kul Tiran Vanguard
-		timerHeavySlashCD:Stop(args.destGUID)
-	end
-end
-
---[[
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 257939 then
+	if cid == 129996 or cid == 138019 or cid == 129879 then--Irontide Cleaver/Kul Tiran Vanguard
+		--timerHeavySlashCD:Stop(args.destGUID)
 	end
 end
 --]]
+
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
+	if spellId == 257540 then--Cannon Barrage
+		specWarnCannonBarrage:Show()
+		specWarnCannonBarrage:Play("watchstep")
+	--19.7, 18.2, 14.6
+	elseif spellId == 274002 then--Call Adds
+		specWarnAdds:Show()
+		specWarnAdds:Play("mobsoon")
+		--timerAddsCD:Start()
+	elseif spellId == 257287 then
+		--local guid = UnitGUID(uId)
+		if self:AntiSpam(3, 1) then
+			specWarnHeavySlash:Show()
+			specWarnHeavySlash:Play("shockwave")
+		end
+		--timerHeavySlashCD:Start(nil, guid)
+	end
+end
