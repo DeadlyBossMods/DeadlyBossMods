@@ -79,7 +79,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnPurificationStrike:Play("watchstep")
 	elseif spellId == 270284 then
 		specWarnPurificationBeam:Show()
-		specWarnPurificationBeam:Play("getbehind")
+		specWarnPurificationBeam:Play("behindmob")
 	elseif spellId == 270514 then
 		specWarnGroundCrush:Show()
 		specWarnGroundCrush:Play("watchstep")
