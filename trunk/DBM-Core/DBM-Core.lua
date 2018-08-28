@@ -3819,8 +3819,9 @@ do
 	end
 	local function SecondaryLoadCheck(self)
 		local _, instanceType, difficulty, _, _, _, _, mapID, instanceGroupSize = GetInstanceInfo()
-		if not savedDifficulty then
-			savedDifficulty, difficultyText = self:GetCurrentInstanceDifficulty()
+		local currentDifficulty, currentDifficultyText = self:GetCurrentInstanceDifficulty()
+		if currentDifficulty ~= savedDifficulty then
+			savedDifficulty, difficultyText = currentDifficulty, currentDifficultyText
 		end
 		self:Debug("Instance Check fired with mapID "..mapID.." and difficulty "..difficulty, 2)
 		if LastInstanceMapID == mapID then
