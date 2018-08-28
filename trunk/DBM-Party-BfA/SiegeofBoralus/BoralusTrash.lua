@@ -75,16 +75,22 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 256957 and self:IsValidWarning(args.sourceGUID) then
 		specWarnWatertightShellDispel:CombinedShow(1, args.destName)
+		specWarnWatertightShellDispel:CancelVoice()
+		specWarnWatertightShellDispel:ScheduleVoice(1, "helpdispel")
 	elseif spellId == 257168 and self:IsValidWarning(args.sourceGUID) then
 		specWarnCursedSlash:Show(args.destName)
+		specWarnCursedSlash:Play("helpdispel")
 	elseif spellId == 272421 and args:IsPlayer() then
 		specWarnSightedArt:Show()
 		specWarnSightedArt:Play("targetyou")
 		yellSightedArt:Yell()
 	elseif spellId == 272571 and self:IsValidWarning(args.sourceGUID) then
 		specWarnChokingWatersDispel:Show(args.destName)
+		specWarnChokingWatersDispel:Play("helpdispel")
 	elseif spellId == 272888 and self:IsValidWarning(args.sourceGUID) then
 		specWarnFerocity:Show(args.destName)
+		specWarnFerocity:Play("trannow")
+		
 	end
 end
 

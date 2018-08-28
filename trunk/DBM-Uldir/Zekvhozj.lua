@@ -106,8 +106,8 @@ function mod:OnCombatStart(delay)
 	countdownMightofVoid:Start(15-delay)
 	timerSurgingDarknessCD:Start(25-delay)
 	countdownSurgingDarkness:Start(25)
-	timerQirajiWarriorCD:Start(70-delay)--Despite what journal says, this is always 70 regardless
-	--timerEyeBeamCD:Start(96-delay)--Iffy
+	timerQirajiWarriorCD:Start(58-delay)--Despite what journal says, this is always 58 regardless
+	--timerEyeBeamCD:Start(54-delay)--Iffy
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(DBM_CORE_INFOFRAME_POWER)
 		DBM.InfoFrame:Show(4, "enemypower", 2)
@@ -271,7 +271,7 @@ end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 266913 then--Spawn Qiraji Warrior
-		--timerQirajiWarriorCD:Start()
+		timerQirajiWarriorCD:Start()
 	elseif spellId == 267192 then--Spawn Anub'ar Caster
 		timerAnubarCasterCD:Start()
 	elseif spellId == 265437 then--Roiling Deceit
