@@ -1,0 +1,132 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\FrameXML\UI.xsd">
+
+	<Frame name="DBM_GUI_DropDownMenuTemplate" virtual="true">
+		<Size>
+			<AbsDimension x="160" y="32"/>
+		</Size>
+		<Layers>
+			<Layer level="ARTWORK">
+				<Texture name="$parentLeft" file="Interface\Glues\CharacterCreate\CharacterCreate-LabelFrame">
+					<Size>
+						<AbsDimension x="25" y="64"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset>
+								<AbsDimension x="0" y="17"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0" right="0.1953125" top="0" bottom="1"/>
+				</Texture>
+				<Texture name="$parentMiddle" file="Interface\Glues\CharacterCreate\CharacterCreate-LabelFrame">
+					<Size>
+						<AbsDimension x="155" y="64"/>
+					</Size>
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentLeft" relativePoint="RIGHT"/>
+					</Anchors>
+					<TexCoords left="0.1953125" right="0.8046875" top="0" bottom="1"/>
+				</Texture>
+				<Texture name="$parentRight" file="Interface\Glues\CharacterCreate\CharacterCreate-LabelFrame">
+					<Size>
+						<AbsDimension x="25" y="64"/>
+					</Size>
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentMiddle" relativePoint="RIGHT"/>
+					</Anchors>
+					<TexCoords left="0.8046875" right="1" top="0" bottom="1"/>
+				</Texture>
+				<FontString name="$parentText" inherits="GameFontHighlightSmall" justifyH="RIGHT">
+					<Size>
+						<AbsDimension x="0" y="10"/>
+					</Size>
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentLeft">
+							<Offset>
+								<AbsDimension x="30" y="2"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Button name="$parentButton">
+				<Size>
+					<AbsDimension x="24" y="24"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPRIGHT" relativeTo="$parentRight">
+						<Offset>
+							<AbsDimension x="-16" y="-18"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<NormalTexture name="$parentNormalTexture" file="Interface\ChatFrame\UI-ChatIcon-ScrollDown-Up">
+					<Size>
+						<AbsDimension x="24" y="24"/>
+					</Size>
+					<Anchors>
+						<Anchor point="RIGHT"/>
+					</Anchors>
+				</NormalTexture>
+				<PushedTexture name="$parentPushedTexture" file="Interface\ChatFrame\UI-ChatIcon-ScrollDown-Down">
+					<Size>
+						<AbsDimension x="24" y="24"/>
+					</Size>
+					<Anchors>
+						<Anchor point="RIGHT"/>
+					</Anchors>
+				</PushedTexture>
+				<DisabledTexture name="$parentDisabledTexture" file="Interface\ChatFrame\UI-ChatIcon-ScrollDown-Disabled">
+					<Size>
+						<AbsDimension x="24" y="24"/>
+					</Size>
+					<Anchors>
+						<Anchor point="RIGHT"/>
+					</Anchors>
+				</DisabledTexture>
+				<HighlightTexture name="$parentHighlightTexture" file="Interface\Buttons\UI-Common-MouseHilight" alphaMode="ADD">
+					<Size>
+						<AbsDimension x="24" y="24"/>
+					</Size>
+					<Anchors>
+						<Anchor point="RIGHT"/>
+					</Anchors>
+				</HighlightTexture>
+			</Button>
+		</Frames>
+	</Frame>
+
+	<Button name="DBM_GUI_DropDownMenuButtonTemplate" virtual="true">
+		<Size x="100" y="16"/>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture name="$parentHighlight" file="Interface\QuestFrame\UI-QuestTitleHighlight" alphaMode="ADD" setAllPoints="true" hidden="true"/>
+				<NormalTexture name="$parentNormalTexture"/>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnClick>
+				self:OnClick()
+			</OnClick>
+			<OnEnter>
+				_G[self:GetName().."Highlight"]:Show();
+			</OnEnter>
+			<OnLeave>
+				_G[self:GetName().."Highlight"]:Hide();
+			</OnLeave>
+		</Scripts>
+		<ButtonText name="$parentNormalText">
+			<Anchors>
+				<Anchor point="LEFT">
+					<Offset x="5" y="0"/>
+				</Anchor>
+			</Anchors>
+		</ButtonText>
+		<NormalFont style="GameFontHighlightSmallLeft"/>
+		<HighlightFont style="GameFontHighlightSmallLeft"/>
+		<DisabledFont style="GameFontDisableSmallLeft"/>
+	</Button>
+</Ui>
