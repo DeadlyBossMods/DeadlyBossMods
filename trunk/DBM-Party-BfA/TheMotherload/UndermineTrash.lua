@@ -59,7 +59,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 263275 and self:IsValidWarning(args.sourceGUID) then
 		specWarnCover:Show()
 		specWarnCover:Play("moveboss")
-	elseif spellId == 267433 and self:IsValidWarning(args.sourceGUID) and self:AntiSpam(4, 1) then
+	elseif spellId == 267433 and self:AntiSpam(4, 1) then--IsValidWarning removed because it caused most activate mechs not to announce. re-add if it becomes problem
 		warnActivateMech:Show()
 	elseif spellId == 262554 and self:IsValidWarning(args.sourceGUID) and self:AntiSpam(4, 2) then
 		warnRepair:Show()
@@ -91,6 +91,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 		specWarnIcedSpritzer:Show(args.sourceName)
 		specWarnIcedSpritzer:Play("kickcast")
 	elseif spellId == 262515 then
-		warnAzeriteHeartseeker:Show(args.destName)
+		warnAzeriteHeartseeker:CombinedShow(0.5, args.destName)
 	end
 end
