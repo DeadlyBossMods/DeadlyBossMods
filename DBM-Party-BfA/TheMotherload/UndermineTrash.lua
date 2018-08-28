@@ -8,8 +8,8 @@ mod:SetZone()
 mod.isTrashMod = true
 
 mod:RegisterEvents(
-	"SPELL_CAST_START 268709 268129 263275 267433 263103 263066 268865 268797 269090 262540 262554",
-	"SPELL_AURA_APPLIED 268702 262947 262540",
+	"SPELL_CAST_START 268709 268129 263275 267433 263103 263066 268865 268797 269090 262540 262554 262092",
+	"SPELL_AURA_APPLIED 268702 262947 262540 262092",
 	"SPELL_CAST_SUCCESS 280604 262515"
 )
 
@@ -28,9 +28,11 @@ local specWarnTransSyrum			= mod:NewSpecialWarningInterrupt(263066, "HasInterrup
 local specWarnEnemyToGoo			= mod:NewSpecialWarningInterrupt(268797, "HasInterrupt", nil, nil, 1, 2)
 local specWarnArtilleryBarrage		= mod:NewSpecialWarningInterrupt(269090, "HasInterrupt", nil, nil, 1, 2)
 local specWarnOvercharge			= mod:NewSpecialWarningInterrupt(262540, "HasInterrupt", nil, nil, 1, 2)
+local specWarnInhaleVapors			= mod:NewSpecialWarningInterrupt(262092, "HasInterrupt", nil, nil, 1, 2)
 local specWarnForceCannon			= mod:NewSpecialWarningDodge(268865, nil, nil, nil, 2, 2)
 local specWarnAzeriteInjection		= mod:NewSpecialWarningDispel(262947, "MagicDispeller", nil, nil, 1, 2)
 local specWarnOverchargeDispel		= mod:NewSpecialWarningDispel(262540, "MagicDispeller", nil, nil, 1, 2)
+local specWarnInhaleVaporsDispel	= mod:NewSpecialWarningDispel(262092, "RemoveEnrage", nil, nil, 1, 2)
 
 function mod:SPELL_CAST_START(args)
 	if not self.Options.Enabled then return end
@@ -56,6 +58,9 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 262540 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnOvercharge:Show(args.sourceName)
 		specWarnOvercharge:Play("kickcast")
+	elseif spellId == 262092 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
+		specWarnInhaleVapors:Show(args.sourceName)
+		specWarnInhaleVapors:Play("kickcast")
 	elseif spellId == 263275 and self:IsValidWarning(args.sourceGUID) then
 		specWarnCover:Show()
 		specWarnCover:Play("moveboss")
@@ -77,10 +82,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnFuriousQuake:Play("kickcast")
 	elseif spellId == 262947 and not args:IsDestTypePlayer() then
 		specWarnAzeriteInjection:Show(args.sourceName)
-		specWarnAzeriteInjection:Play("dispelboss")
+		specWarnAzeriteInjection:Play("helpdispel")
 	elseif spellId == 262540 and not args:IsDestTypePlayer() then
 		specWarnOverchargeDispel:Show(args.sourceName)
-		specWarnOverchargeDispel:Play("dispelboss")
+		specWarnOverchargeDispel:Play("helpdispel")
+	elseif spellId == 262092 and self:AntiSpam(4, 4) then
+		specWarnInhaleVaporsDispel:Show(args.sourceName)
+		specWarnInhaleVaporsDispel:Play("helpdispel")
 	end
 end
 

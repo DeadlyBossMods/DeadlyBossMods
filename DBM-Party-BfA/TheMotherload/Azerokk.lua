@@ -17,12 +17,13 @@ mod:RegisterEventsInCombat(
 )
 
 local warnRagingGaze				= mod:NewTargetAnnounce(257582, 2)
+local warnPulse						= mod:NewCastAnnounce(258622, 3)
 
 local specWarnCallEarthRager		= mod:NewSpecialWarningCount(257593, nil, nil, nil, 1, 2)
 local specWarnRagingGaze			= mod:NewSpecialWarningRun(257582, nil, nil, nil, 4, 2)
 local yellRagingGaze				= mod:NewYell(257582)
 local specWarnInfusion				= mod:NewSpecialWarningSwitch(271698, "-Tank", nil, nil, 1, 2)
-local specWarnResonantPulse			= mod:NewSpecialWarningDodge(258622, nil, nil, nil, 2, 2)
+--local specWarnResonantPulse			= mod:NewSpecialWarningDodge(258622, nil, nil, nil, 2, 2)
 local specWarnTectonicSmash			= mod:NewSpecialWarningDodge(275907, "Tank", nil, 2, 1, 2)
 local specWarnQuake					= mod:NewSpecialWarningDodge(258627, nil, nil, nil, 2, 2)
 --local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
@@ -114,8 +115,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnCallEarthRager:Play("bigmob")
 		timerCallEarthragerCD:Start(60, self.vb.addCount+1)--add self.vb.addCount+1
 	elseif spellId == 258622 then
-		specWarnResonantPulse:Show()
-		specWarnResonantPulse:Play("watchstep")
+		warnPulse:Show()
 		timerResonantPulseCD:Start()
 	elseif spellId == 275907 then
 		specWarnTectonicSmash:Show()
