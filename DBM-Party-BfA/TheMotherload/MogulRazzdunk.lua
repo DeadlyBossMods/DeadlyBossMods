@@ -13,7 +13,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_REMOVED 260189 262515",
 	"SPELL_AURA_REMOVED_DOSE 260189",
 	"SPELL_CAST_START 260280 271456",
-	"SPELL_CAST_SUCCESS 260813 271456 276212"
+	"SPELL_CAST_SUCCESS 260813 271456 276212",
+	"RAID_BOSS_WHISPER"
 )
 
 --TODO: Maybe general range 6 for Micro Missiles from BOOMBA?
@@ -91,7 +92,7 @@ function mod:SPELL_AURA_REMOVED_DOSE(args)
 	local spellId = args.spellId
 	if spellId == 260189 then
 		local amount = args.amount or 0
-		warnDrill:Show(amount)
+		warnDrill:Show(args.destName, amount)
 	end
 end
 mod.SPELL_AURA_REMOVED = mod.SPELL_AURA_REMOVED_DOSE
@@ -123,7 +124,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		else
 			warnHomingMissile:Show(args.destName)
 		end
-	elseif spellId == 271456 then
+	elseif spellId == 271456 and self:AntiSpam(6, args.destName) then--Backup, should only trigger if OnTranscriptorSync didn't run
 		if args:IsPlayer() then
 			specWarnDrillSmash:Show(bigRedRocket)
 			specWarnDrillSmash:Play("targetyou")
@@ -133,6 +134,23 @@ function mod:SPELL_CAST_SUCCESS(args)
 		end
 	elseif spellId == 276212 then
 		warnSummonBooma:Show()
+	end
+end
+
+function mod:RAID_BOSS_WHISPER(msg)
+	if msg:find("260838") then
+		specWarnDrillSmash:Show(bigRedRocket)
+		specWarnDrillSmash:Play("targetyou")
+		yellDrillSmash:Yell()
+	end
+end
+
+function mod:OnTranscriptorSync(msg, targetName)
+	if msg:find("260838") then
+		targetName = Ambiguate(targetName, "none")
+		if self:AntiSpam(6, targetName) then
+			warnDrillSmash:Show(targetName)
+		end
 	end
 end
 
