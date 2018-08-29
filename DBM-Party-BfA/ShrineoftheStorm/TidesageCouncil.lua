@@ -10,19 +10,20 @@ mod:SetBossHPInfoToHighest()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
---	"SPELL_AURA_APPLIED",
+	"SPELL_AURA_APPLIED 267830",
+	"SPELL_AURA_REMOVED 267830",
 	"SPELL_CAST_START 267818 267905 267891 267899",
 	"SPELL_CAST_SUCCESS 267901",
 	"UNIT_DIED"
 )
 
---local warnSwirlingScythe			= mod:NewTargetAnnounce(195254, 2)
+local warnBlessingofTempest			= mod:NewTargetNoFilterAnnounce(267830, 4)
 
 local specWarnReinforcingWardT		= mod:NewSpecialWarningMove(267905, nil, nil, nil, 1, 2)
 local specWarnReinforcingWard		= mod:NewSpecialWarningMoveTo(267905, nil, nil, nil, 1, 2)
 local specWarnSwiftnessWardT		= mod:NewSpecialWarningMove(267891, nil, nil, nil, 1, 2)
 local specWarnSwiftnessWard			= mod:NewSpecialWarningMoveTo(267891, nil, nil, nil, 1, 2)
-local specWarnSlicingBlast			= mod:NewSpecialWarningInterrupt(267818, false, nil, 2, 1, 2)--Interrupting causes more tornados to spawn, so some recommend no interrupting, so this optino now OPT in
+local specWarnSlicingBlast			= mod:NewSpecialWarningInterrupt(267818, true, nil, 3, 1, 2)
 local specWarnHinderingCleave		= mod:NewSpecialWarningDefensive(267899, "Tank", nil, nil, 1, 2)
 local specWarnBlessingofIronsides	= mod:NewSpecialWarningRun(267901, nil, nil, nil, 4, 2)
 --local yellSwirlingScythe			= mod:NewYell(195254)
@@ -36,8 +37,13 @@ local timerBlessingofIronsidesCD	= mod:NewCDTimer(32.4, 267901, nil, "Tank", nil
 --mod:AddRangeFrameOption(5, 194966)
 --mod:AddInfoFrameOption(267905, true)
 
+mod.vb.bossTempest = false
+
 function mod:OnCombatStart(delay)
-	timerBlessingofIronsidesCD:Start(5-delay)
+	self.vb.bossTempest = false
+	if not self:IsNormal() then
+		timerBlessingofIronsidesCD:Start(5-delay)
+	end
 	timerHinderingCleaveCD:Start(5.8-delay)
 	timerSwiftnessWardCD:Start(16.1-delay)
 	timerReinforcingWardCD:Start(30.1-delay)
@@ -56,15 +62,21 @@ function mod:OnCombatEnd()
 --	end
 end
 
---[[
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 194966 then
-	
+	if spellId == 267830 then
+		self.vb.bossTempest = true
+		warnBlessingofTempest:Show(args.destName)
 	end
 end
 --mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
---]]
+
+function mod:SPELL_AURA_REMOVED(args)
+	local spellId = args.spellId
+	if spellId == 267830 then
+		self.vb.bossTempest = false
+	end
+end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
@@ -86,7 +98,7 @@ function mod:SPELL_CAST_START(args)
 			specWarnSwiftnessWard:Show(args.spellName)
 			specWarnSwiftnessWard:Play("findshield")
 		end
-	elseif spellId == 267818 then
+	elseif spellId == 267818 and not self.vb.bossTempest then
 		specWarnSlicingBlast:Show(args.sourceName)
 		specWarnSlicingBlast:Play("kickcast")
 	elseif spellId == 267899 then
