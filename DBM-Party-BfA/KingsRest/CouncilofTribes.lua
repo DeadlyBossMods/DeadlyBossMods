@@ -61,7 +61,7 @@ mod.vb.bossTwo = 0
 local function whoDat(self, delay)
 	for i = 1, 3 do--Might actually only need to check boss 1
 		local bossUID = "boss"..i
-		if UnitCanAttack(bossUID) then
+		if UnitCanAttack("player", bossUID) then
 			local cid = self:GetUnitCreatureId(bossUID)
 			if cid == 135475 then -- Kula the Butcher
 				timerWhirlingAxesCD:Start(6-delay)
@@ -245,7 +245,7 @@ end
 
 --2nd and 3rd Boss timers
 function mod:UNIT_TARGETABLE_CHANGED(uId)
-	if UnitCanAttack(uId) then
+	if UnitCanAttack("player", uId) then
 		local cid = self:GetUnitCreatureId(uId)
 		if cid == 135475 then -- Kula the Butcher (only seen on engage, need a pull boss isn't first to verify)
 			timerWhirlingAxesCD:Start(8)

@@ -32,7 +32,7 @@ local specWarnThrash					= mod:NewSpecialWarningDefensive(262277, "Tank", nil, n
 local specWarnRottingRegurg				= mod:NewSpecialWarningDodge(262292, nil, nil, nil, 2, 2)
 local specWarnShockwaveStomp			= mod:NewSpecialWarningSpell(262288, nil, nil, nil, 2, 2)
 local specWarnMalodorousMiasma			= mod:NewSpecialWarningYou(262313, nil, nil, nil, 1, 2)
-local specWarnDeadlyDisease				= mod:NewSpecialWarningDefensive(262314, nil, nil, nil, 1, 2)
+local specWarnPutridParoxysm			= mod:NewSpecialWarningDefensive(262314, nil, nil, nil, 1, 2)
 local specWarnAdds						= mod:NewSpecialWarningAdds(262364, "Dps", nil, nil, 1, 2)
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
 
@@ -212,8 +212,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			updateRangeFrame(self)
 		end
 	elseif spellId == 262314 and args:IsPlayer() then
-		specWarnDeadlyDisease:Show()
-		specWarnDeadlyDisease:Play("defensive")
+		specWarnPutridParoxysm:Show()
+		specWarnPutridParoxysm:Play("defensive")
 		if self:IsMythic() then
 			updateRangeFrame(self)
 		end
