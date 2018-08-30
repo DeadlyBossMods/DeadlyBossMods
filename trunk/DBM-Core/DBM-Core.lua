@@ -7935,7 +7935,14 @@ do
 			["HasInterrupt"] = true,
 			["RemoveEnrage"] = true,
 		},
-		[255] = {	--Survival Hunter (Legion)
+		[254] = {	--Markmanship Hunter Hunter
+			["Dps"] = true,
+			["Ranged"] = true,
+			["RangedDps"] = true,
+			["Physical"] = true,
+			["HasInterrupt"] = true,
+		},
+		[255] = {	--Survival Hunter (Legion+)
 			["Dps"] = true,
 			["Melee"] = true,
 			["MeleeDps"] = true,
@@ -8057,7 +8064,6 @@ do
 	specRoleTable[64] = specRoleTable[62]--Fire Mage same as arcane
 	specRoleTable[72] = specRoleTable[71]--Fury Warrior same as Arms
 	specRoleTable[252] = specRoleTable[251]--Unholy DK same as frost
-	specRoleTable[254] = specRoleTable[253]--Markmanship Hunter same as beast
 	specRoleTable[257] = specRoleTable[256]--Holy Priest same as disc
 	specRoleTable[260] = specRoleTable[259]--Combat Rogue same as Assassination
 	specRoleTable[261] = specRoleTable[259]--Subtlety Rogue same as Assassination
