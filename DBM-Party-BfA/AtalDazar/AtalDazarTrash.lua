@@ -27,7 +27,7 @@ local specWarnMendingWord			= mod:NewSpecialWarningInterrupt(253517, "HasInterru
 local specWarnDinoMight				= mod:NewSpecialWarningInterrupt(256849, "HasInterrupt", nil, nil, 1, 2)
 local specWarnUnstableHex			= mod:NewSpecialWarningInterrupt(252781, "HasInterrupt", nil, nil, 1, 2)
 local specWarnTransfusion			= mod:NewSpecialWarningMoveTo(260666, nil, nil, nil, 3, 2)
-local specWarnFanaticsRageDispel	= mod:NewSpecialWarningDispel(255824, "RemoveEnrage", nil, nil, 1, 2)
+local specWarnFanaticsRageDispel	= mod:NewSpecialWarningDispel(255824, "RemoveEnrage", nil, 2, 1, 2)
 local specWarnDinoMightDispel		= mod:NewSpecialWarningDispel(256849, "MagicDispeller", nil, nil, 1, 2)
 local specWarnVenomfangStrikeDispel	= mod:NewSpecialWarningDispel(252687, "RemovePoison", nil, nil, 1, 2)
 

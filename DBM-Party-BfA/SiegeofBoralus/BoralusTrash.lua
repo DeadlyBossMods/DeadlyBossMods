@@ -32,7 +32,7 @@ local specWarnRevitalizingMist		= mod:NewSpecialWarningInterrupt(274569, "HasInt
 local specWarnChokingWaters			= mod:NewSpecialWarningInterrupt(272571, false, nil, nil, 1, 2)--Because it's on same mob as mist, off by default
 local specWarnWatertightShellDispel	= mod:NewSpecialWarningDispel(256957, "MagicDispeller", nil, nil, 1, 2)
 local specWarnCursedSlash			= mod:NewSpecialWarningDispel(257168, "RemoveCurse", nil, nil, 1, 2)
-local specWarnFerocity				= mod:NewSpecialWarningDispel(272888, "RemoveEnrage", nil, nil, 1, 2)
+local specWarnFerocity				= mod:NewSpecialWarningDispel(272888, "RemoveEnrage", nil, 2, 1, 2)
 local specWarnChokingWatersDispel	= mod:NewSpecialWarningDispel(272571, "Healer", nil, nil, 1, 2)
 local specWarnFear					= mod:NewSpecialWarningSpell(257169, nil, nil, nil, 2, 2)
 
