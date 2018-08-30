@@ -34,7 +34,7 @@ local specWarnGTFO					= mod:NewSpecialWarningGTFO(272397, nil, nil, nil, 1, 2)
 --Raoul
 ----Hostile
 local timerBarrelSmashCD			= mod:NewCDTimer(22.9, 256589, nil, "Melee", nil, 3)--22.9-24.5
-local timerBlackoutBarrelCD			= mod:NewCDTimer(49.7, 258338, nil, nil, nil, 3, nil, DBM_CORE_DAMAGE_ICON)
+local timerBlackoutBarrelCD			= mod:NewCDTimer(47.3, 258338, nil, nil, nil, 3, nil, DBM_CORE_DAMAGE_ICON)
 ----Friendly
 local timerTappedKegCD				= mod:NewNextTimer(22.3, 272884, nil, nil, nil, 5)
 --Eudora
