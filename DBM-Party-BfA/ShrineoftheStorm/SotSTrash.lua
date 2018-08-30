@@ -96,7 +96,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnMinorReinforcement:Play("moveboss")
 	elseif spellId == 268273 and self:AntiSpam(4, 11) then
 		specWarnDeepSmash:Show()
-		specWarnDeepSmash:Play("moveboss")
+		specWarnDeepSmash:Play("watchstep")
 	elseif spellId == 268322 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnTouchofDrownedKick:Show(args.sourceName)
 		specWarnTouchofDrownedKick:Play("kickcast")
@@ -119,7 +119,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnDetectThoughts:Show(args.destName)
 		specWarnDetectThoughts:Play("helpdispel")
 	elseif spellId == 276767 and self:AntiSpam(2, 13) then
-		if self.Option.SpecWarn276767dispel then
+		if self.Options.SpecWarn276767dispel then
 			specWarnConsumingVoid:Show(args.destName)
 			specWarnConsumingVoid:Play("helpdispel")
 		else
