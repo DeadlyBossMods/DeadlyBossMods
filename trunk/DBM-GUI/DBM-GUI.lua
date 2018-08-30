@@ -3072,6 +3072,22 @@ local function CreateOptionsMenu()
 		end)
 		VictorySoundDropdown3:SetPoint("TOPLEFT", DungeonMusicDropDown, "TOPLEFT", 0, -45)
 		
+		local TurtleDropDown = eventSoundsGeneralArea:CreateDropdown(L.EventTurtleMusic, useCombined and DBM.Music or DBM.BattleMusic, "DBM", "EventSoundTurle", function(value)
+			DBM.Options.EventSoundTurle = value
+			if value ~= "Random" then
+				if not DBM.Options.tempMusicSetting then
+					DBM.Options.tempMusicSetting = tonumber(GetCVar("Sound_EnableMusic"))
+					if DBM.Options.tempMusicSetting == 0 then
+						SetCVar("Sound_EnableMusic", 1)
+					else
+						DBM.Options.tempMusicSetting = nil--Don't actually need it
+					end
+				end
+				PlayMusic(value)
+			end
+		end)
+		TurtleDropDown:SetPoint("TOPLEFT", MusicDropDown, "TOPLEFT", 0, -45)
+		
 		local eventSoundsExtrasArea	= eventSoundsPanel:CreateArea(L.Area_EventSoundsExtras, nil, 52, true)
 		local combineMusic			= eventSoundsExtrasArea:CreateCheckButton(L.EventMusicCombined, true, nil, "EventSoundMusicCombined")
 		
