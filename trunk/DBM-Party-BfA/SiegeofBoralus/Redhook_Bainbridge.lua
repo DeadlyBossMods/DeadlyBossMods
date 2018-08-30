@@ -42,7 +42,7 @@ local specWarnSteelTempest			= mod:NewSpecialWarningDodge(260924, nil, nil, nil,
 --local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
 --BOTH
 local specWarnCannonBarrage			= mod:NewSpecialWarningDodge(257540, nil, nil, nil, 2, 2)
-local specWarnAdds					= mod:NewSpecialWarningAdds(257649, "-Healer", nil, nil, 1, 2)
+--local specWarnAdds					= mod:NewSpecialWarningAdds(257649, "-Healer", nil, nil, 1, 2)
 
 --Chopper Redhook
 --local timerOntheHookCD				= mod:NewAITimer(13, 257459, nil, nil, nil, 3)
@@ -146,8 +146,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		specWarnCannonBarrage:Play("watchstep")
 	--19.7, 18.2, 14.6
 	elseif spellId == 274002 then--Call Adds
-		specWarnAdds:Show()
-		specWarnAdds:Play("mobsoon")
+		--specWarnAdds:Show()
+		--specWarnAdds:Play("mobsoon")
 		--timerAddsCD:Start()
 	elseif spellId == 257287 then
 		--local guid = UnitGUID(uId)
