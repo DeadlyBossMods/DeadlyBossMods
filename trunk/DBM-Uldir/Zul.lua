@@ -65,7 +65,7 @@ local specWarnCongealBlood				= mod:NewSpecialWarningSwitch(273451, "Dps", nil, 
 local specWarnBloodshard				= mod:NewSpecialWarningInterrupt(273350, false, nil, 4, 1, 2)--Spam cast, so opt in, not opt out
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
 --Stage Two: Zul, Awakened
-local specWarnRupturingBlood			= mod:NewSpecialWarningStack(274358, nil, 3, nil, nil, 1, 6)
+local specWarnRupturingBlood			= mod:NewSpecialWarningStack(274358, nil, 4, nil, nil, 1, 6)
 local specWarnRupturingBloodTaunt		= mod:NewSpecialWarningTaunt(274358, nil, nil, nil, 1, 2)
 local specWarnRupturingBloodEdge		= mod:NewSpecialWarningMoveTo(274358, nil, nil, nil, 1, 7)
 local yellRupturingBloodFades			= mod:NewShortFadesYell(274358)
@@ -299,7 +299,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId) then
 			local amount = args.amount or 1
-			if amount >= 3 then
+			if amount >= 4 then
 				if args:IsPlayer() then
 					specWarnRupturingBlood:Show(amount)
 					specWarnRupturingBlood:Play("stackhigh")
