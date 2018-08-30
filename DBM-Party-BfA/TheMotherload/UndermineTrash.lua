@@ -32,7 +32,7 @@ local specWarnInhaleVapors			= mod:NewSpecialWarningInterrupt(262092, "HasInterr
 local specWarnForceCannon			= mod:NewSpecialWarningDodge(268865, nil, nil, nil, 2, 2)
 local specWarnAzeriteInjection		= mod:NewSpecialWarningDispel(262947, "MagicDispeller", nil, nil, 1, 2)
 local specWarnOverchargeDispel		= mod:NewSpecialWarningDispel(262540, "MagicDispeller", nil, nil, 1, 2)
-local specWarnInhaleVaporsDispel	= mod:NewSpecialWarningDispel(262092, "RemoveEnrage", nil, nil, 1, 2)
+local specWarnInhaleVaporsDispel	= mod:NewSpecialWarningDispel(262092, "RemoveEnrage", nil, 2, 1, 2)
 
 function mod:SPELL_CAST_START(args)
 	if not self.Options.Enabled then return end
