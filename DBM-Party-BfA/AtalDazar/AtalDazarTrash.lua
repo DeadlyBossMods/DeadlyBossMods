@@ -93,7 +93,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if spellId == 253583 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnFieryEnchant:Show(args.sourceName)
 		specWarnFieryEnchant:Play("kickcast")
-	elseif spellId == 253721 then
+	elseif spellId == 253721 and self:AntiSpam(3, 1) then
 		warnBulwarkofJuju:Show()
 	end
 end
