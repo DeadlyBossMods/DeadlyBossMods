@@ -36,7 +36,7 @@ local timerUpheavalCD				= mod:NewCDTimer(20, 259718, nil, nil, nil, 3)
 function mod:OnCombatStart(delay)
 	--timerBoundlessRotCD:Start(1-delay)
 	timerShockwaveCD:Start(10-delay)
-	timerUpheavalCD:Start(22-delay)
+	timerUpheavalCD:Start(17-delay)
 	if not self:IsNormal() then
 		timerVolatilePodsCD:Start(20.4-delay)
 	end

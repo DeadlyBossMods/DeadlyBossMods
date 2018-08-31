@@ -9,7 +9,8 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 257882 276068"
+	"SPELL_CAST_START 257882 276068",
+	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
 local specWarnCrashingTide			= mod:NewSpecialWarningDodge(261563, "Tank", nil, nil, 1, 2)
