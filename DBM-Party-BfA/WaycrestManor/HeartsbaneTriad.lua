@@ -2,7 +2,7 @@ local mod	= DBM:NewMod(2125, "DBM-Party-BfA", 10, 1001)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
-mod:SetCreatureID(135358, 135359, 135360)
+mod:SetCreatureID(135358, 135359, 135360, 131823, 131824, 131825)--All versions so we can pull boss
 mod:SetEncounterID(2113)
 mod:DisableESCombatDetection()--ES fires For entryway trash pull sometimes, for some reason.
 mod:SetZone()
@@ -49,6 +49,9 @@ function mod:OnCombatStart(delay)
 		DBM.InfoFrame:SetHeader(DBM_CORE_INFOFRAME_POWER)
 		DBM.InfoFrame:Show(3, "enemypower", 2)
 	end
+	--Hack so win detection and bosses remaining work with 6 CIDs
+	self.vb.bossLeft = 3
+	self.numBoss = 3
 end
 
 function mod:OnCombatEnd()
@@ -66,11 +69,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.activeTriad = args.destGUID
 		warnActiveTriad:Show(args.destName)
 		local cid = self:GetCIDFromGUID(args.destGUID)
-		if cid == 135360 then--Sister Briar
+		if cid == 135360 or cid == 131825 then--Sister Briar
 			timerJaggedNettlesCD:Start(7.8)--CAST SUCCESS
-		elseif cid == 135358 then--Sister Malady
+		elseif cid == 135358 or cid == 131823 then--Sister Malady
 			timerSoulManipulationCD:Start(11.3)--CAST SUCCESS
-		elseif cid == 135359 then--Sister Solena
+		elseif cid == 135359 or cid == 131824 then--Sister Solena
 			timerUnstableRunicMarkCD:Start(8.5)
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Show(6)
@@ -99,11 +102,11 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 260805 then--Iris
 		local cid = self:GetCIDFromGUID(args.destGUID)
-		if cid == 135360 then--Sister Briar
+		if cid == 135360 or cid == 131825 then--Sister Briar
 			timerJaggedNettlesCD:Stop()
-		elseif cid == 135358 then--Sister Malady
+		elseif cid == 135358 or cid == 131823 then--Sister Malady
 			timerSoulManipulationCD:Stop()
-		elseif cid == 135359 then--Sister Solena
+		elseif cid == 135359 or cid == 131824 then--Sister Solena
 			timerUnstableRunicMarkCD:Stop()
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Hide()

@@ -108,6 +108,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 270605 then--Summon Demolisher
 		timerDemolisherTerrorCD:Start()
 	elseif spellId == 269984 then--Damage Boss 35% (can use SPELL_CAST_START of 269456 alternatively)
+		--Might actually be at Repair event instead (269366)
 		timerDemolisherTerrorCD:Stop()
 		timerDemolisherTerrorCD:Start(35)--35-40
 	end
