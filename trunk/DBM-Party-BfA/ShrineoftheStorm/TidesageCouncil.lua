@@ -25,7 +25,7 @@ local specWarnSwiftnessWardT		= mod:NewSpecialWarningMove(267891, nil, nil, nil,
 local specWarnSwiftnessWard			= mod:NewSpecialWarningMoveTo(267891, nil, nil, nil, 1, 2)
 local specWarnSlicingBlast			= mod:NewSpecialWarningInterrupt(267818, true, nil, 3, 1, 2)
 local specWarnHinderingCleave		= mod:NewSpecialWarningDefensive(267899, "Tank", nil, nil, 1, 2)
-local specWarnBlessingofIronsides	= mod:NewSpecialWarningRun(267901, nil, nil, nil, 4, 2)
+local specWarnBlessingofIronsides	= mod:NewSpecialWarningRun(267901, "Tank", nil, 2, 4, 2)
 --local yellSwirlingScythe			= mod:NewYell(195254)
 --local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
 
