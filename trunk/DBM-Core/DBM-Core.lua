@@ -3752,31 +3752,41 @@ function DBM:SCENARIO_COMPLETED()
 	end
 end
 
-function DBM:UPDATE_VEHICLE_ACTIONBAR()
-	if self.Options.turtlePlaying and not HasVehicleActionBar() then
-		DBM:TransitionToDungeonBGM(false, true)
-	end
-	if self.Options.EventSoundTurle and self.Options.EventSoundTurle ~= "None" and self.Options.EventSoundTurle ~= "" and HasVehicleActionBar() and IsSpellKnown(271938) then
-		fireEvent("DBM_MusicStart", "Turtle")
-		if not self.Options.tempMusicSetting then
-			self.Options.tempMusicSetting = tonumber(GetCVar("Sound_EnableMusic"))
-			if self.Options.tempMusicSetting == 0 then
-				SetCVar("Sound_EnableMusic", 1)
-			else
-				self.Options.tempMusicSetting = nil--Don't actually need it
+do
+	local function delayedVehicleCheck(self)
+		if self.Options.turtlePlaying and not HasVehicleActionBar() then
+			DBM:TransitionToDungeonBGM(false, true)
+			return
+		end
+		if self:GetCIDFromGUID(UnitGUID("pet")) == 138172 then
+			fireEvent("DBM_MusicStart", "Turtle")
+			if not self.Options.tempMusicSetting then
+				self.Options.tempMusicSetting = tonumber(GetCVar("Sound_EnableMusic"))
+				if self.Options.tempMusicSetting == 0 then
+					SetCVar("Sound_EnableMusic", 1)
+				else
+					self.Options.tempMusicSetting = nil--Don't actually need it
+				end
 			end
+			local path = "MISSING"
+			if self.Options.EventSoundTurle == "Random" then
+				local usedTable = self.Options.EventSoundMusicCombined and DBM.Music or DBM.BattleMusic
+				local random = fastrandom(3, #usedTable)
+				path = usedTable[random].value
+			else
+				path = self.Options.EventSoundTurle
+			end
+			PlayMusic(path)
+			self.Options.turtlePlaying = true
+			DBM:Debug("Starting turtle music with file: "..path)
 		end
-		local path = "MISSING"
-		if self.Options.EventSoundTurle == "Random" then
-			local usedTable = self.Options.EventSoundMusicCombined and DBM.Music or DBM.BattleMusic
-			local random = fastrandom(3, #usedTable)
-			path = usedTable[random].value
-		else
-			path = self.Options.EventSoundTurle
+	end
+
+	function DBM:UPDATE_VEHICLE_ACTIONBAR()
+		if self.Options.EventSoundTurle and self.Options.EventSoundTurle ~= "None" and self.Options.EventSoundTurle ~= "" then
+			self:Unschedule(delayedVehicleCheck)
+			self:Schedule(1, delayedVehicleCheck, self)
 		end
-		PlayMusic(path)
-		self.Options.turtlePlaying = true
-		DBM:Debug("Starting turtle music with file: "..path)
 	end
 end
 
