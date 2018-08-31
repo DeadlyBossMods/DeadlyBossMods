@@ -19,7 +19,7 @@ local specWarnSpiritedDefense		= mod:NewSpecialWarningInterrupt(265368, "HasInte
 local specWarnDrainEssence			= mod:NewSpecialWarningInterrupt(266036, "HasInterrupt", nil, nil, 1, 2)
 local specWarnSoulFetish			= mod:NewSpecialWarningInterrupt(278551, "HasInterrupt", nil, nil, 1, 2)
 local specWarnDinnerBell			= mod:NewSpecialWarningInterrupt(265407, "HasInterrupt", nil, nil, 1, 2)
-local specWarnDecayingTouch			= mod:NewSpecialWarningSpell(265881, "Tank", nil, nil, 1, 2)
+local specWarnDecayingTouch			= mod:NewSpecialWarningDefensive(265881, "Tank", nil, nil, 1, 2)
 local specWarnSplinterSpike			= mod:NewSpecialWarningDodge(265759, nil, nil, nil, 2, 2)
 local specWarnUproot				= mod:NewSpecialWarningDodge(264038, nil, nil, nil, 2, 2)
 local specWarnMarkingCleave			= mod:NewSpecialWarningDodge(263905, "Tank", nil, 2, 1, 2)
@@ -61,7 +61,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 264038 and self:AntiSpam(3, 1) then
 		specWarnUproot:Show()
 		specWarnUproot:Play("watchstep")
-	elseif spellId == 263905 and self:AntiSpam(4, 2) then
+	elseif spellId == 263905 and self:AntiSpam(2.5, 2) then
 		specWarnMarkingCleave:Show()
 		specWarnMarkingCleave:Play("shockwave")
 	elseif spellId == 263961 and self:AntiSpam(4, 3) then
