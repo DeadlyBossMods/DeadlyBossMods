@@ -65,7 +65,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 270492 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnHex:Show(args.sourceName)
 		specWarnHex:Play("kickcast")
-	elseif spellId == 270889 then
+	elseif spellId == 270889  and self:AntiSpam(3, 6) then
 		specWarnChannelLighting:Show()
 		specWarnChannelLighting:Play("justrun")
 	elseif spellId == 270084 and self:AntiSpam(4, 2) then
@@ -74,13 +74,13 @@ function mod:SPELL_CAST_START(args)
 		warnAxeShadowWhirl:Show()
 	elseif spellId == 270482 and self:AntiSpam(4, 4) then
 		warnBloodedLeap:Show()
-	elseif spellId == 270293 then
+	elseif spellId == 270293 and self:AntiSpam(3, 5) then
 		specWarnPurificationStrike:Show()
 		specWarnPurificationStrike:Play("watchstep")
 	elseif spellId == 270284 then
 		specWarnPurificationBeam:Show()
 		specWarnPurificationBeam:Play("behindmob")
-	elseif spellId == 270514 then
+	elseif spellId == 270514 and self:AntiSpam(3, 5) then
 		specWarnGroundCrush:Show()
 		specWarnGroundCrush:Play("watchstep")
 	end
@@ -92,7 +92,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 269976 then
 		specWarnAncestralFury:Show(args.destName)
 		specWarnAncestralFury:Show("trannow")
-	elseif spellId == 270927 then
+	elseif spellId == 270927 and self:AntiSpam(3, 6) then
 		specWarnBladestorm:Show()
 		specWarnBladestorm:Play("justrun")
 	elseif spellId == 270920 then

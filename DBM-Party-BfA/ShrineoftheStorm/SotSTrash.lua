@@ -61,13 +61,13 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 267973 and self:AntiSpam(5, 1) then
 		specWarnWashAway:Show()
 		specWarnWashAway:Play("watchstep")
-	elseif spellId == 268391 and self:AntiSpam(4, 2) then
+	elseif spellId == 268391 and self:AntiSpam(2.5, 2) then
 		specWarnMentalAssault:Show()
 		specWarnMentalAssault:Play("shockwave")
 	elseif spellId == 268239 and self:AntiSpam(5, 4) then
 		specWarnShipbreakerStorm:Show()
 		specWarnShipbreakerStorm:Play("aesoon")
-	elseif spellId == 276268 and self:AntiSpam(4, 5) then
+	elseif spellId == 276268 and self:AntiSpam(2.5, 2) then
 		specWarnHeavingBlow:Show()
 		specWarnHeavingBlow:Play("shockwave")
 	elseif spellId == 267977 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
@@ -94,7 +94,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 268211 and self:AntiSpam(4, 10) then
 		specWarnMinorReinforcement:Show()
 		specWarnMinorReinforcement:Play("moveboss")
-	elseif spellId == 268273 and self:AntiSpam(4, 11) then
+	elseif spellId == 268273 and self:AntiSpam(4, 1) then
 		specWarnDeepSmash:Show()
 		specWarnDeepSmash:Play("watchstep")
 	elseif spellId == 268322 and self:CheckInterruptFilter(args.sourceGUID, false, true) then

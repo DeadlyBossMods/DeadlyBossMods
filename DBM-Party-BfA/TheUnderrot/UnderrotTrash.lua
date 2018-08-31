@@ -32,13 +32,13 @@ local specWarnDecayingMind			= mod:NewSpecialWarningInterrupt(278961, "HasInterr
 function mod:SPELL_CAST_START(args)
 	if not self.Options.Enabled then return end
 	local spellId = args.spellId
-	if spellId == 272609 and self:AntiSpam(3, 1) then
+	if spellId == 272609 and self:AntiSpam(2.5, 1) then
 		specWarnMaddeningGaze:Show()
 		specWarnMaddeningGaze:Play("shockwave")
-	elseif spellId == 265019 and self:AntiSpam(3, 2) then
+	elseif spellId == 265019 and self:AntiSpam(2.5, 1) then
 		specWarnSavageCleave:Show()
 		specWarnSavageCleave:Play("shockwave")
-	elseif spellId == 265540 and self:AntiSpam(3, 3) then
+	elseif spellId == 265540 and self:AntiSpam(2.5, 1) then
 		specWarnRottenBile:Show()
 		specWarnRottenBile:Play("shockwave")
 	elseif spellId == 266106 and self:CheckInterruptFilter(args.sourceGUID, false, true) then

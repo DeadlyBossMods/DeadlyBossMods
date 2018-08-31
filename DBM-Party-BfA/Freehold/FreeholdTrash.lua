@@ -79,7 +79,7 @@ function mod:SPELL_CAST_START(args)
 		warnDuelistDash:Show()
 	elseif spellId == 274383 and self:AntiSpam(3, 9) then
 		warnRatTrap:Show()
-	elseif spellId == 258199 and self:AntiSpam(3, 11) then
+	elseif spellId == 258199 and self:AntiSpam(3, 3) then
 		specWarnGroundShatter:Show()
 		specWarnGroundShatter:Play("justrun")
 	end

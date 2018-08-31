@@ -17,9 +17,9 @@ mod:RegisterEvents(
 --TODO, heavy slash, non boss version? it's not in combat log since blizz sucks
 --TODO, target scan Ricochet (272542)?
 local warnBananaRampage				= mod:NewSpellAnnounce(272546, 2)
+local warnBolsteringShout			= mod:NewSpellAnnounce(275826, 2)
 local warnFerocity					= mod:NewCastAnnounce(272888, 3)
 
-local specWarnBolsteringShout		= mod:NewSpecialWarningMove(275826, "Tank", nil, nil, 1, 2)
 local specWarnSlobberKnocker		= mod:NewSpecialWarningDodge(256627, "Tank", nil, nil, 1, 2)
 local specWarnSingingSteel			= mod:NewSpecialWarningDodge(256709, "Tank", nil, nil, 1, 2)
 local specWarnCrushingSlam			= mod:NewSpecialWarningDodge(272711, "Tank", nil, nil, 1, 2)
@@ -40,12 +40,11 @@ function mod:SPELL_CAST_START(args)
 	if not self.Options.Enabled then return end
 	local spellId = args.spellId
 	if spellId == 275826 and self:IsValidWarning(args.sourceGUID) and self:AntiSpam(4, 1) then
-		specWarnBolsteringShout:Show()
-		specWarnBolsteringShout:Play("moveboss")
-	elseif spellId == 256627 and self:IsValidWarning(args.sourceGUID) and self:AntiSpam(4, 2) then
+		warnBolsteringShout:Show()
+	elseif spellId == 256627 and self:IsValidWarning(args.sourceGUID) and self:AntiSpam(2.5, 2) then
 		specWarnSlobberKnocker:Show()
 		specWarnSlobberKnocker:Play("shockwave")
-	elseif spellId == 256709 and self:IsValidWarning(args.sourceGUID) and self:AntiSpam(4, 3) then
+	elseif spellId == 256709 and self:IsValidWarning(args.sourceGUID) and self:AntiSpam(2.5, 2) then
 		specWarnSingingSteel:Show()
 		specWarnSingingSteel:Play("shockwave")
 	elseif spellId == 257170 and self:IsValidWarning(args.sourceGUID) and self:AntiSpam(4, 4) then
@@ -123,7 +122,7 @@ function mod:OnSync(msg)
 	if msg == "Trample" and self:AntiSpam(4, 10) then
 		specWarnTrample:Show()
 		specWarnTrample:Play("chargemove")
-	elseif msg == "CrushingSlam" and self:AntiSpam(4, 11) then
+	elseif msg == "CrushingSlam" and self:AntiSpam(2.5, 2) then
 		specWarnCrushingSlam:Show()
 		specWarnCrushingSlam:Play("shockwave")
 	end

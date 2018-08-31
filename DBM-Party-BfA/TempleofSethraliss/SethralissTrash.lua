@@ -25,7 +25,7 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 265968 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnHealingSurge:Show(args.sourceName)
 		specWarnHealingSurge:Play("kickcast")
-	elseif spellId == 272657 then
+	elseif spellId == 272657 and self:AntiSpam(2.5, 1) then
 		specWarnNoxiousBreath:Show()
 		specWarnNoxiousBreath:Play("shockwave")
 	end
