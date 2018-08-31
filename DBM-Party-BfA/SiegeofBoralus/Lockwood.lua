@@ -96,7 +96,7 @@ function mod:UNIT_SPELLCAST_START(uId, _, spellId)
 	elseif spellId == 268260 then--Broadside 
 		specWarnBroadside:Show()
 		specWarnBroadside:Play("shockwave")
-		--timerBroadsideCD:Start()
+		timerBroadsideCD:Start(10.9)
 	end
 end
 
@@ -110,7 +110,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		self.vb.bossGone = false
 		timerBroadsideCD:Stop()
 		timerCleartheDeckCD:Start(4.3)
-		--timerWithdrawCD:Start()--Unknown, pulls too short
+		timerWithdrawCD:Start(36)
 	elseif spellId == 268963 then--Unstable Ordnance
 		warnUnstableOrdnance:Show()
 		timerBroadsideCD:Stop()
