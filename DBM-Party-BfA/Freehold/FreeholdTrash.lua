@@ -97,7 +97,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 257739 and self:AntiSpam(3, 10) then
 		--If it can be dispelled by affected player, no reason to tell them to run away, dispel is priority
 		if self.Options.SpecWarn257739dispel then
-			specWarnBlindRage:Show(args.sourceName)
+			specWarnBlindRage:Show(args.destName)
 			specWarnBlindRage:Play("trannow")
 		elseif args:IsPlayer() then
 			specWarnBlindRagePlayer:Show()
@@ -106,7 +106,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 257908 and self:AntiSpam(3, 12) then
 		--If tank can dispel self, no reason to tell tank to defensive through it, dispel is priority
 		if self.Options.SpecWarn257908dispel then
-			specWarnOiledBlade:Show(args.sourceName)
+			specWarnOiledBlade:Show(args.destName)
 			specWarnOiledBlade:Play("helpdispel")
 		elseif args:IsPlayer() then
 			specWarnOiledBladeSelf:Show()
