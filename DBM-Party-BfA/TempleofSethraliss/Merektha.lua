@@ -37,7 +37,7 @@ local timerHadotoxinCD				= mod:NewAITimer(13, 263957, nil, "Tank|Healer|RemoveP
 local timerNoxiousBreathCD			= mod:NewCDTimer(89.3, 272657, nil, nil, nil, 3)
 --local timerBlindingSandCD			= mod:NewCDTimer(51, 263914, nil, nil, nil, 2)
 --local timerHatchCD					= mod:NewCDTimer(43.9, 264239, nil, nil, nil, 1)--even need a CD bar or just cast bar?
-local timerBurrowCD					= mod:NewCDTimer(13, 264206, nil, nil, nil, 6)
+--local timerBurrowCD					= mod:NewCDTimer(13, 264206, nil, nil, nil, 6)--Health based apparently
 --local timerBurrowEnds				= mod:NewBuffActiveTimer(13, 264206, nil, nil, nil, 6)
 
 --mod:AddRangeFrameOption(5, 194966)
@@ -48,7 +48,7 @@ mod:AddNamePlateOption("NPAuraOnHatch", 264233)
 function mod:OnCombatStart(delay)
 	timerHadotoxinCD:Start(1-delay)
 	timerNoxiousBreathCD:Start(6-delay)
-	timerBurrowCD:Start(15.2-delay)
+	--timerBurrowCD:Start(15.2-delay)
 	if self.Options.NPAuraOnObscured or self.Options.NPAuraOnHatch then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
@@ -112,7 +112,7 @@ function mod:SPELL_CAST_START(args)
 		if self:AntiSpam(3, 1) then
 			warnHatch:Show()--Cast instantly when burrow ends
 			--timerBlindingSandCD:Start(6)
-			timerBurrowCD:Start(18)
+			--timerBurrowCD:Start(18)
 		end
 	end
 end

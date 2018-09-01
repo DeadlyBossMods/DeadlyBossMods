@@ -11,7 +11,7 @@ mod.noBossDeathKill = true
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_AURA_APPLIED 268008 269686 268024",
+	"SPELL_AURA_APPLIED 268008 269686 268024 268008",
 	"SPELL_AURA_REMOVED 268008 269686 274149",
 	"SPELL_CAST_START 268061",
 	"SPELL_CAST_SUCCESS 273677 274149",
@@ -27,6 +27,7 @@ local warnLifeForce					= mod:NewSpellAnnounce(274149, 1)
 local specWarnChainLightning		= mod:NewSpecialWarningInterrupt(268061, nil, nil, nil, 1, 2)
 local specWarnRainofToads			= mod:NewSpecialWarningSpell(269688, nil, nil, nil, 2, 2)
 local specWarnPlague				= mod:NewSpecialWarningDispel(269686, "RemoveDisease", nil, nil, 1, 2)
+local specWarnSnakeCharm			= mod:NewSpecialWarningDispel(268008, "Healer", nil, nil, 1, 2)
 --local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
 
 --local timerRainofToadsCD			= mod:NewAITimer(20, 269688, nil, nil, nil, 1)--More work needed
@@ -67,6 +68,9 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 268024 and self:AntiSpam(3, 1) then
 		warnPulse:Show()
 		timerPulseCD:Start()
+	elseif spellId == 268008 and self:AntiSpam(3, 3) then
+		specWarnSnakeCharm:Show(args.destName)
+		specWarnSnakeCharm:Play("helpdispel")
 	end
 end
 --mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
