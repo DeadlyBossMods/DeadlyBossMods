@@ -32,7 +32,11 @@ local specWarnThrash					= mod:NewSpecialWarningDefensive(262277, "Tank", nil, n
 local specWarnRottingRegurg				= mod:NewSpecialWarningDodge(262292, nil, nil, nil, 2, 2)
 local specWarnShockwaveStomp			= mod:NewSpecialWarningSpell(262288, nil, nil, nil, 2, 2)
 local specWarnMalodorousMiasma			= mod:NewSpecialWarningYou(262313, nil, nil, nil, 1, 2)
+local yellMalodorousMiasma				= mod:NewYell(262313)
+local yellMalodorousMiasmaFades			= mod:NewFadesYell(262313)
 local specWarnPutridParoxysm			= mod:NewSpecialWarningDefensive(262314, nil, nil, nil, 1, 2)
+local yellPutridParoxysm				= mod:NewYell(262314)
+local yellPutridParoxysmFades			= mod:NewFadesYell(262314)
 local specWarnAdds						= mod:NewSpecialWarningAdds(262364, "Dps", nil, nil, 1, 2)
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
 
@@ -61,7 +65,7 @@ do
 		table.wipe(lines)
 		table.wipe(addedGUIDs)
 		--Check nameplates
-		for i = 1, 40 do
+		for i = 1, 40 do--In case friendly nameplates enabled, gotta check at least 40 to find up to 10 mobs in 30 man raid
 			local UnitID = "nameplate"..i
 			local GUID = UnitGUID(UnitID)
 			if GUID and not addedGUIDs[GUID] then
@@ -99,7 +103,7 @@ end
 local updateRangeFrame
 do
 	local function debuffFilter(uId)
-		if DBM:UnitDebuff(uId, 262313) or DBM:UnitDebuff(uId, 262314) then
+		if DBM:UnitDebuff(uId, 262313, 262314) then
 			return true
 		end
 	end
@@ -209,12 +213,16 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnMalodorousMiasma:Show()
 		specWarnMalodorousMiasma:Play("targetyou")
 		if self:IsMythic() then
+			yellMalodorousMiasma:Yell()
+			yellMalodorousMiasmaFades:Countdown(18)
 			updateRangeFrame(self)
 		end
 	elseif spellId == 262314 and args:IsPlayer() then
 		specWarnPutridParoxysm:Show()
 		specWarnPutridParoxysm:Play("defensive")
 		if self:IsMythic() then
+			yellPutridParoxysm:Yell()
+			yellPutridParoxysmFades:Countdown(6)
 			updateRangeFrame(self)
 		end
 	elseif spellId == 262378 then
@@ -226,6 +234,11 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if (spellId == 262313 or spellId == 262314) and args:IsPlayer() and self:IsMythic() then
 		updateRangeFrame(self)
+		if spellId == 262313 then
+			yellMalodorousMiasmaFades:Cancel()
+		else
+			yellPutridParoxysmFades:Cancel()
+		end
 	end
 end
 

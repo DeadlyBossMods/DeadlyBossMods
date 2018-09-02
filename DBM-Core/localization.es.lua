@@ -168,6 +168,7 @@ DBM_CORE_UPDATEREMINDER_TESTVERSION		= "AVISO: Estás usando una versión de Dea
 DBM_CORE_VEM							= "AVISO: Estás ejecutando Deadly Boss Mods y Voice Encounter Mods a la vez. DBM no funciona correctamente con esta configuración, y por tanto no se ejecutará."
 DBM_CORE_3RDPROFILES					= "AVISO: DBM-Profiles no es compatible con esta versión de DBM. Con tal de evitar conflictos, DBM no se ejecutará hasta que borres tu DBM-Profiles actual."
 DBM_CORE_DPMCORE						= "AVISO: Deadly PvP Mods ya no está en desarrollo y no es compatible con esta versión de DBM. Con tal de evitar conflictos, DBM no se ejecutará hasta que borres Deadly PvP Mods."
+DBM_CORE_DBMLDB							= "AVISO: DBM-LDB está ahora incluido en DBM-Core. Es recomendable que borres la carpeta 'DBM-LDB' de tu carpeta de addons."
 DBM_CORE_UPDATE_REQUIRES_RELAUNCH		= "AVISO: Esta actualización de DBM no funcionará correctamente hasta que reinicies el juego. Esta versión contiene nuevos archivos o cambios a los archivos .toc que no pueden recargarse mediante /reload. Es muy probable que DBM no funcione correctamente hasta que reinicies el juego."
 DBM_CORE_OUT_OF_DATE_NAG				= "Tu versión de Deadly Boss Mods está desfasada para este encuentro. Se recomienda que actualices DBM para no perderte ningún aviso, temporizador o indicador crucial para tu grupo de banda."
 
@@ -347,6 +348,7 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS.taunt			= "%s en >%%s< - ¡provoca ahora!"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.close			= "%s en >%%s< cerca de ti"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.move			= "%s - ¡sal de ahí!"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.dodge			= "%s - ¡esquiva!"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.dodgeloc		= "%s - ¡esquiva por %%s!"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.moveaway		= "%s - ¡aléjate de los demás!"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.moveto		= "%s - ¡ve a >%%s<!"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.jump			= "%s - ¡salta!"
@@ -549,12 +551,12 @@ DBM_CORE_DUR_ENTRY					= "%s: Durabilidad [%d%%] / Piezas rotas [%s]"
 DBM_CORE_LAG_FOOTER					= "Sin respuesta: %s"
 
 --LDB
-DBM_LDB_TOOLTIP_HELP1	= "Click izquierdo para abrir DBM"
-DBM_LDB_TOOLTIP_HELP2	= "Click derecho para el menú de configuración"
+DBM_LDB_TOOLTIP_HELP1	= "Clic izquierdo para abrir DBM"
+DBM_LDB_TOOLTIP_HELP2	= "Clic derecho para el menú de configuración"
 
-DBM_LDB_LOAD_MODS		= "Cargar boss mods"
+DBM_LDB_LOAD_MODS		= "Cargar módulo"
 
-DBM_LDB_CAT_OTHER		= "Otros Boss Mods"
+DBM_LDB_CAT_OTHER		= "Otros módulos"
 
 DBM_LDB_CAT_GENERAL		= "General"
-DBM_LDB_ENABLE_BOSS_MOD	= "habilitar boss mod"
+DBM_LDB_ENABLE_BOSS_MOD	= "Habilitar módulo"
