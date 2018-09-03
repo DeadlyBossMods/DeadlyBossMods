@@ -101,7 +101,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 269976 then
 		specWarnAncestralFury:Show(args.destName)
-		specWarnAncestralFury:Show("trannow")
+		specWarnAncestralFury:Show("helpdispel")
 	elseif spellId == 270927 and self:AntiSpam(3, 6) then
 		specWarnBladestorm:Show()
 		specWarnBladestorm:Play("justrun")
