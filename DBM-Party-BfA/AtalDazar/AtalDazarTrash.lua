@@ -68,7 +68,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnTransfusion:Play("takedamage")
 	elseif spellId == 255824 then
 		specWarnFanaticsRageDispel:Show(args.destName)
-		specWarnFanaticsRageDispel:Play("trannow")
+		specWarnFanaticsRageDispel:Play("helpdispel")
 	elseif spellId == 256849 then
 		specWarnDinoMightDispel:Show(args.destName)
 		specWarnDinoMightDispel:Play("helpdispel")
