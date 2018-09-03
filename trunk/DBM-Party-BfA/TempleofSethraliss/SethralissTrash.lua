@@ -72,7 +72,7 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	if not self.Options.Enabled then return end
 	local spellId = args.spellId
-	if spellId == 273563 then
+	if spellId == 273563 and args:IsDestTypePlayer() then
 		if self.Options.SpecWarn273563dispel then
 			specWarnNeurotoxinDispel:Show(args.destName)
 			specWarnNeurotoxinDispel:Play("helpdispel")
@@ -83,16 +83,16 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 272659 and not args:IsDestTypePlayer() and self:AntiSpam(3, 3) then
 		specWarnElectrifiedScales:Show(args.destName)
 		specWarnElectrifiedScales:Play("helpdispel")
-	elseif spellId == 267027 and self:AntiSpam(3, 4) then
+	elseif spellId == 267027 and args:IsDestTypePlayer() and self:AntiSpam(3, 4) then
 		specWarnCytotoxin:Show(args.destName)
 		specWarnCytotoxin:Play("helpdispel")
-	elseif spellId == 272699 and self:AntiSpam(3, 4) then
+	elseif spellId == 272699 and args:IsDestTypePlayer() and self:AntiSpam(3, 4) then
 		specWarnVenomousSpit:Show(args.destName)
 		specWarnVenomousSpit:Play("helpdispel")
-	elseif spellId == 268013 and self:AntiSpam(3, 8) then
+	elseif spellId == 268013 and args:IsDestTypePlayer() and self:AntiSpam(3, 8) then
 		specWarnFlameShock:Show(args.destName)
 		specWarnFlameShock:Play("helpdispel")
-	elseif spellId == 268008 and self:AntiSpam(3, 8) then
+	elseif spellId == 268008 and args:IsDestTypePlayer() and self:AntiSpam(3, 8) then
 		specWarnSnakeCharm:Show(args.destName)
 		specWarnSnakeCharm:Play("helpdispel")
 	end
