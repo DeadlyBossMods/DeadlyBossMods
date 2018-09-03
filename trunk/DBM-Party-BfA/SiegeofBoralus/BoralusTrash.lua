@@ -88,7 +88,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnChokingWatersDispel:Play("helpdispel")
 	elseif spellId == 272888 and self:IsValidWarning(args.sourceGUID) then
 		specWarnFerocity:Show(args.destName)
-		specWarnFerocity:Play("trannow")
+		specWarnFerocity:Play("helpdispel")
 		
 	end
 end

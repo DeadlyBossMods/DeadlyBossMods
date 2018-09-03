@@ -93,12 +93,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnGTFO:Play("runaway")
 	elseif spellId == 257476 and self:AntiSpam(3, 6) then
 		specWarnBestialWrath:Show(args.destName)
-		specWarnBestialWrath:Play("trannow")
+		specWarnBestialWrath:Play("helpdispel")
 	elseif spellId == 257739 and self:AntiSpam(3, 10) then
 		--If it can be dispelled by affected player, no reason to tell them to run away, dispel is priority
 		if self.Options.SpecWarn257739dispel then
 			specWarnBlindRage:Show(args.destName)
-			specWarnBlindRage:Play("trannow")
+			specWarnBlindRage:Play("helpdispel")
 		elseif args:IsPlayer() then
 			specWarnBlindRagePlayer:Show()
 			specWarnBlindRagePlayer:Play("justrun")
