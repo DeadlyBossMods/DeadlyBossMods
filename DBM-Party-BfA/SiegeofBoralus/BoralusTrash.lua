@@ -83,7 +83,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnSightedArt:Show()
 		specWarnSightedArt:Play("targetyou")
 		yellSightedArt:Yell()
-	elseif spellId == 272571 and self:IsValidWarning(args.sourceGUID) then
+	elseif spellId == 272571 and args:IsDestTypePlayer() then
 		specWarnChokingWatersDispel:Show(args.destName)
 		specWarnChokingWatersDispel:Play("helpdispel")
 	elseif spellId == 272888 and self:IsValidWarning(args.sourceGUID) then

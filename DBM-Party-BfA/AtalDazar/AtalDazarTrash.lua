@@ -76,7 +76,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnUnstableHexSelf:Show()
 		specWarnUnstableHexSelf:Play("runout")
 		yellUnstableHex:Yell()
-	elseif spellId == 252687 then
+	elseif spellId == 252687 and args:IsDestTypePlayer() then
 		if args:IsPlayer() then
 			specWarnVenomfangStrike:Show()
 			specWarnVenomfangStrike:Play("defensive")

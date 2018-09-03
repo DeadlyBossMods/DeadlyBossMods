@@ -126,7 +126,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnConsumingVoidStop:Show(args.destName)
 			specWarnConsumingVoidStop:Play("stopattack")
 		end
-	elseif spellId == 268322 and self:AntiSpam(2, 3) then
+	elseif spellId == 268322 and args:IsDestTypePlayer() and self:AntiSpam(2, 3) then
 		specWarnTouchofDrowned:Show(args.destName)
 		specWarnTouchofDrowned:Play("helpdispel")
 	elseif spellId == 268214 then

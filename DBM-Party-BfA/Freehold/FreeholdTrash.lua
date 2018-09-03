@@ -103,7 +103,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnBlindRagePlayer:Show()
 			specWarnBlindRagePlayer:Play("justrun")
 		end
-	elseif spellId == 257908 and self:AntiSpam(3, 12) then
+	elseif spellId == 257908 and args:IsDestTypePlayer() and self:AntiSpam(3, 12) then
 		--If tank can dispel self, no reason to tell tank to defensive through it, dispel is priority
 		if self.Options.SpecWarn257908dispel then
 			specWarnOiledBlade:Show(args.destName)
@@ -112,7 +112,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnOiledBladeSelf:Show()
 			specWarnOiledBladeSelf:Play("defensive")
 		end
-	elseif spellId == 258323 and self:AntiSpam(3, 7) then
+	elseif spellId == 258323 and args:IsDestTypePlayer() and self:AntiSpam(3, 7) then
 		specWarnInfectedWound:Show(args.destName)
 		specWarnInfectedWound:Play("helpdispel")
 	end
