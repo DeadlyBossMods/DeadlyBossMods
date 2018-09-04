@@ -66,7 +66,7 @@ local specWarnThousandMaws				= mod:NewSpecialWarningSwitch(267509, nil, nil, ni
 local specWarnTorment					= mod:NewSpecialWarningInterrupt(267427, "HasInterrupt", nil, nil, 1, 2)
 local specWarnMassiveSmash				= mod:NewSpecialWarningSpell(267412, nil, nil, nil, 1, 2)
 local specWarnDarkBargain				= mod:NewSpecialWarningDodge(267409, nil, nil, nil, 1, 2)
-local specWarnDarkBargainOther			= mod:NewSpecialWarningTaunt(267409, nil, nil, nil, 1, 2)
+local specWarnDarkBargainOther			= mod:NewSpecialWarningTaunt(267409, false, nil, 2, 1, 2)
 local specWarnGTFO						= mod:NewSpecialWarningGTFO(270287, nil, nil, nil, 1, 2)
 local specWarnDecayingEruption			= mod:NewSpecialWarningInterrupt(267462, "HasInterrupt", nil, nil, 1, 2)--Mythic
 ----Arena Floor P2+
