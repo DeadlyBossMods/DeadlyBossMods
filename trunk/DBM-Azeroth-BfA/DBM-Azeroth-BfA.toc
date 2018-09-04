@@ -18,7 +18,7 @@
 ## X-DBM-Mod-Name-zhTW: 艾澤拉斯 (決戰艾澤拉斯)
 ## X-DBM-Mod-World-Boss: 1
 ## X-DBM-Mod-Sort: 410
-## X-DBM-Mod-MapID: 1643,1642
+## X-DBM-Mod-MapID: 1643,1642,0
 ## X-DBM-Mod-LoadCID: 132701,132253,136385,140163,140252,138794,138122,137374
 ## X-DBM-Mod-MinCoreRevision: 17286
 ## X-DBM-Mod-MinExpansion: 7
