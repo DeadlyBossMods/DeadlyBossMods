@@ -225,7 +225,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnImminentRuin:Show(self:IconNumToTexture(icon))
 			specWarnImminentRuin:Play("mm"..icon)
 			yellImminentRuin:Yell(icon, icon, icon)
-			yellImminentRuinFades:Countdown(self:IsMythic() and 8 or 12, icon)
+			yellImminentRuinFades:Countdown(self:IsMythic() and 8 or 12, nil, icon)
 		elseif self:CheckNearby(12, args.destName) and not DBM:UnitDebuff("player", spellId) then
 			specWarnImminentRuinNear:CombinedShow(0.3, args.destName)--Combined show to prevent warning spam if multiple targets near you
 			specWarnImminentRuinNear:CancelVoice()--Avoid spam
@@ -234,7 +234,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			--warnImminentRuin:CombinedShow(0.3, args.destName)
 		end
 		if self.Options.SetIconRuin then
-			self:SetIcon(args.destName, icon)--Should be BW compatible, for most part.
+			self:SetIcon(args.destName, icon)
 		end
 		self.vb.ruinIcon = self.vb.ruinIcon + 1
 		if self.vb.ruinIcon == 3 then
