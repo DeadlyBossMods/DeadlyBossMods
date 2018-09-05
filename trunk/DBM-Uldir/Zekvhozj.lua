@@ -6,8 +6,7 @@ mod:SetCreatureID(134445)--Zek'vhozj, 134503/qiraji-warrior
 mod:SetEncounterID(2136)
 --mod:DisableESCombatDetection()
 mod:SetZone()
---mod:SetBossHPInfoToHighest()
---mod:SetUsedIcons(1, 2, 3, 4, 5, 6)
+mod:SetUsedIcons(1, 2, 3)
 --mod:SetHotfixNoticeRev(16950)
 --mod:SetMinSyncRevision(16950)
 mod.respawnTime = 29
@@ -25,7 +24,7 @@ mod:RegisterEventsInCombat(
 	"UNIT_DIED",
 	"CHAT_MSG_MONSTER_YELL",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
-	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3"
+	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5"
 )
 
 --TODO, icons for Roiling Deceit if applied to more than one target at a time
@@ -78,7 +77,7 @@ mod:AddTimerLine(SCENARIO_STAGE:format(1))
 local timerQirajiWarriorCD				= mod:NewCDTimer(60, "ej18071", nil, nil, nil, 1, 31700)--UNKNOWN, TODO
 local timerEyeBeamCD					= mod:NewCDTimer(40, 264382, nil, nil, nil, 3)
 mod:AddTimerLine(SCENARIO_STAGE:format(2))
-local timerAnubarCasterCD				= mod:NewCDTimer(60, "ej18397", nil, nil, nil, 1, 31700)--82
+local timerAnubarCasterCD				= mod:NewCDTimer(80, "ej18397", nil, nil, nil, 1, 31700)--82
 local timerRoilingDeceitCD				= mod:NewCDTimer(45, 265360, nil, nil, nil, 3)--61
 --local timerVoidBoltCD					= mod:NewAITimer(19.9, 267180, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
 mod:AddTimerLine(SCENARIO_STAGE:format(3))
@@ -90,24 +89,26 @@ local countdownSurgingDarkness			= mod:NewCountdown(64, 265451, true, nil, 3)
 local countdownMightofVoid				= mod:NewCountdown("Alt37", 267312, "Tank", nil, 3)
 --local countdownFelstormBarrage		= mod:NewCountdown("AltTwo32", 244000, nil, nil, 3)
 
---mod:AddSetIconOption("SetIconGift", 265360, true)
 --mod:AddRangeFrameOption("8/10")
 --mod:AddBoolOption("ShowAllPlatforms", false)
+mod:AddSetIconOption("SetIconOnAdds", 267192, true, true)
 mod:AddInfoFrameOption(265451, true)
 
 mod.vb.phase = 1
 mod.vb.orbCount = 0
+mod.vb.addIcon = 1
 
 function mod:OnCombatStart(delay)
 	self.vb.phase = 1
 	self.vb.orbCount = 0
+	self.vb.addIcon = 1
 	timerTitanSparkCD:Start(10-delay)
 	timerMightofVoidCD:Start(15-delay)
 	countdownMightofVoid:Start(15-delay)
 	timerSurgingDarknessCD:Start(25-delay)
 	countdownSurgingDarkness:Start(25)
-	timerQirajiWarriorCD:Start(58-delay)--Despite what journal says, this is always 58 regardless
-	--timerEyeBeamCD:Start(54-delay)--Iffy
+	timerEyeBeamCD:Start(52-delay)--Despite what journal says, this is always 52-54 regardless
+	timerQirajiWarriorCD:Start(56-delay)--Despite what journal says, this is always 56-58 regardless
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(DBM_CORE_INFOFRAME_POWER)
 		DBM.InfoFrame:Show(4, "enemypower", 2)
@@ -273,7 +274,11 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 266913 then--Spawn Qiraji Warrior
 		timerQirajiWarriorCD:Start()
 	elseif spellId == 267192 then--Spawn Anub'ar Caster
-		timerAnubarCasterCD:Start()
+		if self:IsEasy() then
+			timerAnubarCasterCD:Start()--80
+		else
+			timerAnubarCasterCD:Start(60)--Assumed still same, will find out soon™
+		end
 	elseif spellId == 265437 then--Roiling Deceit
 		--here because this spell ID fires at beginning of each set ONCE
 		if self:IsMythic() then
@@ -287,6 +292,16 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		else
 			timerTitanSparkCD:Start(10)
 		end
+	elseif spellId == 267191 then--Anub'ar Caster Summon Cosmetic Beam
+		if not GetRaidTargetIndex(uId) then--Not already marked
+			if self.Options.SetIconOnAdds then
+				SetRaidTarget(uId, self.vb.addIcon)
+			end
+			self.vb.addIcon = self.vb.addIcon + 1
+			if self.vb.addIcon == 4 then
+				self.vb.addIcon = 1
+			end
+		end
 	end
 end
 
@@ -294,7 +309,7 @@ function mod:OnSync(msg, targetname)
 	if not self:IsInCombat() then return end
 	if msg == "CThunDisc" and self:AntiSpam(5, 1) then
 		--timerQirajiWarriorCD:Start(7)
-		timerEyeBeamCD:Start(31.1)
+		--timerEyeBeamCD:Start(31.1)
 	elseif msg == "YoggDisc" and self:AntiSpam(5, 2) then
 		self.vb.phase = 2
 		if not self:IsMythic() then
