@@ -74,7 +74,7 @@ local countdownEssenceShear				= mod:NewCountdown("Alt20", 274693, "Tank", nil, 
 local countdownImminentRuin				= mod:NewCountdown("AltTwo20", 272536, "-Tank", nil, 3)
 
 mod:AddSetIconOption("SetIconRuin", 272536, true)
---mod:AddRangeFrameOption("8/10")
+mod:AddRangeFrameOption(5, 272407)
 mod:AddInfoFrameOption(272146, true)
 
 mod.vb.phase = 1
@@ -102,12 +102,15 @@ function mod:OnCombatStart(delay)
 		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(272146))
 		DBM.InfoFrame:Show(5, "playerdebuffstacks", 272146, 1)
 	end
+	if self.Options.RangeFrame then
+		DBM.RangeCheck:Show(5)
+	end
 end
 
 function mod:OnCombatEnd()
---	if self.Options.RangeFrame then
---		DBM.RangeCheck:Hide()
---	end
+	if self.Options.RangeFrame then
+		DBM.RangeCheck:Hide()
+	end
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
 	end
