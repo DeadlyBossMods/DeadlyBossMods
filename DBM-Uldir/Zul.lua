@@ -166,8 +166,8 @@ function mod:OnCombatStart(delay)
 	self.vb.activeDecay = nil
 	timerPoolofDarknessCD:Start(20.5-delay, 1)
 	timerDarkRevolationCD:Start(30-delay)
-	timerCallofCrawgCD:Start(35, 1)--35-38
-	timerCallofHexerCD:Start(51.3, 1)--51-54
+	timerCallofCrawgCD:Start(34.9, 1)--35-45
+	timerCallofHexerCD:Start(50.7, 1)--50.7-54
 	timerCallofCrusherCD:Start(70, 1)--70-73
 	if self.Options.InfoFrame then
 		--DBM.InfoFrame:SetHeader(DBM_CORE_INFOFRAME_POWER)
@@ -306,18 +306,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				if args:IsPlayer() then
 					specWarnRupturingBlood:Show(amount)
 					specWarnRupturingBlood:Play("stackhigh")
-					yellRupturingBloodFades:Cancel()
-					yellRupturingBloodFades:Countdown(20)
-					specWarnRupturingBloodEdge:Cancel()
-					specWarnRupturingBloodEdge:Schedule(15, DBM_CORE_ROOM_EDGE)
-					specWarnRupturingBloodEdge:CancelVoice()
-					specWarnRupturingBloodEdge:ScheduleVoice(15, "runtoedge")
 				else
-					--local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", args.spellName)
-					--local remaining
-					--if expireTime then
-					--	remaining = expireTime-GetTime()
-					--end
 					if not UnitIsDeadOrGhost("player") and not DBM:UnitDebuff("player", spellId) then--Can't taunt less you've dropped yours off, period.
 					--if not UnitIsDeadOrGhost("player") and (not remaining or remaining and remaining < 12) then
 						specWarnRupturingBloodTaunt:Show(args.destName)
@@ -335,13 +324,15 @@ function mod:SPELL_AURA_APPLIED(args)
 			if args:IsPlayer() then
 				specWarnRupturingBlood:Show(1)
 				specWarnRupturingBlood:Play("stackhigh")
-				yellRupturingBloodFades:Cancel()
-				yellRupturingBloodFades:Countdown(20)
-				specWarnRupturingBloodEdge:Cancel()
-				specWarnRupturingBloodEdge:Schedule(15, DBM_CORE_ROOM_EDGE)
-				specWarnRupturingBloodEdge:CancelVoice()
-				specWarnRupturingBloodEdge:ScheduleVoice(15, "runtoedge")
 			end
+		end
+		if args:IsPlayer() then
+			yellRupturingBloodFades:Cancel()
+			yellRupturingBloodFades:Countdown(20)
+			specWarnRupturingBloodEdge:Cancel()
+			specWarnRupturingBloodEdge:Schedule(15, DBM_CORE_ROOM_EDGE)
+			specWarnRupturingBloodEdge:CancelVoice()
+			specWarnRupturingBloodEdge:ScheduleVoice(15, "runtoedge")
 		end
 	elseif spellId == 273365 or spellId == 271640 then--Two versions of debuff, one that spawns an add and one that does not (so probably LFR/normal version vs heroic/mythic version)
 		local icon = self.vb.DarkRevIcon
