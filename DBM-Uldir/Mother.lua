@@ -5,6 +5,7 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(135452)--136429 Chamber 01, 137022 Chamber 02, 137023 Chamber 03
 mod:SetEncounterID(2141)
 mod:SetZone()
+mod:SetUsedIcons(8, 7, 6, 5, 4, 3, 2, 1)
 --mod:SetHotfixNoticeRev(16950)
 --mod:SetMinSyncRevision(16950)
 --mod.respawnTime = 35
@@ -15,7 +16,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 267787 268198",
 	"SPELL_CAST_SUCCESS 267795 267945 267885 267878 269827 268089 277973 277961 277742",
 	"SPELL_AURA_APPLIED 267787 274205 269051",
-	"SPELL_AURA_APPLIED_DOSE 267787"
+	"SPELL_AURA_APPLIED_DOSE 267787",
+	"SPELL_SUMMON 268871"
 )
 
 --More mythic timer work
@@ -37,7 +39,7 @@ local specWarnSurgicalBeam				= mod:NewSpecialWarningDodgeLoc(269827, nil, nil, 
 local timerSunderingScalpelCD			= mod:NewNextTimer(23.1, 267787, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerPurifyingFlameCD				= mod:NewNextTimer(23.1, 267795, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
 local timerWindTunnelCD					= mod:NewNextTimer(39.8, 267945, nil, nil, nil, 2)
-local timerSurgicalBeamCD				= mod:NewCDSourceTimer(30, 269827, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
+local timerSurgicalBeamCD				= mod:NewCDSourceTimer(30, 269827, 143444, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)--Shortname "Laser"
 local timerCleansingFlameCD				= mod:NewCastSourceTimer(180, 268095, nil, nil, nil, 6)
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
@@ -47,6 +49,9 @@ local countdownSunderingScalpel			= mod:NewCountdown("Alt23", 267787, "Tank", ni
 local countdownSurgicalBeam				= mod:NewCountdown("AltTwo30", 269827, nil, nil, 3)
 
 mod:AddInfoFrameOption(268095, true)
+mod:AddSetIconOption("SetIconOnAdds", 268871, true, true)
+
+mod.vb.startIcon = 1
 
 local updateInfoFrame
 do
@@ -83,6 +88,7 @@ do
 end
 
 function mod:OnCombatStart(delay)
+	self.vb.startIcon = 1
 	timerSunderingScalpelCD:Start(5.9-delay)
 	countdownSunderingScalpel:Start(5.9-delay)
 	timerPurifyingFlameCD:Start(10.8-delay)
@@ -157,6 +163,17 @@ function mod:SPELL_CAST_SUCCESS(args)
 		specWarnSurgicalBeam:Play("laserrun")
 	elseif spellId == 268089 and self:AntiSpam(3, 1) then--End Cast of Cleansing Purge
 		warnCleansingPurgeFinish:Show(args.sourceName)
+	end
+end
+
+function mod:SPELL_SUMMON(args)
+	local spellId = args.spellId
+	if spellId == 268871 then
+		if self.Options.SetIconOnAdds then--136949 CID
+			self:ScanForMobs(args.sourceGUID, 2, self.vb.startIcon, 1, 0.2, 10, "SetIconOnAdds")
+		end
+		self.vb.startIcon = self.vb.startIcon + 1
+		if self.vb.startIcon == 9 then self.vb.startIcon = 1 end
 	end
 end
 
