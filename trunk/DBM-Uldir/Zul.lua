@@ -104,6 +104,7 @@ mod:AddNamePlateOption("NPAuraOnEngorgedBurst", 276299)
 mod:AddNamePlateOption("NPAuraOnDecayingFlesh", 276434)
 mod:AddSetIconOption("SetIconOnDecay", 276434, true, true)
 mod:AddSetIconOption("SetIconDarkRev", 273365, true)
+mod:AddDropdownOption("TauntBehavior", {"TwoHardThreeEasy", "TwoAlways", "ThreeAlways"}, "TwoHardThreeEasy", "misc")
 
 mod.vb.phase = 1
 mod.vb.darkRevCount = 0
@@ -339,13 +340,16 @@ function mod:SPELL_AURA_APPLIED(args)
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId) then
 			local amount = args.amount or 1
-			if amount >= 3 then
+			local tauntStack = 3
+			if self:IsHard() and self.Options.TauntBehavior == "TwoHardThreeEasy" or self.Options.TauntBehavior == "TwoAlways" then
+				tauntStack = 2
+			end
+			if amount >= tauntStack then
 				if args:IsPlayer() then
 					specWarnRupturingBlood:Show(amount)
 					specWarnRupturingBlood:Play("stackhigh")
 				else
 					if not UnitIsDeadOrGhost("player") and not DBM:UnitDebuff("player", spellId) then--Can't taunt less you've dropped yours off, period.
-					--if not UnitIsDeadOrGhost("player") and (not remaining or remaining and remaining < 12) then
 						specWarnRupturingBloodTaunt:Show(args.destName)
 						specWarnRupturingBloodTaunt:Play("tauntboss")
 					else
