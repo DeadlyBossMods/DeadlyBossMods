@@ -8,7 +8,7 @@ mod:DisableESCombatDetection()--ES fires moment you throw out CC, so it can't be
 mod:SetZone()
 --mod:SetBossHPInfoToHighest()
 mod:SetUsedIcons(1, 2, 8)
---mod:SetHotfixNoticeRev(16950)
+mod:SetHotfixNoticeRev(17775)
 --mod:SetMinSyncRevision(16950)
 --mod.respawnTime = 35
 
