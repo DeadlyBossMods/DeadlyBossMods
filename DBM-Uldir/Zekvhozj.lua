@@ -7,7 +7,7 @@ mod:SetEncounterID(2136)
 --mod:DisableESCombatDetection()
 mod:SetZone()
 mod:SetUsedIcons(1, 2, 3)
---mod:SetHotfixNoticeRev(16950)
+mod:SetHotfixNoticeRev(17776)
 --mod:SetMinSyncRevision(16950)
 mod.respawnTime = 29
 
@@ -274,11 +274,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 266913 then--Spawn Qiraji Warrior
 		timerQirajiWarriorCD:Start()
 	elseif spellId == 267192 then--Spawn Anub'ar Caster
-		if self:IsEasy() then
-			timerAnubarCasterCD:Start()--80
-		else
-			timerAnubarCasterCD:Start(60)--Assumed still same, will find out soon™
-		end
+		timerAnubarCasterCD:Start()--80
 	elseif spellId == 265437 then--Roiling Deceit
 		--here because this spell ID fires at beginning of each set ONCE
 		if self:IsMythic() then
