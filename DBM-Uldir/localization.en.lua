@@ -60,7 +60,11 @@ L:SetOptionLocalization({
 	timerCallofCrawgCD		= "Show timer for when Crawg pools begin to form",
 	timerCallofHexerCD 		= "Show timer for when Hexer pools begin to form",
 	timerCallofCrusherCD	= "Show timer for when Crusher pools begin to form",
-	timerAddIncoming		= "Show timer for when incoming add is attackable"
+	timerAddIncoming		= "Show timer for when incoming add is attackable",
+	TauntBehavior			= "Set taunt behavior for tank swaps",
+	TwoHardThreeEasy		= "Swap at 2 stacks on heroic/mythic, 3 stacks on other difficulties",--Default
+	TwoAlways				= "Always swap at 2 stacks regardless of difficulty",
+	ThreeAlways				= "Always swap at 3 stacks regardless of difficulty"
 })
 
 L:SetMiscLocalization({
