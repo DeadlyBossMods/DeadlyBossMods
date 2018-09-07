@@ -66,6 +66,15 @@ local function updateAllTimers(self, ICD)
 	self:Unschedule(clearBossICD)
 	self:Schedule(ICD, clearBossICD, self)
 	DBM:Debug("updateAllTimers running", 3)
+	if timerPurifyingFlameCD:GetRemaining() < ICD then
+		local elapsed, total = timerPurifyingFlameCD:GetTime()
+		local extend = ICD - (total-elapsed)
+		DBM:Debug("timerPurifyingFlameCD extended by: "..extend, 2)
+		timerPurifyingFlameCD:Stop()
+		timerPurifyingFlameCD:Update(elapsed, total+extend)
+		countdownPurifyingFlame:Cancel()
+		countdownPurifyingFlame:Start(ICD)
+	end
 	if timerSanitizingStrikeCD:GetRemaining() < ICD then
 		local elapsed, total = timerSanitizingStrikeCD:GetTime()
 		local extend = ICD - (total-elapsed)
