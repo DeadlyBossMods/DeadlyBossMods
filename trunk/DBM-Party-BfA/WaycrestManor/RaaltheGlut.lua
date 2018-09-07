@@ -15,6 +15,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_MISSED 264698"
 )
 
+--TODO, run dungeon to get NEW tenderize timers post hotfix
 local warnTenderize					= mod:NewCountAnnounce(264923, 2)
 
 local specWarnServant				= mod:NewSpecialWarningSwitch(264931, nil, nil, nil, 1, 2)
@@ -23,7 +24,7 @@ local specWarnRottenExpulsion		= mod:NewSpecialWarningDodge(264694, nil, nil, ni
 local specWarnGTFO					= mod:NewSpecialWarningGTFO(264698, nil, nil, nil, 1, 2)
 
 --local timerServantCD				= mod:NewNextTimer(13, 264931, nil, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON)
-local timerTenderizeCD				= mod:NewNextTimer(29.2, 264923, nil, nil, nil, 3)--Timer for first in each set of 3
+--local timerTenderizeCD				= mod:NewNextTimer(29.2, 264923, nil, nil, nil, 3)--Timer for first in each set of 3
 local timerRottenExpulsionCD		= mod:NewCDTimer(14.6, 264694, nil, nil, nil, 3)--14.6--26 (health based?)
 
 --mod:AddRangeFrameOption(5, 194966)
@@ -34,7 +35,7 @@ function mod:OnCombatStart(delay)
 	self.vb.tenderizeCount = 0
 	--timerServantCD:Start(43.7-delay)--Verify not health based
 	timerRottenExpulsionCD:Start(5-delay)
-	timerTenderizeCD:Start(-delay)--Also 29.2
+	--timerTenderizeCD:Start(-delay)--Also 29.2
 end
 
 function mod:OnCombatEnd()
@@ -54,7 +55,7 @@ function mod:SPELL_CAST_START(args)
 		if self.vb.tenderizeCount == 1 then
 			specWarnTenderize:Show()
 			specWarnTenderize:Play("watchstep")
-			timerTenderizeCD:Start()
+			--timerTenderizeCD:Start()
 		else
 			warnTenderize:Show(self.vb.tenderizeCount)
 		end

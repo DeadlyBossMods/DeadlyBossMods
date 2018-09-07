@@ -24,34 +24,83 @@ mod:RegisterEventsInCombat(
 --[[
 ability.id = 267787 and type = "begincast"
  or (ability.id = 267795 or ability.id = 267945 or ability.id = 269827 or ability.id = 277973 or ability.id = 277961 or ability.id = 268089 or ability.id = 277742) and type = "cast"
+ or ability.id = 269051 and type = "applybuff"
 --]]
-local warnSunderingScalpel				= mod:NewStackAnnounce(267787, 3, nil, "Tank")
+local warnSanitizingStrike				= mod:NewStackAnnounce(267787, 3, nil, "Tank")
 local warnWindTunnel					= mod:NewSpellAnnounce(267945, 2)
 local warnDepletedEnergy				= mod:NewSpellAnnounce(274205, 1)
 local warnCleansingPurgeFinish			= mod:NewTargetNoFilterAnnounce(268095, 4)
 
-local specWarnSunderingScalpel			= mod:NewSpecialWarningDodge(267787, nil, nil, nil, 1, 2)
+local specWarnSanitizingStrike			= mod:NewSpecialWarningDodge(267787, nil, nil, nil, 1, 2)
 local specWarnPurifyingFlame			= mod:NewSpecialWarningDodge(267795, nil, nil, nil, 2, 2)
 local specWarnClingingCorruption		= mod:NewSpecialWarningInterrupt(268198, "HasInterrupt", nil, nil, 1, 2)
 local specWarnSurgicalBeam				= mod:NewSpecialWarningDodgeLoc(269827, nil, nil, nil, 3, 2)
 
 --mod:AddTimerLine(Nexus)
-local timerSunderingScalpelCD			= mod:NewNextTimer(23.1, 267787, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
-local timerPurifyingFlameCD				= mod:NewNextTimer(23.1, 267795, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
+local timerSanitizingStrikeCD			= mod:NewNextTimer(23.1, 267787, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerPurifyingFlameCD				= mod:NewNextTimer(20.1, 267795, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
 local timerWindTunnelCD					= mod:NewNextTimer(39.8, 267945, nil, nil, nil, 2)
 local timerSurgicalBeamCD				= mod:NewCDSourceTimer(30, 269827, 143444, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)--Shortname "Laser"
 local timerCleansingFlameCD				= mod:NewCastSourceTimer(180, 268095, nil, nil, nil, 6)
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
 
-local countdownPurifyingFlame			= mod:NewCountdown(23, 267795, true, nil, 3)
-local countdownSunderingScalpel			= mod:NewCountdown("Alt23", 267787, "Tank", nil, 3)
+local countdownPurifyingFlame			= mod:NewCountdown(20, 267795, true, nil, 3)
+local countdownSanitizingStrike			= mod:NewCountdown("Alt23", 267787, "Tank", nil, 3)
 local countdownSurgicalBeam				= mod:NewCountdown("AltTwo30", 269827, nil, nil, 3)
 
 mod:AddInfoFrameOption(268095, true)
 mod:AddSetIconOption("SetIconOnAdds", 268871, true, true)
 
 mod.vb.startIcon = 1
+mod.vb.phase = 1
+mod.vb.bossInICD = false
+mod.vb.nextLaser = 1--1 side 2 top
+
+local function clearBossICD(self)
+	self.vb.bossInICD = false
+end
+
+local function updateAllTimers(self, ICD)
+	self.vb.bossInICD = true
+	self:Unschedule(clearBossICD)
+	self:Schedule(ICD, clearBossICD, self)
+	DBM:Debug("updateAllTimers running", 3)
+	if timerSanitizingStrikeCD:GetRemaining() < ICD then
+		local elapsed, total = timerSanitizingStrikeCD:GetTime()
+		local extend = ICD - (total-elapsed)
+		DBM:Debug("timerSanitizingStrikeCD extended by: "..extend, 2)
+		timerSanitizingStrikeCD:Stop()
+		timerSanitizingStrikeCD:Update(elapsed, total+extend)
+		countdownSanitizingStrike:Cancel()
+		countdownSanitizingStrike:Start(ICD)
+	end
+	if timerWindTunnelCD:GetRemaining() < ICD then
+		local elapsed, total = timerWindTunnelCD:GetTime()
+		local extend = ICD - (total-elapsed)
+		DBM:Debug("timerWindTunnelCD extended by: "..extend, 2)
+		timerWindTunnelCD:Stop()
+		timerWindTunnelCD:Update(elapsed, total+extend)
+	end
+	if (self.vb.nextLaser == 1) and timerSurgicalBeamCD:GetRemaining(DBM_CORE_SIDE) < ICD then
+		local elapsed, total = timerSurgicalBeamCD:GetTime(DBM_CORE_SIDE)
+		local extend = ICD - (total-elapsed)
+		DBM:Debug("timerSurgicalBeamCD SIDE extended by: "..extend, 2)
+		timerSurgicalBeamCD:Stop()
+		timerSurgicalBeamCD:Update(elapsed, total+extend, DBM_CORE_SIDE)
+		countdownSurgicalBeam:Cancel()
+		countdownSurgicalBeam:Start(ICD)
+	end
+	if (self.vb.nextLaser == 2) and timerSurgicalBeamCD:GetRemaining(DBM_CORE_TOP) < ICD then
+		local elapsed, total = timerSurgicalBeamCD:GetTime(DBM_CORE_TOP)
+		local extend = ICD - (total-elapsed)
+		DBM:Debug("timerSurgicalBeamCD TOP extended by: "..extend, 2)
+		timerSurgicalBeamCD:Stop()
+		timerSurgicalBeamCD:Update(elapsed, total+extend, DBM_CORE_TOP)
+		countdownSurgicalBeam:Cancel()
+		countdownSurgicalBeam:Start(ICD)
+	end
+end
 
 local updateInfoFrame
 do
@@ -89,8 +138,11 @@ end
 
 function mod:OnCombatStart(delay)
 	self.vb.startIcon = 1
-	timerSunderingScalpelCD:Start(5.9-delay)
-	countdownSunderingScalpel:Start(5.9-delay)
+	self.vb.phase = 1
+	self.vb.bossInICD = false
+	self.vb.nextLaser = 1--1 side 2 top
+	timerSanitizingStrikeCD:Start(5.9-delay)
+	countdownSanitizingStrike:Start(5.9-delay)
 	timerPurifyingFlameCD:Start(10.8-delay)
 	countdownPurifyingFlame:Start(10.8-delay)
 	timerWindTunnelCD:Start(20.6-delay)
@@ -113,11 +165,12 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 267787 then
 		if self:IsTanking("player", "boss1", nil, true) then
-			specWarnSunderingScalpel:Show()
-			specWarnSunderingScalpel:Play("shockwave")
+			specWarnSanitizingStrike:Show()
+			specWarnSanitizingStrike:Play("shockwave")
 		end
-		timerSunderingScalpelCD:Start()
-		countdownSunderingScalpel:Start()
+		timerSanitizingStrikeCD:Start()
+		countdownSanitizingStrike:Start()
+		updateAllTimers(self, 4.9)
 	elseif spellId == 268198 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnClingingCorruption:Show(args.sourceName)
 		specWarnClingingCorruption:Play("kickcast")
@@ -131,6 +184,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		specWarnPurifyingFlame:Play("watchstep")
 		timerPurifyingFlameCD:Start()
 		countdownPurifyingFlame:Start()
+		updateAllTimers(self, 6)
 	elseif spellId == 267878 then--Directional IDs for winds (Coming from east blowing to west?)
 		--warnWindTunnel:Show()
 		DBM:Debug("what way is wind blowing for spellId :"..spellId)
@@ -141,26 +195,30 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnWindTunnel:Show()
 		timerWindTunnelCD:Show()--40-47
 	elseif spellId == 269827 or spellId == 277973 or spellId == 277961 or spellId == 277742 then
-		if spellId == 277961 or spellId == 277742 then--Top
+		if spellId == 277961 or spellId == 277742 or spellId == 269827 then--Top (277961 mythic chamber 2, 277742 heroic Chamber 2, 269827 heroic chamber 3)
 			specWarnSurgicalBeam:Show(DBM_CORE_TOP)
-			timerSurgicalBeamCD:Start(40, DBM_CORE_TOP)--40-47
-			countdownSurgicalBeam:Start(40)
-		elseif spellId == 277973 then--Sides
+			--Next Beam side
+			timerSurgicalBeamCD:Start(16, DBM_CORE_SIDE)
+			countdownSurgicalBeam:Start(16)
+			self.vb.nextLaser = 1
+		else--Sides (277973 all)
 			specWarnSurgicalBeam:Show(DBM_CORE_SIDE)
 			if self:IsEasy() then--No top down lasers in LFR/Normal, but side happen more often
-				timerSurgicalBeamCD:Start(30, DBM_CORE_SIDE)--40-47
+				timerSurgicalBeamCD:Start(30, DBM_CORE_SIDE)--30-31
 				countdownSurgicalBeam:Start(30)
+				self.vb.nextLaser = 1
 			else
-				timerSurgicalBeamCD:Start(40, DBM_CORE_SIDE)--40-47
-				countdownSurgicalBeam:Start(40)
+				self.vb.nextLaser = 2
+				if self.vb.phase == 3 then
+					timerSurgicalBeamCD:Start(24, DBM_CORE_TOP)
+					countdownSurgicalBeam:Start(24)
+				else--TODO, confirm it's 30 here and not just always delayed by 6/5 second ICD
+					timerSurgicalBeamCD:Start(30, DBM_CORE_TOP)
+					countdownSurgicalBeam:Start(30)
+				end
 			end
-		else--Middle (chamber 3) (269827)
-			specWarnSurgicalBeam:Show(DBM_CORE_MIDDLE)
-			timerSurgicalBeamCD:Start(30, DBM_CORE_MIDDLE)--30-?
-			countdownSurgicalBeam:Start(30)
-			specWarnSurgicalBeam:ScheduleVoice(1.5, "keepmove")
 		end
-		specWarnSurgicalBeam:Play("laserrun")
+		specWarnSurgicalBeam:Play("watchstep")--laserrun wasn't quite right, cause it says "on you" Needed "laser, run" not "laser on you, run"
 	elseif spellId == 268089 and self:AntiSpam(3, 1) then--End Cast of Cleansing Purge
 		warnCleansingPurgeFinish:Show(args.sourceName)
 	end
@@ -183,7 +241,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId) then
 			local amount = args.amount or 1
-			warnSunderingScalpel:Show(args.destName, amount)
+			warnSanitizingStrike:Show(args.destName, amount)
 		end
 	elseif spellId == 274205 then
 		warnDepletedEnergy:Show()
@@ -192,14 +250,26 @@ function mod:SPELL_AURA_APPLIED(args)
 		local cid = self:GetCIDFromGUID(args.destGUID)
 		local time = self:IsMythic() and 123 or 180
 		if cid == 136429 then
+			self.vb.phase = 1
 			timerCleansingFlameCD:Start(time, 1)
 		elseif cid == 137022 then
+			self.vb.phase = 2
 			timerCleansingFlameCD:Start(time, 2)
-			--if self:IsHard() then
-			--	timerSurgicalBeamCD:Start(10, DBM_CORE_SIDE)--10-18, need more work to get this better if possible
-			--	timerSurgicalBeamCD:Start(33, DBM_CORE_TOP)--33-41
-			--end
+			--Example of no strike delay. It's almost always 10 though because of current dps timing and her being in ICD when she transitions, delaying first beam by 5+ seconds
+			--However, I'm an overachiever and figured this out first :)
+			--"<177.86 23:14:27> [CLEU] SPELL_AURA_APPLIED##nil#Creature-0-3019-1861-22695-137022-00000F4965#Chamber 02#269051#Cleansing Purge#BUFF#nil", -- [4372]
+			--"<183.09 23:14:32> [CLEU] SPELL_CAST_SUCCESS#Creature-0-3019-1861-22695-135452-00000F44FF#MOTHER##nil#277973#Uldir Defensive Beam#nil#nil", -- [4534]
+			if not self.vb.bossInICD then
+				timerSurgicalBeamCD:Start(5, DBM_CORE_SIDE)
+			else
+				timerSurgicalBeamCD:Start(10, DBM_CORE_SIDE)
+			end
 		elseif cid == 137023 then
+			self.vb.phase = 3
+			self.vb.nextLaser = 1
+			timerSurgicalBeamCD:Stop()--Resets, kinda
+			countdownSurgicalBeam:Cancel()
+			timerSurgicalBeamCD:Start(15, DBM_CORE_SIDE)--15 if delayed by nothing, but can be longer if flames ICD gets triggered
 			timerCleansingFlameCD:Start(time, 3)
 		end
 	end
