@@ -1,7 +1,7 @@
 -- Mini Dragon(projecteurs@gmail.com)
 -- 夏一可
 -- Blizzard Entertainment
--- Last update: 2018/07/12
+-- Last update: 2018/09/07
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -56,11 +56,27 @@ L= DBM:GetModLocalization(2194)
 L= DBM:GetModLocalization(2195)
 
 L:SetTimerLocalization({
+	timerCallofCrawgCD		= "下一个嗜血抱齿兽池 (%s)",
+	timerCallofHexerCD 		= "下一个鲜血妖术师池 (%s)",
+	timerCallofCrusherCD	= "下一个碾压者池 (%s)",
 	timerAddIncoming		= DBM_INCOMING
 })
 
 L:SetOptionLocalization({
-	timerAddIncoming		= "计时条：当小怪可以进攻时"
+	timerCallofCrawgCD		= "计时条：嗜血抱齿兽池开始生成时",
+	timerCallofHexerCD 		= "计时条：鲜血妖术师池开始生成时",
+	timerCallofCrusherCD	= "计时条：碾压者池开始生成时",
+	timerAddIncoming		= "计时条：当小怪可以进攻时",
+	TauntBehavior			= "设置换坦嘲讽规则",
+	TwoHardThreeEasy		= "英雄/神话模式2层换，其他模式3层换",--Default
+	TwoAlways				= "总是2层换",
+	ThreeAlways				= "总是3层换"
+})
+
+L:SetMiscLocalization({
+	Crusher			=	"碾压者",
+	Bloodhexer		=	"鲜血妖术师",
+	Crawg			=	"嗜血抱齿兽"
 })
 
 ------------------
