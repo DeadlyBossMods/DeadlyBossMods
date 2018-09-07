@@ -72,6 +72,7 @@ local specWarnDecayingEruption			= mod:NewSpecialWarningInterrupt(267462, "HasIn
 ----Arena Floor P2+
 local specWarnGrowingCorruption			= mod:NewSpecialWarningCount(270447, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.stack:format(5, 270447), nil, 1, 2)
 local specWarnGrowingCorruptionOther	= mod:NewSpecialWarningTaunt(270447, nil, nil, nil, 1, 2)
+local specWarnExplosiveCorruptionOther	= mod:NewSpecialWarningTaunt(272506, nil, nil, nil, 1, 2)
 local specWarnBloodFeast				= mod:NewSpecialWarningYou(263235, nil, nil, nil, 1, 2)
 local yellBloodFeast					= mod:NewYell(263235, nil, nil, nil, "YELL")
 local yellBloodFeastFades				= mod:NewFadesYell(263235, nil, nil, nil, "YELL")
@@ -334,6 +335,13 @@ function mod:SPELL_CAST_SUCCESS(args)
 				specWarnExplosiveCorruption:Play("runout")
 				yellExplosiveCorruption:Yell()
 				--Yell countdown scheduled on APPLIED event
+			end
+		else--This event is only ever on tank, so no need for tank filter
+			local uId = DBM:GetRaidUnitId(args.destName)
+			if self:IsTanking(uId, "boss1", nil, true) then
+				--However, in case 3 tank strat, do need to make sure it's tank actually on Ghuun to avoid notifying unnessesary taunts
+				specWarnExplosiveCorruptionOther:Show(args.destName)
+				specWarnExplosiveCorruptionOther:Play("tauntboss")
 			end
 		end
 	end
