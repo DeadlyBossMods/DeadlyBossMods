@@ -14,7 +14,7 @@ mod.respawnTime = 29
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 264382 267180 267239 270620 265231 265530",
+	"SPELL_CAST_START 264382 265358 267180 267239 270620 265231 265530",
 	"SPELL_CAST_SUCCESS 264382",
 	"SPELL_AURA_APPLIED 265264 265360 265662 265646 265237",
 	"SPELL_AURA_APPLIED_DOSE 265264",
@@ -32,7 +32,7 @@ mod:RegisterEventsInCombat(
 --TODO, find a log that drags out P1 so can see timer between eye beams/warrior adds. Or wait til mythic when P1 mechanics don't disable
 --TODO, maybe a "next bounce" timer
 --[[
-(ability.id = 267239 or ability.id = 265231 or ability.id = 265530 or ability.id = 264382) and type = "begincast"
+(ability.id = 267239 or ability.id = 265231 or ability.id = 265530 or ability.id = 264382 or ability.id = 265358) and type = "begincast"
  or ability.id = 265360 and type = "applydebuff"
  or (ability.id = 267180 or ability.id = 270620) and type = "begincast"
 --]]
@@ -99,14 +99,24 @@ mod.vb.addIcon = 1
 
 function mod:EyeBeamTarget(targetname, uId)
 	if not targetname then return end
-	if self:AntiSpam(5, 5) then
-		if targetname == UnitName("player") then
-			specWarnEyeBeam:Show()
-			specWarnEyeBeam:Play("runout")
-			yellEyeBeam:Yell()
-		else
-			warnEyeBeam:Show(targetname)
-		end
+	if targetname == UnitName("player") and self:AntiSpam(5, 5) then
+		specWarnEyeBeam:Show()
+		specWarnEyeBeam:Play("runout")
+		yellEyeBeam:Yell()
+	else
+		warnEyeBeam:Show(targetname)
+	end
+end
+
+function mod:RollingTarget(targetname, uId)
+	if not targetname then return end
+	if targetname == UnitName("player") and self:AntiSpam(5, 6) then
+		specWarnRoilingDeceit:Show(DBM_CORE_ROOM_EDGE)
+		specWarnRoilingDeceit:Play("runtoedge")
+		yellRoilingDeceit:Yell()
+		yellRoilingDeceitFades:Countdown(12)
+	else
+		warnRoilingDeceit:Show(args.destName)
 	end
 end
 
@@ -139,7 +149,9 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 264382 then
-		self:ScheduleMethod(0.1, "BossTargetScanner", args.sourceGUID, "EyeBeamTarget", 0.1, 5, nil, nil, nil, nil, true)
+		self:ScheduleMethod(0.2, "BossTargetScanner", args.sourceGUID, "EyeBeamTarget", 0.1, 8, true, nil, nil, nil, true)
+	elseif spellId == 265358 then
+		self:ScheduleMethod(0.2, "BossTargetScanner", args.sourceGUID, "RollingTarget", 0.1, 8, true, nil, nil, nil, true)
 	elseif spellId == 267180 then
 		--timerVoidBoltCD:Start(args.sourceGUID)
 		if self:CheckInterruptFilter(args.sourceGUID, false, true) then
@@ -176,13 +188,13 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 264382 and self:AntiSpam(5, 5) then--Backup, in case target scan breaks
-		if args:IsPlayer() then
+	if spellId == 264382 then--Backup, in case target scan breaks
+		if args:IsPlayer() and self:AntiSpam(5, 5) then
 			specWarnEyeBeam:Show()
 			specWarnEyeBeam:Play("runout")
 			yellEyeBeam:Yell()
-		else
-			warnEyeBeam:Show(args.destName)
+--		else
+--			warnEyeBeam:Show(args.destName)
 		end
 	end
 end
@@ -199,13 +211,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnShatter:Schedule(4.5, args.destName)
 		specWarnShatter:ScheduleVoice(4.5, "tauntboss")
 	elseif spellId == 265360 then
-		if args:IsPlayer() then
+		if args:IsPlayer() and self:AntiSpam(5, 6) then
 			specWarnRoilingDeceit:Show(DBM_CORE_ROOM_EDGE)
 			specWarnRoilingDeceit:Play("runtoedge")
 			yellRoilingDeceit:Yell()
 			yellRoilingDeceitFades:Countdown(12)
-		else
-			warnRoilingDeceit:Show(args.destName)
+--		else
+--			warnRoilingDeceit:Show(args.destName)
 		end
 	elseif spellId == 265662 then
 		warnCorruptorsPact:CombinedShow(0.5, args.destName)--Combined in case more than one soaks same ball (will happen in lfr/normal for sure or farm content for dps increases)
