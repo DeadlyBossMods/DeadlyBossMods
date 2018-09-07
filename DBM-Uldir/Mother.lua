@@ -6,7 +6,7 @@ mod:SetCreatureID(135452)--136429 Chamber 01, 137022 Chamber 02, 137023 Chamber 
 mod:SetEncounterID(2141)
 mod:SetZone()
 mod:SetUsedIcons(8, 7, 6, 5, 4, 3, 2, 1)
---mod:SetHotfixNoticeRev(16950)
+mod:SetHotfixNoticeRev(17778)
 --mod:SetMinSyncRevision(16950)
 --mod.respawnTime = 35
 

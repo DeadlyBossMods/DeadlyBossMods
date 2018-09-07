@@ -229,6 +229,7 @@ L.EventMusicCombined		= "던전과 보스 전투 배경음에 모든 음악 사�
 L.Area_EventSoundsFilters	= "이벤트 효과음 필터 적용 조건"
 L.EventFilterDungMythicMusic= "신화/신화+ 난이도에선 던전 배경음을 재생하지 않음"
 L.EventFilterMythicMusic	= "신화/신화+ 난이도에선 보스 전투 배경음을 재생하지 않음"
+L.EventTurtleMusic			= "거북이 해변 퀘스트 배경음 설정"
 
 -- Tab: Global Filter
 L.Panel_SpamFilter			= "DBM 전역 기능 끄기 및 필터"
