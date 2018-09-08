@@ -224,9 +224,9 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 265662 then
 		warnCorruptorsPact:CombinedShow(0.5, args.destName)--Combined in case more than one soaks same ball (will happen in lfr/normal for sure or farm content for dps increases)
 		if args:IsPlayer() then
-			yellCorruptorsPact:Countdown(20)
-			specWarnWillofCorruptorSoon:Schedule(16)
-			specWarnWillofCorruptorSoon:ScheduleVoice(16, "takedamage")--use this voice? can you off yourself before the MC?
+			yellCorruptorsPact:Countdown(30)
+			specWarnWillofCorruptorSoon:Schedule(26)
+			specWarnWillofCorruptorSoon:ScheduleVoice(26, "takedamage")--use this voice? can you off yourself before the MC?
 		end
 	elseif spellId == 265646 then
 		warnWillofCorruptor:CombinedShow(0.5, args.destName)
