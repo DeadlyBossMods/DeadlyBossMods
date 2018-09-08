@@ -46,7 +46,7 @@ local yellOmegaVector						= mod:NewYell(265129)
 local yellOmegaVectorFades					= mod:NewShortFadesYell(265129)
 local specWarnGestate						= mod:NewSpecialWarningYou(265212, nil, nil, nil, 1, 2)
 local yellGestate							= mod:NewYell(265212)
-local specWarnGestateNear					= mod:NewSpecialWarningClose(265212, nil, nil, nil, 1, 2)
+local specWarnGestateNear					= mod:NewSpecialWarningClose(265212, false, nil, 2, 1, 2)
 local specWarnAmalgam						= mod:NewSpecialWarningSwitch("ej18007", "-Healer", nil, 2, 1, 2)
 local specWarnSpawnParasite					= mod:NewSpecialWarningSwitch(275055, "Dps", nil, nil, 1, 2)--Mythic
 --local specWarnContagion					= mod:NewSpecialWarningCount(267242, nil, nil, nil, 2, 2)
@@ -203,12 +203,14 @@ function mod:SPELL_AURA_APPLIED(args)
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Show(8)
 			end
-		elseif self:CheckNearby(8, args.destName) then
+		elseif self:CheckNearby(5, args.destName) then
 			specWarnGestateNear:Show(args.destName)
 			specWarnGestateNear:Play("runaway")
 		else
 			warnGestate:Show(args.destName)
 		end
+		specWarnAmalgam:Show()
+		specWarnAmalgam:Play("killmob")
 	elseif spellId == 265127 then
 		if args:IsPlayer() and self:IsMythic() then
 			local amount = args.amount or 1
@@ -242,8 +244,8 @@ function mod:SPELL_AURA_REMOVED(args)
 			end
 		end
 	elseif spellId == 265212 then
-		specWarnAmalgam:Show()
-		specWarnAmalgam:Play("killmob")
+		--specWarnAmalgam:Show()
+		--specWarnAmalgam:Play("killmob")
 		if args:IsPlayer() then
 			if self.Options.RangeFrame then
 				if playerHasTen then
@@ -280,12 +282,14 @@ function mod:OnTranscriptorSync(msg, targetName)
 		targetName = Ambiguate(targetName, "none")
 		if self:AntiSpam(4, targetName) then
 			if UnitName("player") == targetName then return end--Player already got warned
-			if self:CheckNearby(8, targetName) then
+			if self:CheckNearby(5, targetName) then
 				specWarnGestateNear:Show(targetName)
 				specWarnGestateNear:Play("runaway")
 			else
 				warnGestate:Show(targetName)
 			end
+			specWarnAmalgam:Show()
+			specWarnAmalgam:Play("killmob")
 		end
 	end
 end
