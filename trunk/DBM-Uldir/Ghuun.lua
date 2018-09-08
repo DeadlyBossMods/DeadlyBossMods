@@ -55,7 +55,7 @@ local warnBurrow						= mod:NewSpellAnnounce(267579, 2)
 
 --Arena Floor
 local specWarnBloodHost					= mod:NewSpecialWarningClose(267813, nil, nil, nil, 1, 2)--Mythic
---local specWarnSpawnofGhuun			= mod:NewSpecialWarningSwitch("ej13699", "RangedDps", nil, nil, 1, 2)
+--local specWarnSpawnofGhuun			= mod:NewSpecialWarningSwitch("ej13699", "Dps", nil, nil, 1, 2)
 local yellBloodHost						= mod:NewYell(267813)--Mythic
 local specWarnDarkPurpose				= mod:NewSpecialWarningRun(268074, nil, nil, nil, 4, 2)--Mythic
 local yellDarkPurpose					= mod:NewYell(268074)--Mythic
@@ -137,32 +137,30 @@ do
 	updateInfoFrame = function()
 		table.wipe(lines)
 		table.wipe(sortedLines)
-		--Boss Powers first
-		--TODO, eliminate main or alternate if it's not needed (drycode checking both to ensure everything is covered)
-		--TODO, eliminate worthless tentacles and stuff
-		for i = 1, 2 do
-			local uId = "boss"..i
-			--Primary Power
-			local currentPower, maxPower = UnitPower(uId), UnitPowerMax(uId)
-			if maxPower and maxPower ~= 0 then
-				if currentPower / maxPower * 100 >= 1 then
-					addLine(UnitName(uId), currentPower)
-				end
-			end
-			--Alternate Power
-			local currentAltPower, maxAltPower = UnitPower(uId, 10), UnitPowerMax(uId, 10)
-			if maxAltPower and maxAltPower ~= 0 then
-				if currentAltPower / maxAltPower * 100 >= 1 then
-					addLine(UnitName(uId), currentAltPower)
-				end
+		--Ghuun Power
+		local currentPower, maxPower = UnitPower("boss1"), UnitPowerMax("boss1")
+		if maxPower and maxPower ~= 0 then
+			if currentPower / maxPower * 100 >= 1 then
+				addLine(UnitName("boss1"), currentPower)
 			end
 		end
-		--Scan raid for notable debuffs and add them
-		for i=1, #matrixTargets do
-			local name = matrixTargets[i]
-			local uId = DBM:GetRaidUnitId(name)
-			if not uId then break end
-			addLine(matrixSpellName, UnitName(uId))
+		--Matrix Stuff
+		if mod.vb.phase < 3 then
+			local currentPower, maxPower = UnitPower("boss2"), UnitPowerMax("boss2")
+			if maxPower and maxPower ~= 0 then
+				if currentPower / maxPower * 100 >= 1 then
+					local matrixCount = (currentPower == 35) and 1 or (currentPower == 70) and 2 or 3
+					addLine(UnitName("boss2"), matrixCount.."/3")
+				end
+			end
+			--Scan raid for notable debuffs and add them
+			for i=1, #matrixTargets do
+				local name = matrixTargets[i]
+				local uId = DBM:GetRaidUnitId(name)
+				if not uId then break end
+				addLine(matrixSpellName, UnitName(uId))
+			end
+			addLine(L.CurrentMatrix, mod.vb.matrixCount)
 		end
 		for i=1, #bloodFeastTarget do
 			local name = bloodFeastTarget[i]
@@ -417,7 +415,11 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnBloodFeast:Show()
 			specWarnBloodFeast:Play("targetyou")
 			yellBloodFeast:Yell()
-			yellBloodFeastFades:Countdown(10)
+			local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", 263235)
+			if expireTime then--Done this way so hotfix automatically goes through
+				local remaining = expireTime-GetTime()
+				yellBloodFeastFades:Countdown(remaining)
+			end
 		else
 			--specWarnBloodFeastMoveTo:Show(args.destName)
 		end
@@ -452,10 +454,10 @@ function mod:SPELL_AURA_REMOVED(args)
 			DBM.Nameplate:Hide(true, args.sourceGUID, spellId)
 		end
 	elseif spellId == 267813 then
-		if self:AntiSpam(5, 5) and not DBM:UnitDebuff("player", 267813) then
+--		if self:AntiSpam(5, 5) and not DBM:UnitDebuff("player", 267813) then
 			--specWarnSpawnofGhuun:Show()
 			--specWarnSpawnofGhuun:Play("killmob")
-		end
+--		end
 		if self.Options.SetIconOnBloodHost and not self:IsLFR() then
 			self:SetIcon(args.destName, 0)
 		end
