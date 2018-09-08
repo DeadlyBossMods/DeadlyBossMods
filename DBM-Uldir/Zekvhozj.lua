@@ -23,7 +23,8 @@ mod:RegisterEventsInCombat(
 --	"SPELL_PERIODIC_MISSED",
 	"UNIT_DIED",
 --	"CHAT_MSG_MONSTER_YELL",
-	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5"
+	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5",
+	"UNIT_POWER_FREQUENT boss1"
 )
 
 --TODO, icons for Roiling Deceit?
