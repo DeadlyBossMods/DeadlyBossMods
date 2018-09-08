@@ -166,7 +166,7 @@ function mod:OnCombatStart(delay)
 	self.vb.DarkRevIcon = 1
 	self.vb.activeDecay = nil
 	timerPoolofDarknessCD:Start(20.5-delay, 1)
-	timerDarkRevolationCD:Start(30-delay)
+	timerDarkRevolationCD:Start(30-delay, 1)
 	timerCallofCrawgCD:Start(34.9, 1)--35-45
 	timerCallofHexerCD:Start(50.7, 1)--50.7-54
 	timerCallofCrusherCD:Start(70, 1)--70-73
@@ -267,7 +267,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerDeathwishCD:Start(23)
 	elseif spellId == 273365 or spellId == 271640 then--Two versions of debuff, one that spawns an add and one that does not (so probably LFR/normal version vs heroic/mythic version)
 		self.vb.darkRevCount = self.vb.darkRevCount + 1
-		warnDarkRevCount:Show(self.vb.darkRevCount+1)
+		warnDarkRevCount:Show(self.vb.darkRevCount)
 		timerDarkRevolationCD:Start(nil, self.vb.darkRevCount+1)
 	elseif spellId == 273889 then--Bloodthirsty Crawg
 		self.vb.CrawgSpawnCount = self.vb.CrawgSpawnCount + 1
