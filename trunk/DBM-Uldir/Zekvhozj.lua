@@ -34,6 +34,7 @@ mod:RegisterEventsInCombat(
  or ability.id = 265360 and type = "applydebuff"
  or (ability.id = 267180 or ability.id = 270620) and type = "begincast"
 --]]
+local warnPhase						= mod:NewPhaseChangeAnnounce()
 --local warnXorothPortal					= mod:NewSpellAnnounce(244318, 2, nil, nil, nil, nil, nil, 7)
 local warnVoidLash						= mod:NewStackAnnounce(265264, 2, nil, "Tank")
 --Stage One: Chaos
@@ -319,6 +320,7 @@ function mod:UNIT_POWER_FREQUENT(uId)
 		countdownSurgingDarkness:Cancel()
 		countdownSurgingDarkness:Start(79.1)
 		if self.vb.phase == 2 then
+			warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(2))
 			if not self:IsMythic() then
 				timerQirajiWarriorCD:Stop()
 				timerEyeBeamCD:Stop()
@@ -326,6 +328,7 @@ function mod:UNIT_POWER_FREQUENT(uId)
 			timerAnubarCasterCD:Start(20.5)
 			timerRoilingDeceitCD:Start(22)--CAST_START
 		elseif self.vb.phase == 3 then
+			warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(3))
 			if not self:IsMythic() then
 				timerAnubarCasterCD:Stop()
 				timerRoilingDeceitCD:Cancel()
