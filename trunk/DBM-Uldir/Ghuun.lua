@@ -417,7 +417,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnBloodFeast:Show()
 			specWarnBloodFeast:Play("targetyou")
 			yellBloodFeast:Yell()
-			yellBloodFeastFades:Countdown(8)
+			yellBloodFeastFades:Countdown(10)
 		else
 			--specWarnBloodFeastMoveTo:Show(args.destName)
 		end
