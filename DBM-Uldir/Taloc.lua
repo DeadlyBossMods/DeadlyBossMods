@@ -16,7 +16,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 271296 271728 271895",
 	"SPELL_CAST_SUCCESS 271224 275205 278888",
 	"SPELL_AURA_APPLIED 271224 271965 275270 275189 275205 278888",
-	"SPELL_AURA_REMOVED 271225 271965 275189 275205",
+	"SPELL_AURA_REMOVED 271225 271965 275189 275205 271224 278888",
 	"SPELL_PERIODIC_DAMAGE 270290",
 	"SPELL_PERIODIC_MISSED 270290"
 )
@@ -253,6 +253,10 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 275205 then
 		if args:IsPlayer() then
 			yellEnlargedHeartFades:Cancel()
+		end
+	elseif spellId == 271224 or spellId == 278888 then
+		if args:IsPlayer() then
+			specWarnPlasmaDischarge:CancelVoice()
 		end
 	end
 end
