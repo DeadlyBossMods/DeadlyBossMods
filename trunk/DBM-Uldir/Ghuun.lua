@@ -218,6 +218,7 @@ function mod:OnCombatStart(delay)
 	timerExplosiveCorruptionCD:Start(8-delay, 1)--SUCCESS
 	timerThousandMawsCD:Start(25.4-delay, 1)
 	if self.Options.InfoFrame then
+		DBM.InfoFrame:SetHeader(OVERVIEW)
 		DBM.InfoFrame:Show(8, "function", updateInfoFrame, false, false)
 	end
 	if self.Options.NPAuraOnFixate or self.Options.NPAuraOnUnstoppable then
