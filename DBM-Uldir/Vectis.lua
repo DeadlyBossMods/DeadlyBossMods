@@ -13,20 +13,20 @@ mod.respawnTime = 29
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 267242 265217",
+	"SPELL_CAST_START 267242 265217 265206",
 	"SPELL_CAST_SUCCESS 265178 265212 266459 265209",
 	"SPELL_AURA_APPLIED 265178 265129 265212",
 	"SPELL_AURA_APPLIED_DOSE 265178 265127",
 	"SPELL_AURA_REMOVED 265178 265129 265212 265217",
 	"SPELL_SUMMON 275055",
-	"RAID_BOSS_WHISPER"
+	"RAID_BOSS_WHISPER",
+	"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
---	"UNIT_DIED",
+	"UNIT_DIED"
 )
 
 --TODO, determine highest tolerable tank stacks. Need a better idea of raid numbers/tuning. Was wildly variable between 4 and 11 in testing, so leaving at 6 for now
---TODO, Immunosuppression Timer for big adds??
 --[[
 (ability.id = 267242 or ability.id = 265217) and type = "begincast"
  or (ability.id = 265178 or ability.id = 266459 or ability.id = 265212 or ability.id = 265209) and type = "cast"
@@ -37,6 +37,7 @@ local warnEvolvingAffliction				= mod:NewStackAnnounce(265178, 2, nil, "Tank")
 local warnGestate							= mod:NewTargetAnnounce(265212, 3)
 local warnHypergenesis						= mod:NewSpellAnnounce(266926, 3)
 local warnContagion							= mod:NewCountAnnounce(267242, 3)
+local warnImmunoSupp						= mod:NewCountAnnounce(265206, 3)
 
 local specWarnEvolvingAffliction			= mod:NewSpecialWarningStack(265178, nil, 2, nil, nil, 1, 6)
 local specWarnEvolvingAfflictionOther		= mod:NewSpecialWarningTaunt(265178, nil, nil, nil, 1, 2)
@@ -59,6 +60,7 @@ local timerGestateCD						= mod:NewCDTimer(25.5, 265212, nil, nil, nil, 3)
 local timerContagionCD						= mod:NewCDCountTimer(23, 267242, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
 local timerLiquefyCD						= mod:NewCDTimer(90.9, 265217, nil, nil, nil, 6)
 local timerHypergenesisCD					= mod:NewCDCountTimer(11.4, 266459, nil, nil, nil, 5)--11.4 or 12.2, not sure which one blizz decided on, find out later
+local timerImmunoSuppCD						= mod:NewCDCountTimer(25.5, 265206, nil, nil, nil, 5, nil, DBM_CORE_HEALER_ICON)
 
 --local berserkTimer						= mod:NewBerserkTimer(600)
 
@@ -73,10 +75,15 @@ mod:AddBoolOption("ShowHighestFirst", true)--The priority for mythic, non mythic
 
 mod.vb.ContagionCount = 0
 mod.vb.hyperGenesisCount = 0
+mod.vb.ImmunosuppCount = 0
 local availableRaidIcons = {[1] = true, [2] = true, [3] = true, [4] = true, [5] = true, [6] = true, [7] = true, [8] = true}
 local playerHasTen = false
+local seenAdds = {}
+local castsPerGUID = {}
 
 function mod:OnCombatStart(delay)
+	table.wipe(seenAdds)
+	table.wipe(castsPerGUID)
 	self.vb.ContagionCount = 0
 	availableRaidIcons = {[1] = true, [2] = true, [3] = true, [4] = true, [5] = true, [6] = true, [7] = true, [8] = true}
 	timerEvolvingAfflictionCD:Start(4.7-delay)--Instantly on engage
@@ -92,6 +99,8 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnCombatEnd()
+	table.wipe(seenAdds)
+	table.wipe(castsPerGUID)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
@@ -117,6 +126,10 @@ function mod:SPELL_CAST_START(args)
 		timerEvolvingAfflictionCD:Stop()
 		timerContagionCD:Stop()
 		timerHypergenesisCD:Start(9.8, 1)
+	elseif spellId == 265206 then
+		castsPerGUID[args.sourceGUID] = castsPerGUID[args.sourceGUID] + 1
+		warnImmunoSupp:Show(castsPerGUID[args.sourceGUID])
+		timerImmunoSuppCD:Start(9.7, castsPerGUID[args.sourceGUID]+1, args.sourceGUID)
 	end
 end
 
@@ -294,6 +307,29 @@ function mod:OnTranscriptorSync(msg, targetName)
 	end
 end
 
+function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
+	for i = 1, 5 do
+		local unitID = "boss"..i
+		local GUID = UnitGUID(unitID)
+		if GUID and not seenAdds[GUID] then
+			seenAdds[GUID] = true
+			local cid = self:GetCIDFromGUID(GUID)
+			if cid == 135016 then--Big Adds
+				castsPerGUID[GUID] = 0
+				timerImmunoSuppCD:Start(5.4, 1, GUID)
+			end
+		end
+	end
+end
+
+function mod:UNIT_DIED(args)
+	local cid = self:GetCIDFromGUID(args.destGUID)
+	if cid == 135016 then
+		timerImmunoSuppCD:Stop(castsPerGUID[args.destGUID]+1, args.destGUID)
+		castsPerGUID[args.destGUID] = nil
+	end
+end
+
 --[[
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 228007 and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
@@ -302,13 +338,6 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
-
-function mod:UNIT_DIED(args)
-	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 124396 then
-
-	end
-end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 265291 then--Liquefy Cancel Cosmetic
