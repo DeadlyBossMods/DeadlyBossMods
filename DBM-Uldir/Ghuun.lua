@@ -64,7 +64,7 @@ local yellExplosiveCorruption			= mod:NewYell(272506)
 local yellExplosiveCorruptionFades		= mod:NewShortFadesYell(272506)
 local specWarnThousandMaws				= mod:NewSpecialWarningSwitch(267509, nil, nil, nil, 1, 2)
 local specWarnTorment					= mod:NewSpecialWarningInterrupt(267427, "HasInterrupt", nil, nil, 1, 2)
-local specWarnMassiveSmash				= mod:NewSpecialWarningSpell(267412, nil, nil, nil, 1, 2)
+local specWarnMassiveSmash				= mod:NewSpecialWarningSpell(267412, "Tank", nil, 2, 1, 2)
 local specWarnDarkBargain				= mod:NewSpecialWarningDodge(267409, nil, nil, nil, 1, 2)
 local specWarnDarkBargainOther			= mod:NewSpecialWarningTaunt(267409, false, nil, 2, 1, 2)
 local specWarnGTFO						= mod:NewSpecialWarningGTFO(270287, nil, nil, nil, 1, 2)
@@ -121,6 +121,7 @@ mod.vb.mawCastCount = 0
 mod.vb.matrixCount = 0
 mod.vb.explosiveCount = 0
 mod.vb.waveCast = 0
+mod.vb.matrixActive = false
 local matrixTargets, bloodFeastTarget = {}, {}
 local thousandMawsTimers = {25.4, 26.3, 25.5, 24.2, 23.9, 23.1, 21.5, 21.9, 19.4}
 
@@ -160,7 +161,11 @@ do
 				if not uId then break end
 				addLine(matrixSpellName, UnitName(uId))
 			end
-			addLine(L.CurrentMatrix, mod.vb.matrixCount)
+			if mod.vb.matrixActive then
+				addLine(L.CurrentMatrix, mod.vb.matrixCount)
+			else
+				addLine(L.NextMatrix, mod.vb.matrixCount+1)
+			end
 		end
 		for i=1, #bloodFeastTarget do
 			local name = bloodFeastTarget[i]
@@ -200,6 +205,7 @@ function mod:OnCombatStart(delay)
 	self.vb.matrixCount = 0
 	self.vb.explosiveCount = 0
 	self.vb.waveCast = 0
+	self.vb.matrixActive = false
 	timerMatrixCD:Start(5.3, 1)
 	timerExplosiveCorruptionCD:Start(8-delay, 1)--SUCCESS
 	timerThousandMawsCD:Start(25.4-delay, 1)
@@ -256,6 +262,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 267579 then
 		warnBurrow:Show()
 	elseif (spellId == 263482 or spellId == 263503) then
+		self.vb.matrixActive = false
 		specWarnReorginationBlast:Show()
 		specWarnReorginationBlast:Play("aesoon")--Or phase change
 		timerMatrixCD:Stop()
@@ -294,6 +301,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			timerExplosiveCorruptionCD:AddTime(24, self.vb.explosiveCount+1)
 		end
 	elseif spellId == 263373 then
+		self.vb.matrixActive = false
 		timerMatrixCD:Stop()
 		timerMatrixCD:Start(11.5, self.vb.matrixCount+1)
 	elseif spellId == 270373 or spellId == 270428 then--Wave of Corruption
@@ -510,7 +518,8 @@ function mod:UNIT_DIED(args)
 end
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
-	if msg:find("spell:263420") and self:AntiSpam(15, 7) then
+	if msg:find("spell:263420") and self:AntiSpam(10, 7) then
+		self.vb.matrixActive = true
 		self.vb.matrixCount = self.vb.matrixCount + 1
 		warnMatrixSpawn:Show(self.vb.matrixCount)
 	end
