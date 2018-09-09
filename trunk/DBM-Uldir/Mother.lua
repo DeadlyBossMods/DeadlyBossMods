@@ -91,23 +91,25 @@ local function updateAllTimers(self, ICD)
 		timerWindTunnelCD:Stop()
 		timerWindTunnelCD:Update(elapsed, total+extend)
 	end
-	if (self.vb.nextLaser == 1) and timerSurgicalBeamCD:GetRemaining(DBM_CORE_SIDE) < ICD then
-		local elapsed, total = timerSurgicalBeamCD:GetTime(DBM_CORE_SIDE)
-		local extend = ICD - (total-elapsed)
-		DBM:Debug("timerSurgicalBeamCD SIDE extended by: "..extend, 2)
-		timerSurgicalBeamCD:Stop()
-		timerSurgicalBeamCD:Update(elapsed, total+extend, DBM_CORE_SIDE)
-		countdownSurgicalBeam:Cancel()
-		countdownSurgicalBeam:Start(ICD)
-	end
-	if (self.vb.nextLaser == 2) and timerSurgicalBeamCD:GetRemaining(DBM_CORE_TOP) < ICD then
-		local elapsed, total = timerSurgicalBeamCD:GetTime(DBM_CORE_TOP)
-		local extend = ICD - (total-elapsed)
-		DBM:Debug("timerSurgicalBeamCD TOP extended by: "..extend, 2)
-		timerSurgicalBeamCD:Stop()
-		timerSurgicalBeamCD:Update(elapsed, total+extend, DBM_CORE_TOP)
-		countdownSurgicalBeam:Cancel()
-		countdownSurgicalBeam:Start(ICD)
+	if self.vb.phase >= 2 then
+		if (self.vb.nextLaser == 1) and timerSurgicalBeamCD:GetRemaining(DBM_CORE_SIDE) < ICD then
+			local elapsed, total = timerSurgicalBeamCD:GetTime(DBM_CORE_SIDE)
+			local extend = ICD - (total-elapsed)
+			DBM:Debug("timerSurgicalBeamCD SIDE extended by: "..extend, 2)
+			timerSurgicalBeamCD:Stop()
+			timerSurgicalBeamCD:Update(elapsed, total+extend, DBM_CORE_SIDE)
+			countdownSurgicalBeam:Cancel()
+			countdownSurgicalBeam:Start(ICD)
+		end
+		if (self.vb.nextLaser == 2) and timerSurgicalBeamCD:GetRemaining(DBM_CORE_TOP) < ICD then
+			local elapsed, total = timerSurgicalBeamCD:GetTime(DBM_CORE_TOP)
+			local extend = ICD - (total-elapsed)
+			DBM:Debug("timerSurgicalBeamCD TOP extended by: "..extend, 2)
+			timerSurgicalBeamCD:Stop()
+			timerSurgicalBeamCD:Update(elapsed, total+extend, DBM_CORE_TOP)
+			countdownSurgicalBeam:Cancel()
+			countdownSurgicalBeam:Start(ICD)
+		end
 	end
 end
 
