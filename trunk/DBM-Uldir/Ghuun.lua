@@ -130,6 +130,7 @@ local function checkThrowFail(self)
 	self:Unschedule(checkThrowFail)
 	timerMatrixCD:Stop()
 	timerMatrixCD:Start(9.5, self.vb.matrixCount+1)
+	self.vb.matrixActive = false
 end
 
 local updateInfoFrame
