@@ -119,6 +119,7 @@ mod:AddSetIconOption("SetIconOnBloodHost", 267813, true)
 mod.vb.phase = 1
 mod.vb.mawCastCount = 0
 mod.vb.matrixCount = 0
+mod.vb.matrixSide = DBM_CORE_LEFT
 mod.vb.explosiveCount = 0
 mod.vb.waveCast = 0
 mod.vb.matrixActive = false
@@ -170,9 +171,18 @@ do
 				addLine(matrixSpellName, UnitName(uId))
 			end
 			if mod.vb.matrixActive then
-				addLine(L.CurrentMatrix, mod.vb.matrixCount)
+				if mod:IsMythic() then--No side, short text
+					addLine(L.CurrentMatrix, mod.vb.matrixCount)
+				else--Side, long text
+					addLine(L.CurrentMatrixLong:format(mod.vb.matrixSide), mod.vb.matrixCount)
+				end
 			else
-				addLine(L.NextMatrix, mod.vb.matrixCount+1)
+				if mod:IsMythic() then
+					addLine(L.NextMatrix, mod.vb.matrixCount+1)
+				else
+					local sideText = (mod.vb.matrixSide == DBM_CORE_LEFT) and DBM_CORE_RIGHT or DBM_CORE_LEFT
+					addLine(L.NextMatrixLong:format(sideText), mod.vb.matrixCount+1)
+				end
 			end
 		end
 		for i=1, #bloodFeastTarget do
@@ -224,6 +234,11 @@ function mod:OnCombatStart(delay)
 	if self.Options.NPAuraOnFixate or self.Options.NPAuraOnUnstoppable then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
+	if not self:IsMythic() then
+		self.vb.matrixSide = DBM_CORE_LEFT
+	--else
+		--Do shit on mythic
+	end
 end
 
 function mod:OnCombatEnd()
@@ -272,6 +287,7 @@ function mod:SPELL_CAST_START(args)
 		warnBurrow:Show()
 	elseif (spellId == 263482 or spellId == 263503) then
 		self.vb.matrixActive = false
+		self.vb.matrixSide = DBM_CORE_RIGHT--Actually left, but this makes it so the way it's coded works
 		specWarnReorginationBlast:Show()
 		specWarnReorginationBlast:Play("aesoon")--Or phase change
 		timerMatrixCD:Stop()
@@ -516,18 +532,18 @@ mod.SPELL_MISSED = mod.SPELL_DAMAGE
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 136461 then--spawn of ghuun
-	
-	elseif cid == 138531 or cid == 134634 then--Cyclopean Terror (P1, P2)
-	
-	elseif cid == 138529 or cid == 134635 then--Dark Young (P1, P2)
+	if cid == 138529 or cid == 134635 then--Dark Young (P1, P2)
 		timerMassiveSmashCD:Stop(args.destGUID)
 		timerDarkBargainCD:Stop(args.destGUID)
-	elseif cid == 134590 then--Blightspreader Tendril
-
-	elseif cid == 141265 then--Amorphus Cyst (cat)
+--	elseif cid == 138531 or cid == 134634 then--Cyclopean Terror (P1, P2)
 	
-	elseif cid == 134010 then--Gibbering Horror
+--	elseif cid == 134590 then--Blightspreader Tendril
+
+--	elseif cid == 136461 then--spawn of ghuun
+
+--	elseif cid == 141265 then--Amorphus Cyst (cat)
+	
+--	elseif cid == 134010 then--Gibbering Horror
 	
 	end
 end
@@ -535,6 +551,13 @@ end
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 	if msg:find("spell:263420") and self:AntiSpam(10, 7) then
 		self.vb.matrixActive = true
+		if not self:IsMythic() then
+			if self.vb.matrixSide == DBM_CORE_LEFT then
+				self.vb.matrixSide = DBM_CORE_RIGHT
+			else
+				self.vb.matrixSide = DBM_CORE_LEFT
+			end
+		end
 		self.vb.matrixCount = self.vb.matrixCount + 1
 		warnMatrixSpawn:Show(self.vb.matrixCount)
 	end
