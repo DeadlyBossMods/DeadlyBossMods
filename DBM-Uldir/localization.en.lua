@@ -79,7 +79,8 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(2147)
 
 L:SetMiscLocalization({
-	CurrentMatrix	=	"Current Matrix:"
+	CurrentMatrix	=	"Current Matrix:",
+	NextMatrix		=	"Next Matrix:"
 })
 
 -------------
