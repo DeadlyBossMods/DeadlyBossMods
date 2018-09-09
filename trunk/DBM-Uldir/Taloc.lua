@@ -52,10 +52,10 @@ local specWarnEnlargedHeartOther		= mod:NewSpecialWarningMoveTo(275205, "-Tank",
 local specWarnGTFO						= mod:NewSpecialWarningGTFO(270290, nil, nil, nil, 1, 2)
 
 mod:AddTimerLine(BOSS)
-local timerPlasmaDischargeCD			= mod:NewCDTimer(30.4, 271225, nil, nil, nil, 3)--30.4-42
-local timerCudgelOfGoreCD				= mod:NewCDTimer(58.4, 271296, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)--60.4-63
+local timerPlasmaDischargeCD			= mod:NewCDCountTimer(30.4, 271225, nil, nil, nil, 3)--30.4-42
+local timerCudgelOfGoreCD				= mod:NewCDCountTimer(58.4, 271296, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)--60.4-63
 local timerSanguineStaticCD				= mod:NewCDTimer(55, 272582, nil, nil, nil, 3)--60.4-63
-local timerCloggedArteriesCD			= mod:NewCDTimer(60.4, 275189, nil, nil, nil, 3)--60.4-63
+local timerCloggedArteriesCD			= mod:NewCDCountTimer(60.4, 275189, nil, nil, nil, 3)--60.4-63
 local timerEnlargedHeartCD				= mod:NewCDTimer(60.4, 275205, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)--60.4-63
 mod:AddTimerLine(DBM:GetSpellInfo(271965))
 local timerPoweredDown					= mod:NewBuffActiveTimer(88.6, 271965, nil, nil, nil, 6)
@@ -74,6 +74,8 @@ mod:AddInfoFrameOption(275270, true)
 local bloodStorm = DBM:GetSpellInfo(270290)
 local ignoreGTFO = false
 mod.vb.plasmaCast = 0
+mod.vb.cudgelCount = 0
+mod.vb.cloggedCount = 0
 mod.vb.phase = 1
 
 function mod:StaticTarget(targetname, uId)
@@ -90,13 +92,15 @@ end
 
 function mod:OnCombatStart(delay)
 	self.vb.plasmaCast = 0
+	self.vb.cudgelCount = 0
+	self.vb.cloggedCount = 0
 	self.vb.phase = 1
-	timerPlasmaDischargeCD:Start(5.9-delay)
+	timerPlasmaDischargeCD:Start(5.9-delay, 1)
 	timerSanguineStaticCD:Start(18-delay)
-	timerCudgelOfGoreCD:Start(35-delay)
+	timerCudgelOfGoreCD:Start(35-delay, 1)
 	countdownCudgelofGore:Start(35)
 	if self:IsMythic() then
-		timerCloggedArteriesCD:Start(24-delay)
+		timerCloggedArteriesCD:Start(24-delay, 1)
 		timerEnlargedHeartCD:Start(25-delay)
 		countdownEnlargedHeart:Start(25-delay)
 	end
@@ -115,7 +119,10 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 271296 then
-		timerCudgelOfGoreCD:Start()
+		if self:AntiSpam(5, 4) then--Don't incriment counter on stutter casts because tank died.
+			self.vb.cudgelCount = self.vb.cudgelCount + 1
+		end
+		timerCudgelOfGoreCD:Start(nil, self.vb.cudgelCount+1)
 		countdownCudgelofGore:Start(58.4)
 		if self:IsTanking("player", "boss1", nil, true) then
 			specWarnCudgelofGore:Show(bloodStorm)
@@ -143,17 +150,17 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.plasmaCast = self.vb.plasmaCast + 1
 		if self.vb.phase == 1 then
 			if self.vb.plasmaCast == 1 then
-				timerPlasmaDischargeCD:Start(41)
+				timerPlasmaDischargeCD:Start(41, self.vb.plasmaCast+1)
 			else
-				timerPlasmaDischargeCD:Start(35)
+				timerPlasmaDischargeCD:Start(35, self.vb.plasmaCast+1)
 			end
 		else
 			if self.vb.plasmaCast == 1 then
-				timerPlasmaDischargeCD:Start(40)
+				timerPlasmaDischargeCD:Start(40, self.vb.plasmaCast+1)
 			elseif self.vb.plasmaCast == 2 then
-				timerPlasmaDischargeCD:Start(35)
+				timerPlasmaDischargeCD:Start(35, self.vb.plasmaCast+1)
 			else
-				timerPlasmaDischargeCD:Start(30)
+				timerPlasmaDischargeCD:Start(30, self.vb.plasmaCast+1)
 			end
 		end
 	elseif spellId == 275205 then
@@ -197,7 +204,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 275189 then
 		if self:AntiSpam(3, 3) then
-			timerCloggedArteriesCD:Start()
+			self.vb.cloggedCount = self.vb.cloggedCount + 1
+			timerCloggedArteriesCD:Start(nil, self.vb.cloggedCount+1)
 		end
 		if args:IsPlayer() then
 			specWarnCloggedArteries:Show()
@@ -233,16 +241,18 @@ function mod:SPELL_AURA_REMOVED(args)
 
 	elseif spellId == 271965 then
 		self.vb.plasmaCast = 0
+		self.vb.cudgelCount = 0
+		self.vb.cloggedCount = 0
 		self.vb.phase = 2
 		warnPoweringDownOver:Show()
 		warnPoweringDownOver:Play("phasechange")
 		timerPoweredDown:Stop()
-		timerPlasmaDischargeCD:Start(12.8)--6
+		timerPlasmaDischargeCD:Start(12.8, 1)--6
 		timerSanguineStaticCD:Start(27)--18
-		timerCudgelOfGoreCD:Start(37)--35
+		timerCudgelOfGoreCD:Start(37, 1)--35
 		countdownCudgelofGore:Start(37)--35
 		if self:IsMythic() then
-			timerCloggedArteriesCD:Start(24.4)
+			timerCloggedArteriesCD:Start(24.4, 1)
 			timerEnlargedHeartCD:Start(25.7)
 			countdownEnlargedHeart:Start(25.7)
 		end
