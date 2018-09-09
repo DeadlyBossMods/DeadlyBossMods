@@ -14,8 +14,8 @@ mod:SetMinSyncRevision(17776)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 267509 267427 267412 273406 273405 267409 267462 267579 263482 263503 263307 275160",
-	"SPELL_CAST_SUCCESS 263235 263482 263503 263373 270373 270428 276839 274582 272505 275756",
+	"SPELL_CAST_START 267509 267427 267412 273406 273405 267409 267462 267579 263482 263503 263307 275160 263373",
+	"SPELL_CAST_SUCCESS 263235 263482 263503 263373 270373 270428 276839 274582 272505 275756 263416",
 	"SPELL_AURA_APPLIED 268074 267813 277079 272506 274262 263372 270447 263235 270443 273405 267409",
 	"SPELL_AURA_APPLIED_DOSE 270447",
 	"SPELL_AURA_REMOVED 268074 267813 277079 272506 274262 263235 263372",
@@ -37,7 +37,6 @@ mod:RegisterEventsInCombat(
 --TODO, Bursting Boil CAST detection
 --TODO, find right balance for automating specWarnBloodFeastMoveTo. Right now don't want to assume EVERYONE goes to target, maybe only players above x stacks?
 --TODO, timers for Mind Numbing Chatter?
---TODO, detecting cores that FAIL to deposit and get destroyed instead (to determin when next core timer is)
 --[[
 (ability.id = 267509 or ability.id = 273406 or ability.id = 273405 or ability.id = 267579 or ability.id = 263482 or ability.id = 263503 or ability.id = 275160) and type = "begincast"
  or (ability.id = 272505 or ability.id = 275756 or ability.id = 263235 or ability.id = 263482 or ability.id = 263503 or ability.id = 263373 or ability.id = 270373 or ability.id = 270428 or ability.id = 276839 or ability.id = 274582) and type = "cast"
@@ -47,6 +46,7 @@ mod:RegisterEventsInCombat(
 --]]
 --Arena Floor
 local warnMatrixSpawn					= mod:NewCountAnnounce(263420, 1)
+local warnMatrixFail					= mod:NewAnnounce("warnMatrixFail", 4, 263420)
 local warnPowerMatrix					= mod:NewTargetNoFilterAnnounce(263420, 2, nil, false)--No Filter announce, but off by default since infoframe is more productive way of showing it
 local warnBloodHost						= mod:NewTargetAnnounce(267813, 3)--Mythic
 local warnDarkPurpose					= mod:NewTargetAnnounce(268074, 4, nil, false)--Mythic
@@ -124,6 +124,13 @@ mod.vb.waveCast = 0
 mod.vb.matrixActive = false
 local matrixTargets, bloodFeastTarget = {}, {}
 local thousandMawsTimers = {25.4, 26.3, 25.5, 24.2, 23.9, 23.1, 21.5, 21.9, 19.4}
+
+local function checkThrowFail(self)
+	--If this function runs it means matrix was not caught after a throw and is lost
+	self:Unschedule(checkThrowFail)
+	timerMatrixCD:Stop()
+	timerMatrixCD:Start(9.5, self.vb.matrixCount+1)
+end
 
 local updateInfoFrame
 do
@@ -274,6 +281,9 @@ function mod:SPELL_CAST_START(args)
 		specWarnGazeofGhuun:Show()
 		specWarnGazeofGhuun:Play("turnaway")
 		timerGazeofGhuunCD:Start()
+	elseif spellId == 263373 then
+		self:Unschedule(checkThrowFail)
+		self.vb.matrixActive = false
 	end
 end
 
@@ -301,7 +311,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 			timerExplosiveCorruptionCD:AddTime(24, self.vb.explosiveCount+1)
 		end
 	elseif spellId == 263373 then
-		self.vb.matrixActive = false
 		timerMatrixCD:Stop()
 		timerMatrixCD:Start(11.5, self.vb.matrixCount+1)
 	elseif spellId == 270373 or spellId == 270428 then--Wave of Corruption
@@ -350,6 +359,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 				specWarnExplosiveCorruptionOther:Play("tauntboss")
 			end
 		end
+	elseif spellId == 263416 then--Throw Power Matrix
+		self:Unschedule(checkThrowFail)
+		self:Schedule(4, checkThrowFail, self)
 	end
 end
 
@@ -393,6 +405,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellExplosiveCorruptionFades:Countdown(spellId == 277079 and 6 or 4)
 		end
 	elseif spellId == 263372 then
+		self:Unschedule(checkThrowFail)
 		if args:IsPlayer() then
 			specWarnPowerMatrix:Show()
 			specWarnPowerMatrix:Play("newmatrix")
