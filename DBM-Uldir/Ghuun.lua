@@ -38,7 +38,7 @@ mod:RegisterEventsInCombat(
 --TODO, find right balance for automating specWarnBloodFeastMoveTo. Right now don't want to assume EVERYONE goes to target, maybe only players above x stacks?
 --TODO, timers for Mind Numbing Chatter?
 --[[
-(ability.id = 267509 or ability.id = 273406 or ability.id = 273405 or ability.id = 267579 or ability.id = 263482 or ability.id = 263503 or ability.id = 275160) and type = "begincast"
+(ability.id = 267509 or ability.id = 273406 or ability.id = 273405 or ability.id = 267579 or ability.id = 263482 or ability.id = 263503 or ability.id = 275160 or ability.id = 269455) and type = "begincast"
  or (ability.id = 272505 or ability.id = 275756 or ability.id = 263235 or ability.id = 263482 or ability.id = 263503 or ability.id = 263373 or ability.id = 270373 or ability.id = 270428 or ability.id = 276839 or ability.id = 274582) and type = "cast"
  or ability.id = 270443
  or (ability.id = 267462 or ability.id = 267412 or ability.id = 267409) and type = "begincast"
@@ -129,7 +129,7 @@ local function checkThrowFail(self)
 	--If this function runs it means matrix was not caught after a throw and is lost
 	self:Unschedule(checkThrowFail)
 	timerMatrixCD:Stop()
-	timerMatrixCD:Start(9.5, self.vb.matrixCount+1)
+	timerMatrixCD:Start(8, self.vb.matrixCount+1)--Confirm
 	self.vb.matrixActive = false
 end
 
@@ -275,7 +275,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnReorginationBlast:Show()
 		specWarnReorginationBlast:Play("aesoon")--Or phase change
 		timerMatrixCD:Stop()
-		timerMatrixCD:Start(30, self.vb.matrixCount+1)
+		timerMatrixCD:Start(29, self.vb.matrixCount+1)
 	elseif spellId == 263307 then
 		specWarnMindNumbingChatter:Show()
 		specWarnMindNumbingChatter:Play("stopcast")
@@ -314,7 +314,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		end
 	elseif spellId == 263373 then
 		timerMatrixCD:Stop()
-		timerMatrixCD:Start(11.5, self.vb.matrixCount+1)
+		timerMatrixCD:Start(10, self.vb.matrixCount+1)
 	elseif spellId == 270373 or spellId == 270428 then--Wave of Corruption
 		self.vb.waveCast = self.vb.waveCast + 1
 		if self.vb.phase == 2 then
