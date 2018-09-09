@@ -205,6 +205,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 267945 then--Global Id for winds
 		warnWindTunnel:Show()
 		timerWindTunnelCD:Show()--40-47
+		updateAllTimers(self, 6)
 	elseif spellId == 269827 or spellId == 277973 or spellId == 277961 or spellId == 277742 then
 		if spellId == 277961 or spellId == 277742 or spellId == 269827 then--Top (277961 mythic chamber 2, 277742 heroic Chamber 2, 269827 heroic chamber 3)
 			specWarnSurgicalBeam:Show(DBM_CORE_TOP)
