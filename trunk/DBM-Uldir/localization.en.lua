@@ -87,8 +87,10 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	CurrentMatrix	=	"Current Matrix:",
-	NextMatrix		=	"Next Matrix:"
+	CurrentMatrix		=	"Current Matrix:",--Mythic
+	NextMatrix			=	"Next Matrix:",--Mythic
+	CurrentMatrixLong	=	"Current Matrix (%s):",--Non Mythic
+	NextMatrixLong		=	"Next Matrix (%s):"--Non Mythic
 })
 
 -------------
