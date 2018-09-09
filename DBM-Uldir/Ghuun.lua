@@ -157,8 +157,8 @@ do
 		if mod.vb.phase < 3 then
 			local currentPower2, maxPower2 = UnitPower("boss2"), UnitPowerMax("boss2")
 			if maxPower2 and maxPower2 ~= 0 then
-				if currentPower2 / maxPower2 * 100 >= 1 then
-					local matrixCount = (currentPower2 == 35) and 1 or (currentPower2 == 70) and 2 or 3
+				if currentPower2 / maxPower2 * 100 >= 0 then
+					local matrixCount = (currentPower2 == 35) and 1 or (currentPower2 == 70) and 2 or (currentPower2 == 100) and 3 or 0
 					addLine(UnitName("boss2"), matrixCount.."/3")
 				end
 			end
