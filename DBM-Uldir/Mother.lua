@@ -210,8 +210,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if spellId == 277961 or spellId == 277742 or spellId == 269827 then--Top (277961 mythic chamber 2, 277742 heroic Chamber 2, 269827 heroic chamber 3)
 			specWarnSurgicalBeam:Show(DBM_CORE_TOP)
 			--Next Beam side
-			timerSurgicalBeamCD:Start(16, DBM_CORE_SIDE)
-			countdownSurgicalBeam:Start(16)
+			timerSurgicalBeamCD:Start(11, DBM_CORE_SIDE)--Usually delayed, but yes it's 11
+			countdownSurgicalBeam:Start(11)
 			self.vb.nextLaser = 1
 		else--Sides (277973 all)
 			specWarnSurgicalBeam:Show(DBM_CORE_SIDE)
@@ -224,9 +224,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 				if self.vb.phase == 3 then
 					timerSurgicalBeamCD:Start(24, DBM_CORE_TOP)
 					countdownSurgicalBeam:Start(24)
-				else--TODO, confirm it's 30 here and not just always delayed by 6/5 second ICD
-					timerSurgicalBeamCD:Start(30, DBM_CORE_TOP)
-					countdownSurgicalBeam:Start(30)
+				else--TODO, confirm it's 29 here and not just always delayed by 6/5 second ICD (I'm even more confident it's 24 here too based on watching stream, think it's usually 30 cause of ICD)
+					timerSurgicalBeamCD:Start(29, DBM_CORE_TOP)
+					countdownSurgicalBeam:Start(29)
 				end
 			end
 		end
