@@ -78,6 +78,21 @@ L:SetMiscLocalization({
 ------------------
 L= DBM:GetModLocalization(2147)
 
+L:SetWarningLocalization({
+	warnMatrixFail		= "동력 매트릭스 배달 실패"
+})
+
+L:SetOptionLocalization({
+	warnMatrixFail		= "동력 매트릭스가 바닥에 떨어졌을 때 경고를 표시합니다."
+})
+
+L:SetMiscLocalization({
+	CurrentMatrix		=	"현재 매트릭스:",--Mythic
+	NextMatrix			=	"다음 매트릭스:",--Mythic
+	CurrentMatrixLong	=	"현재 매트릭스 (%s):",--Non Mythic
+	NextMatrixLong		=	"다음 매트릭스 (%s):"--Non Mythic
+})
+
 -------------
 --  Trash  --
 -------------

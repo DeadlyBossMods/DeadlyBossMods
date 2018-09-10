@@ -137,6 +137,11 @@ function mod:OnCombatStart(delay)
 		DBM.InfoFrame:SetHeader(DBM_CORE_INFOFRAME_POWER)
 		DBM.InfoFrame:Show(4, "enemypower", 2)
 	end
+	if self:IsMythic() then
+		--Yogg timers will start on pull
+		--timerAnubarCasterCD:Start(20.5)
+		--timerRoilingDeceitCD:Start(22)--CAST_START
+	end
 end
 
 function mod:OnCombatEnd()
@@ -325,9 +330,11 @@ function mod:UNIT_POWER_FREQUENT(uId)
 			if not self:IsMythic() then
 				timerQirajiWarriorCD:Stop()
 				timerEyeBeamCD:Stop()
+				timerAnubarCasterCD:Start(20.5)
+				timerRoilingDeceitCD:Start(22)--CAST_START
+			else
+				timerOrbofCorruptionCD:Start(12, 1)--Assumed
 			end
-			timerAnubarCasterCD:Start(20.5)
-			timerRoilingDeceitCD:Start(22)--CAST_START
 		elseif self.vb.phase == 3 then
 			warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(3))
 			if not self:IsMythic() then

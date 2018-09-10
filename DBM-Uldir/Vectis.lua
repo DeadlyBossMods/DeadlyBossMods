@@ -15,7 +15,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 267242 265217 265206",
 	"SPELL_CAST_SUCCESS 265178 265212 266459 265209",
-	"SPELL_AURA_APPLIED 265178 265129 265212",
+	"SPELL_AURA_APPLIED 265178 265129 265212 274990",
 	"SPELL_AURA_APPLIED_DOSE 265178 265127",
 	"SPELL_AURA_REMOVED 265178 265129 265212 265217",
 	"SPELL_SUMMON 275055",
@@ -51,7 +51,13 @@ local specWarnGestateNear					= mod:NewSpecialWarningClose(265212, false, nil, 2
 local specWarnAmalgam						= mod:NewSpecialWarningSwitch("ej18007", "-Healer", nil, 2, 1, 2)
 local specWarnSpawnParasite					= mod:NewSpecialWarningSwitch(275055, "Dps", nil, nil, 1, 2)--Mythic
 --local specWarnContagion					= mod:NewSpecialWarningCount(267242, nil, nil, nil, 2, 2)
-local specWarnLiquefy						= mod:NewSpecialWarningSpell(265217, nil, nil, nil, 2, 2)
+local specWarnBurstingLesions				= mod:NewSpecialWarningMoveAway(274990, nil, nil, nil, 1, 2)
+local yellBurstingLesions					= mod:NewYell(274990, nil, false)--Mythic
+local yellEngorgedParasite					= mod:NewYell(274983)--Mythic
+local yellTerminalEruption					= mod:NewYell(274989, nil, nil, nil, "YELL")--Mythic
+local specWarnLingeringInfection			= mod:NewSpecialWarningStack(265127, nil, 6, nil, nil, 1, 6)
+local specWarnLiquefy						= mod:NewSpecialWarningSpell(265217, nil, nil, nil, 3, 2)
+local specWarnTerminalEruption				= mod:NewSpecialWarningSpell(274989, nil, nil, nil, 2, 2)
 --local specWarnGTFO						= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
 
 --mod:AddTimerLine(Nexus)
@@ -77,13 +83,14 @@ mod.vb.ContagionCount = 0
 mod.vb.hyperGenesisCount = 0
 mod.vb.ImmunosuppCount = 0
 local availableRaidIcons = {[1] = true, [2] = true, [3] = true, [4] = true, [5] = true, [6] = true, [7] = true, [8] = true}
-local playerHasTen = false
+local playerHasSix, playerHasTwelve, playerHasTwentyFive = false, false, false
 local seenAdds = {}
 local castsPerGUID = {}
 
 function mod:OnCombatStart(delay)
 	table.wipe(seenAdds)
 	table.wipe(castsPerGUID)
+	playerHasSix, playerHasTwelve, playerHasTwentyFive = false, false, false
 	self.vb.ContagionCount = 0
 	availableRaidIcons = {[1] = true, [2] = true, [3] = true, [4] = true, [5] = true, [6] = true, [7] = true, [8] = true}
 	timerEvolvingAfflictionCD:Start(4.7-delay)--Instantly on engage
@@ -109,6 +116,26 @@ function mod:OnCombatEnd()
 	end
 end
 
+function mod:OnTimerRecovery()
+	if self:IsMythic() then
+		local _, _, count = DBM:UnitDebuff("player", 265127)--Lingering Infection Recovery
+		if count then
+			if count >= 6 then
+				playerHasSix = true
+				if self.Options.RangeFrame then
+					DBM.RangeCheck:Show(5)
+				end
+			end
+			if count >= 12 then--Spawning Parasite (274983) will begin
+				playerHasTwelve = true
+			end
+			if count >= 25 then
+				playerHasTwentyFive = true
+			end
+		end
+	end
+end
+
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 267242 then
@@ -116,6 +143,28 @@ function mod:SPELL_CAST_START(args)
 		warnContagion:Show(self.vb.ContagionCount)
 		--specWarnContagion:Play("aesoon")
 		timerContagionCD:Start(nil, self.vb.ContagionCount+1)
+		if self:IsMythic() then
+			if playerHasSix then
+				specWarnBurstingLesions:Show()
+				specWarnBurstingLesions:Play("range5")
+				--Yell Priorities
+				if playerHasTwentyFive then
+					yellTerminalEruption:Yell()
+				elseif playerHasTwelve then
+					yellEngorgedParasite:Yell()
+				else
+					yellBurstingLesions:Yell()
+				end
+			end
+			for uId in DBM:GetGroupMembers() do
+				local _, _, count = DBM:UnitDebuff("player", 265127)
+				if count and count >= 25 then
+					specWarnTerminalEruption:Show()
+					specWarnTerminalEruption:Play("aesoon")
+					break
+				end
+			end
+		end
 	elseif spellId == 265217 then
 		specWarnLiquefy:Show()
 		specWarnLiquefy:Play("phasechange")
@@ -227,11 +276,23 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 265127 then
 		if args:IsPlayer() and self:IsMythic() then
 			local amount = args.amount or 1
-			if amount >= 10 and not playerHasTen then
-				playerHasTen = true
+			if not playerHasSix and amount >= 6 then
+				playerHasSix = true
+				specWarnLingeringInfection:Show(amount)
+				specWarnLingeringInfection:Play("stackhigh")
 				if self.Options.RangeFrame then
 					DBM.RangeCheck:Show(5)
 				end
+			elseif not playerHasTwelve and amount >= 12 then--Spawning Parasite (274983) will begin
+				playerHasTwelve = true
+				specWarnLingeringInfection:Show(amount)
+				specWarnLingeringInfection:Play("stackhigh")
+				--yellEngorgedParasite:Yell()
+			elseif not playerHasTwentyFive and amount >= 25 then
+				playerHasTwentyFive = true
+				specWarnLingeringInfection:Show(amount)
+				specWarnLingeringInfection:Play("stackhigh")
+				--yellTerminalEruption:Yell()
 			end
 		end
 	end
@@ -261,7 +322,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		--specWarnAmalgam:Play("killmob")
 		if args:IsPlayer() then
 			if self.Options.RangeFrame then
-				if playerHasTen then
+				if playerHasSix then
 					DBM.RangeCheck:Show(5)
 				else
 					DBM.RangeCheck:Hide()
