@@ -8,7 +8,7 @@ mod:SetZone()
 mod.isTrashMod = true
 
 mod:RegisterEvents(
-	"SPELL_CAST_START 270003 269973 270923 270889 270901 270084 270872 270293 270284 270492 270482 270514",
+	"SPELL_CAST_START 270003 269973 270923 270889 270901 270084 270872 270293 270284 270492 270482 270514 270507",
 	"SPELL_AURA_APPLIED 269976 270927 270920 270865 271640 271561 269936",
 	"SPELL_AURA_REMOVED 271640",
 	"SPELL_CAST_SUCCESS 270500 270497 270930",
@@ -22,6 +22,7 @@ local warnAxeBarrage				= mod:NewCastAnnounce(270084, 4)
 local warnAxeShadowWhirl			= mod:NewCastAnnounce(270872, 3)
 local warnBloodedLeap				= mod:NewCastAnnounce(270482, 3)
 local warnEntomb					= mod:NewTargetNoFilterAnnounce(267702, 3)
+local warnPoisonBarrage				= mod:NewTargetAnnounce(270507, 4)
 local warnPoolofDarkness			= mod:NewSpellAnnounce(272014, 3)
 
 local specWarnWailofMourning		= mod:NewSpecialWarningSpell(271561, "Healer", nil, nil, 2, 2)
@@ -46,10 +47,25 @@ local yellEntomb					= mod:NewYell(267702)
 local specWarnDarkRevelation		= mod:NewSpecialWarningMoveAway(271640, nil, nil, nil, 1, 2)
 local yellDarkRevelation			= mod:NewYell(271640)
 local yellDarkRevelationFades		= mod:NewShortFadesYell(271640)
+local specWarnPoisonBarrage			= mod:NewSpecialWarningMoveAway(270507, nil, nil, nil, 1, 2)
+local yellPoisonBarrage				= mod:NewYell(270507)
+local yellPoisonBarrageFades		= mod:NewShortFadesYell(270507)
 local specWarnFixate				= mod:NewSpecialWarningRun(269936, nil, nil, nil, 4, 2)
 local yellFixate					= mod:NewYell(269936, nil, false)
 local specWarnHiddenBlade			= mod:NewSpecialWarningMoveAway(270865, nil, nil, nil, 1, 2)
 local specWarnHealingTideTotem		= mod:NewSpecialWarningSwitch(270497, "-Healer", nil, nil, 1, 2)
+
+function mod:BarrageTarget(targetname, uId)
+	if not targetname then return end
+	if targetname == UnitName("player") and self:AntiSpam(4, 8) then
+		specWarnPoisonBarrage:Show()
+		specWarnPoisonBarrage:Play("runout")
+		yellPoisonBarrage:Yell()
+		yellPoisonBarrageFades:Countdown(4)
+	else
+		warnPoisonBarrage:Show(targetname)
+	end
+end
 
 function mod:SPELL_CAST_START(args)
 	if not self.Options.Enabled then return end
@@ -93,6 +109,8 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 271561 and self:AntiSpam(4, 7) then
 		specWarnWailofMourning:Show()
 		specWarnWailofMourning:Play("aesoon")
+	elseif spellId == 270507 then
+		self:ScheduleMethod(0.1, "BossTargetScanner", args.sourceGUID, "BarrageTarget", 0.1, 8)
 	end
 end
 
