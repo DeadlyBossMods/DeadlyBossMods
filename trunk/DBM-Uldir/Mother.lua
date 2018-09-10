@@ -13,7 +13,7 @@ mod:SetHotfixNoticeRev(17778)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 267787 268198",
+	"SPELL_CAST_START 267787 268198 279669",
 	"SPELL_CAST_SUCCESS 267795 267945 267885 267878 269827 268089 277973 277961 277742",
 	"SPELL_SUMMON 268871",
 	"SPELL_AURA_APPLIED 267787 274205 269051 279662 279663",
@@ -31,6 +31,7 @@ local warnSanitizingStrike				= mod:NewStackAnnounce(267787, 3, nil, "Tank")
 local warnWindTunnel					= mod:NewSpellAnnounce(267945, 2)
 local warnDepletedEnergy				= mod:NewSpellAnnounce(274205, 1)
 local warnCleansingPurgeFinish			= mod:NewTargetNoFilterAnnounce(268095, 4)
+local warnBacterialOutbreak				= mod:NewSpellAnnounce(279669, 3)
 
 local specWarnSanitizingStrike			= mod:NewSpecialWarningDodge(267787, nil, nil, nil, 1, 2)
 local specWarnPurifyingFlame			= mod:NewSpecialWarningDodge(267795, nil, nil, nil, 2, 2)
@@ -215,6 +216,8 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 268198 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnClingingCorruption:Show(args.sourceName)
 		specWarnClingingCorruption:Play("kickcast")
+	elseif spellId == 279669 then
+		warnBacterialOutbreak:Show()
 	end
 end
 
@@ -269,7 +272,7 @@ end
 function mod:SPELL_SUMMON(args)
 	local spellId = args.spellId
 	if spellId == 268871 then
-		if self.Options.SetIconOnAdds then--136949 CID
+		if self.Options.SetIconOnAdds then--136949 CID for dps Adds, 143065 CID Healer Adds(Viral Contagion), 143067 CID Tank Add (Resistant Bacterium)
 			self:ScanForMobs(args.sourceGUID, 2, self.vb.startIcon, 1, 0.2, 10, "SetIconOnAdds")
 		end
 		self.vb.startIcon = self.vb.startIcon + 1
