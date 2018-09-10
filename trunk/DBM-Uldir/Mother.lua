@@ -15,9 +15,10 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 267787 268198",
 	"SPELL_CAST_SUCCESS 267795 267945 267885 267878 269827 268089 277973 277961 277742",
-	"SPELL_AURA_APPLIED 267787 274205 269051",
+	"SPELL_SUMMON 268871",
+	"SPELL_AURA_APPLIED 267787 274205 269051 279662 279663",
 	"SPELL_AURA_APPLIED_DOSE 267787",
-	"SPELL_SUMMON 268871"
+	"SPELL_AURA_REMOVED 279662 279663"
 )
 
 --More mythic timer work
@@ -35,6 +36,11 @@ local specWarnSanitizingStrike			= mod:NewSpecialWarningDodge(267787, nil, nil, 
 local specWarnPurifyingFlame			= mod:NewSpecialWarningDodge(267795, nil, nil, nil, 2, 2)
 local specWarnClingingCorruption		= mod:NewSpecialWarningInterrupt(268198, "HasInterrupt", nil, nil, 1, 2)
 local specWarnSurgicalBeam				= mod:NewSpecialWarningDodgeLoc(269827, nil, nil, nil, 3, 2)
+local specWarnEndemicVirus				= mod:NewSpecialWarningMoveAway(279662, nil, nil, nil, 1, 2)
+local yellEndemicVirus					= mod:NewYell(279662)
+local yellEndemicVirusFades				= mod:NewShortFadesYell(279662)
+local specWarnSpreadingEpidemic			= mod:NewSpecialWarningMoveAway(279663, nil, nil, nil, 1, 2)
+local yellSpreadingEpidemic				= mod:NewYell(279663)
 
 --mod:AddTimerLine(Nexus)
 local timerSanitizingStrikeCD			= mod:NewNextTimer(23.1, 267787, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
@@ -51,6 +57,7 @@ local countdownSurgicalBeam				= mod:NewCountdown("AltTwo30", 269827, nil, nil, 
 
 mod:AddInfoFrameOption(268095, true)
 mod:AddSetIconOption("SetIconOnAdds", 268871, true, true)
+mod:AddRangeFrameOption(5, 272407)
 
 mod.vb.startIcon = 1
 mod.vb.phase = 1
@@ -147,6 +154,23 @@ do
 	end
 end
 
+local updateRangeFrame
+do
+	local function debuffFilter(uId)
+		if DBM:UnitDebuff(uId, 279662, 279663) then--Endemic Virus, Spreading Epidemic
+			return true
+		end
+	end
+	updateRangeFrame = function(self)
+		if not self.Options.RangeFrame then return end
+		if DBM:UnitDebuff("player", 279662, 279663) then
+			DBM.RangeCheck:Show(10)
+		else
+			DBM.RangeCheck:Show(10, debuffFilter)
+		end
+	end
+end
+
 function mod:OnCombatStart(delay)
 	self.vb.startIcon = 1
 	self.vb.phase = 1
@@ -164,11 +188,17 @@ function mod:OnCombatStart(delay)
 	if self:AntiSpam(3, 1) then
 		--Do nothing
 	end
+	if self:IsMythic() then
+		updateRangeFrame(self)
+	end
 end
 
 function mod:OnCombatEnd()
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
+	end
+	if self.Options.RangeFrame then
+		DBM.RangeCheck:Hide()
 	end
 end
 
@@ -284,6 +314,35 @@ function mod:SPELL_AURA_APPLIED(args)
 			timerSurgicalBeamCD:Start(15, DBM_CORE_SIDE)--15 if delayed by nothing, but can be longer if flames ICD gets triggered
 			timerCleansingFlameCD:Start(time, 3)
 		end
+	elseif spellId == 279662 then
+		if args:IsPlayer() then
+			specWarnEndemicVirus:Show()
+			specWarnEndemicVirus:Play("runout")
+			yellEndemicVirus:Yell()
+			yellEndemicVirusFades:Countdown(20)
+			updateRangeFrame(self)
+		end
+	elseif spellId == 279663 then
+		if args:IsPlayer() then
+			specWarnSpreadingEpidemic:Show()
+			specWarnSpreadingEpidemic:Play("runout")
+			yellSpreadingEpidemic:Yell()
+			updateRangeFrame(self)
+		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
+
+function mod:SPELL_AURA_REMOVED(args)
+	local spellId = args.spellId
+	if spellId == 279662 then
+		if args:IsPlayer() then
+			updateRangeFrame(self)
+			yellEndemicVirusFades:Cancel()
+		end
+	elseif spellId == 279663 then
+		if args:IsPlayer() then
+			updateRangeFrame(self)
+		end
+	end
+end
