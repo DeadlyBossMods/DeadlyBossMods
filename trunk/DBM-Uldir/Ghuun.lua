@@ -35,7 +35,6 @@ mod:RegisterEventsInCombat(
 --TODO, cast event for Matrix Surge and possible aoe warning (with throttle)
 --TODO, how does http://bfa.wowhead.com/spell=268174/tendrils-of-corruption work? warning/yell? is it like yogg squeeze?
 --TODO, Bursting Boil CAST detection
---TODO, find right balance for automating specWarnBloodFeastMoveTo. Right now don't want to assume EVERYONE goes to target, maybe only players above x stacks?
 --TODO, timers for Mind Numbing Chatter?
 --[[
 (ability.id = 267509 or ability.id = 273406 or ability.id = 273405 or ability.id = 267579 or ability.id = 263482 or ability.id = 263503 or ability.id = 275160 or ability.id = 269455) and type = "begincast"
@@ -76,7 +75,7 @@ local specWarnExplosiveCorruptionOther	= mod:NewSpecialWarningTaunt(272506, nil,
 local specWarnBloodFeast				= mod:NewSpecialWarningYou(263235, nil, nil, nil, 1, 2)
 local yellBloodFeast					= mod:NewYell(263235, nil, nil, nil, "YELL")
 local yellBloodFeastFades				= mod:NewFadesYell(263235, nil, nil, nil, "YELL")
-local specWarnBloodFeastMoveTo			= mod:NewSpecialWarningMoveTo(263235, nil, nil, nil, 1, 2)
+local specWarnBloodFeastTarget			= mod:NewSpecialWarningTargetCount(263235, nil, nil, nil, 1, 2)
 local specWarnMindNumbingChatter		= mod:NewSpecialWarningCast(263307, "SpellCaster", nil, nil, 1, 2)
 ----Arena Floor P3
 local specWarnCollapse					= mod:NewSpecialWarningDodge(276839, nil, nil, nil, 2, 2)
@@ -95,7 +94,7 @@ local timerMassiveSmashCD				= mod:NewCDTimer(9.7, 267412, nil, "Tank", nil, 5, 
 local timerDarkBargainCD				= mod:NewCDTimer(23.1, 267409, nil, nil, nil, 3, nil, DBM_CORE_DAMAGE_ICON)
 mod:AddTimerLine(SCENARIO_STAGE:format(2))
 local timerWaveofCorruptionCD			= mod:NewCDCountTimer(15, 270373, nil, nil, nil, 3)
-local timerBloodFeastCD					= mod:NewCDTimer(15, 263235, nil, nil, nil, 2)
+local timerBloodFeastCD					= mod:NewCDCountTimer(15, 263235, nil, nil, nil, 2)
 mod:AddTimerLine(SCENARIO_STAGE:format(3))
 local timerMalignantGrowthCD			= mod:NewCDTimer(20.5, 274582, nil, nil, nil, 3)
 local timerGazeofGhuunCD				= mod:NewCDTimer(30, 275160, nil, nil, nil, 2)
@@ -122,6 +121,7 @@ mod.vb.matrixCount = 0
 mod.vb.matrixSide = DBM_CORE_LEFT
 mod.vb.explosiveCount = 0
 mod.vb.waveCast = 0
+mod.vb.bloodFeastCount = 0
 mod.vb.matrixActive = false
 local matrixTargets, bloodFeastTarget = {}, {}
 local thousandMawsTimers = {25.4, 26.3, 25.5, 24.2, 23.9, 23.1, 21.5, 21.9, 19.4}
@@ -223,6 +223,7 @@ function mod:OnCombatStart(delay)
 	self.vb.matrixCount = 0
 	self.vb.explosiveCount = 0
 	self.vb.waveCast = 0
+	self.vb.bloodFeastCount = 0
 	self.vb.matrixActive = false
 	timerMatrixCD:Start(5.3, 1)
 	timerExplosiveCorruptionCD:Start(8-delay, 1)--SUCCESS
@@ -322,7 +323,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			timerExplosiveCorruptionCD:Start(27, 1)--SUCCESS. Casts it instantly on stun end
 		else
 			if self.vb.waveCast == 2 then--Current timer is blood feast
-				timerBloodFeastCD:AddTime(24)
+				timerBloodFeastCD:AddTime(24, self.vb.bloodFeastCount+1)
 			else--Current timer is wave of corruption
 				timerWaveofCorruptionCD:AddTime(24, self.vb.waveCast+1)
 			end
@@ -337,7 +338,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			if self.vb.waveCast == 1 then
 				timerWaveofCorruptionCD:Start(15.75, 2)
 			else
-				timerBloodFeastCD:Start(15.75)
+				timerBloodFeastCD:Start(15.75, self.vb.bloodFeastCount+1)
 			end
 		else--P3, No more blood feast, only waves
 			timerWaveofCorruptionCD:Start(20.5, self.vb.waveCast+1)
@@ -450,6 +451,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 	elseif spellId == 263235 then
+		self.vb.bloodFeastCount = self.vb.bloodFeastCount + 1
 		if args:IsPlayer() then
 			specWarnBloodFeast:Show()
 			specWarnBloodFeast:Play("targetyou")
@@ -460,7 +462,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				yellBloodFeastFades:Countdown(remaining)
 			end
 		else
-			--specWarnBloodFeastMoveTo:Show(args.destName)
+			specWarnBloodFeastTarget:Show(self.vb.bloodFeastCount, args.destName)
 		end
 		if not tContains(bloodFeastTarget, args.destName) then
 			table.insert(bloodFeastTarget, args.destName)
@@ -580,7 +582,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 			if self.vb.waveCast == 1 then
 				timerWaveofCorruptionCD:Start(15, 2)
 			else
-				timerBloodFeastCD:Start(15)
+				timerBloodFeastCD:Start(15, self.vb.bloodFeastCount+1)
 			end
 		else--No more blood feast, only waves
 			timerWaveofCorruptionCD:Start(20.5, self.vb.waveCast+1)
