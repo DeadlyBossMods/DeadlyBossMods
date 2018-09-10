@@ -173,7 +173,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 271224 or spellId == 278888 then
 		warnPlastmaDischarge:CombinedShow(0.3, args.destName)
-		if args:IsPlayer() then
+		if args:IsPlayer() and self:AntiSpam(3, 5) then
 			specWarnPlasmaDischarge:Show()
 			specWarnPlasmaDischarge:Play("runout")
 			specWarnPlasmaDischarge:ScheduleVoice(1.5, "keepmove")
