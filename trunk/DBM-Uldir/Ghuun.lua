@@ -75,7 +75,7 @@ local specWarnExplosiveCorruptionOther	= mod:NewSpecialWarningTaunt(272506, nil,
 local specWarnBloodFeast				= mod:NewSpecialWarningYou(263235, nil, nil, nil, 1, 2)
 local yellBloodFeast					= mod:NewYell(263235, nil, nil, nil, "YELL")
 local yellBloodFeastFades				= mod:NewFadesYell(263235, nil, nil, nil, "YELL")
-local specWarnBloodFeastTarget			= mod:NewSpecialWarningTargetCount(263235, nil, nil, nil, 1, 2)
+local specWarnBloodFeastTarget			= mod:NewSpecialWarningTargetCount(263235, nil, nil, nil, 1, 8)
 local specWarnMindNumbingChatter		= mod:NewSpecialWarningCast(263307, "SpellCaster", nil, nil, 1, 2)
 ----Arena Floor P3
 local specWarnCollapse					= mod:NewSpecialWarningDodge(276839, nil, nil, nil, 2, 2)
@@ -462,6 +462,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		else
 			specWarnBloodFeastTarget:Show(self.vb.bloodFeastCount, args.destName)
+			specWarnBloodFeastTarget:Play("bloodfeast")
+			local count = self.vb.bloodFeastCount
+			specWarnBloodFeastTarget:ScheduleVoice(1, nil, "Interface\\AddOns\\DBM-VP"..DBM.Options.ChosenVoicePack.."\\count\\"..count..".ogg")
 		end
 		if not tContains(bloodFeastTarget, args.destName) then
 			table.insert(bloodFeastTarget, args.destName)
