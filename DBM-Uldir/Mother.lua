@@ -100,23 +100,35 @@ local function updateAllTimers(self, ICD)
 		timerWindTunnelCD:Update(elapsed, total+extend)
 	end
 	if self.vb.phase >= 2 then
-		if (self.vb.nextLaser == 1) and timerSurgicalBeamCD:GetRemaining(DBM_CORE_SIDE) < ICD then
-			local elapsed, total = timerSurgicalBeamCD:GetTime(DBM_CORE_SIDE)
-			local extend = ICD - (total-elapsed)
-			DBM:Debug("timerSurgicalBeamCD SIDE extended by: "..extend, 2)
-			timerSurgicalBeamCD:Stop()
-			timerSurgicalBeamCD:Update(elapsed, total+extend, DBM_CORE_SIDE)
-			countdownSurgicalBeam:Cancel()
-			countdownSurgicalBeam:Start(ICD)
-		end
-		if (self.vb.nextLaser == 2) and timerSurgicalBeamCD:GetRemaining(DBM_CORE_TOP) < ICD then
-			local elapsed, total = timerSurgicalBeamCD:GetTime(DBM_CORE_TOP)
-			local extend = ICD - (total-elapsed)
-			DBM:Debug("timerSurgicalBeamCD TOP extended by: "..extend, 2)
-			timerSurgicalBeamCD:Stop()
-			timerSurgicalBeamCD:Update(elapsed, total+extend, DBM_CORE_TOP)
-			countdownSurgicalBeam:Cancel()
-			countdownSurgicalBeam:Start(ICD)
+		if self:IsMythic() then
+			if timerSurgicalBeamCD:GetRemaining(DBM_CORE_BOTH) < ICD then
+				local elapsed, total = timerSurgicalBeamCD:GetTime(DBM_CORE_BOTH)
+				local extend = ICD - (total-elapsed)
+				DBM:Debug("timerSurgicalBeamCD BOTH extended by: "..extend, 2)
+				timerSurgicalBeamCD:Stop()
+				timerSurgicalBeamCD:Update(elapsed, total+extend, DBM_CORE_BOTH)
+				countdownSurgicalBeam:Cancel()
+				countdownSurgicalBeam:Start(ICD)
+			end
+		else
+			if (self.vb.nextLaser == 1) and timerSurgicalBeamCD:GetRemaining(DBM_CORE_SIDE) < ICD then
+				local elapsed, total = timerSurgicalBeamCD:GetTime(DBM_CORE_SIDE)
+				local extend = ICD - (total-elapsed)
+				DBM:Debug("timerSurgicalBeamCD SIDE extended by: "..extend, 2)
+				timerSurgicalBeamCD:Stop()
+				timerSurgicalBeamCD:Update(elapsed, total+extend, DBM_CORE_SIDE)
+				countdownSurgicalBeam:Cancel()
+				countdownSurgicalBeam:Start(ICD)
+			end
+			if (self.vb.nextLaser == 2) and timerSurgicalBeamCD:GetRemaining(DBM_CORE_TOP) < ICD then
+				local elapsed, total = timerSurgicalBeamCD:GetTime(DBM_CORE_TOP)
+				local extend = ICD - (total-elapsed)
+				DBM:Debug("timerSurgicalBeamCD TOP extended by: "..extend, 2)
+				timerSurgicalBeamCD:Stop()
+				timerSurgicalBeamCD:Update(elapsed, total+extend, DBM_CORE_TOP)
+				countdownSurgicalBeam:Cancel()
+				countdownSurgicalBeam:Start(ICD)
+			end
 		end
 	end
 end
@@ -212,7 +224,7 @@ function mod:SPELL_CAST_START(args)
 		end
 		timerSanitizingStrikeCD:Start()
 		countdownSanitizingStrike:Start()
-		updateAllTimers(self, 4.9)
+		updateAllTimers(self, 4.8)
 	elseif spellId == 268198 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnClingingCorruption:Show(args.sourceName)
 		specWarnClingingCorruption:Play("kickcast")
@@ -240,19 +252,29 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerWindTunnelCD:Show()--40-47
 		updateAllTimers(self, 6)
 	elseif spellId == 269827 or spellId == 277973 or spellId == 277961 or spellId == 277742 then
-		if spellId == 277961 or spellId == 277742 or spellId == 269827 then--Top (277961 mythic chamber 2, 277742 heroic Chamber 2, 269827 heroic chamber 3)
-			specWarnSurgicalBeam:Show(DBM_CORE_TOP)
-			--Next Beam side
-			timerSurgicalBeamCD:Start(11, DBM_CORE_SIDE)--Usually delayed, but yes it's 11
-			countdownSurgicalBeam:Start(11)
-			self.vb.nextLaser = 1
-		else--Sides (277973 all)
-			specWarnSurgicalBeam:Show(DBM_CORE_SIDE)
-			if self:IsEasy() then--No top down lasers in LFR/Normal, but side happen more often
-				timerSurgicalBeamCD:Start(30, DBM_CORE_SIDE)--30-31
-				countdownSurgicalBeam:Start(30)
-				self.vb.nextLaser = 1
+		if self:IsMythic() then--All the things
+			specWarnSurgicalBeam:Show(DBM_CORE_BOTH)
+			if self.vb.phase == 3 then
+				timerSurgicalBeamCD:Start(20.5, DBM_CORE_BOTH)--20, but often delayed by ICD
+				countdownSurgicalBeam:Start(20.5)
 			else
+				timerSurgicalBeamCD:Start(50, DBM_CORE_BOTH)--50, but often delayed by ICD
+				countdownSurgicalBeam:Start(50)
+			end
+		elseif self:IsEasy() then--Only side
+			specWarnSurgicalBeam:Show(DBM_CORE_SIDE)
+			timerSurgicalBeamCD:Start(30, DBM_CORE_SIDE)--30-31
+			countdownSurgicalBeam:Start(30)
+			self.vb.nextLaser = 1
+		else--Heroic (alternating)
+			if spellId == 277961 or spellId == 277742 or spellId == 269827 then--Top spellIds
+				specWarnSurgicalBeam:Show(DBM_CORE_TOP)
+				--Next Beam side
+				timerSurgicalBeamCD:Start(11, DBM_CORE_SIDE)--Usually delayed, but yes it's 11
+				countdownSurgicalBeam:Start(11)
+				self.vb.nextLaser = 1
+			else--Sides (277973 all)
+				specWarnSurgicalBeam:Show(DBM_CORE_SIDE)
 				self.vb.nextLaser = 2
 				if self.vb.phase == 3 then
 					timerSurgicalBeamCD:Start(24, DBM_CORE_TOP)

@@ -250,6 +250,7 @@ DBM_COOLDOWN						= "%s CD"
 DBM_CORE_UNKNOWN					= "unknown"--UNKNOWN which is "Unknown" (does u vs U matter?)
 DBM_CORE_LEFT						= "Left"
 DBM_CORE_RIGHT						= "Right"
+DBM_CORE_BOTH						= "Both"
 DBM_CORE_BACK						= "Back"--BACK
 DBM_CORE_SIDE						= "Side"
 DBM_CORE_TOP						= "Top"
