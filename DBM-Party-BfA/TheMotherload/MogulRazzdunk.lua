@@ -81,7 +81,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnHeartseeker:Play("targetyou")
 			yellHeartseeker:Yell()
 		else
-			specWarnHeartseekerOther:Show()
+			specWarnHeartseekerOther:Show(args.destName)
 			specWarnHeartseekerOther:Play("gathershare")
 		end
 	end
