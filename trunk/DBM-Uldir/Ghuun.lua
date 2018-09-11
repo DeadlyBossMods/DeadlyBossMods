@@ -14,7 +14,7 @@ mod:SetMinSyncRevision(17776)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 267509 267427 267412 273406 273405 267409 267462 267579 263482 263503 263307 275160 263373",
+	"SPELL_CAST_START 267509 267427 267412 273406 273405 267409 267462 267579 263482 263503 263307 275160",
 	"SPELL_CAST_SUCCESS 263235 263482 263503 263373 270373 270428 276839 274582 272505 275756 263416",
 	"SPELL_AURA_APPLIED 268074 267813 277079 272506 274262 263372 270447 263235 270443 273405 267409",
 	"SPELL_AURA_APPLIED_DOSE 270447",
@@ -130,7 +130,7 @@ local function checkThrowFail(self)
 	--If this function runs it means matrix was not caught after a throw and is lost
 	self:Unschedule(checkThrowFail)
 	timerMatrixCD:Stop()
-	timerMatrixCD:Start(8, self.vb.matrixCount+1)--Confirm
+	timerMatrixCD:Start(6, self.vb.matrixCount+1)--TODO: Confirm
 	self.vb.matrixActive = false
 end
 
@@ -300,9 +300,6 @@ function mod:SPELL_CAST_START(args)
 		specWarnGazeofGhuun:Show()
 		specWarnGazeofGhuun:Play("turnaway")
 		timerGazeofGhuunCD:Start()
-	elseif spellId == 263373 then
-		self:Unschedule(checkThrowFail)
-		self.vb.matrixActive = false
 	end
 end
 
@@ -329,9 +326,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 			end
 			timerExplosiveCorruptionCD:AddTime(24, self.vb.explosiveCount+1)
 		end
-	elseif spellId == 263373 then
+	elseif spellId == 263373 then--Deposit Matrix
 		timerMatrixCD:Stop()
 		timerMatrixCD:Start(10, self.vb.matrixCount+1)
+		self:Unschedule(checkThrowFail)
+		self.vb.matrixActive = false
 	elseif spellId == 270373 or spellId == 270428 then--Wave of Corruption
 		self.vb.waveCast = self.vb.waveCast + 1
 		if self.vb.phase == 2 then
@@ -378,9 +377,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 				specWarnExplosiveCorruptionOther:Play("tauntboss")
 			end
 		end
-	elseif spellId == 263416 then--Throw Power Matrix
-		self:Unschedule(checkThrowFail)
-		self:Schedule(4, checkThrowFail, self)
+	--elseif spellId == 263416 then--Throw Power Matrix
+		--self:Unschedule(checkThrowFail)
+		--self:Schedule(4, checkThrowFail, self)
 	end
 end
 
@@ -513,6 +512,8 @@ function mod:SPELL_AURA_REMOVED(args)
 		tDeleteItem(bloodFeastTarget, args.destName)
 	elseif spellId == 263372 then
 		tDeleteItem(matrixTargets, args.destName)
+		self:Unschedule(checkThrowFail)
+		self:Schedule(3.5, checkThrowFail, self)
 	end
 end
 
