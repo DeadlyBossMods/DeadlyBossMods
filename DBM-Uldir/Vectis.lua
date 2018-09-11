@@ -241,7 +241,11 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnOmegaVector:Show()
 			specWarnOmegaVector:Play("targetyou")
 			yellOmegaVector:Yell()
-			yellOmegaVectorFades:Countdown(12, 3)
+			local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", spellId)--Flex debuff, have to live pull duration
+			if expireTime then--Done this way so hotfix automatically goes through
+				local remaining = expireTime-GetTime()
+				yellOmegaVectorFades:Countdown(remaining, 3)
+			end
 		end
 		if self.Options.SetIconVector then
 			local uId = DBM:GetRaidUnitId(args.destName)
