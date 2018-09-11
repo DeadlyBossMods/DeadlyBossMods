@@ -346,6 +346,7 @@ function mod:UNIT_POWER_FREQUENT(uId)
 				timerAnubarCasterCD:Start(20.5)
 				timerRoilingDeceitCD:Start(22)--CAST_START
 			else--Mythic Stage 2 is final stage, start final stage timer
+				timerAddsCD:Stop()
 				timerOrbofCorruptionCD:Start(12, 1)--Assumed
 			end
 		elseif self.vb.phase == 3 then
