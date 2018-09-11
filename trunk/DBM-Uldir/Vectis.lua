@@ -5,7 +5,7 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(134442)--135016 Plague Amalgam
 mod:SetEncounterID(2134)
 mod:SetZone()
-mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
+mod:SetUsedIcons(1, 2, 3, 4)
 --mod:SetHotfixNoticeRev(16950)
 --mod:SetMinSyncRevision(16950)
 mod.respawnTime = 29
@@ -81,8 +81,7 @@ mod:AddBoolOption("ShowHighestFirst", true)--The priority for mythic, non mythic
 
 mod.vb.ContagionCount = 0
 mod.vb.hyperGenesisCount = 0
-mod.vb.ImmunosuppCount = 0
-local availableRaidIcons = {[1] = true, [2] = true, [3] = true, [4] = true, [5] = true, [6] = true, [7] = true, [8] = true}
+mod.vb.omegaIcon = 1
 local playerHasSix, playerHasTwelve, playerHasTwentyFive = false, false, false
 local seenAdds = {}
 local castsPerGUID = {}
@@ -92,7 +91,8 @@ function mod:OnCombatStart(delay)
 	table.wipe(castsPerGUID)
 	playerHasSix, playerHasTwelve, playerHasTwentyFive = false, false, false
 	self.vb.ContagionCount = 0
-	availableRaidIcons = {[1] = true, [2] = true, [3] = true, [4] = true, [5] = true, [6] = true, [7] = true, [8] = true}
+	self.vb.hyperGenesisCount = 0
+	self.vb.omegaIcon = 1
 	timerEvolvingAfflictionCD:Start(4.7-delay)--Instantly on engage
 	timerGestateCD:Start(10-delay)--SUCCESS
 	countdownGestate:Start(10-delay)
@@ -248,18 +248,12 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 		if self.Options.SetIconVector then
-			local uId = DBM:GetRaidUnitId(args.destName)
-			local currentIcon = GetRaidTargetIndex(uId) or 0
-			if currentIcon == 0 then--Don't set icon i target already has one
-				--Find first available icon
-				for i = 1, 8 do
-					if availableRaidIcons[i] then
-						self:SetIcon(args.destName, i)
-						availableRaidIcons[i] = false
-						break
-					end
-				end
-			end
+			self:SetIcon(args.destName, self.vb.omegaIcon)
+		end
+		self.vb.omegaIcon = self.vb.omegaIcon + 1
+		local expectedDebuffs = self:IsMythic() and 5 or 4
+		if self.vb.omegaIcon == expectedDebuffs then
+			self.vb.omegaIcon = 1
 		end
 	elseif spellId == 265212 and self:AntiSpam(4, args.destName) then
 		if args:IsPlayer() then
@@ -314,12 +308,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			yellOmegaVectorFades:Cancel()
 		end
 		if self.Options.SetIconVector then
-			local uId = DBM:GetRaidUnitId(args.destName)
-			local currentIcon = GetRaidTargetIndex(uId) or 0
 			self:SetIcon(args.destName, 0)
-			if currentIcon > 0 then
-				availableRaidIcons[currentIcon] = true
-			end
 		end
 	elseif spellId == 265212 then
 		--specWarnAmalgam:Show()
