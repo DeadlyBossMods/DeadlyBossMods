@@ -9210,12 +9210,12 @@ do
 	end
 
 	function countdownProtoType:Start(timer, count)
+		if DBM.Options.DontPlayCountdowns then return end
 		if not self.option or self.mod.Options[self.option] then
 			timer = timer or self.timer or 10
 			timer = timer < 2 and self.timer or timer
 			count = count or self.count or 5
 			if timer <= count then count = floor(timer) end
-			if DBM.Options.DontPlayCountdowns then return end
 			if not path1 or not path2 or not path3 then
 				DBM:Debug("Voice cache not built at time of countdownProtoType:Start. On fly caching.", 3)
 				DBM:BuildVoiceCountdownCache()
@@ -9256,6 +9256,7 @@ do
 	countdownProtoType.Show = countdownProtoType.Start
 
 	function countdownProtoType:Schedule(t)
+		if DBM.Options.DontPlayCountdowns then return end
 		return schedule(t, self.Start, self.mod, self)
 	end
 
