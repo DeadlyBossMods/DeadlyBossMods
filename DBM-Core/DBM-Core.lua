@@ -9271,10 +9271,6 @@ do
 			print("NewCountdown: you must provide either spellId or optionName", 2)
 			return
 		end
-		if type(timer) == "string" and timer:match("OptionVersion") then
-			print("OptionVersion depricated for newCountdown :"..optionDefault)
-			return
-		end
 		local optionVersion
 		if type(optionName) == "number" then
 			optionVersion = optionName
