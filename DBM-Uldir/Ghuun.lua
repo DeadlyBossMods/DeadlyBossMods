@@ -118,7 +118,7 @@ mod:AddSetIconOption("SetIconOnBloodHost", 267813, true)
 mod.vb.phase = 1
 mod.vb.mawCastCount = 0
 mod.vb.matrixCount = 0
-mod.vb.matrixSide = DBM_CORE_LEFT
+mod.vb.matrixSide = DBM_CORE_RIGHT
 mod.vb.explosiveCount = 0
 mod.vb.waveCast = 0
 mod.vb.bloodFeastCount = 0
@@ -228,17 +228,17 @@ function mod:OnCombatStart(delay)
 	timerMatrixCD:Start(5.3, 1)
 	timerExplosiveCorruptionCD:Start(8-delay, 1)--SUCCESS
 	timerThousandMawsCD:Start(25.4-delay, 1)
+	if not self:IsMythic() then
+		self.vb.matrixSide = DBM_CORE_RIGHT
+	--else
+		--Do shit on mythic
+	end
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(OVERVIEW)
 		DBM.InfoFrame:Show(8, "function", updateInfoFrame, false, false)
 	end
 	if self.Options.NPAuraOnFixate or self.Options.NPAuraOnUnstoppable then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
-	end
-	if not self:IsMythic() then
-		self.vb.matrixSide = DBM_CORE_LEFT
-	--else
-		--Do shit on mythic
 	end
 end
 
