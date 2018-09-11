@@ -303,8 +303,9 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 275160 then
 		specWarnGazeofGhuun:Show()
 		specWarnGazeofGhuun:Play("turnaway")
-		timerGazeofGhuunCD:Start()--26.8
-		countdownGazeofGhuun:Start(26.8)
+		local timer = self:IsHard() and 26.8 or self:IsEasy() and 31.6--TODO, mythic and LFR, easy vs hard is assumed but only confirmed on heroic/normal
+		timerGazeofGhuunCD:Start(timer)
+		countdownGazeofGhuun:Start(timer)
 	end
 end
 
@@ -357,7 +358,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 				countdownBloodFeast:Start(15.75)
 			end
 		else--P3, No more blood feast, only waves
-			timerWaveofCorruptionCD:Start(20.5, self.vb.waveCast+1)
+			--Faster on easy because no growth
+			local timer = self:IsHard() and 25.6 or self:IsEasy() and 20.5--TODO, mythic and LFR, easy vs hard is assumed but only confirmed on heroic/normal
+			timerWaveofCorruptionCD:Start(timer, self.vb.waveCast+1)
 		end
 	elseif spellId == 276839 then
 		self.vb.phase = 3
@@ -374,17 +377,20 @@ function mod:SPELL_CAST_SUCCESS(args)
 		countdownExplosiveCorruption:Start(30)
 		timerMalignantGrowthCD:Start(33.7)--33.7-34.1
 		countdownMalignantGrowth:Start(33.7)
-		timerGazeofGhuunCD:Start(47.4)
-		countdownGazeofGhuun:Start(47.4)
-		timerWaveofCorruptionCD:Start(49.9, 1)
+		local timer1 = self:IsHard() and 47.4 or self:IsEasy() and 52.3--Gaze of G'huun
+		local timer2 = self:IsHard() and 49.9 or self:IsEasy() and 37.7--Wave of Corruption (sooner on easy because no growth)
+		timerGazeofGhuunCD:Start(timer1)
+		countdownGazeofGhuun:Start(timer1)
+		timerWaveofCorruptionCD:Start(timer2, 1)
 	elseif spellId == 272505 or spellId == 275756 then
 		self.vb.explosiveCount = self.vb.explosiveCount + 1
 		if self.vb.phase == 1 then
 			timerExplosiveCorruptionCD:Start(26, self.vb.explosiveCount+1)
 			countdownExplosiveCorruption:Start(26)
 		else
-			timerExplosiveCorruptionCD:Start(13.4, self.vb.explosiveCount+1)
-			countdownExplosiveCorruption:Start(13.4)
+			local timer = self:IsHard() and 13.4 or self:IsEasy() and 15.8--TODO, mythic and LFR, easy vs hard is assumed but only confirmed on heroic/normal
+			timerExplosiveCorruptionCD:Start(timer, self.vb.explosiveCount+1)
+			countdownExplosiveCorruption:Start(timer)
 		end
 		if args:IsPlayer() then--Success event can be up to 2.5 seconds faster than applied event, but only tanks will get success event
 			if self:AntiSpam(3, 8) then
