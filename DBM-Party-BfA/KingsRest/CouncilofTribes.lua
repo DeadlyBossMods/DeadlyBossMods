@@ -12,9 +12,10 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 267256 266231",
+	"SPELL_AURA_REMOVED 267256",
 	"SPELL_CAST_START 266206 266951 266237 267273 267060",
 	"SPELL_CAST_SUCCESS 266231",
---	"UNIT_DIED",
+	"UNIT_DIED",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3",
 	"UNIT_TARGETABLE_CHANGED boss1 boss2 boss3"
@@ -55,6 +56,8 @@ mod:AddSetIconOption("SetIconOnBarrel", 266951, true)
 mod.vb.phase = 1
 mod.vb.bossOne = 0
 mod.vb.bossTwo = 0
+mod.vb.earthTotemActive = false
+mod.vb.bossName = "nil"
 
 --Engage Timers
 local function whoDat(self, delay)
@@ -80,6 +83,8 @@ function mod:OnCombatStart(delay)
 	self.vb.phase = 1
 	self.vb.bossOne = 0
 	self.vb.bossTwo = 0
+	self.vb.bossName = "nil"
+	self.vb.earthTotemActive = false
 	self:Schedule(2, whoDat, self, delay)
 end
 
@@ -91,9 +96,10 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 267256 then
+	if spellId == 267256 and not self.vb.earthTotemActive then
 		specWarnEarthwall:Show(args.destName)
 		specWarnEarthwall:Play("dispelboss")
+		self.vb.bossName = args.destName
 	elseif spellId == specWarnSeveringAxe then
 		if args:IsPlayer() then
 			specWarnSeveringAxe:Show()
@@ -104,6 +110,13 @@ function mod:SPELL_AURA_APPLIED(args)
 	end
 end
 --mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
+
+function mod:SPELL_AURA_REMOVED(args)
+	local spellId = args.spellId
+	if spellId == 267256  then
+		self.vb.bossName = "nil"
+	end
+end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
@@ -136,6 +149,7 @@ function mod:SPELL_CAST_START(args)
 			--timerPoisonNovaCD:Start()--Not enough data
 		end
 	elseif spellId == 267060 then
+		self.vb.earthTotemActive = true
 		specWarnTotems:Show()
 		specWarnTotems:Play("changetarget")
 		--timerTotemsCD:Start()--Not enough data
@@ -149,20 +163,16 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
---[[
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 135475 then -- Kula the Butcher
-		timerWhirlingAxesCD:Stop()
-	elseif cid == 135470 then -- Aka'ali the Conqueror
-		timerBarrelThroughCD:Stop()
-		timerDebilitatingBackhandCD:Stop()
-	elseif cid == 135472 then -- Zanazal the Wise
-		timerPoisonNovaCD:Stop()
-		timerTotemsCD:Stop()
+	if cid == 135759 then--Earth Totem
+		self.vb.earthTotemActive = false
+		if self.vb.bossName ~= "nil" then
+			specWarnEarthwall:Show(self.vb.bossName)
+			specWarnEarthwall:Play("dispelboss")
+		end
 	end
 end
---]]
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 	if msg:find("spell:266951") then
