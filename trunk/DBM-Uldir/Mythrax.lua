@@ -38,13 +38,13 @@ mod:RegisterEventsInCombat(
 --]]
 --Stage One: Oblivion's Call
 local warnPhase2						= mod:NewPhaseAnnounce(2, 2, nil, nil, nil, nil, nil, 2)
+local warnOblivionSphere				= mod:NewCountAnnounce(272407, 4)
 
 --Stage One: Oblivion's Call
 local specWarnEssenceShearDodge			= mod:NewSpecialWarningDodge(274693, false, nil, nil, 3, 2)
 local specWarnEssenceShear				= mod:NewSpecialWarningDefensive(274693, nil, nil, nil, 1, 2)
 local specWarnEssenceShearOther			= mod:NewSpecialWarningTaunt(274693, nil, nil, nil, 1, 2)
 local specWarnObliterationBlast			= mod:NewSpecialWarningDodge(273538, nil, nil, nil, 2, 2)--Mythic
-local specWarnOblivionSphere			= mod:NewSpecialWarningSwitch(272407, "RangedDps", nil, nil, 1, 2)
 local yellOblivionSphere				= mod:NewYell(272407)
 local specWarnImminentRuin				= mod:NewSpecialWarningYouPos(272536, nil, nil, nil, 1, 2)
 local yellImminentRuin					= mod:NewPosYell(272536, 139073)--Short name "Ruin"
@@ -305,8 +305,7 @@ end
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 272177 then--Oblivion Sphere (yes it's in combat log, but needs antispam event since it fires twice there)
 		self.vb.sphereCast = self.vb.sphereCast + 1
-		specWarnOblivionSphere:Show()
-		specWarnOblivionSphere:Play("killmob")
+		warnOblivionSphere:Show(self.vb.sphereCast)
 		timerOblivionSphereCD:Start(15, self.vb.sphereCast+1)
 		countdownOblivionSphere:Start(15)
 	end

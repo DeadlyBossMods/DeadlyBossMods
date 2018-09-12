@@ -45,7 +45,7 @@ local warnEyeBeam						= mod:NewTargetAnnounce(264382, 2)
 --Stage Two: Deception
 local warnRoilingDeceit					= mod:NewTargetAnnounce(265360, 4)
 --Stage Three: Corruption
-local warnCorruptorsPact				= mod:NewTargetAnnounce(265662, 2)
+local warnCorruptorsPact				= mod:NewTargetCountAnnounce(265662, 2, nil, nil, nil, nil, nil, nil, true)--Non Filtered Alert
 local warnWillofCorruptor				= mod:NewTargetAnnounce(265646, 4, nil, false)
 
 --General
@@ -67,7 +67,7 @@ local specWarnVoidbolt					= mod:NewSpecialWarningInterrupt(267180, "HasInterrup
 local specWarnOrbOfCorruption			= mod:NewSpecialWarningCount(267239, nil, nil, nil, 2, 7)
 local yellCorruptorsPact				= mod:NewFadesYell(265662)
 local specWarnWillofCorruptorSoon		= mod:NewSpecialWarningSoon(265646, nil, nil, nil, 3, 2)
-local specWarnWillofCorruptor			= mod:NewSpecialWarningSwitch(265646, "RangedDps", nil, nil, 1, 2)
+local specWarnWillofCorruptor			= mod:NewSpecialWarningSwitch(265646, "Dps", nil, 2, 1, 2)
 local specWarnEntropicBlast				= mod:NewSpecialWarningInterrupt(270620, "HasInterrupt", nil, nil, 1, 2)
 
 mod:AddTimerLine(GENERAL)
@@ -84,6 +84,7 @@ local timerRoilingDeceitCD				= mod:NewCDTimer(45, 265360, nil, nil, nil, 3)--61
 --local timerVoidBoltCD					= mod:NewAITimer(19.9, 267180, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
 mod:AddTimerLine(SCENARIO_STAGE:format(3))
 local timerOrbofCorruptionCD			= mod:NewCDCountTimer(50, 267239, nil, nil, nil, 5)
+local timerOrbLands						= mod:NewTimer(45, "timerOrbLands", 267239, nil, nil, 5)--61
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
 
@@ -100,6 +101,7 @@ mod.vb.phase = 1
 mod.vb.orbCount = 0
 mod.vb.addIcon = 1
 mod.vb.lastPower = 0
+mod.vb.corruptorsPactCount = 0
 
 function mod:EyeBeamTarget(targetname, uId)
 	if not targetname then return end
@@ -129,6 +131,7 @@ function mod:OnCombatStart(delay)
 	self.vb.orbCount = 0
 	self.vb.addIcon = 1
 	self.vb.lastPower = 0
+	self.vb.corruptorsPactCount = 0
 	timerTitanSparkCD:Start(10-delay)
 	timerMightofVoidCD:Start(15-delay)
 	countdownMightofVoid:Start(15-delay)
@@ -172,6 +175,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.orbCount = self.vb.orbCount + 1
 		specWarnOrbOfCorruption:Show(self.vb.orbCount)
 		specWarnOrbOfCorruption:Play("161612")--catch balls
+		timerOrbLands:Start(5, 1)
 		if not self:IsMythic() then--Didn't see cast on mythic?
 			timerOrbofCorruptionCD:Start(50, self.vb.orbCount+1)
 		end
@@ -236,7 +240,11 @@ function mod:SPELL_AURA_APPLIED(args)
 --			warnRoilingDeceit:Show(args.destName)
 		end
 	elseif spellId == 265662 then
-		warnCorruptorsPact:CombinedShow(0.5, args.destName)--Combined in case more than one soaks same ball (will happen in lfr/normal for sure or farm content for dps increases)
+		if self:AntiSpam(5, 7) then
+			self.vb.corruptorsPactCount = self.vb.corruptorsPactCount + 1
+			timerOrbLands:Start(15, self.vb.corruptorsPactCount+1)
+		end
+		warnCorruptorsPact:CombinedShow(0.5, self.vb.corruptorsPactCount, args.destName)--Combined in case more than one soaks same ball (will happen in lfr/normal for sure or farm content for dps increases)
 		if args:IsPlayer() then
 			yellCorruptorsPact:Countdown(30)
 			specWarnWillofCorruptorSoon:Schedule(26)
