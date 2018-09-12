@@ -46,6 +46,7 @@ local warnDarkRevCount					= mod:NewCountAnnounce(273365, 3)
 --Stage Two: Zul, Awakened
 local warnPhase2						= mod:NewPhaseAnnounce(2, 2, nil, nil, nil, nil, nil, 2)
 local warnRupturingBlood				= mod:NewStackAnnounce(274358, 2, nil, "Tank")
+local warnDeathwish						= mod:NewCountAnnounce(274271, 3)
 
 --Stage One: The Forces of Blood
 local specWarnDarkRevolation			= mod:NewSpecialWarningYouPos(273365, nil, nil, nil, 1, 2)
@@ -85,7 +86,7 @@ local timerBloodyCleaveCD				= mod:NewCDTimer(14.1, 273316, nil, "Tank", nil, 5,
 local timerCongealBloodCD				= mod:NewCDTimer(22.7, 273451, nil, "Dps", nil, 5, nil, DBM_CORE_DAMAGE_ICON)
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(18550))
 local timerRupturingBloodCD				= mod:NewCDTimer(6.1, 274358, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
-local timerDeathwishCD					= mod:NewNextTimer(27.9, 274271, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON..DBM_CORE_MAGIC_ICON)
+local timerDeathwishCD					= mod:NewNextCountTimer(27.9, 274271, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON..DBM_CORE_MAGIC_ICON)
 
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
@@ -114,6 +115,7 @@ mod.vb.CrawgsActive = 0
 mod.vb.HexerSpawnCount = 0
 mod.vb.CrusherSpawnCount = 0
 mod.vb.DarkRevIcon = 1
+mod.vb.deathwishCount = 0
 mod.vb.activeDecay = nil
 local unitTracked = {}
 
@@ -164,6 +166,7 @@ function mod:OnCombatStart(delay)
 	self.vb.HexerSpawnCount = 0
 	self.vb.CrusherSpawnCount = 0
 	self.vb.DarkRevIcon = 1
+	self.vb.deathwishCount = 0
 	self.vb.activeDecay = nil
 	timerPoolofDarknessCD:Start(20.5-delay, 1)
 	timerDarkRevolationCD:Start(30-delay, 1)
@@ -264,7 +267,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerCallofCrusherCD:Stop()
 		timerRupturingBloodCD:Start(6.5)
 		timerPoolofDarknessCD:Start(15, self.vb.poolCount+1)--Still used in P2
-		timerDeathwishCD:Start(23)
+		timerDeathwishCD:Start(23, 1)
 	elseif spellId == 273365 or spellId == 271640 then--Two versions of debuff, one that spawns an add and one that does not (so probably LFR/normal version vs heroic/mythic version)
 		self.vb.darkRevCount = self.vb.darkRevCount + 1
 		warnDarkRevCount:Show(self.vb.darkRevCount)
@@ -537,7 +540,9 @@ end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 274315 then--Deathwish
-		timerDeathwishCD:Start()
+		self.vb.deathwishCount = self.vb.deathwishCount + 1
+		warnDeathwish:Show(self.vb.deathwishCount)
+		timerDeathwishCD:Start(nil, self.vb.deathwishCount+1)
 	elseif spellId == 273361 then--Pool of Darkness
 		self.vb.poolCount = self.vb.poolCount + 1
 		if self.Options.SpecWarn273361count then
