@@ -37,7 +37,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(2166)
 
 L:SetOptionLocalization({
-	ShowHighestFirst	 =	"중첩이 높은 순서대로 정보 프레임에 끈질긴 감염 대상자 정렬 (중첩 낮은순 대신)"
+	ShowHighestFirst2	 =	"중첩이 높은 순서대로 정보 프레임에 끈질긴 감염 대상자 정렬 (중첩 낮은순 대신)"
 })
 
 ---------------

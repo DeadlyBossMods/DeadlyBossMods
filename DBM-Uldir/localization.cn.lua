@@ -42,7 +42,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(2166)
 
 L:SetOptionLocalization({
-	ShowHighestFirst	 =	"将信息窗中持续感染的层数从高往低显示(默认从低到高)"
+	ShowHighestFirst2	 =	"将信息窗中持续感染的层数从高往低显示(默认从低到高)"
 })
 
 ---------------

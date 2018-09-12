@@ -37,7 +37,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(2166)
 
 L:SetOptionLocalization({
-	ShowHighestFirst	 =	"Sortiere Infofenster nach dem höchsten Stapel von \"Anhaltende Infektion\" (statt dem niedrigsten Stapel)"
+	ShowHighestFirst2	 =	"Sortiere Infofenster nach dem höchsten Stapel von \"Anhaltende Infektion\" (statt dem niedrigsten Stapel)"
 })
 
 ---------------
