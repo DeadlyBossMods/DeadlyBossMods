@@ -41,7 +41,6 @@ local warnImmunoSupp						= mod:NewCountAnnounce(265206, 3)
 
 local specWarnEvolvingAffliction			= mod:NewSpecialWarningStack(265178, nil, 2, nil, nil, 1, 6)
 local specWarnEvolvingAfflictionOther		= mod:NewSpecialWarningTaunt(265178, nil, nil, nil, 1, 2)
---local yellEvolvingAffliction				= mod:NewShortFadesYell(265178)
 local specWarnOmegaVector					= mod:NewSpecialWarningYou(265129, nil, nil, nil, 1, 2)
 local yellOmegaVector						= mod:NewYell(265129)
 local yellOmegaVectorFades					= mod:NewShortFadesYell(265129)
@@ -77,22 +76,72 @@ local countdownLiquefy						= mod:NewCountdown("AltTwo90", 265217, nil, nil, 3)
 mod:AddSetIconOption("SetIconVector", 265129, true)
 mod:AddRangeFrameOption("5/8")
 mod:AddInfoFrameOption(265127, true)
-mod:AddBoolOption("ShowHighestFirst", true)--The priority for mythic, non mythic will probably turn off
+mod:AddBoolOption("ShowHighestFirst2", false)--Show lest stacks first by default, since it alines with new infoframe
 
 mod.vb.ContagionCount = 0
 mod.vb.plagueBombCount = 0
-mod.vb.omegaIcon = 1
+local vectorTargets = {[1] = false, [2] = false, [3] = false, [4] = false}
 local playerHasSix, playerHasTwelve, playerHasTwentyFive = false, false, false
 local seenAdds = {}
 local castsPerGUID = {}
 
+local updateInfoFrame
+do
+	local floor, tsort = math.floor, table.sort
+	local lines = {}
+	local tempLines = {}
+	local sortedLines = {}
+	local function sortFuncDesc(a, b) return lines[a] > lines[b] end
+	local function sortFuncAsc(a, b) return lines[a] < lines[b] end
+	local function addLine(key, value)
+		-- sort by insertion order
+		lines[key] = value
+		sortedLines[#sortedLines + 1] = key
+	end
+	updateInfoFrame = function()
+		table.wipe(lines)
+		table.wipe(tempLines)
+		table.wipe(sortedLines)
+		--Vector Players First
+		for i=1, #vectorTargets do
+			if vectorTargets[i] then
+				local name = vectorTargets[i]
+				local uId = DBM:GetRaidUnitId(name)
+				if uId then--Failsafe
+					local _, _, _, _, _, expireTime = DBM:UnitDebuff(uId, 265129)
+					local remaining = floor(expireTime-GetTime())
+					addLine(name, remaining)
+				end
+			end
+		end
+		--Lingering Infection (UGLY code)
+		for uId in DBM:GetGroupMembers() do
+			local spellName, _, count = DBM:UnitDebuff(uId, 265127)
+			if spellName and count then
+				tempLines[UnitName(uId)] = count
+			end
+		end
+		--Sort lingering according to options
+		if mod.Options.ShowHighestFirst2 then
+			tsort(tempLines, sortFuncDesc)
+		else
+			tsort(tempLines, sortFuncAsc)
+		end
+		--Now move lingering back into regular infoframe tables
+		for i, v in ipairs(tempLines) do
+			addLine(tempLines[i], v)
+		end
+		return lines, sortedLines
+	end
+end
+
 function mod:OnCombatStart(delay)
 	table.wipe(seenAdds)
 	table.wipe(castsPerGUID)
+	vectorTargets = {[1] = false, [2] = false, [3] = false, [4] = false}
 	playerHasSix, playerHasTwelve, playerHasTwentyFive = false, false, false
 	self.vb.ContagionCount = 0
 	self.vb.plagueBombCount = 0
-	self.vb.omegaIcon = 1
 	timerEvolvingAfflictionCD:Start(4.7-delay)
 	timerGestateCD:Start(10-delay)--SUCCESS
 	countdownGestate:Start(10-delay)
@@ -100,8 +149,13 @@ function mod:OnCombatStart(delay)
 	timerLiquefyCD:Start(90.8-delay)
 	countdownLiquefy:Start(90.8-delay)
 	if self.Options.InfoFrame then
-		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(265127))
-		DBM.InfoFrame:Show(8, "playerdebuffstacks", 265127, self.Options.ShowHighestFirst and 1 or 2)
+		if DBM.Options.DebugMode then--Until tested, only enable new frame in debug mode
+			DBM.InfoFrame:SetHeader(OVERVIEW)
+			DBM.InfoFrame:Show(8, "function", updateInfoFrame, false, false)--8 by default, will show all 4 vectors and 4 lowest (or 4 highest) lingering
+		else--Fall back to old frame
+			DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(265127))
+			DBM.InfoFrame:Show(8, "playerdebuffstacks", 265127, self.Options.ShowHighestFirst2 and 1 or 2)
+		end
 	end
 end
 
@@ -240,18 +294,24 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnOmegaVector:Play("targetyou")
 			yellOmegaVector:Yell()
 			local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", spellId)--Flex debuff, have to live pull duration
-			if expireTime then--Done this way so hotfix automatically goes through
+			if expireTime then
 				local remaining = expireTime-GetTime()
 				yellOmegaVectorFades:Countdown(remaining, 3)
 			end
 		end
-		if self.Options.SetIconVector then
-			self:SetIcon(args.destName, self.vb.omegaIcon)
-		end
-		self.vb.omegaIcon = self.vb.omegaIcon + 1
-		local expectedDebuffs = self:IsMythic() and 5 or 4
-		if self.vb.omegaIcon == expectedDebuffs then
-			self.vb.omegaIcon = 1
+		local expectedDebuffs = self:IsMythic() and 4 or 3
+		for i = 1, expectedDebuffs do
+			if not vectorTargets[i] then--Not yet assigned!
+				vectorTargets[i] = args.destName--Assign player name for infoframe
+				if self.Options.SetIconVector then--Now do icon stuff, if enabled
+					local uId = DBM:GetRaidUnitId(args.destName)
+					local currentIcon = GetRaidTargetIndex(uId) or 0
+					if currentIcon == 0 then--Don't set icon if target already has one
+						self:SetIcon(args.destName, i)
+					end
+				end
+				break
+			end
 		end
 	elseif spellId == 265212 and self:AntiSpam(4, args.destName) then
 		if args:IsPlayer() then
@@ -305,8 +365,31 @@ function mod:SPELL_AURA_REMOVED(args)
 		if args:IsPlayer() then
 			yellOmegaVectorFades:Cancel()
 		end
-		if self.Options.SetIconVector then
-			self:SetIcon(args.destName, 0)
+		local expectedDebuffs = self:IsMythic() and 4 or 3
+		local oneRemoved = false
+		for i = 1, expectedDebuffs do
+			if vectorTargets[i] and vectorTargets[i] == args.destName then--Found assignment matching this units name
+				if not oneRemoved then
+					vectorTargets[i] = false--remove first assignment we find
+					oneRemoved = true
+					--If icons enabled, remove icon or continue loop to look for next assignment
+					if self.Options.SetIconVector then
+						local uId = DBM:GetRaidUnitId(args.destName)
+						if not DBM:UnitDebuff(uId, spellId) then--No remaining debuffs, we're done!
+							self:SetIcon(args.destName, 0)
+							break--Break loop, nothing further to do
+						end
+					else--Icon option isn't even enabled, so just break loop outright
+						break
+					end
+				else
+					--Loop is continuing because debuff still existed
+					if self.Options.SetIconVector then
+						self:SetIcon(args.destName, i)
+						break--Break loop, Icon updated to next 
+					end
+				end
+			end
 		end
 	elseif spellId == 265212 then
 		--specWarnAmalgam:Show()

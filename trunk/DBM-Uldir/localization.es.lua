@@ -37,7 +37,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(2166)
 
 L:SetOptionLocalization({
-	ShowHighestFirst	 =	"Ordenar marco de información de $spell:265127 de mayor a menor cantidad de acumulaciones (en lugar de menor a mayor)"
+	ShowHighestFirst2	 =	"Ordenar marco de información de $spell:265127 de mayor a menor cantidad de acumulaciones (en lugar de menor a mayor)"
 })
 --Mostrar spellid en lugar de texto, pendiente de prueba
 
