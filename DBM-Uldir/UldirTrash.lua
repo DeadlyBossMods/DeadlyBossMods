@@ -7,7 +7,7 @@ mod:SetZone()
 mod.isTrashMod = true
 
 mod:RegisterEvents(
-	"SPELL_CAST_START 277047 274802",
+	"SPELL_CAST_START 277047 274802 276540 278976",
 	"SPELL_CAST_SUCCESS 277358",
 	"SPELL_AURA_APPLIED 277047 277498 277548"
 --	"SPELL_AURA_REMOVED"
@@ -16,6 +16,7 @@ mod:RegisterEvents(
 local warnCorruptingGaze				= mod:NewTargetAnnounce(277047, 3)
 local warnMindSlave						= mod:NewTargetNoFilterAnnounce(277498, 3)
 
+local specWarnWildLeap					= mod:NewSpecialWarningDodge(278976, nil, nil, nil, 2, 2)
 local specWarnCorruptingGaze			= mod:NewSpecialWarningMoveAway(277047, nil, nil, nil, 1, 2)
 local specWarnCorruptingGazeNear		= mod:NewSpecialWarningClose(277047, nil, nil, nil, 1, 2)
 local yellCorruptingGaze				= mod:NewYell(277047)
@@ -47,12 +48,15 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 277047 then
 		--self:BossTargetScanner(args.sourceGUID, "SubmergeTarget", 0.1, 14)
 		self:ScheduleMethod(0.2, "BossTargetScanner", args.sourceGUID, "GazeTarget", 0.1, 12)
-	elseif spellId == 274802 then
+	elseif spellId == 274802 and self:AntiSpam(3, 1) then
 		specWarnBloodstorm:Show()
 		specWarnBloodstorm:Play("justrun")
 	elseif spellId == 276540 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnBloodShield:Show(args.sourceName)
 		specWarnBloodShield:Play("kickcast")
+	elseif spellId == 278976 and self:AntiSpam(3, 2) then
+		specWarnWildLeap:Show()
+		specWarnWildLeap:Play("watchstep")
 	end
 end
 
