@@ -95,7 +95,7 @@ local countdownMightofVoid				= mod:NewCountdown("Alt37", 267312, "Tank", nil, 3
 --mod:AddRangeFrameOption("8/10")
 --mod:AddBoolOption("ShowAllPlatforms", false)
 mod:AddSetIconOption("SetIconOnAdds", 267192, true, true)
-mod:AddInfoFrameOption(265451, true)
+--mod:AddInfoFrameOption(265451, true)
 
 mod.vb.phase = 1
 mod.vb.orbCount = 0
@@ -138,10 +138,10 @@ function mod:OnCombatStart(delay)
 	timerSurgingDarknessCD:Start(25-delay)
 	countdownSurgingDarkness:Start(25)
 	timerEyeBeamCD:Start(52-delay)--Despite what journal says, this is always 52-54 regardless
-	if self.Options.InfoFrame then
-		DBM.InfoFrame:SetHeader(DBM_CORE_INFOFRAME_POWER)
-		DBM.InfoFrame:Show(4, "enemypower", 2)
-	end
+--	if self.Options.InfoFrame then
+--		DBM.InfoFrame:SetHeader(DBM_CORE_INFOFRAME_POWER)
+--		DBM.InfoFrame:Show(4, "enemypower", 2)
+--	end
 	if self:IsMythic() then
 		timerAddsCD:Start(62.7)--Both adds
 		timerRoilingDeceitCD:Start(27)--CAST_START
@@ -154,9 +154,9 @@ function mod:OnCombatEnd()
 --	if self.Options.RangeFrame then
 --		DBM.RangeCheck:Hide()
 --	end
-	if self.Options.InfoFrame then
-		DBM.InfoFrame:Hide()
-	end
+--	if self.Options.InfoFrame then
+--		DBM.InfoFrame:Hide()
+--	end
 end
 
 function mod:SPELL_CAST_START(args)
