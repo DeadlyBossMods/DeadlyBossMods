@@ -44,6 +44,7 @@ local warnEyeBeam						= mod:NewTargetCountAnnounce(264382, 2)
 --local warnFixate						= mod:NewTargetAnnounce(264219, 2)
 --Stage Two: Deception
 local warnRoilingDeceit					= mod:NewTargetCountAnnounce(265360, 4)
+local warnCasterAddsRemaining			= mod:NewAddsLeftAnnounce("ej18397", 2, 31700)
 --Stage Three: Corruption
 local warnCorruptorsPact				= mod:NewTargetCountAnnounce(265662, 2, nil, nil, nil, nil, nil, nil, true)--Non Filtered Alert
 local warnWillofCorruptor				= mod:NewTargetAnnounce(265646, 4, nil, false)
@@ -55,7 +56,7 @@ local specWarnShatter					= mod:NewSpecialWarningTaunt(265237, nil, nil, nil, 1,
 local specWarnAdds						= mod:NewSpecialWarningAdds(31700, nil, nil, nil, 1, 2)--Generic Warning only used on Mythic
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
 --Stage One: Chaos
-local specWarnEyeBeam					= mod:NewSpecialWarningMoveAway(264382, nil, nil, nil, 1, 2)
+local specWarnEyeBeam					= mod:NewSpecialWarningMoveAway(264382, nil, nil, 2, 3, 2)
 local yellEyeBeam						= mod:NewCountYell(264382)
 --local specWarnFixate					= mod:NewSpecialWarningRun(264219, nil, nil, nil, 4, 2)
 --Stage Two: Deception
@@ -104,6 +105,7 @@ mod.vb.lastPower = 0
 mod.vb.eyeCount = 0
 mod.vb.roilingCount = 0
 mod.vb.corruptorsPactCount = 0
+mod.vb.casterAddsRemaining = 0
 
 function mod:EyeBeamTarget(targetname, uId)
 	if not targetname then return end
@@ -137,6 +139,7 @@ function mod:OnCombatStart(delay)
 	self.vb.eyeCount = 0
 	self.vb.roilingCount = 0
 	self.vb.corruptorsPactCount = 0
+	self.vb.casterAddsRemaining = 0
 	timerTitanSparkCD:Start(10-delay)
 	timerMightofVoidCD:Start(15-delay)
 	countdownMightofVoid:Start(15-delay)
@@ -218,6 +221,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 --			warnEyeBeam:Show(args.destName)
 		end
 	elseif spellId == 271099 then--Mythic Summon Adds
+		self.vb.casterAddsRemaining = self.vb.casterAddsRemaining + 3
 		specWarnAdds:Show()
 		specWarnAdds:Play("killmob")
 		timerAddsCD:Start()
@@ -297,6 +301,8 @@ function mod:UNIT_DIED(args)
 	elseif cid == 135083 then--Guardian of Yogg-Saron
 	
 	elseif cid == 135824 then--Anub'ar Voidweaver
+		self.vb.casterAddsRemaining = self.vb.casterAddsRemaining - 1
+		warnCasterAddsRemaining:Show(self.vb.casterAddsRemaining)
 		--timerVoidBoltCD:Stop(args.destGUID)
 	end
 end
@@ -305,6 +311,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 266913 and not self:IsMythic() then--Spawn Qiraji Warrior
 		timerQirajiWarriorCD:Start()
 	elseif spellId == 267192 and not self:IsMythic() then--Spawn Anub'ar Caster
+		self.vb.casterAddsRemaining = self.vb.casterAddsRemaining + 3
 		timerAnubarCasterCD:Start()--80
 	elseif spellId == 265437 then--Roiling Deceit
 		self.vb.roilingCount = 0
