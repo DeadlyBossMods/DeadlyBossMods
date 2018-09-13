@@ -39,6 +39,8 @@ mod:RegisterEventsInCombat(
 --Stage One: Oblivion's Call
 local warnPhase2						= mod:NewPhaseAnnounce(2, 2, nil, nil, nil, nil, nil, 2)
 local warnOblivionSphere				= mod:NewCountAnnounce(272407, 4)
+--Stage Two:
+local warnDestroyerRemaining			= mod:NewAddsLeftAnnounce("ej18508", 2, 274693)
 
 --Stage One: Oblivion's Call
 local specWarnEssenceShearDodge			= mod:NewSpecialWarningDodge(274693, false, nil, nil, 3, 2)
@@ -295,6 +297,7 @@ function mod:UNIT_DIED(args)
 		--TODO, infoframe add tracking
 	elseif cid == 139381 then--N'raqi Destroyer
 		self.vb.destroyersRemaining = self.vb.destroyersRemaining - 1
+		warnDestroyerRemaining:Show(self.vb.destroyersRemaining)
 		--TODO, infoframe add tracking
 		if self.vb.destroyersRemaining == 0 then
 			timerEssenceShearCD:Stop(DBM_ADD)
