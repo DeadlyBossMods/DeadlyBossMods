@@ -140,22 +140,28 @@ function mod:OnCombatStart(delay)
 	self.vb.roilingCount = 0
 	self.vb.corruptorsPactCount = 0
 	self.vb.casterAddsRemaining = 0
+	--Same in All
 	timerTitanSparkCD:Start(10-delay)
 	timerMightofVoidCD:Start(15-delay)
 	countdownMightofVoid:Start(15-delay)
-	timerSurgingDarknessCD:Start(25-delay)
-	countdownSurgingDarkness:Start(25)
-	timerEyeBeamCD:Start(52-delay)--Despite what journal says, this is always 52-54 regardless
+	timerEyeBeamCD:Start(52-delay)--52-54
+	if self:IsLFR() then
+		timerSurgingDarknessCD:Start(41-delay)--Custom for LFR
+		countdownSurgingDarkness:Start(41)--Custom for LFR
+	else
+		timerSurgingDarknessCD:Start(25-delay)--Same in rest of them
+		countdownSurgingDarkness:Start(25)--Same in rest of them
+		if self:IsMythic() then
+			timerAddsCD:Start(62.7)--Both adds with custom adds trigger
+			timerRoilingDeceitCD:Start(26.5)--CAST_START
+		else
+			timerQirajiWarriorCD:Start(56-delay)--56-58 regardless
+		end
+	end
 --	if self.Options.InfoFrame then
 --		DBM.InfoFrame:SetHeader(DBM_CORE_INFOFRAME_POWER)
 --		DBM.InfoFrame:Show(4, "enemypower", 2)
 --	end
-	if self:IsMythic() then
-		timerAddsCD:Start(62.7)--Both adds
-		timerRoilingDeceitCD:Start(27)--CAST_START
-	else
-		timerQirajiWarriorCD:Start(56-delay)--Despite what journal says, this is always 56-58 regardless
-	end
 end
 
 function mod:OnCombatEnd()
@@ -316,16 +322,14 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	elseif spellId == 265437 then--Roiling Deceit
 		self.vb.roilingCount = 0
 		--here because this spell ID fires at beginning of each set ONCE
-		--if self:IsMythic() then
-		--	timerRoilingDeceitCD:Schedule(6, 60)
-		--else
-			timerRoilingDeceitCD:Schedule(6, 60)--Same in both
-		--end
+		timerRoilingDeceitCD:Schedule(6, 60)--Same in all
 	elseif spellId == 264746 then--Eye beam
 		self.vb.eyeCount = 0
 		--here because this spell ID fires at beginning of each set ONCE
 		if self:IsMythic() then
 			timerEyeBeamCD:Schedule(6, 60)
+		elseif self:IsLFR() then
+			timerEyeBeamCD:Schedule(6, 50)
 		else
 			timerEyeBeamCD:Schedule(6, 40)
 		end
@@ -365,18 +369,18 @@ function mod:UNIT_POWER_FREQUENT(uId)
 			if not self:IsMythic() then
 				timerQirajiWarriorCD:Stop()
 				timerEyeBeamCD:Stop()
-				timerAnubarCasterCD:Start(20.5)
+				if not self:IsLFR() then
+					timerAnubarCasterCD:Start(20.5)
+				end
 				timerRoilingDeceitCD:Start(22)--CAST_START
 			else--Mythic Stage 2 is final stage, start final stage timer
 				timerAddsCD:Stop()
 				timerOrbofCorruptionCD:Start(12, 1)--Assumed
 			end
-		elseif self.vb.phase == 3 then
+		elseif self.vb.phase == 3 then--Should only happen on non mythic
 			warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(3))
-			if not self:IsMythic() then
-				timerAnubarCasterCD:Stop()
-				timerRoilingDeceitCD:Cancel()
-			end
+			timerAnubarCasterCD:Stop()
+			timerRoilingDeceitCD:Cancel()
 			timerOrbofCorruptionCD:Start(12, 1)
 		end
 	end
