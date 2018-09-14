@@ -190,9 +190,9 @@ function mod:SPELL_CAST_START(args)
 		specWarnOrbOfCorruption:Show(self.vb.orbCount)
 		specWarnOrbOfCorruption:Play("161612")--catch balls
 		timerOrbLands:Start(5, 1)
-		if not self:IsMythic() then--Didn't see cast on mythic?
-			timerOrbofCorruptionCD:Start(50, self.vb.orbCount+1)
-		end
+		--if not self:IsMythic() then--Didn't see cast on mythic?
+			--timerOrbofCorruptionCD:Start(50, self.vb.orbCount+1)
+		--end
 	elseif spellId == 270620 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnEntropicBlast:Show(args.sourceName)
 		specWarnEntropicBlast:Play("kickcast")
