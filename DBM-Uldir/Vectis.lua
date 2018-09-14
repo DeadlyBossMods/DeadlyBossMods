@@ -103,7 +103,7 @@ do
 		table.wipe(tempLines)
 		table.wipe(sortedLines)
 		--Vector Players First
-		for i=1, #vectorTargets do
+		for i=1, 4 do
 			if vectorTargets[i] then
 				local name = vectorTargets[i]
 				local uId = DBM:GetRaidUnitId(name)
