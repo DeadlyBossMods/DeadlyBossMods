@@ -15,15 +15,16 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 262292 262288 262364 262277",
 	"SPELL_CAST_SUCCESS 262370",
 	"SPELL_AURA_APPLIED 262313 262314 262378",
+	"SPELL_AURA_APPLIED_DOSE 262313 262314",
 	"SPELL_AURA_REMOVED 262313 262314",
-	"SPELL_AURA_REMOVED_DOSE 262256",
-	"UNIT_DIED",
-	"UNIT_SPELLCAST_SUCCEEDED boss1"
+	"SPELL_AURA_REMOVED_DOSE 262256"
+--	"UNIT_DIED"
+--	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
 --[[
 (ability.id = 262292 or ability.id = 262288 or ability.id = 262364) and type = "begincast"
- or ability.id = 262370 and type = "cast"
+ or (ability.id = 262370 or ability.id = 274470) and type = "cast"
 --]]
 local warnFrenzy						= mod:NewSpellAnnounce(262378, 3)
 local warnThrashNotTanking				= mod:NewSpellAnnounce(262277, 3, nil, "Tank|Healer")
@@ -32,9 +33,11 @@ local specWarnThrash					= mod:NewSpecialWarningDefensive(262277, "Tank", nil, n
 local specWarnRottingRegurg				= mod:NewSpecialWarningDodge(262292, nil, nil, nil, 2, 2)
 local specWarnShockwaveStomp			= mod:NewSpecialWarningCount(262288, nil, nil, nil, 2, 2)
 local specWarnMalodorousMiasma			= mod:NewSpecialWarningYou(262313, nil, nil, nil, 1, 2)
+local specWarnMalodorousMiasmaStack		= mod:NewSpecialWarningStack(262313, nil, 2, nil, nil, 1, 6)
 local yellMalodorousMiasma				= mod:NewYell(262313)
 local yellMalodorousMiasmaFades			= mod:NewFadesYell(262313)
 local specWarnPutridParoxysm			= mod:NewSpecialWarningDefensive(262314, nil, nil, nil, 1, 2)
+local specWarnPutridParoxysmStack		= mod:NewSpecialWarningStack(262314, nil, 2, nil, nil, 1, 6)
 local yellPutridParoxysm				= mod:NewYell(262314)
 local yellPutridParoxysmFades			= mod:NewFadesYell(262314)
 local specWarnAdds						= mod:NewSpecialWarningAdds(262364, "Dps", nil, nil, 1, 2)
@@ -44,6 +47,8 @@ local timerThrashCD						= mod:NewCDTimer(6, 262277, nil, "Tank", nil, 5, nil, D
 local timerRottingRegurgCD				= mod:NewCDTimer(40.1, 262292, nil, nil, nil, 3)
 local timerShockwaveStompCD				= mod:NewCDCountTimer(28.8, 262288, nil, nil, nil, 2)
 local timerAddsCD						= mod:NewAddsTimer(54.8, 262364, nil, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON)
+local timerEnticingCast					= mod:NewCastTimer(30, 262364, nil, nil, nil, 6, nil, DBM_CORE_DAMAGE_ICON)
+
 
 local berserkTimer						= mod:NewBerserkTimer(369)
 
@@ -56,49 +61,33 @@ mod:AddInfoFrameOption(262364, true)
 
 mod.vb.stompCount = 0
 
-local trackedAdds = {}
-
-local updateInfoFrame
+local updateInfoFrame, openInfoFrame
 do
 	local lines = {}
-	local addedGUIDs = {}
-	local floor, UnitCastingInfo, UnitHealth, UnitHealthMax = math.floor, UnitCastingInfo, UnitHealth, UnitHealthMax
+	local floor, UnitCastingInfo, UnitHealth, UnitHealthMax, UnitExists = math.floor, UnitCastingInfo, UnitHealth, UnitHealthMax, UnitExists
 	updateInfoFrame = function()
 		table.wipe(lines)
-		table.wipe(addedGUIDs)
-		--Check nameplates
-		for i = 1, 40 do--In case friendly nameplates enabled, gotta check at least 40 to find up to 10 mobs in 30 man raid
-			local UnitID = "nameplate"..i
-			local GUID = UnitGUID(UnitID)
-			if GUID and not addedGUIDs[GUID] then
-				local cid = mod:GetCIDFromGUID(GUID)
-				if cid == 133492 then
-					local unitHealth = UnitHealth(UnitID) / UnitHealthMax(UnitID)
-					local _, _, _, startTime, endTime = UnitCastingInfo(UnitID)
-					local time = ((endTime or 0) - (startTime or 0)) / 1000
-					if time then
-						lines[floor(unitHealth).."%"] = floor(time)
-					end
+		local found = false
+		for i = 2, 4 do--Adds do get Boss Unit IDs, so just need to check boss2-boss4
+			local UnitID = "boss"..i
+			if UnitExists(UnitID) then
+				found = true
+				local unitHealth = UnitHealth(UnitID) / UnitHealthMax(UnitID)
+				local _, _, _, startTime, endTime = UnitCastingInfo(UnitID)
+				local time = ((endTime or 0) - (startTime or 0)) / 1000
+				if time then
+					lines[floor(unitHealth).."%"] = floor(time)
 				end
 			end
 		end
-		--Check raid targets
-		for uId in DBM:GetGroupMembers() do
-			local UnitID = uId.."target"
-			local GUID = UnitGUID(UnitID)
-			if GUID and not addedGUIDs[GUID] then
-				local cid = mod:GetCIDFromGUID(GUID)
-				if cid == 133492 then
-					local unitHealth = UnitHealth(UnitID) / UnitHealthMax(UnitID)
-					local _, _, _, startTime, endTime = UnitCastingInfo(UnitID)
-					if startTime and endTime then
-						local time = (endTime - startTime) / 1000
-						lines[floor(unitHealth).."%"] = floor(time)
-					end
-				end
-			end
+		if not found then
+			DBM.InfoFrame:Hide()
 		end
 		return lines
+	end
+	openInfoFrame = function(self, spellName)
+		DBM.InfoFrame:SetHeader(spellName)
+		DBM.InfoFrame:Show(5, "function", updateInfoFrame, false, true)
 	end
 end
 
@@ -123,7 +112,6 @@ end
 
 function mod:OnCombatStart(delay)
 	self.vb.stompCount = 0
-	table.wipe(trackedAdds)
 	timerThrashCD:Start(6.7-delay)
 	countdownThrash:Start(6.7-delay)
 	if not self:IsEasy() then
@@ -134,12 +122,15 @@ function mod:OnCombatStart(delay)
 		timerRottingRegurgCD:Start(31.4-delay)
 		countdownRottingRegurg:Start(31.4-delay)
 	end
-	timerAddsCD:Start(55-delay)
+	timerAddsCD:Start(55-delay)--Until Attackable, not the chute visuals
 	countdownAdds:Start(55-delay)
-	berserkTimer:Start()
 	if self:IsMythic() then
 		updateRangeFrame(self)
+		--berserkTimer:Start(330)--Rumored, not confirmed
+	else
+		--berserkTimer:Start()
 	end
+	berserkTimer:Start()--Until rumor confirmed, use this berserk timer in all modes
 end
 
 function mod:OnCombatEnd()
@@ -174,17 +165,19 @@ function mod:SPELL_CAST_START(args)
 		specWarnShockwaveStomp:Play("carefly")
 		timerShockwaveStompCD:Start(nil, self.vb.stompCount+1)
 	elseif spellId == 262364 then--Enticing Essence
-		if not trackedAdds[args.sourceGUID] then
-			trackedAdds[args.sourceGUID] = true
-		end
-		if self.Options.InfoFrame and #trackedAdds > 0 and not DBM.InfoFrame:IsShown() then
-			DBM.InfoFrame:SetHeader(args.spellName)
-			DBM.InfoFrame:Show(5, "function", updateInfoFrame, false, true)
+		if self.Options.InfoFrame and not DBM.InfoFrame:IsShown() then
+			self:Unschedule(openInfoFrame)
+			self:Schedule(2, openInfoFrame, self, args.spellName)--delayed because Boss Unit Ids don't exist right away on cast start
 		end
 		if self:AntiSpam(10, 2) then
 			specWarnAdds:Show()
 			specWarnAdds:Play("killmob")
-			timerAddsCD:Start()
+			if self:IsEasy() then
+				timerEnticingCast:Start(30)
+			else
+				timerEnticingCast:Start(20)
+			end
+			timerAddsCD:Start(54.8)
 			countdownAdds:Start(54.8)
 		end
 	elseif spellId == 262277 then
@@ -214,18 +207,32 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 262313 and args:IsPlayer() then
-		specWarnMalodorousMiasma:Show()
-		specWarnMalodorousMiasma:Play("targetyou")
-		if self:IsMythic() then
+		local amount = args.amount or 1
+		if amount == 1 then
 			yellMalodorousMiasma:Yell()
+			specWarnMalodorousMiasma:Show()
+			specWarnMalodorousMiasma:Play("targetyou")
+		else
+			specWarnMalodorousMiasmaStack:Show(amount)
+			specWarnMalodorousMiasmaStack:Play("stackhigh")
+		end
+		if self:IsMythic() then
+			yellMalodorousMiasmaFades:Cancel()
 			yellMalodorousMiasmaFades:Countdown(18)
 			updateRangeFrame(self)
 		end
 	elseif spellId == 262314 and args:IsPlayer() then
-		specWarnPutridParoxysm:Show()
-		specWarnPutridParoxysm:Play("defensive")
-		if self:IsMythic() then
+		local amount = args.amount or 1
+		if amount == 1 then
 			yellPutridParoxysm:Yell()
+			specWarnPutridParoxysm:Show()
+			specWarnPutridParoxysm:Play("defensive")
+		else
+			specWarnPutridParoxysmStack:Show(amount)
+			specWarnPutridParoxysmStack:Play("stackhigh")
+		end
+		if self:IsMythic() then
+			yellPutridParoxysmFades:Cancel()
 			yellPutridParoxysmFades:Countdown(6)
 			updateRangeFrame(self)
 		end
@@ -233,6 +240,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnFrenzy:Show()
 	end
 end
+mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
@@ -261,12 +269,11 @@ function mod:SPELL_AURA_REMOVED_DOSE(args)
 	end
 end
 
+--[[
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 133492 then--Corruption Corpuscle
-		trackedAdds[args.destGUID] = nil
-		if self.Options.InfoFrame and #trackedAdds == 0 then
-			DBM.InfoFrame:Hide()
-		end
+
 	end
 end
+--]]
