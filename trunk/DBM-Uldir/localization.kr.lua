@@ -25,6 +25,14 @@ L= DBM:GetModLocalization(2146)
 ---------------------------
 L= DBM:GetModLocalization(2169)
 
+L:SetTimerLocalization({
+	timerOrbLands	= "구슬 (%s) 떨어짐"
+})
+
+L:SetOptionLocalization({
+	timerOrbLands	 =	"타락의 보주가 나오면 타이머 바 보기"
+})
+
 L:SetMiscLocalization({
 	CThunDisc	 =	"원반 접속 완료. 크툰 데이터를 불러옵니다.",
 	YoggDisc	 =	"원반 접속 완료. 요그사론 데이터를 불러옵니다.",
