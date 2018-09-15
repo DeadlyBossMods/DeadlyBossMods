@@ -41,9 +41,9 @@ local warnImmunoSupp						= mod:NewCountAnnounce(265206, 3)
 
 local specWarnEvolvingAffliction			= mod:NewSpecialWarningStack(265178, nil, 2, nil, nil, 1, 6)
 local specWarnEvolvingAfflictionOther		= mod:NewSpecialWarningTaunt(265178, nil, nil, nil, 1, 2)
-local specWarnOmegaVector					= mod:NewSpecialWarningYou(265129, nil, nil, nil, 1, 2)
-local yellOmegaVector						= mod:NewYell(265129)
-local yellOmegaVectorFades					= mod:NewShortFadesYell(265129)
+local specWarnOmegaVector					= mod:NewSpecialWarningYouPos(265129, nil, nil, nil, 1, 2)
+local yellOmegaVector						= mod:NewPosYell(265129)
+local yellOmegaVectorFades					= mod:NewIconFadesYell(265129)
 local specWarnGestate						= mod:NewSpecialWarningYou(265212, nil, nil, nil, 1, 2)
 local yellGestate							= mod:NewYell(265212)
 local specWarnGestateNear					= mod:NewSpecialWarningClose(265212, false, nil, 2, 1, 2)
@@ -84,6 +84,7 @@ local vectorTargets = {[1] = false, [2] = false, [3] = false, [4] = false}
 local playerHasSix, playerHasTwelve, playerHasTwentyFive = false, false, false
 local seenAdds = {}
 local castsPerGUID = {}
+local playersIcon = 0
 
 local updateInfoFrame
 do
@@ -140,6 +141,7 @@ function mod:OnCombatStart(delay)
 	table.wipe(castsPerGUID)
 	vectorTargets = {[1] = false, [2] = false, [3] = false, [4] = false}
 	playerHasSix, playerHasTwelve, playerHasTwentyFive = false, false, false
+	playersIcon = 0
 	self.vb.ContagionCount = 0
 	self.vb.plagueBombCount = 0
 	timerEvolvingAfflictionCD:Start(4.7-delay)
@@ -289,19 +291,11 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 	elseif spellId == 265129 then
-		if args:IsPlayer() and self:AntiSpam(1.5, 2) then
-			specWarnOmegaVector:Show()
-			specWarnOmegaVector:Play("targetyou")
-			yellOmegaVector:Yell()
-			local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", spellId)--Flex debuff, have to live pull duration
-			if expireTime then
-				local remaining = expireTime-GetTime()
-				yellOmegaVectorFades:Countdown(remaining, 3)
-			end
-		end
 		local expectedDebuffs = self:IsMythic() and 4 or 3
+		local icon = 0
 		for i = 1, expectedDebuffs do
 			if not vectorTargets[i] then--Not yet assigned!
+				icon = i
 				vectorTargets[i] = args.destName--Assign player name for infoframe
 				if self.Options.SetIconVector then--Now do icon stuff, if enabled
 					local uId = DBM:GetRaidUnitId(args.destName)
@@ -311,6 +305,19 @@ function mod:SPELL_AURA_APPLIED(args)
 					end
 				end
 				break
+			end
+		end
+		if args:IsPlayer() then
+			if playersIcon == 0 then--No icon assigned, warn here
+				playersIcon = icon
+				specWarnOmegaVector:Show(self:IconNumToTexture(icon))
+				specWarnOmegaVector:Play("targetyou")
+			end
+			yellOmegaVector:Yell(icon, icon, icon)--Do yell regardless so people can see two are on one target
+			local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", spellId)--Flex debuff, have to live pull duration
+			if expireTime then
+				local remaining = expireTime-GetTime()
+				yellOmegaVectorFades:Countdown(remaining, 3, nil, icon)
 			end
 		end
 	elseif spellId == 265212 and self:AntiSpam(4, args.destName) then
@@ -362,9 +369,6 @@ function mod:SPELL_AURA_REMOVED(args)
 			--yellEvolvingAffliction:Cancel()
 		end
 	elseif spellId == 265129 then
-		if args:IsPlayer() then
-			yellOmegaVectorFades:Cancel()
-		end
 		local expectedDebuffs = self:IsMythic() and 4 or 3
 		local oneRemoved = false
 		for i = 1, expectedDebuffs do
@@ -372,18 +376,28 @@ function mod:SPELL_AURA_REMOVED(args)
 				if not oneRemoved then
 					vectorTargets[i] = false--remove first assignment we find
 					oneRemoved = true
-					--If icons enabled, remove icon or continue loop to look for next assignment
-					if self.Options.SetIconVector then
-						local uId = DBM:GetRaidUnitId(args.destName)
-						if not DBM:UnitDebuff(uId, spellId) then--No remaining debuffs, we're done!
-							self:SetIcon(args.destName, 0)
-							break--Break loop, nothing further to do
+					local uId = DBM:GetRaidUnitId(args.destName)
+					local stillDebuffed = DBM:UnitDebuff(uId, spellId)--Check for remaining debuffs
+					if args:IsPlayer() then
+						yellOmegaVectorFades:Cancel(i)--Only unschedule the first found icon yell
+						if not stillDebuffed then
+							playersIcon = 0--None left, return player icon to 0
 						end
-					else--Icon option isn't even enabled, so just break loop outright
-						break
+					end
+					if not stillDebuffed then--Terminate loop and remove icon if enabled
+						if self.Options.SetIconVector then
+							self:SetIcon(args.destName, 0)
+						end
+						break--Break loop, nothing further to do
 					end
 				else
 					--Loop is continuing because debuff still existed
+					--if args:IsPlayer() and playersIcon ~= 0 then
+						--Give player new position
+						--specWarnOmegaVector:Show(self:IconNumToTexture(i))
+						--specWarnOmegaVector:Play("targetyou")
+						--yellOmegaVector:Yell(icon, icon, icon)
+					--end
 					if self.Options.SetIconVector then
 						self:SetIcon(args.destName, i)
 						break--Break loop, Icon updated to next 
