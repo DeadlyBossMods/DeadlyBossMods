@@ -34,7 +34,7 @@ local warnSiegeMode					= mod:NewSpellAnnounce(271223)
 local warnDemoCannon				= mod:NewTargetNoFilterAnnounce(271246, 2, nil, false)--Not part of global filter, in case healer wants to turn it on for heal targets
 
 --Mobile
-local specWarnShatteringPulse		= mod:NewSpecialWarningSpell(271163, "Tank", nil, nil, 1, 2)
+local specWarnShatteringPulse		= mod:NewSpecialWarningSpell(271163, false, nil, 2, 1, 2)
 --Siege
 local specWarnEverybodyOut			= mod:NewSpecialWarningSwitch(271280, "-Healer", nil, nil, 1, 2)
 local specWarnFieldRepair			= mod:NewSpecialWarningInterrupt(271797, "HasInterrupt", nil, nil, 1, 2)
@@ -97,7 +97,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 271280 then
 		specWarnEverybodyOut:Show()
 		specWarnEverybodyOut:Play("killmob")
-	elseif spellId == 271797 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
+	elseif spellId == 271797 and self:CheckInterruptFilter(args.sourceGUID, false, true, true) then
 		specWarnFieldRepair:Show(args.sourceName)
 		specWarnFieldRepair:Play("kickcast")
 	elseif spellId == 271783 and self:AntiSpam(3, 2) then
