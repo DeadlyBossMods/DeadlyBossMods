@@ -7174,6 +7174,7 @@ end
 -------------------
 do
 	local bonusTimeStamp = 0
+	local bonusRollForce = false
 	local warFrontMaps = {
 		[14] = true, -- Arathi Highlands
 	}
@@ -7192,11 +7193,16 @@ do
 	end
 	SLASH_DBMBONUS1 = "/dbmbonusroll"
 	SlashCmdList["DBMBONUS"] = function(msg)
+		bonusRollForce = true
 		showBonusRoll(DBM)
 	end
 	--TODO, see where timewalking ilvl fits into filters
 	--Couldn't get any of events to work so have to hook the show script directly
 	BonusRollFrame:HookScript("OnShow", function(self, event, ...)
+		if bonusRollForce then
+			bonusRollForce = false
+			return
+		end
 		DBM:Debug("BonusRollFrame OnShow fired", 2)
 		if DBM.Options.BonusFilter == "Never" then return end
 		local _, _, difficultyId, _, _, _, _, mapID = GetInstanceInfo()
