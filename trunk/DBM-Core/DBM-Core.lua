@@ -251,6 +251,7 @@ DBM.DefaultOptions = {
 	HelpMessageVersion = 3,
 	MoviesSeen = {},
 	MovieFilter = "AfterFirst",
+	BonusFilter = "Never",
 	LastRevision = 0,
 	DebugMode = false,
 	DebugLevel = 1,
@@ -7164,6 +7165,52 @@ do
 			self:AddMsg(DBM_CORE_MOVIE_SKIPPED)
 		else
 			self.Options.MoviesSeen[currentMapID] = true
+		end
+	end
+end
+
+-------------------
+--  Bonus Filter --
+-------------------
+do
+	local bonusTimeStamp = 0
+	local warFrontMaps = {
+		[14] = true, -- Arathi Highlands
+	}
+	local function hideBonusRoll(self)
+		bonusTimeStamp = GetTime()
+		BonusRollFrame:Hide()
+		self:AddMsg(DBM_CORE_BONUS_SKIPPED)
+	end
+	local function showBonusRoll(self)
+		if (GetTime() - bonusTimeStamp) < 180 then--3 min timer still active
+			BonusRollFrame:Show()
+			BonusRollFrame:Show()
+		else--Out of Time
+			self:AddMsg(DBM_CORE_BONUS_EXPIRED)
+		end
+	end
+	SLASH_DBMBONUS1 = "/dbmbonusroll"
+	SlashCmdList["DBMBONUS"] = function(msg)
+		showBonusRoll(DBM)
+	end
+	--TODO, see where timewalking ilvl fits into filters
+	function DBM:SPELL_CONFIRMATION_PROMPT(spellID, confirmType)
+		if confirmType == LE_SPELL_CONFIRMATION_PROMPT_TYPE_BONUS_ROLL then
+			if self.Options.BonusFilter == "Never" then return end
+			local _, _, difficultyId, _, _, _, _, mapID = GetInstanceInfo()
+			local localMapID = C_Map.GetBestMapForUnit("player") or 0
+			local keystoneLevel = C_ChallengeMode.GetActiveKeystoneInfo() or 0
+			self:Unschedule(hideBonusRoll)
+			if self.Options.BonusFilter == "TrivialContent" and (difficultyId == 1 or difficultyId == 2) then--Basically anything below 340 ilvl (normal/heroic dungeons)
+				self:Schedule(0.2, hideBonusRoll, self)
+			elseif self.Options.BonusFilter == "NormalRaider" and (difficultyId == 14 or difficultyId == 17 or difficultyId == 23 or (difficultyId == 8 and keystoneLevel < 5)) then--Basically, anything below 355 (normal/heroic/mythic dungeons lower than 5, LFR
+				self:Schedule(0.2, hideBonusRoll, self)
+			elseif self.Options.BonusFilter == "HeroicRaider" and (difficultyId == 14 or difficultyId == 15 or difficultyId == 17 or difficultyId == 23 or (difficultyId == 8 and keystoneLevel < 10) or (difficultyId == 0 and not warFrontMaps[localMapID])) then--Basically, anything below 370 (normal/heroic/mythic dungeons lower than 10, LFR/Normal Raids
+				self:Schedule(0.2, hideBonusRoll, self)
+			elseif self.Options.BonusFilter == "MythicRaider" and (difficultyId == 14 or difficultyId == 15 or difficultyId == 16 or difficultyId == 17 or difficultyId == 23 or difficultyId == 8 or difficultyId == 0) then--Basically, anything below 385 (ANY dungeon, LFR/Normal/Heroic Raids
+				self:Schedule(0.2, hideBonusRoll, self)
+			end
 		end
 	end
 end

@@ -290,7 +290,7 @@ L.PT_Threshold				= "Do not show Break/Combat/Custom Timer countdown text above:
 L.Panel_HideBlizzard		= "Blizzard Disable & Hide"
 L.Area_HideBlizzard			= "Blizzard Disable & Hide Options"
 L.HideBossEmoteFrame		= "Hide raid boss emote frame during boss fights"
-L.HideWatchFrame			= "Hide watch (objectives) frame during boss fights if no achievements are being tracked. If in a CM, creates a temp medal timer during boss fight while frame hidden."
+L.HideWatchFrame			= "Hide watch (objectives) frame during boss fights if no achievements are being tracked and if not in a Mythic+"
 L.HideGarrisonUpdates		= "Hide garrison toasts during boss fights"
 L.HideGuildChallengeUpdates	= "Hide guild challenge toasts during boss fights"
 L.HideQuestTooltips			= "Hide quest objectives from tooltips during boss fights"
@@ -301,6 +301,11 @@ L.AfterFirst				= "After each movie has played once"
 L.Always					= ALWAYS
 L.CombatOnly				= "Disable in combat (any)"
 L.RaidCombat				= "Disable in combat (bosses only)"
+L.HideBonusHeader			= "Hide bonus roll window in..."
+L.TrivialContent			= "NON-Mythic dungeons (<340)"--Basically anything below 340
+L.NormalRaider				= "Dungeons below Mythic+5 and LFR raids (<355)"--Basically, anything below 355
+L.HeroicRaider				= "Dungeons below Mythic+10 and raids below heroic and non warfront bosses (<370)"--Basically anything below 370
+L.MythicRaider				= "Anything below mythic difficulty raids (<385)"--Basically anything below 385
 
 L.Panel_ExtraFeatures		= "Extra Features"
 --
