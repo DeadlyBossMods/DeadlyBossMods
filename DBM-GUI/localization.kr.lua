@@ -280,7 +280,7 @@ L.PT_Threshold				= "휴식/전투/사용자 지정 타이머 초읽기 숫자 �
 L.Panel_HideBlizzard		= "블리자드 기능 끄기 및 숨김"
 L.Area_HideBlizzard			= "블리자드 기능 끄기 및 숨김 설정"
 L.HideBossEmoteFrame		= "보스 전투중 보스 감정표현 숨기기"
-L.HideWatchFrame			= "추적중인 업적이 없을 경우 보스 전투시 퀘스트 추적 프레임을 숨깁니다. 도전 모드에서는 메달 제한시간 프레임이 생성됩니다."
+L.HideWatchFrame			= "추적중인 업적이 없고 신화+ 난이도가 아니라면 보스 전투시 퀘스트 추적 프레임을 숨깁니다."
 L.HideGarrisonUpdates		= "보스 전투중 주둔지 팝업 알림 숨기기"
 L.HideGuildChallengeUpdates	= "보스 전투중 길드 도전 과제 알림 숨기기"
 L.HideQuestTooltips			= "보스 전투중 툴팁에서 퀘스트 정보 숨기기"
@@ -291,6 +291,11 @@ L.AfterFirst				= "1회 이상 본 영상만"
 L.Always					= "항상 끄기"
 L.CombatOnly				= "전투중 차단 (모든 전투)"
 L.RaidCombat				= "전투중 차단 (보스만)"
+L.HideBonusHeader			= "추가 전리품 주사위 굴림 창을 숨길 전리품 레벨..."
+L.TrivialContent			= "신화 미만 던전 (<340)"--Basically anything below 340
+L.NormalRaider				= "신화+ 5단 미만 던전과 공격대 찾기 레이드 (<355)"--Basically, anything below 355
+L.HeroicRaider				= "신화+ 10단 미만 던전과 영웅 미만 레이드와 격전지 이외 필드 레이드 보스 (<370)"--Basically anything below 370
+L.MythicRaider				= "신화 레이드 미만 모든 보스 (<385)"--Basically anything below 385
 
 L.Panel_ExtraFeatures		= "기타 기능"
 --
