@@ -171,7 +171,7 @@ function mod:OnCombatStart(delay)
 	timerPoolofDarknessCD:Start(20.5-delay, 1)
 	timerDarkRevolationCD:Start(30-delay, 1)
 	timerCallofCrawgCD:Start(34.9, 1)--35-45
-	timerCallofHexerCD:Start(50.7, 1)--50.7-54
+	timerCallofHexerCD:Start(50.5, 1)--50.5-54
 	timerCallofCrusherCD:Start(70, 1)--70-73
 	if self.Options.InfoFrame then
 		--DBM.InfoFrame:SetHeader(DBM_CORE_INFOFRAME_POWER)
@@ -278,7 +278,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 		specWarnCallofCrawgSoon:Play("mobsoon")
 		specWarnCallofCrawg:Schedule(12, self.vb.CrawgSpawnCount)
 		specWarnCallofCrawg:ScheduleVoice(12, "killmob")
-		timerCallofCrawgCD:Start(40.6, self.vb.CrawgSpawnCount+1)
+		if self:IsMythic() then
+			timerCallofCrawgCD:Start(45.6, self.vb.CrawgSpawnCount+1)
+		else
+			timerCallofCrawgCD:Start(40.6, self.vb.CrawgSpawnCount+1)
+		end
 		timerAddIncoming:Start(12, L.Crawg)
 		self.vb.CrawgsActive = self.vb.CrawgsActive + 4--4 in all difficulties?
 		if self.Options.NPAuraOnEngorgedBurst and self.vb.CrawgsActive <= 4 then--This should only happen if previous count was 0, so re-enable scanner
