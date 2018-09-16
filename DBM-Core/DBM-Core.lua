@@ -1356,7 +1356,7 @@ do
 				"UPDATE_BATTLEFIELD_STATUS",
 				"PLAY_MOVIE",
 				"CINEMATIC_START",
-				"BONUS_ROLL_ACTIVATE",
+				--"BONUS_ROLL_STARTED",
 				"PLAYER_LEVEL_CHANGED",
 				"PLAYER_SPECIALIZATION_CHANGED",
 				"PARTY_INVITE_REQUEST",
@@ -7173,6 +7173,7 @@ end
 -------------------
 --  Bonus Filter --
 -------------------
+--[[
 do
 	local bonusTimeStamp = 0
 	local warFrontMaps = {
@@ -7196,8 +7197,8 @@ do
 		showBonusRoll(DBM)
 	end
 	--TODO, see where timewalking ilvl fits into filters
-	function DBM:BONUS_ROLL_ACTIVATE()
-		DBM:Debug("BONUS_ROLL_ACTIVATE fired", 2)
+	function DBM:BONUS_ROLL_STARTED()
+		DBM:Debug("BONUS_ROLL_STARTED fired", 2)
 		if self.Options.BonusFilter == "Never" then return end
 		local _, _, difficultyId, _, _, _, _, mapID = GetInstanceInfo()
 		local localMapID = C_Map.GetBestMapForUnit("player") or 0
@@ -7214,6 +7215,7 @@ do
 		end
 	end
 end
+--]]
 
 ----------------------------
 --  Boss Mod Constructor  --
