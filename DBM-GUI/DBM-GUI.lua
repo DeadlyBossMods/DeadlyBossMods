@@ -3165,7 +3165,7 @@ local function CreateOptionsMenu()
 
 	do
 		local hideBlizzPanel = DBM_GUI_Frame:CreateNewPanel(L.Panel_HideBlizzard, "option")
-		local hideBlizzArea = hideBlizzPanel:CreateArea(L.Area_HideBlizzard, nil, 295, true)--315
+		local hideBlizzArea = hideBlizzPanel:CreateArea(L.Area_HideBlizzard, nil, 315, true)--295
 		hideBlizzArea:CreateCheckButton(L.HideBossEmoteFrame, true, nil, "HideBossEmoteFrame2")
 		hideBlizzArea:CreateCheckButton(L.HideWatchFrame, true, nil, "HideObjectivesFrame")
 		hideBlizzArea:CreateCheckButton(L.HideGarrisonUpdates, true, nil, "HideGarrisonToasts")
@@ -3184,7 +3184,7 @@ local function CreateOptionsMenu()
 		end)
 		blockMovieDropDown:SetPoint("TOPLEFT", DisableSFX, "TOPLEFT", 0, -40)
 		
-		--[[local bonusRollOptions = {
+		local bonusRollOptions = {
 			{	text	= L.Disable,		value 	= "Never"},
 			{	text	= L.TrivialContent,	value 	= "TrivialContent"},
 			{	text	= L.NormalRaider,	value 	= "NormalRaider"},
@@ -3194,7 +3194,7 @@ local function CreateOptionsMenu()
 		local blockBonusDropDown = hideBlizzArea:CreateDropdown(L.HideBonusHeader, bonusRollOptions, "DBM", "BonusFilter", function(value)
 			DBM.Options.BonusFilter = value
 		end)
-		blockBonusDropDown:SetPoint("TOPLEFT", blockMovieDropDown, "TOPLEFT", 0, -40)--]]
+		blockBonusDropDown:SetPoint("TOPLEFT", blockMovieDropDown, "TOPLEFT", 0, -40)
 
 		--hideBlizzArea:AutoSetDimension()
 		hideBlizzPanel:SetMyOwnHeight()
