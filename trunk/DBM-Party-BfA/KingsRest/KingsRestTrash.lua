@@ -139,7 +139,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnDarkRevelation:Play("runout")
 		yellDarkRevelation:Yell()
 		yellDarkRevelationFades:Countdown(10)
-	elseif spellId == 269936 and args:IsPlayer() then
+	elseif spellId == 269936 and args:IsPlayer() and self:AntiSpam(3, 9) then
 		specWarnFixate:Show()
 		specWarnFixate:Play("justrun")
 		yellFixate:Yell()
