@@ -34,11 +34,11 @@ local warnSiegeMode					= mod:NewSpellAnnounce(271223)
 local warnDemoCannon				= mod:NewTargetNoFilterAnnounce(271246, 2, nil, false)--Not part of global filter, in case healer wants to turn it on for heal targets
 
 --Mobile
-local specWarnShatteringPulse		= mod:NewSpecialWarningSpell(271163, false, nil, 2, 1, 2)
+local specWarnShatteringPulse		= mod:NewSpecialWarningSpell(271163, "Tank", nil, 3, 1, 2)
 --Siege
 local specWarnEverybodyOut			= mod:NewSpecialWarningSwitch(271280, "-Healer", nil, nil, 1, 2)
 local specWarnFieldRepair			= mod:NewSpecialWarningInterrupt(271797, "HasInterrupt", nil, nil, 1, 2)
-local specWarnSentry				= mod:NewSpecialWarningMove(271783, "Tank", nil, nil, 1, 2)
+local specWarnSentry				= mod:NewSpecialWarningMove(271783, false, nil, 2, 1, 2)
 --local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
 
 --Mobile
