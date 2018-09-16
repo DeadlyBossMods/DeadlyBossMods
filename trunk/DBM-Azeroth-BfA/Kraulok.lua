@@ -12,22 +12,25 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 275175 275200 276046",
-	"SPELL_AURA_REMOVED 275200"
+--	"SPELL_AURA_REMOVED 275200",
+	"UNIT_SPELLCAST_SUCCEEDED"
 )
 
---TODO: Can Sonic Bellow be dodged by tank?
 --TODO: Which script is right script for Earth spike.
 local warnPrimalRage				= mod:NewSpellAnnounce(275200, 3)
+local warnShakeLoose				= mod:NewSpellAnnounce(276046, 3)
 
 local specWarnSonicBellow			= mod:NewSpecialWarningDodge(275175, nil, nil, nil, 2, 2)
-local specWarnShakeLoose			= mod:NewSpecialWarningSwitch(276046, nil, nil, nil, 1, 2)
+local specWarnEarthSpike			= mod:NewSpecialWarningDodge(275194, nil, nil, nil, 2, 2)
+--local specWarnShakeLoose			= mod:NewSpecialWarningSwitch(276046, nil, nil, nil, 1, 2)
 --local specWarnClutch				= mod:NewSpecialWarningYou(261509, nil, nil, nil, 1, 2)
 --local yellClutch					= mod:NewYell(261509)
 --local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
 
-local timerSonicBellowCD				= mod:NewAITimer(16, 275175, nil, nil, nil, 3)
+--local timerSonicBellowCD				= mod:NewAITimer(16, 275175, nil, nil, nil, 3)--6-34?
 --local timerEarthSpikeCD				= mod:NewAITimer(16, 275194, nil, nil, nil, 3)
-local timerShakeLooseCD					= mod:NewAITimer(16, 276046, nil, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON)
+local timerPrimalRageCD					= mod:NewCDTimer(32.7, 275200, nil, nil, nil, 3)
+local timerShakeLooseCD					= mod:NewCDTimer(28, 276046, nil, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON)--28 seconds, but does it an extra time when he's really low
 
 mod:AddRangeFrameOption(5, 275194)
 --mod:AddReadyCheckOption(37460, false)
@@ -57,13 +60,13 @@ function mod:SPELL_CAST_START(args)
 		timerSonicBellowCD:Start()
 	elseif spellId == 275200 then
 		warnPrimalRage:Show()
-		timerSonicBellowCD:Stop()
+		timerPrimalRageCD:Start()
+		--timerSonicBellowCD:Stop()
 		--timerEarthSpikeCD:Stop()
-		timerSonicBellowCD:Start(2)
+		--timerSonicBellowCD:Start(5)
 		--timerEarthSpikeCD:Start(2)
 	elseif spellId == 276046 then
-		specWarnShakeLoose:Show()
-		specWarnShakeLoose:Play("killmob")
+		warnShakeLoose:Show()
 		timerShakeLooseCD:Start()
 	end
 end
@@ -71,9 +74,9 @@ end
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 275200 then--Primal Rage
-		timerSonicBellowCD:Stop()
+		--timerSonicBellowCD:Stop()
 		--timerEarthSpikeCD:Stop()
-		timerSonicBellowCD:Start(3)
+		--timerSonicBellowCD:Start(3)
 		--timerEarthSpikeCD:Start(3)
 	end
 end
@@ -93,9 +96,11 @@ function mod:UNIT_DIED(args)
 		
 	end
 end
+--]]
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 257939 then
+	if spellId == 275194 and self:AntiSpam(4, 1) then
+		specWarnEarthSpike:Show()
+		specWarnEarthSpike:Play("watchstep")
 	end
 end
---]]
