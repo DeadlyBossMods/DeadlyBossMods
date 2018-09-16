@@ -7198,6 +7198,7 @@ do
 	--TODO, see where timewalking ilvl fits into filters
 	function DBM:SPELL_CONFIRMATION_PROMPT(spellID, confirmType)
 		if confirmType == LE_SPELL_CONFIRMATION_PROMPT_TYPE_BONUS_ROLL then
+			DBM:Debug("SPELL_CONFIRMATION_PROMPT fired for bonus roll", 2)
 			if self.Options.BonusFilter == "Never" then return end
 			local _, _, difficultyId, _, _, _, _, mapID = GetInstanceInfo()
 			local localMapID = C_Map.GetBestMapForUnit("player") or 0
