@@ -22,7 +22,7 @@ local specWarnSandTrap				= mod:NewSpecialWarningDodge(257092, nil, nil, nil, 2,
 local specWarnUpheavel				= mod:NewSpecialWarningYou(257617, nil, nil, nil, 2, 2)
 local yellUpheavel					= mod:NewYell(257617)
 local specWarnUpheavelNear			= mod:NewSpecialWarningClose(257617, nil, nil, nil, 2, 2)
-local specWarnSandstorm				= mod:NewSpecialWarningSpell(257092, nil, nil, nil, 2, 2)
+local specWarnSandstorm				= mod:NewSpecialWarningSpell(257495, nil, nil, nil, 2, 2)
 --local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
 
 --local timerReapSoulCD				= mod:NewNextTimer(13, 194956, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON..DBM_CORE_DEADLY_ICON)
