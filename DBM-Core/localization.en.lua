@@ -55,6 +55,8 @@ DBM_CORE_TRANSCRIPTOR_LOG_START		= "Transcriptor logging started."
 DBM_CORE_TRANSCRIPTOR_LOG_END		= "Transcriptor logging ended."
 
 DBM_CORE_MOVIE_SKIPPED				= "DBM has attempted to skip a cut scene automatically."
+DBM_CORE_BONUS_SKIPPED				= "DBM has automatically closed bonus loot frame. If you need to get this frame back, type /dbmbonusroll within 3 minutes"
+DBM_CORE_BONUS_EXPIRED				= "You've attempted to use /dbmbonusroll to bring up bonus roll window but there is currently no bonus roll active."
 
 DBM_CORE_AFK_WARNING				= "You are AFK and in combat (%d percent health remaining), firing sound alert. If you are not AFK, clear your AFK flag or disable this option in 'extra features'."
 
