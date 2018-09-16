@@ -7187,6 +7187,7 @@ do
 		if (GetTime() - bonusTimeStamp) < 180 then--3 min timer still active
 			BonusRollFrame:Show()
 			BonusRollFrame:Show()
+			bonusTimeStamp = 0--Reset to 0, because you can't call frame back more than once, once you pass it's over
 		else--Out of Time
 			self:AddMsg(DBM_CORE_BONUS_EXPIRED)
 		end
