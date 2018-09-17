@@ -56,6 +56,7 @@ local specWarnShatter					= mod:NewSpecialWarningTaunt(265237, nil, nil, nil, 1,
 local specWarnAdds						= mod:NewSpecialWarningAdds(31700, nil, nil, nil, 1, 2)--Generic Warning only used on Mythic
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
 --Stage One: Chaos
+local specWarnEyeBeamSoon				= mod:NewSpecialWarningSoon(264382, nil, nil, nil, 1, 2)
 local specWarnEyeBeam					= mod:NewSpecialWarningMoveAway(264382, nil, nil, 2, 3, 2)
 local yellEyeBeam						= mod:NewCountYell(264382)
 --local specWarnFixate					= mod:NewSpecialWarningRun(264219, nil, nil, nil, 4, 2)
@@ -145,6 +146,8 @@ function mod:OnCombatStart(delay)
 	timerMightofVoidCD:Start(15-delay)
 	countdownMightofVoid:Start(15-delay)
 	timerEyeBeamCD:Start(52-delay)--52-54
+	specWarnEyeBeamSoon:Schedule(47)
+	specWarnEyeBeamSoon:ScheduleVoice(47, "Scattersoon")
 	if self:IsLFR() then
 		timerSurgingDarknessCD:Start(41-delay)--Custom for LFR
 		countdownSurgingDarkness:Start(41)--Custom for LFR
@@ -328,10 +331,16 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		--here because this spell ID fires at beginning of each set ONCE
 		if self:IsMythic() then
 			timerEyeBeamCD:Schedule(6, 60)
+			specWarnEyeBeamSoon:Schedule(61)
+			specWarnEyeBeamSoon:ScheduleVoice(61, "Scattersoon")
 		elseif self:IsLFR() then
 			timerEyeBeamCD:Schedule(6, 50)
+			specWarnEyeBeamSoon:Schedule(51)
+			specWarnEyeBeamSoon:ScheduleVoice(51, "Scattersoon")
 		else
 			timerEyeBeamCD:Schedule(6, 40)
+			specWarnEyeBeamSoon:Schedule(41)
+			specWarnEyeBeamSoon:ScheduleVoice(41, "Scattersoon")
 		end
 	elseif spellId == 267019 then--Titan Spark
 		if self:IsMythic() and self.vb.phase < 2 or self.vb.phase < 3 then
@@ -369,6 +378,8 @@ function mod:UNIT_POWER_FREQUENT(uId)
 			if not self:IsMythic() then
 				timerQirajiWarriorCD:Stop()
 				timerEyeBeamCD:Stop()
+				specWarnEyeBeamSoon:Cancel()
+				specWarnEyeBeamSoon:CancelVoice()
 				if not self:IsLFR() then
 					timerAnubarCasterCD:Start(20.5)
 				end
