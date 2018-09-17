@@ -57,7 +57,7 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 275175 then
 		specWarnSonicBellow:Show()
 		specWarnSonicBellow:Play("shockwave")
-		timerSonicBellowCD:Start()
+		--timerSonicBellowCD:Start()
 	elseif spellId == 275200 then
 		warnPrimalRage:Show()
 		timerPrimalRageCD:Start()
