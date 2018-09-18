@@ -39,10 +39,10 @@ local warnPhase							= mod:NewPhaseChangeAnnounce()
 --local warnXorothPortal					= mod:NewSpellAnnounce(244318, 2, nil, nil, nil, nil, nil, 7)
 local warnVoidLash						= mod:NewStackAnnounce(265264, 2, nil, "Tank")
 --Stage One: Chaos
-local warnEyeBeam						= mod:NewTargetCountAnnounce(264382, 2)
+local warnEyeBeam						= mod:NewTargetCountAnnounce(264382, 2, nil, nil, nil, nil, nil, nil, true)
 --local warnFixate						= mod:NewTargetAnnounce(264219, 2)
 --Stage Two: Deception
-local warnRoilingDeceit					= mod:NewTargetCountAnnounce(265360, 4)
+local warnRoilingDeceit					= mod:NewTargetCountAnnounce(265360, 4, nil, nil, nil, nil, nil, nil, true)
 local warnCasterAddsRemaining			= mod:NewAddsLeftAnnounce("ej18397", 2, 31700)
 --Stage Three: Corruption
 local warnCorruptorsPact				= mod:NewTargetCountAnnounce(265662, 2, nil, nil, nil, nil, nil, nil, true)--Non Filtered Alert
