@@ -10075,6 +10075,10 @@ do
 		return newSpecialWarning(self, "moveaway", text, nil, optionDefault, ...)
 	end
 	
+	function bossModPrototype:NewSpecialWarningMoveAwayCount(text, optionDefault, ...)
+		return newSpecialWarning(self, "moveawaycount", text, nil, optionDefault, ...)
+	end
+	
 	function bossModPrototype:NewSpecialWarningMoveTo(text, optionDefault, ...)
 		return newSpecialWarning(self, "moveto", text, nil, optionDefault, ...)
 	end
