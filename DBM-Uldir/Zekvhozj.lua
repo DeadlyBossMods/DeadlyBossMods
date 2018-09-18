@@ -56,7 +56,7 @@ local specWarnAdds						= mod:NewSpecialWarningAdds(31700, nil, nil, nil, 1, 2)-
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
 --Stage One: Chaos
 local specWarnEyeBeamSoon				= mod:NewSpecialWarningSoon(264382, nil, nil, nil, 1, 2)
-local specWarnEyeBeam					= mod:NewSpecialWarningMoveAway(264382, nil, nil, 2, 3, 2)
+local specWarnEyeBeam					= mod:NewSpecialWarningMoveAwayCount(264382, nil, nil, 2, 3, 2)
 local yellEyeBeam						= mod:NewCountYell(264382)
 --local specWarnFixate					= mod:NewSpecialWarningRun(264219, nil, nil, nil, 4, 2)
 --Stage Two: Deception
@@ -109,9 +109,8 @@ mod.vb.casterAddsRemaining = 0
 
 function mod:EyeBeamTarget(targetname, uId)
 	if not targetname then return end
-	self.vb.eyeCount = self.vb.eyeCount + 1
 	if targetname == UnitName("player") and self:AntiSpam(5, 5) then
-		specWarnEyeBeam:Show()
+		specWarnEyeBeam:Show(self.vb.eyeCount)
 		specWarnEyeBeam:Play("runout")
 		yellEyeBeam:Yell(self.vb.eyeCount)
 	else
@@ -178,6 +177,7 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 264382 then
+		self.vb.eyeCount = self.vb.eyeCount + 1
 		self:ScheduleMethod(0.2, "BossTargetScanner", args.sourceGUID, "EyeBeamTarget", 0.1, 8, true, nil, nil, nil, true)
 	elseif spellId == 265358 then
 		self:ScheduleMethod(0.2, "BossTargetScanner", args.sourceGUID, "RollingTarget", 0.1, 8, true, nil, nil, nil, true)
@@ -221,9 +221,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 264382 then--Backup, in case target scan breaks
 		if args:IsPlayer() and self:AntiSpam(5, 5) then
-			specWarnEyeBeam:Show()
+			specWarnEyeBeam:Show(self.vb.eyeCount)
 			specWarnEyeBeam:Play("runout")
-			yellEyeBeam:Yell()
+			yellEyeBeam:Yell(self.vb.eyeCount)
 --		else
 --			warnEyeBeam:Show(args.destName)
 		end
