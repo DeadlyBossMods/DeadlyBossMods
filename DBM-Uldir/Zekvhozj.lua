@@ -93,7 +93,7 @@ local countdownSurgingDarkness			= mod:NewCountdown(82.8, 265451, true, nil, 3)
 local countdownMightofVoid				= mod:NewCountdown("Alt37", 267312, "Tank", nil, 3)
 --local countdownFelstormBarrage		= mod:NewCountdown("AltTwo32", 244000, nil, nil, 3)
 
---mod:AddRangeFrameOption("8/10")
+mod:AddRangeFrameOption(6, 264382)
 --mod:AddBoolOption("ShowAllPlatforms", false)
 mod:AddSetIconOption("SetIconOnAdds", 267192, true, true)
 --mod:AddInfoFrameOption(265451, true)
@@ -144,8 +144,6 @@ function mod:OnCombatStart(delay)
 	timerMightofVoidCD:Start(15-delay)
 	countdownMightofVoid:Start(15-delay)
 	timerEyeBeamCD:Start(52-delay)--52-54
-	specWarnEyeBeamSoon:Schedule(47)
-	specWarnEyeBeamSoon:ScheduleVoice(47, "Scattersoon")
 	if self:IsLFR() then
 		timerSurgingDarknessCD:Start(41-delay)--Custom for LFR
 		countdownSurgingDarkness:Start(41)--Custom for LFR
@@ -166,9 +164,9 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnCombatEnd()
---	if self.Options.RangeFrame then
---		DBM.RangeCheck:Hide()
---	end
+	if self.Options.RangeFrame then
+		DBM.RangeCheck:Hide()
+	end
 --	if self.Options.InfoFrame then
 --		DBM.InfoFrame:Hide()
 --	end
@@ -227,6 +225,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 			yellEyeBeam:Yell(self.vb.eyeCount)
 --		else
 --			warnEyeBeam:Show(args.destName)
+		end
+		if self.vb.eyeCount == 3 and self.Options.RangeFrame then
+			DBM.RangeCheck:Hide()
 		end
 	elseif spellId == 271099 then--Mythic Summon Adds
 		self.vb.casterAddsRemaining = self.vb.casterAddsRemaining + 3
@@ -329,19 +330,18 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		timerRoilingDeceitCD:Schedule(6, 60)--Same in all
 	elseif spellId == 264746 then--Eye beam
 		self.vb.eyeCount = 0
+		specWarnEyeBeamSoon:Show()
+		specWarnEyeBeamSoon:Play("Scattersoon")
 		--here because this spell ID fires at beginning of each set ONCE
 		if self:IsMythic() then
 			timerEyeBeamCD:Schedule(6, 60)
-			specWarnEyeBeamSoon:Schedule(61)
-			specWarnEyeBeamSoon:ScheduleVoice(61, "Scattersoon")
 		elseif self:IsLFR() then
 			timerEyeBeamCD:Schedule(6, 50)
-			specWarnEyeBeamSoon:Schedule(51)
-			specWarnEyeBeamSoon:ScheduleVoice(51, "Scattersoon")
 		else
 			timerEyeBeamCD:Schedule(6, 40)
-			specWarnEyeBeamSoon:Schedule(41)
-			specWarnEyeBeamSoon:ScheduleVoice(41, "Scattersoon")
+		end
+		if self.Options.RangeFrame then
+			DBM.RangeCheck:Show(6)
 		end
 	elseif spellId == 267019 then--Titan Spark
 		if self:IsMythic() and self.vb.phase < 2 or self.vb.phase < 3 then
@@ -379,8 +379,6 @@ function mod:UNIT_POWER_FREQUENT(uId)
 			if not self:IsMythic() then
 				timerQirajiWarriorCD:Stop()
 				timerEyeBeamCD:Stop()
-				specWarnEyeBeamSoon:Cancel()
-				specWarnEyeBeamSoon:CancelVoice()
 				if not self:IsLFR() then
 					timerAnubarCasterCD:Start(20.5)
 				end
