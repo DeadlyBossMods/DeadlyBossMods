@@ -29,7 +29,6 @@ mod:RegisterEventsInCombat(
 
 --TODO, icons for Roiling Deceit?
 --TODO, mark mind controlled players?
---TODO, maybe a "next bounce" timer
 --[[
 (ability.id = 267239 or ability.id = 265231 or ability.id = 265530 or ability.id = 264382 or ability.id = 265358) and type = "begincast"
  or ability.id = 271099 and type = "cast"
@@ -189,8 +188,7 @@ function mod:SPELL_CAST_START(args)
 			specWarnVoidbolt:Play("kickcast")
 		end
 	elseif spellId == 267239 and self:AntiSpam(15, 4) then--Backup, in case emote doesn't fire for more than first one
-		self.vb.orbCount = self.vb.orbCount + 1
-		specWarnOrbOfCorruption:Show(self.vb.orbCount)
+		specWarnOrbOfCorruption:Show(1)
 		specWarnOrbOfCorruption:Play("161612")--catch balls
 		timerOrbLands:Start(5, 1)
 		--if not self:IsMythic() then--Didn't see cast on mythic?
@@ -260,6 +258,8 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 265662 then
 		if self:AntiSpam(5, 7) then
 			self.vb.corruptorsPactCount = self.vb.corruptorsPactCount + 1
+			specWarnOrbOfCorruption:Show(self.vb.corruptorsPactCount+1)--+1 cause this is pre warning for next orb
+			specWarnOrbOfCorruption:Play("161612")
 			timerOrbLands:Start(15, self.vb.corruptorsPactCount+1)
 		end
 		warnCorruptorsPact:CombinedShow(0.5, self.vb.corruptorsPactCount, args.destName)--Combined in case more than one soaks same ball (will happen in lfr/normal for sure or farm content for dps increases)
