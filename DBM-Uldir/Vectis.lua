@@ -155,13 +155,8 @@ function mod:OnCombatStart(delay)
 	timerLiquefyCD:Start(90.8-delay)
 	countdownLiquefy:Start(90.8-delay)
 	if self.Options.InfoFrame then
-		if DBM.Options.DebugMode then--Until tested, only enable new frame in debug mode
-			DBM.InfoFrame:SetHeader(OVERVIEW)
-			DBM.InfoFrame:Show(8, "function", updateInfoFrame, false, true)--8 by default, will show all 4 vectors and 4 lowest (or 4 highest) lingering
-		else--Fall back to old frame
-			DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(265127))
-			DBM.InfoFrame:Show(8, "playerdebuffstacks", 265127, self.Options.ShowHighestFirst2 and 1 or 2)
-		end
+		DBM.InfoFrame:SetHeader(OVERVIEW)
+		DBM.InfoFrame:Show(8, "function", updateInfoFrame, false, true)--8 by default, will show all 4 vectors and 4 lowest (or 4 highest) lingering
 	end
 end
 
