@@ -317,7 +317,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", spellId)--Flex debuff, have to live pull duration
 			if expireTime then
 				local remaining = expireTime-GetTime()
-				yellOmegaVectorFades:Countdown(remaining, 3, nil, icon)
+				yellOmegaVectorFades:Countdown(remaining, 3, icon)
 			end
 		end
 	elseif spellId == 265212 and self:AntiSpam(4, args.destName) then
