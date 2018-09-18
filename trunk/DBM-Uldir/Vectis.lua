@@ -153,7 +153,7 @@ function mod:OnCombatStart(delay)
 	if self.Options.InfoFrame then
 		if DBM.Options.DebugMode then--Until tested, only enable new frame in debug mode
 			DBM.InfoFrame:SetHeader(OVERVIEW)
-			DBM.InfoFrame:Show(8, "function", updateInfoFrame, false, false)--8 by default, will show all 4 vectors and 4 lowest (or 4 highest) lingering
+			DBM.InfoFrame:Show(8, "function", updateInfoFrame, false, true)--8 by default, will show all 4 vectors and 4 lowest (or 4 highest) lingering
 		else--Fall back to old frame
 			DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(265127))
 			DBM.InfoFrame:Show(8, "playerdebuffstacks", 265127, self.Options.ShowHighestFirst2 and 1 or 2)
@@ -232,6 +232,9 @@ function mod:SPELL_CAST_START(args)
 		timerContagionCD:Stop()
 		timerplagueBombCD:Start(9.8, 1)
 	elseif spellId == 265206 then
+		if not castsPerGUID[args.sourceGUID] then--Shouldn't happen, but does?
+			castsPerGUID[args.sourceGUID] = 0
+		end
 		castsPerGUID[args.sourceGUID] = castsPerGUID[args.sourceGUID] + 1
 		warnImmunoSupp:Show(castsPerGUID[args.sourceGUID])
 		timerImmunoSuppCD:Start(9.7, castsPerGUID[args.sourceGUID]+1, args.sourceGUID)
