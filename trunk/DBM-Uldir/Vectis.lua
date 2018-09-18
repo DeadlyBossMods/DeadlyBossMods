@@ -91,6 +91,7 @@ do
 	local floor, tsort = math.floor, table.sort
 	local lines = {}
 	local tempLines = {}
+	local tempLinesSorted = {}
 	local sortedLines = {}
 	local function sortFuncDesc(a, b) return lines[a] > lines[b] end
 	local function sortFuncAsc(a, b) return lines[a] < lines[b] end
@@ -102,6 +103,7 @@ do
 	updateInfoFrame = function()
 		table.wipe(lines)
 		table.wipe(tempLines)
+		table.wipe(tempLinesSorted)
 		table.wipe(sortedLines)
 		--Vector Players First
 		for i=1, 4 do
@@ -119,18 +121,20 @@ do
 		for uId in DBM:GetGroupMembers() do
 			local spellName, _, count = DBM:UnitDebuff(uId, 265127)
 			if spellName and count then
-				tempLines[UnitName(uId)] = count
+				local unitName = UnitName(uId)
+				tempLines[unitName] = count
+				tempLinesSorted[#tempLinesSorted + 1] = unitName
 			end
 		end
 		--Sort lingering according to options
 		if mod.Options.ShowHighestFirst2 then
-			tsort(tempLines, sortFuncDesc)
+			tsort(tempLinesSorted, sortFuncDesc)
 		else
-			tsort(tempLines, sortFuncAsc)
+			tsort(tempLinesSorted, sortFuncAsc)
 		end
 		--Now move lingering back into regular infoframe tables
-		for i, v in ipairs(tempLines) do
-			addLine(tempLines[i], v)
+		for _, name in ipairs(tempLinesSorted) do
+			addLine(name, tempLines[name])
 		end
 		return lines, sortedLines
 	end
