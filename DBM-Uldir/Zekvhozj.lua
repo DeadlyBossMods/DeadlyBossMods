@@ -180,6 +180,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.eyeCount = self.vb.eyeCount + 1
 		self:ScheduleMethod(0.2, "BossTargetScanner", args.sourceGUID, "EyeBeamTarget", 0.1, 8, true, nil, nil, nil, true)
 	elseif spellId == 265358 then
+		self.vb.roilingCount = self.vb.roilingCount + 1
 		self:ScheduleMethod(0.2, "BossTargetScanner", args.sourceGUID, "RollingTarget", 0.1, 8, true, nil, nil, nil, true)
 	elseif spellId == 267180 then
 		--timerVoidBoltCD:Start(args.sourceGUID)
