@@ -213,7 +213,7 @@ function mod:SPELL_CAST_START(args)
 				end
 			end
 			for uId in DBM:GetGroupMembers() do
-				local _, _, count = DBM:UnitDebuff("player", 265127)
+				local _, _, count = DBM:UnitDebuff(uId, 265127)
 				if count and count >= 25 then
 					specWarnTerminalEruption:Show()
 					specWarnTerminalEruption:Play("aesoon")
