@@ -50,7 +50,7 @@ local timerAddsCD						= mod:NewAddsTimer(54.8, 262364, nil, nil, nil, 1, nil, D
 local timerEnticingCast					= mod:NewCastTimer(30, 262364, nil, nil, nil, 6, nil, DBM_CORE_DAMAGE_ICON)
 
 
-local berserkTimer						= mod:NewBerserkTimer(369)
+local berserkTimer						= mod:NewBerserkTimer(330)
 
 local countdownRottingRegurg			= mod:NewCountdown(40, 262292, true, nil, 4)
 local countdownThrash					= mod:NewCountdown("Alt12", 262277, false, nil, 3)--off by default since it'd be a LOT of counting. But some might still want it
