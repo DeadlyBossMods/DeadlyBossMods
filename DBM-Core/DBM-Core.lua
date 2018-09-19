@@ -289,8 +289,12 @@ DBM.Victory = {
 DBM.Defeat = {
 	{text = "None",value  = "None"},
 	{text = "Random",value  = "Random"},
-	{text = "Kologarn: You Fail",value = "Sound\\Creature\\Kologarn\\UR_Kologarn_Slay02.ogg", length=4},
 	{text = "Alizabal: Incompetent Raiders",value = "Sound\\Creature\\ALIZABAL\\VO_BH_ALIZABAL_RESET_01.ogg", length=4},
+	{text = "Bwonsamdi: Over Your Head",value = "Sound\\Creature\\bwonsamdi\\vo_801_bwonsamdi_35_m.ogg", length=4},
+	{text = "Bwonsamdi: Pour Little Thing",value = "Sound\\Creature\\bwonsamdi\\vo_801_bwonsamdi_37_m.ogg", length=4},
+	{text = "Bwonsamdi: Impressive Death",value = "Sound\\Creature\\bwonsamdi\\vo_801_bwonsamdi_38_m.ogg", length=4},
+	{text = "Bwonsamdi: All That Armor",value = "Sound\\Creature\\bwonsamdi\\vo_801_bwonsamdi_50_m.ogg", length=4},
+	{text = "Kologarn: You Fail",value = "Sound\\Creature\\Kologarn\\UR_Kologarn_Slay02.ogg", length=4},
 	{text = "Hodir: Tragic",value = "Sound\\Creature\\Hodir\\UR_Hodir_Slay01.ogg", length=4},
 	{text = "Thorim: Failures",value = "Sound\\Creature\\Thorim\\UR_Thorim_P1Wipe01.ogg", length=4},
 	{text = "Valithria: Failures",value = "Sound\\Creature\\ValithriaDreamwalker\\IC_Valithria_Berserk01.ogg", length=4},
