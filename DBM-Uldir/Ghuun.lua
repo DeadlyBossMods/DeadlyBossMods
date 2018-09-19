@@ -16,9 +16,9 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 267509 267427 267412 273406 273405 267409 267462 267579 263482 263503 263307 275160",
 	"SPELL_CAST_SUCCESS 263235 263482 263503 263373 270373 270428 276839 274582 272505 275756 263416",
-	"SPELL_AURA_APPLIED 268074 267813 277079 272506 274262 263372 270447 263235 270443 273405 267409 263284",
+	"SPELL_AURA_APPLIED 268074 267813 277079 272506 274262 263372 270447 263235 270443 273405 267409 263284 277007",
 	"SPELL_AURA_APPLIED_DOSE 270447",
-	"SPELL_AURA_REMOVED 268074 267813 277079 272506 274262 263235 263372",
+	"SPELL_AURA_REMOVED 268074 267813 277079 272506 274262 263235 263372 277007",
 	"SPELL_PERIODIC_DAMAGE 270287",
 	"SPELL_PERIODIC_MISSED 270287",
 --	"SPELL_DAMAGE 263326",
@@ -76,6 +76,7 @@ local yellBloodFeast					= mod:NewYell(263235, nil, nil, nil, "YELL")
 local yellBloodFeastFades				= mod:NewFadesYell(263235, nil, nil, nil, "YELL")
 local specWarnBloodFeastTarget			= mod:NewSpecialWarningTargetCount(263235, nil, nil, nil, 1, 8)
 local specWarnMindNumbingChatter		= mod:NewSpecialWarningCast(263307, "SpellCaster", nil, nil, 1, 2)
+local specWarnBurstingBoil				= mod:NewSpecialWarningYou(277007, nil, nil, nil, 1, 2)--Mythic
 ----Arena Floor P3
 local specWarnCollapse					= mod:NewSpecialWarningDodge(276839, nil, nil, nil, 2, 2)
 local specWarnMalignantGrowth			= mod:NewSpecialWarningDodge(274582, nil, nil, nil, 2, 2)
@@ -426,9 +427,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnDarkPurpose:Show()
 			specWarnDarkPurpose:Play("justrun")
 			yellDarkPurpose:Yell()
-		end
-		if self.Options.NPAuraOnFixate then
-			DBM.Nameplate:Show(true, args.sourceGUID, spellId)
+			if self.Options.NPAuraOnFixate then
+				DBM.Nameplate:Show(true, args.sourceGUID, spellId)
+			end
 		end
 	elseif spellId == 275204 then
 		if self.Options.NPAuraOnUnstoppable then
@@ -519,6 +520,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 263284 then--Horror Spawn
 		timerMindNumbingChatterCD:Start(10, args.destGUID)
+	elseif spellId == 277007 then
+		if args:IsPlayer() then
+			specWarnBurstingBoil:Show()
+			specWarnBurstingBoil:Play("targetyou")
+		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
