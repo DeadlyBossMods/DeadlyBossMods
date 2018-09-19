@@ -80,11 +80,43 @@ mod:AddBoolOption("ShowHighestFirst2", false)--Show lest stacks first by default
 
 mod.vb.ContagionCount = 0
 mod.vb.plagueBombCount = 0
+mod.vb.iconsUsed = true
 local vectorTargets = {[1] = false, [2] = false, [3] = false, [4] = false}
 local playerHasSix, playerHasTwelve, playerHasTwentyFive = false, false, false
 local seenAdds = {}
 local castsPerGUID = {}
 local playersIcon = 0
+
+--Resolve icon conflict with BW by simply having DBM disable icon setting automatically if there is a single promoted BW user in the raid
+local function ModCheck(self)
+	if IsInRaid() and not IsPartyLFG() then--Future proof in case solo/not in a raid
+		for uId in DBM:GetGroupMembers() do
+			local name = DBM:GetUnitFullName(uId)
+			if DBM:GetRaidRank(name) > 0 and self:CheckBigWigs(name) then
+				self.vb.iconsUsed = false
+				break
+			end
+		end
+	end
+end
+
+--Attempt to match BW icon assignment in personal messages and yells
+local function delayedIconCheck(self)
+	local currentIcon = GetRaidTargetIndex("player") or 0
+	if currentIcon > 0 then--Icon Found
+		specWarnOmegaVector:Show(self:IconNumToTexture(currentIcon))
+		specWarnOmegaVector:Play("mm"..currentIcon)
+	else--Didn't find an icon
+		specWarnOmegaVector:Show(DBM_CORE_UNKNOWN)
+		specWarnOmegaVector:Play("targetyou")
+	end
+	yellOmegaVector:Yell(currentIcon, currentIcon, currentIcon)--Do yell regardless so people can see two are on one target
+	local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", 265129)--Flex debuff, have to live pull duration
+	if expireTime then
+		local remaining = expireTime-GetTime()
+		yellOmegaVectorFades:Countdown(remaining-0.3, 3, currentIcon)
+	end
+end
 
 local updateInfoFrame
 do
@@ -149,6 +181,7 @@ function mod:OnCombatStart(delay)
 	playersIcon = 0
 	self.vb.ContagionCount = 0
 	self.vb.plagueBombCount = 0
+	self.vb.iconsUsed = true
 	timerEvolvingAfflictionCD:Start(4.7-delay)
 	timerGestateCD:Start(10-delay)--SUCCESS
 	countdownGestate:Start(10-delay)
@@ -159,6 +192,7 @@ function mod:OnCombatStart(delay)
 		DBM.InfoFrame:SetHeader(OVERVIEW)
 		DBM.InfoFrame:Show(self:IsMythic() and 9 or 7, "function", updateInfoFrame, false, true)--Default size to show all vectors and equal number of lingering
 	end
+	ModCheck(self)
 end
 
 function mod:OnCombatEnd()
@@ -173,6 +207,7 @@ function mod:OnCombatEnd()
 end
 
 function mod:OnTimerRecovery()
+	ModCheck(self)--Shouldn't be needed, since the variable will be sent with recovered timers anyways, but just in case
 	if self:IsMythic() then
 		local _, _, count = DBM:UnitDebuff("player", 265127)--Lingering Infection Recovery
 		if count then
@@ -300,7 +335,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			if not vectorTargets[i] then--Not yet assigned!
 				icon = i
 				vectorTargets[i] = args.destName--Assign player name for infoframe
-				if self.Options.SetIconVector then--Now do icon stuff, if enabled
+				if self.Options.SetIconVector and self.vb.iconsUsed then--Now do icon stuff, if enabled
 					local uId = DBM:GetRaidUnitId(args.destName)
 					local currentIcon = GetRaidTargetIndex(uId) or 0
 					if currentIcon == 0 then--Don't set icon if target already has one
@@ -311,16 +346,21 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 		if args:IsPlayer() then
-			if playersIcon == 0 then--No icon assigned, warn here
-				playersIcon = icon
-				specWarnOmegaVector:Show(self:IconNumToTexture(icon))
-				specWarnOmegaVector:Play("targetyou")
-			end
-			yellOmegaVector:Yell(icon, icon, icon)--Do yell regardless so people can see two are on one target
-			local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", spellId)--Flex debuff, have to live pull duration
-			if expireTime then
-				local remaining = expireTime-GetTime()
-				yellOmegaVectorFades:Countdown(remaining, 3, icon)
+			if not self.vb.iconsUsed then--BW is doingicons, delay player warning to give BW time to set icons
+				self:Unschedule(delayedIconCheck)
+				self:Schedule(0.3, delayedIconCheck, self)
+			else
+				if playersIcon == 0 then--No icon assigned, warn here
+					playersIcon = icon
+					specWarnOmegaVector:Show(self:IconNumToTexture(icon))
+					specWarnOmegaVector:Play("targetyou")
+				end
+				yellOmegaVector:Yell(icon, icon, icon)--Do yell regardless so people can see two are on one target
+				local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", spellId)--Flex debuff, have to live pull duration
+				if expireTime then
+					local remaining = expireTime-GetTime()
+					yellOmegaVectorFades:Countdown(remaining, 3, icon)
+				end
 			end
 		end
 	elseif spellId == 265212 and self:AntiSpam(4, args.destName) then
@@ -382,13 +422,17 @@ function mod:SPELL_AURA_REMOVED(args)
 					local uId = DBM:GetRaidUnitId(args.destName)
 					local stillDebuffed = DBM:UnitDebuff(uId, spellId)--Check for remaining debuffs
 					if args:IsPlayer() then
-						yellOmegaVectorFades:Cancel(i)--Only unschedule the first found icon yell
-						if not stillDebuffed then
-							playersIcon = 0--None left, return player icon to 0
+						if not self.vb.iconsUsed then
+							yellOmegaVectorFades:Cancel()--Cancel them all
+						else
+							yellOmegaVectorFades:Cancel(i)--Only unschedule the first found icon yell
+							if not stillDebuffed then
+								playersIcon = 0--None left, return player icon to 0
+							end
 						end
 					end
 					if not stillDebuffed then--Terminate loop and remove icon if enabled
-						if self.Options.SetIconVector then
+						if self.Options.SetIconVector and self.vb.iconsUsed then
 							self:SetIcon(args.destName, 0)
 						end
 						break--Break loop, nothing further to do
@@ -401,7 +445,7 @@ function mod:SPELL_AURA_REMOVED(args)
 						--specWarnOmegaVector:Play("targetyou")
 						--yellOmegaVector:Yell(icon, icon, icon)
 					--end
-					if self.Options.SetIconVector then
+					if self.Options.SetIconVector and self.vb.iconsUsed then
 						self:SetIcon(args.destName, i)
 						break--Break loop, Icon updated to next 
 					end
