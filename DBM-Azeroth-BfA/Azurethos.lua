@@ -17,13 +17,15 @@ mod:RegisterEventsInCombat(
 --TODO, see if can detect gale force teleport target
 --local warnMothersEmbrace			= mod:NewTargetAnnounce(219045, 3)
 
-local specWarnAzurethosFury			= mod:NewSpecialWarningRun(274839, nil, nil, nil, 4, 2)
+local specWarnAzurethosFury			= mod:NewSpecialWarningDodge(274839, nil, nil, nil, 2, 2)
 local specWarnGaleForce				= mod:NewSpecialWarningDodge(274829, nil, nil, nil, 2, 2)
 local specWarnWingBuffet			= mod:NewSpecialWarningDodge(274832, nil, nil, nil, 1, 2)
 
-local timerAzurethosFuryCD			= mod:NewAITimer(16, 274839, nil, nil, nil, 2)
-local timerGaleForceCD				= mod:NewAITimer(16, 274829, nil, nil, nil, 3)
-local timerWingBuffetCD				= mod:NewAITimer(16, 274832, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerAzurethosFuryCD			= mod:NewCDTimer(46.8, 274839, nil, nil, nil, 2)
+--"Gale Force-274829-npc:136385 = pull:40.7, 47.1, 19.8, 33.7, 47.5, 19.6, 31.9, 18.4, 32.2", --
+--local timerGaleForceCD			= mod:NewAITimer(16, 274829, nil, nil, nil, 3)--2 timers alternating, problem is, joining mid fight you don't know what count you're on
+--"Wing Buffet-274832-npc:136385 = pull:2.8, 42.1, 11.2, 35.9, 11.1, 42.8, 11.5, 35.8, 11.4, 39.8, 10.7, 40.0"
+--local timerWingBuffetCD				= mod:NewAITimer(16, 274832, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--Also alternating timers. on a world boss this just won't work
 
 --mod:AddRangeFrameOption(5, 194966)
 --mod:AddReadyCheckOption(37460, false)
@@ -46,16 +48,16 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 274839 then
 		specWarnAzurethosFury:Show()
-		specWarnAzurethosFury:Play("justrun")
+		specWarnAzurethosFury:Play("watchstep")
 		timerAzurethosFuryCD:Start()
 	elseif spellId == 274829 then
 		specWarnGaleForce:Show()
 		specWarnGaleForce:Play("shockwave")
-		timerGaleForceCD:Start()
+		--timerGaleForceCD:Start()
 	elseif spellId == 274832 then
 		specWarnWingBuffet:Show()
 		specWarnWingBuffet:Play("shockwave")
-		timerWingBuffetCD:Start()
+		--timerWingBuffetCD:Start()
 	end
 end
 

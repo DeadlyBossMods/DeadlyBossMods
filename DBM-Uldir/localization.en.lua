@@ -47,6 +47,10 @@ L:SetOptionLocalization({
 	ShowHighestFirst2	 =	"Sort Lingering Infection Infoframe by highest debuff stack (instead of lowest)"
 })
 
+L:SetMiscLocalization({
+	BWIconMsg			 =	"DBM's has passed icon marking to a promoted BW user in raid to avoid icon conflicts"
+})
+
 ---------------
 -- Mythrax the Unraveler --
 ---------------
