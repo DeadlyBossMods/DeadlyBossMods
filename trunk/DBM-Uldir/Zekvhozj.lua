@@ -189,7 +189,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 267239 and self:AntiSpam(15, 4) then--Backup, in case emote doesn't fire for more than first one
 		specWarnOrbOfCorruption:Show(1)
 		specWarnOrbOfCorruption:Play("161612")--catch balls
-		timerOrbLands:Start(5, 1)
+		timerOrbLands:Start(8, 1)
 		--if not self:IsMythic() then--Didn't see cast on mythic?
 			--timerOrbofCorruptionCD:Start(50, self.vb.orbCount+1)
 		--end
@@ -252,7 +252,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() and self:AntiSpam(5, 6) then
 			specWarnRoilingDeceit:Show(DBM_CORE_ROOM_EDGE)
 			specWarnRoilingDeceit:Play("runtoedge")
-			yellRoilingDeceit:Yell()
+			yellRoilingDeceit:Yell(self.vb.roilingCount)
 			yellRoilingDeceitFades:Countdown(12)
 --		else
 --			warnRoilingDeceit:Show(args.destName)
