@@ -83,7 +83,7 @@ local function updateAllTimers(self, ICD)
 		countdownPurifyingFlame:Cancel()
 		countdownPurifyingFlame:Start(ICD)
 	end
-	if timerSanitizingStrikeCD:GetRemaining() < ICD then
+	--[[if timerSanitizingStrikeCD:GetRemaining() < ICD then
 		local elapsed, total = timerSanitizingStrikeCD:GetTime()
 		local extend = ICD - (total-elapsed)
 		DBM:Debug("timerSanitizingStrikeCD extended by: "..extend, 2)
@@ -91,7 +91,7 @@ local function updateAllTimers(self, ICD)
 		timerSanitizingStrikeCD:Update(elapsed, total+extend)
 		countdownSanitizingStrike:Cancel()
 		countdownSanitizingStrike:Start(ICD)
-	end
+	end--]]
 	if timerWindTunnelCD:GetRemaining() < ICD then
 		local elapsed, total = timerWindTunnelCD:GetTime()
 		local extend = ICD - (total-elapsed)

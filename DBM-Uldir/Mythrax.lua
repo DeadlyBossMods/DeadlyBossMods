@@ -89,7 +89,8 @@ mod.vb.beamCast = 0
 mod.vb.destroyersRemaining = 2
 mod.vb.ruinIcon = 1
 mod.vb.echoesCast = 0
-local beamTimers = {20, 12, 12, 12, 12}--20, 14, 10, 12 (old) (if it remains 12 repeating, table should be eliminated)
+local beamTimers = {19.5, 12, 12, 12, 12}--20, 14, 10, 12 (old) (if it remains 12 repeating, table should be eliminated)
+local mythicBeamTimers = {19.5, 15, 15, 15}
 
 function mod:OnCombatStart(delay)
 	self.vb.phase = 1
@@ -179,13 +180,13 @@ function mod:SPELL_CAST_START(args)
 		timerOblivionSphereCD:Start(7)--Resets to 7
 		countdownOblivionSphere:Start(7)
 		timerVisionsoMadnessCD:Start(11.5)
-		timerObliterationbeamCD:Start(20, 1)
+		timerObliterationbeamCD:Start(19.5, 1)
 		timerEssenceShearCD:Start(29.1, DBM_ADD)
 	elseif spellId == 272115 then
 		self.vb.beamCast = self.vb.beamCast + 1
 		specWarnObliterationbeam:Show()
 		specWarnObliterationbeam:Play("watchstep")
-		local timer = beamTimers[self.vb.beamCast+1]
+		local timer = self:IsMythic() and mythicBeamTimers[self.vb.beamCast+1] or beamTimers[self.vb.beamCast+1]
 		if timer then
 			timerObliterationbeamCD:Start(timer, self.vb.beamCast+1)
 		end
@@ -209,7 +210,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 273949 then
 		specWarnVisionsofMadness:Show()
 		specWarnVisionsofMadness:Play("killmob")
-		timerVisionsoMadnessCD:Start()
+		timerVisionsoMadnessCD:Start(self:IsMythic() and 30 or 20)
 	elseif spellId == 276922 then--Living Weapon
 		self.vb.echoesCast = 0
 		specWarnLivingWeapon:Show()
@@ -273,7 +274,6 @@ function mod:SPELL_AURA_REMOVED(args)
 	if spellId == 272407 then--Purple Ball Lovin
 		--DO STUFF?
 	elseif spellId == 272536 then
-		--Icon Marking?
 		if args:IsPlayer() then
 			yellImminentRuinFades:Cancel()
 		end
@@ -281,24 +281,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			self:SetIcon(args.destName, 0)
 		end
 	elseif spellId == 274230 then--Boss active again
-		self.vb.sphereCast = 0--Does this reset? does it follow same rules? 40 seconds after each multiple of 3?
-		self.vb.ruinCast = 0--Does this reset? does it follow same rules?
-		timerVeil:Stop()
-		timerObliterationbeamCD:Stop()
-		timerVisionsoMadnessCD:Stop()
-		timerImminentRuinCD:Start(7.5, 1)--SUCCESS
-		countdownImminentRuin:Start(7.5)
-		if self:IsMythic() then
-			timerOblivionSphereCD:Start(7, 1)
-			countdownOblivionSphere:Start(7)
-			--timerLivingWeaponCD:Start(15.2)
-		else
-			timerOblivionSphereCD:Start(9, 1)
-			countdownOblivionSphere:Start(9)
-		end
-		timerObliterationBlastCD:Start(15, BOSS)
-		timerEssenceShearCD:Start(20, BOSS)--START
-		countdownEssenceShear:Start(20)
+		--buggy shit
 	elseif spellId == 279157 then--CLEU method of detecting add leaving, TODO, see if can detect it with IEEU or UNIT_TARGETABLE_CHANGED so it's reliable when add can be killed in 3 seconds (so, like next expansion :D)
 		timerVoidEchoesCD:Stop()
 		timerObliterationBlastCD:Stop(DBM_ADD)
@@ -337,5 +320,24 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		warnOblivionSphere:Show(self.vb.sphereCast)
 		timerOblivionSphereCD:Start(15, self.vb.sphereCast+1)
 		countdownOblivionSphere:Start(15)
+	elseif spellId == 279748 then
+		self.vb.sphereCast = 0
+		self.vb.ruinCast = 0
+		timerVeil:Stop()
+		timerObliterationbeamCD:Stop()
+		timerVisionsoMadnessCD:Stop()
+		timerImminentRuinCD:Start(7.5, 1)--SUCCESS
+		countdownImminentRuin:Start(7.5)
+		if self:IsMythic() then
+			timerOblivionSphereCD:Start(7, 1)
+			countdownOblivionSphere:Start(7)
+			--timerLivingWeaponCD:Start(15.2)
+		else
+			timerOblivionSphereCD:Start(9, 1)
+			countdownOblivionSphere:Start(9)
+		end
+		timerObliterationBlastCD:Start(15, BOSS)
+		timerEssenceShearCD:Start(20, BOSS)--START
+		countdownEssenceShear:Start(20)
 	end
 end
