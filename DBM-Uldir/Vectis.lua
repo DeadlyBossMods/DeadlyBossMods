@@ -117,6 +117,7 @@ do
 				end
 			end
 		end
+		addLine(" ", " ")--Insert a blank entry to split the two debuffs
 		--Lingering Infection (UGLY code)
 		for uId in DBM:GetGroupMembers() do
 			local spellName, _, count = DBM:UnitDebuff(uId, 265127)
@@ -156,7 +157,7 @@ function mod:OnCombatStart(delay)
 	countdownLiquefy:Start(90.8-delay)
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(OVERVIEW)
-		DBM.InfoFrame:Show(8, "function", updateInfoFrame, false, true)--8 by default, will show all 4 vectors and 4 lowest (or 4 highest) lingering
+		DBM.InfoFrame:Show(self:IsMythic() and 9 or 7, "function", updateInfoFrame, false, true)--Default size to show all vectors and equal number of lingering
 	end
 end
 
