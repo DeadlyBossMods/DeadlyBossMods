@@ -56,7 +56,7 @@ local specWarnBurstingLesions				= mod:NewSpecialWarningMoveAway(274990, nil, ni
 local yellBurstingLesions					= mod:NewYell(274990, nil, false)--Mythic
 local yellEngorgedParasite					= mod:NewYell(274983)--Mythic
 local yellTerminalEruption					= mod:NewYell(274989, nil, nil, nil, "YELL")--Mythic
-local specWarnLingeringInfection			= mod:NewSpecialWarningStack(265127, nil, 6, nil, nil, 1, 6)
+local specWarnLingeringInfection			= mod:NewSpecialWarningStack(265127, nil, 5, nil, nil, 1, 6)
 local specWarnLiquefy						= mod:NewSpecialWarningSpell(265217, nil, nil, nil, 3, 2)
 local specWarnTerminalEruption				= mod:NewSpecialWarningSpell(274989, nil, nil, nil, 2, 2)
 --local specWarnGTFO						= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
@@ -402,7 +402,10 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 265127 then
 		if args:IsPlayer() and self:IsMythic() then
 			local amount = args.amount or 1
-			if not playerHasSix and amount >= 6 then
+			if amount == 5 or amount == 11 or amount == 24 then--Warn one stack before bad things as well
+				specWarnLingeringInfection:Show(amount)
+				specWarnLingeringInfection:Play("stackhigh")
+			elseif not playerHasSix and amount >= 6 then
 				playerHasSix = true
 				specWarnLingeringInfection:Show(amount)
 				specWarnLingeringInfection:Play("stackhigh")
