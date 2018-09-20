@@ -63,9 +63,9 @@ local specWarnTerminalEruption				= mod:NewSpecialWarningSpell(274989, nil, nil,
 
 --mod:AddTimerLine(Nexus)
 local timerEvolvingAfflictionCD				= mod:NewCDTimer(8.5, 265178, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
-local timerGestateCD						= mod:NewCDTimer(25.5, 265212, nil, nil, nil, 3)
-local timerContagionCD						= mod:NewCDCountTimer(23, 267242, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
-local timerLiquefyCD						= mod:NewCDTimer(90.9, 265217, nil, nil, nil, 6)
+local timerGestateCD						= mod:NewNextTimer(25.5, 265212, nil, nil, nil, 3)
+local timerContagionCD						= mod:NewNextCountTimer(23, 267242, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
+local timerLiquefyCD						= mod:NewNextTimer(90.9, 265217, nil, nil, nil, 6)
 local timerplagueBombCD						= mod:NewCDCountTimer(11.4, 266459, nil, nil, nil, 5)--11.4 or 12.2, not sure which one blizz decided on, find out later
 local timerImmunoSuppCD						= mod:NewCDCountTimer(25.5, 265206, nil, nil, nil, 5, nil, DBM_CORE_HEALER_ICON)
 
