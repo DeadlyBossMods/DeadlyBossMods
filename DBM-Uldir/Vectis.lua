@@ -153,7 +153,7 @@ do
 				if uId then--Failsafe
 					local _, _, _, _, _, expireTime = DBM:UnitDebuff(uId, 265129)
 					local remaining = floor(expireTime-GetTime())
-					addLine(name, "("..i..")"..remaining)--Insert numeric into name so a person who has more than two vectors will show both of them AND not conflict with lingering entries
+					addLine(name, i.."-"..remaining)--Insert numeric into name so a person who has more than two vectors will show both of them AND not conflict with lingering entries
 				end
 			end
 		end
