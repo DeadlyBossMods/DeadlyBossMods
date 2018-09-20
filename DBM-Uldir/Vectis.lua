@@ -51,7 +51,7 @@ local yellGestate							= mod:NewYell(265212)
 local specWarnGestateNear					= mod:NewSpecialWarningClose(265212, false, nil, 2, 1, 2)
 local specWarnAmalgam						= mod:NewSpecialWarningSwitch("ej18007", "-Healer", nil, 2, 1, 2)
 local specWarnSpawnParasite					= mod:NewSpecialWarningSwitch(275055, "Dps", nil, nil, 1, 2)--Mythic
---local specWarnContagion					= mod:NewSpecialWarningCount(267242, nil, nil, nil, 2, 2)
+local specWarnContagion						= mod:NewSpecialWarningCount(267242, false, nil, 2, 2, 2)
 local specWarnBurstingLesions				= mod:NewSpecialWarningMoveAway(274990, nil, nil, nil, 1, 2)
 local yellBurstingLesions					= mod:NewYell(274990, nil, false)--Mythic
 local yellEngorgedParasite					= mod:NewYell(274983)--Mythic
@@ -251,8 +251,12 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 267242 then
 		self.vb.ContagionCount = self.vb.ContagionCount + 1
-		warnContagion:Show(self.vb.ContagionCount)
-		--specWarnContagion:Play("aesoon")
+		if self.Options.SpecWarn267242count then
+			specWarnContagion:Show(self.vb.ContagionCount)
+			specWarnContagion:Play("aesoon")
+		else
+			warnContagion:Show(self.vb.ContagionCount)
+		end
 		timerContagionCD:Start(nil, self.vb.ContagionCount+1)
 		if self:IsMythic() then
 			if playerHasSix then--Done here so earlier warning, not on APPLIED
