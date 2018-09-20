@@ -45,7 +45,12 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(2166)
 
 L:SetOptionLocalization({
-	ShowHighestFirst2	 =	"중첩이 높은 순서대로 정보 프레임에 끈질긴 감염 대상자 정렬 (중첩 낮은순 대신)"
+	ShowHighestFirst2	 =	"중첩이 높은 순서대로 정보 프레임에 끈질긴 감염 대상자 정렬 (중첩 낮은순 대신)",
+	ShowOnlyParty		 =	"내 파티원의 끈질긴 감염 중첩만 보기"
+})
+
+L:SetMiscLocalization({
+	BWIconMsg			 =	"징표 충돌을 방지하기 위해 DBM의 징표 기능을 권한이 있는 공격대 내 빅윅 사용자에게 넘겨줬습니다. 빅윅 사용자가 징표 기능을 켰는지 확인하시고 DBM의 징표 기능을 활성화하고 싶을땐 빅윅 사용자의 등급을 내리면 됩니다"
 })
 
 ---------------
