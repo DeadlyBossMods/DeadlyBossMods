@@ -43,7 +43,9 @@ local specWarnEvolvingAffliction			= mod:NewSpecialWarningStack(265178, nil, 2, 
 local specWarnEvolvingAfflictionOther		= mod:NewSpecialWarningTaunt(265178, nil, nil, nil, 1, 2)
 local specWarnOmegaVector					= mod:NewSpecialWarningYouPos(265129, nil, nil, nil, 1, 2)
 local yellOmegaVector						= mod:NewPosYell(265129)
+local yellOmegaVectorNoIcon					= mod:NewYell(265129)
 local yellOmegaVectorFades					= mod:NewIconFadesYell(265129)
+local yellOmegaVectorFadesNoIcon			= mod:NewShortFadesYell(265129)
 local specWarnGestate						= mod:NewSpecialWarningYou(265212, nil, nil, nil, 1, 2)
 local yellGestate							= mod:NewYell(265212)
 local specWarnGestateNear					= mod:NewSpecialWarningClose(265212, false, nil, 2, 1, 2)
@@ -103,18 +105,23 @@ end
 --Attempt to match BW icon assignment in personal messages and yells
 local function delayedIconCheck(self)
 	local currentIcon = GetRaidTargetIndex("player") or 0
+	local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", 265129)--Flex debuff, have to live pull duration
 	if currentIcon > 0 then--Icon Found
 		specWarnOmegaVector:Show(self:IconNumToTexture(currentIcon))
 		specWarnOmegaVector:Play("mm"..currentIcon)
+		yellOmegaVector:Yell(currentIcon, currentIcon, currentIcon)
+		if expireTime then
+			local remaining = expireTime-GetTime()
+			yellOmegaVectorFades:Countdown(remaining-0.3, 3, currentIcon)
+		end
 	else--Didn't find an icon
 		specWarnOmegaVector:Show(DBM_CORE_UNKNOWN)
 		specWarnOmegaVector:Play("targetyou")
-	end
-	yellOmegaVector:Yell(currentIcon, currentIcon, currentIcon)--Do yell regardless so people can see two are on one target
-	local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", 265129)--Flex debuff, have to live pull duration
-	if expireTime then
-		local remaining = expireTime-GetTime()
-		yellOmegaVectorFades:Countdown(remaining-0.3, 3, currentIcon)
+		yellOmegaVectorNoIcon:Yell()
+		if expireTime then
+			local remaining = expireTime-GetTime()
+			yellOmegaVectorFadesNoIcon:Countdown(remaining-0.3, 3, currentIcon)
+		end--Do yell regardless so people can see two are on one target
 	end
 end
 
@@ -424,8 +431,10 @@ function mod:SPELL_AURA_REMOVED(args)
 					if args:IsPlayer() then
 						if not self.vb.iconsUsed then
 							yellOmegaVectorFades:Cancel()--Cancel them all
+							yellOmegaVectorFadesNoIcon:Cancel()
 						else
 							yellOmegaVectorFades:Cancel(i)--Only unschedule the first found icon yell
+							yellOmegaVectorFadesNoIcon:Cancel()
 							if not stillDebuffed then
 								playersIcon = 0--None left, return player icon to 0
 							end
