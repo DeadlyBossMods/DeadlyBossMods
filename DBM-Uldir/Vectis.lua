@@ -79,6 +79,7 @@ mod:AddSetIconOption("SetIconVector", 265129, true)
 mod:AddRangeFrameOption("5/8")
 mod:AddInfoFrameOption(265127, true)
 mod:AddBoolOption("ShowHighestFirst2", false)--Show lest stacks first by default, since it alines with new infoframe
+mod:AddBoolOption("ShowOnlyParty", false)
 
 mod.vb.ContagionCount = 0
 mod.vb.plagueBombCount = 0
@@ -158,12 +159,24 @@ do
 		end
 		addLine(" ", " ")--Insert a blank entry to split the two debuffs
 		--Lingering Infection (UGLY code)
-		for uId in DBM:GetGroupMembers() do
-			local spellName, _, count = DBM:UnitDebuff(uId, 265127)
-			if spellName and count then
-				local unitName = UnitName(uId)
-				tempLines[unitName] = count
-				tempLinesSorted[#tempLinesSorted + 1] = unitName
+		if mod.Options.ShowOnlyParty then
+			for i = 1, GetNumSubgroupMembers() do--Starting at 1 should skip player, show everyone else
+				local uId = "party"..i
+				local spellName, _, count = DBM:UnitDebuff(uId, 265127)
+				if spellName and count then
+					local unitName = UnitName(uId)
+					tempLines[unitName] = count
+					tempLinesSorted[#tempLinesSorted + 1] = unitName
+				end
+			end
+		else
+			for uId in DBM:GetGroupMembers() do
+				local spellName, _, count = DBM:UnitDebuff(uId, 265127)
+				if spellName and count then
+					local unitName = UnitName(uId)
+					tempLines[unitName] = count
+					tempLinesSorted[#tempLinesSorted + 1] = unitName
+				end
 			end
 		end
 		--Sort lingering according to options
