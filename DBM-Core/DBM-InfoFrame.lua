@@ -747,14 +747,15 @@ function onUpdate(frame)
 		local rightText = lines[leftText]
 		local icon = icons[leftText] and icons[leftText]..leftText
 		if friendlyEvents[currentEvent] then
-			local unitId = DBM:GetRaidUnitId(DBM:GetUnitFullName(leftText)) or "player"--Prevent nil logical error
+			local extra, extraName = string.split("-", leftText)--Find just unit name, if extra info had to be added to make unique
+			local unitId = DBM:GetRaidUnitId(DBM:GetUnitFullName(extraName or leftText)) or "player"--Prevent nil logical error
 			if unitId and select(4, UnitPosition(unitId)) == currentMapId then
 				local _, class = UnitClass(unitId)
 				if class then
 					color = RAID_CLASS_COLORS[class]
 				end
 				linesShown = linesShown + 1
-				if leftText == playerName then--It's player.
+				if (extraName or leftText) == playerName then--It's player.
 					if currentEvent == "health" or currentEvent == "playerpower" or currentEvent == "playerabsorb" or currentEvent == "playerbuff" or currentEvent == "playergooddebuff" or currentEvent == "playerbaddebuff" or currentEvent == "playerdebuffremaining" or currentEvent == "playerdebuffstacks" or currentEvent == "playerbuffremaining" or currentEvent == "playertargets" or (currentEvent == "playeraggro" and value[1] == 3) then--Red
 						frame:AddDoubleLine(icon or leftText, rightText, 255, 0, 0, 255, 255, 255)-- (leftText, rightText, left.R, left.G, left.B, right.R, right.G, right.B)
 					else--Green
@@ -781,7 +782,8 @@ function onUpdate(frame)
 			end
 		else
 			local color2 = NORMAL_FONT_COLOR--Only custom into frames will have chance of putting player names on right side
-			local unitId = DBM:GetRaidUnitId(DBM:GetUnitFullName(leftText))
+			local extra, extraName = string.split("-", leftText)--Find just unit name, if extra info had to be added to make unique
+			local unitId = DBM:GetRaidUnitId(DBM:GetUnitFullName(extraName or leftText))
 			local unitId2 = DBM:GetRaidUnitId(DBM:GetUnitFullName(rightText))
 			--Class color names in custom functions too, IF unitID exists
 			if unitId then--Check left text
