@@ -153,7 +153,7 @@ do
 				if uId then--Failsafe
 					local _, _, _, _, _, expireTime = DBM:UnitDebuff(uId, 265129)
 					local remaining = floor(expireTime-GetTime())
-					addLine(name, remaining)
+					addLine(name..":", remaining)--: inserted to make sure table entry differs from table entry for lingering
 				end
 			end
 		end
