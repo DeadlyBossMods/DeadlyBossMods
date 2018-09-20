@@ -66,8 +66,8 @@ end
 
 function mod:ZONE_CHANGED_NEW_AREA()
 	if setActive then
-		local mapID = GetPlayerMapAreaID("player")
-		if mapID == 27 or mapID == 4 then--Dun Morogh, Durotar
+		local mapID = C_Map.GetBestMapForUnit("player")
+		if mapID == 27 or mapID == 1 then--Dun Morogh, Durotar
 			setDialog(self, true)
 		else
 			setDialog(self)
