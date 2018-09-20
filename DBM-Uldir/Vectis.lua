@@ -109,7 +109,7 @@ local function delayedIconCheck(self)
 	local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", 265129)--Flex debuff, have to live pull duration
 	if currentIcon > 0 then--Icon Found
 		specWarnOmegaVector:Show(self:IconNumToTexture(currentIcon))
-		specWarnOmegaVector:Play("mm"..currentIcon)
+		specWarnOmegaVector:Play("targetyou")
 		yellOmegaVector:Yell(currentIcon, currentIcon, currentIcon)
 		if expireTime then
 			local remaining = expireTime-GetTime()
@@ -467,13 +467,6 @@ function mod:SPELL_AURA_REMOVED(args)
 						break--Break loop, nothing further to do
 					end
 				else
-					--Loop is continuing because debuff still existed
-					--if args:IsPlayer() and playersIcon ~= 0 then
-						--Give player new position
-						--specWarnOmegaVector:Show(self:IconNumToTexture(i))
-						--specWarnOmegaVector:Play("targetyou")
-						--yellOmegaVector:Yell(icon, icon, icon)
-					--end
 					if self.Options.SetIconVector and self.vb.iconsUsed then
 						self:SetIcon(args.destName, i)
 						break--Break loop, Icon updated to next 
