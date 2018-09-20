@@ -153,7 +153,7 @@ do
 				if uId then--Failsafe
 					local _, _, _, _, _, expireTime = DBM:UnitDebuff(uId, 265129)
 					local remaining = floor(expireTime-GetTime())
-					addLine(name, i.."-"..remaining)--Insert numeric into name so a person who has more than two vectors will show both of them AND not conflict with lingering entries
+					addLine(i.."-"..name, remaining)--Insert numeric into name so a person who has more than two vectors will show both of them AND not conflict with lingering entries
 				end
 			end
 		end
@@ -251,7 +251,7 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 267242 then
 		self.vb.ContagionCount = self.vb.ContagionCount + 1
-		if self.Options.SpecWarn267242count then
+		if self.Options.SpecWarn267242count2 then
 			specWarnContagion:Show(self.vb.ContagionCount)
 			specWarnContagion:Play("aesoon")
 		else
