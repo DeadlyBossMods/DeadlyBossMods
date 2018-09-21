@@ -248,7 +248,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnImminentRuin:Show(self:IconNumToTexture(icon))
 			specWarnImminentRuin:Play("mm"..icon)
 			yellImminentRuin:Yell(icon, icon, icon)
-			yellImminentRuinFades:Countdown(self:IsMythic() and 8 or 12, nil, icon)
+			yellImminentRuinFades:Countdown(12, nil, icon)
 		elseif self:CheckNearby(12, args.destName) and not DBM:UnitDebuff("player", spellId) then
 			specWarnImminentRuinNear:CombinedShow(0.3, args.destName)--Combined show to prevent warning spam if multiple targets near you
 			specWarnImminentRuinNear:CancelVoice()--Avoid spam
@@ -326,13 +326,15 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		timerVeil:Stop()
 		timerObliterationbeamCD:Stop()
 		timerVisionsoMadnessCD:Stop()
-		timerImminentRuinCD:Start(7.5, 1)--SUCCESS
-		countdownImminentRuin:Start(7.5)
 		if self:IsMythic() then
+			timerImminentRuinCD:Start(5, 1)--SUCCESS
+			countdownImminentRuin:Start(5)
 			timerOblivionSphereCD:Start(7, 1)
 			countdownOblivionSphere:Start(7)
-			--timerLivingWeaponCD:Start(15.2)
+			timerLivingWeaponCD:Start(16.6)
 		else
+			timerImminentRuinCD:Start(7.5, 1)--SUCCESS
+			countdownImminentRuin:Start(7.5)
 			timerOblivionSphereCD:Start(9, 1)
 			countdownOblivionSphere:Start(9)
 		end
