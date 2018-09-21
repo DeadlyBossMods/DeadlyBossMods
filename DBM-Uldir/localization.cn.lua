@@ -1,7 +1,7 @@
 -- Mini Dragon(projecteurs@gmail.com)
 -- 夏一可
 -- Blizzard Entertainment
--- Last update: 2018/09/07
+-- Last update: 2018/09/21
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -30,6 +30,14 @@ L= DBM:GetModLocalization(2146)
 ---------------------------
 L= DBM:GetModLocalization(2169)
 
+L:SetTimerLocalization({
+	timerOrbLands	= "下一个球落地 (%s)"
+})
+
+L:SetOptionLocalization({
+	timerOrbLands	 =	"计时条：下一次腐蚀之球落地"
+})
+
 L:SetMiscLocalization({
 	CThunDisc 			= 	"检索圆盘成功。正在读取克苏恩数据。",
 	YoggDisc 			= 	"检索圆盘成功。正在读取尤格-萨隆数据。",
@@ -42,7 +50,12 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(2166)
 
 L:SetOptionLocalization({
-	ShowHighestFirst2	 =	"将信息窗中持续感染的层数从高往低显示(默认从低到高)"
+	ShowHighestFirst2	 =	"将信息窗中持续感染的层数从高往低显示(默认从低到高)",
+	ShowOnlyParty		 =	"只显示自己小队的持续感染层数信息(得先编队)"
+})
+
+L:SetMiscLocalization({
+	BWIconMsg			 =	"DBM能够和BW互通团队标识。请确保团队权限正常防止胡乱标识。"
 })
 
 ---------------
@@ -83,6 +96,21 @@ L:SetMiscLocalization({
 -- G'huun --
 ------------------
 L= DBM:GetModLocalization(2147)
+
+L:SetWarningLocalization({
+	warnMatrixFail		= "能量矩阵掉落"
+})
+
+L:SetOptionLocalization({
+	warnMatrixFail		= "计时条：当能量矩阵掉落时"
+})
+
+L:SetMiscLocalization({
+	CurrentMatrix		=	"当前矩阵:",--Mythic
+	NextMatrix			=	"下个矩阵:",--Mythic
+	CurrentMatrixLong	=	"当前矩阵 (%s):",--Non Mythic
+	NextMatrixLong		=	"下个矩阵 (%s):"--Non Mythic
+})
 
 -------------
 --  Trash  --
