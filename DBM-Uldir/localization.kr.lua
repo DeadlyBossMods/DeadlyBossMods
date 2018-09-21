@@ -45,8 +45,8 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(2166)
 
 L:SetOptionLocalization({
-	ShowHighestFirst2	 =	"중첩이 높은 순서대로 정보 프레임에 끈질긴 감염 대상자 정렬 (중첩 낮은순 대신)",
-	ShowOnlyParty		 =	"내 파티원의 끈질긴 감염 중첩만 보기"
+	ShowHighestFirst2	 =	"중첩이 높은 순서대로 정보 프레임에 잔존하는 감염 대상자 정렬 (중첩 낮은순 대신)",
+	ShowOnlyParty		 =	"내 파티원의 잔존하는 감염 중첩만 보기"
 })
 
 L:SetMiscLocalization({
