@@ -31,7 +31,7 @@ mod:AddInfoFrameOption(265973, true)
 function mod:OnCombatStart(delay)
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(DBM_CORE_INFOFRAME_POWER)
-		DBM.InfoFrame:Show(2, "enemypower", 2)
+		DBM.InfoFrame:Show(2, "enemypower", 2, 10)
 	end
 end
 
