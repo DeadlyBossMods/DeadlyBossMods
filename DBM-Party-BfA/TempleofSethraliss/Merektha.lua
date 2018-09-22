@@ -42,14 +42,13 @@ local timerNoxiousBreathCD			= mod:NewCDTimer(89.3, 272657, nil, nil, nil, 3)
 
 --mod:AddRangeFrameOption(5, 194966)
 mod:AddNamePlateOption("NPAuraOnObscured", 267050)
-mod:AddNamePlateOption("NPAuraOnHatch", 264233)
 
 
 function mod:OnCombatStart(delay)
 	timerHadotoxinCD:Start(1-delay)
 	timerNoxiousBreathCD:Start(6-delay)
 	--timerBurrowCD:Start(15.2-delay)
-	if self.Options.NPAuraOnObscured or self.Options.NPAuraOnHatch then
+	if self.Options.NPAuraOnObscured then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
 end
@@ -58,7 +57,7 @@ function mod:OnCombatEnd()
 --	if self.Options.RangeFrame then
 --		DBM.RangeCheck:Hide()
 --	end
-	if self.Options.NPAuraOnObscured or self.Options.NPAuraOnHatch then
+	if self.Options.NPAuraOnObscured then
 		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
 	end
 end
@@ -106,9 +105,6 @@ function mod:SPELL_CAST_START(args)
 		specWarnBlindingSand:Show()
 		specWarnBlindingSand:Play("turnaway")
 	elseif (spellId == 264239 or spellId == 264233) then--Hatch
-		if self.Options.NPAuraOnHatch then
-			DBM.Nameplate:Show(true, args.sourceGUID, spellId, nil, 35)
-		end
 		if self:AntiSpam(3, 1) then
 			warnHatch:Show()--Cast instantly when burrow ends
 			--timerBlindingSandCD:Start(6)
