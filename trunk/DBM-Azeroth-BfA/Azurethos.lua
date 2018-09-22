@@ -15,10 +15,11 @@ mod:RegisterEventsInCombat(
 )
 
 --TODO, see if can detect gale force teleport target
---local warnMothersEmbrace			= mod:NewTargetAnnounce(219045, 3)
+local warnGaleForce					= mod:NewTargetAnnounce(274829, 3)
 
 local specWarnAzurethosFury			= mod:NewSpecialWarningDodge(274839, nil, nil, nil, 2, 2)
 local specWarnGaleForce				= mod:NewSpecialWarningDodge(274829, nil, nil, nil, 2, 2)
+local yellGaleForce					= mod:NewYell(274829)
 local specWarnWingBuffet			= mod:NewSpecialWarningDodge(274832, nil, nil, nil, 1, 2)
 
 local timerAzurethosFuryCD			= mod:NewCDTimer(46.8, 274839, nil, nil, nil, 2)
@@ -29,6 +30,14 @@ local timerAzurethosFuryCD			= mod:NewCDTimer(46.8, 274839, nil, nil, nil, 2)
 
 --mod:AddRangeFrameOption(5, 194966)
 --mod:AddReadyCheckOption(37460, false)
+
+function mod:GaleForce(targetname, uId)
+	if not targetname then return end
+	warnGaleForce:Show(targetname)
+	if targetname == UnitName("player") then
+		yellGaleForce:Yell()
+	end
+end
 
 function mod:OnCombatStart(delay, yellTriggered)
 	if yellTriggered then
@@ -54,6 +63,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnGaleForce:Show()
 		specWarnGaleForce:Play("shockwave")
 		--timerGaleForceCD:Start()
+		self:BossTargetScanner(args.sourceGUID, "GaleForce", 0.05, 1)--One check, boss is already looking at target at time of start, and stops looking at target almost immediately, we need target boss has soon as cast starts
 	elseif spellId == 274832 then
 		specWarnWingBuffet:Show()
 		specWarnWingBuffet:Play("shockwave")
