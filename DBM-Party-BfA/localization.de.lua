@@ -52,7 +52,7 @@ L= DBM:GetModLocalization(2093)
 L= DBM:GetModLocalization(2094)
 
 L:SetMiscLocalization({
-	openingRP = "Gather 'round and place yer bets! We got a new set of vict-- uh... competitors! Take it away, Gurgthok and Wodin!"--translate (trigger)
+	openingRP = "Schließt Eure Wetten ab! Wir haben Frischflei.... äh, neue Herausforderer! Und nun Applaus für: Gurgthock und Wodin!"
 })
 
 -----------------------
@@ -120,7 +120,7 @@ L= DBM:GetModLocalization(2154)
 L= DBM:GetModLocalization(2155)
 
 L:SetMiscLocalization({
-	openingRP	= "It would seem you have guests, Lord Stormsong."--translate (trigger)
+	openingRP	= "Mir scheint, Ihr habt Gäste, Lord Sturmsang."
 })
 
 -----------------------
