@@ -21,7 +21,6 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_REMOVED 279662 279663"
 )
 
---More mythic timer work
 --[[
 ability.id = 267787 and type = "begincast"
  or (ability.id = 267795 or ability.id = 267945 or ability.id = 269827 or ability.id = 277973 or ability.id = 277961 or ability.id = 268089 or ability.id = 277742) and type = "cast"
@@ -156,12 +155,6 @@ do
 				end
 			end
 		end
-		--Player personal checks
-		--local spellName, _, _, _, _, expireTime = DBM:UnitDebuff("player", 267821)
-		--if spellName and expireTime then--Personal Defense Grid. Same spellId is used for going through and lingering, but expire time will only exist for lingering
-			--local remaining = expireTime-GetTime()
-			--addLine(spellName, remaining)
-		--end
 		--TODO, player tracking per chamber if possible
 		return lines, sortedLines
 	end
