@@ -22,7 +22,7 @@ local specWarnCalloftheDeep			= mod:NewSpecialWarningDodge(270185, nil, nil, nil
 local yellCrushingEmbrace			= mod:NewYell(270624)
 local specWarnPutridWaters			= mod:NewSpecialWarningMoveAway(275014, nil, nil, nil, 1, 2)
 local yellPutridWaters				= mod:NewYell(275014)
-local specWarnSlam					= mod:NewSpecialWarningDodge(269266, nil, nil, nil, 2, 2)
+local specWarnSlam					= mod:NewSpecialWarningDodge(269266, "Tank", nil, 2, 2, 2)
 --local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
 
 --local timerCalloftheDeepCD			= mod:NewAITimer(13, 270185, nil, nil, nil, 3)--6.4, 15.1, 19.0, 11.9, 12.1, 12.3, 15.6, 12.1, 12.9, 7.0, 8.6, 7.5, 7.2, 7.4, 7.0, 7.0, 7.3, 7.2
