@@ -9,10 +9,11 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 258338 256589 257117 267522 272884 267533 272902",
+	"SPELL_CAST_START 258338 256589 257117 267522 272884 267533 272902 265088 264608 265168",
 	"SPELL_CAST_SUCCESS 258381",
 	"SPELL_DAMAGE 272397",
-	"SPELL_MISSED 272397"
+	"SPELL_MISSED 272397",
+	"UNIT_DIED"
 )
 
 --TODO: target scan Blackout Barrel?
@@ -20,6 +21,10 @@ mod:RegisterEventsInCombat(
 local warnLuckySevens				= mod:NewSpellAnnounce(257117, 1)
 local warnTappedKeg					= mod:NewSpellAnnounce(272884, 1)
 local warnChainShot					= mod:NewSpellAnnounce(272902, 1)
+--Announce Brews
+local warnConfidenceBrew			= mod:NewCastAnnounce(265088, 1)--Confidence-Boosting Freehold Brew
+local warnInvigoratingBrew			= mod:NewCastAnnounce(264608, 1)--Invigorating Freehold Brew
+local warnCausticBrew				= mod:NewCastAnnounce(265168, 1)--Caustic Freehold Brew
 
 --Raoul
 local specWarnBarrelSmash			= mod:NewSpecialWarningRun(256589, "Melee", nil, nil, 4, 2)
@@ -31,6 +36,8 @@ local specWarnCuttingSurge			= mod:NewSpecialWarningDodge(267522, nil, nil, nil,
 local specWarnWhirlpoolofBlades		= mod:NewSpecialWarningDodge(267533, nil, nil, nil, 2, 2)
 local specWarnGTFO					= mod:NewSpecialWarningGTFO(272397, nil, nil, nil, 1, 2)
 
+--General
+local timerTendingBarCD				= mod:NewNextTimer(8, 264605, nil, nil, nil, 3)
 --Raoul
 ----Hostile
 local timerBarrelSmashCD			= mod:NewCDTimer(22.9, 256589, nil, "Melee", nil, 3)--22.9-24.5
@@ -138,6 +145,15 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 272902 then
 		warnChainShot:Show()
 		timerChainShotCD:Start()
+	elseif spellId == 265088 or spellId == 264608 or spellId == 265168 then
+		if spellId == 265088 then
+			warnConfidenceBrew:Show()
+		elseif spellId == 264608 then
+			warnInvigoratingBrew:Show()
+		else
+			warnCausticBrew:Show()
+		end
+		timerTendingBarCD:Start()
 	end
 end
 
@@ -157,3 +173,21 @@ function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
 	end
 end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE
+
+function mod:UNIT_DIED(args)
+	local cid = self:GetCIDFromGUID(args.destGUID)
+	if cid == 126845 then--Captain Jolly
+		timerCuttingSurgeCD:Stop()
+		timerWhirlpoolofBladesCD:Stop()
+		timerLuckySevensCD:Stop()
+	elseif cid == 126847 then--Captain Raoul
+		timerBarrelSmashCD:Stop()
+		timerBlackoutBarrelCD:Stop()
+		timerTappedKegCD:Stop()
+	elseif cid == 126848 then--Captain Eudora
+		timerGrapeShotCD:Stop()
+		timerChainShotCD:Stop()
+	elseif cid == 133219 then--Rummy Mancomb (You bastard, you killed Rummy!)
+		timerTendingBarCD:Stop()
+	end
+end
