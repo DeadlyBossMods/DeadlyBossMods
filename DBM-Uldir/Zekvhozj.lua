@@ -94,7 +94,7 @@ local countdownMightofVoid				= mod:NewCountdown("Alt37", 267312, "Tank", nil, 3
 --local countdownFelstormBarrage		= mod:NewCountdown("AltTwo32", 244000, nil, nil, 3)
 
 mod:AddRangeFrameOption(6, 264382)
---mod:AddBoolOption("ShowAllPlatforms", false)
+mod:AddBoolOption("EarlyTankSwap", false)
 mod:AddSetIconOption("SetIconOnAdds", 267192, true, true)
 --mod:AddInfoFrameOption(265451, true)
 
@@ -246,8 +246,13 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnVoidLash:Show(args.destName, amount)
 		end
 	elseif spellId == 265237 and not args:IsPlayer() then
-		specWarnShatter:Schedule(4.5, args.destName)
-		specWarnShatter:ScheduleVoice(4.5, "tauntboss")
+		if self.Options.EarlyTankSwap then
+			specWarnShatter:Show(args.destName)
+			specWarnShatter:Play("tauntboss")
+		else
+			specWarnShatter:Schedule(4.5, args.destName)
+			specWarnShatter:ScheduleVoice(4.5, "tauntboss")
+		end
 	elseif spellId == 265360 then
 		if args:IsPlayer() and self:AntiSpam(5, 6) then
 			specWarnRoilingDeceit:Show(DBM_CORE_ROOM_EDGE)
