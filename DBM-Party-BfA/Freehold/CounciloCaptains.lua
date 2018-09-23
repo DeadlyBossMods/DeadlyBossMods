@@ -105,6 +105,9 @@ local function scanCaptains(self, isPull, delay)
 end
 
 function mod:OnCombatStart(delay)
+	if not self:IsNormal() then
+		timerTendingBarCD:Start(8-delay)
+	end
 	self:Schedule(1, scanCaptains, self, true, delay)--1 second delay to give IEEU time to populate boss unitIDs
 end
 

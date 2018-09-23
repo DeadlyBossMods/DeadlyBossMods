@@ -8,7 +8,7 @@ mod:SetZone()
 mod.isTrashMod = true
 
 mod:RegisterEvents(
-	"SPELL_CAST_START 268709 268129 263275 267433 263103 263066 268865 268797 269090 262540 262554 262092",
+	"SPELL_CAST_START 268709 268129 263275 267433 263103 263066 268865 268797 269090 262540 262554 262092 263202",
 	"SPELL_AURA_APPLIED 268702 262947 262540 262092",
 	"SPELL_CAST_SUCCESS 280604 262515"
 )
@@ -20,6 +20,7 @@ local warnAzeriteHeartseeker		= mod:NewTargetNoFilterAnnounce(262515, 3)
 --local yellArrowBarrage				= mod:NewYell(200343)
 local specWarnCover					= mod:NewSpecialWarningMove(263275, "Tank", nil, nil, 1, 2)
 local specWarnEarthShield			= mod:NewSpecialWarningInterrupt(268709, "HasInterrupt", nil, nil, 1, 2)
+local specWarnRockLance				= mod:NewSpecialWarningInterrupt(263202, false, nil, nil, 1, 2)
 local specWarnIcedSpritzer			= mod:NewSpecialWarningInterrupt(280604, "HasInterrupt", nil, nil, 1, 2)
 local specWarnCola					= mod:NewSpecialWarningInterrupt(268129, "HasInterrupt", nil, nil, 1, 2)
 local specWarnFuriousQuake			= mod:NewSpecialWarningInterrupt(268702, "HasInterrupt", nil, nil, 1, 2)
@@ -61,6 +62,9 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 262092 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnInhaleVapors:Show(args.sourceName)
 		specWarnInhaleVapors:Play("kickcast")
+	elseif spellId == 263202 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
+		specWarnRockLance:Show(args.sourceName)
+		specWarnRockLance:Play("kickcast")
 	elseif spellId == 263275 and self:IsValidWarning(args.sourceGUID) then
 		specWarnCover:Show()
 		specWarnCover:Play("moveboss")
