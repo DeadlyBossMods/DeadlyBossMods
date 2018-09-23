@@ -11,7 +11,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 269029 268230",
 	"UNIT_DIED",
-	"UNIT_SPELLCAST_START boss2 boss3 boss4 boss5",--Adds only
+	"UNIT_SPELLCAST_START boss1 boss2 boss3 boss4 boss5",--Adds only
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5"--boss and Adds
 )
 
@@ -95,7 +95,7 @@ function mod:UNIT_SPELLCAST_START(uId, _, spellId)
 		specWarnHeavySlash:Play("shockwave")
 	elseif spellId == 268260 then--Broadside 
 		specWarnBroadside:Show()
-		specWarnBroadside:Play("shockwave")
+		specWarnBroadside:Play("watchstep")
 		timerBroadsideCD:Start(10.9)
 	end
 end
