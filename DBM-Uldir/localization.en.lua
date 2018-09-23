@@ -29,7 +29,8 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	timerOrbLands	 =	"Show timer for when Orb of Corruption Lands"
+	timerOrbLands	 =	"Show timer for when Orb of Corruption Lands",
+	EarlyTankSwap	 =	"Show tank swap warning immediately after Shatter, instead of waiting for 2nd Void Lash"
 })
 
 L:SetMiscLocalization({
