@@ -6,7 +6,7 @@ mod:SetCreatureID(132998)
 mod:SetEncounterID(2122)
 mod:SetZone()
 --mod:SetBossHPInfoToHighest()
-mod:SetUsedIcons(6)
+mod:SetUsedIcons(7, 6, 5, 4, 3, 2, 1)
 mod:SetHotfixNoticeRev(17776)
 mod:SetMinSyncRevision(17776)
 --mod.respawnTime = 35
@@ -39,6 +39,8 @@ mod:RegisterEventsInCombat(
  or (ability.id = 272505 or ability.id = 275756 or ability.id = 263235 or ability.id = 263482 or ability.id = 263503 or ability.id = 263373 or ability.id = 270373 or ability.id = 270428 or ability.id = 276839 or ability.id = 274582) and type = "cast"
  or ability.id = 270443
  or (ability.id = 267462 or ability.id = 267412 or ability.id = 267409) and type = "begincast"
+ or ability.id = 270443 and type = "applybuff"
+ or ability.id = 277007 and type = "applydebuff"
  or (ability.id = 277079 or ability.id = 272506 or ability.id = 274262) and (type = "applydebuff" or type = "removedebuff")
 --]]
 --Arena Floor
@@ -95,6 +97,7 @@ local timerDarkBargainCD				= mod:NewCDTimer(23.1, 267409, nil, nil, nil, 3, nil
 mod:AddTimerLine(SCENARIO_STAGE:format(2))
 local timerWaveofCorruptionCD			= mod:NewCDCountTimer(15, 270373, nil, nil, nil, 3)
 local timerBloodFeastCD					= mod:NewCDCountTimer(15, 263235, nil, nil, nil, 2)
+local timerBurstingBoilCD				= mod:NewCDCountTimer(20.5, 277007, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
 ----Horror
 local timerMindNumbingChatterCD			= mod:NewCDTimer(13.4, 263307, nil, "SpellCaster", nil, 2)
 mod:AddTimerLine(SCENARIO_STAGE:format(3))
@@ -117,6 +120,7 @@ mod:AddInfoFrameOption(nil, true)
 mod:AddNamePlateOption("NPAuraOnFixate", 268074)
 mod:AddNamePlateOption("NPAuraOnUnstoppable", 275204)
 mod:AddSetIconOption("SetIconOnBloodHost", 267813, true)
+mod:AddSetIconOption("SetIconOnBurstingBoil", 277007, true)
 
 mod.vb.phase = 1
 mod.vb.mawCastCount = 0
@@ -125,6 +129,8 @@ mod.vb.matrixSide = DBM_CORE_RIGHT
 mod.vb.explosiveCount = 0
 mod.vb.waveCast = 0
 mod.vb.bloodFeastCount = 0
+mod.vb.burstingIcon = 0
+mod.vb.burstingCount = 0
 mod.vb.matrixActive = false
 local matrixTargets, bloodFeastTarget = {}, {}
 local thousandMawsTimers = {25.4, 26.3, 25.5, 24.2, 23.9, 23.1, 21.5, 21.9, 19.4}
@@ -227,15 +233,18 @@ function mod:OnCombatStart(delay)
 	self.vb.explosiveCount = 0
 	self.vb.waveCast = 0
 	self.vb.bloodFeastCount = 0
+	self.vb.burstingIcon = 0
+	self.vb.burstingCount = 0
 	self.vb.matrixActive = false
 	timerMatrixCD:Start(5.3, 1)
-	timerExplosiveCorruptionCD:Start(8-delay, 1)--SUCCESS
-	countdownExplosiveCorruption:Start(8-delay)
-	timerThousandMawsCD:Start(25.4-delay, 1)
+	timerThousandMawsCD:Start(24.3-delay, 1)
 	if not self:IsMythic() then
 		self.vb.matrixSide = DBM_CORE_RIGHT
-	--else
-		--Do shit on mythic
+		timerExplosiveCorruptionCD:Start(8-delay, 1)--SUCCESS
+		countdownExplosiveCorruption:Start(8-delay)
+	else
+		timerExplosiveCorruptionCD:Start(10-delay, 1)--SUCCESS
+		countdownExplosiveCorruption:Start(10-delay)
 	end
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(OVERVIEW)
@@ -304,7 +313,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 275160 then
 		specWarnGazeofGhuun:Show()
 		specWarnGazeofGhuun:Play("turnaway")
-		local timer = self:IsHard() and 26.8 or self:IsEasy() and 31.6--TODO, mythic and LFR, easy vs hard is assumed but only confirmed on heroic/normal
+		local timer = self:IsHard() and 26.7 or self:IsEasy() and 31.6--TODO, LFR, easy is assumed
 		timerGazeofGhuunCD:Start(timer)
 		countdownGazeofGhuun:Start(timer)
 	end
@@ -314,7 +323,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 263235 then--Blood Feast
 		self.vb.waveCast = 0
-		timerWaveofCorruptionCD:Start(15.75, 1)--Wave of corruption is next, not blood Feast
+		timerWaveofCorruptionCD:Start(15.6, 1)--Wave of corruption is next, not blood Feast
 	elseif (spellId == 263482 or spellId == 263503) then
 		timerReOrgBlast:Start()
 		if self.vb.phase < 2 then--Phase 1 to Phase 2 Transition
@@ -325,11 +334,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 			countdownExplosiveCorruption:Cancel()
 			timerMassiveSmashCD:Stop()--Technically should AddTime(25) each add, but honestly, if the adds don't die in this 25 second window you done fucked up
 			timerDarkBargainCD:Stop()--Technically should AddTime(25) each add, but honestly, if the adds don't die in this 25 second window you done fucked up
-			timerExplosiveCorruptionCD:Start(27, 1)--SUCCESS. Casts it instantly on stun end
-			countdownExplosiveCorruption:Start(27)
 		else--Drive cast in Phase 2
 			if self.vb.waveCast == 2 then--Current timer is blood feast
-				--timerBloodFeastCD:AddTime(24, self.vb.bloodFeastCount+1)
 				local elapsed, total = timerBloodFeastCD:GetTime(self.vb.bloodFeastCount+1)
 				local extend = (total+24) - elapsed
 				timerBloodFeastCD:Update(elapsed, total+24, self.vb.bloodFeastCount+1)
@@ -343,6 +349,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 			timerExplosiveCorruptionCD:Update(elapsed2, total2+24, self.vb.explosiveCount+1)
 			countdownExplosiveCorruption:Cancel()
 			countdownExplosiveCorruption:Start(extend2)
+			if self:IsMythic() then
+				timerBurstingBoilCD:AddTime(24, self.vb.burstingCount+1)
+			end
 		end
 	elseif spellId == 263373 then--Deposit Matrix
 		timerMatrixCD:Stop()
@@ -353,14 +362,14 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.waveCast = self.vb.waveCast + 1
 		if self.vb.phase == 2 then
 			if self.vb.waveCast == 1 then
-				timerWaveofCorruptionCD:Start(15.75, 2)
+				timerWaveofCorruptionCD:Start(15.6, 2)
 			else
-				timerBloodFeastCD:Start(15.75, self.vb.bloodFeastCount+1)
-				countdownBloodFeast:Start(15.75)
+				timerBloodFeastCD:Start(15.6, self.vb.bloodFeastCount+1)
+				countdownBloodFeast:Start(15.6)
 			end
 		else--P3, No more blood feast, only waves
 			--Faster on easy because no growth
-			local timer = self:IsHard() and 25.6 or self:IsEasy() and 20.5--TODO, mythic and LFR, easy vs hard is assumed but only confirmed on heroic/normal
+			local timer = self:IsHard() and 25.5 or self:IsEasy() and 20.5--TODO, LFR
 			timerWaveofCorruptionCD:Start(timer, self.vb.waveCast+1)
 		end
 	elseif spellId == 276839 then
@@ -372,24 +381,32 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerBloodFeastCD:Stop()
 		countdownBloodFeast:Cancel()
 		timerWaveofCorruptionCD:Stop()
+		timerBurstingBoilCD:Stop()
 		timerExplosiveCorruptionCD:Stop()
-		timerExplosiveCorruptionCD:Start(30, 1)--SUCCESS
 		countdownExplosiveCorruption:Cancel()
-		countdownExplosiveCorruption:Start(30)
 		timerMalignantGrowthCD:Start(33.7)--33.7-34.1
 		countdownMalignantGrowth:Start(33.7)
-		local timer1 = self:IsHard() and 47.4 or self:IsEasy() and 52.3--Gaze of G'huun
-		local timer2 = self:IsHard() and 49.9 or self:IsEasy() and 37.7--Wave of Corruption (sooner on easy because no growth)
+		if self:IsMythic() then
+			timerBurstingBoilCD:Start(36, self.vb.burstingCount+1)--Might not be 36, might actually be a pause boss on P3 push and resume wen collapse is done. More Data Needed
+			timerExplosiveCorruptionCD:Start(44.5, 1)--SUCCESS
+			countdownExplosiveCorruption:Start(44.5)
+		else
+			timerExplosiveCorruptionCD:Start(30, 1)--SUCCESS
+			countdownExplosiveCorruption:Start(30)
+		end
+		local timer1 = self:IsMythic() and 44.9 or self:IsHeroic() and 47.4 or self:IsEasy() and 52.3--Gaze of G'huun
+		local timer2 = self:IsHeroic() and 49.9 or 37.6--Wave of Corruption (Mythic and normal are both 37.6, heroic is 49.9 cause it's delayed by other casts)
 		timerGazeofGhuunCD:Start(timer1)
 		countdownGazeofGhuun:Start(timer1)
 		timerWaveofCorruptionCD:Start(timer2, 1)
 	elseif spellId == 272505 or spellId == 275756 then
 		self.vb.explosiveCount = self.vb.explosiveCount + 1
-		if self.vb.phase == 1 then
-			timerExplosiveCorruptionCD:Start(26, self.vb.explosiveCount+1)
-			countdownExplosiveCorruption:Start(26)
+		if self.vb.phase == 1 then	
+			local timer = self:IsMythic() and 44 or 26
+			timerExplosiveCorruptionCD:Start(timer, self.vb.explosiveCount+1)
+			countdownExplosiveCorruption:Start(timer)
 		else
-			local timer = self:IsHard() and 13.4 or self:IsEasy() and 15.8--TODO, mythic and LFR, easy vs hard is assumed but only confirmed on heroic/normal
+			local timer = self:IsMythic() and 25.5 or self:IsHeroic() and 13.4 or self:IsEasy() and 15.8--TODO, LFR
 			timerExplosiveCorruptionCD:Start(timer, self.vb.explosiveCount+1)
 			countdownExplosiveCorruption:Start(timer)
 		end
@@ -447,7 +464,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if self.Options.SetIconOnBloodHost and not self:IsLFR() then
 			--This assumes no fuckups. Because honestly coding this around fuckups is not worth the effort
-			self:SetIcon(args.destName, 6)
+			self:SetIcon(args.destName, 7)
 		end
 	elseif spellId == 277079 or spellId == 272506 or spellId == 274262 then--272506 spread, 274262 initial targets, 277079 probably LFR with 6 second duration
 		if args:IsPlayer() then
@@ -505,10 +522,17 @@ function mod:SPELL_AURA_APPLIED(args)
 		if not tContains(bloodFeastTarget, args.destName) then
 			table.insert(bloodFeastTarget, args.destName)
 		end
-	elseif spellId == 270443 then
+	elseif spellId == 270443 then--Bite
 		--Start wave timer when boss activates, vs when he's first stunned.
 		self.vb.waveCast = 0
-		timerWaveofCorruptionCD:Start(15, 1)--10
+		if self:IsMythic() then
+			--Wave seem cast instantly on mythic so no timer for first.
+			timerBurstingBoilCD:Start(24.9, 1)
+		else
+			timerExplosiveCorruptionCD:Start(9, 1)
+			countdownExplosiveCorruption:Start(9)
+			timerWaveofCorruptionCD:Start(15, 1)
+		end
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(5)
 		end
@@ -521,9 +545,18 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 263284 then--Horror Spawn
 		timerMindNumbingChatterCD:Start(10, args.destGUID)
 	elseif spellId == 277007 then
+		if self:AntiSpam(15, 9) then
+			self.vb.burstingIcon = 0
+			self.vb.burstingCount = self.vb.burstingCount + 1
+			timerBurstingBoilCD:Start(20.5, self.vb.burstingCount+1)
+		end
+		self.vb.burstingIcon = self.vb.burstingIcon + 1
 		if args:IsPlayer() then
 			specWarnBurstingBoil:Show()
 			specWarnBurstingBoil:Play("targetyou")
+		end
+		if self.Options.SetIconOnBurstingBoil then
+			self:SetIcon(args.destName, self.vb.burstingIcon)
 		end
 	end
 end
@@ -564,6 +597,13 @@ function mod:SPELL_AURA_REMOVED(args)
 		tDeleteItem(matrixTargets, args.destName)
 		self:Unschedule(checkThrowFail)
 		self:Schedule(3.5, checkThrowFail, self)
+	elseif spellId == 277007 then
+		if args:IsPlayer() then
+
+		end
+		if self.Options.SetIconOnBurstingBoil then
+			self:SetIcon(args.destName, 0)
+		end
 	end
 end
 
