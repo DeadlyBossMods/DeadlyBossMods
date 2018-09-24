@@ -97,7 +97,7 @@ mod:AddInfoFrameOption(258040, true)
 mod:AddNamePlateOption("NPAuraOnPresence", 276093)
 mod:AddNamePlateOption("NPAuraOnThrumming", 273288)
 mod:AddNamePlateOption("NPAuraOnBoundbyShadow", 273432)
-mod:AddNamePlateOption("NPAuraOnEngorgedBurst", 276299)
+mod:AddNamePlateOption("NPAuraOnEngorgedBurst2", 276299, false)
 mod:AddNamePlateOption("NPAuraOnDecayingFlesh", 276434)
 mod:AddSetIconOption("SetIconOnDecay", 276434, true, true)
 mod:AddSetIconOption("SetIconDarkRev", 273365, true)
@@ -141,9 +141,9 @@ function mod:OnCombatStart(delay)
 			"UNIT_TARGET_UNFILTERED"
 		)
 	end
-	if self.Options.NPAuraOnPresence or self.Options.NPAuraOnThrumming or self.Options.NPAuraOnBoundbyShadow or self.Options.NPAuraOnEngorgedBurst or self.Options.NPAuraOnDecayingFlesh then
+	if self.Options.NPAuraOnPresence or self.Options.NPAuraOnThrumming or self.Options.NPAuraOnBoundbyShadow or self.Options.NPAuraOnEngorgedBurst2 or self.Options.NPAuraOnDecayingFlesh then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
-		if self.Options.NPAuraOnEngorgedBurst then
+		if self.Options.NPAuraOnEngorgedBurst2 then
 			self:RegisterOnUpdateHandler(function(self)
 				for i = 1, 40 do
 					local UnitID = "nameplate"..i
@@ -191,7 +191,7 @@ function mod:OnCombatEnd()
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
 	end
-	if self.Options.NPAuraOnPresence or self.Options.NPAuraOnThrumming or self.Options.NPAuraOnBoundbyShadow or self.Options.NPAuraOnEngorgedBurst or self.Options.NPAuraOnDecayingFlesh then
+	if self.Options.NPAuraOnPresence or self.Options.NPAuraOnThrumming or self.Options.NPAuraOnBoundbyShadow or self.Options.NPAuraOnEngorgedBurst2 or self.Options.NPAuraOnDecayingFlesh then
 		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
 	end
 end
@@ -243,7 +243,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		end
 		timerAddIncoming:Start(12, L.Crawg)
 		self.vb.CrawgsActive = self.vb.CrawgsActive + 4--4 in all difficulties?
-		if self.Options.NPAuraOnEngorgedBurst and self.vb.CrawgsActive <= 4 then--This should only happen if previous count was 0, so re-enable scanner
+		if self.Options.NPAuraOnEngorgedBurst2 and self.vb.CrawgsActive <= 4 then--This should only happen if previous count was 0, so re-enable scanner
 			self:RegisterOnUpdateHandler(function(self)
 				for i = 1, 40 do
 					local UnitID = "nameplate"..i
