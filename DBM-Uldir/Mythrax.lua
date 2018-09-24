@@ -8,7 +8,7 @@ mod:SetEncounterID(2135)
 mod:SetZone()
 mod:SetBossHPInfoToHighest()
 mod:SetUsedIcons(1, 2)
---mod:SetHotfixNoticeRev(16950)
+mod:SetHotfixNoticeRev(17895)
 --mod:SetMinSyncRevision(16950)
 --mod.respawnTime = 35
 
