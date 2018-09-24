@@ -415,7 +415,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 276434 then--Decaying Flesh
 		self.vb.activeDecay = args.destGUID
-		warnActiveDecay:Show(args.destName)
+		local cid = self:GetCIDFromGUID(args.destGUID)
+		if cid ~= 139059 then--Minimize spam by just not announcing when it's on Crawgs
+			warnActiveDecay:Show(args.destName)
+		end
 		if self.Options.NPAuraOnDecayingFlesh then
 			DBM.Nameplate:Show(true, args.destGUID, spellId)
 		end
