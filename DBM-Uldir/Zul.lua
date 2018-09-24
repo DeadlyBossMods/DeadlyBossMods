@@ -20,15 +20,11 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 273365 271640 273434 276093 273288 274358 274271 273432 276434",
 	"SPELL_AURA_APPLIED_DOSE 274358",
 	"SPELL_AURA_REMOVED 273365 271640 276093 273288 274358 274271 273432 276434",
---	"SPELL_PERIODIC_DAMAGE",
---	"SPELL_PERIODIC_MISSED",
 	"UNIT_DIED",
---	"CHAT_MSG_RAID_BOSS_EMOTE",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
 --TODO, check Locus of Corruption trigger for bugs after adding unneeded antispam to fix an impossible bug
---TODO, stack count assumed for tank swaps?
 --TODO, minion of zul fixate detection?
 --TODO, maybe switch warning for minions of zul, or detectable spawns, show on a custom infoframe number of adds up (each type)
 --[[
@@ -119,45 +115,7 @@ mod.vb.deathwishCount = 0
 mod.vb.activeDecay = nil
 local unitTracked = {}
 
-local updateInfoFrame
-do
-	local lines = {}
-	local sortedLines = {}
-	local function addLine(key, value)
-		-- sort by insertion order
-		lines[key] = value
-		sortedLines[#sortedLines + 1] = key
-	end
-	updateInfoFrame = function()
-		table.wipe(lines)
-		table.wipe(sortedLines)
-		--Boss Powers first
-		for i = 1, 5 do
-			local uId = "boss"..i
-			--Primary Power
-			local currentPower, maxPower = UnitPower(uId), UnitPowerMax(uId)
-			if maxPower and maxPower ~= 0 then
-				if currentPower / maxPower * 100 >= 1 then
-					addLine(UnitName(uId), currentPower)
-				end
-			end
-		end
-		--Player personal checks
-		local spellName3, _, _, _, _, expireTime = DBM:UnitDebuff("player", 276672)
-		if spellName3 and expireTime then--Personal Unleashed Shadow
-			local remaining = expireTime-GetTime()
-			addLine(spellName3, remaining)
-		end
-		local spellName4, _, currentStack = DBM:UnitDebuff("player", 274195)
-		if spellName4 and currentStack then--Personal Corrupted Blood
-			addLine(spellName4, currentStack)
-		end
-		return lines, sortedLines
-	end
-end
-
 function mod:OnCombatStart(delay)
-	DBM:AddMsg("There is no Dana, only Zul")
 	self.vb.phase = 1
 	self.vb.poolCount = 0
 	self.vb.darkRevCount = 0
@@ -174,8 +132,8 @@ function mod:OnCombatStart(delay)
 	timerCallofHexerCD:Start(50.5, 1)--50.5-54
 	timerCallofCrusherCD:Start(70, 1)--70-73
 	if self.Options.InfoFrame then
-		--DBM.InfoFrame:SetHeader(DBM_CORE_INFOFRAME_POWER)
-		DBM.InfoFrame:Show(8, "function", updateInfoFrame, false, false)
+		DBM.InfoFrame:SetHeader(DBM_CORE_INFOFRAME_POWER)
+		DBM.InfoFrame:Show(5, "enemypower", 2)
 	end
 	table.wipe(unitTracked)
 	if self:IsMythic() then
@@ -523,27 +481,6 @@ do
 		end
 	end
 end
-
---At some point during testing, blizzard hotfixed out the CLEU event for pool of darkness, this is the backup (1 second slower than old CLEU event)
---CLEU event is still coded into mod for good measure in case it returns but not holding breath
---[[
-function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
-	if msg:find("spell:273361") and self:AntiSpam(5, 5) then
-		self.vb.poolCount = self.vb.poolCount + 1
-		if self.Options.SpecWarn273361count then
-			specWarnPoolofDarkness:Show(self.vb.poolCount)
-			specWarnPoolofDarkness:Play("helpsoak")
-		else
-			warnPoolofDarkness:Show(self.vb.poolCount)
-		end
-		if self.vb.phase == 2 then
-			timerPoolofDarknessCD:Start(15.5, self.vb.poolCount+1)
-		else
-			timerPoolofDarknessCD:Start(30.5, self.vb.poolCount+1)
-		end
-	end
-end
---]]
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 274315 then--Deathwish
