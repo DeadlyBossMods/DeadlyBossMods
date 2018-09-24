@@ -390,7 +390,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerMalignantGrowthCD:Start(33.7)--33.7-34.1
 		countdownMalignantGrowth:Start(33.7)
 		if self:IsMythic() then
-			timerBurstingBoilCD:Start(36, self.vb.burstingCount+1)--Might not be 36, might actually be a pause boss on P3 push and resume wen collapse is done. More Data Needed
+			timerBurstingBoilCD:Start(28, self.vb.burstingCount+1)
 			timerExplosiveCorruptionCD:Start(44.5, 1)--SUCCESS
 			countdownExplosiveCorruption:Start(44.5)
 		else
@@ -530,7 +530,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.waveCast = 0
 		if self:IsMythic() then
 			--Wave seem cast instantly on mythic so no timer for first.
-			timerBurstingBoilCD:Start(24.9, 1)
+			timerBurstingBoilCD:Start(16.9, 1)
 		else
 			timerExplosiveCorruptionCD:Start(9, 1)
 			countdownExplosiveCorruption:Start(9)
@@ -551,7 +551,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self:AntiSpam(15, 9) then
 			self.vb.burstingIcon = 0
 			self.vb.burstingCount = self.vb.burstingCount + 1
-			timerBurstingBoilCD:Start(20.5, self.vb.burstingCount+1)
+			timerBurstingBoilCD:Start(20.5-8, self.vb.burstingCount+1)--Remove minus 8 when moved to correct event
 		end
 		self.vb.burstingIcon = self.vb.burstingIcon + 1
 		if args:IsPlayer() then
