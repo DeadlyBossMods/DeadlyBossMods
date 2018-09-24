@@ -334,6 +334,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 			countdownExplosiveCorruption:Cancel()
 			timerMassiveSmashCD:Stop()--Technically should AddTime(25) each add, but honestly, if the adds don't die in this 25 second window you done fucked up
 			timerDarkBargainCD:Stop()--Technically should AddTime(25) each add, but honestly, if the adds don't die in this 25 second window you done fucked up
+			if self:IsMythic() then
+				timerWaveofCorruptionCD:Start(33, 1)
+			end
 		else--Drive cast in Phase 2
 			if self.vb.waveCast == 2 then--Current timer is blood feast
 				local elapsed, total = timerBloodFeastCD:GetTime(self.vb.bloodFeastCount+1)
