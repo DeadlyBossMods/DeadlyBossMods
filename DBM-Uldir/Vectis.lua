@@ -533,7 +533,7 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 			local cid = self:GetCIDFromGUID(GUID)
 			if cid == 135016 then--Big Adds
 				castsPerGUID[GUID] = 0
-				timerImmunoSuppCD:Start(5.4, 1, GUID)
+				timerImmunoSuppCD:Start(4, 1, GUID)
 			end
 		end
 	end
