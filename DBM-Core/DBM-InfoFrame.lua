@@ -745,9 +745,9 @@ function onUpdate(frame)
 			--return
 		end
 		local rightText = lines[leftText]
-		local icon = icons[leftText] and icons[leftText]..leftText
+		local extra, extraName = string.split("-", leftText)--Find just unit name, if extra info had to be added to make unique
+		local icon = icons[extraName or leftText] and icons[extraName or leftText]..leftText
 		if friendlyEvents[currentEvent] then
-			local extra, extraName = string.split("-", leftText)--Find just unit name, if extra info had to be added to make unique
 			local unitId = DBM:GetRaidUnitId(DBM:GetUnitFullName(extraName or leftText)) or "player"--Prevent nil logical error
 			if unitId and select(4, UnitPosition(unitId)) == currentMapId then
 				local _, class = UnitClass(unitId)
@@ -782,7 +782,6 @@ function onUpdate(frame)
 			end
 		else
 			local color2 = NORMAL_FONT_COLOR--Only custom into frames will have chance of putting player names on right side
-			local extra, extraName = string.split("-", leftText)--Find just unit name, if extra info had to be added to make unique
 			local unitId = DBM:GetRaidUnitId(DBM:GetUnitFullName(extraName or leftText))
 			local unitId2 = DBM:GetRaidUnitId(DBM:GetUnitFullName(rightText))
 			--Class color names in custom functions too, IF unitID exists
