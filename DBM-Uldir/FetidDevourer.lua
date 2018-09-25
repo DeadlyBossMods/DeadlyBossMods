@@ -178,8 +178,9 @@ function mod:SPELL_CAST_START(args)
 			else
 				timerEnticingCast:Start(20)
 			end
-			timerAddsCD:Start(54.8)
-			countdownAdds:Start(54.8)
+			local timer = self:IsMythic() and 75 or self:IsEasy() and 60 or 54.8
+			timerAddsCD:Start(timer)
+			countdownAdds:Start(timer)
 		end
 	elseif spellId == 262277 then
 		timerThrashCD:Start()
