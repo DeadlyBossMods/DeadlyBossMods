@@ -423,6 +423,7 @@ DBM_CORE_AUTO_TIMER_TEXTS.addscustom		= "쫄 등장 (%%s)"
 
 DBM_CORE_AUTO_TIMER_OPTIONS.target		= "$spell:%s 디버프 타이머 바 보기"
 DBM_CORE_AUTO_TIMER_OPTIONS.cast		= "$spell:%s 시전 타이머 바 보기"
+DBM_CORE_AUTO_TIMER_OPTIONS.castcount		= "$spell:%s 시전 타이머 바 보기 (횟수 포함)"
 DBM_CORE_AUTO_TIMER_OPTIONS.castsource		= "$spell:%s 시전 타이머 바 보기 (시전자 이름 포함)"
 DBM_CORE_AUTO_TIMER_OPTIONS.active		= "$spell:%s 지속 시간 타이머 바 보기"
 DBM_CORE_AUTO_TIMER_OPTIONS.fades		= "$spell:%s 남은 시간 타이머 바 보기"

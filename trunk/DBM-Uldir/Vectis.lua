@@ -439,9 +439,8 @@ function mod:SPELL_AURA_REMOVED(args)
 			--yellEvolvingAffliction:Cancel()
 		end
 	elseif spellId == 265129 then
-		local expectedDebuffs = self:IsMythic() and 4 or 3
 		local oneRemoved = false
-		for i = 1, expectedDebuffs do
+		for i = 1, 4 do
 			if vectorTargets[i] and vectorTargets[i] == args.destName then--Found assignment matching this units name
 				if not oneRemoved then
 					vectorTargets[i] = false--remove first assignment we find

@@ -20,6 +20,14 @@ L= DBM:GetModLocalization(2167)
 ---------------------------
 L= DBM:GetModLocalization(2146)
 
+L:SetWarningLocalization({
+	addsSoon		= "쓰레기 처리 장치 열림 - 곧 쫄 등장"
+})
+
+L:SetOptionLocalization({
+	addsSoon		= "쓰레기 처리 장치가 열리고 쫄 생성이 시작되면 사전 경고 보기"
+})
+
 ---------------------------
 -- Zek'vhozj --
 ---------------------------
