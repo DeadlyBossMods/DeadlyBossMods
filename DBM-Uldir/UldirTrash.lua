@@ -48,7 +48,7 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 277047 then
 		--self:BossTargetScanner(args.sourceGUID, "SubmergeTarget", 0.1, 14)
 		self:ScheduleMethod(0.2, "BossTargetScanner", args.sourceGUID, "GazeTarget", 0.1, 12)
-	elseif spellId == 274802 and self:AntiSpam(3, 1) then
+	elseif spellId == 274802 and self:AntiSpam(5, 1) then
 		specWarnBloodstorm:Show()
 		specWarnBloodstorm:Play("justrun")
 	elseif spellId == 276540 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
