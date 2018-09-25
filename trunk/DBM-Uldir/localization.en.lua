@@ -19,6 +19,14 @@ L= DBM:GetModLocalization(2167)
 ---------------------------
 L= DBM:GetModLocalization(2146)
 
+L:SetWarningLocalization({
+	addsSoon		= "Chute has opened - Adds Soon"
+})
+
+L:SetOptionLocalization({
+	addsSoon		= "Show pre warning for when chutes open and start spawning adds"
+})
+
 ---------------------------
 -- Zek'vhozj --
 ---------------------------
