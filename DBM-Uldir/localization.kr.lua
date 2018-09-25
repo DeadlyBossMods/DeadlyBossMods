@@ -30,7 +30,8 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	timerOrbLands	 =	"타락의 보주가 나오면 타이머 바 보기"
+	timerOrbLands	 =	"타락의 보주가 나오면 타이머 바 보기",
+	EarlyTankSwap	 =	"산산조각을 맞으면 2번째 공허의 채찍을 기다리지 않고 바로 탱커 교대 경고 보기"
 })
 
 L:SetMiscLocalization({
