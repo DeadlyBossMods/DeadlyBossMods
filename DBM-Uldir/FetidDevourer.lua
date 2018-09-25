@@ -13,7 +13,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 262292 262288 262364 262277",
-	"SPELL_CAST_SUCCESS 262370",
+	"SPELL_CAST_SUCCESS 262370 274470",
 	"SPELL_AURA_APPLIED 262313 262314 262378",
 	"SPELL_AURA_APPLIED_DOSE 262313 262314",
 	"SPELL_AURA_REMOVED 262313 262314",
@@ -28,6 +28,7 @@ mod:RegisterEventsInCombat(
 --]]
 local warnFrenzy						= mod:NewSpellAnnounce(262378, 3)
 local warnThrashNotTanking				= mod:NewSpellAnnounce(262277, 3, nil, "Tank|Healer")
+local warnChuteVisual					= mod:NewAnnounce("addsSoon", 3, 262364)
 
 local specWarnThrash					= mod:NewSpecialWarningDefensive(262277, "Tank", nil, nil, 1, 2)
 local specWarnRottingRegurg				= mod:NewSpecialWarningDodge(262292, nil, nil, nil, 2, 2)
@@ -201,6 +202,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 			timerRottingRegurgCD:Start(elapsed, total)--Construct new timer with adjustment
 			countdownRottingRegurg:Start(remaining)
 		end
+	elseif spellId == 274470 and self:AntiSpam(5, 3) then
+		warnChuteVisual:Show()
 	end
 end
 
