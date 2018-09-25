@@ -25,10 +25,10 @@ mod:RegisterEventsInCombat(
 --	"SPELL_MISSED 263326",
 	"UNIT_DIED",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
+	"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, add "burrow" cd timer?
 --TODO, add timers for host, when ORIGIN cast can be detected (not spread/fuckup casts)
 --TODO, cast event for Matrix Surge and possible aoe warning (with throttle)
 --TODO, how does http://bfa.wowhead.com/spell=268174/tendrils-of-corruption work? warning/yell? is it like yogg squeeze?
@@ -94,6 +94,7 @@ local timerThousandMawsCD				= mod:NewCDCountTimer(23.9, 267509, nil, nil, nil, 
 ----Adds
 local timerMassiveSmashCD				= mod:NewCDTimer(9.7, 267412, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerDarkBargainCD				= mod:NewCDTimer(23.1, 267409, nil, nil, nil, 3, nil, DBM_CORE_DAMAGE_ICON)
+local timerBurrowCD						= mod:NewCDTimer(30, 267579, nil, nil, nil, 6)
 mod:AddTimerLine(SCENARIO_STAGE:format(2))
 local timerWaveofCorruptionCD			= mod:NewCDCountTimer(15, 270373, nil, nil, nil, 3)
 local timerBloodFeastCD					= mod:NewCDCountTimer(15, 263235, nil, nil, nil, 2)
@@ -136,6 +137,7 @@ mod.vb.matrixActive = false
 local playerBursting = false
 local matrixTargets, bloodFeastTarget = {}, {}
 local thousandMawsTimers = {25.4, 26.3, 25.5, 24.2, 23.9, 23.1, 21.5, 21.9, 19.4}
+local seenAdds = {}
 
 local function checkThrowFail(self)
 	--If this function runs it means matrix was not caught after a throw and is lost
@@ -229,6 +231,7 @@ end
 function mod:OnCombatStart(delay)
 	table.wipe(matrixTargets)
 	table.wipe(bloodFeastTarget)
+	table.wipe(seenAdds)
 	self.vb.phase = 1
 	self.vb.mawCastCount = 0
 	self.vb.matrixCount = 0
@@ -302,6 +305,7 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 267579 then
 		warnBurrow:Show()
+		timerBurrowCD:Start(29.5, args.sourceGUID)
 	elseif (spellId == 263482 or spellId == 263503) then
 		self.vb.matrixActive = false
 		self.vb.matrixSide = DBM_CORE_RIGHT--Actually left, but this makes it so the way it's coded works
@@ -630,16 +634,12 @@ function mod:UNIT_DIED(args)
 	if cid == 138529 or cid == 134635 then--Dark Young (P1, P2)
 		timerMassiveSmashCD:Stop(args.destGUID)
 		timerDarkBargainCD:Stop(args.destGUID)
---	elseif cid == 138531 or cid == 134634 then--Cyclopean Terror (P1, P2)
-	
---	elseif cid == 134590 then--Blightspreader Tendril
-
---	elseif cid == 136461 then--spawn of ghuun
-
---	elseif cid == 141265 then--Amorphus Cyst (cat)
-	
+	elseif cid == 134590 then--Blightspreader Tendril
+		timerBurrowCD:Stop(args.destGUID)
 	elseif cid == 134010 then--Gibbering Horror
 		timerMindNumbingChatterCD:Stop(args.destGUID)
+--	elseif cid == 136461 then--spawn of ghuun
+--	elseif cid == 138531 or cid == 134634 then--Cyclopean Terror (P1, P2)
 	end
 end
 
@@ -655,6 +655,20 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 		end
 		self.vb.matrixCount = self.vb.matrixCount + 1
 		warnMatrixSpawn:Show(self.vb.matrixCount)
+	end
+end
+
+function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
+	for i = 1, 5 do
+		local unitID = "boss"..i
+		local GUID = UnitGUID(unitID)
+		if GUID and not seenAdds[GUID] then
+			seenAdds[GUID] = true
+			local cid = self:GetCIDFromGUID(GUID)
+			if cid == 134590 then--Big Adds
+				timerBurrowCD:Start(30.5, GUID)
+			end
+		end
 	end
 end
 
