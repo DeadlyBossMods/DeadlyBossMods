@@ -65,35 +65,40 @@ mod.vb.stompCount = 0
 local updateInfoFrame, openInfoFrame
 do
 	local lines = {}
+	local sortedLines = {}
 	local floor, UnitCastingInfo, UnitHealth, UnitHealthMax, UnitExists = math.floor, UnitCastingInfo, UnitHealth, UnitHealthMax, UnitExists
+	local function addLine(key, value)
+		-- sort by insertion order
+		lines[key] = value
+		sortedLines[#sortedLines + 1] = key
+	end
 	updateInfoFrame = function()
 		table.wipe(lines)
+		table.wipe(sortedLines)
 		local found = false
-		local count = 0
 		for i = 2, 4 do--Adds do get Boss Unit IDs, so just need to check boss2-boss4
 			local UnitID = "boss"..i
 			if UnitExists(UnitID) then
 				found = true
-				count = count + 1
 				local unitHealth = (UnitHealth(UnitID) / UnitHealthMax(UnitID)) * 100
 				local _, _, _, startTime, endTime = UnitCastingInfo(UnitID)
 				local time = (endTime or 0) - (startTime or 0)
 				if time and time > 0 then
 					local castTime = time / 1000
-					lines[count.."-"..floor(unitHealth).."%"] = floor(castTime)
+					addLine(i.."-"..floor(unitHealth).."%", floor(castTime))
 				else
-					lines[count.."-"..floor(unitHealth).."%"] = 0
+					addLine(i.."-"..floor(unitHealth).."%", 0)
 				end
 			end
 		end
 		if not found then
 			DBM.InfoFrame:Hide()
 		end
-		return lines
+		return lines, sortedLines
 	end
 	openInfoFrame = function(self, spellName)
 		DBM.InfoFrame:SetHeader(spellName)
-		DBM.InfoFrame:Show(5, "function", updateInfoFrame, false, true)
+		DBM.InfoFrame:Show(5, "function", updateInfoFrame, false, false)
 	end
 end
 
