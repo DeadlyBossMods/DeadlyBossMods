@@ -111,11 +111,11 @@ do
 	updateRangeFrame = function(self)
 		if not self.Options.RangeFrame then return end
 		if DBM:UnitDebuff("player", 262314) then
-			DBM.RangeCheck:Show(20)
+			DBM.RangeCheck:Show(12)--Actuall 10 but buffer used for good measure
 		elseif DBM:UnitDebuff("player", 262313) then
-			DBM.RangeCheck:Show(8)
+			DBM.RangeCheck:Show(6)--Actually 4 but buffer used for good measure
 		else
-			DBM.RangeCheck:Show(8, debuffFilter)
+			DBM.RangeCheck:Show(6, debuffFilter)--Actually 4 but buffer used for good measure
 		end
 	end
 end
