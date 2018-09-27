@@ -77,7 +77,7 @@ do
 				count = count + 1
 				local unitHealth = (UnitHealth(UnitID) / UnitHealthMax(UnitID)) * 100
 				local _, _, _, startTime, endTime = UnitCastingInfo(UnitID)
-				local time = ((endTime or 0) - (startTime or 0)) / 1000
+				local time = (endTime or 0) - (startTime or 0)
 				if time and time > 0 then
 					local castTime = time / 1000
 					lines[count.."-"..floor(unitHealth).."%"] = floor(castTime)
