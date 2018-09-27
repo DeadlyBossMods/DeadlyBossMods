@@ -66,7 +66,7 @@ local updateInfoFrame, openInfoFrame
 do
 	local lines = {}
 	local sortedLines = {}
-	local floor, UnitCastingInfo, UnitHealth, UnitHealthMax, UnitExists = math.floor, UnitCastingInfo, UnitHealth, UnitHealthMax, UnitExists
+	local floor, GetTime, UnitCastingInfo, UnitHealth, UnitHealthMax, UnitExists = math.floor, GetTime, UnitCastingInfo, UnitHealth, UnitHealthMax, UnitExists
 	local function addLine(key, value)
 		-- sort by insertion order
 		lines[key] = value
@@ -81,8 +81,8 @@ do
 			if UnitExists(UnitID) then
 				found = true
 				local unitHealth = (UnitHealth(UnitID) / UnitHealthMax(UnitID)) * 100
-				local _, _, _, startTime, endTime = UnitCastingInfo(UnitID)
-				local time = (endTime or 0) - (startTime or 0)
+				local _, _, _, _, endTime = UnitCastingInfo(UnitID)
+				local time = (endTime or 0) - GetTime()
 				if time and time > 0 then
 					local castTime = time / 1000
 					addLine(i.."-"..floor(unitHealth).."%", floor(castTime))
