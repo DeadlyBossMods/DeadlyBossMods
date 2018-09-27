@@ -5,7 +5,7 @@ local L = DBM_GUI_Translations
 L.MainFrame	= "Deadly Boss Mods"
 
 L.TranslationByPrefix		= "翻譯:"
-L.TranslationBy 			= "Imbav@聖光之願"
+L.TranslationBy 			= "Whyvv@聖光之願"
 L.Website					= "在discord上拜訪我們:|cFF73C2FBhttps://discord.gg/deadlybossmods|r。請在推特上關注@deadlybossmods或@MysticalOS"
 L.WebsiteButton				= "論壇"
 
@@ -226,6 +226,7 @@ L.EventWipeSound			= "設置戰鬥滅團時的音效"
 L.EventEngageSound			= "設置戰鬥開戰時的音效"
 L.EventDungeonMusic			= "在地城/團隊內設置撥放的音樂"
 L.EventEngageMusic			= "設置戰鬥中的音樂"
+L.EventTurtleMusic			= "設置turtle beach quests中的音樂"
 L.Area_EventSoundsExtras	= "事件音效選項"
 L.EventMusicCombined		= "允許在地城和戰鬥選擇的所有音效選項(此選項需要UI重載去反映改變)"
 L.Area_EventSoundsFilters	= "事件音效過濾條件"
@@ -269,7 +270,7 @@ L.FilterInterrupts2			= "如果施放者不在目前的目標/專注(總是過�
 L.FilterInterrupts3			= "如果施放者不在目前的目標/專注(總是過濾) 或中斷技在冷卻時 (首領跟小兵都過濾)"
 L.FilterInterruptNoteName	= "過濾可中斷技能的警告(與次數)，如果自訂註記警告沒有包含你的名字"
 L.FilterDispels				= "過濾可驅散技能如果你的驅散技正在冷卻中"
-L.FilterSelfHud				= "從HudMap過濾你自己(排除Hud的距離功能)"
+L.FilterTrashWarnings		= "過濾普通和英雄地城的所有小怪警告"
 
 L.Area_PullTimer			= "開怪計時器過濾選項"
 L.DontShowPTNoID			= "阻擋與你不同區域ID送出的開怪倒數計時條"
@@ -282,7 +283,7 @@ L.PT_Threshold				= "不要顯示高於%d秒以上的休息/開戰/自訂倒數�
 L.Panel_HideBlizzard		= "禁用及隱藏暴雪功能"
 L.Area_HideBlizzard			= "禁用及隱藏暴雪功能選項"
 L.HideBossEmoteFrame		= "首領戰鬥時隱藏團隊首領表情框架"
-L.HideWatchFrame			= "首領戰鬥時隱藏任務目標框架。如果在挑戰模式中，當框架隱藏會在首領戰鬥中建立一個暫時的獎牌計時器。"
+L.HideWatchFrame			= "首領戰鬥時隱藏任務目標框架如果沒有成就追蹤時或是不在傳奇+模式。"
 L.HideGarrisonUpdates		= "首領戰鬥時隱藏要塞任務完成提示"
 L.HideGuildChallengeUpdates	= "首領戰鬥時隱藏公會挑戰完成提示"
 L.HideQuestTooltips			= "首領戰鬥時隱藏滑鼠提示的任務物件"
@@ -293,6 +294,11 @@ L.AfterFirst				= "在每次動畫播放一次之後"
 L.Always					= ALWAYS
 L.CombatOnly				= "在任何戰鬥中禁用"
 L.RaidCombat				= "只在首領戰鬥中禁用"
+L.HideBonusHeader			= "隱藏額外獎勵視窗低於..."
+L.TrivialContent			= "五人地城(<340)"--Basically anything below 340
+L.NormalRaider				= "傳奇地城+5和隨機團隊(<355)"--Basically, anything below 355
+L.HeroicRaider				= "傳奇地城+10和英雄團隊和非戰爭前線首領(<370)"--Basically anything below 370
+L.MythicRaider				= "傳奇團隊(<385)"--Basically anything below 385
 
 L.Panel_ExtraFeatures		= "額外功能"
 --

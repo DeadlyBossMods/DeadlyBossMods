@@ -204,7 +204,7 @@ L:SetGeneralLocalization({
 })
 
 -----------------------
--- <<<The Undermine>>> --
+-- <<<MOTHERLOAD>>> --
 -----------------------
 -----------------------
 -- Coin-operated Crowd Pummeler --
