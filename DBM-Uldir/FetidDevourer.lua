@@ -57,7 +57,7 @@ local countdownRottingRegurg			= mod:NewCountdown(40, 262292, true, nil, 4)
 local countdownThrash					= mod:NewCountdown("Alt12", 262277, false, nil, 3)--off by default since it'd be a LOT of counting. But some might still want it
 local countdownAdds						= mod:NewCountdown("AltTwo32", 262364, "Dps", nil, 5)
 
-mod:AddRangeFrameOption("8/20")
+mod:AddRangeFrameOption("6/12")
 mod:AddInfoFrameOption(262364, true)
 
 mod.vb.stompCount = 0
