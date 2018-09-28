@@ -54,7 +54,7 @@ local specWarnGTFO						= mod:NewSpecialWarningGTFO(270290, nil, nil, nil, 1, 2)
 mod:AddTimerLine(BOSS)
 local timerPlasmaDischargeCD			= mod:NewCDCountTimer(30.4, 271225, nil, nil, nil, 3)--30.4-42
 local timerCudgelOfGoreCD				= mod:NewCDCountTimer(58.4, 271296, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)--60.4-63
-local timerSanguineStaticCD				= mod:NewCDTimer(55, 272582, nil, nil, nil, 3)--60.4-63
+local timerSanguineStaticCD				= mod:NewCDTimer(53.6, 272582, nil, nil, nil, 3)--60.4-63
 local timerEnlargedHeartCD				= mod:NewCDCountTimer(60.4, 275205, nil, nil, nil, 3, nil, DBM_CORE_TANK_ICON)--60.4-63 (also timer for hardened, go out at same time, no need for two)
 mod:AddTimerLine(DBM:GetSpellInfo(271965))
 local timerPoweredDown					= mod:NewBuffActiveTimer(88.6, 271965, nil, nil, nil, 6)
@@ -156,7 +156,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			if self.vb.plasmaCast == 1 then
 				timerPlasmaDischargeCD:Start(40, self.vb.plasmaCast+1)
 			elseif self.vb.plasmaCast == 2 then
-				timerPlasmaDischargeCD:Start(35, self.vb.plasmaCast+1)
+				timerPlasmaDischargeCD:Start(32.8, self.vb.plasmaCast+1)
 			else
 				timerPlasmaDischargeCD:Start(30, self.vb.plasmaCast+1)
 			end
