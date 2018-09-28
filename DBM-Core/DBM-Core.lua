@@ -10073,6 +10073,10 @@ do
 		return newSpecialWarning(self, "dodge", text, nil, optionDefault, ...)
 	end
 	
+	function bossModPrototype:NewSpecialWarningDodgeCount(text, optionDefault, ...)
+		return newSpecialWarning(self, "dodgecount", text, nil, optionDefault, ...)
+	end
+	
 	function bossModPrototype:NewSpecialWarningDodgeLoc(text, optionDefault, ...)
 		return newSpecialWarning(self, "dodgeloc", text, nil, optionDefault, ...)
 	end
