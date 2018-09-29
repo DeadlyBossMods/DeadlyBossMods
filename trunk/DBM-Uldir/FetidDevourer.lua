@@ -153,7 +153,7 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 262292 then
 		specWarnRottingRegurg:Show()
-		specWarnRottingRegurg:Play("shockwave")
+		specWarnRottingRegurg:Play("breathsoon")
 		if not self:IsEasy() then
 			if self:IsMythic() then
 				timerRottingRegurgCD:Start(37)--37

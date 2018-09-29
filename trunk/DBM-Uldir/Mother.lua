@@ -68,6 +68,7 @@ local function clearBossICD(self)
 	self.vb.bossInICD = false
 end
 
+--All timers are affected by other timers, EXCEPT tank ability, that is always cast regardless of ICD
 local function updateAllTimers(self, ICD)
 	self.vb.bossInICD = true
 	self:Unschedule(clearBossICD)
@@ -242,13 +243,14 @@ function mod:SPELL_CAST_SUCCESS(args)
 		DBM:Debug("what way is wind blowing for spellId :"..spellId)
 	elseif spellId == 267945 then--Global Id for winds
 		warnWindTunnel:Show()
-		timerWindTunnelCD:Show()--40-47
+		timerWindTunnelCD:Start()--40 unless delayed by ICD
 		updateAllTimers(self, 6)
 	elseif spellId == 269827 or spellId == 277973 or spellId == 277961 or spellId == 277742 then
+		updateAllTimers(self, 8.5)
 		if self:IsMythic() then--All the things
 			specWarnSurgicalBeam:Show(DBM_CORE_BOTH)
 			if self.vb.phase == 3 then
-				timerSurgicalBeamCD:Start(20.5, DBM_CORE_BOTH)--20, but often delayed by ICD
+				timerSurgicalBeamCD:Start(20.5, DBM_CORE_BOTH)--20, but almost always delayed by ICD
 				countdownSurgicalBeam:Start(20.5)
 			else
 				timerSurgicalBeamCD:Start(50, DBM_CORE_BOTH)--50, but often delayed by ICD
