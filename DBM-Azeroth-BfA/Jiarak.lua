@@ -57,10 +57,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 261467 then
 		specWarnMatriarchsCall:Show()
+		specWarnMatriarchsCall:Play("killmob")
 		timerMatriarchCallCD:Start()
 	elseif spellId == 261088 then
 		specWarnHurricaneCrash:Show()
-		specWarnHurricaneCrash:Play("run")
+		specWarnHurricaneCrash:Play("justrun")
 		specWarnHurricaneCrash:ScheduleVoice(1.5, "keepmove")
 		timerHurricaneCrashCD:Start()
 	end
