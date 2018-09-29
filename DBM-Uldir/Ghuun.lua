@@ -652,9 +652,11 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 			else
 				self.vb.matrixSide = DBM_CORE_LEFT
 			end
+			warnMatrixSpawn:Show(self.vb.matrixCount.."-"..self.vb.matrixSide)
+		else
+			warnMatrixSpawn:Show(self.vb.matrixCount)
 		end
 		self.vb.matrixCount = self.vb.matrixCount + 1
-		warnMatrixSpawn:Show(self.vb.matrixCount)
 	end
 end
 
