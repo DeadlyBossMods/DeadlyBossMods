@@ -246,7 +246,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerWindTunnelCD:Start()--40 unless delayed by ICD
 		updateAllTimers(self, 6)
 	elseif spellId == 269827 or spellId == 277973 or spellId == 277961 or spellId == 277742 then
-		updateAllTimers(self, 8.5)
 		if self:IsMythic() then--All the things
 			specWarnSurgicalBeam:Show(DBM_CORE_BOTH)
 			if self.vb.phase == 3 then
@@ -256,11 +255,13 @@ function mod:SPELL_CAST_SUCCESS(args)
 				timerSurgicalBeamCD:Start(50, DBM_CORE_BOTH)--50, but often delayed by ICD
 				countdownSurgicalBeam:Start(50)
 			end
+			updateAllTimers(self, 8.5)
 		elseif self:IsEasy() then--Only side
 			specWarnSurgicalBeam:Show(DBM_CORE_SIDE)
 			timerSurgicalBeamCD:Start(30, DBM_CORE_SIDE)--30-31
 			countdownSurgicalBeam:Start(30)
 			self.vb.nextLaser = 1
+			updateAllTimers(self, 8.5)
 		else--Heroic (alternating)
 			if spellId == 277961 or spellId == 277742 or spellId == 269827 then--Top spellIds
 				specWarnSurgicalBeam:Show(DBM_CORE_TOP)
@@ -268,6 +269,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 				timerSurgicalBeamCD:Start(11, DBM_CORE_SIDE)--Usually delayed, but yes it's 11
 				countdownSurgicalBeam:Start(11)
 				self.vb.nextLaser = 1
+				updateAllTimers(self, 10.9)--Top down beams on non mythic granted even MORE extend
 			else--Sides (277973 all)
 				specWarnSurgicalBeam:Show(DBM_CORE_SIDE)
 				self.vb.nextLaser = 2
@@ -278,6 +280,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 					timerSurgicalBeamCD:Start(29, DBM_CORE_TOP)
 					countdownSurgicalBeam:Start(29)
 				end
+				updateAllTimers(self, 8.5)
 			end
 		end
 		specWarnSurgicalBeam:Play("watchstep")--laserrun wasn't quite right, cause it says "on you" Needed "laser, run" not "laser on you, run"
