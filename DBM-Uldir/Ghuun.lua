@@ -415,8 +415,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 			local timer = self:IsMythic() and 44 or 26
 			timerExplosiveCorruptionCD:Start(timer, self.vb.explosiveCount+1)
 			countdownExplosiveCorruption:Start(timer)
-		else
-			local timer = self:IsMythic() and 25.5 or self:IsHeroic() and 13.4 or self:IsEasy() and 15.8--TODO, LFR
+		elseif self.vb.phase == 2 then
+			timerExplosiveCorruptionCD:Start(15.8, self.vb.explosiveCount+1)--15.8 in all, except mythic, doesn't exist in mythic P2
+			countdownExplosiveCorruption:Start(15.8)
+		else--Phase 3
+			local timer = self:IsMythic() and 25.5 or self:IsHeroic() and 13.2 or self:IsEasy() and 15.8--TODO, LFR
 			timerExplosiveCorruptionCD:Start(timer, self.vb.explosiveCount+1)
 			countdownExplosiveCorruption:Start(timer)
 		end
