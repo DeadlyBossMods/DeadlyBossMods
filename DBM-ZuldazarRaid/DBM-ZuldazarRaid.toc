@@ -1,0 +1,27 @@
+## Interface: 80000
+## X-Min-Interface: 80100
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0UZuldazar Raid|r
+## Author: MysticalOS
+## LoadOnDemand: 1
+## RequiredDeps: DBM-Core
+## SavedVariables: DBMZuldazarRaid_AllSavedVars
+## SavedVariablesPerCharacter: DBMZuldazarRaid_SavedStats
+## X-DBM-Mod: 1
+## X-DBM-Mod-Type: RAID
+## X-DBM-Mod-Category: BFA
+## X-DBM-Mod-Has-Mythic : 1
+## X-DBM-Mod-SubCategories: Shared,Alliance,Horde
+## X-DBM-Mod-Sort: 406
+## X-DBM-Mod-MapID: 2070
+## X-DBM-Mod-MinCoreRevision: 17286
+## X-DBM-Mod-MinExpansion: 7
+localization.en.lua
+FridaIronbellows.lua
+Mekkatorgue.lua
+SeaPriestBlockade.lua
+FlameDuo.lua
+GrongtheRevenant.lua
+KingGrong.lua
+LoaCouncil.lua
+Rastakhan.lua
+ZuldazarRaidTrash.lua
