@@ -82,7 +82,7 @@ local specWarnBurstingBoil				= mod:NewSpecialWarningYou(277007, nil, nil, nil, 
 ----Arena Floor P3
 local specWarnCollapse					= mod:NewSpecialWarningDodge(276839, nil, nil, nil, 2, 2)
 local specWarnMalignantGrowth			= mod:NewSpecialWarningDodge(274582, nil, nil, nil, 2, 2)
-local specWarnGazeofGhuun				= mod:NewSpecialWarningLookAway(275160, nil, nil, nil, 2, 2)
+local specWarnGazeofGhuun				= mod:NewSpecialWarningLookAway(275160, nil, nil, 2, 3, 2)
 --Upper Platforms
 local specWarnPowerMatrix				= mod:NewSpecialWarningYou(263420, nil, nil, nil, 1, 8)--New voice "Matrix on you"
 local yellPowerMatrix					= mod:NewYell(263420)
