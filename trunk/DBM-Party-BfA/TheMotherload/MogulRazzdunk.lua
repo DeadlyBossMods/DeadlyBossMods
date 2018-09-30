@@ -9,12 +9,12 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_AURA_APPLIED 260189 262515 260190",
+	"SPELL_AURA_APPLIED 260189 262515 260190 260829",
 	"SPELL_AURA_REMOVED 260189 262515",
 	"SPELL_AURA_REMOVED_DOSE 260189",
 	"SPELL_CAST_START 260280 271456",
-	"SPELL_CAST_SUCCESS 260813 271456 276212",
-	"RAID_BOSS_WHISPER"
+	"SPELL_CAST_SUCCESS 260813 271456 276212"
+--	"RAID_BOSS_WHISPER"
 )
 
 --TODO: Maybe general range 6 for Micro Missiles from BOOMBA?
@@ -84,6 +84,17 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnHeartseekerOther:Show(args.destName)
 			specWarnHeartseekerOther:Play("gathershare")
 		end
+	elseif spellId == 260829 then
+		if args:IsPlayer() then
+			specWarnHomingMissile:Show()
+			specWarnHomingMissile:Play("runout")
+			yellHomingMissile:Yell()
+		elseif self:CheckNearby(20, args.destName) then
+			specWarnHomingMissileNear:Show(args.destName)
+			specWarnHomingMissileNear:Play("watchstep")
+		else
+			warnHomingMissile:Show(args.destName)
+		end
 	end
 end
 --mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -114,29 +125,20 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 260813 then
 		timerHomingMissileCD:Start()
-		if args:IsPlayer() then
-			specWarnHomingMissile:Show()
-			specWarnHomingMissile:Play("runout")
-			yellHomingMissile:Yell()
-		elseif self:CheckNearby(20, args.destName) then
-			specWarnHomingMissileNear:Show(args.destName)
-			specWarnHomingMissileNear:Play("watchstep")
-		else
-			warnHomingMissile:Show(args.destName)
-		end
 	elseif spellId == 271456 and self:AntiSpam(6, args.destName) then--Backup, should only trigger if OnTranscriptorSync didn't run
-		if args:IsPlayer() then
-			specWarnDrillSmash:Show(bigRedRocket)
-			specWarnDrillSmash:Play("targetyou")
-			yellDrillSmash:Yell()
-		else
+		--if args:IsPlayer() then
+			--specWarnDrillSmash:Show(bigRedRocket)
+			--specWarnDrillSmash:Play("targetyou")
+			--yellDrillSmash:Yell()
+		--else
 			warnDrillSmash:Show(args.destName)
-		end
+		--end
 	elseif spellId == 276212 then
 		warnSummonBooma:Show()
 	end
 end
 
+--[[
 function mod:RAID_BOSS_WHISPER(msg)
 	if msg:find("260838") then
 		specWarnDrillSmash:Show(bigRedRocket)
@@ -153,6 +155,7 @@ function mod:OnTranscriptorSync(msg, targetName)
 		end
 	end
 end
+--]]
 
 
 --[[
