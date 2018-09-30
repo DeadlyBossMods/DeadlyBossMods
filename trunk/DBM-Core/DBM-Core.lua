@@ -1193,13 +1193,10 @@ do
 			for i = 1, GetNumAddOns() do
 				local addonName = GetAddOnInfo(i)
 				local enabled = GetAddOnEnableState(playerName, i)
-				local minToc = tonumber(GetAddOnMetadata(i, "X-Min-Interface"))
 				if GetAddOnMetadata(i, "X-DBM-Mod") then
 					if enabled ~= 0 then
 						if checkEntry(bannedMods, addonName) then
 							AddMsg(self, "The mod " .. addonName .. " is deprecated and will not be available. Please remove the folder " .. addonName .. " from your Interface" .. (IsWindowsClient() and "\\" or "/") .. "AddOns folder to get rid of this message. Check for an updated version of " .. addonName .. " that is compatible with your game version.")
-						elseif not testBuild and minToc and minToc > wowTOC then
-							self:Debug(i.." not loaded because mod requires minimum toc of "..minToc)
 						else
 							local mapIdTable = {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-MapID") or "")}
 							tinsert(self.AddOns, {
@@ -1220,6 +1217,7 @@ do
 								isExpedition	= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Expedition") or 0) == 1,
 								minRevision		= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-MinCoreRevision") or 0),
 								minExpansion	= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-MinExpansion") or 0),
+								minToc			= tonumber(GetAddOnMetadata(i, "X-Min-Interface") or 0),
 								modId			= addonName,
 							})
 							for i = #self.AddOns[#self.AddOns].mapId, 1, -1 do
@@ -3978,6 +3976,9 @@ function DBM:LoadMod(mod, force)
 	end
 	if mod.minExpansion > GetExpansionLevel() then
 		self:AddMsg(DBM_CORE_LOAD_MOD_EXP_MISMATCH:format(mod.name))
+		return
+	elseif not testBuild and mod.minToc > wowTOC then
+		self:AddMsg(DBM_CORE_LOAD_MOD_TOC_MISMATCH:format(mod.name, mod.minToc))
 		return
 	end
 	if not currentSpecID then
@@ -7116,7 +7117,8 @@ function DBM:FindInstanceIDs()
 end
 
 --/run DBM:FindEncounterIDs(1028)--Azeroth (BfA)
---/run DBM:FindEncounterIDs(1031)--Uldir
+--/run DBM:FindEncounterIDs(1177)--Crucible of Storms
+--/run DBM:FindEncounterIDs(1176)--Zuldazar Raid
 --/run DBM:FindEncounterIDs(1001, 23)--Dungeon Template (mythic difficulty)
 function DBM:FindEncounterIDs(instanceID, diff)
 	if not instanceID then
