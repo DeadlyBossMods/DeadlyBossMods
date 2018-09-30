@@ -72,7 +72,7 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	if not self.Options.Enabled then return end
 	local spellId = args.spellId
-	if spellId == 256957 and self:IsValidWarning(args.sourceGUID) then
+	if spellId == 256957 and self:IsValidWarning(args.sourceGUID) and not args:IsDestTypePlayer() then
 		specWarnWatertightShellDispel:CombinedShow(1, args.destName)
 		specWarnWatertightShellDispel:CancelVoice()
 		specWarnWatertightShellDispel:ScheduleVoice(1, "helpdispel")
