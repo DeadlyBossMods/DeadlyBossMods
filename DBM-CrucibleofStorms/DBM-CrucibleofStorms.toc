@@ -10,6 +10,7 @@
 ## X-DBM-Mod-Type: RAID
 ## X-DBM-Mod-Category: BFA
 ## X-DBM-Mod-Has-Mythic : 1
+## X-DBM-Mod-Name: Crucible of Storms
 ## X-DBM-Mod-Sort: 407
 ## X-DBM-Mod-MapID: 2096
 ## X-DBM-Mod-MinCoreRevision: 17286
