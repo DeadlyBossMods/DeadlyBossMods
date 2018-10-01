@@ -11,6 +11,7 @@ DBM_CORE_LOAD_GUI_COMBAT			= "圖形介面不能在戰鬥中初始化。圖形�
 DBM_CORE_BAD_LOAD					= "DBM偵測到你的此副本的模組在戰鬥中讀取失敗。一旦脫離戰鬥，請立即輸入/console reloadui重新載入。"
 DBM_CORE_LOAD_MOD_VER_MISMATCH		= "%s不能被讀取因為你的DBM-Core未達需求，請更新版本。"
 DBM_CORE_LOAD_MOD_EXP_MISMATCH		= "%s不能被讀取因為這是設計給WoW資料片而目前尚未開放。當資料片開放時，此模組會自動啟用。"
+DBM_CORE_LOAD_MOD_TOC_MISMATCH		= "%s不能被讀取因為這是設計給WoW更新檔(%s)而目前尚未開放。當更新檔更新時，此模組會自動啟用。"
 DBM_CORE_LOAD_MOD_DISABLED			= "%s已安裝但目前停用中。此模組不會載入除非你啟用它。"
 DBM_CORE_LOAD_MOD_DISABLED_PLURAL	= "%s已安裝但目前停用中。這些模組不會載入除非你啟用它們。"
 
