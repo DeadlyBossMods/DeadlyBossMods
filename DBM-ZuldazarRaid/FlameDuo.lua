@@ -9,7 +9,7 @@ local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 --mod:SetCreatureID(creatureID, creatureID2)
-mod:SetEncounterID(2266, 2267)--Just engage off either CID, same boss is same boss
+mod:SetEncounterID(2266)
 --mod:DisableESCombatDetection()
 mod:SetZone()
 --mod:SetBossHPInfoToHighest()

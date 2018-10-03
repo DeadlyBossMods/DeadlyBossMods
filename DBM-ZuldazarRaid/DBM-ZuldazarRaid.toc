@@ -17,12 +17,14 @@
 ## X-DBM-Mod-MinCoreRevision: 17286
 ## X-DBM-Mod-MinExpansion: 7
 localization.en.lua
-FridaIronbellows.lua
-Mekkatorgue.lua
-SeaPriestBlockade.lua
+Frida_Kanae.lua
+KingGrong.lua
 FlameDuo.lua
 GrongtheRevenant.lua
-KingGrong.lua
+TreasureGuardian.lua
 LoaCouncil.lua
+Mekkatorgue.lua
 Rastakhan.lua
+SeaPriestBlockade.lua
+Jaina.lua
 ZuldazarRaidTrash.lua
