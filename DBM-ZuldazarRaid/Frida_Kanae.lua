@@ -1,9 +1,15 @@
-local mod	= DBM:NewMod(2333, "DBM-ZuldazarRaid", 1, 1176)
+local dungeonID, creatureID, creatureID2
+if UnitFactionGroup("player") == "Alliance" then
+	dungeonID, creatureID, creatureID2 = 2344, 0, 0--Ra'wani Kanae
+else--Horde
+	dungeonID, creatureID, creatureID2 = 2333, 0, 0--Frida Ironbellows
+end
+local mod	= DBM:NewMod(dungeonID, "DBM-ZuldazarRaid", 1, 1176)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 --mod:SetCreatureID(138967)
-mod:SetEncounterID(2264, 2265)
+mod:SetEncounterID(2265)
 --mod:DisableESCombatDetection()
 mod:SetZone()
 --mod:SetBossHPInfoToHighest()
