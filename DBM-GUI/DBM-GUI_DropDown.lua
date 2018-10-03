@@ -306,6 +306,14 @@ do
 			dropdown:SetScript("OnShow", function() dropdown:SetSelectedValue(DBM.Bars:GetOption(var)) end)
 		elseif vartype then
 			dropdown:SetScript("OnShow", function() dropdown:SetSelectedValue(vartype.Options[var]) end)
+		else--For external modules like DBM-RaidLeadTools
+			for k,v in next, dropdown.values do
+				if v.value ~= nil and v.value == var or v.text == var then
+					_G[dropdown:GetName().."Text"]:SetText(v.text)
+					dropdown.value = v.value
+					dropdown.text = v.text
+				end
+			end
 		end
 
 		return obj
