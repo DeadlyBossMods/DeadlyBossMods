@@ -10,7 +10,7 @@ mod:SetZone()
 mod:SetUsedIcons(1, 2, 8)
 mod:SetHotfixNoticeRev(17775)
 --mod:SetMinSyncRevision(16950)
---mod.respawnTime = 35
+mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
 
