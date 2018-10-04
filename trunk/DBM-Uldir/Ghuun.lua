@@ -318,7 +318,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnMindNumbingChatter:Play("stopcast")
 		timerMindNumbingChatterCD:Start(nil, args.sourceGUID)
 	elseif spellId == 275160 then
-		specWarnGazeofGhuun:Show()
+		specWarnGazeofGhuun:Show(args.sourceName)
 		specWarnGazeofGhuun:Play("turnaway")
 		local timer = self:IsHard() and 26.7 or self:IsEasy() and 31.6--TODO, LFR, easy is assumed
 		timerGazeofGhuunCD:Start(timer)
