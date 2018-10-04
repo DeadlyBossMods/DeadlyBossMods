@@ -1,3 +1,4 @@
+if UnitFactionGroup("player") == "Alliance" then return end--Don't load this version of fight on alliance side
 local mod	= DBM:NewMod(2325, "DBM-ZuldazarRaid", 3, 1176)
 local L		= mod:GetLocalizedStrings()
 

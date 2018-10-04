@@ -1,3 +1,4 @@
+if UnitFactionGroup("player") ~= "Alliance" then return end--Don't load this version of fight on horde side
 local mod	= DBM:NewMod(2340, "DBM-ZuldazarRaid", 2, 1176)
 local L		= mod:GetLocalizedStrings()
 
