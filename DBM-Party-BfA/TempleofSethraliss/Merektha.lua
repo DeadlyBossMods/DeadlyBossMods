@@ -102,7 +102,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnNoxiousBreath:Play("watchstep")
 		--timerNoxiousBreathCD:Start()
 	elseif spellId == 263914 then
-		specWarnBlindingSand:Show()
+		specWarnBlindingSand:Show(args.sourceName)
 		specWarnBlindingSand:Play("turnaway")
 	elseif (spellId == 264239 or spellId == 264233) then--Hatch
 		if self:AntiSpam(3, 1) then

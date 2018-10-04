@@ -133,7 +133,7 @@ function mod:OnCombatStart(delay)
 	timerCallofCrusherCD:Start(70, 1)--70-73
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(DBM_CORE_INFOFRAME_POWER)
-		DBM.InfoFrame:Show(5, "enemypower", 2)
+		DBM.InfoFrame:Show(5, "enemypower", 1)
 	end
 	table.wipe(unitTracked)
 	if self:IsMythic() then
@@ -365,7 +365,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 273288 then--Thrumming Pulse
 		if self.Options.NPAuraOnThrumming then
-			DBM.Nameplate:Show(true, args.destGUID, spellId)
+			DBM.Nameplate:Show(true, args.destGUID, spellId, nil, 40)
 		end
 	elseif spellId == 273432 then--Bound by Shadow
 		if self.Options.NPAuraOnBoundbyShadow then
@@ -378,7 +378,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnActiveDecay:Show(args.destName)
 		end
 		if self.Options.NPAuraOnDecayingFlesh then
-			DBM.Nameplate:Show(true, args.destGUID, spellId)
+			DBM.Nameplate:Show(true, args.destGUID, spellId, nil, 12)
 		end
 	elseif spellId == 274271 then
 		if args:IsPlayer() then
