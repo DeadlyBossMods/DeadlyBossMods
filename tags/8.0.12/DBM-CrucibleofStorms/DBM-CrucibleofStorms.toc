@@ -1,0 +1,21 @@
+## Interface: 80000
+## X-Min-Interface: 80100
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0UCrucible of Storms|r
+## Author: MysticalOS
+## LoadOnDemand: 1
+## RequiredDeps: DBM-Core
+## SavedVariables: DBMCrucibleofStorms_AllSavedVars
+## SavedVariablesPerCharacter: DBMCrucibleofStorms_SavedStats
+## X-DBM-Mod: 1
+## X-DBM-Mod-Type: RAID
+## X-DBM-Mod-Category: BFA
+## X-DBM-Mod-Has-Mythic : 1
+## X-DBM-Mod-Name: Crucible of Storms
+## X-DBM-Mod-Sort: 407
+## X-DBM-Mod-MapID: 2096
+## X-DBM-Mod-MinCoreRevision: 17286
+## X-DBM-Mod-MinExpansion: 7
+localization.en.lua
+RestlessCabal.lua
+Uunat.lua
+CrucibleofStormsTrash.lua
