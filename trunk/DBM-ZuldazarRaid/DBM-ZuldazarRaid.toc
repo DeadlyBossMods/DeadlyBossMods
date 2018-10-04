@@ -23,7 +23,7 @@ FlameDuo.lua
 GrongtheRevenant.lua
 TreasureGuardian.lua
 LoaCouncil.lua
-Mekkatorgue.lua
+Mekkatorque.lua
 Rastakhan.lua
 SeaPriestBlockade.lua
 Jaina.lua
