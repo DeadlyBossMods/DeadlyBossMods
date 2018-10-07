@@ -35,7 +35,8 @@ mod:RegisterEventsInCombat(
 --]]
 --Stage One: Oblivion's Call
 local warnPhase						= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
-local warnOblivionSphere				= mod:NewCountAnnounce(272407, 4)
+local warnOblivionSphere			= mod:NewCountAnnounce(272407, 4)
+local warnVoidEchoes				= mod:NewCountAnnounce(279157, 4)
 --Stage Two:
 local warnDestroyerRemaining			= mod:NewAddsLeftAnnounce("ej18508", 2, 274693)
 
@@ -50,7 +51,7 @@ local yellImminentRuin					= mod:NewPosYell(272536, 139073)--Short name "Ruin"
 local yellImminentRuinFades				= mod:NewIconFadesYell(272536, 139073)
 local specWarnImminentRuinNear			= mod:NewSpecialWarningClose(272536, false, nil, 2, 1, 2)
 local specWarnLivingWeapon				= mod:NewSpecialWarningSwitch(276922, "RangedDps", nil, nil, 1, 2)--Mythic (include melee dps too? asuming do to spheres, a big no)
-local specWarnVoidEchoes				= mod:NewSpecialWarningCount(279157, nil, nil, nil, 2, 2)--Mythic
+local specWarnVoidEchoes				= mod:NewSpecialWarningCount(279157, false, nil, 2, 2, 2)--Mythic
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
 --Stage Two: Fury of the C'thraxxi
 local specWarnObliterationbeam			= mod:NewSpecialWarningDodgeCount(272115, nil, nil, nil, 2, 2)--Generic for now
@@ -186,8 +187,12 @@ function mod:SPELL_CAST_START(args)
 		specWarnMindFlay:Play("kickcast")
 	elseif spellId == 279157 then
 		self.vb.echoesCast = self.vb.echoesCast + 1
-		specWarnVoidEchoes:Show(self.vb.echoesCast)
-		specWarnVoidEchoes:Play("aesoon")
+		if self.Options.SpecWarn279157count2 then
+			specWarnVoidEchoes:Show(self.vb.echoesCast)
+			specWarnVoidEchoes:Play("aesoon")
+		else
+			warnVoidEchoes:Show(self.vb.echoesCast)
+		end
 		timerVoidEchoesCD:Start(9.7, self.vb.echoesCast+1)
 	end
 end
