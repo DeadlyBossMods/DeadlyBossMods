@@ -252,7 +252,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		local icon = self.vb.ruinIcon
 		if args:IsPlayer() then
 			specWarnImminentRuin:Show(self:IconNumToTexture(icon))
-			specWarnImminentRuin:Play("mm"..icon)
+			specWarnImminentRuin:Play("runout")--"mm"..icon
 			yellImminentRuin:Yell(icon, icon, icon)
 			yellImminentRuinFades:Countdown(12, nil, icon)
 		elseif self:CheckNearby(12, args.destName) and not DBM:UnitDebuff("player", spellId) then
