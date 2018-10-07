@@ -419,8 +419,8 @@ local enableIcons = true -- set to false when a raid leader or a promoted player
 local bannedMods = { -- a list of "banned" (meaning they are replaced by another mod or discontinued). These mods will not be loaded by DBM (and they wont show up in the GUI)
 	"DBM-Battlegrounds", --replaced by DBM-PvP
 	-- ZG and ZA are now part of the party mods for Cataclysm
-	"DBM-ZulAman",--Remove restriction in 8.0 classic wow
-	"DBM-ZG",--Remove restriction in 8.0 classic wow
+	"DBM-ZulAman",--Remove restriction in classic wow but add load conditions to not load on live
+	"DBM-ZG",--Remove restriction in classic wow but add load conditions to not load on live
 	"DBM-SiegeOfOrgrimmar",--Block legacy version. New version is "DBM-SiegeOfOrgrimmarV2"
 	"DBM-HighMail",
 	"DBM-ProvingGrounds-MoP",--Renamed to DBM-ProvingGrounds in 6.0 version since blizzard updated content for WoD
@@ -429,7 +429,7 @@ local bannedMods = { -- a list of "banned" (meaning they are replaced by another
 	"DBM-Suramar",--Renamed to DBM-Nighthold
 	"DBM-KulTiras",--Merged to DBM-Azeroth-BfA
 	"DBM-Zandalar",--Merged to DBM-Azeroth-BfA
-	"DBM-PvP",--Discontinued do to inability to maintain such large scale external projects with limitted time/resources
+	"DBM-PvP",--Discontinued, but returning soon™
 }
 
 
