@@ -649,6 +649,7 @@ end
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 	if msg:find("spell:263420") and self:AntiSpam(10, 7) then
 		self.vb.matrixActive = true
+		self.vb.matrixCount = self.vb.matrixCount + 1
 		if not self:IsMythic() then
 			if self.vb.matrixSide == DBM_CORE_LEFT then
 				self.vb.matrixSide = DBM_CORE_RIGHT
@@ -659,7 +660,6 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 		else
 			warnMatrixSpawn:Show(self.vb.matrixCount)
 		end
-		self.vb.matrixCount = self.vb.matrixCount + 1
 	end
 end
 
