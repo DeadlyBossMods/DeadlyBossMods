@@ -69,7 +69,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnCalloftheDeep:Show()
 		specWarnCalloftheDeep:Play("watchstep")
 		--timerCalloftheDeepCD:Start()
-	elseif spellId == 269266 then
+	elseif spellId == 269266 and self:AntiSpam(2.5, 1) then
 		specWarnSlam:Show()
 		specWarnSlam:Play("shockwave")
 		timerSlamCD:Start(nil, args.sourceGUID)
