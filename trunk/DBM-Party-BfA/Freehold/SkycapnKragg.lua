@@ -22,10 +22,11 @@ mod:RegisterEventsInCombat(
 --(ability.id = 255952 or ability.id = 256106) and type = "begincast" or (ability.id = 256056 or ability.id = 256060 or ability.id = 256005) and type = "cast"
 local warnPhase2					= mod:NewPhaseAnnounce(2, 2, nil, nil, nil, nil, nil, 2)
 local warnVilebombardment			= mod:NewSpellAnnounce(256005, 2, nil, false)--Every 6 seconds so off by default
+local warnPowderShot				= mod:NewSpellAnnounce(256106, 2)
 
 local specWarnCharge				= mod:NewSpecialWarningDodge(255952, nil, nil, nil, 2, 2)
 local specWarnDiveBomb				= mod:NewSpecialWarningDodge(272046, nil, nil, nil, 2, 2)
-local specWarnPowderShot			= mod:NewSpecialWarningSpell(256106, nil, nil, nil, 2, 2)--Dodge?
+--local specWarnPowderShot			= mod:NewSpecialWarningSpell(256106, nil, nil, nil, 2, 2)--Dodge?
 --local yellSwirlingScythe			= mod:NewYell(195254)
 local specWarnBrew					= mod:NewSpecialWarningInterrupt(256060, "HasInterrupt", nil, nil, 1, 2)
 local specWarnGTFO					= mod:NewSpecialWarningGTFO(256016, nil, nil, nil, 1, 2)
@@ -59,8 +60,9 @@ function mod:SPELL_CAST_START(args)
 		specWarnCharge:Play("chargemove")
 		timerChargeCD:Start()
 	elseif spellId == 256106 then
-		specWarnPowderShot:Show()
-		specWarnPowderShot:Play("shockwave")--Review, I barely remember fight it died so fast
+		warnPowderShot:Show()
+		--specWarnPowderShot:Show()
+		--specWarnPowderShot:Play("shockwave")--Review, I barely remember fight it died so fast
 		timerPowderShotCD:Start()
 	elseif spellId == 272046 then
 		specWarnDiveBomb:Show()
