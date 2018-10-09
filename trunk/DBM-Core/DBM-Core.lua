@@ -10145,6 +10145,10 @@ do
 	function bossModPrototype:NewSpecialWarningAddsCustom(text, optionDefault, ...)
 		return newSpecialWarning(self, "Addscustom", text, nil, optionDefault, ...)
 	end
+	
+	function bossModPrototype:NewSpecialWarningTargetChange(text, optionDefault, ...)
+		return newSpecialWarning(self, "targetchange", text, nil, optionDefault, ...)
+	end
 
 	function bossModPrototype:NewSpecialWarningPreWarn(text, optionDefault, time, ...)
 		return newSpecialWarning(self, "prewarn", text, time, optionDefault, ...)
