@@ -219,7 +219,9 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 262313 and args:IsPlayer() then
 		local amount = args.amount or 1
 		if amount == 1 then
-			yellMalodorousMiasma:Yell()
+			if self:IsMythic() then
+				yellMalodorousMiasma:Yell()
+			end
 			specWarnMalodorousMiasma:Show()
 			specWarnMalodorousMiasma:Play("targetyou")
 		elseif self:AntiSpam(2, 4) then
@@ -234,7 +236,9 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 262314 and args:IsPlayer() then
 		local amount = args.amount or 1
 		if amount == 1 then
-			yellPutridParoxysm:Yell()
+			if self:IsMythic() then
+				yellPutridParoxysm:Yell()
+			end
 			specWarnPutridParoxysm:Show()
 			specWarnPutridParoxysm:Play("defensive")
 		else
