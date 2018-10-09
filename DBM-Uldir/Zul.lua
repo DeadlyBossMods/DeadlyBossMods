@@ -139,7 +139,8 @@ do
 			--Primary Power
 			local currentPower, maxPower = UnitPower(uId), UnitPowerMax(uId)
 			if maxPower and maxPower ~= 0 then
-				if currentPower / maxPower * 100 >= 1 then
+				local adjustedPower = currentPower / maxPower * 100
+				if adjustedPower >= 1 and adjustedPower ~= 100 then--Filter 100 power, to basically eliminate cced Adds
 					addLine(UnitName(uId), currentPower)
 				end
 			end
