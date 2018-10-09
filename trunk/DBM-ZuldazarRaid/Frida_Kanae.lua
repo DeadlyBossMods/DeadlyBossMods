@@ -23,7 +23,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 283598 284474 283662 284578 283628 283626 283650 283933",
 --	"SPELL_CAST_SUCCESS 283955",
-	"SPELL_AURA_APPLIED 284468 283619 283573 284469 283933 284436 282113",
+	"SPELL_AURA_APPLIED 284468 283619 283573 284469 283933 284436 282113 283582",
 	"SPELL_AURA_APPLIED_DOSE 283573",
 	"SPELL_AURA_REMOVED 283619 284468 284469 283933 284436",
 	"UNIT_DIED"
@@ -54,7 +54,7 @@ local specWarnPenance					= mod:NewSpecialWarningInterrupt(284578, "HasInterrupt
 local specWarnHeal						= mod:NewSpecialWarningInterrupt(283628, "HasInterrupt", nil, nil, 1, 2)
 local specWarnDivineBurst				= mod:NewSpecialWarningInterrupt(283626, "HasInterrupt", nil, nil, 1, 2)
 local specWarnBlindingFaith				= mod:NewSpecialWarningLookAway(283650, nil, nil, nil, 3, 2)
---local specWarnGTFO					= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
+local specWarnGTFO						= mod:NewSpecialWarningGTFO(283582, nil, nil, nil, 1, 2)
 
 mod:AddTimerLine(BOSS)
 local timerWaveofLightCD				= mod:NewCDTimer(10.5, 283598, nil, nil, nil, 3, nil, DBM_CORE_MAGIC_ICON)
@@ -226,6 +226,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 282113 then
 		warnAvengingWrath:Show(args.destName)
+	elseif spellId == 283582 and args:IsPlayer() and self:AntiSpam(2, 4) then
+		specWarnGTFO:Show(args.spellName)
+		specWarnGTFO:Play("runaway")
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -251,15 +254,13 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
---[[
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
-	if spellId == 228007 and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
+	if spellId == 283582 and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
 		specWarnGTFO:Show(spellName)
 		specWarnGTFO:Play("runaway")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
---]]
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
