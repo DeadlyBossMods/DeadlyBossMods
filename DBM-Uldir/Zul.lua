@@ -115,6 +115,57 @@ mod.vb.deathwishCount = 0
 mod.vb.activeDecay = nil
 local unitTracked = {}
 
+local updateInfoFrame
+do
+	local floor, tsort = math.floor, table.sort
+	local lines = {}
+	local tempLines = {}
+	local tempLinesSorted = {}
+	local sortedLines = {}
+	local function sortFuncDesc(a, b) return tempLines[a] > tempLines[b] end
+	local function addLine(key, value)
+		-- sort by insertion order
+		lines[key] = value
+		sortedLines[#sortedLines + 1] = key
+	end
+	updateInfoFrame = function()
+		table.wipe(lines)
+		table.wipe(tempLines)
+		table.wipe(tempLinesSorted)
+		table.wipe(sortedLines)
+		--Boss Powers first
+		for i = 1, 5 do
+			local uId = "boss"..i
+			--Primary Power
+			local currentPower, maxPower = UnitPower(uId), UnitPowerMax(uId)
+			if maxPower and maxPower ~= 0 then
+				if currentPower / maxPower * 100 >= 1 then
+					addLine(UnitName(uId), currentPower)
+				end
+			end
+		end
+		if mod:IsMythic() then
+			addLine(" ", " ")--Insert a blank entry to split the two debuffs
+			--Corrupted Blood Stacks (UGLY code)
+			for uId in DBM:GetGroupMembers() do
+				local spellName, _, count = DBM:UnitDebuff(uId, 274195)
+				if spellName and count then
+					local unitName = UnitName(uId)
+					tempLines[unitName] = count
+					tempLinesSorted[#tempLinesSorted + 1] = unitName
+				end
+			end
+			--Sort debuffs by highest then inject into regular table
+			tsort(tempLinesSorted, sortFuncDesc)
+			for _, name in ipairs(tempLinesSorted) do
+				addLine(name, tempLines[name])
+			end
+		end
+		return lines, sortedLines
+	end
+end
+
+
 function mod:OnCombatStart(delay)
 	self.vb.phase = 1
 	self.vb.poolCount = 0
@@ -133,7 +184,7 @@ function mod:OnCombatStart(delay)
 	timerCallofCrusherCD:Start(70, 1)--70-73
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(DBM_CORE_INFOFRAME_POWER)
-		DBM.InfoFrame:Show(5, "enemypower", 1)
+		DBM.InfoFrame:Show(8, "function", updateInfoFrame, false, false)
 	end
 	table.wipe(unitTracked)
 	if self:IsMythic() then

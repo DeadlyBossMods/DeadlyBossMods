@@ -377,7 +377,8 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 	switchcount		= "%s - switch targets (%%s)",
 	gtfo			= "%%s under you - move away",
 	Adds			= "Incoming Adds - switch targets",
-	Addscustom		= "Incoming Adds - %%s"
+	Addscustom		= "Incoming Adds - %%s",
+	targetchange	= "Target Change - switch to %%s"
 }
 
 -- Auto-generated Special Warning Localizations
@@ -420,7 +421,8 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 	switchcount		= "Show special warning (with count) to switch targets for $spell:%s",
 	gtfo 			= "Show special warning to move out bad stuff on ground",
 	Adds			= "Show special warning to switch targets for incoming adds",
-	Addscustom		= "Show special warning for incoming adds"
+	Addscustom		= "Show special warning for incoming adds",
+	targetchange	= "Show special warning for priority target changes"
 }
 
 -- Auto-generated Timer Localizations
