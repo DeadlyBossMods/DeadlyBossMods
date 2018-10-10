@@ -4,7 +4,7 @@ local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(147268)
-mod:SetEncounterID(2262)--Grongs are separate mods because they have too many diff names and IDs plus have unique encounter IDs
+mod:SetEncounterID(2263)
 --mod:DisableESCombatDetection()
 mod:SetZone()
 --mod:SetBossHPInfoToHighest()
