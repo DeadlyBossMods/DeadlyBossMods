@@ -99,6 +99,7 @@ local function ModCheck(self)
 			local name = DBM:GetUnitFullName(uId)
 			if DBM:GetRaidRank(name) > 0 and self:CheckBigWigs(name) then
 				iconsUsed = false
+				DBM:AddMsg(L.BWIconMsg)
 				break
 			end
 		end

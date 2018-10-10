@@ -59,7 +59,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	BWIconMsg			 =	"DBM's has passed icon marking to a promoted BW user in raid to avoid icon conflicts, make sure they have marking enabled or demote them to enable DBM marking"
+	BWIconMsg			 =	"DBM's has passed icon marking to a promoted BW user in raid to avoid icon conflicts. Make sure they have marking enabled, or demote them to enable DBM marking, or enable the override option in Vectis options"
 })
 
 ---------------
