@@ -80,10 +80,11 @@ mod:AddRangeFrameOption("5/8")
 mod:AddInfoFrameOption(265127, true)
 mod:AddBoolOption("ShowHighestFirst2", false)--Show lest stacks first by default, since it alines with new infoframe
 mod:AddBoolOption("ShowOnlyParty", false)
+mod:AddBoolOption("SetIconsRegardless", false)
 
 mod.vb.ContagionCount = 0
 mod.vb.plagueBombCount = 0
-mod.vb.iconsUsed = true
+local iconsUsed = true
 local vectorTargets = {[1] = false, [2] = false, [3] = false, [4] = false}
 local playerHasSix, playerHasTwelve, playerHasTwentyFive = false, false, false
 local seenAdds = {}
@@ -92,11 +93,12 @@ local playersIcon = 0
 
 --Resolve icon conflict with BW by simply having DBM disable icon setting automatically if there is a single promoted BW user in the raid
 local function ModCheck(self)
+	if self.Options.SetIconsRegardless then return end
 	if IsInRaid() and not IsPartyLFG() then--Future proof in case solo/not in a raid
 		for uId in DBM:GetGroupMembers() do
 			local name = DBM:GetUnitFullName(uId)
 			if DBM:GetRaidRank(name) > 0 and self:CheckBigWigs(name) then
-				self.vb.iconsUsed = false
+				iconsUsed = false
 				break
 			end
 		end
@@ -201,7 +203,7 @@ function mod:OnCombatStart(delay)
 	playersIcon = 0
 	self.vb.ContagionCount = 0
 	self.vb.plagueBombCount = 0
-	self.vb.iconsUsed = true
+	iconsUsed = true
 	timerEvolvingAfflictionCD:Start(4.7-delay)
 	timerGestateCD:Start(10-delay)--SUCCESS
 	countdownGestate:Start(10-delay)
@@ -227,7 +229,7 @@ function mod:OnCombatEnd()
 end
 
 function mod:OnTimerRecovery()
-	ModCheck(self)--Shouldn't be needed, since the variable will be sent with recovered timers anyways, but just in case
+	ModCheck(self)
 	if self:IsMythic() then
 		local _, _, count = DBM:UnitDebuff("player", 265127)--Lingering Infection Recovery
 		if count then
@@ -359,7 +361,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			if not vectorTargets[i] then--Not yet assigned!
 				icon = i
 				vectorTargets[i] = args.destName--Assign player name for infoframe
-				if self.Options.SetIconVector and self.vb.iconsUsed then--Now do icon stuff, if enabled
+				if self.Options.SetIconVector and iconsUsed then--Now do icon stuff, if enabled
 					local uId = DBM:GetRaidUnitId(args.destName)
 					local currentIcon = GetRaidTargetIndex(uId) or 0
 					if currentIcon == 0 then--Don't set icon if target already has one
@@ -370,7 +372,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 		if args:IsPlayer() then
-			if not self.vb.iconsUsed then--BW is doingicons, delay player warning to give BW time to set icons
+			if not iconsUsed then--BW is doingicons, delay player warning to give BW time to set icons
 				self:Unschedule(delayedIconCheck)
 				self:Schedule(0.3, delayedIconCheck, self)
 			else
@@ -448,7 +450,7 @@ function mod:SPELL_AURA_REMOVED(args)
 					local uId = DBM:GetRaidUnitId(args.destName)
 					local stillDebuffed = DBM:UnitDebuff(uId, spellId)--Check for remaining debuffs
 					if args:IsPlayer() then
-						if not self.vb.iconsUsed then
+						if not iconsUsed then
 							yellOmegaVectorFades:Cancel()--Cancel them all
 							yellOmegaVectorFadesNoIcon:Cancel()
 						else
@@ -460,13 +462,13 @@ function mod:SPELL_AURA_REMOVED(args)
 						end
 					end
 					if not stillDebuffed then--Terminate loop and remove icon if enabled
-						if self.Options.SetIconVector and self.vb.iconsUsed then
+						if self.Options.SetIconVector and iconsUsed then
 							self:SetIcon(args.destName, 0)
 						end
 						break--Break loop, nothing further to do
 					end
 				else
-					if self.Options.SetIconVector and self.vb.iconsUsed then
+					if self.Options.SetIconVector and iconsUsed then
 						self:SetIcon(args.destName, i)
 						break--Break loop, Icon updated to next 
 					end
