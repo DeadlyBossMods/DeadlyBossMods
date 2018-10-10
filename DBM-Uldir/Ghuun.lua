@@ -228,6 +228,29 @@ do
 	end
 end
 
+--Handles the ICD that Gaze of G'huun triggers on other abilities
+local function updateAllTimers(self, ICD)
+	DBM:Debug("updateAllTimers running", 3)
+	if self.vb.phase == 3 then
+		if timerWaveofCorruptionCD:GetRemaining(self.vb.waveCast+1) < ICD then
+			local elapsed, total = timerWaveofCorruptionCD:GetTime(self.vb.waveCast+1)
+			local extend = ICD - (total-elapsed)
+			DBM:Debug("timerWaveofCorruptionCD extended by: "..extend, 2)
+			timerWaveofCorruptionCD:Stop()
+			timerWaveofCorruptionCD:Update(elapsed, total+extend, self.vb.waveCast+1)
+		end
+		if timerMalignantGrowthCD:GetRemaining() < ICD then
+			local elapsed, total = timerMalignantGrowthCD:GetTime()
+			local extend = ICD - (total-elapsed)
+			DBM:Debug("timerMalignantGrowthCD extended by: "..extend, 2)
+			timerMalignantGrowthCD:Stop()
+			timerMalignantGrowthCD:Update(elapsed, total+extend)
+			countdownMalignantGrowth:Cancel()
+			countdownMalignantGrowth:Start(ICD)
+		end
+	end
+end
+
 function mod:OnCombatStart(delay)
 	table.wipe(matrixTargets)
 	table.wipe(bloodFeastTarget)
@@ -316,13 +339,18 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 263307 then
 		specWarnMindNumbingChatter:Show()
 		specWarnMindNumbingChatter:Play("stopcast")
-		timerMindNumbingChatterCD:Start(nil, args.sourceGUID)
+		if self:IsMythic() then
+			timerMindNumbingChatterCD:Start(9.8, args.sourceGUID)
+		else
+			timerMindNumbingChatterCD:Start(13.4, args.sourceGUID)
+		end
 	elseif spellId == 275160 then
 		specWarnGazeofGhuun:Show(args.sourceName)
 		specWarnGazeofGhuun:Play("turnaway")
-		local timer = self:IsHard() and 26.7 or self:IsEasy() and 31.6--TODO, LFR, easy is assumed
+		local timer = self:IsMythic() and 21.97 or self:IsHard() and 26.7 or self:IsEasy() and 31.6--TODO, LFR, easy is assumed
 		timerGazeofGhuunCD:Start(timer)
 		countdownGazeofGhuun:Start(timer)
+		updateAllTimers(self, 3.6)
 	end
 end
 
@@ -330,7 +358,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 263235 then--Blood Feast
 		self.vb.waveCast = 0
-		timerWaveofCorruptionCD:Start(15.6, 1)--Wave of corruption is next, not blood Feast
+		timerWaveofCorruptionCD:Start(15.6, 1)--16.6--Wave of corruption is next, not blood Feast
 	elseif (spellId == 263482 or spellId == 263503) then
 		timerReOrgBlast:Start()
 		if self.vb.phase < 2 then--Phase 1 to Phase 2 Transition
@@ -342,7 +370,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			timerMassiveSmashCD:Stop()--Technically should AddTime(25) each add, but honestly, if the adds don't die in this 25 second window you done fucked up
 			timerDarkBargainCD:Stop()--Technically should AddTime(25) each add, but honestly, if the adds don't die in this 25 second window you done fucked up
 			if self:IsMythic() then
-				timerWaveofCorruptionCD:Start(33, 1)
+				timerWaveofCorruptionCD:Start(34, 1)
 			end
 		else--Drive cast in Phase 2
 			if self.vb.waveCast == 2 then--Current timer is blood feast
@@ -379,7 +407,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			end
 		else--P3, No more blood feast, only waves
 			--Faster on easy because no growth
-			local timer = self:IsHard() and 25.5 or self:IsEasy() and 20.5--TODO, LFR
+			local timer = self:IsMythic() and 15.84 or self:IsHard() and 25.5 or self:IsEasy() and 20.5--TODO, LFR
 			timerWaveofCorruptionCD:Start(timer, self.vb.waveCast+1)
 		end
 	elseif spellId == 276839 then
@@ -556,7 +584,11 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnDarkBargainOther:Play("changemt")
 		end
 	elseif spellId == 263284 then--Horror Spawn
-		timerMindNumbingChatterCD:Start(10, args.destGUID)
+		if self:IsMythic() then
+			timerMindNumbingChatterCD:Start(7, args.destGUID)
+		else
+			timerMindNumbingChatterCD:Start(10, args.destGUID)
+		end
 	elseif spellId == 277007 then
 		self.vb.burstingIcon = self.vb.burstingIcon + 1
 		if args:IsPlayer() then
