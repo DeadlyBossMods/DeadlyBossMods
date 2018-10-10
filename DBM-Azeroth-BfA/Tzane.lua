@@ -12,7 +12,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 262004 261600 261552",
-	"SPELL_CAST_SUCCESS 262004 261605",
+	"SPELL_CAST_SUCCESS 262004",
 	"SPELL_AURA_APPLIED 261605",
 	"SPELL_AURA_REMOVED 261605"
 )
@@ -28,10 +28,10 @@ local specWarnTerrorWall			= mod:NewSpecialWarningDodge(261552, nil, nil, nil, 3
 
 --local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
 
-local timerCrushingSlamCD			= mod:NewAITimer(16, 262004, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
-local timerCoalescedEssenceCD		= mod:NewAITimer(16, 261600, nil, nil, nil, 3)
-local timerConsumingSpiritsCD		= mod:NewAITimer(16, 261605, nil, nil, nil, 3)
-local timerTerrorWallCD				= mod:NewAITimer(16, 261552, nil, nil, nil, 3)
+local timerCrushingSlamCD			= mod:NewCDTimer(24.8, 262004, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--24.8-31?
+local timerCoalescedEssenceCD		= mod:NewCDTimer(25.5, 261600, nil, nil, nil, 3)--25-28?
+local timerConsumingSpiritsCD		= mod:NewCDTimer(21.9, 261605, nil, nil, nil, 3)--21-35?
+local timerTerrorWallCD				= mod:NewCDTimer(24.9, 261552, nil, nil, nil, 3)--24-29?
 
 mod:AddRangeFrameOption(8, 261605)
 --mod:AddReadyCheckOption(37460, false)
@@ -76,8 +76,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 			specWarnCrushingSlamOther:Show(args.destName)
 			specWarnCrushingSlamOther:Play("tauntboss")
 		end
-	elseif spellId == 261605 then
-		timerConsumingSpiritsCD:Start()
 	end
 end
 
@@ -85,6 +83,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 261605 then
 		warnConsumingSpirits:CombinedShow(0.3, args.destName)
+		timerConsumingSpiritsCD:DelayedStart(0.3)
 		if args:IsPlayer() then
 			specWarnConsumingSpirits:Show()
 			specWarnConsumingSpirits:Play("runout")
