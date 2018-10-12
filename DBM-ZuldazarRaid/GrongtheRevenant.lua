@@ -17,42 +17,42 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 282399 285994 282533 286435",
-	"SPELL_CAST_SUCCESS 282543",
+	"SPELL_CAST_SUCCESS 282543 282526 286450",
 	"SPELL_AURA_APPLIED 285671 285875 286434",
 --	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 286434",
 	"SPELL_ENERGIZE 282533",
-	"UNIT_DIED",
-	"UNIT_SPELLCAST_SUCCEEDED boss1"
+	"UNIT_DIED"
+--	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
 --TODO, verify tank swaps, for most part, asuming it's Ursoc 2.0, but it may be more of a zekvoz and one tank gets both attacks. Until verified, disabled taunt warnings to avoid misleading
 --TODO, detect Voodoo Blast targets and add runout?
---TODO, death empowerment timers and count if it's not a frequent/spammed cast
 --TODO, add exploding soon and now warnings?
---TODO, finish timer updates code for when boss gains SPELL_ENERGIZE
 --TODO, same as above, but with Core. Update energy/timers
 --local warnXorothPortal				= mod:NewSpellAnnounce(244318, 2, nil, nil, nil, nil, nil, 7)
 local warnCrushed						= mod:NewYouAnnounce(285671, 3)
 local warnRendingBite					= mod:NewYouAnnounce(285875, 3)
-local warnDeathEmpowerment				= mod:NewCastAnnounce(282533, 3)
 local warnShadowCore					= mod:NewTargetNoFilterAnnounce(286434, 2)
 --local warnRupturingBlood				= mod:NewStackAnnounce(274358, 2, nil, "Tank")
 
 local specWarnDeathKnell				= mod:NewSpecialWarningCount(282399, nil, nil, nil, 2, 2)
-local specWarnDeathlySlam				= mod:NewSpecialWarningRun(282543, nil, nil, nil, 4, 2)
+local specWarnDeathlySlam				= mod:NewSpecialWarningDodge(282543, nil, nil, nil, 2, 2)
 local specWarnFerociousRoar				= mod:NewSpecialWarningSpell(285994, nil, nil, nil, 2, 2)
---local specWarnCrushedTaunt				= mod:NewSpecialWarningTaunt(285671, nil, nil, nil, 1, 2)
---local specWarnRendingBiteTaunt			= mod:NewSpecialWarningTaunt(285875, nil, nil, nil, 1, 2)
+local specWarnAdd						= mod:NewSpecialWarningSwitch(282526, "Dps", nil, nil, 1, 2)
+local specWarnAddInterrupt				= mod:NewSpecialWarningInterruptCount(282533, "HasInterrupt", nil, nil, 1, 2)
+local specWarnCrushedTaunt				= mod:NewSpecialWarningTaunt(285671, nil, nil, nil, 1, 2)
+local specWarnRendingBiteTaunt			= mod:NewSpecialWarningTaunt(285875, nil, nil, nil, 1, 2)
 --local yellDarkRevolation				= mod:NewPosYell(273365)
 --local yellDarkRevolationFades			= mod:NewIconFadesYell(273365)
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
 
 --mod:AddTimerLine(DBM:EJ_GetSectionInfo(18527))
-local timerDeathKnellCD					= mod:NewAITimer(55, 282399, nil, nil, nil, 2)
-local timerNecroticComboCD				= mod:NewAITimer(14.1, 286450, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
-local timerDeathlySlamCD				= mod:NewAITimer(55, 282543, nil, nil, nil, 2)
-local timerFerociousRoarCD				= mod:NewAITimer(55, 285994, nil, nil, nil, 2)
+local timerDeathKnellCD					= mod:NewCDCountTimer(100, 282399, nil, nil, nil, 2)
+local timerNecroticComboCD				= mod:NewCDTimer(20.1, 286450, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerDeathlySlamCD				= mod:NewCDTimer(23.1, 282543, nil, nil, nil, 3)
+local timerFerociousRoarCD				= mod:NewCDTimer(21.9, 285994, nil, nil, nil, 2)
+local timerAddCD						= mod:NewCDTimer(60.7, 282526, nil, nil, nil, 1)
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
 
@@ -69,6 +69,7 @@ mod:AddInfoFrameOption(282399, true)
 --mod.vb.phase = 1
 mod.vb.deathKnellCount = 0
 local coreTargets = {}
+local castsPerGUID = {}
 
 local updateInfoFrame
 do
@@ -107,10 +108,12 @@ end
 function mod:OnCombatStart(delay)
 	self.vb.deathKnellCount = 0
 	table.wipe(coreTargets)
-	timerDeathKnellCD:Start(1-delay)
-	timerNecroticComboCD:Start(1-delay)
-	timerDeathlySlamCD:Start(1-delay)
-	timerFerociousRoarCD:Start(1-delay)
+	table.wipe(castsPerGUID)
+	timerDeathlySlamCD:Start(13.2-delay)
+	timerAddCD:Start(16.8-delay)
+	timerNecroticComboCD:Start(18-delay)
+	--timerFerociousRoarCD:Start(27.7-delay)--VERIFY
+	timerDeathKnellCD:Start(100-delay, 1)
 --	if self.Options.NPAuraOnPresence then
 --		DBM:FireEvent("BossMod_EnableHostileNameplates")
 --	end
@@ -138,15 +141,36 @@ function mod:SPELL_CAST_START(args)
 		self.vb.deathKnellCount = self.vb.deathKnellCount + 1
 		specWarnDeathKnell:Show(self.vb.deathKnellCount)
 		specWarnDeathKnell:Play("aesoon")
-		timerDeathKnellCD:Start()
+		timerDeathKnellCD:Stop()
+		timerDeathKnellCD:Start(100, self.vb.deathKnellCount+1)
 	elseif spellId == 285994 then
 		specWarnFerociousRoar:Show()
 		specWarnFerociousRoar:Play("fearsoon")
 		timerFerociousRoarCD:Start()
 	elseif spellId == 282533 then
-		warnDeathEmpowerment:Show()
+		if not castsPerGUID[args.sourceGUID] then
+			castsPerGUID[args.sourceGUID] = 0
+		end
+		castsPerGUID[args.sourceGUID] = castsPerGUID[args.sourceGUID] + 1
+		local count = castsPerGUID[args.sourceGUID]
+		if self:CheckInterruptFilter(args.sourceGUID, false, false) then
+			specWarnAddInterrupt:Show(args.sourceName, count)
+			if count == 1 then
+				specWarnAddInterrupt:Play("kick1r")
+			elseif count == 2 then
+				specWarnAddInterrupt:Play("kick2r")
+			elseif count == 3 then
+				specWarnAddInterrupt:Play("kick3r")
+			elseif count == 4 then
+				specWarnAddInterrupt:Play("kick4r")
+			elseif count == 5 then
+				specWarnAddInterrupt:Play("kick5r")
+			else
+				specWarnAddInterrupt:Play("kickcast")
+			end
+		end
 	elseif spellId == 286435 then
-		timerDeathKnellCD:Stop()
+		--timerDeathKnellCD:Stop()
 	end
 end
 
@@ -154,8 +178,14 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 282543 then
 		specWarnDeathlySlam:Show()
-		specWarnDeathlySlam:Play("justrun")
+		specWarnDeathlySlam:Play("watchstep")
 		timerDeathlySlamCD:Start()
+	elseif spellId == 282526 then--Death Spectre
+		specWarnAdd:Show()
+		specWarnAdd:Play("killmob")
+		timerAddCD:Start()
+	elseif spellId == 286450 then--Necrotic Combo
+		timerNecroticComboCD:Start()
 	end
 end
 
@@ -167,12 +197,12 @@ function mod:SPELL_AURA_APPLIED(args)
 			if args:IsPlayer() then
 				warnCrushed:Show()
 			else
-				--if not UnitIsDeadOrGhost("player") and not DBM:UnitDebuff("player", spellId) then--Can't taunt less you've dropped yours off, period.
-					--specWarnCrushedTaunt:Show(args.destName)
-					--specWarnCrushedTaunt:Play("tauntboss")
+				if not UnitIsDeadOrGhost("player") and not DBM:UnitDebuff("player", spellId) then--Can't taunt less you've dropped yours off, period.
+					specWarnCrushedTaunt:Show(args.destName)
+					specWarnCrushedTaunt:Play("tauntboss")
 				--else
 					--warnRupturingBlood:Show(args.destName, amount)
-				--end
+				end
 			end
 		end
 	elseif spellId == 285875 then
@@ -181,12 +211,12 @@ function mod:SPELL_AURA_APPLIED(args)
 			if args:IsPlayer() then
 				warnRendingBite:Show()
 			else
-				--if not UnitIsDeadOrGhost("player") and not DBM:UnitDebuff("player", spellId) then--Can't taunt less you've dropped yours off, period.
-					--specWarnRendingBiteTaunt:Show(args.destName)
-					--specWarnRendingBiteTaunt:Play("tauntboss")
+				if not UnitIsDeadOrGhost("player") and not DBM:UnitDebuff("player", spellId) then--Can't taunt less you've dropped yours off, period.
+					specWarnRendingBiteTaunt:Show(args.destName)
+					specWarnRendingBiteTaunt:Play("tauntboss")
 				--else
 					--warnRupturingBlood:Show(args.destName, amount)
-				--end
+				end
 			end
 		end
 	elseif spellId == 286434 then
@@ -217,27 +247,30 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
 function mod:SPELL_ENERGIZE(_, _, _, _, destGUID, _, _, _, spellId, _, _, amount)
 	if spellId == 282533 and destGUID == UnitGUID("boss1") then
-		--TODO, even more complex marked for death checks here to factor that into energy updating.
 		DBM:Debug("SPELL_ENERGIZE fired on Boss. Amount: "..amount)
-		--[[local bossPower = UnitPower("boss1")
-		bossPower = bossPower / 4--4 energy per second, smash every 25 seconds there abouts.
-		local remaining = 25-bossPower
-		countdownShatteringSmash:Cancel()
-		countdownShatteringSmash:Start(remaining)
-		timerShatteringSmashCD:Stop()--Prevent timer debug when updating timer
-		timerShatteringSmashCD:Start(remaining, self.vb.smashCount+1)--]]
+		local elapsed, total = timerDeathKnellCD:GetTime(self.vb.deathKnellCount+1)--Grab current timer
+		local adjustAmount = 10--Assume on easy difficulties etc it'll be less, or more on harder ones
+		elapsed = elapsed + adjustAmount
+		local remaining = total-elapsed
+		--countdownRottingRegurg:Cancel()
+		timerDeathKnellCD:Stop()--Trash old timer
+		if remaining >= 3 then--It's worth showing updated timer
+			timerDeathKnellCD:Update(elapsed, total, self.vb.deathKnellCount+1)--Construct new timer with adjustment
+			--countdownRottingRegurg:Start(remaining)
+		end
 	end
 end
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 144998 then--Death Specter
-
+		castsPerGUID[args.destGUID] = nil
 	end
 end
 
+--282523/death-specter-summon in case removed from combat log later
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 286450 then--Necrotic Combo
-		timerNecroticComboCD:Start()
+	if spellId == 286450 then
+
 	end
 end
