@@ -22,7 +22,7 @@ local warnVisage					= mod:NewAddsLeftAnnounce("ej18312", 2, 269692)
 
 local specWarnBloodVisage			= mod:NewSpecialWarningSwitch("ej18312", "-Healer", nil, nil, 1, 2)
 local specWarnVileExpulsion			= mod:NewSpecialWarningDodge(269843, nil, nil, nil, 2, 2)
-local specWarnCleansingLight		= mod:NewSpecialWarningMoveTo(269310, nil, nil, nil, 1, 2)
+local specWarnCleansingLight		= mod:NewSpecialWarningYou(269310, nil, nil, nil, 1, 2)
 local specWarnGTFO					= mod:NewSpecialWarningGTFO(269838, nil, nil, nil, 1, 2)
 
 local timerBloodVisageCD			= mod:NewCDTimer(15.7, "ej18312", nil, nil, nil, 1, 269692)
@@ -58,7 +58,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnVileExpulsion:Play("watchwave")
 		timerVileExpulsionCD:Start()
 	elseif spellId == 269310 then
-		specWarnCleansingLight:Show(vileExpulsion)
+		specWarnCleansingLight:Show()
 		specWarnCleansingLight:Play("gathershare")
 		timerCleansingLightCD:Start()
 	end
