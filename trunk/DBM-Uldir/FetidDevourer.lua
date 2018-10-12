@@ -206,7 +206,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		countdownRottingRegurg:Cancel()
 		timerRottingRegurgCD:Stop()--Trash old timer
 		if remaining >= 3 then--It's worth showing updated timer
-			timerRottingRegurgCD:Start(elapsed, total)--Construct new timer with adjustment
+			timerRottingRegurgCD:Update(elapsed, total)--Construct new timer with adjustment
 			countdownRottingRegurg:Start(remaining)
 		end
 	elseif spellId == 274470 and self:AntiSpam(5, 3) then
