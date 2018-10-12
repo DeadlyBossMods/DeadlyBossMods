@@ -10,7 +10,8 @@ DBM_CORE_LOAD_GUI_ERROR				= "GUI를 로딩할 수 없음: %s"
 DBM_CORE_LOAD_GUI_COMBAT			= "전투중에는 GUI의 최초 로딩을 할 수 없습니다. 전투가 종료되면 GUI가 로딩됩니다. GUI가 로딩된 다음부턴 전투중에도 GUI를 열 수 있습니다."
 DBM_CORE_BAD_LOAD					= "DBM이 전투로 인해 현재 인스턴스의 모드를 완전히 로딩하지 못했습니다. 전투가 종료된 후 가능한 빨리 /console reloadui 명령어를 입력해주세요."
 DBM_CORE_LOAD_MOD_VER_MISMATCH		= "DBM-Core가 로딩 조건과 맞지 않아 %s|1을;를; 로딩하지 못했습니다. 최신 버전을 설치하세요"
-DBM_CORE_LOAD_MOD_EXP_MISMATCH		= "지금은 사용할 수 없는 WoW 확장팩용으로 설계되었으므로 %s|1을;를; 로딩하지 못했습니다. 다음 확장팩이 출시되면 해당 모드는 자동으로 작동합니다."
+DBM_CORE_LOAD_MOD_EXP_MISMATCH		= "아직 출시되지 않은 WoW 확장팩용으로 설계되었으므로 %s|1을;를; 로딩하지 못했습니다. 확장팩이 출시되면 해당 모드는 자동으로 작동합니다."
+DBM_CORE_LOAD_MOD_TOC_MISMATCH		= "아직 나오지 않은 WoW 패치 (%2$s) 용으로 설계되었으므로 %1$s|1을;를; 로딩하지 못했습니다. 패치가 나오면 해당 모드는 자동으로 작동합니다."
 DBM_CORE_LOAD_MOD_DISABLED			= "%s|1이;가; 설치는 돼있지만 켜져있질 않습니다. 직접 켜기 전까진 모드가 로딩되지 않습니다."
 DBM_CORE_LOAD_MOD_DISABLED_PLURAL	= "%s|1이;가; 설치는 돼있지만 켜져있질 않습니다. 직접 켜기 전까진 모드들이 로딩되지 않습니다."
 
@@ -151,7 +152,7 @@ DBM_CORE_VERSIONCHECK_FOOTER		= "DBM을 설치한 플레이어 %d명과 Bigwigs�
 DBM_CORE_VERSIONCHECK_OUTDATED		= "다음 %d명의 플레이어가 구버전 보스 모드를 사용중: %s"
 DBM_CORE_YOUR_VERSION_OUTDATED      = "사용중인 Deadly Boss Mods 버전이 사용 기한을 지났습니다. http://www.deadlybossmods.com에서 최신 버전을 받으세요."
 DBM_CORE_VOICE_PACK_OUTDATED		= "선택한 DBM 음성팩에 일부 음성이 들어있지 않습니다. 몇가지 경고 음성이 기본 효과음으로 재생됩니다. 최신 음성팩을 다운로드 받거나 제작자에게 누락된 음성 파일 업데이트를 요청하시기 바랍니다"
-DBM_CORE_VOICE_MISSING				= "선택한 DBM 음성팩을 찾을 수 없습니다. 설정 내역이 'None' 으로 초기화 됩니다. 만약 이것이 오류라면 음성팩이 제대로 설치되어 있고 애드온 목록에서 활성화되어 있는지 확인해 보시기 바랍니다."
+DBM_CORE_VOICE_MISSING				= "선택한 DBM 음성팩을 찾을 수 없습니다. 오류일 경우 음성팩이 제대로 설치되어 있고 애드온 목록에서 활성화되어 있는지 확인해 보시기 바랍니다."
 DBM_CORE_VOICE_DISABLED				= "현재 DBM 음성팩이 한 개 이상 설치되어 있지만 사용하고 있는게 없습니다. 음성팩을 사용하려면 '음성 경보' 항목에서 음성팩이 지정되어 있는지 확인하세요. 음성팩을 사용할 의사가 없으면 음성팩을 삭제하시면 이 메시지는 더이상 출력되지 않습니다"
 DBM_CORE_VOICE_COUNT_MISSING		= "초읽기 음성 %d번으로 설정된 음성/초읽기 팩을 찾을 수 없습니다. 기본 설정으로 초기화 되었습니다: %s"
 
@@ -267,6 +268,7 @@ DBM_NO_DEBUFF						= "%s 없음"--For use in places like info frame where you pu
 DBM_ALLY							= "공대원"--Such as "Move to Ally"
 DBM_ADD								= "쫄"--A fight Add as in "boss spawned extra adds"
 DBM_ADDS							= "쫄"
+DBM_BOSS							= "보스"
 DBM_CORE_ROOM_EDGE					= "구석"
 DBM_CORE_FAR_AWAY					= "먼 곳"
 DBM_CORE_BREAK_LOS					= "시야를 가리는 곳"
@@ -357,7 +359,7 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS.moveto		= "%s - >%%s<|1으로;로; 이동"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.jump		= "%s - 점프"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.run		= "%s - 도망치세요"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.cast		= "%s - 주문 시전 중지"
-DBM_CORE_AUTO_SPEC_WARN_TEXTS.lookaway		= "%s - 고개 돌리세요"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.lookaway		= "%%2$s에게 %1$s - 고개 돌리세요"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.reflect		= "%s: >%%s< - 공격 중지"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.stack		= "당신에게 %s (%%d중첩)"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.switch		= "%s - 대상 바꾸세요"
@@ -365,6 +367,7 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS.switchcount	= "%s - 대상 바꾸세요 (%%s)"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.gtfo		= "%%s 깔림 - 피하세요"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.Adds		= "쫄 등장 - 대상 바꾸세요"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.Addscustom	= "쫄 등장 - %%s"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.targetchange	= "대상 변경 - %%s 치세요"
 
 -- Auto-generated Special Warning Localizations
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell			= "$spell:%s 특수 경고 보기"
@@ -406,6 +409,7 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switchcount 		= "$spell:%s에 대상 변경 특�
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.gtfo 			= "바닥 피하기 특수 경고 보기"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.Adds 			= "쫄 등장시 대상 변경 특수 경고 보기"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.Addscustom		= "쫄 등장시 특수 경고 보기"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.targetchange		= "점사 우선순위 변경시 특수 경고 보기"
 
 -- Auto-generated Timer Localizations
 DBM_CORE_AUTO_TIMER_TEXTS.active		= "%s 종료"--Buff/Debuff/event on boss
