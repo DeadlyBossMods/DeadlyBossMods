@@ -134,9 +134,14 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 273282 then
-		if not self:IsTanking("player", "boss1", nil, true) and DBM:UnitDebuff("player", 274693) then
-			specWarnEssenceShearDodge:Show()
-			specWarnEssenceShearDodge:Play("shockwave")
+		if self:IsTanking("player", "boss1", nil, true) then
+			specWarnEssenceShear:Show()
+			specWarnEssenceShear:Play("defensive")
+		else
+			if DBM:UnitDebuff("player", 274693) then
+				specWarnEssenceShearDodge:Show()
+				specWarnEssenceShearDodge:Play("shockwave")
+			end
 		end
 		local cid = self:GetCIDFromGUID(args.sourceGUID)
 		if cid == 134546 then--Main boss
@@ -232,10 +237,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 274693 then
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId) then
-			if args:IsPlayer() then
-				specWarnEssenceShear:Show()
-				specWarnEssenceShear:Play("defensive")
-			else
+			if not args:IsPlayer() then
 				local cid = self:GetCIDFromGUID(args.sourceGUID)
 				if cid == 134546 then--Main boss
 					specWarnEssenceShearOther:Show(args.destName)
