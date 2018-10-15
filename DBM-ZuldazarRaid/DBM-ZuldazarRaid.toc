@@ -18,9 +18,8 @@
 ## X-DBM-Mod-MinExpansion: 7
 localization.en.lua
 Frida_Kanae.lua
-KingGrong.lua
+Grong.lua
 FlameDuo.lua
-GrongtheRevenant.lua
 TreasureGuardian.lua
 LoaCouncil.lua
 Mekkatorque.lua
