@@ -264,7 +264,7 @@ end
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 144876 then--Apetagonizer 3000
-
+		castsPerGUID[args.destGUID] = nil
 	end
 end
 

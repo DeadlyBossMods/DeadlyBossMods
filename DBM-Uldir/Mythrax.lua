@@ -15,7 +15,7 @@ mod:SetHotfixNoticeRev(17895)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 273282 273538 273810 272115 274019 279157",
+	"SPELL_CAST_START 273282 273538 273810 272115 274019 279157 273944",
 	"SPELL_CAST_SUCCESS 272533 273949 276922 272404",
 	"SPELL_AURA_APPLIED 274693 272407 272536",
 --	"SPELL_AURA_APPLIED_DOSE",
@@ -57,6 +57,7 @@ local specWarnVoidEchoes				= mod:NewSpecialWarningCount(279157, false, nil, 2, 
 local specWarnObliterationbeam			= mod:NewSpecialWarningDodgeCount(272115, nil, nil, nil, 2, 2)--Generic for now
 --local specWarnObliterationbeamYou		= mod:NewSpecialWarningRun(272115, nil, nil, nil, 4, 2)--Generic for now
 local specWarnVisionsofMadness			= mod:NewSpecialWarningSwitchCount(273949, "-Healer", nil, nil, 1, 2)
+local specWarnVoidVolley				= mod:NewSpecialWarningInterruptCount(273944, "HasInterrupt", nil, nil, 1, 2)
 local specWarnMindFlay					= mod:NewSpecialWarningInterrupt(274019, "HasInterrupt", nil, nil, 1, 2)
 
 mod:AddTimerLine(SCENARIO_STAGE:format(1))
@@ -91,6 +92,7 @@ mod.vb.isIntermission = false
 mod.vb.visionsCount = 0
 local beamTimers = {19.5, 24, 12, 12}--Changed for a 3rd time
 local mythicBeamTimers = {19.5, 15, 15, 15}
+local castsPerGUID = {}
 
 function mod:OnCombatStart(delay)
 	self.vb.ruinCast = 0
@@ -101,6 +103,7 @@ function mod:OnCombatStart(delay)
 	self.vb.destroyersRemaining = 2
 	self.vb.isIntermission = false
 	self.vb.visionsCount = 0
+	table.wipe(castsPerGUID)
 	timerImminentRuinCD:Start(4.9-delay, 1)
 	if self:IsMythic() then
 		timerOblivionSphereCD:Start(7-delay, 1)
@@ -199,6 +202,28 @@ function mod:SPELL_CAST_START(args)
 			warnVoidEchoes:Show(self.vb.echoesCast)
 		end
 		timerVoidEchoesCD:Start(9.7, self.vb.echoesCast+1)
+	elseif spellId == 273944 then
+		if not castsPerGUID[args.sourceGUID] then
+			castsPerGUID[args.sourceGUID] = 0
+		end
+		castsPerGUID[args.sourceGUID] = castsPerGUID[args.sourceGUID] + 1
+		local count = castsPerGUID[args.sourceGUID]
+		if self:CheckInterruptFilter(args.sourceGUID, false, false) then
+			specWarnVoidVolley:Show(args.sourceName, count)
+			if count == 1 then
+				specWarnVoidVolley:Play("kick1r")
+			elseif count == 2 then
+				specWarnVoidVolley:Play("kick2r")
+			elseif count == 3 then
+				specWarnVoidVolley:Play("kick3r")
+			elseif count == 4 then
+				specWarnVoidVolley:Play("kick4r")
+			elseif count == 5 then
+				specWarnVoidVolley:Play("kick5r")
+			else
+				specWarnVoidVolley:Play("kickcast")
+			end
+		end
 	end
 end
 
@@ -309,6 +334,7 @@ function mod:UNIT_DIED(args)
 	--elseif cid == 139487 then--Vision of Madness
 		--TODO, infoframe add tracking
 	elseif cid == 139381 then--N'raqi Destroyer
+		castsPerGUID[args.destGUID] = nil
 		self.vb.destroyersRemaining = self.vb.destroyersRemaining - 1
 		warnDestroyerRemaining:Show(self.vb.destroyersRemaining)
 		--TODO, infoframe add tracking
