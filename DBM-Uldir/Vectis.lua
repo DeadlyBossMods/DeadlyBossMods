@@ -152,6 +152,7 @@ do
 		for i=1, 4 do
 			if vectorTargets[i] then
 				local name = vectorTargets[i]
+				DBM:Debug("Vector "..i.." on "..name, 3)
 				local uId = DBM:GetRaidUnitId(name)
 				if uId then--Failsafe
 					local _, _, _, _, _, expireTime = DBM:UnitDebuff(uId, 265129)
