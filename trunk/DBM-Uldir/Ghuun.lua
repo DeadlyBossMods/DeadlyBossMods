@@ -74,7 +74,7 @@ local specWarnGrowingCorruptionOther	= mod:NewSpecialWarningTaunt(270447, nil, n
 local specWarnExplosiveCorruptionOther	= mod:NewSpecialWarningTaunt(272506, nil, nil, nil, 1, 2)
 local specWarnBloodFeast				= mod:NewSpecialWarningYou(263235, nil, nil, nil, 1, 2)
 local yellBloodFeast					= mod:NewYell(263235, nil, nil, nil, "YELL")
-local yellBloodFeastFades				= mod:NewFadesYell(263235, nil, nil, nil, "YELL")
+local yellBloodFeastFades				= mod:NewIconFadesYell(263235, nil, nil, nil, "YELL")
 local specWarnBloodFeastTarget			= mod:NewSpecialWarningTargetCount(263235, nil, nil, nil, 1, 8)
 local specWarnMindNumbingChatter		= mod:NewSpecialWarningCast(263307, "SpellCaster", nil, nil, 1, 2)
 local specWarnBurstingBoilCast			= mod:NewSpecialWarningDodge(277007, nil, nil, nil, 2, 2)
@@ -552,7 +552,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", spellId)--Remove debuff scan once mythic time confirmed, then can hard code for efficiency sake
 			if expireTime then--Done this way so hotfix automatically goes through
 				local remaining = expireTime-GetTime()
-				yellBloodFeastFades:Countdown(remaining)
+				yellBloodFeastFades:Countdown(remaining, nil, 7)
 			end
 		else
 			specWarnBloodFeastTarget:Show(self.vb.bloodFeastCount, args.destName)
