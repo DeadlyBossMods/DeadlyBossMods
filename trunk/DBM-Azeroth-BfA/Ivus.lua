@@ -1,5 +1,5 @@
 local dungeonID, creatureID
-local breathId, strikeId
+local breathId, strikeId, gtfoId
 if UnitFactionGroup("player") == "Alliance" then
 	dungeonID, creatureID = 2345, 148295--Ivus the Decayed
 	breathId, strikeId, gtfoId = 287537, 287549, 287538
