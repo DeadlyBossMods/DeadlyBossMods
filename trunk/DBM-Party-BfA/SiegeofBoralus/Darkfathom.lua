@@ -20,7 +20,7 @@ local specWarnTidalSurge			= mod:NewSpecialWarningMoveTo(276068, nil, nil, nil, 
 
 local timerCrashingTideCD			= mod:NewCDTimer(15.8, 261563, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerBreakWaterCD				= mod:NewCDTimer(30, 257882, nil, nil, nil, 3)
-local timerTidalSurgeCD				= mod:NewCDTimer(13, 276068, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
+local timerTidalSurgeCD				= mod:NewCDTimer(49.8, 276068, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
 
 --mod:AddRangeFrameOption(5, 194966)
 
@@ -45,7 +45,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 276068 then
 		specWarnTidalSurge:Show(DBM_CORE_BREAK_LOS)
 		specWarnTidalSurge:Play("findshelter")
-		--timerTidalSurgeCD:Start()--Unknown, pulls to short
+		timerTidalSurgeCD:Start()--Unknown, pulls to short
 	end
 end
 
