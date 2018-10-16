@@ -137,6 +137,7 @@ mod.vb.matrixActive = false
 local playerBursting = false
 local matrixTargets, bloodFeastTarget = {}, {}
 local thousandMawsTimers = {25.4, 26.3, 25.5, 24.2, 23.9, 23.1, 21.5, 21.9, 19.4}
+local thousandMawsTimersLFR = {27.78, 29.2, 27.9, 26.46, 26.13, 25.26, 23.51, 23.95, 21.21}--Timers 4+ extrapolated using 1.093x greater formula
 local seenAdds = {}
 
 local function checkThrowFail(self)
@@ -266,7 +267,11 @@ function mod:OnCombatStart(delay)
 	self.vb.matrixActive = false
 	playerBursting = false
 	timerMatrixCD:Start(5.3, 1)
-	timerThousandMawsCD:Start(24.3-delay, 1)
+	if self:IsLFR() then
+		timerThousandMawsCD:Start(27.7-delay, 1)
+	else
+		timerThousandMawsCD:Start(24.3-delay, 1)
+	end
 	if not self:IsMythic() then
 		self.vb.matrixSide = DBM_CORE_RIGHT
 		timerExplosiveCorruptionCD:Start(8-delay, 1)--SUCCESS
@@ -302,7 +307,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.mawCastCount = self.vb.mawCastCount + 1
 		specWarnThousandMaws:Show()
 		specWarnThousandMaws:Play("killmob")
-		local timer = thousandMawsTimers[self.vb.mawCastCount+1]
+		local timer = self:IsLFR() and thousandMawsTimersLFR[self.vb.mawCastCount+1] or thousandMawsTimers[self.vb.mawCastCount+1]
 		if timer then
 			timerThousandMawsCD:Start(timer, self.vb.mawCastCount+1)
 		end
@@ -407,7 +412,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			end
 		else--P3, No more blood feast, only waves
 			--Faster on easy because no growth
-			local timer = self:IsMythic() and 15.84 or self:IsHard() and 25.5 or self:IsEasy() and 20.5--TODO, LFR
+			local timer = self:IsMythic() and 15.84 or self:IsHard() and 25.5 or self:IsEasy() and 20.4
 			timerWaveofCorruptionCD:Start(timer, self.vb.waveCast+1)
 		end
 	elseif spellId == 276839 then
@@ -422,18 +427,20 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerBurstingBoilCD:Stop()
 		timerExplosiveCorruptionCD:Stop()
 		countdownExplosiveCorruption:Cancel()
-		timerMalignantGrowthCD:Start(33.7)--33.7-34.1
-		countdownMalignantGrowth:Start(33.7)
+		if not self:IsLFR() then
+			timerMalignantGrowthCD:Start(33.7)--33.7-34.1
+			countdownMalignantGrowth:Start(33.7)
+		end
 		if self:IsMythic() then
 			timerBurstingBoilCD:Start(28, self.vb.burstingCount+1)
 			timerExplosiveCorruptionCD:Start(44.5, 1)--SUCCESS
 			countdownExplosiveCorruption:Start(44.5)
 		else
-			timerExplosiveCorruptionCD:Start(30, 1)--SUCCESS
-			countdownExplosiveCorruption:Start(30)
+			timerExplosiveCorruptionCD:Start(29.8, 1)--SUCCESS
+			countdownExplosiveCorruption:Start(29.8)
 		end
-		local timer1 = self:IsMythic() and 44.9 or self:IsHeroic() and 47.4 or self:IsEasy() and 52.3--Gaze of G'huun
-		local timer2 = self:IsHeroic() and 49.9 or 37.6--Wave of Corruption (Mythic and normal are both 37.6, heroic is 49.9 cause it's delayed by other casts)
+		local timer1 = self:IsMythic() and 44.9 or self:IsHeroic() and 47.4 or self:IsEasy() and 52.2--Gaze of G'huun
+		local timer2 = self:IsHeroic() and 49.9 or 37.6--Wave of Corruption (Mythic, normal, and LFR are all 37.6, heroic is 49.9 cause it's delayed by other casts)
 		timerGazeofGhuunCD:Start(timer1)
 		countdownGazeofGhuun:Start(timer1)
 		timerWaveofCorruptionCD:Start(timer2, 1)

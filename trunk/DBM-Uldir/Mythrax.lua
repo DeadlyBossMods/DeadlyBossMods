@@ -104,7 +104,10 @@ function mod:OnCombatStart(delay)
 	self.vb.isIntermission = false
 	self.vb.visionsCount = 0
 	table.wipe(castsPerGUID)
-	timerImminentRuinCD:Start(4.9-delay, 1)
+	if not self:IsLFR() then
+		timerImminentRuinCD:Start(4.9-delay, 1)
+		countdownImminentRuin:Start(4.9-delay)
+	end
 	if self:IsMythic() then
 		timerOblivionSphereCD:Start(7-delay, 1)
 		countdownOblivionSphere:Start(7-delay)
@@ -179,7 +182,9 @@ function mod:SPELL_CAST_START(args)
 			timerIntermission:Start(75)
 		else
 			timerObliterationbeamCD:Start(20.5, 1)
-			timerVisionsoMadnessCD:Start(31.5, 1)
+			if not self:IsLFR() then
+				timerVisionsoMadnessCD:Start(31.5, 1)
+			end
 			timerIntermission:Start(80)
 		end
 	elseif spellId == 272115 then
@@ -251,8 +256,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.sphereCast = self.vb.sphereCast + 1
 		warnOblivionSphere:Show(self.vb.sphereCast)
 		if not self.vb.isIntermission then
-			timerOblivionSphereCD:Start(15, self.vb.sphereCast+1)
-			countdownOblivionSphere:Start(15)
+			timerOblivionSphereCD:Start(14.9, self.vb.sphereCast+1)
+			countdownOblivionSphere:Start(14.9)
 		end
 	end
 end
@@ -365,6 +370,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		self.vb.sphereCast = 0
 		self.vb.ruinCast = 0
 		self.vb.isIntermission = false
+		timerIntermission:Stop()
 		warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(1))
 		warnPhase:Play("phasechange")
 		timerObliterationbeamCD:Stop()
@@ -376,8 +382,10 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 			countdownOblivionSphere:Start(7)
 			timerLivingWeaponCD:Start(16.6)
 		else
-			timerImminentRuinCD:Start(7.5, 1)--SUCCESS
-			countdownImminentRuin:Start(7.5)
+			if not self:IsLFR() then
+				timerImminentRuinCD:Start(7.5, 1)--SUCCESS
+				countdownImminentRuin:Start(7.5)
+			end
 			timerOblivionSphereCD:Start(9, 1)
 			countdownOblivionSphere:Start(9)
 		end
