@@ -1,14 +1,14 @@
 local dungeonID, creatureID, creatureID2
 if UnitFactionGroup("player") == "Alliance" then
-	dungeonID, creatureID, creatureID2 = 2323, 0, 0--Grimfang and Firecaller
+	dungeonID, creatureID, creatureID2 = 2323, 148238, 146100--Ma'ra Grimfang and Anathos Firecaller
 else--Horde
-	dungeonID, creatureID, creatureID2 = 2341, 0, 0--Flamefist and the Illuminated
+	dungeonID, creatureID, creatureID2 = 2341, 146099, 0--Manceroy Flamefist and the Mestrah, the Illuminated
 end
 local mod	= DBM:NewMod(dungeonID, "DBM-ZuldazarRaid", 1, 1176)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
---mod:SetCreatureID(creatureID, creatureID2)
+mod:SetCreatureID(creatureID, creatureID2)
 mod:SetEncounterID(2266)
 --mod:DisableESCombatDetection()
 mod:SetZone()
@@ -30,7 +30,7 @@ mod:RegisterEventsInCombat(
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
-
+--TODO, Mestrah, the Illuminated is still missing a CID
 --local warnXorothPortal				= mod:NewSpellAnnounce(244318, 2, nil, nil, nil, nil, nil, 7)
 --Stage One: The Forces of Blood
 --local warnPoolofDarkness				= mod:NewCountAnnounce(273361, 4)
