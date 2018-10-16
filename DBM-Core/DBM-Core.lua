@@ -10590,6 +10590,7 @@ do
 		--If timertext is a number, accept it as a secondary auto translate spellid
 		if DBM.Options.ShortTimerText and timerText and type(timerText) == "number" then
 			timerTextValue = timerText
+			spellName = DBM:GetSpellInfo(timerText or 0)--Override Cached spell Name
 		else
 			timerTextValue = self.localization.timers[timerText]
 		end
