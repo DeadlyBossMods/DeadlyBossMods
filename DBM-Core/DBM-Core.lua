@@ -10341,7 +10341,7 @@ do
 			if self.type and not self.text then
 				msg = pformat(self.mod:GetLocalizedTimerText(self.type, self.spellId, self.name), ...)
 			else
-				if type(self.text) == "number" then
+				if type(self.text) == "number" then--spellId passed in timer text, it's a timer with short text
 					msg = pformat(self.mod:GetLocalizedTimerText(self.type, self.text, self.name), ...)
 				else
 					msg = pformat(self.text, ...)
@@ -10588,7 +10588,7 @@ do
 		spellName = spellName or tostring(spellId)
 		local timerTextValue
 		--If timertext is a number, accept it as a secondary auto translate spellid
-		if timerText and type(timerText) == "number" and DBM.Options.ShortTimerText then
+		if DBM.Options.ShortTimerText and timerText and type(timerText) == "number" then
 			timerTextValue = timerText
 		else
 			timerTextValue = self.localization.timers[timerText]
