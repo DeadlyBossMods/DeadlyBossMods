@@ -51,7 +51,6 @@ local timerSiegeUpCD				= mod:NewCDTimer(84.5, 271223, nil, nil, nil, 6)--84.5-8
 local timerSiegeUp					= mod:NewBuffActiveTimer(64, 271223, nil, nil, nil, 6)--64-66
 local timerDemoCannonCD				= mod:NewCDTimer(5.8, 271246, nil, false, nil, 5, nil, DBM_CORE_HEALER_ICON)
 
-
 mod:AddRangeFrameOption(8, 271192)
 mod:AddNamePlateOption("NPAuraOnSentry", 271783)
 --mod:AddReadyCheckOption(37460, false)
