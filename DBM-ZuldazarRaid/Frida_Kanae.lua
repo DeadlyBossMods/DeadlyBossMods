@@ -265,9 +265,12 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 147895 or cid == 145898 then--Rezani Disciple/Anointed Disciple
-	
+
 	elseif cid == 147896 or cid == 145903 then--Zandalari Crusader/Darkforged Crusader
 		timerBlindingFaithCD:Stop(args.destGUID)
+		if self.Options.NPAuraOnBlindingFaith then
+			DBM.Nameplate:Hide(true, args.destGUID, 283650)
+		end
 	end
 end
 
