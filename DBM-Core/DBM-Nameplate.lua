@@ -149,6 +149,10 @@ local function HookNameplate(frame)
     frame:HookScript('OnHide',Nameplate_OnHide)
 end
 
+local function Nameplate_AutoHide(self, isGUID, unit, spellId, texture)
+	self:Hide(isGUID, unit, spellId, texture)
+end
+
 local function Nameplate_UnitAdded(frame,unit)
     if not frame or not unit then return end
 
@@ -238,6 +242,9 @@ function nameplateFrame:Show(isGUID, unit, spellId, texture, duration, desaturat
         local frame = GetNamePlateForUnit(unit)
         if frame then
             Nameplate_UnitAdded(frame, unit)
+            if duration then
+            	DBM:Schedule(duration, Nameplate_AutoHide, self, isGUID, unit, spellId, texture)
+            end
         end
     else
         --GUID, less efficient because it must scan all plates to find
@@ -246,6 +253,9 @@ function nameplateFrame:Show(isGUID, unit, spellId, texture, duration, desaturat
             local foundUnit = frame.namePlateUnitToken or (frame.UnitFrame and frame.UnitFrame.unit)
             if foundUnit and UnitGUID(foundUnit) == unit then
                 Nameplate_UnitAdded(frame, foundUnit)
+            	if duration then
+            		DBM:Schedule(duration, Nameplate_AutoHide, self, isGUID, unit, spellId, texture)
+            	end
                 break
             end
         end
