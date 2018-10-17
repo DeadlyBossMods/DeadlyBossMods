@@ -193,7 +193,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 286425 then
 		self.vb.shieldActive = true
-		specWarnShield:Show(args.destName)
+		specWarnShield:Show()
 		specWarnShield:Play("targetchange")
 		timerShieldCD:Start()
 		if self.Options.InfoFrame then
