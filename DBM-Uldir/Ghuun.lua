@@ -488,9 +488,11 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 268074 then
 		warnDarkPurpose:CombinedShow(0.5, args.destName)
 		if args:IsPlayer() then
-			specWarnDarkPurpose:Show()
-			specWarnDarkPurpose:Play("justrun")
-			yellDarkPurpose:Yell()
+			if self:AntiSpam(3, 9) then
+				specWarnDarkPurpose:Show()
+				specWarnDarkPurpose:Play("justrun")
+				yellDarkPurpose:Yell()
+			end
 			if self.Options.NPAuraOnFixate then
 				DBM.Nameplate:Show(true, args.sourceGUID, spellId)
 			end
