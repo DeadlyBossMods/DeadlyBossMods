@@ -12,7 +12,7 @@ local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(creatureID)
-mod:SetEncounterID(2263)--One shared ID right now, but supposed to be split agian soon™
+mod:SetEncounterID(2263, 2284)--2263 Alliance, 2284 Horde
 --mod:DisableESCombatDetection()
 mod:SetZone()
 --mod:SetBossHPInfoToHighest()

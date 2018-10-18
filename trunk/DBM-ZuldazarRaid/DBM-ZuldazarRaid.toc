@@ -10,7 +10,7 @@
 ## X-DBM-Mod-Type: RAID
 ## X-DBM-Mod-Category: BFA
 ## X-DBM-Mod-Has-Mythic : 1
-## X-DBM-Mod-Name: Zuldazar Raid
+## X-DBM-Mod-Name: Battle of Dazar'alor
 ## X-DBM-Mod-SubCategories: Shared,Alliance,Horde
 ## X-DBM-Mod-Sort: 406
 ## X-DBM-Mod-MapID: 2070
