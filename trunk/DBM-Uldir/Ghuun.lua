@@ -547,7 +547,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnGrowingCorruption:Show(amount)
 				specWarnGrowingCorruption:Play("changemt")
 			else
-				specWarnGrowingCorruptionOther:Show(L.name)
+				specWarnGrowingCorruptionOther:Show(args.destName)
 				specWarnGrowingCorruptionOther:Play("changemt")
 			end
 		end
