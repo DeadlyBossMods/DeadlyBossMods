@@ -181,7 +181,7 @@ do
 				local name = matrixTargets[i]
 				local uId = DBM:GetRaidUnitId(name)
 				if not uId then break end
-				addLine(matrixSpellName, UnitName(uId))
+				addLine(i.."-"..matrixSpellName, UnitName(uId))
 			end
 			if mod.vb.matrixActive then
 				if mod:IsMythic() then--No side, short text
