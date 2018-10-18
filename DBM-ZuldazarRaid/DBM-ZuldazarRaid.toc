@@ -21,9 +21,9 @@ Frida_Kanae.lua
 Grong.lua
 FlameDuo.lua
 TreasureGuardian.lua
-LoaCouncil.lua
+ConclaveoftheChosen.lua
 Mekkatorque.lua
 Rastakhan.lua
-SeaPriestBlockade.lua
+StormwallBlockade.lua
 Jaina.lua
 ZuldazarRaidTrash.lua
