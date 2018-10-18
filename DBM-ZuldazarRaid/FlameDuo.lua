@@ -9,7 +9,7 @@ local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(creatureID, creatureID2)
-mod:SetEncounterID(2266)
+mod:SetEncounterID(2266, 2285)--2266 horde, 2285 Alliance
 --mod:DisableESCombatDetection()
 mod:SetZone()
 --mod:SetBossHPInfoToHighest()
