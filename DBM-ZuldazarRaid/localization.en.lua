@@ -75,5 +75,5 @@ L= DBM:GetModLocalization(2343)
 L = DBM:GetModLocalization("ZuldazarRaidTrash")
 
 L:SetGeneralLocalization({
-	name =	"Zuldazar Trash"
+	name =	"Dazar'alor Trash"
 })
