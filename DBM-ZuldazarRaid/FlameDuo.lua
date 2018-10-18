@@ -2,7 +2,7 @@ local dungeonID, creatureID, creatureID2
 if UnitFactionGroup("player") == "Alliance" then
 	dungeonID, creatureID, creatureID2 = 2323, 148238, 146100--Ma'ra Grimfang and Anathos Firecaller
 else--Horde
-	dungeonID, creatureID, creatureID2 = 2341, 146099, 148270--Manceroy Flamefist and the Mestrah <the Illuminated>
+	dungeonID, creatureID, creatureID2 = 2341, 144693, 144690--Manceroy Flamefist and the Mestrah <the Illuminated>
 end
 local mod	= DBM:NewMod(dungeonID, "DBM-ZuldazarRaid", 1, 1176)
 local L		= mod:GetLocalizedStrings()
