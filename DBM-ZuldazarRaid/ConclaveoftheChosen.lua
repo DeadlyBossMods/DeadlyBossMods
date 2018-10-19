@@ -22,6 +22,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED_DOSE 285945 282444",
 	"SPELL_AURA_REMOVED 282079 282135 286007 282834 286811",
 	"UNIT_DIED",
+	"CHAT_MSG_RAID_BOSS_EMOTE",
+	"UNIT_TARGETABLE_CHANGED",
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5"
 )
 
@@ -353,6 +355,14 @@ function mod:UNIT_DIED(args)
 		timerKragwasWrathCD:Stop()
 	--elseif cid == 148714 then--Bwonsamdi
 		
+	end
+end
+
+function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
+	if msg:find("spell:282107") then
+		specWarnPakusWrath:Show(args.sourceName)
+		specWarnPakusWrath:Play("gathershare")
+		timerPakusWrathCD:Start()
 	end
 end
 
