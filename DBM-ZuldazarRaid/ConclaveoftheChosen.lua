@@ -48,7 +48,7 @@ local specWarnActivated					= mod:NewSpecialWarningSwitchCount(118212, "Tank", D
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
 --Pa'ku's Aspect
 local specWarnGiftofWind				= mod:NewSpecialWarningSpell(282098, nil, nil, nil, 2, 2)
-local specWarnHasteningWinds			= mod:NewSpecialWarningCount(270447, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.stack:format(8, 270447), nil, 1, 2)
+local specWarnHasteningWinds			= mod:NewSpecialWarningCount(270447, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.stack:format(5, 270447), nil, 1, 2)
 local specWarnHasteningWindsOther		= mod:NewSpecialWarningTaunt(270447, nil, nil, nil, 1, 2)
 local specWarnPakusWrath				= mod:NewSpecialWarningMoveTo(282107, nil, nil, nil, 3, 2)
 local specWarnPakusWrathDefensive		= mod:NewSpecialWarningDefensive(282107, nil, nil, nil, 3, 2)
@@ -222,7 +222,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 285945 then
 		local amount = args.amount or 1
-		if (amount >= 8) and self:AntiSpam(3, 4) then--Fine Tune
+		if (amount >= 5) and self:AntiSpam(3, 4) then--Fine Tune
 			if self:IsTanking("player", "boss1", nil, true) then
 				specWarnHasteningWinds:Show(amount)
 				specWarnHasteningWinds:Play("changemt")
