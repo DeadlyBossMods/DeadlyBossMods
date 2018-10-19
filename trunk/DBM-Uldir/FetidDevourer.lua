@@ -122,8 +122,8 @@ end
 
 function mod:OnCombatStart(delay)
 	self.vb.stompCount = 0
-	timerThrashCD:Start(6.7-delay)
-	countdownThrash:Start(6.7-delay)
+	timerThrashCD:Start(5.7-delay)
+	countdownThrash:Start(5.7-delay)
 	if not self:IsEasy() then
 		timerShockwaveStompCD:Start(26.1-delay, 1)
 		timerRottingRegurgCD:Start(40-delay)
