@@ -10303,6 +10303,15 @@ do
 					end
 				else--AI timer passed with 4 or less is indicating phase change, with timer as phase number
 					if self["phase"..timer.."CastTimer"] and type(self["phase"..timer.."CastTimer"]) == "number" then
+						--Check if timer is shorter than previous learned first timer by scanning remaining time on existing bar
+						local bar = DBM.Bars:GetBar(id)
+						if bar then
+							local remaining = ("%.1f"):format(bar.timer)
+							if bar.timer > 0.2 then
+								self["phase"..timer.."CastTimer"] = self["phase"..timer.."CastTimer"] - remaining
+								DBM:Debug("AI timer learned a lower first timer for current phase of "..self["phase"..timer.."CastTimer"], 2)
+							end
+						end
 						timer = self["phase"..timer.."CastTimer"]
 					else--No first pull timer generated yet, set it to GetTime, as a string
 						self["phase"..timer.."CastTimer"] = tostring(GetTime())
