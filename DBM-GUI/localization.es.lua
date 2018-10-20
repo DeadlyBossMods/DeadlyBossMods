@@ -6,7 +6,7 @@ local L = DBM_GUI_Translations
 L.MainFrame = "Deadly Boss Mods"
 
 L.TranslationByPrefix		= "Traducido por "
-L.TranslationBy 	= "Saispai"
+L.TranslationBy 			= "Saispai"
 L.Website					= "Visita nuestro canal de Discord: |cFF73C2FBhttps://discord.gg/deadlybossmods|r."
 L.WebsiteButton				= "Página web"
 
@@ -290,6 +290,11 @@ L.AfterFirst				= "Tras ver la cinemática por primera vez"
 L.Always					= ALWAYS
 L.CombatOnly				= "En combate"
 L.RaidCombat				= "En combate (solo en jefes)"
+L.HideBonusHeader			= "Ocultar ventana de tirada bonus en"
+L.TrivialContent			= "Mazmorras no míticas (<340)"--Basically anything below 340
+L.NormalRaider				= "LFR y mazmorras míticas inferiores a +5 (<355)"--Basically, anything below 355
+L.HeroicRaider				= "Bandas inferiores a heroico, mazmorras míticas inferiores a +10 y jefes de mundo (<370)"--Basically anything below 370
+L.MythicRaider				= "Todo lo inferior a banda mítica (<385)"--Basically anything below 385
 
 -- Tab: Extra Features
 L.Panel_ExtraFeatures		= "Funciones adicionales"

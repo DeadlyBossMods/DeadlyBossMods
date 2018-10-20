@@ -16,6 +16,8 @@
 ## X-DBM-Mod-Has-Mythic : 1
 ## X-DBM-Mod-SubCategoriesID: 1763, 1754, 1762, 1864, 1822, 1877, 1594, 1841, 1771, 1862
 ## X-DBM-Mod-Name: Party (Battle for Azeroth)
+## X-DBM-Mod-Name-esES: Mazmorras (BfA)
+## X-DBM-Mod-Name-esMX: Mazmorras (BfA)
 ## X-DBM-Mod-Name-deDE: Gruppe (BfA)
 ## X-DBM-Mod-Name-koKR: 5인 던전 (격전의 아제로스)
 ## X-DBM-Mod-Name-zhTW: 隊伍首領 (決戰艾澤拉斯)
