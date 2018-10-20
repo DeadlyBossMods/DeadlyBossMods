@@ -1,7 +1,7 @@
 -- Mini Dragon(projecteurs@gmail.com)
 -- 夏一可
 -- Blizzard Entertainment
--- Last update: 2018/09/21
+-- Last update: 2018/10/20
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -25,6 +25,15 @@ L= DBM:GetModLocalization(2167)
 ---------------------------
 L= DBM:GetModLocalization(2146)
 
+L:SetWarningLocalization({
+	addsSoon		= "边门开启，准备小怪"
+})
+
+L:SetOptionLocalization({
+	addsSoon		= "特殊警报：边门开启，准备小怪"
+})
+
+
 ---------------------------
 -- Zek'vhozj --
 ---------------------------
@@ -35,7 +44,8 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	timerOrbLands	 =	"计时条：下一次腐蚀之球落地"
+	timerOrbLands	 =	"计时条：下一次腐蚀之球落地",
+	EarlyTankSwap	 =	"粉碎后直接提示换坦，而不是等到下一次虚空鞭笞"
 })
 
 L:SetMiscLocalization({
@@ -51,11 +61,12 @@ L= DBM:GetModLocalization(2166)
 
 L:SetOptionLocalization({
 	ShowHighestFirst2	 =	"将信息窗中持续感染的层数从高往低显示(默认从低到高)",
-	ShowOnlyParty		 =	"只显示自己小队的持续感染层数信息(得先编队)"
+	ShowOnlyParty		 =	"只显示自己小队的持续感染层数信息(得先编队)",
+	SetIconsRegardless	 =	"强制设置标志，不管BW用户是否有权限(三思而后行))"
 })
 
 L:SetMiscLocalization({
-	BWIconMsg			 =	"DBM能够和BW互通团队标识。请确保团队权限正常防止胡乱标识。"
+	BWIconMsg			 =	"DBM能够和BW互通团队标识。请确保团队权限正常防止胡乱标识，或者去掉他们的权限让DBM表示。"
 })
 
 ---------------
