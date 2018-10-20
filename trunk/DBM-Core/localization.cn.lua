@@ -2,7 +2,7 @@
 -- Diablohu(diablohudream@gmail.com)
 -- yleaf(yaroot@gmail.com)
 -- Mini Dragon(projecteurs@gmail.com)
--- Last update: 2018/09/21
+-- Last update: 2018/10/20
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -359,6 +359,7 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS.dodgeloc			= "%s - 躲开%%s边"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.moveaway			= "%s - 离开人群"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.moveawaycount		= "%s (%%s) - 离开人群"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.moveto			= "%s - 靠近 >%%s<"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.soak				= "%s - 快吸收"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.jump				= "%s - 快跳"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.run				= "%s - 快跑"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.cast				= "%s - 停止施法"
@@ -396,6 +397,7 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS.dodgeloc		= "特殊警报：当你受到$spell:%
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.moveaway		= "特殊警报：当你受到$spell:%s影响并需要跑开人群时"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.moveawaycount	= "特殊警报：当你受到$spell:%s影响并需要跑开人群时(带计数)"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.moveto			= "特殊警报：当他人中了$spell:%s并需要你去靠近时"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.soak			= "特殊警报：当你需要吸收$spell:%s时"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.jump			= "特殊警报：当你受到$spell:%s影响并需要跳起来时"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.run				= "特殊警报：当你受到$spell:%s影响并需要跑开时"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.cast			= "特殊警报：当你需要打断$spell:%s时"
