@@ -2,7 +2,7 @@ local mod	= DBM:NewMod(2330, "DBM-ZuldazarRaid", 2, 1176)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
-mod:SetCreatureID(144747, 144767, 144963, 144941, 145388)--Bwonsamdi's ID needs to be found, and if it's needed
+mod:SetCreatureID(144747, 144767, 144963, 144941)--Mythic need other 2 IDs?
 mod:SetEncounterID(2268)
 --mod:DisableESCombatDetection()
 mod:SetZone()
@@ -16,20 +16,16 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 282098 282107 285889 282155 282411",
-	"SPELL_CAST_SUCCESS 282135 282444 282834 285878 283685 284666",
+	"SPELL_CAST_SUCCESS 282135 282444 285878 284666",
 	"SPELL_AURA_APPLIED 282079 285945 282135 286007 282209 282444 282834 286811 284663",
 --	"SPELL_AURA_REFRESH 282079",
 	"SPELL_AURA_APPLIED_DOSE 285945 282444",
 	"SPELL_AURA_REMOVED 282079 282135 286007 282834 286811",
-	"UNIT_DIED",
+--	"UNIT_DIED",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
-	"UNIT_TARGETABLE_CHANGED",
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5"
 )
 
---TODO, Fix phase change stuff.
---TODO, figure out what IDs actually die during fight for total boss count
---TODO, fine tune hastening winds swap stacks
 --TODO, fine tune Lacerating Claws swap stacks
 --General
 local warnActivated						= mod:NewTargetAnnounce(118212, 3, 78740, nil, nil, nil, nil, nil, true)
@@ -78,27 +74,27 @@ local specWarnBwonsamdisWrath			= mod:NewSpecialWarningYou(284663, nil, nil, nil
 
 --mod:AddTimerLine(DBM:EJ_GetSectionInfo(18527))
 --Pa'ku's Aspect
-local timerGiftofWindCD					= mod:NewAITimer(55, 282098, nil, nil, nil, 2)
-local timerPakusWrathCD					= mod:NewAITimer(55, 282107, nil, nil, nil, 2)
+local timerGiftofWindCD					= mod:NewCDTimer(31.6, 282098, nil, nil, nil, 2)
+local timerPakusWrathCD					= mod:NewCDTimer(70, 282107, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
 --Gonk's Aspect
-local timerCrawlingHexCD				= mod:NewAITimer(14.1, 282135, nil, nil, nil, 3, nil, DBM_CORE_CURSE_ICON)
-local timerRaptorFormCD					= mod:NewAITimer(14.1, 285889, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
-local timerGonksWrathCD					= mod:NewAITimer(14.1, 282155, nil, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON)
+local timerCrawlingHexCD				= mod:NewCDTimer(25.4, 282135, nil, nil, nil, 3, nil, DBM_CORE_CURSE_ICON)
+local timerRaptorFormCD					= mod:NewCDTimer(15.8, 285889, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--15.8-17
+local timerGonksWrathCD					= mod:NewCDTimer(60, 282155, nil, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON)
 --Kimbul's Aspect
-local timerLaceratingClawsCD			= mod:NewAITimer(14.1, 282444, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
-local timerKinbulsWrathCD				= mod:NewAITimer(14.1, 282834, nil, nil, nil, 3)
+local timerLaceratingClawsCD			= mod:NewCDTimer(26.8, 282444, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--26.8-31.6
+local timerKinbulsWrathCD				= mod:NewCDTimer(60, 282834, nil, nil, nil, 3)
 --Akunda's Aspect
-local timerThunderingStormCD			= mod:NewAITimer(14.1, 282411, nil, "Melee", nil, 3, nil, DBM_CORE_TANK_ICON)
-local timerMindWipeCD					= mod:NewAITimer(14.1, 285878, nil, nil, nil, 3)
-local timerAkundasWrathCD				= mod:NewAITimer(14.1, 283685, nil, nil, nil, 3)
+local timerThunderingStormCD			= mod:NewCDTimer(19.5, 282411, nil, "Melee", nil, 3, nil, DBM_CORE_TANK_ICON)
+local timerMindWipeCD					= mod:NewCDTimer(33.7, 285878, nil, nil, nil, 3)
+local timerAkundasWrathCD				= mod:NewCDTimer(60, 283685, nil, nil, nil, 3)
 --Krag'wa
-local timerKragwasWrathCD				= mod:NewAITimer(14.1, 282636, nil, nil, nil, 3)
+--local timerKragwasWrathCD				= mod:NewAITimer(14.1, 282636, nil, nil, nil, 3)
 --Bwonsamdi
 local timerBwonsamdisWrathCD			= mod:NewAITimer(14.1, 284666, nil, nil, nil, 3, nil, DBM_CORE_CURSE_ICON..DBM_CORE_HEALER_ICON)
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
 
---local countdownCollapsingWorld			= mod:NewCountdown(50, 243983, true, 3, 3)
+local countdownPakusWrath				= mod:NewCountdown(70, 282107, true, nil, 5)
 --local countdownLaceratingClaws				= mod:NewCountdown("Alt12", 244016, false, 2, 3)
 --local countdownFelstormBarrage			= mod:NewCountdown("AltTwo32", 244000, nil, nil, 3)
 
@@ -111,8 +107,17 @@ mod:AddNamePlateOption("NPAuraOnFixate", 282209)
 --mod:AddSetIconOption("SetIconDarkRev", 273365, true)
 
 --mod.vb.phase = 1
+mod.vb.ignoredActivate = true
+local raptorsSeen = {}
+
+local function clearActivateIgnore(self)
+	self.vb.ignoredActivate = false
+end
 
 function mod:OnCombatStart(delay)
+	table.wipe(raptorsSeen)
+	self.vb.ignoredActivate = true
+	self:Schedule(3, clearActivateIgnore, self)
 	if self.Options.NPAuraOnPact or self.Options.NPAuraOnPackHunter or self.Options.NPAuraOnFixate then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
@@ -123,6 +128,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnCombatEnd()
+	table.wipe(raptorsSeen)
 --	if self.Options.RangeFrame then
 --		DBM.RangeCheck:Hide()
 --	end
@@ -140,9 +146,11 @@ function mod:SPELL_CAST_START(args)
 		specWarnGiftofWind:Show()
 		timerGiftofWindCD:Start()
 	elseif spellId == 282107 then
-		specWarnPakusWrath:Show(args.sourceName)
-		specWarnPakusWrath:Play("gathershare")
-		timerPakusWrathCD:Start()
+		DBM:Debug("blizz added Paku's Wrath to CLEU, improve code!")
+		--specWarnPakusWrath:Show(args.sourceName)
+		--specWarnPakusWrath:Play("gathershare")
+		--timerPakusWrathCD:Start()
+		--countdownPakusWrath:Start()
 	elseif spellId == 285889 then
 		timerRaptorFormCD:Start()
 		for i = 1, 2 do
@@ -154,9 +162,10 @@ function mod:SPELL_CAST_START(args)
 			end
 		end
 	elseif spellId == 282155 then
-		specWarnGonksWrath:Show()
-		specWarnGonksWrath:Play("killmob")
-		timerGonksWrathCD:Start()
+		DBM:Debug("blizz added Gonk's Wrath to CLEU, improve code!")
+		--specWarnGonksWrath:Show()
+		--specWarnGonksWrath:Play("killmob")
+		--timerGonksWrathCD:Start()
 	elseif spellId == 282411 then
 		timerThunderingStormCD:Start()
 		if self:CheckInterruptFilter(args.sourceGUID, true, false) then--Only show warning if target/focus on caster
@@ -172,12 +181,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerCrawlingHexCD:Start()
 	elseif spellId == 282444 then
 		timerLaceratingClawsCD:Start()
-	elseif spellId == 282834 then
-		timerKinbulsWrathCD:Start()
 	elseif spellId == 285878 then
 		timerMindWipeCD:Start()
-	elseif spellId == 283685 then
-		timerAkundasWrathCD:Start()
 	elseif spellId == 284666 then
 		timerBwonsamdisWrathCD:Start()
 	end
@@ -207,7 +212,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 285945 then
 		local amount = args.amount or 1
-		if (amount >= 8) and self:AntiSpam(3, 4) then--Fine Tune
+		if (amount >= 8) and self:AntiSpam(3, 1) then--Fine Tune
 			if self:IsTanking("player", "boss1", nil, true) then
 				specWarnHasteningWinds:Show(amount)
 				specWarnHasteningWinds:Play("changemt")
@@ -246,12 +251,23 @@ function mod:SPELL_AURA_APPLIED(args)
 				DBM.Nameplate:Show(true, args.sourceGUID, spellId)
 			end
 		end
+		if not raptorsSeen[args.sourceGUID] then
+			raptorsSeen[args.sourceGUID] = true
+			if self:AntiSpam(10, 2) then
+				specWarnGonksWrath:Show()
+				specWarnGonksWrath:Play("killmob")
+				timerGonksWrathCD:Start()
+			end
+		end
 	elseif spellId == 282834 then
 		if args:IsPlayer() then
 			specWarnKimbulsWrath:Show()
 			specWarnKimbulsWrath:Play("targetyou")
 			yellKimbulsWrath:Yell()
 			yellKimbulsWrathFades:Countdown(12)
+		end
+		if self:AntiSpam(10, 3) then
+			timerKinbulsWrathCD:Start():Start()
 		end
 	elseif spellId == 285878 then
 		if args:IsPlayer() then
@@ -268,6 +284,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellAkundasWrathFades:Countdown(6)
 		else
 			warnAkundasWrath:CombinedShow(0.3, args.destName)
+		end
+		if self:AntiSpam(10, 4) then
+			timerAkundasWrathCD:Start()
 		end
 	elseif spellId == 284663 then
 		if args:IsPlayer() then
@@ -317,9 +336,7 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spell
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
---]]
 
---If UNIT_DIED doesn't fire, move to targetWeWarn false on UNIT_TARGETABLE_CHANGED
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 144747 then--Pa'ku's Aspect
@@ -338,59 +355,74 @@ function mod:UNIT_DIED(args)
 		timerAkundasWrathCD:Stop()
 	elseif cid == 145388 then--Krag'wa
 		timerKragwasWrathCD:Stop()
-	--elseif cid == 148714 then--Bwonsamdi
-		
 	end
 end
+--]]
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 	if msg:find("spell:282107") then
 		specWarnPakusWrath:Show("Birdo")
 		specWarnPakusWrath:Play("gathershare")
 		timerPakusWrathCD:Start()
-	end
-end
-
---Assumed
-function mod:UNIT_TARGETABLE_CHANGED(uId)
-	local cid = self:GetUnitCreatureId(uId)
-	local targetWeWarn = false
-	if UnitExists(uId) then
-		targetWeWarn = true
-		DBM:Debug("UNIT_TARGETABLE_CHANGED, Boss Engaging", 2)
-	else
-		DBM:Debug("UNIT_TARGETABLE_CHANGED, Boss Leaving", 2)
-	end
-	if targetWeWarn then
-		if self.Options.SpecWarn118212switchcount then
-			specWarnActivated:Show(UnitName(uId))
-			specWarnActivated:Play("changetarget")
-		else
-			warnActivated:Show(UnitName(uId))
-		end
-		--Start Timers
-		if cid == 144747 then--Pa'ku's Aspect
-			timerGiftofWindCD:Start(2)
-			timerPakusWrathCD:Start(2)
-		elseif cid == 144767 then--Gonk's Aspect
-			timerCrawlingHexCD:Start(2)
-			timerRaptorFormCD:Start(2)
-			timerGonksWrathCD:Start(2)
-		elseif cid == 144963 then--Kimbul's Aspect
-			timerLaceratingClawsCD:Start(2)
-			timerKinbulsWrathCD:Start(2)
-		elseif cid == 144941 then--Akunda's Aspect
-			timerThunderingStormCD:Start(2)
-			timerMindWipeCD:Start(2)
-			timerAkundasWrathCD:Start(2)
-		elseif cid == 145388 then--Krag'wa
-			timerKragwasWrathCD:Start(2)
-		end
+		countdownPakusWrath:Start()
 	end
 end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 282635 then--Krag'wa's Wrath
-		timerKragwasWrathCD:Start()
+		--timerKragwasWrathCD:Start()
+	elseif spellId == 130966 then--Permanent Feign Death (dying/leaving) (slightly faster than UNIT_DIED)
+		local cid = self:GetUnitCreatureId(uId)
+		if cid == 144747 then--Pa'ku's Aspect
+			timerGiftofWindCD:Stop()
+			local pakusWrathRemaining = timerPakusWrathCD:GetRemaining() or 0
+			if pakusWrathRemaining >= 14 then
+				--if it's less than 13, it's going to happen regardless of pakus death, because bird spawns 13 seconds before cast
+				timerPakusWrathCD:Stop()
+				countdownPakusWrath:Cancel()
+			end
+		elseif cid == 144767 then--Gonk's Aspect
+			timerCrawlingHexCD:Stop()
+			timerRaptorFormCD:Stop()
+			timerGonksWrathCD:Stop()
+		elseif cid == 144963 then--Kimbul's Aspect
+			timerLaceratingClawsCD:Stop()
+			timerKinbulsWrathCD:Stop()
+		elseif cid == 144941 then--Akunda's Aspect
+			timerThunderingStormCD:Stop()
+			timerMindWipeCD:Stop()
+			timerAkundasWrathCD:Stop()
+		--elseif cid == 145388 then--Krag'wa
+			--timerKragwasWrathCD:Stop()
+		end
+	elseif spellId == 282080 then--Loa's Pact (entering)
+		if not self.vb.ignoredActivate then
+			if self.Options.SpecWarn118212switchcount then
+				specWarnActivated:Show(UnitName(uId))
+				specWarnActivated:Play("changetarget")
+			else
+				warnActivated:Show(UnitName(uId))
+			end
+		end
+		--Start Timers
+		local cid = self:GetUnitCreatureId(uId)
+		if cid == 144747 then--Pa'ku's Aspect
+			timerGiftofWindCD:Start(4.8)--Assuming he always starts at 90 energy even when he isn't spawned on pull
+			timerPakusWrathCD:Start(73.5)--When actual aoe starts, first event we can detect
+			countdownPakusWrath:Start(73.5)
+		elseif cid == 144767 then--Gonk's Aspect
+			timerCrawlingHexCD:Start(14)--Assuming starting at 70 energy is always true
+			timerRaptorFormCD:Start(15.7)
+			timerGonksWrathCD:Start(31)
+		elseif cid == 144963 then--Kimbul's Aspect
+			timerLaceratingClawsCD:Start(10.3)
+			timerKinbulsWrathCD:Start(42.2)
+		elseif cid == 144941 then--Akunda's Aspect
+			timerMindWipeCD:Start(5.6)
+			timerAkundasWrathCD:Start(13)
+			timerThunderingStormCD:Start(15.4)
+		--elseif cid == 145388 then--Krag'wa
+			--timerKragwasWrathCD:Start(2)
+		end
 	end
 end
