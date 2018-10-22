@@ -16,9 +16,9 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 267509 267427 267412 273406 273405 267409 267462 267579 263482 263503 263307 275160",
 	"SPELL_CAST_SUCCESS 263235 263482 263503 263373 270373 270428 276839 274582 272505 275756 263416",
-	"SPELL_AURA_APPLIED 268074 267813 277079 272506 274262 263372 270447 263235 270443 273405 267409 263284 277007",
+	"SPELL_AURA_APPLIED 268074 267813 277079 272506 274262 263372 270447 263235 270443 273405 267409 263284 277007 263436",
 	"SPELL_AURA_APPLIED_DOSE 270447",
-	"SPELL_AURA_REMOVED 268074 267813 277079 272506 274262 263235 263372 277007",
+	"SPELL_AURA_REMOVED 268074 267813 277079 272506 274262 263235 263372 277007 273405 267409 263436",
 	"SPELL_PERIODIC_DAMAGE 270287",
 	"SPELL_PERIODIC_MISSED 270287",
 --	"SPELL_DAMAGE 263326",
@@ -133,7 +133,7 @@ mod.vb.bloodFeastCount = 0
 mod.vb.burstingIcon = 0
 mod.vb.burstingCount = 0
 mod.vb.matrixActive = false
-local playerBursting = false
+local playerHasImperfect, playerHasBursting, playerHasBargain = false, false, false
 local matrixTargets, bloodFeastTarget = {}, {}
 local thousandMawsTimers = {25.4, 26.3, 25.5, 24.2, 23.9, 23.1, 21.5, 21.9, 19.4}
 local thousandMawsTimersLFR = {27.78, 29.2, 27.9, 26.46, 26.13, 25.26, 23.51, 23.95, 21.21}--Timers 4+ extrapolated using 1.093x greater formula
@@ -205,24 +205,26 @@ do
 			addLine(bloodFeastName, UnitName(uId))
 		end
 		--Player personal checks
-		local spellName3, _, _, _, _, expireTime = DBM:UnitDebuff("player", 263436)
-		if spellName3 and expireTime then--Personal Imperfect Physiology
-			local remaining = expireTime-GetTime()
-			addLine(spellName3, math.floor(remaining))
+		if playerHasImperfect then
+			local spellName3, _, _, _, _, expireTime = DBM:UnitDebuff("player", 263436)
+			if spellName3 and expireTime then--Personal Imperfect Physiology
+				local remaining = expireTime-GetTime()
+				addLine(spellName3, math.floor(remaining))
+			end
 		end
-		local spellName4, _, currentStack = DBM:UnitDebuff("player", 263227, 269301)
-		if spellName4 and currentStack then--Personal Putrid Blood count
-			addLine(spellName4, currentStack)
+		if playerHasBursting then
+			local spellName5, _, _, _, _, expireTime2 = DBM:UnitDebuff("player", 277007)
+			if spellName5 and expireTime2 then--Personal Bursting Boil
+				local remaining2 = expireTime2-GetTime()
+				addLine(spellName5, math.floor(remaining2))
+			end
 		end
-		local spellName5, _, _, _, _, expireTime2 = DBM:UnitDebuff("player", 277007)
-		if spellName5 and expireTime2 then--Personal Bursting Boil
-			local remaining2 = expireTime2-GetTime()
-			addLine(spellName5, math.floor(remaining2))
-		end
-		local spellName6, _, _, _, _, expireTime3 = DBM:UnitDebuff("player", 273405, 267409)
-		if spellName6 and expireTime3 then--Personal Dark Bargain
-			local remaining3 = expireTime3-GetTime()
-			addLine(spellName6, math.floor(remaining3))
+		if playerHasBargain then
+			local spellName6, _, _, _, _, expireTime3 = DBM:UnitDebuff("player", 273405, 267409)
+			if spellName6 and expireTime3 then--Personal Dark Bargain
+				local remaining3 = expireTime3-GetTime()
+				addLine(spellName6, math.floor(remaining3))
+			end
 		end
 		return lines, sortedLines
 	end
@@ -264,7 +266,7 @@ function mod:OnCombatStart(delay)
 	self.vb.burstingIcon = 0
 	self.vb.burstingCount = 0
 	self.vb.matrixActive = false
-	playerBursting = false
+	playerHasImperfect, playerHasBursting, playerHasBargain = false, false, false
 	timerMatrixCD:Start(5.3, 1)
 	if self:IsLFR() then
 		timerThousandMawsCD:Start(27.7-delay, 1)
@@ -297,6 +299,18 @@ function mod:OnCombatEnd()
 	end
 	if self.Options.NPAuraOnFixate or self.Options.NPAuraOnUnstoppable then
 		DBM.Nameplate:Hide(false, nil, nil, nil, true, true)
+	end
+end
+
+function mod:OnTimerRecovery()
+	if DBM:UnitDebuff("player", 277007) then
+		playerHasBursting = true
+	end
+	if DBM:UnitDebuff("player", 277007) then
+		playerHasImperfect = true
+	end
+	if DBM:UnitDebuff("player", 273405, 267409) then
+		playerHasBargain = true
 	end
 end
 
@@ -591,6 +605,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnDarkBargainOther:Show(args.destName)
 			specWarnDarkBargainOther:Play("changemt")
 		end
+		if args:IsPlayer() then
+			playerHasBargain = true
+		end
 	elseif spellId == 263284 then--Horror Spawn
 		if self:IsMythic() then
 			timerMindNumbingChatterCD:Start(7, args.destGUID)
@@ -600,13 +617,15 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 277007 then
 		self.vb.burstingIcon = self.vb.burstingIcon + 1
 		if args:IsPlayer() then
-			playerBursting = true
+			playerHasBursting = true
 			specWarnBurstingBoil:Show()
 			specWarnBurstingBoil:Play("targetyou")
 		end
 		if self.Options.SetIconOnBurstingBoil then
 			self:SetIcon(args.destName, self.vb.burstingIcon)
 		end
+	elseif spellId == 263436 and args:IsPlayer() then
+		playerHasImperfect = true
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -648,11 +667,15 @@ function mod:SPELL_AURA_REMOVED(args)
 		self:Schedule(3.5, checkThrowFail, self)
 	elseif spellId == 277007 then
 		if args:IsPlayer() then
-			playerBursting = false
+			playerHasBursting = false
 		end
 		if self.Options.SetIconOnBurstingBoil then
 			self:SetIcon(args.destName, 0)
 		end
+	elseif (spellId == 273405 or spellId == 267409) and args:IsPlayer() then
+		playerHasBargain = false
+	elseif spellId == 263436 and args:IsPlayer() then
+		playerHasImperfect = false
 	end
 end
 
@@ -723,7 +746,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		self.vb.burstingCount = self.vb.burstingCount + 1
 		timerBurstingBoil:Start(8, self.vb.burstingCount)
 		timerBurstingBoilCD:Start(20.5, self.vb.burstingCount+1)
-		if playerBursting then--Need to avoid the new boils
+		if playerHasBursting then--Need to avoid the new boils
 			specWarnBurstingBoilCast:Show()
 			specWarnBurstingBoilCast:Play("watchstep")
 		else--Need to help soak them
