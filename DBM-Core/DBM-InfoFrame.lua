@@ -338,7 +338,7 @@ local function updatePlayerPower()
 	twipe(lines)
 	local threshold = value[1]
 	local powerType = value[2]
-	local spellFilter = value[3]--Passed as spell name already
+	local spellFilter = value[3]
 	for uId in DBM:GetGroupMembers() do
 		if spellFilter and DBM:UnitDebuff(uId, spellFilter) then
 			--Do nothing
@@ -395,14 +395,14 @@ end
 
 local function updateEnemyAbsorb()
 	twipe(lines)
-	local spellName = value[1]
+	local spellInput = value[1]
 	local totalAbsorb = value[2]
 	for i = 1, 5 do
 		local uId = "boss"..i
 		if UnitExists(uId) then
 			local absorbAmount
-			if spellName then--Get specific spell absorb
-				absorbAmount = select(16, DBM:UnitBuff(uId, spellName)) or select(16, DBM:UnitDebuff(uId, spellName))
+			if spellInput then--Get specific spell absorb
+				absorbAmount = select(16, DBM:UnitBuff(uId, spellInput)) or select(16, DBM:UnitDebuff(uId, spellInput))
 			else--Get all of them
 				absorbAmount = UnitGetTotalAbsorbs(uId)
 			end
@@ -423,15 +423,15 @@ end
 
 local function updateAllAbsorb()
 	twipe(lines)
-	local spellName = value[1]
+	local spellInput = value[1]
 	local totalAbsorb = value[2]
 	local totalAbsorb2 = value[3]
 	for i = 1, 5 do
 		local uId = "boss"..i
 		if UnitExists(uId) then
 			local absorbAmount
-			if spellName then--Get specific spell absorb
-				absorbAmount = select(16, DBM:UnitBuff(uId, spellName)) or select(16, DBM:UnitDebuff(uId, spellName))
+			if spellInput then--Get specific spell absorb
+				absorbAmount = select(16, DBM:UnitBuff(uId, spellInput)) or select(16, DBM:UnitDebuff(uId, spellInput))
 			else--Get all of them
 				absorbAmount = UnitGetTotalAbsorbs(uId)
 			end
@@ -446,16 +446,18 @@ local function updateAllAbsorb()
 			end
 		end
 	end
-	for uId in DBM:GetGroupMembers() do
-		local absorbAmount = select(16, DBM:UnitBuff(uId, spellName)) or select(16, DBM:UnitDebuff(uId, spellName))
-		if absorbAmount then
-			local text
-			if totalAbsorb2 then
-				text = absorbAmount / totalAbsorb2 * 100
-			else
-				text = absorbAmount
+	if spellInput then
+		for uId in DBM:GetGroupMembers() do
+			local absorbAmount = select(16, DBM:UnitBuff(uId, spellInput)) or select(16, DBM:UnitDebuff(uId, spellInput))
+			if absorbAmount then
+				local text
+				if totalAbsorb2 then
+					text = absorbAmount / totalAbsorb2 * 100
+				else
+					text = absorbAmount
+				end
+				lines[UnitName(uId)] = mfloor(text).."%"
 			end
-			lines[UnitName(uId)] = mfloor(text).."%"
 		end
 	end
 	updateLines()
@@ -464,10 +466,10 @@ end
 
 local function updatePlayerAbsorb()
 	twipe(lines)
-	local spellName = value[1]
+	local spellInput = value[1]
 	local totalAbsorb = value[2]
 	for uId in DBM:GetGroupMembers() do
-		local absorbAmount = select(16, DBM:UnitBuff(uId, spellName)) or select(16, DBM:UnitDebuff(uId, spellName))
+		local absorbAmount = select(16, DBM:UnitBuff(uId, spellInput)) or select(16, DBM:UnitDebuff(uId, spellInput))
 		if absorbAmount then
 			local text
 			if totalAbsorb then
@@ -502,12 +504,12 @@ end
 --Debuffs that are good to have, therefor it's bad NOT to have them.
 local function updateGoodPlayerDebuffs()
 	twipe(lines)
-	local spellName = value[1]
+	local spellInput = value[1]
 	local tankIgnored = value[2]
 	for uId in DBM:GetGroupMembers() do
 		if tankIgnored and (UnitGroupRolesAssigned(uId) == "TANK" or GetPartyAssignment("MAINTANK", uId, 1)) then
 		else
-			if not DBM:UnitDebuff(uId, spellName) and not UnitIsDeadOrGhost(uId) then
+			if not DBM:UnitDebuff(uId, spellInput) and not UnitIsDeadOrGhost(uId) then
 				lines[UnitName(uId)] = ""
 			end
 		end
@@ -581,7 +583,7 @@ local function updateReverseBadPlayerDebuffs()
 	for uId in DBM:GetGroupMembers() do
 		if tankIgnored and (UnitGroupRolesAssigned(uId) == "TANK" or GetPartyAssignment("MAINTANK", uId, 1)) then
 		else
-			if not DBM:UnitDebuff(uId, spellInput) and not UnitIsDeadOrGhost(uId) and not DBM:UnitDebuff(uId, 27827) then--27827 Spirit of Redemption. This particular info frame wants to ignore this
+			if not DBM:UnitDebuff(uId, spellInput) and not UnitIsDeadOrGhost(uId) and not DBM:UnitBuff(uId, 27827) then--27827 Spirit of Redemption. This particular info frame wants to ignore this
 				lines[UnitName(uId)] = ""
 			end
 		end
