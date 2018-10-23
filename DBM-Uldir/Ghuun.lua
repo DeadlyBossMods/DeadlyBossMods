@@ -6,7 +6,7 @@ mod:SetCreatureID(132998)
 mod:SetEncounterID(2122)
 mod:SetZone()
 --mod:SetBossHPInfoToHighest()
-mod:SetUsedIcons(7, 6, 5, 4, 3, 2, 1)
+mod:SetUsedIcons(8, 7, 6, 5, 4, 3, 2, 1)
 mod:SetHotfixNoticeRev(17906)
 mod:SetMinSyncRevision(17776)
 mod.respawnTime = 29
@@ -122,6 +122,7 @@ mod:AddNamePlateOption("NPAuraOnFixate", 268074)
 mod:AddNamePlateOption("NPAuraOnUnstoppable", 275204)
 mod:AddSetIconOption("SetIconOnBloodHost", 267813, true)
 mod:AddSetIconOption("SetIconOnBurstingBoil", 277007, true)
+mod:AddSetIconOption("SetIconOnExplosiveCorruption", 272506, false)
 
 mod.vb.phase = 1
 mod.vb.mawCastCount = 0
@@ -132,6 +133,7 @@ mod.vb.waveCast = 0
 mod.vb.bloodFeastCount = 0
 mod.vb.burstingIcon = 0
 mod.vb.burstingCount = 0
+mod.vb.explosiveIcon = 0
 mod.vb.matrixActive = false
 local playerHasImperfect, playerHasBursting, playerHasBargain = false, false, false
 local matrixTargets, bloodFeastTarget = {}, {}
@@ -265,6 +267,7 @@ function mod:OnCombatStart(delay)
 	self.vb.bloodFeastCount = 0
 	self.vb.burstingIcon = 0
 	self.vb.burstingCount = 0
+	self.vb.explosiveIcon = 0
 	self.vb.matrixActive = false
 	playerHasImperfect, playerHasBursting, playerHasBargain = false, false, false
 	timerMatrixCD:Start(5.3, 1)
@@ -458,6 +461,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		countdownGazeofGhuun:Start(timer1)
 		timerWaveofCorruptionCD:Start(timer2, 1)
 	elseif spellId == 272505 or spellId == 275756 then
+		self.vb.explosiveIcon = 0
 		self.vb.explosiveCount = self.vb.explosiveCount + 1
 		if self.vb.phase == 1 then	
 			local timer = self:IsMythic() and 44 or 26
@@ -530,6 +534,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:SetIcon(args.destName, 7)
 		end
 	elseif spellId == 277079 or spellId == 272506 or spellId == 274262 then--272506 spread, 274262 initial targets, 277079 probably LFR with 6 second duration
+		self.vb.explosiveIcon = self.vb.explosiveIcon + 1
 		if args:IsPlayer() then
 			if self:AntiSpam(3, 8) then
 				specWarnExplosiveCorruption:Show()
@@ -537,6 +542,9 @@ function mod:SPELL_AURA_APPLIED(args)
 				yellExplosiveCorruption:Yell()
 			end
 			yellExplosiveCorruptionFades:Countdown(spellId == 277079 and 6 or 4)
+		end
+		if self.Options.SetIconOnExplosiveCorruption then
+			self:SetIcon(args.destName, self.vb.explosiveIcon)
 		end
 	elseif spellId == 263372 then
 		self:Unschedule(checkThrowFail)
@@ -655,6 +663,9 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self:AntiSpam(7.5, 8) then--Adjust throttle as needed for shit shows
 			specWarnVirulentCorruption:Show()
 			specWarnVirulentCorruption:Play("watchorb")
+		end
+		if self.Options.SetIconOnExplosiveCorruption then
+			self:SetIcon(args.destName, 0)
 		end
 	elseif spellId == 263235 then
 		if args:IsPlayer() then
