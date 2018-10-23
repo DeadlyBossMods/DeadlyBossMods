@@ -90,7 +90,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 257274 and args:IsPlayer() and self:AntiSpam(2, 2) then
 		specWarnGTFO:Show(args.spellName)
-		specWarnGTFO:Play("runaway")
+		specWarnGTFO:Play("watchstep")
 	elseif spellId == 257476 and self:AntiSpam(3, 6) then
 		specWarnBestialWrath:Show(args.destName)
 		specWarnBestialWrath:Play("helpdispel")
