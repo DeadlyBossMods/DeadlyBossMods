@@ -664,6 +664,20 @@ local function updateByFunction()
 	end
 end
 
+--Unsorted table maintained by mod and just sent here.
+--Never updated by onupdate method, requires manual updates when mod updates table
+local function updateByTable()
+	twipe(lines)
+	local table = value[1]
+	--Copy table into lines
+	for i, v in ipairs(table) do
+		lines[i] = v
+	end
+	--Pass to update lines code for sort handling
+	updateLines()
+	updateIcons()
+end
+
 local function updateTest()
 	twipe(lines)
 	lines["Alpha"] = 1
@@ -692,6 +706,7 @@ local events = {
 	["playerdebuffstacks"] = updatePlayerDebuffStacks,
 	["playertargets"] = updatePlayerTargets,
 	["function"] = updateByFunction,
+	["table"] = updateByTable,
 	["test"] = updateTest
 }
 
@@ -807,7 +822,7 @@ end
 ---------------
 --  Methods  --
 ---------------
---Arg 1: spellName, health/powervalue, customfunction. Arg 2: TankIgnore, Powertype, SortFunction, totalAbsorb. Arg 3: SpellFilter, UseIcon. Arg 4: disable onUpdate
+--Arg 1: spellName, health/powervalue, customfunction, table type. Arg 2: TankIgnore, Powertype, SortFunction, totalAbsorb, sortmethod (table/stacks). Arg 3: SpellFilter, UseIcon. Arg 4: disable onUpdate
 function infoFrame:Show(maxLines, event, ...)
 	currentMapId = select(4, UnitPosition("player"))
 	if DBM.Options.DontShowInfoFrame and (event or 0) ~= "test" then return end
@@ -830,7 +845,7 @@ function infoFrame:Show(maxLines, event, ...)
 		end
 	--If spellId is given as value one and it's not a byspellid event, convert to spellname
 	--this also allows spell name to be given by mod, since value 1 verifies it's a number
-	elseif type(value[1]) == "number" and event ~= "health" and event ~= "function" and event ~= "playertargets" and event ~= "playeraggro" and event ~= "playerpower" and event ~= "enemypower" and event ~= "test" then
+	elseif type(value[1]) == "number" and event ~= "health" and event ~= "function" and event ~= "table" and event ~= "playertargets" and event ~= "playeraggro" and event ~= "playerpower" and event ~= "enemypower" and event ~= "test" then
 		--Outside of "byspellid" functions, typical frames will still use spell NAME matching not spellID.
 		--This just determines if we convert the spell input to a spell Name, if a spellId was provided for a non byspellid infoframe
 		value[1] = DBM:GetSpellInfo(value[1])
@@ -840,7 +855,7 @@ function infoFrame:Show(maxLines, event, ...)
 		sortMethod = 3
 	elseif event == "health" or event == "playerdebuffremaining" then
 		sortMethod = 2	-- Sort lowest first
-	elseif event == "playerdebuffstacks" and value[2] then
+	elseif (event == "playerdebuffstacks" or event == "table") and value[2] then
 		if type(value[2]) == "number" then
 			sortMethod = value[2]
 		end
@@ -859,7 +874,7 @@ function infoFrame:Show(maxLines, event, ...)
 	frame:Show()
 	frame:SetOwner(UIParent, "ANCHOR_PRESERVE")
 	onUpdate(frame)
-	if not frame.ticker and not value[4] then
+	if not frame.ticker and not value[4] and not event == "table" then
 		frame.ticker = C_Timer.NewTicker(0.5, function() onUpdate(frame) end)
 	end
 	local wowToc, testBuild, wowVersionString = DBM:GetTOC()
@@ -877,6 +892,14 @@ function infoFrame:Update(time)
 		else
 			onUpdate(frame)
 		end
+	end
+end
+
+function infoFrame:UpdateTable(table)
+	frame = frame or createFrame()
+	if frame:IsShown() then
+		value[1] = table
+		onUpdate(frame)
 	end
 end
 
