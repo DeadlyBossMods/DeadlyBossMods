@@ -699,7 +699,7 @@ end
 updater = mainFrame:CreateAnimationGroup()
 updater:SetLooping("REPEAT")
 local anim = updater:CreateAnimation()
-anim:SetDuration(0.1)
+anim:SetDuration(0.05)
 
 mainFrame:SetScript("OnEvent", function(self, event, ...)
 	if event == "GROUP_ROSTER_UPDATE" or event == "RAID_TARGET_UPDATE" then
