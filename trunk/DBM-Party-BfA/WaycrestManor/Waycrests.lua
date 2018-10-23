@@ -23,7 +23,7 @@ local warnVirulentPathogen			= mod:NewTargetAnnounce(261440, 2)
 local specWarnDiscordantCadenza		= mod:NewSpecialWarningDodge(268306, nil, nil, nil, 2, 2)
 local specWarnVirulentPathogen		= mod:NewSpecialWarningMoveAway(261440, nil, nil, nil, 1, 2)
 local yellVirulentPathogen			= mod:NewShortYell(261440)
---local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
+--local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 8)
 
 local timerWastingStrikeCD			= mod:NewCDTimer(16.5, 261438, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--16.5-17.1
 local timerVirulentPathogenCD		= mod:NewCDTimer(15.4, 261440, nil, nil, nil, 3, nil, DBM_CORE_DISEASE_ICON)--15.4-17
@@ -88,7 +88,7 @@ end
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 228007 and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
 		specWarnGTFO:Show()
-		specWarnGTFO:Play("watchstep")
+		specWarnGTFO:Play("watchfeet")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE

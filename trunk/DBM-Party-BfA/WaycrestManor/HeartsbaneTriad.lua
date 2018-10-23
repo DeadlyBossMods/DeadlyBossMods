@@ -30,7 +30,7 @@ local yellUnstableMark				= mod:NewYell(260703)
 local specWarnAuraofDread			= mod:NewSpecialWarningKeepMove(268088, nil, nil, nil, 1, 2)
 local specWarnJaggedNettles			= mod:NewSpecialWarningTarget(260703, "Healer", nil, nil, 1, 2)
 local specWarnSoulManipulation		= mod:NewSpecialWarningSwitch(260907, nil, nil, nil, 1, 2)
---local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
+--local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 8)
 
 local timerJaggedNettlesCD			= mod:NewNextTimer(13.3, 260741, nil, nil, nil, 5, nil, DBM_CORE_HEALER_ICON)
 local timerSoulManipulationCD		= mod:NewNextTimer(13.3, 260907, nil, nil, nil, 3, nil, DBM_CORE_TANK_ICON)--Always tank? if not, remove tank icon
@@ -180,7 +180,7 @@ end
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 228007 and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
 		specWarnGTFO:Show()
-		specWarnGTFO:Play("watchstep")
+		specWarnGTFO:Play("watchfeet")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE

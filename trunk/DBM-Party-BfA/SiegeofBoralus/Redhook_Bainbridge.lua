@@ -39,7 +39,7 @@ local specWarnIronGaze				= mod:NewSpecialWarningRun(260954, nil, nil, nil, 4, 2
 local yellIronGaze					= mod:NewYell(260954)
 local specWarnHangmansNoose			= mod:NewSpecialWarningRun(261428, nil, nil, nil, 4, 2)
 local specWarnSteelTempest			= mod:NewSpecialWarningDodge(260924, nil, nil, nil, 2, 2)
---local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
+--local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 8)
 --BOTH
 local specWarnCannonBarrage			= mod:NewSpecialWarningDodge(257540, nil, nil, nil, 2, 2)
 --local specWarnAdds					= mod:NewSpecialWarningAdds(257649, "-Healer", nil, nil, 1, 2)
@@ -126,7 +126,7 @@ end
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 228007 and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
 		specWarnGTFO:Show()
-		specWarnGTFO:Play("watchstep")
+		specWarnGTFO:Play("watchfeet")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE

@@ -65,7 +65,7 @@ local specWarnTorment					= mod:NewSpecialWarningInterrupt(267427, "HasInterrupt
 local specWarnMassiveSmash				= mod:NewSpecialWarningSpell(267412, "Tank", nil, 2, 1, 2)
 local specWarnDarkBargain				= mod:NewSpecialWarningDodge(267409, nil, nil, 2, 3, 2)
 local specWarnDarkBargainOther			= mod:NewSpecialWarningTaunt(267409, false, nil, 2, 1, 2)
-local specWarnGTFO						= mod:NewSpecialWarningGTFO(270287, nil, nil, nil, 1, 2)
+local specWarnGTFO						= mod:NewSpecialWarningGTFO(270287, nil, nil, nil, 1, 8)
 local specWarnDecayingEruption			= mod:NewSpecialWarningInterrupt(267462, "HasInterrupt", nil, nil, 1, 2)--Mythic
 ----Arena Floor P2+
 local specWarnGrowingCorruption			= mod:NewSpecialWarningCount(270447, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.stack:format(5, 270447), nil, 1, 2)
@@ -693,7 +693,7 @@ end
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
 	if spellId == 270287 and destGUID == UnitGUID("player") and self:AntiSpam(2, 6) then
 		specWarnGTFO:Show(spellName)
-		specWarnGTFO:Play("watchstep")
+		specWarnGTFO:Play("watchfeet")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
@@ -701,7 +701,7 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
 	if spellId == 263326 and destGUID == UnitGUID("player") and self:AntiSpam(2, 6) then
 		specWarnGTFO:Show(spellName)
-		specWarnGTFO:Play("watchstep")
+		specWarnGTFO:Play("watchfeet")
 	end
 end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE

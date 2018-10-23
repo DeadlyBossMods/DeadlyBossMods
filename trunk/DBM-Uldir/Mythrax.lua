@@ -53,7 +53,7 @@ local yellImminentRuinFades				= mod:NewIconFadesYell(272536, 139073)
 local specWarnImminentRuinNear			= mod:NewSpecialWarningClose(272536, false, nil, 2, 1, 2)
 local specWarnLivingWeapon				= mod:NewSpecialWarningSwitch(276922, "RangedDps", nil, nil, 1, 2)--Mythic (include melee dps too? asuming do to spheres, a big no)
 local specWarnVoidEchoes				= mod:NewSpecialWarningCount(279157, false, nil, 2, 2, 2)--Mythic
---local specWarnGTFO					= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
+--local specWarnGTFO					= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 8)
 --Stage Two: Fury of the C'thraxxi
 local specWarnObliterationbeam			= mod:NewSpecialWarningDodgeCount(272115, nil, nil, nil, 2, 2)--Generic for now
 --local specWarnObliterationbeamYou		= mod:NewSpecialWarningRun(272115, nil, nil, nil, 4, 2)--Generic for now
@@ -353,7 +353,7 @@ end
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 228007 and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
 		specWarnGTFO:Show()
-		specWarnGTFO:Play("watchstep")
+		specWarnGTFO:Play("watchfeet")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE

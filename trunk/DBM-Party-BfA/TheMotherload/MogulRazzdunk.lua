@@ -36,7 +36,7 @@ local yellDrillSmash				= mod:NewYell(271456)
 local specWarnHeartseeker			= mod:NewSpecialWarningYou(262515, nil, nil, nil, 1, 2)
 local specWarnHeartseekerOther		= mod:NewSpecialWarningTarget(262515, "Tank", nil, nil, 1, 2)
 local yellHeartseeker				= mod:NewYell(262515)
---local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
+--local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 8)
 
 --local timerReapSoulCD				= mod:NewAITimer(13, 194956, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON..DBM_CORE_DEADLY_ICON)
 --Stage One: Big Guns
@@ -162,7 +162,7 @@ end
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 228007 and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
 		specWarnGTFO:Show()
-		specWarnGTFO:Play("watchstep")
+		specWarnGTFO:Play("watchfeet")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE

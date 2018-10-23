@@ -49,7 +49,7 @@ local yellEnlargedHeart					= mod:NewYell(275205)
 local yellEnlargedHeartFades			= mod:NewFadesYell(275205)
 local specWarnEnlargedHeartTaunt		= mod:NewSpecialWarningTaunt(275205, "Tank", nil, nil, 1, 2)
 local specWarnEnlargedHeartOther		= mod:NewSpecialWarningMoveTo(275205, "-Tank", nil, nil, 1, 2)
-local specWarnGTFO						= mod:NewSpecialWarningGTFO(270290, nil, nil, nil, 1, 2)
+local specWarnGTFO						= mod:NewSpecialWarningGTFO(270290, nil, nil, nil, 1, 8)
 
 mod:AddTimerLine(BOSS)
 local timerPlasmaDischargeCD			= mod:NewCDCountTimer(30.4, 271225, nil, nil, nil, 3)--30.4-42
@@ -268,7 +268,7 @@ end
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
 	if spellId == 270290 and destGUID == UnitGUID("player") and self:AntiSpam(2, 2) and not ignoreGTFO then
 		specWarnGTFO:Show(spellName)
-		specWarnGTFO:Play("watchstep")
+		specWarnGTFO:Play("watchfeet")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE

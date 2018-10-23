@@ -40,7 +40,7 @@ local specWarnDoomsHowlEngineer		= mod:NewSpecialWarningSwitch("ej18702", "-Heal
 local specWarnLionsHowlEngineer		= mod:NewSpecialWarningSwitch("ej18682", "-Healer", nil, nil, 1, 2)
 local specWarnFieldRepair			= mod:NewSpecialWarningInterrupt(271797, "HasInterrupt", nil, nil, 1, 2)
 local specWarnSentry				= mod:NewSpecialWarningMove(271783, false, nil, 2, 1, 2)
---local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
+--local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 8)
 
 --Mobile
 local timerShatteringPulseCD		= mod:NewCDTimer(20.9, 271163, nil, "Tank", nil, 5)
@@ -157,7 +157,7 @@ end
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 228007 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
 		specWarnGTFO:Show()
-		specWarnGTFO:Play("watchstep")
+		specWarnGTFO:Play("watchfeet")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE

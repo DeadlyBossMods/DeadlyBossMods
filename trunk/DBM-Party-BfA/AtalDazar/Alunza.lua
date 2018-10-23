@@ -21,7 +21,7 @@ local warnMoltenGold				= mod:NewSpellAnnounce(255591, 3)
 local specWarnTransfusion			= mod:NewSpecialWarningMoveTo(255577, nil, nil, nil, 3, 2)
 local specWarnClaws					= mod:NewSpecialWarningDefensive(255579, "Tank", nil, nil, 1, 2)
 --local yellSwirlingScythe			= mod:NewYell(195254)
---local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
+--local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 8)
 
 local timerTransfusionCD			= mod:NewNextTimer(34, 255577, nil, nil, nil, 5)
 local timerGildedClawsCD			= mod:NewCDTimer(34, 255579, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
@@ -77,7 +77,7 @@ end
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 228007 and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
 		specWarnGTFO:Show()
-		specWarnGTFO:Play("watcgstep")
+		specWarnGTFO:Play("watchfeet")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE

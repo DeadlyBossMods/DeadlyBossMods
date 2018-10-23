@@ -25,7 +25,7 @@ local yellSoulRend					= mod:NewYell(249923)
 local specWarnWrackingPain			= mod:NewSpecialWarningInterrupt(250096, "HasInterrupt", nil, nil, 1, 2)
 local specWarnSkewer				= mod:NewSpecialWarningDefensive(249919, "Tank", nil, nil, 1, 2)
 local specWarnEchoes				= mod:NewSpecialWarningDodge(250050, nil, nil, nil, 2, 2)
-local specWarnGTFO					= mod:NewSpecialWarningGTFO(250036, nil, nil, nil, 1, 2)
+local specWarnGTFO					= mod:NewSpecialWarningGTFO(250036, nil, nil, nil, 1, 8)
 
 local timerSoulrendCD				= mod:NewCDTimer(41.4, 249923, nil, nil, nil, 3, nil, DBM_CORE_DAMAGE_ICON)
 local timerWrackingPainCD			= mod:NewCDTimer(17, 250096, nil, "HasInterrupt", nil, 4, nil, DBM_CORE_INTERRUPT_ICON)--17-23
@@ -43,7 +43,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 250036 and args:IsPlayer() and self:AntiSpam(2, 1) then
 		specWarnGTFO:Show(args.spellName)
-		specWarnGTFO:Play("watchstep")
+		specWarnGTFO:Play("watchfeet")
 	end
 end
 
@@ -89,7 +89,7 @@ end
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
 	if spellId == 250036 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
 		specWarnGTFO:Show(spellName)
-		specWarnGTFO:Play("watchstep")
+		specWarnGTFO:Play("watchfeet")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE

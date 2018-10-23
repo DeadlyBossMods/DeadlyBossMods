@@ -27,7 +27,7 @@ local specWarnSlicingBlast			= mod:NewSpecialWarningInterrupt(267818, "HasInterr
 local specWarnHinderingCleave		= mod:NewSpecialWarningDefensive(267899, "Tank", nil, nil, 1, 2)
 local specWarnBlessingofIronsides	= mod:NewSpecialWarningRun(267901, "Tank", nil, 2, 4, 2)
 --local yellSwirlingScythe			= mod:NewYell(195254)
---local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
+--local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 8)
 
 local timerReinforcingWardCD		= mod:NewCDTimer(30.2, 267905, nil, nil, nil, 5, nil, DBM_CORE_IMPORTANT_ICON)
 local timerSwiftnessWardCD			= mod:NewCDTimer(36.4, 267891, nil, nil, nil, 5)--More data needed
@@ -121,7 +121,7 @@ end
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 228007 and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
 		specWarnGTFO:Show()
-		specWarnGTFO:Play("watchstep")
+		specWarnGTFO:Play("watchfeet")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
