@@ -682,7 +682,7 @@ end
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
 	if spellId == 270287 and destGUID == UnitGUID("player") and self:AntiSpam(2, 6) then
 		specWarnGTFO:Show(spellName)
-		specWarnGTFO:Play("runaway")
+		specWarnGTFO:Play("watchstep")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
@@ -690,7 +690,7 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
 	if spellId == 263326 and destGUID == UnitGUID("player") and self:AntiSpam(2, 6) then
 		specWarnGTFO:Show(spellName)
-		specWarnGTFO:Play("runaway")
+		specWarnGTFO:Play("watchstep")
 	end
 end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE
