@@ -18,12 +18,12 @@
 ## X-DBM-Mod-MinExpansion: 7
 localization.en.lua
 Frida_Kanae.lua
-Grong.lua
 FlameDuo.lua
+Grong.lua
 TreasureGuardian.lua
 ConclaveoftheChosen.lua
-Mekkatorque.lua
 Rastakhan.lua
+Mekkatorque.lua
 StormwallBlockade.lua
 Jaina.lua
 ZuldazarRaidTrash.lua
