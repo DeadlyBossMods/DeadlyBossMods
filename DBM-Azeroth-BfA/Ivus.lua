@@ -100,7 +100,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if (spellId == 282414 or spellId == 287538) and args:IsPlayer() then
 		specWarnGTFO:Show(args.spellName)
-		specWarnGTFO:Play("runaway")
+		specWarnGTFO:Play("watchstep")
 	end
 end
 
