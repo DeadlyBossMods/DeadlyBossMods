@@ -22,7 +22,7 @@ local specWarnCrush					= mod:NewSpecialWarningDefensive(260508, "Tank", nil, ni
 local specWarnThorns				= mod:NewSpecialWarningSwitch(267907, "Dps", nil, nil, 1, 2)
 local yellThorns					= mod:NewYell(267907)
 local specWarnSoulHarvest			= mod:NewSpecialWarningMoveTo(260512, "Tank", nil, nil, 3, 2)
---local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
+--local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 8)
 
 local timerCrushCD					= mod:NewCDTimer(17, 260508, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--17-26
 local timerThornsCD					= mod:NewNextTimer(21.8, 267907, nil, nil, nil, 3, nil, DBM_CORE_DAMAGE_ICON)
@@ -92,7 +92,7 @@ end
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 228007 and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
 		specWarnGTFO:Show()
-		specWarnGTFO:Play("watchstep")
+		specWarnGTFO:Play("watchfeet")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE

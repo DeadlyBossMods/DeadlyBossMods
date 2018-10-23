@@ -31,7 +31,7 @@ local specWarnBlindingSand			= mod:NewSpecialWarningLookAway(263914, nil, nil, n
 local specWarnKnotofSnakes			= mod:NewSpecialWarningSwitch(263958, "-Healer", nil, nil, 1, 2)
 local specWarnKnotofSnakesYou		= mod:NewSpecialWarningYou(263958, nil, nil, nil, 1, 2)
 local yellKnotofSnakes				= mod:NewYell(263958)
-local specWarnGTFO					= mod:NewSpecialWarningGTFO(263927, nil, nil, nil, 1, 2)
+local specWarnGTFO					= mod:NewSpecialWarningGTFO(263927, nil, nil, nil, 1, 8)
 
 local timerHadotoxinCD				= mod:NewAITimer(13, 263957, nil, "Tank|Healer|RemovePoison", nil, 5, nil, DBM_CORE_TANK_ICON..DBM_CORE_POISON_ICON)
 local timerNoxiousBreathCD			= mod:NewCDTimer(89.3, 272657, nil, nil, nil, 3)
@@ -123,7 +123,7 @@ end
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
 	if spellId == 263927 and destGUID == UnitGUID("player") and self:AntiSpam(2, 2) then
 		specWarnGTFO:Show(spellName)
-		specWarnGTFO:Play("watchstep")
+		specWarnGTFO:Play("watchfeet")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE

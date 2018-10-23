@@ -51,7 +51,7 @@ local warnStormsWail					= mod:NewTargetNoFilterAnnounce(285350, 3)
 ----General
 local specWarnTidalShroud				= mod:NewSpecialWarningSwitch(286558, nil, nil, nil, 3, 2)
 local specWarnTidalEmpowerment			= mod:NewSpecialWarningInterrupt(284765, "HasInterrupt", nil, nil, 1, 2)
-local specWarnGTFO						= mod:NewSpecialWarningGTFO(285075, nil, nil, nil, 1, 2)
+local specWarnGTFO						= mod:NewSpecialWarningGTFO(285075, nil, nil, nil, 1, 8)
 ----Sister Katherine
 local specWarnVoltaicFlash				= mod:NewSpecialWarningDodge(284262, nil, nil, nil, 2, 2)
 --local yellDarkRevolation				= mod:NewPosYell(273365)
@@ -281,7 +281,7 @@ end
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
 	if spellId == 285075 and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
 		specWarnGTFO:Show(spellName)
-		specWarnGTFO:Play("watchstep")
+		specWarnGTFO:Play("watchfeet")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE

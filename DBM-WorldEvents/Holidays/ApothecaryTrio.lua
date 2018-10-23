@@ -21,7 +21,7 @@ mod:RegisterEventsInCombat(
 
 local warnChainReaction			= mod:NewCastAnnounce(68821, 3, nil, nil, "Melee", 2)
 
-local specWarnGTFO				= mod:NewSpecialWarningGTFO(68927, nil, nil, nil, 1, 2)
+local specWarnGTFO				= mod:NewSpecialWarningGTFO(68927, nil, nil, nil, 1, 8)
 
 local timerHummel				= mod:NewTimer(10.5, "HummelActive", "Interface\\Icons\\ability_warrior_offensivestance", nil, false, "TrioActiveTimer")
 local timerBaxter				= mod:NewTimer(17.5, "BaxterActive", "Interface\\Icons\\ability_warrior_offensivestance", nil, false, "TrioActiveTimer")
@@ -39,7 +39,7 @@ end
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
 	if (spellId == 68927 or spellId == 68934) and destGUID == UnitGUID("player") and self:AntiSpam() then
 		specWarnGTFO:Show(spellName)
-		specWarnGTFO:Play("watchstep")
+		specWarnGTFO:Play("watchfeet")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE

@@ -26,7 +26,7 @@ local specWarnEntomb				= mod:NewSpecialWarningYou(267702, nil, nil, nil, 1, 2)
 local yellEntomb					= mod:NewYell(267702)
 local specWarnEntombOther			= mod:NewSpecialWarningSwitch(267702, nil, nil, nil, 1, 2)
 local specWarnWretchedDischarge		= mod:NewSpecialWarningInterrupt(267763, "HasInterrupt", nil, nil, 1, 2)
-local specWarnGTFO					= mod:NewSpecialWarningGTFO(267874, nil, nil, nil, 1, 2)
+local specWarnGTFO					= mod:NewSpecialWarningGTFO(267874, nil, nil, nil, 1, 8)
 
 local timerBurnCorruptionCD			= mod:NewCDTimer(13, 267639, nil, "Melee", nil, 2, nil, DBM_CORE_TANK_ICON..DBM_CORE_DEADLY_ICON)
 local timerDrainFluidsCD			= mod:NewCDTimer(13, 267618, nil, nil, nil, 3)
@@ -97,7 +97,7 @@ end
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 267874 and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
 		specWarnGTFO:Show()
-		specWarnGTFO:Play("watchstep")
+		specWarnGTFO:Play("watchfeet")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE

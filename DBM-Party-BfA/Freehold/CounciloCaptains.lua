@@ -34,7 +34,7 @@ local specWarnGrapeShot				= mod:NewSpecialWarningDodge(258381, nil, nil, nil, 3
 --Jolly
 local specWarnCuttingSurge			= mod:NewSpecialWarningDodge(267522, nil, nil, nil, 2, 2)
 local specWarnWhirlpoolofBlades		= mod:NewSpecialWarningDodge(267533, nil, nil, nil, 2, 2)
-local specWarnGTFO					= mod:NewSpecialWarningGTFO(272397, nil, nil, nil, 1, 2)
+local specWarnGTFO					= mod:NewSpecialWarningGTFO(272397, nil, nil, nil, 1, 8)
 
 --General
 local timerTendingBarCD				= mod:NewNextTimer(8, 264605, nil, nil, nil, 3)
@@ -172,7 +172,7 @@ end
 function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
 	if spellId == 272397 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) and not self:IsTank() then
 		specWarnGTFO:Show(spellName)
-		specWarnGTFO:Play("watchstep")
+		specWarnGTFO:Play("watchfeet")
 	end
 end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE
