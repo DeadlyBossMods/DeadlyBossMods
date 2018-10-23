@@ -17,9 +17,10 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 273282 273538 273810 272115 274019 279157 273944",
 	"SPELL_CAST_SUCCESS 272533 273949 276922 272404",
-	"SPELL_AURA_APPLIED 274693 272407 272536",
---	"SPELL_AURA_APPLIED_DOSE",
-	"SPELL_AURA_REMOVED 272407 272536 279157",
+	"SPELL_AURA_APPLIED 274693 272407 272536 272146",
+	"SPELL_AURA_APPLIED_DOSE 272146",
+	"SPELL_AURA_REMOVED 272407 272536 279157 272146",
+	"SPELL_AURA_REMOVED_DOSE 272146",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 	"UNIT_DIED",
@@ -93,6 +94,7 @@ mod.vb.visionsCount = 0
 local beamTimers = {19.5, 24, 12, 12}--Changed for a 3rd time
 local mythicBeamTimers = {19.5, 15, 15, 15}
 local castsPerGUID = {}
+local infoframeTable = {}
 
 function mod:OnCombatStart(delay)
 	self.vb.ruinCast = 0
@@ -104,6 +106,7 @@ function mod:OnCombatStart(delay)
 	self.vb.isIntermission = false
 	self.vb.visionsCount = 0
 	table.wipe(castsPerGUID)
+	table.wipe(infoframeTable)
 	if not self:IsLFR() then
 		timerImminentRuinCD:Start(4.9-delay, 1)
 		countdownImminentRuin:Start(4.9-delay)
@@ -121,7 +124,11 @@ function mod:OnCombatStart(delay)
 	countdownEssenceShear:Start(19-delay)
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(272146))
-		DBM.InfoFrame:Show(5, "playerdebuffstacks", 272146, 1)
+		if DBM.Options.DebugMode then
+			DBM.InfoFrame:Show(5, "table", infoframeTable, 1)
+		else
+			DBM.InfoFrame:Show(5, "playerdebuffstacks", 272146, 1)
+		end
 	end
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(5)
@@ -301,9 +308,14 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.vb.ruinIcon == 3 then
 			self.vb.ruinIcon = 1
 		end
+	elseif spellId == 272146 then
+		infoframeTable[args.destName] = args.amount or 1
+		if self.Options.InfoFrame and DBM.Options.DebugMode then
+			DBM.InfoFrame:UpdateTable(infoframeTable)
+		end
 	end
 end
---mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
+mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
@@ -319,6 +331,21 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 279157 then--CLEU method of detecting add leaving, TODO, see if can detect it with IEEU or UNIT_TARGETABLE_CHANGED so it's reliable when add can be killed in 3 seconds (so, like next expansion :D)
 		timerVoidEchoesCD:Stop()
 		timerObliterationBlastCD:Stop(DBM_ADD)
+	elseif spellId == 272146 then
+		infoframeTable[args.destName] = nil
+		if self.Options.InfoFrame and DBM.Options.DebugMode then
+			DBM.InfoFrame:UpdateTable(infoframeTable)
+		end
+	end
+end
+
+function mod:SPELL_AURA_REMOVED_DOSE(args)
+	local spellId = args.spellId
+	if spellId == 272146 then
+		infoframeTable[args.destName] = args.amount or 1
+		if self.Options.InfoFrame and DBM.Options.DebugMode then
+			DBM.InfoFrame:UpdateTable(infoframeTable)
+		end
 	end
 end
 
