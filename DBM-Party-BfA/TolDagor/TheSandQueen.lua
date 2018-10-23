@@ -23,7 +23,7 @@ local specWarnUpheavel				= mod:NewSpecialWarningYou(257617, nil, nil, nil, 2, 2
 local yellUpheavel					= mod:NewYell(257617)
 local specWarnUpheavelNear			= mod:NewSpecialWarningClose(257617, nil, nil, nil, 2, 2)
 local specWarnSandstorm				= mod:NewSpecialWarningSpell(257495, nil, nil, nil, 2, 2)
---local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
+--local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 8)
 
 --local timerReapSoulCD				= mod:NewNextTimer(13, 194956, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON..DBM_CORE_DEADLY_ICON)
 local timerSandTrapCD				= mod:NewCDTimer(14.2, 257092, nil, nil, nil, 3)--14.2-18.6
@@ -91,7 +91,7 @@ end
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 228007 and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
 		specWarnGTFO:Show()
-		specWarnGTFO:Play("watchstep")
+		specWarnGTFO:Play("watchfeet")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE

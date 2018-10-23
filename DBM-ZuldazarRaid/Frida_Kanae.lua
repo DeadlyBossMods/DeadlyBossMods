@@ -54,7 +54,7 @@ local specWarnPenance					= mod:NewSpecialWarningInterrupt(284578, "HasInterrupt
 local specWarnHeal						= mod:NewSpecialWarningInterrupt(283628, "HasInterrupt", nil, nil, 1, 2)
 local specWarnDivineBurst				= mod:NewSpecialWarningInterrupt(283626, "HasInterrupt", nil, nil, 1, 2)
 local specWarnBlindingFaith				= mod:NewSpecialWarningLookAway(283650, nil, nil, nil, 3, 2)
-local specWarnGTFO						= mod:NewSpecialWarningGTFO(283582, nil, nil, nil, 1, 2)
+local specWarnGTFO						= mod:NewSpecialWarningGTFO(283582, nil, nil, nil, 1, 8)
 
 mod:AddTimerLine(DBM_BOSS)
 local timerWaveofLightCD				= mod:NewCDTimer(10.5, 283598, nil, nil, nil, 3, nil, DBM_CORE_MAGIC_ICON)
@@ -228,7 +228,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnAvengingWrath:Show(args.destName)
 	elseif spellId == 283582 and args:IsPlayer() and self:AntiSpam(2, 4) then
 		specWarnGTFO:Show(args.spellName)
-		specWarnGTFO:Play("watchstep")
+		specWarnGTFO:Play("watchfeet")
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -257,7 +257,7 @@ end
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
 	if spellId == 283582 and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
 		specWarnGTFO:Show(spellName)
-		specWarnGTFO:Play("watchstep")
+		specWarnGTFO:Play("watchfeet")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE

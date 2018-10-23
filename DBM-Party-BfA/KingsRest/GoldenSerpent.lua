@@ -24,7 +24,7 @@ local yellSpitGold					= mod:NewYell(265773)
 local specWarnLucreCall				= mod:NewSpecialWarningSwitch(265923, nil, nil, nil, 1, 2)--Only non Tank
 local specWarnLucreCallTank			= mod:NewSpecialWarningMove(265923, nil, nil, nil, 1, 2)--Only Tank
 local specWarnSerpentine			= mod:NewSpecialWarningRun(265781, nil, nil, nil, 4, 2)
-local specWarnGTFO					= mod:NewSpecialWarningGTFO(265914, nil, nil, nil, 1, 2)
+local specWarnGTFO					= mod:NewSpecialWarningGTFO(265914, nil, nil, nil, 1, 8)
 
 local timerTailThrashCD				= mod:NewCDTimer(16.9, 265910, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON..DBM_CORE_DEADLY_ICON)
 local timerSpitGoldCD				= mod:NewCDCountTimer(10.9, 265773, nil, nil, nil, 3)
@@ -97,7 +97,7 @@ end
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 265914 and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
 		specWarnGTFO:Show()
-		specWarnGTFO:Play("watchstep")
+		specWarnGTFO:Play("watchfeet")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE

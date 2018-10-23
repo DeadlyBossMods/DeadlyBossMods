@@ -28,7 +28,7 @@ local specWarnAvastye				= mod:NewSpecialWarningSwitch(257316, "Dps", nil, nil, 
 local specWarnSwiftwindSaber		= mod:NewSpecialWarningDodge(257278, nil, nil, nil, 2, 2)
 local specWarnCannonBarrage			= mod:NewSpecialWarningRun(257305, nil, nil, nil, 4, 2)
 local yellCannonBarrage				= mod:NewYell(257305)
---local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
+--local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 8)
 
 local timerAvastyeCD				= mod:NewCDTimer(13, 257316, nil, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON)
 local timerSwiftwindSaberCD			= mod:NewCDTimer(15.8, 257316, nil, nil, nil, 3)
@@ -105,7 +105,7 @@ end
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 228007 and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
 		specWarnGTFO:Show()
-		specWarnGTFO:Play("watchstep")
+		specWarnGTFO:Play("watchfeet")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE

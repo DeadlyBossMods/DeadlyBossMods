@@ -22,7 +22,7 @@ local specWarnSummonSlaver			= mod:NewSpecialWarningSwitch(266266, "-Healer", ni
 local specWarnDreadEssence			= mod:NewSpecialWarningSpell(266181, nil, nil, nil, 2, 2)
 local specWarnDarkenedLightning		= mod:NewSpecialWarningInterrupt(266225, "HasInterrupt", nil, nil, 1, 2)
 --local yellSwirlingScythe			= mod:NewYell(195254)
---local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
+--local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 8)
 
 local timerDarkenedLightningCD		= mod:NewCDTimer(15.7, 266225, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)--Has interrupt spell icon but it's not actually interruptable
 local timerSummonSlaverCD			= mod:NewCDTimer(17, 266266, nil, nil, nil, 1)--17-22
@@ -77,7 +77,7 @@ end
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 228007 and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
 		specWarnGTFO:Show()
-		specWarnGTFO:Play("watchstep")
+		specWarnGTFO:Play("watchfeet")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE

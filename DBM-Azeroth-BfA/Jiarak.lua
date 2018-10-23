@@ -23,7 +23,7 @@ local specWarnHurricaneCrash		= mod:NewSpecialWarningRun(261088, nil, nil, nil, 
 local specWarnMatriarchsCall		= mod:NewSpecialWarningSwitch(261467, "-Healer", nil, 2, 1, 2)
 --local specWarnClutch				= mod:NewSpecialWarningYou(261509, nil, nil, nil, 1, 2)
 --local yellClutch					= mod:NewYell(261509)
---local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
+--local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 8)
 
 local timerStormWingCD				= mod:NewCDTimer(46.2, 260908, nil, nil, nil, 2)
 local timerHurricaneCrashCD			= mod:NewCDTimer(46.2, 261088, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
@@ -82,7 +82,7 @@ end
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 228007 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
 		specWarnGTFO:Show()
-		specWarnGTFO:Play("watchstep")
+		specWarnGTFO:Play("watchfeet")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE

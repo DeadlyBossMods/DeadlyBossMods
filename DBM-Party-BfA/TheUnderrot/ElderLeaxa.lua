@@ -16,7 +16,7 @@ mod:RegisterEventsInCombat(
 local specWarnBloodBolt				= mod:NewSpecialWarningInterrupt(260879, "HasInterrupt", nil, nil, 1, 2)
 local specWarnCreepingRot			= mod:NewSpecialWarningDodge(260894, nil, nil, nil, 2, 2)
 local specWarnSanguineFeast			= mod:NewSpecialWarningDodge(264757, nil, nil, nil, 2, 2)
---local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
+--local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 8)
 
 --TODO: Use NewNextSourceTimer to split adds from boss
 local timerBloodBoltCD				= mod:NewCDTimer(6.1, 260879, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
@@ -83,7 +83,7 @@ end
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 228007 and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
 		specWarnGTFO:Show()
-		specWarnGTFO:Play("watchstep")
+		specWarnGTFO:Play("watchfeet")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE

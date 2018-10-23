@@ -29,7 +29,7 @@ local specWarnDiveBomb				= mod:NewSpecialWarningDodge(272046, nil, nil, nil, 2,
 --local specWarnPowderShot			= mod:NewSpecialWarningSpell(256106, nil, nil, nil, 2, 2)--Dodge?
 --local yellSwirlingScythe			= mod:NewYell(195254)
 local specWarnBrew					= mod:NewSpecialWarningInterrupt(256060, "HasInterrupt", nil, nil, 1, 2)
-local specWarnGTFO					= mod:NewSpecialWarningGTFO(256016, nil, nil, nil, 1, 2)
+local specWarnGTFO					= mod:NewSpecialWarningGTFO(256016, nil, nil, nil, 1, 8)
 
 local timerChargeCD					= mod:NewCDTimer(8.4, 255952, nil, nil, nil, 3)
 local timerDiveBombCD				= mod:NewCDTimer(17, 272046, nil, nil, nil, 3)
@@ -45,7 +45,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 256016 and args:IsPlayer() and self:AntiSpam(2, 1) then
 		specWarnGTFO:Show(args.spellName)
-		specWarnGTFO:Play("watchstep")
+		specWarnGTFO:Play("watchfeet")
 	elseif spellId == 256060 then
 		specWarnBrew:Show(args.sourceName)
 		specWarnBrew:Play("kickcast")
@@ -82,7 +82,7 @@ end
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
 	if spellId == 256016 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
 		specWarnGTFO:Show(spellName)
-		specWarnGTFO:Play("watchstep")
+		specWarnGTFO:Play("watchfeet")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE

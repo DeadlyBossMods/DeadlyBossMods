@@ -21,7 +21,7 @@ local specWarnFuselighter			= mod:NewSpecialWarningYou(257028, nil, nil, nil, 1,
 local yellFuselighter				= mod:NewYell(257028, nil, false)
 local specWarnFuselighterOther		= mod:NewSpecialWarningDispel(257028, "Healer", nil, nil, 1, 2)
 local specWarnIgnition				= mod:NewSpecialWarningSpell(256970, nil, nil, nil, 1, 2)
---local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
+--local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 8)
 
 local timerCinderflameCD			= mod:NewCDTimer(20.5, 256955, nil, nil, nil, 3)
 local timerFuselighterCD			= mod:NewCDTimer(14.7, 257028, nil, nil, nil, 3, nil, DBM_CORE_MAGIC_ICON)--14.7-23, health based?
@@ -80,7 +80,7 @@ end
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 228007 and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
 		specWarnGTFO:Show()
-		specWarnGTFO:Play("watchstep")
+		specWarnGTFO:Play("watchfeet")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE

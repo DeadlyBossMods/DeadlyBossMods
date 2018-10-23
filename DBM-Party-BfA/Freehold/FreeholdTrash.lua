@@ -37,7 +37,7 @@ local specWarnBestialWrath				= mod:NewSpecialWarningDispel(257476, "RemoveEnrag
 local specWarnBlindRage					= mod:NewSpecialWarningDispel(257739, "RemoveEnrage", nil, 2, 1, 2)
 local specWarnInfectedWound				= mod:NewSpecialWarningDispel(258323, "RemoveDisease", nil, nil, 1, 2)
 local specWarnOiledBlade				= mod:NewSpecialWarningDispel(257908, "Healer", nil, nil, 1, 2)
-local specWarnGTFO						= mod:NewSpecialWarningGTFO(257274, nil, nil, nil, 1, 2)
+local specWarnGTFO						= mod:NewSpecialWarningGTFO(257274, nil, nil, nil, 1, 8)
 
 function mod:SPELL_CAST_START(args)
 	if not self.Options.Enabled then return end
@@ -90,7 +90,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 257274 and args:IsPlayer() and self:AntiSpam(2, 2) then
 		specWarnGTFO:Show(args.spellName)
-		specWarnGTFO:Play("watchstep")
+		specWarnGTFO:Play("watchfeet")
 	elseif spellId == 257476 and self:AntiSpam(3, 6) then
 		specWarnBestialWrath:Show(args.destName)
 		specWarnBestialWrath:Play("helpdispel")

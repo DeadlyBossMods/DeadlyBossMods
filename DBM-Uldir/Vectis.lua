@@ -59,7 +59,7 @@ local yellTerminalEruption					= mod:NewYell(274989, nil, nil, nil, "YELL")--Myt
 local specWarnLingeringInfection			= mod:NewSpecialWarningStack(265127, nil, 5, nil, nil, 1, 6)
 local specWarnLiquefy						= mod:NewSpecialWarningSpell(265217, nil, nil, nil, 3, 2)
 local specWarnTerminalEruption				= mod:NewSpecialWarningSpell(274989, nil, nil, nil, 2, 2)
---local specWarnGTFO						= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
+--local specWarnGTFO						= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 8)
 
 --mod:AddTimerLine(Nexus)
 local timerEvolvingAfflictionCD				= mod:NewCDTimer(8.5, 265178, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
@@ -555,7 +555,7 @@ end
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 228007 and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
 		specWarnGTFO:Show()
-		specWarnGTFO:Play("watchstep")
+		specWarnGTFO:Play("watchfeet")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE

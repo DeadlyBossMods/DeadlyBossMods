@@ -21,7 +21,7 @@ local warnCapacitance				= mod:NewCountAnnounce(266511, 2)
 local specWarnConsumeCharge			= mod:NewSpecialWarningSpell(266512, nil, nil, nil, 2, 2)
 local specWarnElectroshock			= mod:NewSpecialWarningStack(266923, nil, 5, nil, nil, 1, 6)
 --local yellSwirlingScythe			= mod:NewYell(195254)
---local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 2)
+--local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 8)
 
 --local timerReapSoulCD				= mod:NewNextTimer(13, 194956, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON..DBM_CORE_DEADLY_ICON)
 
@@ -70,7 +70,7 @@ end
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 228007 and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
 		specWarnGTFO:Show()
-		specWarnGTFO:Play("watchstep")
+		specWarnGTFO:Play("watchfeet")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
