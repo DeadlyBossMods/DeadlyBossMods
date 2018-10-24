@@ -135,7 +135,7 @@ mod.vb.burstingIcon = 0
 mod.vb.burstingCount = 0
 mod.vb.explosiveIcon = 0
 mod.vb.matrixActive = false
-local playerHasImperfect, playerHasBursting, playerHasBargain = false, false, false
+local playerHasImperfect, playerHasBursting, playerHasBargain, playerHasMatrix = false, false, false, false
 local matrixTargets, bloodFeastTarget = {}, {}
 local thousandMawsTimers = {25.4, 26.3, 25.5, 24.2, 23.9, 23.1, 21.5, 21.9, 19.4}
 local thousandMawsTimersLFR = {27.78, 29.2, 27.9, 26.46, 26.13, 25.26, 23.51, 23.95, 21.21}--Timers 4+ extrapolated using 1.093x greater formula
@@ -269,7 +269,7 @@ function mod:OnCombatStart(delay)
 	self.vb.burstingCount = 0
 	self.vb.explosiveIcon = 0
 	self.vb.matrixActive = false
-	playerHasImperfect, playerHasBursting, playerHasBargain = false, false, false
+	playerHasImperfect, playerHasBursting, playerHasBargain, playerHasMatrix = false, false, false, false
 	timerMatrixCD:Start(5.3, 1)
 	if self:IsLFR() then
 		timerThousandMawsCD:Start(27.7-delay, 1)
@@ -396,20 +396,20 @@ function mod:SPELL_CAST_SUCCESS(args)
 		else--Drive cast in Phase 2
 			if self.vb.waveCast == 2 then--Current timer is blood feast
 				local elapsed, total = timerBloodFeastCD:GetTime(self.vb.bloodFeastCount+1)
-				local extend = (total+24) - elapsed
-				timerBloodFeastCD:Update(elapsed, total+24, self.vb.bloodFeastCount+1)
+				local extend = (total+25) - elapsed
+				timerBloodFeastCD:Update(elapsed, total+25, self.vb.bloodFeastCount+1)
 				countdownBloodFeast:Cancel()
 				countdownBloodFeast:Start(extend)
 			else--Current timer is wave of corruption
-				timerWaveofCorruptionCD:AddTime(24, self.vb.waveCast+1)
+				timerWaveofCorruptionCD:AddTime(25, self.vb.waveCast+1)
 			end
 			local elapsed2, total2 = timerExplosiveCorruptionCD:GetTime(self.vb.explosiveCount+1)
-			local extend2 = (total2+24) - elapsed2
-			timerExplosiveCorruptionCD:Update(elapsed2, total2+24, self.vb.explosiveCount+1)
+			local extend2 = (total2+25) - elapsed2
+			timerExplosiveCorruptionCD:Update(elapsed2, total2+25, self.vb.explosiveCount+1)
 			countdownExplosiveCorruption:Cancel()
 			countdownExplosiveCorruption:Start(extend2)
 			if self:IsMythic() then
-				timerBurstingBoilCD:AddTime(24, self.vb.burstingCount+1)
+				timerBurstingBoilCD:AddTime(25, self.vb.burstingCount+1)
 			end
 		end
 	elseif spellId == 263373 then--Deposit Matrix
@@ -552,6 +552,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnPowerMatrix:Show()
 			specWarnPowerMatrix:Play("newmatrix")
 			yellPowerMatrix:Yell()
+			playerHasMatrix = true
 		else
 			if self:IsMythic() then
 				warnPowerMatrix:CombinedShow(1, args.destName)
@@ -568,9 +569,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			if self:IsTanking("player", "boss1", nil, true) then
 				specWarnGrowingCorruption:Show(amount)
 				specWarnGrowingCorruption:Play("changemt")
-			else
+			elseif not playerHasMatrix then--if player has matrix, don't shout to taunt boss
 				specWarnGrowingCorruptionOther:Show(args.destName)
-				specWarnGrowingCorruptionOther:Play("changemt")
+				specWarnGrowingCorruptionOther:Play("tauntboss")
 			end
 		end
 	elseif spellId == 263235 then
@@ -676,6 +677,9 @@ function mod:SPELL_AURA_REMOVED(args)
 		tDeleteItem(matrixTargets, args.destName)
 		self:Unschedule(checkThrowFail)
 		self:Schedule(3.5, checkThrowFail, self)
+		if args:IsPlayer() then
+			playerHasMatrix = false
+		end
 	elseif spellId == 277007 then
 		if args:IsPlayer() then
 			playerHasBursting = false
