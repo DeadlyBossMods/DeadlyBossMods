@@ -41,7 +41,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-
+	Bulwark =	"Bulwark",
+	Hand	=	"Hand"
 })
 
 ---------------------------
