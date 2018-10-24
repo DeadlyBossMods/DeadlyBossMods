@@ -379,7 +379,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 263235 then--Blood Feast
 		self.vb.waveCast = 0
-		timerWaveofCorruptionCD:Start(15.6, 1)--16.6--Wave of corruption is next, not blood Feast
+		timerWaveofCorruptionCD:Start(15.5, 1)--Wave of corruption is next, not blood Feast
 	elseif (spellId == 263482 or spellId == 263503) then
 		timerReOrgBlast:Start()
 		if self.vb.phase < 2 then--Phase 1 to Phase 2 Transition
@@ -421,7 +421,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.waveCast = self.vb.waveCast + 1
 		if self.vb.phase == 2 then
 			if self.vb.waveCast == 1 then
-				timerWaveofCorruptionCD:Start(15.6, 2)
+				timerWaveofCorruptionCD:Start(15.5, 2)
 			else
 				timerBloodFeastCD:Start(15.6, self.vb.bloodFeastCount+1)
 				countdownBloodFeast:Start(15.6)
@@ -598,7 +598,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.waveCast = 0
 		if self:IsMythic() then
 			--Wave seem cast instantly on mythic so no timer for first.
-			timerBurstingBoilCD:Start(16.9, 1)
+			timerBurstingBoilCD:Start(14.3, 1)--14.3-17
 		else
 			timerExplosiveCorruptionCD:Start(9, 1)
 			countdownExplosiveCorruption:Start(9)
