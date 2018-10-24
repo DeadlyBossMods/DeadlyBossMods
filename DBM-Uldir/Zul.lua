@@ -93,7 +93,7 @@ local timerDeathwishCD					= mod:NewNextCountTimer(27.9, 274271, nil, nil, nil, 
 
 --mod:AddSetIconOption("SetIconGift", 255594, true)
 --mod:AddRangeFrameOption("8/10")
-mod:AddInfoFrameOption(258040, true)
+mod:AddInfoFrameOption(274195, true)
 mod:AddNamePlateOption("NPAuraOnPresence", 276093)
 mod:AddNamePlateOption("NPAuraOnThrumming", 273288)
 mod:AddNamePlateOption("NPAuraOnBoundbyShadow", 273432)

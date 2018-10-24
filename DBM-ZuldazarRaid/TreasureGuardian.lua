@@ -15,13 +15,13 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 282939 287659 287070 285995 284941",
-	"SPELL_CAST_SUCCESS 283507 287648 284081 284493 284470 287072 285014 287037",
-	"SPELL_AURA_APPLIED 284798 283507 287648 284470 287072 285014 287037",
+	"SPELL_CAST_START 282939 287659 287070 285995 284941 283947 283606",
+	"SPELL_CAST_SUCCESS 283507 287648 284470 287072 285014 287037 285505",
+	"SPELL_AURA_APPLIED 284798 283507 287648 284470 287072 285014 287037 284105",
 --	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 284798 283507 287648 284470 287072 285014",
-	"UNIT_DIED",
-	"UNIT_SPELLCAST_START boss1 boss2 boss3"
+	"UNIT_DIED"
+--	"UNIT_SPELLCAST_START boss1 boss2 boss3"
 )
 
 --Figure out right crush idea, too many to guess right, also need to see how it's done by source
@@ -34,7 +34,6 @@ local warnVolatileCharge				= mod:NewTargetAnnounce(283507, 2)
 ----Traps
 local warnFlameJet						= mod:NewSpellAnnounce(285479, 3)
 local warnRubyBeam						= mod:NewSpellAnnounce(284081, 3)
-local warnPulseToxin					= mod:NewSpellAnnounce(284493, 2)
 local warnTimeBomb						= mod:NewTargetAnnounce(284470, 2)
 --Stage Two: Toppling the Guardian
 local warnPhase2						= mod:NewPhaseAnnounce(2, 2)
@@ -45,12 +44,14 @@ local warnLiquidGold					= mod:NewTargetAnnounce(287072, 2)
 local specWarnGrosslyIncandescent		= mod:NewSpecialWarningYou(284798, nil, nil, nil, 1, 2)
 local yellGrosslyIncandescent			= mod:NewYell(284798)
 --Stage One: Raiding The Vault
+----General
+local specWarnCrush						= mod:NewSpecialWarningDodge(283606, nil, nil, nil, 2, 2)
 ----The Hand of In'zashi
 local specWarnVolatileCharge			= mod:NewSpecialWarningMoveAway(283507, nil, nil, nil, 1, 2)
 local yellVolatileCharge				= mod:NewYell(283507)
 local yellVolatileChargeFade			= mod:NewFadesYell(283507)
 ----Yalat's Bulwark
-local specWarnFlamesofPunishment		= mod:NewSpecialWarningDodge(282939, nil, nil, nil, 2, 2)
+local specWarnFlamesofPunishment		= mod:NewSpecialWarningDodge(282939, nil, nil, nil, 2, 8)
 ----Traps
 local specWarnTimeBomb					= mod:NewSpecialWarningMoveAway(284470, nil, nil, nil, 1, 2)
 local yellTimeBomb						= mod:NewYell(284470)
@@ -69,18 +70,17 @@ local specWarnCoinSweep					= mod:NewSpecialWarningTaunt(287037, nil, nil, nil, 
 
 --mod:AddTimerLine(DBM:EJ_GetSectionInfo(18527))
 --Stage One: Raiding The Vault
---local timerCrushCD					= mod:NewCDSourceTimer(55, 283604, nil, nil, nil, 3)--Both
+local timerCrushCD						= mod:NewCDSourceTimer(55, 283604, nil, nil, nil, 3)--Both
 ----The Hand of In'zashi
-local timerVolatileChargeCD				= mod:NewAITimer(55, 283507, nil, nil, nil, 3)
+local timerVolatileChargeCD				= mod:NewCDTimer(12.1, 283507, nil, nil, nil, 3)
 ----Yalat's Bulwark
-local timerFlamesofPunishmentCD			= mod:NewAITimer(55, 282939, nil, nil, nil, 3)
+local timerFlamesofPunishmentCD			= mod:NewCDTimer(23, 282939, nil, nil, nil, 3)
 ----Traps
-local timerFlameJetCD					= mod:NewAITimer(55, 285479, nil, nil, nil, 3)
-local timerRubyBeamCD					= mod:NewAITimer(55, 284081, nil, nil, nil, 3)
-local timerPulseToxinCD					= mod:NewAITimer(55, 284493, nil, nil, nil, 2)
-local timerTimeBombCD					= mod:NewAITimer(55, 284470, nil, nil, nil, 3, nil, DBM_CORE_MAGIC_ICON)
+local timerFlameJet						= mod:NewBuffActiveTimer(12, 285479, nil, nil, nil, 3)
+local timerRubyBeam						= mod:NewBuffActiveTimer(8, 284081, nil, nil, nil, 3)
+local timerTimeBombCD					= mod:NewCDTimer(21.8, 284470, nil, nil, nil, 3, nil, DBM_CORE_MAGIC_ICON)
 --Stage Two: Toppling the Guardian
-local timerDrawPowerCD					= mod:NewCastTimer(5, 282939, nil, nil, nil, 6)
+local timerDrawPower					= mod:NewCastTimer(5, 282939, nil, nil, nil, 6)
 local timerLiquidGoldCD					= mod:NewAITimer(5, 287072, nil, nil, nil, 3)
 local timerSpiritsofGoldCD				= mod:NewAITimer(5, 285995, nil, nil, nil, 1)
 local timerCoinShowerCD					= mod:NewAITimer(5, 285014, nil, nil, nil, 5, nil, DBM_CORE_DEADLY_ICON)
@@ -101,6 +101,7 @@ local timerCoinSweepCD					= mod:NewAITimer(14.1, 287037, nil, "Tank", nil, 5, n
 
 mod.vb.phase = 1
 mod.vb.wailCast = 0
+mod.vb.bulwarkCrush = 0
 local grosslyIncandescentTargets = {}
 
 local updateInfoFrame
@@ -166,6 +167,7 @@ end
 function mod:OnCombatStart(delay)
 	self.vb.phase = 1
 	self.vb.wailCast = 0
+	self.vb.bulwarkCrush = 0
 --	if self.Options.NPAuraOnPresence then
 --		DBM:FireEvent("BossMod_EnableHostileNameplates")
 --	end
@@ -192,23 +194,23 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 282939 or spellId == 287659 then
-		specWarnFlamesofPunishment:Show()
-		specWarnFlamesofPunishment:Play("watchwave")
+		if self:CheckTankDistance(args.sourceGUID, 43) then
+			specWarnFlamesofPunishment:Show()
+			specWarnFlamesofPunishment:Play("behindboss")
+			specWarnFlamesofPunishment:ScheduleVoice(1.5, "keepmove")
+		end
 		timerFlamesofPunishmentCD:Start()
 	elseif spellId == 287070 then
 		self.vb.phase = 2
 		self.vb.wailCast = 0
 		--Do these stop?
 		timerTimeBombCD:Stop()
-		timerPulseToxinCD:Stop()
-		timerRubyBeamCD:Stop()
-		timerFlameJetCD:Stop()
 		warnPhase2:Show()
-		timerDrawPowerCD:Start()
-		timerLiquidGoldCD:Start(2)
+		timerDrawPower:Start()
+		timerLiquidGoldCD:Start(2)--14.5
+		timerCoinSweepCD:Start(2)--15.7
 		timerSpiritsofGoldCD:Start(2)
 		timerWailofGreedCD:Start(2)
-		timerCoinSweepCD:Start(2)
 	elseif spellId == 285995 then
 		specWarnSpiritsofGold:Show()
 		specWarnSpiritsofGold:Play("killmob")
@@ -218,6 +220,25 @@ function mod:SPELL_CAST_START(args)
 		specWarnWailofGreed:Show(self.vb.wailCast)
 		specWarnWailofGreed:Play("aesoon")
 		timerWailofGreedCD:Start()
+	elseif spellId == 283947 and self:AntiSpam(5, 1) then--Flame Jet
+		warnFlameJet:Show()
+		timerFlameJet:Start(12)
+	elseif spellId == 283606 then
+		if self:CheckTankDistance(args.sourceGUID, 43) then
+			specWarnCrush:Show()
+			specWarnCrush:Play("watchstep")
+		end
+		local cid = self:GetCIDFromGUID(args.sourceGUID)
+		if cid == 145274 then--Yalat's Bulwark
+			self.vb.bulwarkCrush = self.vb.bulwarkCrush + 1
+			if self.vb.bulwarkCrush == 1 then
+				timerCrushCD:Start(17, L.Bulwark)
+			else
+				timerCrushCD:Start(23, L.Bulwark)--7.5, 17.0, 23.2, 23.0, 23.1, 23.1, 23.1, 23.0, 23.1, 23.1, 23.1
+			end
+		else--The Hand of In'zashi
+			timerCrushCD:Start(15.8, L.Hand)--7.1, 30.5, 26.7, 15.8, 26.7, 15.8, 25.6, 15.8, 15.8, 18.2, 15.8, 15.8
+		end
 	end
 end
 
@@ -225,20 +246,16 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 283507 or spellId == 287648 then
 		timerVolatileChargeCD:Start()
-	elseif spellId == 284081 then
-		warnRubyBeam:Show()
-		timerRubyBeamCD:Start()
-	elseif spellId == 284493 then
-		warnPulseToxin:Show()
-		timerPulseToxinCD:Start()
 	elseif spellId == 284470 then
-		timerTimeBombCD:Start()
+		timerTimeBombCD:Start(21.8, args.sourceGUID)
 	elseif spellId == 287072 then
 		timerLiquidGoldCD:Start()
 	elseif spellId == 285014 then
 		timerCoinShowerCD:Start()
 	elseif spellId == 287037 then
 		timerCoinSweepCD:Start()
+	elseif spellId == 285505 then--Arcane Amethyst Visual
+		timerTimeBombCD:Start(5.5, args.sourceGUID)
 	end
 end
 
@@ -304,6 +321,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnCoinShower:Show(args.destName)
 		end
 		specWarnCoinShower:Play("gathershare")
+	elseif spellId == 284105 and self:AntiSpam(5, 2) then
+		warnRubyBeam:Show()
+		timerRubyBeam:Start(8)
 	end
 end
 --mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -345,16 +365,19 @@ function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 145273 then--The Hand of In'zashi
 		timerVolatileChargeCD:Stop()
+		timerCrushCD:Stop(L.Hand)
 	elseif cid == 145274 then--Yalat's Bulwark
 		timerFlamesofPunishmentCD:Stop()
+		timerCrushCD:Stop(L.Bulwark)
 	--elseif cid == 147218 then--Spirit of Gold
 		
 	end
 end
 
+--[[
 function mod:UNIT_SPELLCAST_START(uId, _, spellId)
 	if spellId == 283947 and self:AntiSpam(5, 1) then--Flame Jet
-		warnFlameJet:Show()
-		timerFlameJetCD:Start()
+
 	end
 end
+--]]

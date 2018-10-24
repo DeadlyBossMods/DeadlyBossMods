@@ -26,7 +26,7 @@ local warnDrillSmash				= mod:NewTargetNoFilterAnnounce(271456, 2)
 local warnSummonBooma				= mod:NewSpellAnnounce(276212, 2)
 
 --Stage One: Big Guns
-local specWarnGatlingGun			= mod:NewSpecialWarningDodge(260280, nil, nil, nil, 3, 2)
+local specWarnGatlingGun			= mod:NewSpecialWarningDodge(260280, nil, nil, nil, 3, 8)
 local specWarnHomingMissile			= mod:NewSpecialWarningMoveAway(260811, nil, nil, nil, 1, 2)
 local yellHomingMissile				= mod:NewYell(260811)
 local specWarnHomingMissileNear		= mod:NewSpecialWarningClose(260811, nil, nil, nil, 1, 2)
@@ -112,7 +112,8 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 260280 then
 		specWarnGatlingGun:Show()
-		specWarnGatlingGun:Play("shockwave")
+		specWarnGatlingGun:Play("behindboss")
+		specWarnGatlingGun:ScheduleVoice(1.5, "keepmove")
 		timerGatlingGunCD:Start()
 	elseif spellId == 271456 then
 		warnDrillSmashCast:Show()
