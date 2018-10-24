@@ -598,7 +598,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.waveCast = 0
 		if self:IsMythic() then
 			--Wave seem cast instantly on mythic so no timer for first.
-			timerBurstingBoilCD:Start(14.3, 1)--14.3-17
+			timerBurstingBoilCD:Start(14.3, 1)--14.3-18
 		else
 			timerExplosiveCorruptionCD:Start(9, 1)
 			countdownExplosiveCorruption:Start(9)

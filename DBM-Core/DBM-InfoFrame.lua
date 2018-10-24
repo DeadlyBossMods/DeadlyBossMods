@@ -876,7 +876,7 @@ function infoFrame:Show(maxLines, event, ...)
 	frame:Show()
 	frame:SetOwner(UIParent, "ANCHOR_PRESERVE")
 	onUpdate(frame)
-	if not frame.ticker and not value[4] and not event == "table" then
+	if not frame.ticker and not value[4] and event ~= "table" then
 		frame.ticker = C_Timer.NewTicker(0.5, function() onUpdate(frame) end)
 	end
 	local wowToc, testBuild, wowVersionString = DBM:GetTOC()
