@@ -122,14 +122,6 @@ function mod:OnCombatStart(delay)
 	timerObliterationBlastCD:Start(14.9-delay, BOSS)
 	timerEssenceShearCD:Start(19-delay, BOSS)--START
 	countdownEssenceShear:Start(19-delay)
-	if self.Options.InfoFrame then
-		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(272146))
-		if DBM.Options.DebugMode then
-			DBM.InfoFrame:Show(5, "table", infoframeTable, 1)
-		else
-			DBM.InfoFrame:Show(5, "playerdebuffstacks", 272146, 1)
-		end
-	end
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(5)
 	end
@@ -310,8 +302,19 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 272146 then
 		infoframeTable[args.destName] = args.amount or 1
-		if self.Options.InfoFrame and DBM.Options.DebugMode then
-			DBM.InfoFrame:UpdateTable(infoframeTable)
+		if self.Options.InfoFrame then
+			if not DBM.InfoFrame:IsShown() then
+				DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(272146))
+				if DBM.Options.DebugMode then
+					DBM.InfoFrame:Show(5, "table", infoframeTable, 1)
+				else
+					DBM.InfoFrame:Show(5, "playerdebuffstacks", 272146, 1)
+				end
+			else
+				if DBM.Options.DebugMode then
+					DBM.InfoFrame:UpdateTable(infoframeTable)
+				end
+			end
 		end
 	end
 end
@@ -333,8 +336,14 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerObliterationBlastCD:Stop(DBM_ADD)
 	elseif spellId == 272146 then
 		infoframeTable[args.destName] = nil
-		if self.Options.InfoFrame and DBM.Options.DebugMode then
-			DBM.InfoFrame:UpdateTable(infoframeTable)
+		if self.Options.InfoFrame then
+			if #infoframeTable > 0 then
+				if DBM.Options.DebugMode then
+					DBM.InfoFrame:UpdateTable(infoframeTable)
+				end
+			else
+				DBM.InfoFrame:Hide()
+			end
 		end
 	end
 end
