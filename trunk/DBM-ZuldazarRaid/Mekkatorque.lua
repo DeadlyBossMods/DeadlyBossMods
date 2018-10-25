@@ -15,31 +15,65 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
---	"SPELL_CAST_START",
---	"SPELL_CAST_SUCCESS",
---	"SPELL_AURA_APPLIED",
+	"SPELL_CAST_START 282205 287797 287952 286465 287929",
+	"SPELL_CAST_SUCCESS 282182 287757 284042 288049",
+	"SPELL_AURA_APPLIED 282182 287757 287167 284168 289023 286051",
 --	"SPELL_AURA_APPLIED_DOSE",
---	"SPELL_AURA_REMOVED",
---	"UNIT_DIED",
+	"SPELL_AURA_REMOVED 287757 282401",
+	"UNIT_DIED"
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
+--TODO, fine right boss CID, he has 9 of them that were all added in 8.1 alone
+--TODO, Gigavolt Charge has 3 debuff spellIDs, all 3 used or what the deal?
+--TODO, see if timers reset on lift off and landing, like 2nd boss of HFC
+--TODO, Dimensional Ripper XL target?
+--TODO, icon marking for poly morph dispel assignments?
+--TODO, nameplate aura for tampering protocol, if it has actual debuff diration (wowhead does not)
+--TODO, better intermission code?
+--TODO, correct event/spellid for shrink ray timer
+--TODO, if number of bots can be counted, add additional "switch to bots" warnings when shrunk is applied if any are still up
+--TODO, intermission ending on removal of 282401 or death of x shield generators?
+--TODO, blast off and crash down might be entirely based on intermission and not actually P1 abilities
+local warnPhase						= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
+--Ground Phase
+local warnShrunk						= mod:NewTargetNoFilterAnnounce(284168, 1)
+--Intermission: Evasive Maneuvers!
 
---local warnXorothPortal				= mod:NewSpellAnnounce(244318, 2, nil, nil, nil, nil, nil, 7)
---Stage One: The Forces of Blood
---local warnPoolofDarkness				= mod:NewCountAnnounce(273361, 4)
---local warnActiveDecay					= mod:NewTargetNoFilterAnnounce(276434, 1)
---local warnRupturingBlood				= mod:NewStackAnnounce(274358, 2, nil, "Tank")
+--Final Push
+local warnHyperDrive					= mod:NewTargetNoFilterAnnounce(286051, 3)
 
---local specWarnDarkRevolation			= mod:NewSpecialWarningYouPos(273365, nil, nil, nil, 1, 2)
---local yellDarkRevolation				= mod:NewPosYell(273365)
---local yellDarkRevolationFades			= mod:NewIconFadesYell(273365)
---local specWarnBloodshard				= mod:NewSpecialWarningInterrupt(273350, false, nil, 4, 1, 2)
+--Ground Phase
+local specWarnBusterCannon				= mod:NewSpecialWarningYou(282182, nil, nil, nil, 1, 2)
+local specWarnBlastOff					= mod:NewSpecialWarningRun(282205, "Melee", nil, nil, 4, 2)
+local specWarnCrashDown					= mod:NewSpecialWarningDodge(287797, nil, nil, nil, 2, 2)
+local specWarnGigaVoltCharge			= mod:NewSpecialWarningYou(286646, nil, nil, nil, 1, 2)
+local yellGigaVoltCharge				= mod:NewYell(286646)
+local yellGigaVoltChargeFades			= mod:NewFadesYell(286646)
+local specWarnGigaVoltChargeFading		= mod:NewSpecialWarningMoveTo(286646, nil, nil, nil, 3, 2)
+local specWarnGigaVoltChargeTaunt		= mod:NewSpecialWarningTaunt(286646, nil, nil, nil, 1, 2)
+local specWarnDimensionalRipperXL		= mod:NewSpecialWarningSpell(287952, nil, nil, nil, 2, 5)
+local specWarnDiscombobulation			= mod:NewSpecialWarningDispel(287167, "Healer", nil, nil, 1, 2)--Mythic
+local specWarnDeploySparkBot			= mod:NewSpecialWarningSwitch(288410, nil, nil, nil, 1, 2)
+local specWarnShrunk					= mod:NewSpecialWarningYou(284168, nil, nil, nil, 1, 2)
+local yellShrunk						= mod:NewYell(284168)--Shrunk will just say with white letters
+local specWarnEnormous					= mod:NewSpecialWarningYou(289023, nil, nil, nil, 1, 2)--Mythic
+local yellEnormous						= mod:NewYell(289023, nil, nil, nil, "YELL")--Enormous will shout with red letters
+--Intermission: Evasive Maneuvers!
+local specWarnExplodingSheep			= mod:NewSpecialWarningDodge(287929, nil, nil, nil, 2, 2)
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 8)
 
 --mod:AddTimerLine(DBM:EJ_GetSectionInfo(18527))
---local timerDarkRevolationCD			= mod:NewCDCountTimer(55, 273365, nil, nil, nil, 3)
---local timerBloodyCleaveCD				= mod:NewCDTimer(14.1, 273316, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+--Ground Phase
+local timerBusterCannonCD				= mod:NewAITimer(55, 282182, nil, nil, nil, 3)
+local timerBlastOffCD					= mod:NewAITimer(55, 282205, nil, nil, nil, 2)
+local timerCrashDownCD					= mod:NewAITimer(55, 287797, nil, nil, nil, 3)
+local timerGigaVoltChargeCD				= mod:NewAITimer(14.1, 286646, nil, nil, nil, 3, nil, DBM_CORE_TANK_ICON)
+local timerDimensionalRipperXLCD		= mod:NewAITimer(55, 287952, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
+local timerDeploySparkBotCD				= mod:NewAITimer(55, 288410, nil, nil, nil, 1)
+local timerShrinkRayCD					= mod:NewAITimer(55, 288049, nil, nil, nil, 3)
+--Intermission: Evasive Maneuvers!
+local timerExplodingSheepCD				= mod:NewAITimer(55, 287929, nil, nil, nil, 3)
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
 
@@ -56,6 +90,14 @@ mod:RegisterEventsInCombat(
 --mod.vb.phase = 1
 
 function mod:OnCombatStart(delay)
+	timerBusterCannonCD:Start(1-delay)
+	timerBlastOffCD:Start(1-delay)
+	timerGigaVoltChargeCD:Start(1-delay)
+	timerDeploySparkBotCD:Start(1-delay)
+	timerShrinkRayCD:Start(1-delay)
+	if self:IsHard() then
+		timerDimensionalRipperXLCD:Start(1-delay)
+	end
 --	if self.Options.NPAuraOnPresence then
 --		DBM:FireEvent("BossMod_EnableHostileNameplates")
 --	end
@@ -75,57 +117,124 @@ end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 273316 then
-
---	elseif spellId == 273350 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
---		specWarnBloodshard:Show(args.sourceName)
---		specWarnBloodshard:Play("kickcast")
+	if spellId == 282205 then
+		specWarnBlastOff:Show()
+		specWarnBlastOff:Play("justrun")
+		--timerCrashDownCD:Start()
+		timerBlastOffCD:Start()--Move to crash down when not AI
+	elseif spellId == 287797 then
+		specWarnCrashDown:Show()
+		specWarnCrashDown:Play("watchstep")
+	elseif spellId == 287952 then
+		specWarnDimensionalRipperXL:Show()
+		specWarnDimensionalRipperXL:Play("teleyou")
+		timerDimensionalRipperXLCD:Start()
+	elseif spellId == 286465 then--Deploy Shield generators
+		warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(2))
+		warnPhase:Play("phasechange")
+		timerBusterCannonCD:Stop()
+		timerBlastOffCD:Stop()
+		timerGigaVoltChargeCD:Stop()
+		timerDeploySparkBotCD:Stop()
+		timerShrinkRayCD:Stop()
+		timerDimensionalRipperXLCD:Stop()
+		--timerCrashDownCD:Stop()
+		timerGigaVoltChargeCD:Start(2)
+		timerShrinkRayCD:Start(2)
+		timerExplodingSheepCD:Start(2)
+	elseif spellId == 287929 then
+		specWarnExplodingSheep:Show()
+		specWarnExplodingSheep:Play("watchstep")
+		timerExplodingSheepCD:Start()
 	end
 end
 
---[[
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 274358 then
-
+	if spellId == 282182 then
+		timerBusterCannonCD:Start()
+	elseif spellId == 287757 then
+		timerGigaVoltChargeCD:Start()
+	elseif spellId == 284042 then
+		if DBM:UnitDebuff("player", 284168) then--Shrunk
+			specWarnDeploySparkBot:Show()
+			specWarnDeploySparkBot:Play("targetchange")
+		end
+		timerDeploySparkBotCD:Start()
+	elseif spellId == 288049 then
+		timerShrinkRayCD:Start()
 	end
 end
---]]
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 274358 then
-		--[[local uId = DBM:GetRaidUnitId(args.destName)
-		if self:IsTanking(uId) then
-			local amount = args.amount or 1
-			if amount >= 2 then
-				if args:IsPlayer() then
-					specWarnRupturingBlood:Show(amount)
-					specWarnRupturingBlood:Play("stackhigh")
-				else
-					if not UnitIsDeadOrGhost("player") and not DBM:UnitDebuff("player", spellId) then--Can't taunt less you've dropped yours off, period.
-						specWarnRupturingBloodTaunt:Show(args.destName)
-						specWarnRupturingBloodTaunt:Play("tauntboss")
-					else
-						warnRupturingBlood:Show(args.destName, amount)
-					end
-				end
-			else
-				warnRupturingBlood:Show(args.destName, amount)
+	if spellId == 282182 then
+		if args:IsPlayer() then
+			specWarnBusterCannon:Show()
+			specWarnBusterCannon:Play("targetyou")
+		end
+	elseif spellId == 287757 then--Or 283409 or 286646
+		if args:IsPlayer() then
+			specWarnGigaVoltCharge:Show()
+			specWarnGigaVoltCharge:Play("targetyou")
+			specWarnGigaVoltChargeFading:Schedule(10, DBM_CORE_BREAK_LOS)
+			specWarnGigaVoltChargeFading:ScheduleVoice(10, "findshelter")--TODO, more specific voice
+			yellGigaVoltCharge:Yell()
+			yellGigaVoltChargeFades:Countdown(15)
+		else
+			local uId = DBM:GetRaidUnitId(args.destName)
+			if self:IsTanking(uId) then
+				specWarnGigaVoltChargeTaunt:Show(args.destName)
+				specWarnGigaVoltChargeTaunt:Play("tauntboss")
 			end
-		end--]]
+		end
+	elseif spellId == 287167 then
+		specWarnDiscombobulation:CombinedShow(0.3, args.destName)
+		specWarnDiscombobulation:ScheduleVoice(0.3, "helpdispel")
+	elseif spellId == 284168 then
+		warnShrunk:CombinedShow(0.5, args.destName)
+		if args:IsPlayer() then
+			specWarnShrunk:Show()
+			specWarnShrunk:Play("targetyou")
+			yellShrunk:Yell()
+		end
+	elseif spellId == 289023 then
+		if args:IsPlayer() then
+			specWarnEnormous:Show()
+			specWarnEnormous:Play("watchstep")
+			yellEnormous:Yell()
+		end
+	elseif spellId == 286051 then
+		warnHyperDrive:Show(args.destName)
 	end
 end
 --mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
---[[
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
-	if spellId == 273365 then
-
+	if spellId == 287757 then--Or 283409 or 286646
+		if args:IsPlayer() then
+			specWarnGigaVoltChargeFading:Cancel()
+			specWarnGigaVoltChargeFading:CancelVoice()
+			yellGigaVoltChargeFades:Cancel()
+		end
+	elseif spellId == 282401 then--Gnomish Force Shield
+		warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(1))
+		warnPhase:Play("phasechange")
+		timerGigaVoltChargeCD:Stop()
+		timerShrinkRayCD:Stop()
+		timerExplodingSheepCD:Stop()
+		
+		timerBusterCannonCD:Start(3)
+		timerBlastOffCD:Start(3)
+		timerGigaVoltChargeCD:Start(3)
+		timerDeploySparkBotCD:Start(3)
+		timerShrinkRayCD:Start(3)
+		timerDimensionalRipperXLCD:Start(3)
 	end
 end
 
+--[[
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
 	if spellId == 228007 and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
 		specWarnGTFO:Show(spellName)
@@ -133,15 +242,18 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spell
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
-
+--]]
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 139185 then
+	if cid == 146440 then--Shield Generator
+	
+	--elseif cid == 148123 then--Evil Twin (Mythic)
 
 	end
 end
 
+--[[
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 274315 then
 
