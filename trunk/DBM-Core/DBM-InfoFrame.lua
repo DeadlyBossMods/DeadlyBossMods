@@ -406,7 +406,7 @@ local function updateEnemyAbsorb()
 			else--Get all of them
 				absorbAmount = UnitGetTotalAbsorbs(uId)
 			end
-			if absorbAmount then
+			if absorbAmount and absorbAmount > 0 then
 				local text
 				if totalAbsorb then
 					text = absorbAmount / totalAbsorb * 100

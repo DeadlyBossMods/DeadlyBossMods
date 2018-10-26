@@ -21,8 +21,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_REFRESH 285000 285382",
 	"SPELL_AURA_APPLIED_DOSE 285000 285382",
 	"SPELL_AURA_REMOVED 286558 285000 285382 285350 285426",
-	"SPELL_PERIODIC_DAMAGE 285075",
-	"SPELL_PERIODIC_MISSED 285075",
+--	"SPELL_PERIODIC_DAMAGE 285075",
+--	"SPELL_PERIODIC_MISSED 285075",
 	"UNIT_DIED"
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
@@ -51,7 +51,7 @@ local warnStormsWail					= mod:NewTargetNoFilterAnnounce(285350, 3)
 ----General
 local specWarnTidalShroud				= mod:NewSpecialWarningSwitch(286558, nil, nil, nil, 3, 2)
 local specWarnTidalEmpowerment			= mod:NewSpecialWarningInterrupt(284765, "HasInterrupt", nil, nil, 1, 2)
-local specWarnGTFO						= mod:NewSpecialWarningGTFO(285075, nil, nil, nil, 1, 8)
+--local specWarnGTFO						= mod:NewSpecialWarningGTFO(285075, false, nil, 2, 1, 8)
 ----Sister Katherine
 local specWarnVoltaicFlash				= mod:NewSpecialWarningDodge(284262, nil, nil, nil, 2, 2)
 --local yellDarkRevolation				= mod:NewPosYell(273365)
@@ -123,7 +123,7 @@ function mod:OnCombatStart(delay)
 	end
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(DBM_CORE_INFOFRAME_POWER)
-		DBM.InfoFrame:Show(4, "enemypower", 2)
+		DBM.InfoFrame:Show(4, "enemypower", 1, 10)
 	end
 end
 
@@ -144,7 +144,7 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 284262 then
 		if self:CheckTankDistance(args.sourceGUID, 43) then
 			specWarnVoltaicFlash:Show()
-			specWarnVoltaicFlash:Play("farfromline")
+			specWarnVoltaicFlash:Play("watchorb")
 		end
 		timerVoltaicFlashCD:Start()
 	elseif spellId == 284106 then
@@ -224,7 +224,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.InfoFrame and self.vb.shieldsActive == 1 then--Only trigger on first shield going up, info frame itself should scan all bosses automatically
 			for i = 1, 3 do
 				local bossUnitID = "boss"..i
-				if UnitGUID(bossUnitID) == args.sourceGUID then--Identify correct unit ID
+				if UnitGUID(bossUnitID) == args.destGUID then--Identify casting unit ID
 					DBM.InfoFrame:SetHeader(args.spellName)
 					DBM.InfoFrame:Show(2, "enemyabsorb", nil, UnitGetTotalAbsorbs(bossUnitID))
 					break
@@ -286,6 +286,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
+--[[
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
 	if spellId == 285075 and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
 		specWarnGTFO:Show(spellName)
@@ -293,6 +294,7 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spell
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
+--]]
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
