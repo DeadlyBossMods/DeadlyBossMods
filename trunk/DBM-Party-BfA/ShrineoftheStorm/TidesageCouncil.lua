@@ -98,7 +98,7 @@ function mod:SPELL_CAST_START(args)
 			specWarnSwiftnessWard:Show(args.spellName)
 			specWarnSwiftnessWard:Play("findshield")
 		end
-	elseif spellId == 267818 and not self.vb.bossTempest then
+	elseif spellId == 267818 and not self.vb.bossTempest and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnSlicingBlast:Show(args.sourceName)
 		specWarnSlicingBlast:Play("kickcast")
 	elseif spellId == 267899 then
