@@ -103,7 +103,8 @@ function mod:SPELL_AURA_REMOVED_DOSE(args)
 	local spellId = args.spellId
 	if spellId == 260189 then
 		local amount = args.amount or 0
-		warnDrill:Show(args.destName, amount)
+		warnDrill:Cancel()
+		warnDrill:Schedule(0.5, args.destName, amount)
 	end
 end
 mod.SPELL_AURA_REMOVED = mod.SPELL_AURA_REMOVED_DOSE
