@@ -47,14 +47,17 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 264931 then
-		specWarnServant:Show()
-		specWarnServant:Play("killmob")
+		local bossHealth = self:GetBossHPByGUID(args.sourceGUID)
+		if bossHealth and bossHealth >= 10 then--Only warn to switch to add if boss above 10%, else ignore them
+			specWarnServant:Show()
+			specWarnServant:Play("killmob")
+		end
 		--timerServantCD:Start()
 	elseif spellId == 264923 then
 		self.vb.tenderizeCount = self.vb.tenderizeCount + 1
 		if self.vb.tenderizeCount == 1 then
 			specWarnTenderize:Show()
-			specWarnTenderize:Play("watchstep")
+			specWarnTenderize:Play("shockwave")
 			--timerTenderizeCD:Start()
 		else
 			warnTenderize:Show(self.vb.tenderizeCount)
