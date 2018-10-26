@@ -10,7 +10,8 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 268202",
-	"SPELL_CAST_START 266225 266266 266181"
+	"SPELL_CAST_START 266225 266266 266181",
+	"SPELL_CAST_SUCCESS 266266"
 )
 
 --TODO, re-transcribe fight to see what UNIT events exist so maybe yell isn't needed
@@ -63,13 +64,19 @@ function mod:SPELL_CAST_START(args)
 			specWarnDarkenedLightning:Play("kickcast")
 		end
 	elseif spellId == 266266 then
-		specWarnSummonSlaver:Show()
-		specWarnSummonSlaver:Play("killmob")
 		timerSummonSlaverCD:Start()
 	elseif spellId == 266181 then
 		specWarnDreadEssence:Show()
 		specWarnDreadEssence:Play("aesoon")
 		--timerDreadEssenceCD:Start()
+	end
+end
+
+function mod:SPELL_CAST_SUCCESS(args)
+	local spellId = args.spellId
+	if spellId == 266266 then
+		specWarnSummonSlaver:Show()
+		specWarnSummonSlaver:Play("killmob")
 	end
 end
 
