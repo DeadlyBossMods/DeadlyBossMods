@@ -21,7 +21,8 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 283598 284474 283662 284578 283628 283626 283650 283933",
+	"SPELL_CAST_START 283598 284474 283662 284578 283628 283626 283650 283933 287469 287419",
+	"SPELL_INTERRUPT",
 --	"SPELL_CAST_SUCCESS 283955",
 	"SPELL_AURA_APPLIED 284468 283619 283573 284469 283933 284436 282113 283582",
 	"SPELL_AURA_APPLIED_DOSE 283573",
@@ -31,6 +32,7 @@ mod:RegisterEventsInCombat(
 )
 
 --TODO, swap count for Sacred Blade 3 or 2?
+--TODO, maybe a custom huge interrupt icon for the nameplate cast icon for angelic?
 --local warnXorothPortal				= mod:NewSpellAnnounce(244318, 2, nil, nil, nil, nil, nil, 7)
 local warnWaveofLight					= mod:NewTargetNoFilterAnnounce(283598, 1)
 local warnSacredBlade					= mod:NewStackAnnounce(283573, 2, nil, "Tank")
@@ -55,12 +57,14 @@ local specWarnHeal						= mod:NewSpecialWarningInterrupt(283628, "HasInterrupt",
 local specWarnDivineBurst				= mod:NewSpecialWarningInterrupt(283626, "HasInterrupt", nil, nil, 1, 2)
 local specWarnBlindingFaith				= mod:NewSpecialWarningLookAway(283650, nil, nil, nil, 3, 2)
 local specWarnGTFO						= mod:NewSpecialWarningGTFO(283582, nil, nil, nil, 1, 8)
+local specWarnPrayerfortheFallen		= mod:NewSpecialWarningSpell(287469, nil, nil, nil, 3, 2)--Mythic
 
 mod:AddTimerLine(DBM_BOSS)
 local timerWaveofLightCD				= mod:NewCDTimer(10.5, 283598, nil, nil, nil, 3, nil, DBM_CORE_MAGIC_ICON)
 local timerJudgmentRightCD				= mod:NewCDTimer(50.3, 283933, nil, nil, nil, 3)
 local timerJudgmentReckoningCD			= mod:NewCDTimer(50.3, 284474, nil, nil, nil, 2)
 local timerCallToArmsCD					= mod:NewCDTimer(104.6, 283662, nil, nil, nil, 1)
+local timerPrayerfortheFallenCD			= mod:NewAITimer(13.4, 287469, nil, nil, nil, 2, nil, DBM_CORE_IMPORTANT_ICON)
 mod:AddTimerLine(DBM_ADDS)
 local timerBlindingFaithCD				= mod:NewCDTimer(13.4, 284474, nil, nil, nil, 2)
 
@@ -78,6 +82,8 @@ mod:AddNamePlateOption("NPAuraOnRet2", 284468, false)--off by default since it's
 mod:AddNamePlateOption("NPAuraOnWave", 283619)
 mod:AddNamePlateOption("NPAuraOnJudgment", 283933)
 mod:AddNamePlateOption("NPAuraOnBlindingFaith", 283650)
+mod:AddNamePlateOption("NPAuraOnAngelicRenewal", 287419)
+
 --mod:AddSetIconOption("SetIconDarkRev", 273365, true)
 
 --mod.vb.phase = 1
@@ -116,7 +122,10 @@ function mod:OnCombatStart(delay)
 	specWarnJudgmentReckoning:Schedule(45.7-delay)
 	specWarnJudgmentReckoning:ScheduleVoice(45.7, "aesoon")
 	timerCallToArmsCD:Start(110.4-delay)
-	if self.Options.NPAuraOnRet2 or self.Options.NPAuraOnWave or self.Options.NPAuraOnJudgment or self.Options.NPAuraOnBlindingFaith then
+	if self:IsMythic() then
+		timerPrayerfortheFallenCD:Start(1-delay)
+	end
+	if self.Options.NPAuraOnRet2 or self.Options.NPAuraOnWave or self.Options.NPAuraOnJudgment or self.Options.NPAuraOnBlindingFaith or self.Options.NPAuraOnAngelicRenewal then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
 end
@@ -128,7 +137,7 @@ function mod:OnCombatEnd()
 --	if self.Options.InfoFrame then
 --		DBM.InfoFrame:Hide()
 --	end
-	if self.Options.NPAuraOnRet2 or self.Options.NPAuraOnWave or self.Options.NPAuraOnJudgment or self.Options.NPAuraOnBlindingFaith then
+	if self.Options.NPAuraOnRet2 or self.Options.NPAuraOnWave or self.Options.NPAuraOnJudgment or self.Options.NPAuraOnBlindingFaith or self.Options.NPAuraOnAngelicRenewal then
 		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
 	end
 end
@@ -165,6 +174,22 @@ function mod:SPELL_CAST_START(args)
 		end
 		if self.Options.NPAuraOnBlindingFaith then
 			DBM.Nameplate:Show(true, args.sourceGUID, spellId, nil, 4)
+		end
+	elseif spellId == 287469 then
+		specWarnPrayerfortheFallen:Show()
+		specWarnPrayerfortheFallen:Play("specialsoon")
+		timerPrayerfortheFallenCD:Start()
+	elseif spellId == 287419 then
+		if self.Options.NPAuraOnAngelicRenewal then
+			DBM.Nameplate:Show(true, args.sourceGUID, spellId, nil, 8)
+		end
+	end
+end
+
+function mod:SPELL_INTERRUPT(args)
+	if type(args.extraSpellId) == "number" and args.extraSpellId == 287419 then
+		if self.Options.NPAuraOnAngelicRenewal then
+			DBM.Nameplate:Hide(true, args.destGUID)
 		end
 	end
 end
