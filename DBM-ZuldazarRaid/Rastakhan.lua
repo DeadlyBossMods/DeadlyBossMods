@@ -2,7 +2,7 @@ local mod	= DBM:NewMod(2335, "DBM-ZuldazarRaid", 2, 1176)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
-mod:SetCreatureID(145616)
+mod:SetCreatureID(145616)--145644 Bwonsamdi
 mod:SetEncounterID(2272)
 --mod:DisableESCombatDetection()
 mod:SetZone()
@@ -15,23 +15,21 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 284933 284686 283504 287116 287333 286695 286742",
-	"SPELL_CAST_SUCCESS 284831 284662 284781 285213 288449",
-	"SPELL_SUMMON 285172 285003 285402",
-	"SPELL_AURA_APPLIED 284831 285195 284662 284781 285349 288449 289169 289162 286779",
+	"SPELL_CAST_START 284831 284933 284686 283504 287116 287333 286695 286742",
+	"SPELL_CAST_SUCCESS 284662 284781 288449 285347 285172",
+	"SPELL_SUMMON 285003 285402",
+	"SPELL_AURA_APPLIED 284831 285195 284662 284781 285349 288415 288449 284446 289162 286779 284455",
 	"SPELL_AURA_APPLIED_DOSE 285195",
-	"SPELL_AURA_REMOVED 284831 285195 288449 289162 286779",
+	"SPELL_AURA_REMOVED 284831 285195 288449 289162 286779 284276 284455",
 	"SPELL_AURA_REMOVED_DOSE 285195",
-	"UNIT_DIED",
-	"UNIT_SPELLCAST_SUCCEEDED boss1"
+	"UNIT_DIED"
+--	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
 
---TODO, is serpent totem a high priority?
---TODO, verify meteor leap target scan (or use better event if there is one)
---TODO, detect voodoo doll target
+--TODO, is serpent totem a kill target or a reposition raid one in most strats?
+--TODO, detect voodoo doll targets? wasn't even used on heroic test (at least in phases 1-3)
 --TODO, dread reaping fix?
---TODO, detect which realm players are in for warning filtering
 --TODO, timers and bigger warnings for Seal of Bwonsamdi?
 --TODO, shadow smash a tank swap?
 --TODO, more add timers in general if verifying certain casts are long enough CD
@@ -39,7 +37,6 @@ mod:RegisterEventsInCombat(
 --General
 local warnPhase							= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
 --Stage One: Zandalari Honor Guard
-local warnSerpTotem						= mod:NewSpellAnnounce(285172, 2)
 ----Prelate Za'lan
 local warnSealofPurification			= mod:NewTargetAnnounce(284662, 2)
 ----Siegebreaker Roka
@@ -52,6 +49,8 @@ local warnVoodooDoll					= mod:NewSpellAnnounce(285402, 3)
 local warnDeathsDoor					= mod:NewTargetAnnounce(288449, 2)
 --Stage Three: Enter the Death Realm
 local warnDreadreaping					= mod:NewSpellAnnounce(287116, 3)
+local warnInevitableEnd					= mod:NewSpellAnnounce(287333, 3)
+local warnZombieTotem					= mod:NewSpellAnnounce(285003, 2)
 ----Spirits
 local warnSealofBwonsamdi				= mod:NewSpellAnnounce(286695, 3)
 local warnShadowSmash					= mod:NewCastAnnounce(286742, 3)
@@ -62,12 +61,15 @@ local yellScorchingDetonation			= mod:NewYell(284831)
 local yellScorchingDetonationFades		= mod:NewFadesYell(284831)
 local specWarnScorchingDetonationOther	= mod:NewSpecialWarningTaunt(284831, nil, nil, nil, 1, 2)
 local specWarnPlagueofToads				= mod:NewSpecialWarningDodge(284933, nil, nil, nil, 2, 2)
+local specWarnSerpTotem					= mod:NewSpecialWarningSwitch(285172, false, nil, nil, 1, 2)
+local specWarnSerpTotemDodge			= mod:NewSpecialWarningRun(285172, nil, nil, nil, 4, 2)
 ----Prelate Za'lan
 local specWarnSealofPurification		= mod:NewSpecialWarningRun(284662, nil, nil, nil, 4, 2)
 local yellSealofPurification			= mod:NewYell(284662)
 ----Siegebreaker Roka
 local specWarnMeteorLeap				= mod:NewSpecialWarningMoveTo(284686, nil, nil, nil, 1, 2)
 local yellMeteorLeap					= mod:NewYell(284686)
+local yellMeteorLeapFades				= mod:NewShortFadesYell(284686)
 ----Headhunter Gal'wana
 local specWarnGrievousAxe				= mod:NewSpecialWarningDefensive(284781, false, nil, nil, 1, 2)
 --Stage Two: Bwonsamdi's Pact
@@ -75,8 +77,8 @@ local specWarnPlagueofFire				= mod:NewSpecialWarningMoveAway(285349, nil, nil, 
 local yellPlagueofFire					= mod:NewYell(285349)
 local specWarnZombieDustTotem			= mod:NewSpecialWarningSwitch(285003, "Dps", nil, nil, 1, 2)
 ----Bwonsamdi
-local specWarnCaressofDeath				= mod:NewSpecialWarningDefensive(285213, nil, nil, nil, 1, 2)
-local specWarnCaressofDeathOther		= mod:NewSpecialWarningTaunt(285213, nil, nil, nil, 1, 2)
+local specWarnCaressofDeath				= mod:NewSpecialWarningDefensive(288415, nil, nil, nil, 1, 2)
+local specWarnCaressofDeathOther		= mod:NewSpecialWarningTaunt(288415, false, nil, 2, 1, 2)
 local specWarnSufferingSpirits			= mod:NewSpecialWarningCount(283504, nil, nil, nil, 2, 2)
 local specWarnDeathsDoor				= mod:NewSpecialWarningMoveAway(288449, nil, nil, nil, 3, 2)
 local yellDeathsDoor					= mod:NewYell(288449)
@@ -89,29 +91,27 @@ local specWarnShadowSmashOther			= mod:NewSpecialWarningTaunt(286742, nil, nil, 
 local specWarnGTFO						= mod:NewSpecialWarningGTFO(286772, nil, nil, nil, 1, 8)
 local specWarnFocusedDimise				= mod:NewSpecialWarningInterrupt(286779, nil, nil, nil, 1, 2)
 
---local yellMeteorLeapFades				= mod:NewShortFadesYell(284686)
-
 --mod:AddTimerLine(DBM:EJ_GetSectionInfo(18527))
 --Stage One: Zandalari Honor Guard
-local timerScorchingDetonationCD		= mod:NewAITimer(14.1, 284831, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
-local timerPlagueofToadsCD				= mod:NewAITimer(14.1, 284933, nil, nil, nil, 1)
-local timerSerpentTotemCD				= mod:NewAITimer(14.1, 285172, nil, nil, nil, 1)
+local timerScorchingDetonationCD		= mod:NewCDTimer(23.1, 284831, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerPlagueofToadsCD				= mod:NewCDTimer(21.9, 284933, nil, nil, nil, 1)
+local timerSerpentTotemCD				= mod:NewCDTimer(31.6, 285172, nil, nil, nil, 1)
 ----Prelate Za'lan
-local timerSealofPurificationCD			= mod:NewAITimer(14.1, 284662, nil, nil, nil, 3)
+local timerSealofPurificationCD			= mod:NewCDTimer(25.4, 284662, nil, nil, nil, 3)
 ----Siegebreaker Roka
-local timerMeteorLeapCD					= mod:NewAITimer(14.1, 284686, nil, nil, nil, 3)
+local timerMeteorLeapCD					= mod:NewCDTimer(33.3, 284686, nil, nil, nil, 3)
 ----Headhunter Gal'wana
-local timerGrievousAxeCD				= mod:NewAITimer(14.1, 284781, nil, nil, nil, 3, nil, DBM_CORE_HEALER_ICON)
+local timerGrievousAxeCD				= mod:NewCDTimer(17.1, 284781, nil, nil, nil, 3, nil, DBM_CORE_HEALER_ICON)
 --Stage Two: Bwonsamdi's Pact
-local timerPlagueofFireCD				= mod:NewAITimer(14.1, 285347, nil, nil, nil, 3)
-local timerZombieDustTotemCD			= mod:NewAITimer(14.1, 285003, nil, nil, nil, 1)
+local timerPlagueofFireCD				= mod:NewCDTimer(23, 285347, nil, nil, nil, 3)
+local timerZombieDustTotemCD			= mod:NewCDTimer(44.9, 285003, nil, nil, nil, 1)
 local timerVoodooDollCD					= mod:NewAITimer(14.1, 285402, nil, nil, nil, 1)
 ----Bwonsamdi
-local timerCaressofDeathCD				= mod:NewAITimer(14.1, 285213, nil, "Tank", nil, 5, nil, DBM_CORE_DEADLY_ICON..DBM_CORE_TANK_ICON)
 local timerSufferingSpiritsCD			= mod:NewAITimer(14.1, 283504, nil, nil, nil, 2)
-local timerDeathsDoorCD					= mod:NewAITimer(14.1, 288449, nil, nil, nil, 3)
+local timerDeathsDoorCD					= mod:NewCDTimer(27.9, 288449, nil, nil, nil, 3)
 --Stage Three: Enter the Death Realm
-local timerDreadReapingCD				= mod:NewAITimer(14.1, 287116, nil, nil, nil, 3)
+local timerSpiritVortex					= mod:NewCastTimer(5, 284478, nil, nil, nil, 6)
+local timerDreadReapingCD				= mod:NewCDTimer(14.1, 287116, nil, nil, nil, 3)
 local timerInevitableEndCD				= mod:NewAITimer(14.1, 287333, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
@@ -125,20 +125,24 @@ mod:AddRangeFrameOption(8, 285349)
 mod:AddInfoFrameOption(285195, true)
 mod:AddNamePlateOption("NPAuraOnRelentlessness", 289162)
 mod:AddNamePlateOption("NPAuraOnFocusedDemise", 286779)
+mod:AddBoolOption("AnnounceAlternatePhase", false, "announce")
 --mod:AddSetIconOption("SetIconDarkRev", 273365, true)
 
 mod.vb.phase = 1
-mod.vb.miniBosses = 3
 mod.vb.sufferingSpirits = 0
+local playerDeathPhase = false
 local infoframeTable = {}
 
+--"<24.26 16:22:52> [CLEU] SPELL_CAST_START#Creature-0-2083-2070-6821-146322-00005225A8#Siegebreaker Roka##nil#284686#Meteor Leap#nil#nil", -- [107]
+--"<24.46 16:22:52> [DBM_Announce] Meteor Leap on >Lorn-Benedictus<#236171#target#284686#2335", -- [110]
+--"<29.28 16:22:57> [CLEU] SPELL_CAST_SUCCESS#Creature-0-2083-2070-6821-146322-00005225A8#Siegebreaker Roka#Player-3296-000AA073#Lorn-Benedictus#284686#Meteor Leap#nil#nil", -- [133]
 function mod:MeteorLeapTarget(targetname, uId)
 	if not targetname then return end
 	if targetname == UnitName("player") then
 		specWarnMeteorLeap:Show(GROUP)
 		specWarnMeteorLeap:Play("gathershare")
 		yellMeteorLeap:Yell()
-		--yellMeteorLeapFades:Countdown()
+		yellMeteorLeapFades:Countdown(4.8)--Target scan takes about 0.2 seconds
 	elseif not self:IsTank() then
 		specWarnMeteorLeap:Show(targetname)
 		specWarnMeteorLeap:Play("gathershare")
@@ -149,15 +153,15 @@ end
 
 function mod:OnCombatStart(delay)
 	self.vb.phase = 1
-	self.vb.miniBosses = 3
 	self.vb.sufferingSpirits = 0
+	playerDeathPhase = false
 	table.wipe(infoframeTable)
-	timerScorchingDetonationCD:Start(1-delay)
-	timerPlagueofToadsCD:Start(1-delay)
-	timerSerpentTotemCD:Start(1-delay)
-	timerSealofPurificationCD:Start(1-delay)
-	timerMeteorLeapCD:Start(1-delay)
-	timerGrievousAxeCD:Start(1-delay)
+	timerSealofPurificationCD:Start(7.2-delay)
+	timerGrievousAxeCD:Start(8.2-delay)
+	timerMeteorLeapCD:Start(15.4-delay)
+	timerScorchingDetonationCD:Start(25.3-delay)
+	timerPlagueofToadsCD:Start(20.4-delay)
+	timerSerpentTotemCD:Start(30.2-delay)
 	if self.Options.NPAuraOnRelentlessness or self.Options.NPAuraOnFocusedDemise then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
@@ -176,9 +180,27 @@ function mod:OnCombatEnd()
 	end
 end
 
+function mod:OnTimerRecovery()
+	if DBM:UnitDebuff("player", 284455) then
+		playerDeathPhase = true
+	end
+end
+
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 284933 then
+	if spellId == 284831 then
+		timerScorchingDetonationCD:Start()
+		if self.vb.phase >= 3 then
+			timerScorchingDetonationCD:Start(32.8)
+			if self:LatencyCheck() then
+				self:SendSync("ScorchingDetonation")
+			end
+		elseif self.vb.phase == 2 then
+			timerScorchingDetonationCD:Start(32.8)
+		else--Phase 1
+			timerScorchingDetonationCD:Start(23.1)
+		end
+	elseif spellId == 284933 then
 		specWarnPlagueofToads:Show()
 		specWarnPlagueofToads:Play("watchstep")
 		timerPlagueofToadsCD:Start()
@@ -190,14 +212,20 @@ function mod:SPELL_CAST_START(args)
 		specWarnSufferingSpirits:Show(self.vb.sufferingSpirits)
 		specWarnSufferingSpirits:Play("aesoon")
 		timerSufferingSpiritsCD:Start()
-	elseif spellId == 287116 and self:AntiSpam(3, 1) then
+	elseif spellId == 287116 and self:AntiSpam(5, 1) then
 		warnDreadreaping:Show()
-		timerDreadReapingCD:Start()
+		--timerDreadReapingCD:Start()
+		if self:LatencyCheck() then
+			self:SendSync("DreadReaping")
+		end
 	elseif spellId == 287333 then
 		specWarnInevitableEnd:Show()
 		specWarnInevitableEnd:Play("justrun")
 		timerInevitableEndCD:Start()
-	elseif spellId == 286695 then
+		if self:LatencyCheck() then
+			self:SendSync("InevitableEnd")
+		end
+	elseif spellId == 286695 and self:AntiSpam(5, 2) then
 		warnSealofBwonsamdi:Show()
 	elseif spellId == 286742 then
 		warnShadowSmash:Show()
@@ -206,28 +234,42 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 284831 then
-		timerScorchingDetonationCD:Start()
-	elseif spellId == 284662 then
+	if spellId == 284662 then
 		timerSealofPurificationCD:Start()
 	elseif spellId == 284781 then
 		timerGrievousAxeCD:Start()
-	elseif spellId == 285213 then
-		timerCaressofDeathCD:Start()
 	elseif spellId == 288449 then
 		timerDeathsDoorCD:Start()
+		if self.vb.phase >= 3 then
+			if self:LatencyCheck() then
+				self:SendSync("DeathsDoor")--used by rastakhan in P3
+			end
+		end
+	elseif spellId == 285347 and self:AntiSpam(3, 3) then--Plague of Fire
+		timerPlagueofFireCD:Start()
+	elseif spellId == 285172 then
+		if self.Options.SpecWarn285172switch then
+			specWarnSerpTotem:Show()
+			specWarnSerpTotem:Play("attacktotem")
+		else
+			specWarnSerpTotemDodge:Show()
+			specWarnSerpTotemDodge:Play("justrun")
+		end
+		timerSerpentTotemCD:Start()
 	end
 end
 
 function mod:SPELL_SUMMON(args)
 	local spellId = args.spellId
-	if spellId == 285172 then
-		warnSerpTotem:Show()
-		timerSerpentTotemCD:Start()
-	elseif spellId == 285003 then
+	if spellId == 285003 then
 		specWarnZombieDustTotem:Show()
 		specWarnZombieDustTotem:Play("attacktotem")
 		timerZombieDustTotemCD:Start()
+		if self.vb.phase >= 3 then
+			if self:LatencyCheck() then
+				self:SendSync("ZombieTotem")
+			end
+		end
 	elseif spellId == 285402 then
 		warnVoodooDoll:Show()
 		timerVoodooDollCD:Start()
@@ -284,13 +326,16 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnPlagueofFire:Play("runout")
 			yellPlagueofFire:Yell()
 		end
-	elseif spellId == 285213 then
+	elseif spellId == 288415 then
 		if args:IsPlayer() then
 			specWarnCaressofDeath:Show()
 			specWarnCaressofDeath:Play("defensive")
 		else
-			specWarnCaressofDeathOther:Show(args.destName)
-			specWarnCaressofDeathOther:Play("tauntboss")
+			local uId = DBM:GetRaidUnitId(args.destName)
+			if self:IsTanking(uId) and not DBM:UnitDebuff("player", spellId) then
+				specWarnCaressofDeathOther:Show(args.destName)
+				specWarnCaressofDeathOther:Play("tauntboss")
+			end
 		end
 	elseif spellId == 288449 then
 		if args:IsPlayer() then
@@ -299,27 +344,28 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellDeathsDoor:Yell()
 			yellDeathsDoorFades:Countdown(8)
 		else
-			warnDeathsDoor:CombinedShow(0.3, args.destName)--Multiple targets assumed, change if not
+			warnDeathsDoor:Show(args.destName)
 		end
-	elseif spellId == 289169 and self.vb.phase < 3 then--Bwonsamdi's Boon
+	elseif spellId == 284446 and self.vb.phase < 3 then--Bwonsamdi's Boon
 		self.vb.phase = 3
 		warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(3))
 		warnPhase:Play("pthree")
 		timerScorchingDetonationCD:Stop()
-		timerScorchingDetonationCD:Stop()
 		timerPlagueofFireCD:Stop()
 		timerZombieDustTotemCD:Stop()
 		timerVoodooDollCD:Stop()
-		timerCaressofDeathCD:Stop()--SUCCESS
 		timerSufferingSpiritsCD:Stop()
 		timerDeathsDoorCD:Stop()
-		--Resets of timers assumed, don't reset if they don't reset
-		timerZombieDustTotemCD:Start(3)
-		timerDeathsDoorCD:Start(3)
-		timerCaressofDeathCD:Start(3)
-		timerPlagueofFireCD:Start(3)
-		timerDreadReapingCD:Start(3)
-		timerInevitableEndCD:Start(3)
+		
+		--Rasta
+		timerSpiritVortex:Start(5)
+		--timerZombieDustTotemCD:Start(3)--Not actually used in Stage 3?
+		timerDeathsDoorCD:Start(27.5)--SUCCESS
+		timerScorchingDetonationCD:Start(32.8)
+		timerPlagueofFireCD:Start(40)
+		--Bwon
+		timerDreadReapingCD:Start(7.6)
+		timerInevitableEndCD:Start(35.9)
 		self:RegisterShortTermEvents(
 			"SPELL_PERIODIC_DAMAGE 286772",
 			"SPELL_PERIODIC_MISSED 286772"
@@ -347,6 +393,8 @@ function mod:SPELL_AURA_APPLIED(args)
 				DBM.Nameplate:Show(true, args.sourceGUID, spellId, nil, 5)
 			end
 		end
+	elseif spellId == 284455 and args:IsPlayer() then
+		playerDeathPhase = true
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -374,6 +422,27 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.NPAuraOnFocusedDemise then
 			DBM.Nameplate:Hide(true, args.sourceGUID, spellId)
 		end
+	elseif spellId == 284276 then--Bind Souls (P2 Start)
+		self.vb.phase = 2
+		warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(2))
+		warnPhase:Play("ptwo")
+		timerPlagueofToadsCD:Stop()
+		timerSerpentTotemCD:Stop()
+		timerScorchingDetonationCD:Stop()
+		
+		--Rasta
+		timerZombieDustTotemCD:Start(19.1)
+		timerScorchingDetonationCD:Start(26.4)
+		timerPlagueofFireCD:Start(33.3)
+		timerSufferingSpiritsCD:Start(2)--Never seen on heroic
+		--Bwon
+		timerDeathsDoorCD:Start(54)
+		timerVoodooDollCD:Start(2)--Never seen on heroic
+		if self.Options.RangeFrame then
+			DBM.RangeCheck:Show(8)
+		end
+	elseif spellId == 284455 and args:IsPlayer() then
+		playerDeathPhase = false
 	end
 end
 
@@ -401,49 +470,14 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spell
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
---Probably temp location function
-local function changeStage(self, stage)
-	if self.vb.phase < 2 and stage == 2 then
-		self.vb.phase = 2
-		warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(2))
-		warnPhase:Play("ptwo")
-		timerPlagueofToadsCD:Stop()
-		timerSerpentTotemCD:Stop()
-		--Assumed
-		timerScorchingDetonationCD:Stop()
-		timerScorchingDetonationCD:Start(2)
-		timerPlagueofFireCD:Start(2)
-		timerZombieDustTotemCD:Start(2)
-		timerVoodooDollCD:Start(2)
-		timerCaressofDeathCD:Start(2)--SUCCESS
-		timerSufferingSpiritsCD:Start(2)
-		timerDeathsDoorCD:Start(2)
-		if self.Options.RangeFrame then
-			DBM.RangeCheck:Show(8)
-		end
-	end
-end
-
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 146320 then--Prelate Za'lan
 		timerSealofPurificationCD:Stop()
-		self.vb.miniBosses = self.vb.miniBosses - 1
-		if self.vb.miniBosses == 0 then
-			changeStage(self, 2)
-		end
 	elseif cid == 146322 then--Siegebreaker Roka
 		timerMeteorLeapCD:Stop()
-		self.vb.miniBosses = self.vb.miniBosses - 1
-		if self.vb.miniBosses == 0 then
-			changeStage(self, 2)
-		end
 	elseif cid == 146326 then--Headhunter Galwana
 		timerGrievousAxeCD:Stop()
-		self.vb.miniBosses = self.vb.miniBosses - 1
-		if self.vb.miniBosses == 0 then
-			changeStage(self, 2)
-		end
 	--elseif cid == 146766 then--Greater Serpent Totem
 	
 	--elseif cid == 146731 then--Zombie Dust Totem
@@ -457,8 +491,57 @@ function mod:UNIT_DIED(args)
 	end
 end
 
+--[[
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 285347 then--Plague of Fire
-		timerPlagueofFireCD:Start()
+	--if spellId == 285347 then--Plague of Fire
+	
+	--elseif spellId == 287165 then--King Rastakhan P1 -> P2 Conversation (alternate P2 start
+
+--"<292.22 16:58:46> [UNIT_SPELLCAST_SUCCEEDED] King Rastakhan(??) -Summon Phantom of Retribution- boss1:Cast-3-2083-2070-6821-284540-002A522E86:284540
+--"<292.24 16:58:46> [UNIT_SPELLCAST_SUCCEEDED] King Rastakhan(??) -Summon Phantom of Rage- boss1:Cast-3-2083-2070-6821-284542-002C522E86:284542
+--"<292.24 16:58:46> [UNIT_SPELLCAST_SUCCEEDED] King Rastakhan(??) -Summon Phantom of Slaughter- boss1:Cast-3-2083-2070-6821-284543-002E522E86:284543
+--"<292.24 16:58:46> [UNIT_SPELLCAST_SUCCEEDED] King Rastakhan(??) -Summon Phantom of Ruin- boss1:Cast-3-2083-2070-6821-284544-002FD22E86:284544
+	--end
+end
+--]]
+
+--On sync will always enable timers for both phases, so players changing phases will have working timers
+--Announce alternate phase simply enables showing general announces for other phases as well
+function mod:OnSync(msg, target)
+	if msg == "ScorchingDetonation" then--Rastakhan
+		if playerDeathPhase then
+			if self.Options.AnnounceAlternatePhase then
+			
+			end
+			timerScorchingDetonationCD:Start(32.8)
+		end
+	elseif msg == "DreadReaping" then--BwonSamdi
+		if not playerDeathPhase then
+			if self.Options.AnnounceAlternatePhase then
+				warnDreadreaping:Show()
+			end
+			--timerDreadReapingCD:Start()
+		end
+	elseif msg == "InevitableEnd" then--BwonSamdi
+		if not playerDeathPhase then
+			if self.Options.AnnounceAlternatePhase then
+				warnInevitableEnd:Show()
+			end
+			timerInevitableEndCD:Start()
+		end
+	elseif msg == "DeathsDoor" then--Rastakhan (in p3, in P2 where we don't sync, bwonsamdi)
+		if playerDeathPhase then
+			timerDeathsDoorCD:Start()
+		end
+		if self.Options.AnnounceAlternatePhase then
+		
+		end
+	elseif msg == "ZombieTotem" then--Rastakhan
+		if playerDeathPhase then
+			if self.Options.AnnounceAlternatePhase then
+				warnZombieTotem:Show()
+			end
+			timerZombieDustTotemCD:Start()
+		end
 	end
 end
