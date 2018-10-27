@@ -40,7 +40,7 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 250585 and args:IsPlayer() and self:AntiSpam(2, 1) then
+	if spellId == 250585 and args:IsPlayer() and self:AntiSpam(3, 1) then
 		specWarnGTFO:Show(args.spellName)
 		specWarnGTFO:Play("watchfeet")
 	end
