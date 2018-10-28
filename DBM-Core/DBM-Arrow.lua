@@ -173,7 +173,7 @@ end
 
 local function show(runAway, x, y, distance, time, legacy, dwayed)
 	if DBM:HasMapRestrictions() then return end
-	if not frame:IsShown() and not recentlyHidden then
+	if not frame:IsShown() and not recentlyHidden and not dwayed then
 		DBM:AddMsg(DBM_CORE_ARROW_SUMMONED)
 	end
 	local player
