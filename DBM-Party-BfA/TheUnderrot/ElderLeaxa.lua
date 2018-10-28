@@ -22,7 +22,7 @@ local specWarnSanguineFeast			= mod:NewSpecialWarningDodge(264757, nil, nil, nil
 local timerBloodBoltCD				= mod:NewCDTimer(6.1, 260879, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
 local timerCreepingRotCD			= mod:NewNextTimer(15.8, 260894, nil, nil, nil, 3)
 local timerSanguineFeastCD			= mod:NewNextTimer(30, 264757, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
-local timerBloodMirrorCD			= mod:NewCDTimer(13, 264603, nil, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON)
+local timerBloodMirrorCD			= mod:NewCDTimer(47.4, 264603, nil, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON)--47.4-49.8
 
 mod:AddInfoFrameOption(260685, "Healer")
 
@@ -75,7 +75,7 @@ function mod:SPELL_CAST_START(args)
 		
 		end
 	elseif spellId == 264603 then
-		--timerBloodMirrorCD:Start()
+		timerBloodMirrorCD:Start()
 	end
 end
 
