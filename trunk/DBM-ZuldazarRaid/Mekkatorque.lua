@@ -2,7 +2,7 @@ local mod	= DBM:NewMod(2334, "DBM-ZuldazarRaid", 3, 1176)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
---mod:SetCreatureID(138967)
+mod:SetCreatureID(144796)
 mod:SetEncounterID(2276)
 --mod:DisableESCombatDetection()
 mod:SetZone()
@@ -15,27 +15,20 @@ mod.respawnTime = 29
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 282205 287797 287952 286465 287929",
-	"SPELL_CAST_SUCCESS 282182 287757 284042 288049",
-	"SPELL_AURA_APPLIED 282182 287757 287167 284168 289023 286051",
+	"SPELL_CAST_START 282205 287952 287929 282153 288410 287751 287797",
+	"SPELL_CAST_SUCCESS 287757 286693 288041 288049",
+	"SPELL_AURA_APPLIED 287757 287167 284168 289023 286051",
 --	"SPELL_AURA_APPLIED_DOSE",
-	"SPELL_AURA_REMOVED 287757 282401",
+	"SPELL_AURA_REMOVED 287757",
 	"UNIT_DIED"
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, fine right boss CID, he has 9 of them that were all added in 8.1 alone
 --TODO, Gigavolt Charge has 3 debuff spellIDs, all 3 used or what the deal?
---TODO, see if timers reset on lift off and landing, like 2nd boss of HFC
---TODO, Dimensional Ripper XL target?
 --TODO, icon marking for poly morph dispel assignments?
 --TODO, nameplate aura for tampering protocol, if it has actual debuff diration (wowhead does not)
---TODO, better intermission code?
---TODO, correct event/spellid for shrink ray timer
 --TODO, if number of bots can be counted, add additional "switch to bots" warnings when shrunk is applied if any are still up
---TODO, intermission ending on removal of 282401 or death of x shield generators?
---TODO, blast off and crash down might be entirely based on intermission and not actually P1 abilities
-local warnPhase						= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
+local warnPhase							= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
 --Ground Phase
 local warnShrunk						= mod:NewTargetNoFilterAnnounce(284168, 1)
 --Intermission: Evasive Maneuvers!
@@ -44,9 +37,9 @@ local warnShrunk						= mod:NewTargetNoFilterAnnounce(284168, 1)
 local warnHyperDrive					= mod:NewTargetNoFilterAnnounce(286051, 3)
 
 --Ground Phase
-local specWarnBusterCannon				= mod:NewSpecialWarningYou(282182, nil, nil, nil, 1, 2)
+local specWarnBusterCannon				= mod:NewSpecialWarningDodge(282153, nil, nil, nil, 2, 2)
 local specWarnBlastOff					= mod:NewSpecialWarningRun(282205, "Melee", nil, nil, 4, 2)
-local specWarnCrashDown					= mod:NewSpecialWarningDodge(287797, nil, nil, nil, 2, 2)
+--local specWarnCrashDown					= mod:NewSpecialWarningDodge(287797, nil, nil, nil, 2, 2)
 local specWarnGigaVoltCharge			= mod:NewSpecialWarningYou(286646, nil, nil, nil, 1, 2)
 local yellGigaVoltCharge				= mod:NewYell(286646)
 local yellGigaVoltChargeFades			= mod:NewFadesYell(286646)
@@ -65,15 +58,16 @@ local specWarnExplodingSheep			= mod:NewSpecialWarningDodge(287929, nil, nil, ni
 
 --mod:AddTimerLine(DBM:EJ_GetSectionInfo(18527))
 --Ground Phase
-local timerBusterCannonCD				= mod:NewAITimer(55, 282182, nil, nil, nil, 3)
-local timerBlastOffCD					= mod:NewAITimer(55, 282205, nil, nil, nil, 2)
-local timerCrashDownCD					= mod:NewAITimer(55, 287797, nil, nil, nil, 3)
-local timerGigaVoltChargeCD				= mod:NewAITimer(14.1, 286646, nil, nil, nil, 3, nil, DBM_CORE_TANK_ICON)
-local timerDimensionalRipperXLCD		= mod:NewAITimer(55, 287952, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
-local timerDeploySparkBotCD				= mod:NewAITimer(55, 288410, nil, nil, nil, 1)
-local timerShrinkRayCD					= mod:NewAITimer(55, 288049, nil, nil, nil, 3)
+local timerBusterCannonCD				= mod:NewCDCountTimer(25, 282153, nil, nil, nil, 3)
+local timerBlastOffCD					= mod:NewCDCountTimer(55, 282205, nil, nil, nil, 2)
+local timerCrashDownCD					= mod:NewCastTimer(4.5, 287797, nil, nil, nil, 3)
+local timerGigaVoltChargeCD				= mod:NewCDCountTimer(14.1, 286646, nil, nil, nil, 3, nil, DBM_CORE_TANK_ICON)
+local timerDimensionalRipperXLCD		= mod:NewCDCountTimer(55, 287952, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
+local timerDeploySparkBotCD				= mod:NewCDCountTimer(55, 288410, nil, nil, nil, 1)
+local timerShrinkRayCD					= mod:NewCDCountTimer(55, 288049, nil, nil, nil, 3)
 --Intermission: Evasive Maneuvers!
-local timerExplodingSheepCD				= mod:NewAITimer(55, 287929, nil, nil, nil, 3)
+local timerIntermission					= mod:NewPhaseTimer(49.9)
+local timerExplodingSheepCD				= mod:NewCDCountTimer(55, 287929, nil, nil, nil, 3)
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
 
@@ -87,16 +81,64 @@ local timerExplodingSheepCD				= mod:NewAITimer(55, 287929, nil, nil, nil, 3)
 --mod:AddNamePlateOption("NPAuraOnPresence", 276093)
 --mod:AddSetIconOption("SetIconDarkRev", 273365, true)
 
---mod.vb.phase = 1
+mod.vb.phase = 1
+--Count variables for every timer, because stupid sequence mod
+mod.vb.botCount = 0
+mod.vb.cannonCount = 0
+mod.vb.blastOffcount = 0
+mod.vb.ripperCount = 0
+mod.vb.gigaCount = 0
+mod.vb.shrinkCount = 0
+mod.vb.sheepCount = 0
+--Timers by phase
+local sparkBotTimers = {
+	[1] = {5, 30, 50, 20},
+	[1.5] = {21.9, 15},
+	[2] = {5, 25, 40, 30},
+	[2.5] = {21.9, 15},--Assumed
+}
+local busterCannonTimers = {
+	[1] = {15, 25, 27, 43},
+	[2] = {10.5, 25, 30, 40},
+}
+local blastOffTimers = {
+	[1] = {25, 32, 18, 25},
+	[2] = {20.5, 31.1, 28.9, 15},
+}
+local dimRipperTimers = {
+	[1] = {53, 42},
+	[2] = {48.5, 42.1},
+}
+local gigaVoltTImers = {
+	[1] = {21.5, 31, 39},
+	[2] = {17, 31, 29},
+}
+local shrinkTimers = {
+	[1] = {65},
+	[1.5] = {7.9, 17.1},
+	[2] = {113},
+	[2.5] = {7.9, 17.1},--Assumed
+}
+local explodingSheepTimers = {
+	[1.5] = {12.9, 17.0, 15.0},
+	[2.5] = {12.9, 17.0, 15.0},--Assumed, could be different too
+}
 
 function mod:OnCombatStart(delay)
-	timerBusterCannonCD:Start(1-delay)
-	timerBlastOffCD:Start(1-delay)
-	timerGigaVoltChargeCD:Start(1-delay)
-	timerDeploySparkBotCD:Start(1-delay)
-	timerShrinkRayCD:Start(1-delay)
+	self.vb.phase = 1
+	self.vb.botCount = 0
+	self.vb.cannonCount = 0
+	self.vb.blastOffcount = 0
+	self.vb.ripperCount = 0
+	self.vb.gigaCount = 0
+	self.vb.shrinkCount = 0
+	timerDeploySparkBotCD:Start(5-delay, 1)
+	timerBusterCannonCD:Start(15-delay, 1)
+	timerGigaVoltChargeCD:Start(21.5-delay, 1)--Success
+	timerBlastOffCD:Start(25-delay, 1)
+	timerShrinkRayCD:Start(65-delay, 1)--Success
 	if self:IsHard() then
-		timerDimensionalRipperXLCD:Start(1-delay)
+		timerDimensionalRipperXLCD:Start(53-delay, 1)
 	end
 --	if self.Options.NPAuraOnPresence then
 --		DBM:FireEvent("BossMod_EnableHostileNameplates")
@@ -118,62 +160,124 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 282205 then
+		self.vb.blastOffcount = self.vb.blastOffcount + 1
 		specWarnBlastOff:Show()
 		specWarnBlastOff:Play("justrun")
-		--timerCrashDownCD:Start()
-		timerBlastOffCD:Start()--Move to crash down when not AI
-	elseif spellId == 287797 then
-		specWarnCrashDown:Show()
-		specWarnCrashDown:Play("watchstep")
+		timerCrashDownCD:Start(4.5)
+		local timer = blastOffTimers[self.vb.phase][self.vb.blastOffcount+1]
+		if timer then
+			timerBlastOffCD:Start(timer, self.vb.blastOffcount+1)
+		end
 	elseif spellId == 287952 then
+		self.vb.ripperCount = self.vb.ripperCount + 1
 		specWarnDimensionalRipperXL:Show()
 		specWarnDimensionalRipperXL:Play("teleyou")
-		timerDimensionalRipperXLCD:Start()
-	elseif spellId == 286465 then--Deploy Shield generators
-		warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(2))
-		warnPhase:Play("phasechange")
-		timerBusterCannonCD:Stop()
-		timerBlastOffCD:Stop()
-		timerGigaVoltChargeCD:Stop()
-		timerDeploySparkBotCD:Stop()
-		timerShrinkRayCD:Stop()
-		timerDimensionalRipperXLCD:Stop()
-		--timerCrashDownCD:Stop()
-		timerGigaVoltChargeCD:Start(2)
-		timerShrinkRayCD:Start(2)
-		timerExplodingSheepCD:Start(2)
+		local timer = dimRipperTimers[self.vb.phase][self.vb.ripperCount+1]
+		if timer then
+			timerDimensionalRipperXLCD:Start(timer, self.vb.ripperCount+1)
+		end
 	elseif spellId == 287929 then
+		self.vb.sheepCount = self.vb.sheepCount + 1
 		specWarnExplodingSheep:Show()
 		specWarnExplodingSheep:Play("watchstep")
-		timerExplodingSheepCD:Start()
+		local timer = explodingSheepTimers[self.vb.phase][self.vb.sheepCount+1]
+		if timer then
+			timerExplodingSheepCD:Start(timer, self.vb.sheepCount+1)
+		end
+	elseif spellId == 282153 then
+		self.vb.cannonCount = self.vb.cannonCount + 1
+		specWarnBusterCannon:Show()
+		specWarnBusterCannon:Play("shockwave")
+		local timer = busterCannonTimers[self.vb.phase][self.vb.cannonCount+1]
+		if timer then
+			timerBusterCannonCD:Start(timer, self.vb.cannonCount+1)
+		end
+	elseif spellId == 288410 then
+		self.vb.botCount = self.vb.botCount + 1
+		if DBM:UnitDebuff("player", 284168) then--Shrunk
+			specWarnDeploySparkBot:Show()
+			specWarnDeploySparkBot:Play("targetchange")
+		end
+		local timer = sparkBotTimers[self.vb.phase][self.vb.botCount+1]
+		if timer then
+			timerDeploySparkBotCD:Start(timer, self.vb.botCount+1)
+		end
+	elseif spellId == 287751 then--Evasive Maneuvers (intermission Start)
+		self.vb.phase = self.vb.phase + 0.5
+		--These happen in intermission too so intermission counters needed
+		self.vb.botCount = 0
+		self.vb.ripperCount = 0
+		self.vb.gigaCount = 0
+		self.vb.shrinkCount = 0
+		self.vb.sheepCount = 0--Only intermission so only place need to reset it
+		warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(self.vb.phase))
+		warnPhase:Play("phasechange")
+		timerCrashDownCD:Stop()
+		timerDeploySparkBotCD:Stop()
+		timerBusterCannonCD:Stop()
+		timerGigaVoltChargeCD:Stop()--Success
+		timerBlastOffCD:Stop()
+		timerShrinkRayCD:Stop()
+		
+		timerShrinkRayCD:Start(7.9, 1)
+		timerExplodingSheepCD:Start(12.9, 1)
+		timerDeploySparkBotCD:Start(21.9, 1)
+		timerGigaVoltChargeCD:Start(41.4, 1)
+		if self:IsHard() then
+			timerDimensionalRipperXLCD:Start(16.9, 1)
+		end
+		timerIntermission:Start(49.9)--Seems time based but journal says when generators die
+	elseif spellId == 287797 then--Crash Down (intermission end)
+		self.vb.phase = self.vb.phase + 0.5
+		--Reset everything but sheep, for next ground phase
+		self.vb.botCount = 0
+		self.vb.cannonCount = 0
+		self.vb.blastOffcount = 0
+		self.vb.ripperCount = 0
+		self.vb.gigaCount = 0
+		self.vb.shrinkCount = 0
+		warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(self.vb.phase))
+		warnPhase:Play("phasechange")
+		timerExplodingSheepCD:Stop()
+		timerDeploySparkBotCD:Stop()
+		timerGigaVoltChargeCD:Stop()
+		timerShrinkRayCD:Stop()
+		timerDimensionalRipperXLCD:Stop()
+		
+		timerDeploySparkBotCD:Start(5.5, 1)
+		timerBusterCannonCD:Start(10.5, 1)
+		timerGigaVoltChargeCD:Start(17, 1)--Success
+		timerBlastOffCD:Start(20.5, 1)
+		timerShrinkRayCD:Start(114, 1)--Success (bugged? Should not take this long for a shrink)
+		if self:IsHard() then
+			timerDimensionalRipperXLCD:Start(48.5, 1)
+		end
+		if self.vb.phase == 3 then
+			DBM:AddMsg("This Phase does not yet have any timers, please log fight with WCL advanced combat logging or transcriptor for best results and share logs with MysticalOS")
+		end
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 282182 then
-		timerBusterCannonCD:Start()
-	elseif spellId == 287757 then
-		timerGigaVoltChargeCD:Start()
-	elseif spellId == 284042 then
-		if DBM:UnitDebuff("player", 284168) then--Shrunk
-			specWarnDeploySparkBot:Show()
-			specWarnDeploySparkBot:Play("targetchange")
+	if spellId == 287757 then
+		self.vb.gigaCount = self.vb.gigaCount + 1
+		local timer = gigaVoltTImers[self.vb.phase][self.vb.gigaCount+1]
+		if timer then
+			timerGigaVoltChargeCD:Start(timer, self.vb.gigaCount+1)
 		end
-		timerDeploySparkBotCD:Start()
-	elseif spellId == 288049 then
-		timerShrinkRayCD:Start()
+	elseif spellId == 286693 or spellId == 288041 or spellId == 288049 then--288041 used in intermission first, 288049 second in intermission, 286693 outside intermission
+		self.vb.shrinkCount = self.vb.shrinkCount + 1
+		local timer = shrinkTimers[self.vb.phase][self.vb.shrinkCount+1]
+		if timer then
+			timerShrinkRayCD:Start(timer, self.vb.shrinkCount+1)
+		end
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 282182 then
-		if args:IsPlayer() then
-			specWarnBusterCannon:Show()
-			specWarnBusterCannon:Play("targetyou")
-		end
-	elseif spellId == 287757 then--Or 283409 or 286646
+	if spellId == 287757 then--Or 283409 or 286646
 		if args:IsPlayer() then
 			specWarnGigaVoltCharge:Show()
 			specWarnGigaVoltCharge:Play("targetyou")
@@ -218,19 +322,6 @@ function mod:SPELL_AURA_REMOVED(args)
 			specWarnGigaVoltChargeFading:CancelVoice()
 			yellGigaVoltChargeFades:Cancel()
 		end
-	elseif spellId == 282401 then--Gnomish Force Shield
-		warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(1))
-		warnPhase:Play("phasechange")
-		timerGigaVoltChargeCD:Stop()
-		timerShrinkRayCD:Stop()
-		timerExplodingSheepCD:Stop()
-		
-		timerBusterCannonCD:Start(3)
-		timerBlastOffCD:Start(3)
-		timerGigaVoltChargeCD:Start(3)
-		timerDeploySparkBotCD:Start(3)
-		timerShrinkRayCD:Start(3)
-		timerDimensionalRipperXLCD:Start(3)
 	end
 end
 
