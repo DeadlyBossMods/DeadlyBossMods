@@ -10,6 +10,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 265773",
+	"SPELL_AURA_REMOVED 265773",
 	"SPELL_CAST_START 265773 265923 265781 265910",
 	"SPELL_PERIODIC_DAMAGE 265914",
 	"SPELL_PERIODIC_MISSED 265914"
@@ -21,6 +22,7 @@ local warnSpitGold					= mod:NewTargetAnnounce(265773, 2)
 local specWarnTailThrash			= mod:NewSpecialWarningDefensive(265910, nil, nil, nil, 1, 2)
 local specWarnSpitGold				= mod:NewSpecialWarningMoveAway(265773, nil, nil, nil, 1, 2)
 local yellSpitGold					= mod:NewYell(265773)
+local yellSpitGoldFades				= mod:NewShortFadesYell(265773)
 local specWarnLucreCall				= mod:NewSpecialWarningSwitch(265923, nil, nil, nil, 1, 2)--Only non Tank
 local specWarnLucreCallTank			= mod:NewSpecialWarningMove(265923, nil, nil, nil, 1, 2)--Only Tank
 local specWarnSerpentine			= mod:NewSpecialWarningRun(265781, nil, nil, nil, 4, 2)
@@ -57,10 +59,20 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnSpitGold:Show()
 			specWarnSpitGold:Play("runout")
 			yellSpitGold:Yell()
+			yellSpitGoldFades:Countdown(9)
 		end
 	end
 end
 --mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
+
+function mod:SPELL_AURA_REMOVED(args)
+	local spellId = args.spellId
+	if spellId == 265773 then
+		if args:IsPlayer() then
+			yellSpitGoldFades:Cancel()
+		end
+	end
+end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
