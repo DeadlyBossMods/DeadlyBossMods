@@ -7,7 +7,7 @@ mod:SetEncounterID(2276)
 --mod:DisableESCombatDetection()
 mod:SetZone()
 --mod:SetBossHPInfoToHighest()
---mod:SetUsedIcons(1, 2, 8)
+mod:SetUsedIcons(8, 7, 6, 5, 4, 3, 2, 1)
 --mod:SetHotfixNoticeRev(17775)
 --mod:SetMinSyncRevision(16950)
 mod.respawnTime = 29
@@ -19,7 +19,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS 287757 286693 288041 288049",
 	"SPELL_AURA_APPLIED 287757 287167 284168 289023 286051",
 --	"SPELL_AURA_APPLIED_DOSE",
-	"SPELL_AURA_REMOVED 287757",
+	"SPELL_AURA_REMOVED 287757 284168",
 	"UNIT_DIED"
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
@@ -75,13 +75,14 @@ local timerExplodingSheepCD				= mod:NewCDCountTimer(55, 287929, nil, nil, nil, 
 --local countdownRupturingBlood				= mod:NewCountdown("Alt12", 244016, false, 2, 3)
 --local countdownFelstormBarrage			= mod:NewCountdown("AltTwo32", 244000, nil, nil, 3)
 
---mod:AddSetIconOption("SetIconGift", 255594, true)
+mod:AddSetIconOption("SetIconShrunk", 284168, true)
 --mod:AddRangeFrameOption("8/10")
 --mod:AddInfoFrameOption(258040, true)
 --mod:AddNamePlateOption("NPAuraOnPresence", 276093)
 --mod:AddSetIconOption("SetIconDarkRev", 273365, true)
 
 mod.vb.phase = 1
+mod.vb.shrunkIcon = 0
 --Count variables for every timer, because stupid sequence mod
 mod.vb.botCount = 0
 mod.vb.cannonCount = 0
@@ -126,6 +127,7 @@ local explodingSheepTimers = {
 
 function mod:OnCombatStart(delay)
 	self.vb.phase = 1
+	self.vb.shrunkIcon = 0
 	self.vb.botCount = 0
 	self.vb.cannonCount = 0
 	self.vb.blastOffcount = 0
@@ -268,6 +270,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		end
 	elseif spellId == 286693 or spellId == 288041 or spellId == 288049 then--288041 used in intermission first, 288049 second in intermission, 286693 outside intermission
 		self.vb.shrinkCount = self.vb.shrinkCount + 1
+		self.vb.shrunkIcon = 0
 		local timer = shrinkTimers[self.vb.phase][self.vb.shrinkCount+1]
 		if timer then
 			timerShrinkRayCD:Start(timer, self.vb.shrinkCount+1)
@@ -296,11 +299,15 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnDiscombobulation:CombinedShow(0.3, args.destName)
 		specWarnDiscombobulation:ScheduleVoice(0.3, "helpdispel")
 	elseif spellId == 284168 then
+		self.vb.shrunkIcon = self.vb.shrunkIcon + 1
 		warnShrunk:CombinedShow(0.5, args.destName)
 		if args:IsPlayer() then
 			specWarnShrunk:Show()
 			specWarnShrunk:Play("targetyou")
 			yellShrunk:Yell()
+		end
+		if self.Options.SetIconShrunk then
+			self:SetIcon(args.destName, self.vb.shrunkIcon)
 		end
 	elseif spellId == 289023 then
 		if args:IsPlayer() then
@@ -321,6 +328,10 @@ function mod:SPELL_AURA_REMOVED(args)
 			specWarnGigaVoltChargeFading:Cancel()
 			specWarnGigaVoltChargeFading:CancelVoice()
 			yellGigaVoltChargeFades:Cancel()
+		end
+	elseif spellId == 284168 then
+		if self.Options.SetIconShrunk then
+			self:SetIcon(args.destName, 0)
 		end
 	end
 end
