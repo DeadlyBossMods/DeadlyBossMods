@@ -668,9 +668,8 @@ end
 
 --Unsorted table maintained by mod and just sent here.
 --Never updated by onupdate method, requires manual updates when mod updates table
-local function updateByTable()
+local function updateByTable(table)
 	twipe(lines)
-	local table = value[1]
 	--Copy table into lines
 	for i, v in ipairs(table) do
 		lines[i] = v
@@ -731,9 +730,9 @@ local friendlyEvents = {
 	["playertargets"] = true
 }
 
-function onUpdate(frame)
+function onUpdate(frame, table)
 	if events[currentEvent] then
-		events[currentEvent]()
+		events[currentEvent](table)
 	else
 		if frame then
 			frame:Hide()
@@ -900,8 +899,7 @@ end
 function infoFrame:UpdateTable(table)
 	frame = frame or createFrame()
 	if frame:IsShown() then
-		value[1] = table
-		onUpdate(frame)
+		onUpdate(frame, table)
 	end
 end
 
