@@ -674,7 +674,7 @@ local function updateByTable(table)
 	for i, v in pairs(table) do
 		lines[i] = v
 	end
-	--Pass to update lines code for sort handling
+	--Pass to update lines for sort handling
 	updateLines()
 	updateIcons()
 end
@@ -877,6 +877,9 @@ function infoFrame:Show(maxLines, event, ...)
 	onUpdate(frame)
 	if not frame.ticker and not value[4] and event ~= "table" then
 		frame.ticker = C_Timer.NewTicker(0.5, function() onUpdate(frame) end)
+	elseif frame.ticker and event == "table" then--Redundancy, in event calling a new table based infoframe show without a hide event to unschedule ticker based infoframe
+		frame.ticker:Cancel()
+		frame.ticker = nil
 	end
 	local wowToc, testBuild, wowVersionString = DBM:GetTOC()
 end
