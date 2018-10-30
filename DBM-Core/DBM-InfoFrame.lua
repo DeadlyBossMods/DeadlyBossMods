@@ -671,7 +671,7 @@ end
 local function updateByTable(table)
 	twipe(lines)
 	--Copy table into lines
-	for i, v in ipairs(table) do
+	for i, v in pairs(table) do
 		lines[i] = v
 	end
 	--Pass to update lines code for sort handling
