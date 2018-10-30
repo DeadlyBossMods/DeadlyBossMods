@@ -669,6 +669,7 @@ end
 --Unsorted table maintained by mod and just sent here.
 --Never updated by onupdate method, requires manual updates when mod updates table
 local function updateByTable(table)
+	if not table then return end
 	twipe(lines)
 	--Copy table into lines
 	for i, v in pairs(table) do
@@ -864,7 +865,7 @@ function infoFrame:Show(maxLines, event, ...)
 		sortMethod = 1
 	end
 	if events[currentEvent] then
-		events[currentEvent]()
+		events[currentEvent](value[1])
 	else
 		error("DBM-InfoFrame: Unsupported event", 2)
 		return
@@ -874,7 +875,7 @@ function infoFrame:Show(maxLines, event, ...)
 	end
 	frame:Show()
 	frame:SetOwner(UIParent, "ANCHOR_PRESERVE")
-	onUpdate(frame)
+	onUpdate(frame, value[1])
 	if not frame.ticker and not value[4] and event ~= "table" then
 		frame.ticker = C_Timer.NewTicker(0.5, function() onUpdate(frame) end)
 	elseif frame.ticker and event == "table" then--Redundancy, in event calling a new table based infoframe show without a hide event to unschedule ticker based infoframe
@@ -901,7 +902,7 @@ end
 
 function infoFrame:UpdateTable(table)
 	frame = frame or createFrame()
-	if frame:IsShown() then
+	if frame:IsShown() and table then
 		onUpdate(frame, table)
 	end
 end
