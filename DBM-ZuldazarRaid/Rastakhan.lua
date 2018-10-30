@@ -293,15 +293,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.InfoFrame then
 			if not DBM.InfoFrame:IsShown() then
 				DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(285195))
-				if DBM.Options.DebugMode and DBM.Options.DebugLevel == 3 then
-					DBM.InfoFrame:Show(5, "table", infoframeTable, 1)
-				else
-					DBM.InfoFrame:Show(5, "playerdebuffstacks", 285195, 1)
-				end
+				DBM.InfoFrame:Show(5, "table", infoframeTable, 1)
 			else
-				if DBM.Options.DebugMode and DBM.Options.DebugLevel == 3 then
-					DBM.InfoFrame:UpdateTable(infoframeTable)
-				end
+				DBM.InfoFrame:UpdateTable(infoframeTable)
 			end
 		end
 	elseif spellId == 284662 then
@@ -407,7 +401,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif spellId == 285195 then
 		infoframeTable[args.destName] = nil
-		if self.Options.InfoFrame and DBM.Options.DebugMode and DBM.Options.DebugLevel == 3 then
+		if self.Options.InfoFrame then
 			DBM.InfoFrame:UpdateTable(infoframeTable)
 		end
 	elseif spellId == 288449 then
@@ -452,9 +446,7 @@ function mod:SPELL_AURA_REMOVED_DOSE(args)
 		infoframeTable[args.destName] = args.amount or 1
 		if self.Options.InfoFrame then
 			if #infoframeTable > 0 then
-				if DBM.Options.DebugMode and DBM.Options.DebugLevel == 3 then
-					DBM.InfoFrame:UpdateTable(infoframeTable)
-				end
+				DBM.InfoFrame:UpdateTable(infoframeTable)
 			else
 				DBM.InfoFrame:Hide()
 			end
