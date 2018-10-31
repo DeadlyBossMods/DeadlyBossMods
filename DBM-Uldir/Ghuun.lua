@@ -38,7 +38,7 @@ mod:RegisterEventsInCombat(
  or ability.id = 270443
  or (ability.id = 267462 or ability.id = 267412 or ability.id = 267409) and type = "begincast"
  or ability.id = 270443 and type = "applybuff"
- or (ability.id = 277079 or ability.id = 272506 or ability.id = 274262) and (type = "applydebuff" or type = "removedebuff")
+ or (ability.id = 277079 or ability.id = 272506 or ability.id = 274262 or ability.id = 263504) and (type = "applydebuff" or type = "removedebuff")
 --]]
 --Arena Floor
 local warnMatrixSpawn					= mod:NewCountAnnounce(263420, 1)
@@ -136,7 +136,7 @@ mod.vb.burstingCount = 0
 mod.vb.explosiveIcon = 0
 mod.vb.matrixActive = false
 local playerHasImperfect, playerHasBursting, playerHasBargain, playerHasMatrix = false, false, false, false
-local matrixTargets, bloodFeastTarget = {}, {}
+local matrixTargets, bloodFeastTarget = {}, nil
 local thousandMawsTimers = {25.4, 26.3, 25.5, 24.2, 23.9, 23.1, 21.5, 21.9, 19.4}
 local thousandMawsTimersLFR = {27.78, 29.2, 27.9, 26.46, 26.13, 25.26, 23.51, 23.95, 21.21}--Timers 4+ extrapolated using 1.093x greater formula
 local seenAdds = {}
@@ -200,11 +200,8 @@ do
 				end
 			end
 		end
-		for i=1, #bloodFeastTarget do
-			local name = bloodFeastTarget[i]
-			local uId = DBM:GetRaidUnitId(name)
-			if not uId then break end
-			addLine(bloodFeastName, UnitName(uId))
+		if bloodFeastTarget then
+			addLine(bloodFeastName, bloodFeastTarget)
 		end
 		--Player personal checks
 		if playerHasImperfect then
@@ -257,8 +254,8 @@ end
 
 function mod:OnCombatStart(delay)
 	table.wipe(matrixTargets)
-	table.wipe(bloodFeastTarget)
 	table.wipe(seenAdds)
+	bloodFeastTarget = nil
 	self.vb.phase = 1
 	self.vb.mawCastCount = 0
 	self.vb.matrixCount = 0
@@ -591,9 +588,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			local count = self.vb.bloodFeastCount
 			specWarnBloodFeastTarget:ScheduleVoice(1, nil, "Interface\\AddOns\\DBM-VP"..DBM.Options.ChosenVoicePack.."\\count\\"..count..".ogg")
 		end
-		if not tContains(bloodFeastTarget, args.destName) then
-			table.insert(bloodFeastTarget, args.destName)
-		end
+		bloodFeastTarget = args.destName
 	elseif spellId == 270443 then--Bite
 		--Start wave timer when boss activates, vs when he's first stunned.
 		self.vb.waveCast = 0
@@ -672,7 +667,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		if args:IsPlayer() then
 			yellBloodFeastFades:Cancel()
 		end
-		tDeleteItem(bloodFeastTarget, args.destName)
+		bloodFeastTarget = nil
 	elseif spellId == 263372 then
 		tDeleteItem(matrixTargets, args.destName)
 		self:Unschedule(checkThrowFail)
