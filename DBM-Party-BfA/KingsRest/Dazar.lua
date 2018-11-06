@@ -16,6 +16,7 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
+--(ability.id = 268932 or ability.id = 268403 or ability.id = 268586) and type = "begincast"
 --TODO:  pull:12.0, 42.3, 19.7, 23.2 (wtf?)
 local warnGaleSlash					= mod:NewSpellAnnounce(268403, 2)
 local warnQuakingLeap				= mod:NewTargetAnnounce(268932, 2)
@@ -32,15 +33,41 @@ local specWarnDeadlyRoar			= mod:NewSpecialWarningSpell(269369, nil, nil, nil, 2
 --local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 8)
 
 local timerGaleSlashCD				= mod:NewCDTimer(13, 268403, nil, nil, nil, 3)
-local timerQuakingLeapCD			= mod:NewCDTimer(19.7, 268932, nil, nil, nil, 3)--19.7-42.3 NANI?
+local timerQuakingLeapCD			= mod:NewCDTimer(19.3, 268932, nil, nil, nil, 3)
 local timerBladeComboCD				= mod:NewCDTimer(14.5, 268586, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
 --Adds
 local timerHuntingLeapCD			= mod:NewCDTimer(12.8, 269231, nil, nil, nil, 3)
-local timerDeathlyRoarCD			= mod:NewCDTimer(13, 269369, nil, nil, nil, 2)
+local timerDeathlyRoarCD			= mod:NewCDTimer(13.6, 269369, nil, nil, nil, 2)
 
 --mod:AddRangeFrameOption(5, 194966)
 
 local seenMobs = {}
+
+--Handles the ICD that Boss triggers on other abilities
+local function updateAllTimers(self, ICD)
+	DBM:Debug("updateAllTimers running", 3)
+	if timerGaleSlashCD:GetRemaining(self.vb.waveCast+1) < ICD then
+		local elapsed, total = timerGaleSlashCD:GetTime()
+		local extend = ICD - (total-elapsed)
+		DBM:Debug("timerGaleSlashCD extended by: "..extend, 2)
+		timerGaleSlashCD:Stop()
+		timerGaleSlashCD:Update(elapsed, total+extend)
+	end
+	if timerQuakingLeapCD:GetRemaining() < ICD then
+		local elapsed, total = timerQuakingLeapCD:GetTime()
+		local extend = ICD - (total-elapsed)
+		DBM:Debug("timerQuakingLeapCD extended by: "..extend, 2)
+		timerQuakingLeapCD:Stop()
+		timerQuakingLeapCD:Update(elapsed, total+extend)
+	end
+	if timerBladeComboCD:GetRemaining() < ICD then
+		local elapsed, total = timerBladeComboCD:GetTime()
+		local extend = ICD - (total-elapsed)
+		DBM:Debug("timerBladeComboCD extended by: "..extend, 2)
+		timerBladeComboCD:Stop()
+		timerBladeComboCD:Update(elapsed, total+extend)
+	end
+end
 
 function mod:LeapTarget(targetname, uId)
 	if not targetname then return end
@@ -74,19 +101,24 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 268403 then
 		warnGaleSlash:Show()
 		timerGaleSlashCD:Start()
+		--updateAllTimers(self, 4.5)--Not confirmed
 	elseif spellId == 268932 then
+		timerQuakingLeapCD:Stop()
 		timerQuakingLeapCD:Start()
 		self:BossTargetScanner(args.sourceGUID, "LeapTarget", 0.05, 12, true)--0.2 seconds faster than emote still
+		updateAllTimers(self, 4.5)
 	elseif spellId == 268586 then
-		if self:IsTanking("player", "boss1", nil, true) then
+		if self:IsTanking("player", "boss1", nil, true) and self:AntiSpam(3, 1) then
 			specWarnBladeCombo:Show()
 			specWarnBladeCombo:Play("defensive")
 		end
+		timerBladeComboCD:Stop()
 		timerBladeComboCD:Start()
+		updateAllTimers(self, 5)
 	elseif spellId == 269369 then
 		specWarnDeadlyRoar:Show()
 		specWarnDeadlyRoar:Play("fearsoon")
-		--timerDeathlyRoarCD:Start()
+		timerDeathlyRoarCD:Start()
 	end
 end
 
