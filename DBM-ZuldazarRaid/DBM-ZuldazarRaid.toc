@@ -17,8 +17,8 @@
 ## X-DBM-Mod-MinCoreRevision: 17286
 ## X-DBM-Mod-MinExpansion: 7
 localization.en.lua
-Frida_Kanae.lua
-FlameDuo.lua
+ChampionofLight.lua
+JadefireMasters.lua
 Grong.lua
 TreasureGuardian.lua
 ConclaveoftheChosen.lua
