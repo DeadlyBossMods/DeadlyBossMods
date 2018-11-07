@@ -331,10 +331,10 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 272146 then
 		infoframeTable[args.destName] = nil
 		if self.Options.InfoFrame then
-			if #infoframeTable > 0 then
-				DBM.InfoFrame:UpdateTable(infoframeTable)
-			else
+			if #infoframeTable == 0 then
 				DBM.InfoFrame:Hide()
+			else
+				DBM.InfoFrame:UpdateTable(infoframeTable)
 			end
 		end
 	end
