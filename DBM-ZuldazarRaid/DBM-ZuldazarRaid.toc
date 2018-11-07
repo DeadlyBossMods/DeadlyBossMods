@@ -20,7 +20,7 @@ localization.en.lua
 ChampionofLight.lua
 JadefireMasters.lua
 Grong.lua
-TreasureGuardian.lua
+Opulence.lua
 ConclaveoftheChosen.lua
 Rastakhan.lua
 Mekkatorque.lua
