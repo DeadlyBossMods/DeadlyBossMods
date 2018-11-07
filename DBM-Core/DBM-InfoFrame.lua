@@ -669,11 +669,12 @@ end
 --Unsorted table maintained by mod and just sent here.
 --Never updated by onupdate method, requires manual updates when mod updates table
 local function updateByTable(table)
-	if not table then return end
 	twipe(lines)
 	--Copy table into lines
-	for i, v in pairs(table) do
-		lines[i] = v
+	if table then
+		for i, v in pairs(table) do
+			lines[i] = v
+		end
 	end
 	--Pass to update lines for sort handling
 	updateLines()
