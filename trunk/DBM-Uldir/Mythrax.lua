@@ -173,7 +173,7 @@ function mod:SPELL_CAST_START(args)
 			timerObliterationBlastCD:Start(12, DBM_ADD)
 		end
 	elseif spellId == 273810 then--Timers start here, because we have to factor boss movement
-		timerOblivionSphereCD:Start(7)--Resets to 7
+		timerOblivionSphereCD:Start(7, self.vb.sphereCast+1)--Resets to 7
 		countdownOblivionSphere:Start(7)--Still seems same in all
 		if self:IsMythic() then
 			timerObliterationbeamCD:Start(18.5, 1)
