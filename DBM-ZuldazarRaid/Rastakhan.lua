@@ -402,7 +402,11 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 285195 then
 		infoframeTable[args.destName] = nil
 		if self.Options.InfoFrame then
-			DBM.InfoFrame:UpdateTable(infoframeTable)
+			if #infoframeTable == 0 then
+				DBM.InfoFrame:Hide()
+			else
+				DBM.InfoFrame:UpdateTable(infoframeTable)
+			end
 		end
 	elseif spellId == 288449 then
 		if args:IsPlayer() then
@@ -445,11 +449,7 @@ function mod:SPELL_AURA_REMOVED_DOSE(args)
 	if spellId == 285195 then
 		infoframeTable[args.destName] = args.amount or 1
 		if self.Options.InfoFrame then
-			if #infoframeTable > 0 then
-				DBM.InfoFrame:UpdateTable(infoframeTable)
-			else
-				DBM.InfoFrame:Hide()
-			end
+			DBM.InfoFrame:UpdateTable(infoframeTable)
 		end
 	end
 end
