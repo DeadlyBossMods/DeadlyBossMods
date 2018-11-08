@@ -269,7 +269,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellKimbulsWrathFades:Countdown(12)
 		end
 		if self:AntiSpam(10, 3) then
-			timerKinbulsWrathCD:Start():Start()
+			timerKinbulsWrathCD:Start()
 		end
 	elseif spellId == 285878 then
 		if args:IsPlayer() then
