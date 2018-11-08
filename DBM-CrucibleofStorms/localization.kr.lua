@@ -33,5 +33,5 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("CrucibleofStormsTrash")
 
 L:SetGeneralLocalization({
-	name =	"폭풍의 도가니 일반몹"
+	name =	"폭풍의 용광로 일반몹"
 })
