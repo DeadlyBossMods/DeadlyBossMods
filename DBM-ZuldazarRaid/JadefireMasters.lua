@@ -1,6 +1,6 @@
 local dungeonID, creatureID, creatureID2
 if UnitFactionGroup("player") == "Alliance" then
-	dungeonID, creatureID, creatureID2 = 2323, 148238, 146100--Ma'ra Grimfang and Anathos Firecaller
+	dungeonID, creatureID, creatureID2 = 2323, 144691, 144692--Ma'ra Grimfang and Anathos Firecaller
 else--Horde
 	dungeonID, creatureID, creatureID2 = 2341, 144693, 144690--Manceroy Flamefist and the Mestrah <the Illuminated>
 end
