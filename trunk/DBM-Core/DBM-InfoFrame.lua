@@ -377,7 +377,7 @@ local function updateEnemyPower()
 			local currentPower, maxPower = UnitPower(uId), UnitPowerMax(uId)
 			if maxPower and maxPower ~= 0 then--Prevent division by 0 in addition to filtering non existing units that may still return false on UnitExists()
 				if currentPower / maxPower * 100 >= threshold then
-					lines[UnitName(uId)] = DBM_CORE_INFOFRAME_MAIN..currentPower
+					lines[UnitName(uId)] = currentPower
 				end
 			end
 			--Alternate Power
