@@ -231,7 +231,8 @@ function mod:SPELL_AURA_REMOVED(args)
 		specWarnPyroblast:Show(args.destName)
 		specWarnPyroblast:Play("kickcast")
 		if self.Options.InfoFrame and self.vb.shieldsActive == 0 then
-			DBM.InfoFrame:Hide()
+			DBM.InfoFrame:SetHeader(DBM_CORE_INFOFRAME_POWER)
+			DBM.InfoFrame:Show(4, "enemypower", 2)
 		end
 	elseif spellId == 286988 then
 		if args:IsPlayer() then
