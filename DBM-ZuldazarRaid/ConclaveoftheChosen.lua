@@ -363,8 +363,13 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 	if msg:find("spell:282107") then
 		specWarnPakusWrath:Show("Birdo")
 		specWarnPakusWrath:Play("gathershare")
-		timerPakusWrathCD:Start()
-		countdownPakusWrath:Start()
+		if self:IsMythic() then
+			timerPakusWrathCD:Start(60)
+			countdownPakusWrath:Start(60)
+		else
+			timerPakusWrathCD:Start(70)
+			countdownPakusWrath:Start(70)
+		end
 	end
 end
 
