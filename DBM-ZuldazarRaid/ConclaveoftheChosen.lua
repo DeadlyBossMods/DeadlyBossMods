@@ -37,7 +37,7 @@ local warnLaceratingClaws				= mod:NewStackAnnounce(282444, 2, nil, "Tank")
 local warnMindWipe						= mod:NewTargetNoFilterAnnounce(285878, 4)
 local warnAkundasWrath					= mod:NewTargetAnnounce(286811, 2)
 --Bwonsamdi
-local warnBwonsamdisWrath				= mod:NewTargetNoFilterAnnounce(284663, 4, nil, "Healer")
+local warnBwonsamdisWrath				= mod:NewTargetNoFilterAnnounce(284663, 4, nil, false, 2)--Spammy latter fight, opt in, not opt out
 
 --General
 local specWarnActivated					= mod:NewSpecialWarningSwitchCount(118212, "Tank", DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch:format(118212), nil, 3, 2)
@@ -69,8 +69,10 @@ local specWarnAkundasWrath				= mod:NewSpecialWarningYou(286811, nil, nil, nil, 
 local yellAkundasWrath					= mod:NewYell(286811)
 local yellAkundasWrathFades				= mod:NewFadesYell(286811)
 --Krag'wa
-local specWarnBwonsamdisWrath			= mod:NewSpecialWarningYou(284663, nil, nil, nil, 3, 2)
+
 --Bwonsamdi
+local specWarnBwonsamdisWrath			= mod:NewSpecialWarningYou(284663, nil, nil, nil, 3, 2)
+local specWarnBwonsamdisWrathDispel		= mod:NewSpecialWarningDispel(284663, "RemoveCurse", nil, nil, 1, 2)
 
 --mod:AddTimerLine(DBM:EJ_GetSectionInfo(18527))
 --Pa'ku's Aspect
@@ -294,6 +296,11 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnBwonsamdisWrath:Play("targetyou")
 		else
 			warnBwonsamdisWrath:Show(args.destName)
+		end
+		local uId = DBM:GetRaidUnitId(args.destName)
+		if self:IsTanking(uId) then
+			specWarnBwonsamdisWrathDispel:Show(args.destName)
+			specWarnBwonsamdisWrathDispel:Play("helpdispel")
 		end
 	end
 end
