@@ -125,6 +125,10 @@ function mod:OnCombatStart(delay)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(5)
 	end
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(272146))
+		DBM.InfoFrame:Show(5, "table", infoframeTable, 1)
+	end
 end
 
 function mod:OnCombatEnd()
@@ -303,12 +307,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 272146 then
 		infoframeTable[args.destName] = args.amount or 1
 		if self.Options.InfoFrame then
-			if not DBM.InfoFrame:IsShown() then
-				DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(272146))
-				DBM.InfoFrame:Show(5, "table", infoframeTable, 1)
-			else
-				DBM.InfoFrame:UpdateTable(infoframeTable)
-			end
+			DBM.InfoFrame:UpdateTable(infoframeTable)
 		end
 	end
 end
@@ -331,11 +330,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 272146 then
 		infoframeTable[args.destName] = nil
 		if self.Options.InfoFrame then
-			if #infoframeTable == 0 then
-				DBM.InfoFrame:Hide()
-			else
-				DBM.InfoFrame:UpdateTable(infoframeTable)
-			end
+			DBM.InfoFrame:UpdateTable(infoframeTable)
 		end
 	end
 end
