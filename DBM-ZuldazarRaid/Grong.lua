@@ -49,7 +49,7 @@ local warnCore							= mod:NewTargetNoFilterAnnounce(coreSpellId, 2)
 
 local specWarnEnergyAOE					= mod:NewSpecialWarningCount(energyAOESpellId, nil, nil, nil, 2, 2)
 local specWarnSlam						= mod:NewSpecialWarningDodge(slamSpellId, nil, nil, nil, 2, 2)
-local specWarnFerociousRoar				= mod:NewSpecialWarningSpell(285994, nil, nil, nil, 2, 2)
+--local specWarnFerociousRoar				= mod:NewSpecialWarningSpell(285994, nil, nil, nil, 2, 2)
 local specWarnAdd						= mod:NewSpecialWarningSwitch(addSpawnId, "Dps", nil, nil, 1, 2)
 local specWarnAddInterrupt				= mod:NewSpecialWarningInterruptCount(addCastId, "HasInterrupt", nil, nil, 1, 2)
 local specWarnCrushedTaunt				= mod:NewSpecialWarningTaunt(285671, nil, nil, nil, 1, 2)
@@ -62,7 +62,7 @@ local specWarnRendingBiteTaunt			= mod:NewSpecialWarningTaunt(285875, nil, nil, 
 local timerEnergyAOECD					= mod:NewCDCountTimer(100, energyAOESpellId, nil, nil, nil, 2)
 local timerTankComboCD					= mod:NewCDTimer(30.3, tankComboId, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerSlamCD						= mod:NewCDTimer(29.1, slamSpellId, nil, nil, nil, 3)
-local timerFerociousRoarCD				= mod:NewCDTimer(21.9, 285994, nil, nil, nil, 2)
+--local timerFerociousRoarCD				= mod:NewCDTimer(21.9, 285994, nil, nil, nil, 2)
 local timerAddCD						= mod:NewCDTimer(120, addSpawnId, nil, nil, nil, 1)
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
@@ -155,9 +155,9 @@ function mod:SPELL_CAST_START(args)
 		timerEnergyAOECD:Stop()
 		timerEnergyAOECD:Start(100, self.vb.EnergyAOECount+1)
 	elseif spellId == 285994 then
-		specWarnFerociousRoar:Show()
-		specWarnFerociousRoar:Play("fearsoon")
-		timerFerociousRoarCD:Start()
+		--specWarnFerociousRoar:Show()
+		--specWarnFerociousRoar:Play("fearsoon")
+		--timerFerociousRoarCD:Start()
 	elseif spellId == 282533 or spellId == 282243 then
 		if not castsPerGUID[args.sourceGUID] then
 			castsPerGUID[args.sourceGUID] = 0
