@@ -24,6 +24,10 @@ mod:RegisterEventsInCombat(
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
+--[[
+(ability.id = 282205 or ability.id = 287952 or ability.id = 287929 or ability.id = 282153 or ability.id = 288410 or ability.id = 287751 or ability.id = 287797) and type = "begincast"
+ or (ability.id = 287757 or ability.id = 286693 or ability.id = 288041 or ability.id = 288049) and type = "cast"
+--]]
 --TODO, Gigavolt Charge has 3 debuff spellIDs, all 3 used or what the deal?
 --TODO, icon marking for poly morph dispel assignments?
 --TODO, nameplate aura for tampering protocol, if it has actual debuff diration (wowhead does not)
@@ -45,7 +49,7 @@ local yellGigaVoltCharge				= mod:NewYell(286646)
 local yellGigaVoltChargeFades			= mod:NewFadesYell(286646)
 local specWarnGigaVoltChargeFading		= mod:NewSpecialWarningMoveTo(286646, nil, nil, nil, 3, 2)
 local specWarnGigaVoltChargeTaunt		= mod:NewSpecialWarningTaunt(286646, nil, nil, nil, 1, 2)
-local specWarnDimensionalRipperXL		= mod:NewSpecialWarningSpell(287952, nil, nil, nil, 2, 5)
+local specWarnWormholeGenerator 		= mod:NewSpecialWarningSpell(287952, nil, nil, nil, 2, 5)
 local specWarnDiscombobulation			= mod:NewSpecialWarningDispel(287167, "Healer", nil, nil, 1, 2)--Mythic
 local specWarnDeploySparkBot			= mod:NewSpecialWarningSwitch(288410, nil, nil, nil, 1, 2)
 local specWarnShrunk					= mod:NewSpecialWarningYou(284168, nil, nil, nil, 1, 2)
@@ -62,9 +66,9 @@ local timerBusterCannonCD				= mod:NewCDCountTimer(25, 282153, nil, nil, nil, 3)
 local timerBlastOffCD					= mod:NewCDCountTimer(55, 282205, nil, nil, nil, 2)
 local timerCrashDownCD					= mod:NewCastTimer(4.5, 287797, nil, nil, nil, 3)
 local timerGigaVoltChargeCD				= mod:NewCDCountTimer(14.1, 286646, nil, nil, nil, 3, nil, DBM_CORE_TANK_ICON)
-local timerDimensionalRipperXLCD		= mod:NewCDCountTimer(55, 287952, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
+local timerWormholeGeneratorCD		= mod:NewCDCountTimer(55, 287952, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
 local timerDeploySparkBotCD				= mod:NewCDCountTimer(55, 288410, nil, nil, nil, 1)
-local timerShrinkRayCD					= mod:NewCDCountTimer(55, 288049, nil, nil, nil, 3)
+local timerWorldEnlargerCD					= mod:NewCDCountTimer(55, 288049, nil, nil, nil, 3)
 --Intermission: Evasive Maneuvers!
 local timerIntermission					= mod:NewPhaseTimer(49.9)
 local timerExplodingSheepCD				= mod:NewCDCountTimer(55, 287929, nil, nil, nil, 3)
@@ -91,38 +95,164 @@ mod.vb.ripperCount = 0
 mod.vb.gigaCount = 0
 mod.vb.shrinkCount = 0
 mod.vb.sheepCount = 0
---Timers by phase
+mod.vb.difficultyName = "None"
+--Timers by phase and difficulty
 local sparkBotTimers = {
-	[1] = {5, 30, 50, 20},
-	[1.5] = {21.9, 15},
-	[2] = {5, 25, 40, 30},
-	[2.5] = {21.9, 15},--Assumed
+	["lfr"] = {
+		[1] = {},
+		[1.5] = {},
+		[2] = {},
+		[2.5] = {},
+		[3] = {},
+	},
+	["normal"] = {
+		[1] = {},
+		[1.5] = {},
+		[2] = {},
+		[2.5] = {},
+		[3] = {},
+	},
+	["heroic"] = {
+		[1] = {5, 30, 50, 20},
+		[1.5] = {21.9, 15},
+		[2] = {5, 25, 40, 30},
+		[2.5] = {21.9, 15},--Assumed
+		[3] = {},
+	},
+	["mythic"] = {
+		[1] = {19.8, 20, 22.7, 40},
+		[1.5] = {},
+		[2] = {},
+		[2.5] = {},
+		[3] = {},
+	},
 }
 local busterCannonTimers = {
-	[1] = {15, 25, 27, 43},
-	[2] = {10.5, 25, 30, 40},
+	["lfr"] = {
+		[1] = {},
+		[2] = {},
+		[3] = {},
+	},
+	["normal"] = {
+		[1] = {},
+		[2] = {},
+		[3] = {},
+	},
+	["heroic"] = {
+		[1] = {15, 25, 27, 43},
+		[2] = {10.5, 25, 30, 40},
+		[3] = {},
+	},
+	["mythic"] = {
+		[1] = {10.1, 26.4, 12.9, 20.9},
+		[2] = {},
+		[3] = {},
+	},
 }
 local blastOffTimers = {
-	[1] = {25, 32, 18, 25},
-	[2] = {20.5, 31.1, 28.9, 15},
+	["lfr"] = {
+		[1] = {},
+		[2] = {},
+		[3] = {},
+	},
+	["normal"] = {
+		[1] = {},
+		[2] = {},
+		[3] = {},
+	},
+	["heroic"] = {
+		[1] = {25, 32, 18, 25},
+		[2] = {20.5, 31.1, 28.9, 15},
+		[3] = {},
+	},
+	["mythic"] = {
+		[1] = {29.8, 60.2},
+		[2] = {},
+		[3] = {},
+	},
 }
-local dimRipperTimers = {
-	[1] = {53, 42},
-	[2] = {48.5, 42.1},
+local wormholeTimers = {
+	--Not used on normal/lfr
+	["heroic"] = {
+		[1] = {53, 42},
+		[2] = {48.5, 42.1},
+		[3] = {},
+	},
+	["mythic"] = {
+		[1] = {41.7, 17.1, 39.5},
+		[2] = {},
+		[3] = {},
+	},
 }
 local gigaVoltTImers = {
-	[1] = {21.5, 31, 39},
-	[2] = {17, 31, 29},
+	["lfr"] = {
+		[1] = {},
+		[2] = {},
+		[3] = {},
+	},
+	["normal"] = {
+		[1] = {},
+		[2] = {},
+		[3] = {},
+	},
+	["heroic"] = {
+		[1] = {21.5, 31, 39},
+		[2] = {17, 31, 29},
+		[3] = {},
+	},
+	["mythic"] = {
+		[1] = {16.9, 80.5},
+		[2] = {},
+		[3] = {},
+	},
 }
-local shrinkTimers = {
-	[1] = {65},
-	[1.5] = {7.9, 17.1},
-	[2] = {113},
-	[2.5] = {7.9, 17.1},--Assumed
+local worldEnlargerTimers = {
+	["lfr"] = {
+		[1] = {},
+		[1.5] = {},
+		[2] = {},
+		[2.5] = {},
+		[3] = {},
+	},
+	["normal"] = {
+		[1] = {},
+		[1.5] = {},
+		[2] = {},
+		[2.5] = {},
+		[3] = {},
+	},
+	["heroic"] = {
+		[1] = {65},
+		[1.5] = {7.9, 17.1},
+		[2] = {113},
+		[2.5] = {7.9, 17.1},--Assumed
+		[3] = {},
+	},
+	["mythic"] = {
+		[1] = {78.2},
+		[1.5] = {},
+		[2] = {},
+		[2.5] = {},
+		[3] = {},
+	},
 }
 local explodingSheepTimers = {
-	[1.5] = {12.9, 17.0, 15.0},
-	[2.5] = {12.9, 17.0, 15.0},--Assumed, could be different too
+	["lfr"] = {
+		[1.5] = {},
+		[2.5] = {},
+	},
+	["normal"] = {
+		[1.5] = {},
+		[2.5] = {},
+	},
+	["heroic"] = {
+		[1.5] = {12.9, 17.0, 15.0},
+		[2.5] = {12.9, 17.0, 15.0},--Assumed, could be different too
+	},
+	["mythic"] = {
+		[1.5] = {},
+		[2.5] = {},--Assumed, could be different too
+	},
 }
 
 function mod:OnCombatStart(delay)
@@ -134,13 +264,26 @@ function mod:OnCombatStart(delay)
 	self.vb.ripperCount = 0
 	self.vb.gigaCount = 0
 	self.vb.shrinkCount = 0
-	timerDeploySparkBotCD:Start(5-delay, 1)
-	timerBusterCannonCD:Start(15-delay, 1)
-	timerGigaVoltChargeCD:Start(21.5-delay, 1)--Success
-	timerBlastOffCD:Start(25-delay, 1)
-	timerShrinkRayCD:Start(65-delay, 1)--Success
-	if self:IsHard() then
-		timerDimensionalRipperXLCD:Start(53-delay, 1)
+	if self:IsMythic() then
+		self.vb.difficultyName = "mythic"
+		timerBusterCannonCD:Start(10-delay, 1)
+		timerGigaVoltChargeCD:Start(16.5-delay, 1)--Success
+		timerDeploySparkBotCD:Start(19.8-delay, 1)
+		timerBlastOffCD:Start(29.8-delay, 1)
+		timerWormholeGeneratorCD:Start(41-delay, 1)
+		timerWorldEnlargerCD:Start(78-delay, 1)--Success
+	elseif self:IsHeroic() then
+		self.vb.difficultyName = "heroic"
+		timerDeploySparkBotCD:Start(5-delay, 1)
+		timerBusterCannonCD:Start(15-delay, 1)
+		timerGigaVoltChargeCD:Start(21.5-delay, 1)--Success
+		timerBlastOffCD:Start(25-delay, 1)
+		timerWormholeGeneratorCD:Start(53-delay, 1)
+		timerWorldEnlargerCD:Start(65-delay, 1)--Success
+	elseif self:IsNormal() then
+		self.vb.difficultyName = "normal"
+	else
+		self.vb.difficultyName = "lfr"
 	end
 --	if self.Options.NPAuraOnPresence then
 --		DBM:FireEvent("BossMod_EnableHostileNameplates")
@@ -166,23 +309,23 @@ function mod:SPELL_CAST_START(args)
 		specWarnBlastOff:Show()
 		specWarnBlastOff:Play("justrun")
 		timerCrashDownCD:Start(4.5)
-		local timer = blastOffTimers[self.vb.phase][self.vb.blastOffcount+1]
+		local timer = blastOffTimers[self.vb.difficultyName][self.vb.phase][self.vb.blastOffcount+1]
 		if timer then
 			timerBlastOffCD:Start(timer, self.vb.blastOffcount+1)
 		end
 	elseif spellId == 287952 then
 		self.vb.ripperCount = self.vb.ripperCount + 1
-		specWarnDimensionalRipperXL:Show()
-		specWarnDimensionalRipperXL:Play("teleyou")
-		local timer = dimRipperTimers[self.vb.phase][self.vb.ripperCount+1]
+		specWarnWormholeGenerator:Show()
+		specWarnWormholeGenerator:Play("teleyou")
+		local timer = wormholeTimers[self.vb.difficultyName][self.vb.phase][self.vb.ripperCount+1]
 		if timer then
-			timerDimensionalRipperXLCD:Start(timer, self.vb.ripperCount+1)
+			timerWormholeGeneratorCD:Start(timer, self.vb.ripperCount+1)
 		end
 	elseif spellId == 287929 then
 		self.vb.sheepCount = self.vb.sheepCount + 1
 		specWarnExplodingSheep:Show()
 		specWarnExplodingSheep:Play("watchstep")
-		local timer = explodingSheepTimers[self.vb.phase][self.vb.sheepCount+1]
+		local timer = explodingSheepTimers[self.vb.difficultyName][self.vb.phase][self.vb.sheepCount+1]
 		if timer then
 			timerExplodingSheepCD:Start(timer, self.vb.sheepCount+1)
 		end
@@ -190,7 +333,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.cannonCount = self.vb.cannonCount + 1
 		specWarnBusterCannon:Show()
 		specWarnBusterCannon:Play("shockwave")
-		local timer = busterCannonTimers[self.vb.phase][self.vb.cannonCount+1]
+		local timer = busterCannonTimers[self.vb.difficultyName][self.vb.phase][self.vb.cannonCount+1]
 		if timer then
 			timerBusterCannonCD:Start(timer, self.vb.cannonCount+1)
 		end
@@ -200,7 +343,7 @@ function mod:SPELL_CAST_START(args)
 			specWarnDeploySparkBot:Show()
 			specWarnDeploySparkBot:Play("targetchange")
 		end
-		local timer = sparkBotTimers[self.vb.phase][self.vb.botCount+1]
+		local timer = sparkBotTimers[self.vb.difficultyName][self.vb.phase][self.vb.botCount+1]
 		if timer then
 			timerDeploySparkBotCD:Start(timer, self.vb.botCount+1)
 		end
@@ -219,14 +362,14 @@ function mod:SPELL_CAST_START(args)
 		timerBusterCannonCD:Stop()
 		timerGigaVoltChargeCD:Stop()--Success
 		timerBlastOffCD:Stop()
-		timerShrinkRayCD:Stop()
+		timerWorldEnlargerCD:Stop()
 		
-		timerShrinkRayCD:Start(7.9, 1)
+		timerWorldEnlargerCD:Start(7.9, 1)
 		timerExplodingSheepCD:Start(12.9, 1)
 		timerDeploySparkBotCD:Start(21.9, 1)
 		timerGigaVoltChargeCD:Start(41.4, 1)
 		if self:IsHard() then
-			timerDimensionalRipperXLCD:Start(16.9, 1)
+			timerWormholeGeneratorCD:Start(16.9, 1)
 		end
 		timerIntermission:Start(49.9)--Seems time based but journal says when generators die
 	elseif spellId == 287797 then--Crash Down (intermission end)
@@ -243,16 +386,16 @@ function mod:SPELL_CAST_START(args)
 		timerExplodingSheepCD:Stop()
 		timerDeploySparkBotCD:Stop()
 		timerGigaVoltChargeCD:Stop()
-		timerShrinkRayCD:Stop()
-		timerDimensionalRipperXLCD:Stop()
+		timerWorldEnlargerCD:Stop()
+		timerWormholeGeneratorCD:Stop()
 		
 		timerDeploySparkBotCD:Start(5.5, 1)
 		timerBusterCannonCD:Start(10.5, 1)
 		timerGigaVoltChargeCD:Start(17, 1)--Success
 		timerBlastOffCD:Start(20.5, 1)
-		timerShrinkRayCD:Start(114, 1)--Success (bugged? Should not take this long for a shrink)
+		timerWorldEnlargerCD:Start(114, 1)--Success (bugged? Should not take this long for a shrink)
 		if self:IsHard() then
-			timerDimensionalRipperXLCD:Start(48.5, 1)
+			timerWormholeGeneratorCD:Start(48.5, 1)
 		end
 		if self.vb.phase == 3 then
 			DBM:AddMsg("This Phase does not yet have any timers, please log fight with WCL advanced combat logging or transcriptor for best results and share logs with MysticalOS")
@@ -264,16 +407,16 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 287757 then
 		self.vb.gigaCount = self.vb.gigaCount + 1
-		local timer = gigaVoltTImers[self.vb.phase][self.vb.gigaCount+1]
+		local timer = gigaVoltTImers[self.vb.difficultyName][self.vb.phase][self.vb.gigaCount+1]
 		if timer then
 			timerGigaVoltChargeCD:Start(timer, self.vb.gigaCount+1)
 		end
 	elseif spellId == 286693 or spellId == 288041 or spellId == 288049 then--288041 used in intermission first, 288049 second in intermission, 286693 outside intermission
 		self.vb.shrinkCount = self.vb.shrinkCount + 1
 		self.vb.shrunkIcon = 0
-		local timer = shrinkTimers[self.vb.phase][self.vb.shrinkCount+1]
+		local timer = worldEnlargerTimers[self.vb.difficultyName][self.vb.phase][self.vb.shrinkCount+1]
 		if timer then
-			timerShrinkRayCD:Start(timer, self.vb.shrinkCount+1)
+			timerWorldEnlargerCD:Start(timer, self.vb.shrinkCount+1)
 		end
 	end
 end
