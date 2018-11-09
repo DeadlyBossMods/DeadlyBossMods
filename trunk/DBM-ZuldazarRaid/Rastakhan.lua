@@ -291,12 +291,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 285195 then
 		infoframeTable[args.destName] = args.amount or 1
 		if self.Options.InfoFrame then
-			if not DBM.InfoFrame:IsShown() then
-				DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(285195))
-				DBM.InfoFrame:Show(5, "table", infoframeTable, 1)
-			else
-				DBM.InfoFrame:UpdateTable(infoframeTable)
-			end
+			DBM.InfoFrame:UpdateTable(infoframeTable)
 		end
 	elseif spellId == 284662 then
 		if args:IsPlayer() then
@@ -402,11 +397,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 285195 then
 		infoframeTable[args.destName] = nil
 		if self.Options.InfoFrame then
-			if #infoframeTable == 0 then
-				DBM.InfoFrame:Hide()
-			else
-				DBM.InfoFrame:UpdateTable(infoframeTable)
-			end
+			DBM.InfoFrame:UpdateTable(infoframeTable)
 		end
 	elseif spellId == 288449 then
 		if args:IsPlayer() then
@@ -438,6 +429,10 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerVoodooDollCD:Start(2)--Never seen on heroic
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(8)
+		end
+		if self.Options.InfoFrame then
+			DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(285195))
+			DBM.InfoFrame:Show(5, "table", infoframeTable, 1)
 		end
 	elseif spellId == 284455 and args:IsPlayer() then
 		playerDeathPhase = false

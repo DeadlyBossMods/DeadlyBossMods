@@ -374,7 +374,11 @@ function mod:SPELL_CAST_START(args)
 		local timer = self:IsMythic() and 21.97 or self:IsHard() and 26.7 or self:IsEasy() and 31.6--TODO, LFR, easy is assumed
 		timerGazeofGhuunCD:Start(timer)
 		countdownGazeofGhuun:Start(timer)
-		updateAllTimers(self, 3.6)
+		if self:IsMythic() then
+			updateAllTimers(self, 3.6)
+		else
+			updateAllTimers(self, 2.4)--3.6 mythic only?
+		end
 	end
 end
 
