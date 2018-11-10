@@ -67,11 +67,14 @@ local specWarnFirefromMist				= mod:NewSpecialWarningSwitch(285428, nil, nil, ni
 
 --mod:AddTimerLine(DBM:EJ_GetSectionInfo(18527))
 --local timerDarkRevolationCD			= mod:NewCDCountTimer(55, 273365, nil, nil, nil, 3)
-local timerMultiSidedStrikeCD			= mod:NewCDTimer(35.2, 282030, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerMultiSidedStrikeCD			= mod:NewCDTimer(35.2, 282030, nil, nil, nil, 5, 2, DBM_CORE_TANK_ICON)--35-60, cause variation is awesome
 local timerSpiritsofXuenCD				= mod:NewCDTimer(40.1, 285645, nil, nil, nil, 1, nil, DBM_CORE_HEROIC_ICON)
+local timerRollCD						= mod:NewCDTimer(40.1, 286427, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 --Mage
 local timerShieldCD						= mod:NewCDTimer(13.4, 286425, nil, nil, nil, 4, nil, DBM_CORE_DAMAGE_ICON..DBM_CORE_INTERRUPT_ICON)
 local timerSearingEmbersCD				= mod:NewCDTimer(15.8, 286988, nil, nil, nil, 3, nil, DBM_CORE_MAGIC_ICON..DBM_CORE_HEALER_ICON)--15.8-29.2?
+--Combos
+local timerFirefromMistCD				= mod:NewCDTimer(40.1, 285428, nil, nil, nil, 6)
 --local timerMagmaTrapCD					= mod:NewAITimer(55, 284374, nil, nil, nil, 5)
 --Team Attacks
 
@@ -89,19 +92,28 @@ mod:AddNamePlateOption("NPAuraOnExplosion", 284399)
 --mod:AddSetIconOption("SetIconDarkRev", 273365, true)
 
 mod.vb.phase = 1
-mod.vb.shieldsActive = 0
+mod.vb.shieldsActive = false
 mod.vb.embersIcon = 0
 --mod.vb.magmaTrapCount = 0
 
 function mod:OnCombatStart(delay)
 	self.vb.phase = 1
-	self.vb.shieldsActive = 0
+	self.vb.shieldsActive = false
 	self.vb.embersIcon = 0
 	--self.vb.magmaTrapCount = 0
 	timerSearingEmbersCD:Start(9.5)
-	timerShieldCD:Start(10.5-delay)
-	timerMultiSidedStrikeCD:Start(15.6-delay)
-	timerSpiritsofXuenCD:Start(25.5-delay)
+	if self:IsMythic() then
+		timerRollCD:Start(8.6)
+		timerShieldCD:Start(15.8-delay)
+		timerSpiritsofXuenCD:Start(15.8-delay)
+		timerMultiSidedStrikeCD:Start(30-delay)
+		timerFirefromMistCD:Start(100-delay)
+	else
+		timerShieldCD:Start(10.5-delay)
+		timerMultiSidedStrikeCD:Start(15.6-delay)
+		timerSpiritsofXuenCD:Start(25.5-delay)
+		timerFirefromMistCD:Start(130-delay)
+	end
 	if self.Options.NPAuraOnFixate or self.Options.NPAuraOnExplosion then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
@@ -183,15 +195,19 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 	elseif spellId == 286425 then
-		self.vb.shieldsActive = self.vb.shieldsActive + 1
+		self.vb.shieldsActive = true
 		if self.Options.SpecWarn286425switch2 then
 			specWarnShield:Show(args.destName)
 			specWarnShield:Play("targetchange")
 		else
 			warnShield:Show(args.destName)
 		end
-		timerShieldCD:Start()
-		if self.Options.InfoFrame and self.vb.shieldsActive == 1 then
+		if self:IsMythic() then
+			timerShieldCD:Start(30)--Less often on mythic, likely related to multi strike lasting longer and affecting most of raid
+		else
+			timerShieldCD:Start(13.4)
+		end
+		if self.Options.InfoFrame then
 			for i = 1, 2 do
 				local bossUnitID = "boss"..i
 				if UnitGUID(bossUnitID) == args.sourceGUID then--Identify correct unit ID
@@ -227,10 +243,10 @@ function mod:SPELL_AURA_REMOVED(args)
 			DBM.Nameplate:Hide(true, args.sourceGUID, spellId)
 		end
 	elseif spellId == 286425 then
-		self.vb.shieldsActive = self.vb.shieldsActive - 1
+		self.vb.shieldsActive = false
 		specWarnPyroblast:Show(args.destName)
 		specWarnPyroblast:Play("kickcast")
-		if self.Options.InfoFrame and self.vb.shieldsActive == 0 then
+		if self.Options.InfoFrame then
 			DBM.InfoFrame:SetHeader(DBM_CORE_INFOFRAME_POWER)
 			DBM.InfoFrame:Show(4, "enemypower", 2)
 		end
@@ -276,5 +292,11 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	elseif spellId == 286987 then--Searing Embers
 		self.vb.embersIcon = 0
 		timerSearingEmbersCD:Start()
+	elseif spellId == 286427 then--Roll
+		if self:IsMythic() then
+			timerRollCD:start(31)
+		else
+			timerRollCD:Start(20.3)
+		end
 	end
 end
