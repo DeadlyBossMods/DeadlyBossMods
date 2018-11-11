@@ -46,7 +46,7 @@ local seenMobs = {}
 --Handles the ICD that Boss triggers on other abilities
 local function updateAllTimers(self, ICD)
 	DBM:Debug("updateAllTimers running", 3)
-	if timerGaleSlashCD:GetRemaining(self.vb.waveCast+1) < ICD then
+	if timerGaleSlashCD:GetRemaining() < ICD then
 		local elapsed, total = timerGaleSlashCD:GetTime()
 		local extend = ICD - (total-elapsed)
 		DBM:Debug("timerGaleSlashCD extended by: "..extend, 2)
