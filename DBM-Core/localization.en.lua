@@ -422,7 +422,7 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 	stack 			= "Show special warning when you are affected by >=%d stacks of $spell:%s",
 	switch			= "Show special warning to switch targets for $spell:%s",
 	switchcount		= "Show special warning (with count) to switch targets for $spell:%s",
-	gtfo 			= "Show special warning to move out bad stuff on ground",
+	gtfo 			= "Show special warning to move out of bad stuff on ground",
 	Adds			= "Show special warning to switch targets for incoming adds",
 	Addscustom		= "Show special warning for incoming adds",
 	targetchange	= "Show special warning for priority target changes"
