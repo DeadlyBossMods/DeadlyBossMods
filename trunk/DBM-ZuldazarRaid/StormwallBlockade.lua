@@ -101,16 +101,16 @@ mod:AddNamePlateOption("NPAuraOnKepWrapping", 285382)
 --mod:AddSetIconOption("SetIconDarkRev", 273365, true)
 
 mod.vb.phase = 1
-mod.vb.shieldsActive = 0
 mod.vb.bossesDied = 0
 mod.vb.firstCast = false
 local freezingTidePod = DBM:GetSpellInfo(285075)
+local activeShield = {}
 
 function mod:OnCombatStart(delay)
 	self.vb.phase = 1
-	self.vb.shieldsActive = 0
 	self.vb.bossesDied = 0
 	self.vb.firstCast = false
+	table.wipe(activeShield)
 	--Sister
 	timerCracklingLightningCD:Start(10.6-delay)
 	timerTidalShroudCD:Start(17.3-delay)
@@ -215,22 +215,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			--end
 		--end
 	elseif spellId == 286558 then
-		self.vb.shieldsActive = self.vb.shieldsActive + 1
 		specWarnTidalShroud:Show()
 		specWarnTidalShroud:Play("targetchange")
-		if self:AntiSpam(5, 1) then
-			timerTidalShroudCD:Start()
-		end
-		if self.Options.InfoFrame and self.vb.shieldsActive == 1 then--Only trigger on first shield going up, info frame itself should scan all bosses automatically
-			for i = 1, 3 do
-				local bossUnitID = "boss"..i
-				if UnitGUID(bossUnitID) == args.destGUID then--Identify casting unit ID
-					DBM.InfoFrame:SetHeader(args.spellName)
-					DBM.InfoFrame:Show(2, "enemyabsorb", nil, UnitGetTotalAbsorbs(bossUnitID))
-					break
-				end
-			end
-		end
+		self:SendSync("ShieldAdded", args.destGUID)
 	elseif spellId == 284405 then
 		if args:IsPlayer() then
 			specWarnTemptingSong:Show()
@@ -260,14 +247,10 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 286558 then
-		self.vb.shieldsActive = self.vb.shieldsActive - 1
+		self:SendSync("ShieldRemoved", args.destGUID)
 		if self:CheckInterruptFilter(args.destGUID, false, true) then
 			specWarnTidalEmpowerment:Show(args.destName)
 			specWarnTidalEmpowerment:Play("kickcast")
-		end
-		if self.Options.InfoFrame and self.vb.shieldsActive == 0 then
-			DBM.InfoFrame:SetHeader(DBM_CORE_INFOFRAME_POWER)
-			DBM.InfoFrame:Show(4, "enemypower", 2)
 		end
 	elseif spellId == 285000 then
 		if args:IsPlayer() then
@@ -311,6 +294,31 @@ function mod:UNIT_DIED(args)
 		self.vb.bossesDied = self.vb.bossesDied + 1
 		if self.vb.bossesDied == 2 then
 			timerTidalShroudCD:Stop()
+		end
+	end
+end
+
+function mod:OnSync(msg, guid)
+	if msg == "ShieldAdded" and guid and not activeShield[guid] then
+		activeShield[guid] = true
+		if self:AntiSpam(5, 1) then
+			timerTidalShroudCD:Start()
+		end
+		if self.Options.InfoFrame and #activeShield == 1 then--Only trigger on first shield going up, info frame itself should scan all bosses automatically
+			for i = 1, 3 do
+				local bossUnitID = "boss"..i
+				if UnitGUID(bossUnitID) == guid then--Identify casting unit ID
+					DBM.InfoFrame:SetHeader(args.spellName)
+					DBM.InfoFrame:Show(2, "enemyabsorb", nil, UnitGetTotalAbsorbs(bossUnitID))
+					break
+				end
+			end
+		end
+	elseif msg == "ShieldRemoved" and guid and activeShield[guid] then
+		activeShield[guid] = nil
+		if self.Options.InfoFrame and #activeShield == 0 then
+			DBM.InfoFrame:SetHeader(DBM_CORE_INFOFRAME_POWER)
+			DBM.InfoFrame:Show(4, "enemypower", 1, 10)
 		end
 	end
 end
