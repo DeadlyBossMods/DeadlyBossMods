@@ -28,6 +28,7 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
+--TODO, rework Avalaunche
 --TODO, Gathering Blizzard improvements?
 --TODO, add additional mythic only spells/timers
 --TODO, add frequency and priority, special warnings, announce spawn location if possible, etc
@@ -102,7 +103,7 @@ local specWarnPrismaticImage			= mod:NewSpecialWarningSwitch(288747, "Dps", nil,
 --Stage One: Burning Seas
 local timerCorsairCD					= mod:NewAITimer(55, "ej19690", nil, nil, nil, 1, "Interface\\ICONS\\Inv_tabard_kultiran")
 local timerBombardCD					= mod:NewAITimer(55, 285828, nil, nil, nil, 3)
-local timerAvalancheCD					= mod:NewAITimer(14.1, 287565, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerAvalancheCD					= mod:NewAITimer(14.1, 287565, nil, nil, nil, 5, 2)
 local timerGraspofFrostCD				= mod:NewAITimer(55, 287626, nil, nil, nil, 3, nil, DBM_CORE_MAGIC_ICON)
 local timerFreezingBlastCD				= mod:NewAITimer(55, 285177, nil, nil, nil, 3)
 local timerRingofIceCD					= mod:NewAITimer(55, 285459, nil, nil, nil, 2, nil, DBM_CORE_IMPORTANT_ICON)
@@ -358,13 +359,12 @@ function mod:SPELL_AURA_APPLIED(args)
 			DBM.Nameplate:Show(true, args.sourceGUID, spellId)
 		end
 	elseif spellId == 288212 then
+		warnBroadside:CombinedShow(0.5, args.destName)
 		if args:IsPlayer() then
 			specWarnBroadside:Show()
 			specWarnBroadside:Play("targetyou")
 			yellBroadside:Yell()
 			yellBroadsideFades:Countdown(4)
-		else
-			warnBroadside:Show(args.destName)
 		end
 		timerBroadsideCD:Start()
 	elseif spellId == 288374 then
