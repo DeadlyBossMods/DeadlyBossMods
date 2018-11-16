@@ -156,8 +156,12 @@ function mod:OnCombatStart(delay)
 	self.vb.sufferingSpirits = 0
 	playerDeathPhase = false
 	table.wipe(infoframeTable)
-	timerSealofPurificationCD:Start(7.2-delay)
-	timerGrievousAxeCD:Start(8.2-delay)
+	if not self:IsLFR() then
+		timerSealofPurificationCD:Start(7.2-delay)
+	end
+	if self:IsHard() then
+		timerGrievousAxeCD:Start(8.2-delay)
+	end
 	timerMeteorLeapCD:Start(15.4-delay)
 	timerScorchingDetonationCD:Start(25.3-delay)
 	timerPlagueofToadsCD:Start(20.4-delay)
