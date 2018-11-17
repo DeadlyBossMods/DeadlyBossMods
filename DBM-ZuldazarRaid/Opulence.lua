@@ -15,8 +15,8 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 282939 287659 287070 285995 284941 283947 283606 289155",
-	"SPELL_CAST_SUCCESS 283507 287648 284470 287072 285014 287037 285505",
+	"SPELL_CAST_START 282939 287659 287070 285995 284941 283947 283606 289906 289155",
+	"SPELL_CAST_SUCCESS 283507 287648 284470 287072 285014 287037 285505 286541",
 	"SPELL_AURA_APPLIED 284798 283507 287648 284470 287072 285014 287037 284105 287424 289776",
 --	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 284798 283507 287648 284470 287072 285014 287424 289776",
@@ -79,7 +79,7 @@ local timerVolatileChargeCD				= mod:NewCDTimer(12.1, 283507, nil, nil, nil, 3)
 ----Yalat's Bulwark
 local timerFlamesofPunishmentCD			= mod:NewCDTimer(23, 282939, nil, nil, nil, 3)
 ----Traps
-local timerFlameJet						= mod:NewBuffActiveTimer(12, 285479, nil, nil, nil, 3)
+--local timerFlameJet						= mod:NewBuffActiveTimer(12, 285479, nil, nil, nil, 3)
 local timerRubyBeam						= mod:NewBuffActiveTimer(8, 284081, nil, nil, nil, 3)
 local timerTimeBombCD					= mod:NewCDTimer(21.8, 284470, nil, nil, nil, 3, nil, DBM_CORE_MAGIC_ICON)
 --Stage Two: Toppling the Guardian
@@ -232,20 +232,14 @@ function mod:SPELL_CAST_START(args)
 		timerWailofGreedCD:Start()
 	elseif spellId == 283947 and self:AntiSpam(5, 1) then--Flame Jet
 		warnFlameJet:Show()
-		timerFlameJet:Start(12)
-	elseif spellId == 283606 then
+		--timerFlameJet:Start(12)
+	elseif spellId == 283606 or spellId == 289906 then
 		if self:CheckTankDistance(args.sourceGUID, 43) then
 			specWarnCrush:Show()
 			specWarnCrush:Play("watchstep")
 		end
-		local cid = self:GetCIDFromGUID(args.sourceGUID)
-		if cid == 145274 then--Yalat's Bulwark
-			self.vb.bulwarkCrush = self.vb.bulwarkCrush + 1
-			if self.vb.bulwarkCrush == 1 then
-				timerCrushCD:Start(17, L.Bulwark)
-			else
-				timerCrushCD:Start(23, L.Bulwark)--7.5, 17.0, 23.2, 23.0, 23.1, 23.1, 23.1, 23.0, 23.1, 23.1, 23.1
-			end
+		if spellId == 289906 then--Yalat's Bulwark
+			timerCrushCD:Start(20.6, L.Bulwark)--7.7, 21.9, 31.6, 21.8, 20.6, 20.7, 18.2, 21.8
 		else--The Hand of In'zashi
 			timerCrushCD:Start(15.8, L.Hand)--7.1, 30.5, 26.7, 15.8, 26.7, 15.8, 25.6, 15.8, 15.8, 18.2, 15.8, 15.8
 		end
@@ -270,6 +264,19 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerCoinSweepCD:Start()
 	elseif spellId == 285505 then--Arcane Amethyst Visual
 		timerTimeBombCD:Start(5.5, args.sourceGUID)
+	elseif spellId == 286541 then--Consuming Flame
+		local cid = self:GetCIDFromGUID(args.sourceGUID)
+		if cid == 145273 then--The Hand of In'zashi
+			timerVolatileChargeCD:Stop()
+			timerCrushCD:Stop(L.Hand)
+			timerVolatileChargeCD:Start(14.2)--Success
+			timerCrushCD:Start(14.5, L.Hand)
+		elseif cid == 145274 then--Yalat's Bulwark
+			timerFlamesofPunishmentCD:Stop()
+			timerCrushCD:Stop(L.Bulwark)
+			timerCrushCD:Start(14.5, L.Bulwark)
+			timerFlamesofPunishmentCD:Start(24.5)
+		end
 	end
 end
 
