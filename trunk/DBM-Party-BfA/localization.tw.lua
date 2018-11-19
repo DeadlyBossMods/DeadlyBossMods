@@ -52,7 +52,7 @@ L= DBM:GetModLocalization(2093)
 L= DBM:GetModLocalization(2094)
 
 L:SetMiscLocalization({
-	openingRP = "Gather 'round and place yer bets! We got a new set of vict-- uh... competitors! Take it away, Gurthok and Wodin!"
+	openingRP = "趕快過來下注啊！我們有新的肉靶…呃，是挑戰者！準備開始！葛爾薩克和烏丁！"
 })
 
 -----------------------
@@ -120,7 +120,7 @@ L= DBM:GetModLocalization(2154)
 L= DBM:GetModLocalization(2155)
 
 L:SetMiscLocalization({
-	openingRP	= "It would seem you have guests, Lord Stormsong."
+	openingRP	= "斯陀頌恩領主，你好像有訪客呢。"
 })
 
 -----------------------
