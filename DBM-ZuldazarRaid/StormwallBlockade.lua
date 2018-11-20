@@ -304,7 +304,7 @@ function mod:OnSync(msg, guid)
 		if self:AntiSpam(5, 1) then
 			timerTidalShroudCD:Start()
 		end
-		--[[if self.Options.InfoFrame and #activeShield == 1 then--Only trigger on first shield going up, info frame itself should scan all bosses automatically
+		if self.Options.InfoFrame and #activeShield == 1 then--Only trigger on first shield going up, info frame itself should scan all bosses automatically
 			for i = 1, 3 do
 				local bossUnitID = "boss"..i
 				if UnitGUID(bossUnitID) == guid then--Identify casting unit ID
@@ -313,13 +313,13 @@ function mod:OnSync(msg, guid)
 					break
 				end
 			end
-		end--]]
+		end
 	elseif msg == "ShieldRemoved" and guid and activeShield[guid] then
 		activeShield[guid] = nil
-		--[[if self.Options.InfoFrame and #activeShield == 0 then
+		if self.Options.InfoFrame and #activeShield == 0 then
 			DBM.InfoFrame:SetHeader(DBM_CORE_INFOFRAME_POWER)
 			DBM.InfoFrame:Show(4, "enemypower", 1, 10)
-		end--]]
+		end
 	end
 end
 
