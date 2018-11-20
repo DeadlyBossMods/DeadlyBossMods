@@ -17,10 +17,10 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 287565 287626 285177 285459 290036 288221 288345 288441 288719 289219 289940 290084 288619 288747",
 	"SPELL_CAST_SUCCESS 285725 287925 287626 285257 289220 288374 288211",
-	"SPELL_AURA_APPLIED 285212 287490 289387 287925 285253 287626 288199 290053 288219 288212 288374 288412 288434 289220 285254 288038",
-	"SPELL_AURA_APPLIED_DOSE 285212 285253",
-	"SPELL_AURA_REMOVED 285212 287925 287626 288199 290053 288219 288212 288374 289220 288038",
-	"SPELL_AURA_REMOVED_DOSE 285212",
+	"SPELL_AURA_APPLIED 287993 287490 289387 287925 285253 287626 288199 290053 288219 288212 288374 288412 288434 289220 285254 288038",
+	"SPELL_AURA_APPLIED_DOSE 287993 285253",
+	"SPELL_AURA_REMOVED 287993 287925 287626 288199 290053 288219 288212 288374 289220 288038",
+	"SPELL_AURA_REMOVED_DOSE 287993",
 	"SPELL_PERIODIC_DAMAGE 288297",
 	"SPELL_PERIODIC_MISSED 288297",
 	"UNIT_DIED",
@@ -31,15 +31,15 @@ mod:RegisterEventsInCombat(
 --TODO, Gathering Blizzard improvements?
 --TODO, add additional mythic only spells/timers
 --TODO, detect set charge barrels, and add them to infoframe with time remaining
---TODO, separate cast hand of frost from spread hand of frost spellIds
---TODO, enable hand of frost timer when can separate cast ID from spread ID and get boss cast event
+--TODO, separate cast hand of frost from spread hand of frost spellIds (currently not possible)
+--TODO, enable hand of frost timer when can separate cast ID from spread ID and get boss cast event (currently not possible)
 --TODO, verify elemental and P 2.5 phase end being based on elemental dying
 --TODO, improve elemental CDS to use GUID to handle the split mechanic on mythic.
---TODO, so many overlapping tank mechanics and journal doesn't even talk about most of them except for the one they flag as NOT a tank mechanic in all but one phase, wtf?
 --TODO, rework interrupt to use vectis interrupt per GUID code for mythic
 --TODO, orb of frost targetting and improve voice/warning for it
 --TODO, shattering lance script and warning/cast timer
 --TODO, what spells do Prismatic Images copy, so it can be handled by timer code
+--TODO, Crystalline Dust was never used at all during heroic testing.
 --General
 local warnPhase							= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
 local warnFrozenSolid					= mod:NewTargetNoFilterAnnounce(287490, 4)
@@ -103,12 +103,12 @@ local timerGraspofFrostCD				= mod:NewCDTimer(17, 287626, nil, nil, nil, 3, nil,
 --local timerFreezingBlastCD				= mod:NewAITimer(55, 285177, nil, nil, nil, 3)--No explanation but HUGE variation
 local timerRingofIceCD					= mod:NewCDTimer(60.7, 285459, nil, nil, nil, 2, nil, DBM_CORE_IMPORTANT_ICON)
 --Stage Two: Frozen Wrath
-local timerBroadsideCD					= mod:NewAITimer(55, 288212, nil, nil, nil, 3)
-local timerSiegebreakerCD				= mod:NewAITimer(55, 288374, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
-local timerCrystallineDustCD			= mod:NewAITimer(14.1, 289940, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
---local timerHandofFrostCD				= mod:NewAITimer(55, 288412, nil, nil, nil, 3)
-local timerGlacialRayCD					= mod:NewAITimer(55, 288345, nil, nil, nil, 3)
-local timerIcefallCD					= mod:NewAITimer(55, 288475, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
+local timerBroadsideCD					= mod:NewCDTimer(31.5, 288212, nil, nil, nil, 3)
+local timerSiegebreakerCD				= mod:NewCDTimer(59.9, 288374, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
+--local timerCrystallineDustCD			= mod:NewCDTimer(14.1, 289940, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--Was never used during fight
+local timerHandofFrostCD				= mod:NewCDTimer(55, 288412, nil, nil, nil, 3)--Timer is only for first cast of phase, after that, can't tell cast from jump
+local timerGlacialRayCD					= mod:NewCDTimer(49.8, 288345, nil, nil, nil, 3)--49.8-61.1?
+local timerIcefallCD					= mod:NewCDTimer(43.4, 288475, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
 --local timerIcefall						= mod:NewCastTimer(55, 288475, nil, nil, nil, 3)
 --Intermission 2
 local timerHeartofFrostCD				= mod:NewAITimer(55, 289220, nil, nil, nil, 3)
@@ -128,7 +128,7 @@ local timerPrismaticImageCD				= mod:NewAITimer(55, 288747, nil, nil, nil, 1, ni
 
 --mod:AddSetIconOption("SetIconGift", 255594, true)
 mod:AddRangeFrameOption(10, 289379)
-mod:AddInfoFrameOption(285212, false)--Will be changed to true later, right now it'll probably though too many thousands of errors to be on by default
+mod:AddInfoFrameOption(287993, false)--Will be changed to true later, right now it'll probably though too many thousands of errors to be on by default
 mod:AddNamePlateOption("NPAuraOnMarkedTarget", 288038)
 mod:AddNamePlateOption("NPAuraOnTimeWarp", 287925)
 mod:AddNamePlateOption("NPAuraOnRefractiveIce", 288219)
@@ -215,7 +215,11 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 287565 then
-		timerAvalancheCD:Start()
+		if self.vb.phase == 1 then
+			timerAvalancheCD:Start(60)
+		else
+			timerAvalancheCD:Start(75)--75-90
+		end
 	elseif spellId == 287626 then
 		self.vb.GraspofFrostIcon = 1
 	elseif spellId == 285177 then
@@ -243,16 +247,16 @@ function mod:SPELL_CAST_START(args)
 		warnPhase:Play("phasechange")
 		timerBroadsideCD:Stop()
 		timerSiegebreakerCD:Stop()
-		timerCrystallineDustCD:Stop()
+		--timerCrystallineDustCD:Stop()
 		timerAvalancheCD:Stop()
-		--timerHandofFrostCD:Stop()
+		timerHandofFrostCD:Stop()
 		timerGlacialRayCD:Stop()
 		timerIcefallCD:Stop()
 	elseif spellId == 289219 then
 		warnFrostNova:Show()
 		timerFrostNovaCD:Start()
 	elseif spellId == 289940 then
-		timerCrystallineDustCD:Start()
+		--timerCrystallineDustCD:Start()
 	elseif spellId == 290084 then
 		timerWaterBoltVolleyCD:Start()
 		if self:CheckInterruptFilter(args.sourceGUID, false, true) then
@@ -305,7 +309,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				warnIceShard:Show(args.destName, amount)
 			end
 		end
-	elseif spellId == 285212 then
+	elseif spellId == 287993 then
 		ChillingTouchStacks[args.destName] = args.amount or 1
 	elseif spellId == 287490 then
 		warnFrozenSolid:CombinedShow(0.5, args.destName)
@@ -410,7 +414,7 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
-	if spellId == 285212 then
+	if spellId == 287993 then
 		ChillingTouchStacks[args.destName] = nil
 	elseif spellId == 288038 then
 		if self.Options.NPAuraOnMarkedTarget then
@@ -428,15 +432,15 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.phase = 2
 		warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(2))
 		warnPhase:Play("ptwo")
-		timerBroadsideCD:Start(2)
-		timerSiegebreakerCD:Start(2)
-		timerCrystallineDustCD:Start(2)
-		timerAvalancheCD:Start(2)
-		--timerHandofFrostCD:Start(2)
-		timerGlacialRayCD:Start(2)
+		timerBroadsideCD:Start(2)--It actually is 2 seconds
+		timerGlacialRayCD:Start(6.6)
+		timerAvalancheCD:Start(16.3)
+		timerHandofFrostCD:Start(21.5)--21.5-25.57
+		--timerCrystallineDustCD:Start(2)
 		if not self:IsLFR() then
-			timerIcefallCD:Start(2)
+			timerIcefallCD:Start(30.8)
 		end
+		timerSiegebreakerCD:Start(40.3)
 	elseif spellId == 288219 then
 		if self.Options.NPAuraOnRefractiveIce then
 			DBM.Nameplate:Hide(true, args.sourceGUID, spellId)
@@ -463,7 +467,7 @@ end
 
 function mod:SPELL_AURA_REMOVED_DOSE(args)
 	local spellId = args.spellId
-	if spellId == 285212 then
+	if spellId == 287993 then
 		ChillingTouchStacks[args.destName] = args.amount or 1
 	end
 end
@@ -488,7 +492,7 @@ function mod:UNIT_DIED(args)
 		warnPhase:Play("pthree")
 		timerBroadsideCD:Start(3)
 		timerSiegebreakerCD:Start(3)
-		timerCrystallineDustCD:Start(3)
+		--timerCrystallineDustCD:Start(3)
 		timerGlacialRayCD:Start(3)
 		if not self:IsLFR() then
 			timerIcefallCD:Start(3)
