@@ -360,13 +360,32 @@ local function updateEnemyPower()
 	twipe(lines)
 	local threshold = value[1]
 	local powerType = value[2]
+	local specificUnit = value[3]
 	if powerType then--Only do power type defined
-		for i = 1, 5 do
-			local uId = "boss"..i
-			local currentPower, maxPower = UnitPower(uId, powerType), UnitPowerMax(uId, powerType)
+		if specificUnit then
+			local currentPower, maxPower = UnitPower(specificUnit, powerType), UnitPowerMax(specificUnit, powerType)
 			if maxPower and maxPower ~= 0 then--Prevent division by 0 in addition to filtering non existing units that may still return false on UnitExists()
 				if currentPower / maxPower * 100 >= threshold then
-					lines[UnitName(uId)] = currentPower
+					lines[UnitName(specificUnit)] = currentPower
+				end
+			end
+		else
+			if specificUnit then
+				local currentPower, maxPower = UnitPower(specificUnit), UnitPowerMax(specificUnit)
+				if maxPower and maxPower ~= 0 then--Prevent division by 0 in addition to filtering non existing units that may still return false on UnitExists()
+					if currentPower / maxPower * 100 >= threshold then
+						lines[UnitName(specificUnit)] = currentPower
+					end
+				end
+			else
+				for i = 1, 5 do
+					local uId = "boss"..i
+					local currentPower, maxPower = UnitPower(uId), UnitPowerMax(uId)
+					if maxPower and maxPower ~= 0 then--Prevent division by 0 in addition to filtering non existing units that may still return false on UnitExists()
+						if currentPower / maxPower * 100 >= threshold then
+							lines[UnitName(uId)] = currentPower
+						end
+					end
 				end
 			end
 		end
@@ -397,14 +416,14 @@ local function updateEnemyAbsorb()
 	twipe(lines)
 	local spellInput = value[1]
 	local totalAbsorb = value[2]
-	for i = 1, 5 do
-		local uId = "boss"..i
-		if UnitExists(uId) then
+	local specificUnit = value[3]
+	if specificUnit then
+		if UnitExists(specificUnit) then
 			local absorbAmount
 			if spellInput then--Get specific spell absorb
-				absorbAmount = select(16, DBM:UnitBuff(uId, spellInput)) or select(16, DBM:UnitDebuff(uId, spellInput))
+				absorbAmount = select(16, DBM:UnitBuff(specificUnit, spellInput)) or select(16, DBM:UnitDebuff(specificUnit, spellInput))
 			else--Get all of them
-				absorbAmount = UnitGetTotalAbsorbs(uId)
+				absorbAmount = UnitGetTotalAbsorbs(specificUnit)
 			end
 			if absorbAmount and absorbAmount > 0 then
 				local text
@@ -413,7 +432,28 @@ local function updateEnemyAbsorb()
 				else
 					text = absorbAmount
 				end
-				lines[UnitName(uId)] = mfloor(text).."%"
+				lines[UnitName(specificUnit)] = mfloor(text).."%"
+			end
+		end
+	else
+		for i = 1, 5 do
+			local uId = "boss"..i
+			if UnitExists(uId) then
+				local absorbAmount
+				if spellInput then--Get specific spell absorb
+					absorbAmount = select(16, DBM:UnitBuff(uId, spellInput)) or select(16, DBM:UnitDebuff(uId, spellInput))
+				else--Get all of them
+					absorbAmount = UnitGetTotalAbsorbs(uId)
+				end
+				if absorbAmount and absorbAmount > 0 then
+					local text
+					if totalAbsorb then
+						text = absorbAmount / totalAbsorb * 100
+					else
+						text = absorbAmount
+					end
+					lines[UnitName(uId)] = mfloor(text).."%"
+				end
 			end
 		end
 	end
