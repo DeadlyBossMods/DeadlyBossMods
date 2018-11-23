@@ -24,8 +24,13 @@ L:SetWarningLocalization({
 	addsSoon		= "쓰레기 처리 장치 열림 - 곧 쫄 등장"
 })
 
+L:SetTimerLocalization({
+	chuteTimer		= "다음 쓰레기 처리 장치 (%s)"
+})
+
 L:SetOptionLocalization({
-	addsSoon		= "쓰레기 처리 장치가 열리고 쫄 생성이 시작되면 사전 경고 보기"
+	addsSoon		= "쓰레기 처리 장치가 열리고 쫄 생성이 시작되면 사전 경고 보기",
+	chuteTimer		= "쓰레기 처리 장치 열림 타이머 보기"
 })
 
 ---------------------------

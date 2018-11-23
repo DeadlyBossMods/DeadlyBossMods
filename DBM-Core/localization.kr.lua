@@ -268,6 +268,7 @@ DBM_NO_DEBUFF						= "%s 없음"--For use in places like info frame where you pu
 DBM_ALLY							= "공대원"--Such as "Move to Ally"
 DBM_ADD								= "쫄"--A fight Add as in "boss spawned extra adds"
 DBM_ADDS							= "쫄"
+DBM_BIG_ADD							= "큰 쫄"
 DBM_BOSS							= "보스"
 DBM_CORE_ROOM_EDGE					= "구석"
 DBM_CORE_FAR_AWAY					= "먼 곳"
