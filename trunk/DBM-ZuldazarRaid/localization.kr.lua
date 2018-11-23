@@ -51,6 +51,11 @@ L:SetMiscLocalization({
 ---------------------------
 L= DBM:GetModLocalization(2330)
 
+L:SetMiscLocalization({
+	BwonsamdiWrath =	"Well, if ya so eager for death, ya shoulda come see me sooner!",
+	BwonsamdiWrath2 =	"Sooner or later... everybody serves me!"
+})
+
 ---------------------------
 --  King Rastakhan (Alliance) --
 ---------------------------
