@@ -7,7 +7,7 @@ mod:SetEncounterID(2128)
 mod:SetZone()
 --mod:SetHotfixNoticeRev(16950)
 --mod:SetMinSyncRevision(16950)
-mod.respawnTime = 29--Guessed, but feels about right.
+mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
 
@@ -18,8 +18,6 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED_DOSE 262313 262314",
 	"SPELL_AURA_REMOVED 262313 262314",
 	"SPELL_AURA_REMOVED_DOSE 262256"
---	"UNIT_DIED"
---	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
 --[[
@@ -42,14 +40,12 @@ local specWarnPutridParoxysmStack		= mod:NewSpecialWarningStack(262314, nil, 2, 
 local yellPutridParoxysm				= mod:NewYell(262314)
 local yellPutridParoxysmFades			= mod:NewFadesYell(262314)
 local specWarnAdds						= mod:NewSpecialWarningAdds(262364, "Dps", nil, nil, 1, 2)
---local specWarnGTFO					= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 8)
 
 local timerThrashCD						= mod:NewCDTimer(6, 262277, 74979, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--Short Name "Thrash"
 local timerRottingRegurgCD				= mod:NewCDTimer(40.1, 262292, 21131, nil, nil, 3)--Short Name "Breath"
 local timerShockwaveStompCD				= mod:NewCDCountTimer(28.8, 262288, 116969, nil, nil, 2)--Short Name "Stomp"
+local timerPreAddsCD					= mod:NewTimer(54.8, "chuteTimer", 262364, false, nil, 5)
 local timerAddsCD						= mod:NewAddsTimer(54.8, 262364, nil, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON)
---local timerEnticingCast					= mod:NewCastTimer(30, 262364, nil, nil, nil, 6, nil, DBM_CORE_DAMAGE_ICON)
-
 
 local berserkTimer						= mod:NewBerserkTimer(330)
 
@@ -134,8 +130,10 @@ function mod:OnCombatStart(delay)
 	end
 	timerAddsCD:Start(55-delay)--Until Attackable, not the chute visuals
 	countdownAdds:Start(55-delay)
+	timerPreAddsCD:Start(45, DBM_ADDS)
 	if self:IsMythic() then
 		updateRangeFrame(self)
+		timerPreAddsCD:Start(35, DBM_BIG_ADD)
 	end
 	berserkTimer:Start()--Until rumor confirmed, use this berserk timer in all modes
 end
@@ -179,14 +177,13 @@ function mod:SPELL_CAST_START(args)
 		if self:AntiSpam(10, 2) then
 			specWarnAdds:Show()
 			specWarnAdds:Play("killmob")
-			--[[if self:IsEasy() then
-				timerEnticingCast:Start(30)
-			else
-				timerEnticingCast:Start(20)
-			end--]]
 			local timer = self:IsMythic() and 75 or self:IsEasy() and 60 or 54.8
 			timerAddsCD:Start(timer)
 			countdownAdds:Start(timer)
+			timerPreAddsCD:Start(timer-10, DBM_ADDS)
+			if self:IsMythic() then
+				timerPreAddsCD:Start(timer-20, DBM_BIG_ADD)
+			end
 		end
 	elseif spellId == 262277 then
 		timerThrashCD:Start()
@@ -282,12 +279,3 @@ function mod:SPELL_AURA_REMOVED_DOSE(args)
 		end
 	end
 end
-
---[[
-function mod:UNIT_DIED(args)
-	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 133492 then--Corruption Corpuscle
-
-	end
-end
---]]
