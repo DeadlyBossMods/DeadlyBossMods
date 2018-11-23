@@ -24,6 +24,10 @@ mod:RegisterEventsInCombat(
 --	"UNIT_SPELLCAST_START boss1 boss2 boss3"
 )
 
+--[[
+(ability.id = 282939 or ability.id = 287659 or ability.id = 287070 or ability.id = 285995 or ability.id = 284941 or ability.id = 283947 or ability.id = 283606 or ability.id = 289906 or ability.id = 289155) and type = "begincast"
+ or (ability.id = 283507 or ability.id = 287648 or ability.id = 284470 or ability.id = 287072 or ability.id = 285014 or ability.id = 287037 or ability.id = 285505 or ability.id = 286541) and type = "cast"
+--]]
 --Figure out right crush idea, too many to guess right, also need to see how it's done by source
 --TODO, more trap work, especially ruby beam targetting
 --The Zandalari Crown Jewels
@@ -84,11 +88,11 @@ local timerRubyBeam						= mod:NewBuffActiveTimer(8, 284081, nil, nil, nil, 3)
 local timerTimeBombCD					= mod:NewCDTimer(21.8, 284470, nil, nil, nil, 3, nil, DBM_CORE_MAGIC_ICON)
 --Stage Two: Toppling the Guardian
 local timerDrawPower					= mod:NewCastTimer(5, 282939, nil, nil, nil, 6)
-local timerLiquidGoldCD					= mod:NewAITimer(5, 287072, nil, nil, nil, 3)
-local timerSpiritsofGoldCD				= mod:NewAITimer(5, 285995, nil, nil, nil, 1)
-local timerCoinShowerCD					= mod:NewAITimer(5, 285014, nil, nil, nil, 5, nil, DBM_CORE_DEADLY_ICON)
-local timerWailofGreedCD				= mod:NewAITimer(55, 284941, nil, nil, nil, 2, nil, DBM_CORE_HEALER_ICON)
-local timerCoinSweepCD					= mod:NewAITimer(14.1, 287037, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerLiquidGoldCD					= mod:NewCDTimer(8.5, 287072, nil, nil, nil, 3)
+local timerSpiritsofGoldCD				= mod:NewCDTimer(65.6, 285995, nil, nil, nil, 1)
+local timerCoinShowerCD					= mod:NewCDTimer(30.3, 285014, nil, nil, nil, 5, nil, DBM_CORE_DEADLY_ICON)
+local timerWailofGreedCD				= mod:NewCDTimer(55, 284941, nil, nil, nil, 2, nil, DBM_CORE_HEALER_ICON)--Timer still needed, DON"T FORGET!
+local timerCoinSweepCD					= mod:NewCDTimer(10.9, 287037, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerSurgingGoldCD				= mod:NewAITimer(23, 289155, nil, nil, nil, 3)
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
@@ -211,12 +215,13 @@ function mod:SPELL_CAST_START(args)
 		timerTimeBombCD:Stop()
 		warnPhase2:Show()
 		timerDrawPower:Start()
-		timerLiquidGoldCD:Start(2)--14.5
-		timerCoinSweepCD:Start(2)--15.7
-		timerSpiritsofGoldCD:Start(2)
-		timerWailofGreedCD:Start(2)
-		if self:IsHard() then
-			timerCoinShowerCD:Start(2)
+		--Normal Mode, may differ elsewhere
+		timerLiquidGoldCD:Start(4.5)
+		timerCoinSweepCD:Start(16.3)
+		timerSpiritsofGoldCD:Start(26.7)
+		timerWailofGreedCD:Start(60.7)
+		if not self:IsLFR() then
+			timerCoinShowerCD:Start(17)
 			if self:IsMythic() then
 				timerSurgingGoldCD:Start(2)
 			end
@@ -229,7 +234,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.wailCast = self.vb.wailCast + 1
 		specWarnWailofGreed:Show(self.vb.wailCast)
 		specWarnWailofGreed:Play("aesoon")
-		timerWailofGreedCD:Start()
+		--timerWailofGreedCD:Start()
 	elseif spellId == 283947 and self:AntiSpam(5, 1) then--Flame Jet
 		warnFlameJet:Show()
 		--timerFlameJet:Start(12)
