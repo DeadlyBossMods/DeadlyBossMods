@@ -23,8 +23,13 @@ L:SetWarningLocalization({
 	addsSoon		= "Chute has opened - Adds Soon"
 })
 
+L:SetTimerLocalization({
+	chuteTimer		= "Next Chute (%s)"
+})
+
 L:SetOptionLocalization({
-	addsSoon		= "Show pre warning for when chutes open and start spawning adds"
+	addsSoon		= "Show pre warning for when chutes open and start spawning adds",
+	chuteTimer		= "Show timer for when Chutes open"
 })
 
 ---------------------------

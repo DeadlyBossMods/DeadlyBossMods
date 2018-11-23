@@ -26,7 +26,13 @@ mod:RegisterEventsInCombat(
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
-
+--[[
+(ability.id = 284831 or ability.id = 284933 or ability.id = 284686 or ability.id = 283504 or ability.id = 287116 or ability.id = 287333 or ability.id = 286695 or ability.id = 286742) and type = "begincast"
+ or (ability.id = 284662 or ability.id = 284781 or ability.id = 288449 or ability.id = 285172) and type = "cast"
+ or ability.id = 285347 and type = "cast" and source.id = 145616
+ or (ability.id = 285003 or ability.id = 285402) and type = "summon"
+ or (ability.id = 284276 or ability.id = 284446) and (type = "applybuff" or type = "removebuff")
+--]]
 --TODO, is serpent totem a kill target or a reposition raid one in most strats?
 --TODO, detect voodoo doll targets? wasn't even used on heroic test (at least in phases 1-3)
 --TODO, dread reaping fix?
@@ -45,6 +51,7 @@ local warnMeteorLeap					= mod:NewTargetNoFilterAnnounce(284686, 2)
 local warnGrieviousAxe					= mod:NewTargetNoFilterAnnounce(284781, 2, nil, "Healer")
 --Stage Two: Bwonsamdi's Pact
 local warnVoodooDoll					= mod:NewSpellAnnounce(285402, 3)
+local warnScorchingDetonation			= mod:NewCastAnnounce(284831, 2, nil, false)
 ----Bwonsamdi
 local warnDeathsDoor					= mod:NewTargetAnnounce(288449, 2)
 --Stage Three: Enter the Death Realm
@@ -94,7 +101,7 @@ local specWarnFocusedDimise				= mod:NewSpecialWarningInterrupt(286779, nil, nil
 --mod:AddTimerLine(DBM:EJ_GetSectionInfo(18527))
 --Stage One: Zandalari Honor Guard
 local timerScorchingDetonationCD		= mod:NewCDTimer(23.1, 284831, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
-local timerPlagueofToadsCD				= mod:NewCDTimer(21.9, 284933, nil, nil, nil, 1)
+local timerPlagueofToadsCD				= mod:NewCDTimer(21.1, 284933, nil, nil, nil, 1)
 local timerSerpentTotemCD				= mod:NewCDTimer(31.6, 285172, nil, nil, nil, 1)
 ----Prelate Za'lan
 local timerSealofPurificationCD			= mod:NewCDTimer(25.4, 284662, nil, nil, nil, 3)
@@ -113,6 +120,8 @@ local timerDeathsDoorCD					= mod:NewCDTimer(27.9, 288449, nil, nil, nil, 3)
 local timerSpiritVortex					= mod:NewCastTimer(5, 284478, nil, nil, nil, 6)
 local timerDreadReapingCD				= mod:NewCDTimer(14.1, 287116, nil, nil, nil, 3)
 local timerInevitableEndCD				= mod:NewAITimer(14.1, 287333, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
+----Spirits
+local timerSealofBwonCD					= mod:NewCDTimer(25.5, 286695, nil, nil, nil, 5)
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
 
@@ -157,7 +166,7 @@ function mod:OnCombatStart(delay)
 	playerDeathPhase = false
 	table.wipe(infoframeTable)
 	if not self:IsLFR() then
-		timerSealofPurificationCD:Start(7.2-delay)
+		timerSealofPurificationCD:Start(9.7-delay)
 	end
 	if self:IsHard() then
 		timerGrievousAxeCD:Start(8.2-delay)
@@ -207,7 +216,11 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 284933 then
 		specWarnPlagueofToads:Show()
 		specWarnPlagueofToads:Play("watchstep")
-		timerPlagueofToadsCD:Start()
+		if self.vb.phase == 1 then
+			timerPlagueofToadsCD:Start(21.1)
+		else
+			timerPlagueofToadsCD:Start(60)
+		end
 	elseif spellId == 284686 then
 		timerMeteorLeapCD:Start()
 		self:ScheduleMethod(0.2, "BossTargetScanner", args.sourceGUID, "MeteorLeapTarget", 0.1, 8, true, nil, nil, nil, true)
@@ -231,6 +244,7 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 286695 and self:AntiSpam(5, 2) then
 		warnSealofBwonsamdi:Show()
+		timerSealofBwonCD:Start()
 	elseif spellId == 286742 then
 		warnShadowSmash:Show()
 	end
@@ -249,7 +263,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 				self:SendSync("DeathsDoor")--used by rastakhan in P3
 			end
 		end
-	elseif spellId == 285347 and self:AntiSpam(3, 3) then--Plague of Fire
+	elseif spellId == 285347 and self:AntiSpam(3, 3) and args:GetSrcCreatureID() == 145616 then--Plague of Fire
 		timerPlagueofFireCD:Start()
 	elseif spellId == 285172 then
 		if self.Options.SpecWarn285172switch then
@@ -339,6 +353,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			warnDeathsDoor:Show(args.destName)
 		end
+		if self.vb.phase >= 3 then
+			self:SendSync("DeathsDoorTarget", args.destName)
+		end
 	elseif spellId == 284446 and self.vb.phase < 3 then--Bwonsamdi's Boon
 		self.vb.phase = 3
 		warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(3))
@@ -359,6 +376,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		--Bwon
 		timerDreadReapingCD:Start(7.6)
 		timerInevitableEndCD:Start(35.9)
+		timerSealofBwonCD:Start(43)
 		self:RegisterShortTermEvents(
 			"SPELL_PERIODIC_DAMAGE 286772",
 			"SPELL_PERIODIC_MISSED 286772"
@@ -424,12 +442,13 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerScorchingDetonationCD:Stop()
 		
 		--Rasta
-		timerZombieDustTotemCD:Start(19.1)
-		timerScorchingDetonationCD:Start(26.4)
-		timerPlagueofFireCD:Start(33.3)
-		timerSufferingSpiritsCD:Start(2)--Never seen on heroic
+		timerZombieDustTotemCD:Start(26.3)
+		timerScorchingDetonationCD:Start(33.6)
+		timerPlagueofFireCD:Start(40.7)
+		timerPlagueofToadsCD:Start(61.5)--Seen on mythic, on other difficulties?
+		timerSufferingSpiritsCD:Start(2)--Never seen on heroic or mythic
 		--Bwon
-		timerDeathsDoorCD:Start(54)
+		timerDeathsDoorCD:Start(64.2)
 		timerVoodooDollCD:Start(2)--Never seen on heroic
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(8)
@@ -502,7 +521,7 @@ function mod:OnSync(msg, target)
 	if msg == "ScorchingDetonation" then--Rastakhan
 		if playerDeathPhase then
 			if self.Options.AnnounceAlternatePhase then
-			
+				warnScorchingDetonation:Show()
 			end
 			timerScorchingDetonationCD:Start(32.8)
 		end
@@ -524,8 +543,9 @@ function mod:OnSync(msg, target)
 		if playerDeathPhase then
 			timerDeathsDoorCD:Start()
 		end
-		if self.Options.AnnounceAlternatePhase then
-		
+	elseif msg == "DeathsDoorTarget" then--Rastakhan (in p3, in P2 where we don't sync, bwonsamdi)
+		if playerDeathPhase and self.Options.AnnounceAlternatePhase then
+			warnDeathsDoor:Show(target)
 		end
 	elseif msg == "ZombieTotem" then--Rastakhan
 		if playerDeathPhase then
