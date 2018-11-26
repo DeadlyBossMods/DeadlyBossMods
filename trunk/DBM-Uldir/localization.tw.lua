@@ -24,8 +24,13 @@ L:SetWarningLocalization({
 	addsSoon		= "滑道已開啟 - 小怪來了"
 })
 
+L:SetTimerLocalization({
+	chuteTimer		= "下一次滑道(%s)"
+})
+
 L:SetOptionLocalization({
-	addsSoon		= "為滑道開啟和開始小怪準備出現顯示預先警告"
+	addsSoon		= "為滑道開啟和開始小怪準備出現顯示預先警告",
+	chuteTimer		= "為何時滑道開啟顯示計時器"
 })
 
 ---------------------------
