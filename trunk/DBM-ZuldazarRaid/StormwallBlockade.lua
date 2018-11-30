@@ -308,7 +308,7 @@ function mod:OnSync(msg, guid)
 			for i = 1, 3 do
 				local bossUnitID = "boss"..i
 				if UnitGUID(bossUnitID) == guid then--Identify casting unit ID
-					DBM.InfoFrame:SetHeader(args.spellName)
+					DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(286558))
 					DBM.InfoFrame:Show(2, "enemyabsorb", nil, UnitGetTotalAbsorbs(bossUnitID))
 					break
 				end
