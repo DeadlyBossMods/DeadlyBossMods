@@ -15,9 +15,9 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 267242 265217 265206",
 	"SPELL_CAST_SUCCESS 265178 265212 266459 265209",
-	"SPELL_AURA_APPLIED 265178 265129 265212",
+	"SPELL_AURA_APPLIED 265178 265129 265212 265127",
 	"SPELL_AURA_APPLIED_DOSE 265178 265127",
-	"SPELL_AURA_REMOVED 265178 265129 265212 265217",
+	"SPELL_AURA_REMOVED 265178 265129 265212 265217 265127",
 	"SPELL_SUMMON 275055",
 	"RAID_BOSS_WHISPER",
 	"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
@@ -86,6 +86,7 @@ mod.vb.ContagionCount = 0
 mod.vb.plagueBombCount = 0
 local iconsUsed = true
 local vectorTargets = {[1] = false, [2] = false, [3] = false, [4] = false}
+local lingeringTable = {}
 local playerHasSix, playerHasTwelve, playerHasTwentyFive = false, false, false
 local seenAdds = {}
 local castsPerGUID = {}
@@ -148,50 +149,71 @@ do
 		table.wipe(tempLines)
 		table.wipe(tempLinesSorted)
 		table.wipe(sortedLines)
-		--Vector Players First
-		for i=1, 4 do
-			if vectorTargets[i] then
-				local name = vectorTargets[i]
-				DBM:Debug("Vector "..i.." on "..name, 3)
-				local uId = DBM:GetRaidUnitId(name)
-				if uId then--Failsafe
-					local _, _, _, _, _, expireTime = DBM:UnitDebuff(uId, 265129)
-					local remaining = floor(expireTime-GetTime())
-					addLine(i.."-"..name, remaining)--Insert numeric into name so a person who has more than two vectors will show both of them AND not conflict with lingering entries
-				end
-			end
-		end
-		addLine(" ", " ")--Insert a blank entry to split the two debuffs
-		--Lingering Infection (UGLY code)
 		if mod.Options.ShowOnlyParty then
-			for i = 1, GetNumSubgroupMembers() do--Starting at 1 should skip player, show everyone else
-				local uId = "party"..i
-				local spellName, _, count = DBM:UnitDebuff(uId, 265127)
-				if spellName and count then
-					local unitName = UnitName(uId)
-					tempLines[unitName] = count
-					tempLinesSorted[#tempLinesSorted + 1] = unitName
+			--Vector Players separately
+			for i=1, 4 do
+				if vectorTargets[i] then
+					local name = vectorTargets[i]
+					DBM:Debug("Vector "..i.." on "..name, 3)
+					local uId = DBM:GetRaidUnitId(name)
+					if uId then--Failsafe
+						local _, _, _, _, _, expireTime = DBM:UnitDebuff(uId, 265129)
+						local remaining = floor(expireTime-GetTime())
+						addLine(DBM_CORE_DISEASE_ICON..i.."-"..name, remaining)--Insert numeric into name so a person who has more than two vectors will show both of them AND not conflict with lingering entries
+					end
 				end
 			end
+			addLine(" ", " ")--Insert a blank entry to split the two debuffs
+			--Insert lingering Infection targets after vector targets
+			for i = 0, GetNumSubgroupMembers() do--Starting at 1 should skip player, show everyone else
+				local uId
+				if (i == 0) then
+					uId = "player"
+				else
+					uId = "party"..i
+				end
+				local unitName = UnitName(uId)
+				local count = lingeringTable[unitName] or 0
+				addLine(unitName, count)--Sorting will be group order instead of lingering stack count so we don't do temp sorting here
+			end
 		else
+			--Show lingering and vectors combined for entire raid
 			for uId in DBM:GetGroupMembers() do
-				local spellName, _, count = DBM:UnitDebuff(uId, 265127)
-				if spellName and count then
-					local unitName = UnitName(uId)
-					tempLines[unitName] = count
-					tempLinesSorted[#tempLinesSorted + 1] = unitName
+				local unitName = UnitName(uId)
+				local count = lingeringTable[unitName] or 0
+				tempLines[unitName] = count
+				tempLinesSorted[#tempLinesSorted + 1] = unitName
+			end
+			--Sort lingering according to options
+			if mod.Options.ShowHighestFirst2 then
+				tsort(tempLinesSorted, sortFuncDesc)
+			else
+				tsort(tempLinesSorted, sortFuncAsc)
+			end
+			--Now move lingering back into regular infoframe tables
+			for _, name in ipairs(tempLinesSorted) do
+				local hasVector = false
+				for i=1, 4 do
+					if vectorTargets[i] and vectorTargets[i] == name then
+						DBM:Debug("Vector "..i.." on "..name, 3)
+						if not hasVector then
+							hasVector = i
+						else
+							hasVector = hasVector.."/"..i
+						end
+					end
+				end
+				if hasVector then
+					local uId = DBM:GetRaidUnitId(name)
+					local _, _, _, _, _, expireTime = DBM:UnitDebuff(uId, 265129)--Will only return expire time for first debuff player has, if they have multiple, fortunately first one found should be shortest time
+					local remaining = floor(expireTime-GetTime())
+					--Inserts vector numbers unit has and remaining debuff along with lingering stacks
+					addLine(DBM_CORE_DISEASE_ICON..hasVector.."-"..name, tempLines[name].."-"..remaining)--Insert numeric into name so a person who has more than two vectors will show both of them AND not conflict with lingering entries
+				else
+					--No vector on this target, just insert name and lingering count
+					addLine(name, tempLines[name])
 				end
 			end
-		end
-		--Sort lingering according to options
-		if mod.Options.ShowHighestFirst2 then
-			tsort(tempLinesSorted, sortFuncDesc)
-		else
-			tsort(tempLinesSorted, sortFuncAsc)
-		end
-		--Now move lingering back into regular infoframe tables
-		for _, name in ipairs(tempLinesSorted) do
-			addLine(name, tempLines[name])
 		end
 		return lines, sortedLines
 	end
@@ -200,6 +222,7 @@ end
 function mod:OnCombatStart(delay)
 	table.wipe(seenAdds)
 	table.wipe(castsPerGUID)
+	table.wipe(lingeringTable)
 	vectorTargets = {[1] = false, [2] = false, [3] = false, [4] = false}
 	playerHasSix, playerHasTwelve, playerHasTwentyFive = false, false, false
 	playersIcon = 0
@@ -214,7 +237,7 @@ function mod:OnCombatStart(delay)
 	countdownLiquefy:Start(90.8-delay)
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(OVERVIEW)
-		DBM.InfoFrame:Show(self:IsMythic() and 9 or 7, "function", updateInfoFrame, false, true)--Default size to show all vectors and equal number of lingering
+		DBM.InfoFrame:Show(self:IsMythic() and 20 or 8, "function", updateInfoFrame, false, true)--Default size to show all vectors and equal number of lingering
 	end
 	ModCheck(self)
 end
@@ -432,6 +455,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				--yellTerminalEruption:Yell()
 			end
 		end
+		lingeringTable[args.destName] = args.amount or 1
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -496,6 +520,8 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerContagionCD:Start(24.3, 1)
 		timerLiquefyCD:Start(94.8)
 		countdownLiquefy:Start(94.8)
+	elseif spellId == 265127 then
+		lingeringTable[args.destName] = nil
 	end
 end
 

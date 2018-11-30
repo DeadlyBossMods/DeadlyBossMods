@@ -11,7 +11,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 269029 268230",
 	"UNIT_DIED",
-	"UNIT_SPELLCAST_START boss1 boss2 boss3 boss4 boss5",--Adds only
+	"UNIT_SPELLCAST_START boss1 boss2 boss3 boss4 boss5",--boss and Adds
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5"--boss and Adds
 )
 
