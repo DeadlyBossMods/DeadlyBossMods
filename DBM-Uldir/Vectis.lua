@@ -237,7 +237,7 @@ function mod:OnCombatStart(delay)
 	countdownLiquefy:Start(90.8-delay)
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(OVERVIEW)
-		DBM.InfoFrame:Show(self:IsMythic() and 20 or 8, "function", updateInfoFrame, false, true)--Default size to show all vectors and equal number of lingering
+		DBM.InfoFrame:Show(self:IsHard() and 30 or 8, "function", updateInfoFrame, false, true)--Default size to show all vectors and equal number of lingering
 	end
 	ModCheck(self)
 end
