@@ -4,10 +4,11 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(135452)--136429 Chamber 01, 137022 Chamber 02, 137023 Chamber 03
 mod:SetEncounterID(2141)
+mod:DisableESCombatDetection()--ES breaks if you pull boss through door to skip trash. Then after that the trash bugs and continues to throw ES events even after mother is defeated
 mod:SetZone()
 mod:SetUsedIcons(8, 7, 6, 5, 4, 3, 2, 1)
 mod:SetHotfixNoticeRev(17778)
---mod:SetMinSyncRevision(16950)
+mod:SetMinSyncRevision(18111)
 mod.respawnTime = 25
 
 mod:RegisterCombat("combat")
