@@ -19,10 +19,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 265264 265360 265662 265646 265237",
 	"SPELL_AURA_APPLIED_DOSE 265264",
 	"SPELL_AURA_REMOVED 265360 265662",
---	"SPELL_PERIODIC_DAMAGE",
---	"SPELL_PERIODIC_MISSED",
 	"UNIT_DIED",
---	"CHAT_MSG_MONSTER_YELL",
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5",
 	"UNIT_POWER_FREQUENT boss1"
 )
@@ -35,7 +32,7 @@ mod:RegisterEventsInCombat(
  or ability.id = 265360 and type = "applydebuff"
  or (ability.id = 267180 or ability.id = 270620) and type = "begincast"
 --]]
-local warnPhase							= mod:NewPhaseChangeAnnounce()
+local warnPhase							= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
 --local warnXorothPortal					= mod:NewSpellAnnounce(244318, 2, nil, nil, nil, nil, nil, 7)
 local warnVoidLash						= mod:NewStackAnnounce(265264, 2, nil, "Tank")
 --Stage One: Chaos
@@ -82,7 +79,6 @@ local timerEyeBeamCD					= mod:NewCDTimer(40, 264382, nil, nil, nil, 3)
 mod:AddTimerLine(SCENARIO_STAGE:format(2))
 local timerAnubarCasterCD				= mod:NewCDTimer(80, "ej18397", nil, nil, nil, 1, 31700)--82
 local timerRoilingDeceitCD				= mod:NewCDTimer(45, 265360, nil, nil, nil, 3)--61
---local timerVoidBoltCD					= mod:NewAITimer(19.9, 267180, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
 mod:AddTimerLine(SCENARIO_STAGE:format(3))
 local timerOrbofCorruptionCD			= mod:NewCDCountTimer(50, 267239, nil, nil, nil, 5)
 local timerOrbLands						= mod:NewTimer(45, "timerOrbLands", 267239, nil, nil, 5)--61
@@ -91,12 +87,10 @@ local timerOrbLands						= mod:NewTimer(45, "timerOrbLands", 267239, nil, nil, 5
 
 local countdownSurgingDarkness			= mod:NewCountdown(82.8, 265451, true, nil, 3)
 local countdownMightofVoid				= mod:NewCountdown("Alt37", 267312, "Tank", nil, 3)
---local countdownFelstormBarrage		= mod:NewCountdown("AltTwo32", 244000, nil, nil, 3)
 
 mod:AddRangeFrameOption(6, 264382)
 mod:AddBoolOption("EarlyTankSwap", false)
 mod:AddSetIconOption("SetIconOnAdds", 267192, true, true)
---mod:AddInfoFrameOption(265451, true)
 
 mod.vb.phase = 1
 mod.vb.orbCount = 0
@@ -130,6 +124,43 @@ function mod:RollingTarget(targetname, uId)
 	end
 end
 
+--In the rare case boss is AT 0 energy when he phase changes, then the current energy based phase detection will fail
+--This aims to correct timers/current phase if boss casts abilities that don't match current phase dbm thinks it is
+local function correctCurrentStage(self, expectedStage)
+	if self.vb.phase < expectedStage then
+		self.vb.phase = self.vb.phase + 1
+		timerMightofVoidCD:Stop()
+		countdownMightofVoid:Cancel()
+		timerSurgingDarknessCD:Stop()
+		countdownSurgingDarkness:Cancel()
+		timerMightofVoidCD:Start(14.1)
+		countdownMightofVoid:Start(14.1)
+		timerSurgingDarknessCD:Start(63.2)
+		countdownSurgingDarkness:Start(63.2)
+		if self.vb.phase == 2 then
+			warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(2))
+			warnPhase:Play("ptwo")
+			if not self:IsMythic() then
+				timerQirajiWarriorCD:Stop()
+				timerEyeBeamCD:Stop()
+				if not self:IsLFR() then
+					timerAnubarCasterCD:Start(4.6)
+				end
+				timerRoilingDeceitCD:Start(6.1)--CAST_START
+			else--Mythic Stage 2 is final stage, start final stage timer
+				timerAddsCD:Stop()
+				timerOrbofCorruptionCD:Start(6, 1)
+			end
+		elseif self.vb.phase == 3 then--Should only happen on non mythic
+			warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(3))
+			warnPhase:Play("pthree")
+			timerAnubarCasterCD:Stop()
+			timerRoilingDeceitCD:Cancel()
+			timerOrbofCorruptionCD:Start(6, 1)
+		end
+	end
+end
+
 function mod:OnCombatStart(delay)
 	self.vb.phase = 1
 	self.vb.orbCount = 0
@@ -157,19 +188,12 @@ function mod:OnCombatStart(delay)
 			timerQirajiWarriorCD:Start(56-delay)--56-58 regardless
 		end
 	end
---	if self.Options.InfoFrame then
---		DBM.InfoFrame:SetHeader(DBM_CORE_INFOFRAME_POWER)
---		DBM.InfoFrame:Show(4, "enemypower", 2)
---	end
 end
 
 function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
---	if self.Options.InfoFrame then
---		DBM.InfoFrame:Hide()
---	end
 end
 
 function mod:SPELL_CAST_START(args)
@@ -300,16 +324,6 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
---[[
-function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
-	if spellId == 228007 and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
-		specWarnGTFO:Show()
-		specWarnGTFO:Play("watchfeet")
-	end
-end
-mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
---]]
-
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 134503 then--Qiraji Warrior
@@ -333,6 +347,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		self.vb.roilingCount = 0
 		--here because this spell ID fires at beginning of each set ONCE
 		timerRoilingDeceitCD:Schedule(6, 60)--Same in all
+		if not self:IsMythic() then
+			correctCurrentStage(self, 2)--First ability he'll cast in stage 2 that's clearly a stage 2 ability
+		end
 	elseif spellId == 264746 then--Eye beam
 		self.vb.eyeCount = 0
 		specWarnEyeBeamSoon:Show()
@@ -364,6 +381,10 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 				self.vb.addIcon = 1
 			end
 		end
+	--"<380.54 21:44:30> [UNIT_POWER_UPDATE] boss1#Zek'voz#ENERGY#3#0#100#0#0", -- [12792]
+	--"<386.64 21:44:36> [UNIT_SPELLCAST_SUCCEEDED] Zek'voz(Towelliee) -Orb of Corruption- [[boss1:Cast-3-3882-1861-22058-267234-0002908684]]", -- [12966]
+	elseif spellId == 267234 then--Orb of Corruption First run script
+		correctCurrentStage(self, self:IsMythic() and 2 or 3)--First ability he'll cast in final stage that's clearly a final stage ability
 	end
 end
 
@@ -381,6 +402,7 @@ function mod:UNIT_POWER_FREQUENT(uId)
 		countdownSurgingDarkness:Start(79.1)
 		if self.vb.phase == 2 then
 			warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(2))
+			warnPhase:Play("ptwo")
 			if not self:IsMythic() then
 				timerQirajiWarriorCD:Stop()
 				timerEyeBeamCD:Stop()
@@ -394,6 +416,7 @@ function mod:UNIT_POWER_FREQUENT(uId)
 			end
 		elseif self.vb.phase == 3 then--Should only happen on non mythic
 			warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(3))
+			warnPhase:Play("pthree")
 			timerAnubarCasterCD:Stop()
 			timerRoilingDeceitCD:Cancel()
 			timerOrbofCorruptionCD:Start(12, 1)
@@ -401,26 +424,3 @@ function mod:UNIT_POWER_FREQUENT(uId)
 	end
 	self.vb.lastPower = bossPower
 end
-
---[[
---Blizz seems to have removed the yells
-function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
-	if not self:LatencyCheck() then return end
-	if (msg == L.CThunDisc or msg:find(L.CThunDisc)) then
-		self:SendSync("CThunDisc")
-	elseif (msg == L.YoggDisc or msg:find(L.YoggDisc)) then
-		self:SendSync("YoggDisc")
-	elseif (msg == L.CorruptedDisc or msg:find(L.CorruptedDisc)) then
-		self:SendSync("NzothDisc")
-	end
-end
-
-function mod:OnSync(msg, targetname)
-	if not self:IsInCombat() then return end
-	if msg == "YoggDisc" and self:AntiSpam(5, 2) then
-
-	elseif msg == "NzothDisc" and self:AntiSpam(5, 3) then
-
-	end
-end
---]]
