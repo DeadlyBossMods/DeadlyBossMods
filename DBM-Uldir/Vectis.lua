@@ -159,7 +159,7 @@ do
 					if uId then--Failsafe
 						local _, _, _, _, _, expireTime = DBM:UnitDebuff(uId, 265129)
 						local remaining = floor(expireTime-GetTime())
-						addLine(DBM_CORE_DISEASE_ICON..i.."-"..name, remaining)--Insert numeric into name so a person who has more than two vectors will show both of them AND not conflict with lingering entries
+						addLine(i.."-"..name, remaining)--Insert numeric into name so a person who has more than two vectors will show both of them AND not conflict with lingering entries
 					end
 				end
 			end
@@ -208,7 +208,7 @@ do
 					local _, _, _, _, _, expireTime = DBM:UnitDebuff(uId, 265129)--Will only return expire time for first debuff player has, if they have multiple, fortunately first one found should be shortest time
 					local remaining = floor(expireTime-GetTime())
 					--Inserts vector numbers unit has and remaining debuff along with lingering stacks
-					addLine(DBM_CORE_DISEASE_ICON..hasVector.."-"..name, tempLines[name].."-"..remaining)--Insert numeric into name so a person who has more than two vectors will show both of them AND not conflict with lingering entries
+					addLine(hasVector.."-"..name, tempLines[name].."-"..remaining)--Insert numeric into name so a person who has more than two vectors will show both of them AND not conflict with lingering entries
 				else
 					--No vector on this target, just insert name and lingering count
 					addLine(name, tempLines[name])
