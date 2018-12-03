@@ -157,9 +157,13 @@ do
 					DBM:Debug("Vector "..i.." on "..name, 3)
 					local uId = DBM:GetRaidUnitId(name)
 					if uId then--Failsafe
-						local _, _, _, _, _, expireTime = DBM:UnitDebuff(uId, 265129)
-						local remaining = floor(expireTime-GetTime())
-						addLine(i.."-"..name, remaining)--Insert numeric into name so a person who has more than two vectors will show both of them AND not conflict with lingering entries
+						if expireTime then
+							local _, _, _, _, _, expireTime = DBM:UnitDebuff(uId, 265129)
+							local remaining = floor(expireTime-GetTime())
+							addLine(i.."-"..name, remaining)--Insert numeric into name so a person who has more than two vectors will show both of them AND not conflict with lingering entries
+						else
+							vectorTargets[i] = nil
+						end
 					end
 				end
 			end
@@ -206,9 +210,13 @@ do
 				if hasVector then
 					local uId = DBM:GetRaidUnitId(name)
 					local _, _, _, _, _, expireTime = DBM:UnitDebuff(uId, 265129)--Will only return expire time for first debuff player has, if they have multiple, fortunately first one found should be shortest time
-					local remaining = floor(expireTime-GetTime())
-					--Inserts vector numbers unit has and remaining debuff along with lingering stacks
-					addLine(hasVector.."-"..name, tempLines[name].."-"..remaining)--Insert numeric into name so a person who has more than two vectors will show both of them AND not conflict with lingering entries
+					if expireTime then
+						local remaining = floor(expireTime-GetTime())
+						--Inserts vector numbers unit has and remaining debuff along with lingering stacks
+						addLine(hasVector.."-"..name, tempLines[name].."-"..remaining)--Insert numeric into name so a person who has more than two vectors will show both of them AND not conflict with lingering entries
+					else
+						vectorTargets[i] = nil
+					end
 				else
 					--No vector on this target, just insert name and lingering count
 					addLine(name, tempLines[name])
