@@ -60,7 +60,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(2166)
 
 L:SetOptionLocalization({
-	ShowHighestFirst2	 =	"将信息窗中持续感染的层数从高往低显示(默认从低到高)",
+	ShowHighestFirst3	 =	"将信息窗中持续感染的层数从高往低显示(默认从低到高)",
 	ShowOnlyParty		 =	"只显示自己小队的持续感染层数信息(得先编队)",
 	SetIconsRegardless	 =	"强制设置标志，不管BW用户是否有权限(三思而后行))"
 })
