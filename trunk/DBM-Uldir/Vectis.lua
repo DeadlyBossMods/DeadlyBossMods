@@ -212,14 +212,17 @@ do
 					local _, _, _, _, _, expireTime = DBM:UnitDebuff(uId, 265129)--Will only return expire time for first debuff player has, if they have multiple, fortunately first one found should be shortest time
 					if expireTime then
 						local remaining = floor(expireTime-GetTime())
-						--Inserts vector numbers unit has and remaining debuff along with lingering stacks
+						--Inserts vector numbers unit has and remaining debuff along with lingering stacks even if it's 0 stacks
 						addLine(hasVector.."-"..name, tempLines[name].."-"..remaining)--Insert numeric into name so a person who has more than two vectors will show both of them AND not conflict with lingering entries
 					else
 						vectorTargets[i] = nil
 					end
 				else
 					--No vector on this target, just insert name and lingering count
-					addLine(name, tempLines[name])
+					--Omit 0 counts for non vector targets
+					if tempLines[name] > 0 then
+						addLine(name, tempLines[name])
+					end
 				end
 			end
 		end
