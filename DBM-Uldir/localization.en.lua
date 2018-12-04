@@ -58,7 +58,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(2166)
 
 L:SetOptionLocalization({
-	ShowHighestFirst2	 =	"Sort Lingering Infection Infoframe by highest debuff stack (instead of lowest). Only applies if not set to party only.",
+	ShowHighestFirst3	 =	"Sort Lingering Infection Infoframe by highest debuff stack (instead of lowest). Only applies if not set to party only.",
 	ShowOnlyParty		 =	"Show Lingering Infection only for your party. This option always sorts the frame by party order.",
 	SetIconsRegardless	 =	"Set icons regardless of whether or not a BW user has assist (Advanced)"
 })
