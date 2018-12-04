@@ -78,7 +78,7 @@ local countdownLiquefy						= mod:NewCountdown("AltTwo90", 265217, nil, nil, 3)
 mod:AddSetIconOption("SetIconVector", 265129, true)
 mod:AddRangeFrameOption("5/8")
 mod:AddInfoFrameOption(265127, true)
-mod:AddBoolOption("ShowHighestFirst2", false)--Show lest stacks first by default, since it alines with new infoframe
+mod:AddBoolOption("ShowHighestFirst3", true)--Show highest stacks first by default, since it alines with 3rd generation infoframe
 mod:AddBoolOption("ShowOnlyParty", false)
 mod:AddBoolOption("SetIconsRegardless", false)
 
@@ -189,7 +189,7 @@ do
 				tempLinesSorted[#tempLinesSorted + 1] = unitName
 			end
 			--Sort lingering according to options
-			if mod.Options.ShowHighestFirst2 then
+			if mod.Options.ShowHighestFirst3 then
 				tsort(tempLinesSorted, sortFuncDesc)
 			else
 				tsort(tempLinesSorted, sortFuncAsc)

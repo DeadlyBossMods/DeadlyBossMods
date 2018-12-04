@@ -37,7 +37,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(2166)
 
 L:SetOptionLocalization({
-	ShowHighestFirst2	 =	"Sort Lingering Infection Infoframe by highest debuff stack (instead of lowest)"
+	ShowHighestFirst3	 =	"Sort Lingering Infection Infoframe by highest debuff stack (instead of lowest)"
 })
 
 ---------------

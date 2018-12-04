@@ -54,7 +54,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(2166)
 
 L:SetOptionLocalization({
-	ShowHighestFirst2	 =	"Ordenar marco de información de $spell:265127 de mayor a menor cantidad de acumulaciones (en lugar de menor a mayor)",
+	ShowHighestFirst3	 =	"Ordenar marco de información de $spell:265127 de mayor a menor cantidad de acumulaciones (en lugar de menor a mayor)",
 	ShowOnlyParty		 =	"Mostrar solo las acumulaciones de $spell:265127 de tu grupo",
 	SetIconsRegardless	 =	"Poner iconos independientemente de si un jugador con permisos de ayudante tiene BigWigs (avanzado)"
 })

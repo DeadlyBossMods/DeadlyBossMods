@@ -245,7 +245,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 267945 then--Global Id for winds
 		warnWindTunnel:Show()
 		timerWindTunnelCD:Start()--40 unless delayed by ICD
-		updateAllTimers(self, 6)
+		updateAllTimers(self, 5.6)
 	elseif spellId == 269827 or spellId == 277973 or spellId == 277961 or spellId == 277742 then
 		if self:IsMythic() then--All the things
 			specWarnSurgicalBeam:Show(DBM_CORE_BOTH)
