@@ -149,6 +149,7 @@ do
 		table.wipe(tempLines)
 		table.wipe(tempLinesSorted)
 		table.wipe(sortedLines)
+		local showHighest = mod.Options.ShowHighestFirst3
 		if mod.Options.ShowOnlyParty then
 			--Vector Players separately
 			for i=1, 4 do
@@ -189,7 +190,7 @@ do
 				tempLinesSorted[#tempLinesSorted + 1] = unitName
 			end
 			--Sort lingering according to options
-			if mod.Options.ShowHighestFirst3 then
+			if showHighest then
 				tsort(tempLinesSorted, sortFuncDesc)
 			else
 				tsort(tempLinesSorted, sortFuncAsc)
@@ -220,7 +221,7 @@ do
 				else
 					--No vector on this target, just insert name and lingering count
 					--Omit 0 counts for non vector targets
-					if tempLines[name] > 0 then
+					if showHighest and tempLines[name] > 0 then
 						addLine(name, tempLines[name])
 					end
 				end
