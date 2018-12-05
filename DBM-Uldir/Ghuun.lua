@@ -444,6 +444,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.waveCast = 0
 		specWarnCollapse:Show()
 		specWarnCollapse:Play("watchstep")
+		timerReOrgBlast:Stop()
 		timerBloodFeastCD:Stop()
 		countdownBloodFeast:Cancel()
 		timerWaveofCorruptionCD:Stop()
