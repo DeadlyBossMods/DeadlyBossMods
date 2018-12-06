@@ -72,7 +72,7 @@ local timerImmunoSuppCD						= mod:NewCDCountTimer(25.5, 265206, nil, nil, nil, 
 --local berserkTimer						= mod:NewBerserkTimer(600)
 
 local countdownGestate						= mod:NewCountdown(25.5, 265212, true, nil, 3)
---local countdownEvolvingAffliction			= mod:NewCountdown("Alt12", 265178, "Tank", 2, 3)
+local countdownContagion					= mod:NewCountdown("Alt12", 267242, "Healer", 2, 3)
 local countdownLiquefy						= mod:NewCountdown("AltTwo90", 265217, nil, nil, 3)
 
 mod:AddSetIconOption("SetIconVector", 265129, true)
@@ -245,6 +245,7 @@ function mod:OnCombatStart(delay)
 	timerGestateCD:Start(10-delay)--SUCCESS
 	countdownGestate:Start(10-delay)
 	timerContagionCD:Start(20.5-delay, 1)
+	countdownContagion:Start(20.5-delay)
 	timerLiquefyCD:Start(90.8-delay)
 	countdownLiquefy:Start(90.8-delay)
 	if self.Options.InfoFrame then
@@ -296,7 +297,8 @@ function mod:SPELL_CAST_START(args)
 		else
 			warnContagion:Show(self.vb.ContagionCount)
 		end
-		timerContagionCD:Start(nil, self.vb.ContagionCount+1)
+		timerContagionCD:Start(23, self.vb.ContagionCount+1)
+		countdownContagion:Start(23)
 		if self:IsMythic() then
 			if playerHasSix then--Done here so earlier warning, not on APPLIED
 				specWarnBurstingLesions:Show()
@@ -328,6 +330,7 @@ function mod:SPELL_CAST_START(args)
 		countdownGestate:Cancel()
 		timerEvolvingAfflictionCD:Stop()
 		timerContagionCD:Stop()
+		countdownContagion:Cancel()
 		timerplagueBombCD:Start(9.8, 1)
 	elseif spellId == 265206 then
 		if not castsPerGUID[args.sourceGUID] then--Shouldn't happen, but does?
@@ -530,6 +533,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerGestateCD:Start(14.6)--SUCCESS
 		countdownGestate:Start(14.6)
 		timerContagionCD:Start(24.3, 1)
+		countdownContagion:Start(24.3)
 		timerLiquefyCD:Start(94.8)
 		countdownLiquefy:Start(94.8)
 	elseif spellId == 265127 then
