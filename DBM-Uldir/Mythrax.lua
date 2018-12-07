@@ -91,10 +91,24 @@ mod.vb.ruinIcon = 1
 mod.vb.echoesCast = 0
 mod.vb.isIntermission = false
 mod.vb.visionsCount = 0
-local beamTimers = {19.5, 24, 12, 12}--Changed for a 3rd time
+local beamTimers = {19.5, 12, 12, 12, 12}
 local mythicBeamTimers = {19.5, 15, 15, 15}
 local castsPerGUID = {}
 local infoframeTable = {}
+
+local function beamCorrection(self)
+	DBM:Debug("Boss skipped a beam, scheduling next one")
+	self:Unschedule(beamCorrection)
+	self.vb.beamCast = self.vb.beamCast + 1
+	local timer = self:IsMythic() and mythicBeamTimers[self.vb.beamCast+1] or beamTimers[self.vb.beamCast+1]
+	if timer then
+		timerObliterationbeamCD:Start(timer-4, self.vb.beamCast+1)
+		local timer2 = self:IsMythic() and mythicBeamTimers[self.vb.beamCast+1] or beamTimers[self.vb.beamCast+2]
+		if timer2 then
+			self:Schedule(timer2, beamCorrection, self)
+		end
+	end
+end
 
 function mod:OnCombatStart(delay)
 	self.vb.ruinCast = 0
@@ -191,12 +205,17 @@ function mod:SPELL_CAST_START(args)
 			timerIntermission:Start(80)
 		end
 	elseif spellId == 272115 then
+		self:Unschedule(beamCorrection)
 		self.vb.beamCast = self.vb.beamCast + 1
 		specWarnObliterationbeam:Show(self.vb.beamCast)
 		specWarnObliterationbeam:Play("watchstep")
 		local timer = self:IsMythic() and mythicBeamTimers[self.vb.beamCast+1] or beamTimers[self.vb.beamCast+1]
 		if timer then
 			timerObliterationbeamCD:Start(timer, self.vb.beamCast+1)
+			local timer2 = self:IsMythic() and mythicBeamTimers[self.vb.beamCast+1] or beamTimers[self.vb.beamCast+2]
+			if timer2 then
+				self:Schedule(timer2+4, beamCorrection, self)
+			end
 		end
 	elseif spellId == 274019 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnMindFlay:Show(args.sourceName)
@@ -390,6 +409,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		countdownImminentRuin:Cancel()
 		timerLivingWeaponCD:Stop()
 	elseif spellId == 279748 then
+		self:Unschedule(beamCorrection)
 		self.vb.sphereCast = 0
 		self.vb.ruinCast = 0
 		self.vb.isIntermission = false
