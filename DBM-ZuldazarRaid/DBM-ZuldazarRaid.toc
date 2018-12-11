@@ -1,4 +1,4 @@
-## Interface: 80000
+## Interface: 80100
 ## X-Min-Interface: 80100
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Battle of Dazar'alor|r
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0다자알로 전투|r
@@ -11,8 +11,6 @@
 ## X-DBM-Mod-Type: RAID
 ## X-DBM-Mod-Category: BFA
 ## X-DBM-Mod-Has-Mythic : 1
-## X-DBM-Mod-Name: Battle of Dazar'alor
-## X-DBM-Mod-Name-koKR: 다자알로 전투
 ## X-DBM-Mod-SubCategories: Shared,Alliance,Horde
 ## X-DBM-Mod-SubCategories-koKR: 공통,얼라이언스,호드
 ## X-DBM-Mod-Sort: 406
