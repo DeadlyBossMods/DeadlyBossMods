@@ -7115,8 +7115,10 @@ do
 end
 
 --To speed up creating new mods.
-function DBM:FindDungeonIDs()
-	for i=1, 3000 do
+function DBM:FindDungeonIDs(low, peak)
+	local start = low or 1
+	local range = peak or 3000
+	for i = start, range do
 		local dungeon = GetRealZoneText(i)
 		if dungeon and dungeon ~= "" then
 			self:AddMsg(i..": "..dungeon)
@@ -7124,8 +7126,10 @@ function DBM:FindDungeonIDs()
 	end
 end
 
-function DBM:FindInstanceIDs()
-	for i=1, 3000 do
+function DBM:FindInstanceIDs(low, peak)
+	local start = low or 1
+	local range = peak or 3000
+	for i = start, range do
 		local instance = EJ_GetInstanceInfo(i)
 		if instance then
 			self:AddMsg(i..": "..instance)
@@ -7137,6 +7141,8 @@ end
 --/run DBM:FindEncounterIDs(1177)--Crucible of Storms
 --/run DBM:FindEncounterIDs(1176)--Zuldazar Raid
 --/run DBM:FindEncounterIDs(1001, 23)--Dungeon Template (mythic difficulty)
+--/run DBM:FindEncounterIDs(instanceID, 1)--Classic Dungeons need diff 1 specified
+--/run DBM:FindDungeonIDs(1, 300)--Find Classic Dungeon IDs
 function DBM:FindEncounterIDs(instanceID, diff)
 	if not instanceID then
 		self:AddMsg("Error: Function requires instanceID be provided")
@@ -7292,7 +7298,7 @@ do
 			end
 		end
 
-		if tonumber(name) then
+		if tonumber(name) and EJ_GetEncounterInfo then
 			local t = EJ_GetEncounterInfo(tonumber(name))
 			if type(nameModifier) == "number" then--Get name form EJ_GetCreatureInfo
 				t = select(2, EJ_GetCreatureInfo(nameModifier, tonumber(name)))
