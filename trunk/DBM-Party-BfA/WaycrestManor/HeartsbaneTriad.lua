@@ -160,6 +160,7 @@ do
 					local icon = GetRaidTargetIndex(uId)
 					if not icon then
 						SetRaidTarget(uId.."target", 8)
+						break
 					end
 				end
 				if not (self.vb.activeTriad) then
