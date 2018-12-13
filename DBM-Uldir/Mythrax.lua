@@ -78,6 +78,7 @@ local timerVisionsoMadnessCD			= mod:NewNextCountTimer(20, 273949, nil, nil, nil
 local countdownOblivionSphere			= mod:NewCountdown(19.9, 272407, nil, nil, 3)
 local countdownEssenceShear				= mod:NewCountdown("Alt20", 274693, "Tank", nil, 3)
 local countdownImminentRuin				= mod:NewCountdown("AltTwo20", 272536, "-Tank", nil, 3)
+local countdownBeam						= mod:NewCountdown("AltTwo20", 272115, nil, nil, 3)
 
 mod:AddSetIconOption("SetIconRuin", 272536, true)
 mod:AddRangeFrameOption(5, 272407)
@@ -103,6 +104,7 @@ local function beamCorrection(self)
 	local timer = self:IsMythic() and mythicBeamTimers[self.vb.beamCast+1] or beamTimers[self.vb.beamCast+1]
 	if timer then
 		timerObliterationbeamCD:Start(timer-4, self.vb.beamCast+1)
+		countdownBeam:Start(timer-4)
 		local timer2 = self:IsMythic() and mythicBeamTimers[self.vb.beamCast+1] or beamTimers[self.vb.beamCast+2]
 		if timer2 then
 			self:Schedule(timer2, beamCorrection, self)
@@ -195,10 +197,12 @@ function mod:SPELL_CAST_START(args)
 		countdownOblivionSphere:Start(7)--Still seems same in all
 		if self:IsMythic() then
 			timerObliterationbeamCD:Start(18.5, 1)
+			countdownBeam:Start(18.5)
 			timerVisionsoMadnessCD:Start(26.1, 1)
 			timerIntermission:Start(75)
 		else
 			timerObliterationbeamCD:Start(20.5, 1)
+			countdownBeam:Start(20.5)
 			if not self:IsLFR() then
 				timerVisionsoMadnessCD:Start(31.5, 1)
 			end
@@ -212,6 +216,7 @@ function mod:SPELL_CAST_START(args)
 		local timer = self:IsMythic() and mythicBeamTimers[self.vb.beamCast+1] or beamTimers[self.vb.beamCast+1]
 		if timer then
 			timerObliterationbeamCD:Start(timer, self.vb.beamCast+1)
+			countdownBeam:Start(timer)
 			local timer2 = self:IsMythic() and mythicBeamTimers[self.vb.beamCast+1] or beamTimers[self.vb.beamCast+2]
 			if timer2 then
 				self:Schedule(timer2+4, beamCorrection, self)
@@ -417,6 +422,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(1))
 		warnPhase:Play("phasechange")
 		timerObliterationbeamCD:Stop()
+		countdownBeam:Cancel()
 		timerVisionsoMadnessCD:Stop()
 		if self:IsMythic() then
 			timerImminentRuinCD:Start(5, 1)--SUCCESS

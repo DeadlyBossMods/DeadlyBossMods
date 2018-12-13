@@ -14,7 +14,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 263257 263318 263775 263234 263573 263365",
 	"SPELL_CAST_SUCCESS 263371 263424 263425",
 	"UNIT_DIED",
-	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2"
+	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2",
+	"UNIT_TARGET_UNFILTERED"
 )
 
 --TODO, target scan/warn Gale Force target if possible
@@ -55,8 +56,12 @@ local timerArcDashCD				= mod:NewCDTimer(23, 263424, nil, nil, nil, 3)
 
 mod:AddRangeFrameOption("8")
 mod:AddInfoFrameOption(263246, true)
+mod:AddSetIconOption("SetIconOnNoLit", 263246, true, true)
+
+mod.vb.noLitShield = nil
 
 function mod:OnCombatStart(delay)
+	self.vb.noLitShield = nil
 	--Adderis should be in winds, Aspix timers started by Lightning Shield buff
 	timerCycloneStrikeCD:Start(9.8-delay)
 	if not self:IsNormal() then
@@ -121,6 +126,7 @@ end
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 263246 then--Lightning Shield
+		self.vb.noLitShield = args.destGUID
 		local cid = self:GetCIDFromGUID(args.destGUID)
 		--Start wind timers and stop lightning
 		if cid == 133379 then--Adderis
@@ -210,5 +216,31 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		specWarnGaleForce:Show()
 		specWarnGaleForce:Play("specialsoon")
 		timerGaleForceCD:Start()
+	end
+end
+
+do
+	local function TrySetTarget(self)
+		if DBM:GetRaidRank() >= 1 then
+			for uId in DBM:GetGroupMembers() do
+				if UnitGUID(uId.."target") == self.vb.noLitShield then
+					self.vb.noLitShield = nil
+					local icon = GetRaidTargetIndex(uId)
+					if not icon then
+						SetRaidTarget(uId.."target", 8)
+						break
+					end
+				end
+				if not (self.vb.noLitShield) then
+					break
+				end
+			end
+		end
+	end
+
+	function mod:UNIT_TARGET_UNFILTERED()
+		if self.Options.SetIconOnNoLit and self.vb.noLitShield then
+			TrySetTarget(self)
+		end
 	end
 end
