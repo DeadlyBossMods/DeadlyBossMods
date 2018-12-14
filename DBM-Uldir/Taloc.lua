@@ -96,8 +96,8 @@ function mod:OnCombatStart(delay)
 	self.vb.phase = 1
 	timerPlasmaDischargeCD:Start(5.9-delay, 1)
 	timerSanguineStaticCD:Start(18-delay)
-	timerCudgelOfGoreCD:Start(35-delay, 1)
-	countdownCudgelofGore:Start(35)
+	timerCudgelOfGoreCD:Start(31.2-delay, 1)
+	countdownCudgelofGore:Start(31.2)
 	if self:IsMythic() then
 		timerEnlargedHeartCD:Start(24-delay, 1)
 		countdownEnlargedHeart:Start(24-delay)
