@@ -598,7 +598,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			if self:IsTanking("player", "boss1", nil, true) then
 				specWarnGrowingCorruption:Show(amount)
 				specWarnGrowingCorruption:Play("changemt")
-			elseif not playerHasMatrix then--if player has matrix, don't shout to taunt boss
+			elseif not playerHasMatrix and self:CheckTankDistance(args.destGUID, 30) then--if player has matrix, or is > 30 yards away from active tank, don't show taunt warnings
 				specWarnGrowingCorruptionOther:Show(args.destName)
 				specWarnGrowingCorruptionOther:Play("tauntboss")
 			end
