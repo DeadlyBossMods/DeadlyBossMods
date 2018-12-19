@@ -17,20 +17,15 @@ mod:SetCreatureID(creatureID)
 mod:SetZone()
 --mod:SetHotfixNoticeRev(17775)
 --mod:SetMinSyncRevision(16950)
---mod.respawnTime = 35
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 282404 287537 282463 282486 287549 282615",
---	"SPELL_CAST_SUCCESS",
+	"SPELL_CAST_START 282404 287537 282463 282486 287549 282615 287554",
 	"SPELL_AURA_APPLIED 282414 287538",
-	"SPELL_AURA_REMOVED 282615"
---	"UNIT_DIED"
---	"UNIT_SPELLCAST_SUCCEEDED"
+	"SPELL_AURA_REMOVED 282615 287554"
 )
 
---TODO, more than 1 pull, to confirm/improve timer interaction with petrify mechanic
 local warnPetrify						= mod:NewSpellAnnounce(282615, 2, nil, nil, nil, nil, nil, 2)
 local warnPetrifyEnded					= mod:NewEndAnnounce(282615, 2, nil, nil, nil, nil, nil, 2)
 
@@ -42,9 +37,9 @@ local specWarnShockwave					= mod:NewSpecialWarningDodge(282463, nil, nil, nil, 
 local specWarnGroundSpell				= mod:NewSpecialWarningSpell(strikeId, nil, nil, nil, 3, 2)
 local specWarnGTFO						= mod:NewSpecialWarningGTFO(gtfoId, nil, nil, nil, 1, 8)
 
-local timerBreathCD						= mod:NewCDTimer(71.5, breathId, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
-local timerShockwaveCD					= mod:NewCDTimer(23, 282463, nil, nil, nil, 3)--23-46?
-local timerGroundSpellCD				= mod:NewCDTimer(71.5, strikeId, nil, nil, nil, 3)
+local timerBreathCD						= mod:NewCDTimer(71.5, breathId, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--71-76?
+local timerShockwaveCD					= mod:NewCDTimer(23, 282463, nil, nil, nil, 3)--23-25
+local timerGroundSpellCD				= mod:NewCDTimer(71.5, strikeId, nil, nil, nil, 3)--71-76?
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
 
@@ -92,31 +87,22 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 282404 or spellId == 287537 then
 		specWarnBreath:Show()
 		specWarnBreath:Play("breathsoon")
-		timerBreathCD:Start()
+		--timerBreathCD:Start()
 	elseif spellId == 282463 then
 		timerShockwaveCD:Start()
 		self:BossTargetScanner(args.sourceGUID, "ShockwaveTarget", 0.2, 5)
 	elseif spellId == 282486 or spellId == 287549 then
 		specWarnGroundSpell:Show()
 		specWarnGroundSpell:Play("watchstep")
-		timerGroundSpellCD:Start()
-	elseif spellId == 282615 then
+		--timerGroundSpellCD:Start()
+	elseif spellId == 282615 or spellId == 287554 then
 		warnPetrify:Show()
 		warnPetrify:Play("pchange")
-		--timerShockwaveCD:Stop()
-		--timerBreathCD:Stop()
-		--timerGroundSpellCD:Stop()
+		timerShockwaveCD:Stop()
+		timerBreathCD:Stop()
+		timerGroundSpellCD:Stop()
 	end
 end
-
---[[
-function mod:SPELL_CAST_SUCCESS(args)
-	local spellId = args.spellId
-	if spellId == 282543 or spellId == 282179 then
-
-	end
-end
---]]
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
@@ -128,31 +114,21 @@ end
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
-	if spellId == 282615 then
+	if spellId == 282615 or spellId == 287554 then
 		warnPetrifyEnded:Show()
 		warnPetrifyEnded:Play("pchange")
+		--Horde
 		--"<68.97 22:37:20> [CLEU] SPELL_AURA_REMOVED#Creature-0-3133-1-14200-144946-00001081D1#Ivus the Forest Lord#Creature-0-3133-1-14200-144946-00001081D1#Ivus the Forest Lord#282615#Petrify#BUFF#nil", -- [1876]
 		--"<85.15 22:37:36> [CLEU] SPELL_CAST_START#Creature-0-3133-1-14200-144946-00001081D1#Ivus the Forest Lord##nil#282463#Shockwave#nil#nil", -- [2224]
 		--"<91.25 22:37:42> [CLEU] SPELL_CAST_START#Creature-0-3133-1-14200-144946-00001081D1#Ivus the Forest Lord##nil#282404#Frost Breath#nil#nil", -- [2367]
 		--"<97.46 22:37:48> [CLEU] SPELL_CAST_START#Creature-0-3133-1-14200-144946-00001081D1#Ivus the Forest Lord##nil#282486#Lunar Strike#nil#nil", -- [2556]
-		--timerShockwaveCD:Start(16.1)
-		--timerBreathCD:Start(22.2)
-		--timerGroundSpellCD:Start(28.4)
+		--Alliance
+		--"<72.32 15:24:21> [CLEU] SPELL_AURA_REMOVED#Creature-0-3888-1-1949-148295-0000194E89#Ivus the Decayed#Creature-0-3888-1-1949-148295-0000194E89#Ivus the Decayed#287554#Petrify#BUFF#nil"
+		--"<88.78 15:24:37> [CLEU] SPELL_CAST_START#Creature-0-3888-1-1949-148295-0000194E89#Ivus the Decayed##nil#282463#Shockwave#nil#nil", -- [1152]
+		--"<94.82 15:24:43> [CLEU] SPELL_CAST_START#Creature-0-3888-1-1949-148295-0000194E89#Ivus the Decayed##nil#287537#Plague Breath#nil#nil", -- [1370]
+		--"<100.85 15:24:49> [CLEU] SPELL_CAST_START#Creature-0-3888-1-1949-148295-0000194E89#Ivus the Decayed##nil#287549#Fungal Bloom#nil#nil", -- [1584]
+		timerShockwaveCD:Start(16.1)
+		timerBreathCD:Start(22.2)
+		timerGroundSpellCD:Start(28.4)
 	end
 end
-
---[[
-function mod:UNIT_DIED(args)
-	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 144998 or cid == 144876 then--Death Specter/Apetagonizer 3000
-		castsPerGUID[args.destGUID] = nil
-	end
-end
-
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	--Backup add spawn triggers in case CLEU stuff gets purged
-	if spellId == 286450 or spellId == 282082 then
-
-	end
-end
---]]
