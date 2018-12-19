@@ -1,0 +1,33 @@
+## Interface: 80100
+## X-Min-Interface: 80100
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Battle of Dazar'alor|r
+## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0다자알로 전투|r
+## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0达萨罗之战|r
+## Author: MysticalOS
+## LoadOnDemand: 1
+## RequiredDeps: DBM-Core
+## SavedVariables: DBMZuldazarRaid_AllSavedVars
+## SavedVariablesPerCharacter: DBMZuldazarRaid_SavedStats
+## X-DBM-Mod: 1
+## X-DBM-Mod-Type: RAID
+## X-DBM-Mod-Category: BFA
+## X-DBM-Mod-Has-Mythic : 1
+## X-DBM-Mod-SubCategories: Shared,Alliance,Horde
+## X-DBM-Mod-SubCategories-koKR: 공통,얼라이언스,호드
+## X-DBM-Mod-Sort: 406
+## X-DBM-Mod-MapID: 2070
+## X-DBM-Mod-MinCoreRevision: 17286
+## X-DBM-Mod-MinExpansion: 7
+localization.en.lua
+localization.kr.lua
+localization.cn.lua
+ChampionofLight.lua
+JadefireMasters.lua
+Grong.lua
+Opulence.lua
+ConclaveoftheChosen.lua
+Rastakhan.lua
+Mekkatorque.lua
+StormwallBlockade.lua
+Jaina.lua
+ZuldazarRaidTrash.lua
