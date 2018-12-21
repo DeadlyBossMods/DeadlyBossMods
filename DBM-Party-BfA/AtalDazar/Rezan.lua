@@ -15,8 +15,6 @@ mod:RegisterEventsInCombat(
 	"CHAT_MSG_RAID_BOSS_EMOTE"
 )
 
---TODO, relog fight, when logging fight doesn't cause client to crash, then use real timers not AI timers
---TODO, try to warn pursuit faster is possible
 local warnPursuit				= mod:NewTargetAnnounce(257407, 2)
 
 local specWarnTeeth				= mod:NewSpecialWarningDefensive(255434, "Tank", nil, nil, 1, 2)
