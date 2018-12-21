@@ -11,8 +11,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 255577",
 	"SPELL_CAST_SUCCESS 255579 255591",
-	"SPELL_AURA_APPLIED 255579",
-	"SPELL_AURA_REMOVED 255579"
+	"SPELL_AURA_APPLIED 255579"
 )
 
 --ability.id = 255577 and type = "begincast" or ability.id = 255579 and type = "cast" or ability.id = 255591
@@ -60,6 +59,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if spellId == 255579 then
 		specWarnClaws:Show()
 		specWarnClaws:Play("defensive")
+		timerGildedClawsCD:Start()
 	elseif spellId == 255591 then
 		warnMoltenGold:Show()
 		timerMoltenGoldCD:Start()
@@ -71,12 +71,5 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 255579 and not args:IsDestTypePlayer() then
 		specWarnClawsDispel:Show(args.destName)
 		specWarnClawsDispel:Play("dispelboss")
-	end
-end
-
-function mod:SPELL_AURA_REMOVED(args)
-	local spellId = args.spellId
-	if spellId == 255579 then
-		timerGildedClawsCD:Start()
 	end
 end
