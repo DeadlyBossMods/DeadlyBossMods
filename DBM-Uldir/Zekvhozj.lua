@@ -4,7 +4,6 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(134445)--Zek'vhozj, 134503/qiraji-warrior
 mod:SetEncounterID(2136)
---mod:DisableESCombatDetection()
 mod:SetZone()
 mod:SetUsedIcons(1, 2, 3, 6, 7, 8)
 mod:SetHotfixNoticeRev(17776)
@@ -31,11 +30,9 @@ mod:RegisterEventsInCombat(
  or (ability.id = 267180 or ability.id = 270620) and type = "begincast"
 --]]
 local warnPhase							= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
---local warnXorothPortal					= mod:NewSpellAnnounce(244318, 2, nil, nil, nil, nil, nil, 7)
 local warnVoidLash						= mod:NewStackAnnounce(265264, 2, nil, "Tank")
 --Stage One: Chaos
 local warnEyeBeam						= mod:NewTargetCountAnnounce(264382, 2, nil, nil, nil, nil, nil, nil, true)
---local warnFixate						= mod:NewTargetAnnounce(264219, 2)
 --Stage Two: Deception
 local warnRoilingDeceit					= mod:NewTargetCountAnnounce(265360, 4, nil, nil, nil, nil, nil, nil, true)
 local warnCasterAddsRemaining			= mod:NewAddsLeftAnnounce("ej18397", 2, 31700)
@@ -48,12 +45,10 @@ local specWarnSurgingDarkness			= mod:NewSpecialWarningDodge(265451, nil, nil, n
 local specWarnMightofVoid				= mod:NewSpecialWarningDefensive(267312, nil, nil, nil, 1, 2)
 local specWarnShatter					= mod:NewSpecialWarningTaunt(265237, nil, nil, nil, 1, 2)
 local specWarnAdds						= mod:NewSpecialWarningAdds(31700, nil, nil, nil, 1, 2)--Generic Warning only used on Mythic
---local specWarnGTFO					= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 8)
 --Stage One: Chaos
 local specWarnEyeBeamSoon				= mod:NewSpecialWarningSoon(264382, nil, nil, nil, 1, 2)
 local specWarnEyeBeam					= mod:NewSpecialWarningMoveAwayCount(264382, nil, nil, 2, 3, 2)
 local yellEyeBeam						= mod:NewCountYell(264382)
---local specWarnFixate					= mod:NewSpecialWarningRun(264219, nil, nil, nil, 4, 2)
 --Stage Two: Deception
 local specWarnRoilingDeceit				= mod:NewSpecialWarningMoveTo(265360, nil, nil, nil, 3, 7)
 local yellRoilingDeceit					= mod:NewCountYell(265360)
@@ -85,6 +80,7 @@ local timerOrbLands						= mod:NewTimer(45, "timerOrbLands", 267239, nil, nil, 5
 
 local countdownSurgingDarkness			= mod:NewCountdown(82.8, 265451, true, nil, 3)
 local countdownMightofVoid				= mod:NewCountdown("Alt37", 267312, "Tank", nil, 3)
+local countdownEyeBeam					= mod:NewCountdown("AltTwo37", 264382, "-Tank", nil, 5)
 
 mod:AddRangeFrameOption(6, 264382)
 mod:AddBoolOption("EarlyTankSwap", false)
@@ -138,6 +134,7 @@ function mod:OnCombatStart(delay)
 	timerMightofVoidCD:Start(15-delay)
 	countdownMightofVoid:Start(15-delay)
 	timerEyeBeamCD:Start(52-delay)--52-54
+	countdownEyeBeam:Start(52-delay)
 	if self:IsLFR() then
 		timerSurgingDarknessCD:Start(41-delay)--Custom for LFR
 		countdownSurgingDarkness:Start(41)--Custom for LFR
@@ -177,9 +174,6 @@ function mod:SPELL_CAST_START(args)
 		specWarnOrbOfCorruption:Show(1)
 		specWarnOrbOfCorruption:Play("161612")--catch balls
 		timerOrbLands:Start(8, 1)
-		--if not self:IsMythic() then--Didn't see cast on mythic?
-			--timerOrbofCorruptionCD:Start(50, self.vb.orbCount+1)
-		--end
 	elseif spellId == 270620 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnEntropicBlast:Show(args.sourceName)
 		specWarnEntropicBlast:Play("kickcast")
@@ -210,8 +204,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 			specWarnEyeBeam:Show(self.vb.eyeCount)
 			specWarnEyeBeam:Play("runout")
 			yellEyeBeam:Yell(self.vb.eyeCount)
---		else
---			warnEyeBeam:Show(args.destName)
 		end
 		if self.vb.eyeCount == 3 and self.Options.RangeFrame then
 			DBM.RangeCheck:Hide()
@@ -237,6 +229,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			if not self:IsMythic() then
 				timerQirajiWarriorCD:Stop()
 				timerEyeBeamCD:Stop()
+				countdownEyeBeam:Cancel()
 				if not self:IsLFR() then
 					timerAnubarCasterCD:Start(20.5)
 				end
@@ -277,8 +270,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnRoilingDeceit:Play("runtoedge")
 			yellRoilingDeceit:Yell(self.vb.roilingCount)
 			yellRoilingDeceitFades:Countdown(12)
---		else
---			warnRoilingDeceit:Show(args.destName)
 		end
 	elseif spellId == 265662 then
 		if self:AntiSpam(5, 7) then
@@ -320,14 +311,9 @@ end
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 134503 then--Qiraji Warrior
-
-	elseif cid == 135083 then--Guardian of Yogg-Saron
-	
-	elseif cid == 135824 then--Anub'ar Voidweaver
+	if cid == 135824 then--Anub'ar Voidweaver
 		self.vb.casterAddsRemaining = self.vb.casterAddsRemaining - 1
 		warnCasterAddsRemaining:Show(self.vb.casterAddsRemaining)
-		--timerVoidBoltCD:Stop(args.destGUID)
 	end
 end
 
@@ -348,10 +334,13 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		--here because this spell ID fires at beginning of each set ONCE
 		if self:IsMythic() then
 			timerEyeBeamCD:Schedule(6, 60)
+			countdownEyeBeam:Start(66)
 		elseif self:IsLFR() then
 			timerEyeBeamCD:Schedule(6, 50)
+			countdownEyeBeam:Start(56)
 		else
 			timerEyeBeamCD:Schedule(6, 40)
+			countdownEyeBeam:Start(46)
 		end
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(6)

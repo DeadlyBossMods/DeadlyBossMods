@@ -5,7 +5,6 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(137119)--Taloc
 mod:SetEncounterID(2144)
 mod:SetZone()
---mod:SetUsedIcons(1, 2, 3)
 --mod:SetHotfixNoticeRev(16950)
 --mod:SetMinSyncRevision(16950)
 mod.respawnTime = 29
@@ -16,7 +15,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 271296 271728 271895",
 	"SPELL_CAST_SUCCESS 271224 275205 278888",
 	"SPELL_AURA_APPLIED 271224 271965 275270 275189 275205 278888",
-	"SPELL_AURA_REMOVED 271225 271965 275189 275205 271224 278888",
+	"SPELL_AURA_REMOVED 271965 275189 275205 271224 278888",
 	"SPELL_PERIODIC_DAMAGE 270290",
 	"SPELL_PERIODIC_MISSED 270290"
 )
@@ -63,11 +62,7 @@ local timerPoweredDown					= mod:NewBuffActiveTimer(88.6, 271965, nil, nil, nil,
 
 local countdownCudgelofGore				= mod:NewCountdown(58, 271296)
 local countdownEnlargedHeart			= mod:NewCountdown("Alt60", 275205, true, 2)
---local countdownFelstormBarrage			= mod:NewCountdown("AltTwo32", 244000, nil, nil, 3)
 
-mod:AddSetIconOption("SetIconPlasmaDischarge", 271225, true)
---mod:AddRangeFrameOption("8/10")
---mod:AddBoolOption("ShowAllPlatforms", false)
 mod:AddInfoFrameOption(275270, true)
 
 local bloodStorm = DBM:GetSpellInfo(270290)
@@ -106,9 +101,6 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnCombatEnd()
---	if self.Options.RangeFrame then
---		DBM.RangeCheck:Hide()
---	end
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
 	end
@@ -230,13 +222,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	end
 end
---mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
  
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
-	if spellId == 271225 then--Used later with icon feature
-
-	elseif spellId == 271965 then
+	if spellId == 271965 then
 		ignoreGTFO = false
 		self.vb.plasmaCast = 0
 		self.vb.cudgelCount = 0
@@ -275,12 +264,3 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spell
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
-
---[[
-function mod:UNIT_DIED(args)
-	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 124396 then
-
-	end
-end
---]]

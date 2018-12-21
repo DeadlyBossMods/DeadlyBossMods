@@ -17,12 +17,10 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS 265178 265212 266459 265209",
 	"SPELL_AURA_APPLIED 265178 265129 265212 265127",
 	"SPELL_AURA_APPLIED_DOSE 265178 265127",
-	"SPELL_AURA_REMOVED 265178 265129 265212 265217 265127",
+	"SPELL_AURA_REMOVED 265129 265212 265217 265127",
 	"SPELL_SUMMON 275055",
 	"RAID_BOSS_WHISPER",
 	"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
---	"SPELL_PERIODIC_DAMAGE",
---	"SPELL_PERIODIC_MISSED",
 	"UNIT_DIED"
 )
 
@@ -59,7 +57,6 @@ local yellTerminalEruption					= mod:NewYell(274989, nil, nil, nil, "YELL")--Myt
 local specWarnLingeringInfection			= mod:NewSpecialWarningStack(265127, nil, 5, nil, nil, 1, 6)
 local specWarnLiquefy						= mod:NewSpecialWarningSpell(265217, nil, nil, nil, 3, 2)
 local specWarnTerminalEruption				= mod:NewSpecialWarningSpell(274989, nil, nil, nil, 2, 2)
---local specWarnGTFO						= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 8)
 
 --mod:AddTimerLine(Nexus)
 local timerEvolvingAfflictionCD				= mod:NewCDTimer(8.5, 265178, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
@@ -320,7 +317,6 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 265217 then
 		specWarnLiquefy:Show()
 		specWarnLiquefy:Play("phasechange")
-		--self.vb.ContagionCount = 0
 		self.vb.plagueBombCount = 0
 		timerGestateCD:Stop()
 		countdownGestate:Cancel()
@@ -458,12 +454,10 @@ function mod:SPELL_AURA_APPLIED(args)
 				playerHasTwelve = true
 				specWarnLingeringInfection:Show(amount)
 				specWarnLingeringInfection:Play("stackhigh")
-				--yellEngorgedParasite:Yell()
 			elseif not playerHasTwentyFive and amount >= 25 then
 				playerHasTwentyFive = true
 				specWarnLingeringInfection:Show(amount)
 				specWarnLingeringInfection:Play("stackhigh")
-				--yellTerminalEruption:Yell()
 			end
 		end
 		lingeringTable[args.destName] = args.amount or 1
@@ -473,11 +467,7 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
-	if spellId == 265178 then
-		if args:IsPlayer() then
-			--yellEvolvingAffliction:Cancel()
-		end
-	elseif spellId == 265129 then
+	if spellId == 265129 then
 		local oneRemoved = false
 		for i = 1, 4 do
 			if vectorTargets[i] and vectorTargets[i] == args.destName then--Found assignment matching this units name
@@ -513,8 +503,6 @@ function mod:SPELL_AURA_REMOVED(args)
 			end
 		end
 	elseif spellId == 265212 then
-		--specWarnAmalgam:Show()
-		--specWarnAmalgam:Play("killmob")
 		if args:IsPlayer() then
 			if self.Options.RangeFrame then
 				if playerHasSix then
@@ -588,19 +576,3 @@ function mod:UNIT_DIED(args)
 		castsPerGUID[args.destGUID] = nil
 	end
 end
-
---[[
-function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
-	if spellId == 228007 and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
-		specWarnGTFO:Show()
-		specWarnGTFO:Play("watchfeet")
-	end
-end
-mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
-
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 265291 then--Liquefy Cancel Cosmetic
-
-	end
-end
---]]
