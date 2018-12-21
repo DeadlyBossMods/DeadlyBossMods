@@ -6,7 +6,6 @@ mod:SetCreatureID(138967)
 mod:SetEncounterID(2145)
 mod:DisableESCombatDetection()--ES fires moment you throw out CC, so it can't be trusted for combatstart
 mod:SetZone()
---mod:SetBossHPInfoToHighest()
 mod:SetUsedIcons(1, 2, 8)
 mod:SetHotfixNoticeRev(17775)
 --mod:SetMinSyncRevision(16950)
@@ -26,7 +25,6 @@ mod:RegisterEventsInCombat(
 
 --TODO, check Locus of Corruption trigger for bugs after adding unneeded antispam to fix an impossible bug
 --TODO, minion of zul fixate detection?
---TODO, maybe switch warning for minions of zul, or detectable spawns, show on a custom infoframe number of adds up (each type)
 --[[
 (ability.id = 273889 or ability.id = 274098 or ability.id = 274119) and type = "begincast"
  or (ability.id = 274358 or ability.id = 274168 or ability.id = 273365 or ability.id = 271640 or ability.id = 273360) and type = "cast"
@@ -34,7 +32,6 @@ mod:RegisterEventsInCombat(
  or ability.id = 274271 and type = "applydebuff"
  or (ability.id = 273316 or ability.id = 273451) and type = "begincast"
 --]]
---local warnXorothPortal				= mod:NewSpellAnnounce(244318, 2, nil, nil, nil, nil, nil, 7)
 --Stage One: The Forces of Blood
 local warnPoolofDarkness				= mod:NewCountAnnounce(273361, 4)--Generic warning since you want to be aware of it but not emphesized unless you're an assigned soaker
 local warnActiveDecay					= mod:NewTargetNoFilterAnnounce(276434, 1)
@@ -60,7 +57,6 @@ local specWarnMinionofZul				= mod:NewSpecialWarningSwitch("ej18530", "MagicDisp
 ----Forces of Blood
 local specWarnCongealBlood				= mod:NewSpecialWarningSwitch(273451, "Dps", nil, nil, 3, 2)
 local specWarnBloodshard				= mod:NewSpecialWarningInterrupt(273350, false, nil, 4, 1, 2)--Spam cast, so opt in, not opt out
---local specWarnGTFO					= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 8)
 --Stage Two: Zul, Awakened
 local specWarnRupturingBlood			= mod:NewSpecialWarningStack(274358, nil, 3, nil, nil, 1, 6)
 local specWarnRupturingBloodTaunt		= mod:NewSpecialWarningTaunt(274358, nil, nil, nil, 1, 2)
@@ -84,15 +80,13 @@ mod:AddTimerLine(DBM:EJ_GetSectionInfo(18550))
 local timerRupturingBloodCD				= mod:NewCDTimer(6.1, 274358, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerDeathwishCD					= mod:NewNextCountTimer(27.9, 274271, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON..DBM_CORE_MAGIC_ICON)
 
-
 --local berserkTimer					= mod:NewBerserkTimer(600)
 
---local countdownCollapsingWorld			= mod:NewCountdown(50, 243983, true, 3, 3)
---local countdownRupturingBlood				= mod:NewCountdown("Alt12", 244016, false, 2, 3)
---local countdownFelstormBarrage			= mod:NewCountdown("AltTwo32", 244000, nil, nil, 3)
+local countdownDarkRevolation			= mod:NewCountdown(55, 273365, "-Tank")
+local countdownPoolofDarkness			= mod:NewCountdown("Alt12", 273361, false, nil, 4)
+--P2
+local countdownDeathwish				= mod:NewCountdown(27.9, 274271, "-Tank")
 
---mod:AddSetIconOption("SetIconGift", 255594, true)
---mod:AddRangeFrameOption("8/10")
 mod:AddInfoFrameOption(274195, true)
 mod:AddNamePlateOption("NPAuraOnPresence", 276093)
 mod:AddNamePlateOption("NPAuraOnThrumming", 273288)
@@ -183,7 +177,9 @@ function mod:OnCombatStart(delay)
 	self.vb.deathwishCount = 0
 	self.vb.activeDecay = nil
 	timerPoolofDarknessCD:Start(20.5-delay, 1)
+	countdownPoolofDarkness:Start(20.5-delay)
 	timerDarkRevolationCD:Start(30-delay, 1)
+	countdownDarkRevolation:Start(30-delay)
 	timerCallofCrawgCD:Start(34.9, 1)--35-45
 	timerCallofHexerCD:Start(50.5, 1)--50.5-54
 	timerCallofCrusherCD:Start(70, 1)--70-73
@@ -241,9 +237,6 @@ end
 
 function mod:OnCombatEnd()
 	self:UnregisterShortTermEvents()
---	if self.Options.RangeFrame then
---		DBM.RangeCheck:Hide()
---	end
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
 	end
@@ -275,17 +268,22 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnPhase2:Show()
 		warnPhase2:Play("ptwo")
 		timerDarkRevolationCD:Stop()
+		countdownDarkRevolation:Cancel()
 		timerPoolofDarknessCD:Stop()
+		countdownPoolofDarkness:Cancel()
 		timerCallofCrawgCD:Stop()
 		timerCallofHexerCD:Stop()
 		timerCallofCrusherCD:Stop()
 		timerRupturingBloodCD:Start(6.5)
 		timerPoolofDarknessCD:Start(15, self.vb.poolCount+1)--Still used in P2
+		countdownPoolofDarkness:Start(15)
 		timerDeathwishCD:Start(23, 1)
+		countdownDeathwish:Start(23)
 	elseif spellId == 273365 or spellId == 271640 then--Two versions of debuff, one that spawns an add and one that does not (so probably LFR/normal version vs heroic/mythic version)
 		self.vb.darkRevCount = self.vb.darkRevCount + 1
 		warnDarkRevCount:Show(self.vb.darkRevCount)
-		timerDarkRevolationCD:Start(nil, self.vb.darkRevCount+1)
+		timerDarkRevolationCD:Start(55, self.vb.darkRevCount+1)
+		countdownDarkRevolation:Start(55)
 	elseif spellId == 273889 then--Bloodthirsty Crawg
 		self.vb.CrawgSpawnCount = self.vb.CrawgSpawnCount + 1
 		specWarnCallofCrawgSoon:Show(self.vb.CrawgSpawnCount)
@@ -491,16 +489,6 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
---[[
-function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
-	if spellId == 228007 and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
-		specWarnGTFO:Show()
-		specWarnGTFO:Play("watchfeet")
-	end
-end
-mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
---]]
-
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 139185 then--minion-of-zul
@@ -548,7 +536,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 274315 then--Deathwish
 		self.vb.deathwishCount = self.vb.deathwishCount + 1
 		warnDeathwish:Show(self.vb.deathwishCount)
-		timerDeathwishCD:Start(nil, self.vb.deathwishCount+1)
+		timerDeathwishCD:Start(27.9, self.vb.deathwishCount+1)
+		countdownDeathwish:Start(27.9)
 	elseif spellId == 273361 then--Pool of Darkness
 		self.vb.poolCount = self.vb.poolCount + 1
 		if self.Options.SpecWarn273361count then
@@ -559,8 +548,10 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		end
 		if self.vb.phase == 2 then
 			timerPoolofDarknessCD:Start(15.5, self.vb.poolCount+1)
+			countdownPoolofDarkness:Start(15.5)
 		else
 			timerPoolofDarknessCD:Start(30.5, self.vb.poolCount+1)
+			countdownPoolofDarkness:Start(30.5)
 		end
 	end
 end

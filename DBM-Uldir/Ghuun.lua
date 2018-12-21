@@ -5,7 +5,6 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(132998)
 mod:SetEncounterID(2122)
 mod:SetZone()
---mod:SetBossHPInfoToHighest()
 mod:SetUsedIcons(8, 7, 6, 5, 4, 3, 2, 1)
 mod:SetHotfixNoticeRev(17906)
 mod:SetMinSyncRevision(18056)
@@ -21,17 +20,12 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_REMOVED 268074 267813 277079 272506 274262 263235 263372 277007 273405 267409 263436",
 	"SPELL_PERIODIC_DAMAGE 270287",
 	"SPELL_PERIODIC_MISSED 270287",
---	"SPELL_DAMAGE 263326",
---	"SPELL_MISSED 263326",
 	"UNIT_DIED",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
 	"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, add timers for host, when ORIGIN cast can be detected (not spread/fuckup casts)
---TODO, cast event for Matrix Surge and possible aoe warning (with throttle)
---TODO, how does http://bfa.wowhead.com/spell=268174/tendrils-of-corruption work? warning/yell? is it like yogg squeeze?
 --[[
 (ability.id = 267509 or ability.id = 273406 or ability.id = 273405 or ability.id = 267579 or ability.id = 263482 or ability.id = 263503 or ability.id = 275160 or ability.id = 269455) and type = "begincast"
  or (ability.id = 272505 or ability.id = 275756 or ability.id = 263235 or ability.id = 263482 or ability.id = 263503 or ability.id = 263373 or ability.id = 270373 or ability.id = 270428 or ability.id = 276839 or ability.id = 274582 or ability.id = 276994) and type = "cast"
@@ -117,7 +111,6 @@ local countdownMalignantGrowth			= mod:NewCountdown("Alt12", 274582, true, nil, 
 local countdownGazeofGhuun				= mod:NewCountdown("AltTwo32", 275160, nil, nil, 3)
 
 mod:AddRangeFrameOption(5, 270428)
---mod:AddBoolOption("ShowAllPlatforms", false)
 mod:AddInfoFrameOption(nil, true)
 mod:AddNamePlateOption("NPAuraOnFixate", 268074)
 mod:AddNamePlateOption("NPAuraOnUnstoppable", 275204)
@@ -524,9 +517,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 		specWarnMalignantGrowth:Play("watchstep")
 		timerMalignantGrowthCD:Start()--25.6
 		countdownMalignantGrowth:Start(25.6)
-	--elseif spellId == 263416 then--Throw Power Matrix
-		--self:Unschedule(checkThrowFail)
-		--self:Schedule(4, checkThrowFail, self)
 	end
 end
 
@@ -677,10 +667,6 @@ function mod:SPELL_AURA_REMOVED(args)
 			DBM.Nameplate:Hide(true, args.sourceGUID, spellId)
 		end
 	elseif spellId == 267813 then
---		if self:AntiSpam(5, 5) and not DBM:UnitDebuff("player", 267813) then
-			--specWarnSpawnofGhuun:Show()
-			--specWarnSpawnofGhuun:Play("killmob")
---		end
 		if self.Options.SetIconOnBloodHost and not self:IsLFR() then
 			self:SetIcon(args.destName, 0)
 		end
@@ -746,8 +732,6 @@ function mod:UNIT_DIED(args)
 		timerBurrowCD:Stop(args.destGUID)
 	elseif cid == 134010 then--Gibbering Horror
 		timerMindNumbingChatterCD:Stop(args.destGUID)
---	elseif cid == 136461 then--spawn of ghuun
---	elseif cid == 138531 or cid == 134634 then--Cyclopean Terror (P1, P2)
 	end
 end
 
