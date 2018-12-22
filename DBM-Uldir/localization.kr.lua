@@ -59,8 +59,8 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(2166)
 
 L:SetOptionLocalization({
-	ShowHighestFirst3	 =	"중첩이 높은 순서대로 정보 프레임에 잔존하는 감염 대상자 정렬 (중첩 낮은순 대신)",
-	ShowOnlyParty		 =	"내 파티원의 잔존하는 감염 중첩만 보기",
+	ShowHighestFirst3	 =	"중첩이 높은 순서대로 정보 창에 잔존하는 감염 대상자를 정렬합니다. (중첩 낮은순 대신) 파티원만 보기 설정을 껐을때만 적용됩니다.",
+	ShowOnlyParty		 =	"내 파티원의 잔존하는 감염 중첩만 표시합니다. 정보 창이 항상 파티원 순서대로 정렬됩니다.",
 	SetIconsRegardless	 =	"빅윅 사용자 승급 여부에 관계없이 공격대 징표 설정 기능 사용 (고급 사용자용)"
 })
 
