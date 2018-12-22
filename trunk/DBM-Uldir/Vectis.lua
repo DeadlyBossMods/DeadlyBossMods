@@ -172,14 +172,14 @@ do
 				else
 					uId = "party"..i
 				end
-				local unitName = UnitName(uId)
+				local unitName = DBM:GetUnitFullName(uId)
 				local count = lingeringTable[unitName] or 0
 				addLine(unitName, count)--Sorting will be group order instead of lingering stack count so we don't do temp sorting here
 			end
 		else
 			--Show lingering and vectors combined for entire raid
 			for uId in DBM:GetGroupMembers() do
-				local unitName = UnitName(uId)
+				local unitName = DBM:GetUnitFullName(uId)
 				local count = lingeringTable[unitName] or 0
 				tempLines[unitName] = count
 				tempLinesSorted[#tempLinesSorted + 1] = unitName
@@ -209,7 +209,7 @@ do
 					if expireTime then
 						local remaining = floor(expireTime-GetTime())
 						--Inserts vector numbers unit has and remaining debuff along with lingering stacks even if it's 0 stacks
-						addLine(hasVector.."-"..name, tempLines[name].."-"..remaining)--Insert numeric into name so a person who has more than two vectors will show both of them AND not conflict with lingering entries
+						addLine(hasVector.."-"..name, tempLines[name].."-|cFF088A08"..remaining.."|r")--Insert numeric into name so a person who has more than two vectors will show both of them AND not conflict with lingering entries
 					end
 				else
 					--No vector on this target, just insert name and lingering count
@@ -243,7 +243,7 @@ function mod:OnCombatStart(delay)
 	countdownLiquefy:Start(90.8-delay)
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(OVERVIEW)
-		DBM.InfoFrame:Show(self:IsHard() and 30 or 8, "function", updateInfoFrame, false, true)--Default size to show all vectors and equal number of lingering
+		DBM.InfoFrame:Show(self:IsLFR() and 5 or 30, "function", updateInfoFrame, false, true)--Default size to show all vectors and equal number of lingering
 	end
 	ModCheck(self)
 end
