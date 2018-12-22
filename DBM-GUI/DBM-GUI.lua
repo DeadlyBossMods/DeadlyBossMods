@@ -3147,13 +3147,13 @@ local function CreateOptionsMenu()
 		spamPTArea:CreateCheckButton(L.DontShowPTNoID, true, nil, "DontShowPTNoID")
 		spamPTArea:CreateCheckButton(L.DontShowPT, true, nil, "DontShowPT2")
 		spamPTArea:CreateCheckButton(L.DontShowPTText, true, nil, "DontShowPTText")
-		spamPTArea:CreateCheckButton(L.DontPlayPTCountdown, true, nil, "DontPlayPTCountdown")
-		local SPTCDT = spamPTArea:CreateCheckButton(L.DontShowPTCountdownText, true, nil, "DontShowPTCountdownText")
+		spamPTArea:CreateCheckButton(L.DontShowPTCountdownText, true, nil, "DontShowPTCountdownText")
+		local SPTCDA = spamPTArea:CreateCheckButton(L.DontPlayPTCountdown, true, nil, "DontPlayPTCountdown")
 
-		local PTSlider = spamPTArea:CreateSlider(L.PT_Threshold, 3, 30, 1, 300)   -- (text , min_value , max_value , step , width)
-		PTSlider:SetPoint('BOTTOMLEFT', SPTCDT, "BOTTOMLEFT", 80, -40)--Position based on slider, text anchored to slider. English has large text, so must move slider to middle :\
-		PTSlider:HookScript("OnShow", function(self) self:SetValue(mfloor(DBM.Options.PTCountThreshold)) end)
-		PTSlider:HookScript("OnValueChanged", function(self) DBM.Options.PTCountThreshold = mfloor(self:GetValue()) end)
+		local PTSlider = spamPTArea:CreateSlider(L.PT_Threshold, 1, 10, 1, 300)   -- (text , min_value , max_value , step , width)
+		PTSlider:SetPoint('BOTTOMLEFT', SPTCDA, "BOTTOMLEFT", 80, -40)--Position based on slider, text anchored to slider. English has large text, so must move slider to middle :\
+		PTSlider:HookScript("OnShow", function(self) self:SetValue(mfloor(DBM.Options.PTCountThreshold2)) end)
+		PTSlider:HookScript("OnValueChanged", function(self) DBM.Options.PTCountThreshold2 = mfloor(self:GetValue()) end)
 
 		spamPTArea:AutoSetDimension()
 		spamRestoreArea:AutoSetDimension()
