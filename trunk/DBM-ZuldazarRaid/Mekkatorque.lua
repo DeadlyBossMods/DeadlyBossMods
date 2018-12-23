@@ -15,7 +15,7 @@ mod.respawnTime = 29
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 282205 287952 287929 282153 288410 287751 287797",
+	"SPELL_CAST_START 282205 287952 287929 282153 288410 287751 287797 287757",
 	"SPELL_CAST_SUCCESS 287757 286693 288041 288049",
 	"SPELL_AURA_APPLIED 287757 287167 284168 289023 286051",
 --	"SPELL_AURA_APPLIED_DOSE",
@@ -45,8 +45,8 @@ local specWarnBusterCannon				= mod:NewSpecialWarningDodge(282153, nil, nil, nil
 local specWarnBlastOff					= mod:NewSpecialWarningRun(282205, "Melee", nil, nil, 4, 2)
 --local specWarnCrashDown					= mod:NewSpecialWarningDodge(287797, nil, nil, nil, 2, 2)
 local specWarnGigaVoltCharge			= mod:NewSpecialWarningYou(286646, nil, nil, nil, 1, 2)
-local yellGigaVoltCharge				= mod:NewYell(286646)
-local yellGigaVoltChargeFades			= mod:NewFadesYell(286646)
+local yellGigaVoltCharge				= mod:NewPosYell(286646)
+local yellGigaVoltChargeFades			= mod:NewIconFadesYell(286646)
 local specWarnGigaVoltChargeFading		= mod:NewSpecialWarningMoveTo(286646, nil, nil, nil, 3, 2)
 local specWarnGigaVoltChargeTaunt		= mod:NewSpecialWarningTaunt(286646, nil, nil, nil, 1, 2)
 local specWarnWormholeGenerator 		= mod:NewSpecialWarningSpell(287952, nil, nil, nil, 2, 5)
@@ -66,9 +66,9 @@ local timerBusterCannonCD				= mod:NewCDCountTimer(25, 282153, nil, nil, nil, 3)
 local timerBlastOffCD					= mod:NewCDCountTimer(55, 282205, nil, nil, nil, 2)
 local timerCrashDownCD					= mod:NewCastTimer(4.5, 287797, nil, nil, nil, 3)
 local timerGigaVoltChargeCD				= mod:NewCDCountTimer(14.1, 286646, nil, nil, nil, 3, nil, DBM_CORE_TANK_ICON)
-local timerWormholeGeneratorCD		= mod:NewCDCountTimer(55, 287952, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
+local timerWormholeGeneratorCD			= mod:NewCDCountTimer(55, 287952, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
 local timerDeploySparkBotCD				= mod:NewCDCountTimer(55, 288410, nil, nil, nil, 1)
-local timerWorldEnlargerCD					= mod:NewCDCountTimer(55, 288049, nil, nil, nil, 3)
+local timerWorldEnlargerCD				= mod:NewCDCountTimer(55, 288049, nil, nil, nil, 3)
 --Intermission: Evasive Maneuvers!
 local timerIntermission					= mod:NewPhaseTimer(49.9)
 local timerExplodingSheepCD				= mod:NewCDCountTimer(55, 287929, nil, nil, nil, 3)
@@ -79,6 +79,7 @@ local timerExplodingSheepCD				= mod:NewCDCountTimer(55, 287929, nil, nil, nil, 
 --local countdownRupturingBlood				= mod:NewCountdown("Alt12", 244016, false, 2, 3)
 --local countdownFelstormBarrage			= mod:NewCountdown("AltTwo32", 244000, nil, nil, 3)
 
+mod:AddSetIconOption("SetIconGigaVolt", 286646, true)
 mod:AddSetIconOption("SetIconShrunk", 284168, true)
 --mod:AddRangeFrameOption("8/10")
 --mod:AddInfoFrameOption(258040, true)
@@ -86,13 +87,14 @@ mod:AddSetIconOption("SetIconShrunk", 284168, true)
 --mod:AddSetIconOption("SetIconDarkRev", 273365, true)
 
 mod.vb.phase = 1
-mod.vb.shrunkIcon = 0
+mod.vb.shrunkIcon = 8
 --Count variables for every timer, because stupid sequence mod
 mod.vb.botCount = 0
 mod.vb.cannonCount = 0
 mod.vb.blastOffcount = 0
 mod.vb.ripperCount = 0
 mod.vb.gigaCount = 0
+mod.vb.gigaIcon = 1
 mod.vb.shrinkCount = 0
 mod.vb.sheepCount = 0
 mod.vb.difficultyName = "None"
@@ -257,12 +259,13 @@ local explodingSheepTimers = {
 
 function mod:OnCombatStart(delay)
 	self.vb.phase = 1
-	self.vb.shrunkIcon = 0
+	self.vb.shrunkIcon = 8
 	self.vb.botCount = 0
 	self.vb.cannonCount = 0
 	self.vb.blastOffcount = 0
 	self.vb.ripperCount = 0
 	self.vb.gigaCount = 0
+	self.vb.gigaIcon = 1
 	self.vb.shrinkCount = 0
 	if self:IsMythic() then
 		self.vb.difficultyName = "mythic"
@@ -400,6 +403,8 @@ function mod:SPELL_CAST_START(args)
 		if self.vb.phase == 3 then
 			DBM:AddMsg("This Phase does not yet have any timers, please log fight with WCL advanced combat logging or transcriptor for best results and share logs with MysticalOS")
 		end
+	elseif spellId == 287757 then
+		self.vb.gigaIcon = 1
 	end
 end
 
@@ -413,7 +418,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		end
 	elseif spellId == 286693 or spellId == 288041 or spellId == 288049 then--288041 used in intermission first, 288049 second in intermission, 286693 outside intermission
 		self.vb.shrinkCount = self.vb.shrinkCount + 1
-		self.vb.shrunkIcon = 0
+		self.vb.shrunkIcon = 8
 		local timer = worldEnlargerTimers[self.vb.difficultyName][self.vb.phase][self.vb.shrinkCount+1]
 		if timer then
 			timerWorldEnlargerCD:Start(timer, self.vb.shrinkCount+1)
@@ -424,13 +429,14 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 287757 then--Or 283409 or 286646
+		local icon = self.vb.gigaIcon
 		if args:IsPlayer() then
 			specWarnGigaVoltCharge:Show()
 			specWarnGigaVoltCharge:Play("targetyou")
-			specWarnGigaVoltChargeFading:Schedule(10, DBM_CORE_BREAK_LOS)
+			specWarnGigaVoltChargeFading:Schedule(10, DBM_CORE_BREAK_LOS)--Or self:IconNumToTexture(icon)
 			specWarnGigaVoltChargeFading:ScheduleVoice(10, "findshelter")--TODO, more specific voice
-			yellGigaVoltCharge:Yell()
-			yellGigaVoltChargeFades:Countdown(15)
+			yellGigaVoltCharge:Yell(icon, icon, icon)
+			yellGigaVoltChargeFades:Countdown(15, nil, icon)
 		else
 			local uId = DBM:GetRaidUnitId(args.destName)
 			if self:IsTanking(uId) then
@@ -438,11 +444,14 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnGigaVoltChargeTaunt:Play("tauntboss")
 			end
 		end
+		if self.Options.SetIconGigaVolt then
+			self:SetIcon(args.destName, icon)
+		end
+		self.vb.gigaIcon = self.vb.gigaIcon - 1
 	elseif spellId == 287167 then
 		specWarnDiscombobulation:CombinedShow(0.3, args.destName)
 		specWarnDiscombobulation:ScheduleVoice(0.3, "helpdispel")
 	elseif spellId == 284168 then
-		self.vb.shrunkIcon = self.vb.shrunkIcon + 1
 		warnShrunk:CombinedShow(0.5, args.destName)
 		if args:IsPlayer() then
 			specWarnShrunk:Show()
@@ -452,6 +461,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.SetIconShrunk then
 			self:SetIcon(args.destName, self.vb.shrunkIcon)
 		end
+		self.vb.shrunkIcon = self.vb.shrunkIcon - 1
 	elseif spellId == 289023 then
 		if args:IsPlayer() then
 			specWarnEnormous:Show()
@@ -471,6 +481,9 @@ function mod:SPELL_AURA_REMOVED(args)
 			specWarnGigaVoltChargeFading:Cancel()
 			specWarnGigaVoltChargeFading:CancelVoice()
 			yellGigaVoltChargeFades:Cancel()
+		end
+		if self.Options.SetIconGigaVolt then
+			self:SetIcon(args.destName, 0)
 		end
 	elseif spellId == 284168 then
 		if self.Options.SetIconShrunk then
