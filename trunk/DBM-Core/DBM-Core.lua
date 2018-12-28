@@ -7132,9 +7132,10 @@ do
 end
 
 --To speed up creating new mods.
-function DBM:FindDungeonIDs(low, peak)
+function DBM:FindDungeonMapIDs(low, peak)
 	local start = low or 1
 	local range = peak or 3000
+	self:AddMsg("-----------------")
 	for i = start, range do
 		local dungeon = GetRealZoneText(i)
 		if dungeon and dungeon ~= "" then
@@ -7146,6 +7147,7 @@ end
 function DBM:FindInstanceIDs(low, peak)
 	local start = low or 1
 	local range = peak or 3000
+	self:AddMsg("-----------------")
 	for i = start, range do
 		local instance = EJ_GetInstanceInfo(i)
 		if instance then
@@ -7158,14 +7160,16 @@ end
 --/run DBM:FindEncounterIDs(1177)--Crucible of Storms
 --/run DBM:FindEncounterIDs(1176)--Zuldazar Raid
 --/run DBM:FindEncounterIDs(1001, 23)--Dungeon Template (mythic difficulty)
---/run DBM:FindEncounterIDs(instanceID, 1)--Classic Dungeons need diff 1 specified
---/run DBM:FindDungeonIDs(1, 300)--Find Classic Dungeon IDs
+--/run DBM:FindEncounterIDs(230, 1)--Classic Dungeons need diff 1 specified
+--/run DBM:FindDungeonMapIDs(1, 500)--Find Classic Dungeon Map IDs
+--/run DBM:FindInstanceIDs(1, 300)--Find Classic Dungeon Journal IDs
 function DBM:FindEncounterIDs(instanceID, diff)
 	if not instanceID then
 		self:AddMsg("Error: Function requires instanceID be provided")
 	end
 	if not diff then diff = 14 end--Default to "normal" in 6.0+ if diff arg not given.
 	EJ_SetDifficulty(diff)--Make sure it's set to right difficulty or it'll ignore mobs (ie ra-den if it's not set to heroic). Use user specified one as primary, with curernt zone difficulty as fallback
+	self:AddMsg("-----------------")
 	for i=1, 25 do
 		local name, _, encounterID = EJ_GetEncounterInfoByIndex(i, instanceID)
 		if name then
