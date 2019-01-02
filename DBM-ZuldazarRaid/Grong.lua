@@ -25,9 +25,9 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 282399 285994 282533 286435 282243 285660 281936",
-	"SPELL_CAST_SUCCESS 282543 282526 286450 282179 282247 282082",
+	"SPELL_CAST_SUCCESS 282543 282526 286450 282179 282247 282082 289292 285875 282083",
 	"SPELL_AURA_APPLIED 285671 285875 286434 285659",
---	"SPELL_AURA_APPLIED_DOSE",
+	"SPELL_AURA_APPLIED_DOSE 285875 285671",
 	"SPELL_AURA_REMOVED 286434 285659",
 	"SPELL_ENERGIZE 282533 282243",
 	"UNIT_DIED"
@@ -38,12 +38,14 @@ mod:RegisterEventsInCombat(
 (ability.id = 282399 or ability.id = 281936 or ability.id = 285994 or ability.id = 286435 or ability.id = 285660) and type = "begincast"
  or (ability.id = 282543 or ability.id = 282179 or ability.id = 282526 or ability.id = 282247 or ability.id = 286450 or ability.id = 282082) and type = "cast"
  or (ability.id = 282533 or ability.id = 282243) and type = "begincast"
+ --Tank Combo
+(ability.id = 285875 or ability.id = 286450 or ability.id = 282082 or ability.id = 282083 or ability.id = 289292) and type = "cast" or ability.id = 285671 and type = "applydebuff"
 --]]
 --TODO, detect Voodoo Blast targets and add runout?
 --TODO, add exploding soon and now warnings?
 --local warnXorothPortal				= mod:NewSpellAnnounce(244318, 2, nil, nil, nil, nil, nil, 7)
-local warnCrushed						= mod:NewYouAnnounce(285671, 3)
-local warnRendingBite					= mod:NewYouAnnounce(285875, 3)
+local warnCrushed						= mod:NewStackAnnounce(285671, 3, nil, "Tank")
+local warnRendingBite					= mod:NewStackAnnounce(285875, 2, nil, "Tank")
 local warnCore							= mod:NewTargetNoFilterAnnounce(coreSpellId, 2)
 --local warnRupturingBlood				= mod:NewStackAnnounce(274358, 2, nil, "Tank")
 
@@ -52,8 +54,9 @@ local specWarnSlam						= mod:NewSpecialWarningDodge(slamSpellId, nil, nil, nil,
 --local specWarnFerociousRoar				= mod:NewSpecialWarningSpell(285994, nil, nil, nil, 2, 2)
 local specWarnAdd						= mod:NewSpecialWarningSwitch(addSpawnId, "Dps", nil, nil, 1, 2)
 local specWarnAddInterrupt				= mod:NewSpecialWarningInterruptCount(addCastId, "HasInterrupt", nil, nil, 1, 2)
-local specWarnCrushedTaunt				= mod:NewSpecialWarningTaunt(285671, nil, nil, nil, 1, 2)
-local specWarnRendingBiteTaunt			= mod:NewSpecialWarningTaunt(285875, nil, nil, nil, 1, 2)
+local specWarnCrushedTaunt				= mod:NewSpecialWarningTaunt(285671, nil, nil, nil, 1, 2)--After any crush that isn't 3rd cast
+local specWarnRendingBiteTaunt			= mod:NewSpecialWarningTaunt(285875, nil, nil, nil, 1, 2)--At 2 stacks, but only if it's first two casts of combo
+local specWarnThrow						= mod:NewSpecialWarningTaunt(289292, nil, nil, nil, 1, 2)
 --local yellDarkRevolation				= mod:NewPosYell(273365)
 --local yellDarkRevolationFades			= mod:NewIconFadesYell(273365)
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 8)
@@ -79,6 +82,7 @@ mod:AddInfoFrameOption(energyAOESpellId, true)
 
 --mod.vb.phase = 1
 mod.vb.EnergyAOECount = 0
+mod.vb.comboCount = 0
 local coreTargets = {}
 local castsPerGUID = {}
 
@@ -118,6 +122,7 @@ end
 
 function mod:OnCombatStart(delay)
 	self.vb.EnergyAOECount = 0
+	self.vb.comboCount = 0
 	table.wipe(coreTargets)
 	table.wipe(castsPerGUID)
 	timerSlamCD:Start(13.2-delay)
@@ -196,7 +201,17 @@ function mod:SPELL_CAST_SUCCESS(args)
 		specWarnAdd:Play("killmob")
 		timerAddCD:Start()
 	elseif spellId == 286450 or spellId == 282082 then--Necrotic Combo/Bestial Combo
+		self.vb.comboCount = 0
 		timerTankComboCD:Start()
+	elseif spellId == 289292 then
+		if not args:IsPlayer() then
+			specWarnThrow:Show(args.destName)
+			specWarnThrow:Play("tauntboss")
+		end
+	elseif spellId == 282083 then--Beastial Smash
+		self.vb.comboCount = self.vb.comboCount + 1
+	elseif spellId == 285875 then--Rending Bite
+		self.vb.comboCount = self.vb.comboCount + 1
 	end
 end
 
@@ -205,29 +220,33 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 285671 then
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId) then
-			if args:IsPlayer() then
-				warnCrushed:Show()
-			else
-				if not UnitIsDeadOrGhost("player") and not DBM:UnitDebuff("player", spellId) then--Can't taunt less you've dropped yours off, period.
+			local amount = args.amount or 1
+			if not args:IsPlayer() then
+				--always swap after a crush if combo is only at 1 or 2, because crush CAN be 3rd cast of a combo.
+				if not UnitIsDeadOrGhost("player") and not DBM:UnitDebuff("player", spellId) and self.vb.comboCount < 3 then
 					specWarnCrushedTaunt:Show(args.destName)
 					specWarnCrushedTaunt:Play("tauntboss")
-				--else
-					--warnRupturingBlood:Show(args.destName, amount)
+				else
+					warnCrushed:Show(args.destName, amount)
 				end
+			else
+				warnCrushed:Show(args.destName, amount)
 			end
 		end
 	elseif spellId == 285875 then
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId) then
-			if args:IsPlayer() then
-				warnRendingBite:Show()
-			else
-				if not UnitIsDeadOrGhost("player") and not DBM:UnitDebuff("player", spellId) then--Can't taunt less you've dropped yours off, period.
+			local amount = args.amount or 1
+			if not args:IsPlayer() then
+				--Taunt at 2 stacks of rend, if combo count less than 3 (basically any combo starting with rend rend x) to make sure tank doesn't get a 3rd rend
+				if not UnitIsDeadOrGhost("player") and not DBM:UnitDebuff("player", spellId) and amount >= 2 and self.vb.comboCount < 3 then--Can't taunt less you've dropped yours off, period.
 					specWarnRendingBiteTaunt:Show(args.destName)
 					specWarnRendingBiteTaunt:Play("tauntboss")
-				--else
-					--warnRupturingBlood:Show(args.destName, amount)
+				else--only 1 stack, or no risk of it being a rend rend rend combo
+					warnRendingBite:Show(args.destName, amount)
 				end
+			else
+				warnCrushed:Show(args.destName, amount)
 			end
 		end
 	elseif spellId == 286434 or spellId == 285659 then
@@ -237,7 +256,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	end
 end
---mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
+mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
