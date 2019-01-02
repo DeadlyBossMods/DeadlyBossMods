@@ -239,7 +239,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			local amount = args.amount or 1
 			if not args:IsPlayer() then
 				--Taunt at 2 stacks of rend, if combo count less than 3 (basically any combo starting with rend rend x) to make sure tank doesn't get a 3rd rend
-				if not UnitIsDeadOrGhost("player") and not DBM:UnitDebuff("player", spellId) and amount >= 2 and self.vb.comboCount < 3 then--Can't taunt less you've dropped yours off, period.
+				if not UnitIsDeadOrGhost("player") and not DBM:UnitDebuff("player", spellId) and amount >= 2 then--Can't taunt less you've dropped yours off, period.
 					specWarnRendingBiteTaunt:Show(args.destName)
 					specWarnRendingBiteTaunt:Play("tauntboss")
 				else--only 1 stack, or no risk of it being a rend rend rend combo
