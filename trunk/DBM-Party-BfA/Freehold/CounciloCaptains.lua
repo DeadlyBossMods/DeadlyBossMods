@@ -10,7 +10,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 258338 256589 257117 267522 272884 267533 272902 265088 264608 265168",
-	"SPELL_CAST_SUCCESS 258381",
+	"SPELL_CAST_SUCCESS 258381 265088 264608",
 	"SPELL_DAMAGE 272397",
 	"SPELL_MISSED 272397",
 	"UNIT_DIED"
@@ -22,9 +22,9 @@ local warnLuckySevens				= mod:NewSpellAnnounce(257117, 1)
 local warnTappedKeg					= mod:NewSpellAnnounce(272884, 1)
 local warnChainShot					= mod:NewSpellAnnounce(272902, 1)
 --Announce Brews
-local warnConfidenceBrew			= mod:NewCastAnnounce(265088, 1)--Confidence-Boosting Freehold Brew
-local warnInvigoratingBrew			= mod:NewCastAnnounce(264608, 1)--Invigorating Freehold Brew
-local warnCausticBrew				= mod:NewCastAnnounce(265168, 1)--Caustic Freehold Brew
+local warnConfidenceBrew			= mod:NewSpellAnnounce(265088, 1)--Confidence-Boosting Freehold Brew
+local warnInvigoratingBrew			= mod:NewSpellAnnounce(264608, 1)--Invigorating Freehold Brew
+local warnCausticBrew				= mod:NewCastAnnounce(265168, 3)--Caustic Freehold Brew
 
 --Raoul
 local specWarnBarrelSmash			= mod:NewSpecialWarningRun(256589, "Melee", nil, nil, 4, 2)
@@ -149,11 +149,7 @@ function mod:SPELL_CAST_START(args)
 		warnChainShot:Show()
 		timerChainShotCD:Start()
 	elseif spellId == 265088 or spellId == 264608 or spellId == 265168 then
-		if spellId == 265088 then
-			warnConfidenceBrew:Show()
-		elseif spellId == 264608 then
-			warnInvigoratingBrew:Show()
-		else
+		if spellId == 265168 then
 			warnCausticBrew:Show()
 		end
 		timerTendingBarCD:Start()
@@ -166,6 +162,12 @@ function mod:SPELL_CAST_SUCCESS(args)
 		specWarnGrapeShot:Show()
 		specWarnGrapeShot:Play("stilldanger")
 		timerGrapeShotCD:Start()
+	elseif spellId == 265088 or spellId == 264608 then
+		if spellId == 265088 then
+			warnConfidenceBrew:Show()
+		else
+			warnInvigoratingBrew:Show()
+		end
 	end
 end
 
