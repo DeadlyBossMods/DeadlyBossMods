@@ -20,7 +20,7 @@ local specWarnGlacialBreath			= mod:NewSpecialWarningDodge(274891, nil, nil, nil
 local specWarnFreezingTempest		= mod:NewSpecialWarningMoveTo(274895, nil, nil, 2, 3, 2)
 
 local timerPermafrostSpikeCD		= mod:NewCDTimer(10.2, 274896, nil, nil, nil, 3)
-local timerGlacialBreathCD			= mod:NewCDTimer(45.1, 274891, nil, nil, nil, 3)
+local timerGlacialBreathCD			= mod:NewCDTimer(43.2, 274891, nil, nil, nil, 3)
 local timerFreezingTempestCD		= mod:NewCDTimer(65.5, 274895, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
 
 --mod:AddReadyCheckOption(37460, false)
