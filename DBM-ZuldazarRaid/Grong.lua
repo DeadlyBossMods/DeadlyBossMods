@@ -199,7 +199,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 282526 or spellId == 282247 then--Death Spectre/Apetagonizer 3000 Bomb
 		specWarnAdd:Show()
 		specWarnAdd:Play("killmob")
-		timerAddCD:Start()
+		if self:IsMythic() then
+			timerAddCD:Start(120)--2 every 2 minutes
+		else
+			timerAddCD:Start(60)--1 every 1 minute
+		end
 	elseif spellId == 286450 or spellId == 282082 then--Necrotic Combo/Bestial Combo
 		self.vb.comboCount = 0
 		timerTankComboCD:Start()
