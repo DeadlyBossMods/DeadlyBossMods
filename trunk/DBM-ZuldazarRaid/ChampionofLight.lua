@@ -12,7 +12,6 @@ mod:SetCreatureID(creatureID)
 mod:SetEncounterID(2265)
 --mod:DisableESCombatDetection()
 mod:SetZone()
---mod:SetBossHPInfoToHighest()
 --mod:SetUsedIcons(1, 2, 8)
 --mod:SetHotfixNoticeRev(17775)
 --mod:SetMinSyncRevision(16950)
@@ -31,7 +30,7 @@ mod:RegisterEventsInCombat(
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, swap count for Sacred Blade 3 or 2?
+--TODO, swap count for Sacred Blade? Should it be a force swap in LFR?
 --TODO, maybe a custom huge interrupt icon for the nameplate cast icon for angelic?
 --local warnXorothPortal				= mod:NewSpellAnnounce(244318, 2, nil, nil, nil, nil, nil, 7)
 local warnWaveofLight					= mod:NewTargetNoFilterAnnounce(283598, 1)
@@ -42,8 +41,8 @@ local warnSealofReckoning				= mod:NewSpellAnnounce(284436, 2)
 local warnAvengingWrath					= mod:NewTargetNoFilterAnnounce(282113, 3)
 
 local specWarnTargetChange				= mod:NewSpecialWarningTargetChange(283662, nil, nil, nil, 1, 2)
-local specWarnSacredBlade				= mod:NewSpecialWarningStack(283573, nil, 3, nil, nil, 1, 6)
-local specWarnSacredBladeTaunt			= mod:NewSpecialWarningTaunt(283573, nil, nil, nil, 1, 2)
+local specWarnSacredBlade				= mod:NewSpecialWarningStack(283573, nil, 5, nil, nil, 1, 6)
+local specWarnSacredBladeTaunt			= mod:NewSpecialWarningTaunt(283573, false, nil, 2, 1, 2)
 local specWarnWaveofLight				= mod:NewSpecialWarningTarget(283598, "Tank", nil, nil, 3, 2)
 local specWarnWaveofLightYou			= mod:NewSpecialWarningYou(283598, nil, nil, nil, 1, 2)
 local yellWaveofLight					= mod:NewYell(283598)
@@ -61,10 +60,10 @@ local specWarnPrayerfortheFallen		= mod:NewSpecialWarningSpell(287469, nil, nil,
 
 mod:AddTimerLine(DBM_BOSS)
 local timerWaveofLightCD				= mod:NewCDTimer(10.5, 283598, nil, nil, nil, 3, nil, DBM_CORE_MAGIC_ICON)
-local timerJudgmentRightCD				= mod:NewCDTimer(50.3, 283933, nil, nil, nil, 3)
-local timerJudgmentReckoningCD			= mod:NewCDTimer(50.3, 284474, nil, nil, nil, 2)
+local timerJudgmentRightCD				= mod:NewNextTimer(50.3, 283933, nil, nil, nil, 3)
+local timerJudgmentReckoningCD			= mod:NewNextTimer(50.3, 284474, nil, nil, nil, 2)
 local timerCallToArmsCD					= mod:NewCDTimer(104.6, 283662, nil, nil, nil, 1)
-local timerPrayerfortheFallenCD			= mod:NewAITimer(13.4, 287469, nil, nil, nil, 2, nil, DBM_CORE_IMPORTANT_ICON)
+local timerPrayerfortheFallenCD			= mod:NewNextTimer(13.4, 287469, nil, nil, nil, 2, nil, DBM_CORE_IMPORTANT_ICON)
 mod:AddTimerLine(DBM_ADDS)
 local timerBlindingFaithCD				= mod:NewCDTimer(13.4, 284474, nil, nil, nil, 2)
 
@@ -83,10 +82,7 @@ mod:AddNamePlateOption("NPAuraOnWave", 283619)
 mod:AddNamePlateOption("NPAuraOnJudgment", 283933)
 mod:AddNamePlateOption("NPAuraOnBlindingFaith", 283650)
 mod:AddNamePlateOption("NPAuraOnAngelicRenewal", 287419)
-
 --mod:AddSetIconOption("SetIconDarkRev", 273365, true)
-
---mod.vb.phase = 1
 
 function mod:WaveofLightTarget(targetname, uId)
 	if uId then
@@ -123,7 +119,7 @@ function mod:OnCombatStart(delay)
 	specWarnJudgmentReckoning:ScheduleVoice(45.7, "aesoon")
 	timerCallToArmsCD:Start(110.4-delay)
 	if self:IsMythic() then
-		timerPrayerfortheFallenCD:Start(1-delay)
+		timerPrayerfortheFallenCD:Start(25.5-delay)
 	end
 	if self.Options.NPAuraOnRet2 or self.Options.NPAuraOnWave or self.Options.NPAuraOnJudgment or self.Options.NPAuraOnBlindingFaith or self.Options.NPAuraOnAngelicRenewal then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
@@ -178,7 +174,6 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 287469 then
 		specWarnPrayerfortheFallen:Show()
 		specWarnPrayerfortheFallen:Play("specialsoon")
-		timerPrayerfortheFallenCD:Start()
 	elseif spellId == 287419 then
 		if self.Options.NPAuraOnAngelicRenewal then
 			DBM.Nameplate:Show(true, args.sourceGUID, spellId, nil, 8)
@@ -209,12 +204,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId) then
 			local amount = args.amount or 1
-			if amount >= 3 then
+			if amount >= 5 then
 				if args:IsPlayer() then
 					specWarnSacredBlade:Show(amount)
 					specWarnSacredBlade:Play("stackhigh")
 				else
-					if not UnitIsDeadOrGhost("player") and not DBM:UnitDebuff("player", spellId) then--Can't taunt less you've dropped yours off, period.
+					if not UnitIsDeadOrGhost("player") and not DBM:UnitDebuff("player", spellId) and self.Options.SpecWarn283573taunt2 then--Can't taunt less you've dropped yours off, period.
 						specWarnSacredBladeTaunt:Show(args.destName)
 						specWarnSacredBladeTaunt:Play("tauntboss")
 					else
@@ -241,9 +236,15 @@ function mod:SPELL_AURA_APPLIED(args)
 		countdownReleaseSeal:Start(52.3)
 		specWarnJudgmentReckoning:Schedule(47.3)
 		specWarnJudgmentReckoning:ScheduleVoice(47.3, "aesoon")
+		if self:IsMythic() then
+			timerPrayerfortheFallenCD:Start(25.9-delay)
+		end
 	elseif spellId == 284436 then--Seal of Reckoning
 		warnSealofReckoning:Show()
 		timerJudgmentReckoningCD:Start(52.3)
+		if self:IsMythic() then
+			timerPrayerfortheFallenCD:Start(25.9-delay)
+		end
 	elseif spellId == 283933 then
 		warnJudgmentRighteousness:Show(args.destName)
 		if self.Options.NPAuraOnJudgment then
