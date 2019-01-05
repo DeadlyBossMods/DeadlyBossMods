@@ -51,7 +51,7 @@ L= DBM:GetModLocalization(2093)
 L= DBM:GetModLocalization(2094)
 
 L:SetMiscLocalization({
-	openingRP = "Gather 'round and place yer bets! We got a new set of vict-- uh... competitors! Take it away, Gurgthok and Wodin!"
+	openingRP = "Gather 'round and place yer bets! We got a new set of vict-- uh... competitors! Take it away, Gurgthock and Wodin!"
 })
 
 -----------------------
