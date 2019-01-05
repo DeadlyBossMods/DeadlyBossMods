@@ -11,7 +11,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 263246 263371",
 	"SPELL_AURA_REMOVED 263246 263371",
-	"SPELL_CAST_START 263257 263318 263775 263234 263573 263365",
+	"SPELL_CAST_START 263257 263318 263775 263234 263309 263365",
 	"SPELL_CAST_SUCCESS 263371 263424 263425",
 	"UNIT_DIED",
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2",
@@ -167,7 +167,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnGust:Play("kickcast")
 	elseif spellId == 263234 then
 		timerArcingBladeCD:Start()
-	elseif spellId == 263573 then
+	elseif spellId == 263309 then
 		specWarnCycloneStrike:Show()
 		specWarnCycloneStrike:Play("shockwave")
 		timerCycloneStrikeCD:Start()
