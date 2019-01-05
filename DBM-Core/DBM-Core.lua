@@ -7604,8 +7604,8 @@ function bossModPrototype:IsCriteriaCompleted(criteriaIDToCheck)
 	return false
 end
 
-function bossModPrototype:LatencyCheck()
-	return select(4, GetNetStats()) < DBM.Options.LatencyThreshold
+function bossModPrototype:LatencyCheck(custom)
+	return select(4, GetNetStats()) < (custom or DBM.Options.LatencyThreshold)
 end
 
 function bossModPrototype:CheckBigWigs(name)
