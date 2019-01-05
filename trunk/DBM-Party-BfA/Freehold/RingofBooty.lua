@@ -109,7 +109,7 @@ end
 function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 	--"<0.92 02:51:13> [CHAT_MSG_MONSTER_YELL] Gather 'round and place yer bets! We got a new set of vict-- uh... competitors! Take it away, Gurthok and Wodin!#Davey \"Two Eyes\"###Hunyadi##0#0##0#1165#nil#0#false#false#false#false", 
 	--"<63.07 02:52:15> [CLEU] SPELL_AURA_APPLIED#Creature-0-2084-1754-9152-130099-00007D20E9#Lightning#Creature-0-2084-1754-9152-130099-00007D20E9#Lightning#257829#Greasy#BUFF#nil", -- [23]
-	if (msg == L.openingRP or msg:find(L.openingRP)) and self:LatencyCheck() then
+	if (msg == L.openingRP or msg:find(L.openingRP)) and self:LatencyCheck(1000) then
 		self:SendSync("openingRP")
 	end
 end

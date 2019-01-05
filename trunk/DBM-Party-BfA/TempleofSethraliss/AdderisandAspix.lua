@@ -37,7 +37,9 @@ local specWarnGust					= mod:NewSpecialWarningInterrupt(263775, "HasInterrupt", 
 local specWarnGaleForce				= mod:NewSpecialWarningSpell(263776, nil, nil, nil, 2, 2)
 --Adderis
 --local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 8)
-local specWarnCycloneStrike			= mod:NewSpecialWarningDodge(263573, nil, nil, nil, 3, 2)
+local specWarnCycloneStrike			= mod:NewSpecialWarningYou(263573, nil, nil, nil, 3, 2)
+local specWarnCycloneStrikeOther	= mod:NewSpecialWarningDodge(263573, nil, nil, nil, 3, 2)
+local yellCycloneStrike				= mod:NewYell(263573)
 local specWarnPearlofThunder		= mod:NewSpecialWarningRun(263365, nil, nil, nil, 4, 2)
 
 --Aspix
@@ -59,6 +61,18 @@ mod:AddInfoFrameOption(263246, true)
 mod:AddSetIconOption("SetIconOnNoLit", 263246, true, true)
 
 mod.vb.noLitShield = nil
+
+function mod:CycloneTarget(targetname, uId)
+	if not targetname then return end
+	if targetname == UnitName("player") then
+		specWarnCycloneStrike:Show()
+		specWarnCycloneStrike:Play("targetyou")
+		yellCycloneStrike:Yell()
+	else
+		specWarnCycloneStrikeOther:Show()
+		specWarnCycloneStrikeOther:Play("shockwave")
+	end
+end
 
 function mod:OnCombatStart(delay)
 	self.vb.noLitShield = nil
@@ -168,9 +182,8 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 263234 then
 		timerArcingBladeCD:Start()
 	elseif spellId == 263309 then
-		specWarnCycloneStrike:Show()
-		specWarnCycloneStrike:Play("shockwave")
 		timerCycloneStrikeCD:Start()
+		self:ScheduleMethod(0.2, "BossTargetScanner", args.sourceGUID, "CycloneTarget", 0.04, 16)--give 0.2 delay before scan start.
 	elseif spellId == 263365 then
 		specWarnPearlofThunder:Show()
 		specWarnPearlofThunder:Play("justrun")
