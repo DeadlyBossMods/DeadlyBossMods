@@ -43,7 +43,7 @@ local warnAvengingWrath					= mod:NewTargetNoFilterAnnounce(282113, 3)
 local specWarnTargetChange				= mod:NewSpecialWarningTargetChange(283662, nil, nil, nil, 1, 2)
 local specWarnSacredBlade				= mod:NewSpecialWarningStack(283573, nil, 5, nil, nil, 1, 6)
 local specWarnSacredBladeTaunt			= mod:NewSpecialWarningTaunt(283573, false, nil, 2, 1, 2)
-local specWarnWaveofLight				= mod:NewSpecialWarningTarget(283598, "Tank", nil, nil, 3, 2)
+local specWarnWaveofLight				= mod:NewSpecialWarningTarget(283598, false, nil, 2, 1, 2)
 local specWarnWaveofLightYou			= mod:NewSpecialWarningYou(283598, nil, nil, nil, 1, 2)
 local yellWaveofLight					= mod:NewYell(283598)
 --local specWarnWaveofLightGeneral		= mod:NewSpecialWarningDodge(283598, nil, nil, nil, 2, 2)
@@ -87,7 +87,7 @@ mod:AddNamePlateOption("NPAuraOnAngelicRenewal", 287419)
 function mod:WaveofLightTarget(targetname, uId)
 	if uId then
 		if not UnitIsFriend("player", uId) then--Boss targetting one of adds
-			if UnitIsUnit("target", uId) then
+			if UnitIsUnit("target", uId) and self.Options.SpecWarn283598target2 then
 				specWarnWaveofLight:Show(targetname)
 				specWarnWaveofLight:Play("moveboss")
 			else
@@ -164,7 +164,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnDivineBurst:Play("kickcast")
 	elseif spellId == 283650 then
 		timerBlindingFaithCD:Start(13.4, args.sourceGUID)
-		if self:AntiSpam(3, 1) then
+		if self:AntiSpam(3.5, 1) then
 			specWarnBlindingFaith:Show(args.sourceName)
 			specWarnBlindingFaith:Play("turnaway")
 		end
