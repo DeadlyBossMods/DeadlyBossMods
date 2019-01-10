@@ -237,13 +237,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnJudgmentReckoning:Schedule(47.3)
 		specWarnJudgmentReckoning:ScheduleVoice(47.3, "aesoon")
 		if self:IsMythic() then
-			timerPrayerfortheFallenCD:Start(25.9-delay)
+			timerPrayerfortheFallenCD:Start(25.9)
 		end
 	elseif spellId == 284436 then--Seal of Reckoning
 		warnSealofReckoning:Show()
 		timerJudgmentReckoningCD:Start(52.3)
 		if self:IsMythic() then
-			timerPrayerfortheFallenCD:Start(25.9-delay)
+			timerPrayerfortheFallenCD:Start(25.9)
 		end
 	elseif spellId == 283933 then
 		warnJudgmentRighteousness:Show(args.destName)
