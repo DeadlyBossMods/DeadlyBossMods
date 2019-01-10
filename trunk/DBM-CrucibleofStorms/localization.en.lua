@@ -5,6 +5,11 @@ local L
 ---------------------------
 L= DBM:GetModLocalization(2328)
 
+L:SetMiscLocalization({
+	Zaxasj = "Zaxasj",
+	Fathuul = "Fa'thuul"
+})
+
 ---------------------------
 -- Uu'nat, Harbinger of the Void --
 ---------------------------
