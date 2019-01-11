@@ -15,12 +15,12 @@ mod:SetUsedIcons(1, 2, 3, 6)--Refine when max number of doubt targets is known
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 282675 282589 283524 282386 282515 282517 282407 285416 282617",
-	"SPELL_CAST_SUCCESS 282561 282384 282432 287762",
-	"SPELL_AURA_APPLIED 282741 286755 282914 283524 282386 282540 282561 282384 282432 287876",
+	"SPELL_CAST_START 282675 282589 282515 282517 282617 282818",
+	"SPELL_CAST_SUCCESS 282561 282384 282407 285416",
+	"SPELL_AURA_APPLIED 282741 282742 282914 283524 282386 282540 282561 282384 282432 287876 282817",
 	"SPELL_AURA_APPLIED_DOSE 282384",
-	"SPELL_AURA_REFRESH 282384",
-	"SPELL_AURA_REMOVED 282741 286755 282386 282561 282384 282432",
+	"SPELL_AURA_REFRESH 282384 282386 283524",
+	"SPELL_AURA_REMOVED 282741 282742 282386 282561 282384 282432",
 --	"SPELL_PERIODIC_DAMAGE 287876",
 --	"SPELL_PERIODIC_MISSED 287876",
 	"UNIT_DIED",
@@ -30,25 +30,21 @@ mod:RegisterEventsInCombat(
 --TODO: add general announce for embrace of the void? it seems pretty given, it's more of a healer track on raid frames thing than a DBM thing
 --TODO, correct cast ID for custody of the deep to warn tank to move boss into bubble
 --TODO, refine AbyssalCollapse for situations like do we cancel bar if shield gets completely depleted, etc
---TODO, verify Aphotic Blast target scanning
---TODO, can tank dodge Cerebral Assault too? or does it face tank regardless and used as a sudo tank swap?
 --TODO, see if relics hard reset boss cd timers or if they just get paused, or if nothing affects them at all
 --TODO, custom info frame that tracks who has herald, personal promises of power, probably other crap
---TODO, fine tune tank swap stacks
---TODO, figure out what triggers severed anguish, does it just happen when shearmind is expiring?
+--TODO, fine tune tank swap stacks (changed to 3, but many strats may favor doing 2-5 to reduce add spawn complexity and tank damage. Probably will just add a drop down)
 --TODO, detect void crash bounces, use general announce for cast and first bounce, special warning for one that needs soaking?
---TODO, verify cast spell ID for crushing Doubt
---local warnXorothPortal				= mod:NewSpellAnnounce(244318, 2, nil, nil, nil, nil, nil, 7)
 --Relics of Power
 local warnUmbralShell					= mod:NewFadesAnnounce(282741, 1)
 --General
 local warnPact							= mod:NewCastAnnounce(282675, 4)
 --Zaxasj the Speaker
-local warnDarkHeraldFaded				= mod:NewFadesAnnounce(282589, 1)
-local warnDarkHerald					= mod:NewTargetNoFilterAnnounce(282589, 3)
+local warnDarkHeraldFaded				= mod:NewFadesAnnounce(282561, 1)
+local warnDarkHerald					= mod:NewTargetNoFilterAnnounce(282561, 3)
 --Fa'thuul the Feared
 local warnShearMind						= mod:NewStackAnnounce(282384, 2, nil, "Tank")
 local warnVoidCrash						= mod:NewSpellAnnounce(285416, 2)
+local warnCrushingDoubt					= mod:NewTargetAnnounce(282432, 2)
 
 --Relics of Power
 local specWarnUmbralShell				= mod:NewSpecialWarningSwitch(282741, "Dps", nil, nil, 1, 2)
@@ -56,25 +52,25 @@ local specWarnCustodyoftheDeep			= mod:NewSpecialWarningMoveTo(284772, "Tank", n
 local specWarnStormofAnnihilation		= mod:NewSpecialWarningSpell(286755, nil, nil, nil, 2, 2)
 local specWarnPowerOverwhelming			= mod:NewSpecialWarningTarget(282914, nil, nil, nil, 3)--A wipe basically
 --Zaxasj the Speaker
-local specWarnAphoticBlast				= mod:NewSpecialWarningYou(282386, nil, nil, nil, 3, 2)
+local specWarnAphoticBlast				= mod:NewSpecialWarningYou(282386, false, nil, 2, 1, 2)
 local yellAphoticBlast					= mod:NewFadesYell(282386)
 local specWarnAgentofDemise				= mod:NewSpecialWarningTargetChange(282540, "-Healer", nil, nil, 1, 2)
 local yellAgentofDemise					= mod:NewYell(282540, nil, nil, nil, "YELL")
 local specWarnCustodyoftheDeep			= mod:NewSpecialWarningMoveTo(284772, "Tank", nil, nil, 1, 2)
-local specWarnCerebralAssault			= mod:NewSpecialWarningDodge(282589, nil, nil, nil, 2, 2)
+local specWarnCerebralAssault			= mod:NewSpecialWarningDodge(282589, nil, nil, nil, 3, 2)
 local specWarnDarkherald				= mod:NewSpecialWarningYou(282561, nil, nil, nil, 1, 2)
 local yellDarkherald					= mod:NewYell(282561)
 local specWarnVisagefromBeyond			= mod:NewSpecialWarningSwitch(282515, "-Healer", nil, nil, 1, 2)
 --Fa'thuul the Feared
-local specWarnShearMind					= mod:NewSpecialWarningStack(282384, nil, 7, nil, nil, 1, 6)
+local specWarnShearMind					= mod:NewSpecialWarningStack(282384, nil, 3, nil, nil, 1, 6)
 local specWarnShearMindTaunt			= mod:NewSpecialWarningTaunt(282384, nil, nil, nil, 1, 2)
-local yellShearMindFades				= mod:NewFadesYell(282384)
-local specSeveredAnguish				= mod:NewSpecialWarningSwitch(282817, "-Healer", nil, nil, 1, 2)
+local yellShearMindFades				= mod:NewFadesYell(282384, nil, false)--useful but optional
+local specSeveredAnguish				= mod:NewSpecialWarningTaunt(282817, nil, nil, nil, 1, 2)
 local specWarnCrushingDoubt				= mod:NewSpecialWarningYouPos(282432, nil, nil, nil, 1, 2)
 local yellCrushingDoubt					= mod:NewPosYell(282432)
 local yellCrushingDoubtFades			= mod:NewIconFadesYell(282432)
-local specWarnEldritchRevelation		= mod:NewSpecialWarningSwitch(282617, "-Healer", nil, nil, 1, 2)
-local specWarnWitnesstheEnd				= mod:NewSpecialWarningInterrupt(282621, nil, nil, nil, 1, 2)
+local specWarnEldritchRevelation		= mod:NewSpecialWarningSwitch(282617, false, nil, 2, 1, 2)
+local specWarnWitnesstheEnd				= mod:NewSpecialWarningInterrupt(282621, false, nil, 2, 1, 2)
 local specWarnGTFO						= mod:NewSpecialWarningGTFO(287876, nil, nil, nil, 1, 8)
 
 --mod:AddTimerLine(DBM:EJ_GetSectionInfo(18527))
@@ -82,15 +78,15 @@ local timerAbyssalCollapse				= mod:NewCastTimer(20, 282886, nil, nil, nil, 2, n
 local timerStormofAnnihilation			= mod:NewCastTimer(15, 286755, nil, nil, nil, 2, nil, DBM_CORE_HEALER_ICON)
 local timerPact							= mod:NewCastSourceTimer(12, 282675, nil, nil, nil, 2, nil, DBM_CORE_IMPORTANT_ICON)
 --Zaxasj the Speaker
-local timerAphoticBlastCD				= mod:NewAITimer(55, 282386, nil, nil, nil, 3)
-local timerCerebralAssaultCD			= mod:NewAITimer(55, 282589, nil, nil, nil, 3)
+local timerCerebralAssaultCD			= mod:NewCDTimer(31.6, 282589, nil, nil, nil, 3)
 local timerDarkherald					= mod:NewTargetTimer(20, 282589, nil, nil, nil, 5)
-local timerDarkheraldCD					= mod:NewAITimer(55, 282589, nil, nil, nil, 3)
+local timerDarkheraldCD					= mod:NewCDTimer(32.8, 282589, nil, nil, nil, 3)
 local timerTerrifyingEcho				= mod:NewCastTimer(15, 282517, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
 --Fa'thuul the Feared
-local timerShearMindCD					= mod:NewAITimer(14.1, 282384, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
-local timerVoidCrashCD					= mod:NewAITimer(55, 285416, nil, nil, nil, 3)
-local timerCrushingDoubtCD				= mod:NewAITimer(55, 282432, nil, nil, nil, 3)
+local timerShearMindCD					= mod:NewCDTimer(8.4, 282384, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerDevourThoughtsCD				= mod:NewCDTimer(9.8, 282818, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerVoidCrashCD					= mod:NewCDTimer(13.3, 285416, nil, nil, nil, 3)
+local timerCrushingDoubtCD				= mod:NewCDTimer(40.1, 282432, nil, nil, nil, 3)
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
 
@@ -100,28 +96,26 @@ local timerCrushingDoubtCD				= mod:NewAITimer(55, 282432, nil, nil, nil, 3)
 
 mod:AddSetIconOption("SetIconCrushingDoubt", 282432, true)
 mod:AddSetIconOption("SetIconDarkherald", 282561, true)
-mod:AddRangeFrameOption(6, 282386, "Ranged")
+mod:AddRangeFrameOption(6, 283524)
 mod:AddInfoFrameOption(282741, true)
 mod:AddNamePlateOption("NPAuraOnEcho", 282517)
 
 --mod.vb.phase = 1
 mod.vb.CrushingDoubtIcon = 1
+mod.vb.tankAddsActive = 0
 
 function mod:OnCombatStart(delay)
 	self.vb.CrushingDoubtIcon = 1
+	self.vb.tankAddsActive = 0
 	--Z
-	timerAphoticBlastCD:Start(1-delay)--START
-	timerCerebralAssaultCD:Start(1-delay)
-	timerDarkheraldCD:Start(1-delay)--SUCCESS
+	timerCerebralAssaultCD:Start(16.8-delay)
+	timerDarkheraldCD:Start(11.5-delay)--SUCCESS
 	--F
-	timerShearMindCD:Start(1-delay)
-	timerVoidCrashCD:Start(1-delay)
-	timerCrushingDoubtCD:Start(1-delay)
+	timerShearMindCD:Start(8.5-delay)--SUCCESS
+	timerVoidCrashCD:Start(13-delay)--SUCCESS
+	timerCrushingDoubtCD:Start(18.1-delay)
 	if self.Options.NPAuraOnPresence then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
-	end
-	if self.Options.RangeFrame then
-		DBM.RangeCheck:Show(6)
 	end
 end
 
@@ -152,8 +146,6 @@ function mod:SPELL_CAST_START(args)
 		specWarnCerebralAssault:Show()
 		specWarnCerebralAssault:Play("shockwave")
 		timerCerebralAssaultCD:Start()
-	elseif spellId == 283524 or spellId == 282386 then
-		timerAphoticBlastCD:Start()
 	elseif spellId == 282515 then
 		specWarnVisagefromBeyond:Show()
 		specWarnVisagefromBeyond:Play("bigmob")
@@ -165,12 +157,11 @@ function mod:SPELL_CAST_START(args)
 		if self.Options.NPAuraOnEcho then
 			DBM.Nameplate:Show(true, args.sourceGUID, spellId, nil, 15)
 		end
-	elseif spellId == 282407 or spellId == 285416 then
-		warnVoidCrash:Show()
-		timerVoidCrashCD:Start()
 	elseif (spellId == 283540 or spellId == 282621) and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnWitnesstheEnd:Show(args.sourceName)
 		specWarnWitnesstheEnd:Play("kickcast")
+	elseif spellId == 282818 then
+		timerDevourThoughtsCD:Start(9.8, args.sourceGUID)
 	end
 end
 
@@ -186,12 +177,12 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 282561 then
-		timerDarkheraldCD:Start()--Move to cast start, if target scanable
+		timerDarkheraldCD:Start()--Kept here because boss can stutter cast so START is bad place to start timer
 	elseif spellId == 282384 then
 		timerShearMindCD:Start()
-	elseif spellId == 282432 or spellId == 287762 then
-		self.vb.CrushingDoubtIcon = 1
-		timerCrushingDoubtCD:Start()
+	elseif spellId == 282407 or spellId == 285416 then
+		warnVoidCrash:Show()
+		timerVoidCrashCD:Start()
 	end
 end
 
@@ -217,7 +208,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				--end
 			--end
 		end
-	elseif spellId == 286755 then
+	elseif spellId == 282742 then
 		specWarnStormofAnnihilation:Show()
 		specWarnStormofAnnihilation:Play("aesoon")
 		timerStormofAnnihilation:Start()
@@ -225,16 +216,21 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnPowerOverwhelming:Show()
 	elseif spellId == 283524 or spellId == 282386 then
 		if args:IsPlayer() then
-			specWarnAphoticBlast:Show()
-			specWarnAphoticBlast:Play("targetyou")
 			if spellId == 282386 then--Heroic/Mythic
+				specWarnAphoticBlast:Show()
+				specWarnAphoticBlast:Play("targetyou")
+				yellAphoticBlast:Cancel()
 				yellAphoticBlast:Countdown(20)
+			end
+			if self.Options.RangeFrame then
+				DBM.RangeCheck:Show(6)
 			end
 		end
 	elseif spellId == 282540 then
 		if not args:IsPlayer() then
-			specWarnAgentofDemise:Show()
-			specWarnAgentofDemise:Play("targetchange")
+			specWarnAgentofDemise:CombinedShow(1, args.destName)
+			specWarnAgentofDemise:ScheduleVoice(1, "targetchange")
+		else
 			yellAgentofDemise:Yell()
 		end
 	elseif spellId == 282561 then
@@ -253,12 +249,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId) then
 			local amount = args.amount or 1
-			if amount >= 7 then
+			if amount >= 3 then
 				if args:IsPlayer() then
 					specWarnShearMind:Show(amount)
 					specWarnShearMind:Play("stackhigh")
 				else
-					if not UnitIsDeadOrGhost("player") and not DBM:UnitDebuff("player", spellId) then--Can't taunt less you've dropped yours off, period.
+					if not UnitIsDeadOrGhost("player") and not DBM:UnitDebuff("player", spellId) and self.vb.tankAddsActive == 0 then--Can't taunt less you've dropped yours off and aren't dealing with an add
 						specWarnShearMindTaunt:Show(args.destName)
 						specWarnShearMindTaunt:Play("tauntboss")
 					else
@@ -274,6 +270,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellShearMindFades:Countdown(12)
 		end
 	elseif spellId == 282432 then
+		warnCrushingDoubt:CombinedShow(1, args.destName)
 		local icon = self.vb.CrushingDoubtIcon
 		if args:IsPlayer() then
 			specWarnCrushingDoubt:Show(self:IconNumToTexture(icon))
@@ -288,6 +285,19 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 287876 and args:IsPlayer() and self:AntiSpam(3, 2) then
 		specWarnGTFO:Show(args.spellName)
 		specWarnGTFO:Play("runaway")--This particular case it's not a watch feet GTFO, it's a run away since you're too far into darkness
+	elseif spellId == 282817 then
+		self.vb.tankAddsActive = self.vb.tankAddsActive + 1
+		local _, _, _, _, expireTime = DBM:UnitDebuff("player", 282384)
+		local remaining
+		if expireTime then
+			remaining = expireTime-GetTime()
+		end
+		--Taunt add, you don't have debuff, or your debuff will fade before devour thoughts finishes and you aren't currently tanking either of bosses
+		if not UnitDetailedThreatSituation("player", "boss1") and not UnitDetailedThreatSituation("player", "boss2") and (not remaining or remaining and remaining < 5.5) then
+			specSeveredAnguish:Show()
+			specSeveredAnguish:Play("killmob")
+		end
+		timerDevourThoughtsCD:Start(4.5, args.destGUID)--START
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -302,11 +312,14 @@ function mod:SPELL_AURA_REMOVED(args)
 			--DBM.InfoFrame:Show(4, "enemypower", 2)
 			DBM.InfoFrame:Hide()
 		end
-	elseif spellId == 286755 then
+	elseif spellId == 282742 then
 		timerStormofAnnihilation:Stop()
 	elseif spellId == 282386 then
 		if args:IsPlayer() then
 			yellAphoticBlast:Cancel()
+			if self.Options.RangeFrame then
+				DBM.RangeCheck:Hide()
+			end
 		end
 	elseif spellId == 282561 then
 		timerDarkherald:Stop(args.destName)
@@ -344,8 +357,9 @@ function mod:UNIT_DIED(args)
 		if self.Options.NPAuraOnEcho then
 			DBM.Nameplate:Hide(true, args.destGUID)
 		end
---	elseif cid == 145275 then--Manifestation of Anguish
-		
+	elseif cid == 145275 then--Manifestation of Anguish
+		self.vb.tankAddsActive = self.vb.tankAddsActive - 1
+		timerDevourThoughtsCD:Stop(args.destGUID)
 	end
 end
 
@@ -354,10 +368,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		specWarnCustodyoftheDeep:Show(DBM_CORE_SHIELD)
 		specWarnCustodyoftheDeep:Play("moveboss")
 		timerAbyssalCollapse:Start()
-	elseif spellId == 282814 then--Severed Anguish
-		if not DBM:UnitDebuff("player", 282384) then--Cannot allow tank that currently has that boss to take this add, it must be tanked by someone with no stacks
-			specSeveredAnguish:Show()
-			specSeveredAnguish:Play("killmob")
-		end
+	elseif spellId == 287762 then--Crushing Doubt
+		self.vb.CrushingDoubtIcon = 1
+		timerCrushingDoubtCD:Start()
 	end
 end
