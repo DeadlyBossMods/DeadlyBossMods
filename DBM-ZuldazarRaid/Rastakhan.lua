@@ -40,6 +40,7 @@ mod:RegisterEventsInCombat(
 --TODO, shadow smash a tank swap?
 --TODO, more add timers in general if verifying certain casts are long enough CD
 --TODO, Stage Four: Uncontrollable Power?
+--TODO, 286772 now returns invalid spellID on live?
 --General
 local warnPhase							= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
 --Stage One: Zandalari Honor Guard
@@ -95,7 +96,7 @@ local specWarnInevitableEnd				= mod:NewSpecialWarningRun(287333, nil, nil, nil,
 ----Spirits
 local specWarnShadowSmash				= mod:NewSpecialWarningDefensive(286742, nil, nil, nil, 1, 2)
 local specWarnShadowSmashOther			= mod:NewSpecialWarningTaunt(286742, nil, nil, nil, 1, 2)
-local specWarnGTFO						= mod:NewSpecialWarningGTFO(286772, nil, nil, nil, 1, 8)
+--local specWarnGTFO						= mod:NewSpecialWarningGTFO(286772, nil, nil, nil, 1, 8)
 local specWarnFocusedDimise				= mod:NewSpecialWarningInterrupt(286779, nil, nil, nil, 1, 2)
 
 --mod:AddTimerLine(DBM:EJ_GetSectionInfo(18527))
@@ -377,10 +378,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerDreadReapingCD:Start(7.6)
 		timerInevitableEndCD:Start(35.9)
 		timerSealofBwonCD:Start(43)
-		self:RegisterShortTermEvents(
-			"SPELL_PERIODIC_DAMAGE 286772",
-			"SPELL_PERIODIC_MISSED 286772"
-		)
+--		self:RegisterShortTermEvents(
+--			"SPELL_PERIODIC_DAMAGE 286772",
+--			"SPELL_PERIODIC_MISSED 286772"
+--		)
 	elseif spellId == 289162 then
 		if self.Options.NPAuraOnRelentlessness then
 			DBM.Nameplate:Show(true, args.sourceGUID, spellId)
@@ -472,6 +473,7 @@ function mod:SPELL_AURA_REMOVED_DOSE(args)
 	end
 end
 
+--[[
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
 	if spellId == 286772 and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
 		specWarnGTFO:Show(spellName)
@@ -479,6 +481,7 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spell
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
+--]]
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
