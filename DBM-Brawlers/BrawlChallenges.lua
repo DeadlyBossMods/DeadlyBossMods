@@ -18,18 +18,18 @@ mod:RegisterEvents(
 	"UNIT_SPELLCAST_CHANNEL_START target focus"
 )
 
-local warnLumberingCharge		= mod:NewSpellAnnounce(134527, 4)--Goredome
-local warnToughLuck				= mod:NewStackAnnounce(134624, 1)--Smash Hoofstomp
-local warnShieldWaller			= mod:NewSpellAnnounce(134650, 2)--Smash Hoofstomp
-local warnSummonTwister			= mod:NewSpellAnnounce(132670, 3)--Kirrawk
-local warnStormCloud			= mod:NewSpellAnnounce(135234, 3)--Kirrawk
-local warnThrowNet				= mod:NewSpellAnnounce(133308, 3)--Fran and Riddoh
-local warnGoblinDevice			= mod:NewSpellAnnounce(133227, 4)--Fran and Riddoh
-local warnChomp					= mod:NewSpellAnnounce(135342, 4)--Bruce
-local warnBulwark				= mod:NewAddsLeftAnnounce(138901, 2)--Ahoo'ru
-local warnCharge				= mod:NewCastAnnounce(138845, 1)--Ahoo'ru
-local warnCompleteHeal			= mod:NewCastAnnounce(142621, 4)--Ahoo'ru
-local warnDivineCircle			= mod:NewSpellAnnounce(142585, 3)--Ahoo'ru
+local warnLumberingCharge			= mod:NewSpellAnnounce(134527, 4)--Goredome
+local warnToughLuck					= mod:NewStackAnnounce(134624, 1)--Smash Hoofstomp
+local warnShieldWaller				= mod:NewSpellAnnounce(134650, 2)--Smash Hoofstomp
+local warnSummonTwister				= mod:NewSpellAnnounce(132670, 3)--Kirrawk
+local warnStormCloud				= mod:NewSpellAnnounce(135234, 3)--Kirrawk
+local warnThrowNet					= mod:NewSpellAnnounce(133308, 3)--Fran and Riddoh
+local warnGoblinDevice				= mod:NewSpellAnnounce(133227, 4)--Fran and Riddoh
+local warnChomp						= mod:NewSpellAnnounce(135342, 4)--Bruce
+local warnBulwark					= mod:NewAddsLeftAnnounce(138901, 2)--Ahoo'ru
+local warnCharge					= mod:NewCastAnnounce(138845, 1)--Ahoo'ru
+local warnCompleteHeal				= mod:NewCastAnnounce(142621, 4)--Ahoo'ru
+local warnDivineCircle				= mod:NewSpellAnnounce(142585, 3)--Ahoo'ru
 local warnSmolderingHeat			= mod:NewTargetNoFilterAnnounce(142400, 4)--Anthracite
 local warnCooled					= mod:NewTargetNoFilterAnnounce(141371, 1)--Anthracite
 local warnOnFire					= mod:NewTargetNoFilterAnnounce(141388, 4)--Anthracite
@@ -37,24 +37,24 @@ local warnRockPaperScissors			= mod:NewSpellAnnounce(141206, 3)--Ro-Shambo
 local warnPowerCrystal				= mod:NewSpellAnnounce(133398, 3)--Millhouse Manastorm
 local warnDoom						= mod:NewSpellAnnounce(133650, 4)--Millhouse Manastorm
 
-local specWarnLumberingCharge	= mod:NewSpecialWarningDodge(134527)--Goredome
-local specWarnStormCloud		= mod:NewSpecialWarningInterrupt(135234)--Kirrawk
-local specWarnGoblinDevice		= mod:NewSpecialWarningSpell(133227)--Fran and Riddoh
-local specWarnChomp				= mod:NewSpecialWarningDodge(135342)--Bruce
-local specWarnCharge			= mod:NewSpecialWarningSpell(138845)--Ahoo'ru
-local specWarnCompleteHeal		= mod:NewSpecialWarningInterrupt(142621, nil, nil, nil, 3)--Ahoo'ru
-local specWarnDivineCircle		= mod:NewSpecialWarningDodge(142585)--Ahoo'ru
+local specWarnLumberingCharge		= mod:NewSpecialWarningDodge(134527)--Goredome
+local specWarnStormCloud			= mod:NewSpecialWarningInterrupt(135234)--Kirrawk
+local specWarnGoblinDevice			= mod:NewSpecialWarningSpell(133227)--Fran and Riddoh
+local specWarnChomp					= mod:NewSpecialWarningDodge(135342)--Bruce
+local specWarnCharge				= mod:NewSpecialWarningSpell(138845)--Ahoo'ru
+local specWarnCompleteHeal			= mod:NewSpecialWarningInterrupt(142621, nil, nil, nil, 3)--Ahoo'ru
+local specWarnDivineCircle			= mod:NewSpecialWarningDodge(142585)--Ahoo'ru
 local specWarnSmolderingHeat		= mod:NewSpecialWarningYou(142400)--Anthracite
 local specWarnRPS					= mod:NewSpecialWarning("specWarnRPS")--Ro-Shambo
 local specWarnDoom					= mod:NewSpecialWarningSpell(133650, nil, nil, nil, true)--Millhouse Manastorm
 
-local timerLumberingChargeCD	= mod:NewCDTimer(7, 134527, nil, nil, nil, 3)--Goredome
-local timerShieldWaller			= mod:NewBuffActiveTimer(10, 134650)--Smash Hoofstomp
-local timerSummonTwisterCD		= mod:NewCDTimer(15, 132670, nil, nil, nil, 3)--Kirrawk
-local timerThrowNetCD			= mod:NewCDTimer(20, 133308, nil, nil, nil, 3)--Fran and Riddoh
-local timerGoblinDeviceCD		= mod:NewCDTimer(22, 133227, nil, nil, nil, 3)--Fran and Riddoh
-local timerChompCD				= mod:NewCDTimer(8, 135342)--Bruce
-local timerDivineCircleCD		= mod:NewCDTimer(35, 142585)--Insufficent data to say if accurate with certainty --Ahoo'ru
+local timerLumberingChargeCD		= mod:NewCDTimer(7, 134527, nil, nil, nil, 3)--Goredome
+local timerShieldWaller				= mod:NewBuffActiveTimer(10, 134650)--Smash Hoofstomp
+local timerSummonTwisterCD			= mod:NewCDTimer(15, 132670, nil, nil, nil, 3)--Kirrawk
+local timerThrowNetCD				= mod:NewCDTimer(20, 133308, nil, nil, nil, 3)--Fran and Riddoh
+local timerGoblinDeviceCD			= mod:NewCDTimer(22, 133227, nil, nil, nil, 3)--Fran and Riddoh
+local timerChompCD					= mod:NewCDTimer(8, 135342)--Bruce
+local timerDivineCircleCD			= mod:NewCDTimer(35, 142585)--Insufficent data to say if accurate with certainty --Ahoo'ru
 local timerSmolderingHeatCD			= mod:NewCDTimer(20, 142400)--Anthracite
 local timerCooled					= mod:NewTargetTimer(20, 141371, nil, nil, nil, 6)--Anthracite
 local timerRockpaperScissorsCD		= mod:NewCDTimer(42, 141206, nil, nil, nil, 6)--Ro-Shambo
@@ -207,8 +207,7 @@ end
 
 --This event won't really work well for spectators if they target the player instead of boss. This event only fires if boss is on target/focus
 --It is however the ONLY event you can detect this spell using.
-function mod:UNIT_SPELLCAST_CHANNEL_START(uId, _, bfaSpellId, _, legacySpellId)
-	local spellId = legacySpellId or bfaSpellId
+function mod:UNIT_SPELLCAST_CHANNEL_START(uId, _, spellId)
 	if not brawlersMod.Options.SpectatorMode and not brawlersMod:PlayerFighting() then return end--Spectator mode is disabled, do nothing.
 	if spellId == 134527 and self:AntiSpam() then
 		timerLumberingChargeCD:Start()

@@ -6,7 +6,6 @@ mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
 
 mod:RegisterEvents(
 	"UNIT_SPELLCAST_SUCCEEDED player",
---	"UNIT_EXITED_VEHICLE player",
 	"RAID_BOSS_WHISPER"
 )
 mod.noStatistics = true
@@ -21,14 +20,11 @@ local warnTotalAdds				= mod:NewAnnounce("warnTotalAdds", 2)
 
 local specWarnWave				= mod:NewSpecialWarning("specWarnWave", nil, nil, nil, 2, 2)
 
---local timerWave					= mod:NewTimer(170, "timerWave")
-
 local wave = 0
 local addCount = 0
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 92816 then--Create Battery (Game Start)
---		timerWave:Start(285)
 		wave = 0
 		addCount = 0
 	elseif spellId == 91739 then--Zombie
@@ -53,22 +49,5 @@ function mod:RAID_BOSS_WHISPER(msg)
 		addCount = 0
 		specWarnWave:Show()
 		specWarnWave:Play("mobsoon")
-		--Need more data to confirm this, timing may be based off something else more accurate
---[[		if wave == 1 then
-			timerWave:Start(298)
-		elseif wave == 2 then
-			timerWave:Start(230)
-		elseif wave == 3 then
-			timerWave:Start(240)
-		elseif wave == 4 then
-			timerWave:Start(170)
-		elseif wave == 5 then
-			timerWave:Start(198)
-		end	-]]
 	end
 end
-
-function mod:UNIT_EXITED_VEHICLE(uId)
---	timerWave:Cancel()
-end
-
