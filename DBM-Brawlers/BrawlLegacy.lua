@@ -16,20 +16,20 @@ mod:RegisterEvents(
 )
 
 --Basicly a mod of retired bosses that are no longer in use, but kept preserved in legacy mod in case they exist SOMEWHERE or return
-local warnShadowStrikes			= mod:NewSpellAnnounce(126209, 3)--Akama
-local warnChainLightning		= mod:NewSpellAnnounce(39945, 3)--Akama
-local warnVolatileFlames		= mod:NewSpellAnnounce(134740, 3)--Vian the Volatile
-local warnFireLine				= mod:NewCastAnnounce(133607, 4, 2)--Vian the Volatile
-local warnDevastatingThrust		= mod:NewSpellAnnounce(134777, 4)--Ixx
-local warnFallenKin				= mod:NewStackAnnounce(134789, 3)--Yikkan Izu
-local warnDisorientingShriek	= mod:NewSpellAnnounce(134795, 3)--Yikkan Izu
-local warnHammerFist			= mod:NewCastAnnounce(141104, 4)--Doctor FIST
-local warnRainDance				= mod:NewSpellAnnounce(124860, 4)--Proboskus
-local warnTorrent				= mod:NewSpellAnnounce(124935, 4)--Proboskus
-local warnShadowbolt			= mod:NewSpellAnnounce(125212, 3)--Dark Summoner
-local warnGhost					= mod:NewSpellAnnounce(133465, 4)--Dark Summoner
-local warnMines					= mod:NewCountAnnounce(133018, 3)--Battletron
-local warnMinesSpawning			= mod:NewSpellAnnounce(133015, 4)--Battletron
+local warnShadowStrikes				= mod:NewSpellAnnounce(126209, 3)--Akama
+local warnChainLightning			= mod:NewSpellAnnounce(39945, 3)--Akama
+local warnVolatileFlames			= mod:NewSpellAnnounce(134740, 3)--Vian the Volatile
+local warnFireLine					= mod:NewCastAnnounce(133607, 4, 2)--Vian the Volatile
+local warnDevastatingThrust			= mod:NewSpellAnnounce(134777, 4)--Ixx
+local warnFallenKin					= mod:NewStackAnnounce(134789, 3)--Yikkan Izu
+local warnDisorientingShriek		= mod:NewSpellAnnounce(134795, 3)--Yikkan Izu
+local warnHammerFist				= mod:NewCastAnnounce(141104, 4)--Doctor FIST
+local warnRainDance					= mod:NewSpellAnnounce(124860, 4)--Proboskus
+local warnTorrent					= mod:NewSpellAnnounce(124935, 4)--Proboskus
+local warnShadowbolt				= mod:NewSpellAnnounce(125212, 3)--Dark Summoner
+local warnGhost						= mod:NewSpellAnnounce(133465, 4)--Dark Summoner
+local warnMines						= mod:NewCountAnnounce(133018, 3)--Battletron
+local warnMinesSpawning				= mod:NewSpellAnnounce(133015, 4)--Battletron
 local warnEightChomps				= mod:NewSpellAnnounce(142788, 4)--Mecha-Bruce
 local warnBetterStrongerFaster		= mod:NewSpellAnnounce(142795, 2)--Mecha-Bruce
 local warnStasisBeam				= mod:NewSpellAnnounce(142769, 3)--Mecha-Bruce
@@ -48,17 +48,17 @@ local warnHeatedPokers				= mod:NewSpellAnnounce(133286, 4)--Dungeon Master Vish
 local warnIntensifyingAssault		= mod:NewStackAnnounce(141396, 3)--T440 Dual-Mode Robot
 local warnPrecisionArtillery		= mod:NewStackAnnounce(141401, 3)--T440 Dual-Mode Robot
 
-local specWarnShadowStrikes		= mod:NewSpecialWarningDispel(126209, "MagicDispeller")--Akama
-local specWarnChainLightning	= mod:NewSpecialWarningInterrupt(39945)--Akama
-local specWarnFireLine			= mod:NewSpecialWarningDodge(133607)--Vian the Volatile
-local specWarnDevastatingThrust	= mod:NewSpecialWarningDodge(134777)--Ixx
-local specWarnDisorientingShriek= mod:NewSpecialWarningInterrupt(134795)--Yikkan Izu
-local specWarnHammerFist		= mod:NewSpecialWarningRun(141104, nil, nil, nil, 3)--Doctor FIST
-local specWarnRainDance			= mod:NewSpecialWarningSpell(124860, nil, nil, nil, 2)--Proboskus
-local specWarnTorrent			= mod:NewSpecialWarningInterrupt(124935)--Proboskus
-local specWarnShadowbolt		= mod:NewSpecialWarningSpell(125212, false)--Let you choose which one is important to warn for(Dark Summoner)
-local specWarnGhost				= mod:NewSpecialWarningSpell(133465, false)--Dark Summoner
-local specWarnMinesSpawning		= mod:NewSpecialWarningSpell(133015)--Battletron
+local specWarnShadowStrikes			= mod:NewSpecialWarningDispel(126209, "MagicDispeller")--Akama
+local specWarnChainLightning		= mod:NewSpecialWarningInterrupt(39945)--Akama
+local specWarnFireLine				= mod:NewSpecialWarningDodge(133607)--Vian the Volatile
+local specWarnDevastatingThrust		= mod:NewSpecialWarningDodge(134777)--Ixx
+local specWarnDisorientingShriek	= mod:NewSpecialWarningInterrupt(134795)--Yikkan Izu
+local specWarnHammerFist			= mod:NewSpecialWarningRun(141104, nil, nil, nil, 3)--Doctor FIST
+local specWarnRainDance				= mod:NewSpecialWarningSpell(124860, nil, nil, nil, 2)--Proboskus
+local specWarnTorrent				= mod:NewSpecialWarningInterrupt(124935)--Proboskus
+local specWarnShadowbolt			= mod:NewSpecialWarningSpell(125212, false)--Let you choose which one is important to warn for(Dark Summoner)
+local specWarnGhost					= mod:NewSpecialWarningSpell(133465, false)--Dark Summoner
+local specWarnMinesSpawning			= mod:NewSpecialWarningSpell(133015)--Battletron
 local specWarnEightChomps			= mod:NewSpecialWarningDodge(142788)--Mecha-Bruce
 local specWarnBlindCleave			= mod:NewSpecialWarningRun(246127, nil, nil, 2, 4)--Blind Hero
 local specWarnBoomingBoogaloo		= mod:NewSpecialWarningSpell(140894, nil, nil, nil, 2)--Master Boom Boom
@@ -70,17 +70,17 @@ local specWarnHeatedPokers			= mod:NewSpecialWarningSpell(133286)--Dungeon Maste
 local specWarnIntensifyingAssault	= mod:NewSpecialWarningStack(141396, true, 10)--T440 Dual-Mode Robot
 local specWarnPrecisionArtillery	= mod:NewSpecialWarningStack(141401, true, 10)--T440 Dual-Mode Robot
 
-local timerShadowStrikes		= mod:NewBuffActiveTimer(15, 126209)--Akama
-local timerChainLightningCD		= mod:NewCDTimer(17, 39945, nil, nil, nil, 4)--Akama
-local timerVolatileFlamesCD		= mod:NewCDTimer(11, 134740)--Vian the Volatile
-local timerFireLineCD			= mod:NewCDTimer(15, 133607, nil, nil, nil, 3)--Vian the Volatile
-local timerDevastatingThrustCD	= mod:NewCDTimer(12, 134777, nil, nil, nil, 3)--Ixx
-local timerFallenKin			= mod:NewBuffActiveTimer(2, 134789)--Yikkan Izu
-local timerRainDanceCD			= mod:NewCDTimer(18, 124860, nil, nil, nil, 2)--Proboskus
-local timerTorrentCD			= mod:NewCDTimer(18, 124935, nil, nil, nil, 4)--Proboskus
-local timerShriekCD				= mod:NewCDTimer(23, 134795)
-local timerShadowboltCD			= mod:NewCDTimer(12, 125212, nil, nil, nil, 4)--Dark Summoner
-local timerGhostCD				= mod:NewNextTimer(13, 133465, nil, nil, nil, 1)--Dark Summoner
+local timerShadowStrikes			= mod:NewBuffActiveTimer(15, 126209)--Akama
+local timerChainLightningCD			= mod:NewCDTimer(17, 39945, nil, nil, nil, 4)--Akama
+local timerVolatileFlamesCD			= mod:NewCDTimer(11, 134740)--Vian the Volatile
+local timerFireLineCD				= mod:NewCDTimer(15, 133607, nil, nil, nil, 3)--Vian the Volatile
+local timerDevastatingThrustCD		= mod:NewCDTimer(12, 134777, nil, nil, nil, 3)--Ixx
+local timerFallenKin				= mod:NewBuffActiveTimer(2, 134789)--Yikkan Izu
+local timerRainDanceCD				= mod:NewCDTimer(18, 124860, nil, nil, nil, 2)--Proboskus
+local timerTorrentCD				= mod:NewCDTimer(18, 124935, nil, nil, nil, 4)--Proboskus
+local timerShriekCD					= mod:NewCDTimer(23, 134795)
+local timerShadowboltCD				= mod:NewCDTimer(12, 125212, nil, nil, nil, 4)--Dark Summoner
+local timerGhostCD					= mod:NewNextTimer(13, 133465, nil, nil, nil, 1)--Dark Summoner
 local timerEightChompsCD			= mod:NewCDTimer(9.5, 142788, nil, nil, nil, 3)--Mecha-Bruce
 local timerBetterStrongerFasterCD	= mod:NewCDTimer(20, 142795)--Mecha-Bruce
 local timerStasisBeamCD				= mod:NewCDTimer(20, 142769, nil, nil, nil, 3)--Mecha-Bruce
@@ -309,8 +309,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
-function mod:UNIT_SPELLCAST_INTERRUPTED(uId, _, bfaSpellId, _, legacySpellId)
-	local spellId = legacySpellId or bfaSpellId
+function mod:UNIT_SPELLCAST_INTERRUPTED(uId, _, spellId)
 	if not brawlersMod.Options.SpectatorMode and not brawlersMod:PlayerFighting() then return end--Spectator mode is disabled, do nothing.
 	if spellId == 133346 and self:AntiSpam() then
 		timerDarkZoneCD:Start(4)--Interrupting dark zone does not put it on cd, he will recast it 4 seconds later
@@ -318,8 +317,7 @@ function mod:UNIT_SPELLCAST_INTERRUPTED(uId, _, bfaSpellId, _, legacySpellId)
 end
 
 --It is however the ONLY event you can detect this spell using.
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, bfaSpellId, _, legacySpellId)
-	local spellId = legacySpellId or bfaSpellId
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if not brawlersMod.Options.SpectatorMode and not brawlersMod:PlayerFighting() then return end--Spectator mode is disabled, do nothing.
 	if spellId == 133253 and self:AntiSpam() then
 		warnCharging:Show()

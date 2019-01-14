@@ -13,16 +13,6 @@ mod:RegisterEvents(
 	"ZONE_CHANGED_NEW_AREA"
 )
 
---TODO. Add option to disable volume normalizing.
---TODO, ram racing stuff
---local warnCleave				= mod:NewSpellAnnounce(104903, 2)
---local warnStarfall			= mod:NewSpellAnnounce(26540, 3)
-
---local specWarnStarfall		= mod:NewSpecialWarningMove(26540)
-
---local timerCleaveCD			= mod:NewCDTimer(8.5, 104903, nil, nil, nil, 6)
---local timerStarfallCD			= mod:NewCDTimer(15, 26540, nil, nil, nil, 2)
-
 mod:AddBoolOption("NormalizeVolume", true, "misc")
 
 local setActive = false
@@ -80,16 +70,3 @@ function mod:ZONE_CHANGED_NEW_AREA()
 	end
 end
 mod.OnInitialize = mod.ZONE_CHANGED_NEW_AREA
-
---[[
-function mod:SPELL_CAST_SUCCESS(args)
-	local spellId = args.spellId
-	if spellId == 104903 then
-		warnCleave:Show()
-		timerCleaveCD:Start()
-	elseif spellId == 26540 then
-		warnStarfall:Show()
-		timerStarfallCD:Start()
-	end
-end
---]]
