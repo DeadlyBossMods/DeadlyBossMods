@@ -29,7 +29,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 285671 285875 286434 285659",
 	"SPELL_AURA_APPLIED_DOSE 285875 285671",
 	"SPELL_AURA_REMOVED 286434 285659",
-	"SPELL_ENERGIZE 282533 282243",
+--	"SPELL_ENERGIZE 282533 282243",
 	"UNIT_DIED"
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
@@ -44,11 +44,9 @@ mod:RegisterEventsInCombat(
 --]]
 --TODO, detect Voodoo Blast targets and add runout?
 --TODO, add exploding soon and now warnings?
---local warnXorothPortal				= mod:NewSpellAnnounce(244318, 2, nil, nil, nil, nil, nil, 7)
 local warnCrushed						= mod:NewStackAnnounce(285671, 3, nil, "Tank")
 local warnRendingBite					= mod:NewStackAnnounce(285875, 2, nil, "Tank")
 local warnCore							= mod:NewTargetNoFilterAnnounce(coreSpellId, 2)
---local warnRupturingBlood				= mod:NewStackAnnounce(274358, 2, nil, "Tank")
 
 local specWarnEnergyAOE					= mod:NewSpecialWarningCount(energyAOESpellId, nil, nil, nil, 2, 2)
 local specWarnSlam						= mod:NewSpecialWarningDodge(slamSpellId, nil, nil, nil, 2, 2)
@@ -63,10 +61,10 @@ local specWarnThrow						= mod:NewSpecialWarningTaunt(289292, nil, nil, nil, 1, 
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 8)
 
 --mod:AddTimerLine(DBM:EJ_GetSectionInfo(18527))
-local timerEnergyAOECD					= mod:NewCDCountTimer(100, energyAOESpellId, nil, nil, nil, 2)
+--local timerEnergyAOECD					= mod:NewCDCountTimer(100, energyAOESpellId, nil, nil, nil, 2)
 local timerTankComboCD					= mod:NewCDTimer(30.3, tankComboId, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerSlamCD						= mod:NewCDTimer(29.1, slamSpellId, nil, nil, nil, 3)
---local timerFerociousRoarCD				= mod:NewCDTimer(21.9, 285994, nil, nil, nil, 2)
+local timerFerociousRoarCD				= mod:NewCDTimer(5.5, 285994, nil, nil, nil, 2)--27-33
 local timerAddCD						= mod:NewCDTimer(120, addSpawnId, nil, nil, nil, 1)
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
@@ -86,6 +84,13 @@ mod.vb.EnergyAOECount = 0
 mod.vb.comboCount = 0
 local coreTargets = {}
 local castsPerGUID = {}
+
+
+local function fearRepeater(self)
+	timerFerociousRoarCD:Start()
+	self:Schedule(5.5, fearRepeater, self)
+end
+
 
 local updateInfoFrame
 do
@@ -129,14 +134,17 @@ function mod:OnCombatStart(delay)
 	timerSlamCD:Start(13.2-delay)
 	timerAddCD:Start(16.8-delay)
 	timerTankComboCD:Start(18-delay)
-	--timerFerociousRoarCD:Start(27.7-delay)--VERIFY
-	timerEnergyAOECD:Start(100-delay, 1)
+--	timerFerociousRoarCD:Start(27.7-delay)--VERIFY
+--	timerEnergyAOECD:Start(100-delay, 1)
 --	if self.Options.NPAuraOnPresence then
 --		DBM:FireEvent("BossMod_EnableHostileNameplates")
 --	end
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(OVERVIEW)
 		DBM.InfoFrame:Show(8, "function", updateInfoFrame, false, false)
+	end
+	if DBM.Options.DebugMode then
+		self:Schedule(5.5, fearRepeater, self)
 	end
 end
 
@@ -158,9 +166,9 @@ function mod:SPELL_CAST_START(args)
 		self.vb.EnergyAOECount = self.vb.EnergyAOECount + 1
 		specWarnEnergyAOE:Show(self.vb.EnergyAOECount)
 		specWarnEnergyAOE:Play("aesoon")
-		timerEnergyAOECD:Stop()
-		timerEnergyAOECD:Start(100, self.vb.EnergyAOECount+1)
-	elseif spellId == 285994 then
+		--timerEnergyAOECD:Stop()
+		--timerEnergyAOECD:Start(100, self.vb.EnergyAOECount+1)
+--	elseif spellId == 285994 then
 		--specWarnFerociousRoar:Show()
 		--specWarnFerociousRoar:Play("fearsoon")
 		--timerFerociousRoarCD:Start()
@@ -278,7 +286,6 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spell
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
---]]
 
 function mod:SPELL_ENERGIZE(_, _, _, _, destGUID, _, _, _, spellId, _, _, amount)
 	if (spellId == 282533 or spellId == 282243) and destGUID == UnitGUID("boss1") then
@@ -295,6 +302,7 @@ function mod:SPELL_ENERGIZE(_, _, _, _, destGUID, _, _, _, spellId, _, _, amount
 		end
 	end
 end
+--]]
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
