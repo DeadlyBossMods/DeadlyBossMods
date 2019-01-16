@@ -54,7 +54,7 @@ local warnGrieviousAxe					= mod:NewTargetNoFilterAnnounce(284781, 2, nil, "Heal
 local warnVoodooDoll					= mod:NewSpellAnnounce(285402, 3)
 local warnScorchingDetonation			= mod:NewCastAnnounce(284831, 2, nil, false)
 ----Bwonsamdi
-local warnDeathsDoor					= mod:NewTargetAnnounce(288449, 2)
+local warnDeathsDoor					= mod:NewTargetNoFilterAnnounce(288449, 2)
 --Stage Three: Enter the Death Realm
 local warnDreadreaping					= mod:NewSpellAnnounce(287116, 3)
 local warnInevitableEnd					= mod:NewSpellAnnounce(287333, 3)
@@ -542,11 +542,11 @@ function mod:OnSync(msg, target)
 			end
 			timerInevitableEndCD:Start()
 		end
-	elseif msg == "DeathsDoor" then--Rastakhan (in p3, in P2 where we don't sync, bwonsamdi)
+	elseif msg == "DeathsDoor" then--Rastakhan (in p3+, in P2 where we don't sync, bwonsamdi)
 		if playerDeathPhase then
 			timerDeathsDoorCD:Start()
 		end
-	elseif msg == "DeathsDoorTarget" then--Rastakhan (in p3, in P2 where we don't sync, bwonsamdi)
+	elseif msg == "DeathsDoorTarget" then--Rastakhan (in p3+, in P2 where we don't sync, bwonsamdi)
 		if playerDeathPhase and self.Options.AnnounceAlternatePhase then
 			warnDeathsDoor:Show(target)
 		end
