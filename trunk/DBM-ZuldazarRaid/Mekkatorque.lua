@@ -44,7 +44,7 @@ local warnHyperDrive					= mod:NewTargetNoFilterAnnounce(286051, 3)
 local specWarnBusterCannon				= mod:NewSpecialWarningDodge(282153, nil, nil, nil, 2, 2)
 local specWarnBlastOff					= mod:NewSpecialWarningRun(282205, "Melee", nil, nil, 4, 2)
 --local specWarnCrashDown					= mod:NewSpecialWarningDodge(287797, nil, nil, nil, 2, 2)
-local specWarnGigaVoltCharge			= mod:NewSpecialWarningYou(286646, nil, nil, nil, 1, 2)
+local specWarnGigaVoltCharge			= mod:NewSpecialWarningYouPos(286646, nil, nil, nil, 1, 2)
 local yellGigaVoltCharge				= mod:NewPosYell(286646)
 local yellGigaVoltChargeFades			= mod:NewIconFadesYell(286646)
 local specWarnGigaVoltChargeFading		= mod:NewSpecialWarningMoveTo(286646, nil, nil, nil, 3, 2)
@@ -52,8 +52,9 @@ local specWarnGigaVoltChargeTaunt		= mod:NewSpecialWarningTaunt(286646, nil, nil
 local specWarnWormholeGenerator 		= mod:NewSpecialWarningSpell(287952, nil, nil, nil, 2, 5)
 local specWarnDiscombobulation			= mod:NewSpecialWarningDispel(287167, "Healer", nil, nil, 1, 2)--Mythic
 local specWarnDeploySparkBot			= mod:NewSpecialWarningSwitch(288410, nil, nil, nil, 1, 2)
-local specWarnShrunk					= mod:NewSpecialWarningYou(284168, nil, nil, nil, 1, 2)
+local specWarnShrunk					= mod:NewSpecialWarningYouPos(284168, nil, nil, nil, 1, 2)
 local yellShrunk						= mod:NewYell(284168)--Shrunk will just say with white letters
+local yellShrunkRepeater				= mod:NewPosYell(284168, DBM_CORE_AUTO_YELL_CUSTOM_POSITION)
 local specWarnEnormous					= mod:NewSpecialWarningYou(289023, nil, nil, nil, 1, 2)--Mythic
 local yellEnormous						= mod:NewYell(289023, nil, nil, nil, "YELL")--Enormous will shout with red letters
 --Intermission: Evasive Maneuvers!
@@ -257,6 +258,11 @@ local explodingSheepTimers = {
 	},
 }
 
+local function shrunkYellRepeater(self, icon)
+	yellShrunkRepeater:Yell(icon, "", icon)
+	self:Schedule(2, shrunkYellRepeater, self, icon)
+end
+
 function mod:OnCombatStart(delay)
 	self.vb.phase = 1
 	self.vb.shrunkIcon = 8
@@ -431,10 +437,10 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 287757 then--Or 283409 or 286646
 		local icon = self.vb.gigaIcon
 		if args:IsPlayer() then
-			specWarnGigaVoltCharge:Show()
+			specWarnGigaVoltCharge:Show(self:IconNumToTexture(icon))
 			specWarnGigaVoltCharge:Play("targetyou")
 			specWarnGigaVoltChargeFading:Schedule(10, DBM_CORE_BREAK_LOS)--Or self:IconNumToTexture(icon)
-			specWarnGigaVoltChargeFading:ScheduleVoice(10, "findshelter")--TODO, more specific voice
+			specWarnGigaVoltChargeFading:ScheduleVoice(10, "mm"..icon)--TODO, more specific voice
 			yellGigaVoltCharge:Yell(icon, icon, icon)
 			yellGigaVoltChargeFades:Countdown(15, nil, icon)
 		else
@@ -453,13 +459,18 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnDiscombobulation:ScheduleVoice(0.3, "helpdispel")
 	elseif spellId == 284168 then
 		warnShrunk:CombinedShow(0.5, args.destName)
+		local icon = self.vb.shrunkIcon
 		if args:IsPlayer() then
-			specWarnShrunk:Show()
+			specWarnShrunk:Show(self:IconNumToTexture(icon))
 			specWarnShrunk:Play("targetyou")
-			yellShrunk:Yell()
+			yellShrunk:Yell(icon, args.spellName, icon)
+			if not self:IsLFR() then
+				self:Unschedule(shrunkYellRepeater)
+				self:Schedule(2, shrunkYellRepeater, self, icon)
+			end
 		end
 		if self.Options.SetIconShrunk then
-			self:SetIcon(args.destName, self.vb.shrunkIcon)
+			self:SetIcon(args.destName, icon)
 		end
 		self.vb.shrunkIcon = self.vb.shrunkIcon - 1
 	elseif spellId == 289023 then
@@ -488,6 +499,9 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 284168 then
 		if self.Options.SetIconShrunk then
 			self:SetIcon(args.destName, 0)
+		end
+		if args:IsPlayer() then
+			self:Unschedule(shrunkYellRepeater)
 		end
 	end
 end
