@@ -30,6 +30,7 @@ mod:RegisterEventsInCombat(
 --]]
 --Figure out right crush idea, too many to guess right, also need to see how it's done by source
 --TODO, more trap work, especially ruby beam targetting
+--TODO, auto correction code (for tank ability at least)
 --The Zandalari Crown Jewels
 local warnGrosslyIncandescent			= mod:NewTargetNoFilterAnnounce(284798, 1)
 --Stage One: Raiding The Vault
