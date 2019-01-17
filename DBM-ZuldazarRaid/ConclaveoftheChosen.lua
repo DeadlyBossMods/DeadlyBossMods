@@ -7,7 +7,7 @@ mod:SetEncounterID(2268)
 --mod:DisableESCombatDetection()
 mod:SetZone()
 mod:SetBossHPInfoToHighest()
---mod:SetUsedIcons(1, 2, 8)
+mod:SetUsedIcons(1, 2, 3, 4)
 --mod:SetHotfixNoticeRev(17775)
 --mod:SetMinSyncRevision(16950)
 --mod.respawnTime = 35
@@ -28,6 +28,7 @@ mod:RegisterEventsInCombat(
 )
 
 --TODO, fine tune Lacerating Claws swap stacks
+--TODO, fix timer updating on "death" for wraths
 --General
 local warnActivated						= mod:NewTargetAnnounce(118212, 3, 78740, nil, nil, nil, nil, nil, true)
 --Gonk's Aspect
@@ -46,12 +47,12 @@ local specWarnActivated					= mod:NewSpecialWarningSwitchCount(118212, "Tank", D
 --Pa'ku's Aspect
 local specWarnGiftofWind				= mod:NewSpecialWarningSpell(282098, nil, nil, nil, 2, 2)
 local specWarnHasteningWinds			= mod:NewSpecialWarningCount(270447, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.stack:format(8, 270447), nil, 1, 2)
-local specWarnHasteningWindsOther		= mod:NewSpecialWarningTaunt(270447, nil, nil, nil, 1, 2)
+local specWarnHasteningWindsOther		= mod:NewSpecialWarningTaunt(270447, nil, nil, nil, 1, 2)--Should be dispelled vs tank swapped, but in super low case a 10 man group has no dispeller, we need tank warning
 local specWarnPakusWrath				= mod:NewSpecialWarningMoveTo(282107, nil, nil, nil, 3, 2)
 --Gonk's Aspect
 local specWarnCrawlingHex				= mod:NewSpecialWarningYou(282135, nil, nil, nil, 1, 2)
-local yellCrawlingHex					= mod:NewYell(282135)
-local yellCrawlingHexFades				= mod:NewFadesYell(282135)
+local yellCrawlingHex					= mod:NewPosYell(282135)
+local yellCrawlingHexFades				= mod:NewIconFadesYell(282135)
 local specWarnCrawlingHexNear			= mod:NewSpecialWarningClose(282135, nil, nil, nil, 1, 2)
 local specWarnRaptorForm				= mod:NewSpecialWarningDefensive(285889, nil, nil, nil, 3, 2)
 local specWarnGonksWrath				= mod:NewSpecialWarningSwitch(282155, "Dps", nil, nil, 1, 2)
@@ -98,8 +99,8 @@ local timerBwonsamdisWrathCD			= mod:NewCDCountTimer(50, 284666, nil, nil, nil, 
 --local berserkTimer					= mod:NewBerserkTimer(600)
 
 local countdownPakusWrath				= mod:NewCountdown(70, 282107, true, nil, 5)
---local countdownLaceratingClaws				= mod:NewCountdown("Alt12", 244016, false, 2, 3)
---local countdownFelstormBarrage			= mod:NewCountdown("AltTwo32", 244000, nil, nil, 3)
+--local countdownLaceratingClaws		= mod:NewCountdown("Alt12", 244016, false, 2, 3)
+--local countdownFelstormBarrage		= mod:NewCountdown("AltTwo32", 244000, nil, nil, 3)
 
 --mod:AddSetIconOption("SetIconGift", 255594, true)
 --mod:AddRangeFrameOption("8/10")
@@ -107,9 +108,11 @@ mod:AddInfoFrameOption(282079, true)--Not real spellID, just filler for now
 mod:AddNamePlateOption("NPAuraOnPact", 282079)
 mod:AddNamePlateOption("NPAuraOnPackHunter", 286007)
 mod:AddNamePlateOption("NPAuraOnFixate", 282209)
---mod:AddSetIconOption("SetIconDarkRev", 273365, true)
+mod:AddSetIconOption("SetIconHex", 282135, false)
 
 --mod.vb.phase = 1
+mod.vb.hexIcon = 1
+mod.vb.hexIgnore = false
 mod.vb.ignoredActivate = true
 mod.vb.pakuWrathCount = 0
 mod.vb.wrathCount = 0
@@ -119,8 +122,14 @@ local function clearActivateIgnore(self)
 	self.vb.ignoredActivate = false
 end
 
+local function setHexIgnore(self)
+	self.vb.hexIgnore = false
+end
+
 function mod:OnCombatStart(delay)
 	table.wipe(raptorsSeen)
+	self.vb.hexIcon = 1
+	self.vb.hexIgnore = false
 	self.vb.ignoredActivate = true
 	self.vb.pakuWrathCount = 0
 	self.vb.wrathCount = 0
@@ -188,6 +197,9 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 282135 then
+		self.vb.hexIcon = 1
+		self.vb.hexIgnore = false
+		self:Schedule(1.5, setHexIgnore, self)
 		timerCrawlingHexCD:Start()
 	elseif spellId == 282444 then
 		timerLaceratingClawsCD:Start()
@@ -240,11 +252,12 @@ function mod:SPELL_AURA_APPLIED(args)
 			DBM.Nameplate:Show(true, args.destGUID, spellId)
 		end
 	elseif spellId == 282135 then
+		local icon = self.vb.hexIcon
 		if args:IsPlayer() then
 			specWarnCrawlingHex:Show()
 			specWarnCrawlingHex:Play("targetyou")
-			yellCrawlingHex:Yell()
-			yellCrawlingHexFades:Countdown(5)
+			yellCrawlingHex:Yell(icon, icon, icon)
+			yellCrawlingHexFades:Countdown(5, nil, icon)
 		elseif self:CheckNearby(8, args.destName) and not DBM:UnitDebuff("player", spellId) then
 			specWarnCrawlingHexNear:CombinedShow(0.3, args.destName)
 			specWarnCrawlingHexNear:CancelVoice()--Avoid spam
@@ -252,6 +265,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			warnCrawlingHex:CombinedShow(0.3, args.destName)
 		end
+		if self.Options.SetIconHex then
+			self:SetIcon(args.destName, icon)
+		end
+		self.vb.hexIcon = self.vb.hexIcon + 1
 	elseif spellId == 282209 then
 		if args:IsPlayer() then
 			specWarnMarkofPrey:Show()
@@ -377,15 +394,15 @@ end
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 	if msg:find("spell:282107") then
 		self.vb.pakuWrathCount = self.vb.pakuWrathCount + 1
-		specWarnPakusWrath:Show("Birdo")
+		specWarnPakusWrath:Show(L.Bird)
 		specWarnPakusWrath:Play("gathershare")
-		if self:IsMythic() then
+--		if self:IsMythic() then
 			timerPakusWrathCD:Start(60, self.vb.pakuWrathCount+1)
 			countdownPakusWrath:Start(60)
-		else
-			timerPakusWrathCD:Start(70, self.vb.pakuWrathCount+1)
-			countdownPakusWrath:Start(70)
-		end
+--		else
+--			timerPakusWrathCD:Start(70, self.vb.pakuWrathCount+1)
+--			countdownPakusWrath:Start(70)
+--		end
 	end
 end
 
@@ -404,9 +421,10 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 			timerGiftofWindCD:Stop()
 			local pakusWrathRemaining = timerPakusWrathCD:GetRemaining(self.vb.pakuWrathCount+1) or 0
 			if pakusWrathRemaining >= 14 then
-				--if it's less than 13, it's going to happen regardless of pakus death, because bird spawns 13 seconds before cast
+				--if it's less than 13, it's going to happen regardless of death, because bird spawns 13 seconds before cast
 				timerPakusWrathCD:Stop()
 				countdownPakusWrath:Cancel()
+				--TODO, start new wrath timer
 			end
 		elseif cid == 144767 then--Gonk's Aspect
 			timerCrawlingHexCD:Stop()
@@ -415,10 +433,12 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		elseif cid == 144963 then--Kimbul's Aspect
 			timerLaceratingClawsCD:Stop()
 			timerKinbulsWrathCD:Stop()
+			--TODO, start new wrath timer
 		elseif cid == 144941 then--Akunda's Aspect
 			timerThunderingStormCD:Stop()
 			timerMindWipeCD:Stop()
 			timerAkundasWrathCD:Stop()
+			--TODO, start new wrath timer
 		--elseif cid == 145388 then--Krag'wa
 			--timerKragwasWrathCD:Stop()
 		end
