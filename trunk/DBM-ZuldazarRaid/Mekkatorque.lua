@@ -498,7 +498,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			if self:IsTanking("player", "boss1", nil, true) then
 				specWarnElectroshockAmp:Show(amount)
 				specWarnElectroshockAmp:Play("changemt")
-			else
+			elseif not DBM:UnitDebuff("player", 284168, 287757) then--Don't have shrunk or giga
 				specWarnElectroshockAmpOther:Show(args.destName)
 				specWarnElectroshockAmpOther:Play("tauntboss")
 			end
