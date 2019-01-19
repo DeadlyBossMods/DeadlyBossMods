@@ -71,12 +71,12 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(2332)
 
 ---------------------------
---  Sea Priest Blockade (Both) --
+--  Sea Priest Blockade (Horde) --
 ---------------------------
 L= DBM:GetModLocalization(2337)
 
 ---------------------------
---  Jaina Proudmoore (Both?) --
+--  Jaina Proudmoore (Horde) --
 ---------------------------
 L= DBM:GetModLocalization(2343)
 

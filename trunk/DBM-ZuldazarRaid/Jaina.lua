@@ -60,6 +60,7 @@ local warnFrostNova						= mod:NewCastAnnounce(289219, 3)
 
 --General
 local specWarnFreezingBlood				= mod:NewSpecialWarningYou(289387, nil, nil, nil, 1, 2)
+local specWarnChillingStack				= mod:NewSpecialWarningStack(287993, nil, 2, nil, nil, 1, 6)
 --Stage One: Burning Seas
 local specWarnMarkedTarget				= mod:NewSpecialWarningRun(288038, nil, nil, nil, 4, 2)
 local yellMarkedTarget					= mod:NewYell(288038, nil, false)
@@ -310,7 +311,12 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 	elseif spellId == 287993 then
-		ChillingTouchStacks[args.destName] = args.amount or 1
+		local amount = args.amount or 1
+		ChillingTouchStacks[args.destName] = amount
+		if args:IsPlayer() and amount >= 15 and amount % 2 == 1 then--15, 17, 19
+			specWarnChillingStack:Show(amount)
+			specWarnChillingStack:Play("stackhigh")
+		end
 	elseif spellId == 287490 then
 		warnFrozenSolid:CombinedShow(0.5, args.destName)
 	elseif spellId == 289387 then
