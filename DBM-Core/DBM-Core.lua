@@ -2223,6 +2223,7 @@ do
 			if DBM.InfoFrame:IsShown() then
 				DBM.InfoFrame:Hide()
 			else
+				DBM.InfoFrame:SetHeader(DBM_CORE_INFOFRAME_AGGRO)
 				DBM.InfoFrame:Show(7, "playeraggro", 1)
 			end
 		else
