@@ -2219,6 +2219,12 @@ do
 			else
 				DBM.InfoFrame:Show(5, "test")
 			end
+		elseif cmd:sub(1, 10) == "aggroframe" then
+			if DBM.InfoFrame:IsShown() then
+				DBM.InfoFrame:Hide()
+			else
+				DBM.InfoFrame:Show(7, "playeraggro", 2)
+			end
 		else
 			DBM:LoadGUI()
 		end
