@@ -2223,7 +2223,7 @@ do
 			if DBM.InfoFrame:IsShown() then
 				DBM.InfoFrame:Hide()
 			else
-				DBM.InfoFrame:Show(7, "playeraggro", 2)
+				DBM.InfoFrame:Show(7, "playeraggro", 1)
 			end
 		else
 			DBM:LoadGUI()
