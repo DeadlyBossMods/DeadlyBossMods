@@ -58,8 +58,8 @@ local specWarnWormholeGenerator 		= mod:NewSpecialWarningSpell(287952, nil, nil,
 local specWarnDiscombobulation			= mod:NewSpecialWarningDispel(287167, "Healer", nil, nil, 1, 2)--Mythic
 local specWarnDeploySparkBot			= mod:NewSpecialWarningSwitch(288410, nil, nil, nil, 1, 2)
 local specWarnShrunk					= mod:NewSpecialWarningYouPos(284168, nil, nil, nil, 1, 2)
-local yellShrunk						= mod:NewYell(284168)--Shrunk will just say with white letters
-local yellShrunkRepeater				= mod:NewPosYell(284168, DBM_CORE_AUTO_YELL_CUSTOM_POSITION)
+local yellShrunk						= mod:NewShortYell(284168)--Shrunk will just say with white letters
+local yellShrunkRepeater				= mod:NewYell(284168, UnitName("player"))
 local specWarnShrunkTaunt				= mod:NewSpecialWarningTaunt(284168, nil, nil, nil, 1, 2)
 local specWarnEnormous					= mod:NewSpecialWarningYou(289023, nil, nil, nil, 1, 2)--Mythic
 local yellEnormous						= mod:NewYell(289023, nil, nil, nil, "YELL")--Enormous will shout with red letters
@@ -94,7 +94,7 @@ mod:AddSetIconOption("SetIconShrunk", 284168, true)
 --mod:AddSetIconOption("SetIconDarkRev", 273365, true)
 
 mod.vb.phase = 1
-mod.vb.shrunkIcon = 8
+--mod.vb.shrunkIcon = 8
 --Count variables for every timer, because stupid sequence mod
 mod.vb.botCount = 0
 mod.vb.cannonCount = 0
@@ -111,73 +111,57 @@ local sparkBotTimers = {
 		[1] = {},
 		[1.5] = {},
 		[2] = {},
-		[2.5] = {},
-		[3] = {},
 	},
 	["normal"] = {
 		[1] = {},
 		[1.5] = {},
 		[2] = {},
-		[2.5] = {},
-		[3] = {},
 	},
 	["heroic"] = {
 		[1] = {5, 30, 50, 20},
 		[1.5] = {21.9, 15},
 		[2] = {5, 25, 40, 30},
-		[2.5] = {21.9, 15},--Assumed
-		[3] = {},
 	},
 	["mythic"] = {
 		[1] = {19.8, 20, 22.7, 40, 17.1},
 		[1.5] = {},
 		[2] = {},
-		[2.5] = {},
-		[3] = {},
 	},
 }
 local busterCannonTimers = {
 	["lfr"] = {
 		[1] = {},
 		[2] = {},
-		[3] = {},
 	},
 	["normal"] = {
 		[1] = {},
 		[2] = {},
-		[3] = {},
 	},
 	["heroic"] = {
 		[1] = {15, 25, 27, 43},
 		[2] = {10.5, 25, 30, 40},
-		[3] = {},
 	},
 	["mythic"] = {
 		[1] = {10.1, 26.4, 12.9, 20.9, 24.5, 15.4},
 		[2] = {},
-		[3] = {},
 	},
 }
 local blastOffTimers = {
 	["lfr"] = {
 		[1] = {},
 		[2] = {},
-		[3] = {},
 	},
 	["normal"] = {
 		[1] = {},
 		[2] = {},
-		[3] = {},
 	},
 	["heroic"] = {
 		[1] = {25, 32, 18, 25},
 		[2] = {20.5, 31.1, 28.9, 15},
-		[3] = {},
 	},
 	["mythic"] = {
 		[1] = {29.8, 60.2},
 		[2] = {},
-		[3] = {},
 	},
 }
 local wormholeTimers = {
@@ -185,34 +169,32 @@ local wormholeTimers = {
 	["heroic"] = {
 		[1] = {53, 42},
 		[2] = {48.5, 42.1},
-		[3] = {},
 	},
 	["mythic"] = {
 		[1] = {41.7, 17.1, 39.5, 27.5},
 		[2] = {},
-		[3] = {},
 	},
 }
-local gigaVoltTImers = {
+local gigaVoltTimers = {
 	["lfr"] = {
 		[1] = {},
+		[1.5] = {},
 		[2] = {},
-		[3] = {},
 	},
 	["normal"] = {
 		[1] = {},
+		[1.5] = {},
 		[2] = {},
-		[3] = {},
 	},
 	["heroic"] = {
 		[1] = {21.5, 31, 39},
+		[1.5] = {},
 		[2] = {17, 31, 29},
-		[3] = {},
 	},
 	["mythic"] = {
 		[1] = {16.9, 80.5},
+		[1.5] = {},
 		[2] = {},
-		[3] = {},
 	},
 }
 local worldEnlargerTimers = {
@@ -220,58 +202,46 @@ local worldEnlargerTimers = {
 		[1] = {},
 		[1.5] = {},
 		[2] = {},
-		[2.5] = {},
-		[3] = {},
 	},
 	["normal"] = {
 		[1] = {},
 		[1.5] = {},
 		[2] = {},
-		[2.5] = {},
-		[3] = {},
 	},
 	["heroic"] = {
 		[1] = {65},
 		[1.5] = {7.9, 17.1},
 		[2] = {113},
-		[2.5] = {7.9, 17.1},--Assumed
-		[3] = {},
 	},
 	["mythic"] = {
 		[1] = {78.2},
 		[1.5] = {},
 		[2] = {},
-		[2.5] = {},
-		[3] = {},
 	},
 }
 local explodingSheepTimers = {
 	["lfr"] = {
 		[1.5] = {},
-		[2.5] = {},
 	},
 	["normal"] = {
 		[1.5] = {},
-		[2.5] = {},
 	},
 	["heroic"] = {
 		[1.5] = {12.9, 17.0, 15.0},
-		[2.5] = {12.9, 17.0, 15.0},--Assumed, could be different too
 	},
 	["mythic"] = {
 		[1.5] = {},
-		[2.5] = {},
 	},
 }
 
 local function shrunkYellRepeater(self, icon)
-	yellShrunkRepeater:Yell(icon, "", icon)
-	self:Schedule(2, shrunkYellRepeater, self, icon)
+	yellShrunkRepeater:Yell()
+	self:Schedule(2, shrunkYellRepeater, self)
 end
 
 function mod:OnCombatStart(delay)
 	self.vb.phase = 1
-	self.vb.shrunkIcon = 8
+	--self.vb.shrunkIcon = 8
 	self.vb.botCount = 0
 	self.vb.cannonCount = 0
 	self.vb.blastOffcount = 0
@@ -423,13 +393,13 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 287757 then
 		self.vb.gigaCount = self.vb.gigaCount + 1
-		local timer = gigaVoltTImers[self.vb.difficultyName][self.vb.phase][self.vb.gigaCount+1]
+		local timer = gigaVoltTimers[self.vb.difficultyName][self.vb.phase][self.vb.gigaCount+1]
 		if timer then
 			timerGigaVoltChargeCD:Start(timer, self.vb.gigaCount+1)
 		end
 	elseif spellId == 286693 or spellId == 288041 or spellId == 288049 then--288041 used in intermission first, 288049 second in intermission, 286693 outside intermission
 		self.vb.shrinkCount = self.vb.shrinkCount + 1
-		self.vb.shrunkIcon = 8
+		--self.vb.shrunkIcon = 8
 		local timer = worldEnlargerTimers[self.vb.difficultyName][self.vb.phase][self.vb.shrinkCount+1]
 		if timer then
 			timerWorldEnlargerCD:Start(timer, self.vb.shrinkCount+1)
@@ -464,14 +434,14 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnDiscombobulation:ScheduleVoice(0.3, "helpdispel")
 	elseif spellId == 284168 then
 		warnShrunk:CombinedShow(0.5, args.destName)
-		local icon = self.vb.shrunkIcon
+		--local icon = self.vb.shrunkIcon
 		if args:IsPlayer() then
 			specWarnShrunk:Show(self:IconNumToTexture(icon))
 			specWarnShrunk:Play("targetyou")
-			yellShrunk:Yell(icon, args.spellName, icon)
+			yellShrunk:Yell()
 			if not self:IsLFR() then
 				self:Unschedule(shrunkYellRepeater)
-				self:Schedule(2, shrunkYellRepeater, self, icon)
+				self:Schedule(2, shrunkYellRepeater, self)
 			end
 		else
 			local uId = DBM:GetRaidUnitId(args.destName)
@@ -480,10 +450,10 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnShrunkTaunt:Play("tauntboss")
 			end
 		end
-		if self.Options.SetIconShrunk then
-			self:SetIcon(args.destName, icon)
-		end
-		self.vb.shrunkIcon = self.vb.shrunkIcon - 1
+		--if self.Options.SetIconShrunk then
+		--	self:SetIcon(args.destName, icon)
+		--end
+		--self.vb.shrunkIcon = self.vb.shrunkIcon - 1
 	elseif spellId == 289023 then
 		if args:IsPlayer() then
 			specWarnEnormous:Show()
