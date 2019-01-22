@@ -134,7 +134,7 @@ mod:AddInfoFrameOption(287993, false)--Will be changed to true later, right now 
 mod:AddNamePlateOption("NPAuraOnMarkedTarget", 288038)
 mod:AddNamePlateOption("NPAuraOnTimeWarp", 287925)
 mod:AddNamePlateOption("NPAuraOnRefractiveIce", 288219)
-mod:AddSetIconOption("SetIconGraspofFrost", 287626, true)
+mod:AddSetIconOption("SetIconGraspofFrost2", 287626, false)
 
 mod.vb.phase = 1
 mod.vb.corsairCount = 0
@@ -344,7 +344,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 287626 then
 		specWarGraspofFrost:CombinedShow(0.5, args.destName)
 		specWarGraspofFrost:ScheduleVoice(0.5, "helpdispel")
-		if self.Options.SetIconGraspofFrost then
+		if self.Options.SetIconGraspofFrost2 then
 			self:SetIcon(args.destName, self.vb.GraspofFrostIcon)
 		end
 		self.vb.GraspofFrostIcon = self.vb.GraspofFrostIcon + 1
@@ -432,7 +432,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			DBM.Nameplate:Hide(true, args.sourceGUID, spellId)
 		end
 	elseif spellId == 287626 then
-		if self.Options.SetIconGraspofFrost then
+		if self.Options.SetIconGraspofFrost2 then
 			self:SetIcon(args.destName, 0)
 		end
 	elseif spellId == 288199 or spellId == 290053 then--Howling Winds
