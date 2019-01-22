@@ -40,6 +40,7 @@ mod:RegisterEventsInCombat(
 --TODO, shattering lance script and warning/cast timer
 --TODO, what spells do Prismatic Images copy, so it can be handled by timer code
 --TODO, Crystalline Dust was never used at all during heroic testing.
+--Todo, broadside icons?
 --General
 local warnPhase							= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
 local warnFrozenSolid					= mod:NewTargetNoFilterAnnounce(287490, 4)
@@ -73,7 +74,7 @@ local specWarnFreezingBlast				= mod:NewSpecialWarningDodge(285177, nil, nil, ni
 local specWarnRingofIce					= mod:NewSpecialWarningRun(285459, nil, nil, nil, 4, 2)
 --Stage Two: Frozen Wrath
 local specWarnGTFO						= mod:NewSpecialWarningGTFO(288297, nil, nil, nil, 1, 8)
-local specWarnBroadside					= mod:NewSpecialWarningYou(288212, nil, nil, nil, 1, 2)
+local specWarnBroadside					= mod:NewSpecialWarningMoveAway(288212, nil, nil, nil, 1, 2)
 local yellBroadside						= mod:NewYell(288212)
 local yellBroadsideFades				= mod:NewShortFadesYell(288212)
 local specWarnSiegebreaker				= mod:NewSpecialWarningMoveAway(288374, nil, nil, nil, 3, 2)
@@ -107,7 +108,7 @@ local timerRingofIceCD					= mod:NewCDTimer(60.7, 285459, nil, nil, nil, 2, nil,
 local timerBroadsideCD					= mod:NewCDTimer(31.5, 288212, nil, nil, nil, 3)
 local timerSiegebreakerCD				= mod:NewCDTimer(59.9, 288374, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
 --local timerCrystallineDustCD			= mod:NewCDTimer(14.1, 289940, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--Was never used during fight
-local timerHandofFrostCD				= mod:NewCDTimer(55, 288412, nil, nil, nil, 3)--Timer is only for first cast of phase, after that, can't tell cast from jump
+--local timerHandofFrostCD				= mod:NewCDTimer(55, 288412, nil, nil, nil, 3)--Timer is only for first cast of phase, after that, can't tell cast from jump
 local timerGlacialRayCD					= mod:NewCDTimer(49.8, 288345, nil, nil, nil, 3)--49.8-61.1?
 local timerIcefallCD					= mod:NewCDTimer(43.4, 288475, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
 --local timerIcefall						= mod:NewCastTimer(55, 288475, nil, nil, nil, 3)
@@ -250,7 +251,7 @@ function mod:SPELL_CAST_START(args)
 		timerSiegebreakerCD:Stop()
 		--timerCrystallineDustCD:Stop()
 		timerAvalancheCD:Stop()
-		timerHandofFrostCD:Stop()
+		--timerHandofFrostCD:Stop()
 		timerGlacialRayCD:Stop()
 		timerIcefallCD:Stop()
 	elseif spellId == 289219 then
@@ -313,7 +314,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 287993 then
 		local amount = args.amount or 1
 		ChillingTouchStacks[args.destName] = amount
-		if args:IsPlayer() and amount >= 15 and amount % 2 == 1 then--15, 17, 19
+		if args:IsPlayer() and (amount == 12 or amount >= 15 and amount % 2 == 1) then--12, 15, 17, 19
 			specWarnChillingStack:Show(amount)
 			specWarnChillingStack:Play("stackhigh")
 		end
@@ -441,7 +442,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerBroadsideCD:Start(2)--It actually is 2 seconds
 		timerGlacialRayCD:Start(6.6)
 		timerAvalancheCD:Start(16.3)
-		timerHandofFrostCD:Start(21.5)--21.5-25.57
+		--timerHandofFrostCD:Start(21.5)--21.5-25.57
 		--timerCrystallineDustCD:Start(2)
 		if not self:IsLFR() then
 			timerIcefallCD:Start(30.8)
