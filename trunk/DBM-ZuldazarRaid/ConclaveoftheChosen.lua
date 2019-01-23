@@ -16,7 +16,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 282098 282107 285889 282155 282411",
-	"SPELL_CAST_SUCCESS 282135 282444 285878",
+	"SPELL_CAST_SUCCESS 282444 285878",
 	"SPELL_AURA_APPLIED 282079 285945 282135 286007 282209 282444 282834 286811 284663",
 --	"SPELL_AURA_REFRESH 282079",
 	"SPELL_AURA_APPLIED_DOSE 285945 282444",
@@ -199,12 +199,7 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 282135 then
-		self.vb.hexIcon = 1
-		self.vb.hexIgnore = false
-		self:Schedule(1.5, setHexIgnore, self)
-		timerCrawlingHexCD:Start()
-	elseif spellId == 282444 then
+	if spellId == 282444 then
 		timerLaceratingClawsCD:Start()
 	elseif spellId == 285878 then
 		timerMindWipeCD:Start()
@@ -480,6 +475,11 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		--elseif cid == 145388 then--Krag'wa
 			--timerKragwasWrathCD:Start(2)
 		end
+	elseif spellId == 283193 then--Since blizzard hates combat log so much (clawing hex)
+		self.vb.hexIcon = 1
+		self.vb.hexIgnore = false
+		self:Schedule(1.5, setHexIgnore, self)
+		timerCrawlingHexCD:Start()
 	end
 end
 
