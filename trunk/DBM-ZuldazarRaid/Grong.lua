@@ -63,7 +63,7 @@ local specWarnThrow						= mod:NewSpecialWarningTaunt(289292, nil, nil, nil, 1, 
 --mod:AddTimerLine(DBM:EJ_GetSectionInfo(18527))
 --local timerEnergyAOECD					= mod:NewCDCountTimer(100, energyAOESpellId, nil, nil, nil, 2)
 local timerTankComboCD					= mod:NewCDTimer(30.3, tankComboId, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
-local timerSlamCD						= mod:NewCDTimer(29.1, slamSpellId, nil, nil, nil, 3)
+local timerSlamCD						= mod:NewCDTimer(28, slamSpellId, nil, nil, nil, 3)
 local timerFerociousRoarCD				= mod:NewCDTimer(37, 285994, nil, nil, nil, 2)--27-33
 local timerAddCD						= mod:NewCDTimer(120, addSpawnId, nil, nil, nil, 1)
 
