@@ -31,7 +31,7 @@ mod:RegisterEventsInCombat(
 )
 
 --[[
-(ability.id = 284469 or ability.id = 284436) and type = "begincast"
+(ability.id = 284469 or ability.id = 284436 or ability.id = 287469 or ability.id = 283598) and type = "begincast"
 --]]
 --TODO, swap count for Sacred Blade? Should it be a force swap in LFR?
 --TODO, maybe a custom huge interrupt icon for the nameplate cast icon for angelic?

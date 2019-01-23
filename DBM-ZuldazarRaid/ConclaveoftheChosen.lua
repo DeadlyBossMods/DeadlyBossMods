@@ -28,7 +28,15 @@ mod:RegisterEventsInCombat(
 )
 
 --TODO, fine tune Lacerating Claws swap stacks
---TODO, fix timer updating on "death" for wraths
+--TODO, fine tune attack speed swaps?
+--Line 2 of expression is wraths (that's right blizz put 0 of them in combat log)
+--Line 3 of expression is hex, separated in case want to filter it out since it is a log spammer
+--[[
+(ability.id = 282098 or ability.id = 282107 or ability.id = 285889 or ability.id = 282155 or ability.id = 282411) and type = "begincast"
+ or (ability.id = 282444 or ability.id = 285878 or ability.id = 282636) and type = "cast"
+ or (ability.id = 282209 or ability.id = 282834 or ability.id = 286811 or ability.id = 284663) and type = "applydebuff"
+ or (ability.id = 282135) and type = "applydebuff"
+--]]
 --General
 local warnActivated						= mod:NewTargetAnnounce(118212, 3, 78740, nil, nil, nil, nil, nil, true)
 --Paku's Aspect

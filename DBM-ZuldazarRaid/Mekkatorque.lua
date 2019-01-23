@@ -32,7 +32,6 @@ mod:RegisterEventsInCombat(
 --TODO, icon marking for poly morph dispel assignments?
 --TODO, nameplate aura for tampering protocol, if it has actual debuff diration (wowhead does not)
 --TODO, if number of bots can be counted, add additional "switch to bots" warnings when shrunk is applied if any are still up
---TODO, scrap existing timers and redo them for 3 phase fight instead of 5
 --TODO, wormhole generator target scan? hidden aura scan?
 --TODO, adjust electroshock stacks?
 local warnPhase							= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
