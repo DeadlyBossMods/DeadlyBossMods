@@ -76,7 +76,7 @@ local specWarnFlashofPhoenixes			= mod:NewSpecialWarningSpell(284388, nil, nil, 
 
 --mod:AddTimerLine(DBM:EJ_GetSectionInfo(18527))
 --local timerDarkRevolationCD			= mod:NewCDCountTimer(55, 273365, nil, nil, nil, 3)
-local timerMultiSidedStrikeCD			= mod:NewCDTimer(55.9, 282030, nil, nil, nil, 5, 2, DBM_CORE_TANK_ICON)--35-60, cause variation is awesome
+local timerMultiSidedStrikeCD			= mod:NewCDTimer(55.9, 282030, nil, nil, 2, 5, nil, DBM_CORE_TANK_ICON)--35-60, cause variation is awesome
 local timerSpiritsofXuenCD				= mod:NewCDTimer(40.1, 285645, nil, nil, nil, 1, nil, DBM_CORE_HEROIC_ICON)
 local timerRollCD						= mod:NewCDTimer(40.1, 286427, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 --Mage
