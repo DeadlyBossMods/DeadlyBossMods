@@ -32,6 +32,7 @@ mod:RegisterEventsInCombat(
  or ability.id = 285347 and type = "cast" and source.id = 145616
  or (ability.id = 285003 or ability.id = 285402) and type = "summon"
  or (ability.id = 284276 or ability.id = 284446) and (type = "applybuff" or type = "removebuff")
+ or ability.id = 288117 and type = "applydebuff"
 --]]
 --TODO, is serpent totem a kill target or a reposition raid one in most strats?
 --TODO, detect voodoo doll targets? wasn't even used on heroic test (at least in phases 1-3)
@@ -51,8 +52,8 @@ local warnMeteorLeap					= mod:NewTargetNoFilterAnnounce(284686, 2)
 ----Headhunter Gal'wana
 local warnGrieviousAxe					= mod:NewTargetNoFilterAnnounce(284781, 2, nil, "Healer")
 --Stage Two: Bwonsamdi's Pact
-local warnVoodooDoll					= mod:NewSpellAnnounce(285402, 3)
-local warnScorchingDetonation			= mod:NewCastAnnounce(284831, 2, nil, false)
+--local warnVoodooDoll					= mod:NewSpellAnnounce(285402, 3)
+local warnScorchingDetonation			= mod:NewTargetNoFilterAnnounce(284831, 2)
 ----Bwonsamdi
 local warnDeathsDoor					= mod:NewTargetNoFilterAnnounce(288449, 2)
 --Stage Three: Enter the Death Realm
@@ -87,7 +88,7 @@ local specWarnZombieDustTotem			= mod:NewSpecialWarningSwitch(285003, "Dps", nil
 ----Bwonsamdi
 local specWarnCaressofDeath				= mod:NewSpecialWarningDefensive(288415, nil, nil, nil, 1, 2)
 local specWarnCaressofDeathOther		= mod:NewSpecialWarningTaunt(288415, false, nil, 2, 1, 2)
-local specWarnSufferingSpirits			= mod:NewSpecialWarningCount(283504, nil, nil, nil, 2, 2)
+--local specWarnSufferingSpirits			= mod:NewSpecialWarningCount(283504, nil, nil, nil, 2, 2)
 local specWarnDeathsDoor				= mod:NewSpecialWarningMoveAway(288449, nil, nil, nil, 3, 2)
 local yellDeathsDoor					= mod:NewYell(288449)
 local yellDeathsDoorFades				= mod:NewFadesYell(288449)
@@ -113,14 +114,15 @@ local timerGrievousAxeCD				= mod:NewCDTimer(17.1, 284781, nil, nil, nil, 3, nil
 --Stage Two: Bwonsamdi's Pact
 local timerPlagueofFireCD				= mod:NewCDTimer(23, 285347, nil, nil, nil, 3)
 local timerZombieDustTotemCD			= mod:NewCDTimer(44.9, 285003, nil, nil, nil, 1)
-local timerVoodooDollCD					= mod:NewAITimer(14.1, 285402, nil, nil, nil, 1)
+--local timerVoodooDollCD					= mod:NewAITimer(14.1, 285402, nil, nil, nil, 1)
 ----Bwonsamdi
-local timerSufferingSpiritsCD			= mod:NewAITimer(14.1, 283504, nil, nil, nil, 2)
+--local timerSufferingSpiritsCD			= mod:NewAITimer(14.1, 283504, nil, nil, nil, 2)
 local timerDeathsDoorCD					= mod:NewCDTimer(27.9, 288449, nil, nil, nil, 3)
 --Stage Three: Enter the Death Realm
 local timerSpiritVortex					= mod:NewCastTimer(5, 284478, nil, nil, nil, 6)
 local timerDreadReapingCD				= mod:NewCDTimer(14.1, 287116, nil, nil, nil, 3)
-local timerInevitableEndCD				= mod:NewCDTimer(14.1, 287333, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
+local timerInevitableEndCD				= mod:NewCDTimer(75, 287333, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
+local timerAddsCD						= mod:NewAddsTimer(120, 284446, nil, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON)--Generic Timer only used on Mythic
 ----Spirits
 local timerSealofBwonCD					= mod:NewCDTimer(25.5, 286695, nil, nil, nil, 5)
 
@@ -139,7 +141,7 @@ mod:AddBoolOption("AnnounceAlternatePhase", false, "announce")
 --mod:AddSetIconOption("SetIconDarkRev", 273365, true)
 
 mod.vb.phase = 1
-mod.vb.sufferingSpirits = 0
+--mod.vb.sufferingSpirits = 0
 local playerDeathPhase = false
 local infoframeTable = {}
 
@@ -163,7 +165,7 @@ end
 
 function mod:OnCombatStart(delay)
 	self.vb.phase = 1
-	self.vb.sufferingSpirits = 0
+	--self.vb.sufferingSpirits = 0
 	playerDeathPhase = false
 	table.wipe(infoframeTable)
 	if not self:IsLFR() then
@@ -205,9 +207,9 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 284831 then
 		if self.vb.phase >= 3 then
 			timerScorchingDetonationCD:Start(32.8)
-			if self:LatencyCheck() then
-				self:SendSync("ScorchingDetonation")
-			end
+			--if self:LatencyCheck() then
+			--	self:SendSync("ScorchingDetonation")
+			--end
 		elseif self.vb.phase == 2 then
 			timerScorchingDetonationCD:Start(32.8)
 		else--Phase 1
@@ -225,23 +227,36 @@ function mod:SPELL_CAST_START(args)
 		timerMeteorLeapCD:Start()
 		self:ScheduleMethod(0.2, "BossTargetScanner", args.sourceGUID, "MeteorLeapTarget", 0.1, 8, true, nil, nil, nil, true)
 	elseif spellId == 283504 then
-		self.vb.sufferingSpirits = self.vb.sufferingSpirits + 1
-		specWarnSufferingSpirits:Show(self.vb.sufferingSpirits)
-		specWarnSufferingSpirits:Play("aesoon")
-		timerSufferingSpiritsCD:Start()
+		DBM:AddMsg("Blizzard added Suffering Spirits, alert DBM Author")
+		--self.vb.sufferingSpirits = self.vb.sufferingSpirits + 1
+		--specWarnSufferingSpirits:Show(self.vb.sufferingSpirits)
+		--specWarnSufferingSpirits:Play("aesoon")
+		--timerSufferingSpiritsCD:Start()
 	elseif spellId == 287116 and self:AntiSpam(5, 1) then
-		warnDreadreaping:Show()
+		if not playerDeathPhase then
+			if self.Options.AnnounceAlternatePhase then
+				warnDreadreaping:Show()
+			end
+		else
+			warnDreadreaping:Show()
+		end
 		--timerDreadReapingCD:Start()
-		if self:LatencyCheck() then
-			self:SendSync("DreadReaping")
-		end
+		--if self:LatencyCheck() then
+		--	self:SendSync("DreadReaping")
+		--end
 	elseif spellId == 287333 then
-		specWarnInevitableEnd:Show()
-		specWarnInevitableEnd:Play("justrun")
-		--timerInevitableEndCD:Start()
-		if self:LatencyCheck() then
-			self:SendSync("InevitableEnd")
+		if not playerDeathPhase then
+			if self.Options.AnnounceAlternatePhase then
+				warnInevitableEnd:Show()
+			end
+		else
+			specWarnInevitableEnd:Show()
+			specWarnInevitableEnd:Play("justrun")
 		end
+		timerInevitableEndCD:Start()
+		--if self:LatencyCheck() then
+		--	self:SendSync("InevitableEnd")
+		--end
 	elseif spellId == 286695 and self:AntiSpam(5, 2) then
 		warnSealofBwonsamdi:Show()
 		timerSealofBwonCD:Start()
@@ -258,11 +273,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerGrievousAxeCD:Start()
 	elseif spellId == 288449 then
 		timerDeathsDoorCD:Start()
-		if self.vb.phase >= 3 then
-			if self:LatencyCheck() then
-				self:SendSync("DeathsDoor")--used by rastakhan in P3
-			end
-		end
+		--if self.vb.phase >= 3 then
+		--	if self:LatencyCheck() then
+		--		self:SendSync("DeathsDoor")--used by rastakhan in P3
+		--	end
+		--end
 	elseif spellId == 285347 and self:AntiSpam(3, 3) and args:GetSrcCreatureID() == 145616 then--Plague of Fire
 		timerPlagueofFireCD:Start()
 	elseif spellId == 285172 then
@@ -280,17 +295,23 @@ end
 function mod:SPELL_SUMMON(args)
 	local spellId = args.spellId
 	if spellId == 285003 then
-		specWarnZombieDustTotem:Show()
-		specWarnZombieDustTotem:Play("attacktotem")
-		timerZombieDustTotemCD:Start()
-		if self.vb.phase >= 3 then
-			if self:LatencyCheck() then
-				self:SendSync("ZombieTotem")
+		if playerDeathPhase then
+			if self.Options.AnnounceAlternatePhase then
+				warnZombieTotem:Show()
 			end
+		else
+			specWarnZombieDustTotem:Show()
+			specWarnZombieDustTotem:Play("attacktotem")
 		end
-	elseif spellId == 285402 then
-		warnVoodooDoll:Show()
-		timerVoodooDollCD:Start()
+		timerZombieDustTotemCD:Start()
+		--if self.vb.phase >= 3 then
+		--	if self:LatencyCheck() then
+		--		self:SendSync("ZombieTotem")
+		--	end
+		--end
+--	elseif spellId == 285402 then
+		--warnVoodooDoll:Show()
+		--timerVoodooDollCD:Start()
 	end
 end
 
@@ -303,8 +324,14 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellScorchingDetonation:Yell()
 			yellScorchingDetonationFades:Countdown(5)
 		else
-			specWarnScorchingDetonationOther:Show(args.destName)
-			specWarnScorchingDetonationOther:Play("tauntboss")
+			if playerDeathPhase then
+				if self.Options.AnnounceAlternatePhase then
+					warnScorchingDetonation:Show(args.destName)
+				end
+			else
+				specWarnScorchingDetonationOther:Show(args.destName)
+				specWarnScorchingDetonationOther:Play("tauntboss")
+			end
 		end
 	elseif spellId == 285195 then
 		infoframeTable[args.destName] = args.amount or 1
@@ -353,9 +380,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			warnDeathsDoor:Show(args.destName)
 		end
-		if self.vb.phase >= 3 then
-			self:SendSync("DeathsDoorTarget", args.destName)
-		end
+		--if self.vb.phase >= 3 then
+		--	self:SendSync("DeathsDoorTarget", args.destName)
+		--end
 	elseif spellId == 284446 and self.vb.phase < 3 then--Bwonsamdi's Boon
 		self.vb.phase = 3
 		warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(3))
@@ -363,20 +390,21 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerScorchingDetonationCD:Stop()
 		timerPlagueofFireCD:Stop()
 		timerZombieDustTotemCD:Stop()
-		timerVoodooDollCD:Stop()
-		timerSufferingSpiritsCD:Stop()
+		--timerVoodooDollCD:Stop()
+		--timerSufferingSpiritsCD:Stop()
 		timerDeathsDoorCD:Stop()
 		
 		--Rasta
 		timerSpiritVortex:Start(5)
+		timerAddsCD:Start(6)
 		--timerZombieDustTotemCD:Start(3)--Not actually used in Stage 3?
 		timerDeathsDoorCD:Start(27.5)--SUCCESS
 		timerScorchingDetonationCD:Start(32.8)
 		timerPlagueofFireCD:Start(40)
 		--Bwon
 		timerDreadReapingCD:Start(7.6)
-		timerInevitableEndCD:Start(35.9)
-		timerSealofBwonCD:Start(43)
+		timerInevitableEndCD:Start(35.8)
+		timerSealofBwonCD:Start(39.2)
 --		self:RegisterShortTermEvents(
 --			"SPELL_PERIODIC_DAMAGE 286772",
 --			"SPELL_PERIODIC_MISSED 286772"
@@ -444,12 +472,12 @@ function mod:SPELL_AURA_REMOVED(args)
 		--Rasta
 		timerZombieDustTotemCD:Start(26.3)
 		timerScorchingDetonationCD:Start(33.6)
-		timerPlagueofFireCD:Start(40.7)
-		timerPlagueofToadsCD:Start(61.5)--Seen on mythic, on other difficulties?
-		timerSufferingSpiritsCD:Start(2)--Never seen on heroic or mythic
+		timerPlagueofFireCD:Start(40.7)--40-42
+		timerPlagueofToadsCD:Start(47.1)
+		--timerSufferingSpiritsCD:Start(2)--Never seen on heroic or mythic
 		--Bwon
-		timerDeathsDoorCD:Start(64.2)
-		timerVoodooDollCD:Start(2)--Never seen on heroic
+		timerDeathsDoorCD:Start(59.8)
+		--timerVoodooDollCD:Start(2)--Never seen on heroic
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(8)
 		end
@@ -503,27 +531,24 @@ function mod:UNIT_DIED(args)
 	end
 end
 
---[[
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	--if spellId == 285347 then--Plague of Fire
-	
-	--elseif spellId == 287165 then--King Rastakhan P1 -> P2 Conversation (alternate P2 start
+	--"<292.22 16:58:46> [UNIT_SPELLCAST_SUCCEEDED] King Rastakhan(??) -Summon Phantom of Retribution- boss1:Cast-3-2083-2070-6821-284540-002A522E86:284540
+	--"<292.24 16:58:46> [UNIT_SPELLCAST_SUCCEEDED] King Rastakhan(??) -Summon Phantom of Rage- boss1:Cast-3-2083-2070-6821-284542-002C522E86:284542
+	--"<292.24 16:58:46> [UNIT_SPELLCAST_SUCCEEDED] King Rastakhan(??) -Summon Phantom of Slaughter- boss1:Cast-3-2083-2070-6821-284543-002E522E86:284543
+	--"<292.24 16:58:46> [UNIT_SPELLCAST_SUCCEEDED] King Rastakhan(??) -Summon Phantom of Ruin- boss1:Cast-3-2083-2070-6821-284544-002FD22E86:284544
+	if spellId == 284540 then--Summon Phantom of Retribution
 
---"<292.22 16:58:46> [UNIT_SPELLCAST_SUCCEEDED] King Rastakhan(??) -Summon Phantom of Retribution- boss1:Cast-3-2083-2070-6821-284540-002A522E86:284540
---"<292.24 16:58:46> [UNIT_SPELLCAST_SUCCEEDED] King Rastakhan(??) -Summon Phantom of Rage- boss1:Cast-3-2083-2070-6821-284542-002C522E86:284542
---"<292.24 16:58:46> [UNIT_SPELLCAST_SUCCEEDED] King Rastakhan(??) -Summon Phantom of Slaughter- boss1:Cast-3-2083-2070-6821-284543-002E522E86:284543
---"<292.24 16:58:46> [UNIT_SPELLCAST_SUCCEEDED] King Rastakhan(??) -Summon Phantom of Ruin- boss1:Cast-3-2083-2070-6821-284544-002FD22E86:284544
-	--end
+	end
 end
---]]
 
+--[[
 --On sync will always enable timers for both phases, so players changing phases will have working timers
 --Announce alternate phase simply enables showing general announces for other phases as well
 function mod:OnSync(msg, target)
 	if msg == "ScorchingDetonation" then--Rastakhan
 		if playerDeathPhase then
 			if self.Options.AnnounceAlternatePhase then
-				warnScorchingDetonation:Show()
+				warnScorchingDetonation:Show(target)
 			end
 			timerScorchingDetonationCD:Start(32.8)
 		end
@@ -539,7 +564,7 @@ function mod:OnSync(msg, target)
 			if self.Options.AnnounceAlternatePhase then
 				warnInevitableEnd:Show()
 			end
-			--timerInevitableEndCD:Start()
+			timerInevitableEndCD:Start()
 		end
 	elseif msg == "DeathsDoor" then--Rastakhan (in p3+, in P2 where we don't sync, bwonsamdi)
 		if playerDeathPhase then
@@ -558,3 +583,4 @@ function mod:OnSync(msg, target)
 		end
 	end
 end
+--]]
