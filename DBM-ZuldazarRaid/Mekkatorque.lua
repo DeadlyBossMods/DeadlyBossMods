@@ -105,7 +105,7 @@ mod.vb.gigaIcon = 1
 mod.vb.shrinkCount = 0
 mod.vb.sheepCount = 0
 mod.vb.difficultyName = "None"
---Normal and heroic are ALMOST identical but have at least 1 difference (which is why they are separate, for fine tuning)
+--Normal and heroic are ALMOST identical but have at least 2 differences (which is why they are separate, for fine tuning)
 local sparkBotTimers = {
 	["lfr"] = {
 		[1] = {},
