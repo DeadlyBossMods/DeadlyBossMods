@@ -8,48 +8,46 @@ mod:SetEncounterID(2280)
 mod:SetZone()
 mod:SetBossHPInfoToHighest()
 --mod:SetUsedIcons(1, 2, 8)
---mod:SetHotfixNoticeRev(17775)
+mod:SetHotfixNoticeRev(18175)
 --mod:SetMinSyncRevision(16950)
 --mod.respawnTime = 35
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 284262 284106 284393 284383 285118 285017 284362",
+	"SPELL_CAST_START 284262 284106 284393 284383 285118 285017 284362 288696",
 	"SPELL_CAST_SUCCESS 285350 285426",
-	"SPELL_AURA_APPLIED 286558 284405 285000 285382 285350 285426",
+	"SPELL_AURA_APPLIED 286558 284405 285000 285382 285350 285426 287995",
 	"SPELL_AURA_REFRESH 285000 285382",
 	"SPELL_AURA_APPLIED_DOSE 285000 285382",
-	"SPELL_AURA_REMOVED 286558 285000 285382 285350 285426",
+	"SPELL_AURA_REMOVED 286558 285000 285382 285350 285426 287995",
+	"SPELL_INTERRUPT",
 --	"SPELL_PERIODIC_DAMAGE 285075",
 --	"SPELL_PERIODIC_MISSED 285075",
 	"UNIT_DIED"
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, ability to detect what ship one is on, and filter warnings from other ship/dock
---TODO, P2 detection. UNIT_DIED probably not used for sister and brother since they stay active in some capacity
---TODO, target scan or emote for Crackling Lightning location?
 --TODO, switch to custom hybrid frame to show both shields and boss energy and storm's Wail
 --TODO, add Tidal/Jolting Volleys? Just seems like general consistent aoe damage so not worth warning yet
---TODO, add range frame show on P2 when P2 is detectable
 --TODO, icons and stuff for storm's wail
 --TODO, add "watch wave" warning for Energized wake on mythic
---local warnXorothPortal				= mod:NewSpellAnnounce(244318, 2, nil, nil, nil, nil, nil, 7)
 --Stage One: Storm the Ships
 ----General
 local warnTranslocate					= mod:NewTargetNoFilterAnnounce(284393, 2)
 ----Sister Katherine
 local warnCracklingLightning			= mod:NewCastAnnounce(284106, 3)
+local warnElecShroud					= mod:NewTargetAnnounce(287995, 4)
 ----Brother Joseph
 local warnTemptingSong					= mod:NewTargetAnnounce(284405, 2)
+local warnTidalShroud					= mod:NewTargetAnnounce(286558, 4)
 --Stage Two: Laminaria
+local warnCataTides						= mod:NewCastAnnounce(288696, 3)
 local warnKelpWrapped					= mod:NewStackAnnounce(285000, 2, nil, "Tank")
 local warnStormsWail					= mod:NewTargetNoFilterAnnounce(285350, 3)
 
 --Stage One: Storm the Ships
 ----General
-local specWarnTidalShroud				= mod:NewSpecialWarningSwitch(286558, nil, nil, nil, 3, 2)
 local specWarnTidalEmpowerment			= mod:NewSpecialWarningInterrupt(284765, "HasInterrupt", nil, nil, 1, 2)
 --local specWarnGTFO						= mod:NewSpecialWarningGTFO(285075, false, nil, 2, 1, 8)
 ----Sister Katherine
@@ -74,23 +72,25 @@ local yellStormsWailFades				= mod:NewShortFadesYell(285350)
 --mod:AddTimerLine(DBM:EJ_GetSectionInfo(18527))
 --Stage One: Storm the Ships
 ----General
-local timerTidalShroudCD				= mod:NewCDTimer(31.5, 286558, nil, nil, nil, 4, nil, DBM_CORE_DAMAGE_ICON..DBM_CORE_INTERRUPT_ICON)--Might be series timer, 37 then 31
 ----Sister Katherine
-local timerVoltaicFlashCD				= mod:NewCDTimer(17, 284262, nil, nil, nil, 3)
-local timerCracklingLightningCD			= mod:NewCDTimer(18.2, 284106, nil, nil, nil, 3)
+local timerVoltaicFlashCD				= mod:NewCDTimer(17, 284262, nil, nil, nil, 3)--17-35 wtf?
+local timerCracklingLightningCD			= mod:NewCDTimer(12.1, 284106, nil, nil, nil, 3)--12.1 and 23 alternating?
 --local timerThunderousBoomCD			= mod:NewCastTimer(55, 284120, nil, nil, nil, 2)--After timing is figured out after crackling
---local timerBloodyCleaveCD				= mod:NewAITimer(14.1, 273316, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+--local timerElecShroudCD					= mod:NewCDTimer(34, 287995, nil, nil, nil, 4, nil, DBM_CORE_DAMAGE_ICON..DBM_CORE_INTERRUPT_ICON)--34-41, maybe health based?
 ----Brother Joseph
-local timerSeaStormCD					= mod:NewCDTimer(17, 284360, nil, nil, nil, 3)
-local timerSeasTemptationCD				= mod:NewCDTimer(26.7, 284383, nil, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON)--Might be 36.1 before teleport and 26.7 after teleport
+local timerSeaStormCD					= mod:NewCDTimer(10.9, 284360, nil, nil, nil, 3)
+local timerSeasTemptationCD				= mod:NewCDTimer(35.3, 284383, nil, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON)--Might be 36.1 before teleport and 26.7 after teleport or health based
+--local timerTidalShroudCD				= mod:NewCDTimer(37, 286558, nil, nil, nil, 4, nil, DBM_CORE_DAMAGE_ICON..DBM_CORE_INTERRUPT_ICON)--Probalby health based
 --Stage Two: Laminaria
-local timerSeaSwellCD					= mod:NewCDTimer(22.4, 285118, nil, nil, nil, 3)
-local timerIreoftheDeepCD				= mod:NewCDTimer(27.9, 285017, nil, nil, nil, 5)
-local timerStormsWailCD					= mod:NewCDTimer(53.5, 285350, nil, nil, nil, 3)
+local timerCataTides					= mod:NewCastTimer(15, 288696, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
+local timerSeaSwellCD					= mod:NewCDTimer(17.0, 285118, nil, nil, nil, 3)
+local timerIreoftheDeepCD				= mod:NewCDTimer(32.9, 285017, nil, nil, nil, 5)
+local timerStormsWailCD					= mod:NewCDTimer(120.5, 285350, nil, nil, nil, 3)
+local timerStormsWail					= mod:NewTargetTimer(12, 285350, nil, nil, nil, 5)
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
 
---local countdownCollapsingWorld			= mod:NewCountdown(50, 243983, true, 3, 3)
+local countdownSeaSwell					= mod:NewCountdown(17.0, 285118, true, 3, 3)
 --local countdownRupturingBlood				= mod:NewCountdown("Alt12", 244016, false, 2, 3)
 --local countdownFelstormBarrage			= mod:NewCountdown("AltTwo32", 244000, nil, nil, 3)
 
@@ -102,22 +102,21 @@ mod:AddNamePlateOption("NPAuraOnKepWrapping", 285382)
 
 mod.vb.phase = 1
 mod.vb.bossesDied = 0
-mod.vb.firstCast = false
 local freezingTidePod = DBM:GetSpellInfo(285075)
 local activeShield = {}
 
 function mod:OnCombatStart(delay)
 	self.vb.phase = 1
 	self.vb.bossesDied = 0
-	self.vb.firstCast = false
 	table.wipe(activeShield)
 	--Sister
-	timerCracklingLightningCD:Start(10.6-delay)
-	timerTidalShroudCD:Start(17.3-delay)
-	timerVoltaicFlashCD:Start(22.7-delay)
+	timerCracklingLightningCD:Start(3.9-delay)--3.9-8.8
+	--timerElecShroudCD:Start(30-delay)
+	timerVoltaicFlashCD:Start(8.8-delay)
 	--Brother
-	timerSeaStormCD:Start(1-delay)
-	timerSeasTemptationCD:Start(11.3-delay)
+	--timerSeaStormCD:Start(7.6-delay)--0.3-8
+	timerSeasTemptationCD:Start(15.5-delay)--Might be health based
+	--timerTidalShroudCD:Start(17.3-delay)
 	if self.Options.NPAuraOnKepWrapping then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
@@ -164,12 +163,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnSeaSwell:Show()
 		specWarnSeaSwell:Play("watchstep")
 		timerSeaSwellCD:Start()
-		--Shitty P2 trigger, do better later
-		if not self.vb.firstCast then
-			self.vb.firstCast = true
-			timerIreoftheDeepCD:Start(5)
-			timerStormsWailCD:Start(14)
-		end
+		countdownSeaSwell:Start(17)
 	elseif spellId == 285017 then
 		specWarnIreoftheDeep:Show()
 		specWarnIreoftheDeep:Play("gathershare")
@@ -180,6 +174,9 @@ function mod:SPELL_CAST_START(args)
 			specWarnSeaStorm:Play("watchstep")
 		end
 		timerSeaStormCD:Start()
+	elseif spellId == 288696 then
+		warnCataTides:Show()
+		timerCataTides:Start()
 	end
 end
 
@@ -201,7 +198,7 @@ function mod:SPELL_AURA_APPLIED(args)
 					--specWarnRupturingBlood:Show(amount)
 					--specWarnRupturingBlood:Play("stackhigh")
 					yellKepWrapped:Cancel()
-					yellKepWrapped:Countdown(15)
+					yellKepWrapped:Countdown(18)
 				--else
 					--if not UnitIsDeadOrGhost("player") and not DBM:UnitDebuff("player", spellId) then--Can't taunt less you've dropped yours off, period.
 						--specWarnRupturingBloodTaunt:Show(args.destName)
@@ -215,9 +212,16 @@ function mod:SPELL_AURA_APPLIED(args)
 			--end
 		--end
 	elseif spellId == 286558 then
-		specWarnTidalShroud:Show()
-		specWarnTidalShroud:Play("targetchange")
-		self:SendSync("ShieldAdded", args.destGUID)
+		if self:CheckTankDistance(args.destGUID, 43) then
+			warnTidalShroud:Show(args.destName)
+		end
+		--timerTidalShroudCD:Start()
+		--self:SendSync("ShieldAdded", args.destGUID)
+	elseif spellId == 287995 then
+		if self:CheckTankDistance(args.destGUID, 43) then
+			warnElecShroud:Show(args.destName)
+		end
+		--timerElecShroudCD:Start()
 	elseif spellId == 284405 then
 		if args:IsPlayer() then
 			specWarnTemptingSong:Show()
@@ -239,6 +243,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			warnStormsWail:Show(args.destName)
 		end
+		timerStormsWail:Start(12, args.destName)
 	end
 end
 mod.SPELL_AURA_REFRESH = mod.SPELL_AURA_APPLIED
@@ -247,7 +252,7 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 286558 then
-		self:SendSync("ShieldRemoved", args.destGUID)
+		--self:SendSync("ShieldRemoved", args.destGUID)
 		if self:CheckInterruptFilter(args.destGUID, false, true) then
 			specWarnTidalEmpowerment:Show(args.destName)
 			specWarnTidalEmpowerment:Play("kickcast")
@@ -266,6 +271,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		if args:IsPlayer() then
 			yellStormsWailFades:Cancel()
 		end
+		timerStormsWail:Stop(12, args.destName)
 	end
 end
 
@@ -279,31 +285,35 @@ end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 --]]
 
+function mod:SPELL_INTERRUPT(args)
+	if type(args.extraSpellId) == "number" and args.extraSpellId == 288696 then
+		self.vb.phase = 2
+		timerIreoftheDeepCD:Start(3.4)
+		timerSeaSwellCD:Start(5.4)
+		countdownSeaSwell:Start(5.4)
+		timerStormsWailCD:Start(9)
+	end
+end
+
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 146251 then--Sister
 		timerVoltaicFlashCD:Stop()
 		timerCracklingLightningCD:Stop()
 		self.vb.bossesDied = self.vb.bossesDied + 1
-		if self.vb.bossesDied == 2 then
-			timerTidalShroudCD:Stop()
-		end
+		--timerElecShroudCD:Stop()
 	elseif cid == 146251 then--Brother
 		timerSeaStormCD:Stop()
 		timerSeasTemptationCD:Stop()
 		self.vb.bossesDied = self.vb.bossesDied + 1
-		if self.vb.bossesDied == 2 then
-			timerTidalShroudCD:Stop()
-		end
+		--timerTidalShroudCD:Stop()
 	end
 end
 
+--[[
 function mod:OnSync(msg, guid)
 	if msg == "ShieldAdded" and guid and not activeShield[guid] then
 		activeShield[guid] = true
-		if self:AntiSpam(5, 1) then
-			timerTidalShroudCD:Start()
-		end
 		if self.Options.InfoFrame and #activeShield == 1 then--Only trigger on first shield going up, info frame itself should scan all bosses automatically
 			for i = 1, 3 do
 				local bossUnitID = "boss"..i
@@ -323,7 +333,6 @@ function mod:OnSync(msg, guid)
 	end
 end
 
---[[
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 274315 then
 
