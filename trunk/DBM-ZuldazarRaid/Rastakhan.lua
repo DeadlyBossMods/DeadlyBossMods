@@ -121,7 +121,7 @@ local timerDeathsDoorCD					= mod:NewCDTimer(27.9, 288449, nil, nil, nil, 3)
 --Stage Three: Enter the Death Realm
 local timerSpiritVortex					= mod:NewCastTimer(5, 284478, nil, nil, nil, 6)
 local timerDreadReapingCD				= mod:NewCDTimer(14.1, 287116, nil, nil, nil, 3)
-local timerInevitableEndCD				= mod:NewCDTimer(75, 287333, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
+local timerInevitableEndCD				= mod:NewCDTimer(62.5, 287333, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)--62-75?
 local timerAddsCD						= mod:NewAddsTimer(120, 284446, nil, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON)--Generic Timer only used on Mythic
 ----Spirits
 local timerSealofBwonCD					= mod:NewCDTimer(25.5, 286695, nil, nil, nil, 5)
