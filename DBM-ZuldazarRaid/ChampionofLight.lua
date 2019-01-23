@@ -30,6 +30,9 @@ mod:RegisterEventsInCombat(
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
+--[[
+(ability.id = 284469 or ability.id = 284436) and type = "begincast"
+--]]
 --TODO, swap count for Sacred Blade? Should it be a force swap in LFR?
 --TODO, maybe a custom huge interrupt icon for the nameplate cast icon for angelic?
 --local warnXorothPortal				= mod:NewSpellAnnounce(244318, 2, nil, nil, nil, nil, nil, 7)
@@ -60,7 +63,7 @@ local specWarnPrayerfortheFallen		= mod:NewSpecialWarningSpell(287469, nil, nil,
 
 mod:AddTimerLine(DBM_BOSS)
 local timerWaveofLightCD				= mod:NewCDTimer(10.5, 283598, nil, nil, nil, 3, nil, DBM_CORE_MAGIC_ICON)
-local timerJudgmentRightCD				= mod:NewNextTimer(50.3, 283933, nil, nil, nil, 3)
+local timerJudgmentRetCD				= mod:NewNextTimer(50.3, 283933, nil, nil, nil, 3)
 local timerJudgmentReckoningCD			= mod:NewNextTimer(50.3, 284474, nil, nil, nil, 2)
 local timerCallToArmsCD					= mod:NewCDTimer(104.6, 283662, nil, nil, nil, 1)
 local timerPrayerfortheFallenCD			= mod:NewNextTimer(13.4, 287469, nil, nil, nil, 2, nil, DBM_CORE_IMPORTANT_ICON)
@@ -113,7 +116,7 @@ end
 function mod:OnCombatStart(delay)
 	warnSealofRet:Show()
 	timerWaveofLightCD:Start(13.4-delay)
-	timerJudgmentRightCD:Start(50.7-delay)
+	timerJudgmentRetCD:Start(50.7-delay)
 	countdownReleaseSeal:Start(50.7-delay)
 	specWarnJudgmentReckoning:Schedule(45.7-delay)
 	specWarnJudgmentReckoning:ScheduleVoice(45.7, "aesoon")
@@ -232,7 +235,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 284469 then--Seal of Retribution
 		warnSealofRet:Show()
-		timerJudgmentRightCD:Start(52.3)
+		timerJudgmentRetCD:Start(52.3)
 		countdownReleaseSeal:Start(52.3)
 		specWarnJudgmentReckoning:Schedule(47.3)
 		specWarnJudgmentReckoning:ScheduleVoice(47.3, "aesoon")
@@ -240,6 +243,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			timerPrayerfortheFallenCD:Start(25.9)
 		end
 	elseif spellId == 284436 then--Seal of Reckoning
+		--Blizz changed it that if all adds die, seal of reck is recast right away instead of maintaining seal of ret
+		timerJudgmentRetCD:Stop()
+		countdownReleaseSeal:Cancel()
 		warnSealofReckoning:Show()
 		timerJudgmentReckoningCD:Start(52.3)
 		if self:IsMythic() then
@@ -274,7 +280,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			DBM.Nameplate:Hide(true, args.destGUID, spellId)
 		end
 	elseif spellId == 284469 then--Seal of Retribution
-		timerJudgmentRightCD:Stop()
+		timerJudgmentRetCD:Stop()
 	elseif spellId == 284436 then--Seal of Reckoning
 		timerJudgmentReckoningCD:Stop()
 	end
