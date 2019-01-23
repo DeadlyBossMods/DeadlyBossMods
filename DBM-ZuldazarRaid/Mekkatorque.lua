@@ -105,7 +105,7 @@ mod.vb.gigaIcon = 1
 mod.vb.shrinkCount = 0
 mod.vb.sheepCount = 0
 mod.vb.difficultyName = "None"
---Timers by phase and difficulty
+--Normal and heroic are ALMOST identical but have at least 1 difference (which is why they are separate, for fine tuning)
 local sparkBotTimers = {
 	["lfr"] = {
 		[1] = {},
@@ -113,17 +113,17 @@ local sparkBotTimers = {
 		[2] = {},
 	},
 	["normal"] = {
-		[1] = {5.1, 22.5, 27.5, 42.5, 22.5, 25.0, 42.5},
+		[1] = {5, 22, 27.5, 42.5, 22.5, 25, 42, 22.5, 22.5},
 		[1.5] = {},
-		[2] = {15.8, 40.0, 42.5, 47.5},
+		[2] = {15.7, 40, 42.5, 47.5},
 	},
 	["heroic"] = {
-		[1] = {5, 30, 50, 20},--REDO?
-		[1.5] = {21.9, 15},--REDO?
-		[2] = {5, 25, 40, 30},--REDO?
+		[1] = {5, 22, 27.5, 42.5, 22.5, 25, 42, 22.5, 22.5},
+		[1.5] = {19.8},--Actual difference on heroic, normal omits this
+		[2] = {15.7, 40, 42.5, 47.5},
 	},
 	["mythic"] = {
-		[1] = {19.8, 20, 22.7, 40, 17.1},--REDO?
+		[1] = {},
 		[1.5] = {},
 		[2] = {},
 	},
@@ -134,12 +134,12 @@ local busterCannonTimers = {
 		[2] = {},
 	},
 	["normal"] = {
-		[1] = {13.1, 33.0, 64.5, 40.0, 26.5},
+		[1] = {13, 32.9, 64.5, 40, 26.5, 65},
 		[2] = {17.8, 29.0, 64.5, 40.0, 26.5},
 	},
 	["heroic"] = {
-		[1] = {15, 25, 27, 43},--REDO?
-		[2] = {10.5, 25, 30, 40},--REDO?
+		[1] = {13, 32.9, 64.5, 40, 26.5, 65},
+		[2] = {17.8, 29.0, 64.5, 40.0, 26.5},
 	},
 	["mythic"] = {
 		[1] = {10.1, 26.4, 12.9, 20.9, 24.5, 15.4},--REDO?
@@ -156,8 +156,8 @@ local blastOffTimers = {
 		[2] = {41.8, 29.0, 35.5, 34.1},
 	},
 	["heroic"] = {
-		[1] = {25, 32, 18, 25},--REDO?
-		[2] = {20.5, 31.1, 28.9, 15},--REDO?
+		[1] = {37.1, 31.0, 37.5, 34.1, 50.4},
+		[2] = {41.8, 29.0, 35.5, 34.1},
 	},
 	["mythic"] = {
 		[1] = {29.8, 60.2},--REDO?
@@ -167,11 +167,13 @@ local blastOffTimers = {
 local wormholeTimers = {
 	--Not used on normal/lfr
 	["heroic"] = {
-		[1] = {53, 42},--REDO?
-		[2] = {48.5, 42.1},--REDO?
+		[1] = {38, 98.7},
+		[1.5] = {46.8},
+		[2] = {38.8, 88.6},
 	},
 	["mythic"] = {
 		[1] = {41.7, 17.1, 39.5, 27.5},--REDO?
+		[1.5] = {},
 		[2] = {},
 	},
 }
@@ -182,14 +184,14 @@ local gigaVoltTimers = {
 		[2] = {},
 	},
 	["normal"] = {
-		[1] = {21.5, 40, 40, 33, 41.9},
+		[1] = {21.5, 40, 40, 33, 41.9, 40.5},
 		[1.5] = {16.9, 33.5},
-		[2] = {22.3, 40, 40, 35, 39.9},
+		[2] = {22.2, 40, 40, 35, 39.9},
 	},
 	["heroic"] = {
-		[1] = {21.5, 31, 39},--REDO?
-		[1.5] = {},
-		[2] = {17, 31, 29},--REDO?
+		[1] = {21.5, 40, 40, 33, 41.9, 40.5},
+		[1.5] = {16.9, 33.5},
+		[2] = {22.2, 40, 40, 35, 39.9},
 	},
 	["mythic"] = {
 		[1] = {16.9, 80.5},--REDO?
@@ -204,14 +206,14 @@ local worldEnlargerTimers = {
 		[2] = {},
 	},
 	["normal"] = {
-		[1] = {75.1, 90},
+		[1] = {75, 90},
 		[1.5] = {7.4, 31},
 		[2] = {75.8, 90},
 	},
 	["heroic"] = {
-		[1] = {65},--REDO?
-		[1.5] = {7.9, 17.1},--REDO?
-		[2] = {113},--REDO?
+		[1] = {75, 90},
+		[1.5] = {7.4, 31},
+		[2] = {75.8, 90},
 	},
 	["mythic"] = {
 		[1] = {78.2},--REDO?
@@ -224,13 +226,15 @@ local explodingSheepTimers = {
 		[1.5] = {},
 	},
 	["normal"] = {
-		[1.5] = {12.5, 30, 12},
+		[1.5] = {12.5, 29.9, 12},
 	},
 	["heroic"] = {
-		[1.5] = {12.9, 17, 15},
+		[1.5] = {12.5, 29.9, 12},
+		[2] = {28.3, 100},--Another heroic vs normal difference
 	},
 	["mythic"] = {
 		[1.5] = {},
+		[2] = {},
 	},
 }
 
@@ -257,23 +261,20 @@ function mod:OnCombatStart(delay)
 		timerBlastOffCD:Start(29.8-delay, 1)
 		timerWormholeGeneratorCD:Start(41-delay, 1)
 		timerWorldEnlargerCD:Start(75-delay, 1)--Start
-	elseif self:IsHeroic() then
-		self.vb.difficultyName = "heroic"
-		timerDeploySparkBotCD:Start(5-delay, 1)
-		timerBusterCannonCD:Start(15-delay, 1)
-		timerGigaVoltChargeCD:Start(21.5-delay, 1)--Success
-		timerBlastOffCD:Start(25-delay, 1)
-		timerWormholeGeneratorCD:Start(53-delay, 1)
-		timerWorldEnlargerCD:Start(68-delay, 1)--Start
-	elseif self:IsNormal() then
-		self.vb.difficultyName = "normal"
+	else
 		timerDeploySparkBotCD:Start(5-delay, 1)
 		timerBusterCannonCD:Start(13-delay, 1)
 		timerGigaVoltChargeCD:Start(21.5-delay, 1)--Success
 		timerBlastOffCD:Start(37-delay, 1)
+		if self:IsHeroic() then
+			self.vb.difficultyName = "heroic"
+			timerWormholeGeneratorCD:Start(53-delay, 1)
+		elseif self:IsNormal() then
+			self.vb.difficultyName = "normal"
+		else
+			self.vb.difficultyName = "lfr"
+		end
 		timerWorldEnlargerCD:Start(75-delay, 1)--Start
-	else
-		self.vb.difficultyName = "lfr"
 	end
 --	if self.Options.NPAuraOnPresence then
 --		DBM:FireEvent("BossMod_EnableHostileNameplates")
@@ -346,7 +347,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.ripperCount = 0
 		self.vb.gigaCount = 0
 		self.vb.shrinkCount = 0
-		self.vb.sheepCount = 0--Only intermission so only place need to reset it
+		self.vb.sheepCount = 0
 		warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(self.vb.phase))
 		warnPhase:Play("phasechange")
 		timerCrashDownCD:Stop()
@@ -355,13 +356,16 @@ function mod:SPELL_CAST_START(args)
 		timerGigaVoltChargeCD:Stop()--Success
 		timerBlastOffCD:Stop()
 		timerWorldEnlargerCD:Stop()
-		
-		timerWorldEnlargerCD:Start(7.9, 1)
-		timerExplodingSheepCD:Start(12.9, 1)
-		timerDeploySparkBotCD:Start(21.9, 1)
-		timerGigaVoltChargeCD:Start(41.4, 1)
-		if self:IsHard() then
+		if self:IsMythic() then
 			timerWormholeGeneratorCD:Start(16.9, 1)
+		else
+			timerWorldEnlargerCD:Start(7.9, 1)
+			timerExplodingSheepCD:Start(12.8, 1)
+			timerGigaVoltChargeCD:Start(16.9, 1)
+			if self:IsHeroic() then
+				timerDeploySparkBotCD:Start(19.8, 1)
+				timerWormholeGeneratorCD:Start(46.8, 1)
+			end
 		end
 		timerIntermission:Start(49.9)--Seems time based but journal says when generators die
 	elseif spellId == 287797 then--Crash Down (intermission end)
@@ -373,6 +377,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.ripperCount = 0
 		self.vb.gigaCount = 0
 		self.vb.shrinkCount = 0
+		self.vb.sheepCount = 0
 		warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(self.vb.phase))
 		warnPhase:Play("phasechange")
 		timerExplodingSheepCD:Stop()
@@ -380,20 +385,18 @@ function mod:SPELL_CAST_START(args)
 		timerGigaVoltChargeCD:Stop()
 		timerWorldEnlargerCD:Stop()
 		timerWormholeGeneratorCD:Stop()
-		
 		if self:IsMythic() then
 
-		elseif self:IsHeroic() then
-
-		elseif self:IsNormal() then
-			timerDeploySparkBotCD:Start(15.8, 1)
+		else
+			timerDeploySparkBotCD:Start(15.7, 1)
 			timerBusterCannonCD:Start(17.8, 1)
-			timerGigaVoltChargeCD:Start(22.3, 1)--Success
+			timerGigaVoltChargeCD:Start(22.2, 1)--Success
 			timerBlastOffCD:Start(41.8, 1)
-			timerWorldEnlargerCD:Start(75.8, 1)--Start
-			--timerWormholeGeneratorCD:Start(48.5, 1)
-		else--LFR
-
+			timerWorldEnlargerCD:Start(75.7, 1)--Start
+			if self:IsHeroic() then
+				timerExplodingSheepCD:Start(28.3, 1)
+				timerWormholeGeneratorCD:Start(38.8, 1)
+			end
 		end
 	elseif spellId == 287757 then
 		self.vb.gigaIcon = 1
@@ -447,7 +450,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnShrunk:CombinedShow(0.5, args.destName)
 		--local icon = self.vb.shrunkIcon
 		if args:IsPlayer() then
-			specWarnShrunk:Show(self:IconNumToTexture(icon))
+			specWarnShrunk:Show()
 			specWarnShrunk:Play("targetyou")
 			yellShrunk:Yell()
 			if not self:IsLFR() then
