@@ -3176,11 +3176,12 @@ local function CreateOptionsMenu()
 
 		local movieOptions = {
 			{	text	= L.Disable,	value 	= "Never"},
+			{	text	= L.OnlyFight,	value 	= "OnlyFight"},
 			{	text	= L.AfterFirst,	value 	= "AfterFirst"},
 			{	text	= L.Always,		value 	= "Block"},
 		}
-		local blockMovieDropDown = hideBlizzArea:CreateDropdown(L.DisableCinematics, movieOptions, "DBM", "MovieFilter", function(value)
-			DBM.Options.MovieFilter = value
+		local blockMovieDropDown = hideBlizzArea:CreateDropdown(L.DisableCinematics, movieOptions, "DBM", "MovieFilter2", function(value)
+			DBM.Options.MovieFilter2 = value
 		end)
 		blockMovieDropDown:SetPoint("TOPLEFT", DisableSFX, "TOPLEFT", 0, -40)
 		
