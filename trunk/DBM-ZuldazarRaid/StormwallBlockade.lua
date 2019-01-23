@@ -32,6 +32,11 @@ mod:RegisterEventsInCombat(
 --TODO, add Tidal/Jolting Volleys? Just seems like general consistent aoe damage so not worth warning yet
 --TODO, icons and stuff for storm's wail
 --TODO, add "watch wave" warning for Energized wake on mythic
+--[[
+(ability.id = 284262 or ability.id = 284106 or ability.id = 284393 or ability.id = 284383 or ability.id = 285118 or ability.id = 285017 or ability.id = 284362 or ability.id = 288696) and type = "begincast"
+ or (ability.id = 285350 or ability.id = 285426) and type = "cast"
+ or ability.id = 288696 and type = "interrupt"
+--]]
 --Stage One: Storm the Ships
 ----General
 local warnTranslocate					= mod:NewTargetNoFilterAnnounce(284393, 2)

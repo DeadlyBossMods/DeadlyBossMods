@@ -40,6 +40,11 @@ mod:RegisterEventsInCombat(
 --TODO, what spells do Prismatic Images copy, so it can be handled by timer code
 --TODO, Crystalline Dust was never used at all during heroic testing.
 --Todo, broadside icons?
+--[[
+(ability.id = 290084 or ability.id = 287565 or ability.id = 285177 or ability.id = 285459 or ability.id = 290036 or ability.id = 288345 or ability.id = 288441 or ability.id = 288719 or ability.id = 289219 or ability.id = 288619 or ability.id = 288747) and type = "beginast"
+ or (ability.id = 287925 or ability.id = 287626 or ability.id = 289220 or ability.id = 288374 or ability.id = 288211) and type = "cast"
+ or (ability.id = 288199 or ability.id = 290053) and type = "applybuff"
+--]]
 --General
 local warnPhase							= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
 local warnFrozenSolid					= mod:NewTargetNoFilterAnnounce(287490, 4)
@@ -539,7 +544,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 288013 then--Corsair Picker
 		warnCorsair:Show()
 		timerCorsairCD:Start()
-		--timerBombardCD:Start(2)--Assumed
 	elseif spellId == 288713 then--Blink to Intermission Spot Center
 		self.vb.phase = 1.5
 		warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(1.5))
