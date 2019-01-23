@@ -8,11 +8,12 @@ mod:SetEncounterID(2271)
 mod:SetZone()
 --mod:SetBossHPInfoToHighest()
 --mod:SetUsedIcons(1, 2, 8)
---mod:SetHotfixNoticeRev(17775)
---mod:SetMinSyncRevision(16950)
+mod:SetHotfixNoticeRev(18175)
+mod:SetMinSyncRevision(18175)
 --mod.respawnTime = 35
 
 mod:RegisterCombat("combat")
+mod:SetWipeTime(30)
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 282939 287659 287070 285995 284941 283947 283606 289906 289155",

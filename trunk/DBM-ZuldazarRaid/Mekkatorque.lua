@@ -8,25 +8,25 @@ mod:SetEncounterID(2276)
 mod:SetZone()
 --mod:SetBossHPInfoToHighest()
 mod:SetUsedIcons(8, 7, 6, 5, 4, 3, 2, 1)
---mod:SetHotfixNoticeRev(17775)
+mod:SetHotfixNoticeRev(18175)
 --mod:SetMinSyncRevision(16950)
 mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 282205 287952 287929 282153 288410 287751 287797 287757",
-	"SPELL_CAST_SUCCESS 287757 286693 288041 288049",
-	"SPELL_AURA_APPLIED 287757 287167 284168 289023 286051 289699",
+	"SPELL_CAST_START 282205 287952 287929 282153 288410 287751 287797 287757 286693 288041 288049 289537 287691",
+	"SPELL_CAST_SUCCESS 287757",
+	"SPELL_AURA_APPLIED 287757 287167 284168 289023 286051 289699 286646",
 	"SPELL_AURA_APPLIED_DOSE 289699",
-	"SPELL_AURA_REMOVED 287757 284168",
+	"SPELL_AURA_REMOVED 287757 284168 286646",
 	"UNIT_DIED"
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
 --[[
-(ability.id = 282205 or ability.id = 287952 or ability.id = 287929 or ability.id = 282153 or ability.id = 288410 or ability.id = 287751 or ability.id = 287797) and type = "begincast"
- or (ability.id = 287757 or ability.id = 286693 or ability.id = 288041 or ability.id = 288049) and type = "cast"
+(ability.id = 282205 or ability.id = 287952 or ability.id = 287929 or ability.id = 282153 or ability.id = 288410 or ability.id = 287751 or ability.id = 287797 or ability.id = 286693 or ability.id = 288041 or ability.id = 288049 or ability.id = 289537 or ability.id = 287691) and type = "begincast"
+ or (ability.id = 287757 or ability.id = 286597) and type = "cast"
 --]]
 --TODO, Gigavolt Charge has 3 debuff spellIDs, all 3 used or what the deal?
 --TODO, icon marking for poly morph dispel assignments?
@@ -87,7 +87,7 @@ local timerExplodingSheepCD				= mod:NewCDCountTimer(55, 287929, nil, nil, nil, 
 --local countdownFelstormBarrage			= mod:NewCountdown("AltTwo32", 244000, nil, nil, 3)
 
 mod:AddSetIconOption("SetIconGigaVolt", 286646, true)
-mod:AddSetIconOption("SetIconShrunk", 284168, true)
+--mod:AddSetIconOption("SetIconShrunk2", 284168, false)
 --mod:AddRangeFrameOption("8/10")
 --mod:AddInfoFrameOption(258040, true)
 --mod:AddNamePlateOption("NPAuraOnPresence", 276093)
@@ -113,17 +113,17 @@ local sparkBotTimers = {
 		[2] = {},
 	},
 	["normal"] = {
-		[1] = {},
+		[1] = {5.1, 22.5, 27.5, 42.5, 22.5, 25.0, 42.5},
 		[1.5] = {},
-		[2] = {},
+		[2] = {15.8, 40.0, 42.5, 47.5},
 	},
 	["heroic"] = {
-		[1] = {5, 30, 50, 20},
-		[1.5] = {21.9, 15},
-		[2] = {5, 25, 40, 30},
+		[1] = {5, 30, 50, 20},--REDO?
+		[1.5] = {21.9, 15},--REDO?
+		[2] = {5, 25, 40, 30},--REDO?
 	},
 	["mythic"] = {
-		[1] = {19.8, 20, 22.7, 40, 17.1},
+		[1] = {19.8, 20, 22.7, 40, 17.1},--REDO?
 		[1.5] = {},
 		[2] = {},
 	},
@@ -134,15 +134,15 @@ local busterCannonTimers = {
 		[2] = {},
 	},
 	["normal"] = {
-		[1] = {},
-		[2] = {},
+		[1] = {13.1, 33.0, 64.5, 40.0, 26.5},
+		[2] = {17.8, 29.0, 64.5, 40.0, 26.5},
 	},
 	["heroic"] = {
-		[1] = {15, 25, 27, 43},
-		[2] = {10.5, 25, 30, 40},
+		[1] = {15, 25, 27, 43},--REDO?
+		[2] = {10.5, 25, 30, 40},--REDO?
 	},
 	["mythic"] = {
-		[1] = {10.1, 26.4, 12.9, 20.9, 24.5, 15.4},
+		[1] = {10.1, 26.4, 12.9, 20.9, 24.5, 15.4},--REDO?
 		[2] = {},
 	},
 }
@@ -152,26 +152,26 @@ local blastOffTimers = {
 		[2] = {},
 	},
 	["normal"] = {
-		[1] = {},
-		[2] = {},
+		[1] = {37.1, 31.0, 37.5, 34.1, 50.4},
+		[2] = {41.8, 29.0, 35.5, 34.1},
 	},
 	["heroic"] = {
-		[1] = {25, 32, 18, 25},
-		[2] = {20.5, 31.1, 28.9, 15},
+		[1] = {25, 32, 18, 25},--REDO?
+		[2] = {20.5, 31.1, 28.9, 15},--REDO?
 	},
 	["mythic"] = {
-		[1] = {29.8, 60.2},
+		[1] = {29.8, 60.2},--REDO?
 		[2] = {},
 	},
 }
 local wormholeTimers = {
 	--Not used on normal/lfr
 	["heroic"] = {
-		[1] = {53, 42},
-		[2] = {48.5, 42.1},
+		[1] = {53, 42},--REDO?
+		[2] = {48.5, 42.1},--REDO?
 	},
 	["mythic"] = {
-		[1] = {41.7, 17.1, 39.5, 27.5},
+		[1] = {41.7, 17.1, 39.5, 27.5},--REDO?
 		[2] = {},
 	},
 }
@@ -182,17 +182,17 @@ local gigaVoltTimers = {
 		[2] = {},
 	},
 	["normal"] = {
-		[1] = {},
-		[1.5] = {},
-		[2] = {},
+		[1] = {21.5, 40, 40, 33, 41.9},
+		[1.5] = {16.9, 33.5},
+		[2] = {22.3, 40, 40, 35, 39.9},
 	},
 	["heroic"] = {
-		[1] = {21.5, 31, 39},
+		[1] = {21.5, 31, 39},--REDO?
 		[1.5] = {},
-		[2] = {17, 31, 29},
+		[2] = {17, 31, 29},--REDO?
 	},
 	["mythic"] = {
-		[1] = {16.9, 80.5},
+		[1] = {16.9, 80.5},--REDO?
 		[1.5] = {},
 		[2] = {},
 	},
@@ -204,17 +204,17 @@ local worldEnlargerTimers = {
 		[2] = {},
 	},
 	["normal"] = {
-		[1] = {},
-		[1.5] = {},
-		[2] = {},
+		[1] = {75.1, 90},
+		[1.5] = {7.4, 31},
+		[2] = {75.8, 90},
 	},
 	["heroic"] = {
-		[1] = {65},
-		[1.5] = {7.9, 17.1},
-		[2] = {113},
+		[1] = {65},--REDO?
+		[1.5] = {7.9, 17.1},--REDO?
+		[2] = {113},--REDO?
 	},
 	["mythic"] = {
-		[1] = {78.2},
+		[1] = {78.2},--REDO?
 		[1.5] = {},
 		[2] = {},
 	},
@@ -224,10 +224,10 @@ local explodingSheepTimers = {
 		[1.5] = {},
 	},
 	["normal"] = {
-		[1.5] = {},
+		[1.5] = {12.5, 30, 12},
 	},
 	["heroic"] = {
-		[1.5] = {12.9, 17.0, 15.0},
+		[1.5] = {12.9, 17, 15},
 	},
 	["mythic"] = {
 		[1.5] = {},
@@ -256,7 +256,7 @@ function mod:OnCombatStart(delay)
 		timerDeploySparkBotCD:Start(19.8-delay, 1)
 		timerBlastOffCD:Start(29.8-delay, 1)
 		timerWormholeGeneratorCD:Start(41-delay, 1)
-		timerWorldEnlargerCD:Start(78-delay, 1)--Success
+		timerWorldEnlargerCD:Start(75-delay, 1)--Start
 	elseif self:IsHeroic() then
 		self.vb.difficultyName = "heroic"
 		timerDeploySparkBotCD:Start(5-delay, 1)
@@ -264,9 +264,14 @@ function mod:OnCombatStart(delay)
 		timerGigaVoltChargeCD:Start(21.5-delay, 1)--Success
 		timerBlastOffCD:Start(25-delay, 1)
 		timerWormholeGeneratorCD:Start(53-delay, 1)
-		timerWorldEnlargerCD:Start(65-delay, 1)--Success
+		timerWorldEnlargerCD:Start(68-delay, 1)--Start
 	elseif self:IsNormal() then
 		self.vb.difficultyName = "normal"
+		timerDeploySparkBotCD:Start(5-delay, 1)
+		timerBusterCannonCD:Start(13-delay, 1)
+		timerGigaVoltChargeCD:Start(21.5-delay, 1)--Success
+		timerBlastOffCD:Start(37-delay, 1)
+		timerWorldEnlargerCD:Start(75-delay, 1)--Start
 	else
 		self.vb.difficultyName = "lfr"
 	end
@@ -324,7 +329,7 @@ function mod:SPELL_CAST_START(args)
 		if timer then
 			timerBusterCannonCD:Start(timer, self.vb.cannonCount+1)
 		end
-	elseif spellId == 288410 then
+	elseif spellId == 288410 or spellId == 287691 then
 		self.vb.botCount = self.vb.botCount + 1
 		if DBM:UnitDebuff("player", 284168) then--Shrunk
 			specWarnDeploySparkBot:Show()
@@ -335,7 +340,7 @@ function mod:SPELL_CAST_START(args)
 			timerDeploySparkBotCD:Start(timer, self.vb.botCount+1)
 		end
 	elseif spellId == 287751 then--Evasive Maneuvers (intermission Start)
-		self.vb.phase = self.vb.phase + 0.5
+		self.vb.phase = 1.5
 		--These happen in intermission too so intermission counters needed
 		self.vb.botCount = 0
 		self.vb.ripperCount = 0
@@ -360,7 +365,7 @@ function mod:SPELL_CAST_START(args)
 		end
 		timerIntermission:Start(49.9)--Seems time based but journal says when generators die
 	elseif spellId == 287797 then--Crash Down (intermission end)
-		self.vb.phase = self.vb.phase + 0.5
+		self.vb.phase = 2
 		--Reset everything but sheep, for next ground phase
 		self.vb.botCount = 0
 		self.vb.cannonCount = 0
@@ -376,16 +381,29 @@ function mod:SPELL_CAST_START(args)
 		timerWorldEnlargerCD:Stop()
 		timerWormholeGeneratorCD:Stop()
 		
-		timerDeploySparkBotCD:Start(5.5, 1)
-		timerBusterCannonCD:Start(10.5, 1)
-		timerGigaVoltChargeCD:Start(17, 1)--Success
-		timerBlastOffCD:Start(20.5, 1)
-		timerWorldEnlargerCD:Start(114, 1)--Success (bugged? Should not take this long for a shrink)
-		if self:IsHard() then
-			timerWormholeGeneratorCD:Start(48.5, 1)
+		if self:IsMythic() then
+
+		elseif self:IsHeroic() then
+
+		elseif self:IsNormal() then
+			timerDeploySparkBotCD:Start(15.8, 1)
+			timerBusterCannonCD:Start(17.8, 1)
+			timerGigaVoltChargeCD:Start(22.3, 1)--Success
+			timerBlastOffCD:Start(41.8, 1)
+			timerWorldEnlargerCD:Start(75.8, 1)--Start
+			--timerWormholeGeneratorCD:Start(48.5, 1)
+		else--LFR
+
 		end
 	elseif spellId == 287757 then
 		self.vb.gigaIcon = 1
+	elseif spellId == 286693 or spellId == 288041 or spellId == 288049 or spellId == 289537 then--288041 used in intermission first, 288049 second in intermission, 286693 outside intermission
+		self.vb.shrinkCount = self.vb.shrinkCount + 1
+		--self.vb.shrunkIcon = 8
+		local timer = worldEnlargerTimers[self.vb.difficultyName][self.vb.phase][self.vb.shrinkCount+1]
+		if timer then
+			timerWorldEnlargerCD:Start(timer, self.vb.shrinkCount+1)
+		end
 	end
 end
 
@@ -397,19 +415,12 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if timer then
 			timerGigaVoltChargeCD:Start(timer, self.vb.gigaCount+1)
 		end
-	elseif spellId == 286693 or spellId == 288041 or spellId == 288049 then--288041 used in intermission first, 288049 second in intermission, 286693 outside intermission
-		self.vb.shrinkCount = self.vb.shrinkCount + 1
-		--self.vb.shrunkIcon = 8
-		local timer = worldEnlargerTimers[self.vb.difficultyName][self.vb.phase][self.vb.shrinkCount+1]
-		if timer then
-			timerWorldEnlargerCD:Start(timer, self.vb.shrinkCount+1)
-		end
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 287757 then--Or 283409 or 286646
+	if spellId == 287757 or spellId == 286646 then--283409?
 		local icon = self.vb.gigaIcon
 		if args:IsPlayer() then
 			specWarnGigaVoltCharge:Show(self:IconNumToTexture(icon))
@@ -450,7 +461,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnShrunkTaunt:Play("tauntboss")
 			end
 		end
-		--if self.Options.SetIconShrunk then
+		--if self.Options.SetIconShrunk2 then
 		--	self:SetIcon(args.destName, icon)
 		--end
 		--self.vb.shrunkIcon = self.vb.shrunkIcon - 1
@@ -479,7 +490,7 @@ end
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
-	if spellId == 287757 then--Or 283409 or 286646
+	if spellId == 287757 or spellId == 286646 then--283409?
 		if args:IsPlayer() then
 			specWarnGigaVoltChargeFading:Cancel()
 			specWarnGigaVoltChargeFading:CancelVoice()
@@ -489,9 +500,9 @@ function mod:SPELL_AURA_REMOVED(args)
 			self:SetIcon(args.destName, 0)
 		end
 	elseif spellId == 284168 then
-		if self.Options.SetIconShrunk then
-			self:SetIcon(args.destName, 0)
-		end
+		--if self.Options.SetIconShrunk2 then
+			--self:SetIcon(args.destName, 0)
+		--end
 		if args:IsPlayer() then
 			self:Unschedule(shrunkYellRepeater)
 		end

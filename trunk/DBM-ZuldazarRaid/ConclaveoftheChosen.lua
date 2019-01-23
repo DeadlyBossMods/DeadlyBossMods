@@ -31,6 +31,8 @@ mod:RegisterEventsInCombat(
 --TODO, fix timer updating on "death" for wraths
 --General
 local warnActivated						= mod:NewTargetAnnounce(118212, 3, 78740, nil, nil, nil, nil, nil, true)
+--Paku's Aspect
+local warnGiftofWind					= mod:NewSpellAnnounce(282098, 3)
 --Gonk's Aspect
 local warnCrawlingHex					= mod:NewTargetAnnounce(282135, 2)
 --Kimbul's Aspect
@@ -45,7 +47,6 @@ local warnBwonsamdisWrath				= mod:NewTargetNoFilterAnnounce(284663, 4, nil, fal
 local specWarnActivated					= mod:NewSpecialWarningSwitchCount(118212, "Tank", DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch:format(118212), nil, 3, 2)
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 8)
 --Pa'ku's Aspect
-local specWarnGiftofWind				= mod:NewSpecialWarningSpell(282098, nil, nil, nil, 2, 2)
 local specWarnHasteningWinds			= mod:NewSpecialWarningCount(270447, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.stack:format(8, 270447), nil, 1, 2)
 local specWarnHasteningWindsOther		= mod:NewSpecialWarningTaunt(270447, nil, nil, nil, 1, 2)--Should be dispelled vs tank swapped, but in super low case a 10 man group has no dispeller, we need tank warning
 local specWarnPakusWrath				= mod:NewSpecialWarningMoveTo(282107, nil, nil, nil, 3, 2)
@@ -162,7 +163,7 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 282098 then
-		specWarnGiftofWind:Show()
+		warnGiftofWind:Show()
 		timerGiftofWindCD:Start()
 	elseif spellId == 282107 then
 		DBM:Debug("blizz added Paku's Wrath to CLEU, improve code!")
