@@ -1,11 +1,11 @@
 local dungeonID, creatureID
-local coreSpellId, energyAOESpellId, slamSpellId, addSpawnId, addCastId, tankComboId
+local coreSpellId, energyAOESpellId, slamSpellId, addSpawnId, addCastId, addProjectileId, tankComboId
 if UnitFactionGroup("player") == "Alliance" then
 	dungeonID, creatureID = 2340, 144638--Grong the Revenant
-	coreSpellId, energyAOESpellId, slamSpellId, addSpawnId, addCastId, tankComboId = 286434, 282399, 282543, 282526, 282533, 286450
+	coreSpellId, energyAOESpellId, slamSpellId, addSpawnId, addCastId, addProjectileId, tankComboId = 286434, 282399, 282543, 282526, 282533, 282467, 286450
 else--Horde
 	dungeonID, creatureID = 2325, 147268--King Grong
-	coreSpellId, energyAOESpellId, slamSpellId, addSpawnId, addCastId, tankComboId = 285659, 281936, 282179, 282247, 282243, 282082
+	coreSpellId, energyAOESpellId, slamSpellId, addSpawnId, addCastId, addProjectileId, tankComboId = 285659, 281936, 282179, 282247, 282243, 282190, 282082
 end
 local mod	= DBM:NewMod(dungeonID, "DBM-ZuldazarRaid", 1, 1176)
 local L		= mod:GetLocalizedStrings()
@@ -30,8 +30,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED_DOSE 285875 285671",
 	"SPELL_AURA_REMOVED 286434 285659",
 --	"SPELL_ENERGIZE 282533 282243",
-	"UNIT_DIED"
---	"UNIT_SPELLCAST_SUCCEEDED boss1"
+	"UNIT_DIED",
+	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
 --[[
@@ -66,6 +66,7 @@ local timerTankComboCD					= mod:NewCDTimer(30.3, tankComboId, nil, "Tank", nil,
 local timerSlamCD						= mod:NewCDTimer(28, slamSpellId, nil, nil, nil, 3)
 local timerFerociousRoarCD				= mod:NewCDTimer(37, 285994, nil, nil, nil, 2)--27-33
 local timerAddCD						= mod:NewCDTimer(120, addSpawnId, nil, nil, nil, 1)
+local timerAddAttackCD					= mod:NewCDTimer(23.8, addProjectileId, nil, nil, nil, 3)--12-32
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
 
@@ -135,6 +136,7 @@ function mod:OnCombatStart(delay)
 	timerSlamCD:Start(25-delay)
 	timerAddCD:Start(57.8-delay)--One add spawns with boss?
 	if self:IsHard() then
+		timerAddAttackCD:Start(10.6-delay)
 		timerFerociousRoarCD:Start(16.5-delay)--VERIFY
 	end
 --	timerEnergyAOECD:Start(100-delay, 1)
@@ -314,8 +316,10 @@ function mod:UNIT_DIED(args)
 end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
+	if spellId == 282467 or spellId == 282190 then
+		timerAddAttackCD:Start()
 	--Backup add spawn triggers in case CLEU stuff gets purged
-	if spellId == 286450 or spellId == 282082 then
+--	elseif spellId == 286450 or spellId == 282082 then
 
 	end
 end
