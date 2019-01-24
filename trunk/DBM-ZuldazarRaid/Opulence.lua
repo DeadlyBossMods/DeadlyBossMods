@@ -19,6 +19,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 282939 287659 287070 285995 284941 283947 283606 289906 289155",
 	"SPELL_CAST_SUCCESS 283507 287648 284470 287072 285014 287037 285505 286541",
 	"SPELL_AURA_APPLIED 284798 283507 287648 284470 287072 285014 287037 284105 287424 289776",
+	"SPELL_AURA_REFRESH 284470",
 --	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 284798 283507 287648 284470 287072 285014 287424 289776",
 	"UNIT_DIED"
@@ -40,7 +41,7 @@ local warnVolatileCharge				= mod:NewTargetAnnounce(283507, 2)
 ----Traps
 local warnFlameJet						= mod:NewSpellAnnounce(285479, 3)
 local warnRubyBeam						= mod:NewSpellAnnounce(284081, 3)
-local warnTimeBomb						= mod:NewTargetAnnounce(284470, 2)
+local warnHexofLethargy						= mod:NewTargetAnnounce(284470, 2)
 --Stage Two: Toppling the Guardian
 local warnPhase2						= mod:NewPhaseAnnounce(2, 2)
 local warnLiquidGold					= mod:NewTargetAnnounce(287072, 2)
@@ -59,9 +60,9 @@ local yellVolatileChargeFade			= mod:NewFadesYell(283507)
 ----Yalat's Bulwark
 local specWarnFlamesofPunishment		= mod:NewSpecialWarningDodge(282939, nil, nil, nil, 2, 8)
 ----Traps
-local specWarnTimeBomb					= mod:NewSpecialWarningMoveAway(284470, nil, nil, nil, 1, 2)
-local yellTimeBomb						= mod:NewYell(284470)
-local yellTimeBombFade					= mod:NewFadesYell(284470)
+local specWarnHexofLethargy				= mod:NewSpecialWarningMoveAway(284470, nil, nil, nil, 1, 2)
+local yellHexofLethargy					= mod:NewYell(284470)
+local yellHexofLethargyFade				= mod:NewFadesYell(284470)
 --Stage Two: Toppling the Guardian
 local specWarnLiquidGold				= mod:NewSpecialWarningMoveAway(287072, nil, nil, nil, 1, 2)
 local yellLiquidGold					= mod:NewYell(287072)
@@ -87,7 +88,7 @@ local timerFlamesofPunishmentCD			= mod:NewCDTimer(23, 282939, nil, nil, nil, 3)
 ----Traps
 --local timerFlameJet						= mod:NewBuffActiveTimer(12, 285479, nil, nil, nil, 3)
 local timerRubyBeam						= mod:NewBuffActiveTimer(8, 284081, nil, nil, nil, 3)
-local timerTimeBombCD					= mod:NewCDTimer(21.8, 284470, nil, nil, nil, 3, nil, DBM_CORE_MAGIC_ICON)
+local timerHexofLethargyCD					= mod:NewCDTimer(21.8, 284470, nil, nil, nil, 3, nil, DBM_CORE_MAGIC_ICON)
 --Stage Two: Toppling the Guardian
 local timerDrawPower					= mod:NewCastTimer(5, 282939, nil, nil, nil, 6)
 local timerLiquidGoldCD					= mod:NewCDTimer(8.5, 287072, nil, nil, nil, 3)
@@ -214,7 +215,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.phase = 2
 		self.vb.wailCast = 0
 		--Do these stop?
-		timerTimeBombCD:Stop()
+		timerHexofLethargyCD:Stop()
 		warnPhase2:Show()
 		timerDrawPower:Start()
 		--Normal Mode, may differ elsewhere
@@ -262,7 +263,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if spellId == 283507 or spellId == 287648 then
 		timerVolatileChargeCD:Start()
 	elseif spellId == 284470 then
-		timerTimeBombCD:Start(21.8, args.sourceGUID)
+		timerHexofLethargyCD:Start(21.8, args.sourceGUID)
 	elseif spellId == 287072 then
 		timerLiquidGoldCD:Start()
 	elseif spellId == 285014 then
@@ -270,7 +271,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 287037 then
 		timerCoinSweepCD:Start()
 	elseif spellId == 285505 then--Arcane Amethyst Visual
-		timerTimeBombCD:Start(5.5, args.sourceGUID)
+		timerHexofLethargyCD:Start(5.5, args.sourceGUID)
 	elseif spellId == 286541 then--Consuming Flame
 		local cid = self:GetCIDFromGUID(args.sourceGUID)
 		if cid == 145273 then--The Hand of In'zashi
@@ -324,12 +325,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 284470 then
 		if args:IsPlayer() then
-			specWarnTimeBomb:Show()
-			specWarnTimeBomb:Play("runout")
-			yellTimeBomb:Yell()
-			yellTimeBombFade:Countdown(10)
+			specWarnHexofLethargy:Show()
+			specWarnHexofLethargy:Play("runout")
+			yellHexofLethargy:Yell()
+			yellHexofLethargyFade:Cancel()
+			yellHexofLethargyFade:Countdown(30)
 		else
-			warnTimeBomb:CombinedShow(0.3, args.destName)
+			warnHexofLethargy:CombinedShow(0.3, args.destName)
 		end
 	elseif spellId == 287072 then
 		if args:IsPlayer() then
@@ -360,7 +362,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	end
 end
---mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
+mod.SPELL_AURA_REFRESH = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
@@ -372,7 +374,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif spellId == 284470 then
 		if args:IsPlayer() then
-			yellTimeBombFade:Cancel()
+			yellHexofLethargyFade:Cancel()
 		end
 	elseif spellId == 287072 then
 		if args:IsPlayer() then
