@@ -15,8 +15,8 @@ mod.respawnTime = 29
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 282205 287952 287929 282153 288410 287751 287797 287757 286693 288041 288049 289537 287691",
-	"SPELL_CAST_SUCCESS 287757",
+	"SPELL_CAST_START 282205 287952 287929 282153 288410 287751 287797 287757 286693 288041 288049 289537 287691 286597",
+	"SPELL_CAST_SUCCESS 287757 286597",
 	"SPELL_AURA_APPLIED 287757 287167 284168 289023 286051 289699 286646",
 	"SPELL_AURA_APPLIED_DOSE 289699",
 	"SPELL_AURA_REMOVED 287757 284168 286646",
@@ -43,8 +43,8 @@ local warnShrunk						= mod:NewTargetNoFilterAnnounce(284168, 1)
 local warnHyperDrive					= mod:NewTargetNoFilterAnnounce(286051, 3)
 
 --Ground Phase
-local specWarnBusterCannon				= mod:NewSpecialWarningDodge(282153, nil, nil, nil, 2, 2)
-local specWarnBlastOff					= mod:NewSpecialWarningRun(282205, "Melee", nil, nil, 4, 2)
+local specWarnBusterCannon				= mod:NewSpecialWarningDodgeCount(282153, nil, nil, nil, 2, 2)
+local specWarnBlastOff					= mod:NewSpecialWarningDodgeCount(282205, nil, nil, nil, 4, 2)
 --local specWarnCrashDown					= mod:NewSpecialWarningDodge(287797, nil, nil, nil, 2, 2)
 local specWarnElectroshockAmp			= mod:NewSpecialWarningCount(289699, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.stack:format(8, 270447), nil, 1, 2)
 local specWarnElectroshockAmpOther		= mod:NewSpecialWarningTaunt(289699, nil, nil, nil, 1, 2)
@@ -53,7 +53,7 @@ local yellGigaVoltCharge				= mod:NewPosYell(286646)
 local yellGigaVoltChargeFades			= mod:NewIconFadesYell(286646)
 local specWarnGigaVoltChargeFading		= mod:NewSpecialWarningMoveTo(286646, nil, nil, nil, 3, 2)
 local specWarnGigaVoltChargeTaunt		= mod:NewSpecialWarningTaunt(286646, nil, nil, nil, 1, 2)
-local specWarnWormholeGenerator 		= mod:NewSpecialWarningSpell(287952, nil, nil, nil, 2, 5)
+local specWarnWormholeGenerator 		= mod:NewSpecialWarningCount(287952, nil, nil, nil, 2, 5)
 local specWarnDiscombobulation			= mod:NewSpecialWarningDispel(287167, "Healer", nil, nil, 1, 2)--Mythic
 local specWarnDeploySparkBot			= mod:NewSpecialWarningSwitch(288410, nil, nil, nil, 1, 2)
 local specWarnShrunk					= mod:NewSpecialWarningYouPos(284168, nil, nil, nil, 1, 2)
@@ -298,7 +298,7 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 282205 then
 		self.vb.blastOffcount = self.vb.blastOffcount + 1
-		specWarnBlastOff:Show()
+		specWarnBlastOff:Show(self.vb.blastOffcount)
 		specWarnBlastOff:Play("justrun")
 		timerCrashDownCD:Start(4.5)
 		local timer = blastOffTimers[self.vb.difficultyName][self.vb.phase][self.vb.blastOffcount+1]
@@ -307,7 +307,7 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 287952 then
 		self.vb.ripperCount = self.vb.ripperCount + 1
-		specWarnWormholeGenerator:Show()
+		specWarnWormholeGenerator:Show(self.vb.ripperCount)
 		specWarnWormholeGenerator:Play("teleyou")
 		local timer = wormholeTimers[self.vb.difficultyName][self.vb.phase][self.vb.ripperCount+1]
 		if timer then
@@ -323,7 +323,7 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 282153 then
 		self.vb.cannonCount = self.vb.cannonCount + 1
-		specWarnBusterCannon:Show()
+		specWarnBusterCannon:Show(self.vb.cannonCount)
 		specWarnBusterCannon:Play("shockwave")
 		local timer = busterCannonTimers[self.vb.difficultyName][self.vb.phase][self.vb.cannonCount+1]
 		if timer then
@@ -397,7 +397,7 @@ function mod:SPELL_CAST_START(args)
 				timerWormholeGeneratorCD:Start(38.8, 1)
 			end
 		end
-	elseif spellId == 287757 then
+	elseif spellId == 287757 or spellId == 286597 then
 		self.vb.gigaIcon = 1
 	elseif spellId == 286693 or spellId == 288041 or spellId == 288049 or spellId == 289537 then--288041 used in intermission first, 288049 second in intermission, 286693 outside intermission
 		self.vb.shrinkCount = self.vb.shrinkCount + 1
@@ -411,7 +411,7 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 287757 then
+	if spellId == 287757 or spellId == 286597 then
 		self.vb.gigaCount = self.vb.gigaCount + 1
 		local timer = gigaVoltTimers[self.vb.difficultyName][self.vb.phase][self.vb.gigaCount+1]
 		if timer then
