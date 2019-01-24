@@ -65,8 +65,7 @@ local specWarnSeasTemptation			= mod:NewSpecialWarningSwitch(284383, "RangedDps"
 local specWarnTemptingSong				= mod:NewSpecialWarningRun(284405, nil, nil, nil, 4, 2)
 local yellTemptingSong					= mod:NewYell(284405)
 --Stage Two: Laminaria
---local specWarnEnergizedStorm			= mod:NewSpecialWarningSwitch("ej19312", "Tank", nil, nil, 1, 2)
---local specWarnKepWrappedTaunt			= mod:NewSpecialWarningTaunt(285000, nil, nil, nil, 1, 2)
+local specWarnEnergizedStorm			= mod:NewSpecialWarningSwitch("ej19312", "RangedDps", nil, nil, 1, 2)
 local yellKepWrapped					= mod:NewFadesYell(285000)
 local specWarnSeaSwell					= mod:NewSpecialWarningDodge(285118, nil, nil, nil, 2, 2)
 local specWarnIreoftheDeep				= mod:NewSpecialWarningSoak(285017, "-Tank", nil, nil, 1, 2)
@@ -108,12 +107,48 @@ mod:AddNamePlateOption("NPAuraOnKepWrapping", 285382)
 mod.vb.phase = 1
 mod.vb.bossesDied = 0
 local freezingTidePod = DBM:GetSpellInfo(285075)
-local activeShield = {}
+local stormTargets = {}
+
+local updateInfoFrame
+do
+	local stormsWail = DBM:GetSpellInfo(285350)
+	local lines = {}
+	local sortedLines = {}
+	local function addLine(key, value)
+		-- sort by insertion order
+		lines[key] = value
+		sortedLines[#sortedLines + 1] = key
+	end
+	updateInfoFrame = function()
+		table.wipe(lines)
+		table.wipe(sortedLines)
+		--Big Guys Power
+		local currentPower, maxPower = UnitPower("boss3"), UnitPowerMax("boss3")
+		if maxPower and maxPower ~= 0 then
+			if currentPower / maxPower * 100 >= 1 then
+				addLine(UnitName("boss3"), currentPower)
+			end
+		end
+		--Scan raid for notable debuffs and add them
+		if #stormTargets > 0 then
+			--addLine("", "")
+			for i=1, #stormTargets do
+				local spellName, _, _, _, _, expireTime = DBM:UnitDebuff("player", 285350, 285426)
+				if spellName and expireTime then--Personal Dark Bargain
+					local name = stormTargets[i]
+					local remaining = expireTime-GetTime()
+					addLine(name, math.floor(remaining))
+				end
+			end
+		end
+		return lines, sortedLines
+	end
+end
 
 function mod:OnCombatStart(delay)
+	table.wipe(stormTargets)
 	self.vb.phase = 1
 	self.vb.bossesDied = 0
-	table.wipe(activeShield)
 	--Sister
 	timerCracklingLightningCD:Start(3.9-delay)--3.9-8.8
 	--timerElecShroudCD:Start(30-delay)
@@ -126,8 +161,8 @@ function mod:OnCombatStart(delay)
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
 	if self.Options.InfoFrame then
-		DBM.InfoFrame:SetHeader(DBM_CORE_INFOFRAME_POWER)
-		DBM.InfoFrame:Show(4, "enemypower", 1, 10)
+		DBM.InfoFrame:SetHeader(OVERVIEW)
+		DBM.InfoFrame:Show(8, "function", updateInfoFrame, false, false)
 	end
 end
 
@@ -221,7 +256,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnTidalShroud:Show(args.destName)
 		end
 		--timerTidalShroudCD:Start()
-		--self:SendSync("ShieldAdded", args.destGUID)
 	elseif spellId == 287995 then
 		if self:CheckTankDistance(args.destGUID, 43) then
 			warnElecShroud:Show(args.destName)
@@ -249,6 +283,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnStormsWail:Show(args.destName)
 		end
 		timerStormsWail:Start(12, args.destName)
+		if not tContains(stormTargets, args.destName) then
+			table.insert(stormTargets, args.destName)
+		end
 	end
 end
 mod.SPELL_AURA_REFRESH = mod.SPELL_AURA_APPLIED
@@ -257,7 +294,6 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 286558 then
-		--self:SendSync("ShieldRemoved", args.destGUID)
 		if self:CheckInterruptFilter(args.destGUID, false, true) then
 			specWarnTidalEmpowerment:Show(args.destName)
 			specWarnTidalEmpowerment:Play("kickcast")
@@ -271,12 +307,15 @@ function mod:SPELL_AURA_REMOVED(args)
 			DBM.Nameplate:Hide(true, args.destGUID, spellId)
 		end
 	elseif spellId == 285350 or spellId == 285426 then
-		--specWarnEnergizedStorm:Show()
-		--specWarnEnergizedStorm:Play("targetchange")
+		if self:AntiSpam(5, 1) then
+			specWarnEnergizedStorm:Show()
+			specWarnEnergizedStorm:Play("targetchange")
+		end
 		if args:IsPlayer() then
 			yellStormsWailFades:Cancel()
 		end
 		timerStormsWail:Stop(12, args.destName)
+		tDeleteItem(stormTargets, args.destName)
 	end
 end
 
@@ -314,33 +353,3 @@ function mod:UNIT_DIED(args)
 		--timerTidalShroudCD:Stop()
 	end
 end
-
---[[
-function mod:OnSync(msg, guid)
-	if msg == "ShieldAdded" and guid and not activeShield[guid] then
-		activeShield[guid] = true
-		if self.Options.InfoFrame and #activeShield == 1 then--Only trigger on first shield going up, info frame itself should scan all bosses automatically
-			for i = 1, 3 do
-				local bossUnitID = "boss"..i
-				if UnitGUID(bossUnitID) == guid then--Identify casting unit ID
-					DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(286558))
-					DBM.InfoFrame:Show(2, "enemyabsorb", nil, UnitGetTotalAbsorbs(bossUnitID))
-					break
-				end
-			end
-		end
-	elseif msg == "ShieldRemoved" and guid and activeShield[guid] then
-		activeShield[guid] = nil
-		if self.Options.InfoFrame and #activeShield == 0 then
-			DBM.InfoFrame:SetHeader(DBM_CORE_INFOFRAME_POWER)
-			DBM.InfoFrame:Show(4, "enemypower", 1, 10)
-		end
-	end
-end
-
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 274315 then
-
-	end
-end
---]]
