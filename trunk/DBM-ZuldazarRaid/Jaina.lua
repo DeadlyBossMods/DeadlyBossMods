@@ -150,8 +150,10 @@ local updateInfoFrame
 do
 	local floor, tsort = math.floor, table.sort
 	local lines = {}
+	local tempLines = {}
+	local tempLinesSorted = {}
 	local sortedLines = {}
-	local function sortFuncDesc(a, b) return ChillingTouchStacks[a] > ChillingTouchStacks[b] end
+	local function sortFuncDesc(a, b) return tempLines[a] > tempLines[b] end
 	local function addLine(key, value)
 		-- sort by insertion order
 		lines[key] = value
@@ -159,6 +161,8 @@ do
 	end
 	updateInfoFrame = function()
 		table.wipe(lines)
+		table.wipe(tempLines)
+		table.wipe(tempLinesSorted)
 		table.wipe(sortedLines)
 		--Boss Powers first
 		for i = 1, 5 do
@@ -176,10 +180,18 @@ do
 		--Chilling Touch Stacks
 		--Sort debuffs by highest then inject into regular table
 		if #ChillingTouchStacks > 0 then
-			tsort(ChillingTouchStacks, sortFuncDesc)
-			for _, name in ipairs(ChillingTouchStacks) do
-				addLine(name, ChillingTouchStacks[name])
+			for uId in DBM:GetGroupMembers() do
+				local unitName = DBM:GetUnitFullName(uId)
+				local count = ChillingTouchStacks[unitName] or 0
+				tempLines[unitName] = count
+				tempLinesSorted[#tempLinesSorted + 1] = unitName
 			end
+			--Sort lingering according to options
+			tsort(tempLinesSorted, sortFuncDesc)
+			for _, name in ipairs(tempLinesSorted) do
+				addLine(name, tempLines[name])
+			end
+
 		end
 		return lines, sortedLines
 	end
