@@ -16,7 +16,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 284831 284933 284686 283504 287116 287333 286695 286742",
-	"SPELL_CAST_SUCCESS 284662 284781 288449 285347 285172",
+	"SPELL_CAST_SUCCESS 284662 284781 288449 285347 285172 284521",
 	"SPELL_SUMMON 285003 285402",
 	"SPELL_AURA_APPLIED 284831 285195 284662 284781 285349 288415 288449 284446 289162 286779 284455",
 	"SPELL_AURA_APPLIED_DOSE 285195",
@@ -28,7 +28,7 @@ mod:RegisterEventsInCombat(
 
 --[[
 (ability.id = 284831 or ability.id = 284933 or ability.id = 284686 or ability.id = 283504 or ability.id = 287116 or ability.id = 287333 or ability.id = 286695 or ability.id = 286742) and type = "begincast"
- or (ability.id = 284662 or ability.id = 284781 or ability.id = 288449 or ability.id = 285172) and type = "cast"
+ or (ability.id = 284662 or ability.id = 284781 or ability.id = 288449 or ability.id = 285172 or ability.id = 284521) and type = "cast"
  or ability.id = 285347 and type = "cast" and source.id = 145616
  or (ability.id = 285003 or ability.id = 285402) and type = "summon"
  or (ability.id = 284276 or ability.id = 284446) and (type = "applybuff" or type = "removebuff")
@@ -102,7 +102,7 @@ local specWarnFocusedDimise				= mod:NewSpecialWarningInterrupt(286779, nil, nil
 
 --mod:AddTimerLine(DBM:EJ_GetSectionInfo(18527))
 --Stage One: Zandalari Honor Guard
-local timerScorchingDetonationCD		= mod:NewCDTimer(23.1, 284831, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerScorchingDetonationCD		= mod:NewCDCountTimer(23.1, 284831, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerPlagueofToadsCD				= mod:NewCDTimer(21.1, 284933, nil, nil, nil, 1)
 local timerSerpentTotemCD				= mod:NewCDTimer(31.6, 285172, nil, nil, nil, 1)
 ----Prelate Za'lan
@@ -141,6 +141,7 @@ mod:AddBoolOption("AnnounceAlternatePhase", false, "announce")
 --mod:AddSetIconOption("SetIconDarkRev", 273365, true)
 
 mod.vb.phase = 1
+mod.vb.scorchingDetCount = 0
 --mod.vb.sufferingSpirits = 0
 local playerDeathPhase = false
 local infoframeTable = {}
@@ -166,6 +167,7 @@ end
 function mod:OnCombatStart(delay)
 	self.vb.phase = 1
 	--self.vb.sufferingSpirits = 0
+	self.vb.scorchingDetCount = 0
 	playerDeathPhase = false
 	table.wipe(infoframeTable)
 	if not self:IsLFR() then
@@ -175,7 +177,7 @@ function mod:OnCombatStart(delay)
 		timerGrievousAxeCD:Start(8.2-delay)
 	end
 	timerMeteorLeapCD:Start(15.4-delay)
-	timerScorchingDetonationCD:Start(25.3-delay)
+	timerScorchingDetonationCD:Start(25.3-delay, 1)
 	timerPlagueofToadsCD:Start(20.4-delay)
 	timerSerpentTotemCD:Start(30.2-delay)
 	if self.Options.NPAuraOnRelentlessness or self.Options.NPAuraOnFocusedDemise then
@@ -205,22 +207,31 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 284831 then
-		if self.vb.phase >= 3 then
+		self.vb.scorchingDetCount = self.vb.scorchingDetCount + 1
+		if self.vb.phase == 3 then
 			timerScorchingDetonationCD:Start(32.8)
 			--if self:LatencyCheck() then
 			--	self:SendSync("ScorchingDetonation")
 			--end
+		elseif self.vb.phase == 4 then
+			if self.vb.scorchingDetCount % 2 == 0 then
+				timerScorchingDetonationCD:Start(27.8)
+			else
+				timerScorchingDetonationCD:Start(34)
+			end
 		elseif self.vb.phase == 2 then
 			timerScorchingDetonationCD:Start(32.8)
 		else--Phase 1
 			timerScorchingDetonationCD:Start(23.1)
 		end
-	elseif spellId == 284933 then
+	elseif spellId == 284933 and self:AntiSpam(5, 4) then
 		specWarnPlagueofToads:Show()
 		specWarnPlagueofToads:Play("watchstep")
 		if self.vb.phase == 1 then
 			timerPlagueofToadsCD:Start(21.1)
-		else
+		elseif self.vb.phase == 4 then
+			timerPlagueofToadsCD:Start(28.1)
+		else--Phase 2
 			timerPlagueofToadsCD:Start(60)
 		end
 	elseif spellId == 284686 then
@@ -272,14 +283,22 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 284781 then
 		timerGrievousAxeCD:Start()
 	elseif spellId == 288449 then
-		timerDeathsDoorCD:Start()
+		if self.vb.phase == 4 then
+			timerDeathsDoorCD:Start(37.4)
+		else
+			timerDeathsDoorCD:Start(27.9)
+		end
 		--if self.vb.phase >= 3 then
 		--	if self:LatencyCheck() then
 		--		self:SendSync("DeathsDoor")--used by rastakhan in P3
 		--	end
 		--end
 	elseif spellId == 285347 and self:AntiSpam(3, 3) and args:GetSrcCreatureID() == 145616 then--Plague of Fire
-		timerPlagueofFireCD:Start()
+		if self.vb.phase == 3 then
+			timerPlagueofFireCD:Start(39)
+		else--2 and 4
+			timerPlagueofFireCD:Start(23)--23-25
+		end
 	elseif spellId == 285172 then
 		if self.Options.SpecWarn285172switch then
 			specWarnSerpTotem:Show()
@@ -289,6 +308,20 @@ function mod:SPELL_CAST_SUCCESS(args)
 			specWarnSerpTotemDodge:Play("justrun")
 		end
 		timerSerpentTotemCD:Start()
+	elseif spellId == 284521 then--Spirit Expulsion
+		self.vb.phase = 4
+		self.vb.scorchingDetCount = 0
+		warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(4))
+		warnPhase:Play("pfour")
+		timerDeathsDoorCD:Stop()
+		timerScorchingDetonationCD:Stop()
+		timerPlagueofFireCD:Stop()
+		timerInevitableEndCD:Stop()
+		timerDeathsDoorCD:Start(9.3)
+		timerPlagueofToadsCD:Start(15.1)
+		timerScorchingDetonationCD:Start(19.2, 1)
+		timerPlagueofFireCD:Start(27.3)
+		timerInevitableEndCD:Start(28.2)
 	end
 end
 
@@ -385,6 +418,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		--end
 	elseif spellId == 284446 and self.vb.phase < 3 then--Bwonsamdi's Boon
 		self.vb.phase = 3
+		self.vb.scorchingDetCount = 0
 		warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(3))
 		warnPhase:Play("pthree")
 		timerScorchingDetonationCD:Stop()
@@ -399,7 +433,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerAddsCD:Start(6)
 		--timerZombieDustTotemCD:Start(3)--Not actually used in Stage 3?
 		timerDeathsDoorCD:Start(27.5)--SUCCESS
-		timerScorchingDetonationCD:Start(32.8)
+		timerScorchingDetonationCD:Start(32.8, 1)
 		timerPlagueofFireCD:Start(40)
 		--Bwon
 		timerDreadReapingCD:Start(7.6)
@@ -463,6 +497,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif spellId == 284276 then--Bind Souls (P2 Start)
 		self.vb.phase = 2
+		self.vb.scorchingDetCount = 0
 		warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(2))
 		warnPhase:Play("ptwo")
 		timerPlagueofToadsCD:Stop()
@@ -471,7 +506,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		
 		--Rasta
 		timerZombieDustTotemCD:Start(26.3)
-		timerScorchingDetonationCD:Start(33.6)
+		timerScorchingDetonationCD:Start(33.6, 1)
 		timerPlagueofFireCD:Start(40.7)--40-42
 		timerPlagueofToadsCD:Start(47.1)
 		--timerSufferingSpiritsCD:Start(2)--Never seen on heroic or mythic

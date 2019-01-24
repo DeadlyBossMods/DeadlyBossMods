@@ -123,19 +123,32 @@ do
 		table.wipe(lines)
 		table.wipe(sortedLines)
 		--Big Guys Power
-		local currentPower, maxPower = UnitPower("boss3"), UnitPowerMax("boss3")
+		local currentPower, maxPower = UnitPower("boss1"), UnitPowerMax("boss1")
 		if maxPower and maxPower ~= 0 then
 			if currentPower / maxPower * 100 >= 1 then
-				addLine(UnitName("boss3"), currentPower)
+				addLine(UnitName("boss1"), currentPower)
 			end
 		end
+		--[[for i = 1, 3 do
+			local unitID = "boss"..i
+			local cid = mod:GetUnitCreatureId(unitID) or 0
+			if cid == 146256 then
+				local currentPower, maxPower = UnitPower(unitID), UnitPowerMax(unitID)
+				if maxPower and maxPower ~= 0 then
+					if currentPower / maxPower * 100 >= 1 then
+						addLine(UnitName(unitID), currentPower)
+					end
+				end
+			end
+		end--]]
 		--Scan raid for notable debuffs and add them
 		if #stormTargets > 0 then
 			--addLine("", "")
 			for i=1, #stormTargets do
-				local spellName, _, _, _, _, expireTime = DBM:UnitDebuff("player", 285350, 285426)
+				local name = stormTargets[i]
+				local uId = DBM:GetRaidUnitId(name)
+				local spellName, _, _, _, _, expireTime = DBM:UnitDebuff(uId, 285350, 285426)
 				if spellName and expireTime then--Personal Dark Bargain
-					local name = stormTargets[i]
 					local remaining = expireTime-GetTime()
 					addLine(name, math.floor(remaining))
 				end
@@ -175,6 +188,13 @@ function mod:OnCombatEnd()
 	end
 	if self.Options.NPAuraOnKepWrapping then
 		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
+	end
+end
+
+function mod:OnTimerRecovery()
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:SetHeader(OVERVIEW)
+		DBM.InfoFrame:Show(8, "function", updateInfoFrame, false, false)
 	end
 end
 
