@@ -256,7 +256,7 @@ function mod:SPELL_CAST_START(args)
 		--	self:SendSync("DreadReaping")
 		--end
 	elseif spellId == 287333 then
-		if not playerDeathPhase then
+		if not playerDeathPhase and self.vb.phase ~= 4 then
 			if self.Options.AnnounceAlternatePhase then
 				warnInevitableEnd:Show()
 			end
