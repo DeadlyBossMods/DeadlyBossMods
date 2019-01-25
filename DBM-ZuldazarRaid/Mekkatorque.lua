@@ -17,10 +17,10 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 282205 287952 287929 282153 288410 287751 287797 287757 286693 288041 288049 289537 287691 286597",
 	"SPELL_CAST_SUCCESS 287757 286597",
-	"SPELL_AURA_APPLIED 287757 287167 284168 289023 286051 289699 286646",
+	"SPELL_AURA_APPLIED 287757 287167 284168 289023 286051 289699 286646 282406",
 	"SPELL_AURA_APPLIED_DOSE 289699",
-	"SPELL_AURA_REMOVED 287757 284168 286646",
-	"UNIT_DIED"
+	"SPELL_AURA_REMOVED 287757 284168 286646"
+--	"UNIT_DIED"
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
@@ -29,9 +29,7 @@ mod:RegisterEventsInCombat(
  or (ability.id = 287757 or ability.id = 286597) and type = "cast"
 --]]
 --TODO, Gigavolt Charge has 3 debuff spellIDs, all 3 used or what the deal?
---TODO, icon marking for poly morph dispel assignments?
 --TODO, nameplate aura for tampering protocol, if it has actual debuff diration (wowhead does not)
---TODO, if number of bots can be counted, add additional "switch to bots" warnings when shrunk is applied if any are still up
 --TODO, wormhole generator target scan? hidden aura scan?
 --TODO, adjust electroshock stacks?
 local warnPhase							= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
@@ -86,14 +84,13 @@ local timerExplodingSheepCD				= mod:NewCDCountTimer(55, 287929, nil, nil, nil, 
 --local countdownFelstormBarrage			= mod:NewCountdown("AltTwo32", 244000, nil, nil, 3)
 
 mod:AddSetIconOption("SetIconGigaVolt", 286646, true)
---mod:AddSetIconOption("SetIconShrunk2", 284168, false)
+mod:AddSetIconOption("SetIconBot", 288410, true, true)
 --mod:AddRangeFrameOption("8/10")
 --mod:AddInfoFrameOption(258040, true)
 --mod:AddNamePlateOption("NPAuraOnPresence", 276093)
 --mod:AddSetIconOption("SetIconDarkRev", 273365, true)
 
 mod.vb.phase = 1
---mod.vb.shrunkIcon = 8
 --Count variables for every timer, because stupid sequence mod
 mod.vb.botCount = 0
 mod.vb.cannonCount = 0
@@ -101,6 +98,7 @@ mod.vb.blastOffcount = 0
 mod.vb.ripperCount = 0
 mod.vb.gigaCount = 0
 mod.vb.gigaIcon = 1
+mod.vb.botIcon = 4
 mod.vb.shrinkCount = 0
 mod.vb.sheepCount = 0
 mod.vb.difficultyName = "None"
@@ -244,13 +242,13 @@ end
 
 function mod:OnCombatStart(delay)
 	self.vb.phase = 1
-	--self.vb.shrunkIcon = 8
 	self.vb.botCount = 0
 	self.vb.cannonCount = 0
 	self.vb.blastOffcount = 0
 	self.vb.ripperCount = 0
 	self.vb.gigaCount = 0
 	self.vb.gigaIcon = 1
+	self.vb.botIcon = 4
 	self.vb.shrinkCount = 0
 	if self:IsMythic() then
 		self.vb.difficultyName = "mythic"
@@ -401,7 +399,6 @@ function mod:SPELL_CAST_START(args)
 		self.vb.gigaIcon = 1
 	elseif spellId == 286693 or spellId == 288041 or spellId == 288049 or spellId == 289537 then--288041 used in intermission first, 288049 second in intermission, 286693 outside intermission
 		self.vb.shrinkCount = self.vb.shrinkCount + 1
-		--self.vb.shrunkIcon = 8
 		local timer = worldEnlargerTimers[self.vb.difficultyName][self.vb.phase][self.vb.shrinkCount+1]
 		if timer then
 			timerWorldEnlargerCD:Start(timer, self.vb.shrinkCount+1)
@@ -447,7 +444,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnDiscombobulation:ScheduleVoice(0.3, "helpdispel")
 	elseif spellId == 284168 then
 		warnShrunk:CombinedShow(0.5, args.destName)
-		--local icon = self.vb.shrunkIcon
 		if args:IsPlayer() then
 			specWarnShrunk:Show()
 			specWarnShrunk:Play("targetyou")
@@ -463,10 +459,6 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnShrunkTaunt:Play("tauntboss")
 			end
 		end
-		--if self.Options.SetIconShrunk2 then
-		--	self:SetIcon(args.destName, icon)
-		--end
-		--self.vb.shrunkIcon = self.vb.shrunkIcon - 1
 	elseif spellId == 289023 then
 		if args:IsPlayer() then
 			specWarnEnormous:Show()
@@ -486,6 +478,12 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnElectroshockAmpOther:Play("tauntboss")
 			end
 		end
+	elseif spellId == 282406 then--Spark Pulse#BUFF#nil
+		if self.Options.SetIconBot then
+			self:ScanForMobs(args.destGUID, 0, self.vb.botIcon, 1, 0.2, 10)
+		end
+		self.vb.botIcon = self.vb.botIcon + 1
+		if self.vb.botIcon == 9 then self.vb.botIcon = 4 end--Icons 4-8
 	end
 end
 --mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -502,9 +500,6 @@ function mod:SPELL_AURA_REMOVED(args)
 			self:SetIcon(args.destName, 0)
 		end
 	elseif spellId == 284168 then
-		--if self.Options.SetIconShrunk2 then
-			--self:SetIcon(args.destName, 0)
-		--end
 		if args:IsPlayer() then
 			self:Unschedule(shrunkYellRepeater)
 		end
@@ -519,7 +514,6 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spell
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
---]]
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
@@ -530,7 +524,6 @@ function mod:UNIT_DIED(args)
 	end
 end
 
---[[
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 274315 then
 
