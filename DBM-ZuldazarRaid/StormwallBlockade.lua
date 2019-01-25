@@ -69,7 +69,7 @@ local specWarnEnergizedStorm			= mod:NewSpecialWarningSwitch("ej19312", "RangedD
 local yellKepWrapped					= mod:NewFadesYell(285000)
 local specWarnSeaSwell					= mod:NewSpecialWarningDodge(285118, nil, nil, nil, 2, 2)
 local specWarnIreoftheDeep				= mod:NewSpecialWarningSoak(285017, "-Tank", nil, nil, 1, 2)
-local specWarnStormsWail				= mod:NewSpecialWarningMoveTo(285350, nil, nil, nil, 1, 2)
+local specWarnStormsWail				= mod:NewSpecialWarningMoveTo(285350, nil, nil, 2, 3, 2)
 local yellStormsWail					= mod:NewYell(285350)
 local yellStormsWailFades				= mod:NewShortFadesYell(285350)
 
@@ -296,6 +296,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 285350 or spellId == 285426 then
 		if args:IsPlayer() then
 			specWarnStormsWail:Show(freezingTidePod)
+			specWarnStormsWail:Schedule(7, DBM_CORE_BACK)
 			specWarnStormsWail:Play("targetyou")
 			yellStormsWail:Yell()
 			yellStormsWailFades:Countdown(10)
@@ -333,6 +334,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 		if args:IsPlayer() then
 			yellStormsWailFades:Cancel()
+			specWarnStormsWail:Cancel()
 		end
 		timerStormsWail:Stop(12, args.destName)
 		tDeleteItem(stormTargets, args.destName)
