@@ -53,7 +53,8 @@ L= DBM:GetModLocalization(2330)
 
 L:SetMiscLocalization({
 	BwonsamdiWrath =	"Well, if ya so eager for death, ya shoulda come see me sooner!",
-	BwonsamdiWrath2 =	"Sooner or later... everybody serves me!"
+	BwonsamdiWrath2 =	"Sooner or later... everybody serves me!",
+	Bird			 =	"새"
 })
 
 ---------------------------
@@ -71,12 +72,12 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(2332)
 
 ---------------------------
---  Sea Priest Blockade (Both) --
+--  Sea Priest Blockade (Horde) --
 ---------------------------
 L= DBM:GetModLocalization(2337)
 
 ---------------------------
---  Jaina Proudmoore (Both?) --
+--  Jaina Proudmoore (Horde) --
 ---------------------------
 L= DBM:GetModLocalization(2343)
 
