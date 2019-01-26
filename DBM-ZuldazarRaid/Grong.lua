@@ -25,7 +25,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 282399 285994 282533 286435 282243 285660 281936",
-	"SPELL_CAST_SUCCESS 282543 282526 286450 282179 282247 282082 289292 285875 282083",
+	"SPELL_CAST_SUCCESS 282543 282526 286450 282179 282247 282082 289292 285875 282083 289307",
 	"SPELL_AURA_APPLIED 285671 285875 286434 285659",
 	"SPELL_AURA_APPLIED_DOSE 285875 285671",
 	"SPELL_AURA_REMOVED 286434 285659",
@@ -47,6 +47,7 @@ mod:RegisterEventsInCombat(
 local warnCrushed						= mod:NewStackAnnounce(285671, 3, nil, "Tank")
 local warnRendingBite					= mod:NewStackAnnounce(285875, 2, nil, "Tank")
 local warnCore							= mod:NewTargetNoFilterAnnounce(coreSpellId, 2)
+local warnThrowTarget					= mod:NewTargetNoFilterAnnounce(289307, 2)
 
 local specWarnEnergyAOE					= mod:NewSpecialWarningCount(energyAOESpellId, nil, nil, nil, 2, 2)
 local specWarnSlam						= mod:NewSpecialWarningDodge(slamSpellId, nil, nil, nil, 2, 2)
@@ -56,7 +57,8 @@ local specWarnAddInterrupt				= mod:NewSpecialWarningInterruptCount(addCastId, "
 local specWarnCrushedTaunt				= mod:NewSpecialWarningTaunt(285671, nil, nil, nil, 1, 2)--After any crush that isn't 3rd cast
 local specWarnRendingBiteTaunt			= mod:NewSpecialWarningTaunt(285875, nil, nil, nil, 1, 2)--At 2 stacks, but only if it's first two casts of combo
 local specWarnThrow						= mod:NewSpecialWarningTaunt(289292, nil, nil, nil, 1, 2)
---local yellDarkRevolation				= mod:NewPosYell(273365)
+local specWarnThrowTarget				= mod:NewSpecialWarningMoveAway(289307, nil, nil, nil, 3, 2)
+local yellThrowTarget					= mod:NewYell(289307)
 --local yellDarkRevolationFades			= mod:NewIconFadesYell(273365)
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 8)
 
@@ -229,6 +231,14 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.comboCount = self.vb.comboCount + 1
 	elseif spellId == 285875 then--Rending Bite
 		self.vb.comboCount = self.vb.comboCount + 1
+	elseif spellId == 289307 then
+		if args:IsPlayer() then
+			specWarnThrowTarget:Show()
+			specWarnThrowTarget:Play("runout")
+			yellThrowTarget:Yell()
+		else
+			warnThrowTarget:Show(args.destName)
+		end
 	end
 end
 
