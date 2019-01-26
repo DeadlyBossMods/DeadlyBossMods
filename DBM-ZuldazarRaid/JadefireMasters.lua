@@ -103,13 +103,11 @@ mod:AddNamePlateOption("NPAuraOnFixate", 268074)
 mod:AddNamePlateOption("NPAuraOnExplosion", 284399)
 --mod:AddSetIconOption("SetIconDarkRev", 273365, true)
 
-mod.vb.phase = 1
 mod.vb.shieldsActive = false
 mod.vb.embersIcon = 0
 --mod.vb.magmaTrapCount = 0
 
 function mod:OnCombatStart(delay)
-	self.vb.phase = 1
 	self.vb.shieldsActive = false
 	self.vb.embersIcon = 0
 	--self.vb.magmaTrapCount = 0
