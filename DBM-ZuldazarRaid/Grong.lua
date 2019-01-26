@@ -59,7 +59,7 @@ local specWarnRendingBiteTaunt			= mod:NewSpecialWarningTaunt(285875, nil, nil, 
 local specWarnThrow						= mod:NewSpecialWarningTaunt(289292, nil, nil, nil, 1, 2)
 local specWarnThrowTarget				= mod:NewSpecialWarningMoveAway(289307, nil, nil, nil, 3, 2)
 local yellThrowTarget					= mod:NewYell(289307)
---local yellDarkRevolationFades			= mod:NewIconFadesYell(273365)
+local yellThrowTargetFades				= mod:NewShortFadesYell(289307)
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 8)
 
 --mod:AddTimerLine(DBM:EJ_GetSectionInfo(18527))
@@ -236,6 +236,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			specWarnThrowTarget:Show()
 			specWarnThrowTarget:Play("runout")
 			yellThrowTarget:Yell()
+			yellThrowTargetFades:Countdown(6, 3)
 		else
 			warnThrowTarget:Show(args.destName)
 		end
