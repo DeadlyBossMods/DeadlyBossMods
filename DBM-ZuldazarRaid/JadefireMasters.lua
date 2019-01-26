@@ -60,7 +60,7 @@ local specWarnMultiSidedStrike			= mod:NewSpecialWarningYou(282030, nil, nil, ni
 local specWarnStalking					= mod:NewSpecialWarningYou(285632, nil, nil, nil, 1, 2)
 local yellStalking						= mod:NewYell(285632)
 --Mage
-local specWarnRisingFlames				= mod:NewSpecialWarningStack(282037, nil, 2, nil, nil, 1, 6)
+local specWarnRisingFlames				= mod:NewSpecialWarningStack(282037, nil, 6, nil, nil, 1, 6)
 local specWarnRisingFlamesOther			= mod:NewSpecialWarningTaunt(282037, nil, nil, nil, 1, 2)
 --local yellDarkRevolation				= mod:NewPosYell(273365)
 local yellRisingFlamesFades				= mod:NewShortFadesYell(282037)
@@ -201,7 +201,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId) then
 			local amount = args.amount or 1
-			if amount >= 5 then
+			if amount >= 6 and self:AntiSpam(4, 1) then
 				if args:IsPlayer() then
 					specWarnRisingFlames:Show(amount)
 					specWarnRisingFlames:Play("stackhigh")
