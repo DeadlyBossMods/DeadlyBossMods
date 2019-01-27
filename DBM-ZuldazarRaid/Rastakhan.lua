@@ -22,8 +22,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED_DOSE 285195",
 	"SPELL_AURA_REMOVED 284831 285195 288449 289162 286779 284276 284455",
 	"SPELL_AURA_REMOVED_DOSE 285195",
-	"UNIT_DIED"
---	"UNIT_SPELLCAST_SUCCEEDED boss1"
+	"UNIT_DIED",
+	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
 --[[
@@ -83,7 +83,7 @@ local yellMeteorLeapFades				= mod:NewShortFadesYell(284686)
 local specWarnGrievousAxe				= mod:NewSpecialWarningDefensive(284781, false, nil, nil, 1, 2)
 --Stage Two: Bwonsamdi's Pact
 local specWarnPlagueofFire				= mod:NewSpecialWarningMoveAway(285349, nil, nil, nil, 1, 2)
-local yellPlagueofFire					= mod:NewYell(285349)
+local yellPlagueofFire					= mod:NewYell(285349, 255782)
 local specWarnZombieDustTotem			= mod:NewSpecialWarningSwitch(285003, "Dps", nil, nil, 1, 2)
 ----Bwonsamdi
 local specWarnCaressofDeath				= mod:NewSpecialWarningDefensive(288415, nil, nil, nil, 1, 2)
@@ -416,7 +416,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		--if self.vb.phase >= 3 then
 		--	self:SendSync("DeathsDoorTarget", args.destName)
 		--end
-	elseif spellId == 284446 and self.vb.phase < 3 then--Bwonsamdi's Boon
+	elseif spellId == 284446 and self.vb.phase < 3 then--Bwonsamdi's Boon (shouldn't be needed but good to have)
 		self.vb.phase = 3
 		self.vb.scorchingDetCount = 0
 		warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(3))
@@ -567,12 +567,41 @@ function mod:UNIT_DIED(args)
 end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
+	--"<195.03 22:35:44> [UNIT_SPELLCAST_SUCCEEDED] King Rastakhan(Towelliee) -King Rastakhan P2 -> P3 Conversation [DO NOT TRANSLATE]- [[boss1:Cast-3-3019-2070-28900-290801-000C493290:290801]]", -- [3752]
+	--"<201.14 22:35:50> [CLEU] SPELL_CAST_SUCCESS#Vehicle-0-3019-2070-28900-145644-0000493216#Bwonsamdi#Vehicle-0-3019-2070-28900-145616-0000493177#King Rastakhan#284446#Bwonsamdi's Boon#nil#nil", -- [3850]
+	if spellId == 290801 then--King Rastakhan P2 -> P3 Conversation [DO NOT TRANSLATE] (Only one faster than CLEU)
+		self.vb.phase = 3
+		self.vb.scorchingDetCount = 0
+		warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(3))
+		warnPhase:Play("pthree")
+		timerScorchingDetonationCD:Stop()
+		timerPlagueofFireCD:Stop()
+		timerZombieDustTotemCD:Stop()
+		--timerVoodooDollCD:Stop()
+		--timerSufferingSpiritsCD:Stop()
+		timerDeathsDoorCD:Stop()
+		
+		--Rasta
+		timerSpiritVortex:Start(11)
+		timerAddsCD:Start(12)
+		--timerZombieDustTotemCD:Start(3)--Not actually used in Stage 3?
+		timerDeathsDoorCD:Start(33.5)--SUCCESS
+		timerScorchingDetonationCD:Start(38.8, 1)
+		timerPlagueofFireCD:Start(46)
+		--Bwon
+		timerDreadReapingCD:Start(13.6)
+		timerInevitableEndCD:Start(41.8)
+		timerSealofBwonCD:Start(45.2)
+--		self:RegisterShortTermEvents(
+--			"SPELL_PERIODIC_DAMAGE 286772",
+--			"SPELL_PERIODIC_MISSED 286772"
+--		)
 	--"<292.22 16:58:46> [UNIT_SPELLCAST_SUCCEEDED] King Rastakhan(??) -Summon Phantom of Retribution- boss1:Cast-3-2083-2070-6821-284540-002A522E86:284540
 	--"<292.24 16:58:46> [UNIT_SPELLCAST_SUCCEEDED] King Rastakhan(??) -Summon Phantom of Rage- boss1:Cast-3-2083-2070-6821-284542-002C522E86:284542
 	--"<292.24 16:58:46> [UNIT_SPELLCAST_SUCCEEDED] King Rastakhan(??) -Summon Phantom of Slaughter- boss1:Cast-3-2083-2070-6821-284543-002E522E86:284543
 	--"<292.24 16:58:46> [UNIT_SPELLCAST_SUCCEEDED] King Rastakhan(??) -Summon Phantom of Ruin- boss1:Cast-3-2083-2070-6821-284544-002FD22E86:284544
-	if spellId == 284540 then--Summon Phantom of Retribution
-
+--	elseif spellId == 284540 then--Summon Phantom of Retribution
+	
 	end
 end
 
