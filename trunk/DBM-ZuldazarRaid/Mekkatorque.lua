@@ -486,7 +486,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.vb.botIcon == 9 then self.vb.botIcon = 4 end--Icons 4-8
 	end
 end
---mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
+mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId

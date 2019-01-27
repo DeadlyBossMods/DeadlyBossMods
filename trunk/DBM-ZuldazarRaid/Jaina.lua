@@ -204,8 +204,8 @@ function mod:OnCombatStart(delay)
 	table.wipe(ChillingTouchStacks)
 	timerCorsairCD:Start(5.1-delay)
 	timerAvalancheCD:Start(8.5-delay)
+	timerFreezingBlastCD:Start(17.9-delay)
 	timerGraspofFrostCD:Start(26.6-delay)
-	--timerFreezingBlastCD:Start(1-delay)
 	timerRingofIceCD:Start(60.7-delay)
 	if self.Options.RangeFrame and self:IsMythic() then
 		DBM.RangeCheck:Show(10)
@@ -369,7 +369,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:SetIcon(args.destName, self.vb.GraspofFrostIcon)
 		end
 		self.vb.GraspofFrostIcon = self.vb.GraspofFrostIcon + 1
-	elseif (spellId == 288199 or spellId == 290053) and self.vb.phase == 1 then--Howling Winds
+	elseif (spellId == 288199 or spellId == 290053) and self.vb.phase == 1 then--Howling Winds (secondary 1.5 trigger)
 		self.vb.phase = 1.5
 		warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(1.5))
 		warnPhase:Play("phasechange")
@@ -377,7 +377,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerCorsairCD:Stop()
 		timerAvalancheCD:Stop()
 		timerGraspofFrostCD:Stop()
-		--timerFreezingBlastCD:Stop()
+		timerFreezingBlastCD:Stop()
 		timerRingofIceCD:Stop()
 	elseif spellId == 288219 then
 		if self.Options.NPAuraOnRefractiveIce then
@@ -556,16 +556,16 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 288013 then--Corsair Picker
 		warnCorsair:Show()
 		timerCorsairCD:Start()
-	elseif spellId == 288713 then--Blink to Intermission Spot Center
+	elseif spellId == 290681 then--Transition Visual 1
 		self.vb.phase = 1.5
 		warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(1.5))
 		warnPhase:Play("phasechange")
 		timerCorsairCD:Stop()
 		timerAvalancheCD:Stop()
 		timerGraspofFrostCD:Stop()
-		--timerFreezingBlastCD:Stop()
+		timerFreezingBlastCD:Stop()
 		timerRingofIceCD:Stop()
-		timerPhaseTransition:Start(18)
+		timerPhaseTransition:Start(12.5)
 	elseif spellId == 288405 or spellId == 288401 then--Ability Callout Corsair on the Port Side
 		DBM:Debug("Corsair on the Port Side")
 	elseif spellId == 288407 or spellId == 288406 then--Ability Callout Corsair on the Starboard Side
