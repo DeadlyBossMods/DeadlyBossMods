@@ -135,7 +135,7 @@ local timerPrismaticImageCD				= mod:NewAITimer(55, 288747, nil, nil, nil, 1, ni
 
 --mod:AddSetIconOption("SetIconGift", 255594, true)
 mod:AddRangeFrameOption(10, 289379)
-mod:AddInfoFrameOption(287993, true)--Will be changed to true later, right now it'll probably though too many thousands of errors to be on by default
+mod:AddInfoFrameOption(287993, true, 2)
 mod:AddNamePlateOption("NPAuraOnMarkedTarget", 288038)
 mod:AddNamePlateOption("NPAuraOnTimeWarp", 287925)
 mod:AddNamePlateOption("NPAuraOnRefractiveIce", 288219)
