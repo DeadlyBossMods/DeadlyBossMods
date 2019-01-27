@@ -17,7 +17,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 282098 282107 285889 282155 282411",
 	"SPELL_CAST_SUCCESS 282444 285878 282636",
-	"SPELL_AURA_APPLIED 282079 285945 282135 286007 282209 282444 282834 286811 284663",
+	"SPELL_AURA_APPLIED 282079 285945 282135 286007 282209 282444 282834 286811 284663 285879",
 --	"SPELL_AURA_REFRESH 282079",
 	"SPELL_AURA_APPLIED_DOSE 285945 282444",
 	"SPELL_AURA_REMOVED 282079 282135 286007 282834 286811",
@@ -76,6 +76,7 @@ local specWarnLaceratingClawsTaunt		= mod:NewSpecialWarningTaunt(282444, nil, ni
 local specWarnKimbulsWrath				= mod:NewSpecialWarningYou(282834, nil, nil, nil, 1, 2)
 local yellKimbulsWrath					= mod:NewYell(282834)
 local yellKimbulsWrathFades				= mod:NewFadesYell(282834)
+local specWarnKimbulsWrathNear			= mod:NewSpecialWarningClose(282834, nil, nil, nil, 1, 2)
 --Akunda's Aspect
 local specWarnThunderingStorm			= mod:NewSpecialWarningRun(282411, "Melee", nil, nil, 4, 2)
 local specWarnMindWipe					= mod:NewSpecialWarningYou(285878, nil, nil, nil, 1, 2)
@@ -314,11 +315,14 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnKimbulsWrath:Play("targetyou")
 			yellKimbulsWrath:Yell()
 			yellKimbulsWrathFades:Countdown(12)
+		elseif self:CheckNearby(5, args.destName) then
+			specWarnKimbulsWrathNear:CombinedShow(1, args.destName)
+			specWarnKimbulsWrathNear:ScheduleVoice(1, "runaway")
 		end
 		if self:AntiSpam(10, 3) then
 			timerKinbulsWrathCD:Start()
 		end
-	elseif spellId == 285878 then
+	elseif spellId == 285879 then
 		if args:IsPlayer() then
 			specWarnMindWipe:Show()
 			specWarnMindWipe:Play("targetyou")
