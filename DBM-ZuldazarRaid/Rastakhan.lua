@@ -62,7 +62,6 @@ local warnInevitableEnd					= mod:NewSpellAnnounce(287333, 3)
 local warnZombieTotem					= mod:NewSpellAnnounce(285003, 2)
 ----Spirits
 local warnSealofBwonsamdi				= mod:NewSpellAnnounce(286695, 3)
-local warnShadowSmash					= mod:NewCastAnnounce(286742, 3)
 
 --Stage One: Zandalari Honor Guard
 local specWarnScorchingDetonation		= mod:NewSpecialWarningMoveAway(284831, nil, nil, nil, 3, 2)
@@ -95,8 +94,9 @@ local yellDeathsDoorFades				= mod:NewFadesYell(288449)
 --Stage Three: Enter the Death Realm
 local specWarnInevitableEnd				= mod:NewSpecialWarningRun(287333, nil, nil, nil, 4, 2)
 ----Spirits
-local specWarnShadowSmash				= mod:NewSpecialWarningDefensive(286742, nil, nil, nil, 1, 2)
-local specWarnShadowSmashOther			= mod:NewSpecialWarningTaunt(286742, nil, nil, nil, 1, 2)
+local specWarnNecroticSmash				= mod:NewSpecialWarningDodge(286742, "Melee", nil, nil, 4, 2)
+local specWarnNecroticSmashFuckedUp		= mod:NewSpecialWarningDefensive(286742, nil, nil, nil, 1, 2)--If tank gets hit by it, warn this
+local specWarnNecroticSmashOther		= mod:NewSpecialWarningTaunt(286742, nil, nil, nil, 1, 2)--And warn other tank to taunt.
 --local specWarnGTFO						= mod:NewSpecialWarningGTFO(286772, nil, nil, nil, 1, 8)
 local specWarnFocusedDimise				= mod:NewSpecialWarningInterrupt(286779, nil, nil, nil, 1, 2)
 
@@ -114,7 +114,7 @@ local timerGrievousAxeCD				= mod:NewCDTimer(17.1, 284781, nil, nil, nil, 3, nil
 --Stage Two: Bwonsamdi's Pact
 local timerPlagueofFireCD				= mod:NewCDTimer(23, 285347, nil, nil, nil, 3)
 local timerZombieDustTotemCD			= mod:NewCDTimer(44.9, 285003, nil, nil, nil, 1)
---local timerVoodooDollCD					= mod:NewAITimer(14.1, 285402, nil, nil, nil, 1)
+--local timerVoodooDollCD				= mod:NewAITimer(14.1, 285402, nil, nil, nil, 1)
 ----Bwonsamdi
 --local timerSufferingSpiritsCD			= mod:NewAITimer(14.1, 283504, nil, nil, nil, 2)
 local timerDeathsDoorCD					= mod:NewCDTimer(27.9, 288449, nil, nil, nil, 3)
@@ -125,6 +125,7 @@ local timerInevitableEndCD				= mod:NewCDTimer(62.5, 287333, nil, nil, nil, 2, n
 local timerAddsCD						= mod:NewAddsTimer(120, 284446, nil, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON)--Generic Timer only used on Mythic
 ----Spirits
 local timerSealofBwonCD					= mod:NewCDTimer(25.5, 286695, nil, nil, nil, 5)
+local timerNecroticSmashCD				= mod:NewCDTimer(34.6, 286742, nil, nil, nil, 2)
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
 
@@ -272,7 +273,9 @@ function mod:SPELL_CAST_START(args)
 		warnSealofBwonsamdi:Show()
 		timerSealofBwonCD:Start()
 	elseif spellId == 286742 then
-		warnShadowSmash:Show()
+		specWarnNecroticSmash:Show()
+		specWarnNecroticSmash:Play("justrun")
+		timerNecroticSmashCD:Start(34.6)
 	end
 end
 
@@ -431,6 +434,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		--Rasta
 		timerSpiritVortex:Start(5)
 		timerAddsCD:Start(6)
+		timerNecroticSmashCD:Start(23)
 		--timerZombieDustTotemCD:Start(3)--Not actually used in Stage 3?
 		timerDeathsDoorCD:Start(27.5)--SUCCESS
 		timerScorchingDetonationCD:Start(32.8, 1)
@@ -449,13 +453,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 286742 then
 		if args:IsPlayer() then
-			specWarnShadowSmash:Show()
-			specWarnShadowSmash:Play("defensive")
+			specWarnNecroticSmashFuckedUp:Show()
+			specWarnNecroticSmashFuckedUp:Play("defensive")
 		else
 			local uId = DBM:GetRaidUnitId(args.destName)
 			if self:IsTanking(uId) and not DBM:UnitDebuff("player", spellId) then
-				specWarnShadowSmashOther:Show(args.destName)
-				specWarnShadowSmashOther:Play("changemt")
+				specWarnNecroticSmashOther:Show(args.destName)
+				specWarnNecroticSmashOther:Play("changemt")
 			end
 		end
 	elseif spellId == 286779 then
@@ -561,8 +565,8 @@ function mod:UNIT_DIED(args)
 	
 	--elseif cid == 146491 then--phantom-of-retribution
 	
-	--elseif cid == 146492 then--phantom-of-rage
-
+	elseif cid == 146492 then--phantom-of-rage
+		timerNecroticSmashCD:Stop()
 	end
 end
 
@@ -584,6 +588,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		--Rasta
 		timerSpiritVortex:Start(11)
 		timerAddsCD:Start(12)
+		timerNecroticSmashCD:Start(29)
 		--timerZombieDustTotemCD:Start(3)--Not actually used in Stage 3?
 		timerDeathsDoorCD:Start(33.5)--SUCCESS
 		timerScorchingDetonationCD:Start(38.8, 1)
