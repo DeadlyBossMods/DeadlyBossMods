@@ -78,23 +78,23 @@ local yellStormsWailFades				= mod:NewShortFadesYell(285350)
 ----General
 ----Sister Katherine
 local timerVoltaicFlashCD				= mod:NewCDTimer(17, 284262, nil, nil, nil, 3)--17-35 wtf?
-local timerCracklingLightningCD			= mod:NewCDTimer(12.1, 284106, nil, nil, nil, 3)--12.1 and 23 alternating?
+local timerCracklingLightningCD			= mod:NewCDTimer(12.1, 284106, nil, nil, nil, 3)--12.1 and 22 alternating
 --local timerThunderousBoomCD			= mod:NewCastTimer(55, 284120, nil, nil, nil, 2)--After timing is figured out after crackling
---local timerElecShroudCD					= mod:NewCDTimer(34, 287995, nil, nil, nil, 4, nil, DBM_CORE_DAMAGE_ICON..DBM_CORE_INTERRUPT_ICON)--34-41, maybe health based?
+local timerElecShroudCD					= mod:NewCDTimer(34, 287995, nil, nil, nil, 4, nil, DBM_CORE_DAMAGE_ICON..DBM_CORE_INTERRUPT_ICON)--34-41, maybe health based?
 ----Brother Joseph
 local timerSeaStormCD					= mod:NewCDTimer(10.9, 284360, nil, nil, nil, 3)
-local timerSeasTemptationCD				= mod:NewCDTimer(35.3, 284383, nil, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON)--Might be 36.1 before teleport and 26.7 after teleport or health based
---local timerTidalShroudCD				= mod:NewCDTimer(37, 286558, nil, nil, nil, 4, nil, DBM_CORE_DAMAGE_ICON..DBM_CORE_INTERRUPT_ICON)--Probalby health based
+local timerSeasTemptationCD				= mod:NewCDTimer(34, 284383, nil, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON)--Might be health based
+local timerTidalShroudCD				= mod:NewCDTimer(36.5, 286558, nil, nil, nil, 4, nil, DBM_CORE_DAMAGE_ICON..DBM_CORE_INTERRUPT_ICON)--Probalby health based
 --Stage Two: Laminaria
 local timerCataTides					= mod:NewCastTimer(15, 288696, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
-local timerSeaSwellCD					= mod:NewCDTimer(17.0, 285118, nil, nil, nil, 3)
-local timerIreoftheDeepCD				= mod:NewCDTimer(32.9, 285017, nil, nil, nil, 5)
+local timerSeaSwellCD					= mod:NewCDTimer(20.6, 285118, nil, nil, nil, 3)
+local timerIreoftheDeepCD				= mod:NewCDTimer(32.8, 285017, nil, nil, nil, 5)
 local timerStormsWailCD					= mod:NewCDTimer(120.5, 285350, nil, nil, nil, 3)
 local timerStormsWail					= mod:NewTargetTimer(12, 285350, nil, nil, nil, 5)
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
 
-local countdownSeaSwell					= mod:NewCountdown(17.0, 285118, true, 3, 3)
+local countdownSeaSwell					= mod:NewCountdown(20.6, 285118, true, 3, 3)
 --local countdownRupturingBlood				= mod:NewCountdown("Alt12", 244016, false, 2, 3)
 --local countdownFelstormBarrage			= mod:NewCountdown("AltTwo32", 244000, nil, nil, 3)
 
@@ -106,6 +106,7 @@ mod:AddNamePlateOption("NPAuraOnKepWrapping", 285382)
 
 mod.vb.phase = 1
 mod.vb.bossesDied = 0
+mod.vb.cracklingCast = 0
 local freezingTidePod = DBM:GetSpellInfo(285075)
 local stormTargets = {}
 
@@ -162,14 +163,15 @@ function mod:OnCombatStart(delay)
 	table.wipe(stormTargets)
 	self.vb.phase = 1
 	self.vb.bossesDied = 0
+	self.vb.cracklingCast = 0
 	--Sister
 	timerCracklingLightningCD:Start(3.9-delay)--3.9-8.8
-	--timerElecShroudCD:Start(30-delay)
+	timerElecShroudCD:Start(30-delay)
 	timerVoltaicFlashCD:Start(8.8-delay)
 	--Brother
 	--timerSeaStormCD:Start(7.6-delay)--0.3-8
 	timerSeasTemptationCD:Start(15.5-delay)--Might be health based
-	--timerTidalShroudCD:Start(17.3-delay)
+	timerTidalShroudCD:Start(30.1-delay)--30-32
 	if self.Options.NPAuraOnKepWrapping then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
@@ -210,9 +212,35 @@ function mod:SPELL_CAST_START(args)
 		if self:CheckTankDistance(args.sourceGUID, 43) then
 			warnCracklingLightning:Show()
 		end
-		timerCracklingLightningCD:Start()
+		self.vb.cracklingCast = self.vb.cracklingCast + 1
+		if self.vb.cracklingCast % 2 == 0 then
+			timerCracklingLightningCD:Start(21.9)--21.9 (usually 23.1 but I have one log showing 21.9)
+		else
+			timerCracklingLightningCD:Start(12.1)
+		end
 	elseif spellId == 284393 then
 		warnTranslocate:Show(args.sourceName)
+		local cid = self:GetCIDFromGUID(args.destGUID)
+		if cid == 146251 then--Sister
+			self.vb.cracklingCast = 0
+			timerVoltaicFlashCD:Stop()
+			timerCracklingLightningCD:Stop()
+			timerElecShroudCD:Stop()
+			
+			--This may be more complicated than this, like maybe a pause/resume more so than this
+			timerCracklingLightningCD:Start(14.2)
+			timerVoltaicFlashCD:Start(17)
+			timerElecShroudCD:Start(36.4)
+		elseif cid == 146251 then--Brother
+			timerSeaStormCD:Stop()
+			timerSeasTemptationCD:Stop()
+			timerTidalShroudCD:Stop()
+			
+			--This may be more complicated than this, like maybe a pause/resume more so than this
+			timerSeaStormCD:Start(12.1)
+			timerSeasTemptationCD:Start(26.7)--Even less sure about this one
+			timerTidalShroudCD:Start(37.7)
+		end
 	elseif spellId == 284383 then
 		if self:CheckTankDistance(args.sourceGUID, 43) then
 			specWarnSeasTemptation:Show()
@@ -223,7 +251,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnSeaSwell:Show()
 		specWarnSeaSwell:Play("watchstep")
 		timerSeaSwellCD:Start()
-		countdownSeaSwell:Start(17)
+		countdownSeaSwell:Start(20.6)
 	elseif spellId == 285017 then
 		specWarnIreoftheDeep:Show()
 		specWarnIreoftheDeep:Play("gathershare")
@@ -275,12 +303,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self:CheckTankDistance(args.destGUID, 43) then
 			warnTidalShroud:Show(args.destName)
 		end
-		--timerTidalShroudCD:Start()
+		timerTidalShroudCD:Start()
 	elseif spellId == 287995 then
 		if self:CheckTankDistance(args.destGUID, 43) then
 			warnElecShroud:Show(args.destName)
 		end
-		--timerElecShroudCD:Start()
+		timerElecShroudCD:Start()
 	elseif spellId == 284405 then
 		if args:IsPlayer() then
 			specWarnTemptingSong:Show()
@@ -367,11 +395,11 @@ function mod:UNIT_DIED(args)
 		timerVoltaicFlashCD:Stop()
 		timerCracklingLightningCD:Stop()
 		self.vb.bossesDied = self.vb.bossesDied + 1
-		--timerElecShroudCD:Stop()
+		timerElecShroudCD:Stop()
 	elseif cid == 146251 then--Brother
 		timerSeaStormCD:Stop()
 		timerSeasTemptationCD:Stop()
 		self.vb.bossesDied = self.vb.bossesDied + 1
-		--timerTidalShroudCD:Stop()
+		timerTidalShroudCD:Stop()
 	end
 end
