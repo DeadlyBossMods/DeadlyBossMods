@@ -1,7 +1,7 @@
 -- Mini Dragon(projecteurs@gmail.com)
 -- 夏一可
 -- Blizzard Entertainment
--- Last update: 2018/12/12
+-- Last update: 2018/01/28
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -58,7 +58,8 @@ L= DBM:GetModLocalization(2330)
 
 L:SetMiscLocalization({
 	BwonsamdiWrath =	"既然你们这么想死，干嘛不早点来找我？",
-	BwonsamdiWrath2 =	"迟早……所有人都会臣服于我！"
+	BwonsamdiWrath2 =	"迟早……所有人都会臣服于我！",
+	Bird			 =	"鸟"
 })
 
 ---------------------------
