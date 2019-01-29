@@ -24,7 +24,7 @@ mod:SetHotfixNoticeRev(18176)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 282399 285994 282533 286435 282243 285660 281936",
+	"SPELL_CAST_START 282399 285994 282533 286435 282243 285660 281936 290574",
 	"SPELL_CAST_SUCCESS 282543 282526 286450 282179 282247 282082 289292 285875 282083 289307",
 	"SPELL_AURA_APPLIED 285671 285875 286434 285659",
 	"SPELL_AURA_APPLIED_DOSE 285875 285671",
@@ -35,7 +35,7 @@ mod:RegisterEventsInCombat(
 )
 
 --[[
-(ability.id = 282399 or ability.id = 281936 or ability.id = 285994 or ability.id = 286435 or ability.id = 285660) and type = "begincast"
+(ability.id = 282399 or ability.id = 281936 or ability.id = 285994 or ability.id = 286435 or ability.id = 285660 or ability.id = 290574) and type = "begincast"
  or (ability.id = 282543 or ability.id = 282179 or ability.id = 282526 or ability.id = 282247 or ability.id = 286450 or ability.id = 282082) and type = "cast"
  or (ability.id = 282533 or ability.id = 282243) and type = "begincast"
  or (ability.id = 286434 or ability.id = 285659) and type = "applydebuff"
@@ -88,11 +88,6 @@ mod.vb.comboCount = 0
 local coreTargets = {}
 local castsPerGUID = {}
 
-local function fearRepeater(self)
-	timerFerociousRoarCD:Start()
-	self:Schedule(5.5, fearRepeater, self)
-end
-
 local updateInfoFrame
 do
 	local lines = {}
@@ -137,13 +132,7 @@ function mod:OnCombatStart(delay)
 	timerTankComboCD:Start(22-delay)
 	if self:IsHard() then
 		timerAddAttackCD:Start(10.6-delay)
-		if self:IsHeroic() then--Only heroic, on mythic it's not a cast, it's an aura
-			timerFerociousRoarCD:Start(36-delay)--First one can be between 36-39
-		else--Mythic
-			if DBM.Options.DebugMode then
-				self:Schedule(5.5, fearRepeater, self)
-			end
-		end
+		timerFerociousRoarCD:Start(35.5-delay)--First one can be between 35.5-39
 	end
 --	timerEnergyAOECD:Start(100-delay, 1)
 --	if self.Options.NPAuraOnPresence then
@@ -175,7 +164,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnEnergyAOE:Play("aesoon")
 		--timerEnergyAOECD:Stop()
 		--timerEnergyAOECD:Start(100, self.vb.EnergyAOECount+1)
-	elseif spellId == 285994 then
+	elseif spellId == 285994 or spellId == 290574 then
 		specWarnFerociousRoar:Show()
 		specWarnFerociousRoar:Play("fearsoon")
 		timerFerociousRoarCD:Start()
