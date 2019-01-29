@@ -68,6 +68,7 @@ local warnCrystalDust					= mod:NewCountAnnounce(289940, 3)
 local specWarnFreezingBlood				= mod:NewSpecialWarningYou(289387, nil, nil, nil, 1, 2)
 local specWarnChillingStack				= mod:NewSpecialWarningStack(287993, nil, 2, nil, nil, 1, 6)
 --Stage One: Burning Seas
+local specWarnIceShard					= mod:NewSpecialWarningTaunt(285253, false, nil, nil, 1, 2)
 local specWarnMarkedTarget				= mod:NewSpecialWarningRun(288038, nil, nil, nil, 4, 2)
 local yellMarkedTarget					= mod:NewYell(288038, nil, false)
 --local specWarnBombard					= mod:NewSpecialWarningDodge(285828, nil, nil, nil, 2, 2)
@@ -346,7 +347,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self:IsTanking(uId) then
 			local amount = args.amount or 1
 			if amount % 3 == 0 then
-				warnIceShard:Show(args.destName, amount)
+				if amount >= 8 and not args:IsPlayer() and self.Options.SpecWarn285253taunt and not DBM:UnitDebuff("player", 285254) then
+					specWarnIceShard:Show(args.destName)
+				else
+					warnIceShard:Show(args.destName, amount)
+				end
 			end
 		end
 	elseif spellId == 287993 then
