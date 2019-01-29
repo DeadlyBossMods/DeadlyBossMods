@@ -67,7 +67,7 @@ local yellRisingFlamesFades				= mod:NewShortFadesYell(282037)
 local specWarnShield					= mod:NewSpecialWarningTargetChange(286425, false, nil, nil, 1, 2)
 local specWarnPyroblast					= mod:NewSpecialWarningInterrupt(286379, "HasInterrupt", nil, nil, 1, 2)
 local specWarnSearingEmbers				= mod:NewSpecialWarningYou(286988, false, nil, 2, 1, 2)
---local yellSearingEmbers					= mod:NewYell(286988)
+local yellSearingEmbers					= mod:NewYell(286988, nil, false)
 --local yellSearingEmbersFades			= mod:NewShortFadesYell(286988)
 --local specWarnBloodshard				= mod:NewSpecialWarningInterrupt(273350, false, nil, 4, 1, 2)
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 8)
@@ -250,7 +250,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnSearingEmbers:Show()
 			specWarnSearingEmbers:Play("targetyou")
-			--yellSearingEmbers:Yell()
+			yellSearingEmbers:Yell()
 			--yellSearingEmbersFades:Countdown(10)
 		end
 		if self.Options.SetIconEmbers then
@@ -266,7 +266,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnFlashofPhoenixes:Play("phasechange")
 	end
 end
---mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
+mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
