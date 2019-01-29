@@ -38,12 +38,12 @@ mod:RegisterEventsInCombat(
 --TODO, orb of frost targetting and improve voice/warning for it
 --TODO, shattering lance script and warning/cast timer
 --TODO, what spells do Prismatic Images copy, so it can be handled by timer code
---TODO, Crystalline Dust was never used at all during heroic testing.
 --Todo, broadside icons?
 --[[
-(ability.id = 290084 or ability.id = 287565 or ability.id = 285177 or ability.id = 285459 or ability.id = 290036 or ability.id = 288345 or ability.id = 288441 or ability.id = 288719 or ability.id = 289219 or ability.id = 288619 or ability.id = 288747) and type = "beginast"
+(ability.id = 290084 or ability.id = 287565 or ability.id = 285177 or ability.id = 285459 or ability.id = 290036 or ability.id = 288345 or ability.id = 288441 or ability.id = 288719 or ability.id = 289219 or ability.id = 288619 or ability.id = 288747) and type = "begincast"
  or (ability.id = 287925 or ability.id = 287626 or ability.id = 289220 or ability.id = 288374 or ability.id = 288211) and type = "cast"
  or (ability.id = 288199 or ability.id = 290053) and type = "applybuff"
+ or ability.id = 290001 and type = "removebuff"
 --]]
 --General
 local warnPhase							= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
@@ -63,6 +63,8 @@ local warnSiegebreaker					= mod:NewTargetNoFilterAnnounce(288374, 3)
 local warnHeartofFrost					= mod:NewTargetAnnounce(289220, 2)
 local warnFrostNova						= mod:NewCastAnnounce(289219, 3)
 --local warnShatteringLance				= mod:NewCastAnnounce(288671, 4)
+--Stage Three
+local warnCrystalDust					= mod:NewSpellAnnounce(289940, 3)
 
 --General
 local specWarnFreezingBlood				= mod:NewSpecialWarningYou(289387, nil, nil, nil, 1, 2)
@@ -97,7 +99,7 @@ local yellHeartofFrost					= mod:NewYell(289220)
 local specWarnWaterBoltVolley			= mod:NewSpecialWarningInterrupt(290084, "HasInterrupt", nil, nil, 1, 2)
 --Stage Three:
 local specWarnOrbofFrost				= mod:NewSpecialWarningDodge(288619, nil, nil, nil, 2, 2)
-local specWarnPrismaticImage			= mod:NewSpecialWarningSwitch(288747, "Dps", nil, nil, 1, 2)
+local specWarnPrismaticImage			= mod:NewSpecialWarningSwitchCount(288747, "Dps", nil, nil, 1, 2)
 
 --mod:AddTimerLine(DBM:EJ_GetSectionInfo(18527))
 --General
@@ -112,7 +114,6 @@ local timerRingofIceCD					= mod:NewCDTimer(60.7, 285459, nil, nil, nil, 2, nil,
 --Stage Two: Frozen Wrath
 local timerBroadsideCD					= mod:NewCDTimer(31.5, 288212, nil, nil, nil, 3)
 local timerSiegebreakerCD				= mod:NewCDTimer(59.9, 288374, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
---local timerCrystallineDustCD			= mod:NewCDTimer(14.1, 289940, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--Was never used during fight
 --local timerHandofFrostCD				= mod:NewCDTimer(55, 288412, nil, nil, nil, 3)--Timer is only for first cast of phase, after that, can't tell cast from jump
 local timerGlacialRayCD					= mod:NewCDTimer(49.8, 288345, nil, nil, nil, 3)--49.8-61.1?
 local timerIcefallCD					= mod:NewCDTimer(43.4, 288475, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
@@ -122,8 +123,9 @@ local timerHeartofFrostCD				= mod:NewAITimer(55, 289220, nil, nil, nil, 3)
 local timerFrostNovaCD					= mod:NewAITimer(55, 289219, nil, nil, nil, 2)
 local timerWaterBoltVolleyCD			= mod:NewAITimer(55, 290084, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
 --Stage 3
-local timerOrbofFrostCD					= mod:NewAITimer(55, 288619, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
-local timerPrismaticImageCD				= mod:NewAITimer(55, 288747, nil, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON)
+local timerOrbofFrostCD					= mod:NewCDTimer(60, 288619, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
+local timerPrismaticImageCD				= mod:NewCDCountTimer(41.3, 288747, nil, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON)
+local timerCrystallineDustCD			= mod:NewCDTimer(14.1, 289940, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
 
@@ -144,6 +146,7 @@ mod:AddSetIconOption("SetIconGraspofFrost2", 287626, false)
 mod.vb.phase = 1
 mod.vb.corsairCount = 0
 mod.vb.GraspofFrostIcon = 1
+mod.vb.imageCount = 0
 local ChillingTouchStacks = {}
 
 local updateInfoFrame
@@ -201,6 +204,7 @@ function mod:OnCombatStart(delay)
 	self.vb.phase = 1
 	self.vb.corsairCount = 0
 	self.vb.GraspofFrostIcon = 1
+	self.vb.imageCount = 0
 	table.wipe(ChillingTouchStacks)
 	timerCorsairCD:Start(5.1-delay)
 	timerAvalancheCD:Start(8.5-delay)
@@ -270,7 +274,6 @@ function mod:SPELL_CAST_START(args)
 		warnPhase:Play("phasechange")
 		timerBroadsideCD:Stop()
 		timerSiegebreakerCD:Stop()
-		--timerCrystallineDustCD:Stop()
 		timerAvalancheCD:Stop()
 		--timerHandofFrostCD:Stop()
 		timerGlacialRayCD:Stop()
@@ -279,7 +282,8 @@ function mod:SPELL_CAST_START(args)
 		warnFrostNova:Show()
 		timerFrostNovaCD:Start()
 	elseif spellId == 289940 then
-		--timerCrystallineDustCD:Start()
+		warnCrystalDust:Show()
+		timerCrystallineDustCD:Start()
 	elseif spellId == 290084 then
 		timerWaterBoltVolleyCD:Start()
 		if self:CheckInterruptFilter(args.sourceGUID, false, true) then
@@ -291,9 +295,10 @@ function mod:SPELL_CAST_START(args)
 		specWarnOrbofFrost:Play("watchorb")
 		timerOrbofFrostCD:Start()
 	elseif spellId == 288747 then
-		specWarnPrismaticImage:Show()
+		self.vb.imageCount = self.vb.imageCount + 1
+		specWarnPrismaticImage:Show(self.vb.imageCount)
 		specWarnPrismaticImage:Play("killmob")
-		timerPrismaticImageCD:Start()
+		timerPrismaticImageCD:Start(nil, self.vb.imageCount+1)
 	end
 end
 
@@ -463,7 +468,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerGlacialRayCD:Start(6.6)
 		timerAvalancheCD:Start(16.3)
 		--timerHandofFrostCD:Start(21.5)--21.5-25.57
-		--timerCrystallineDustCD:Start(2)
 		if not self:IsLFR() then
 			timerIcefallCD:Start(30.8)
 		end
@@ -493,16 +497,16 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.phase = 3
 		warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(3))
 		warnPhase:Play("pthree")
-		timerBroadsideCD:Start(14.9)
-		timerGlacialRayCD:Start(91.6)
-		timerSiegebreakerCD:Start(102.6)--to CLEU event, emote 1 second faster, may change
-		--timerCrystallineDustCD:Start(3)
+		timerBroadsideCD:Start(14.8)--SUCCESS
+		timerCrystallineDustCD:Start(25)
+		timerGlacialRayCD:Start(48.6)
+		timerSiegebreakerCD:Start(58.4)--to CLEU event, emote 1 second faster, may change
 		if not self:IsLFR() then
-			timerPrismaticImageCD:Start(12.6)
-			timerIcefallCD:Start(103.6)
+			timerPrismaticImageCD:Start(12.6, 1)
+			timerIcefallCD:Start(60.5)
 		end
 		if self:IsHard() then
-			timerOrbofFrostCD:Start(3)
+			timerOrbofFrostCD:Start(11)
 		end
 	end
 end
