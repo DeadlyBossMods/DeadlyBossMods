@@ -230,7 +230,7 @@ function mod:OnCombatStart(delay)
 		--DBM.InfoFrame:SetHeader(DBM_CORE_INFOFRAME_POWER)
 		--DBM.InfoFrame:Show(8, "function", updateInfoFrame, false, false)
 		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(287993))
-		DBM.InfoFrame:Show(5, "table", ChillingTouchStacks, 1)
+		DBM.InfoFrame:Show(10, "table", ChillingTouchStacks, 1)
 	end
 	if self.Options.NPAuraOnMarkedTarget or self.Options.NPAuraOnTimeWarp or self.Options.NPAuraOnRefractiveIce then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
