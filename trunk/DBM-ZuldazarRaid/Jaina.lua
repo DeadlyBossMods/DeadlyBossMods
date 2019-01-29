@@ -79,6 +79,7 @@ local specWarGraspofFrost				= mod:NewSpecialWarningDispel(287626, false, nil, 2
 local specWarnFreezingBlast				= mod:NewSpecialWarningDodge(285177, "Tank", nil, nil, 2, 2)
 local specWarnRingofIce					= mod:NewSpecialWarningRun(285459, nil, nil, nil, 4, 2)
 --Stage Two: Frozen Wrath
+local specWarnIceBlockTaunt				= mod:NewSpecialWarningTaunt(287490, nil, nil, nil, 3, 2)
 local specWarnGTFO						= mod:NewSpecialWarningGTFO(288297, nil, nil, nil, 1, 8)
 local specWarnBroadside					= mod:NewSpecialWarningMoveAway(288212, nil, nil, nil, 1, 2)--NewSpecialWarningYouPos
 local yellBroadside						= mod:NewPosYell(288212)
@@ -366,6 +367,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 287490 then
 		warnFrozenSolid:CombinedShow(0.5, args.destName)
+		local uId = DBM:GetRaidUnitId(args.destName)
+		if self:IsTanking(uId) and not args:IsPlayer() then
+			specWarnIceBlockTaunt:Show(args.destName)
+			specWarnIceBlockTaunt:Play("tauntboss")
+		end
 	elseif spellId == 289387 then
 		if args:IsPlayer() and self:AntiSpam(6, 1) then
 			specWarnFreezingBlood:Show()
