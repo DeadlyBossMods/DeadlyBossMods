@@ -11013,7 +11013,10 @@ function bossModPrototype:AddNamePlateOption(name, spellId, default)
 end
 
 function bossModPrototype:AddInfoFrameOption(spellId, default, optionVersion)
-	local oVersion = tostring(optionVersion) or ""
+	local oVersion = ""
+	if optionVersion then
+		optionVersion = tostring(optionVersion)
+	end
 	self.DefaultOptions["InfoFrame"..oVersion] = (default == nil) or default
 	if default and type(default) == "string" then
 		default = self:GetRoleFlagValue(default)
