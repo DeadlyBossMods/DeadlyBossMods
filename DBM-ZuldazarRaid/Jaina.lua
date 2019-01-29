@@ -15,11 +15,11 @@ mod:SetHotfixNoticeRev(18175)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 287565 287626 285177 285459 290036 288221 288345 288441 288719 289219 289940 290084 288619 288747",
+	"SPELL_CAST_START 287565 285177 285459 290036 288221 288345 288441 288719 289219 289940 290084 288619 288747",
 	"SPELL_CAST_SUCCESS 285725 287925 287626 289220 288374 288211",
 	"SPELL_AURA_APPLIED 287993 287490 289387 287925 285253 287626 288199 290053 288219 288212 288374 288412 288434 289220 285254 288038",
 	"SPELL_AURA_APPLIED_DOSE 287993 285253",
-	"SPELL_AURA_REMOVED 287993 287925 287626 288199 290053 288219 288212 288374 289220 288038 290001",
+	"SPELL_AURA_REMOVED 287993 287925 288199 290053 288219 288212 288374 289220 288038 290001",
 	"SPELL_AURA_REMOVED_DOSE 287993",
 	"SPELL_PERIODIC_DAMAGE 288297",
 	"SPELL_PERIODIC_MISSED 288297",
@@ -37,8 +37,6 @@ mod:RegisterEventsInCombat(
 --TODO, rework interrupt to use vectis interrupt per GUID code for mythic
 --TODO, orb of frost targetting and improve voice/warning for it
 --TODO, shattering lance script and warning/cast timer
---TODO, what spells do Prismatic Images copy, so it can be handled by timer code
---Todo, broadside icons?
 --[[
 (ability.id = 290084 or ability.id = 287565 or ability.id = 285177 or ability.id = 285459 or ability.id = 290036 or ability.id = 288345 or ability.id = 288441 or ability.id = 288719 or ability.id = 289219 or ability.id = 288619 or ability.id = 288747) and type = "begincast"
  or (ability.id = 287925 or ability.id = 287626 or ability.id = 289220 or ability.id = 288374 or ability.id = 288211) and type = "cast"
@@ -81,9 +79,9 @@ local specWarnFreezingBlast				= mod:NewSpecialWarningDodge(285177, "Tank", nil,
 local specWarnRingofIce					= mod:NewSpecialWarningRun(285459, nil, nil, nil, 4, 2)
 --Stage Two: Frozen Wrath
 local specWarnGTFO						= mod:NewSpecialWarningGTFO(288297, nil, nil, nil, 1, 8)
-local specWarnBroadside					= mod:NewSpecialWarningMoveAway(288212, nil, nil, nil, 1, 2)
-local yellBroadside						= mod:NewYell(288212)
-local yellBroadsideFades				= mod:NewShortFadesYell(288212)
+local specWarnBroadside					= mod:NewSpecialWarningMoveAway(288212, nil, nil, nil, 1, 2)--NewSpecialWarningYouPos
+local yellBroadside						= mod:NewPosYell(288212)
+local yellBroadsideFades				= mod:NewIconFadesYell(288212)
 local specWarnSiegebreaker				= mod:NewSpecialWarningMoveAway(288374, nil, nil, nil, 3, 2)
 local yellSiegebreaker					= mod:NewYell(288374, nil, nil, nil, "YELL")
 local yellSiegebreakerFades				= mod:NewShortFadesYell(288374, nil, nil, nil, "YELL")
@@ -133,17 +131,15 @@ local countdownRingofIce				= mod:NewCountdown(60, 285459, true)
 --local countdownFelstormBarrage			= mod:NewCountdown("AltTwo32", 244000, nil, nil, 3)
 --Stage Two: Frozen Wrath
 
---mod:AddSetIconOption("SetIconGift", 255594, true)
 mod:AddRangeFrameOption(10, 289379)
 mod:AddInfoFrameOption(287993, true, 2)
 mod:AddNamePlateOption("NPAuraOnMarkedTarget", 288038)
 mod:AddNamePlateOption("NPAuraOnTimeWarp", 287925)
 mod:AddNamePlateOption("NPAuraOnRefractiveIce", 288219)
-mod:AddSetIconOption("SetIconGraspofFrost2", 287626, false)
+mod:AddSetIconOption("SetIconBroadside", 287626, true)
 
 mod.vb.phase = 1
 mod.vb.corsairCount = 0
-mod.vb.GraspofFrostIcon = 1
 mod.vb.imageCount = 0
 mod.vb.ringofFrostCount = 0
 mod.vb.iceFallCount = 0
@@ -152,6 +148,7 @@ mod.vb.orbCount = 0
 mod.vb.broadsideCount = 0
 mod.vb.siegeCount = 0
 mod.vb.glacialRayCount = 0
+mod.vb.broadsideIcon = 0
 local ChillingTouchStacks = {}
 
 --[[
@@ -210,7 +207,6 @@ end
 function mod:OnCombatStart(delay)
 	self.vb.phase = 1
 	self.vb.corsairCount = 0
-	self.vb.GraspofFrostIcon = 1
 	self.vb.imageCount = 0
 	self.vb.ringofFrostCount = 0
 	self.vb.iceFallCount = 0
@@ -219,6 +215,7 @@ function mod:OnCombatStart(delay)
 	self.vb.broadsideCount = 0
 	self.vb.siegeCount = 0
 	self.vb.glacialRayCount = 0
+	self.vb.broadsideIcon = 0
 	table.wipe(ChillingTouchStacks)
 	timerCorsairCD:Start(5.1-delay)
 	timerAvalancheCD:Start(8.5-delay)
@@ -260,8 +257,6 @@ function mod:SPELL_CAST_START(args)
 		else
 			timerAvalancheCD:Start(75)--75-90
 		end
-	elseif spellId == 287626 then
-		self.vb.GraspofFrostIcon = 1
 	elseif spellId == 285177 then
 		if self.Options.SpecWarn285177dodge then
 			specWarnFreezingBlast:Show()
@@ -338,6 +333,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.siegeCount = self.vb.siegeCount + 1
 		timerSiegebreakerCD:Start(nil, self.vb.siegeCount+1)
 	elseif spellId == 288211 then
+		self.vb.broadsideIcon = 0
 		self.vb.broadsideCount = self.vb.broadsideCount + 1
 		timerBroadsideCD:Start(nil, self.vb.broadsideCount+1)
 	end
@@ -389,10 +385,6 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 287626 then
 		specWarGraspofFrost:CombinedShow(1, args.destName)
 		specWarGraspofFrost:ScheduleVoice(1, "helpdispel")
-		if self.Options.SetIconGraspofFrost2 then
-			self:SetIcon(args.destName, self.vb.GraspofFrostIcon)
-		end
-		self.vb.GraspofFrostIcon = self.vb.GraspofFrostIcon + 1
 	elseif (spellId == 288199 or spellId == 290053) and self.vb.phase == 1 then--Howling Winds (secondary 1.5 trigger)
 		self.vb.phase = 1.5
 		warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(1.5))
@@ -404,17 +396,29 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerFreezingBlastCD:Stop()
 		timerRingofIceCD:Stop()
 		countdownRingofIce:Cancel()
+		--More Bandaiding for blizzard closing frame on movie play
+		if self.Options.InfoFrame then
+			--DBM.InfoFrame:SetHeader(DBM_CORE_INFOFRAME_POWER)
+			--DBM.InfoFrame:Show(8, "function", updateInfoFrame, false, false)
+			DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(287993))
+			DBM.InfoFrame:Show(5, "table", ChillingTouchStacks, 1)
+		end
 	elseif spellId == 288219 then
 		if self.Options.NPAuraOnRefractiveIce then
 			DBM.Nameplate:Show(true, args.sourceGUID, spellId)
 		end
 	elseif spellId == 288212 then
+		self.vb.broadsideIcon = self.vb.broadsideIcon + 1
+		local icon = self.vb.broadsideIcon
 		warnBroadside:CombinedShow(0.5, args.destName)
 		if args:IsPlayer() then
-			specWarnBroadside:Show()
+			specWarnBroadside:Show(self:IconNumToTexture(icon))
 			specWarnBroadside:Play("targetyou")
-			yellBroadside:Yell()
-			yellBroadsideFades:Countdown(6)
+			yellBroadside:Yell(icon, icon, icon)
+			yellBroadsideFades:Countdown(6, nil, icon)
+		end
+		if self.Options.SetIconBroadside then
+			self:SetIcon(args.destName, icon)
 		end
 	elseif spellId == 288374 then
 		if args:IsPlayer() then
@@ -479,10 +483,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.NPAuraOnTimeWarp then
 			DBM.Nameplate:Hide(true, args.sourceGUID, spellId)
 		end
-	elseif spellId == 287626 then
-		if self.Options.SetIconGraspofFrost2 then
-			self:SetIcon(args.destName, 0)
-		end
 	elseif spellId == 288199 or spellId == 290053 then--Howling Winds
 		self.vb.phase = 2
 		warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(2))
@@ -495,13 +495,6 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerIcefallCD:Start(30.2, 1)
 		end
 		timerSiegebreakerCD:Start(40.3, 1)
-		--More Bandaiding for blizzard closing frame on movie play
-		if self.Options.InfoFrame then
-			--DBM.InfoFrame:SetHeader(DBM_CORE_INFOFRAME_POWER)
-			--DBM.InfoFrame:Show(8, "function", updateInfoFrame, false, false)
-			DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(287993))
-			DBM.InfoFrame:Show(5, "table", ChillingTouchStacks, 1)
-		end
 	elseif spellId == 288219 then
 		if self.Options.NPAuraOnRefractiveIce then
 			DBM.Nameplate:Hide(true, args.sourceGUID, spellId)
@@ -509,6 +502,9 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 288212 then
 		if args:IsPlayer() then
 			yellBroadsideFades:Cancel()
+		end
+		if self.Options.SetIconBroadside then
+			self:SetIcon(args.destName, 0)
 		end
 	elseif spellId == 288374 then
 		if args:IsPlayer() then
