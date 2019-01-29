@@ -327,7 +327,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnStormsWail:Schedule(7, DBM_CORE_BACK)
 			specWarnStormsWail:Play("targetyou")
 			yellStormsWail:Yell()
-			yellStormsWailFades:Countdown(10)
+			yellStormsWailFades:Countdown(self:IsEasy() and 13 or 10)
 		else
 			warnStormsWail:Show(args.destName)
 		end
