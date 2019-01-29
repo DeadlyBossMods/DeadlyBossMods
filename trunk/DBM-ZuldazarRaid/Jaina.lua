@@ -396,8 +396,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerFreezingBlastCD:Stop()
 		timerRingofIceCD:Stop()
 		countdownRingofIce:Cancel()
-		--More Bandaiding for blizzard closing frame on movie play
-		if self.Options.InfoFrame then
+		--Blizzard closes tooltip windows during cut scenes, so we gotta make sure to recall this window
+		if self.Options.InfoFrame and not DBM.InfoFrame:IsShown() then
 			--DBM.InfoFrame:SetHeader(DBM_CORE_INFOFRAME_POWER)
 			--DBM.InfoFrame:Show(8, "function", updateInfoFrame, false, false)
 			DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(287993))
@@ -495,6 +495,13 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerIcefallCD:Start(30.2, 1)
 		end
 		timerSiegebreakerCD:Start(40.3, 1)
+		--Blizzard closes tooltip windows during cut scenes, so we gotta make sure to recall this window
+		if self.Options.InfoFrame and not DBM.InfoFrame:IsShown() then
+			--DBM.InfoFrame:SetHeader(DBM_CORE_INFOFRAME_POWER)
+			--DBM.InfoFrame:Show(8, "function", updateInfoFrame, false, false)
+			DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(287993))
+			DBM.InfoFrame:Show(5, "table", ChillingTouchStacks, 1)
+		end
 	elseif spellId == 288219 then
 		if self.Options.NPAuraOnRefractiveIce then
 			DBM.Nameplate:Hide(true, args.sourceGUID, spellId)
