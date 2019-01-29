@@ -95,7 +95,7 @@ local specWarnIcefall					= mod:NewSpecialWarningDodgeCount(288475, nil, nil, ni
 --Intermission 2
 local specWarnHeartofFrost				= mod:NewSpecialWarningMoveAway(289220, nil, nil, nil, 1, 2)
 local yellHeartofFrost					= mod:NewYell(289220)
-local specWarnWaterBoltVolley			= mod:NewSpecialWarningInterrupt(290084, "HasInterrupt", nil, nil, 1, 2)
+local specWarnWaterBoltVolley			= mod:NewSpecialWarningInterruptCount(290084, "HasInterrupt", nil, nil, 1, 2)
 --Stage Three:
 local specWarnOrbofFrost				= mod:NewSpecialWarningDodgeCount(288619, nil, nil, nil, 2, 2)
 local specWarnPrismaticImage			= mod:NewSpecialWarningSwitchCount(288747, "Dps", nil, nil, 1, 2)
@@ -119,7 +119,7 @@ local timerIcefallCD					= mod:NewCDCountTimer(42.8, 288475, nil, nil, nil, 3, n
 --local timerIcefall						= mod:NewCastTimer(55, 288475, nil, nil, nil, 3)
 --Intermission 2
 local timerHeartofFrostCD				= mod:NewCDTimer(8.5, 289220, nil, nil, nil, 3)
-local timerWaterBoltVolleyCD			= mod:NewCDTimer(7.2, 290084, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
+local timerWaterBoltVolleyCD			= mod:NewCDCountTimer(7.2, 290084, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
 --Stage 3
 local timerOrbofFrostCD					= mod:NewCDCountTimer(60, 288619, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
 local timerPrismaticImageCD				= mod:NewCDCountTimer(41.3, 288747, nil, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON)
@@ -151,6 +151,7 @@ mod.vb.broadsideCount = 0
 mod.vb.siegeCount = 0
 mod.vb.glacialRayCount = 0
 mod.vb.broadsideIcon = 0
+mod.vb.waterboltVolleyCount = 0
 local ChillingTouchStacks = {}
 
 --[[
@@ -288,6 +289,7 @@ function mod:SPELL_CAST_START(args)
 		--timerIcefall:Start()
 	elseif spellId == 288719 then--Flash Freeze
 		self.vb.phase = 2.5
+		self.vb.waterboltVolleyCount = 0
 		warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(2.5))
 		warnPhase:Play("phasechange")
 		timerBroadsideCD:Stop()
@@ -303,10 +305,24 @@ function mod:SPELL_CAST_START(args)
 		warnCrystalDust:Show(self.vb.dustCount)
 		timerCrystallineDustCD:Start(nil, self.vb.dustCount)
 	elseif spellId == 290084 then
-		timerWaterBoltVolleyCD:Start()
+		self.vb.waterboltVolleyCount = self.vb.waterboltVolleyCount + 1
+		local count = self.vb.waterboltVolleyCount
+		timerWaterBoltVolleyCD:Start(nil, count+1)
 		if self:CheckInterruptFilter(args.sourceGUID, false, true) then
-			specWarnWaterBoltVolley:Show(args.sourceName)
-			specWarnWaterBoltVolley:Play("kickcast")
+			specWarnWaterBoltVolley:Show(args.sourceName, count)
+			if count == 1 then
+				specWarnWaterBoltVolley:Play("kick1r")
+			elseif count == 2 then
+				specWarnWaterBoltVolley:Play("kick2r")
+			elseif count == 3 then
+				specWarnWaterBoltVolley:Play("kick3r")
+			elseif count == 4 then
+				specWarnWaterBoltVolley:Play("kick4r")
+			elseif count == 5 then
+				specWarnWaterBoltVolley:Play("kick5r")
+			else
+				specWarnWaterBoltVolley:Play("kickcast")
+			end
 		end
 	elseif spellId == 288619 then
 		self.vb.orbCount = self.vb.orbCount + 1
