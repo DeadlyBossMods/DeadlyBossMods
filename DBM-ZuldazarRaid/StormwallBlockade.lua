@@ -220,7 +220,7 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 284393 then
 		warnTranslocate:Show(args.sourceName)
-		local cid = self:GetCIDFromGUID(args.destGUID)
+		local cid = self:GetCIDFromGUID(args.sourceGUID)
 		if cid == 146251 then--Sister
 			self.vb.cracklingCast = 0
 			timerVoltaicFlashCD:Stop()

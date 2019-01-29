@@ -16,7 +16,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 287565 287626 285177 285459 290036 288221 288345 288441 288719 289219 289940 290084 288619 288747",
-	"SPELL_CAST_SUCCESS 285725 287925 287626 285257 289220 288374 288211",
+	"SPELL_CAST_SUCCESS 285725 287925 287626 289220 288374 288211",
 	"SPELL_AURA_APPLIED 287993 287490 289387 287925 285253 287626 288199 290053 288219 288212 288374 288412 288434 289220 285254 288038",
 	"SPELL_AURA_APPLIED_DOSE 287993 285253",
 	"SPELL_AURA_REMOVED 287993 287925 287626 288199 290053 288219 288212 288374 289220 288038 290001",
@@ -93,7 +93,6 @@ local specWarnHandofFrostNear			= mod:NewSpecialWarningClose(288412, nil, nil, n
 local specWarnGlacialRay				= mod:NewSpecialWarningDodgeCount(288345, nil, nil, nil, 2, 2)
 local specWarnIcefall					= mod:NewSpecialWarningDodgeCount(288475, nil, nil, nil, 2, 2)
 --Intermission 2
-local specWarnTideElemental				= mod:NewSpecialWarningSwitch(285257, "-Healer", nil, nil, 1, 2)
 local specWarnHeartofFrost				= mod:NewSpecialWarningMoveAway(289220, nil, nil, nil, 1, 2)
 local yellHeartofFrost					= mod:NewYell(289220)
 local specWarnWaterBoltVolley			= mod:NewSpecialWarningInterrupt(290084, "HasInterrupt", nil, nil, 1, 2)
@@ -119,9 +118,8 @@ local timerGlacialRayCD					= mod:NewCDCountTimer(49.8, 288345, nil, nil, nil, 3
 local timerIcefallCD					= mod:NewCDCountTimer(43.4, 288475, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
 --local timerIcefall						= mod:NewCastTimer(55, 288475, nil, nil, nil, 3)
 --Intermission 2
-local timerHeartofFrostCD				= mod:NewAITimer(55, 289220, nil, nil, nil, 3)
-local timerFrostNovaCD					= mod:NewAITimer(55, 289219, nil, nil, nil, 2)
-local timerWaterBoltVolleyCD			= mod:NewAITimer(55, 290084, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
+local timerHeartofFrostCD				= mod:NewCDTimer(8.5, 289220, nil, nil, nil, 3)
+local timerWaterBoltVolleyCD			= mod:NewCDTimer(7.2, 290084, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
 --Stage 3
 local timerOrbofFrostCD					= mod:NewCDCountTimer(60, 288619, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
 local timerPrismaticImageCD				= mod:NewCDCountTimer(41.3, 288747, nil, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON)
@@ -130,7 +128,7 @@ local timerCrystallineDustCD			= mod:NewCDCountTimer(14.1, 289940, nil, "Tank", 
 --local berserkTimer					= mod:NewBerserkTimer(600)
 
 --Stage One: Burning Seas
---local countdownCollapsingWorld			= mod:NewCountdown(50, 243983, true, 3, 3)
+local countdownRingofIce				= mod:NewCountdown(60, 285459, true)
 --local countdownRupturingBlood				= mod:NewCountdown("Alt12", 244016, false, 2, 3)
 --local countdownFelstormBarrage			= mod:NewCountdown("AltTwo32", 244000, nil, nil, 3)
 --Stage Two: Frozen Wrath
@@ -225,6 +223,7 @@ function mod:OnCombatStart(delay)
 	timerFreezingBlastCD:Start(17.9-delay)
 	timerGraspofFrostCD:Start(26.6-delay)
 	timerRingofIceCD:Start(60.7-delay, 1)
+	countdownRingofIce:Start(60.7)
 	if self.Options.RangeFrame and self:IsMythic() then
 		DBM.RangeCheck:Show(10)
 	end
@@ -272,6 +271,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnRingofIce:Show(self.vb.ringofFrostCount)
 		specWarnRingofIce:Play("justrun")
 		timerRingofIceCD:Start(nil, self.vb.ringofFrostCount+1)
+		countdownRingofIce:Start(60.7)
 	elseif spellId == 288221 and self:AntiSpam(3, 3) then
 		warnBurningExplosion:Show()
 	elseif spellId == 288345 and self:AntiSpam(4, 8) then
@@ -297,7 +297,6 @@ function mod:SPELL_CAST_START(args)
 		timerIcefallCD:Stop()
 	elseif spellId == 289219 then
 		warnFrostNova:Show()
-		timerFrostNovaCD:Start()
 	elseif spellId == 289940 then
 		self.vb.dustCount = self.vb.dustCount + 1
 		warnCrystalDust:Show(self.vb.dustCount)
@@ -329,14 +328,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnTimeWarp:Show()
 	elseif spellId == 287626 then
 		timerGraspofFrostCD:Start()
-	elseif spellId == 285257 then
-		specWarnTideElemental:Show()
-		specWarnTideElemental:Play("bigmob")
-		timerHeartofFrostCD:Start(2)
-		timerFrostNovaCD:Start(2)
-		if self:IsHard() then
-			timerWaterBoltVolleyCD:Start(2)
-		end
 	elseif spellId == 289220 then
 		timerHeartofFrostCD:Start()
 	elseif spellId == 288374 then
@@ -405,6 +396,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerGraspofFrostCD:Stop()
 		timerFreezingBlastCD:Stop()
 		timerRingofIceCD:Stop()
+		countdownRingofIce:Cancel()
 	elseif spellId == 288219 then
 		if self.Options.NPAuraOnRefractiveIce then
 			DBM.Nameplate:Show(true, args.sourceGUID, spellId)
@@ -555,7 +547,6 @@ function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 146765 then--Tide Elemental (or one of these, 149144, 149501, 149558)
 		timerHeartofFrostCD:Stop()
-		timerFrostNovaCD:Stop()
 		timerWaterBoltVolleyCD:Stop()
 	--elseif cid == 149535 then--Icebound Image
 	
@@ -594,6 +585,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		timerGraspofFrostCD:Stop()
 		timerFreezingBlastCD:Stop()
 		timerRingofIceCD:Stop()
+		countdownRingofIce:Cancel()
 		timerPhaseTransition:Start(12.5)
 	elseif spellId == 288405 or spellId == 288401 then--Ability Callout Corsair on the Port Side
 		DBM:Debug("Corsair on the Port Side")
