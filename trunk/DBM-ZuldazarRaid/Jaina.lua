@@ -361,7 +361,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnChillingStack:Play("stackhigh")
 		end
 		if self.Options.InfoFrame then
-			DBM.InfoFrame:UpdateTable(infoframeTable)
+			DBM.InfoFrame:UpdateTable(ChillingTouchStacks)
 		end
 	elseif spellId == 287490 then
 		warnFrozenSolid:CombinedShow(0.5, args.destName)
@@ -469,7 +469,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	if spellId == 287993 then
 		ChillingTouchStacks[args.destName] = nil
 		if self.Options.InfoFrame then
-			DBM.InfoFrame:UpdateTable(infoframeTable)
+			DBM.InfoFrame:UpdateTable(ChillingTouchStacks)
 		end
 	elseif spellId == 288038 then
 		if self.Options.NPAuraOnMarkedTarget then
@@ -543,7 +543,7 @@ function mod:SPELL_AURA_REMOVED_DOSE(args)
 	if spellId == 287993 then
 		ChillingTouchStacks[args.destName] = args.amount or 1
 		if self.Options.InfoFrame then
-			DBM.InfoFrame:UpdateTable(infoframeTable)
+			DBM.InfoFrame:UpdateTable(ChillingTouchStacks)
 		end
 	end
 end
