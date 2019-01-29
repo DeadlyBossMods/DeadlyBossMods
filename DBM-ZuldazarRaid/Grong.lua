@@ -38,7 +38,7 @@ mod:RegisterEventsInCombat(
 (ability.id = 282399 or ability.id = 281936 or ability.id = 285994 or ability.id = 286435 or ability.id = 285660) and type = "begincast"
  or (ability.id = 282543 or ability.id = 282179 or ability.id = 282526 or ability.id = 282247 or ability.id = 286450 or ability.id = 282082) and type = "cast"
  or (ability.id = 282533 or ability.id = 282243) and type = "begincast"
- or (ability.id = 286434 or ability.id) = 285659 and type = "applydebuff"
+ or (ability.id = 286434 or ability.id = 285659) and type = "applydebuff"
  --Tank Combo Only
 (ability.id = 285875 or ability.id = 286450 or ability.id = 282082 or ability.id = 282083 or ability.id = 289292) and type = "cast" or ability.id = 285671 and type = "applydebuff"
 --]]
@@ -65,8 +65,8 @@ local yellThrowTargetFades				= mod:NewShortFadesYell(289307)
 --mod:AddTimerLine(DBM:EJ_GetSectionInfo(18527))
 --local timerEnergyAOECD					= mod:NewCDCountTimer(100, energyAOESpellId, nil, nil, nil, 2)
 local timerTankComboCD					= mod:NewCDTimer(30.3, tankComboId, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
-local timerSlamCD						= mod:NewCDTimer(28, slamSpellId, nil, nil, nil, 3)
-local timerFerociousRoarCD				= mod:NewCDTimer(37, 285994, nil, nil, nil, 2)--27-33
+local timerSlamCD						= mod:NewCDTimer(27, slamSpellId, nil, nil, nil, 3)
+local timerFerociousRoarCD				= mod:NewCDTimer(36.5, 285994, nil, nil, nil, 2)
 local timerAddCD						= mod:NewCDTimer(120, addSpawnId, nil, nil, nil, 1)
 local timerAddAttackCD					= mod:NewCDTimer(23.8, addProjectileId, nil, nil, nil, 3)--12-32
 
@@ -88,12 +88,10 @@ mod.vb.comboCount = 0
 local coreTargets = {}
 local castsPerGUID = {}
 
---[[
 local function fearRepeater(self)
 	timerFerociousRoarCD:Start()
 	self:Schedule(5.5, fearRepeater, self)
 end
---]]
 
 local updateInfoFrame
 do
@@ -134,12 +132,18 @@ function mod:OnCombatStart(delay)
 	self.vb.comboCount = 0
 	table.wipe(coreTargets)
 	table.wipe(castsPerGUID)
-	timerTankComboCD:Start(3.2-delay)
-	timerSlamCD:Start(25-delay)
-	timerAddCD:Start(57.8-delay)--One add spawns with boss?
+	timerSlamCD:Start(15-delay)
+	timerAddCD:Start(16.5-delay)
+	timerTankComboCD:Start(22-delay)
 	if self:IsHard() then
 		timerAddAttackCD:Start(10.6-delay)
-		timerFerociousRoarCD:Start(16.5-delay)--VERIFY
+		if self:IsHeroic() then--Only heroic, on mythic it's not a cast, it's an aura
+			timerFerociousRoarCD:Start(36-delay)--First one can be between 36-39
+		else--Mythic
+			if DBM.Options.DebugMode then
+				self:Schedule(5.5, fearRepeater, self)
+			end
+		end
 	end
 --	timerEnergyAOECD:Start(100-delay, 1)
 --	if self.Options.NPAuraOnPresence then
@@ -149,9 +153,6 @@ function mod:OnCombatStart(delay)
 		DBM.InfoFrame:SetHeader(OVERVIEW)
 		DBM.InfoFrame:Show(8, "function", updateInfoFrame, false, false)
 	end
---	if DBM.Options.DebugMode then
---		self:Schedule(5.5, fearRepeater, self)
---	end
 end
 
 function mod:OnCombatEnd()
