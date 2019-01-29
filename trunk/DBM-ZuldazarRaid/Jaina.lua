@@ -111,11 +111,11 @@ local timerGraspofFrostCD				= mod:NewCDTimer(6, 287626, nil, nil, nil, 3, nil, 
 local timerFreezingBlastCD				= mod:NewCDTimer(10.1, 285177, nil, "Tank", nil, 3)
 local timerRingofIceCD					= mod:NewCDCountTimer(60.7, 285459, nil, nil, nil, 2, nil, DBM_CORE_IMPORTANT_ICON)
 --Stage Two: Frozen Wrath
-local timerBroadsideCD					= mod:NewCDCountTimer(31.5, 288212, nil, nil, nil, 3)
+local timerBroadsideCD					= mod:NewCDCountTimer(31.3, 288212, nil, nil, nil, 3)
 local timerSiegebreakerCD				= mod:NewCDCountTimer(59.9, 288374, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
 --local timerHandofFrostCD				= mod:NewCDTimer(55, 288412, nil, nil, nil, 3)--Timer is only for first cast of phase, after that, can't tell cast from jump
 local timerGlacialRayCD					= mod:NewCDCountTimer(49.8, 288345, nil, nil, nil, 3)--49.8-61.1?
-local timerIcefallCD					= mod:NewCDCountTimer(43.4, 288475, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
+local timerIcefallCD					= mod:NewCDCountTimer(42.8, 288475, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
 --local timerIcefall						= mod:NewCastTimer(55, 288475, nil, nil, nil, 3)
 --Intermission 2
 local timerHeartofFrostCD				= mod:NewCDTimer(8.5, 289220, nil, nil, nil, 3)
@@ -154,6 +154,7 @@ mod.vb.siegeCount = 0
 mod.vb.glacialRayCount = 0
 local ChillingTouchStacks = {}
 
+--[[
 local updateInfoFrame
 do
 	local floor, tsort = math.floor, table.sort
@@ -204,6 +205,7 @@ do
 		return lines, sortedLines
 	end
 end
+--]]
 
 function mod:OnCombatStart(delay)
 	self.vb.phase = 1
@@ -228,8 +230,10 @@ function mod:OnCombatStart(delay)
 		DBM.RangeCheck:Show(10)
 	end
 	if self.Options.InfoFrame then
-		DBM.InfoFrame:SetHeader(DBM_CORE_INFOFRAME_POWER)
-		DBM.InfoFrame:Show(8, "function", updateInfoFrame, false, false)
+		--DBM.InfoFrame:SetHeader(DBM_CORE_INFOFRAME_POWER)
+		--DBM.InfoFrame:Show(8, "function", updateInfoFrame, false, false)
+		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(287993))
+		DBM.InfoFrame:Show(5, "table", infoframeTable, 1)
 	end
 	if self.Options.NPAuraOnMarkedTarget or self.Options.NPAuraOnTimeWarp or self.Options.NPAuraOnRefractiveIce then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
@@ -356,6 +360,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnChillingStack:Show(amount)
 			specWarnChillingStack:Play("stackhigh")
 		end
+		if self.Options.InfoFrame then
+			DBM.InfoFrame:UpdateTable(infoframeTable)
+		end
 	elseif spellId == 287490 then
 		warnFrozenSolid:CombinedShow(0.5, args.destName)
 	elseif spellId == 289387 then
@@ -461,6 +468,9 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 287993 then
 		ChillingTouchStacks[args.destName] = nil
+		if self.Options.InfoFrame then
+			DBM.InfoFrame:UpdateTable(infoframeTable)
+		end
 	elseif spellId == 288038 then
 		if self.Options.NPAuraOnMarkedTarget then
 			DBM.Nameplate:Hide(true, args.sourceGUID, spellId)
@@ -477,12 +487,12 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.phase = 2
 		warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(2))
 		warnPhase:Play("ptwo")
-		timerBroadsideCD:Start(3.8, 1)--SUCCESS
+		timerBroadsideCD:Start(3.2, 1)--SUCCESS
 		timerGlacialRayCD:Start(6.6, 1)
 		timerAvalancheCD:Start(16.3)
 		--timerHandofFrostCD:Start(21.5)--21.5-25.57
 		if not self:IsLFR() then
-			timerIcefallCD:Start(30.8, 1)
+			timerIcefallCD:Start(30.2, 1)
 		end
 		timerSiegebreakerCD:Start(40.3, 1)
 	elseif spellId == 288219 then
@@ -532,6 +542,9 @@ function mod:SPELL_AURA_REMOVED_DOSE(args)
 	local spellId = args.spellId
 	if spellId == 287993 then
 		ChillingTouchStacks[args.destName] = args.amount or 1
+		if self.Options.InfoFrame then
+			DBM.InfoFrame:UpdateTable(infoframeTable)
+		end
 	end
 end
 
