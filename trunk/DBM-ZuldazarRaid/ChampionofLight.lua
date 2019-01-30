@@ -236,8 +236,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 284469 then--Seal of Retribution
 		warnSealofRet:Show()
-		timerJudgmentRetCD:Start(52.3)
-		countdownReleaseSeal:Start(52.3)
+		timerJudgmentRetCD:Start(52.3)--50.6?
+		countdownReleaseSeal:Start(52.3)--50.6?
 		specWarnJudgmentReckoning:Schedule(47.3)
 		specWarnJudgmentReckoning:ScheduleVoice(47.3, "aesoon")
 	elseif spellId == 284436 then--Seal of Reckoning
