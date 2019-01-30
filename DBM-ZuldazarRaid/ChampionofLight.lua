@@ -15,7 +15,7 @@ mod:SetZone()
 --mod:SetUsedIcons(1, 2, 8)
 --mod:SetHotfixNoticeRev(17775)
 --mod:SetMinSyncRevision(16950)
---mod.respawnTime = 35
+mod.respawnTime = 17--Ish, from stream watching.
 
 mod:RegisterCombat("combat")
 
@@ -36,7 +36,6 @@ mod:RegisterEventsInCombat(
 --]]
 --TODO, swap count for Sacred Blade? Should it be a force swap in LFR?
 --TODO, maybe a custom huge interrupt icon for the nameplate cast icon for angelic?
---local warnXorothPortal				= mod:NewSpellAnnounce(244318, 2, nil, nil, nil, nil, nil, 7)
 local warnWaveofLight					= mod:NewTargetNoFilterAnnounce(283598, 1)
 local warnSacredBlade					= mod:NewStackAnnounce(283573, 2, nil, "Tank")
 local warnSealofRet						= mod:NewSpellAnnounce(283573, 2)
