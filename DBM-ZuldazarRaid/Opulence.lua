@@ -94,7 +94,7 @@ local timerDrawPower					= mod:NewCastTimer(5, 282939, nil, nil, nil, 6)
 local timerLiquidGoldCD					= mod:NewCDTimer(15.6, 287072, nil, nil, nil, 3)
 local timerSpiritsofGoldCD				= mod:NewCDTimer(65.6, 285995, nil, nil, nil, 1)
 local timerCoinShowerCD					= mod:NewCDTimer(30.3, 285014, nil, nil, nil, 5, nil, DBM_CORE_DEADLY_ICON)
-local timerWailofGreedCD				= mod:NewCDTimer(71, 284941, nil, nil, nil, 2, nil, DBM_CORE_HEALER_ICON)--Timer still needed beyond first cast
+local timerWailofGreedCD				= mod:NewCDTimer(71, 284941, nil, nil, nil, 2, nil, DBM_CORE_HEALER_ICON)--71-75
 local timerCoinSweepCD					= mod:NewCDTimer(10.9, 287037, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerSurgingGoldCD				= mod:NewCDTimer(42.5, 289155, nil, nil, nil, 3)--Real timer needed, using AI tech for now
 
