@@ -360,7 +360,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		end
 	elseif spellId == 286427 then--Roll
 		if self:IsMythic() then
-			timerRollCD:start(31)
+			timerRollCD:Start(31)
 		else
 			timerRollCD:Start(20.3)
 		end
