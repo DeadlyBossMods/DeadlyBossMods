@@ -112,7 +112,7 @@ function mod:OnCombatStart(delay)
 	self.vb.shieldsActive = false
 	self.vb.embersIcon = 0
 	self.vb.magmaTrapCount = 0
-	timerSearingEmbersCD:Start(11.9-delay)
+	timerSearingEmbersCD:Start(11.9-delay)--13.1 in LFR?
 	if self:IsMythic() then
 		timerRollCD:Start(8.6)
 		timerShieldCD:Start(15.8-delay)
@@ -134,11 +134,11 @@ function mod:OnCombatStart(delay)
 	else
 		timerRollCD:Start(20-delay)
 		timerShieldCD:Start(20-delay)
-		timerMultiSidedStrikeCD:Start(36-delay)
+		timerMultiSidedStrikeCD:Start(35-delay)
 		--Blizzards energy code is still utter shite
 		timerFirefromMistCD:Start(51-delay)
-		timerFlashofPhoenixesCD:Start(133-delay)
-		timerBlazingPhoenixCD:Start(262-delay)
+		timerFlashofPhoenixesCD:Start(130-delay)
+		timerBlazingPhoenixCD:Start(271-delay)
 	end
 	if self.Options.NPAuraOnFixate or self.Options.NPAuraOnExplosion then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
