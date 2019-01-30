@@ -48,6 +48,7 @@ local warnCrushed						= mod:NewStackAnnounce(285671, 3, nil, "Tank")
 local warnRendingBite					= mod:NewStackAnnounce(285875, 2, nil, "Tank")
 local warnCore							= mod:NewTargetNoFilterAnnounce(coreSpellId, 2)
 local warnThrowTarget					= mod:NewTargetNoFilterAnnounce(289307, 2)
+local warnAddProjectile					= mod:NewSpellAnnounce(addProjectileId, 2)
 
 local specWarnEnergyAOE					= mod:NewSpecialWarningCount(energyAOESpellId, nil, nil, nil, 2, 2)
 local specWarnSlam						= mod:NewSpecialWarningDodge(slamSpellId, nil, nil, nil, 2, 2)
@@ -318,6 +319,7 @@ end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 282467 or spellId == 282190 then
+		warnAddProjectile:Show()
 		timerAddAttackCD:Start()
 	--Backup add spawn triggers in case CLEU stuff gets purged
 --	elseif spellId == 286450 or spellId == 282082 then
