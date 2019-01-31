@@ -136,16 +136,21 @@ do
 		table.wipe(lines)
 		table.wipe(sortedLines)
 		--The Zandalari Crown Jewels Helper
-		--Incandescent Stacks/Diamond Absorb Checks
+		--Diamond Absorb Checks
+		for uId in DBM:GetGroupMembers() do
+			local unitName = DBM:GetUnitFullName(uId)
+			local absorb = diamondTargets[unitName]
+			if absorb then
+				local absorbAmount = select(16, DBM:UnitDebuff(uId, 284527)) or 0
+				addLine(unitName, DBM_CORE_SHIELD.."-"..math.floor(absorbAmount))
+			end
+		end
+		--Incandescent Stacks
 		for uId in DBM:GetGroupMembers() do
 			local unitName = DBM:GetUnitFullName(uId)
 			local count = incandescentStacks[unitName]
-			local absorb = diamondTargets[unitName]
 			if count then
 				addLine(unitName, Incan.."-"..count)
-			elseif absorb then
-				local absorbAmount = select(16, DBM:UnitDebuff(uId, 284527)) or 0
-				addLine(unitName, DBM_CORE_SHIELD.."-"..math.floor(absorbAmount))
 			end
 		end
 		--Incandescent Full
