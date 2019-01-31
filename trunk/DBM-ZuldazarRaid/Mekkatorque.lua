@@ -289,7 +289,6 @@ function mod:OnCombatEnd()
 --	if self.Options.NPAuraOnPresence then
 --		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
 --	end
-	DBM:AddMsg("This Boss was redone from 5 stage boss to 3 stage boss after most of testing, so timers need reworking and may not be correct. They will be updated as quickly as possible on live")
 end
 
 function mod:SPELL_CAST_START(args)
