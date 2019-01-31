@@ -82,7 +82,7 @@ local specWarnSurgingGold				= mod:NewSpecialWarningDodge(289155, nil, nil, nil,
 --mod:AddTimerLine(DBM:EJ_GetSectionInfo(18527))
 --General
 local timerThiefsBane					= mod:NewBuffFadesTimer(30, 287424, nil, nil, nil, 3)
-local timerChaoticDisplacementCD		= mod:NewCDTimer(30, 289383, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)--Mythic
+local timerChaoticDisplacementCD		= mod:NewCDTimer(30.3, 289383, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)--Mythic
 --Stage One: Raiding The Vault
 local timerCrushCD						= mod:NewCDSourceTimer(55, 283604, nil, nil, nil, 3)--Both
 ----The Hand of In'zashi
@@ -190,10 +190,10 @@ function mod:OnCombatStart(delay)
 	self.vb.phase = 1
 	self.vb.wailCast = 0
 	self.vb.bulwarkCrush = 0
-	timerVolatileChargeCD:Start(1-delay)
-	timerFlamesofPunishmentCD:Start(1-delay)
+	timerVolatileChargeCD:Start(6-delay)
+	timerFlamesofPunishmentCD:Start(17-delay)
 	if self:IsMythic() then
-		timerChaoticDisplacementCD:Start(30-delay)
+		timerChaoticDisplacementCD:Start(30.3-delay)
 	end
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(OVERVIEW)
