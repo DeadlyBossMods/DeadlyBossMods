@@ -258,6 +258,7 @@ function mod:OnCombatStart(delay)
 		timerBlastOffCD:Start(29.8-delay, 1)
 		timerWormholeGeneratorCD:Start(41-delay, 1)
 		timerWorldEnlargerCD:Start(75-delay, 1)--Start
+		DBM:AddMsg("Mythic timers (and possibly LFR) timers still need work.")
 	else
 		timerDeploySparkBotCD:Start(5-delay, 1)
 		timerBusterCannonCD:Start(13-delay, 1)
@@ -276,7 +277,6 @@ function mod:OnCombatStart(delay)
 --	if self.Options.NPAuraOnPresence then
 --		DBM:FireEvent("BossMod_EnableHostileNameplates")
 --	end
-	DBM:AddMsg("This Boss was redone from 5 stage boss to 3 stage boss after most of testing, so timers need reworking and may not be correct. They will be updated as quickly as possible on live")
 end
 
 function mod:OnCombatEnd()
