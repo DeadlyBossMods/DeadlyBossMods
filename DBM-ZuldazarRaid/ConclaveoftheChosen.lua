@@ -36,6 +36,7 @@ mod:RegisterEventsInCombat(
  or (ability.id = 282444 or ability.id = 285878 or ability.id = 282636) and type = "cast"
  or (ability.id = 282209 or ability.id = 282834 or ability.id = 286811 or ability.id = 284663) and type = "applydebuff"
  or (ability.id = 282135) and type = "applydebuff"
+ or ability.id = 282109 and target.name = "Omegall"
 --]]
 --General
 local warnActivated						= mod:NewTargetAnnounce(118212, 3, 78740, nil, nil, nil, nil, nil, true)
@@ -113,7 +114,7 @@ local timerBwonsamdisWrathCD			= mod:NewCDCountTimer(50, 284666, nil, nil, nil, 
 
 local countdownPakusWrath				= mod:NewCountdown(70, 282107, true, nil, 5)
 --local countdownLaceratingClaws		= mod:NewCountdown("Alt12", 244016, false, 2, 3)
---local countdownFelstormBarrage		= mod:NewCountdown("AltTwo32", 244000, nil, nil, 3)
+local countdownKragwasWrath				= mod:NewCountdown("AltTwo32", 282636, "Ranged", nil, 3)
 
 --mod:AddSetIconOption("SetIconGift", 255594, true)
 --mod:AddRangeFrameOption("8/10")
@@ -128,6 +129,7 @@ mod.vb.hexIcon = 1
 mod.vb.hexIgnore = false
 mod.vb.ignoredActivate = true
 mod.vb.pakuWrathCount = 0
+mod.vb.pakuDead = false
 mod.vb.wrathCount = 0
 mod.vb.kragwaCast = 0
 local raptorsSeen = {}
@@ -146,6 +148,7 @@ function mod:OnCombatStart(delay)
 	self.vb.hexIgnore = false
 	self.vb.ignoredActivate = true
 	self.vb.pakuWrathCount = 0
+	self.vb.pakuDead = false
 	self.vb.wrathCount = 0
 	self.vb.kragwaCast = 0
 	self:Schedule(3, clearActivateIgnore, self)
@@ -158,6 +161,7 @@ function mod:OnCombatStart(delay)
 	end
 	if self:IsHard() then
 		timerKragwasWrathCD:Start(29.3-delay)
+		countdownKragwasWrath:Start(29.3-delay)
 		if self:IsMythic() then
 			timerBwonsamdisWrathCD:Start(51-delay, 1)
 		end
@@ -224,6 +228,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.kragwaCast = self.vb.kragwaCast + 1
 		if self.vb.kragwaCast == 1 or (self.vb.kragwaCast-1) % 3 == 0 then--1, 4, 7, 10, etc
 			timerKragwasWrathCD:Start()
+			countdownKragwasWrath:Start(49.8)
 		end
 	end
 end
@@ -401,7 +406,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 		self.vb.pakuWrathCount = self.vb.pakuWrathCount + 1
 		specWarnPakusWrath:Show(L.Bird)
 		specWarnPakusWrath:Play("gathershare")
-		if self:IsMythic() then
+		if self.vb.pakuDead then
 			warnPakuWrath:Schedule(50)
 			timerPakusWrathCD:Start(60, self.vb.pakuWrathCount+1)
 			countdownPakusWrath:Start(60)
@@ -423,6 +428,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 130966 then--Permanent Feign Death (dying/leaving) (slightly faster than UNIT_DIED)
 		local cid = self:GetUnitCreatureId(uId)
 		if cid == 144747 then--Pa'ku's Aspect
+			self.vb.pakuDead = true
 			timerGiftofWindCD:Stop()
 			--local pakusWrathRemaining = timerPakusWrathCD:GetRemaining(self.vb.pakuWrathCount+1) or 0
 			--if pakusWrathRemaining >= 14 then
@@ -454,9 +460,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		--Start Timers
 		local cid = self:GetUnitCreatureId(uId)
 		if cid == 144747 then--Pa'ku's Aspect
-			--self.vb.pakuWrathCount = 0
 			timerGiftofWindCD:Start(4.8)--Assuming he always starts at 90 energy even when he isn't spawned on pull
-			timerPakusWrathCD:Start(73.5, self.vb.pakuWrathCount+1)--When actual aoe starts, first event we can detect
+			timerPakusWrathCD:Start(73.5, self.vb.pakuWrathCount+1)--When actual emote fires, first event we can detect
 			countdownPakusWrath:Start(73.5)
 		elseif cid == 144767 then--Gonk's Aspect
 			timerCrawlingHexCD:Start(13.4)--Assuming starting at 70 energy is always true

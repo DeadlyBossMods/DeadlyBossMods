@@ -169,7 +169,7 @@ do
 		if trackedGemBuff then
 			local spellName3, _, currentStack3 = DBM:UnitDebuff("player", 284817, 284883)
 			if spellName3 and currentStack3 then--Personal Earthen Roots/Unleashed Rage count
-				addLine(spellName3.." ("..currentStack2..")", "")
+				addLine(spellName3.." ("..currentStack3..")", "")
 			end
 		end
 		--Other Considerations

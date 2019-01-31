@@ -73,9 +73,9 @@ local timerAddAttackCD					= mod:NewCDTimer(23.8, addProjectileId, nil, nil, nil
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
 
---local countdownCollapsingWorld			= mod:NewCountdown(50, 243983, true, 3, 3)
---local countdownRupturingBlood				= mod:NewCountdown("Alt12", 244016, false, 2, 3)
---local countdownFelstormBarrage			= mod:NewCountdown("AltTwo32", 244000, nil, nil, 3)
+local countdownAdd						= mod:NewCountdown(120, addSpawnId, true, nil, 5)
+local countdownTankCombo				= mod:NewCountdown("Alt12", tankComboId, "Tank", nil, 4)
+local countdownFerociousRoar			= mod:NewCountdown("AltTwo32", 285994, nil, nil, 3)
 
 --mod:AddSetIconOption("SetIconGift", 255594, true)
 --mod:AddRangeFrameOption("8/10")
@@ -130,10 +130,13 @@ function mod:OnCombatStart(delay)
 	table.wipe(castsPerGUID)
 	timerSlamCD:Start(15-delay)
 	timerAddCD:Start(16.5-delay)
+	countdownAdd:Start(16.5-delay)
 	timerTankComboCD:Start(22-delay)
+	countdownTankCombo:Start(22-delay)
 	if self:IsHard() then
 		timerAddAttackCD:Start(10.6-delay)
 		timerFerociousRoarCD:Start(35.5-delay)--First one can be between 35.5-39
+		countdownFerociousRoar:Start(35.5-delay)
 	end
 --	timerEnergyAOECD:Start(100-delay, 1)
 --	if self.Options.NPAuraOnPresence then
@@ -169,6 +172,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnFerociousRoar:Show()
 		specWarnFerociousRoar:Play("fearsoon")
 		timerFerociousRoarCD:Start()
+		countdownFerociousRoar:Start(36.5)
 	elseif spellId == 282533 or spellId == 282243 then
 		if not castsPerGUID[args.sourceGUID] then
 			castsPerGUID[args.sourceGUID] = 0
@@ -207,12 +211,15 @@ function mod:SPELL_CAST_SUCCESS(args)
 		specWarnAdd:Play("killmob")
 		if self:IsMythic() then
 			timerAddCD:Start(120)--2 every 2 minutes
+			countdownAdd:Start(120)
 		else
 			timerAddCD:Start(60)--1 every 1 minute
+			countdownAdd:Start(60)
 		end
 	elseif spellId == 286450 or spellId == 282082 then--Necrotic Combo/Bestial Combo
 		self.vb.comboCount = 0
 		timerTankComboCD:Start()
+		countdownTankCombo:Start(30.3)
 	elseif spellId == 289292 then
 		if not args:IsPlayer() then
 			specWarnThrow:Show(args.destName)
