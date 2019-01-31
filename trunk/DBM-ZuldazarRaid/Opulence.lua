@@ -18,10 +18,10 @@ mod:SetWipeTime(30)
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 282939 287659 287070 285995 284941 283947 283606 289906 289155",
 	"SPELL_CAST_SUCCESS 283507 287648 284470 287072 285014 287037 285505 286541",
-	"SPELL_AURA_APPLIED 284798 283507 287648 284470 287072 285014 287037 284105 287424 289776 284664 284814 284881 284527",
+	"SPELL_AURA_APPLIED 284798 283507 287648 284470 287072 285014 287037 284105 287424 289776 284664 284814 284881 284527 289383",
 	"SPELL_AURA_APPLIED_DOSE 284664",
 	"SPELL_AURA_REFRESH 284470",
-	"SPELL_AURA_REMOVED 284798 283507 287648 284470 287072 285014 287424 289776 284664 284527",
+	"SPELL_AURA_REMOVED 284798 283507 287648 284470 287072 285014 287424 289776 284664 284527 289383",
 	"SPELL_AURA_REMOVED_DOSE 284664",
 	"UNIT_DIED"
 --	"UNIT_SPELLCAST_START boss1 boss2 boss3"
@@ -35,13 +35,14 @@ mod:RegisterEventsInCombat(
 --TODO, auto correction code (for tank ability at least)
 --The Zandalari Crown Jewels
 local warnGrosslyIncandescent			= mod:NewTargetNoFilterAnnounce(284798, 1)
+local warnChaoticDisplacement			= mod:NewTargetAnnounce(289383, 3)
 --Stage One: Raiding The Vault
 ----The Hand of In'zashi
 local warnVolatileCharge				= mod:NewTargetAnnounce(283507, 2)
 ----Traps
 local warnFlameJet						= mod:NewSpellAnnounce(285479, 3)
 local warnRubyBeam						= mod:NewSpellAnnounce(284081, 3)
-local warnHexofLethargy						= mod:NewTargetAnnounce(284470, 2)
+local warnHexofLethargy					= mod:NewTargetAnnounce(284470, 2)
 --Stage Two: Toppling the Guardian
 local warnPhase2						= mod:NewPhaseAnnounce(2, 2)
 local warnLiquidGold					= mod:NewTargetAnnounce(287072, 2)
@@ -53,6 +54,8 @@ local yellGrosslyIncandescent			= mod:NewYell(284798)
 --Stage One: Raiding The Vault
 ----General
 local specWarnCrush						= mod:NewSpecialWarningDodge(283606, nil, nil, nil, 2, 2)
+local specWarnChaoticDisplacement		= mod:NewSpecialWarningYou(289383, nil, nil, nil, 3, 2)
+local yellChaoticDisplacement			= mod:NewYell(289383, nil, false)
 ----The Hand of In'zashi
 local specWarnVolatileCharge			= mod:NewSpecialWarningMoveAway(283507, nil, nil, nil, 1, 2)
 local yellVolatileCharge				= mod:NewYell(283507)
@@ -79,6 +82,7 @@ local specWarnSurgingGold				= mod:NewSpecialWarningDodge(289155, nil, nil, nil,
 --mod:AddTimerLine(DBM:EJ_GetSectionInfo(18527))
 --General
 local timerThiefsBane					= mod:NewBuffFadesTimer(30, 287424, nil, nil, nil, 3)
+local timerChaoticDisplacementCD		= mod:NewCDTimer(30, 289383, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)--Mythic
 --Stage One: Raiding The Vault
 local timerCrushCD						= mod:NewCDSourceTimer(55, 283604, nil, nil, nil, 3)--Both
 ----The Hand of In'zashi
@@ -188,6 +192,9 @@ function mod:OnCombatStart(delay)
 	self.vb.bulwarkCrush = 0
 	timerVolatileChargeCD:Start(1-delay)
 	timerFlamesofPunishmentCD:Start(1-delay)
+	if self:IsMythic() then
+		timerChaoticDisplacementCD:Start(30-delay)
+	end
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(OVERVIEW)
 		DBM.InfoFrame:Show(8, "function", updateInfoFrame, false, false)
@@ -223,6 +230,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.wailCast = 0
 		--Do these stop?
 		timerHexofLethargyCD:Stop()
+		timerChaoticDisplacementCD:Stop()
 		warnPhase2:Show()
 		timerDrawPower:Start()
 		--Normal Mode, may differ elsewhere
@@ -378,6 +386,16 @@ function mod:SPELL_AURA_APPLIED(args)
 		trackedGemBuff = true
 	elseif spellId == 284527 then--Diamond
 		diamondTargets[args.destName] = true
+	elseif spellId == 289383 then--Chaotic Displaecment
+		warnChaoticDisplacement:CombinedShow(0.5, args.destName)
+		if args:IsPlayer() then
+			specWarnChaoticDisplacement:Show()
+			specWarnChaoticDisplacement:Play("targetyou")
+			yellChaoticDisplacement:Yell()
+		end
+		if self:AntiSpam(10, 3) then
+			timerChaoticDisplacementCD:Start()
+		end
 	end
 end
 mod.SPELL_AURA_REFRESH = mod.SPELL_AURA_APPLIED
