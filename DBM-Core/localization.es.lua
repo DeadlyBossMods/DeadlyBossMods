@@ -11,6 +11,7 @@ DBM_CORE_LOAD_GUI_COMBAT			= "La interfaz no se puede cargar en combate. Se carg
 DBM_CORE_BAD_LOAD					= "DBM ha detectado que no se ha podido cargar el módulo de esta estancia porque estás en combate. Por favor, escribe '/console reloadui' nada más salir de combate."
 DBM_CORE_LOAD_MOD_VER_MISMATCH		= "No se ha podido cargar el módulo de %s porque tu módulo de DBM-Core no cumple los requisitos necesarios. Se necesita una versión más reciente."
 DBM_CORE_LOAD_MOD_EXP_MISMATCH		= "No se ha podido cargar el módulo de %s porque está diseñado para una expansión que aún no se encuentra disponible. Este módulo se habilitará automáticamente cuando salga la nueva expansión."
+DBM_CORE_LOAD_MOD_TOC_MISMATCH		= "No se ha podido cargar el módulo de %s porque está diseñado para un parche de WoW que aún no se encuentra disponible. Este módulo se habilitará automáticamente cuando salga dicho parche."
 DBM_CORE_LOAD_MOD_DISABLED			= "%s está instalado pero se encuentra desactivado. Este módulo no se cargará hasta que lo actives."
 DBM_CORE_LOAD_MOD_DISABLED_PLURAL	= "%s están instalados pero se encuentran desactivados. Estos módulos no se cargarán hasta que los actives."
 
@@ -56,6 +57,8 @@ DBM_CORE_TRANSCRIPTOR_LOG_START		= "Registro de Transcriptor iniciado."
 DBM_CORE_TRANSCRIPTOR_LOG_END		= "Registro de Transcriptor finalizado."
 
 DBM_CORE_MOVIE_SKIPPED				= "Cinemática saltada automáticamente."
+DBM_CORE_BONUS_SKIPPED				= "DBM ha cerrado automáticamente la ventana de bonus de botín. Si quieres abrirla, escribe /dbmbonusroll antes de que pasen 3 minutos."
+DBM_CORE_BONUS_EXPIRED				= "Has intentado usar /dbmbonusroll para abrir la ventana de bonus de botín, pero no tienes ninguna tirada pendiente."
 
 DBM_CORE_AFK_WARNING				= "Estás ausente y en combate (%d por cierto de salud restante); se procederá a reproducir un sonido de alerta. Sino estás ausente, quítate el estado o desactiva esta opción en 'Funciones adicionales'."
 
@@ -205,6 +208,7 @@ DBM_CORE_INFOFRAME_SETLINES			= "Líneas máximas"
 DBM_CORE_INFOFRAME_LINESDEFAULT		= "Por defecto"
 DBM_CORE_INFOFRAME_LINES_TO			= "%d"
 DBM_CORE_INFOFRAME_POWER			= "Recurso"
+DBM_CORE_INFOFRAME_AGGRO			= "Amenaza"
 DBM_CORE_INFOFRAME_MAIN				= "Principal:"--Main power
 DBM_CORE_INFOFRAME_ALT				= "Secundario:"--Alternate Power
 
@@ -269,6 +273,7 @@ DBM_NO_DEBUFF						= "Sin %s"--For use in places like info frame where you put "
 DBM_ALLY							= "un aliado"--Such as "Move to Ally"
 DBM_ADD								= "Esbirro"--A fight Add as in "boss spawned extra adds" - must check
 DBM_ADDS							= "Esbirros"
+DBM_BIG_ADD							= "Esbirro grande"
 DBM_BOSS							= "Jefe"
 DBM_CORE_ROOM_EDGE					= "los bordes de la sala"
 DBM_CORE_FAR_AWAY					= "alejarte"
@@ -307,6 +312,7 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS.fades		= "%s ha terminado"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.adds		= "%s restantes: %%d"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.cast		= "Lanzando %s en %.1f s"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.soon		= "%s en breve"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.sooncount	= "%s (%%s) en breve"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.prewarn	= "%s en %s"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage		= "Fase %s"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.prestage	= "Fase %s en breve"
@@ -324,6 +330,7 @@ DBM_CORE_AUTO_ANNOUNCE_OPTIONS.fades		= "Mostrar aviso cuando expire $spell:%s"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.adds			= "Anunciar el número de $spell:%s restantes"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.cast			= "Mostrar aviso cuando se esté lanzando $spell:%s"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.soon			= prewarnOption
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.sooncount	= prewarnOption
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.prewarn 		= prewarnOption
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.stage		= "Anunciar cambio a Fase %s"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.stagechange	= "Anunciar cambios de fase"

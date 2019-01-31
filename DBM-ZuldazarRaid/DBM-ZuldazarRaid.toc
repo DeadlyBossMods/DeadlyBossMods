@@ -22,6 +22,7 @@
 ## X-DBM-Mod-MinExpansion: 7
 localization.en.lua
 localization.kr.lua
+localization.es.lua
 localization.cn.lua
 localization.tw.lua
 ChampionofLight.lua
