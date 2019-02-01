@@ -63,7 +63,7 @@ local yellVolatileChargeFade			= mod:NewFadesYell(283507)
 ----Yalat's Bulwark
 local specWarnFlamesofPunishment		= mod:NewSpecialWarningDodge(282939, nil, nil, nil, 2, 8)
 ----Traps
-local specWarnHexofLethargy				= mod:NewSpecialWarningMoveAway(284470, nil, nil, nil, 1, 2)
+local specWarnHexofLethargy				= mod:NewSpecialWarningYou(284470, nil, nil, nil, 1, 2)
 local yellHexofLethargy					= mod:NewYell(284470)
 local yellHexofLethargyFade				= mod:NewFadesYell(284470)
 --Stage Two: Toppling the Guardian
@@ -350,7 +350,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 284470 then
 		if args:IsPlayer() then
 			specWarnHexofLethargy:Show()
-			specWarnHexofLethargy:Play("runout")
+			specWarnHexofLethargy:Play("stopmove")
 			yellHexofLethargy:Yell()
 			yellHexofLethargyFade:Cancel()
 			yellHexofLethargyFade:Countdown(30)
