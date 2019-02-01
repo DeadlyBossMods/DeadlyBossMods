@@ -254,7 +254,7 @@ function mod:SPELL_CAST_START(args)
 		countdownSeaSwell:Start(20.6)
 	elseif spellId == 285017 then
 		specWarnIreoftheDeep:Show()
-		specWarnIreoftheDeep:Play("gathershare")
+		specWarnIreoftheDeep:Play("helpsoak")
 		timerIreoftheDeepCD:Start()
 	elseif spellId == 284362 then
 		if self:CheckTankDistance(args.sourceGUID, 43) then
