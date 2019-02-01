@@ -102,12 +102,19 @@ mod.vb.botIcon = 4
 mod.vb.shrinkCount = 0
 mod.vb.sheepCount = 0
 mod.vb.difficultyName = "None"
---Normal and heroic are ALMOST identical but have at least 2 differences (which is why they are separate, for fine tuning)
+--Most difficulties are identical, and in earlier weeks they were even more identical
+--However, Blizz has already shown they are willing to adjust lower difficulties (such as removing one of buster cannon casts on week 2 from non mythic)
+--As such, need to have duplicate tables across board so it's easy to update mod on wim if they adjust specific difficulties only.
+--Currently there are 3 differences between difficulties.
+--Mythic has extra buster Cannon (after they removed one of them from other 3)
+--Heroic and Mythic only have an additional Bot in intermission
+--Heroic and mythic have additional sheep casts in Phase 2
+--Mythic has one less gigavolt charge at (176)
 local sparkBotTimers = {
 	["lfr"] = {
-		[1] = {},
+		[1] = {5, 22, 27.5, 42.5, 22.5, 25, 42, 22.5, 22.5},
 		[1.5] = {},
-		[2] = {},
+		[2] = {15.7, 40, 42.5, 47.5},
 	},
 	["normal"] = {
 		[1] = {5, 22, 27.5, 42.5, 22.5, 25, 42, 22.5, 22.5},
@@ -116,49 +123,49 @@ local sparkBotTimers = {
 	},
 	["heroic"] = {
 		[1] = {5, 22, 27.5, 42.5, 22.5, 25, 42, 22.5, 22.5},
-		[1.5] = {19.8},--Actual difference on heroic, normal omits this
+		[1.5] = {19.8},--Actual difference on heroic/mythic
 		[2] = {15.7, 40, 42.5, 47.5},
 	},
 	["mythic"] = {
-		[1] = {20, 20, 21, 40, 18},--REDO?
-		[1.5] = {},
-		[2] = {},
+		[1] = {5, 22, 27.5, 42.5, 22.5, 25, 42, 22.5, 22.5},
+		[1.5] = {19.8},--Actual difference on heroic/mythic
+		[2] = {15.7, 40, 42.5, 47.5},
 	},
 }
 local busterCannonTimers = {
 	["lfr"] = {
-		[1] = {},
-		[2] = {},
+		[1] = {13, 32.9, 64.5, 40, 26.4, 65},
+		[2] = {17.7, 29.0, 64.5, 40, 26.5},
 	},
 	["normal"] = {
-		[1] = {13, 32.9, 64.5, 40, 26.5, 65},
-		[2] = {17.8, 29.0, 64.5, 40.0, 26.5},
+		[1] = {13, 32.9, 64.5, 40, 26.4, 65},
+		[2] = {17.7, 29.0, 64.5, 40, 26.5},
 	},
 	["heroic"] = {
 		[1] = {13, 32.9, 64.5, 40, 26.5, 65},
-		[2] = {17.8, 29.0, 64.5, 40.0, 26.5},
+		[2] = {17.7, 29.0, 64.5, 40, 26.5},
 	},
 	["mythic"] = {
-		[1] = {10.1, 26.4, 12.9, 20.9, 24.5, 15.4},--REDO?
-		[2] = {},
+		[1] = {13, 32.9, 33.5, 31, 40, 26.4, 65},--There is an ADDITIONAL cast on Mythic difficulty only at 1:19 (79sec into fight)
+		[2] = {17.7, 29.0, 33.5, 31, 40, 26.5},--TODO: Probably needs extra cast added here too, drycoded for now
 	},
 }
 local blastOffTimers = {
 	["lfr"] = {
-		[1] = {},
-		[2] = {},
+		[1] = {37.1, 31.0, 37.5, 34.1, 50.4},
+		[2] = {41.7, 29.0, 35.5, 34.1},
 	},
 	["normal"] = {
 		[1] = {37.1, 31.0, 37.5, 34.1, 50.4},
-		[2] = {41.8, 29.0, 35.5, 34.1},
+		[2] = {41.7, 29.0, 35.5, 34.1},
 	},
 	["heroic"] = {
 		[1] = {37.1, 31.0, 37.5, 34.1, 50.4},
-		[2] = {41.8, 29.0, 35.5, 34.1},
+		[2] = {41.7, 29.0, 35.5, 34.1},
 	},
 	["mythic"] = {
-		[1] = {29.8, 60, 40},--REDO?
-		[2] = {},
+		[1] = {37.1, 31.0, 37.5, 34.1, 50.4},
+		[2] = {41.7, 29.0, 35.5, 34.1},
 	},
 }
 local wormholeTimers = {
@@ -169,38 +176,38 @@ local wormholeTimers = {
 		[2] = {38.8, 88.6},
 	},
 	["mythic"] = {
-		[1] = {41.7, 15.5, 39.5, 27.5},--REDO?
-		[1.5] = {},
-		[2] = {},
+		[1] = {38, 98.7},
+		[1.5] = {50.3},--This cast is flipped with gigavolt charge on mythic
+		[2] = {38.8, 88.6},
 	},
 }
 local gigaVoltTimers = {
 	["lfr"] = {
-		[1] = {},
-		[1.5] = {},
-		[2] = {},
+		[1] = {21.5, 40, 40, 33, 41.9, 40},
+		[1.5] = {16.9, 33.5},
+		[2] = {22.2, 40, 40, 35, 39.9},
 	},
 	["normal"] = {
-		[1] = {21.5, 40, 40, 33, 41.9, 40.5},
+		[1] = {21.5, 40, 40, 33, 41.9, 40},
 		[1.5] = {16.9, 33.5},
 		[2] = {22.2, 40, 40, 35, 39.9},
 	},
 	["heroic"] = {
-		[1] = {21.5, 40, 40, 33, 41.9, 40.5},
+		[1] = {21.5, 40, 40, 33, 41.9, 40},
 		[1.5] = {16.9, 33.5},
 		[2] = {22.2, 40, 40, 35, 39.9},
 	},
 	["mythic"] = {
-		[1] = {16.5, 80.5},--REDO?
-		[1.5] = {},
-		[2] = {},
+		[1] = {21.5, 40, 40, 33, 82},--One cast is removed on Mythic Difficulty
+		[1.5] = {16.9, 32},--Cast sooner on mythic do to swap with wormhole
+		[2] = {22.2, 40, 40, 35, 82},--Assumed, don't know if one cast is removed or not
 	},
 }
 local worldEnlargerTimers = {
 	["lfr"] = {
-		[1] = {},
-		[1.5] = {},
-		[2] = {},
+		[1] = {75, 90},
+		[1.5] = {7.4, 31},
+		[2] = {75.8, 90},
 	},
 	["normal"] = {
 		[1] = {75, 90},
@@ -213,25 +220,25 @@ local worldEnlargerTimers = {
 		[2] = {75.8, 90},
 	},
 	["mythic"] = {
-		[1] = {75},--REDO?
-		[1.5] = {},
-		[2] = {},
+		[1] = {75, 90},
+		[1.5] = {7.4, 31},
+		[2] = {75.8, 90},
 	},
 }
 local explodingSheepTimers = {
 	["lfr"] = {
-		[1.5] = {},
+		[1.5] = {12.5, 29.9, 12},
 	},
 	["normal"] = {
 		[1.5] = {12.5, 29.9, 12},
 	},
 	["heroic"] = {
 		[1.5] = {12.5, 29.9, 12},
-		[2] = {28.3, 100},--Another heroic vs normal difference
+		[2] = {28.3, 100},--Heroic/Mythic Only
 	},
 	["mythic"] = {
-		[1.5] = {},
-		[2] = {},
+		[1.5] = {12.5, 29.9, 12},
+		[2] = {28.3, 100},
 	},
 }
 
@@ -250,29 +257,24 @@ function mod:OnCombatStart(delay)
 	self.vb.gigaIcon = 1
 	self.vb.botIcon = 4
 	self.vb.shrinkCount = 0
+	--Same across board (at least for now, LFR not out yet)
+	timerDeploySparkBotCD:Start(5-delay, 1)
+	timerBusterCannonCD:Start(13-delay, 1)
+	timerGigaVoltChargeCD:Start(21.5-delay, 1)--Success
+	timerBlastOffCD:Start(37-delay, 1)
+	timerWorldEnlargerCD:Start(75-delay, 1)--Start
 	if self:IsMythic() then
 		self.vb.difficultyName = "mythic"
-		timerBusterCannonCD:Start(10-delay, 1)
-		timerGigaVoltChargeCD:Start(16.5-delay, 1)--Success
-		timerDeploySparkBotCD:Start(19.8-delay, 1)
-		timerBlastOffCD:Start(29.8-delay, 1)
-		timerWormholeGeneratorCD:Start(41-delay, 1)
-		timerWorldEnlargerCD:Start(75-delay, 1)--Start
-		DBM:AddMsg("Mythic timers (and possibly LFR) timers still need work.")
+		timerWormholeGeneratorCD:Start(38-delay, 1)
 	else
-		timerDeploySparkBotCD:Start(5-delay, 1)
-		timerBusterCannonCD:Start(13-delay, 1)
-		timerGigaVoltChargeCD:Start(21.5-delay, 1)--Success
-		timerBlastOffCD:Start(37-delay, 1)
 		if self:IsHeroic() then
 			self.vb.difficultyName = "heroic"
-			timerWormholeGeneratorCD:Start(53-delay, 1)
+			timerWormholeGeneratorCD:Start(38-delay, 1)
 		elseif self:IsNormal() then
 			self.vb.difficultyName = "normal"
 		else
 			self.vb.difficultyName = "lfr"
 		end
-		timerWorldEnlargerCD:Start(75-delay, 1)--Start
 	end
 --	if self.Options.NPAuraOnPresence then
 --		DBM:FireEvent("BossMod_EnableHostileNameplates")
@@ -352,14 +354,14 @@ function mod:SPELL_CAST_START(args)
 		timerGigaVoltChargeCD:Stop()--Success
 		timerBlastOffCD:Stop()
 		timerWorldEnlargerCD:Stop()
-		if self:IsMythic() then
-			timerWormholeGeneratorCD:Start(16.9, 1)
-		else
-			timerWorldEnlargerCD:Start(7.9, 1)
-			timerExplodingSheepCD:Start(12.8, 1)
-			timerGigaVoltChargeCD:Start(16.9, 1)
-			if self:IsHeroic() then
-				timerDeploySparkBotCD:Start(19.8, 1)
+		timerWorldEnlargerCD:Start(7.9, 1)
+		timerExplodingSheepCD:Start(12.8, 1)
+		timerGigaVoltChargeCD:Start(16.9, 1)
+		if self:IsHard() then
+			timerDeploySparkBotCD:Start(19.8, 1)
+			if self:IsMythic() then
+				timerWormholeGeneratorCD:Start(50.3, 1)
+			else
 				timerWormholeGeneratorCD:Start(46.8, 1)
 			end
 		end
@@ -381,18 +383,14 @@ function mod:SPELL_CAST_START(args)
 		timerGigaVoltChargeCD:Stop()
 		timerWorldEnlargerCD:Stop()
 		timerWormholeGeneratorCD:Stop()
-		if self:IsMythic() then
-
-		else
-			timerDeploySparkBotCD:Start(15.7, 1)
-			timerBusterCannonCD:Start(17.8, 1)
-			timerGigaVoltChargeCD:Start(22.2, 1)--Success
-			timerBlastOffCD:Start(41.8, 1)
-			timerWorldEnlargerCD:Start(75.7, 1)--Start
-			if self:IsHeroic() then
-				timerExplodingSheepCD:Start(28.3, 1)
-				timerWormholeGeneratorCD:Start(38.8, 1)
-			end
+		timerDeploySparkBotCD:Start(15.7, 1)
+		timerBusterCannonCD:Start(17.7, 1)
+		timerGigaVoltChargeCD:Start(22.2, 1)--Success
+		timerBlastOffCD:Start(41.7, 1)
+		timerWorldEnlargerCD:Start(75.7, 1)--Start
+		if self:IsHard() then
+			timerExplodingSheepCD:Start(28.3, 1)
+			timerWormholeGeneratorCD:Start(38.8, 1)
 		end
 	elseif spellId == 287757 or spellId == 286597 then
 		self.vb.gigaIcon = 1
