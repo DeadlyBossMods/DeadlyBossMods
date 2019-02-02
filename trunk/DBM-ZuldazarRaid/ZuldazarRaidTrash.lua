@@ -8,16 +8,17 @@ mod.isTrashMod = true
 
 mod:RegisterEvents(
 --	"SPELL_CAST_START",
---	"SPELL_CAST_SUCCESS",
---	"SPELL_AURA_APPLIED"
---	"SPELL_AURA_REMOVED"
+	"SPELL_CAST_SUCCESS 290578",
+	"SPELL_AURA_APPLIED 289917"
+--	"SPELL_AURA_REMOVED 289917"
 )
 
---local warnCorruptingGaze				= mod:NewTargetAnnounce(277047, 3)
---local warnMindSlave						= mod:NewTargetNoFilterAnnounce(277498, 3)
+local warnBwonSamdiPact					= mod:NewTargetNoFilterAnnounce(289917, 3)
+local warnBwonsamdiKnife				= mod:NewTargetSourceAnnounce(290578, 3)
 
---local specWarnWildLeap					= mod:NewSpecialWarningDodge(278976, nil, nil, nil, 2, 2)
---local yellCorruptingGaze				= mod:NewYell(277047)
+local specWarnBwonSamdiPact				= mod:NewSpecialWarningYou(289917, nil, nil, nil, 1, 2)
+local specWarnBwonSamdiKnife			= mod:NewSpecialWarningYou(290578, nil, nil, nil, 1, 2)
+--local yellCorruptingGaze				= mod:NewYell(289917)
 --local specWarnBloodShield				= mod:NewSpecialWarningInterrupt(276540, "HasInterrupt", nil, nil, 1, 2)
 
 --mod:AddRangeFrameOption(10, 221028)
@@ -51,26 +52,43 @@ function mod:SPELL_CAST_START(args)
 		specWarnBloodShield:Play("kickcast")
 	end
 end
+--]]
+
+--/run DBM:GetModByName("ZuldazarRaidTrash"):TestSourceWarning("SomeAsshole", "YOU")
+function mod:TestSourceWarning(sourceName, destName)
+	warnBwonsamdiKnife:Show(sourceName, destName)
+end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 277358 then
-
+	if spellId == 290578 then
+		if args:IsPlayer() then
+			specWarnBwonSamdiKnife:Show()
+			specWarnBwonSamdiKnife:Play("targetyou")
+		else
+			warnBwonsamdiKnife:Show(args.sourceName, args.destName)
+		end
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if not self.Options.Enabled then return end
 	local spellId = args.spellId
-	if spellId == 277047 then
-
+	if spellId == 289917 then
+		if args:IsPlayer() then
+			specWarnBwonSamdiPact:Show()
+			specWarnBwonSamdiPact:Play("targetyou")
+		else
+			warnBwonSamdiPact:Show(args.destName)
+		end
 	end
 end
 --mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
+--[[
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
-	if spellId == 221028 then
+	if spellId == 289917 then
 	
 	end
 end
