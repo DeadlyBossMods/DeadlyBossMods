@@ -185,6 +185,7 @@ DBM_CORE_MINIMAP_TOOLTIP_HEADER		= "Deadly Boss Mods"
 DBM_CORE_MINIMAP_TOOLTIP_FOOTER		= "Hold shift and drag to move"
 
 DBM_CORE_RANGECHECK_HEADER			= "Range Check (%dyd)"
+DBM_CORE_RANGECHECK_RHEADER			= "R-Range Check (%dyd)"
 DBM_CORE_RANGECHECK_SETRANGE		= "Set range"
 DBM_CORE_RANGECHECK_SETTHRESHOLD	= "Set player threshold"
 DBM_CORE_RANGECHECK_SOUNDS			= "Sounds"
@@ -199,7 +200,9 @@ DBM_CORE_RANGECHECK_OPTION_RADAR	= "Show radar frame"
 DBM_CORE_RANGECHECK_OPTION_TEXT		= "Show text frame"
 DBM_CORE_RANGECHECK_OPTION_BOTH		= "Show both frames"
 DBM_CORE_RANGERADAR_HEADER			= "Range:%d Players:%d"
+DBM_CORE_RANGERADAR_RHEADER			= "R-Range:%d Players:%d"
 DBM_CORE_RANGERADAR_IN_RANGE_TEXT	= "%d in range (%dyd)"--Multi
+DBM_CORE_RANGECHECK_IN_RANGE_TEXT	= "%d in range"--Text based doesn't need (%dyd), especially since it's not very accurate to the specific yard anyways
 DBM_CORE_RANGERADAR_IN_RANGE_TEXTONE= "%s (%0.1fyd)"--One target
 
 DBM_CORE_INFOFRAME_SHOW_SELF		= "Always show your power"		-- Always show your own power value even if you are below the threshold

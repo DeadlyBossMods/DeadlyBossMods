@@ -563,15 +563,24 @@ do
 		local restricted = mainFrame.restrictions
 		local tEnabled = textFrame.isShown
 		local rEnabled = radarFrame.isShown
+		local reverse = mainFrame.reverse
 		if tEnabled then
 			textFrame:ClearLines()
-			textFrame:SetText(DBM_CORE_RANGECHECK_HEADER:format(activeRange), 1, 1, 1)
+			if reverse then
+				textFrame:SetText(DBM_CORE_RANGECHECK_RHEADER:format(activeRange), 1, 1, 1)
+			else
+				textFrame:SetText(DBM_CORE_RANGECHECK_HEADER:format(activeRange), 1, 1, 1)
+			end
 		end
 		if rEnabled and (prevRange ~= activeRange or prevThreshold ~= mainFrame.redCircleNumPlayers) then
 			prevRange = activeRange
 			pixelsperyard = min(radarFrame:GetWidth(), radarFrame:GetHeight()) / (activeRange * 3)
 			radarFrame.circle:SetSize(activeRange * pixelsperyard * 2, activeRange * pixelsperyard * 2)
-			radarFrame.text:SetText(DBM_CORE_RANGERADAR_HEADER:format(activeRange, mainFrame.redCircleNumPlayers))
+			if reverse then
+				radarFrame.text:SetText(DBM_CORE_RANGERADAR_HEADER:format(activeRange, mainFrame.redCircleNumPlayers))
+			else
+				radarFrame.text:SetText(DBM_CORE_RANGERADAR_RHEADER:format(activeRange, mainFrame.redCircleNumPlayers))
+			end
 		end
 
 		local playerMapId = GetBestMapForUnit("player") or 0
@@ -583,9 +592,10 @@ do
 		local closePlayer = 0
 		local closestRange = nil
 		local closetName = nil
-		local reverse = mainFrame.reverse
 		local filter = mainFrame.filter
 		local type = reverse and 2 or filter and 1 or 0
+		local warnThreshold = mainFrame.redCircleNumPlayers
+		local onlySummary = mainFrame.onlySummary
 		for i = 1, numPlayers do
 			local uId = unitList[i]
 			local dot = dots[i]
@@ -594,7 +604,7 @@ do
 				local range--Juset set to a number in case any api fails and returns nil
 				if restricted then--API restrictions are in play, so pretend we're back in BC
 					--Start at bottom and work way up.
-					--Definitely not most efficient way of doing it. Refactor later when 7.1 hits PTR
+					--Definitely not most efficient way of doing it. Refactor later
 					--All ranges aer tested and compared against UnitDistanceSquared.
 					--Worgsaw has a tooltip of 6 but doesn't factor in hitboxes/etc. It doesn't return false until UnitDistanceSquared of 8. bandages 18 even though spell range is 15, etc. Acorn actually is 5 in both though
 					if IsItemInRange(37727, uId) then range = 5--Ruby Acorn
@@ -624,7 +634,7 @@ do
 					end
 					if not closetName then closetName = UnitName(uId) end
 				end
-				if tEnabled and inRange and closePlayer < 6 then-- display up to 5 players in text range frame.
+				if tEnabled and inRange and not onlySummary and closePlayer < 6 then -- display up to 5 players in text range frame.
 					local playerName = UnitName(uId)
 					local color = RAID_CLASS_COLORS[dot.class] or NORMAL_FONT_COLOR
 					local icon = dot.icon
@@ -651,8 +661,14 @@ do
 			end
 		end
 
-		local warnThreshold = mainFrame.redCircleNumPlayers
 		if tEnabled then
+			--Green Text (Regular range frame and not near too many players, or reverse range frame and we ARE near enough)
+			if (reverse and closePlayer >= warnThreshold) or (not reverse and closePlayer < warnThreshold) then
+				textFrame:AddLine(DBM_CORE_RANGECHECK_IN_RANGE_TEXT:format(closePlayer, activeRange), 0, 1, 0)
+			--Red Text (Regular range frame and we are near too many players, or reverse range frame and we aren't near enough)
+			else
+				textFrame:AddLine(DBM_CORE_RANGECHECK_IN_RANGE_TEXT:format(closePlayer, activeRange), 1, 0, 0)
+			end
 			textFrame:Show()
 		end
 		if rEnabled then
@@ -790,7 +806,7 @@ end
 --  Methods  --
 ---------------
 local restoreRange, restoreFilter, restoreThreshold, restoreReverse = nil, nil, nil, nil
-function rangeCheck:Show(range, filter, forceshow, redCircleNumPlayers, reverse, hideTime)
+function rangeCheck:Show(range, filter, forceshow, redCircleNumPlayers, reverse, hideTime, onlySummary)
 	if (DBM:GetNumRealGroupMembers() < 2 or DBM.Options.DontShowRangeFrame) and not forceshow then return end
 	if type(range) == "function" then -- the first argument is optional
 		return self:Show(nil, range)
@@ -845,6 +861,7 @@ function rangeCheck:Show(range, filter, forceshow, redCircleNumPlayers, reverse,
 	mainFrame.reverse = reverse
 	mainFrame.hideTime = hideTime and (GetTime() + hideTime) or 0
 	mainFrame.restrictions = restrictionsActive
+	mainFrame.onlySummary = onlySummary
 	if not mainFrame.eventRegistered then
 		mainFrame.eventRegistered = true
 		updateIcon()
@@ -853,7 +870,7 @@ function rangeCheck:Show(range, filter, forceshow, redCircleNumPlayers, reverse,
 	end
 	updater:SetScript("OnLoop", updateRangeFrame)
 	updater:Play()
-	if forceshow and not DBM.Options.DontRestoreRange then--Force means user activaetd range frame, store user value for restore function
+	if forceshow and not DBM.Options.DontRestoreRange then--Force means user activated range frame, store user value for restore function
 		restoreRange, restoreFilter, restoreThreshold, restoreReverse = mainFrame.range, mainFrame.filter, mainFrame.redCircleNumPlayers, mainFrame.reverse
 	end
 end
