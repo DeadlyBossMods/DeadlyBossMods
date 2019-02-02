@@ -659,7 +659,6 @@ end
 function mod:UNIT_POWER_FREQUENT(uId, type)
 	if type == "ALTERNATE" then--Assumed, but has to be, since her main power is her special attacks (ie ring of ice)
 		local altPower = UnitPower(uId, 10)
-		self.vb.lastBoatPower = altPower
 		if rangeThreshold < 3 and altPower >= 75 then
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Show(10, nil, nil, 5, true, nil, self.Options.ShowOnlySummary)--Reverse checker, threshold 5
