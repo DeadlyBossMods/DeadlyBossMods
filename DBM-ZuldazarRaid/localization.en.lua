@@ -80,6 +80,10 @@ L= DBM:GetModLocalization(2337)
 ---------------------------
 L= DBM:GetModLocalization(2343)
 
+L:SetOptionLocalization({
+	ShowOnlySummary	= "Hide player names on reverse range check and show only the summary info (the total nearby player count)"
+})
+
 -------------
 --  Trash  --
 -------------
