@@ -564,12 +564,21 @@ do
 		local tEnabled = textFrame.isShown
 		local rEnabled = radarFrame.isShown
 		local reverse = mainFrame.reverse
+		local warnThreshold = mainFrame.redCircleNumPlayers
 		if tEnabled then
 			textFrame:ClearLines()
 			if reverse then
-				textFrame:SetText(DBM_CORE_RANGECHECK_RHEADER:format(activeRange), 1, 1, 1)
+				if warnThreshold > 1 then
+					textFrame:SetText(DBM_CORE_RANGECHECK_RHEADERT:format(activeRange, warnThreshold), 1, 1, 1)
+				else
+					textFrame:SetText(DBM_CORE_RANGECHECK_RHEADER:format(activeRange), 1, 1, 1)
+				end
 			else
-				textFrame:SetText(DBM_CORE_RANGECHECK_HEADER:format(activeRange), 1, 1, 1)
+				if warnThreshold > 1 then
+					textFrame:SetText(DBM_CORE_RANGECHECK_HEADERT:format(activeRange, warnThreshold), 1, 1, 1)
+				else
+					textFrame:SetText(DBM_CORE_RANGECHECK_HEADER:format(activeRange), 1, 1, 1)
+				end
 			end
 		end
 		if rEnabled and (prevRange ~= activeRange or prevThreshold ~= mainFrame.redCircleNumPlayers) then
@@ -594,7 +603,6 @@ do
 		local closetName = nil
 		local filter = mainFrame.filter
 		local type = reverse and 2 or filter and 1 or 0
-		local warnThreshold = mainFrame.redCircleNumPlayers
 		local onlySummary = mainFrame.onlySummary
 		for i = 1, numPlayers do
 			local uId = unitList[i]
