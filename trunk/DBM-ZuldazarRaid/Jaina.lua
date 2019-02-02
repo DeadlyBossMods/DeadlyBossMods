@@ -19,7 +19,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS 285725 287925 287626 289220 288374 288211",
 	"SPELL_AURA_APPLIED 287993 287490 289387 287925 285253 287626 288199 290053 288219 288212 288374 288412 288434 289220 285254 288038",
 	"SPELL_AURA_APPLIED_DOSE 287993 285253",
-	"SPELL_AURA_REMOVED 287993 287925 288199 290053 288219 288212 288374 289220 288038 290001",
+	"SPELL_AURA_REMOVED 287993 287925 288199 290053 288219 288212 288374 288038 290001",
 	"SPELL_AURA_REMOVED_DOSE 287993",
 	"SPELL_PERIODIC_DAMAGE 288297",
 	"SPELL_PERIODIC_MISSED 288297",
@@ -139,6 +139,7 @@ mod:AddNamePlateOption("NPAuraOnMarkedTarget", 288038)
 mod:AddNamePlateOption("NPAuraOnTimeWarp", 287925)
 mod:AddNamePlateOption("NPAuraOnRefractiveIce", 288219)
 mod:AddSetIconOption("SetIconBroadside", 287626, true)
+mod:AddBoolOption("ShowOnlySummary", false, "misc")
 
 mod.vb.phase = 1
 mod.vb.corsairCount = 0
@@ -153,6 +154,7 @@ mod.vb.glacialRayCount = 0
 mod.vb.broadsideIcon = 0
 mod.vb.waterboltVolleyCount = 0
 local ChillingTouchStacks = {}
+local rangeThreshold = 1
 
 --[[
 local updateInfoFrame
@@ -221,12 +223,20 @@ function mod:OnCombatStart(delay)
 	self.vb.broadsideIcon = 0
 	table.wipe(ChillingTouchStacks)
 	if self:IsMythic() then
+		rangeThreshold = 1
 		timerCorsairCD:Start(5.1-delay)--Unknown
 		timerAvalancheCD:Start(13.4-delay)
 		timerFreezingBlastCD:Start(8.6-delay)
 		timerGraspofFrostCD:Start(23.5-delay)
 		timerRingofIceCD:Start(87.8-delay, 1)--Nani?
 		countdownRingofIce:Start(87.8)--Nani?
+		berserkTimer:Start(720)
+		if self.Options.RangeFrame then
+			DBM.RangeCheck:Show(10, nil, nil, 1, true, nil, self.Options.ShowOnlySummary)--Reverse checker, threshold 1 at start
+		end
+		self:RegisterShortTermEvents(
+			"UNIT_POWER_FREQUENT boss1"
+		)
 	else
 		timerCorsairCD:Start(5.1-delay)
 		timerAvalancheCD:Start(8.5-delay)
@@ -234,9 +244,7 @@ function mod:OnCombatStart(delay)
 		timerGraspofFrostCD:Start(26.6-delay)
 		timerRingofIceCD:Start(60.7-delay, 1)
 		countdownRingofIce:Start(60.7)
-	end
-	if self.Options.RangeFrame and self:IsMythic() then
-		DBM.RangeCheck:Show(10)
+		berserkTimer:Start(900)
 	end
 	if self.Options.InfoFrame then
 		--DBM.InfoFrame:SetHeader(DBM_CORE_INFOFRAME_POWER)
@@ -247,14 +255,10 @@ function mod:OnCombatStart(delay)
 	if self.Options.NPAuraOnMarkedTarget or self.Options.NPAuraOnTimeWarp or self.Options.NPAuraOnRefractiveIce then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
-	if self:IsMythic() then
-		berserkTimer:Start(720)
-	else
-		berserkTimer:Start(900)
-	end
 end
 
 function mod:OnCombatEnd()
+	self:UnregisterShortTermEvents()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
@@ -475,9 +479,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnSiegebreaker:Play("runout")
 			yellSiegebreaker:Yell()
 			yellSiegebreakerFades:Countdown(8)
-			if self.Options.RangeFrame and not self:IsMythic() then
-				DBM.RangeCheck:Show(10)
-			end
 		else
 			warnSiegebreaker:Show(args.destName)
 		end
@@ -495,9 +496,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnHeartofFrost:Show()
 			specWarnHeartofFrost:Play("runout")
 			yellHeartofFrost:Yell()
-			if self.Options.RangeFrame and not self:IsMythic() then
-				DBM.RangeCheck:Show(10)
-			end
 		else
 			warnHeartofFrost:Show(args.destName)
 		end
@@ -565,15 +563,6 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 288374 then
 		if args:IsPlayer() then
 			yellSiegebreakerFades:Cancel()
-			if self.Options.RangeFrame and not self:IsMythic() then
-				DBM.RangeCheck:Hide()
-			end
-		end
-	elseif spellId == 289220 then
-		if args:IsPlayer() then
-			if self.Options.RangeFrame and not self:IsMythic() then
-				DBM.RangeCheck:Hide()
-			end
 		end
 	elseif spellId == 290001 then--Arcane Barrage
 		self.vb.phase = 3
@@ -664,5 +653,22 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		DBM:Debug("Corsair on the Port Side")
 	elseif spellId == 288407 or spellId == 288406 then--Ability Callout Corsair on the Starboard Side
 		DBM:Debug("Corsair on the Starboard Side")
+	end
+end
+
+function mod:UNIT_POWER_FREQUENT(uId, type)
+	if type == "ALTERNATE" then--Assumed, but has to be, since her main power is her special attacks (ie ring of ice)
+		local altPower = UnitPower(uId, 10)
+		self.vb.lastBoatPower = altPower
+		if rangeThreshold < 3 and altPower >= 75 then
+			if self.Options.RangeFrame then
+				DBM.RangeCheck:Show(10, nil, nil, 5, true, nil, self.Options.ShowOnlySummary)--Reverse checker, threshold 5
+			end
+			self:UnregisterShortTermEvents()
+		elseif rangeThreshold < 2 and altPower >=50 then
+			if self.Options.RangeFrame then
+				DBM.RangeCheck:Show(10, nil, nil, 3, true, nil, self.Options.ShowOnlySummary)--Reverse checker, threshold 3
+			end
+		end
 	end
 end
