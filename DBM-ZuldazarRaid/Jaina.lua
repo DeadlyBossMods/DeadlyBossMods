@@ -220,12 +220,21 @@ function mod:OnCombatStart(delay)
 	self.vb.glacialRayCount = 0
 	self.vb.broadsideIcon = 0
 	table.wipe(ChillingTouchStacks)
-	timerCorsairCD:Start(5.1-delay)
-	timerAvalancheCD:Start(8.5-delay)
-	timerFreezingBlastCD:Start(17.9-delay)
-	timerGraspofFrostCD:Start(26.6-delay)
-	timerRingofIceCD:Start(60.7-delay, 1)
-	countdownRingofIce:Start(60.7)
+	if self:IsMythic() then
+		timerCorsairCD:Start(5.1-delay)--Unknown
+		timerAvalancheCD:Start(13.4-delay)
+		timerFreezingBlastCD:Start(8.6-delay)
+		timerGraspofFrostCD:Start(23.5-delay)
+		timerRingofIceCD:Start(87.8-delay, 1)--Nani?
+		countdownRingofIce:Start(87.8)--Nani?
+	else
+		timerCorsairCD:Start(5.1-delay)
+		timerAvalancheCD:Start(8.5-delay)
+		timerFreezingBlastCD:Start(17.9-delay)
+		timerGraspofFrostCD:Start(26.6-delay)
+		timerRingofIceCD:Start(60.7-delay, 1)
+		countdownRingofIce:Start(60.7)
+	end
 	if self.Options.RangeFrame and self:IsMythic() then
 		DBM.RangeCheck:Show(10)
 	end
@@ -261,7 +270,11 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 287565 then
 		if self.vb.phase == 1 then
-			timerAvalancheCD:Start(60)
+			if self:IsMythic() then
+				timerAvalancheCD:Start(45)
+			else
+				timerAvalancheCD:Start(60)
+			end
 		else
 			timerAvalancheCD:Start(75)--75-90
 		end
@@ -349,7 +362,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 287925 then
 		warnTimeWarp:Show()
 	elseif spellId == 287626 then
-		timerGraspofFrostCD:Start()
+		if self:IsMythic() then
+			timerGraspofFrostCD:Start(17.3)
+		else
+			timerGraspofFrostCD:Start()--6
+		end
 	elseif spellId == 289220 then
 		timerHeartofFrostCD:Start()
 	elseif spellId == 288374 then
