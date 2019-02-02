@@ -16,7 +16,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 284262 284106 284393 284383 285017 284362 288696",
-	"SPELL_CAST_SUCCESS 285350 285426 285118",
+	"SPELL_CAST_SUCCESS 285350 285426 285118 290694",
 	"SPELL_AURA_APPLIED 286558 284405 285000 285382 285350 285426 287995",
 	"SPELL_AURA_REFRESH 285000 285382",
 	"SPELL_AURA_APPLIED_DOSE 285000 285382",
@@ -33,8 +33,8 @@ mod:RegisterEventsInCombat(
 --TODO, icons and stuff for storm's wail
 --TODO, add "watch wave" warning for Energized wake on mythic
 --[[
-(ability.id = 284262 or ability.id = 284106 or ability.id = 284393 or ability.id = 284383 or ability.id = 285118 or ability.id = 285017 or ability.id = 284362 or ability.id = 288696) and type = "begincast"
- or (ability.id = 285350 or ability.id = 285426) and type = "cast"
+(ability.id = 284262 or ability.id = 284106 or ability.id = 284393 or ability.id = 284383 or ability.id = 285017 or ability.id = 284362 or ability.id = 288696) and type = "begincast"
+ or (ability.id = 285350 or ability.id = 285426 or ability.id = 285118 or ability.id = 290694) and type = "cast"
  or ability.id = 288696 and type = "interrupt"
 --]]
 --Stage One: Storm the Ships
@@ -172,6 +172,10 @@ function mod:OnCombatStart(delay)
 	--timerSeaStormCD:Start(7.6-delay)--0.3-8
 	timerSeasTemptationCD:Start(15.5-delay)--Might be health based
 	timerTidalShroudCD:Start(30.1-delay)--30-32
+	if self:IsMythic() then
+		timerSeaSwellCD:Start(19.8-delay)
+		countdownSeaSwell:Start(19.8-delay)
+	end
 	if self.Options.NPAuraOnKepWrapping then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
@@ -228,7 +232,7 @@ function mod:SPELL_CAST_START(args)
 			timerElecShroudCD:Stop()
 			
 			--This may be more complicated than this, like maybe a pause/resume more so than this
-			timerCracklingLightningCD:Start(14.2)
+			timerCracklingLightningCD:Start(12)
 			timerVoltaicFlashCD:Start(17)
 			timerElecShroudCD:Start(36.4)
 		elseif cid == 146251 then--Brother
@@ -256,7 +260,11 @@ function mod:SPELL_CAST_START(args)
 			specWarnSeaStorm:Show()
 			specWarnSeaStorm:Play("watchstep")
 		end
-		timerSeaStormCD:Start()
+		if self:IsMythic() then
+			timerSeaStormCD:Start(9.7)
+		else
+			timerSeaStormCD:Start()--10.9
+		end
 	elseif spellId == 288696 then
 		warnCataTides:Show()
 		timerCataTides:Start()
@@ -267,11 +275,21 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if (spellId == 285350 or spellId == 285426) and args:GetSrcCreatureID() == 146256 then
 		timerStormsWailCD:Start()
-	elseif spellId == 285118 then
+	elseif spellId == 285118 then--All P2 Sea Swell
 		specWarnSeaSwell:Show()
 		specWarnSeaSwell:Play("watchstep")
-		timerSeaSwellCD:Start()
-		countdownSeaSwell:Start(20.6)
+		if self:IsMythic() then
+			timerSeaSwellCD:Start(17)
+			countdownSeaSwell:Start(17)
+		else
+			timerSeaSwellCD:Start()
+			countdownSeaSwell:Start(20.6)
+		end
+	elseif spellId == 290694 and self:AntiSpam(5, 2) then--Mythic P1 Sea Swell
+		specWarnSeaSwell:Show()
+		specWarnSeaSwell:Play("watchstep")
+		timerSeaSwellCD:Start(20)
+		countdownSeaSwell:Start(20)
 	end
 end
 
@@ -382,6 +400,8 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 function mod:SPELL_INTERRUPT(args)
 	if type(args.extraSpellId) == "number" and args.extraSpellId == 288696 then
 		self.vb.phase = 2
+		timerSeaSwellCD:Stop()
+		countdownSeaSwell:Cancel()
 		timerIreoftheDeepCD:Start(3.4)
 		timerSeaSwellCD:Start(7.4)
 		countdownSeaSwell:Start(7.4)
