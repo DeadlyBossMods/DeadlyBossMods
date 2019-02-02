@@ -28,7 +28,6 @@ mod:RegisterEventsInCombat(
 (ability.id = 282205 or ability.id = 287952 or ability.id = 287929 or ability.id = 282153 or ability.id = 288410 or ability.id = 287751 or ability.id = 287797 or ability.id = 286693 or ability.id = 288041 or ability.id = 288049 or ability.id = 289537 or ability.id = 287691) and type = "begincast"
  or (ability.id = 287757 or ability.id = 286597) and type = "cast"
 --]]
---TODO, Gigavolt Charge has 3 debuff spellIDs, all 3 used or what the deal?
 --TODO, nameplate aura for tampering protocol, if it has actual debuff diration (wowhead does not)
 --TODO, wormhole generator target scan? hidden aura scan?
 --TODO, adjust electroshock stacks?
@@ -72,7 +71,7 @@ local timerCrashDownCD					= mod:NewCastTimer(4.5, 287797, nil, nil, nil, 3)
 local timerGigaVoltChargeCD				= mod:NewNextCountTimer(14.1, 286646, nil, nil, nil, 3, nil, DBM_CORE_TANK_ICON)
 local timerWormholeGeneratorCD			= mod:NewNextCountTimer(55, 287952, 67833, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)--Shorttext "Wormhole"
 local timerDeploySparkBotCD				= mod:NewNextCountTimer(55, 288410, nil, nil, nil, 1)
-local timerWorldEnlargerCD				= mod:NewNextCountTimer(55, 288049, nil, nil, nil, 3)
+local timerWorldEnlargerCD				= mod:NewNextCountTimer(90, 288049, nil, nil, nil, 3)
 --Intermission: Evasive Maneuvers!
 local timerIntermission					= mod:NewPhaseTimer(49.9)
 local timerExplodingSheepCD				= mod:NewNextCountTimer(55, 287929, 222529, nil, nil, 3)--Shorttext "Exploding Sheep"
@@ -205,24 +204,24 @@ local gigaVoltTimers = {
 }
 local worldEnlargerTimers = {
 	["lfr"] = {
-		[1] = {75, 90},
+		[1] = {75, 90, 90},
 		[1.5] = {7.4, 31},
-		[2] = {75.8, 90},
+		[2] = {75.8, 90, 90},--Extra 90 assumed
 	},
 	["normal"] = {
-		[1] = {75, 90},
+		[1] = {75, 90, 90},
 		[1.5] = {7.4, 31},
-		[2] = {75.8, 90},
+		[2] = {75.8, 90, 90},--Extra 90 assumed
 	},
 	["heroic"] = {
-		[1] = {75, 90},
+		[1] = {75, 90, 90},
 		[1.5] = {7.4, 31},
-		[2] = {75.8, 90},
+		[2] = {75.8, 90, 90},--Extra 90 assumed
 	},
 	["mythic"] = {
-		[1] = {75, 90},
+		[1] = {75, 90, 90},
 		[1.5] = {7.4, 31},
-		[2] = {75.8, 90},
+		[2] = {75.8, 90, 90},--Extra 90 assumed
 	},
 }
 local explodingSheepTimers = {
