@@ -1,0 +1,37 @@
+## Interface: 80100
+## X-Min-Interface: 80000
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Azeroth (BfA)|r
+## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Azeroth (BfA)|r
+## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0아제로스 (격아)|r
+## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0艾澤拉斯 (決戰艾澤拉斯)|r
+## Author: MysticalOS
+## LoadOnDemand: 1
+## RequiredDeps: DBM-Core
+## SavedVariables: DBMAzerothBfA_AllSavedVars
+## SavedVariablesPerCharacter: DBMAzerothBfA_SavedStats
+## X-DBM-Mod: 1
+## X-DBM-Mod-Type: RAID
+## X-DBM-Mod-Category: BFA
+## X-DBM-Mod-Has-Single-Format: 1
+## X-DBM-Mod-Name: Azeroth (BfA)
+## X-DBM-Mod-Name-koKR: 아제로스 (격전의 아제로스)
+## X-DBM-Mod-Name-zhTW: 艾澤拉斯 (決戰艾澤拉斯)
+## X-DBM-Mod-World-Boss: 1
+## X-DBM-Mod-Sort: 410
+## X-DBM-Mod-MapID: 1643,1642,0,1
+## X-DBM-Mod-LoadCID: 132701,132253,136385,140163,140252,138794,138122,137374,148295,144946
+## X-DBM-Mod-MinCoreRevision: 17286
+## X-DBM-Mod-MinExpansion: 7
+localization.en.lua
+localization.de.lua
+localization.kr.lua
+localization.cn.lua
+localization.tw.lua
+Tzane.lua
+Jiarak.lua
+HailstoneConstruct.lua
+Azurethos.lua
+DoomsHowl.lua
+Yenajz.lua
+Kraulok.lua
+Ivus.lua
