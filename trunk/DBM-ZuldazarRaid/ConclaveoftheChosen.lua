@@ -418,9 +418,14 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 	end
 end
 
-function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
-	if msg:find(L.BwonsamdiWrath) or msg == L.BwonsamdiWrath or msg:find(L.BwonsamdiWrath2) or msg == L.BwonsamdiWrath2 then
-		self:SendSync("BwonsamdiWrath")
+do
+	local Bwonsamdi = DBM:EJ_GetSectionInfo(19195)
+	function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
+		--IF Bwonsamdi is yeller, and target is nil, it's always a wrath. If there is a target, it's someone dying and Bwonsamdi taunting them.
+		--The actual string matches for text shouldn't be needed any longer but being kept around in event Bwonsamdi's non english name in joural doesn't match non english name in yell sender
+		if (not target and npc == Bwonsamdi) or msg:find(L.BwonsamdiWrath) or msg == L.BwonsamdiWrath or msg:find(L.BwonsamdiWrath2) or msg == L.BwonsamdiWrath2 then
+			self:SendSync("BwonsamdiWrath")
+		end
 	end
 end
 
