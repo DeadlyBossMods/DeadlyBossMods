@@ -138,7 +138,7 @@ mod:AddInfoFrameOption(287993, true, 2)
 mod:AddNamePlateOption("NPAuraOnMarkedTarget", 288038)
 mod:AddNamePlateOption("NPAuraOnTimeWarp", 287925)
 mod:AddNamePlateOption("NPAuraOnRefractiveIce", 288219)
-mod:AddSetIconOption("SetIconBroadside", 287626, true)
+mod:AddSetIconOption("SetIconBroadside", 288212, true)
 mod:AddBoolOption("ShowOnlySummary", false, "misc")
 
 mod.vb.phase = 1
