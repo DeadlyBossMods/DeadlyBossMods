@@ -52,8 +52,8 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(2330)
 
 L:SetMiscLocalization({
-	BwonsamdiWrath =	"Well, if ya so eager for death, ya shoulda come see me sooner!",
-	BwonsamdiWrath2 =	"Sooner or later... everybody serves me!",
+	BwonsamdiWrath =	"그렇게 죽고 싶었으면, 더 일찍 날 찾아왔어야지!",
+	BwonsamdiWrath2 =	"히히, 어차피 언젠간... 모두 날 섬기게 돼 있지!",
 	Bird			 =	"새"
 })
 
@@ -80,6 +80,10 @@ L= DBM:GetModLocalization(2337)
 --  Jaina Proudmoore (Horde) --
 ---------------------------
 L= DBM:GetModLocalization(2343)
+
+L:SetOptionLocalization({
+	ShowOnlySummary	= "역방향 거리 검사시 플레이어 이름을 숨기고 요약된 정보만 표시 (근처에 있는 플레이어의 수)"
+})
 
 -------------
 --  Trash  --

@@ -182,6 +182,9 @@ DBM_PIZZA_ERROR_USAGE				= "사용법: /dbm [broadcast] timer <시간> <텍스�
 DBM_CORE_MINIMAP_TOOLTIP_FOOTER		= "쉬프트 누르고 드래그로 이동"
 
 DBM_CORE_RANGECHECK_HEADER			= "탐지 거리 (%dm)"
+DBM_CORE_RANGECHECK_HEADERT			= "탐지 거리 (%dm-%d명)"
+DBM_CORE_RANGECHECK_RHEADER			= "역-탐지 거리 (%dm)"
+DBM_CORE_RANGECHECK_RHEADERT		= "역-탐지 거리 (%dm-%d명)"
 DBM_CORE_RANGECHECK_SETRANGE		= "거리 설정"
 DBM_CORE_RANGECHECK_SETTHRESHOLD	= "탐지할 최소 플레이어 수 설정"
 DBM_CORE_RANGECHECK_SOUNDS			= "효과음"
@@ -196,7 +199,9 @@ DBM_CORE_RANGECHECK_OPTION_RADAR	= "레이더 창 표시"
 DBM_CORE_RANGECHECK_OPTION_TEXT		= "텍스트 창 표시"
 DBM_CORE_RANGECHECK_OPTION_BOTH		= "모두 표시"
 DBM_CORE_RANGERADAR_HEADER			= "거리:%d, 플레이어:%d"
-DBM_CORE_RANGERADAR_IN_RANGE_TEXT	= "%d명 (거리 %dm)"
+DBM_CORE_RANGERADAR_RHEADER			= "역-거리:%d 플레이어:%d"
+DBM_CORE_RANGERADAR_IN_RANGE_TEXT	= "범위 내 %d명 (%dm)"
+DBM_CORE_RANGECHECK_IN_RANGE_TEXT	= "범위 내 %d명"--Text based doesn't need (%dyd), especially since it's not very accurate to the specific yard anyways
 DBM_CORE_RANGERADAR_IN_RANGE_TEXTONE	= "%s (%0.1fm)"--One target
 
 DBM_CORE_INFOFRAME_SHOW_SELF		= "내 자원 항상 보기"		-- Always show your own power value even if you are below the threshold
@@ -300,6 +305,7 @@ DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL = "업적"--BATTLE_PET_SOURCE_6
 -- Auto-generated Warning Localizations
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.you			= "당신에게 %s"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.target			= "%s: >%%s<"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.targetsource	= ">%%s<의 %s 시전: >%%s<"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.targetcount	= "%s (%%s): >%%s<"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.ends			= "%s 종료"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.endtarget		= "%s 종료: >%%s<"
@@ -316,6 +322,7 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS.stack			= "%s: >%%s< (%%d)"
 local prewarnOption = "$spell:%s 사전 경고 보기"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.you			= "당신이 $spell:%s 대상이 된 경우 알림 보기"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target		= "$spell:%s 대상 알림"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.targetsource	= "$spell:%s 대상 알림 (시전자 포함)"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.targetcount	= "$spell:%s 대상 알림 (횟수 포함)"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell		= "$spell:%s 경고 보기"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.ends			= "$spell:%s 종료시 경고 보기"
