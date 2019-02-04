@@ -17,7 +17,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 287565 285177 285459 290036 288221 288345 288441 288719 289219 289940 290084 288619 288747",
 	"SPELL_CAST_SUCCESS 285725 287925 287626 289220 288374 288211",
-	"SPELL_AURA_APPLIED 287993 287490 289387 287925 285253 287626 288199 290053 288219 288212 288374 288412 288434 289220 285254 288038",
+	"SPELL_AURA_APPLIED 287993 287490 289387 287925 285253 287626 288199 290053 288219 288212 288374 288412 288434 289220 285254 288038 287322",
 	"SPELL_AURA_APPLIED_DOSE 287993 285253",
 	"SPELL_AURA_REMOVED 287993 287925 288199 290053 288219 288212 288374 288038 290001",
 	"SPELL_AURA_REMOVED_DOSE 287993",
@@ -38,12 +38,13 @@ mod:RegisterEventsInCombat(
 --[[
 (ability.id = 290084 or ability.id = 287565 or ability.id = 285177 or ability.id = 285459 or ability.id = 290036 or ability.id = 288345 or ability.id = 288441 or ability.id = 288719 or ability.id = 289219 or ability.id = 288619 or ability.id = 288747) and type = "begincast"
  or (ability.id = 287925 or ability.id = 287626 or ability.id = 289220 or ability.id = 288374 or ability.id = 288211) and type = "cast"
- or (ability.id = 288199 or ability.id = 290053) and (type = "applybuff" or type = "removebuff")
+ or (ability.id = 288199 or ability.id = 290053 or ability.id = 287322) and (type = "applybuff" or type = "removebuff")
  or ability.id = 290001 and type = "removebuff"
 --]]
 --General
 local warnPhase							= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
 local warnFrozenSolid					= mod:NewTargetNoFilterAnnounce(287490, 4)
+local warnJainaIceBlocked				= mod:NewTargetNoFilterAnnounce(287322, 2)
 --Stage One: Burning Seas
 local warnCorsair						= mod:NewSoonAnnounce("ej19690", 2, "Interface\\ICONS\\Inv_tabard_kultiran", nil, nil, nil, nil, 7)
 local warnMarkedTarget					= mod:NewTargetAnnounce(288038, 2)
@@ -527,6 +528,8 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnAvalancheTaunt:Play("tauntboss")
 			end
 		end
+	elseif spellId == 287322 then
+		warnJainaIceBlocked:Show(args.destName)
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
