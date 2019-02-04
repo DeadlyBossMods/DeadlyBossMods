@@ -7310,7 +7310,7 @@ do
 				subTab = modSubTab,
 				optionCategories = {
 				},
-				categorySort = {"announce", "announceother", "announcepersonal", "announcerole", "timer", "sound", "misc"},
+				categorySort = {"announce", "announceother", "announcepersonal", "announcerole", "timer", "sound", "yell", "nameplate", "icon", "misc"},
 				id = name,
 				announces = {},
 				specwarns = {},
@@ -9505,10 +9505,10 @@ do
 		)
 		if optionName then
 			obj.option = optionName
-			self:AddBoolOption(obj.option, optionDefault, "misc")
+			self:AddBoolOption(obj.option, optionDefault, "yell")
 		elseif not (optionName == false) then
 			obj.option = "Yell"..(spellId or yellText)..(yellType ~= "yell" and yellType or "")..(optionVersion or "")
-			self:AddBoolOption(obj.option, optionDefault, "misc")
+			self:AddBoolOption(obj.option, optionDefault, "yell")
 			self.localization.options[obj.option] = DBM_CORE_AUTO_YELL_OPTION_TEXT[yellType]:format(spellId)
 		end
 		return obj
@@ -10946,7 +10946,7 @@ function bossModPrototype:AddSetIconOption(name, spellId, default, isHostile)
 		default = self:GetRoleFlagValue(default)
 	end
 	self.Options[name] = (default == nil) or default
-	self:SetOptionCategory(name, "misc")
+	self:SetOptionCategory(name, "icon")
 	if isHostile then
 		if not self.findFastestComputer then
 			self.findFastestComputer = {}
@@ -11012,7 +11012,7 @@ function bossModPrototype:AddNamePlateOption(name, spellId, default)
 		default = self:GetRoleFlagValue(default)
 	end
 	self.Options[name] = (default == nil) or default
-	self:SetOptionCategory(name, "misc")
+	self:SetOptionCategory(name, "nameplate")
 	self.localization.options[name] = DBM_CORE_AUTO_NAMEPLATE_OPTION_TEXT:format(spellId)
 end
 
@@ -11812,6 +11812,9 @@ do
 			announcepersonal	= DBM_CORE_OPTION_CATEGORY_WARNINGS_YOU,
 			announcerole		= DBM_CORE_OPTION_CATEGORY_WARNINGS_ROLE,
 			sound				= DBM_CORE_OPTION_CATEGORY_SOUNDS,
+			yell				= DBM_CORE_OPTION_CATEGORY_YELLS,
+			icon				= DBM_CORE_OPTION_CATEGORY_ICONS,
+			nameplate			= DBM_CORE_OPTION_CATEGORY_NAMEPLATES,
 			misc				= MISCELLANEOUS
 		}, returnKey)
 	}
