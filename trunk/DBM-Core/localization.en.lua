@@ -531,6 +531,16 @@ DBM_CORE_AUTO_INFO_FRAME_OPTION_TEXT	= "Show info frame for $spell:%s"
 DBM_CORE_AUTO_INFO_FRAME_OPTION_TEXT2	= "Show info frame for encounter overview"
 DBM_CORE_AUTO_READY_CHECK_OPTION_TEXT	= "Play ready check sound when boss is pulled (even if it's not targeted)"
 
+--Option Headers
+----General Headers
+DBM_CORE_HEADER_INTERMISSION		= "Intermission"
+--SCENARIO_STAGE:format(1)--Not our own, just noting global DBM already uses for Stage: %d
+----"Misc" Headers
+DBM_CORE_HEADER_YELL				= "Yell Options"
+DBM_CORE_HEADER_NAMEPLATE			= "Nameplate Options"
+DBM_CORE_HEADER_ICON				= "Icon Options"
+DBM_CORE_HEADER_OTHER				= "Other Options"--Info/Range/Misc Bools
+
 -- New special warnings
 DBM_CORE_MOVE_WARNING_BAR			= "Announce movable"
 DBM_CORE_MOVE_WARNING_MESSAGE		= "Thanks for using Deadly Boss Mods"
