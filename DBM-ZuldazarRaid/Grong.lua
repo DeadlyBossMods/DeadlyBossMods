@@ -77,11 +77,10 @@ local countdownAdd						= mod:NewCountdown(120, addSpawnId, true, nil, 5)
 local countdownTankCombo				= mod:NewCountdown("Alt12", tankComboId, "Tank", nil, 4)
 local countdownFerociousRoar			= mod:NewCountdown("AltTwo32", 285994, nil, nil, 3)
 
+--mod:AddNamePlateOption("NPAuraOnPresence", 276093)
 --mod:AddSetIconOption("SetIconGift", 255594, true)
 --mod:AddRangeFrameOption("8/10")
 mod:AddInfoFrameOption(energyAOESpellId, true)
---mod:AddNamePlateOption("NPAuraOnPresence", 276093)
---mod:AddSetIconOption("SetIconDarkRev", 273365, true)
 
 --mod.vb.phase = 1
 mod.vb.EnergyAOECount = 0
