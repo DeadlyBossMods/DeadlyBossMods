@@ -13,12 +13,12 @@ L= DBM:GetModLocalization(2333)--Frida Fuelleférreo (Horda)
 -----------
 L= DBM:GetModLocalization(2325)--Rey Grong (Horda)
 
-L= DBM:GetModLocalization(2340)--Grong el Aparecido (Alianza)
+L= DBM:GetModLocalization(2340)--Grong el Resucitado (Alianza)
 
 ----------------------------
 -- Maestros Fuego de Jade --
 ----------------------------
-L= DBM:GetModLocalization(2323)--Ma'ra Colmillosiniestro y Anathos Clamafuegos (Allianza)
+L= DBM:GetModLocalization(2323)--Ma'ra Colmillosiniestro y Anathos Clamafuegos (Alianza)
 
 L= DBM:GetModLocalization(2341)--Manceroy Puñoígneo y Mestrah la Iluminada (Horda)
 
@@ -78,6 +78,10 @@ L= DBM:GetModLocalization(2337)
 -- Lady Jaina Valiente --
 -------------------------
 L= DBM:GetModLocalization(2343)
+
+L:SetOptionLocalization({
+	ShowOnlySummary	= "Mostrar solo la cantidad de jugadores cercanos en la comprobación de distancia en lugar de listar sus nombres"
+})
 
 ----------------------
 -- Enemigos menores --
