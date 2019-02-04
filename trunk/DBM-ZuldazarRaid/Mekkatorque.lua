@@ -17,9 +17,9 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 282205 287952 287929 282153 288410 287751 287797 287757 286693 288041 288049 289537 287691 286597",
 	"SPELL_CAST_SUCCESS 287757 286597",
-	"SPELL_AURA_APPLIED 287757 287167 284168 289023 286051 289699 286646 282406",
+	"SPELL_AURA_APPLIED 287757 287167 284168 289023 286051 289699 286646 282406 286105",
 	"SPELL_AURA_APPLIED_DOSE 289699",
-	"SPELL_AURA_REMOVED 287757 284168 286646"
+	"SPELL_AURA_REMOVED 287757 284168 286646 286105"
 --	"UNIT_DIED"
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
@@ -85,7 +85,7 @@ local countdownWormhole					= mod:NewCountdown("AltTwo32", 287952, nil, nil, 4)
 mod:AddSetIconOption("SetIconGigaVolt", 286646, true)
 mod:AddSetIconOption("SetIconBot", 288410, true, true)
 --mod:AddRangeFrameOption("8/10")
---mod:AddInfoFrameOption(258040, true)
+mod:AddInfoFrameOption(286105, true)
 --mod:AddNamePlateOption("NPAuraOnPresence", 276093)
 --mod:AddSetIconOption("SetIconDarkRev", 273365, true)
 
@@ -101,6 +101,7 @@ mod.vb.botIcon = 4
 mod.vb.shrinkCount = 0
 mod.vb.sheepCount = 0
 mod.vb.difficultyName = "None"
+local playersInRobots = {}
 --Most difficulties are identical, and in earlier weeks they were even more identical
 --However, Blizz has already shown they are willing to adjust lower difficulties (such as removing one of buster cannon casts on week 2 from non mythic)
 --As such, need to have duplicate tables across board so it's easy to update mod on wim if they adjust specific difficulties only.
@@ -246,6 +247,36 @@ local function shrunkYellRepeater(self, icon)
 	self:Schedule(2, shrunkYellRepeater, self)
 end
 
+local updateInfoFrame
+do
+	local floor = math.floor
+	local lines = {}
+	local sortedLines = {}
+	local function addLine(key, value)
+		-- sort by insertion order
+		lines[key] = value
+		sortedLines[#sortedLines + 1] = key
+	end
+	updateInfoFrame = function()
+		table.wipe(lines)
+		table.wipe(sortedLines)
+		if #playersInRobots > 0 then--Players in robots
+			for uId in DBM:GetGroupMembers() do
+				local unitName = DBM:GetUnitFullName(uId)
+				if playersInRobots[unitName] then--Matched a unitID and playername to one of them
+					local count = playersInRobots[unitName]--Check successful code entries
+					local spellName, _, _, _, _, expireTime = DBM:UnitDebuff(uId, 286105)--Check remaining time on tampering
+					if spellName and expireTime then
+						local remaining = expireTime-GetTime()
+						addLine(unitName, count.."/3 - "..floor(remaining))--Display playername, disarm code of 3, and remaining Tampering
+					end
+				end
+			end
+		end
+		return lines, sortedLines
+	end
+end
+
 function mod:OnCombatStart(delay)
 	self.vb.phase = 1
 	self.vb.botCount = 0
@@ -256,6 +287,7 @@ function mod:OnCombatStart(delay)
 	self.vb.gigaIcon = 1
 	self.vb.botIcon = 4
 	self.vb.shrinkCount = 0
+	table.wipe(playersInRobots)
 	--Same across board (at least for now, LFR not out yet)
 	timerDeploySparkBotCD:Start(5-delay, 1)
 	timerBusterCannonCD:Start(13-delay, 1)
@@ -279,6 +311,10 @@ function mod:OnCombatStart(delay)
 			self.vb.difficultyName = "lfr"
 		end
 	end
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(286105))
+		DBM.InfoFrame:Show(8, "function", updateInfoFrame, false, false)
+	end
 --	if self.Options.NPAuraOnPresence then
 --		DBM:FireEvent("BossMod_EnableHostileNameplates")
 --	end
@@ -288,9 +324,9 @@ function mod:OnCombatEnd()
 --	if self.Options.RangeFrame then
 --		DBM.RangeCheck:Hide()
 --	end
---	if self.Options.InfoFrame then
---		DBM.InfoFrame:Hide()
---	end
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:Hide()
+	end
 --	if self.Options.NPAuraOnPresence then
 --		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
 --	end
@@ -431,6 +467,10 @@ function mod:SPELL_CAST_SUCCESS(args)
 			timerGigaVoltChargeCD:Start(timer, self.vb.gigaCount+1)
 			countdownGigavoltCharge:Start(timer)
 		end
+	elseif spellId == 286152 or spellId == 286219 or spellId == 286215 or spellId == 286226 or spellId == 286192 then--Disarm Codes
+		if playersInRobots[args.sourceName] then
+			playersInRobots[args.sourceName] = playersInRobots[args.sourceName] + 1
+		end
 	end
 end
 
@@ -501,6 +541,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		self.vb.botIcon = self.vb.botIcon + 1
 		if self.vb.botIcon == 9 then self.vb.botIcon = 4 end--Icons 4-8
+	elseif spellId == 286105 then--Tampering
+		playersInRobots[args.destName] = 0
+		if args:IsPlayer() then
+			self:Unschedule(shrunkYellRepeater)
+			self:Schedule(2, shrunkYellRepeater, self)
+		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -517,6 +563,11 @@ function mod:SPELL_AURA_REMOVED(args)
 			self:SetIcon(args.destName, 0)
 		end
 	elseif spellId == 284168 then
+		if args:IsPlayer() then
+			self:Unschedule(shrunkYellRepeater)
+		end
+	elseif spellId == 286105 then--Tampering
+		playersInRobots[args.destName] = nil
 		if args:IsPlayer() then
 			self:Unschedule(shrunkYellRepeater)
 		end
