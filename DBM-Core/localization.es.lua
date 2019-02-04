@@ -279,7 +279,7 @@ DBM_CORE_ROOM_EDGE					= "los bordes de la sala"
 DBM_CORE_FAR_AWAY					= "alejarte"
 DBM_CORE_BREAK_LOS					= "romper la línea de mira" --must check
 DBM_CORE_SAFE						= "una zona segura"
-DBM_CORE_SHIELD						= "un escudo"
+DBM_CORE_SHIELD						= "Escudo"
 DBM_INCOMING						= "%s en breve"
 --Common Locals end
 
