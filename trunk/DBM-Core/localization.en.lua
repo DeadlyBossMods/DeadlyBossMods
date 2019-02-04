@@ -131,10 +131,10 @@ DBM_CORE_OPTION_CATEGORY_WARNINGS_ROLE	= "Role Announces"
 
 DBM_CORE_OPTION_CATEGORY_SOUNDS			= "Sounds"
 --Misc object broken down into sub cats
-DBM_CORE_OPTION_CATEGORY_DROPDOWNS		= "Dropdown Options"--Still put in MISC sub grooup, just used for line separators since multiple of these on a fight (or even having on of these at all) is rare.
-DBM_CORE_OPTION_CATEGORY_YELLS			= "Yell Options"
-DBM_CORE_OPTION_CATEGORY_NAMEPLATES		= "Nameplate Options"
-DBM_CORE_OPTION_CATEGORY_ICONS			= "Icon Options"
+DBM_CORE_OPTION_CATEGORY_DROPDOWNS		= "Dropdowns"--Still put in MISC sub grooup, just used for line separators since multiple of these on a fight (or even having on of these at all) is rare.
+DBM_CORE_OPTION_CATEGORY_YELLS			= "Yells"
+DBM_CORE_OPTION_CATEGORY_NAMEPLATES		= "Nameplates"
+DBM_CORE_OPTION_CATEGORY_ICONS			= "Icons"
 
 DBM_CORE_AUTO_RESPONDED						= "Auto-responded."
 DBM_CORE_STATUS_WHISPER						= "%s: %s, %d/%d people alive"
