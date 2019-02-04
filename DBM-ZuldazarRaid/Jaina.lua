@@ -63,7 +63,6 @@ local warnFrostNova						= mod:NewCastAnnounce(289219, 3)
 local warnCrystalDust					= mod:NewCountAnnounce(289940, 3)
 
 --General
-mod:AddMiscLine(DBM_CORE_HEADER_YELL)--At top of special warnings, because all the yells are up here too for grouping purposes
 local specWarnFreezingBlood				= mod:NewSpecialWarningYou(289387, nil, nil, nil, 1, 2)
 local specWarnChillingStack				= mod:NewSpecialWarningStack(287993, nil, 2, nil, nil, 1, 6)
 --Stage One: Burning Seas
@@ -119,7 +118,7 @@ local timerGlacialRayCD					= mod:NewCDCountTimer(49.8, 288345, nil, nil, nil, 3
 local timerIcefallCD					= mod:NewCDCountTimer(42.8, 288475, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
 --local timerIcefall						= mod:NewCastTimer(55, 288475, nil, nil, nil, 3)
 --Intermission 2
-mod:AddTimerLine(DBM_CORE_HEADER_INTERMISSION)
+mod:AddTimerLine(DBM_CORE_INTERMISSION)
 local timerHeartofFrostCD				= mod:NewCDTimer(8.5, 289220, nil, nil, nil, 3)
 local timerWaterBoltVolleyCD			= mod:NewCDCountTimer(7.2, 290084, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
 --Stage 3
@@ -136,13 +135,10 @@ local countdownRingofIce				= mod:NewCountdown(60, 285459, true)
 --local countdownFelstormBarrage			= mod:NewCountdown("AltTwo32", 244000, nil, nil, 3)
 --Stage Two: Frozen Wrath
 
-mod:AddMiscLine(DBM_CORE_HEADER_NAMEPLATE)
 mod:AddNamePlateOption("NPAuraOnMarkedTarget", 288038)
 mod:AddNamePlateOption("NPAuraOnTimeWarp", 287925)
 mod:AddNamePlateOption("NPAuraOnRefractiveIce", 288219)
-mod:AddMiscLine(DBM_CORE_HEADER_ICON)
 mod:AddSetIconOption("SetIconBroadside", 288212, true)
-mod:AddMiscLine(DBM_CORE_HEADER_OTHER)
 mod:AddRangeFrameOption(10, 289379)
 mod:AddInfoFrameOption(287993, true, 2)
 mod:AddBoolOption("ShowOnlySummary", false, "misc")

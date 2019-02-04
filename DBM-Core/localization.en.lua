@@ -123,12 +123,18 @@ DBM_CORE_OPTION_TIMER_COMBAT		= "Show timer for combat start"
 DBM_CORE_BAD						= "Bad"
 
 DBM_CORE_OPTION_CATEGORY_TIMERS			= "Bars"
+--Sub cats for "announce" object
 DBM_CORE_OPTION_CATEGORY_WARNINGS		= "General Announces"
 DBM_CORE_OPTION_CATEGORY_WARNINGS_YOU	= "Personal Announces"
 DBM_CORE_OPTION_CATEGORY_WARNINGS_OTHER	= "Target Announces"
 DBM_CORE_OPTION_CATEGORY_WARNINGS_ROLE	= "Role Announces"
+
 DBM_CORE_OPTION_CATEGORY_SOUNDS			= "Sounds"
-DBM_CORE_OPTION_CATEGORY_DROPDOWNS		= "Dropdowns"
+--Misc object broken down into sub cats
+DBM_CORE_OPTION_CATEGORY_DROPDOWNS		= "Dropdown Options"--Still put in MISC sub grooup, just used for line separators since multiple of these on a fight (or even having on of these at all) is rare.
+DBM_CORE_OPTION_CATEGORY_YELLS			= "Yell Options"
+DBM_CORE_OPTION_CATEGORY_NAMEPLATES		= "Nameplate Options"
+DBM_CORE_OPTION_CATEGORY_ICONS			= "Icon Options"
 
 DBM_CORE_AUTO_RESPONDED						= "Auto-responded."
 DBM_CORE_STATUS_WHISPER						= "%s: %s, %d/%d people alive"
@@ -530,16 +536,6 @@ DBM_CORE_AUTO_RRANGE_OPTION_TEXT_SHORT	= "Show reverse range frame (%s)"
 DBM_CORE_AUTO_INFO_FRAME_OPTION_TEXT	= "Show info frame for $spell:%s"
 DBM_CORE_AUTO_INFO_FRAME_OPTION_TEXT2	= "Show info frame for encounter overview"
 DBM_CORE_AUTO_READY_CHECK_OPTION_TEXT	= "Play ready check sound when boss is pulled (even if it's not targeted)"
-
---Option Headers
-----General Headers
-DBM_CORE_HEADER_INTERMISSION		= "Intermission"
---SCENARIO_STAGE:format(1)--Not our own, just noting global DBM already uses for Stage: %d
-----"Misc" Headers
-DBM_CORE_HEADER_YELL				= "Yell Options"
-DBM_CORE_HEADER_NAMEPLATE			= "Nameplate Options"
-DBM_CORE_HEADER_ICON				= "Icon Options"
-DBM_CORE_HEADER_OTHER				= "Other Options"--Info/Range/Misc Bools
 
 -- New special warnings
 DBM_CORE_MOVE_WARNING_BAR			= "Announce movable"
