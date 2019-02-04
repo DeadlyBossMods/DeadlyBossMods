@@ -99,11 +99,10 @@ local countdownSeaSwell					= mod:NewCountdown(20.6, 285118, true, 3, 3)
 --local countdownRupturingBlood				= mod:NewCountdown("Alt12", 244016, false, 2, 3)
 --local countdownFelstormBarrage			= mod:NewCountdown("AltTwo32", 244000, nil, nil, 3)
 
---mod:AddSetIconOption("SetIconGift", 255594, true)
-mod:AddRangeFrameOption(5, 285118)
-mod:AddInfoFrameOption(284760, true)
 mod:AddNamePlateOption("NPAuraOnKepWrapping", 285382)
 --mod:AddSetIconOption("SetIconDarkRev", 273365, true)
+mod:AddRangeFrameOption(5, 285118)
+mod:AddInfoFrameOption(284760, true)
 
 mod.vb.phase = 1
 mod.vb.bossesDied = 0

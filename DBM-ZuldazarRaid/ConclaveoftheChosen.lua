@@ -116,13 +116,12 @@ local countdownPakusWrath				= mod:NewCountdown(70, 282107, true, nil, 5)
 --local countdownLaceratingClaws		= mod:NewCountdown("Alt12", 244016, false, 2, 3)
 local countdownKragwasWrath				= mod:NewCountdown("AltTwo32", 282636, "Ranged", nil, 3)
 
---mod:AddSetIconOption("SetIconGift", 255594, true)
---mod:AddRangeFrameOption("8/10")
-mod:AddInfoFrameOption(282079, true)--Not real spellID, just filler for now
 mod:AddNamePlateOption("NPAuraOnPact", 282079)
 mod:AddNamePlateOption("NPAuraOnPackHunter", 286007)
 mod:AddNamePlateOption("NPAuraOnFixate", 282209)
 mod:AddSetIconOption("SetIconHex", 282135, false)
+--mod:AddRangeFrameOption("8/10")
+mod:AddInfoFrameOption(282079, true)--Not real spellID, just filler for now
 
 --mod.vb.phase = 1
 mod.vb.hexIcon = 1

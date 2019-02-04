@@ -94,6 +94,7 @@ local timerFlamesofPunishmentCD			= mod:NewCDTimer(23, 282939, nil, nil, nil, 3)
 local timerRubyBeam						= mod:NewBuffActiveTimer(8, 284081, nil, nil, nil, 3)
 local timerHexofLethargyCD					= mod:NewCDTimer(21.8, 284470, nil, nil, nil, 3, nil, DBM_CORE_MAGIC_ICON)
 --Stage Two: Toppling the Guardian
+mod:AddTimerLine(SCENARIO_STAGE:format(2))
 local timerDrawPower					= mod:NewCastTimer(5, 282939, nil, nil, nil, 6)
 local timerLiquidGoldCD					= mod:NewCDTimer(15.6, 287072, nil, nil, nil, 3)
 local timerSpiritsofGoldCD				= mod:NewCDTimer(65.6, 285995, nil, nil, nil, 1)
@@ -108,11 +109,11 @@ local timerSurgingGoldCD				= mod:NewCDTimer(42.5, 289155, nil, nil, nil, 3)--Re
 --local countdownRupturingBlood				= mod:NewCountdown("Alt12", 244016, false, 2, 3)
 --local countdownFelstormBarrage			= mod:NewCountdown("AltTwo32", 244000, nil, nil, 3)
 
+mod:AddNamePlateOption("NPAuraOnGoldenRadiance", 289776)
+--mod:AddSetIconOption("SetIconDarkRev", 273365, true)
 --mod:AddSetIconOption("SetIconGift", 255594, true)
 --mod:AddRangeFrameOption("8/10")
 mod:AddInfoFrameOption(284664, true)
-mod:AddNamePlateOption("NPAuraOnGoldenRadiance", 289776)
---mod:AddSetIconOption("SetIconDarkRev", 273365, true)
 
 mod.vb.phase = 1
 mod.vb.wailCast = 0
