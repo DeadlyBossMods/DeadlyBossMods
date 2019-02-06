@@ -167,7 +167,7 @@ do
 		end
 		--Player personal checks (Always Tracked)
 		local spellName2, _, currentStack2, _, _, expireTime2 = DBM:UnitDebuff("player", 284573)
-		if spellName2 and currentStack2 then--Personal Tailwinds count
+		if spellName2 and currentStack2 and expireTime2 then--Personal Tailwinds count
 			local remaining2 = expireTime2-GetTime()
 			addLine(spellName2.." ("..currentStack2..")", math.floor(remaining2))
 		end
