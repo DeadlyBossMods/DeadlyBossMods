@@ -225,9 +225,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 		--timerBwonsamdisWrathCD:Start()
 	elseif spellId == 282636 then
 		self.vb.kragwaCast = self.vb.kragwaCast + 1
-		if self.vb.kragwaCast == 1 or (self.vb.kragwaCast-1) % 3 == 0 then--1, 4, 7, 10, etc
-			timerKragwasWrathCD:Start()
-			countdownKragwasWrath:Start(49.8)
+		if self.vb.kragwaCast % 4 == 0 then
+			timerKragwasWrathCD:Start(40)
+			countdownKragwasWrath:Start(40)
+		else
+			timerKragwasWrathCD:Start(3)
 		end
 	end
 end
