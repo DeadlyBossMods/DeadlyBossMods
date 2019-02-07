@@ -64,7 +64,7 @@ local warnFrostNova						= mod:NewCastAnnounce(289219, 3)
 local warnCrystalDust					= mod:NewCountAnnounce(289940, 3)
 
 --General
-local specWarnFreezingBlood				= mod:NewSpecialWarningYou(289387, nil, nil, nil, 1, 2)
+local specWarnFreezingBlood				= mod:NewSpecialWarningMoveTo(289387, nil, nil, 2, 3, 2)
 local specWarnChillingStack				= mod:NewSpecialWarningStack(287993, nil, 2, nil, nil, 1, 6)
 --Stage One: Burning Seas
 local specWarnIceShard					= mod:NewSpecialWarningTaunt(285253, false, nil, nil, 1, 2)
@@ -240,7 +240,7 @@ function mod:OnCombatStart(delay)
 			DBM.RangeCheck:Show(10, nil, nil, 1, true, nil, self.Options.ShowOnlySummary)--Reverse checker, threshold 1 at start
 		end
 		self:RegisterShortTermEvents(
-			"UNIT_POWER_FREQUENT boss1"
+			"UNIT_POWER_FREQUENT player"
 		)
 	else
 		--timerCorsairCD:Start(5.1-delay)
@@ -432,8 +432,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnIceBlockTaunt:Play("tauntboss")
 		end
 	elseif spellId == 289387 then
-		if args:IsPlayer() and self:AntiSpam(6, 1) then
-			specWarnFreezingBlood:Show()
+		if args:IsPlayer() then
+			specWarnFreezingBlood:Show(DBM_ALLY)
 			specWarnFreezingBlood:Play("gathershare")
 		end
 	elseif spellId == 288038 then
