@@ -562,7 +562,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.vb.botIcon == 9 then self.vb.botIcon = 4 end--Icons 4-8
 	elseif spellId == 286105 then--Tampering
 		playersInRobots[args.destName] = 0
-		if args:IsPlayer() or args.destName == UnitName("player") then
+		if args:IsPlayer() or args.destGUID == UnitGUID("player") then
 			self:Unschedule(shrunkYellRepeater)
 			self:Schedule(2, shrunkYellRepeater, self)
 		end
@@ -594,7 +594,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif spellId == 286105 then--Tampering
 		playersInRobots[args.destName] = nil
-		if args:IsPlayer() or args.destName == UnitName("player") then
+		if args:IsPlayer() or args.destGUID == UnitGUID("player") then
 			self:Unschedule(shrunkYellRepeater)
 		end
 	end
