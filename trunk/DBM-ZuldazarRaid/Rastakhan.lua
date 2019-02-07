@@ -18,9 +18,9 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 284831 284933 284686 283504 287116 287333 286695 286742",
 	"SPELL_CAST_SUCCESS 284662 284781 290955 288449 285347 285172 284521",
 	"SPELL_SUMMON 285003 285402",
-	"SPELL_AURA_APPLIED 284831 285195 284662 285349 288415 288449 284446 289162 286779 284455",
+	"SPELL_AURA_APPLIED 284831 285195 284662 285349 288415 288449 284446 289162 286779 284455 284376",
 	"SPELL_AURA_APPLIED_DOSE 285195",
-	"SPELL_AURA_REMOVED 284831 285195 288449 289162 286779 284276 284455",
+	"SPELL_AURA_REMOVED 284831 285195 288449 289162 286779 284455",
 	"SPELL_AURA_REMOVED_DOSE 285195",
 	"UNIT_DIED",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
@@ -33,6 +33,7 @@ mod:RegisterEventsInCombat(
  or (ability.id = 285003 or ability.id = 285402) and type = "summon"
  or (ability.id = 284276 or ability.id = 284446) and (type = "applybuff" or type = "removebuff")
  or ability.id = 288117 and type = "applydebuff"
+ or ability.id = 284376 and type = "applydebuff"
 --]]
 --TODO, is serpent totem a kill target or a reposition raid one in most strats?
 --TODO, dread reaping fix?
@@ -403,6 +404,33 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			warnDeathsDoor:Show(args.destName)
 		end
+	--"<66.15 22:33:35> [CLEU] SPELL_AURA_REMOVED#Vehicle-0-3019-2070-28900-145616-0000493177#King Rastakhan#Vehicle-0-3019-2070-28900-145616-0000493177#King Rastakhan#284276#Bind Souls#BUFF#nil", -- [1068]
+	--"<73.39 22:33:42> [CLEU] SPELL_AURA_APPLIED#Vehicle-0-3019-2070-28900-145644-0000493216#Unknown#Pet-0-3019-2070-28900-25867-04035496FD#Apok#284376#Death's Presence#DEBUFF#nil", -- [1197]
+	elseif spellId == 284376 and self.vb.phase < 2 then--Bind Souls (P2 Start)
+		self.vb.phase = 2
+		self.vb.scorchingDetCount = 0
+		warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(2))
+		warnPhase:Play("ptwo")
+		timerPlagueofToadsCD:Stop()
+		timerSerpentTotemCD:Stop()
+		timerScorchingDetonationCD:Stop()
+		countdownScorchingDet:Cancel()
+		
+		--Rasta
+		timerZombieDustTotemCD:Start(19.2)
+		timerScorchingDetonationCD:Start(26.5, 1)
+		countdownScorchingDet:Start(26.5)
+		timerPlagueofFireCD:Start(33.7)--33-35.5
+		timerPlagueofToadsCD:Start(39.8)
+		--Bwon
+		timerDeathsDoorCD:Start(52.8)--52-56
+		if self.Options.RangeFrame then
+			DBM.RangeCheck:Show(8)
+		end
+		if self.Options.InfoFrame then
+			DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(285195))
+			DBM.InfoFrame:Show(5, "table", infoframeTable, 1)
+		end
 	elseif spellId == 284446 and self.vb.phase < 3 then--Bwonsamdi's Boon (shouldn't be needed but good to have)
 		self.vb.phase = 3
 		self.vb.scorchingDetCount = 0
@@ -490,31 +518,6 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 286779 then
 		if self.Options.NPAuraOnFocusedDemise then
 			DBM.Nameplate:Hide(true, args.sourceGUID, spellId)
-		end
-	elseif spellId == 284276 then--Bind Souls (P2 Start)
-		self.vb.phase = 2
-		self.vb.scorchingDetCount = 0
-		warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(2))
-		warnPhase:Play("ptwo")
-		timerPlagueofToadsCD:Stop()
-		timerSerpentTotemCD:Stop()
-		timerScorchingDetonationCD:Stop()
-		countdownScorchingDet:Cancel()
-		
-		--Rasta
-		timerZombieDustTotemCD:Start(26.2)
-		timerScorchingDetonationCD:Start(33.5, 1)
-		countdownScorchingDet:Start(33.5)
-		timerPlagueofFireCD:Start(40.7)--40-42
-		timerPlagueofToadsCD:Start(46.8)
-		--Bwon
-		timerDeathsDoorCD:Start(59.8)
-		if self.Options.RangeFrame then
-			DBM.RangeCheck:Show(8)
-		end
-		if self.Options.InfoFrame then
-			DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(285195))
-			DBM.InfoFrame:Show(5, "table", infoframeTable, 1)
 		end
 	elseif spellId == 284455 and args:IsPlayer() then
 		playerDeathPhase = false
