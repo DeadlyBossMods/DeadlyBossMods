@@ -384,6 +384,10 @@ options = {
 		type = "number",
 		default = 60,
 	},
+	Alpha = {
+		type = "number",
+		default = 1,
+	},
 	Scale = {
 		type = "number",
 		default = 0.9,
@@ -1053,7 +1057,9 @@ function barPrototype:Update(elapsed)
 	end
 	if isFadingIn and isFadingIn < 0.5 and currentStyle ~= "NoAnim" then
 		self.fadingIn = isFadingIn + elapsed
-		frame:SetAlpha((isFadingIn) / 0.5)
+		if barOptions.Alpha == 1 then--Only fade in if alpha is 1, otherwise we already have a faded bar
+			frame:SetAlpha((isFadingIn) / 0.5)
+		end
 	elseif isFadingIn then
 		self.fadingIn = nil
 	end
@@ -1227,6 +1233,7 @@ function barPrototype:ApplyStyle()
 	local barOptions = self.owner.options
 	local sparkEnabled = barOptions.BarStyle ~= "NoAnim" and barOptions.Spark
 	local enlarged = self.enlarged
+	local alpha = barOptions.Alpha
 	texture:SetTexture(barOptions.Texture)
 	if self.color then
 		local barRed, barGreen, barBlue = self.color.r, self.color.g, self.color.b
@@ -1282,7 +1289,7 @@ function barPrototype:ApplyStyle()
 	end
 	texture:SetAlpha(1)
 	bar:SetAlpha(1)
-	frame:SetAlpha(1)
+	frame:SetAlpha(alpha)
 	local barFont, barFontSize, barFontFlag = barOptions.Font, barOptions.FontSize, barOptions.FontFlag
 	name:SetFont(barFont, barFontSize, barFontFlag)
 	name:SetPoint("LEFT", bar, "LEFT", 3, 0)
