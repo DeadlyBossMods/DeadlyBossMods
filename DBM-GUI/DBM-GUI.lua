@@ -2254,11 +2254,6 @@ local function CreateOptionsMenu()
 		DecimalSlider:SetPoint("TOPLEFT", BarSetup.frame, "TOPLEFT", 20, -255)
 		DecimalSlider:SetScript("OnShow", createDBTOnShowHandler("Decimal"))
 		DecimalSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("Decimal"))
-		
-		local AlphaSlider = BarSetup:CreateSlider(L.Bar_Alpha, 0.1, 1, 0.1)
-		AlphaSlider:SetPoint("TOPLEFT", BarSetup.frame, "TOPLEFT", 20, -295)
-		AlphaSlider:SetScript("OnShow", createDBTOnShowHandler("Alpha"))
-		AlphaSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("Alpha"))
 
 		local descriptionText = BarSetup:CreateText(L.Bar_DBMOnly, 405, nil, nil, "LEFT")
 		descriptionText:SetPoint("TOPLEFT", BarSetup.frame, "TOPLEFT", 20, -340)
@@ -2282,7 +2277,7 @@ local function CreateOptionsMenu()
 		-----------------------
 		-- Small Bar Options --
 		-----------------------
-		local BarSetupSmall = BarSetupPanel:CreateArea(L.AreaTitle_BarSetupSmall, nil, 175, true)
+		local BarSetupSmall = BarSetupPanel:CreateArea(L.AreaTitle_BarSetupSmall, nil, 205, true)
 
 		local smalldummybar = DBM.Bars:CreateDummyBar()
 		smalldummybar.frame:SetParent(BarSetupSmall.frame)
@@ -2304,6 +2299,11 @@ local function CreateOptionsMenu()
 		BarScaleSlider:SetPoint("TOPLEFT", BarWidthSlider, "BOTTOMLEFT", 0, -10)
 		BarScaleSlider:SetScript("OnShow", createDBTOnShowHandler("Scale"))
 		BarScaleSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("Scale"))
+		
+		local AlphaSlider = BarSetup:CreateSlider(L.Bar_Alpha, 0.1, 1, 0.1)
+		AlphaSlider:SetPoint("TOPLEFT", BarScaleSlider, "BOTTOMLEFT", 0, -10)
+		AlphaSlider:SetScript("OnShow", createDBTOnShowHandler("Alpha"))
+		AlphaSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("Alpha"))
 
 		local BarOffsetXSlider = BarSetup:CreateSlider(L.Slider_BarOffSetX, -50, 50, 1, 120)
 		BarOffsetXSlider:SetPoint("TOPLEFT", BarSetupSmall.frame, "TOPLEFT", 350, -90)
@@ -2324,6 +2324,7 @@ local function CreateOptionsMenu()
 			resetDBTValueToDefault(BarScaleSlider, "Scale")
 			resetDBTValueToDefault(BarOffsetXSlider, "BarXOffset")
 			resetDBTValueToDefault(BarOffsetYSlider, "BarYOffset")
+			resetDBTValueToDefault(AlphaSlider, "Alpha")
 			--TimerX
 			--TimerY
 			--TimerPoint
@@ -2332,7 +2333,7 @@ local function CreateOptionsMenu()
 		-----------------------
 		-- Huge Bar Options --
 		-----------------------
-		local BarSetupHuge = BarSetupPanel:CreateArea(L.AreaTitle_BarSetupHuge, nil, 190, true)
+		local BarSetupHuge = BarSetupPanel:CreateArea(L.AreaTitle_BarSetupHuge, nil, 220, true)
 
 		local enablebar = BarSetupHuge:CreateCheckButton(L.EnableHugeBar, true, nil, nil, "HugeBarsEnabled")
 
@@ -2359,6 +2360,11 @@ local function CreateOptionsMenu()
 		HugeBarScaleSlider:SetPoint("TOPLEFT", HugeBarWidthSlider, "BOTTOMLEFT", 0, -10)
 		HugeBarScaleSlider:SetScript("OnShow", createDBTOnShowHandler("HugeScale"))
 		HugeBarScaleSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("HugeScale"))
+		
+		local HugeAlphaSlider = BarSetup:CreateSlider(L.Bar_Alpha, 0.1, 1, 0.1)
+		HugeAlphaSlider:SetPoint("TOPLEFT", HugeBarScaleSlider, "BOTTOMLEFT", 0, -10)
+		HugeAlphaSlider:SetScript("OnShow", createDBTOnShowHandler("HugeAlpha"))
+		HugeAlphaSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("HugeAlpha"))
 
 		local HugeBarOffsetXSlider = BarSetupHuge:CreateSlider(L.Slider_BarOffSetX, -50, 50, 1, 120)
 		HugeBarOffsetXSlider:SetPoint("TOPLEFT", BarSetupHuge.frame, "TOPLEFT", 350, -105)
@@ -2379,6 +2385,7 @@ local function CreateOptionsMenu()
 			resetDBTValueToDefault(HugeBarScaleSlider, "HugeScale")
 			resetDBTValueToDefault(HugeBarOffsetXSlider, "HugeBarXOffset")
 			resetDBTValueToDefault(HugeBarOffsetYSlider, "HugeBarYOffset")
+			resetDBTValueToDefault(HugeAlphaSlider, "HugeAlpha")
 			--HugeTimerPoint
 			--HugeTimerX
 			--HugeTimerY
