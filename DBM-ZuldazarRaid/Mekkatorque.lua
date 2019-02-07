@@ -264,25 +264,18 @@ do
 		table.wipe(lines)
 		table.wipe(sortedLines)
 		if #playersInRobots > 0 then--Players in robots
-			DBM:Debug("We have no robots", 3)
+			DBM:Debug("We have robots", 3)
 			for uId in DBM:GetGroupMembers() do
 				local unitName = DBM:GetUnitFullName(uId)
 				if playersInRobots[unitName] then--Matched a unitID and playername to one of them
 					DBM:Debug(unitName.." is in a robot", 3)
 					local count = playersInRobots[unitName]--Check successful code entries
 					local spellName, _, _, _, _, expireTime = DBM:UnitDebuff(uId, 286105)--Check remaining time on tampering
-					local spellName2, _, _, _, _, expireTime2 = DBM:UnitDebuff(uId.."pet", 286105)
 					if spellName and expireTime then
 						local remaining = expireTime-GetTime()
 						addLine(unitName, count.."/3 - "..floor(remaining))--Display playername, disarm code of 3, and remaining Tampering
 						if not debugMessageShown then
 							DBM:AddMsg("Debuff check on uId worked, tell MysticalOS/DBM Author")
-						end
-					elseif spellName2 and expireTime2 then
-						local remaining2 = expireTime2-GetTime()
-						addLine(unitName, count.."/3 - "..floor(remaining2))--Display playername, disarm code of 3, and remaining Tampering
-						if not debugMessageShown then
-							DBM:AddMsg("Debuff check on pet worked, tell MysticalOS/DBM Author")
 						end
 					else
 						addLine(unitName, count.."/3 - ".."WIP")
@@ -292,6 +285,8 @@ do
 					end
 				end
 			end
+		else
+			DBM:Debug("We have no robots", 3)
 		end
 		return lines, sortedLines
 	end
@@ -564,12 +559,15 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.botIcon = self.vb.botIcon + 1
 		if self.vb.botIcon == 9 then self.vb.botIcon = 4 end--Icons 4-8
 	elseif spellId == 286105 then--Tampering
-		playersInRobots[args.destName] = 0
-		if args:IsPlayer() or args.destGUID == UnitGUID("player") then
-			self:Unschedule(shrunkYellRepeater)
-			self:Schedule(2, shrunkYellRepeater, self)
+		local type = strsplit("-", args.destGUID or "")
+		if type and type ~= "Vehicle" then
+			playersInRobots[args.destName] = 0
+			if args:IsPlayer() then
+				self:Unschedule(shrunkYellRepeater)
+				self:Schedule(2, shrunkYellRepeater, self)
+			end
+			DBM:Debug(args.destName.." got in a robot")
 		end
-		DBM:Debug(args.destName.." got in a robot")
 	elseif spellId == 287114 then
 		warnMisTele:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
@@ -597,11 +595,14 @@ function mod:SPELL_AURA_REMOVED(args)
 			self:Unschedule(shrunkYellRepeater)
 		end
 	elseif spellId == 286105 then--Tampering
-		playersInRobots[args.destName] = nil
-		if args:IsPlayer() or args.destGUID == UnitGUID("player") then
-			self:Unschedule(shrunkYellRepeater)
+		local type = strsplit("-", args.destGUID or "")
+		if type and type ~= "Vehicle" then
+			playersInRobots[args.destName] = nil
+			if args:IsPlayer() then
+				self:Unschedule(shrunkYellRepeater)
+			end
+			DBM:Debug(args.destName.." got out of a robot")
 		end
-		DBM:Debug(args.destName.." got out of a robot")
 	end
 end
 
