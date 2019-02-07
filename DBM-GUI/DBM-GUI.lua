@@ -2254,6 +2254,11 @@ local function CreateOptionsMenu()
 		DecimalSlider:SetPoint("TOPLEFT", BarSetup.frame, "TOPLEFT", 20, -255)
 		DecimalSlider:SetScript("OnShow", createDBTOnShowHandler("Decimal"))
 		DecimalSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("Decimal"))
+		
+		local AlphaSlider = BarSetup:CreateSlider(L.Bar_Alpha, 0.1, 1, 0.1)
+		AlphaSlider:SetPoint("TOPLEFT", BarSetup.frame, "TOPLEFT", 20, -295)
+		AlphaSlider:SetScript("OnShow", createDBTOnShowHandler("Alpha"))
+		AlphaSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("Alpha"))
 
 		local descriptionText = BarSetup:CreateText(L.Bar_DBMOnly, 405, nil, nil, "LEFT")
 		descriptionText:SetPoint("TOPLEFT", BarSetup.frame, "TOPLEFT", 20, -340)
