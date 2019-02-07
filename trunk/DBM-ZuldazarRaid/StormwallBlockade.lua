@@ -356,10 +356,11 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 285350 or spellId == 285426 then
 		if args:IsPlayer() then
 			specWarnStormsWail:Show(freezingTidePod)
-			specWarnStormsWail:Schedule(7, DBM_CORE_BACK)
+			timer = self:IsEasy() and 13 or 10
+			specWarnStormsWail:Schedule(timer-4.5, DBM_CORE_BACK)
 			specWarnStormsWail:Play("targetyou")
 			yellStormsWail:Yell()
-			yellStormsWailFades:Countdown(self:IsEasy() and 13 or 10)
+			yellStormsWailFades:Countdown(timer)
 		else
 			warnStormsWail:Show(args.destName)
 		end
