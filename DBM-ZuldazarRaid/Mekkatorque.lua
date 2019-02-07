@@ -17,7 +17,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 282205 287952 287929 282153 288410 287751 287797 287757 286693 288041 288049 289537 287691 286597",
 	"SPELL_CAST_SUCCESS 287757 286597",
-	"SPELL_AURA_APPLIED 287757 287167 284168 289023 286051 289699 286646 282406 286105",
+	"SPELL_AURA_APPLIED 287757 287167 284168 289023 286051 289699 286646 282406 286105 287114",
 	"SPELL_AURA_APPLIED_DOSE 289699",
 	"SPELL_AURA_REMOVED 287757 284168 286646 286105"
 --	"UNIT_DIED"
@@ -37,6 +37,7 @@ mod:RegisterEventsInCombat(
 local warnPhase							= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
 --Ground Phase
 local warnShrunk						= mod:NewTargetNoFilterAnnounce(284168, 1)
+local warnMisTele						= mod:NewTargetNoFilterAnnounce(287114, 3)
 --Intermission: Evasive Maneuvers!
 
 --Final Push
@@ -62,6 +63,8 @@ local yellShrunkRepeater				= mod:NewYell(284168, UnitName("player"))
 local specWarnShrunkTaunt				= mod:NewSpecialWarningTaunt(284168, nil, nil, nil, 1, 2)
 local specWarnEnormous					= mod:NewSpecialWarningYou(289023, nil, nil, nil, 1, 2)--Mythic
 local yellEnormous						= mod:NewYell(289023, nil, nil, nil, "YELL")--Enormous will shout with red letters
+local specWarnMisCalcTele				= mod:NewSpecialWarningYou(287114, nil, nil, nil, 1, 2)--Mythic
+local yellMisCalcTele					= mod:NewYell(287114)
 --Intermission: Evasive Maneuvers!
 local specWarnExplodingSheep			= mod:NewSpecialWarningDodge(287929, nil, nil, nil, 2, 2)
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 8)
@@ -268,6 +271,8 @@ do
 					if spellName and expireTime then
 						local remaining = expireTime-GetTime()
 						addLine(unitName, count.."/3 - "..floor(remaining))--Display playername, disarm code of 3, and remaining Tampering
+					else
+						addLine(unitName, count.."/3 - ".."WIP")
 					end
 				end
 			end
@@ -545,6 +550,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			self:Unschedule(shrunkYellRepeater)
 			self:Schedule(2, shrunkYellRepeater, self)
+		end
+	elseif spellId == 287114 then
+		warnMisTele:CombinedShow(0.3, args.destName)
+		if args:IsPlayer() then
+			specWarnMisCalcTele:Show()
+			specWarnMisCalcTele:Play("carefly")
+			yellMisCalcTele:Yell()
 		end
 	end
 end
