@@ -264,9 +264,11 @@ do
 		table.wipe(lines)
 		table.wipe(sortedLines)
 		if #playersInRobots > 0 then--Players in robots
+			DBM:Debug("We have no robots", 3)
 			for uId in DBM:GetGroupMembers() do
 				local unitName = DBM:GetUnitFullName(uId)
 				if playersInRobots[unitName] then--Matched a unitID and playername to one of them
+					DBM:Debug(unitName.." is in a robot", 3)
 					local count = playersInRobots[unitName]--Check successful code entries
 					local spellName, _, _, _, _, expireTime = DBM:UnitDebuff(uId, 286105)--Check remaining time on tampering
 					local spellName2, _, _, _, _, expireTime2 = DBM:UnitDebuff(uId.."pet", 286105)
@@ -489,6 +491,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 286152 or spellId == 286219 or spellId == 286215 or spellId == 286226 or spellId == 286192 then--Disarm Codes
 		if playersInRobots[args.sourceName] then
 			playersInRobots[args.sourceName] = playersInRobots[args.sourceName] + 1
+			DBM:Debug(args.sourceName.." cast a code spell")
 		end
 	end
 end
@@ -566,6 +569,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:Unschedule(shrunkYellRepeater)
 			self:Schedule(2, shrunkYellRepeater, self)
 		end
+		DBM:Debug(args.destName.." got in a robot")
 	elseif spellId == 287114 then
 		warnMisTele:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
@@ -597,6 +601,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		if args:IsPlayer() or args.destGUID == UnitGUID("player") then
 			self:Unschedule(shrunkYellRepeater)
 		end
+		DBM:Debug(args.destName.." got out of a robot")
 	end
 end
 
