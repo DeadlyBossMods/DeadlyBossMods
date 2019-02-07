@@ -106,6 +106,7 @@ mod.vb.botIcon = 4
 mod.vb.shrinkCount = 0
 mod.vb.sheepCount = 0
 mod.vb.difficultyName = "None"
+local debugMessageShown = false
 local playersInRobots = {}
 --Normal and heroic seem identical, at least so far, but blizz has been making tweeks to fight multiple times. Even this week they made additional timer alterations from last week on heroic
 --As such, need to have duplicate tables across board so it's easy to update mod on wim if they adjust specific difficulties only.
@@ -268,11 +269,24 @@ do
 				if playersInRobots[unitName] then--Matched a unitID and playername to one of them
 					local count = playersInRobots[unitName]--Check successful code entries
 					local spellName, _, _, _, _, expireTime = DBM:UnitDebuff(uId, 286105)--Check remaining time on tampering
+					local spellName2, _, _, _, _, expireTime2 = DBM:UnitDebuff(uId.."pet", 286105)
 					if spellName and expireTime then
 						local remaining = expireTime-GetTime()
 						addLine(unitName, count.."/3 - "..floor(remaining))--Display playername, disarm code of 3, and remaining Tampering
+						if not debugMessageShown then
+							DBM:AddMsg("Debuff check on uId worked, tell MysticalOS/DBM Author")
+						end
+					elseif spellName2 and expireTime2 then
+						local remaining2 = expireTime2-GetTime()
+						addLine(unitName, count.."/3 - "..floor(remaining2))--Display playername, disarm code of 3, and remaining Tampering
+						if not debugMessageShown then
+							DBM:AddMsg("Debuff check on pet worked, tell MysticalOS/DBM Author")
+						end
 					else
 						addLine(unitName, count.."/3 - ".."WIP")
+						if not debugMessageShown then
+							DBM:AddMsg("Debuff check failed but rest worked, tell MysticalOS/DBM Author")
+						end
 					end
 				end
 			end
@@ -291,6 +305,7 @@ function mod:OnCombatStart(delay)
 	self.vb.gigaIcon = 1
 	self.vb.botIcon = 4
 	self.vb.shrinkCount = 0
+	debugMessageShown = false
 	table.wipe(playersInRobots)
 	--Same across board (at least for now, LFR not out yet)
 	timerDeploySparkBotCD:Start(5-delay, 1)
