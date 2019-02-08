@@ -29,12 +29,12 @@ mod:RegisterEventsInCombat(
 )
 
 --TODO, Gathering Blizzard verification?
---TODO, add additional mythic only spells/timers
+--TODO, add additional mythic only spells/timers for P2 and beyond
 --TODO, detect set charge barrels, and add them to infoframe with time remaining?
---TODO, improve elemental CDS to use GUID to handle the split mechanic on mythic.
 --TODO, rework interrupt to use vectis interrupt per GUID code for mythic
 --TODO, orb of frost targetting and improve voice/warning for it
 --TODO, shattering lance script and warning/cast timer
+--TODO, figure out P2 and P3 winds (and 2.5?) current code simply blocks it from running outside P1
 --[[
 (ability.id = 290084 or ability.id = 287565 or ability.id = 285177 or ability.id = 285459 or ability.id = 290036 or ability.id = 288345 or ability.id = 288441 or ability.id = 288719 or ability.id = 289219 or ability.id = 288619 or ability.id = 288747 or ability.id = 289488) and type = "begincast"
  or (ability.id = 287925 or ability.id = 287626 or ability.id = 289220 or ability.id = 288374 or ability.id = 288211) and type = "cast"
