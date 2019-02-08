@@ -16,7 +16,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 282205 287952 287929 282153 288410 287751 287797 287757 286693 288041 288049 289537 287691 286597",
-	"SPELL_CAST_SUCCESS 287757 286597",
+	"SPELL_CAST_SUCCESS 287757 286597 286152 286219 286215 286226 286192",
 	"SPELL_AURA_APPLIED 287757 287167 284168 289023 286051 289699 286646 282406 286105 287114",
 	"SPELL_AURA_APPLIED_DOSE 289699",
 	"SPELL_AURA_REMOVED 287757 284168 286646 286105"
@@ -265,10 +265,12 @@ do
 		table.wipe(sortedLines)
 		if #playersInRobots > 0 then--Players in robots
 			DBM:Debug("We have robots", 3)
+			local found = false
 			for uId in DBM:GetGroupMembers() do
 				local unitName = DBM:GetUnitFullName(uId)
 				if playersInRobots[unitName] then--Matched a unitID and playername to one of them
 					DBM:Debug(unitName.." is in a robot", 3)
+					found = true
 					local count = playersInRobots[unitName]--Check successful code entries
 					local spellName, _, _, _, _, expireTime = DBM:UnitDebuff(uId, 286105)--Check remaining time on tampering
 					if spellName and expireTime then
@@ -284,6 +286,9 @@ do
 						end
 					end
 				end
+			end
+			if not found then
+				DBM:Debug("but could not find a single player in raid that matches players in robots", 3)
 			end
 		else
 			DBM:Debug("We have no robots", 3)
