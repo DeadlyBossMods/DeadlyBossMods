@@ -15,11 +15,11 @@ mod:SetHotfixNoticeRev(18175)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 287565 285177 285459 290036 288221 288345 288441 288719 289219 289940 290084 288619 288747",
+	"SPELL_CAST_START 287565 285177 285459 290036 288221 288345 288441 288719 289219 289940 290084 288619 288747 289488",
 	"SPELL_CAST_SUCCESS 285725 287925 287626 289220 288374 288211",
-	"SPELL_AURA_APPLIED 287993 287490 289387 287925 285253 287626 288199 290053 288219 288212 288374 288412 288434 289220 285254 288038 287322",
+	"SPELL_AURA_APPLIED 287993 287490 289387 287925 285253 287626 288199 288219 288212 288374 288412 288434 289220 285254 288038 287322 288169",
 	"SPELL_AURA_APPLIED_DOSE 287993 285253",
-	"SPELL_AURA_REMOVED 287993 287925 288199 290053 288219 288212 288374 288038 290001",
+	"SPELL_AURA_REMOVED 287993 287925 288199 288219 288212 288374 288038 290001",
 	"SPELL_AURA_REMOVED_DOSE 287993",
 	"SPELL_PERIODIC_DAMAGE 288297",
 	"SPELL_PERIODIC_MISSED 288297",
@@ -36,10 +36,11 @@ mod:RegisterEventsInCombat(
 --TODO, orb of frost targetting and improve voice/warning for it
 --TODO, shattering lance script and warning/cast timer
 --[[
-(ability.id = 290084 or ability.id = 287565 or ability.id = 285177 or ability.id = 285459 or ability.id = 290036 or ability.id = 288345 or ability.id = 288441 or ability.id = 288719 or ability.id = 289219 or ability.id = 288619 or ability.id = 288747) and type = "begincast"
+(ability.id = 290084 or ability.id = 287565 or ability.id = 285177 or ability.id = 285459 or ability.id = 290036 or ability.id = 288345 or ability.id = 288441 or ability.id = 288719 or ability.id = 289219 or ability.id = 288619 or ability.id = 288747 or ability.id = 289488) and type = "begincast"
  or (ability.id = 287925 or ability.id = 287626 or ability.id = 289220 or ability.id = 288374 or ability.id = 288211) and type = "cast"
- or (ability.id = 288199 or ability.id = 290053 or ability.id = 287322) and (type = "applybuff" or type = "removebuff")
+ or (ability.id = 288199 or ability.id = 287322) and (type = "applybuff" or type = "removebuff")
  or ability.id = 290001 and type = "removebuff"
+ or ability.id = 288169 and type = "applydebuff"
 --]]
 --General
 local warnPhase							= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
@@ -52,6 +53,7 @@ local warnSetCharge						= mod:NewSpellAnnounce(285725, 2)
 local warnIceShard						= mod:NewStackAnnounce(285253, 2, nil, "Tank")
 local warnTimeWarp						= mod:NewSpellAnnounce(287925, 3)
 local warnFreezingBlast					= mod:NewSpellAnnounce(285177, 3)
+local warnFrozenSiege					= mod:NewSpellAnnounce(289488, 2)
 --Stage Two: Frozen Wrath
 local warnBurningExplosion				= mod:NewCastAnnounce(288221, 3)
 local warnBroadside						= mod:NewTargetNoFilterAnnounce(288212, 2)
@@ -110,6 +112,8 @@ local timerAvalancheCD					= mod:NewCDTimer(60.7, 287565, nil, nil, 2, 5)
 local timerGraspofFrostCD				= mod:NewCDTimer(6, 287626, nil, nil, nil, 3, nil, DBM_CORE_MAGIC_ICON)
 local timerFreezingBlastCD				= mod:NewCDTimer(10.1, 285177, nil, "Tank", nil, 3)
 local timerRingofIceCD					= mod:NewCDCountTimer(60.7, 285459, nil, nil, nil, 2, nil, DBM_CORE_IMPORTANT_ICON)
+local timerHowlingWindsCD				= mod:NewCDCountTimer(80, 288169, nil, nil, nil, 6)--Mythic
+local timerFrozenSiegeCD				= mod:NewCDCountTimer(31.6, 289488, nil, nil, nil, 3)--Mythic
 --Stage Two: Frozen Wrath
 mod:AddTimerLine(SCENARIO_STAGE:format(2))
 local timerBroadsideCD					= mod:NewCDCountTimer(31.3, 288212, nil, nil, nil, 3)
@@ -156,6 +160,7 @@ mod.vb.siegeCount = 0
 mod.vb.glacialRayCount = 0
 mod.vb.broadsideIcon = 0
 mod.vb.waterboltVolleyCount = 0
+mod.vb.howlingWindsCast = 0
 local ChillingTouchStacks = {}
 local castsPerGUID = {}
 local rangeThreshold = 1
@@ -225,16 +230,19 @@ function mod:OnCombatStart(delay)
 	self.vb.siegeCount = 0
 	self.vb.glacialRayCount = 0
 	self.vb.broadsideIcon = 0
+	self.vb.howlingWindsCast = 0
 	table.wipe(castsPerGUID)
 	table.wipe(ChillingTouchStacks)
 	if self:IsMythic() then
 		rangeThreshold = 1
+		timerFrozenSiegeCD:Start(3.3-delay)
 		--timerCorsairCD:Start(5.1-delay)--Unknown
 		timerAvalancheCD:Start(13.4-delay)
 		timerFreezingBlastCD:Start(8.6-delay)
 		timerGraspofFrostCD:Start(23.5-delay)
 		timerRingofIceCD:Start(60.7-delay, 1)
 		countdownRingofIce:Start(60.7)
+		timerHowlingWindsCD:Start(67, 1)
 		berserkTimer:Start(720)
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(10, nil, nil, 1, true, nil, self.Options.ShowOnlySummary)--Reverse checker, threshold 1 at start
@@ -294,7 +302,11 @@ function mod:SPELL_CAST_START(args)
 		else
 			warnFreezingBlast:Show()
 		end
-		timerFreezingBlastCD:Start()
+		if self:IsMythic() then
+			timerFreezingBlastCD:Start(14.5)
+		else
+			timerFreezingBlastCD:Start(10.1)
+		end
 	elseif spellId == 285459 or spellId == 290036 then
 		self.vb.ringofFrostCount = self.vb.ringofFrostCount + 1
 		specWarnRingofIce:Show(self.vb.ringofFrostCount)
@@ -373,6 +385,9 @@ function mod:SPELL_CAST_START(args)
 		specWarnPrismaticImage:Show(self.vb.imageCount)
 		specWarnPrismaticImage:Play("killmob")
 		timerPrismaticImageCD:Start(nil, self.vb.imageCount+1)
+	elseif spellId == 289488 then--Frozen Siege
+		warnFrozenSiege:Show()
+		timerFrozenSiegeCD:Start()
 	end
 end
 
@@ -455,7 +470,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 287626 then
 		specWarGraspofFrost:CombinedShow(1, args.destName)
 		specWarGraspofFrost:ScheduleVoice(1, "helpdispel")
-	elseif (spellId == 288199 or spellId == 290053) and self.vb.phase == 1 then--Howling Winds (secondary 1.5 trigger)
+	elseif spellId == 288199 and self.vb.phase == 1 then--Howling Winds (secondary 1.5 trigger)
 		self.vb.phase = 1.5
 		warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(1.5))
 		warnPhase:Play("phasechange")
@@ -465,6 +480,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerGraspofFrostCD:Stop()
 		timerFreezingBlastCD:Stop()
 		timerRingofIceCD:Stop()
+		timerHowlingWindsCD:Stop()
+		timerFrozenSiegeCD:Stop()
 		countdownRingofIce:Cancel()
 		--Blizzard closes tooltip windows during cut scenes, so we gotta make sure to recall this window
 		if self.Options.InfoFrame and not DBM.InfoFrame:IsShown() then
@@ -530,6 +547,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 287322 then
 		warnJainaIceBlocked:Show(args.destName)
+	elseif spellId == 288169 and self:AntiSpam(10, 10) and self.vb.phase == 1 then--Howling Winds (Mythic)
+		self.vb.howlingWindsCast = self.vb.howlingWindsCast + 1
+		timerHowlingWindsCD:Start(80, self.vb.howlingWindsCast+1)
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -549,7 +569,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.NPAuraOnTimeWarp then
 			DBM.Nameplate:Hide(true, args.sourceGUID, spellId)
 		end
-	elseif spellId == 288199 or spellId == 290053 then--Howling Winds
+	elseif spellId == 288199 and self.vb.phase < 2  then--Howling Winds
 		self.vb.phase = 2
 		warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(2))
 		warnPhase:Play("ptwo")
@@ -562,7 +582,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 		timerSiegebreakerCD:Start(40.3, 1)
 		--Blizzard closes tooltip windows during cut scenes, so we gotta make sure to recall this window
-		if self.Options.InfoFrame and not DBM.InfoFrame:IsShown() then
+		if self.Options.InfoFrame and not DBM.InfoFrame:IsShown() and self:IsInCombat() then
 			--DBM.InfoFrame:SetHeader(DBM_CORE_INFOFRAME_POWER)
 			--DBM.InfoFrame:Show(8, "function", updateInfoFrame, false, false)
 			DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(287993))
@@ -603,7 +623,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerOrbofFrostCD:Start(11, 1)
 		end
 		--Blizzard closes tooltip windows during cut scenes, so we gotta make sure to recall this window
-		if self.Options.InfoFrame and not DBM.InfoFrame:IsShown() then
+		if self.Options.InfoFrame and not DBM.InfoFrame:IsShown() and self:IsInCombat() then
 			--DBM.InfoFrame:SetHeader(DBM_CORE_INFOFRAME_POWER)
 			--DBM.InfoFrame:Show(8, "function", updateInfoFrame, false, false)
 			DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(287993))
@@ -676,6 +696,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		timerGraspofFrostCD:Stop()
 		timerFreezingBlastCD:Stop()
 		timerRingofIceCD:Stop()
+		timerHowlingWindsCD:Stop()
+		timerFrozenSiegeCD:Stop()
 		countdownRingofIce:Cancel()
 		timerPhaseTransition:Start(12.5)
 	end
