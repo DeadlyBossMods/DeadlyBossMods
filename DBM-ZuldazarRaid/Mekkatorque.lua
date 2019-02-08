@@ -572,6 +572,8 @@ function mod:SPELL_AURA_APPLIED(args)
 				self:Schedule(2, shrunkYellRepeater, self)
 			end
 			DBM:Debug(args.destName.." got in a robot")
+		else
+			DBM:Debug("Robot is being tampered")
 		end
 	elseif spellId == 287114 then
 		warnMisTele:CombinedShow(0.3, args.destName)
