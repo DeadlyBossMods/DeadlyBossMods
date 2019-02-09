@@ -2258,8 +2258,8 @@ local function CreateOptionsMenu()
 
 		local DecimalSlider = BarSetup:CreateSlider(L.Bar_Decimal, 5, 60, 1)
 		DecimalSlider:SetPoint("TOPLEFT", BarSetup.frame, "TOPLEFT", 20, -265)
-		DecimalSlider:SetScript("OnShow", createDBTOnShowHandler("Decimal"))
-		DecimalSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("Decimal"))
+		DecimalSlider:SetScript("OnShow", createDBTOnShowHandler("TDecimal"))
+		DecimalSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("TDecimal"))
 
 		-------
 		local BarSetupDBMClassic = BarSetupPanel:CreateArea(L.Bar_DBMOnly, nil, 100, true)
