@@ -24,7 +24,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_PERIODIC_DAMAGE 288297",
 	"SPELL_PERIODIC_MISSED 288297",
 	"UNIT_DIED",
---	"CHAT_MSG_RAID_BOSS_EMOTE",
+	"CHAT_MSG_RAID_BOSS_EMOTE",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
@@ -47,7 +47,8 @@ local warnPhase							= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2
 local warnFrozenSolid					= mod:NewTargetNoFilterAnnounce(287490, 4)
 local warnJainaIceBlocked				= mod:NewTargetNoFilterAnnounce(287322, 2)
 --Stage One: Burning Seas
-local warnCorsair						= mod:NewSoonAnnounce("ej19690", 2, "Interface\\ICONS\\Inv_tabard_kultiran", nil, nil, nil, nil, 7)
+local warnCorsairSoon					= mod:NewSoonAnnounce("ej19690", 2, "Interface\\ICONS\\Inv_tabard_kultiran", nil, nil, nil, nil, 7)
+local warnCorsair						= mod:NewTargetAnnounce("ej19690", 3, "Interface\\ICONS\\Inv_tabard_kultiran", nil, nil, nil, nil, 7)
 local warnMarkedTarget					= mod:NewTargetAnnounce(288038, 2)
 local warnSetCharge						= mod:NewSpellAnnounce(285725, 2)
 local warnIceShard						= mod:NewStackAnnounce(285253, 2, nil, "Tank")
@@ -731,22 +732,22 @@ function mod:UNIT_DIED(args)
 	end
 end
 
---[[
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
-	if msg:find("spell:285828") then
-		specWarnBombard:Show()
-		specWarnBombard:Play("watchstep")
-		--timerBombardCD:Start()
+	if msg:find(L.Port) then
+		warnCorsair:Show(L.Port)
+		warnCorsair:Play("killmob")
+	elseif msg:find(L.Starboard) then
+		warnCorsair:Show(L.Starboard)
+		warnCorsair:Play("killmob")
 	end
 end
---]]
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	--"<11.40 22:23:57> [UNIT_SPELLCAST_SUCCEEDED] Lady Jaina Proudmoore(Murdina) -Corsair Picker- [[boss1:Cast-3-3133-2070-28514-288013-002BCFC74D:288013]]", -- [110]
 	--"<25.44 22:24:11> [CHAT_MSG_RAID_BOSS_EMOTE] A Kul Tiran Corsair approaches on the port side!#Kul Tiran Corsair###Apookie##0#0##0#2952#nil#0#false#false#false#false", -- [295]
 	if spellId == 288013 then--Corsair Picker (fires 12-14 seconds before emote does)
-		warnCorsair:Show()
-		warnCorsair:Play("mobsoon")
+		warnCorsairSoon:Show()
+		warnCorsairSoon:Play("mobsoon")
 		timerCorsairCD:Start(12.3)
 	elseif spellId == 290681 then--Transition Visual 1
 		self.vb.phase = 1.5
