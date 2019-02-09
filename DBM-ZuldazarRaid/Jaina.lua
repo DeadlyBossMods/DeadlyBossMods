@@ -15,7 +15,7 @@ mod:SetHotfixNoticeRev(18175)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 287565 285177 285459 290036 288221 288345 288441 288719 289219 289940 290084 288619 288747 289488",
+	"SPELL_CAST_START 287565 285177 285459 290036 288221 288345 288441 288719 289219 289940 290084 288619 288747 289488 289220",
 	"SPELL_CAST_SUCCESS 285725 287925 287626 289220 288374 288211",
 	"SPELL_AURA_APPLIED 287993 287490 289387 287925 285253 287626 288199 288219 288212 288374 288412 288434 289220 285254 288038 287322 288169",
 	"SPELL_AURA_APPLIED_DOSE 287993 285253",
@@ -32,7 +32,7 @@ mod:RegisterEventsInCombat(
 --TODO, add additional mythic only spells/timers for P2 and beyond
 --TODO, detect set charge barrels, and add them to infoframe with time remaining?
 --TODO, rework interrupt to use vectis interrupt per GUID code for mythic
---TODO, orb of frost targetting and improve voice/warning for it
+--TODO, orb of frost targetting and improve voice/warning for it?
 --TODO, shattering lance script and warning/cast timer
 --TODO, figure out P2 and P3 winds (and 2.5?) current code simply blocks it from running outside P1
 --[[
@@ -109,8 +109,8 @@ mod:AddTimerLine(SCENARIO_STAGE:format(1))
 local timerCorsairCD					= mod:NewCDTimer(60.4, "ej19690", nil, nil, nil, 1, "Interface\\ICONS\\Inv_tabard_kultiran")
 --local timerBombardCD					= mod:NewAITimer(55, 285828, nil, nil, nil, 3)
 local timerAvalancheCD					= mod:NewCDTimer(60.7, 287565, nil, nil, 2, 5, nil, nil, true)
-local timerGraspofFrostCD				= mod:NewCDTimer(6, 287626, nil, nil, nil, 3, nil, DBM_CORE_MAGIC_ICON, true)
-local timerFreezingBlastCD				= mod:NewCDTimer(10.1, 285177, nil, "Tank", nil, 3, nil, nil, true)
+local timerGraspofFrostCD				= mod:NewCDTimer(17.3, 287626, nil, nil, nil, 3, nil, DBM_CORE_MAGIC_ICON, true)
+local timerFreezingBlastCD				= mod:NewCDTimer(14, 285177, nil, "Tank", nil, 3, nil, nil, true)
 local timerRingofIceCD					= mod:NewCDCountTimer(60.7, 285459, nil, nil, nil, 2, nil, DBM_CORE_IMPORTANT_ICON, true)
 local timerHowlingWindsCD				= mod:NewCDCountTimer(80, 288169, nil, nil, nil, 6)--Mythic
 local timerFrozenSiegeCD				= mod:NewCDCountTimer(31.6, 289488, nil, nil, nil, 3)--Mythic
@@ -240,6 +240,19 @@ function mod:TimerTestFunctionEnd()
 	timerRingofIceCD:Stop()
 	timerHowlingWindsCD:Stop()
 	self:UnscheduleMethod("TimerTestFunction")
+end
+
+function mod:HeartofFrostTarget(targetname, uId)
+	if not targetname then return end
+	if self:AntiSpam(4, targetname) then
+		if targetname == UnitName("player") then
+			specWarnHeartofFrost:Show()
+			specWarnHeartofFrost:Play("runout")
+			yellHeartofFrost:Yell()
+		else
+			warnHeartofFrost:Show(targetname)
+		end
+	end
 end
 
 function mod:OnCombatStart(delay)
@@ -415,6 +428,8 @@ function mod:SPELL_CAST_START(args)
 		self.vb.frozenSiegeCount = self.vb.frozenSiegeCount + 1
 		warnFrozenSiege:Show(self.vb.frozenSiegeCount)
 		timerFrozenSiegeCD:Start(nil, self.vb.frozenSiegeCount+1)
+	elseif spellId == 289220 then
+		self:ScheduleMethod(0.2, "BossTargetScanner", args.sourceGUID, "HeartofFrostTarget", 0.1, 8, true, nil, nil, nil, false)--Does this target tank? if not, change false to true
 	end
 end
 
@@ -425,11 +440,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 287925 then
 		warnTimeWarp:Show()
 	elseif spellId == 287626 then
-		if self:IsMythic() then
-			timerGraspofFrostCD:Start(17.3)
-		else
-			timerGraspofFrostCD:Start()--6
-		end
+		timerGraspofFrostCD:Start(17.3)
 	elseif spellId == 289220 and args:GetSrcCreatureID() == 149144 then
 		timerHeartofFrostCD:Start()
 	elseif spellId == 288374 then
@@ -555,7 +566,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnHandofFrostNear:Show(args.destName)
 			specWarnHandofFrostNear:Play("watchstep")
 		end
-	elseif spellId == 289220 then
+	elseif spellId == 289220 and self:AntiSpam(4, args.destName) then
 		if args:IsPlayer() then
 			specWarnHeartofFrost:Show()
 			specWarnHeartofFrost:Play("runout")
@@ -577,7 +588,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 287322 then
 		warnJainaIceBlocked:Show(args.destName)
-	elseif spellId == 288169 and self:AntiSpam(10, 10) and self.vb.phase == 1 then--Howling Winds (Mythic)
+	elseif spellId == 288169 and self:AntiSpam(10, 10) and self.vb.phase ~= 1.5 then--Howling Winds (Mythic)
 		self.vb.howlingWindsCast = self.vb.howlingWindsCast + 1
 		timerHowlingWindsCD:Start(80, self.vb.howlingWindsCast+1)
 	end
