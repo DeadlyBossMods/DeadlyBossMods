@@ -97,11 +97,12 @@ local specWarnNecroticSmashOther		= mod:NewSpecialWarningTaunt(286742, nil, nil,
 --local specWarnGTFO						= mod:NewSpecialWarningGTFO(286772, nil, nil, nil, 1, 8)
 local specWarnFocusedDimise				= mod:NewSpecialWarningInterrupt(286779, nil, nil, nil, 1, 2)
 
---mod:AddTimerLine(DBM:EJ_GetSectionInfo(18527))
 --Stage One: Zandalari Honor Guard
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(19172))
 local timerScorchingDetonationCD		= mod:NewCDCountTimer(23.1, 284831, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerPlagueofToadsCD				= mod:NewCDTimer(21.1, 284933, nil, nil, nil, 1)
 local timerSerpentTotemCD				= mod:NewCDTimer(31.6, 285172, nil, nil, nil, 1)
+mod:AddTimerLine(DBM_ADDS)
 ----Prelate Za'lan
 local timerSealofPurificationCD			= mod:NewCDTimer(25.4, 284662, nil, nil, nil, 3)
 ----Siegebreaker Roka
@@ -109,16 +110,19 @@ local timerMeteorLeapCD					= mod:NewCDTimer(33.3, 284686, nil, nil, nil, 3)
 ----Headhunter Gal'wana
 local timerGrievousAxeCD				= mod:NewCDTimer(17.1, 284781, nil, nil, nil, 3, nil, DBM_CORE_HEALER_ICON)
 --Stage Two: Bwonsamdi's Pact
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(19242))
 local timerPlagueofFireCD				= mod:NewCDTimer(23, 285347, nil, nil, nil, 3)
 local timerZombieDustTotemCD			= mod:NewCDTimer(44.9, 285003, nil, nil, nil, 1)
 ----Bwonsamdi
 local timerDeathsDoorCD					= mod:NewCDTimer(27.9, 288449, nil, nil, nil, 3)
 --Stage Three: Enter the Death Realm
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(19243))
 local timerSpiritVortex					= mod:NewCastTimer(5, 284478, nil, nil, nil, 6)
 local timerDreadReapingCD				= mod:NewCDTimer(14.1, 287116, nil, nil, nil, 3)
 local timerInevitableEndCD				= mod:NewCDCountTimer(62.5, 287333, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)--62-75?
-local timerAddsCD						= mod:NewAddsTimer(120, 284446, nil, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON)--Generic Timer only used on Mythic
+local timerAddsCD						= mod:NewAddsTimer(120, 284446, nil, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON)--Single use at start of Stage 3
 ----Spirits
+mod:AddTimerLine(DBM_ADDS)
 local timerSealofBwonCD					= mod:NewCDTimer(25.5, 286695, nil, nil, nil, 5)
 local timerNecroticSmashCD				= mod:NewCDTimer(34.6, 286742, nil, nil, nil, 2)
 

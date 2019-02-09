@@ -74,19 +74,21 @@ local specWarnStormsWail				= mod:NewSpecialWarningMoveTo(285350, nil, nil, 2, 3
 local yellStormsWail					= mod:NewYell(285350)
 local yellStormsWailFades				= mod:NewShortFadesYell(285350)
 
---mod:AddTimerLine(DBM:EJ_GetSectionInfo(18527))
 --Stage One: Storm the Ships
-----General
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(19257))
 ----Sister Katherine
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(19261))
 local timerVoltaicFlashCD				= mod:NewCDTimer(17, 284262, nil, nil, nil, 3)--17-35 wtf?
 local timerCracklingLightningCD			= mod:NewCDTimer(12.1, 284106, nil, nil, nil, 3)--12.1 and 22 alternating
 --local timerThunderousBoomCD			= mod:NewCastTimer(55, 284120, nil, nil, nil, 2)--After timing is figured out after crackling
 local timerElecShroudCD					= mod:NewCDTimer(34, 287995, nil, nil, nil, 4, nil, DBM_CORE_DAMAGE_ICON..DBM_CORE_INTERRUPT_ICON)--34-41, maybe health based?
 ----Brother Joseph
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(19262))
 local timerSeaStormCD					= mod:NewCDTimer(10.9, 284360, nil, nil, nil, 3)
 local timerSeasTemptationCD				= mod:NewCDCountTimer(34, 284383, nil, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON)--Might be health based
 local timerTidalShroudCD				= mod:NewCDTimer(36.5, 286558, nil, nil, nil, 4, nil, DBM_CORE_DAMAGE_ICON..DBM_CORE_INTERRUPT_ICON)--Probalby health based
 --Stage Two: Laminaria
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(19258))
 local timerCataTides					= mod:NewCastTimer(15, 288696, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
 local timerSeaSwellCD					= mod:NewCDTimer(20.6, 285118, nil, nil, nil, 3)
 local timerIreoftheDeepCD				= mod:NewCDTimer(32.8, 285017, nil, nil, nil, 5)
