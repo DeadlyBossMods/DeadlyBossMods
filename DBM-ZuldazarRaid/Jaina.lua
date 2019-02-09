@@ -106,7 +106,7 @@ local specWarnPrismaticImage			= mod:NewSpecialWarningSwitchCount(288747, "Dps",
 local timerPhaseTransition				= mod:NewPhaseTimer(55)
 --Stage One: Burning Seas
 mod:AddTimerLine(SCENARIO_STAGE:format(1))
-local timerCorsairCD					= mod:NewCDTimer(60.4, "ej19690", nil, nil, nil, 1, "Interface\\ICONS\\Inv_tabard_kultiran", true)
+local timerCorsairCD					= mod:NewCDTimer(60.4, "ej19690", nil, nil, nil, 1, "Interface\\ICONS\\Inv_tabard_kultiran", nil, true)
 --local timerBombardCD					= mod:NewAITimer(55, 285828, nil, nil, nil, 3)
 local timerAvalancheCD					= mod:NewCDTimer(60.7, 287565, nil, nil, 2, 5, nil, nil, true)
 local timerGraspofFrostCD				= mod:NewCDTimer(6, 287626, nil, nil, nil, 3, nil, DBM_CORE_MAGIC_ICON, true)
@@ -218,7 +218,17 @@ do
 end
 --]]
 
---/run DBM:GetModByName("2343"):OnCombatStart(0)
+--/run DBM:GetModByName("2343"):TimerTestFunction(30)
+function mod:TimerTestFunction(time)
+	timerFrozenSiegeCD:Start(3.3-delay)
+	timerAvalancheCD:Start(13.4-delay)
+	timerFreezingBlastCD:Start(8.6-delay)
+	timerGraspofFrostCD:Start(23.5-delay)
+	timerRingofIceCD:Start(60.7-delay, 1)
+	timerHowlingWindsCD:Start(67, 1)
+	self:ScheduleMethod(time, "TimerTestFunction", time)
+end
+
 function mod:OnCombatStart(delay)
 	self.vb.phase = 1
 	self.vb.corsairCount = 0
