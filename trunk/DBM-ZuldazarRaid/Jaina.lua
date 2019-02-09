@@ -570,7 +570,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.NPAuraOnTimeWarp then
 			DBM.Nameplate:Hide(true, args.sourceGUID, spellId)
 		end
-	elseif spellId == 288199 and self.vb.phase < 2  then--Howling Winds
+	elseif spellId == 288199 and self.vb.phase < 2 and self:IsInCombat()  then--Howling Winds
 		self.vb.phase = 2
 		warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(2))
 		warnPhase:Play("ptwo")
@@ -583,7 +583,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 		timerSiegebreakerCD:Start(40.3, 1)
 		--Blizzard closes tooltip windows during cut scenes, so we gotta make sure to recall this window
-		if self.Options.InfoFrame and not DBM.InfoFrame:IsShown() and self:IsInCombat() then
+		if self.Options.InfoFrame and not DBM.InfoFrame:IsShown() then
 			--DBM.InfoFrame:SetHeader(DBM_CORE_INFOFRAME_POWER)
 			--DBM.InfoFrame:Show(8, "function", updateInfoFrame, false, false)
 			DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(287993))
@@ -604,7 +604,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		if args:IsPlayer() then
 			yellSiegebreakerFades:Cancel()
 		end
-	elseif spellId == 290001 then--Arcane Barrage
+	elseif spellId == 290001 and self:IsInCombat() then--Arcane Barrage
 		self.vb.phase = 3
 		self.vb.iceFallCount = 0
 		self.vb.broadsideCount = 0
@@ -624,7 +624,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerOrbofFrostCD:Start(11, 1)
 		end
 		--Blizzard closes tooltip windows during cut scenes, so we gotta make sure to recall this window
-		if self.Options.InfoFrame and not DBM.InfoFrame:IsShown() and self:IsInCombat() then
+		if self.Options.InfoFrame and not DBM.InfoFrame:IsShown() then
 			--DBM.InfoFrame:SetHeader(DBM_CORE_INFOFRAME_POWER)
 			--DBM.InfoFrame:Show(8, "function", updateInfoFrame, false, false)
 			DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(287993))
