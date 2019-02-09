@@ -106,7 +106,7 @@ local specWarnPrismaticImage			= mod:NewSpecialWarningSwitchCount(288747, "Dps",
 local timerPhaseTransition				= mod:NewPhaseTimer(55)
 --Stage One: Burning Seas
 mod:AddTimerLine(SCENARIO_STAGE:format(1))
-local timerCorsairCD					= mod:NewCDTimer(60.4, "ej19690", nil, nil, nil, 1, "Interface\\ICONS\\Inv_tabard_kultiran", nil, true)
+local timerCorsairCD					= mod:NewCDTimer(60.4, "ej19690", nil, nil, nil, 1, "Interface\\ICONS\\Inv_tabard_kultiran")
 --local timerBombardCD					= mod:NewAITimer(55, 285828, nil, nil, nil, 3)
 local timerAvalancheCD					= mod:NewCDTimer(60.7, 287565, nil, nil, 2, 5, nil, nil, true)
 local timerGraspofFrostCD				= mod:NewCDTimer(6, 287626, nil, nil, nil, 3, nil, DBM_CORE_MAGIC_ICON, true)
@@ -224,10 +224,10 @@ function mod:TimerTestFunction(time)
 	timerFrozenSiegeCD:Start(3.3, 1)
 	timerAvalancheCD:Start(13.4)
 	timerFreezingBlastCD:Start(8.6)
-	timerGraspofFrostCD:Start(23.5)
+	timerGraspofFrostCD:Start(15.5)
 	timerRingofIceCD:Stop()
-	timerRingofIceCD:Start(60.7, 1)
-	timerHowlingWindsCD:Start(67, 1)
+	timerRingofIceCD:Start(20, 1)
+	timerHowlingWindsCD:Start(25, 1)
 	self:ScheduleMethod(time, "TimerTestFunction", time)
 end
 
