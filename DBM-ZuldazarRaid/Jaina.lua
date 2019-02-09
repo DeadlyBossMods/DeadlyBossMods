@@ -457,7 +457,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 287925 then
 		warnTimeWarp:Show()
 	elseif spellId == 287626 then
-		timerGraspofFrostCD:Start(17.3)
+		if self:IsHard() then
+			timerGraspofFrostCD:Start(17.3)
+		end
 		self:Schedule(0.1, graspCollection, true)
 	elseif spellId == 289220 and args:GetSrcCreatureID() == 149144 then
 		timerHeartofFrostCD:Start()
