@@ -78,11 +78,13 @@ local timerAbyssalCollapse				= mod:NewCastTimer(20, 282886, nil, nil, nil, 2, n
 local timerStormofAnnihilation			= mod:NewCastTimer(15, 286755, nil, nil, nil, 2, nil, DBM_CORE_HEALER_ICON)
 local timerPact							= mod:NewCastSourceTimer(12, 282675, nil, nil, nil, 2, nil, DBM_CORE_IMPORTANT_ICON)
 --Zaxasj the Speaker
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(18974))
 local timerCerebralAssaultCD			= mod:NewCDTimer(31.6, 282589, nil, nil, nil, 3)
 local timerDarkherald					= mod:NewTargetTimer(20, 282589, nil, nil, nil, 5)
 local timerDarkheraldCD					= mod:NewCDTimer(32.8, 282589, nil, nil, nil, 3)
 local timerTerrifyingEcho				= mod:NewCastTimer(15, 282517, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
 --Fa'thuul the Feared
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(18983))
 local timerShearMindCD					= mod:NewCDTimer(8.4, 282384, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerDevourThoughtsCD				= mod:NewCDTimer(9.8, 282818, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerVoidCrashCD					= mod:NewCDTimer(13.3, 285416, nil, nil, nil, 3)
