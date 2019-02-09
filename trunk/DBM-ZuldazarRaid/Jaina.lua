@@ -15,7 +15,7 @@ mod:SetHotfixNoticeRev(18175)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 287565 285177 285459 290036 288221 288345 288441 288719 289219 289940 290084 288619 288747 289488 289220",
+	"SPELL_CAST_START 287565 285177 285459 290036 288221 288345 288441 288719 289219 289940 290084 288619 288747 289488 289220 287626",
 	"SPELL_CAST_SUCCESS 285725 287925 287626 289220 288374 288211",
 	"SPELL_AURA_APPLIED 287993 287490 289387 287925 285253 287626 288199 288219 288212 288374 288412 288434 289220 285254 288038 287322 288169",
 	"SPELL_AURA_APPLIED_DOSE 287993 285253",
@@ -76,7 +76,7 @@ local yellMarkedTarget					= mod:NewYell(288038, nil, false)
 local specWarnAvalanche					= mod:NewSpecialWarningYou(285254, nil, nil, nil, 1, 2)
 local yellAvalanche						= mod:NewYell(285254)
 local specWarnAvalancheTaunt			= mod:NewSpecialWarningTaunt(287565, nil, nil, nil, 1, 2)
-local specWarGraspofFrost				= mod:NewSpecialWarningDispel(287626, false, nil, 2, 1, 2)--Cast more often now, so make this an opt in warning
+local specWarGraspofFrost				= mod:NewSpecialWarningDispel(287626, "Healer", nil, 3, 1, 2)
 local specWarnFreezingBlast				= mod:NewSpecialWarningDodge(285177, "Tank", nil, nil, 2, 2)
 local specWarnRingofIce					= mod:NewSpecialWarningRun(285459, nil, nil, nil, 4, 2)
 --Stage Two: Frozen Wrath
@@ -163,6 +163,8 @@ mod.vb.waterboltVolleyCount = 0
 mod.vb.howlingWindsCast = 0
 mod.vb.frozenSiegeCount = 0
 local ChillingTouchStacks = {}
+local chillingCollector = {}
+local graspActive = false
 local castsPerGUID = {}
 local rangeThreshold = 1
 
@@ -255,6 +257,17 @@ function mod:HeartofFrostTarget(targetname, uId)
 	end
 end
 
+local function graspCollection(finish)
+	if finish then
+		graspActive = false
+		specWarGraspofFrost:Show(table.concat(chillingCollector, "<, >"))
+		specWarGraspofFrost:Play("helpdispel")
+	else
+		table.wipe(chillingCollector)
+		graspActive = true
+	end
+end
+
 function mod:OnCombatStart(delay)
 	self.vb.phase = 1
 	self.vb.corsairCount = 0
@@ -271,6 +284,8 @@ function mod:OnCombatStart(delay)
 	self.vb.frozenSiegeCount = 0
 	table.wipe(castsPerGUID)
 	table.wipe(ChillingTouchStacks)
+	table.wipe(chillingCollector)
+	graspActive = false
 	if self:IsMythic() then
 		rangeThreshold = 1
 		timerFrozenSiegeCD:Start(3.3-delay, 1)
@@ -430,6 +445,8 @@ function mod:SPELL_CAST_START(args)
 		timerFrozenSiegeCD:Start(nil, self.vb.frozenSiegeCount+1)
 	elseif spellId == 289220 then
 		self:ScheduleMethod(0.2, "BossTargetScanner", args.sourceGUID, "HeartofFrostTarget", 0.1, 8, true, nil, nil, nil, false)--Does this target tank? if not, change false to true
+	elseif spellId == 287626 then
+		graspCollection()
 	end
 end
 
@@ -441,6 +458,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnTimeWarp:Show()
 	elseif spellId == 287626 then
 		timerGraspofFrostCD:Start(17.3)
+		graspCollection(true)
 	elseif spellId == 289220 and args:GetSrcCreatureID() == 149144 then
 		timerHeartofFrostCD:Start()
 	elseif spellId == 288374 then
@@ -477,6 +495,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:UpdateTable(ChillingTouchStacks)
 		end
+		if graspActive then
+			chillingCollector[#chillingCollector + 1] = args.destName
+		end
 	elseif spellId == 287490 then
 		warnFrozenSolid:CombinedShow(0.5, args.destName)
 		local uId = DBM:GetRaidUnitId(args.destName)
@@ -506,8 +527,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			DBM.Nameplate:Show(true, args.sourceGUID, spellId, nil, 40)
 		end
 	elseif spellId == 287626 then
-		specWarGraspofFrost:CombinedShow(1, args.destName)
-		specWarGraspofFrost:ScheduleVoice(1, "helpdispel")
+		--specWarGraspofFrost:CombinedShow(1, args.destName)
+		--specWarGraspofFrost:ScheduleVoice(1, "helpdispel")
 	elseif spellId == 288199 then--Howling Winds (secondary 1.5 trigger)
 		if self.vb.phase == 1 then
 			self.vb.phase = 1.5
