@@ -84,6 +84,11 @@ L:SetOptionLocalization({
 	ShowOnlySummary	= "Hide player names on reverse range check and show only the summary info (the total nearby player count)"
 })
 
+L:SetMiscLocalization({
+	Port			=	"port side",
+	Starboard		=	"starboard side"
+})
+
 -------------
 --  Trash  --
 -------------
