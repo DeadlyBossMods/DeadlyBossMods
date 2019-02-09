@@ -476,6 +476,10 @@ options = {
 		type = "string",
 		default = "NoAnim",
 	},
+	KeepBars = {
+		type = "boolean",
+		default = true,
+	},
 }
 
 
@@ -742,7 +746,7 @@ do
 	end
 	local mt = {__index = barPrototype}
 
-	function DBT:CreateBar(timer, id, icon, huge, small, color, isDummy, colorType, inlineIcon)
+	function DBT:CreateBar(timer, id, icon, huge, small, color, isDummy, colorType, inlineIcon, keep)
 		if timer <= 0 then return end
 		if (self.numBars or 0) >= 15 and not isDummy then return end
 		--Most efficient place to block it, nil colorType instead of checking option every update
@@ -778,6 +782,7 @@ do
 				newBar.colorType = colorType
 				newBar.flashing = nil
 				newBar.inlineIcon = inlineIcon
+				newBar.keep = keep
 			else  -- duplicate code ;(
 				newBar = setmetatable({
 					frame = newFrame,
@@ -793,6 +798,7 @@ do
 					flashing = nil,
 					colorType = colorType,
 					inlineIcon = inlineIcon,
+					keep = keep,
 					lastUpdate = GetTime()
 				}, mt)
 			end
@@ -1041,7 +1047,7 @@ function barPrototype:Update(elapsed)
 			spark:SetVertexColor(r, g, b)
 		end
 	end
-	if timerValue <= 0 then
+	if timerValue <= 0 and not (barOptions.KeepBars and self.keep) then
 		return self:Cancel()
 	else
 		if fillUpBars then

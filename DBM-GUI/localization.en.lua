@@ -178,6 +178,8 @@ L.BarSort					= "Sort by remaining time"
 L.BarColorByType			= "Color by type"
 L.BarInlineIcons			= "Show inline icons"
 L.ShortTimerText			= "Use short timer text (when available)"
+L.KeepBar					= "Keep timer active until ability cast"
+L.KeepBar2					= "(when supported by mod)"
 
 -- Tab: Spec Warn Frame
 L.Panel_SpecWarnFrame		= "Special Warnings"
