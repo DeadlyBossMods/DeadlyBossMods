@@ -54,11 +54,6 @@ function mod:SPELL_CAST_START(args)
 end
 --]]
 
---/run DBM:GetModByName("ZuldazarRaidTrash"):TestSourceWarning("Omegal", "YOU")
-function mod:TestSourceWarning(sourceName, destName)
-	warnBwonsamdiKnife:Show(sourceName, destName)
-end
-
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 290578 then

@@ -79,12 +79,12 @@ local specWarnCoinSweep					= mod:NewSpecialWarningTaunt(287037, nil, nil, nil, 
 local specWarnSurgingGold				= mod:NewSpecialWarningDodge(289155, nil, nil, nil, 2, 2)
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 8)
 
---mod:AddTimerLine(DBM:EJ_GetSectionInfo(18527))
 --General
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(19495))
 local timerThiefsBane					= mod:NewBuffFadesTimer(30, 287424, nil, nil, nil, 3)
-local timerChaoticDisplacementCD		= mod:NewCDTimer(30.3, 289383, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)--Mythic
 --Stage One: Raiding The Vault
 local timerCrushCD						= mod:NewCDSourceTimer(55, 283604, nil, nil, nil, 3)--Both
+local timerChaoticDisplacementCD		= mod:NewCDTimer(30.3, 289383, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)--Mythic
 ----The Hand of In'zashi
 local timerVolatileChargeCD				= mod:NewCDTimer(12.1, 283507, nil, nil, nil, 3)
 ----Yalat's Bulwark
@@ -94,7 +94,7 @@ local timerFlamesofPunishmentCD			= mod:NewCDTimer(23, 282939, nil, nil, nil, 3)
 local timerRubyBeam						= mod:NewBuffActiveTimer(8, 284081, nil, nil, nil, 3)
 local timerHexofLethargyCD					= mod:NewCDTimer(21.8, 284470, nil, nil, nil, 3, nil, DBM_CORE_MAGIC_ICON)
 --Stage Two: Toppling the Guardian
-mod:AddTimerLine(SCENARIO_STAGE:format(2))
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(19496))
 local timerDrawPower					= mod:NewCastTimer(5, 282939, nil, nil, nil, 6)
 local timerLiquidGoldCD					= mod:NewCDTimer(15.6, 287072, nil, nil, nil, 3)
 local timerSpiritsofGoldCD				= mod:NewCDTimer(65.6, 285995, nil, nil, nil, 1)
