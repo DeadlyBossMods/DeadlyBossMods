@@ -161,6 +161,7 @@ mod.vb.glacialRayCount = 0
 mod.vb.broadsideIcon = 0
 mod.vb.waterboltVolleyCount = 0
 mod.vb.howlingWindsCast = 0
+mod.vb.frozenSiegeCount = 0
 local ChillingTouchStacks = {}
 local castsPerGUID = {}
 local rangeThreshold = 1
@@ -220,14 +221,25 @@ end
 
 --/run DBM:GetModByName("2343"):TimerTestFunction(30)
 function mod:TimerTestFunction(time)
-	timerFrozenSiegeCD:Start(3.3-delay)
-	timerAvalancheCD:Start(13.4-delay)
-	timerFreezingBlastCD:Start(8.6-delay)
-	timerGraspofFrostCD:Start(23.5-delay)
+	timerFrozenSiegeCD:Start(3.3, 1)
+	timerAvalancheCD:Start(13.4)
+	timerFreezingBlastCD:Start(8.6)
+	timerGraspofFrostCD:Start(23.5)
 	timerRingofIceCD:Stop()
-	timerRingofIceCD:Start(60.7-delay, 1)
+	timerRingofIceCD:Start(60.7, 1)
 	timerHowlingWindsCD:Start(67, 1)
 	self:ScheduleMethod(time, "TimerTestFunction", time)
+end
+
+--/run DBM:GetModByName("2343"):TimerTestFunctionEnd()
+function mod:TimerTestFunctionEnd()
+	timerFrozenSiegeCD:Stop()
+	timerAvalancheCD:Stop()
+	timerFreezingBlastCD:Stop()
+	timerGraspofFrostCD:Stop()
+	timerRingofIceCD:Stop()
+	timerHowlingWindsCD:Stop()
+	self:UnscheduleMethod("TimerTestFunction")
 end
 
 function mod:OnCombatStart(delay)
@@ -243,11 +255,12 @@ function mod:OnCombatStart(delay)
 	self.vb.glacialRayCount = 0
 	self.vb.broadsideIcon = 0
 	self.vb.howlingWindsCast = 0
+	self.vb.frozenSiegeCount = 0
 	table.wipe(castsPerGUID)
 	table.wipe(ChillingTouchStacks)
 	if self:IsMythic() then
 		rangeThreshold = 1
-		timerFrozenSiegeCD:Start(3.3-delay)
+		timerFrozenSiegeCD:Start(3.3-delay, 1)
 		--timerCorsairCD:Start(5.1-delay)--Unknown
 		timerAvalancheCD:Start(13.4-delay)
 		timerFreezingBlastCD:Start(8.6-delay)
@@ -399,8 +412,9 @@ function mod:SPELL_CAST_START(args)
 		specWarnPrismaticImage:Play("killmob")
 		timerPrismaticImageCD:Start(nil, self.vb.imageCount+1)
 	elseif spellId == 289488 then--Frozen Siege
-		warnFrozenSiege:Show()
-		timerFrozenSiegeCD:Start()
+		self.vb.frozenSiegeCount = self.vb.frozenSiegeCount + 1
+		warnFrozenSiege:Show(self.vb.frozenSiegeCount)
+		timerFrozenSiegeCD:Start(nil, self.vb.frozenSiegeCount+1)
 	end
 end
 
@@ -483,10 +497,13 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 287626 then
 		specWarGraspofFrost:CombinedShow(1, args.destName)
 		specWarGraspofFrost:ScheduleVoice(1, "helpdispel")
-	elseif spellId == 288199 and self.vb.phase == 1 then--Howling Winds (secondary 1.5 trigger)
-		self.vb.phase = 1.5
-		warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(1.5))
-		warnPhase:Play("phasechange")
+	elseif spellId == 288199 then--Howling Winds (secondary 1.5 trigger)
+		if self.vb.phase == 1 then
+			self.vb.phase = 1.5
+			warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(1.5))
+			warnPhase:Play("phasechange")
+		end
+		--Redundant timer cancels in case she slipped anything last second at first 1.5 trigger (happens)
 		timerPhaseTransition:Stop()--In case it's wrong
 		timerCorsairCD:Stop()
 		timerAvalancheCD:Stop()
