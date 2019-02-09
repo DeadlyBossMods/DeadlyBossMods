@@ -10433,8 +10433,10 @@ do
 			--Keep: true or nil, whether or not to keep bar on screen when it expires (if true, timer should be retained until an actual TimerStop occurs or a new TimerStart with same barId happens
 			fireEvent("DBM_TimerStart", id, msg, timer, self.icon, self.type, self.spellId, colorId, self.mod.id, self.keep)
 			tinsert(self.startedTimers, id)
-			self.mod:Unschedule(removeEntry, self.startedTimers, id)
-			self.mod:Schedule(timer, removeEntry, self.startedTimers, id)
+			if not self.keep then--Don't ever remove startedTimers on a schedule, if it's a keep timer
+				self.mod:Unschedule(removeEntry, self.startedTimers, id)
+				self.mod:Schedule(timer, removeEntry, self.startedTimers, id)
+			end
 			return bar
 		else
 			return false, "disabled"
