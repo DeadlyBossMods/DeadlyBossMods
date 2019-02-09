@@ -446,7 +446,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 289220 then
 		self:ScheduleMethod(0.2, "BossTargetScanner", args.sourceGUID, "HeartofFrostTarget", 0.1, 8, true, nil, nil, nil, false)--Does this target tank? if not, change false to true
 	elseif spellId == 287626 then
-		graspCollection()
+		self:Schedule(1.9, graspCollection, self)
 	end
 end
 
