@@ -446,7 +446,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 289220 then
 		self:ScheduleMethod(0.2, "BossTargetScanner", args.sourceGUID, "HeartofFrostTarget", 0.1, 8, true, nil, nil, nil, false)--Does this target tank? if not, change false to true
 	elseif spellId == 287626 then
-		self:Schedule(1.9, graspCollection, self)
+		self:Schedule(1.9, graspCollection)
 	end
 end
 
@@ -458,7 +458,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnTimeWarp:Show()
 	elseif spellId == 287626 then
 		timerGraspofFrostCD:Start(17.3)
-		graspCollection(true)
+		self:Schedule(0.1, graspCollection, true)
 	elseif spellId == 289220 and args:GetSrcCreatureID() == 149144 then
 		timerHeartofFrostCD:Start()
 	elseif spellId == 288374 then
