@@ -57,7 +57,7 @@ local applyFailed = false
 local totalBars = 0
 local barIsAnimating = false
 local function stringFromTimer(t)
-	if t <= DBM.Bars:GetOption("Decimal") then
+	if t <= DBM.Bars:GetOption("TDecimal") then
 		return ("%.1f"):format(t)
 	elseif t <= 60 then
 		return ("%d"):format(t)
@@ -380,9 +380,9 @@ options = {
 		type = "number",
 		default = 20,
 	},
-	Decimal = {
+	TDecimal = {
 		type = "number",
-		default = 60,
+		default = 11,
 	},
 	Alpha = {
 		type = "number",
