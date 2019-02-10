@@ -60,9 +60,10 @@ local specWarnDeploySparkBot			= mod:NewSpecialWarningSwitch(288410, nil, nil, n
 local specWarnShrunk					= mod:NewSpecialWarningYou(284168, nil, nil, nil, 1, 2)
 local yellShrunk						= mod:NewShortYell(284168)--Shrunk will just say with white letters
 local yellShrunkRepeater				= mod:NewYell(284168, UnitName("player"))
+local yellTamperingRepeater				= mod:NewYell(286105, UnitName("player"), nil, nil, "YELL")
 local specWarnShrunkTaunt				= mod:NewSpecialWarningTaunt(284168, nil, nil, nil, 1, 2)
 local specWarnEnormous					= mod:NewSpecialWarningYou(289023, nil, nil, nil, 1, 2)--Mythic
-local yellEnormous						= mod:NewYell(289023, nil, nil, nil, "YELL")--Enormous will shout with red letters
+local yellEnormous						= mod:NewYell(289023)--Enormous will shout with red letters
 local specWarnMisCalcTele				= mod:NewSpecialWarningYou(287114, nil, nil, nil, 1, 2)--Mythic
 local yellMisCalcTele					= mod:NewYell(287114)
 --Intermission: Evasive Maneuvers!
@@ -245,9 +246,13 @@ local explodingSheepTimers = {
 	},
 }
 
-local function shrunkYellRepeater(self, icon)
-	yellShrunkRepeater:Yell()
-	self:Schedule(2, shrunkYellRepeater, self)
+local function shrunkYellRepeater(self, tampering)
+	if tampering then
+		yellTamperingRepeater:Yell()
+	else
+		yellShrunkRepeater:Yell()
+	end
+	self:Schedule(2, shrunkYellRepeater, self, tampering)
 end
 
 local updateInfoFrame
@@ -554,7 +559,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			robotCount = robotCount + 1
 			if args:IsPlayer() then
 				self:Unschedule(shrunkYellRepeater)
-				self:Schedule(2, shrunkYellRepeater, self)
+				self:Schedule(2, shrunkYellRepeater, self, true)
 			end
 		end
 	elseif spellId == 287114 then
