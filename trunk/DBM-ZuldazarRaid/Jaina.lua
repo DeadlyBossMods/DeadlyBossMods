@@ -446,6 +446,7 @@ function mod:SPELL_CAST_START(args)
 		self:ScheduleMethod(0.2, "BossTargetScanner", args.sourceGUID, "HeartofFrostTarget", 0.1, 8, true, nil, nil, nil, false)--Does this target tank? if not, change false to true
 	elseif spellId == 287626 then
 		table.wipe(chillingCollector)
+		self:Unschedule(graspCollection)
 		self:Schedule(1.9, graspCollection, false)
 	end
 end
