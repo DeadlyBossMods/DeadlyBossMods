@@ -10406,7 +10406,7 @@ do
 			elseif self.colorType and type(self.colorType) == "string" then--No option for specific timer, but another bool option given that tells us where to look for TColor
 				colorId = self.mod.Options[self.colorType .. "TColor"] or 0
 			end
-			local bar = DBM.Bars:CreateBar(timer, id, self.icon, nil, nil, nil, nil, colorId, nil, self.keep)
+			local bar = DBM.Bars:CreateBar(timer, id, self.icon, nil, nil, nil, nil, colorId, nil, self.keep, self.fade)
 			if not bar then
 				return false, "error" -- creating the timer failed somehow, maybe hit the hard-coded timer limit of 15
 			end
@@ -10443,6 +10443,23 @@ do
 		end
 	end
 	timerPrototype.Show = timerPrototype.Start
+	
+	--A way to set the fade to yes or no, overriding value in NewTimer object
+	--If this method is used, it WILL persist until reload or changing it back, since it's writing bool into meta
+	function timerPrototype:SetFade(fadeOn, ...)
+		--Done this way so SetFade can be used with :Start without needless performance cost (ie, ApplyStyle won't run unless it needs to)
+		if fadeOn and not self.fade then
+			local id = self.id..pformat((("\t%s"):rep(select("#", ...))), ...)
+			local bar = DBM.Bars:GetBar(id)
+			bar.fade = true
+			bar:ApplyStyle()
+		elseif not fadeOn and self.fade then
+			local id = self.id..pformat((("\t%s"):rep(select("#", ...))), ...)
+			local bar = DBM.Bars:GetBar(id)
+			bar.fade = false
+			bar:ApplyStyle()
+		end
+	end
 
 	function timerPrototype:DelayedStart(delay, ...)
 		unschedule(self.Start, self.mod, self, ...)
