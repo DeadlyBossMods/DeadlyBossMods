@@ -67,7 +67,7 @@ local warnFrostNova						= mod:NewCastAnnounce(289219, 3)
 local warnCrystalDust					= mod:NewCountAnnounce(289940, 3)
 
 --General
-local specWarnFreezingBlood				= mod:NewSpecialWarningMoveTo(289387, nil, nil, 2, 3, 2)
+local specWarnFreezingBlood				= mod:NewSpecialWarningMoveTo(289387, false, nil, 3, 1, 2)
 local specWarnChillingStack				= mod:NewSpecialWarningStack(287993, nil, 2, nil, nil, 1, 6)
 --Stage One: Burning Seas
 local specWarnIceShard					= mod:NewSpecialWarningTaunt(285253, false, nil, nil, 1, 2)

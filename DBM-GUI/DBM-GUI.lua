@@ -2073,7 +2073,7 @@ local function CreateOptionsMenu()
 		bar7OptionsText2:SetPoint("TOPLEFT", customInline, "TOPLEFT", 0, -60)
 
 		--General Options
-		local BarSetup = BarSetupPanel:CreateArea(L.AreaTitle_BarSetup, nil, 370, true)
+		local BarSetup = BarSetupPanel:CreateArea(L.AreaTitle_BarSetup, nil, 410, true)
 
 		local color1 = BarSetup:CreateColorSelect(64)
 		local color2 = BarSetup:CreateColorSelect(64)
@@ -2218,6 +2218,12 @@ local function CreateOptionsMenu()
 		
 		local KeepTimers2 = BarSetup:CreateText(L.KeepBar2, 405, nil, nil, "LEFT")
 		KeepTimers2:SetPoint("TOPLEFT", KeepTimers, "BOTTOMLEFT", 25, 10)
+		
+		local FadeTimers = BarSetup:CreateCheckButton(L.FadeBar, false, nil, nil, "FadeBars")
+		FadeTimers:SetPoint("TOPLEFT", KeepTimers, "BOTTOMLEFT", 0, 0)
+		
+		local FadeTimers2 = BarSetup:CreateText(L.KeepBar2, 405, nil, nil, "LEFT")
+		FadeTimers2:SetPoint("TOPLEFT", FadeTimers, "BOTTOMLEFT", 25, 10)
 
 		-- Functions for bar setup
 		local function createDBTOnShowHandler(option)
