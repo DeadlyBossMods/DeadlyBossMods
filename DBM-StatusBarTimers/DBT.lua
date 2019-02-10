@@ -480,6 +480,10 @@ options = {
 		type = "boolean",
 		default = true,
 	},
+	FadeBars = {
+		type = "boolean",
+		default = true,
+	},
 }
 
 
@@ -746,7 +750,7 @@ do
 	end
 	local mt = {__index = barPrototype}
 
-	function DBT:CreateBar(timer, id, icon, huge, small, color, isDummy, colorType, inlineIcon, keep)
+	function DBT:CreateBar(timer, id, icon, huge, small, color, isDummy, colorType, inlineIcon, keep, fade)
 		if timer <= 0 then return end
 		if (self.numBars or 0) >= 15 and not isDummy then return end
 		--Most efficient place to block it, nil colorType instead of checking option every update
@@ -783,6 +787,7 @@ do
 				newBar.flashing = nil
 				newBar.inlineIcon = inlineIcon
 				newBar.keep = keep
+				newBar.fade = fade
 			else  -- duplicate code ;(
 				newBar = setmetatable({
 					frame = newFrame,
@@ -799,6 +804,7 @@ do
 					colorType = colorType,
 					inlineIcon = inlineIcon,
 					keep = keep,
+					fade = fade,
 					lastUpdate = GetTime()
 				}, mt)
 			end
@@ -1287,12 +1293,20 @@ function barPrototype:ApplyStyle()
 		bar:SetWidth(barHugeWidth)
 		bar:SetHeight(barHeight)
 		frame:SetScale(barOptions.HugeScale)
-		frame:SetAlpha(barOptions.HugeAlpha)
+		if barOptions.FadeBars and self.fade then
+			frame:SetAlpha(barOptions.HugeAlpha/2)
+		else
+			frame:SetAlpha(barOptions.HugeAlpha)
+		end
 	else
 		bar:SetWidth(barWidth)
 		bar:SetHeight(barHeight)
 		frame:SetScale(barOptions.Scale)
-		frame:SetAlpha(barOptions.Alpha)
+		if barOptions.FadeBars and self.fade then
+			frame:SetAlpha(barOptions.Alpha/2)
+		else
+			frame:SetAlpha(barOptions.Alpha)
+		end
 	end
 	if barOptions.IconLocked then
 		if enlarged then frame:SetWidth(barHugeWidth); frame:SetHeight(barHeight); else frame:SetWidth(barWidth); frame:SetHeight(barHeight); end
