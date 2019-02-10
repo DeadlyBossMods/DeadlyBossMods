@@ -263,7 +263,6 @@ local function graspCollection(finish)
 		specWarGraspofFrost:Show(table.concat(chillingCollector, "<, >"))
 		specWarGraspofFrost:Play("helpdispel")
 	else
-		table.wipe(chillingCollector)
 		graspActive = true
 	end
 end
@@ -446,7 +445,8 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 289220 then
 		self:ScheduleMethod(0.2, "BossTargetScanner", args.sourceGUID, "HeartofFrostTarget", 0.1, 8, true, nil, nil, nil, false)--Does this target tank? if not, change false to true
 	elseif spellId == 287626 then
-		self:Schedule(1.9, graspCollection)
+		table.wipe(chillingCollector)
+		self:Schedule(1.9, graspCollection, false)
 	end
 end
 
@@ -498,7 +498,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			DBM.InfoFrame:UpdateTable(ChillingTouchStacks)
 		end
 		if graspActive then
-			chillingCollector[#chillingCollector + 1] = args.destName
+			if not tContains(chillingCollector, args.destName) then
+				table.insert(chillingCollector, args.destName)
+			end
 		end
 	elseif spellId == 287490 then
 		warnFrozenSolid:CombinedShow(0.5, args.destName)
