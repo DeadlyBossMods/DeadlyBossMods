@@ -167,6 +167,7 @@ local chillingCollector = {}
 local graspActive = false
 local castsPerGUID = {}
 local rangeThreshold = 1
+local fixStupid = {}
 
 --[[
 local updateInfoFrame
@@ -285,6 +286,7 @@ function mod:OnCombatStart(delay)
 	table.wipe(ChillingTouchStacks)
 	table.wipe(chillingCollector)
 	graspActive = false
+	table.wipe(fixStupid)
 	if self:IsMythic() then
 		rangeThreshold = 1
 		timerFrozenSiegeCD:Start(3.3-delay, 1)
@@ -557,7 +559,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(287993))
 			DBM.InfoFrame:Show(5, "table", ChillingTouchStacks, 1)
 		end
-	elseif spellId == 288219 then
+	elseif spellId == 288219 and not fixStupid[args.sourceGUID] then
+		fixStupid[args.sourceGUID] = true
 		if self.Options.NPAuraOnRefractiveIce then
 			DBM.Nameplate:Show(true, args.sourceGUID, spellId)
 		end
