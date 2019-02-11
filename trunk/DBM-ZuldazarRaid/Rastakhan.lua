@@ -163,6 +163,7 @@ function mod:MeteorLeapTarget(targetname, uId)
 end
 
 --/run DBM:GetModByName("2335"):TestLiveRealm()
+--Run me to test starting bars who already have fade variable set
 function mod:TestLiveRealm()
 	--Set fade defaults to fade bwonsamdi's timers
 	timerInevitableEndCD:SetFade(true)
@@ -181,6 +182,7 @@ function mod:TestLiveRealm()
 end
 
 --/run DBM:GetModByName("2335"):TestDeathRealm()
+--Run me to do same as above but on alternate timers
 function mod:TestDeathRealm()
 	--Set fade defaults to fade bwonsamdi's timers
 	timerInevitableEndCD:SetFade(false)
@@ -198,7 +200,36 @@ function mod:TestDeathRealm()
 	timerInevitableEndCD:Start(35.8, 1)
 end
 
+--/run DBM:GetModByName("2335"):TestLiveUpdate()
+--Run me to test fade running on an already running timer (fade update event)
+function mod:TestLiveUpdate()
+	--Rasta
+	timerZombieDustTotemCD:Start(10)
+	timerDeathsDoorCD:Start(27.5)
+	timerScorchingDetonationCD:Start(32.8, 1)
+	timerPlagueofFireCD:Start(40)
+	--Bwon
+	timerDreadReapingCD:Start(7.6)
+	timerInevitableEndCD:Start(35.8, 1)
+	--Set fade defaults to fade bwonsamdi's timers
+	timerInevitableEndCD:SetFade(false, 1)
+	timerDreadReapingCD:SetFade(false)
+	timerZombieDustTotemCD:SetFade(true)
+	timerScorchingDetonationCD:SetFade(true, 1)
+	timerPlagueofFireCD:SetFade(true)
+end
 
+--/run DBM:GetModByName("2335"):EndTests()
+function mod:EndTest()
+	--Rasta
+	timerZombieDustTotemCD:Stop()
+	timerDeathsDoorCD:Stop(5)
+	timerScorchingDetonationCD:Stop()
+	timerPlagueofFireCD:Stop()
+	--Bwon
+	timerDreadReapingCD:Stop()
+	timerInevitableEndCD:Stop()
+end
 
 function mod:OnCombatStart(delay)
 	self.vb.phase = 1
