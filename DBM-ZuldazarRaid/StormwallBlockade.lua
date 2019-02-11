@@ -244,55 +244,54 @@ function mod:SPELL_CAST_START(args)
 			timerVoltaicFlashCD:Stop()
 			timerCracklingLightningCD:Stop()
 			timerElecShroudCD:Stop()
-			
-			--This may be more complicated than this, like maybe a pause/resume more so than this
-			timerCracklingLightningCD:Start(12)
-			timerVoltaicFlashCD:Start(17)
-			timerElecShroudCD:Start(36.4)
 			--Set all to false on teleport til we can refresh tank distance
 			timerCracklingLightningCD:SetFade(false)
 			timerVoltaicFlashCD:SetFade(false)
 			timerElecShroudCD:SetFade(false)
+			--This may be more complicated than this, like maybe a pause/resume more so than this
+			timerCracklingLightningCD:Start(12)
+			timerVoltaicFlashCD:Start(17)
+			timerElecShroudCD:Start(36.4)
 		elseif cid == 146251 then--Brother
 			timerSeaStormCD:Stop()
 			timerSeasTemptationCD:Stop()
 			timerTidalShroudCD:Stop()
-			
+
+			--Set all to false on teleport til we can refresh tank distance
+			timerSeaStormCD:SetFade(false)
+			timerSeasTemptationCD:SetFade(false)
+			timerTidalShroudCD:SetFade(false)
 			--This may be more complicated than this, like maybe a pause/resume more so than this
 			timerSeaStormCD:Start(12.1)
 			timerSeasTemptationCD:Start(26.7, self.vb.sirenCount+1)--Even less sure about this one
 			timerTidalShroudCD:Start(37.7)
-			--Set all to false on teleport til we can refresh tank distance
-			timerSeaStormCD:SetFade(false)
-			timerSeasTemptationCD:SetFade(false, self.vb.sirenCount+1)
-			timerTidalShroudCD:SetFade(false)
 		end
 	elseif spellId == 284383 then
 		self.vb.sirenCount = self.vb.sirenCount + 1
-		timerSeasTemptationCD:Start(nil, self.vb.sirenCount+1)
 		if self:CheckTankDistance(args.sourceGUID, 43) then
 			specWarnSeasTemptation:Show()
 			specWarnSeasTemptation:Play("killmob")
-			timerSeasTemptationCD:SetFade(false, self.vb.sirenCount+1)
+			timerSeasTemptationCD:SetFade(false)
 		else
-			timerSeasTemptationCD:SetFade(true, self.vb.sirenCount+1)
+			timerSeasTemptationCD:SetFade(true)
 		end
+		timerSeasTemptationCD:Start(nil, self.vb.sirenCount+1)
 	elseif spellId == 285017 then
 		specWarnIreoftheDeep:Show()
 		specWarnIreoftheDeep:Play("helpsoak")
 		timerIreoftheDeepCD:Start()
 	elseif spellId == 284362 then
-		if self:IsMythic() then
-			timerSeaStormCD:Start(9.7)
-		else
-			timerSeaStormCD:Start()--10.9
-		end
 		if self:CheckTankDistance(args.sourceGUID, 43) then
 			specWarnSeaStorm:Show()
 			specWarnSeaStorm:Play("watchstep")
 			timerSeaStormCD:SetFade(false)
 		else
 			timerSeaStormCD:SetFade(true)
+		end
+		if self:IsMythic() then
+			timerSeaStormCD:Start(9.7)
+		else
+			timerSeaStormCD:Start()--10.9
 		end
 	elseif spellId == 288696 then
 		warnCataTides:Show()
@@ -358,21 +357,21 @@ function mod:SPELL_AURA_APPLIED(args)
 			--end
 		--end
 	elseif spellId == 286558 then
-		timerTidalShroudCD:Start()
 		if self:CheckTankDistance(args.destGUID, 43) then
 			warnTidalShroud:Show(args.destName)
 			timerTidalShroudCD:SetFade(false)
 		else
 			timerTidalShroudCD:SetFade(true)
 		end
+		timerTidalShroudCD:Start()
 	elseif spellId == 287995 then
-		timerElecShroudCD:Start()
 		if self:CheckTankDistance(args.destGUID, 43) then
 			warnElecShroud:Show(args.destName)
 			timerElecShroudCD:SetFade(false)
 		else
 			timerElecShroudCD:SetFade(true)
 		end
+		timerElecShroudCD:Start()
 	elseif spellId == 284405 then
 		if args:IsPlayer() then
 			specWarnTemptingSong:Show()
@@ -456,10 +455,10 @@ function mod:SPELL_INTERRUPT(args)
 		timerSeaSwellCD:Start(7.2)--21.9
 		countdownSeaSwell:Start(7.2)
 		if self:IsMythic() then
-			timerVoltaicFlashCD:Start(18.7)
 			timerVoltaicFlashCD:SetFade(false)
+			timerSeasTemptationCD:SetFade(false)
+			timerVoltaicFlashCD:Start(18.7)
 			timerSeasTemptationCD:Start(38.7, 1)
-			timerSeasTemptationCD:SetFade(false, 1)
 		end
 	end
 end
