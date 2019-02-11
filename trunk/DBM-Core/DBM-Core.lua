@@ -10444,22 +10444,26 @@ do
 	end
 	timerPrototype.Show = timerPrototype.Start
 	
-	--A way to set the fade to yes or no, overriding value in NewTimer object
-	--If this method is used, it WILL persist until reload or changing it back, since it's writing bool into meta
+	--A way to set the fade to yes or no, overriding hardcoded value in NewTimer object with temporary one
+	--If this method is used, it WILL persist until reload or changing it back
 	function timerPrototype:SetFade(fadeOn, ...)
 		--Done this way so SetFade can be used with :Start without needless performance cost (ie, ApplyStyle won't run unless it needs to)
 		if fadeOn and not self.fade then
+			self.fade = true--set timer object metatable, which will make sure next bar started uses fade
+			--Find and Update an existing bar that's already started
 			local id = self.id..pformat((("\t%s"):rep(select("#", ...))), ...)
 			local bar = DBM.Bars:GetBar(id)
-			if bar then
-				bar.fade = true
+			if bar and not bar.fade then
+				bar.fade = true--Set bar object metatable, which is copied from timer metatable at bar start only
 				bar:ApplyStyle()
 			end
 		elseif not fadeOn and self.fade then
+			self.fade = false--set timer object metatable, which will make sure next bar started does NOT use fade
+			--Find and Update an existing bar that's already started
 			local id = self.id..pformat((("\t%s"):rep(select("#", ...))), ...)
 			local bar = DBM.Bars:GetBar(id)
-			if bar then
-				bar.fade = false
+			if bar and bar.fade then
+				bar.fade = false--Set bar object metatable, which is copied from timer metatable at bar start only
 				bar:ApplyStyle()
 			end
 		end
