@@ -10451,13 +10451,17 @@ do
 		if fadeOn and not self.fade then
 			local id = self.id..pformat((("\t%s"):rep(select("#", ...))), ...)
 			local bar = DBM.Bars:GetBar(id)
-			bar.fade = true
-			bar:ApplyStyle()
+			if bar then
+				bar.fade = true
+				bar:ApplyStyle()
+			end
 		elseif not fadeOn and self.fade then
 			local id = self.id..pformat((("\t%s"):rep(select("#", ...))), ...)
 			local bar = DBM.Bars:GetBar(id)
-			bar.fade = false
-			bar:ApplyStyle()
+			if bar then
+				bar.fade = false
+				bar:ApplyStyle()
+			end
 		end
 	end
 
