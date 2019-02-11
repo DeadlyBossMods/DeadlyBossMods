@@ -223,6 +223,8 @@ end
 --]]
 
 --/run DBM:GetModByName("2343"):TimerTestFunction(30)
+--This will auto loop, just run it once and wait to see how keep timers behave.
+--Grasp of frost and ring of ice will be two main ones to watch, they won't be "cast" again but every 30 seconds so a 15 and 20 second timer will be kept for 15 or 10 additional seconds.
 function mod:TimerTestFunction(time)
 	timerFrozenSiegeCD:Start(3.3, 1)
 	timerAvalancheCD:Start(13.4)
@@ -235,6 +237,7 @@ function mod:TimerTestFunction(time)
 end
 
 --/run DBM:GetModByName("2343"):TimerTestFunctionEnd()
+--Just run to end loop and stop all timers
 function mod:TimerTestFunctionEnd()
 	timerFrozenSiegeCD:Stop()
 	timerAvalancheCD:Stop()
