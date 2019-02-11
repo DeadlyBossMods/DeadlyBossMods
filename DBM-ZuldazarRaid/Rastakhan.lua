@@ -377,7 +377,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerPlagueofFireCD:Stop()
 		timerInevitableEndCD:Stop()
 		countdownInevitableEnd:Cancel()
-		--unfade everything
+		--unfade everything used in stage 4
 		timerInevitableEndCD:SetFade(false)
 		timerScorchingDetonationCD:SetFade(false)
 		timerPlagueofFireCD:SetFade(false)
