@@ -104,6 +104,7 @@ mod.vb.botIcon = 4
 mod.vb.shrinkCount = 0
 mod.vb.sheepCount = 0
 mod.vb.difficultyName = "None"
+local shrunkTargets = {}
 local playersInRobots = {}
 local robotCount = 0
 --Normal and heroic seem identical, at least so far, but blizz has been making tweeks to fight multiple times. Even this week they made additional timer alterations from last week on heroic
@@ -254,6 +255,7 @@ end
 
 local updateInfoFrame
 do
+	local shrunkName = DBM:GetSpellInfo(284168)
 	local floor = math.floor
 	local lines = {}
 	local sortedLines = {}
@@ -265,7 +267,9 @@ do
 	updateInfoFrame = function()
 		table.wipe(lines)
 		table.wipe(sortedLines)
+		--Players in Robots
 		if robotCount > 0 then
+			--Tampering First
 			for uId in DBM:GetGroupMembers() do
 				local unitName = DBM:GetUnitFullName(uId)
 				if playersInRobots[unitName] then--Matched a unitID and playername to one of them
@@ -277,6 +281,39 @@ do
 					else
 						addLine(unitName, count.."/3")
 					end
+				end
+			end
+		end
+		--Shrunk Second
+		addLine(shrunkName)
+		if #shrunkTargets > 0 then
+			local name, name2, name3, name4, name5, name6, name7, name8 = shrunkTargets[1], shrunkTargets[2], shrunkTargets[3], shrunkTargets[4], shrunkTargets[5], shrunkTargets[6], shrunkTargets[7], shrunkTargets[8]
+			if name then
+				if name2 then
+					addLine(name, name2)
+				else
+					addLine(name)
+				end
+			end
+			if name3 then
+				if name4 then
+					addLine(name3, name4)
+				else
+					addLine(name3)
+				end
+			end
+			if name5 then
+				if name6 then
+					addLine(name5, name6)
+				else
+					addLine(name5)
+				end
+			end
+			if name7 then
+				if name8 then
+					addLine(name7, name8)
+				else
+					addLine(name7)
 				end
 			end
 		end
@@ -295,6 +332,7 @@ function mod:OnCombatStart(delay)
 	self.vb.botIcon = 4
 	self.vb.shrinkCount = 0
 	table.wipe(playersInRobots)
+	table.wipe(shrunkTargets)
 	robotCount = 0
 	--Same across board (at least for now, LFR not out yet)
 	timerDeploySparkBotCD:Start(5-delay, 1)
@@ -517,6 +555,9 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnShrunkTaunt:Play("tauntboss")
 			end
 		end
+		if not tContains(shrunkTargets, args.destName) then
+			table.insert(shrunkTargets, args.destName)
+		end
 	elseif spellId == 289023 then
 		if args:IsPlayer() then
 			specWarnEnormous:Show()
@@ -575,6 +616,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			self:SetIcon(args.destName, 0)
 		end
 	elseif spellId == 284168 then
+		tDeleteItem(shrunkTargets, args.destName)
 		if args:IsPlayer() then
 			self:Unschedule(shrunkYellRepeater)
 		end
