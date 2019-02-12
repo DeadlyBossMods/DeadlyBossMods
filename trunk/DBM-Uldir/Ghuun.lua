@@ -177,9 +177,7 @@ do
 			--Scan raid for notable debuffs and add them
 			for i=1, #matrixTargets do
 				local name = matrixTargets[i]
-				local uId = DBM:GetRaidUnitId(name)
-				if not uId then break end
-				addLine(i.."-"..matrixSpellName, UnitName(uId))
+				addLine(i.."-"..matrixSpellName, name)
 			end
 			if mod.vb.matrixActive then
 				if mod:IsMythic() then--No side, short text
