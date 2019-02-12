@@ -20,8 +20,6 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 287757 287167 284168 289023 286051 289699 286646 282406 286105 287114",
 	"SPELL_AURA_APPLIED_DOSE 289699",
 	"SPELL_AURA_REMOVED 287757 284168 286646 286105"
---	"UNIT_DIED"
---	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
 --[[
@@ -89,10 +87,8 @@ local countdownWorldEnlarger			= mod:NewCountdown(50, 288049, true, nil, 4)
 local countdownGigavoltCharge			= mod:NewCountdown("Alt12", 286646, true, nil, 4)
 local countdownWormhole					= mod:NewCountdown("AltTwo32", 287952, nil, nil, 4)
 
---mod:AddNamePlateOption("NPAuraOnPresence", 276093)
 mod:AddSetIconOption("SetIconGigaVolt", 286646, true)
 mod:AddSetIconOption("SetIconBot", 288410, true, true)
---mod:AddRangeFrameOption("8/10")
 mod:AddInfoFrameOption(286105, true)
 
 mod.vb.phase = 1
@@ -326,21 +322,12 @@ function mod:OnCombatStart(delay)
 		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(286105))
 		DBM.InfoFrame:Show(8, "function", updateInfoFrame, false, false)
 	end
---	if self.Options.NPAuraOnPresence then
---		DBM:FireEvent("BossMod_EnableHostileNameplates")
---	end
 end
 
 function mod:OnCombatEnd()
---	if self.Options.RangeFrame then
---		DBM.RangeCheck:Hide()
---	end
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
 	end
---	if self.Options.NPAuraOnPresence then
---		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
---	end
 end
 
 function mod:SPELL_CAST_START(args)
@@ -608,19 +595,4 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spell
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
-
-function mod:UNIT_DIED(args)
-	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 146440 then--Shield Generator
-	
-	--elseif cid == 148123 then--Evil Twin (Mythic)
-
-	end
-end
-
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 274315 then
-
-	end
-end
 --]]
