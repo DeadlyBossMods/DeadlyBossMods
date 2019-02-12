@@ -36,6 +36,7 @@ local warnPhase							= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2
 --Ground Phase
 local warnShrunk						= mod:NewTargetNoFilterAnnounce(284168, 1)
 local warnMisTele						= mod:NewTargetNoFilterAnnounce(287114, 3)
+local warnDeploySparkbot				= mod:NewCountAnnounce(288410, 2)
 --Intermission: Evasive Maneuvers!
 
 --Final Push
@@ -54,7 +55,7 @@ local specWarnGigaVoltChargeFading		= mod:NewSpecialWarningMoveTo(286646, nil, n
 local specWarnGigaVoltChargeTaunt		= mod:NewSpecialWarningTaunt(286646, nil, nil, nil, 1, 2)
 local specWarnWormholeGenerator 		= mod:NewSpecialWarningCount(287952, nil, nil, nil, 2, 5)
 local specWarnDiscombobulation			= mod:NewSpecialWarningDispel(287167, "Healer", nil, nil, 1, 2)--Mythic
-local specWarnDeploySparkBot			= mod:NewSpecialWarningSwitch(288410, nil, nil, nil, 1, 2)
+local specWarnDeploySparkBot			= mod:NewSpecialWarningSwitchCount(288410, false, nil, nil, 1, 2)
 local specWarnShrunk					= mod:NewSpecialWarningYou(284168, nil, nil, nil, 1, 2)
 local yellShrunk						= mod:NewShortYell(284168)--Shrunk will just say with white letters
 local yellShrunkRepeater				= mod:NewYell(284168, UnitName("player"))
@@ -368,9 +369,11 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 288410 or spellId == 287691 then
 		self.vb.botCount = self.vb.botCount + 1
-		if DBM:UnitDebuff("player", 284168) then--Shrunk
-			specWarnDeploySparkBot:Show()
+		if self.Options.SpecWarn288410switchcount then
+			specWarnDeploySparkBot:Show(self.vb.botCount)
 			specWarnDeploySparkBot:Play("targetchange")
+		else
+			warnDeploySparkbot:Show(self.vb.botCount)
 		end
 		local timer = sparkBotTimers[self.vb.difficultyName][self.vb.phase][self.vb.botCount+1]
 		if timer then
