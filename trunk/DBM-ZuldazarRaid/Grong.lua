@@ -79,12 +79,9 @@ local countdownAdd						= mod:NewCountdown(120, addSpawnId, true, nil, 5)
 local countdownTankCombo				= mod:NewCountdown("Alt12", tankComboId, "Tank", nil, 4)
 local countdownFerociousRoar			= mod:NewCountdown("AltTwo32", 285994, nil, nil, 3)
 
---mod:AddNamePlateOption("NPAuraOnPresence", 276093)
---mod:AddSetIconOption("SetIconGift", 255594, true)
---mod:AddRangeFrameOption("8/10")
+mod:AddRangeFrameOption(8, 285994)
 mod:AddInfoFrameOption(energyAOESpellId, true)
 
---mod.vb.phase = 1
 mod.vb.EnergyAOECount = 0
 mod.vb.comboCount = 0
 local coreTargets = {}
@@ -140,9 +137,9 @@ function mod:OnCombatStart(delay)
 		countdownFerociousRoar:Start(35.5-delay)
 	end
 --	timerEnergyAOECD:Start(100-delay, 1)
---	if self.Options.NPAuraOnPresence then
---		DBM:FireEvent("BossMod_EnableHostileNameplates")
---	end
+	if self.Options.RangeFrame then
+		DBM.RangeCheck:Show(8, nil, nil, 2, true)
+	end
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(OVERVIEW)
 		DBM.InfoFrame:Show(8, "function", updateInfoFrame, false, false)
@@ -150,15 +147,12 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnCombatEnd()
---	if self.Options.RangeFrame then
---		DBM.RangeCheck:Hide()
---	end
+	if self.Options.RangeFrame then
+		DBM.RangeCheck:Hide()
+	end
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
 	end
---	if self.Options.NPAuraOnPresence then
---		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
---	end
 end
 
 function mod:SPELL_CAST_START(args)

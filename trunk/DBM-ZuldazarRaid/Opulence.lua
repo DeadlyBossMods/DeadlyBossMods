@@ -90,7 +90,6 @@ local timerVolatileChargeCD				= mod:NewCDTimer(12.1, 283507, nil, nil, nil, 3)
 ----Yalat's Bulwark
 local timerFlamesofPunishmentCD			= mod:NewCDTimer(23, 282939, nil, nil, nil, 3)
 ----Traps
---local timerFlameJet						= mod:NewBuffActiveTimer(12, 285479, nil, nil, nil, 3)
 local timerRubyBeam						= mod:NewBuffActiveTimer(8, 284081, nil, nil, nil, 3)
 local timerHexofLethargyCD					= mod:NewCDTimer(21.8, 284470, nil, nil, nil, 3, nil, DBM_CORE_MAGIC_ICON)
 --Stage Two: Toppling the Guardian
@@ -261,7 +260,6 @@ function mod:SPELL_CAST_START(args)
 		--timerWailofGreedCD:Start()
 	elseif spellId == 283947 and self:AntiSpam(5, 1) then--Flame Jet
 		warnFlameJet:Show()
-		--timerFlameJet:Start(12)
 	elseif spellId == 283606 or spellId == 289906 then
 		if self:CheckTankDistance(args.sourceGUID, 43) then
 			specWarnCrush:Show()
