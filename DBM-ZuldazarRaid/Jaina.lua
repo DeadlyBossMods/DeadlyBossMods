@@ -104,6 +104,7 @@ local specWarnPrismaticImage			= mod:NewSpecialWarningSwitchCount(288747, "Dps",
 
 --General
 local timerPhaseTransition				= mod:NewPhaseTimer(55)
+local timerHowlingWindsCD				= mod:NewCDCountTimer(80, 288169, nil, nil, nil, 6)--Mythic
 --Stage One: Burning Seas
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(19557))
 local timerCorsairCD					= mod:NewCDTimer(60.4, "ej19690", nil, nil, nil, 1, "Interface\\ICONS\\Inv_tabard_kultiran")
@@ -112,7 +113,6 @@ local timerAvalancheCD					= mod:NewCDTimer(60.7, 287565, nil, nil, 2, 5, nil, n
 local timerGraspofFrostCD				= mod:NewCDTimer(17.3, 287626, nil, nil, nil, 3, nil, DBM_CORE_MAGIC_ICON, true)
 local timerFreezingBlastCD				= mod:NewCDTimer(14, 285177, nil, "Tank", nil, 3, nil, nil, true)
 local timerRingofIceCD					= mod:NewCDCountTimer(60.7, 285459, nil, nil, nil, 2, nil, DBM_CORE_IMPORTANT_ICON, true)
-local timerHowlingWindsCD				= mod:NewCDCountTimer(80, 288169, nil, nil, nil, 6)--Mythic
 local timerFrozenSiegeCD				= mod:NewCDCountTimer(31.6, 289488, nil, nil, nil, 3)--Mythic
 --Stage Two: Frozen Wrath
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(19565))
@@ -299,7 +299,7 @@ function mod:OnCombatStart(delay)
 		timerGraspofFrostCD:Start(23.5-delay)
 		timerRingofIceCD:Start(60.7-delay, 1)
 		countdownRingofIce:Start(60.7)
-		timerHowlingWindsCD:Start(67, 1)
+		timerHowlingWindsCD:Start(66.9, 1)
 		berserkTimer:Start(720)
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(10, nil, nil, 1, true, nil, self.Options.ShowOnlySummary)--Reverse checker, threshold 1 at start
@@ -344,13 +344,9 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 287565 then
 		if self.vb.phase == 1 then
-			if self:IsMythic() then
-				timerAvalancheCD:Start(45)
-			else
-				timerAvalancheCD:Start(60)
-			end
+			timerAvalancheCD:Start(self:IsMythic() and 45 and 60)
 		else
-			timerAvalancheCD:Start(75)--75-90
+			timerAvalancheCD:Start(self:IsMythic() and 81.5 or 75)--75-90
 		end
 	elseif spellId == 285177 then
 		if self.Options.SpecWarn285177dodge then
@@ -377,12 +373,12 @@ function mod:SPELL_CAST_START(args)
 		self.vb.glacialRayCount = self.vb.glacialRayCount + 1
 		specWarnGlacialRay:Show(self.vb.glacialRayCount)
 		specWarnGlacialRay:Play("watchstep")
-		timerGlacialRayCD:Start(nil, self.vb.glacialRayCount+1)
+		timerGlacialRayCD:Start(self:IsMythic() and 40 or self.vb.phase == 2 and 49.8 or 60, self.vb.glacialRayCount+1)
 	elseif spellId == 288441 and self:AntiSpam(6, 7) then
 		self.vb.iceFallCount = self.vb.iceFallCount + 1
 		specWarnIcefall:Show(self.vb.iceFallCount)
 		specWarnIcefall:Play("watchstep")
-		timerIcefallCD:Start(nil, self.vb.iceFallCount+1)
+		timerIcefallCD:Start(self:IsMythic() and 36.5 or self.vb.phase == 2 and 42.8 or 62, self.vb.iceFallCount+1)
 		--timerIcefall:Start()
 	elseif spellId == 288719 then--Flash Freeze
 		self.vb.phase = 2.5
@@ -395,7 +391,7 @@ function mod:SPELL_CAST_START(args)
 		--timerHandofFrostCD:Stop()
 		timerGlacialRayCD:Stop()
 		timerIcefallCD:Stop()
-		--Blizzard closes tooltip windows during cut scenes, so we gotta make sure to recall this window
+		--Infoframe closes during cut scenes, so we gotta make sure to recall this window
 		if self.Options.InfoFrame and not DBM.InfoFrame:IsShown() then
 			--DBM.InfoFrame:SetHeader(DBM_CORE_INFOFRAME_POWER)
 			--DBM.InfoFrame:Show(8, "function", updateInfoFrame, false, false)
@@ -442,7 +438,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.imageCount = self.vb.imageCount + 1
 		specWarnPrismaticImage:Show(self.vb.imageCount)
 		specWarnPrismaticImage:Play("killmob")
-		timerPrismaticImageCD:Start(nil, self.vb.imageCount+1)
+		timerPrismaticImageCD:Start(41.3, self.vb.imageCount+1)
 	elseif spellId == 289488 then--Frozen Siege
 		self.vb.frozenSiegeCount = self.vb.frozenSiegeCount + 1
 		warnFrozenSiege:Show(self.vb.frozenSiegeCount)
@@ -471,7 +467,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerHeartofFrostCD:Start()
 	elseif spellId == 288374 then
 		self.vb.siegeCount = self.vb.siegeCount + 1
-		timerSiegebreakerCD:Start(nil, self.vb.siegeCount+1)
+		timerSiegebreakerCD:Start(self:IsMythic() and 68.2 or 59.9, self.vb.siegeCount+1)
 	elseif spellId == 288211 then
 		self.vb.broadsideIcon = 0
 		self.vb.broadsideCount = self.vb.broadsideCount + 1
@@ -555,7 +551,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerHowlingWindsCD:Stop()
 		timerFrozenSiegeCD:Stop()
 		countdownRingofIce:Cancel()
-		--Blizzard closes tooltip windows during cut scenes, so we gotta make sure to recall this window
+		--Infoframe closes during cut scenes, so we gotta make sure to recall this window
 		if self.Options.InfoFrame and not DBM.InfoFrame:IsShown() then
 			--DBM.InfoFrame:SetHeader(DBM_CORE_INFOFRAME_POWER)
 			--DBM.InfoFrame:Show(8, "function", updateInfoFrame, false, false)
@@ -654,12 +650,15 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerIcefallCD:Start(30.2, 1)
 		end
 		timerSiegebreakerCD:Start(40.3, 1)
-		--Blizzard closes tooltip windows during cut scenes, so we gotta make sure to recall this window
+		--Infoframe closes during cut scenes, so we gotta make sure to recall this window
 		if self.Options.InfoFrame and not DBM.InfoFrame:IsShown() then
 			--DBM.InfoFrame:SetHeader(DBM_CORE_INFOFRAME_POWER)
 			--DBM.InfoFrame:Show(8, "function", updateInfoFrame, false, false)
 			DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(287993))
 			DBM.InfoFrame:Show(5, "table", ChillingTouchStacks, 1)
+		end
+		if self:IsMythic() and self:AntiSpam(10, 10) then--Antispam to ignore applied from howling winds right at end of 1.5
+			timerHowlingWindsCD:Start(68.1)
 		end
 	elseif spellId == 288219 then
 		if self.Options.NPAuraOnRefractiveIce then
@@ -684,18 +683,18 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.glacialRayCount = 0
 		warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(3))
 		warnPhase:Play("pthree")
-		timerBroadsideCD:Start(14.8, 1)--SUCCESS
+		timerBroadsideCD:Start(19.7, 1)--SUCCESS
 		timerCrystallineDustCD:Start(25, 1)
 		timerGlacialRayCD:Start(48.6, 1)
 		timerSiegebreakerCD:Start(58.4, 1)--to CLEU event, emote 1 second faster, may change
 		if not self:IsLFR() then
-			timerPrismaticImageCD:Start(12.6, 1)
-			timerIcefallCD:Start(60.5, 1)
+			timerPrismaticImageCD:Start(22.4, 1)
+			timerIcefallCD:Start(60.2, 1)
 		end
 		if self:IsHard() then
 			timerOrbofFrostCD:Start(11, 1)
 		end
-		--Blizzard closes tooltip windows during cut scenes, so we gotta make sure to recall this window
+		--Infoframe closes during cut scenes, so we gotta make sure to recall this window
 		if self.Options.InfoFrame and not DBM.InfoFrame:IsShown() then
 			--DBM.InfoFrame:SetHeader(DBM_CORE_INFOFRAME_POWER)
 			--DBM.InfoFrame:Show(8, "function", updateInfoFrame, false, false)
