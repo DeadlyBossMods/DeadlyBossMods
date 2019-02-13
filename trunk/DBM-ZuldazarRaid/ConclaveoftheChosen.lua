@@ -305,9 +305,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.hexIcon = self.vb.hexIcon + 1
 	elseif spellId == 282209 then
 		if args:IsPlayer() then
-			specWarnMarkofPrey:Show()
-			specWarnMarkofPrey:Play("justrun")
-			yellMarkofPrey:Yell()
+			if self:AntiSpam(3, 5) then
+				specWarnMarkofPrey:Show()
+				specWarnMarkofPrey:Play("justrun")
+				yellMarkofPrey:Yell()
+			end
 			if self.Options.NPAuraOnFixate then
 				DBM.Nameplate:Show(true, args.sourceGUID, spellId)
 			end
