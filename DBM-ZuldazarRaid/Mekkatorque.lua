@@ -287,7 +287,7 @@ do
 		--Shrunk Second
 		if #shrunkTargets > 0 then
 			addLine("---"..shrunkName.."---")
-			local name, name2, name3, name4, name5, name6, name7, name8 = shrunkTargets[1], shrunkTargets[2], shrunkTargets[3], shrunkTargets[4], shrunkTargets[5], shrunkTargets[6], shrunkTargets[7], shrunkTargets[8]
+			local name, name2, name3, name4, name5, name6, name7, name8, name9, name10, name11, name12 = shrunkTargets[1], shrunkTargets[2], shrunkTargets[3], shrunkTargets[4], shrunkTargets[5], shrunkTargets[6], shrunkTargets[7], shrunkTargets[8], shrunkTargets[9], shrunkTargets[10], shrunkTargets[11], shrunkTargets[12]
 			if name then
 				if name2 then
 					addLine(name, name2)
@@ -314,6 +314,20 @@ do
 					addLine(name7, name8)
 				else
 					addLine(name7)
+				end
+			end
+			if name9 then
+				if name10 then
+					addLine(name9, name10)
+				else
+					addLine(name9)
+				end
+			end
+			if name11 then
+				if name12 then
+					addLine(name11, name12)
+				else
+					addLine(name11)
 				end
 			end
 		end
