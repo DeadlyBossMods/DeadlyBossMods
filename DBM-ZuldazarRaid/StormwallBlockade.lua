@@ -211,7 +211,6 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 284262 then
-		timerVoltaicFlashCD:Start()
 		if self:CheckTankDistance(args.sourceGUID, 43) then
 			specWarnVoltaicFlash:Show()
 			specWarnVoltaicFlash:Play("watchorb")
@@ -219,22 +218,23 @@ function mod:SPELL_CAST_START(args)
 		else
 			timerVoltaicFlashCD:SetFade(true)
 		end
+		timerVoltaicFlashCD:Start()
 	elseif spellId == 288941 and self:AntiSpam(20, 2) then--AntiSpam must be at least 15 here, 20 for good measure
 		specWarnVoltaicFlash:Show()
 		specWarnVoltaicFlash:Play("watchorb")
 		timerVoltaicFlashCD:Start(42.5)
 	elseif spellId == 284106 then
 		self.vb.cracklingCast = self.vb.cracklingCast + 1
-		if self.vb.cracklingCast % 2 == 0 then
-			timerCracklingLightningCD:Start(21.9)--21.9 (usually 23.1 but I have one log showing 21.9)
-		else
-			timerCracklingLightningCD:Start(12.1)
-		end
 		if self:CheckTankDistance(args.sourceGUID, 43) then
 			warnCracklingLightning:Show()
 			timerCracklingLightningCD:SetFade(false)
 		else
 			timerCracklingLightningCD:SetFade(true)
+		end
+		if self.vb.cracklingCast % 2 == 0 then
+			timerCracklingLightningCD:Start(21.9)--21.9 (usually 23.1 but I have one log showing 21.9)
+		else
+			timerCracklingLightningCD:Start(12.1)
 		end
 	elseif spellId == 284393 then
 		warnTranslocate:Show(args.sourceName)

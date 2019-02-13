@@ -228,6 +228,9 @@ function mod:SPELL_CAST_START(args)
 			specWarnFlamesofPunishment:Show()
 			specWarnFlamesofPunishment:Play("behindboss")
 			specWarnFlamesofPunishment:ScheduleVoice(1.5, "keepmove")
+			timerFlamesofPunishmentCD:SetFade(false)
+		else
+			timerFlamesofPunishmentCD:SetFade(true)
 		end
 		timerFlamesofPunishmentCD:Start()
 	elseif spellId == 287070 then
@@ -260,15 +263,21 @@ function mod:SPELL_CAST_START(args)
 		--timerWailofGreedCD:Start()
 	elseif spellId == 283947 and self:AntiSpam(5, 1) then--Flame Jet
 		warnFlameJet:Show()
-	elseif spellId == 283606 or spellId == 289906 then
+	elseif spellId == 283606 then
+		timerCrushCD:Start(15.8, L.Hand)--7.1, 30.5, 26.7, 15.8, 26.7, 15.8, 25.6, 15.8, 15.8, 18.2, 15.8, 15.8
 		if self:CheckTankDistance(args.sourceGUID, 43) then
 			specWarnCrush:Show()
 			specWarnCrush:Play("watchstep")
+		else
+			timerCrushCD:SetSTFade(L.Hand)
 		end
-		if spellId == 289906 then--Yalat's Bulwark
-			timerCrushCD:Start(20.6, L.Bulwark)--7.7, 21.9, 31.6, 21.8, 20.6, 20.7, 18.2, 21.8
-		else--The Hand of In'zashi
-			timerCrushCD:Start(15.8, L.Hand)--7.1, 30.5, 26.7, 15.8, 26.7, 15.8, 25.6, 15.8, 15.8, 18.2, 15.8, 15.8
+	elseif spellId == 289906 then
+		timerCrushCD:Start(20.6, L.Bulwark)--7.7, 21.9, 31.6, 21.8, 20.6, 20.7, 18.2, 21.8
+		if self:CheckTankDistance(args.sourceGUID, 43) then
+			specWarnCrush:Show()
+			specWarnCrush:Play("watchstep")
+		else
+			timerCrushCD:SetSTFade(L.Bulwark)
 		end
 	elseif spellId == 289155 then
 		specWarnSurgingGold:Show()
