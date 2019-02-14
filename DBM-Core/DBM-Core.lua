@@ -7912,9 +7912,11 @@ do
 			if inRange then--IsItemInRange was a success
 				return inRange
 			else--IsItemInRange doesn't work on all bosses/npcs, but tank checks do
+				DBM:Debug("CheckBossDistance failed on IsItemInRange for: "..cidOrGuid, 2)
 				return self:CheckTankDistance(cidOrGuid, nil, defaultReturn)--Return tank distance check fallback
 			end
 		end
+		DBM:Debug("CheckBossDistance failed on uId for: "..cidOrGuid, 2)
 		return (defaultReturn == nil) or defaultReturn--When we simply can't figure anything out, return true and allow warnings using this filter to fire
 	end
 
