@@ -534,8 +534,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnGigaVoltCharge:Show(self:IconNumToTexture(icon))
 			specWarnGigaVoltCharge:Play("targetyou")
-			specWarnGigaVoltChargeFading:Schedule(10, DBM_CORE_BREAK_LOS)--Or self:IconNumToTexture(icon)
-			specWarnGigaVoltChargeFading:ScheduleVoice(10, "mm"..icon)--TODO, more specific voice
+			specWarnGigaVoltChargeFading:Schedule(8.5, DBM_CORE_BREAK_LOS)
+			specWarnGigaVoltChargeFading:ScheduleVoice(8.5, "mm"..icon)
 			yellGigaVoltCharge:Yell(icon, icon, icon)
 			yellGigaVoltChargeFades:Countdown(15, nil, icon)
 		else
