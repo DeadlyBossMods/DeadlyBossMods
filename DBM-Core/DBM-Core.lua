@@ -7903,9 +7903,10 @@ do
 	local rangeCache = {}
 	local rangeUpdated = {}
 	
-	function bossModPrototype:CheckBossDistance(cidOrGuid, itemId, defaultReturn)
+	function bossModPrototype:CheckBossDistance(cidOrGuid, onlyBoss, itemId, defaultReturn)
 		if not DBM.Options.DontShowFarWarnings then return true end--Global disable.
-		local uId = cidOrGuid and DBM:GetUnitIdFromGUID(cidOrGuid) or DBM:GetUnitIdFromCID(self.creatureId)
+		local cidOrGuid = cidOrGuid or self.creatureId
+		local uId = DBM:GetUnitIdFromGUID(cidOrGuid, onlyBoss)
 		if uId then
 			local itemId = itemId or 32698
 			local inRange = IsItemInRange(itemId, uId)
@@ -7913,14 +7914,14 @@ do
 				return inRange
 			else--IsItemInRange doesn't work on all bosses/npcs, but tank checks do
 				DBM:Debug("CheckBossDistance failed on IsItemInRange for: "..cidOrGuid, 2)
-				return self:CheckTankDistance(cidOrGuid, nil, defaultReturn)--Return tank distance check fallback
+				return self:CheckTankDistance(cidOrGuid, nil, onlyBoss, defaultReturn)--Return tank distance check fallback
 			end
 		end
 		DBM:Debug("CheckBossDistance failed on uId for: "..cidOrGuid, 2)
 		return (defaultReturn == nil) or defaultReturn--When we simply can't figure anything out, return true and allow warnings using this filter to fire
 	end
 
-	function bossModPrototype:CheckTankDistance(cidOrGuid, distance, defaultReturn)
+	function bossModPrototype:CheckTankDistance(cidOrGuid, distance, onlyBoss, defaultReturn)
 		if not DBM.Options.DontShowFarWarnings then return true end--Global disable.
 		if rangeCache[cidOrGuid] and (GetTime() - (rangeUpdated[cidOrGuid] or 0)) < 2 then -- return same range within 2 sec call
 			if rangeCache[cidOrGuid] > distance then
@@ -7932,7 +7933,7 @@ do
 			local cidOrGuid = cidOrGuid or self.creatureId--GetBossTarget supports GUID or CID and it will automatically return correct values with EITHER ONE
 			local distance = distance or 43
 			local uId
-			local _, fallbackuId, mobuId = self:GetBossTarget(cidOrGuid)
+			local _, fallbackuId, mobuId = self:GetBossTarget(cidOrGuid, onlyBoss)
 			if mobuId then--Have a valid mob unit ID
 				--First, use trust threat more than fallbackuId and see what we pull from it first.
 				--This is because for CheckTankDistance we want to know who is tanking it, not who it's targeting.
