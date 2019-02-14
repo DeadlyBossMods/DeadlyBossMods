@@ -224,7 +224,7 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 282939 or spellId == 287659 then
-		if self:CheckBossDistance(args.sourceGUID) then
+		if self:CheckBossDistance(args.sourceGUID, true) then
 			specWarnFlamesofPunishment:Show()
 			specWarnFlamesofPunishment:Play("behindboss")
 			specWarnFlamesofPunishment:ScheduleVoice(1.5, "keepmove")
@@ -265,7 +265,7 @@ function mod:SPELL_CAST_START(args)
 		warnFlameJet:Show()
 	elseif spellId == 283606 then
 		timerCrushCD:Start(15.8, L.Hand)--7.1, 30.5, 26.7, 15.8, 26.7, 15.8, 25.6, 15.8, 15.8, 18.2, 15.8, 15.8
-		if self:CheckBossDistance(args.sourceGUID) then
+		if self:CheckBossDistance(args.sourceGUID, true) then
 			specWarnCrush:Show()
 			specWarnCrush:Play("watchstep")
 		else
@@ -273,7 +273,7 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 289906 then
 		timerCrushCD:Start(20.6, L.Bulwark)--7.7, 21.9, 31.6, 21.8, 20.6, 20.7, 18.2, 21.8
-		if self:CheckBossDistance(args.sourceGUID) then
+		if self:CheckBossDistance(args.sourceGUID, true) then
 			specWarnCrush:Show()
 			specWarnCrush:Play("watchstep")
 		else
