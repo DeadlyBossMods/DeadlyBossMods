@@ -7969,6 +7969,7 @@ do
 				--Tank in range, return true.
 				return true
 			end
+			DBM:Debug("CheckTankDistance failed on uId for: "..cidOrGuid, 2)
 			return (defaultReturn == nil) or defaultReturn--When we simply can't figure anything out, return true and allow warnings using this filter to fire. But some spells will prefer not to fire(i.e : Galakras tower spell), we can define it on this function calling.
 		end
 	end
