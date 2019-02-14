@@ -82,7 +82,12 @@ L= DBM:GetModLocalization(2337)
 L= DBM:GetModLocalization(2343)
 
 L:SetOptionLocalization({
-	ShowOnlySummary	= "역방향 거리 검사시 플레이어 이름을 숨기고 요약된 정보만 표시 (근처에 있는 플레이어의 수)"
+	ShowOnlySummary	= "반전 거리 검사시 플레이어 이름을 숨기고 요약된 정보만 표시 (근처에 있는 플레이어의 수)"
+})
+
+L:SetMiscLocalization({
+	Port			=	"왼쪽",
+	Starboard		=	"오른쪽"
 })
 
 -------------
