@@ -152,7 +152,7 @@ end
 --Needs to be run on pull and teleports (either player changing sides or boss)
 local function delayedSisterUpdate(self)
 	self:Unschedule(delayedSisterUpdate)
-	if self:CheckBossDistance(146251) then--Sister Katherine
+	if self:CheckBossDistance(146251, true) then--Sister Katherine
 		timerCracklingLightningCD:SetFade(false)
 		timerVoltaicFlashCD:SetFade(false)
 		timerElecShroudCD:SetFade(false)
@@ -165,7 +165,7 @@ end
 
 local function delayedBrotherUpdate(self)
 	self:Unschedule(delayedBrotherUpdate)
-	if self:CheckBossDistance(146253) then--Brother Joseph
+	if self:CheckBossDistance(146253, true) then--Brother Joseph
 		timerSeaStormCD:SetFade(false)
 		timerSeasTemptationCD:SetFade(false, self.vb.sirenCount+1)
 		timerTidalShroudCD:SetFade(false)
@@ -227,7 +227,7 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 284262 then
-		if self:CheckBossDistance(args.sourceGUID) then
+		if self:CheckBossDistance(args.sourceGUID, true) then
 			specWarnVoltaicFlash:Show()
 			specWarnVoltaicFlash:Play("watchorb")
 			timerVoltaicFlashCD:SetFade(false)
@@ -241,7 +241,7 @@ function mod:SPELL_CAST_START(args)
 		timerVoltaicFlashCD:Start(42.5)
 	elseif spellId == 284106 then
 		self.vb.cracklingCast = self.vb.cracklingCast + 1
-		if self:CheckBossDistance(args.sourceGUID) then
+		if self:CheckBossDistance(args.sourceGUID, true) then
 			warnCracklingLightning:Show()
 			timerCracklingLightningCD:SetFade(false)
 		else
@@ -278,7 +278,7 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 284383 then
 		self.vb.sirenCount = self.vb.sirenCount + 1
-		if self:CheckBossDistance(args.sourceGUID) then
+		if self:CheckBossDistance(args.sourceGUID, true) then
 			specWarnSeasTemptation:Show()
 			specWarnSeasTemptation:Play("killmob")
 			timerSeasTemptationCD:SetFade(false)
@@ -291,7 +291,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnIreoftheDeep:Play("helpsoak")
 		timerIreoftheDeepCD:Start()
 	elseif spellId == 284362 then
-		if self:CheckBossDistance(args.sourceGUID) then
+		if self:CheckBossDistance(args.sourceGUID, true) then
 			specWarnSeaStorm:Show()
 			specWarnSeaStorm:Play("watchstep")
 			timerSeaStormCD:SetFade(false)
@@ -367,7 +367,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			--end
 		--end
 	elseif spellId == 286558 then
-		if self:CheckBossDistance(args.destGUID) then
+		if self:CheckBossDistance(args.destGUID, true) then
 			warnTidalShroud:Show(args.destName)
 			timerTidalShroudCD:SetFade(false)
 		else
@@ -375,7 +375,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		timerTidalShroudCD:Start()
 	elseif spellId == 287995 then
-		if self:CheckBossDistance(args.destGUID) then
+		if self:CheckBossDistance(args.destGUID, true) then
 			warnElecShroud:Show(args.destName)
 			timerElecShroudCD:SetFade(false)
 		else
