@@ -133,26 +133,13 @@ do
 				addLine(UnitName("boss1"), currentPower)
 			end
 		end
-		--[[for i = 1, 3 do
-			local unitID = "boss"..i
-			local cid = mod:GetUnitCreatureId(unitID) or 0
-			if cid == 146256 then
-				local currentPower, maxPower = UnitPower(unitID), UnitPowerMax(unitID)
-				if maxPower and maxPower ~= 0 then
-					if currentPower / maxPower * 100 >= 1 then
-						addLine(UnitName(unitID), currentPower)
-					end
-				end
-			end
-		end--]]
-		--Scan raid for notable debuffs and add them
 		if #stormTargets > 0 then
 			--addLine("", "")
 			for i=1, #stormTargets do
 				local name = stormTargets[i]
 				local uId = DBM:GetRaidUnitId(name)
 				local spellName, _, _, _, _, expireTime = DBM:UnitDebuff(uId, 285350, 285426)
-				if spellName and expireTime then--Personal Dark Bargain
+				if spellName and expireTime then
 					local remaining = expireTime-GetTime()
 					addLine(name, math.floor(remaining))
 				end
