@@ -3130,7 +3130,7 @@ function DBM:IsCreatureGUID(guid)
 	return false
 end
 
-function DBM:GetBossUnitId(name, bossOnly)
+function DBM:GetBossUnitId(name, bossOnly)--Deprecated, only old mods use this
 	local returnUnitID
 	for i = 1, 5 do
 		if UnitName("boss" .. i) == name then
@@ -3147,20 +3147,24 @@ function DBM:GetBossUnitId(name, bossOnly)
 	return returnUnitID
 end
 
-function DBM:GetUnitIdFromGUID(guid, bossOnly)
+function DBM:GetUnitIdFromGUID(cidOrGuid, bossOnly)
 	local returnUnitID
 	for i = 1, 5 do
 		local unitId = "boss"..i
 		local bossGUID = UnitGUID(unitId)
-		if bossGUID == guid then
-			returnUnitID = bossGUID
+		local cid = self:GetCIDFromGUID(cidOrGuid)
+		if bossGUID == cidOrGuid or cid == cidOrGuid then
+			returnUnitID = unitId
 		end
 	end
 	--Didn't find valid unitID from boss units, scan raid targets
 	if not returnUnitID and not bossOnly then
 		for uId in self:GetGroupMembers() do
-			if UnitGUID(uId .. "target") == guid then
-				returnUnitID = uId.."target"
+			local unitId = uId .. "target"
+			local bossGUID = UnitGUID(unitId)
+			local cid = self:GetCIDFromGUID(cidOrGuid)
+			if bossGUID == cidOrGuid or cid == cidOrGuid then
+				returnUnitID = unitId
 			end
 		end
 	end
@@ -7898,6 +7902,21 @@ end
 do
 	local rangeCache = {}
 	local rangeUpdated = {}
+	
+	function bossModPrototype:CheckBossDistance(cidOrGuid, itemId, defaultReturn)
+		if not DBM.Options.DontShowFarWarnings then return true end--Global disable.
+		local uId = cidOrGuid and DBM:GetUnitIdFromGUID(cidOrGuid) or DBM:GetUnitIdFromCID(self.creatureId)
+		if uId then
+			local itemId = itemId or 32698
+			local inRange = IsItemInRange(itemId, uId)
+			if inRange then--IsItemInRange was a success
+				return inRange
+			else--IsItemInRange doesn't work on all bosses/npcs, but tank checks do
+				return self:CheckTankDistance(cidOrGuid, nil, defaultReturn)--Return tank distance check fallback
+			end
+		end
+		return (defaultReturn == nil) or defaultReturn--When we simply can't figure anything out, return true and allow warnings using this filter to fire
+	end
 
 	function bossModPrototype:CheckTankDistance(cidOrGuid, distance, defaultReturn)
 		if not DBM.Options.DontShowFarWarnings then return true end--Global disable.

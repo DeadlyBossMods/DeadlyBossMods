@@ -183,10 +183,17 @@ do
 		elseif level == 2 then
 			if menu == "range" then
 				info = UIDropDownMenu_CreateInfo()
-				info.text = DBM_CORE_RANGECHECK_SETRANGE_TO:format(5)
+				info.text = DBM_CORE_RANGECHECK_SETRANGE_TO:format(4)
 				info.func = setRange
-				info.arg1 = 5
-				info.checked = (mainFrame.range == 5)
+				info.arg1 = 4
+				info.checked = (mainFrame.range == 4)
+				UIDropDownMenu_AddButton(info, 2)
+				
+				info = UIDropDownMenu_CreateInfo()
+				info.text = DBM_CORE_RANGECHECK_SETRANGE_TO:format(6)
+				info.func = setRange
+				info.arg1 = 6
+				info.checked = (mainFrame.range == 6)
 				UIDropDownMenu_AddButton(info, 2)
 				
 				info = UIDropDownMenu_CreateInfo()
@@ -201,13 +208,6 @@ do
 				info.func = setRange
 				info.arg1 = 10
 				info.checked = (mainFrame.range == 10)
-				UIDropDownMenu_AddButton(info, 2)
-
-				info = UIDropDownMenu_CreateInfo()
-				info.text = DBM_CORE_RANGECHECK_SETRANGE_TO:format(11)
-				info.func = setRange
-				info.arg1 = 11
-				info.checked = (mainFrame.range == 11)
 				UIDropDownMenu_AddButton(info, 2)
 				
 				info = UIDropDownMenu_CreateInfo()
@@ -586,9 +586,9 @@ do
 			pixelsperyard = min(radarFrame:GetWidth(), radarFrame:GetHeight()) / (activeRange * 3)
 			radarFrame.circle:SetSize(activeRange * pixelsperyard * 2, activeRange * pixelsperyard * 2)
 			if reverse then
-				radarFrame.text:SetText(DBM_CORE_RANGERADAR_HEADER:format(activeRange, mainFrame.redCircleNumPlayers))
-			else
 				radarFrame.text:SetText(DBM_CORE_RANGERADAR_RHEADER:format(activeRange, mainFrame.redCircleNumPlayers))
+			else
+				radarFrame.text:SetText(DBM_CORE_RANGERADAR_HEADER:format(activeRange, mainFrame.redCircleNumPlayers))
 			end
 		end
 
@@ -615,7 +615,8 @@ do
 					--Definitely not most efficient way of doing it. Refactor later
 					--All ranges aer tested and compared against UnitDistanceSquared.
 					--Worgsaw has a tooltip of 6 but doesn't factor in hitboxes/etc. It doesn't return false until UnitDistanceSquared of 8. bandages 18 even though spell range is 15, etc. Acorn actually is 5 in both though
-					if IsItemInRange(37727, uId) then range = 5--Ruby Acorn
+					if IsItemInRange(90175, uId) then range = 4--Gin-Ji Knife Set
+					elseif IsItemInRange(37727, uId) then range = 6--Ruby Acorn
 					elseif IsItemInRange(63427, uId) then range = 8--Worgsaw
 					elseif CheckInteractDistance(uId, 3) then range = 10
 					elseif CheckInteractDistance(uId, 2) then range = 11
@@ -623,8 +624,9 @@ do
 					elseif IsItemInRange(6450, uId) then range = 18--Bandages. (despite popular sites saying it's 15 yards, it's actually 18 yards verified by UnitDistanceSquared
 					elseif IsItemInRange(21519, uId) then range = 22--Item says 20, returns true until 22.
 					elseif CheckInteractDistance(uId, 1) then range = 30
-					elseif UnitInRange(uId) then range = 43
-					elseif IsItemInRange(116139, uId)  then range = 50
+					elseif UnitInRange(uId) then range = 43--item check of 34471 also good for 43
+					elseif IsItemInRange(32698, uId)  then range = 48--Wrangling Rope
+					elseif IsItemInRange(116139, uId)  then range = 53
 					elseif IsItemInRange(32825, uId) then range = 60
 					elseif IsItemInRange(35278, uId) then range = 80
 					else range = 1000 end--Just so it has a numeric value, even if it's unknown to protect from nil errors
@@ -737,7 +739,8 @@ end)
 local getDistanceBetween, getDistanceBetweenALL
 do
 	local function itsBCAgain(uId)
-		if IsItemInRange(37727, uId) then return 5
+		if IsItemInRange(90175, uId) then return 4
+		elseif IsItemInRange(37727, uId) then return 6
 		elseif IsItemInRange(63427, uId) then return 8
 		elseif CheckInteractDistance(uId, 3) then return 10
 		elseif CheckInteractDistance(uId, 2) then return 11
@@ -746,7 +749,8 @@ do
 		elseif IsItemInRange(21519, uId) then return 22
 		elseif CheckInteractDistance(uId, 1) then return 30
 		elseif UnitInRange(uId) then return 43
-		elseif IsItemInRange(116139, uId) then return 50
+		elseif IsItemInRange(32698, uId) then return 48
+		elseif IsItemInRange(116139, uId) then return 53
 		elseif IsItemInRange(32825, uId) then return 60
 		elseif IsItemInRange(35278, uId) then return 80
 		else return 1000 end--Just so it has a numeric value, even if it's unknown to protect from nil errors
@@ -826,8 +830,8 @@ function rangeCheck:Show(range, filter, forceshow, redCircleNumPlayers, reverse,
 	local restrictionsActive = DBM:HasMapRestrictions()
 	if (DBM.Options.RangeFrameFrames == "text" or DBM.Options.RangeFrameFrames == "both" or restrictionsActive) and not textFrame.isShown then
 		if restrictionsActive then
-			if range <= 5 then
-				range = 5
+			if range <= 4 then
+				range = 4
 			elseif range <= 6 then
 				range = 6
 			elseif range <= 8 then
@@ -846,8 +850,10 @@ function rangeCheck:Show(range, filter, forceshow, redCircleNumPlayers, reverse,
 				range = 30
 			elseif range <= 43 then
 				range = 43
-			elseif range <= 50 then
-				range = 50
+			elseif range <= 48 then
+				range = 48
+			elseif range <= 53 then
+				range = 53
 			elseif range <= 60 then
 				range = 60
 			elseif range <= 80 then

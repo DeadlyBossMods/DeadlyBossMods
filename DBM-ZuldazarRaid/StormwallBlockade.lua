@@ -149,6 +149,33 @@ do
 	end
 end
 
+--Needs to be run on pull and teleports (either player changing sides or boss)
+local function delayedSisterUpdate(self)
+	self:Unschedule(delayedSisterUpdate)
+	if self:CheckBossDistance(146251) then--Sister Katherine
+		timerCracklingLightningCD:SetFade(false)
+		timerVoltaicFlashCD:SetFade(false)
+		timerElecShroudCD:SetFade(false)
+	else
+		timerCracklingLightningCD:SetFade(true)
+		timerVoltaicFlashCD:SetFade(true)
+		timerElecShroudCD:SetFade(true)
+	end
+end
+
+local function delayedBrotherUpdate(self)
+	self:Unschedule(delayedBrotherUpdate)
+	if self:CheckBossDistance(146253) then--Brother Joseph
+		timerSeaStormCD:SetFade(false)
+		timerSeasTemptationCD:SetFade(false, self.vb.sirenCount+1)
+		timerTidalShroudCD:SetFade(false)
+	else
+		timerSeaStormCD:SetFade(true)
+		timerSeasTemptationCD:SetFade(true, self.vb.sirenCount+1)
+		timerTidalShroudCD:SetFade(true)
+	end
+end
+
 function mod:OnCombatStart(delay)
 	table.wipe(stormTargets)
 	self.vb.phase = 1
@@ -174,6 +201,8 @@ function mod:OnCombatStart(delay)
 		DBM.InfoFrame:SetHeader(OVERVIEW)
 		DBM.InfoFrame:Show(8, "function", updateInfoFrame, false, false)
 	end
+	self:Schedule(2, delayedSisterUpdate, self)--Update timers couple seconds into pull
+	self:Schedule(2, delayedBrotherUpdate, self)--Update timers couple seconds into pull
 end
 
 function mod:OnCombatEnd()
@@ -198,7 +227,7 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 284262 then
-		if self:CheckTankDistance(args.sourceGUID, 43) then
+		if self:CheckBossDistance(args.sourceGUID) then
 			specWarnVoltaicFlash:Show()
 			specWarnVoltaicFlash:Play("watchorb")
 			timerVoltaicFlashCD:SetFade(false)
@@ -212,7 +241,7 @@ function mod:SPELL_CAST_START(args)
 		timerVoltaicFlashCD:Start(42.5)
 	elseif spellId == 284106 then
 		self.vb.cracklingCast = self.vb.cracklingCast + 1
-		if self:CheckTankDistance(args.sourceGUID, 43) then
+		if self:CheckBossDistance(args.sourceGUID) then
 			warnCracklingLightning:Show()
 			timerCracklingLightningCD:SetFade(false)
 		else
@@ -231,31 +260,25 @@ function mod:SPELL_CAST_START(args)
 			timerVoltaicFlashCD:Stop()
 			timerCracklingLightningCD:Stop()
 			timerElecShroudCD:Stop()
-			--Set all to false on teleport til we can refresh tank distance
-			timerCracklingLightningCD:SetFade(false)
-			timerVoltaicFlashCD:SetFade(false)
-			timerElecShroudCD:SetFade(false)
 			--This may be more complicated than this, like maybe a pause/resume more so than this
 			timerCracklingLightningCD:Start(12)
 			timerVoltaicFlashCD:Start(17)
 			timerElecShroudCD:Start(36.4)
+			self:Schedule(2, delayedSisterUpdate, self)--Update timers couple seconds into pull
 		elseif cid == 146251 then--Brother
 			timerSeaStormCD:Stop()
 			timerSeasTemptationCD:Stop()
 			timerTidalShroudCD:Stop()
 
-			--Set all to false on teleport til we can refresh tank distance
-			timerSeaStormCD:SetFade(false)
-			timerSeasTemptationCD:SetFade(false)
-			timerTidalShroudCD:SetFade(false)
 			--This may be more complicated than this, like maybe a pause/resume more so than this
 			timerSeaStormCD:Start(12.1)
 			timerSeasTemptationCD:Start(26.7, self.vb.sirenCount+1)--Even less sure about this one
 			timerTidalShroudCD:Start(37.7)
+			self:Schedule(2, delayedBrotherUpdate, self)--Update timers couple seconds into pull
 		end
 	elseif spellId == 284383 then
 		self.vb.sirenCount = self.vb.sirenCount + 1
-		if self:CheckTankDistance(args.sourceGUID, 43) then
+		if self:CheckBossDistance(args.sourceGUID) then
 			specWarnSeasTemptation:Show()
 			specWarnSeasTemptation:Play("killmob")
 			timerSeasTemptationCD:SetFade(false)
@@ -268,7 +291,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnIreoftheDeep:Play("helpsoak")
 		timerIreoftheDeepCD:Start()
 	elseif spellId == 284362 then
-		if self:CheckTankDistance(args.sourceGUID, 43) then
+		if self:CheckBossDistance(args.sourceGUID) then
 			specWarnSeaStorm:Show()
 			specWarnSeaStorm:Play("watchstep")
 			timerSeaStormCD:SetFade(false)
@@ -344,7 +367,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			--end
 		--end
 	elseif spellId == 286558 then
-		if self:CheckTankDistance(args.destGUID, 43) then
+		if self:CheckBossDistance(args.destGUID) then
 			warnTidalShroud:Show(args.destName)
 			timerTidalShroudCD:SetFade(false)
 		else
@@ -352,7 +375,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		timerTidalShroudCD:Start()
 	elseif spellId == 287995 then
-		if self:CheckTankDistance(args.destGUID, 43) then
+		if self:CheckBossDistance(args.destGUID) then
 			warnElecShroud:Show(args.destName)
 			timerElecShroudCD:SetFade(false)
 		else
