@@ -3152,9 +3152,15 @@ function DBM:GetUnitIdFromGUID(cidOrGuid, bossOnly)
 	for i = 1, 5 do
 		local unitId = "boss"..i
 		local bossGUID = UnitGUID(unitId)
-		local cid = self:GetCIDFromGUID(cidOrGuid)
-		if bossGUID == cidOrGuid or cid == cidOrGuid then
-			returnUnitID = unitId
+		if type(cidOrGuid) == "number" then--CID passed
+			local cid = self:GetCIDFromGUID(bossGUID)
+			if cid == cidOrGuid then
+				returnUnitID = unitId
+			end
+		else--GUID passed
+			if bossGUID == cidOrGuid then
+				returnUnitID = unitId
+			end
 		end
 	end
 	--Didn't find valid unitID from boss units, scan raid targets
