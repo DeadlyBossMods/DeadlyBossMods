@@ -289,8 +289,12 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif spellId == 286425 then
 		self.vb.shieldsActive = false
-		specWarnPyroblast:Show(args.destName)
-		specWarnPyroblast:Play("kickcast")
+		local bossUnitID = self:GetUnitIdFromGUID(args.destGUID)
+		local spellName = bossUnitID and UnitCastingInfo(bossUnitID) or nil
+		if spellName then
+			specWarnPyroblast:Show(args.destName)
+			specWarnPyroblast:Play("kickcast")
+		end
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:SetHeader(DBM_CORE_INFOFRAME_POWER)
 			DBM.InfoFrame:Show(4, "enemypower", 2)
