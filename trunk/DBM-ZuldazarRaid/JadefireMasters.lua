@@ -104,6 +104,7 @@ mod:AddNamePlateOption("NPAuraOnExplosion", 284399)
 mod.vb.shieldsActive = false
 mod.vb.embersIcon = 0
 mod.vb.magmaTrapCount = 0
+local pyroBlast = DBM:GetSpellInfo(286379)
 
 function mod:OnCombatStart(delay)
 	self.vb.shieldsActive = false
@@ -291,7 +292,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.shieldsActive = false
 		local bossUnitID = self:GetUnitIdFromGUID(args.destGUID)
 		local spellName = bossUnitID and UnitCastingInfo(bossUnitID) or nil
-		if spellName then
+		if spellName and spellName == pyroBlast then
 			specWarnPyroblast:Show(args.destName)
 			specWarnPyroblast:Play("kickcast")
 		end

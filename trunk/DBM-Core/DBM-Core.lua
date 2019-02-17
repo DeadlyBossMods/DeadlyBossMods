@@ -6087,7 +6087,7 @@ do
 				if mod.vb.phase then
 					wipeHP = wipeHP.." ("..SCENARIO_STAGE:format(mod.vb.phase)..")"
 				end
-				if mod.numBoss then
+				if mod.numBoss and mod.vb.bossLeft and mod.numBoss > 1 then
 					local bossesKilled = mod.numBoss - mod.vb.bossLeft
 					wipeHP = wipeHP.." ("..BOSSES_KILLED:format(bossesKilled, mod.numBoss)..")"
 				end
@@ -6848,7 +6848,7 @@ do
 			if mod.vb.phase then
 				hpText = hpText.." ("..SCENARIO_STAGE:format(mod.vb.phase)..")"
 			end
-			if mod.numBoss then
+			if mod.numBoss and mod.vb.bossLeft and mod.numBoss > 1 then
 				local bossesKilled = mod.numBoss - mod.vb.bossLeft
 				hpText = hpText.." ("..BOSSES_KILLED:format(bossesKilled, mod.numBoss)..")"
 			end
@@ -6867,7 +6867,7 @@ do
 			if mod.vb.phase then
 				hpText = hpText.." ("..SCENARIO_STAGE:format(mod.vb.phase)..")"
 			end
-			if mod.numBoss then
+			if mod.numBoss and mod.vb.bossLeft and mod.numBoss > 1 then
 				local bossesKilled = mod.numBoss - mod.vb.bossLeft
 				hpText = hpText.." ("..BOSSES_KILLED:format(bossesKilled, mod.numBoss)..")"
 			end
@@ -11315,9 +11315,9 @@ function bossModPrototype:SetCreatureID(...)
 		self.multiMobPullDetection = {...}
 		if self.combatInfo then
 			self.combatInfo.multiMobPullDetection = self.multiMobPullDetection
+			self.numBoss = #self.multiMobPullDetection
 			if self.inCombat then
 				--Called mid combat, fix some variables
-				self.numBoss = #self.multiMobPullDetection
 				self.vb.bossLeft = self.numBoss
 			end
 		end
@@ -11328,6 +11328,7 @@ function bossModPrototype:SetCreatureID(...)
 	else
 		local cId = ...
 		bossIds[cId] = true
+		self.numBoss = 1
 	end
 end
 
