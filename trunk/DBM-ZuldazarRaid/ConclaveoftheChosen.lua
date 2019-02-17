@@ -491,7 +491,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	elseif spellId == 283193 then--Since blizzard hates combat log so much (clawing hex)
 		self.vb.hexIcon = 1
 		self.vb.hexIgnore = false
-		self:Schedule(1.5, setHexIgnore, self)
+		self:Schedule(0.5, setHexIgnore, self)
 		timerCrawlingHexCD:Start()
 	end
 end
