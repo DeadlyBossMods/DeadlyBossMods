@@ -27,17 +27,15 @@ local timerHummel				= mod:NewTimer(10.5, "HummelActive", "Interface\\Icons\\abi
 local timerBaxter				= mod:NewTimer(17.5, "BaxterActive", "Interface\\Icons\\ability_warrior_offensivestance", nil, false, "TrioActiveTimer")
 local timerFrye					= mod:NewTimer(25.5, "FryeActive", "Interface\\Icons\\ability_warrior_offensivestance", nil, false, "TrioActiveTimer")
 mod:AddBoolOption("TrioActiveTimer", true, "timer", nil, 1)
-local timerChainReaction		= mod:NewCastTimer(3, 68821, nil, "Melee")
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 68821 then
+	if args.spellId == 68821 and self:AntiSpam(3, 1) then
 		warnChainReaction:Show()
-		timerChainReaction:Start()
 	end
 end
 
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
-	if (spellId == 68927 or spellId == 68934) and destGUID == UnitGUID("player") and self:AntiSpam() then
+	if (spellId == 68927 or spellId == 68934) and destGUID == UnitGUID("player") and self:AntiSpam(3, 2) then
 		specWarnGTFO:Show(spellName)
 		specWarnGTFO:Play("watchfeet")
 	end
