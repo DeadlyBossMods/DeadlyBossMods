@@ -315,9 +315,9 @@ function mod:SPELL_AURA_REMOVED(args)
 		--timerSearingEmbersCD:Start(7)--7-15 (wishy washy)
 		timerMultiSidedStrikeCD:Start(8.4)--May not actually work this way
 		timerShieldCD:Start(8.5)
-		timerMagmaTrapCD:Start(9, self.vb.magmaTrapCount+1)
 		--timerRollCD:Start()
 		if self:IsHard() then
+			timerMagmaTrapCD:Start(9, self.vb.magmaTrapCount+1)
 			timerSpiritsofXuenCD:Start(25)
 		end
 	end
