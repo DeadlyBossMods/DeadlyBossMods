@@ -343,7 +343,7 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 287565 then
 		if self.vb.phase == 1 then
-			timerAvalancheCD:Start(self:IsMythic() and 45 and 60)
+			timerAvalancheCD:Start(self:IsMythic() and 45 or 60)
 		else
 			timerAvalancheCD:Start(self:IsMythic() and 81.5 or 75)--75-90
 		end
