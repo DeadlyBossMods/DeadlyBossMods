@@ -80,7 +80,7 @@ L= DBM:GetModLocalization(2337)
 L= DBM:GetModLocalization(2343)
 
 L:SetOptionLocalization({
-	ShowOnlySummary	= "Mostrar solo la cantidad de jugadores cercanos en la comprobación de distancia en lugar de listar sus nombres"
+	ShowOnlySummary2	= "Mostrar solo la cantidad de jugadores cercanos en la comprobación de distancia en lugar de listar sus nombres"
 })
 
 ----------------------
