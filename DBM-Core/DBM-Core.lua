@@ -9221,6 +9221,10 @@ do
 		end
 		return newAnnounce(self, "prewarn", spellId, color or 2, icon, optionDefault, optionName, nil, time, soundOption)
 	end
+	
+	function bossModPrototype:NewBaitAnnounce(spellId, color, ...)
+		return newAnnounce(self, "bait", spellId, color or 3, ...)
+	end
 
 	function bossModPrototype:NewPhaseAnnounce(stage, color, icon, ...)
 		return newAnnounce(self, "stage", stage, color or 2, icon or "Interface\\Icons\\Spell_Nature_WispSplode", ...)
@@ -10100,6 +10104,10 @@ do
 
 	function bossModPrototype:NewSpecialWarningSoon(text, optionDefault, ...)
 		return newSpecialWarning(self, "soon", text, nil, optionDefault, ...)
+	end
+
+	function bossModPrototype:NewSpecialWarningBait(text, optionDefault, ...)
+		return newSpecialWarning(self, "bait", text, nil, optionDefault, ...)
 	end
 
 	function bossModPrototype:NewSpecialWarningDispel(text, optionDefault, ...)
