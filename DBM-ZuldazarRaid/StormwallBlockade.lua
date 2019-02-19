@@ -223,6 +223,13 @@ function mod:OnCombatEnd()
 	if self.Options.NPAuraOnKepWrapping then
 		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
 	end
+	--Reset fades on wipes
+	timerCracklingLightningCD:SetFade(false)
+	timerVoltaicFlashCD:SetFade(false)
+	timerElecShroudCD:SetFade(false)
+	timerSeaStormCD:SetFade(false)
+	timerSeasTemptationCD:SetFade(false)
+	timerTidalShroudCD:SetFade(false)
 end
 
 function mod:OnTimerRecovery()
