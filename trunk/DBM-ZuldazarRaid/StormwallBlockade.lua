@@ -321,6 +321,8 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 288696 then
 		warnCataTides:Show()
 		timerCataTides:Start()
+		timerSeaSwellCD:Stop()
+		countdownSeaSwell:Cancel()
 	end
 end
 
