@@ -17,7 +17,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 287565 285177 285459 290036 288221 288345 288441 288719 289219 289940 290084 288619 288747 289488 289220 287626",
 	"SPELL_CAST_SUCCESS 285725 287925 287626 289220 288374 288211",
-	"SPELL_AURA_APPLIED 287993 287490 289387 287925 285253 287626 288199 288219 288212 288374 288412 288434 289220 285254 288038 287322 288169",
+	"SPELL_AURA_APPLIED 287993 287490 289387 287925 285253 288199 288219 288212 288374 288412 288434 289220 285254 288038 287322 288169",
 	"SPELL_AURA_APPLIED_DOSE 287993 285253",
 	"SPELL_AURA_REMOVED 287993 287925 288199 288219 288212 288374 288038 290001",
 	"SPELL_AURA_REMOVED_DOSE 287993",
@@ -145,7 +145,7 @@ mod:AddNamePlateOption("NPAuraOnRefractiveIce", 288219)
 mod:AddSetIconOption("SetIconBroadside", 288212, true)
 mod:AddRangeFrameOption(10, 289379)
 mod:AddInfoFrameOption(287993, true, 2)
-mod:AddBoolOption("ShowOnlySummary", false, "misc")
+mod:AddBoolOption("ShowOnlySummary2", true, "misc")
 
 mod.vb.phase = 1
 mod.vb.corsairCount = 0
@@ -301,7 +301,7 @@ function mod:OnCombatStart(delay)
 		timerHowlingWindsCD:Start(66.9, 1)
 		berserkTimer:Start(720)
 		if self.Options.RangeFrame then
-			DBM.RangeCheck:Show(10, nil, nil, 1, true, nil, self.Options.ShowOnlySummary)--Reverse checker, threshold 1 at start
+			DBM.RangeCheck:Show(10, nil, nil, 1, true, nil, self.Options.ShowOnlySummary2)--Reverse checker, threshold 1 at start
 		end
 		self:RegisterShortTermEvents(
 			"UNIT_POWER_FREQUENT player"
@@ -408,6 +408,7 @@ function mod:SPELL_CAST_START(args)
 			castsPerGUID[args.sourceGUID] = 0
 		end
 		castsPerGUID[args.sourceGUID] = castsPerGUID[args.sourceGUID] + 1
+		if castsPerGUID[args.sourceGUID] == 5 then castsPerGUID[args.sourceGUID] = 1 end--Loop at 4
 		local count = castsPerGUID[args.sourceGUID]
 		if args:GetSrcCreatureID() == 149144 then
 			timerWaterBoltVolleyCD:Start(nil, count+1)
@@ -422,9 +423,7 @@ function mod:SPELL_CAST_START(args)
 				specWarnWaterBoltVolley:Play("kick3r")
 			elseif count == 4 then
 				specWarnWaterBoltVolley:Play("kick4r")
-			elseif count == 5 then
-				specWarnWaterBoltVolley:Play("kick5r")
-			else
+			else--Shouldn't happen, but fallback rules never hurt
 				specWarnWaterBoltVolley:Play("kickcast")
 			end
 		end
@@ -516,7 +515,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnFreezingBlood:Play("gathershare")
 		end
 	elseif spellId == 288038 then
-		warnMarkedTarget:CombinedShow(0.5, args.destName)
+		warnMarkedTarget:CombinedShow(1, args.destName)
 		if args:IsPlayer() then
 			if self:AntiSpam(3, 2) then
 				specWarnMarkedTarget:Show()
@@ -531,7 +530,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.NPAuraOnTimeWarp then
 			DBM.Nameplate:Show(true, args.sourceGUID, spellId, nil, 40)
 		end
-	elseif spellId == 287626 then
+	--elseif spellId == 287626 then
 		--specWarGraspofFrost:CombinedShow(1, args.destName)
 		--specWarGraspofFrost:ScheduleVoice(1, "helpdispel")
 	elseif spellId == 288199 then--Howling Winds (secondary 1.5 trigger)
@@ -779,12 +778,12 @@ function mod:UNIT_POWER_FREQUENT(uId, type)
 		local altPower = UnitPower(uId, 10)
 		if rangeThreshold < 3 and altPower >= 75 then
 			if self.Options.RangeFrame then
-				DBM.RangeCheck:Show(10, nil, nil, 5, true, nil, self.Options.ShowOnlySummary)--Reverse checker, threshold 5
+				DBM.RangeCheck:Show(10, nil, nil, 5, true, nil, self.Options.ShowOnlySummary2)--Reverse checker, threshold 5
 			end
 			self:UnregisterShortTermEvents()
 		elseif rangeThreshold < 2 and altPower >=50 then
 			if self.Options.RangeFrame then
-				DBM.RangeCheck:Show(10, nil, nil, 3, true, nil, self.Options.ShowOnlySummary)--Reverse checker, threshold 3
+				DBM.RangeCheck:Show(10, nil, nil, 3, true, nil, self.Options.ShowOnlySummary2)--Reverse checker, threshold 3
 			end
 		end
 	end
