@@ -150,7 +150,7 @@ do
 end
 
 --Needs to be run on pull and teleports (either player changing sides or boss)
-local function delayedSisterUpdate(self)
+local function delayedSisterUpdate(self, first)
 	self:Unschedule(delayedSisterUpdate)
 	if self:CheckBossDistance(146251, true) then--Sister Katherine
 		timerCracklingLightningCD:SetFade(false)
@@ -161,9 +161,13 @@ local function delayedSisterUpdate(self)
 		timerVoltaicFlashCD:SetFade(true)
 		timerElecShroudCD:SetFade(true)
 	end
+	--Secondary scan (only runs on translocate)
+	if first then
+		self:Schedule(3, delayedSisterUpdate, self)
+	end
 end
 
-local function delayedBrotherUpdate(self)
+local function delayedBrotherUpdate(self, first)
 	self:Unschedule(delayedBrotherUpdate)
 	if self:CheckBossDistance(146253, true) then--Brother Joseph
 		timerSeaStormCD:SetFade(false)
@@ -173,6 +177,10 @@ local function delayedBrotherUpdate(self)
 		timerSeaStormCD:SetFade(true)
 		timerSeasTemptationCD:SetFade(true, self.vb.sirenCount+1)
 		timerTidalShroudCD:SetFade(true)
+	end
+	--Secondary scan (only runs on translocate)
+	if first then
+		self:Schedule(3, delayedBrotherUpdate, self)
 	end
 end
 
@@ -264,7 +272,7 @@ function mod:SPELL_CAST_START(args)
 			timerCracklingLightningCD:Start(12)
 			timerVoltaicFlashCD:Start(17)
 			timerElecShroudCD:Start(36.4)
-			self:Schedule(2, delayedSisterUpdate, self)--Update timers couple seconds into pull
+			self:Schedule(2, delayedSisterUpdate, self, true)
 		elseif cid == 146251 then--Brother
 			timerSeaStormCD:Stop()
 			timerSeasTemptationCD:Stop()
@@ -274,7 +282,7 @@ function mod:SPELL_CAST_START(args)
 			timerSeaStormCD:Start(12.1)
 			timerSeasTemptationCD:Start(26.7, self.vb.sirenCount+1)--Even less sure about this one
 			timerTidalShroudCD:Start(37.7)
-			self:Schedule(2, delayedBrotherUpdate, self)--Update timers couple seconds into pull
+			self:Schedule(2, delayedBrotherUpdate, self, true)
 		end
 	elseif spellId == 284383 then
 		self.vb.sirenCount = self.vb.sirenCount + 1
