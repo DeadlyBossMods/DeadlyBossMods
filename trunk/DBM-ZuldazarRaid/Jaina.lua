@@ -734,7 +734,7 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 function mod:SPELL_INTERRUPT(args)
 	if type(args.extraSpellId) == "number" and args.extraSpellId == 290084 then
 		if self.Options.NPAuraOnWaterBolt then
-			DBM.Nameplate:Hide(true, args.sourceGUID)
+			DBM.Nameplate:Hide(true, args.destGUID)
 		end
 	end
 end
