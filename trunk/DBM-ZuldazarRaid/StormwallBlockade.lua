@@ -279,7 +279,7 @@ function mod:SPELL_CAST_START(args)
 			timerCracklingLightningCD:Start(12)
 			timerVoltaicFlashCD:Start(17)
 			timerElecShroudCD:Start(36.4)
-			self:Schedule(2, delayedSisterUpdate, self, true)
+			self:Schedule(3, delayedSisterUpdate, self, true)
 		elseif cid == 146251 then--Brother
 			timerSeaStormCD:Stop()
 			timerSeasTemptationCD:Stop()
@@ -289,7 +289,7 @@ function mod:SPELL_CAST_START(args)
 			timerSeaStormCD:Start(12.1)
 			timerSeasTemptationCD:Start(26.7, self.vb.sirenCount+1)--Even less sure about this one
 			timerTidalShroudCD:Start(37.7)
-			self:Schedule(2, delayedBrotherUpdate, self, true)
+			self:Schedule(3, delayedBrotherUpdate, self, true)
 		end
 	elseif spellId == 284383 then
 		self.vb.sirenCount = self.vb.sirenCount + 1
