@@ -68,7 +68,7 @@ local yellTemptingSong					= mod:NewYell(284405)
 --Stage Two: Laminaria
 local specWarnEnergizedStorm			= mod:NewSpecialWarningSwitch("ej19312", "RangedDps", nil, nil, 1, 2)
 local yellKepWrapped					= mod:NewFadesYell(285000)
-local specWarnSeaSwell					= mod:NewSpecialWarningDodge(285118, nil, nil, nil, 2, 2)
+local specWarnSeaSwell					= mod:NewSpecialWarningDodge(285118, nil, nil, 2, 3, 2)
 local specWarnIreoftheDeep				= mod:NewSpecialWarningSoak(285017, "-Tank", nil, nil, 1, 2)
 local specWarnStormsWail				= mod:NewSpecialWarningMoveTo(285350, nil, nil, 2, 3, 2)
 local yellStormsWail					= mod:NewYell(285350)
@@ -280,7 +280,7 @@ function mod:SPELL_CAST_START(args)
 			timerVoltaicFlashCD:Start(17)
 			timerElecShroudCD:Start(36.4)
 			self:Schedule(3, delayedSisterUpdate, self, true)
-		elseif cid == 146251 then--Brother
+		else--Brother
 			timerSeaStormCD:Stop()
 			timerSeasTemptationCD:Stop()
 			timerTidalShroudCD:Stop()
