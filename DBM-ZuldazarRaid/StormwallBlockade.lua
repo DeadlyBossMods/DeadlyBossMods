@@ -163,7 +163,7 @@ local function delayedSisterUpdate(self, first)
 	end
 	--Secondary scan (only runs on translocate)
 	if first then
-		self:Schedule(3, delayedSisterUpdate, self)
+		self:Schedule(2, delayedSisterUpdate, self)
 	end
 end
 
@@ -180,7 +180,7 @@ local function delayedBrotherUpdate(self, first)
 	end
 	--Secondary scan (only runs on translocate)
 	if first then
-		self:Schedule(3, delayedBrotherUpdate, self)
+		self:Schedule(2, delayedBrotherUpdate, self)
 	end
 end
 
@@ -209,8 +209,8 @@ function mod:OnCombatStart(delay)
 		DBM.InfoFrame:SetHeader(OVERVIEW)
 		DBM.InfoFrame:Show(8, "function", updateInfoFrame, false, false)
 	end
-	self:Schedule(2, delayedSisterUpdate, self)--Update timers couple seconds into pull
-	self:Schedule(2, delayedBrotherUpdate, self)--Update timers couple seconds into pull
+	self:Schedule(0.5, delayedSisterUpdate, self, true)--Update timers couple seconds into pull
+	self:Schedule(0.5, delayedBrotherUpdate, self, true)--Update timers couple seconds into pull
 end
 
 function mod:OnCombatEnd()
