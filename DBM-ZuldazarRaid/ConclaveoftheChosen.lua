@@ -2,7 +2,7 @@ local mod	= DBM:NewMod(2330, "DBM-ZuldazarRaid", 2, 1176)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
-mod:SetCreatureID(144747, 144767, 144963, 144941)--Mythic need other 2 IDs?
+mod:SetCreatureID(144747, 144767, 144963, 144941)
 mod:SetEncounterID(2268)
 --mod:DisableESCombatDetection()
 mod:SetZone()
@@ -130,7 +130,6 @@ mod:AddInfoFrameOption(282079, true)--Not real spellID, just filler for now
 
 --mod.vb.phase = 1
 mod.vb.hexIcon = 1
-mod.vb.hexIgnore = false
 mod.vb.ignoredActivate = true
 mod.vb.pakuWrathCount = 0
 mod.vb.pakuDead = false
@@ -142,14 +141,9 @@ local function clearActivateIgnore(self)
 	self.vb.ignoredActivate = false
 end
 
-local function setHexIgnore(self)
-	self.vb.hexIgnore = false
-end
-
 function mod:OnCombatStart(delay)
 	table.wipe(raptorsSeen)
 	self.vb.hexIcon = 1
-	self.vb.hexIgnore = false
 	self.vb.ignoredActivate = true
 	self.vb.pakuWrathCount = 0
 	self.vb.pakuDead = false
@@ -285,7 +279,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnCrawlingHex:Show()
 			specWarnCrawlingHex:Play("targetyou")
-			if self.vb.hexIgnore then
+			if icon > 8 then
 				yellCrawlingHexAlt:Yell()
 				yellCrawlingHexFadesAlt:Countdown(5)
 			else
@@ -299,7 +293,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			warnCrawlingHex:CombinedShow(0.3, args.destName)
 		end
-		if self.Options.SetIconHex and not self.vb.hexIgnore then
+		if self.Options.SetIconHex and icon < 9 then
 			self:SetIcon(args.destName, icon)
 		end
 		self.vb.hexIcon = self.vb.hexIcon + 1
@@ -490,8 +484,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		end
 	elseif spellId == 283193 then--Since blizzard hates combat log so much (clawing hex)
 		self.vb.hexIcon = 1
-		self.vb.hexIgnore = false
-		self:Schedule(0.5, setHexIgnore, self)
 		timerCrawlingHexCD:Start()
 	end
 end
