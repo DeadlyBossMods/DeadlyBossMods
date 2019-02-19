@@ -90,7 +90,7 @@ local timerTidalShroudCD				= mod:NewCDTimer(36.5, 286558, nil, nil, nil, 4, nil
 --Stage Two: Laminaria
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(19258))
 local timerCataTides					= mod:NewCastTimer(15, 288696, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
-local timerSeaSwellCD					= mod:NewCDTimer(20.6, 285118, nil, nil, nil, 3)
+local timerSeaSwellCD					= mod:NewCDTimer(20.6, 285118, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
 local timerIreoftheDeepCD				= mod:NewCDTimer(32.8, 285017, nil, nil, nil, 5)
 local timerStormsWailCD					= mod:NewCDTimer(120.5, 285350, nil, nil, nil, 3)
 local timerStormsWail					= mod:NewTargetTimer(12, 285350, nil, nil, nil, 5)
@@ -475,6 +475,7 @@ function mod:SPELL_INTERRUPT(args)
 		self.vb.phase = 2
 		self.vb.sirenCount = 0
 		timerSeaSwellCD:Stop()
+		timerCataTides:Stop()
 		countdownSeaSwell:Cancel()
 		--Same on all difficulties but some variation because they can actually come in different orders. in reality probably all start with same timer then randomized order by spell queue
 		timerIreoftheDeepCD:Start(3.2)--17.4
