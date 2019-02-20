@@ -149,6 +149,7 @@ mod:AddSetIconOption("SetIconBroadside", 288212, true)
 mod:AddRangeFrameOption(10, 289379)
 mod:AddInfoFrameOption(287993, true, 2)
 mod:AddBoolOption("ShowOnlySummary2", true, "misc")
+mod:AddDropdownOption("InterruptBehavior", {"Three", "Four", "Five"}, "Three", "misc")
 
 mod.vb.phase = 1
 mod.vb.corsairCount = 0
@@ -164,6 +165,7 @@ mod.vb.broadsideIcon = 0
 mod.vb.waterboltVolleyCount = 0
 mod.vb.howlingWindsCast = 0
 mod.vb.frozenSiegeCount = 0
+mod.vb.interruptBehavior = "Three"
 local ChillingTouchStacks = {}
 local chillingCollector = {}
 local graspActive = false
@@ -171,7 +173,7 @@ local castsPerGUID = {}
 local rangeThreshold = 1
 local fixStupid = {}
 --1 2178508, 2 2178501, 3 2178502, 4 2178503, 2178500 (none)--Not best icons, better ones needed
-local interruptTextures = {[1] = 2178508, [2] = 2178501, [3] = 2178502, [4] = 2178503,}
+local interruptTextures = {[1] = 2178508, [2] = 2178501, [3] = 2178502, [4] = 2178503, [5] = 2178504,}
 
 --[[
 local updateInfoFrame
@@ -289,6 +291,7 @@ function mod:OnCombatStart(delay)
 	self.vb.broadsideIcon = 0
 	self.vb.howlingWindsCast = 0
 	self.vb.frozenSiegeCount = 0
+	self.vb.interruptBehavior = self.Options.InterruptBehavior--Default it to whatever user has it set to, until group leader overrides it
 	table.wipe(castsPerGUID)
 	table.wipe(ChillingTouchStacks)
 	table.wipe(chillingCollector)
@@ -328,6 +331,16 @@ function mod:OnCombatStart(delay)
 	end
 	if self.Options.NPAuraOnMarkedTarget or self.Options.NPAuraOnTimeWarp or self.Options.NPAuraOnRefractiveIce or self.Options.NPAuraOnWaterBolt then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
+	end
+	--Group leader decides interrupt behavior
+	if UnitIsGroupLeader("player") and not self:IsLFR() then
+		if self.Options.InterruptBehavior == "Three" then
+			self:SendSync("Three")
+		elseif self.Options.InterruptBehavior == "Four" then
+			self:SendSync("Four")
+		elseif self.Options.InterruptBehavior == "Five" then
+			self:SendSync("Five")
+		end
 	end
 end
 
@@ -413,7 +426,9 @@ function mod:SPELL_CAST_START(args)
 			castsPerGUID[args.sourceGUID] = 0
 		end
 		castsPerGUID[args.sourceGUID] = castsPerGUID[args.sourceGUID] + 1
-		if castsPerGUID[args.sourceGUID] == 5 then castsPerGUID[args.sourceGUID] = 1 end--Loop at 4
+		if (self.vb.interruptBehavior == "Three" and castsPerGUID[args.sourceGUID] == 4) or (self.vb.interruptBehavior == "Four" and castsPerGUID[args.sourceGUID] == 5) or (self.vb.interruptBehavior == "Five" and castsPerGUID[args.sourceGUID] == 6) then
+			castsPerGUID[args.sourceGUID] = 0
+		end
 		local count = castsPerGUID[args.sourceGUID]
 		if args:GetSrcCreatureID() == 149144 then
 			timerWaterBoltVolleyCD:Start(nil, count+1)
@@ -428,6 +443,8 @@ function mod:SPELL_CAST_START(args)
 				specWarnWaterBoltVolley:Play("kick3r")
 			elseif count == 4 then
 				specWarnWaterBoltVolley:Play("kick4r")
+			elseif count == 5 then
+				specWarnWaterBoltVolley:Play("kick5r")
 			else--Shouldn't happen, but fallback rules never hurt
 				specWarnWaterBoltVolley:Play("kickcast")
 			end
@@ -815,4 +832,15 @@ function mod:UNIT_POWER_FREQUENT(uId, type)
 			end
 		end
 	end
+end
+
+function mod:OnSync(msg)
+	if self:IsLFR() then return end
+	if msg == "Three" then
+		self.vb.interruptBehavior = "Three"
+	elseif msg == "Four" then
+		self.vb.interruptBehavior = "Four"
+	elseif msg == "Five" then
+		self.vb.interruptBehavior = "Five"
+	end	
 end
