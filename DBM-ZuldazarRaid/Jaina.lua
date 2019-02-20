@@ -426,10 +426,10 @@ function mod:SPELL_CAST_START(args)
 		if not castsPerGUID[args.sourceGUID] then
 			castsPerGUID[args.sourceGUID] = 0
 		end
-		castsPerGUID[args.sourceGUID] = castsPerGUID[args.sourceGUID] + 1
 		if (self.vb.interruptBehavior == "Three" and castsPerGUID[args.sourceGUID] == 4) or (self.vb.interruptBehavior == "Four" and castsPerGUID[args.sourceGUID] == 5) or (self.vb.interruptBehavior == "Five" and castsPerGUID[args.sourceGUID] == 6) then
 			castsPerGUID[args.sourceGUID] = 0
 		end
+		castsPerGUID[args.sourceGUID] = castsPerGUID[args.sourceGUID] + 1
 		local count = castsPerGUID[args.sourceGUID]
 		if args:GetSrcCreatureID() == 149144 then
 			timerWaterBoltVolleyCD:Start(nil, count+1)
@@ -765,7 +765,7 @@ end
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 149144 then--Jaina's Tide Elemental
+	if cid == 149144 or cid == 149558 then--Jaina's Tide Elemental
 		castsPerGUID[args.destGUID] = nil
 		timerHeartofFrostCD:Stop()
 		timerWaterBoltVolleyCD:Stop()
