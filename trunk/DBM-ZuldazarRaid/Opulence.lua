@@ -331,6 +331,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			timerCrushCD:Start(14.5, L.Bulwark)
 			timerFlamesofPunishmentCD:Start(24.2)
 		end
+		updatePlayerTimers(self)
 	end
 end
 
