@@ -489,7 +489,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 end
 
 function mod:OnSync(msg)
-	if msg == "BwonsamdiWrath" then
+	if msg == "BwonsamdiWrath" and self:IsInCombat() then
 		self.vb.wrathCount = self.vb.wrathCount + 1
 		timerBwonsamdisWrathCD:Start(50, self.vb.wrathCount+1)
 	end
