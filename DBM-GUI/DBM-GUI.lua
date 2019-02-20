@@ -824,11 +824,11 @@ function PanelPrototype:CreateCreatureModelFrame(width, height, creatureid)
 	return ModelFrame
 end
 
-function PanelPrototype:AutoSetDimension()
+function PanelPrototype:AutoSetDimension(additionalHeight)
 	if not self.frame.mytype == "area" then return end
 	local height = self.frame:GetHeight()
-
-	local need_height = 25
+	local addHeight = additionalHeight or 0
+	local need_height = 25 + addHeight
 
 	local kids = { self.frame:GetChildren() }
 	for _, child in pairs(kids) do
@@ -4647,6 +4647,7 @@ do
 			if category then
 				local catpanel = panel:CreateArea(mod.localization.cats[catident], nil, nil, true)
 				local button, lastButton, addSpacer
+				local hasDropdowns = 0
 				for _, v in ipairs(category) do
 					if v == DBM_OPTION_SPACER then
 						addSpacer = true
@@ -4679,11 +4680,12 @@ do
 						for i, v in ipairs(mod.dropdowns[v]) do
 							dropdownOptions[#dropdownOptions + 1] = { text = mod.localization.options[v], value = v }
 						end
-						button = catpanel:CreateDropdown(mod.localization.options[v], dropdownOptions, mod, v, function(value) mod.Options[v] = value end)
+						button = catpanel:CreateDropdown(mod.localization.options[v], dropdownOptions, mod, v, function(value) mod.Options[v] = value end, nil, 32)
 						if addSpacer then
 							button:SetPoint("TOPLEFT", lastButton, "BOTTOMLEFT", 0, -6)
 							addSpacer = false
 						else
+							hasDropdowns = hasDropdowns + 7--Add 7 extra pixels per dropdown, because autodims is only reserving 25 per line, and dropdowns are 32
 							button:SetPoint("TOPLEFT", lastButton, "BOTTOMLEFT", 0, -10)
 						end
 						button:SetScript("OnShow", function(self)
@@ -4691,7 +4693,7 @@ do
 						end)
 					end
 				end
-				catpanel:AutoSetDimension()
+				catpanel:AutoSetDimension(hasDropdowns)
 				panel:SetMyOwnHeight()
 			end
 		end
