@@ -1184,11 +1184,11 @@ do
 			if LibStub("LibDBIcon-1.0", true) then
 				LibStub("LibDBIcon-1.0"):Register("DBM", dataBroker, DBM_MinimapIcon)
 			end
-			--[[local soundChannels = tonumber(GetCVar("Sound_NumChannels")) or 24--if set to 24, may return nil, Defaults usually do
+			local soundChannels = tonumber(GetCVar("Sound_NumChannels")) or 24--if set to 24, may return nil, Defaults usually do
 			--If this messes with your fps, stop raiding with a toaster. It's only fix for addon sound ducking.
 			if soundChannels < 64 then
 				SetCVar("Sound_NumChannels", 64)
-			end--]]
+			end
 			self.AddOns = {}
 			self.Voices = { {text = "None",value  = "None"}, }--Create voice table, with default "None" value
 			self.VoiceVersions = {}
@@ -4479,8 +4479,10 @@ do
 					end
 					--Find min revision.
 					updateNotificationDisplayed = 2
-					AddMsg(DBM, DBM_CORE_UPDATEREMINDER_HEADER:match("([^\n]*)"))
-					AddMsg(DBM, DBM_CORE_UPDATEREMINDER_HEADER:match("\n(.*)"):format(displayVersion, version))
+					if not DBM.Options.DontShowReminders then
+						AddMsg(DBM, DBM_CORE_UPDATEREMINDER_HEADER:match("([^\n]*)"))
+						AddMsg(DBM, DBM_CORE_UPDATEREMINDER_HEADER:match("\n(.*)"):format(displayVersion, version))
+					end
 					showConstantReminder = 1
 				elseif not noRaid and #newerVersionPerson == 3 and updateNotificationDisplayed < 3 then--The following code requires at least THREE people to send that higher revision. That should be more than adaquate
 					--Disable if revision grossly out of date even if not major patch.
@@ -4489,14 +4491,13 @@ do
 						if revDifference > 100 then
 							if updateNotificationDisplayed < 3 then
 								updateNotificationDisplayed = 3
-								AddMsg(DBM, DBM_CORE_UPDATEREMINDER_DISABLE)
-								DBM:Disable(true)
+								AddMsg(DBM, DBM_CORE_UPDATEREMINDER_NODISABLE)
 							end
 						end
 					--Disable if out of date and it's a major patch.
 					elseif not testBuild and dbmToc < wowTOC then
 						updateNotificationDisplayed = 3
-						AddMsg(DBM, DBM_CORE_UPDATEREMINDER_MAJORPATCH)
+						AddMsg(DBM, DBM_CORE_UPDATEREMINDER_MAJORPATCH)--Major patches will ALWAYS ignore DontShowReminders
 						DBM:Disable(true)
 					end
 				end
@@ -4549,9 +4550,7 @@ do
 			raid[sender].locale = locale
 			raid[sender].enabledIcons = iconEnabled or "false"
 			DBM:Debug("Received version info from "..sender.." : Rev - "..revision..", Ver - "..version..", Rev Diff - "..(revision - DBM.Revision), 3)
-			if not DBM.Options.DontShowReminders then
-				HandleVersion(revision, version, displayVersion, sender)
-			end
+			HandleVersion(revision, version, displayVersion, sender)
 		end
 		DBM:GROUP_ROSTER_UPDATE()
 	end
@@ -4560,9 +4559,7 @@ do
 		revision, version = tonumber(revision), tonumber(version)
 		if revision and version and displayVersion then
 			DBM:Debug("Received G version info from "..sender.." : Rev - "..revision..", Ver - "..version..", Rev Diff - "..(revision - DBM.Revision), 3)
-			if not DBM.Options.DontShowReminders then
-				HandleVersion(revision, version, displayVersion, sender, true)
-			end
+			HandleVersion(revision, version, displayVersion, sender, true)
 		end
 	end
 
