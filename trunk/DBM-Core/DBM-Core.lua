@@ -10512,13 +10512,19 @@ do
 	--This version does NOT set timer object meta, only started bar meta
 	--Use this if you only want to alter an already STARTED temporarily
 	--As such it also only needs fadeOn. fadeoff isn't needed since this temp alter never affects newly started bars
-	function timerPrototype:SetSTFade(...)
+	function timerPrototype:SetSTFade(fadeOn, ...)
 		local id = self.id..pformat((("\t%s"):rep(select("#", ...))), ...)
 		local bar = DBM.Bars:GetBar(id)
-		if bar and not bar.fade then
-			fireEvent("DBM_TimerFadeUpdate", id, self.spellId, self.mod.id, true)--Timer ID, spellId, modId, true/nil (new callback only needed if we update an existing timers fade, self.fade is passed in timer start object for new timers)
-			bar.fade = true--Set bar object metatable, which is copied from timer metatable at bar start only
-			bar:ApplyStyle()
+		if bar then
+			if fadeOn and not bar.fade then
+				fireEvent("DBM_TimerFadeUpdate", id, self.spellId, self.mod.id, true)--Timer ID, spellId, modId, true/nil (new callback only needed if we update an existing timers fade, self.fade is passed in timer start object for new timers)
+				bar.fade = true--Set bar object metatable, which is copied from timer metatable at bar start only
+				bar:ApplyStyle()
+			elseif not fadeOn and bar.fade then
+				fireEvent("DBM_TimerFadeUpdate", id, self.spellId, self.mod.id, nil)
+				bar.fade = false
+				bar:ApplyStyle()
+			end
 		end
 	end
 

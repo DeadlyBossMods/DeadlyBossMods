@@ -2,7 +2,7 @@ local mod	= DBM:NewMod(2342, "DBM-ZuldazarRaid", 2, 1176)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
---mod:SetCreatureID(138967)--145261 or 147564
+mod:SetCreatureID(145261)
 mod:SetEncounterID(2271)
 --mod:DisableESCombatDetection()
 mod:SetZone()
@@ -31,8 +31,7 @@ mod:RegisterEventsInCombat(
 (ability.id = 282939 or ability.id = 287659 or ability.id = 287070 or ability.id = 285995 or ability.id = 284941 or ability.id = 283947 or ability.id = 283606 or ability.id = 289906 or ability.id = 289155) and type = "begincast"
  or (ability.id = 283507 or ability.id = 287648 or ability.id = 284470 or ability.id = 287072 or ability.id = 285014 or ability.id = 287037 or ability.id = 285505 or ability.id = 286541) and type = "cast"
 --]]
---TODO, more trap work, especially ruby beam targetting
---TODO, auto correction code (for tank ability at least)
+--TODO, work on boss and bar behaviors when soloing this raid one day (assuming blizzard makes it so one boss running out of their tunnel across to other tunnel doesn't auto reset boss, because that will happen when soloing
 --The Zandalari Crown Jewels
 local warnGrosslyIncandescent			= mod:NewTargetNoFilterAnnounce(284798, 1)
 local warnChaoticDisplacement			= mod:NewTargetAnnounce(289383, 3)
@@ -187,6 +186,20 @@ do
 	end
 end
 
+--Single check, assume that if not near one boss you are near the other
+local function updatePlayerTimers(self)
+	self:Unschedule(updatePlayerTimers)
+	if self:CheckBossDistance(145273, true) then--The Hand of In'zashi
+		timerFlamesofPunishmentCD:SetFade(true)
+		timerCrushCD:SetSTFade(false, L.Hand)
+		timerCrushCD:SetSTFade(true, L.Bulwark)
+	else--145274 Yalat's Bulwark
+		timerFlamesofPunishmentCD:SetFade(false)
+		timerCrushCD:SetSTFade(true, L.Hand)
+		timerCrushCD:SetSTFade(false, L.Bulwark)
+	end
+end
+
 function mod:OnCombatStart(delay)
 	table.wipe(incandescentStacks)
 	table.wipe(grosslyIncandescentTargets)
@@ -207,6 +220,7 @@ function mod:OnCombatStart(delay)
 	if self.Options.NPAuraOnGoldenRadiance then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
+	self:Schedule(1, updatePlayerTimers, self)
 end
 
 function mod:OnCombatEnd()
@@ -269,7 +283,7 @@ function mod:SPELL_CAST_START(args)
 			specWarnCrush:Show()
 			specWarnCrush:Play("watchstep")
 		else
-			timerCrushCD:SetSTFade(L.Hand)
+			timerCrushCD:SetSTFade(true, L.Hand)
 		end
 	elseif spellId == 289906 then
 		timerCrushCD:Start(20.6, L.Bulwark)--7.7, 21.9, 31.6, 21.8, 20.6, 20.7, 18.2, 21.8
@@ -277,7 +291,7 @@ function mod:SPELL_CAST_START(args)
 			specWarnCrush:Show()
 			specWarnCrush:Play("watchstep")
 		else
-			timerCrushCD:SetSTFade(L.Bulwark)
+			timerCrushCD:SetSTFade(true, L.Bulwark)
 		end
 	elseif spellId == 289155 then
 		specWarnSurgingGold:Show()
@@ -443,6 +457,10 @@ function mod:SPELL_AURA_REMOVED(args)
 		incandescentStacks[args.destName] = nil
 	elseif spellId == 284527 then--Diamond
 		diamondTargets[args.destName] = nil
+	elseif spellId == 289383 then--Chaotic Displaecment
+		if args:IsPlayer() then
+			self:Schedule(1, updatePlayerTimers, self)
+		end
 	end
 end
 
