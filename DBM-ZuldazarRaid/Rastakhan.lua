@@ -74,8 +74,8 @@ local specWarnSealofPurification		= mod:NewSpecialWarningRun(284662, nil, nil, n
 local yellSealofPurification			= mod:NewYell(284662)
 ----Siegebreaker Roka
 local specWarnMeteorLeap				= mod:NewSpecialWarningMoveTo(284686, nil, nil, nil, 1, 2)
-local yellMeteorLeap					= mod:NewYell(284686)
-local yellMeteorLeapFades				= mod:NewShortFadesYell(284686)
+local yellMeteorLeap					= mod:NewYell(284686, nil, nil, nil, "YELL")
+local yellMeteorLeapFades				= mod:NewShortFadesYell(284686, nil, nil, nil, "YELL")
 ----Headhunter Gal'wana
 local specWarnGrievousAxe				= mod:NewSpecialWarningDefensive(284781, false, nil, nil, 1, 2)
 --Stage Two: Bwonsamdi's Pact
