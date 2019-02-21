@@ -16,7 +16,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 284262 284106 284393 284383 285017 284362 288696 288941",
-	"SPELL_CAST_SUCCESS 285350 285426 285118 290694 289795",
+	"SPELL_CAST_SUCCESS 285350 285426 285118 290694 289795 287169",
 	"SPELL_AURA_APPLIED 286558 284405 285000 285382 285350 285426 287995",
 	"SPELL_AURA_REFRESH 285000 285382",
 	"SPELL_AURA_APPLIED_DOSE 285000 285382",
@@ -44,6 +44,7 @@ local warnTranslocate					= mod:NewTargetNoFilterAnnounce(284393, 2)
 ----Sister Katherine
 local warnCracklingLightning			= mod:NewCastAnnounce(284106, 3)
 local warnElecShroud					= mod:NewTargetAnnounce(287995, 4)
+local warnJoltingVolley					= mod:NewCountAnnounce(287169, 3)
 ----Brother Joseph
 local warnTemptingSong					= mod:NewTargetAnnounce(284405, 2)
 local warnTidalShroud					= mod:NewTargetAnnounce(286558, 4)
@@ -94,6 +95,7 @@ local timerSeaSwellCD					= mod:NewCDTimer(20.6, 285118, nil, nil, nil, 3, nil, 
 local timerIreoftheDeepCD				= mod:NewCDTimer(32.8, 285017, nil, nil, nil, 5)
 local timerStormsWailCD					= mod:NewCDTimer(120.5, 285350, nil, nil, nil, 3)
 local timerStormsWail					= mod:NewTargetTimer(12, 285350, nil, nil, nil, 5)
+local timerJoltingVolleyCD				= mod:NewCDCountTimer(43.6, 287169, nil, nil, nil, 2, nil, DBM_CORE_HEALER_ICON)
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
 
@@ -110,6 +112,7 @@ mod.vb.phase = 1
 mod.vb.bossesDied = 0
 mod.vb.cracklingCast = 0
 mod.vb.sirenCount = 0
+mod.vb.joltingCast = 0
 local freezingTidePod = DBM:GetSpellInfo(285075)
 local stormTargets = {}
 
@@ -190,6 +193,7 @@ function mod:OnCombatStart(delay)
 	self.vb.bossesDied = 0
 	self.vb.cracklingCast = 0
 	self.vb.sirenCount = 0
+	self.vb.joltingCast = 0
 	--Sister
 	timerCracklingLightningCD:Start(3.9-delay)--3.9-8.8
 	timerElecShroudCD:Start(30-delay)
@@ -340,14 +344,14 @@ function mod:SPELL_CAST_SUCCESS(args)
 			timerSeaSwellCD:Start()
 			countdownSeaSwell:Start(20.6)
 		end
-	elseif spellId == 290694 and self:AntiSpam(5, 2) then--Mythic P1 Sea Swell
+	elseif spellId == 290694 and self:AntiSpam(5, 3) then--Mythic P1 Sea Swell
 		specWarnSeaSwell:Show()
 		specWarnSeaSwell:Play("watchstep")
 		timerSeaSwellCD:Start(20)
 		countdownSeaSwell:Start(20)
 	elseif spellId == 289795 and self.vb.phase == 2 then--Zuldazar Reuse Spell 06 (P2 sirens spawning)
 		self.vb.sirenCount = self.vb.sirenCount + 1
-		if self:AntiSpam(8, 8) then
+		if self:AntiSpam(8, 5) then
 			specWarnSeasTemptation:Show()
 			specWarnSeasTemptation:Play("killmob")
 		end
@@ -356,6 +360,10 @@ function mod:SPELL_CAST_SUCCESS(args)
 		else
 			timerSeasTemptationCD:Start(5, self.vb.sirenCount+1)
 		end
+	elseif spellId == 287169 and self.vb.phase == 2 and self:AntiSpam(10, 4) then--Only want to see timer for it in mythic, it's mostly spammed in P1 and doesn't need a timer there
+		self.vb.joltingCast = self.vb.joltingCast + 1
+		warnJoltingVolley:Show(self.vb.joltingCast)
+		timerJoltingVolleyCD:Start(43.6, self.vb.joltingCast+1)
 	end
 end
 
@@ -462,7 +470,7 @@ end
 
 --[[
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
-	if spellId == 285075 and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
+	if spellId == 285075 and destGUID == UnitGUID("player") and self:AntiSpam(2, 6) then
 		specWarnGTFO:Show(spellName)
 		specWarnGTFO:Play("watchfeet")
 	end
@@ -486,6 +494,7 @@ function mod:SPELL_INTERRUPT(args)
 			timerVoltaicFlashCD:SetFade(false)
 			timerSeasTemptationCD:SetFade(false)
 			timerVoltaicFlashCD:Start(18.7)
+			timerJoltingVolleyCD:Start(21.6, 1)
 			timerSeasTemptationCD:Start(38.7, 1)
 		end
 	end
