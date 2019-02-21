@@ -160,6 +160,7 @@ L.ExpandUpwards				= "計時條向上延伸"
 L.FillUpBars				= "填滿計時條"
 L.ClickThrough				= "禁用鼠標事件(允許你點擊穿透計時條)"
 L.Bar_Decimal				= "%d秒以下顯示小數點"
+L.Bar_Alpha					= "計時條透明度: %0.1f"
 L.Bar_DBMOnly				= "以下選項只支援 \"DBM\" 計時條風格"
 L.Bar_EnlargeTime			= "計時條時間低於:%d時放大"
 L.Bar_EnlargePercent		= "計時條百分比低於:%0.1f%%時放大"
@@ -169,6 +170,9 @@ L.BarSort					= "依剩餘時間排序"
 L.BarColorByType			= "根據類型上色"
 L.BarInlineIcons			= "顯示嵌入圖示"
 L.ShortTimerText			= "使用較短的計時器文字(如果可用時)"
+L.KeepBar					= "保持計時條顯示直到技能施放"
+L.KeepBar2					= "(當被模組支援)"
+L.FadeBar					= "清除超出範圍技能的計時條"
 
 -- Tab: Spec Warn Frame
 L.Panel_SpecWarnFrame		= "特別警告"
@@ -296,10 +300,10 @@ L.Always					= ALWAYS
 L.CombatOnly				= "在任何戰鬥中禁用"
 L.RaidCombat				= "只在首領戰鬥中禁用"
 L.HideBonusHeader			= "隱藏額外獎勵視窗低於..."
-L.TrivialContent			= "五人地城(<340)"--Basically anything below 340
-L.NormalRaider				= "傳奇地城+5和隨機團隊(<355)"--Basically, anything below 355
-L.HeroicRaider				= "傳奇地城+10和英雄團隊和非戰爭前線首領(<370)"--Basically anything below 370
-L.MythicRaider				= "傳奇團隊(<385)"--Basically anything below 385
+L.TrivialContent			= "五人地城"--Basically anything below 340
+L.NormalRaider				= "傳奇地城+5和隨機團隊"--Basically, anything below 355
+L.HeroicRaider				= "傳奇地城+10和英雄團隊和非戰爭前線首領"--Basically anything below 370
+L.MythicRaider				= "傳奇團隊"--Basically anything below 385
 
 L.Panel_ExtraFeatures		= "額外功能"
 --
