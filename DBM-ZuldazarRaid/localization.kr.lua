@@ -82,7 +82,11 @@ L= DBM:GetModLocalization(2337)
 L= DBM:GetModLocalization(2343)
 
 L:SetOptionLocalization({
-	ShowOnlySummary2	= "반전 거리 검사시 플레이어 이름을 숨기고 요약된 정보만 표시 (근처에 있는 플레이어의 수)"
+	ShowOnlySummary2	= "반전 거리 검사시 플레이어 이름을 숨기고 요약된 정보만 표시 (근처에 있는 플레이어의 수)",
+	InterruptBehavior	= "물정령 차단 알림 설정 (공대장일 경우 다른 사람의 설정을 무시함)",
+	Three				= "3인 로테이션 ",--Default
+	Four				= "4인 로테이션 ",
+	Five				= "5인 로테이션 "
 })
 
 L:SetMiscLocalization({
