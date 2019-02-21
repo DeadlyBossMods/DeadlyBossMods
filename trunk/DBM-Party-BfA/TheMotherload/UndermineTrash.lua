@@ -8,7 +8,7 @@ mod:SetZone()
 mod.isTrashMod = true
 
 mod:RegisterEvents(
-	"SPELL_CAST_START 268709 268129 263275 267433 263103 263066 268865 268797 269090 262540 262554 262092 263202",
+	"SPELL_CAST_START 268709 268129 263275 267433 263103 263066 268865 268797 269090 262540 262554 262092 263202 267354",
 	"SPELL_AURA_APPLIED 268702 262947 262540 262092",
 	"SPELL_CAST_SUCCESS 280604 262515"
 )
@@ -17,7 +17,8 @@ local warnActivateMech				= mod:NewCastAnnounce(267433, 4)
 local warnRepair					= mod:NewCastAnnounce(262554, 4)
 local warnAzeriteHeartseeker		= mod:NewTargetNoFilterAnnounce(262515, 3)
 
---local yellArrowBarrage				= mod:NewYell(200343)
+--local yellArrowBarrage			= mod:NewYell(200343)
+local specWarnHailofFlechettes		= mod:NewSpecialWarningSpell(267354, nil, nil, nil, 2, 2)
 local specWarnCover					= mod:NewSpecialWarningMove(263275, "Tank", nil, nil, 1, 2)
 local specWarnEarthShield			= mod:NewSpecialWarningInterrupt(268709, "HasInterrupt", nil, nil, 1, 2)
 local specWarnRockLance				= mod:NewSpecialWarningInterrupt(263202, false, nil, nil, 1, 2)
@@ -75,6 +76,9 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 268865 and self:IsValidWarning(args.sourceGUID) and self:AntiSpam(4, 3) then
 		specWarnForceCannon:Show()
 		specWarnForceCannon:Play("shockwave")
+	elseif spellId == 267354 and self:IsValidWarning(args.sourceGUID) and self:AntiSpam(4, 5) then
+		specWarnHailofFlechettes:Show()
+		specWarnHailofFlechettes:Play("stilldanger")--Not great, I can't find the old "crowdcontrol" sound.
 	end
 end
 
