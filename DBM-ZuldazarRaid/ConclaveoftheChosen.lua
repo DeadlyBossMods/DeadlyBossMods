@@ -450,6 +450,14 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 			timerThunderingStormCD:Stop()
 			timerMindWipeCD:Stop()
 		end
+		if timerPakusWrathCD:GetRemaining(self.vb.pakuWrathCount+1) > 40 then
+			local elapsed, total = timerPakusWrathCD:GetTime(self.vb.pakuWrathCount+1)
+			local remaining = total - elapsed
+			DBM:Debug("timerPakusWrathCD extended by: 10 seconds do to boss death with > 40 remaining", 2)
+			timerPakusWrathCD:AddTime(10, self.vb.pakuWrathCount+1)
+			countdownPakusWrath:Cancel()
+			countdownPakusWrath:Start(remaining+10)
+		end
 	elseif spellId == 282080 then--Loa's Pact (entering)
 		if not self.vb.ignoredActivate then
 			if self.Options.SpecWarn118212switchcount then
