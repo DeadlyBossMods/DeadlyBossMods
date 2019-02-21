@@ -81,6 +81,19 @@ L= DBM:GetModLocalization(2337)
 ---------------------------
 L= DBM:GetModLocalization(2343)
 
+L:SetOptionLocalization({
+	ShowOnlySummary2	= "隱藏玩家名稱在反距離監控而且只顯示總結訊息(附近玩家數量)",
+	InterruptBehavior	= "設置水元素中斷行為 (如果你是團隊隊長會覆蓋所有其他人的設定)",
+	Three				= "3人輪流",--Default
+	Four				= "4人輪流",
+	Five				= "5人輪流"
+})
+
+L:SetMiscLocalization({
+	Port			=	"左舷側",
+	Starboard		=	"右舷側"
+})
+
 -------------
 --  Trash  --
 -------------
