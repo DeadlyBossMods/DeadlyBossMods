@@ -297,10 +297,10 @@ L.Always					= "항상 끄기"
 L.CombatOnly				= "전투중 차단 (모든 전투)"
 L.RaidCombat				= "전투중 차단 (보스만)"
 L.HideBonusHeader			= "추가 전리품 주사위 굴림 창을 숨길 전리품 레벨..."
-L.TrivialContent			= "신화 미만 던전 (<340)"--Basically anything below 340
-L.NormalRaider				= "신화+ 5단 미만 던전과 공격대 찾기 레이드 (<355)"--Basically, anything below 355
-L.HeroicRaider				= "신화+ 10단 미만 던전과 영웅 미만 레이드와 격전지 이외 필드 레이드 보스 (<370)"--Basically anything below 370
-L.MythicRaider				= "신화 레이드 미만 모든 보스 (<385)"--Basically anything below 385
+L.TrivialContent			= "신화 미만 던전"--Basically anything below 340
+L.NormalRaider				= "신화+ 5단 미만 던전과 공격대 찾기 레이드"--Basically, anything below 355
+L.HeroicRaider				= "신화+ 10단 미만 던전과 영웅 미만 레이드와 격전지 이외 필드 레이드 보스"--Basically anything below 370
+L.MythicRaider				= "신화 레이드 미만 모든 보스"--Basically anything below 385
 
 L.Panel_ExtraFeatures		= "기타 기능"
 --

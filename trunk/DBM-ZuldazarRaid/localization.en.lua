@@ -90,7 +90,8 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	Port			=	"port side",
-	Starboard		=	"starboard side"
+	Starboard		=	"starboard side",
+	Freezing		=	"Freezing in %s"
 })
 
 -------------
