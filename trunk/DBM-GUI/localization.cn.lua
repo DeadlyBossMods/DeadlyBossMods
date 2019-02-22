@@ -2,7 +2,7 @@
 -- yleaf(yaroot@gmail.com)
 -- sunlcy@NGA
 -- Mini Dragon(projecteurs@gmail.com)
--- Last update: 2018/09/21
+-- Last update: 2019/02/22
 
 if GetLocale() ~= "zhCN" then return end
 if not DBM_GUI_Translations then DBM_GUI_Translations = {} end
@@ -167,6 +167,7 @@ L.ExpandUpwards				= "快消失的计时条在上"
 L.FillUpBars				= "填充计时条"
 L.ClickThrough				= "禁用鼠标点击事件（允许你点击计时条后面的目标）"
 L.Bar_Decimal				= "%d秒以内显示小数点"
+L.Bar_Alpha					= "计时条透明度: %0.1f"
 L.Bar_DBMOnly				= "以下设置只对 \"DBM\" 计时条有效 (两个判断的操作符是或，任一就变大)"
 L.Bar_EnlargeTime			= "在%d秒后计时条变大"
 L.Bar_EnlargePercent		= "在%0.1f%%后计时条变大"
@@ -176,6 +177,9 @@ L.BarSort					= "按剩余时间排序"
 L.BarColorByType			= "按类着色"
 L.BarInlineIcons			= "显示条内图标"
 L.ShortTimerText			= "使用更短的计时条文字 (当可行时)"
+L.KeepBar					= "保持计时条显示直到技能被释放"
+L.KeepBar2					= "(当被模组支持时)"
+L.FadeBar					= "隐藏超出技能范围的计时条"
 
 -- Tab: Spec Warn Frame
 L.Panel_SpecWarnFrame		= "特殊警报"
@@ -300,10 +304,10 @@ L.Always					= "总是跳过"
 L.CombatOnly				= "在任何战斗中隐藏"
 L.RaidCombat				= "只在Boss战斗中隐藏"
 L.HideBonusHeader			= "隐藏奖励拾取投掷"
-L.TrivialContent			= "低于5M掉落 (<340)"--Basically anything below 340
-L.NormalRaider				= "低于5层大秘 和随机团掉落 (<355)"--Basically, anything below 355
-L.HeroicRaider				= "低于10层大秘，H副本 (<370)"--Basically anything below 370
-L.MythicRaider				= "低于M副本 (<385)"--Basically anything below 385
+L.TrivialContent			= "低于5M掉落"--Basically anything below 340
+L.NormalRaider				= "低于5层大秘和随机团掉落"--Basically, anything below 355
+L.HeroicRaider				= "低于10层大秘，H副本"--Basically anything below 370
+L.MythicRaider				= "M副本"--Basically anything below 385
 
 L.Panel_ExtraFeatures		= "其他功能"
 --
