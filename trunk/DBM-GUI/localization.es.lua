@@ -15,32 +15,32 @@ L.OTabBosses	= "Jefes"
 L.TabCategory_Options	 	= "Opciones generales"
 L.TabCategory_OTHER    		= "Otros módulos"
 
-L.BossModLoaded 	= "Estadísticas de %s"
-L.BossModLoad_now 	= [[Este módulo no está cargado. 
+L.BossModLoaded 			= "Estadísticas de %s"
+L.BossModLoad_now 			= [[Este módulo no está cargado. 
 Se cargará al entrar en la estancia. 
 También puedes hacer clic en el botón para cargar el módulo manualmente.]]
 
-L.PosX = 'Posición X'
-L.PosY = 'Posición Y'
+L.PosX 						= 'Posición X'
+L.PosY 						= 'Posición Y'
 
-L.MoveMe 		= 'Posición'
-L.Button_OK 		= 'Aceptar'
-L.Button_Cancel 	= 'Cancelar'
-L.Button_LoadMod 	= 'Cargar módulo'
-L.Mod_Enabled		= "Habilitar módulo"
-L.Mod_Reset		= "Cargar opciones por defecto"
-L.Reset 		= "Restaurar"
+L.MoveMe 					= 'Posición'
+L.Button_OK 				= 'Aceptar'
+L.Button_Cancel 			= 'Cancelar'
+L.Button_LoadMod 			= 'Cargar módulo'
+L.Mod_Enabled				= "Habilitar módulo"
+L.Mod_Reset					= "Cargar opciones por defecto"
+L.Reset 					= "Restaurar"
 
-L.NoSound		= "Sin sonido"
+L.NoSound					= "Sin sonido"
 
-L.IconsInUse	= "Iconos usados por este módulo"
+L.IconsInUse				= "Iconos usados por este módulo"
 
 -- Tab: Boss Statistics
-L.BossStatistics	= "Estadísticas"
-L.Statistic_Kills	= "Victorias:"
-L.Statistic_Wipes	= "Derrotas:"
+L.BossStatistics			= "Estadísticas"
+L.Statistic_Kills			= "Victorias:"
+L.Statistic_Wipes			= "Derrotas:"
 L.Statistic_Incompletes		= "Inacabados:"--For scenarios, TODO, figure out a clean way to replace any Statistic_Wipes with Statistic_Incompletes for scenario mods
-L.Statistic_BestKill	= "Mejor victoria:"
+L.Statistic_BestKill		= "Mejor victoria:"
 L.Statistic_BestRank		= "Mejor nivel:"--Maybe not get used, not sure yet, localize anyways
 
 -- Tab: General Core Options
@@ -155,6 +155,7 @@ L.ExpandUpwards				= "Expandir arriba"
 L.FillUpBars				= "Rellenar"
 L.ClickThrough				= "Deshabilitar clic en barras"
 L.Bar_Decimal				= "Mostrar decimales bajo: %d s"
+L.Bar_Alpha					= "Transparencia de barra: %0.1f"
 L.Bar_DBMOnly				= "Estas opciones solo funcionan con el estilo de barras DBM"
 L.Bar_EnlargeTime			= "Agrandar barras bajo tiempo: %d s"
 L.Bar_EnlargePercent		= "Agrandar barras bajo %%: %0.1f%%"
@@ -164,6 +165,9 @@ L.BarSort					= "Ordenar por tiempo restante"
 L.BarColorByType			= "Color por tipo"
 L.BarInlineIcons			= "Iconos en barras"
 L.ShortTimerText			= "Texto de temporizador breve"
+L.KeepBar					= "Mantener hasta que se lance la habilidad"
+L.KeepBar2					= "(siempre que el módulo lo permita)"
+L.FadeBar					= "Desteñir barras de habilidades lejanas"
 
 -- Tab: Spec Warn Frame
 L.Panel_SpecWarnFrame		= "Avisos especiales"
@@ -265,17 +269,17 @@ L.FilterInterrupts2			= "Si no es tu objetivo o foco (siempre) o no puedes inter
 L.FilterInterrupts3			= "Si no es tu objetivo o foco (siempre) o no puedes interrumpir (todos los enemigos)"
 L.FilterInterruptNoteName	= "Ocultar avisos de facultades interrumpibles con orden de interrupciones si el aviso no contiene tu nombre en la nota"
 L.FilterDispels				= "Ocular avisos de facultades disipables si tu disipación no está disponible"
+L.FilterTrashWarnings		= "Ocultar todos los avisos de enemigos menores en mazmorras normales y heroicas"
 L.FilterSelfHud				= "Excluirte de los indicadores (los indicadores de distancia no te tendrán en cuenta)"
 
 L.Area_PullTimer			= "Opciones de filtros de inicio de encuentro, descanso, combate y personalizados"
 L.DontShowPTNoID			= "Ocultar temporizadores de inicio de encuentro que se inicien en zonas distintas"
 L.DontShowPT				= "Ocultar barras de temporizadores de inicio de encuentro y descanso"
 L.DontShowPTText			= "Ocultar anuncios de temporizadores de inicio de encuentro y descanso"
-L.DontPlayPTCountdown		= "Desactivar sonidos de cuenta atrás de temporizadores de inicio de encuentro, descanso, combate y personalizados"
 L.DontShowPTCountdownText	= "Ocultar texto de cuenta atrás de temporizadores de inicio de encuentro, descanso, combate y personalizados"
+L.DontPlayPTCountdown		= "Desactivar sonidos de cuenta atrás de temporizadores de inicio de encuentro, descanso, combate y personalizados"
 L.PT_Threshold				= "Ocultar temporizadores por encima de: %d s"
 
--- Tab: Blizzard Disable & Hide
 L.Panel_HideBlizzard		= "Interfaz y funciones de Blizzard"
 L.Area_HideBlizzard			= "Opciones de interfaz y funciones de Blizzard"
 L.HideBossEmoteFrame		= "Ocultar avisos de encuentro de mazmorra y banda"
@@ -292,12 +296,11 @@ L.Always					= ALWAYS
 L.CombatOnly				= "En combate"
 L.RaidCombat				= "En combate (solo en jefes)"
 L.HideBonusHeader			= "Ocultar ventana de tirada bonus en"
-L.TrivialContent			= "Mazmorras no míticas (<340)"--Basically anything below 340
-L.NormalRaider				= "LFR y mazmorras míticas inferiores a +5 (<355)"--Basically, anything below 355
-L.HeroicRaider				= "Bandas inferiores a heroico, mazmorras míticas inferiores a +10 y jefes de mundo (<370)"--Basically anything below 370
-L.MythicRaider				= "Todo lo inferior a banda mítica (<385)"--Basically anything below 385
+L.TrivialContent			= "Mazmorras no míticas"
+L.NormalRaider				= "LFR y mazmorras míticas inferiores a +5"
+L.HeroicRaider				= "Bandas inferiores a heroico, mazmorras míticas inferiores a +10 y jefes de mundo (<400)"
+L.MythicRaider				= "Todo lo inferior a banda mítica"
 
--- Tab: Extra Features
 L.Panel_ExtraFeatures		= "Funciones adicionales"
 --
 L.Area_ChatAlerts			= "Opciones de alertas de texto"
