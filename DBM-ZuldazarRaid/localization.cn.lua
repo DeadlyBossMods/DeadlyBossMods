@@ -1,7 +1,7 @@
 -- Mini Dragon(projecteurs@gmail.com)
 -- 夏一可
 -- Blizzard Entertainment
--- Last update: 2018/01/28
+-- Last update: 2019/02/22
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -77,14 +77,28 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(2332)
 
 ---------------------------
---  Sea Priest Blockade (Both) --
+--  Sea Priest Blockade (Horde) --
 ---------------------------
 L= DBM:GetModLocalization(2337)
 
 ---------------------------
---  Jaina Proudmoore (Both?) --
+--  Jaina Proudmoore (Horde) --
 ---------------------------
 L= DBM:GetModLocalization(2343)
+
+L:SetOptionLocalization({
+	ShowOnlySummary	= "隐藏反向距离监控中的玩家名字，只显示统计信息（附近有几个人）",
+	InterruptBehavior	= "设置水元素打断机制（队长覆盖他人设定）",
+	Three				= "3人打断（默认）",--Default
+	Four				= "4人打断",
+	Five				= "5人打断"
+})
+
+L:SetMiscLocalization({
+	Port			=	"左舷",
+	Starboard		=	"右舷"
+})
+
 
 -------------
 --  Trash  --
