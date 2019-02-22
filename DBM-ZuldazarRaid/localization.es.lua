@@ -50,8 +50,8 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(2330)
 
 L:SetMiscLocalization({
-	BwonsamdiWrath =	"Well, if ya so eager for death, ya shoulda come see me sooner!",--Need footage in EU Spanish
-	BwonsamdiWrath2 =	"Sooner or later... everybody serves me!",--Need footage in EU Spanish
+	BwonsamdiWrath =	"Si tantah ganah tieneh de morir, ¡deberíah haber venido anteh!",
+	BwonsamdiWrath2 =	"Anteh o dehpuéh... ¡todoh me sirven!",
 	Bird			 =	"Pa'ku"
 })
 
@@ -80,7 +80,17 @@ L= DBM:GetModLocalization(2337)
 L= DBM:GetModLocalization(2343)
 
 L:SetOptionLocalization({
-	ShowOnlySummary2	= "Mostrar solo la cantidad de jugadores cercanos en la comprobación de distancia en lugar de listar sus nombres"
+	ShowOnlySummary2	= "Mostrar solo la cantidad de jugadores cercanos en la comprobación de distancia en lugar de listar sus nombres",
+	InterruptBehavior	= "Patrón de interrupción para el elemental (sobrescribe la configuración del resto de jugadores si eres el líder de banda)",
+	Three				= "Rotación de tres jugadores",--Default
+	Four				= "Rotación de cuatro jugadores",
+	Five				= "Rotación de cinco jugadores"
+})
+
+L:SetMiscLocalization({
+	Port			=	"babor",
+	Starboard		=	"estribor",
+	Freezing		=	"Congelación en %s"
 })
 
 ----------------------
