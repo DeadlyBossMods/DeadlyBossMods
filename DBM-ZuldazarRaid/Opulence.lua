@@ -428,6 +428,13 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 mod.SPELL_AURA_REFRESH = mod.SPELL_AURA_APPLIED
 
+function mod:SPELL_AURA_APPLIED_DOSE(args)
+	local spellId = args.spellId
+	if spellId == 284664 then
+		incandescentStacks[args.destName] = args.amount
+	end
+end
+
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 284798 then
