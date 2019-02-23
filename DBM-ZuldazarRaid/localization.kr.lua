@@ -91,7 +91,8 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	Port			=	"왼쪽",
-	Starboard		=	"오른쪽"
+	Starboard		=	"오른쪽",
+	Freezing		=	"얼음 %s초 전"
 })
 
 -------------
