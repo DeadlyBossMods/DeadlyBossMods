@@ -5476,6 +5476,10 @@ do
 			delayedFunction()
 			delayedFunction = nil
 		end
+		if watchFrameRestore then
+			ObjectiveTrackerFrame:Show()
+			watchFrameRestore = false
+		end
 	end
 
 	local function isBossEngaged(cId)
@@ -5863,7 +5867,7 @@ do
 			--process global options
 			self:HideBlizzardEvents(1)
 			self:StartLogging(0, nil)
-			if self.Options.HideObjectivesFrame and mod.addon.type ~= "SCENARIO" and GetNumTrackedAchievements() == 0 and difficultyIndex ~= 8 then
+			if self.Options.HideObjectivesFrame and mod.addon.type ~= "SCENARIO" and GetNumTrackedAchievements() == 0 and difficultyIndex ~= 8 and not InCombatLockdown() then
 				if ObjectiveTrackerFrame:IsVisible() then
 					ObjectiveTrackerFrame:Hide()
 					watchFrameRestore = true
@@ -6303,7 +6307,7 @@ do
 				self:Unschedule(checkBossHealth)
 				self:Unschedule(checkCustomBossHealth)
 				self.Arrow:Hide(true)
-				if watchFrameRestore then
+				if watchFrameRestore and not InCombatLockdown() then
 					ObjectiveTrackerFrame:Show()
 					watchFrameRestore = false
 				end
