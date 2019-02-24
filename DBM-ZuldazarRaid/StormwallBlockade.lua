@@ -68,7 +68,7 @@ local specWarnTemptingSong				= mod:NewSpecialWarningRun(284405, nil, nil, nil, 
 local yellTemptingSong					= mod:NewYell(284405)
 --Stage Two: Laminaria
 local specWarnEnergizedStorm			= mod:NewSpecialWarningSwitch("ej19312", "RangedDps", nil, nil, 1, 2)
-local yellKepWrapped					= mod:NewFadesYell(285000)
+--local yellKepWrapped					= mod:NewFadesYell(285000)
 local specWarnSeaSwell					= mod:NewSpecialWarningDodge(285118, nil, nil, 2, 3, 2)
 local specWarnIreoftheDeep				= mod:NewSpecialWarningSoak(285017, "-Tank", nil, nil, 1, 2)
 local specWarnStormsWail				= mod:NewSpecialWarningMoveTo(285350, nil, nil, 2, 3, 2)
@@ -370,27 +370,12 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 285000 then
-		local uId = DBM:GetRaidUnitId(args.destName)
-		--if self:IsTanking(uId) then
-			local amount = args.amount or 1
-			--if amount >= 2 then
-				if args:IsPlayer() then
-					--specWarnRupturingBlood:Show(amount)
-					--specWarnRupturingBlood:Play("stackhigh")
-					yellKepWrapped:Cancel()
-					yellKepWrapped:Countdown(18)
-				--else
-					--if not UnitIsDeadOrGhost("player") and not DBM:UnitDebuff("player", spellId) then--Can't taunt less you've dropped yours off, period.
-						--specWarnRupturingBloodTaunt:Show(args.destName)
-						--specWarnRupturingBloodTaunt:Play("tauntboss")
-					--else
-						--warnKelpWrapped:Show(args.destName, amount)
-					--end
-				end
-			--else
-				warnKelpWrapped:Show(args.destName, amount)
-			--end
+		local amount = args.amount or 1
+		--if args:IsPlayer() then
+		--	yellKepWrapped:Cancel()
+			--yellKepWrapped:Countdown(18)
 		--end
+		warnKelpWrapped:Show(args.destName, amount)
 	elseif spellId == 286558 then
 		if self:CheckBossDistance(args.destGUID, true) then
 			warnTidalShroud:Show(args.destName)
@@ -446,10 +431,10 @@ function mod:SPELL_AURA_REMOVED(args)
 			specWarnTidalEmpowerment:Show(args.destName)
 			specWarnTidalEmpowerment:Play("kickcast")
 		end
-	elseif spellId == 285000 then
-		if args:IsPlayer() then
-			yellKepWrapped:Cancel()
-		end
+	--elseif spellId == 285000 then
+		--if args:IsPlayer() then
+		--	yellKepWrapped:Cancel()
+		--end
 	elseif spellId == 285382 then
 		if self.Options.NPAuraOnKepWrapping then
 			DBM.Nameplate:Hide(true, args.destGUID, spellId)
