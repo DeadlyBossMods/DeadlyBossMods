@@ -19,7 +19,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS 285725 287925 287626 289220 288374 288211 290084",
 	"SPELL_AURA_APPLIED 287993 287490 289387 287925 285253 288199 288219 288212 288374 288412 288434 289220 285254 288038 287322 288169",
 	"SPELL_AURA_APPLIED_DOSE 287993 285253",
-	"SPELL_AURA_REMOVED 287993 287925 288199 288219 288212 288374 288038 290001 289387",
+	"SPELL_AURA_REMOVED 287993 287925 288199 288219 288212 288374 288038 290001 289387 287322",
 	"SPELL_AURA_REMOVED_DOSE 287993",
 	"SPELL_PERIODIC_DAMAGE 288297",
 	"SPELL_PERIODIC_MISSED 288297",
@@ -109,6 +109,7 @@ local specWarnPrismaticImage			= mod:NewSpecialWarningSwitchCount(288747, nil, n
 local timerPhaseTransition				= mod:NewPhaseTimer(55)
 local timerHowlingWindsCD				= mod:NewCDCountTimer(80, 288169, nil, nil, nil, 6)--Mythic
 local berserkTimer						= mod:NewBerserkTimer(900)
+local timerIceBlockCD					= mod:NewTargetTimer(20, 287322, nil, nil, nil, 6)
 --Stage One: Burning Seas
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(19557))
 local timerCorsairCD					= mod:NewCDTimer(60.4, "ej19690", nil, nil, nil, 1, "Interface\\ICONS\\Inv_tabard_kultiran")
@@ -652,6 +653,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 287322 then
 		warnJainaIceBlocked:Show(args.destName)
+		timerIceBlockCD:Start(args.destName)
 	elseif spellId == 288169 and self:AntiSpam(10, 10) and self.vb.phase ~= 1.5 then--Howling Winds (Mythic)
 		self.vb.howlingWindsCast = self.vb.howlingWindsCast + 1
 		timerHowlingWindsCD:Start(80, self.vb.howlingWindsCast+1)
@@ -747,6 +749,8 @@ function mod:SPELL_AURA_REMOVED(args)
 		if args:IsPlayer() then
 			yellFreezingBlood:Cancel()
 		end
+	elseif spellId == 287322 then
+		timerIceBlockCD:Stop(args.destName)
 	end
 end
 
