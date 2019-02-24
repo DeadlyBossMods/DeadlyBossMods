@@ -5477,7 +5477,8 @@ do
 			delayedFunction = nil
 		end
 		if watchFrameRestore then
-			ObjectiveTrackerFrame:Show()
+			--ObjectiveTrackerFrame:Show()
+			ObjectiveTracker_Expand()
 			watchFrameRestore = false
 		end
 	end
@@ -5869,7 +5870,8 @@ do
 			self:StartLogging(0, nil)
 			if self.Options.HideObjectivesFrame and mod.addon.type ~= "SCENARIO" and GetNumTrackedAchievements() == 0 and difficultyIndex ~= 8 and not InCombatLockdown() then
 				if ObjectiveTrackerFrame:IsVisible() then
-					ObjectiveTrackerFrame:Hide()
+					--ObjectiveTrackerFrame:Hide()
+					ObjectiveTracker_Collapse()
 					watchFrameRestore = true
 				end
 			end
@@ -6308,7 +6310,8 @@ do
 				self:Unschedule(checkCustomBossHealth)
 				self.Arrow:Hide(true)
 				if watchFrameRestore and not InCombatLockdown() then
-					ObjectiveTrackerFrame:Show()
+					--ObjectiveTrackerFrame:Show()
+					ObjectiveTracker_Expand()
 					watchFrameRestore = false
 				end
 				if tooltipsHidden then
