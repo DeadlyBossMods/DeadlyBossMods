@@ -147,13 +147,13 @@ local infoframeTable = {}
 --"<24.26 16:22:52> [CLEU] SPELL_CAST_START#Creature-0-2083-2070-6821-146322-00005225A8#Siegebreaker Roka##nil#284686#Meteor Leap#nil#nil", -- [107]
 --"<24.46 16:22:52> [DBM_Announce] Meteor Leap on >Lorn-Benedictus<#236171#target#284686#2335", -- [110]
 --"<29.28 16:22:57> [CLEU] SPELL_CAST_SUCCESS#Creature-0-2083-2070-6821-146322-00005225A8#Siegebreaker Roka#Player-3296-000AA073#Lorn-Benedictus#284686#Meteor Leap#nil#nil", -- [133]
-function mod:MeteorLeapTarget(targetname, uId)
+function mod:MeteorLeapTarget(targetname, uId, bossuid, scanningTime)
 	if not targetname then return end
 	if targetname == UnitName("player") then
 		specWarnMeteorLeap:Show(GROUP)
 		specWarnMeteorLeap:Play("gathershare")
 		yellMeteorLeap:Yell()
-		yellMeteorLeapFades:Countdown(4.8)--Target scan takes about 0.2 seconds
+		yellMeteorLeapFades:Countdown(5-scanningTime)
 	elseif not self:IsTank() then
 		specWarnMeteorLeap:Show(targetname)
 		specWarnMeteorLeap:Play("gathershare")
