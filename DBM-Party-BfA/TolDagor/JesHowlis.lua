@@ -45,7 +45,7 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 257777 then
+	if spellId == 257777 and self:CheckDispelFilter() then
 		specWarnCripShiv:Show(args.destName)
 		specWarnCripShiv:Play("helpdispel")
 	elseif spellId == 257827 then

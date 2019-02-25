@@ -61,14 +61,14 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.NPAuraOnSnakeCharm then
 			DBM.Nameplate:Show(true, args.destGUID, spellId, nil, 15)
 		end
-	elseif spellId == 269686 then
+	elseif spellId == 269686 and self:CheckDispelFilter() then
 		specWarnPlague:Show(args.destName)
 		specWarnPlague:Play("helpdispel")
 		timerPlague:Start(args.destName)
 	elseif spellId == 268024 and self:AntiSpam(3, 1) then
 		warnPulse:Show()
 		timerPulseCD:Start()
-	elseif spellId == 268008 and self:AntiSpam(3, 3) then
+	elseif spellId == 268008 and self:AntiSpam(3, 3) and self:CheckDispelFilter() then
 		specWarnSnakeCharm:Show(args.destName)
 		specWarnSnakeCharm:Play("helpdispel")
 	end
