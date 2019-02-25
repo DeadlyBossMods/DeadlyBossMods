@@ -244,13 +244,14 @@ local explodingSheepTimers = {
 	},
 }
 
-local function shrunkYellRepeater(self, tampering)
-	if tampering then
-		yellTamperingRepeater:Yell()
-	else
-		yellShrunkRepeater:Yell()
-	end
-	self:Schedule(2, shrunkYellRepeater, self, tampering)
+local function shrunkYellRepeater(self)
+	yellShrunkRepeater:Yell()
+	self:Schedule(2, shrunkYellRepeater, self)
+end
+
+local function TamperingYellRepeater(self)
+	yellTamperingRepeater:Yell()
+	self:Schedule(2, TamperingYellRepeater, self)
 end
 
 local updateInfoFrame
@@ -603,8 +604,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			playersInRobots[args.destName] = 0
 			robotCount = robotCount + 1
 			if args:IsPlayer() then
-				self:Unschedule(shrunkYellRepeater)
-				self:Schedule(2, shrunkYellRepeater, self, true)
+				self:Unschedule(TamperingYellRepeater)
+				self:Schedule(2, TamperingYellRepeater, self)
 			end
 		end
 	elseif spellId == 287114 then
@@ -640,7 +641,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			playersInRobots[args.destName] = nil
 			robotCount = robotCount - 1
 			if args:IsPlayer() then
-				self:Unschedule(shrunkYellRepeater)
+				self:Unschedule(TamperingYellRepeater)
 			end
 		end
 	end
