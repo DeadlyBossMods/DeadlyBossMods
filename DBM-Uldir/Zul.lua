@@ -409,7 +409,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.vb.DarkRevIcon == 3 then
 			self.vb.DarkRevIcon = 1
 		end
-	elseif spellId == 273434 then
+	elseif spellId == 273434 and self:CheckDispelFilter() then
 		specWarnPitofDespair:CombinedShow(0.3, args.destName)
 		specWarnPitofDespair:CancelVoice()--Avoid spam
 		specWarnPitofDespair:ScheduleVoice(0.3, "helpdispel")

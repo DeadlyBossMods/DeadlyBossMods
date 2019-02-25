@@ -269,11 +269,13 @@ function mod:HeartofFrostTarget(targetname, uId)
 	end
 end
 
-local function graspCollection(finish)
+local function graspCollection(self, finish)
 	if finish then
 		graspActive = false
-		specWarGraspofFrost:Show(table.concat(chillingCollector, "<, >"))
-		specWarGraspofFrost:Play("helpdispel")
+		if self:CheckDispelFilter() then
+			specWarGraspofFrost:Show(table.concat(chillingCollector, "<, >"))
+			specWarGraspofFrost:Play("helpdispel")
+		end
 	else
 		graspActive = true
 	end
@@ -480,7 +482,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 287626 then
 		table.wipe(chillingCollector)
 		self:Unschedule(graspCollection)
-		self:Schedule(1.9, graspCollection, false)
+		self:Schedule(1.9, graspCollection, self, false)
 	end
 end
 
@@ -494,7 +496,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if self:IsHard() then
 			timerGraspofFrostCD:Start(17.3)
 		end
-		self:Schedule(0.1, graspCollection, true)
+		self:Schedule(0.1, graspCollection, self, true)
 	elseif spellId == 289220 and args:GetSrcCreatureID() == 149144 then
 		timerHeartofFrostCD:Start()
 	elseif spellId == 288374 then

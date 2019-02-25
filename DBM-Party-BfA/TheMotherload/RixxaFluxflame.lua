@@ -52,9 +52,8 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 259853 then
+	if spellId == 259853 and self:CheckDispelFilter() then
 		specWarnChemBurn:CombinedShow(1, args.destName)
-		specWarnChemBurn:CancelVoice()
 		specWarnChemBurn:ScheduleVoice(1, "dispelnow")
 		if self:AntiSpam(5, 1) then
 			self.vb.chemBurnCast = self.vb.chemBurnCast + 1
