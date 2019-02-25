@@ -8183,6 +8183,7 @@ do
 			["CasterDps"] = true,
 			["MagicDispeller"] = true,
 			["HasInterrupt"] = true,
+			["RemoveDisease"] = true,
 		},
 		[259] = {	--Assassination Rogue
 			["Dps"] = true,
