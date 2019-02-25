@@ -360,7 +360,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnBwonsamdisWrath:Show(args.destName)
 		end
 		local uId = DBM:GetRaidUnitId(args.destName)
-		if self:IsTanking(uId) then
+		if self:IsTanking(uId) and self:CheckDispelFilter() then
 			specWarnBwonsamdisWrathDispel:Show(args.destName)
 			specWarnBwonsamdisWrathDispel:Play("helpdispel")
 		end

@@ -48,7 +48,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnFuselighter:Show()
 			specWarnFuselighter:Play("targetyou")
 			yellFuselighter:Yell()
-		else
+		elseif self:CheckDispelFilter() then
 			specWarnFuselighterOther:Show(args.destName)
 			specWarnFuselighterOther:Play("helpdispel")
 		end

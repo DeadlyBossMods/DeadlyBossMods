@@ -550,7 +550,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:SetIcon(args.destName, icon)
 		end
 		self.vb.gigaIcon = self.vb.gigaIcon + 1
-	elseif spellId == 287167 then
+	elseif spellId == 287167 and self:CheckDispelFilter() then
 		specWarnDiscombobulation:CombinedShow(0.3, args.destName)
 		specWarnDiscombobulation:ScheduleVoice(0.3, "helpdispel")
 	elseif spellId == 284168 then
