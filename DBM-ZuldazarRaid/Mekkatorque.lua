@@ -30,7 +30,6 @@ mod:RegisterEventsInCombat(
 --https://www.warcraftlogs.com/reports/1WvLk2yzwK48CmHM#fight=last&view=events&pins=2%24Off%24%23244F4B%24expression%24(ability.id%20%3D%20282205%20or%20ability.id%20%3D%20287952%20or%20ability.id%20%3D%20287929%20or%20ability.id%20%3D%20282153%20or%20ability.id%20%3D%20288410%20or%20ability.id%20%3D%20287751%20or%20ability.id%20%3D%20287797%20or%20ability.id%20%3D%20286693%20or%20ability.id%20%3D%20288041%20or%20ability.id%20%3D%20288049%20or%20ability.id%20%3D%20289537%20or%20ability.id%20%3D%20287691)%20and%20type%20%3D%20%22begincast%22%20%20or%20(ability.id%20%3D%20287757%20or%20ability.id%20%3D%20286597)%20and%20type%20%3D%20%22cast%22&translate=true
 --https://www.warcraftlogs.com/reports/GXfwVbyY4cDRd37K#fight=last&view=events&pins=2%24Off%24%23244F4B%24expression%24(ability.id%20%3D%20282205%20or%20ability.id%20%3D%20287952%20or%20ability.id%20%3D%20287929%20or%20ability.id%20%3D%20282153%20or%20ability.id%20%3D%20288410%20or%20ability.id%20%3D%20287751%20or%20ability.id%20%3D%20287797%20or%20ability.id%20%3D%20286693%20or%20ability.id%20%3D%20288041%20or%20ability.id%20%3D%20288049%20or%20ability.id%20%3D%20289537%20or%20ability.id%20%3D%20287691)%20and%20type%20%3D%20%22begincast%22%20%20or%20(ability.id%20%3D%20287757%20or%20ability.id%20%3D%20286597)%20and%20type%20%3D%20%22cast%22
 --TODO, nameplate aura for tampering protocol, if it has actual debuff diration (wowhead does not)
---TODO, wormhole generator target scan? hidden aura scan?
 --TODO, adjust electroshock stacks?
 local warnPhase							= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
 --Ground Phase
@@ -184,11 +183,6 @@ local wormholeTimers = {
 	},
 }
 local gigaVoltTimers = {
-	["lfr"] = {
-		[1] = {21.5, 40, 40, 33, 41.9, 40},
-		[1.5] = {16.9, 33.5},
-		[2] = {22.2, 40, 40, 35, 39.9, 40, 47, 28, 35, 40},
-	},
 	["normal"] = {
 		[1] = {21.5, 40, 40, 33, 41.9, 40},
 		[1.5] = {16.9, 33.5},
@@ -352,24 +346,31 @@ function mod:OnCombatStart(delay)
 	--Same across board (at least for now, LFR not out yet)
 	timerDeploySparkBotCD:Start(5-delay, 1)
 	timerBusterCannonCD:Start(13-delay, 1)
-	timerGigaVoltChargeCD:Start(21.5-delay, 1)--Success
-	countdownGigavoltCharge:Start(21.5-delay)
-	timerBlastOffCD:Start(37-delay, 1)
 	timerWorldEnlargerCD:Start(75-delay, 1)--Start
 	countdownWorldEnlarger:Start(75-delay)
 	if self:IsMythic() then
 		self.vb.difficultyName = "mythic"
+		timerGigaVoltChargeCD:Start(21.5-delay, 1)--Success
+		countdownGigavoltCharge:Start(21.5-delay)
 		timerWormholeGeneratorCD:Start(38-delay, 1)
 		countdownWormhole:Start(38-delay)
+		timerBlastOffCD:Start(41-delay, 1)
 	else
 		if self:IsHeroic() then
 			self.vb.difficultyName = "heroic"
+			timerGigaVoltChargeCD:Start(21.5-delay, 1)--Success
+			countdownGigavoltCharge:Start(21.5-delay)
 			timerWormholeGeneratorCD:Start(38-delay, 1)
 			countdownWormhole:Start(38-delay)
+			timerBlastOffCD:Start(41-delay, 1)
 		elseif self:IsNormal() then
 			self.vb.difficultyName = "normal"
+			timerGigaVoltChargeCD:Start(21.5-delay, 1)--Success
+			countdownGigavoltCharge:Start(21.5-delay)
+			timerBlastOffCD:Start(37-delay, 1)
 		else
 			self.vb.difficultyName = "lfr"
+			timerBlastOffCD:Start(37-delay, 1)
 		end
 	end
 	if self.Options.InfoFrame then
@@ -455,9 +456,9 @@ function mod:SPELL_CAST_START(args)
 		timerWorldEnlargerCD:Start(7.9, 1)
 		countdownWorldEnlarger:Start(7.9)
 		timerExplodingSheepCD:Start(12.8, 1)
-		timerGigaVoltChargeCD:Start(16.9, 1)
-		countdownGigavoltCharge:Start(16.6)
 		if self:IsHard() then
+			timerGigaVoltChargeCD:Start(16.9, 1)
+			countdownGigavoltCharge:Start(16.6)
 			timerDeploySparkBotCD:Start(19.8, 1)
 			if self:IsMythic() then
 				timerWormholeGeneratorCD:Start(50.3, 1)
@@ -465,6 +466,11 @@ function mod:SPELL_CAST_START(args)
 			else
 				timerWormholeGeneratorCD:Start(46.8, 1)
 				countdownWormhole:Start(46.8)
+			end
+		else
+			if self:IsNormal() then
+				timerGigaVoltChargeCD:Start(16.9, 1)
+				countdownGigavoltCharge:Start(16.6)
 			end
 		end
 		timerIntermission:Start(64.8)
@@ -490,8 +496,6 @@ function mod:SPELL_CAST_START(args)
 		countdownWormhole:Cancel()
 		timerDeploySparkBotCD:Start(15.7, 1)
 		timerBusterCannonCD:Start(17.7, 1)
-		timerGigaVoltChargeCD:Start(22.2, 1)--Success
-		countdownGigavoltCharge:Start(22.2)
 		timerBlastOffCD:Start(41.7, 1)
 		timerWorldEnlargerCD:Start(75.7, 1)--Start
 		countdownWorldEnlarger:Start(75.7)
@@ -499,6 +503,13 @@ function mod:SPELL_CAST_START(args)
 			timerExplodingSheepCD:Start(28.3, 1)
 			timerWormholeGeneratorCD:Start(38.8, 1)
 			countdownWormhole:Start(38.8)
+			timerGigaVoltChargeCD:Start(22.2, 1)--Success
+			countdownGigavoltCharge:Start(22.2)
+		else
+			if self:IsNormal() then
+				timerGigaVoltChargeCD:Start(22.2, 1)--Success
+				countdownGigavoltCharge:Start(22.2)
+			end
 		end
 	elseif spellId == 287757 or spellId == 286597 then
 		self.vb.gigaIcon = 1
