@@ -92,7 +92,7 @@ mod:AddTimerLine(DBM:EJ_GetSectionInfo(19258))
 local timerCataTides					= mod:NewCastTimer(15, 288696, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
 local timerSeaSwellCD					= mod:NewCDTimer(20.6, 285118, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
 local timerIreoftheDeepCD				= mod:NewCDTimer(32.8, 285017, nil, nil, nil, 5)
-local timerStormsWailCD					= mod:NewCDTimer(120.5, 285350, nil, nil, nil, 3)
+local timerStormsWailCD					= mod:NewCDTimer(120.2, 285350, nil, nil, nil, 3)
 local timerStormsWail					= mod:NewTargetTimer(12, 285350, nil, nil, nil, 5)
 local timerJoltingVolleyCD				= mod:NewCDCountTimer(43.6, 287169, nil, nil, nil, 2, nil, DBM_CORE_HEALER_ICON)
 
@@ -193,14 +193,23 @@ function mod:OnCombatStart(delay)
 	self.vb.cracklingCast = 0
 	self.vb.sirenCount = 0
 	self.vb.joltingCast = 0
-	--Sister
-	timerCracklingLightningCD:Start(3.9-delay)--3.9-8.8
-	timerElecShroudCD:Start(30-delay)
-	timerVoltaicFlashCD:Start(8.8-delay)
-	--Brother
-	--timerSeaStormCD:Start(7.6-delay)--0.3-8
-	timerSeasTemptationCD:Start(15.5-delay, 1)--Might be health based
-	timerTidalShroudCD:Start(30.1-delay)--30-32
+	if not self:IsLFR() then
+		--Sister
+		timerCracklingLightningCD:Start(3.9-delay)--3.9-8.8
+		timerVoltaicFlashCD:Start(8.8-delay)
+		timerElecShroudCD:Start(30-delay)
+		--Brother
+		timerSeaStormCD:Start(6-delay)--0.3-8
+		timerSeasTemptationCD:Start(15.5-delay, 1)--Might be health based
+		timerTidalShroudCD:Start(30.1-delay)--30-32
+	else
+		--Sister
+		timerCracklingLightningCD:Start(11.7-delay)--3.9-8.8
+		timerVoltaicFlashCD:Start(20-delay)
+		--Brother
+		timerSeaStormCD:Start(6-delay)--0.3-8
+		timerSeasTemptationCD:Start(12.1-delay, 1)--Might be health based
+	end
 	if self:IsMythic() then
 		timerSeaSwellCD:Start(19.8-delay)
 		countdownSeaSwell:Start(19.8-delay)
@@ -252,7 +261,11 @@ function mod:SPELL_CAST_START(args)
 		else
 			timerVoltaicFlashCD:SetFade(true)
 		end
-		timerVoltaicFlashCD:Start()
+		if self:IsLFR() then
+			timerVoltaicFlashCD:Start(29)
+		else
+			timerVoltaicFlashCD:Start()--12
+		end
 	elseif spellId == 288941 and self:AntiSpam(20, 2) then--AntiSpam must be at least 15 here, 20 for good measure
 		specWarnVoltaicFlash:Show()
 		specWarnVoltaicFlash:Play("watchorb")
@@ -265,10 +278,14 @@ function mod:SPELL_CAST_START(args)
 		else
 			timerCracklingLightningCD:SetFade(true)
 		end
-		if self.vb.cracklingCast % 2 == 0 then
-			timerCracklingLightningCD:Start(21.9)--21.9 (usually 23.1 but I have one log showing 21.9)
+		if self:IsLFR() then
+			timerCracklingLightningCD:Start(30)
 		else
-			timerCracklingLightningCD:Start(12.1)
+			if self.vb.cracklingCast % 2 == 0 then
+				timerCracklingLightningCD:Start(21.9)--21.9 (usually 23.1 but I have one log showing 21.9)
+			else
+				timerCracklingLightningCD:Start(12.1)
+			end
 		end
 	elseif spellId == 284393 then
 		warnTranslocate:Show(args.sourceName)
@@ -303,7 +320,7 @@ function mod:SPELL_CAST_START(args)
 		else
 			timerSeasTemptationCD:SetFade(true)
 		end
-		timerSeasTemptationCD:Start(nil, self.vb.sirenCount+1)
+		timerSeasTemptationCD:Start(34, self.vb.sirenCount+1)
 	elseif spellId == 285017 then
 		specWarnIreoftheDeep:Show()
 		specWarnIreoftheDeep:Play("helpsoak")
@@ -318,6 +335,8 @@ function mod:SPELL_CAST_START(args)
 		end
 		if self:IsMythic() then
 			timerSeaStormCD:Start(9.7)
+		elseif self:IsLFR() then
+			timerSeaStormCD:Start(17)
 		else
 			timerSeaStormCD:Start()--10.9
 		end
@@ -339,6 +358,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if self:IsMythic() then
 			timerSeaSwellCD:Start(17)
 			countdownSeaSwell:Start(17)
+		elseif self:IsLFR() then
+			timerSeaSwellCD:Start(24.3)
+			countdownSeaSwell:Start(24.3)
 		else
 			timerSeaSwellCD:Start()
 			countdownSeaSwell:Start(20.6)
@@ -469,17 +491,30 @@ function mod:SPELL_INTERRUPT(args)
 		timerSeaSwellCD:Stop()
 		timerCataTides:Stop()
 		countdownSeaSwell:Cancel()
-		--Same on all difficulties but some variation because they can actually come in different orders. in reality probably all start with same timer then randomized order by spell queue
-		timerIreoftheDeepCD:Start(3.2)--17.4
-		timerStormsWailCD:Start(6.6)--22.3
-		timerSeaSwellCD:Start(7.2)--21.9
-		countdownSeaSwell:Start(7.2)
 		if self:IsMythic() then
 			timerVoltaicFlashCD:SetFade(false)
 			timerSeasTemptationCD:SetFade(false)
+			--Same on all difficulties but some variation because they can actually come in different orders. in reality probably all start with same timer then randomized order by spell queue
+			timerIreoftheDeepCD:Start(3.2)
+			timerStormsWailCD:Start(6.6)
+			timerSeaSwellCD:Start(7.2)
+			countdownSeaSwell:Start(7.2)
+			--Mythic Only
 			timerJoltingVolleyCD:Start(10.2, 1)
 			timerVoltaicFlashCD:Start(18.7)
 			timerSeasTemptationCD:Start(38.7, 1)
+		elseif self:IsLFR() then
+			--LFR seems to do it's own thing with timers across the board
+			timerSeaSwellCD:Start(5.3)
+			countdownSeaSwell:Start(5.3)
+			timerIreoftheDeepCD:Start(7)
+			timerStormsWailCD:Start(16.7)
+		else
+			--Same on all difficulties but some variation because they can actually come in different orders. in reality probably all start with same timer then randomized order by spell queue
+			timerIreoftheDeepCD:Start(3.2)
+			timerStormsWailCD:Start(6.6)
+			timerSeaSwellCD:Start(7.2)
+			countdownSeaSwell:Start(7.2)
 		end
 	end
 end
