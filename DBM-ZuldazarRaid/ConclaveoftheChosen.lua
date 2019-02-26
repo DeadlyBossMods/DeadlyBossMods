@@ -17,11 +17,9 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 282098 282107 285889 282155 282411",
 	"SPELL_CAST_SUCCESS 282444 285878 282636",
-	"SPELL_AURA_APPLIED 282079 285945 282135 286007 282209 282444 282834 286811 284663 285879",
---	"SPELL_AURA_REFRESH 282079",
+	"SPELL_AURA_APPLIED 282079 285945 282135 286007 282209 282444 282834 286811 284663 285879 290573",
 	"SPELL_AURA_APPLIED_DOSE 285945 282444",
-	"SPELL_AURA_REMOVED 282079 282135 286007 282834 286811",
---	"UNIT_DIED",
+	"SPELL_AURA_REMOVED 282079 282135 286007 282834 286811 290573",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
 	"CHAT_MSG_MONSTER_YELL",
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5"
@@ -40,7 +38,7 @@ mod:RegisterEventsInCombat(
  or (ability.id = 282444 or ability.id = 285878 or ability.id = 282636 or ability.id = 282736) and type = "cast"
  or (ability.id = 282209 or ability.id = 282834 or ability.id = 286811) and type = "applydebuff"
  or ability.id = 282109 and target.name = "Omegall"
- or (ability.id = 282135 or ability.id = 284663) and type = "applydebuff"
+ or (ability.id = 282135 or ability.id = 290573 or ability.id = 284663) and type = "applydebuff"
 --]]
 --General
 local warnActivated						= mod:NewTargetAnnounce(118212, 3, 78740, nil, nil, nil, nil, nil, true)
@@ -136,7 +134,6 @@ mod:AddInfoFrameOption(282079, true)--Not real spellID, just filler for now
 mod.vb.hexIcon = 1
 mod.vb.ignoredActivate = true
 mod.vb.pakuWrathCount = 0
---mod.vb.pakuDead = false
 mod.vb.wrathCount = 0
 mod.vb.kragwaCast = 0
 local raptorsSeen = {}
@@ -150,7 +147,6 @@ function mod:OnCombatStart(delay)
 	self.vb.hexIcon = 1
 	self.vb.ignoredActivate = true
 	self.vb.pakuWrathCount = 0
-	--self.vb.pakuDead = false
 	self.vb.wrathCount = 0
 	self.vb.kragwaCast = 0
 	self:Schedule(3, clearActivateIgnore, self)
@@ -278,7 +274,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.NPAuraOnPackHunter then
 			DBM.Nameplate:Show(true, args.destGUID, spellId)
 		end
-	elseif spellId == 282135 then
+	elseif spellId == 282135 or spellId == 290573 then
 		local icon = self.vb.hexIcon
 		if args:IsPlayer() then
 			specWarnCrawlingHex:Show()
@@ -374,9 +370,12 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.NPAuraOnPact then
 			DBM.Nameplate:Hide(true, args.destGUID, spellId)
 		end
-	elseif spellId == 282135 then
+	elseif spellId == 282135 or spellId == 290573 then
 		if args:IsPlayer() then
 			yellCrawlingHexFades:Cancel()
+		end
+		if self.Options.SetIconHex then
+			self:SetIcon(args.destName, 0)
 		end
 	elseif spellId == 286007 then
 		if self.Options.NPAuraOnPackHunter then
@@ -412,15 +411,9 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 		self.vb.pakuWrathCount = self.vb.pakuWrathCount + 1
 		specWarnPakusWrath:Show(L.Bird)
 		specWarnPakusWrath:Play("gathershare")
---		if self.vb.pakuDead then
-			warnPakuWrath:Schedule(50)
-			timerPakusWrathCD:Start(60, self.vb.pakuWrathCount+1)
-			countdownPakusWrath:Start(60)
---		else
---			warnPakuWrath:Schedule(60)
---			timerPakusWrathCD:Start(70, self.vb.pakuWrathCount+1)
---			countdownPakusWrath:Start(70)
---		end
+		warnPakuWrath:Schedule(50)
+		timerPakusWrathCD:Start(60, self.vb.pakuWrathCount+1)
+		countdownPakusWrath:Start(60)
 	end
 end
 
@@ -439,7 +432,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 130966 then--Permanent Feign Death (dying/leaving) (slightly faster than UNIT_DIED)
 		local cid = self:GetUnitCreatureId(uId)
 		if cid == 144747 then--Pa'ku's Aspect
-			--self.vb.pakuDead = true
 			timerGiftofWindCD:Stop()
 		elseif cid == 144767 then--Gonk's Aspect
 			timerCrawlingHexCD:Stop()
