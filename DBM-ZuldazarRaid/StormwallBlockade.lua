@@ -29,12 +29,11 @@ mod:RegisterEventsInCombat(
 )
 
 --TODO, switch to custom hybrid frame to show both shields and boss energy and storm's Wail
---TODO, add Tidal/Jolting Volleys? Just seems like general consistent aoe damage so not worth warning yet
 --TODO, icons and stuff for storm's wail
 --TODO, add "watch wave" warning for Energized wake on mythic
 --[[
 (ability.id = 284262 or ability.id = 284106 or ability.id = 284393 or ability.id = 284383 or ability.id = 285017 or ability.id = 284362 or ability.id = 288696 or ability.id = 288941) and type = "begincast"
- or (ability.id = 285350 or ability.id = 285426 or ability.id = 285118 or ability.id = 290694 or ability.id = 289795) and type = "cast"
+ or (ability.id = 285350 or ability.id = 285426 or ability.id = 285118 or ability.id = 290694 or ability.id = 289795 or ability.id = 287169) and type = "cast"
  or type = "interrupt"
  or ability.id = 284405 and type = "applydebuff"
 --]]
@@ -478,8 +477,8 @@ function mod:SPELL_INTERRUPT(args)
 		if self:IsMythic() then
 			timerVoltaicFlashCD:SetFade(false)
 			timerSeasTemptationCD:SetFade(false)
+			timerJoltingVolleyCD:Start(11, 1)
 			timerVoltaicFlashCD:Start(18.7)
-			timerJoltingVolleyCD:Start(21.6, 1)
 			timerSeasTemptationCD:Start(38.7, 1)
 		end
 	end
