@@ -359,7 +359,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		else
 			timerSeasTemptationCD:Start(5, self.vb.sirenCount+1)
 		end
-	elseif spellId == 287169 and self.vb.phase == 2 and self:AntiSpam(10, 4) then--Only want to see timer for it in mythic, it's mostly spammed in P1 and doesn't need a timer there
+	elseif spellId == 287169 and self.vb.phase == 2 and self:AntiSpam(12, 4) then--Only want to see timer for it in mythic, it's mostly spammed in P1 and doesn't need a timer there
 		self.vb.joltingCast = self.vb.joltingCast + 1
 		warnJoltingVolley:Show(self.vb.joltingCast)
 		timerJoltingVolleyCD:Start(43.6, self.vb.joltingCast+1)
@@ -477,7 +477,7 @@ function mod:SPELL_INTERRUPT(args)
 		if self:IsMythic() then
 			timerVoltaicFlashCD:SetFade(false)
 			timerSeasTemptationCD:SetFade(false)
-			timerJoltingVolleyCD:Start(11, 1)
+			timerJoltingVolleyCD:Start(10.2, 1)
 			timerVoltaicFlashCD:Start(18.7)
 			timerSeasTemptationCD:Start(38.7, 1)
 		end
