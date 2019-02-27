@@ -112,6 +112,7 @@ mod.vb.bossesDied = 0
 mod.vb.cracklingCast = 0
 mod.vb.sirenCount = 0
 mod.vb.joltingCast = 0
+mod.vb.stormsActive = 0
 mod.vb.stormsWailIcon = 1
 local freezingTidePod = DBM:GetSpellInfo(285075)
 local stormTargets = {}
@@ -194,6 +195,7 @@ function mod:OnCombatStart(delay)
 	self.vb.cracklingCast = 0
 	self.vb.sirenCount = 0
 	self.vb.joltingCast = 0
+	self.vb.stormsActive = 0
 	self.vb.stormsWailIcon = 1
 	if not self:IsLFR() then
 		--Sister
@@ -353,6 +355,7 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if (spellId == 285350 or spellId == 285426) and args:GetSrcCreatureID() == 146256 then
+		self.vb.stormsActive = self.vb.stormsActive + 1
 		timerStormsWailCD:Start()
 	elseif spellId == 285118 then--All P2 Sea Swell
 		specWarnSeaSwell:Show()
@@ -445,9 +448,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.SetIconWail then
 			self:SetIcon(args.destName, self.vb.stormsWailIcon)
 		end
-		--rotate through 3 icons, if more than 3 debuffs are ever out at once, it'll start to fail, but the pull has already failed.
+		--Smart rotation code that'll automatically rotate betwen needed number of icons based on number of debuffs out
+		--Automatically reset icon to 1 if icon higher than our max count.
+		--ie 2 debuffs out, it'll alternate icons 1 and 2. 3 out, it'll cycle through icons 1-3, a single debuff, it'll basically keep resetting to 1
 		self.vb.stormsWailIcon = self.vb.stormsWailIcon + 1
-		if self.vb.stormsWailIcon == 4 then
+		if self.vb.stormsWailIcon > self.vb.stormsActive then
 			self.vb.stormsWailIcon = 1
 		end
 	end
