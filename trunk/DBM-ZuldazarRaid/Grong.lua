@@ -138,7 +138,7 @@ function mod:OnCombatStart(delay)
 	end
 --	timerEnergyAOECD:Start(100-delay, 1)
 	if self.Options.RangeFrame then
-		DBM.RangeCheck:Show(8, nil, nil, 2, true)
+		DBM.RangeCheck:Show(8, nil, nil, 1, true)
 	end
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(OVERVIEW)
