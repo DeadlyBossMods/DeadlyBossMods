@@ -7,7 +7,7 @@ mod:SetEncounterID(2280)
 --mod:DisableESCombatDetection()
 mod:SetZone()
 mod:SetBossHPInfoToHighest()
---mod:SetUsedIcons(1, 2, 8)
+mod:SetUsedIcons(1, 2, 3)
 mod:SetHotfixNoticeRev(18367)
 --mod:SetMinSyncRevision(16950)
 --mod.respawnTime = 35
@@ -103,7 +103,7 @@ local countdownSeaSwell					= mod:NewCountdown(20.6, 285118, true, 3, 3)
 --local countdownFelstormBarrage			= mod:NewCountdown("AltTwo32", 244000, nil, nil, 3)
 
 mod:AddNamePlateOption("NPAuraOnKepWrapping", 285382)
---mod:AddSetIconOption("SetIconDarkRev", 273365, true)
+mod:AddSetIconOption("SetIconWail", 285350, true)
 mod:AddRangeFrameOption(5, 285118)
 mod:AddInfoFrameOption(284760, true)
 
@@ -112,6 +112,7 @@ mod.vb.bossesDied = 0
 mod.vb.cracklingCast = 0
 mod.vb.sirenCount = 0
 mod.vb.joltingCast = 0
+mod.vb.stormsWailIcon = 1
 local freezingTidePod = DBM:GetSpellInfo(285075)
 local stormTargets = {}
 
@@ -193,6 +194,7 @@ function mod:OnCombatStart(delay)
 	self.vb.cracklingCast = 0
 	self.vb.sirenCount = 0
 	self.vb.joltingCast = 0
+	self.vb.stormsWailIcon = 1
 	if not self:IsLFR() then
 		--Sister
 		timerCracklingLightningCD:Start(3.9-delay)--3.9-8.8
@@ -440,6 +442,14 @@ function mod:SPELL_AURA_APPLIED(args)
 		if not tContains(stormTargets, args.destName) then
 			table.insert(stormTargets, args.destName)
 		end
+		if self.Options.SetIconWail then
+			self:SetIcon(args.destName, self.vb.stormsWailIcon)
+		end
+		--rotate through 3 icons, if more than 3 debuffs are ever out at once, it'll start to fail, but the pull has already failed.
+		self.vb.stormsWailIcon = self.vb.stormsWailIcon + 1
+		if self.vb.stormsWailIcon == 4 then
+			self.vb.stormsWailIcon = 1
+		end
 	end
 end
 mod.SPELL_AURA_REFRESH = mod.SPELL_AURA_APPLIED
@@ -471,6 +481,9 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 		timerStormsWail:Stop(12, args.destName)
 		tDeleteItem(stormTargets, args.destName)
+		if self.Options.SetIconWail then
+			self:SetIcon(args.destName, 0)
+		end
 	end
 end
 
