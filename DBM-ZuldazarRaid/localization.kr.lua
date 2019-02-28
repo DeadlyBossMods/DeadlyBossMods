@@ -86,12 +86,13 @@ L:SetOptionLocalization({
 	InterruptBehavior	= "물정령 차단 알림 설정 (공대장일 경우 다른 사람의 설정을 무시함)",
 	Three				= "3인 로테이션 ",--Default
 	Four				= "4인 로테이션 ",
-	Five				= "5인 로테이션 "
+	Five				= "5인 로테이션 ",
+	SetWeather			= "보스 전투를 시작하면 자동으로 날씨 효과가 낮음으로 설정되고 전투가 끝나면 이전 설정으로 복구",
 })
 
 L:SetMiscLocalization({
-	Port			=	"왼쪽",
-	Starboard		=	"오른쪽",
+	Port			=	"좌현",
+	Starboard		=	"우현",
 	Freezing		=	"얼음 %s초 전"
 })
 

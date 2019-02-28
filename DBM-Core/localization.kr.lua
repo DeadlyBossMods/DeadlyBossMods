@@ -31,7 +31,7 @@ DBM_CORE_LOOT_SPEC_REMINDER			= "현재 전문화는 %s입니다. 현재 지정�
 
 DBM_CORE_BIGWIGS_ICON_CONFLICT		= "DBM이 BigWigs와 DBM 모두 공격대 징표 기능을 사용하고 있음을 감지했습니다. 충돌을 방지하기 위해 공대장이 두 애드온중 하나의 징표 설정을 비활성화해야 합니다."
 
-DBM_CORE_MOD_AVAILABLE				= "이 지역/보스에서 %s|1을;를; 사용할 수 있습니다. Curse/WoWI 또는 deadlybossmods.com에서 다운로드 받으실 수 있습니다."
+DBM_CORE_MOD_AVAILABLE				= "이 지역에서 %s|1을;를; 사용할 수 있습니다. Curse/Twitch, WoWI, deadlybossmods.com에서 다운로드 받으실 수 있습니다."
 
 DBM_CORE_COMBAT_STARTED				= "%s 전투 시작. 행운을 빕니다! :)";
 DBM_CORE_COMBAT_STARTED_IN_PROGRESS	= "%s 전투 진행 도중 참가했습니다. 행운을 빕니다! :)"
