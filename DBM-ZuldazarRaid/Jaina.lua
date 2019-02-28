@@ -7,7 +7,7 @@ mod:SetEncounterID(2281)
 --mod:DisableESCombatDetection()
 mod:SetZone()
 --mod:SetBossHPInfoToHighest()
-mod:SetUsedIcons(1, 2, 3)
+mod:SetUsedIcons(1, 2, 3, 4)
 mod:SetHotfixNoticeRev(18363)
 --mod:SetMinSyncRevision(16950)
 --mod.respawnTime = 35
@@ -19,7 +19,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS 285725 287925 287626 289220 288374 288211 290084",
 	"SPELL_AURA_APPLIED 287993 287490 289387 287925 285253 288199 288219 288212 288374 288412 288434 289220 285254 288038 287322 288169",
 	"SPELL_AURA_APPLIED_DOSE 287993 285253",
-	"SPELL_AURA_REMOVED 287993 287925 288199 288219 288212 288374 288038 290001 289387 287322",
+	"SPELL_AURA_REMOVED 287993 287925 288199 288219 288212 288374 288038 290001 289387 287322 285254",
 	"SPELL_AURA_REMOVED_DOSE 287993",
 	"SPELL_PERIODIC_DAMAGE 288297",
 	"SPELL_PERIODIC_MISSED 288297",
@@ -78,8 +78,8 @@ local specWarnIceShard					= mod:NewSpecialWarningTaunt(285253, false, nil, nil,
 local specWarnMarkedTarget				= mod:NewSpecialWarningRun(288038, nil, nil, nil, 4, 2)
 local yellMarkedTarget					= mod:NewYell(288038, nil, false)
 --local specWarnBombard					= mod:NewSpecialWarningDodge(285828, nil, nil, nil, 2, 2)
-local specWarnAvalanche					= mod:NewSpecialWarningYou(285254, nil, nil, nil, 1, 2)
-local yellAvalanche						= mod:NewYell(285254)
+local specWarnAvalanche					= mod:NewSpecialWarningYouPos(285254, nil, nil, nil, 1, 2)
+local yellAvalanche						= mod:NewPosYell(285254)
 local specWarnAvalancheTaunt			= mod:NewSpecialWarningTaunt(287565, nil, nil, nil, 1, 2)
 local specWarGraspofFrost				= mod:NewSpecialWarningDispel(287626, "Healer", nil, 3, 1, 2)
 local specWarnFreezingBlast				= mod:NewSpecialWarningDodge(285177, "Tank", nil, nil, 2, 2)
@@ -147,6 +147,7 @@ mod:AddNamePlateOption("NPAuraOnMarkedTarget", 288038)
 mod:AddNamePlateOption("NPAuraOnTimeWarp", 287925)
 mod:AddNamePlateOption("NPAuraOnRefractiveIce", 288219)
 mod:AddNamePlateOption("NPAuraOnWaterBolt", 290084)
+mod:AddSetIconOption("SetIconAvalanche", 287565, true)
 mod:AddSetIconOption("SetIconBroadside", 288212, true)
 mod:AddRangeFrameOption(10, 289379)
 mod:AddInfoFrameOption(287993, true, 2)
@@ -166,6 +167,7 @@ mod.vb.broadsideCount = 0
 mod.vb.siegeCount = 0
 mod.vb.glacialRayCount = 0
 mod.vb.broadsideIcon = 0
+mod.vb.avalancheIcon = 0
 mod.vb.waterboltVolleyCount = 0
 mod.vb.howlingWindsCast = 0
 mod.vb.frozenSiegeCount = 0
@@ -296,6 +298,7 @@ function mod:OnCombatStart(delay)
 	self.vb.siegeCount = 0
 	self.vb.glacialRayCount = 0
 	self.vb.broadsideIcon = 0
+	self.vb.avalancheIcon = 0
 	self.vb.howlingWindsCast = 0
 	self.vb.frozenSiegeCount = 0
 	self.vb.interruptBehavior = self.Options.InterruptBehavior--Default it to whatever user has it set to, until group leader overrides it
@@ -376,8 +379,10 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 287565 then
 		if self.vb.phase == 1 then
+			self.vb.avalancheIcon = 0
 			timerAvalancheCD:Start(self:IsMythic() and 45 or 60)
 		else
+			self.vb.avalancheIcon = 3
 			timerAvalancheCD:Start(self:IsMythic() and 81.5 or 75)--75-90
 		end
 	elseif spellId == 285177 then
@@ -653,16 +658,21 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnHeartofFrost:Show(args.destName)
 		end
 	elseif spellId == 285254 then
+		self.vb.avalancheIcon = self.vb.avalancheIcon + 1
+		local icon = self.vb.avalancheIcon
 		if args:IsPlayer() then
-			specWarnAvalanche:Show()
+			specWarnAvalanche:Show(self:IconNumToTexture(icon))
 			specWarnAvalanche:Play("runout")
-			yellAvalanche:Yell()
+			yellAvalanche:Yell(icon, icon, icon)
 		else
 			local uId = DBM:GetRaidUnitId(args.destName)
 			if self:IsTanking(uId) then
 				specWarnAvalancheTaunt:Show(args.destName)
 				specWarnAvalancheTaunt:Play("tauntboss")
 			end
+		end
+		if self.Options.SetIconAvalanche then
+			self:SetIcon(args.destName, self.vb.avalancheIcon)
 		end
 	elseif spellId == 287322 then
 		warnJainaIceBlocked:Show(args.destName)
@@ -760,6 +770,10 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif spellId == 287322 then
 		timerIceBlockCD:Stop(args.destName)
+	elseif spellId == 285254 then
+		if self.Options.SetIconAvalanche then
+			self:SetIcon(args.destName, 0)
+		end
 	end
 end
 
