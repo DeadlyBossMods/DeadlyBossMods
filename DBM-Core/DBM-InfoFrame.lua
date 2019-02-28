@@ -853,6 +853,8 @@ function onUpdate(frame, table)
 				else
 					color = NORMAL_FONT_COLOR
 				end
+			else
+				color = NORMAL_FONT_COLOR
 			end
 			if unitId2 then--Check right text
 				local _, class = UnitClass(unitId2)
@@ -861,6 +863,8 @@ function onUpdate(frame, table)
 				else
 					color2 = NORMAL_FONT_COLOR
 				end
+			else
+				color2 = NORMAL_FONT_COLOR
 			end
 			linesShown = linesShown + 1
 			frame:AddDoubleLine(icon or leftText, rightText, color.r, color.g, color.b, color2.r, color2.g, color2.b)
