@@ -837,13 +837,20 @@ function mod:UNIT_POWER_FREQUENT(uId, type)
 	if type == "ALTERNATE" then--Assumed, but has to be, since her main power is her special attacks (ie ring of ice)
 		local altPower = UnitPower(uId, 10)
 		if rangeThreshold < 3 and altPower >= 75 then
+			rangeThreshold = 3
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Show(10, nil, nil, 5, true, nil, self.Options.ShowOnlySummary2)--Reverse checker, threshold 5
 			end
 			self:UnregisterShortTermEvents()
 		elseif rangeThreshold < 2 and altPower >=50 then
+			rangeThreshold = 2
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Show(10, nil, nil, 3, true, nil, self.Options.ShowOnlySummary2)--Reverse checker, threshold 3
+			end
+		elseif rangeThreshold > 1 and altPower < 50 then
+			rangeThreshold = 1
+			if self.Options.RangeFrame then
+				DBM.RangeCheck:Show(10, nil, nil, 1, true, nil, self.Options.ShowOnlySummary2)--Reverse checker, threshold 1
 			end
 		end
 	end
