@@ -677,6 +677,7 @@ do
 				textFrame:AddLine(DBM_CORE_RANGECHECK_IN_RANGE_TEXT:format(closePlayer, activeRange), 0, 1, 0)
 			--Red Text (Regular range frame and we are near too many players, or reverse range frame and we aren't near enough)
 			else
+				updateSound(closePlayer)
 				textFrame:AddLine(DBM_CORE_RANGECHECK_IN_RANGE_TEXT:format(closePlayer, activeRange), 1, 0, 0)
 			end
 			textFrame:Show()
@@ -714,10 +715,9 @@ do
 				end
 				prevColor = circleColor
 			end
-		end
-
-		if closePlayer >= warnThreshold then
-			updateSound(closePlayer)
+			if circleColor == 2 then--Red
+				updateSound(closePlayer)
+			end
 		end
 	end
 end
