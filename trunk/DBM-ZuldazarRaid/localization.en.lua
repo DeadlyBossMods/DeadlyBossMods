@@ -85,7 +85,8 @@ L:SetOptionLocalization({
 	InterruptBehavior	= "Set elemental interrupt behavior (Will override everyone elses setting if you are raid leader)",
 	Three				= "3 person rotation ",--Default
 	Four				= "4 person rotation ",
-	Five				= "5 person rotation "
+	Five				= "5 person rotation ",
+	SetWeather			= "Automatically turn weather density setting to lowest when boss is engaged and restore on combat end",
 })
 
 L:SetMiscLocalization({

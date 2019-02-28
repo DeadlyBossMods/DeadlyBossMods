@@ -151,6 +151,7 @@ mod:AddSetIconOption("SetIconBroadside", 288212, true)
 mod:AddRangeFrameOption(10, 289379)
 mod:AddInfoFrameOption(287993, true, 2)
 mod:AddBoolOption("ShowOnlySummary2", true, "misc")
+mod:AddBoolOption("SetWeather", true)
 mod:AddMiscLine(DBM_CORE_OPTION_CATEGORY_DROPDOWNS)
 mod:AddDropdownOption("InterruptBehavior", {"Three", "Four", "Five"}, "Three", "misc")
 
@@ -177,6 +178,7 @@ local rangeThreshold = 1
 local fixStupid = {}
 --1 2178508, 2 2178501, 3 2178502, 4 2178503, 2178500 (none)--Not best icons, better ones needed
 local interruptTextures = {[1] = 2178508, [2] = 2178501, [3] = 2178502, [4] = 2178503, [5] = 2178504,}
+local CVAR1, CVAR2 = nil, nil
 
 --[[
 local updateInfoFrame
@@ -345,6 +347,11 @@ function mod:OnCombatStart(delay)
 			self:SendSync("Five")
 		end
 	end
+	if self.Options.SetWeather then
+		CVAR1, CVAR2 = GetCVar("weatherDensity") or 2, GetCVar("RAIDweatherDensity") or 2--Non raid cvar is nil if 3 (default) and raid one is nil if 2 (default)
+		SetCVar("weatherDensity", 0)
+		SetCVar("RAIDweatherDensity", 0)
+	end
 end
 
 function mod:OnCombatEnd()
@@ -357,6 +364,11 @@ function mod:OnCombatEnd()
 	end
 	if self.Options.NPAuraOnMarkedTarget or self.Options.NPAuraOnTimeWarp or self.Options.NPAuraOnRefractiveIce or self.Options.NPAuraOnWaterBolt then
 		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
+	end
+	if CVAR1 or CVAR2 then
+		SetCVar("weatherDensity", CVAR1)
+		SetCVar("RAIDweatherDensity", CVAR2)
+		CVAR1, CVAR2 = nil, nil
 	end
 end
 
