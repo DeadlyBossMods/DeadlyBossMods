@@ -338,7 +338,7 @@ end
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 144998 or cid == 144876 then--Death Specter/Apetagonizer 3000
+	if cid == 144998 or cid == 149617 or cid == 144876 or cid == 149611 then--Death Specter/Apetagonizer 3000
 		castsPerGUID[args.destGUID] = nil
 		if self.Options.NPAuraOnInterrupt then
 			DBM.Nameplate:Hide(true, args.destGUID)
