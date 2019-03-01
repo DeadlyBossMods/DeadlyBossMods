@@ -61,7 +61,7 @@ local warnFrozenSiege					= mod:NewSpellAnnounce(289488, 2)
 local warnBurningExplosion				= mod:NewCastAnnounce(288221, 3)
 local warnBroadside						= mod:NewTargetNoFilterAnnounce(288212, 2)
 local warnSiegebreaker					= mod:NewTargetNoFilterAnnounce(288374, 3)
-local warnGlacialRay					= mod:NewBaitAnnounce(285177, 3, nil, nil, nil, nil, 8)
+local warnGlacialRay					= mod:NewBaitAnnounce(288345, 3, nil, nil, nil, nil, 8)
 --Intermission 2
 local warnHeartofFrost					= mod:NewTargetAnnounce(289220, 2)
 local warnFrostNova						= mod:NewCastAnnounce(289219, 3)
