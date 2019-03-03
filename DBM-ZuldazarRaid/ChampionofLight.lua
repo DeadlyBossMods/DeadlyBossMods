@@ -10,11 +10,8 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(creatureID)
 mod:SetEncounterID(2265)
---mod:DisableESCombatDetection()
 mod:SetZone()
---mod:SetUsedIcons(1, 2, 8)
 --mod:SetHotfixNoticeRev(17775)
---mod:SetMinSyncRevision(16950)
 mod.respawnTime = 17--Ish, from stream watching.
 
 mod:RegisterCombat("combat")
