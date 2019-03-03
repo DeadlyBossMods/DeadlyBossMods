@@ -1302,7 +1302,7 @@ function barPrototype:ApplyStyle()
 		bar:SetWidth(barWidth)
 		bar:SetHeight(barHeight)
 		frame:SetScale(barOptions.Scale)
-		if barOptions.FadeBars and self.fade then
+		if barOptions.FadeBars and self.fade and barOptions.Alpha ~= 0 then
 			frame:SetAlpha(barOptions.Alpha/2)
 		else
 			frame:SetAlpha(barOptions.Alpha)
