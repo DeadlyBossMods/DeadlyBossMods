@@ -2312,7 +2312,7 @@ local function CreateOptionsMenu()
 		BarScaleSlider:SetScript("OnShow", createDBTOnShowHandler("Scale"))
 		BarScaleSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("Scale"))
 		
-		local AlphaSlider = BarSetup:CreateSlider(L.Bar_Alpha, 0.1, 1, 0.1)
+		local AlphaSlider = BarSetup:CreateSlider(L.Bar_Alpha, 0, 1, 0.1)
 		AlphaSlider:SetPoint("TOPLEFT", BarScaleSlider, "BOTTOMLEFT", 0, -10)
 		AlphaSlider:SetScript("OnShow", createDBTOnShowHandler("Alpha"))
 		AlphaSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("Alpha"))
