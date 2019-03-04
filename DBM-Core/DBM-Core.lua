@@ -7571,7 +7571,7 @@ end
 
 function bossModPrototype:IsMythic()
 	local diff = savedDifficulty or DBM:GetCurrentInstanceDifficulty()
-	if diff == "mythic" then
+	if diff == "mythic" or diff == "challenge5" then
 		return true
 	end
 	return false
