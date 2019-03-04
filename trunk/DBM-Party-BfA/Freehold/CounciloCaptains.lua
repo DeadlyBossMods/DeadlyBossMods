@@ -165,7 +165,7 @@ function mod:SPELL_CAST_START(args)
 			warnCausticBrew:Show()
 		end
 		timerTendingBarCD:Start()
-	elseif spellId == 256979 then
+	elseif spellId == 256979 and self:IsMythic() then
 		self:ScheduleMethod(0.1, "BossTargetScanner", args.sourceGUID, "PowderShotTarget", 0.1, 16, true, nil, nil, nil, true)
 	end
 end
