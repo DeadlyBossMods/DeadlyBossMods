@@ -282,6 +282,9 @@ function mod:OnTimerRecovery()
 		timerZombieDustTotemCD:SetFade(true)
 		timerScorchingDetonationCD:SetFade(true, self.vb.InevitableEndCount+1)
 		timerPlagueofFireCD:SetFade(true)
+		if not self:IsMythic() then
+			timerNecroticSmashCD:SetFade(true)
+		end
 	end
 end
 
@@ -354,8 +357,10 @@ function mod:SPELL_CAST_START(args)
 		warnSealofBwonsamdi:Show()
 		timerSealofBwonCD:Start()
 	elseif spellId == 286742 then
-		specWarnNecroticSmash:Show()
-		specWarnNecroticSmash:Play("justrun")
+		if self:IsMythic() or not playerDeathPhase then
+			specWarnNecroticSmash:Show()
+			specWarnNecroticSmash:Play("justrun")
+		end
 		timerNecroticSmashCD:Start(34.6)
 	end
 end
@@ -412,6 +417,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerInevitableEndCD:SetFade(false)
 		timerScorchingDetonationCD:SetFade(false)
 		timerPlagueofFireCD:SetFade(false)
+		if not self:IsMythic() then
+			timerNecroticSmashCD:SetFade(false)
+		end
 		timerDeathsDoorCD:Start(9.3)
 		timerPlagueofToadsCD:Start(15.1)
 		timerScorchingDetonationCD:Start(19.2, 1)
@@ -536,6 +544,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		--Set fade defaults to fade bwonsamdi's timers
 		timerInevitableEndCD:SetFade(true)
 		timerDreadReapingCD:SetFade(true)
+		timerNecroticSmashCD:SetFade(false)
 		--Rasta
 		timerSpiritVortex:Start(5)
 		timerAddsCD:Start(6)
@@ -586,6 +595,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerZombieDustTotemCD:SetFade(true)
 		timerScorchingDetonationCD:SetFade(true, self.vb.scorchingDetCount+1)
 		timerPlagueofFireCD:SetFade(true)
+		if not self:IsMythic() then
+			timerNecroticSmashCD:SetFade(true)
+		end
 		--Start countdown for countdownInevitableEnd
 		local elapsed, total = timerInevitableEndCD:GetTime(self.vb.InevitableEndCount+1)
 		local remaining = total-elapsed
@@ -630,6 +642,9 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerZombieDustTotemCD:SetFade(false)
 		timerScorchingDetonationCD:SetFade(false, self.vb.scorchingDetCount+1)
 		timerPlagueofFireCD:SetFade(false)
+		if not self:IsMythic() then
+			timerNecroticSmashCD:SetFade(false)
+		end
 	end
 end
 
