@@ -61,6 +61,10 @@ L:SetGeneralLocalization({
 	name = "싸움꾼: 2계급"
 })
 
+L:SetOptionLocalization({
+	SetIconOnBlat	= "브랏 본체에 전술 목표 아이콘 설정(해골)"
+})
+
 ------------
 -- Rank 3 --
 ------------
@@ -68,10 +72,6 @@ L= DBM:GetModLocalization("BrawlRank3")
 
 L:SetGeneralLocalization({
 	name = "싸움꾼: 3계급"
-})
-
-L:SetOptionLocalization({
-	SetIconOnBlat	= "브랏 본체에 전술 목표 아이콘 설정(해골)"
 })
 
 ------------

@@ -61,6 +61,10 @@ L:SetGeneralLocalization({
 	name = "Бойцовская гильдия: 2 ранг"
 })
 
+L:SetOptionLocalization({
+	SetIconOnBlat	= "Устанавливать метку (череп) на настоящего Блэт"
+})
+
 ------------
 -- Rank 3 --
 ------------
@@ -68,10 +72,6 @@ L= DBM:GetModLocalization("BrawlRank3")
 
 L:SetGeneralLocalization({
 	name = "Бойцовская гильдия: 3 ранг"
-})
-
-L:SetOptionLocalization({
-	SetIconOnBlat	= "Устанавливать метку (череп) на настоящего Блэт"
 })
 
 ------------

@@ -61,6 +61,10 @@ L:SetGeneralLocalization({
 	name = "Rango 2"
 })
 
+L:SetOptionLocalization({
+	SetIconOnBlat	= "Poner icono (calavera) en el verdadero Blat"
+})
+
 -------------
 -- Rango 3 --
 -------------
@@ -68,10 +72,6 @@ L= DBM:GetModLocalization("BrawlRank3")
 
 L:SetGeneralLocalization({
 	name = "Rango 3"
-})
-
-L:SetOptionLocalization({
-	SetIconOnBlat	= "Poner icono (calavera) en el verdadero Blat"
 })
 
 -------------
