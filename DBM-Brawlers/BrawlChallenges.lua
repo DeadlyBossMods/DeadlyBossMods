@@ -96,6 +96,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerCooled:Start(args.destName)
 	elseif args.spellId == 141388 then
 		warnOnFire:Show(args.destName)
+	elseif args.spellId == 134624 then
+		warnToughLuck:Show(args.destName, args.amount or 1)
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -117,8 +119,6 @@ function mod:SPELL_CAST_START(args)
 		DBM.Arrow:ShowStatic(90, 3)
 	elseif args.spellId == 140886 and self.Options.ArrowOnBoxing and brawlersMod:PlayerFighting() then--Right Hook
 		DBM.Arrow:ShowStatic(180, 3)
-	elseif args.spellId == 134624 then
-		warnToughLuck:Show(args.destName, args.amount or 1)
 	elseif args.spellId == 135234 then
 		--CD seems to be 32 seconds usually but sometimes only 16? no timer for now
 		if brawlersMod:PlayerFighting() then
