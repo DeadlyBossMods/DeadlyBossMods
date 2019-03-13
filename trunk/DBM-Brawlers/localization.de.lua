@@ -65,6 +65,10 @@ L:SetGeneralLocalization({
 	name = "Kampfgilde: Rang 2"
 })
 
+L:SetOptionLocalization({
+	SetIconOnBlat	= "Setze Zeichen auf echten \"Blat\" (Totenkopf)"
+})
+
 ------------
 -- Rank 3 --
 ------------
@@ -74,10 +78,6 @@ L:SetGeneralLocalization({
 	name = "Kampfgilde: Rang 3"
 })
 
-L:SetOptionLocalization({
-	SetIconOnBlat	= "Setze Zeichen auf echten \"Blat\" (Totenkopf)"
-})
-
 ------------
 -- Rank 4 --
 ------------
@@ -85,10 +85,6 @@ L= DBM:GetModLocalization("BrawlRank4")
 
 L:SetGeneralLocalization({
 	name = "Kampfgilde: Rang 4"
-})
-
-L:SetOptionLocalization({
-	SetIconOnDominika	= "Setze Zeichen auf echte \"Dominika die Illusionistin\" (Totenkopf)"
 })
 
 ------------

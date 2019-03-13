@@ -6,75 +6,58 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetZone()
 
 mod:RegisterEvents(
-	"SPELL_CAST_START 132666 33975 136334",
-	"SPELL_AURA_APPLIED 229884",
-	"SPELL_AURA_REMOVED 229884",
-	"SPELL_SUMMON 236458"
+	"SPELL_CAST_START 133302 229124",
+--	"SPELL_AURA_APPLIED 229884",
+--	"SPELL_AURA_REMOVED 229884",
+	"PLAYER_TARGET_CHANGED"
 )
 
 --TODO, boom broom timer
-local warnPyroblast				= mod:NewCastAnnounce(33975, 3)--Sanoriak
-local warnFireWall				= mod:NewSpellAnnounce(132666, 4)--Sanoriak
-local warnBoomBroom				= mod:NewSpellAnnounce(236458, 4)--Bill the Janitor
-local warnZenOrb				= mod:NewTargetNoFilterAnnounce(229884, 1)--Master Paku
+local warnPowershot				= mod:NewCastAnnounce(229124, 4)--Johnny Awesome
 
-local specWarnFireWall			= mod:NewSpecialWarningSpell(132666, nil, nil, nil, 2, 2)--Sanoriak
-local specWarnBoomBroom			= mod:NewSpecialWarningRun(236458, nil, nil, nil, 4, 2)--Bill the Janitor
+local specWarnPowerShot			= mod:NewSpecialWarningMoveTo(229124, nil, nil, nil, 1, 2)--Johnny Awesome
 
-local timerFirewallCD			= mod:NewCDTimer(17, 132666, nil, nil, nil, 3)--Sanoriak
-local timerBoomBoomCD			= mod:NewAITimer(17, 236458, nil, nil, nil, 1)--Bill the Janitor
-local timerZenOrb				= mod:NewTargetTimer(15, 229884, nil, nil, nil, 5)--Master Paku
+local timerPowerShotCD			= mod:NewCDTimer(15.5, 229124, nil, nil, nil, 3)--Johnny Awesome
 
-local countdownZenOrb			= mod:NewCountdown(15, 229884)
+mod:AddBoolOption("SetIconOnBlat", true)--Blat
 
 local brawlersMod = DBM:GetModByName("Brawlers")
+local blatGUID = 0
+local GetRaidTargetIndex = GetRaidTargetIndex
 
 function mod:SPELL_CAST_START(args)
 	if not brawlersMod.Options.SpectatorMode and not brawlersMod:PlayerFighting() then return end--Spectator mode is disabled, do nothing.
-	if args:IsSpellID(33975, 136334) then--Spellid is used by 5 diff mobs in game, but SetZone sould filter the other 4 mobs.
-		warnPyroblast:Show()
-	elseif args.spellId == 132666 then
-		timerFirewallCD:Start()--First one is 5 seconds after combat start
+	if args.spellId == 133302 then
+		blatGUID = args.sourceGUID
+	elseif args.spellId == 229124 then
+		timerPowerShotCD:Start()
 		if brawlersMod:PlayerFighting() then
-			specWarnFireWall:Show()
-			specWarnFireWall:Play("watchstep")
+			specWarnPowerShot:Show(PET)
+			specWarnPowerShot:Play("findshelter")
 		else
-			warnFireWall:Show()
+			warnPowershot:Show()
 		end
 	end
 end
 
+--[[
 function mod:SPELL_AURA_APPLIED(args)
 	if not brawlersMod.Options.SpectatorMode and not brawlersMod:PlayerFighting() then return end
 	if args.spellId == 229884 then
-		timerZenOrb:Start(args.destName)
-		if brawlersMod:PlayerFighting() then
-			countdownZenOrb:Start()
-		else
-			warnZenOrb:Show(args.destName)
-		end
+
 	end
 end
 
 function mod:SPELL_AURA_REMOVED(args)
 	if not brawlersMod.Options.SpectatorMode and not brawlersMod:PlayerFighting() then return end
 	if args.spellId == 229884 then
-		timerZenOrb:Stop(args.destName)
-		if brawlersMod:PlayerFighting() then
-			countdownZenOrb:Cancel()
-		end
+
 	end
 end
+--]]
 
-function mod:SPELL_SUMMON(args)
-	if not brawlersMod.Options.SpectatorMode and not brawlersMod:PlayerFighting() then return end
-	if args.spellId == 236458 then
-		timerBoomBoomCD:Start()
-		if brawlersMod:PlayerFighting() then--Only give special warnings if you're in arena though.
-			specWarnBoomBroom:Show()
-			specWarnBoomBroom:Play("justrun")
-		else
-			warnBoomBroom:Show()
-		end
+function mod:PLAYER_TARGET_CHANGED()
+	if self.Options.SetIconOnBlat and not DBM.Options.DontSetIcons and UnitGUID("target") == blatGUID and GetRaidTargetIndex("target") ~= 8 then
+		SetRaidTarget("target", 8)
 	end
 end

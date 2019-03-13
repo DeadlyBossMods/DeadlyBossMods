@@ -6,27 +6,27 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetZone()
 
 mod:RegisterEvents(
-	"SPELL_CAST_START 234489"
+	"SPELL_CAST_START 135342"
 --	"SPELL_AURA_APPLIED",
 --	"SPELL_AURA_REMOVED"
 )
 
-local warnShotgunRoar			= mod:NewCastAnnounce(234489, 3)--Oso
+local warnChomp					= mod:NewSpellAnnounce(135342, 4)--Bruce
 
-local specWarnShotgunRoar		= mod:NewSpecialWarningDodge(234489)--Oso
+local specWarnChomp				= mod:NewSpecialWarningDodge(135342)--Bruce
 
-local timerShotgunRoarCD		= mod:NewCDTimer(11, 234489, nil, nil, nil, 3)--Oso
+local timerChompCD				= mod:NewCDTimer(8, 135342)--Bruce
 
 local brawlersMod = DBM:GetModByName("Brawlers")
 
 function mod:SPELL_CAST_START(args)
 	if not brawlersMod.Options.SpectatorMode and not brawlersMod:PlayerFighting() then return end--Spectator mode is disabled, do nothing.
-	if args.spellId == 234489 then
-		timerShotgunRoarCD:Start()
-		if brawlersMod:PlayerFighting() then
-			specWarnShotgunRoar:Show()
+	if args.spellId == 135342 then
+		timerChompCD:Start()--And timers (first one is after 6 seconds)
+		if brawlersMod:PlayerFighting() then--Only give special warnings if you're in arena though.
+			specWarnChomp:Show()
 		else
-			warnShotgunRoar:Show()
+			warnChomp:Show()--Give reg warnings for spectators
 		end
 	end
 end

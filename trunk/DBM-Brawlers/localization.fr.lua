@@ -61,6 +61,10 @@ L:SetGeneralLocalization({
 	name = "Bastonneurs : Rang 2"
 })
 
+L:SetOptionLocalization({
+	SetIconOnBlat	= "Met un symbole (crâne) sur le vrai Blat"
+})
+
 ------------
 -- Rank 3 --
 ------------
@@ -68,10 +72,6 @@ L= DBM:GetModLocalization("BrawlRank3")
 
 L:SetGeneralLocalization({
 	name = "Bastonneurs : Rang 3"
-})
-
-L:SetOptionLocalization({
-	SetIconOnBlat	= "Met un symbole (crâne) sur le vrai Blat"
 })
 
 ------------

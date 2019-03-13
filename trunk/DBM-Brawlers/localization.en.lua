@@ -64,6 +64,10 @@ L:SetGeneralLocalization({
 	name = "Brawlers: Rank 2"
 })
 
+L:SetOptionLocalization({
+	SetIconOnBlat	= "Set icon (skull) on real Blat"
+})
+
 ------------
 -- Rank 3 --
 ------------
@@ -73,10 +77,6 @@ L:SetGeneralLocalization({
 	name = "Brawlers: Rank 3"
 })
 
-L:SetOptionLocalization({
-	SetIconOnBlat	= "Set icon (skull) on real Blat"
-})
-
 ------------
 -- Rank 4 --
 ------------
@@ -84,10 +84,6 @@ L= DBM:GetModLocalization("BrawlRank4")
 
 L:SetGeneralLocalization({
 	name = "Brawlers: Rank 4"
-})
-
-L:SetOptionLocalization({
-	SetIconOnDominika	= "Set icon (skull) on real Dominika the Illusionist"
 })
 
 ------------
@@ -143,7 +139,7 @@ L:SetGeneralLocalization({
 L= DBM:GetModLocalization("BrawlLegacy")
 
 L:SetGeneralLocalization({
-	name = "Brawlers: Legacy"
+	name = "Brawlers: Random"
 })
 
 L:SetOptionLocalization({
@@ -156,7 +152,7 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization("BrawlChallenges")
 
 L:SetGeneralLocalization({
-	name = "Brawlers: Challenge"
+	name = "Brawlers: Random 2"
 })
 
 L:SetWarningLocalization({

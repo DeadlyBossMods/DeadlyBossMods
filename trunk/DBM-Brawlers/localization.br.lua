@@ -62,6 +62,10 @@ L:SetGeneralLocalization({
 	name = "Brigões: Rank 2"
 })
 
+L:SetOptionLocalization({
+	SetIconOnBlat	= "Marca (caveira) no verdadeiro Blat"
+})
+
 ------------
 -- Rank 3 --
 ------------
@@ -69,10 +73,6 @@ L= DBM:GetModLocalization("BrawlRank3")
 
 L:SetGeneralLocalization({
 	name = "Brigões: Rank 3"
-})
-
-L:SetOptionLocalization({
-	SetIconOnBlat	= "Marca (caveira) no verdadeiro Blat"
 })
 
 ------------

@@ -9,12 +9,10 @@ mod:SetZone()
 mod:RegisterEvents(
 	"CHAT_MSG_RAID_BOSS_EMOTE",
 	"SPELL_AURA_APPLIED 141206 134650 142400 141371 141388 134624",
-	"SPELL_AURA_APPLIED_DOSE 134624 138901",
-	"SPELL_AURA_REMOVED 134650 138901",
-	"SPELL_AURA_REMOVED_DOSE 138901",
-	"SPELL_CAST_START 140868 140862 140886 135234 133308 135342 133650 133398",
-	"SPELL_CAST_SUCCESS 132670 133227",
-	"UNIT_DIED",
+	"SPELL_AURA_APPLIED_DOSE 134624",
+	"SPELL_AURA_REMOVED 134650",
+	"SPELL_CAST_START 140868 140862 140886 135234 133650 133398 133262",
+	"SPELL_CAST_SUCCESS 132670 133250",
 	"UNIT_SPELLCAST_CHANNEL_START target focus"
 )
 
@@ -23,42 +21,32 @@ local warnToughLuck					= mod:NewStackAnnounce(134624, 1)--Smash Hoofstomp
 local warnShieldWaller				= mod:NewSpellAnnounce(134650, 2)--Smash Hoofstomp
 local warnSummonTwister				= mod:NewSpellAnnounce(132670, 3)--Kirrawk
 local warnStormCloud				= mod:NewSpellAnnounce(135234, 3)--Kirrawk
-local warnThrowNet					= mod:NewSpellAnnounce(133308, 3)--Fran and Riddoh
-local warnGoblinDevice				= mod:NewSpellAnnounce(133227, 4)--Fran and Riddoh
-local warnChomp						= mod:NewSpellAnnounce(135342, 4)--Bruce
-local warnBulwark					= mod:NewAddsLeftAnnounce(138901, 2)--Ahoo'ru
-local warnCharge					= mod:NewCastAnnounce(138845, 1)--Ahoo'ru
-local warnCompleteHeal				= mod:NewCastAnnounce(142621, 4)--Ahoo'ru
-local warnDivineCircle				= mod:NewSpellAnnounce(142585, 3)--Ahoo'ru
 local warnSmolderingHeat			= mod:NewTargetNoFilterAnnounce(142400, 4)--Anthracite
 local warnCooled					= mod:NewTargetNoFilterAnnounce(141371, 1)--Anthracite
 local warnOnFire					= mod:NewTargetNoFilterAnnounce(141388, 4)--Anthracite
 local warnRockPaperScissors			= mod:NewSpellAnnounce(141206, 3)--Ro-Shambo
 local warnPowerCrystal				= mod:NewSpellAnnounce(133398, 3)--Millhouse Manastorm
 local warnDoom						= mod:NewSpellAnnounce(133650, 4)--Millhouse Manastorm
+local warnBlueCrush					= mod:NewSpellAnnounce(133262, 4)--Epicus Maximus
+local warnDestructolaser			= mod:NewSpellAnnounce(133250, 4)--Epicus Maximus
 
 local specWarnLumberingCharge		= mod:NewSpecialWarningDodge(134527)--Goredome
 local specWarnStormCloud			= mod:NewSpecialWarningInterrupt(135234)--Kirrawk
-local specWarnGoblinDevice			= mod:NewSpecialWarningSpell(133227)--Fran and Riddoh
-local specWarnChomp					= mod:NewSpecialWarningDodge(135342)--Bruce
-local specWarnCharge				= mod:NewSpecialWarningSpell(138845)--Ahoo'ru
-local specWarnCompleteHeal			= mod:NewSpecialWarningInterrupt(142621, nil, nil, nil, 3)--Ahoo'ru
-local specWarnDivineCircle			= mod:NewSpecialWarningDodge(142585)--Ahoo'ru
 local specWarnSmolderingHeat		= mod:NewSpecialWarningYou(142400)--Anthracite
 local specWarnRPS					= mod:NewSpecialWarning("specWarnRPS")--Ro-Shambo
 local specWarnDoom					= mod:NewSpecialWarningSpell(133650, nil, nil, nil, true)--Millhouse Manastorm
+local specWarnBlueCrush				= mod:NewSpecialWarningInterrupt(133262, nil, nil, nil, 1, 2)--Epicus Maximus
+local specWarnDestructolaser		= mod:NewSpecialWarningMove(133250, nil, nil, nil, 2, 1)--Epicus Maximus
 
 local timerLumberingChargeCD		= mod:NewCDTimer(7, 134527, nil, nil, nil, 3)--Goredome
 local timerShieldWaller				= mod:NewBuffActiveTimer(10, 134650)--Smash Hoofstomp
 local timerSummonTwisterCD			= mod:NewCDTimer(15, 132670, nil, nil, nil, 3)--Kirrawk
-local timerThrowNetCD				= mod:NewCDTimer(20, 133308, nil, nil, nil, 3)--Fran and Riddoh
-local timerGoblinDeviceCD			= mod:NewCDTimer(22, 133227, nil, nil, nil, 3)--Fran and Riddoh
-local timerChompCD					= mod:NewCDTimer(8, 135342)--Bruce
-local timerDivineCircleCD			= mod:NewCDTimer(35, 142585)--Insufficent data to say if accurate with certainty --Ahoo'ru
 local timerSmolderingHeatCD			= mod:NewCDTimer(20, 142400)--Anthracite
 local timerCooled					= mod:NewTargetTimer(20, 141371, nil, nil, nil, 6)--Anthracite
 local timerRockpaperScissorsCD		= mod:NewCDTimer(42, 141206, nil, nil, nil, 6)--Ro-Shambo
 local timerPowerCrystalCD			= mod:NewCDTimer(13, 133398)--Millhouse Manastorm
+local timerBlueCrushCD				= mod:NewCDTimer(19.4, 133262, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)--Epicus Maximus
+local timerDestructolaserCD			= mod:NewNextTimer(30, 133250, nil, nil, nil, 3)--Epicus Maximus
 
 mod:AddBoolOption("ArrowOnBoxing")--Ro-Shambo
 
@@ -108,8 +96,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerCooled:Start(args.destName)
 	elseif args.spellId == 141388 then
 		warnOnFire:Show(args.destName)
-	elseif args.spellId == 138901 then
-		warnBulwark:Show(args.amount or 0)
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -140,35 +126,6 @@ function mod:SPELL_CAST_START(args)
 		else
 			warnStormCloud:Show()
 		end
-	elseif args.spellId == 133308 then
-		warnThrowNet:Show()
-		timerThrowNetCD:Start()
-	elseif args.spellId == 135342 then
-		timerChompCD:Start()--And timers (first one is after 6 seconds)
-		if brawlersMod:PlayerFighting() then--Only give special warnings if you're in arena though.
-			specWarnChomp:Show()
-		else
-			warnChomp:Show()--Give reg warnings for spectators
-		end
-	elseif args.spellId == 138845 then
-		if brawlersMod:PlayerFighting() then
-			specWarnCharge:Show()
-		else
-			warnCharge:Show()
-		end
-	elseif args.spellId == 142621 then
-		if brawlersMod:PlayerFighting() then
-			specWarnCompleteHeal:Show(args.sourceName)
-		else
-			warnCompleteHeal:Show()
-		end
-	elseif args.spellId == 142583 then
-		timerDivineCircleCD:Start()
-		if args:IsPlayer() then
-			specWarnDivineCircle:Show()
-		else
-			warnDivineCircle:Show()
-		end
 	elseif args.spellId == 133650 then
 		if brawlersMod:PlayerFighting() then
 			specWarnDoom:Show()
@@ -178,6 +135,14 @@ function mod:SPELL_CAST_START(args)
 	elseif args.spellId == 133398 then
 		warnPowerCrystal:Show()
 		timerPowerCrystalCD:Start()
+	elseif args.spellId == 133262 then
+		timerBlueCrushCD:Start()
+		if brawlersMod:PlayerFighting() then
+			specWarnBlueCrush:Show(args.sourceName)
+			specWarnBlueCrush:Play("kickcast")
+		else
+			warnBlueCrush:Show()
+		end
 	end
 end
 
@@ -186,22 +151,14 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if args.spellId == 132670 then
 		warnSummonTwister:Show()
 		timerSummonTwisterCD:Start()--22 seconds after combat start?
-	elseif args.spellId == 133227 then
-		timerGoblinDeviceCD:Start()--6 seconds after combat start, if i do that kind of detection later
-		if brawlersMod:PlayerFighting() then--Only give special warnings if you're in arena though.
-			specWarnGoblinDevice:Show()
+	elseif args.spellId == 133250 then
+		timerDestructolaserCD:Start()
+		if brawlersMod:PlayerFighting() then
+			specWarnDestructolaser:Show()
+			specWarnDestructolaser:Play("watchstep")
 		else
-			warnGoblinDevice:Show()
+			warnDestructolaser:Show()
 		end
-	end
-end
-
-function mod:UNIT_DIED(args)
-	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 67524 then--These 2 have a 1 min 50 second berserk
-		timerThrowNetCD:Cancel()
-	elseif cid == 67525 then--These 2 have a 1 min 50 second berserk
-		timerGoblinDeviceCD:Cancel()
 	end
 end
 
