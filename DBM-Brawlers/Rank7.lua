@@ -6,57 +6,49 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetZone()
 
 mod:RegisterEvents(
-	"SPELL_CAST_START 133262",
-	"SPELL_CAST_SUCCESS 133250 141013",
+	"SPELL_CAST_START 133308",
+	"SPELL_CAST_SUCCESS 133227",
 	"SPELL_AURA_APPLIED_DOSE 138901",
 	"SPELL_AURA_REMOVED_DOSE 138901",
-	"SPELL_AURA_REMOVED 138901"
+	"SPELL_AURA_REMOVED 138901",
+	"UNIT_DIED"
 )
 
-local warnSpitAcid				= mod:NewSpellAnnounce(141013, 4)--Nibbleh
-local warnBlueCrush				= mod:NewSpellAnnounce(133262, 4)--Epicus Maximus
-local warnDestructolaser		= mod:NewSpellAnnounce(133250, 4)--Epicus Maximus
+local warnThrowNet					= mod:NewSpellAnnounce(133308, 3)--Fran and Riddoh
+local warnGoblinDevice				= mod:NewSpellAnnounce(133227, 4)--Fran and Riddoh
 
-local specWarnSpitAcid			= mod:NewSpecialWarningSpell(141013, nil, nil, nil, 1, 2)--Nibbleh
-local specWarnBlueCrush			= mod:NewSpecialWarningInterrupt(133262, nil, nil, nil, 1, 2)--Epicus Maximus
-local specWarnDestructolaser	= mod:NewSpecialWarningMove(133250, nil, nil, nil, 2, 1)--Epicus Maximus
+local specWarnGoblinDevice			= mod:NewSpecialWarningSpell(133227)--Fran and Riddoh
 
-local timerSpitAcidCD			= mod:NewNextTimer(20, 141013)--Nibbleh
-local timerBlueCrushCD			= mod:NewCDTimer(19.4, 133262, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)--Epicus Maximus
-local timerDestructolaserCD		= mod:NewNextTimer(30, 133250, nil, nil, nil, 3)--Epicus Maximus
+local timerThrowNetCD				= mod:NewCDTimer(20, 133308, nil, nil, nil, 3)--Fran and Riddoh
+local timerGoblinDeviceCD			= mod:NewCDTimer(22, 133227, nil, nil, nil, 3)--Fran and Riddoh
 
 local brawlersMod = DBM:GetModByName("Brawlers")
 
 function mod:SPELL_CAST_START(args)
 	if not brawlersMod.Options.SpectatorMode and not brawlersMod:PlayerFighting() then return end--Spectator mode is disabled, do nothing.
-	if args.spellId == 133262 then
-		timerBlueCrushCD:Start()
-		if brawlersMod:PlayerFighting() then
-			specWarnBlueCrush:Show(args.sourceName)
-			specWarnBlueCrush:Play("kickcast")
-		else
-			warnBlueCrush:Show()
-		end
+	if args.spellId == 133308 then
+		warnThrowNet:Show()
+		timerThrowNetCD:Start()
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if not brawlersMod.Options.SpectatorMode and not brawlersMod:PlayerFighting() then return end--Spectator mode is disabled, do nothing.
-	if args.spellId == 133250 then
-		timerDestructolaserCD:Start()
-		if brawlersMod:PlayerFighting() then
-			specWarnDestructolaser:Show()
-			specWarnDestructolaser:Play("watchstep")
+	if args.spellId == 133227 then
+		timerGoblinDeviceCD:Start()--6 seconds after combat start, if i do that kind of detection later
+		if brawlersMod:PlayerFighting() then--Only give special warnings if you're in arena though.
+			specWarnGoblinDevice:Show()
 		else
-			warnDestructolaser:Show()
+			warnGoblinDevice:Show()
 		end
-	elseif args.spellId == 141013 then
-		timerSpitAcidCD:Start()
-		if brawlersMod:PlayerFighting() then
-			specWarnSpitAcid:Show()
-			specWarnSpitAcid:Play("watchstep")
-		else
-			warnSpitAcid:Show()
-		end
+	end
+end
+
+function mod:UNIT_DIED(args)
+	local cid = self:GetCIDFromGUID(args.destGUID)
+	if cid == 67524 then--These 2 have a 1 min 50 second berserk
+		timerThrowNetCD:Cancel()
+	elseif cid == 67525 then--These 2 have a 1 min 50 second berserk
+		timerGoblinDeviceCD:Cancel()
 	end
 end
