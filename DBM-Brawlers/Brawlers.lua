@@ -120,8 +120,9 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 	elseif msg:find(L.Rank10, 1, true) then
 		currentFighter = target
 		currentRank = 10
+	--elseif msg:find(L.Rumbler) then
 	--He's targeting current fighter but it's not a match begin yell, the only other time this happens is on match end and 10 second pre berserk warning. This tries to filter pre berserk warnings then pass match end
-	elseif currentFighter and (target == currentFighter) and not (msg:find(L.BizmoIgnored) or msg == L.BizmoIgnored or msg:find(L.BizmoIgnored2) or msg == L.BizmoIgnored2 or msg:find(L.BizmoIgnored3) or msg == L.BizmoIgnored3 or msg:find(L.BizmoIgnored4) or msg == L.BizmoIgnored4) then
+	elseif currentFighter and (target == currentFighter) and not (msg:find(L.BizmoIgnored) or msg == L.BizmoIgnored or msg:find(L.BizmoIgnored2) or msg == L.BizmoIgnored2 or msg:find(L.BizmoIgnored3) or msg == L.BizmoIgnored3 or msg:find(L.BizmoIgnored4) or msg == L.BizmoIgnored4 or msg:find(L.BizmoIgnored5) or msg == L.BizmoIgnored5) then
 		self:SendSync("MatchEnd")
 		isMatchBegin = false
 	else
