@@ -52,8 +52,10 @@ end
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 67524 then--These 2 have a 1 min 50 second berserk
-		timerThrowNetCD:Cancel()
+		timerThrowNetCD:Stop()
 	elseif cid == 67525 then--These 2 have a 1 min 50 second berserk
-		timerGoblinDeviceCD:Cancel()
+		timerGoblinDeviceCD:Stop()
+	elseif cid == 229154 then--Dupree
+		timerHighNoon:Stop()
 	end
 end
