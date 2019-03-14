@@ -6,7 +6,7 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetZone()
 
 mod:RegisterEvents(
-	"SPELL_CAST_START 133308",
+	"SPELL_CAST_START 133308 229154",
 	"SPELL_CAST_SUCCESS 133227",
 	"SPELL_AURA_APPLIED_DOSE 138901",
 	"SPELL_AURA_REMOVED_DOSE 138901",
@@ -16,11 +16,13 @@ mod:RegisterEvents(
 
 local warnThrowNet					= mod:NewSpellAnnounce(133308, 3)--Fran and Riddoh
 local warnGoblinDevice				= mod:NewSpellAnnounce(133227, 4)--Fran and Riddoh
+local warnHighNoon					= mod:NewCastAnnounce(229154, 4)
 
 local specWarnGoblinDevice			= mod:NewSpecialWarningSpell(133227)--Fran and Riddoh
 
 local timerThrowNetCD				= mod:NewCDTimer(20, 133308, nil, nil, nil, 3)--Fran and Riddoh
 local timerGoblinDeviceCD			= mod:NewCDTimer(22, 133227, nil, nil, nil, 3)--Fran and Riddoh
+local timerHighNoon					= mod:NewCastTimer(80, 229154, nil, nil, nil, 3)
 
 local brawlersMod = DBM:GetModByName("Brawlers")
 
@@ -29,6 +31,9 @@ function mod:SPELL_CAST_START(args)
 	if args.spellId == 133308 then
 		warnThrowNet:Show()
 		timerThrowNetCD:Start()
+	elseif args.spellId == 229154 then
+		warnHighNoon:Show()
+		timerHighNoon:Start()
 	end
 end
 
