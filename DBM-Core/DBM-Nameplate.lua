@@ -210,6 +210,7 @@ end
 --addLine true or false/nil, if present, tells it to create a line between player and nameplate aura
 --ie, anchored to UIParent Center (ie player is in center) and to bottom of nameplate aura.
 --Line will be handled entirely by aura, no need for second object/functions. When aura hides, line hides.
+--Maybe additional arg for line color (since not all environments are equal. might want a red line in a blue room and a blue line in a red room, etc
 function nameplateFrame:Show(isGUID, unit, spellId, texture, duration, desaturate, addLine)
     -- nameplate icons are disabled;
     if DBM.Options.DontShowNameplateIcons then return end
