@@ -24,7 +24,7 @@ local specWarnAuraofRot				= mod:NewSpecialWarningStack(236155, nil, 8, nil, nil
 local specWarnEightChomps			= mod:NewSpecialWarningDodge(142788)--Mecha-Bruce
 
 local timerSpitAcidCD				= mod:NewNextTimer(20, 141013)--Nibbleh
-local timerEightChompsCD			= mod:NewCDTimer(9.5, 142788, nil, nil, nil, 3)--Mecha-Bruce
+local timerEightChompsCD			= mod:NewCDTimer(8.5, 142788, nil, nil, nil, 3)--Mecha-Bruce
 local timerBetterStrongerFasterCD	= mod:NewCDTimer(20, 142795)--Mecha-Bruce
 local timerStasisBeamCD				= mod:NewCDTimer(20, 142769, nil, nil, nil, 3)--Mecha-Bruce
 
