@@ -36,6 +36,7 @@ L:SetMiscLocalization({
 	BizmoIgnored4	= "Is it getting hot in here? Or is it just me?",
 	BizmoIgnored5	= "The fire's coming!",
 	BizmoIgnored6	= "I think we've seen just about enough of this. Am I right?",
+	BizmoIgnored7	= "We've got a whole list of people who want to fight, you know.",
 	--Horde pre berserk
 	BazzelIgnored	= "Sheesh, guys! Hurry it up already!",
 	--I wish there was a better way to do this....so much localizing. :(
