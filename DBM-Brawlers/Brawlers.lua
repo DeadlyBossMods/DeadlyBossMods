@@ -21,7 +21,7 @@ local specWarnYourNext		= mod:NewSpecialWarning("specWarnYourNext")
 local specWarnYourTurn		= mod:NewSpecialWarning("specWarnYourTurn")
 local specWarnRumble		= mod:NewSpecialWarning("specWarnRumble")
 
-local berserkTimer			= mod:NewBerserkTimer(120)--all fights have a 2 min enrage to 134545. some fights have an earlier berserk though.
+local berserkTimer			= mod:NewBerserkTimer(123)--all fights have a 2 min enrage to 134545. some fights have an earlier berserk though.
 
 mod:AddBoolOption("SpectatorMode", true)
 mod:AddBoolOption("SpeakOutQueue", true)
@@ -99,7 +99,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 		specWarnRumble:Show()
 	--He's targeting current fighter but it's not a match begin yell, the only other time this happens is on match end and 10 second pre berserk warning.
 	--This tries to filter pre berserk warnings then pass match end in a way that will definitely catch them all, but might also incorrectly cancel berserk timer at 10 second pre berserk warning if a message filter isn't localized yet
-	elseif currentFighter and (target == currentFighter) and not (msg:find(L.BizmoIgnored) or msg == L.BizmoIgnored or msg:find(L.BizmoIgnored2) or msg == L.BizmoIgnored2 or msg:find(L.BizmoIgnored3) or msg == L.BizmoIgnored3 or msg:find(L.BizmoIgnored4) or msg == L.BizmoIgnored4 or msg:find(L.BizmoIgnored5) or msg == L.BizmoIgnored5 or msg:find(L.BizmoIgnored6) or msg == L.BizmoIgnored6) then
+	elseif currentFighter and (target == currentFighter) and not (msg:find(L.BizmoIgnored) or msg == L.BizmoIgnored or msg:find(L.BizmoIgnored2) or msg == L.BizmoIgnored2 or msg:find(L.BizmoIgnored3) or msg == L.BizmoIgnored3 or msg:find(L.BizmoIgnored4) or msg == L.BizmoIgnored4 or msg:find(L.BizmoIgnored5) or msg == L.BizmoIgnored5 or msg:find(L.BizmoIgnored6) or msg == L.BizmoIgnored6 or msg:find(L.BizmoIgnored7) or msg == L.BizmoIgnored7 or msg:find(L.BazzelIgnored) or msg == L.BazzelIgnored) then
 		self:SendSync("MatchEnd")
 		isMatchBegin = false
 	else
@@ -146,7 +146,6 @@ function mod:ZONE_CHANGED_NEW_AREA()
 	if currentZoneID == 369 or currentZoneID == 1043 then
 		playerIsFighting = false
 		currentFighter = nil
-		currentRank = 0
 		lastRank = 0
 		modsStopped = false
 		eventsRegistered = true
