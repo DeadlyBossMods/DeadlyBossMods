@@ -12,13 +12,15 @@ L:SetGeneralLocalization({
 L:SetWarningLocalization({
 	warnQueuePosition2	= "You're %d in queue",
 	specWarnYourNext	= "You're next!",
-	specWarnYourTurn	= "You're up!"
+	specWarnYourTurn	= "You're up!",
+	specWarnRumble		= "Rumble!"
 })
 
 L:SetOptionLocalization({
 	warnQueuePosition2	= "Announce your current position in queue whenever it changes",
 	specWarnYourNext	= "Show special warning when you're next in line",
 	specWarnYourTurn	= "Show special warning when it's your match",
+	specWarnRumble		= "Show special warning when someone starts a Rumble",
 	SpectatorMode		= "Show warnings/timers when spectating fights<br/>(Personal 'Special Warning' messages not shown to spectators)",
 	SpeakOutQueue		= "Count out your number in the queue when it updates",
 	NormalizeVolume		= "Automatically normalize the DIALOG sound channel volume to match SFX sound channel volume when in Brawlers area so that cheers aren't so loud."
@@ -27,12 +29,15 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	Bizmo			= "Bizmo",--Alliance
 	Bazzelflange	= "Boss Bazzelflange",--Horde
+	--Alliance pre berserk
 	BizmoIgnored	= "We Don't have all night. Hurry it up already!",
 	BizmoIgnored2	= "Do you smell smoke?",
 	BizmoIgnored3	= "I think it's about time to call this fight.",
 	BizmoIgnored4	= "Is it getting hot in here? Or is it just me?",
 	BizmoIgnored5	= "The fire's coming!",
 	BizmoIgnored6	= "I think we've seen just about enough of this. Am I right?",
+	--Horde pre berserk
+	BazzelIgnored	= "Sheesh, guys! Hurry it up already!",
 	--I wish there was a better way to do this....so much localizing. :(
 	Rank1			= "Rank 1",
 	Rank2			= "Rank 2",
@@ -42,8 +47,8 @@ L:SetMiscLocalization({
 	Rank6			= "Rank 6",
 	Rank7			= "Rank 7",
 	Rank8			= "Rank 8",
-	Rank9			= "Rank 9",
-	Rank10			= "Rank 10",
+--	Rank9			= "Rank 9",
+--	Rank10			= "Rank 10",
 	Rumbler			= "rumbler",
 	Proboskus		= "Oh dear... I'm sorry, but it looks like you're going to have to fight Proboskus.",--Alliance
 	Proboskus2		= "Ha ha ha! What bad luck you have! It's Proboskus! Ahhh ha ha ha! I've got twenty five gold that says you die in the fire!"--Horde
