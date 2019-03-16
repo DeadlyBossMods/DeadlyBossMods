@@ -40,6 +40,10 @@ L:SetMiscLocalization({
 	--Horde pre berserk
 	BazzelIgnored	= "Sheesh, guys! Hurry it up already!",
 	BazzelIgnored2	= "Alright, alright. We've got a line going out here, you know.",
+	BazzelIgnored3	= "Uh oh... I smell smoke...",
+	BazzelIgnored4	= "Let's keep it movin' in there!",
+	BazzelIgnored5	= "Is it gettin' hot in here?",
+	BazzelIgnored6	= "Time's almost up!",
 	--I wish there was a better way to do this....so much localizing. :(
 	Rank1			= "Rank 1",
 	Rank2			= "Rank 2",
