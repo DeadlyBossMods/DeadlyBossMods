@@ -39,6 +39,7 @@ L:SetMiscLocalization({
 	BizmoIgnored7	= "We've got a whole list of people who want to fight, you know.",
 	--Horde pre berserk
 	BazzelIgnored	= "Sheesh, guys! Hurry it up already!",
+	BazzelIgnored2	= "Alright, alright. We've got a line going out here, you know.",
 	--I wish there was a better way to do this....so much localizing. :(
 	Rank1			= "Rank 1",
 	Rank2			= "Rank 2",
