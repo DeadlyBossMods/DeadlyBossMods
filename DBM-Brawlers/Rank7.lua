@@ -21,7 +21,7 @@ local warnHighNoon					= mod:NewCastAnnounce(229154, 4)
 local specWarnGoblinDevice			= mod:NewSpecialWarningSpell(133227)--Fran and Riddoh
 
 local timerThrowNetCD				= mod:NewCDTimer(20, 133308, nil, nil, nil, 3)--Fran and Riddoh
-local timerGoblinDeviceCD			= mod:NewCDTimer(22, 133227, nil, nil, nil, 3)--Fran and Riddoh
+local timerGoblinDeviceCD			= mod:NewCDTimer(21.8, 133227, nil, nil, nil, 3)--Fran and Riddoh
 local timerHighNoon					= mod:NewCastTimer(80, 229154, nil, nil, nil, 3)
 
 local brawlersMod = DBM:GetModByName("Brawlers")
