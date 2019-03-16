@@ -27,7 +27,7 @@ local specWarnCompleteHeal			= mod:NewSpecialWarningInterrupt(142621, nil, nil, 
 local specWarnDivineCircle			= mod:NewSpecialWarningDodge(142585)--Ahoo'ru
 
 local timerShotgunRoarCD			= mod:NewCDTimer(9.9, 234489, nil, nil, nil, 3)--Oso
-local timerDivineCircleCD			= mod:NewCDTimer(35, 142585)--Insufficent data to say if accurate with certainty --Ahoo'ru
+local timerDivineCircleCD			= mod:NewCDTimer(26.7, 142585)--Insufficent data to say if accurate with certainty --Ahoo'ru
 
 local brawlersMod = DBM:GetModByName("Brawlers")
 
