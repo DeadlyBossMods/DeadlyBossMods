@@ -83,6 +83,10 @@ L:SetOptionLocalization({
 	SetIconOnBlat	= "Set icon (skull) on real Blat"
 })
 
+L:SetMiscLocalization({
+	Sand			= "Sand"
+})
+
 ------------
 -- Rank 3 --
 ------------
