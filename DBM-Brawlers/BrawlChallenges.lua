@@ -11,7 +11,7 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED 141206 134650 142400 141371 141388 134624",
 	"SPELL_AURA_APPLIED_DOSE 134624",
 	"SPELL_AURA_REMOVED 134650",
-	"SPELL_CAST_START 140868 140862 140886 135234 133650 133398 133262",
+	"SPELL_CAST_START 140868 140862 140886 135234 133650 133398 133262 294665 294638",
 	"SPELL_CAST_SUCCESS 132670 133250",
 	"UNIT_SPELLCAST_CHANNEL_START target focus"
 )
@@ -29,6 +29,7 @@ local warnPowerCrystal				= mod:NewSpellAnnounce(133398, 3)--Millhouse Manastorm
 local warnDoom						= mod:NewSpellAnnounce(133650, 4)--Millhouse Manastorm
 local warnBlueCrush					= mod:NewSpellAnnounce(133262, 4)--Epicus Maximus
 local warnDestructolaser			= mod:NewSpellAnnounce(133250, 4)--Epicus Maximus
+local warnVoidBurst					= mod:NewSpellAnnounce(294638, 3)--Xan-Sallish
 
 local specWarnLumberingCharge		= mod:NewSpecialWarningDodge(134527)--Goredome
 local specWarnStormCloud			= mod:NewSpecialWarningInterrupt(135234)--Kirrawk
@@ -37,6 +38,8 @@ local specWarnRPS					= mod:NewSpecialWarning("specWarnRPS")--Ro-Shambo
 local specWarnDoom					= mod:NewSpecialWarningSpell(133650, nil, nil, nil, true)--Millhouse Manastorm
 local specWarnBlueCrush				= mod:NewSpecialWarningInterrupt(133262, nil, nil, nil, 1, 2)--Epicus Maximus
 local specWarnDestructolaser		= mod:NewSpecialWarningMove(133250, nil, nil, nil, 2, 1)--Epicus Maximus
+local specWarnConsumeEssence		= mod:NewSpecialWarningInterrupt(294665, nil, nil, nil, 1, 2)--Xan-Sallish
+local specWarnVoidBurst				= mod:NewSpecialWarningDodge(294638, nil, nil, nil, 2, 1)--Xan-Sallish
 
 local timerLumberingChargeCD		= mod:NewCDTimer(7, 134527, nil, nil, nil, 3)--Goredome
 local timerShieldWaller				= mod:NewBuffActiveTimer(10, 134650)--Smash Hoofstomp
@@ -47,6 +50,7 @@ local timerRockpaperScissorsCD		= mod:NewCDTimer(42, 141206, nil, nil, nil, 6)--
 local timerPowerCrystalCD			= mod:NewCDTimer(13, 133398)--Millhouse Manastorm
 local timerBlueCrushCD				= mod:NewCDTimer(19.4, 133262, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)--Epicus Maximus
 local timerDestructolaserCD			= mod:NewNextTimer(30, 133250, nil, nil, nil, 3)--Epicus Maximus
+local timerConsumeEssenceCD			= mod:NewCDTimer(22.3, 294665, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)--Xan-Sallish
 
 mod:AddBoolOption("ArrowOnBoxing")--Ro-Shambo
 
@@ -142,6 +146,21 @@ function mod:SPELL_CAST_START(args)
 			specWarnBlueCrush:Play("kickcast")
 		else
 			warnBlueCrush:Show()
+		end
+	elseif args.spellId == 294665 then
+		timerConsumeEssenceCD:Start()
+		if brawlersMod:PlayerFighting() and self:CheckInterruptFilter(args.sourceGUID, false, true) then
+			specWarnConsumeEssence:Show(args.sourceName)
+			specWarnConsumeEssence:Play("kickcast")
+		else
+			warnBlueCrush:Show()
+		end
+	elseif args.spellId == 294638 then
+		if brawlersMod:PlayerFighting() then
+			specWarnVoidBurst:Show()
+			specWarnVoidBurst:Play("watchorb")
+		else
+			warnVoidBurst:Show()
 		end
 	end
 end
