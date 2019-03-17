@@ -94,8 +94,8 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 	if msg:find(L.Rank1, 1, true) or msg:find(L.Rank2, 1, true) or msg:find(L.Rank3, 1, true) or msg:find(L.Rank4, 1, true) or msg:find(L.Rank5, 1, true) or msg:find(L.Rank6, 1, true) or msg:find(L.Rank7, 1, true) or msg:find(L.Rank8, 1, true) then -- fix for ruRU clients.
 		currentFighter = target
 	elseif msg:find(L.Rumbler) then
-		self:SendSync("MatchEnd")--End any other matches in progress
-		isMatchBegin = false--And start a new match instead?
+		--self:SendSync("MatchEnd")--End any other matches in progress
+		--isMatchBegin = false--And start a new match instead?
 		specWarnRumble:Show()
 	--He's targeting current fighter but it's not a match begin yell, the only other times this happens is on match end and 10 second pre berserk warning.
 	--This tries to filter pre berserk warnings then pass match end in a way that will definitely catch them all
