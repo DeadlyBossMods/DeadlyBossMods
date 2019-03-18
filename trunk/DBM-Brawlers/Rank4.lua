@@ -18,7 +18,7 @@ mod:RegisterEvents(
 local warnPyroblast				= mod:NewCastAnnounce(33975, 3)--Sanoriak
 local warnFireWall				= mod:NewSpellAnnounce(132666, 4)--Sanoriak
 
-local specWarnFireWall			= mod:NewSpecialWarningSpell(132666, nil, nil, nil, 2, 2)--Sanoriak
+local specWarnFireWall			= mod:NewSpecialWarningDodge(132666, nil, nil, nil, 2, 2)--Sanoriak
 
 --local timerFirewallCD			= mod:NewCDTimer(17, 132666, nil, nil, nil, 3)--Sanoriak
 
@@ -27,7 +27,7 @@ local brawlersMod = DBM:GetModByName("Brawlers")
 
 function mod:SPELL_CAST_START(args)
 	if not brawlersMod.Options.SpectatorMode and not brawlersMod:PlayerFighting() then return end--Spectator mode is disabled, do nothing.
-	if args:IsSpellID(33975, 136334) then--Spellid is used by 5 diff mobs in game, but SetZone sould filter the other 4 mobs.
+	if args:IsSpellID(33975, 136334) then
 		warnPyroblast:Show()
 	elseif args.spellId == 132666 then
 		--timerFirewallCD:Start()--First one is 5 seconds after combat start

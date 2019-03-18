@@ -14,7 +14,6 @@ mod:RegisterEvents(
 	"SPELL_AURA_REMOVED_DOSE 138901"
 )
 
---TODO, powershot spellid/event is drycoded, it may be a SUCCESS or APPLIED channel event.
 local warnShotgunRoar				= mod:NewCastAnnounce(234489, 3)--Oso
 local warnBulwark					= mod:NewAddsLeftAnnounce(138901, 2)--Ahoo'ru
 local warnCharge					= mod:NewCastAnnounce(138845, 1)--Ahoo'ru
