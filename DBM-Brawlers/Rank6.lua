@@ -15,7 +15,7 @@ mod:RegisterEvents(
 --Get real dino dash timer, and add Ogrewatch when better idea of mechanics
 
 local warnSpitAcid					= mod:NewSpellAnnounce(141013, 4)--Nibbleh
-local warnEightChomps				= mod:NewSpellAnnounce(142788, 4)--Mecha-Bruce
+local warnEightChomps				= mod:NewSpellAnnounce(142788, 4, nil, false, 2)--Mecha-Bruce
 local warnBetterStrongerFaster		= mod:NewSpellAnnounce(142795, 2)--Mecha-Bruce
 local warnStasisBeam				= mod:NewSpellAnnounce(142769, 3)--Mecha-Bruce
 
