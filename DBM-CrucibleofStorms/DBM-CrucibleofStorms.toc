@@ -20,6 +20,7 @@
 localization.en.lua
 localization.kr.lua
 localization.cn.lua
+localization.tw.lua
 RestlessCabal.lua
 Uunat.lua
 CrucibleofStormsTrash.lua
