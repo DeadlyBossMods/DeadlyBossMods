@@ -49,8 +49,8 @@ function mod:SPELL_CAST_START(args)
 	elseif args.spellId == 291394 then
 		timerDarkOutpourCD:Start()
 		if brawlersMod:PlayerFighting() then
-			specWarnDarkOutpour:Show()
-			specWarnDarkOutpour:Play("justrun")
+			specWarnDarkOutpour:Play("watchstep")
+			specWarnDarkOutpour:ScheduleVoice(1, "keepmove")
 		else
 			warnDarkOutpour:Show()
 		end
