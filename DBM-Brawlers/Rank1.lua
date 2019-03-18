@@ -11,7 +11,7 @@ mod:RegisterEvents(
 --	"SPELL_AURA_REMOVED"
 )
 
-local warnChomp					= mod:NewSpellAnnounce(135342, 4)--Bruce
+local warnChomp					= mod:NewSpellAnnounce(135342, 4, nil, false, 2)--Bruce
 local warnDaFifHammer			= mod:NewSpellAnnounce(290486, 3)--Thog Hammerspace
 local warnCantataofFlooting		= mod:NewSpellAnnounce(140983, 3)
 
