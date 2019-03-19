@@ -93,7 +93,7 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	Port			=	"左舷側",
 	Starboard		=	"右舷側",
-	Freezing		=	"%s後凍結 "
+	Freezing		=	"凍結在%s"
 })
 
 -------------
