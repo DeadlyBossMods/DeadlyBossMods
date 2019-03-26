@@ -29,12 +29,8 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, Gathering Blizzard verification?
---TODO, add additional mythic only spells/timers for P2 and beyond
 --TODO, detect set charge barrels, and add them to infoframe with time remaining?
---TODO, rework interrupt to use vectis interrupt per GUID code for mythic
---TODO, orb of frost targetting and improve voice/warning for it?
---TODO, shattering lance script and warning/cast timer
+--TODO, shattering lance script and warning/cast timer?
 --TODO, Glacial Ray triggers a 9.7 ICD on all other timers. Timers can be improved by account for this in an UpdateAllTimers method and possibly other min ICDs of other casts
 --[[
 (ability.id = 290084 or ability.id = 287565 or ability.id = 285177 or ability.id = 285459 or ability.id = 290036 or ability.id = 288345 or ability.id = 288441 or ability.id = 288719 or ability.id = 289219 or ability.id = 288619 or ability.id = 288747 or ability.id = 289488) and type = "begincast"
@@ -860,7 +856,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 end
 
 function mod:UNIT_POWER_FREQUENT(uId, type)
-	if type == "ALTERNATE" then--Assumed, but has to be, since her main power is her special attacks (ie ring of ice)
+	if type == "ALTERNATE" then
 		local altPower = UnitPower(uId, 10)
 		if rangeThreshold < 3 and altPower >= 75 then
 			rangeThreshold = 3
