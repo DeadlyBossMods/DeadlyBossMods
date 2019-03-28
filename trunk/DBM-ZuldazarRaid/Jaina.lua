@@ -448,7 +448,7 @@ function mod:SPELL_CAST_START(args)
 		if not castsPerGUID[args.sourceGUID] then
 			castsPerGUID[args.sourceGUID] = 0
 		end
-		if (self.vb.interruptBehavior == "Three" and castsPerGUID[args.sourceGUID] == 4) or (self.vb.interruptBehavior == "Four" and castsPerGUID[args.sourceGUID] == 5) or (self.vb.interruptBehavior == "Five" and castsPerGUID[args.sourceGUID] == 6) then
+		if (self.vb.interruptBehavior == "Three" and castsPerGUID[args.sourceGUID] == 3) or (self.vb.interruptBehavior == "Four" and castsPerGUID[args.sourceGUID] == 4) or (self.vb.interruptBehavior == "Five" and castsPerGUID[args.sourceGUID] == 5) then
 			castsPerGUID[args.sourceGUID] = 0
 		end
 		castsPerGUID[args.sourceGUID] = castsPerGUID[args.sourceGUID] + 1
