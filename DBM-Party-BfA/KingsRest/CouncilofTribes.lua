@@ -96,7 +96,7 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 267256 and not self.vb.earthTotemActive then
+	if spellId == 267256 and not self.vb.earthTotemActive and not args:IsDestTypePlayer() then
 		specWarnEarthwall:Show(args.destName)
 		specWarnEarthwall:Play("dispelboss")
 		self.vb.bossName = args.destName
