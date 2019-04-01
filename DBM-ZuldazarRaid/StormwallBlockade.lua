@@ -17,10 +17,10 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 284262 284393 284383 285017 284362 288696 288941",
 	"SPELL_CAST_SUCCESS 285350 285426 285118 290694 289795 287169 284106",
-	"SPELL_AURA_APPLIED 286558 284405 285000 285382 285350 285426 287995 288205",
+	"SPELL_AURA_APPLIED 286558 284405 285000 285382 285350 285426 287995 288205 284361",
 	"SPELL_AURA_REFRESH 285000 285382",
 	"SPELL_AURA_APPLIED_DOSE 285000 285382",
-	"SPELL_AURA_REMOVED 286558 285000 285382 285350 285426 287995 288205",
+	"SPELL_AURA_REMOVED 286558 285000 285382 285350 285426 287995 288205 284361",
 	"SPELL_INTERRUPT",
 --	"SPELL_PERIODIC_DAMAGE 285075",
 --	"SPELL_PERIODIC_MISSED 285075",
@@ -45,6 +45,7 @@ local warnCracklingLightning			= mod:NewTargetAnnounce(288205, 4)
 local warnElecShroud					= mod:NewTargetAnnounce(287995, 4)
 local warnJoltingVolley					= mod:NewCountAnnounce(287169, 3)
 ----Brother Joseph
+local warnSeaStorm						= mod:NewTargetAnnounce(284361, 2)
 local warnTemptingSong					= mod:NewTargetAnnounce(284405, 2)
 local warnTidalShroud					= mod:NewTargetAnnounce(286558, 4)
 --Stage Two: Laminaria
@@ -62,7 +63,9 @@ local specWarnCracklingLightning		= mod:NewSpecialWarningMoveAway(288205, nil, n
 local yellCracklingLightning			= mod:NewYell(288205)
 local yellCracklingLightningFades		= mod:NewShortFadesYell(288205)
 ----Brother Joseph
-local specWarnSeaStorm					= mod:NewSpecialWarningDodge(284360, nil, nil, nil, 2, 2)
+local specWarnSeaStorm					= mod:NewSpecialWarningMoveAway(284361, nil, nil, nil, 1, 2)
+local yellSeaStorm						= mod:NewYell(284361)
+local yellSeaStormFades					= mod:NewShortFadesYell(284361)
 local specWarnSeasTemptation			= mod:NewSpecialWarningSwitch(284383, "RangedDps", nil, nil, 1, 2)--Ranged assumed for now, melee stay out until temping song goes out
 local specWarnTemptingSong				= mod:NewSpecialWarningRun(284405, nil, nil, nil, 4, 2)
 local yellTemptingSong					= mod:NewYell(284405)
@@ -315,8 +318,6 @@ function mod:SPELL_CAST_START(args)
 		timerIreoftheDeepCD:Start()
 	elseif spellId == 284362 then
 		if self:CheckBossDistance(args.sourceGUID, true) then
-			specWarnSeaStorm:Show()
-			specWarnSeaStorm:Play("watchstep")
 			timerSeaStormCD:SetFade(false)
 		else
 			timerSeaStormCD:SetFade(true)
@@ -460,9 +461,25 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnCracklingLightning:Show()
 			specWarnCracklingLightning:Play("runout")
 			yellCracklingLightning:Yell()
-			yellCracklingLightningFades:Countdown(4)
+			local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", spellId)
+			if expireTime then
+				local remaining = expireTime-GetTime()
+				yellCracklingLightningFades:Countdown(remaining)
+			end
 		else
 			warnCracklingLightning:Show(args.destName)
+		end
+	elseif spellId == 284361 then
+		warnSeaStorm:CombinedShow(0.5, args.destName)
+		if args:IsPlayer() then
+			specWarnSeaStorm:Show()
+			specWarnSeaStorm:Play("runout")
+			yellSeaStorm:Yell()
+			local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", spellId)
+			if expireTime then
+				local remaining = expireTime-GetTime()
+				yellSeaStormFades:Countdown(remaining)
+			end
 		end
 	end
 end
@@ -501,6 +518,10 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 288205 then
 		if args:IsPlayer() then
 			yellCracklingLightningFades:Cancel()
+		end
+	elseif spellId == 284361 then
+		if args:IsPlayer() then
+			yellSeaStormFades:Cancel()
 		end
 	end
 end
