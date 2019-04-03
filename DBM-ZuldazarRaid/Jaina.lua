@@ -821,6 +821,10 @@ function mod:UNIT_DIED(args)
 		if self.Options.NPAuraOnWaterBolt then
 			DBM.Nameplate:Hide(true, args.destGUID)
 		end
+	elseif cid == 148965 then--Kul Tiran Marine
+		if self.Options.NPAuraOnMarkedTarget then
+			DBM.Nameplate:Hide(true, args.destGUID, spellId)
+		end
 	elseif cid == 149535 then--Icebound Image
 		if self.Options.NPAuraOnHowlingWinds then
 			DBM.Nameplate:Hide(true, args.destGUID, spellId)
