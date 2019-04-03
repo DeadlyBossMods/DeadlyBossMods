@@ -1,0 +1,35 @@
+## Interface: 80100
+## X-Min-Interface: 80000
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Uldir|r
+## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Uldir|r
+## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0울디르|r
+## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0奧迪爾|r
+## Author: MysticalOS
+## LoadOnDemand: 1
+## RequiredDeps: DBM-Core
+## SavedVariables: DBMUldir_AllSavedVars
+## SavedVariablesPerCharacter: DBMUldir_SavedStats
+## X-DBM-Mod: 1
+## X-DBM-Mod-Type: RAID
+## X-DBM-Mod-Category: BFA
+## X-DBM-Mod-Has-Mythic : 1
+## X-DBM-Mod-Sort: 408
+## X-DBM-Mod-MapID: 1861
+## X-DBM-Mod-MinCoreRevision: 17286
+## X-DBM-Mod-MinExpansion: 7
+localization.en.lua
+localization.de.lua
+localization.kr.lua
+localization.ru.lua
+localization.cn.lua
+localization.es.lua
+localization.tw.lua
+Taloc.lua
+Mother.lua
+FetidDevourer.lua
+Zekvhozj.lua
+Vectis.lua
+Zul.lua
+Mythrax.lua
+Ghuun.lua
+UldirTrash.lua
