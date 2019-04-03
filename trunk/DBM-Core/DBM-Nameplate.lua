@@ -84,7 +84,7 @@ do
         line:SetThickness(4)
         line:SetColorTexture(unpack(color or {1,0,0,1}))
         line:SetStartPoint('CENTER',UIParent)
-        line:SetEndPoint('BOTTOM',icon)
+        line:SetEndPoint('BOTTOM',frame.parent)
         line:Show()
     end
     local function AuraFrame_AddAura(frame,aura_tbl)
@@ -213,7 +213,7 @@ end)
 -----------------
 --  Functions  --
 -----------------
---/run DBM.Nameplate:Show(true, UnitGUID("target"), 227723, nil, nil, nil, true, {1, 1, 0.5, 1})--Mana tracking, easy to find in Legion Dalaran
+--/run DBM.Nameplate:Show(true, UnitGUID("target"), 1459, nil, nil, nil, true, {1, 1, 0.5, 1})--Mage Buff, easy to find
 --/run DBM.Nameplate:Show(false, GetUnitName("target", true), 227723)--Mana tracking, easy to find in Dalaran
 --/run DBM.Nameplate:Hide(true, nil, nil, nil, true)
 --/run DBM.Nameplate:Hide(true, UnitGUID("target"), 227723)
