@@ -213,7 +213,7 @@ end)
 -----------------
 --  Functions  --
 -----------------
---/run DBM.Nameplate:Show(true, UnitGUID("target"), 227723)--Mana tracking, easy to find in Legion Dalaran
+--/run DBM.Nameplate:Show(true, UnitGUID("target"), 227723, nil, nil, nil, true, {1, 1, 0.5, 1})--Mana tracking, easy to find in Legion Dalaran
 --/run DBM.Nameplate:Show(false, GetUnitName("target", true), 227723)--Mana tracking, easy to find in Dalaran
 --/run DBM.Nameplate:Hide(true, nil, nil, nil, true)
 --/run DBM.Nameplate:Hide(true, UnitGUID("target"), 227723)
