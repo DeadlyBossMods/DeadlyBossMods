@@ -77,7 +77,17 @@ do
                 -floor(total_width/2),0)
         end
     end
-    local function AuraFrame_AddAura(frame,texture)
+    local function AuraFrame_ShowLine(frame,icon,color)
+        icon.line = icon.line or UIParent:CreateLine(nil,'OVERLAY')
+        local line = icon.line
+
+        line:SetThickness(4)
+        line:SetColorTexture(unpack(color or {1,0,0,1}))
+        line:SetStartPoint('CENTER',UIParent)
+        line:SetEndPoint('BOTTOM',icon)
+        line:Show()
+    end
+    local function AuraFrame_AddAura(frame,aura_tbl)
         if not frame.icons then
             frame.icons = {}
         end
@@ -85,41 +95,50 @@ do
             frame.texture_index = {}
         end
 
-        local icon = frame:GetIcon(texture)
-        icon:SetTexture(texture)
+        local icon = frame:GetIcon(aura_tbl.texture)
+        icon:SetTexture(aura_tbl.texture)
         icon:Show()
 
-        frame.texture_index[texture] = icon
+        if aura_tbl.line then
+            frame:ShowLine(icon,aura_tbl.lineColor)
+        elseif icon.line then
+            icon.line:Hide()
+        end
 
+        frame.texture_index[aura_tbl.texture] = icon
         frame:ArrangeIcons()
     end
-    local function AuraFrame_RemoveAura(frame,texture)
+    local function AuraFrame_RemoveAura(frame,texture,batch)
         if not texture then return end
         if not frame.texture_index then return end
-        if not frame.texture_index[texture] then return end
 
-        frame.texture_index[texture]:Hide()
+        local icon = frame.texture_index[texture]
+        if not icon then return end
+
+        icon:Hide()
+        if icon.line then
+            icon.line:Hide()
+        end
         frame.texture_index[texture] = nil
 
-        frame:ArrangeIcons()
+        if not batch then
+            frame:ArrangeIcons()
+        end
     end
     local function AuraFrame_RemoveAll(frame)
         if not frame.icons or not frame.texture_index then return end
 
-        for i,icon in ipairs(frame.icons) do
-            icon:Hide()
+        for texture,icon in pairs(frame.texture_index) do
+            frame:RemoveAura(texture,true)
         end
-
-        if type(frame.texture_index) == 'table' then
-            twipe(frame.texture_index)
-        end
+        twipe(frame.texture_index)
     end
 
     local auraframe_proto = {
         CreateIcon = AuraFrame_CreateIcon,
         GetIcon = AuraFrame_GetIcon,
         ArrangeIcons = AuraFrame_ArrangeIcons,
-
+        ShowLine = AuraFrame_ShowLine,
         AddAura = AuraFrame_AddAura,
         RemoveAura = AuraFrame_RemoveAura,
         RemoveAll = AuraFrame_RemoveAll,
@@ -211,7 +230,7 @@ end
 --ie, anchored to UIParent Center (ie player is in center) and to bottom of nameplate aura.
 --Line will be handled entirely by aura, no need for second object/functions. When aura hides, line hides.
 --Maybe additional arg for line color (since not all environments are equal. might want a red line in a blue room and a blue line in a red room, etc
-function nameplateFrame:Show(isGUID, unit, spellId, texture, duration, desaturate, addLine)
+function nameplateFrame:Show(isGUID, unit, spellId, texture, duration, desaturate, addLine, lineColor)
     -- nameplate icons are disabled;
     if DBM.Options.DontShowNameplateIcons then return end
 
@@ -222,7 +241,7 @@ function nameplateFrame:Show(isGUID, unit, spellId, texture, duration, desaturat
 
     -- Supported by nameplate mod, passing to their handler;
     if self:SupportedNPMod() then
-        DBM:FireEvent("BossMod_ShowNameplateAura", isGUID, unit, currentTexture, duration, desaturate, addLine)
+        DBM:FireEvent("BossMod_ShowNameplateAura", isGUID, unit, currentTexture, duration, desaturate, addLine, lineColor)
         DBM:Debug("DBM.Nameplate Found supported NP mod, only sending Show callbacks", 3)
         return
     end
@@ -239,7 +258,11 @@ function nameplateFrame:Show(isGUID, unit, spellId, texture, duration, desaturat
         num_units = num_units + 1
     end
 
-    tinsert(units[unit],currentTexture)
+    tinsert(units[unit], {
+        texture = currentTexture,
+        line = addLine,
+        lineColor = lineColor
+    })
 
     -- find frame for this unit;
     if not isGUID then
