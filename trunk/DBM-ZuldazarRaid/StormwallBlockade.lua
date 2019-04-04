@@ -170,7 +170,7 @@ local function delayedSisterUpdate(self, reschedule)
 		timerElecShroudCD:SetFade(true)
 	end
 	--Secondary scan (only runs on translocate)
-	if reschedule and reschedule < 3 then
+	if reschedule and reschedule < 4 then
 		self:Schedule(2, delayedSisterUpdate, self, reschedule+1)
 	end
 end
@@ -187,7 +187,7 @@ local function delayedBrotherUpdate(self, reschedule)
 		timerTidalShroudCD:SetFade(true)
 	end
 	--Secondary scan (only runs on translocate)
-	if reschedule and reschedule < 3 then
+	if reschedule and reschedule < 4 then
 		self:Schedule(2, delayedBrotherUpdate, self, reschedule+1)
 	end
 end
