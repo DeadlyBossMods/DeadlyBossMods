@@ -730,7 +730,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif spellId == 288219 then
 		if self.Options.NPAuraOnRefractiveIce then
-			DBM.Nameplate:Hide(true, args.sourceGUID, spellId)
+			DBM.Nameplate:Hide(true, args.sourceGUID)--Passed without spellId/tecture to force remove all, in event there are multiple (shouldn't be but doesn't hurt)
 		end
 	elseif spellId == 288212 then
 		if args:IsPlayer() then
