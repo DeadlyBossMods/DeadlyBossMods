@@ -4,9 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(146409)
 mod:SetEncounterID(2281)
---mod:DisableESCombatDetection()
 mod:SetZone()
---mod:SetBossHPInfoToHighest()
 mod:SetUsedIcons(1, 2, 3, 4)
 mod:SetHotfixNoticeRev(18363)
 --mod:SetMinSyncRevision(16950)
@@ -182,59 +180,6 @@ local fixStupid = {}
 local interruptTextures = {[1] = 2178508, [2] = 2178501, [3] = 2178502, [4] = 2178503, [5] = 2178504, [6] = 2178505, [7] = 2178506, [8] = 2178507,}--Fathoms Deck
 local CVAR1, CVAR2 = nil, nil
 
---[[
-local updateInfoFrame
-do
-	local floor, tsort = math.floor, table.sort
-	local lines = {}
-	local tempLines = {}
-	local tempLinesSorted = {}
-	local sortedLines = {}
-	local function sortFuncDesc(a, b) return tempLines[a] > tempLines[b] end
-	local function addLine(key, value)
-		-- sort by insertion order
-		lines[key] = value
-		sortedLines[#sortedLines + 1] = key
-	end
-	updateInfoFrame = function()
-		table.wipe(lines)
-		table.wipe(tempLines)
-		table.wipe(tempLinesSorted)
-		table.wipe(sortedLines)
-		--Boss Powers first
-		for i = 1, 5 do
-			local uId = "boss"..i
-			--Primary Power
-			local currentPower, maxPower = UnitPower(uId), UnitPowerMax(uId)
-			if maxPower and maxPower ~= 0 then
-				local adjustedPower = currentPower / maxPower * 100
-				if adjustedPower >= 1 then
-					addLine(UnitName(uId), currentPower)
-				end
-			end
-		end
-		addLine(" ", " ")--Insert a blank entry to split the two debuffs
-		--Chilling Touch Stacks
-		--Sort debuffs by highest then inject into regular table
-		if #ChillingTouchStacks > 0 then
-			for uId in DBM:GetGroupMembers() do
-				local unitName = DBM:GetUnitFullName(uId)
-				local count = ChillingTouchStacks[unitName] or 0
-				tempLines[unitName] = count
-				tempLinesSorted[#tempLinesSorted + 1] = unitName
-			end
-			--Sort lingering according to options
-			tsort(tempLinesSorted, sortFuncDesc)
-			for _, name in ipairs(tempLinesSorted) do
-				addLine(name, tempLines[name])
-			end
-
-		end
-		return lines, sortedLines
-	end
-end
---]]
-
 --/run DBM:GetModByName("2343"):TimerTestFunction(30)
 --This will auto loop, just run it once and wait to see how keep timers behave.
 --Grasp of frost and ring of ice will be two main ones to watch, they won't be "cast" again but every 30 seconds so a 15 and 20 second timer will be kept for 15 or 10 additional seconds.
@@ -333,8 +278,6 @@ function mod:OnCombatStart(delay)
 		berserkTimer:Start(900)
 	end
 	if self.Options.InfoFrame then
-		--DBM.InfoFrame:SetHeader(DBM_CORE_INFOFRAME_POWER)
-		--DBM.InfoFrame:Show(8, "function", updateInfoFrame, false, false)
 		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(287993))
 		DBM.InfoFrame:Show(10, "table", ChillingTouchStacks, 1)
 	end
