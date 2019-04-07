@@ -1,7 +1,7 @@
 -- Mini Dragon(projecteurs@gmail.com)
 -- 夏一可
 -- Blizzard Entertainment
--- Last update: 2019/02/22
+-- Last update: 2019/04/04
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -87,16 +87,18 @@ L= DBM:GetModLocalization(2337)
 L= DBM:GetModLocalization(2343)
 
 L:SetOptionLocalization({
-	ShowOnlySummary	= "隐藏反向距离监控中的玩家名字，只显示统计信息（附近有几个人）",
+	ShowOnlySummary		= "隐藏反向距离监控中的玩家名字，只显示统计信息（附近有几个人）",
 	InterruptBehavior	= "设置水元素打断机制（队长覆盖他人设定）",
 	Three				= "3人打断（默认）",--Default
 	Four				= "4人打断",
-	Five				= "5人打断"
+	Five				= "5人打断",
+	SetWeather			= "战斗开始时自动将天气粒子设置调低，并在战斗结束后恢复"
 })
 
 L:SetMiscLocalization({
 	Port			=	"左舷",
-	Starboard		=	"右舷"
+	Starboard		=	"右舷",
+	Freezing		=	"%s秒后冰冻"
 })
 
 
