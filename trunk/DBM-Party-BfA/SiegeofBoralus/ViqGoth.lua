@@ -104,10 +104,8 @@ function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 137614 or cid == 137625 or cid == 137626 or cid == 140447 then--Demolishing Terror
 		timerSlamCD:Stop(args.destGUID)
-	--elseif cid == 137627 then--Constricting Terror
-	
-	elseif cid == 137437 then--Gripping Terror
-		timerDemolisherTerrorCD:Stop(args.destGUID)
+	elseif cid == 137405 then--Gripping Terror
+		timerDemolisherTerrorCD:Stop()
 	end
 end
 
@@ -118,8 +116,8 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 		if GUID and not seenAdds[GUID] then
 			seenAdds[GUID] = true
 			local cid = self:GetCIDFromGUID(GUID)
-			if cid == 137437 then--Big Adds
-				timerDemolisherTerrorCD:Start(19.9, GUID)
+			if cid == 137405 then--Gripping Terror
+				timerDemolisherTerrorCD:Start(19.9)
 			end
 		end
 	end
@@ -127,8 +125,7 @@ end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 270605 then--Summon Demolisher
-		local GUID = UnitGUID(uId)
-		timerDemolisherTerrorCD:Start(20, GUID)
+		timerDemolisherTerrorCD:Start(20)
 	elseif spellId == 269984 then--Damage Boss 35% (can use SPELL_CAST_START of 269456 alternatively)
 		--Might actually be at Repair event instead (269366)
 		if self.vb.phase < 3 then
