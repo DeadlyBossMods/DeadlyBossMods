@@ -234,6 +234,11 @@ end
 function nameplateFrame:Show(isGUID, unit, spellId, texture, duration, desaturate, addLine, lineColor)
     -- nameplate icons are disabled;
     if DBM.Options.DontShowNameplateIcons then return end
+    
+    if DBM.Options.DontShowNameplateLines then
+    	--User doesn't want lines, force nil them out if they exist
+    	addLine, lineColor = nil, nil
+    end
 
     -- ignore player nameplate;
     if playerGUID == unit or playerName == unit then return end
