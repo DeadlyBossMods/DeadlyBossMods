@@ -139,11 +139,11 @@ local countdownRingofIce				= mod:NewCountdown(60, 285459, true)
 local countdownGlacialray				= mod:NewCountdown("AltTwo32", 288345, true, nil, 3)
 --Stage Two: Frozen Wrath
 
-mod:AddNamePlateOption("NPAuraOnMarkedTarget", 288038)
+mod:AddNamePlateOption("NPAuraOnMarkedTarget2", 288038, false)
 mod:AddNamePlateOption("NPAuraOnTimeWarp", 287925)
 mod:AddNamePlateOption("NPAuraOnRefractiveIce", 288219)
 mod:AddNamePlateOption("NPAuraOnWaterBolt", 290084)
-mod:AddNamePlateOption("NPAuraOnHowlingWinds", 290053)
+mod:AddNamePlateOption("NPAuraOnHowlingWinds2", 290053, false)
 mod:AddSetIconOption("SetIconAvalanche", 287565, true)
 mod:AddSetIconOption("SetIconBroadside", 288212, true)
 mod:AddRangeFrameOption(10, 289379)
@@ -281,7 +281,7 @@ function mod:OnCombatStart(delay)
 		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(287993))
 		DBM.InfoFrame:Show(10, "table", ChillingTouchStacks, 1)
 	end
-	if self.Options.NPAuraOnMarkedTarget or self.Options.NPAuraOnTimeWarp or self.Options.NPAuraOnRefractiveIce or self.Options.NPAuraOnWaterBolt or self.Options.NPAuraOnHowlingWinds then
+	if self.Options.NPAuraOnMarkedTarget2 or self.Options.NPAuraOnTimeWarp or self.Options.NPAuraOnRefractiveIce or self.Options.NPAuraOnWaterBolt or self.Options.NPAuraOnHowlingWinds2 then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
 	--Group leader decides interrupt behavior
@@ -309,7 +309,7 @@ function mod:OnCombatEnd()
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
 	end
-	if self.Options.NPAuraOnMarkedTarget or self.Options.NPAuraOnTimeWarp or self.Options.NPAuraOnRefractiveIce or self.Options.NPAuraOnWaterBolt or self.Options.NPAuraOnHowlingWinds then
+	if self.Options.NPAuraOnMarkedTarget2 or self.Options.NPAuraOnTimeWarp or self.Options.NPAuraOnRefractiveIce or self.Options.NPAuraOnWaterBolt or self.Options.NPAuraOnHowlingWinds2 then
 		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
 	end
 	if CVAR1 or CVAR2 then
@@ -523,7 +523,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnMarkedTarget:Play("justrun")
 				yellMarkedTarget:Yell()
 			end
-			if self.Options.NPAuraOnMarkedTarget then
+			if self.Options.NPAuraOnMarkedTarget2 then
 				DBM.Nameplate:Show(true, args.sourceGUID, spellId, nil, 10, nil, true, {0.75, 0, 0, 0.75})
 			end
 		end
@@ -626,8 +626,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerHowlingWindsCD:Start(80, self.vb.howlingWindsCast+1)
 	elseif spellId == 290053 then--Howling Winds buff Images get
 		self.vb.howlingRemaining = self.vb.howlingRemaining + 1
-		if self.Options.NPAuraOnHowlingWinds then
-			DBM.Nameplate:Show(true, args.sourceGUID, spellId, nil, nil, nil, true, {1, 1, 0.5, 1})--{1, 0.5, 0},
+		if self.Options.NPAuraOnHowlingWinds2 then
+			DBM.Nameplate:Show(true, args.sourceGUID, spellId, nil, nil, nil, true, {1, 1, 0.5, 0.75})--{1, 0.5, 0},
 		end
 	end
 end
@@ -641,7 +641,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			DBM.InfoFrame:UpdateTable(ChillingTouchStacks)
 		end
 	elseif spellId == 288038 then
-		if self.Options.NPAuraOnMarkedTarget then
+		if self.Options.NPAuraOnMarkedTarget2 then
 			DBM.Nameplate:Hide(true, args.sourceGUID, spellId)
 		end
 	elseif spellId == 287925 then
@@ -765,11 +765,11 @@ function mod:UNIT_DIED(args)
 			DBM.Nameplate:Hide(true, args.destGUID)
 		end
 	elseif cid == 148965 then--Kul Tiran Marine
-		if self.Options.NPAuraOnMarkedTarget then
+		if self.Options.NPAuraOnMarkedTarget2 then
 			DBM.Nameplate:Hide(true, args.destGUID, spellId)
 		end
 	elseif cid == 149535 then--Icebound Image
-		if self.Options.NPAuraOnHowlingWinds then
+		if self.Options.NPAuraOnHowlingWinds2 then
 			DBM.Nameplate:Hide(true, args.destGUID, spellId)
 		end
 	elseif cid == 148631 then--Unexploded Ordinance
