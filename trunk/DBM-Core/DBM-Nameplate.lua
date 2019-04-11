@@ -80,6 +80,7 @@ do
     local function AuraFrame_ShowLine(frame,icon,color)
         icon.line = icon.line or UIParent:CreateLine(nil,'OVERLAY')
         local line = icon.line
+        line.GetPoint = function() return end
 
         line:SetThickness(4)
         line:SetColorTexture(unpack(color or {1,0,0,1}))
