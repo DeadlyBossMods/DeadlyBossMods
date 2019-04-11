@@ -7,7 +7,7 @@ mod:SetEncounterID(2269)
 --mod:DisableESCombatDetection()
 mod:SetZone()
 mod:SetBossHPInfoToHighest()
-mod:SetUsedIcons(1, 2, 3, 6)--Refine when max number of doubt targets is known
+mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7)--Refine when max number of doubt targets is known
 --mod:SetHotfixNoticeRev(17775)
 --mod:SetMinSyncRevision(16950)
 --mod.respawnTime = 35
@@ -102,6 +102,7 @@ local timerCrushingDoubtCD				= mod:NewCDTimer(40.1, 282432, nil, nil, nil, 3)
 
 mod:AddSetIconOption("SetIconCrushingDoubt", 282432, true)
 mod:AddSetIconOption("SetIconDarkherald", 282561, true)
+mod:AddSetIconOption("SetIconOnAdds", 282621, true, true)
 mod:AddRangeFrameOption(6, 283524)
 mod:AddInfoFrameOption(282741, true)
 mod:AddNamePlateOption("NPAuraOnEcho", 282517)
@@ -109,14 +110,18 @@ mod:AddNamePlateOption("NPAuraOnEcho", 282517)
 --mod.vb.phase = 1
 mod.vb.CrushingDoubtIcon = 1
 mod.vb.tankAddsActive = 0
+mod.vb.addIcon = 4--4-6
+local mobGUIDs = {}
 
 function mod:OnCombatStart(delay)
+	table.wipe(mobGUIDs)
 	self.vb.CrushingDoubtIcon = 1
 	self.vb.tankAddsActive = 0
-	--Z
+	self.vb.addIcon = 4
+	--Zaxasj the Speaker
 	timerCerebralAssaultCD:Start(16.8-delay)
 	timerDarkheraldCD:Start(11.5-delay)--SUCCESS
-	--F
+	--Fa'thuul the Feared
 	timerShearMindCD:Start(8.5-delay)--SUCCESS
 	timerVoidCrashCD:Start(13-delay)--SUCCESS
 	timerCrushingDoubtCD:Start(18.1-delay)
@@ -163,9 +168,21 @@ function mod:SPELL_CAST_START(args)
 		if self.Options.NPAuraOnEcho then
 			DBM.Nameplate:Show(true, args.sourceGUID, spellId, nil, 15)
 		end
-	elseif (spellId == 283540 or spellId == 282621) and self:CheckInterruptFilter(args.sourceGUID, false, true) then
-		specWarnWitnesstheEnd:Show(args.sourceName)
-		specWarnWitnesstheEnd:Play("kickcast")
+	elseif (spellId == 283540 or spellId == 282621) then
+		if not mobGUIDs[args.sourceGUID] then
+			mobGUIDs[args.sourceGUID] = true
+			if self.Options.SetIconOnAdds then
+				self:ScanForMobs(args.sourceGUID, 2, self.vb.addIcon, 1, 0.2, 10)
+			end
+			self.vb.addIcon = self.vb.addIcon + 1
+			if self.vb.addIcon == 7 then--4-6
+				self.vb.addIcon = 4
+			end
+		end
+		if self:CheckInterruptFilter(args.sourceGUID, false, true) then
+			specWarnWitnesstheEnd:Show(args.sourceName)
+			specWarnWitnesstheEnd:Play("kickcast")
+		end
 	elseif spellId == 282818 then
 		timerDevourThoughtsCD:Start(9.8, args.sourceGUID)
 	end
@@ -249,7 +266,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnDarkHerald:Show(args.destName)
 		end
 		if self.Options.SetIconDarkherald then
-			self:SetIcon(args.destName, 6)
+			self:SetIcon(args.destName, 7)
 		end
 	elseif spellId == 282384 then
 		local uId = DBM:GetRaidUnitId(args.destName)
@@ -366,6 +383,8 @@ function mod:UNIT_DIED(args)
 	elseif cid == 145275 then--Manifestation of Anguish
 		self.vb.tankAddsActive = self.vb.tankAddsActive - 1
 		timerDevourThoughtsCD:Stop(args.destGUID)
+	elseif cid == 145053 then--Eldritch Abomination
+		mobGUIDs[args.destGUID] = nil
 	end
 end
 

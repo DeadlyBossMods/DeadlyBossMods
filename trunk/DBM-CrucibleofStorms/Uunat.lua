@@ -7,7 +7,7 @@ mod:SetEncounterID(2273)
 --mod:DisableESCombatDetection()
 mod:SetZone()
 --mod:SetBossHPInfoToHighest()
---mod:SetUsedIcons(1, 2, 8)
+mod:SetUsedIcons(1, 2, 3, 6, 7, 8)
 --mod:SetHotfixNoticeRev(17775)
 --mod:SetMinSyncRevision(16950)
 --mod.respawnTime = 35
@@ -112,6 +112,7 @@ mod:AddNamePlateOption("NPAuraOnBond", 287693)
 mod:AddNamePlateOption("NPAuraOnFeed", 285307)
 mod:AddNamePlateOption("NPAuraOnRegen", 285333)
 mod:AddSetIconOption("SetIconTorment", 285652, true)
+mod:AddSetIconOption("SetIconOnAdds", 285427, true, true)
 
 mod.vb.phase = 1
 mod.vb.resonCount = 0
@@ -121,10 +122,12 @@ mod.vb.nzothEyesCount = 0
 mod.vb.activeUndying = 0
 mod.vb.HysteriaCount = 0
 mod.vb.LunacyCount = 0
-mod.vb.tormentIcon = 1
+mod.vb.tormentIcon = 1--1 forwards
+mod.vb.addIcon = 8--8 backwards
 local trackedFeedback1, trackedFeedback2, trackedFeedback3 = false, false, false
 local playerAffected = false
 local unitTracked = {}
+local mobGUIDs = {}
 
 local updateInfoFrame
 do
@@ -202,9 +205,11 @@ function mod:OnCombatStart(delay)
 	self.vb.HysteriaCount = 0
 	self.vb.LunacyCount = 0
 	self.vb.tormentIcon = 1
+	self.vb.addIcon = 8
 	trackedFeedback1, trackedFeedback2, trackedFeedback3 = false, false, false
 	playerAffected = false
 	table.wipe(unitTracked)
+	table.wipe(mobGUIDs)
 	timerUnstableResonanceCD:Start(1-delay)
 	timerTouchoftheEndCD:Start(1-delay)
 	timerOblivionTearCD:Start(1-delay)
@@ -280,9 +285,21 @@ function mod:SPELL_CAST_START(args)
 		specWarnGiftofNzothLunacy:Show(self.vb.LunacyCount)
 		specWarnGiftofNzothLunacy:Play("stopattack")--Right voice?
 		timerGiftofNzothLunacyCD:Start()
-	elseif spellId == 285427 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
-		specWarnConsumeEssence:Show(args.sourceName)
-		specWarnConsumeEssence:Play("kickcast")
+	elseif spellId == 285427 then
+		if not mobGUIDs[args.sourceGUID] then
+			mobGUIDs[args.sourceGUID] = true
+			if self.Options.SetIconOnAdds then
+				self:ScanForMobs(args.sourceGUID, 2, self.vb.addIcon, 1, 0.2, 10)
+			end
+			self.vb.addIcon = self.vb.addIcon - 1
+			if self.vb.addIcon == 5 then--8-6
+				self.vb.addIcon = 8
+			end
+		end
+		if self:CheckInterruptFilter(args.sourceGUID, false, true) then
+			specWarnConsumeEssence:Show(args.sourceName)
+			specWarnConsumeEssence:Play("kickcast")
+		end
 	end
 end
 
@@ -499,8 +516,8 @@ function mod:UNIT_DIED(args)
 				self:UnregisterOnUpdateHandler()
 			end
 		end
-	--elseif cid == 146940 then--Primordial Mindbender
-	
+	elseif cid == 146940 then--Primordial Mindbender
+		mobGUIDs[args.destGUID] = nil
 	--elseif cid == 147024 then--Unknowable Terror
 		--timerUnknowableTerrorCD:Stop(args.destGUID)
 	end
