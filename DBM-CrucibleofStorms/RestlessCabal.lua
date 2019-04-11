@@ -34,6 +34,10 @@ mod:RegisterEventsInCombat(
 --TODO, custom info frame that tracks who has herald, personal promises of power, probably other crap
 --TODO, fine tune tank swap stacks (changed to 3, but many strats may favor doing 2-5 to reduce add spawn complexity and tank damage. Probably will just add a drop down)
 --TODO, detect void crash bounces, use general announce for cast and first bounce, special warning for one that needs soaking?
+--[[
+(ability.id = 282675 or ability.id = 282589 or ability.id = 282515 or ability.id = 282617 or ability.id = 282517 or ability.id = 283540 or ability.id = 282621 or ability.id = 282818) and type = "begincast"
+ or (ability.id = 282561 or ability.id = 282384 or ability.id = 282407 or ability.id = 285416) and type = "cast"
+--]]
 --Relics of Power
 local warnUmbralShell					= mod:NewFadesAnnounce(282741, 1)
 --General
