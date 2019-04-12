@@ -84,7 +84,8 @@ L:SetOptionLocalization({
 	InterruptBehavior	= "Patrón de interrupción para el elemental (sobrescribe la configuración del resto de jugadores si eres el líder de banda)",
 	Three				= "Rotación de tres jugadores",--Default
 	Four				= "Rotación de cuatro jugadores",
-	Five				= "Rotación de cinco jugadores"
+	Five				= "Rotación de cinco jugadores",
+	SetWeather			= "Bajar automáticamente la densidad del clima al mínimo al iniciar el encuentro (se restaurará a su configuración anterior al terminar el combate)"
 })
 
 L:SetMiscLocalization({
