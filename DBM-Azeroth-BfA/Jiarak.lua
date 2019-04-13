@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod(2141, "DBM-Azeroth-BfA", nil, 1028)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision$"):sub(12, -3))
+mod:SetRevision(("@file-date-integer@"))
 mod:SetCreatureID(132253)
 --mod:SetEncounterID(1880)
 mod:SetReCombatTime(20)
@@ -90,7 +90,7 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 124396 then
-		
+
 	end
 end
 

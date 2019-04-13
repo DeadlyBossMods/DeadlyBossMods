@@ -7,7 +7,7 @@ end
 local mod	= DBM:NewMod(dungeonID, "DBM-Party-BfA", 5, 1001)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision$"):sub(12, -3))
+mod:SetRevision(("@file-date-integer@"))
 mod:SetCreatureID(creatureID)
 mod:SetEncounterID(encounterID)
 mod:SetZone()

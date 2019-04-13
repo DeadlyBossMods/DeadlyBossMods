@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod(2114, "DBM-Party-BfA", 7, 1001)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision$"):sub(12, -3))
+mod:SetRevision(("@file-date-integer@"))
 mod:SetCreatureID(129227)
 mod:SetEncounterID(2106)
 mod:DisableESCombatDetection()--ES fires for nearby trash even if boss isn't pulled
@@ -148,7 +148,7 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 124396 then
-		
+
 	end
 end
 

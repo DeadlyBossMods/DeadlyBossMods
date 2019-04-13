@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod(2170, "DBM-Party-BfA", 3, 1041)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision$"):sub(12, -3))
+mod:SetRevision(("@file-date-integer@"))
 mod:SetCreatureID(135475, 135470, 135472)
 mod:SetEncounterID(2140)
 mod:SetZone()
@@ -276,4 +276,4 @@ function mod:UNIT_TARGETABLE_CHANGED(uId)
 			timerTotemsCD:Start(19.2)
 		end
 	end
-end	
+end

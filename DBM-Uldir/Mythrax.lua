@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod(2194, "DBM-Uldir", nil, 1031)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision$"):sub(12, -3))
+mod:SetRevision(("@file-date-integer@"))
 mod:SetCreatureID(134546)--138324 Xalzaix
 mod:SetEncounterID(2135)
 mod:SetZone()
@@ -299,7 +299,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 	elseif spellId == 272407 then--Purple Ball Lovin
-		
+
 		if args:IsPlayer() then
 			yellOblivionSphere:Yell()
 		end

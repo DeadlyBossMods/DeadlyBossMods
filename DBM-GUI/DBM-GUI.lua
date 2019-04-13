@@ -43,7 +43,7 @@
 --
 
 
-local revision =("$Revision$"):sub(12, -3)
+local revision =("@file-date-integer@")
 local FrameTitle = "DBM_GUI_Option_"	-- all GUI frames get automatically a name FrameTitle..ID
 
 local PanelPrototype = {}
@@ -416,7 +416,7 @@ do
 		{ sound=true, text = "SW 3", value = 3 },
 		{ sound=true, text = "SW 4", value = 4 },
 	})
-	
+
 	--TODO, this should be localized
 	local tcolors = {
 		{ text = "Generic", value = 0 },
@@ -1576,14 +1576,14 @@ local function CreateOptionsMenu()
 		--            Bar Options           --
 		--------------------------------------
 		local BarSetupPanel = DBM_GUI_Frame:CreateNewPanel(L.BarSetup, "option")
-		
+
 		local BarColors = BarSetupPanel:CreateArea(L.AreaTitle_BarColors, nil, 635, true)
 		local movemebutton = BarColors:CreateButton(L.MoveMe, 100, 16)
 		movemebutton:SetPoint('BOTTOMRIGHT', BarColors.frame, "TOPRIGHT", 0, -1)
 		movemebutton:SetNormalFontObject(GameFontNormalSmall)
 		movemebutton:SetHighlightFontObject(GameFontNormalSmall)
 		movemebutton:SetScript("OnClick", function() DBM.Bars:ShowMovableBar() end)
-		
+
 		--Color Type 1 (Adds)
 		local color1Type1 = BarColors:CreateColorSelect(64)
 		local color2Type1 = BarColors:CreateColorSelect(64)
@@ -1637,7 +1637,7 @@ local function CreateOptionsMenu()
 			DBM.Bars:SetOption("EndColorAB", select(3, self:GetColorRGB()))
 			color2Type1text:SetTextColor(self:GetColorRGB())
 		end)
-		
+
 		local dummybarcolor1 = DBM.Bars:CreateDummyBar(1)
 		dummybarcolor1.frame:SetParent(BarColors.frame)
 		dummybarcolor1.frame:SetPoint("TOP", color2Type1text, "LEFT", 10, 40)
@@ -1705,7 +1705,7 @@ local function CreateOptionsMenu()
 			DBM.Bars:SetOption("EndColorAEB", select(3, self:GetColorRGB()))
 			color2Type2text:SetTextColor(self:GetColorRGB())
 		end)
-		
+
 		local dummybarcolor2 = DBM.Bars:CreateDummyBar(2)
 		dummybarcolor2.frame:SetParent(BarColors.frame)
 		dummybarcolor2.frame:SetPoint("TOP", color2Type2text, "LEFT", 10, 40)
@@ -1773,7 +1773,7 @@ local function CreateOptionsMenu()
 			DBM.Bars:SetOption("EndColorDB", select(3, self:GetColorRGB()))
 			color2Type3text:SetTextColor(self:GetColorRGB())
 		end)
-		
+
 		local dummybarcolor3 = DBM.Bars:CreateDummyBar(3)
 		dummybarcolor3.frame:SetParent(BarColors.frame)
 		dummybarcolor3.frame:SetPoint("TOP", color2Type3text, "LEFT", 10, 40)
@@ -1841,7 +1841,7 @@ local function CreateOptionsMenu()
 			DBM.Bars:SetOption("EndColorIB", select(3, self:GetColorRGB()))
 			color2Type4text:SetTextColor(self:GetColorRGB())
 		end)
-		
+
 		local dummybarcolor4 = DBM.Bars:CreateDummyBar(4)
 		dummybarcolor4.frame:SetParent(BarColors.frame)
 		dummybarcolor4.frame:SetPoint("TOP", color2Type4text, "LEFT", 10, 40)
@@ -1909,7 +1909,7 @@ local function CreateOptionsMenu()
 			DBM.Bars:SetOption("EndColorRB", select(3, self:GetColorRGB()))
 			color2Type5text:SetTextColor(self:GetColorRGB())
 		end)
-		
+
 		local dummybarcolor5 = DBM.Bars:CreateDummyBar(5)
 		dummybarcolor5.frame:SetParent(BarColors.frame)
 		dummybarcolor5.frame:SetPoint("TOP", color2Type5text, "LEFT", 10, 40)
@@ -1977,7 +1977,7 @@ local function CreateOptionsMenu()
 			DBM.Bars:SetOption("EndColorPB", select(3, self:GetColorRGB()))
 			color2Type6text:SetTextColor(self:GetColorRGB())
 		end)
-		
+
 		local dummybarcolor6 = DBM.Bars:CreateDummyBar(6)
 		dummybarcolor6.frame:SetParent(BarColors.frame)
 		dummybarcolor6.frame:SetPoint("TOP", color2Type6text, "LEFT", 10, 40)
@@ -2046,7 +2046,7 @@ local function CreateOptionsMenu()
 			DBM.Bars:SetOption("EndColorUIB", select(3, self:GetColorRGB()))
 			color2Type7text:SetTextColor(self:GetColorRGB())
 		end)
-		
+
 		local dummybarcolor7 = DBM.Bars:CreateDummyBar(7)
 		dummybarcolor7.frame:SetParent(BarColors.frame)
 		dummybarcolor7.frame:SetPoint("TOP", color2Type7text, "LEFT", 10, 40)
@@ -2127,7 +2127,7 @@ local function CreateOptionsMenu()
 			DBM.Bars:SetOption("EndColorB", select(3, self:GetColorRGB()))
 			color2text:SetTextColor(self:GetColorRGB())
 		end)
-		
+
 		local maindummybar = DBM.Bars:CreateDummyBar()
 		maindummybar.frame:SetParent(BarSetup.frame)
 		maindummybar.frame:SetPoint("TOP", color2text, "LEFT", 10, 40)
@@ -2185,7 +2185,7 @@ local function CreateOptionsMenu()
 			{	text	= L.MonochromeOutline,		value 	= "MONOCHROME,OUTLINE"			},
 			{	text	= L.MonochromeThickOutline,	value 	= "MONOCHROME,THICKOUTLINE"		}
 		}
-		
+
 		local FontFlagDropDown = BarSetup:CreateDropdown("Font Flags", FontFlags, "DBT", "FontFlag",
 			function(value)
 				DBM.Bars:SetOption("FontFlag", value)
@@ -2203,25 +2203,25 @@ local function CreateOptionsMenu()
 
 		local SortBars = BarSetup:CreateCheckButton(L.BarSort, false, nil, nil, "Sort")
 		SortBars:SetPoint("TOPLEFT", ClickThrough, "BOTTOMLEFT", 0, 0)
-		
+
 		local ColorBars = BarSetup:CreateCheckButton(L.BarColorByType, false, nil, nil, "ColorByType")
 		ColorBars:SetPoint("TOPLEFT", SortBars, "BOTTOMLEFT", 0, 0)
-		
+
 		local InlineIcons = BarSetup:CreateCheckButton(L.BarInlineIcons, false, nil, nil, "InlineIcons")
 		InlineIcons:SetPoint("LEFT", ColorBars, "LEFT", 130, 0)
-		
+
 		local ShortTimers = BarSetup:CreateCheckButton(L.ShortTimerText, false, nil, "ShortTimerText")
 		ShortTimers:SetPoint("TOPLEFT", ColorBars, "BOTTOMLEFT", 0, 0)
-		
+
 		local KeepTimers = BarSetup:CreateCheckButton(L.KeepBar, false, nil, nil, "KeepBars")
 		KeepTimers:SetPoint("TOPLEFT", ShortTimers, "BOTTOMLEFT", 0, 0)
-		
+
 		local KeepTimers2 = BarSetup:CreateText(L.KeepBar2, 405, nil, nil, "LEFT")
 		KeepTimers2:SetPoint("TOPLEFT", KeepTimers, "BOTTOMLEFT", 25, 10)
-		
+
 		local FadeTimers = BarSetup:CreateCheckButton(L.FadeBar, false, nil, nil, "FadeBars")
 		FadeTimers:SetPoint("TOPLEFT", KeepTimers, "BOTTOMLEFT", 0, 0)
-		
+
 		local FadeTimers2 = BarSetup:CreateText(L.KeepBar2, 405, nil, nil, "LEFT")
 		FadeTimers2:SetPoint("TOPLEFT", FadeTimers, "BOTTOMLEFT", 25, 10)
 
@@ -2246,7 +2246,7 @@ local function CreateOptionsMenu()
 				end
 			end
 		end
-		
+
 		local function resetDBTValueToDefault(slider, option)
 			DBM.Bars:SetOption(option, DBM.Bars:GetDefaultOption(option))
 			slider:SetValue(DBM.Bars:GetOption(option))
@@ -2295,7 +2295,7 @@ local function CreateOptionsMenu()
 		smalldummybar.frame:SetParent(BarSetupSmall.frame)
 		smalldummybar.frame:SetPoint('BOTTOM', BarSetupSmall.frame, "TOP", 0, -35)
 		smalldummybar.frame:SetScript("OnUpdate", function(self, elapsed) smalldummybar:Update(elapsed) end)
-		
+
 		local ExpandUpwards = BarSetup:CreateCheckButton(L.ExpandUpwards, false, nil, nil, "ExpandUpwards")
 		ExpandUpwards:SetPoint("TOPLEFT", smalldummybar.frame, "BOTTOMLEFT", -50, -15)
 
@@ -2311,7 +2311,7 @@ local function CreateOptionsMenu()
 		BarScaleSlider:SetPoint("TOPLEFT", BarWidthSlider, "BOTTOMLEFT", 0, -10)
 		BarScaleSlider:SetScript("OnShow", createDBTOnShowHandler("Scale"))
 		BarScaleSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("Scale"))
-		
+
 		local AlphaSlider = BarSetup:CreateSlider(L.Bar_Alpha, 0, 1, 0.1)
 		AlphaSlider:SetPoint("TOPLEFT", BarScaleSlider, "BOTTOMLEFT", 0, -10)
 		AlphaSlider:SetScript("OnShow", createDBTOnShowHandler("Alpha"))
@@ -2326,7 +2326,7 @@ local function CreateOptionsMenu()
 		BarOffsetYSlider:SetPoint("TOPLEFT", BarOffsetXSlider, "BOTTOMLEFT", 0, -10)
 		BarOffsetYSlider:SetScript("OnShow", createDBTOnShowHandler("BarYOffset"))
 		BarOffsetYSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("BarYOffset"))
-		
+
 		local barResetbutton = BarSetup:CreateButton(L.SpecWarn_ResetMe, 120, 16)
 		barResetbutton:SetPoint('BOTTOMRIGHT', BarSetupSmall.frame, "BOTTOMRIGHT", -5, 5)
 		barResetbutton:SetNormalFontObject(GameFontNormalSmall)
@@ -2356,7 +2356,7 @@ local function CreateOptionsMenu()
 		hugedummybar.enlarged = true
 		hugedummybar.enlargeHack = true
 		hugedummybar:ApplyStyle()
-		
+
 		local ExpandUpwardsLarge = BarSetup:CreateCheckButton(L.ExpandUpwards, false, nil, nil, "ExpandUpwardsLarge")
 		ExpandUpwardsLarge:SetPoint("TOPLEFT", hugedummybar.frame, "BOTTOMLEFT", -50, -15)
 
@@ -2372,7 +2372,7 @@ local function CreateOptionsMenu()
 		HugeBarScaleSlider:SetPoint("TOPLEFT", HugeBarWidthSlider, "BOTTOMLEFT", 0, -10)
 		HugeBarScaleSlider:SetScript("OnShow", createDBTOnShowHandler("HugeScale"))
 		HugeBarScaleSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("HugeScale"))
-		
+
 		local HugeAlphaSlider = BarSetup:CreateSlider(L.Bar_Alpha, 0.1, 1, 0.1)
 		HugeAlphaSlider:SetPoint("TOPLEFT", HugeBarScaleSlider, "BOTTOMLEFT", 0, -10)
 		HugeAlphaSlider:SetScript("OnShow", createDBTOnShowHandler("HugeAlpha"))
@@ -2387,7 +2387,7 @@ local function CreateOptionsMenu()
 		HugeBarOffsetYSlider:SetPoint("TOPLEFT", HugeBarOffsetXSlider, "BOTTOMLEFT", 0, -10)
 		HugeBarOffsetYSlider:SetScript("OnShow", createDBTOnShowHandler("HugeBarYOffset"))
 		HugeBarOffsetYSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("HugeBarYOffset"))
-		
+
 		local hugeBarResetbutton = BarSetupHuge:CreateButton(L.SpecWarn_ResetMe, 120, 16)
 		hugeBarResetbutton:SetPoint('BOTTOMRIGHT', BarSetupHuge.frame, "BOTTOMRIGHT", -5, 5)
 		hugeBarResetbutton:SetNormalFontObject(GameFontNormalSmall)
@@ -2656,7 +2656,7 @@ local function CreateOptionsMenu()
 					DBM:ShowTestSpecialWarning(nil, 4)
 			end)
 		end
-		
+
 		local color5 = specArea:CreateColorSelect(64)
 		color5:SetPoint('TOPLEFT', color4, "TOPLEFT", 0, -105)
 		local color5text = specArea:CreateText(L.SpecWarn_FlashColor:format(5), 80)
@@ -2856,7 +2856,7 @@ local function CreateOptionsMenu()
 				--DBM:ShowTestSpecialWarning(nil, 4, true)--Pass with flash but no sound
 			end)
 		end
-		
+
 		local SpecialWarnSoundDropDown5 = specArea:CreateDropdown(L.SpecialWarnSound5, Sounds, "DBM", "SpecialWarningSound5", function(value)
 			DBM.Options.SpecialWarningSound5 = value
 		end)
@@ -3013,25 +3013,25 @@ local function CreateOptionsMenu()
 			DBM.Options.VoiceOverSpecW2 = value
 		end)
 		SWFilterDropDown:SetPoint("TOPLEFT", VPF1, "TOPLEFT", 0, -45)
-		
+
 		local VPUrlArea1		= spokenAlertsPanel:CreateArea(L.Area_GetVEM, nil, 28, true)
 		local VPDownloadUrl1	= VPUrlArea1:CreateText(L.VEMDownload, 405, nil, nil, "LEFT")
 		VPDownloadUrl1:SetPoint("TOPLEFT", VPUrlArea1.frame, "TOPLEFT", 10, -7)
 		VPUrlArea1.frame:SetScript("OnMouseUp", function(...) DBM:ShowUpdateReminder(nil, nil, L.Area_GetVEM, "https://wow.curseforge.com/projects/dbm-voicepack-vem") end)
-		
+
 		local VPUrlArea2		= spokenAlertsPanel:CreateArea(L.Area_BrowseOtherVP, nil, 28, true)
 		local VPDownloadUrl2	= VPUrlArea2:CreateText(L.BrowseOtherVPs, 405, nil, nil, "LEFT")
 		VPDownloadUrl2:SetPoint("TOPLEFT", VPUrlArea2.frame, "TOPLEFT", 10, -7)
 		VPUrlArea2.frame:SetScript("OnMouseUp", function(...) DBM:ShowUpdateReminder(nil, nil, L.Area_BrowseOtherVP, "https://wow.curseforge.com/search?search=dbm+voice") end)
-		
+
 		local VPUrlArea3		= spokenAlertsPanel:CreateArea(L.Area_BrowseOtherCT, nil, 28, true)
 		local VPDownloadUrl3	= VPUrlArea3:CreateText(L.BrowseOtherCTs, 405, nil, nil, "LEFT")
 		VPDownloadUrl3:SetPoint("TOPLEFT", VPUrlArea3.frame, "TOPLEFT", 10, -7)
 		VPUrlArea3.frame:SetScript("OnMouseUp", function(...) DBM:ShowUpdateReminder(nil, nil, L.Area_BrowseOtherCT, "https://wow.curseforge.com/search?search=dbm+count+pack") end)
-		
+
 		spokenAlertsPanel:SetMyOwnHeight()
 	end
-	
+
 	do
 		local Sounds = MixinSharedMedia3("sound", {
 			{	text	= L.NoSound,						value	= "" },
@@ -3048,7 +3048,7 @@ local function CreateOptionsMenu()
 			end
 		end)
 		VictorySoundDropdown:SetPoint("TOPLEFT", eventSoundsGeneralArea.frame, "TOPLEFT", 0, -20)
-		
+
 		local VictorySoundDropdown2 = eventSoundsGeneralArea:CreateDropdown(L.EventWipeSound, DBM.Defeat, "DBM", "EventSoundWipe", function(value)
 			DBM.Options.EventSoundWipe = value
 			if value ~= "Random" then
@@ -3056,7 +3056,7 @@ local function CreateOptionsMenu()
 			end
 		end)
 		VictorySoundDropdown2:SetPoint("LEFT", VictorySoundDropdown, "RIGHT", 70, 0)
-		
+
 		local useCombined = DBM.Options.EventSoundMusicCombined
 		local DungeonMusicDropDown = eventSoundsGeneralArea:CreateDropdown(L.EventDungeonMusic, useCombined and DBM.Music or DBM.DungeonMusic, "DBM", "EventSoundDungeonBGM", function(value)
 			DBM.Options.EventSoundDungeonBGM = value
@@ -3073,7 +3073,7 @@ local function CreateOptionsMenu()
 			end
 		end)
 		DungeonMusicDropDown:SetPoint("TOPLEFT", VictorySoundDropdown, "TOPLEFT", 0, -45)
-		
+
 		local MusicDropDown = eventSoundsGeneralArea:CreateDropdown(L.EventEngageMusic, useCombined and DBM.Music or DBM.BattleMusic, "DBM", "EventSoundMusic", function(value)
 			DBM.Options.EventSoundMusic = value
 			if value ~= "Random" then
@@ -3089,13 +3089,13 @@ local function CreateOptionsMenu()
 			end
 		end)
 		MusicDropDown:SetPoint("TOPLEFT", VictorySoundDropdown2, "TOPLEFT", 0, -45)
-		
+
 		local VictorySoundDropdown3 = eventSoundsGeneralArea:CreateDropdown(L.EventEngageSound, Sounds, "DBM", "EventSoundEngage", function(value)
 			DBM.Options.EventSoundEngage = value
 			DBM:PlaySoundFile(DBM.Options.EventSoundEngage)
 		end)
 		VictorySoundDropdown3:SetPoint("TOPLEFT", DungeonMusicDropDown, "TOPLEFT", 0, -45)
-		
+
 		local TurtleDropDown = eventSoundsGeneralArea:CreateDropdown(L.EventTurtleMusic, useCombined and DBM.Music or DBM.BattleMusic, "DBM", "EventSoundTurle", function(value)
 			DBM.Options.EventSoundTurle = value
 			if value ~= "Random" then
@@ -3111,17 +3111,17 @@ local function CreateOptionsMenu()
 			end
 		end)
 		TurtleDropDown:SetPoint("TOPLEFT", MusicDropDown, "TOPLEFT", 0, -45)
-		
+
 		local eventSoundsExtrasArea	= eventSoundsPanel:CreateArea(L.Area_EventSoundsExtras, nil, 52, true)
 		local combineMusic			= eventSoundsExtrasArea:CreateCheckButton(L.EventMusicCombined, true, nil, "EventSoundMusicCombined")
-		
+
 		local eventSoundsFiltersArea= eventSoundsPanel:CreateArea(L.Area_EventSoundsFilters, nil, 72, true)
 		local musicDungMythicFilter	= eventSoundsFiltersArea:CreateCheckButton(L.EventFilterDungMythicMusic, true, nil, "EventDungMusicMythicFilter")
 		local musicMythicFilter		= eventSoundsFiltersArea:CreateCheckButton(L.EventFilterMythicMusic, true, nil, "EventMusicMythicFilter")
-		
+
 		eventSoundsPanel:SetMyOwnHeight()
 	end
-	
+
 
 	do
 		local spamPanel = DBM_GUI_Frame:CreateNewPanel(L.Panel_SpamFilter, "option")
@@ -3156,7 +3156,7 @@ local function CreateOptionsMenu()
 		spamSpecArea:CreateCheckButton(L.FilterDispels, true, nil, "FilterDispel")
 		spamSpecArea:CreateCheckButton(L.FilterTrashWarnings, true, nil, "FilterTrashWarnings2")
 		local FilterInterruptNote = spamSpecArea:CreateCheckButton(L.FilterInterruptNoteName, true, nil, "FilterInterruptNoteName")
-		
+
 		local interruptOptions = {
 			{	text	= L.SWFNever,			value 	= "None"},
 			{	text	= L.FilterInterrupts,	value 	= "onlyTandF"},
@@ -3209,7 +3209,7 @@ local function CreateOptionsMenu()
 			DBM.Options.MovieFilter2 = value
 		end)
 		blockMovieDropDown:SetPoint("TOPLEFT", DisableSFX, "TOPLEFT", 0, -40)
-		
+
 		local bonusRollOptions = {
 			{	text	= L.Disable,		value 	= "Never"},
 			{	text	= L.TrivialContent,	value 	= "TrivialContent"},
@@ -3253,7 +3253,7 @@ local function CreateOptionsMenu()
 			AdvancedAutologBosses	= bossLoggingArea:CreateCheckButton(L.AdvancedAutologBosses, true, nil, "AdvancedAutologBosses")
 		end
 		local LogOnlyRaidBosses		= bossLoggingArea:CreateCheckButton(L.LogOnlyRaidBosses, true, nil, "LogOnlyRaidBosses")
-		
+
 		local thirdPartyArea
 		if BigBrother and type(BigBrother.ConsumableCheck) == "function" then
 			thirdPartyArea			= extraFeaturesPanel:CreateArea(L.Area_3rdParty, nil, 100, true)
@@ -3373,7 +3373,7 @@ local function CreateOptionsMenu()
 	-- Set Revision // please don't translate this!
 	if DBM.NewerVersion then
 		DBM_GUI_OptionsFrameRevision:SetText("Deadly Boss Mods "..DBM.DisplayVersion.." (r"..DBM.Revision.."). |cffff0000Version "..DBM.NewerVersion.." is available.|r")
-	else	
+	else
 		DBM_GUI_OptionsFrameRevision:SetText("Deadly Boss Mods "..DBM.DisplayVersion.." (r"..DBM.Revision..")")
 	end
 	if L.TranslationBy then
@@ -3513,7 +3513,7 @@ do
 				end
 				bottom2value1:SetText( stats.timewalkerKills )
 				bottom2value2:SetText( stats.timewalkerPulls-stats.timewalkerKills )
-				bottom2value3:SetText( stats.timewalkerBestTime and ("%d:%02d"):format(mfloor(stats.timewalkerBestTime / 60), stats.timewalkerBestTime % 60) or "-" )	
+				bottom2value3:SetText( stats.timewalkerBestTime and ("%d:%02d"):format(mfloor(stats.timewalkerBestTime / 60), stats.timewalkerBestTime % 60) or "-" )
 			elseif statsType == 11 then--Party: Mythic, Mythic+ (7.0/8.0 mythic only dungeons)
 				top1value1:SetText( stats.mythicKills )
 				top1value2:SetText( stats.mythicPulls-stats.mythicKills )
@@ -3628,7 +3628,7 @@ do
 				copyModSoundProfile.text = nil
 				_G[copyModSoundProfile:GetName().."Text"]:SetText("")
 			end)
-			
+
 			local copyModNoteProfile = modProfileArea:CreateDropdown(L.SelectModProfileCopyNote, modProfileDropdown, nil, nil, function(value)
 				local name, profile = strsplit("|", value)
 				DBM:CopyAllModTypeOption(addon.modId, name, tonumber(profile), "SWNote")
@@ -3646,7 +3646,7 @@ do
 				DBM:DeleteAllModOption(addon.modId, name, tonumber(profile))
 				C_Timer.After(0.05, DBM_GUI.dbm_modProfilePanel_refresh)
 			end, 100)
-			
+
 			deleteModProfile:SetPoint("TOPLEFT", copyModSoundProfile, "BOTTOMLEFT", 0, -10)
 			deleteModProfile:SetScript("OnShow", function()
 				deleteModProfile.value = nil

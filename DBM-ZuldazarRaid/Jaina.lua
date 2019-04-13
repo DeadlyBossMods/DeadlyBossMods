@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod(2343, "DBM-ZuldazarRaid", 3, 1176)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision$"):sub(12, -3))
+mod:SetRevision(("@file-date-integer@"))
 mod:SetCreatureID(146409)
 mod:SetEncounterID(2281)
 mod:SetZone()
@@ -843,5 +843,5 @@ function mod:OnSync(msg)
 		self.vb.interruptBehavior = "Four"
 	elseif msg == "Five" then
 		self.vb.interruptBehavior = "Five"
-	end	
+	end
 end

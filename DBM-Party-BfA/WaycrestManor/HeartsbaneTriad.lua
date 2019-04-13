@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod(2125, "DBM-Party-BfA", 10, 1001)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision$"):sub(12, -3))
+mod:SetRevision(("@file-date-integer@"))
 mod:SetCreatureID(135358, 135359, 135360, 131823, 131824, 131825)--All versions so we can pull boss
 mod:SetEncounterID(2113)
 mod:DisableESCombatDetection()--ES fires For entryway trash pull sometimes, for some reason.
@@ -191,15 +191,15 @@ function mod:UNIT_DIED(args)
 	if cid == 135360 then--Sister Briar
 		timerJaggedNettlesCD:Stop()
 	elseif cid == 135358 then--Sister Malady
-	
+
 	elseif cid == 135359 then--Sister Solena
-		
+
 	end
 end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 257939 then
-	
+
 	end
 end
 --]]

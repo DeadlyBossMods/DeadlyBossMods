@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod(2156, "DBM-Party-BfA", 4, 1001)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision$"):sub(12, -3))
+mod:SetRevision(("@file-date-integer@"))
 mod:SetCreatureID(134069)
 mod:SetEncounterID(2133)
 mod:SetZone()
@@ -106,7 +106,7 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 124396 then
-		
+
 	end
 end
 

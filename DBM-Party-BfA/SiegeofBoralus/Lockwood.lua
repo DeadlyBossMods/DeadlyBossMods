@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod(2173, "DBM-Party-BfA", 5, 1001)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision$"):sub(12, -3))
+mod:SetRevision(("@file-date-integer@"))
 mod:SetCreatureID(129208)
 mod:SetEncounterID(2109)
 mod:SetZone()
@@ -51,7 +51,7 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 194966 then
-	
+
 	end
 end
 --mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -93,7 +93,7 @@ function mod:UNIT_SPELLCAST_START(uId, _, spellId)
 	if spellId == 257288 and self:AntiSpam(3, 1) then
 		specWarnHeavySlash:Show()
 		specWarnHeavySlash:Play("shockwave")
-	elseif spellId == 268260 then--Broadside 
+	elseif spellId == 268260 then--Broadside
 		specWarnBroadside:Show()
 		specWarnBroadside:Play("watchstep")
 		timerBroadsideCD:Start(10.9)

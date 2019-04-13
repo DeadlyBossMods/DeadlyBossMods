@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod(2153, "DBM-Party-BfA", 4, 1001)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision$"):sub(12, -3))
+mod:SetRevision(("@file-date-integer@"))
 mod:SetCreatureID(134056)--134828 split forms
 mod:SetEncounterID(2130)
 mod:SetZone()
@@ -126,13 +126,13 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 124396 then
-		
+
 	end
 end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 264941 then--Erupting Waters (ending)
-		
+
 	end
 end
 --]]

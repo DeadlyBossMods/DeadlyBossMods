@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod(2143, "DBM-Party-BfA", 6, 1001)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision$"):sub(12, -3))
+mod:SetRevision(("@file-date-integer@"))
 mod:SetCreatureID(133384)
 mod:SetEncounterID(2125)
 mod:SetZone()
@@ -15,13 +15,13 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS 263957",
 	"SPELL_PERIODIC_DAMAGE 263927",
 	"SPELL_PERIODIC_MISSED 263927",
-	"UNIT_SPELLCAST_SUCCEEDED boss1" 
+	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
 --TODO, can eggs be attacked during hatch to reduce add spawns? if so change to special switch warning
 --TODO, remove hatch nameplate aura if they don't have nameplates
 --TODO, add new class info for "HasStun" so can be used on specWarnKnotofSnakes
---TODO, timers for breath and blind are inconsistent with burrows. 
+--TODO, timers for breath and blind are inconsistent with burrows.
 local warnHatch						= mod:NewCastAnnounce(264239, 3)
 local warnBurrow					= mod:NewSpellAnnounce(264206, 2, nil, nil, nil, nil, nil, nil, true)
 
@@ -91,7 +91,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			DBM.Nameplate:Hide(true, args.destGUID, spellId)
 		end
 	--elseif spellId == 263958 then
-		
+
 	end
 end
 
@@ -132,9 +132,9 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 135562 then--venomous-ophidian
-	
+
 	elseif cid == 134390 then--sand-crusted-striker
-		
+
 	end
 end
 --]]

@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod(2167, "DBM-Uldir", nil, 1031)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision$"):sub(12, -3))
+mod:SetRevision(("@file-date-integer@"))
 mod:SetCreatureID(135452)--136429 Chamber 01, 137022 Chamber 02, 137023 Chamber 03
 mod:SetEncounterID(2141)
 mod:DisableESCombatDetection()--ES breaks if you pull boss through door to skip trash. Then after that the trash bugs and continues to throw ES events even after mother is defeated

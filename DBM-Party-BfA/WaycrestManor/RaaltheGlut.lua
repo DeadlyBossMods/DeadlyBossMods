@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod(2127, "DBM-Party-BfA", 10, 1001)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision$"):sub(12, -3))
+mod:SetRevision(("@file-date-integer@"))
 mod:SetCreatureID(131863)
 mod:SetEncounterID(2115)
 mod:SetZone()
@@ -76,7 +76,7 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 194966 then
-	
+
 	end
 end
 --mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -94,7 +94,7 @@ mod.SPELL_MISSED = mod.SPELL_DAMAGE
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 124396 then
-		
+
 	end
 end
 

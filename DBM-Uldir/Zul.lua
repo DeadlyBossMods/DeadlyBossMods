@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod(2195, "DBM-Uldir", nil, 1031)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision$"):sub(12, -3))
+mod:SetRevision(("@file-date-integer@"))
 mod:SetCreatureID(138967)
 mod:SetEncounterID(2145)
 mod:DisableESCombatDetection()--ES fires moment you throw out CC, so it can't be trusted for combatstart
@@ -492,7 +492,7 @@ end
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 139185 then--minion-of-zul
-	
+
 	elseif cid == 139051 then--nazmani-crusher
 		timerBloodyCleaveCD:Stop(args.destGUID)
 	elseif cid == 139057 then--nazmani-bloodhexer

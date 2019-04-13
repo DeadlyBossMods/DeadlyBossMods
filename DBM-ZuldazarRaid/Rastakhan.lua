@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod(2335, "DBM-ZuldazarRaid", 2, 1176)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision$"):sub(12, -3))
+mod:SetRevision(("@file-date-integer@"))
 mod:SetCreatureID(145616)--145644 Bwonsamdi
 mod:SetEncounterID(2272)
 --mod:DisableESCombatDetection()
@@ -514,7 +514,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerSerpentTotemCD:Stop()
 		timerScorchingDetonationCD:Stop()
 		countdownScorchingDet:Cancel()
-		
+
 		--Rasta
 		timerZombieDustTotemCD:Start(19.2)
 		timerScorchingDetonationCD:Start(26.5, 1)
@@ -677,7 +677,7 @@ function mod:UNIT_DIED(args)
 	elseif cid == 146326 then--Headhunter Galwana
 		timerGrievousAxeCD:Stop()
 	--elseif cid == 146491 then--phantom-of-retribution
-	
+
 	elseif cid == 146492 then--phantom-of-rage
 		timerNecroticSmashCD:Stop()
 	end
@@ -722,6 +722,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	--"<292.24 16:58:46> [UNIT_SPELLCAST_SUCCEEDED] King Rastakhan(??) -Summon Phantom of Slaughter- boss1:Cast-3-2083-2070-6821-284543-002E522E86:284543
 	--"<292.24 16:58:46> [UNIT_SPELLCAST_SUCCEEDED] King Rastakhan(??) -Summon Phantom of Ruin- boss1:Cast-3-2083-2070-6821-284544-002FD22E86:284544
 --	elseif spellId == 284540 then--Summon Phantom of Retribution
-	
+
 	end
 end
