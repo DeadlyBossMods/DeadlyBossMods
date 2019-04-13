@@ -1,0 +1,18 @@
+package-as: DBM-Core
+enable-nolib-creation: no
+
+move-folders:
+    DBM-Core/DBM-Brawlers: DBM-Brawlers
+    DBM-Core/DBM-DefaultSkin: DBM-DefaultSkin
+    DBM-Core/DBM-DMF: DBM-DMF
+    DBM-Core/DBM-GUI: DBM-GUI
+    DBM-Core/DBM-StatusBarTimers: DBM-StatusBarTimers
+    DBM-Core/DBM-WorldEvents: DBM-WorldEvents
+    DBM-Core/DBM-Party-BfA: DBM-Party-BfA
+    DBM-Core/DBM-Azeroth-BfA: DBM-Azeroth-BfA
+    DBM-Core/DBM-Uldir: DBM-Uldir
+    DBM-Core/DBM-CrucibleofStorms: DBM-CrucibleofStorms
+    DBM-Core/DBM-ZuldazarRaid: DBM-ZuldazarRaid
+    DBM-Core/DBM-AzsharasPalace: DBM-AzsharasPalace
+    DBM-Core/DBM-Core: DBM-Core
+
