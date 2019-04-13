@@ -41,7 +41,7 @@
 --  Globals/Default Options  --
 -------------------------------
 DBM = {
-	Revision = tonumber(("@file-date-integer@")),
+	Revision = tonumber(string.sub("@file-date-integer@", 1, -5)),
 	DisplayVersion = "8.1.15 alpha", -- the string that is shown as version
 	ReleaseRevision = 18480 -- the revision of the latest stable version that is available
 }
