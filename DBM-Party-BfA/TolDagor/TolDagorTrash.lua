@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod("TolDagorTrash", "DBM-Party-BfA", 9)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision("@file-date-integer@")
+mod:SetRevision(string.sub("@file-date-integer@", 1, -5))
 --mod:SetModelID(47785)
 mod:SetZone()
 
