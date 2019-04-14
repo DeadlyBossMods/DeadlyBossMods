@@ -766,15 +766,15 @@ function mod:UNIT_DIED(args)
 		end
 	elseif cid == 148965 then--Kul Tiran Marine
 		if self.Options.NPAuraOnMarkedTarget2 then
-			DBM.Nameplate:Hide(true, args.destGUID, spellId)
+			DBM.Nameplate:Hide(true, args.destGUID)
 		end
 	elseif cid == 149535 then--Icebound Image
 		if self.Options.NPAuraOnHowlingWinds2 then
-			DBM.Nameplate:Hide(true, args.destGUID, spellId)
+			DBM.Nameplate:Hide(true, args.destGUID)
 		end
 	elseif cid == 148631 then--Unexploded Ordinance
 		if self.Options.NPAuraOnRefractiveIce then
-			DBM.Nameplate:Hide(true, args.destGUID, spellId)
+			DBM.Nameplate:Hide(true, args.destGUID)
 		end
 	end
 end
