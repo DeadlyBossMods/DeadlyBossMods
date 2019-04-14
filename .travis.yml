@@ -1,0 +1,18 @@
+language: minimal
+
+addons:
+  apt:
+    packages:
+    - luarocks
+
+git:
+  depth: 100
+
+install: luarocks install --local luacheck
+
+script: /home/travis/.luarocks/bin/luacheck . --no-color -qo "011"
+
+notifications:
+  email:
+    on_failure: always
+    on_success: never
