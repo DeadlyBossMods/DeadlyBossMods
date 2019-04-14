@@ -16,8 +16,8 @@ L.TabCategory_Options	 	= "Opciones generales"
 L.TabCategory_OTHER    		= "Otros módulos"
 
 L.BossModLoaded 			= "Estadísticas de %s"
-L.BossModLoad_now 			= [[Este módulo no está cargado. 
-Se cargará al entrar en la estancia. 
+L.BossModLoad_now 			= [[Este módulo no está cargado.
+Se cargará al entrar en la estancia.
 También puedes hacer clic en el botón para cargar el módulo manualmente.]]
 
 L.PosX 						= 'Posición X'
@@ -69,7 +69,7 @@ L.RaidWarnColor_1 			= "Color 1"
 L.RaidWarnColor_2 			= "Color 2"
 L.RaidWarnColor_3		 	= "Color 3"
 L.RaidWarnColor_4 			= "Color 4"
-L.InfoRaidWarning			= [[Puedes especificar la posición y colores del marco de avisos de banda. 
+L.InfoRaidWarning			= [[Puedes especificar la posición y colores del marco de avisos de banda.
 Este marco se usa para mensajes como "Jugador X afectado por Y".]]
 L.ColorResetted 			= "Se ha reiniciado la configuración de colores de este campo."
 L.ShowWarningsInChat 		= "Mostrar avisos en el chat"

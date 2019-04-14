@@ -12,9 +12,9 @@ DBM_CORE_LOAD_MOD_VER_MISMATCH		= "%s n'a pas pu être chargé car votre DBM-Cor
 DBM_CORE_DYNAMIC_DIFFICULTY_CLUMP   = "DBM a désactivé la vérification du nombre de joueurs à portée sur ce combat pour cause de manque d'information sur le nombre de joueurs requis regroupés pour votre taille de raid."
 DBM_CORE_DYNAMIC_ADD_COUNT          = "DBM a désactivé les alertes de décompte d'adds en vie sur ce combat pour cause de manque d'information du nombre d'adds apparaissant pour votre taille de raid."
 DBM_CORE_DYNAMIC_MULTIPLE           = "DBM a désactivé plusieurs fonctionnalités sur ce combat pour cause de manque d'informations sur certains mécanismes pour votre taille de raid  ."
- 
+
 DBM_CORE_LOOT_SPEC_REMINDER         = "Votre spécialisation actuelle est %s. Votre choix de loot actuel est %s."
- 
+
 DBM_CORE_BIGWIGS_ICON_CONFLICT      = "DBM a détecté que vous avez activé vos icônes de raid sur DBM et Bigwigs simultanément. Désactivez les icônes de l'un d'entre-eux pour éviter tout conflit avec votre raid leader"
 
 DBM_CORE_MOD_AVAILABLE				= "%s est disponible pour ce contenu. Vous pouvez trouver sur |HDBM:forums|h|cff3588ffdeadlybossmods.com|r ou sur Curse. Ce message ne s'affichera qu'une fois."

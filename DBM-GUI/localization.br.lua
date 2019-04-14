@@ -22,8 +22,8 @@ L.TabCategory_PVP 			= "PVP"
 L.TabCategory_OTHER    		= "Outros módulos"
 
 L.BossModLoaded 			= "%s estatísticas"
-L.BossModLoad_now 			= [[Esse módulo não está carregado. 
-Ele será carregado quando você entrar na instância. 
+L.BossModLoad_now 			= [[Esse módulo não está carregado.
+Ele será carregado quando você entrar na instância.
 Você também pode clicar no botão para carregar o módulo manualmente.]]
 
 L.PosX						= 'Posição X'

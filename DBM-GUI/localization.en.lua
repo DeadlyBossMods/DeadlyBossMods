@@ -24,8 +24,8 @@ L.TabCategory_CLASSIC		= EXPANSION_NAME0
 L.TabCategory_OTHER    		= "Other Boss Mods"
 
 L.BossModLoaded 			= "%s statistics"
-L.BossModLoad_now 			= [[This boss mod is not loaded. 
-It will be loaded when you enter the instance. 
+L.BossModLoad_now 			= [[This boss mod is not loaded.
+It will be loaded when you enter the instance.
 You can also click the button to load the mod manually.]]
 
 L.PosX						= 'Position X'
@@ -82,7 +82,7 @@ L.RaidWarnColor_1 			= "Color 1"
 L.RaidWarnColor_2 			= "Color 2"
 L.RaidWarnColor_3		 	= "Color 3"
 L.RaidWarnColor_4 			= "Color 4"
-L.InfoRaidWarning			= [[You can specify the position and colors of the raid warning frame. 
+L.InfoRaidWarning			= [[You can specify the position and colors of the raid warning frame.
 This frame is used for messages like "Player X is affected by Y".]]
 L.ColorResetted 			= "The color settings of this field have been reset."
 L.ShowWarningsInChat 		= "Show warnings in chat frame"

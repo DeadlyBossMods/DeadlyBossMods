@@ -18,8 +18,8 @@ L.TabCategory_CLASSIC		= "WoW Classic"
 L.TabCategory_OTHER    		= "Altri Boss Mods"
 
 L.BossModLoaded 			= "%s statistiche"
-L.BossModLoad_now 			= [[Questo BossMod non e' caricato. 
-Verra' caricato quando entri nell'istanza. 
+L.BossModLoad_now 			= [[Questo BossMod non e' caricato.
+Verra' caricato quando entri nell'istanza.
 Puoi anche cliccare il bottone per caricare il modulo manualmente.]]
 
 L.PosX						= 'Posizione X'
