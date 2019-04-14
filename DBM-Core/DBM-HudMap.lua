@@ -1498,7 +1498,7 @@ do
 		end
 
 		local hyp = abs(sqrt((dx * dx) + (dy * dy)))
-		local x, y = sin(angle + bearing), cos(angle + bearing)
+		x, y = sin(angle + bearing), cos(angle + bearing)
 		nx, ny = -x * hyp, -y * hyp
 
 		if alwaysShow then

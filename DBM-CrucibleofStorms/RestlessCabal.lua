@@ -60,7 +60,6 @@ local specWarnAphoticBlast				= mod:NewSpecialWarningYou(282386, false, nil, 2, 
 local yellAphoticBlast					= mod:NewFadesYell(282386)
 local specWarnAgentofDemise				= mod:NewSpecialWarningTargetChange(282540, "-Healer", nil, nil, 1, 2)
 local yellAgentofDemise					= mod:NewYell(282540, nil, nil, nil, "YELL")
-local specWarnCustodyoftheDeep			= mod:NewSpecialWarningMoveTo(284772, "Tank", nil, nil, 1, 2)
 local specWarnCerebralAssault			= mod:NewSpecialWarningDodge(282589, nil, nil, nil, 3, 2)
 local specWarnDarkherald				= mod:NewSpecialWarningYou(282561, nil, nil, nil, 1, 2)
 local yellDarkherald					= mod:NewYell(282561)

@@ -175,11 +175,11 @@ function mod:ZONE_CHANGED_NEW_AREA()
 	if mod2 then
 		mod2:Stop()--Stop all timers and warnings
 	end
-	local mod2 = DBM:GetModByName("BrawlLegacy")
+	mod2 = DBM:GetModByName("BrawlLegacy")
 	if mod2 then
 		mod2:Stop()--Stop all timers and warnings
 	end
-	local mod2 = DBM:GetModByName("BrawlRumble")
+	mod2 = DBM:GetModByName("BrawlRumble")
 	if mod2 then
 		mod2:Stop()--Stop all timers and warnings
 	end
@@ -233,11 +233,11 @@ function mod:OnSync(msg)
 		if mod2 then
 			mod2:Stop()--Stop all timers and warnings
 		end
-		local mod2 = DBM:GetModByName("BrawlLegacy")
+		mod2 = DBM:GetModByName("BrawlLegacy")
 		if mod2 then
 			mod2:Stop()--Stop all timers and warnings
 		end
-		local mod2 = DBM:GetModByName("BrawlRumble")
+		mod2 = DBM:GetModByName("BrawlRumble")
 		if mod2 then
 			mod2:Stop()--Stop all timers and warnings
 		end

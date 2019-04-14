@@ -615,7 +615,7 @@ do
 		obj.secAnchor:Show()
 		return obj
 	end
-	
+
 	local function delaySkinCheck(self)
 		local skins = self:GetSkins()
 		if not skins then--Returns nil if checked too soon
@@ -1168,7 +1168,7 @@ function DBT:SavePosition()
 	self:SetOption("TimerPoint", point)
 	self:SetOption("TimerX", x)
 	self:SetOption("TimerY", y)
-	local point, _, _, x, y = self.secAnchor:GetPoint(1)
+	point, _, _, x, y = self.secAnchor:GetPoint(1)
 	self:SetOption("HugeTimerPoint", point)
 	self:SetOption("HugeTimerX", x)
 	self:SetOption("HugeTimerY", y)
@@ -1223,7 +1223,7 @@ function barPrototype:Cancel()
 	unusedBarObjects[self] = self
 	self.dead = true
 	self.owner.numBars = (self.owner.numBars or 1) - 1
-	totalBars = self.owner.numBars 
+	totalBars = self.owner.numBars
 end
 
 
