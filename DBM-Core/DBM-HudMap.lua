@@ -444,7 +444,7 @@ local function DrawRouteLineCustom(T, C, sx, sy, ex, ey, w, extend, relPoint)
 		Bwid = ((l * c) - (w * s)) * TAXIROUTE_LINEFACTOR_2;
 		Bhgt = ((w * c) - (l * s)) * TAXIROUTE_LINEFACTOR_2;
 		BLx, BLy, BRy = (w / l) * sc, s * s, (l / w) * sc;
-		BRx, TLx, TLy, TRx = 1 - BLy, BLy, 1 - BRy, 1 - BLx; 
+		BRx, TLx, TLy, TRx = 1 - BLy, BLy, 1 - BRy, 1 - BLx;
 		TRy = BRx;
 	else
 		Bwid = ((l * c) + (w * s)) * TAXIROUTE_LINEFACTOR_2;
@@ -684,7 +684,7 @@ Edge = setmetatable({
 		elseif self.dx and self.dy then
 			dx, dy = self.dx, self.dy
 		end
-		
+
 		if self.w then
 			w = self.w
 		else
@@ -694,7 +694,7 @@ Edge = setmetatable({
 		local visible
 		if sx and sy and dx and dy then
 			local px, py = mod:GetUnitPosition("player")
-			local radius = zoomScale * zoomScale 
+			local radius = zoomScale * zoomScale
 			local d1 = pow(px - sx, 2) + pow(py - sy, 2)
 			local d2 = pow(px - dx, 2) + pow(py - dy, 2)
 			visible = d1 < radius or d2 < radius
@@ -1399,7 +1399,7 @@ end
 function mod:DistanceBetweenPoints(x1, y1, x2, y2)
 	local dx = x2 - x1
 	local dy = y2 - y1
-	return abs(pow((dx*dx)+(dy*dy), 0.5))	
+	return abs(pow((dx*dx)+(dy*dy), 0.5))
 end
 
 function mod:DistanceToPoint(unit, x, y)

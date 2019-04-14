@@ -2726,37 +2726,37 @@ do
 	--New LDB Object
 	if LibStub("LibDataBroker-1.1", true) then
 		dataBroker = LibStub("LibDataBroker-1.1"):NewDataObject("DBM",
-        	{type = "launcher", label = "DBM", icon = "Interface\\AddOns\\DBM-Core\\textures\\Minimap-Button-Up"}
-    	)
+			{type = "launcher", label = "DBM", icon = "Interface\\AddOns\\DBM-Core\\textures\\Minimap-Button-Up"}
+		)
 
 		function dataBroker.OnClick(self, button)
 			if IsShiftKeyDown() then return end
 			if button == "RightButton" then
 				UIDropDownMenu_Initialize(dropdownFrame, initialize)
 				ToggleDropDownMenu(1, nil, dropdownFrame, "cursor", 5, -10)
-    		else
-       			DBM:LoadGUI()
-       		end
-    	end
+			else
+				DBM:LoadGUI()
+			end
+		end
 
-    	function dataBroker.OnTooltipShow(GameTooltip)
-        	GameTooltip:SetText(DBM_CORE_MINIMAP_TOOLTIP_HEADER, 1, 1, 1)
-        	GameTooltip:AddLine(ver, NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, 1)
-        	GameTooltip:AddLine(" ")
-        	GameTooltip:AddLine(DBM_CORE_MINIMAP_TOOLTIP_FOOTER, RAID_CLASS_COLORS.MAGE.r, RAID_CLASS_COLORS.MAGE.g, RAID_CLASS_COLORS.MAGE.b, 1)
+		function dataBroker.OnTooltipShow(GameTooltip)
+			GameTooltip:SetText(DBM_CORE_MINIMAP_TOOLTIP_HEADER, 1, 1, 1)
+			GameTooltip:AddLine(ver, NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, 1)
+			GameTooltip:AddLine(" ")
+			GameTooltip:AddLine(DBM_CORE_MINIMAP_TOOLTIP_FOOTER, RAID_CLASS_COLORS.MAGE.r, RAID_CLASS_COLORS.MAGE.g, RAID_CLASS_COLORS.MAGE.b, 1)
 			GameTooltip:AddLine(DBM_LDB_TOOLTIP_HELP1, RAID_CLASS_COLORS.MAGE.r, RAID_CLASS_COLORS.MAGE.g, RAID_CLASS_COLORS.MAGE.b)
 			GameTooltip:AddLine(DBM_LDB_TOOLTIP_HELP2, RAID_CLASS_COLORS.MAGE.r, RAID_CLASS_COLORS.MAGE.g, RAID_CLASS_COLORS.MAGE.b)
-    	end
-    end
+		end
+	end
 
-    function DBM:ToggleMinimapButton()
-        DBM_MinimapIcon.hide = not DBM_MinimapIcon.hide
-        if DBM_MinimapIcon.hide then
-            LibStub("LibDBIcon-1.0"):Hide("DBM")
-        else
-            LibStub("LibDBIcon-1.0"):Show("DBM")
-        end
-    end
+	function DBM:ToggleMinimapButton()
+		DBM_MinimapIcon.hide = not DBM_MinimapIcon.hide
+		if DBM_MinimapIcon.hide then
+			LibStub("LibDBIcon-1.0"):Hide("DBM")
+		else
+			LibStub("LibDBIcon-1.0"):Show("DBM")
+		end
+	end
 end
 
 -------------------------------------------------
@@ -3717,8 +3717,8 @@ do
 					end
 				end
 			end
-            -- Check regular non-BNet friends
-            local nf = GetNumFriends()
+			-- Check regular non-BNet friends
+			local nf = GetNumFriends()
 			for i = 1, nf do
 				local toonName = GetFriendInfo(i)
 				if toonName == sender then

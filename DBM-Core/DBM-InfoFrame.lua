@@ -95,7 +95,7 @@ do
 	local function toggleShowSelf()
 		DBM.Options.InfoFrameShowSelf = not DBM.Options.InfoFrameShowSelf
 	end
-	
+
 	local function setLines(self, line)
 		DBM.Options.InfoFrameLines = line
 		if line ~= 0 then
@@ -124,7 +124,7 @@ do
 			end
 			info.func = toggleShowSelf
 			UIDropDownMenu_AddButton(info, 1)
-			
+
 			info = UIDropDownMenu_CreateInfo()
 			info.text = DBM_CORE_INFOFRAME_SETLINES
 			info.notCheckable = true
@@ -161,28 +161,28 @@ do
 				info.arg1 = 5
 				info.checked = (DBM.Options.InfoFrameLines == 5)
 				UIDropDownMenu_AddButton(info, 2)
-				
+
 				info = UIDropDownMenu_CreateInfo()
 				info.text = DBM_CORE_INFOFRAME_LINES_TO:format(8)
 				info.func = setLines
 				info.arg1 = 8
 				info.checked = (DBM.Options.InfoFrameLines == 8)
 				UIDropDownMenu_AddButton(info, 2)
-				
+
 				info = UIDropDownMenu_CreateInfo()
 				info.text = DBM_CORE_INFOFRAME_LINES_TO:format(10)
 				info.func = setLines
 				info.arg1 = 10
 				info.checked = (DBM.Options.InfoFrameLines == 10)
 				UIDropDownMenu_AddButton(info, 2)
-				
+
 				info = UIDropDownMenu_CreateInfo()
 				info.text = DBM_CORE_INFOFRAME_LINES_TO:format(15)
 				info.func = setLines
 				info.arg1 = 15
 				info.checked = (DBM.Options.InfoFrameLines == 15)
 				UIDropDownMenu_AddButton(info, 2)
-				
+
 				info = UIDropDownMenu_CreateInfo()
 				info.text = DBM_CORE_INFOFRAME_LINES_TO:format(20)
 				info.func = setLines

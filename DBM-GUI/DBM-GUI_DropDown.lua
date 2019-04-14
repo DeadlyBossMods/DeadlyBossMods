@@ -220,7 +220,7 @@ do
 			self:ShowMenu(self.dropdown.values)
 		end
 	end
-	
+
 	ClickFrame:SetAllPoints(DBM_GUI_OptionsFrame)
 	ClickFrame:SetFrameStrata("TOOLTIP")
 	ClickFrame:RegisterForClicks("AnyDown")
@@ -230,9 +230,9 @@ do
 	end)
 
 	------------------------------------------------------------------------------------------
-	
+
 	local dropdownPrototype = CreateFrame("Frame")
-	
+
 	function dropdownPrototype:SetSelectedValue(selected)
 		if selected and self.values and type(self.values) == "table" then
 			for k,v in next, self.values do
@@ -244,7 +244,7 @@ do
 			end
 		end
 	end
-	
+
 	function DBM_GUI:CreateDropdown(title, values, vartype, var, callfunc, width, height, parent)
 		local FrameTitle = "DBM_GUI_DropDown"
 		-- Check Values
@@ -254,7 +254,7 @@ do
 				entry.value = entry.value or entry.text
 			end
 		end
-		
+
 		-- Create the Dropdown Frame
 		local dropdown = CreateFrame("Frame", FrameTitle..self:GetNewID(), parent or self.frame, "DBM_GUI_DropDownMenuTemplate")
 		dropdown.creator = self
@@ -297,7 +297,7 @@ do
 			dropdown.titletext:SetFontObject('GameFontNormalSmall')
 			dropdown.titletext:SetText(title)
 		end
-		
+
 		local obj = setmetatable(dropdown, {__index = dropdownPrototype})
 
 		if vartype and vartype == "DBM" and DBM.Options[var] ~= nil then

@@ -114,7 +114,7 @@ do
 		rangeCheck:Hide(true)
 		rangeCheck:Show(range, mainFrame.filter, true, mainFrame.redCircleNumPlayers or 1)
 	end
-	
+
 	local function setThreshold(self, threshold)
 		rangeCheck:Hide(true)
 		rangeCheck:Show(mainFrame.range, mainFrame.filter, true, threshold)
@@ -188,14 +188,14 @@ do
 				info.arg1 = 4
 				info.checked = (mainFrame.range == 4)
 				UIDropDownMenu_AddButton(info, 2)
-				
+
 				info = UIDropDownMenu_CreateInfo()
 				info.text = DBM_CORE_RANGECHECK_SETRANGE_TO:format(6)
 				info.func = setRange
 				info.arg1 = 6
 				info.checked = (mainFrame.range == 6)
 				UIDropDownMenu_AddButton(info, 2)
-				
+
 				info = UIDropDownMenu_CreateInfo()
 				info.text = DBM_CORE_RANGECHECK_SETRANGE_TO:format(8)
 				info.func = setRange
@@ -209,7 +209,7 @@ do
 				info.arg1 = 10
 				info.checked = (mainFrame.range == 10)
 				UIDropDownMenu_AddButton(info, 2)
-				
+
 				info = UIDropDownMenu_CreateInfo()
 				info.text = DBM_CORE_RANGECHECK_SETRANGE_TO:format(13)
 				info.func = setRange
@@ -230,7 +230,7 @@ do
 				info.arg1 = 30
 				info.checked = (mainFrame.range == 30)
 				UIDropDownMenu_AddButton(info, 2)
-				
+
 				info = UIDropDownMenu_CreateInfo()
 				info.text = DBM_CORE_RANGECHECK_SETRANGE_TO:format(43)
 				info.func = setRange
@@ -251,35 +251,35 @@ do
 				info.arg1 = 2
 				info.checked = (mainFrame.redCircleNumPlayers == 2)
 				UIDropDownMenu_AddButton(info, 2)
-				
+
 				info = UIDropDownMenu_CreateInfo()
 				info.text = 3
 				info.func = setThreshold
 				info.arg1 = 3
 				info.checked = (mainFrame.redCircleNumPlayers == 3)
 				UIDropDownMenu_AddButton(info, 2)
-				
+
 				info = UIDropDownMenu_CreateInfo()
 				info.text = 4
 				info.func = setThreshold
 				info.arg1 = 4
 				info.checked = (mainFrame.redCircleNumPlayers == 4)
 				UIDropDownMenu_AddButton(info, 2)
-				
+
 				info = UIDropDownMenu_CreateInfo()
 				info.text = 5
 				info.func = setThreshold
 				info.arg1 = 5
 				info.checked = (mainFrame.redCircleNumPlayers == 5)
 				UIDropDownMenu_AddButton(info, 2)
-				
+
 				info = UIDropDownMenu_CreateInfo()
 				info.text = 6
 				info.func = setThreshold
 				info.arg1 = 6
 				info.checked = (mainFrame.redCircleNumPlayers == 6)
 				UIDropDownMenu_AddButton(info, 2)
-				
+
 				info = UIDropDownMenu_CreateInfo()
 				info.text = 8
 				info.func = setThreshold
@@ -755,7 +755,7 @@ do
 		elseif IsItemInRange(35278, uId) then return 80
 		else return 1000 end--Just so it has a numeric value, even if it's unknown to protect from nil errors
 	end
-	
+
 	function getDistanceBetweenALL(checkrange)
 		local range = 1000
 		for uId in DBM:GetGroupMembers() do
@@ -772,7 +772,7 @@ do
 		end
 		return false--No one was foundi nrnage
 	end
-	
+
 	function getDistanceBetween(uId, x, y)
 		local restrictionsActive = DBM:HasMapRestrictions()
 		if not x then--If only one arg then 2nd arg is always assumed to be player
@@ -907,7 +907,7 @@ function rangeCheck:Hide(force)
 		end
 		if radarFrame then
 			radarFrame.isShown = nil
-			radarFrame:Hide() 
+			radarFrame:Hide()
 		end
 	end
 end

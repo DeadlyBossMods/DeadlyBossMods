@@ -246,8 +246,8 @@ function nameplateFrame:Show(isGUID, unit, spellId, texture, duration, desaturat
     if DBM.Options.DontShowNameplateIcons then return end
 
     if DBM.Options.DontShowNameplateLines then
-    	--User doesn't want lines, force nil them out if they exist
-    	addLine, lineColor = nil, nil
+		--User doesn't want lines, force nil them out if they exist
+		addLine, lineColor = nil, nil
     end
 
     -- ignore player nameplate;
@@ -286,7 +286,7 @@ function nameplateFrame:Show(isGUID, unit, spellId, texture, duration, desaturat
         if frame then
             Nameplate_UnitAdded(frame, unit)
             if duration then
-            	DBM:Schedule(duration, Nameplate_AutoHide, self, isGUID, unit, spellId, texture)
+				DBM:Schedule(duration, Nameplate_AutoHide, self, isGUID, unit, spellId, texture)
             end
         end
     else
@@ -296,9 +296,9 @@ function nameplateFrame:Show(isGUID, unit, spellId, texture, duration, desaturat
             local foundUnit = frame.namePlateUnitToken or (frame.UnitFrame and frame.UnitFrame.unit)
             if foundUnit and UnitGUID(foundUnit) == unit then
                 Nameplate_UnitAdded(frame, foundUnit)
-            	if duration then
-            		DBM:Schedule(duration, Nameplate_AutoHide, self, isGUID, unit, spellId, texture)
-            	end
+				if duration then
+					DBM:Schedule(duration, Nameplate_AutoHide, self, isGUID, unit, spellId, texture)
+				end
                 break
             end
         end
@@ -313,11 +313,11 @@ function nameplateFrame:Hide(isGUID, unit, spellId, texture, force, isHostile, i
         DBM:Debug("DBM.Nameplate Found supported NP mod, only sending Hide callbacks", 3)
 
         if force then
-        	if isFriendly then
-            	DBM:FireEvent("BossMod_DisableFriendlyNameplates")
+			if isFriendly then
+				DBM:FireEvent("BossMod_DisableFriendlyNameplates")
             end
             if isHostile then
-            	DBM:FireEvent("BossMod_DisableHostileNameplates")
+				DBM:FireEvent("BossMod_DisableHostileNameplates")
             end
         elseif unit then
             DBM:FireEvent("BossMod_HideNameplateAura", isGUID, unit, currentTexture)
