@@ -9216,11 +9216,6 @@ do
 	end
 
 	function bossModPrototype:NewCastAnnounce(spellId, color, castTime, icon, optionDefault, optionName, noArg, soundOption)
-		local optionVersion
-		if type(optionName) == "number" then
-			optionVersion = optionName
-			optionName = nil
-		end
 		return newAnnounce(self, "cast", spellId, color or 3, icon, optionDefault, optionName, castTime, nil, soundOption)
 	end
 
@@ -9233,11 +9228,6 @@ do
 	end
 
 	function bossModPrototype:NewPreWarnAnnounce(spellId, time, color, icon, optionDefault, optionName, noArg, soundOption)
-		local optionVersion
-		if type(optionName) == "number" then
-			optionVersion = optionName
-			optionName = nil
-		end
 		return newAnnounce(self, "prewarn", spellId, color or 2, icon, optionDefault, optionName, nil, time, soundOption)
 	end
 
@@ -9400,17 +9390,14 @@ do
 				DBM:Debug("Voice cache not built at time of countdownProtoType:Start. On fly caching.", 3)
 				DBM:BuildVoiceCountdownCache()
 			end
-			local voice, maxCount, path
+			local maxCount, path
 			if self.alternateVoice == 2 then
-				voice = voice2 or DBM.DefaultOptions.CountdownVoice2
 				maxCount = voice2max or 10
 				path = path2 or "Interface\\AddOns\\DBM-Core\\Sounds\\Kolt\\"
 			elseif self.alternateVoice == 3 then
-				voice = voice3 or DBM.DefaultOptions.CountdownVoice3v2
 				maxCount = voice3max or 5
 				path = path3 or "Interface\\AddOns\\DBM-Core\\Sounds\\Heroes\\Necromancer\\"
 			else
-				voice = voice1 or DBM.DefaultOptions.CountdownVoice
 				maxCount = voice1max or 10
 				path = path1 or "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica\\"
 			end

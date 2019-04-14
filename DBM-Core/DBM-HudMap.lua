@@ -14,7 +14,6 @@ local error, print = error, print
 local CallbackHandler = LibStub:GetLibrary("CallbackHandler-1.0")
 local updateFrame = CreateFrame("Frame", "DBMHudMapUpdateFrame")
 local onUpdate, Point, Edge
-local followedUnits = {}
 local callbacks = CallbackHandler:New(mod)
 local activeMarkers = 0
 local hudarActive = false
@@ -761,9 +760,6 @@ do
 		Free = function(self, noAnimate)
 			if self:OnFree(noAnimate) == false then return end
 
-			if self.follow then
-				followedUnits[self.follow] = nil
-			end
 			for edge, _ in pairs(self.edges) do
 				edge:Free()
 			end
@@ -800,11 +796,11 @@ do
 			return self
 		end,
 
+		--Doubt anything actually uses Follow call, should probably be stripped out
 		Follow = function(self, unit)
 			self.stickX = nil
 			self.stickY = nil
 			self.follow = unit
-			followedUnits[unit] = self
 			return self
 		end,
 
