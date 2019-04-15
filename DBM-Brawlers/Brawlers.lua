@@ -171,17 +171,17 @@ function mod:ZONE_CHANGED_NEW_AREA()
 			mod2:Stop()--Stop all timers and warnings
 		end
 	end
-	local mod2 = DBM:GetModByName("BrawlChallenges")
-	if mod2 then
-		mod2:Stop()--Stop all timers and warnings
+	local mod3 = DBM:GetModByName("BrawlChallenges")
+	if mod3 then
+		mod3:Stop()--Stop all timers and warnings
 	end
-	mod2 = DBM:GetModByName("BrawlLegacy")
-	if mod2 then
-		mod2:Stop()--Stop all timers and warnings
+	local mod4 = DBM:GetModByName("BrawlLegacy")
+	if mod4 then
+		mod4:Stop()--Stop all timers and warnings
 	end
-	mod2 = DBM:GetModByName("BrawlRumble")
-	if mod2 then
-		mod2:Stop()--Stop all timers and warnings
+	local mod5 = DBM:GetModByName("BrawlRumble")
+	if mod5 then
+		mod5:Stop()--Stop all timers and warnings
 	end
 	setDialog(self)
 	modsStopped = true
