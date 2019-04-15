@@ -37,6 +37,7 @@ mod:RegisterEventsInCombat(
 --[[
 (ability.id = 282675 or ability.id = 282589 or ability.id = 282515 or ability.id = 282617 or ability.id = 282517 or ability.id = 283540 or ability.id = 282621 or ability.id = 282818) and type = "begincast"
  or (ability.id = 282561 or ability.id = 282384 or ability.id = 282407 or ability.id = 285416) and type = "cast"
+ or (ability.id = 282817 or ability.id = 282432) and type = "applydebuff"
 --]]
 --Relics of Power
 local warnUmbralShell					= mod:NewFadesAnnounce(282741, 1)
@@ -68,7 +69,7 @@ local specWarnVisagefromBeyond			= mod:NewSpecialWarningSwitch(282515, "-Healer"
 local specWarnShearMind					= mod:NewSpecialWarningStack(282384, nil, 3, nil, nil, 1, 6)
 local specWarnShearMindTaunt			= mod:NewSpecialWarningTaunt(282384, nil, nil, nil, 1, 2)
 local yellShearMindFades				= mod:NewFadesYell(282384, nil, false)--useful but optional
-local specSeveredAnguish				= mod:NewSpecialWarningTaunt(282817, nil, nil, nil, 1, 2)
+--local specSeveredAnguish				= mod:NewSpecialWarningTaunt(282817, nil, nil, nil, 1, 2)
 local specWarnCrushingDoubt				= mod:NewSpecialWarningYouPos(282432, nil, nil, nil, 1, 2)
 local yellCrushingDoubt					= mod:NewPosYell(282432)
 local yellCrushingDoubtFades			= mod:NewIconFadesYell(282432)
@@ -82,14 +83,14 @@ local timerStormofAnnihilation			= mod:NewCastTimer(15, 286755, nil, nil, nil, 2
 local timerPact							= mod:NewCastSourceTimer(12, 282675, nil, nil, nil, 2, nil, DBM_CORE_IMPORTANT_ICON)
 --Zaxasj the Speaker
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(18974))
-local timerCerebralAssaultCD			= mod:NewCDTimer(31.6, 282589, nil, nil, nil, 3)
+local timerCerebralAssaultCD			= mod:NewCDTimer(31.5, 282589, nil, nil, nil, 3)
 local timerDarkherald					= mod:NewTargetTimer(20, 282589, nil, nil, nil, 5)
-local timerDarkheraldCD					= mod:NewCDTimer(32.8, 282589, nil, nil, nil, 3)
+local timerDarkheraldCD					= mod:NewCDTimer(32.7, 282589, nil, nil, nil, 3)
 local timerTerrifyingEcho				= mod:NewCastTimer(15, 282517, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
 --Fa'thuul the Feared
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(18983))
 local timerShearMindCD					= mod:NewCDTimer(8.4, 282384, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
-local timerDevourThoughtsCD				= mod:NewCDTimer(9.8, 282818, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+--local timerDevourThoughtsCD				= mod:NewCDTimer(9.8, 282818, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerVoidCrashCD					= mod:NewCDTimer(13.3, 285416, nil, nil, nil, 3)
 local timerCrushingDoubtCD				= mod:NewCDTimer(40.1, 282432, nil, nil, nil, 3)
 
@@ -108,18 +109,18 @@ mod:AddNamePlateOption("NPAuraOnEcho", 282517)
 
 --mod.vb.phase = 1
 mod.vb.CrushingDoubtIcon = 1
-mod.vb.tankAddsActive = 0
+--mod.vb.tankAddsActive = 0
 mod.vb.addIcon = 4--4-6
 local mobGUIDs = {}
 
 function mod:OnCombatStart(delay)
 	table.wipe(mobGUIDs)
 	self.vb.CrushingDoubtIcon = 1
-	self.vb.tankAddsActive = 0
+	--self.vb.tankAddsActive = 0
 	self.vb.addIcon = 4
 	--Zaxasj the Speaker
-	timerCerebralAssaultCD:Start(16.8-delay)
-	timerDarkheraldCD:Start(11.5-delay)--SUCCESS
+	timerDarkheraldCD:Start(10.2-delay)--SUCCESS
+	timerCerebralAssaultCD:Start(15.5-delay)
 	--Fa'thuul the Feared
 	timerShearMindCD:Start(8.5-delay)--SUCCESS
 	timerVoidCrashCD:Start(13-delay)--SUCCESS
@@ -182,8 +183,8 @@ function mod:SPELL_CAST_START(args)
 			specWarnWitnesstheEnd:Show(args.sourceName)
 			specWarnWitnesstheEnd:Play("kickcast")
 		end
-	elseif spellId == 282818 then
-		timerDevourThoughtsCD:Start(9.8, args.sourceGUID)
+--	elseif spellId == 282818 then
+		--timerDevourThoughtsCD:Start(9.8, args.sourceGUID)
 	end
 end
 
@@ -276,7 +277,7 @@ function mod:SPELL_AURA_APPLIED(args)
 					specWarnShearMind:Show(amount)
 					specWarnShearMind:Play("stackhigh")
 				else
-					if not UnitIsDeadOrGhost("player") and not DBM:UnitDebuff("player", spellId) and self.vb.tankAddsActive == 0 then--Can't taunt less you've dropped yours off and aren't dealing with an add
+					if not UnitIsDeadOrGhost("player") and not DBM:UnitDebuff("player", spellId) then--Can't taunt less you've dropped yours off and aren't dealing with an add
 						specWarnShearMindTaunt:Show(args.destName)
 						specWarnShearMindTaunt:Play("tauntboss")
 					else
@@ -307,7 +308,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 287876 and args:IsPlayer() and self:AntiSpam(3, 2) then
 		specWarnGTFO:Show(args.spellName)
 		specWarnGTFO:Play("runaway")--This particular case it's not a watch feet GTFO, it's a run away since you're too far into darkness
-	elseif spellId == 282817 then
+	--[[elseif spellId == 282817 then
 		self.vb.tankAddsActive = self.vb.tankAddsActive + 1
 		local _, _, _, _, expireTime = DBM:UnitDebuff("player", 282384)
 		local remaining
@@ -319,7 +320,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specSeveredAnguish:Show()
 			specSeveredAnguish:Play("killmob")
 		end
-		timerDevourThoughtsCD:Start(4.5, args.destGUID)--START
+		timerDevourThoughtsCD:Start(4.5, args.destGUID)--START--]]
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -379,9 +380,9 @@ function mod:UNIT_DIED(args)
 		if self.Options.NPAuraOnEcho then
 			DBM.Nameplate:Hide(true, args.destGUID)
 		end
-	elseif cid == 145275 then--Manifestation of Anguish
-		self.vb.tankAddsActive = self.vb.tankAddsActive - 1
-		timerDevourThoughtsCD:Stop(args.destGUID)
+--	elseif cid == 145275 then--Manifestation of Anguish
+--		self.vb.tankAddsActive = self.vb.tankAddsActive - 1
+		--timerDevourThoughtsCD:Stop(args.destGUID)
 	elseif cid == 145053 then--Eldritch Abomination
 		mobGUIDs[args.destGUID] = nil
 	end
