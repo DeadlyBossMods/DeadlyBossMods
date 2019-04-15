@@ -42,8 +42,8 @@
 -------------------------------
 DBM = {
 	Revision = tonumber(string.sub("@file-date-integer@", 1, -5)),
-	DisplayVersion = "8.1.15 alpha", -- the string that is shown as version
-	ReleaseRevision = 18480 -- the revision of the latest stable version that is available
+	DisplayVersion = "8.1.15", -- the string that is shown as version
+	ReleaseRevision = 2019041517 -- 2019/4/15/1700. the revision of the latest stable version that is available
 }
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
