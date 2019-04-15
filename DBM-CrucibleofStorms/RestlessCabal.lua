@@ -74,7 +74,7 @@ local specWarnCrushingDoubt				= mod:NewSpecialWarningYouPos(282432, nil, nil, n
 local yellCrushingDoubt					= mod:NewPosYell(282432)
 local yellCrushingDoubtFades			= mod:NewIconFadesYell(282432)
 local specWarnEldritchRevelation		= mod:NewSpecialWarningSwitch(282617, false, nil, 2, 1, 2)
-local specWarnWitnesstheEnd				= mod:NewSpecialWarningInterrupt(282621, false, nil, 2, 1, 2)
+local specWarnWitnesstheEnd				= mod:NewSpecialWarningInterruptCount(282621, false, nil, nil, 1, 2)
 local specWarnGTFO						= mod:NewSpecialWarningGTFO(287876, nil, nil, nil, 1, 8)
 
 --mod:AddTimerLine(DBM:EJ_GetSectionInfo(18527))
@@ -106,15 +106,17 @@ mod:AddSetIconOption("SetIconOnAdds", 282621, true, true)
 mod:AddRangeFrameOption(6, 283524)
 mod:AddInfoFrameOption(282741, true)
 mod:AddNamePlateOption("NPAuraOnEcho", 282517)
+mod:AddNamePlateOption("NPAuraOnWitness", 282621)
 
 --mod.vb.phase = 1
 mod.vb.CrushingDoubtIcon = 1
 --mod.vb.tankAddsActive = 0
 mod.vb.addIcon = 4--4-6
-local mobGUIDs = {}
+local castsPerGUID = {}
+local interruptTextures = {[1] = 2178508, [2] = 2178501, [3] = 2178502, [4] = 2178503, [5] = 2178504, [6] = 2178505, [7] = 2178506, [8] = 2178507,}--Fathoms Deck
 
 function mod:OnCombatStart(delay)
-	table.wipe(mobGUIDs)
+	table.wipe(castsPerGUID)
 	self.vb.CrushingDoubtIcon = 1
 	--self.vb.tankAddsActive = 0
 	self.vb.addIcon = 4
@@ -125,7 +127,7 @@ function mod:OnCombatStart(delay)
 	timerShearMindCD:Start(8.5-delay)--SUCCESS
 	timerVoidCrashCD:Start(13-delay)--SUCCESS
 	timerCrushingDoubtCD:Start(18.1-delay)
-	if self.Options.NPAuraOnPresence then
+	if self.Options.NPAuraOnPresence or self.Options.NPAuraOnWitness then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
 end
@@ -137,7 +139,7 @@ function mod:OnCombatEnd()
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
 	end
-	if self.Options.NPAuraOnPresence then
+	if self.Options.NPAuraOnPresence or self.Options.NPAuraOnWitness then
 		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
 	end
 end
@@ -169,8 +171,8 @@ function mod:SPELL_CAST_START(args)
 			DBM.Nameplate:Show(true, args.sourceGUID, spellId, nil, 15)
 		end
 	elseif (spellId == 283540 or spellId == 282621) then
-		if not mobGUIDs[args.sourceGUID] then
-			mobGUIDs[args.sourceGUID] = true
+		if not castsPerGUID[args.sourceGUID] then
+			castsPerGUID[args.sourceGUID] = 0
 			if self.Options.SetIconOnAdds then
 				self:ScanForMobs(args.sourceGUID, 2, self.vb.addIcon, 1, 0.2, 10)
 			end
@@ -179,9 +181,26 @@ function mod:SPELL_CAST_START(args)
 				self.vb.addIcon = 4
 			end
 		end
+		castsPerGUID[args.sourceGUID] = castsPerGUID[args.sourceGUID] + 1
+		local count = castsPerGUID[args.sourceGUID]
 		if self:CheckInterruptFilter(args.sourceGUID, false, true) then
-			specWarnWitnesstheEnd:Show(args.sourceName)
-			specWarnWitnesstheEnd:Play("kickcast")
+			specWarnWitnesstheEnd:Show(args.sourceName, count)
+			if count == 1 then
+				specWarnWitnesstheEnd:Play("kick1r")
+			elseif count == 2 then
+				specWarnWitnesstheEnd:Play("kick2r")
+			elseif count == 3 then
+				specWarnWitnesstheEnd:Play("kick3r")
+			elseif count == 4 then
+				specWarnWitnesstheEnd:Play("kick4r")
+			elseif count == 5 then
+				specWarnWitnesstheEnd:Play("kick5r")
+			else--Shouldn't happen, but fallback rules never hurt
+				specWarnWitnesstheEnd:Play("kickcast")
+			end
+		end
+		if self.Options.NPAuraOnWitness then
+			DBM.Nameplate:Show(true, args.sourceGUID, spellId, interruptTextures[count])
 		end
 --	elseif spellId == 282818 then
 		--timerDevourThoughtsCD:Start(9.8, args.sourceGUID)
@@ -384,7 +403,10 @@ function mod:UNIT_DIED(args)
 --		self.vb.tankAddsActive = self.vb.tankAddsActive - 1
 		--timerDevourThoughtsCD:Stop(args.destGUID)
 	elseif cid == 145053 then--Eldritch Abomination
-		mobGUIDs[args.destGUID] = nil
+		castsPerGUID[args.destGUID] = nil
+		if self.Options.NPAuraOnWitness then
+			DBM.Nameplate:Hide(true, args.destGUID)
+		end
 	end
 end
 

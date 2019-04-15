@@ -71,7 +71,7 @@ local specWarnGiftofNzothObscurity		= mod:NewSpecialWarningDodge(285453, nil, ni
 local specWarnCallUndyingGuardian		= mod:NewSpecialWarningSwitch(285820, "-Healer", nil, nil, 1, 2)
 --Stage Two: His Dutiful Servants
 local specWarnGiftofNzothHysteria		= mod:NewSpecialWarningCount(285638, nil, nil, nil, 2, 2)
-local specWarnConsumeEssence			= mod:NewSpecialWarningInterrupt(285427, false, nil, 4, 1, 2)
+local specWarnConsumeEssence			= mod:NewSpecialWarningInterruptCount(285427, false, nil, nil, 1, 2)
 local specWarnUnknowableTerror			= mod:NewSpecialWarningRun(285562, nil, nil, nil, 4, 2)
 --Stage Three: His Unwavering Gaze
 local specWarnInsatiableTorment			= mod:NewSpecialWarningYou(285652, nil, nil, nil, 1, 2)
@@ -115,6 +115,7 @@ mod:AddRangeFrameOption(10, 293653)
 mod:AddNamePlateOption("NPAuraOnBond", 287693)
 mod:AddNamePlateOption("NPAuraOnFeed", 285307)
 mod:AddNamePlateOption("NPAuraOnRegen", 285333)
+mod:AddNamePlateOption("NPAuraOnConsume", 285427)
 mod:AddSetIconOption("SetIconTorment", 285652, true)
 mod:AddSetIconOption("SetIconOnAdds", 285427, true, true)
 
@@ -131,7 +132,8 @@ mod.vb.addIcon = 8--8 backwards
 local trackedFeedback1, trackedFeedback2, trackedFeedback3 = false, false, false
 local playerAffected = false
 local unitTracked = {}
-local mobGUIDs = {}
+local castsPerGUID = {}
+local interruptTextures = {[1] = 2178508, [2] = 2178501, [3] = 2178502, [4] = 2178503, [5] = 2178504, [6] = 2178505, [7] = 2178506, [8] = 2178507,}--Fathoms Deck
 
 local updateInfoFrame
 do
@@ -213,7 +215,7 @@ function mod:OnCombatStart(delay)
 	trackedFeedback1, trackedFeedback2, trackedFeedback3 = false, false, false
 	playerAffected = false
 	table.wipe(unitTracked)
-	table.wipe(mobGUIDs)
+	table.wipe(castsPerGUID)
 	timerVoidCrashCD:Start(6.1-delay)
 	timerOblivionTearCD:Start(12.1-delay)
 	timerTouchoftheEndCD:Start(26.7-delay)
@@ -227,7 +229,7 @@ function mod:OnCombatStart(delay)
 		DBM.InfoFrame:SetHeader(OVERVIEW)
 		DBM.InfoFrame:Show(8, "function", updateInfoFrame, false, false)
 	end
-	if self.Options.NPAuraOnBond or self.Options.NPAuraOnFeed or self.Options.NPAuraOnRegen then
+	if self.Options.NPAuraOnBond or self.Options.NPAuraOnFeed or self.Options.NPAuraOnRegen or self.Options.NPAuraOnConsume then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
 end
@@ -239,7 +241,7 @@ function mod:OnCombatEnd()
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
 	end
-	if self.Options.NPAuraOnBond or self.Options.NPAuraOnFeed or self.Options.NPAuraOnRegen then
+	if self.Options.NPAuraOnBond or self.Options.NPAuraOnFeed or self.Options.NPAuraOnRegen or self.Options.NPAuraOnConsume then
 		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
 	end
 end
@@ -294,8 +296,8 @@ function mod:SPELL_CAST_START(args)
 		specWarnGiftofNzothLunacy:Play("stopattack")--Right voice?
 		timerGiftofNzothLunacyCD:Start()
 	elseif spellId == 285427 then
-		if not mobGUIDs[args.sourceGUID] then
-			mobGUIDs[args.sourceGUID] = true
+		if not castsPerGUID[args.sourceGUID] then
+			castsPerGUID[args.sourceGUID] = 0
 			if self.Options.SetIconOnAdds then
 				self:ScanForMobs(args.sourceGUID, 2, self.vb.addIcon, 1, 0.2, 10)
 			end
@@ -304,9 +306,26 @@ function mod:SPELL_CAST_START(args)
 				self.vb.addIcon = 8
 			end
 		end
+		castsPerGUID[args.sourceGUID] = castsPerGUID[args.sourceGUID] + 1
+		local count = castsPerGUID[args.sourceGUID]
 		if self:CheckInterruptFilter(args.sourceGUID, false, true) then
-			specWarnConsumeEssence:Show(args.sourceName)
-			specWarnConsumeEssence:Play("kickcast")
+			specWarnConsumeEssence:Show(args.sourceName, count)
+			if count == 1 then
+				specWarnConsumeEssence:Play("kick1r")
+			elseif count == 2 then
+				specWarnConsumeEssence:Play("kick2r")
+			elseif count == 3 then
+				specWarnConsumeEssence:Play("kick3r")
+			elseif count == 4 then
+				specWarnConsumeEssence:Play("kick4r")
+			elseif count == 5 then
+				specWarnConsumeEssence:Play("kick5r")
+			else--Shouldn't happen, but fallback rules never hurt
+				specWarnConsumeEssence:Play("kickcast")
+			end
+		end
+		if self.Options.NPAuraOnConsume then
+			DBM.Nameplate:Show(true, args.sourceGUID, spellId, interruptTextures[count])
 		end
 	end
 end
@@ -525,7 +544,10 @@ function mod:UNIT_DIED(args)
 			end
 		end
 	elseif cid == 146940 then--Primordial Mindbender
-		mobGUIDs[args.destGUID] = nil
+		castsPerGUID[args.destGUID] = nil
+		if self.Options.NPAuraOnConsume then
+			DBM.Nameplate:Hide(true, args.destGUID)
+		end
 	--elseif cid == 147024 then--Unknowable Terror
 		--timerUnknowableTerrorCD:Stop(args.destGUID)
 	end
