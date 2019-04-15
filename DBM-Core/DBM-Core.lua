@@ -9287,7 +9287,7 @@ do
 	--Voice Object
 	--Individual options still generated in case a person likes to enable voice, but not for ALL warnings (they can pick and choose what is enabled/disabled"
 	local soundPrototype2 = {}
-	mt = { __index = soundPrototype2 }
+	local mt2 = { __index = soundPrototype2 }
 	function bossModPrototype:NewVoice(spellId, optionDefault, optionName, optionVersion)
 		if not spellId and not optionName then
 			print("NewVoice: you must provide either spellId or optionName", 2)
@@ -9302,7 +9302,7 @@ do
 			{
 				mod = self,
 			},
-			mt
+			mt2
 		)
 		if #DBM.Voices < 2 then optionName = false end--Hide options if no voice packs are installed
 		if optionName then
