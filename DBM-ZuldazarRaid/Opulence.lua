@@ -141,7 +141,7 @@ do
 			local absorb = diamondTargets[unitName]
 			if absorb then
 				local absorbAmount = select(16, DBM:UnitDebuff(uId, 284527)) or 0
-				addLine(unitName, DBM_CORE_SHIELD.."-"..math.floor(absorbAmount))
+				addLine(unitName, DBM_CORE_SHIELD.."--"..math.floor(absorbAmount))
 			end
 		end
 		--Incandescent Stacks
@@ -149,7 +149,7 @@ do
 			local unitName = DBM:GetUnitFullName(uId)
 			local count = incandescentStacks[unitName]
 			if count then
-				addLine(unitName, Incan.."-"..count)
+				addLine(unitName, Incan.."--"..count)
 			end
 		end
 		--Incandescent Full
@@ -160,7 +160,7 @@ do
 			local spellName, _, _, _, _, expireTime = DBM:UnitDebuff(uId, 284798)
 			if expireTime then
 				local remaining = expireTime-GetTime()
-				addLine(name, grosslyIncan.."-"..math.floor(remaining))
+				addLine(name, grosslyIncan.."--"..math.floor(remaining))
 			end
 		end
 		--Player personal checks (Always Tracked)
