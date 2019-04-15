@@ -80,7 +80,7 @@ local specWarnGiftofNzothLunacy			= mod:NewSpecialWarningCount(285685, nil, nil,
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 8)
 
 --Relics of Power
---mod:AddTimerLifne(DBM:EJ_GetSectionInfo(18527))
+--mod:AddTimerLine(DBM:EJ_GetSectionInfo(18527))
 local timerStormofAnnihilation			= mod:NewTargetTimer(15, 284583, nil, nil, nil, 2, nil, DBM_CORE_HEALER_ICON)
 local timerUnstableResonanceCD			= mod:NewAITimer(55, 293653, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
 local timerUnstableResonance			= mod:NewBuffFadesTimer(15, 293653, nil, nil, nil, 5, nil, DBM_CORE_DEADLY_ICON)
