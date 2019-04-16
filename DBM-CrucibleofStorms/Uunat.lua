@@ -544,7 +544,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.SetIconTorment then
 			self:SetIcon(args.destName, 0)
 		end
-	elseif spellId == 286310 then--Void Shield
+	elseif spellId == 286310 and self:IsInCombat() then--Void Shield
 		self.vb.phase = self.vb.phase + 1
 		self.vb.tearCount = 0--Maybe not reset?
 		if self.vb.phase == 2 then
