@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod(2194, "DBM-Uldir", nil, 1031)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(string.sub("@file-date-integer@", 1, -5))
+mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(134546)--138324 Xalzaix
 mod:SetEncounterID(2135)
 mod:SetZone()

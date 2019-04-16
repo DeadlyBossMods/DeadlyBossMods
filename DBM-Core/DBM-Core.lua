@@ -3641,9 +3641,6 @@ do
 		-- load special warning options
 		self:UpdateWarningOptions()
 		self:UpdateSpecialWarningOptions()
-		if self.Options.CoreSavedRevision < 16970 then
-			if self.Options.SpecialWarningSound3 == "Sound\\Creature\\KilJaeden\\KILJAEDEN02.ogg" then self.Options.SpecialWarningSound3 = self.DefaultOptions.SpecialWarningSound3 end
-		end
 		self.Options.CoreSavedRevision = self.Revision
 	end
 end
@@ -4522,7 +4519,7 @@ do
 					--Disable if revision grossly out of date even if not major patch.
 					if raid[newerVersionPerson[1]] and raid[newerVersionPerson[2]] and raid[newerVersionPerson[3]] then
 						local revDifference = mmin(((raid[newerVersionPerson[1]].revision or 0) - DBM.Revision), ((raid[newerVersionPerson[2]].revision or 0) - DBM.Revision), ((raid[newerVersionPerson[3]].revision or 0) - DBM.Revision))
-						if revDifference > 2000 then--Approx 2 months old 201904151
+						if revDifference > 100000000 then--Approx 1 month old 20190416172622
 							if updateNotificationDisplayed < 3 then
 								updateNotificationDisplayed = 3
 								AddMsg(DBM, DBM_CORE_UPDATEREMINDER_NODISABLE)
@@ -4537,14 +4534,14 @@ do
 				end
 			end
 		end
-		if DBM.DisplayVersion:find("alpha") and #newerRevisionPerson < 3 and updateNotificationDisplayed < 2 and (revision - DBM.Revision) > 1000000 then
+		if DBM.DisplayVersion:find("alpha") and #newerRevisionPerson < 3 and updateNotificationDisplayed < 2 and (revision - DBM.Revision) > 7000000 then--Approx 7 days old 20190416172622
 			if not checkEntry(newerRevisionPerson, sender) then
 				newerRevisionPerson[#newerRevisionPerson + 1] = sender
 				DBM:Debug("Newer revision detected from "..sender.." : Rev - "..revision..", Ver - "..version..", Rev Diff - "..(revision - DBM.Revision))
 			end
 			if #newerRevisionPerson == 2 and raid[newerRevisionPerson[1]] and raid[newerRevisionPerson[2]] then
 				local revDifference = mmin(((raid[newerRevisionPerson[1]].revision or 0) - DBM.Revision), ((raid[newerRevisionPerson[2]].revision or 0) - DBM.Revision))
-				if testBuild and revDifference > 5000000 then--Approx 5 days old
+				if testBuild and revDifference > 3000000 then--Approx 3 days old 20190416172622
 					updateNotificationDisplayed = 3
 					AddMsg(DBM, DBM_CORE_UPDATEREMINDER_DISABLE)
 					DBM:Disable(true)
@@ -4577,7 +4574,6 @@ do
 	syncHandlers["V"] = function(sender, revision, version, displayVersion, locale, iconEnabled, VPVersion)
 		revision, version = tonumber(revision), tonumber(version)
 		if revision and version and displayVersion and raid[sender] then
-			if revision == 2019041517 then revision = 201904151 end--Dirty fix to fix a mistake
 			raid[sender].revision = revision
 			raid[sender].version = version
 			raid[sender].displayVersion = displayVersion
@@ -11488,7 +11484,7 @@ function bossModPrototype:ReceiveSync(event, sender, revision, ...)
 end
 
 function bossModPrototype:SetRevision(revision)
-	revision = tonumber(revision or "")
+	revision = parseCurseDate(revision or "")
 	if not revision then
 		-- bad revision: either forgot the svn keyword or using git svn
 		revision = DBM.Revision
@@ -11496,12 +11492,13 @@ function bossModPrototype:SetRevision(revision)
 	self.revision = revision
 end
 
+--Either treat it as a valid number, or a curse string that needs to be made into a valid number
 function bossModPrototype:SetMinSyncRevision(revision)
-	self.minSyncRevision = revision
+	self.minSyncRevision = (type(revision or "") == "number") and revision or parseCurseDate(revision)
 end
 
 function bossModPrototype:SetHotfixNoticeRev(revision)
-	self.hotfixNoticeRev = revision
+	self.hotfixNoticeRev = (type(revision or "") == "number") and revision or parseCurseDate(revision)
 end
 
 -----------------
