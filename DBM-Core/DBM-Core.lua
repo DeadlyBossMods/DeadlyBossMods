@@ -43,7 +43,7 @@
 DBM = {
 	Revision = tonumber(string.sub("@file-date-integer@", 1, -5)),
 	DisplayVersion = "8.1.17 alpha", -- the string that is shown as version
-	ReleaseRevision = 2019041517 -- 2019/4/15/17:00. the revision of the latest stable version that is available
+	ReleaseRevision = 201904151 -- 2019/4/15/1. the revision of the latest stable version that is available
 }
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
@@ -4503,7 +4503,7 @@ do
 					--Disable if revision grossly out of date even if not major patch.
 					if raid[newerVersionPerson[1]] and raid[newerVersionPerson[2]] and raid[newerVersionPerson[3]] then
 						local revDifference = mmin(((raid[newerVersionPerson[1]].revision or 0) - DBM.Revision), ((raid[newerVersionPerson[2]].revision or 0) - DBM.Revision), ((raid[newerVersionPerson[3]].revision or 0) - DBM.Revision))
-						if revDifference > 200000000 then--Approx 2 months old 20190413233128
+						if revDifference > 2000 then--Approx 2 months old 201904151
 							if updateNotificationDisplayed < 3 then
 								updateNotificationDisplayed = 3
 								AddMsg(DBM, DBM_CORE_UPDATEREMINDER_NODISABLE)
@@ -4525,7 +4525,7 @@ do
 			end
 			if #newerRevisionPerson == 2 and raid[newerRevisionPerson[1]] and raid[newerRevisionPerson[2]] then
 				local revDifference = mmin(((raid[newerRevisionPerson[1]].revision or 0) - DBM.Revision), ((raid[newerRevisionPerson[2]].revision or 0) - DBM.Revision))
-				if testBuild and revDifference > 5000000 then--Approx 5 days old (20190413233128)
+				if testBuild and revDifference > 50 then--Approx 5 days old (201904151)
 					updateNotificationDisplayed = 3
 					AddMsg(DBM, DBM_CORE_UPDATEREMINDER_DISABLE)
 					DBM:Disable(true)
@@ -4558,6 +4558,7 @@ do
 	syncHandlers["V"] = function(sender, revision, version, displayVersion, locale, iconEnabled, VPVersion)
 		revision, version = tonumber(revision), tonumber(version)
 		if revision and version and displayVersion and raid[sender] then
+			if revision == 2019041517 then revision = 201904151 end--Dirty fix to fix a mistake
 			raid[sender].revision = revision
 			raid[sender].version = version
 			raid[sender].displayVersion = displayVersion
