@@ -68,7 +68,7 @@ local specWarnVisagefromBeyond			= mod:NewSpecialWarningSwitch(282515, "-Healer"
 --Fa'thuul the Feared
 local specWarnShearMind					= mod:NewSpecialWarningStack(282384, nil, 3, nil, nil, 1, 6)
 local specWarnShearMindTaunt			= mod:NewSpecialWarningTaunt(282384, nil, nil, nil, 1, 2)
-local yellShearMindFades				= mod:NewFadesYell(282384, nil, false)--useful but optional
+--local yellShearMindFades				= mod:NewFadesYell(282384, nil, false)--useful but optional
 --local specSeveredAnguish				= mod:NewSpecialWarningTaunt(282817, nil, nil, nil, 1, 2)
 local specWarnCrushingDoubt				= mod:NewSpecialWarningYouPos(282432, nil, nil, nil, 1, 2)
 local yellCrushingDoubt					= mod:NewPosYell(282432)
@@ -307,10 +307,10 @@ function mod:SPELL_AURA_APPLIED(args)
 				warnShearMind:Show(args.destName, amount)
 			end
 		end
-		if args:IsPlayer() then
-			yellShearMindFades:Cancel()
-			yellShearMindFades:Countdown(12)
-		end
+		--if args:IsPlayer() then
+			--yellShearMindFades:Cancel()
+			--yellShearMindFades:Countdown(12)
+		--end
 	elseif spellId == 282432 then
 		warnCrushingDoubt:CombinedShow(1, args.destName)
 		local icon = self.vb.CrushingDoubtIcon
@@ -371,10 +371,10 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.SetIconDarkherald then
 			self:SetIcon(args.destName, 0)
 		end
-	elseif spellId == 282384 then
-		if args:IsPlayer() then
-			yellShearMindFades:Cancel()
-		end
+	--elseif spellId == 282384 then
+		--if args:IsPlayer() then
+			--yellShearMindFades:Cancel()
+		--end
 	elseif spellId == 282432 then
 		if self.Options.SetIconCrushingDoubt then
 			self:SetIcon(args.destName, 0)
