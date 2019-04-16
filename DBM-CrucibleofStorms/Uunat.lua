@@ -38,6 +38,7 @@ mod:RegisterEventsInCombat(
 --[[
 (ability.id = 293653 or ability.id = 285185 or ability.id = 285416 or ability.id = 285376 or ability.id = 285345 or ability.id = 285453 or ability.id = 285820 or ability.id = 285638 or ability.id = 285427 or ability.id = 285562 or ability.id = 285685) and type = "begincast"
  or (ability.id = 284851 or ability.id = 285652) and type = "cast"
+ or ability.id = 286310
 --]]
 local warnVoidShield					= mod:NewTargetNoFilterAnnounce(286310, 2, nil, nil, nil, nil, nil, 7)
 --Relics of Power
