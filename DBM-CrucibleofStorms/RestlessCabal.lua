@@ -255,7 +255,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnStormofAnnihilation:Play("aesoon")
 		timerStormofAnnihilation:Start()
 	elseif spellId == 282914 then
-		specWarnPowerOverwhelming:Show()
+		specWarnPowerOverwhelming:Show(args.destName)
 	elseif spellId == 283524 or spellId == 282386 then
 		if args:IsPlayer() then
 			if spellId == 282386 then--Heroic/Mythic
