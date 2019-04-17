@@ -15,12 +15,13 @@ mod:SetUsedIcons(1, 2, 3, 4, 6, 7, 8)--Refine when max number of doubt targets i
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 282675 282589 282515 282517 282617 282818",
-	"SPELL_CAST_SUCCESS 282561 282384 282407 285416 283066",
+	"SPELL_CAST_START 282675 282589 282515 282517 282617 282818 283540 282621",
+	"SPELL_CAST_SUCCESS 282561 282384 282407 285416 283066 283540 282621",
 	"SPELL_AURA_APPLIED 282741 282742 282914 283524 282386 282540 282561 282384 282432 287876 282817",
 	"SPELL_AURA_APPLIED_DOSE 282384",
 	"SPELL_AURA_REFRESH 282384 282386 283524",
 	"SPELL_AURA_REMOVED 282741 282742 282386 282561 282384 282432 282741",
+	"SPELL_INTERRUPT",
 --	"SPELL_PERIODIC_DAMAGE 287876",
 --	"SPELL_PERIODIC_MISSED 287876",
 	"UNIT_DIED",
@@ -176,7 +177,7 @@ function mod:SPELL_CAST_START(args)
 		if not castsPerGUID[args.sourceGUID] then
 			castsPerGUID[args.sourceGUID] = 0
 			if self.Options.SetIconOnAdds then
-				self:ScanForMobs(args.sourceGUID, 2, self.vb.addIcon, 1, 0.2, 10)
+				self:ScanForMobs(args.sourceGUID, 2, self.vb.addIcon, 1, 0.2, 12)
 			end
 			self.vb.addIcon = self.vb.addIcon - 1
 			if self.vb.addIcon == 5 then--6-8
@@ -210,9 +211,8 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_INTERRUPT(args)
-	if type(args.extraSpellId) == "number" and args.extraSpellId == 282517 then
-		timerTerrifyingEcho:Stop()
-		if self.Options.NPAuraOnEcho then
+	if type(args.extraSpellId) == "number" and (args.extraSpellId == 283540 or args.extraSpellId == 282621) then
+		if self.Options.NPAuraOnWitness then
 			DBM.Nameplate:Hide(true, args.destGUID)
 		end
 	end
@@ -233,6 +233,10 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.shieldCount = self.vb.shieldCount + 1
 		warnCustodyoftheDeep:Show(self.vb.shieldCount)
 		timerAbyssalCollapse:Start()
+	elseif (spellId == 283540 or spellId == 282621) then
+		if self.Options.NPAuraOnWitness then
+			DBM.Nameplate:Hide(true, args.destGUID)
+		end
 	end
 end
 
@@ -248,15 +252,15 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		specWarnUmbralShell:Play("attackshield")
 		if self.Options.InfoFrame then
-			--for i = 1, 2 do
-				--local bossUnitID = "boss"..i
-				--if UnitGUID(bossUnitID) == args.sourceGUID then--Identify correct unit ID
+			for i = 1, 2 do
+				local bossUnitID = "boss"..i
+				if UnitGUID(bossUnitID) == args.sourceGUID then--Identify correct unit ID
 					DBM.InfoFrame:SetHeader(args.spellName)
-					--DBM.InfoFrame:Show(2, "enemyabsorb", nil, UnitGetTotalAbsorbs(bossUnitID))
-					DBM.InfoFrame:Show(2, "enemyabsorb")
-					--break
-				--end
-			--end
+					DBM.InfoFrame:Show(2, "enemyabsorb", nil, UnitGetTotalAbsorbs(bossUnitID), bossUnitID)
+					--DBM.InfoFrame:Show(2, "enemyabsorb")
+					break
+				end
+			end
 		end
 	elseif spellId == 282742 then
 		specWarnStormofAnnihilation:Show()
@@ -386,6 +390,14 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 282432 then
 		if self.Options.SetIconCrushingDoubt then
 			self:SetIcon(args.destName, 0)
+		end
+	end
+end
+
+function mod:SPELL_INTERRUPT(args)
+	if type(args.extraSpellId) == "number" and args.extraSpellId == 290084 then
+		if self.Options.NPAuraOnWaterBolt then
+			DBM.Nameplate:Hide(true, args.destGUID)
 		end
 	end
 end

@@ -16,11 +16,12 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 293653 285185 285416 285376 285345 285453 285820 285638 285427 285562 285685",
-	"SPELL_CAST_SUCCESS 284851 285652",
+	"SPELL_CAST_SUCCESS 284851 285652 285427",
 	"SPELL_SUMMON 286165",
 	"SPELL_AURA_APPLIED 286459 286457 286458 284583 293663 293662 293661 284851 285345 287693 285333 285652 286310 284768 284569 284684",
 --	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 286459 286457 286458 284583 293663 293662 293661 284851 287693 285333 285652 286310 284768 284569 284684",
+	"SPELL_INTERRUPT",
 	"UNIT_DIED"
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
@@ -79,7 +80,7 @@ local specWarnPrimordialMindbender		= mod:NewSpecialWarningSwitch("ej19118", "Dp
 
 --Stage Three: His Unwavering Gaze
 local specWarnInsatiableTorment			= mod:NewSpecialWarningYou(285652, nil, nil, nil, 1, 2)
-local yellInsatiableTorment				= mod:NewYell(285652)
+local yellInsatiableTorment				= mod:NewPosYell(285652)
 local specWarnGiftofNzothLunacy			= mod:NewSpecialWarningCount(285685, nil, nil, nil, 2, 2)
 
 --Relics of Power
@@ -117,7 +118,7 @@ local countdownResonanceFades			= mod:NewCountdownFades(15, 293653, nil, nil, 5)
 
 --mod:AddSetIconOption("SetIconGift", 255594, true)
 mod:AddRangeFrameOption(10, 293653)
---mod:AddInfoFrameOption(258040, true)
+mod:AddInfoFrameOption(293653, true)
 mod:AddNamePlateOption("NPAuraOnBond", 287693)
 mod:AddNamePlateOption("NPAuraOnFeed", 285307)
 mod:AddNamePlateOption("NPAuraOnRegen", 285333)
@@ -281,28 +282,30 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 285185 then
 		self.vb.tearCount = self.vb.tearCount + 1
 		warnOblivionTear:Show(self.vb.tearCount)
-		timerOblivionTearCD:Start(nil, self.vb.tearCount+1)
+		timerOblivionTearCD:Start(self.vb.phase == 3 and 12.1 or 16.6, self.vb.tearCount+1)
 	elseif spellId == 285416 then
 		self.vb.voidCrashCount = self.vb.voidCrashCount + 1
 		warnVoidCrash:Show(self.vb.voidCrashCount)
 		timerVoidCrashCD:Start(nil, self.vb.voidCrashCount+1)
 	elseif spellId == 285376 then--Eyes of N'zoth (trigger for both spells below)
 		self.vb.nzothEyesCount = self.vb.nzothEyesCount + 1
-		--timerEyesofNzothCD:Start(nil, self.vb.nzothEyesCount+1)
+		--timerEyesofNzothCD:Start(32.7, self.vb.nzothEyesCount+1)
 		--If stage 3, or an even cast in phase 1, next is piercing
 		if self.vb.phase == 1 then
 			if self.vb.nzothEyesCount % 2 == 0 then
 				specWarnMaddeningEyesCast:Show(self.vb.nzothEyesCount)
 				specWarnMaddeningEyesCast:Play("farfromline")
+				timerPiercingGazeCD:Start(32.7, self.vb.nzothEyesCount+1)
 			else
-				specWarnPiercingGaze:Show()
+				specWarnPiercingGaze:Show(self.vb.nzothEyesCount)
 				specWarnPiercingGaze:Play("specialsoon")--don't have anything better really
-				timerPiercingGazeCD:Start(nil, self.vb.nzothEyesCount+1)
+				timerMaddeningEyesCD:Start(32.7, self.vb.nzothEyesCount+1)
 			end
 		else--Phase 3 and all we get is piercing
 			specWarnPiercingGaze:Show()
 			specWarnPiercingGaze:Play("specialsoon")--don't have anything better really
-			timerPiercingGazeCD:Start(nil, self.vb.nzothEyesCount+1)
+			--52 and 47 alternating
+			timerPiercingGazeCD:Start((self.vb.nzothEyesCount % 2 == 0) and 47.5 or 52.2, self.vb.nzothEyesCount+1)
 		end
 	--elseif spellId == 285345 and self:AntiSpam(3, 1) then
 		--specWarnMaddeningEyesCast:Show()
@@ -317,7 +320,7 @@ function mod:SPELL_CAST_START(args)
 			specWarnCallUndyingGuardian:Show()
 			specWarnCallUndyingGuardian:Play("bigmob")
 		end
-		timerCallUndyingGuardianCD:Start()
+		timerCallUndyingGuardianCD:Start(self.vb.phase == 3 and 31.5 or 47)
 	elseif spellId == 285638 then
 		self.vb.HysteriaCount = self.vb.HysteriaCount + 1
 		specWarnGiftofNzothHysteria:Show(self.vb.HysteriaCount)
@@ -337,7 +340,7 @@ function mod:SPELL_CAST_START(args)
 		if not castsPerGUID[args.sourceGUID] then
 			castsPerGUID[args.sourceGUID] = 0
 			if self.Options.SetIconOnAdds then
-				self:ScanForMobs(args.sourceGUID, 2, self.vb.addIcon, 1, 0.2, 10)
+				self:ScanForMobs(args.sourceGUID, 2, self.vb.addIcon, 1, 0.2, 12)
 			end
 			self.vb.addIcon = self.vb.addIcon - 1
 			if self.vb.addIcon == 5 then--8-6
@@ -380,6 +383,10 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerTouchoftheEndCD:Start()
 	elseif spellId == 285652 then
 		timerInsatiableTormentCD:Start()
+	elseif spellId == 285427 then
+		if self.Options.NPAuraOnConsume then
+			DBM.Nameplate:Hide(true, args.destGUID)
+		end
 	end
 end
 
@@ -509,15 +516,16 @@ function mod:SPELL_AURA_APPLIED(args)
 			DBM.Nameplate:Show(true, args.destGUID, spellId)
 		end
 	elseif spellId == 285652 then
+		local icon = self.vb.tormentIcon
 		if args:IsPlayer() then
 			specWarnInsatiableTorment:Show()
 			specWarnInsatiableTorment:Play("targetyou")
-			yellInsatiableTorment:Yell()
+			yellInsatiableTorment:Yell(icon, icon, icon)
 		else
 			warnInsatiableTorment:CombinedShow(0.5, args.destName)
 		end
 		if self.Options.SetIconTorment then
-			self:SetIcon(args.destName, self.vb.tormentIcon)
+			self:SetIcon(args.destName, icon)
 		end
 		self.vb.tormentIcon = self.vb.tormentIcon + 1
 	elseif spellId == 286310 then--Void Shield
@@ -620,6 +628,14 @@ function mod:SPELL_AURA_REMOVED(args)
 		mod.vb.tempestCaller = nil
 	elseif spellId == 284684 then--Void
 		mod.vb.voidstone = nil
+	end
+end
+
+function mod:SPELL_INTERRUPT(args)
+	if type(args.extraSpellId) == "number" and args.extraSpellId == 285427 then
+		if self.Options.NPAuraOnConsume then
+			DBM.Nameplate:Hide(true, args.destGUID)
+		end
 	end
 end
 
