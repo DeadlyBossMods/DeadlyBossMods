@@ -4,7 +4,7 @@ if UnitFactionGroup("player") == "Alliance" then
 	dungeonID, creatureID = 2340, 144638--Grong the Revenant
 	coreSpellId, energyAOESpellId, slamSpellId, addSpawnId, addCastId, addProjectileId, tankComboId = 286434, 282399, 282543, 282526, 282533, 282467, 286450
 else--Horde
-	dungeonID, creatureID = 2325, 147268--King Grong
+	dungeonID, creatureID = 2325, 144637--King Grong
 	coreSpellId, energyAOESpellId, slamSpellId, addSpawnId, addCastId, addProjectileId, tankComboId = 285659, 281936, 282179, 282247, 282243, 282190, 282082
 end
 local mod	= DBM:NewMod(dungeonID, "DBM-ZuldazarRaid", 1, 1176)
