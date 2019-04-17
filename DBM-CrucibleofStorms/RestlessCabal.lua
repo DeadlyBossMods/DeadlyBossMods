@@ -7,7 +7,7 @@ mod:SetEncounterID(2269)
 --mod:DisableESCombatDetection()
 mod:SetZone()
 mod:SetBossHPInfoToHighest()
-mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7)--Refine when max number of doubt targets is known
+mod:SetUsedIcons(1, 2, 3, 4, 6, 7, 8)--Refine when max number of doubt targets is known
 --mod:SetHotfixNoticeRev(17775)
 --mod:SetMinSyncRevision(16950)
 --mod.respawnTime = 35
@@ -16,11 +16,11 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 282675 282589 282515 282517 282617 282818",
-	"SPELL_CAST_SUCCESS 282561 282384 282407 285416",
+	"SPELL_CAST_SUCCESS 282561 282384 282407 285416 283066",
 	"SPELL_AURA_APPLIED 282741 282742 282914 283524 282386 282540 282561 282384 282432 287876 282817",
 	"SPELL_AURA_APPLIED_DOSE 282384",
 	"SPELL_AURA_REFRESH 282384 282386 283524",
-	"SPELL_AURA_REMOVED 282741 282742 282386 282561 282384 282432",
+	"SPELL_AURA_REMOVED 282741 282742 282386 282561 282384 282432 282741",
 --	"SPELL_PERIODIC_DAMAGE 287876",
 --	"SPELL_PERIODIC_MISSED 287876",
 	"UNIT_DIED",
@@ -28,7 +28,6 @@ mod:RegisterEventsInCombat(
 )
 
 --TODO: add general announce for embrace of the void? it seems pretty given, it's more of a healer track on raid frames thing than a DBM thing
---TODO, correct cast ID for custody of the deep to warn tank to move boss into bubble
 --TODO, refine AbyssalCollapse for situations like do we cancel bar if shield gets completely depleted, etc
 --TODO, see if relics hard reset boss cd timers or if they just get paused, or if nothing affects them at all
 --TODO, custom info frame that tracks who has herald, personal promises of power, probably other crap
@@ -36,11 +35,12 @@ mod:RegisterEventsInCombat(
 --TODO, detect void crash bounces, use general announce for cast and first bounce, special warning for one that needs soaking?
 --[[
 (ability.id = 282675 or ability.id = 282589 or ability.id = 282515 or ability.id = 282617 or ability.id = 282517 or ability.id = 283540 or ability.id = 282621 or ability.id = 282818) and type = "begincast"
- or (ability.id = 282561 or ability.id = 282384 or ability.id = 282407 or ability.id = 285416) and type = "cast"
+ or (ability.id = 282561 or ability.id = 282384 or ability.id = 282407 or ability.id = 285416 or ability.id = 283066 or ability.id = 282742) and type = "cast"
  or (ability.id = 282817 or ability.id = 282432) and type = "applydebuff"
 --]]
 --Relics of Power
 local warnUmbralShell					= mod:NewFadesAnnounce(282741, 1)
+local warnCustodyoftheDeep				= mod:NewCountAnnounce(284772, 3)
 --General
 local warnPact							= mod:NewCastAnnounce(282675, 4)
 --Zaxasj the Speaker
@@ -52,8 +52,8 @@ local warnVoidCrash						= mod:NewSpellAnnounce(285416, 2)
 local warnCrushingDoubt					= mod:NewTargetAnnounce(282432, 2)
 
 --Relics of Power
-local specWarnUmbralShell				= mod:NewSpecialWarningSwitch(282741, "Dps", nil, nil, 1, 2)
-local specWarnCustodyoftheDeep			= mod:NewSpecialWarningMoveTo(284772, "Tank", nil, nil, 1, 2)
+local specWarnUmbralShell				= mod:NewSpecialWarningTargetChange(282741, "Dps", nil, nil, 1, 2)
+--local specWarnCustodyoftheDeep			= mod:NewSpecialWarningMoveTo(284772, false, nil, 2, 1, 2)--optional?
 local specWarnStormofAnnihilation		= mod:NewSpecialWarningSpell(286755, nil, nil, nil, 2, 2)
 local specWarnPowerOverwhelming			= mod:NewSpecialWarningTarget(282914, nil, nil, nil, 3)--A wipe basically
 --Zaxasj the Speaker
@@ -109,17 +109,19 @@ mod:AddNamePlateOption("NPAuraOnEcho", 282517)
 mod:AddNamePlateOption("NPAuraOnWitness", 282621)
 
 --mod.vb.phase = 1
+mod.vb.shieldCount = 0
 mod.vb.CrushingDoubtIcon = 1
 --mod.vb.tankAddsActive = 0
-mod.vb.addIcon = 4--4-6
+mod.vb.addIcon = 8
 local castsPerGUID = {}
 local interruptTextures = {[1] = 2178508, [2] = 2178501, [3] = 2178502, [4] = 2178503, [5] = 2178504, [6] = 2178505, [7] = 2178506, [8] = 2178507,}--Fathoms Deck
 
 function mod:OnCombatStart(delay)
 	table.wipe(castsPerGUID)
+	self.vb.shieldCount = 0
 	self.vb.CrushingDoubtIcon = 1
 	--self.vb.tankAddsActive = 0
-	self.vb.addIcon = 4
+	self.vb.addIcon = 8
 	--Zaxasj the Speaker
 	timerDarkheraldCD:Start(10.2-delay)--SUCCESS
 	timerCerebralAssaultCD:Start(15.5-delay)
@@ -176,9 +178,9 @@ function mod:SPELL_CAST_START(args)
 			if self.Options.SetIconOnAdds then
 				self:ScanForMobs(args.sourceGUID, 2, self.vb.addIcon, 1, 0.2, 10)
 			end
-			self.vb.addIcon = self.vb.addIcon + 1
-			if self.vb.addIcon == 7 then--4-6
-				self.vb.addIcon = 4
+			self.vb.addIcon = self.vb.addIcon - 1
+			if self.vb.addIcon == 5 then--6-8
+				self.vb.addIcon = 8
 			end
 		end
 		castsPerGUID[args.sourceGUID] = castsPerGUID[args.sourceGUID] + 1
@@ -225,6 +227,12 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 282407 or spellId == 285416 then
 		warnVoidCrash:Show()
 		timerVoidCrashCD:Start()
+	elseif spellId == 283066 then
+		--specWarnCustodyoftheDeep:Show(DBM_CORE_SHIELD)
+		--specWarnCustodyoftheDeep:Play("moveboss")
+		self.vb.shieldCount = self.vb.shieldCount + 1
+		warnCustodyoftheDeep:Show(self.vb.shieldCount)
+		timerAbyssalCollapse:Start()
 	end
 end
 
@@ -285,7 +293,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnDarkHerald:Show(args.destName)
 		end
 		if self.Options.SetIconDarkherald then
-			self:SetIcon(args.destName, 7)
+			self:SetIcon(args.destName, 4)
 		end
 	elseif spellId == 282384 then
 		local uId = DBM:GetRaidUnitId(args.destName)
@@ -411,11 +419,7 @@ function mod:UNIT_DIED(args)
 end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if (spellId == 286696 or spellId == 284772) and self:AntiSpam(5, 1) then--Custody of the Deep
-		specWarnCustodyoftheDeep:Show(DBM_CORE_SHIELD)
-		specWarnCustodyoftheDeep:Play("moveboss")
-		timerAbyssalCollapse:Start()
-	elseif spellId == 287762 then--Crushing Doubt
+	if spellId == 287762 then--Crushing Doubt
 		self.vb.CrushingDoubtIcon = 1
 		timerCrushingDoubtCD:Start()
 	end
