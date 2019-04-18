@@ -85,8 +85,8 @@ local timerPact							= mod:NewCastSourceTimer(12, 282675, nil, nil, nil, 2, nil
 --Zaxasj the Speaker
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(18974))
 local timerCerebralAssaultCD			= mod:NewCDTimer(31.5, 282589, nil, nil, nil, 3)
-local timerDarkherald					= mod:NewTargetTimer(20, 282589, nil, nil, nil, 5)
-local timerDarkheraldCD					= mod:NewCDTimer(32.7, 282589, nil, nil, nil, 3)
+local timerDarkherald					= mod:NewTargetTimer(20, 282561, nil, nil, nil, 5)
+local timerDarkheraldCD					= mod:NewCDTimer(32.7, 282561, nil, nil, nil, 3)
 local timerTerrifyingEcho				= mod:NewCastTimer(15, 282517, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
 --Fa'thuul the Feared
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(18983))
