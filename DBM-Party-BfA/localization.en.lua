@@ -334,3 +334,55 @@ L = DBM:GetModLocalization("WaycrestTrash")
 L:SetGeneralLocalization({
 	name =	"Waycrest Manor Trash"
 })
+
+-----------------------
+-- <<<Operation: Mechagon>>> --
+-----------------------
+-----------------------
+-- King Gobbamak --
+-----------------------
+L= DBM:GetModLocalization(2357)
+
+-----------------------
+-- Gunker --
+-----------------------
+L= DBM:GetModLocalization(2358)
+
+-----------------------
+-- Trixie & Naeno --
+-----------------------
+L= DBM:GetModLocalization(2360)
+
+-----------------------
+-- HK-8 Aerial Oppression Unit --
+-----------------------
+L= DBM:GetModLocalization(2355)
+
+-----------------------
+-- Tussle Tonks --
+-----------------------
+L= DBM:GetModLocalization(2336)
+
+-----------------------
+-- K.U.-J.0. --
+-----------------------
+L= DBM:GetModLocalization(2339)
+
+-----------------------
+-- Machinist's Garden --
+-----------------------
+L= DBM:GetModLocalization(2348)
+
+-----------------------
+-- King Mechagon --
+-----------------------
+L= DBM:GetModLocalization(2331)
+
+---------
+--Trash--
+---------
+L = DBM:GetModLocalization("MechagonTrash")
+
+L:SetGeneralLocalization({
+	name =	"Mechagon Trash"
+})

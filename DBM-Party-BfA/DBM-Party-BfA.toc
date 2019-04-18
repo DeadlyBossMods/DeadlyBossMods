@@ -14,7 +14,7 @@
 ## X-DBM-Mod-Category: BFA
 ## X-DBM-Mod-Has-Challenge: 1
 ## X-DBM-Mod-Has-Mythic : 1
-## X-DBM-Mod-SubCategoriesID: 1763, 1754, 1762, 1864, 1822, 1877, 1594, 1841, 1771, 1862
+## X-DBM-Mod-SubCategoriesID: 1763, 1754, 1762, 1864, 1822, 1877, 1594, 1841, 1771, 1862, 2097
 ## X-DBM-Mod-Name: Party (Battle for Azeroth)
 ## X-DBM-Mod-Name-esES: Mazmorras (BfA)
 ## X-DBM-Mod-Name-esMX: Mazmorras (BfA)
@@ -23,7 +23,7 @@
 ## X-DBM-Mod-Name-zhTW: 隊伍首領 (決戰艾澤拉斯)
 ## X-DBM-Mod-Name-zhCN: 5人小队 (争霸艾泽拉斯)
 ## X-DBM-Mod-Sort: 415
-## X-DBM-Mod-MapID: 1763, 1754, 1762, 1864, 1822, 1877, 1594, 1841, 1771, 1862
+## X-DBM-Mod-MapID: 1763, 1754, 1762, 1864, 1822, 1877, 1594, 1841, 1771, 1862, 2097
 ## X-DBM-Mod-MinCoreRevision: 17286
 ## X-DBM-Mod-MinExpansion: 7
 localization.en.lua
@@ -83,3 +83,12 @@ WaycrestManor\RaaltheGlut.lua
 WaycrestManor\Waycrests.lua
 WaycrestManor\GorakTul.lua
 WaycrestManor\WaycrestTrash.lua
+Mechagon\KingGobbamak.lua
+Mechagon\Gunker.lua
+Mechagon\Trixie_Naeno.lua
+Mechagon\HK8.lua
+Mechagon\TussleTonks.lua
+Mechagon\KUJ0.lua
+Mechagon\MachinistGarden.lua
+Mechagon\KingMechagon.lua
+MechagonTrash.lua
