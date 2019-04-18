@@ -91,4 +91,4 @@ Mechagon\TussleTonks.lua
 Mechagon\KUJ0.lua
 Mechagon\MachinistGarden.lua
 Mechagon\KingMechagon.lua
-MechagonTrash.lua
+Mechagon\MechagonTrash.lua
