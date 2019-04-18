@@ -95,7 +95,7 @@ local timerVoidCrashCD					= mod:NewCDCountTimer(31, 285416, nil, nil, nil, 3)
 --local timerEyesofNzothCD				= mod:NewCDCountTimer(32.7, 285376, nil, nil, nil, 3)--32.7-36.4 (probably spell queuing)
 local timerPiercingGazeCD				= mod:NewCDCountTimer(32.7, 285367, nil, nil, nil, 3)
 local timerMaddeningEyesCD				= mod:NewCDCountTimer(32.7, 285345, nil, nil, nil, 3)
-local timerCallUndyingGuardianCD		= mod:NewCDTimer(47, 285820, nil, nil, nil, 1)
+local timerCallUndyingGuardianCD		= mod:NewCDTimer(46.1, 285820, nil, nil, nil, 1)
 local timerGiftofNzothObscurityCD		= mod:NewCDTimer(42.1, 285453, nil, nil, nil, 2)
 --Stage Two: His Dutiful Servants
 local timerUnknowableTerrorCD			= mod:NewCDTimer(40.5, 285562, nil, nil, nil, 3)
@@ -320,7 +320,7 @@ function mod:SPELL_CAST_START(args)
 			specWarnCallUndyingGuardian:Show()
 			specWarnCallUndyingGuardian:Play("bigmob")
 		end
-		timerCallUndyingGuardianCD:Start(self.vb.phase == 3 and 31.5 or 47)
+		timerCallUndyingGuardianCD:Start(self.vb.phase == 3 and 31.5 or 46.1)
 	elseif spellId == 285638 then
 		self.vb.HysteriaCount = self.vb.HysteriaCount + 1
 		specWarnGiftofNzothHysteria:Show(self.vb.HysteriaCount)
