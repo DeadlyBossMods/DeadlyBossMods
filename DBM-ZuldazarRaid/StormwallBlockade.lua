@@ -229,8 +229,8 @@ function mod:OnCombatStart(delay)
 		DBM.InfoFrame:SetHeader(OVERVIEW)
 		DBM.InfoFrame:Show(8, "function", updateInfoFrame, false, false)
 	end
-	self:Schedule(0.5, delayedSisterUpdate, self, true)--Update timers couple seconds into pull
-	self:Schedule(0.5, delayedBrotherUpdate, self, true)--Update timers couple seconds into pull
+	self:Schedule(0.5, delayedSisterUpdate, self, 1)--Update timers couple seconds into pull
+	self:Schedule(0.5, delayedBrotherUpdate, self, 1)--Update timers couple seconds into pull
 end
 
 function mod:OnCombatEnd()
