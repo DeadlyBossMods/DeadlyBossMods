@@ -10,6 +10,7 @@
 ## X-DBM-Mod-Type: RAID
 ## X-DBM-Mod-Category: BFA
 ## X-DBM-Mod-Has-Mythic : 1
+## X-DBM-Mod-Name: The Eternal Palace
 ## X-DBM-Mod-Sort: 405
 ## X-DBM-Mod-MapID: 2164
 ## X-DBM-Mod-MinCoreRevision: 17286
