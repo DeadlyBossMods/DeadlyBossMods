@@ -434,11 +434,14 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 285350 or spellId == 285426 then
 		if args:IsPlayer() then
 			specWarnStormsWail:Show(freezingTidePod)
-			local timer = self:IsEasy() and 13 or 10
-			specWarnStormsWail:Schedule(timer-4.5, DBM_CORE_BACK)
 			specWarnStormsWail:Play("targetyou")
 			yellStormsWail:Yell()
-			yellStormsWailFades:Countdown(timer)
+			local spellName, _, _, _, _, expireTime = DBM:UnitDebuff("player", spellId)
+			if expireTime then
+				local remaining = expireTime-GetTime()
+				specWarnStormsWail:Schedule(remaining-4.5, DBM_CORE_BACK)
+				yellStormsWailFades:Countdown(remaining)
+			end
 		else
 			warnStormsWail:Show(args.destName)
 		end
