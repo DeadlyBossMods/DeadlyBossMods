@@ -29,7 +29,9 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-
+	Ocean = "바다",
+	Storm = "폭풍",
+	Void = "공허"
 })
 
 -------------

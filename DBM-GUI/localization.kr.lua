@@ -17,7 +17,7 @@ L.TabCategory_Options		= "일반 설정"
 L.TabCategory_OTHER			= "기타 보스 모드"
 
 L.BossModLoaded 			= "%s 통계"
-L.BossModLoad_now 			= [[보스 모드가 로딩되지 않았습니다.
+L.BossModLoad_now 			= [[보스 모드가 로딩되지 않았습니다. 
 해당 인스턴스에 진입하면 로딩됩니다.
 아래 버튼을 클릭해서 모드를 직접 로딩할 수도 있습니다.]]
 
@@ -75,7 +75,7 @@ L.RaidWarnColor_1 			= "색상 1"
 L.RaidWarnColor_2 			= "색상 2"
 L.RaidWarnColor_3 			= "색상 3"
 L.RaidWarnColor_4 			= "색상 4"
-L.InfoRaidWarning			= [[공격대 경보 프레임의 위치와 색상을 설정할 수 있습니다.
+L.InfoRaidWarning			= [[공격대 경보 프레임의 위치와 색상을 설정할 수 있습니다. 
 본 프레임은 "플레이어 X가 Y에 걸렸습니다"와 같은 메시지를 표시하는데 사용됩니다.]]
 L.ColorResetted 			= "이 영역의 색상 설정을 초기화 합니다."
 L.ShowWarningsInChat 		= "대화창에서 경보 보기"
@@ -248,7 +248,8 @@ L.SpamBlockNoSetIcon		= "대상에 공격대 징표를 설정하지 않음"
 L.SpamBlockNoRangeFrame		= "거리 창 표시 안함"
 L.SpamBlockNoInfoFrame		= "정보 창 표시 안함"
 L.SpamBlockNoHudMap			= "HUD 표시 안함"
-L.SpamBlockNoNameplate		= "이름표 오라 표시 안함"
+L.SpamBlockNoNameplate		= "이름표 오라 표시 안함 (완전히 작동 중단)"
+L.SpamBlockNoNameplateLines	= "이름표 오라에 선 표시 안함 (오라 아이콘은 계속 표시됨)"
 L.SpamBlockNoCountdowns		= "초읽기 효과음 재생 안함"
 L.SpamBlockNoYells			= "대화 알림 사용 안함"
 L.SpamBlockNoNoteSync		= "메모 공유 수락 안함"

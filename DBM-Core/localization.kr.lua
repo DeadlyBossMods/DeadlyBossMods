@@ -89,7 +89,7 @@ DBM_CORE_MPROFILE_DELETE_S_ERROR	= "원본이 손상되었습니다. 설정이 �
 DBM_CORE_NOTE_SHARE_SUCCESS			= "%s|1이;가; %s에 대한 메모를 공유했습니다."
 DBM_CORE_NOTE_SHARE_FAIL			= "%s|1이;가; %s에 대한 메모 공유를 시도했습니다. 하지만 해당 보스 스킬에 관련된 모드를 설치하지 않았거나 로딩하지 않은 상태입니다. 이 메모가 필요하다면 해당 모드를 로딩했는지 확인 후 공유를 다시 요청하세요."
 
-DBM_CORE_NOTEHEADER					= "%s에 대한 메모를 여기에 입력하세요. 캐릭터명을 >< 로 감싸면 직업 색상으로 표시됩니다. 여러개의 메모가 필요한 경우 '/'로 분리하세요."
+DBM_CORE_NOTEHEADER					= "%s에 대한 메모를 여기에 입력하세요. 캐릭터명을 >< 로 감싸면 직업 색상으로 표시됩니다. 여러번 경고가 필요한 경우 '/'로 메모를 구분해서 작성하세요."
 DBM_CORE_NOTEFOOTER					= "설정을 변경하려면 '확인', 변경을 취소하려면 '취소' 버튼을 누르세요."
 DBM_CORE_NOTESHAREDHEADER			= "%s|1이;가; %s에 대해 아래의 메모를 공유했습니다. 수락할 경우 이미 존재하는 메모를 덮어쓰게 됩니다."
 DBM_CORE_NOTESHARED					= "메모를 공격대 또는 파티에 전송했습니다."
@@ -339,7 +339,7 @@ DBM_CORE_AUTO_ANNOUNCE_OPTIONS.adds			= "$spell:%s의 남은 수 알림 보기"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.cast			= "$spell:%s 시전시 경고 보기"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.soon		= prewarnOption
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.sooncount	= prewarnOption
-DBM_CORE_AUTO_ANNOUNCE_OPTIONS.prewarn 		= prewarnOption
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.prewarn 		= prewarnOption 
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.bait		= "$spell:%s 사전 경고 보기 (위치 유도)"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.stage		= "%s단계 알림"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.stagechange	= "단계 전환 알림"
