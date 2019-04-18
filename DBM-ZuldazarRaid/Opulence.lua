@@ -366,7 +366,11 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnVolatileCharge:Show()
 			specWarnVolatileCharge:Play("runout")
 			yellVolatileCharge:Yell()
-			yellVolatileChargeFade:Countdown(8)
+			local spellName, _, _, _, _, expireTime = DBM:UnitDebuff("player", spellId)
+			if expireTime then
+				local remaining = expireTime-GetTime()
+				yellVolatileChargeFade:Countdown(remaining)
+			end
 		else
 			warnVolatileCharge:CombinedShow(0.3, args.destName)
 		end
