@@ -13,7 +13,7 @@
 ## X-DBM-Mod-Type: RAID
 ## X-DBM-Mod-Category: BFA
 ## X-DBM-Mod-Has-Mythic : 1
-## X-DBM-Mod-Sort: 407
+## X-DBM-Mod-Sort: 406
 ## X-DBM-Mod-MapID: 2096
 ## X-DBM-Mod-MinCoreRevision: 17286
 ## X-DBM-Mod-MinExpansion: 7
