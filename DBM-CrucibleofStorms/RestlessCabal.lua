@@ -7,7 +7,7 @@ mod:SetEncounterID(2269)
 --mod:DisableESCombatDetection()
 mod:SetZone()
 mod:SetBossHPInfoToHighest()
-mod:SetUsedIcons(1, 2, 3, 4, 5, 6)--Refine when max number of doubt targets is known
+mod:SetUsedIcons(1, 2, 3, 4, 5)--Refine when max number of doubt targets is known
 --mod:SetHotfixNoticeRev(17775)
 --mod:SetMinSyncRevision(16950)
 --mod.respawnTime = 35
@@ -113,7 +113,7 @@ mod:AddNamePlateOption("NPAuraOnWitness", 282621)
 mod.vb.shieldCount = 0
 mod.vb.CrushingDoubtIcon = 1
 --mod.vb.tankAddsActive = 0
-mod.vb.addIcon = 4
+mod.vb.addIcon = 3
 local castsPerGUID = {}
 local interruptTextures = {[1] = 2178508, [2] = 2178501, [3] = 2178502, [4] = 2178503, [5] = 2178504, [6] = 2178505, [7] = 2178506, [8] = 2178507,}--Fathoms Deck
 
@@ -122,7 +122,7 @@ function mod:OnCombatStart(delay)
 	self.vb.shieldCount = 0
 	self.vb.CrushingDoubtIcon = 1
 	--self.vb.tankAddsActive = 0
-	self.vb.addIcon = 4
+	self.vb.addIcon = 3
 	--Zaxasj the Speaker
 	timerDarkheraldCD:Start(10.2-delay)--SUCCESS
 	timerCerebralAssaultCD:Start(15.5-delay)
@@ -180,8 +180,8 @@ function mod:SPELL_CAST_START(args)
 				self:ScanForMobs(args.sourceGUID, 2, self.vb.addIcon, 1, 0.2, 12)
 			end
 			self.vb.addIcon = self.vb.addIcon + 1
-			if self.vb.addIcon == 7 then--4-6 (to match markers bw uses, even though we won't actually put them on same targets. DBM does CLEU event order, BW seems to do it on random order based on targetting
-				self.vb.addIcon = 4
+			if self.vb.addIcon == 6 then--3-5 (to match markers bw uses)
+				self.vb.addIcon = 3
 			end
 		end
 		castsPerGUID[args.sourceGUID] = castsPerGUID[args.sourceGUID] + 1

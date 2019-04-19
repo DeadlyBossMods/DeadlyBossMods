@@ -7,7 +7,7 @@ mod:SetEncounterID(2273)
 --mod:DisableESCombatDetection()
 mod:SetZone()
 --mod:SetBossHPInfoToHighest()
-mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)--Torment reserves as many as needed, but hopefully won't use more than 5 so adds don't get messed up
+mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)--Torment reserves as many as needed, but no more than 5, adds use first 3
 --mod:SetHotfixNoticeRev(17775)
 --mod:SetMinSyncRevision(16950)
 --mod.respawnTime = 35
@@ -18,9 +18,9 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 293653 285185 285416 285376 285345 285453 285820 285638 285427 285562 285685",
 	"SPELL_CAST_SUCCESS 284851 285652 285427",
 	"SPELL_SUMMON 286165",
-	"SPELL_AURA_APPLIED 286459 286457 286458 284583 293663 293662 293661 284851 285345 287693 285333 285652 286310 284768 284569 284684",
+	"SPELL_AURA_APPLIED 286459 286457 286458 284583 293663 293662 293661 284851 285345 287693 285333 285652 286310 284768 284569 284684 284722",
 --	"SPELL_AURA_APPLIED_DOSE",
-	"SPELL_AURA_REMOVED 286459 286457 286458 284583 293663 293662 293661 284851 287693 285333 285652 286310 284768 284569 284684",
+	"SPELL_AURA_REMOVED 286459 286457 286458 284583 293663 293662 293661 284851 287693 285333 285652 286310 284768 284569 284684 284722",
 	"SPELL_INTERRUPT",
 	"UNIT_DIED"
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
@@ -31,9 +31,7 @@ mod:RegisterEventsInCombat(
 --TODO, special warning for storm instead of regular? I feel like since players control the cast, it just needs to be general for now
 --TODO, do more with Oblivion Tear?
 --TODO, do more with Void Crash?
---TODO, do more with piercing Gaze of N'Zoth?
---TODO, detect Primordial Mindbender spawns in a better way
---TODO, improve icon code. need to see rate debuffs go out, how many at once, etc.
+--TODO, update icon code when BW changes it again
 --[[
 (ability.id = 293653 or ability.id = 285185 or ability.id = 285416 or ability.id = 285376 or ability.id = 285345 or ability.id = 285453 or ability.id = 285820 or ability.id = 285638 or ability.id = 285427 or ability.id = 285562 or ability.id = 285685) and type = "begincast"
  or (ability.id = 284851 or ability.id = 285652) and type = "cast"
@@ -47,6 +45,8 @@ local warnFeedbackVoid					= mod:NewYouAnnounce(286459, 2)
 local warnFeedbackOcean					= mod:NewYouAnnounce(286457, 2)
 local warnFeedbackStorm					= mod:NewYouAnnounce(286458, 2)
 local warnStormofAnnihilation			= mod:NewTargetAnnounce(284583, 2)
+local warnUmbrelShield					= mod:NewTargetNoFilterAnnounce(284722, 2)
+local warnUmbralShellOver				= mod:NewFadesAnnounce(284722, 2)
 --Stage One: His All-Seeing Eyes
 local warnOblivionTear					= mod:NewCountAnnounce(285185, 2)
 local warnVoidCrash						= mod:NewCountAnnounce(285416, 2)
@@ -71,7 +71,7 @@ local specWarnMaddeningEyesCast			= mod:NewSpecialWarningDodgeCount(285345, nil,
 local specWarnMaddeningEyes				= mod:NewSpecialWarningYou(285345, nil, nil, nil, 1, 2)
 local yellMaddeningEyes					= mod:NewYell(285345)
 local specWarnGiftofNzothObscurity		= mod:NewSpecialWarningDodge(285453, nil, nil, nil, 2, 2)
-local specWarnCallUndyingGuardian		= mod:NewSpecialWarningSwitch(285820, "-Healer", nil, nil, 1, 2)
+local specWarnCallUndyingGuardian		= mod:NewSpecialWarningSwitchCount(285820, "-Healer", nil, nil, 1, 2)
 --Stage Two: His Dutiful Servants
 local specWarnGiftofNzothHysteria		= mod:NewSpecialWarningCount(285638, nil, nil, nil, 2, 2)
 local specWarnConsumeEssence			= mod:NewSpecialWarningInterruptCount(285427, false, nil, nil, 1, 2)
@@ -95,7 +95,7 @@ local timerVoidCrashCD					= mod:NewCDCountTimer(31, 285416, nil, nil, nil, 3)
 --local timerEyesofNzothCD				= mod:NewCDCountTimer(32.7, 285376, nil, nil, nil, 3)--32.7-36.4 (probably spell queuing)
 local timerPiercingGazeCD				= mod:NewCDCountTimer(32.7, 285367, nil, nil, nil, 3)
 local timerMaddeningEyesCD				= mod:NewCDCountTimer(32.7, 285345, nil, nil, nil, 3)
-local timerCallUndyingGuardianCD		= mod:NewCDTimer(46.1, 285820, nil, nil, nil, 1)
+local timerCallUndyingGuardianCD		= mod:NewCDCountTimer(47, 285820, nil, nil, nil, 1)
 local timerGiftofNzothObscurityCD		= mod:NewCDTimer(42.1, 285453, nil, nil, nil, 2)
 --Stage Two: His Dutiful Servants
 local timerUnknowableTerrorCD			= mod:NewCDTimer(40.5, 285562, nil, nil, nil, 3)
@@ -134,10 +134,13 @@ mod.vb.nzothEyesCount = 0
 mod.vb.activeUndying = 0
 mod.vb.HysteriaCount = 0
 mod.vb.LunacyCount = 0
-mod.vb.tormentIcon = 1--1 forwards
-mod.vb.addIcon = 8--8 backwards
+mod.vb.undyingCount = 0
+mod.vb.tormentIcon = 8--8 backwards, to avoid add icons
+mod.vb.addIcon = 1--1 fowards
 mod.vb.mindBenderCount = 0
 mod.vb.tridentOcean, mod.vb.tempestCaller, mod.vb.voidstone = nil, nil, nil
+mod.vb.tridentDrop, mod.vb.tempestDrop, mod.vb.voidDrop = nil, nil, nil
+mod.vb.umbrelTarget = nil
 local trackedFeedback1, trackedFeedback2, trackedFeedback3 = false, false, false
 local playerAffected = false
 local unitTracked = {}
@@ -146,7 +149,7 @@ local interruptTextures = {[1] = 2178508, [2] = 2178501, [3] = 2178502, [4] = 21
 
 local updateInfoFrame
 do
-	local UnstableResonance = DBM:GetSpellInfo(293653)
+	local UnstableResonance, UmbrelShield = DBM:GetSpellInfo(293653), DBM:GetSpellInfo(284722)
 	local lines = {}
 	local sortedLines = {}
 	local function addLine(key, value)
@@ -157,21 +160,6 @@ do
 	updateInfoFrame = function()
 		table.wipe(lines)
 		table.wipe(sortedLines)
-		--Umbral Absorb Checks
-		--[[for uId in DBM:GetGroupMembers() do
-			local absorbAmount = select(16, DBM:UnitDebuff(uId, 284722))
-			if absorbAmount then
-				local unitName = DBM:GetUnitFullName(uId)
-				addLine(unitName, math.floor(absorbAmount))
-			end
-		end
-		--Bosses Power
-		local currentPower, maxPower = UnitPower("boss1"), UnitPowerMax("boss1")
-		if maxPower and maxPower ~= 0 then
-			if currentPower / maxPower * 100 >= 1 then
-				addLine(UnitName("boss1"), currentPower)
-			end
-		end--]]
 		--Track Active Resonance Debuffs (Mythic)
 		if mod.vb.resonCount > 0 then
 			addLine(UnstableResonance, mod.vb.resonCount)
@@ -179,12 +167,34 @@ do
 		--Relics
 		if mod.vb.tridentOcean then
 			addLine(L.Ocean, mod.vb.tridentOcean)
+		else--Show time since relic was dropped on ground
+			if mod.vb.tridentDrop then
+				addLine(L.Ocean, math.floor(GetTime()-mod.vb.tridentDrop))
+			end
 		end
 		if mod.vb.tempestCaller then
 			addLine(L.Storm, mod.vb.tempestCaller)
+		else--Show time since relic was dropped on ground
+			if mod.vb.tempestDrop then
+				addLine(L.Storm, math.floor(GetTime()-mod.vb.tempestDrop))
+			end
 		end
 		if mod.vb.voidstone then
 			addLine(L.Void, mod.vb.voidstone)
+		else--Show time since relic was dropped on ground
+			if mod.vb.voidDrop then
+				addLine(L.Void, math.floor(GetTime()-mod.vb.voidDrop))
+			end
+		end
+		--Umbral Absorb Check (voidstone)
+		if mod.vb.umbrelTarget then
+			local uId = DBM:GetRaidUnitId(mod.vb.umbrelTarget)
+			if uId then
+				local absorbAmount = select(16, DBM:UnitDebuff(uId, 284722))
+				if absorbAmount then
+					addLine(UmbrelShield, math.floor(absorbAmount))
+				end
+			end
 		end
 		--Player personal checks (Checked if you have feedback)
 		if trackedFeedback1 then--Void
@@ -229,10 +239,13 @@ function mod:OnCombatStart(delay)
 	self.vb.activeUndying = 0
 	self.vb.HysteriaCount = 0
 	self.vb.LunacyCount = 0
-	self.vb.tormentIcon = 1
-	self.vb.addIcon = 8
+	self.vb.undyingCount = 0
+	self.vb.tormentIcon = 8
+	self.vb.addIcon = 1
 	self.vb.mindBenderCount = 0
 	self.vb.tridentOcean, self.vb.tempestCaller, self.vb.voidstone = nil, nil, nil
+	self.vb.tridentDrop, self.vb.tempestDrop, self.vb.voidDrop = nil, nil, nil
+	self.vb.umbrelTarget = nil
 	trackedFeedback1, trackedFeedback2, trackedFeedback3 = false, false, false
 	playerAffected = false
 	table.wipe(unitTracked)
@@ -243,7 +256,7 @@ function mod:OnCombatStart(delay)
 	timerOblivionTearCD:Start(12.1-delay, 1)
 	timerTouchoftheEndCD:Start(26.7-delay)
 	timerGiftofNzothObscurityCD:Start(20.6-delay)
-	timerCallUndyingGuardianCD:Start(30.3-delay)
+	timerCallUndyingGuardianCD:Start(30.3-delay, 1)
 	--timerEyesofNzothCD:Start(42-delay, 1)
 	timerPiercingGazeCD:Start(42-delay, 1)
 	if self:IsMythic() then
@@ -316,11 +329,12 @@ function mod:SPELL_CAST_START(args)
 		timerGiftofNzothObscurityCD:Start()
 	elseif spellId == 285820 then
 		--Not a tank, or you are a tank and affected by Touch of the end (the tank that needs to deal with mob)
+		self.vb.undyingCount = self.vb.undyingCount + 1
 		if not self:IsTank() or DBM:UnitDebuff("player", 284851) then
-			specWarnCallUndyingGuardian:Show()
+			specWarnCallUndyingGuardian:Show(self.vb.undyingCount)
 			specWarnCallUndyingGuardian:Play("bigmob")
 		end
-		timerCallUndyingGuardianCD:Start(self.vb.phase == 3 and 31.5 or 46.1)
+		timerCallUndyingGuardianCD:Start(self.vb.phase == 3 and 31.5 or 47, self.vb.undyingCount+1)
 	elseif spellId == 285638 then
 		self.vb.HysteriaCount = self.vb.HysteriaCount + 1
 		specWarnGiftofNzothHysteria:Show(self.vb.HysteriaCount)
@@ -342,9 +356,9 @@ function mod:SPELL_CAST_START(args)
 			if self.Options.SetIconOnAdds then
 				self:ScanForMobs(args.sourceGUID, 2, self.vb.addIcon, 1, 0.2, 12)
 			end
-			self.vb.addIcon = self.vb.addIcon - 1
-			if self.vb.addIcon == 5 then--8-6
-				self.vb.addIcon = 8
+			self.vb.addIcon = self.vb.addIcon + 1
+			if self.vb.addIcon == 4 then--1-3
+				self.vb.addIcon = 1
 			end
 			if self:AntiSpam(5, 3) then
 				self.vb.mindBenderCount = self.vb.mindBenderCount + 1
@@ -527,7 +541,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.SetIconTorment then
 			self:SetIcon(args.destName, icon)
 		end
-		self.vb.tormentIcon = self.vb.tormentIcon + 1
+		self.vb.tormentIcon = self.vb.tormentIcon - 1
+		if self.vb.tormentIcon < 4 then self.vb.tormentIcon = 8 end--Keep icons away from add icons
 	elseif spellId == 286310 then--Void Shield
 		warnVoidShield:Show(args.destName)
 		warnVoidShield:Play("phasechange")
@@ -546,11 +561,14 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerMindBenderCD:Stop()
 		timerUnstableResonanceCD:Stop()
 	elseif spellId == 284768 then--Trident
-		mod.vb.tridentOcean = args.destName
+		self.vb.tridentOcean = args.destName
 	elseif spellId == 284569 then--Tempest
-		mod.vb.tempestCaller = args.destName
+		self.vb.tempestCaller = args.destName
 	elseif spellId == 284684 then--Void
-		mod.vb.voidstone = args.destName
+		self.vb.voidstone = args.destName
+	elseif spellId == 284722 then--Umbrel
+		warnUmbrelShield:Show(args.destName)
+		self.vb.umbrelTarget = args.destName
 	end
 end
 --mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -604,30 +622,36 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerOblivionTearCD:Start(13.3, 1)
 			timerUnknowableTerrorCD:Start(18.2)
 			timerTouchoftheEndCD:Start(22.2)
-			timerCallUndyingGuardianCD:Start(32)
+			timerCallUndyingGuardianCD:Start(32, self.vb.undyingCount+1)
 			timerMindBenderCD:Start(34.4, 1)
 			timerGiftofNzothHysteriaCD:Start(40.5, 1)
 			if self:IsMythic() then
 				timerUnstableResonanceCD:Start(2)
 			end
-		elseif self.vb.phase == 3 then--Assumed, unsubstanciated
+		elseif self.vb.phase == 3 then
 			self.vb.nzothEyesCount = 0
 			--Timers and stuff
 			timerInsatiableTormentCD:Start(12.1)
 			timerOblivionTearCD:Start(13.3, 1)
 			timerTouchoftheEndCD:Start(21.9)
-			timerCallUndyingGuardianCD:Start(26.7)
+			timerCallUndyingGuardianCD:Start(26.7, self.vb.undyingCount+1)
 			timerGiftofNzothLunacyCD:Start(40.1, 1)
 			if self:IsMythic() then
 				timerUnstableResonanceCD:Start(3)
 			end
 		end
 	elseif spellId == 284768 then--Trident
-		mod.vb.tridentOcean = nil
+		self.vb.tridentOcean = nil
+		self.vb.tridentDrop = GetTime()
 	elseif spellId == 284569 then--Tempest
-		mod.vb.tempestCaller = nil
+		self.vb.tempestCaller = nil
+		self.vb.tempestDrop = GetTime()
 	elseif spellId == 284684 then--Void
-		mod.vb.voidstone = nil
+		self.vb.voidstone = nil
+		self.vb.voidDrop = GetTime()
+	elseif spellId == 284722 then--Umbrel
+		self.vb.umbrelTarget = nil
+		warnUmbralShellOver:Show()
 	end
 end
 
