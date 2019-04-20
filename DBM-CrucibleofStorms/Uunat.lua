@@ -4,12 +4,10 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(145371)
 mod:SetEncounterID(2273)
---mod:DisableESCombatDetection()
 mod:SetZone()
---mod:SetBossHPInfoToHighest()
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)--Torment reserves as many as needed, but no more than 5, adds use first 3
---mod:SetHotfixNoticeRev(17775)
---mod:SetMinSyncRevision(16950)
+mod:SetHotfixNoticeRev(20190420212326)
+mod:SetMinSyncRevision(20190420212326)
 --mod.respawnTime = 35
 
 mod:RegisterCombat("combat")
