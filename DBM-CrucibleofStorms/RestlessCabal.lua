@@ -7,7 +7,7 @@ mod:SetEncounterID(2269)
 --mod:DisableESCombatDetection()
 mod:SetZone()
 mod:SetBossHPInfoToHighest()
-mod:SetUsedIcons(1, 2, 3, 4, 5)--Refine when max number of doubt targets is known
+mod:SetUsedIcons(1, 2, 3, 4, 5, 6)--Refine when max number of doubt targets is known
 --mod:SetHotfixNoticeRev(17775)
 --mod:SetMinSyncRevision(16950)
 --mod.respawnTime = 35
@@ -101,9 +101,9 @@ local berserkTimer						= mod:NewBerserkTimer(780)
 --local countdownShearMind				= mod:NewCountdown("Alt12", 244016, false, 2, 3)
 --local countdownFelstormBarrage			= mod:NewCountdown("AltTwo32", 244000, nil, nil, 3)
 
-mod:AddSetIconOption("SetIconCrushingDoubt", 282432, true)
-mod:AddSetIconOption("SetIconDarkherald", 282561, true)
-mod:AddSetIconOption("SetIconOnAdds", 282621, true, true)
+mod:AddSetIconOption("SetIconCrushingDoubt", 282432, true, false, {1, 2})
+mod:AddSetIconOption("SetIconDarkherald", 282561, true, false, {6})
+mod:AddSetIconOption("SetIconOnAdds", 282617, true, true, {3, 4, 5})
 mod:AddRangeFrameOption(6, 283524)
 mod:AddInfoFrameOption(282741, true)
 mod:AddNamePlateOption("NPAuraOnEcho", 282517)
@@ -306,7 +306,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnDarkHerald:Show(args.destName)
 		end
 		if self.Options.SetIconDarkherald then
-			self:SetIcon(args.destName, 3)
+			self:SetIcon(args.destName, 6)
 		end
 	elseif spellId == 282384 then
 		local uId = DBM:GetRaidUnitId(args.destName)

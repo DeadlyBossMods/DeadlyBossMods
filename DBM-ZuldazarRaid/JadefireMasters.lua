@@ -99,7 +99,6 @@ mod:AddSetIconOption("SetIconEmbers", 286988, true)
 mod:AddInfoFrameOption(281959, true)
 mod:AddNamePlateOption("NPAuraOnFixate", 268074)
 mod:AddNamePlateOption("NPAuraOnExplosion", 284399)
---mod:AddSetIconOption("SetIconDarkRev", 273365, true)
 
 mod.vb.shieldsActive = false
 mod.vb.embersIcon = 0

@@ -84,8 +84,8 @@ local countdownEyeBeam					= mod:NewCountdown("AltTwo37", 264382, "-Tank", nil, 
 
 mod:AddRangeFrameOption(6, 264382)
 mod:AddBoolOption("EarlyTankSwap", false)
-mod:AddSetIconOption("SetIconOnAdds", 267192, true, true)
-mod:AddSetIconOption("SetIconOnEyeBeam", 264382, true)
+mod:AddSetIconOption("SetIconOnAdds", 267192, true, true, {1, 2, 3})
+mod:AddSetIconOption("SetIconOnEyeBeam", 264382, true, false, {6, 7, 8})
 
 mod.vb.phase = 1
 mod.vb.orbCount = 0

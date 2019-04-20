@@ -114,9 +114,9 @@ mod:AddRangeFrameOption(5, 270428)
 mod:AddInfoFrameOption(nil, true)
 mod:AddNamePlateOption("NPAuraOnFixate", 268074)
 mod:AddNamePlateOption("NPAuraOnUnstoppable", 275204)
-mod:AddSetIconOption("SetIconOnBloodHost", 267813, true)
-mod:AddSetIconOption("SetIconOnBurstingBoil", 277007, true)
-mod:AddSetIconOption("SetIconOnExplosiveCorruption", 272506, false)
+mod:AddSetIconOption("SetIconOnBloodHost", 267813, true, false, {7})
+mod:AddSetIconOption("SetIconOnBurstingBoil", 277007, true, false, {1, 2, 3, 4, 5, 6})
+mod:AddSetIconOption("SetIconOnExplosiveCorruption", 272506, false, false, {1, 2, 3, 4, 5, 6, 7, 8})
 
 mod.vb.phase = 1
 mod.vb.mawCastCount = 0

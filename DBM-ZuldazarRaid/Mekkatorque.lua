@@ -87,8 +87,8 @@ local countdownWorldEnlarger			= mod:NewCountdown(50, 288049, true, nil, 4)
 local countdownGigavoltCharge			= mod:NewCountdown("Alt12", 286646, true, nil, 4)
 local countdownWormhole					= mod:NewCountdown("AltTwo32", 287952, nil, nil, 4)
 
-mod:AddSetIconOption("SetIconGigaVolt", 286646, true)
-mod:AddSetIconOption("SetIconBot", 288410, true, true)
+mod:AddSetIconOption("SetIconGigaVolt", 286646, true, false, {1, 2, 3})
+mod:AddSetIconOption("SetIconBot", 288410, true, true, {4, 5, 6, 7, 8})
 mod:AddInfoFrameOption(286105, true)
 
 mod.vb.phase = 1

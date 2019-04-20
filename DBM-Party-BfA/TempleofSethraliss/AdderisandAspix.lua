@@ -5,6 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(133379, 133944)
 mod:SetEncounterID(2124)
 mod:SetZone()
+mod:SetUsedIcons(8)
 
 mod:RegisterCombat("combat")
 
@@ -58,7 +59,7 @@ local timerArcDashCD				= mod:NewCDTimer(23, 263424, nil, nil, nil, 3)
 
 mod:AddRangeFrameOption("8")
 mod:AddInfoFrameOption(263246, true)
-mod:AddSetIconOption("SetIconOnNoLit", 263246, true, true)
+mod:AddSetIconOption("SetIconOnNoLit", 263246, true, true, {8})
 
 mod.vb.noLitShield = nil
 

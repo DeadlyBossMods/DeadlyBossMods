@@ -107,7 +107,7 @@ local countdownSeaSwell					= mod:NewCountdown(20.6, 285118, true, 3, 3)
 --local countdownFelstormBarrage			= mod:NewCountdown("AltTwo32", 244000, nil, nil, 3)
 
 mod:AddNamePlateOption("NPAuraOnKepWrapping", 285382)
-mod:AddSetIconOption("SetIconWail", 285350, true)
+mod:AddSetIconOption("SetIconWail", 285350, true, false, {1, 2, 3})
 mod:AddRangeFrameOption(5, 285118)
 mod:AddInfoFrameOption(284760, true)
 

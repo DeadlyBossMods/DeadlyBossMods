@@ -11052,7 +11052,7 @@ function bossModPrototype:AddSpecialWarningOption(name, default, defaultSound, c
 	self:SetOptionCategory(name, cat)
 end
 
-function bossModPrototype:AddSetIconOption(name, spellId, default, isHostile)
+function bossModPrototype:AddSetIconOption(name, spellId, default, isHostile, iconsUsed)
 	self.DefaultOptions[name] = (default == nil) or default
 	if default and type(default) == "string" then
 		default = self:GetRoleFlagValue(default)
@@ -11067,6 +11067,22 @@ function bossModPrototype:AddSetIconOption(name, spellId, default, isHostile)
 		self.localization.options[name] = DBM_CORE_AUTO_ICONS_OPTION_TEXT2:format(spellId)
 	else
 		self.localization.options[name] = DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(spellId)
+	end
+	--A table defining used icons by number, insert icon textures to end of option
+	if iconsUsed then
+		self.localization.options[name] = self.localization.options[name].." ("
+		for i=1, #iconsUsed do
+			if 		iconsUsed[i] == 1 then		self.localization.options[name] = self.localization.options[name].."|TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:0:16:0:16|t"
+			elseif	iconsUsed[i] == 2 then		self.localization.options[name] = self.localization.options[name].."|TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:16:32:0:16|t"
+			elseif	iconsUsed[i] == 3 then		self.localization.options[name] = self.localization.options[name].."|TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:32:48:0:16|t"
+			elseif	iconsUsed[i] == 4 then		self.localization.options[name] = self.localization.options[name].."|TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:48:64:0:16|t"
+			elseif	iconsUsed[i] == 5 then		self.localization.options[name] = self.localization.options[name].."|TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:0:16:16:32|t"
+			elseif	iconsUsed[i] == 6 then		self.localization.options[name] = self.localization.options[name].."|TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:16:32:16:32|t"
+			elseif	iconsUsed[i] == 7 then		self.localization.options[name] = self.localization.options[name].."|TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:32:48:16:32|t"
+			elseif	iconsUsed[i] == 8 then		self.localization.options[name] = self.localization.options[name].."|TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:48:64:16:32|t"
+			end
+		end
+		self.localization.options[name] = self.localization.options[name]..")"
 	end
 end
 

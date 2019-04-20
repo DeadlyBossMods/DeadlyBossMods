@@ -72,7 +72,7 @@ local countdownGestate						= mod:NewCountdown(25.5, 265212, true, nil, 3)
 local countdownContagion					= mod:NewCountdown("Alt12", 267242, "Healer", 2, 3)
 local countdownLiquefy						= mod:NewCountdown("AltTwo90", 265217, nil, nil, 3)
 
-mod:AddSetIconOption("SetIconVector", 265129, true)
+mod:AddSetIconOption("SetIconVector", 265129, true, false, {1, 2, 3, 4})
 mod:AddRangeFrameOption("5/8")
 mod:AddInfoFrameOption(265127, true)
 mod:AddBoolOption("ShowHighestFirst3", true)--Show highest stacks first by default, since it alines with 3rd generation infoframe

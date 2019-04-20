@@ -38,7 +38,7 @@ local timerUnstableRunicMarkCD		= mod:NewNextTimer(13.3, 260703, nil, nil, nil, 
 
 mod:AddRangeFrameOption(6, 260703)
 mod:AddInfoFrameOption(260773, true)
-mod:AddSetIconOption("SetIconOnTriad", 260805, true, true)
+mod:AddSetIconOption("SetIconOnTriad", 260805, true, true, {8})
 
 mod.vb.activeTriad = nil
 local IrisBuff = DBM:GetSpellInfo(260805)

@@ -76,7 +76,7 @@ local countdownEssenceShear				= mod:NewCountdown("Alt20", 274693, "Tank", nil, 
 local countdownImminentRuin				= mod:NewCountdown("AltTwo20", 272536, "-Tank", nil, 3)
 local countdownBeam						= mod:NewCountdown("AltTwo20", 272115, nil, nil, 3)
 
-mod:AddSetIconOption("SetIconRuin", 272536, true)
+mod:AddSetIconOption("SetIconRuin", 272536, true, false, {1, 2})
 mod:AddRangeFrameOption(5, 272407)
 mod:AddInfoFrameOption(272146, true)
 

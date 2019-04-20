@@ -123,8 +123,8 @@ mod:AddNamePlateOption("NPAuraOnBond", 287693)
 mod:AddNamePlateOption("NPAuraOnFeed", 285307)
 mod:AddNamePlateOption("NPAuraOnRegen", 285333)
 mod:AddNamePlateOption("NPAuraOnConsume", 285427)
-mod:AddSetIconOption("SetIconTorment2", 285652, false)
-mod:AddSetIconOption("SetIconOnAdds", 285427, true, true)
+mod:AddSetIconOption("SetIconTorment2", 285652, false, false, {4, 5, 6, 7, 8})
+mod:AddSetIconOption("SetIconOnAdds", "ej19118", true, true, {1, 2, 3})
 
 mod.vb.phase = 1
 mod.vb.touchCount = 0
