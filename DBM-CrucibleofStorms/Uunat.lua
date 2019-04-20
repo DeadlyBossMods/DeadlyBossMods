@@ -41,9 +41,12 @@ mod:RegisterEventsInCombat(
 local warnPhase							= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
 local warnVoidShield					= mod:NewTargetNoFilterAnnounce(286310, 2, nil, nil, nil, nil, nil, 7)
 --Relics of Power
+local warnVoidRelic						= mod:NewTargetNoFilterAnnounce(284684, 1)
+local warnOceanRelic					= mod:NewTargetNoFilterAnnounce(284768, 1)
+local warnStormRelic					= mod:NewTargetNoFilterAnnounce(284569, 1)
 local warnFeedbackVoid					= mod:NewYouAnnounce(286459, 2)
 local warnFeedbackOcean					= mod:NewYouAnnounce(286457, 2)
-local warnFeedbackStorm					= mod:NewYouAnnounce(286458, 2)
+local warnFeedbackStorm					= mod:NewYouAnnounce(284569, 2)
 local warnStormofAnnihilation			= mod:NewTargetAnnounce(284583, 2)
 local warnUmbrelShield					= mod:NewTargetNoFilterAnnounce(284722, 2)
 local warnUmbralShellOver				= mod:NewFadesAnnounce(284722, 2)
@@ -62,7 +65,7 @@ local specWarnUnstableResonance			= mod:NewSpecialWarningMoveAway(293653, nil, n
 local specWarnUnstableResonanceVoid		= mod:NewSpecialWarningYouPos(293663, nil, nil, nil, 1, 6)
 local specWarnUnstableResonanceOcean	= mod:NewSpecialWarningYouPos(293662, nil, nil, nil, 1, 6)
 local specWarnUnstableResonanceStorm	= mod:NewSpecialWarningYouPos(293661, nil, nil, nil, 1, 6)
-local yellUnstableResonanceSign			= mod:NewPosYell(293653, DBM_CORE_AUTO_YELL_CUSTOM_POSITION)
+local yellUnstableResonanceSign			= mod:NewPosYell(293653, DBM_CORE_AUTO_YELL_CUSTOM_POSITION, nil, nil, "YELL"))
 --Stage One: His All-Seeing Eyes
 local specWarnTouchoftheEnd				= mod:NewSpecialWarningYou(284851, nil, nil, nil, 1, 2)
 local specWarnTouchoftheEndTaunt		= mod:NewSpecialWarningTaunt(284851, nil, nil, nil, 1, 6)
@@ -77,18 +80,18 @@ local specWarnGiftofNzothHysteria		= mod:NewSpecialWarningCount(285638, nil, nil
 local specWarnConsumeEssence			= mod:NewSpecialWarningInterruptCount(285427, false, nil, nil, 1, 2)
 local specWarnUnknowableTerror			= mod:NewSpecialWarningRun(285562, nil, nil, nil, 4, 2)
 local specWarnPrimordialMindbender		= mod:NewSpecialWarningSwitch("ej19118", "Dps", nil, nil, 1, 2)
-
 --Stage Three: His Unwavering Gaze
 local specWarnInsatiableTorment			= mod:NewSpecialWarningYou(285652, nil, nil, nil, 1, 2)
 local yellInsatiableTorment				= mod:NewShortYell(285652, 142942)--Short text "Torment"
 local specWarnGiftofNzothLunacy			= mod:NewSpecialWarningCount(285685, nil, nil, nil, 2, 2)
 
 --Relics of Power
---mod:AddTimerLine(DBM:EJ_GetSectionInfo(18527))
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(19055))
 local timerStormofAnnihilation			= mod:NewTargetTimer(15, 284583, 196871, nil, nil, 2, nil, DBM_CORE_HEALER_ICON)--Short text "Storm"
 local timerUnstableResonanceCD			= mod:NewAITimer(55, 293653, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
 local timerUnstableResonance			= mod:NewBuffFadesTimer(15, 293653, nil, nil, nil, 5, nil, DBM_CORE_DEADLY_ICON)
 --Stage One: His All-Seeing Eyes
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(19104))
 local timerTouchoftheEndCD				= mod:NewCDCountTimer(25, 284851, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--25, but heavily affected by spell queueing or some kind of ability overlap protection
 local timerOblivionTearCD				= mod:NewCDCountTimer(12.1, 285185, nil, nil, nil, 3)--12.1 but often delayed by other casts
 local timerVoidCrashCD					= mod:NewCDCountTimer(31, 285416, nil, nil, nil, 3)
@@ -98,10 +101,12 @@ local timerMaddeningEyesCD				= mod:NewCDCountTimer(32.7, 285345, nil, nil, nil,
 local timerCallUndyingGuardianCD		= mod:NewCDCountTimer(47, 285820, 234890, nil, nil, 1)--Short text "Guardian"
 local timerGiftofNzothObscurityCD		= mod:NewCDCountTimer(42.1, 285453, 285477, nil, nil, 2)--Short text "Obscurity"
 --Stage Two: His Dutiful Servants
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(19105))
 local timerUnknowableTerrorCD			= mod:NewCDTimer(40.5, 285562, nil, nil, nil, 3)
 local timerMindBenderCD					= mod:NewCDCountTimer(61.1, "ej19118", 284485, nil, nil, 1, 285427, DBM_CORE_DAMAGE_ICON)--Shorttext "Mindbender"
 local timerGiftofNzothHysteriaCD		= mod:NewCDCountTimer(42.5, 285638, 55975, nil, nil, 2)--Short text "Hysteria"
 --Stage Three: His Unwavering Gaze
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(19106))
 local timerInsatiableTormentCD			= mod:NewCDTimer(23.1, 285652, 142942, nil, nil, 3)--Short text "Torment"
 local timerGiftofNzothLunacyCD			= mod:NewCDCountTimer(42.6, 285685, L.Lunacy, nil, nil, 2)--Manually translated because no spell to short text it
 
@@ -138,11 +143,12 @@ mod.vb.tormentCount = 0
 mod.vb.tormentIcon = 8--8 backwards, to avoid add icons
 mod.vb.addIcon = 1--1 fowards
 mod.vb.mindBenderCount = 0
-mod.vb.tridentOcean, mod.vb.tempestCaller, mod.vb.voidstone = nil, nil, nil
+mod.vb.tridentOcean, mod.vb.tempestCaller, mod.vb.voidstone = "None", "None", "None"
 mod.vb.tridentDrop, mod.vb.tempestDrop, mod.vb.voidDrop = nil, nil, nil
 mod.vb.umbrelTarget = nil
 local trackedFeedback1, trackedFeedback2, trackedFeedback3 = false, false, false
 local playerAffected = false
+local playerName = UnitName("player")
 local unitTracked = {}
 local castsPerGUID = {}
 local interruptTextures = {[1] = 2178508, [2] = 2178501, [3] = 2178502, [4] = 2178503, [5] = 2178504, [6] = 2178505, [7] = 2178506, [8] = 2178507,}--Fathoms Deck
@@ -165,21 +171,21 @@ do
 			addLine(UnstableResonance, mod.vb.resonCount)
 		end
 		--Relics
-		if mod.vb.tridentOcean then
+		if mod.vb.tridentOcean ~= "None" then
 			addLine(L.Ocean, mod.vb.tridentOcean)
 		else--Show time since relic was dropped on ground
 			if mod.vb.tridentDrop then
 				addLine(L.Ocean, math.floor(GetTime()-mod.vb.tridentDrop))
 			end
 		end
-		if mod.vb.tempestCaller then
+		if mod.vb.tempestCaller ~= "None" then
 			addLine(L.Storm, mod.vb.tempestCaller)
 		else--Show time since relic was dropped on ground
 			if mod.vb.tempestDrop then
 				addLine(L.Storm, math.floor(GetTime()-mod.vb.tempestDrop))
 			end
 		end
-		if mod.vb.voidstone then
+		if mod.vb.voidstone ~= "None" then
 			addLine(L.Void, mod.vb.voidstone)
 		else--Show time since relic was dropped on ground
 			if mod.vb.voidDrop then
@@ -224,7 +230,12 @@ end
 
 local function updateResonanceYell(self, icon)
 	if not self.Options.ResonanceYellFilter then return end
-	if playerAffected then
+	--If player with relic, icons AND playername in red text
+	if self.vb.resonCount > 0 and (self.vb.tridentOcean == playerName or self.vb.tempestCaller == playerName or self.vb.voidstone == playerName) then
+		yellUnstableResonanceSign:Yell(icon, playerName, icon)
+		self:Schedule(2, updateResonanceYell, self, icon)
+	--Not one of relics, just one of resonance targets, just double icons
+	elseif playerAffected then
 		yellUnstableResonanceSign:Yell(icon, "", icon)
 		self:Schedule(2, updateResonanceYell, self, icon)
 	end
@@ -244,7 +255,7 @@ function mod:OnCombatStart(delay)
 	self.vb.tormentIcon = 8
 	self.vb.addIcon = 1
 	self.vb.mindBenderCount = 0
-	self.vb.tridentOcean, self.vb.tempestCaller, self.vb.voidstone = nil, nil, nil
+	self.vb.tridentOcean, self.vb.tempestCaller, self.vb.voidstone = "None", "None", "None"
 	self.vb.tridentDrop, self.vb.tempestDrop, self.vb.voidDrop = nil, nil, nil
 	self.vb.umbrelTarget = nil
 	trackedFeedback1, trackedFeedback2, trackedFeedback3 = false, false, false
@@ -475,6 +486,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerStormofAnnihilation:Start(args.destName)
 	elseif spellId == 293663 or spellId == 293662 or spellId == 293661 then--Unstable Resonance (all)
 		self.vb.resonCount = self.vb.resonCount + 1
+		if mod.vb.resonCount > 0 and (self.vb.tridentOcean == playerName or self.vb.tempestCaller == playerName or self.vb.voidstone == playerName) then
+			local icon = self.vb.tridentOcean == playerName and 6 or self.vb.tempestCaller == playerName and 1 or self.vb.voidstone == playerName and 3
+			yellUnstableResonanceSign:Yell(icon, playerName, icon)
+			self:Schedule(2, updateResonanceYell, self, icon)
+		end
 		if spellId == 293663 then--Void
 			if args:IsPlayer() then
 				specWarnUnstableResonanceVoid:Show(self:IconNumToTexture(3))
@@ -566,13 +582,16 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerUnstableResonanceCD:Stop()
 	elseif spellId == 284768 then--Trident
 		self.vb.tridentOcean = args.destName
+		warnOceanRelic:Show(args.destName)
 	elseif spellId == 284569 then--Tempest
 		self.vb.tempestCaller = args.destName
+		warnStormRelic:Show(args.destName)
 	elseif spellId == 284684 then--Void
 		self.vb.voidstone = args.destName
+		warnVoidRelic:Show(args.destName)
 	elseif spellId == 284722 then--Umbrel
-		warnUmbrelShield:Show(args.destName)
 		self.vb.umbrelTarget = args.destName
+		warnUmbrelShield:Show(args.destName)
 	end
 end
 --mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -648,13 +667,13 @@ function mod:SPELL_AURA_REMOVED(args)
 			end
 		end
 	elseif spellId == 284768 then--Trident
-		self.vb.tridentOcean = nil
+		self.vb.tridentOcean = "None"
 		self.vb.tridentDrop = GetTime()
 	elseif spellId == 284569 then--Tempest
-		self.vb.tempestCaller = nil
+		self.vb.tempestCaller = "None"
 		self.vb.tempestDrop = GetTime()
 	elseif spellId == 284684 then--Void
-		self.vb.voidstone = nil
+		self.vb.voidstone = "None"
 		self.vb.voidDrop = GetTime()
 	elseif spellId == 284722 then--Umbrel
 		self.vb.umbrelTarget = nil
