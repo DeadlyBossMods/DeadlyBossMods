@@ -10776,7 +10776,7 @@ do
 			timerTextValue = timerText
 			spellName = DBM:GetSpellInfo(timerText or 0)--Override Cached spell Name
 		else
-			timerTextValue = self.localization.timers[timerText]
+			timerTextValue = self.localization.timers[timerText] or timerText--Check timers table first, otherwise accept it as literal timer text
 		end
 		local id = "Timer"..(spellId or 0)..timerType..(optionVersion or "")
 		local obj = setmetatable(
