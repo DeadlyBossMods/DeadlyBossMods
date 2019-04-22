@@ -45,7 +45,6 @@ local warnHexofLethargy					= mod:NewTargetAnnounce(284470, 2)
 --Stage Two: Toppling the Guardian
 local warnPhase2						= mod:NewPhaseAnnounce(2, 2)
 local warnLiquidGold					= mod:NewTargetAnnounce(287072, 2)
---local warnRupturingBlood				= mod:NewStackAnnounce(274358, 2, nil, "Tank")
 
 --The Zandalari Crown Jewels
 local specWarnGrosslyIncandescent		= mod:NewSpecialWarningYou(284798, nil, nil, nil, 1, 2)

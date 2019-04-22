@@ -15,12 +15,12 @@ mod:SetUsedIcons(1, 2, 3, 4, 5, 6)--Refine when max number of doubt targets is k
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 282675 282589 282515 282517 282617 282818 283540 282621",
+	"SPELL_CAST_START 282675 282589 282515 282517 282617 283540 282621",
 	"SPELL_CAST_SUCCESS 282561 282384 282407 285416 283066 283540 282621",
-	"SPELL_AURA_APPLIED 282741 282742 282914 283524 282386 282540 282561 282384 282432 287876 282817",
-	"SPELL_AURA_APPLIED_DOSE 282384",
+	"SPELL_AURA_APPLIED 282741 282742 282914 283524 282386 282540 282561 282384 282432 287876 282621 282566",
+	"SPELL_AURA_APPLIED_DOSE 282384 282566",
 	"SPELL_AURA_REFRESH 282384 282386 283524",
-	"SPELL_AURA_REMOVED 282741 282742 282386 282561 282384 282432 282741",
+	"SPELL_AURA_REMOVED 282741 282742 282386 282561 282432 282741 282621 282566",
 	"SPELL_INTERRUPT",
 --	"SPELL_PERIODIC_DAMAGE 287876",
 --	"SPELL_PERIODIC_MISSED 287876",
@@ -31,7 +31,6 @@ mod:RegisterEventsInCombat(
 --TODO: add general announce for embrace of the void? it seems pretty given, it's more of a healer track on raid frames thing than a DBM thing
 --TODO, refine AbyssalCollapse for situations like do we cancel bar if shield gets completely depleted, etc
 --TODO, see if relics hard reset boss cd timers or if they just get paused, or if nothing affects them at all
---TODO, custom info frame that tracks who has herald, personal promises of power, probably other crap
 --TODO, fine tune tank swap stacks (changed to 3, but many strats may favor doing 2-5 to reduce add spawn complexity and tank damage. Probably will just add a drop down)
 --TODO, detect void crash bounces, use general announce for cast and first bounce, special warning for one that needs soaking?
 --[[
@@ -65,12 +64,11 @@ local yellAgentofDemise					= mod:NewYell(282540, nil, nil, nil, "YELL")
 local specWarnCerebralAssault			= mod:NewSpecialWarningDodgeCount(282589, nil, nil, nil, 3, 2)
 local specWarnDarkherald				= mod:NewSpecialWarningYou(282561, nil, nil, nil, 1, 2)
 local yellDarkherald					= mod:NewYell(282561)
+local specWarnPowerStack				= mod:NewSpecialWarningStack(282566, nil, 6, nil, nil, 1, 6)
 local specWarnVisagefromBeyond			= mod:NewSpecialWarningSwitch(282515, "-Healer", nil, nil, 1, 2)
 --Fa'thuul the Feared
 local specWarnShearMind					= mod:NewSpecialWarningStack(282384, nil, 3, nil, nil, 1, 6)
 local specWarnShearMindTaunt			= mod:NewSpecialWarningTaunt(282384, nil, nil, nil, 1, 2)
---local yellShearMindFades				= mod:NewFadesYell(282384, nil, false)--useful but optional
---local specSeveredAnguish				= mod:NewSpecialWarningTaunt(282817, nil, nil, nil, 1, 2)
 local specWarnCrushingDoubt				= mod:NewSpecialWarningYouPos(282432, nil, nil, nil, 1, 2)
 local yellCrushingDoubt					= mod:NewPosYell(282432)
 local yellCrushingDoubtFades			= mod:NewIconFadesYell(282432)
@@ -91,7 +89,6 @@ local timerTerrifyingEcho				= mod:NewCastTimer(15, 282517, nil, nil, nil, 4, ni
 --Fa'thuul the Feared
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(18983))
 local timerShearMindCD					= mod:NewCDTimer(8.4, 282384, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
---local timerDevourThoughtsCD				= mod:NewCDTimer(9.8, 282818, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerVoidCrashCD					= mod:NewCDTimer(13.3, 285416, nil, nil, nil, 3)
 local timerCrushingDoubtCD				= mod:NewCDCountTimer(40.1, 282432, nil, nil, nil, 3)
 
@@ -115,10 +112,57 @@ mod.vb.assaultCount = 0
 mod.vb.heraldCount = 0
 mod.vb.crushingDoubtCount = 0
 mod.vb.CrushingDoubtIcon = 1
---mod.vb.tankAddsActive = 0
 mod.vb.addIcon = 3
+mod.vb.umbrelTarget = nil
+mod.vb.heraldTarget = nil
 local castsPerGUID = {}
+local playerWitness = false
+local playerPromise = false
 local interruptTextures = {[1] = 2178508, [2] = 2178501, [3] = 2178502, [4] = 2178503, [5] = 2178504, [6] = 2178505, [7] = 2178506, [8] = 2178507,}--Fathoms Deck
+
+local updateInfoFrame
+do
+	local heraldName, UmbrelShield = DBM:GetSpellInfo(282561), DBM:GetSpellInfo(282741)
+	local lines = {}
+	local sortedLines = {}
+	local function addLine(key, value)
+		-- sort by insertion order
+		lines[key] = value
+		sortedLines[#sortedLines + 1] = key
+	end
+	updateInfoFrame = function()
+		table.wipe(lines)
+		table.wipe(sortedLines)
+		--Umbral Absorb Check
+		if mod.vb.umbrelTarget then
+			local absorbAmount = select(16, DBM:UnitDebuff(mod.vb.umbrelTarget, 282741))
+			if absorbAmount then
+				addLine(UmbrelShield, math.floor(absorbAmount))
+			end
+		end
+		--Witness the End tracker
+		if playerWitness then
+			local spellName, _, _, _, _, expireTime = DBM:UnitDebuff("player", 282621)
+			local remaining = expireTime-GetTime()
+			if spellName and expireTime then
+				addLine(DBM_CORE_DEADLY_ICON..spellName, math.floor(remaining))
+			end
+		end
+		--Herald
+		if mod.vb.heraldTarget then
+			addLine(heraldName, mod.vb.heraldTarget)
+		end
+		--Personal Promise of Power
+		if playerPromise then
+			local spellName2, _, currentStack2, _, _, expireTime2 = DBM:UnitDebuff("player", 282566)
+			if spellName2 and currentStack2 and expireTime2 then
+				local remaining2 = expireTime2-GetTime()
+				addLine(spellName2.." ("..currentStack2..")", math.floor(remaining2))
+			end
+		end
+		return lines, sortedLines
+	end
+end
 
 function mod:OnCombatStart(delay)
 	table.wipe(castsPerGUID)
@@ -127,8 +171,11 @@ function mod:OnCombatStart(delay)
 	self.vb.heraldCount = 0
 	self.vb.crushingDoubtCount = 0
 	self.vb.CrushingDoubtIcon = 1
-	--self.vb.tankAddsActive = 0
 	self.vb.addIcon = 3
+	self.vb.umbrelTarget = nil
+	self.vb.heraldTarget = nil
+	playerWitness = false
+	playerPromise = false
 	--Zaxasj the Speaker
 	timerDarkheraldCD:Start(10.2-delay, 1)--SUCCESS
 	timerCerebralAssaultCD:Start(15.5-delay, 1)
@@ -139,6 +186,10 @@ function mod:OnCombatStart(delay)
 	berserkTimer:Start(780-delay)--780 verified on normal https://www.warcraftlogs.com/reports/FDpxbA2ht68rqXaZ#fight=3&view=events&pins=2%24Off%24%23244F4B%24expression%24ability.name%20%3D%20%22Berserk%22
 	if self.Options.NPAuraOnPresence or self.Options.NPAuraOnWitness then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
+	end
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:SetHeader(OVERVIEW)
+		DBM.InfoFrame:Show(10, "function", updateInfoFrame, false, false)
 	end
 end
 
@@ -151,6 +202,15 @@ function mod:OnCombatEnd()
 	end
 	if self.Options.NPAuraOnPresence or self.Options.NPAuraOnWitness then
 		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
+	end
+end
+
+function mod:OnTimerRecovery()
+	if DBM:UnitDebuff("player", 282621) then
+		playerWitness = true
+	end
+	if DBM:UnitDebuff("player", 282566) then
+		playerPromise = true
 	end
 end
 
@@ -213,8 +273,6 @@ function mod:SPELL_CAST_START(args)
 		if self.Options.NPAuraOnWitness then
 			DBM.Nameplate:Show(true, args.sourceGUID, spellId, interruptTextures[count])
 		end
---	elseif spellId == 282818 then
-		--timerDevourThoughtsCD:Start(9.8, args.sourceGUID)
 	end
 end
 
@@ -252,6 +310,7 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 282741 then
+		self.vb.umbrelTarget = DBM:GetEnemyUnitIdByGUID(args.destGUID)
 		local cid = self:GetCIDFromGUID(args.destGUID)
 		--146497 Zaxasj, 146495 Fa'thuul
 		if cid == 146497 then
@@ -260,17 +319,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnUmbralShell:Show(L.Fathuul)
 		end
 		specWarnUmbralShell:Play("attackshield")
-		if self.Options.InfoFrame then
-			for i = 1, 2 do
-				local bossUnitID = "boss"..i
-				if UnitGUID(bossUnitID) == args.sourceGUID then--Identify correct unit ID
-					DBM.InfoFrame:SetHeader(args.spellName)
-					DBM.InfoFrame:Show(2, "enemyabsorb", nil, UnitGetTotalAbsorbs(bossUnitID), bossUnitID)
-					--DBM.InfoFrame:Show(2, "enemyabsorb")
-					break
-				end
-			end
-		end
 	elseif spellId == 282742 then
 		specWarnStormofAnnihilation:Show()
 		specWarnStormofAnnihilation:Play("aesoon")
@@ -298,6 +346,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 282561 then
 		timerDarkherald:Start(args.destName)
+		self.vb.heraldTarget = args.destName
 		if args:IsPlayer() then
 			specWarnDarkherald:Show()
 			specWarnDarkherald:Play("targetyou")
@@ -348,19 +397,15 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 287876 and args:IsPlayer() and self:AntiSpam(3, 2) then
 		specWarnGTFO:Show(args.spellName)
 		specWarnGTFO:Play("runaway")--This particular case it's not a watch feet GTFO, it's a run away since you're too far into darkness
-	--[[elseif spellId == 282817 then
-		self.vb.tankAddsActive = self.vb.tankAddsActive + 1
-		local _, _, _, _, expireTime = DBM:UnitDebuff("player", 282384)
-		local remaining
-		if expireTime then
-			remaining = expireTime-GetTime()
+	elseif spellId == 282621 and args:IsPlayer() then
+		playerWitness = true
+	elseif spellId == 282566 and args:IsPlayer() then
+		playerPromise = true
+		local amount = args.amount or 1
+		if amount >= 6 then
+			specWarnPowerStack:Show(amount)
+			specWarnPowerStack:Play("stackhigh")
 		end
-		--Taunt add, you don't have debuff, or your debuff will fade before devour thoughts finishes and you aren't currently tanking either of bosses
-		if not UnitDetailedThreatSituation("player", "boss1") and not UnitDetailedThreatSituation("player", "boss2") and (not remaining or remaining and remaining < 5.5) then
-			specSeveredAnguish:Show()
-			specSeveredAnguish:Play("killmob")
-		end
-		timerDevourThoughtsCD:Start(4.5, args.destGUID)--START--]]
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -369,12 +414,8 @@ mod.SPELL_AURA_REFRESH = mod.SPELL_AURA_APPLIED
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 282741 then
+		self.vb.umbrelTarget = nil
 		warnUmbralShell:Show()
-		if self.Options.InfoFrame then
-			--DBM.InfoFrame:SetHeader(DBM_CORE_INFOFRAME_POWER)
-			--DBM.InfoFrame:Show(4, "enemypower", 2)
-			DBM.InfoFrame:Hide()
-		end
 	elseif spellId == 282742 then
 		timerStormofAnnihilation:Stop()
 	elseif spellId == 282386 then
@@ -385,6 +426,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			end
 		end
 	elseif spellId == 282561 then
+		self.vb.heraldTarget = nil
 		timerDarkherald:Stop(args.destName)
 		if args:IsPlayer() then
 			warnDarkHeraldFaded:Show()
@@ -392,14 +434,14 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.SetIconDarkherald then
 			self:SetIcon(args.destName, 0)
 		end
-	--elseif spellId == 282384 then
-		--if args:IsPlayer() then
-			--yellShearMindFades:Cancel()
-		--end
 	elseif spellId == 282432 then
 		if self.Options.SetIconCrushingDoubt then
 			self:SetIcon(args.destName, 0)
 		end
+	elseif spellId == 282621 and args:IsPlayer() then
+		playerWitness = false
+	elseif spellId == 282566 and args:IsPlayer() then
+		playerPromise = false
 	end
 end
 
@@ -428,9 +470,6 @@ function mod:UNIT_DIED(args)
 		if self.Options.NPAuraOnEcho then
 			DBM.Nameplate:Hide(true, args.destGUID)
 		end
---	elseif cid == 145275 then--Manifestation of Anguish
---		self.vb.tankAddsActive = self.vb.tankAddsActive - 1
-		--timerDevourThoughtsCD:Stop(args.destGUID)
 	elseif cid == 145053 then--Eldritch Abomination
 		castsPerGUID[args.destGUID] = nil
 		if self.Options.NPAuraOnWitness then
