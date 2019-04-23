@@ -462,7 +462,7 @@ function createRadarFrame()
 
 	local player = radarFrame:CreateTexture(nil, "OVERLAY")
 	player:SetSize(32, 32)
-	player:SetTexture("Interface\\Minimap\\MinimapArrow.blp")
+	player:SetTexture(136431)--"Interface\\Minimap\\MinimapArrow.blp"
 	player:SetBlendMode("ADD")
 	player:SetPoint("CENTER")
 
@@ -485,7 +485,7 @@ function createRadarFrame()
 	for i = 1, 40 do
 		local dot = radarFrame:CreateTexture(nil, "OVERLAY")
 		dot:SetSize(24, 24)
-		dot:SetTexture("Interface\\Minimap\\PartyRaidBlips")
+		dot:SetTexture(249183)--"Interface\\Minimap\\PartyRaidBlips"
 		dot:Hide()
 		dots[i] = dot
 	end
@@ -534,7 +534,8 @@ do
 				dot.class = class
 				if icon and icon < 9 then
 					dot.icon = icon
-					dot:SetTexture(format("Interface\\TargetingFrame\\UI-RaidTargetingIcon_%d", icon))
+					--137001-137008
+					dot:SetTexture(13700 .. icon)--format("Interface\\TargetingFrame\\UI-RaidTargetingIcon_%d", icon)
 					dot:SetTexCoord(0, 1, 0, 1)
 					dot:SetSize(16, 16)
 					dot:SetDrawLayer("OVERLAY", 1)
@@ -542,7 +543,7 @@ do
 					dot.icon = nil
 					class = class or "PRIEST"
 					local c = RAID_CLASS_COLORS[class]
-					dot:SetTexture("Interface\\Minimap\\PartyRaidBlips")
+					dot:SetTexture(249183)--"Interface\\Minimap\\PartyRaidBlips"
 					dot:SetTexCoord(BLIP_TEX_COORDS[class][1], BLIP_TEX_COORDS[class][2], BLIP_TEX_COORDS[class][3], BLIP_TEX_COORDS[class][4])
 					dot:SetSize(24, 24)
 					dot:SetDrawLayer("OVERLAY", 0)

@@ -847,7 +847,7 @@ do
 	end
 	function DBT:CreateDummyBar(colorType, inlineIcon)
 		dummyBars = dummyBars + 1
-		local dummy = self:CreateBar(25, "dummy"..dummyBars, "Interface\\Icons\\Spell_Nature_WispSplode", nil, true, nil, true, colorType, inlineIcon)
+		local dummy = self:CreateBar(25, "dummy"..dummyBars, 136116, nil, true, nil, true, colorType, inlineIcon)--"Interface\\Icons\\Spell_Nature_WispSplode"
 		dummy:SetText("Dummy", inlineIcon)
 		dummy:Cancel()
 		self.bars[dummy] = true
@@ -910,11 +910,11 @@ end
 --  General Bar Methods  --
 ---------------------------
 function DBT:ShowTestBars()
-	self:CreateBar(10, "Test 1", "Interface\\Icons\\Spell_Nature_WispSplode")
-	self:CreateBar(14, "Test 2", "Interface\\Icons\\Spell_Nature_WispSplode")
-	self:CreateBar(20, "Test 3", "Interface\\Icons\\Spell_Nature_WispSplode")
-	self:CreateBar(12, "Test 4", "Interface\\Icons\\Spell_Nature_WispSplode")
-	self:CreateBar(21.5, "Test 5", "Interface\\Icons\\Spell_Nature_WispSplode")
+	self:CreateBar(10, "Test 1", 136116)--"Interface\\Icons\\Spell_Nature_WispSplode"
+	self:CreateBar(14, "Test 2", 136116)
+	self:CreateBar(20, "Test 3", 136116)
+	self:CreateBar(12, "Test 4", 136116)
+	self:CreateBar(21.5, "Test 5", 136116)
 end
 
 function barPrototype:SetTimer(timer)
@@ -1182,11 +1182,11 @@ do
 
 	function DBT:ShowMovableBar(small, large)
 		if small or small == nil then
-			local bar1 = self:CreateBar(20, "Move1", "Interface\\Icons\\Spell_Nature_WispSplode", nil, true)
+			local bar1 = self:CreateBar(20, "Move1", 136116, nil, true)
 			bar1:SetText(DBM_CORE_MOVABLE_BAR)
 		end
 		if large or large == nil then
-			local bar2 = self:CreateBar(20, "Move2", "Interface\\Icons\\Spell_Nature_WispSplode", true)
+			local bar2 = self:CreateBar(20, "Move2", 136116, true)
 			bar2:SetText(DBM_CORE_MOVABLE_BAR)
 		end
 		updateClickThrough(self, false)

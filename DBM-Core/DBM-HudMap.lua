@@ -47,27 +47,27 @@ end
 local targetCanvasAlpha
 
 local textureLookup = {
-	star		= [[Interface\TARGETINGFRAME\UI-RaidTargetingIcon_1.blp]],
-	circle		= [[Interface\TARGETINGFRAME\UI-RaidTargetingIcon_2.blp]],
-	diamond		= [[Interface\TARGETINGFRAME\UI-RaidTargetingIcon_3.BLP]],
-	triangle	= [[Interface\TARGETINGFRAME\UI-RaidTargetingIcon_4.blp]],
-	moon		= [[Interface\TARGETINGFRAME\UI-RaidTargetingIcon_5.blp]],
-	square		= [[Interface\TARGETINGFRAME\UI-RaidTargetingIcon_6.blp]],
-	cross		= [[Interface\TARGETINGFRAME\UI-RaidTargetingIcon_7.blp]],
-	skull		= [[Interface\TARGETINGFRAME\UI-RaidTargetingIcon_8.blp]],
-	cross2		= [[Interface\RAIDFRAME\ReadyCheck-NotReady.blp]],
-	check		= [[Interface\RAIDFRAME\ReadyCheck-Ready.blp]],
-	question	= [[Interface\RAIDFRAME\ReadyCheck-Waiting.blp]],
-	targeting	= [[Interface\Minimap\Ping\ping5.blp]],
+	star		= 137001,--[[Interface\TARGETINGFRAME\UI-RaidTargetingIcon_1.blp]]
+	circle		= 137002,--[[Interface\TARGETINGFRAME\UI-RaidTargetingIcon_2.blp]]
+	diamond		= 137003,--[[Interface\TARGETINGFRAME\UI-RaidTargetingIcon_3.BLP]]
+	triangle	= 137004,--[[Interface\TARGETINGFRAME\UI-RaidTargetingIcon_4.blp]]
+	moon		= 137005,--[[Interface\TARGETINGFRAME\UI-RaidTargetingIcon_5.blp]]
+	square		= 137006,--[[Interface\TARGETINGFRAME\UI-RaidTargetingIcon_6.blp]]
+	cross		= 137007,--[[Interface\TARGETINGFRAME\UI-RaidTargetingIcon_7.blp]]
+	skull		= 137008,--[[Interface\TARGETINGFRAME\UI-RaidTargetingIcon_8.blp]]
+	cross2		= 136813,--[[Interface\RAIDFRAME\ReadyCheck-NotReady.blp]]
+	check		= 136814,--[[Interface\RAIDFRAME\ReadyCheck-Ready.blp]]
+	question	= 136815,--[[Interface\RAIDFRAME\ReadyCheck-Waiting.blp]]
+	targeting	= 136439,--[[Interface\Minimap\Ping\ping5.blp]]
 	highlight	= [[Interface\AddOns\DBM-Core\textures\alert_circle]],
 	timer		= [[Interface\AddOns\DBM-Core\textures\timer]],
-	glow		= [[Interface\GLUES\MODELS\UI_Tauren\gradientCircle]],
-	party		= [[Interface\MINIMAP\PartyRaidBlips]],
-	ring		= [[SPELLS\CIRCLE]],
-	rune1		= [[SPELLS\AURARUNE256.BLP]],
-	rune2		= [[SPELLS\AURARUNE9.BLP]],
-	rune3		= [[SPELLS\AURARUNE_A.BLP]],
-	rune4		= [[SPELLS\AURARUNE_B.BLP]],
+	glow		= 132039,--[[Interface\GLUES\MODELS\UI_Tauren\gradientCircle]]
+	party		= 249183,--[[Interface\MINIMAP\PartyRaidBlips]]
+	ring		= 165793,--[[SPELLS\CIRCLE]]
+	rune1		= 165630,--[[SPELLS\AURARUNE256.BLP]]
+	rune2		= 165637,--[[SPELLS\AURARUNE9.BLP]]
+	rune3		= 165638,--[[SPELLS\AURARUNE_A.BLP]]
+	rune4		= 165639,--[[SPELLS\AURARUNE_B.BLP]]
 	odunblue	= [[Interface\Icons\Boss_OdunRunes_Blue.blp]],--Blue fishies
 	odungreen	= [[Interface\Icons\Boss_OdunRunes_Green.blp]],--Green cube
 	odunorange	= [[Interface\Icons\Boss_OdunRunes_Orange.blp]],--Orange N
@@ -1012,7 +1012,7 @@ do
 		SetTexture = function(self, texfile, blend)
 			local tex = self.texture
 			texfile = texfile or "glow"
-			tex:SetTexture(textureLookup[texfile] or texfile or [[Interface\GLUES\MODELS\UI_Tauren\gradientCircle]])
+			tex:SetTexture(textureLookup[texfile] or texfile or 132039)--[[Interface\GLUES\MODELS\UI_Tauren\gradientCircle]]
 			if texCoordLookup[texfile] then
 				tex:SetTexCoord(unpack(texCoordLookup[texfile]))
 			else

@@ -199,7 +199,7 @@ end
 --  Create the frame  --
 ------------------------
 local frameBackdrop = {
-	bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background",
+	bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background",--131071
 	tile = true,
 	tileSize = 16,
 	insets = { left = 2, right = 14, top = 2, bottom = 2 },
@@ -302,6 +302,7 @@ local function updateLinesCustomSort(sortFunc)
 	end
 end
 
+--8.2 TODO FIXME if broken.
 local function updateIcons()
 	twipe(icons)
 	for uId in DBM:GetGroupMembers() do

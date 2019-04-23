@@ -240,14 +240,15 @@ local function MixinSharedMedia3(mediatype, mediatable)
 		local LSM = LibStub("LibSharedMedia-3.0")
 		soundsRegistered = true
 		--Internal Game Media
-		LSM:Register("sound", "Headless Horseman: Laugh", [[Sound\Creature\HeadlessHorseman\Horseman_Laugh_01.ogg]])
-		LSM:Register("sound", "Yogg Saron: Laugh", [[Sound\Creature\YoggSaron\UR_YoggSaron_Slay01.ogg]])
-		LSM:Register("sound", "Loatheb: I see you", [[Sound\Creature\Loathstare\Loa_Naxx_Aggro02.ogg]])
-		LSM:Register("sound", "Lady Malande: Flee", [[Sound\Creature\LadyMalande\BLCKTMPLE_LadyMal_Aggro01.ogg]])
-		LSM:Register("sound", "Milhouse: Light You Up", [[Sound\Creature\MillhouseManastorm\TEMPEST_Millhouse_Pyro01.ogg]])
-		LSM:Register("sound", "Void Reaver: Marked", [[Sound\Creature\VoidReaver\TEMPEST_VoidRvr_Aggro01.ogg]])
-		LSM:Register("sound", "Kaz'rogal: Marked", [[Sound\Creature\KazRogal\CAV_Kaz_Mark02.ogg]])
-		LSM:Register("sound", "C'Thun: You Will Die!", [[Sound\Creature\CThun\CThunYouWillDIe.ogg]])
+		--8.2 FIXME, sound kit IDs already ready, just waiting on LSM to support them. Currently LSM ignores media that doesn't endin .wav or .ogg
+		--LSM:Register("sound", "Headless Horseman: Laugh", [[Sound\Creature\HeadlessHorseman\Horseman_Laugh_01.ogg]])--11965
+		--LSM:Register("sound", "Yogg Saron: Laugh", [[Sound\Creature\YoggSaron\UR_YoggSaron_Slay01.ogg]])--15757
+		--LSM:Register("sound", "Loatheb: I see you", [[Sound\Creature\Loathstare\Loa_Naxx_Aggro02.ogg]])--128466
+		--LSM:Register("sound", "Lady Malande: Flee", [[Sound\Creature\LadyMalande\BLCKTMPLE_LadyMal_Aggro01.ogg]])--11482
+		--LSM:Register("sound", "Milhouse: Light You Up", [[Sound\Creature\MillhouseManastorm\TEMPEST_Millhouse_Pyro01.ogg]])--49764
+		--LSM:Register("sound", "Void Reaver: Marked", [[Sound\Creature\VoidReaver\TEMPEST_VoidRvr_Aggro01.ogg]])--11213
+		--LSM:Register("sound", "Kaz'rogal: Marked", [[Sound\Creature\KazRogal\CAV_Kaz_Mark02.ogg]])--11052
+		--LSM:Register("sound", "C'Thun: You Will Die!", [[Sound\Creature\CThun\CThunYouWillDIe.ogg]])--8585
 		--Embedded Sound Clip media
 		LSM:Register("sound", "Jaina: Beware", [[Interface\AddOns\DBM-Core\sounds\SoundClips\beware.ogg]])
 		LSM:Register("sound", "Jaina: Beware (reverb)", [[Interface\AddOns\DBM-Core\sounds\SoundClips\beware_with_reverb.ogg]])
@@ -589,7 +590,7 @@ do
 		linetext:SetText(text or "")
 
 		local linebg = line:CreateTexture()
-		linebg:SetTexture("Interface\\Tooltips\\UI-Tooltip-Background")
+		linebg:SetTexture(137056)--"Interface\\Tooltips\\UI-Tooltip-Background"
 		linebg:SetSize(self.frame:GetWidth() - linetext:GetWidth() - 25, 2)
 		linebg:SetPoint("RIGHT", line, "RIGHT", 0, 0)
 
@@ -723,7 +724,7 @@ function PanelPrototype:CreateColorSelect(dimension, withalpha, alphawidth)
 
 	-- create the colorpicker
 	local colorwheelthumbtexture = colorselect:CreateTexture()
-	colorwheelthumbtexture:SetTexture("Interface\\Buttons\\UI-ColorPicker-Buttons")
+	colorwheelthumbtexture:SetTexture(137056)--"Interface\\Buttons\\UI-ColorPicker-Buttons"
 	colorwheelthumbtexture:SetWidth(10)
 	colorwheelthumbtexture:SetHeight(10)
 	colorwheelthumbtexture:SetTexCoord(0,0.15625, 0, 0.625)
@@ -739,7 +740,7 @@ function PanelPrototype:CreateColorSelect(dimension, withalpha, alphawidth)
 
 		-- create the alpha arrows
 		local colorvaluethumbtexture = colorselect:CreateTexture()
-		colorvaluethumbtexture:SetTexture("Interface\\Buttons\\UI-ColorPicker-Buttons")
+		colorvaluethumbtexture:SetTexture(130756)--"Interface\\Buttons\\UI-ColorPicker-Buttons"
 		colorvaluethumbtexture:SetWidth( alphawidth/32 * 48)
 		colorvaluethumbtexture:SetHeight( alphawidth/32 * 14)
 		colorvaluethumbtexture:SetTexCoord(0.25, 1, 0.875, 0)
@@ -1111,11 +1112,11 @@ do
 
 		if element.haschilds then
 			if not element.showsub then
-				button.toggle:SetNormalTexture("Interface\\Buttons\\UI-PlusButton-UP")
-				button.toggle:SetPushedTexture("Interface\\Buttons\\UI-PlusButton-DOWN")
+				button.toggle:SetNormalTexture(130838)--"Interface\\Buttons\\UI-PlusButton-UP"
+				button.toggle:SetPushedTexture(130836)--"Interface\\Buttons\\UI-PlusButton-DOWN"
 			else
-				button.toggle:SetNormalTexture("Interface\\Buttons\\UI-MinusButton-UP")
-				button.toggle:SetPushedTexture("Interface\\Buttons\\UI-MinusButton-DOWN")
+				button.toggle:SetNormalTexture(130838)--"Interface\\Buttons\\UI-MinusButton-UP"
+				button.toggle:SetPushedTexture(130836)--"Interface\\Buttons\\UI-PlusButton-DOWN"
 			end
 			button.toggle:Show()
 		else
@@ -1465,9 +1466,9 @@ local function CreateOptionsMenu()
 		-- RaidWarn Sound
 		local Sounds = MixinSharedMedia3("sound", {
 			{	text	= L.NoSound,	value	= "" },
-			{	text	= "RaidWarning",value 	= "Sound\\interface\\RaidWarning.ogg", 		sound=true },
-			{	text	= "Classic",	value 	= "Sound\\Doodad\\BellTollNightElf.ogg", 	sound=true },
-			{	text	= "Ding",		value 	= "Sound\\interface\\AlarmClockWarning3.ogg", 	sound=true }
+			{	text	= "RaidWarning",value 	= 8959, 	sound=true },--"Sound\\interface\\RaidWarning.ogg"
+			{	text	= "Classic",	value 	= 11742, 	sound=true },--"Sound\\Doodad\\BellTollNightElf.ogg"
+			{	text	= "Ding",		value 	= 12889, 	sound=true }--"Sound\\interface\\AlarmClockWarning3.ogg"
 		})
 
 		local RaidWarnSoundDropDown = raidwarnoptions:CreateDropdown(L.RaidWarnSound, Sounds, "DBM", "RaidWarningSound", function(value)
@@ -2145,7 +2146,7 @@ local function CreateOptionsMenu()
 
 		local Textures = MixinSharedMedia3("statusbar", {
 			{	text	= "Default",	value 	= "Interface\\AddOns\\DBM-DefaultSkin\\textures\\default.blp", 	texture	= "Interface\\AddOns\\DBM-DefaultSkin\\textures\\default.blp"	},
-			{	text	= "Blizzad",	value 	= "Interface\\PaperDollInfoFrame\\UI-Character-Skills-Bar", 	texture	= "Interface\\PaperDollInfoFrame\\UI-Character-Skills-Bar"	},
+			{	text	= "Blizzad",	value 	= "Interface\\PaperDollInfoFrame\\UI-Character-Skills-Bar", 	texture	= 136570	},
 			{	text	= "Glaze",	value 	= "Interface\\AddOns\\DBM-Core\\textures\\glaze.blp", 		texture	= "Interface\\AddOns\\DBM-Core\\textures\\glaze.blp"	},
 			{	text	= "Otravi",	value 	= "Interface\\AddOns\\DBM-Core\\textures\\otravi.blp", 		texture	= "Interface\\AddOns\\DBM-Core\\textures\\otravi.blp"	},
 			{	text	= "Smooth",	value 	= "Interface\\AddOns\\DBM-Core\\textures\\smooth.blp", 		texture	= "Interface\\AddOns\\DBM-Core\\textures\\smooth.blp"	}
@@ -2690,15 +2691,24 @@ local function CreateOptionsMenu()
 
 		local Sounds = MixinSharedMedia3("sound", {
 			{	text	= L.NoSound,			value	= "" },
-			{	text	= "PvP Flag",			value 	= "Sound\\Spells\\PVPFlagTaken.ogg", 		sound=true },
-			{	text	= "Blizzard",			value 	= "Sound\\interface\\UI_RaidBossWhisperWarning.ogg", 		sound=true },
-			{	text	= "Beware!",			value 	= "Sound\\Creature\\AlgalonTheObserver\\UR_Algalon_BHole01.ogg", 		sound=true },
+			{	text	= "PvP Flag",			value 	= 8174, 		sound=true },--"Sound\\Spells\\PVPFlagTaken.ogg"
+			{	text	= "Blizzard",			value 	= 37666, 		sound=true },--"Sound\\interface\\UI_RaidBossWhisperWarning.ogg"
+			{	text	= "Beware!",			value 	= 15391, 		sound=true },--"Sound\\Creature\\AlgalonTheObserver\\UR_Algalon_BHole01.ogg"
 			{	text	= "AirHorn",			value 	= "Interface\\AddOns\\DBM-Core\\sounds\\AirHorn.ogg", 		sound=true },
-			{	text	= "Destruction",		value 	= "Sound\\Creature\\KilJaeden\\KILJAEDEN02.ogg", 		sound=true },
-			{	text	= "NotPrepared",		value 	= "Sound\\Creature\\Illidan\\BLACK_Illidan_04.ogg", 		sound=true },
-			{	text	= "NotPrepared2",		value 	= "Sound\\Creature\\Illidan_Stormrage\\VO_703_Illidan_Stormrage_03.ogg", 		sound=true },
-			{	text	= "RunAwayLittleGirl",	value 	= "Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.ogg", 		sound=true },
-			{	text	= "NightElfBell",		value 	= "Sound\\Doodad\\BellTollNightElf.ogg", 	sound=true }
+			{	text	= "Destruction",		value 	= 12506, 		sound=true },--"Sound\\Creature\\KilJaeden\\KILJAEDEN02.ogg"
+			{	text	= "NotPrepared",		value 	= 11466, 		sound=true },--"Sound\\Creature\\Illidan\\BLACK_Illidan_04.ogg"
+			{	text	= "NotPrepared2",		value 	= 68563, 		sound=true },--"Sound\\Creature\\Illidan_Stormrage\\VO_703_Illidan_Stormrage_03.ogg"
+			{	text	= "RunAwayLittleGirl",	value 	= 9278, 		sound=true },--"Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.ogg"
+			{	text	= "NightElfBell",		value 	= 11742, 		sound=true },--"Sound\\Doodad\\BellTollNightElf.ogg"
+			--8.2 FIXME, move back to LSM when supported
+			{	text	= "Headless Horseman: Laugh", value = 11965, sound = true },
+			{	text	= "Yogg Saron: Laugh", value = 15757, sound = true },
+			{	text	= "Loatheb: I see you", value = 128466, sound = true },
+			{	text	= "Lady Malande: Flee", value = 11482, sound = true },
+			{	text	= "Milhouse: Light You Up", value = 49764, sound = true },
+			{	text	= "Void Reaver: Marked", value = 11213, sound = true },
+			{	text	= "Kaz'rogal: Marked", value = 11052, sound = true },
+			{	text	= "C'Thun: You Will Die!", value = 8585, sound = true }
 		})
 
 		local SpecialWarnSoundDropDown = specArea:CreateDropdown(L.SpecialWarnSound, Sounds, "DBM", "SpecialWarningSound", function(value)
@@ -3035,7 +3045,7 @@ local function CreateOptionsMenu()
 	do
 		local Sounds = MixinSharedMedia3("sound", {
 			{	text	= L.NoSound,						value	= "" },
-			{	text	= "Muradin: Charge",				value 	= "Sound\\Creature\\MuradinBronzebeard\\IC_Muradin_Saurfang02.ogg", 		sound=true },
+			{	text	= "Muradin: Charge",				value 	= "Sound\\Creature\\MuradinBronzebeard\\IC_Muradin_Saurfang02.ogg", 		sound=true },--16971
 		})
 
 		local eventSoundsPanel	 	= DBM_GUI_Frame:CreateNewPanel(L.Panel_EventSounds, "option")
@@ -4616,7 +4626,7 @@ do
 		iconstat:SetText(L.IconsInUse)
 		for i=1, 8, 1 do
 			local icon = panel.frame:CreateTexture()
-			icon:SetTexture("Interface\\TargetingFrame\\UI-RaidTargetingIcons.blp")
+			icon:SetTexture(137009)--"Interface\\TargetingFrame\\UI-RaidTargetingIcons.blp"
 			icon:SetPoint("TOPRIGHT", panel.frame, "TOPRIGHT", -150-(i*18), -26)
 			icon:SetWidth(16)
 			icon:SetHeight(16)

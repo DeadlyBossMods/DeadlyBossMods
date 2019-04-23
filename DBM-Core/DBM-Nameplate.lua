@@ -253,7 +253,8 @@ function nameplateFrame:Show(isGUID, unit, spellId, texture, duration, desaturat
     -- ignore player nameplate;
     if playerGUID == unit or playerName == unit then return end
 
-    local currentTexture = texture or GetSpellTexture(spellId)
+	--Texture Id passed as string so as not to get confused with spellID for GetSpellTexture
+    local currentTexture = tonumber(texture) or texture or GetSpellTexture(spellId)
 
     -- Supported by nameplate mod, passing to their handler;
     if self:SupportedNPMod() then
@@ -307,7 +308,8 @@ end
 
 --Friendly is still being kept around for world bosses, for now anyways, but args being swapped.
 function nameplateFrame:Hide(isGUID, unit, spellId, texture, force, isHostile, isFriendly)
-    local currentTexture = texture or GetSpellTexture(spellId)
+	--Texture Id passed as string so as not to get confused with spellID for GetSpellTexture
+    local currentTexture = tonumber(texture) or texture or GetSpellTexture(spellId)
 
     if self:SupportedNPMod() then
         DBM:Debug("DBM.Nameplate Found supported NP mod, only sending Hide callbacks", 3)
