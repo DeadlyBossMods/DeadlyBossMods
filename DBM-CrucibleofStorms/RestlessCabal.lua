@@ -154,10 +154,9 @@ do
 		end
 		--Personal Promise of Power
 		if playerPromise then
-			local spellName2, _, currentStack2, _, _, expireTime2 = DBM:UnitDebuff("player", 282566)
-			if spellName2 and currentStack2 and expireTime2 then
-				local remaining2 = expireTime2-GetTime()
-				addLine(spellName2.." ("..currentStack2..")", math.floor(remaining2))
+			local spellName2, _, currentStack2 = DBM:UnitDebuff("player", 282566)
+			if spellName2 and currentStack2 then
+				addLine(spellName2, currentStack2)
 			end
 		end
 		return lines, sortedLines
@@ -271,6 +270,7 @@ function mod:SPELL_CAST_START(args)
 			end
 		end
 		if self.Options.NPAuraOnWitness then
+			DBM.Nameplate:Hide(true, args.sourceGUID)--In case spell interrupt check still isn't working
 			DBM.Nameplate:Show(true, args.sourceGUID, spellId, interruptTextures[count])
 		end
 	end
