@@ -326,7 +326,7 @@ function mod:SPELL_CAST_START(args)
 				timerMaddeningEyesCD:Start(32.7, self.vb.nzothEyesCount+1)
 			end
 		else--Phase 3 and all we get is piercing
-			specWarnPiercingGaze:Show()
+			specWarnPiercingGaze:Show(self.vb.nzothEyesCount)
 			specWarnPiercingGaze:Play("specialsoon")--don't have anything better really
 			--52 and 47 alternating
 			timerPiercingGazeCD:Start((self.vb.nzothEyesCount % 2 == 0) and 47.5 or 52.2, self.vb.nzothEyesCount+1)
