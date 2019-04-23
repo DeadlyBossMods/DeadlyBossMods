@@ -513,9 +513,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		elseif spellId == 293661 then--Storm
 			if args:IsPlayer() then
 				specWarnUnstableResonanceStorm:Show(self:IconNumToTexture(1))
-				specWarnUnstableResonanceStorm:Play("mm"..1)
-				yellUnstableResonanceSign:Yell(1, "", 1)--Yellow Star
-				self:Schedule(2, updateResonanceYell, self, 1)
+				specWarnUnstableResonanceStorm:Play("mm"..5)
+				yellUnstableResonanceSign:Yell(5, "", 5)--White Moon
+				self:Schedule(2, updateResonanceYell, self, 5)
 				countdownResonanceFades:Start()
 				timerUnstableResonance:Start()
 				playerAffected = true

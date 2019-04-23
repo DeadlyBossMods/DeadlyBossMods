@@ -431,7 +431,7 @@ local delayedFunction
 local dataBroker
 local voiceSessionDisabled = false
 
-local fakeBWVersion, fakeBWHash = 142, "7e8a067"
+local fakeBWVersion, fakeBWHash = 145, "d2e67ed"
 local versionQueryString, versionResponseString = "Q^%d^%s", "V^%d^%s"
 
 local enableIcons = true -- set to false when a raid leader or a promoted player has a newer version of DBM
