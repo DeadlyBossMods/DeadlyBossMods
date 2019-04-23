@@ -264,11 +264,11 @@ function mod:OnCombatStart(delay)
 		timerVoidCrashCD:Start(6.1-delay, 1)
 	end
 	timerOblivionTearCD:Start(12.1-delay, 1)
-	timerTouchoftheEndCD:Start(26.7-delay, 1)
 	timerGiftofNzothObscurityCD:Start(20.6-delay, 1)
+	timerTouchoftheEndCD:Start(26.7-delay, 1)
 	timerCallUndyingGuardianCD:Start(30.3-delay, 1)
-	--timerEyesofNzothCD:Start(42-delay, 1)
-	timerPiercingGazeCD:Start(42-delay, 1)
+	--timerEyesofNzothCD:Start(40-delay, 1)
+	timerPiercingGazeCD:Start(40-delay, 1)
 	if self:IsMythic() then
 		timerUnstableResonanceCD:Start(1-delay)
 	end

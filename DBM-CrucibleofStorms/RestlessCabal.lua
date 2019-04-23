@@ -4,7 +4,6 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(146497, 146495)--146497 Zaxasj, 146495 Fa'thuul
 mod:SetEncounterID(2269)
---mod:DisableESCombatDetection()
 mod:SetZone()
 mod:SetBossHPInfoToHighest()
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6)--Refine when max number of doubt targets is known
@@ -94,9 +93,9 @@ local timerCrushingDoubtCD				= mod:NewCDCountTimer(40.1, 282432, nil, nil, nil,
 
 local berserkTimer						= mod:NewBerserkTimer(780)
 
---local countdownCollapsingWorld			= mod:NewCountdown(50, 243983, true, 3, 3)
---local countdownShearMind				= mod:NewCountdown("Alt12", 244016, false, 2, 3)
---local countdownFelstormBarrage			= mod:NewCountdown("AltTwo32", 244000, nil, nil, 3)
+local countdownCerebralAssault			= mod:NewCountdown(50, 282589, true)
+local countdownCrushingDoubt			= mod:NewCountdown("Alt12", 282432, "-Tank", nil, 3)
+local countdownDarkherald				= mod:NewCountdown("AltTwo12", 282561, "-Tank", nil, 3)
 
 mod:AddSetIconOption("SetIconCrushingDoubt", 282432, true, false, {1, 2})
 mod:AddSetIconOption("SetIconDarkherald", 282561, true, false, {6})
@@ -176,13 +175,21 @@ function mod:OnCombatStart(delay)
 	playerWitness = false
 	playerPromise = false
 	--Zaxasj the Speaker
-	timerDarkheraldCD:Start(10.2-delay, 1)--SUCCESS
-	timerCerebralAssaultCD:Start(15.5-delay, 1)
+	if not self:IsLFR() then
+		timerDarkheraldCD:Start(10.2-delay, 1)--SUCCESS
+		countdownDarkherald:Start(10.2-delay)
+		timerCerebralAssaultCD:Start(15.5-delay, 1)
+		countdownCerebralAssault:Start(15.5-delay)
+	else
+		timerCerebralAssaultCD:Start(32.4-delay, 1)
+		countdownCerebralAssault:Start(32.4-delay)
+	end
 	--Fa'thuul the Feared
-	timerShearMindCD:Start(8.5-delay)--SUCCESS
+	timerShearMindCD:Start(8.4-delay)--SUCCESS
 	timerVoidCrashCD:Start(13-delay)--SUCCESS
 	timerCrushingDoubtCD:Start(18.1-delay, 1)
-	berserkTimer:Start(780-delay)--780 verified on normal https://www.warcraftlogs.com/reports/FDpxbA2ht68rqXaZ#fight=3&view=events&pins=2%24Off%24%23244F4B%24expression%24ability.name%20%3D%20%22Berserk%22
+	countdownCrushingDoubt:Start(18.1-delay)
+	berserkTimer:Start(self:IsMythic() and 510 or 780-delay)--Mythic and normal berserks verified. LFR still unknown if bererks at 13 min.
 	if self.Options.NPAuraOnPresence or self.Options.NPAuraOnWitness then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
@@ -228,7 +235,9 @@ function mod:SPELL_CAST_START(args)
 		self.vb.assaultCount = self.vb.assaultCount + 1
 		specWarnCerebralAssault:Show(self.vb.assaultCount)
 		specWarnCerebralAssault:Play("shockwave")
-		timerCerebralAssaultCD:Start(nil, self.vb.assaultCount+1)
+		local timer = self:IsLFR() and 41.5 or 31.5
+		timerCerebralAssaultCD:Start(timer, self.vb.assaultCount+1)
+		countdownCerebralAssault:Start(timer)
 	elseif spellId == 282515 then
 		specWarnVisagefromBeyond:Show()
 		specWarnVisagefromBeyond:Play("bigmob")
@@ -288,7 +297,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 282561 then
 		self.vb.heraldCount = self.vb.heraldCount + 1
-		timerDarkheraldCD:Start(nil, self.vb.heraldCount+1)--Kept here because boss can stutter cast so START is bad place to start timer
+		timerDarkheraldCD:Start(32.7, self.vb.heraldCount+1)--Kept here because boss can stutter cast so START is bad place to start timer
+		countdownDarkherald:Start(32.7)
 	elseif spellId == 282384 then
 		timerShearMindCD:Start()
 	elseif spellId == 282407 or spellId == 285416 then
@@ -482,6 +492,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 287762 then--Crushing Doubt
 		self.vb.CrushingDoubtIcon = 1
 		self.vb.crushingDoubtCount = self.vb.crushingDoubtCount + 1
-		timerCrushingDoubtCD:Start(nil, self.vb.crushingDoubtCount+1)
+		local timer = self:IsLFR() and 60.1 or 40.1
+		timerCrushingDoubtCD:Start(timer, self.vb.crushingDoubtCount+1)
+		countdownCrushingDoubt:Start(timer)
 	end
 end
