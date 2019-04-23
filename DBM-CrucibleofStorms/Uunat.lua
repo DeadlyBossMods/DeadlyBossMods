@@ -413,7 +413,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerInsatiableTormentCD:Start()
 	elseif spellId == 285427 then
 		if self.Options.NPAuraOnConsume then
-			DBM.Nameplate:Hide(true, args.destGUID)
+			DBM.Nameplate:Hide(true, args.sourceGUID)
 		end
 	end
 end

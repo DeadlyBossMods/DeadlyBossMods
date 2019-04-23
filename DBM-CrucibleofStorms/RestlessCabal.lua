@@ -302,7 +302,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerAbyssalCollapse:Start()
 	elseif (spellId == 283540 or spellId == 282621) then
 		if self.Options.NPAuraOnWitness then
-			DBM.Nameplate:Hide(true, args.destGUID)
+			DBM.Nameplate:Hide(true, args.sourceGUID)
 		end
 	end
 end
