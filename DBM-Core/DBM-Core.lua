@@ -3663,7 +3663,7 @@ do
 		if type(DBM.Options.SpecialWarningSound2) == "string" and not DBM.Options.SpecialWarningSound2:find("Interface\\AddOns") then DBM.Options.SpecialWarningSound2 = DBM.DefaultOptions.SpecialWarningSound2 end
 		if type(DBM.Options.SpecialWarningSound3) == "string" and not DBM.Options.SpecialWarningSound3:find("Interface\\AddOns") then DBM.Options.SpecialWarningSound3 = DBM.DefaultOptions.SpecialWarningSound3 end
 		if type(DBM.Options.SpecialWarningSound4) == "string" and not DBM.Options.SpecialWarningSound4:find("Interface\\AddOns") then DBM.Options.SpecialWarningSound4 = DBM.DefaultOptions.SpecialWarningSound4 end
-		if type(DBM.Options.SpecialWarningSound5) == "string" and not DBM.Options.SpecialWarningSound4:find("Interface\\AddOns") then DBM.Options.SpecialWarningSound5 = DBM.DefaultOptions.SpecialWarningSound5 end
+		if type(DBM.Options.SpecialWarningSound5) == "string" and not DBM.Options.SpecialWarningSound5:find("Interface\\AddOns") then DBM.Options.SpecialWarningSound5 = DBM.DefaultOptions.SpecialWarningSound5 end
 	end
 end
 
