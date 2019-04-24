@@ -7084,7 +7084,7 @@ do
 			testTimer5 = testMod:NewTimer(20, "%s    ", "135826", nil, nil, 2, DBM_CORE_HEALER_ICON)
 			testTimer6 = testMod:NewTimer(20, "%s     ", "136116", nil, nil, 5, DBM_CORE_TANK_ICON)
 			testTimer7 = testMod:NewTimer(20, "%s      ", "136116", nil, nil, 6)
-			testTimer8 = testMod:NewTimer(20, "%s       ", "136116e", nil, nil, 7)
+			testTimer8 = testMod:NewTimer(20, "%s       ", "136116", nil, nil, 7)
 			testCount1 = testMod:NewCountdown(0, 0, nil, nil, nil, true)
 			testCount2 = testMod:NewCountdown(0, 0, nil, nil, nil, true, true)
 			testSpecialWarning1 = testMod:NewSpecialWarning("%s", nil, nil, nil, 1, 2)

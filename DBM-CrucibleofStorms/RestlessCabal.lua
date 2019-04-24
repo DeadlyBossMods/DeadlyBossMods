@@ -14,7 +14,7 @@ mod:SetUsedIcons(1, 2, 3, 4, 5, 6)--Refine when max number of doubt targets is k
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 282675 282589 282515 282517 282617 283540 282621",
+	"SPELL_CAST_START 282675 282589 282515 282517 282617 283540 282621 285154",
 	"SPELL_CAST_SUCCESS 282561 282384 282407 285416 283066 283540 282621",
 	"SPELL_AURA_APPLIED 282741 282742 282914 283524 282386 282540 282561 282384 282432 287876 282621 282566",
 	"SPELL_AURA_APPLIED_DOSE 282384 282566",
@@ -33,7 +33,7 @@ mod:RegisterEventsInCombat(
 --TODO, fine tune tank swap stacks (changed to 3, but many strats may favor doing 2-5 to reduce add spawn complexity and tank damage. Probably will just add a drop down)
 --TODO, detect void crash bounces, use general announce for cast and first bounce, special warning for one that needs soaking?
 --[[
-(ability.id = 282675 or ability.id = 282589 or ability.id = 282515 or ability.id = 282617 or ability.id = 282517 or ability.id = 283540 or ability.id = 282621 or ability.id = 282818) and type = "begincast"
+(ability.id = 282675 or ability.id = 282589 or ability.id = 282515 or ability.id = 282617 or ability.id = 282517 or ability.id = 283540 or ability.id = 282621 or ability.id = 282818 or ability.id = 285154) and type = "begincast"
  or (ability.id = 282561 or ability.id = 282384 or ability.id = 282407 or ability.id = 285416 or ability.id = 283066 or ability.id = 282742) and type = "cast"
  or (ability.id = 282817 or ability.id = 282432) and type = "applydebuff"
 --]]
@@ -176,11 +176,16 @@ function mod:OnCombatStart(delay)
 	playerPromise = false
 	--Zaxasj the Speaker
 	if not self:IsLFR() then
-		timerDarkheraldCD:Start(10.2-delay, 1)--SUCCESS
-		countdownDarkherald:Start(10.2-delay)
-		timerCerebralAssaultCD:Start(15.5-delay, 1)
-		countdownCerebralAssault:Start(15.5-delay)
-	else
+		timerDarkheraldCD:Start(14-delay, 1)--SUCCESS
+		countdownDarkherald:Start(14-delay)
+		if self:IsMythic() then
+			timerCerebralAssaultCD:Start(15-delay, 1)
+			countdownCerebralAssault:Start(15-delay)
+		else
+			timerCerebralAssaultCD:Start(30-delay, 1)
+			countdownCerebralAssault:Start(30-delay)
+		end
+	else--LFR
 		timerCerebralAssaultCD:Start(32.4-delay, 1)
 		countdownCerebralAssault:Start(32.4-delay)
 	end
@@ -231,11 +236,11 @@ function mod:SPELL_CAST_START(args)
 		else
 			timerPact:Start(12, L.Fathuul)
 		end
-	elseif spellId == 282589 then
+	elseif spellId == 282589 or spellId == 285154 then
 		self.vb.assaultCount = self.vb.assaultCount + 1
 		specWarnCerebralAssault:Show(self.vb.assaultCount)
 		specWarnCerebralAssault:Play("shockwave")
-		local timer = self:IsLFR() and 41.5 or 31.5
+		local timer = self:IsMythic() and 31.5 or 41.5
 		timerCerebralAssaultCD:Start(timer, self.vb.assaultCount+1)
 		countdownCerebralAssault:Start(timer)
 	elseif spellId == 282515 then
@@ -492,7 +497,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 287762 then--Crushing Doubt
 		self.vb.CrushingDoubtIcon = 1
 		self.vb.crushingDoubtCount = self.vb.crushingDoubtCount + 1
-		local timer = self:IsLFR() and 60.1 or 40.1
+		local timer = self:IsMythic() and 46.1 or 60.1
 		timerCrushingDoubtCD:Start(timer, self.vb.crushingDoubtCount+1)
 		countdownCrushingDoubt:Start(timer)
 	end
