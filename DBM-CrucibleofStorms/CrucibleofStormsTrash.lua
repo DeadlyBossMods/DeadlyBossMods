@@ -7,16 +7,16 @@ mod:SetZone()
 mod.isTrashMod = true
 
 mod:RegisterEvents(
---	"SPELL_CAST_START",
+	"SPELL_CAST_START 293957"
 --	"SPELL_CAST_SUCCESS",
---	"SPELL_AURA_APPLIED"
+--	"SPELL_AURA_APPLIED",
 --	"SPELL_AURA_REMOVED"
 )
 
 --local warnCorruptingGaze				= mod:NewTargetAnnounce(277047, 3)
 --local warnMindSlave					= mod:NewTargetNoFilterAnnounce(277498, 3)
 
---local specWarnWildLeap				= mod:NewSpecialWarningDodge(278976, nil, nil, nil, 2, 2)
+local specWarnMaddeningGaze				= mod:NewSpecialWarningDodge(293957, nil, nil, nil, 2, 2)
 --local yellCorruptingGaze				= mod:NewYell(277047)
 --local specWarnBloodShield				= mod:NewSpecialWarningInterrupt(276540, "HasInterrupt", nil, nil, 1, 2)
 
@@ -40,18 +40,21 @@ function mod:GazeTarget(targetname, uId)
 end
 --]]
 
---[[
+
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 277047 then
 		--self:BossTargetScanner(args.sourceGUID, "SubmergeTarget", 0.1, 14)
-		self:ScheduleMethod(0.2, "BossTargetScanner", args.sourceGUID, "GazeTarget", 0.1, 12)
-	elseif spellId == 276540 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
-		specWarnBloodShield:Show(args.sourceName)
-		specWarnBloodShield:Play("kickcast")
+		--self:ScheduleMethod(0.2, "BossTargetScanner", args.sourceGUID, "GazeTarget", 0.1, 12)
+		specWarnMaddeningGaze:Show()
+		specWarnMaddeningGaze:Play("shockwave")
+	--elseif spellId == 276540 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
+		--specWarnBloodShield:Show(args.sourceName)
+		--specWarnBloodShield:Play("kickcast")
 	end
 end
 
+--[[
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 277358 then
