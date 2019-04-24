@@ -302,8 +302,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 282561 then
 		self.vb.heraldCount = self.vb.heraldCount + 1
-		timerDarkheraldCD:Start(32.7, self.vb.heraldCount+1)--Kept here because boss can stutter cast so START is bad place to start timer
-		countdownDarkherald:Start(32.7)
+		local timer = self:IsMythic() and 18.2 or 32.7
+		timerDarkheraldCD:Start(timer, self.vb.heraldCount+1)--Kept here because boss can stutter cast so START is bad place to start timer
+		countdownDarkherald:Start(timer)
 	elseif spellId == 282384 then
 		timerShearMindCD:Start()
 	elseif spellId == 282407 or spellId == 285416 then
