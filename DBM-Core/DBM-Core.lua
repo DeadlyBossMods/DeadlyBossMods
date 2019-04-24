@@ -60,6 +60,7 @@ local function parseCurseDate(date)
 end
 
 local function showRealDate(curseDate)
+	curseDate = tostring(curseDate)
 	local year, month, day, hour, minute, second = curseDate:sub(1, 4), curseDate:sub(5, 6), curseDate:sub(7, 8), curseDate:sub(9, 10), curseDate:sub(11, 12), curseDate:sub(13, 14)
 	if year and month and day and hour and minute and second then
 		return year.."/"..month.."/"..day.." "..hour..":"..minute..":"..second
