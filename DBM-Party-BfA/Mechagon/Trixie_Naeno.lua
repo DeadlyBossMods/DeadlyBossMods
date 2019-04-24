@@ -17,7 +17,7 @@ mod:RegisterEventsInCombat(
 )
 
 --Trixie "The Tech" Tazer
-local warnMegaTaze					= mod:NewTargetNoFIlterAnnounce(298718, 3)
+local warnMegaTaze					= mod:NewTargetNoFilterAnnounce(298718, 3)
 local warnJumpStart					= mod:NewSpellAnnounce(298897, 3)
 --Naeno Megacrash
 --local warnRollOut					= mod:NewSpellAnnounce(298946, 3)
