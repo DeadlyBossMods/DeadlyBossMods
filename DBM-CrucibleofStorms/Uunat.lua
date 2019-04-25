@@ -128,6 +128,7 @@ mod:AddNamePlateOption("NPAuraOnRegen", 285333)
 mod:AddNamePlateOption("NPAuraOnConsume", 285427)
 mod:AddSetIconOption("SetIconTorment2", 285652, false, false, {4, 5, 6, 7, 8})
 mod:AddSetIconOption("SetIconOnAdds", "ej19118", true, true, {1, 2, 3})
+mod:AddDropdownOption("UnstableBehavior", {"SetOne", "SetTwo", "SetThree", "SetFour"}, "SetOne", "misc")
 
 mod.vb.phase = 1
 mod.vb.touchCount = 0
@@ -144,6 +145,7 @@ mod.vb.mindBenderCount = 0
 mod.vb.tridentOcean, mod.vb.tempestCaller, mod.vb.voidstone = "None", "None", "None"
 mod.vb.tridentDrop, mod.vb.tempestDrop, mod.vb.voidDrop = nil, nil, nil
 mod.vb.umbrelTarget = nil
+mod.vb.tridentOceanicon, mod.vb.tempestStormIcon, mod.vb.voidIcon = 6, 5, 3
 local trackedFeedback1, trackedFeedback2, trackedFeedback3 = false, false, false
 local playerAffected = false
 local playerName = UnitName("player")
@@ -271,6 +273,19 @@ function mod:OnCombatStart(delay)
 	timerPiercingGazeCD:Start(40-delay, 1)
 	if self:IsMythic() then
 		timerUnstableResonanceCD:Start(1-delay)
+		if self.Options.UnstableBehavior == "SetOne" then
+			self.vb.tridentOceanicon, self.vb.tempestStormIcon, self.vb.voidIcon = 6, 5, 3--Square, Moon, Diamond
+			if UnitIsGroupLeader("player") then self:SendSync("SetOne") end
+		elseif self.Options.UnstableBehavior == "SetTwo" then
+			self.vb.tridentOceanicon, self.vb.tempestStormIcon, self.vb.voidIcon = 5, 6, 3--Moon, Square, Diamond
+			if UnitIsGroupLeader("player") then self:SendSync("SetTwo") end
+		elseif self.Options.UnstableBehavior == "SetThree" then
+			self.vb.tridentOceanicon, self.vb.tempestStormIcon, self.vb.voidIcon = 5, 1, 3--Moon, Star, Diamond
+			if UnitIsGroupLeader("player") then self:SendSync("SetThree") end
+		elseif self.Options.UnstableBehavior == "SetFour" then
+			self.vb.tridentOceanicon, self.vb.tempestStormIcon, self.vb.voidIcon = 6, 1, 3--Square, Star, Diamond
+			if UnitIsGroupLeader("player") then self:SendSync("SetFour") end
+		end
 	end
 	berserkTimer:Start(780-delay)--780 verified on normal at least https://www.warcraftlogs.com/reports/rPQXVgaD6AnF4h2R#fight=8&view=events&pins=2%24Off%24%23244F4B%24expression%24ability.name%20%3D%20%22Berserk%22
 	if self.Options.InfoFrame then
@@ -485,37 +500,37 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerStormofAnnihilation:Start(args.destName)
 	elseif spellId == 293663 or spellId == 293662 or spellId == 293661 then--Unstable Resonance (all)
 		self.vb.resonCount = self.vb.resonCount + 1
-		if mod.vb.resonCount > 0 and (self.vb.tridentOcean == playerName or self.vb.tempestCaller == playerName or self.vb.voidstone == playerName) then
-			local icon = self.vb.tridentOcean == playerName and 6 or self.vb.tempestCaller == playerName and 1 or self.vb.voidstone == playerName and 3
+		if self.vb.resonCount > 0 and (self.vb.tridentOcean == playerName or self.vb.tempestCaller == playerName or self.vb.voidstone == playerName) then
+			local icon = self.vb.tridentOcean == playerName and self.vb.tridentOceanicon or self.vb.tempestCaller == playerName and self.vb.tempestStormIcon or self.vb.voidstone == playerName and self.vb.voidIcon
 			yellUnstableResonanceSign:Yell(icon, playerName, icon)
 			self:Schedule(2, updateResonanceYell, self, icon)
 		end
 		if spellId == 293663 then--Void
 			if args:IsPlayer() then
-				specWarnUnstableResonanceVoid:Show(self:IconNumToTexture(3))
-				specWarnUnstableResonanceVoid:Play("mm"..3)
-				yellUnstableResonanceSign:Yell(3, "", 3)--Purple Diamond
-				self:Schedule(2, updateResonanceYell, self, 3)
+				specWarnUnstableResonanceVoid:Show(self:IconNumToTexture(self.vb.voidIcon))
+				specWarnUnstableResonanceVoid:Play("mm"..self.vb.voidIcon)
+				yellUnstableResonanceSign:Yell(self.vb.voidIcon, "", self.vb.voidIcon)
+				self:Schedule(2, updateResonanceYell, self, self.vb.voidIcon)
 				countdownResonanceFades:Start()
 				timerUnstableResonance:Start()
 				playerAffected = true
 			end
 		elseif spellId == 293662 then--Ocean
 			if args:IsPlayer() then
-				specWarnUnstableResonanceOcean:Show(self:IconNumToTexture(6))
-				specWarnUnstableResonanceOcean:Play("mm"..6)
-				yellUnstableResonanceSign:Yell(6, "", 6)--Blue Square
-				self:Schedule(2, updateResonanceYell, self, 6)
+				specWarnUnstableResonanceOcean:Show(self:IconNumToTexture(self.vb.tridentOceanicon))
+				specWarnUnstableResonanceOcean:Play("mm"..self.vb.tridentOceanicon)
+				yellUnstableResonanceSign:Yell(self.vb.tridentOceanicon, "", self.vb.tridentOceanicon)
+				self:Schedule(2, updateResonanceYell, self, self.vb.tridentOceanicon)
 				countdownResonanceFades:Start()
 				timerUnstableResonance:Start()
 				playerAffected = true
 			end
 		elseif spellId == 293661 then--Storm
 			if args:IsPlayer() then
-				specWarnUnstableResonanceStorm:Show(self:IconNumToTexture(1))
-				specWarnUnstableResonanceStorm:Play("mm"..5)
-				yellUnstableResonanceSign:Yell(5, "", 5)--White Moon
-				self:Schedule(2, updateResonanceYell, self, 5)
+				specWarnUnstableResonanceStorm:Show(self:IconNumToTexture(self.vb.tempestStormIcon))
+				specWarnUnstableResonanceStorm:Play("mm"..self.vb.tempestStormIcon)
+				yellUnstableResonanceSign:Yell(self.vb.tempestStormIcon, "", self.vb.tempestStormIcon)
+				self:Schedule(2, updateResonanceYell, self, self.vb.tempestStormIcon)
 				countdownResonanceFades:Start()
 				timerUnstableResonance:Start()
 				playerAffected = true
@@ -724,3 +739,26 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	end
 end
 --]]
+
+do
+	--Delayed function just to make absolute sure RL sync overrides user settings after OnCombatStart functions run
+	local function UpdateYellIcons(self, msg)
+		if msg == "SetOne" then
+			self.vb.tridentOceanicon, self.vb.tempestStormIcon, self.vb.voidIcon = 6, 5, 3--Square, Moon, Diamond
+			DBM:AddMsg(L.DBMConfigMsg:format(msg))
+		elseif msg == "SetTwo" then
+			self.vb.tridentOceanicon, self.vb.tempestStormIcon, self.vb.voidIcon = 5, 6, 3--Moon, Square, Diamond
+			DBM:AddMsg(L.DBMConfigMsg:format(msg))
+		elseif msg == "SetThree" then
+			self.vb.tridentOceanicon, self.vb.tempestStormIcon, self.vb.voidIcon = 5, 1, 3--Moon, Star, Diamond
+			DBM:AddMsg(L.DBMConfigMsg:format(msg))
+		elseif msg == "SetFour" then
+			self.vb.tridentOceanicon, self.vb.tempestStormIcon, self.vb.voidIcon = 6, 1, 3--Square, Star, Diamond
+			DBM:AddMsg(L.DBMConfigMsg:format(msg))
+		end
+	end
+	function mod:OnSync(msg)
+		if not self:IsMythic() then return end--Just in case some shit lord sends syncs in LFR or something, we don't want to trigger DBMConfigMsg
+		self:Schedule(3, UpdateYellIcons, self, msg)
+	end
+end
