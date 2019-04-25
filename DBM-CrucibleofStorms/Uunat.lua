@@ -36,6 +36,13 @@ mod:RegisterEventsInCombat(
  or ability.id = 286310
  or (ability.id = 284768 or ability.id = 284569 or ability.id = 284684)
 --]]
+--Undying 2 first, Eye 2 second
+--Heroic https://www.warcraftlogs.com/reports/VNWqBp9v6JXzTYRd#fight=17&view=events&pins=2%24Off%24%23244F4B%24expression%24(ability.id%20%3D%20293653%20or%20ability.id%20%3D%20285185%20or%20ability.id%20%3D%20285416%20or%20ability.id%20%3D%20285376%20or%20ability.id%20%3D%20285345%20or%20ability.id%20%3D%20285453%20or%20ability.id%20%3D%20285820%20or%20ability.id%20%3D%20285638%20or%20ability.id%20%3D%20285427%20or%20ability.id%20%3D%20285562%20or%20ability.id%20%3D%20285685)%20and%20type%20%3D%20%22begincast%22%20%20or%20(ability.id%20%3D%20284851%20or%20ability.id%20%3D%20285652)%20and%20type%20%3D%20%22cast%22%20%20or%20ability.id%20%3D%20286310%20%20or%20(ability.id%20%3D%20284768%20or%20ability.id%20%3D%20284569%20or%20ability.id%20%3D%20284684)
+--Mythic https://www.warcraftlogs.com/reports/Dq1vBHCx6k3KnZJY#fight=50&view=events&pins=2%24Off%24%23244F4B%24expression%24(ability.id%20%3D%20293653%20or%20ability.id%20%3D%20285185%20or%20ability.id%20%3D%20285416%20or%20ability.id%20%3D%20285376%20or%20ability.id%20%3D%20285345%20or%20ability.id%20%3D%20285453%20or%20ability.id%20%3D%20285820%20or%20ability.id%20%3D%20285638%20or%20ability.id%20%3D%20285427%20or%20ability.id%20%3D%20285562%20or%20ability.id%20%3D%20285685)%20and%20type%20%3D%20%22begincast%22%20%20or%20(ability.id%20%3D%20284851%20or%20ability.id%20%3D%20285652)%20and%20type%20%3D%20%22cast%22%20%20or%20ability.id%20%3D%20286310%20%20or%20(ability.id%20%3D%20284768%20or%20ability.id%20%3D%20284569%20or%20ability.id%20%3D%20284684)
+
+--Eyes 2 first, Undying 2 second
+--Heroic https://www.warcraftlogs.com/reports/VNWqBp9v6JXzTYRd#fight=19&view=events&pins=2%24Off%24%23244F4B%24expression%24(ability.id%20%3D%20293653%20or%20ability.id%20%3D%20285185%20or%20ability.id%20%3D%20285416%20or%20ability.id%20%3D%20285376%20or%20ability.id%20%3D%20285345%20or%20ability.id%20%3D%20285453%20or%20ability.id%20%3D%20285820%20or%20ability.id%20%3D%20285638%20or%20ability.id%20%3D%20285427%20or%20ability.id%20%3D%20285562%20or%20ability.id%20%3D%20285685)%20and%20type%20%3D%20%22begincast%22%20%20or%20(ability.id%20%3D%20284851%20or%20ability.id%20%3D%20285652)%20and%20type%20%3D%20%22cast%22%20%20or%20ability.id%20%3D%20286310%20%20or%20(ability.id%20%3D%20284768%20or%20ability.id%20%3D%20284569%20or%20ability.id%20%3D%20284684)
+--Mythic https://www.warcraftlogs.com/reports/Dq1vBHCx6k3KnZJY#fight=47&view=events&pins=2%24Off%24%23244F4B%24expression%24(ability.id%20%3D%20293653%20or%20ability.id%20%3D%20285185%20or%20ability.id%20%3D%20285416%20or%20ability.id%20%3D%20285376%20or%20ability.id%20%3D%20285345%20or%20ability.id%20%3D%20285453%20or%20ability.id%20%3D%20285820%20or%20ability.id%20%3D%20285638%20or%20ability.id%20%3D%20285427%20or%20ability.id%20%3D%20285562%20or%20ability.id%20%3D%20285685)%20and%20type%20%3D%20%22begincast%22%20%20or%20(ability.id%20%3D%20284851%20or%20ability.id%20%3D%20285652)%20and%20type%20%3D%20%22cast%22%20%20or%20ability.id%20%3D%20286310%20%20or%20(ability.id%20%3D%20284768%20or%20ability.id%20%3D%20284569%20or%20ability.id%20%3D%20284684)
 local warnPhase							= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
 local warnVoidShield					= mod:NewTargetNoFilterAnnounce(286310, 2, nil, nil, nil, nil, nil, 7)
 --Relics of Power
@@ -86,7 +93,7 @@ local specWarnGiftofNzothLunacy			= mod:NewSpecialWarningCount(285685, nil, nil,
 --Relics of Power
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(19055))
 local timerStormofAnnihilation			= mod:NewTargetTimer(15, 284583, 196871, nil, nil, 2, nil, DBM_CORE_HEALER_ICON)--Short text "Storm"
-local timerUnstableResonanceCD			= mod:NewAITimer(55, 293653, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
+local timerUnstableResonanceCD			= mod:NewCDCountTimer(41.2, 293653, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
 local timerUnstableResonance			= mod:NewBuffFadesTimer(15, 293653, nil, nil, nil, 5, nil, DBM_CORE_DEADLY_ICON)
 --Stage One: His All-Seeing Eyes
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(19104))
@@ -139,6 +146,7 @@ mod.vb.nzothEyesCount = 0
 mod.vb.activeUndying = 0
 mod.vb.undyingCount = 0
 mod.vb.tormentCount = 0
+mod.vb.resonCastCount = 0
 mod.vb.tormentIcon = 8--8 backwards, to avoid add icons
 mod.vb.addIcon = 1--1 fowards
 mod.vb.mindBenderCount = 0
@@ -252,6 +260,7 @@ function mod:OnCombatStart(delay)
 	self.vb.giftofNzothCount = 0
 	self.vb.undyingCount = 0
 	self.vb.tormentCount = 0
+	self.vb.resonCastCount = 0
 	self.vb.tormentIcon = 8
 	self.vb.addIcon = 1
 	self.vb.mindBenderCount = 0
@@ -267,12 +276,12 @@ function mod:OnCombatStart(delay)
 	end
 	timerOblivionTearCD:Start(12.1-delay, 1)
 	timerGiftofNzothObscurityCD:Start(20.6-delay, 1)
-	timerTouchoftheEndCD:Start(26.7-delay, 1)
+	timerTouchoftheEndCD:Start(26.5-delay, 1)
 	timerCallUndyingGuardianCD:Start(30.3-delay, 1)
 	--timerEyesofNzothCD:Start(40-delay, 1)
 	timerPiercingGazeCD:Start(40-delay, 1)
 	if self:IsMythic() then
-		timerUnstableResonanceCD:Start(1-delay)
+		timerUnstableResonanceCD:Start(13.1-delay, 1)
 		if self.Options.UnstableBehavior == "SetOne" then
 			self.vb.tridentOceanicon, self.vb.tempestStormIcon, self.vb.voidIcon = 6, 5, 3--Square, Moon, Diamond
 			if UnitIsGroupLeader("player") then self:SendSync("SetOne") end
@@ -312,9 +321,10 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 293653 then
-		specWarnUnstableResonance:Show()
+		self.vb.resonCastCount = self.vb.resonCastCount + 1
+		specWarnUnstableResonance:Show(self.vb.resonCastCount)
 		specWarnUnstableResonance:Play("scatter")
-		timerUnstableResonanceCD:Start()
+		timerUnstableResonanceCD:Start(nil, self.vb.resonCastCount+1)
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(10)
 		end
@@ -335,6 +345,11 @@ function mod:SPELL_CAST_START(args)
 				specWarnMaddeningEyesCast:Show(self.vb.nzothEyesCount)
 				specWarnMaddeningEyesCast:Play("farfromline")
 				timerPiercingGazeCD:Start(32.7, self.vb.nzothEyesCount+1)
+				--Trigger the 10 second Undying 2 delay since Eyes 2 was first
+				if (self.vb.undyingCount < 2) and (self.vb.nzothEyesCount == 2) then
+					timerCallUndyingGuardianCD:Stop()
+					timerCallUndyingGuardianCD:Start(10, 2)
+				end
 			else
 				specWarnPiercingGaze:Show(self.vb.nzothEyesCount)
 				specWarnPiercingGaze:Play("specialsoon")--don't have anything better really
@@ -362,6 +377,11 @@ function mod:SPELL_CAST_START(args)
 			specWarnCallUndyingGuardian:Play("bigmob")
 		end
 		timerCallUndyingGuardianCD:Start(self.vb.phase == 3 and 31.5 or 46.1, self.vb.undyingCount+1)
+		--Trigger the 10 second eyes 2 delay since Undying 2 was first
+		if (self.vb.phase == 1) and (self.vb.undyingCount == 2) and (self.vb.nzothEyesCount < 2) then
+			timerMaddeningEyesCD:Stop()
+			timerMaddeningEyesCD:Start(10, 2)
+		end
 	elseif spellId == 285638 then
 		self.vb.giftofNzothCount = self.vb.giftofNzothCount + 1
 		specWarnGiftofNzothHysteria:Show(self.vb.giftofNzothCount)
@@ -667,7 +687,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerMindBenderCD:Start(34, 1)
 			timerGiftofNzothHysteriaCD:Start(40.1, 1)
 			if self:IsMythic() then
-				timerUnstableResonanceCD:Start(2)
+				--timerUnstableResonanceCD:Start(2, self.vb.resonCastCount+1+)
 			end
 		elseif self.vb.phase == 3 then
 			self.vb.nzothEyesCount = 0--Only reset on 3 because doesn't exist in 2
@@ -677,7 +697,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerCallUndyingGuardianCD:Start(26.7, 1)
 			timerGiftofNzothLunacyCD:Start(40.1, 1)
 			if self:IsMythic() then
-				timerUnstableResonanceCD:Start(3)
+				--timerUnstableResonanceCD:Start(3, self.vb.resonCastCount+1+)
 			end
 		end
 	elseif spellId == 284768 then--Trident
