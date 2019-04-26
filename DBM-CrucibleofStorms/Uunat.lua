@@ -687,7 +687,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerMindBenderCD:Start(34, 1)
 			timerGiftofNzothHysteriaCD:Start(40.1, 1)
 			if self:IsMythic() then
-				timerUnstableResonanceCD:Start(33.5, self.vb.resonCastCount+1+)
+				timerUnstableResonanceCD:Start(33.5, self.vb.resonCastCount+1)
 			end
 		elseif self.vb.phase == 3 then
 			self.vb.nzothEyesCount = 0--Only reset on 3 because doesn't exist in 2
@@ -697,7 +697,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerCallUndyingGuardianCD:Start(26.7, 1)
 			timerGiftofNzothLunacyCD:Start(40.1, 1)
 			if self:IsMythic() then
-				timerUnstableResonanceCD:Start(33.5, self.vb.resonCastCount+1+)
+				timerUnstableResonanceCD:Start(33.5, self.vb.resonCastCount+1)
 			end
 		end
 	elseif spellId == 284768 then--Trident
