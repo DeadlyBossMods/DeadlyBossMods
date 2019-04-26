@@ -127,7 +127,7 @@ DBM_CORE_VOICE_PACK_OUTDATED		= "O pacote de vozes do seu DBM pode estar sem alg
 DBM_CORE_VOICE_MISSING				= "Você tinha um pacote de vozes DBM selecionado que não pode ser encontrado. Sua seleção foi restaurada para 'Nenhum/None'. Caso seja um erro, certifique-se que o pacote esta instalado corretamente e habilitado em addons."
 DBM_CORE_VOICE_COUNT_MISSING		= "Voz de contagem regressiva %d esta selecionada para um pacote de voz que não pode ser encontrado. Foi restaurada a configuração padrão."
 
-DBM_CORE_UPDATEREMINDER_HEADER		= "Sua versão do Deadly Boss Mods está desatualizada.\n A versão %s (r%d) está disponível para baixar no site da curse, WoWI ou aqui:"
+DBM_CORE_UPDATEREMINDER_HEADER		= "Sua versão do Deadly Boss Mods está desatualizada.\n A versão %s (%s) está disponível para baixar no site da curse, WoWI ou aqui:"
 DBM_CORE_UPDATEREMINDER_HEADER_ALPHA	= "A sua versão alpha do DBM está desatualizada.\n Você esta pelo menos %d versões de testes para trás. É recomendado que os usuários do DBM utilizem a versão mais recente do alpha ou a mais recente das versões estáveis. Versões alphas desatualizadas podem resultar em faltas de algumas funcionalidades ou totalmente inoperante."
 DBM_CORE_UPDATEREMINDER_FOOTER		= "Pressione Ctrl+C para copiar o link de download para a área de transferência."
 DBM_CORE_UPDATEREMINDER_FOOTER_GENERIC	= "Pressione Ctrl+C para copiar o link de download para a área de transferência."
