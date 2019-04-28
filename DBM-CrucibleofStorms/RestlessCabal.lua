@@ -21,6 +21,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_REFRESH 282384 282386 283524",
 	"SPELL_AURA_REMOVED 282741 282742 282386 282561 282432 282741 282621 282566",
 	"SPELL_INTERRUPT",
+	"SPELL_SUMMON 282515",
 --	"SPELL_PERIODIC_DAMAGE 287876",
 --	"SPELL_PERIODIC_MISSED 287876",
 	"UNIT_DIED",
@@ -79,6 +80,7 @@ local specWarnGTFO						= mod:NewSpecialWarningGTFO(287876, nil, nil, nil, 1, 8)
 local timerAbyssalCollapse				= mod:NewCastTimer(20, 282886, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
 local timerStormofAnnihilation			= mod:NewCastTimer(15, 286755, 196871, nil, nil, 2, nil, DBM_CORE_HEALER_ICON)--Short text "Storm"
 local timerPact							= mod:NewCastSourceTimer(12, 282675, nil, nil, nil, 2, nil, DBM_CORE_IMPORTANT_ICON)
+local timerVisageActive					= mod:NewBuffActiveTimer(60, 282515, nil, nil, nil, 1)
 --Zaxasj the Speaker
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(18974))
 local timerCerebralAssaultCD			= mod:NewCDCountTimer(31.5, 282589, nil, nil, nil, 3)
@@ -344,10 +346,13 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 283524 or spellId == 282386 then
 		if args:IsPlayer() then
 			if spellId == 282386 then--Heroic/Mythic
-				specWarnAphoticBlast:Show()
-				specWarnAphoticBlast:Play("targetyou")
+				local amount = args.amount or 1
+				if amount == 1 then
+					specWarnAphoticBlast:Show()
+					specWarnAphoticBlast:Play("targetyou")
+				end
 				yellAphoticBlast:Cancel()
-				yellAphoticBlast:Countdown(20)
+				yellAphoticBlast:Countdown(30)
 			end
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Show(6)
@@ -469,6 +474,17 @@ function mod:SPELL_INTERRUPT(args)
 	end
 end
 
+function mod:SPELL_SUMMON(args)
+	local spellId = args.spellId
+	if spellId == 282515 then
+		local timer = self:IsMythic() and 120 or self:IsHeroic() and 90
+		if timer then
+			timerVisageActive:Start(timer, args.destGUID)
+		end
+	end
+end
+
+
 --[[
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
 	if spellId == 287876 and destGUID == UnitGUID("player") and self:AntiSpam(4, 2) then
@@ -486,6 +502,7 @@ function mod:UNIT_DIED(args)
 		if self.Options.NPAuraOnEcho then
 			DBM.Nameplate:Hide(true, args.destGUID)
 		end
+		timerVisageActive:Stop(args.destGUID)
 	elseif cid == 145053 then--Eldritch Abomination
 		castsPerGUID[args.destGUID] = nil
 		if self.Options.NPAuraOnWitness then
