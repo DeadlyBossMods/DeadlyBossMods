@@ -4723,7 +4723,7 @@ do
 			inspopuptext:SetText(DBM_REQ_INSTANCE_ID_PERMISSION:format(sender, sender))
 			buttonaccept:SetScript("OnClick", function(f) savedSender = nil DBM:Unschedule(autoDecline) accessList[sender] = true syncHandlers["IR"](sender) f:GetParent():Hide() end)
 			buttondecline:SetScript("OnClick", function(f) autoDecline(sender, 1) end)
-			PlaySound(850)
+			DBM:PlaySound(850)
 			inspopup:Show()
 		end
 
@@ -6567,7 +6567,7 @@ end
 function DBM:PlaySoundFile(path, ignoreSFX)
 	if self.Options.SilentMode then return end
 	if type(path) == "number" then
-		return DBM:PlaySound(path, ignoreSFX)
+		return self:PlaySound(path, ignoreSFX)
 	end
 	local soundSetting = self.Options.UseSoundChannel
 	if ignoreSFX or soundSetting == "Master" then
@@ -6580,7 +6580,7 @@ end
 function DBM:PlaySound(path, ignoreSFX)
 	if self.Options.SilentMode then return end
 	if type(path) == "string" then
-		return DBM:PlaySoundFile(path, ignoreSFX)
+		return self:PlaySoundFile(path, ignoreSFX)
 	end
 	local soundSetting = self.Options.UseSoundChannel
 	if ignoreSFX or soundSetting == "Master" then
