@@ -6564,29 +6564,32 @@ function DBM:HasMapRestrictions()
 	return false
 end
 
-function DBM:PlaySoundFile(path, ignoreSFX)
-	if self.Options.SilentMode then return end
-	if type(path) == "number" then
-		return self:PlaySound(path, ignoreSFX)
+do
+	local function playSound(self, path, ignoreSFX)
+		local soundSetting = self.Options.UseSoundChannel
+		if type(path) == "number" then
+			if ignoreSFX or soundSetting == "Master" then
+				PlaySound(path, "Master")
+			else
+				PlaySound(path, soundSetting)
+			end
+		else
+			if ignoreSFX or soundSetting == "Master" then
+				PlaySoundFile(path, "Master")
+			else
+				PlaySoundFile(path, soundSetting)
+			end
+		end
 	end
-	local soundSetting = self.Options.UseSoundChannel
-	if ignoreSFX or soundSetting == "Master" then
-		PlaySoundFile(path, "Master")
-	else
-		PlaySoundFile(path, soundSetting)
-	end
-end
 
-function DBM:PlaySound(path, ignoreSFX)
-	if self.Options.SilentMode then return end
-	if type(path) == "string" then
-		return self:PlaySoundFile(path, ignoreSFX)
+	function DBM:PlaySoundFile(path, ignoreSFX)
+		if self.Options.SilentMode then return end
+		playSound(self, path, ignoreSFX)
 	end
-	local soundSetting = self.Options.UseSoundChannel
-	if ignoreSFX or soundSetting == "Master" then
-		PlaySound(path, "Master")
-	else
-		PlaySound(path, soundSetting)
+
+	function DBM:PlaySound(path, ignoreSFX)
+		if self.Options.SilentMode then return end
+		playSound(self, path, ignoreSFX)
 	end
 end
 
