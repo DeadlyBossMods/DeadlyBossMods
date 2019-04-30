@@ -112,7 +112,7 @@ local timerMindBenderCD					= mod:NewCDCountTimer(61.1, "ej19118", 284485, nil, 
 local timerGiftofNzothHysteriaCD		= mod:NewCDCountTimer(42.5, 285638, 55975, nil, nil, 2)--Short text "Hysteria"
 --Stage Three: His Unwavering Gaze
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(19106))
-local timerInsatiableTormentCD			= mod:NewCDTimer(23.1, 285652, 142942, nil, nil, 3)--Short text "Torment"
+local timerInsatiableTormentCD			= mod:NewCDCountTimer(23.1, 285652, 142942, nil, nil, 3)--Short text "Torment"
 local timerGiftofNzothLunacyCD			= mod:NewCDCountTimer(42.6, 285685, L.Lunacy, nil, nil, 2)--Manually translated because no spell to short text it
 
 local berserkTimer						= mod:NewBerserkTimer(780)
@@ -464,7 +464,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerTouchoftheEndCD:Start(nil, self.vb.touchCount+1)
 	elseif spellId == 285652 then
 		self.vb.tormentCount = self.vb.tormentCount + 1
-		timerInsatiableTormentCD:Start()
+		local players = DBM:GetGroupSize() or 30--If for SOME reason GetGroupSize fails, we'll use lowest possible CD
+		local timer = self:IsMythic() and 45 or 600/players
+		timerInsatiableTormentCD:Start(timer, self.vb.tormentCount+1)
 	elseif spellId == 285427 then
 		if self.Options.NPAuraOnConsume then
 			DBM.Nameplate:Hide(true, args.sourceGUID)
@@ -709,7 +711,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			end
 		elseif self.vb.phase == 3 then
 			self.vb.nzothEyesCount = 0--Only reset on 3 because doesn't exist in 2
-			timerInsatiableTormentCD:Start(12.1)
+			timerInsatiableTormentCD:Start(12.1, 1)
 			timerOblivionTearCD:Start(13.3, 1)
 			timerTouchoftheEndCD:Start(21.9, 1)
 			timerCallUndyingGuardianCD:Start(26.7, 1)

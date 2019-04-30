@@ -6592,16 +6592,20 @@ do
 	local function playSound(self, path, ignoreSFX)
 		local soundSetting = self.Options.UseSoundChannel
 		if type(path) == "number" then
-			if ignoreSFX or soundSetting == "Master" then
+			if soundSetting == "Dialog" then
+				PlaySound(path, "Dialog")
+			elseif ignoreSFX or soundSetting == "Master" then
 				PlaySound(path, "Master")
 			else
-				PlaySound(path, soundSetting)
+				PlaySound(path)
 			end
 		else
-			if ignoreSFX or soundSetting == "Master" then
+			if soundSetting == "Dialog" then
+				PlaySoundFile(path, "Dialog")
+			elseif ignoreSFX or soundSetting == "Master" then
 				PlaySoundFile(path, "Master")
 			else
-				PlaySoundFile(path, soundSetting)
+				PlaySoundFile(path)
 			end
 		end
 	end

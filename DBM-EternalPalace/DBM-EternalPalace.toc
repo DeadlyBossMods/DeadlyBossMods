@@ -1,6 +1,7 @@
 ## Interface: 80200
 ## X-Min-Interface: 80200
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0The Eternal Palace|r
+## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0영원한 궁전|r
 ## Author: MysticalOS
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
@@ -11,11 +12,13 @@
 ## X-DBM-Mod-Category: BFA
 ## X-DBM-Mod-Has-Mythic : 1
 ## X-DBM-Mod-Name: The Eternal Palace
+## X-DBM-Mod-Name-koKR: 영원한 궁전
 ## X-DBM-Mod-Sort: 405
 ## X-DBM-Mod-MapID: 2164
 ## X-DBM-Mod-MinCoreRevision: 17286
 ## X-DBM-Mod-MinExpansion: 7
 localization.en.lua
+localization.kr.lua
 AbyssalCommanderSivara.lua
 RageofAzshara.lua
 UnderwaterMonstrosity.lua

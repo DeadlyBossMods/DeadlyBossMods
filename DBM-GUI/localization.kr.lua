@@ -214,7 +214,7 @@ L.SpecWarn_NoSoundsWVoice	= "음성 경보가 있는 특수 경고의 효과음 
 L.SWFNever					= "하지 않음"
 L.SWFDefaultOnly			= "특수 경고가 기본 효과음만 재생할 때 (사용자 지정 효과음은 계속 재생 허용)"
 L.SWFAll					= "특수 경고가 모든 효과음을 사용할 때"
-L.SpecWarn_AlwaysVoice		= "모든 음성 경보 재생 (보스마다 지정된 설정을 무시합니다. 공대장에게 유용합니다.)"
+L.SpecWarn_AlwaysVoice		= "모든 음성 경보 재생 (특수 경고를 꺼놔도 재생됩니다. 공대장에게 유용하며 다른 사람에게는 권장하지 않습니다)"
 --TODO, maybe add URLS right to GUI panel on where to acquire 3rd party voice packs?
 L.Area_GetVEM				= "VEM 음성팩 받기"
 L.Area_BrowseOtherVP		= "Curse에 올라와있는 다른 음성팩 보기"
