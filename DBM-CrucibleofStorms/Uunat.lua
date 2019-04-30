@@ -6,7 +6,7 @@ mod:SetCreatureID(145371)
 mod:SetEncounterID(2273)
 mod:SetZone()
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)--Torment reserves as many as needed, but no more than 5, adds use first 3
-mod:SetHotfixNoticeRev(20190420212326)
+mod:SetHotfixNoticeRev(2019043033124)
 mod:SetMinSyncRevision(20190420212326)
 --mod.respawnTime = 35
 
@@ -716,9 +716,9 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerGiftofNzothLunacyCD:Start(40.1, 1)
 			if self:IsMythic() then
 				timerUnstableResonanceCD:Start(33.5, self.vb.resonCastCount+1)
-				timerPiercingGazeCD:Start(62.5)
+				timerPiercingGazeCD:Start(62.5, 1)
 			else
-				timerPiercingGazeCD:Start(42.6)
+				timerPiercingGazeCD:Start(42.6, 1)
 			end
 		end
 	elseif spellId == 284768 then--Trident
