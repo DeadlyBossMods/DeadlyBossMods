@@ -93,7 +93,7 @@ local specWarnGiftofNzothLunacy			= mod:NewSpecialWarningCount(285685, nil, nil,
 --Relics of Power
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(19055))
 local timerStormofAnnihilation			= mod:NewTargetTimer(15, 284583, 196871, nil, nil, 2, nil, DBM_CORE_HEALER_ICON)--Short text "Storm"
-local timerUnstableResonanceCD			= mod:NewCDCountTimer(41.2, 293653, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)--41-45
+local timerUnstableResonanceCD			= mod:NewCDCountTimer(40.8, 293653, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)--40.8-45
 local timerUnstableResonance			= mod:NewBuffFadesTimer(15, 293653, nil, nil, nil, 5, nil, DBM_CORE_DEADLY_ICON)
 --Stage One: His All-Seeing Eyes
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(19104))
@@ -328,6 +328,25 @@ function mod:SPELL_CAST_START(args)
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(10)
 		end
+		--Update some Timers
+		local tearElapsed, tearTotal = timerOblivionTearCD:GetTime(self.vb.tearCount+1)
+		local tearExtend = 21.2 - (tearTotal-tearElapsed)
+		DBM:Debug("timerOblivionTearCD extended by: "..tearExtend, 2)
+		timerOblivionTearCD:Update(tearElapsed, tearTotal+tearExtend, self.vb.tearCount+1)
+		if self.vb.phase == 1 then
+			--Query correct timer
+			if self.vb.nzothEyesCount % 2 == 0 then--Last eyes cast was maddening, next is piercing
+				local eyesElapsed, eyesTotal = timerPiercingGazeCD:GetTime(self.vb.nzothEyesCount+1)
+				local eyesExtend = 19.4 - (eyesTotal-eyesElapsed)
+				DBM:Debug("timerPiercingGazeCD extended by: "..eyesExtend, 2)
+				timerPiercingGazeCD:Update(eyesElapsed, eyesTotal+eyesExtend, self.vb.nzothEyesCount+1)
+			else--Last eyes cast was piercing, next is maddening
+				local eyesElapsed, eyesTotal = timerMaddeningEyesCD:GetTime(self.vb.nzothEyesCount+1)
+				local eyesExtend = 19.4 - (eyesTotal-eyesElapsed)
+				DBM:Debug("timerMaddeningEyesCD extended by: "..eyesExtend, 2)
+				timerMaddeningEyesCD:Update(eyesElapsed, eyesTotal+eyesExtend, self.vb.nzothEyesCount+1)
+			end
+		end
 	elseif spellId == 285185 then
 		self.vb.tearCount = self.vb.tearCount + 1
 		warnOblivionTear:Show(self.vb.tearCount)
@@ -345,10 +364,10 @@ function mod:SPELL_CAST_START(args)
 				specWarnMaddeningEyesCast:Show(self.vb.nzothEyesCount)
 				specWarnMaddeningEyesCast:Play("farfromline")
 				timerPiercingGazeCD:Start(32.7, self.vb.nzothEyesCount+1)
-				--Trigger the 10 second Undying 2 delay since Eyes 2 was first
-				if (self.vb.undyingCount < 2) and (self.vb.nzothEyesCount == 2) then
+				--Trigger the 10 second Undying 2 delay since Eyes 2 was first (no longer happens on mythic)
+				if not self:IsMythic() and ((self.vb.undyingCount < 2) and (self.vb.nzothEyesCount == 2)) then
 					timerCallUndyingGuardianCD:Stop()
-					timerCallUndyingGuardianCD:Start(10, 2)
+					timerCallUndyingGuardianCD:Start(9.6, 2)
 				end
 			else
 				specWarnPiercingGaze:Show(self.vb.nzothEyesCount)
@@ -358,8 +377,7 @@ function mod:SPELL_CAST_START(args)
 		else--Phase 3 and all we get is piercing
 			specWarnPiercingGaze:Show(self.vb.nzothEyesCount)
 			specWarnPiercingGaze:Play("specialsoon")--don't have anything better really
-			--52 and 47 alternating
-			timerPiercingGazeCD:Start((self.vb.nzothEyesCount % 2 == 0) and 47.5 or 52.2, self.vb.nzothEyesCount+1)
+			timerPiercingGazeCD:Start(self:IsMythic() and 40 or 47.5, self.vb.nzothEyesCount+1)
 		end
 	--elseif spellId == 285345 and self:AntiSpam(3, 1) then
 		--specWarnMaddeningEyesCast:Show()
@@ -377,10 +395,10 @@ function mod:SPELL_CAST_START(args)
 			specWarnCallUndyingGuardian:Play("bigmob")
 		end
 		timerCallUndyingGuardianCD:Start(self.vb.phase == 3 and 31.5 or 46.1, self.vb.undyingCount+1)
-		--Trigger the 10 second eyes 2 delay since Undying 2 was first
-		if (self.vb.phase == 1) and (self.vb.undyingCount == 2) and (self.vb.nzothEyesCount < 2) then
+		--Trigger the 10 second eyes 2 delay since Undying 2 was first (no longer happens on mythic)
+		if not self:IsMythic() and ((self.vb.phase == 1) and (self.vb.undyingCount == 2) and (self.vb.nzothEyesCount < 2)) then
 			timerMaddeningEyesCD:Stop()
-			timerMaddeningEyesCD:Start(10, 2)
+			timerMaddeningEyesCD:Start(9.6, 2)
 		end
 	elseif spellId == 285638 then
 		self.vb.giftofNzothCount = self.vb.giftofNzothCount + 1
@@ -698,6 +716,9 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerGiftofNzothLunacyCD:Start(40.1, 1)
 			if self:IsMythic() then
 				timerUnstableResonanceCD:Start(33.5, self.vb.resonCastCount+1)
+				timerPiercingGazeCD:Start(62.5)
+			else
+				timerPiercingGazeCD:Start(42.6)
 			end
 		end
 	elseif spellId == 284768 then--Trident
