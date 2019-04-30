@@ -221,7 +221,7 @@ L.SpecWarn_NoSoundsWVoice	= "Filter special warning sounds for warnings that als
 L.SWFNever					= "Never"
 L.SWFDefaultOnly			= "when special warnings use default sounds. (Allows custom sounds to still play)"
 L.SWFAll					= "when special warnings use any sound"
-L.SpecWarn_AlwaysVoice		= "Always play all spoken alerts (Overrides boss-specific options. Useful for RL)"
+L.SpecWarn_AlwaysVoice		= "Always play all spoken alerts (Even if Special Warning disabled. Useful for Raid Leader, not recommended otherwise)"
 --TODO, maybe add URLS right to GUI panel on where to acquire 3rd party voice packs?
 L.Area_GetVEM				= "Get VEM Voice Pack"
 L.VEMDownload				= "|cFF73C2FBhttps://wow.curseforge.com/projects/dbm-voicepack-vem|r"

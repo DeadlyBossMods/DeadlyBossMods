@@ -12,6 +12,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 250585",
 	"SPELL_CAST_START 250258",
 	"SPELL_CAST_SUCCESS 250368 259572 250241",
+	"SPELL_PERIODIC_DAMAGE 250585",
+	"SPELL_PERIODIC_MISSED 250585",
 	"UNIT_DIED"
 )
 
@@ -77,15 +79,15 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
---[[
-function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
-	if spellId == 228007 and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
-		specWarnGTFO:Show()
+
+function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
+	if spellId == 250585 and destGUID == UnitGUID("player") and self:AntiSpam(3, 1) then
+		specWarnGTFO:Show(spellName)
 		specWarnGTFO:Play("watchfeet")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
---]]
+
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
