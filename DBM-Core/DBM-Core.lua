@@ -2505,8 +2505,8 @@ do
 			self:AddMsg(DBM_PIZZA_ERROR_USAGE)
 			return
 		end
-		self.Bars:CreateBar(time, text, "Interface\\Icons\\Spell_Holy_BorrowedTime")
-		fireEvent("DBM_TimerStart", "DBMPizzaTimer", text, time, "Interface\\Icons\\Spell_Holy_BorrowedTime", "pizzatimer", nil, 0)
+		self.Bars:CreateBar(time, text, 237538)
+		fireEvent("DBM_TimerStart", "DBMPizzaTimer", text, time, 237538, "pizzatimer", nil, 0)
 		if broadcast then
 			if count then
 				sendLoggedSync("CU", ("%s\t%s"):format(time, text))
@@ -3294,7 +3294,7 @@ function DBM:LoadModOptions(modId, inCombat, first)
 						end
 					--Fix options for custom special warning sounds not in addons folder that are not using soundkit IDs
 					elseif option:find("SWSound") then
-						if savedOptions[id][profileNum][option] and (type(savedOptions[id][profileNum][option]) == "string") and not (savedOptions[id][profileNum][option]):find("Interface\\AddOns") then
+						if savedOptions[id][profileNum][option] and (type(savedOptions[id][profileNum][option]) == "string") and not (savedOptions[id][profileNum][option]):find("AddOns") then
 							savedOptions[id][profileNum][option] = mod.DefaultOptions[option]
 							self:Debug("Migrated "..option.." to option defaults", 2)
 						end
@@ -3670,12 +3670,33 @@ do
 		self.Options.CoreSavedRevision = self.Revision
 		--Migrate user sound options to soundkit Ids if selected media doesn't exist in Interface\\AddOns
 		--This will in the short term, screw with people trying to use LibSharedMedia sound files on 8.1.5 until LSM has migrated as well.
-		if type(DBM.Options.RaidWarningSound) == "string" and not DBM.Options.RaidWarningSound:find("Interface\\AddOns") then DBM.Options.RaidWarningSound = DBM.DefaultOptions.RaidWarningSound end
-		if type(DBM.Options.SpecialWarningSound) == "string" and not DBM.Options.SpecialWarningSound:find("Interface\\AddOns") then DBM.Options.SpecialWarningSound = DBM.DefaultOptions.SpecialWarningSound end
-		if type(DBM.Options.SpecialWarningSound2) == "string" and not DBM.Options.SpecialWarningSound2:find("Interface\\AddOns") then DBM.Options.SpecialWarningSound2 = DBM.DefaultOptions.SpecialWarningSound2 end
-		if type(DBM.Options.SpecialWarningSound3) == "string" and not DBM.Options.SpecialWarningSound3:find("Interface\\AddOns") then DBM.Options.SpecialWarningSound3 = DBM.DefaultOptions.SpecialWarningSound3 end
-		if type(DBM.Options.SpecialWarningSound4) == "string" and not DBM.Options.SpecialWarningSound4:find("Interface\\AddOns") then DBM.Options.SpecialWarningSound4 = DBM.DefaultOptions.SpecialWarningSound4 end
-		if type(DBM.Options.SpecialWarningSound5) == "string" and not DBM.Options.SpecialWarningSound5:find("Interface\\AddOns") then DBM.Options.SpecialWarningSound5 = DBM.DefaultOptions.SpecialWarningSound5 end
+		local migrated = false
+		if type(self.Options.RaidWarningSound) == "string" and not self.Options.RaidWarningSound:find("AddOns") then
+			self.Options.RaidWarningSound = self.DefaultOptions.RaidWarningSound
+			migrated = true
+		end
+		if type(self.Options.SpecialWarningSound) == "string" and not self.Options.SpecialWarningSound:find("AddOns") then
+			self.Options.SpecialWarningSound = self.DefaultOptions.SpecialWarningSound
+			migrated = true
+		end
+		if type(self.Options.SpecialWarningSound2) == "string" and not self.Options.SpecialWarningSound2:find("AddOns") then
+			self.Options.SpecialWarningSound2 = self.DefaultOptions.SpecialWarningSound2
+			migrated = true
+		end
+		if type(self.Options.SpecialWarningSound3) == "string" and not self.Options.SpecialWarningSound3:find("AddOns") then
+			self.Options.SpecialWarningSound3 = self.DefaultOptions.SpecialWarningSound3
+			migrated= true
+		end
+		if type(self.Options.SpecialWarningSound4) == "string" and not self.Options.SpecialWarningSound4:find("AddOns") then
+			migrated = true
+		self.Options.SpecialWarningSound4 = self.DefaultOptions.SpecialWarningSound4 end
+		if type(self.Options.SpecialWarningSound5) == "string" and not self.Options.SpecialWarningSound5:find("AddOns") then
+			self.Options.SpecialWarningSound5 = self.DefaultOptions.SpecialWarningSound5
+			migrated = true
+		end
+		if migrated then
+			self:AddMsg(DBM_CORE_SOUNDKIT_MIGRATION)
+		end
 	end
 end
 
@@ -3692,8 +3713,8 @@ end
 
 function DBM:LFG_PROPOSAL_SHOW()
 	if self.Options.ShowQueuePop and not self.Options.DontShowBossTimers then
-		self.Bars:CreateBar(40, DBM_LFG_INVITE, "Interface\\Icons\\Spell_Holy_BorrowedTime")
-		fireEvent("DBM_TimerStart", "DBMLFGTimer", DBM_LFG_INVITE, 40, "Interface\\Icons\\Spell_Holy_BorrowedTime", "extratimer", nil, 0)
+		self.Bars:CreateBar(40, DBM_LFG_INVITE, 237538)
+		fireEvent("DBM_TimerStart", "DBMLFGTimer", DBM_LFG_INVITE, 40, 237538, "extratimer", nil, 0)
 	end
 	if self.Options.LFDEnhance then
 		self:FlashClientIcon()
@@ -3800,8 +3821,8 @@ function DBM:UPDATE_BATTLEFIELD_STATUS()
 		if GetBattlefieldStatus(i) == "confirm" then
 			if self.Options.ShowQueuePop and not self.Options.DontShowBossTimers then
 				queuedBattlefield[i] = select(2, GetBattlefieldStatus(i))
-				self.Bars:CreateBar(85, queuedBattlefield[i], "Interface\\Icons\\Spell_Holy_BorrowedTime")	-- need to confirm the timer
-				fireEvent("DBM_TimerStart", "DBMBFSTimer", queuedBattlefield[i], 85, "Interface\\Icons\\Spell_Holy_BorrowedTime", "extratimer", nil, 0)
+				self.Bars:CreateBar(85, queuedBattlefield[i], 237538)	-- need to confirm the timer
+				fireEvent("DBM_TimerStart", "DBMBFSTimer", queuedBattlefield[i], 85, 237538, "extratimer", nil, 0)
 			end
 			if self.Options.LFDEnhance then
 				self:PlaySound(8960, true)--Because regular sound uses SFX channel which is too low of volume most of time
@@ -4339,7 +4360,7 @@ do
 			dummyMod = DBM:NewMod("PullTimerCountdownDummy")
 			DBM:GetModLocalization("PullTimerCountdownDummy"):SetGeneralLocalization{ name = DBM_CORE_MINIMAP_TOOLTIP_HEADER }
 			dummyMod.countdown = dummyMod:NewCountdown(0, 0, nil, nil, threshold, true)
-			dummyMod.text = dummyMod:NewAnnounce("%s", 1, "Interface\\Icons\\ability_warrior_offensivestance")
+			dummyMod.text = dummyMod:NewAnnounce("%s", 1, "132349")
 			dummyMod.geartext = dummyMod:NewSpecialWarning("  %s  ", nil, nil, nil, 3)
 		end
 		--Cancel any existing pull timers before creating new ones, we don't want double countdowns or mismatching blizz countdown text (cause you can't call another one if one is in progress)
@@ -4359,8 +4380,8 @@ do
 		if timer == 0 then return end--"/dbm pull 0" will strictly be used to cancel the pull timer (which is why we let above part of code run but not below)
 		DBM:FlashClientIcon()
 		if not DBM.Options.DontShowPT2 then
-			DBM.Bars:CreateBar(timer, DBM_CORE_TIMER_PULL, "Interface\\Icons\\Spell_Holy_BorrowedTime")
-			fireEvent("DBM_TimerStart", "pull", DBM_CORE_TIMER_PULL, timer, "Interface\\Icons\\Spell_Holy_BorrowedTime", "utilitytimer", nil, 0)
+			DBM.Bars:CreateBar(timer, DBM_CORE_TIMER_PULL, 132349)
+			fireEvent("DBM_TimerStart", "pull", DBM_CORE_TIMER_PULL, timer, 132349, "utilitytimer", nil, 0)
 		end
 		if not DBM.Options.DontPlayPTCountdown then
 			dummyMod.countdown:Start(timer)
@@ -5604,7 +5625,7 @@ do
 			if v.noEEDetection then return end
 			if v.respawnTime and success == 0 and self.Options.ShowRespawn and not self.Options.DontShowBossTimers then--No special hacks needed for bad wrath ENCOUNTER_END. Only mods that define respawnTime have a timer, since variable per boss.
 				local name = string.split(",", name)
-				self.Bars:CreateBar(v.respawnTime, DBM_CORE_TIMER_RESPAWN:format(name), "Interface\\Icons\\Spell_Holy_BorrowedTime")--237538
+				self.Bars:CreateBar(v.respawnTime, DBM_CORE_TIMER_RESPAWN:format(name), 237538)--Interface\\Icons\\Spell_Holy_BorrowedTime
 				fireEvent("DBM_TimerStart", "DBMRespawnTimer", DBM_CORE_TIMER_RESPAWN:format(name), v.respawnTime, 237538, "extratimer", nil, 0, v.id)
 			end
 			if v.multiEncounterPullDetection then
@@ -5946,7 +5967,7 @@ do
 						bestTime = mod.stats[statVarTable[savedDifficulty].."BestTime"]
 					end
 					if bestTime and bestTime > 0 then
-						local speedTimer = mod:NewTimer(bestTime, DBM_SPEED_KILL_TIMER_TEXT, "Interface\\Icons\\Spell_Holy_BorrowedTime", nil, false)
+						local speedTimer = mod:NewTimer(bestTime, DBM_SPEED_KILL_TIMER_TEXT, 237538, nil, false)
 						speedTimer:Start()
 					end
 				end
@@ -11041,7 +11062,7 @@ do
 
 	function bossModPrototype:NewCombatTimer(timer, text, barText, barIcon)
 		timer = timer or 10
-		local bar = self:NewTimer(timer, barText or DBM_CORE_GENERIC_TIMER_COMBAT, barIcon or "Interface\\Icons\\ability_warrior_offensivestance", nil, "timer_combat")
+		local bar = self:NewTimer(timer, barText or DBM_CORE_GENERIC_TIMER_COMBAT, barIcon or "132349", nil, "timer_combat")
 		local countdown = self:NewCountdown(0, 0, nil, false, nil, true)
 		local obj = setmetatable(
 			{

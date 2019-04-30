@@ -240,7 +240,7 @@ local function MixinSharedMedia3(mediatype, mediatable)
 		local LSM = LibStub("LibSharedMedia-3.0")
 		soundsRegistered = true
 		--Internal Game Media
-		--8.2 FIXME, sound kit IDs already ready, just waiting on LSM to support them. Currently LSM ignores media that doesn't endin .wav or .ogg
+		--8.2 FIXME, sound kit IDs already ready, just waiting on LSM to support them. Currently LSM ignores media that doesn't end in .wav or .ogg
 		--LSM:Register("sound", "Headless Horseman: Laugh", [[Sound\Creature\HeadlessHorseman\Horseman_Laugh_01.ogg]])--11965
 		--LSM:Register("sound", "Yogg Saron: Laugh", [[Sound\Creature\YoggSaron\UR_YoggSaron_Slay01.ogg]])--15757
 		--LSM:Register("sound", "Loatheb: I see you", [[Sound\Creature\Loathstare\Loa_Naxx_Aggro02.ogg]])--128466

@@ -100,6 +100,7 @@ DBM_CORE_NOTESHAREERRORALREADYOPEN	= "Cannot open a shared note link while note 
 DBM_CORE_ALLMOD_DEFAULT_LOADED		= "Default options for all mods in this instance have been loaded."
 DBM_CORE_ALLMOD_STATS_RESETED		= "All mod stats have been reset."
 DBM_CORE_MOD_DEFAULT_LOADED			= "Default options for this fight have been loaded."
+DBM_CORE_SOUNDKIT_MIGRATION			= "One or more of your warning/special warning sounds were reset to defaults do to incompatability with patch 8.2 and later (sound must reside in interface folder to play by path, or use SoundKit ID)"
 
 DBM_CORE_WORLDBOSS_ENGAGED			= "%s was possibly engaged on your realm at %s percent health. (Sent by %s)"
 DBM_CORE_WORLDBOSS_DEFEATED			= "%s was possibly defeated on your realm (Sent by %s)."
