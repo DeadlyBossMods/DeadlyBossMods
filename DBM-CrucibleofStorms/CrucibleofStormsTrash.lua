@@ -43,7 +43,7 @@ end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 277047 then
+	if spellId == 293957 then
 		--self:BossTargetScanner(args.sourceGUID, "SubmergeTarget", 0.1, 14)
 		--self:ScheduleMethod(0.2, "BossTargetScanner", args.sourceGUID, "GazeTarget", 0.1, 12)
 		specWarnMaddeningGaze:Show()
