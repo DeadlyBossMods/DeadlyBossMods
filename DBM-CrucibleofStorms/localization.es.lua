@@ -16,14 +16,6 @@ L:SetMiscLocalization({
 ----------------------------------
 L= DBM:GetModLocalization(2332)
 
-L:SetWarningLocalization({
-
-})
-
-L:SetTimerLocalization({
-
-})
-
 L:SetOptionLocalization({
 
 })

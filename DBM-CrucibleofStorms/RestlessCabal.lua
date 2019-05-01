@@ -53,7 +53,6 @@ local warnCrushingDoubt					= mod:NewTargetAnnounce(282432, 2)
 
 --Relics of Power
 local specWarnUmbralShell				= mod:NewSpecialWarningTargetChange(282741, "Dps", nil, nil, 1, 2)
---local specWarnCustodyoftheDeep			= mod:NewSpecialWarningMoveTo(284772, false, nil, 2, 1, 2)--optional?
 local specWarnStormofAnnihilation		= mod:NewSpecialWarningSpell(286755, nil, nil, nil, 2, 2)
 local specWarnPowerOverwhelming			= mod:NewSpecialWarningTarget(282914, nil, nil, nil, 3)--A wipe basically
 --Zaxasj the Speaker
@@ -313,8 +312,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnVoidCrash:Show()
 		timerVoidCrashCD:Start()
 	elseif spellId == 283066 then
-		--specWarnCustodyoftheDeep:Show(DBM_CORE_SHIELD)
-		--specWarnCustodyoftheDeep:Play("moveboss")
 		self.vb.shieldCount = self.vb.shieldCount + 1
 		warnCustodyoftheDeep:Show(self.vb.shieldCount)
 		timerAbyssalCollapse:Start()
