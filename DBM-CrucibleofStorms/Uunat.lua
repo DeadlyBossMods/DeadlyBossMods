@@ -296,7 +296,7 @@ function mod:OnCombatStart(delay)
 			if UnitIsGroupLeader("player") then self:SendSync("SetFour") end
 		end
 	end
-	berserkTimer:Start(780-delay)--780 verified on normal at least https://www.warcraftlogs.com/reports/rPQXVgaD6AnF4h2R#fight=8&view=events&pins=2%24Off%24%23244F4B%24expression%24ability.name%20%3D%20%22Berserk%22
+	berserkTimer:Start(self:IsMythic() and 540 or 780-delay)--780 verified on normal at least https://www.warcraftlogs.com/reports/rPQXVgaD6AnF4h2R#fight=8&view=events&pins=2%24Off%24%23244F4B%24expression%24ability.name%20%3D%20%22Berserk%22
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(OVERVIEW)
 		DBM.InfoFrame:Show(10, "function", updateInfoFrame, false, false)
