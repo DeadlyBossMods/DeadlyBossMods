@@ -4,6 +4,7 @@
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0다자알로 전투|r
 ## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0达萨罗之战|r
 ## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0達薩亞洛之戰|r
+## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Битва за Дазар'алор|r
 ## Author: MysticalOS
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
@@ -25,6 +26,7 @@ localization.kr.lua
 localization.es.lua
 localization.cn.lua
 localization.tw.lua
+localization.ru.lua
 ChampionofLight.lua
 JadefireMasters.lua
 Grong.lua
