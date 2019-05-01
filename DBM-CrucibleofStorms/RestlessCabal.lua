@@ -195,7 +195,7 @@ function mod:OnCombatStart(delay)
 	timerVoidCrashCD:Start(13-delay)--SUCCESS
 	timerCrushingDoubtCD:Start(18.1-delay, 1)
 	countdownCrushingDoubt:Start(18.1-delay)
-	berserkTimer:Start(self:IsMythic() and 510 or 780-delay)--Mythic and normal berserks verified. LFR still unknown if bererks at 13 min.
+	berserkTimer:Start(self:IsMythic() and 570 or 780-delay)--Mythic and normal berserks verified. LFR still unknown if bererks at 13 min.
 	if self.Options.NPAuraOnPresence or self.Options.NPAuraOnWitness then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
