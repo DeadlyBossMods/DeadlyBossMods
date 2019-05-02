@@ -157,6 +157,7 @@ mod.vb.tridentOceanicon, mod.vb.tempestStormIcon, mod.vb.voidIcon = 6, 5, 3
 local trackedFeedback1, trackedFeedback2, trackedFeedback3 = false, false, false
 local playerAffected = false
 local playerName = UnitName("player")
+local playerHasRelic = false
 local unitTracked = {}
 local castsPerGUID = {}
 local interruptTextures = {[1] = 2178508, [2] = 2178501, [3] = 2178502, [4] = 2178503, [5] = 2178504, [6] = 2178505, [7] = 2178506, [8] = 2178507,}--Fathoms Deck
@@ -239,8 +240,8 @@ end
 local function updateResonanceYell(self, icon)
 	if not self.Options.ResonanceYellFilter then return end
 	--If player with relic, icons AND playername in red text
-	if self.vb.resonCount > 0 and (self.vb.tridentOcean == playerName or self.vb.tempestCaller == playerName or self.vb.voidstone == playerName) then
-		yellUnstableResonanceSign:Yell(icon, playerName, icon)
+	if self.vb.resonCount > 0 and playerHasRelic then
+		yellUnstableResonanceSign:Yell(icon, playerHasRelic, icon)
 		self:Schedule(2, updateResonanceYell, self, icon)
 	--Not one of relics, just one of resonance targets, just double icons
 	elseif playerAffected then
@@ -269,6 +270,7 @@ function mod:OnCombatStart(delay)
 	self.vb.umbrelTarget = nil
 	trackedFeedback1, trackedFeedback2, trackedFeedback3 = false, false, false
 	playerAffected = false
+	playerHasRelic = false
 	table.wipe(unitTracked)
 	table.wipe(castsPerGUID)
 	if self:IsHard() then
@@ -303,6 +305,16 @@ function mod:OnCombatStart(delay)
 	end
 	if self.Options.NPAuraOnBond or self.Options.NPAuraOnFeed or self.Options.NPAuraOnRegen or self.Options.NPAuraOnConsume then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
+	end
+end
+
+function mod:OnTimerRecovery()
+	if self.vb.tridentOcean == playerName then
+		playerHasRelic = L.Ocean
+	elseif self.vb.tempestCaller == playerName then
+		playerHasRelic = L.Storm
+	elseif self.vb.voidstone == playerName then
+		playerHasRelic = L.Void
 	end
 end
 
@@ -540,9 +552,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerStormofAnnihilation:Start(args.destName)
 	elseif spellId == 293663 or spellId == 293662 or spellId == 293661 then--Unstable Resonance (all)
 		self.vb.resonCount = self.vb.resonCount + 1
-		if self.vb.resonCount > 0 and (self.vb.tridentOcean == playerName or self.vb.tempestCaller == playerName or self.vb.voidstone == playerName) then
+		if self:AntiSpam(5, 6) and playerHasRelic then
 			local icon = self.vb.tridentOcean == playerName and self.vb.tridentOceanicon or self.vb.tempestCaller == playerName and self.vb.tempestStormIcon or self.vb.voidstone == playerName and self.vb.voidIcon
-			yellUnstableResonanceSign:Yell(icon, playerName, icon)
+			yellUnstableResonanceSign:Yell(icon, playerHasRelic, icon)
 			self:Schedule(2, updateResonanceYell, self, icon)
 		end
 		if spellId == 293663 then--Void
@@ -637,12 +649,21 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 284768 then--Trident
 		self.vb.tridentOcean = args.destName
 		warnOceanRelic:Show(args.destName)
+		if args:IsPlayer() then
+			playerHasRelic = L.Ocean
+		end
 	elseif spellId == 284569 then--Tempest
 		self.vb.tempestCaller = args.destName
 		warnStormRelic:Show(args.destName)
+		if args:IsPlayer() then
+			playerHasRelic = L.Storm
+		end
 	elseif spellId == 284684 then--Void
 		self.vb.voidstone = args.destName
 		warnVoidRelic:Show(args.destName)
+		if args:IsPlayer() then
+			playerHasRelic = L.Void
+		end
 	elseif spellId == 284722 then--Umbrel
 		self.vb.umbrelTarget = args.destName
 		warnUmbrelShield:Show(args.destName)
@@ -726,12 +747,21 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 284768 then--Trident
 		self.vb.tridentOcean = "None"
 		self.vb.tridentDrop = GetTime()
+		if args:IsPlayer() then
+			playerHasRelic = false
+		end
 	elseif spellId == 284569 then--Tempest
 		self.vb.tempestCaller = "None"
 		self.vb.tempestDrop = GetTime()
+		if args:IsPlayer() then
+			playerHasRelic = false
+		end
 	elseif spellId == 284684 then--Void
 		self.vb.voidstone = "None"
 		self.vb.voidDrop = GetTime()
+		if args:IsPlayer() then
+			playerHasRelic = false
+		end
 	elseif spellId == 284722 then--Umbrel
 		self.vb.umbrelTarget = nil
 		warnUmbralShellOver:Show()

@@ -25,7 +25,7 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	Ocean = "Trident/Ocean",
-	Storm = "Tempest/Storm",
+	Storm = "Tempest Caller",
 	Void = "Void Stone",
 	Lunacy = "Lunacy",
 	DBMConfigMsg	= "Unstable Resonance configuration set to %s to match raid leaders configuration."
