@@ -316,6 +316,11 @@ function mod:OnTimerRecovery()
 	elseif self.vb.voidstone == playerName then
 		playerHasRelic = L.Void
 	end
+	if playerHasRelic and self.vb.resonCount > 0 then
+		local icon = self.vb.tridentOcean == playerName and self.vb.tridentOceanicon or self.vb.tempestCaller == playerName and self.vb.tempestStormIcon or self.vb.voidstone == playerName and self.vb.voidIcon
+		yellUnstableResonanceSign:Yell(icon, playerHasRelic, icon)
+		self:Schedule(2, updateResonanceYell, self, icon)
+	end
 end
 
 function mod:OnCombatEnd()
