@@ -5689,7 +5689,7 @@ do
 						self:StartCombat(v.mod, 0, "MONSTER_MESSAGE")
 					else--World Boss
 						scanForCombat(v.mod, v.mob, 0)
-						if v.mod.readyCheckQuestId and (self.Options.WorldBossNearAlert or v.mod.Options.ReadyCheck) and not IsQuestFlaggedCompleted(v.mod.readyCheckQuestId) then
+						if v.mod.readyCheckQuestId and (self.Options.WorldBossNearAlert or v.mod.Options.ReadyCheck) and not IsQuestFlaggedCompleted(v.mod.readyCheckQuestId) and v.mod.readyCheckMaxLevel >= playerLevel then
 							self:FlashClientIcon()
 							self:PlaySound(8960, true)
 						end
@@ -11232,8 +11232,9 @@ function bossModPrototype:AddInfoFrameOption(spellId, default, optionVersion)
 	end
 end
 
-function bossModPrototype:AddReadyCheckOption(questId, default)
+function bossModPrototype:AddReadyCheckOption(questId, default, maxLevel)
 	self.readyCheckQuestId = questId
+	self.readyCheckMaxLevel = maxLevel or 999
 	self.DefaultOptions["ReadyCheck"] = (default == nil) or default
 	if default and type(default) == "string" then
 		default = self:GetRoleFlagValue(default)
