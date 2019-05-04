@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/DeadlyBossMods/DeadlyBossMods.svg?branch=master)](https://travis-ci.org/DeadlyBossMods/DeadlyBossMods)
-[![WeakAuras on Discord](https://img.shields.io/badge/discord-DeadlyBossMods-738bd7.svg?style=flat)](https://discord.gg/DeadlyBossMods) 
+[![DeadlyBossMods on Discord](https://img.shields.io/badge/discord-DeadlyBossMods-738bd7.svg?style=flat)](https://discord.gg/DeadlyBossMods) 
 
 [![Patreon](https://media.forgecdn.net/attachments/76/25/patreon-medium-button.png)](https://www.patreon.com/deadlybossmods)
 
