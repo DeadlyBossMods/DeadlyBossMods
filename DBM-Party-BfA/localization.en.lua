@@ -45,6 +45,21 @@ L= DBM:GetModLocalization(2102)
 -----------------------
 L= DBM:GetModLocalization(2093)
 
+L:SetWarningLocalization({
+	warnGoodBrew		= "Casting %s: 3 sec",
+	specWarnBrewOnBoss	= "Good Brew - move %s"
+})
+
+L:SetOptionLocalization({
+	warnGoodBrew		= "Show warning when good brew is being cast",
+	specWarnBrewOnBoss	= "Show special warning when good brew is under boss"
+})
+
+L:SetMiscLocalization({
+	critBrew		= "Crit Brew",
+	hasteBrew		= "Haste Brew"
+})
+
 -----------------------
 -- Ring of Booty --
 -----------------------

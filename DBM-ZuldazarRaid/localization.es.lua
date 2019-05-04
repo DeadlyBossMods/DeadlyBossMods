@@ -27,18 +27,6 @@ L= DBM:GetModLocalization(2341)--Manceroy Puñoígneo y Mestrah la Iluminada (Ho
 ---------------
 L= DBM:GetModLocalization(2342)
 
-L:SetWarningLocalization({
-
-})
-
-L:SetTimerLocalization({
-
-})
-
-L:SetOptionLocalization({
-
-})
-
 L:SetMiscLocalization({
 	Bulwark =	"Baluarte",
 	Hand	=	"Mano"
