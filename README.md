@@ -1,5 +1,9 @@
-<p><img src="https://media.forgecdn.net/attachments/76/25/patreon-medium-button.png" width="408" height="80" /></p>
-<p><a href="https://www.patreon.com/deadlybossmods">https://www.patreon.com/deadlybossmods</a></p>
+[![Build Status](https://travis-ci.org/DeadlyBossMods/DeadlyBossMods.svg?branch=master)](https://travis-ci.org/DeadlyBossMods/DeadlyBossMods)
+[![WeakAuras on Discord](https://img.shields.io/badge/discord-DeadlyBossMods-738bd7.svg?style=flat)](https://discord.gg/DeadlyBossMods) 
+
+[![Patreon](https://media.forgecdn.net/attachments/76/25/patreon-medium-button.png)](https://www.patreon.com/deadlybossmods)
+
+
 <h2><strong>Supporter Benefits</strong></h2>
 <p><strong><a href="https://www.deadlybossmods.com/forum/viewtopic.php?f=7&amp;t=428#p1180">https://www.deadlybossmods.com/forum/viewtopic.php?f=7&amp;t=428#p1180</a></strong></p>
 <h2 id="w-suggestions-support-forums"><strong>Some basic DBM setup/advanced features guides</strong></h2>
