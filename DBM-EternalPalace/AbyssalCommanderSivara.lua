@@ -30,6 +30,8 @@ mod:RegisterEventsInCombat(
 local warnChimericMarks					= mod:NewSpellAnnounce(294726, 4)
 local warnRimefrost						= mod:NewStackAnnounce(300701, 2, nil, "Tank")
 local warnSepticTaint					= mod:NewStackAnnounce(300705, 2, nil, "Tank")
+local warnOverflowingChill				= mod:NewTargetAnnounce(295348, 3)
+local warnOverflowingVenom				= mod:NewTargetAnnounce(295421, 3)
 
 local specWarnFrostMark					= mod:NewSpecialWarningYouPos(294711, nil, nil, nil, 1, 9)
 local specWarnToxicMark					= mod:NewSpecialWarningYouPos(294715, nil, nil, nil, 1, 9)
@@ -163,6 +165,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnSepticTaint:Show(args.destName, amount)
 		end
 	elseif spellId == 295348 then
+		warnOverflowingChill:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			specWarnOverflowingChill:Show()
 			specWarnOverflowingChill:Play("runout")
@@ -170,6 +173,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellOverflowingChillFades:Countdown(5)
 		end
 	elseif spellId == 295421 then
+		warnOverflowingVenom:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			specWarnOverflowingVenom:Show()
 			specWarnOverflowingVenom:Play("runout")

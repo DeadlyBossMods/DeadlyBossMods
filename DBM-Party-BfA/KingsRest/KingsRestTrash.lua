@@ -126,7 +126,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 270920 and self:CheckDispelFilter() then
 		specWarnSeduction:Show(args.destName)
 		specWarnSeduction:Show("helpdispel")
-	elseif spellId == 270865 and args:IsDestTypePlayer() then
+	elseif spellId == 270865 and args:IsDestTypePlayer() and self:AntiSpam(3, args.destName) then
 		if args:IsPlayer() then
 			specWarnHiddenBlade:Show()
 			specWarnHiddenBlade:Show("runout")
