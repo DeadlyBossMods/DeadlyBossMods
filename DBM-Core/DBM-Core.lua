@@ -331,7 +331,7 @@ DBM.Defeat = {
 	{text = "Scrollsage Nola: Cycle",value = 109069, length=4},--"sound/creature/scrollsage_nola/vo_801_scrollsage_nola_34_f.ogg"
 	{text = "Thorim: Failures",value = 15742, length=4},--"Sound\\Creature\\Thorim\\UR_Thorim_P1Wipe01.ogg"
 	{text = "Valithria: Failures",value = 17067, length=4},--"Sound\\Creature\\ValithriaDreamwalker\\IC_Valithria_Berserk01.ogg"
-	{text = "Yogg-Saron: Laugh",value = 126220, length=4},--"Sound\\Creature\\YoggSaron\\UR_YoggSaron_Slay01.ogg"
+	{text = "Yogg-Saron: Laugh",value = 15757, length=4},--"Sound\\Creature\\YoggSaron\\UR_YoggSaron_Slay01.ogg"
 }
 DBM.Music = {--Contains all music media, period
 	{text = "None",value  = "None"},
@@ -6593,11 +6593,11 @@ do
 		local soundSetting = self.Options.UseSoundChannel
 		if type(path) == "number" then
 			if soundSetting == "Dialog" then
-				PlaySound(path, "Dialog")
+				PlaySound(path, "Dialog", false)
 			elseif ignoreSFX or soundSetting == "Master" then
-				PlaySound(path, "Master")
+				PlaySound(path, "Master", false)
 			else
-				PlaySound(path)
+				PlaySound(path)--using SFX channel, leave forceNoDuplicates on.
 			end
 		else
 			if soundSetting == "Dialog" then
