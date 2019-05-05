@@ -46,6 +46,21 @@ L= DBM:GetModLocalization(2102)
 -----------------------
 L= DBM:GetModLocalization(2093)
 
+L:SetWarningLocalization({
+	warnGoodBrew		= "%s 시전: 3초",
+	specWarnBrewOnBoss	= "버프 맥주 - %s 자리로 이동"
+})
+
+L:SetOptionLocalization({
+	warnGoodBrew		= "버프 맥주가 시전되면 경고 보기",
+	specWarnBrewOnBoss	= "보스 자리에 버프 맥주가 나오면 특수 경고 보기"
+})
+
+L:SetMiscLocalization({
+	critBrew		= "극대화 맥주",
+	hasteBrew		= "가속 맥주"
+})
+
 -----------------------
 -- Ring of Booty --
 -----------------------

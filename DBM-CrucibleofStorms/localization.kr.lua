@@ -26,7 +26,7 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	Ocean = "삼지창/바다",
-	Storm = "폭풍우/폭풍",
+	Storm = "폭풍우 소환기",
 	Void = "공허의 돌",
 	Lunacy = "광기",
 	DBMConfigMsg	= "불안정한 공명 설정이 공대장의 설정대로 %s이 되었습니다."
