@@ -51,6 +51,10 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 249923 or spellId == 259187 then
 		timerSoulrendCD:Start()
+		if not self:IsNormal() then
+			specWarnSoulRend:Show()
+			specWarnSoulRend:Play("runout")
+		end
 	elseif spellId == 250096 then
 		timerWrackingPainCD:Start()
 		if self:CheckInterruptFilter(args.sourceGUID, false, true) then
@@ -79,9 +83,6 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, targetname)
 			else
 				warnSoulRend:Show(targetname)
 			end
-		else--No target name, probably heroic+ and affecting everyone
-			specWarnSoulRend:Show()
-			specWarnSoulRend:Play("runout")
 		end
 	end
 end

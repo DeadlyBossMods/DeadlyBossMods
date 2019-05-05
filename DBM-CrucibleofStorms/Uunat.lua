@@ -5,8 +5,8 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(145371)
 mod:SetEncounterID(2273)
 mod:SetZone()
-mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)--Torment reserves as many as needed, but no more than 5, adds use first 3
-mod:SetHotfixNoticeRev(2019043033124)
+mod:SetUsedIcons(1, 2, 3, 4, 5, 6)
+mod:SetHotfixNoticeRev(20190430033124)
 mod:SetMinSyncRevision(20190420212326)
 --mod.respawnTime = 35
 
@@ -14,22 +14,18 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 293653 285185 285416 285376 285345 285453 285820 285638 285427 285562 285685",
-	"SPELL_CAST_SUCCESS 284851 285652 285427",
+	"SPELL_CAST_SUCCESS 284851 285652 285427 293653",
 	"SPELL_SUMMON 286165",
 	"SPELL_AURA_APPLIED 286459 286457 286458 284583 293663 293662 293661 284851 285345 287693 285333 285652 286310 284768 284569 284684 284722",
---	"SPELL_AURA_APPLIED_DOSE",
-	"SPELL_AURA_REMOVED 286459 286457 286458 284583 293663 293662 293661 284851 287693 285333 285652 286310 284768 284569 284684 284722",
+	"SPELL_AURA_REMOVED 286459 286457 286458 284583 293663 293662 293661 284851 287693 285333 286310 284768 284569 284684 284722",
 	"SPELL_INTERRUPT",
 	"UNIT_DIED"
---	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, improve the overall infoframe
 --TODO, somehow detect abyssal collapse and absorb remaining and time remaining on infoframe and detect cast for a target warning as well
 --TODO, special warning for storm instead of regular? I feel like since players control the cast, it just needs to be general for now
 --TODO, do more with Oblivion Tear?
 --TODO, do more with Void Crash?
---TODO, update icon code when BW changes it again
 --[[
 (ability.id = 293653 or ability.id = 285185 or ability.id = 285416 or ability.id = 285376 or ability.id = 285345 or ability.id = 285453 or ability.id = 285820 or ability.id = 285638 or ability.id = 285427 or ability.id = 285562 or ability.id = 285685) and type = "begincast"
  or (ability.id = 284851 or ability.id = 285652) and type = "cast"
@@ -70,7 +66,8 @@ local specWarnUnstableResonance			= mod:NewSpecialWarningMoveAway(293653, nil, n
 local specWarnUnstableResonanceVoid		= mod:NewSpecialWarningYouPos(293663, nil, nil, nil, 1, 6)
 local specWarnUnstableResonanceOcean	= mod:NewSpecialWarningYouPos(293662, nil, nil, nil, 1, 6)
 local specWarnUnstableResonanceStorm	= mod:NewSpecialWarningYouPos(293661, nil, nil, nil, 1, 6)
-local yellUnstableResonanceSign			= mod:NewPosYell(293653, DBM_CORE_AUTO_YELL_CUSTOM_POSITION, nil, nil, "YELL")
+local yellUnstableResonanceSign			= mod:NewPosYell(293653, DBM_CORE_AUTO_YELL_CUSTOM_POSITION)
+local yellUnstableResonanceRelic		= mod:NewPosYell("ej18970", DBM_CORE_AUTO_YELL_CUSTOM_POSITION, nil, nil, "YELL")
 --Stage One: His All-Seeing Eyes
 local specWarnTouchoftheEnd				= mod:NewSpecialWarningYou(284851, nil, nil, nil, 1, 2)
 local specWarnTouchoftheEndTaunt		= mod:NewSpecialWarningTaunt(284851, nil, nil, nil, 1, 6)
@@ -133,9 +130,9 @@ mod:AddNamePlateOption("NPAuraOnBond", 287693)
 mod:AddNamePlateOption("NPAuraOnFeed", 285307)
 mod:AddNamePlateOption("NPAuraOnRegen", 285333)
 mod:AddNamePlateOption("NPAuraOnConsume", 285427)
-mod:AddSetIconOption("SetIconTorment2", 285652, false, false, {4, 5, 6, 7, 8})
-mod:AddSetIconOption("SetIconOnAdds", "ej19118", true, true, {1, 2, 3})
-mod:AddDropdownOption("UnstableBehavior", {"SetOne", "SetTwo", "SetThree", "SetFour"}, "SetOne", "misc")
+mod:AddSetIconOption("SetIconOnAdds", "ej19118", true, true, {1, 2, 4})
+mod:AddSetIconOption("SetIconOnRelics", "ej18970", true, false, {1, 3, 5, 6})--only up to 3 are used, but it depends on what user sets UnstableBehavior2 to. 1 is not included in the default (SetTwo)
+mod:AddDropdownOption("UnstableBehavior2", {"SetOne", "SetTwo", "SetThree", "SetFour"}, "SetTwo", "misc")--SetTwo is BW default (BW default used to be SetOne)
 
 mod.vb.phase = 1
 mod.vb.touchCount = 0
@@ -147,7 +144,6 @@ mod.vb.activeUndying = 0
 mod.vb.undyingCount = 0
 mod.vb.tormentCount = 0
 mod.vb.resonCastCount = 0
-mod.vb.tormentIcon = 8--8 backwards, to avoid add icons
 mod.vb.addIcon = 1--1 fowards
 mod.vb.mindBenderCount = 0
 mod.vb.tridentOcean, mod.vb.tempestCaller, mod.vb.voidstone = "None", "None", "None"
@@ -238,10 +234,9 @@ do
 end
 
 local function updateResonanceYell(self, icon)
-	if not self.Options.ResonanceYellFilter then return end
 	--If player with relic, icons AND playername in red text
 	if self.vb.resonCount > 0 and playerHasRelic then
-		yellUnstableResonanceSign:Yell(icon, playerHasRelic, icon)
+		yellUnstableResonanceRelic:Yell(icon, playerHasRelic, icon)
 		self:Schedule(2, updateResonanceYell, self, icon)
 	--Not one of relics, just one of resonance targets, just double icons
 	elseif playerAffected then
@@ -262,7 +257,6 @@ function mod:OnCombatStart(delay)
 	self.vb.undyingCount = 0
 	self.vb.tormentCount = 0
 	self.vb.resonCastCount = 0
-	self.vb.tormentIcon = 8
 	self.vb.addIcon = 1
 	self.vb.mindBenderCount = 0
 	self.vb.tridentOcean, self.vb.tempestCaller, self.vb.voidstone = "None", "None", "None"
@@ -284,16 +278,16 @@ function mod:OnCombatStart(delay)
 	timerPiercingGazeCD:Start(40-delay, 1)
 	if self:IsMythic() then
 		timerUnstableResonanceCD:Start(13.1-delay, 1)
-		if self.Options.UnstableBehavior == "SetOne" then
+		if self.Options.UnstableBehavior2 == "SetOne" then
 			self.vb.tridentOceanicon, self.vb.tempestStormIcon, self.vb.voidIcon = 6, 5, 3--Square, Moon, Diamond
 			if UnitIsGroupLeader("player") then self:SendSync("SetOne") end
-		elseif self.Options.UnstableBehavior == "SetTwo" then
+		elseif self.Options.UnstableBehavior2 == "SetTwo" then
 			self.vb.tridentOceanicon, self.vb.tempestStormIcon, self.vb.voidIcon = 5, 6, 3--Moon, Square, Diamond
 			if UnitIsGroupLeader("player") then self:SendSync("SetTwo") end
-		elseif self.Options.UnstableBehavior == "SetThree" then
+		elseif self.Options.UnstableBehavior2 == "SetThree" then
 			self.vb.tridentOceanicon, self.vb.tempestStormIcon, self.vb.voidIcon = 5, 1, 3--Moon, Star, Diamond
 			if UnitIsGroupLeader("player") then self:SendSync("SetThree") end
-		elseif self.Options.UnstableBehavior == "SetFour" then
+		elseif self.Options.UnstableBehavior2 == "SetFour" then
 			self.vb.tridentOceanicon, self.vb.tempestStormIcon, self.vb.voidIcon = 6, 1, 3--Square, Star, Diamond
 			if UnitIsGroupLeader("player") then self:SendSync("SetFour") end
 		end
@@ -318,7 +312,8 @@ function mod:OnTimerRecovery()
 	end
 	if playerHasRelic and self.vb.resonCount > 0 then
 		local icon = self.vb.tridentOcean == playerName and self.vb.tridentOceanicon or self.vb.tempestCaller == playerName and self.vb.tempestStormIcon or self.vb.voidstone == playerName and self.vb.voidIcon
-		yellUnstableResonanceSign:Yell(icon, playerHasRelic, icon)
+		yellUnstableResonanceRelic:Yell(icon, playerHasRelic, icon)
+		self:Unschedule(updateResonanceYell)
 		self:Schedule(2, updateResonanceYell, self, icon)
 	end
 end
@@ -438,9 +433,12 @@ function mod:SPELL_CAST_START(args)
 			if self.Options.SetIconOnAdds then
 				self:ScanForMobs(args.sourceGUID, 2, self.vb.addIcon, 1, 0.2, 12)
 			end
+			--Increment icon for next cast/seticon
 			self.vb.addIcon = self.vb.addIcon + 1
-			if self.vb.addIcon == 4 then--1-3
-				self.vb.addIcon = 1
+			if self.vb.addIcon == 5 then--1, 2, 4
+				self.vb.addIcon = 1--Reset to 1 if its 5
+			elseif self.vb.addIcon == 3 then
+				self.vb.addIcon = 4--Skip 3 and go to 4 if it's 3
 			end
 			if self:AntiSpam(5, 3) then
 				self.vb.mindBenderCount = self.vb.mindBenderCount + 1
@@ -487,6 +485,18 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 285427 then
 		if self.Options.NPAuraOnConsume then
 			DBM.Nameplate:Hide(true, args.sourceGUID)
+		end
+	elseif spellId == 293653 then--Unstable Resonance
+		if self.Options.SetIconOnRelics then--Slghtly redundant, but in off chance they enabled an incompatible icon option such as torment icons, we want to reset icons to relics here
+			self:SetIcon(self.vb.tridentOcean, self.vb.tridentOceanicon)
+			self:SetIcon(self.vb.tempestCaller, self.vb.tempestStormIcon)
+			self:SetIcon(self.vb.voidstone, self.vb.voidIcon)
+		end
+		if playerHasRelic then
+			local icon = self.vb.tridentOcean == playerName and self.vb.tridentOceanicon or self.vb.tempestCaller == playerName and self.vb.tempestStormIcon or self.vb.voidstone == playerName and self.vb.voidIcon
+			yellUnstableResonanceRelic:Yell(icon, playerHasRelic, icon)
+			self:Unschedule(updateResonanceYell)
+			self:Schedule(2, updateResonanceYell, self, icon)
 		end
 	end
 end
@@ -557,16 +567,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerStormofAnnihilation:Start(args.destName)
 	elseif spellId == 293663 or spellId == 293662 or spellId == 293661 then--Unstable Resonance (all)
 		self.vb.resonCount = self.vb.resonCount + 1
-		if self:AntiSpam(5, 6) and playerHasRelic then
-			local icon = self.vb.tridentOcean == playerName and self.vb.tridentOceanicon or self.vb.tempestCaller == playerName and self.vb.tempestStormIcon or self.vb.voidstone == playerName and self.vb.voidIcon
-			yellUnstableResonanceSign:Yell(icon, playerHasRelic, icon)
-			self:Schedule(2, updateResonanceYell, self, icon)
-		end
 		if spellId == 293663 then--Void
 			if args:IsPlayer() then
 				specWarnUnstableResonanceVoid:Show(self:IconNumToTexture(self.vb.voidIcon))
 				specWarnUnstableResonanceVoid:Play("mm"..self.vb.voidIcon)
 				yellUnstableResonanceSign:Yell(self.vb.voidIcon, "", self.vb.voidIcon)
+				self:Unschedule(updateResonanceYell)
 				self:Schedule(2, updateResonanceYell, self, self.vb.voidIcon)
 				countdownResonanceFades:Start()
 				timerUnstableResonance:Start()
@@ -577,6 +583,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnUnstableResonanceOcean:Show(self:IconNumToTexture(self.vb.tridentOceanicon))
 				specWarnUnstableResonanceOcean:Play("mm"..self.vb.tridentOceanicon)
 				yellUnstableResonanceSign:Yell(self.vb.tridentOceanicon, "", self.vb.tridentOceanicon)
+				self:Unschedule(updateResonanceYell)
 				self:Schedule(2, updateResonanceYell, self, self.vb.tridentOceanicon)
 				countdownResonanceFades:Start()
 				timerUnstableResonance:Start()
@@ -587,6 +594,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnUnstableResonanceStorm:Show(self:IconNumToTexture(self.vb.tempestStormIcon))
 				specWarnUnstableResonanceStorm:Play("mm"..self.vb.tempestStormIcon)
 				yellUnstableResonanceSign:Yell(self.vb.tempestStormIcon, "", self.vb.tempestStormIcon)
+				self:Unschedule(updateResonanceYell)
 				self:Schedule(2, updateResonanceYell, self, self.vb.tempestStormIcon)
 				countdownResonanceFades:Start()
 				timerUnstableResonance:Start()
@@ -629,11 +637,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			warnInsatiableTorment:CombinedShow(0.5, args.destName)
 		end
-		if self.Options.SetIconTorment2 then
-			self:SetIcon(args.destName, self.vb.tormentIcon)
-		end
-		self.vb.tormentIcon = self.vb.tormentIcon - 1
-		if self.vb.tormentIcon < 4 then self.vb.tormentIcon = 8 end--Keep icons away from add icons
 	elseif spellId == 286310 then--Void Shield
 		warnVoidShield:Show(args.destName)
 		warnVoidShield:Play("phasechange")
@@ -654,27 +657,53 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 284768 then--Trident
 		self.vb.tridentOcean = args.destName
 		warnOceanRelic:Show(args.destName)
+		local icon = self.vb.tridentOceanicon
 		if args:IsPlayer() then
 			playerHasRelic = L.Ocean
+			if self.vb.resonCount > 0 then--Looted relic after resonance went out, update scheduler
+				yellUnstableResonanceRelic:Yell(icon, playerHasRelic, icon)
+				self:Unschedule(updateResonanceYell)
+				self:Schedule(2, updateResonanceYell, self, icon)
+			end
+		end
+		if self.Options.SetIconOnRelics then
+			self:SetIcon(args.destName, icon)
 		end
 	elseif spellId == 284569 then--Tempest
 		self.vb.tempestCaller = args.destName
 		warnStormRelic:Show(args.destName)
+		local icon = self.vb.tempestStormIcon
 		if args:IsPlayer() then
 			playerHasRelic = L.Storm
+			if self.vb.resonCount > 0 then--Looted relic after resonance went out, update scheduler
+				yellUnstableResonanceRelic:Yell(icon, playerHasRelic, icon)
+				self:Unschedule(updateResonanceYell)
+				self:Schedule(2, updateResonanceYell, self, icon)
+			end
+		end
+		if self.Options.SetIconOnRelics then
+			self:SetIcon(args.destName, icon)
 		end
 	elseif spellId == 284684 then--Void
 		self.vb.voidstone = args.destName
 		warnVoidRelic:Show(args.destName)
+		local icon = self.vb.voidIcon
 		if args:IsPlayer() then
 			playerHasRelic = L.Void
+			if self.vb.resonCount > 0 then--Looted relic after resonance went out, update scheduler
+				yellUnstableResonanceRelic:Yell(icon, playerHasRelic, icon)
+				self:Unschedule(updateResonanceYell)
+				self:Schedule(2, updateResonanceYell, self, icon)
+			end
+		end
+		if self.Options.SetIconOnRelics then
+			self:SetIcon(args.destName, self.vb.voidIcon)
 		end
 	elseif spellId == 284722 then--Umbrel
 		self.vb.umbrelTarget = args.destName
 		warnUmbrelShield:Show(args.destName)
 	end
 end
---mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
@@ -695,7 +724,6 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 293663 or spellId == 293662 or spellId == 293661 then--Unstable Resonance (all)
 		self.vb.resonCount = self.vb.resonCount - 1
 		if args:IsPlayer() then
-			self:Unschedule(updateResonanceYell)
 			countdownResonanceFades:Cancel()
 			timerUnstableResonance:Stop()
 			playerAffected = false
@@ -710,10 +738,6 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 285333 then--Unnatural Regeneration
 		if self.Options.NPAuraOnRegen then
 			DBM.Nameplate:Hide(true, args.destGUID, spellId)
-		end
-	elseif spellId == 285652 then
-		if self.Options.SetIconTorment2 then
-			self:SetIcon(args.destName, 0)
 		end
 	elseif spellId == 286310 and self:IsInCombat() then--Void Shield
 		self.vb.phase = self.vb.phase + 1
@@ -755,17 +779,26 @@ function mod:SPELL_AURA_REMOVED(args)
 		if args:IsPlayer() then
 			playerHasRelic = false
 		end
+		if self.Options.SetIconOnRelics then
+			self:SetIcon(args.destName, 0)
+		end
 	elseif spellId == 284569 then--Tempest
 		self.vb.tempestCaller = "None"
 		self.vb.tempestDrop = GetTime()
 		if args:IsPlayer() then
 			playerHasRelic = false
 		end
+		if self.Options.SetIconOnRelics then
+			self:SetIcon(args.destName, 0)
+		end
 	elseif spellId == 284684 then--Void
 		self.vb.voidstone = "None"
 		self.vb.voidDrop = GetTime()
 		if args:IsPlayer() then
 			playerHasRelic = false
+		end
+		if self.Options.SetIconOnRelics then
+			self:SetIcon(args.destName, 0)
 		end
 	elseif spellId == 284722 then--Umbrel
 		self.vb.umbrelTarget = nil
@@ -809,14 +842,6 @@ function mod:UNIT_DIED(args)
 		end
 	end
 end
-
---[[
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 274315 then
-
-	end
-end
---]]
 
 do
 	--Delayed function just to make absolute sure RL sync overrides user settings after OnCombatStart functions run
