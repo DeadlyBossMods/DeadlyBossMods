@@ -216,7 +216,7 @@ end
 
 --[[
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
-	if spellId == 270290 and destGUID == UnitGUID("player") and self:AntiSpam(2, 2) and not ignoreGTFO then
+	if spellId == 270290 and destGUID == UnitGUID("player") and self:AntiSpam(2, 2) then
 		specWarnGTFO:Show(spellName)
 		specWarnGTFO:Play("watchfeet")
 	end

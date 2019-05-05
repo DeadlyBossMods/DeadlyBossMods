@@ -21,7 +21,7 @@ localization.en.lua
 localization.kr.lua
 AbyssalCommanderSivara.lua
 RageofAzshara.lua
-UnderwaterMonstrosity.lua
+BlackwaterBehemoth.lua
 LadyPriscillaAshvane.lua
 TheHatchery.lua
 TheQueensCourt.lua
