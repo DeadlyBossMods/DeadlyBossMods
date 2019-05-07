@@ -2,7 +2,7 @@ local mod	= DBM:NewMod(2328, "DBM-CrucibleofStorms", nil, 1177)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
-mod:SetCreatureID(146497, 146495)--146497 Zaxasj, 146495 Fa'thuul
+mod:SetCreatureID(144755, 144754)--144755 Zaxasj, 144754 Fa'thuul
 mod:SetEncounterID(2269)
 mod:SetZone()
 mod:SetBossHPInfoToHighest()
