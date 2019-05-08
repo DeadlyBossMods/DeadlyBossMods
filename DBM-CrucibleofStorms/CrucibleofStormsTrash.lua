@@ -14,7 +14,7 @@ local specWarnMaddeningGaze				= mod:NewSpecialWarningDodge(293957, nil, nil, ni
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 293957 then
+	if spellId == 293957 and self:AntiSpam(4, 1) then
 		specWarnMaddeningGaze:Show()
 		specWarnMaddeningGaze:Play("shockwave")
 	end
