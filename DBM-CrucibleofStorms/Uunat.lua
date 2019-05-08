@@ -131,8 +131,8 @@ mod:AddNamePlateOption("NPAuraOnFeed", 285307)
 mod:AddNamePlateOption("NPAuraOnRegen", 285333)
 mod:AddNamePlateOption("NPAuraOnConsume", 285427)
 mod:AddSetIconOption("SetIconOnAdds", "ej19118", true, true, {1, 2, 4})
-mod:AddSetIconOption("SetIconOnRelics", "ej18970", true, false, {1, 3, 5, 6})--only up to 3 are used, but it depends on what user sets UnstableBehavior2 to. 1 is not included in the default (SetTwo)
-mod:AddDropdownOption("UnstableBehavior2", {"SetOne", "SetTwo", "SetThree", "SetFour"}, "SetTwo", "misc")--SetTwo is BW default (BW default used to be SetOne)
+mod:AddSetIconOption("SetIconOnRelics", "ej18970", true, false, {1, 3, 5, 6, 7})--only up to 3 are used, but it depends on what user sets UnstableBehavior2 to. 1 and 7 are not included in the default used by DBM/BW (SetTwo)
+mod:AddDropdownOption("UnstableBehavior2", {"SetOne", "SetTwo", "SetThree", "SetFour", "SetFive", "SetSix"}, "SetTwo", "misc")--SetTwo is BW default (BW default used to be SetOne)
 
 mod.vb.phase = 1
 mod.vb.touchCount = 0
@@ -290,6 +290,12 @@ function mod:OnCombatStart(delay)
 		elseif self.Options.UnstableBehavior2 == "SetFour" then
 			self.vb.tridentOceanicon, self.vb.tempestStormIcon, self.vb.voidIcon = 6, 1, 3--Square, Star, Diamond
 			if UnitIsGroupLeader("player") then self:SendSync("SetFour") end
+		elseif self.Options.UnstableBehavior2 == "SetFive" then
+			self.vb.tridentOceanicon, self.vb.tempestStormIcon, self.vb.voidIcon = 6, 7, 3--Square, Cross, Diamond
+			if UnitIsGroupLeader("player") then self:SendSync("SetFive") end
+		elseif self.Options.UnstableBehavior2 == "SetSix" then
+			self.vb.tridentOceanicon, self.vb.tempestStormIcon, self.vb.voidIcon = 5, 7, 3--Moon, Cross, Diamond
+			if UnitIsGroupLeader("player") then self:SendSync("SetSix") end
 		end
 	end
 	berserkTimer:Start(self:IsMythic() and 540 or 780-delay)--780 verified on normal at least https://www.warcraftlogs.com/reports/rPQXVgaD6AnF4h2R#fight=8&view=events&pins=2%24Off%24%23244F4B%24expression%24ability.name%20%3D%20%22Berserk%22
@@ -857,6 +863,12 @@ do
 			DBM:AddMsg(L.DBMConfigMsg:format(msg))
 		elseif msg == "SetFour" then
 			self.vb.tridentOceanicon, self.vb.tempestStormIcon, self.vb.voidIcon = 6, 1, 3--Square, Star, Diamond
+			DBM:AddMsg(L.DBMConfigMsg:format(msg))
+		elseif msg == "SetFive" then
+			self.vb.tridentOceanicon, self.vb.tempestStormIcon, self.vb.voidIcon = 6, 7, 3--Square, Cross, Diamond
+			DBM:AddMsg(L.DBMConfigMsg:format(msg))
+		elseif msg == "SetSix" then
+			self.vb.tridentOceanicon, self.vb.tempestStormIcon, self.vb.voidIcon = 5, 7, 3--Moon, Cross, Diamond
 			DBM:AddMsg(L.DBMConfigMsg:format(msg))
 		end
 	end
