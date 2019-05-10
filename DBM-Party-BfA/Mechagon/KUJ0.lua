@@ -48,12 +48,11 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 291972 then
+		warnExplosiveLeap:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			specWarnExplosiveLeap:Show()
 			specWarnExplosiveLeap:Play("runout")
 			yellExplosiveLeap:Yell()
-		else
-			warnExplosiveLeap:Show(args.destName)
 		end
 	elseif spellId == 294929 then
 		local amount = args.amount or 1
