@@ -512,7 +512,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 287762 then--Crushing Doubt
 		self.vb.CrushingDoubtIcon = 1
 		self.vb.crushingDoubtCount = self.vb.crushingDoubtCount + 1
-		local timer = self:IsMythic() and 46.1 or 60.1
+		local timer = self:IsMythic() and 45 or 60.1
 		timerCrushingDoubtCD:Start(timer, self.vb.crushingDoubtCount+1)
 		countdownCrushingDoubt:Start(timer)
 	end
