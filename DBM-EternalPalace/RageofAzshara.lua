@@ -26,15 +26,12 @@ mod:RegisterEventsInCombat(
 --TODO, verify correct unshackled power spellid
 --TODO, right voie for gale buffet
 local warnArcanadoBurst					= mod:NewSpellAnnounce(296430, 2)
-local warnSquallTrap					= mod:NewTargetNoFilterAnnounce(296459, 4)
+local warnSquallTrap					= mod:NewSpellAnnounce(296459, 4)
 local warnArcaneBomb					= mod:NewTargetNoFilterAnnounce(296737, 4)
 
 --Rising Fury
 local specWarnTideFistCast				= mod:NewSpecialWarningDefensive(296566, nil, nil, nil, 1, 2)
 local specWarnTideFist					= mod:NewSpecialWarningTaunt(296566, nil, nil, nil, 1, 2)
-local specWarnSquallTrap				= mod:NewSpecialWarningMoveAway(296459, nil, nil, nil, 1, 2)
-local yellSquallTrap					= mod:NewYell(296459)
-local specWarnCrushingNear				= mod:NewSpecialWarningClose(296459, nil, nil, nil, 1, 2)
 local specWarnArcaneBomb				= mod:NewSpecialWarningMoveAway(296737, nil, nil, nil, 1, 2)
 local yellArcaneBomb					= mod:NewYell(296737)
 local yellArcaneBombFades				= mod:NewShortFadesYell(296737)
@@ -66,22 +63,6 @@ local timerGaleBuffetCD					= mod:NewAITimer(58.2, 296701, nil, nil, nil, 3)
 --mod.vb.phase = 1
 mod.vb.unshackledCount = 0
 
-function mod:CrushingTarget(targetname, uId)
-	if not targetname then return end
-	if self:AntiSpam(4, targetname) then
-		if targetname == UnitName("player") then
-			specWarnSquallTrap:Show()
-			specWarnSquallTrap:Play("runout")
-			yellSquallTrap:Yell()
-		elseif self:CheckNearby(12, targetname) then
-			specWarnCrushingNear:Show(targetname)
-			specWarnCrushingNear:Play("runaway")
-		else
-			warnSquallTrap:Show(targetname)
-		end
-	end
-end
-
 function mod:OnCombatStart(delay)
 	self.vb.unshackledCount = 0
 	timerTideFistCD:Start(1-delay)
@@ -108,7 +89,7 @@ function mod:SPELL_CAST_START(args)
 		end
 		timerTideFistCD:Start()
 	elseif spellId == 296459 then
-		self:ScheduleMethod(0.2, "BossTargetScanner", args.sourceGUID, "CrushingTarget", 0.1, 16, true, nil, nil, nil, false)--Does this target tank? if not, change false to true
+		warnSquallTrap:Show()
 	elseif spellId == 296894 or spellId == 302465 then
 		self.vb.unshackledCount = self.vb.unshackledCount + 1
 		specWarnUnshackledPower:Show(self.vb.unshackledCount)
@@ -153,13 +134,12 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnTideFist:Play("tauntboss")
 		end
 	elseif spellId == 296737 then
+		warnArcaneBomb:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			specWarnArcaneBomb:Show()
 			specWarnArcaneBomb:Play("runout")
 			yellArcaneBomb:Yell()
 			yellArcaneBombFades:Countdown(10)
-		else
-			warnArcaneBomb:Show(args.destName)
 		end
 	end
 end

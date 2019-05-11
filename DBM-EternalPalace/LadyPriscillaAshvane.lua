@@ -26,6 +26,13 @@ mod:RegisterEventsInCombat(
  or (ability.id = 296569 or ability.id = 296944 or ability.id = 296725 or ability.id = 296662) and type = "cast"
  or ability.id = 296650 and (type = "applybuff" or type = "removebuff")
  or ability.id = 296943 or ability.id = 296940 or ability.id = 296942 or ability.id = 296939 or ability.id = 296941 or ability.id = 296938
+Orange: Circle and X
+Purple: Diamond and moon
+Green: Triangle and Square
+
+Orange: Circle and star
+Purple: Diamond and X
+Green: Triangle and Square
 --]]
 local warnShield						= mod:NewTargetNoFilterAnnounce(296650, 2, nil, nil, nil, nil, nil, 2)
 local warnShieldOver					= mod:NewEndAnnounce(296650, 2, nil, nil, nil, nil, nil, 2)

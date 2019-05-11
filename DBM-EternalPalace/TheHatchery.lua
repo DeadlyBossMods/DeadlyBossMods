@@ -2,7 +2,7 @@ local mod	= DBM:NewMod(2351, "DBM-EternalPalace", nil, 1179)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
-mod:SetCreatureID(152128)--Zoatroid 153941 Orgozoa 152128
+mod:SetCreatureID(152128)
 mod:SetEncounterID(2303)
 mod:SetZone()
 --mod:SetHotfixNoticeRev(16950)
@@ -12,11 +12,12 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 298242 298413 298548 295818 295822 296691",
-	"SPELL_CAST_SUCCESS 299095 298156 298548",
-	"SPELL_AURA_APPLIED 299095 298156 298306 296914 295779",
+	"SPELL_CAST_START 298413 298548 295818 295822 296691",
+	"SPELL_CAST_SUCCESS 298242 298103 298156 298548",
+	"SPELL_SUMMON 298465",
+	"SPELL_AURA_APPLIED 298156 298306 296914 295779",
 	"SPELL_AURA_APPLIED_DOSE 298156",
-	"SPELL_AURA_REMOVED 298306 296914",
+	"SPELL_AURA_REMOVED 298306 296914 295779",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 	"SPELL_INTERRUPT",
@@ -24,19 +25,14 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, correct ichor event
---TODO, more with incubation fluid?
 --TODO, Pervasive Shock?
---TODO, review phase change methods
 --TODO, skewer or not to skewer
---TODO, verify aqua lance. if works, nameplate aura with line between casting mob and player
 --TODO, raging-rapids?
---TODO, shocking lightning warnings/timer defaults?
 --TODO, do more with powerful stomp?
 local warnDesensitizingSting				= mod:NewStackAnnounce(298156, 2, nil, "Tank")
-local warnIncubationFluid					= mod:NewStackAnnounce(298242, 2, nil, "Tank")
+local warnIncubationFluid					= mod:NewTargetNoFilterAnnounce(298306, 2)
 ----Adds
-local warnAquaLance							= mod:NewTargetAnnounce(295779, 2)
+local warnAquaLance							= mod:NewTargetNoFilterAnnounce(295779, 2)
 local warnShockingLightning					= mod:NewSpellAnnounce(295818, 2, nil, false)
 local warnPowerfulStomp						= mod:NewCountAnnounce(296691, 2)
 
@@ -44,51 +40,60 @@ local specWarnDesensitizingSting			= mod:NewSpecialWarningStack(298156, nil, 9, 
 local specWarnDesensitizingStingTaunt		= mod:NewSpecialWarningTaunt(298156, nil, nil, nil, 1, 2)
 local specWarnDribblingIchor				= mod:NewSpecialWarningSwitchCount(298103, nil, nil, nil, 1, 2)
 local specWarnIncubationFluid				= mod:NewSpecialWarningMoveAway(298306, nil, nil, nil, 1, 2)
-local specWarnArcingCurrent					= mod:NewSpecialWarningSpell(295825, nil, nil, nil, 2, 2)
+local specWarnArcingCurrent					= mod:NewSpecialWarningCount(295825, nil, nil, nil, 2, 2)
 local yellArcingCurrent						= mod:NewYell(295825)
+--local specWarnGTFO						= mod:NewSpecialWarningGTFO(270290, nil, nil, nil, 1, 8)
 ----Adds
 local specWarnAquaLance						= mod:NewSpecialWarningMoveAway(295779, nil, nil, nil, 1, 2)
 local yellAquaLance							= mod:NewYell(295779)
---local specWarnGTFO						= mod:NewSpecialWarningGTFO(270290, nil, nil, nil, 1, 8)
+local yellAquaLanceFades					= mod:NewShortFadesYell(295779)
 local specWarnConductivePulse				= mod:NewSpecialWarningInterrupt(295822, "HasInterrupt", nil, nil, 3, 2)
 
---mod:AddTimerLine(BOSS)
-local timerDesensitizingStingCD				= mod:NewAITimer(58.2, 298156, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
-local timerDribblingIchorCD					= mod:NewAITimer(30.4, 298103, nil, nil, nil, 1)--30.4-42
-local timerIncubationFluidCD				= mod:NewAITimer(30.4, 298242, nil, nil, nil, 3)
-local timerArcingCurrentCD					= mod:NewAITimer(30.4, 295825, nil, nil, nil, 3)
+mod:AddTimerLine(BOSS)
+local timerDesensitizingStingCD				= mod:NewCDTimer(6.1, 298156, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerDribblingIchorCD					= mod:NewCDCountTimer(84, 298103, nil, nil, nil, 1)--30.4-42
+local timerIncubationFluidCD				= mod:NewCDTimer(32.8, 298242, nil, nil, nil, 3)
+local timerArcingCurrentCD					= mod:NewCDTimer(34.1, 295825, nil, nil, nil, 3)
 local timerMassiveIncubator					= mod:NewCastTimer(45, 298548, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
-----Adds
-local timerAquaLanceCD						= mod:NewAITimer(30.4, 295779, nil, nil, nil, 3)
-local timerShockingLightningCD				= mod:NewAITimer(30.4, 295818, nil, false, nil, 3)
-local timerConductivePulseCD				= mod:NewAITimer(45, 295822, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
-local timerPowerfulStompCD					= mod:NewAITimer(45, 296691, nil, nil, nil, 2, nil, DBM_CORE_HEALER_ICON)
+mod:AddTimerLine(DBM_ADDS)
+local timerAmnioticEruption					= mod:NewCastTimer(5, 298465, nil, nil, nil, 2, nil, DBM_CORE_TANK_ICON)
+local timerAquaLanceCD						= mod:NewCDTimer(25.5, 295779, nil, nil, nil, 3)
+local timerShockingLightningCD				= mod:NewCDTimer(4.8, 295818, nil, false, nil, 3)
+local timerConductivePulseCD				= mod:NewCDTimer(18.2, 295822, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
+local timerPowerfulStompCD					= mod:NewCDTimer(29.1, 296691, nil, nil, nil, 2, nil, DBM_CORE_HEALER_ICON)
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
 
---local countdownCudgelofGore				= mod:NewCountdown(58, 271296)
---local countdownEnlargedHeart			= mod:NewCountdown("Alt60", 275205, true, 2)
+local countdownDesensitizingString		= mod:NewCountdown("Alt6", 298156, false, nil, 3)
+local countdownIchor					= mod:NewCountdown(84, 298103)
+local countdownIncubationFluid			= mod:NewCountdown("AltTwo60", 298242, true)
+local countdownMassiveIncubator			= mod:NewCountdown(45, 298548)
 
 --mod:AddRangeFrameOption(6, 264382)
 --mod:AddInfoFrameOption(275270, true)
 --mod:AddSetIconOption("SetIconOnEyeBeam", 264382, true)
+mod:AddNamePlateOption("NPAuraOnAquaLance", 282209)
 mod:AddNamePlateOption("NPAuraOnChaoticGrowth", 296914)
 
 mod.vb.phase = 1
 mod.vb.addCount = 0
+mod.vb.arcingCurrentCount = 0
 local playerHasIncubation = false
 local castsPerGUID = {}
 
 function mod:OnCombatStart(delay)
 	self.vb.phase = 1
 	self.vb.addCount = 0
+	self.vb.arcingCurrentCount = 0
 	playerHasIncubation = false
 	table.wipe(castsPerGUID)
-	timerDesensitizingStingCD:Start(1-delay)
-	timerDribblingIchorCD:Start(1-delay)
-	timerIncubationFluidCD:Start(1-delay)
-	timerArcingCurrentCD:Start(1-delay)
-	if self.Options.NPAuraOnChaoticGrowth then
+	timerDesensitizingStingCD:Start(3.4-delay)
+	countdownDesensitizingString:Start(3.4-delay)
+	timerIncubationFluidCD:Start(18.8-delay)
+	timerDribblingIchorCD:Start(23.9-delay, 1)
+	countdownIchor:Start(23.9)
+	timerArcingCurrentCD:Start(35-delay, 1)
+	if self.Options.NPAuraOnChaoticGrowth or self.Options.NPAuraOnAquaLance then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
 end
@@ -100,7 +105,7 @@ function mod:OnCombatEnd()
 --	if self.Options.RangeFrame then
 --		DBM.RangeCheck:Hide()
 --	end
-	if self.Options.NPAuraOnChaoticGrowth then
+	if self.Options.NPAuraOnChaoticGrowth or self.Options.NPAuraOnAquaLance then
 		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
 	end
 end
@@ -113,12 +118,10 @@ end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 298242 then
-		warnIncubationFluid:Show()
-		timerIncubationFluidCD:Start()
-	elseif spellId == 298413 then
-		specWarnArcingCurrent:Show()
-		timerArcingCurrentCD:Start()
+	if spellId == 298413 then
+		self.vb.arcingCurrentCount = self.vb.arcingCurrentCount + 1
+		specWarnArcingCurrent:Show(self.vb.arcingCurrentCount)
+		timerArcingCurrentCD:Start(nil, self.vb.arcingCurrentCount+1)
 		if playerHasIncubation then
 			yellArcingCurrent:Yell()
 			specWarnArcingCurrent:Play("targetyou")
@@ -127,6 +130,7 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 298548 then
 		timerMassiveIncubator:Start(45)
+		countdownMassiveIncubator:Start(45)
 	elseif spellId == 295818 then
 		warnShockingLightning:Show()
 		timerShockingLightningCD:Start(nil, args.sourceGUID)
@@ -148,31 +152,47 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 298103 and self:AntiSpam(5, 1) then--Dribbling Ichor
+	if spellId == 298242 then
+		timerIncubationFluidCD:Start()
+	elseif spellId == 298103 then--Dribbling Ichor
 		self.vb.addCount = self.vb.addCount + 1
 		specWarnDribblingIchor:Show(self.vb.addCount)
 		specWarnDribblingIchor:Play("mobsoon")
-		timerDribblingIchorCD:Start()
+		if self.vb.phase == 2 or self.vb.addCount < 3 then--Assumed there are more than 3 in P2
+			if self.vb.addCount == 1 then
+				timerDribblingIchorCD:Start(88.8, 2)
+				countdownIchor:Start(88.8)
+			else--2+ (todo verify the + part)
+				timerDribblingIchorCD:Start(84, self.vb.addCount+1)
+				countdownIchor:Start(84)
+			end
+		end
 	elseif spellId == 298156 then
 		timerDesensitizingStingCD:Start()
+		countdownDesensitizingString:Start(6.1)
 	elseif spellId == 298548 then--Massive Incubator
-		timerDribblingIchorCD:Start(2)
-		timerDesensitizingStingCD:Start(2)
-		timerIncubationFluidCD:Start(2)
-		timerArcingCurrentCD:Start(2)
+		timerDesensitizingStingCD:Start(3.4)
+		countdownDesensitizingString:Start(3.4)
+		timerIncubationFluidCD:Start(18.8)
+		timerDribblingIchorCD:Start(23.9, 1)
+		countdownIchor:Start(23.9)
+		timerArcingCurrentCD:Start(35)
 	elseif spellId == 295779 then
 		timerAquaLanceCD:Start(nil, args.sourceGUID)
 	end
 end
 
+function mod:SPELL_SUMMON(args)
+	local spellId = args.spellId
+	if spellId == 298465 then
+		timerAmnioticEruption:Start(5, args.destGUID)
+	end
+end
+
+
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 299095 and self:AntiSpam(5, 1) then--Dribbling Ichor
-		self.vb.addCount = self.vb.addCount + 1
-		specWarnDribblingIchor:Show(self.vb.addCount)
-		specWarnDribblingIchor:Play("mobsoon")
-		timerDribblingIchorCD:Start()
-	elseif spellId == 298156 then
+	if spellId == 298156 then
 		local amount = args.amount or 1
 		if amount >= 9 then
 			if args:IsPlayer() then
@@ -190,6 +210,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnDesensitizingSting:Show(args.destName, amount)
 		end
 	elseif spellId == 298306 then
+		warnIncubationFluid:CombinedShow(1.5, args.destName)
 		if args:IsPlayer() then
 			specWarnIncubationFluid:Show()
 			specWarnIncubationFluid:Play("targetyou")
@@ -204,6 +225,10 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnAquaLance:Show()
 			specWarnAquaLance:Play("targetyou")
 			yellAquaLance:Yell()
+			yellAquaLanceFades:Countdown(5)
+			if self.Options.NPAuraOnAquaLance then
+				DBM.Nameplate:Show(true, args.sourceGUID, spellId, nil, nil, nil, true, {0.75, 0, 0, 0.75})
+			end
 		else
 			warnAquaLance:Show(args.destName)
 		end
@@ -221,6 +246,13 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.NPAuraOnChaoticGrowth then
 			DBM.Nameplate:Hide(true, args.destGUID, spellId)
 		end
+	elseif spellId == 295779 then
+		if args:IsPlayer() then
+			yellAquaLanceFades:Cancel()
+			if self.Options.NPAuraOnAquaLance then
+				DBM.Nameplate:Hide(true, args.destGUID, spellId)
+			end
+		end
 	end
 end
 
@@ -237,18 +269,19 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 function mod:SPELL_INTERRUPT(args)
 	if type(args.extraSpellId) == "number" and args.extraSpellId == 298548 then
 		timerMassiveIncubator:Stop()
-		timerDribblingIchorCD:Start(2)
-		timerDesensitizingStingCD:Start(2)
-		timerIncubationFluidCD:Start(2)
-		timerArcingCurrentCD:Start(2)
+		countdownMassiveIncubator:Cancel()
+		timerDesensitizingStingCD:Start(3.4)
+		countdownDesensitizingString:Start(3.4)
+		timerIncubationFluidCD:Start(18.8)
+		timerDribblingIchorCD:Start(23.9, 1)
+		countdownIchor:Start(23.9)
+		timerArcingCurrentCD:Start(35)
 	end
 end
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 153941 then--Zoatroid
-
-	elseif cid == 152311 then--hatchery-warrior
+	if cid == 152311 then--hatchery-warrior
 		timerAquaLanceCD:Stop(args.destGUID)
 	elseif cid == 152312 then--hatchery-witch
 		timerShockingLightningCD:Stop(args.destGUID)
@@ -259,19 +292,18 @@ function mod:UNIT_DIED(args)
 	end
 end
 
+--"<216.58 17:04:01> [UNIT_SPELLCAST_SUCCEEDED] Orgozoa(??) -Absorb Fluids- [[boss1:Cast-3-3198-2164-287-298689-0041D5E741:298689]]", -- [6915]
+--"<236.77 17:04:22> [UNIT_SPELLCAST_START] Orgozoa(??) - Massive Incubator - 45s [[boss1:Cast-3-3198-2164-287-298548-005955E755:298548]]", -- [7466]
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 298077 and self:AntiSpam(5, 1) then--Dribling Ichor
-		self.vb.addCount = self.vb.addCount + 1
-		specWarnDribblingIchor:Show(self.vb.addCount)
-		specWarnDribblingIchor:Play("mobsoon")
-		if self.vb.addCount == 3 then
-			self.vb.phase = 2
-			timerDribblingIchorCD:Stop()
-			timerDesensitizingStingCD:Stop()
-			timerIncubationFluidCD:Stop()
-			timerArcingCurrentCD:Stop()
-		else
-			timerDribblingIchorCD:Start()
-		end
+	if spellId == 298689 then--Absorb Fluids
+		self.vb.phase = 2
+		self.vb.addCount = 0
+		self.vb.arcingCurrentCount = 0
+		timerDribblingIchorCD:Stop()
+		countdownIchor:Cancel()
+		timerDesensitizingStingCD:Stop()
+		countdownDesensitizingString:Cancel()
+		timerIncubationFluidCD:Stop()
+		timerArcingCurrentCD:Stop()
 	end
 end
