@@ -20,7 +20,7 @@
 localization.en.lua
 localization.kr.lua
 AbyssalCommanderSivara.lua
-RageofAzshara.lua
+RadianceofAzshara.lua
 BlackwaterBehemoth.lua
 LadyPriscillaAshvane.lua
 TheHatchery.lua

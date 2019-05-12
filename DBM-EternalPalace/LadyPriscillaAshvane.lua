@@ -171,7 +171,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		countdownShield:Cancel()
 		timerUpsurgeCD:Start(3.1)
 		timerBarnacleBashCD:Start(7.3, 1)
-		countdownSpellPicker:Start(7.3)
+		if self:IsTank() then
+			countdownSpellPicker:Start(7.3)
+		end
 		timerRipplingwaveCD:Start(13.5, 1)
 		countdownRipplingWave:Start(13.5)
 		timerCoralGrowthCD:Start(30.5, 1)
@@ -277,7 +279,9 @@ function mod:SPELL_AURA_REMOVED(args)
 		countdownSpellPicker:Cancel()
 		--timerCrushingDepthsCD:Start(2)--Not started here
 		timerBarnacleBashCD:Start(8.6, 1)
-		countdownSpellPicker:Start(8.6)
+		if self:IsTank() then
+			countdownSpellPicker:Start(8.6)
+		end
 		timerArcingAzeriteCD:Start(16.6, 1)
 		countdownArcingAzerite:Start(16.6)
 		timerUpsurgeCD:Start(32.6)--Upsurge is cast in this phase, but only event for it is spell_damage. timer is estimation
@@ -335,9 +339,12 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		if self.vb.spellPicker == 3 then
 			self.vb.spellPicker = 0
 			timerBarnacleBashCD:Start(15.9, self.vb.spellPicker+1)
+			if self:IsTank() then
+				countdownSpellPicker:Start(15.9)
+			end
 		elseif self.vb.spellPicker == 2 then--Two bash been cast, crushing is next
 			timerCrushingDepthsCD:Start(15.9, self.vb.spellPicker+1)
+			countdownSpellPicker:Start(15.9)
 		end
-		countdownSpellPicker:Start(15.9)
 	end
 end
