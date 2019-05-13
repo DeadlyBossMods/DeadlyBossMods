@@ -12,8 +12,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 260416 260333",
 	"SPELL_AURA_REMOVED 260416",
 	"SPELL_CAST_START 260793 260292",
-	"SPELL_CAST_SUCCESS 260333",
-	"UNIT_SPELLCAST_SUCCEEDED boss1"
+	"SPELL_CAST_SUCCESS 260333"
 )
 
 --TODO, a really long normal pull to get timer interactions correct when there are no tantrums
@@ -33,11 +32,13 @@ local timerTantrumCD				= mod:NewCDTimer(13, 260333, nil, nil, nil, 2, nil, DBM_
 
 mod:AddNamePlateOption("NPAuraMetamorphosis", 260416)
 
-mod.vb.IndigestionCast = false--Never used more than once per cycle, whereass charge is always may or may not be cast twice
+mod.vb.IndigestionCast = false--Never used more than once per cycle, whereass charge may or may not be cast twice
+mod.vb.chargeCast = 0
 mod.vb.tantrumCast = 0
 
 function mod:OnCombatStart(delay)
 	self.vb.IndigestionCast = false
+	self.vb.chargeCast = 0
 	self.vb.tantrumCast = 0
 	if self.Options.NPAuraMetamorphosis then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
@@ -45,6 +46,7 @@ function mod:OnCombatStart(delay)
 	--he casts random ability first
 	timerIndigestionCD:Start(8.3-delay)
 	timerChargeCD:Start(8.3-delay)
+	--timerTantrumCD:Start(45)
 end
 
 function mod:OnCombatEnd()
@@ -77,24 +79,42 @@ function mod:SPELL_CAST_START(args)
 		self.vb.IndigestionCast = true
 		specWarnIndigestion:Show()
 		specWarnIndigestion:Play("breathsoon")
-		--Regardless of whether the 20 seconds will be up before then, Indigestion always resets charge to 12
+		--Charge is always 12 seconds after indigiestion in EVERY combo
+		--Also, regardless of time left on charg timer, Indigestion always resets charge to 12
 		timerChargeCD:Stop()
-		local checkTantrum = timerTantrumCD:GetRemaining() or 100--If timer doesn't exist set to 100 (like normal mode)
-		if checkTantrum > 12 then
-			timerChargeCD:Start(12)
+		timerChargeCD:Start(12)
+		if not self:IsNormal() then
+			if self.vb.chargeCast == 0 then--No charge yet, it means it's one of the two Indigestion first combos
+				if self.vb.tantrumCast == 0 then--Indigestion, charge, charge, Tantrum
+					--Very niche combat start condition. This segment slightly longer than rest
+					timerTantrumCD:Start(43.7)
+				else
+					--It's only Indigestion, charge, Tantrum
+					timerTantrumCD:Start(26.7)
+				end
+			end
+		else
+			timerIndigestionCD:Start(45)
+			--(will probably never be accurate, since WCL lacks tools to search for normal dungeons)
 		end
 	elseif spellId == 260292 then
+		self.vb.chargeCast = self.vb.chargeCast + 1
 		specWarnCharge:Show()
 		specWarnCharge:Play("chargemove")
-		--If not cast first, it'll be cast 10.9 seconds after the first charge cast
-		if not self.vb.IndigestionCast or self:IsNormal() then--Normal is guesswork, and very likely wrong
-			timerIndigestionCD:Start(10.9)
-		else
-			--Very niche combat start condition. This segment slightly longer than rest
-			--As such, it's the ONLY time he'll double charge if Indigestion was first
-			if self.vb.tantrumCast == 0 then
-				timerChargeCD:Start()
+		if not self:IsNormal() then
+			--If charge is first, Indigestion will always be cast 10.9 seconds after
+			if not self.vb.IndigestionCast then--charge, indigestion, charge combo.
+				timerIndigestionCD:Start(10.9)
+				if not self:IsNormal() then
+					timerTantrumCD:Start(37.6)
+				end
+			else--Indigestion was first, check for niche Indigestion, charge, charge, Tantrum combo
+				if self.vb.tantrumCast == 0 then
+					timerChargeCD:Start(20)
+				end
 			end
+		else--On normal, just always start the 20 second timer, but allow it to still be corrected by Indigestion Cast
+			timerChargeCD:Start(20)
 		end
 	end
 end
@@ -103,6 +123,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 260333 then
 		self.vb.IndigestionCast = false
+		self.vb.chargeCast = 0
 		self.vb.tantrumCast = self.vb.tantrumCast + 1
 		timerChargeCD:Stop()
 		specWarnTantrum:Show(self.vb.tantrumCast)
@@ -110,11 +131,5 @@ function mod:SPELL_CAST_SUCCESS(args)
 		--Start both bars, what he uses first is random
 		timerIndigestionCD:Start(18.2)
 		timerChargeCD:Start(18.2)
-	end
-end
-
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 271775 then--Tantrum Energy Bar
-		timerTantrumCD:Start(15)
 	end
 end
