@@ -105,9 +105,7 @@ function mod:SPELL_CAST_START(args)
 			--If charge is first, Indigestion will always be cast 10.9 seconds after
 			if not self.vb.IndigestionCast then--charge, indigestion, charge combo.
 				timerIndigestionCD:Start(10.9)
-				if not self:IsNormal() then
-					timerTantrumCD:Start(37.6)
-				end
+				timerTantrumCD:Start(37.6)
 			else--Indigestion was first, check for niche Indigestion, charge, charge, Tantrum combo
 				if self.vb.tantrumCast == 0 then
 					timerChargeCD:Start(20)
