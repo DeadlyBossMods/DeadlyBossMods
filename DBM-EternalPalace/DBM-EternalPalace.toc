@@ -23,8 +23,8 @@ AbyssalCommanderSivara.lua
 RadianceofAzshara.lua
 BlackwaterBehemoth.lua
 LadyPriscillaAshvane.lua
-TheHatchery.lua
+Orgozoa.lua
 TheQueensCourt.lua
-HeraldofNzoth.lua
+Zaqul.lua
 QueenAzshara.lua
 EternalPalaceTrash.lua

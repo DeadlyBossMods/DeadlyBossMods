@@ -50,6 +50,10 @@ L= DBM:GetModLocalization(2359)
 ---------------------------
 L= DBM:GetModLocalization(2349)
 
+L:SetMiscLocalization({
+	Tear =	"Tear"
+})
+
 ---------------------------
 --  Queen Azshara --
 ---------------------------

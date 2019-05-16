@@ -15,9 +15,9 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 294726 295332 296551 298122 295791",
 	"SPELL_CAST_SUCCESS 295346 295332 295791",
-	"SPELL_AURA_APPLIED 294711 294715 300701 300705 295348 300961 300962",
+	"SPELL_AURA_APPLIED 294711 294715 300701 300705 295348 300961 300962 300882 300883",
 	"SPELL_AURA_APPLIED_DOSE 294711 294715 300701 300705",
-	"SPELL_AURA_REMOVED 294711 294715 295348",
+	"SPELL_AURA_REMOVED 294711 294715 295348 300882 300883",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED"
 	"CHAT_MSG_RAID_BOSS_EMOTE",
@@ -25,9 +25,9 @@ mod:RegisterEventsInCombat(
 )
 
 --TODO, request voice pack authors add "frost mark" and "toxic mark"
---TODO< fix tank swap code when debuff ID implimented
+--TODO, fix tank swap code when a strategy consensus is reached
 --TODO, improve DBM when strats formulate for boss on how to handle tank stacks
---TODO, add frostshock Bolts?
+--TODO, if inversion sickness is a LOT of people (or everyone) ono mythic, disable target warning on mythic
 --[[
 (ability.id = 294726 or ability.id = 295332 or ability.id = 296551 or ability.id = 298122 or ability.id = 295791) and type = "begincast"
  or (ability.id = 295332 or ability.id = 295346) and type = "cast"
@@ -38,6 +38,7 @@ local warnRimefrost						= mod:NewStackAnnounce(300701, 2, nil, "Tank")
 local warnSepticTaint					= mod:NewStackAnnounce(300705, 2, nil, "Tank")
 local warnOverflowingChill				= mod:NewTargetNoFilterAnnounce(295348, 3)
 local warnOverflowingVenom				= mod:NewTargetNoFilterAnnounce(295421, 3)
+local warnInversionSickness				= mod:NewTargetNoFilterAnnounce(300882, 4)
 
 local specWarnFrostMark					= mod:NewSpecialWarningYouPos(294711, nil, nil, nil, 1, 9)
 local specWarnToxicMark					= mod:NewSpecialWarningYouPos(294715, nil, nil, nil, 1, 9)
@@ -52,7 +53,11 @@ local yellOverflowingChillFades			= mod:NewShortFadesYell(295348)
 local specWarnOverflowingVenom			= mod:NewSpecialWarningMoveAway(295421, nil, nil, nil, 1, 2)
 local yellOverflowingVenom				= mod:NewYell(295421)
 local yellOverflowingVenomFades			= mod:NewShortFadesYell(295421)
-local specWarnInversion					= mod:NewSpecialWarningSpell(295791, nil, nil, nil, 3, 2)
+local specWarnInversion					= mod:NewSpecialWarningMoveAway(295791, nil, nil, nil, 3, 2)
+local specWarnInversionSicknessFrost	= mod:NewSpecialWarningYou(300882, nil, nil, nil, 1, 2)--Separate warning in case user wants to customize sound based on type
+local specWarnInversionSicknessToxic	= mod:NewSpecialWarningYou(300883, nil, nil, nil, 1, 2)--Separate warning in case user wants to customize sound based on type
+local yellInversionSickness				= mod:NewYell(300882)
+local yellInversionSicknessFades		= mod:NewShortFadesYell(300882)
 local specWarnFrostJav					= mod:NewSpecialWarningYou(295606, nil, nil, nil, 1, 2)
 local yellFrostJav						= mod:NewYell(295606)
 local specWarnToxicJav					= mod:NewSpecialWarningYou(295607, nil, nil, nil, 1, 2)
@@ -64,6 +69,7 @@ local timerCrushingReverbCD				= mod:NewCDTimer(21.1, 295332, nil, nil, nil, 5, 
 local timerOverwhelmingBarrageCD		= mod:NewCDTimer(40, 296551, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
 local timerOverflowCD					= mod:NewCDTimer(31.6, 295346, nil, nil, nil, 3)--31.6 but can be delayed by boss spell queuing
 local timerInversionCD					= mod:NewCDTimer(90, 295791, nil, nil, nil, 2, nil, DBM_CORE_HEROIC_ICON)
+local timerfrostshockboltsCD			= mod:NewCDTimer(61.2, 295601, nil, nil, nil, 3)
 local timerChimericMarksCD				= mod:NewAITimer(58.2, 294726, nil, nil, nil, 2)--Mythic
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
@@ -86,6 +92,7 @@ function mod:OnCombatStart(delay)
 	timerOverflowCD:Start(15.7-delay)
 	timerOverwhelmingBarrageCD:Start(40.2-delay)
 	countdownOverwhelmingBarrage:Start(40.2-delay)
+	timerfrostshockboltsCD:Start(47.3-delay)
 	if self:IsHard() then
 		timerInversionCD:Start(90-delay)
 		countdownInversion:Start(90-delay)
@@ -209,6 +216,19 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif (spellId == 300961 or spellId == 300962) and args:IsPlayer() then
 		specWarnGTFO:Show(args.spellName)
 		specWarnGTFO:Play("watchfeet")
+	elseif (spellId == 300882 or spellId == 300883) then
+		warnInversionSickness:CombinedShow(0.3, args.destname)
+		if args:IsPlayer() then
+			if spellId == 300882 then--Frost
+				specWarnInversionSicknessFrost:Show()
+				specWarnInversionSicknessFrost:Play("targetyou")
+			else--Toxic
+				specWarnInversionSicknessToxic:Show()
+				specWarnInversionSicknessToxic:Play("targetyou")
+			end
+			yellInversionSickness:Yell()
+			yellInversionSicknessFades:Countdown(4)
+		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -233,6 +253,10 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 295421 then
 		if args:IsPlayer() then
 			yellOverflowingVenomFades:Cancel()
+		end
+	elseif (spellId == 300882 or spellId == 300883) then
+		if args:IsPlayer() then
+			yellInversionSicknessFades:Cancel()
 		end
 	end
 end
@@ -291,5 +315,7 @@ end
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 295346 and self:AntiSpam(5, 3) then
 		timerOverflowCD:Start()
+	elseif spellId == 295601 and self:AntiSpam(5, 4) then
+		timerfrostshockboltsCD:Start()
 	end
 end

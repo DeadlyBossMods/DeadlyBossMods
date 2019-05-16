@@ -83,7 +83,7 @@ local castsPerGUID = {}
 
 function mod:OnCombatStart(delay)
 	self.vb.phase = 1
-	self.vb.addCount = 0
+	--self.vb.addCount = 0
 	self.vb.arcingCurrentCount = 0
 	playerHasIncubation = false
 	table.wipe(castsPerGUID)
@@ -227,7 +227,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellAquaLance:Yell()
 			yellAquaLanceFades:Countdown(5)
 			if self.Options.NPAuraOnAquaLance then
-				DBM.Nameplate:Show(true, args.sourceGUID, spellId, nil, nil, nil, true, {0.75, 0, 0, 0.75})
+				DBM.Nameplate:Show(true, args.sourceGUID, spellId)
 			end
 		else
 			warnAquaLance:Show(args.destName)
