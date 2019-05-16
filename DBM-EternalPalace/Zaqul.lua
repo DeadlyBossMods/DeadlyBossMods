@@ -292,7 +292,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.SetIconDread then
 			self:SetIcon(args.destName, 0)
 		end
-	if spellId == 296018 then--Non LFR
+	elseif spellId == 296018 then--Non LFR
 		if args:IsPlayer() then
 			yellManicDreadFades:Cancel()
 		end
