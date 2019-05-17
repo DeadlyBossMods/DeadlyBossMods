@@ -3080,6 +3080,7 @@ local function CreateOptionsMenu()
 					end
 				end
 				PlayMusic(value)
+				DBM.Options.musicPlaying = true
 			end
 		end)
 		DungeonMusicDropDown:SetPoint("TOPLEFT", VictorySoundDropdown, "TOPLEFT", 0, -45)
@@ -3096,6 +3097,7 @@ local function CreateOptionsMenu()
 					end
 				end
 				PlayMusic(value)
+				DBM.Options.musicPlaying = true
 			end
 		end)
 		MusicDropDown:SetPoint("TOPLEFT", VictorySoundDropdown2, "TOPLEFT", 0, -45)

@@ -102,7 +102,7 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 296546 then
 		self.vb.tideFistCount = self.vb.tideFistCount + 1
-		if UnitDetailedThreatSituation("player", "boss1") then
+		if self:IsTanking("player", "boss1", nil, true) then
 			specWarnTideFistCast:Show()
 			specWarnTideFistCast:Play("defensive")
 		end

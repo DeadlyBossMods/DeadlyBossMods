@@ -194,7 +194,7 @@ function mod:SPELL_CAST_START(args)
 		timerRaptorFormCD:Start()
 		for i = 1, 4 do
 			local bossUnitID = "boss"..i
-			if UnitExists(bossUnitID) and UnitGUID(bossUnitID) == args.sourceGUID and UnitDetailedThreatSituation("player", bossUnitID) then--We are highest threat target
+			if UnitExists(bossUnitID) and UnitGUID(bossUnitID) == args.sourceGUID and self:IsTanking("player", "boss1", nil, true) then--We are highest threat target
 				specWarnRaptorForm:Show()
 				specWarnRaptorForm:Play("defensive")
 				break
