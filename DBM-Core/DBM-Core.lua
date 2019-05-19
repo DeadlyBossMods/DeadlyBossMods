@@ -1187,6 +1187,11 @@ do
 			end
 			onLoadCallbacks = nil
 			loadOptions(self)
+			if wowTOC < 80000 then
+				self:Disable(true)
+				C_TimerAfter(15, function() AddMsg(self, DBM_CORE_RETAIL_ONLY) end)
+				return
+			end
 			if GetAddOnEnableState(playerName, "VEM-Core") >= 1 then
 				self:Disable(true)
 				C_TimerAfter(15, function() AddMsg(self, DBM_CORE_VEM) end)
