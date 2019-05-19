@@ -16,9 +16,9 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 300088 301807 297325 301947",
 	"SPELL_CAST_SUCCESS 299914 296850",
-	"SPELL_AURA_APPLIED 296704 301244 297656 297564 297585 301828 299914 296851",
+	"SPELL_AURA_APPLIED 296704 301244 297656 297566 297585 301828 299914 296851",
 	"SPELL_AURA_APPLIED_DOSE 301828",
-	"SPELL_AURA_REMOVED 296704 301244 297656 297564 299914 296851",
+	"SPELL_AURA_REMOVED 296704 301244 297656 297566 299914 296851",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
@@ -41,8 +41,8 @@ local warnRepeatPerformance				= mod:NewTargetNoFilterAnnounce(301244, 3, nil, "
 local warnRepeatPerformanceOver			= mod:NewFadesAnnounce(301244, 1)--Personal fades warning
 local warnStandAlone					= mod:NewTargetAnnounce(297656, 2)
 local warnStandAloneOver				= mod:NewFadesAnnounce(297656, 1)--Personal fades warning
-local warnDeferredSentence				= mod:NewTargetAnnounce(297564, 2)
-local warnDeferredSentenceOver			= mod:NewFadesAnnounce(297564, 1)--Personal fades warning
+local warnDeferredSentence				= mod:NewTargetAnnounce(297566, 2)
+local warnDeferredSentenceOver			= mod:NewFadesAnnounce(297566, 1)--Personal fades warning
 --Silivaz the Zealous
 local warnSilivazTouch					= mod:NewStackAnnounce(244899, 2, nil, "Tank")
 --Pashmar the Fanatical
@@ -55,7 +55,7 @@ local specWarnFormRanks					= mod:NewSpecialWarningMoveTo(298050, "-Tank", nil, 
 local specWarnRepeatPerformance			= mod:NewSpecialWarningYou(301244, nil, nil, nil, 1, 2)
 local specWarnStandAlone				= mod:NewSpecialWarningMoveAway(297656, nil, nil, nil, 1, 2)
 local yellStandAlone					= mod:NewYell(297656)
-local specWarnDeferredSentence			= mod:NewSpecialWarningKeepMove(297564, nil, nil, nil, 1, 2)
+local specWarnDeferredSentence			= mod:NewSpecialWarningKeepMove(297566, nil, nil, nil, 1, 2)
 local specWarnObeyorSuffer				= mod:NewSpecialWarningDefensive(297585, nil, nil, nil, 1, 2)
 local specWarnObeyorSufferTaunt			= mod:NewSpecialWarningTaunt(297585, false, nil, nil, 1, 2)
 --Silivaz the Zealous
@@ -82,7 +82,7 @@ mod:AddTimerLine(DBM:EJ_GetSectionInfo(20258))
 local timerFormRanksCD					= mod:NewNextTimer(40, 298050, nil, nil, nil, 3)
 local timerRepeatPerformanceCD			= mod:NewNextTimer(40, 301244, nil, nil, nil, 3)
 local timerStandAloneCD					= mod:NewNextTimer(40, 297656, nil, nil, nil, 3)
-local timerDeferredSentenceCD			= mod:NewNextTimer(40, 297564, nil, nil, nil, 3)
+local timerDeferredSentenceCD			= mod:NewNextTimer(40, 297566, nil, nil, nil, 3)
 local timerObeyorSufferCD				= mod:NewNextTimer(40, 297585, nil, nil, nil, 3)
 --Silivaz the Zealous
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20231))
@@ -101,14 +101,16 @@ local countdownFreneticCharge			= mod:NewCountdown("Alt60", 299914, "-Tank")
 
 mod:AddNamePlateOption("NPAuraOnSoP", 296704)
 --mod:AddRangeFrameOption(6, 264382)
---mod:AddInfoFrameOption(275270, true)
+--mod:AddInfoFrameOption(297566, true)
 mod:AddSetIconOption("SetIconFreneticCharge", 299914, true, false, {4})
 mod:AddSetIconOption("SetIconSparks", 301947, true, true, {1, 2, 3})
 
 mod.vb.sparkIcon = 1
+mod.vb.sentenceActive = 0
 
 function mod:OnCombatStart(delay)
 	self.vb.sparkIcon = 1
+	self.vb.sentenceActive = 0
 	--ass-shara
 	--timerSummonDecreesCD:Start(1-delay)--used almost instantly on pull anyways
 	--Silivaz
@@ -187,7 +189,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnStandAlone:Play("runout")
 			yellStandAlone:Yell()
 		end
-	elseif spellId == 297564 then
+	elseif spellId == 297566 then
+		self.vb.sentenceActive = self.vb.sentenceActive + 1
 		warnDeferredSentence:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			specWarnDeferredSentence:Show()
@@ -270,7 +273,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnFreneticCharge:Play("gathershare")
 			yellFreneticCharge:Yell()
 			yellFreneticChargeFades:Countdown(4)
-		elseif not DBM:UnitDebuff("player", 297656, 303188, 297585, 297564) and not self:IsTank() then--Not tank, or affected by decrees that'd conflict with soaking
+		elseif not DBM:UnitDebuff("player", 297656, 303188, 297585) and not self:IsTank() then--Not tank, or affected by decrees that'd conflict with soaking
 			specWarnFreneticCharge:Show(GROUP)
 			specWarnFreneticCharge:Play("gathershare")
 		end
@@ -306,7 +309,8 @@ function mod:SPELL_AURA_REMOVED(args)
 		if args:IsPlayer() then
 			warnStandAloneOver:Show()
 		end
-	elseif spellId == 297564 then
+	elseif spellId == 297566 then
+		self.vb.sentenceActive = self.vb.sentenceActive - 1
 		if args:IsPlayer() then
 			warnDeferredSentenceOver:Show()
 		end
