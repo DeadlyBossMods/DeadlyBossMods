@@ -58,7 +58,7 @@ local warnStormsWail					= mod:NewTargetNoFilterAnnounce(285350, 3)
 local specWarnTidalEmpowerment			= mod:NewSpecialWarningInterrupt(284765, "HasInterrupt", nil, nil, 1, 2)
 --local specWarnGTFO						= mod:NewSpecialWarningGTFO(285075, false, nil, 2, 1, 8)
 ----Sister Katherine
-local specWarnVoltaicFlash				= mod:NewSpecialWarningDodge(284262, nil, nil, nil, 2, 2)
+local specWarnVoltaicFlash				= mod:NewSpecialWarningDodgeCount(284262, nil, nil, nil, 2, 2)
 local specWarnCracklingLightning		= mod:NewSpecialWarningMoveAway(288205, nil, nil, nil, 1, 2)
 local yellCracklingLightning			= mod:NewYell(288205)
 local yellCracklingLightningFades		= mod:NewShortFadesYell(288205)
@@ -66,7 +66,7 @@ local yellCracklingLightningFades		= mod:NewShortFadesYell(288205)
 local specWarnSeaStorm					= mod:NewSpecialWarningMoveAway(284361, nil, nil, nil, 1, 2)
 local yellSeaStorm						= mod:NewYell(284361)
 local yellSeaStormFades					= mod:NewShortFadesYell(284361)
-local specWarnSeasTemptation			= mod:NewSpecialWarningSwitch(284383, "RangedDps", nil, nil, 1, 2)--Ranged assumed for now, melee stay out until temping song goes out
+local specWarnSeasTemptation			= mod:NewSpecialWarningSwitchCount(284383, "RangedDps", nil, nil, 1, 2)--Ranged assumed for now, melee stay out until temping song goes out
 local specWarnTemptingSong				= mod:NewSpecialWarningRun(284405, nil, nil, nil, 4, 2)
 local yellTemptingSong					= mod:NewYell(284405)
 --Stage Two: Laminaria
@@ -116,6 +116,7 @@ mod.vb.sirenCount = 0
 mod.vb.joltingCast = 0
 mod.vb.stormsActive = 0
 mod.vb.stormsWailIcon = 1
+mod.vb.voltaicFlashCount = 0
 local freezingTidePod = DBM:GetSpellInfo(285075)
 local stormTargets = {}
 
@@ -199,6 +200,7 @@ function mod:OnCombatStart(delay)
 	self.vb.joltingCast = 0
 	self.vb.stormsActive = 0
 	self.vb.stormsWailIcon = 1
+	self.vb.voltaicFlashCount = 0
 	if not self:IsLFR() then
 		--Sister
 		timerCracklingLightningCD:Start(5.9-delay)--5.9-10.8
@@ -260,8 +262,9 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 284262 then
+		self.vb.voltaicFlashCount = self.vb.voltaicFlashCount + 1
 		if self:CheckBossDistance(args.sourceGUID, true) then
-			specWarnVoltaicFlash:Show()
+			specWarnVoltaicFlash:Show(self.vb.voltaicFlashCount)
 			specWarnVoltaicFlash:Play("watchorb")
 			timerVoltaicFlashCD:SetFade(false)
 		else
@@ -273,7 +276,8 @@ function mod:SPELL_CAST_START(args)
 			timerVoltaicFlashCD:Start()--12
 		end
 	elseif spellId == 288941 and self:AntiSpam(20, 2) then--AntiSpam must be at least 15 here, 20 for good measure
-		specWarnVoltaicFlash:Show()
+		self.vb.voltaicFlashCount = self.vb.voltaicFlashCount + 1
+		specWarnVoltaicFlash:Show(self.vb.voltaicFlashCount)
 		specWarnVoltaicFlash:Play("watchorb")
 		timerVoltaicFlashCD:Start(42.5)
 	elseif spellId == 284393 then
@@ -303,7 +307,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 284383 then
 		self.vb.sirenCount = self.vb.sirenCount + 1
 		if self:CheckBossDistance(args.sourceGUID, true) then
-			specWarnSeasTemptation:Show()
+			specWarnSeasTemptation:Show(self.vb.sirenCount)
 			specWarnSeasTemptation:Play("killmob")
 			timerSeasTemptationCD:SetFade(false)
 		else
@@ -361,7 +365,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 289795 and self.vb.phase == 2 then--Zuldazar Reuse Spell 06 (P2 sirens spawning)
 		self.vb.sirenCount = self.vb.sirenCount + 1
 		if self:AntiSpam(8, 5) then
-			specWarnSeasTemptation:Show()
+			specWarnSeasTemptation:Show(self.vb.sirenCount)
 			specWarnSeasTemptation:Play("killmob")
 		end
 		if self.vb.sirenCount % 2 == 0 then
@@ -535,6 +539,7 @@ function mod:SPELL_INTERRUPT(args)
 	if type(args.extraSpellId) == "number" and args.extraSpellId == 288696 then
 		self.vb.phase = 2
 		self.vb.sirenCount = 0
+		self.vb.voltaicFlashCount = 0
 		timerSeaSwellCD:Stop()
 		timerCataTides:Stop()
 		countdownSeaSwell:Cancel()

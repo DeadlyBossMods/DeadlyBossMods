@@ -45,6 +45,10 @@ L= DBM:GetModLocalization(2351)
 ---------------------------
 L= DBM:GetModLocalization(2359)
 
+L:SetMiscLocalization({
+	Circles =	"Circles in 3s"
+})
+
 ---------------------------
 -- Herald of N'zoth --
 ---------------------------

@@ -52,6 +52,7 @@ local specWarnHysteria					= mod:NewSpecialWarningStack(292971, nil, 15, nil, ni
 --Stage One: The Herald
 local specWarnHorrificSummoner			= mod:NewSpecialWarningSwitch("ej20172", "-Healer", nil, nil, 1, 2)
 local specWarnCrushingGrasp				= mod:NewSpecialWarningDodge(292565, nil, nil, nil, 2, 2)
+local yellDread							= mod:NewPosYell(292963)
 local yellDreadFades					= mod:NewIconFadesYell(292963)
 --Stage Two: Grip of Fear
 local specWarnManifedNightmares			= mod:NewSpecialWarningYou(293509, nil, nil, nil, 1, 2)
@@ -63,8 +64,10 @@ local specWarShatteredPsyche			= mod:NewSpecialWarningDispel(295327, "Healer", n
 --Stage Four: All Pathways Open
 local specWarnDarkPulse					= mod:NewSpecialWarningSwitch(303978, "-Healer", nil, nil, 1, 2)
 local specWarnPsychoticSplit			= mod:NewSpecialWarningSwitch(301068, "-Healer", nil, nil, 1, 2)
+local yellDreadScream					= mod:NewPosYell(303543)
 local yellDreadScreamFades				= mod:NewIconFadesYell(303543)--Mythic
 local specWarnVoidSlam					= mod:NewSpecialWarningDodge(302593, nil, nil, nil, 2, 2)--Mythic
+local yellManicDread					= mod:NewPosYell(296018)
 local yellManicDreadFades				= mod:NewIconFadesYell(296018)
 
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(270290, nil, nil, nil, 1, 8)
@@ -228,6 +231,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if spellId == 292963 then--Non LFR
 			local icon = self.vb.dreadIcon
 			if args:IsPlayer() then
+				yellDread:Yell(icon, icon, icon)
 				yellDreadFades:Countdown(10, nil, icon)
 			end
 			if self.Options.SetIconDread then
@@ -240,6 +244,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if spellId == 296018 then--Non LFR
 			local icon = self.vb.dreadIcon
 			if args:IsPlayer() then
+				yellManicDread:Yell(icon, icon, icon)
 				yellManicDreadFades:Countdown(10, nil, icon)
 			end
 			if self.Options.SetIconManicDreadScream then
@@ -251,6 +256,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnDreadScream:CombinedShow(0.3, args.destName)
 		local icon = self.vb.dreadIcon
 		if args:IsPlayer() then
+			yellDreadScream:Yell(icon, icon, icon)
 			yellDreadScreamFades:Countdown(10, nil, icon)
 		end
 		if self.Options.SetIconDreadScream then
