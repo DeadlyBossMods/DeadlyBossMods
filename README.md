@@ -21,7 +21,7 @@
 </ul>
 <h2 id="w-additional-mods"><strong>Additional Mods</strong></h2>
 <ul>
-<li><a href="http://wow.curseforge.com/addons/dbm-victorysounds">Victory Sounds</a></li>
+<li><a href="https://wow.curseforge.com/projects/deadly-boss-mods-dbm-event-sound-pack">Event Sound Pack</a></li>
 <li><a href="http://wow.curseforge.com/addons/dbm-spelltimers">SpellTimers</a></li>
 <li><a href="http://wow.curseforge.com/addons/dbm-archaeology">DBM-Archaeology</a></li>
 <li><a href="https://wow.curseforge.com/projects/dbm-challenges">DBM-Challenges</a></li>
