@@ -485,22 +485,22 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 			local text = ""
 			if spellId == 299249 then--Soak Orbs
-				specWarnQueensDecree:ScheduleVoiceOverLap(0+specWarnQueensDecree, "helpsoak")
+				specWarnQueensDecree:ScheduleVoiceOverLap(0+playerDecreeCount, "helpsoak")
 				text = text..", "..L.SoakOrb
 			elseif spellId == 299251 then--Dodge Orbs
-				specWarnQueensDecree:ScheduleVoiceOverLap(0+specWarnQueensDecree, "watchorb")
+				specWarnQueensDecree:ScheduleVoiceOverLap(0+playerDecreeCount, "watchorb")
 				text = text..", "..L.AvoidOrb
 			elseif spellId == 299254 then--Group Up
-				specWarnQueensDecree:ScheduleVoiceOverLap(0+specWarnQueensDecree, "gather")
+				specWarnQueensDecree:ScheduleVoiceOverLap(0+playerDecreeCount, "gather")
 				text = text..", "..L.GroupUp
 			elseif spellId == 299255 then--Don't Group Up
-				specWarnQueensDecree:ScheduleVoiceOverLap(0+specWarnQueensDecree, "scatter")
+				specWarnQueensDecree:ScheduleVoiceOverLap(0+playerDecreeCount, "scatter")
 				text = text..", "..L.Spread
 			elseif spellId == 299252 then--Keep Moving
-				specWarnQueensDecree:ScheduleVoiceOverLap(0+specWarnQueensDecree, "keepmove")
+				specWarnQueensDecree:ScheduleVoiceOverLap(0+playerDecreeCount, "keepmove")
 				text = text..", "..L.Move
 			elseif spellId == 299253 then--Stop Moving
-				specWarnQueensDecree:ScheduleVoiceOverLap(0+specWarnQueensDecree, "stopmove")
+				specWarnQueensDecree:ScheduleVoiceOverLap(0+playerDecreeCount, "stopmove")
 				text = text..", "..L.DontMove
 			end
 			playerDecreeCount = playerDecreeCount + 1--Increased after voices, because of way voice scheduling is being done
