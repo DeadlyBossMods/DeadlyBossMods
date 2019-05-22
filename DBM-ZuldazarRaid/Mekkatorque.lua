@@ -36,6 +36,7 @@ local warnPhase							= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2
 local warnShrunk						= mod:NewTargetNoFilterAnnounce(284168, 1)
 local warnMisTele						= mod:NewTargetNoFilterAnnounce(287114, 3)
 local warnDeploySparkbot				= mod:NewCountAnnounce(288410, 2)
+local warnGigavoltCharge				= mod:NewTargetAnnounce(286646, 3)
 --Intermission: Evasive Maneuvers!
 
 --Final Push
@@ -543,6 +544,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 287757 or spellId == 286646 then--283409?
 		local icon = self.vb.gigaIcon
+		warnGigavoltCharge:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			specWarnGigaVoltCharge:Show(self:IconNumToTexture(icon))
 			specWarnGigaVoltCharge:Play("targetyou")
