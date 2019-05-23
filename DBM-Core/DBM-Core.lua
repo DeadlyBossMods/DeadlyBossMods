@@ -3795,9 +3795,9 @@ do
 				end
 			end
 			-- Check regular non-BNet friends
-			local nf = GetNumFriends()
+			local nf = C_FriendList.GetNumFriends()
 			for i = 1, nf do
-				local toonName = GetFriendInfo(i)
+				local toonName = C_FriendList.GetFriendInfo(i)
 				if toonName == sender then
 					AcceptPartyInvite()
 					return
