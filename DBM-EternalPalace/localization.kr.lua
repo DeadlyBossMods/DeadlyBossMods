@@ -64,6 +64,15 @@ L:SetMiscLocalization({
 ---------------------------
 L= DBM:GetModLocalization(2361)
 
+L:SetMiscLocalization({
+	SoakOrb =	"구슬 맞기",
+	AvoidOrb =	"구슬 피하기",
+	GroupUp =	"뭉치기",
+	Spread =	"산개",
+	Move	 =	"계속 이동",
+	DontMove =	"이동 중지"
+})
+
 -------------
 --  Trash  --
 -------------
