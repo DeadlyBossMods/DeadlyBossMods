@@ -55,8 +55,8 @@ local warnFrozenSiege					= mod:NewSpellAnnounce(289488, 2)
 local warnHowlingWindsLeft				= mod:NewCountAnnounce(290053, 2)
 --Stage Two: Frozen Wrath
 local warnBurningExplosion				= mod:NewCastAnnounce(288221, 3)
-local warnBroadside						= mod:NewTargetNoFilterAnnounce(288212, 2)
-local warnSiegebreaker					= mod:NewTargetNoFilterAnnounce(288374, 3)
+local warnBroadside						= mod:NewTargetCountAnnounce(288212, 2, nil, nil, nil, nil, nil, nil, true)
+local warnSiegebreaker					= mod:NewTargetCountAnnounce(288374, 3, nil, nil, nil, nil, nil, nil, true)
 local warnGlacialRay					= mod:NewBaitAnnounce(288345, 3, nil, nil, nil, nil, 8)
 --Intermission 2
 local warnHeartofFrost					= mod:NewTargetAnnounce(289220, 2)
@@ -83,10 +83,10 @@ local specWarnRingofIce					= mod:NewSpecialWarningRun(285459, nil, nil, nil, 4,
 --Stage Two: Frozen Wrath
 local specWarnIceBlockTaunt				= mod:NewSpecialWarningTaunt(287490, nil, nil, nil, 3, 2)
 local specWarnGTFO						= mod:NewSpecialWarningGTFO(288297, nil, nil, nil, 1, 8)
-local specWarnBroadside					= mod:NewSpecialWarningMoveAway(288212, nil, nil, nil, 1, 2)--NewSpecialWarningYouPos
+local specWarnBroadside					= mod:NewSpecialWarningMoveAwayCount(288212, nil, nil, nil, 1, 2)--NewSpecialWarningYouPos
 local yellBroadside						= mod:NewPosYell(288212)
 local yellBroadsideFades				= mod:NewIconFadesYell(288212)
-local specWarnSiegebreaker				= mod:NewSpecialWarningMoveAway(288374, nil, nil, nil, 3, 2)
+local specWarnSiegebreaker				= mod:NewSpecialWarningMoveAwayCount(288374, nil, nil, nil, 3, 2)
 local yellSiegebreaker					= mod:NewYell(288374, nil, nil, nil, "YELL")
 local yellSiegebreakerFades				= mod:NewShortFadesYell(288374, nil, nil, nil, "YELL")
 local specWarnHandofFrost				= mod:NewSpecialWarningYou(288412, nil, nil, nil, 1, 2)
@@ -565,9 +565,9 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 288212 then
 		self.vb.broadsideIcon = self.vb.broadsideIcon + 1
 		local icon = self.vb.broadsideIcon
-		warnBroadside:CombinedShow(0.5, args.destName)
+		warnBroadside:CombinedShow(0.5, self.vb.broadsideCount, args.destName)
 		if args:IsPlayer() then
-			specWarnBroadside:Show(self:IconNumToTexture(icon))
+			specWarnBroadside:Show(self.vb.broadsideCount)
 			specWarnBroadside:Play("targetyou")
 			yellBroadside:Yell(icon, icon, icon)
 			yellBroadsideFades:Countdown(6, nil, icon)
@@ -577,12 +577,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 288374 then
 		if args:IsPlayer() then
-			specWarnSiegebreaker:Show()
+			specWarnSiegebreaker:Show(self.vb.siegeCount)
 			specWarnSiegebreaker:Play("runout")
 			yellSiegebreaker:Yell()
 			yellSiegebreakerFades:Countdown(8)
 		else
-			warnSiegebreaker:Show(args.destName)
+			warnSiegebreaker:Show(self.vb.siegeCount, args.destName)
 		end
 	elseif spellId == 288412 or spellId == 288434 then
 		if args:IsPlayer() then
