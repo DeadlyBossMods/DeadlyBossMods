@@ -69,8 +69,8 @@ end
 
 DBM = {
 	Revision = parseCurseDate("@project-date-integer@"),
-	DisplayVersion = "8.1.25", -- the string that is shown as version
-	ReleaseRevision = releaseDate(2019, 5, 23) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	DisplayVersion = "8.1.26", -- the string that is shown as version
+	ReleaseRevision = releaseDate(2019, 5, 23, 12) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 }
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
@@ -497,9 +497,10 @@ local UnitAffectingCombat, InCombatLockdown, IsFalling, IsEncounterInProgress, U
 local UnitGUID, UnitHealth, UnitHealthMax, UnitBuff, UnitDebuff = UnitGUID, UnitHealth, UnitHealthMax, UnitBuff, UnitDebuff
 local UnitExists, UnitIsDead, UnitIsFriend, UnitIsUnit = UnitExists, UnitIsDead, UnitIsFriend, UnitIsUnit
 local GetSpellInfo, GetDungeonInfo, GetSpellTexture, GetSpellCooldown = GetSpellInfo, GetDungeonInfo, GetSpellTexture, GetSpellCooldown
-local EJ_GetEncounterInfo, EJ_GetCreatureInfo, EJ_GetSectionInfo, GetSectionIconFlags
+local EJ_GetEncounterInfo, EJ_GetCreatureInfo = EJ_GetEncounterInfo, EJ_GetCreatureInfo
+local EJ_GetSectionInfo, GetSectionIconFlags
 if C_EncounterJournal then
-	EJ_GetEncounterInfo, EJ_GetCreatureInfo, EJ_GetSectionInfo, GetSectionIconFlags = EJ_GetEncounterInfo, EJ_GetCreatureInfo, C_EncounterJournal.GetSectionInfo, C_EncounterJournal.GetSectionIconFlags
+	EJ_GetSectionInfo, GetSectionIconFlags = C_EncounterJournal.GetSectionInfo, C_EncounterJournal.GetSectionIconFlags
 end
 local GetInstanceInfo = GetInstanceInfo
 local GetSpecialization, GetSpecializationInfo, GetSpecializationInfoByID = GetSpecialization, GetSpecializationInfo, GetSpecializationInfoByID
