@@ -192,7 +192,7 @@ do
 		for i = 1, 5 do
 			local uId = "boss"..i
 			--Primary Power
-			local currentPower, maxPower = UnitPower(uId), UnitPowerMax(uId)
+			local currentPower, maxPower = UnitPower(uId, 10), UnitPowerMax(uId, 10)
 			if maxPower and maxPower ~= 0 then
 				local adjustedPower = currentPower / maxPower * 100
 				if adjustedPower >= 1 and adjustedPower ~= 100 then--Filter 100 power, to basically eliminate cced Adds
@@ -464,15 +464,14 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnChargedSpear:Show(args.destName)
 		end
 	elseif spellId == 299094 or spellId == 303797 or spellId == 303799 then
+		warnBeckon:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			specWarnBeckon:Show()
 			specWarnBeckon:Play("targetyou")
 			yellBeckon:Yell()
-		elseif spellId ~= 299094 and self:CheckNearby(8, args.destName) then--Warn nearby, because it's jealousy version
+		elseif spellId ~= 299094 and self:CheckNearby(8, args.destName) and not DBM:UnitDebuff("player", spellId) then--Warn nearby, because it's jealousy version
 			specWarnBeckonNear:Show(args.destName)
 			specWarnBeckonNear:Play("runaway")
-		else
-			warnBeckon:Show(args.destName)
 		end
 	elseif spellId == 303825 then
 		warnCrushingDepths:Show(args.destName)
