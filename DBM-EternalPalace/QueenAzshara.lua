@@ -2,7 +2,7 @@ local mod	= DBM:NewMod(2361, "DBM-EternalPalace", nil, 1179)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
---mod:SetCreatureID(137119)
+mod:SetCreatureID(152910)
 mod:SetEncounterID(2299)
 mod:SetZone()
 mod:SetUsedIcons(3, 2, 1)
@@ -263,9 +263,9 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnCombatEnd()
---	if self.Options.InfoFrame then
---		DBM.InfoFrame:Hide()
---	end
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:Hide()
+	end
 --	if self.Options.RangeFrame then
 --		DBM.RangeCheck:Hide()
 --	end
