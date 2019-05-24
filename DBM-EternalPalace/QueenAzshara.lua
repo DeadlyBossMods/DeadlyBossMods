@@ -504,8 +504,12 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 			playerDecreeCount = playerDecreeCount + 1--Increased after voices, because of way voice scheduling is being done
 			--Only show warning after we've collected all decrees we'regoing to get
+			--Sometimes you get less than max amount though so must still schedule
+			specWarnQueensDecree:Cancel()
 			if self.vb.maxDecree == playerDecreeCount then
 				specWarnQueensDecree:Show(text)
+			else
+				specWarnQueensDecree:Schedule(0.5, text)
 			end
 		end
 	elseif spellId == 303657 then
