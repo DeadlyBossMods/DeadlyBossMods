@@ -19,7 +19,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS 282444 285878 282636",
 	"SPELL_AURA_APPLIED 282079 285945 282135 286007 282209 282444 282834 286811 284663 285879 290573",
 	"SPELL_AURA_APPLIED_DOSE 285945 282444",
-	"SPELL_AURA_REMOVED 282079 282135 286007 282834 286811 290573",
+	"SPELL_AURA_REMOVED 282079 282135 286007 282834 286811 290573 282209",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
 	"CHAT_MSG_MONSTER_YELL",
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5"
@@ -305,7 +305,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				yellMarkofPrey:Yell()
 			end
 			if self.Options.NPAuraOnFixate then
-				DBM.Nameplate:Show(true, args.sourceGUID, spellId, nil, nil, nil, true, {0.75, 0, 0, 0.75})
+				DBM.Nameplate:Show(true, args.sourceGUID, spellId)
 			end
 		end
 		if not raptorsSeen[args.sourceGUID] then

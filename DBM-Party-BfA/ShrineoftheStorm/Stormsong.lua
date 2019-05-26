@@ -108,7 +108,7 @@ end
 
 function mod:OnSync(msg, targetname)
 	if msg == "openingRP" and self:AntiSpam(10, 6) then
-		timerRP:Start(19.6)
+		timerRP:Start(24.6)
 	end
 end
 
