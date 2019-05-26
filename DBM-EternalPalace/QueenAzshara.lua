@@ -22,6 +22,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_PERIODIC_MISSED 297898 303981",
 	"UNIT_DIED",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
+--	"UPDATE_UI_WIDGET"
 )
 
 --TODO, do something different iwth pressure surge later, announce remaining maybe
@@ -39,6 +40,7 @@ mod:RegisterEventsInCombat(
 --TODO, figure out cast time for https://ptr.wowhead.com/spell=301518/massive-energy-spike (ie between overload cast start, and when all remaining energy is released)
 --TODO, announce short ciruit?
 --TODO, FIND way to accurate detect big hulking naga spawn. currently it's iffy at best, so can't do initial timers for pound, or even spawn
+--TODO, capture UPDATE_UI_WIDGET better with modified transcriptor to get the widget values I need
 --Ancient Wards
 local warnPhase							= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
 local warnPressureSurge					= mod:NewSpellAnnounce(302208, 2)
@@ -187,8 +189,8 @@ do
 		table.wipe(tempLines)
 		table.wipe(tempLinesSorted)
 		table.wipe(sortedLines)
-		--Boss Powers first
-		for i = 1, 5 do
+		--Power levels pulled from widgets
+		--[[for i = 1, 5 do
 			local uId = "boss"..i
 			--Primary Power
 			local currentPower, maxPower = UnitPower(uId, 10), UnitPowerMax(uId, 10)
@@ -198,7 +200,7 @@ do
 					addLine(UnitName(uId), currentPower)
 				end
 			end
-		end
+		end--]]
 		--Player Personal Checks
 		if playerSoulDrained then
 			local spellName2, _, currentStack2, _, _, expireTime2 = DBM:UnitDebuff("player", 298569)
@@ -665,7 +667,17 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		specWarnReversalofFortune:Show()
 		specWarnReversalofFortune:Play("telesoon")
 		--timerReversalofFortuneCD:Start()
-	elseif spellId == 304475 then--Arcane Jolt
+--	elseif spellId == 304475 then--Arcane Jolt
 
 	end
 end
+
+--[[
+function mod:UPDATE_UI_WIDGET(table)
+	local id = table.widgetID
+	if id ~= 1901 and id ~= 1904 and id ~= 2043 and id ~= 2043 then return end
+	local widgetInfo = C_UIWidgetManager.GetIconAndTextWidgetVisualizationInfo(id)
+	local text = widgetInfo.text
+	if not text then return end
+end
+--]]
