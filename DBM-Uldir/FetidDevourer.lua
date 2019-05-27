@@ -42,16 +42,12 @@ local yellPutridParoxysmFades			= mod:NewFadesYell(262314)
 local specWarnAdds						= mod:NewSpecialWarningAdds(262364, "Dps", nil, nil, 1, 2)
 
 local timerThrashCD						= mod:NewCDTimer(6, 262277, 74979, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--Short Name "Thrash"
-local timerRottingRegurgCD				= mod:NewCDTimer(40.1, 262292, 21131, nil, nil, 3)--Short Name "Breath"
+local timerRottingRegurgCD				= mod:NewCDTimer(40.1, 262292, 21131, nil, nil, 3, nil, nil, nil, 1, 4)--Short Name "Breath"
 local timerShockwaveStompCD				= mod:NewCDCountTimer(28.8, 262288, 116969, nil, nil, 2)--Short Name "Stomp"
 local timerPreAddsCD					= mod:NewTimer(54.8, "chuteTimer", 262364, false, nil, 5)
-local timerAddsCD						= mod:NewAddsTimer(54.8, 262364, nil, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON)
+local timerAddsCD						= mod:NewAddsTimer(54.8, 262364, nil, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON, nil, 3, 5)
 
 local berserkTimer						= mod:NewBerserkTimer(330)
-
-local countdownRottingRegurg			= mod:NewCountdown(40, 262292, true, nil, 4)
-local countdownThrash					= mod:NewCountdown("Alt12", 262277, false, nil, 3)--off by default since it'd be a LOT of counting. But some might still want it
-local countdownAdds						= mod:NewCountdown("AltTwo32", 262364, "Dps", nil, 5)
 
 mod:AddRangeFrameOption("6/12")
 mod:AddInfoFrameOption(262364, true)
@@ -119,17 +115,13 @@ end
 function mod:OnCombatStart(delay)
 	self.vb.stompCount = 0
 	timerThrashCD:Start(5.7-delay)
-	countdownThrash:Start(5.7-delay)
 	if not self:IsEasy() then
 		timerShockwaveStompCD:Start(26.1-delay, 1)
 		timerRottingRegurgCD:Start(40-delay)
-		countdownRottingRegurg:Start(40-delay)
 	else
 		timerRottingRegurgCD:Start(31.4-delay)
-		countdownRottingRegurg:Start(31.4-delay)
 	end
 	timerAddsCD:Start(55-delay)--Until Attackable, not the chute visuals
-	countdownAdds:Start(55-delay)
 	timerPreAddsCD:Start(45, DBM_ADDS)
 	if self:IsMythic() then
 		updateRangeFrame(self)
@@ -155,14 +147,11 @@ function mod:SPELL_CAST_START(args)
 		if not self:IsEasy() then
 			if self:IsMythic() then
 				timerRottingRegurgCD:Start(37)--37
-				countdownRottingRegurg:Start(37)--37
 			else
 				timerRottingRegurgCD:Start()--40
-				countdownRottingRegurg:Start()--40
 			end
 		else
 			timerRottingRegurgCD:Start(30.3)
-			countdownRottingRegurg:Start(30.3)
 		end
 	elseif spellId == 262288 and self:AntiSpam(5, 1) then
 		self.vb.stompCount = self.vb.stompCount + 1
@@ -179,7 +168,6 @@ function mod:SPELL_CAST_START(args)
 			specWarnAdds:Play("killmob")
 			local timer = self:IsMythic() and 75 or self:IsEasy() and 60 or 54.8
 			timerAddsCD:Start(timer)
-			countdownAdds:Start(timer)
 			timerPreAddsCD:Start(timer-10, DBM_ADDS)
 			if self:IsMythic() then
 				timerPreAddsCD:Start(timer-20, DBM_BIG_ADD)
@@ -187,7 +175,6 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 262277 then
 		timerThrashCD:Start()
-		countdownThrash:Start()
 	end
 end
 
@@ -200,11 +187,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 		local adjustAmount = self:IsEasy() and 6 or self:IsMythic() and 7.4 or 8
 		elapsed = elapsed + adjustAmount
 		local remaining = total-elapsed
-		countdownRottingRegurg:Cancel()
 		timerRottingRegurgCD:Stop()--Trash old timer
 		if remaining >= 3 then--It's worth showing updated timer
 			timerRottingRegurgCD:Update(elapsed, total)--Construct new timer with adjustment
-			countdownRottingRegurg:Start(remaining)
 		end
 	elseif spellId == 274470 and self:AntiSpam(5, 3) then
 		warnChuteVisual:Show()

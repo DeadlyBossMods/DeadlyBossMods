@@ -62,13 +62,13 @@ local specWarnWillofCorruptor			= mod:NewSpecialWarningSwitch(265646, "Dps", nil
 local specWarnEntropicBlast				= mod:NewSpecialWarningInterrupt(270620, "HasInterrupt", nil, nil, 1, 2)
 
 mod:AddTimerLine(GENERAL)
-local timerSurgingDarknessCD			= mod:NewCDTimer(82.8, 265451, nil, "Melee", nil, 2, nil, DBM_CORE_DEADLY_ICON)--60 based on energy math
-local timerMightofVoidCD				= mod:NewCDTimer(37.6, 267312, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerSurgingDarknessCD			= mod:NewCDTimer(82.8, 265451, nil, "Melee", nil, 2, nil, DBM_CORE_DEADLY_ICON, nil, 1, 3)--60 based on energy math
+local timerMightofVoidCD				= mod:NewCDTimer(37.6, 267312, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON, nil, 2, 3)
 local timerTitanSparkCD					= mod:NewCDTimer(37.6, 264954, nil, "Healer", nil, 2)
 local timerAddsCD						= mod:NewAddsTimer(120, 31700, nil, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON)--Generic Timer only used on Mythic
 mod:AddTimerLine(SCENARIO_STAGE:format(1))
 local timerQirajiWarriorCD				= mod:NewCDTimer(60, "ej18071", nil, nil, nil, 1, 31700)--UNKNOWN, TODO
-local timerEyeBeamCD					= mod:NewCDTimer(40, 264382, nil, nil, nil, 3)
+local timerEyeBeamCD					= mod:NewCDTimer(40, 264382, nil, nil, nil, 3, nil, nil, nil, not mod:IsTank() and 3, 5)
 mod:AddTimerLine(SCENARIO_STAGE:format(2))
 local timerAnubarCasterCD				= mod:NewCDTimer(80, "ej18397", nil, nil, nil, 1, 31700)--82
 local timerRoilingDeceitCD				= mod:NewCDTimer(45, 265360, nil, nil, nil, 3)--61
@@ -77,10 +77,6 @@ local timerOrbofCorruptionCD			= mod:NewCDCountTimer(50, 267239, nil, nil, nil, 
 local timerOrbLands						= mod:NewTimer(45, "timerOrbLands", 267239, nil, nil, 5)--61
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
-
-local countdownSurgingDarkness			= mod:NewCountdown(82.8, 265451, true, nil, 3)
-local countdownMightofVoid				= mod:NewCountdown("Alt37", 267312, "Tank", nil, 3)
-local countdownEyeBeam					= mod:NewCountdown("AltTwo37", 264382, "-Tank", nil, 5)
 
 mod:AddRangeFrameOption(6, 264382)
 mod:AddBoolOption("EarlyTankSwap", false)
@@ -132,15 +128,11 @@ function mod:OnCombatStart(delay)
 	--Same in All
 	timerTitanSparkCD:Start(10-delay)
 	timerMightofVoidCD:Start(15-delay)
-	countdownMightofVoid:Start(15-delay)
 	timerEyeBeamCD:Start(52-delay)--52-54
-	countdownEyeBeam:Start(52-delay)
 	if self:IsLFR() then
 		timerSurgingDarknessCD:Start(41-delay)--Custom for LFR
-		countdownSurgingDarkness:Start(41)--Custom for LFR
 	else
 		timerSurgingDarknessCD:Start(25-delay)--Same in rest of them
-		countdownSurgingDarkness:Start(25)--Same in rest of them
 		if self:IsMythic() then
 			timerAddsCD:Start(62.7)--Both adds with custom adds trigger
 			timerRoilingDeceitCD:Start(26.5)--CAST_START
@@ -179,7 +171,6 @@ function mod:SPELL_CAST_START(args)
 		specWarnEntropicBlast:Play("kickcast")
 	elseif spellId == 265231 then--First Void Lash
 		timerMightofVoidCD:Start()
-		countdownMightofVoid:Start()
 		if self:IsTanking("player", "boss1", nil, true) then
 			specWarnMightofVoid:Show()
 			specWarnMightofVoid:Play("defensive")
@@ -189,10 +180,8 @@ function mod:SPELL_CAST_START(args)
 		specWarnSurgingDarkness:Play("watchstep")
 		if not self:IsMythic() then
 			timerSurgingDarknessCD:Start(84)
-			countdownSurgingDarkness:Start(84)
 		else
 			timerSurgingDarknessCD:Start()
-			countdownSurgingDarkness:Start(64)
 		end
 	end
 end
@@ -217,19 +206,14 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.phase = self.vb.phase + 1
 		timerMightofVoidCD:Stop()
 		timerMightofVoidCD:Start(30)
-		countdownMightofVoid:Cancel()
-		countdownMightofVoid:Start(30)
 		timerSurgingDarknessCD:Stop()
 		timerSurgingDarknessCD:Start(79.1)
-		countdownSurgingDarkness:Cancel()
-		countdownSurgingDarkness:Start(79.1)
 		if self.vb.phase == 2 then
 			warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(2))
 			warnPhase:Play("ptwo")
 			if not self:IsMythic() then
 				timerQirajiWarriorCD:Stop()
 				timerEyeBeamCD:Stop()
-				countdownEyeBeam:Cancel()
 				if not self:IsLFR() then
 					timerAnubarCasterCD:Start(20.5)
 				end
@@ -334,13 +318,10 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		--here because this spell ID fires at beginning of each set ONCE
 		if self:IsMythic() then
 			timerEyeBeamCD:Schedule(6, 60)
-			countdownEyeBeam:Start(66)
 		elseif self:IsLFR() then
 			timerEyeBeamCD:Schedule(6, 50)
-			countdownEyeBeam:Start(56)
 		else
 			timerEyeBeamCD:Schedule(6, 40)
-			countdownEyeBeam:Start(46)
 		end
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(6)

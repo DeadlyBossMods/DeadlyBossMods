@@ -67,7 +67,7 @@ local yellDeathwish						= mod:NewYell(274271)
 local specWarnDeathwishNear				= mod:NewSpecialWarningClose(274271, nil, nil, nil, 1, 2)
 
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(18527))
-local timerDarkRevolationCD				= mod:NewCDCountTimer(55, 273365, nil, nil, nil, 3)--55-63 (might get delayed by other casts)
+local timerDarkRevolationCD				= mod:NewCDCountTimer(55, 273365, nil, nil, nil, 3, nil, nil, nil, not mod:IsTank() and 1, 4)--55-63 (might get delayed by other casts)
 local timerPoolofDarknessCD				= mod:NewCDCountTimer(30.6, 273361, nil, nil, nil, 5, nil, DBM_CORE_DEADLY_ICON)
 local timerCallofCrawgCD				= mod:NewTimer(42.6, "timerCallofCrawgCD", 273889, nil, nil, 1, DBM_CORE_DAMAGE_ICON)--Spawn trigger
 local timerCallofHexerCD				= mod:NewTimer(62.1, "timerCallofHexerCD", 273889, nil, nil, 1, DBM_CORE_DAMAGE_ICON)--Spawn trigger
@@ -78,14 +78,9 @@ local timerBloodyCleaveCD				= mod:NewCDTimer(14.1, 273316, nil, "Tank", nil, 5,
 local timerCongealBloodCD				= mod:NewCDTimer(22.7, 273451, nil, "Dps", nil, 5, nil, DBM_CORE_DAMAGE_ICON)
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(18550))
 local timerRupturingBloodCD				= mod:NewCDTimer(6.1, 274358, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
-local timerDeathwishCD					= mod:NewNextCountTimer(27.9, 274271, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON..DBM_CORE_MAGIC_ICON)
+local timerDeathwishCD					= mod:NewNextCountTimer(27.9, 274271, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON..DBM_CORE_MAGIC_ICON, nil, not mod:IsTank() and 1, 4)
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
-
-local countdownDarkRevolation			= mod:NewCountdown(55, 273365, "-Tank")
-local countdownPoolofDarkness			= mod:NewCountdown("Alt12", 273361, false, nil, 4)
---P2
-local countdownDeathwish				= mod:NewCountdown(27.9, 274271, "-Tank")
 
 mod:AddInfoFrameOption(274195, true)
 mod:AddNamePlateOption("NPAuraOnPresence", 276093)
@@ -177,9 +172,7 @@ function mod:OnCombatStart(delay)
 	self.vb.deathwishCount = 0
 	self.vb.activeDecay = nil
 	timerPoolofDarknessCD:Start(20.5-delay, 1)
-	countdownPoolofDarkness:Start(20.5-delay)
 	timerDarkRevolationCD:Start(30-delay, 1)
-	countdownDarkRevolation:Start(30-delay)
 	timerCallofCrawgCD:Start(34.9, 1)--35-45
 	timerCallofHexerCD:Start(50.5, 1)--50.5-54
 	timerCallofCrusherCD:Start(70, 1)--70-73
@@ -268,22 +261,17 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnPhase2:Show()
 		warnPhase2:Play("ptwo")
 		timerDarkRevolationCD:Stop()
-		countdownDarkRevolation:Cancel()
 		timerPoolofDarknessCD:Stop()
-		countdownPoolofDarkness:Cancel()
 		timerCallofCrawgCD:Stop()
 		timerCallofHexerCD:Stop()
 		timerCallofCrusherCD:Stop()
 		timerRupturingBloodCD:Start(6.5)
 		timerPoolofDarknessCD:Start(15, self.vb.poolCount+1)--Still used in P2
-		countdownPoolofDarkness:Start(15)
 		timerDeathwishCD:Start(23, 1)
-		countdownDeathwish:Start(23)
 	elseif spellId == 273365 or spellId == 271640 then--Two versions of debuff, one that spawns an add and one that does not (so probably LFR/normal version vs heroic/mythic version)
 		self.vb.darkRevCount = self.vb.darkRevCount + 1
 		warnDarkRevCount:Show(self.vb.darkRevCount)
 		timerDarkRevolationCD:Start(55, self.vb.darkRevCount+1)
-		countdownDarkRevolation:Start(55)
 	elseif spellId == 273889 then--Bloodthirsty Crawg
 		self.vb.CrawgSpawnCount = self.vb.CrawgSpawnCount + 1
 		specWarnCallofCrawgSoon:Show(self.vb.CrawgSpawnCount)
@@ -537,7 +525,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		self.vb.deathwishCount = self.vb.deathwishCount + 1
 		warnDeathwish:Show(self.vb.deathwishCount)
 		timerDeathwishCD:Start(27.9, self.vb.deathwishCount+1)
-		countdownDeathwish:Start(27.9)
 	elseif spellId == 273361 then--Pool of Darkness
 		self.vb.poolCount = self.vb.poolCount + 1
 		if self.Options.SpecWarn273361count then
@@ -548,10 +535,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		end
 		if self.vb.phase == 2 then
 			timerPoolofDarknessCD:Start(15.5, self.vb.poolCount+1)
-			countdownPoolofDarkness:Start(15.5)
 		else
 			timerPoolofDarknessCD:Start(30.5, self.vb.poolCount+1)
-			countdownPoolofDarkness:Start(30.5)
 		end
 	end
 end

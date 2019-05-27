@@ -58,18 +58,14 @@ local specWarnPrayerfortheFallen		= mod:NewSpecialWarningSpell(287469, nil, nil,
 
 mod:AddTimerLine(DBM_BOSS)
 local timerWaveofLightCD				= mod:NewCDTimer(10.5, 283598, nil, nil, nil, 3, nil, DBM_CORE_MAGIC_ICON)
-local timerJudgmentRetCD				= mod:NewNextTimer(50.3, 283933, nil, nil, nil, 3)
-local timerJudgmentReckoningCD			= mod:NewNextTimer(50.3, 284474, nil, nil, nil, 2)
+local timerJudgmentRetCD				= mod:NewNextTimer(50.3, 283933, nil, nil, nil, 3, nil, nil, nil, 1, 5)
+local timerJudgmentReckoningCD			= mod:NewNextTimer(50.3, 284474, nil, nil, nil, 2, nil, nil, nil, 1, 5)
 --local timerCallToArmsCD					= mod:NewCDTimer(104.6, 283662, nil, nil, nil, 1)--Adds come with phase change, redundant
-local timerPrayerfortheFallenCD			= mod:NewCDTimer(50.2, 287469, nil, nil, nil, 2, nil, DBM_CORE_IMPORTANT_ICON)
+local timerPrayerfortheFallenCD			= mod:NewCDTimer(50.2, 287469, nil, nil, nil, 2, nil, DBM_CORE_IMPORTANT_ICON, nil, 2, 4)
 mod:AddTimerLine(DBM_ADDS)
 local timerBlindingFaithCD				= mod:NewCDTimer(13.4, 284474, nil, nil, nil, 2)
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
-
-local countdownReleaseSeal				= mod:NewCountdown(50.3, 283955, true, nil, 5)
-local countdownPrayerforFallen			= mod:NewCountdown("Alt12", 287469, true, nil, 4)
---local countdownFelstormBarrage		= mod:NewCountdown("AltTwo32", 244000, nil, nil, 3)
 
 mod:AddNamePlateOption("NPAuraOnRet2", 284468, false)--off by default since it's basically on the mobs half the fight
 mod:AddNamePlateOption("NPAuraOnWave", 283619)
@@ -102,12 +98,10 @@ function mod:OnCombatStart(delay)
 	warnSealofRet:Show()
 	timerWaveofLightCD:Start(13.1-delay)
 	timerJudgmentRetCD:Start(50.7-delay)
-	countdownReleaseSeal:Start(50.7-delay)
 	specWarnJudgmentReckoning:Schedule(45.7-delay)
 	specWarnJudgmentReckoning:ScheduleVoice(45.7, "aesoon")
 	if self:IsMythic() then
 		timerPrayerfortheFallenCD:Start(25.5-delay)
-		countdownPrayerforFallen:Start(25.5-delay)
 	end
 	if self.Options.NPAuraOnRet2 or self.Options.NPAuraOnWave or self.Options.NPAuraOnJudgment or self.Options.NPAuraOnBlindingFaith or self.Options.NPAuraOnAngelicRenewal then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
@@ -156,7 +150,6 @@ function mod:SPELL_CAST_START(args)
 		specWarnPrayerfortheFallen:Show()
 		specWarnPrayerfortheFallen:Play("specialsoon")
 		timerPrayerfortheFallenCD:Start(50.2)
-		countdownPrayerforFallen:Start(50.2)
 	elseif spellId == 287419 then
 		if self.Options.NPAuraOnAngelicRenewal then
 			DBM.Nameplate:Show(true, args.sourceGUID, spellId, nil, 8)
@@ -207,13 +200,11 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 284469 then--Seal of Retribution
 		warnSealofRet:Show()
 		timerJudgmentRetCD:Start(52.3)--50.6?
-		countdownReleaseSeal:Start(52.3)--50.6?
 		specWarnJudgmentReckoning:Schedule(47.3)
 		specWarnJudgmentReckoning:ScheduleVoice(47.3, "aesoon")
 	elseif spellId == 284436 then--Seal of Reckoning
 		--Blizz changed it that if all adds die, seal of reck is recast right away instead of maintaining seal of ret
 		timerJudgmentRetCD:Stop()
-		countdownReleaseSeal:Cancel()
 		warnSealofReckoning:Show()
 		timerJudgmentReckoningCD:Start(52.3)
 	elseif spellId == 283933 then

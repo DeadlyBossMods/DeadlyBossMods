@@ -12,9 +12,7 @@ mod:RegisterEvents(
 )
 mod.noStatistics = true
 
-local timerGame		= mod:NewBuffActiveTimer(60, 101871, nil, nil, nil, 6)
-
-local countdownGame	= mod:NewCountdownFades(60, 101871)
+local timerGame		= mod:NewBuffActiveTimer(60, 101871, nil, nil, nil, 5, nil, nil, nil, 1, 5)
 
 mod:AddBoolOption("SetBubbles", true)--Because the NPC is an annoying and keeps doing chat says while you're shooting which cover up the targets if bubbles are on.
 
@@ -23,7 +21,6 @@ local CVAR = false
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 101871 and args:IsPlayer() then
 		timerGame:Start()
-		countdownGame:Start(60)
 		if self.Options.SetBubbles and GetCVarBool("chatBubbles") then
 			CVAR = true
 			SetCVar("chatBubbles", 0)
@@ -34,7 +31,6 @@ end
 function mod:SPELL_AURA_REMOVED(args)
 	if args.spellId == 101871 and args:IsPlayer() then
 		timerGame:Cancel()
-		countdownGame:Cancel()
 		if self.Options.SetBubbles and not GetCVarBool("chatBubbles") and CVAR then--Only turn them back on if they are off now, but were on when we minigame
 			SetCVar("chatBubbles", 1)
 			CVAR = false

@@ -102,10 +102,6 @@ local timerSurgingGoldCD				= mod:NewCDTimer(42.5, 289155, nil, nil, nil, 3)--Re
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
 
---local countdownCollapsingWorld			= mod:NewCountdown(50, 243983, true, 3, 3)
---local countdownRupturingBlood				= mod:NewCountdown("Alt12", 244016, false, 2, 3)
---local countdownFelstormBarrage			= mod:NewCountdown("AltTwo32", 244000, nil, nil, 3)
-
 mod:AddNamePlateOption("NPAuraOnGoldenRadiance", 289776)
 --mod:AddRangeFrameOption("8/10")
 mod:AddInfoFrameOption(284664, true)

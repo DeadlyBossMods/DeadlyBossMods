@@ -83,7 +83,7 @@ local yellPowerMatrix					= mod:NewYell(263420)
 local specWarnReorginationBlast			= mod:NewSpecialWarningSpell(263482, nil, nil, nil, 2, 2)
 
 mod:AddTimerLine("Arena Floor")--Dungeon journal later
-local timerExplosiveCorruptionCD		= mod:NewCDCountTimer(13, 272506, nil, nil, nil, 3)
+local timerExplosiveCorruptionCD		= mod:NewCDCountTimer(13, 272506, nil, nil, nil, 3, nil, nil, nil, 1, 3)
 local timerThousandMawsCD				= mod:NewCDCountTimer(23.9, 267509, nil, nil, nil, 1)--23.9-26.7
 ----Adds
 local timerMassiveSmashCD				= mod:NewCDTimer(9.7, 267412, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
@@ -91,24 +91,19 @@ local timerDarkBargainCD				= mod:NewCDTimer(23.1, 267409, nil, nil, nil, 3, nil
 local timerBurrowCD						= mod:NewCDTimer(30, 267579, nil, nil, nil, 6)
 mod:AddTimerLine(SCENARIO_STAGE:format(2))
 local timerWaveofCorruptionCD			= mod:NewCDCountTimer(15, 270373, nil, nil, nil, 3)
-local timerBloodFeastCD					= mod:NewCDCountTimer(15, 263235, nil, nil, nil, 2)
+local timerBloodFeastCD					= mod:NewCDCountTimer(15, 263235, nil, nil, nil, 2, nil, nil, nil, 2, 4)
 local timerBurstingBoil					= mod:NewCastCountTimer(8, 277007, nil, nil, 2, 5, nil, DBM_CORE_HEROIC_ICON)
 local timerBurstingBoilCD				= mod:NewCDCountTimer(20.5, 277007, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
 ----Horror
 local timerMindNumbingChatterCD			= mod:NewCDTimer(13.4, 263307, nil, "SpellCaster", nil, 2)
 mod:AddTimerLine(SCENARIO_STAGE:format(3))
-local timerMalignantGrowthCD			= mod:NewCDTimer(25.6, 274582, nil, nil, nil, 3)--
-local timerGazeofGhuunCD				= mod:NewCDTimer(26.8, 275160, 195503, nil, nil, 2)--26.8-29.1 (shortname "Gaze")
+local timerMalignantGrowthCD			= mod:NewCDTimer(25.6, 274582, nil, nil, nil, 3, nil, nil, nil, 2, 4)
+local timerGazeofGhuunCD				= mod:NewCDTimer(26.8, 275160, 195503, nil, nil, 2, nil, nil, nil, 3, 3)--26.8-29.1 (shortname "Gaze")
 mod:AddTimerLine("Upper Platforms")--Dungeon journal later
 local timerMatrixCD						= mod:NewNextCountTimer(12.1, 263420, nil, nil, nil, 5)
 local timerReOrgBlast					= mod:NewBuffActiveTimer(25, 263482, nil, nil, nil, 6)
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
-
-local countdownExplosiveCorruption		= mod:NewCountdown(13, 272506, true, nil, 3)
-local countdownBloodFeast				= mod:NewCountdown("Alt12", 263235, true, nil, 4)--P2 Only
-local countdownMalignantGrowth			= mod:NewCountdown("Alt12", 274582, true, nil, 4)--P3 Only
-local countdownGazeofGhuun				= mod:NewCountdown("AltTwo32", 275160, nil, nil, 3)
 
 mod:AddRangeFrameOption(5, 270428)
 mod:AddInfoFrameOption(nil, true)
@@ -240,8 +235,6 @@ local function updateAllTimers(self, ICD)
 			DBM:Debug("timerMalignantGrowthCD extended by: "..extend, 2)
 			timerMalignantGrowthCD:Stop()
 			timerMalignantGrowthCD:Update(elapsed, total+extend)
-			countdownMalignantGrowth:Cancel()
-			countdownMalignantGrowth:Start(ICD)
 		end
 	end
 end
@@ -271,10 +264,8 @@ function mod:OnCombatStart(delay)
 	if not self:IsMythic() then
 		self.vb.matrixSide = DBM_CORE_RIGHT
 		timerExplosiveCorruptionCD:Start(8-delay, 1)--SUCCESS
-		countdownExplosiveCorruption:Start(8-delay)
 	else
 		timerExplosiveCorruptionCD:Start(10-delay, 1)--SUCCESS
-		countdownExplosiveCorruption:Start(10-delay)
 	end
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(OVERVIEW)
@@ -385,7 +376,6 @@ function mod:SPELL_CAST_START(args)
 		specWarnGazeofGhuun:Play("turnaway")
 		local timer = self:IsMythic() and 21.97 or self:IsHard() and 26.7 or self:IsEasy() and 31.6--TODO, LFR, easy is assumed
 		timerGazeofGhuunCD:Start(timer)
-		countdownGazeofGhuun:Start(timer)
 		if self:IsMythic() then
 			updateAllTimers(self, 3.6)
 		else
@@ -406,7 +396,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 			self.vb.explosiveCount = 0
 			timerThousandMawsCD:Stop()
 			timerExplosiveCorruptionCD:Stop()
-			countdownExplosiveCorruption:Cancel()
 			timerMassiveSmashCD:Stop()--Technically should AddTime(25) each add, but honestly, if the adds don't die in this 25 second window you done fucked up
 			timerDarkBargainCD:Stop()--Technically should AddTime(25) each add, but honestly, if the adds don't die in this 25 second window you done fucked up
 			if self:IsMythic() then
@@ -417,16 +406,12 @@ function mod:SPELL_CAST_SUCCESS(args)
 				local elapsed, total = timerBloodFeastCD:GetTime(self.vb.bloodFeastCount+1)
 				local extend = (total+25) - elapsed
 				timerBloodFeastCD:Update(elapsed, total+25, self.vb.bloodFeastCount+1)
-				countdownBloodFeast:Cancel()
-				countdownBloodFeast:Start(extend)
 			else--Current timer is wave of corruption
 				timerWaveofCorruptionCD:AddTime(25, self.vb.waveCast+1)
 			end
 			local elapsed2, total2 = timerExplosiveCorruptionCD:GetTime(self.vb.explosiveCount+1)
 			local extend2 = (total2+25) - elapsed2
 			timerExplosiveCorruptionCD:Update(elapsed2, total2+25, self.vb.explosiveCount+1)
-			countdownExplosiveCorruption:Cancel()
-			countdownExplosiveCorruption:Start(extend2)
 			if self:IsMythic() then
 				timerBurstingBoilCD:AddTime(25, self.vb.burstingCount+1)
 			end
@@ -443,7 +428,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 				timerWaveofCorruptionCD:Start(15.5, 2)
 			else
 				timerBloodFeastCD:Start(15.6, self.vb.bloodFeastCount+1)
-				countdownBloodFeast:Start(15.6)
 			end
 		else--P3, No more blood feast, only waves
 			--Faster on easy because no growth
@@ -458,27 +442,21 @@ function mod:SPELL_CAST_SUCCESS(args)
 		specWarnCollapse:Play("watchstep")
 		timerReOrgBlast:Stop()
 		timerBloodFeastCD:Stop()
-		countdownBloodFeast:Cancel()
 		timerWaveofCorruptionCD:Stop()
 		timerBurstingBoilCD:Stop()
 		timerExplosiveCorruptionCD:Stop()
-		countdownExplosiveCorruption:Cancel()
 		if not self:IsLFR() then
 			timerMalignantGrowthCD:Start(33.7)--33.7-34.1
-			countdownMalignantGrowth:Start(33.7)
 		end
 		if self:IsMythic() then
 			timerBurstingBoilCD:Start(28, self.vb.burstingCount+1)
 			timerExplosiveCorruptionCD:Start(44.5, 1)--SUCCESS
-			countdownExplosiveCorruption:Start(44.5)
 		else
 			timerExplosiveCorruptionCD:Start(29.8, 1)--SUCCESS
-			countdownExplosiveCorruption:Start(29.8)
 		end
 		local timer1 = self:IsMythic() and 44.9 or self:IsHeroic() and 47.4 or self:IsEasy() and 52.2--Gaze of G'huun
 		local timer2 = self:IsHeroic() and 49.9 or 37.6--Wave of Corruption (Mythic, normal, and LFR are all 37.6, heroic is 49.9 cause it's delayed by other casts)
 		timerGazeofGhuunCD:Start(timer1)
-		countdownGazeofGhuun:Start(timer1)
 		timerWaveofCorruptionCD:Start(timer2, 1)
 	elseif spellId == 272505 or spellId == 275756 then
 		self.vb.explosiveIcon = 0
@@ -486,14 +464,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if self.vb.phase == 1 then
 			local timer = self:IsMythic() and 44 or 26
 			timerExplosiveCorruptionCD:Start(timer, self.vb.explosiveCount+1)
-			countdownExplosiveCorruption:Start(timer)
 		elseif self.vb.phase == 2 then
 			timerExplosiveCorruptionCD:Start(15.8, self.vb.explosiveCount+1)--15.8 in all, except mythic, doesn't exist in mythic P2
-			countdownExplosiveCorruption:Start(15.8)
 		else--Phase 3
 			local timer = self:IsMythic() and 25.5 or self:IsHeroic() and 13.2 or self:IsEasy() and 15.8--TODO, LFR
 			timerExplosiveCorruptionCD:Start(timer, self.vb.explosiveCount+1)
-			countdownExplosiveCorruption:Start(timer)
 		end
 		if args:IsPlayer() then--Success event can be up to 2.5 seconds faster than applied event, but only tanks will get success event
 			if self:AntiSpam(3, 8) then
@@ -514,7 +489,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 		specWarnMalignantGrowth:Show()
 		specWarnMalignantGrowth:Play("watchstep")
 		timerMalignantGrowthCD:Start()--25.6
-		countdownMalignantGrowth:Start(25.6)
 	end
 end
 
@@ -617,7 +591,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			timerBurstingBoilCD:Start(14.3, 1)--14.3-18
 		else
 			timerExplosiveCorruptionCD:Start(9, 1)
-			countdownExplosiveCorruption:Start(9)
 			timerWaveofCorruptionCD:Start(15, 1)
 		end
 		if self.Options.RangeFrame then

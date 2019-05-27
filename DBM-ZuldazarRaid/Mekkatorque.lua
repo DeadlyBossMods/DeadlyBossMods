@@ -74,19 +74,15 @@ local specWarnExplodingSheep			= mod:NewSpecialWarningDodge(287929, nil, nil, ni
 local timerBusterCannonCD				= mod:NewNextCountTimer(25, 282153, 88891, nil, nil, 3)--Shorttext "Cannon"
 local timerBlastOffCD					= mod:NewNextCountTimer(55, 282205, nil, nil, nil, 2)
 local timerCrashDownCD					= mod:NewCastTimer(4.5, 287797, nil, nil, nil, 3)
-local timerGigaVoltChargeCD				= mod:NewNextCountTimer(14.1, 286646, nil, nil, nil, 3, nil, DBM_CORE_TANK_ICON)
-local timerWormholeGeneratorCD			= mod:NewNextCountTimer(55, 287952, 67833, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)--Shorttext "Wormhole"
+local timerGigaVoltChargeCD				= mod:NewNextCountTimer(14.1, 286646, nil, nil, nil, 3, nil, DBM_CORE_TANK_ICON, nil, 2, 4)
+local timerWormholeGeneratorCD			= mod:NewNextCountTimer(55, 287952, 67833, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON, nil, 3, 4)--Shorttext "Wormhole"
 local timerDeploySparkBotCD				= mod:NewNextCountTimer(55, 288410, nil, nil, nil, 1)
-local timerWorldEnlargerCD				= mod:NewNextCountTimer(90, 288049, nil, nil, nil, 3)
+local timerWorldEnlargerCD				= mod:NewNextCountTimer(90, 288049, nil, nil, nil, 3, nil, nil, nil, 1, 4)
 --Intermission: Evasive Maneuvers!
 local timerIntermission					= mod:NewPhaseTimer(64.8)
 local timerExplodingSheepCD				= mod:NewNextCountTimer(55, 287929, 222529, nil, nil, 3)--Shorttext "Exploding Sheep"
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
-
-local countdownWorldEnlarger			= mod:NewCountdown(50, 288049, true, nil, 4)
-local countdownGigavoltCharge			= mod:NewCountdown("Alt12", 286646, true, nil, 4)
-local countdownWormhole					= mod:NewCountdown("AltTwo32", 287952, nil, nil, 4)
 
 mod:AddSetIconOption("SetIconGigaVolt", 286646, true, false, {1, 2, 3})
 mod:AddSetIconOption("SetIconBot", 288410, true, true, {4, 5, 6, 7, 8})
@@ -348,26 +344,20 @@ function mod:OnCombatStart(delay)
 	timerDeploySparkBotCD:Start(5-delay, 1)
 	timerBusterCannonCD:Start(13-delay, 1)
 	timerWorldEnlargerCD:Start(75-delay, 1)--Start
-	countdownWorldEnlarger:Start(75-delay)
 	if self:IsMythic() then
 		self.vb.difficultyName = "mythic"
 		timerGigaVoltChargeCD:Start(21.5-delay, 1)--Success
-		countdownGigavoltCharge:Start(21.5-delay)
 		timerWormholeGeneratorCD:Start(38-delay, 1)
-		countdownWormhole:Start(38-delay)
 		timerBlastOffCD:Start(41-delay, 1)
 	else
 		if self:IsHeroic() then
 			self.vb.difficultyName = "heroic"
 			timerGigaVoltChargeCD:Start(21.5-delay, 1)--Success
-			countdownGigavoltCharge:Start(21.5-delay)
 			timerWormholeGeneratorCD:Start(38-delay, 1)
-			countdownWormhole:Start(38-delay)
 			timerBlastOffCD:Start(41-delay, 1)
 		elseif self:IsNormal() then
 			self.vb.difficultyName = "normal"
 			timerGigaVoltChargeCD:Start(21.5-delay, 1)--Success
-			countdownGigavoltCharge:Start(21.5-delay)
 			timerBlastOffCD:Start(37-delay, 1)
 		else
 			self.vb.difficultyName = "lfr"
@@ -404,7 +394,6 @@ function mod:SPELL_CAST_START(args)
 		local timer = wormholeTimers[self.vb.difficultyName][self.vb.phase][self.vb.ripperCount+1]
 		if timer then
 			timerWormholeGeneratorCD:Start(timer, self.vb.ripperCount+1)
-			countdownWormhole:Start(timer)
 		end
 	elseif spellId == 287929 then
 		self.vb.sheepCount = self.vb.sheepCount + 1
@@ -448,30 +437,22 @@ function mod:SPELL_CAST_START(args)
 		timerDeploySparkBotCD:Stop()
 		timerBusterCannonCD:Stop()
 		timerGigaVoltChargeCD:Stop()--Success
-		countdownGigavoltCharge:Cancel()
 		timerBlastOffCD:Stop()
 		timerWorldEnlargerCD:Stop()
-		countdownWorldEnlarger:Cancel()
 		timerWormholeGeneratorCD:Stop()
-		countdownWormhole:Cancel()
 		timerWorldEnlargerCD:Start(7.9, 1)
-		countdownWorldEnlarger:Start(7.9)
 		timerExplodingSheepCD:Start(12.8, 1)
 		if self:IsHard() then
 			timerGigaVoltChargeCD:Start(16.9, 1)
-			countdownGigavoltCharge:Start(16.6)
 			timerDeploySparkBotCD:Start(19.8, 1)
 			if self:IsMythic() then
 				timerWormholeGeneratorCD:Start(50.3, 1)
-				countdownWormhole:Start(50.3)
 			else
 				timerWormholeGeneratorCD:Start(46.8, 1)
-				countdownWormhole:Start(46.8)
 			end
 		else
 			if self:IsNormal() then
 				timerGigaVoltChargeCD:Start(16.9, 1)
-				countdownGigavoltCharge:Start(16.6)
 			end
 		end
 		timerIntermission:Start(64.8)
@@ -490,26 +471,19 @@ function mod:SPELL_CAST_START(args)
 		timerExplodingSheepCD:Stop()
 		timerDeploySparkBotCD:Stop()
 		timerGigaVoltChargeCD:Stop()
-		countdownGigavoltCharge:Cancel()
 		timerWorldEnlargerCD:Stop()
-		countdownWorldEnlarger:Cancel()
 		timerWormholeGeneratorCD:Stop()
-		countdownWormhole:Cancel()
 		timerDeploySparkBotCD:Start(15.7, 1)
 		timerBusterCannonCD:Start(17.7, 1)
 		timerBlastOffCD:Start(41.7, 1)
 		timerWorldEnlargerCD:Start(75.7, 1)--Start
-		countdownWorldEnlarger:Start(75.7)
 		if self:IsHard() then
 			timerExplodingSheepCD:Start(28.3, 1)
 			timerWormholeGeneratorCD:Start(38.8, 1)
-			countdownWormhole:Start(38.8)
 			timerGigaVoltChargeCD:Start(22.2, 1)--Success
-			countdownGigavoltCharge:Start(22.2)
 		else
 			if self:IsNormal() then
 				timerGigaVoltChargeCD:Start(22.2, 1)--Success
-				countdownGigavoltCharge:Start(22.2)
 			end
 		end
 	elseif spellId == 287757 or spellId == 286597 then
@@ -519,7 +493,6 @@ function mod:SPELL_CAST_START(args)
 		local timer = worldEnlargerTimers[self.vb.difficultyName][self.vb.phase][self.vb.shrinkCount+1]
 		if timer then
 			timerWorldEnlargerCD:Start(timer, self.vb.shrinkCount+1)
-			countdownWorldEnlarger:Start(timer)
 		end
 	end
 end
@@ -531,7 +504,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 		local timer = gigaVoltTimers[self.vb.difficultyName][self.vb.phase][self.vb.gigaCount+1]
 		if timer then
 			timerGigaVoltChargeCD:Start(timer, self.vb.gigaCount+1)
-			countdownGigavoltCharge:Start(timer)
 		end
 	elseif spellId == 286152 or spellId == 286219 or spellId == 286215 or spellId == 286226 or spellId == 286192 then--Disarm Codes
 		if playersInRobots[args.sourceName] then

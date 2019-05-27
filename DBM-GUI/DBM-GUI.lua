@@ -430,6 +430,13 @@ do
 		{ text = "Important (User)", value = 7 },
 	}
 
+	local cvoice = {
+		{ text = "None", value = 0 },
+		{ text = "Primary", value = 1 },
+		{ text = "Secondary", value = 2 },
+		{ text = "Tertiary", value = 3 },
+	}
+
 	function PanelPrototype:CreateCheckButton(name, autoplace, textleft, dbmvar, dbtvar, mod, modvar, globalvar, isTimer)
 		if not name then
 			return
@@ -460,7 +467,7 @@ do
 			end
 			name = name:gsub("%$journal:(%d+)", replaceJournalLinks)
 		end
-		local dropdown
+		local dropdown, dropdown2
 		local noteButton
 		if modvar then--Special warning, has modvar for sound and note
 			if isTimer then
@@ -469,6 +476,12 @@ do
 				end, 20, 25, button)
 				dropdown:SetScript("OnShow", function(self)
 					self:SetSelectedValue(mod.Options[modvar.."TColor"])
+				end)
+				dropdown2 = self:CreateDropdown(nil, cvoice, nil, nil, function(value)
+					mod.Options[modvar.."CVoice"] = value
+				end, 20, 25, button)
+				dropdown2:SetScript("OnShow", function(self)
+					self:SetSelectedValue(mod.Options[modvar.."CVoice"])
 				end)
 			else
 				dropdown = self:CreateDropdown(nil, sounds, nil, nil, function(value)
@@ -507,6 +520,11 @@ do
 				textbeside = noteButton
 				textpad = 2
 				widthAdjust = widthAdjust + dropdown:GetWidth() + noteButton:GetWidth()
+			elseif dropdown2 then
+				dropdown2:SetPoint('LEFT', dropdown, "RIGHT", 18, 0)
+				textbeside = dropdown2
+				textpad = 35
+				widthAdjust = widthAdjust + dropdown:GetWidth() + dropdown2:GetWidth()
 			else
 				textbeside = dropdown
 				textpad = 35
@@ -4670,6 +4688,8 @@ do
 						lastButton = button
 						if mod.Options[v .. "TColor"] then
 							button = catpanel:CreateCheckButton(mod.localization.options[v], true, nil, nil, nil, mod, v, nil, true)
+						--elseif mod.Options[v .. "CVoice"] then
+							--button = catpanel:CreateCheckButton(mod.localization.options[v], true, nil, nil, nil, mod, v, nil, true)
 						elseif mod.Options[v .. "SWSound"] then
 							button = catpanel:CreateCheckButton(mod.localization.options[v], true, nil, nil, nil, mod, v)
 						else

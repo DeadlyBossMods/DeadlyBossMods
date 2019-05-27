@@ -26,16 +26,13 @@ local specWarnGrasp					= mod:NewSpecialWarningSpell(267360, nil, nil, nil, 2, 2
 
 local timerYawningGateCD			= mod:NewCDTimer(21, 269399, nil, nil, nil, 3)
 local timerCalltheAbyssCD			= mod:NewNextTimer(90, 267299, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
-local timerGraspCD					= mod:NewNextTimer(50, 267360, nil, nil, nil, 6)
-
-local countdownGrasp				= mod:NewCountdown(50, 267360)
+local timerGraspCD					= mod:NewNextTimer(50, 267360, nil, nil, nil, 6, nil, nil, nil, 1, 4)
 
 --mod:AddRangeFrameOption(5, 194966)
 
 function mod:OnCombatStart(delay)
 	timerYawningGateCD:Start(13-delay)
 	timerGraspCD:Start(20.5-delay)
-	countdownGrasp:Start(20.5-delay)
 	--if not self:IsNormal() then
 		--timerCalltheAbyssCD:Start(73-delay)
 	--end
@@ -55,7 +52,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 		timerYawningGateCD:Start(16.3)
 		timerGraspCD:Start()
-		countdownGrasp:Start()
 	end
 end
 --mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -88,8 +84,6 @@ function mod:SPELL_ENERGIZE(_, _, _, _, destGUID, _, _, _, spellId, _, _, amount
 		bossPower = bossPower / 2--2 energy per second, grasp every 50 seconds there abouts.
 		local remaining = 50-bossPower
 		local newTimer = 50-remaining
-		countdownGrasp:Cancel()
-		countdownGrasp:Start(remaining)
 		timerGraspCD:Update(newTimer, 50)
 	end
 end

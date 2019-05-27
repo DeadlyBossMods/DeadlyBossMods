@@ -50,11 +50,11 @@ local yellAquaLanceFades					= mod:NewShortFadesYell(295779)
 local specWarnConductivePulse				= mod:NewSpecialWarningInterrupt(295822, "HasInterrupt", nil, nil, 3, 2)
 
 mod:AddTimerLine(BOSS)
-local timerDesensitizingStingCD				= mod:NewCDTimer(6.1, 298156, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
-local timerDribblingIchorCD					= mod:NewCDCountTimer(84, 298103, nil, nil, nil, 1)--30.4-42
-local timerIncubationFluidCD				= mod:NewCDTimer(32.8, 298242, nil, nil, nil, 3)
+local timerDesensitizingStingCD				= mod:NewCDTimer(6.1, 298156, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON, nil, nil, 3)--If user does enable countdown for this, max count at 3
+local timerDribblingIchorCD					= mod:NewCDCountTimer(84, 298103, nil, nil, nil, 1, nil, nil, nil, 1, 4)--30.4-42
+local timerIncubationFluidCD				= mod:NewCDTimer(32.8, 298242, nil, nil, nil, 3, nil, nil, nil, 3, 4)
 local timerArcingCurrentCD					= mod:NewCDTimer(34.1, 295825, nil, nil, nil, 3)
-local timerMassiveIncubator					= mod:NewCastTimer(45, 298548, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
+local timerMassiveIncubator					= mod:NewCastTimer(45, 298548, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON, nil, 1, 4)
 mod:AddTimerLine(DBM_ADDS)
 local timerAmnioticEruption					= mod:NewCastTimer(5, 298465, nil, nil, nil, 2, nil, DBM_CORE_TANK_ICON)
 local timerAquaLanceCD						= mod:NewCDTimer(25.5, 295779, nil, nil, nil, 3)
@@ -63,11 +63,6 @@ local timerConductivePulseCD				= mod:NewCDTimer(18.2, 295822, nil, nil, nil, 4,
 local timerPowerfulStompCD					= mod:NewCDTimer(29.1, 296691, nil, nil, nil, 2, nil, DBM_CORE_HEALER_ICON)
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
-
-local countdownDesensitizingString		= mod:NewCountdown("Alt6", 298156, false, nil, 3)
-local countdownIchor					= mod:NewCountdown(84, 298103)
-local countdownIncubationFluid			= mod:NewCountdown("AltTwo60", 298242, true)
-local countdownMassiveIncubator			= mod:NewCountdown(45, 298548)
 
 --mod:AddRangeFrameOption(6, 264382)
 --mod:AddInfoFrameOption(275270, true)
@@ -88,10 +83,8 @@ function mod:OnCombatStart(delay)
 	playerHasIncubation = false
 	table.wipe(castsPerGUID)
 	timerDesensitizingStingCD:Start(3.4-delay)
-	countdownDesensitizingString:Start(3.4-delay)
 	timerIncubationFluidCD:Start(18.8-delay)
 	timerDribblingIchorCD:Start(23.9-delay, 1)
-	countdownIchor:Start(23.9)
 	timerArcingCurrentCD:Start(35-delay, 1)
 	if self.Options.NPAuraOnChaoticGrowth or self.Options.NPAuraOnAquaLance then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
@@ -130,7 +123,6 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 298548 then
 		timerMassiveIncubator:Start(45)
-		countdownMassiveIncubator:Start(45)
 	elseif spellId == 295818 then
 		warnShockingLightning:Show()
 		timerShockingLightningCD:Start(nil, args.sourceGUID)
@@ -161,21 +153,16 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if self.vb.phase == 2 or self.vb.addCount < 3 then--Assumed there are more than 3 in P2
 			if self.vb.addCount == 1 then
 				timerDribblingIchorCD:Start(88.8, 2)
-				countdownIchor:Start(88.8)
 			else--2+ (todo verify the + part)
 				timerDribblingIchorCD:Start(84, self.vb.addCount+1)
-				countdownIchor:Start(84)
 			end
 		end
 	elseif spellId == 298156 then
 		timerDesensitizingStingCD:Start()
-		countdownDesensitizingString:Start(6.1)
 	elseif spellId == 298548 then--Massive Incubator
 		timerDesensitizingStingCD:Start(3.4)
-		countdownDesensitizingString:Start(3.4)
 		timerIncubationFluidCD:Start(18.8)
 		timerDribblingIchorCD:Start(23.9, 1)
-		countdownIchor:Start(23.9)
 		timerArcingCurrentCD:Start(35)
 	elseif spellId == 295779 then
 		timerAquaLanceCD:Start(nil, args.sourceGUID)
@@ -269,12 +256,9 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 function mod:SPELL_INTERRUPT(args)
 	if type(args.extraSpellId) == "number" and args.extraSpellId == 298548 then
 		timerMassiveIncubator:Stop()
-		countdownMassiveIncubator:Cancel()
 		timerDesensitizingStingCD:Start(3.4)
-		countdownDesensitizingString:Start(3.4)
 		timerIncubationFluidCD:Start(18.8)
 		timerDribblingIchorCD:Start(23.9, 1)
-		countdownIchor:Start(23.9)
 		timerArcingCurrentCD:Start(35)
 	end
 end
@@ -300,9 +284,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		self.vb.addCount = 0
 		self.vb.arcingCurrentCount = 0
 		timerDribblingIchorCD:Stop()
-		countdownIchor:Cancel()
 		timerDesensitizingStingCD:Stop()
-		countdownDesensitizingString:Cancel()
 		timerIncubationFluidCD:Stop()
 		timerArcingCurrentCD:Stop()
 	end

@@ -79,14 +79,14 @@ local timerDesperateMeasures			= mod:NewCastTimer(10, 271225, nil, nil, nil, 5)
 --Queen Azshara
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20258))
 --local timerSummonDecreesCD			= mod:NewNextTimer(40, 297960, nil, nil, nil, 3)
-local timerFormRanksCD					= mod:NewNextTimer(40, 298050, nil, nil, nil, 3)
-local timerRepeatPerformanceCD			= mod:NewNextTimer(40, 301244, nil, nil, nil, 3)
-local timerStandAloneCD					= mod:NewNextTimer(40, 297656, nil, nil, nil, 3)
-local timerDeferredSentenceCD			= mod:NewNextTimer(40, 297566, nil, nil, nil, 3)
-local timerObeyorSufferCD				= mod:NewNextTimer(40, 297585, nil, nil, nil, 3)
+local timerFormRanksCD					= mod:NewNextTimer(40, 298050, nil, nil, nil, 3, nil, nil, nil, 1, 4)
+local timerRepeatPerformanceCD			= mod:NewNextTimer(40, 301244, nil, nil, nil, 3, nil, nil, nil, 1, 4)
+local timerStandAloneCD					= mod:NewNextTimer(40, 297656, nil, nil, nil, 3, nil, nil, nil, 1, 4)
+local timerDeferredSentenceCD			= mod:NewNextTimer(40, 297566, nil, nil, nil, 3, nil, nil, nil, 1, 4)
+local timerObeyorSufferCD				= mod:NewNextTimer(40, 297585, nil, nil, nil, 3, nil, nil, nil, 1, 4)
 --Silivaz the Zealous
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20231))
-local timerFreneticChargeCD				= mod:NewNextTimer(60.6, 299914, nil, nil, nil, 3)
+local timerFreneticChargeCD				= mod:NewNextTimer(60.6, 299914, nil, nil, nil, 3, nil, nil, nil, not mod:IsTank() and 2, 4)
 local timerZealousEruptionCD			= mod:NewNextTimer(104.4, 301807, nil, nil, nil, 2)
 --Pashmar the Fanatical
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20235))
@@ -95,9 +95,6 @@ local timerViolentOutburstCD			= mod:NewNextTimer(104.4, 297325, nil, nil, nil, 
 local timerPotentSparkCD				= mod:NewNextTimer(92.2, 301947, nil, nil, nil, 1)
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
-
-local countdownSummonDecrees			= mod:NewCountdown(40, 297960)
-local countdownFreneticCharge			= mod:NewCountdown("Alt60", 299914, "-Tank")
 
 mod:AddNamePlateOption("NPAuraOnSoP", 296704)
 --mod:AddRangeFrameOption(6, 264382)
@@ -115,7 +112,6 @@ function mod:OnCombatStart(delay)
 	--timerSummonDecreesCD:Start(1-delay)--used almost instantly on pull anyways
 	--Silivaz
 	timerFreneticChargeCD:Start(30.4-delay)
-	countdownFreneticCharge:Start(30.4-delay)
 	timerZealousEruptionCD:Start(51.1-delay)
 	--Pashmar
 	timerPotentSparkCD:Start(15.8-delay)
@@ -164,7 +160,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 299914 then
 		timerFreneticChargeCD:Start()
-		countdownFreneticCharge:Start(60.6)
 	elseif spellId == 296850 then
 		timerFanaticalVerdictCD:Start()
 	end
@@ -350,19 +345,14 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 		specWarnFormRanks:Show(L.Circles)
 		specWarnFormRanks:Play("gathershare")
 		timerRepeatPerformanceCD:Start()
-		countdownSummonDecrees:Start(40)
 	elseif msg:find("spell:301244") then--Repeat Performance (Stand Alone is next)
 		timerStandAloneCD:Start()
-		countdownSummonDecrees:Start(40)
 	elseif msg:find("spell:297656") then--Stand Alone (Sentence is next)
 		timerDeferredSentenceCD:Start()
-		countdownSummonDecrees:Start(40)
 	elseif msg:find("spell:297566") then--Defferred Sentence (Obey is next)
 		timerObeyorSufferCD:Start()
-		countdownSummonDecrees:Start(40)
 	elseif msg:find("spell:297585") then--Obey or Suffer (loops back to form ranks after)
 		timerFormRanksCD:Start()
-		countdownSummonDecrees:Start(40)
 	end
 end
 

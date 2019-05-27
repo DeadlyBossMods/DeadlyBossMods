@@ -148,9 +148,6 @@ local timerOverloadCD					= mod:NewAITimer(30.4, 300807, nil, nil, nil, 5, nil, 
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
 
---local countdownCudgelofGore			= mod:NewCountdown(58, 271296)
---local countdownColdBlast				= mod:NewCountdown("Alt60", 298014, "Tank", 3)
-
 mod:AddNamePlateOption("NPAuraOnTorment", 297912)
 mod:AddNamePlateOption("NPAuraOnInfuriated", 300428)
 --mod:AddRangeFrameOption(6, 264382)

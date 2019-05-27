@@ -19,9 +19,7 @@ local warnGnoll					= mod:NewAnnounce("warnGnoll", 2, nil, false)
 
 local specWarnHogger			= mod:NewSpecialWarning("specWarnHogger")
 
-local timerGame					= mod:NewBuffActiveTimer(60, 101612, nil, nil, nil, 6)
-
-local countdownGame				= mod:NewCountdownFades(60, 101612)
+local timerGame					= mod:NewBuffActiveTimer(60, 101612, nil, nil, nil, 5, nil, nil, nil, 1, 5)
 
 local gameEarnedPoints = 0
 local gameMaxPoints = 0
@@ -31,14 +29,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		gameEarnedPoints = 0
 		gameMaxPoints = 0
 		timerGame:Start()
-		countdownGame:Start(60)
 	end
 end
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args.spellId == 101612 and args:IsPlayer() then
 		timerGame:Cancel()
-		countdownGame:Cancel()
 		if self.Options.warnGameOver then
 			if gameEarnedPoints > 0 then
 				warnGameOverQuest:Show(gameEarnedPoints, gameMaxPoints)

@@ -51,22 +51,16 @@ local yellArcingAzeriteFades			= mod:NewIconFadesYell(296944)
 local specWarnGTFO						= mod:NewSpecialWarningGTFO(296752, nil, nil, nil, 1, 8)
 
 --mod:AddTimerLine(BOSS)
-local timerCoralGrowthCD				= mod:NewCDCountTimer(30, 296555, nil, nil, nil, 3)
-local timerRipplingwaveCD				= mod:NewCDCountTimer(32.2, 296688, nil, nil, nil, 3)
-local timerCrushingDepthsCD				= mod:NewCDCountTimer(15.9, 297324, nil, nil, nil, 3, nil, DBM_CORE_TANK_ICON..DBM_CORE_DAMAGE_ICON)
+local timerCoralGrowthCD				= mod:NewCDCountTimer(30, 296555, nil, nil, nil, 3, nil, nil, nil, 1, 4)
+local timerRipplingwaveCD				= mod:NewCDCountTimer(32.2, 296688, nil, nil, nil, 3, nil, nil, nil, 3, 4)
+local timerCrushingDepthsCD				= mod:NewCDCountTimer(15.9, 297324, nil, nil, nil, 3, nil, DBM_CORE_TANK_ICON..DBM_CORE_DAMAGE_ICON, nil, 2, 4)
 local timerUpsurgeCD					= mod:NewCDTimer(15.3, 298055, nil, nil, nil, 3)
-local timerBarnacleBashCD				= mod:NewCDCountTimer(15.9, 296725, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerBarnacleBashCD				= mod:NewCDCountTimer(15.9, 296725, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON, nil, mod:IsTank() and 2, 4)
 --Stage 2
-local timerArcingAzeriteCD				= mod:NewCDCountTimer(39, 296944, nil, nil, nil, 3)
-local timerShieldCD						= mod:NewCDTimer(66.1, 296650, nil, nil, nil, 6)
+local timerArcingAzeriteCD				= mod:NewCDCountTimer(39, 296944, nil, nil, nil, 3, nil, nil, nil, 3, 4)
+local timerShieldCD						= mod:NewCDTimer(66.1, 296650, nil, nil, nil, 6, nil, nil, nil, 1, 4)
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
-
-local countdownCoralGrowth				= mod:NewCountdown(58, 296555)
-local countdownRipplingWave				= mod:NewCountdown("AltTwo16", 296688)
-local countdownSpellPicker				= mod:NewCountdown("Alt16", 296725)
-local countdownArcingAzerite			= mod:NewCountdown("AltTwo16", 296944)
-local countdownShield					= mod:NewCountdown(58, 296650)
 
 mod:AddRangeFrameOption("4/12")
 mod:AddInfoFrameOption(296650, true)
@@ -139,7 +133,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.coralGrowth = self.vb.coralGrowth + 1
 		warnCoral:Show(self.vb.coralGrowth)
 		timerCoralGrowthCD:Start(30, self.vb.coralGrowth+1)
-		countdownCoralGrowth:Start(30)
 	--elseif spellId == 296944 then
 	--	timerArcingAzeriteCD:Start()
 	--elseif spellId == 296725 then
@@ -149,7 +142,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 		specWarnRipplingWave:Show(self.vb.ripplingWave)
 		specWarnRipplingWave:Play("watchwave")
 		timerRipplingwaveCD:Start(32.2, self.vb.ripplingWave+1)
-		countdownRipplingWave:Start(32.2)
 	end
 end
 
@@ -163,21 +155,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.spellPicker = 0
 		timerUpsurgeCD:Stop()
 		timerBarnacleBashCD:Stop()
-		countdownSpellPicker:Cancel()
 		timerCrushingDepthsCD:Stop()
 		timerArcingAzeriteCD:Stop()
-		countdownArcingAzerite:Cancel()
 		timerShieldCD:Stop()
-		countdownShield:Cancel()
 		timerUpsurgeCD:Start(3.1)
 		timerBarnacleBashCD:Start(7.3, 1)
-		if self:IsTank() then
-			countdownSpellPicker:Start(7.3)
-		end
 		timerRipplingwaveCD:Start(13.5, 1)
-		countdownRipplingWave:Start(13.5)
 		timerCoralGrowthCD:Start(30.5, 1)
-		countdownCoralGrowth:Start(30.5)
 		--timerCrushingDepthsCD:Start(45.2)--Not started here
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:SetHeader(args.spellName)
@@ -201,7 +185,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			self.vb.arcingCast = self.vb.arcingCast + 1
 			if self.vb.arcingCast == 1 then
 				timerArcingAzeriteCD:Start(39, 2)
-				countdownArcingAzerite:Start(39)
 			end
 		end
 		if (spellId == 296943 or spellId == 296940) then--Purple K
@@ -270,23 +253,15 @@ function mod:SPELL_AURA_REMOVED(args)
 		warnShieldOver:Show()
 		warnShieldOver:Play("phasechange")
 		timerCoralGrowthCD:Stop()
-		countdownCoralGrowth:Cancel()
 		timerRipplingwaveCD:Stop()
-		countdownRipplingWave:Cancel()
 		timerCrushingDepthsCD:Stop()
 		timerUpsurgeCD:Stop()
 		timerBarnacleBashCD:Stop()
-		countdownSpellPicker:Cancel()
 		--timerCrushingDepthsCD:Start(2)--Not started here
 		timerBarnacleBashCD:Start(8.6, 1)
-		if self:IsTank() then
-			countdownSpellPicker:Start(8.6)
-		end
 		timerArcingAzeriteCD:Start(16.6, 1)
-		countdownArcingAzerite:Start(16.6)
 		timerUpsurgeCD:Start(32.6)--Upsurge is cast in this phase, but only event for it is spell_damage. timer is estimation
 		timerShieldCD:Start(66.1)
-		countdownShield:Start(66.1)
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:Hide()
 		end
@@ -339,12 +314,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		if self.vb.spellPicker == 3 then
 			self.vb.spellPicker = 0
 			timerBarnacleBashCD:Start(15.9, self.vb.spellPicker+1)
-			if self:IsTank() then
-				countdownSpellPicker:Start(15.9)
-			end
 		elseif self.vb.spellPicker == 2 then--Two bash been cast, crushing is next
 			timerCrushingDepthsCD:Start(15.9, self.vb.spellPicker+1)
-			countdownSpellPicker:Start(15.9)
 		end
 	end
 end

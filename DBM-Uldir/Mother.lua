@@ -42,17 +42,13 @@ local specWarnSpreadingEpidemic			= mod:NewSpecialWarningMoveAway(279663, nil, n
 local yellSpreadingEpidemic				= mod:NewYell(279663)
 
 --mod:AddTimerLine(Nexus)
-local timerSanitizingStrikeCD			= mod:NewNextTimer(23.1, 267787, 191540, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--Short name "Strike"
-local timerPurifyingFlameCD				= mod:NewNextTimer(20.1, 267795, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
+local timerSanitizingStrikeCD			= mod:NewNextTimer(23.1, 267787, 191540, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON, nil, 2, 3)--Short name "Strike"
+local timerPurifyingFlameCD				= mod:NewNextTimer(20.1, 267795, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON, nil, 1, 3)
 local timerWindTunnelCD					= mod:NewNextTimer(39.5, 267945, nil, nil, nil, 2)
-local timerSurgicalBeamCD				= mod:NewCDSourceTimer(30, 269827, 143444, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)--Shortname "Laser"
+local timerSurgicalBeamCD				= mod:NewCDSourceTimer(30, 269827, 143444, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON, nil, 3, 3)--Shortname "Laser"
 local timerCleansingFlameCD				= mod:NewCastSourceTimer(180, 268095, nil, nil, nil, 6)
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
-
-local countdownPurifyingFlame			= mod:NewCountdown(20, 267795, true, nil, 3)
-local countdownSanitizingStrike			= mod:NewCountdown("Alt23", 267787, "Tank", nil, 3)
-local countdownSurgicalBeam				= mod:NewCountdown("AltTwo30", 269827, nil, nil, 3)
 
 mod:AddInfoFrameOption(268095, true)
 mod:AddRangeFrameOption(5, 272407)
@@ -77,8 +73,6 @@ local function updateAllTimers(self, ICD)
 		DBM:Debug("timerPurifyingFlameCD extended by: "..extend, 2)
 		timerPurifyingFlameCD:Stop()
 		timerPurifyingFlameCD:Update(elapsed, total+extend)
-		countdownPurifyingFlame:Cancel()
-		countdownPurifyingFlame:Start(ICD)
 	end
 	if timerWindTunnelCD:GetRemaining() < ICD then
 		local elapsed, total = timerWindTunnelCD:GetTime()
@@ -95,8 +89,6 @@ local function updateAllTimers(self, ICD)
 				DBM:Debug("timerSurgicalBeamCD BOTH extended by: "..extend, 2)
 				timerSurgicalBeamCD:Stop()
 				timerSurgicalBeamCD:Update(elapsed, total+extend, DBM_CORE_BOTH)
-				countdownSurgicalBeam:Cancel()
-				countdownSurgicalBeam:Start(ICD)
 			end
 		else
 			if (self.vb.nextLaser == 1) and timerSurgicalBeamCD:GetRemaining(DBM_CORE_SIDE) < ICD then
@@ -105,8 +97,6 @@ local function updateAllTimers(self, ICD)
 				DBM:Debug("timerSurgicalBeamCD SIDE extended by: "..extend, 2)
 				timerSurgicalBeamCD:Stop()
 				timerSurgicalBeamCD:Update(elapsed, total+extend, DBM_CORE_SIDE)
-				countdownSurgicalBeam:Cancel()
-				countdownSurgicalBeam:Start(ICD)
 			end
 			if (self.vb.nextLaser == 2) and timerSurgicalBeamCD:GetRemaining(DBM_CORE_TOP) < ICD then
 				local elapsed, total = timerSurgicalBeamCD:GetTime(DBM_CORE_TOP)
@@ -114,8 +104,6 @@ local function updateAllTimers(self, ICD)
 				DBM:Debug("timerSurgicalBeamCD TOP extended by: "..extend, 2)
 				timerSurgicalBeamCD:Stop()
 				timerSurgicalBeamCD:Update(elapsed, total+extend, DBM_CORE_TOP)
-				countdownSurgicalBeam:Cancel()
-				countdownSurgicalBeam:Start(ICD)
 			end
 		end
 	end
@@ -171,9 +159,7 @@ function mod:OnCombatStart(delay)
 	self.vb.bossInICD = false
 	self.vb.nextLaser = 1--1 side 2 top
 	timerSanitizingStrikeCD:Start(5.9-delay)
-	countdownSanitizingStrike:Start(5.9-delay)
 	timerPurifyingFlameCD:Start(10.8-delay)
-	countdownPurifyingFlame:Start(10.8-delay)
 	timerWindTunnelCD:Start(20.6-delay)
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(DBM_CORE_INFOFRAME_POWER)
@@ -204,7 +190,6 @@ function mod:SPELL_CAST_START(args)
 			specWarnSanitizingStrike:Play("shockwave")
 		end
 		timerSanitizingStrikeCD:Start()
-		countdownSanitizingStrike:Start()
 		updateAllTimers(self, 4.8)
 	elseif spellId == 268198 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnClingingCorruption:Show(args.sourceName)
@@ -220,7 +205,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 		specWarnPurifyingFlame:Show()
 		specWarnPurifyingFlame:Play("watchstep")
 		timerPurifyingFlameCD:Start()
-		countdownPurifyingFlame:Start()
 		updateAllTimers(self, 6)
 	elseif spellId == 267878 then--Directional IDs for winds (Coming from east blowing to west?)
 		--warnWindTunnel:Show()
@@ -237,16 +221,13 @@ function mod:SPELL_CAST_SUCCESS(args)
 			specWarnSurgicalBeam:Show(DBM_CORE_BOTH)
 			if self.vb.phase == 3 then
 				timerSurgicalBeamCD:Start(20.5, DBM_CORE_BOTH)--20, but almost always delayed by ICD
-				countdownSurgicalBeam:Start(20.5)
 			else
 				timerSurgicalBeamCD:Start(50, DBM_CORE_BOTH)--50, but often delayed by ICD
-				countdownSurgicalBeam:Start(50)
 			end
 			updateAllTimers(self, 8.5)
 		elseif self:IsEasy() then--Only side
 			specWarnSurgicalBeam:Show(DBM_CORE_SIDE)
 			timerSurgicalBeamCD:Start(30, DBM_CORE_SIDE)--30-31
-			countdownSurgicalBeam:Start(30)
 			self.vb.nextLaser = 1
 			updateAllTimers(self, 8.5)
 		else--Heroic (alternating)
@@ -254,7 +235,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 				specWarnSurgicalBeam:Show(DBM_CORE_TOP)
 				--Next Beam side
 				timerSurgicalBeamCD:Start(11, DBM_CORE_SIDE)--Usually delayed, but yes it's 11
-				countdownSurgicalBeam:Start(11)
 				self.vb.nextLaser = 1
 				updateAllTimers(self, 10.9)--Top down beams on non mythic granted even MORE extend
 			else--Sides (277973 all)
@@ -262,10 +242,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 				self.vb.nextLaser = 2
 				if self.vb.phase == 3 then
 					timerSurgicalBeamCD:Start(24, DBM_CORE_TOP)
-					countdownSurgicalBeam:Start(24)
 				else--TODO, confirm it's 29 here and not just always delayed by 6/5 second ICD (I'm even more confident it's 24 here too based on watching stream, think it's usually 30 cause of ICD)
 					timerSurgicalBeamCD:Start(29, DBM_CORE_TOP)
-					countdownSurgicalBeam:Start(29)
 				end
 				updateAllTimers(self, 8.5)
 			end
@@ -309,7 +287,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			self.vb.phase = 3
 			self.vb.nextLaser = 1
 			timerSurgicalBeamCD:Stop()--Resets, kinda
-			countdownSurgicalBeam:Cancel()
 			timerSurgicalBeamCD:Start(15, DBM_CORE_SIDE)--15 if delayed by nothing, but can be longer if flames ICD gets triggered
 			timerCleansingFlameCD:Start(time, 3)
 		end

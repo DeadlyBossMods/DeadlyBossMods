@@ -52,16 +52,13 @@ local specWarnGTFO						= mod:NewSpecialWarningGTFO(270290, nil, nil, nil, 1, 8)
 
 mod:AddTimerLine(BOSS)
 local timerPlasmaDischargeCD			= mod:NewCDCountTimer(30.4, 271225, nil, nil, nil, 3)--30.4-42
-local timerCudgelOfGoreCD				= mod:NewCDCountTimer(58.2, 271296, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)--60.4-63
+local timerCudgelOfGoreCD				= mod:NewCDCountTimer(58.2, 271296, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON, nil, 1, 4)--60.4-63
 local timerSanguineStaticCD				= mod:NewCDTimer(53.6, 272582, nil, nil, nil, 3)--60.4-63
-local timerEnlargedHeartCD				= mod:NewCDCountTimer(60.4, 275205, nil, nil, nil, 3, nil, DBM_CORE_TANK_ICON)--60.4-63 (also timer for hardened, go out at same time, no need for two)
+local timerEnlargedHeartCD				= mod:NewCDCountTimer(60.4, 275205, nil, nil, nil, 3, nil, DBM_CORE_TANK_ICON, nil, 2, 4)--60.4-63 (also timer for hardened, go out at same time, no need for two)
 mod:AddTimerLine(DBM:GetSpellInfo(271965))
 local timerPoweredDown					= mod:NewBuffActiveTimer(88.6, 271965, nil, nil, nil, 6)
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
-
-local countdownCudgelofGore				= mod:NewCountdown(58, 271296)
-local countdownEnlargedHeart			= mod:NewCountdown("Alt60", 275205, true, 2)
 
 mod:AddInfoFrameOption(275270, true)
 
@@ -92,10 +89,8 @@ function mod:OnCombatStart(delay)
 	timerPlasmaDischargeCD:Start(5.9-delay, 1)
 	timerSanguineStaticCD:Start(18-delay)
 	timerCudgelOfGoreCD:Start(31.2-delay, 1)
-	countdownCudgelofGore:Start(31.2)
 	if self:IsMythic() then
 		timerEnlargedHeartCD:Start(24-delay, 1)
-		countdownEnlargedHeart:Start(24-delay)
 	end
 	ignoreGTFO = false
 end
@@ -113,7 +108,6 @@ function mod:SPELL_CAST_START(args)
 			self.vb.cudgelCount = self.vb.cudgelCount + 1
 		end
 		timerCudgelOfGoreCD:Start(nil, self.vb.cudgelCount+1)
-		countdownCudgelofGore:Start(58.4)
 		if self:IsTanking("player", "boss1", nil, true) then
 			specWarnCudgelofGore:Show(bloodStorm)
 			specWarnCudgelofGore:Play("targetyou")--Better voice maybe, or custom voice
@@ -156,7 +150,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 275205 then
 		self.vb.enlargedCount = self.vb.enlargedCount + 1
 		timerEnlargedHeartCD:Start(nil, self.vb.enlargedCount+1)
-		countdownEnlargedHeart:Start(60.4)
 	end
 end
 
@@ -179,10 +172,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerPoweredDown:Start()
 		timerPlasmaDischargeCD:Stop()
 		timerCudgelOfGoreCD:Stop()
-		countdownCudgelofGore:Cancel()
 		timerSanguineStaticCD:Stop()
 		timerEnlargedHeartCD:Stop()
-		countdownEnlargedHeart:Cancel()
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(275270))
 			DBM.InfoFrame:Show(5, "playerbaddebuff", 275270)
@@ -237,10 +228,8 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerPlasmaDischargeCD:Start(12.8, 1)--6
 		timerSanguineStaticCD:Start(27)--18
 		timerCudgelOfGoreCD:Start(37, 1)--35
-		countdownCudgelofGore:Start(37)--35
 		if self:IsMythic() then
 			timerEnlargedHeartCD:Start(30.7, 1)
-			countdownEnlargedHeart:Start(30.7)
 		end
 	elseif spellId == 275189 then
 		if args:IsPlayer() then
