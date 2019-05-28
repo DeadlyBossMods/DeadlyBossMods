@@ -478,6 +478,10 @@ do
 				end)
 				dropdown2 = self:CreateDropdown(nil, cvoice, nil, nil, function(value)
 					mod.Options[modvar.."CVoice"] = value
+					local countPlay = value == 3 and DBM.Options.CountdownVoice3v2 or value == 2 and DBM.Options.CountdownVoice2 or DBM.Options.CountdownVoice
+					if countPlay > 0 then
+						DBM:PlayCountSound(1, countPlay)
+					end
 				end, 20, 25, button)
 				dropdown2:SetScript("OnShow", function(self)
 					self:SetSelectedValue(mod.Options[modvar.."CVoice"])
@@ -4687,8 +4691,6 @@ do
 						lastButton = button
 						if mod.Options[v .. "TColor"] then
 							button = catpanel:CreateCheckButton(mod.localization.options[v], true, nil, nil, nil, mod, v, nil, true)
-						--elseif mod.Options[v .. "CVoice"] then
-							--button = catpanel:CreateCheckButton(mod.localization.options[v], true, nil, nil, nil, mod, v, nil, true)
 						elseif mod.Options[v .. "SWSound"] then
 							button = catpanel:CreateCheckButton(mod.localization.options[v], true, nil, nil, nil, mod, v)
 						else
