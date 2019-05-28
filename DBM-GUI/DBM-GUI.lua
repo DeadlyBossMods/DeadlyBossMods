@@ -478,8 +478,8 @@ do
 				end)
 				dropdown2 = self:CreateDropdown(nil, cvoice, nil, nil, function(value)
 					mod.Options[modvar.."CVoice"] = value
-					local countPlay = value == 3 and DBM.Options.CountdownVoice3v2 or value == 2 and DBM.Options.CountdownVoice2 or DBM.Options.CountdownVoice
 					if value > 0 then
+						local countPlay = value == 3 and DBM.Options.CountdownVoice3v2 or value == 2 and DBM.Options.CountdownVoice2 or DBM.Options.CountdownVoice
 						DBM:PlayCountSound(1, countPlay)
 					end
 				end, 20, 25, button)
