@@ -10505,14 +10505,12 @@ do
 			for i = 1, timer do
 				if i < maxCount then
 					DBM:Schedule(i, playCountSound, timerId, path..i..".ogg")
-					--self.sound5:Schedule(i, path..i..".ogg")
 				end
 			end
 		else
 			for i = count, 1, -1 do
 				if i <= maxCount then
 					DBM:Schedule(timer-i, playCountSound, timerId, path..i..".ogg")
-					--self.sound5:Schedule(timer-i, path..i..".ogg")
 				end
 			end
 		end
