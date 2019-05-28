@@ -148,6 +148,18 @@ L.Bar7Header				= "사용자 바 설정"
 L.Bar7ForceLarge			= "항상 커다란 바 사용"
 L.Bar7CustomInline			= "바 안쪽에 사용자 지정 '!' 아이콘 사용"
 L.Bar7Footer				= "(Dummy 바는 시간이 끝나면 사라집니다)"
+--Dropdown Options
+L.CBTGeneric				= "일반"
+L.CBTAdd					= "쫄 등장"
+L.CBTAOE					= "광역데미지"
+L.CBTTargeted				= "당신이 대상"
+L.CBTInterrupt				= "차단"
+L.CBTRole					= "특정 역할용"
+L.CBTPhase					= "페이즈 전환"
+L.CBTImportant				= "중요 (사용자)"
+L.CVoiceOne					= "초읽기 음성 1"
+L.CVoiceTwo					= "초읽기 음성 2"
+L.CVoiceThree				= "초읽기 음성 3"
 
 -- Tab: Timers
 L.AreaTitle_BarColors		= "타이머 종류별 바 색상"

@@ -70,7 +70,13 @@ L:SetMiscLocalization({
 	GroupUp =	"뭉치기",
 	Spread =	"산개",
 	Move	 =	"계속 이동",
-	DontMove =	"이동 중지"
+	DontMove =	"이동 중지",
+	--For Yells, not yet used, localize anyways.
+	Soaking =	"{rt3}구슬 맞기{rt3}",--Diamond for arcane orbs
+	Stacking =	"뭉치기",
+	Solo =		"산개",
+	Marching =	"{rt4}이동{rt4}",--Green Triangle
+	Staying =	"{rt7}멈춰{rt7}"--Red X
 })
 
 -------------
