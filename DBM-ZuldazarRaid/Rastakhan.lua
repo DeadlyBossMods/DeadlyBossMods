@@ -40,6 +40,7 @@ mod:RegisterEventsInCombat(
 --TODO, timers and bigger warnings for Seal of Bwonsamdi?
 --TODO, Update add timers when they teleport to death realm on mythic?
 --TODO, 286772 now returns invalid spellID on live?
+--TODO, remove countdown object when countdown code updated to auto disable on .fade events
 --General
 local warnPhase							= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
 --Stage One: Zandalari Honor Guard
@@ -99,7 +100,7 @@ local specWarnFocusedDimise				= mod:NewSpecialWarningInterrupt(286779, nil, nil
 
 --Stage One: Zandalari Honor Guard
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(19172))
-local timerScorchingDetonationCD		= mod:NewCDCountTimer(23.1, 284831, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerScorchingDetonationCD		= mod:NewCDCountTimer(23.1, 284831, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON, nil, 2, 4)
 local timerPlagueofToadsCD				= mod:NewCDTimer(21.1, 284933, nil, nil, nil, 1)
 local timerSerpentTotemCD				= mod:NewCDTimer(31.6, 285172, nil, nil, nil, 1)
 mod:AddTimerLine(DBM_ADDS)
@@ -128,8 +129,8 @@ local timerNecroticSmashCD				= mod:NewCDTimer(34.6, 286742, nil, nil, nil, 2)
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
 
-local countdownScorchingDet				= mod:NewCountdown("Alt12", 284831, "Tank", nil, 4)
-local countdownInevitableEnd			= mod:NewCountdown(50, 287333, nil, nil, 5)
+local countdownScorchingDet				= mod:NewCountdown("Alt12", 284831, "Tank", nil, 4)--Custom object, because we need to split countdown by player phase
+local countdownInevitableEnd			= mod:NewCountdown(50, 287333, nil, nil, 5)--Custom object, because we need to split countdown by player phase
 
 mod:AddNamePlateOption("NPAuraOnRelentlessness", 289162)
 mod:AddNamePlateOption("NPAuraOnFocusedDemise", 286779)

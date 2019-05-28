@@ -42,20 +42,16 @@ local specWarnGaleBuffet				= mod:NewSpecialWarningSpell(296701, nil, nil, nil, 
 
 --Rising Fury
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20076))
-local timerTideFistCD					= mod:NewNextCountTimer(58.2, 296546, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerTideFistCD					= mod:NewNextCountTimer(58.2, 296546, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON, nil, 2, 4)
 local timerArcanadoBurstCD				= mod:NewNextCountTimer(58.2, 296430, nil, nil, nil, 3)
-local timerArcaneBombCD					= mod:NewNextCountTimer(58.2, 296737, nil, nil, nil, 3)
-local timerUnshacklingPowerCD			= mod:NewNextCountTimer(58.2, 296894, nil, nil, nil, 2, nil, DBM_CORE_HEALER_ICON)
+local timerArcaneBombCD					= mod:NewNextCountTimer(58.2, 296737, nil, "-Tank", nil, 3, nil, nil, nil, 3, 4)
+local timerUnshacklingPowerCD			= mod:NewNextCountTimer(58.2, 296894, nil, nil, nil, 2, nil, DBM_CORE_HEALER_ICON, nil, 1, 4)
 local timerAncientTempestCD				= mod:NewNextTimer(95.9, 152364, nil, nil, nil, 6)
 --Raging Storm
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20078))
 local timerGaleBuffetCD					= mod:NewCDTimer(23.1, 296701, nil, nil, nil, 2)
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
-
-local countdownUnshacklingPower			= mod:NewCountdown(58, 296894)
-local countdownTideFist					= mod:NewCountdown("Alt60", 296546, "Tank")
-local countdownArcaneBomb				= mod:NewCountdown("AltTwo60", 296737, "-Tank")
 
 --mod:AddRangeFrameOption(6, 264382)
 --mod:AddInfoFrameOption(275270, true)
@@ -81,11 +77,8 @@ function mod:OnCombatStart(delay)
 	self.vb.tempestStage = false
 	timerArcanadoBurstCD:Start(6-delay, 1)
 	timerArcaneBombCD:Start(7-delay, 1)
-	countdownArcaneBomb:Start(7-delay)
 	timerUnshacklingPowerCD:Start(10-delay, 1)
-	countdownUnshacklingPower:Start(10-delay)
 	timerTideFistCD:Start(15-delay, 1)
-	countdownTideFist:Start(15-delay)
 	timerAncientTempestCD:Start(95.8)
 end
 
@@ -109,7 +102,6 @@ function mod:SPELL_CAST_START(args)
 		local timer = tideFistTimers[self.vb.tideFistCount+1]
 		if timer then
 			timerTideFistCD:Start(timer, self.vb.tideFistCount+1)
-			countdownTideFist:Start(timer)
 		end
 	elseif spellId == 296459 then
 		warnSquallTrap:Show()
@@ -120,21 +112,17 @@ function mod:SPELL_CAST_START(args)
 		local timer = unshackledPowerTimers[self.vb.unshackledCount+1]
 		if timer then
 			timerUnshacklingPowerCD:Start(timer, self.vb.unshackledCount+1)
-			countdownUnshacklingPower:Start(timer)
 		end
 	elseif spellId == 295916 then--Ancient Tempest (phase change)
 		self.vb.tempestStage = true
 		self.vb.arcaneBombCount = 0
 		timerTideFistCD:Stop()
-		countdownTideFist:Cancel()
 		timerArcanadoBurstCD:Stop()
 		timerArcaneBombCD:Stop()
-		countdownArcaneBomb:Cancel()
 		timerUnshacklingPowerCD:Stop()
 		specWarnAncientTempest:Show()
 		specWarnAncientTempest:Play("phasechange")
 		timerArcaneBombCD:Start(17.1, 1)
-		countdownArcaneBomb:Start(17.1)
 		timerGaleBuffetCD:Start(22)
 	elseif spellId == 296701 then
 		specWarnGaleBuffet:Show()
@@ -151,7 +139,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 		local timer = self.vb.tempestStage and 20 or arcaneBombTimers[self.vb.arcaneBombCount+1]
 		if timer then
 			timerArcaneBombCD:Start(timer, self.vb.arcaneBombCount+1)
-			countdownArcaneBomb:Start(timer)
 		end
 	end
 end
@@ -212,13 +199,10 @@ function mod:UNIT_DIED(args)
 		self.vb.arcaneBombCount = 0
 		timerGaleBuffetCD:Stop()
 		timerArcaneBombCD:Stop()
-		countdownArcaneBomb:Cancel()
 		timerArcanadoBurstCD:Start(6, 1)
 		timerArcaneBombCD:Start(7, 1)
-		countdownArcaneBomb:Start(7)
 		timerUnshacklingPowerCD:Start(10, 1)
 		timerTideFistCD:Start(15, 1)
-		countdownTideFist:Start(15)
 		timerAncientTempestCD:Start(95.8)
 	end
 end

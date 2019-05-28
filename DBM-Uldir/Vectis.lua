@@ -60,17 +60,13 @@ local specWarnTerminalEruption				= mod:NewSpecialWarningSpell(274989, nil, nil,
 
 --mod:AddTimerLine(Nexus)
 local timerEvolvingAfflictionCD				= mod:NewCDTimer(8.5, 265178, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
-local timerGestateCD						= mod:NewNextTimer(25.5, 265212, nil, nil, nil, 3)
-local timerContagionCD						= mod:NewNextCountTimer(23, 267242, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
-local timerLiquefyCD						= mod:NewNextTimer(90.9, 265217, nil, nil, nil, 6)
+local timerGestateCD						= mod:NewNextTimer(25.5, 265212, nil, nil, nil, 3, nil, nil, nil, 1, 3)
+local timerContagionCD						= mod:NewNextCountTimer(23, 267242, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON, nil, mod:IsHealer() and 2, 3)
+local timerLiquefyCD						= mod:NewNextTimer(90.9, 265217, nil, nil, nil, 6, nil, nil, nil, 3, 3)
 local timerplagueBombCD						= mod:NewCDCountTimer(11.4, 266459, nil, nil, nil, 5)--11.4 or 12.2, not sure which one blizz decided on, find out later
 local timerImmunoSuppCD						= mod:NewCDCountTimer(25.5, 265206, nil, nil, nil, 5, nil, DBM_CORE_HEALER_ICON)
 
 --local berserkTimer						= mod:NewBerserkTimer(600)
-
-local countdownGestate						= mod:NewCountdown(25.5, 265212, true, nil, 3)
-local countdownContagion					= mod:NewCountdown("Alt12", 267242, "Healer", 2, 3)
-local countdownLiquefy						= mod:NewCountdown("AltTwo90", 265217, nil, nil, 3)
 
 mod:AddSetIconOption("SetIconVector", 265129, true, false, {1, 2, 3, 4})
 mod:AddRangeFrameOption("5/8")
@@ -236,11 +232,8 @@ function mod:OnCombatStart(delay)
 	iconsUsed = true
 	timerEvolvingAfflictionCD:Start(4.7-delay)
 	timerGestateCD:Start(10-delay)--SUCCESS
-	countdownGestate:Start(10-delay)
 	timerContagionCD:Start(20.5-delay, 1)
-	countdownContagion:Start(20.5-delay)
 	timerLiquefyCD:Start(90.8-delay)
-	countdownLiquefy:Start(90.8-delay)
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(OVERVIEW)
 		DBM.InfoFrame:Show(self:IsLFR() and 5 or 30, "function", updateInfoFrame, false, true)--Default size to show all vectors and equal number of lingering
@@ -291,7 +284,6 @@ function mod:SPELL_CAST_START(args)
 			warnContagion:Show(self.vb.ContagionCount)
 		end
 		timerContagionCD:Start(23, self.vb.ContagionCount+1)
-		countdownContagion:Start(23)
 		if self:IsMythic() then
 			if playerHasSix then--Done here so earlier warning, not on APPLIED
 				specWarnBurstingLesions:Show()
@@ -319,10 +311,8 @@ function mod:SPELL_CAST_START(args)
 		specWarnLiquefy:Play("phasechange")
 		self.vb.plagueBombCount = 0
 		timerGestateCD:Stop()
-		countdownGestate:Cancel()
 		timerEvolvingAfflictionCD:Stop()
 		timerContagionCD:Stop()
-		countdownContagion:Cancel()
 		timerplagueBombCD:Start(9.8, 1)
 	elseif spellId == 265206 then
 		if not castsPerGUID[args.sourceGUID] then--Shouldn't happen, but does?
@@ -346,7 +336,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 		end
 	elseif spellId == 265212 or spellId == 265209 then
 		timerGestateCD:Start()
-		countdownGestate:Start()
 	end
 end
 
@@ -515,11 +504,8 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 265217 then
 		timerEvolvingAfflictionCD:Start(8.5)
 		timerGestateCD:Start(14.6)--SUCCESS
-		countdownGestate:Start(14.6)
 		timerContagionCD:Start(24.3, 1)
-		countdownContagion:Start(24.3)
 		timerLiquefyCD:Start(94.8)
-		countdownLiquefy:Start(94.8)
 	elseif spellId == 265127 then
 		lingeringTable[args.destName] = nil
 	end

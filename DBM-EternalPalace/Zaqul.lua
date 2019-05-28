@@ -96,9 +96,6 @@ local timerManicDreadCD					= mod:NewAITimer(30.4, 296018, nil, "Healer", nil, 5
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
 
---local countdownCudgelofGore				= mod:NewCountdown(58, 271296)
---local countdownEnlargedHeart			= mod:NewCountdown("Alt60", 275205, true, 2)
-
 --mod:AddRangeFrameOption(6, 264382)
 mod:AddInfoFrameOption(292971, true)
 mod:AddSetIconOption("SetIconDread", 292963, true, false, {1, 2, 3})

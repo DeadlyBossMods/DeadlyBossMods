@@ -749,7 +749,7 @@ do
 	end
 	local mt = {__index = barPrototype}
 
-	function DBT:CreateBar(timer, id, icon, huge, small, color, isDummy, colorType, inlineIcon, keep, fade)
+	function DBT:CreateBar(timer, id, icon, huge, small, color, isDummy, colorType, inlineIcon, keep, fade, countdown, countdownMax)
 		if timer <= 0 then return end
 		if (self.numBars or 0) >= 15 and not isDummy then return end
 		--Most efficient place to block it, nil colorType instead of checking option every update
@@ -787,6 +787,8 @@ do
 				newBar.inlineIcon = inlineIcon
 				newBar.keep = keep
 				newBar.fade = fade
+				newBar.countdown = countdown
+				newBar.countdownMax = countdownMax
 			else  -- duplicate code ;(
 				newBar = setmetatable({
 					frame = newFrame,
@@ -804,6 +806,8 @@ do
 					inlineIcon = inlineIcon,
 					keep = keep,
 					fade = fade,
+					countdown = countdown,
+					countdownMax = countdownMax,
 					lastUpdate = GetTime()
 				}, mt)
 			end

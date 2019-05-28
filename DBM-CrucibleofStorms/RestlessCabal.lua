@@ -82,21 +82,17 @@ local timerPact							= mod:NewCastSourceTimer(12, 282675, nil, nil, nil, 2, nil
 local timerVisageActive					= mod:NewBuffActiveTimer(60, 282515, nil, nil, nil, 1)
 --Zaxasj the Speaker
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(18974))
-local timerCerebralAssaultCD			= mod:NewCDCountTimer(31.5, 282589, nil, nil, nil, 3)
+local timerCerebralAssaultCD			= mod:NewCDCountTimer(31.5, 282589, nil, nil, nil, 3, nil, nil, nil, 1, 5)--inlineIcon, keep, countdown, countdownMax
 local timerDarkherald					= mod:NewTargetTimer(20, 282561, nil, nil, nil, 5)
-local timerDarkheraldCD					= mod:NewCDCountTimer(32.7, 282561, nil, nil, nil, 3)
+local timerDarkheraldCD					= mod:NewCDCountTimer(32.7, 282561, nil, nil, nil, 3, nil, nil, nil, 3, 3)
 local timerTerrifyingEcho				= mod:NewCastTimer(15, 282517, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
 --Fa'thuul the Feared
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(18983))
 local timerShearMindCD					= mod:NewCDTimer(8.4, 282384, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerVoidCrashCD					= mod:NewCDTimer(13.3, 285416, nil, nil, nil, 3)
-local timerCrushingDoubtCD				= mod:NewCDCountTimer(40.1, 282432, nil, nil, nil, 3)
+local timerCrushingDoubtCD				= mod:NewCDCountTimer(40.1, 282432, nil, nil, nil, 3, nil, nil, nil, 2, 3)
 
 local berserkTimer						= mod:NewBerserkTimer(780)
-
-local countdownCerebralAssault			= mod:NewCountdown(50, 282589, true)
-local countdownCrushingDoubt			= mod:NewCountdown("Alt12", 282432, "-Tank", nil, 3)
-local countdownDarkherald				= mod:NewCountdown("AltTwo12", 282561, "-Tank", nil, 3)
 
 mod:AddSetIconOption("SetIconCrushingDoubt", 282432, true, false, {1, 2})
 mod:AddSetIconOption("SetIconDarkherald", 282561, true, false, {6})
@@ -178,23 +174,18 @@ function mod:OnCombatStart(delay)
 	--Zaxasj the Speaker
 	if not self:IsLFR() then
 		timerDarkheraldCD:Start(14-delay, 1)--SUCCESS
-		countdownDarkherald:Start(14-delay)
 		if self:IsMythic() then
 			timerCerebralAssaultCD:Start(15-delay, 1)
-			countdownCerebralAssault:Start(15-delay)
 		else
 			timerCerebralAssaultCD:Start(30-delay, 1)
-			countdownCerebralAssault:Start(30-delay)
 		end
 	else--LFR
 		timerCerebralAssaultCD:Start(32.4-delay, 1)
-		countdownCerebralAssault:Start(32.4-delay)
 	end
 	--Fa'thuul the Feared
 	timerShearMindCD:Start(8.4-delay)--SUCCESS
 	timerVoidCrashCD:Start(13-delay)--SUCCESS
 	timerCrushingDoubtCD:Start(18.1-delay, 1)
-	countdownCrushingDoubt:Start(18.1-delay)
 	berserkTimer:Start(self:IsMythic() and 570 or 780-delay)--Mythic and normal berserks verified. LFR still unknown if bererks at 13 min.
 	if self.Options.NPAuraOnPresence or self.Options.NPAuraOnWitness then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
@@ -243,7 +234,6 @@ function mod:SPELL_CAST_START(args)
 		specWarnCerebralAssault:Play("shockwave")
 		local timer = self:IsMythic() and 31.5 or 41.5
 		timerCerebralAssaultCD:Start(timer, self.vb.assaultCount+1)
-		countdownCerebralAssault:Start(timer)
 	elseif spellId == 282515 then
 		specWarnVisagefromBeyond:Show()
 		specWarnVisagefromBeyond:Play("bigmob")
@@ -305,7 +295,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.heraldCount = self.vb.heraldCount + 1
 		local timer = self:IsMythic() and 18.2 or 32.7
 		timerDarkheraldCD:Start(timer, self.vb.heraldCount+1)--Kept here because boss can stutter cast so START is bad place to start timer
-		countdownDarkherald:Start(timer)
 	elseif spellId == 282384 then
 		timerShearMindCD:Start()
 	elseif spellId == 282407 or spellId == 285416 then
@@ -395,10 +384,6 @@ function mod:SPELL_AURA_APPLIED(args)
 				warnShearMind:Show(args.destName, amount)
 			end
 		end
-		--if args:IsPlayer() then
-			--yellShearMindFades:Cancel()
-			--yellShearMindFades:Countdown(12)
-		--end
 	elseif spellId == 282432 then
 		warnCrushingDoubt:CombinedShow(1, args.destName)
 		local icon = self.vb.CrushingDoubtIcon
@@ -514,6 +499,5 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		self.vb.crushingDoubtCount = self.vb.crushingDoubtCount + 1
 		local timer = self:IsMythic() and 45 or 60.1
 		timerCrushingDoubtCD:Start(timer, self.vb.crushingDoubtCount+1)
-		countdownCrushingDoubt:Start(timer)
 	end
 end

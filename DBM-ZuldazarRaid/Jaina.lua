@@ -114,14 +114,14 @@ local timerCorsairCD					= mod:NewCDTimer(60.4, "ej19690", nil, nil, nil, 1, "22
 local timerAvalancheCD					= mod:NewCDTimer(60.7, 287565, nil, nil, 2, 5, nil, nil, true)
 local timerGraspofFrostCD				= mod:NewCDTimer(17.3, 287626, nil, nil, nil, 3, nil, DBM_CORE_MAGIC_ICON, true)
 local timerFreezingBlastCD				= mod:NewCDTimer(14, 285177, nil, "Tank", nil, 3, nil, nil, true)
-local timerRingofIceCD					= mod:NewCDCountTimer(60.7, 285459, nil, nil, nil, 2, nil, DBM_CORE_IMPORTANT_ICON, true)
+local timerRingofIceCD					= mod:NewCDCountTimer(60.7, 285459, nil, nil, nil, 2, nil, DBM_CORE_IMPORTANT_ICON, true, 1, 4)
 local timerFrozenSiegeCD				= mod:NewCDCountTimer(31.6, 289488, nil, nil, nil, 3, nil, nil, true)--Mythic
 --Stage Two: Frozen Wrath
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(19565))
 local timerBroadsideCD					= mod:NewCDCountTimer(31.3, 288212, nil, nil, nil, 3)
 local timerSiegebreakerCD				= mod:NewCDCountTimer(59.9, 288374, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
 --local timerHandofFrostCD				= mod:NewCDTimer(55, 288412, nil, nil, nil, 3)--Timer is only for first cast of phase, after that, can't tell cast from jump
-local timerGlacialRayCD					= mod:NewCDCountTimer(49.8, 288345, nil, nil, nil, 3, nil, nil, true)--49.8-61.1 (can be delayed significantly by ice block
+local timerGlacialRayCD					= mod:NewCDCountTimer(49.8, 288345, nil, nil, nil, 3, nil, nil, true, 3, 3)--49.8-61.1 (can be delayed significantly by ice block
 local timerIcefallCD					= mod:NewCDCountTimer(42.8, 288475, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
 --local timerIcefall						= mod:NewCastTimer(55, 288475, nil, nil, nil, 3)
 --Intermission 2
@@ -133,11 +133,6 @@ mod:AddTimerLine(DBM:EJ_GetSectionInfo(19624))
 local timerOrbofFrostCD					= mod:NewCDCountTimer(60, 288619, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
 local timerPrismaticImageCD				= mod:NewCDCountTimer(41.3, 288747, nil, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON)
 local timerCrystallineDustCD			= mod:NewCDCountTimer(14.1, 289940, nil, nil, 2, 5, nil, DBM_CORE_TANK_ICON, true)
-
---Stage One: Burning Seas
-local countdownRingofIce				= mod:NewCountdown(60, 285459, true)
-local countdownGlacialray				= mod:NewCountdown("AltTwo32", 288345, true, nil, 3)
---Stage Two: Frozen Wrath
 
 mod:AddNamePlateOption("NPAuraOnMarkedTarget2", 288038, false)
 mod:AddNamePlateOption("NPAuraOnTimeWarp", 287925)
@@ -260,7 +255,6 @@ function mod:OnCombatStart(delay)
 		timerFreezingBlastCD:Start(8.6-delay)
 		timerGraspofFrostCD:Start(23.5-delay)
 		timerRingofIceCD:Start(60.7-delay, 1)
-		countdownRingofIce:Start(60.7)
 		timerHowlingWindsCD:Start(66.9, 1)
 		berserkTimer:Start(720)
 		if self.Options.RangeFrame then
@@ -274,7 +268,6 @@ function mod:OnCombatStart(delay)
 		timerFreezingBlastCD:Start(16.6-delay)
 		timerGraspofFrostCD:Start(26.6-delay)
 		timerRingofIceCD:Start(60.7-delay, 1)
-		countdownRingofIce:Start(60.7)
 		berserkTimer:Start(900)
 	end
 	if self.Options.InfoFrame then
@@ -347,7 +340,6 @@ function mod:SPELL_CAST_START(args)
 		specWarnRingofIce:Play("justrun")
 		timerRingofIceCD:Stop()
 		timerRingofIceCD:Start(nil, self.vb.ringofFrostCount+1)
-		countdownRingofIce:Start(60.7)
 	elseif spellId == 288221 and self:AntiSpam(3, 3) then
 		warnBurningExplosion:Show()
 	elseif spellId == 288345 and self:AntiSpam(4, 8) then
@@ -356,7 +348,6 @@ function mod:SPELL_CAST_START(args)
 		specWarnGlacialRay:Play("watchstep")
 		local timer = self:IsMythic() and 40 or self.vb.phase == 2 and (self:IsLFR() and 60 or 49.8) or 60
 		timerGlacialRayCD:Start(timer, self.vb.glacialRayCount+1)
-		countdownGlacialray:Start(timer)
 		warnGlacialRay:Schedule(timer-5)
 		warnGlacialRay:ScheduleVoice(timer-5, "bait")
 	elseif spellId == 288441 and self:AntiSpam(6, 7) then
@@ -375,7 +366,6 @@ function mod:SPELL_CAST_START(args)
 		timerAvalancheCD:Stop()
 		--timerHandofFrostCD:Stop()
 		timerGlacialRayCD:Stop()
-		countdownGlacialray:Cancel()
 		warnGlacialRay:Cancel()
 		warnGlacialRay:CancelVoice()
 		timerIcefallCD:Stop()
@@ -549,7 +539,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerRingofIceCD:Stop()
 		timerHowlingWindsCD:Stop()
 		timerFrozenSiegeCD:Stop()
-		countdownRingofIce:Cancel()
 		--Infoframe closes during cut scenes, so we gotta make sure to recall this window
 		if self.Options.InfoFrame and not DBM.InfoFrame:IsShown() then
 			--DBM.InfoFrame:SetHeader(DBM_CORE_INFOFRAME_POWER)
@@ -654,7 +643,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		warnPhase:Play("ptwo")
 		timerBroadsideCD:Start(3.2, 1)--SUCCESS
 		timerGlacialRayCD:Start(6.6, 1)
-		countdownGlacialray:Start(6.6)
 		warnGlacialRay:Schedule(1.6)
 		warnGlacialRay:ScheduleVoice(1.6, "bait")
 		timerAvalancheCD:Start(16.3)
@@ -698,7 +686,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerPrismaticImageCD:Start(self:IsEasy() and 12.4 or 22.4, 1)--Comes 10 seconds earlier in LFR/normal do to no orb of frost
 		timerCrystallineDustCD:Start(25, 1)
 		timerGlacialRayCD:Start(48.6, 1)
-		countdownGlacialray:Start(48.6)
 		warnGlacialRay:Schedule(43.6)
 		warnGlacialRay:ScheduleVoice(43.6, "bait")
 		timerSiegebreakerCD:Start(58.4, 1)--to CLEU event, emote 1 second faster, may change
@@ -807,7 +794,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		timerRingofIceCD:Stop()
 		timerHowlingWindsCD:Stop()
 		timerFrozenSiegeCD:Stop()
-		countdownRingofIce:Cancel()
 		timerPhaseTransition:Start(12.5)
 	end
 end

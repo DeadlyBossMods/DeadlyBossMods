@@ -411,23 +411,29 @@ do
 	end
 
 	local sounds = MixinSharedMedia3("sound", {
-		{ sound=true, text = "None", value = "None" },
+		{ sound=true, text = L.None, value = "None" },
 		{ sound=true, text = "SW 1", value = 1 },
 		{ sound=true, text = "SW 2", value = 2 },
 		{ sound=true, text = "SW 3", value = 3 },
 		{ sound=true, text = "SW 4", value = 4 },
 	})
 
-	--TODO, this should be localized
 	local tcolors = {
-		{ text = "Generic", value = 0 },
-		{ text = "Add", value = 1 },
-		{ text = "AOE", value = 2 },
-		{ text = "Targeted", value = 3 },
-		{ text = "Interrupt", value = 4 },
-		{ text = "Role", value = 5 },
-		{ text = "Phase", value = 6 },
-		{ text = "Important (User)", value = 7 },
+		{ text = L.CBTGeneric, value = 0 },
+		{ text = L.CBTAdd, value = 1 },
+		{ text = L.CBTAOE, value = 2 },
+		{ text = L.CBTTargeted, value = 3 },
+		{ text = L.CBTInterrupt, value = 4 },
+		{ text = L.CBTRole, value = 5 },
+		{ text = L.CBTPhase, value = 6 },
+		{ text = L.CBTImportant, value = 7 },
+	}
+
+	local cvoice = {
+		{ text = L.None, value = 0 },
+		{ text = L.CVoiceOne, value = 1 },
+		{ text = L.CVoiceTwo, value = 2 },
+		{ text = L.CVoiceThree, value = 3 },
 	}
 
 	function PanelPrototype:CreateCheckButton(name, autoplace, textleft, dbmvar, dbtvar, mod, modvar, globalvar, isTimer)
@@ -460,7 +466,7 @@ do
 			end
 			name = name:gsub("%$journal:(%d+)", replaceJournalLinks)
 		end
-		local dropdown
+		local dropdown, dropdown2
 		local noteButton
 		if modvar then--Special warning, has modvar for sound and note
 			if isTimer then
@@ -469,6 +475,16 @@ do
 				end, 20, 25, button)
 				dropdown:SetScript("OnShow", function(self)
 					self:SetSelectedValue(mod.Options[modvar.."TColor"])
+				end)
+				dropdown2 = self:CreateDropdown(nil, cvoice, nil, nil, function(value)
+					mod.Options[modvar.."CVoice"] = value
+					local countPlay = value == 3 and DBM.Options.CountdownVoice3v2 or value == 2 and DBM.Options.CountdownVoice2 or DBM.Options.CountdownVoice
+					if value > 0 then
+						DBM:PlayCountSound(1, countPlay)
+					end
+				end, 20, 25, button)
+				dropdown2:SetScript("OnShow", function(self)
+					self:SetSelectedValue(mod.Options[modvar.."CVoice"])
 				end)
 			else
 				dropdown = self:CreateDropdown(nil, sounds, nil, nil, function(value)
@@ -507,6 +523,11 @@ do
 				textbeside = noteButton
 				textpad = 2
 				widthAdjust = widthAdjust + dropdown:GetWidth() + noteButton:GetWidth()
+			elseif dropdown2 then
+				dropdown2:SetPoint('LEFT', dropdown, "RIGHT", 18, 0)
+				textbeside = dropdown2
+				textpad = 35
+				widthAdjust = widthAdjust + dropdown:GetWidth() + dropdown2:GetWidth()
 			else
 				textbeside = dropdown
 				textpad = 35

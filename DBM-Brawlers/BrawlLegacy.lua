@@ -103,8 +103,8 @@ local timerShadowTorchCD			= mod:NewCDTimer(5.3, 232504, nil, nil, nil, 3)-- 5.3
 local timerWaterShield				= mod:NewTargetTimer(15, 228981, nil, nil, nil, 5)--Burnstachio
 local timerRockets					= mod:NewBuffActiveTimer(9, 133212, nil, nil, nil, 3)--Max Megablast (GG Engineering)
 
-local countdownWaterShield			= mod:NewCountdownFades(15, 228981)
-local countdownZenOrb				= mod:NewCountdown(15, 229884)
+local countdownWaterShield			= mod:NewCountdownFades(15, 228981)--Custom object used because we want to split countdown from timer in brawlers guild
+local countdownZenOrb				= mod:NewCountdown(15, 229884)--Custom object used because we want to split countdown from timer in brawlers guild
 
 mod:AddBoolOption("SpeakOutStrikes", true)--Blind Hero
 

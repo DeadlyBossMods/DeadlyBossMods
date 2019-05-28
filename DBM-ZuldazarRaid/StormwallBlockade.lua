@@ -93,16 +93,12 @@ local timerTidalShroudCD				= mod:NewCDTimer(36.5, 286558, nil, nil, nil, 4, nil
 --Stage Two: Laminaria
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(19258))
 local timerCataTides					= mod:NewCastTimer(15, 288696, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
-local timerSeaSwellCD					= mod:NewCDTimer(20.6, 285118, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
+local timerSeaSwellCD					= mod:NewCDTimer(20.6, 285118, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON, nil, 1, 3)
 local timerIreoftheDeepCD				= mod:NewCDTimer(32.8, 285017, nil, nil, nil, 5)
 local timerStormsWailCD					= mod:NewCDTimer(120.2, 285350, nil, nil, nil, 3)
 local timerJoltingVolleyCD				= mod:NewCDCountTimer(43.6, 287169, nil, nil, nil, 2, nil, DBM_CORE_HEALER_ICON)
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
-
-local countdownSeaSwell					= mod:NewCountdown(20.6, 285118, true, 3, 3)
---local countdownRupturingBlood				= mod:NewCountdown("Alt12", 244016, false, 2, 3)
---local countdownFelstormBarrage			= mod:NewCountdown("AltTwo32", 244000, nil, nil, 3)
 
 mod:AddNamePlateOption("NPAuraOnKepWrapping", 285382)
 mod:AddSetIconOption("SetIconWail", 285350, true, false, {1, 2, 3})
@@ -220,7 +216,6 @@ function mod:OnCombatStart(delay)
 	end
 	if self:IsMythic() then
 		timerSeaSwellCD:Start(19.8-delay)
-		countdownSeaSwell:Start(19.8-delay)
 	end
 	if self.Options.NPAuraOnKepWrapping then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
@@ -335,7 +330,6 @@ function mod:SPELL_CAST_START(args)
 		warnCataTides:Show()
 		timerCataTides:Start()
 		timerSeaSwellCD:Stop()
-		countdownSeaSwell:Cancel()
 	end
 end
 
@@ -349,19 +343,15 @@ function mod:SPELL_CAST_SUCCESS(args)
 		specWarnSeaSwell:Play("watchstep")
 		if self:IsMythic() then
 			timerSeaSwellCD:Start(17)
-			countdownSeaSwell:Start(17)
 		elseif self:IsLFR() then
 			timerSeaSwellCD:Start(24.3)
-			countdownSeaSwell:Start(24.3)
 		else
 			timerSeaSwellCD:Start()
-			countdownSeaSwell:Start(20.6)
 		end
 	elseif spellId == 290694 and self:AntiSpam(5, 3) then--Mythic P1 Sea Swell
 		specWarnSeaSwell:Show()
 		specWarnSeaSwell:Play("watchstep")
 		timerSeaSwellCD:Start(20)
-		countdownSeaSwell:Start(20)
 	elseif spellId == 289795 and self.vb.phase == 2 then--Zuldazar Reuse Spell 06 (P2 sirens spawning)
 		self.vb.sirenCount = self.vb.sirenCount + 1
 		if self:AntiSpam(8, 5) then
@@ -542,7 +532,6 @@ function mod:SPELL_INTERRUPT(args)
 		self.vb.voltaicFlashCount = 0
 		timerSeaSwellCD:Stop()
 		timerCataTides:Stop()
-		countdownSeaSwell:Cancel()
 		if self:IsMythic() then
 			timerVoltaicFlashCD:SetFade(false)
 			timerSeasTemptationCD:SetFade(false)
@@ -550,7 +539,6 @@ function mod:SPELL_INTERRUPT(args)
 			timerIreoftheDeepCD:Start(3.2)
 			timerStormsWailCD:Start(6.6)
 			timerSeaSwellCD:Start(7.2)
-			countdownSeaSwell:Start(7.2)
 			--Mythic Only
 			timerJoltingVolleyCD:Start(10.2, 1)
 			timerVoltaicFlashCD:Start(18.7)
@@ -558,7 +546,6 @@ function mod:SPELL_INTERRUPT(args)
 		elseif self:IsLFR() then
 			--LFR seems to do it's own thing with timers across the board
 			timerSeaSwellCD:Start(5.3)
-			countdownSeaSwell:Start(5.3)
 			timerIreoftheDeepCD:Start(7)
 			timerStormsWailCD:Start(16.7)
 		else
@@ -566,7 +553,6 @@ function mod:SPELL_INTERRUPT(args)
 			timerIreoftheDeepCD:Start(3.2)
 			timerStormsWailCD:Start(6.6)
 			timerSeaSwellCD:Start(7.2)
-			countdownSeaSwell:Start(7.2)
 		end
 	end
 end

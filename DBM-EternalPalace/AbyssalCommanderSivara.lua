@@ -65,18 +65,14 @@ local yellToxicJav						= mod:NewYell(295607)
 local specWarnGTFO						= mod:NewSpecialWarningGTFO(300961, nil, nil, nil, 1, 8)
 
 --mod:AddTimerLine(BOSS)
-local timerCrushingReverbCD				= mod:NewCDTimer(21.1, 295332, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
-local timerOverwhelmingBarrageCD		= mod:NewCDTimer(40, 296551, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
+local timerCrushingReverbCD				= mod:NewCDTimer(21.1, 295332, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON, nil, mod:IsMelee() and 2, 4)
+local timerOverwhelmingBarrageCD		= mod:NewCDTimer(40, 296551, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON, nil, 1, 4)
 local timerOverflowCD					= mod:NewCDTimer(31.6, 295346, nil, nil, nil, 3)--31.6 but can be delayed by boss spell queuing
-local timerInversionCD					= mod:NewCDTimer(90, 295791, nil, nil, nil, 2, nil, DBM_CORE_HEROIC_ICON)
+local timerInversionCD					= mod:NewCDTimer(90, 295791, nil, nil, nil, 2, nil, DBM_CORE_HEROIC_ICON, nil, 3, 4)
 local timerfrostshockboltsCD			= mod:NewCDTimer(61.2, 295601, nil, nil, nil, 3)
 local timerChimericMarksCD				= mod:NewAITimer(58.2, 294726, nil, nil, nil, 2)--Mythic
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
-
-local countdownCrushingReverb			= mod:NewCountdown("Alt21", 295332, "Melee")
-local countdownOverwhelmingBarrage		= mod:NewCountdown(40, 296551)
-local countdownInversion				= mod:NewCountdown("AltTwo90", 295791, true)
 
 mod:AddSetIconOption("SetIconOnMarks", 294726, true, false, {4, 6})
 mod:AddInfoFrameOption(294726, true)
@@ -88,14 +84,11 @@ function mod:OnCombatStart(delay)
 	table.wipe(MarksStacks)
 	playerMark = 0--1 Toxic, 2 Frost
 	timerCrushingReverbCD:Start(10.6-delay)
-	countdownCrushingReverb:Start(10.6-delay)
 	timerOverflowCD:Start(15.7-delay)
 	timerOverwhelmingBarrageCD:Start(40.2-delay)
-	countdownOverwhelmingBarrage:Start(40.2-delay)
 	timerfrostshockboltsCD:Start(47.3-delay)
 	if self:IsHard() then
 		timerInversionCD:Start(90-delay)
-		countdownInversion:Start(90-delay)
 		self:RegisterShortTermEvents(
 			"UNIT_POWER_FREQUENT player"
 		)
@@ -136,7 +129,6 @@ function mod:SPELL_CAST_START(args)
 		specWarnOverwhelmingBarrage:Show()
 		specWarnOverwhelmingBarrage:Play("aesoon")
 		timerOverwhelmingBarrageCD:Start(40)
-		countdownOverwhelmingBarrage:Start(40)
 	elseif spellId == 295791 then
 		specWarnInversion:Show()
 		specWarnInversion:Play("scatter")
@@ -149,10 +141,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 		DBM:AddMsg("blizzard added overflow to combat log, tell DBM author")
 	elseif spellId == 295332 then--Has to be in success, can stutter cast
 		timerCrushingReverbCD:Start()
-		countdownCrushingReverb:Start(21.1)
 	elseif spellId == 295791 then
 		timerInversionCD:Start(90)
-		countdownInversion:Start(90)
 	end
 end
 
