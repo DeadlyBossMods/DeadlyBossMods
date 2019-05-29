@@ -10505,14 +10505,12 @@ do
 			for i = 1, timer do
 				if i < maxCount then
 					DBM:Schedule(i, playCountSound, timerId, path..i..".ogg")
-					--self.sound5:Schedule(i, path..i..".ogg")
 				end
 			end
 		else
 			for i = count, 1, -1 do
 				if i <= maxCount then
 					DBM:Schedule(timer-i, playCountSound, timerId, path..i..".ogg")
-					--self.sound5:Schedule(timer-i, path..i..".ogg")
 				end
 			end
 		end
@@ -10699,7 +10697,7 @@ do
 				bar:ApplyStyle()
 				if bar.countdown then--Unfading bar, start countdown
 					DBM:Unschedule(playCountSound, id)
-					DBM:Schedule(playCountdown, id, bar.timer, bar.countdown, bar.countdownMax)--timerId, timer, voice, count
+					playCountdown(id, bar.timer, bar.countdown, bar.countdownMax)--timerId, timer, voice, count
 					DBM:Debug("Re-enabling a countdown on bar ID: "..id.." after a SetFade disable call")
 				end
 			end
@@ -10727,7 +10725,7 @@ do
 				bar:ApplyStyle()
 				if bar.countdown then--Unfading bar, start countdown
 					DBM:Unschedule(playCountSound, id)
-					DBM:Schedule(playCountdown, id, bar.timer, bar.countdown, bar.countdownMax)--timerId, timer, voice, count
+					playCountdown(id, bar.timer, bar.countdown, bar.countdownMax)--timerId, timer, voice, count
 					DBM:Debug("Re-enabling a countdown on bar ID: "..id.." after a SetSTFade disable call")
 				end
 			end
@@ -10817,7 +10815,7 @@ do
 		if bar.countdown and bar.countdown > 0 then
 			DBM:Unschedule(playCountSound, id)
 			if not bar.fade then--Don't start countdown voice if it's faded bar
-				DBM:Schedule(playCountdown, id, totalTime-elapsed, bar.countdown, bar.countdownMax)--timerId, timer, voice, count
+				playCountdown(id, totalTime-elapsed, bar.countdown, bar.countdownMax)--timerId, timer, voice, count
 				DBM:Debug("Updating a countdown after a timer Update call for timer ID:"..id)
 			end
 		end
@@ -10837,7 +10835,7 @@ do
 					if bar.countdown then
 						DBM:Unschedule(playCountSound, id)
 						if not bar.fade then--Don't start countdown voice if it's faded bar
-							DBM:Schedule(playCountdown, id, total-elapsed, bar.countdown, bar.countdownMax)--timerId, timer, voice, count
+							playCountdown(id, total-elapsed, bar.countdown, bar.countdownMax)--timerId, timer, voice, count
 							DBM:Debug("Updating a countdown after a timer AddTime call for timer ID:"..id)
 						end
 					end
