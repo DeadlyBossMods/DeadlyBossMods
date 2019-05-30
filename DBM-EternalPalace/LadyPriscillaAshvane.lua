@@ -87,13 +87,13 @@ do
 		table.wipe(lines)
 		table.wipe(sortedLines)
 		if mod.vb.purpleone and mod.vb.purpletwo then--Purple K (NE)
-			addLine("|TInterface\\Icons\\Boss_OdunRunes_Purple.blp:12:12|tNE|TInterface\\Icons\\Boss_OdunRunes_Purple.blp:12:12|t--"..mod.vb.purpleone, mod.vb.purpletwo)
+			addLine("|TInterface\\Icons\\Boss_OdunRunes_Purple.blp:12:12|tPurple|TInterface\\Icons\\Boss_OdunRunes_Purple.blp:12:12|t--"..mod.vb.purpleone, mod.vb.purpletwo)
 		end
 		if mod.vb.orangeone and mod.vb.orangetwo then--Orange N (SE)
-			addLine("|TInterface\\Icons\\Boss_OdunRunes_Orange.blp:12:12|tSE|TInterface\\Icons\\Boss_OdunRunes_Orange.blp:12:12|t--"..mod.vb.orangeone, mod.vb.orangetwo)
+			addLine("|TInterface\\Icons\\Boss_OdunRunes_Orange.blp:12:12|tOrange|TInterface\\Icons\\Boss_OdunRunes_Orange.blp:12:12|t--"..mod.vb.orangeone, mod.vb.orangetwo)
 		end
 		if mod.vb.greenone and mod.vb.greentwo then--Green box (N)
-			addLine("|TInterface\\Icons\\Boss_OdunRunes_Green.blp:12:12|tN|TInterface\\Icons\\Boss_OdunRunes_Green.blp:12:12|t--"..mod.vb.greenone, mod.vb.greentwo)
+			addLine("|TInterface\\Icons\\Boss_OdunRunes_Green.blp:12:12|tGreen|TInterface\\Icons\\Boss_OdunRunes_Green.blp:12:12|t--"..mod.vb.greenone, mod.vb.greentwo)
 		end
 		return lines, sortedLines
 	end

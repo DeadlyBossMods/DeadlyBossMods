@@ -48,10 +48,10 @@ local specWarnVenomousBlood				= mod:NewSpecialWarningStopMove(295796, nil, nil,
 local specWarnCrushingReverb			= mod:NewSpecialWarningDefensive(295332, "Melee", nil, 2, 2, 2)
 local specWarnOverwhelmingBarrage		= mod:NewSpecialWarningDodge(296551, nil, nil, nil, 3, 2)
 local specWarnOverflowingChill			= mod:NewSpecialWarningMoveAway(295348, nil, nil, nil, 1, 2)
-local yellOverflowingChill				= mod:NewYell(295348)
+local yellOverflowingChill				= mod:NewPosYell(295348, DBM_CORE_AUTO_YELL_CUSTOM_POSITION)
 local yellOverflowingChillFades			= mod:NewIconFadesYell(295348)
 local specWarnOverflowingVenom			= mod:NewSpecialWarningMoveAway(295421, nil, nil, nil, 1, 2)
-local yellOverflowingVenom				= mod:NewYell(295421)
+local yellOverflowingVenom				= mod:NewPosYell(295421, DBM_CORE_AUTO_YELL_CUSTOM_POSITION)
 local yellOverflowingVenomFades			= mod:NewIconFadesYell(295421)
 local specWarnInversion					= mod:NewSpecialWarningMoveAway(295791, nil, nil, nil, 3, 2)
 local specWarnInversionSicknessFrost	= mod:NewSpecialWarningYou(300882, nil, nil, nil, 1, 2)--Separate warning in case user wants to customize sound based on type
@@ -190,7 +190,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 295348 then
 		warnOverflowingChill:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
-			specWarnOverflowingChill:Show()
+			specWarnOverflowingChill:Show(6, args.spellName, 6)
 			specWarnOverflowingChill:Play("runout")
 			yellOverflowingChill:Yell()
 			yellOverflowingChillFades:Countdown(5, nil, 6)
@@ -200,7 +200,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnOverflowingVenom:Show()
 			specWarnOverflowingVenom:Play("runout")
-			yellOverflowingVenom:Yell()
+			yellOverflowingVenom:Yell(4, args.spellName, 4)
 			yellOverflowingVenomFades:Countdown(5, nil, 4)
 		end
 	elseif (spellId == 300961 or spellId == 300962) and args:IsPlayer() then
