@@ -49,19 +49,19 @@ local specWarnCrushingReverb			= mod:NewSpecialWarningDefensive(295332, "Melee",
 local specWarnOverwhelmingBarrage		= mod:NewSpecialWarningDodge(296551, nil, nil, nil, 3, 2)
 local specWarnOverflowingChill			= mod:NewSpecialWarningMoveAway(295348, nil, nil, nil, 1, 2)
 local yellOverflowingChill				= mod:NewYell(295348)
-local yellOverflowingChillFades			= mod:NewShortFadesYell(295348)
+local yellOverflowingChillFades			= mod:NewIconFadesYell(295348)
 local specWarnOverflowingVenom			= mod:NewSpecialWarningMoveAway(295421, nil, nil, nil, 1, 2)
 local yellOverflowingVenom				= mod:NewYell(295421)
-local yellOverflowingVenomFades			= mod:NewShortFadesYell(295421)
+local yellOverflowingVenomFades			= mod:NewIconFadesYell(295421)
 local specWarnInversion					= mod:NewSpecialWarningMoveAway(295791, nil, nil, nil, 3, 2)
 local specWarnInversionSicknessFrost	= mod:NewSpecialWarningYou(300882, nil, nil, nil, 1, 2)--Separate warning in case user wants to customize sound based on type
 local specWarnInversionSicknessToxic	= mod:NewSpecialWarningYou(300883, nil, nil, nil, 1, 2)--Separate warning in case user wants to customize sound based on type
 local yellInversionSickness				= mod:NewYell(300882)
-local yellInversionSicknessFades		= mod:NewShortFadesYell(300882)
+local yellInversionSicknessFades		= mod:NewIconFadesYell(300882)
 local specWarnFrostJav					= mod:NewSpecialWarningYou(295606, nil, nil, nil, 1, 2)
-local yellFrostJav						= mod:NewYell(295606)
+local yellFrostJav						= mod:NewPosYell(295606, DBM_CORE_AUTO_YELL_CUSTOM_POSITION)
 local specWarnToxicJav					= mod:NewSpecialWarningYou(295607, nil, nil, nil, 1, 2)
-local yellToxicJav						= mod:NewYell(295607)
+local yellToxicJav						= mod:NewPosYell(295607, DBM_CORE_AUTO_YELL_CUSTOM_POSITION)
 local specWarnGTFO						= mod:NewSpecialWarningGTFO(300961, nil, nil, nil, 1, 8)
 
 --mod:AddTimerLine(BOSS)
@@ -193,7 +193,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnOverflowingChill:Show()
 			specWarnOverflowingChill:Play("runout")
 			yellOverflowingChill:Yell()
-			yellOverflowingChillFades:Countdown(5)
+			yellOverflowingChillFades:Countdown(5, nil, 6)
 		end
 	elseif spellId == 295421 then
 		warnOverflowingVenom:CombinedShow(0.3, args.destName)
@@ -201,23 +201,24 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnOverflowingVenom:Show()
 			specWarnOverflowingVenom:Play("runout")
 			yellOverflowingVenom:Yell()
-			yellOverflowingVenomFades:Countdown(5)
+			yellOverflowingVenomFades:Countdown(5, nil, 4)
 		end
 	elseif (spellId == 300961 or spellId == 300962) and args:IsPlayer() then
 		specWarnGTFO:Show(args.spellName)
 		specWarnGTFO:Play("watchfeet")
 	elseif (spellId == 300882 or spellId == 300883) then
-		warnInversionSickness:CombinedShow(0.3, args.destname)
+		warnInversionSickness:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			if spellId == 300882 then--Frost
 				specWarnInversionSicknessFrost:Show()
 				specWarnInversionSicknessFrost:Play("targetyou")
+				yellInversionSicknessFades:Countdown(4, nil, 6)
 			else--Toxic
 				specWarnInversionSicknessToxic:Show()
 				specWarnInversionSicknessToxic:Play("targetyou")
+				yellInversionSicknessFades:Countdown(4, nil, 4)
 			end
 			yellInversionSickness:Yell()
-			yellInversionSicknessFades:Countdown(4)
 		end
 	end
 end
@@ -250,21 +251,25 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	end
 end
-function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, targetname)
-	if msg:find("spell:295607") then--Toxic Jav
-		if targetname and self:AntiSpam(5, targetname) then
-			if targetname == UnitName("player") then
-				specWarnToxicJav:Show()
-				specWarnToxicJav:Play("targetyou")
-				yellToxicJav:Yell()
+
+do
+	local frostJav, toxicJav = DBM:GetSpellInfo(295606), DBM:GetSpellInfo(295607)
+	function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, targetname)
+		if msg:find("spell:295607") then--Toxic Jav
+			if targetname and self:AntiSpam(5, targetname) then
+				if targetname == UnitName("player") then
+					specWarnToxicJav:Show()
+					specWarnToxicJav:Play("targetyou")
+					yellToxicJav:Yell(6, frostJav, 6)
+				end
 			end
-		end
-	elseif msg:find("spell:295606") then--Frost Jav
-		if targetname and self:AntiSpam(5, targetname) then
-			if targetname == UnitName("player") then
-				specWarnFrostJav:Show()
-				specWarnFrostJav:Play("targetyou")
-				yellFrostJav:Yell()
+		elseif msg:find("spell:295606") then--Frost Jav
+			if targetname and self:AntiSpam(5, targetname) then
+				if targetname == UnitName("player") then
+					specWarnFrostJav:Show()
+					specWarnFrostJav:Play("targetyou")
+					yellFrostJav:Yell(4, toxicJav, 4)
+				end
 			end
 		end
 	end
