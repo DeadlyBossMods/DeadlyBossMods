@@ -78,7 +78,7 @@ local specWarnViolentOutburst			= mod:NewSpecialWarningRun(297325, nil, nil, nil
 local timerDesperateMeasures			= mod:NewCastTimer(10, 271225, nil, nil, nil, 5)
 --Queen Azshara
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20258))
---local timerSummonDecreesCD			= mod:NewNextTimer(40, 297960, nil, nil, nil, 3)
+--local timerSummonDecreesCD			= mod:NewNextTimer(40, 297960, nil, nil, nil, 3, nil, nil, nil, 1, 4)
 local timerFormRanksCD					= mod:NewNextTimer(40, 298050, nil, nil, nil, 3, nil, nil, nil, 1, 4)
 local timerRepeatPerformanceCD			= mod:NewNextTimer(40, 301244, nil, nil, nil, 3, nil, nil, nil, 1, 4)
 local timerStandAloneCD					= mod:NewNextTimer(40, 297656, nil, nil, nil, 3, nil, nil, nil, 1, 4)
@@ -108,15 +108,25 @@ mod.vb.sentenceActive = 0
 function mod:OnCombatStart(delay)
 	self.vb.sparkIcon = 1
 	self.vb.sentenceActive = 0
-	--ass-shara
-	--timerSummonDecreesCD:Start(1-delay)--used almost instantly on pull anyways
-	--Silivaz
-	timerFreneticChargeCD:Start(30.4-delay)
-	timerZealousEruptionCD:Start(51.1-delay)
-	--Pashmar
-	timerPotentSparkCD:Start(15.8-delay)
-	timerFanaticalVerdictCD:Start(30.4-delay)
-	timerViolentOutburstCD:Start(100.8-delay)
+	if self:IsMythic() then
+		--ass-shara
+		timerFormRanksCD:Start(30-delay)
+		--Silivaz
+		timerFreneticChargeCD:Start(30.4-delay)
+		timerZealousEruptionCD:Start(51.1-delay)
+		--Pashmar
+		timerPotentSparkCD:Start(15.8-delay)
+		timerFanaticalVerdictCD:Start(30.4-delay)
+		timerViolentOutburstCD:Start(100.8-delay)
+	else
+		--Silivaz
+		timerFreneticChargeCD:Start(30.4-delay)
+		timerZealousEruptionCD:Start(51.1-delay)
+		--Pashmar
+		timerPotentSparkCD:Start(15.8-delay)
+		timerFanaticalVerdictCD:Start(30.4-delay)
+		timerViolentOutburstCD:Start(100.8-delay)
+	end
 	if self.Options.NPAuraOnSoP then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
@@ -344,15 +354,15 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 	if msg:find("spell:298050") then--Form Ranks (Repeat Performance is next)
 		specWarnFormRanks:Show(L.Circles)
 		specWarnFormRanks:Play("gathershare")
-		timerRepeatPerformanceCD:Start()
+		timerRepeatPerformanceCD:Start(self:IsMythic() and 30 or 40)
 	elseif msg:find("spell:301244") then--Repeat Performance (Stand Alone is next)
-		timerStandAloneCD:Start()
+		timerStandAloneCD:Start(self:IsMythic() and 30 or 40)
 	elseif msg:find("spell:297656") then--Stand Alone (Sentence is next)
-		timerDeferredSentenceCD:Start()
+		timerDeferredSentenceCD:Start(self:IsMythic() and 30 or 40)
 	elseif msg:find("spell:297566") then--Defferred Sentence (Obey is next)
-		timerObeyorSufferCD:Start()
+		timerObeyorSufferCD:Start(self:IsMythic() and 30 or 40)
 	elseif msg:find("spell:297585") then--Obey or Suffer (loops back to form ranks after)
-		timerFormRanksCD:Start()
+		timerFormRanksCD:Start(self:IsMythic() and 30 or 40)
 	end
 end
 
