@@ -295,7 +295,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnEndemicVirus:Show()
 			specWarnEndemicVirus:Play("runout")
 			yellEndemicVirus:Yell()
-			yellEndemicVirusFades:Countdown(20)
+			yellEndemicVirusFades:Countdown(spellId)
 			updateRangeFrame(self)
 		end
 	elseif spellId == 279663 then

@@ -523,7 +523,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnGigaVoltChargeFading:Schedule(8.5, DBM_CORE_BREAK_LOS)
 			specWarnGigaVoltChargeFading:ScheduleVoice(8.5, "mm"..icon)
 			yellGigaVoltCharge:Yell(icon, icon, icon)
-			yellGigaVoltChargeFades:Countdown(15, nil, icon)
+			yellGigaVoltChargeFades:Countdown(spellId, nil, icon)
 		else
 			local uId = DBM:GetRaidUnitId(args.destName)
 			if self:IsTanking(uId) then

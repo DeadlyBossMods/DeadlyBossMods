@@ -65,12 +65,12 @@ local yellToxicJav						= mod:NewPosYell(295607, DBM_CORE_AUTO_YELL_CUSTOM_POSIT
 local specWarnGTFO						= mod:NewSpecialWarningGTFO(300961, nil, nil, nil, 1, 8)
 
 --mod:AddTimerLine(BOSS)
-local timerCrushingReverbCD				= mod:NewCDTimer(21.1, 295332, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON, nil, mod:IsMelee() and 2, 4)
+local timerCrushingReverbCD				= mod:NewCDTimer(29.1, 295332, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON, nil, mod:IsMelee() and 2, 4)
 local timerOverwhelmingBarrageCD		= mod:NewCDTimer(40, 296551, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON, nil, 1, 4)
-local timerOverflowCD					= mod:NewCDTimer(31.6, 295346, nil, nil, nil, 3)--31.6 but can be delayed by boss spell queuing
-local timerInversionCD					= mod:NewCDTimer(90, 295791, nil, nil, nil, 2, nil, DBM_CORE_HEROIC_ICON, nil, 3, 4)
-local timerfrostshockboltsCD			= mod:NewCDTimer(61.2, 295601, nil, nil, nil, 3)
-local timerChimericMarksCD				= mod:NewAITimer(58.2, 294726, nil, nil, nil, 2)--Mythic
+local timerOverflowCD					= mod:NewCDTimer(40.1, 295346, nil, nil, nil, 3)--31.6 previously, but 40 as of mythic testing
+local timerInversionCD					= mod:NewCDTimer(72.9, 295791, nil, nil, nil, 2, nil, DBM_CORE_HEROIC_ICON, nil, 3, 4)
+local timerfrostshockboltsCD			= mod:NewCDTimer(52.2, 295601, nil, nil, nil, 3)
+local timerChimericMarksCD				= mod:NewCDTimer(22.8, 294726, nil, nil, nil, 2)--Mythic
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
 
@@ -86,9 +86,12 @@ function mod:OnCombatStart(delay)
 	timerCrushingReverbCD:Start(10.6-delay)
 	timerOverflowCD:Start(15.7-delay)
 	timerOverwhelmingBarrageCD:Start(40.2-delay)
-	timerfrostshockboltsCD:Start(47.3-delay)
+	timerfrostshockboltsCD:Start(50.8-delay)
 	if self:IsHard() then
-		timerInversionCD:Start(90-delay)
+		if self:IsMythic() then
+			timerChimericMarksCD:Start(9.9-delay)
+		end
+		timerInversionCD:Start(70-delay)
 		self:RegisterShortTermEvents(
 			"UNIT_POWER_FREQUENT player"
 		)
@@ -193,7 +196,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnOverflowingChill:Show(6, args.spellName, 6)
 			specWarnOverflowingChill:Play("runout")
 			yellOverflowingChill:Yell()
-			yellOverflowingChillFades:Countdown(5, nil, 6)
+			yellOverflowingChillFades:Countdown(spellId, nil, 6)
 		end
 	elseif spellId == 295421 then
 		warnOverflowingVenom:CombinedShow(0.3, args.destName)
@@ -201,7 +204,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnOverflowingVenom:Show()
 			specWarnOverflowingVenom:Play("runout")
 			yellOverflowingVenom:Yell(4, args.spellName, 4)
-			yellOverflowingVenomFades:Countdown(5, nil, 4)
+			yellOverflowingVenomFades:Countdown(spellId, nil, 4)
 		end
 	elseif (spellId == 300961 or spellId == 300962) and args:IsPlayer() then
 		specWarnGTFO:Show(args.spellName)
@@ -212,11 +215,11 @@ function mod:SPELL_AURA_APPLIED(args)
 			if spellId == 300882 then--Frost
 				specWarnInversionSicknessFrost:Show()
 				specWarnInversionSicknessFrost:Play("targetyou")
-				yellInversionSicknessFades:Countdown(4, nil, 6)
+				yellInversionSicknessFades:Countdown(spellId, nil, 6)
 			else--Toxic
 				specWarnInversionSicknessToxic:Show()
 				specWarnInversionSicknessToxic:Play("targetyou")
-				yellInversionSicknessFades:Countdown(4, nil, 4)
+				yellInversionSicknessFades:Countdown(spellId, nil, 4)
 			end
 			yellInversionSickness:Yell()
 		end

@@ -212,7 +212,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnAquaLance:Show()
 			specWarnAquaLance:Play("targetyou")
 			yellAquaLance:Yell()
-			yellAquaLanceFades:Countdown(5)
+			yellAquaLanceFades:Countdown(spellId)
 			if self.Options.NPAuraOnAquaLance then
 				DBM.Nameplate:Show(true, args.sourceGUID, spellId)
 			end

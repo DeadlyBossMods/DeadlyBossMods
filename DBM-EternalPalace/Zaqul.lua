@@ -238,7 +238,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			local icon = self.vb.dreadIcon
 			if args:IsPlayer() then
 				yellDread:Yell(icon, icon, icon)
-				yellDreadFades:Countdown(10, nil, icon)
+				yellDreadFades:Countdown(spellId, nil, icon)
 			end
 			if self.Options.SetIconDread then
 				self:SetIcon(args.destName, icon)
@@ -251,7 +251,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			local icon = self.vb.dreadIcon
 			if args:IsPlayer() then
 				yellManicDread:Yell(icon, icon, icon)
-				yellManicDreadFades:Countdown(10, nil, icon)
+				yellManicDreadFades:Countdown(spellId, nil, icon)
 			end
 			if self.Options.SetIconManicDreadScream then
 				self:SetIcon(args.destName, icon)
@@ -263,7 +263,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		local icon = self.vb.dreadIcon
 		if args:IsPlayer() then
 			yellDreadScream:Yell(icon, icon, icon)
-			yellDreadScreamFades:Countdown(10, nil, icon)
+			yellDreadScreamFades:Countdown(spellId, nil, icon)
 		end
 		if self.Options.SetIconDreadScream then
 			self:SetIcon(args.destName, icon)
@@ -278,7 +278,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnManifedNightmares:Show()
 			specWarnManifedNightmares:Play("targetyou")
 			yellManifedNightmares:Yell()
-			yellManifedNightmaresFades:Countdown(6)
+			yellManifedNightmaresFades:Countdown(spellId)
 		end
 	elseif spellId == 295327 then
 		if self:CheckDispelFilter() then

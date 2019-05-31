@@ -338,7 +338,7 @@ function mod:SPELL_AURA_APPLIED(args)
 					specWarnAphoticBlast:Play("targetyou")
 				end
 				yellAphoticBlast:Cancel()
-				yellAphoticBlast:Countdown(30)
+				yellAphoticBlast:Countdown(spellId)
 			end
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Show(6)
@@ -391,7 +391,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnCrushingDoubt:Show(self:IconNumToTexture(icon))
 			specWarnCrushingDoubt:Play("mm"..icon)
 			yellCrushingDoubt:Yell(icon, icon, icon)
-			yellCrushingDoubtFades:Countdown(10, nil, icon)
+			yellCrushingDoubtFades:Countdown(spellId, nil, icon)
 		end
 		if self.Options.SetIconCrushingDoubt then
 			self:SetIcon(args.destName, icon)

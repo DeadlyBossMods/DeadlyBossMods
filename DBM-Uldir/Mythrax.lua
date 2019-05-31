@@ -292,7 +292,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnImminentRuin:Show(self:IconNumToTexture(icon))
 			specWarnImminentRuin:Play("runout")--"mm"..icon
 			yellImminentRuin:Yell(icon, icon, icon)
-			yellImminentRuinFades:Countdown(12, nil, icon)
+			yellImminentRuinFades:Countdown(spellId, nil, icon)
 		elseif self:CheckNearby(12, args.destName) and not DBM:UnitDebuff("player", spellId) then
 			specWarnImminentRuinNear:CombinedShow(0.3, args.destName)--Combined show to prevent warning spam if multiple targets near you
 			specWarnImminentRuinNear:CancelVoice()--Avoid spam

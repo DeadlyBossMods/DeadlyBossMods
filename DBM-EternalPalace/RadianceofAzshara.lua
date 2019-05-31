@@ -157,7 +157,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnArcaneBomb:Show()
 			specWarnArcaneBomb:Play("runout")
 			yellArcaneBomb:Yell(icon, icon, icon)
-			yellArcaneBombFades:Countdown(10, nil, icon)
+			yellArcaneBombFades:Countdown(spellId, nil, icon)
 		end
 		if self.Options.SetIconOnArcaneBomb then
 			self:SetIcon(args.destname, self.vb.arcaneBombicon)

@@ -267,7 +267,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnFreneticCharge:Show(GROUP)
 			specWarnFreneticCharge:Play("gathershare")
 			yellFreneticCharge:Yell()
-			yellFreneticChargeFades:Countdown(4)
+			yellFreneticChargeFades:Countdown(spellId)
 		elseif not DBM:UnitDebuff("player", 297656, 303188, 297585) and not self:IsTank() then--Not tank, or affected by decrees that'd conflict with soaking
 			specWarnFreneticCharge:Show(GROUP)
 			specWarnFreneticCharge:Play("gathershare")
@@ -282,7 +282,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnFanaticalVerdict:Play("runout")
 			--end
 			yellFanaticalVerdict:Yell()
-			yellFanaticalVerdictFades:Countdown(8)
+			yellFanaticalVerdictFades:Countdown(spellId)
 		else
 			warnFanaticalVerdict:Show(args.destName)
 		end

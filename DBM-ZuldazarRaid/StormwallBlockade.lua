@@ -451,11 +451,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnCracklingLightning:Show()
 			specWarnCracklingLightning:Play("runout")
 			yellCracklingLightning:Yell()
-			local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", spellId)
-			if expireTime then
-				local remaining = expireTime-GetTime()
-				yellCracklingLightningFades:Countdown(remaining)
-			end
+			yellCracklingLightningFades:Countdown(spellId)
 		else
 			warnCracklingLightning:Show(args.destName)
 		end
@@ -465,11 +461,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnSeaStorm:Show()
 			specWarnSeaStorm:Play("runout")
 			yellSeaStorm:Yell()
-			local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", spellId)
-			if expireTime then
-				local remaining = expireTime-GetTime()
-				yellSeaStormFades:Countdown(remaining)
-			end
+			yellSeaStormFades:Countdown(spellId)
 		end
 	end
 end

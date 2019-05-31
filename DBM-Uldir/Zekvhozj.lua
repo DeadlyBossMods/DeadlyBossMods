@@ -253,7 +253,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnRoilingDeceit:Show(DBM_CORE_ROOM_EDGE)
 			specWarnRoilingDeceit:Play("runtoedge")
 			yellRoilingDeceit:Yell(self.vb.roilingCount)
-			yellRoilingDeceitFades:Countdown(12)
+			yellRoilingDeceitFades:Countdown(spellId)
 		end
 	elseif spellId == 265662 then
 		if self:AntiSpam(5, 7) then
@@ -264,7 +264,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		warnCorruptorsPact:CombinedShow(0.5, self.vb.corruptorsPactCount, args.destName)--Combined in case more than one soaks same ball (will happen in lfr/normal for sure or farm content for dps increases)
 		if args:IsPlayer() then
-			yellCorruptorsPact:Countdown(30)
+			yellCorruptorsPact:Countdown(spellId)
 			specWarnWillofCorruptorSoon:Schedule(26)
 			specWarnWillofCorruptorSoon:ScheduleVoice(26, "takedamage")--use this voice? can you off yourself before the MC?
 		end

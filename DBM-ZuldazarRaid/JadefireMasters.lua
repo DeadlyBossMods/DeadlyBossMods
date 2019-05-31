@@ -216,7 +216,7 @@ function mod:SPELL_AURA_APPLIED(args)
 					specWarnRisingFlames:Show(amount)
 					specWarnRisingFlames:Play("stackhigh")
 					yellRisingFlamesFades:Cancel()
-					yellRisingFlamesFades:Countdown(15)
+					yellRisingFlamesFades:Countdown(spellId)
 				else
 					if not UnitIsDeadOrGhost("player") and not DBM:UnitDebuff("player", spellId) then--Can't taunt less you've dropped yours off, period.
 						specWarnRisingFlamesOther:Show(args.destName)

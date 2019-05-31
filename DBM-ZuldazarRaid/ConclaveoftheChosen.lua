@@ -274,10 +274,10 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnCrawlingHex:Play("targetyou")
 			if icon > 8 then
 				yellCrawlingHexAlt:Yell()
-				yellCrawlingHexFadesAlt:Countdown(5)
+				yellCrawlingHexFadesAlt:Countdown(spellId)
 			else
 				yellCrawlingHex:Yell(icon, icon, icon)
-				yellCrawlingHexFades:Countdown(5, nil, icon)
+				yellCrawlingHexFades:Countdown(spellId, nil, icon)
 			end
 		elseif self:CheckNearby(8, args.destName) and not DBM:UnitDebuff("player", spellId) then
 			specWarnCrawlingHexNear:CombinedShow(0.3, args.destName)
@@ -314,7 +314,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnKimbulsWrath:Show()
 			specWarnKimbulsWrath:Play("targetyou")
 			yellKimbulsWrath:Yell()
-			yellKimbulsWrathFades:Countdown(12)
+			yellKimbulsWrathFades:Countdown(spellId)
 		elseif self:CheckNearby(5, args.destName) then
 			specWarnKimbulsWrathNear:CombinedShow(1, args.destName)
 			specWarnKimbulsWrathNear:ScheduleVoice(1, "runaway")
@@ -334,7 +334,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnAkundasWrath:Show()
 			specWarnAkundasWrath:Play("runout")
 			yellAkundasWrath:Yell()
-			yellAkundasWrathFades:Countdown(6)
+			yellAkundasWrathFades:Countdown(spellId)
 		else
 			warnAkundasWrath:CombinedShow(0.3, args.destName)
 		end

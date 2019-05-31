@@ -433,7 +433,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnScorchingDetonation:Show()
 			specWarnScorchingDetonation:Play("runout")
 			yellScorchingDetonation:Yell()
-			yellScorchingDetonationFades:Countdown(5)
+			yellScorchingDetonationFades:Countdown(spellId)
 		else
 			if playerDeathPhase then
 				if self.Options.AnnounceAlternatePhase then
@@ -480,7 +480,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnDeathsDoor:Show()
 			specWarnDeathsDoor:Play("runout")
 			yellDeathsDoor:Yell()
-			yellDeathsDoorFades:Countdown(8)
+			yellDeathsDoorFades:Countdown(spellId)
 		else
 			warnDeathsDoor:Show(args.destName)
 		end
