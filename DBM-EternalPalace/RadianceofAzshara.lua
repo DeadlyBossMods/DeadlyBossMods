@@ -124,7 +124,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnAncientTempest:Play("phasechange")
 		timerArcaneBombCD:Start(17.1, 1)
 		timerGaleBuffetCD:Start(22)
-	elseif spellId == 296701 then
+	elseif spellId == 296701 and self:AntiSpam(3, 3) then
 		specWarnGaleBuffet:Show()
 		specWarnGaleBuffet:Play("carefly")
 		timerGaleBuffetCD:Start()
