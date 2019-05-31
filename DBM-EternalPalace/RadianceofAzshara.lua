@@ -42,11 +42,11 @@ local specWarnGaleBuffet				= mod:NewSpecialWarningSpell(296701, nil, nil, nil, 
 
 --Rising Fury
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20076))
-local timerTideFistCD					= mod:NewNextCountTimer(58.2, 296546, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON, nil, 2, 4)
+local timerTideFistCD					= mod:NewNextCountTimer(58.2, 296546, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON, nil, mod:IsTank() and 2, 4)
 local timerArcanadoBurstCD				= mod:NewNextCountTimer(58.2, 296430, nil, nil, nil, 3)
 local timerArcaneBombCD					= mod:NewNextCountTimer(58.2, 296737, nil, "-Tank", nil, 3, nil, nil, nil, 3, 4)
 local timerUnshacklingPowerCD			= mod:NewNextCountTimer(58.2, 296894, nil, nil, nil, 2, nil, DBM_CORE_HEALER_ICON, nil, 1, 4)
-local timerAncientTempestCD				= mod:NewNextTimer(95.9, 152364, nil, nil, nil, 6)
+local timerAncientTempestCD				= mod:NewNextTimer(95.9, 295916, nil, nil, nil, 6)
 --Raging Storm
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20078))
 local timerGaleBuffetCD					= mod:NewCDTimer(23.1, 296701, nil, nil, nil, 2)
