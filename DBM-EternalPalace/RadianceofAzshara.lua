@@ -23,7 +23,8 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, verify correct unshackled power spellid for LFR or mythic
+--TODO, verify correct unshackled power spellid for LFR
+--TODO, see if heroic timers changed.
 local warnArcanadoBurst					= mod:NewSpellAnnounce(296430, 2)
 local warnSquallTrap					= mod:NewSpellAnnounce(296459, 4)
 local warnArcaneBomb					= mod:NewTargetNoFilterAnnounce(296737, 4)
@@ -63,10 +64,24 @@ mod.vb.tideFistCount = 0
 mod.vb.arcaneBombCount = 0
 mod.vb.arcaneBombicon = 1
 mod.vb.tempestStage = false
-local arcanadoTimers = {6.0, 12.0, 13.1, 10.9, 17.1, 6.9, 12.0}
-local tideFistTimers = {17.0, 20.0, 22.1, 17.9}
-local unshackledPowerTimers = {10.0, 18.0, 9.1, 17.0, 18.0}
-local arcaneBombTimers = {7.0, 20.0, 20.0, 20.0, 26.2}
+mod.vb.addsLeft = 1
+mod.vb.difficultyName = "None"
+local arcanadoTimers = {
+	["heroic"] = {6.0, 12.0, 13.1, 10.9, 17.1, 6.9, 12.0},
+	["mythic"] = {5.9, 12.6, 13.1, 10.5, 12.2, 13.1, 10.6}
+}
+local tideFistTimers = {
+	["heroic"] = {15.0, 20.0, 22.1, 17.9},
+	["mythic"] = {15.4, 20.5, 19.0, 20.1}
+}
+local unshackledPowerTimers = {
+	["heroic"] = {10.0, 18.0, 9.1, 17.0, 18.0},
+	["mythic"] = {10.0, 18.0, 18.0, 18.3, 18.2}
+}
+local arcaneBombTimers = {
+	["heroic"] = {7.0, 20.0, 20.0, 20.0, 26.2},
+	["mythic"] = {7.3, 19.9, 22.1, 18.0, 25.5}
+}
 
 function mod:OnCombatStart(delay)
 	self.vb.unshackledCount = 0
@@ -75,11 +90,21 @@ function mod:OnCombatStart(delay)
 	self.vb.arcaneBombCount = 0
 	self.vb.arcaneBombicon = 1
 	self.vb.tempestStage = false
+	--Seem same in heroic and mythic thus far
 	timerArcanadoBurstCD:Start(6-delay, 1)
 	timerArcaneBombCD:Start(7-delay, 1)
 	timerUnshacklingPowerCD:Start(10-delay, 1)
 	timerTideFistCD:Start(15-delay, 1)
 	timerAncientTempestCD:Start(95.8)
+	if self:IsMythic() then
+		self.vb.difficultyName = "mythic"
+	elseif self:IsHeroic() then
+		self.vb.difficultyName = "heroic"
+	elseif self:IsNormal() then
+		self.vb.difficultyName = "normal"
+	else
+		self.vb.difficultyName = "lfr"
+	end
 end
 
 function mod:OnCombatEnd()
@@ -99,35 +124,47 @@ function mod:SPELL_CAST_START(args)
 			specWarnTideFistCast:Show()
 			specWarnTideFistCast:Play("defensive")
 		end
-		local timer = tideFistTimers[self.vb.tideFistCount+1]
+		local timer = tideFistTimers[self.vb.difficultyName][self.vb.tideFistCount+1]
 		if timer then
 			timerTideFistCD:Start(timer, self.vb.tideFistCount+1)
 		end
 	elseif spellId == 296459 then
 		warnSquallTrap:Show()
-	elseif spellId == 296894 or spellId == 302465 then--296894 verified, 302465 unknown (maybe lfr or mythic)
+	elseif spellId == 296894 or spellId == 302465 then--296894 verified heroic and mythic, 302465 unknown (maybe lfr)
 		self.vb.unshackledCount = self.vb.unshackledCount + 1
 		specWarnUnshackledPower:Show(self.vb.unshackledCount)
 		specWarnUnshackledPower:Play("aesoon")
-		local timer = unshackledPowerTimers[self.vb.unshackledCount+1]
+		local timer = unshackledPowerTimers[self.vb.difficultyName][self.vb.unshackledCount+1]
 		if timer then
 			timerUnshacklingPowerCD:Start(timer, self.vb.unshackledCount+1)
 		end
 	elseif spellId == 295916 then--Ancient Tempest (phase change)
 		self.vb.tempestStage = true
 		self.vb.arcaneBombCount = 0
+		if self:IsMythic() then
+			self.vb.addsLeft = 2
+		else
+			self.vb.addsLeft = 1
+		end
 		timerTideFistCD:Stop()
 		timerArcanadoBurstCD:Stop()
 		timerArcaneBombCD:Stop()
 		timerUnshacklingPowerCD:Stop()
 		specWarnAncientTempest:Show()
 		specWarnAncientTempest:Play("phasechange")
-		timerArcaneBombCD:Start(17.1, 1)
-		timerGaleBuffetCD:Start(22)
-	elseif spellId == 296701 and self:AntiSpam(3, 3) then
-		specWarnGaleBuffet:Show()
-		specWarnGaleBuffet:Play("carefly")
-		timerGaleBuffetCD:Start()
+		if self:IsMythic() then
+			timerArcaneBombCD:Start(12.6, 1)
+			timerGaleBuffetCD:Start(18)
+		else
+			timerArcaneBombCD:Start(17.1, 1)
+			timerGaleBuffetCD:Start(22)
+		end
+	elseif spellId == 296701 then
+		if self:CheckBossDistance(args.sourceGUID, true, 34471) then--43 yards
+			specWarnGaleBuffet:Show()
+			specWarnGaleBuffet:Play("carefly")
+		end
+		timerGaleBuffetCD:Start(nil, args.sourceGUID)
 	end
 end
 
@@ -136,7 +173,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if spellId == 296737 and self:AntiSpam(5, 1) then
 		self.vb.arcaneBombicon = 1
 		self.vb.arcaneBombCount = self.vb.arcaneBombCount + 1
-		local timer = self.vb.tempestStage and 20 or arcaneBombTimers[self.vb.arcaneBombCount+1]
+		local timer = self.vb.tempestStage and 20 or arcaneBombTimers[self.vb.difficultyName][self.vb.arcaneBombCount+1]
 		if timer then
 			timerArcaneBombCD:Start(timer, self.vb.arcaneBombCount+1)
 		end
@@ -192,18 +229,21 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 152512 then--Stormwraith
-		self.vb.tempestStage = false
-		self.vb.unshackledCount = 0
-		self.vb.arcanadoCount = 0
-		self.vb.tideFistCount = 0
-		self.vb.arcaneBombCount = 0
-		timerGaleBuffetCD:Stop()
-		timerArcaneBombCD:Stop()
-		timerArcanadoBurstCD:Start(6, 1)
-		timerArcaneBombCD:Start(7, 1)
-		timerUnshacklingPowerCD:Start(10, 1)
-		timerTideFistCD:Start(15, 1)
-		timerAncientTempestCD:Start(95.8)
+		timerGaleBuffetCD:Stop(args.destGUID)
+		self.vb.addsLeft = self.vb.addsLeft - 1
+		if self.vb.addsLeft == 0 then
+			self.vb.tempestStage = false
+			self.vb.unshackledCount = 0
+			self.vb.arcanadoCount = 0
+			self.vb.tideFistCount = 0
+			self.vb.arcaneBombCount = 0
+			timerArcaneBombCD:Stop()
+			timerArcanadoBurstCD:Start(6, 1)
+			timerArcaneBombCD:Start(7, 1)
+			timerUnshacklingPowerCD:Start(10, 1)
+			timerTideFistCD:Start(15, 1)
+			timerAncientTempestCD:Start(95.8)
+		end
 	end
 end
 
@@ -211,7 +251,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 296428 then--Arcanado Burst
 		self.vb.arcanadoCount = self.vb.arcanadoCount + 1
 		warnArcanadoBurst:Show(self.vb.arcanadoCount)
-		local timer = arcanadoTimers[self.vb.arcanadoCount+1]
+		local timer = arcanadoTimers[self.vb.difficultyName][self.vb.arcanadoCount+1]
 		if timer then
 			timerArcanadoBurstCD:Start(timer, self.vb.arcanadoCount+1)
 		end
