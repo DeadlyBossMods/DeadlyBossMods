@@ -195,7 +195,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnOverflowingChill:Show(6, args.spellName, 6)
 			specWarnOverflowingChill:Play("runout")
-			yellOverflowingChill:Yell()
+			yellOverflowingChill:Yell(6, args.spellName, 6)
 			yellOverflowingChillFades:Countdown(spellId, nil, 6)
 		end
 	elseif spellId == 295421 then
@@ -263,7 +263,7 @@ do
 				if targetname == UnitName("player") then
 					specWarnToxicJav:Show()
 					specWarnToxicJav:Play("targetyou")
-					yellToxicJav:Yell(6, frostJav, 6)
+					yellToxicJav:Yell(6, toxicJav, 6)
 				end
 			end
 		elseif msg:find("spell:295606") then--Frost Jav
@@ -271,7 +271,7 @@ do
 				if targetname == UnitName("player") then
 					specWarnFrostJav:Show()
 					specWarnFrostJav:Play("targetyou")
-					yellFrostJav:Yell(4, toxicJav, 4)
+					yellFrostJav:Yell(4, frostJav, 4)
 				end
 			end
 		end

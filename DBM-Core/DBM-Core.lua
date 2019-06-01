@@ -917,7 +917,7 @@ do
 		end
 	end
 
-	function DBM:UnregisterInCombatEvents(srmOnly)
+	function DBM:UnregisterInCombatEvents(srmOnly, srmIncluded)
 		for event, mods in pairs(registeredEvents) do
 			if srmOnly then
 				local i = 1
@@ -934,7 +934,7 @@ do
 			elseif (event:sub(0, 6) == "SPELL_"and event ~= "SPELL_NAME_UPDATE" or event:sub(0, 6) == "RANGE_") then
 				local i = 1
 				while mods[i] do
-					if mods[i] == self and event ~= "SPELL_AURA_REMOVED" then
+					if mods[i] == self and (srmIncluded or event ~= "SPELL_AURA_REMOVED") then
 						local findEvent = findRealEvent(self.inCombatOnlyEvents, event)
 						if findEvent then
 							unregisterCLEUEvent(self, findEvent)
@@ -6149,14 +6149,20 @@ do
 		end
 	end
 
-	function DBM:EndCombat(mod, wipe)
+	function DBM:EndCombat(mod, wipe, srmIncluded)
 		if removeEntry(inCombat, mod) then
 			local scenario = mod.addon.type == "SCENARIO" and not mod.soloChallenge
 			if mod.inCombatOnlyEvents and mod.inCombatOnlyEventsRegistered then
-				-- unregister all events except for SPELL_AURA_REMOVED events (might still be needed to remove icons etc...)
-				mod:UnregisterInCombatEvents()
-				self:Schedule(2, mod.UnregisterInCombatEvents, mod, true) -- 2 seconds should be enough for all auras to fade
+				if srmIncluded then-- unregister all events including SPELL_AURA_REMOVED events
+					mod:UnregisterInCombatEvents(false, true)
+				else-- unregister all events except for SPELL_AURA_REMOVED events (might still be needed to remove icons etc...)
+					mod:UnregisterInCombatEvents()
+					self:Schedule(2, mod.UnregisterInCombatEvents, mod, true) -- 2 seconds should be enough for all auras to fade
+				end
 				self:Schedule(3, mod.Stop, mod) -- Remove accident started timers.
+				if mod.OnCombatEnd then
+					self:Schedule(3, mod.OnCombatEnd(wipe), mod) -- Remove accidentally shown frames
+				end
 				mod.inCombatOnlyEventsRegistered = nil
 			end
 			if mod.updateInterval then
