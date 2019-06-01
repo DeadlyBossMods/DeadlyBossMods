@@ -67,18 +67,26 @@ mod.vb.tempestStage = false
 mod.vb.addsLeft = 1
 mod.vb.difficultyName = "None"
 local arcanadoTimers = {
+	["lfr"] = {6.0, 12.0, 13.1, 10.9, 17.1, 6.9, 12.0},--Not verified
+	["normal"] = {6.0, 12.0, 13.1, 10.9, 17.1, 6.9, 12.0},--Not verified
 	["heroic"] = {6.0, 12.0, 13.1, 10.9, 17.1, 6.9, 12.0},
 	["mythic"] = {5.9, 12.6, 13.1, 10.5, 12.2, 13.1, 10.6}
 }
 local tideFistTimers = {
+	["lfr"] = {15.0, 20.0, 22.1, 17.9},--Not verified
+	["normal"] = {15.0, 20.0, 22.1, 17.9},--Not verified
 	["heroic"] = {15.0, 20.0, 22.1, 17.9},
 	["mythic"] = {15.4, 20.5, 19.0, 20.1}
 }
 local unshackledPowerTimers = {
+	["lfr"] = {10.0, 18.0, 9.1, 17.0, 18.0},--Not verified
+	["normal"] = {10.0, 18.0, 9.1, 17.0, 18.0},--Not verified
 	["heroic"] = {10.0, 18.0, 9.1, 17.0, 18.0},
 	["mythic"] = {10.0, 18.0, 18.0, 18.3, 18.2}
 }
 local arcaneBombTimers = {
+	["lfr"] = {7.0, 20.0, 20.0, 20.0, 26.2},--Not verified
+	["normal"] = {7.0, 20.0, 20.0, 20.0, 26.2},--Not verified
 	["heroic"] = {7.0, 20.0, 20.0, 20.0, 26.2},
 	["mythic"] = {7.3, 19.9, 22.1, 18.0, 25.5}
 }
