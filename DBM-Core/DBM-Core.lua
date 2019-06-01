@@ -6160,9 +6160,6 @@ do
 					self:Schedule(2, mod.UnregisterInCombatEvents, mod, true) -- 2 seconds should be enough for all auras to fade
 				end
 				self:Schedule(3, mod.Stop, mod) -- Remove accident started timers.
-				if mod.OnCombatEnd then
-					self:Schedule(3, mod.OnCombatEnd(wipe), mod) -- Remove accidentally shown frames
-				end
 				mod.inCombatOnlyEventsRegistered = nil
 			end
 			if mod.updateInterval then
