@@ -231,7 +231,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 294711 or spellId == 294715 then
 		MarksStacks[args.destName] = nil
-		if self.Options.InfoFrame and self:IsInCombat() then--Because there is no other low cpu alternative that works, so we'll spam check combat status instead
+		if self.Options.InfoFrame then
 			DBM.InfoFrame:UpdateTable(MarksStacks)
 		end
 	elseif spellId == 295348 then
