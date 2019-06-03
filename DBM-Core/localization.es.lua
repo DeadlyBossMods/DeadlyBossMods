@@ -20,7 +20,6 @@ DBM_COPY_URL_DIALOG					= "Copiar vínculo"
 --Post Patch 7.1
 DBM_CORE_NO_RANGE					= "No se puede usar el radar de distancia en estancias. Se procederá a usar el marco de distancia por texto."
 DBM_CORE_NO_ARROW					= "No se puede usar la flecha en estancias."
-DBM_CORE_ARROW_SUMMONED				= "Flecha activada. SiArrow has been activated. If you did not do this manually, you have a 3rd party addon configured to activated it for you"
 DBM_CORE_NO_HUD						= "No se puede usar el indicador en pantalla en estancias."
 
 DBM_CORE_DYNAMIC_DIFFICULTY_CLUMP	= "DBM ha desactivado el marco de distancia dinámico para este combate debido a la falta de información sobre las diferencias según el número de jugadores."

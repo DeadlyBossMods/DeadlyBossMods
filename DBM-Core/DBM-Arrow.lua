@@ -178,17 +178,10 @@ end
 ----------------------
 --  Public Methods  --
 ----------------------
-local recentlyHidden = false
-local function clearVariable()
-	recentlyHidden = false
-end
 
---/run DBM.Arrow:ShowRunTo(50, 50, 1, nil, true, true, "Waypoint")
-local function show(runAway, x, y, distance, time, legacy, dwayed, title)
+--/run DBM.Arrow:ShowRunTo(50, 50, 1, nil, true, "Waypoint")
+local function show(runAway, x, y, distance, time, legacy, title)
 	if DBM:HasMapRestrictions() then return end
-	if not frame:IsShown() and not recentlyHidden and not dwayed then
-		DBM:AddMsg(DBM_CORE_ARROW_SUMMONED)
-	end
 	local player
 	if type(x) == "string" then
 		player, hideDistance, hideTime = x, y, hideDistance
@@ -260,11 +253,8 @@ function arrowFrame:IsShown()
 end
 
 function arrowFrame:Hide(autoHide)
-	recentlyHidden = true
 	textframe:Hide()
 	frame:Hide()
-	DBM:Unschedule(clearVariable)
-	DBM:Schedule(10, clearVariable)
 end
 
 local function endMove()

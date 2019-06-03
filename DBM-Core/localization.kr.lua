@@ -20,7 +20,6 @@ DBM_COPY_URL_DIALOG					= "URL 복사"
 --Post Patch 7.1
 DBM_CORE_NO_RANGE					= "거리 레이더를 인스턴스 던전에서 사용할 수 없습니다. 예전의 텍스트 방식 거리창으로 대체됩니다."
 DBM_CORE_NO_ARROW					= "화살표 기능을 인스턴스 던전에서 사용할 수 없습니다"
-DBM_CORE_ARROW_SUMMONED				= "DBM 화살표가 작동되었습니다. 화살표가 작동하지 않는다면 설치한 다른 써드파티 애드온에 작동 방식이 설정되어 있는 것입니다"
 DBM_CORE_NO_HUD						= "HUD 기능을 인스턴스 던전에서 사용할 수 없습니다"
 
 DBM_CORE_DYNAMIC_DIFFICULTY_CLUMP	= "현재 공격대 규모에 맞는 필요한 플레이어 숫자 관련 정보가 부족하여 DBM이 이 전투에서 동적 거리창을 비활성화 했습니다."
@@ -342,7 +341,7 @@ DBM_CORE_AUTO_ANNOUNCE_OPTIONS.adds			= "$spell:%s의 남은 수 알림 보기"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.cast			= "$spell:%s 시전시 경고 보기"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.soon		= prewarnOption
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.sooncount	= prewarnOption
-DBM_CORE_AUTO_ANNOUNCE_OPTIONS.prewarn 		= prewarnOption 
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.prewarn 		= prewarnOption
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.bait		= "$spell:%s 사전 경고 보기 (위치 유도)"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.stage		= "%s단계 알림"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.stagechange	= "단계 전환 알림"

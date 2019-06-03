@@ -26,7 +26,6 @@ DBM_COPY_URL_DIALOG					= "复制网址"
 --Post Patch 7.1
 DBM_CORE_NO_RANGE					= "距离雷达在副本中无法使用，该功能会使用文本代替"
 DBM_CORE_NO_ARROW					= "箭头在副本中无法使用"
-DBM_CORE_ARROW_SUMMONED				= "DBM箭头被启用了. 如果不是你启用的, 说明有一个第三方插件调用了DBM箭头."
 DBM_CORE_NO_HUD						= "HUDMap 在副本中无法使用"
 
 DBM_CORE_DYNAMIC_DIFFICULTY_CLUMP	= "由于玩家数量不足，DBM 无法开启动态距离检测。"
