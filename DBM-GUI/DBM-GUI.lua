@@ -306,7 +306,7 @@ local function MixinSharedMedia3(mediatype, mediatable)
 				elseif mediatype == "font" then
 					tinsert(result, {text=k, value=v, font=v})
 				--Only insert paths from addons folder, ignore file data ID, since there is no clean way to handle supporitng both FDID and soundkit at same time
-				elseif mediatype == "sound" and type(v) == "string" and v:find("addons") then
+				elseif mediatype == "sound" and type(v) == "string" and v:find("Addons") then
 					tinsert(result, {text=k, value=v, sound=true})
 				end
 			end
