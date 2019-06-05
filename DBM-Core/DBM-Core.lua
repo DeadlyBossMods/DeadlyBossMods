@@ -3312,7 +3312,7 @@ function DBM:LoadModOptions(modId, inCombat, first)
 					elseif option:find("SWSound") and (testBuild or wowTOC >= 80200) then
 						if savedOptions[id][profileNum][option] and (type(savedOptions[id][profileNum][option]) == "string") then
 							local searchMsg = (savedOptions[id][profileNum][option]):lower()
-							if not searchMsg:find("addOns") then
+							if not searchMsg:find("addons") then
 								savedOptions[id][profileNum][option] = mod.DefaultOptions[option]
 								self:Debug("Migrated "..option.." to option defaults", 2)
 							end
@@ -3693,42 +3693,42 @@ do
 			local migrated = false
 			if type(self.Options.RaidWarningSound) == "string" then
 				local searchMsg = self.Options.RaidWarningSound:lower()
-				if not searchMsg:find("addOns") then
+				if not searchMsg:find("addons") then
 					self.Options.RaidWarningSound = self.DefaultOptions.RaidWarningSound
 					migrated = true
 				end
 			end
 			if type(self.Options.SpecialWarningSound) == "string" then
 				local searchMsg = self.Options.SpecialWarningSound:lower()
-				if not searchMsg:find("addOns") then
+				if not searchMsg:find("addons") then
 					self.Options.SpecialWarningSound = self.DefaultOptions.SpecialWarningSound
 					migrated = true
 				end
 			end
 			if type(self.Options.SpecialWarningSound2) == "string" then
 				local searchMsg = self.Options.SpecialWarningSound2:lower()
-				if not searchMsg:find("addOns") then
+				if not searchMsg:find("addons") then
 					self.Options.SpecialWarningSound2 = self.DefaultOptions.SpecialWarningSound2
 					migrated = true
 				end
 			end
 			if type(self.Options.SpecialWarningSound3) == "string" then
 				local searchMsg = self.Options.SpecialWarningSound3:lower()
-				if not searchMsg:find("addOns") then
+				if not searchMsg:find("addons") then
 					self.Options.SpecialWarningSound3 = self.DefaultOptions.SpecialWarningSound3
 					migrated = true
 				end
 			end
 			if type(self.Options.SpecialWarningSound4) == "string" then
 				local searchMsg = self.Options.SpecialWarningSound4:lower()
-				if not searchMsg:find("addOns") then
+				if not searchMsg:find("addons") then
 					self.Options.SpecialWarningSound4 = self.DefaultOptions.SpecialWarningSound4
 					migrated = true
 				end
 			end
 			if type(self.Options.SpecialWarningSound5) == "string" then
 				local searchMsg = self.Options.SpecialWarningSound5:lower()
-				if not searchMsg:find("addOns") then
+				if not searchMsg:find("addons") then
 					self.Options.SpecialWarningSound5 = self.DefaultOptions.SpecialWarningSound5
 					migrated = true
 				end
