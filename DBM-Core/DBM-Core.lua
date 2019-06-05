@@ -3310,9 +3310,12 @@ function DBM:LoadModOptions(modId, inCombat, first)
 						end
 					--Fix options for custom special warning sounds not in addons folder that are not using soundkit IDs
 					elseif option:find("SWSound") and (testBuild or wowTOC >= 80200) then
-						if savedOptions[id][profileNum][option] and (type(savedOptions[id][profileNum][option]) == "string") and not (savedOptions[id][profileNum][option]):find("AddOns") then
-							savedOptions[id][profileNum][option] = mod.DefaultOptions[option]
-							self:Debug("Migrated "..option.." to option defaults", 2)
+						if savedOptions[id][profileNum][option] and (type(savedOptions[id][profileNum][option]) == "string") then
+							local searchMsg = (savedOptions[id][profileNum][option]):lower()
+							if not searchMsg:find("addOns") then
+								savedOptions[id][profileNum][option] = mod.DefaultOptions[option]
+								self:Debug("Migrated "..option.." to option defaults", 2)
+							end
 						end
 					end
 				end
@@ -3688,29 +3691,47 @@ do
 		--This will in the short term, screw with people trying to use LibSharedMedia sound files on 8.1.5 until LSM has migrated as well.
 		if (testBuild or wowTOC >= 80200) then
 			local migrated = false
-			if type(self.Options.RaidWarningSound) == "string" and not self.Options.RaidWarningSound:find("AddOns") then
-				self.Options.RaidWarningSound = self.DefaultOptions.RaidWarningSound
-				migrated = true
+			if type(self.Options.RaidWarningSound) == "string" then
+				local searchMsg = self.Options.RaidWarningSound:lower()
+				if not searchMsg:find("addOns") then
+					self.Options.RaidWarningSound = self.DefaultOptions.RaidWarningSound
+					migrated = true
+				end
 			end
-			if type(self.Options.SpecialWarningSound) == "string" and not self.Options.SpecialWarningSound:find("AddOns") then
-				self.Options.SpecialWarningSound = self.DefaultOptions.SpecialWarningSound
-				migrated = true
+			if type(self.Options.SpecialWarningSound) == "string" then
+				local searchMsg = self.Options.SpecialWarningSound:lower()
+				if not searchMsg:find("addOns") then
+					self.Options.SpecialWarningSound = self.DefaultOptions.SpecialWarningSound
+					migrated = true
+				end
 			end
-			if type(self.Options.SpecialWarningSound2) == "string" and not self.Options.SpecialWarningSound2:find("AddOns") then
-				self.Options.SpecialWarningSound2 = self.DefaultOptions.SpecialWarningSound2
-				migrated = true
+			if type(self.Options.SpecialWarningSound2) == "string" then
+				local searchMsg = self.Options.SpecialWarningSound2:lower()
+				if not searchMsg:find("addOns") then
+					self.Options.SpecialWarningSound2 = self.DefaultOptions.SpecialWarningSound2
+					migrated = true
+				end
 			end
-			if type(self.Options.SpecialWarningSound3) == "string" and not self.Options.SpecialWarningSound3:find("AddOns") then
-				self.Options.SpecialWarningSound3 = self.DefaultOptions.SpecialWarningSound3
-				migrated= true
+			if type(self.Options.SpecialWarningSound3) == "string" then
+				local searchMsg = self.Options.SpecialWarningSound3:lower()
+				if not searchMsg:find("addOns") then
+					self.Options.SpecialWarningSound3 = self.DefaultOptions.SpecialWarningSound3
+					migrated = true
+				end
 			end
-			if type(self.Options.SpecialWarningSound4) == "string" and not self.Options.SpecialWarningSound4:find("AddOns") then
-				self.Options.SpecialWarningSound4 = self.DefaultOptions.SpecialWarningSound4
-				migrated = true
+			if type(self.Options.SpecialWarningSound4) == "string" then
+				local searchMsg = self.Options.SpecialWarningSound4:lower()
+				if not searchMsg:find("addOns") then
+					self.Options.SpecialWarningSound4 = self.DefaultOptions.SpecialWarningSound4
+					migrated = true
+				end
 			end
-			if type(self.Options.SpecialWarningSound5) == "string" and not self.Options.SpecialWarningSound5:find("AddOns") then
-				self.Options.SpecialWarningSound5 = self.DefaultOptions.SpecialWarningSound5
-				migrated = true
+			if type(self.Options.SpecialWarningSound5) == "string" then
+				local searchMsg = self.Options.SpecialWarningSound5:lower()
+				if not searchMsg:find("addOns") then
+					self.Options.SpecialWarningSound5 = self.DefaultOptions.SpecialWarningSound5
+					migrated = true
+				end
 			end
 			if migrated then
 				self:AddMsg(DBM_CORE_SOUNDKIT_MIGRATION)
