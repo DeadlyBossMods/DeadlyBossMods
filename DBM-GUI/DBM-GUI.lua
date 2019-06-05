@@ -239,16 +239,6 @@ local function MixinSharedMedia3(mediatype, mediatable)
 	if not soundsRegistered then
 		local LSM = LibStub("LibSharedMedia-3.0")
 		soundsRegistered = true
-		--Internal Game Media
-		--8.2 FIXME, sound kit IDs already ready, just waiting on LSM to support them. Currently LSM ignores media that doesn't end in .wav or .ogg
-		--LSM:Register("sound", "Headless Horseman: Laugh", [[Sound\Creature\HeadlessHorseman\Horseman_Laugh_01.ogg]])--11965
-		--LSM:Register("sound", "Yogg Saron: Laugh", [[Sound\Creature\YoggSaron\UR_YoggSaron_Slay01.ogg]])--15757
-		--LSM:Register("sound", "Loatheb: I see you", [[Sound\Creature\Loathstare\Loa_Naxx_Aggro02.ogg]])--128466
-		--LSM:Register("sound", "Lady Malande: Flee", [[Sound\Creature\LadyMalande\BLCKTMPLE_LadyMal_Aggro01.ogg]])--11482
-		--LSM:Register("sound", "Milhouse: Light You Up", [[Sound\Creature\MillhouseManastorm\TEMPEST_Millhouse_Pyro01.ogg]])--49764
-		--LSM:Register("sound", "Void Reaver: Marked", [[Sound\Creature\VoidReaver\TEMPEST_VoidRvr_Aggro01.ogg]])--11213
-		--LSM:Register("sound", "Kaz'rogal: Marked", [[Sound\Creature\KazRogal\CAV_Kaz_Mark02.ogg]])--11052
-		--LSM:Register("sound", "C'Thun: You Will Die!", [[Sound\Creature\CThun\CThunYouWillDIe.ogg]])--8585
 		--Embedded Sound Clip media
 		LSM:Register("sound", "Jaina: Beware", [[Interface\AddOns\DBM-Core\sounds\SoundClips\beware.ogg]])
 		LSM:Register("sound", "Jaina: Beware (reverb)", [[Interface\AddOns\DBM-Core\sounds\SoundClips\beware_with_reverb.ogg]])
@@ -311,12 +301,13 @@ local function MixinSharedMedia3(mediatype, mediatable)
 				end
 			end
 			if insertme then
-				if mediatype == "sound" then
-					tinsert(result, {text=k, value=v, sound=true})
-				elseif mediatype == "statusbar" then
+				if mediatype == "statusbar" then
 					tinsert(result, {text=k, value=v, texture=v})
 				elseif mediatype == "font" then
 					tinsert(result, {text=k, value=v, font=v})
+				--Only insert paths, ignore file data ID, since there is no clean way to handle supporitng both FDID and soundkit at same time
+				elseif mediatype == "sound" and type(v) == "string" then
+					tinsert(result, {text=k, value=v, sound=true})
 				end
 			end
 		end
@@ -2721,7 +2712,6 @@ local function CreateOptionsMenu()
 			{	text	= "NotPrepared2",		value 	= 68563, 		sound=true },--"Sound\\Creature\\Illidan_Stormrage\\VO_703_Illidan_Stormrage_03.ogg"
 			{	text	= "RunAwayLittleGirl",	value 	= 9278, 		sound=true },--"Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.ogg"
 			{	text	= "NightElfBell",		value 	= 11742, 		sound=true },--"Sound\\Doodad\\BellTollNightElf.ogg"
-			--8.2 FIXME, move back to LSM when supported
 			{	text	= "Headless Horseman: Laugh", value = 11965, sound = true },
 			{	text	= "Yogg Saron: Laugh", value = 15757, sound = true },
 			{	text	= "Loatheb: I see you", value = 128466, sound = true },
