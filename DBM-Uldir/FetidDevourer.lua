@@ -76,9 +76,9 @@ do
 				local _, _, _, _, endTime = UnitCastingInfo(UnitID)
 				local time = ((endTime or 0) / 1000) - GetTime()
 				if time and time > 0 then
-					addLine(i.."--"..floor(unitHealth).."%", floor(time))
+					addLine(i.."|"..floor(unitHealth).."%", floor(time))
 				else
-					addLine(i.."--"..floor(unitHealth).."%", 0)
+					addLine(i.."|"..floor(unitHealth).."%", 0)
 				end
 			end
 		end
@@ -212,7 +212,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if self:IsMythic() then
 			yellMalodorousMiasmaFades:Cancel()
-			yellMalodorousMiasmaFades:Countdown(18)
+			yellMalodorousMiasmaFades:Countdown(spellId)
 			updateRangeFrame(self)
 		end
 	elseif spellId == 262314 and args:IsPlayer() then
@@ -229,7 +229,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if self:IsMythic() then
 			yellPutridParoxysmFades:Cancel()
-			yellPutridParoxysmFades:Countdown(6)
+			yellPutridParoxysmFades:Countdown(spellId)
 			updateRangeFrame(self)
 		end
 	elseif spellId == 262378 then

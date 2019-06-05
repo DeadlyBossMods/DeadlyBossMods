@@ -20,7 +20,6 @@ DBM_COPY_URL_DIALOG					= "複製網址"
 --Post Patch 7.1
 DBM_CORE_NO_RANGE					= "距離雷達不能在副本中使用，使用傳統文字距離框架取代"
 DBM_CORE_NO_ARROW					= "箭頭不能在副本中使用"
-DBM_CORE_ARROW_SUMMONED				= "箭頭已被啟用。如果你沒有開啟此功能，可能有其他第三方插件為你啟用此功能。"
 DBM_CORE_NO_HUD						= "HUDMap 不能在副本中使用"
 
 DBM_CORE_DYNAMIC_DIFFICULTY_CLUMP	= "DBM已中禁用動態距離框架，你目前的團隊人數在這場戰鬥中的機制資訊不足。"

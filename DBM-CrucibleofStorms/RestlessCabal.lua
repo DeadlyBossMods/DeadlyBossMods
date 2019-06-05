@@ -17,8 +17,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 282675 282589 282515 282517 282617 283540 282621 285154",
 	"SPELL_CAST_SUCCESS 282561 282384 282407 285416 283066 283540 282621",
 	"SPELL_AURA_APPLIED 282741 282742 282914 283524 282386 282540 282561 282384 282432 287876 282621 282566",
-	"SPELL_AURA_APPLIED_DOSE 282384 282566",
-	"SPELL_AURA_REFRESH 282384 282386 283524",
+	"SPELL_AURA_APPLIED_DOSE 282384 282566 282386",
+	"SPELL_AURA_REFRESH 282384 282386",
 	"SPELL_AURA_REMOVED 282741 282742 282386 282561 282432 282741 282621 282566",
 	"SPELL_INTERRUPT",
 	"SPELL_SUMMON 282515",
@@ -338,7 +338,7 @@ function mod:SPELL_AURA_APPLIED(args)
 					specWarnAphoticBlast:Play("targetyou")
 				end
 				yellAphoticBlast:Cancel()
-				yellAphoticBlast:Countdown(30)
+				yellAphoticBlast:Countdown(spellId)
 			end
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Show(6)
@@ -391,7 +391,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnCrushingDoubt:Show(self:IconNumToTexture(icon))
 			specWarnCrushingDoubt:Play("mm"..icon)
 			yellCrushingDoubt:Yell(icon, icon, icon)
-			yellCrushingDoubtFades:Countdown(10, nil, icon)
+			yellCrushingDoubtFades:Countdown(spellId, nil, icon)
 		end
 		if self.Options.SetIconCrushingDoubt then
 			self:SetIcon(args.destName, icon)

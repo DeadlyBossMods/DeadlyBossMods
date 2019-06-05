@@ -172,7 +172,7 @@ do
 			--Scan raid for notable debuffs and add them
 			for i=1, #matrixTargets do
 				local name = matrixTargets[i]
-				addLine(i.."--"..matrixSpellName, name)
+				addLine(i.."|"..matrixSpellName, name)
 			end
 			if mod.vb.matrixActive then
 				if mod:IsMythic() then--No side, short text
@@ -532,7 +532,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnExplosiveCorruption:Play("runout")
 				yellExplosiveCorruption:Yell()
 			end
-			yellExplosiveCorruptionFades:Countdown(spellId == 277079 and 6 or 4)
+			yellExplosiveCorruptionFades:Countdown(spellId)
 		end
 		if self.Options.SetIconOnExplosiveCorruption then
 			self:SetIcon(args.destName, self.vb.explosiveIcon)
@@ -571,11 +571,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnBloodFeast:Show()
 			specWarnBloodFeast:Play("targetyou")
 			yellBloodFeast:Yell()
-			local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", spellId)--Remove debuff scan once mythic time confirmed, then can hard code for efficiency sake
-			if expireTime then--Done this way so hotfix automatically goes through
-				local remaining = expireTime-GetTime()
-				yellBloodFeastFades:Countdown(remaining, nil, 7)
-			end
+			yellBloodFeastFades:Countdown(spellId, nil, 7)
 		else
 			specWarnBloodFeastTarget:Show(self.vb.bloodFeastCount, args.destName)
 			specWarnBloodFeastTarget:Play("bloodfeast")

@@ -376,7 +376,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if args:IsPlayer() then
 			yellRupturingBloodFades:Cancel()
-			yellRupturingBloodFades:Countdown(20)
+			yellRupturingBloodFades:Countdown(spellId)
 			specWarnRupturingBloodEdge:Cancel()
 			specWarnRupturingBloodEdge:Schedule(15, DBM_CORE_ROOM_EDGE)
 			specWarnRupturingBloodEdge:CancelVoice()
@@ -388,7 +388,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnDarkRevolation:Show(self:IconNumToTexture(icon))
 			specWarnDarkRevolation:Play("mm"..icon)
 			yellDarkRevolation:Yell(icon, icon, icon)
-			yellDarkRevolationFades:Countdown(10, nil, icon)
+			yellDarkRevolationFades:Countdown(spellId, nil, icon)
 		end
 		if self.Options.SetIconDarkRev then
 			self:SetIcon(args.destName, icon)

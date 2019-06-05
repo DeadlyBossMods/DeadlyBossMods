@@ -14,8 +14,8 @@ mod:SetUsedIcons(1, 2, 3, 4)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 300088 301807 297325 301947",
-	"SPELL_CAST_SUCCESS 299914 296850",
+	"SPELL_CAST_START 300088 301807 297325 301947 299915",
+	"SPELL_CAST_SUCCESS 296850",
 	"SPELL_AURA_APPLIED 296704 301244 297656 297566 297585 301828 299914 296851",
 	"SPELL_AURA_APPLIED_DOSE 301828",
 	"SPELL_AURA_REMOVED 296704 301244 297656 297566 299914 296851",
@@ -33,6 +33,10 @@ mod:RegisterEventsInCombat(
 --TODO, Frenetic Charge soak priority
 --TODO, at time of testing her decrees don't reset order between pulls, which means decree she starts with is whatever was next from PREVIOUS pull
 --TODO, assess where to put other two countdowns, right now one is on charge, and undecided on 3rd if it should be the run in aoe or run out one
+--[[
+(ability.id = 300088 or ability.id = 301807 or ability.id = 297325 or ability.id = 301947 or ability.id = 299915) and type = "begincast"
+ or (ability.id = 296850) and type = "cast"
+--]]
 --local warnPoweringDown				= mod:NewSpellAnnounce(271965, 2, nil, nil, nil, nil, nil, 2)
 --General
 local warnDesperateMeasures				= mod:NewCastAnnounce(300088, 4)
@@ -78,7 +82,6 @@ local specWarnViolentOutburst			= mod:NewSpecialWarningRun(297325, nil, nil, nil
 local timerDesperateMeasures			= mod:NewCastTimer(10, 271225, nil, nil, nil, 5)
 --Queen Azshara
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20258))
---local timerSummonDecreesCD			= mod:NewNextTimer(40, 297960, nil, nil, nil, 3)
 local timerFormRanksCD					= mod:NewNextTimer(40, 298050, nil, nil, nil, 3, nil, nil, nil, 1, 4)
 local timerRepeatPerformanceCD			= mod:NewNextTimer(40, 301244, nil, nil, nil, 3, nil, nil, nil, 1, 4)
 local timerStandAloneCD					= mod:NewNextTimer(40, 297656, nil, nil, nil, 3, nil, nil, nil, 1, 4)
@@ -108,15 +111,24 @@ mod.vb.sentenceActive = 0
 function mod:OnCombatStart(delay)
 	self.vb.sparkIcon = 1
 	self.vb.sentenceActive = 0
-	--ass-shara
-	--timerSummonDecreesCD:Start(1-delay)--used almost instantly on pull anyways
+	--Timers that differ between heroic/mythic tests
+	if self:IsMythic() then
+		--ass-shara
+		timerFormRanksCD:Start(30-delay)
+		--Pashmar
+		timerPotentSparkCD:Start(20.6-delay)
+	else
+		--On heroic, azshara cast decree immediately on pull
+		--Pashmar
+		timerPotentSparkCD:Start(15.8-delay)
+	end
+	--TImers that are same across board
 	--Silivaz
-	timerFreneticChargeCD:Start(30.4-delay)
-	timerZealousEruptionCD:Start(51.1-delay)
+	timerFreneticChargeCD:Start(30.3-delay)
+	timerZealousEruptionCD:Start(50.9-delay)
 	--Pashmar
-	timerPotentSparkCD:Start(15.8-delay)
 	timerFanaticalVerdictCD:Start(30.4-delay)
-	timerViolentOutburstCD:Start(100.8-delay)
+	timerViolentOutburstCD:Start(100.7-delay)
 	if self.Options.NPAuraOnSoP then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
@@ -153,14 +165,14 @@ function mod:SPELL_CAST_START(args)
 		self.vb.sparkIcon = 1
 		warnPotentSpark:Show()
 		timerPotentSparkCD:Start()
+	elseif spellId == 299915 then
+		timerFreneticChargeCD:Start(self:IsMythic() and 40 or 60)
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 299914 then
-		timerFreneticChargeCD:Start()
-	elseif spellId == 296850 then
+	if spellId == 296850 then
 		timerFanaticalVerdictCD:Start()
 	end
 end
@@ -267,7 +279,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnFreneticCharge:Show(GROUP)
 			specWarnFreneticCharge:Play("gathershare")
 			yellFreneticCharge:Yell()
-			yellFreneticChargeFades:Countdown(4)
+			yellFreneticChargeFades:Countdown(spellId)
 		elseif not DBM:UnitDebuff("player", 297656, 303188, 297585) and not self:IsTank() then--Not tank, or affected by decrees that'd conflict with soaking
 			specWarnFreneticCharge:Show(GROUP)
 			specWarnFreneticCharge:Play("gathershare")
@@ -282,7 +294,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnFanaticalVerdict:Play("runout")
 			--end
 			yellFanaticalVerdict:Yell()
-			yellFanaticalVerdictFades:Countdown(8)
+			yellFanaticalVerdictFades:Countdown(spellId)
 		else
 			warnFanaticalVerdict:Show(args.destName)
 		end
@@ -344,15 +356,15 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 	if msg:find("spell:298050") then--Form Ranks (Repeat Performance is next)
 		specWarnFormRanks:Show(L.Circles)
 		specWarnFormRanks:Play("gathershare")
-		timerRepeatPerformanceCD:Start()
+		timerRepeatPerformanceCD:Start(self:IsMythic() and 30 or 40)
 	elseif msg:find("spell:301244") then--Repeat Performance (Stand Alone is next)
-		timerStandAloneCD:Start()
+		timerStandAloneCD:Start(self:IsMythic() and 30 or 40)
 	elseif msg:find("spell:297656") then--Stand Alone (Sentence is next)
-		timerDeferredSentenceCD:Start()
+		timerDeferredSentenceCD:Start(self:IsMythic() and 30 or 40)
 	elseif msg:find("spell:297566") then--Defferred Sentence (Obey is next)
-		timerObeyorSufferCD:Start()
+		timerObeyorSufferCD:Start(self:IsMythic() and 30 or 40)
 	elseif msg:find("spell:297585") then--Obey or Suffer (loops back to form ranks after)
-		timerFormRanksCD:Start()
+		timerFormRanksCD:Start(self:IsMythic() and 30 or 40)
 	end
 end
 

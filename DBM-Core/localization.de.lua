@@ -19,7 +19,6 @@ DBM_COPY_URL_DIALOG					= "Kopiere URL"
 --Post Patch 7.1
 DBM_CORE_NO_RANGE					= "Das Abstandsradar kann in Instanzen nicht genutzt werden. Es wird stattdessen die alte textbasierte Abstandsanzeige verwendet."
 DBM_CORE_NO_ARROW					= "Der Pfeil kann in Instanzen nicht genutzt werden."
-DBM_CORE_ARROW_SUMMONED				= "Der Pfeil wurde aktiviert. Falls du das nicht manuell gemacht hast, dann hast du ein Addon eines Drittanbieters so konfiguriert, dass es den Pfeil für dich aktiviert."
 DBM_CORE_NO_HUD						= "Die HudMap kann in Instanzen nicht genutzt werden."
 
 DBM_CORE_DYNAMIC_DIFFICULTY_CLUMP	= "DBM hat das dynamische Abstandsfenster für diesen Kampf deaktiviert, da nicht genügend Informationen vorliegen, auf wieviel versammelte Spieler bei deiner Gruppengröße geprüft werden muss."

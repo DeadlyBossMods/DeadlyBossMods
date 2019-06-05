@@ -15,7 +15,7 @@ mod:SetHotfixNoticeRev(18367)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 284262 284393 284383 285017 284362 288696 288941",
+	"SPELL_CAST_START 284262 284393 284383 285017 284362 288696 288941 289487 289479",
 	"SPELL_CAST_SUCCESS 285350 285426 285118 290694 289795 287169 284106",
 	"SPELL_AURA_APPLIED 286558 284405 285000 285382 285350 285426 287995 288205 284361",
 	"SPELL_AURA_REFRESH 285000 285382",
@@ -76,6 +76,9 @@ local specWarnIreoftheDeep				= mod:NewSpecialWarningSoak(285017, "-Tank", nil, 
 local specWarnStormsWail				= mod:NewSpecialWarningMoveTo(285350, nil, nil, 2, 3, 2)
 local yellStormsWail					= mod:NewYell(285350)
 local yellStormsWailFades				= mod:NewShortFadesYell(285350)
+--Achievement
+local specWarnUndertow					= mod:NewSpecialWarningSpell(289487, nil, nil, nil, 2, 2)
+local specWarnHydroBlast				= mod:NewSpecialWarningSpell(289479, nil, nil, nil, 2, 3)
 
 --Stage One: Storm the Ships
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(19257))
@@ -330,6 +333,12 @@ function mod:SPELL_CAST_START(args)
 		warnCataTides:Show()
 		timerCataTides:Start()
 		timerSeaSwellCD:Stop()
+	elseif spellId == 289487 then
+		specWarnUndertow:Show()
+		specWarnUndertow:Play("keepmove")
+	elseif spellId == 289479 then
+		specWarnHydroBlast:Show()
+		specWarnHydroBlast:Play("crowdcontrol")
 	end
 end
 
@@ -451,11 +460,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnCracklingLightning:Show()
 			specWarnCracklingLightning:Play("runout")
 			yellCracklingLightning:Yell()
-			local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", spellId)
-			if expireTime then
-				local remaining = expireTime-GetTime()
-				yellCracklingLightningFades:Countdown(remaining)
-			end
+			yellCracklingLightningFades:Countdown(spellId)
 		else
 			warnCracklingLightning:Show(args.destName)
 		end
@@ -465,11 +470,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnSeaStorm:Show()
 			specWarnSeaStorm:Play("runout")
 			yellSeaStorm:Yell()
-			local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", spellId)
-			if expireTime then
-				local remaining = expireTime-GetTime()
-				yellSeaStormFades:Countdown(remaining)
-			end
+			yellSeaStormFades:Countdown(spellId)
 		end
 	end
 end

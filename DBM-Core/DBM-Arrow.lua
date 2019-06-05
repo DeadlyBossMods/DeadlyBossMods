@@ -42,6 +42,15 @@ frame:SetScript("OnDragStop", function(self)
 	DBM.Options.ArrowPosX = x
 	DBM.Options.ArrowPosY = y
 end)
+
+local textframe = CreateFrame("Frame", nil, frame)
+
+frame.distance = textframe:CreateFontString("OVERLAY", nil, "GameFontNormalSmall")
+frame.title = textframe:CreateFontString("OVERLAY", nil, "GameFontHighlightSmall")
+frame.title:SetPoint("TOP", frame, "BOTTOM", 0, 0)
+frame.distance:SetPoint("TOP", frame.title, "BOTTOM", 0, 0)
+textframe:Hide()
+
 local arrow = frame:CreateTexture(nil, "OVERLAY")
 arrow:SetTexture("Interface\\AddOns\\DBM-Core\\textures\\arrows\\Arrow.blp")
 arrow:SetAllPoints(frame)
@@ -73,6 +82,7 @@ end
 local updateArrow
 do
 	local currentCell
+	local formatText = "%dy"
 	function updateArrow(direction, distance)
 		local cell = floor(direction / pi2 * 108 + 0.5) % 108
 		if cell ~= currentCell then
@@ -97,6 +107,8 @@ do
 				arrow:SetVertexColor(1, 1 - perc, 0)
 				if distance <= hideDistance then
 					frame:Hide()
+				else
+					frame.distance:SetText(formatText:format(distance))
 				end
 			end
 		else
@@ -166,21 +178,27 @@ end
 ----------------------
 --  Public Methods  --
 ----------------------
-local recentlyHidden = false
-local function clearVariable()
-	recentlyHidden = false
-end
 
-local function show(runAway, x, y, distance, time, legacy, dwayed)
+--/run DBM.Arrow:ShowRunTo(50, 50, 1, nil, true, "Waypoint")
+local function show(runAway, x, y, distance, time, legacy, title)
 	if DBM:HasMapRestrictions() then return end
-	if not frame:IsShown() and not recentlyHidden and not dwayed then
-		DBM:AddMsg(DBM_CORE_ARROW_SUMMONED)
-	end
 	local player
 	if type(x) == "string" then
 		player, hideDistance, hideTime = x, y, hideDistance
 	end
 	frame:Show()
+	textframe:Show()
+	if title then
+		frame.title:Show()
+		frame.title:SetText(title)
+	else
+		frame.title:Hide()
+	end
+	if runAway then
+		frame.distance:Hide()
+	else
+		frame.distance:Show()
+	end
 	runAwayArrow = runAway
 	hideDistance = distance or runAway and 100 or 3
 	if time then
@@ -227,6 +245,7 @@ function arrowFrame:ShowStatic(angle, time)
 		hideTime = nil
 	end
 	frame:Show()
+	textframe:Hide()--just in case they call static while a non static was already showing
 end
 
 function arrowFrame:IsShown()
@@ -234,10 +253,8 @@ function arrowFrame:IsShown()
 end
 
 function arrowFrame:Hide(autoHide)
-	recentlyHidden = true
+	textframe:Hide()
 	frame:Hide()
-	DBM:Unschedule(clearVariable)
-	DBM:Schedule(10, clearVariable)
 end
 
 local function endMove()

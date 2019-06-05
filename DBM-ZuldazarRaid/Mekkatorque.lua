@@ -15,7 +15,7 @@ mod.respawnTime = 29
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 282205 287952 287929 282153 288410 287751 287797 287757 286693 288041 288049 289537 287691 286597",
+	"SPELL_CAST_START 282205 287952 287929 282153 288410 287751 287797 287757 286693 288041 288049 289537 287691 286597 289864 289870",
 	"SPELL_CAST_SUCCESS 287757 286597 286152 286219 286215 286226 286192",
 	"SPELL_AURA_APPLIED 287757 287167 284168 289023 286051 289699 286646 282406 286105 287114",
 	"SPELL_AURA_APPLIED_DOSE 289699",
@@ -65,6 +65,8 @@ local specWarnEnormous					= mod:NewSpecialWarningYou(289023, nil, nil, nil, 1, 
 local yellEnormous						= mod:NewYell(289023)--Enormous will shout with red letters
 local specWarnMisCalcTele				= mod:NewSpecialWarningYou(287114, nil, nil, nil, 1, 2)--Mythic
 local yellMisCalcTele					= mod:NewYell(287114)
+local specWarnBlingstorm				= mod:NewSpecialWarningRun(289864, "Melee", nil, nil, 4, 2)
+local specWarnGoldChainLightning		= mod:NewSpecialWarningInterrupt(289870, "HasInterrupt", nil, nil, 1, 2)
 --Intermission: Evasive Maneuvers!
 local specWarnExplodingSheep			= mod:NewSpecialWarningDodge(287929, nil, nil, nil, 2, 2)
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 8)
@@ -494,6 +496,12 @@ function mod:SPELL_CAST_START(args)
 		if timer then
 			timerWorldEnlargerCD:Start(timer, self.vb.shrinkCount+1)
 		end
+	elseif spellId == 289864 then
+		specWarnBlingstorm:Show()
+		specWarnBlingstorm:Play("justrun")
+	elseif spellId == 289870 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
+		specWarnGoldChainLightning:Show(args.sourceName)
+		specWarnGoldChainLightning:Play("kickcast")
 	end
 end
 
@@ -523,7 +531,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnGigaVoltChargeFading:Schedule(8.5, DBM_CORE_BREAK_LOS)
 			specWarnGigaVoltChargeFading:ScheduleVoice(8.5, "mm"..icon)
 			yellGigaVoltCharge:Yell(icon, icon, icon)
-			yellGigaVoltChargeFades:Countdown(15, nil, icon)
+			yellGigaVoltChargeFades:Countdown(spellId, nil, icon)
 		else
 			local uId = DBM:GetRaidUnitId(args.destName)
 			if self:IsTanking(uId) then

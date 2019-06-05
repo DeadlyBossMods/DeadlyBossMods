@@ -48,29 +48,29 @@ local specWarnVenomousBlood				= mod:NewSpecialWarningStopMove(295796, nil, nil,
 local specWarnCrushingReverb			= mod:NewSpecialWarningDefensive(295332, "Melee", nil, 2, 2, 2)
 local specWarnOverwhelmingBarrage		= mod:NewSpecialWarningDodge(296551, nil, nil, nil, 3, 2)
 local specWarnOverflowingChill			= mod:NewSpecialWarningMoveAway(295348, nil, nil, nil, 1, 2)
-local yellOverflowingChill				= mod:NewYell(295348)
-local yellOverflowingChillFades			= mod:NewShortFadesYell(295348)
+local yellOverflowingChill				= mod:NewPosYell(295348, DBM_CORE_AUTO_YELL_CUSTOM_POSITION)
+local yellOverflowingChillFades			= mod:NewIconFadesYell(295348)
 local specWarnOverflowingVenom			= mod:NewSpecialWarningMoveAway(295421, nil, nil, nil, 1, 2)
-local yellOverflowingVenom				= mod:NewYell(295421)
-local yellOverflowingVenomFades			= mod:NewShortFadesYell(295421)
+local yellOverflowingVenom				= mod:NewPosYell(295421, DBM_CORE_AUTO_YELL_CUSTOM_POSITION)
+local yellOverflowingVenomFades			= mod:NewIconFadesYell(295421)
 local specWarnInversion					= mod:NewSpecialWarningMoveAway(295791, nil, nil, nil, 3, 2)
 local specWarnInversionSicknessFrost	= mod:NewSpecialWarningYou(300882, nil, nil, nil, 1, 2)--Separate warning in case user wants to customize sound based on type
 local specWarnInversionSicknessToxic	= mod:NewSpecialWarningYou(300883, nil, nil, nil, 1, 2)--Separate warning in case user wants to customize sound based on type
 local yellInversionSickness				= mod:NewYell(300882)
-local yellInversionSicknessFades		= mod:NewShortFadesYell(300882)
+local yellInversionSicknessFades		= mod:NewIconFadesYell(300882)
 local specWarnFrostJav					= mod:NewSpecialWarningYou(295606, nil, nil, nil, 1, 2)
-local yellFrostJav						= mod:NewYell(295606)
+local yellFrostJav						= mod:NewPosYell(295606, DBM_CORE_AUTO_YELL_CUSTOM_POSITION)
 local specWarnToxicJav					= mod:NewSpecialWarningYou(295607, nil, nil, nil, 1, 2)
-local yellToxicJav						= mod:NewYell(295607)
+local yellToxicJav						= mod:NewPosYell(295607, DBM_CORE_AUTO_YELL_CUSTOM_POSITION)
 local specWarnGTFO						= mod:NewSpecialWarningGTFO(300961, nil, nil, nil, 1, 8)
 
 --mod:AddTimerLine(BOSS)
-local timerCrushingReverbCD				= mod:NewCDTimer(21.1, 295332, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON, nil, mod:IsMelee() and 2, 4)
+local timerCrushingReverbCD				= mod:NewCDTimer(29.1, 295332, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON, nil, mod:IsMelee() and 2, 4)
 local timerOverwhelmingBarrageCD		= mod:NewCDTimer(40, 296551, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON, nil, 1, 4)
-local timerOverflowCD					= mod:NewCDTimer(31.6, 295346, nil, nil, nil, 3)--31.6 but can be delayed by boss spell queuing
-local timerInversionCD					= mod:NewCDTimer(90, 295791, nil, nil, nil, 2, nil, DBM_CORE_HEROIC_ICON, nil, 3, 4)
-local timerfrostshockboltsCD			= mod:NewCDTimer(61.2, 295601, nil, nil, nil, 3)
-local timerChimericMarksCD				= mod:NewAITimer(58.2, 294726, nil, nil, nil, 2)--Mythic
+local timerOverflowCD					= mod:NewCDTimer(40.1, 295346, nil, nil, nil, 3)--31.6 previously, but 40 as of mythic testing
+local timerInversionCD					= mod:NewCDTimer(72.9, 295791, nil, nil, nil, 2, nil, DBM_CORE_HEROIC_ICON, nil, 3, 4)
+local timerfrostshockboltsCD			= mod:NewCDTimer(52.2, 295601, nil, nil, nil, 3)
+local timerChimericMarksCD				= mod:NewCDTimer(22.8, 294726, nil, nil, nil, 2)--Mythic
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
 
@@ -86,9 +86,12 @@ function mod:OnCombatStart(delay)
 	timerCrushingReverbCD:Start(10.6-delay)
 	timerOverflowCD:Start(15.7-delay)
 	timerOverwhelmingBarrageCD:Start(40.2-delay)
-	timerfrostshockboltsCD:Start(47.3-delay)
+	timerfrostshockboltsCD:Start(50.8-delay)
 	if self:IsHard() then
-		timerInversionCD:Start(90-delay)
+		if self:IsMythic() then
+			timerChimericMarksCD:Start(9.9-delay)
+		end
+		timerInversionCD:Start(70-delay)
 		self:RegisterShortTermEvents(
 			"UNIT_POWER_FREQUENT player"
 		)
@@ -190,34 +193,35 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 295348 then
 		warnOverflowingChill:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
-			specWarnOverflowingChill:Show()
+			specWarnOverflowingChill:Show(6, args.spellName, 6)
 			specWarnOverflowingChill:Play("runout")
-			yellOverflowingChill:Yell()
-			yellOverflowingChillFades:Countdown(5)
+			yellOverflowingChill:Yell(6, args.spellName, 6)
+			yellOverflowingChillFades:Countdown(spellId, nil, 6)
 		end
 	elseif spellId == 295421 then
 		warnOverflowingVenom:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			specWarnOverflowingVenom:Show()
 			specWarnOverflowingVenom:Play("runout")
-			yellOverflowingVenom:Yell()
-			yellOverflowingVenomFades:Countdown(5)
+			yellOverflowingVenom:Yell(4, args.spellName, 4)
+			yellOverflowingVenomFades:Countdown(spellId, nil, 4)
 		end
 	elseif (spellId == 300961 or spellId == 300962) and args:IsPlayer() then
 		specWarnGTFO:Show(args.spellName)
 		specWarnGTFO:Play("watchfeet")
 	elseif (spellId == 300882 or spellId == 300883) then
-		warnInversionSickness:CombinedShow(0.3, args.destname)
+		warnInversionSickness:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			if spellId == 300882 then--Frost
 				specWarnInversionSicknessFrost:Show()
 				specWarnInversionSicknessFrost:Play("targetyou")
+				yellInversionSicknessFades:Countdown(spellId, nil, 6)
 			else--Toxic
 				specWarnInversionSicknessToxic:Show()
 				specWarnInversionSicknessToxic:Play("targetyou")
+				yellInversionSicknessFades:Countdown(spellId, nil, 4)
 			end
 			yellInversionSickness:Yell()
-			yellInversionSicknessFades:Countdown(4)
 		end
 	end
 end
@@ -230,12 +234,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:UpdateTable(MarksStacks)
 		end
-		--if args:IsPlayer() then
-		--	playerMark = 0--1 Toxic, 2 Frost
-		--end
-		--if self.Options.SetIconOnMarks then
-		--	self:SetIcon(args.destName, 0)
-		--end
 	elseif spellId == 295348 then
 		if args:IsPlayer() then
 			yellOverflowingChillFades:Cancel()
@@ -250,21 +248,25 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	end
 end
-function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, targetname)
-	if msg:find("spell:295607") then--Toxic Jav
-		if targetname and self:AntiSpam(5, targetname) then
-			if targetname == UnitName("player") then
-				specWarnToxicJav:Show()
-				specWarnToxicJav:Play("targetyou")
-				yellToxicJav:Yell()
+
+do
+	local frostJav, toxicJav = DBM:GetSpellInfo(295606), DBM:GetSpellInfo(295607)
+	function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, targetname)
+		if msg:find("spell:295607") then--Toxic Jav
+			if targetname and self:AntiSpam(5, targetname) then
+				if targetname == UnitName("player") then
+					specWarnToxicJav:Show()
+					specWarnToxicJav:Play("targetyou")
+					yellToxicJav:Yell(6, toxicJav, 6)
+				end
 			end
-		end
-	elseif msg:find("spell:295606") then--Frost Jav
-		if targetname and self:AntiSpam(5, targetname) then
-			if targetname == UnitName("player") then
-				specWarnFrostJav:Show()
-				specWarnFrostJav:Play("targetyou")
-				yellFrostJav:Yell()
+		elseif msg:find("spell:295606") then--Frost Jav
+			if targetname and self:AntiSpam(5, targetname) then
+				if targetname == UnitName("player") then
+					specWarnFrostJav:Show()
+					specWarnFrostJav:Play("targetyou")
+					yellFrostJav:Yell(4, frostJav, 4)
+				end
 			end
 		end
 	end

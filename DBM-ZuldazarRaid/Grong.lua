@@ -229,7 +229,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			specWarnThrowTarget:Show()
 			specWarnThrowTarget:Play("runout")
 			yellThrowTarget:Yell()
-			yellThrowTargetFades:Countdown(6, 3)
+			yellThrowTargetFades:Countdown(spellId, 3)
 		else
 			warnThrowTarget:Show(args.destName)
 		end

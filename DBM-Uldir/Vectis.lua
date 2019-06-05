@@ -154,7 +154,7 @@ do
 						local _, _, _, _, _, expireTime = DBM:UnitDebuff(uId, 265129)
 						if expireTime then
 							local remaining = floor(expireTime-GetTime())
-							addLine(i.."--"..name, remaining)--Insert numeric into name so a person who has more than two vectors will show both of them AND not conflict with lingering entries
+							addLine(i.."|"..name, remaining)--Insert numeric into name so a person who has more than two vectors will show both of them AND not conflict with lingering entries
 						end
 					end
 				end
@@ -205,7 +205,7 @@ do
 					if expireTime then
 						local remaining = floor(expireTime-GetTime())
 						--Inserts vector numbers unit has and remaining debuff along with lingering stacks even if it's 0 stacks
-						addLine(hasVector.."--"..name, tempLines[name].."-|cFF088A08"..remaining.."|r")--Insert numeric into name so a person who has more than two vectors will show both of them AND not conflict with lingering entries
+						addLine(hasVector.."|"..name, tempLines[name].."-|cFF088A08"..remaining.."|r")--Insert numeric into name so a person who has more than two vectors will show both of them AND not conflict with lingering entries
 					end
 				else
 					--No vector on this target, just insert name and lingering count
@@ -403,11 +403,7 @@ function mod:SPELL_AURA_APPLIED(args)
 					specWarnOmegaVector:Play("targetyou")
 				end
 				yellOmegaVector:Yell(icon, icon, icon)--Do yell regardless so people can see two are on one target
-				local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", spellId)--Flex debuff, have to live pull duration
-				if expireTime then
-					local remaining = expireTime-GetTime()
-					yellOmegaVectorFades:Countdown(remaining, 3, icon)
-				end
+				yellOmegaVectorFades:Countdown(spellId, 3, icon)
 			end
 		end
 	elseif spellId == 265212 and self:AntiSpam(4, args.destName) then

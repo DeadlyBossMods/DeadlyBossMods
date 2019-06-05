@@ -805,7 +805,7 @@ function onUpdate(frame, table)
 			--return
 		end
 		local rightText = lines[leftText]
-		local extra, extraName = string.split("--", leftText)--Find just unit name, if extra info had to be added to make unique
+		local extra, extraName = string.split("|", leftText)--Find just unit name, if extra info had to be added to make unique
 		local icon = icons[extraName or leftText] and icons[extraName or leftText]..leftText
 		if friendlyEvents[currentEvent] then
 			local unitId = DBM:GetRaidUnitId(DBM:GetUnitFullName(extraName or leftText)) or "player"--Prevent nil logical error
@@ -935,7 +935,6 @@ function infoFrame:Show(maxLines, event, ...)
 		frame.ticker:Cancel()
 		frame.ticker = nil
 	end
-	local wowToc, testBuild, wowVersionString = DBM:GetTOC()
 end
 
 function infoFrame:RegisterCallback(cb)

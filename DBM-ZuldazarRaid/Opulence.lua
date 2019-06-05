@@ -359,11 +359,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnVolatileCharge:Show()
 			specWarnVolatileCharge:Play("runout")
 			yellVolatileCharge:Yell()
-			local spellName, _, _, _, _, expireTime = DBM:UnitDebuff("player", spellId)
-			if expireTime then
-				local remaining = expireTime-GetTime()
-				yellVolatileChargeFade:Countdown(remaining)
-			end
+			yellVolatileChargeFade:Countdown(spellId)
 		else
 			warnVolatileCharge:CombinedShow(0.3, args.destName)
 		end
@@ -373,7 +369,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnHexofLethargy:Play("stopmove")
 			yellHexofLethargy:Yell()
 			yellHexofLethargyFade:Cancel()
-			yellHexofLethargyFade:Countdown(30)
+			yellHexofLethargyFade:Countdown(spellId)
 		else
 			warnHexofLethargy:CombinedShow(0.3, args.destName)
 		end
@@ -382,7 +378,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnLiquidGold:Show()
 			specWarnLiquidGold:Play("runout")
 			yellLiquidGold:Yell()
-			yellLiquidGoldFade:Countdown(12)
+			yellLiquidGoldFade:Countdown(spellId)
 		else
 			warnLiquidGold:CombinedShow(0.3, args.destName)
 		end
@@ -390,7 +386,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnCoinShower:Show(GROUP)
 			yellCoinShower:Yell()
-			yellCoinShowerFade:Countdown(10)
+			yellCoinShowerFade:Countdown(spellId)
 		elseif not self:IsTank() then--Exclude only tanks
 			specWarnCoinShower:Show(args.destName)
 		end
