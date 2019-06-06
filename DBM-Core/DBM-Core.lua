@@ -6667,7 +6667,7 @@ do
 	end
 end
 
---Future proofing EJ_GetSectionInfo compat layer to make it easier updatable. EJ_GetSectionInfo won't be depricated functions forever.
+--Future proofing EJ_GetSectionInfo compat layer to make it easier updatable.
 function DBM:EJ_GetSectionInfo(sectionID)
 	local info = EJ_GetSectionInfo(sectionID);
 	local flag1, flag2, flag3, flag4;
@@ -7132,6 +7132,7 @@ function DBM:Debug(text, level)
 		local frame = _G[tostring(DBM.Options.ChatFrame)]
 		frame = frame and frame:IsShown() and frame or DEFAULT_CHAT_FRAME
 		frame:AddMessage("|cffff7d0aDBM Debug:|r "..text, 1, 1, 1)
+		fireEvent("DBM_Debug", text, level)
 	end
 end
 

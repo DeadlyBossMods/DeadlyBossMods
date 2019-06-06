@@ -99,7 +99,7 @@ local specWarnHeartofFrost				= mod:NewSpecialWarningMoveAway(289220, nil, nil, 
 local yellHeartofFrost					= mod:NewYell(289220)
 local specWarnWaterBoltVolley			= mod:NewSpecialWarningInterruptCount(290084, "HasInterrupt", nil, nil, 1, 2)
 --Stage Three:
-local specWarnOrbofFrost				= mod:NewSpecialWarningDodgeCount(288619, nil, nil, nil, 2, 2)
+local specWarnOrbofFrost				= mod:NewSpecialWarningCount(288619, nil, nil, nil, 2, 2)
 local specWarnPrismaticImage			= mod:NewSpecialWarningSwitchCount(288747, nil, nil, 2, 1, 2)
 
 --General
