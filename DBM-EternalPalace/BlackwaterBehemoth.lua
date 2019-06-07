@@ -37,9 +37,9 @@ local specWarnCavitation				= mod:NewSpecialWarningSpell(292083, nil, nil, nil, 
 
 --mod:AddTimerLine(BOSS)
 local timerBioluminescentCloud			= mod:NewCastCountTimer(30.4, 292205, nil, nil, nil, 5)
-local timerToxicSpineCD					= mod:NewNextTimer(25.5, 292167, nil, "Healer", nil, 5, nil, DBM_CORE_HEALER_ICON)
-local timerShockPulseCD					= mod:NewNextCountTimer(34, 292270, nil, nil, nil, 2, nil, nil, nil, 1, 4)
-local timerPiercingBarbCD				= mod:NewAITimer(58.2, 301494, nil, nil, nil, 3)--Mythic
+local timerToxicSpineCD					= mod:NewNextTimer(20, 292167, nil, "Healer", nil, 5, nil, DBM_CORE_HEALER_ICON)
+local timerShockPulseCD					= mod:NewNextCountTimer(30, 292270, nil, nil, nil, 2, nil, nil, nil, 1, 4)
+local timerPiercingBarbCD				= mod:NewAITimer(30, 301494, nil, nil, nil, 3)--Mythic
 local timerCavitation					= mod:NewCastTimer(40, 292083, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
