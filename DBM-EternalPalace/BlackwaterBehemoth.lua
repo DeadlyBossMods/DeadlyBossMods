@@ -37,9 +37,9 @@ local specWarnCavitation				= mod:NewSpecialWarningSpell(292083, nil, nil, nil, 
 
 --mod:AddTimerLine(BOSS)
 local timerBioluminescentCloud			= mod:NewCastCountTimer(30.4, 292205, nil, nil, nil, 5)
-local timerToxicSpineCD					= mod:NewNextTimer(20, 292167, nil, "Healer", nil, 5, nil, DBM_CORE_HEALER_ICON)
-local timerShockPulseCD					= mod:NewNextCountTimer(30, 292270, nil, nil, nil, 2, nil, nil, nil, 1, 4)
-local timerPiercingBarbCD				= mod:NewAITimer(30, 301494, nil, nil, nil, 3)--Mythic
+local timerToxicSpineCD					= mod:NewNextTimer(25.5, 292167, nil, "Healer", nil, 5, nil, DBM_CORE_HEALER_ICON)
+local timerShockPulseCD					= mod:NewNextCountTimer(34, 292270, nil, nil, nil, 2, nil, nil, nil, 1, 4)
+local timerPiercingBarbCD				= mod:NewNextTimer(30, 301494, nil, nil, nil, 3)--Mythic
 local timerCavitation					= mod:NewCastTimer(40, 292083, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
@@ -95,10 +95,10 @@ function mod:OnCombatStart(delay)
 	self.vb.cloudCount = 0
 	self.vb.shockPulse = 0
 	playerBio, playerBioTwo, playerBioThree = false, false, false
-	timerToxicSpineCD:Start(22.9-delay)
-	timerShockPulseCD:Start(26.5-delay, 1)
+	timerToxicSpineCD:Start(self:isMythic() and 8-delay or 22.9-delay)
+	timerShockPulseCD:Start(self:isMythic() and 23-delay or 26.5-delay, 1)
 	if self:IsMythic() then
-		timerPiercingBarbCD:Start(1-delay)
+		timerPiercingBarbCD:Start(11-delay)
 	end
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(OVERVIEW)
@@ -133,7 +133,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.shockPulse = self.vb.shockPulse + 1
 		specWarnShockPulse:Show(self.vb.shockPulse)
 		specWarnShockPulse:Play("aesoon")
-		timerShockPulseCD:Start(34, self.vb.shockPulse+1)
+		timerShockPulseCD:Start(self:isMythic() and 30 or 34, self.vb.shockPulse+1)
 	elseif spellId == 292083 then
 		specWarnCavitation:Show()
 		specWarnCavitation:Play("phasechange")
@@ -141,12 +141,15 @@ function mod:SPELL_CAST_START(args)
 		timerToxicSpineCD:Stop()
 		timerShockPulseCD:Stop()
 		timerPiercingBarbCD:Stop()
+	elseif spellId == 292159 then
+		warnToxicSpine:Show(args.destName)
+		timerToxicSpineCD:Start(self:isMythic() and 20 or 25.5)
+	end
 --	elseif spellId == 267180 then
 --		if self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		--	specWarnVoidbolt:Show(args.sourceName)
 			--specWarnVoidbolt:Play("kickcast")
 --		end
-	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
@@ -157,9 +160,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if self:AntiSpam(5, 1) then
 			warnBioluminescentCloud:Show()
 		end
-	elseif spellId == 292159 then
-		timerToxicSpineCD:Start()
-	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
@@ -218,10 +218,10 @@ end
 function mod:SPELL_INTERRUPT(args)
 	if type(args.extraSpellId) == "number" and args.extraSpellId == 292083 then
 		timerCavitation:Stop()
-		timerToxicSpineCD:Start(20.8)
-		timerShockPulseCD:Start(25.7, self.vb.shockPulse+1)
+		timerToxicSpineCD:Start(self:isMythic() and 8 or 20.8)
+		timerShockPulseCD:Start(self:isMythic() and 23 or 25.7, self.vb.shockPulse+1)
 		if self:IsMythic() then
-			timerPiercingBarbCD:Start(2)
+			timerPiercingBarbCD:Start(11)
 		end
 	end
 end
