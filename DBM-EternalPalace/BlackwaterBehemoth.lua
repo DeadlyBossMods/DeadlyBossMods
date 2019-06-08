@@ -160,6 +160,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if self:AntiSpam(5, 1) then
 			warnBioluminescentCloud:Show()
 		end
+	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
