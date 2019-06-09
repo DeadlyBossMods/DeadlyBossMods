@@ -263,10 +263,17 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 function mod:SPELL_INTERRUPT(args)
 	if type(args.extraSpellId) == "number" and args.extraSpellId == 298548 then
 		timerMassiveIncubator:Stop()
-		timerDesensitizingStingCD:Start(3.4)
-		timerIncubationFluidCD:Start(18.8)
-		timerDribblingIchorCD:Start(23.9, 1)
-		timerArcingCurrentCD:Start(35)
+		if self:IsMythic() then
+			timerDesensitizingStingCD:Start(3.9)
+			timerIncubationFluidCD:Start(17.2)
+			timerDribblingIchorCD:Start(29.4, 1)
+			timerArcingCurrentCD:Start(40, 1)
+		else
+			timerDesensitizingStingCD:Start(3.4)
+			timerIncubationFluidCD:Start(18.8)
+			timerDribblingIchorCD:Start(23.9, 1)
+			timerArcingCurrentCD:Start(35)
+		end
 	end
 end
 
