@@ -53,7 +53,7 @@ mod:AddTimerLine(BOSS)
 local timerDesensitizingStingCD				= mod:NewCDTimer(6.1, 298156, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON, nil, nil, 3)--If user does enable countdown for this, max count at 3
 local timerDribblingIchorCD					= mod:NewCDCountTimer(84, 298103, nil, nil, nil, 1, nil, nil, nil, 1, 4)--30.4-42
 local timerIncubationFluidCD				= mod:NewCDTimer(32.8, 298242, nil, nil, nil, 3, nil, nil, nil, 3, 4)
-local timerArcingCurrentCD					= mod:NewCDTimer(34.1, 295825, nil, nil, nil, 3)
+local timerArcingCurrentCD					= mod:NewCDCountTimer(34.1, 295825, nil, nil, nil, 3)
 local timerMassiveIncubator					= mod:NewCastTimer(45, 298548, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON, nil, 1, 4)
 mod:AddTimerLine(DBM_ADDS)
 local timerAmnioticEruption					= mod:NewCastTimer(5, 298465, nil, nil, nil, 2, nil, DBM_CORE_TANK_ICON)
@@ -272,7 +272,7 @@ function mod:SPELL_INTERRUPT(args)
 			timerDesensitizingStingCD:Start(3.4)
 			timerIncubationFluidCD:Start(18.8)
 			timerDribblingIchorCD:Start(23.9, 1)
-			timerArcingCurrentCD:Start(35)
+			timerArcingCurrentCD:Start(35, 1)
 		end
 	end
 end
