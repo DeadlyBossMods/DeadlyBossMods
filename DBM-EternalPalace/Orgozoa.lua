@@ -13,7 +13,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 298413 298548 295818 295822 296691",
-	"SPELL_CAST_SUCCESS 298242 298103 298156 298548",
+	"SPELL_CAST_SUCCESS 298242 298103 298156 298548 305057",
 	"SPELL_SUMMON 298465",
 	"SPELL_AURA_APPLIED 298156 298306 296914 295779",
 	"SPELL_AURA_APPLIED_DOSE 298156",
@@ -29,8 +29,10 @@ mod:RegisterEventsInCombat(
 --TODO, skewer or not to skewer
 --TODO, raging-rapids?
 --TODO, do more with powerful stomp?
+--TODO, special warn for tender add spawns?
 local warnDesensitizingSting				= mod:NewStackAnnounce(298156, 2, nil, "Tank")
 local warnIncubationFluid					= mod:NewTargetNoFilterAnnounce(298306, 2)
+local warnCallofTender						= mod:NewCountAnnounce(305057, 2)
 ----Adds
 local warnAquaLance							= mod:NewTargetNoFilterAnnounce(295779, 2)
 local warnShockingLightning					= mod:NewSpellAnnounce(295818, 2, nil, false)
@@ -54,6 +56,8 @@ local timerDesensitizingStingCD				= mod:NewCDTimer(6.1, 298156, nil, nil, nil, 
 local timerDribblingIchorCD					= mod:NewCDCountTimer(84, 298103, nil, nil, nil, 1, nil, nil, nil, 1, 4)--30.4-42
 local timerIncubationFluidCD				= mod:NewCDTimer(32.8, 298242, nil, nil, nil, 3, nil, nil, nil, 3, 4)
 local timerArcingCurrentCD					= mod:NewCDCountTimer(34.1, 295825, nil, nil, nil, 3)
+local timerCalloftheTenderCD				= mod:NewCDCountTimer(35, 305057, nil, nil, nil, 1, nil, DBM_CORE_MYTHIC_ICON, nil, 2, 4)--30.4-42
+--Transition
 local timerMassiveIncubator					= mod:NewCastTimer(45, 298548, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON, nil, 1, 4)
 mod:AddTimerLine(DBM_ADDS)
 local timerAmnioticEruption					= mod:NewCastTimer(5, 298465, nil, nil, nil, 2, nil, DBM_CORE_TANK_ICON)
@@ -73,22 +77,26 @@ mod:AddNamePlateOption("NPAuraOnChaoticGrowth", 296914)
 mod.vb.phase = 1
 mod.vb.addCount = 0
 mod.vb.arcingCurrentCount = 0
+mod.vb.tenderCount = 0
+mod.vb.ichorAddsRemaining = 0
 local playerHasIncubation = false
 local castsPerGUID = {}
 
 function mod:OnCombatStart(delay)
 	self.vb.phase = 1
-	--self.vb.addCount = 0
+	self.vb.addCount = 0
 	self.vb.arcingCurrentCount = 0
+	self.vb.tenderCount = 0
+	self.vb.ichorAddsRemaining = 0
 	playerHasIncubation = false
 	table.wipe(castsPerGUID)
+	timerDesensitizingStingCD:Start(3-delay)
 	if self:IsMythic() then
-		timerDesensitizingStingCD:Start(3.9-delay)
-		timerIncubationFluidCD:Start(17.2-delay)
-		timerDribblingIchorCD:Start(29.4-delay, 1)
-		timerArcingCurrentCD:Start(40-delay, 1)
+		timerIncubationFluidCD:Start(17.1-delay)
+		timerCalloftheTenderCD:Start(20.3-delay, 1)
+		timerDribblingIchorCD:Start(25.2-delay, 1)
+		timerArcingCurrentCD:Start(36.4-delay, 1)
 	else
-		timerDesensitizingStingCD:Start(3.4-delay)
 		timerIncubationFluidCD:Start(18.8-delay)
 		timerDribblingIchorCD:Start(23.9-delay, 1)
 		timerArcingCurrentCD:Start(35-delay, 1)
@@ -155,11 +163,12 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerIncubationFluidCD:Start()
 	elseif spellId == 298103 then--Dribbling Ichor
 		self.vb.addCount = self.vb.addCount + 1
+		self.vb.ichorAddsRemaining = self.vb.ichorAddsRemaining + 3
 		specWarnDribblingIchor:Show(self.vb.addCount)
 		specWarnDribblingIchor:Play("mobsoon")
 		if self.vb.phase == 2 or self.vb.addCount < 3 then--Assumed there are more than 3 in P2
 			if self.vb.addCount == 1 then
-				timerDribblingIchorCD:Start(88.8, 2)
+				timerDribblingIchorCD:Start(88.7, 2)
 			else--2+ (todo verify the + part)
 				timerDribblingIchorCD:Start(84, self.vb.addCount+1)
 			end
@@ -173,6 +182,10 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerArcingCurrentCD:Start(35)
 	elseif spellId == 295779 then
 		timerAquaLanceCD:Start(nil, args.sourceGUID)
+	elseif spellId == 305057 then
+		self.vb.tenderCount = self.vb.tenderCount + 1
+		warnCallofTender:Show(self.vb.tenderCount)
+		timerCalloftheTenderCD:Start(35, self.vb.tenderCount+1)
 	end
 end
 
@@ -188,7 +201,8 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 298156 then
 		local amount = args.amount or 1
-		if amount >= 9 then
+		--if adds all dead, should be swapping at about 6-7. If they aren't all dead, it'll start throwing emergency warnings at 8+
+		if (self.vb.ichorAddsRemaining == 0 and amount >= 6) or amount >= 8 then
 			if args:IsPlayer() then
 				specWarnDesensitizingSting:Show(amount)
 				specWarnDesensitizingSting:Play("stackhigh")
@@ -263,13 +277,13 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 function mod:SPELL_INTERRUPT(args)
 	if type(args.extraSpellId) == "number" and args.extraSpellId == 298548 then
 		timerMassiveIncubator:Stop()
+		timerDesensitizingStingCD:Start(3)
 		if self:IsMythic() then
-			timerDesensitizingStingCD:Start(3.9)
-			timerIncubationFluidCD:Start(17.2)
-			timerDribblingIchorCD:Start(29.4, 1)
-			timerArcingCurrentCD:Start(40, 1)
+			timerIncubationFluidCD:Start(17.1)
+			timerCalloftheTenderCD:Start(20.3, 1)
+			timerDribblingIchorCD:Start(25.2, 1)
+			timerArcingCurrentCD:Start(36.4, 1)
 		else
-			timerDesensitizingStingCD:Start(3.4)
 			timerIncubationFluidCD:Start(18.8)
 			timerDribblingIchorCD:Start(23.9, 1)
 			timerArcingCurrentCD:Start(35, 1)
@@ -287,6 +301,8 @@ function mod:UNIT_DIED(args)
 	elseif cid == 152313 then--hatchery-brute
 		castsPerGUID[args.destGUID] = nil
 		timerPowerfulStompCD:Stop(args.destGUID)
+	elseif cid == 152159 then--Zoatroid
+		self.vb.ichorAddsRemaining = self.vb.ichorAddsRemaining - 1
 	end
 end
 
@@ -297,9 +313,11 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		self.vb.phase = 2
 		self.vb.addCount = 0
 		self.vb.arcingCurrentCount = 0
+		self.vb.tenderCount = 0
 		timerDribblingIchorCD:Stop()
 		timerDesensitizingStingCD:Stop()
 		timerIncubationFluidCD:Stop()
 		timerArcingCurrentCD:Stop()
+		timerCalloftheTenderCD:Stop()
 	end
 end
