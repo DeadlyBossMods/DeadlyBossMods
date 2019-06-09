@@ -14,7 +14,7 @@ mod:SetUsedIcons(1, 2, 3, 4)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 300088 301807 297325 301947 299915",
+	"SPELL_CAST_START 300088 301807 297325 301947 299915 300395",
 	"SPELL_CAST_SUCCESS 296850",
 	"SPELL_AURA_APPLIED 296704 301244 297656 297566 297585 301828 299914 296851",
 	"SPELL_AURA_APPLIED_DOSE 301828",
@@ -93,6 +93,7 @@ local timerFreneticChargeCD				= mod:NewNextTimer(60.6, 299914, nil, nil, nil, 3
 local timerZealousEruptionCD			= mod:NewNextTimer(104.4, 301807, nil, nil, nil, 2)
 --Pashmar the Fanatical
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20235))
+local timerFerventBoltCD				= mod:NewNextTimer(12.1, 300395, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerFanaticalVerdictCD			= mod:NewNextTimer(26.7, 296850, nil, nil, nil, 3)
 local timerViolentOutburstCD			= mod:NewNextTimer(104.4, 297325, nil, nil, nil, 2)
 local timerPotentSparkCD				= mod:NewNextTimer(92.2, 301947, nil, nil, nil, 1)
@@ -116,7 +117,8 @@ function mod:OnCombatStart(delay)
 		--ass-shara
 		timerFormRanksCD:Start(30-delay)
 		--Pashmar
-		timerPotentSparkCD:Start(20.6-delay)
+		timerPotentSparkCD:Start(20.4-delay)
+		timerFerventBoltCD:Start(5.1-delay)
 	else
 		--On heroic, azshara cast decree immediately on pull
 		--Pashmar
@@ -125,7 +127,7 @@ function mod:OnCombatStart(delay)
 	--TImers that are same across board
 	--Silivaz
 	timerFreneticChargeCD:Start(30.3-delay)
-	timerZealousEruptionCD:Start(50.9-delay)
+	timerZealousEruptionCD:Start(50.7-delay)
 	--Pashmar
 	timerFanaticalVerdictCD:Start(30.4-delay)
 	timerViolentOutburstCD:Start(100.7-delay)
@@ -160,13 +162,15 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 297325 then
 		specWarnViolentOutburst:Show()
 		specWarnViolentOutburst:Play("justrun")
-		timerViolentOutburstCD:Start()
+		timerViolentOutburstCD:Start(self:IsMythic() and 106 or 104.4)
 	elseif spellId == 301947 then
 		self.vb.sparkIcon = 1
 		warnPotentSpark:Show()
 		timerPotentSparkCD:Start()
 	elseif spellId == 299915 then
 		timerFreneticChargeCD:Start(self:IsMythic() and 40 or 60)
+	elseif spellId == 300395 then
+		timerFerventBoltCD:Start()
 	end
 end
 
