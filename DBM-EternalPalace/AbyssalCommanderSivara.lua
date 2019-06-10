@@ -70,7 +70,7 @@ local timerOverwhelmingBarrageCD		= mod:NewCDTimer(40, 296551, nil, nil, nil, 2,
 local timerOverflowCD					= mod:NewCDTimer(40.1, 295346, nil, nil, nil, 3)--31.6 previously, but 40 as of mythic testing
 local timerInversionCD					= mod:NewCDTimer(72.9, 295791, nil, nil, nil, 2, nil, DBM_CORE_HEROIC_ICON, nil, 3, 4)
 local timerfrostshockboltsCD			= mod:NewCDTimer(52.2, 295601, nil, nil, nil, 3)
-local timerChimericMarksCD				= mod:NewCDTimer(22.8, 294726, nil, nil, nil, 2)--Mythic
+local timerChimericMarksCD				= mod:NewCDTimer(22.8, 294726, nil, nil, nil, 2, nil, DBM_CORE_MYTHIC_ICON)--Mythic
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
 
@@ -149,6 +149,21 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
+--Prevent warning/yell spam if player rapidly changes between frost and toxic
+local function debuffSwapAggregation(self, spellId)
+	if spellId == 294711 then--Frost
+		specWarnFrostMark:Show(self:IconNumToTexture(6))
+		specWarnFrostMark:Play("frostmark")
+		yellMark:Yell(6, "", 6)--Square
+		playerMark = 2--1 Toxic, 2 Frost
+	else--Toxic
+		specWarnToxicMark:Show(self:IconNumToTexture(4))
+		specWarnToxicMark:Play("toxicmark")
+		yellMark:Yell(4, "", 4)--Triangle
+		playerMark = 1--1 Toxic, 2 Frost
+	end
+end
+
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 294711 or spellId == 294715 then--Frost left, Toxic right
@@ -157,27 +172,16 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:UpdateTable(MarksStacks)
 		end
-		if amount == 1 then
-			if args:IsPlayer() then
-				if spellId == 294711 then--Frost
-					specWarnFrostMark:Show(self:IconNumToTexture(6))
-					specWarnFrostMark:Play("frostmark")
-					yellMark:Yell(6, "", 6)--Square
-					playerMark = 2--1 Toxic, 2 Frost
-				else--Toxic
-					specWarnToxicMark:Show(self:IconNumToTexture(4))
-					specWarnToxicMark:Play("toxicmark")
-					yellMark:Yell(4, "", 4)--Triangle
-					playerMark = 1--1 Toxic, 2 Frost
-				end
-			end
-			local uId = DBM:GetRaidUnitId(args.destName)
-			if self.Options.SetIconOnMarks and self:IsTanking(uId) then
-				if spellId == 294711 then--Frost
-					self:SetIcon(args.destName, 6)
-				else
-					self:SetIcon(args.destName, 4)
-				end
+		if args:IsPlayer() and amount == 1 then
+			self:Unschedule(debuffSwapAggregation)
+			self:Schedule(1, debuffSwapAggregation, self, spellId)
+		end
+		local uId = DBM:GetRaidUnitId(args.destName)
+		if self.Options.SetIconOnMarks and self:IsTanking(uId) then
+			if spellId == 294711 then--Frost
+				self:SetIcon(args.destName, 6)
+			else
+				self:SetIcon(args.destName, 4)
 			end
 		end
 	elseif spellId == 300701 then--Rimefrost

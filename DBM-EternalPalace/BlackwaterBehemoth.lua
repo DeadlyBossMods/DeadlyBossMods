@@ -13,7 +13,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 292270 292083",
-	"SPELL_CAST_SUCCESS 292205 302135 292159",
+	"SPELL_CAST_SUCCESS 292205 302135 292159 301494",
 	"SPELL_AURA_APPLIED 292307 292133 292138 289699 292167 301494 298595",
 	"SPELL_AURA_APPLIED_DOSE 289699",
 	"SPELL_AURA_REMOVED 292133 292138 298595",
@@ -23,23 +23,28 @@ mod:RegisterEventsInCombat(
 )
 
 --TODO: Can boss cast Bioelectric Feelers during Cavitation, when tank is forced away from boss?
---TODO, figure out how to track who Piercing Barb is on.
+--[[
+(ability.id = 292270 or ability.id = 292083) and type = "begincast"
+ or (ability.id = 292205 or ability.id = 302135 or ability.id = 292159 or ability.id = 301494) and type = "cast"
+ or type = "interrupt"
+--]]
 local warnBioluminescentCloud			= mod:NewSpellAnnounce(292205, 2)
 local warnToxicSpine					= mod:NewTargetNoFilterAnnounce(292167, 2, nil, "Healer")
+local warnPiercingBarb					= mod:NewTargetNoFilterAnnounce(301494, 2)
 
 local specWarnGazefromBelow				= mod:NewSpecialWarningYou(292307, nil, nil, nil, 3, 2)
 local specWarnFeedingFrenzy				= mod:NewSpecialWarningCount(298424, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.stack:format(18, 298424), nil, 1, 2)
 local specWarnFeedingFrenzyOther		= mod:NewSpecialWarningTaunt(298424, nil, nil, nil, 1, 2)
 local specWarnShockPulse				= mod:NewSpecialWarningCount(292270, nil, nil, nil, 2, 2)
 local specWarnCavitation				= mod:NewSpecialWarningSpell(292083, nil, nil, nil, 2, 2)
---local specWarnPiercingBarb			= mod:NewSpecialWarningYou(301494, nil, nil, nil, 3, 2)
+local specWarnPiercingBarb				= mod:NewSpecialWarningYou(301494, nil, nil, nil, 1, 2)
+local yellPiercingBarb					= mod:NewYell(301494)
 --local specWarnGTFO						= mod:NewSpecialWarningGTFO(270290, nil, nil, nil, 1, 8)
 
---mod:AddTimerLine(BOSS)
 local timerBioluminescentCloud			= mod:NewCastCountTimer(30.4, 292205, nil, nil, nil, 5)
 local timerToxicSpineCD					= mod:NewNextTimer(25.5, 292167, nil, "Healer", nil, 5, nil, DBM_CORE_HEALER_ICON)
 local timerShockPulseCD					= mod:NewNextCountTimer(34, 292270, nil, nil, nil, 2, nil, nil, nil, 1, 4)
-local timerPiercingBarbCD				= mod:NewAITimer(58.2, 301494, nil, nil, nil, 3)--Mythic
+local timerPiercingBarbCD				= mod:NewNextTimer(29.9, 301494, nil, nil, nil, 3, nil, nil, nil, 3, 4)--Mythic
 local timerCavitation					= mod:NewCastTimer(40, 292083, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
@@ -95,10 +100,13 @@ function mod:OnCombatStart(delay)
 	self.vb.cloudCount = 0
 	self.vb.shockPulse = 0
 	playerBio, playerBioTwo, playerBioThree = false, false, false
-	timerToxicSpineCD:Start(22.9-delay)
-	timerShockPulseCD:Start(26.5-delay, 1)
 	if self:IsMythic() then
-		timerPiercingBarbCD:Start(1-delay)
+		timerPiercingBarbCD:Start(11-delay)
+		timerToxicSpineCD:Start(11-delay)
+		timerShockPulseCD:Start(23-delay, 1)
+	else
+		timerToxicSpineCD:Start(20.8-delay)
+		timerShockPulseCD:Start(26.5-delay, 1)
 	end
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(OVERVIEW)
@@ -141,11 +149,6 @@ function mod:SPELL_CAST_START(args)
 		timerToxicSpineCD:Stop()
 		timerShockPulseCD:Stop()
 		timerPiercingBarbCD:Stop()
---	elseif spellId == 267180 then
---		if self:CheckInterruptFilter(args.sourceGUID, false, true) then
-		--	specWarnVoidbolt:Show(args.sourceName)
-			--specWarnVoidbolt:Play("kickcast")
---		end
 	end
 end
 
@@ -158,7 +161,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 			warnBioluminescentCloud:Show()
 		end
 	elseif spellId == 292159 then
-		timerToxicSpineCD:Start()
+		timerToxicSpineCD:Start(self:IsMythic() and 20 or 25.5)
+	elseif spellId == 301494 then
+		timerPiercingBarbCD:Start()
 	end
 end
 
@@ -193,7 +198,13 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 292167 then
 		warnToxicSpine:CombinedShow(0.3, args.destName)
 	elseif spellId == 301494 then
-		timerPiercingBarbCD:Start()
+		if args:IsPlayer() then
+			specWarnPiercingBarb:Show()
+			specWarnPiercingBarb:Play("targetyou")
+			yellPiercingBarb:Yell()
+		else
+			warnPiercingBarb:Show(args.destName)
+		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -221,7 +232,12 @@ function mod:SPELL_INTERRUPT(args)
 		timerToxicSpineCD:Start(20.8)
 		timerShockPulseCD:Start(25.7, self.vb.shockPulse+1)
 		if self:IsMythic() then
-			timerPiercingBarbCD:Start(2)
+			timerPiercingBarbCD:Start(11)
+			timerToxicSpineCD:Start(11)
+			timerShockPulseCD:Start(23, self.vb.shockPulse+1)
+		else
+			timerToxicSpineCD:Start(20.8)
+			timerShockPulseCD:Start(25.7, self.vb.shockPulse+1)
 		end
 	end
 end
