@@ -70,7 +70,7 @@ local timerOverwhelmingBarrageCD		= mod:NewCDTimer(40, 296551, nil, nil, nil, 2,
 local timerOverflowCD					= mod:NewCDTimer(40.1, 295346, nil, nil, nil, 3)--31.6 previously, but 40 as of mythic testing
 local timerInversionCD					= mod:NewCDTimer(72.9, 295791, nil, nil, nil, 2, nil, DBM_CORE_HEROIC_ICON, nil, 3, 4)
 local timerfrostshockboltsCD			= mod:NewCDTimer(52.2, 295601, nil, nil, nil, 3)
-local timerChimericMarksCD				= mod:NewCDTimer(22.8, 294726, nil, nil, nil, 2)--Mythic
+local timerChimericMarksCD				= mod:NewCDTimer(22.8, 294726, nil, nil, nil, 2, nil, DBM_CORE_MYTHIC_ICON)--Mythic
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
 
