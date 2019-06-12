@@ -552,31 +552,33 @@ local function removeEntry(t, val)
 	return existed
 end
 
-local function checkForFriend(sender, includeGuild)
-	--Check if it's a bnet friend sending a non bnet whisper
-	local _, numBNetOnline = BNGetNumFriends()
-	for i = 1, numBNetOnline do
-		local presenceID, _, _, _, _, _, _, isOnline = BNGetFriendInfo(i)
-		local friendIndex = BNGetFriendIndex(presenceID)--Check if they are on more than one client at once (very likely with bnet launcher or mobile)
-		for i=1, BNGetNumFriendGameAccounts(friendIndex) do
-			local _, toonName, client = BNGetFriendGameAccountInfo(friendIndex, i)
-			if toonName and client == BNET_CLIENT_WOW then--Check if toon name exists and if client is wow. If yes to both, we found right client
-				if toonName == sender then--Now simply see if this is sender
-					return true
+local function checkForSafeSender(sender, checkFriends, checkGuild)
+	if checkFriends then
+		--Check if it's a bnet friend sending a non bnet whisper
+		local _, numBNetOnline = BNGetNumFriends()
+		for i = 1, numBNetOnline do
+			local presenceID, _, _, _, _, _, _, isOnline = BNGetFriendInfo(i)
+			local friendIndex = BNGetFriendIndex(presenceID)--Check if they are on more than one client at once (very likely with bnet launcher or mobile)
+			for i=1, BNGetNumFriendGameAccounts(friendIndex) do
+				local _, toonName, client = BNGetFriendGameAccountInfo(friendIndex, i)
+				if toonName and client == BNET_CLIENT_WOW then--Check if toon name exists and if client is wow. If yes to both, we found right client
+					if toonName == sender then--Now simply see if this is sender
+						return true
+					end
 				end
 			end
 		end
-	end
-	--Check if it's a non bnet friend
-	local nf = C_FriendList.GetNumFriends()
-	for i = 1, nf do
-		local toonName = C_FriendList.GetFriendInfo(i)
-		if toonName == sender then
-			return true
+		--Check if it's a non bnet friend
+		local nf = C_FriendList.GetNumFriends()
+		for i = 1, nf do
+			local toonName = C_FriendList.GetFriendInfo(i)
+			if toonName == sender then
+				return true
+			end
 		end
 	end
 	--Check Guildies (not used by whisper syncs, but used by status whispers)
-	if includeGuild then
+	if checkGuild then
 		local totalMembers, _, numOnlineAndMobileMembers = GetNumGuildMembers()
 		local scanTotal = GetGuildRosterShowOffline() and totalMembers or numOnlineAndMobileMembers--Attempt CPU saving, if "show offline" is unchecked, we can reliably scan only online members instead of whole roster
 		for i=1, scanTotal do
@@ -3852,45 +3854,14 @@ do
 		if IsInInstance() or GetLFGMode(1) or GetLFGMode(2) or GetLFGMode(3) or GetLFGMode(4) or GetLFGMode(5) then return end
 		--First check realID
 		if self.Options.AutoAcceptFriendInvite then
-			local _, numBNetOnline = BNGetNumFriends()
-			for i = 1, numBNetOnline do
-				local presenceID, _, _, _, _, _, _, isOnline = BNGetFriendInfo(i)
-				local friendIndex = BNGetFriendIndex(presenceID)--Check if they are on more than one client at once (very likely with new launcher)
-				for i=1, BNGetNumFriendGameAccounts(friendIndex) do
-					local _, toonName, client = BNGetFriendGameAccountInfo(friendIndex, i)
-					if toonName and client == BNET_CLIENT_WOW then--Check if toon name exists and if client is wow. If yes to both, we found right client
-						if toonName == sender then--Now simply see if this is sender
-							AcceptPartyInvite()
-							return
-						end
-					end
-				end
-			end
-			-- Check regular non-BNet friends
-			local nf = C_FriendList.GetNumFriends()
-			for i = 1, nf do
-				local toonName = C_FriendList.GetFriendInfo(i)
-				if toonName == sender then
-					AcceptPartyInvite()
-					return
-				end
+			if checkForSafeSender(sender, true) then
+				AcceptPartyInvite()
 			end
 		end
 		--Second check guildies
 		if self.Options.AutoAcceptGuildInvite then
-			local totalMembers, numOnlineGuildMembers, numOnlineAndMobileMembers = GetNumGuildMembers()
-			local scanTotal = GetGuildRosterShowOffline() and totalMembers or numOnlineAndMobileMembers
-			for i=1, scanTotal do
-				--At this time, it's not easy to tell an officer from a non officer
-				--since a guild might have ranks 1-3 or even 1-4 be officers/leader while another might only be 1-2
-				--therefor, this feature is just a "yes/no" for if sender is a guildy
-				local name, rank, rankIndex = GetGuildRosterInfo(i)
-				if not name then break end
-				name = Ambiguate(name, "none")
-				if sender == name then
-					AcceptPartyInvite()
-					return
-				end
+			if checkForSafeSender(sender, false, true) then
+				AcceptPartyInvite()
 			end
 		end
 	end
@@ -5210,7 +5181,7 @@ do
 		if channel == "BN_WHISPER" then
 			handler = whisperSyncHandlers[prefix]
 		--Whisper syncs sent from non friends are automatically rejected if not from a friend or someone in your group
-		elseif channel == "WHISPER" and sender ~= playerName and (checkForFriend(sender) or DBM:GetRaidUnitId(sender)) then -- separate between broadcast and unicast, broadcast must not be sent as unicast or vice-versa
+		elseif channel == "WHISPER" and sender ~= playerName and (checkForSafeSender(sender, true) or DBM:GetRaidUnitId(sender)) then -- separate between broadcast and unicast, broadcast must not be sent as unicast or vice-versa
 			handler = whisperSyncHandlers[prefix]
 		else
 			handler = syncHandlers[prefix]
@@ -6992,7 +6963,7 @@ do
 	-- sender is a presenceId for real id messages, a character name otherwise
 	local function onWhisper(msg, sender, isRealIdMessage)
 		if statusWhisperDisabled then return end--RL has disabled status whispers for entire raid.
-		if not (isRealIdMessage or checkForFriend(sender, true)) then return end--Automatically reject all whisper functions from non friends
+		if not (isRealIdMessage or checkForSafeSender(sender, true, true)) then return end--Automatically reject all whisper functions from non friends/guildies
 		if msg:find(chatPrefix) and not InCombatLockdown() and DBM:AntiSpam(60, "Ogron") and DBM.Options.AutoReplySound then
 			--Might need more validation if people figure out they can just whisper people with chatPrefix to trigger it.
 			--However if I have to add more validation it probably won't work in most languages :\ So lets hope antispam and combat check is enough
