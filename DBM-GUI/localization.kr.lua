@@ -275,6 +275,7 @@ L.SpamBlockNoRangeRestore	= "모드가 '숨김' 명령을 내렸을 때 이전 �
 L.Area_SpamFilter			= "스팸 필터 설정"
 L.DontShowFarWarnings		= "멀리 떨어진 곳의 이벤트에 대한 알림 및 바 표시 안함"
 L.StripServerName			= "경고와 타이머에서 서버명 지우기"
+L.FilterVoidFormSay			= "공허의 형상일땐 위치/초읽기 대화 전송 안함"
 
 L.Area_SpecFilter			= "역할 필터 설정"
 L.FilterTankSpec			= "방어 전담이 아닐땐 방어 전담용 경고 보지 않기 (참고: '도발' 경고는 현재 전부 기본값으로 켜짐 상태이기 때문에 대부분의 이용자는 설정을 끄지 않는 것을 권장합니다.)"
@@ -283,7 +284,7 @@ L.FilterInterrupts			= "주문 시전 몹이 현재 대상/주시 대상이 아�
 L.FilterInterrupts2			= "주문 시전 몹이 현재 대상/주시 대상이 아니거나 (항상) 차단기가 쿨타임일 때 (보스 전투만)"
 L.FilterInterrupts3			= "주문 시전 몹이 현재 대상/주시 대상이 아니거나 (항상) 차단기가 쿨타임일 때 (보스 및 쫄 정리시)"
 L.FilterInterruptNoteName	= "사용자 메모에 자기 이름이 포함되지 않은 경우 차단 가능 주문의 경고 보지 않기"
-L.FilterDispels				= "해제 주문이 재사용 대기중이면 해제 경고 보지 않기"
+L.FilterDispels				= "해제 주문이 쿨타임일땐 해제 경고 보지 않기"
 L.FilterTrashWarnings		= "일반 &amp; 영웅 던전에선 일반몹 경고 보지 않기"
 
 L.Area_PullTimer			= "풀링, 휴식, 전투, 사용자 지정 바 필터 설정"
