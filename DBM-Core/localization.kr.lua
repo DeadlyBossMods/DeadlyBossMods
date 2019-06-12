@@ -182,7 +182,7 @@ DBM_CORE_RETAIL_ONLY					= "경고: 이 DBM 버전은 월드 오브 워크래프
 
 DBM_CORE_MOVABLE_BAR				= "드래그 하세요!"
 
-DBM_PIZZA_SYNC_INFO					= "|Hplayer:%1$s|h[%1$s]|h1이;가; 당신에게 DBM 타이머를 전송했습니다"
+DBM_PIZZA_SYNC_INFO					= "|Hplayer:%1$s|h[%1$s]|h님이 당신에게 DBM 타이머를 전송했습니다"
 DBM_PIZZA_CONFIRM_IGNORE			= "정말 %s의 DBM 타이머를 차단하시겠습니까? 이 공격대에 있는 동안에만 적용됩니다."
 DBM_PIZZA_ERROR_USAGE				= "사용법: /dbm [broadcast] timer <시간> <텍스트>. <시간>은 1초 이상이어야 합니다."
 
