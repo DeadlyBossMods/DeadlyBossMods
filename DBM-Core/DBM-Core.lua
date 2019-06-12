@@ -552,6 +552,17 @@ local function removeEntry(t, val)
 	return existed
 end
 
+local function checkForFriend(sender)
+	local nf = C_FriendList.GetNumFriends()
+	for i = 1, nf do
+		local toonName = C_FriendList.GetFriendInfo(i)
+		if toonName == sender then
+			return true
+		end
+	end
+	return false
+end
+
 -- automatically sends an addon message to the appropriate channel (INSTANCE_CHAT, RAID or PARTY)
 local function sendSync(prefix, msg)
 	msg = msg or ""
@@ -1371,7 +1382,7 @@ do
 				"GROUP_ROSTER_UPDATE",
 				"INSTANCE_GROUP_SIZE_CHANGED",
 				"CHAT_MSG_ADDON",
-				"CHAT_MSG_ADDON_LOGGED",--Enable in next Beta Build
+				"CHAT_MSG_ADDON_LOGGED",
 				"BN_CHAT_MSG_ADDON",
 				"PLAYER_REGEN_DISABLED",
 				"PLAYER_REGEN_ENABLED",
@@ -4547,7 +4558,7 @@ do
 	end
 
 	whisperSyncHandlers["BTR3"] = function(sender, timer)
-		if DBM.Options.DontShowUserTimers or not DBM:GetRaidUnitId(sender) then return end
+		if DBM.Options.DontShowUserTimers then return end
 		timer = tonumber(timer or 0)
 		if timer > 3600 then return end
 		DBM:Unschedule(DBM.RequestTimers)--IF we got BTR3 sync, then we know immediately RequestTimers was successful, so abort others
@@ -4934,7 +4945,6 @@ do
 		local updateInstanceInfo, showResults
 
 		whisperSyncHandlers["II"] = function(sender, result, name, id, diff, maxPlayers, progress, textDiff)
-			if not DBM:GetRaidUnitId(sender) then return end
 			if GetTime() - lastRequest > 62 or not results then
 				return
 			end
@@ -5132,10 +5142,6 @@ do
 	end
 
 	whisperSyncHandlers["RT"] = function(sender)
-		if not DBM:GetRaidUnitId(sender) then
-			DBM:Debug(sender.." attempted to request timers but isn't in your group")
-			return
-		end
 		if UnitInBattleground("player") then
 			return
 		end
@@ -5143,10 +5149,6 @@ do
 	end
 
 	whisperSyncHandlers["CI"] = function(sender, mod, time)
-		if not DBM:GetRaidUnitId(sender) then
-			DBM:Debug(sender.." attempted to send you combat info but isn't in your group")
-			return
-		end
 		mod = DBM:GetModByName(mod or "")
 		time = tonumber(time or 0)
 		if mod and time then
@@ -5155,7 +5157,6 @@ do
 	end
 
 	whisperSyncHandlers["TI"] = function(sender, mod, timeLeft, totalTime, id, ...)
-		if not DBM:GetRaidUnitId(sender) then return end--This can't be checked fast enough on timer recovery, so it causes it to fail
 		mod = DBM:GetModByName(mod or "")
 		timeLeft = tonumber(timeLeft or 0)
 		totalTime = tonumber(totalTime or 0)
@@ -5165,7 +5166,6 @@ do
 	end
 
 	whisperSyncHandlers["VI"] = function(sender, mod, name, value)
-		if not DBM:GetRaidUnitId(sender) then return end--This can't be checked fast enough on timer recovery, so it causes it to fail
 		mod = DBM:GetModByName(mod or "")
 		value = tonumber(value) or value
 		if mod and name and value then
@@ -5178,7 +5178,11 @@ do
 			return
 		end
 		local handler
-		if channel == "WHISPER" and sender ~= playerName then -- separate between broadcast and unicast, broadcast must not be sent as unicast or vice-versa
+		--Can only be from a friend
+		if channel == "BN_WHISPER" then
+			handler = whisperSyncHandlers[prefix]
+		--Whisper syncs sent from non friends are automatically rejected if not from a friend or someone in your group
+		elseif channel == "WHISPER" and sender ~= playerName and (checkForFriend(sender) or DBM:GetRaidUnitId(sender)) then -- separate between broadcast and unicast, broadcast must not be sent as unicast or vice-versa
 			handler = whisperSyncHandlers[prefix]
 		else
 			handler = syncHandlers[prefix]
@@ -5242,7 +5246,7 @@ do
 
 	function DBM:BN_CHAT_MSG_ADDON(prefix, msg, channel, sender)
 		if prefix == "D4" and msg then
-			handleSync(channel, sender, strsplit("\t", msg))
+			handleSync("BN_WHISPER", sender, strsplit("\t", msg))
 		end
 	end
 end
@@ -6960,6 +6964,7 @@ do
 	-- sender is a presenceId for real id messages, a character name otherwise
 	local function onWhisper(msg, sender, isRealIdMessage)
 		if statusWhisperDisabled then return end--RL has disabled status whispers for entire raid.
+		if not (isRealIdMessage or checkForFriend(sender)) then return end--Automatically reject all whisper functions from non friends
 		if msg:find(chatPrefix) and not InCombatLockdown() and DBM:AntiSpam(60, "Ogron") and DBM.Options.AutoReplySound then
 			--Might need more validation if people figure out they can just whisper people with chatPrefix to trigger it.
 			--However if I have to add more validation it probably won't work in most languages :\ So lets hope antispam and combat check is enough
