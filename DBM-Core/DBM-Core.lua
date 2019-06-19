@@ -1313,12 +1313,24 @@ do
 								end
 							end
 							if self.AddOns[#self.AddOns].subTabs then
-								for k, v in ipairs(self.AddOns[#self.AddOns].subTabs) do
-									local id = tonumber(self.AddOns[#self.AddOns].subTabs[k])
-									if id then
-										self.AddOns[#self.AddOns].subTabs[k] = GetRealZoneText(id):trim() or id
+								local subTabs = self.AddOns[#self.AddOns].subTabs
+								for k, v in ipairs(subTabs) do
+									--Ugly hack to inject custom string text into auto localized zone name sub cats
+									if subTabs[k]:find("|") then
+										local id, nameModifier = strsplit("|", subTabs[k])
+										if id and nameModifier then
+											id = tonumber(id)
+											self.AddOns[#self.AddOns].subTabs[k] = (GetRealZoneText(id):trim() or id).." ("..nameModifier..")"
+										else
+											self.AddOns[#self.AddOns].subTabs[k] = (subTabs[k]):trim()
+										end
 									else
-										self.AddOns[#self.AddOns].subTabs[k] = (self.AddOns[#self.AddOns].subTabs[k]):trim()
+										local id = tonumber(subTabs[k])
+										if id then
+											self.AddOns[#self.AddOns].subTabs[k] = GetRealZoneText(id):trim() or id
+										else
+											self.AddOns[#self.AddOns].subTabs[k] = (subTabs[k]):trim()
+										end
 									end
 								end
 							end

@@ -30,7 +30,7 @@ local specWarnQuake					= mod:NewSpecialWarningDodge(258627, nil, nil, nil, 2, 2
 
 local timerCallEarthragerCD			= mod:NewNextCountTimer(60.4, 257593, nil, nil, nil, 1)
 --local timerInfusionCD				= mod:NewAITimer(13, 271698, nil, nil, nil, 3, nil, DBM_CORE_DAMAGE_ICON)--Health based?
-local timerResonantPulseCD			= mod:NewCDTimer(33.2, 258622, nil, nil, nil, 2)
+local timerResonantPulseCD			= mod:NewCDTimer(32.2, 258622, nil, nil, nil, 2)
 local timerTectonicSmashCD			= mod:NewCDTimer(23.0, 275907, nil, nil, nil, 3)--23-28
 
 mod:AddInfoFrameOption(257481, true)
