@@ -25,6 +25,11 @@ mod:RegisterEventsInCombat(
 
 --TODO, verify correct unshackled power spellid for LFR
 --TODO, see if heroic timers changed.
+--[[
+(ability.id = 296546 or ability.id = 296459 or ability.id = 296894 or ability.id = 302465 or ability.id = 295916 or ability.id = 296701) and type = "begincast"
+ or ability.id = 296737 and type = "cast"
+ or type = "death" and target.id = 152512
+--]]
 local warnArcanadoBurst					= mod:NewSpellAnnounce(296430, 2)
 local warnSquallTrap					= mod:NewSpellAnnounce(296459, 4)
 local warnArcaneBomb					= mod:NewTargetNoFilterAnnounce(296737, 4)
