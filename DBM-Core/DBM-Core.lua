@@ -9376,6 +9376,10 @@ do
 	function bossModPrototype:NewPrePhaseAnnounce(stage, color, icon, ...)
 		return newAnnounce(self, "prestage", stage, color or 2, icon or "136116", ...)
 	end
+
+	function bossModPrototype:NewMoveToAnnounce(spellId, color, ...)
+		return newAnnounce(self, "moveto", spellId, color or 3, ...)
+	end
 end
 
 --------------------
@@ -10123,6 +10127,13 @@ do
 	end
 
 	function specialWarningPrototype:ScheduleVoice(t, ...)
+		if voiceSessionDisabled or DBM.Options.ChosenVoicePack == "None" then return end
+		unschedule(self.Play, self.mod, self)--Allow ScheduleVoice to be used in same way as CombinedShow
+		return schedule(t, self.Play, self.mod, self, ...)
+	end
+
+	--Object Permits scheduling voice multiple times for same object
+	function specialWarningPrototype:ScheduleVoiceOverLap(t, ...)
 		if voiceSessionDisabled or DBM.Options.ChosenVoicePack == "None" then return end
 		return schedule(t, self.Play, self.mod, self, ...)
 	end

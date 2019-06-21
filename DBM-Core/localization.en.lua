@@ -290,7 +290,7 @@ DBM_BOSS							= "Boss"
 DBM_CORE_ROOM_EDGE					= "Room Edge"
 DBM_CORE_FAR_AWAY					= "Far Away"
 DBM_CORE_BREAK_LOS					= "Break LOS"
-DBM_CORE_RESTORE_LOS				= "Restore LOS"
+DBM_CORE_RESTORE_LOS				= "Restore/Maintain LOS"
 DBM_CORE_SAFE						= "Safe"
 DBM_CORE_SHIELD						= "Shield"
 DBM_INCOMING						= "%s Incoming"
@@ -333,7 +333,8 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
 	stage		= "Stage %s",
 	prestage	= "Stage %s soon",
 	count		= "%s (%%s)",
-	stack		= "%s on >%%s< (%%d)"
+	stack		= "%s on >%%s< (%%d)",
+	moveto		= "%s - move to >%%s<"
 }
 
 local prewarnOption = "Show pre-warning for $spell:%s"
@@ -356,7 +357,8 @@ DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
 	stagechange	= "Announce stage changes",
 	prestage	= "Show a prewarning for Stage %s",
 	count		= "Show warning for $spell:%s (with count)",
-	stack		= "Announce $spell:%s stacks"
+	stack		= "Announce $spell:%s stacks",
+	moveto		= "Show warning to move to someone or some place for $spell:%s"
 }
 
 DBM_CORE_AUTO_SPEC_WARN_TEXTS = {

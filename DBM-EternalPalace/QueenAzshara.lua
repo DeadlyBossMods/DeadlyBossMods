@@ -50,6 +50,7 @@ mod:RegisterEventsInCombat(
 local warnPhase							= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
 local warnPressureSurge					= mod:NewSpellAnnounce(302208, 2)
 --Stage One: Cursed Lovers
+local warnPainfulMemoriesOver			= mod:NewMoveToAnnounce(297937, 1)
 ----Aethanel
 local warnLightningOrbs					= mod:NewSpellAnnounce(298121, 2)
 local warnFrozen						= mod:NewTargetNoFilterAnnounce(298018, 4)
@@ -61,7 +62,7 @@ local warnGroundPound					= mod:NewCountAnnounce(298531, 2)
 ----Azshara
 local warnDrainAncientWard				= mod:NewSpellAnnounce(300334, 2)
 local warnBeckon						= mod:NewTargetNoFilterAnnounce(299094, 3)
-local warnCrushingDepths				= mod:NewTargetNoFilterAnnounce(303825, 4)
+local warnCrushingDepths				= mod:NewTargetNoFilterAnnounce(303825, 4, nil, false, 2)
 --Intermission One: Queen's Decree
 local warnQueensDecree					= mod:NewCastAnnounce(299250, 3)
 --Stage Two: Hearts Unleashed
@@ -80,7 +81,7 @@ local warnSystemShock					= mod:NewTargetAnnounce(300877, 3)
 local specWarnDrainedSoul				= mod:NewSpecialWarningStack(298569, nil, 6, nil, nil, 1, 6)
 --Stage One: Cursed Lovers
 local specWarnPainfulMemories			= mod:NewSpecialWarningMoveTo(297937, "Tank", nil, nil, 3, 2)
-local specWarnLonging					= mod:NewSpecialWarningMoveTo(297934, "Tank", nil, nil, 3, 2)
+local specWarnLonging					= mod:NewSpecialWarningMoveTo(297934, false, nil, 2, 3, 2)
 local specWarnGTFO						= mod:NewSpecialWarningGTFO(297898, nil, nil, nil, 1, 8)
 ----Aethanel
 local specWarnChainLightning			= mod:NewSpecialWarningInterrupt(297972, "HasInterrupt", nil, nil, 1, 2)
@@ -461,7 +462,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnBeckonNear:Play("runaway")
 		end
 	elseif spellId == 303825 then
-		warnCrushingDepths:Show(args.destName)
+		warnCrushingDepths:CombinedShow(1, args.destName)
 	--Suffer (soak Orb), Obey (don't soak orb), Stand Together (group up), Stand Alone (don't group up), March (keep moving), Stay (stop moving)
 	elseif spellId == 299249 or spellId == 299251 or spellId == 299254 or spellId == 299255 or spellId == 299252 or spellId == 299253 then
 		--Temp, remove if cast event works
@@ -548,6 +549,8 @@ function mod:SPELL_AURA_APPLIED(args)
 
 	elseif spellId == 297937 then
 		self.vb.painfulMemoriesActive = true
+		warnPainfulMemoriesOver:Show(DBM_CORE_RESTORE_LOS)
+		warnPainfulMemoriesOver:Play("moveboss")
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
