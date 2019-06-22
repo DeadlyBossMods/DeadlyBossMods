@@ -41,10 +41,16 @@ mod:RegisterEventsInCombat(
 --TODO, announce short ciruit?
 --TODO, FIND way to accurate detect big hulking naga spawn. currently it's iffy at best, so can't do initial timers for pound, or even spawn
 --TODO, capture UPDATE_UI_WIDGET better with modified transcriptor to get the widget values I need
+--[[
+(ability.id = 297937 or ability.id = 297934 or ability.id = 298121 or ability.id = 297972 or ability.id = 298531 or ability.id = 300478 or ability.id = 299250 or ability.id = 299178 or ability.id = 300519 or ability.id = 303629 or ability.id = 300490 or ability.id = 297372 or ability.id = 300807) and type = "begincast"
+ or (ability.id = 302208 or ability.id = 298014 or ability.id = 301078 or ability.id = 299094 or ability.id = 303657 or ability.id = 303629 or ability.id = 300492 or ability.id = 300743 or ability.id = 303980 or ability.id = 302141 or ability.id = 300334) and type = "cast"
+ or type = "death" and (target.id = 153059 or target.id = 153060)
+--]]
 --Ancient Wards
 local warnPhase							= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
 local warnPressureSurge					= mod:NewSpellAnnounce(302208, 2)
 --Stage One: Cursed Lovers
+local warnPainfulMemoriesOver			= mod:NewMoveToAnnounce(297937, 1)
 ----Aethanel
 local warnLightningOrbs					= mod:NewSpellAnnounce(298121, 2)
 local warnFrozen						= mod:NewTargetNoFilterAnnounce(298018, 4)
@@ -56,7 +62,7 @@ local warnGroundPound					= mod:NewCountAnnounce(298531, 2)
 ----Azshara
 local warnDrainAncientWard				= mod:NewSpellAnnounce(300334, 2)
 local warnBeckon						= mod:NewTargetNoFilterAnnounce(299094, 3)
-local warnCrushingDepths				= mod:NewTargetNoFilterAnnounce(303825, 4)
+local warnCrushingDepths				= mod:NewTargetNoFilterAnnounce(303825, 4, nil, false, 2)
 --Intermission One: Queen's Decree
 local warnQueensDecree					= mod:NewCastAnnounce(299250, 3)
 --Stage Two: Hearts Unleashed
@@ -75,7 +81,7 @@ local warnSystemShock					= mod:NewTargetAnnounce(300877, 3)
 local specWarnDrainedSoul				= mod:NewSpecialWarningStack(298569, nil, 6, nil, nil, 1, 6)
 --Stage One: Cursed Lovers
 local specWarnPainfulMemories			= mod:NewSpecialWarningMoveTo(297937, "Tank", nil, nil, 3, 2)
-local specWarnLonging					= mod:NewSpecialWarningMoveTo(297934, "Tank", nil, nil, 3, 2)
+local specWarnLonging					= mod:NewSpecialWarningMoveTo(297934, false, nil, 2, 3, 2)
 local specWarnGTFO						= mod:NewSpecialWarningGTFO(297898, nil, nil, nil, 1, 8)
 ----Aethanel
 local specWarnChainLightning			= mod:NewSpecialWarningInterrupt(297972, "HasInterrupt", nil, nil, 1, 2)
@@ -187,17 +193,7 @@ do
 		table.wipe(tempLinesSorted)
 		table.wipe(sortedLines)
 		--Power levels pulled from widgets
-		--[[for i = 1, 5 do
-			local uId = "boss"..i
-			--Primary Power
-			local currentPower, maxPower = UnitPower(uId, 10), UnitPowerMax(uId, 10)
-			if maxPower and maxPower ~= 0 then
-				local adjustedPower = currentPower / maxPower * 100
-				if adjustedPower >= 1 and adjustedPower ~= 100 then--Filter 100 power, to basically eliminate cced Adds
-					addLine(UnitName(uId), currentPower)
-				end
-			end
-		end--]]
+		--TODO
 		--Player Personal Checks
 		if playerSoulDrained then
 			local spellName2, _, currentStack2, _, _, expireTime2 = DBM:UnitDebuff("player", 298569)
@@ -466,7 +462,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnBeckonNear:Play("runaway")
 		end
 	elseif spellId == 303825 then
-		warnCrushingDepths:Show(args.destName)
+		warnCrushingDepths:CombinedShow(1, args.destName)
 	--Suffer (soak Orb), Obey (don't soak orb), Stand Together (group up), Stand Alone (don't group up), March (keep moving), Stay (stop moving)
 	elseif spellId == 299249 or spellId == 299251 or spellId == 299254 or spellId == 299255 or spellId == 299252 or spellId == 299253 then
 		--Temp, remove if cast event works
@@ -553,6 +549,8 @@ function mod:SPELL_AURA_APPLIED(args)
 
 	elseif spellId == 297937 then
 		self.vb.painfulMemoriesActive = true
+		warnPainfulMemoriesOver:Show(DBM_CORE_RESTORE_LOS)
+		warnPainfulMemoriesOver:Play("moveboss")
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -615,7 +613,6 @@ do
 		timerQueensDecreeCD:Start(1.5)--Actually 5, but needs to stay AI timer for now, since P2+ lacking so much data
 		timerArcaneOrbsCD:Start(8.5)
 	end
-
 	function mod:UNIT_DIED(args)
 		local cid = self:GetCIDFromGUID(args.destGUID)
 		if cid == 153059 then--Aethanel

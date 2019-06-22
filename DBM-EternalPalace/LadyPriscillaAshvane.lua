@@ -13,7 +13,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 --	"SPELL_CAST_START 297402 297398 297324",
-	"SPELL_CAST_SUCCESS 296569 296662 296725 297398",
+	"SPELL_CAST_SUCCESS 296569 296662 296725 297398 297240 298056",
 	"SPELL_AURA_APPLIED 296650 296725 296943 296940 296942 296939 296941 296938",
 	"SPELL_AURA_REMOVED 296650 296943 296940 296942 296939 296941 296938",
 	"SPELL_PERIODIC_DAMAGE 296752",
@@ -39,17 +39,17 @@ local specWarnCrushingDepths			= mod:NewSpecialWarningMoveAway(297324, nil, nil,
 local yellCrushingDepths				= mod:NewYell(297324)
 local specWarnCrushingNear				= mod:NewSpecialWarningClose(297324, nil, nil, nil, 1, 2)
 local specWarnBarnacleBash				= mod:NewSpecialWarningTaunt(296725, nil, nil, nil, 1, 2)
-local specWarnArcingAzerite				= mod:NewSpecialWarningYouPos(296944, nil, nil, nil, 3, 9)
+local specWarnArcingAzerite				= mod:NewSpecialWarningYouPos(296944, nil, nil, nil, 3)--, 9
 local yellArcingAzerite					= mod:NewPosYell(296944, DBM_CORE_AUTO_YELL_CUSTOM_POSITION)
 local yellArcingAzeriteFades			= mod:NewIconFadesYell(296944)
 local specWarnGTFO						= mod:NewSpecialWarningGTFO(296752, nil, nil, nil, 1, 8)
 
 --mod:AddTimerLine(BOSS)
 --local timerCoralGrowthCD				= mod:NewCDCountTimer(30, 296555, nil, nil, nil, 3, nil, nil, nil, 1, 4)
---local timerRipplingwaveCD				= mod:NewCDCountTimer(32.2, 296688, nil, nil, nil, 3, nil, nil, nil, 3, 4)
-local timerCrushingDepthsCD				= mod:NewCDCountTimer(15.9, 297324, nil, nil, nil, 3, nil, DBM_CORE_TANK_ICON..DBM_CORE_DAMAGE_ICON, nil, 2, 4)
+local timerRipplingwaveCD				= mod:NewCDCountTimer(32.2, 296688, nil, nil, nil, 3, nil, nil, nil, 3, 4)
+local timerCrushingDepthsCD				= mod:NewCDCountTimer(15, 297324, nil, nil, nil, 3, nil, DBM_CORE_TANK_ICON..DBM_CORE_DAMAGE_ICON, nil, 2, 4)
 --local timerUpsurgeCD					= mod:NewCDTimer(15.3, 298055, nil, nil, nil, 3)
-local timerBarnacleBashCD				= mod:NewCDCountTimer(15.9, 296725, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON, nil, mod:IsTank() and 2, 4)
+local timerBarnacleBashCD				= mod:NewCDCountTimer(15, 296725, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON, nil, mod:IsTank() and 2, 4)
 --Stage 2
 local timerArcingAzeriteCD				= mod:NewCDCountTimer(39, 296944, nil, nil, nil, 3, nil, nil, nil, 3, 4)
 local timerShieldCD						= mod:NewCDTimer(66.1, 296650, nil, nil, nil, 6, nil, nil, nil, 1, 4)
@@ -81,7 +81,7 @@ do
 		table.wipe(lines)
 		table.wipe(sortedLines)
 		if mod.vb.blueone and mod.vb.bluetwo then
-			addLine("|TInterface\\Icons\\Ability_Bossashvane_Icon03.blp:12:12|Blue|"..mod.vb.blueone, mod.vb.bluetwo)
+			addLine("|TInterface\\Icons\\Ability_Bossashvane_Icon03.blp:12:12|tBlue|"..mod.vb.blueone, mod.vb.bluetwo)
 		end
 		if mod.vb.redone and mod.vb.redtwo then
 			addLine("|TInterface\\Icons\\Ability_Bossashvane_Icon02.blp:12:12|tRed|"..mod.vb.redone, mod.vb.redtwo)
@@ -141,7 +141,15 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.ripplingWave = self.vb.ripplingWave + 1
 		--specWarnRipplingWave:Show(self.vb.ripplingWave)
 		--specWarnRipplingWave:Play("watchwave")
-		--timerRipplingwaveCD:Start(32.2, self.vb.ripplingWave+1)
+		timerRipplingwaveCD:Start(32.2, self.vb.ripplingWave+1)
+	elseif spellId == 297240 then--Shield, slightly delayed to make sure UnitGetTotalAbsorbs returns a value
+		if self.Options.InfoFrame then
+			DBM.InfoFrame:SetHeader(args.spellName)
+			DBM.InfoFrame:Show(2, "enemyabsorb", nil, UnitGetTotalAbsorbs("boss1"), true, "boss1")
+		end
+	elseif spellId == 298056 then--Upsurge
+		warnUpsurge:Show()
+		--timerUpsurgeCD:Start()
 	end
 end
 
@@ -160,13 +168,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerShieldCD:Stop()
 		--timerUpsurgeCD:Start(3.1)
 		timerBarnacleBashCD:Start(7.3, 1)
-		--timerRipplingwaveCD:Start(13.5, 1)
+		timerRipplingwaveCD:Start(13.5, 1)
 		--timerCoralGrowthCD:Start(30.5, 1)
 		--timerCrushingDepthsCD:Start(45.2)--Not started here
-		if self.Options.InfoFrame then
-			DBM.InfoFrame:SetHeader(args.spellName)
-			DBM.InfoFrame:Show(2, "enemyabsorb", nil, UnitGetTotalAbsorbs("boss1"), true, false)
-		end
 		if self.Options.RangeFrame then
 			if self:IsRanged() then
 				DBM.RangeCheck:Show(12)
@@ -190,7 +194,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if (spellId == 296943 or spellId == 296940) then--Blue
 			if args:IsPlayer() then
 				specWarnArcingAzerite:Show("|TInterface\\Icons\\Ability_Bossashvane_Icon03.blp:12:12|tBlue|TInterface\\Icons\\Ability_Bossashvane_Icon03.blp:12:12|t")
-				specWarnArcingAzerite:Play("breakcoral")
+				--specWarnArcingAzerite:Play("breakcoral")
 				yellArcingAzerite:Yell(6, "", 6)
 				yellArcingAzeriteFades:Countdown(8, nil, 6)
 			end
@@ -202,7 +206,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		elseif (spellId == 296942 or spellId == 296939) then--Red
 			if args:IsPlayer() then
 				specWarnArcingAzerite:Show("|TInterface\\Icons\\Ability_Bossashvane_Icon02.blp:12:12|tRed|TInterface\\Icons\\Ability_Bossashvane_Icon02.blp:12:12|t")
-				specWarnArcingAzerite:Play("breakcoral")
+				--specWarnArcingAzerite:Play("breakcoral")
 				yellArcingAzerite:Yell(7, "", 7)
 				yellArcingAzeriteFades:Countdown(8, nil, 7)
 			end
@@ -214,7 +218,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		elseif (spellId == 296941 or spellId == 296938) then--Green/Yellow
 			if args:IsPlayer() then
 				specWarnArcingAzerite:Show("|TInterface\\Icons\\Ability_Bossashvane_Icon01.blp:12:12|tGreen|TInterface\\Icons\\Ability_Bossashvane_Icon01.blp:12:12|t|")
-				specWarnArcingAzerite:Play("breakcoral")
+				--specWarnArcingAzerite:Play("breakcoral")
 				yellArcingAzerite:Yell(4, "", 4)
 				yellArcingAzeriteFades:Countdown(8, nil, 4)
 			end
@@ -253,7 +257,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		warnShieldOver:Show()
 		warnShieldOver:Play("phasechange")
 		--timerCoralGrowthCD:Stop()
-		--timerRipplingwaveCD:Stop()
+		timerRipplingwaveCD:Stop()
 		timerCrushingDepthsCD:Stop()
 		--timerUpsurgeCD:Stop()
 		timerBarnacleBashCD:Stop()
@@ -307,10 +311,7 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
 --[[
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 298056 then--Upsurge
-		warnUpsurge:Show()
-		timerUpsurgeCD:Start()
-	elseif spellId == 297437 then--Lady Ashvane Spell Picker
+	if spellId == 297437 then--Lady Ashvane Spell Picker
 		self.vb.spellPicker = self.vb.spellPicker + 1
 		if self.vb.spellPicker == 3 then
 			self.vb.spellPicker = 0

@@ -30,6 +30,11 @@ mod:RegisterEventsInCombat(
 --TODO, raging-rapids?
 --TODO, do more with powerful stomp?
 --TODO, special warn for tender add spawns?
+--[[
+(ability.id = 298413 or ability.id = 298548 or ability.id = 295818 or ability.id = 295822 or ability.id = 296691) and type = "begincast"
+ or (ability.id = 298242 or ability.id = 298103 or ability.id = 298156 or ability.id = 298548 or ability.id = 295779 or ability.id = 305057) and type = "cast"
+ or type = "interrupt"
+--]]
 local warnDesensitizingSting				= mod:NewStackAnnounce(298156, 2, nil, "Tank")
 local warnIncubationFluid					= mod:NewTargetNoFilterAnnounce(298306, 2)
 local warnCallofTender						= mod:NewCountAnnounce(305057, 2)

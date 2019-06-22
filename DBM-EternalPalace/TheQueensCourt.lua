@@ -292,15 +292,12 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:SetIcon(args.destName, 4)
 		end
 	elseif spellId == 296851 then
-		if args:IsPlayer() then--If you have form ranks, do NOT run out
-			--if not DBM:UnitDebuff("player", 303188) then
-				specWarnFanaticalVerdict:Show()
-				specWarnFanaticalVerdict:Play("runout")
-			--end
+		warnFanaticalVerdict:CombinedShow(0.3, args.destName)
+		if args:IsPlayer() then
+			specWarnFanaticalVerdict:Show()
+			specWarnFanaticalVerdict:Play("runout")
 			yellFanaticalVerdict:Yell()
 			yellFanaticalVerdictFades:Countdown(spellId)
-		else
-			warnFanaticalVerdict:Show(args.destName)
 		end
 	end
 end
@@ -360,15 +357,15 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 	if msg:find("spell:298050") then--Form Ranks (Repeat Performance is next)
 		specWarnFormRanks:Show(L.Circles)
 		specWarnFormRanks:Play("gathershare")
-		timerRepeatPerformanceCD:Start(self:IsMythic() and 30 or 40)
+		timerRepeatPerformanceCD:Start(self:IsMythic() and 30 or self:IsHeroic() and 40 or 60)
 	elseif msg:find("spell:301244") then--Repeat Performance (Stand Alone is next)
-		timerStandAloneCD:Start(self:IsMythic() and 30 or 40)
+		timerStandAloneCD:Start(self:IsMythic() and 30 or self:IsHeroic() and 40 or 60)
 	elseif msg:find("spell:297656") then--Stand Alone (Sentence is next)
-		timerDeferredSentenceCD:Start(self:IsMythic() and 30 or 40)
+		timerDeferredSentenceCD:Start(self:IsMythic() and 30 or self:IsHeroic() and 40 or 60)
 	elseif msg:find("spell:297566") then--Defferred Sentence (Obey is next)
-		timerObeyorSufferCD:Start(self:IsMythic() and 30 or 40)
+		timerObeyorSufferCD:Start(self:IsMythic() and 30 or self:IsHeroic() and 40 or 60)
 	elseif msg:find("spell:297585") then--Obey or Suffer (loops back to form ranks after)
-		timerFormRanksCD:Start(self:IsMythic() and 30 or 40)
+		timerFormRanksCD:Start(self:IsMythic() and 30 or self:IsHeroic() and 40 or 60)
 	end
 end
 

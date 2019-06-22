@@ -36,6 +36,10 @@ mod:RegisterEventsInCombat(
 --TODO, warning filters/timer fades for images/split on mythic stage 4?
 --TODO, void slam, who does it target? random or the tank? if random, can we target scan it?
 --TODO, pause/resume (or reset) timers for boss shielding/split phase in stage 4
+--[[
+(ability.id = 301141 or ability.id = 303543 or ability.id = 296018 or ability.id = 292963 or ability.id = 296257 or ability.id = 302468 or ability.id = 303978 or ability.id = 301068 or ability.id = 302593) and type = "begincast"
+ or (ability.id = 292963 or ability.id = 302503 or ability.id = 296018 or ability.id = 302504 or ability.id = 302219 or ability.id = 303543 or ability.id = 295444) and type = "cast"
+--]]
 local warnPhase							= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
 local warnDiscipleofNzoth				= mod:NewTargetNoFilterAnnounce(292981, 4)
 --Stage One: The Herald
