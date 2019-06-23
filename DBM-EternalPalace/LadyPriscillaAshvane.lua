@@ -12,9 +12,9 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
---	"SPELL_CAST_START 297402 297398 297324",
-	"SPELL_CAST_SUCCESS 296569 296662 296725 297398 297240 298056",
-	"SPELL_AURA_APPLIED 296650 296725 296943 296940 296942 296939 296941 296938",
+	"SPELL_CAST_START 297398",
+	"SPELL_CAST_SUCCESS 296569 296662 296725 297240 298056",
+	"SPELL_AURA_APPLIED 296650 296725 296943 296940 296942 296939 296941 296938 302989 297397",
 	"SPELL_AURA_REMOVED 296650 296943 296940 296942 296939 296941 296938",
 	"SPELL_PERIODIC_DAMAGE 296752",
 	"SPELL_PERIODIC_MISSED 296752"
@@ -23,20 +23,21 @@ mod:RegisterEventsInCombat(
 
 --[[
 (ability.id = 297402 or ability.id = 297398 or ability.id = 297324) and type = "begincast"
- or (ability.id = 296569 or ability.id = 296944 or ability.id = 296725 or ability.id = 296662 or ability.id = 297398) and type = "cast"
+ or (ability.id = 296569 or ability.id = 296944 or ability.id = 296725 or ability.id = 296662) and type = "cast"
  or ability.id = 296650 and (type = "applybuff" or type = "removebuff")
  or ability.id = 296943 or ability.id = 296940 or ability.id = 296942 or ability.id = 296939 or ability.id = 296941 or ability.id = 296938
 --]]
---TODO< blizzard gutted half the mod by stripping a ton out of combat log. Review other ways to readd stuff with scheduling?
+--TODO, verify timers for shield dropping. rate she re-generates shield may be slower on lower difficulties and this may affect timers
+--TODO, upsurge seems to be a pattern loop, but it'll be easier to
 local warnShield						= mod:NewTargetNoFilterAnnounce(296650, 2, nil, nil, nil, nil, nil, 2)
 local warnShieldOver					= mod:NewEndAnnounce(296650, 2, nil, nil, nil, nil, nil, 2)
---local warnCoral							= mod:NewCountAnnounce(296555, 2)
-local warnCrushingDepths				= mod:NewTargetNoFilterAnnounce(297324, 4)
---local warnUpsurge						= mod:NewSpellAnnounce(298055, 3)
+--local warnCoral						= mod:NewCountAnnounce(296555, 2)
+local warnBrinyBubble					= mod:NewTargetNoFilterAnnounce(297324, 4)
+local warnUpsurge						= mod:NewSpellAnnounce(298055, 3)
 
---local specWarnRipplingWave				= mod:NewSpecialWarningCount(296688, nil, nil, nil, 2, 2)
-local specWarnCrushingDepths			= mod:NewSpecialWarningMoveAway(297324, nil, nil, nil, 1, 2)
-local yellCrushingDepths				= mod:NewYell(297324)
+--local specWarnRipplingWave			= mod:NewSpecialWarningCount(296688, nil, nil, nil, 2, 2)
+local specWarnBrinyBubble				= mod:NewSpecialWarningMoveAway(297324, nil, nil, nil, 1, 2)
+local yellBrinyBubble					= mod:NewYell(297324)
 local specWarnCrushingNear				= mod:NewSpecialWarningClose(297324, nil, nil, nil, 1, 2)
 local specWarnBarnacleBash				= mod:NewSpecialWarningTaunt(296725, nil, nil, nil, 1, 2)
 local specWarnArcingAzerite				= mod:NewSpecialWarningYouPos(296944, nil, nil, nil, 3)--, 9
@@ -46,12 +47,12 @@ local specWarnGTFO						= mod:NewSpecialWarningGTFO(296752, nil, nil, nil, 1, 8)
 
 --mod:AddTimerLine(BOSS)
 --local timerCoralGrowthCD				= mod:NewCDCountTimer(30, 296555, nil, nil, nil, 3, nil, nil, nil, 1, 4)
-local timerRipplingwaveCD				= mod:NewCDCountTimer(32.2, 296688, nil, nil, nil, 3, nil, nil, nil, 3, 4)
-local timerCrushingDepthsCD				= mod:NewCDCountTimer(15, 297324, nil, nil, nil, 3, nil, DBM_CORE_TANK_ICON..DBM_CORE_DAMAGE_ICON, nil, 2, 4)
---local timerUpsurgeCD					= mod:NewCDTimer(15.3, 298055, nil, nil, nil, 3)
+local timerRipplingwaveCD				= mod:NewCDCountTimer(35, 296688, nil, nil, nil, 3, nil, nil, nil, 3, 4)
+local timerBrinyBubbleCD				= mod:NewCDCountTimer(15, 297324, nil, nil, nil, 3, nil, DBM_CORE_TANK_ICON..DBM_CORE_DAMAGE_ICON, nil, 2, 4)
+local timerUpsurgeCD					= mod:NewCDCountTimer(15.3, 298055, nil, nil, nil, 3)
 local timerBarnacleBashCD				= mod:NewCDCountTimer(15, 296725, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON, nil, mod:IsTank() and 2, 4)
 --Stage 2
-local timerArcingAzeriteCD				= mod:NewCDCountTimer(39, 296944, nil, nil, nil, 3, nil, nil, nil, 3, 4)
+local timerArcingAzeriteCD				= mod:NewCDCountTimer(35, 296944, nil, nil, nil, 3, nil, nil, nil, 3, 4)
 local timerShieldCD						= mod:NewCDTimer(66.1, 296650, nil, nil, nil, 6, nil, nil, nil, 1, 4)
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
@@ -64,6 +65,9 @@ mod.vb.coralGrowth = 0
 mod.vb.ripplingWave = 0
 mod.vb.spellPicker = 0
 mod.vb.arcingCast = 0
+mod.vb.upsurgeCast = 0
+mod.vb.firstShield = false
+mod.vb.shieldDown = false
 mod.vb.blueone, mod.vb.bluetwo = nil, nil
 mod.vb.redone, mod.vb.redtwo = nil, nil
 mod.vb.greenone, mod.vb.greentwo = nil, nil
@@ -98,6 +102,9 @@ function mod:OnCombatStart(delay)
 	self.vb.ripplingWave = 0
 	self.vb.spellPicker = 0
 	self.vb.arcingCast = 0
+	self.vb.upsurgeCast = 0
+	self.vb.shieldDown = false
+	self.vb.firstShield = false
 	self.vb.blueone, self.vb.bluetwo = nil, nil
 	self.vb.redone, self.vb.redtwo = nil, nil
 	self.vb.greenone, self.vb.greentwo = nil, nil
@@ -112,14 +119,13 @@ function mod:OnCombatEnd()
 	end
 end
 
---[[
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 297402 or spellId == 297398 or spellId == 297324 then--297398 verified, other two unknown
-		--timerCrushingDepthsCD:Start()
+	if spellId == 297398 then--297398 verified, other two unknown (or spellId == 297402 or spellId == 297324)
+		self.vb.spellPicker = 0
+		timerBarnacleBashCD:Start(15.9, self.vb.spellPicker+1)--start to success
 	end
 end
---]]
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
@@ -129,48 +135,67 @@ function mod:SPELL_CAST_SUCCESS(args)
 		--timerCoralGrowthCD:Start(30, self.vb.coralGrowth+1)
 	--elseif spellId == 296944 then
 	--	timerArcingAzeriteCD:Start()
-	elseif spellId == 296725 or spellId == 297398 then
+	elseif spellId == 296725 then--Barnacle Bash
 		self.vb.spellPicker = self.vb.spellPicker + 1
-		if self.vb.spellPicker == 3 then
-			self.vb.spellPicker = 0
-			timerBarnacleBashCD:Start(15.9, self.vb.spellPicker+1)
-		elseif self.vb.spellPicker == 2 then--Two bash been cast, crushing is next
-			timerCrushingDepthsCD:Start(15.9, self.vb.spellPicker+1)
+		if self.vb.spellPicker == 2 then--Two bash been cast, Briny is next
+			timerBrinyBubbleCD:Start(self.vb.shieldDown and 10 or 15, self.vb.spellPicker+1)--Success to start
+		else
+			timerBarnacleBashCD:Start(self.vb.shieldDown and 15 or 16, self.vb.spellPicker+1)--success to success
 		end
 	elseif spellId == 296662 then
 		self.vb.ripplingWave = self.vb.ripplingWave + 1
 		--specWarnRipplingWave:Show(self.vb.ripplingWave)
 		--specWarnRipplingWave:Play("watchwave")
-		timerRipplingwaveCD:Start(32.2, self.vb.ripplingWave+1)
+		timerRipplingwaveCD:Start(35, self.vb.ripplingWave+1)
 	elseif spellId == 297240 then--Shield, slightly delayed to make sure UnitGetTotalAbsorbs returns a value
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:SetHeader(args.spellName)
 			DBM.InfoFrame:Show(2, "enemyabsorb", nil, UnitGetTotalAbsorbs("boss1"), true, "boss1")
 		end
 	elseif spellId == 298056 then--Upsurge
-		warnUpsurge:Show()
-		--timerUpsurgeCD:Start()
+		self.vb.upsurgeCast = self.vb.upsurgeCast + 1
+		warnUpsurge:Show(self.vb.upsurgeCast)
+		if self.vb.shieldDown then
+			timerUpsurgeCD:Start(22, self.vb.upsurgeCast+1)
+		else
+			if self.vb.upsurgeCast % 2 == 0 then
+				timerUpsurgeCD:Start(38, self.vb.upsurgeCast+1)
+			else
+				timerUpsurgeCD:Start(15.9, self.vb.upsurgeCast+1)
+			end
+		end
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 296650 then
+		self.vb.shieldDown = false
 		warnShield:Show(args.destName)
 		warnShield:Play("phasechange")
 		self.vb.coralGrowth = 0
 		self.vb.ripplingWave = 0
 		self.vb.spellPicker = 0
-		--timerUpsurgeCD:Stop()
+		self.vb.upsurgeCast = 0
+		timerUpsurgeCD:Stop()
 		timerBarnacleBashCD:Stop()
-		timerCrushingDepthsCD:Stop()
+		timerBrinyBubbleCD:Stop()
 		timerArcingAzeriteCD:Stop()
 		timerShieldCD:Stop()
-		--timerUpsurgeCD:Start(3.1)
-		timerBarnacleBashCD:Start(7.3, 1)
-		timerRipplingwaveCD:Start(13.5, 1)
-		--timerCoralGrowthCD:Start(30.5, 1)
-		--timerCrushingDepthsCD:Start(45.2)--Not started here
+		if not self.vb.firstShield then
+			self.vb.firstShield = true
+			timerBarnacleBashCD:Start(10, 1)--SUCCESS
+			timerUpsurgeCD:Start(12, 1)
+			timerRipplingwaveCD:Start(15, 1)
+			--timerCoralGrowthCD:Start(30.5, 1)
+			--timerBrinyBubbleCD:Start(45.2)--Not started here
+		else
+			timerBarnacleBashCD:Start(13, 1)--SUCCESS
+			timerUpsurgeCD:Start(15, 1)
+			timerRipplingwaveCD:Start(18, 1)
+			--timerCoralGrowthCD:Start(30.5, 1)
+			--timerBrinyBubbleCD:Start(45.2)--Not started here
+		end
 		if self.Options.RangeFrame then
 			if self:IsRanged() then
 				DBM.RangeCheck:Show(12)
@@ -236,16 +261,20 @@ function mod:SPELL_AURA_APPLIED(args)
 				DBM.InfoFrame:Update()
 			end
 		end
-	elseif spellId == 297397 then
+	elseif spellId == 302989 then--Briny targetting spell
+		warnBrinyBubble:CombinedShow(0.3, args.destname)
 		if args:IsPlayer() then
-			specWarnCrushingDepths:Show()
-			specWarnCrushingDepths:Play("runout")
-			yellCrushingDepths:Yell()
-		elseif self:CheckNearby(12, args.destname) then
+			specWarnBrinyBubble:Show()
+			specWarnBrinyBubble:Play("runout")
+			yellBrinyBubble:Yell()
+		end
+	elseif spellId == 297397 then--Briny in bubble spell
+		if args:IsPlayer() then
+			--Yell again, but no further special warnings
+			yellBrinyBubble:Yell()
+		elseif self:CheckNearby(12, args.destname) then--If one is near you, you need to run away from it
 			specWarnCrushingNear:Show(args.destname)
 			specWarnCrushingNear:Play("runaway")
-		else
-			warnCrushingDepths:Show(args.destname)
 		end
 	end
 end
@@ -253,19 +282,21 @@ end
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 296650 then
+		self.vb.shieldDown = true
 		self.vb.spellPicker = 0
+		self.vb.upsurgeCast = 0
+		self.vb.arcingCast = 0
 		warnShieldOver:Show()
 		warnShieldOver:Play("phasechange")
 		--timerCoralGrowthCD:Stop()
 		timerRipplingwaveCD:Stop()
-		timerCrushingDepthsCD:Stop()
-		--timerUpsurgeCD:Stop()
+		timerBrinyBubbleCD:Stop()
+		timerUpsurgeCD:Stop()
 		timerBarnacleBashCD:Stop()
-		--timerCrushingDepthsCD:Start(2)--Not started here
-		timerBarnacleBashCD:Start(8.6, 1)
-		timerArcingAzeriteCD:Start(16.6, 1)
-		--timerUpsurgeCD:Start(32.6)--Upsurge is cast in this phase, but only event for it is spell_damage. timer is estimation
-		timerShieldCD:Start(66.1)
+		timerBarnacleBashCD:Start(13.5, 1)--SUCCESS 8.6
+		timerUpsurgeCD:Start(17.5, 1)
+		timerArcingAzeriteCD:Start(20.5, 1)--16.6
+		timerShieldCD:Start(71)--66 old
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:Hide()
 		end
@@ -317,7 +348,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 			self.vb.spellPicker = 0
 			timerBarnacleBashCD:Start(15.9, self.vb.spellPicker+1)
 		elseif self.vb.spellPicker == 2 then--Two bash been cast, crushing is next
-			timerCrushingDepthsCD:Start(15.9, self.vb.spellPicker+1)
+			timerBrinyBubbleCD:Start(15.9, self.vb.spellPicker+1)
 		end
 	end
 end
