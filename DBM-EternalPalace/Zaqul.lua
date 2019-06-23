@@ -13,10 +13,10 @@ mod:SetUsedIcons(1, 2, 3)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 301141 292963 296257 302468 303978 301068 303543 302593 296018",
-	"SPELL_CAST_SUCCESS 292963 302503 302219 293509 303543 296018 302504 295444",
+	"SPELL_CAST_START 301141 292963 296257 303978 301068 303543 302593 296018 304733",
+	"SPELL_CAST_SUCCESS 292963 302503 293509 303543 296018 302504 295444 294515 299708",
 	"SPELL_SUMMON 300732",
-	"SPELL_AURA_APPLIED 292971 292981 295480 300133 292963 302503 293509 295327 303971 296078 303543 296018 302504 294545",
+	"SPELL_AURA_APPLIED 292971 292981 295480 300133 292963 302503 293509 295327 303971 296078 303543 296018 302504 300584",
 	"SPELL_AURA_APPLIED_DOSE 292971",
 	"SPELL_AURA_REMOVED 292971 292963 293509 303971 296078 303543 296018",
 	"SPELL_AURA_REMOVED_DOSE 292971",
@@ -27,18 +27,16 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, figure out what "pick a portal" is for
---TODO, verify portal of madness event
 --TODO, https://ptr.wowhead.com/spell=300635/gathering-nightmare track via nameplate number of stacks
 --TODO, infoframe detecting number of players in each realm, and showing realm player is in?
---TODO, real phase triggers (especially phase 4 which is harder to dirty code like 2 and 3 were)
 --TODO, dark pulse absorb shield on custom infoframe
 --TODO, warning filters/timer fades for images/split on mythic stage 4?
 --TODO, void slam, who does it target? random or the tank? if random, can we target scan it?
---TODO, pause/resume (or reset) timers for boss shielding/split phase in stage 4
+--TODO, pause/resume (or reset) timers for boss shielding/split phase in stage 4 mythic?
 --[[
-(ability.id = 301141 or ability.id = 303543 or ability.id = 296018 or ability.id = 292963 or ability.id = 296257 or ability.id = 302468 or ability.id = 303978 or ability.id = 301068 or ability.id = 302593) and type = "begincast"
- or (ability.id = 292963 or ability.id = 302503 or ability.id = 296018 or ability.id = 302504 or ability.id = 302219 or ability.id = 303543 or ability.id = 295444) and type = "cast"
+(ability.id = 301141 or ability.id = 303543 or ability.id = 296018 or ability.id = 292963 or ability.id = 296257 or ability.id = 304733 or ability.id = 303978 or ability.id = 301068 or ability.id = 302593) and type = "begincast"
+ or (ability.id = 292963 or ability.id = 302503 or ability.id = 296018 or ability.id = 302504 or ability.id = 303543 or ability.id = 295444 or ability.id = 294515 or ability.id = 299708) and type = "cast"
+ or (ability.id = 300584 or ability.id = 293509) and type = "applydebuff"
 --]]
 local warnPhase							= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
 local warnDiscipleofNzoth				= mod:NewTargetNoFilterAnnounce(292981, 4)
@@ -49,14 +47,13 @@ local warnUnleashedNightmare			= mod:NewSpellAnnounce("ej20289", 3, 300732)
 local warnDread							= mod:NewTargetNoFilterAnnounce(292963, 3, nil, "Healer")
 --Stage Two: Grip of Fear
 --Stage Three: Delirium's Descent
+local warnDeliriumsDescent				= mod:NewCountAnnounce(304733, 3)
 --Stage Four: All Pathways Open
 local warnDreadScream					= mod:NewTargetNoFilterAnnounce(303543, 3, nil, "Healer")--Mythic
 local warnManicDread					= mod:NewTargetNoFilterAnnounce(296018, 3, nil, "Healer")
 
 local specWarnHysteria					= mod:NewSpecialWarningStack(292971, nil, 15, nil, nil, 1, 6)
 --Stage One: The Herald
-local specWarnPortalofMadness			= mod:NewSpecialWarningYou(294545, nil, nil, nil, 1, 2)
-local yellPortalofMadness				= mod:NewYell(294545)
 local specWarnHorrificSummoner			= mod:NewSpecialWarningSwitch("ej20172", "-Healer", nil, nil, 1, 2)
 local specWarnCrushingGrasp				= mod:NewSpecialWarningDodge(292565, nil, nil, nil, 2, 2)
 local yellDread							= mod:NewPosYell(292963)
@@ -81,22 +78,22 @@ local yellManicDreadFades				= mod:NewIconFadesYell(296018)
 
 --mod:AddTimerLine(BOSS)
 --Stage One: The Herald
-local timerPortalofMadnessCD			= mod:NewCDTimer(30.4, 294545, nil, nil, nil, 1)
+local timerHorrificSummonerCD			= mod:NewCDTimer(65.7, "ej20172", nil, nil, nil, 1, 294515, DBM_CORE_DAMAGE_ICON)
 local timerCrushingGraspCD				= mod:NewCDTimer(31.4, 292565, nil, nil, nil, 3)
-local timerDreadCD						= mod:NewCDTimer(75.4, 292963, nil, "Healer", nil, 5, nil, DBM_CORE_MAGIC_ICON)
-local timerMindTetherCD					= mod:NewCDTimer(48.7, 295444, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerDreadCD						= mod:NewCDTimer(75.4, 292963, nil, "Healer", nil, 5, nil, DBM_CORE_MAGIC_ICON)--One dread timer used for all versions (cast by boss)
+local timerMindTetherCD					= mod:NewCDTimer(48.2, 295444, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--52.3
 --Stage Two: Grip of Fear
 local timerManifestNightmaresCD			= mod:NewCDTimer(30, 293509, nil, nil, nil, 3)
-local timerMaddeningEruptionCD			= mod:NewCDTimer(30.9, 292996, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerMaddeningEruptionCD			= mod:NewCDTimer(36.1, 292996, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
 --Stage Three: Delirium's Descent
-local timerOpenDelPortalCD				= mod:NewCDTimer(24.2, 302468, nil, nil, nil, 3)
+local timerDeliriumsDescentCD			= mod:NewCDTimer(20.6, 304733, nil, nil, nil, 3)
 --Stage Four: All Pathways Open
-local timerDarkPulseCD					= mod:NewAITimer(58.2, 303978, nil, nil, nil, 6, nil, DBM_CORE_DEADLY_ICON)--Non Mythic
-local timerPsychoticSplitCD				= mod:NewAITimer(58.2, 301068, nil, nil, nil, 6, nil, DBM_CORE_MYTHIC_ICON..DBM_CORE_DEADLY_ICON)--Mythic
-local timerDreadScreamCD				= mod:NewAITimer(58.2, 303543, nil, "Healer", nil, 5, nil, DBM_CORE_MYTHIC_ICON..DBM_CORE_MAGIC_ICON)--Mythic
+local timerDarkPulseCD					= mod:NewCDTimer(66.6, 303978, nil, nil, nil, 6, nil, DBM_CORE_DEADLY_ICON)--Non Mythic
+local timerManicDreadCD					= mod:NewCDTimer(75.4, 296018, nil, "Healer", nil, 5, nil, DBM_CORE_MAGIC_ICON)
+----Mythic
+local timerPsychoticSplitCD				= mod:NewCDTimer(66.6, 301068, nil, nil, nil, 6, nil, DBM_CORE_MYTHIC_ICON..DBM_CORE_DEADLY_ICON)--Mythic
+--local timerDreadScreamCD				= mod:NewAITimer(58.2, 303543, nil, "Healer", nil, 5, nil, DBM_CORE_MYTHIC_ICON..DBM_CORE_MAGIC_ICON)--Mythic
 local timerVoidSlamCD					= mod:NewAITimer(58.2, 302593, nil, nil, nil, 3)--Mythic
-local timerDarkPassageD					= mod:NewAITimer(58.2, 299705, nil, nil, nil, 1)--All
-local timerManicDreadCD					= mod:NewAITimer(30.4, 296018, nil, "Healer", nil, 5, nil, DBM_CORE_MAGIC_ICON)
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
 
@@ -108,6 +105,7 @@ mod:AddSetIconOption("SetIconManicDreadScream", 296018, true, false, {1, 2, 3})
 
 mod.vb.phase = 1
 mod.vb.dreadIcon = 1
+mod.vb.DeliriumsDescentCount = 0
 --mod.vb.nightmaresCount = 0
 local HysteriaStacks = {}
 
@@ -115,10 +113,11 @@ function mod:OnCombatStart(delay)
 	table.wipe(HysteriaStacks)
 	self.vb.phase = 1
 	self.vb.dreadIcon = 1
+	self.vb.DeliriumsDescentCount = 0
 	--self.vb.nightmaresCount = 0
-	timerMindTetherCD:Start(3.5-delay)
+	timerMindTetherCD:Start(3.3-delay)
 	timerDreadCD:Start(12-delay)
-	timerPortalofMadnessCD:Start(25.9-delay)
+	timerHorrificSummonerCD:Start(25.4-delay)
 	timerCrushingGraspCD:Start(30-delay)
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(292971))
@@ -140,6 +139,8 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 301141 then
 		specWarnCrushingGrasp:Show()
 		specWarnCrushingGrasp:Play("farfromline")
+		--In perfect scenario, not delayed very much if ever even by phase changes
+		--Crushing Grasp-292565-npc:151034 = pull:31.9, 31.6, 31.6, 31.6, 35.6, 34.8
 		timerCrushingGraspCD:Start()
 	elseif spellId == 303543 or spellId == 296018 or spellId == 292963 then--302503 and 302504 excluded (LFR ids)
 		self.vb.dreadIcon = 1
@@ -147,27 +148,25 @@ function mod:SPELL_CAST_START(args)
 		self.vb.phase = 2
 		warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(2))
 		warnPhase:Play("ptwo")
-		timerPortalofMadnessCD:Stop()
-		--Stage 2 does NOT reset dread timer
+		--Timers that never stop, but might need time added to them if they come off cd during transition
 		--timerDreadCD:Stop()
-		--timerPortalofMadnessCD:Start(2)
-		--timerDreadCD:Start(2)
+		--New Stage 2 timers
 		timerManifestNightmaresCD:Start(30)
 		--timerMaddeningEruptionCD:Start(1)--1-3 seconds after this cast
-	elseif spellId == 302468 then--Opening Delirium Realm
+	elseif spellId == 304733 then--Delirium's Descent
 		if self.vb.phase < 3 then
 			self.vb.phase = 3
 			warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(3))
 			warnPhase:Play("pthree")
-			timerDreadCD:Stop()
-			timerCrushingGraspCD:Stop()
+			--Timers actually stopped
 			timerManifestNightmaresCD:Stop()
-			timerMaddeningEruptionCD:Stop()
-			--timerPortalofMadnessCD:Start(3)
-			timerDreadCD:Start(10)
-			timerCrushingGraspCD:Start(19.5)
+			--Timers that never stop, but might need time added to them if they come off cd during transition
+			--timerDreadCD:Stop()
+			--timerCrushingGraspCD:Stop()
 		end
-		timerOpenDelPortalCD:Start()
+		self.vb.DeliriumsDescentCount = self.vb.DeliriumsDescentCount + 1
+		warnDeliriumsDescent:Show(self.vb.DeliriumsDescentCount)
+		timerDeliriumsDescentCD:Start()
 	elseif spellId == 303978 then--Dark Pulse
 		specWarnDarkPulse:Show()
 		specWarnDarkPulse:Play("attackshield")
@@ -188,26 +187,23 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 292963 or spellId == 302503 then--Dread
-		timerDreadCD:Start()
+		--timerDreadCD:Start()
 	elseif spellId == 296018 or spellId == 302504 then--Manic Dread (302504 LFR)
 		timerManicDreadCD:Start()
-	elseif spellId == 302219 and self.vb.phase < 4 then--Reality Portal (shit detection for mythic, needs replacing)
-		self.vb.phase = 4
-		timerDreadCD:Stop()
-		timerOpenDelPortalCD:Stop()
-		timerDarkPassageD:Start(4)
-		if self:IsMythic() then
-			timerPsychoticSplitCD:Start(4)
-		else
-			timerDarkPulseCD:Start(4)
-		end
-		timerManicDreadCD:Start(4)
 --	elseif spellId == 293509 then
 --		timerManifestNightmaresCD:Start()
 	elseif spellId == 303543 then
 		timerDreadScreamCD:Start()
 	elseif spellId == 295444 then--Mind Tether
+		--In perfect scenario, not delayed very much if ever even by phase changes
+		--"Mind Tether-295444-npc:150859 = pull:4.0, 48.2, 52.3, 48.7, 48.7", -- [8]
 		timerMindTetherCD:Start()
+	elseif spellId == 294515 and self:AntiSpam(5, 1) then
+		specWarnHorrificSummoner:Show()
+		specWarnHorrificSummoner:Play("bigmob")
+	elseif spellId == 299708 and self:AntiSpam(5, 1) then
+		specWarnHorrificSummoner:Show()
+		specWarnHorrificSummoner:Play("bigmob")
 	end
 end
 
@@ -290,17 +286,15 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarShatteredPsyche:ScheduleVoice(1, "helpdispel")
 		end
 	elseif spellId == 303971 or spellId == 296078 then--Dark Pulse
-		--timerDarkPassageD:Stop()
 		--timerManicDreadCD:Stop()
-	elseif spellId == 294545 then
-		--timerPortalofMadnessCD:Start()
-		if args:IsPlayer() then
-			specWarnPortalofMadness:Show()
-			specWarnPortalofMadness:Play("targetyou")
-			yellPortalofMadness:Yell()
+	elseif spellId == 300584 and self.vb.phase < 4 then--Reality Portal (shit detection for mythic, needs replacing)
+		self.vb.phase = 4
+		timerDeliriumsDescentCD:Stop()
+		timerMaddeningEruptionCD:Stop()
+		if self:IsMythic() then
+			timerPsychoticSplitCD:Start(4)
 		else
-			specWarnHorrificSummoner:Show()
-			specWarnHorrificSummoner:Play("bigmob")
+			timerDarkPulseCD:Start(43.1)
 		end
 	end
 end
@@ -340,7 +334,6 @@ function mod:SPELL_AURA_REMOVED(args)
 			yellManifedNightmaresFades:Cancel()
 		end
 	elseif spellId == 303971 or spellId == 296078 then--Dark Pulse
-		--timerDarkPassageD:Start()
 		--timerManicDreadCD:Start()
 	end
 end
@@ -385,13 +378,23 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 299703 then--Dark Passage
-		specWarnHorrificSummoner:Show()
-		specWarnHorrificSummoner:Play("bigmob")
-		timerDarkPassageD:Start()
-	elseif spellId == 299711 then--Pick A Portal
+	if spellId == 299711 then--Pick A Portal (script for horrors)
+		--"Pick a Portal-299711-npc:150859 = pull:20.3, 60.7, 92.5, 63.2", -- [5]
+		--Controller used for horrors even if we're in a phase one isn't cast, becauase we still want to know where the script is before we push boss.
+		timerHorrificSummonerCD:Schedule(5)--Script runs 5 sec before spawn events, so we need to offset it
+	elseif spellId == 299974 then--Pick a Dread (Script for dreads)
+		--Controller used for dreads even if we're in a phase one isn't cast, becauase we still want to know where the script is before we push boss.
+		timerDreadCD:Start()
+	--elseif spellId == 301179 then--Pick a Ultimate (Script for Dark Pulse or mythic version Psychotic Split)
 
-	elseif spellId == 299974 then--Pick a Dread
-
+	elseif spellId == 296465 and self.vb.phase < 4 then--Energy Tracker
+		self.vb.phase = 4
+		timerDeliriumsDescentCD:Stop()
+		timerMaddeningEruptionCD:Stop()
+		if self:IsMythic() then
+			timerPsychoticSplitCD:Start(45.1)
+		else
+			timerDarkPulseCD:Start(45.1)
+		end
 	end
 end

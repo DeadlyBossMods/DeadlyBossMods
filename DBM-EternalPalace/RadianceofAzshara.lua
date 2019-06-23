@@ -13,7 +13,7 @@ mod:SetUsedIcons(1, 2)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 296546 296459 296894 302465 295916 296701",
+	"SPELL_CAST_START 296546 296459 296894 302465 295916 296701 304098",
 	"SPELL_CAST_SUCCESS 296737",
 	"SPELL_AURA_APPLIED 296566 296737",
 	"SPELL_AURA_REMOVED 296737",
@@ -55,7 +55,7 @@ local timerUnshacklingPowerCD			= mod:NewNextCountTimer(58.2, 296894, nil, nil, 
 local timerAncientTempestCD				= mod:NewNextTimer(95.9, 295916, nil, nil, nil, 6)
 --Raging Storm
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20078))
-local timerGaleBuffetCD					= mod:NewCDTimer(23.1, 296701, nil, nil, nil, 2)
+local timerGaleBuffetCD					= mod:NewCDTimer(22.7, 296701, nil, nil, nil, 2)
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
 
@@ -72,28 +72,28 @@ mod.vb.tempestStage = false
 mod.vb.addsLeft = 1
 mod.vb.difficultyName = "None"
 local arcanadoTimers = {
-	["lfr"] = {6.0, 12.0, 13.1, 10.9, 17.1, 6.9, 12.0},--Not verified
-	["normal"] = {6.0, 12.0, 13.1, 10.9, 17.1, 6.9, 12.0},--Not verified
-	["heroic"] = {6.0, 12.0, 13.1, 10.9, 17.1, 6.9, 12.0},
-	["mythic"] = {5.9, 12.6, 13.1, 10.5, 12.2, 13.1, 10.6}
+	["lfr"] = {5.9, 12.0, 13.1, 10.5, 12.0, 13.1, 10.6},--Not verified
+	["normal"] = {5.9, 12.0, 13.1, 10.5, 12.0, 13.1, 10.6},
+	["heroic"] = {5.9, 12.0, 13.1, 10.5, 12.0, 13.1, 10.6},--Not Verified, but old ones were scrapped
+	["mythic"] = {5.9, 12.0, 13.1, 10.5, 12.0, 13.1, 10.6}
 }
 local tideFistTimers = {
-	["lfr"] = {15.0, 20.0, 22.1, 17.9},--Not verified
-	["normal"] = {15.0, 20.0, 22.1, 17.9},--Not verified
-	["heroic"] = {15.0, 20.0, 22.1, 17.9},
-	["mythic"] = {15.4, 20.5, 19.0, 20.1}
+	["lfr"] = {15.1, 20.0, 19.0, 20.0},--Not verified
+	["normal"] = {15.1, 20.0, 19.0, 20.0},
+	["heroic"] = {15.1, 20.0, 19.0, 20.0},--Not Verified, but old ones were scrapped
+	["mythic"] = {15.1, 20.0, 19.0, 20.0}
 }
 local unshackledPowerTimers = {
-	["lfr"] = {10.0, 18.0, 9.1, 17.0, 18.0},--Not verified
-	["normal"] = {10.0, 18.0, 9.1, 17.0, 18.0},--Not verified
-	["heroic"] = {10.0, 18.0, 9.1, 17.0, 18.0},
-	["mythic"] = {10.0, 18.0, 18.0, 18.3, 18.2}
+	["lfr"] = {10.0, 18.0, 18.0, 18.0, 18.0},--Not verified
+	["normal"] = {10.0, 18.0, 18.0, 18.0, 18.0},--Same as mythic
+	["heroic"] = {10.0, 18.0, 18.0, 18.0, 18.0},--Not Verified, but old ones were scrapped
+	["mythic"] = {10.0, 18.0, 18.0, 18.0, 18.0}
 }
 local arcaneBombTimers = {
-	["lfr"] = {7.0, 20.0, 20.0, 20.0, 26.2},--Not verified
-	["normal"] = {7.0, 20.0, 20.0, 20.0, 26.2},--Not verified
-	["heroic"] = {7.0, 20.0, 20.0, 20.0, 26.2},
-	["mythic"] = {7.3, 19.9, 22.1, 18.0, 25.5}
+	["lfr"] = {7.1, 19.9, 22.1, 18.0, 25.5},--Not verified
+	["normal"] = {7.1, 19.9, 22.1, 18.0, 25.5},--Same as Mythic
+	["heroic"] = {7.1, 19.9, 22.1, 18.0, 25.5},--Not Verified, but old ones were scrapped
+	["mythic"] = {7.1, 19.9, 22.1, 18.0, 25.5}
 }
 
 function mod:OnCombatStart(delay)
@@ -172,7 +172,7 @@ function mod:SPELL_CAST_START(args)
 			timerArcaneBombCD:Start(17.1, 1)
 			timerGaleBuffetCD:Start(22)
 		end
-	elseif spellId == 296701 then
+	elseif spellId == 296701 or spellId == 304098 then
 		if self:CheckBossDistance(args.sourceGUID, true, 34471) then--43 yards
 			specWarnGaleBuffet:Show()
 			specWarnGaleBuffet:Play("carefly")
