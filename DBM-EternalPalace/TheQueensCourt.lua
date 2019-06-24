@@ -112,17 +112,18 @@ mod.vb.sentenceActive = 0
 function mod:OnCombatStart(delay)
 	self.vb.sparkIcon = 1
 	self.vb.sentenceActive = 0
-	--Timers that differ between heroic/mythic tests
+	--CLEAN THIS MESS UP ON LIVE WITH UPDATED HEROIC TIMERS
 	if self:IsHard() then
 		--Pashmar
 		timerFanaticalVerdictCD:Start(30-delay)
-		timerPotentSparkCD:Start(15.8-delay)
-		--On heroic, azshara casts Form Ranks immediately on pull
+		--On heroic, azshara casts Form Ranks immediately on pull (still true?)
 		if self:IsMythic() then
 			--ass-shara
 			timerFormRanksCD:Start(30-delay)
 			--Pashmar
 			timerPotentSparkCD:Start(20.2-delay)
+		else
+			timerPotentSparkCD:Start(15.8-delay)
 		end
 	else
 		--Timers for Normal and LFR
