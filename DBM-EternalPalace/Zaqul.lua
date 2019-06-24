@@ -374,6 +374,15 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 		specWarnMaddeningEruption:Show(L.Tear)
 		specWarnMaddeningEruption:Play("moveboss")
 		timerMaddeningEruptionCD:Start()
+	elseif (msg == L.Phase3 or msg:find(L.Phase3)) and self.vb.phase < 3 then
+		self.vb.phase = 3
+		warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(3))
+		warnPhase:Play("pthree")
+		--Timers actually stopped
+		timerManifestNightmaresCD:Stop()
+		--Timers that never stop, but might need time added to them if they come off cd during transition
+		--timerDreadCD:Stop()
+		--timerCrushingGraspCD:Stop()
 	end
 end
 
