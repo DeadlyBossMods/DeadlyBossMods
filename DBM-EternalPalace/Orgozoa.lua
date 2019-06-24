@@ -12,8 +12,8 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 298413 298548 295818 295822 296691",
-	"SPELL_CAST_SUCCESS 298242 298103 298156 298548 305057",
+	"SPELL_CAST_START 298548 295818 295822 296691",
+	"SPELL_CAST_SUCCESS 298413 298242 298103 298156 305057",
 	"SPELL_SUMMON 298465",
 	"SPELL_AURA_APPLIED 298156 298306 296914 295779",
 	"SPELL_AURA_APPLIED_DOSE 298156",
@@ -31,8 +31,8 @@ mod:RegisterEventsInCombat(
 --TODO, do more with powerful stomp?
 --TODO, special warn for tender add spawns?
 --[[
-(ability.id = 298413 or ability.id = 298548 or ability.id = 295818 or ability.id = 295822 or ability.id = 296691) and type = "begincast"
- or (ability.id = 298242 or ability.id = 298103 or ability.id = 298156 or ability.id = 298548 or ability.id = 295779 or ability.id = 305057) and type = "cast"
+(ability.id = 298548 or ability.id = 295818 or ability.id = 295822 or ability.id = 296691) and type = "begincast"
+ or (ability.id = 298413 or ability.id = 298242 or ability.id = 298103 or ability.id = 298156 or ability.id = 298548 or ability.id = 295779 or ability.id = 305057) and type = "cast"
  or type = "interrupt"
 --]]
 local warnDesensitizingSting				= mod:NewStackAnnounce(298156, 2, nil, "Tank")
@@ -57,13 +57,13 @@ local yellAquaLanceFades					= mod:NewShortFadesYell(295779)
 local specWarnConductivePulse				= mod:NewSpecialWarningInterrupt(295822, "HasInterrupt", nil, nil, 3, 2)
 
 mod:AddTimerLine(BOSS)
-local timerDesensitizingStingCD				= mod:NewCDTimer(6.1, 298156, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON, nil, nil, 3)--If user does enable countdown for this, max count at 3
+local timerDesensitizingStingCD				= mod:NewCDTimer(5.3, 298156, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON, nil, nil, 3)--If user does enable countdown for this, max count at 3
 local timerDribblingIchorCD					= mod:NewCDCountTimer(84, 298103, nil, nil, nil, 1, nil, nil, nil, 1, 4)--30.4-42
-local timerIncubationFluidCD				= mod:NewCDTimer(32.8, 298242, nil, nil, nil, 3, nil, nil, nil, 3, 4)
-local timerArcingCurrentCD					= mod:NewCDCountTimer(34.1, 295825, nil, nil, nil, 3)
+local timerIncubationFluidCD				= mod:NewCDTimer(32, 298242, nil, nil, nil, 3, nil, nil, nil, 3, 4)
+local timerArcingCurrentCD					= mod:NewCDCountTimer(30.1, 295825, nil, nil, nil, 3)
 local timerCalloftheTenderCD				= mod:NewCDCountTimer(35, 305057, nil, nil, nil, 1, nil, DBM_CORE_MYTHIC_ICON, nil, 2, 4)--30.4-42
 --Transition
-local timerMassiveIncubator					= mod:NewCastTimer(45, 298548, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON, nil, 1, 4)
+local timerMassiveIncubator					= mod:NewCastTimer(20, 298548, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON, nil, 1, 4)--was 45, is 20 now
 mod:AddTimerLine(DBM_ADDS)
 local timerAmnioticEruption					= mod:NewCastTimer(5, 298465, nil, nil, nil, 2, nil, DBM_CORE_TANK_ICON)
 local timerAquaLanceCD						= mod:NewCDTimer(25.5, 295779, nil, nil, nil, 3)
@@ -97,14 +97,14 @@ function mod:OnCombatStart(delay)
 	table.wipe(castsPerGUID)
 	timerDesensitizingStingCD:Start(3-delay)
 	if self:IsMythic() then
-		timerIncubationFluidCD:Start(17.1-delay)
+		timerIncubationFluidCD:Start(17.1-delay)--SUCCESS (TODO, verify)
 		timerCalloftheTenderCD:Start(20.3-delay, 1)
 		timerDribblingIchorCD:Start(25.2-delay, 1)
 		timerArcingCurrentCD:Start(36.4-delay, 1)
 	else
-		timerIncubationFluidCD:Start(18.8-delay)
-		timerDribblingIchorCD:Start(23.9-delay, 1)
-		timerArcingCurrentCD:Start(35-delay, 1)
+		timerIncubationFluidCD:Start(18.7-delay)--SUCCESS
+		timerDribblingIchorCD:Start(28.9-delay, 1)
+		timerArcingCurrentCD:Start(41.0-delay, 1)
 	end
 	if self.Options.NPAuraOnChaoticGrowth or self.Options.NPAuraOnAquaLance then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
@@ -131,17 +131,7 @@ end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 298413 then
-		self.vb.arcingCurrentCount = self.vb.arcingCurrentCount + 1
-		specWarnArcingCurrent:Show(self.vb.arcingCurrentCount)
-		timerArcingCurrentCD:Start(nil, self.vb.arcingCurrentCount+1)
-		if playerHasIncubation then
-			yellArcingCurrent:Yell()
-			specWarnArcingCurrent:Play("targetyou")
-		else
-			specWarnArcingCurrent:Play("farfromline")
-		end
-	elseif spellId == 298548 then
+	if spellId == 298548 then
 		timerMassiveIncubator:Start(45)
 	elseif spellId == 295818 then
 		warnShockingLightning:Show()
@@ -164,7 +154,17 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 298242 then
+	if spellId == 298413 then--used by all arcing currents
+		self.vb.arcingCurrentCount = self.vb.arcingCurrentCount + 1
+		specWarnArcingCurrent:Show(self.vb.arcingCurrentCount)
+		timerArcingCurrentCD:Start(nil, self.vb.arcingCurrentCount+1)
+		if playerHasIncubation then
+			yellArcingCurrent:Yell()
+			specWarnArcingCurrent:Play("targetyou")
+		else
+			specWarnArcingCurrent:Play("farfromline")
+		end
+	elseif spellId == 298242 then
 		timerIncubationFluidCD:Start()
 	elseif spellId == 298103 then--Dribbling Ichor
 		self.vb.addCount = self.vb.addCount + 1
@@ -173,18 +173,13 @@ function mod:SPELL_CAST_SUCCESS(args)
 		specWarnDribblingIchor:Play("mobsoon")
 		if self.vb.phase == 2 or self.vb.addCount < 3 then--Assumed there are more than 3 in P2
 			if self.vb.addCount == 1 then
-				timerDribblingIchorCD:Start(88.7, 2)
+				timerDribblingIchorCD:Start(85, 2)
 			else--2+ (todo verify the + part)
-				timerDribblingIchorCD:Start(84, self.vb.addCount+1)
+				timerDribblingIchorCD:Start(92, self.vb.addCount+1)
 			end
 		end
 	elseif spellId == 298156 then
 		timerDesensitizingStingCD:Start()
-	elseif spellId == 298548 then--Massive Incubator
-		timerDesensitizingStingCD:Start(3.4)
-		timerIncubationFluidCD:Start(18.8)
-		timerDribblingIchorCD:Start(23.9, 1)
-		timerArcingCurrentCD:Start(35)
 	elseif spellId == 295779 then
 		timerAquaLanceCD:Start(nil, args.sourceGUID)
 	elseif spellId == 305057 then
@@ -284,14 +279,14 @@ function mod:SPELL_INTERRUPT(args)
 		timerMassiveIncubator:Stop()
 		timerDesensitizingStingCD:Start(3)
 		if self:IsMythic() then
-			timerIncubationFluidCD:Start(17.1)
+			timerIncubationFluidCD:Start(17.1)--SUCCESS
 			timerCalloftheTenderCD:Start(20.3, 1)
 			timerDribblingIchorCD:Start(25.2, 1)
 			timerArcingCurrentCD:Start(36.4, 1)
-		else
-			timerIncubationFluidCD:Start(18.8)
-			timerDribblingIchorCD:Start(23.9, 1)
-			timerArcingCurrentCD:Start(35, 1)
+		else--Review these, can't be verified because in recent test boss bugged and didn't cast anything in phase 2, he stood there and did nothing
+			timerIncubationFluidCD:Start(18.7)--SUCCESS
+			timerDribblingIchorCD:Start(28.9, 1)
+			timerArcingCurrentCD:Start(41.0, 1)
 		end
 	end
 end

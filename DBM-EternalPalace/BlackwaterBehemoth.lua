@@ -19,7 +19,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_REMOVED 292133 292138 298595",
 	"SPELL_INTERRUPT"
 --	"SPELL_PERIODIC_DAMAGE",
---	"SPELL_PERIODIC_MISSED"
+--	"SPELL_PERIODIC_MISSED",
+	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
 --TODO: Can boss cast Bioelectric Feelers during Cavitation, when tank is forced away from boss?
@@ -146,9 +147,6 @@ function mod:SPELL_CAST_START(args)
 		specWarnCavitation:Show()
 		specWarnCavitation:Play("phasechange")
 		timerCavitation:Start()
-		timerToxicSpineCD:Stop()
-		timerShockPulseCD:Stop()
-		timerPiercingBarbCD:Stop()
 	end
 end
 
@@ -259,10 +257,12 @@ function mod:UNIT_DIED(args)
 
 	end
 end
+--]]
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 266913 then
-
+	if spellId == 292252 and self:AntiSpam(5, 3) then--Power Drain [DNT]
+		timerToxicSpineCD:Stop()
+		timerShockPulseCD:Stop()
+		timerPiercingBarbCD:Stop()
 	end
 end
---]]

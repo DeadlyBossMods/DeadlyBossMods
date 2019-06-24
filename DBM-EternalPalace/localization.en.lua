@@ -36,7 +36,7 @@ L:SetMiscLocalization({
 })
 
 ---------------------------
---  The Hatchery --
+--  Orgozoa --
 ---------------------------
 L= DBM:GetModLocalization(2351)
 
@@ -50,12 +50,13 @@ L:SetMiscLocalization({
 })
 
 ---------------------------
--- Herald of N'zoth --
+-- Za'qul --
 ---------------------------
 L= DBM:GetModLocalization(2349)
 
 L:SetMiscLocalization({
-	Tear =	"Tear"
+	Phase3	= "Za'qul tears open the pathway to Delirium Realm!",
+	Tear	= "Tear"
 })
 
 ---------------------------

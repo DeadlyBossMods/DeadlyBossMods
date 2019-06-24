@@ -194,7 +194,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnHardenedArteriesNear:Cancel()--Cancel CombinedShow if you get affected
 		elseif self:CheckNearby(8, args.destName) and not DBM:UnitDebuff("player", spellId) then
 			specWarnHardenedArteriesNear:CombinedShow(0.5, args.destName)
-			specWarnHardenedArteriesNear:CancelVoice()--Avoid spam
 			specWarnHardenedArteriesNear:ScheduleVoice(0.5, "runaway")
 		end
 	elseif spellId == 275205 then

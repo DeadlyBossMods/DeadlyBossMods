@@ -281,7 +281,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		elseif self:CheckNearby(8, args.destName) and not DBM:UnitDebuff("player", spellId) then
 			specWarnCrawlingHexNear:CombinedShow(0.3, args.destName)
-			specWarnCrawlingHexNear:CancelVoice()--Avoid spam
 			specWarnCrawlingHexNear:ScheduleVoice(0.3, "runaway")
 		else
 			warnCrawlingHex:CombinedShow(0.3, args.destName)
