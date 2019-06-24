@@ -113,24 +113,32 @@ function mod:OnCombatStart(delay)
 	self.vb.sparkIcon = 1
 	self.vb.sentenceActive = 0
 	--Timers that differ between heroic/mythic tests
-	if self:IsMythic() then
+	if self:IsHard() then
+		--Pashmar
+		timerFanaticalVerdictCD:Start(30-delay)
+		timerPotentSparkCD:Start(15.8-delay)
+		--On heroic, azshara casts Form Ranks immediately on pull
+		if self:IsMythic() then
+			--ass-shara
+			timerFormRanksCD:Start(30-delay)
+			--Pashmar
+			timerPotentSparkCD:Start(20.2-delay)
+		end
+	else
+		--Timers for Normal and LFR
 		--ass-shara
 		timerFormRanksCD:Start(30-delay)
 		--Pashmar
-		timerPotentSparkCD:Start(20.4-delay)
-		timerFerventBoltCD:Start(5.1-delay)
-	else
-		--On heroic, azshara cast decree immediately on pull
-		--Pashmar
 		timerPotentSparkCD:Start(15.8-delay)
+		timerFanaticalVerdictCD:Start(37.3-delay)
+		timerFerventBoltCD:Start(5.1-delay)
 	end
-	--TImers that are same across board
+	--Timers that are same across board
 	--Silivaz
-	timerFreneticChargeCD:Start(30.3-delay)
+	timerFreneticChargeCD:Start(30-delay)
 	timerZealousEruptionCD:Start(50.7-delay)
 	--Pashmar
-	timerFanaticalVerdictCD:Start(30.4-delay)
-	timerViolentOutburstCD:Start(100.7-delay)
+	timerViolentOutburstCD:Start(100.1-delay)
 	if self.Options.NPAuraOnSoP then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
