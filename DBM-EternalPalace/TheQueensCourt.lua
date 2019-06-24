@@ -131,7 +131,6 @@ function mod:OnCombatStart(delay)
 		--Pashmar
 		timerPotentSparkCD:Start(15.8-delay)
 		timerFanaticalVerdictCD:Start(37.3-delay)
-		timerFerventBoltCD:Start(5.1-delay)
 	end
 	--Timers that are same across board
 	--Silivaz
@@ -139,6 +138,7 @@ function mod:OnCombatStart(delay)
 	timerZealousEruptionCD:Start(50.7-delay)
 	--Pashmar
 	timerViolentOutburstCD:Start(100.1-delay)
+	timerFerventBoltCD:Start(5.1-delay)
 	if self.Options.NPAuraOnSoP then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
