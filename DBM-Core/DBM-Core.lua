@@ -69,8 +69,8 @@ end
 
 DBM = {
 	Revision = parseCurseDate("@project-date-integer@"),
-	DisplayVersion = "8.2.0 alpha", -- the string that is shown as version
-	ReleaseRevision = releaseDate(2019, 5, 23, 12) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	DisplayVersion = "8.2.0", -- the string that is shown as version
+	ReleaseRevision = releaseDate(2019, 6, 25) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 }
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
@@ -1194,8 +1194,7 @@ do
 			AddMsg(DBM, DBM_CORE_VOICE_COUNT_MISSING:format(3, self.DefaultOptions.CountdownVoice3v2))
 			self.Options.CountdownVoice3v2 = self.DefaultOptions.CountdownVoice3v2
 		end
-		self:BuildVoiceCountdownCache()--This will be slowly deprecated as old mods are migrated to new object
-		self:BuildVoiceCountdownCacheTwo()
+		self:BuildVoiceCountdownCache()
 		--Break timer recovery
 		--Try local settings
 		if self.Options.tempBreak2 then
@@ -1981,7 +1980,7 @@ do
 		elseif cmd == "help" then
 			for i, v in ipairs(DBM_CORE_SLASHCMD_HELP) do DBM:AddMsg(v) end
 		elseif cmd:sub(1, 13) == "timer endloop" then
-			DBM:CreatePizzaTimer(time, "", nil, nil, nil, nil, true)
+			DBM:CreatePizzaTimer(time, "", nil, nil, nil, true)
 		elseif cmd:sub(1, 5) == "timer" then
 			local time, text = msg:match("^%w+ ([%d:]+) (.+)$")
 			if not (time and text) then
@@ -1997,21 +1996,6 @@ do
 			end
 			time = min * 60 + sec
 			DBM:CreatePizzaTimer(time, text)
-		elseif cmd:sub(1, 6) == "ctimer" then
-			local time, text = msg:match("^%w+ ([%d:]+) (.+)$")
-			if not (time and text) then
-				DBM:AddMsg(DBM_PIZZA_ERROR_USAGE)
-				return
-			end
-			local min, sec = string.split(":", time)
-			min = tonumber(min or "") or 0
-			sec = tonumber(sec or "")
-			if min and not sec then
-				sec = min
-				min = 0
-			end
-			time = min * 60 + sec
-			DBM:CreatePizzaTimer(time, text, nil, nil, true)
 		elseif cmd:sub(1, 6) == "ltimer" then
 			local time, text = msg:match("^%w+ ([%d:]+) (.+)$")
 			if not (time and text) then
@@ -2026,22 +2010,7 @@ do
 				min = 0
 			end
 			time = min * 60 + sec
-			DBM:CreatePizzaTimer(time, text, nil, nil, nil, true)
-		elseif cmd:sub(1, 7) == "cltimer" then
-			local time, text = msg:match("^%w+ ([%d:]+) (.+)$")
-			if not (time and text) then
-				DBM:AddMsg(DBM_PIZZA_ERROR_USAGE)
-				return
-			end
-			local min, sec = string.split(":", time)
-			min = tonumber(min or "") or 0
-			sec = tonumber(sec or "")
-			if min and not sec then
-				sec = min
-				min = 0
-			end
-			time = min * 60 + sec
-			DBM:CreatePizzaTimer(time, text, nil, nil, true, true)
+			DBM:CreatePizzaTimer(time, text, nil, nil, true)
 		elseif cmd:sub(1, 15) == "broadcast timer" then--Standard Timer
 			local permission = true
 			if DBM:GetRaidRank(playerName) == 0 or difficultyIndex == 7 or difficultyIndex == 17 then
@@ -2062,26 +2031,6 @@ do
 			end
 			time = min * 60 + sec
 			DBM:CreatePizzaTimer(time, text, permission)
-		elseif cmd:sub(1, 16) == "broadcast ctimer" then
-			local permission = true
-			if DBM:GetRaidRank(playerName) == 0 or difficultyIndex == 7 or difficultyIndex == 17 then
-				DBM:AddMsg(DBM_ERROR_NO_PERMISSION)
-				permission = false
-			end
-			local time, text = msg:match("^%w+ %w+ ([%d:]+) (.+)$")
-			if not (time and text) then
-				DBM:AddMsg(DBM_PIZZA_ERROR_USAGE)
-				return
-			end
-			local min, sec = string.split(":", time)
-			min = tonumber(min or "") or 0
-			sec = tonumber(sec or "")
-			if min and not sec then
-				sec = min
-				min = 0
-			end
-			time = min * 60 + sec
-			DBM:CreatePizzaTimer(time, text, permission, nil, true)
 		elseif cmd:sub(1, 16) == "broadcast ltimer" then
 			local permission = true
 			if DBM:GetRaidRank(playerName) == 0 or difficultyIndex == 7 or difficultyIndex == 17 then
@@ -2101,27 +2050,7 @@ do
 				min = 0
 			end
 			time = min * 60 + sec
-			DBM:CreatePizzaTimer(time, text, permission, nil, nil, true)
-		elseif cmd:sub(1, 17) == "broadcast cltimer" then
-			local permission = true
-			if DBM:GetRaidRank(playerName) == 0 or difficultyIndex == 7 or difficultyIndex == 17 then
-				DBM:AddMsg(DBM_ERROR_NO_PERMISSION)
-				permission = false
-			end
-			local time, text = msg:match("^%w+ %w+ ([%d:]+) (.+)$")
-			if not (time and text) then
-				DBM:AddMsg(DBM_PIZZA_ERROR_USAGE)
-				return
-			end
-			local min, sec = string.split(":", time)
-			min = tonumber(min or "") or 0
-			sec = tonumber(sec or "")
-			if min and not sec then
-				sec = min
-				min = 0
-			end
-			time = min * 60 + sec
-			DBM:CreatePizzaTimer(time, text, permission, nil, true, true)
+			DBM:CreatePizzaTimer(time, text, permission, nil, true)
 		elseif cmd:sub(0,5) == "break" then
 			local timer = tonumber(cmd:sub(6)) or 5
 			Break(timer)
@@ -2542,22 +2471,15 @@ end
 -------------------
 do
 
-	local function loopTimer(time, text, broadcast, sender, count)
-		DBM:CreatePizzaTimer(time, text, broadcast, sender, count, true)
+	local function loopTimer(time, text, broadcast, sender)
+		DBM:CreatePizzaTimer(time, text, broadcast, sender, true)
 	end
 
 	local ignore = {}
-	local fakeMod -- dummy mod for the count sound effects
 	--Standard Pizza Timer
-	function DBM:CreatePizzaTimer(time, text, broadcast, sender, count, loop, terminate)
-		if not fakeMod then
-			fakeMod = self:NewMod("CreateCountTimerDummy")
-			self:GetModLocalization("CreateCountTimerDummy"):SetGeneralLocalization{ name = DBM_CORE_MINIMAP_TOOLTIP_HEADER }
-			fakeMod.countdown = fakeMod:NewCountdown(0, 0, nil, nil, nil, true)
-		end
+	function DBM:CreatePizzaTimer(time, text, broadcast, sender, loop, terminate)
 		if terminate or time == 0 then
 			self:Unschedule(loopTimer)
-			fakeMod.countdown:Cancel()
 			self.Bars:CancelBar(text)
 			fireEvent("DBM_TimerStop", "DBMPizzaTimer")
 			return
@@ -2572,29 +2494,12 @@ do
 		self.Bars:CreateBar(time, text, 237538)
 		fireEvent("DBM_TimerStart", "DBMPizzaTimer", text, time, "237538", "pizzatimer", nil, 0)
 		if broadcast then
-			if count then
-				sendLoggedSync("CU", ("%s\t%s"):format(time, text))
-			else
-				sendLoggedSync("U", ("%s\t%s"):format(time, text))
-			end
+			sendLoggedSync("U", ("%s\t%s"):format(time, text))
 		end
 		if sender then self:ShowPizzaInfo(text, sender) end
-		if count then
-			if not fakeMod then
-				local threshold = self.Options.PTCountThreshold2
-				threshold = floor(threshold)
-				fakeMod = self:NewMod("CreateCountTimerDummy")
-				self:GetModLocalization("CreateCountTimerDummy"):SetGeneralLocalization{ name = DBM_CORE_MINIMAP_TOOLTIP_HEADER }
-				fakeMod.countdown = fakeMod:NewCountdown(0, 0, nil, nil, threshold, true)
-			end
-			if not self.Options.DontPlayPTCountdown then
-				fakeMod.countdown:Cancel()
-				fakeMod.countdown:Start(time)
-			end
-		end
 		if loop then
 			self:Unschedule(loopTimer)--Only one loop timer supported at once doing this, but much cleaner this way
-			self:Schedule(time, loopTimer, time, text, broadcast, sender, count)
+			self:Schedule(time, loopTimer, time, text, broadcast, sender)
 		end
 	end
 
@@ -4417,22 +4322,21 @@ do
 		if timer > 60 then
 			return
 		end
+		--TODO, create a light weight mini countdown object to be used by Pull and Pizza and Combat Timers
 		if not dummyMod then
 			local threshold = DBM.Options.PTCountThreshold2
 			threshold = floor(threshold)
 			dummyMod = DBM:NewMod("PullTimerCountdownDummy")
 			DBM:GetModLocalization("PullTimerCountdownDummy"):SetGeneralLocalization{ name = DBM_CORE_MINIMAP_TOOLTIP_HEADER }
-			dummyMod.countdown = dummyMod:NewCountdown(0, 0, nil, nil, threshold, true)
 			dummyMod.text = dummyMod:NewAnnounce("%s", 1, "132349")
 			dummyMod.geartext = dummyMod:NewSpecialWarning("  %s  ", nil, nil, nil, 3)
+			dummyMod.timer = dummyMod:NewTimer(20, "%s", "132349", nil, nil, 0, nil, nil, DBM.Options.DontPlayPTCountdown and 0 or 1, threshold)
 		end
 		--Cancel any existing pull timers before creating new ones, we don't want double countdowns or mismatching blizz countdown text (cause you can't call another one if one is in progress)
-		if not DBM.Options.DontShowPT2 and DBM.Bars:GetBar(DBM_CORE_TIMER_PULL) then
-			DBM.Bars:CancelBar(DBM_CORE_TIMER_PULL)
-			fireEvent("DBM_TimerStop", "pull")
-		end
-		if not DBM.Options.DontPlayPTCountdown then
-			dummyMod.countdown:Cancel()
+		if not DBM.Options.DontShowPT2 then--and DBM.Bars:GetBar(DBM_CORE_TIMER_PULL)
+			--DBM.Bars:CancelBar(DBM_CORE_TIMER_PULL)
+			dummyMod.timer:Stop()
+			--fireEvent("DBM_TimerStop", "pull")
 		end
 		if not DBM.Options.DontShowPTCountdownText then
 			TimerTracker_OnEvent(TimerTracker, "PLAYER_ENTERING_WORLD")--easiest way to nil out timers on TimerTracker frame. This frame just has no actual star/stop functions
@@ -4443,11 +4347,9 @@ do
 		if timer == 0 then return end--"/dbm pull 0" will strictly be used to cancel the pull timer (which is why we let above part of code run but not below)
 		DBM:FlashClientIcon()
 		if not DBM.Options.DontShowPT2 then
-			DBM.Bars:CreateBar(timer, DBM_CORE_TIMER_PULL, 132349)
-			fireEvent("DBM_TimerStart", "pull", DBM_CORE_TIMER_PULL, timer, "132349", "utilitytimer", nil, 0)
-		end
-		if not DBM.Options.DontPlayPTCountdown then
-			dummyMod.countdown:Start(timer)
+			--DBM.Bars:CreateBar(timer, DBM_CORE_TIMER_PULL, 132349)
+			dummyMod.timer:Start(timer, DBM_CORE_TIMER_PULL)
+			--fireEvent("DBM_TimerStart", "pull", DBM_CORE_TIMER_PULL, timer, "132349", "utilitytimer", nil, 0)
 		end
 		if not DBM.Options.DontShowPTCountdownText then
 			--Start A TimerTracker timer by tricking it to start a BG timer
@@ -4509,32 +4411,29 @@ do
 	do
 		local dummyMod2 -- dummy mod for the break timer
 		function breakTimerStart(self, timer, sender)
+			--TODO, create a light weight mini countdown object to be used by Pull and Break and Pizza and Combat Timers
 			if not dummyMod2 then
 				local threshold = DBM.Options.PTCountThreshold2
 				threshold = floor(threshold)
 				dummyMod2 = DBM:NewMod("BreakTimerCountdownDummy")
 				DBM:GetModLocalization("BreakTimerCountdownDummy"):SetGeneralLocalization{ name = DBM_CORE_MINIMAP_TOOLTIP_HEADER }
-				dummyMod2.countdown = dummyMod2:NewCountdown(0, 0, nil, nil, threshold, true)
 				dummyMod2.text = dummyMod2:NewAnnounce("%s", 1, "237538")
+				dummyMod2.timer = dummyMod2:NewTimer(20, "%s", "237538", nil, nil, 0, nil, nil, DBM.Options.DontPlayPTCountdown and 0 or 1, threshold)
 			end
 			--Cancel any existing break timers before creating new ones, we don't want double countdowns or mismatching blizz countdown text (cause you can't call another one if one is in progress)
-			if not DBM.Options.DontShowPT2 and DBM.Bars:GetBar(DBM_CORE_TIMER_BREAK) then
-				DBM.Bars:CancelBar(DBM_CORE_TIMER_BREAK)
-				fireEvent("DBM_TimerStop", "break")
-			end
-			if not DBM.Options.DontPlayPTCountdown then
-				dummyMod2.countdown:Cancel()
+			if not DBM.Options.DontShowPT2 then--and DBM.Bars:GetBar(DBM_CORE_TIMER_BREAK)
+				--DBM.Bars:CancelBar(DBM_CORE_TIMER_BREAK)
+				dummyMod2.timer:Stop()
+				--fireEvent("DBM_TimerStop", "break")
 			end
 			dummyMod2.text:Cancel()
 			DBM.Options.tempBreak2 = nil
 			if timer == 0 then return end--"/dbm break 0" will strictly be used to cancel the break timer (which is why we let above part of code run but not below)
 			self.Options.tempBreak2 = timer.."/"..time()
 			if not self.Options.DontShowPT2 then
-				self.Bars:CreateBar(timer, DBM_CORE_TIMER_BREAK, 237538)
-				fireEvent("DBM_TimerStart", "break", DBM_CORE_TIMER_BREAK, timer, "237538", "utilitytimer", nil, 0)
-			end
-			if not self.Options.DontPlayPTCountdown then
-				dummyMod2.countdown:Start(timer)
+				--self.Bars:CreateBar(timer, DBM_CORE_TIMER_BREAK, 237538)
+				dummyMod2.timer:Start(timer, DBM_CORE_TIMER_BREAK)
+				--fireEvent("DBM_TimerStart", "break", DBM_CORE_TIMER_BREAK, timer, "237538", "utilitytimer", nil, 0)
 			end
 			if not self.Options.DontShowPTText then
 				local hour, minute = GetGameTime()
@@ -4721,18 +4620,6 @@ do
 		text = tostring(text)
 		if time and text then
 			DBM:CreatePizzaTimer(time, text, nil, sender)
-		end
-	end
-
-	syncHandlers["CU"] = function(sender, time, text)
-		if select(2, IsInInstance()) == "pvp" then return end -- no pizza timers in battlegrounds
-		if DBM.Options.DontShowUserTimers then return end
-		if DBM:GetRaidRank(sender) == 0 or difficultyIndex == 7 or difficultyIndex == 17 then return end
-		if sender == playerName then return end
-		time = tonumber(time or 0)
-		text = tostring(text)
-		if time and text then
-			DBM:CreatePizzaTimer(time, text, nil, sender, true)
 		end
 	end
 
@@ -6090,11 +5977,11 @@ do
 				end
 				--stop pull count
 				local dummyMod = self:GetModByName("PullTimerCountdownDummy")
-				if dummyMod then--stop pull timer, warning, countdowns
-					dummyMod.countdown:Cancel()
+				if dummyMod then--stop pull timer
 					dummyMod.text:Cancel()
-					self.Bars:CancelBar(DBM_CORE_TIMER_PULL)
-					fireEvent("DBM_TimerStop", "pull")
+					--self.Bars:CancelBar(DBM_CORE_TIMER_PULL)
+					dummyMod.timer:Stop()
+					--fireEvent("DBM_TimerStop", "pull")
 					TimerTracker_OnEvent(TimerTracker, "PLAYER_ENTERING_WORLD")
 				end
 				if BigWigs and BigWigs.db.profile.raidicon and not self.Options.DontSetIcons and self:GetRaidRank() > 0 then--Both DBM and bigwigs have raid icon marking turned on.
@@ -6472,7 +6359,7 @@ do
 				eeSyncSender = {}
 				eeSyncReceived = 0
 				targetMonitor = nil
-				self:CreatePizzaTimer(time, "", nil, nil, nil, nil, true)--Auto Terminate infinite loop timers on combat end
+				self:CreatePizzaTimer(time, "", nil, nil, nil, true)--Auto Terminate infinite loop timers on combat end
 				self:TransitionToDungeonBGM(false, true)
 				self:Schedule(22, self.TransitionToDungeonBGM, self)--
 			end
@@ -7183,7 +7070,7 @@ do
 		if not testMod then
 			testMod = self:NewMod("TestMod")
 			self:GetModLocalization("TestMod"):SetGeneralLocalization{ name = "Test Mod" }
-			testWarning1 = testMod:NewAnnounce("%s", 1, "136116")
+			testWarning1 = testMod:NewAnnounce("%s", 1, "136116")--Interface\\Icons\\Spell_Nature_WispSplode
 			testWarning2 = testMod:NewAnnounce("%s", 2, "136194")
 			testWarning3 = testMod:NewAnnounce("%s", 3, "135826")
 			testTimer1 = testMod:NewTimer(20, "%s", "136116", nil, nil)
@@ -7491,7 +7378,6 @@ do
 				announces = {},
 				specwarns = {},
 				timers = {},
-				countdowns = {},
 				vb = {},
 				iconRestore = {},
 				modId = modId,
@@ -7603,9 +7489,6 @@ end
 
 function bossModPrototype:Stop()
 	for i, v in ipairs(self.timers) do
-		v:Stop()
-	end
-	for i, v in ipairs(self.countdowns) do
 		v:Stop()
 	end
 	self:Unschedule()
@@ -9507,153 +9390,35 @@ end
 ----------------------------
 do
 	local countdownProtoType = {}
-	local voice1, voice2, voice3 = nil, nil, nil
-	local voice1max, voice2max, voice3max = 5, 5, 5
-	local path1, path2, path3 = nil, nil, nil
-	local mt = {__index = countdownProtoType}
-
-	function DBM:BuildVoiceCountdownCache()
-		voice1 = self.Options.CountdownVoice
-		voice2 = self.Options.CountdownVoice2
-		voice3 = self.Options.CountdownVoice3v2
-		local voicesFound = 0
-		for i = 1, #self.Counts do
-			local curVoice = self.Counts[i]
-			if curVoice.value == voice1 then
-				path1 = curVoice.path
-				voice1max = curVoice.max
-			end
-			if curVoice.value == voice2 then
-				path2 = curVoice.path
-				voice2max = curVoice.max
-			end
-			if curVoice.value == voice3 then
-				path3 = curVoice.path
-				voice3max = curVoice.max
-			end
+	local function oldCountdownNag()
+		if DBM:AntiSpam(10, "CountNag") then
+			DBM:AddMsg("You are using a mod that's calling obsolete countdown object. Update ALL of your DBM modules to latest version")
 		end
 	end
-
 	function countdownProtoType:Start(timer, count)
-		if DBM.Options.DontPlayCountdowns then return end
-		if not self.option or self.mod.Options[self.option] then
-			timer = timer or self.timer or 10
-			timer = timer < 2 and self.timer or timer
-			count = count or self.count or 5
-			if timer <= count then count = floor(timer) end
-			if not path1 or not path2 or not path3 then
-				DBM:Debug("Voice cache not built at time of countdownProtoType:Start. On fly caching.", 3)
-				DBM:BuildVoiceCountdownCache()
-			end
-			local maxCount, path
-			if self.alternateVoice == 2 then
-				maxCount = voice2max or 10
-				path = path2 or "Interface\\AddOns\\DBM-Core\\Sounds\\Kolt\\"
-			elseif self.alternateVoice == 3 then
-				maxCount = voice3max or 5
-				path = path3 or "Interface\\AddOns\\DBM-Core\\Sounds\\Heroes\\Necromancer\\"
-			else
-				maxCount = voice1max or 10
-				path = path1 or "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica\\"
-			end
-			if not path then--Should not happen but apparently it does somehow
-				DBM:Debug("Voice path failed in countdownProtoType:Start.")
-				return
-			end
-			if self.type == "Countout" then
-				for i = 1, timer do
-					if i < maxCount then
-						self.sound5:Schedule(i, path..i..".ogg")
-					end
-				end
-			else
-				for i = count, 1, -1 do
-					if i <= maxCount then
-						self.sound5:Schedule(timer-i, path..i..".ogg")
-					end
-				end
-			end
-		end
+		oldCountdownNag()
 	end
 	countdownProtoType.Show = countdownProtoType.Start
 
 	function countdownProtoType:Schedule(t)
-		if DBM.Options.DontPlayCountdowns then return end
-		return schedule(t, self.Start, self.mod, self)
+		oldCountdownNag()
 	end
 
 	function countdownProtoType:Cancel()
-		self.mod:Unschedule(self.Start, self)
-		self.sound5:Cancel()
+		oldCountdownNag()
 	end
 	countdownProtoType.Stop = countdownProtoType.Cancel
 
-	local function newCountdown(self, countdownType, timer, spellId, optionDefault, optionName, count, textDisabled, altVoice)
-		if not spellId and not optionName then
-			print("NewCountdown: you must provide either spellId or optionName", 2)
-			return
-		end
-		local optionVersion
-		if type(optionName) == "number" then
-			optionVersion = optionName
-			optionName = nil
-		end
-		if altVoice == true then altVoice = 2 end--Compat
-		if type(timer) == "string" then
-			if timer:match("AltTwo") then
-				altVoice = 3
-				timer = tonumber(string.sub(timer, 7))
-			elseif timer:match("Alt") then
-				altVoice = 2
-				timer = tonumber(string.sub(timer, 4))
-			end
-		end
-		--TODO, maybe make this not use an entire sound object?
-		local sound5 = self:NewSound(5, true, false)
-		timer = timer or 10
-		count = count or 4
-		spellId = spellId or 39505
-		local obj = setmetatable(
-			{
-				id = optionName or countdownType..spellId..(optionVersion or ""),
-				type = countdownType,
-				sound5 = sound5,
-				timer = timer,
-				count = count,
-				textDisabled = textDisabled,
-				alternateVoice = altVoice,
-				mod = self
-			},
-			mt
-		)
-		if optionName then
-			obj.option = obj.id
-			self:AddBoolOption(obj.option, optionDefault, "sound")
-		elseif not (optionName == false) then
-			obj.option = obj.id
-			self:AddBoolOption(obj.option, optionDefault, "sound")
-			if countdownType == "Countdown" then
-				self.localization.options[obj.option] = DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT:format(spellId)
-			elseif countdownType == "CountdownFades" then
-				self.localization.options[obj.option] = DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT2:format(spellId)
-			elseif countdownType == "Countout" then
-				self.localization.options[obj.option] = DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT:format(spellId)
-			end
-		end
-		tinsert(self.countdowns, obj)
-		return obj
-	end
-
 	function bossModPrototype:NewCountdown(...)
-		return newCountdown(self, "Countdown", ...)
+		oldCountdownNag()
 	end
 
 	function bossModPrototype:NewCountdownFades(...)
-		return newCountdown(self, "CountdownFades", ...)
+		oldCountdownNag()
 	end
 
 	function bossModPrototype:NewCountout(...)
-		return newCountdown(self, "Countout", ...)
+		oldCountdownNag()
 	end
 end
 
@@ -10520,7 +10285,7 @@ do
 	local countpath1, countpath2, countpath3 = nil, nil, nil
 
 	--Merged countdown object for timers with build-in countdown
-	function DBM:BuildVoiceCountdownCacheTwo()
+	function DBM:BuildVoiceCountdownCache()
 		countvoice1 = self.Options.CountdownVoice
 		countvoice2 = self.Options.CountdownVoice2
 		countvoice3 = self.Options.CountdownVoice3v2
@@ -10554,7 +10319,7 @@ do
 		if timer <= count then count = floor(timer) end
 		if not countpath1 or not countpath2 or not countpath3 then
 			DBM:Debug("Voice cache not built at time of playCountdown. On fly caching.", 3)
-			DBM:BuildVoiceCountdownCacheTwo()
+			DBM:BuildVoiceCountdownCache()
 		end
 		local maxCount, path
 		if voice == 2 then
@@ -11226,11 +10991,6 @@ do
 			if timer > 30 then self.warning2:Schedule(timer - 30, 30, DBM_CORE_SEC) end
 			if timer > 10 then self.warning2:Schedule(timer - 10, 10, DBM_CORE_SEC) end
 		end
-		if self.countdown then
-			if not DBM.Options.DontPlayPTCountdown then
-				self.countdown:Start(timer)
-			end
-		end
 	end
 
 	function enragePrototype:Schedule(t)
@@ -11244,9 +11004,6 @@ do
 		end
 		if self.warning2 then
 			self.warning2:Cancel()
-		end
-		if self.countdown then
-			self.countdown:Cancel()
 		end
 		self.bar:Stop()
 	end
@@ -11272,13 +11029,12 @@ do
 
 	function bossModPrototype:NewCombatTimer(timer, text, barText, barIcon)
 		timer = timer or 10
-		local bar = self:NewTimer(timer, barText or DBM_CORE_GENERIC_TIMER_COMBAT, barIcon or "132349", nil, "timer_combat")
-		local countdown = self:NewCountdown(0, 0, nil, false, nil, true)
+		--NewTimer(timer, name, texture, optionDefault, optionName, colorType, inlineIcon, keep, countdown, countdownMax, r, g, b)
+		local bar = self:NewTimer(timer, barText or DBM_CORE_GENERIC_TIMER_COMBAT, barIcon or "132349", nil, "timer_combat", nil, nil, nil, 1, 5)
 		local obj = setmetatable(
 			{
 				bar = bar,
 				timer = timer,
-				countdown = countdown,
 				owner = self
 			},
 			mt

@@ -253,11 +253,9 @@ DBM_CORE_TIMER_USAGE	= {
 	"DBM计时器可用命令:",
 	"-----------------",
 	"/dbm timer <秒> <文本>: 启动一个<文本>为名称，长度为<秒>的计时器。",
-	"/dbm ctimer <秒> <文本>: 启动一个<文本>为名称，长度为<秒>的倒计时计时器。",
 	"/dbm ltimer <秒> <文本>: 启动一个<文本>为名称，长度为<秒>的循环计时器。",
-	"/dbm cltimer <秒> <文本>: 启动一个<文本>为名称，长度为<秒>的循环倒计时计时器。",
 	"('Broadcast' 在 'timer' 前会向所有团队成员发送这个计时器(需要队长或助理权限)。",
-	"/dbm timer endloop: 停止所有的 ltimer（循环计时器） 和 cltimer（循环倒计时计时器）."
+	"/dbm timer endloop: 停止所有的 ltimer（循环计时器）."
 }
 
 DBM_ERROR_NO_PERMISSION				= "权限不足。需要队长或助理权限。"

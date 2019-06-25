@@ -26,6 +26,7 @@ function mod:SPELL_CAST_START(args)
 			specWarnPolymorph:Play("targetyou")
 		else
 			warnPolymorph:Show()
+			timerPolymorphCD:SetSTFade(true)
 		end
 	end
 end

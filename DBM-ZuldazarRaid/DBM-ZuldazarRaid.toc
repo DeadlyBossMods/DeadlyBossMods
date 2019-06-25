@@ -1,4 +1,4 @@
-## Interface: 80100
+## Interface: 80200
 ## X-Min-Interface: 80100
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Battle of Dazar'alor|r
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0다자알로 전투|r

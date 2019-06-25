@@ -41,6 +41,7 @@ function mod:SPELL_CAST_START(args)
 			specWarnPowerShot:Play("findshelter")
 		else
 			warnPowershot:Show()
+			timerPowerShotCD:SetSTFade(true)
 		end
 	end
 end
@@ -54,6 +55,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			specWarnColdCrash:Play("findshelter")
 		else
 			warnColdCrash:Show()
+			timerColdCrashCD:SetSTFade(true)
 		end
 	elseif args.spellId == 283188 then
 		warnSMaSHtun:Show()

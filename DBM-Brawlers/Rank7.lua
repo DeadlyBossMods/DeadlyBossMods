@@ -31,9 +31,15 @@ function mod:SPELL_CAST_START(args)
 	if args.spellId == 133308 then
 		warnThrowNet:Show()
 		timerThrowNetCD:Start()
+		if not brawlersMod:PlayerFighting() then
+			timerThrowNetCD:SetSTFade(true)
+		end
 	elseif args.spellId == 229154 then
 		warnHighNoon:Show()
 		timerHighNoon:Start()
+		if not brawlersMod:PlayerFighting() then
+			timerHighNoon:SetSTFade(true)
+		end
 	end
 end
 
@@ -45,6 +51,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			specWarnGoblinDevice:Show()
 		else
 			warnGoblinDevice:Show()
+			timerGoblinDeviceCD:SetSTFade(true)
 		end
 	end
 end

@@ -248,11 +248,9 @@ DBM_CORE_TIMER_USAGE	= {
 	"DBM 타이머 명령어:",
 	"--------------",
 	"/dbm timer <초> <텍스트>: <초> 만큼 지속되는 <텍스트> 타이머가 시작됩니다.",
-	"/dbm ctimer <초> <텍스트>: 초읽기를 포함한 타이머가 시작됩니다.",
 	"/dbm ltimer <초> <텍스트>: 취소하기 전까진 자동 반복되는 타이머가 시작됩니다.",
-	"/dbm cltimer <초> <텍스트>: 취소하기 전까진 자동 반복되는 타이머가 시작되며 초읽기를 포함하고 있습니다.",
 	"(공대장이나 승급자일 경우 타이머 텍스트 앞에 'Broadcast'를 입력하면 공격대에 공유)",
-	"/dbm timer endloop: ltimer와 cltimer의 반복 작동을 멈춥니다."
+	"/dbm timer endloop: ltimer와 반복 작동을 멈춥니다."
 }
 
 DBM_ERROR_NO_PERMISSION				= "이 명령어를 실행하기 위한 권한을 가지고 있지 않습니다."

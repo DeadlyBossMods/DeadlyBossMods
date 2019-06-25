@@ -49,6 +49,7 @@ local timerHaywire					= mod:NewBuffActiveTimer(30, 296080, nil, nil, nil, 6)
 mod:AddNamePlateOption("NPAuraOnWalkieShockie", 296522, false)
 
 mod.vb.phase = 1
+local unitTracked = {}
 
 local function checkHardMode(self, delay)
 	local found = false
@@ -79,6 +80,7 @@ end
 function mod:OnCombatStart(delay)
 	self.vb.phase = 1
 	self:Schedule(1-delay, checkHardMode, self)
+	table.wipe(unitTracked)
 	if self.Options.NPAuraOnWalkieShockie then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 		self:RegisterOnUpdateHandler(function(self)
@@ -120,6 +122,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnCombatEnd()
+	table.wipe(unitTracked)
 --	if self.Options.RangeFrame then
 --		DBM.RangeCheck:Hide()
 --	end

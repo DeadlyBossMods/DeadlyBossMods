@@ -200,11 +200,9 @@ DBM_CORE_SLASHCMD_HELP2				= {
 DBM_CORE_TIMER_USAGE	= {
 	"DBM timer commands:",
 	"/dbm timer <time> <text>: Starts a <x> second DBM Timer with the name <text>.",
-	"/dbm ctimer <time> <text>: Starts a timer that also has countdown text.",
 	"/dbm ltimer <time> <text>: Starts a timer that also automatically loops until canceled.",
-	"/dbm cltimer <time> <text>: Starts a timer that also has countdown text and loops until canceled.",
 	"('Broadcast' in front of any timer also shares it with raid if leader/promoted)",
-	"/dbm timer endloop: Stops any looping ltimer or cltimer."
+	"/dbm timer endloop: Stops any looping ltimer."
 }
 
 DBM_ERROR_NO_PERMISSION				= "Você não tem as permissões necessárias para fazer isso."

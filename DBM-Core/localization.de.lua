@@ -236,11 +236,9 @@ DBM_CORE_SLASHCMD_HELP2				= {
 DBM_CORE_TIMER_USAGE	= {
 	"DBM-Timer Kommandos:",
 	"/dbm timer <sec> <text>: Startet einen <sec> Sekunden langen Timer mit deinem <text>.",
-	"/dbm ctimer <sec> <text>: Startet einen Timer mit Countdown.",
 	"/dbm ltimer <sec> <text>: Startet einen Timer, der automatisch wiederholt wird, bis er abgebrochen wird.",
-	"/dbm cltimer <sec> <text>: Startet einen Timer mit Countdown, der automatisch wiederholt wird, bis er abgebrochen wird.",
-	"/dbm broadcast timer/ctimer/ltimer/cltimer <sec> <text>: schickt den Timer an den Schlachtzug (nur als Leiter/Assistent).",
-	"/dbm timer endloop: Stoppt alle ltimer- und cltimer-Schleifen.",
+	"/dbm broadcast timer/ltimer/cltimer <sec> <text>: schickt den Timer an den Schlachtzug (nur als Leiter/Assistent).",
+	"/dbm timer endloop: Stoppt alle ltimer-.",
 }
 
 DBM_ERROR_NO_PERMISSION				= "Du hast nicht die benötigte Berechtigung für diesen Befehl!"

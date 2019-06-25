@@ -98,13 +98,10 @@ local timerSolarBeamCD				= mod:NewCDTimer(18.5, 129888)--Leona Earthwind
 local timerHeatedPokers				= mod:NewBuffActiveTimer(8, 133286)--Dungeon Master Vishas
 local timerHeatedPokersCD			= mod:NewCDTimer(29, 133286)--Dungeon Master Vishas
 local timerBoomBoomCD				= mod:NewAITimer(17, 236458, nil, nil, nil, 1)--Bill the Janitor
-local timerZenOrb					= mod:NewTargetTimer(15, 229884, nil, nil, nil, 5)--Master Paku
+local timerZenOrb					= mod:NewTargetTimer(15, 229884, nil, nil, nil, 5, nil, nil, nil, 1, 4)--Master Paku
 local timerShadowTorchCD			= mod:NewCDTimer(5.3, 232504, nil, nil, nil, 3)-- 5.3, 6.2, 5.9, 6.1, 6.0 Shadowmaster Aameen
-local timerWaterShield				= mod:NewTargetTimer(15, 228981, nil, nil, nil, 5)--Burnstachio
+local timerWaterShield				= mod:NewTargetTimer(15, 228981, nil, nil, nil, 5, nil, nil, nil, 1, 4)--Burnstachio
 local timerRockets					= mod:NewBuffActiveTimer(9, 133212, nil, nil, nil, 3)--Max Megablast (GG Engineering)
-
-local countdownWaterShield			= mod:NewCountdownFades(15, 228981)--Custom object used because we want to split countdown from timer in brawlers guild
-local countdownZenOrb				= mod:NewCountdown(15, 229884)--Custom object used because we want to split countdown from timer in brawlers guild
 
 mod:AddBoolOption("SpeakOutStrikes", true)--Blind Hero
 
@@ -276,8 +273,14 @@ function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 129888 and self:AntiSpam() then
 		warnSolarBeam:Show()
 		timerSolarBeamCD:Start()
+		if not brawlersMod:PlayerFighting() then
+			timerSolarBeamCD:SetSTFade(true)
+		end
 	elseif args.spellId == 133286 then
 		timerHeatedPokers:Start()
+		if not brawlersMod:PlayerFighting() then
+			timerHeatedPokers:SetSTFade(true)
+		end
 	elseif args.spellId == 141396 then
 		local amount = args.amount or 1
 		if amount % 5 == 0 then
@@ -300,11 +303,15 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnShadowStrikes:Show(args.destName)
 		else
 			warnShadowStrikes:Show()
+			timerShadowStrikes:SetSTFade(true)
 		end
 	elseif args.spellId == 134789 then
 		warnFallenKin:Cancel()
 		warnFallenKin:Schedule(0.5, args.destName, args.amount or 1)
 		timerFallenKin:Start()
+		if not brawlersMod:PlayerFighting() then
+			timerFallenKin:SetSTFade(true)
+		end
 	elseif args.spellId == 133015 then
 		if brawlersMod:PlayerFighting() then
 			specWarnMinesSpawning:Show()
@@ -314,18 +321,16 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args.spellId == 133018 then
 		remainingMines = 8
 	elseif args.spellId == 229884 then
+		warnZenOrb:Show(args.destName)
 		timerZenOrb:Start(args.destName)
-		if brawlersMod:PlayerFighting() then
-			countdownZenOrb:Start()
-		else
-			warnZenOrb:Show(args.destName)
+		if not brawlersMod:PlayerFighting() then
+			timerZenOrb:SetSTFade(true, args.destName)
 		end
 	elseif args.spellId == 228981 then
+		warnWaterShield:Show(args.destName)
 		timerWaterShield:Start(args.destName)
-		if brawlersMod:PlayerFighting() then
-			countdownWaterShield:Start()
-		else
-			warnWaterShield:Show(args.destName)
+		if not brawlersMod:PlayerFighting() then
+			timerWaterShield:SetSTFade(true, args.destName)
 		end
 	end
 end
@@ -334,17 +339,11 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 function mod:SPELL_AURA_REMOVED(args)
 	if not brawlersMod.Options.SpectatorMode and not brawlersMod:PlayerFighting() then return end
 	if args.spellId == 126209 then
-		timerShadowStrikes:Cancel()
+		timerShadowStrikes:Stop()
 	elseif args.spellId == 229884 then
 		timerZenOrb:Stop(args.destName)
-		if brawlersMod:PlayerFighting() then
-			countdownZenOrb:Cancel()
-		end
 	elseif args.spellId == 228981 then
 		timerWaterShield:Stop(args.destName)
-		if brawlersMod:PlayerFighting() then
-			countdownWaterShield:Cancel()
-		end
 	end
 end
 
@@ -357,6 +356,7 @@ function mod:SPELL_SUMMON(args)
 			specWarnBoomBroom:Play("justrun")
 		else
 			warnBoomBroom:Show()
+			timerBoomBoomCD:SetSTFade(true)
 		end
 	end
 end
@@ -365,6 +365,9 @@ function mod:UNIT_SPELLCAST_INTERRUPTED(uId, _, spellId)
 	if not brawlersMod.Options.SpectatorMode and not brawlersMod:PlayerFighting() then return end--Spectator mode is disabled, do nothing.
 	if spellId == 133346 and self:AntiSpam() then
 		timerDarkZoneCD:Start(4)--Interrupting dark zone does not put it on cd, he will recast it 4 seconds later
+		if not brawlersMod:PlayerFighting() then
+			timerDarkZoneCD:SetSTFade(true)
+		end
 	end
 end
 

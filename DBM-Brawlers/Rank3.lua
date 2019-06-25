@@ -38,6 +38,7 @@ function mod:SPELL_CAST_START(args)
 			specWarnShotgunRoar:Show()
 		else
 			warnShotgunRoar:Show()
+			timerShotgunRoarCD:SetSTFade(true)
 		end
 	elseif args.spellId == 138845 then
 		if brawlersMod:PlayerFighting() then
@@ -57,6 +58,7 @@ function mod:SPELL_CAST_START(args)
 			specWarnDivineCircle:Show()
 		else
 			warnDivineCircle:Show()
+			timerDivineCircleCD:SetSTFade(true)
 		end
 	end
 end
