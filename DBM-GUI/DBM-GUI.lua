@@ -3063,7 +3063,7 @@ local function CreateOptionsMenu()
 
 	do
 		local Sounds = MixinSharedMedia3("sound", {
-			{	text	= L.NoSound,						value	= "" },
+			{	text	= L.NoSound,						value	= "None" },
 			{	text	= "Muradin: Charge",				value 	= 16971, 		sound=true },--"Sound\\Creature\\MuradinBronzebeard\\IC_Muradin_Saurfang02.ogg"
 		})
 

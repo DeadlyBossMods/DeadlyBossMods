@@ -134,7 +134,7 @@ DBM.DefaultOptions = {
 	AlwaysPlayVoice = false,
 	EventSoundVictory2 = "None",
 	EventSoundWipe = "None",
-	EventSoundEngage2 = "",
+	EventSoundEngage2 = "None",
 	EventSoundMusic = "None",
 	EventSoundTurle = "None",
 	EventSoundDungeonBGM = "None",
@@ -6312,7 +6312,7 @@ do
 						end
 					end
 				end
-				if self.Options.EventSoundVictory2 and self.Options.EventSoundVictory2 ~= "" then
+				if self.Options.EventSoundVictory2 and self.Options.EventSoundVictory2 ~= "None" and self.Options.EventSoundVictory2 ~= "" then
 					if self.Options.EventSoundVictory2 == "Random" then
 						local random = fastrandom(3, #DBM.Victory)
 						self:PlaySoundFile(DBM.Victory[random].value)
