@@ -219,9 +219,6 @@ local function show(runAway, x, y, distance, time, legacy, title)
 		end
 		targetX, targetY = x, y
 	end
-	if dwayed then
-		DBM:AddMsg(DBM_ARROW_WAY_SUCCESS)
-	end
 end
 
 function arrowFrame:ShowRunTo(...)

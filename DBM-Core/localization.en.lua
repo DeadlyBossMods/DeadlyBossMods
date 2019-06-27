@@ -252,11 +252,9 @@ DBM_CORE_TIMER_USAGE	= {
 	"DBM timer commands:",
 	"-----------------",
 	"/dbm timer <sec> <text>: Starts a <sec> second timer with your <text>.",
-	"/dbm ctimer <sec> <text>: Starts a timer that also has countdown text.",
 	"/dbm ltimer <sec> <text>: Starts a timer that also automatically loops until canceled.",
-	"/dbm cltimer <sec> <text>: Starts a timer that also has countdown text and loops until canceled.",
 	"('Broadcast' in front of any timer also shares it with raid if leader/promoted)",
-	"/dbm timer endloop: Stops any looping ltimer or cltimer."
+	"/dbm timer endloop: Stops any looping ltimer."
 }
 
 DBM_ERROR_NO_PERMISSION				= "You don't have the required permission to do this."

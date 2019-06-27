@@ -204,11 +204,9 @@ DBM_CORE_TIMER_USAGE	= {
 	"Commandes DBM des timers:",
 	"-----------------",
 	"/dbm timer <sec> <text>: Commence un timer de <sec> secondes avec votre <text>.",
-	"/dbm ctimer <sec> <text>: Commence un timer qui contient aussi un texte de compte à rebours.",
 	"/dbm ltimer <sec> <text>: Commence un timer qui tourne en boucle jusqu'à annulation.",
-	"/dbm cltimer <sec> <text>: Commence un timer qui tourne en boucle jusqu'à annulation et contient un texte de compte à rebours.",
 	"('Broadcast' devant n'importe quel timer et partage avec le raid si leader ou assistant)",
-	"/dbm timer endloop: Annule les boucles de ltimer ou cltimer."
+	"/dbm timer endloop: Annule les boucles de ltimer."
 }
 
 DBM_ERROR_NO_PERMISSION				= "Vous n'avez pas la permission requise pour faire cela."

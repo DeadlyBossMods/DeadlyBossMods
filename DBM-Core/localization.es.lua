@@ -250,11 +250,9 @@ DBM_CORE_TIMER_USAGE	= {
 	"DBM timer commands:",
 	"-----------------",
 	"/dbm timer <seg> <texto>: Inicia un temporizador con texto.",
-	"/dbm ctimer <seg> <texto>: Inicia un temporizador con texto de cuenta atrás.",
 	"/dbm ltimer <seg> <texto>: Inicia un temporizador que se repite hasta que se cancela.",
-	"/dbm cltimer <seg> <texto>: Inicia un temporizador con texto de cuenta atrás que se repite hasta que se cancela.",
 	"(Si escribes 'broadcast' delante de un temporizador, lo compartirás con tu grupo de banda si eres líder o ayudante)",
-	"/dbm timer endloop: Cancela todos los ltimer o cltimer que se estén repitiendo."
+	"/dbm timer endloop: Cancela todos los ltimer que se estén repitiendo."
 }
 
 DBM_ERROR_NO_PERMISSION				= "No tienes permiso para hacer eso."
