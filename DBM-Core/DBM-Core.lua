@@ -69,7 +69,7 @@ end
 
 DBM = {
 	Revision = parseCurseDate("@project-date-integer@"),
-	DisplayVersion = "8.2.1", -- the string that is shown as version
+	DisplayVersion = "8.2.2 alpha", -- the string that is shown as version
 	ReleaseRevision = releaseDate(2019, 6, 26) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 }
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
@@ -3269,7 +3269,7 @@ function DBM:LoadModOptions(modId, inCombat, first)
 						end
 					--Fix options for custom special warning sounds not in addons folder that are not using soundkit IDs
 					elseif option:find("SWSound") and (testBuild or wowTOC >= 80200) then
-						if savedOptions[id][profileNum][option] and (type(savedOptions[id][profileNum][option]) == "string" and (type(savedOptions[id][profileNum][option]) ~= "" and (type(savedOptions[id][profileNum][option]) ~= "None") then
+						if savedOptions[id][profileNum][option] and (type(savedOptions[id][profileNum][option]) == "string" and (savedOptions[id][profileNum][option]) ~= "" and (savedOptions[id][profileNum][option]) ~= "None" then
 							local searchMsg = (savedOptions[id][profileNum][option]):lower()
 							if not searchMsg:find("addons") then
 								savedOptions[id][profileNum][option] = mod.DefaultOptions[option]
@@ -4322,7 +4322,6 @@ do
 		if timer > 60 then
 			return
 		end
-		--TODO, create a light weight mini countdown object to be used by Pull and Pizza and Combat Timers
 		if not dummyMod then
 			local threshold = DBM.Options.PTCountThreshold2
 			threshold = floor(threshold)
@@ -4334,7 +4333,6 @@ do
 		end
 		--Cancel any existing pull timers before creating new ones, we don't want double countdowns or mismatching blizz countdown text (cause you can't call another one if one is in progress)
 		if not DBM.Options.DontShowPT2 then--and DBM.Bars:GetBar(DBM_CORE_TIMER_PULL)
-			--DBM.Bars:CancelBar(DBM_CORE_TIMER_PULL)
 			dummyMod.timer:Stop()
 			--fireEvent("DBM_TimerStop", "pull")
 		end
@@ -4347,7 +4345,6 @@ do
 		if timer == 0 then return end--"/dbm pull 0" will strictly be used to cancel the pull timer (which is why we let above part of code run but not below)
 		DBM:FlashClientIcon()
 		if not DBM.Options.DontShowPT2 then
-			--DBM.Bars:CreateBar(timer, DBM_CORE_TIMER_PULL, 132349)
 			dummyMod.timer:Start(timer, DBM_CORE_TIMER_PULL)
 			--fireEvent("DBM_TimerStart", "pull", DBM_CORE_TIMER_PULL, timer, "132349", "utilitytimer", nil, 0)
 		end
@@ -4411,7 +4408,6 @@ do
 	do
 		local dummyMod2 -- dummy mod for the break timer
 		function breakTimerStart(self, timer, sender)
-			--TODO, create a light weight mini countdown object to be used by Pull and Break and Pizza and Combat Timers
 			if not dummyMod2 then
 				local threshold = DBM.Options.PTCountThreshold2
 				threshold = floor(threshold)
@@ -4422,7 +4418,6 @@ do
 			end
 			--Cancel any existing break timers before creating new ones, we don't want double countdowns or mismatching blizz countdown text (cause you can't call another one if one is in progress)
 			if not DBM.Options.DontShowPT2 then--and DBM.Bars:GetBar(DBM_CORE_TIMER_BREAK)
-				--DBM.Bars:CancelBar(DBM_CORE_TIMER_BREAK)
 				dummyMod2.timer:Stop()
 				--fireEvent("DBM_TimerStop", "break")
 			end
@@ -4431,7 +4426,6 @@ do
 			if timer == 0 then return end--"/dbm break 0" will strictly be used to cancel the break timer (which is why we let above part of code run but not below)
 			self.Options.tempBreak2 = timer.."/"..time()
 			if not self.Options.DontShowPT2 then
-				--self.Bars:CreateBar(timer, DBM_CORE_TIMER_BREAK, 237538)
 				dummyMod2.timer:Start(timer, DBM_CORE_TIMER_BREAK)
 				--fireEvent("DBM_TimerStart", "break", DBM_CORE_TIMER_BREAK, timer, "237538", "utilitytimer", nil, 0)
 			end
