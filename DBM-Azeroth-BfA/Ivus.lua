@@ -93,7 +93,7 @@ function mod:SPELL_CAST_START(args)
 		--timerGroundSpellCD:Start()
 	elseif spellId == 282615 or spellId == 287554 then
 		warnPetrify:Show()
-		warnPetrify:Play("pchange")
+		warnPetrify:Play("phasechange")
 		timerShockwaveCD:Stop()
 		timerBreathCD:Stop()
 		timerGroundSpellCD:Stop()
