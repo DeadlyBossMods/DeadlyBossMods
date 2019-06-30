@@ -118,7 +118,6 @@ function mod:OnCombatStart(delay)
 		timerFanaticalVerdictCD:Start(30-delay)
 		--On heroic, azshara casts Form Ranks immediately on pull (still true?)
 		if self:IsMythic() then
-
 			--Pashmar
 			timerPotentSparkCD:Start(20.2-delay)
 		else
