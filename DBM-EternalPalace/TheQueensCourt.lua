@@ -118,8 +118,7 @@ function mod:OnCombatStart(delay)
 		timerFanaticalVerdictCD:Start(30-delay)
 		--On heroic, azshara casts Form Ranks immediately on pull (still true?)
 		if self:IsMythic() then
-			--ass-shara
-			timerFormRanksCD:Start(30-delay)
+
 			--Pashmar
 			timerPotentSparkCD:Start(20.2-delay)
 		else
@@ -127,13 +126,13 @@ function mod:OnCombatStart(delay)
 		end
 	else
 		--Timers for Normal and LFR
-		--ass-shara
-		timerFormRanksCD:Start(30-delay)
 		--Pashmar
 		timerPotentSparkCD:Start(15.8-delay)
 		timerFanaticalVerdictCD:Start(37.3-delay)
 	end
 	--Timers that are same across board
+	--ass-shara
+	timerFormRanksCD:Start(30-delay)
 	--Silivaz
 	timerFreneticChargeCD:Start(30-delay)
 	timerZealousEruptionCD:Start(50.7-delay)
