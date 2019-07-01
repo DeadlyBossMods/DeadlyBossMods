@@ -40,7 +40,7 @@ local specWarnBrinyBubble				= mod:NewSpecialWarningMoveAway(297324, nil, nil, n
 local yellBrinyBubble					= mod:NewYell(297324)
 local specWarnCrushingNear				= mod:NewSpecialWarningClose(297324, nil, nil, nil, 1, 2)
 local specWarnBarnacleBash				= mod:NewSpecialWarningTaunt(296725, nil, nil, nil, 1, 2)
-local specWarnArcingAzerite				= mod:NewSpecialWarningYouPos(296944, nil, nil, nil, 3)--, 9
+local specWarnArcingAzerite				= mod:NewSpecialWarningYouPos(296944, nil, nil, nil, 3, 9)
 local yellArcingAzerite					= mod:NewPosYell(296944, DBM_CORE_AUTO_YELL_CUSTOM_POSITION)
 local yellArcingAzeriteFades			= mod:NewIconFadesYell(296944)
 local specWarnGTFO						= mod:NewSpecialWarningGTFO(296752, nil, nil, nil, 1, 8)
@@ -219,7 +219,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if (spellId == 296943 or spellId == 296940) then--Blue
 			if args:IsPlayer() then
 				specWarnArcingAzerite:Show("|TInterface\\Icons\\Ability_Bossashvane_Icon03.blp:12:12|tBlue|TInterface\\Icons\\Ability_Bossashvane_Icon03.blp:12:12|t")
-				--specWarnArcingAzerite:Play("breakcoral")
+				specWarnArcingAzerite:Play("breakcoral")
 				yellArcingAzerite:Yell(6, "", 6)
 				yellArcingAzeriteFades:Countdown(8, nil, 6)
 			end
@@ -231,7 +231,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		elseif (spellId == 296942 or spellId == 296939) then--Red
 			if args:IsPlayer() then
 				specWarnArcingAzerite:Show("|TInterface\\Icons\\Ability_Bossashvane_Icon02.blp:12:12|tRed|TInterface\\Icons\\Ability_Bossashvane_Icon02.blp:12:12|t")
-				--specWarnArcingAzerite:Play("breakcoral")
+				specWarnArcingAzerite:Play("breakcoral")
 				yellArcingAzerite:Yell(7, "", 7)
 				yellArcingAzeriteFades:Countdown(8, nil, 7)
 			end
@@ -243,7 +243,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		elseif (spellId == 296941 or spellId == 296938) then--Green/Yellow
 			if args:IsPlayer() then
 				specWarnArcingAzerite:Show("|TInterface\\Icons\\Ability_Bossashvane_Icon01.blp:12:12|tGreen|TInterface\\Icons\\Ability_Bossashvane_Icon01.blp:12:12|t|")
-				--specWarnArcingAzerite:Play("breakcoral")
+				specWarnArcingAzerite:Play("breakcoral")
 				yellArcingAzerite:Yell(4, "", 4)
 				yellArcingAzeriteFades:Countdown(8, nil, 4)
 			end

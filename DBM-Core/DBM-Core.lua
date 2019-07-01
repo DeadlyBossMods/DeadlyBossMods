@@ -5468,7 +5468,7 @@ do
 			self:FlashClientIcon()
 			local voice = DBM.Options.ChosenVoicePack
 			local path = 8585--"Sound\\Creature\\CThun\\CThunYouWillDIe.ogg"
-			if not voiceSessionDisabled or voice ~= "None" then
+			if not voiceSessionDisabled and voice ~= "None" then
 				path = "Interface\\AddOns\\DBM-VP"..voice.."\\checkhp.ogg"
 			end
 			self:PlaySound(path)

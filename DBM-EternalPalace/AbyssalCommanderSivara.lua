@@ -40,8 +40,8 @@ local warnOverflowingChill				= mod:NewTargetNoFilterAnnounce(295348, 3)
 local warnOverflowingVenom				= mod:NewTargetNoFilterAnnounce(295421, 3)
 local warnInversionSickness				= mod:NewTargetNoFilterAnnounce(300882, 4)
 
-local specWarnFrostMark					= mod:NewSpecialWarningYouPos(294711, nil, nil, nil, 1)--voice 9
-local specWarnToxicMark					= mod:NewSpecialWarningYouPos(294715, nil, nil, nil, 1)--voice 9
+local specWarnFrostMark					= mod:NewSpecialWarningYouPos(294711, nil, nil, nil, 1, 9)--voice 9
+local specWarnToxicMark					= mod:NewSpecialWarningYouPos(294715, nil, nil, nil, 1, 9)--voice 9
 local yellMark							= mod:NewPosYell(294726, DBM_CORE_AUTO_YELL_CUSTOM_POSITION, true, 2)
 local specWarnFrozenBlood				= mod:NewSpecialWarningKeepMove(295795, nil, nil, nil, 1, 2)
 local specWarnVenomousBlood				= mod:NewSpecialWarningStopMove(295796, nil, nil, nil, 1, 2)
@@ -153,12 +153,12 @@ end
 local function debuffSwapAggregation(self, spellId)
 	if spellId == 294711 then--Frost
 		specWarnFrostMark:Show(self:IconNumToTexture(6))
-		--specWarnFrostMark:Play("frostmark")
+		specWarnFrostMark:Play("frost")
 		yellMark:Yell(6, "", 6)--Square
 		playerMark = 2--1 Toxic, 2 Frost
 	else--Toxic
 		specWarnToxicMark:Show(self:IconNumToTexture(4))
-		--specWarnToxicMark:Play("toxicmark")
+		specWarnToxicMark:Play("toxic")
 		yellMark:Yell(4, "", 4)--Triangle
 		playerMark = 1--1 Toxic, 2 Frost
 	end
