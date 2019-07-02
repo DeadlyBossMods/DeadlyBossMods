@@ -93,7 +93,7 @@ function mod:SPELL_CAST_START(args)
 		--timerGroundSpellCD:Start()
 	elseif spellId == 282615 or spellId == 287554 then
 		warnPetrify:Show()
-		warnPetrify:Play("pchange")
+		warnPetrify:Play("phasechange")
 		timerShockwaveCD:Stop()
 		timerBreathCD:Stop()
 		timerGroundSpellCD:Stop()
@@ -112,7 +112,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 282615 or spellId == 287554 then
 		warnPetrifyEnded:Show()
-		warnPetrifyEnded:Play("pchange")
+		warnPetrifyEnded:Play("phasechange")
 		--Horde
 		--"<68.97 22:37:20> [CLEU] SPELL_AURA_REMOVED#Creature-0-3133-1-14200-144946-00001081D1#Ivus the Forest Lord#Creature-0-3133-1-14200-144946-00001081D1#Ivus the Forest Lord#282615#Petrify#BUFF#nil", -- [1876]
 		--"<85.15 22:37:36> [CLEU] SPELL_CAST_START#Creature-0-3133-1-14200-144946-00001081D1#Ivus the Forest Lord##nil#282463#Shockwave#nil#nil", -- [2224]
