@@ -5,6 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(152236)
 mod:SetEncounterID(2304)
 mod:SetZone()
+mod:SetUsedIcons(1, 2, 3, 4, 6, 7)
 --mod:SetHotfixNoticeRev(16950)
 --mod:SetMinSyncRevision(16950)
 --mod.respawnTime = 29
@@ -15,7 +16,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 297398",
 	"SPELL_CAST_SUCCESS 296569 296662 296725 297240 298056",
 	"SPELL_AURA_APPLIED 296650 296725 296943 296940 296942 296939 296941 296938 302989 297397",
-	"SPELL_AURA_REMOVED 296650 296943 296940 296942 296939 296941 296938",
+	"SPELL_AURA_REMOVED 296650 296943 296940 296942 296939 296941 296938 302989",
 	"SPELL_PERIODIC_DAMAGE 296752",
 	"SPELL_PERIODIC_MISSED 296752"
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
@@ -28,7 +29,6 @@ mod:RegisterEventsInCombat(
  or ability.id = 296943 or ability.id = 296940 or ability.id = 296942 or ability.id = 296939 or ability.id = 296941 or ability.id = 296938
 --]]
 --TODO, verify timers for shield dropping. rate she re-generates shield may be slower on lower difficulties and this may affect timers
---TODO, upsurge seems to be a pattern loop, but it'll be easier to
 local warnShield						= mod:NewTargetNoFilterAnnounce(296650, 2, nil, nil, nil, nil, nil, 2)
 local warnShieldOver					= mod:NewEndAnnounce(296650, 2, nil, nil, nil, nil, nil, 2)
 --local warnCoral						= mod:NewCountAnnounce(296555, 2)
@@ -38,11 +38,12 @@ local warnUpsurge						= mod:NewSpellAnnounce(298055, 3)
 --local specWarnRipplingWave			= mod:NewSpecialWarningCount(296688, nil, nil, nil, 2, 2)
 local specWarnBrinyBubble				= mod:NewSpecialWarningMoveAway(297324, nil, nil, nil, 1, 2)
 local yellBrinyBubble					= mod:NewYell(297324)
+local yellBrinyBubbleFades				= mod:NewShortFadesYell(297324)
 local specWarnCrushingNear				= mod:NewSpecialWarningClose(297324, nil, nil, nil, 1, 2)
 local specWarnBarnacleBash				= mod:NewSpecialWarningTaunt(296725, nil, nil, nil, 1, 2)
 local specWarnArcingAzerite				= mod:NewSpecialWarningYouPos(296944, nil, nil, nil, 3, 9)
-local yellArcingAzerite					= mod:NewPosYell(296944, DBM_CORE_AUTO_YELL_CUSTOM_POSITION)
-local yellArcingAzeriteFades			= mod:NewIconFadesYell(296944)
+local yellArcingAzerite					= mod:NewYell(296944)
+local yellArcingAzeriteFades			= mod:NewShortFadesYell(296944)
 local specWarnGTFO						= mod:NewSpecialWarningGTFO(296752, nil, nil, nil, 1, 8)
 
 --mod:AddTimerLine(BOSS)
@@ -59,7 +60,7 @@ local timerShieldCD						= mod:NewCDTimer(66.1, 296650, nil, nil, nil, 6, nil, n
 
 mod:AddRangeFrameOption("4/12")
 mod:AddInfoFrameOption(296650, true)
---mod:AddSetIconOption("SetIconOnArcingAzerite", 296944, true)
+mod:AddSetIconOption("SetIconOnArcingAzerite", 296944, false, false, {1, 2, 3, 4, 6, 7})
 
 mod.vb.coralGrowth = 0
 mod.vb.ripplingWave = 0
@@ -216,41 +217,53 @@ function mod:SPELL_AURA_APPLIED(args)
 				timerArcingAzeriteCD:Start(39, 2)
 			end
 		end
-		if (spellId == 296943 or spellId == 296940) then--Blue
+		if (spellId == 296941 or spellId == 296938) then--Green
 			if args:IsPlayer() then
-				specWarnArcingAzerite:Show("|TInterface\\Icons\\Ability_Bossashvane_Icon03.blp:12:12|tBlue|TInterface\\Icons\\Ability_Bossashvane_Icon03.blp:12:12|t")
+				specWarnArcingAzerite:Show("|TInterface\\Icons\\Ability_Bossashvane_Icon01.blp:12:12|tGreen|TInterface\\Icons\\Ability_Bossashvane_Icon01.blp:12:12|t|")
 				specWarnArcingAzerite:Play("breakcoral")
-				yellArcingAzerite:Yell(6, "", 6)
-				yellArcingAzeriteFades:Countdown(8, nil, 6)
+				yellArcingAzerite:Yell()
+				yellArcingAzeriteFades:Countdown(spellId)
 			end
-			if spellId == 296943 then
-				self.vb.blueone = args.destName
+			if spellId == 296941 then
+				self.vb.greenone = args.destName
 			else
-				self.vb.bluetwo = args.destName
+				self.vb.greentwo = args.destName
 			end
-		elseif (spellId == 296942 or spellId == 296939) then--Red
+			--star(1) and triangle(4)
+			if self.Options.SetIconOnArcingAzerite then
+				self:SetSortedIcon(1, args.destName, {1, 4}, 2, nil, nil, 1)--TODO, return function announce maybe?
+			end
+		elseif (spellId == 296942 or spellId == 296939) then--Red (orange BW)
 			if args:IsPlayer() then
 				specWarnArcingAzerite:Show("|TInterface\\Icons\\Ability_Bossashvane_Icon02.blp:12:12|tRed|TInterface\\Icons\\Ability_Bossashvane_Icon02.blp:12:12|t")
 				specWarnArcingAzerite:Play("breakcoral")
-				yellArcingAzerite:Yell(7, "", 7)
-				yellArcingAzeriteFades:Countdown(8, nil, 7)
+				yellArcingAzerite:Yell()
+				yellArcingAzeriteFades:Countdown(spellId)
 			end
 			if spellId == 296942 then
 				self.vb.redone = args.destName
 			else
 				self.vb.redtwo = args.destName
 			end
-		elseif (spellId == 296941 or spellId == 296938) then--Green/Yellow
-			if args:IsPlayer() then
-				specWarnArcingAzerite:Show("|TInterface\\Icons\\Ability_Bossashvane_Icon01.blp:12:12|tGreen|TInterface\\Icons\\Ability_Bossashvane_Icon01.blp:12:12|t|")
-				specWarnArcingAzerite:Play("breakcoral")
-				yellArcingAzerite:Yell(4, "", 4)
-				yellArcingAzeriteFades:Countdown(8, nil, 4)
+			--circle(2) and cross(7)
+			if self.Options.SetIconOnArcingAzerite then
+				self:SetSortedIcon(1, args.destName, {2, 7}, 2, nil, nil, 2)--TODO, return function announce maybe?
 			end
-			if spellId == 296941 then
-				self.vb.greenone = args.destName
+		elseif (spellId == 296943 or spellId == 296940) then--Blue (Purple BW)
+			if args:IsPlayer() then
+				specWarnArcingAzerite:Show("|TInterface\\Icons\\Ability_Bossashvane_Icon03.blp:12:12|tBlue|TInterface\\Icons\\Ability_Bossashvane_Icon03.blp:12:12|t")
+				specWarnArcingAzerite:Play("breakcoral")
+				yellArcingAzerite:Yell()
+				yellArcingAzeriteFades:Countdown(spellId)
+			end
+			if spellId == 296943 then
+				self.vb.blueone = args.destName
 			else
-				self.vb.greentwo = args.destName
+				self.vb.bluetwo = args.destName
+			end
+			--diamond(3) and moon(6)
+			if self.Options.SetIconOnArcingAzerite then
+				self:SetSortedIcon(1, args.destName, {3, 6}, 2, nil, nil, 3)--TODO, return function announce maybe?
 			end
 		end
 		if self.Options.InfoFrame then
@@ -267,6 +280,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnBrinyBubble:Show()
 			specWarnBrinyBubble:Play("runout")
 			yellBrinyBubble:Yell()
+			yellBrinyBubbleFades:Countdown(spellId)
 		end
 	elseif spellId == 297397 then--Briny in bubble spell
 		if args:IsPlayer() then
@@ -329,6 +343,11 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:Update()
 		end
+		if self.Options.SetIconOnArcingAzerite then
+			self:SetIcon(args.destName, 0)
+		end
+	elseif spellId == 302989 and args:IsPlayer() then--Briny targetting spell
+		yellBrinyBubbleFades:Cancel()
 	end
 end
 
