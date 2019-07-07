@@ -24,6 +24,7 @@ local function checkBuff()
 	local name, _, _, _, duration, expires, _, _, _, spellId = DBM:UnitBuff("player", wingsName)
 	if name and spellId == 170820 then
 		local time = expires-GetTime()
+		timerGame:Stop()
 		timerGame:Start(time)
 	end
 end
@@ -42,6 +43,7 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 --"<111.5 20:41:44> [CLEU] SPELL_AURA_APPLIED#false#Player-55-07DC716F#Judgementál#1304#0#Player-55-07DC716F#Judgementál#1304#0#170838#Slow Fall#64#BUFF", -- [151]
 function mod:SPELL_AURA_REMOVED(args)
 	if args.spellId == 170820 and args:IsPlayer() then
+		self:Unschedule(checkBuff)
 		timerGame:Cancel()
 	end
 end
