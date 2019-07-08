@@ -11615,7 +11615,7 @@ do
 
 		local function clearSortTable(scanID)
 			iconSortTable[scanID] = nil
-			iconSet[scanID] = 0
+			iconSet[scanID] = nil
 		end
 
 		function bossModPrototype:SetIconByAlphaTable(returnFunc, scanID)
@@ -11648,6 +11648,7 @@ do
 			if uId or UnitExists(target) then--target accepts uid, unitname both.
 				uId = uId or target
 				if not iconSortTable[scanID] then iconSortTable[scanID] = {} end
+				if not iconSet[scanID] then iconSet[scanID] = 0 end
 				local foundDuplicate = false
 				for i = #iconSortTable[scanID], 1, -1 do
 					if iconSortTable[scanID][i] == uId then
@@ -11715,6 +11716,7 @@ do
 			if uId or UnitExists(target) then--target accepts uid, unitname both.
 				uId = uId or target
 				if not iconSortTable[scanID] then iconSortTable[scanID] = {} end
+				if not iconSet[scanID] then iconSet[scanID] = 0 end
 				local foundDuplicate = false
 				for i = #iconSortTable[scanID], 1, -1 do
 					if iconSortTable[scanID][i] == uId then
