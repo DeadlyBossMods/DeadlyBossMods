@@ -84,11 +84,5 @@ L:SetMiscLocalization({
 	GroupUp =	"集合",
 	Spread =	"分散",
 	Move	 =	"保持移动",
-	DontMove =	"停止移动",
-	--For Yells, not yet used, localize anyways.
-	Soaking =	"{rt3}吸收{rt3}",--Diamond for arcane orbs
-	Stacking =	"吸收",
-	Solo =		"Solo",
-	Marching =	"{rt4}配对{rt4}",--Green Triangle
-	Staying =	"{rt7}保持{rt7}"--Red X
+	DontMove =	"停止移动"
 })

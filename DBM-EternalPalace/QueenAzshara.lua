@@ -17,7 +17,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS 302208 298014 301078 299094 300492 300743 303980 302141 300334 303797 303799",
 	"SPELL_AURA_APPLIED 302999 298569 297912 298014 298018 301078 300428 303825 303657 300492 300620 299094 303797 303799 300743 300866 300877 299249 299251 299254 299255 299252 299253 300502 302141 297937",
 	"SPELL_AURA_APPLIED_DOSE 302999 298569 298014 300743",
-	"SPELL_AURA_REMOVED 302999 298569 297912 301078 300428 303657 300502 297937",
+	"SPELL_AURA_REMOVED 302999 298569 297912 301078 300428 303657 300502 297937 299249 299251 299254 299255 299252 299253",
 	"SPELL_PERIODIC_DAMAGE 297898 303981",
 	"SPELL_PERIODIC_MISSED 297898 303981",
 	"UNIT_DIED",
@@ -100,6 +100,7 @@ local specWarnBeckonNear				= mod:NewSpecialWarningClose(303799, nil, nil, nil, 
 local specWarnDivideandConquer			= mod:NewSpecialWarningDodge(300478, nil, nil, nil, 3, 2)--Mythic
 --Intermission One: Queen's Decree
 local specWarnQueensDecree				= mod:NewSpecialWarningYouCount(299250, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.you:format(299250), nil, 3, 2)
+local yellQueensDecree					= mod:NewYell(299250, "%s", false, nil, "YELL")
 --Stage Two: Hearts Unleashed
 local specWarnArcaneVuln				= mod:NewSpecialWarningStack(302999, nil, 12, nil, nil, 1, 6)
 local specWarnArcaneDetonation			= mod:NewSpecialWarningMoveTo(300519, nil, nil, nil, 3, 8)
@@ -189,6 +190,7 @@ local shieldName = DBM:GetSpellInfo(300620)
 local seenAdds = {}
 local castsPerGUID = {}
 local playerDecreeCount = 0
+local playerDecreeYell = 0--100s 2-Stack/1-Solo, 10s 2-Moving/1-Stay, 1s 2-Soak/1-NoSoak
 local phase1AddTimers = {42.8, 59.6, 89.1, 44.8, 39.4}--Consistent pull to pull, only timer sequence that's actually a sequence. Azshara's shit is all just spell queue issues
 
 local updateInfoFrame
@@ -234,6 +236,35 @@ do
 	end
 end
 
+local function decreeYellRepeater(self)
+	--playerDecreeYell = 0--100s 2-Stack/1-Solo, 10s 2-Moving/1-Stay, 1s 2-Soak/1-NoSoak
+	if playerDecreeYell == 0 then return end--All debuffs gone
+	if playerDecreeYell >= 200 then--Stack decree active
+		if playerDecreeYell >= 220 then--Moving/Stack
+			if playerDecreeYell == 222 then--Moving/Stack/Soak
+				yellQueensDecree:Yell(L.HelpSoakMove)--"HELP SOAK MOVE"
+			else--Moving/Stack/NoSoak or just Moving/Stack
+				yellQueensDecree:Yell(L.HelpMove)--"HELP MOVE"
+			end
+		elseif playerDecreeYell >= 210 then--Staying/Stack
+			if playerDecreeYell == 212 then--Staying/Stack/Soak
+				yellQueensDecree:Yell(L.HelpSoakStay)--"HELP SOAK STAY"
+			else--Staying/Stack/NoSoak or Staying/Stack
+				yellQueensDecree:Yell(L.HelpStay)--"HELP STAY"
+			end
+		elseif playerDecreeYell == 202 then--Soak/Stack
+			yellQueensDecree:Yell(L.HelpSoak)--"HELP SOAK"
+		end
+	elseif playerDecreeYell >= 100 then--Solo decree Active
+		if playerDecreeYell == 102 then--Solo/Soak
+			yellQueensDecree:Say(L.SoloSoak)--"SOLO SOAK"
+		else--Solo/NoSoak, Solo/NoSoak/Moving, Solo/NoSoak/Staying, Just Solo
+			yellQueensDecree:Say(L.Solo)--"SOLO"
+		end
+	end
+	self:Schedule(2, decreeYellRepeater, self)
+end
+
 function mod:OnCombatStart(delay)
 	self.vb.phase = 1
 	self.vb.stageOneBossesLeft = 2
@@ -244,6 +275,7 @@ function mod:OnCombatStart(delay)
 	self.vb.drainWardCount = 0
 	self.vb.hulkCount = 0
 	self.vb.painfulMemoriesActive = false
+	playerDecreeYell = 0
 	playerSoulDrained = false
 	table.wipe(arcaneVulnerabilityStacks)
 	table.wipe(seenAdds)
@@ -506,26 +538,33 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			if self:AntiSpam(10, 1) then
 				playerDecreeCount = 0
+				playerDecreeYell = 0
 			end
 			local text = ""
 			if spellId == 299249 then--Soak Orbs
 				specWarnQueensDecree:ScheduleVoiceOverLap(0+playerDecreeCount, "helpsoak")
 				text = text..", "..L.SoakOrb
+				playerDecreeYell = playerDecreeYell + 2--100s 2-Stack/1-Solo, 10s 2-Moving/1-Stay, 1s 2-Soak/1-NoSoak
 			elseif spellId == 299251 then--Dodge Orbs
 				specWarnQueensDecree:ScheduleVoiceOverLap(0+playerDecreeCount, "watchorb")
 				text = text..", "..L.AvoidOrb
+				playerDecreeYell = playerDecreeYell + 1--100s 2-Stack/1-Solo, 10s 2-Moving/1-Stay, 1s 2-Soak/1-NoSoak
 			elseif spellId == 299254 then--Group Up
 				specWarnQueensDecree:ScheduleVoiceOverLap(0+playerDecreeCount, "gather")
 				text = text..", "..L.GroupUp
+				playerDecreeYell = playerDecreeYell + 200--100s 2-Stack/1-Solo, 10s 2-Moving/1-Stay, 1s 2-Soak/1-NoSoak
 			elseif spellId == 299255 then--Don't Group Up
 				specWarnQueensDecree:ScheduleVoiceOverLap(0+playerDecreeCount, "scatter")
 				text = text..", "..L.Spread
+				playerDecreeYell = playerDecreeYell + 100--100s 2-Stack/1-Solo, 10s 2-Moving/1-Stay, 1s 2-Soak/1-NoSoak
 			elseif spellId == 299252 then--Keep Moving
 				specWarnQueensDecree:ScheduleVoiceOverLap(0+playerDecreeCount, "keepmove")
 				text = text..", "..L.Move
+				playerDecreeYell = playerDecreeYell + 20--100s 2-Stack/1-Solo, 10s 2-Moving/1-Stay, 1s 2-Soak/1-NoSoak
 			elseif spellId == 299253 then--Stop Moving
 				specWarnQueensDecree:ScheduleVoiceOverLap(0+playerDecreeCount, "stopmove")
 				text = text..", "..L.DontMove
+				playerDecreeYell = playerDecreeYell + 10--100s 2-Stack/1-Solo, 10s 2-Moving/1-Stay, 1s 2-Soak/1-NoSoak
 			end
 			playerDecreeCount = playerDecreeCount + 1--Increased after voices, because of way voice scheduling is being done
 			--Only show warning after we've collected all decrees we'regoing to get
@@ -536,6 +575,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			else
 				specWarnQueensDecree:Schedule(0.5, text)
 			end
+			self:Unschedule(decreeYellRepeater)
+			self:Schedule(1, decreeYellRepeater, self)
 		end
 	elseif spellId == 303657 then
 		local icon = self.vb.arcaneBurstIcon
@@ -623,6 +664,22 @@ function mod:SPELL_AURA_REMOVED(args)
 
 	elseif spellId == 297937 then
 		self.vb.painfulMemoriesActive = false
+	elseif spellId == 299249 or spellId == 299251 or spellId == 299254 or spellId == 299255 or spellId == 299252 or spellId == 299253 then
+		if args:IsPlayer() then
+			if spellId == 299249 then--Soak Orbs
+				playerDecreeYell = playerDecreeYell - 2--100s 2-Stack/1-Solo, 10s 2-Moving/1-Stay, 1s 2-Soak/1-NoSoak
+			elseif spellId == 299251 then--Dodge Orbs
+				playerDecreeYell = playerDecreeYell - 1--100s 2-Stack/1-Solo, 10s 2-Moving/1-Stay, 1s 2-Soak/1-NoSoak
+			elseif spellId == 299254 then--Group Up
+				playerDecreeYell = playerDecreeYell - 200--100s 2-Stack/1-Solo, 10s 2-Moving/1-Stay, 1s 2-Soak/1-NoSoak
+			elseif spellId == 299255 then--Don't Group Up
+				playerDecreeYell = playerDecreeYell - 100--100s 2-Stack/1-Solo, 10s 2-Moving/1-Stay, 1s 2-Soak/1-NoSoak
+			elseif spellId == 299252 then--Keep Moving
+				playerDecreeYell = playerDecreeYell - 20--100s 2-Stack/1-Solo, 10s 2-Moving/1-Stay, 1s 2-Soak/1-NoSoak
+			elseif spellId == 299253 then--Stop Moving
+				playerDecreeYell = playerDecreeYell - 10--100s 2-Stack/1-Solo, 10s 2-Moving/1-Stay, 1s 2-Soak/1-NoSoak
+			end
+		end
 	end
 end
 
