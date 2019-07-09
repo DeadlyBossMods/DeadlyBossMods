@@ -64,15 +64,6 @@ L:SetMiscLocalization({
 ---------------------------
 L= DBM:GetModLocalization(2361)
 
--------------
---  Trash  --
--------------
-L = DBM:GetModLocalization("EternalPalaceTrash")
-
-L:SetGeneralLocalization({
-	name =	"Eternal Palace Trash"
-})
-
 L:SetMiscLocalization({
 	SoakOrb 		=	"Soak Orb",
 	AvoidOrb 		=	"Avoid Orb",
@@ -94,3 +85,13 @@ L:SetMiscLocalization({
 	SoloSoakMove	= "SOLO SOAK MOVE",
 	SoloSoakStay	= "SOLO SOAK STAY"
 })
+
+-------------
+--  Trash  --
+-------------
+L = DBM:GetModLocalization("EternalPalaceTrash")
+
+L:SetGeneralLocalization({
+	name =	"Eternal Palace Trash"
+})
+
