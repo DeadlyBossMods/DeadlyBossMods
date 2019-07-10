@@ -12,8 +12,8 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 298548 295818 295822 296691",
-	"SPELL_CAST_SUCCESS 298413 298242 298103 298156 305057",
+	"SPELL_CAST_START 298548 295818 295822 296691 307167",
+	"SPELL_CAST_SUCCESS 298242 298103 298156 305057",
 	"SPELL_SUMMON 298465",
 	"SPELL_AURA_APPLIED 298156 298306 296914 295779",
 	"SPELL_AURA_APPLIED_DOSE 298156",
@@ -31,7 +31,7 @@ mod:RegisterEventsInCombat(
 --TODO, do more with powerful stomp?
 --TODO, special warn for tender add spawns?
 --[[
-(ability.id = 298548 or ability.id = 295818 or ability.id = 295822 or ability.id = 296691) and type = "begincast"
+(ability.id = 298548 or ability.id = 295818 or ability.id = 295822 or ability.id = 296691 or ability.id = 307167) and type = "begincast"
  or (ability.id = 298413 or ability.id = 298242 or ability.id = 298103 or ability.id = 298156 or ability.id = 298548 or ability.id = 295779 or ability.id = 305057) and type = "cast"
  or type = "interrupt"
 --]]
@@ -59,7 +59,7 @@ local specWarnConductivePulse				= mod:NewSpecialWarningInterrupt(295822, "HasIn
 mod:AddTimerLine(BOSS)
 local timerDesensitizingStingCD				= mod:NewCDTimer(5.3, 298156, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON, nil, nil, 3)--If user does enable countdown for this, max count at 3
 local timerDribblingIchorCD					= mod:NewCDCountTimer(84, 298103, nil, nil, nil, 1, nil, nil, nil, 1, 4)--30.4-42
-local timerIncubationFluidCD				= mod:NewCDTimer(32, 298242, nil, nil, nil, 3, nil, nil, nil, 3, 4)
+local timerIncubationFluidCD				= mod:NewCDTimer(31.7, 298242, nil, nil, nil, 3, nil, nil, nil, 3, 4)
 local timerArcingCurrentCD					= mod:NewCDCountTimer(30.1, 295825, nil, nil, nil, 3)
 local timerCalloftheTenderCD				= mod:NewCDCountTimer(35, 305057, nil, nil, nil, 1, nil, DBM_CORE_MYTHIC_ICON, nil, 2, 4)--30.4-42
 --Transition
@@ -132,7 +132,9 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 298548 then
-		timerMassiveIncubator:Start(45)
+		local _, _, _, startTime, endTime = UnitCastingInfo("boss1")
+		local time = ((endTime or 0) - (startTime or 0)) / 1000
+		timerMassiveIncubator:Start(time)
 	elseif spellId == 295818 then
 		warnShockingLightning:Show()
 		timerShockingLightningCD:Start(nil, args.sourceGUID)
@@ -149,12 +151,7 @@ function mod:SPELL_CAST_START(args)
 		castsPerGUID[args.sourceGUID] = castsPerGUID[args.sourceGUID] + 1
 		warnPowerfulStomp:Show(castsPerGUID[args.sourceGUID])
 		timerPowerfulStompCD:Start(nil, args.sourceGUID)
-	end
-end
-
-function mod:SPELL_CAST_SUCCESS(args)
-	local spellId = args.spellId
-	if spellId == 298413 then--used by all arcing currents
+	elseif spellId == 307167 then
 		self.vb.arcingCurrentCount = self.vb.arcingCurrentCount + 1
 		specWarnArcingCurrent:Show(self.vb.arcingCurrentCount)
 		timerArcingCurrentCD:Start(nil, self.vb.arcingCurrentCount+1)
@@ -164,7 +161,12 @@ function mod:SPELL_CAST_SUCCESS(args)
 		else
 			specWarnArcingCurrent:Play("farfromline")
 		end
-	elseif spellId == 298242 then
+	end
+end
+
+function mod:SPELL_CAST_SUCCESS(args)
+	local spellId = args.spellId
+	if spellId == 298242 then
 		timerIncubationFluidCD:Start()
 	elseif spellId == 298103 then--Dribbling Ichor
 		self.vb.addCount = self.vb.addCount + 1
@@ -186,6 +188,16 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.tenderCount = self.vb.tenderCount + 1
 		warnCallofTender:Show(self.vb.tenderCount)
 		timerCalloftheTenderCD:Start(35, self.vb.tenderCount+1)
+	--[[elseif spellId == 298413 then--used by all arcing currents
+		self.vb.arcingCurrentCount = self.vb.arcingCurrentCount + 1
+		specWarnArcingCurrent:Show(self.vb.arcingCurrentCount)
+		timerArcingCurrentCD:Start(nil, self.vb.arcingCurrentCount+1)
+		if playerHasIncubation then
+			yellArcingCurrent:Yell()
+			specWarnArcingCurrent:Play("targetyou")
+		else
+			specWarnArcingCurrent:Play("farfromline")
+		end--]]
 	end
 end
 

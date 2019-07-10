@@ -69,6 +69,16 @@ L:SetMiscLocalization({
 ---------------------------
 L= DBM:GetModLocalization(2361)
 
+L:SetMiscLocalization({
+	SoakOrb =	"吸收球",
+	AvoidOrb =	"躲开球",
+	GroupUp =	"集合",
+	Spread =	"分散",
+	Move	 =	"保持移动",
+	DontMove =	"停止移动"
+})
+
+
 -------------
 --  Trash  --
 -------------
@@ -76,19 +86,4 @@ L = DBM:GetModLocalization("EternalPalaceTrash")
 
 L:SetGeneralLocalization({
 	name =	"永恒王宫小怪"
-})
-
-L:SetMiscLocalization({
-	SoakOrb =	"吸收球",
-	AvoidOrb =	"躲开球",
-	GroupUp =	"集合",
-	Spread =	"分散",
-	Move	 =	"保持移动",
-	DontMove =	"停止移动",
-	--For Yells, not yet used, localize anyways.
-	Soaking =	"{rt3}吸收{rt3}",--Diamond for arcane orbs
-	Stacking =	"吸收",
-	Solo =		"Solo",
-	Marching =	"{rt4}配对{rt4}",--Green Triangle
-	Staying =	"{rt7}保持{rt7}"--Red X
 })

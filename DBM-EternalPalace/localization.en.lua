@@ -64,6 +64,28 @@ L:SetMiscLocalization({
 ---------------------------
 L= DBM:GetModLocalization(2361)
 
+L:SetMiscLocalization({
+	SoakOrb 		=	"Soak Orb",
+	AvoidOrb 		=	"Avoid Orb",
+	GroupUp 		=	"Group Up",
+	Spread 			=	"Spread",
+	Move			=	"Keep Moving",
+	DontMove 		=	"Stop Moving",
+	--For Yells
+	HelpSoakMove	= "{rt3}HELP SOAK MOVE{rt3}",--Purple Diamond
+	HelpSoakStay	= "{rt6}HELP SOAK STAY{rt6}",--Blue Square
+	HelpSoak		= "{rt3}HELP SOAK{rt3}",--Purple Diamond
+	HelpMove		= "{rt4}HELP MOVE{rt4}",--Green Triangle
+	HelpStay		= "{rt7}HELP STAY{rt7}",--Red X
+	SoloSoak 		= "SOLO SOAK",
+	Solo 			= "SOLO",
+	--Not currently used Yells
+	SoloMoving		= "SOLO MOVE",
+	SoloStay		= "SOLO STAY",
+	SoloSoakMove	= "SOLO SOAK MOVE",
+	SoloSoakStay	= "SOLO SOAK STAY"
+})
+
 -------------
 --  Trash  --
 -------------
@@ -73,17 +95,3 @@ L:SetGeneralLocalization({
 	name =	"Eternal Palace Trash"
 })
 
-L:SetMiscLocalization({
-	SoakOrb =	"Soak Orb",
-	AvoidOrb =	"Avoid Orb",
-	GroupUp =	"Group Up",
-	Spread =	"Spread",
-	Move	 =	"Keep Moving",
-	DontMove =	"Stop Moving",
-	--For Yells, not yet used, localize anyways.
-	Soaking =	"{rt3}Soaking{rt3}",--Diamond for arcane orbs
-	Stacking =	"Stacking",
-	Solo =		"Solo",
-	Marching =	"{rt4}Marching{rt4}",--Green Triangle
-	Staying =	"{rt7}Staying{rt7}"--Red X
-})

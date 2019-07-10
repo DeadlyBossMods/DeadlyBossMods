@@ -371,8 +371,6 @@ function mod:SPELL_CAST_START(args)
 		timerIcefallCD:Stop()
 		--Infoframe closes during cut scenes, so we gotta make sure to recall this window
 		if self.Options.InfoFrame and not DBM.InfoFrame:IsShown() then
-			--DBM.InfoFrame:SetHeader(DBM_CORE_INFOFRAME_POWER)
-			--DBM.InfoFrame:Show(8, "function", updateInfoFrame, false, false)
 			DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(287993))
 			DBM.InfoFrame:Show(5, "table", ChillingTouchStacks, 1)
 		end
@@ -541,8 +539,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerFrozenSiegeCD:Stop()
 		--Infoframe closes during cut scenes, so we gotta make sure to recall this window
 		if self.Options.InfoFrame and not DBM.InfoFrame:IsShown() then
-			--DBM.InfoFrame:SetHeader(DBM_CORE_INFOFRAME_POWER)
-			--DBM.InfoFrame:Show(8, "function", updateInfoFrame, false, false)
 			DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(287993))
 			DBM.InfoFrame:Show(5, "table", ChillingTouchStacks, 1)
 		end
@@ -651,8 +647,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerSiegebreakerCD:Start(40.3, 1)
 		--Infoframe closes during cut scenes, so we gotta make sure to recall this window
 		if self.Options.InfoFrame and not DBM.InfoFrame:IsShown() then
-			--DBM.InfoFrame:SetHeader(DBM_CORE_INFOFRAME_POWER)
-			--DBM.InfoFrame:Show(8, "function", updateInfoFrame, false, false)
 			DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(287993))
 			DBM.InfoFrame:Show(5, "table", ChillingTouchStacks, 1)
 		end
@@ -695,8 +689,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 		--Infoframe closes during cut scenes, so we gotta make sure to recall this window
 		if self.Options.InfoFrame and not DBM.InfoFrame:IsShown() then
-			--DBM.InfoFrame:SetHeader(DBM_CORE_INFOFRAME_POWER)
-			--DBM.InfoFrame:Show(8, "function", updateInfoFrame, false, false)
 			DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(287993))
 			DBM.InfoFrame:Show(5, "table", ChillingTouchStacks, 1)
 		end
