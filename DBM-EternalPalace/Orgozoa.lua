@@ -12,8 +12,8 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 298548 295818 295822 296691",
-	"SPELL_CAST_SUCCESS 298413 298242 298103 298156 305057",
+	"SPELL_CAST_START 298548 295818 295822 296691 307167",
+	"SPELL_CAST_SUCCESS 298242 298103 298156 305057",
 	"SPELL_SUMMON 298465",
 	"SPELL_AURA_APPLIED 298156 298306 296914 295779",
 	"SPELL_AURA_APPLIED_DOSE 298156",
@@ -31,7 +31,7 @@ mod:RegisterEventsInCombat(
 --TODO, do more with powerful stomp?
 --TODO, special warn for tender add spawns?
 --[[
-(ability.id = 298548 or ability.id = 295818 or ability.id = 295822 or ability.id = 296691) and type = "begincast"
+(ability.id = 298548 or ability.id = 295818 or ability.id = 295822 or ability.id = 296691 or ability.id = 307167) and type = "begincast"
  or (ability.id = 298413 or ability.id = 298242 or ability.id = 298103 or ability.id = 298156 or ability.id = 298548 or ability.id = 295779 or ability.id = 305057) and type = "cast"
  or type = "interrupt"
 --]]
@@ -151,12 +151,7 @@ function mod:SPELL_CAST_START(args)
 		castsPerGUID[args.sourceGUID] = castsPerGUID[args.sourceGUID] + 1
 		warnPowerfulStomp:Show(castsPerGUID[args.sourceGUID])
 		timerPowerfulStompCD:Start(nil, args.sourceGUID)
-	end
-end
-
-function mod:SPELL_CAST_SUCCESS(args)
-	local spellId = args.spellId
-	if spellId == 298413 then--used by all arcing currents
+	elseif spellId == 307167 then
 		self.vb.arcingCurrentCount = self.vb.arcingCurrentCount + 1
 		specWarnArcingCurrent:Show(self.vb.arcingCurrentCount)
 		timerArcingCurrentCD:Start(nil, self.vb.arcingCurrentCount+1)
@@ -166,7 +161,12 @@ function mod:SPELL_CAST_SUCCESS(args)
 		else
 			specWarnArcingCurrent:Play("farfromline")
 		end
-	elseif spellId == 298242 then
+	end
+end
+
+function mod:SPELL_CAST_SUCCESS(args)
+	local spellId = args.spellId
+	if spellId == 298242 then
 		timerIncubationFluidCD:Start()
 	elseif spellId == 298103 then--Dribbling Ichor
 		self.vb.addCount = self.vb.addCount + 1
@@ -188,6 +188,16 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.tenderCount = self.vb.tenderCount + 1
 		warnCallofTender:Show(self.vb.tenderCount)
 		timerCalloftheTenderCD:Start(35, self.vb.tenderCount+1)
+	--[[elseif spellId == 298413 then--used by all arcing currents
+		self.vb.arcingCurrentCount = self.vb.arcingCurrentCount + 1
+		specWarnArcingCurrent:Show(self.vb.arcingCurrentCount)
+		timerArcingCurrentCD:Start(nil, self.vb.arcingCurrentCount+1)
+		if playerHasIncubation then
+			yellArcingCurrent:Yell()
+			specWarnArcingCurrent:Play("targetyou")
+		else
+			specWarnArcingCurrent:Play("farfromline")
+		end--]]
 	end
 end
 
