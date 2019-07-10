@@ -13,14 +13,15 @@ mod:SetUsedIcons(3, 2, 1)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 297937 297934 298121 297972 298531 300478 299250 299178 300519 300490 297372 300807",
-	"SPELL_CAST_SUCCESS 302208 298014 301078 299094 300492 300743 303980 302141 300334 303797 303799",
+	"SPELL_CAST_START 297937 297934 298121 297972 298531 300478 299250 299178 300519 300490 297372 301431 299094 302141 303797 303799 300620",
+	"SPELL_CAST_SUCCESS 302208 298014 301078 300492 300743 300334 300768",
 	"SPELL_AURA_APPLIED 302999 298569 297912 298014 298018 301078 300428 303825 303657 300492 300620 299094 303797 303799 300743 300866 300877 299249 299251 299254 299255 299252 299253 300502 302141 297937",
 	"SPELL_AURA_APPLIED_DOSE 302999 298569 298014 300743",
 	"SPELL_AURA_REMOVED 302999 298569 297912 301078 300428 303657 300502 297937 299249 299251 299254 299255 299252 299253",
-	"SPELL_PERIODIC_DAMAGE 297898 303981",
-	"SPELL_PERIODIC_MISSED 297898 303981",
+	"SPELL_PERIODIC_DAMAGE 297907 303981",
+	"SPELL_PERIODIC_MISSED 297907 303981",
 	"UNIT_DIED",
+	"RAID_BOSS_WHISPER",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
 	"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5"
@@ -30,7 +31,6 @@ mod:RegisterEventsInCombat(
 --TODO, do something different with pressure surge later, announce remaining maybe
 --TODO, figure out stacks for drained soul and arcane debuffs to know what's too high
 --TODO, add drain ancient ward when right spell ID (of 7) is known, one for phase 1, one for phase 2 and one for phase 3?
---TODO, also fix phase 2 version of drain ward (https://ptr.wowhead.com/spell=303457/titanic-machinations)?
 --TODO, finetune arcane burst timing based on size of room and movement penalties and fix spellID for start/success events
 --TODO, detect various adds joining fight and timer/warn them in stage 2+
 --TODO, phase 2.5 intermission detection (Intermission Two: Adoration)
@@ -43,8 +43,8 @@ mod:RegisterEventsInCombat(
 --TODO, announce short ciruit?
 --TODO, capture UPDATE_UI_WIDGET better with modified transcriptor to get the widget values I need
 --[[
-(ability.id = 297937 or ability.id = 297934 or ability.id = 298121 or ability.id = 297972 or ability.id = 298531 or ability.id = 300478 or ability.id = 299250 or ability.id = 299178 or ability.id = 300519 or ability.id = 303629 or ability.id = 300490 or ability.id = 297372 or ability.id = 300807) and type = "begincast"
- or (ability.id = 302208 or ability.id = 298014 or ability.id = 301078 or ability.id = 299094 or ability.id = 303657 or ability.id = 303629 or ability.id = 300492 or ability.id = 300743 or ability.id = 303980 or ability.id = 302141 or ability.id = 300334 or ability.id = 303797 or ability.id = 303799) and type = "cast"
+(ability.id = 297937 or ability.id = 297934 or ability.id = 298121 or ability.id = 297972 or ability.id = 298531 or ability.id = 300478 or ability.id = 299250 or ability.id = 299178 or ability.id = 300519 or ability.id = 303629 or ability.id = 300490 or ability.id = 297372 or ability.id = 301431) and type = "begincast"
+ or (ability.id = 302208 or ability.id = 298014 or ability.id = 301078 or ability.id = 299094 or ability.id = 303657 or ability.id = 303629 or ability.id = 300492 or ability.id = 300743 or ability.id = 303980 or ability.id = 302141 or ability.id = 300334 or ability.id = 303797 or ability.id = 303799 or ability.id = 300768) and type = "cast"
  or type = "death" and (target.id = 153059 or target.id = 153060)
 --]]
 --Ancient Wards
@@ -76,6 +76,7 @@ local warnCrystallineShield				= mod:NewTargetNoFilterAnnounce(300620, 2)
 local warnVoidTouched					= mod:NewStackAnnounce(300743, 2, nil, "Tank")
 local warnNetherPortal					= mod:NewSpellAnnounce(303980, 2)
 local warnEssenceofAzeroth				= mod:NewTargetAnnounce(300866, 2)
+local warnOverload						= mod:NewCountAnnounce(301431, 2)
 local warnSystemShock					= mod:NewTargetAnnounce(300877, 3)
 
 --Ancient Wards
@@ -94,8 +95,8 @@ local yellChargedSpear					= mod:NewYell(301078)
 local yellChargedSpearFades				= mod:NewShortFadesYell(301078)
 ----Azshara
 local specWarnArcaneOrbs				= mod:NewSpecialWarningCount(298787, nil, nil, nil, 2, 2)
-local specWarnBeckon					= mod:NewSpecialWarningYou(299094, nil, nil, nil, 1, 8)
-local yellBeckon						= mod:NewYell(299094)
+local specWarnBeckon					= mod:NewSpecialWarningRun(299094, nil, nil, nil, 4, 8)
+local yellBeckon						= mod:NewYell(299094)--Yell goes off when player loses control of self, not pre warning player gets
 local specWarnBeckonNear				= mod:NewSpecialWarningClose(303799, nil, nil, nil, 1, 8)
 local specWarnDivideandConquer			= mod:NewSpecialWarningDodge(300478, nil, nil, nil, 3, 2)--Mythic
 --Intermission One: Queen's Decree
@@ -114,10 +115,11 @@ local specWarnArcaneBurstFading			= mod:NewSpecialWarningMoveTo(303657, nil, nil
 local specWarnStaticShock				= mod:NewSpecialWarningMoveAway(300492, nil, nil, nil, 1, 8)
 local yellStaticShock					= mod:NewYell(300492)
 --Stage Four: My Palace Is a Prison
-local specWarnInversion					= mod:NewSpecialWarningSpell(297372, nil, nil, nil, 2, 5)
+local specWarnGreaterReversal			= mod:NewSpecialWarningSpell(297372, nil, nil, nil, 2, 5)
 local specWarnVoidtouched				= mod:NewSpecialWarningStack(300743, nil, 4, nil, nil, 1, 6)
 local specWarnVoidtouchedTaunt			= mod:NewSpecialWarningTaunt(300743, nil, nil, nil, 1, 2)
-local specWarnOverload					= mod:NewSpecialWarningCount(300807, nil, nil, nil, 2, 2)
+local specWarnPiercingGaze				= mod:NewSpecialWarningDodge(300768, nil, nil, nil, 2, 2)
+local specWarnOverload					= mod:NewSpecialWarningCount(301431, false, nil, 2, 2, 2)
 local specWarnEssenceofAZeroth			= mod:NewSpecialWarningYou(300866, nil, nil, nil, 1, 2)
 local specWarnSystemShock				= mod:NewSpecialWarningDefensive(300877, nil, nil, nil, 1, 2)
 
@@ -127,8 +129,8 @@ local timerPainfulMemoriesCD			= mod:NewNextTimer(60, 297937, nil, "Tank", nil, 
 local timerLongingCD					= mod:NewNextTimer(60, 297934, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 ----Aethanel
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20261))
-local timerLightningOrbsCD				= mod:NewCDTimer(27.3, 298121, nil, nil, nil, 3)
-local timerChainLightningCD				= mod:NewCDTimer(7.3, 297972, nil, false, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)--7-24, all over place, so off by default
+local timerLightningOrbsCD				= mod:NewCDTimer(16.1, 298121, nil, nil, nil, 3)
+--local timerChainLightningCD				= mod:NewCDTimer(7.3, 297972, nil, false, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)--7-24, all over place, so off by default
 local timerColdBlastCD					= mod:NewCDTimer(9.4, 298014, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 ----Cyranus
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20266))
@@ -149,21 +151,21 @@ local timerQueensDecreeCD				= mod:NewCDTimer(30.4, 299250, nil, nil, nil, 3, ni
 local timerNextPhase					= mod:NewPhaseTimer(30.4)
 --Stage Two: Hearts Unleashed
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20323))
---local timerTitanicMachinationsCD		= mod:NewAITimer(58.2, 303457, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
-local timerArcaneDetonationCD			= mod:NewCDTimer(80, 300519, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
-local timerReversalofFortuneCD			= mod:NewCDTimer(80, 297371, nil, nil, nil, 5, nil, DBM_CORE_IMPORTANT_ICON)
-local timerArcaneBurstCD				= mod:NewCDTimer(58.2, 303657, nil, nil, nil, 3, nil, DBM_CORE_MAGIC_ICON)
+local timerArcaneDetonationCD			= mod:NewCDCountTimer(80, 300519, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
+local timerReversalofFortuneCD			= mod:NewCDCountTimer(80, 297371, nil, nil, nil, 5, nil, DBM_CORE_IMPORTANT_ICON)
+local timerArcaneBurstCD				= mod:NewCDCountTimer(58.2, 303657, nil, nil, nil, 3, nil, DBM_CORE_MAGIC_ICON)
 --Stage Three: Song of the Tides
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20340))
 --local timerEnergizeWardofPowerCD		= mod:NewAITimer(58.2, 303657, nil, nil, nil, 5)
-local timerStaticShockCD				= mod:NewAITimer(58.2, 300492, nil, nil, nil, 3)
-local timerCrystallineShieldCD			= mod:NewAITimer(58.2, 300620, nil, nil, nil, 3, nil, DBM_CORE_DAMAGE_ICON..DBM_CORE_IMPORTANT_ICON)
+--local timerStaticShockCD				= mod:NewAITimer(58.2, 300492, nil, nil, nil, 3)
+--local timerCrystallineShieldCD		= mod:NewCDTimer(17, 300620, nil, nil, nil, 3, nil, DBM_CORE_DAMAGE_ICON..DBM_CORE_IMPORTANT_ICON)
 --Stage Four: My Palace Is a Prison
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20361))
-local timerInversionCD					= mod:NewAITimer(58.2, 297372, nil, nil, nil, 5, nil, DBM_CORE_IMPORTANT_ICON..DBM_CORE_HEROIC_ICON)
-local timerVoidTouchedCD				= mod:NewAITimer(30.4, 300743, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
-local timerNetherPortalCD				= mod:NewAITimer(30.4, 303980, nil, nil, nil, 3)
-local timerOverloadCD					= mod:NewAITimer(30.4, 300807, nil, nil, nil, 5, nil, DBM_CORE_IMPORTANT_ICON)
+local timerGreaterReversalCD			= mod:NewAITimer(58.2, 297372, 297371, nil, nil, 5, nil, DBM_CORE_IMPORTANT_ICON..DBM_CORE_HEROIC_ICON)
+local timerVoidTouchedCD				= mod:NewCDTimer(6.9, 300743, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerNetherPortalCD				= mod:NewNextTimer(35, 303980, nil, nil, nil, 3)
+local timerOverloadCD					= mod:NewCDCountTimer(54.9, 301431, nil, nil, nil, 5, nil, DBM_CORE_IMPORTANT_ICON)
+local timerPiercingGazeCD				= mod:NewCDTimer(65, 300768, nil, nil, nil, 3)
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
 
@@ -183,15 +185,19 @@ mod.vb.beckonCast = 0
 mod.vb.arcaneBurstCount = 0
 mod.vb.drainWardCount = 0
 mod.vb.hulkCount = 0
+mod.vb.reversalCount = 0
+mod.vb.arcaneDetonation = 0
+mod.vb.overloadCount = 0
 mod.vb.painfulMemoriesActive = false
-local arcaneVulnerabilityStacks = {}
+local drainedSoulStacks = {}
 local playerSoulDrained = false
 local shieldName = DBM:GetSpellInfo(300620)
 local seenAdds = {}
 local castsPerGUID = {}
 local playerDecreeCount = 0
 local playerDecreeYell = 0--100s 2-Stack/1-Solo, 10s 2-Moving/1-Stay, 1s 2-Soak/1-NoSoak
-local phase1AddTimers = {42.8, 59.6, 89.1, 44.8, 39.4}--Consistent pull to pull, only timer sequence that's actually a sequence. Azshara's shit is all just spell queue issues
+local phase1HeroicAddTimers = {42.6, 59.6, 89.1, 44.8, 39.4}--PTR data, needs live data
+local phase1NormalAddTimers = {42.6, 84.7}
 
 local updateInfoFrame
 do
@@ -200,7 +206,8 @@ do
 	local tempLines = {}
 	local tempLinesSorted = {}
 	local sortedLines = {}
-	local function sortFuncDesc(a, b) return tempLines[a] > tempLines[b] end
+	--local function sortFuncDesc(a, b) return tempLines[a] > tempLines[b] end
+	local function sortFuncAsc(a, b) return lines[a] < lines[b] end
 	local function addLine(key, value)
 		-- sort by insertion order
 		lines[key] = value
@@ -221,14 +228,16 @@ do
 				addLine(spellName2.." ("..currentStack2..")", math.floor(remaining2))
 			end
 		end
-		addLine(" ", " ")--Insert a blank entry to split the two debuffs
-		--Arcane Vulnerability Stacks (UGLY code)
-		for i, v in pairs(arcaneVulnerabilityStacks) do
-			tempLines[i] = v
-			tempLinesSorted[#tempLinesSorted + 1] = tempLines
+		--Add rest of drained soul
+		for uId in DBM:GetGroupMembers() do
+			if not (UnitGroupRolesAssigned(uId) == "TANK" or GetPartyAssignment("MAINTANK", uId, 1)) then
+				local unitName = UnitName(uId)
+				tempLines[unitName] = drainedSoulStacks[unitName] or 0
+				tempLinesSorted[#tempLinesSorted + 1] = unitName
+			end
 		end
-		--Sort debuffs by highest then inject into regular table
-		tsort(tempLinesSorted, sortFuncDesc)
+		--Sort debuffs by lowest then inject into regular table
+		tsort(tempLinesSorted, sortFuncAsc)
 		for _, name in ipairs(tempLinesSorted) do
 			addLine(name, tempLines[name])
 		end
@@ -274,23 +283,26 @@ function mod:OnCombatStart(delay)
 	self.vb.arcaneBurstCount = 0
 	self.vb.drainWardCount = 0
 	self.vb.hulkCount = 0
+	self.vb.reversalCount = 0
+	self.vb.arcaneDetonation = 0
+	self.vb.overloadCount = 0
 	self.vb.painfulMemoriesActive = false
 	playerDecreeYell = 0
 	playerSoulDrained = false
-	table.wipe(arcaneVulnerabilityStacks)
+	table.wipe(drainedSoulStacks)
 	table.wipe(seenAdds)
 	table.wipe(castsPerGUID)
 	timerPainfulMemoriesCD:Start(19.7)
 	--Aethanel
 	timerLightningOrbsCD:Start(24.4-delay)
-	timerChainLightningCD:Start(15.3-delay)
-	timerColdBlastCD:Start(14.9-delay)--SUCCESS
+	--timerChainLightningCD:Start(15.3-delay)
+	timerColdBlastCD:Start(14.4-delay)--SUCCESS
 	--Cyranus
 	timerChargedSpearCD:Start(27.5-delay)
 	--Azshara
-	timerDrainAncientWardCD:Start(37-delay, 1)
+	timerDrainAncientWardCD:Start(31.6-delay, 1)
 	timerHulkSpawnCD:Start(42-delay, 1)
-	timerBeckonCD:Start(55-delay, 1)
+	timerBeckonCD:Start(54.8-delay, 1)--START
 	timerArcaneOrbsCD:Start(69.8-delay, 1)
 	if self:IsMythic() then
 		self.vb.maxDecree = 3
@@ -301,7 +313,7 @@ function mod:OnCombatStart(delay)
 		self.vb.maxDecree = 1
 	end
 	if self.Options.InfoFrame then
-		DBM.InfoFrame:SetHeader(DBM_CORE_INFOFRAME_POWER)
+		DBM.InfoFrame:SetHeader(OVERVIEW)
 		DBM.InfoFrame:Show(8, "function", updateInfoFrame, false, false)
 	end
 	if self.Options.NPAuraOnTorment or self.Options.NPAuraOnInfuriated then
@@ -330,11 +342,11 @@ end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 297937 then--Painful Memories
+	if spellId == 297937 and self:AntiSpam(3, 3) then--Painful Memories
 		specWarnPainfulMemories:Show(DBM_CORE_BREAK_LOS)
 		specWarnPainfulMemories:Play("moveboss")
 		timerLongingCD:Start()
-	elseif spellId == 297934 then--Longing
+	elseif spellId == 297934 and self:AntiSpam(3, 3) then--Longing
 		specWarnLonging:Show(DBM_CORE_RESTORE_LOS)
 		specWarnLonging:Play("moveboss")
 		timerPainfulMemoriesCD:Start()
@@ -342,7 +354,7 @@ function mod:SPELL_CAST_START(args)
 		warnLightningOrbs:Show()
 		timerLightningOrbsCD:Start()
 	elseif spellId == 297972 then
-		timerChainLightningCD:Start(nil, args.sourceGUID)
+		--timerChainLightningCD:Start(nil, args.sourceGUID)
 		if self:CheckInterruptFilter(args.sourceGUID, false, true) then
 			specWarnChainLightning:Show(args.sourceName)
 			specWarnChainLightning:Play("kickcast")
@@ -358,42 +370,87 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 300478 then
 		specWarnDivideandConquer:Show()
 		timerDivideandConquerCD:Start()
-	elseif spellId == 299250 then
+	elseif spellId == 299250 and self:AntiSpam(4, 5) then--In rare cases she stutter casts it, causing double warnings
 		playerDecreeCount = 0
 		warnQueensDecree:Show()
-		--timerQueensDecreeCD:Start()
 	elseif spellId == 299178 and self.vb.phase < 2 then
 		self.vb.phase = 2
 		self.vb.arcaneBurstCount = 0
 		self.vb.arcaneOrbCount = 0
+		self.vb.beckonCast = 0
 		warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(2))
 		warnPhase:Play("ptwo")
 		timerQueensDecreeCD:Stop()
 		timerArcaneOrbsCD:Stop()
-		timerBeckonCD:Start(29, 1)--SUCCESS
-		timerArcaneBurstCD:Start(60, 1)--SUCCESS
-		timerArcaneDetonationCD:Start(75)--START
-		--timerTitanicMachinationsCD:Start(2)
 		if self:IsHard() then
-			timerReversalofFortuneCD:Start(68.1)
+			timerBeckonCD:Start(25, 1)--START
+			timerArcaneBurstCD:Start(60, 1)--SUCCESS (see if still 60 on heroic)
+		else
+			timerArcaneBurstCD:Start(52.1, 1)--SUCCESS
+			timerBeckonCD:Start(60, 1)--START
+		end
+		timerArcaneDetonationCD:Start(75, 1)--START
+		if not self:IsHard() then
+			timerReversalofFortuneCD:Start(68.1, 1)
 			if self:IsMythic() then
 				timerDivideandConquerCD:Start(2)
 			end
 		end
 	elseif spellId == 300519 then
+		self.vb.arcaneDetonation = self.vb.arcaneDetonation + 1
 		specWarnArcaneDetonation:Show(DBM_CORE_BREAK_LOS)
 		specWarnArcaneDetonation:Play("findshelter")
-		timerArcaneDetonationCD:Start()
+		timerArcaneDetonationCD:Start(nil, self.vb.arcaneDetonation+1)
 	elseif spellId == 300490 then
 		warnEnergizeWardofPower:Show()
 	elseif spellId == 297372 then
-		specWarnInversion:Show()
-		specWarnInversion:Play("telesoon")
-		timerInversionCD:Start()
-	elseif spellId == 300807 then
-		specWarnOverload:Show()
-		specWarnOverload:Play("specialsoon")
-		timerOverloadCD:Start()
+		specWarnGreaterReversal:Show()
+		specWarnGreaterReversal:Play("telesoon")
+		timerGreaterReversalCD:Start()
+	elseif spellId == 301431 then
+		self.vb.overloadCount = self.vb.overloadCount + 1
+		if self.Options.SpecWarn301431count then
+			specWarnOverload:Show(self.vb.overloadCount)
+			specWarnOverload:Play("specialsoon")
+		else
+			warnOverload:Show(self.vb.overloadCount)
+		end
+		timerOverloadCD:Start(54.9, self.vb.overloadCount+1)
+	elseif spellId == 299094 or spellId == 302141 or spellId == 303797 or spellId == 303799 then--299094 Phase 1, 302141 phase 2, 303797 phase 3, 303799 unknown (probably phase 4)
+		self.vb.beckonCast = self.vb.beckonCast + 1
+		if self.vb.phase == 1 then
+			--Phase 1 pattern (imprecise as hell, it's spell queuing not true alternating, but there is enough consistency to do this somewhat)
+			if self.vb.beckonCast % 2 == 0 then
+				--"Beckon-299094-npc:152910 = pull:59.1, 73.2, 51.2", -- [5] HEROIC
+				--"Beckon-299094-npc:152910 = pull:59.4, 90.1", -- [6] NORMAL
+				timerBeckonCD:Start(50, self.vb.beckonCast+1)--Most of time 55, but can be lower
+			else
+				--"Beckon-299094-npc:152910 = pull:56.1, 71.3, 50.6, 63.7"
+				if self:IsHard() then
+					timerBeckonCD:Start(self.vb.beckonCast == 1 and 70 or 60, self.vb.beckonCast+1)-- 2nd cast is always above 70, but 4th cast is more around 60, rest unknown so 60 assumed
+				else
+					timerBeckonCD:Start(self.vb.beckonCast == 1 and 90 or 60, self.vb.beckonCast+1)
+				end
+			end
+		elseif self.vb.phase == 2 then--Phase 2 (Needs more sample)
+			--Phase 2 pattern (imprecise as hell, it's spell queuing not true alternating, but there is enough consistency to do this somewhat)
+			if self.vb.beckonCast % 2 == 0 then
+				timerBeckonCD:Start(55, self.vb.beckonCast+1)
+			else
+				timerBeckonCD:Start(85, self.vb.beckonCast+1)
+			end
+		elseif self.vb.phase == 3 then--Phase 3 (Completely guessed, no data at all for this)
+			--Nothing is known about this phase yet, so do nothing. Never saw ability cast more than once any P3 pull
+		else--Phase 4
+			--Phase 4 pattern (imprecise as hell, it's spell queuing not true alternating, but there is enough consistency to do this somewhat)
+			if self.vb.beckonCast % 2 == 0 then
+				timerBeckonCD:Start(55, self.vb.beckonCast+1)
+			else
+				timerBeckonCD:Start(90, self.vb.beckonCast+1)
+			end
+		end
+	--elseif spellId == 300620 then
+		--timerCrystallineShieldCD:Start()
 	end
 end
 
@@ -405,42 +462,23 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerColdBlastCD:Start()
 	elseif spellId == 301078 then
 		timerChargedSpearCD:Start()
-	elseif spellId == 299094 or spellId == 302141 or spellId == 303797 or spellId == 303799 then--299094 Phase 1, 302141 phase 2, 303797 phase 3, 303799 unknown (probably phase 4)
-		self.vb.beckonCast = self.vb.beckonCast + 1
-		if self.vb.phase == 1 then
-			--Phase 1 pattern (imprecise as hell, it's spell queuing not true alternating, but there is enough consistency to do this somewhat)
-			if self.vb.beckonCast % 2 == 0 then
-				--"Beckon-299094-npc:152910 = pull:59.1, 73.2, 51.2", -- [5]
-				timerBeckonCD:Start(50, self.vb.beckonCast+1)--Most of time 55, but can be lower
-			else
-				--"Beckon-299094-npc:152910 = pull:56.1, 71.3, 50.6, 63.7"
-				timerBeckonCD:Start(self.vb.beckonCast == 1 and 70 or 60, self.vb.beckonCast+1)-- 2nd cast is always above 70, but 4th cast is more around 60, rest unknown so 60 assumed
-			end
-		else--Phase 2 (don't know about rest)
-			--Phase 2 pattern (imprecise as hell, it's spell queuing not true alternating, but there is enough consistency to do this somewhat)
-			if self.vb.beckonCast % 2 == 0 then
-				timerBeckonCD:Start(55, self.vb.beckonCast+1)
-			else
-				timerBeckonCD:Start(85, self.vb.beckonCast+1)
-			end
-		end
 	elseif spellId == 300492 then
-		timerStaticShockCD:Start(nil, args.sourceGUID)
-	elseif spellId == 300620 then
-		timerCrystallineShieldCD:Start()
+		--timerStaticShockCD:Start(nil, args.sourceGUID)
 	elseif spellId == 300743 then
 		timerVoidTouchedCD:Start()
-	elseif spellId == 303980 then
-		warnNetherPortal:Show()
-		timerNetherPortalCD:Start()
 	elseif spellId == 300334 then
 		self.vb.drainWardCount = self.vb.drainWardCount + 1
 		warnDrainAncientWard:Show(self.vb.drainWardCount)
+		--Timers still all over place, it might just be trigger/health based?
 		if self.vb.drainWardCount % 2 == 0 then
 			timerDrainAncientWardCD:Start(49.9, self.vb.drainWardCount+1)
 		else
 			timerDrainAncientWardCD:Start(60, self.vb.drainWardCount+1)
 		end
+	elseif spellId == 300768 then
+		specWarnPiercingGaze:Show()
+		specWarnPiercingGaze:Play("farfromline")
+		timerPiercingGazeCD:Start()
 	end
 end
 
@@ -448,13 +486,13 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 302999 then
 		local amount = args.amount or 1
-		arcaneVulnerabilityStacks[args.destName] = amount
 		if args:IsPlayer() and (amount >= 12 and amount % 3 == 0) then--12, 15, 18, 21, etc
 			specWarnArcaneVuln:Show(amount)
 			specWarnArcaneVuln:Play("stackhigh")
 		end
 	elseif spellId == 298569 then
 		local amount = args.amount or 1
+		drainedSoulStacks[args.destName] = amount
 		if not playerSoulDrained then
 			playerSoulDrained = true
 		end
@@ -521,10 +559,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnChargedSpear:Show(args.destName)
 		end
 	elseif spellId == 299094 or spellId == 302141 or spellId == 303797 or spellId == 303799 then--303797 and 303799 unknown
-		warnBeckon:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
-			specWarnBeckon:Show()
-			specWarnBeckon:Play("targetyou")
 			yellBeckon:Yell()
 		elseif spellId ~= 299094 and self:CheckNearby(8, args.destName) and not DBM:UnitDebuff("player", spellId) then--Warn nearby, because it's jealousy version
 			specWarnBeckonNear:Show(args.destName)
@@ -540,30 +575,30 @@ function mod:SPELL_AURA_APPLIED(args)
 				playerDecreeCount = 0
 				playerDecreeYell = 0
 			end
-			local text = ""
+			local text
 			if spellId == 299249 then--Soak Orbs
 				specWarnQueensDecree:ScheduleVoiceOverLap(0+playerDecreeCount, "helpsoak")
-				text = text..", "..L.SoakOrb
+				text = not text and L.SoakOrb or text..", "..L.SoakOrb
 				playerDecreeYell = playerDecreeYell + 2--100s 2-Stack/1-Solo, 10s 2-Moving/1-Stay, 1s 2-Soak/1-NoSoak
 			elseif spellId == 299251 then--Dodge Orbs
 				specWarnQueensDecree:ScheduleVoiceOverLap(0+playerDecreeCount, "watchorb")
-				text = text..", "..L.AvoidOrb
+				text = not text and L.AvoidOrb or text..", "..L.AvoidOrb
 				playerDecreeYell = playerDecreeYell + 1--100s 2-Stack/1-Solo, 10s 2-Moving/1-Stay, 1s 2-Soak/1-NoSoak
 			elseif spellId == 299254 then--Group Up
 				specWarnQueensDecree:ScheduleVoiceOverLap(0+playerDecreeCount, "gather")
-				text = text..", "..L.GroupUp
+				text = not text and L.GroupUp or text..", "..L.GroupUp
 				playerDecreeYell = playerDecreeYell + 200--100s 2-Stack/1-Solo, 10s 2-Moving/1-Stay, 1s 2-Soak/1-NoSoak
 			elseif spellId == 299255 then--Don't Group Up
 				specWarnQueensDecree:ScheduleVoiceOverLap(0+playerDecreeCount, "scatter")
-				text = text..", "..L.Spread
+				text = not text and L.Spread or text..", "..L.Spread
 				playerDecreeYell = playerDecreeYell + 100--100s 2-Stack/1-Solo, 10s 2-Moving/1-Stay, 1s 2-Soak/1-NoSoak
 			elseif spellId == 299252 then--Keep Moving
 				specWarnQueensDecree:ScheduleVoiceOverLap(0+playerDecreeCount, "keepmove")
-				text = text..", "..L.Move
+				text = not text and L.Move or text..", "..L.Move
 				playerDecreeYell = playerDecreeYell + 20--100s 2-Stack/1-Solo, 10s 2-Moving/1-Stay, 1s 2-Soak/1-NoSoak
 			elseif spellId == 299253 then--Stop Moving
 				specWarnQueensDecree:ScheduleVoiceOverLap(0+playerDecreeCount, "stopmove")
-				text = text..", "..L.DontMove
+				text = not text and L.DontMove or text..", "..L.DontMove
 				playerDecreeYell = playerDecreeYell + 10--100s 2-Stack/1-Solo, 10s 2-Moving/1-Stay, 1s 2-Soak/1-NoSoak
 			end
 			playerDecreeCount = playerDecreeCount + 1--Increased after voices, because of way voice scheduling is being done
@@ -627,18 +662,19 @@ function mod:SPELL_AURA_APPLIED(args)
 
 	elseif spellId == 297937 then
 		self.vb.painfulMemoriesActive = true
-		warnPainfulMemoriesOver:Show(DBM_CORE_RESTORE_LOS)
-		warnPainfulMemoriesOver:Play("moveboss")
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
-	if spellId == 302999 then
-		arcaneVulnerabilityStacks[args.destName] = nil
+	if spellId == 302999 then--Arcane vuln
+		--Do stuff?
 	elseif spellId == 298569 then
-		playerSoulDrained = false
+		drainedSoulStacks[args.destName] = nil
+		if args:IsPlayer() then
+			playerSoulDrained = false
+		end
 	elseif spellId == 297912 then
 		if self.Options.NPAuraOnTorment then
 			DBM.Nameplate:Hide(true, args.sourceGUID, spellId)
@@ -662,8 +698,10 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 --	elseif spellId == 300502 then--Arcane Mastery
 
-	elseif spellId == 297937 then
+	elseif spellId == 297937 and self:AntiSpam(3, 4) then
 		self.vb.painfulMemoriesActive = false
+		warnPainfulMemoriesOver:Show(DBM_CORE_RESTORE_LOS)
+		warnPainfulMemoriesOver:Play("moveboss")
 	elseif spellId == 299249 or spellId == 299251 or spellId == 299254 or spellId == 299255 or spellId == 299252 or spellId == 299253 then
 		if args:IsPlayer() then
 			if spellId == 299249 then--Soak Orbs
@@ -684,7 +722,7 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
-	if (spellId == 303981 or spellId == 297898) and destGUID == UnitGUID("player") and self:AntiSpam(2, 2) then
+	if (spellId == 303981 or spellId == 297907) and destGUID == UnitGUID("player") and self:AntiSpam(2, 2) then
 		specWarnGTFO:Show(spellName)
 		specWarnGTFO:Play("watchfeet")
 	end
@@ -707,14 +745,14 @@ do
 		timerDivideandConquerCD:Stop()
 		timerHulkSpawnCD:Stop()
 		timerDrainAncientWardCD:Stop()
-		timerQueensDecreeCD:Start(4)
+		timerQueensDecreeCD:Start(7.5)--SUCCESS
 		timerNextPhase:Start(27.3)--To Ward of Power cast start
 	end
 	function mod:UNIT_DIED(args)
 		local cid = self:GetCIDFromGUID(args.destGUID)
 		if cid == 153059 then--Aethanel
 			timerLightningOrbsCD:Stop()
-			timerChainLightningCD:Stop()
+			--timerChainLightningCD:Stop()
 			timerColdBlastCD:Stop()
 			self.vb.stageOneBossesLeft = self.vb.stageOneBossesLeft - 1
 			if self.vb.stageOneBossesLeft == 0 then
@@ -729,13 +767,33 @@ do
 		elseif cid == 155643 or cid == 153064 then--overzealous-hulk
 			castsPerGUID[args.destGUID] = nil
 			--timerGroundPoundCD:Stop(args.destGUID)
+		elseif cid == 153090 then--Lady Venomtongue#
+			--timerStaticShockCD:Stop(args.destGUID)
+			--timerChainLightningCD:Stop(args.destGUID)
+		elseif cid == 153091 then--Serena Scarscale
+			--timerStaticShockCD:Stop(args.destGUID)
+			--timerChainLightningCD:Stop(args.destGUID)
 --		elseif cid == 154240 then--azsharas-devoted
 
 --		elseif cid == 154565 then--Loyal Myrmidon
 
---		elseif cid == "unknowntidemistresssirenid" then
---			timerStaticShockCD:Stop(args.destGUID)
---			timerChainLightningCD:Stop(args.destGUID)
+		end
+	end
+end
+
+--2.5 seconds faster than APPLIED/SUCCESS, giving you a little time to move out of melee before stun
+function mod:RAID_BOSS_WHISPER(msg)
+	if msg:find("299094") then
+		specWarnBeckon:Show()
+		specWarnBeckon:Play("justrun")
+	end
+end
+
+function mod:OnTranscriptorSync(msg, targetName)
+	if msg:find("299094") and targetName then
+		targetName = Ambiguate(targetName, "none")
+		if self:AntiSpam(4, targetName) then
+			warnBeckon:CombinedShow(0.5, targetName)
 		end
 	end
 end
@@ -748,6 +806,27 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 		specWarnArcaneOrbs:Show(self.vb.arcaneOrbCount)
 		specWarnArcaneOrbs:Play("watchorb")
 		timerArcaneOrbsCD:Start(self.vb.arcaneOrbCount == 1 and 65 or 75, self.vb.arcaneOrbCount+1)
+	--"<500.67 14:43:34> [CHAT_MSG_RAID_BOSS_EMOTE] |TInterface\\Icons\\SPELL_SHADOW_SHADESOFDARKNESS.BLP:20|tHer ritual complete, Queen Azshara gains the power of the Void!#Queen Azshara#####0#0##0#209#nil#0#false#false#false#false",
+	elseif msg:find("SPELL_SHADOW_SHADESOFDARKNESS.BLP") then--Stage 4
+		self.vb.phase = 4
+		self.vb.reversalCount = 0
+		self.vb.arcaneBurstCount = 0
+		self.vb.arcaneDetonation = 0
+		self.vb.beckonCast = 0
+		timerBeckonCD:Stop()
+		timerReversalofFortuneCD:Stop()
+		timerArcaneDetonationCD:Stop()
+		timerArcaneBurstCD:Stop()
+
+		--void touch and overload are used immediately, so no timers start here
+		timerNetherPortalCD:Start(11.7)
+		timerPiercingGazeCD:Start(31.7)
+		if self:IsMythic() then
+			timerGreaterReversalCD:Start(39.7, 1)
+		elseif not self:IsLFR() then
+			timerReversalofFortuneCD:Start(39.7, 1)
+		end
+		timerBeckonCD:Start(61.7, 1)
 	end
 end
 
@@ -764,13 +843,50 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 			local cid = self:GetCIDFromGUID(GUID)
 			if cid == 153064 then--overzealous-hulk spawn.
 				self.vb.hulkCount = self.vb.hulkCount + 1
-				local timer = phase1AddTimers[self.vb.hulkCount+1]
+				local timer = self:IsHard() and phase1HeroicAddTimers[self.vb.hulkCount+1] or phase1NormalAddTimers[self.vb.hulkCount+1]
 				if timer then
 					timerHulkSpawnCD:Start(timer, self.vb.hulkCount+1)
+				end
+			elseif cid == 153090 or cid == 153091 then
+				--timerCrystallineShieldCD:Start(17.4)--17-20?
+				--timerStaticShockCD:Start(97.9, GUID)
+				if self.vb.phase < 3 then
+					self.vb.phase = 3
+					--self.vb.reversalCount = 0
+					warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(3))
+					warnPhase:Play("pthree")
+
+					--Alternate start point, seems slightly less accurate than using adjure though
+					--timerBeckonCD:Start(40.5, 1)
+					--timerReversalofFortuneCD:Start(52.5, 1)--53.46
+					--timerArcaneDetonationCD:Start(70.4, 1)
+					--timerArcaneBurstCD:Start(92.4)
 				end
 			end
 		end
 	end
+end
+
+local function startIntermissionTwo(self)
+	self.vb.phase = 2.5
+	self.vb.reversalCount = 0
+	self.vb.arcaneBurstCount = 0
+	self.vb.arcaneDetonation = 0
+	self.vb.beckonCast = 0
+	warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(2.5))
+	warnPhase:Play("phasechange")
+	timerReversalofFortuneCD:Stop()
+	timerBeckonCD:Stop()
+	timerArcaneBurstCD:Stop()
+	timerArcaneDetonationCD:Stop()
+	timerDivideandConquerCD:Stop()
+
+	--Despite everything journal says, there really isn't a second intermission, P3 timers start here most accurately for azshara.
+	--But I still delay P3 warning until siren's are attackable,
+	timerBeckonCD:Start(64.6, 1)
+	timerReversalofFortuneCD:Start(77.7, 1)
+	timerArcaneDetonationCD:Start(94.7, 1)
+	timerArcaneBurstCD:Start(116.7, 1)
 end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
@@ -779,9 +895,10 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	elseif spellId == 299886 then--Rush Ward of Power (phase 2 adds)
 		--Maybe usuable with antispam and syncing. No Boss unit IDs, only nameplate really
 	elseif spellId == 297371 then--Reversal of Fortune
+		self.vb.reversalCount = self.vb.reversalCount + 1
 		specWarnReversalofFortune:Show()
 		specWarnReversalofFortune:Play("telesoon")
-		timerReversalofFortuneCD:Start()
+		timerReversalofFortuneCD:Start(self.vb.phase == 2 and 80 or 70, self.vb.reversalCount+1)
 	elseif spellId == 303629 then--Arcane Burst
 		self.vb.arcaneBurstIcon = 1
 		--60, 70.0, 55.3 (P2, unknown beyond that)
@@ -789,8 +906,16 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		if self.vb.arcaneBurstCount % 2 == 0 then
 			timerArcaneBurstCD:Start(55, self.vb.arcaneBurstCount+1)
 		else
-			timerArcaneBurstCD:Start(70, self.vb.arcaneBurstCount+1)
+			timerArcaneBurstCD:Start(60, self.vb.arcaneBurstCount+1)--See if still 70 on heroic
 		end
+	elseif spellId == 302034 then--Adjure
+		--"<338.85 14:18:47> [UNIT_SPELLCAST_SUCCEEDED] Queen Azshara(Murdocc) -Adjure- [[boss1:Cast-3-3883-2164-252-302034-001924DA87:302034]]", -- [6299]
+		--"<343.15 14:18:51> [CHAT_MSG_MONSTER_YELL] Coax the power from these ancient wards! Rattle the chains that bind him!#Queen Azshara###Omegall##0#0##0#2192#nil#0#false#false#false#false", -- [6362]
+		self:Schedule(4.3, startIntermissionTwo, self)--Needed, because timers don't cancel until yell
+		timerQueensDecreeCD:Start(13.9)--SUCCESS (technically debuffs, is no start or success event here)
+	elseif spellId == 303982 then--Nether Portal
+		warnNetherPortal:Show()
+		timerNetherPortalCD:Start()
 	end
 end
 

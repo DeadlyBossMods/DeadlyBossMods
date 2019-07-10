@@ -800,12 +800,9 @@ function onUpdate(frame, table)
 			return
 		elseif leftText and type(leftText) ~= "string" then
 			tostring(leftText)
-			--error("DBM InfoFrame: leftText must be string, Notify DBM author. Infoframe force shutting down ", 2)
-			--frame:Hide()--Force close infoframe so it doesn't keep throwing 100s of errors onupdate. If leftText is broken the frame needs to be shut down
-			--return
 		end
 		local rightText = lines[leftText]
-		local extra, extraName = string.split("|", leftText)--Find just unit name, if extra info had to be added to make unique
+		local extra, extraName = string.split("*", leftText)--Find just unit name, if extra info had to be added to make unique
 		local icon = icons[extraName or leftText] and icons[extraName or leftText]..leftText
 		if friendlyEvents[currentEvent] then
 			local unitId = DBM:GetRaidUnitId(DBM:GetUnitFullName(extraName or leftText)) or "player"--Prevent nil logical error

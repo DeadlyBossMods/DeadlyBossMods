@@ -69,15 +69,6 @@ L:SetMiscLocalization({
 ---------------------------
 L= DBM:GetModLocalization(2361)
 
--------------
---  Trash  --
--------------
-L = DBM:GetModLocalization("EternalPalaceTrash")
-
-L:SetGeneralLocalization({
-	name =	"永恒王宫小怪"
-})
-
 L:SetMiscLocalization({
 	SoakOrb =	"吸收球",
 	AvoidOrb =	"躲开球",
@@ -85,4 +76,14 @@ L:SetMiscLocalization({
 	Spread =	"分散",
 	Move	 =	"保持移动",
 	DontMove =	"停止移动"
+})
+
+
+-------------
+--  Trash  --
+-------------
+L = DBM:GetModLocalization("EternalPalaceTrash")
+
+L:SetGeneralLocalization({
+	name =	"永恒王宫小怪"
 })
