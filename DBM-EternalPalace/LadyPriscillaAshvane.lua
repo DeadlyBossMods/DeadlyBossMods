@@ -86,13 +86,13 @@ do
 		table.wipe(lines)
 		table.wipe(sortedLines)
 		if mod.vb.blueone and mod.vb.bluetwo then
-			addLine("|TInterface\\Icons\\Ability_Bossashvane_Icon03.blp:12:12|tBlue|"..mod.vb.blueone, mod.vb.bluetwo)
+			addLine("|TInterface\\Icons\\Ability_Bossashvane_Icon03.blp:12:12|t"..mod.vb.blueone, mod.vb.bluetwo)
 		end
 		if mod.vb.redone and mod.vb.redtwo then
-			addLine("|TInterface\\Icons\\Ability_Bossashvane_Icon02.blp:12:12|tRed|"..mod.vb.redone, mod.vb.redtwo)
+			addLine("|TInterface\\Icons\\Ability_Bossashvane_Icon02.blp:12:12|t"..mod.vb.redone, mod.vb.redtwo)
 		end
 		if mod.vb.greenone and mod.vb.greentwo then
-			addLine("|TInterface\\Icons\\Ability_Bossashvane_Icon01.blp:12:12|tGreen|"..mod.vb.greenone, mod.vb.greentwo)
+			addLine("|TInterface\\Icons\\Ability_Bossashvane_Icon01.blp:12:12|t"..mod.vb.greenone, mod.vb.greentwo)
 		end
 		return lines, sortedLines
 	end
@@ -149,10 +149,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		--specWarnRipplingWave:Play("watchwave")
 		timerRipplingwaveCD:Start(35, self.vb.ripplingWave+1)
 	elseif spellId == 297240 then--Shield, slightly delayed to make sure UnitGetTotalAbsorbs returns a value
-		if self.Options.InfoFrame then
-			DBM.InfoFrame:SetHeader(args.spellName)
-			DBM.InfoFrame:Show(2, "enemyabsorb", nil, UnitGetTotalAbsorbs("boss1"), true, "boss1")
-		end
+
 	elseif spellId == 298056 then--Upsurge
 		self.vb.upsurgeCast = self.vb.upsurgeCast + 1
 		warnUpsurge:Show(self.vb.upsurgeCast)
@@ -203,6 +200,10 @@ function mod:SPELL_AURA_APPLIED(args)
 			else
 				DBM.RangeCheck:Show(4)
 			end
+		end
+		if self.Options.InfoFrame then
+			DBM.InfoFrame:SetHeader(args.spellName)
+			DBM.InfoFrame:Show(2, "enemyabsorb", nil, args.amount, "boss1")
 		end
 	elseif spellId == 296725 then
 		if not args:IsPlayer() then
@@ -307,8 +308,8 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerBrinyBubbleCD:Stop()
 		timerUpsurgeCD:Stop()
 		timerBarnacleBashCD:Stop()
-		timerBarnacleBashCD:Start(13.5, 1)--SUCCESS 8.6
-		timerUpsurgeCD:Start(17.5, 1)
+		timerBarnacleBashCD:Start(13, 1)--SUCCESS 8.6
+		timerUpsurgeCD:Start(17, 1)
 		timerArcingAzeriteCD:Start(20.5, 1)--16.6
 		timerShieldCD:Start(71)--66 old
 		if self.Options.InfoFrame then

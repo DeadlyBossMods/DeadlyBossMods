@@ -59,7 +59,7 @@ local specWarnConductivePulse				= mod:NewSpecialWarningInterrupt(295822, "HasIn
 mod:AddTimerLine(BOSS)
 local timerDesensitizingStingCD				= mod:NewCDTimer(5.3, 298156, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON, nil, nil, 3)--If user does enable countdown for this, max count at 3
 local timerDribblingIchorCD					= mod:NewCDCountTimer(84, 298103, nil, nil, nil, 1, nil, nil, nil, 1, 4)--30.4-42
-local timerIncubationFluidCD				= mod:NewCDTimer(32, 298242, nil, nil, nil, 3, nil, nil, nil, 3, 4)
+local timerIncubationFluidCD				= mod:NewCDTimer(31.7, 298242, nil, nil, nil, 3, nil, nil, nil, 3, 4)
 local timerArcingCurrentCD					= mod:NewCDCountTimer(30.1, 295825, nil, nil, nil, 3)
 local timerCalloftheTenderCD				= mod:NewCDCountTimer(35, 305057, nil, nil, nil, 1, nil, DBM_CORE_MYTHIC_ICON, nil, 2, 4)--30.4-42
 --Transition
@@ -132,7 +132,9 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 298548 then
-		timerMassiveIncubator:Start(45)
+		local _, _, _, startTime, endTime = UnitCastingInfo("boss1")
+		local time = ((endTime or 0) - (startTime or 0)) / 1000
+		timerMassiveIncubator:Start(time)
 	elseif spellId == 295818 then
 		warnShockingLightning:Show()
 		timerShockingLightningCD:Start(nil, args.sourceGUID)
