@@ -13,7 +13,7 @@ mod:SetUsedIcons(3, 2, 1)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 297937 297934 298121 297972 298531 300478 299250 299178 300519 300490 297372 301431 299094 302141 303797 303799 300620",
+	"SPELL_CAST_START 297937 297934 298121 297972 298531 300478 299250 299178 300519 297372 301431 299094 302141 303797 303799 300620",
 	"SPELL_CAST_SUCCESS 302208 298014 301078 300492 300743 300334 300768",
 	"SPELL_AURA_APPLIED 302999 298569 297912 298014 298018 301078 300428 303825 303657 300492 300620 299094 303797 303799 300743 300866 300877 299249 299251 299254 299255 299252 299253 300502 302141 304267",
 	"SPELL_AURA_APPLIED_DOSE 302999 298569 298014 300743",
@@ -43,7 +43,7 @@ mod:RegisterEventsInCombat(
 --TODO, announce short ciruit?
 --TODO, capture UPDATE_UI_WIDGET better with modified transcriptor to get the widget values I need
 --[[
-(ability.id = 297937 or ability.id = 297934 or ability.id = 298121 or ability.id = 297972 or ability.id = 298531 or ability.id = 300478 or ability.id = 299250 or ability.id = 299178 or ability.id = 300519 or ability.id = 303629 or ability.id = 300490 or ability.id = 297372 or ability.id = 301431) and type = "begincast"
+(ability.id = 297937 or ability.id = 297934 or ability.id = 298121 or ability.id = 297972 or ability.id = 298531 or ability.id = 300478 or ability.id = 299250 or ability.id = 299178 or ability.id = 300519 or ability.id = 303629 or ability.id = 297372 or ability.id = 301431) and type = "begincast"
  or (ability.id = 302208 or ability.id = 298014 or ability.id = 301078 or ability.id = 299094 or ability.id = 303657 or ability.id = 303629 or ability.id = 300492 or ability.id = 300743 or ability.id = 303980 or ability.id = 302141 or ability.id = 300334 or ability.id = 303797 or ability.id = 303799 or ability.id = 300768) and type = "cast"
  or type = "death" and (target.id = 153059 or target.id = 153060)
 --]]
@@ -69,7 +69,7 @@ local warnQueensDecree					= mod:NewCastAnnounce(299250, 3)
 --Stage Two: Hearts Unleashed
 local warnArcaneBurst					= mod:NewTargetNoFilterAnnounce(303657, 3, nil, "Healer", 2)
 --Stage Three: Song of the Tides
-local warnEnergizeWardofPower			= mod:NewSpellAnnounce(300490, 3)
+--local warnEnergizeWardofPower			= mod:NewSpellAnnounce(300490, 3)
 local warnStaticShock					= mod:NewTargetAnnounce(300492, 2)
 local warnCrystallineShield				= mod:NewTargetNoFilterAnnounce(300620, 2)
 --Stage Four: My Palace Is a Prison
@@ -401,8 +401,8 @@ function mod:SPELL_CAST_START(args)
 		specWarnArcaneDetonation:Show(DBM_CORE_BREAK_LOS)
 		specWarnArcaneDetonation:Play("findshelter")
 		timerArcaneDetonationCD:Start(nil, self.vb.arcaneDetonation+1)
-	elseif spellId == 300490 then
-		warnEnergizeWardofPower:Show()
+--	elseif spellId == 300490 then
+		--warnEnergizeWardofPower:Show()
 	elseif spellId == 297372 then
 		specWarnGreaterReversal:Show()
 		specWarnGreaterReversal:Play("telesoon")
