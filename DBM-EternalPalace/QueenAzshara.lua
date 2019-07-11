@@ -15,9 +15,9 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 297937 297934 298121 297972 298531 300478 299250 299178 300519 300490 297372 301431 299094 302141 303797 303799 300620",
 	"SPELL_CAST_SUCCESS 302208 298014 301078 300492 300743 300334 300768",
-	"SPELL_AURA_APPLIED 302999 298569 297912 298014 298018 301078 300428 303825 303657 300492 300620 299094 303797 303799 300743 300866 300877 299249 299251 299254 299255 299252 299253 300502 302141 297937",
+	"SPELL_AURA_APPLIED 302999 298569 297912 298014 298018 301078 300428 303825 303657 300492 300620 299094 303797 303799 300743 300866 300877 299249 299251 299254 299255 299252 299253 300502 302141 304267",
 	"SPELL_AURA_APPLIED_DOSE 302999 298569 298014 300743",
-	"SPELL_AURA_REMOVED 302999 298569 297912 301078 300428 303657 300502 297937 299249 299251 299254 299255 299252 299253",
+	"SPELL_AURA_REMOVED 302999 298569 297912 301078 300428 303657 300502 304267 299249 299251 299254 299255 299252 299253",
 	"SPELL_PERIODIC_DAMAGE 297907 303981",
 	"SPELL_PERIODIC_MISSED 297907 303981",
 	"UNIT_DIED",
@@ -51,7 +51,7 @@ mod:RegisterEventsInCombat(
 local warnPhase							= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
 local warnPressureSurge					= mod:NewSpellAnnounce(302208, 2)
 --Stage One: Cursed Lovers
-local warnPainfulMemoriesOver			= mod:NewMoveToAnnounce(297937, 1)
+local warnPainfulMemoriesOver			= mod:NewMoveToAnnounce(297937, 1, nil, "Tank", 2)
 ----Aethanel
 local warnLightningOrbs					= mod:NewSpellAnnounce(298121, 2)
 local warnFrozen						= mod:NewTargetNoFilterAnnounce(298018, 4)
@@ -493,12 +493,14 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 298569 then
 		local amount = args.amount or 1
 		drainedSoulStacks[args.destName] = amount
-		if not playerSoulDrained then
-			playerSoulDrained = true
-		end
-		if args:IsPlayer() and amount >= 6 then--++
-			specWarnDrainedSoul:Show(amount)
-			specWarnDrainedSoul:Play("stackhigh")
+		if args:IsPlayer() then
+			if not playerSoulDrained then
+				playerSoulDrained = true
+			end
+			if amount >= 6 then--++
+				specWarnDrainedSoul:Show(amount)
+				specWarnDrainedSoul:Play("stackhigh")
+			end
 		end
 	elseif spellId == 297912 then
 		if self.Options.NPAuraOnTorment then
@@ -660,7 +662,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 --	elseif spellId == 300502 then--Arcane Mastery
 
-	elseif spellId == 297937 then
+	elseif spellId == 304267 then
 		self.vb.painfulMemoriesActive = true
 	end
 end
@@ -698,7 +700,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 --	elseif spellId == 300502 then--Arcane Mastery
 
-	elseif spellId == 297937 and self:AntiSpam(3, 4) then
+	elseif spellId == 304267 and self:AntiSpam(3, 4) then
 		self.vb.painfulMemoriesActive = false
 		warnPainfulMemoriesOver:Show(DBM_CORE_RESTORE_LOS)
 		warnPainfulMemoriesOver:Play("moveboss")
