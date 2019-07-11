@@ -48,10 +48,10 @@ local specWarnVenomousBlood				= mod:NewSpecialWarningStopMove(295796, nil, nil,
 local specWarnCrushingReverb			= mod:NewSpecialWarningDefensive(295332, "Melee", nil, 2, 2, 2)
 local specWarnOverwhelmingBarrage		= mod:NewSpecialWarningDodge(296551, nil, nil, nil, 3, 2)
 local specWarnOverflowingChill			= mod:NewSpecialWarningMoveAway(295348, nil, nil, nil, 1, 2)
-local yellOverflowingChill				= mod:NewPosYell(295348, DBM_CORE_AUTO_YELL_CUSTOM_POSITION)
+local yellOverflowingChill				= mod:NewPosYell(295348, DBM_CORE_AUTO_YELL_CUSTOM_POSITION2)
 local yellOverflowingChillFades			= mod:NewIconFadesYell(295348)
 local specWarnOverflowingVenom			= mod:NewSpecialWarningMoveAway(295421, nil, nil, nil, 1, 2)
-local yellOverflowingVenom				= mod:NewPosYell(295421, DBM_CORE_AUTO_YELL_CUSTOM_POSITION)
+local yellOverflowingVenom				= mod:NewPosYell(295421, DBM_CORE_AUTO_YELL_CUSTOM_POSITION2)
 local yellOverflowingVenomFades			= mod:NewIconFadesYell(295421)
 local specWarnInversion					= mod:NewSpecialWarningMoveAway(295791, nil, nil, nil, 3, 2)
 local specWarnInversionSicknessFrost	= mod:NewSpecialWarningYou(300882, nil, nil, nil, 1, 2)--Separate warning in case user wants to customize sound based on type
@@ -59,9 +59,9 @@ local specWarnInversionSicknessToxic	= mod:NewSpecialWarningYou(300883, nil, nil
 local yellInversionSickness				= mod:NewYell(300882)
 local yellInversionSicknessFades		= mod:NewIconFadesYell(300882)
 local specWarnFrostJav					= mod:NewSpecialWarningYou(295606, nil, nil, nil, 1, 2)
-local yellFrostJav						= mod:NewPosYell(295606, DBM_CORE_AUTO_YELL_CUSTOM_POSITION)
+local yellFrostJav						= mod:NewPosYell(295606, DBM_CORE_AUTO_YELL_CUSTOM_POSITION2)
 local specWarnToxicJav					= mod:NewSpecialWarningYou(295607, nil, nil, nil, 1, 2)
-local yellToxicJav						= mod:NewPosYell(295607, DBM_CORE_AUTO_YELL_CUSTOM_POSITION)
+local yellToxicJav						= mod:NewPosYell(295607, DBM_CORE_AUTO_YELL_CUSTOM_POSITION2)
 local specWarnGTFO						= mod:NewSpecialWarningGTFO(300961, nil, nil, nil, 1, 8)
 
 --mod:AddTimerLine(BOSS)
@@ -154,12 +154,12 @@ local function debuffSwapAggregation(self, spellId)
 	if spellId == 294711 then--Frost
 		specWarnFrostMark:Show(self:IconNumToTexture(6))
 		specWarnFrostMark:Play("frost")
-		yellMark:Yell(6, "", 6)--Square
+		yellMark:Yell(6, "")--Square
 		playerMark = 2--1 Toxic, 2 Frost
 	else--Toxic
 		specWarnToxicMark:Show(self:IconNumToTexture(4))
 		specWarnToxicMark:Play("toxic")
-		yellMark:Yell(4, "", 4)--Triangle
+		yellMark:Yell(4, "")--Triangle
 		playerMark = 1--1 Toxic, 2 Frost
 	end
 end

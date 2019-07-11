@@ -67,7 +67,7 @@ local specWarnUnstableResonanceVoid		= mod:NewSpecialWarningYouPos(293663, nil, 
 local specWarnUnstableResonanceOcean	= mod:NewSpecialWarningYouPos(293662, nil, nil, nil, 1, 6)
 local specWarnUnstableResonanceStorm	= mod:NewSpecialWarningYouPos(293661, nil, nil, nil, 1, 6)
 local yellUnstableResonanceSign			= mod:NewPosYell(293653, DBM_CORE_AUTO_YELL_CUSTOM_POSITION)
-local yellUnstableResonanceRelic		= mod:NewPosYell("ej18970", DBM_CORE_AUTO_YELL_CUSTOM_POSITION, nil, nil, "YELL")
+local yellUnstableResonanceRelic		= mod:NewPosYell("ej18970", DBM_CORE_AUTO_YELL_CUSTOM_POSITION2, nil, nil, "YELL")
 --Stage One: His All-Seeing Eyes
 local specWarnTouchoftheEnd				= mod:NewSpecialWarningYou(284851, nil, nil, nil, 1, 2)
 local specWarnTouchoftheEndTaunt		= mod:NewSpecialWarningTaunt(284851, nil, nil, nil, 1, 6)
@@ -231,7 +231,7 @@ local function updateResonanceYell(self, icon)
 		self:Schedule(2, updateResonanceYell, self, icon)
 	--Not one of relics, just one of resonance targets, just double icons
 	elseif playerAffected then
-		yellUnstableResonanceSign:Yell(icon, "", icon)
+		yellUnstableResonanceSign:Yell(icon, "")
 		self:Schedule(2, updateResonanceYell, self, icon)
 	end
 end
@@ -568,7 +568,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			if args:IsPlayer() then
 				specWarnUnstableResonanceVoid:Show(self:IconNumToTexture(self.vb.voidIcon))
 				specWarnUnstableResonanceVoid:Play("mm"..self.vb.voidIcon)
-				yellUnstableResonanceSign:Yell(self.vb.voidIcon, "", self.vb.voidIcon)
+				yellUnstableResonanceSign:Yell(self.vb.voidIcon, "")
 				self:Unschedule(updateResonanceYell)
 				self:Schedule(2, updateResonanceYell, self, self.vb.voidIcon)
 				--countdownResonanceFades:Start()
@@ -579,7 +579,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			if args:IsPlayer() then
 				specWarnUnstableResonanceOcean:Show(self:IconNumToTexture(self.vb.tridentOceanicon))
 				specWarnUnstableResonanceOcean:Play("mm"..self.vb.tridentOceanicon)
-				yellUnstableResonanceSign:Yell(self.vb.tridentOceanicon, "", self.vb.tridentOceanicon)
+				yellUnstableResonanceSign:Yell(self.vb.tridentOceanicon, "")
 				self:Unschedule(updateResonanceYell)
 				self:Schedule(2, updateResonanceYell, self, self.vb.tridentOceanicon)
 				--countdownResonanceFades:Start()
@@ -590,7 +590,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			if args:IsPlayer() then
 				specWarnUnstableResonanceStorm:Show(self:IconNumToTexture(self.vb.tempestStormIcon))
 				specWarnUnstableResonanceStorm:Play("mm"..self.vb.tempestStormIcon)
-				yellUnstableResonanceSign:Yell(self.vb.tempestStormIcon, "", self.vb.tempestStormIcon)
+				yellUnstableResonanceSign:Yell(self.vb.tempestStormIcon, "")
 				self:Unschedule(updateResonanceYell)
 				self:Schedule(2, updateResonanceYell, self, self.vb.tempestStormIcon)
 				--countdownResonanceFades:Start()
