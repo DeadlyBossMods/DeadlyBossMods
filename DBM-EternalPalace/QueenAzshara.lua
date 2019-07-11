@@ -219,7 +219,7 @@ do
 		table.wipe(tempLinesSorted)
 		table.wipe(sortedLines)
 		--Power levels pulled from widgets
-		--TODO
+		----TODO
 		--Player Personal Checks
 		if playerSoulDrained then
 			local spellName2, _, currentStack2, _, _, expireTime2 = DBM:UnitDebuff("player", 298569)
@@ -230,8 +230,8 @@ do
 		end
 		--Add rest of drained soul
 		for uId in DBM:GetGroupMembers() do
-			if not (UnitGroupRolesAssigned(uId) == "TANK" or GetPartyAssignment("MAINTANK", uId, 1)) then
-				local unitName = UnitName(uId)
+			if not (UnitGroupRolesAssigned(uId) == "TANK" or GetPartyAssignment("MAINTANK", uId, 1)) then--Exclude tanks
+				local unitName = DBM:GetUnitFullName(uId)
 				tempLines[unitName] = drainedSoulStacks[unitName] or 0
 				tempLinesSorted[#tempLinesSorted + 1] = unitName
 			end
@@ -312,6 +312,10 @@ function mod:OnCombatStart(delay)
 	else
 		self.vb.maxDecree = 1
 	end
+	for uId in DBM:GetGroupMembers() do
+		local unitName = DBM:GetUnitFullName(uId)
+		drainedSoulStacks[unitName] = 0
+	end
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(OVERVIEW)
 		DBM.InfoFrame:Show(8, "function", updateInfoFrame, false, false)
@@ -335,8 +339,17 @@ function mod:OnCombatEnd()
 end
 
 function mod:OnTimerRecovery()
-	if DBM:UnitDebuff("player", 298569) then
-		playerSoulDrained = true
+	for uId in DBM:GetGroupMembers() do
+		local _, _, currentStack = DBM:UnitDebuff(uId, 298569)
+		local unitName = DBM:GetUnitFullName(uId)
+		drainedSoulStacks[unitName] = currentStack or 0
+		if UnitIsUnit(uId, "player") and currentStack then
+			playerSoulDrained = true
+		end
+		if self.Options.InfoFrame then
+			DBM.InfoFrame:SetHeader(OVERVIEW)
+			DBM.InfoFrame:Show(8, "function", updateInfoFrame, false, false)
+		end
 	end
 end
 
@@ -673,7 +686,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	if spellId == 302999 then--Arcane vuln
 		--Do stuff?
 	elseif spellId == 298569 then
-		drainedSoulStacks[args.destName] = nil
+		drainedSoulStacks[args.destName] = 0
 		if args:IsPlayer() then
 			playerSoulDrained = false
 		end
