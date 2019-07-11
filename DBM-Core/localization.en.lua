@@ -530,8 +530,8 @@ DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT = {
 	position 		= "%s %%s on {rt%%d}"..UnitName("player").."{rt%%d}",
 	combo			= "%s and %%s"--Spell name (from option, plus spellname given in arg)
 }
-DBM_CORE_AUTO_YELL_CUSTOM_POSITION		= "{rt%d}%s{rt%d}"--Doesn't need translating. Has no strings
-DBM_CORE_AUTO_YELL_CUSTOM_POSITION2		= "{rt%d}{rt%d}%s{rt%d}{rt%d}"--Doesn't need translating. Has no strings
+DBM_CORE_AUTO_YELL_CUSTOM_POSITION		= "{rt%d}%s"--Doesn't need translating. Has no strings
+DBM_CORE_AUTO_YELL_CUSTOM_POSITION2		= "{rt%d}%s{rt%d}"--Doesn't need translating. Has no strings
 DBM_CORE_AUTO_YELL_CUSTOM_FADE			= "%s faded"
 DBM_CORE_AUTO_HUD_OPTION_TEXT			= "Show HudMap for $spell:%s (Retired)"
 DBM_CORE_AUTO_HUD_OPTION_TEXT_MULTI		= "Show HudMap for various mechanics (Retired)"
