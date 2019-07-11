@@ -67,7 +67,7 @@ local warnCrushingDepths				= mod:NewTargetNoFilterAnnounce(303825, 4, nil, fals
 --Intermission One: Queen's Decree
 local warnQueensDecree					= mod:NewCastAnnounce(299250, 3)
 --Stage Two: Hearts Unleashed
-local warnArcaneBurst					= mod:NewTargetAnnounce(303657, 3)
+local warnArcaneBurst					= mod:NewTargetNoFilterAnnounce(303657, 3, nil, "Healer", 2)
 --Stage Three: Song of the Tides
 local warnEnergizeWardofPower			= mod:NewSpellAnnounce(300490, 3)
 local warnStaticShock					= mod:NewTargetAnnounce(300492, 2)
