@@ -172,7 +172,7 @@ local timerPiercingGazeCD				= mod:NewCDTimer(65, 300768, nil, nil, nil, 3)
 mod:AddNamePlateOption("NPAuraOnTorment", 297912)
 mod:AddNamePlateOption("NPAuraOnInfuriated", 300428)
 --mod:AddRangeFrameOption(6, 264382)
-mod:AddInfoFrameOption(302999, true)
+mod:AddInfoFrameOption(298569, true)
 mod:AddSetIconOption("SetIconOnArcaneBurst", 303657, true, false, {1, 2, 3})
 
 mod.vb.phase = 1
