@@ -37,7 +37,7 @@ L:SetMiscLocalization({
 })
 
 ---------------------------
---  The Hatchery --
+--  Orgozoa --
 ---------------------------
 L= DBM:GetModLocalization(2351)
 
@@ -51,11 +51,12 @@ L:SetMiscLocalization({
 })
 
 ---------------------------
--- Herald of N'zoth --
+-- Za'qul --
 ---------------------------
 L= DBM:GetModLocalization(2349)
 
 L:SetMiscLocalization({
+	Phase3	= "Za'qul tears open the pathway to Delirium Realm!",
 	Tear =	"눈물"
 })
 
@@ -70,7 +71,20 @@ L:SetMiscLocalization({
 	GroupUp =	"뭉치기",
 	Spread =	"산개",
 	Move	 =	"계속 이동",
-	DontMove =	"이동 중지"
+	DontMove =	"이동 중지",
+	--For Yells
+	HelpSoakMove	= "{rt3}같이 맞기 이동{rt3}",--Purple Diamond
+	HelpSoakStay	= "{rt6}같이 맞기 제자리{rt6}",--Blue Square
+	HelpSoak		= "{rt3}같이 맞기{rt3}",--Purple Diamond
+	HelpMove		= "{rt4}같이 이동{rt4}",--Green Triangle
+	HelpStay		= "{rt7}같이 제자리{rt7}",--Red X
+	SoloSoak 		= "혼자 맞기",
+	Solo =			"혼자",
+	--Not currently used Yells
+	SoloMoving		= "혼자 이동",
+	SoloStay		= "혼자 제자리",
+	SoloSoakMove	= "혼자 맞기 이동",
+	SoloSoakStay	= "혼자 맞기 제자리"
 })
 
 -------------
