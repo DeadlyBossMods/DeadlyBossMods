@@ -154,6 +154,7 @@ mod:AddTimerLine(DBM:EJ_GetSectionInfo(20323))
 local timerArcaneDetonationCD			= mod:NewCDCountTimer(80, 300519, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON, nil, 1, 5)
 local timerReversalofFortuneCD			= mod:NewCDCountTimer(80, 297371, nil, nil, nil, 5, nil, DBM_CORE_IMPORTANT_ICON)
 local timerArcaneBurstCD				= mod:NewCDCountTimer(58.2, 303657, nil, nil, nil, 3, nil, DBM_CORE_MAGIC_ICON)
+local timerAzsharasIndomitableCD		= mod:NewCDTimer(100, "ej20410", nil, nil, nil, 1, 298531, DBM_CORE_DAMAGE_ICON)
 --Stage Three: Song of the Tides
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20340))
 --local timerEnergizeWardofPowerCD		= mod:NewAITimer(58.2, 303657, nil, nil, nil, 5)
@@ -409,6 +410,7 @@ function mod:SPELL_CAST_START(args)
 				timerDivideandConquerCD:Start(2)
 			end
 		end
+		timerAzsharasIndomitableCD:Start(100)
 	elseif spellId == 300519 then
 		self.vb.arcaneDetonation = self.vb.arcaneDetonation + 1
 		specWarnArcaneDetonation:Show(DBM_CORE_BREAK_LOS)
@@ -895,6 +897,7 @@ local function startIntermissionTwo(self)
 	timerArcaneBurstCD:Stop()
 	timerArcaneDetonationCD:Stop()
 	timerDivideandConquerCD:Stop()
+	timerAzsharasIndomitableCD:Stop()
 
 	--Despite everything journal says, there really isn't a second intermission, P3 timers start here most accurately for azshara.
 	--But I still delay P3 warning until siren's are attackable,
