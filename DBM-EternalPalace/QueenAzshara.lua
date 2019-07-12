@@ -30,14 +30,11 @@ mod:RegisterEventsInCombat(
 
 --TODO, do something different with pressure surge later, announce remaining maybe
 --TODO, figure out stacks for drained soul and arcane debuffs to know what's too high
---TODO, add drain ancient ward when right spell ID (of 7) is known, one for phase 1, one for phase 2 and one for phase 3?
 --TODO, finetune arcane burst timing based on size of room and movement penalties and fix spellID for start/success events
 --TODO, detect various adds joining fight and timer/warn them in stage 2+
---TODO, phase 2.5 intermission detection (Intermission Two: Adoration)
 --TODO, beckon might use https://ptr.wowhead.com/spell=303802/army-of-azshara instead
 --TODO, check if multiple targets for static shock
 --TODO, figure out siren creature IDs so they can be auto marked and warning for shield can include which marked mob got it
---TODO, stop shield timer when all adds dead.
 --TODO, fine tune beckon spell Ids, when specific one that has jealousy is known for certain, add nearby warning
 --TODO, figure out cast time for https://ptr.wowhead.com/spell=301518/massive-energy-spike (ie between overload cast start, and when all remaining energy is released)
 --TODO, announce short ciruit?
@@ -151,9 +148,10 @@ local timerQueensDecreeCD				= mod:NewCDTimer(30.4, 299250, nil, nil, nil, 3, ni
 local timerNextPhase					= mod:NewPhaseTimer(30.4)
 --Stage Two: Hearts Unleashed
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20323))
-local timerArcaneDetonationCD			= mod:NewCDCountTimer(80, 300519, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
+local timerArcaneDetonationCD			= mod:NewCDCountTimer(80, 300519, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON, nil, 1, 5)
 local timerReversalofFortuneCD			= mod:NewCDCountTimer(80, 297371, nil, nil, nil, 5, nil, DBM_CORE_IMPORTANT_ICON)
 local timerArcaneBurstCD				= mod:NewCDCountTimer(58.2, 303657, nil, nil, nil, 3, nil, DBM_CORE_MAGIC_ICON)
+local timerAzsharasIndomitableCD		= mod:NewCDTimer(100, "ej20410", nil, nil, nil, 1, 298531, DBM_CORE_DAMAGE_ICON)
 --Stage Three: Song of the Tides
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20340))
 --local timerEnergizeWardofPowerCD		= mod:NewAITimer(58.2, 303657, nil, nil, nil, 5)
@@ -207,7 +205,7 @@ do
 	local tempLinesSorted = {}
 	local sortedLines = {}
 	--local function sortFuncDesc(a, b) return tempLines[a] > tempLines[b] end
-	local function sortFuncAsc(a, b) return lines[a] < lines[b] end
+	local function sortFuncAsc(a, b) return tempLines[a] < tempLines[b] end
 	local function addLine(key, value)
 		-- sort by insertion order
 		lines[key] = value
@@ -219,7 +217,7 @@ do
 		table.wipe(tempLinesSorted)
 		table.wipe(sortedLines)
 		--Power levels pulled from widgets
-		--TODO
+		----TODO
 		--Player Personal Checks
 		if playerSoulDrained then
 			local spellName2, _, currentStack2, _, _, expireTime2 = DBM:UnitDebuff("player", 298569)
@@ -230,8 +228,8 @@ do
 		end
 		--Add rest of drained soul
 		for uId in DBM:GetGroupMembers() do
-			if not (UnitGroupRolesAssigned(uId) == "TANK" or GetPartyAssignment("MAINTANK", uId, 1)) then
-				local unitName = UnitName(uId)
+			if not (UnitGroupRolesAssigned(uId) == "TANK" or GetPartyAssignment("MAINTANK", uId, 1) or UnitIsDeadOrGhost(uId)) then--Exclude tanks and dead
+				local unitName = DBM:GetUnitFullName(uId)
 				tempLines[unitName] = drainedSoulStacks[unitName] or 0
 				tempLinesSorted[#tempLinesSorted + 1] = unitName
 			end
@@ -312,6 +310,10 @@ function mod:OnCombatStart(delay)
 	else
 		self.vb.maxDecree = 1
 	end
+	for uId in DBM:GetGroupMembers() do
+		local unitName = DBM:GetUnitFullName(uId)
+		drainedSoulStacks[unitName] = 0
+	end
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(OVERVIEW)
 		DBM.InfoFrame:Show(8, "function", updateInfoFrame, false, false)
@@ -331,12 +333,20 @@ function mod:OnCombatEnd()
 	if self.Options.NPAuraOnTorment or self.Options.NPAuraOnInfuriated then
 		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
 	end
-	DBM:AddMsg("This mod is very incomplete, do to incomplete testing on PTR, Only Stage 1, 1.5, and 2 have support. 2.5, 3, 4 are WIP")
 end
 
 function mod:OnTimerRecovery()
-	if DBM:UnitDebuff("player", 298569) then
-		playerSoulDrained = true
+	for uId in DBM:GetGroupMembers() do
+		local _, _, currentStack = DBM:UnitDebuff(uId, 298569)
+		local unitName = DBM:GetUnitFullName(uId)
+		drainedSoulStacks[unitName] = currentStack or 0
+		if UnitIsUnit(uId, "player") and currentStack then
+			playerSoulDrained = true
+		end
+		if self.Options.InfoFrame then
+			DBM.InfoFrame:SetHeader(OVERVIEW)
+			DBM.InfoFrame:Show(8, "function", updateInfoFrame, false, false)
+		end
 	end
 end
 
@@ -396,6 +406,7 @@ function mod:SPELL_CAST_START(args)
 				timerDivideandConquerCD:Start(2)
 			end
 		end
+		timerAzsharasIndomitableCD:Start(98.1)--98.1-110?
 	elseif spellId == 300519 then
 		self.vb.arcaneDetonation = self.vb.arcaneDetonation + 1
 		specWarnArcaneDetonation:Show(DBM_CORE_BREAK_LOS)
@@ -558,14 +569,14 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellChargedSpear:Yell()
 			yellChargedSpearFades:Countdown(spellId)
 		else
-			warnChargedSpear:Show(args.destName)
+			warnChargedSpear:CombinedShow(0.5, args.destName)--if two adds are up, they actually go out at same time and we want to combine them
 		end
 	elseif spellId == 299094 or spellId == 302141 or spellId == 303797 or spellId == 303799 then--303797 and 303799 unknown
 		if args:IsPlayer() then
 			yellBeckon:Yell()
 		elseif spellId ~= 299094 and self:CheckNearby(8, args.destName) and not DBM:UnitDebuff("player", spellId) then--Warn nearby, because it's jealousy version
-			specWarnBeckonNear:Show(args.destName)
-			specWarnBeckonNear:Play("runaway")
+			specWarnBeckonNear:CombinedShow(0.5, args.destName)
+			specWarnBeckonNear:ScheduleVoice(0.5, "runaway")
 		end
 	elseif spellId == 303825 then
 		warnCrushingDepths:CombinedShow(1, args.destName)
@@ -673,7 +684,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	if spellId == 302999 then--Arcane vuln
 		--Do stuff?
 	elseif spellId == 298569 then
-		drainedSoulStacks[args.destName] = nil
+		drainedSoulStacks[args.destName] = 0
 		if args:IsPlayer() then
 			playerSoulDrained = false
 		end
@@ -882,6 +893,7 @@ local function startIntermissionTwo(self)
 	timerArcaneBurstCD:Stop()
 	timerArcaneDetonationCD:Stop()
 	timerDivideandConquerCD:Stop()
+	timerAzsharasIndomitableCD:Stop()
 
 	--Despite everything journal says, there really isn't a second intermission, P3 timers start here most accurately for azshara.
 	--But I still delay P3 warning until siren's are attackable,
