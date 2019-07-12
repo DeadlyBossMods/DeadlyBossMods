@@ -410,7 +410,7 @@ function mod:SPELL_CAST_START(args)
 				timerDivideandConquerCD:Start(2)
 			end
 		end
-		timerAzsharasIndomitableCD:Start(100)
+		timerAzsharasIndomitableCD:Start(98.1)--98.1-110?
 	elseif spellId == 300519 then
 		self.vb.arcaneDetonation = self.vb.arcaneDetonation + 1
 		specWarnArcaneDetonation:Show(DBM_CORE_BREAK_LOS)
@@ -573,7 +573,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellChargedSpear:Yell()
 			yellChargedSpearFades:Countdown(spellId)
 		else
-			warnChargedSpear:Show(args.destName)
+			warnChargedSpear:CombinedShow(0.5, args.destName)--if two adds are up, they actually go out at same time and we want to combine them
 		end
 	elseif spellId == 299094 or spellId == 302141 or spellId == 303797 or spellId == 303799 then--303797 and 303799 unknown
 		if args:IsPlayer() then
