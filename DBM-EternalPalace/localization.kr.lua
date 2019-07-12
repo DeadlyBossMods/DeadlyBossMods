@@ -56,8 +56,8 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(2349)
 
 L:SetMiscLocalization({
-	Phase3	= "Za'qul tears open the pathway to Delirium Realm!",
-	Tear =	"눈물"
+	Phase3	= "자쿨이 착란의 영역으로 통하는 길을 엽니다!",
+	Tear =	"균열"
 })
 
 ---------------------------
