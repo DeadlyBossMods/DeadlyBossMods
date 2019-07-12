@@ -17,7 +17,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS 302208 298014 301078 300492 300743 300334 300768",
 	"SPELL_AURA_APPLIED 302999 298569 297912 298014 298018 301078 300428 303825 303657 300492 300620 299094 303797 303799 300743 300866 300877 299249 299251 299254 299255 299252 299253 300502 302141 304267",
 	"SPELL_AURA_APPLIED_DOSE 302999 298569 298014 300743",
-	"SPELL_AURA_REMOVED 302999 298569 297912 301078 300428 303657 300502 304267 299249 299251 299254 299255 299252 299253",
+	"SPELL_AURA_REMOVED 302999 298569 297912 301078 300428 303657 300502 304267 299249 299251 299254 299255 299252 299253 300620",
 	"SPELL_PERIODIC_DAMAGE 297907 303981",
 	"SPELL_PERIODIC_MISSED 297907 303981",
 	"UNIT_DIED",
@@ -171,6 +171,8 @@ mod:AddNamePlateOption("NPAuraOnTorment", 297912)
 mod:AddNamePlateOption("NPAuraOnInfuriated", 300428)
 --mod:AddRangeFrameOption(6, 264382)
 mod:AddInfoFrameOption(298569, true)
+mod:AddBoolOption("SortDesc", false)
+mod:AddBoolOption("ShowTimeNotStacks", false)
 mod:AddSetIconOption("SetIconOnArcaneBurst", 303657, true, false, {1, 2, 3})
 
 mod.vb.phase = 1
@@ -196,6 +198,7 @@ local playerDecreeCount = 0
 local playerDecreeYell = 0--100s 2-Stack/1-Solo, 10s 2-Moving/1-Stay, 1s 2-Soak/1-NoSoak
 local phase1HeroicAddTimers = {42.6, 59.6, 89.1, 44.8, 39.4}--PTR data, needs live data
 local phase1NormalAddTimers = {42.6, 84.7}
+local mobShielded = {}
 
 local updateInfoFrame
 do
@@ -206,6 +209,7 @@ do
 	local sortedLines = {}
 	--local function sortFuncDesc(a, b) return tempLines[a] > tempLines[b] end
 	local function sortFuncAsc(a, b) return tempLines[a] < tempLines[b] end
+	local function sortFuncDesc(a, b) return tempLines[a] > tempLines[b] end
 	local function addLine(key, value)
 		-- sort by insertion order
 		lines[key] = value
@@ -220,22 +224,45 @@ do
 		----TODO
 		--Player Personal Checks
 		if playerSoulDrained then
-			local spellName2, _, currentStack2, _, _, expireTime2 = DBM:UnitDebuff("player", 298569)
-			if spellName2 and currentStack2 and expireTime2 then--Personal Tailwinds count
-				local remaining2 = expireTime2-GetTime()
-				addLine(spellName2.." ("..currentStack2..")", math.floor(remaining2))
+			local spellName, _, currentStack, _, _, expireTime = DBM:UnitDebuff("player", 298569)
+			if spellName and currentStack and expireTime then
+				local remaining = expireTime-GetTime()
+				addLine(spellName.." ("..currentStack..")", math.floor(remaining2))
 			end
 		end
 		--Add rest of drained soul
-		for uId in DBM:GetGroupMembers() do
-			if not (UnitGroupRolesAssigned(uId) == "TANK" or GetPartyAssignment("MAINTANK", uId, 1) or UnitIsDeadOrGhost(uId)) then--Exclude tanks and dead
-				local unitName = DBM:GetUnitFullName(uId)
-				tempLines[unitName] = drainedSoulStacks[unitName] or 0
-				tempLinesSorted[#tempLinesSorted + 1] = unitName
+		if mod.Options.ShowTimeNotStacks then
+			--Higher Performance check that scans all debuff remaining times
+			for uId in DBM:GetGroupMembers() do
+				if not (UnitGroupRolesAssigned(uId) == "TANK" or GetPartyAssignment("MAINTANK", uId, 1) or UnitIsDeadOrGhost(uId)) then--Exclude tanks and dead
+					local unitName = DBM:GetUnitFullName(uId)
+					local spellName2, _, _, _, _, expireTime2 = DBM:UnitDebuff("player", 298569)
+					if spellName2 and expireTime2 then
+						local remaining = expireTime-GetTime()
+						tempLines[unitName] = math.floor(remaining)
+						tempLinesSorted[#tempLinesSorted + 1] = unitName
+					else
+						tempLines[unitName] = 0
+						tempLinesSorted[#tempLinesSorted + 1] = unitName
+					end
+				end
+			end
+		else
+			--More performance friendly check that just returns all player stacks (the default option)
+			for uId in DBM:GetGroupMembers() do
+				if not (UnitGroupRolesAssigned(uId) == "TANK" or GetPartyAssignment("MAINTANK", uId, 1) or UnitIsDeadOrGhost(uId)) then--Exclude tanks and dead
+					local unitName = DBM:GetUnitFullName(uId)
+					tempLines[unitName] = drainedSoulStacks[unitName] or 0
+					tempLinesSorted[#tempLinesSorted + 1] = unitName
+				end
 			end
 		end
-		--Sort debuffs by lowest then inject into regular table
-		tsort(tempLinesSorted, sortFuncAsc)
+		--Sort debuffs, then inject into regular table
+		if mod.Options.SortDesc then
+			tsort(tempLinesSorted, sortFuncDesc)
+		else
+			tsort(tempLinesSorted, sortFuncAsc)
+		end
 		for _, name in ipairs(tempLinesSorted) do
 			addLine(name, tempLines[name])
 		end
@@ -290,6 +317,7 @@ function mod:OnCombatStart(delay)
 	table.wipe(drainedSoulStacks)
 	table.wipe(seenAdds)
 	table.wipe(castsPerGUID)
+	table.wipe(mobShielded)
 	timerPainfulMemoriesCD:Start(19.7)
 	--Aethanel
 	timerLightningOrbsCD:Start(24.4-delay)
@@ -365,7 +393,7 @@ function mod:SPELL_CAST_START(args)
 		timerLightningOrbsCD:Start()
 	elseif spellId == 297972 then
 		--timerChainLightningCD:Start(nil, args.sourceGUID)
-		if self:CheckInterruptFilter(args.sourceGUID, false, true) then
+		if self:CheckInterruptFilter(args.sourceGUID, false, true) and not mobShielded[args.sourceGUID] then
 			specWarnChainLightning:Show(args.sourceName)
 			specWarnChainLightning:Play("kickcast")
 		end
@@ -559,12 +587,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnFrozen:Show(args.destName)
 	elseif spellId == 301078 then
 		if args:IsPlayer() then
-			if self.vb.phase == 1 then
-				specWarnChargedSpear:Show(DBM_CORE_ROOM_EDGE)
-				specWarnChargedSpear:Play("runtoedge")
-			else
+			if #mobShielded > 0 then
 				specWarnChargedSpear:Show(shieldName)
 				specWarnChargedSpear:Play("behindmob")
+			else
+				specWarnChargedSpear:Show(DBM_CORE_ROOM_EDGE)
+				specWarnChargedSpear:Play("runtoedge")
 			end
 			yellChargedSpear:Yell()
 			yellChargedSpearFades:Countdown(spellId)
@@ -656,6 +684,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnStaticShock:Show(args.destName)
 		end
 	elseif spellId == 300620 then
+		if not mobShielded[args.destGUID] then
+			mobShielded[args.destGUID] = true
+		end
 		warnCrystallineShield:Show(args.destName)
 	elseif spellId == 300866 then
 		if args:IsPlayer() then
@@ -731,6 +762,8 @@ function mod:SPELL_AURA_REMOVED(args)
 				playerDecreeYell = playerDecreeYell - 10--100s 2-Stack/1-Solo, 10s 2-Moving/1-Stay, 1s 2-Soak/1-NoSoak
 			end
 		end
+	elseif spellId == 300620 then
+		mobShielded[args.destGUID] = nil
 	end
 end
 

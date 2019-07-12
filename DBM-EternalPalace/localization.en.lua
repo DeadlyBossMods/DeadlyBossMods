@@ -64,26 +64,31 @@ L:SetMiscLocalization({
 ---------------------------
 L= DBM:GetModLocalization(2361)
 
+L:SetOptionLocalization({
+	SortDesc 			= "Sort $spell:298569 Infoframe by highest debuff stack (instead of lowest).",
+	ShowTimeNotStacks	= "Show time remaining on $spell:298569 Infoframe instead of stack count."
+})
+
 L:SetMiscLocalization({
-	SoakOrb 		=	"Soak Orb",
-	AvoidOrb 		=	"Avoid Orb",
-	GroupUp 		=	"Group Up",
-	Spread 			=	"Spread",
-	Move			=	"Keep Moving",
-	DontMove 		=	"Stop Moving",
+	SoakOrb 			= "Soak Orb",
+	AvoidOrb 			= "Avoid Orb",
+	GroupUp 			= "Group Up",
+	Spread 				= "Spread",
+	Move				= "Keep Moving",
+	DontMove 			= "Stop Moving",
 	--For Yells
-	HelpSoakMove	= "{rt3}HELP SOAK MOVE{rt3}",--Purple Diamond
-	HelpSoakStay	= "{rt6}HELP SOAK STAY{rt6}",--Blue Square
-	HelpSoak		= "{rt3}HELP SOAK{rt3}",--Purple Diamond
-	HelpMove		= "{rt4}HELP MOVE{rt4}",--Green Triangle
-	HelpStay		= "{rt7}HELP STAY{rt7}",--Red X
-	SoloSoak 		= "SOLO SOAK",
-	Solo 			= "SOLO",
+	HelpSoakMove		= "{rt3}HELP SOAK MOVE{rt3}",--Purple Diamond
+	HelpSoakStay		= "{rt6}HELP SOAK STAY{rt6}",--Blue Square
+	HelpSoak			= "{rt3}HELP SOAK{rt3}",--Purple Diamond
+	HelpMove			= "{rt4}HELP MOVE{rt4}",--Green Triangle
+	HelpStay			= "{rt7}HELP STAY{rt7}",--Red X
+	SoloSoak 			= "SOLO SOAK",
+	Solo 				= "SOLO",
 	--Not currently used Yells
-	SoloMoving		= "SOLO MOVE",
-	SoloStay		= "SOLO STAY",
-	SoloSoakMove	= "SOLO SOAK MOVE",
-	SoloSoakStay	= "SOLO SOAK STAY"
+	SoloMoving			= "SOLO MOVE",
+	SoloStay			= "SOLO STAY",
+	SoloSoakMove		= "SOLO SOAK MOVE",
+	SoloSoakStay		= "SOLO SOAK STAY"
 })
 
 -------------
