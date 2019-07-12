@@ -207,7 +207,7 @@ do
 	local tempLinesSorted = {}
 	local sortedLines = {}
 	--local function sortFuncDesc(a, b) return tempLines[a] > tempLines[b] end
-	local function sortFuncAsc(a, b) return lines[a] < lines[b] end
+	local function sortFuncAsc(a, b) return tempLines[a] < tempLines[b] end
 	local function addLine(key, value)
 		-- sort by insertion order
 		lines[key] = value
