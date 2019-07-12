@@ -231,7 +231,7 @@ do
 		end
 		--Add rest of drained soul
 		for uId in DBM:GetGroupMembers() do
-			if not (UnitGroupRolesAssigned(uId) == "TANK" or GetPartyAssignment("MAINTANK", uId, 1)) then--Exclude tanks
+			if not (UnitGroupRolesAssigned(uId) == "TANK" or GetPartyAssignment("MAINTANK", uId, 1) or UnitIsDeadOrGhost(uId)) then--Exclude tanks and dead
 				local unitName = DBM:GetUnitFullName(uId)
 				tempLines[unitName] = drainedSoulStacks[unitName] or 0
 				tempLinesSorted[#tempLinesSorted + 1] = unitName
