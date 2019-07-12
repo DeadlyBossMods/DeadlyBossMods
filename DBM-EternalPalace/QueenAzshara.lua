@@ -30,14 +30,11 @@ mod:RegisterEventsInCombat(
 
 --TODO, do something different with pressure surge later, announce remaining maybe
 --TODO, figure out stacks for drained soul and arcane debuffs to know what's too high
---TODO, add drain ancient ward when right spell ID (of 7) is known, one for phase 1, one for phase 2 and one for phase 3?
 --TODO, finetune arcane burst timing based on size of room and movement penalties and fix spellID for start/success events
 --TODO, detect various adds joining fight and timer/warn them in stage 2+
---TODO, phase 2.5 intermission detection (Intermission Two: Adoration)
 --TODO, beckon might use https://ptr.wowhead.com/spell=303802/army-of-azshara instead
 --TODO, check if multiple targets for static shock
 --TODO, figure out siren creature IDs so they can be auto marked and warning for shield can include which marked mob got it
---TODO, stop shield timer when all adds dead.
 --TODO, fine tune beckon spell Ids, when specific one that has jealousy is known for certain, add nearby warning
 --TODO, figure out cast time for https://ptr.wowhead.com/spell=301518/massive-energy-spike (ie between overload cast start, and when all remaining energy is released)
 --TODO, announce short ciruit?
@@ -336,7 +333,6 @@ function mod:OnCombatEnd()
 	if self.Options.NPAuraOnTorment or self.Options.NPAuraOnInfuriated then
 		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
 	end
-	DBM:AddMsg("This mod is very incomplete, do to incomplete testing on PTR, Only Stage 1, 1.5, and 2 have support. 2.5, 3, 4 are WIP")
 end
 
 function mod:OnTimerRecovery()
