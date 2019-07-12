@@ -43,7 +43,7 @@ local yellArcaneBombFades				= mod:NewIconFadesYell(296737)
 local specWarnUnshackledPower			= mod:NewSpecialWarningCount(296894, nil, nil, nil, 2, 2)
 --Raging Storm
 local specWarnAncientTempest			= mod:NewSpecialWarningSpell(295916, nil, nil, nil, 2, 2)
-local specWarnGaleBuffet				= mod:NewSpecialWarningSpell(296701, nil, nil, nil, 2, 2)
+local specWarnGaleBuffet				= mod:NewSpecialWarningSpell(304098, nil, nil, nil, 2, 2)
 --local specWarnGTFO						= mod:NewSpecialWarningGTFO(270290, nil, nil, nil, 1, 8)
 
 --Rising Fury
@@ -55,7 +55,7 @@ local timerUnshacklingPowerCD			= mod:NewNextCountTimer(58.2, 296894, nil, nil, 
 local timerAncientTempestCD				= mod:NewNextTimer(95.9, 295916, nil, nil, nil, 6)
 --Raging Storm
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20078))
-local timerGaleBuffetCD					= mod:NewCDTimer(22.7, 296701, nil, nil, nil, 2)
+local timerGaleBuffetCD					= mod:NewCDTimer(22.7, 304098, nil, nil, nil, 2)
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
 
@@ -172,7 +172,7 @@ function mod:SPELL_CAST_START(args)
 			timerArcaneBombCD:Start(17.1, 1)
 			timerGaleBuffetCD:Start(22)
 		end
-	elseif spellId == 296701 or spellId == 304098 then
+	elseif spellId == 296701 or spellId == 304098 then--296701 unknown
 		if self:CheckBossDistance(args.sourceGUID, true, 34471) then--43 yards
 			specWarnGaleBuffet:Show()
 			specWarnGaleBuffet:Play("carefly")
