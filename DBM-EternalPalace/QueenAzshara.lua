@@ -579,8 +579,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			yellBeckon:Yell()
 		elseif spellId ~= 299094 and self:CheckNearby(8, args.destName) and not DBM:UnitDebuff("player", spellId) then--Warn nearby, because it's jealousy version
-			specWarnBeckonNear:Show(args.destName)
-			specWarnBeckonNear:Play("runaway")
+			specWarnBeckonNear:CombinedShow(0.5, args.destName)
+			specWarnBeckonNear:ScheduleVoice(0.5, "runaway")
 		end
 	elseif spellId == 303825 then
 		warnCrushingDepths:CombinedShow(1, args.destName)
