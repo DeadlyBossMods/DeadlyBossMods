@@ -227,7 +227,7 @@ do
 			local spellName, _, currentStack, _, _, expireTime = DBM:UnitDebuff("player", 298569)
 			if spellName and currentStack and expireTime then
 				local remaining = expireTime-GetTime()
-				addLine(spellName.." ("..currentStack..")", math.floor(remaining2))
+				addLine(spellName.." ("..currentStack..")", math.floor(remaining))
 			end
 		end
 		--Add rest of drained soul
@@ -238,8 +238,8 @@ do
 					local unitName = DBM:GetUnitFullName(uId)
 					local spellName2, _, _, _, _, expireTime2 = DBM:UnitDebuff("player", 298569)
 					if spellName2 and expireTime2 then
-						local remaining = expireTime-GetTime()
-						tempLines[unitName] = math.floor(remaining)
+						local remaining2 = expireTime2-GetTime()
+						tempLines[unitName] = math.floor(remaining2)
 						tempLinesSorted[#tempLinesSorted + 1] = unitName
 					else
 						tempLines[unitName] = 0
