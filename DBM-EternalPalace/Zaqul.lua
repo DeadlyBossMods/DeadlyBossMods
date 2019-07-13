@@ -13,7 +13,7 @@ mod:SetUsedIcons(1, 2, 3)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 301141 292963 296257 303978 301068 303543 302593 296018 304733",
+	"SPELL_CAST_START 301141 292963 296257 303978 301068 303543 302593 296018 304733 296078",
 	"SPELL_CAST_SUCCESS 292963 302503 293509 303543 296018 302504 295444 294515 299708",
 	"SPELL_SUMMON 300732",
 	"SPELL_AURA_APPLIED 292971 292981 295480 300133 292963 302503 293509 295327 303971 296078 303543 296018 302504 300584",
@@ -34,7 +34,7 @@ mod:RegisterEventsInCombat(
 --TODO, void slam, who does it target? random or the tank? if random, can we target scan it?
 --TODO, pause/resume (or reset) timers for boss shielding/split phase in stage 4 mythic?
 --[[
-(ability.id = 301141 or ability.id = 303543 or ability.id = 296018 or ability.id = 292963 or ability.id = 296257 or ability.id = 304733 or ability.id = 303978 or ability.id = 301068 or ability.id = 302593) and type = "begincast"
+(ability.id = 301141 or ability.id = 303543 or ability.id = 296018 or ability.id = 292963 or ability.id = 296257 or ability.id = 304733 or ability.id = 303978 or ability.id = 301068 or ability.id = 302593 or ability.id = 296078) and type = "begincast"
  or (ability.id = 292963 or ability.id = 302503 or ability.id = 296018 or ability.id = 302504 or ability.id = 303543 or ability.id = 295444 or ability.id = 294515 or ability.id = 299708) and type = "cast"
  or (ability.id = 300584 or ability.id = 293509) and type = "applydebuff"
 --]]
@@ -78,18 +78,18 @@ local yellManicDreadFades				= mod:NewIconFadesYell(296018)
 
 --mod:AddTimerLine(BOSS)
 --Stage One: The Herald
-local timerHorrificSummonerCD			= mod:NewCDTimer(65.7, "ej20172", nil, nil, nil, 1, 294515, DBM_CORE_DAMAGE_ICON)
+local timerHorrificSummonerCD			= mod:NewCDTimer(80.1, "ej20172", nil, nil, nil, 1, 294515, DBM_CORE_DAMAGE_ICON)
 local timerCrushingGraspCD				= mod:NewCDTimer(31.4, 292565, nil, nil, nil, 3)
 local timerDreadCD						= mod:NewCDTimer(75.4, 292963, nil, "Healer", nil, 5, nil, DBM_CORE_MAGIC_ICON)--One dread timer used for all versions (cast by boss)
-local timerMindTetherCD					= mod:NewCDTimer(48.2, 295444, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--52.3
+local timerMindTetherCD					= mod:NewCDTimer(47.8, 295444, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--52.3
 --Stage Two: Grip of Fear
-local timerManifestNightmaresCD			= mod:NewCDTimer(30, 293509, nil, nil, nil, 3)
-local timerMaddeningEruptionCD			= mod:NewCDTimer(36.1, 292996, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerManifestNightmaresCD			= mod:NewCDTimer(35, 293509, nil, nil, nil, 3)
+local timerMaddeningEruptionCD			= mod:NewCDTimer(66.4, 292996, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
 --Stage Three: Delirium's Descent
-local timerDeliriumsDescentCD			= mod:NewCDTimer(20.6, 304733, nil, nil, nil, 3)
+local timerDeliriumsDescentCD			= mod:NewCDTimer(35, 304733, nil, nil, nil, 3)
 --Stage Four: All Pathways Open
-local timerDarkPulseCD					= mod:NewCDTimer(66.6, 303978, nil, nil, nil, 6, nil, DBM_CORE_DEADLY_ICON)--Non Mythic
-local timerManicDreadCD					= mod:NewCDTimer(75.4, 296018, nil, "Healer", nil, 5, nil, DBM_CORE_MAGIC_ICON)
+local timerDarkPulseCD					= mod:NewCDTimer(93.5, 303978, nil, nil, nil, 6, nil, DBM_CORE_DEADLY_ICON)
+local timerManicDreadCD					= mod:NewCDTimer(75.4, 296018, nil, "Healer", nil, 5, nil, DBM_CORE_MAGIC_ICON)--75-83
 ----Mythic
 local timerPsychoticSplitCD				= mod:NewCDTimer(66.6, 301068, nil, nil, nil, 6, nil, DBM_CORE_MYTHIC_ICON..DBM_CORE_DEADLY_ICON)--Mythic
 local timerDreadScreamCD				= mod:NewAITimer(58.2, 303543, nil, "Healer", nil, 5, nil, DBM_CORE_MYTHIC_ICON..DBM_CORE_MAGIC_ICON)--Mythic
@@ -117,7 +117,7 @@ function mod:OnCombatStart(delay)
 	--self.vb.nightmaresCount = 0
 	timerMindTetherCD:Start(3.3-delay)
 	timerDreadCD:Start(12-delay)
-	timerHorrificSummonerCD:Start(25.4-delay)
+	timerHorrificSummonerCD:Start(25.4-delay)--20 sec for event, but the portal happens 5 seconds AFTER event
 	timerCrushingGraspCD:Start(30-delay)
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(292971))
@@ -151,7 +151,7 @@ function mod:SPELL_CAST_START(args)
 		--Timers that never stop, but might need time added to them if they come off cd during transition
 		--timerDreadCD:Stop()
 		--New Stage 2 timers
-		timerManifestNightmaresCD:Start(30)
+		timerManifestNightmaresCD:Start(37.2)
 		--timerMaddeningEruptionCD:Start(1)--1-3 seconds after this cast
 	elseif spellId == 304733 then--Delirium's Descent
 		if self.vb.phase < 3 then
@@ -167,7 +167,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.DeliriumsDescentCount = self.vb.DeliriumsDescentCount + 1
 		warnDeliriumsDescent:Show(self.vb.DeliriumsDescentCount)
 		timerDeliriumsDescentCD:Start()
-	elseif spellId == 303978 then--Dark Pulse
+	elseif spellId == 303978 or spellId == 296078 then--Dark Pulse
 		specWarnDarkPulse:Show()
 		specWarnDarkPulse:Play("attackshield")
 		timerDarkPulseCD:Start()
@@ -287,14 +287,14 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 303971 or spellId == 296078 then--Dark Pulse
 		--timerManicDreadCD:Stop()
-	elseif spellId == 300584 and self.vb.phase < 4 then--Reality Portal (shit detection for mythic, needs replacing)
+	elseif spellId == 300584 and self.vb.phase < 4 then--Reality Portal (Only works on non mythic)
 		self.vb.phase = 4
 		timerDeliriumsDescentCD:Stop()
 		timerMaddeningEruptionCD:Stop()
 		if self:IsMythic() then
-			timerPsychoticSplitCD:Start(4)
+			timerPsychoticSplitCD:Start(73.1)
 		else
-			timerDarkPulseCD:Start(43.1)
+			timerDarkPulseCD:Start(73.1)
 		end
 	end
 end
@@ -396,14 +396,14 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		timerDreadCD:Start()
 	--elseif spellId == 301179 then--Pick a Ultimate (Script for Dark Pulse or mythic version Psychotic Split)
 
-	elseif spellId == 296465 and self.vb.phase < 4 then--Energy Tracker
+	elseif spellId == 296465 and self.vb.phase < 4 then--Energy Tracker (should work on all)
 		self.vb.phase = 4
 		timerDeliriumsDescentCD:Stop()
 		timerMaddeningEruptionCD:Stop()
 		if self:IsMythic() then
-			timerPsychoticSplitCD:Start(45.1)
+			timerPsychoticSplitCD:Start(75.1)
 		else
-			timerDarkPulseCD:Start(45.1)
+			timerDarkPulseCD:Start(75.1)
 		end
 	end
 end
