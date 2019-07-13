@@ -14,7 +14,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 297398",
-	"SPELL_CAST_SUCCESS 296569 296662 296725 297240 298056",
+	"SPELL_CAST_SUCCESS 296569 296662 296725 298056",
 	"SPELL_AURA_APPLIED 296650 296725 296943 296940 296942 296939 296941 296938 302989 297397",
 	"SPELL_AURA_REMOVED 296650 296943 296940 296942 296939 296941 296938 302989",
 	"SPELL_PERIODIC_DAMAGE 296752",
@@ -148,8 +148,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 		--specWarnRipplingWave:Show(self.vb.ripplingWave)
 		--specWarnRipplingWave:Play("watchwave")
 		timerRipplingwaveCD:Start(35, self.vb.ripplingWave+1)
-	elseif spellId == 297240 then--Shield, slightly delayed to make sure UnitGetTotalAbsorbs returns a value
-
 	elseif spellId == 298056 then--Upsurge
 		self.vb.upsurgeCast = self.vb.upsurgeCast + 1
 		warnUpsurge:Show(self.vb.upsurgeCast)
