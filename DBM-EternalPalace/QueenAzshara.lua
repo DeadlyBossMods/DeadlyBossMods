@@ -236,7 +236,7 @@ do
 			for uId in DBM:GetGroupMembers() do
 				if not (UnitGroupRolesAssigned(uId) == "TANK" or GetPartyAssignment("MAINTANK", uId, 1) or UnitIsDeadOrGhost(uId)) then--Exclude tanks and dead
 					local unitName = DBM:GetUnitFullName(uId)
-					local spellName2, _, _, _, _, expireTime2 = DBM:UnitDebuff("player", 298569)
+					local spellName2, _, _, _, _, expireTime2 = DBM:UnitDebuff(uId, 298569)
 					if spellName2 and expireTime2 then
 						local remaining2 = expireTime2-GetTime()
 						tempLines[unitName] = math.floor(remaining2)
