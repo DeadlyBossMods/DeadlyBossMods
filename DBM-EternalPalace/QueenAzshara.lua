@@ -513,7 +513,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 300768 then
 		specWarnPiercingGaze:Show()
 		specWarnPiercingGaze:Play("farfromline")
-		timerPiercingGazeCD:Start(self:IsHard and 40 or 65)
+		timerPiercingGazeCD:Start(self:IsHard() and 40 or 65)
 	end
 end
 
