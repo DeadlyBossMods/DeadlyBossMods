@@ -598,7 +598,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 299094 or spellId == 302141 or spellId == 303797 or spellId == 303799 then--303797 and 303799 unknown
 		if args:IsPlayer() then
 			yellBeckon:Yell()
-		elseif (spellId == 303797 or spellId == 303799) and self:CheckNearby(8, args.destName) and not DBM:UnitDebuff("player", spellId) then--Warn nearby, because it's jealousy version
+		elseif self:IsHard() and (spellId == 303797 or spellId == 303799) and self:CheckNearby(8, args.destName) and not DBM:UnitDebuff("player", spellId) then--Warn nearby, because it's jealousy version
 			specWarnBeckonNear:CombinedShow(0.5, args.destName)
 			specWarnBeckonNear:ScheduleVoice(0.5, "runaway")
 		end
