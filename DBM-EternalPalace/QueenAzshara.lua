@@ -383,11 +383,11 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 297937 and self:AntiSpam(3, 3) then--Painful Memories
 		specWarnPainfulMemories:Show(DBM_CORE_BREAK_LOS)
 		specWarnPainfulMemories:Play("moveboss")
-		timerLongingCD:Start(self:IsHeroic() and 65 or 70)
+		timerLongingCD:Start(self:IsHard() and 65 or 70)
 	elseif spellId == 297934 and self:AntiSpam(5, 3) then--Longing
 		specWarnLonging:Show(DBM_CORE_RESTORE_LOS)
 		specWarnLonging:Play("moveboss")
-		timerPainfulMemoriesCD:Start(self:IsHeroic() and 20 or 24.9)
+		timerPainfulMemoriesCD:Start(self:IsHard() and 20 or 24.9)
 	elseif spellId == 298121 then
 		warnLightningOrbs:Show()
 		timerLightningOrbsCD:Start()
@@ -450,7 +450,7 @@ function mod:SPELL_CAST_START(args)
 		else
 			warnOverload:Show(self.vb.overloadCount)
 		end
-		timerOverloadCD:Start(self:IsHeroic() and 44.9 or 54.9, self.vb.overloadCount+1)
+		timerOverloadCD:Start(self:IsHard() and 44.9 or 54.9, self.vb.overloadCount+1)
 	elseif spellId == 299094 or spellId == 302141 or spellId == 303797 or spellId == 303799 then--299094 Phase 1, 302141 phase 2, 303797 phase 3, 303799 unknown (probably phase 4)
 		self.vb.beckonCast = self.vb.beckonCast + 1
 		if self.vb.phase == 1 then
@@ -513,7 +513,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 300768 then
 		specWarnPiercingGaze:Show()
 		specWarnPiercingGaze:Play("farfromline")
-		timerPiercingGazeCD:Start(self:IsHeroic and 40 or 65)
+		timerPiercingGazeCD:Start(self:IsHard and 40 or 65)
 	end
 end
 
