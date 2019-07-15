@@ -13,8 +13,8 @@ mod:SetUsedIcons(3, 2, 1)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 297937 297934 298121 297972 298531 300478 299250 299178 300519 297372 301431 299094 302141 303797 303799 300620",
-	"SPELL_CAST_SUCCESS 302208 298014 301078 300492 300743 300334 300768",
+	"SPELL_CAST_START 297937 297934 298121 297972 298531 300478 299250 299178 300519 301431 299094 302141 303797 303799 300620",
+	"SPELL_CAST_SUCCESS 302208 298014 301078 300743 300334 300768",
 	"SPELL_AURA_APPLIED 302999 298569 297912 298014 298018 301078 300428 303825 303657 300492 300620 299094 303797 303799 300743 300866 300877 299249 299251 299254 299255 299252 299253 300502 302141 304267",
 	"SPELL_AURA_APPLIED_DOSE 302999 298569 298014 300743",
 	"SPELL_AURA_REMOVED 302999 298569 297912 301078 300428 303657 300502 304267 299249 299251 299254 299255 299252 299253 300620",
@@ -131,7 +131,7 @@ local timerLightningOrbsCD				= mod:NewCDTimer(16.1, 298121, nil, nil, nil, 3)
 local timerColdBlastCD					= mod:NewCDTimer(9.4, 298014, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 ----Cyranus
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20266))
-local timerChargedSpearCD				= mod:NewCDTimer(32.3, 301078, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)--32-40
+local timerChargedSpearCD				= mod:NewCDTimer(32.3, 301078, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)--32-40 in stage 1, 12.4-15 stage 3
 ----Overzealous Hulk
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20480))
 local timerHulkSpawnCD					= mod:NewCDCountTimer(30.4, "ej20480", nil, nil, nil, 1, 298531, DBM_CORE_DAMAGE_ICON)
@@ -149,7 +149,7 @@ local timerNextPhase					= mod:NewPhaseTimer(30.4)
 --Stage Two: Hearts Unleashed
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20323))
 local timerArcaneDetonationCD			= mod:NewCDCountTimer(80, 300519, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON, nil, 1, 5)
-local timerReversalofFortuneCD			= mod:NewCDCountTimer(80, 297371, nil, nil, nil, 5, nil, DBM_CORE_IMPORTANT_ICON)
+local timerReversalofFortuneCD			= mod:NewCDCountTimer(80, 297371, nil, nil, nil, 5, nil, DBM_CORE_IMPORTANT_ICON, nil, 2, 5)
 local timerArcaneBurstCD				= mod:NewCDCountTimer(58.2, 303657, nil, nil, nil, 3, nil, DBM_CORE_MAGIC_ICON)
 local timerAzsharasIndomitableCD		= mod:NewCDTimer(100, "ej20410", nil, nil, nil, 1, 298531, DBM_CORE_DAMAGE_ICON)
 --Stage Three: Song of the Tides
@@ -159,9 +159,9 @@ mod:AddTimerLine(DBM:EJ_GetSectionInfo(20340))
 --local timerCrystallineShieldCD		= mod:NewCDTimer(17, 300620, nil, nil, nil, 3, nil, DBM_CORE_DAMAGE_ICON..DBM_CORE_IMPORTANT_ICON)
 --Stage Four: My Palace Is a Prison
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20361))
-local timerGreaterReversalCD			= mod:NewAITimer(58.2, 297372, 297371, nil, nil, 5, nil, DBM_CORE_IMPORTANT_ICON..DBM_CORE_HEROIC_ICON)
+local timerGreaterReversalCD			= mod:NewCDCountTimer(58.2, 297372, 297371, nil, nil, 5, nil, DBM_CORE_IMPORTANT_ICON..DBM_CORE_HEROIC_ICON, nil, 2, 5)
 local timerVoidTouchedCD				= mod:NewCDTimer(6.9, 300743, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
-local timerNetherPortalCD				= mod:NewNextTimer(35, 303980, nil, nil, nil, 3)
+local timerNetherPortalCD				= mod:NewCDTimer(35, 303980, nil, nil, nil, 3)--35 unless delayed by spell queue
 local timerOverloadCD					= mod:NewCDCountTimer(54.9, 301431, nil, nil, nil, 5, nil, DBM_CORE_IMPORTANT_ICON)
 local timerPiercingGazeCD				= mod:NewCDTimer(65, 300768, nil, nil, nil, 3)
 
@@ -383,11 +383,11 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 297937 and self:AntiSpam(3, 3) then--Painful Memories
 		specWarnPainfulMemories:Show(DBM_CORE_BREAK_LOS)
 		specWarnPainfulMemories:Play("moveboss")
-		timerLongingCD:Start()
-	elseif spellId == 297934 and self:AntiSpam(3, 3) then--Longing
+		timerLongingCD:Start(self:IsHard() and 65 or 70)
+	elseif spellId == 297934 and self:AntiSpam(5, 3) then--Longing
 		specWarnLonging:Show(DBM_CORE_RESTORE_LOS)
 		specWarnLonging:Play("moveboss")
-		timerPainfulMemoriesCD:Start()
+		timerPainfulMemoriesCD:Start(self:IsHard() and 20 or 24.9)
 	elseif spellId == 298121 then
 		warnLightningOrbs:Show()
 		timerLightningOrbsCD:Start()
@@ -439,13 +439,9 @@ function mod:SPELL_CAST_START(args)
 		self.vb.arcaneDetonation = self.vb.arcaneDetonation + 1
 		specWarnArcaneDetonation:Show(DBM_CORE_BREAK_LOS)
 		specWarnArcaneDetonation:Play("findshelter")
-		timerArcaneDetonationCD:Start(nil, self.vb.arcaneDetonation+1)
+		timerArcaneDetonationCD:Start(80, self.vb.arcaneDetonation+1)
 --	elseif spellId == 300490 then
 		--warnEnergizeWardofPower:Show()
-	elseif spellId == 297372 then
-		specWarnGreaterReversal:Show()
-		specWarnGreaterReversal:Play("telesoon")
-		timerGreaterReversalCD:Start()
 	elseif spellId == 301431 then
 		self.vb.overloadCount = self.vb.overloadCount + 1
 		if self.Options.SpecWarn301431count then
@@ -454,7 +450,7 @@ function mod:SPELL_CAST_START(args)
 		else
 			warnOverload:Show(self.vb.overloadCount)
 		end
-		timerOverloadCD:Start(54.9, self.vb.overloadCount+1)
+		timerOverloadCD:Start(self:IsHard() and 44.9 or 54.9, self.vb.overloadCount+1)
 	elseif spellId == 299094 or spellId == 302141 or spellId == 303797 or spellId == 303799 then--299094 Phase 1, 302141 phase 2, 303797 phase 3, 303799 unknown (probably phase 4)
 		self.vb.beckonCast = self.vb.beckonCast + 1
 		if self.vb.phase == 1 then
@@ -500,8 +496,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 298014 then
 		timerColdBlastCD:Start()
 	elseif spellId == 301078 then
-		timerChargedSpearCD:Start()
-	elseif spellId == 300492 then
+		timerChargedSpearCD:Start(self.vb.phase == 1 and 32 or 12.8, args.sourceGUID)
+--	elseif spellId == 300492 then
 		--timerStaticShockCD:Start(nil, args.sourceGUID)
 	elseif spellId == 300743 then
 		timerVoidTouchedCD:Start()
@@ -517,7 +513,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 300768 then
 		specWarnPiercingGaze:Show()
 		specWarnPiercingGaze:Play("farfromline")
-		timerPiercingGazeCD:Start()
+		timerPiercingGazeCD:Start(self:IsHard() and 40 or 65)
 	end
 end
 
@@ -602,7 +598,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 299094 or spellId == 302141 or spellId == 303797 or spellId == 303799 then--303797 and 303799 unknown
 		if args:IsPlayer() then
 			yellBeckon:Yell()
-		elseif spellId ~= 299094 and self:CheckNearby(8, args.destName) and not DBM:UnitDebuff("player", spellId) then--Warn nearby, because it's jealousy version
+		elseif self:IsHard() and (spellId == 303797 or spellId == 303799) and self:CheckNearby(8, args.destName) and not DBM:UnitDebuff("player", spellId) then--Warn nearby, because it's jealousy version
 			specWarnBeckonNear:CombinedShow(0.5, args.destName)
 			specWarnBeckonNear:ScheduleVoice(0.5, "runaway")
 		end
@@ -805,7 +801,7 @@ do
 				startIntermissionOne(self)
 			end
 		elseif cid == 153060 then--Cryanus
-			timerChargedSpearCD:Stop()
+			timerChargedSpearCD:Stop(args.destGUID)
 			self.vb.stageOneBossesLeft = self.vb.stageOneBossesLeft - 1
 			if self.vb.stageOneBossesLeft == 0 then
 				startIntermissionOne(self)
@@ -821,8 +817,8 @@ do
 			--timerChainLightningCD:Stop(args.destGUID)
 --		elseif cid == 154240 then--azsharas-devoted
 
---		elseif cid == 154565 then--Loyal Myrmidon
-
+		elseif cid == 154565 then--Loyal Myrmidon
+			timerChargedSpearCD:Stop(args.destGUID)
 		end
 	end
 end
@@ -946,9 +942,14 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		specWarnReversalofFortune:Show()
 		specWarnReversalofFortune:Play("telesoon")
 		timerReversalofFortuneCD:Start(self.vb.phase == 2 and 80 or 70, self.vb.reversalCount+1)
+	elseif spellId == 297372 then
+		self.vb.reversalCount = self.vb.reversalCount + 1
+		specWarnGreaterReversal:Show()
+		specWarnGreaterReversal:Play("telesoon")
+		timerGreaterReversalCD:Start(70, self.vb.reversalCount+1)
 	elseif spellId == 303629 then--Arcane Burst
 		self.vb.arcaneBurstIcon = 1
-		--60, 70.0, 55.3 (P2, unknown beyond that)
+		--60, 70.0, 55.3 (P2)
 		self.vb.arcaneBurstCount = self.vb.arcaneBurstCount + 1
 		if self.vb.arcaneBurstCount % 2 == 0 then
 			timerArcaneBurstCD:Start(55, self.vb.arcaneBurstCount+1)
