@@ -23,7 +23,6 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO: Can boss cast Bioelectric Feelers during Cavitation, when tank is forced away from boss?
 --[[
 (ability.id = 292270 or ability.id = 292083) and type = "begincast"
  or (ability.id = 292205 or ability.id = 302135 or ability.id = 292159 or ability.id = 301494) and type = "cast"
@@ -45,13 +44,13 @@ local yellPiercingBarb					= mod:NewYell(301494)
 local timerBioluminescentCloud			= mod:NewCastCountTimer(30.4, 292205, nil, nil, nil, 5)
 local timerToxicSpineCD					= mod:NewNextTimer(20, 292167, nil, "Healer", nil, 5, nil, DBM_CORE_HEALER_ICON)
 local timerShockPulseCD					= mod:NewNextCountTimer(30, 292270, nil, nil, nil, 2, nil, nil, nil, 1, 4)
-local timerPiercingBarbCD				= mod:NewNextTimer(29.9, 301494, nil, nil, nil, 3, nil, nil, nil, 3, 4)--Mythic
+local timerPiercingBarbCD				= mod:NewNextTimer(29.9, 301494, nil, nil, nil, 3, nil, DBM_CORE_MYTHIC_ICON, nil, 3, 4)--Mythic
 local timerNextPhase					= mod:NewPhaseTimer(100)
 local timerCavitation					= mod:NewCastTimer(32, 292083, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON, nil, 1, 4)
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
 
---mod:AddRangeFrameOption(6, 264382)
+mod:AddRangeFrameOption(5, 292247)
 mod:AddInfoFrameOption(292133, true)
 --mod:AddSetIconOption("SetIconOnEyeBeam", 264382, true)
 
@@ -104,17 +103,20 @@ function mod:OnCombatStart(delay)
 	self.vb.shockPulse = 0
 	playerBio, playerBioTwo, playerBioThree = false, false, false
 	if self:IsMythic() then
-		timerPiercingBarbCD:Start(11-delay)
 		timerToxicSpineCD:Start(11-delay)
+		timerPiercingBarbCD:Start(13-delay)
 		timerShockPulseCD:Start(23-delay, 1)
 	else
 		timerToxicSpineCD:Start(5.4-delay)
 		timerShockPulseCD:Start(19.4-delay, 1)--22?
 	end
-	timerNextPhase:Start(100)
+	timerNextPhase:Start(100)--Power Drain (when it leaves) not 10 seconds after when it casts cav
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(OVERVIEW)
 		DBM.InfoFrame:Show(8, "function", updateInfoFrame, false, false)
+	end
+	if self.Options.RangeFrame then
+		DBM.RangeCheck:Show(5)
 	end
 end
 
@@ -122,9 +124,9 @@ function mod:OnCombatEnd()
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
 	end
---	if self.Options.RangeFrame then
---		DBM.RangeCheck:Hide()
---	end
+	if self.Options.RangeFrame then
+		DBM.RangeCheck:Hide()
+	end
 end
 
 function mod:OnTimerRecovery()
@@ -234,15 +236,15 @@ function mod:SPELL_INTERRUPT(args)
 		self.vb.phase = self.vb.phase + 1
 		timerCavitation:Stop()
 		if self:IsMythic() then
-			timerPiercingBarbCD:Start(11)
 			timerToxicSpineCD:Start(11)
+			timerPiercingBarbCD:Start(13)
 			timerShockPulseCD:Start(23, self.vb.shockPulse+1)
 		else
 			timerToxicSpineCD:Start(5.4)
 			timerShockPulseCD:Start(19.4, self.vb.shockPulse+1)
 		end
 		if self.vb.phase == 2 then
-			timerNextPhase:Start(100)
+			timerNextPhase:Start(100)--Power Drain (when it leaves) not 10 seconds after when it casts cav
 		end
 	end
 end

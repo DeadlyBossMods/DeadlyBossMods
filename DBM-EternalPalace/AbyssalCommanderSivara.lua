@@ -24,7 +24,6 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, request voice pack authors add "frost mark" and "toxic mark"
 --TODO, fix tank swap code when a strategy consensus is reached
 --TODO, improve DBM when strats formulate for boss on how to handle tank stacks
 --TODO, if inversion sickness is a LOT of people (or everyone) ono mythic, disable target warning on mythic
@@ -85,11 +84,11 @@ function mod:OnCombatStart(delay)
 	playerMark = 0--1 Toxic, 2 Frost
 	timerCrushingReverbCD:Start(10.6-delay)
 	timerOverflowCD:Start(15.7-delay)
-	timerOverwhelmingBarrageCD:Start(40.2-delay)
+	timerOverwhelmingBarrageCD:Start(40.1-delay)
 	timerfrostshockboltsCD:Start(50.8-delay)
 	if self:IsHard() then
 		if self:IsMythic() then
-			timerChimericMarksCD:Start(9.9-delay)
+			timerChimericMarksCD:Start(23-delay)
 		end
 		timerInversionCD:Start(70-delay)
 		self:RegisterShortTermEvents(

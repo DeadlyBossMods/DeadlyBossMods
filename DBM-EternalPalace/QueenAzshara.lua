@@ -615,27 +615,27 @@ function mod:SPELL_AURA_APPLIED(args)
 			local text
 			if spellId == 299249 then--Soak Orbs
 				specWarnQueensDecree:ScheduleVoiceOverLap(0+playerDecreeCount, "helpsoak")
-				text = not text and L.SoakOrb or text..", "..L.SoakOrb
+				text = playerDecreeCount == 0 and L.SoakOrb or text..", "..L.SoakOrb
 				playerDecreeYell = playerDecreeYell + 2--100s 2-Stack/1-Solo, 10s 2-Moving/1-Stay, 1s 2-Soak/1-NoSoak
 			elseif spellId == 299251 then--Dodge Orbs
 				specWarnQueensDecree:ScheduleVoiceOverLap(0+playerDecreeCount, "watchorb")
-				text = not text and L.AvoidOrb or text..", "..L.AvoidOrb
+				text = playerDecreeCount == 0 and L.AvoidOrb or text..", "..L.AvoidOrb
 				playerDecreeYell = playerDecreeYell + 1--100s 2-Stack/1-Solo, 10s 2-Moving/1-Stay, 1s 2-Soak/1-NoSoak
 			elseif spellId == 299254 then--Group Up
 				specWarnQueensDecree:ScheduleVoiceOverLap(0+playerDecreeCount, "gather")
-				text = not text and L.GroupUp or text..", "..L.GroupUp
+				text = playerDecreeCount == 0 and L.GroupUp or text..", "..L.GroupUp
 				playerDecreeYell = playerDecreeYell + 200--100s 2-Stack/1-Solo, 10s 2-Moving/1-Stay, 1s 2-Soak/1-NoSoak
 			elseif spellId == 299255 then--Don't Group Up
 				specWarnQueensDecree:ScheduleVoiceOverLap(0+playerDecreeCount, "scatter")
-				text = not text and L.Spread or text..", "..L.Spread
+				text = playerDecreeCount == 0 and L.Spread or text..", "..L.Spread
 				playerDecreeYell = playerDecreeYell + 100--100s 2-Stack/1-Solo, 10s 2-Moving/1-Stay, 1s 2-Soak/1-NoSoak
 			elseif spellId == 299252 then--Keep Moving
 				specWarnQueensDecree:ScheduleVoiceOverLap(0+playerDecreeCount, "keepmove")
-				text = not text and L.Move or text..", "..L.Move
+				text = playerDecreeCount == 0 and L.Move or text..", "..L.Move
 				playerDecreeYell = playerDecreeYell + 20--100s 2-Stack/1-Solo, 10s 2-Moving/1-Stay, 1s 2-Soak/1-NoSoak
 			elseif spellId == 299253 then--Stop Moving
 				specWarnQueensDecree:ScheduleVoiceOverLap(0+playerDecreeCount, "stopmove")
-				text = not text and L.DontMove or text..", "..L.DontMove
+				text = playerDecreeCount == 0 and L.DontMove or text..", "..L.DontMove
 				playerDecreeYell = playerDecreeYell + 10--100s 2-Stack/1-Solo, 10s 2-Moving/1-Stay, 1s 2-Soak/1-NoSoak
 			end
 			playerDecreeCount = playerDecreeCount + 1--Increased after voices, because of way voice scheduling is being done

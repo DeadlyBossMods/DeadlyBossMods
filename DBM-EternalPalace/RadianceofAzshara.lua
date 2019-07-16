@@ -17,6 +17,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS 296737",
 	"SPELL_AURA_APPLIED 296566 296737",
 	"SPELL_AURA_REMOVED 296737",
+	"SPELL_INTERRUPT",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 	"UNIT_DIED",
@@ -24,11 +25,12 @@ mod:RegisterEventsInCombat(
 )
 
 --TODO, verify correct unshackled power spellid for LFR
---TODO, see if heroic timers changed.
+--TODO, verify single time fade works on GUID started timers
 --[[
 (ability.id = 296546 or ability.id = 296459 or ability.id = 296894 or ability.id = 302465 or ability.id = 295916 or ability.id = 296701) and type = "begincast"
  or ability.id = 296737 and type = "cast"
  or type = "death" and target.id = 152512
+ or type = "interrupt"
 --]]
 local warnArcanadoBurst					= mod:NewSpellAnnounce(296430, 2)
 local warnSquallTrap					= mod:NewSpellAnnounce(296459, 4)
@@ -55,7 +57,7 @@ local timerUnshacklingPowerCD			= mod:NewNextCountTimer(58.2, 296894, nil, nil, 
 local timerAncientTempestCD				= mod:NewNextTimer(95.9, 295916, nil, nil, nil, 6)
 --Raging Storm
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20078))
-local timerGaleBuffetCD					= mod:NewCDTimer(22.7, 304098, nil, nil, nil, 2)
+local timerGaleBuffetCD					= mod:NewCDTimer(22.6, 304098, nil, nil, nil, 2)
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
 
@@ -73,25 +75,25 @@ mod.vb.addsLeft = 1
 mod.vb.difficultyName = "None"
 local arcanadoTimers = {
 	["lfr"] = {5.9, 12.0, 13.1, 10.5, 12.0, 13.1, 10.6},--Not verified
-	["normal"] = {5.9, 12.0, 13.1, 10.5, 12.0, 13.1, 10.6},
+	["normal"] = {5.9, 12.0, 13.1, 10.5, 12.0, 13.1, 10.6},--Transcriptor Verifed
 	["heroic"] = {5.9, 12.0, 13.1, 10.5, 12.0, 13.1, 10.6},--Not Verified, but old ones were scrapped
 	["mythic"] = {5.9, 12.0, 13.1, 10.5, 12.0, 13.1, 10.6}
 }
 local tideFistTimers = {
 	["lfr"] = {15.1, 20.0, 19.0, 20.0},--Not verified
-	["normal"] = {15.1, 20.0, 19.0, 20.0},
+	["normal"] = {15.1, 20.0, 19.0, 20.0},--Transcriptor Verifed
 	["heroic"] = {15.1, 20.0, 19.0, 20.0},--Not Verified, but old ones were scrapped
 	["mythic"] = {15.1, 20.0, 19.0, 20.0}
 }
 local unshackledPowerTimers = {
 	["lfr"] = {10.0, 18.0, 18.0, 18.0, 18.0},--Not verified
-	["normal"] = {10.0, 18.0, 18.0, 18.0, 18.0},--Same as mythic
+	["normal"] = {10.0, 18.0, 18.0, 18.0, 18.0},--Transcriptor Verifed
 	["heroic"] = {10.0, 18.0, 18.0, 18.0, 18.0},--Not Verified, but old ones were scrapped
 	["mythic"] = {10.0, 18.0, 18.0, 18.0, 18.0}
 }
 local arcaneBombTimers = {
 	["lfr"] = {7.1, 19.9, 22.1, 18.0, 25.5},--Not verified
-	["normal"] = {7.1, 19.9, 22.1, 18.0, 25.5},--Same as Mythic
+	["normal"] = {7.1, 19.9, 22.1, 18.0, 25.5},--Transcriptor Verifed
 	["heroic"] = {7.1, 19.9, 22.1, 18.0, 25.5},--Not Verified, but old ones were scrapped
 	["mythic"] = {7.1, 19.9, 22.1, 18.0, 25.5}
 }
@@ -165,19 +167,15 @@ function mod:SPELL_CAST_START(args)
 		timerUnshacklingPowerCD:Stop()
 		specWarnAncientTempest:Show()
 		specWarnAncientTempest:Play("phasechange")
-		if self:IsMythic() then
-			timerArcaneBombCD:Start(12.6, 1)
-			timerGaleBuffetCD:Start(18)
-		else
-			timerArcaneBombCD:Start(17.1, 1)
-			timerGaleBuffetCD:Start(22)
-		end
 	elseif spellId == 296701 or spellId == 304098 then--296701 unknown
 		if self:CheckBossDistance(args.sourceGUID, true, 34471) then--43 yards
 			specWarnGaleBuffet:Show()
 			specWarnGaleBuffet:Play("carefly")
 		end
 		timerGaleBuffetCD:Start(nil, args.sourceGUID)
+		if not self:CheckBossDistance(args.sourceGUID, true) then
+			timerGaleBuffetCD:SetSTFade(true, args.sourceGUID)
+		end
 	end
 end
 
@@ -238,6 +236,17 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spell
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 --]]
+
+function mod:SPELL_INTERRUPT(args)
+	if type(args.extraSpellId) == "number" and args.extraSpellId == 304951 then--Focus Power
+		--First arcane bomb is cast immediately after spell lock ends
+		--This means if mage interrupts, 6 seconds after interrupt, hunter, 3 seconds later.
+		timerGaleBuffetCD:Start(11, args.destGUID)
+		if not self:CheckBossDistance(args.destGUID, true) then
+			timerGaleBuffetCD:SetSTFade(true, args.destGUID)
+		end
+	end
+end
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
