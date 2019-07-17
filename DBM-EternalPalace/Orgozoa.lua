@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(152128)
 mod:SetEncounterID(2303)
 mod:SetZone()
---mod:SetHotfixNoticeRev(16950)
+mod:SetHotfixNoticeRev(20190716000000)--2019, 7, 16
 --mod:SetMinSyncRevision(16950)
 --mod.respawnTime = 29
 
@@ -173,12 +173,10 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.ichorAddsRemaining = self.vb.ichorAddsRemaining + 3
 		specWarnDribblingIchor:Show(self.vb.addCount)
 		specWarnDribblingIchor:Play("mobsoon")
-		if self.vb.phase == 2 or self.vb.addCount < 3 then--Assumed there are more than 3 in P2
-			if self.vb.addCount == 1 then
-				timerDribblingIchorCD:Start(85, 2)
-			else--2+ (todo verify the + part)
-				timerDribblingIchorCD:Start(92, self.vb.addCount+1)
-			end
+		if self.vb.addCount == 1 then
+			timerDribblingIchorCD:Start(85, 2)
+		else--2+ (todo verify the + part)
+			timerDribblingIchorCD:Start(92, self.vb.addCount+1)
 		end
 	elseif spellId == 298156 then
 		timerDesensitizingStingCD:Start()

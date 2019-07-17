@@ -13,8 +13,8 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 303319",
 	"SPELL_CAST_SUCCESS 303488",
-	"SPELL_AURA_APPLIED 303488 303451",
-	"SPELL_AURA_REMOVED 303488"
+	"SPELL_AURA_APPLIED 303491 303451",
+	"SPELL_AURA_REMOVED 303491"
 )
 
 --TODO, fix event for electric Discharge
@@ -22,35 +22,31 @@ mod:RegisterEventsInCombat(
 --https://www.wowhead.com/spell=303379/electrified-splash is probably way to detect submerge, but not coded yet in case wrong event (wrong one would spam)
 local warnElectricDischarge			= mod:NewSpellAnnounce(303451, 2)
 
-local specWarnBioelectricBlast		= mod:NewSpecialWarningRun(303319, "Melee", nil, nil, 4, 2)
+local specWarnBioelectricBlast		= mod:NewSpecialWarningDodge(303319, nil, nil, nil, 2, 2)
 local specWarnShockBurst			= mod:NewSpecialWarningMoveAway(303488, nil, nil, nil, 1, 2)
 local yellShockBurst				= mod:NewYell(303488)
 local yellShockBurstFades			= mod:NewShortFadesYell(303488)
 --local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 8)
 
-local timerBioelectricblastCD		= mod:NewCDTimer(23.2, 303319, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
-local timerShockburstCD				= mod:NewCDTimer(23.6, 303488, nil, nil, nil, 3)
-local timerElectricDischargeCD		= mod:NewCDTimer(23.6, 303451, nil, nil, nil, 2, nil, DBM_CORE_HEALER_ICON)
+local timerBioelectricblastCD		= mod:NewCDTimer(20.4, 303319, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
+local timerShockburstCD				= mod:NewCDTimer(37, 303488, nil, nil, nil, 3)
+local timerElectricDischargeCD		= mod:NewCDTimer(25.6, 303451, nil, nil, nil, 2, nil, DBM_CORE_HEALER_ICON)
 
 --mod:AddReadyCheckOption(37460, false)
 
 function mod:OnCombatStart(delay, yellTriggered)
 	if yellTriggered then
-		timerBioelectricblastCD:Start(1-delay)
-		timerShockburstCD:Start(1-delay)
-		timerElectricDischargeCD:Start(1-delay)
+--		timerBioelectricblastCD:Start(1-delay)
+--		timerShockburstCD:Start(1-delay)
+--		timerElectricDischargeCD:Start(1-delay)
 	end
-end
-
-function mod:OnCombatEnd()
-
 end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 303319 then
 		specWarnBioelectricBlast:Show()
-		specWarnBioelectricBlast:Play("justrun")
+		specWarnBioelectricBlast:Play("watchstep")
 		timerBioelectricblastCD:Start()
 	end
 end
@@ -64,7 +60,7 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 303488 then
+	if spellId == 303491 then
 		if args:IsPlayer() then
 			specWarnShockBurst:Show()
 			specWarnShockBurst:Play("runout")
@@ -79,7 +75,7 @@ end
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
-	if spellId == 303488 then
+	if spellId == 303491 then
 		if args:IsPlayer() then
 			yellShockBurstFades:Cancel()
 		end

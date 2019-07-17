@@ -6,7 +6,7 @@ mod:SetCreatureID(151881)
 mod:SetEncounterID(2298)
 mod:SetZone()
 mod:SetUsedIcons(4, 6)
---mod:SetHotfixNoticeRev(16950)
+mod:SetHotfixNoticeRev(20190716000000)--2019, 7, 16
 --mod:SetMinSyncRevision(16950)
 --mod.respawnTime = 29
 
@@ -24,7 +24,6 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, request voice pack authors add "frost mark" and "toxic mark"
 --TODO, fix tank swap code when a strategy consensus is reached
 --TODO, improve DBM when strats formulate for boss on how to handle tank stacks
 --TODO, if inversion sickness is a LOT of people (or everyone) ono mythic, disable target warning on mythic
@@ -83,18 +82,20 @@ local playerMark = 0--1 Toxic, 2 Frost
 function mod:OnCombatStart(delay)
 	table.wipe(MarksStacks)
 	playerMark = 0--1 Toxic, 2 Frost
-	timerCrushingReverbCD:Start(10.6-delay)
+	timerCrushingReverbCD:Start(10.6-delay)--START
 	timerOverflowCD:Start(15.7-delay)
-	timerOverwhelmingBarrageCD:Start(40.2-delay)
+	timerOverwhelmingBarrageCD:Start(40.1-delay)
 	timerfrostshockboltsCD:Start(50.8-delay)
-	if self:IsHard() then
-		if self:IsMythic() then
-			timerChimericMarksCD:Start(9.9-delay)
-		end
+	if not self:IsLFR() then
 		timerInversionCD:Start(70-delay)
-		self:RegisterShortTermEvents(
-			"UNIT_POWER_FREQUENT player"
-		)
+		if self:IsHard() then
+			if self:IsMythic() then
+				timerChimericMarksCD:Start(23-delay)
+			end
+			self:RegisterShortTermEvents(
+				"UNIT_POWER_FREQUENT player"
+			)
+		end
 	end
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(294726))
@@ -143,7 +144,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if spellId == 295346 then
 		DBM:AddMsg("blizzard added overflow to combat log, tell DBM author")
 	elseif spellId == 295332 then--Has to be in success, can stutter cast
-		timerCrushingReverbCD:Start()
+		timerCrushingReverbCD:Start()--START
 	elseif spellId == 295791 then
 		timerInversionCD:Start(90)
 	end
@@ -154,13 +155,19 @@ local function debuffSwapAggregation(self, spellId)
 	if spellId == 294711 then--Frost
 		specWarnFrostMark:Show(self:IconNumToTexture(6))
 		specWarnFrostMark:Play("frost")
-		yellMark:Yell(6, "")--Square
 		playerMark = 2--1 Toxic, 2 Frost
 	else--Toxic
 		specWarnToxicMark:Show(self:IconNumToTexture(4))
 		specWarnToxicMark:Play("toxic")
-		yellMark:Yell(4, "")--Triangle
 		playerMark = 1--1 Toxic, 2 Frost
+	end
+end
+
+local function debuffSwapAggregationTwo(self, spellId)
+	if spellId == 294711 then--Frost
+		yellMark:Yell(6, "")--Square
+	else--Toxic
+		yellMark:Yell(4, "")--Triangle
 	end
 end
 
@@ -174,7 +181,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if args:IsPlayer() and amount == 1 then
 			self:Unschedule(debuffSwapAggregation)
-			self:Schedule(1, debuffSwapAggregation, self, spellId)
+			self:Unschedule(debuffSwapAggregationTwo)
+			self:Schedule(1.5, debuffSwapAggregation, self, spellId)--Aggregate special warnings into a 1.5 second space
+			self:Schedule(2.5, debuffSwapAggregationTwo, self, spellId)--Aggregate yells even further than personal warnings
 		end
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self.Options.SetIconOnMarks and self:IsTanking(uId) then

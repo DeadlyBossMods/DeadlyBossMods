@@ -31,7 +31,6 @@ mod:RegisterEventsInCombat(
 --TODO, track https://ptr.wowhead.com/spell=297836/potent-spark on infoframe, like cabal
 --TODO, better detection of when player is standing still too long with sentence, and re-show keep move warning if they aren't moving enough
 --TODO, Frenetic Charge soak priority
---TODO, at time of testing her decrees don't reset order between pulls, which means decree she starts with is whatever was next from PREVIOUS pull
 --TODO, assess where to put other two countdowns, right now one is on charge, and undecided on 3rd if it should be the run in aoe or run out one
 --[[
 (ability.id = 300088 or ability.id = 301807 or ability.id = 297325 or ability.id = 301947 or ability.id = 299915) and type = "begincast"
@@ -64,7 +63,7 @@ local specWarnObeyorSuffer				= mod:NewSpecialWarningDefensive(297585, nil, nil,
 local specWarnObeyorSufferTaunt			= mod:NewSpecialWarningTaunt(297585, false, nil, nil, 1, 2)
 --Silivaz the Zealous
 local specWarnSilivazTouch				= mod:NewSpecialWarningStack(301828, nil, 7, nil, nil, 1, 6)
-local specWarnSilivazTouchOther			= mod:NewSpecialWarningTaunt(301828, nil, nil, nil, 1, 2)
+--local specWarnSilivazTouchOther			= mod:NewSpecialWarningTaunt(301828, nil, nil, nil, 1, 2)
 local specWarnFreneticCharge			= mod:NewSpecialWarningMoveTo(299914, nil, nil, nil, 1, 2)
 local yellFreneticCharge				= mod:NewYell(299914, nil, nil, nil, "YELL")
 local yellFreneticChargeFades			= mod:NewShortFadesYell(299914, nil, nil, nil, "YELL")
@@ -238,7 +237,7 @@ function mod:SPELL_AURA_APPLIED(args)
 					specWarnSilivazTouch:Show(amount)
 					specWarnSilivazTouch:Play("stackhigh")
 				else--Taunt as soon as stacks are clear, regardless of stack count.
-					local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", spellId)
+					--[[local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", spellId)
 					local remaining
 					if expireTime then
 						remaining = expireTime-GetTime()
@@ -247,9 +246,9 @@ function mod:SPELL_AURA_APPLIED(args)
 					if not UnitIsDeadOrGhost("player") and not remaining  then
 						specWarnSilivazTouchOther:Show(args.destName)
 						specWarnSilivazTouchOther:Play("tauntboss")
-					else
+					else--]]
 						warnSilivazTouch:Show(args.destName, amount)
-					end
+					--end
 				end
 			else
 				warnSilivazTouch:Show(args.destName, amount)
