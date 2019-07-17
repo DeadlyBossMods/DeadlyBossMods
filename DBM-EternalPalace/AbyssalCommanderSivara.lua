@@ -155,13 +155,19 @@ local function debuffSwapAggregation(self, spellId)
 	if spellId == 294711 then--Frost
 		specWarnFrostMark:Show(self:IconNumToTexture(6))
 		specWarnFrostMark:Play("frost")
-		yellMark:Yell(6, "")--Square
 		playerMark = 2--1 Toxic, 2 Frost
 	else--Toxic
 		specWarnToxicMark:Show(self:IconNumToTexture(4))
 		specWarnToxicMark:Play("toxic")
-		yellMark:Yell(4, "")--Triangle
 		playerMark = 1--1 Toxic, 2 Frost
+	end
+end
+
+local function debuffSwapAggregationTwo(self, spellId)
+	if spellId == 294711 then--Frost
+		yellMark:Yell(6, "")--Square
+	else--Toxic
+		yellMark:Yell(4, "")--Triangle
 	end
 end
 
@@ -175,7 +181,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if args:IsPlayer() and amount == 1 then
 			self:Unschedule(debuffSwapAggregation)
-			self:Schedule(1, debuffSwapAggregation, self, spellId)
+			self:Unschedule(debuffSwapAggregationTwo)
+			self:Schedule(1.5, debuffSwapAggregation, self, spellId)--Aggregate special warnings into a 1.5 second space
+			self:Schedule(2.5, debuffSwapAggregationTwo, self, spellId)--Aggregate yells even further than personal warnings
 		end
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self.Options.SetIconOnMarks and self:IsTanking(uId) then
