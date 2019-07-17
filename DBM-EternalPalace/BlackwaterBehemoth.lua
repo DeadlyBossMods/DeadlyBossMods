@@ -16,7 +16,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS 292205 302135 292159 301494",
 	"SPELL_AURA_APPLIED 292307 292133 292138 289699 292167 301494 298595",
 	"SPELL_AURA_APPLIED_DOSE 289699",
-	"SPELL_AURA_REMOVED 292133 292138 298595",
+	"SPELL_AURA_REMOVED 292133 292138 298595 301494",
 	"SPELL_INTERRUPT",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
@@ -39,6 +39,7 @@ local specWarnShockPulse				= mod:NewSpecialWarningCount(292270, nil, nil, nil, 
 local specWarnCavitation				= mod:NewSpecialWarningSpell(292083, nil, nil, nil, 2, 2)
 local specWarnPiercingBarb				= mod:NewSpecialWarningYou(301494, nil, nil, nil, 1, 2)
 local yellPiercingBarb					= mod:NewYell(301494)
+local yellPiercingBarbFades				= mod:NewShortFadesYell(301494)
 --local specWarnGTFO						= mod:NewSpecialWarningGTFO(270290, nil, nil, nil, 1, 8)
 
 local timerBioluminescentCloud			= mod:NewCastCountTimer(30.4, 292205, nil, nil, nil, 5)
@@ -207,6 +208,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnPiercingBarb:Show()
 			specWarnPiercingBarb:Play("targetyou")
 			yellPiercingBarb:Yell()
+			yellPiercingBarbFades:Countdown(spellId)
 		else
 			warnPiercingBarb:Show(args.destName)
 		end
@@ -228,6 +230,8 @@ function mod:SPELL_AURA_REMOVED(args)
 		if args:IsPlayer() then
 			playerBioThree = false
 		end
+	elseif spellId == 301494 and args:IsPlayer() then
+		yellPiercingBarbFades:Cancel()
 	end
 end
 

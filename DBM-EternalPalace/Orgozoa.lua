@@ -173,12 +173,10 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.ichorAddsRemaining = self.vb.ichorAddsRemaining + 3
 		specWarnDribblingIchor:Show(self.vb.addCount)
 		specWarnDribblingIchor:Play("mobsoon")
-		if self.vb.phase == 2 or self.vb.addCount < 3 then--Assumed there are more than 3 in P2
-			if self.vb.addCount == 1 then
-				timerDribblingIchorCD:Start(85, 2)
-			else--2+ (todo verify the + part)
-				timerDribblingIchorCD:Start(92, self.vb.addCount+1)
-			end
+		if self.vb.addCount == 1 then
+			timerDribblingIchorCD:Start(85, 2)
+		else--2+ (todo verify the + part)
+			timerDribblingIchorCD:Start(92, self.vb.addCount+1)
 		end
 	elseif spellId == 298156 then
 		timerDesensitizingStingCD:Start()

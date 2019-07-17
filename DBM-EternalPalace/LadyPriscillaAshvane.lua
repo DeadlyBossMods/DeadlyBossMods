@@ -24,18 +24,17 @@ mod:RegisterEventsInCombat(
 
 --[[
 (ability.id = 297402 or ability.id = 297398 or ability.id = 297324) and type = "begincast"
- or (ability.id = 296569 or ability.id = 296944 or ability.id = 296725 or ability.id = 296662) and type = "cast"
+ or (ability.id = 296569 or ability.id = 296944 or ability.id = 296725 or ability.id = 296662 or ability.id = 298056) and type = "cast"
  or ability.id = 296650 and (type = "applybuff" or type = "removebuff")
  or ability.id = 296943 or ability.id = 296940 or ability.id = 296942 or ability.id = 296939 or ability.id = 296941 or ability.id = 296938
 --]]
---TODO, verify timers for shield dropping. rate she re-generates shield may be slower on lower difficulties and this may affect timers
 local warnShield						= mod:NewTargetNoFilterAnnounce(296650, 2, nil, nil, nil, nil, nil, 2)
 local warnShieldOver					= mod:NewEndAnnounce(296650, 2, nil, nil, nil, nil, nil, 2)
 --local warnCoral						= mod:NewCountAnnounce(296555, 2)
 local warnBrinyBubble					= mod:NewTargetNoFilterAnnounce(297324, 4)
 local warnUpsurge						= mod:NewSpellAnnounce(298055, 3)
 
---local specWarnRipplingWave			= mod:NewSpecialWarningCount(296688, nil, nil, nil, 2, 2)
+local specWarnRipplingWave				= mod:NewSpecialWarningCount(296688, false, nil, 2, 2, 2)
 local specWarnBrinyBubble				= mod:NewSpecialWarningMoveAway(297324, nil, nil, nil, 1, 2)
 local yellBrinyBubble					= mod:NewYell(297324)
 local yellBrinyBubbleFades				= mod:NewShortFadesYell(297324)
@@ -54,7 +53,7 @@ local timerUpsurgeCD					= mod:NewCDCountTimer(15.3, 298055, nil, nil, nil, 3)
 local timerBarnacleBashCD				= mod:NewCDCountTimer(15, 296725, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON, nil, mod:IsTank() and 2, 4)
 --Stage 2
 local timerArcingAzeriteCD				= mod:NewCDCountTimer(35, 296944, nil, nil, nil, 3, nil, nil, nil, 3, 4)
-local timerShieldCD						= mod:NewCDTimer(66.1, 296650, nil, nil, nil, 6, nil, nil, nil, 1, 4)
+local timerShieldCD						= mod:NewCDTimer(70.5, 296650, nil, nil, nil, 6, nil, nil, nil, 1, 4)
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
 
@@ -67,11 +66,12 @@ mod.vb.ripplingWave = 0
 mod.vb.spellPicker = 0
 mod.vb.arcingCast = 0
 mod.vb.upsurgeCast = 0
-mod.vb.firstShield = false
+mod.vb.shieldCount = 0
 mod.vb.shieldDown = false
 mod.vb.blueone, mod.vb.bluetwo = nil, nil
 mod.vb.redone, mod.vb.redtwo = nil, nil
 mod.vb.greenone, mod.vb.greentwo = nil, nil
+local easyUpSurgeTimers = {0, 16, 37.9, 16.5, 16, 24}
 
 local updateInfoFrame
 do
@@ -104,8 +104,8 @@ function mod:OnCombatStart(delay)
 	self.vb.spellPicker = 0
 	self.vb.arcingCast = 0
 	self.vb.upsurgeCast = 0
+	self.vb.shieldCount = 0
 	self.vb.shieldDown = false
-	self.vb.firstShield = false
 	self.vb.blueone, self.vb.bluetwo = nil, nil
 	self.vb.redone, self.vb.redtwo = nil, nil
 	self.vb.greenone, self.vb.greentwo = nil, nil
@@ -122,9 +122,10 @@ end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 297398 then--297398 verified, other two unknown (or spellId == 297402 or spellId == 297324)
+	if spellId == 297398 then--Briny Bubble. 297398 verified, other two unknown (or spellId == 297402 or spellId == 297324)
 		self.vb.spellPicker = 0
-		timerBarnacleBashCD:Start(15.9, self.vb.spellPicker+1)--start to success
+		--Always 15.9 seconds after in all difficulties when shield is up, but when shield is down, it's 24 seconds after on easy but still 15.9 on hard
+		timerBarnacleBashCD:Start(not self.vb.shieldDown and self:IsEasy() and 24 or 15.9, self.vb.spellPicker+1)--start to success
 	end
 end
 
@@ -145,19 +146,28 @@ function mod:SPELL_CAST_SUCCESS(args)
 		end
 	elseif spellId == 296662 then
 		self.vb.ripplingWave = self.vb.ripplingWave + 1
-		--specWarnRipplingWave:Show(self.vb.ripplingWave)
-		--specWarnRipplingWave:Play("watchwave")
-		timerRipplingwaveCD:Start(35, self.vb.ripplingWave+1)
+		specWarnRipplingWave:Show(self.vb.ripplingWave)
+		specWarnRipplingWave:Play("watchwave")
+		timerRipplingwaveCD:Start(self:IsEasy() and 70.5 or 30, self.vb.ripplingWave+1)
 	elseif spellId == 298056 then--Upsurge
 		self.vb.upsurgeCast = self.vb.upsurgeCast + 1
 		warnUpsurge:Show(self.vb.upsurgeCast)
-		if self.vb.shieldDown then
-			timerUpsurgeCD:Start(22, self.vb.upsurgeCast+1)
+		if self.vb.shieldDown and self.vb.upsurgeCast == 1 then
+			timerUpsurgeCD:Start(43.9, 2)
 		else
-			if self.vb.upsurgeCast % 2 == 0 then
-				timerUpsurgeCD:Start(38, self.vb.upsurgeCast+1)
+			if self:IsHard() then--Simple Alternation
+				--Hard: n, 14.9, 30, 15, 29.9, 15, 30.4
+				if self.vb.upsurgeCast % 2 == 0 then
+					timerUpsurgeCD:Start(29.9, self.vb.upsurgeCast+1)
+				else
+					timerUpsurgeCD:Start(14.9, self.vb.upsurgeCast+1)
+				end
 			else
-				timerUpsurgeCD:Start(15.9, self.vb.upsurgeCast+1)
+				--Easy: n, 16, 37.9, 16.5, 16, 24
+				local timer = easyUpSurgeTimers[self.vb.upsurgeCast+1]
+				if timer then
+					timerUpsurgeCD:Start(timer, self.vb.upsurgeCast+1)
+				end
 			end
 		end
 	end
@@ -166,6 +176,7 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 296650 then
+		self.vb.shieldCount = self.vb.shieldCount + 1
 		self.vb.shieldDown = false
 		warnShield:Show(args.destName)
 		warnShield:Play("phasechange")
@@ -178,19 +189,20 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerBrinyBubbleCD:Stop()
 		timerArcingAzeriteCD:Stop()
 		timerShieldCD:Stop()
-		if not self.vb.firstShield then
-			self.vb.firstShield = true
-			timerBarnacleBashCD:Start(10, 1)--SUCCESS
-			timerUpsurgeCD:Start(12, 1)
-			timerRipplingwaveCD:Start(15, 1)
+		local easy = self:IsEasy() or false
+		if self.vb.shieldCount == 1 then
+			self.vb.shieldCount = true
+			timerBarnacleBashCD:Start(easy and 10 or 8, 1)--SUCCESS
+			timerUpsurgeCD:Start(easy and 12 or 9, 1)
+			timerRipplingwaveCD:Start(easy and 17 or 15, 1)
 			--timerCoralGrowthCD:Start(30.5, 1)
-			--timerBrinyBubbleCD:Start(45.2)--Not started here
+			--timerBrinyBubbleCD:Start(easy and 41 or 37)--Not started here
 		else
-			timerBarnacleBashCD:Start(13, 1)--SUCCESS
-			timerUpsurgeCD:Start(15, 1)
-			timerRipplingwaveCD:Start(18, 1)
+			timerUpsurgeCD:Start(easy and 15.5 or 12, 1)
+			timerBarnacleBashCD:Start(easy and 13.8 or 11.7, 1)--SUCCESS
+			timerRipplingwaveCD:Start(20.7, 1)
 			--timerCoralGrowthCD:Start(30.5, 1)
-			--timerBrinyBubbleCD:Start(45.2)--Not started here
+			--timerBrinyBubbleCD:Start(easy and 44.8 or 40.7)--Not started here
 		end
 		if self.Options.RangeFrame then
 			if self:IsRanged() then
@@ -213,7 +225,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self:AntiSpam(5, 1) then
 			self.vb.arcingCast = self.vb.arcingCast + 1
 			if self.vb.arcingCast == 1 then
-				timerArcingAzeriteCD:Start(39, 2)
+				timerArcingAzeriteCD:Start(34.9, 2)
 			end
 		end
 		if (spellId == 296941 or spellId == 296938) then--Green
@@ -306,10 +318,10 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerBrinyBubbleCD:Stop()
 		timerUpsurgeCD:Stop()
 		timerBarnacleBashCD:Stop()
-		timerBarnacleBashCD:Start(13, 1)--SUCCESS 8.6
-		timerUpsurgeCD:Start(17, 1)
-		timerArcingAzeriteCD:Start(20.5, 1)--16.6
-		timerShieldCD:Start(71)--66 old
+		timerBarnacleBashCD:Start(13, 1)--SUCCESS
+		timerUpsurgeCD:Start(18, 1)
+		timerArcingAzeriteCD:Start(20.5, 1)
+		timerShieldCD:Start(70.5)
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:Hide()
 		end
