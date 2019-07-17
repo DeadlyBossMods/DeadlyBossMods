@@ -13,7 +13,7 @@ mod:SetUsedIcons(1, 2)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 296546 296459 296894 302465 295916 296701 304098",
+	"SPELL_CAST_START 296459 296894 295916 296701 296566",
 	"SPELL_CAST_SUCCESS 296737",
 	"SPELL_AURA_APPLIED 296566 296737",
 	"SPELL_AURA_REMOVED 296737",
@@ -24,10 +24,8 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, verify correct unshackled power spellid for LFR
---TODO, verify single time fade works on GUID started timers
 --[[
-(ability.id = 296546 or ability.id = 296459 or ability.id = 296894 or ability.id = 302465 or ability.id = 295916 or ability.id = 296701) and type = "begincast"
+(ability.id = 296566 or ability.id = 296459 or ability.id = 296894 or ability.id = 302465 or ability.id = 295916 or ability.id = 296701 or ability.id = 304098) and type = "begincast"
  or ability.id = 296737 and type = "cast"
  or type = "death" and target.id = 152512
  or type = "interrupt"
@@ -72,31 +70,10 @@ mod.vb.arcaneBombCount = 0
 mod.vb.arcaneBombicon = 1
 mod.vb.tempestStage = false
 mod.vb.addsLeft = 1
-mod.vb.difficultyName = "None"
-local arcanadoTimers = {
-	["lfr"] = {5.9, 12.0, 13.1, 10.5, 12.0, 13.1, 10.6},--Not verified
-	["normal"] = {5.9, 12.0, 13.1, 10.5, 12.0, 13.1, 10.6},--Transcriptor Verifed
-	["heroic"] = {5.9, 12.0, 13.1, 10.5, 12.0, 13.1, 10.6},--Not Verified, but old ones were scrapped
-	["mythic"] = {5.9, 12.0, 13.1, 10.5, 12.0, 13.1, 10.6}
-}
-local tideFistTimers = {
-	["lfr"] = {15.1, 20.0, 19.0, 20.0},--Not verified
-	["normal"] = {15.1, 20.0, 19.0, 20.0},--Transcriptor Verifed
-	["heroic"] = {15.1, 20.0, 19.0, 20.0},--Not Verified, but old ones were scrapped
-	["mythic"] = {15.1, 20.0, 19.0, 20.0}
-}
-local unshackledPowerTimers = {
-	["lfr"] = {10.0, 18.0, 18.0, 18.0, 18.0},--Not verified
-	["normal"] = {10.0, 18.0, 18.0, 18.0, 18.0},--Transcriptor Verifed
-	["heroic"] = {10.0, 18.0, 18.0, 18.0, 18.0},--Not Verified, but old ones were scrapped
-	["mythic"] = {10.0, 18.0, 18.0, 18.0, 18.0}
-}
-local arcaneBombTimers = {
-	["lfr"] = {7.1, 19.9, 22.1, 18.0, 25.5},--Not verified
-	["normal"] = {7.1, 19.9, 22.1, 18.0, 25.5},--Transcriptor Verifed
-	["heroic"] = {7.1, 19.9, 22.1, 18.0, 25.5},--Not Verified, but old ones were scrapped
-	["mythic"] = {7.1, 19.9, 22.1, 18.0, 25.5}
-}
+local arcanadoTimers = {5.9, 12.0, 13.1, 10.5, 12.0, 13.1, 10.6}
+local tideFistTimers = {15.1, 20.0, 19.0, 20.0}
+local unshackledPowerTimers = {10.0, 18.0, 18.0, 18.0, 18.0}
+local arcaneBombTimers = {7.1, 19.9, 22.1, 18.0, 25.5}
 
 function mod:OnCombatStart(delay)
 	self.vb.unshackledCount = 0
@@ -110,16 +87,7 @@ function mod:OnCombatStart(delay)
 	timerArcaneBombCD:Start(7-delay, 1)
 	timerUnshacklingPowerCD:Start(10-delay, 1)
 	timerTideFistCD:Start(15-delay, 1)
-	timerAncientTempestCD:Start(95.8)
-	if self:IsMythic() then
-		self.vb.difficultyName = "mythic"
-	elseif self:IsHeroic() then
-		self.vb.difficultyName = "heroic"
-	elseif self:IsNormal() then
-		self.vb.difficultyName = "normal"
-	else
-		self.vb.difficultyName = "lfr"
-	end
+	timerAncientTempestCD:Start(95.6)
 end
 
 function mod:OnCombatEnd()
@@ -133,23 +101,23 @@ end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 296546 then
+	if spellId == 296566 then
 		self.vb.tideFistCount = self.vb.tideFistCount + 1
 		if self:IsTanking("player", "boss1", nil, true) then
 			specWarnTideFistCast:Show()
 			specWarnTideFistCast:Play("defensive")
 		end
-		local timer = tideFistTimers[self.vb.difficultyName][self.vb.tideFistCount+1]
+		local timer = tideFistTimers[self.vb.tideFistCount+1]
 		if timer then
 			timerTideFistCD:Start(timer, self.vb.tideFistCount+1)
 		end
 	elseif spellId == 296459 then
 		warnSquallTrap:Show()
-	elseif spellId == 296894 or spellId == 302465 then--296894 verified heroic and mythic, 302465 unknown (maybe lfr)
+	elseif spellId == 296894 then--296894 verified all difficulties, 302465 is unknown
 		self.vb.unshackledCount = self.vb.unshackledCount + 1
 		specWarnUnshackledPower:Show(self.vb.unshackledCount)
 		specWarnUnshackledPower:Play("aesoon")
-		local timer = unshackledPowerTimers[self.vb.difficultyName][self.vb.unshackledCount+1]
+		local timer = unshackledPowerTimers[self.vb.unshackledCount+1]
 		if timer then
 			timerUnshacklingPowerCD:Start(timer, self.vb.unshackledCount+1)
 		end
@@ -167,7 +135,7 @@ function mod:SPELL_CAST_START(args)
 		timerUnshacklingPowerCD:Stop()
 		specWarnAncientTempest:Show()
 		specWarnAncientTempest:Play("phasechange")
-	elseif spellId == 296701 or spellId == 304098 then--296701 unknown
+	elseif spellId == 296701 then--296701 verified all difficulties. 304098 is unknown
 		if self:CheckBossDistance(args.sourceGUID, true, 34471) then--43 yards
 			specWarnGaleBuffet:Show()
 			specWarnGaleBuffet:Play("carefly")
@@ -184,7 +152,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if spellId == 296737 and self:AntiSpam(5, 1) then
 		self.vb.arcaneBombicon = 1
 		self.vb.arcaneBombCount = self.vb.arcaneBombCount + 1
-		local timer = self.vb.tempestStage and 20 or arcaneBombTimers[self.vb.difficultyName][self.vb.arcaneBombCount+1]
+		local timer = self.vb.tempestStage and 20 or arcaneBombTimers[self.vb.arcaneBombCount+1]
 		if timer then
 			timerArcaneBombCD:Start(timer, self.vb.arcaneBombCount+1)
 		end
@@ -273,7 +241,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 296428 then--Arcanado Burst
 		self.vb.arcanadoCount = self.vb.arcanadoCount + 1
 		warnArcanadoBurst:Show(self.vb.arcanadoCount)
-		local timer = arcanadoTimers[self.vb.difficultyName][self.vb.arcanadoCount+1]
+		local timer = arcanadoTimers[self.vb.arcanadoCount+1]
 		if timer then
 			timerArcanadoBurstCD:Start(timer, self.vb.arcanadoCount+1)
 		end

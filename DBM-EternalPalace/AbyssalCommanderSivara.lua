@@ -82,18 +82,20 @@ local playerMark = 0--1 Toxic, 2 Frost
 function mod:OnCombatStart(delay)
 	table.wipe(MarksStacks)
 	playerMark = 0--1 Toxic, 2 Frost
-	timerCrushingReverbCD:Start(10.6-delay)
+	timerCrushingReverbCD:Start(10.6-delay)--START
 	timerOverflowCD:Start(15.7-delay)
 	timerOverwhelmingBarrageCD:Start(40.1-delay)
 	timerfrostshockboltsCD:Start(50.8-delay)
-	if self:IsHard() then
-		if self:IsMythic() then
-			timerChimericMarksCD:Start(23-delay)
-		end
+	if not self:IsLFR() then
 		timerInversionCD:Start(70-delay)
-		self:RegisterShortTermEvents(
-			"UNIT_POWER_FREQUENT player"
-		)
+		if self:IsHard() then
+			if self:IsMythic() then
+				timerChimericMarksCD:Start(23-delay)
+			end
+			self:RegisterShortTermEvents(
+				"UNIT_POWER_FREQUENT player"
+			)
+		end
 	end
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(294726))
@@ -142,7 +144,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if spellId == 295346 then
 		DBM:AddMsg("blizzard added overflow to combat log, tell DBM author")
 	elseif spellId == 295332 then--Has to be in success, can stutter cast
-		timerCrushingReverbCD:Start()
+		timerCrushingReverbCD:Start()--START
 	elseif spellId == 295791 then
 		timerInversionCD:Start(90)
 	end

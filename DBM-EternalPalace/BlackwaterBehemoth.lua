@@ -103,13 +103,10 @@ function mod:OnCombatStart(delay)
 	self.vb.cloudCount = 0
 	self.vb.shockPulse = 0
 	playerBio, playerBioTwo, playerBioThree = false, false, false
+	timerToxicSpineCD:Start(11-delay)
+	timerShockPulseCD:Start(21.9-delay, 1)
 	if self:IsMythic() then
-		timerToxicSpineCD:Start(11-delay)
 		timerPiercingBarbCD:Start(13-delay)
-		timerShockPulseCD:Start(23-delay, 1)
-	else
-		timerToxicSpineCD:Start(5.4-delay)
-		timerShockPulseCD:Start(19.4-delay, 1)--22?
 	end
 	timerNextPhase:Start(100)--Power Drain (when it leaves) not 10 seconds after when it casts cav
 	if self.Options.InfoFrame then
