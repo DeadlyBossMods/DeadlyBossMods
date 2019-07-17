@@ -24,18 +24,18 @@ local specWarnMentalCollapse		= mod:NewSpecialWarningRun(301773, nil, nil, nil, 
 local specWarnVoidDance				= mod:NewSpecialWarningDodge(301840, nil, nil, nil, 2, 2)
 --local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 8)
 
-local timerEndlessDoomCD			= mod:NewAITimer(23.6, 301748, nil, nil, nil, 3)
-local timerMentalCollapseCD			= mod:NewAITimer(23.6, 301773, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
-local timerVoidDanceCD				= mod:NewAITimer(23.6, 301840, nil, nil, nil, 3)
+local timerEndlessDoomCD			= mod:NewAITimer(23.6, 301748, nil, nil, nil, 3)--Need at least one more log, i was dumb and released thinking rez was closeby, it wasn't
+local timerMentalCollapseCD			= mod:NewCDTimer(26.8, 301773, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
+local timerVoidDanceCD				= mod:NewCDTimer(27.1, 301840, nil, nil, nil, 3)
 
 --mod:AddRangeFrameOption(8, 261605)
 --mod:AddReadyCheckOption(37460, false)
 
 function mod:OnCombatStart(delay, yellTriggered)
 	if yellTriggered then
-		timerEndlessDoomCD:Start(1-delay)
-		timerMentalCollapseCD:Start(1-delay)
-		timerVoidDanceCD:Start(1-delay)
+--		timerEndlessDoomCD:Start(1-delay)
+--		timerMentalCollapseCD:Start(1-delay)
+--		timerVoidDanceCD:Start(1-delay)
 	end
 end
 
