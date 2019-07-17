@@ -6,7 +6,7 @@ mod:SetCreatureID(152236)
 mod:SetEncounterID(2304)
 mod:SetZone()
 mod:SetUsedIcons(1, 2, 3, 4, 6, 7)
---mod:SetHotfixNoticeRev(16950)
+mod:SetHotfixNoticeRev(20190716000000)--2019, 7, 16
 --mod:SetMinSyncRevision(16950)
 --mod.respawnTime = 29
 
