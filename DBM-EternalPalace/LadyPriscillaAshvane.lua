@@ -38,7 +38,7 @@ local specWarnRipplingWave				= mod:NewSpecialWarningCount(296688, false, nil, 2
 local specWarnBrinyBubble				= mod:NewSpecialWarningMoveAway(297324, nil, nil, nil, 1, 2)
 local yellBrinyBubble					= mod:NewYell(297324)
 local yellBrinyBubbleFades				= mod:NewShortFadesYell(297324)
-local specWarnCrushingNear				= mod:NewSpecialWarningClose(297324, nil, nil, nil, 1, 2)
+local specWarnBrinyBubbleNear			= mod:NewSpecialWarningClose(297324, nil, nil, nil, 1, 2)
 local specWarnBarnacleBash				= mod:NewSpecialWarningTaunt(296725, nil, nil, nil, 1, 2)
 local specWarnArcingAzerite				= mod:NewSpecialWarningYouPos(296944, nil, nil, nil, 3, 9)
 local yellArcingAzerite					= mod:NewYell(296944)
@@ -297,9 +297,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			--Yell again, but no further special warnings
 			yellBrinyBubble:Yell()
-		elseif self:CheckNearby(12, args.destname) then--If one is near you, you need to run away from it
-			specWarnCrushingNear:Show(args.destname)
-			specWarnCrushingNear:Play("runaway")
+		elseif self:CheckNearby(12, args.destName) then--If one is near you, you need to run away from it
+			specWarnBrinyBubbleNear:CombinedShow(0.3, args.destName)
+			specWarnBrinyBubbleNear:ScheduleVoice(0.3, "runaway")
 		end
 	end
 end
