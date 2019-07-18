@@ -12,7 +12,7 @@ mod:SetHotfixNoticeRev(20190716000000)--2019, 7, 16
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 298548 295818 295822 296691 307167",
+	"SPELL_CAST_START 298548 295818 295822 296691 307167 305857",
 	"SPELL_CAST_SUCCESS 298242 298103 298156 305057",
 	"SPELL_SUMMON 298465",
 	"SPELL_AURA_APPLIED 298156 298306 296914 295779",
@@ -31,8 +31,8 @@ mod:RegisterEventsInCombat(
 --TODO, do more with powerful stomp?
 --TODO, special warn for tender add spawns?
 --[[
-(ability.id = 298548 or ability.id = 295818 or ability.id = 295822 or ability.id = 296691 or ability.id = 307167) and type = "begincast"
- or (ability.id = 298413 or ability.id = 298242 or ability.id = 298103 or ability.id = 298156 or ability.id = 298548 or ability.id = 295779 or ability.id = 305057) and type = "cast"
+(ability.id = 298548 or ability.id = 295818 or ability.id = 295822 or ability.id = 296691 or ability.id = 307167 or ability.id = 305857) and type = "begincast"
+ or (ability.id = 298242 or ability.id = 298103 or ability.id = 298156 or ability.id = 298548 or ability.id = 295779 or ability.id = 305057) and type = "cast"
  or type = "interrupt"
 --]]
 local warnDesensitizingSting				= mod:NewStackAnnounce(298156, 2, nil, "Tank")
@@ -96,15 +96,18 @@ function mod:OnCombatStart(delay)
 	playerHasIncubation = false
 	table.wipe(castsPerGUID)
 	timerDesensitizingStingCD:Start(3-delay)
-	if self:IsMythic() then
-		timerIncubationFluidCD:Start(17.1-delay)--SUCCESS (TODO, verify)
-		timerCalloftheTenderCD:Start(20.3-delay, 1)
-		timerDribblingIchorCD:Start(25.2-delay, 1)
-		timerArcingCurrentCD:Start(36.4-delay, 1)
-	else
-		timerIncubationFluidCD:Start(18.7-delay)--SUCCESS
+	--This could still be slightly wrong because there just a standard variation on this bosses mechanics
+	if self:IsHard() then
+		timerIncubationFluidCD:Start(18.6-delay)
 		timerDribblingIchorCD:Start(28.9-delay, 1)
 		timerArcingCurrentCD:Start(41.0-delay, 1)
+		if self:IsMythic() then
+			timerCalloftheTenderCD:Start(20.3-delay, 1)
+		end
+	else--Normal/LFR
+		timerIncubationFluidCD:Start(18.6-delay)--SUCCESS
+		timerDribblingIchorCD:Start(27.6-delay, 1)
+		timerArcingCurrentCD:Start(38.9-delay, 1)
 	end
 	if self.Options.NPAuraOnChaoticGrowth or self.Options.NPAuraOnAquaLance then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
@@ -151,15 +154,15 @@ function mod:SPELL_CAST_START(args)
 		castsPerGUID[args.sourceGUID] = castsPerGUID[args.sourceGUID] + 1
 		warnPowerfulStomp:Show(castsPerGUID[args.sourceGUID])
 		timerPowerfulStompCD:Start(nil, args.sourceGUID)
-	elseif spellId == 307167 then
+	elseif spellId == 307167 or spellId == 305857 then--Normal/Heroic, Mythic
 		self.vb.arcingCurrentCount = self.vb.arcingCurrentCount + 1
 		specWarnArcingCurrent:Show(self.vb.arcingCurrentCount)
 		timerArcingCurrentCD:Start(nil, self.vb.arcingCurrentCount+1)
 		if playerHasIncubation then
 			yellArcingCurrent:Yell()
 			specWarnArcingCurrent:Play("targetyou")
-		else
-			specWarnArcingCurrent:Play("farfromline")
+		--else
+		--	specWarnArcingCurrent:Play("farfromline")
 		end
 	end
 end
@@ -176,7 +179,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if self.vb.addCount == 1 then
 			timerDribblingIchorCD:Start(85, 2)
 		else--2+ (todo verify the + part)
-			timerDribblingIchorCD:Start(92, self.vb.addCount+1)
+			timerDribblingIchorCD:Start(86.4, self.vb.addCount+1)
 		end
 	elseif spellId == 298156 then
 		timerDesensitizingStingCD:Start()
@@ -186,16 +189,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.tenderCount = self.vb.tenderCount + 1
 		warnCallofTender:Show(self.vb.tenderCount)
 		timerCalloftheTenderCD:Start(35, self.vb.tenderCount+1)
-	--[[elseif spellId == 298413 then--used by all arcing currents
-		self.vb.arcingCurrentCount = self.vb.arcingCurrentCount + 1
-		specWarnArcingCurrent:Show(self.vb.arcingCurrentCount)
-		timerArcingCurrentCD:Start(nil, self.vb.arcingCurrentCount+1)
-		if playerHasIncubation then
-			yellArcingCurrent:Yell()
-			specWarnArcingCurrent:Play("targetyou")
-		else
-			specWarnArcingCurrent:Play("farfromline")
-		end--]]
 	end
 end
 
@@ -288,15 +281,18 @@ function mod:SPELL_INTERRUPT(args)
 	if type(args.extraSpellId) == "number" and args.extraSpellId == 298548 then
 		timerMassiveIncubator:Stop()
 		timerDesensitizingStingCD:Start(3)
-		if self:IsMythic() then
-			timerIncubationFluidCD:Start(17.1)--SUCCESS
-			timerCalloftheTenderCD:Start(20.3, 1)
-			timerDribblingIchorCD:Start(25.2, 1)
-			timerArcingCurrentCD:Start(36.4, 1)
-		else--Review these, can't be verified because in recent test boss bugged and didn't cast anything in phase 2, he stood there and did nothing
-			timerIncubationFluidCD:Start(18.7)--SUCCESS
+		--This could still be slightly wrong because there just a standard variation on this bosses mechanics
+		if self:IsHard() then
+			timerIncubationFluidCD:Start(18.6)
 			timerDribblingIchorCD:Start(28.9, 1)
 			timerArcingCurrentCD:Start(41.0, 1)
+			if self:IsMythic() then
+				timerCalloftheTenderCD:Start(20.3, 1)
+			end
+		else--Normal/LFR
+			timerIncubationFluidCD:Start(18.6)--SUCCESS
+			timerDribblingIchorCD:Start(27.6, 1)
+			timerArcingCurrentCD:Start(38.9, 1)
 		end
 	end
 end
