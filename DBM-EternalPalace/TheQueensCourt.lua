@@ -97,7 +97,7 @@ local timerFanaticalVerdictCD			= mod:NewNextTimer(26.7, 296850, nil, nil, nil, 
 local timerViolentOutburstCD			= mod:NewNextTimer(104.4, 297325, nil, nil, nil, 2)
 local timerPotentSparkCD				= mod:NewNextTimer(92.2, 301947, nil, nil, nil, 1)
 
---local berserkTimer					= mod:NewBerserkTimer(600)
+local berserkTimer						= mod:NewBerserkTimer(600)
 
 mod:AddNamePlateOption("NPAuraOnSoP", 296704)
 --mod:AddRangeFrameOption(6, 264382)
@@ -119,6 +119,7 @@ function mod:OnCombatStart(delay)
 		if self:IsMythic() then
 			--Pashmar
 			timerPotentSparkCD:Start(20.2-delay)
+			berserkTimer:Start(450-delay)
 		else
 			timerPotentSparkCD:Start(15.8-delay)
 		end
