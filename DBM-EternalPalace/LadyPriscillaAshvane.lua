@@ -6,7 +6,7 @@ mod:SetCreatureID(152236)
 mod:SetEncounterID(2304)
 mod:SetZone()
 mod:SetUsedIcons(1, 2, 3, 4, 6, 7)
-mod:SetHotfixNoticeRev(20190716000000)--2019, 7, 16
+mod:SetHotfixNoticeRev(20190717000000)--2019, 7, 17
 --mod:SetMinSyncRevision(16950)
 --mod.respawnTime = 29
 
@@ -86,13 +86,13 @@ do
 		table.wipe(lines)
 		table.wipe(sortedLines)
 		if mod.vb.blueone and mod.vb.bluetwo then
-			addLine("|TInterface\\Icons\\Ability_Bossashvane_Icon03.blp:12:12|t"..mod.vb.blueone, mod.vb.bluetwo)
+			addLine("|TInterface\\Icons\\Ability_Bossashvane_Icon03.blp:12:12|t*"..mod.vb.blueone, mod.vb.bluetwo)
 		end
 		if mod.vb.redone and mod.vb.redtwo then
-			addLine("|TInterface\\Icons\\Ability_Bossashvane_Icon02.blp:12:12|t"..mod.vb.redone, mod.vb.redtwo)
+			addLine("|TInterface\\Icons\\Ability_Bossashvane_Icon02.blp:12:12|t*"..mod.vb.redone, mod.vb.redtwo)
 		end
 		if mod.vb.greenone and mod.vb.greentwo then
-			addLine("|TInterface\\Icons\\Ability_Bossashvane_Icon01.blp:12:12|t"..mod.vb.greenone, mod.vb.greentwo)
+			addLine("|TInterface\\Icons\\Ability_Bossashvane_Icon01.blp:12:12|t*"..mod.vb.greenone, mod.vb.greentwo)
 		end
 		return lines, sortedLines
 	end
@@ -191,7 +191,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerShieldCD:Stop()
 		local easy = self:IsEasy() or false
 		if self.vb.shieldCount == 1 then
-			self.vb.shieldCount = true
 			timerBarnacleBashCD:Start(easy and 10 or 8, 1)--SUCCESS
 			timerUpsurgeCD:Start(easy and 12 or 9, 1)
 			timerRipplingwaveCD:Start(easy and 17 or 15, 1)
