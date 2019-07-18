@@ -297,7 +297,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			--Yell again, but no further special warnings
 			yellBrinyBubble:Yell()
-		elseif self:CheckNearby(12, args.destName) then--If one is near you, you need to run away from it
+			specWarnBrinyBubbleNear:Cancel()
+			specWarnBrinyBubbleNear:CancelVoice()
+		elseif self:CheckNearby(12, args.destName) and not DBM:UnitDebuff("player", spellId) then--If one is near you, you need to run away from it
 			specWarnBrinyBubbleNear:CombinedShow(0.3, args.destName)
 			specWarnBrinyBubbleNear:ScheduleVoice(0.3, "runaway")
 		end
