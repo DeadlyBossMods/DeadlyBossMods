@@ -420,8 +420,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.bigAddCount = 0
 		warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(2))
 		warnPhase:Play("ptwo")
-		timerQueensDecreeCD:Stop()
-		timerArcaneOrbsCD:Stop()
+		timerHulkSpawnCD:Stop()--For good measure
 		if self:IsHard() then
 			timerBeckonCD:Start(25, 1)--START
 			timerReversalofFortuneCD:Start(68.1, 1)
@@ -906,7 +905,7 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 				specWarnHulk:Show(self.vb.bigAddCount)
 				specWarnHulk:Play("bigmob")
 				local timer = self:IsHard() and phase1HeroicAddTimers[self.vb.bigAddCount+1] or phase1NormalAddTimers[self.vb.bigAddCount+1]
-				if timer then
+				if timer and self.vb.phase == 1 then
 					timerHulkSpawnCD:Start(timer, self.vb.bigAddCount+1)
 				end
 			elseif cid == 153090 or cid == 153091 then--Phase 3 Sirens becoming active

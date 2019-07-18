@@ -3127,7 +3127,7 @@ local function CreateOptionsMenu()
 		end)
 		VictorySoundDropdown3:SetPoint("TOPLEFT", DungeonMusicDropDown, "TOPLEFT", 0, -45)
 
-		local TurtleDropDown = eventSoundsGeneralArea:CreateDropdown(L.EventTurtleMusic, useCombined and DBM.Music or DBM.BattleMusic, "DBM", "EventSoundTurle", function(value)
+		local TurtleDropDown = eventSoundsGeneralArea:CreateDropdown(L.EventTurtleMusic, DBM.Music, "DBM", "EventSoundTurle", function(value)
 			DBM.Options.EventSoundTurle = value
 			if value ~= "Random" then
 				if not DBM.Options.tempMusicSetting then
