@@ -7217,7 +7217,7 @@ function DBM:FindInstanceIDs(low, peak, contains)
 	for i = start, range do
 		local instance = EJ_GetInstanceInfo(i)
 		if instance then
-			if not contains or contains and dungeon:find(contains) then
+			if not contains or contains and instance:find(contains) then
 				self:AddMsg(i..": "..instance)
 			end
 		end

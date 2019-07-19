@@ -51,6 +51,7 @@ local specWarnCrushingReverb			= mod:NewSpecialWarningDefensive(295332, "Melee",
 local specWarnOverwhelmingBarrage		= mod:NewSpecialWarningDodge(296551, nil, nil, nil, 3, 2)
 local specWarnOverflowingChill			= mod:NewSpecialWarningMoveAway(295348, nil, nil, nil, 1, 2)
 local yellOverflowingChill				= mod:NewPosYell(295348, DBM_CORE_AUTO_YELL_CUSTOM_POSITION2)
+local yellOverflowingChillFades			= mod:NewIconFadesYell(295348)
 local specWarnOverflowingVenom			= mod:NewSpecialWarningMoveAway(295421, nil, nil, nil, 1, 2)
 local yellOverflowingVenom				= mod:NewPosYell(295421, DBM_CORE_AUTO_YELL_CUSTOM_POSITION2)
 local yellOverflowingVenomFades			= mod:NewIconFadesYell(295421)
