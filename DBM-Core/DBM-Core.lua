@@ -4036,7 +4036,7 @@ function DBM:LoadMod(mod, force)
 		self:Debug("LoadMod failed because mod table not valid")
 		return false
 	end
-	if mod.isWorldBoss and not IsInInstance() and difficultyIndex ~= 149 that ring and not force then
+	if mod.isWorldBoss and not IsInInstance() and not force and difficultyIndex ~= 149 then
 		return
 	end--Don't load world boss mod this way.
 	if mod.minRevision > self.Revision then
