@@ -488,7 +488,7 @@ do
 					if type(value) == "string" then
 						DBM:PlayCountSound(1, nil, value)
 					elseif value > 0 then
-						local countPlay = value == 3 and DBM.Options.CountdownVoice3v3 or value == 2 and DBM.Options.CountdownVoice2 or DBM.Options.CountdownVoice
+						local countPlay = value == 3 and DBM.Options.CountdownVoice3 or value == 2 and DBM.Options.CountdownVoice2 or DBM.Options.CountdownVoice
 						DBM:PlayCountSound(1, countPlay)
 					end
 				end, 20, 25, button)
@@ -3027,9 +3027,9 @@ local function CreateOptionsMenu()
 		end)
 		CountSoundDropDown2:SetPoint("LEFT", CountSoundDropDown, "RIGHT", 50, 0)
 
-		local CountSoundDropDown3 = spokenGeneralArea:CreateDropdown(L.CountdownVoice3, DBM.Counts, "DBM", "CountdownVoice3v2", function(value)
-			DBM.Options.CountdownVoice3v2 = value
-			DBM:PlayCountSound(1, DBM.Options.CountdownVoice3v2)
+		local CountSoundDropDown3 = spokenGeneralArea:CreateDropdown(L.CountdownVoice3, DBM.Counts, "DBM", "CountdownVoice3", function(value)
+			DBM.Options.CountdownVoice3 = value
+			DBM:PlayCountSound(1, DBM.Options.CountdownVoice3)
 			DBM:BuildVoiceCountdownCache()
 		end)
 		CountSoundDropDown3:SetPoint("TOPLEFT", CountSoundDropDown, "TOPLEFT", 0, -45)
