@@ -16,12 +16,15 @@ mod:RegisterEvents(
 --	"UNIT_SPELLCAST_SUCCEEDED"
 )
 
-
+--General
+local warnTownPortal				= mod:NewSpellAnnounce(302809, 1)
+--Alliance - Rokhan
 local warnFlamePlague				= mod:NewTargetNoFilterAnnounce(303808, 3, nil, false)
 local warnHexBomb					= mod:NewTargetNoFilterAnnounce(272853, 3)
 local warnGreaterSerpentTotem		= mod:NewSpellAnnounce(272988, 3)
 local warnSinkholeTotem				= mod:NewSpellAnnounce(273118, 3)
 
+--Alliance - Rokhan
 local specWarnChainedLightning		= mod:NewSpecialWarningInterrupt(273110, "HasInterrupt", nil, nil, 1, 2)
 local specWarnFlamePlague			= mod:NewSpecialWarningMoveAway(303808, nil, nil, nil, 1, 2)
 local yellFlamePlague				= mod:NewYell(303808)
@@ -29,6 +32,7 @@ local specWarnHexBomb				= mod:NewSpecialWarningMoveAway(272853, nil, nil, nil, 
 local yellHexBomb					= mod:NewYell(272853)
 local yellHexBombFadesFades			= mod:NewShortFadesYell(272853)
 
+--Alliance - Rokhan
 local timerFlamePlagueCD			= mod:NewCDTimer(35.1, 303808, nil, nil, nil, 3, nil, nil, nil, 1, 3)
 local timerHexBombCD				= mod:NewCDTimer(17, 272853, nil, nil, nil, 3, nil, nil, nil, 2, 3)
 local timerGreaterSerpentTotemCD	= mod:NewCDTimer(20.6, 272988, nil, nil, nil, 1)
@@ -56,6 +60,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 272853 then
 		timerHexBombCD:Start()
 	elseif spellId == 302809 or spellId == 299697 then--Scroll of Town Portal (horde, alliance)
+		warnTownPortal:Show()
 		timerFlamePlagueCD:Stop()
 		timerHexBombCD:Stop()
 		timerGreaterSerpentTotemCD:Stop()
