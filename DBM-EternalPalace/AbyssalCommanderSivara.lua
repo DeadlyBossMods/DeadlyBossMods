@@ -17,7 +17,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS 295346 295332 295791",
 	"SPELL_AURA_APPLIED 294711 294715 300701 300705 295348 300961 300962 300882 300883",
 	"SPELL_AURA_APPLIED_DOSE 294711 294715 300701 300705",
-	"SPELL_AURA_REMOVED 294711 294715 295348 300882 300883",
+	"SPELL_AURA_REFRESH 300701 300705",
+	"SPELL_AURA_REMOVED 294711 294715 295348 300882 300883 300701 300705",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED"
 	"CHAT_MSG_RAID_BOSS_EMOTE",
@@ -39,6 +40,8 @@ local warnOverflowingChill				= mod:NewTargetNoFilterAnnounce(295348, 3)
 local warnOverflowingVenom				= mod:NewTargetNoFilterAnnounce(295421, 3)
 local warnInversionSickness				= mod:NewTargetNoFilterAnnounce(300882, 4)
 
+local yellRimefrostFades				= mod:NewIconFadesYell(300701)
+local yellSepticTaintFades				= mod:NewIconFadesYell(300705)
 local specWarnFrostMark					= mod:NewSpecialWarningYouPos(294711, nil, nil, nil, 1, 9)--voice 9
 local specWarnToxicMark					= mod:NewSpecialWarningYouPos(294715, nil, nil, nil, 1, 9)--voice 9
 local yellMark							= mod:NewPosYell(294726, DBM_CORE_AUTO_YELL_CUSTOM_POSITION, true, 2)
@@ -195,14 +198,18 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 300701 then--Rimefrost
 		local amount = args.amount or 1
-		--if amount % 3 == 0 then
-			warnRimefrost:Show(args.destName, amount)
-		--end
+		warnRimefrost:Show(args.destName, amount)
+		if args:IsPlayer() then
+			yellRimefrostFades:Cancel()
+			yellRimefrostFades:Countdown(spellId, 3, 6)
+		end
 	elseif spellId == 300705 then--Septic Taint
 		local amount = args.amount or 1
-		--if amount % 3 == 0 then
-			warnSepticTaint:Show(args.destName, amount)
-		--end
+		warnSepticTaint:Show(args.destName, amount)
+		if args:IsPlayer() then
+			yellSepticTaintFades:Cancel()
+			yellSepticTaintFades:Countdown(spellId, 3, 4)
+		end
 	elseif spellId == 295348 then
 		warnOverflowingChill:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
@@ -239,6 +246,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
+mod.SPELL_AURA_REFRESH = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
@@ -258,6 +266,14 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif (spellId == 300882 or spellId == 300883) then
 		if args:IsPlayer() then
 			yellInversionSicknessFades:Cancel()
+		end
+	elseif spellId == 300701 then--Rimefrost
+		if args:IsPlayer() then
+			yellRimefrostFades:Cancel()
+		end
+	elseif spellId == 300705 then--Septic Taint
+		if args:IsPlayer() then
+			yellSepticTaintFades:Cancel()
 		end
 	end
 end

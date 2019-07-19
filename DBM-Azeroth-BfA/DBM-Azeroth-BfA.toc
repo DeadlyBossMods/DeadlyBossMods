@@ -13,13 +13,14 @@
 ## X-DBM-Mod-Type: RAID
 ## X-DBM-Mod-Category: BFA
 ## X-DBM-Mod-Has-Single-Format: 1
+## X-DBM-Mod-SubCategoriesID: 1643, 1642, 1943, 2105, 1718
 ## X-DBM-Mod-Name: Azeroth (BfA)
 ## X-DBM-Mod-Name-koKR: 아제로스 (격전의 아제로스)
 ## X-DBM-Mod-Name-zhTW: 艾澤拉斯 (決戰艾澤拉斯)
 ## X-DBM-Mod-World-Boss: 1
 ## X-DBM-Mod-Sort: 410
-## X-DBM-Mod-MapID: 1643,1642,0,1,1718
-## X-DBM-Mod-LoadCID: 132701,132253,136385,140163,140252,138794,138122,137374,148295,144946,152697,152671,152736,152729,155702
+## X-DBM-Mod-MapID: 1643,1642,0,1,1718,1943,1876,2105,2111
+## X-DBM-Mod-LoadCID: 132701,132253,136385,140163,140252,138794,138122,137374,148295,144946,152697,152671,152736,152729,155702,137702
 ## X-DBM-Mod-MinCoreRevision: 17286
 ## X-DBM-Mod-MinExpansion: 7
 localization.en.lua
@@ -37,3 +38,4 @@ Kraulok.lua
 Ivus.lua
 Ulmath.lua
 Wekemara.lua
+WarfrontArathi.lua

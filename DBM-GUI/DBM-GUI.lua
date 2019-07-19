@@ -425,12 +425,23 @@ do
 		{ text = L.CBTImportant, value = 7 },
 	}
 
-	local cvoice = {
+	local function MixinCountTable(baseTable)
+		-- DBM values (baseTable) first, mediatable values afterwards
+		local result = baseTable
+		for i=1,#DBM.Counts do
+			local mediatext = DBM.Counts[i].text
+			local mediapath = DBM.Counts[i].path
+			tinsert(result, {text=mediatext, value=mediapath})
+		end
+		return result
+	end
+
+	local cvoice = MixinCountTable({
 		{ text = L.None, value = 0 },
 		{ text = L.CVoiceOne, value = 1 },
 		{ text = L.CVoiceTwo, value = 2 },
 		{ text = L.CVoiceThree, value = 3 },
-	}
+	})
 
 	function PanelPrototype:CreateCheckButton(name, autoplace, textleft, dbmvar, dbtvar, mod, modvar, globalvar, isTimer)
 		if not name then
@@ -474,8 +485,10 @@ do
 				end)
 				dropdown2 = self:CreateDropdown(nil, cvoice, nil, nil, function(value)
 					mod.Options[modvar.."CVoice"] = value
-					if value > 0 then
-						local countPlay = value == 3 and DBM.Options.CountdownVoice3v2 or value == 2 and DBM.Options.CountdownVoice2 or DBM.Options.CountdownVoice
+					if type(value) == "string" then
+						DBM:PlayCountSound(1, nil, value)
+					elseif value > 0 then
+						local countPlay = value == 3 and DBM.Options.CountdownVoice3 or value == 2 and DBM.Options.CountdownVoice2 or DBM.Options.CountdownVoice
 						DBM:PlayCountSound(1, countPlay)
 					end
 				end, 20, 25, button)
@@ -3004,7 +3017,6 @@ local function CreateOptionsMenu()
 			DBM.Options.CountdownVoice = value
 			DBM:PlayCountSound(1, DBM.Options.CountdownVoice)
 			DBM:BuildVoiceCountdownCache()
-			DBM:BuildVoiceCountdownCacheTwo()
 		end)
 		CountSoundDropDown:SetPoint("TOPLEFT", spokenGeneralArea.frame, "TOPLEFT", 0, -20)
 
@@ -3012,15 +3024,13 @@ local function CreateOptionsMenu()
 			DBM.Options.CountdownVoice2 = value
 			DBM:PlayCountSound(1, DBM.Options.CountdownVoice2)
 			DBM:BuildVoiceCountdownCache()
-			DBM:BuildVoiceCountdownCacheTwo()
 		end)
 		CountSoundDropDown2:SetPoint("LEFT", CountSoundDropDown, "RIGHT", 50, 0)
 
-		local CountSoundDropDown3 = spokenGeneralArea:CreateDropdown(L.CountdownVoice3, DBM.Counts, "DBM", "CountdownVoice3v2", function(value)
-			DBM.Options.CountdownVoice3v2 = value
-			DBM:PlayCountSound(1, DBM.Options.CountdownVoice3v2)
+		local CountSoundDropDown3 = spokenGeneralArea:CreateDropdown(L.CountdownVoice3, DBM.Counts, "DBM", "CountdownVoice3", function(value)
+			DBM.Options.CountdownVoice3 = value
+			DBM:PlayCountSound(1, DBM.Options.CountdownVoice3)
 			DBM:BuildVoiceCountdownCache()
-			DBM:BuildVoiceCountdownCacheTwo()
 		end)
 		CountSoundDropDown3:SetPoint("TOPLEFT", CountSoundDropDown, "TOPLEFT", 0, -45)
 
