@@ -45,8 +45,8 @@ do
 	local ClickFrame = CreateFrame("Button", nil, UIParent)
 
 	TabFrame1:SetBackdrop({
-		bgFile="Interface\\DialogFrame\\UI-DialogBox-Background",--131071
-		edgeFile="Interface\\DialogFrame\\UI-DialogBox-Border",--131072
+		bgFile=131071,--"Interface\\DialogFrame\\UI-DialogBox-Background"
+		edgeFile=131072,--"Interface\\DialogFrame\\UI-DialogBox-Border"
 		tile=1, tileSize=32, edgeSize=32,
 		insets={left=11, right=12, top=12, bottom=11}
 	});

@@ -4618,8 +4618,8 @@ do
 		local savedSender
 
 		local inspopup = CreateFrame("Frame", "DBMPopupLockout", UIParent)
-		inspopup:SetBackdrop({bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background-Dark",--312922
-			edgeFile = "Interface\\DialogFrame\\UI-DialogBox-Border",--131072
+		inspopup:SetBackdrop({bgFile = 312922,--"Interface\\DialogFrame\\UI-DialogBox-Background-Dark"
+			edgeFile = 131072,--"Interface\\DialogFrame\\UI-DialogBox-Border"
 			tile = true, tileSize = 16, edgeSize = 16,
 			insets = {left = 1, right = 1, top = 1, bottom = 1}}
 		)
@@ -4636,7 +4636,7 @@ do
 		local buttonaccept = CreateFrame("Button", nil, inspopup)
 		buttonaccept:SetNormalTexture(130763)--"Interface\\Buttons\\UI-DialogBox-Button-Up"
 		buttonaccept:SetPushedTexture(130761)--"Interface\\Buttons\\UI-DialogBox-Button-Down"
-		buttonaccept:SetHighlightTexture("Interface\\Buttons\\UI-DialogBox-Button-Highlight", "ADD")--130762
+		buttonaccept:SetHighlightTexture(130762, "ADD")--"Interface\\Buttons\\UI-DialogBox-Button-Highlight"
 		buttonaccept:SetSize(128, 35)
 		buttonaccept:SetPoint("BOTTOM", inspopup, "BOTTOM", -75, 0)
 
@@ -4648,7 +4648,7 @@ do
 		local buttondecline = CreateFrame("Button", nil, inspopup)
 		buttondecline:SetNormalTexture(130763)--"Interface\\Buttons\\UI-DialogBox-Button-Up"
 		buttondecline:SetPushedTexture(130761)--"Interface\\Buttons\\UI-DialogBox-Button-Down"
-		buttondecline:SetHighlightTexture("Interface\\Buttons\\UI-DialogBox-Button-Highlight", "ADD")--130762
+		buttondecline:SetHighlightTexture(130762, "ADD")--"Interface\\Buttons\\UI-DialogBox-Button-Highlight"
 		buttondecline:SetSize(128, 35)
 		buttondecline:SetPoint("BOTTOM", inspopup, "BOTTOM", 75, 0)
 
@@ -5150,8 +5150,8 @@ do
 		frame:SetHeight(140)
 		frame:SetPoint("TOP", 0, -230)
 		frame:SetBackdrop({
-			bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background",--131071
-			edgeFile = "Interface\\DialogFrame\\UI-DialogBox-Border", tile = true, tileSize = 32, edgeSize = 32,--131072
+			bgFile = 131071,--"Interface\\DialogFrame\\UI-DialogBox-Background"
+			edgeFile = 131072, tile = true, tileSize = 32, edgeSize = 32,--"Interface\\DialogFrame\\UI-DialogBox-Border"
 			insets = {left = 11, right = 12, top = 12, bottom = 11},
 		})
 		fontstring = frame:CreateFontString(nil, "ARTWORK", "GameFontNormal")
@@ -5244,8 +5244,8 @@ do
 		frame:SetHeight(140)
 		frame:SetPoint("TOP", 0, -230)
 		frame:SetBackdrop({
-			bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background",--131071
-			edgeFile = "Interface\\DialogFrame\\UI-DialogBox-Border", tile = true, tileSize = 32, edgeSize = 32,--131072
+			bgFile = 131071,--"Interface\\DialogFrame\\UI-DialogBox-Background"
+			edgeFile = 131072, tile = true, tileSize = 32, edgeSize = 32,--"Interface\\DialogFrame\\UI-DialogBox-Border"
 			insets = {left = 11, right = 12, top = 12, bottom = 11},
 		})
 		fontstring = frame:CreateFontString(nil, "ARTWORK", "GameFontNormal")

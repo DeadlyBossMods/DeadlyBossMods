@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(150859)
 mod:SetEncounterID(2293)
 mod:SetZone()
-mod:SetUsedIcons(1, 2, 3)
+mod:SetUsedIcons(1, 2, 3, 4)
 --mod:SetHotfixNoticeRev(16950)
 --mod:SetMinSyncRevision(16950)
 --mod.respawnTime = 29
@@ -99,9 +99,9 @@ local timerVoidSlamCD					= mod:NewAITimer(58.2, 302593, nil, nil, nil, 3)--Myth
 
 --mod:AddRangeFrameOption(6, 264382)
 mod:AddInfoFrameOption(292971, true)
-mod:AddSetIconOption("SetIconDread", 292963, true, false, {1, 2, 3})
-mod:AddSetIconOption("SetIconDreadScream", 303543, true, false, {1, 2, 3})
-mod:AddSetIconOption("SetIconManicDreadScream", 296018, true, false, {1, 2, 3})
+mod:AddSetIconOption("SetIconDread", 292963, true, false, {1, 2, 3, 4})
+mod:AddSetIconOption("SetIconDreadScream", 303543, true, false, {1, 2, 3, 4})
+mod:AddSetIconOption("SetIconManicDreadScream", 296018, true, false, {1, 2, 3, 4})
 
 mod.vb.phase = 1
 mod.vb.dreadIcon = 1
