@@ -24,9 +24,9 @@ local warnSinkholeTotem				= mod:NewSpellAnnounce(273118, 3)
 
 local specWarnWailofMourning		= mod:NewSpecialWarningSpell(271561, "Healer", nil, nil, 2, 2)
 local specWarnChainedLightning		= mod:NewSpecialWarningInterrupt(273110, "HasInterrupt", nil, nil, 1, 2)
-local specWarnFlamePlague			= mod:NewSpecialWarningMoveAWay(303808, nil, nil, nil, 1, 2)
+local specWarnFlamePlague			= mod:NewSpecialWarningMoveAway(303808, nil, nil, nil, 1, 2)
 local yellFlamePlague				= mod:NewYell(303808)
-local specWarnHexBomb				= mod:NewSpecialWarningMoveAWay(272853, nil, nil, nil, 1, 2)
+local specWarnHexBomb				= mod:NewSpecialWarningMoveAway(272853, nil, nil, nil, 1, 2)
 local yellHexBomb					= mod:NewYell(272853)
 local yellHexBombFadesFades			= mod:NewShortFadesYell(272853)
 
