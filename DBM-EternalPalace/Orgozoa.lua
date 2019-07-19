@@ -71,7 +71,7 @@ local timerShockingLightningCD				= mod:NewCDTimer(4.8, 295818, nil, false, nil,
 local timerConductivePulseCD				= mod:NewCDTimer(18.2, 295822, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
 local timerPowerfulStompCD					= mod:NewCDTimer(29.1, 296691, nil, nil, nil, 2, nil, DBM_CORE_HEALER_ICON)
 
---local berserkTimer					= mod:NewBerserkTimer(600)
+local berserkTimer							= mod:NewBerserkTimer(600)
 
 --mod:AddRangeFrameOption(6, 264382)
 --mod:AddInfoFrameOption(275270, true)
@@ -109,6 +109,7 @@ function mod:OnCombatStart(delay)
 		timerDribblingIchorCD:Start(27.6-delay, 1)
 		timerArcingCurrentCD:Start(38.9-delay, 1)
 	end
+	berserkTimer:Start(759-delay)--Normal and Heroic at least, unconfirmed LFR and mythic
 	if self.Options.NPAuraOnChaoticGrowth or self.Options.NPAuraOnAquaLance then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end

@@ -95,7 +95,7 @@ local timerPsychoticSplitCD				= mod:NewCDTimer(66.6, 301068, nil, nil, nil, 6, 
 local timerDreadScreamCD				= mod:NewAITimer(58.2, 303543, nil, "Healer", nil, 5, nil, DBM_CORE_MYTHIC_ICON..DBM_CORE_MAGIC_ICON)--Mythic
 local timerVoidSlamCD					= mod:NewAITimer(58.2, 302593, nil, nil, nil, 3)--Mythic
 
---local berserkTimer					= mod:NewBerserkTimer(600)
+local berserkTimer						= mod:NewBerserkTimer(600)
 
 --mod:AddRangeFrameOption(6, 264382)
 mod:AddInfoFrameOption(292971, true)
@@ -119,6 +119,7 @@ function mod:OnCombatStart(delay)
 	timerDreadCD:Start(12-delay)
 	timerHorrificSummonerCD:Start(25.4-delay)--20 sec for event, but the portal happens 5 seconds AFTER event
 	timerCrushingGraspCD:Start(30-delay)
+	berserkTimer:Start(600-delay)
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(292971))
 		DBM.InfoFrame:Show(10, "table", HysteriaStacks, 1)

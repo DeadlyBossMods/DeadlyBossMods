@@ -74,7 +74,7 @@ local timerInversionCD					= mod:NewCDTimer(72.9, 295791, nil, nil, nil, 2, nil,
 local timerfrostshockboltsCD			= mod:NewCDTimer(60.8, 295601, nil, nil, nil, 3)
 local timerChimericMarksCD				= mod:NewCDTimer(22.8, 294726, nil, nil, nil, 2, nil, DBM_CORE_MYTHIC_ICON)--Mythic
 
---local berserkTimer					= mod:NewBerserkTimer(600)
+local berserkTimer						= mod:NewBerserkTimer(600)
 
 mod:AddSetIconOption("SetIconOnMarks", 294726, true, false, {4, 6})
 mod:AddInfoFrameOption(294726, true)
@@ -92,6 +92,7 @@ function mod:OnCombatStart(delay)
 	if not self:IsLFR() then
 		timerInversionCD:Start(70-delay)
 		if self:IsHard() then
+			berserkTimer:Start(360-delay)
 			if self:IsMythic() then
 				timerChimericMarksCD:Start(23-delay)
 			end

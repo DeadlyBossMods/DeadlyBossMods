@@ -55,7 +55,7 @@ local timerBarnacleBashCD				= mod:NewCDCountTimer(15, 296725, nil, nil, nil, 5,
 local timerArcingAzeriteCD				= mod:NewCDCountTimer(35, 296944, nil, nil, nil, 3, nil, nil, nil, 3, 4)
 local timerShieldCD						= mod:NewCDTimer(70.5, 296650, nil, nil, nil, 6, nil, nil, nil, 1, 4)
 
---local berserkTimer					= mod:NewBerserkTimer(600)
+local berserkTimer						= mod:NewBerserkTimer(600)
 
 mod:AddRangeFrameOption("4/12")
 mod:AddInfoFrameOption(296650, true)
@@ -109,6 +109,7 @@ function mod:OnCombatStart(delay)
 	self.vb.blueone, self.vb.bluetwo = nil, nil
 	self.vb.redone, self.vb.redtwo = nil, nil
 	self.vb.greenone, self.vb.greentwo = nil, nil
+	berserkTimer:Start(self:IsMythic() and 505 or self:IsHeroic() and 559-delay)--Not seen normal mode berserk yet
 end
 
 function mod:OnCombatEnd()
