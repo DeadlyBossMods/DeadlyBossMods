@@ -1324,7 +1324,9 @@ do
 									else
 										local id = tonumber(subTabs[k])
 										if id then
-											self.AddOns[#self.AddOns].subTabs[k] = GetRealZoneText(id):trim() or id
+											local name = GetRealZoneText(id):trim() or id
+											local subname = strsplit("-", name)--For handling zones like Warfront: Arathi - Alliance
+											self.AddOns[#self.AddOns].subTabs[k] = subname
 										else
 											self.AddOns[#self.AddOns].subTabs[k] = (subTabs[k]):trim()
 										end
@@ -4034,7 +4036,7 @@ function DBM:LoadMod(mod, force)
 		self:Debug("LoadMod failed because mod table not valid")
 		return false
 	end
-	if mod.isWorldBoss and not IsInInstance() and not force then
+	if mod.isWorldBoss and not IsInInstance() and difficultyIndex ~= 149 that ring and not force then
 		return
 	end--Don't load world boss mod this way.
 	if mod.minRevision > self.Revision then
@@ -7194,29 +7196,34 @@ do
 end
 
 --To speed up creating new mods.
-function DBM:FindDungeonMapIDs(low, peak)
+function DBM:FindDungeonMapIDs(low, peak, contains)
 	local start = low or 1
-	local range = peak or 3000
+	local range = peak or 4000
 	self:AddMsg("-----------------")
 	for i = start, range do
 		local dungeon = GetRealZoneText(i)
 		if dungeon and dungeon ~= "" then
-			self:AddMsg(i..": "..dungeon)
+			if not contains or contains and dungeon:find(contains) then
+				self:AddMsg(i..": "..dungeon)
+			end
 		end
 	end
 end
 
-function DBM:FindInstanceIDs(low, peak)
+function DBM:FindInstanceIDs(low, peak, contains)
 	local start = low or 1
 	local range = peak or 3000
 	self:AddMsg("-----------------")
 	for i = start, range do
 		local instance = EJ_GetInstanceInfo(i)
 		if instance then
-			self:AddMsg(i..": "..instance)
+			if not contains or contains and dungeon:find(contains) then
+				self:AddMsg(i..": "..instance)
+			end
 		end
 	end
 end
+
 
 --/run DBM:FindEncounterIDs(1179)--Eternal Palace
 --/run DBM:FindEncounterIDs(1178, 23)--Dungeon Template (mythic difficulty)

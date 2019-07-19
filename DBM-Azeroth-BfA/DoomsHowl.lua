@@ -4,7 +4,7 @@ if UnitFactionGroup("player") == "Alliance" then
 else--Horde
 	dungeonID, creatureID = 2212, 137374--Lion's Roar
 end
-local mod	= DBM:NewMod(dungeonID, "DBM-Azeroth-BfA", nil, 1028)
+local mod	= DBM:NewMod(dungeonID, "DBM-Azeroth-BfA", 3, 1028)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
