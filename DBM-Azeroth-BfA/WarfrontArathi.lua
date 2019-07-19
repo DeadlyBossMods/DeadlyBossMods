@@ -19,7 +19,7 @@ mod:RegisterEvents(
 
 local warnFlamePlague				= mod:NewTargetNoFilterAnnounce(303808, 3, nil, false)
 local warnHexBomb					= mod:NewTargetNoFilterAnnounce(272853, 3)
-local warnGreaterSerpentTotem		= mod:NewSpellAnnounce(272853, 3)
+local warnGreaterSerpentTotem		= mod:NewSpellAnnounce(272988, 3)
 local warnSinkholeTotem				= mod:NewSpellAnnounce(273118, 3)
 
 local specWarnChainedLightning		= mod:NewSpecialWarningInterrupt(273110, "HasInterrupt", nil, nil, 1, 2)
@@ -31,7 +31,7 @@ local yellHexBombFadesFades			= mod:NewShortFadesYell(272853)
 
 local timerFlamePlagueCD			= mod:NewCDTimer(35.1, 303808, nil, nil, nil, 3, nil, nil, nil, 1, 3)
 local timerHexBombCD				= mod:NewCDTimer(17, 272853, nil, nil, nil, 3, nil, nil, nil, 2, 3)
-local timerGreaterSerpentTotemCD	= mod:NewCDTimer(20.6, 272853, nil, nil, nil, 1)
+local timerGreaterSerpentTotemCD	= mod:NewCDTimer(20.6, 272988, nil, nil, nil, 1)
 local timerSinkholeTotemCD			= mod:NewCDTimer(20, 273118, nil, nil, nil, 2)
 
 --[[
@@ -69,7 +69,7 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	if not self.Options.Enabled then return end
 	local spellId = args.spellId
-	if spellId == 272853 then
+	if spellId == 272988 then
 		warnGreaterSerpentTotem:Show()
 		timerGreaterSerpentTotemCD:Start()
 	elseif spellId == 273118 then
