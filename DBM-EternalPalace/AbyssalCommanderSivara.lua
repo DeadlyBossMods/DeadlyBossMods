@@ -39,7 +39,7 @@ local warnSepticTaint					= mod:NewStackAnnounce(300705, 2, nil, "Tank")
 local warnOverflowingChill				= mod:NewTargetNoFilterAnnounce(295348, 3)
 local warnOverflowingVenom				= mod:NewTargetNoFilterAnnounce(295421, 3)
 local warnInversionSickness				= mod:NewTargetNoFilterAnnounce(300882, 4)
-local warnCrushingReverb				= mod:NewCastAnnounce(295332, 2 nil, nil, "Melee")
+local warnCrushingReverb				= mod:NewCastAnnounce(295332, 2, nil, nil, "Melee")
 
 local yellRimefrostFades				= mod:NewIconFadesYell(300701)
 local yellSepticTaintFades				= mod:NewIconFadesYell(300705)
