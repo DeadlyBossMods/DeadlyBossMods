@@ -227,7 +227,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellOverflowingVenom:Yell(4, args.spellName, 4)
 			yellOverflowingVenomFades:Countdown(spellId, nil, 4)
 		end
-	elseif (spellId == 300961 or spellId == 300962) and args:IsPlayer() then
+	elseif (spellId == 300961 or spellId == 300962) and args:IsPlayer() and self:AntiSpam(4, 1) then
 		specWarnGTFO:Show(args.spellName)
 		specWarnGTFO:Play("watchfeet")
 	elseif (spellId == 300882 or spellId == 300883) then
@@ -305,7 +305,7 @@ end
 function mod:UNIT_POWER_FREQUENT(uId, type)
 	if type == "ALTERNATE" then
 		local altPower = UnitPower(uId, 10)
-		if self:AntiSpam(3, 1) and altPower >= 70 then
+		if self:AntiSpam(3, 2) and altPower >= 70 then
 			if playerMark == 1 then--Toxic
 				specWarnVenomousBlood:Show()
 				specWarnVenomousBlood:Play("stopmove")
