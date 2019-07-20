@@ -4618,7 +4618,7 @@ do
 		local savedSender
 
 		local inspopup = CreateFrame("Frame", "DBMPopupLockout", UIParent)
-		inspopup:SetBackdrop({bgFile = 312922,--"Interface\\DialogFrame\\UI-DialogBox-Background-Dark"
+		inspopup:SetBackdrop({bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background-Dark",--312922
 			edgeFile = 131072,--"Interface\\DialogFrame\\UI-DialogBox-Border"
 			tile = true, tileSize = 16, edgeSize = 16,
 			insets = {left = 1, right = 1, top = 1, bottom = 1}}
@@ -5150,8 +5150,8 @@ do
 		frame:SetHeight(140)
 		frame:SetPoint("TOP", 0, -230)
 		frame:SetBackdrop({
-			bgFile = 131071,--"Interface\\DialogFrame\\UI-DialogBox-Background"
-			edgeFile = 131072, tile = true, tileSize = 32, edgeSize = 32,--"Interface\\DialogFrame\\UI-DialogBox-Border"
+			bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background",--131071
+			edgeFile = "Interface\\DialogFrame\\UI-DialogBox-Border", tile = true, tileSize = 32, edgeSize = 32,--131072
 			insets = {left = 11, right = 12, top = 12, bottom = 11},
 		})
 		fontstring = frame:CreateFontString(nil, "ARTWORK", "GameFontNormal")
@@ -5244,8 +5244,8 @@ do
 		frame:SetHeight(140)
 		frame:SetPoint("TOP", 0, -230)
 		frame:SetBackdrop({
-			bgFile = 131071,--"Interface\\DialogFrame\\UI-DialogBox-Background"
-			edgeFile = 131072, tile = true, tileSize = 32, edgeSize = 32,--"Interface\\DialogFrame\\UI-DialogBox-Border"
+			bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background",--131071
+			edgeFile = "Interface\\DialogFrame\\UI-DialogBox-Border", tile = true, tileSize = 32, edgeSize = 32,--131072
 			insets = {left = 11, right = 12, top = 12, bottom = 11},
 		})
 		fontstring = frame:CreateFontString(nil, "ARTWORK", "GameFontNormal")
