@@ -78,7 +78,7 @@ local specWarnViolentOutburst			= mod:NewSpecialWarningRun(297325, nil, nil, nil
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(270290, nil, nil, nil, 1, 8)
 
 --General
-local timerDesperateMeasures			= mod:NewCastTimer(10, 271225, nil, nil, nil, 5)
+local timerDesperateMeasures			= mod:NewCastTimer(10, 300088, nil, nil, nil, 5)
 --Queen Azshara
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20258))
 local timerFormRanksCD					= mod:NewNextTimer(40, 298050, nil, nil, nil, 3, nil, nil, nil, 1, 4)
