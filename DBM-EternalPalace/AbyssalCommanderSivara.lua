@@ -39,6 +39,7 @@ local warnSepticTaint					= mod:NewStackAnnounce(300705, 2, nil, "Tank")
 local warnOverflowingChill				= mod:NewTargetNoFilterAnnounce(295348, 3)
 local warnOverflowingVenom				= mod:NewTargetNoFilterAnnounce(295421, 3)
 local warnInversionSickness				= mod:NewTargetNoFilterAnnounce(300882, 4)
+local warnCrushingReverb				= mod:NewCastAnnounce(295332, 2, nil, nil, "Melee")
 
 local yellRimefrostFades				= mod:NewIconFadesYell(300701)
 local yellSepticTaintFades				= mod:NewIconFadesYell(300705)
@@ -47,7 +48,6 @@ local specWarnToxicMark					= mod:NewSpecialWarningYouPos(294715, nil, nil, nil,
 local yellMark							= mod:NewPosYell(294726, DBM_CORE_AUTO_YELL_CUSTOM_POSITION, true, 2)
 local specWarnFrozenBlood				= mod:NewSpecialWarningKeepMove(295795, nil, nil, nil, 1, 2)
 local specWarnVenomousBlood				= mod:NewSpecialWarningStopMove(295796, nil, nil, nil, 1, 2)
-local specWarnCrushingReverb			= mod:NewSpecialWarningDefensive(295332, "Melee", nil, 2, 2, 2)
 local specWarnOverwhelmingBarrage		= mod:NewSpecialWarningDodge(296551, nil, nil, nil, 3, 2)
 local specWarnOverflowingChill			= mod:NewSpecialWarningMoveAway(295348, nil, nil, nil, 1, 2)
 local yellOverflowingChill				= mod:NewPosYell(295348, DBM_CORE_AUTO_YELL_CUSTOM_POSITION2)
@@ -74,7 +74,7 @@ local timerInversionCD					= mod:NewCDTimer(72.9, 295791, nil, nil, nil, 2, nil,
 local timerfrostshockboltsCD			= mod:NewCDTimer(60.8, 295601, nil, nil, nil, 3)
 local timerChimericMarksCD				= mod:NewCDTimer(22.8, 294726, nil, nil, nil, 2, nil, DBM_CORE_MYTHIC_ICON)--Mythic
 
---local berserkTimer					= mod:NewBerserkTimer(600)
+local berserkTimer						= mod:NewBerserkTimer(600)
 
 mod:AddSetIconOption("SetIconOnMarks", 294726, true, false, {4, 6})
 mod:AddInfoFrameOption(294726, true)
@@ -92,6 +92,7 @@ function mod:OnCombatStart(delay)
 	if not self:IsLFR() then
 		timerInversionCD:Start(70-delay)
 		if self:IsHard() then
+			berserkTimer:Start(360-delay)
 			if self:IsMythic() then
 				timerChimericMarksCD:Start(23-delay)
 			end
@@ -130,8 +131,7 @@ function mod:SPELL_CAST_START(args)
 		warnChimericMarks:Show()
 		timerChimericMarksCD:Start()
 	elseif spellId == 295332 then
-		specWarnCrushingReverb:Show()
-		specWarnCrushingReverb:Play("carefly")
+		warnCrushingReverb:Show()
 	elseif spellId == 296551 or spellId == 298122 then
 		specWarnOverwhelmingBarrage:Show()
 		specWarnOverwhelmingBarrage:Play("aesoon")
@@ -226,7 +226,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellOverflowingVenom:Yell(4, args.spellName, 4)
 			yellOverflowingVenomFades:Countdown(spellId, nil, 4)
 		end
-	elseif (spellId == 300961 or spellId == 300962) and args:IsPlayer() then
+	elseif (spellId == 300961 or spellId == 300962) and args:IsPlayer() and self:AntiSpam(4, 1) then
 		specWarnGTFO:Show(args.spellName)
 		specWarnGTFO:Play("watchfeet")
 	elseif (spellId == 300882 or spellId == 300883) then
@@ -304,7 +304,7 @@ end
 function mod:UNIT_POWER_FREQUENT(uId, type)
 	if type == "ALTERNATE" then
 		local altPower = UnitPower(uId, 10)
-		if self:AntiSpam(3, 1) and altPower >= 70 then
+		if self:AntiSpam(3, 2) and altPower >= 70 then
 			if playerMark == 1 then--Toxic
 				specWarnVenomousBlood:Show()
 				specWarnVenomousBlood:Play("stopmove")

@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(150859)
 mod:SetEncounterID(2293)
 mod:SetZone()
-mod:SetUsedIcons(1, 2, 3)
+mod:SetUsedIcons(1, 2, 3, 4)
 --mod:SetHotfixNoticeRev(16950)
 --mod:SetMinSyncRevision(16950)
 --mod.respawnTime = 29
@@ -95,13 +95,13 @@ local timerPsychoticSplitCD				= mod:NewCDTimer(66.6, 301068, nil, nil, nil, 6, 
 local timerDreadScreamCD				= mod:NewAITimer(58.2, 303543, nil, "Healer", nil, 5, nil, DBM_CORE_MYTHIC_ICON..DBM_CORE_MAGIC_ICON)--Mythic
 local timerVoidSlamCD					= mod:NewAITimer(58.2, 302593, nil, nil, nil, 3)--Mythic
 
---local berserkTimer					= mod:NewBerserkTimer(600)
+local berserkTimer						= mod:NewBerserkTimer(600)
 
 --mod:AddRangeFrameOption(6, 264382)
 mod:AddInfoFrameOption(292971, true)
-mod:AddSetIconOption("SetIconDread", 292963, true, false, {1, 2, 3})
-mod:AddSetIconOption("SetIconDreadScream", 303543, true, false, {1, 2, 3})
-mod:AddSetIconOption("SetIconManicDreadScream", 296018, true, false, {1, 2, 3})
+mod:AddSetIconOption("SetIconDread", 292963, true, false, {1, 2, 3, 4})
+mod:AddSetIconOption("SetIconDreadScream", 303543, true, false, {1, 2, 3, 4})
+mod:AddSetIconOption("SetIconManicDreadScream", 296018, true, false, {1, 2, 3, 4})
 
 mod.vb.phase = 1
 mod.vb.dreadIcon = 1
@@ -119,6 +119,7 @@ function mod:OnCombatStart(delay)
 	timerDreadCD:Start(12-delay)
 	timerHorrificSummonerCD:Start(25.4-delay)--20 sec for event, but the portal happens 5 seconds AFTER event
 	timerCrushingGraspCD:Start(30-delay)
+	berserkTimer:Start(600-delay)
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(292971))
 		DBM.InfoFrame:Show(10, "table", HysteriaStacks, 1)
