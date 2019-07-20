@@ -491,7 +491,7 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 302208 then
+	if spellId == 302208 and self:AntiSpam(4, 6) then
 		warnPressureSurge:Show()
 	elseif spellId == 298014 then
 		timerColdBlastCD:Start()
