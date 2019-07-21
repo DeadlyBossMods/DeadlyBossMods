@@ -321,7 +321,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerUpsurgeCD:Stop()
 		timerBarnacleBashCD:Stop()
 		timerBarnacleBashCD:Start(13, 1)--SUCCESS
-		timerUpsurgeCD:Start(18, 1)
+		timerUpsurgeCD:Start(17.9, 1)
 		timerArcingAzeriteCD:Start(20.5, 1)
 		timerShieldCD:Start(70.5)
 		if self.Options.InfoFrame then

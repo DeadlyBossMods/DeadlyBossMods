@@ -229,11 +229,11 @@ function mod:UNIT_DIED(args)
 			self.vb.tideFistCount = 0
 			self.vb.arcaneBombCount = 0
 			timerArcaneBombCD:Stop()
-			timerArcanadoBurstCD:Start(6, 1)
-			timerArcaneBombCD:Start(7, 1)
-			timerUnshacklingPowerCD:Start(10, 1)
-			timerTideFistCD:Start(15, 1)
-			timerAncientTempestCD:Start(95.8)
+			timerArcanadoBurstCD:Start(9, 1)
+			timerArcaneBombCD:Start(10, 1)
+			timerUnshacklingPowerCD:Start(13, 1)
+			timerTideFistCD:Start(18, 1)
+			timerAncientTempestCD:Start(98.8)
 		end
 	end
 end
