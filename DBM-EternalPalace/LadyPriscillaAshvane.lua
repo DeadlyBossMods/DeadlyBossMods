@@ -19,7 +19,6 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_REMOVED 296650 296943 296940 296942 296939 296941 296938 302989",
 	"SPELL_PERIODIC_DAMAGE 296752",
 	"SPELL_PERIODIC_MISSED 296752"
---	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
 --[[
@@ -141,7 +140,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 296725 then--Barnacle Bash
 		self.vb.spellPicker = self.vb.spellPicker + 1
 		if self.vb.spellPicker == 2 then--Two bash been cast, Briny is next
-			timerBrinyBubbleCD:Start(self.vb.shieldDown and 10 or 15, self.vb.spellPicker+1)--Success to start
+			timerBrinyBubbleCD:Start(self.vb.shieldDown and 10 or 14.5, self.vb.spellPicker+1)--Success to start
 		else
 			timerBarnacleBashCD:Start(self.vb.shieldDown and 15 or 16, self.vb.spellPicker+1)--success to success
 		end
@@ -196,13 +195,11 @@ function mod:SPELL_AURA_APPLIED(args)
 			timerUpsurgeCD:Start(easy and 12 or 9, 1)
 			timerRipplingwaveCD:Start(easy and 17 or 15, 1)
 			--timerCoralGrowthCD:Start(30.5, 1)
-			--timerBrinyBubbleCD:Start(easy and 41 or 37)--Not started here
 		else
 			timerUpsurgeCD:Start(easy and 15.5 or 12, 1)
 			timerBarnacleBashCD:Start(easy and 13.8 or 11.7, 1)--SUCCESS
 			timerRipplingwaveCD:Start(20.7, 1)
 			--timerCoralGrowthCD:Start(30.5, 1)
-			--timerBrinyBubbleCD:Start(easy and 44.8 or 40.7)--Not started here
 		end
 		if self.Options.RangeFrame then
 			if self:IsRanged() then
@@ -371,17 +368,3 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spell
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
-
---[[
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 297437 then--Lady Ashvane Spell Picker
-		self.vb.spellPicker = self.vb.spellPicker + 1
-		if self.vb.spellPicker == 3 then
-			self.vb.spellPicker = 0
-			timerBarnacleBashCD:Start(15.9, self.vb.spellPicker+1)
-		elseif self.vb.spellPicker == 2 then--Two bash been cast, crushing is next
-			timerBrinyBubbleCD:Start(15.9, self.vb.spellPicker+1)
-		end
-	end
-end
---]]

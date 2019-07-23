@@ -11593,7 +11593,6 @@ do
 			end
 			scanID = scanID or 1
 			if not startIcon then startIcon = 1 end
-			startIcon = startIcon or 8
 			local uId = DBM:GetRaidUnitId(target)
 			if uId or UnitExists(target) then--target accepts uid, unitname both.
 				uId = uId or target
