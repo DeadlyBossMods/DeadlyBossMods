@@ -40,8 +40,8 @@ local yellBrinyBubbleFades				= mod:NewShortFadesYell(297324)
 local specWarnBrinyBubbleNear			= mod:NewSpecialWarningClose(297324, nil, nil, nil, 1, 2)
 local specWarnBarnacleBash				= mod:NewSpecialWarningTaunt(296725, nil, nil, nil, 1, 2)
 local specWarnArcingAzerite				= mod:NewSpecialWarningYouPos(296944, nil, nil, nil, 3, 9)
-local yellArcingAzerite					= mod:NewYell(296944)
-local yellArcingAzeriteFades			= mod:NewShortFadesYell(296944)
+local yellArcingAzerite					= mod:NewPosYell(296944, DBM_CORE_AUTO_YELL_CUSTOM_POSITION)
+local yellArcingAzeriteFades			= mod:NewIconFadesYell(296944)
 local specWarnGTFO						= mod:NewSpecialWarningGTFO(296752, nil, nil, nil, 1, 8)
 
 --mod:AddTimerLine(BOSS)
@@ -229,8 +229,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			if args:IsPlayer() then
 				specWarnArcingAzerite:Show("|TInterface\\Icons\\Ability_Bossashvane_Icon01.blp:12:12|tGreen|TInterface\\Icons\\Ability_Bossashvane_Icon01.blp:12:12|t|")
 				specWarnArcingAzerite:Play("breakcoral")
-				yellArcingAzerite:Yell()
-				yellArcingAzeriteFades:Countdown(spellId)
+				yellArcingAzerite:Yell(4, "")
+				yellArcingAzeriteFades:Countdown(spellId, nil, 4)
 			end
 			if spellId == 296941 then
 				self.vb.greenone = args.destName
@@ -245,8 +245,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			if args:IsPlayer() then
 				specWarnArcingAzerite:Show("|TInterface\\Icons\\Ability_Bossashvane_Icon02.blp:12:12|tRed|TInterface\\Icons\\Ability_Bossashvane_Icon02.blp:12:12|t")
 				specWarnArcingAzerite:Play("breakcoral")
-				yellArcingAzerite:Yell()
-				yellArcingAzeriteFades:Countdown(spellId)
+				yellArcingAzerite:Yell(7, "")
+				yellArcingAzeriteFades:Countdown(spellId, nil, 7)
 			end
 			if spellId == 296942 then
 				self.vb.redone = args.destName
@@ -261,8 +261,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			if args:IsPlayer() then
 				specWarnArcingAzerite:Show("|TInterface\\Icons\\Ability_Bossashvane_Icon03.blp:12:12|tBlue|TInterface\\Icons\\Ability_Bossashvane_Icon03.blp:12:12|t")
 				specWarnArcingAzerite:Play("breakcoral")
-				yellArcingAzerite:Yell()
-				yellArcingAzeriteFades:Countdown(spellId)
+				yellArcingAzerite:Yell(6, "")
+				yellArcingAzeriteFades:Countdown(spellId, nil, 6)
 			end
 			if spellId == 296943 then
 				self.vb.blueone = args.destName
