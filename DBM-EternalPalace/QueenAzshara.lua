@@ -13,7 +13,7 @@ mod:SetHotfixNoticeRev(20190715000000)--2019, 7, 15
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 297937 297934 298121 297972 298531 300478 299250 299178 300519 301431 299094 302141 303797 303799 300620",
+	"SPELL_CAST_START 297937 297934 298121 297972 298531 300478 299250 299178 300519 301431 299094 302141 303797 303799 300620 300480 307331 307332",
 	"SPELL_CAST_SUCCESS 302208 298014 301078 300743 300334 300768",
 	"SPELL_AURA_APPLIED 302999 298569 297912 298014 298018 301078 300428 303825 303657 300492 300620 299094 303797 303799 300743 300866 300877 299249 299251 299254 299255 299252 299253 300502 302141 304267 300551",
 	"SPELL_AURA_APPLIED_DOSE 302999 298569 298014 300743",
@@ -40,7 +40,7 @@ mod:RegisterEventsInCombat(
 --TODO, announce short ciruit?
 --TODO, capture UPDATE_UI_WIDGET better with modified transcriptor to get the widget values I need
 --[[
-(ability.id = 297937 or ability.id = 297934 or ability.id = 298121 or ability.id = 297972 or ability.id = 298531 or ability.id = 300478 or ability.id = 299250 or ability.id = 299178 or ability.id = 300519 or ability.id = 303629 or ability.id = 297372 or ability.id = 301431) and type = "begincast"
+(ability.id = 297937 or ability.id = 297934 or ability.id = 298121 or ability.id = 297972 or ability.id = 298531 or ability.id = 300478 or ability.id = 299250 or ability.id = 299178 or ability.id = 300519 or ability.id = 303629 or ability.id = 297372 or ability.id = 301431 or ability.id = 300480 or ability.id = 307331 or ability.id = 307332) and type = "begincast"
  or (ability.id = 302208 or ability.id = 298014 or ability.id = 301078 or ability.id = 299094 or ability.id = 303657 or ability.id = 303629 or ability.id = 300492 or ability.id = 300743 or ability.id = 303980 or ability.id = 302141 or ability.id = 300334 or ability.id = 303797 or ability.id = 303799 or ability.id = 300768) and type = "cast"
  or type = "death" and (target.id = 153059 or target.id = 153060)
 --]]
@@ -407,7 +407,7 @@ function mod:SPELL_CAST_START(args)
 		local count = castsPerGUID[args.sourceGUID]
 		warnGroundPound:Show(count)
 		--timerGroundPoundCD:Start(nil, args.sourceGUID)
-	elseif spellId == 300478 then
+	elseif (spellId == 300478 or spellId == 300480 or spellId == 307331 or spellId == 307332) and self:AntiSpam(4, 10) then
 		specWarnDivideandConquer:Show()
 		timerDivideandConquerCD:Start()
 	elseif spellId == 299250 and self:AntiSpam(4, 5) then--In rare cases she stutter casts it, causing double warnings
@@ -883,6 +883,9 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 		specWarnArcaneOrbs:Play("watchorb")
 		timerArcaneOrbsCD:Start(self.vb.arcaneOrbCount == 1 and 65 or 75, self.vb.arcaneOrbCount+1)
 	--"<500.67 14:43:34> [CHAT_MSG_RAID_BOSS_EMOTE] |TInterface\\Icons\\SPELL_SHADOW_SHADESOFDARKNESS.BLP:20|tHer ritual complete, Queen Azshara gains the power of the Void!#Queen Azshara#####0#0##0#209#nil#0#false#false#false#false",
+	elseif msg:find("spell:300522") then--Divide and Conquer (unconfirmed)
+		specWarnDivideandConquer:Show()
+		timerDivideandConquerCD:Start()
 	elseif msg:find("SPELL_SHADOW_SHADESOFDARKNESS.BLP") then--Stage 4
 		if self.vb.phase < 4 then--Won't run unless earlier stage 4 trigger failed
 			self.vb.phase = 4
