@@ -10,24 +10,28 @@ mod:SetBossHPInfoToHighest()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
+	"SPELL_CAST_START 298669 302682 298897 298940 298651 298571 298946 299164",--298898
+--	"SPELL_CAST_SUCCESS",
 --	"SPELL_AURA_APPLIED",
 --	"SPELL_AURA_REMOVED",
-	"SPELL_CAST_START 298669 298718 298897 298940 298651 298571",--298946
---	"SPELL_CAST_SUCCESS"
 	"UNIT_DIED"
 )
 
+--Still quite a bit to verify
 --Trixie "The Tech" Tazer
-local warnMegaTaze					= mod:NewTargetNoFilterAnnounce(298718, 3)
+--[[
+(ability.id = 298669 or ability.id = 302682 or ability.id = 298897 or ability.id = 298940 or ability.id = 298946 or ability.id = 298651 or ability.id = 299164 or ability.id = 298571 or ability.id = 298898) and type = "begincast"
+--]]
+local warnMegaTaze					= mod:NewTargetNoFilterAnnounce(302682, 3)
 local warnJumpStart					= mod:NewSpellAnnounce(298897, 3)
 --Naeno Megacrash
---local warnRollOut					= mod:NewSpellAnnounce(298946, 3)
+local warnRoadkill					= mod:NewSpellAnnounce(298946, 3)
 local warnBurnout					= mod:NewSpellAnnounce(298571, 3)
 
 --Trixie "The Tech" Tazer
 local specWarnTaze					= mod:NewSpecialWarningInterrupt(298669, "HasInterrupt", nil, nil, 1, 2)
-local specWarnMegaTaze				= mod:NewSpecialWarningMoveTo(298718, nil, nil, nil, 3, 2)
-local yellMegaTaze					= mod:NewYell(298718)
+local specWarnMegaTaze				= mod:NewSpecialWarningMoveTo(302682, nil, nil, nil, 3, 2)
+local yellMegaTaze					= mod:NewYell(302682)
 --Naeno Megacrash
 local specWarnBoltBuster			= mod:NewSpecialWarningDodge(298940, "Tank", nil, nil, 1, 2)
 local specWarnPedaltotheMetal		= mod:NewSpecialWarningDodge(298651, nil, nil, nil, 2, 2)
@@ -35,7 +39,7 @@ local specWarnPedaltotheMetal		= mod:NewSpecialWarningDodge(298651, nil, nil, ni
 
 --Trixie "The Tech" Tazer
 local timerTazeCD					= mod:NewAITimer(13.4, 298669, nil, "HasInterrupt", nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
-local timerMegaTazeCD				= mod:NewAITimer(13.4, 298718, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
+local timerMegaTazeCD				= mod:NewAITimer(13.4, 302682, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
 --Naeno Megacrash
 local timerBoltBusterCD				= mod:NewAITimer(13.4, 298940, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerPedaltotheMetalCD		= mod:NewAITimer(31.6, 298651, nil, nil, nil, 3)
@@ -69,21 +73,6 @@ function mod:OnCombatEnd()
 --	end
 end
 
-function mod:SPELL_AURA_APPLIED(args)
-	local spellId = args.spellId
-	if spellId == 257777 then
-
-	end
-end
---mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
-
-function mod:SPELL_AURA_REMOVED(args)
-	local spellId = args.spellId
-	if spellId == 257827 then
-
-	end
-end
-
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 298669 then
@@ -92,7 +81,7 @@ function mod:SPELL_CAST_START(args)
 			specWarnTaze:Show(args.sourceName)
 			specWarnTaze:Play("kickcast")
 		end
-	elseif spellId == 298718 then
+	elseif spellId == 302682 then
 		timerMegaTazeCD:Start()
 		self:ScheduleMethod(0.2, "BossTargetScanner", args.sourceGUID, "MegaTazeTarget", 0.1, 12, true, nil, nil, nil, true)
 	elseif spellId == 298897 then
@@ -103,9 +92,9 @@ function mod:SPELL_CAST_START(args)
 		specWarnBoltBuster:Show()
 		specWarnBoltBuster:Play("shockwave")
 		timerBoltBusterCD:Start()
---	elseif spellId == 298946 then
---		warnRollOut:Show()
-	elseif spellId == 298651 then
+	elseif spellId == 298946 then
+		warnRoadkill:Show()
+	elseif spellId == 298651 or spellId == 299164 then
 		specWarnPedaltotheMetal:Show()
 		specWarnPedaltotheMetal:Play("chargemove")
 	elseif spellId == 298571 then
@@ -121,6 +110,21 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
+function mod:SPELL_AURA_APPLIED(args)
+	local spellId = args.spellId
+	if spellId == 257777 then
+
+	end
+end
+--mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
+
+function mod:SPELL_AURA_REMOVED(args)
+	local spellId = args.spellId
+	if spellId == 257827 then
+
+	end
+end
+
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 228007 and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
 		specWarnGTFO:Show()
@@ -130,6 +134,7 @@ end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 --]]
 
+--https://www.wowhead.com/npc=153756/mechacycle#abilities
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 153755 then--Naeno

@@ -10,16 +10,20 @@ mod:SetBossHPInfoToHighest()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_AURA_APPLIED 285388",
+	"SPELL_CAST_START 285020 283422 285388",
+	"SPELL_CAST_SUCCESS 285344 285152",
+--	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED 282801 285388",
 	"SPELL_AURA_REMOVED_DOSE 282801",
-	"SPELL_CAST_START 285020",
-	"SPELL_CAST_SUCCESS 285351 285153 283565",
 	"UNIT_DIED"
 )
 
 --TODO, Foe Flipper target?
 --TODO, Maximum Thrust target?
+--[[
+(ability.id = 285020 or ability.id = 283422 or ability.id = 285388) and type = "begincast"
+ or (ability.id = 285344 or ability.id = 285152) and type = "cast"
+ --]]
 local warnPlatinumPlating			= mod:NewCountAnnounce(282801, 2)
 local warnLayMine					= mod:NewSpellAnnounce(285351, 2)
 local warnFoeFlipper				= mod:NewSpellAnnounce(285153, 2)
@@ -51,14 +55,40 @@ function mod:OnCombatEnd()
 --	end
 end
 
-function mod:SPELL_AURA_APPLIED(args)
+function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 285388 then
+	if spellId == 285020 then
+		specWarnWhirlingEdge:Show()
+		specWarnWhirlingEdge:Play("shockwave")
+		timerWhirlingEdgeCD:Start()
+	elseif spellId == 283422 then
+		warnMaxThrust:Show()
+		timerMaxThrustCD:Start()
+	elseif spellId == 285388 then
 		specWarnVentJets:Show()
 		specWarnVentJets:Play("watchstep")
 		timerVentJetsCD:Start()
 	end
 end
+
+function mod:SPELL_CAST_SUCCESS(args)
+	local spellId = args.spellId
+	if spellId == 285344 then
+		warnLayMine:Show()
+	elseif spellId == 285152 then
+		warnFoeFlipper:Show()
+		timerFoeFlipperCD:Start()
+	end
+end
+
+--[[
+function mod:SPELL_AURA_APPLIED(args)
+	local spellId = args.spellId
+	if spellId == 285388 then
+
+	end
+end
+--]]
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
@@ -71,28 +101,6 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 mod.SPELL_AURA_REMOVED_DOSE = mod.SPELL_AURA_REMOVED
-
-function mod:SPELL_CAST_START(args)
-	local spellId = args.spellId
-	if spellId == 285020 then
-		specWarnWhirlingEdge:Show()
-		specWarnWhirlingEdge:Play("shockwave")
-		timerWhirlingEdgeCD:Start()
-	end
-end
-
-function mod:SPELL_CAST_SUCCESS(args)
-	local spellId = args.spellId
-	if spellId == 285351 then
-		warnLayMine:Show()
-	elseif spellId == 285153 then
-		warnFoeFlipper:Show()
-		timerFoeFlipperCD:Start()
-	elseif spellId == 283565 then
-		warnMaxThrust:Show()
-		timerMaxThrustCD:Start()
-	end
-end
 
 --[[
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
