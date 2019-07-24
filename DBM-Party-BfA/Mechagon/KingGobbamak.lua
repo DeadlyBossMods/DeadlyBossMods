@@ -9,13 +9,16 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_AURA_APPLIED 297257 297261",
---	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START 297254",
-	"SPELL_CAST_SUCCESS 297465"
+	"SPELL_CAST_SUCCESS 297465 297261",
+	"SPELL_AURA_APPLIED 297257"
+--	"SPELL_AURA_REMOVED",
 )
 
---TODO: Get right event for Rumble
+--[[
+ability.id = 297254 and type = "cast"
+ or (ability.id = 297465 or ability.id = 297261) and type = "cast"
+--]]
 --TODO, add nameplate aura for https://ptr.wowhead.com/spell=297318/powered-up if it's on a unit with nameplate
 local warnElectricalCharge			= mod:NewTargetAnnounce(297257, 2)
 local warnGetEm						= mod:NewSpellAnnounce(297465, 2)
@@ -46,33 +49,6 @@ function mod:OnCombatEnd()
 --	end
 end
 
-function mod:SPELL_AURA_APPLIED(args)
-	local spellId = args.spellId
-	if spellId == 297257 then
-		if args:IsPlayer() then
-			specWarnElectricalCharge:Show()
-			specWarnElectricalCharge:Play("targetyou")
-			yellElectricalCharge:Yell()
-		else
-			warnElectricalCharge:Show(args.destName)
-		end
-	elseif spellId == 297261 then
-		specWarnRumble:Show()
-		specWarnRumble:Play("aesoon")
-		timerRumbleCD:Start()
-	end
-end
---mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
-
---[[
-function mod:SPELL_AURA_REMOVED(args)
-	local spellId = args.spellId
-	if spellId == 297257 then
-
-	end
-end
---]]
-
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 297254 then
@@ -87,10 +63,35 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if spellId == 297465 then
 		warnGetEm:Show()
 		timerGetEmCD:Start()
+	elseif spellId == 297261 then
+		specWarnRumble:Show()
+		specWarnRumble:Play("aesoon")
+		timerRumbleCD:Start()
 	end
 end
 
+function mod:SPELL_AURA_APPLIED(args)
+	local spellId = args.spellId
+	if spellId == 297257 then
+		if args:IsPlayer() then
+			specWarnElectricalCharge:Show()
+			specWarnElectricalCharge:Play("targetyou")
+			yellElectricalCharge:Yell()
+		else
+			warnElectricalCharge:Show(args.destName)
+		end
+	end
+end
+--mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
+
 --[[
+function mod:SPELL_AURA_REMOVED(args)
+	local spellId = args.spellId
+	if spellId == 297257 then
+
+	end
+end
+
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 228007 and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
 		specWarnGTFO:Show()

@@ -9,16 +9,21 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
---	"SPELL_AURA_APPLIED",
---	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START 285440",
 	"SPELL_CAST_SUCCESS 285454 294954",
+--	"SPELL_AURA_APPLIED",
+--	"SPELL_AURA_REMOVED",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
 --TODO, can bomb be target scanned?
 --TODO, do more with plants and oil and stuff?
 --TODO, if plant warning works, localize it to something more friendly
+--TODO, add Blossom Blast if it's not spammy
+--[[
+ability.id = 285440 and type = "begincast"
+ or (ability.id = 285454 or ability.id = 294954 or ability.id = 294855) and type = "cast"
+--]]
 local warnDiscomBomb				= mod:NewSpellAnnounce(285454, 2)
 local warnSelfTrimmingHedge			= mod:NewSpellAnnounce(294954, 2)
 local warnPlant						= mod:NewSpellAnnounce(294850, 2)
@@ -47,21 +52,6 @@ function mod:OnCombatEnd()
 --	end
 end
 
-function mod:SPELL_AURA_APPLIED(args)
-	local spellId = args.spellId
-	if spellId == 257777 then
-
-	end
-end
---mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
-
-function mod:SPELL_AURA_REMOVED(args)
-	local spellId = args.spellId
-	if spellId == 257827 then
-
-	end
-end
-
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 285440 then
@@ -83,6 +73,21 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 --[[
+function mod:SPELL_AURA_APPLIED(args)
+	local spellId = args.spellId
+	if spellId == 257777 then
+
+	end
+end
+--mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
+
+function mod:SPELL_AURA_REMOVED(args)
+	local spellId = args.spellId
+	if spellId == 257827 then
+
+	end
+end
+
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 228007 and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
 		specWarnGTFO:Show()

@@ -2,24 +2,30 @@ local mod	= DBM:NewMod(2355, "DBM-Party-BfA", 11, 1178)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
-mod:SetCreatureID(155157)
+mod:SetCreatureID(150190)
 mod:SetEncounterID(2291)--VERIFY
 mod:SetZone()
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
+	"SPELL_CAST_START 295536 296522 295939",
+	"SPELL_CAST_SUCCESS 302274 303885 301351 295445 301177",
 	"SPELL_AURA_APPLIED 296080 302274 303885 303252",
 	"SPELL_AURA_REMOVED 296080 303885",
-	"SPELL_CAST_START 295536 296464 295445 296522 295939",
-	"SPELL_CAST_SUCCESS 302274 303885",
 	"UNIT_DIED"
 )
 
 --TODO, can tank dodge wreck?
 --TODO, additional warnings/timers for platform stuff?
 --TODO, what CID is boss health/win for this fight?
-local warnReinforcementRelay		= mod:NewSpellAnnounce(296464, 2)
+--TODO, better phase code, using Lift Off probably, something https://www.wowhead.com/npc=150190/hk-8-aerial-oppression-unit#abilities shows being cast by boss
+--[[
+(ability.id = 295536 or ability.id = 296522 or ability.id = 295939) and type = "begincast"
+ or ability.id = 302274 or ability.id = 303885 or ability.id = 301351 or ability.id = 295445 or ability.id = 301177) and type = "cast"
+ or (target.id = 150295 or target.id = 155760) and type = "death"
+ --]]
+local warnReinforcementRelay		= mod:NewSpellAnnounce(301351, 2)
 local warnSelfDestruct				= mod:NewCastAnnounce(296522, 4)
 local warnHaywire					= mod:NewTargetNoFilterAnnounce(296080, 1)
 local warnFulminatingZap			= mod:NewTargetNoFilterAnnounce(302274, 2, nil, "Healer")
@@ -36,7 +42,7 @@ local yellAntiTresField				= mod:NewYell(303252)
 --local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 8)
 
 local timerCannonBlastCD			= mod:NewAITimer(31.6, 295536, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
-local timerReinforcementRelayCD		= mod:NewAITimer(31.6, 296464, nil, nil, nil, 1)
+local timerReinforcementRelayCD		= mod:NewAITimer(31.6, 301351, nil, nil, nil, 1)
 local timerWreckCD					= mod:NewAITimer(31.6, 295445, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerFulminatingZapCD			= mod:NewAITimer(31.6, 302274, nil, nil, nil, 3, nil, DBM_CORE_HEALER_ICON)
 local timerFulminatingBurstCD		= mod:NewAITimer(31.6, 303885, nil, nil, nil, 3, nil, DBM_CORE_HEALER_ICON)--Hard Mode
@@ -131,6 +137,44 @@ function mod:OnCombatEnd()
 	end
 end
 
+function mod:SPELL_CAST_START(args)
+	local spellId = args.spellId
+	if spellId == 295536 then
+		specWarnCannonBlast:Show()
+		specWarnCannonBlast:Play("farfromline")
+		timerCannonBlastCD:Start()
+	elseif spellId == 296522 then
+		warnSelfDestruct:Show()
+	elseif spellId == 295939 then
+		specWarnAnnihilationRay:Show()
+		specWarnAnnihilationRay:Play("phasechange")
+		--timerAnnihilationRayCD:Start()
+		--Possibly redundant
+		timerReinforcementRelayCD:Stop()--Assumed
+		timerCannonBlastCD:Stop()
+		timerFulminatingZapCD:Stop()
+		timerFulminatingBurstCD:Stop()
+	end
+end
+
+function mod:SPELL_CAST_SUCCESS(args)
+	local spellId = args.spellId
+	if spellId == 302274 then
+		timerFulminatingZapCD:Start()
+	elseif spellId == 303885 then
+		timerFulminatingBurstCD:Start()
+	elseif spellId == 301351 then
+		warnReinforcementRelay:Show()
+		timerReinforcementRelayCD:Start()
+	elseif spellId == 295445 then
+		specWarnWreck:Show()
+		specWarnWreck:Play("defensive")
+		timerWreckCD:Start(nil, args.sourceGUID)
+	elseif spellId == 301177 then
+
+	end
+end
+
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 296080 then
@@ -170,42 +214,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		if args:IsPlayer() then
 			yellFulminatingBurstFades:Cancel()
 		end
-	end
-end
-
-function mod:SPELL_CAST_START(args)
-	local spellId = args.spellId
-	if spellId == 295536 then
-		specWarnCannonBlast:Show()
-		specWarnCannonBlast:Play("farfromline")
-		timerCannonBlastCD:Start()
-	elseif spellId == 296464 then
-		warnReinforcementRelay:Show()
-		timerReinforcementRelayCD:Start()
-	elseif spellId == 295445 then
-		specWarnWreck:Show()
-		specWarnWreck:Play("defensive")
-		timerWreckCD:Start(nil, args.sourceGUID)
-	elseif spellId == 296522 then
-		warnSelfDestruct:Show()
-	elseif spellId == 295939 then
-		specWarnAnnihilationRay:Show()
-		specWarnAnnihilationRay:Play("phasechange")
-		--timerAnnihilationRayCD:Start()
-		--Possibly redundant
-		timerReinforcementRelayCD:Stop()--Assumed
-		timerCannonBlastCD:Stop()
-		timerFulminatingZapCD:Stop()
-		timerFulminatingBurstCD:Stop()
-	end
-end
-
-function mod:SPELL_CAST_SUCCESS(args)
-	local spellId = args.spellId
-	if spellId == 302274 then
-		timerFulminatingZapCD:Start()
-	elseif spellId == 303885 then
-		timerFulminatingBurstCD:Start()
 	end
 end
 
