@@ -57,7 +57,7 @@ local yellAquaLanceFades					= mod:NewShortFadesYell(295779)
 local specWarnConductivePulse				= mod:NewSpecialWarningInterrupt(295822, "HasInterrupt", nil, nil, 3, 2)
 
 mod:AddTimerLine(BOSS)
-local timerDesensitizingStingCD				= mod:NewCDTimer(5.3, 298156, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON, nil, nil, 3)--If user does enable countdown for this, max count at 3
+local timerDesensitizingStingCD				= mod:NewCDTimer(5.3, 298156, nil, "Tank", 2, 5, nil, DBM_CORE_TANK_ICON, nil, nil, 3)--If user does enable countdown for this, max count at 3
 local timerDribblingIchorCD					= mod:NewCDCountTimer(84, 298103, nil, nil, nil, 1, nil, nil, nil, 1, 4)--30.4-42
 local timerIncubationFluidCD				= mod:NewCDTimer(31.7, 298242, nil, nil, nil, 3, nil, nil, nil, 3, 4)
 local timerArcingCurrentCD					= mod:NewCDCountTimer(30.1, 295825, nil, nil, nil, 3)
