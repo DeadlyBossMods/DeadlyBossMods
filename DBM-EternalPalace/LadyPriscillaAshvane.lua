@@ -34,11 +34,12 @@ local warnBrinyBubble					= mod:NewTargetNoFilterAnnounce(297324, 4)
 local warnUpsurge						= mod:NewSpellAnnounce(298055, 3)
 
 local specWarnRipplingWave				= mod:NewSpecialWarningCount(296688, false, nil, 2, 2, 2)
+local specWarnBarnacleBash				= mod:NewSpecialWarningTaunt(296725, nil, nil, nil, 1, 2)
+local specWarnBubbleTaunt				= mod:NewSpecialWarningTaunt(297324, nil, nil, nil, 1, 2)
 local specWarnBrinyBubble				= mod:NewSpecialWarningMoveAway(297324, nil, nil, nil, 1, 2)
 local yellBrinyBubble					= mod:NewYell(297324)
 local yellBrinyBubbleFades				= mod:NewShortFadesYell(297324)
-local specWarnBrinyBubbleNear			= mod:NewSpecialWarningClose(297324, nil, nil, nil, 1, 2)
-local specWarnBarnacleBash				= mod:NewSpecialWarningTaunt(296725, nil, nil, nil, 1, 2)
+local specWarnBrinyBubbleNear			= mod:NewSpecialWarningClose(297324, false, nil, 2, 1, 2)
 local specWarnArcingAzerite				= mod:NewSpecialWarningYouPos(296944, nil, nil, nil, 3, 9)
 local yellArcingAzerite					= mod:NewPosYell(296944, DBM_CORE_AUTO_YELL_CUSTOM_POSITION)
 local yellArcingAzeriteFades			= mod:NewIconFadesYell(296944)
@@ -47,9 +48,9 @@ local specWarnGTFO						= mod:NewSpecialWarningGTFO(296752, nil, nil, nil, 1, 8)
 --mod:AddTimerLine(BOSS)
 --local timerCoralGrowthCD				= mod:NewCDCountTimer(30, 296555, nil, nil, nil, 3, nil, nil, nil, 1, 4)
 local timerRipplingwaveCD				= mod:NewCDCountTimer(35, 296688, nil, nil, nil, 3, nil, nil, nil, 3, 4)
+local timerBarnacleBashCD				= mod:NewCDCountTimer(15, 296725, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON, nil, mod:IsTank() and 2, 4)
 local timerBrinyBubbleCD				= mod:NewCDCountTimer(15, 297324, nil, nil, nil, 3, nil, DBM_CORE_TANK_ICON..DBM_CORE_DAMAGE_ICON, nil, 2, 4)
 local timerUpsurgeCD					= mod:NewCDCountTimer(15.3, 298055, nil, nil, nil, 3)
-local timerBarnacleBashCD				= mod:NewCDCountTimer(15, 296725, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON, nil, mod:IsTank() and 2, 4)
 --Stage 2
 local timerArcingAzeriteCD				= mod:NewCDCountTimer(35, 296944, nil, nil, nil, 3, nil, nil, nil, 3, 4)
 local timerShieldCD						= mod:NewCDTimer(70.5, 296650, nil, nil, nil, 6, nil, nil, nil, 1, 4)
@@ -125,7 +126,7 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 297398 then--Briny Bubble. 297398 verified, other two unknown (or spellId == 297402 or spellId == 297324)
 		self.vb.spellPicker = 0
 		--Always 15.9 seconds after in all difficulties when shield is up, but when shield is down, it's 24 seconds after on easy but still 15.9 on hard
-		timerBarnacleBashCD:Start(not self.vb.shieldDown and self:IsEasy() and 24 or 15.9, self.vb.spellPicker+1)--start to success
+		timerBarnacleBashCD:Start(not self.vb.shieldDown and self:IsEasy() and 24 or 15.9, 1)--start to success
 	end
 end
 
@@ -213,7 +214,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			DBM.InfoFrame:Show(2, "enemyabsorb", nil, args.amount, "boss1")
 		end
 	elseif spellId == 296725 then
-		if not args:IsPlayer() then
+		if not args:IsPlayer() and self.vb.spellPicker < 2 then
+			--Only show for first bash, there is no reason to taunt after 2nd bash, at least not until bubble, which has it's own taunt warning
 			specWarnBarnacleBash:Show(args.destName)
 			specWarnBarnacleBash:Play("tauntboss")
 		end
@@ -291,9 +293,16 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnBrinyBubble:Play("runout")
 			yellBrinyBubble:Yell()
 			yellBrinyBubbleFades:Countdown(spellId)
-		elseif self:CheckNearby(12, args.destName) and not DBM:UnitDebuff("player", spellId) then--If one is near you, you need to run away from it
-			specWarnBrinyBubbleNear:CombinedShow(0.3, args.destName)
-			specWarnBrinyBubbleNear:ScheduleVoice(0.3, "runaway")
+		else
+			local uId = DBM:GetRaidUnitId(args.destName)
+			if self:IsTanking(uId) then
+				specWarnBubbleTaunt:Show(args.destName)
+				specWarnBubbleTaunt:Play("tauntboss")
+			end
+			if self:CheckNearby(12, args.destName) and not DBM:UnitDebuff("player", spellId) then
+				specWarnBrinyBubbleNear:CombinedShow(0.3, args.destName)
+				specWarnBrinyBubbleNear:ScheduleVoice(0.3, "runaway")
+			end
 		end
 	--[[elseif spellId == 297333 or spellId == 302992 then--Briny in bubble spell
 		if args:IsPlayer() then
