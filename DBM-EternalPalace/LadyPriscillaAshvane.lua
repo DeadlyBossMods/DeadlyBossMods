@@ -6,7 +6,7 @@ mod:SetCreatureID(152236)
 mod:SetEncounterID(2304)
 mod:SetZone()
 mod:SetUsedIcons(1, 2, 3, 4, 6, 7)
-mod:SetHotfixNoticeRev(20190717000000)--2019, 7, 17
+mod:SetHotfixNoticeRev(20190724000000)--2019, 7, 24
 --mod:SetMinSyncRevision(16950)
 --mod.respawnTime = 29
 
@@ -15,8 +15,8 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 297398",
 	"SPELL_CAST_SUCCESS 296569 296662 296725 298056",
-	"SPELL_AURA_APPLIED 296650 296725 296943 296940 296942 296939 296941 296938 302989 297397",
-	"SPELL_AURA_REMOVED 296650 296943 296940 296942 296939 296941 296938 302989",
+	"SPELL_AURA_APPLIED 296650 296725 296943 296940 296942 296939 296941 296938 297397 302989",
+	"SPELL_AURA_REMOVED 296650 296943 296940 296942 296939 296941 296938 297397 302989",
 	"SPELL_PERIODIC_DAMAGE 296752",
 	"SPELL_PERIODIC_MISSED 296752"
 )
@@ -282,24 +282,24 @@ function mod:SPELL_AURA_APPLIED(args)
 				DBM.InfoFrame:Update()
 			end
 		end
-	elseif spellId == 302989 then--Briny targetting spell
+	elseif spellId == 297397 or spellId == 302989 then--Briny targetting spell
 		warnBrinyBubble:CombinedShow(0.3, args.destname)
 		if args:IsPlayer() then
+			specWarnBrinyBubbleNear:Cancel()
+			specWarnBrinyBubbleNear:CancelVoice()
 			specWarnBrinyBubble:Show()
 			specWarnBrinyBubble:Play("runout")
 			yellBrinyBubble:Yell()
 			yellBrinyBubbleFades:Countdown(spellId)
-		end
-	elseif spellId == 297397 then--Briny in bubble spell
-		if args:IsPlayer() then
-			--Yell again, but no further special warnings
-			yellBrinyBubble:Yell()
-			specWarnBrinyBubbleNear:Cancel()
-			specWarnBrinyBubbleNear:CancelVoice()
 		elseif self:CheckNearby(12, args.destName) and not DBM:UnitDebuff("player", spellId) then--If one is near you, you need to run away from it
 			specWarnBrinyBubbleNear:CombinedShow(0.3, args.destName)
 			specWarnBrinyBubbleNear:ScheduleVoice(0.3, "runaway")
 		end
+	--[[elseif spellId == 297333 or spellId == 302992 then--Briny in bubble spell
+		if args:IsPlayer() then
+			--Yell again, but no further special warnings
+			yellBrinyBubble:Yell()
+		end--]]
 	end
 end
 
@@ -356,7 +356,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.SetIconOnArcingAzerite then
 			self:SetIcon(args.destName, 0)
 		end
-	elseif spellId == 302989 and args:IsPlayer() then--Briny targetting spell
+	elseif (spellId == 297397 or spellId == 302989) and args:IsPlayer() then--Briny targetting spell
 		yellBrinyBubbleFades:Cancel()
 	end
 end
