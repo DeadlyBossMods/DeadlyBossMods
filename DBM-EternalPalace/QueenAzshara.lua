@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(152910)
 mod:SetEncounterID(2299)
 mod:SetZone()
-mod:SetUsedIcons(3, 2, 1)
+mod:SetUsedIcons(4, 3, 2, 1)
 mod:SetHotfixNoticeRev(20190715000000)--2019, 7, 15
 --mod:SetMinSyncRevision(16950)
 --mod.respawnTime = 29--Respawn is near instant on ptr, boss requires clicking to engage, no body pulling anyways
@@ -175,7 +175,7 @@ mod:AddNamePlateOption("NPAuraOnInfuriated", 300428)
 mod:AddInfoFrameOption(298569, true)
 mod:AddBoolOption("SortDesc", false)
 mod:AddBoolOption("ShowTimeNotStacks", false)
-mod:AddSetIconOption("SetIconOnArcaneBurst", 303657, true, false, {1, 2, 3})
+mod:AddSetIconOption("SetIconOnArcaneBurst", 303657, true, false, {1, 2, 3, 4})
 
 mod.vb.phase = 1
 mod.vb.stageOneBossesLeft = 2

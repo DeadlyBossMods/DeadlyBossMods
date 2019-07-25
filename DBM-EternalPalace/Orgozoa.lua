@@ -45,7 +45,8 @@ local warnPowerfulStomp						= mod:NewCountAnnounce(296691, 2)
 
 local specWarnDesensitizingSting			= mod:NewSpecialWarningStack(298156, nil, 9, nil, nil, 1, 6)
 local specWarnDesensitizingStingTaunt		= mod:NewSpecialWarningTaunt(298156, nil, nil, nil, 1, 2)
-local specWarnDribblingIchor				= mod:NewSpecialWarningSwitchCount(298103, nil, nil, nil, 1, 2)
+local specWarnDribblingIchor				= mod:NewSpecialWarningCount(298103, nil, nil, nil, 2, 2)
+local specWarnCallofTender					= mod:NewSpecialWarningSwitchCount(305057, "Tank", nil, nil, 1, 2)
 local specWarnIncubationFluid				= mod:NewSpecialWarningMoveAway(298306, nil, nil, nil, 1, 2)
 local specWarnArcingCurrent					= mod:NewSpecialWarningCount(295825, nil, nil, nil, 2, 2)
 local yellArcingCurrent						= mod:NewYell(295825)
@@ -188,7 +189,13 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerAquaLanceCD:Start(nil, args.sourceGUID)
 	elseif spellId == 305057 then
 		self.vb.tenderCount = self.vb.tenderCount + 1
-		warnCallofTender:Show(self.vb.tenderCount)
+		--Will not show warning if you are tanking boss, unless you're only tank left alive
+		if self.Options.SpecWarn305057switchcount and (not self:IsTanking("player", "boss1", nil, true) or self:GetNumAliveTanks() < 2) then
+			specWarnCallofTender:Show(self.vb.tenderCount)
+			specWarnCallofTender:Play("killmob")
+		else
+			warnCallofTender:Show(self.vb.tenderCount)
+		end
 		timerCalloftheTenderCD:Start(35, self.vb.tenderCount+1)
 	end
 end
@@ -211,7 +218,9 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnDesensitizingSting:Show(amount)
 				specWarnDesensitizingSting:Play("stackhigh")
 			else
-				if not UnitIsDeadOrGhost("player") and not DBM:UnitDebuff("player", spellId) then--Can't taunt less you've dropped yours off, period.
+				--Don't show taunt warning if you're 3 tanking and aren't near the boss (this means you are the add tank)
+				--Show taunt warning if you ARE near boss, or if number of alive tanks is less than 3
+				if (self:CheckNearby(8, args.destName) or self:GetNumAliveTanks() < 3) and not DBM:UnitDebuff("player", spellId) and not UnitIsDeadOrGhost("player") then--Can't taunt less you've dropped yours off, period.
 					specWarnDesensitizingStingTaunt:Show(args.destName)
 					specWarnDesensitizingStingTaunt:Play("tauntboss")
 				else
