@@ -240,7 +240,7 @@ local function MixinSharedMedia3(mediatype, mediatable)
 		local LSM = LibStub("LibSharedMedia-3.0")
 		soundsRegistered = true
 		--Embedded Sound Clip media
-		LSM:Register("sound", "AirHorn (DBM)", [[Interface\\AddOns\\DBM-Core\\sounds\\AirHorn.ogg]])
+		LSM:Register("sound", "AirHorn (DBM)", [[Interface\AddOns\DBM-Core\sounds\AirHorn.ogg]])
 		LSM:Register("sound", "Jaina: Beware", [[Interface\AddOns\DBM-Core\sounds\SoundClips\beware.ogg]])
 		LSM:Register("sound", "Jaina: Beware (reverb)", [[Interface\AddOns\DBM-Core\sounds\SoundClips\beware_with_reverb.ogg]])
 		LSM:Register("sound", "Thrall: That's Incredible!", [[Interface\AddOns\DBM-Core\sounds\SoundClips\incredible.ogg]])
