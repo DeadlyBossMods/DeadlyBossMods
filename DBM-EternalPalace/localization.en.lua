@@ -64,9 +64,14 @@ L:SetMiscLocalization({
 ---------------------------
 L= DBM:GetModLocalization(2361)
 
+L:SetTimerLocalization{
+	timerStageThreeBerserk		= "Adds Berserk"
+}
+
 L:SetOptionLocalization({
-	SortDesc 			= "Sort $spell:298569 Infoframe by highest debuff stack (instead of lowest).",
-	ShowTimeNotStacks	= "Show time remaining on $spell:298569 Infoframe instead of stack count."
+	SortDesc 				= "Sort $spell:298569 Infoframe by highest debuff stack (instead of lowest).",
+	ShowTimeNotStacks		= "Show time remaining on $spell:298569 Infoframe instead of stack count.",
+	timerStageThreeBerserk	= "Show timer for when the Stage 3 adds go Berserk"
 })
 
 L:SetMiscLocalization({
