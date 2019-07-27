@@ -39,6 +39,7 @@ mod:RegisterEventsInCombat(
 --TODO, figure out cast time for https://ptr.wowhead.com/spell=301518/massive-energy-spike (ie between overload cast start, and when all remaining energy is released)
 --TODO, announce short ciruit?
 --TODO, capture UPDATE_UI_WIDGET better with modified transcriptor to get the widget values I need
+--TODO, add combat starts timer
 --[[
 (ability.id = 297937 or ability.id = 297934 or ability.id = 298121 or ability.id = 297972 or ability.id = 298531 or ability.id = 300478 or ability.id = 299250 or ability.id = 299178 or ability.id = 300519 or ability.id = 303629 or ability.id = 297372 or ability.id = 301431 or ability.id = 300480 or ability.id = 307331 or ability.id = 307332) and type = "begincast"
  or (ability.id = 302208 or ability.id = 298014 or ability.id = 301078 or ability.id = 299094 or ability.id = 303657 or ability.id = 303629 or ability.id = 300492 or ability.id = 300743 or ability.id = 303980 or ability.id = 302141 or ability.id = 300334 or ability.id = 303797 or ability.id = 303799 or ability.id = 300768) and type = "cast"
