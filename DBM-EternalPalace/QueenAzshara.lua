@@ -617,42 +617,42 @@ function mod:SPELL_AURA_APPLIED(args)
 			local text = ""
 			if spellId == 299249 then--Soak Orbs
 				specWarnQueensDecree:ScheduleVoiceOverLap(0+playerDecreeCount, "helpsoak")
-				if text then
-					text = text..", "..L.SoakOrb
-				else
+				if text == "" then
 					text = L.SoakOrb
+				else
+					text = text..", "..L.SoakOrb
 				end
 				playerDecreeYell = playerDecreeYell + 2--100s 2-Stack/1-Solo, 10s 2-Moving/1-Stay, 1s 2-Soak/1-NoSoak
 			elseif spellId == 299251 then--Dodge Orbs
 				specWarnQueensDecree:ScheduleVoiceOverLap(0+playerDecreeCount, "watchorb")
-				if text then
-					text = text..", "..L.AvoidOrb
-				else
+				if text == "" then
 					text = L.AvoidOrb
+				else
+					text = text..", "..L.AvoidOrb
 				end
 				playerDecreeYell = playerDecreeYell + 1--100s 2-Stack/1-Solo, 10s 2-Moving/1-Stay, 1s 2-Soak/1-NoSoak
 			elseif spellId == 299254 then--Group Up
 				specWarnQueensDecree:ScheduleVoiceOverLap(0+playerDecreeCount, "gather")
-				if text then
-					text = text..", "..L.GroupUp
-				else
+				if text == "" then
 					text = L.GroupUp
+				else
+					text = text..", "..L.GroupUp
 				end
 				playerDecreeYell = playerDecreeYell + 200--100s 2-Stack/1-Solo, 10s 2-Moving/1-Stay, 1s 2-Soak/1-NoSoak
 			elseif spellId == 299255 then--Don't Group Up
 				specWarnQueensDecree:ScheduleVoiceOverLap(0+playerDecreeCount, "scatter")
-				if text then
-					text = text..", "..L.Spread
-				else
+				if text == "" then
 					text = L.Spread
+				else
+					text = text..", "..L.Spread
 				end
 				playerDecreeYell = playerDecreeYell + 100--100s 2-Stack/1-Solo, 10s 2-Moving/1-Stay, 1s 2-Soak/1-NoSoak
 			elseif spellId == 299252 then--Keep Moving
 				specWarnQueensDecree:ScheduleVoiceOverLap(0+playerDecreeCount, "keepmove")
-				if text then
-					text = text..", "..L.Move
-				else
+				if text == "" then
 					text = L.Move
+				else
+					text = text..", "..L.Move
 				end
 				playerDecreeYell = playerDecreeYell + 20--100s 2-Stack/1-Solo, 10s 2-Moving/1-Stay, 1s 2-Soak/1-NoSoak
 			elseif spellId == 299253 then--Stop Moving
