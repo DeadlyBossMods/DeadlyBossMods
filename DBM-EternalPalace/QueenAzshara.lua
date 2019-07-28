@@ -39,6 +39,7 @@ mod:RegisterEventsInCombat(
 --TODO, figure out cast time for https://ptr.wowhead.com/spell=301518/massive-energy-spike (ie between overload cast start, and when all remaining energy is released)
 --TODO, announce short ciruit?
 --TODO, capture UPDATE_UI_WIDGET better with modified transcriptor to get the widget values I need
+--TODO, add combat starts timer
 --[[
 (ability.id = 297937 or ability.id = 297934 or ability.id = 298121 or ability.id = 297972 or ability.id = 298531 or ability.id = 300478 or ability.id = 299250 or ability.id = 299178 or ability.id = 300519 or ability.id = 303629 or ability.id = 297372 or ability.id = 301431 or ability.id = 300480 or ability.id = 307331 or ability.id = 307332) and type = "begincast"
  or (ability.id = 302208 or ability.id = 298014 or ability.id = 301078 or ability.id = 299094 or ability.id = 303657 or ability.id = 303629 or ability.id = 300492 or ability.id = 300743 or ability.id = 303980 or ability.id = 302141 or ability.id = 300334 or ability.id = 303797 or ability.id = 303799 or ability.id = 300768) and type = "cast"
@@ -613,45 +614,45 @@ function mod:SPELL_AURA_APPLIED(args)
 				playerDecreeCount = 0
 				playerDecreeYell = 0
 			end
-			local text
+			local text = ""
 			if spellId == 299249 then--Soak Orbs
 				specWarnQueensDecree:ScheduleVoiceOverLap(0+playerDecreeCount, "helpsoak")
-				if text then
-					text = text..", "..L.SoakOrb
-				else
+				if text == "" then
 					text = L.SoakOrb
+				else
+					text = text..", "..L.SoakOrb
 				end
 				playerDecreeYell = playerDecreeYell + 2--100s 2-Stack/1-Solo, 10s 2-Moving/1-Stay, 1s 2-Soak/1-NoSoak
 			elseif spellId == 299251 then--Dodge Orbs
 				specWarnQueensDecree:ScheduleVoiceOverLap(0+playerDecreeCount, "watchorb")
-				if text then
-					text = text..", "..L.AvoidOrb
-				else
+				if text == "" then
 					text = L.AvoidOrb
+				else
+					text = text..", "..L.AvoidOrb
 				end
 				playerDecreeYell = playerDecreeYell + 1--100s 2-Stack/1-Solo, 10s 2-Moving/1-Stay, 1s 2-Soak/1-NoSoak
 			elseif spellId == 299254 then--Group Up
 				specWarnQueensDecree:ScheduleVoiceOverLap(0+playerDecreeCount, "gather")
-				if text then
-					text = text..", "..L.GroupUp
-				else
+				if text == "" then
 					text = L.GroupUp
+				else
+					text = text..", "..L.GroupUp
 				end
 				playerDecreeYell = playerDecreeYell + 200--100s 2-Stack/1-Solo, 10s 2-Moving/1-Stay, 1s 2-Soak/1-NoSoak
 			elseif spellId == 299255 then--Don't Group Up
 				specWarnQueensDecree:ScheduleVoiceOverLap(0+playerDecreeCount, "scatter")
-				if text then
-					text = text..", "..L.Spread
-				else
+				if text == "" then
 					text = L.Spread
+				else
+					text = text..", "..L.Spread
 				end
 				playerDecreeYell = playerDecreeYell + 100--100s 2-Stack/1-Solo, 10s 2-Moving/1-Stay, 1s 2-Soak/1-NoSoak
 			elseif spellId == 299252 then--Keep Moving
 				specWarnQueensDecree:ScheduleVoiceOverLap(0+playerDecreeCount, "keepmove")
-				if text then
-					text = text..", "..L.Move
-				else
+				if text == "" then
 					text = L.Move
+				else
+					text = text..", "..L.Move
 				end
 				playerDecreeYell = playerDecreeYell + 20--100s 2-Stack/1-Solo, 10s 2-Moving/1-Stay, 1s 2-Soak/1-NoSoak
 			elseif spellId == 299253 then--Stop Moving
