@@ -614,7 +614,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				playerDecreeCount = 0
 				playerDecreeYell = 0
 			end
-			local text
+			local text = ""
 			if spellId == 299249 then--Soak Orbs
 				specWarnQueensDecree:ScheduleVoiceOverLap(0+playerDecreeCount, "helpsoak")
 				if text then
