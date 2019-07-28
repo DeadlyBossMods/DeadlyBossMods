@@ -13,7 +13,7 @@ install: luarocks install --local luacheck
 script: /home/travis/.luarocks/bin/luacheck . --no-color -qo "011"
 
 after_success:
-    - curl -s https://raw.githubusercontent.com/BigWigsMods/packager/master/release.sh | bash
+    - curl -s https://raw.githubusercontent.com/BigWigsMods/packager/master/release.sh | bash; if [[ $? != 0 ]]; then TRAVIS_TEST_RESULT=1; fi
 
 notifications:
   email:
