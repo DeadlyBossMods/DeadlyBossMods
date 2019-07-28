@@ -78,7 +78,7 @@ local warnOverload						= mod:NewCountAnnounce(301431, 2)
 local warnSystemShock					= mod:NewTargetAnnounce(300877, 3)
 
 --Ancient Wards
-local specWarnDrainedSoul				= mod:NewSpecialWarningStack(298569, nil, 6, nil, nil, 1, 6)
+local specWarnDrainedSoul				= mod:NewSpecialWarningStack(298569, nil, 5, nil, nil, 1, 6)
 --Stage One: Cursed Lovers
 local specWarnPainfulMemories			= mod:NewSpecialWarningMoveTo(297937, "Tank", nil, nil, 3, 2)
 local specWarnLonging					= mod:NewSpecialWarningMoveTo(297934, false, nil, 2, 3, 2)
@@ -534,7 +534,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			if not playerSoulDrained then
 				playerSoulDrained = true
 			end
-			if amount >= 6 then--++
+			if amount >= 5 then--++
 				specWarnDrainedSoul:Show(amount)
 				specWarnDrainedSoul:Play("stackhigh")
 			end
