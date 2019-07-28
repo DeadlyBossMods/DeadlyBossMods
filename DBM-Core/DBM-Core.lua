@@ -4049,7 +4049,7 @@ function DBM:LoadMod(mod, force)
 	if mod.minExpansion > GetExpansionLevel() then
 		self:AddMsg(DBM_CORE_LOAD_MOD_EXP_MISMATCH:format(mod.name))
 		return
-	elseif not testBuild and mod.minToc and mod.minToc > wowTOC then
+	elseif not testBuild and mod.minToc > wowTOC then
 		self:AddMsg(DBM_CORE_LOAD_MOD_TOC_MISMATCH:format(mod.name, mod.minToc))
 		return
 	end
