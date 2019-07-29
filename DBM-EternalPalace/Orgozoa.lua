@@ -38,6 +38,7 @@ mod:RegisterEventsInCombat(
 local warnDesensitizingSting				= mod:NewStackAnnounce(298156, 2, nil, "Tank")
 local warnIncubationFluid					= mod:NewTargetNoFilterAnnounce(298306, 2)
 local warnCallofTender						= mod:NewCountAnnounce(305057, 2)
+local warnArcingCurrent						= mod:NewCountAnnounce(295825, 2)
 ----Adds
 local warnAquaLance							= mod:NewTargetNoFilterAnnounce(295779, 2)
 local warnShockingLightning					= mod:NewSpellAnnounce(295818, 2, nil, false)
@@ -158,13 +159,13 @@ function mod:SPELL_CAST_START(args)
 		timerPowerfulStompCD:Start(nil, args.sourceGUID)
 	elseif spellId == 307167 or spellId == 305857 then--Normal/Heroic, Mythic
 		self.vb.arcingCurrentCount = self.vb.arcingCurrentCount + 1
-		specWarnArcingCurrent:Show(self.vb.arcingCurrentCount)
 		timerArcingCurrentCD:Start(nil, self.vb.arcingCurrentCount+1)
-		if playerHasIncubation then
-			yellArcingCurrent:Yell()
+		if playerHasIncubation and self:IsMythic() then
+			specWarnArcingCurrent:Show(self.vb.arcingCurrentCount)
 			specWarnArcingCurrent:Play("targetyou")
-		--else
-		--	specWarnArcingCurrent:Play("farfromline")
+			yellArcingCurrent:Yell()
+		else
+			warnArcingCurrent:Show(self.vb.arcingCurrentCount)
 		end
 	end
 end

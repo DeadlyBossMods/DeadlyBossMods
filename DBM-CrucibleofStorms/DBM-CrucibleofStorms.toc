@@ -1,5 +1,4 @@
 ## Interface: 80200
-## X-Min-Interface: 80100
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Crucible of Storms|r
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0폭풍의 용광로|r
 ## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0風暴邪淵|r
