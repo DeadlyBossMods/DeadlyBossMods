@@ -141,9 +141,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 296725 then--Barnacle Bash
 		self.vb.spellPicker = self.vb.spellPicker + 1
 		if self.vb.spellPicker == 2 then--Two bash been cast, Briny is next
-			timerBrinyBubbleCD:Start(self.vb.shieldDown and 10 or 14.5, self.vb.spellPicker+1)--Success to start
+			timerBrinyBubbleCD:Start(self.vb.shieldDown and 9.9 or 13.9, self.vb.spellPicker+1)--Success to start
 		else
-			timerBarnacleBashCD:Start(self.vb.shieldDown and 15 or 16, self.vb.spellPicker+1)--success to success
+			timerBarnacleBashCD:Start(14.9, self.vb.spellPicker+1)--success to success
 		end
 	elseif spellId == 296662 then
 		self.vb.ripplingWave = self.vb.ripplingWave + 1
