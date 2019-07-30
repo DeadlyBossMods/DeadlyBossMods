@@ -13,7 +13,7 @@ mod:SetUsedIcons(1, 2, 3, 4)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 301141 292963 296257 303978 301068 303543 302593 296018 304733 296078",
+	"SPELL_CAST_START 301141 292963 296257 303978 301068 303543 302593 296018 304733 296078 295814",
 	"SPELL_CAST_SUCCESS 292963 302503 293509 303543 296018 302504 295444 294515 299708",
 	"SPELL_SUMMON 300732",
 	"SPELL_AURA_APPLIED 292971 292981 295480 300133 292963 302503 293509 295327 303971 296078 303543 296018 302504 300584",
@@ -34,9 +34,9 @@ mod:RegisterEventsInCombat(
 --TODO, void slam, who does it target? random or the tank? if random, can we target scan it?
 --TODO, pause/resume (or reset) timers for boss shielding/split phase in stage 4 mythic?
 --[[
-(ability.id = 301141 or ability.id = 303543 or ability.id = 296018 or ability.id = 292963 or ability.id = 296257 or ability.id = 304733 or ability.id = 303978 or ability.id = 301068 or ability.id = 302593 or ability.id = 296078) and type = "begincast"
+(ability.id = 301141 or ability.id = 303543 or ability.id = 296018 or ability.id = 292963 or ability.id = 296257 or ability.id = 304733 or ability.id = 303978 or ability.id = 302593 or ability.id = 296078 or ability.id = 295814) and type = "begincast"
  or (ability.id = 292963 or ability.id = 302503 or ability.id = 296018 or ability.id = 302504 or ability.id = 303543 or ability.id = 295444 or ability.id = 294515 or ability.id = 299708) and type = "cast"
- or (ability.id = 300584 or ability.id = 293509) and type = "applydebuff"
+ or (ability.id = 300584 or ability.id = 293509 or ability.id = 296084) and type = "applydebuff"
 --]]
 local warnPhase							= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
 local warnDiscipleofNzoth				= mod:NewTargetNoFilterAnnounce(292981, 4)
@@ -91,9 +91,10 @@ local timerDeliriumsDescentCD			= mod:NewCDTimer(35, 304733, nil, nil, nil, 3)
 local timerDarkPulseCD					= mod:NewCDTimer(93.5, 303978, nil, nil, nil, 6, nil, DBM_CORE_DEADLY_ICON)
 local timerManicDreadCD					= mod:NewCDTimer(75.4, 296018, nil, "Healer", nil, 5, nil, DBM_CORE_MAGIC_ICON)--75-83
 ----Mythic
-local timerPsychoticSplitCD				= mod:NewCDTimer(66.6, 301068, nil, nil, nil, 6, nil, DBM_CORE_MYTHIC_ICON..DBM_CORE_DEADLY_ICON)--Mythic
-local timerDreadScreamCD				= mod:NewAITimer(58.2, 303543, nil, "Healer", nil, 5, nil, DBM_CORE_MYTHIC_ICON..DBM_CORE_MAGIC_ICON)--Mythic
-local timerVoidSlamCD					= mod:NewAITimer(58.2, 302593, nil, nil, nil, 3)--Mythic
+local timerPsychoticSplitCD				= mod:NewCDTimer(100, 301068, nil, nil, nil, 6, nil, DBM_CORE_MYTHIC_ICON..DBM_CORE_DEADLY_ICON)--Mythic
+local timerPsychoticSplit				= mod:NewCastTimer(25, 301068, nil, nil, nil, 5, nil, DBM_CORE_MYTHIC_ICON..DBM_CORE_DAMAGE_ICON)
+local timerDreadScreamCD				= mod:NewCDTimer(8.5, 303543, nil, "Healer", nil, 5, nil, DBM_CORE_MYTHIC_ICON..DBM_CORE_MAGIC_ICON)--Mythic
+local timerVoidSlam						= mod:NewCastTimer(4.1, 302593, nil, nil, nil, 3)--Mythic
 
 local berserkTimer						= mod:NewBerserkTimer(600)
 
@@ -172,16 +173,17 @@ function mod:SPELL_CAST_START(args)
 		specWarnDarkPulse:Show()
 		specWarnDarkPulse:Play("attackshield")
 		timerDarkPulseCD:Start()
-	elseif spellId == 301068 then
+	elseif spellId == 295814 then
 		specWarnPsychoticSplit:Show()
 		specWarnPsychoticSplit:Play("changetarget")
 		timerPsychoticSplitCD:Start()
-		timerDreadScreamCD:Start(4)
-		timerVoidSlamCD:Start(4)
+		timerDreadScreamCD:Start(15.8)--SUCCESS
+	elseif spellId == 301068 then
+		timerPsychoticSplit:Start(25)
 	elseif spellId == 302593 then
 		specWarnVoidSlam:Show()
 		specWarnVoidSlam:Play("shockwave")
-		timerVoidSlamCD:Start()
+		timerVoidSlam:Start()
 	end
 end
 
@@ -293,6 +295,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerDeliriumsDescentCD:Stop()
 		timerMaddeningEruptionCD:Stop()
 		if self:IsMythic() then
+			--timerManifestNightmaresCD:Start()
 			timerPsychoticSplitCD:Start(73.1)
 		else
 			timerDarkPulseCD:Start(73.1)
@@ -366,7 +369,7 @@ function mod:UNIT_DIED(args)
 	elseif cid == 154682 then--echo-of-fear
 		timerDreadScreamCD:Stop()
 	elseif cid == 154685 then--echo-of-delirium
-		timerVoidSlamCD:Stop()
+		timerVoidSlam:Stop()
 	end
 end
 
@@ -402,6 +405,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		timerDeliriumsDescentCD:Stop()
 		timerMaddeningEruptionCD:Stop()
 		if self:IsMythic() then
+			--timerManifestNightmaresCD:Start()
 			timerPsychoticSplitCD:Start(75.1)
 		else
 			timerDarkPulseCD:Start(75.1)
