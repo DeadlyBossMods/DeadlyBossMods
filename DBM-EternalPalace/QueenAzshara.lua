@@ -13,7 +13,7 @@ mod:SetHotfixNoticeRev(20190715000000)--2019, 7, 15
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 297937 297934 298121 297972 298531 300478 299250 299178 300519 301431 299094 302141 303797 303799 300620 300480 307331 307332",
+	"SPELL_CAST_START 297937 297934 298121 297972 298531 300478 299250 299178 300519 301431 299094 302141 303797 303799 300480 307331 307332",
 	"SPELL_CAST_SUCCESS 302208 298014 301078 300743 300334 300768",
 	"SPELL_AURA_APPLIED 302999 298569 297912 298014 298018 301078 300428 303825 303657 300492 300620 299094 303797 303799 300743 300866 300877 299249 299251 299254 299255 299252 299253 300502 302141 304267 300551",
 	"SPELL_AURA_APPLIED_DOSE 302999 298569 298014 300743",
@@ -28,22 +28,19 @@ mod:RegisterEventsInCombat(
 --	"UPDATE_UI_WIDGET"
 )
 
---TODO, do something different with pressure surge later, announce remaining maybe
---TODO, figure out stacks for drained soul and arcane debuffs to know what's too high
---TODO, finetune arcane burst timing based on size of room and movement penalties and fix spellID for start/success events
---TODO, detect various adds joining fight and timer/warn them in stage 2+
---TODO, beckon might use https://ptr.wowhead.com/spell=303802/army-of-azshara instead
+--TODO, Improve detection of various adds joining fight and associated timers in stage 2+, and get LFR and mythic hulk timers in P1 as well.
 --TODO, check if multiple targets for static shock
 --TODO, figure out siren creature IDs so they can be auto marked and warning for shield can include which marked mob got it
---TODO, fine tune beckon spell Ids, when specific one that has jealousy is known for certain, add nearby warning
 --TODO, figure out cast time for https://ptr.wowhead.com/spell=301518/massive-energy-spike (ie between overload cast start, and when all remaining energy is released)
 --TODO, announce short ciruit?
 --TODO, capture UPDATE_UI_WIDGET better with modified transcriptor to get the widget values I need
 --TODO, add combat starts timer
+--TODO, add real mythic timers, instead of AI timer for divide, and likely incorrect heroic timers for everything else. Mythic needs it's own timers (but is very difficult with how little blizzard puts in combat logs, especially in regard to phase changes)
 --[[
 (ability.id = 297937 or ability.id = 297934 or ability.id = 298121 or ability.id = 297972 or ability.id = 298531 or ability.id = 300478 or ability.id = 299250 or ability.id = 299178 or ability.id = 300519 or ability.id = 303629 or ability.id = 297372 or ability.id = 301431 or ability.id = 300480 or ability.id = 307331 or ability.id = 307332) and type = "begincast"
  or (ability.id = 302208 or ability.id = 298014 or ability.id = 301078 or ability.id = 299094 or ability.id = 303657 or ability.id = 303629 or ability.id = 300492 or ability.id = 300743 or ability.id = 303980 or ability.id = 302141 or ability.id = 300334 or ability.id = 303797 or ability.id = 303799 or ability.id = 300768) and type = "cast"
  or type = "death" and (target.id = 153059 or target.id = 153060)
+ or (ability.id = 303657) and type = "applydebuff"
 --]]
 --Ancient Wards
 local warnPhase							= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
@@ -108,7 +105,6 @@ local specWarnReversalofFortune			= mod:NewSpecialWarningSpell(297371, nil, nil,
 local specWarnArcaneBurst				= mod:NewSpecialWarningYouPos(303657, nil, nil, nil, 1, 2)
 local yellArcaneBurst					= mod:NewPosYell(303657)
 local yellArcaneBurstFades				= mod:NewIconFadesYell(303657)
-local specWarnArcaneBurstFading			= mod:NewSpecialWarningMoveTo(303657, nil, nil, nil, 3, 2)
 local specWarnAzsharasIndomitable		= mod:NewSpecialWarningSwitchCount("ej20410", "Dps", nil, nil, 1, 2)
 --local specWarnArcaneBurstTaunt		= mod:NewSpecialWarningTaunt(303657, nil, nil, nil, 1, 2)
 --Stage Three: Song of the Tides
@@ -130,7 +126,6 @@ local timerLongingCD					= mod:NewNextTimer(60, 297934, nil, "Tank", nil, 5, nil
 ----Aethanel
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20261))
 local timerLightningOrbsCD				= mod:NewCDTimer(16.1, 298121, nil, nil, nil, 3)
---local timerChainLightningCD				= mod:NewCDTimer(7.3, 297972, nil, false, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)--7-24, all over place, so off by default
 local timerColdBlastCD					= mod:NewCDTimer(9.4, 298014, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 ----Cyranus
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20266))
@@ -138,7 +133,6 @@ local timerChargedSpearCD				= mod:NewCDTimer(32.3, 301078, nil, nil, nil, 3, ni
 ----Overzealous Hulk
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20480))
 local timerHulkSpawnCD					= mod:NewCDCountTimer(30.4, "ej20480", nil, nil, nil, 1, 298531, DBM_CORE_DAMAGE_ICON)
---local timerGroundPoundCD				= mod:NewAITimer(30.4, 298531, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)--All over the place, basically can't let any go off anyways
 ----Azshara
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20258))
 local timerDrainAncientWardCD			= mod:NewCDCountTimer(50, 300334, nil, nil, nil, 5)
@@ -160,7 +154,6 @@ mod:AddTimerLine(DBM:EJ_GetSectionInfo(20340))
 local timerStageThreeBerserk			= mod:NewTimer(180, "timerStageThreeBerserk", 28131)
 --local timerEnergizeWardofPowerCD		= mod:NewAITimer(58.2, 303657, nil, nil, nil, 5)
 --local timerStaticShockCD				= mod:NewAITimer(58.2, 300492, nil, nil, nil, 3)
---local timerCrystallineShieldCD		= mod:NewCDTimer(17, 300620, nil, nil, nil, 3, nil, DBM_CORE_DAMAGE_ICON..DBM_CORE_IMPORTANT_ICON)
 --Stage Four: My Palace Is a Prison
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20361))
 local timerGreaterReversalCD			= mod:NewCDCountTimer(70, 297372, 297371, nil, nil, 5, nil, DBM_CORE_IMPORTANT_ICON..DBM_CORE_HEROIC_ICON, nil, 2, 5)
@@ -211,7 +204,6 @@ do
 	local tempLines = {}
 	local tempLinesSorted = {}
 	local sortedLines = {}
-	--local function sortFuncDesc(a, b) return tempLines[a] > tempLines[b] end
 	local function sortFuncAsc(a, b) return tempLines[a] < tempLines[b] end
 	local function sortFuncDesc(a, b) return tempLines[a] > tempLines[b] end
 	local function addLine(key, value)
@@ -224,7 +216,7 @@ do
 		table.wipe(tempLines)
 		table.wipe(tempLinesSorted)
 		table.wipe(sortedLines)
-		--Power levels pulled from widgets
+		--Power levels pulled from widgets?
 		----TODO
 		--Player Personal Checks
 		if playerSoulDrained then
@@ -275,7 +267,6 @@ do
 end
 
 local function decreeYellRepeater(self)
-	--playerDecreeYell = 0--100s 2-Stack/1-Solo, 10s 2-Moving/1-Stay, 1s 2-Soak/1-NoSoak
 	if playerDecreeYell == 0 then return end--All debuffs gone
 	if playerDecreeYell >= 200 then--Stack decree active
 		if playerDecreeYell >= 220 then--Moving/Stack
@@ -324,7 +315,6 @@ function mod:OnCombatStart(delay)
 	timerPainfulMemoriesCD:Start(19.7)
 	--Aethanel
 	timerLightningOrbsCD:Start(24.4-delay)
-	--timerChainLightningCD:Start(15.3-delay)
 	timerColdBlastCD:Start(14.4-delay)--SUCCESS
 	--Cyranus
 	timerChargedSpearCD:Start(27.5-delay)
@@ -396,7 +386,6 @@ function mod:SPELL_CAST_START(args)
 		warnLightningOrbs:Show()
 		timerLightningOrbsCD:Start()
 	elseif spellId == 297972 then
-		--timerChainLightningCD:Start(nil, args.sourceGUID)
 		if self:CheckInterruptFilter(args.sourceGUID, false, true) and not mobShielded[args.sourceGUID] then
 			specWarnChainLightning:Show(args.sourceName)
 			specWarnChainLightning:Play("kickcast")
@@ -408,7 +397,6 @@ function mod:SPELL_CAST_START(args)
 		castsPerGUID[args.sourceGUID] = castsPerGUID[args.sourceGUID] + 1
 		local count = castsPerGUID[args.sourceGUID]
 		warnGroundPound:Show(count)
-		--timerGroundPoundCD:Start(nil, args.sourceGUID)
 	elseif (spellId == 300478 or spellId == 300480 or spellId == 307331 or spellId == 307332) and self:AntiSpam(4, 10) then
 		specWarnDivideandConquer:Show()
 		timerDivideandConquerCD:Start()
@@ -486,8 +474,6 @@ function mod:SPELL_CAST_START(args)
 				timerBeckonCD:Start(90, self.vb.beckonCast+1)
 			end
 		end
-	--elseif spellId == 300620 then
-		--timerCrystallineShieldCD:Start()
 	end
 end
 
@@ -682,8 +668,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnArcaneBurst:Show(self:IconNumToTexture(icon))
 			specWarnArcaneBurst:Play("targetyou")
-			specWarnArcaneBurstFading:Schedule(5, DBM_CORE_BREAK_LOS)
-			specWarnArcaneBurstFading:ScheduleVoice(5, "mm"..icon)
 			yellArcaneBurst:Yell(icon, icon, icon)
 			yellArcaneBurstFades:Countdown(spellId, nil, icon)
 		--else
@@ -763,8 +747,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif spellId == 303657 then
 		if args:IsPlayer() then
-			specWarnArcaneBurstFading:Cancel()
-			specWarnArcaneBurstFading:CancelVoice()
 			yellArcaneBurstFades:Cancel()
 		end
 		if self.Options.SetIconOnArcaneBurst then
@@ -828,7 +810,6 @@ do
 		local cid = self:GetCIDFromGUID(args.destGUID)
 		if cid == 153059 then--Aethanel
 			timerLightningOrbsCD:Stop()
-			--timerChainLightningCD:Stop()
 			timerColdBlastCD:Stop()
 			self.vb.stageOneBossesLeft = self.vb.stageOneBossesLeft - 1
 			if self.vb.stageOneBossesLeft == 0 then
@@ -842,13 +823,10 @@ do
 			end
 		elseif cid == 155643 or cid == 153064 then--overzealous-hulk
 			castsPerGUID[args.destGUID] = nil
-			--timerGroundPoundCD:Stop(args.destGUID)
 		elseif cid == 153090 then--Lady Venomtongue#
 			--timerStaticShockCD:Stop(args.destGUID)
-			--timerChainLightningCD:Stop(args.destGUID)
 		elseif cid == 153091 then--Serena Scarscale
 			--timerStaticShockCD:Stop(args.destGUID)
-			--timerChainLightningCD:Stop(args.destGUID)
 --		elseif cid == 154240 then--azsharas-devoted
 
 --		elseif cid == 155354 then--Azshara's Indomitable
@@ -884,38 +862,9 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 		specWarnArcaneOrbs:Show(self.vb.arcaneOrbCount)
 		specWarnArcaneOrbs:Play("watchorb")
 		timerArcaneOrbsCD:Start(self.vb.arcaneOrbCount == 1 and 65 or 75, self.vb.arcaneOrbCount+1)
-	--"<500.67 14:43:34> [CHAT_MSG_RAID_BOSS_EMOTE] |TInterface\\Icons\\SPELL_SHADOW_SHADESOFDARKNESS.BLP:20|tHer ritual complete, Queen Azshara gains the power of the Void!#Queen Azshara#####0#0##0#209#nil#0#false#false#false#false",
-	elseif msg:find("spell:300522") then--Divide and Conquer (unconfirmed)
+	elseif msg:find("spell:300522") then--Divide and Conquer
 		specWarnDivideandConquer:Show()
 		timerDivideandConquerCD:Start()
-	elseif msg:find("SPELL_SHADOW_SHADESOFDARKNESS.BLP") then--Stage 4
-		if self.vb.phase < 4 then--Won't run unless earlier stage 4 trigger failed
-			self.vb.phase = 4
-			self.vb.reversalCount = 0
-			self.vb.arcaneBurstCount = 0
-			self.vb.arcaneDetonation = 0
-			self.vb.beckonCast = 0
-			timerBeckonCD:Stop()
-			timerReversalofFortuneCD:Stop()
-			timerGreaterReversalCD:Stop()
-			timerArcaneDetonationCD:Stop()
-			timerArcaneBurstCD:Stop()
-
-			--void touch and overload are used immediately, so no timers start here
-			timerNetherPortalCD:Start(11.7)
-			timerPiercingGazeCD:Start(31.7)
-			if self:IsMythic() then--Just copied from heroic for now
-				timerGreaterReversalCD:Start(36.6, 1)
-				timerBeckonCD:Start(56.7, 1)--START
-			elseif self:IsHeroic() then
-				timerGreaterReversalCD:Start(36.6, 1)
-				timerBeckonCD:Start(56.7, 1)--START
-			else
-				timerReversalofFortuneCD:Start(39.7, 1)
-				timerBeckonCD:Start(61.7, 1)--START
-			end
-		end
-		DBM:Debug("Current Stage 4 trigger. If azshara did NOT cast ANYTHING between last debug message and this one, faster trigger is reliable. If she did cast even a single spell between that event and this one, then this is true Stage 4 trigger and no changes are needed")
 	end
 end
 
@@ -939,7 +888,6 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 					timerHulkSpawnCD:Start(timer, self.vb.bigAddCount+1)
 				end
 			elseif cid == 153090 or cid == 153091 then--Phase 3 Sirens becoming active
-				--timerCrystallineShieldCD:Start(17.4)--17-20?
 				--timerStaticShockCD:Start(97.9, GUID)
 				if self.vb.phase < 3 then
 					self.vb.phase = 3
@@ -968,7 +916,6 @@ local function startIntermissionTwo(self)
 	timerArcaneDetonationCD:Stop()
 	timerDivideandConquerCD:Stop()
 	timerAzsharasIndomitableCD:Stop()
-
 	--Despite everything journal says, there really isn't a second intermission, P3 timers start here most accurately for azshara.
 	--But I still delay P3 warning until siren's are attackable,
 	if self:IsHard() then
@@ -976,6 +923,9 @@ local function startIntermissionTwo(self)
 		timerGreaterReversalCD:Start(74.8, 1)
 		timerArcaneDetonationCD:Start(75, 1)
 		timerArcaneBurstCD:Start(87, 1)
+		if self:IsMythic() then
+			timerDivideandConquerCD:Start(3)
+		end
 	else
 		timerBeckonCD:Start(64.6, 1)
 		timerReversalofFortuneCD:Start(77.7, 1)
@@ -985,11 +935,7 @@ local function startIntermissionTwo(self)
 end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 298496 then--Rush Ancient Ward (phase 1 overzealous-hulk)
-		--Not reliable do to being cast before INSTANCE_ENCOUNTER_ENGAGE_UNIT and Hulk actually gaining a boss unit ID
---	elseif spellId == 299886 then--Rush Ward of Power (phase 2 adds)
-		--Maybe usuable with antispam and syncing. No Boss unit IDs, only nameplate really
-	elseif spellId == 297371 then--Reversal of Fortune
+	if spellId == 297371 then--Reversal of Fortune
 		self.vb.reversalCount = self.vb.reversalCount + 1
 		specWarnReversalofFortune:Show()
 		specWarnReversalofFortune:Play("telesoon")
@@ -1027,6 +973,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		timerGreaterReversalCD:Stop()
 		timerArcaneDetonationCD:Stop()
 		timerArcaneBurstCD:Stop()
+		timerDivideandConquerCD:Stop()
 
 		timerVoidTouchedCD:Start(12.9)
 		timerOverloadCD:Start(14, 1)
@@ -1036,6 +983,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 			timerStageThreeBerserk:Stop()
 			timerGreaterReversalCD:Start(48.8, 1)
 			timerBeckonCD:Start(68.9, 1)--START
+			timerDivideandConquerCD:Start(4)
 		elseif self:IsHeroic() then
 			timerGreaterReversalCD:Start(48.8, 1)
 			timerBeckonCD:Start(68.9, 1)--START
@@ -1043,7 +991,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 			timerReversalofFortuneCD:Start(51.9, 1)
 			timerBeckonCD:Start(73.9, 1)--START
 		end
-		DBM:Debug("Possible Earlier Stage 4 Trigger fired, see if Azshara casts anything between this cast and next debug message")
 	end
 end
 
