@@ -16,7 +16,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 300088 301807 297325 301947 299915 300395",
 	"SPELL_CAST_SUCCESS 296850",
-	"SPELL_AURA_APPLIED 296704 301244 297656 297566 297585 301828 299914 296851",
+	"SPELL_AURA_APPLIED 296704 301244 297656 297566 297585 301828 299914 296851 304409",
 	"SPELL_AURA_APPLIED_DOSE 301828",
 	"SPELL_AURA_REMOVED 296704 301244 297656 297566 299914 296851",
 --	"SPELL_PERIODIC_DAMAGE",
@@ -35,6 +35,7 @@ mod:RegisterEventsInCombat(
 --[[
 (ability.id = 300088 or ability.id = 301807 or ability.id = 297325 or ability.id = 301947 or ability.id = 299915) and type = "begincast"
  or (ability.id = 296850) and type = "cast"
+ or source.name = "Queen Azshara" and type = "applydebuff"
 --]]
 --local warnPoweringDown				= mod:NewSpellAnnounce(271965, 2, nil, nil, nil, nil, nil, 2)
 --General
@@ -88,14 +89,14 @@ local timerDeferredSentenceCD			= mod:NewNextTimer(40, 297566, nil, nil, nil, 3,
 local timerObeyorSufferCD				= mod:NewNextTimer(40, 297585, nil, nil, nil, 3, nil, nil, nil, 1, 4)
 --Silivaz the Zealous
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20231))
-local timerFreneticChargeCD				= mod:NewNextTimer(60.6, 299914, nil, nil, nil, 3, nil, nil, nil, not mod:IsTank() and 2, 4)
+local timerFreneticChargeCD				= mod:NewNextTimer(40, 299914, nil, nil, nil, 3, nil, nil, nil, not mod:IsTank() and 2, 4)
 local timerZealousEruptionCD			= mod:NewNextTimer(104.4, 301807, nil, nil, nil, 2)
 --Pashmar the Fanatical
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20235))
 local timerFerventBoltCD				= mod:NewNextTimer(12.1, 300395, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerFanaticalVerdictCD			= mod:NewNextTimer(26.7, 296850, nil, nil, nil, 3)
 local timerViolentOutburstCD			= mod:NewNextTimer(104.4, 297325, nil, nil, nil, 2)
-local timerPotentSparkCD				= mod:NewNextTimer(92.2, 301947, nil, nil, nil, 1)
+local timerPotentSparkCD				= mod:NewCDTimer(92.2, 301947, nil, nil, nil, 1)
 
 local berserkTimer						= mod:NewBerserkTimer(600)
 
@@ -107,37 +108,41 @@ mod:AddSetIconOption("SetIconSparks", 301947, true, true, {1, 2, 3})
 
 mod.vb.sparkIcon = 1
 mod.vb.sentenceActive = 0
+mod.vb.decreeTimer = 90
 
 function mod:OnCombatStart(delay)
 	self.vb.sparkIcon = 1
 	self.vb.sentenceActive = 0
-	--CLEAN THIS MESS UP ON LIVE WITH UPDATED HEROIC TIMERS
-	if self:IsHard() then
-		--Pashmar
-		timerFanaticalVerdictCD:Start(30-delay)
-		--On heroic, azshara casts Form Ranks immediately on pull (still true?)
-		if self:IsMythic() then
-			--Pashmar
-			timerPotentSparkCD:Start(20.2-delay)
-			berserkTimer:Start(450-delay)
-		else
-			timerPotentSparkCD:Start(15.8-delay)
-		end
-	else
-		--Timers for Normal and LFR
-		--Pashmar
-		timerPotentSparkCD:Start(15.8-delay)
-		timerFanaticalVerdictCD:Start(37.3-delay)
-	end
 	--Timers that are same across board
 	--ass-shara
 	timerFormRanksCD:Start(30-delay)
-	--Silivaz
-	timerFreneticChargeCD:Start(30-delay)
-	timerZealousEruptionCD:Start(50.7-delay)
 	--Pashmar
-	timerViolentOutburstCD:Start(100.1-delay)
 	timerFerventBoltCD:Start(5.1-delay)
+	timerFanaticalVerdictCD:Start(37.3-delay)
+	timerViolentOutburstCD:Start(100.1-delay)
+	--Timers that differ by difficulty
+	if self:IsMythic() then
+		--Silivaz
+		timerFreneticChargeCD:Start(30-delay)
+		timerZealousEruptionCD:Start(50-delay)
+		--Pashmar
+		timerPotentSparkCD:Start(20.2-delay)
+		berserkTimer:Start(450-delay)
+		self.vb.decreeTimer = 30
+	else
+		--Silivaz
+		timerZealousEruptionCD:Start(60.5-delay)
+		timerFreneticChargeCD:Start(75-delay)
+		--Pashmar
+		timerPotentSparkCD:Start(15.8-delay)
+		if self:IsHeroic() then
+			self.vb.decreeTimer = 40
+		elseif self:IsLFR() then
+			self.vb.decreeTimer = 90
+		else
+			self.vb.decreeTimer = 60
+		end
+	end
 	if self.Options.NPAuraOnSoP then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
@@ -175,7 +180,7 @@ function mod:SPELL_CAST_START(args)
 		warnPotentSpark:Show()
 		timerPotentSparkCD:Start()
 	elseif spellId == 299915 then
-		timerFreneticChargeCD:Start(self:IsMythic() and 40 or 60)
+		timerFreneticChargeCD:Start(40)
 	elseif spellId == 300395 then
 		timerFerventBoltCD:Start()
 	end
@@ -194,7 +199,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.NPAuraOnSoP then
 			DBM.Nameplate:Show(true, args.destGUID, spellId)
 		end
-	elseif spellId == 301244 then
+	elseif spellId == 301244 or spellId == 304409 then
 		warnRepeatPerformance:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			specWarnRepeatPerformance:Show()
@@ -364,15 +369,19 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 	if msg:find("spell:298050") then--Form Ranks (Repeat Performance is next)
 		specWarnFormRanks:Show(L.Circles)
 		specWarnFormRanks:Play("gathershare")
-		timerRepeatPerformanceCD:Start(self:IsMythic() and 30 or self:IsHeroic() and 40 or 60)
+		timerRepeatPerformanceCD:Start(self.vb.decreeTimer)
 	elseif msg:find("spell:301244") then--Repeat Performance (Stand Alone is next)
-		timerStandAloneCD:Start(self:IsMythic() and 30 or self:IsHeroic() and 40 or 60)
+		timerStandAloneCD:Start(self.vb.decreeTimer)
 	elseif msg:find("spell:297656") then--Stand Alone (Sentence is next)
-		timerDeferredSentenceCD:Start(self:IsMythic() and 30 or self:IsHeroic() and 40 or 60)
+		if self:IsLFR() then--In LFR, it returns to form ranks, obey and differred aren't used in LFR
+			timerFormRanksCD:Start(self.vb.decreeTimer)
+		else
+			timerDeferredSentenceCD:Start(self.vb.decreeTimer)
+		end
 	elseif msg:find("spell:297566") then--Defferred Sentence (Obey is next)
-		timerObeyorSufferCD:Start(self:IsMythic() and 30 or self:IsHeroic() and 40 or 60)
+		timerObeyorSufferCD:Start(self.vb.decreeTimer)
 	elseif msg:find("spell:297585") then--Obey or Suffer (loops back to form ranks after)
-		timerFormRanksCD:Start(self:IsMythic() and 30 or self:IsHeroic() and 40 or 60)
+		timerFormRanksCD:Start(self.vb.decreeTimer)
 	end
 end
 
