@@ -155,6 +155,7 @@ function mod:SPELL_CAST_START(args)
 		--timerDreadCD:Stop()
 		--New Stage 2 timers
 		timerManifestNightmaresCD:Start(37.2)
+		timerHorrificSummonerCD:SetFade(true)--Start fading this timer until P4, timer still exists on the script loop, but we just want to dim timer until it means something again
 		--timerMaddeningEruptionCD:Start(1)--1-3 seconds after this cast
 	elseif spellId == 304733 then--Delirium's Descent
 		if self.vb.phase < 3 then
@@ -404,6 +405,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		--The time between last dread and first manic dread is always 65, so when he transitions into P4
 		--Multiple logs confirm it literally just deletes 10 seconds off existing timer, no timer reset
 		timerDreadCD:RemoveTime(10)
+		timerHorrificSummonerCD:SetFade(false)--Unfade, they can start spawning again
 		--TODO, sometimes the P4 transition timing causes the next nightmares to be skipped, if we can figure out exact timing of that, can do a +35 to existing timer?
 		if self:IsMythic() then
 			timerPsychoticSplitCD:Start(75.1)
