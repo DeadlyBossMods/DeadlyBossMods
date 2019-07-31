@@ -29,7 +29,6 @@ mod:RegisterEventsInCombat(
 --TODO, skewer or not to skewer
 --TODO, raging-rapids?
 --TODO, do more with powerful stomp?
---TODO, special warn for tender add spawns?
 --[[
 (ability.id = 298548 or ability.id = 295818 or ability.id = 295822 or ability.id = 296691 or ability.id = 307167 or ability.id = 305857) and type = "begincast"
  or (ability.id = 298242 or ability.id = 298103 or ability.id = 298156 or ability.id = 298548 or ability.id = 295779 or ability.id = 305057) and type = "cast"
@@ -98,18 +97,11 @@ function mod:OnCombatStart(delay)
 	playerHasIncubation = false
 	table.wipe(castsPerGUID)
 	timerDesensitizingStingCD:Start(3-delay)
-	--This could still be slightly wrong because there just a standard variation on this bosses mechanics
-	if self:IsHard() then
-		timerIncubationFluidCD:Start(18.6-delay)
-		timerDribblingIchorCD:Start(28.9-delay, 1)
-		timerArcingCurrentCD:Start(41.0-delay, 1)
-		if self:IsMythic() then
-			timerCalloftheTenderCD:Start(20.3-delay, 1)
-		end
-	else--Normal/LFR
-		timerIncubationFluidCD:Start(18.6-delay)--SUCCESS
-		timerDribblingIchorCD:Start(27.6-delay, 1)
-		timerArcingCurrentCD:Start(38.9-delay, 1)
+	timerIncubationFluidCD:Start(18.6-delay)
+	timerDribblingIchorCD:Start(28.9-delay, 1)
+	timerArcingCurrentCD:Start(41-delay, 1)
+	if self:IsMythic() then
+		timerCalloftheTenderCD:Start(20.3-delay, 1)
 	end
 	berserkTimer:Start(759-delay)--Normal and Heroic at least, unconfirmed LFR and mythic
 	if self.Options.NPAuraOnChaoticGrowth or self.Options.NPAuraOnAquaLance then
@@ -292,18 +284,11 @@ function mod:SPELL_INTERRUPT(args)
 	if type(args.extraSpellId) == "number" and args.extraSpellId == 298548 then
 		timerMassiveIncubator:Stop()
 		timerDesensitizingStingCD:Start(3)
-		--This could still be slightly wrong because there just a standard variation on this bosses mechanics
-		if self:IsHard() then
-			timerIncubationFluidCD:Start(18.6)
-			timerDribblingIchorCD:Start(28.9, 1)
-			timerArcingCurrentCD:Start(41.0, 1)
-			if self:IsMythic() then
-				timerCalloftheTenderCD:Start(20.3, 1)
-			end
-		else--Normal/LFR
-			timerIncubationFluidCD:Start(18.6)--SUCCESS
-			timerDribblingIchorCD:Start(27.6, 1)
-			timerArcingCurrentCD:Start(38.9, 1)
+		timerIncubationFluidCD:Start(18.6)
+		timerDribblingIchorCD:Start(28.9, 1)
+		timerArcingCurrentCD:Start(41.0, 1)
+		if self:IsMythic() then
+			timerCalloftheTenderCD:Start(20.3, 1)
 		end
 	end
 end

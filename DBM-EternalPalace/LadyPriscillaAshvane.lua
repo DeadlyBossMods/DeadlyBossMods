@@ -126,7 +126,7 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 297398 then--Briny Bubble. 297398 verified, other two unknown (or spellId == 297402 or spellId == 297324)
 		self.vb.spellPicker = 0
 		--Always 15.9 seconds after in all difficulties when shield is up, but when shield is down, it's 24 seconds after on easy but still 15.9 on hard
-		timerBarnacleBashCD:Start(not self.vb.shieldDown and self:IsEasy() and 24 or 15.9, 1)--start to success
+		timerBarnacleBashCD:Start(not self.vb.shieldDown and self:IsEasy() and 23.9 or 15.9, 1)--start to success
 	end
 end
 
@@ -141,7 +141,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 296725 then--Barnacle Bash
 		self.vb.spellPicker = self.vb.spellPicker + 1
 		if self.vb.spellPicker == 2 then--Two bash been cast, Briny is next
-			timerBrinyBubbleCD:Start(self.vb.shieldDown and 9.9 or 13.9, self.vb.spellPicker+1)--Success to start
+			timerBrinyBubbleCD:Start(self.vb.shieldDown and 9.9 or self:IsLFR() and 15 or 13.9, self.vb.spellPicker+1)--Success to start
 		else
 			timerBarnacleBashCD:Start(14.9, self.vb.spellPicker+1)--success to success
 		end
