@@ -5657,7 +5657,7 @@ do
 		if id then
 			local spellId = tonumber(id)
 			if spellId then
-				local spellName = DBM:GetSpellInfo(spellId)
+				local spellName = DBM:GetSpellInfo(spellId) or DBM_CORE_UNKNOWN
 				self:Debug("CHAT_MSG_RAID_BOSS_EMOTE fired: "..sender.."'s "..spellName.."("..spellId..")", 2)
 			end
 		end
