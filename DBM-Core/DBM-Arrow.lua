@@ -45,8 +45,8 @@ end)
 
 local textframe = CreateFrame("Frame", nil, frame)
 
-frame.distance = textframe:CreateFontString("OVERLAY", nil, "GameFontNormalSmall")
-frame.title = textframe:CreateFontString("OVERLAY", nil, "GameFontHighlightSmall")
+frame.distance = textframe:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
+frame.title = textframe:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
 frame.title:SetPoint("TOP", frame, "BOTTOM", 0, 0)
 frame.distance:SetPoint("TOP", frame.title, "BOTTOM", 0, 0)
 textframe:Hide()
