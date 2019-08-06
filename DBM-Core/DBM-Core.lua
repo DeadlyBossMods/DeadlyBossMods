@@ -8052,7 +8052,8 @@ do
 		["RemoveDisease"] = true,--from ally
 		["RemoveEnrage"] = true,--Can remove enemy enrage. returned in 8.x!
 		["RemoveCurse"] = true,--from ally
-		["MagicDispeller"] = true,--from ENEMY, not debuffs on players. use "Healer" for ally magic dispels. ALL healers can do that.
+		["RemoveMagic"] = true,--from ally
+		["MagicDispeller"] = true,--from ENEMY, not debuffs on players. use "Healer" or "RemoveMagic" for ally magic dispels. ALL healers can do that on retail, and warlock Imps
 		["HasInterrupt"] = true,--Has an interrupt that is 24 seconds or less CD that is BASELINE (not a talent)
 		["HasImmunity"] = true,--Has an immunity that can prevent or remove a spell effect (not just one that reduces damage like turtle or dispursion)
 	}]]
@@ -8078,6 +8079,7 @@ do
 			["RaidCooldown"] = true,--Devotion Aura
 			["RemovePoison"] = true,
 			["RemoveDisease"] = true,
+			["RemoveMagic"] = true,
 			["HasImmunity"] = true,
 		},
 		[66] = {	--Protection Paladin
@@ -8155,6 +8157,7 @@ do
 			["RemoveCurse"] = true,
 			["RemovePoison"] = true,
 			["RemoveEnrage"] = true,
+			["RemoveMagic"] = true,
 		},
 		[250] = {	--Blood DK
 			["Tank"] = true,
@@ -8200,6 +8203,7 @@ do
 			["CasterDps"] = true,--Iffy. Technically yes, but this can't be used to determine eligable target for dps only debuffs
 			["RaidCooldown"] = true,--Power Word: Barrier(Discipline) / Divine Hymn (Holy)
 			["RemoveDisease"] = true,
+			["RemoveMagic"] = true,
 			["MagicDispeller"] = true,
 		},
 		[258] = {	--Shadow Priest
@@ -8250,6 +8254,7 @@ do
 			["SpellCaster"] = true,
 			["RaidCooldown"] = true,--Spirit Link Totem
 			["RemoveCurse"] = true,
+			["RemoveMagic"] = true,
 			["MagicDispeller"] = true,
 			["HasInterrupt"] = true,
 		},
@@ -8259,6 +8264,7 @@ do
 			["RangedDps"] = true,
 			["ManaUser"] = true,
 			["SpellCaster"] = true,
+			["RemoveMagic"] = true,--Singe Magic (Imp)
 			["CasterDps"] = true,
 		},
 		[268] = {	--Brewmaster Monk
@@ -8287,6 +8293,7 @@ do
 			["RaidCooldown"] = true,--Revival
 			["RemovePoison"] = true,
 			["RemoveDisease"] = true,
+			["RemoveMagic"] = true,
 		},
 		[577] = {	--Havok Demon Hunter
 			["Dps"] = true,

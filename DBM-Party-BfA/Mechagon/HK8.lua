@@ -3,14 +3,14 @@ local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(150190)
-mod:SetEncounterID(2291)--VERIFY
+mod:SetEncounterID(2291)
 mod:SetZone()
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 295536 296522 295939",
-	"SPELL_CAST_SUCCESS 302274 303885 301351 295445 301177",
+	"SPELL_CAST_START 295536 295939",
+	"SPELL_CAST_SUCCESS 302274 303885 301351 303553 295445 301177",
 	"SPELL_AURA_APPLIED 296080 302274 303885 303252",
 	"SPELL_AURA_REMOVED 296080 303885",
 	"UNIT_DIED"
@@ -18,15 +18,14 @@ mod:RegisterEventsInCombat(
 
 --TODO, can tank dodge wreck?
 --TODO, additional warnings/timers for platform stuff?
---TODO, what CID is boss health/win for this fight?
---TODO, better phase code, using Lift Off probably, something https://www.wowhead.com/npc=150190/hk-8-aerial-oppression-unit#abilities shows being cast by boss
+--TODO, Verify/update non hard mode timers
+--TODO, need log that lets HK lift off and MK1 or MK2 to start a new cycle of all abilities at least once
 --[[
-(ability.id = 295536 or ability.id = 296522 or ability.id = 295939) and type = "begincast"
+(ability.id = 295536 or ability.id = 295939) and type = "begincast"
  or ability.id = 302274 or ability.id = 303885 or ability.id = 301351 or ability.id = 295445 or ability.id = 301177) and type = "cast"
  or (target.id = 150295 or target.id = 155760) and type = "death"
  --]]
 local warnReinforcementRelay		= mod:NewSpellAnnounce(301351, 2)
-local warnSelfDestruct				= mod:NewCastAnnounce(296522, 4)
 local warnHaywire					= mod:NewTargetNoFilterAnnounce(296080, 1)
 local warnFulminatingZap			= mod:NewTargetNoFilterAnnounce(302274, 2, nil, "Healer")
 
@@ -41,20 +40,19 @@ local specWarnAntiTresField			= mod:NewSpecialWarningMoveTo(303252, nil, nil, ni
 local yellAntiTresField				= mod:NewYell(303252)
 --local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 8)
 
-local timerCannonBlastCD			= mod:NewAITimer(31.6, 295536, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
-local timerReinforcementRelayCD		= mod:NewAITimer(31.6, 301351, nil, nil, nil, 1)
-local timerWreckCD					= mod:NewAITimer(31.6, 295445, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
-local timerFulminatingZapCD			= mod:NewAITimer(31.6, 302274, nil, nil, nil, 3, nil, DBM_CORE_HEALER_ICON)
-local timerFulminatingBurstCD		= mod:NewAITimer(31.6, 303885, nil, nil, nil, 3, nil, DBM_CORE_HEALER_ICON)--Hard Mode
+--local timerCannonBlastCD			= mod:NewCDTimer(7.7, 295536, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)--7.7-13.4 variation, useless timer
+local timerReinforcementRelayCD		= mod:NewCDTimer(32.8, 301351, nil, nil, nil, 1)
+local timerWreckCD					= mod:NewCDTimer(24.3, 295445, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerFulminatingZapCD			= mod:NewCDTimer(17.0, 302274, nil, nil, nil, 3, nil, DBM_CORE_HEALER_ICON)--Assumed
+local timerFulminatingBurstCD		= mod:NewCDTimer(17.0, 303885, nil, nil, nil, 3, nil, DBM_CORE_HEALER_ICON)--Hard Mode
 --Stage 2
-local timerAnnihilationRayCD		= mod:NewAITimer(31.6, 295939, nil, nil, nil, 6)
 local timerHaywire					= mod:NewBuffActiveTimer(30, 296080, nil, nil, nil, 6)
 --local timerHowlingFearCD			= mod:NewAITimer(13.4, 257791, nil, "HasInterrupt", nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
 
 --mod:AddRangeFrameOption(5, 194966)
 mod:AddNamePlateOption("NPAuraOnWalkieShockie", 296522, false)
 
-mod.vb.phase = 1
+mod.vb.hard = false
 local unitTracked = {}
 
 local function checkHardMode(self, delay)
@@ -63,18 +61,17 @@ local function checkHardMode(self, delay)
 		local unitID = "boss"..i
 		if UnitExists(unitID) then
 			local cid = self:GetUnitCreatureId(unitID)
-			if cid == 150295 then--Mk1
+			if cid == 150295 then--MK1
 				found = true
-				timerCannonBlastCD:Start(1)
-				timerReinforcementRelayCD:Start(1)
-				timerAnnihilationRayCD:Start(1)
-				timerFulminatingZapCD:Start(1)--SUCCESS
+				timerFulminatingZapCD:Start(8.4)--SUCCESS--Assumed
+				timerWreckCD:Start(15.7)--Assumed
+				timerReinforcementRelayCD:Start(19.8)--Assumed
 			elseif cid == 155760 then--MK2 (hard mode)
 				found = true
-				timerCannonBlastCD:Start(1)
-				timerReinforcementRelayCD:Start(1)
-				timerAnnihilationRayCD:Start(1)
-				timerFulminatingBurstCD:Start(1)--SUCCESS
+				self.vb.hard = true
+				timerFulminatingBurstCD:Start(8.4)--SUCCESS--VERIFIED
+				timerWreckCD:Start(15.7)--VERIFIED
+				timerReinforcementRelayCD:Start(19.8)--VERIFIED
 			end
 		end
 	end
@@ -84,7 +81,7 @@ local function checkHardMode(self, delay)
 end
 
 function mod:OnCombatStart(delay)
-	self.vb.phase = 1
+	self.vb.hard = false
 	self:Schedule(1-delay, checkHardMode, self)
 	table.wipe(unitTracked)
 	if self.Options.NPAuraOnWalkieShockie then
@@ -142,18 +139,9 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 295536 then
 		specWarnCannonBlast:Show()
 		specWarnCannonBlast:Play("farfromline")
-		timerCannonBlastCD:Start()
-	elseif spellId == 296522 then
-		warnSelfDestruct:Show()
 	elseif spellId == 295939 then
 		specWarnAnnihilationRay:Show()
 		specWarnAnnihilationRay:Play("phasechange")
-		--timerAnnihilationRayCD:Start()
-		--Possibly redundant
-		timerReinforcementRelayCD:Stop()--Assumed
-		timerCannonBlastCD:Stop()
-		timerFulminatingZapCD:Stop()
-		timerFulminatingBurstCD:Stop()
 	end
 end
 
@@ -163,15 +151,24 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerFulminatingZapCD:Start()
 	elseif spellId == 303885 then
 		timerFulminatingBurstCD:Start()
-	elseif spellId == 301351 then
+	elseif spellId == 301351 or spellId == 303553 then--Regular, Hard
 		warnReinforcementRelay:Show()
 		timerReinforcementRelayCD:Start()
 	elseif spellId == 295445 then
 		specWarnWreck:Show()
 		specWarnWreck:Play("defensive")
-		timerWreckCD:Start(nil, args.sourceGUID)
-	elseif spellId == 301177 then
-
+		timerWreckCD:Start()
+	elseif spellId == 301177 then--Lift Off (haywire ended, return to stage 1)
+		--TODO, need a log that didn't one phase him, might be harder to come by these days
+		--[[if self.vb.hard  then
+			timerFulminatingBurstCD:Start(8.4)--SUCCESS--Assumed
+			timerWreckCD:Start(15.7)--Assumed
+			timerReinforcementRelayCD:Start(19.8)--Assumed
+		else
+			timerFulminatingZapCD:Start(8.4)--SUCCESS--Assumed
+			timerWreckCD:Start(15.7)--Assumed
+			timerReinforcementRelayCD:Start(19.8)--Assumed
+		end--]]
 	end
 end
 
@@ -207,9 +204,6 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 296080 then--Haywire
 		timerHaywire:Stop()
-		timerAnnihilationRayCD:Start(2)--Assumed
-		timerReinforcementRelayCD:Start(2)--Assumed
-		timerCannonBlastCD:Start(2)
 	elseif spellId == 303885 then
 		if args:IsPlayer() then
 			yellFulminatingBurstFades:Cancel()
@@ -230,13 +224,10 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 150295 or cid == 155760 then--tank-buster-mk1/tank-buster-mk2
-		self.vb.phase = 2
-		timerWreckCD:Stop(args.destGUID)
-		--Possibly Wrong
-		timerCannonBlastCD:Stop()
+		timerWreckCD:Stop()
+		timerReinforcementRelayCD:Stop()
 		timerFulminatingZapCD:Stop()
 		timerFulminatingBurstCD:Stop()
-		timerReinforcementRelayCD:Stop()
 	end
 end
 
