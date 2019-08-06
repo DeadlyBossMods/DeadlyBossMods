@@ -286,6 +286,7 @@ DBM_CORE_FAR_AWAY					= "먼 곳"
 DBM_CORE_BREAK_LOS					= "시야를 가리는 곳"
 DBM_CORE_RESTORE_LOS				= "시야가 나오는 곳"
 DBM_CORE_SAFE						= "안전함"
+DBM_CORE_NOTSAFE					= "위험함"
 DBM_CORE_SHIELD						= "보호막"
 DBM_INCOMING						= "%s 등장"
 --Common Locals end

@@ -72,7 +72,7 @@ L:SetTimerLocalization{
 L:SetOptionLocalization({
 	SortDesc 			= "정보 창에 $spell:298569 디버프 중첩을 높은 순으로 정렬합니다. (낮은순 대신)",
 	ShowTimeNotStacks	= "정보 창에 $spell:298569 디버프 중첩 대신 남은 시간을 표시합니다.",
-	timerStageThreeBerserk	= "3페이즈 쫄이 광폭화 상태에 들어가면 타이머 바 보기"
+	timerStageThreeBerserk	= "3단계 쫄이 광폭화 상태에 들어가면 타이머 바 보기"
 })
 
 L:SetMiscLocalization({
