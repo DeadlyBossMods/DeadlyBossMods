@@ -5,6 +5,8 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(126845, 126847, 126848)--Captain Jolly, Captain Raoul, Captain Eudora
 mod:SetEncounterID(2094)
 mod:SetZone()
+mod:DisableRegenDetection()
+mod:SetMinSyncRevision(20190806000000)--2019, 08, 06
 
 mod:RegisterCombat("combat")
 
@@ -65,6 +67,7 @@ local timerLuckySevensCD			= mod:NewNextTimer(29.1, 257117, nil, nil, nil, 5)
 mod:AddRangeFrameOption(5, 267522)
 
 local function scanCaptains(self, isPull, delay)
+
 	local foundOne, foundTwo, foundThree
 	for i = 1, 3 do
 		local unitID = "boss"..i
@@ -103,10 +106,12 @@ local function scanCaptains(self, isPull, delay)
 			end
 		end
 	end
-	if foundTwo and not foundThree then
-		self:SetCreatureID(foundOne, foundTwo)
-	else
-		self:SetCreatureID(foundOne, foundTwo, foundThree)
+	if foundTwo then
+		if foundThree then
+			self:SetCreatureID(foundOne, foundTwo, foundThree)
+		else
+			self:SetCreatureID(foundOne, foundTwo)
+		end
 	end
 end
 
