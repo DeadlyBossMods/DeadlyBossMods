@@ -135,7 +135,7 @@ local timerHulkSpawnCD					= mod:NewCDCountTimer(30.4, "ej20480", nil, nil, nil,
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20258))
 local timerArcaneOrbsCD					= mod:NewCDCountTimer(65, 298787, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
 local timerBeckonCD						= mod:NewCDCountTimer(30.4, 299094, nil, nil, nil, 3)
-local timerDivideandConquerCD			= mod:NewCDTimer(30.4, 300478, nil, nil, nil, 3, nil, DBM_CORE_MYTHIC_ICON..DBM_CORE_DEADLY_ICON)
+local timerDivideandConquerCD			= mod:NewCDTimer(65, 300478, nil, nil, nil, 3, nil, DBM_CORE_MYTHIC_ICON..DBM_CORE_DEADLY_ICON)
 --Intermission One: Queen's Decree
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20335))
 local timerQueensDecreeCD				= mod:NewCDTimer(30.4, 299250, nil, nil, nil, 3, nil, DBM_CORE_IMPORTANT_ICON)
@@ -860,7 +860,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 		timerArcaneOrbsCD:Start(self:IsMythic() and 59.9 or (self.vb.arcaneOrbCount == 1 and 65 or 74.8), self.vb.arcaneOrbCount+1)
 	elseif msg:find("spell:300522") then--Divide and Conquer
 		specWarnDivideandConquer:Show()
-		timerDivideandConquerCD:Start()
+		timerDivideandConquerCD:Start(self.vb.phase == 4 and 1 or self.vb.phase == 3 and 1 or 65)--Stage 1 and 2 confirmed, stage 3 and 4 unknown so placeholdered
 	end
 end
 
