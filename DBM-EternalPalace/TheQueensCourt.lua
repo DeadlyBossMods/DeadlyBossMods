@@ -16,9 +16,9 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 300088 301807 297325 301947 299915 300395",
 	"SPELL_CAST_SUCCESS 296850",
-	"SPELL_AURA_APPLIED 296704 301244 297656 297566 297585 301828 299914 296851 304409",
+	"SPELL_AURA_APPLIED 296704 301244 297656 304128 297585 301828 299914 296851 304409",
 	"SPELL_AURA_APPLIED_DOSE 301828",
-	"SPELL_AURA_REMOVED 296704 301244 297656 297566 299914 296851",
+	"SPELL_AURA_REMOVED 296704 301244 297656 304128 299914 296851",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
@@ -45,7 +45,7 @@ local warnRepeatPerformance				= mod:NewTargetNoFilterAnnounce(301244, 3, nil, "
 local warnRepeatPerformanceOver			= mod:NewFadesAnnounce(301244, 1)--Personal fades warning
 local warnStandAlone					= mod:NewTargetAnnounce(297656, 2)
 local warnStandAloneOver				= mod:NewFadesAnnounce(297656, 1)--Personal fades warning
-local warnDeferredSentence				= mod:NewTargetAnnounce(297566, 2)
+local warnDeferredSentence				= mod:NewTargetAnnounce(297566, 2, nil, false, 2)
 local warnDeferredSentenceOver			= mod:NewFadesAnnounce(297566, 1)--Personal fades warning
 --Silivaz the Zealous
 local warnSilivazTouch					= mod:NewStackAnnounce(244899, 2, nil, "Tank")
@@ -59,19 +59,19 @@ local specWarnFormRanks					= mod:NewSpecialWarningMoveTo(298050, "-Tank", nil, 
 local specWarnRepeatPerformance			= mod:NewSpecialWarningYou(301244, nil, nil, nil, 1, 2)
 local specWarnStandAlone				= mod:NewSpecialWarningMoveAway(297656, nil, nil, nil, 1, 2)
 local yellStandAlone					= mod:NewYell(297656)
-local specWarnDeferredSentence			= mod:NewSpecialWarningKeepMove(297566, nil, nil, nil, 1, 2)
+local specWarnDeferredSentence			= mod:NewSpecialWarningYou(297566, nil, nil, nil, 1, 2)
 local specWarnObeyorSuffer				= mod:NewSpecialWarningDefensive(297585, nil, nil, nil, 1, 2)
-local specWarnObeyorSufferTaunt			= mod:NewSpecialWarningTaunt(297585, false, nil, nil, 1, 2)
+local specWarnObeyorSufferTaunt			= mod:NewSpecialWarningTaunt(297585, false, nil, 2, 1, 2)
 --Silivaz the Zealous
 local specWarnSilivazTouch				= mod:NewSpecialWarningStack(301828, nil, 7, nil, nil, 1, 6)
---local specWarnSilivazTouchOther			= mod:NewSpecialWarningTaunt(301828, nil, nil, nil, 1, 2)
+--local specWarnSilivazTouchOther		= mod:NewSpecialWarningTaunt(301828, false, nil, 2, 1, 2)
 local specWarnFreneticCharge			= mod:NewSpecialWarningMoveTo(299914, nil, nil, nil, 1, 2)
 local yellFreneticCharge				= mod:NewYell(299914, nil, nil, nil, "YELL")
 local yellFreneticChargeFades			= mod:NewShortFadesYell(299914, nil, nil, nil, "YELL")
 local specWarnZealousEruption			= mod:NewSpecialWarningMoveTo(301807, nil, nil, nil, 3, 2)
 --Pashmar the Fanatical
 local specWarnPashmarsTouch				= mod:NewSpecialWarningStack(301830, nil, 7, nil, nil, 1, 6)
-local specWarnPashmarsTouchOther		= mod:NewSpecialWarningTaunt(301830, nil, nil, nil, 1, 2)
+--local specWarnPashmarsTouchOther		= mod:NewSpecialWarningTaunt(301830, false, nil, 2, 1, 2)
 local specWarnFanaticalVerdict			= mod:NewSpecialWarningMoveAway(296851, nil, nil, nil, 1, 2)
 local yellFanaticalVerdict				= mod:NewYell(296851)
 local yellFanaticalVerdictFades			= mod:NewShortFadesYell(296851)
@@ -212,12 +212,12 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnStandAlone:Play("runout")
 			yellStandAlone:Yell()
 		end
-	elseif spellId == 297566 then
+	elseif spellId == 304128 then
 		self.vb.sentenceActive = self.vb.sentenceActive + 1
 		warnDeferredSentence:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			specWarnDeferredSentence:Show()
-			specWarnDeferredSentence:Play("keepmove")
+			specWarnDeferredSentence:Play("targetyou")
 		end
 	elseif spellId == 297585 then
 		if args:IsPlayer() then
@@ -273,7 +273,7 @@ function mod:SPELL_AURA_APPLIED(args)
 					specWarnPashmarsTouch:Show(amount)
 					specWarnPashmarsTouch:Play("stackhigh")
 				else--Taunt as soon as stacks are clear, regardless of stack count.
-					local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", spellId)
+					--[[local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", spellId)
 					local remaining
 					if expireTime then
 						remaining = expireTime-GetTime()
@@ -282,9 +282,9 @@ function mod:SPELL_AURA_APPLIED(args)
 					if not UnitIsDeadOrGhost("player") and not remaining  then
 						specWarnPashmarsTouchOther:Show(args.destName)
 						specWarnPashmarsTouchOther:Play("tauntboss")
-					else
+					else--]]
 						warnPashmarsTouch:Show(args.destName, amount)
-					end
+					--end
 				end
 			else
 				warnPashmarsTouch:Show(args.destName, amount)
@@ -329,7 +329,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		if args:IsPlayer() then
 			warnStandAloneOver:Show()
 		end
-	elseif spellId == 297566 then
+	elseif spellId == 304128 then
 		self.vb.sentenceActive = self.vb.sentenceActive - 1
 		if args:IsPlayer() then
 			warnDeferredSentenceOver:Show()

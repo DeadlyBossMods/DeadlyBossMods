@@ -290,6 +290,7 @@ DBM_CORE_FAR_AWAY					= "Far Away"
 DBM_CORE_BREAK_LOS					= "Break LOS"
 DBM_CORE_RESTORE_LOS				= "Restore/Maintain LOS"
 DBM_CORE_SAFE						= "Safe"
+DBM_CORE_NOTSAFE					= "Not Safe"
 DBM_CORE_SHIELD						= "Shield"
 DBM_INCOMING						= "%s Incoming"
 --Common Locals end
