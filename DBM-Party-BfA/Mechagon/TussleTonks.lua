@@ -130,7 +130,7 @@ function mod:UNIT_DIED(args)
 	if cid == 144244 then--The Platinum Pummeler
 		timerWhirlingEdgeCD:Stop()
 	elseif cid == 145185 then--Gnomercy 4.U.
-		timerFoeFlipperCD:Stop()
+		--timerFoeFlipperCD:Stop()
 		timerVentJetsCD:Stop()
 		timerMaxThrustCD:Stop()
 	end

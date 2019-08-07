@@ -69,8 +69,8 @@ end
 
 DBM = {
 	Revision = parseCurseDate("@project-date-integer@"),
-	DisplayVersion = "8.2.11 alpha", -- the string that is shown as version
-	ReleaseRevision = releaseDate(2019, 7, 30) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	DisplayVersion = "8.2.11", -- the string that is shown as version
+	ReleaseRevision = releaseDate(2019, 8, 6) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 }
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
@@ -7830,7 +7830,7 @@ do
 		DBM:Debug("Boss unit target scan should be aborting.", 3)
 	end
 
-	function bossModPrototype:BossUnitTargetScanner(unitId, returnFunc, scanTime, filteredUnitID)
+	function bossModPrototype:BossUnitTargetScanner(unitId, returnFunc, scanTime)
 		--UNIT_TARGET technique was originally used by DXE on heroic lich king back in wrath to give most accurate defile/shadow trap warnings. Recently bigwigs started using it.
 		--This is fastest and most accurate method for getting the target and probably should be used where it does work 100% of time.
 		--This method fails if boss is already looking at correct target!! This method needs to monitor a target change so it must start before that target change
