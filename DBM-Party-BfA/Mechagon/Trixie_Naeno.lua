@@ -17,7 +17,7 @@ mod:RegisterEventsInCombat(
 	"UNIT_DIED"
 )
 
---Still quite a bit to verify
+--Still unsure how timer behavior, there may be a shared special timer but what special that gets used is random.
 --Trixie "The Tech" Tazer
 --[[
 (ability.id = 298669 or ability.id = 302682 or ability.id = 298897 or ability.id = 298940 or ability.id = 298946 or ability.id = 298651 or ability.id = 299164 or ability.id = 298571 or ability.id = 298898) and type = "begincast"
@@ -29,7 +29,7 @@ local warnRoadkill					= mod:NewSpellAnnounce(298946, 3)
 local warnBurnout					= mod:NewSpellAnnounce(298571, 3)
 
 --Trixie "The Tech" Tazer
-local specWarnTaze					= mod:NewSpecialWarningInterrupt(298669, "HasInterrupt", nil, nil, 1, 2)
+local specWarnTaze					= mod:NewSpecialWarningInterrupt(298669, false, nil, 2, 1, 2)
 local specWarnMegaTaze				= mod:NewSpecialWarningMoveTo(302682, nil, nil, nil, 3, 2)
 local yellMegaTaze					= mod:NewYell(302682)
 --Naeno Megacrash
@@ -38,13 +38,15 @@ local specWarnPedaltotheMetal		= mod:NewSpecialWarningDodge(298651, nil, nil, ni
 --local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 8)
 
 --Trixie "The Tech" Tazer
-local timerTazeCD					= mod:NewAITimer(13.4, 298669, nil, "HasInterrupt", nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
-local timerMegaTazeCD				= mod:NewAITimer(13.4, 302682, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
+local timerMegaTazeCD				= mod:NewCDTimer(40.1, 302682, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
 --Naeno Megacrash
-local timerBoltBusterCD				= mod:NewAITimer(13.4, 298940, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
-local timerPedaltotheMetalCD		= mod:NewAITimer(31.6, 298651, nil, nil, nil, 3)
+local timerRoadKillCD				= mod:NewCDTimer(27, 298946, nil, nil, nil, 3)
+local timerBoltBusterCD				= mod:NewCDTimer(18.2, 298940, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerPedaltotheMetalCD		= mod:NewCDTimer(60, 298651, nil, nil, nil, 3)
 
 --mod:AddRangeFrameOption(5, 194966)
+
+mod.vb.MetalCast = 0
 
 local SmokeBombName = DBM:GetSpellInfo(298573)
 
@@ -62,9 +64,11 @@ function mod:MegaTazeTarget(targetname, uId)
 end
 
 function mod:OnCombatStart(delay)
-	timerTazeCD:Start(1-delay)
-	timerMegaTazeCD:Start(1-delay)
-	timerBoltBusterCD:Start(1-delay)
+	self.vb.MetalCast = 0
+	timerPedaltotheMetalCD:Start(4.4)
+	timerMegaTazeCD:Start(25.5-delay)
+	timerBoltBusterCD:Start(36.4-delay)
+	timerRoadKillCD:Start(31.6-delay)
 end
 
 function mod:OnCombatEnd()
@@ -76,27 +80,35 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 298669 then
-		timerTazeCD:Start()
 		if self:CheckInterruptFilter(args.sourceGUID, false, true) then
 			specWarnTaze:Show(args.sourceName)
 			specWarnTaze:Play("kickcast")
 		end
 	elseif spellId == 302682 then
+		--25.5, 40.1
 		timerMegaTazeCD:Start()
 		self:ScheduleMethod(0.2, "BossTargetScanner", args.sourceGUID, "MegaTazeTarget", 0.1, 12, true, nil, nil, nil, true)
 	elseif spellId == 298897 then
 		warnJumpStart:Show()
-		--Guessed
-		timerPedaltotheMetalCD:Start(2)
 	elseif spellId == 298940 then
 		specWarnBoltBuster:Show()
 		specWarnBoltBuster:Play("shockwave")
+		--36.4, 18.2"
 		timerBoltBusterCD:Start()
 	elseif spellId == 298946 then
 		warnRoadkill:Show()
+		--31.6, 27.0, 33.6
 	elseif spellId == 298651 or spellId == 299164 then
+		self.vb.MetalCast = self.vb.MetalCast + 1
 		specWarnPedaltotheMetal:Show()
 		specWarnPedaltotheMetal:Play("chargemove")
+		--"Pedal to the Metal-298651-npc:153756 = pull:14.8, 60.7", -- [36]
+		--"Pedal to the Metal-299164-npc:153756 = pull:4.4, 61.5", -- [37]
+		if self.vb.MetalCast % 2 == 0 then
+			timerPedaltotheMetalCD:Start(50)--51.1, but small sample so 50 used
+		else
+			timerPedaltotheMetalCD:Start(9.6)
+		end
 	elseif spellId == 298571 then
 		warnBurnout:Show()
 	end
@@ -138,9 +150,10 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 153755 then--Naeno
-
+		timerPedaltotheMetalCD:Stop()
+		timerRoadKillCD:Stop()
+		timerBoltBusterCD:Stop()
 	elseif cid == 150712 then--Trixie
-		timerTazeCD:Stop()
 		timerMegaTazeCD:Stop()
 	end
 end

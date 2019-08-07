@@ -441,7 +441,7 @@ local iconSetRevision = {}
 local iconSetPerson = {}
 local addsGUIDs = {}
 local targetEventsRegistered = false
-local targetMonitor = nil
+local targetMonitor = {}
 local statusWhisperDisabled = false
 local statusGuildDisabled = false
 local dbmToc = 0
@@ -4136,9 +4136,9 @@ do
 			self:Debug(uId.." changed targets to "..targetName)
 		end
 		--Active BossUnitTargetScanner
-		if targetMonitor and UnitExists(uId.."target") and UnitPlayerOrPetInRaid(uId.."target") then
+		if targetMonitor[uId] and UnitExists(uId.."target") and UnitPlayerOrPetInRaid(uId.."target") then
 			self:Debug("targetMonitor exists, target exists", 2)
-			local modId, unitId, returnFunc = string.split("\t", targetMonitor)
+			local modId, unitId, returnFunc = string.split("\t", targetMonitor[uId])
 			self:Debug("targetMonitor: "..modId..", "..unitId..", "..returnFunc, 2)
 			local tanking, status = UnitDetailedThreatSituation(unitId, unitId.."target")--Tanking may return 0 if npc is temporarily looking at an NPC (IE fracture) but status will still be 3 on true tank
 			if tanking or (status == 3) then
@@ -4148,7 +4148,7 @@ do
 			local mod = self:GetModByName(modId)
 			self:Debug("targetMonitor success, a valid target that's not a tank", 2)
 			mod[returnFunc](mod, self:GetUnitFullName(unitId.."target"), unitId.."target", unitId)--Return results to warning function with all variables.
-			targetMonitor = nil
+			targetMonitor[uId] = nil
 		end
 	end
 end
@@ -6349,7 +6349,7 @@ do
 				bossuIdFound = false
 				eeSyncSender = {}
 				eeSyncReceived = 0
-				targetMonitor = nil
+				twipe(targetMonitor)
 				self:CreatePizzaTimer(time, "", nil, nil, nil, true)--Auto Terminate infinite loop timers on combat end
 				self:TransitionToDungeonBGM(false, true)
 				self:Schedule(22, self.TransitionToDungeonBGM, self)
@@ -7821,12 +7821,16 @@ do
 		DBM:Debug("Boss target scan for "..cidOrGuid.." should be aborting.", 3)
 	end
 
-	function bossModPrototype:BossUnitTargetScannerAbort()
-		targetMonitor = nil
+	function bossModPrototype:BossUnitTargetScannerAbort(uId)
+		if uId then
+			targetMonitor[uId] = nil
+		else--Legacy mod, just wipe entire table
+			twipe(targetMonitor)
+		end
 		DBM:Debug("Boss unit target scan should be aborting.", 3)
 	end
 
-	function bossModPrototype:BossUnitTargetScanner(unitId, returnFunc, scanTime)
+	function bossModPrototype:BossUnitTargetScanner(unitId, returnFunc, scanTime, filteredUnitID)
 		--UNIT_TARGET technique was originally used by DXE on heroic lich king back in wrath to give most accurate defile/shadow trap warnings. Recently bigwigs started using it.
 		--This is fastest and most accurate method for getting the target and probably should be used where it does work 100% of time.
 		--This method fails if boss is already looking at correct target!! This method needs to monitor a target change so it must start before that target change
@@ -7835,8 +7839,8 @@ do
 		--This code is much prettier if it's in mod, but then it'd require copying and pasting it all the time. SO ugly code in core more convinient.
 		local modId = self.id
 		local scanDuration = scanTime or 1.5
-		targetMonitor = modId.."\t"..unitId.."\t"..returnFunc
-		self:ScheduleMethod(scanDuration, "BossUnitTargetScannerAbort")--In case of BossUnitTargetScanner firing too late, and boss already having changed target before monitor started, it needs to abort after x seconds
+		targetMonitor[unitId] = modId.."\t"..unitId.."\t"..returnFunc
+		self:ScheduleMethod(scanDuration, "BossUnitTargetScannerAbort", unitId)--In case of BossUnitTargetScanner firing too late, and boss already having changed target before monitor started, it needs to abort after x seconds
 	end
 
 	function bossModPrototype:BossTargetScanner(cidOrGuid, returnFunc, scanInterval, scanTimes, scanOnlyBoss, isEnemyScan, isFinalScan, targetFilter, tankFilter)
