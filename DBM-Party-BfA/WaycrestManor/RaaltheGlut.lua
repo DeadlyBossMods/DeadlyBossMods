@@ -47,7 +47,7 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 264931 then
-		local bossHealth = self:GetBossHPByGUID(args.sourceGUID)
+		local bossHealth = self:GetBossHP(args.sourceGUID)
 		if bossHealth and bossHealth >= 10 then--Only warn to switch to add if boss above 10%, else ignore them
 			specWarnServant:Show()
 			specWarnServant:Play("killmob")

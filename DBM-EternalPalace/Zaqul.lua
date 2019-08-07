@@ -16,9 +16,9 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 301141 292963 296257 303978 301068 303543 302593 296018 304733 296078 295814",
 	"SPELL_CAST_SUCCESS 292963 302503 293509 303543 296018 302504 295444 294515 299708",
 	"SPELL_SUMMON 300732",
-	"SPELL_AURA_APPLIED 292971 292981 295480 300133 292963 302503 293509 295327 303971 296078 303543 296018 302504",
+	"SPELL_AURA_APPLIED 292971 292981 295480 300133 292963 302503 293509 295327 303971 296078 303543 296018 302504 295249",
 	"SPELL_AURA_APPLIED_DOSE 292971",
-	"SPELL_AURA_REMOVED 292971 292963 293509 303971 296078 303543 296018",
+	"SPELL_AURA_REMOVED 292971 292963 293509 303971 296078 303543 296018 295249",
 	"SPELL_AURA_REMOVED_DOSE 292971",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
@@ -110,6 +110,7 @@ mod.vb.dreadIcon = 1
 mod.vb.DeliriumsDescentCount = 0
 --mod.vb.nightmaresCount = 0
 local HysteriaStacks = {}
+local playerDRealm = false
 
 function mod:OnCombatStart(delay)
 	table.wipe(HysteriaStacks)
@@ -182,7 +183,7 @@ function mod:SPELL_CAST_START(args)
 		timerDreadScreamCD:Start(15.8)--SUCCESS
 	elseif spellId == 301068 then
 		timerPsychoticSplit:Start(25)
-	elseif spellId == 302593 then
+	elseif spellId == 302593 and playerDRealm then
 		specWarnVoidSlam:Show()
 		specWarnVoidSlam:Play("shockwave")
 		timerVoidSlam:Start()
@@ -292,6 +293,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 303971 or spellId == 296078 then--Dark Pulse
 		--timerManicDreadCD:Stop()
+	elseif spellId == 295249 and args:IsPlayer() then
+		playerDRealm = true
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -331,6 +334,8 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif spellId == 303971 or spellId == 296078 then--Dark Pulse
 		--timerManicDreadCD:Start()
+	elseif spellId == 295249 and args:IsPlayer() then
+		playerDRealm = false
 	end
 end
 
