@@ -7,7 +7,7 @@ mod:SetEncounterID(2311)
 mod:SetZone()
 mod:SetBossHPInfoToHighest()
 mod:SetUsedIcons(1, 2, 3, 4)
-mod:SetHotfixNoticeRev(20190730000000)--2019, 7, 30
+mod:SetHotfixNoticeRev(20190807000000)--2019, 8, 7
 --mod:SetMinSyncRevision(16950)
 --mod.respawnTime = 29
 
@@ -16,9 +16,9 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 300088 301807 297325 301947 299915 300395",
 	"SPELL_CAST_SUCCESS 296850",
-	"SPELL_AURA_APPLIED 296704 301244 297656 304128 297585 301828 299914 296851 304409",
+	"SPELL_AURA_APPLIED 296704 301244 297656 297585 301828 299914 296851 304409",
 	"SPELL_AURA_APPLIED_DOSE 301828",
-	"SPELL_AURA_REMOVED 296704 301244 297656 304128 299914 296851",
+	"SPELL_AURA_REMOVED 296704 301244 297656 299914 296851",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
@@ -45,10 +45,10 @@ local warnRepeatPerformance				= mod:NewTargetNoFilterAnnounce(301244, 3, nil, "
 local warnRepeatPerformanceOver			= mod:NewFadesAnnounce(301244, 1)--Personal fades warning
 local warnStandAlone					= mod:NewTargetAnnounce(297656, 2)
 local warnStandAloneOver				= mod:NewFadesAnnounce(297656, 1)--Personal fades warning
-local warnDeferredSentence				= mod:NewTargetAnnounce(297566, 2, nil, false, 2)
-local warnDeferredSentenceOver			= mod:NewFadesAnnounce(297566, 1)--Personal fades warning
+local warnDeferredSentence				= mod:NewSpellAnnounce(297566, 2)
 --Silivaz the Zealous
 local warnSilivazTouch					= mod:NewStackAnnounce(244899, 2, nil, "Tank")
+local warnFreneticCharge				= mod:NewTargetNoFilterAnnounce(299914, 4)
 --Pashmar the Fanatical
 local warnPashmarsTouch					= mod:NewStackAnnounce(245518, 2, nil, "Tank")
 local warnPotentSpark					= mod:NewSpellAnnounce(301947, 3)
@@ -59,7 +59,6 @@ local specWarnFormRanks					= mod:NewSpecialWarningMoveTo(298050, "-Tank", nil, 
 local specWarnRepeatPerformance			= mod:NewSpecialWarningYou(301244, nil, nil, nil, 1, 2)
 local specWarnStandAlone				= mod:NewSpecialWarningMoveAway(297656, nil, nil, nil, 1, 2)
 local yellStandAlone					= mod:NewYell(297656)
-local specWarnDeferredSentence			= mod:NewSpecialWarningYou(297566, nil, nil, nil, 1, 2)
 local specWarnObeyorSuffer				= mod:NewSpecialWarningDefensive(297585, nil, nil, nil, 1, 2)
 local specWarnObeyorSufferTaunt			= mod:NewSpecialWarningTaunt(297585, false, nil, 2, 1, 2)
 --Silivaz the Zealous
@@ -107,12 +106,10 @@ mod:AddSetIconOption("SetIconFreneticCharge", 299914, true, false, {4})
 mod:AddSetIconOption("SetIconSparks", 301947, true, true, {1, 2, 3})
 
 mod.vb.sparkIcon = 1
-mod.vb.sentenceActive = 0
 mod.vb.decreeTimer = 90
 
 function mod:OnCombatStart(delay)
 	self.vb.sparkIcon = 1
-	self.vb.sentenceActive = 0
 	--Timers that are same across board
 	--ass-shara
 	timerFormRanksCD:Start(30-delay)
@@ -212,13 +209,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnStandAlone:Play("runout")
 			yellStandAlone:Yell()
 		end
-	elseif spellId == 304128 then
-		self.vb.sentenceActive = self.vb.sentenceActive + 1
-		warnDeferredSentence:CombinedShow(0.3, args.destName)
-		if args:IsPlayer() then
-			specWarnDeferredSentence:Show()
-			specWarnDeferredSentence:Play("targetyou")
-		end
 	elseif spellId == 297585 then
 		if args:IsPlayer() then
 			specWarnObeyorSuffer:Show()
@@ -297,8 +287,10 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellFreneticCharge:Yell()
 			yellFreneticChargeFades:Countdown(spellId)
 		elseif not DBM:UnitDebuff("player", 297656, 303188, 297585) and not self:IsTank() then--Not tank, or affected by decrees that'd conflict with soaking
-			specWarnFreneticCharge:Show(GROUP)
+			specWarnFreneticCharge:Show(args.destName)
 			specWarnFreneticCharge:Play("gathershare")
+		else
+			warnFreneticCharge:Show(args.destName)
 		end
 		if self.Options.SetIconFreneticCharge then
 			self:SetIcon(args.destName, 4)
@@ -328,11 +320,6 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 297656 then
 		if args:IsPlayer() then
 			warnStandAloneOver:Show()
-		end
-	elseif spellId == 304128 then
-		self.vb.sentenceActive = self.vb.sentenceActive - 1
-		if args:IsPlayer() then
-			warnDeferredSentenceOver:Show()
 		end
 	elseif spellId == 299914 then
 		if args:IsPlayer() then
@@ -379,6 +366,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 			timerDeferredSentenceCD:Start(self.vb.decreeTimer)
 		end
 	elseif msg:find("spell:297566") then--Defferred Sentence (Obey is next)
+		warnDeferredSentence:Show()
 		timerObeyorSufferCD:Start(self.vb.decreeTimer)
 	elseif msg:find("spell:297585") then--Obey or Suffer (loops back to form ranks after)
 		timerFormRanksCD:Start(self.vb.decreeTimer)
