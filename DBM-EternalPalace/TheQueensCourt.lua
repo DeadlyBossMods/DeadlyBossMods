@@ -48,6 +48,7 @@ local warnStandAloneOver				= mod:NewFadesAnnounce(297656, 1)--Personal fades wa
 local warnDeferredSentence				= mod:NewSpellAnnounce(297566, 2)
 --Silivaz the Zealous
 local warnSilivazTouch					= mod:NewStackAnnounce(244899, 2, nil, "Tank")
+local warnFreneticCharge				= mod:NewTargetNoFilterAnnounce(299914, 4)
 --Pashmar the Fanatical
 local warnPashmarsTouch					= mod:NewStackAnnounce(245518, 2, nil, "Tank")
 local warnPotentSpark					= mod:NewSpellAnnounce(301947, 3)
@@ -286,8 +287,10 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellFreneticCharge:Yell()
 			yellFreneticChargeFades:Countdown(spellId)
 		elseif not DBM:UnitDebuff("player", 297656, 303188, 297585) and not self:IsTank() then--Not tank, or affected by decrees that'd conflict with soaking
-			specWarnFreneticCharge:Show(GROUP)
+			specWarnFreneticCharge:Show(args.destName)
 			specWarnFreneticCharge:Play("gathershare")
+		else
+			warnFreneticCharge:Show(args.destName)
 		end
 		if self.Options.SetIconFreneticCharge then
 			self:SetIcon(args.destName, 4)
