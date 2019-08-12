@@ -892,7 +892,7 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 					warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(3))
 					warnPhase:Play("pthree")
 					if self:IsMythic() then
-						timerStageThreeBerserk:Start(180)
+						timerStageThreeBerserk:Start(174.2)
 					end
 				end
 			end
