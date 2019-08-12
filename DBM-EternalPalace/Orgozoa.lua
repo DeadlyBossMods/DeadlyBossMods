@@ -285,8 +285,8 @@ function mod:SPELL_INTERRUPT(args)
 		timerMassiveIncubator:Stop()
 		timerDesensitizingStingCD:Start(3)
 		timerIncubationFluidCD:Start(18.6)
-		timerDribblingIchorCD:Start(28.9, 1)
-		timerArcingCurrentCD:Start(41.0, 1)
+		timerDribblingIchorCD:Start(26.1, 1)
+		timerArcingCurrentCD:Start(38.2, 1)
 		if self:IsMythic() then
 			timerCalloftheTenderCD:Start(20.3, 1)
 		end
