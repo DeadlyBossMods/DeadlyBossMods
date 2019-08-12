@@ -8,7 +8,7 @@ mod.isTrashMod = true
 mod:SetUsedIcons(1, 2, 3, 4, 5)
 
 mod:RegisterEvents(
-	"SPELL_CAST_START 304261 296701 304098 303619",
+	"SPELL_CAST_START 304261 296701 304098 303619 303205",
 	"SPELL_AURA_APPLIED 304026 303619 303942",
 	"SPELL_AURA_REMOVED 304026 303619"
 )
@@ -18,6 +18,7 @@ local warnArcaneBomb						= mod:NewTargetNoFilterAnnounce(304026, 3)
 local warnDread								= mod:NewTargetNoFilterAnnounce(303619, 4, nil, "Healer")
 local warnCoalescedNightmares				= mod:NewTargetAnnounce(303942, 3)
 
+local specWarnHeal							= mod:NewSpecialWarningInterrupt(303205, "HasInterrupt", nil, nil, 1, 2)
 local specWarnRejuvenatingAlgae				= mod:NewSpecialWarningInterrupt(304261, "HasInterrupt", nil, nil, 1, 2)
 local specWarnGaleBuffet					= mod:NewSpecialWarningSpell(296701, nil, nil, nil, 2, 2)
 local specWarnArcaneBomb					= mod:NewSpecialWarningMoveAway(304026, nil, nil, nil, 1, 2)
@@ -35,6 +36,9 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 304261 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnRejuvenatingAlgae:Show(args.sourceName)
 		specWarnRejuvenatingAlgae:Play("kickcast")
+	elseif spellId == 303205 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
+		specWarnHeal:Show(args.sourceName)
+		specWarnHeal:Play("kickcast")
 	elseif spellId == 296701 or spellId == 304098 then
 		specWarnGaleBuffet:Show()
 		specWarnGaleBuffet:Play("carefly")

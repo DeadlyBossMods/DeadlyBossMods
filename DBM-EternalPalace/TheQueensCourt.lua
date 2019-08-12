@@ -9,7 +9,7 @@ mod:SetBossHPInfoToHighest()
 mod:SetUsedIcons(1, 2, 3, 4)
 mod:SetHotfixNoticeRev(20190807000000)--2019, 8, 7
 --mod:SetMinSyncRevision(16950)
---mod.respawnTime = 29
+mod.respawnTime = 20
 
 mod:RegisterCombat("combat")
 

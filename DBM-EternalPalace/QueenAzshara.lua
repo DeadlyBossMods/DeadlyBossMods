@@ -119,6 +119,7 @@ local specWarnSystemShock				= mod:NewSpecialWarningDefensive(300877, nil, nil, 
 
 --Stage One: Cursed Lovers (21)
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20250))
+local timerCombatStart					= mod:NewCombatTimer(4)
 local timerPainfulMemoriesCD			= mod:NewNextTimer(60, 297937, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerLongingCD					= mod:NewNextTimer(60, 297934, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 ----Aethanel
@@ -316,6 +317,7 @@ function mod:OnCombatStart(delay)
 	table.wipe(seenAdds)
 	table.wipe(castsPerGUID)
 	table.wipe(mobShielded)
+	timerCombatStart:Start(4-delay)
 	--Both of them
 	timerPainfulMemoriesCD:Start(19.6)
 	--Aethanel
@@ -923,7 +925,7 @@ local function startIntermissionTwo(self)
 		timerBeckonCD:Start(40, 1)
 		timerGreaterReversalCD:Start(74.7, 1)--Same on heroic/mythic
 		timerArcaneDetonationCD:Start(75, 1)
-		timerArcaneBurstCD:Start(87, 1)
+		timerArcaneBurstCD:Start(86.7, 1)
 	else
 		timerBeckonCD:Start(64.6, 1)
 		timerReversalofFortuneCD:Start(77.7, 1)
