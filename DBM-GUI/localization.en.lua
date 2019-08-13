@@ -21,7 +21,7 @@ L.TabCategory_CATA	 		= EXPANSION_NAME3
 L.TabCategory_WOTLK 		= EXPANSION_NAME2
 L.TabCategory_BC 			= EXPANSION_NAME1
 L.TabCategory_CLASSIC		= EXPANSION_NAME0
-L.TabCategory_OTHER    		= "Other Boss Mods"
+L.TabCategory_OTHER    		= "Other Mods"
 
 L.BossModLoaded 			= "%s statistics"
 L.BossModLoad_now 			= [[This boss mod is not loaded.

@@ -198,6 +198,7 @@ local AddTimers = {
 	["Mythic"] = {37.7, 64.4},
 }
 local phase4MythicPiercingTimers = {51.7, 56.2, 49.9}
+local phase4MythicPortalTimers = {26.7, 50.2, 43.5, 56.3}
 local mobShielded = {}
 
 local updateInfoFrame
@@ -416,7 +417,7 @@ function mod:SPELL_CAST_START(args)
 		warnGroundPound:Show(castsPerGUID[args.sourceGUID])
 	elseif (spellId == 300478 or spellId == 300480 or spellId == 307331 or spellId == 307332) and self:AntiSpam(4, 10) then
 		specWarnDivideandConquer:Show()
-		timerDivideandConquerCD:Start(self.vb.phase == 4 and 1 or self.vb.phase == 3 and 1 or 65)--Stage 1 and 2 confirmed, stage 3 and 4 unknown so placeholdered
+		timerDivideandConquerCD:Start(self.vb.phase == 4 and 87.5 or self.vb.phase == 3 and 59.8 or 65)
 	elseif spellId == 299250 and self:AntiSpam(4, 5) then--In rare cases she stutter casts it, causing double warnings
 		playerDecreeCount = 0
 		warnQueensDecree:Show()
@@ -862,7 +863,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 		timerArcaneOrbsCD:Start(self:IsMythic() and 59.9 or (self.vb.arcaneOrbCount == 1 and 65 or 74.8), self.vb.arcaneOrbCount+1)
 	elseif msg:find("spell:300522") then--Divide and Conquer
 		specWarnDivideandConquer:Show()
-		timerDivideandConquerCD:Start(self.vb.phase == 4 and 1 or self.vb.phase == 3 and 1 or 65)--Stage 1 and 2 confirmed, stage 3 and 4 unknown so placeholdered
+		timerDivideandConquerCD:Start(self.vb.phase == 4 and 87.5 or self.vb.phase == 3 and 59.8 or 65)
 	end
 end
 
@@ -939,12 +940,13 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		self.vb.reversalCount = self.vb.reversalCount + 1
 		specWarnReversalofFortune:Show()
 		specWarnReversalofFortune:Play("telesoon")
+		--Mythic and heroic see this in P2, and it's 80, normal sees this in P3 and 4, and it's 70 there.
 		timerReversalofFortuneCD:Start(self.vb.phase == 2 and 80 or 70, self.vb.reversalCount+1)
 	elseif spellId == 297372 then
 		self.vb.reversalCount = self.vb.reversalCount + 1
 		specWarnGreaterReversal:Show()
 		specWarnGreaterReversal:Play("telesoon")
-		timerGreaterReversalCD:Start(70, self.vb.reversalCount+1)
+		timerGreaterReversalCD:Start(self:IsMythic() and (self.vb.phase == 4 and 81.2 or 90) or 70, self.vb.reversalCount+1)
 	elseif spellId == 303629 then--Arcane Burst
 		self.vb.arcaneBurstIcon = 1
 		--60, 70.0, 55.3 (P2)
@@ -966,7 +968,14 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	elseif spellId == 303982 then--Nether Portal
 		self.vb.netherCount = self.vb.netherCount + 1
 		warnNetherPortal:Show(self.vb.netherCount)
-		timerNetherPortalCD:Start(35, self.vb.netherCount+1)
+		if self:IsMythic() then
+			local timer = phase4MythicPortalTimers[self.vb.netherCount+1]
+			if timer then
+				timerNetherPortalCD:Start(timer, self.vb.netherCount+1)
+			end
+		else
+			timerNetherPortalCD:Start(35, self.vb.netherCount+1)
+		end
 	elseif spellId == 302860 then --Queen Azshara (P4 trigger)
 		self.vb.phase = 4
 		self.vb.reversalCount = 0
@@ -982,20 +991,20 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 
 		timerVoidTouchedCD:Start(12.9)
 		timerOverloadCD:Start(14, 1)
-		timerNetherPortalCD:Start(23.9, 1)--CHECK mythic, when transcriptor logs for P4
-		if self:IsMythic() then--Just copied from heroic for now
-			--TODO, verify timers, since right now they draw from assumption void touched is same between heroic/mythic
-			--Differencials are calculated based on that assumption
+		if self:IsMythic() then
 			timerStageThreeBerserk:Stop()
-			timerGreaterReversalCD:Start(48.8, 1)--CHECK mythic, when transcriptor logs for P4
-			timerPiercingGazeCD:Start(51.7, 1)
-			timerBeckonCD:Start(73, 1)--START
-			--timerDivideandConquerCD:Start(4)
+			timerNetherPortalCD:Start(26.7, 1)
+			timerDivideandConquerCD:Start(39)
+			timerPiercingGazeCD:Start(51.5, 1)
+			timerGreaterReversalCD:Start(64, 1)
+			timerBeckonCD:Start(72.8, 1)--START
 		elseif self:IsHeroic() then
+			timerNetherPortalCD:Start(23.9, 1)
 			timerPiercingGazeCD:Start(43.9, 1)
 			timerGreaterReversalCD:Start(48.8, 1)
 			timerBeckonCD:Start(68.9, 1)--START
 		else
+			timerNetherPortalCD:Start(23.9, 1)
 			timerPiercingGazeCD:Start(43.9, 1)
 			timerReversalofFortuneCD:Start(51.9, 1)
 			timerBeckonCD:Start(73.9, 1)--START
