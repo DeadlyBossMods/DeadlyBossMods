@@ -6,19 +6,19 @@ mod:SetCreatureID(150859)
 mod:SetEncounterID(2293)
 mod:SetZone()
 mod:SetUsedIcons(1, 2, 3, 4)
---mod:SetHotfixNoticeRev(16950)
+mod:SetHotfixNoticeRev(20190813000000)--2019, 8, 13
 --mod:SetMinSyncRevision(16950)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 301141 292963 296257 303978 301068 303543 302593 296018 304733 296078 295814",
-	"SPELL_CAST_SUCCESS 292963 302503 293509 303543 296018 302504 295444 294515 299708",
+	"SPELL_CAST_START 301141 292963 296257 303978 301068 303543 302593 296018 304733 296078 295814 302503",
+	"SPELL_CAST_SUCCESS 303543 295444 294515 299708",
 	"SPELL_SUMMON 300732",
-	"SPELL_AURA_APPLIED 292971 292981 295480 300133 292963 302503 293509 295327 303971 296078 303543 296018 302504 295249",
+	"SPELL_AURA_APPLIED 292971 292981 295480 300133 292963 302503 293509 295327 303543 296018 302504 295249",
 	"SPELL_AURA_APPLIED_DOSE 292971",
-	"SPELL_AURA_REMOVED 292971 292963 293509 303971 296078 303543 296018 295249",
+	"SPELL_AURA_REMOVED 292971 292963 293509 303543 296018 295249",
 	"SPELL_AURA_REMOVED_DOSE 292971",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
@@ -28,14 +28,13 @@ mod:RegisterEventsInCombat(
 )
 
 --TODO, https://ptr.wowhead.com/spell=300635/gathering-nightmare track via nameplate number of stacks
---TODO, infoframe detecting number of players in each realm, and showing realm player is in?
 --TODO, dark pulse absorb shield on custom infoframe
 --TODO, warning filters/timer fades for images/split on mythic stage 4?
 --TODO, void slam, who does it target? random or the tank? if random, can we target scan it?
 --TODO, pause/resume (or reset) timers for boss shielding/split phase in stage 4 mythic?
 --[[
-(ability.id = 301141 or ability.id = 303543 or ability.id = 296018 or ability.id = 292963 or ability.id = 296257 or ability.id = 304733 or ability.id = 303978 or ability.id = 302593 or ability.id = 296078 or ability.id = 295814) and type = "begincast"
- or (ability.id = 292963 or ability.id = 302503 or ability.id = 296018 or ability.id = 302504 or ability.id = 303543 or ability.id = 295444 or ability.id = 294515 or ability.id = 299708) and type = "cast"
+(ability.id = 302504 or ability.id = 302503 or ability.id = 301141 or ability.id = 303543 or ability.id = 296018 or ability.id = 292963 or ability.id = 296257 or ability.id = 304733 or ability.id = 303978 or ability.id = 302593 or ability.id = 296078 or ability.id = 295814) and type = "begincast"
+ or (ability.id = 303543 or ability.id = 295444 or ability.id = 294515 or ability.id = 299708 or ability.id = 296085) and type = "cast"
  or (ability.id = 300584 or ability.id = 293509 or ability.id = 296084) and type = "applydebuff"
  or ability.id = 292963 or ability.id = 302503 or ability.id = 296018 or ability.id = 302504
 --]]
@@ -118,10 +117,16 @@ function mod:OnCombatStart(delay)
 	self.vb.dreadIcon = 1
 	self.vb.DeliriumsDescentCount = 0
 	--self.vb.nightmaresCount = 0
-	timerMindTetherCD:Start(3.3-delay)
-	timerDreadCD:Start(12-delay)
-	timerHorrificSummonerCD:Start(25.4-delay)--20 sec for event, but the portal happens 5 seconds AFTER event
-	timerCrushingGraspCD:Start(30-delay)
+	if not self:IsLFR() then
+		timerMindTetherCD:Start(3.3-delay)
+		timerDreadCD:Start(11.8-delay)--START
+		timerHorrificSummonerCD:Start(25.4-delay)--20 sec for event, but the portal happens 5 seconds AFTER event
+		timerCrushingGraspCD:Start(30-delay)
+	else
+		timerDreadCD:Start(10.8-delay)--START
+		timerCrushingGraspCD:Start(35-delay)
+		timerHorrificSummonerCD:SetFade(true)--They don't spawn in P1 in LFR, but the loop still runs, so set fade in P1 vs P2 like other modes
+	end
 	berserkTimer:Start(600-delay)
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(292971))
@@ -130,6 +135,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnCombatEnd()
+	timerHorrificSummonerCD:SetFade(false)
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
 	end
@@ -163,11 +169,15 @@ function mod:SPELL_CAST_START(args)
 			self.vb.phase = 3
 			warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(3))
 			warnPhase:Play("pthree")
-			--Timers actually stopped
-			--timerManifestNightmaresCD:Stop()
-			--Timers that never stop, but might need time added to them if they come off cd during transition
-			--timerDreadCD:Stop()
-			--timerCrushingGraspCD:Stop()
+			--Timers don't stop/reset here, but they will be extended if below a threshold
+			local dreadICD = self:IsHard() and 20 or 12
+			if timerDreadCD:GetRemaining() < dreadICD then
+				local elapsed, total = timerDreadCD:GetTime()
+				local extend = dreadICD - (total-elapsed)
+				DBM:Debug("timerDreadCD extended by: "..extend, 2)
+				timerDreadCD:Stop()
+				timerDreadCD:Update(elapsed, total+extend)
+			end
 		end
 		self.vb.DeliriumsDescentCount = self.vb.DeliriumsDescentCount + 1
 		warnDeliriumsDescent:Show(self.vb.DeliriumsDescentCount)
@@ -192,13 +202,7 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 292963 or spellId == 302503 then--Dread
-		--timerDreadCD:Start()
-	elseif spellId == 296018 or spellId == 302504 then--Manic Dread (302504 LFR)
-		timerManicDreadCD:Start()
---	elseif spellId == 293509 then
---		timerManifestNightmaresCD:Start()
-	elseif spellId == 303543 then
+	if spellId == 303543 then
 		timerDreadScreamCD:Start()
 	elseif spellId == 295444 then--Mind Tether
 		--In perfect scenario, not delayed very much if ever even by phase changes
@@ -291,8 +295,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarShatteredPsyche:CombinedShow(1, args.destName)
 			specWarShatteredPsyche:ScheduleVoice(1, "helpdispel")
 		end
-	elseif spellId == 303971 or spellId == 296078 then--Dark Pulse
-		--timerManicDreadCD:Stop()
 	elseif spellId == 295249 and args:IsPlayer() then
 		playerDRealm = true
 	end
@@ -332,8 +334,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		if args:IsPlayer() then
 			yellManifedNightmaresFades:Cancel()
 		end
-	elseif spellId == 303971 or spellId == 296078 then--Dark Pulse
-		--timerManicDreadCD:Start()
 	elseif spellId == 295249 and args:IsPlayer() then
 		playerDRealm = false
 	end
@@ -374,13 +374,6 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 		specWarnMaddeningEruption:Show(L.Tear)
 		specWarnMaddeningEruption:Play("moveboss")
 		timerMaddeningEruptionCD:Start()
-	elseif (msg == L.Phase3 or msg:find(L.Phase3)) and self.vb.phase < 3 then
-		self.vb.phase = 3
-		warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(3))
-		warnPhase:Play("pthree")
-		--Timers that never stop, but might need time added to them if they come off cd during transition
-		--timerDreadCD:Stop()
-		--timerCrushingGraspCD:Stop()
 	end
 end
 
@@ -391,18 +384,54 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		timerHorrificSummonerCD:Schedule(5)--Script runs 5 sec before spawn events, so we need to offset it
 	elseif spellId == 299974 then--Pick a Dread (Script for dreads)
 		--Controller used for dreads even if we're in a phase one isn't cast, becauase we still want to know where the script is before we push boss.
-		timerDreadCD:Start()
-	--elseif spellId == 301179 then--Pick a Ultimate (Script for Dark Pulse or mythic version Psychotic Split)
-
+		if self.vb.Phase == 4 then
+			timerManicDreadCD:Start()
+		else
+			timerDreadCD:Start()
+		end
+	--"<198.45 13:47:00> [UNIT_SPELLCAST_SUCCEEDED] Za'qul(Rumpapotimus) -Energy Tracker- [[boss1:Cast-3-3883-2164-252-296465-000D24D314:296465]]", -- [4621]
+	--"<200.84 13:47:02> [CLEU] SPELL_AURA_APPLIED##nil#Creature-0-3883-2164-252-152604-000024D311#First Arcanist Thalyssra#300584#Reality Portal#DEBUFF#nil", -- [4659]
 	elseif spellId == 296465 and self.vb.phase < 4 then--Energy Tracker (should work on all)
 		self.vb.phase = 4
 		timerDeliriumsDescentCD:Stop()
-		timerMaddeningEruptionCD:Stop()
-		--The time between last dread and first manic dread is always 65, so when he transitions into P4
-		--Multiple logs confirm it literally just deletes 10 seconds off existing timer, no timer reset
-		timerDreadCD:RemoveTime(10)
 		timerHorrificSummonerCD:SetFade(false)--Unfade, they can start spawning again
-		--TODO, sometimes the P4 transition timing causes the next nightmares to be skipped, if we can figure out exact timing of that, can do a +35 to existing timer?
+		--Update P4 timers (which is a bit complicated, it's not a hard reset, but severa calculated adjustments based on min timer thresholds)
+		timerDreadCD:RemoveTime(10)--Min time between last dread and first manic dread is 65, so first we take existing 75 timer and subtrack 10
+		if timerDreadCD:GetRemaining() < 12 then--Then we check if remaining is now under 12, if it is, next dread is in 12
+			local elapsed, total = timerDreadCD:GetTime()
+			local extend = 12 - (total-elapsed)
+			DBM:Debug("timerDreadCD extended by: "..extend, 2)
+			timerDreadCD:Stop()
+			timerManicDreadCD:Update(elapsed, total+extend)
+		else--Remaining > 12 so we just need to rename timer but timer is going to continue from previous stage
+			local elapsed, total = timerDreadCD:GetTime()
+			DBM:Debug("timerDreadCD being replaced by timerManicDreadCD, unchanged", 2)
+			timerDreadCD:Stop()
+			timerManicDreadCD:Update(elapsed, total)
+		end
+		if timerHorrificSummonerCD:GetRemaining() < 24 then
+			local elapsed, total = timerHorrificSummonerCD:GetTime()
+			local extend = 24 - (total-elapsed)
+			DBM:Debug("timerHorrificSummonerCD extended by: "..extend, 2)
+			timerHorrificSummonerCD:Stop()
+			timerHorrificSummonerCD:Update(elapsed, total+extend)
+		end
+		if timerCrushingGraspCD:GetRemaining() < 30 then
+			local elapsed, total = timerCrushingGraspCD:GetTime()
+			local extend = 30 - (total-elapsed)
+			DBM:Debug("timerCrushingGraspCD extended by: "..extend, 2)
+			timerCrushingGraspCD:Stop()
+			timerCrushingGraspCD:Update(elapsed, total+extend)
+		end
+		if timerMaddeningEruptionCD:GetRemaining() < 35 then
+			local elapsed, total = timerMaddeningEruptionCD:GetTime()
+			local extend = 35 - (total-elapsed)
+			DBM:Debug("timerMaddeningEruptionCD extended by: "..extend, 2)
+			timerMaddeningEruptionCD:Stop()
+			timerMaddeningEruptionCD:Update(elapsed, total+extend)
+		end
+		--TODO, if Manifest nightmares comes off CD during boss channeling any of above, it's skipped entirely
+		--This is complicated to check and auto correct for, so it's just a wishlist item for the moment
 		if self:IsMythic() then
 			timerPsychoticSplitCD:Start(75.1)
 		else
