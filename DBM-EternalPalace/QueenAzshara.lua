@@ -30,12 +30,10 @@ mod:RegisterEventsInCombat(
 
 --TODO, Improve detection of various adds joining fight and associated timers in stage 2+, and get LFR and mythic hulk timers in P1 as well.
 --TODO, check if multiple targets for static shock
---TODO, figure out siren creature IDs so they can be auto marked and warning for shield can include which marked mob got it
+--TODO, add siren creature IDs so they can be auto marked and warning for shield can include which marked mob got it
 --TODO, figure out cast time for https://ptr.wowhead.com/spell=301518/massive-energy-spike (ie between overload cast start, and when all remaining energy is released)
 --TODO, announce short ciruit?
 --TODO, capture UPDATE_UI_WIDGET better with modified transcriptor to get the widget values I need
---TODO, add combat starts timer
---TODO, add real mythic timers, instead of AI timer for divide, and likely incorrect heroic timers for everything else. Mythic needs it's own timers (but is very difficult with how little blizzard puts in combat logs, especially in regard to phase changes)
 --[[
 (ability.id = 297937 or ability.id = 297934 or ability.id = 298121 or ability.id = 297972 or ability.id = 298531 or ability.id = 300478 or ability.id = 299250 or ability.id = 299178 or ability.id = 300519 or ability.id = 303629 or ability.id = 297372 or ability.id = 301431 or ability.id = 300480 or ability.id = 307331 or ability.id = 307332 or ability.id = 299094 or ability.id = 302141 or ability.id = 303797 or ability.id = 303799) and type = "begincast"
  or (ability.id = 302208 or ability.id = 298014 or ability.id = 301078 or ability.id = 303657 or ability.id = 303629 or ability.id = 300492 or ability.id = 300743 or ability.id = 303980 or ability.id = 300334 or ability.id = 300768) and type = "cast"
@@ -197,7 +195,17 @@ local AddTimers = {
 	["Heroic"] = {41.7, 59.6, 89.1, 44.8, 39.4},
 	["Mythic"] = {37.7, 64.4},
 }
-local phase4MythicPiercingTimers = {51.7, 56.2, 49.9}
+local phase4LFROverloadTimers = {14, 69.8, 75, 65, 65, 60}
+local phase4LFRPiercingTimers = {0, 65, 65, 65, 60, 20}
+local phase4LFRBeckonTimers = {0, 90, 100, 80}--LFR and Normal (so far, greater data might find divergence)
+
+local phase4NormalPiercingTimers = [0, 65, 65, 65, 55, 20]--Not same as LFR, one is different
+
+local phase4HeroicOverloadTimers = {0, 44.9, 44.9, 45, 40, 40, 40}
+local phase4HeroicBeckonTimers = {0, 71.6, 84.9, 69.9}
+local phase4HeroicPiercingTimers = {0, 45, 40, 40, 35, 35, 35}
+
+local phase4MythicPiercingTimers = {51.7, 56.2, 49.9, 49.98}
 local phase4MythicPortalTimers = {26.7, 50.2, 43.5, 56.3}
 local mobShielded = {}
 
@@ -421,7 +429,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 299250 and self:AntiSpam(4, 5) then--In rare cases she stutter casts it, causing double warnings
 		playerDecreeCount = 0
 		warnQueensDecree:Show()
-	elseif spellId == 299178 and self.vb.phase < 2 then
+	elseif spellId == 299178 and self.vb.phase < 2 then--Ward of Power
 		self.vb.phase = 2
 		self.vb.arcaneBurstCount = 0
 		self.vb.arcaneOrbCount = 0
@@ -437,11 +445,11 @@ function mod:SPELL_CAST_START(args)
 				timerDivideandConquerCD:Start(45.4)
 			end
 		else
-			timerBeckonCD:Start(60, 1)--START
+			timerBeckonCD:Start(self:IsLFR() and 55 or 60, 1)--START
 			timerAzsharasIndomitableCD:Start(98.1)--98.1-110?
 		end
 		timerArcaneBurstCD:Start(52.1, 1)--SUCCESS (same on heroic and normal and mythic)
-		timerArcaneDetonationCD:Start(self:IsMythic() and 80.1 or 75, 1)--START (same on heroic and normal but different on mythic)
+		timerArcaneDetonationCD:Start(self:IsMythic() and 80.1 or 75, 1)--START (same on heroic/normal/lfr but different on mythic)
 	elseif spellId == 300519 then
 		self.vb.arcaneDetonation = self.vb.arcaneDetonation + 1
 		specWarnArcaneDetonation:Show(DBM_CORE_BREAK_LOS)
@@ -455,7 +463,10 @@ function mod:SPELL_CAST_START(args)
 		else
 			warnOverload:Show(self.vb.overloadCount)
 		end
-		timerOverloadCD:Start(self:IsHeroic() and 44.9 or 54.9, self.vb.overloadCount+1)--Mythic same as normal, heroic only one that's shorter (so far, LFR unknown)
+		local timer = self:IsLFR() and phase4LFROverloadTimers[self.vb.overloadCount+1] or self:IsHeroic() and phase4HeroicOverloadTimers[self.vb.overloadCount+1] or self:IsNormal and 54.9 or self:IsMythic() and 56
+		if timer then
+			timerOverloadCD:Start(timer, self.vb.overloadCount+1)--Mythic same as normal, heroic only one that's shorter (so far, LFR unknown)
+		end
 	elseif spellId == 299094 or spellId == 302141 or spellId == 303797 or spellId == 303799 then--299094 Phase 1, 302141 phase 2, 303797 phase 3, 303799 Phase 4
 		self.vb.beckonCast = self.vb.beckonCast + 1
 		if self.vb.phase == 1 then
@@ -480,10 +491,9 @@ function mod:SPELL_CAST_START(args)
 			timerBeckonCD:Start(self:IsMythic() and 35 or self:IsHeroic() and 70 or 90, self.vb.beckonCast+1)
 		else--Phase 4
 			--Phase 4 pattern (imprecise as hell, it's spell queuing not true alternating, but there is enough consistency to do this somewhat)
-			if self.vb.beckonCast % 2 == 0 then
-				timerBeckonCD:Start(55, self.vb.beckonCast+1)
-			else
-				timerBeckonCD:Start(self:IsMythic() and 97.4 or 85, self.vb.beckonCast+1)
+			local timer = self:IsEasy() and phase4LFRBeckonTimers[self.vb.beckonCast+1] or self:IsHeroic() and phase4HeroicBeckonTimers[self.vb.beckonCast+1] or self:IsMythic() and 97.4
+			if timer then
+				timerBeckonCD:Start(timer, self.vb.beckonCast+1)
 			end
 		end
 	end
@@ -506,7 +516,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.piercingCount = self.vb.piercingCount + 1
 		specWarnPiercingGaze:Show(self.vb.piercingCount)
 		specWarnPiercingGaze:Play("farfromline")
-		local timer = self:IsMythic() and phase4MythicPiercingTimers[self.vb.piercingCount+1] or self:IsHeroic() and 40 or 65
+		local timer = self:IsMythic() and phase4MythicPiercingTimers[self.vb.piercingCount+1] or self:IsLFR() and phase4LFRPiercingTimers[self.vb.piercingCount+1] or self:IsHeroic() and phase4HeroicPiercingTimers[self.vb.piercingCount+1] or self:IsNormal() and phase4NormalPiercingTimers[self.vb.piercingCount+1]
 		if timer then
 			timerPiercingGazeCD:Start(timer, self.vb.piercingCount+1)
 		end
@@ -957,7 +967,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 			if self.vb.arcaneBurstCount % 2 == 0 then
 				timerArcaneBurstCD:Start(55, self.vb.arcaneBurstCount+1)
 			else
-				timerArcaneBurstCD:Start(60, self.vb.arcaneBurstCount+1)--See if still 70 on heroic
+				timerArcaneBurstCD:Start(self:IsLFR() and 80 or 60, self.vb.arcaneBurstCount+1)--See if still 70 on heroic
 			end
 		end
 	elseif spellId == 302034 then--Adjure
@@ -989,7 +999,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		timerArcaneBurstCD:Stop()
 		timerDivideandConquerCD:Stop()
 
-		timerVoidTouchedCD:Start(12.9)
+		if not self:IsLFR() then
+			timerVoidTouchedCD:Start(12.9)
+		end
 		timerOverloadCD:Start(14, 1)
 		if self:IsMythic() then
 			timerStageThreeBerserk:Stop()
