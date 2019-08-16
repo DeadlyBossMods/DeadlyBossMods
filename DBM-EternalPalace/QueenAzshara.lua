@@ -199,7 +199,7 @@ local phase4LFROverloadTimers = {14, 69.8, 75, 65, 65, 60}
 local phase4LFRPiercingTimers = {0, 65, 65, 65, 60, 20}
 local phase4LFRBeckonTimers = {0, 90, 100, 80}--LFR and Normal (so far, greater data might find divergence)
 
-local phase4NormalPiercingTimers = [0, 65, 65, 65, 55, 20]--Not same as LFR, one is different
+local phase4NormalPiercingTimers = {0, 65, 65, 65, 55, 20}--Not same as LFR, one is different
 
 local phase4HeroicOverloadTimers = {0, 44.9, 44.9, 45, 40, 40, 40}
 local phase4HeroicBeckonTimers = {0, 71.6, 84.9, 69.9}
