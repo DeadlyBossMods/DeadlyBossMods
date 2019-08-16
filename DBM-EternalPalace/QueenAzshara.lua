@@ -463,7 +463,7 @@ function mod:SPELL_CAST_START(args)
 		else
 			warnOverload:Show(self.vb.overloadCount)
 		end
-		local timer = self:IsLFR() and phase4LFROverloadTimers[self.vb.overloadCount+1] or self:IsHeroic() and phase4HeroicOverloadTimers[self.vb.overloadCount+1] or self:IsNormal and 54.9 or self:IsMythic() and 56
+		local timer = self:IsLFR() and phase4LFROverloadTimers[self.vb.overloadCount+1] or self:IsHeroic() and phase4HeroicOverloadTimers[self.vb.overloadCount+1] or self:IsNormal() and 54.9 or self:IsMythic() and 56
 		if timer then
 			timerOverloadCD:Start(timer, self.vb.overloadCount+1)--Mythic same as normal, heroic only one that's shorter (so far, LFR unknown)
 		end
