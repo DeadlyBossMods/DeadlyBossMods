@@ -53,7 +53,6 @@ local berserkTimer						= mod:NewBerserkTimer(720)
 
 mod:AddRangeFrameOption(5, 292247)
 mod:AddInfoFrameOption(292133, true)
---mod:AddSetIconOption("SetIconOnEyeBeam", 264382, true)
 
 mod.vb.phase = 1
 mod.vb.cloudCount = 0
