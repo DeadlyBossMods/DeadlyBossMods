@@ -1,6 +1,7 @@
 ## Interface: 80200
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0The Eternal Palace|r
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0영원한 궁전|r
+## Title-itIT:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Palazzo Eterno|r
 ## Author: MysticalOS
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
@@ -11,6 +12,7 @@
 ## X-DBM-Mod-Category: BFA
 ## X-DBM-Mod-Has-Mythic : 1
 ## X-DBM-Mod-Name: The Eternal Palace
+## X-DBM-Mod-Name-itIT: Palazzo Eterno
 ## X-DBM-Mod-Name-koKR: 영원한 궁전
 ## X-DBM-Mod-Sort: 405
 ## X-DBM-Mod-MapID: 2164
@@ -21,6 +23,7 @@ localization.kr.lua
 localization.cn.lua
 localization.de.lua
 localization.tw.lua
+localization.it.lua
 AbyssalCommanderSivara.lua
 RadianceofAzshara.lua
 BlackwaterBehemoth.lua

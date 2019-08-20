@@ -4,6 +4,7 @@
 ## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0風暴邪淵|r
 ## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0风暴熔炉|r
 ## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Горнило Штормов|r
+## Title-itIT:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Crogiolo delle Tempeste|r
 ## Author: MysticalOS
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
@@ -23,6 +24,7 @@ localization.cn.lua
 localization.tw.lua
 localization.es.lua
 localization.ru.lua
+localization.it.lua
 RestlessCabal.lua
 Uunat.lua
 CrucibleofStormsTrash.lua
