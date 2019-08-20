@@ -27,6 +27,7 @@ localization.de.lua
 localization.kr.lua
 localization.cn.lua
 localization.tw.lua
+localization.it.lua
 Tzane.lua
 Jiarak.lua
 HailstoneConstruct.lua

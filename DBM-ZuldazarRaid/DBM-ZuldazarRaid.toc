@@ -4,6 +4,7 @@
 ## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0达萨罗之战|r
 ## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0達薩亞洛之戰|r
 ## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Битва за Дазар'алор|r
+## Title-itIT:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Battaglia di Dazar'alor|r
 ## Author: MysticalOS
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
@@ -16,6 +17,7 @@
 ## X-DBM-Mod-SubCategories: Shared,Alliance,Horde
 ## X-DBM-Mod-SubCategories-koKR: 공통,얼라이언스,호드
 ## X-DBM-Mod-SubCategories-zhTW: 共通,聯盟,部落
+## X-DBM-Mod-SubCategories-itIT: Condiviso,Alleanza,Orda
 ## X-DBM-Mod-Sort: 407
 ## X-DBM-Mod-MapID: 2070
 ## X-DBM-Mod-MinCoreRevision: 17286
