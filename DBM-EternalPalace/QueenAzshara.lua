@@ -38,6 +38,7 @@ mod:RegisterEventsInCombat(
 (ability.id = 297937 or ability.id = 297934 or ability.id = 298121 or ability.id = 297972 or ability.id = 298531 or ability.id = 300478 or ability.id = 299250 or ability.id = 299178 or ability.id = 300519 or ability.id = 303629 or ability.id = 297372 or ability.id = 301431 or ability.id = 300480 or ability.id = 307331 or ability.id = 307332 or ability.id = 299094 or ability.id = 302141 or ability.id = 303797 or ability.id = 303799) and type = "begincast"
  or (ability.id = 302208 or ability.id = 298014 or ability.id = 301078 or ability.id = 303657 or ability.id = 303629 or ability.id = 300492 or ability.id = 300743 or ability.id = 303980 or ability.id = 300334 or ability.id = 300768) and type = "cast"
  or type = "death" and (target.id = 153059 or target.id = 153060)
+ or ability.id = 300551 and type = "applybuff"
  or (ability.id = 303657) and type = "applydebuff"
 --]]
 --Ancient Wards (20)
@@ -102,8 +103,10 @@ local specWarnReversalofFortune			= mod:NewSpecialWarningSpell(297371, nil, nil,
 local specWarnArcaneBurst				= mod:NewSpecialWarningYouPos(303657, nil, nil, nil, 1, 2)
 local yellArcaneBurst					= mod:NewPosYell(303657)
 local yellArcaneBurstFades				= mod:NewIconFadesYell(303657)
+local specWarnAzsharasDevoted			= mod:NewSpecialWarningSwitch("ej20353", "Dps", nil, nil, 1, 2)
 local specWarnAzsharasIndomitable		= mod:NewSpecialWarningSwitchCount("ej20410", "Dps", nil, nil, 1, 2)
 --Stage Three: Song of the Tides
+local specWarnLoyalMyrmidon				= mod:NewSpecialWarningSwitchCount("ej20355", "Tank", nil, nil, 1, 2)
 local specWarnStaticShock				= mod:NewSpecialWarningMoveAway(300492, nil, nil, nil, 1, 8)
 local yellStaticShock					= mod:NewYell(300492)
 --Stage Four: My Palace Is a Prison
@@ -144,9 +147,11 @@ mod:AddTimerLine(DBM:EJ_GetSectionInfo(20323))
 local timerArcaneDetonationCD			= mod:NewCDCountTimer(80, 300519, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON, nil, 1, 5)
 local timerReversalofFortuneCD			= mod:NewCDCountTimer(80, 297371, nil, nil, nil, 5, nil, DBM_CORE_IMPORTANT_ICON, nil, 2, 5)
 local timerArcaneBurstCD				= mod:NewCDCountTimer(58.2, 303657, nil, nil, nil, 3, nil, DBM_CORE_MAGIC_ICON)
+local timerAzsharasDevotedCD			= mod:NewCDTimer(95, "ej20353", nil, nil, nil, 1, 298531, DBM_CORE_DAMAGE_ICON)
 local timerAzsharasIndomitableCD		= mod:NewCDTimer(100, "ej20410", nil, nil, nil, 1, 298531, DBM_CORE_DAMAGE_ICON)
 --Stage Three: Song of the Tides
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20340))
+local timerLoyalMyrmidonCD				= mod:NewCDTimer(95, "ej20355", nil, nil, nil, 1, 301078, DBM_CORE_DAMAGE_ICON)
 local timerStageThreeBerserk			= mod:NewTimer(180, "timerStageThreeBerserk", 28131)
 --Stage Four: My Palace Is a Prison
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20361))
@@ -439,12 +444,14 @@ function mod:SPELL_CAST_START(args)
 		warnPhase:Play("ptwo")
 		if self:IsHard() then
 			timerBeckonCD:Start(25, 1)--START
+			timerAzsharasDevotedCD:Start(35)--35-38.5
 			timerReversalofFortuneCD:Start(68.1, 1)
-			timerAzsharasIndomitableCD:Start(107)--107-110 (confirmed heroic AND mythic, same variation, 107-110)
+			timerAzsharasIndomitableCD:Start(105)--105-110 (confirmed heroic AND mythic, same variation, 105-110)
 			if self:IsMythic() then
 				timerDivideandConquerCD:Start(45.4)
 			end
 		else
+			timerAzsharasDevotedCD:Start(35)--35-38.5
 			timerBeckonCD:Start(self:IsLFR() and 55 or 60, 1)--START
 			timerAzsharasIndomitableCD:Start(98.1)--98.1-110?
 		end
@@ -723,13 +730,22 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 304267 then
 		self.vb.painfulMemoriesActive = true
 	--Gaining Ward of Power Buff from Blue ward when entering fight
-	--This will only work on heroic/mythic. Adds don't gain buff on normal, only azshara does
+	--This will only work on heroic/mythic. Adds don't gain buff on normal/LFR, only azshara does
 	elseif spellId == 300551 and not seenAdds[args.destGUID] then
 		seenAdds[args.destGUID] = true
-		if self:GetCIDFromGUID(args.destGUID) == 155354 then--Azshara's Indomitable
+		local cid = self:GetCIDFromGUID(args.destGUID)
+		if cid == 155354 then--Azshara's Indomitable
 			self.vb.bigAddCount = self.vb.bigAddCount + 1
 			specWarnAzsharasIndomitable:Show(self.vb.bigAddCount)
 			specWarnAzsharasIndomitable:Play("bigmob")
+		elseif cid == 154240 and self:AntiSpam(10, 10) then--Azshara's Devoted
+			specWarnAzsharasDevoted:Show()
+			specWarnAzsharasDevoted:Play("killmob")
+			timerAzsharasDevotedCD:Start(95)
+		elseif cid == 154565 then--Loyal Myrmidon
+			specWarnLoyalMyrmidon:Show()
+			specWarnLoyalMyrmidon:Play("bigmob")
+			timerLoyalMyrmidonCD:Start(self:IsMythic() and 57.5 or 94.7)
 		end
 	end
 end
@@ -924,6 +940,7 @@ local function startIntermissionTwo(self)
 	timerArcaneBurstCD:Stop()
 	timerArcaneDetonationCD:Stop()
 	timerDivideandConquerCD:Stop()
+	timerAzsharasDevotedCD:Stop()
 	timerAzsharasIndomitableCD:Stop()
 	timerNextPhase:Start(29.9)--Time til P3 trigger, which is adds firing IEEU and becoming attackable
 	if self:IsMythic() then
@@ -998,6 +1015,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		timerArcaneDetonationCD:Stop()
 		timerArcaneBurstCD:Stop()
 		timerDivideandConquerCD:Stop()
+		timerLoyalMyrmidonCD:Stop()
 
 		if not self:IsLFR() then
 			timerVoidTouchedCD:Start(12.9)
