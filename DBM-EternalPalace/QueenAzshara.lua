@@ -6,7 +6,7 @@ mod:SetCreatureID(152910)
 mod:SetEncounterID(2299)
 mod:SetZone()
 mod:SetUsedIcons(4, 3, 2, 1)
-mod:SetHotfixNoticeRev(20190715000000)--2019, 7, 15
+mod:SetHotfixNoticeRev(20190820000000)--2019, 8, 20
 --mod:SetMinSyncRevision(16950)
 --mod.respawnTime = 29--Respawn is near instant on ptr, boss requires clicking to engage, no body pulling anyways
 
@@ -446,7 +446,7 @@ function mod:SPELL_CAST_START(args)
 			timerBeckonCD:Start(25, 1)--START
 			timerAzsharasDevotedCD:Start(35)--35-38.5
 			timerReversalofFortuneCD:Start(68.1, 1)
-			timerAzsharasIndomitableCD:Start(105)--105-110 (confirmed heroic AND mythic, same variation, 105-110)
+			timerAzsharasIndomitableCD:Start(self:IsMythic() and 115 or 105)--Confirmed they left heroic at 105, unable to confirm they ACTUALLY changed mythic to 115, but drycoding it anyways because that's what blizz said.
 			if self:IsMythic() then
 				timerDivideandConquerCD:Start(45.4)
 			end
