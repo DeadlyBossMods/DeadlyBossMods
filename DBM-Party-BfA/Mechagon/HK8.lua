@@ -32,8 +32,8 @@ local warnFulminatingZap			= mod:NewTargetNoFilterAnnounce(302274, 2, nil, "Heal
 local specWarnCannonBlast			= mod:NewSpecialWarningDodge(295536, nil, nil, nil, 2, 2)
 local specWarnWreck					= mod:NewSpecialWarningDefensive(295445, "Tank", nil, nil, 1, 2)
 local specWarnFulminatingBurst		= mod:NewSpecialWarningMoveTo(303885, nil, nil, nil, 1, 2)
-local yellFulminatingBurst			= mod:NewYell(303885)
-local yellFulminatingBurstFades		= mod:NewShortFadesYell(303885)
+local yellFulminatingBurst			= mod:NewYell(303885, nil, nil, nil, "YELL")
+local yellFulminatingBurstFades		= mod:NewShortFadesYell(303885, nil, nil, nil, "YELL")
 --Stage 2
 local specWarnAnnihilationRay		= mod:NewSpecialWarningSpell(295939, nil, nil, nil, 2, 2)
 local specWarnAntiTresField			= mod:NewSpecialWarningMoveTo(303252, nil, nil, nil, 1, 2)
@@ -183,7 +183,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnFulminatingBurst:Show(DBM_ALLY)
 			yellFulminatingBurst:Yell()
-			yellFulminatingBurstFades:Countdown(9)
+			yellFulminatingBurstFades:Countdown(spellId)
 		else
 			specWarnFulminatingBurst:Show(args.destName)
 		end

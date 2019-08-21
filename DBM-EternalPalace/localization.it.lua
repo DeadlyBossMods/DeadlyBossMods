@@ -1,3 +1,4 @@
+if GetLocale() ~= "itIT" then return end
 local L
 
 ---------------------------
@@ -19,21 +20,6 @@ L= DBM:GetModLocalization(2347)
 --  Lady Priscilla Ashvane --
 ---------------------------
 L= DBM:GetModLocalization(2354)
-
-L:SetWarningLocalization({
-
-})
-
-L:SetTimerLocalization({
-
-})
-
-L:SetOptionLocalization({
-
-})
-
-L:SetMiscLocalization({
-})
 
 ---------------------------
 --  Orgozoa --
