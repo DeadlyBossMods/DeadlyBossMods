@@ -9,6 +9,7 @@
 ## Title-esMX:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FFInterfaz gráfica|r
 ## Title-frFR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FFIUG des options|r
 ## Title-ptBR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FFIU de opções|r
+## Title-itIT:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FFInterfaccia Opzioni|r
 ## Notes: GUI for Deadly Boss Mods
 ## Notes-deDE: Grafische Benutzeroberfläche für Deadly Boss Mods
 ## Notes-zhCN: Deadly Boss Mods的设置界面
@@ -19,6 +20,7 @@
 ## Notes-esMX: Interfaz gráfica de Deadly Boss Mods.
 ## Notes-frFR: IUG pour Deadly Boss Mods
 ## Notes-ptBR: IU para o Deadly Boss Mods
+## Notes-itIT: Interfaccia Grafica per Deadly Boss Mods
 ## RequiredDeps: DBM-Core
 ## LoadOnDemand: 1
 ## DefaultState: enabled

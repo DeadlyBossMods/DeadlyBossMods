@@ -8,6 +8,7 @@
 ## Title-ptBR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Eventos Mundiais|r
 ## Title-frFR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Évènements Mondiaux|r
 ## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0世界事件|r
+## Title-itIT:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Eventi Mondiali|r
 ## Author: MysticalOS
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
@@ -28,6 +29,7 @@
 ## X-DBM-Mod-SubCategories-esMX: Holidays,Quests
 ## X-DBM-Mod-SubCategories-ptBR: Holidays,Quests
 ## X-DBM-Mod-SubCategories-frFR: Vacances,Quêtes
+## X-DBM-Mod-SubCategories-itIT: Festività,Missioni
 ## X-DBM-Mod-Name: World Events
 ## X-DBM-Mod-Name-esES: Eventos del mundo
 ## X-DBM-Mod-Name-ruRU: Игровые события
@@ -37,6 +39,7 @@
 ## X-DBM-Mod-Name-deDE: Weltereignisse
 ## X-DBM-Mod-Name-ptBR: Eventos Mundiais
 ## X-DBM-Mod-Name-frFR: Évènements Mondiaux
+## X-DBM-Mod-Name-itIT: Eventi Mondiali
 ## X-DBM-Mod-MapID: 230,189,33,547,1004,1,0,1704,1705,1706,1707
 ## X-DBM-Mod-Sort: 454
 ## X-DBM-Mod-LoadCID: 55003,54499,15467,15466,49687,15664,23558,27215,23486,24710,24484
@@ -50,6 +53,7 @@ localization.de.lua
 localization.es.lua
 localization.cn.lua
 localization.br.lua
+localization.it.lua
 Holidays\Omen.lua
 Holidays\ApothecaryTrio.lua
 Holidays\Ahune.lua
