@@ -46,6 +46,7 @@ local warnSnapped						= mod:NewTargetNoFilterAnnounce(300133, 4, nil, "Tank|Hea
 local warnUnleashedNightmare			= mod:NewSpellAnnounce("ej20289", 3, 300732)
 local warnDread							= mod:NewTargetNoFilterAnnounce(292963, 3, nil, "Healer")
 --Stage Two: Grip of Fear
+local warnPunctureDarkness				= mod:NewTargetNoFilterAnnounce(295099, 1)
 --Stage Three: Delirium's Descent
 local warnDeliriumsDescent				= mod:NewCountAnnounce(304733, 3)
 --Stage Four: All Pathways Open
@@ -299,6 +300,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 295249 and args:IsPlayer() then
 		playerDRealm = true
 	elseif spellId == 295099 then
+		warnPunctureDarkness:Show(args.destName)
 		timerPuncturedDarkness:Start()
 	end
 end
