@@ -16,9 +16,9 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 301141 292963 296257 303978 301068 303543 302593 296018 304733 296078 295814 302503",
 	"SPELL_CAST_SUCCESS 303543 295444 294515 299708",
 	"SPELL_SUMMON 300732",
-	"SPELL_AURA_APPLIED 292971 292981 295480 300133 292963 302503 293509 295327 303543 296018 302504 295249",
+	"SPELL_AURA_APPLIED 292971 292981 295480 300133 292963 302503 293509 295327 303543 296018 302504 295249 295099",
 	"SPELL_AURA_APPLIED_DOSE 292971",
-	"SPELL_AURA_REMOVED 292971 292963 293509 303543 296018 295249",
+	"SPELL_AURA_REMOVED 292971 292963 293509 303543 296018 295249 295099",
 	"SPELL_AURA_REMOVED_DOSE 292971",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
@@ -85,6 +85,7 @@ local timerMindTetherCD					= mod:NewCDTimer(47.8, 295444, nil, "Tank", nil, 5, 
 --Stage Two: Grip of Fear
 local timerManifestNightmaresCD			= mod:NewCDTimer(35, 293509, nil, nil, nil, 3)
 local timerMaddeningEruptionCD			= mod:NewCDTimer(66.4, 292996, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerPuncturedDarkness			= mod:NewBuffActiveTimer(20, 295099, nil, nil, nil, 5, nil, DBM_CORE_DAMAGE_ICON)
 --Stage Three: Delirium's Descent
 local timerDeliriumsDescentCD			= mod:NewCDTimer(35, 304733, nil, nil, nil, 5, nil, DBM_CORE_DAMAGE_ICON)
 --Stage Four: All Pathways Open
@@ -297,6 +298,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 295249 and args:IsPlayer() then
 		playerDRealm = true
+	elseif spellId == 295099 then
+		timerPuncturedDarkness:Start()
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -336,6 +339,8 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif spellId == 295249 and args:IsPlayer() then
 		playerDRealm = false
+	elseif spellId == 295099 then
+		timerPuncturedDarkness:Stop()
 	end
 end
 
