@@ -86,7 +86,8 @@ local timerMindTetherCD					= mod:NewCDTimer(47.8, 295444, nil, "Tank", nil, 5, 
 --Stage Two: Grip of Fear
 local timerManifestNightmaresCD			= mod:NewCDTimer(35, 293509, nil, nil, nil, 3)
 local timerMaddeningEruptionCD			= mod:NewCDTimer(66.4, 292996, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
-local timerPuncturedDarkness			= mod:NewBuffActiveTimer(20, 295099, nil, nil, nil, 5, nil, DBM_CORE_DAMAGE_ICON)
+local timerPuncturedDarkness			= mod:NewNextTimer(25, 295099, nil, nil, nil, 5, nil, DBM_CORE_DAMAGE_ICON)
+local timerPuncturedDarknessActive		= mod:NewBuffActiveTimer(20, 295099, nil, nil, nil, 5, nil, DBM_CORE_DAMAGE_ICON)
 --Stage Three: Delirium's Descent
 local timerDeliriumsDescentCD			= mod:NewCDTimer(35, 304733, nil, nil, nil, 5, nil, DBM_CORE_DAMAGE_ICON)
 --Stage Four: All Pathways Open
@@ -301,7 +302,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		playerDRealm = true
 	elseif spellId == 295099 then
 		warnPunctureDarkness:Show(args.destName)
-		timerPuncturedDarkness:Start()
+		timerPuncturedDarknessActive:Start()
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -342,7 +343,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 295249 and args:IsPlayer() then
 		playerDRealm = false
 	elseif spellId == 295099 then
-		timerPuncturedDarkness:Stop()
+		timerPuncturedDarknessActive:Stop()
 	end
 end
 
@@ -381,6 +382,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 		specWarnMaddeningEruption:Show(L.Tear)
 		specWarnMaddeningEruption:Play("moveboss")
 		timerMaddeningEruptionCD:Start()
+		timerPuncturedDarkness:Start()
 	end
 end
 
