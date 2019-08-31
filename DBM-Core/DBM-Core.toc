@@ -16,7 +16,7 @@
 ## SavedVariablesPerCharacter: DBM_UsedProfile, DBM_UseDualProfile, DBM_CharSavedRevision
 ## LoadOnDemand: 0
 ## DefaultState: enabled
-## Author: Tandanu and Nitram
+## Author: Tandanu and Nitram and MysticalOS
 ## X-Website: http://www.deadlybossmods.com
 ## X-Curse-Project-ID: 3358
 ## X-WoWI-ID: 8814
