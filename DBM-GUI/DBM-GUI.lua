@@ -1166,8 +1166,8 @@ do
 				button.toggle:SetNormalTexture(130838)--"Interface\\Buttons\\UI-PlusButton-UP"
 				button.toggle:SetPushedTexture(130836)--"Interface\\Buttons\\UI-PlusButton-DOWN"
 			else
-				button.toggle:SetNormalTexture(130838)--"Interface\\Buttons\\UI-MinusButton-UP"
-				button.toggle:SetPushedTexture(130836)--"Interface\\Buttons\\UI-PlusButton-DOWN"
+				button.toggle:SetNormalTexture(130821)--"Interface\\Buttons\\UI-MinusButton-UP"
+				button.toggle:SetPushedTexture(130820)--"Interface\\Buttons\\UI-MinusButton-DOWN"
 			end
 			button.toggle:Show()
 		else
