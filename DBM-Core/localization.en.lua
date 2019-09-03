@@ -631,8 +631,8 @@ DBM_CORE_DISEASE_ICON		= "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:20:20:0
 DBM_CORE_ENRAGE_ICON		= "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:20:20:0:0:255:66:102:118:40:58|t"
 
 --LDB
-DBM_LDB_TOOLTIP_HELP1	= "Left-click to open DBM"
-DBM_LDB_TOOLTIP_HELP2	= "Right-click to open config menu"
+DBM_LDB_TOOLTIP_HELP1	= "Click to open DBM"
+--DBM_LDB_TOOLTIP_HELP2	= "Right-click to open config menu"
 
 DBM_LDB_LOAD_MODS		= "Load boss mods"
 
