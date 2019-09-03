@@ -1351,7 +1351,7 @@ local function CreateOptionsMenu()
 		----------------------------------------------
 		--             General Options              --
 		----------------------------------------------
-		local generaloptions = DBM_GUI_Frame:CreateArea(L.General, nil, 180, true)
+		local generaloptions = DBM_GUI_Frame:CreateArea(L.General, nil, 150, true)
 
 		local soundChannelsList = {
 			{	text	= L.UseMasterChannel,	value 	= "Master"},
@@ -1361,7 +1361,7 @@ local function CreateOptionsMenu()
 		local SoundChannelDropdown = generaloptions:CreateDropdown(L.UseSoundChannel, soundChannelsList, "DBM", "UseSoundChannel", function(value)
 			DBM.Options.UseSoundChannel = value
 		end)
-		SoundChannelDropdown:SetPoint("TOPLEFT", generaloptions.frame, "TOPLEFT", 0, -55)
+		SoundChannelDropdown:SetPoint("TOPLEFT", generaloptions.frame, "TOPLEFT", 0, -25)
 
 		local bmrange  = generaloptions:CreateButton(L.Button_RangeFrame, 120, 30)
 		bmrange:SetPoint('TOPLEFT', SoundChannelDropdown, "BOTTOMLEFT", 15, -5)
