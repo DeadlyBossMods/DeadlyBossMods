@@ -1353,14 +1353,6 @@ local function CreateOptionsMenu()
 		----------------------------------------------
 		local generaloptions = DBM_GUI_Frame:CreateArea(L.General, nil, 180, true)
 
-		local MiniMapIcon				= generaloptions:CreateCheckButton(L.EnableMiniMapIcon, true)
-		MiniMapIcon:SetScript("OnClick", function(self)
-			DBM:ToggleMinimapButton()
-			self:SetChecked( not DBM_MinimapIcon.hide )
-		end)
-		MiniMapIcon:SetScript("OnShow", function(self)
-			self:SetChecked( not DBM_MinimapIcon.hide )
-		end)
 		local soundChannelsList = {
 			{	text	= L.UseMasterChannel,	value 	= "Master"},
 			{	text	= L.UseDialogChannel,	value 	= "Dialog"},

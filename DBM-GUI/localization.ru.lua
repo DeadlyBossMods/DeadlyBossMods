@@ -49,7 +49,6 @@ L.Statistic_BestRank		= "Лучший ранг:"--Maybe not get used, not sure y
 
 -- Tab: General Core Options
 L.General 					= "Общие параметры DBM"
-L.EnableMiniMapIcon			= "Отображать кнопку на мини-карте"
 L.UseSoundChannel			= "Выбор аудио канала для предупреждений DBM"
 L.UseMasterChannel			= "Основной аудио канал"
 L.UseDialogChannel			= "Аудио канал диалогов"

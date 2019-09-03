@@ -56,7 +56,6 @@ L.Statistic_BestRank		= "Migliore Grado:"--Maybe not get used, not sure yet, loc
 
 -- Tab: General Core Options
 L.General 					= "Impostazioni Generali DBM"
-L.EnableMiniMapIcon			= "Mostra pulsante minimappa"
 L.UseSoundChannel			= "Imposta canale audio usato da DBM per gli avvisi sonori."
 L.UseMasterChannel			= "Canale audio Principale."
 L.UseDialogChannel			= "Canale audio Dialoghi."
