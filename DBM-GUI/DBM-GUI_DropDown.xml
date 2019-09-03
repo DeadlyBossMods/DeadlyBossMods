@@ -1,5 +1,118 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\FrameXML\UI.xsd">
 
+	<Slider name="DBM_GUI_PanelScrollBarTemplate" virtual="true">
+		<Size>
+			<AbsDimension x="16" y="0"/>
+		</Size>
+		<Frames>
+			<Button name="$parentScrollUpButton" inherits="UIPanelScrollUpButtonTemplate">
+				<Anchors>
+					<Anchor point="BOTTOM" relativePoint="TOP"/>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						if DBM_GUI_DropDown then
+							DBM_GUI_DropDown:OnMouseWheel(1)
+							self.shouldHide = false
+						else
+							local parent = self:GetParent();
+							parent:SetValue(parent:GetValue() - (parent:GetHeight() / 2));
+						end
+						PlaySound(1115);
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="$parentScrollDownButton" inherits="UIPanelScrollDownButtonTemplate">
+				<Anchors>
+					<Anchor point="TOP" relativePoint="BOTTOM"/>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						if DBM_GUI_DropDown then
+							DBM_GUI_DropDown:OnMouseWheel(-1)
+							self.shouldHide = false
+						else
+							local parent = self:GetParent();
+							parent:SetValue(parent:GetValue() + (parent:GetHeight() / 2));
+						end
+						PlaySound(1115);
+					</OnClick>
+				</Scripts>
+			</Button>
+		</Frames>
+		<Scripts>
+			<OnValueChanged>
+				if not shouldHide and DBM_GUI_DropDown and DBM_GUI_DropDown.HideMenu then
+					DBM_GUI_DropDown:HideMenu()
+					self.shouldHide = true
+				end
+				self:GetParent():SetVerticalScroll(value);
+				local min, max = self:GetMinMaxValues()
+				if value == min then
+					_G[self:GetName().."ScrollUpButton"]:Disable()
+				else
+					_G[self:GetName().."ScrollUpButton"]:Enable()
+				end
+				if value == max then
+					_G[self:GetName().."ScrollDownButton"]:Disable()
+				else
+					_G[self:GetName().."ScrollDownButton"]:Enable()
+				end
+			</OnValueChanged>
+		</Scripts>
+		<ThumbTexture name="$parentThumbTexture" inherits="UIPanelScrollBarButton" file="Interface\Buttons\UI-ScrollBar-Knob">
+			<Size>
+				<AbsDimension x="16" y="24"/>
+			</Size>
+			<TexCoords left="0.25" right="0.75" top="0.125" bottom="0.875"/>
+		</ThumbTexture>
+	</Slider>
+
+	<Frame name="DBM_GUI_DropDownMenu" virtual="true">
+		<Frames>
+			<ScrollFrame name="$parentList" hidden="true">
+				<Size>
+					<AbsDimension x="24" y="0"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPRIGHT">
+						<Offset>
+							<AbsDimension x="-3" y="-3"/>
+						</Offset>
+					</Anchor>
+					<Anchor point="BOTTOMRIGHT">
+						<Offset>
+							<AbsDimension x="-3" y="6"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						self:SetBackdropBorderColor(.6, .6, .6, .6)
+						_G[self:GetName().."ScrollBarScrollUpButton"]:Disable()
+						_G[self:GetName().."ScrollBarScrollDownButton"]:Disable()
+					</OnLoad>
+				</Scripts>
+				<Frames>
+					<Slider name="$parentScrollBar" inherits="DBM_GUI_PanelScrollBarTemplate">
+						<Anchors>
+							<Anchor point="TOPRIGHT">
+								<Offset>
+									<AbsDimension x="0" y="-20"/>
+								</Offset>
+							</Anchor>
+							<Anchor point="BOTTOMLEFT">
+								<Offset>
+									<AbsDimension x="" y="19"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</Slider>
+				</Frames>
+			</ScrollFrame>
+		</Frames>
+	</Frame>
+
 	<Frame name="DBM_GUI_DropDownMenuTemplate" virtual="true">
 		<Size>
 			<AbsDimension x="160" y="32"/>
