@@ -1166,8 +1166,8 @@ do
 				button.toggle:SetNormalTexture(130838)--"Interface\\Buttons\\UI-PlusButton-UP"
 				button.toggle:SetPushedTexture(130836)--"Interface\\Buttons\\UI-PlusButton-DOWN"
 			else
-				button.toggle:SetNormalTexture(130838)--"Interface\\Buttons\\UI-MinusButton-UP"
-				button.toggle:SetPushedTexture(130836)--"Interface\\Buttons\\UI-PlusButton-DOWN"
+				button.toggle:SetNormalTexture(130821)--"Interface\\Buttons\\UI-MinusButton-UP"
+				button.toggle:SetPushedTexture(130820)--"Interface\\Buttons\\UI-MinusButton-DOWN"
 			end
 			button.toggle:Show()
 		else
@@ -4594,19 +4594,21 @@ do
 				-- Create a Panel for "Wrath of the Lich King" "Burning Crusade" ...
 				local expLevel = GetExpansionLevel()
 				if expLevel == 7 then--Choose default expanded category based on players current expansion is.
-					Categories[addon.category] = DBM_GUI:CreateNewPanel(L["TabCategory_"..addon.category:upper()] or L.TabCategory_Other, nil, (addon.category:upper()=="BFA"))
+					Categories[addon.category] = DBM_GUI:CreateNewPanel(L["TabCategory_"..addon.category:upper()] or L.TabCategory_OTHER, nil, (addon.category:upper()=="BFA"))
 				elseif expLevel == 6 then
-					Categories[addon.category] = DBM_GUI:CreateNewPanel(L["TabCategory_"..addon.category:upper()] or L.TabCategory_Other, nil, (addon.category:upper()=="LEG"))
+					Categories[addon.category] = DBM_GUI:CreateNewPanel(L["TabCategory_"..addon.category:upper()] or L.TabCategory_OTHER, nil, (addon.category:upper()=="LEG"))
 				elseif expLevel == 5 then
-					Categories[addon.category] = DBM_GUI:CreateNewPanel(L["TabCategory_"..addon.category:upper()] or L.TabCategory_Other, nil, (addon.category:upper()=="WOD"))
+					Categories[addon.category] = DBM_GUI:CreateNewPanel(L["TabCategory_"..addon.category:upper()] or L.TabCategory_OTHER, nil, (addon.category:upper()=="WOD"))
 				elseif expLevel == 4 then
-					Categories[addon.category] = DBM_GUI:CreateNewPanel(L["TabCategory_"..addon.category:upper()] or L.TabCategory_Other, nil, (addon.category:upper()=="MOP"))
+					Categories[addon.category] = DBM_GUI:CreateNewPanel(L["TabCategory_"..addon.category:upper()] or L.TabCategory_OTHER, nil, (addon.category:upper()=="MOP"))
 				elseif expLevel == 3 then
-					Categories[addon.category] = DBM_GUI:CreateNewPanel(L["TabCategory_"..addon.category:upper()] or L.TabCategory_Other, nil, (addon.category:upper()=="CATA"))
+					Categories[addon.category] = DBM_GUI:CreateNewPanel(L["TabCategory_"..addon.category:upper()] or L.TabCategory_OTHER, nil, (addon.category:upper()=="CATA"))
 				elseif expLevel == 2 then
-					Categories[addon.category] = DBM_GUI:CreateNewPanel(L["TabCategory_"..addon.category:upper()] or L.TabCategory_Other, nil, (addon.category:upper()=="WotLK"))
+					Categories[addon.category] = DBM_GUI:CreateNewPanel(L["TabCategory_"..addon.category:upper()] or L.TabCategory_OTHER, nil, (addon.category:upper()=="WotLK"))
 				elseif expLevel == 1 then
-					Categories[addon.category] = DBM_GUI:CreateNewPanel(L["TabCategory_"..addon.category:upper()] or L.TabCategory_Other, nil, (addon.category:upper()=="BC"))
+					Categories[addon.category] = DBM_GUI:CreateNewPanel(L["TabCategory_"..addon.category:upper()] or L.TabCategory_OTHER, nil, (addon.category:upper()=="BC"))
+				else
+					Categories[addon.category] = DBM_GUI:CreateNewPanel(L["TabCategory_"..addon.category:upper()] or L.TabCategory_OTHER, nil, (addon.category:upper()=="CLASSIC"))
 				end
 				if L["TabCategory_"..addon.category:upper()] then
 					local ptext = Categories[addon.category]:CreateText(L["TabCategory_"..addon.category:upper()])
