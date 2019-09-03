@@ -41,7 +41,7 @@ do
 	local BackDropTable = { bgFile = "" }
 	local L = DBM_GUI_Translations
 
-	local TabFrame1 = CreateFrame("Frame", "DBM_GUI_DropDown", UIParent)
+	local TabFrame1 = CreateFrame("Frame", "DBM_GUI_DropDown", UIParent, "DBM_GUI_DropDownMenu")
 	local ClickFrame = CreateFrame("Button", nil, UIParent)
 
 	TabFrame1:SetBackdrop({
@@ -52,7 +52,13 @@ do
 	});
 
 	TabFrame1:EnableMouseWheel(1)
-	TabFrame1:SetScript("OnMouseWheel", function(self, delta)
+	function TabFrame1:OnMouseWheel(delta)
+		local scrollBar = _G[self:GetName() .. "ListScrollBar"]
+		if delta > 0 then
+			scrollBar:SetValue(scrollBar:GetValue() - 1)
+		else
+			scrollBar:SetValue(scrollBar:GetValue() + 1)
+		end
 		if delta > 0 then  -- scroll up
 			self.offset = self.offset - 1
 			if self.offset < 0 then
@@ -62,7 +68,8 @@ do
 			self.offset = self.offset + 1
 		end
 		self:Refresh()
-	end)
+	end
+	TabFrame1:SetScript("OnMouseWheel", TabFrame1.OnMouseWheel)
 
 	TabFrame1:Hide()
 	TabFrame1:SetParent( DBM_GUI_OptionsFrame )
@@ -145,7 +152,7 @@ do
 		for k, button in pairs(self.buttons) do
 			bwidth = button:GetTextWidth()
 			if bwidth > width then
-				TabFrame1:SetWidth(bwidth+32)
+				TabFrame1:SetWidth(bwidth+60)
 				width = bwidth
 			end
 		end
@@ -219,6 +226,14 @@ do
 		else
 			self:ShowMenu(self.dropdown.values)
 		end
+		if #self.dropdown.values > MAX_BUTTONS then
+			_G[self:GetName().."ListScrollBar"]:SetMinMaxValues(0, #self.dropdown.values)
+			_G[self:GetName().."ListScrollBar"]:SetValueStep(1)
+			_G[self:GetName().."List"]:Show()
+		else
+			_G[self:GetName().."ListScrollBar"]:SetValue(0)
+			_G[self:GetName().."List"]:Hide()
+		end
 	end
 
 	ClickFrame:SetAllPoints(DBM_GUI_OptionsFrame)
@@ -283,11 +298,7 @@ do
 				TabFrame1:ClearAllPoints()
 				TabFrame1:SetPoint("TOPRIGHT", self, "BOTTOMRIGHT", 0, -3)
 				TabFrame1.dropdown = self:GetParent()
-				if values[1].font then
-					TabFrame1:ShowFontMenu(self:GetParent().values)
-				else
-					TabFrame1:ShowMenu(self:GetParent().values)
-				end
+				TabFrame1:Refresh()
 			end
 		end)
 
