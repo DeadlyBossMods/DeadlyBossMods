@@ -55,6 +55,7 @@ L.Statistic_BestRank		= "最高评级:"
 
 -- Tab: General Options
 L.General 					= "DBM核心综合设置"
+L.EnableMiniMapIcon			= "显示小地图按钮"
 L.UseSoundChannel			= "设置DBM使用的声道"
 L.UseMasterChannel			= "主声道"
 L.UseDialogChannel			= "对话声道"
