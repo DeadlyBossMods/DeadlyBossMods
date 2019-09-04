@@ -225,10 +225,24 @@ do
 				UIDropDownMenu_AddButton(info, 2)
 
 				info = UIDropDownMenu_CreateInfo()
+				info.text = DBM_CORE_RANGECHECK_SETRANGE_TO:format(23)
+				info.func = setRange
+				info.arg1 = 23
+				info.checked = (mainFrame.range == 23)
+				UIDropDownMenu_AddButton(info, 2)
+
+				info = UIDropDownMenu_CreateInfo()
 				info.text = DBM_CORE_RANGECHECK_SETRANGE_TO:format(30)
 				info.func = setRange
 				info.arg1 = 30
 				info.checked = (mainFrame.range == 30)
+				UIDropDownMenu_AddButton(info, 2)
+
+				info = UIDropDownMenu_CreateInfo()
+				info.text = DBM_CORE_RANGECHECK_SETRANGE_TO:format(33)
+				info.func = setRange
+				info.arg1 = 33
+				info.checked = (mainFrame.range == 33)
 				UIDropDownMenu_AddButton(info, 2)
 
 				info = UIDropDownMenu_CreateInfo()
@@ -618,13 +632,14 @@ do
 					--Worgsaw has a tooltip of 6 but doesn't factor in hitboxes/etc. It doesn't return false until UnitDistanceSquared of 8. bandages 18 even though spell range is 15, etc. Acorn actually is 5 in both though
 					if IsItemInRange(90175, uId) then range = 4--Gin-Ji Knife Set
 					elseif IsItemInRange(37727, uId) then range = 6--Ruby Acorn
-					elseif IsItemInRange(63427, uId) then range = 8--Worgsaw
+					elseif IsItemInRange(8149, uId) then range = 8--Voodoo Charm
 					elseif CheckInteractDistance(uId, 3) then range = 10
 					elseif CheckInteractDistance(uId, 2) then range = 11
 					elseif IsItemInRange(32321, uId) then range = 13--reports 12 but actual range tested is 13
 					elseif IsItemInRange(6450, uId) then range = 18--Bandages. (despite popular sites saying it's 15 yards, it's actually 18 yards verified by UnitDistanceSquared
-					elseif IsItemInRange(21519, uId) then range = 22--Item says 20, returns true until 22.
+					elseif IsItemInRange(21519, uId) then range = 23--Item says 20, returns true until 23.
 					elseif CheckInteractDistance(uId, 1) then range = 30
+					elseif IsItemInRange(1180, uId) then range = 33--Scroll of Stamina
 					elseif UnitInRange(uId) then range = 43--item check of 34471 also good for 43
 					elseif IsItemInRange(32698, uId)  then range = 48--Wrangling Rope
 					elseif IsItemInRange(116139, uId)  then range = 53
@@ -742,13 +757,14 @@ do
 	local function itsBCAgain(uId)
 		if IsItemInRange(90175, uId) then return 4
 		elseif IsItemInRange(37727, uId) then return 6
-		elseif IsItemInRange(63427, uId) then return 8
+		elseif IsItemInRange(8149, uId) then return 8
 		elseif CheckInteractDistance(uId, 3) then return 10
 		elseif CheckInteractDistance(uId, 2) then return 11
 		elseif IsItemInRange(32321, uId) then return 13
 		elseif IsItemInRange(6450, uId) then return 18
-		elseif IsItemInRange(21519, uId) then return 22
+		elseif IsItemInRange(21519, uId) then return 23
 		elseif CheckInteractDistance(uId, 1) then return 30
+		elseif IsItemInRange(1180, uId) then return 33
 		elseif UnitInRange(uId) then return 43
 		elseif IsItemInRange(32698, uId) then return 48
 		elseif IsItemInRange(116139, uId) then return 53
