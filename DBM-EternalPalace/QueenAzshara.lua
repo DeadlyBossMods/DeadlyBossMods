@@ -140,7 +140,6 @@ local timerBeckonCD						= mod:NewCDCountTimer(30.4, 299094, nil, nil, nil, 3)
 local timerDivideandConquerCD			= mod:NewCDTimer(65, 300478, nil, nil, nil, 3, nil, DBM_CORE_MYTHIC_ICON..DBM_CORE_DEADLY_ICON)
 --Intermission One: Queen's Decree
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20335))
-local timerQueensDecreeCD				= mod:NewCDTimer(30.4, 299250, nil, nil, nil, 3, nil, DBM_CORE_IMPORTANT_ICON)
 local timerNextPhase					= mod:NewPhaseTimer(30.4)
 --Stage Two: Hearts Unleashed
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20323))
@@ -198,7 +197,7 @@ local playerDecreeYell = 0--100s 2-Stack/1-Solo, 10s 2-Moving/1-Stay, 1s 2-Soak/
 local AddTimers = {
 	["Normal"] = {42.6, 84.7},
 	["Heroic"] = {41.7, 59.6, 89.1, 44.8, 39.4},
-	["Mythic"] = {37.7, 64.4},
+	["Mythic"] = {37.7, 62.4},
 }
 local phase4LFROverloadTimers = {14, 69.8, 75, 65, 65, 60}
 local phase4LFRPiercingTimers = {0, 65, 65, 65, 60, 20}
@@ -827,7 +826,6 @@ do
 		timerBeckonCD:Stop()
 		timerDivideandConquerCD:Stop()
 		timerHulkSpawnCD:Stop()
-		timerQueensDecreeCD:Start(7.5)--SUCCESS
 		timerNextPhase:Start(27.3)--To Ward of Power cast start
 	end
 	function mod:UNIT_DIED(args)
@@ -991,7 +989,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		--"<338.85 14:18:47> [UNIT_SPELLCAST_SUCCEEDED] Queen Azshara(Murdocc) -Adjure- [[boss1:Cast-3-3883-2164-252-302034-001924DA87:302034]]", -- [6299]
 		--"<343.15 14:18:51> [CHAT_MSG_MONSTER_YELL] Coax the power from these ancient wards! Rattle the chains that bind him!#Queen Azshara###Omegall##0#0##0#2192#nil#0#false#false#false#false", -- [6362]
 		self:Schedule(4.3, startIntermissionTwo, self)--Needed, because timers don't cancel until yell
-		timerQueensDecreeCD:Start(13.9)--SUCCESS (technically debuffs, is no start or success event here)
 	elseif spellId == 303982 then--Nether Portal
 		self.vb.netherCount = self.vb.netherCount + 1
 		warnNetherPortal:Show(self.vb.netherCount)
