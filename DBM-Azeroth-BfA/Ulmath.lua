@@ -12,9 +12,6 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 301748 301773 301840"
---	"SPELL_CAST_SUCCESS",
---	"SPELL_AURA_APPLIED",
---	"SPELL_AURA_REMOVED"
 )
 
 --TODO, upgrade endlessdoom to special warning?
@@ -24,9 +21,9 @@ local specWarnMentalCollapse		= mod:NewSpecialWarningRun(301773, nil, nil, nil, 
 local specWarnVoidDance				= mod:NewSpecialWarningDodge(301840, nil, nil, nil, 2, 2)
 --local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 8)
 
-local timerEndlessDoomCD			= mod:NewAITimer(23.6, 301748, nil, nil, nil, 3)--Need at least one more log, i was dumb and released thinking rez was closeby, it wasn't
+local timerEndlessDoomCD			= mod:NewCDTimer(72, 301748, nil, nil, nil, 3)--Need at least one more log, i was dumb and released thinking rez was closeby, it wasn't
 local timerMentalCollapseCD			= mod:NewCDTimer(20.4, 301773, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
-local timerVoidDanceCD				= mod:NewCDTimer(27.1, 301840, nil, nil, nil, 3)
+local timerVoidDanceCD				= mod:NewCDTimer(21.4, 301840, nil, nil, nil, 3)
 
 --mod:AddRangeFrameOption(8, 261605)
 --mod:AddReadyCheckOption(37460, false)
@@ -37,12 +34,6 @@ function mod:OnCombatStart(delay, yellTriggered)
 --		timerMentalCollapseCD:Start(1-delay)
 --		timerVoidDanceCD:Start(1-delay)
 	end
-end
-
-function mod:OnCombatEnd()
---	if self.Options.RangeFrame then
---		DBM.RangeCheck:Hide()
---	end
 end
 
 function mod:SPELL_CAST_START(args)
@@ -60,39 +51,3 @@ function mod:SPELL_CAST_START(args)
 		timerVoidDanceCD:Start()
 	end
 end
-
---[[
-function mod:SPELL_CAST_SUCCESS(args)
-	local spellId = args.spellId
-	if spellId == 262004 then
-
-	end
-end
-
-function mod:SPELL_AURA_APPLIED(args)
-	local spellId = args.spellId
-	if spellId == 261605 then
-
-	end
-end
-
-function mod:SPELL_AURA_REMOVED(args)
-	local spellId = args.spellId
-	if spellId == 261605 then
-
-	end
-end
-
-function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
-	if spellId == 228007 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
-		specWarnGTFO:Show()
-		specWarnGTFO:Play("watchfeet")
-	end
-end
-mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
-
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 257939 then
-	end
-end
---]]
