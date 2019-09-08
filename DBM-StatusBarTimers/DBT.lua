@@ -986,7 +986,7 @@ function barPrototype:SetColor(color)
 			g = color[2],
 			b = color[3]
 		}
-	}
+	end
 	self.color = color
 	local frame_name = self.frame:GetName()
 	_G[frame_name.."Bar"]:SetStatusBarColor(color.r, color.g, color.b)
