@@ -979,6 +979,14 @@ function barPrototype:SetIcon(icon)
 end
 
 function barPrototype:SetColor(color)
+	-- Fix to allow colors not require the table keys
+	if color[1] and not color.r then
+		color = {
+			r = color[1],
+			g = color[2],
+			b = color[3]
+		}
+	end
 	self.color = color
 	local frame_name = self.frame:GetName()
 	_G[frame_name.."Bar"]:SetStatusBarColor(color.r, color.g, color.b)
