@@ -6410,7 +6410,7 @@ do
 					return
 				end
 			end
-			fireEvent("DBM_PlaySound", path
+			fireEvent("DBM_PlaySound", path)
 			if soundSetting == "Dialog" then
 				PlaySoundFile(path, "Dialog")
 			elseif ignoreSFX or soundSetting == "Master" then
