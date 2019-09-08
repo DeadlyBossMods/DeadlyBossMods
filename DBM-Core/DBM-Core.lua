@@ -69,7 +69,7 @@ end
 
 DBM = {
 	Revision = parseCurseDate("@project-date-integer@"),
-	DisplayVersion = "8.2.16", -- the string that is shown as version
+	DisplayVersion = "8.2.17 alpha", -- the string that is shown as version
 	ReleaseRevision = releaseDate(2019, 9, 4) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 }
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
@@ -8875,7 +8875,7 @@ do
 			------General (can really apply to anything): spell, count, soon, sooncount, prewarn
 			--SpellId: Raw spell or encounter journal Id if available.
 			--Mod ID: Encounter ID as string, or a generic string for mods that don't have encounter ID (such as trash, dummy/test mods)
-			--boolean: Whether or not this warning is a special warning.
+			--boolean: Whether or not this warning is a special warning (higher priority).
 			fireEvent("DBM_Announce", message, self.icon, self.type, self.spellId, self.mod.id, false)
 		else
 			self.combinedcount = 0
@@ -9562,7 +9562,7 @@ do
 			------Personal/Role (Applies to you, or your job): Everything Else
 			--SpellId: Raw spell or encounter journal Id if available.
 			--Mod ID: Encounter ID as string, or a generic string for mods that don't have encounter ID (such as trash, dummy/test mods)
-			--boolean: Whether or not this warning is a special warning.
+			--boolean: Whether or not this warning is a special warning (higher priority).
 			fireEvent("DBM_Announce", text, self.icon, self.type, self.spellId, self.mod.id, true)
 			if self.sound then
 				local soundId = self.option and self.mod.Options[self.option .. "SWSound"] or self.flash
