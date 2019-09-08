@@ -8866,11 +8866,17 @@ do
 				end
 			end
 			--Message: Full message text
-			--Icon: Texture path for icon
+			--Icon: Texture path/id for icon
 			--Type: Announce type
+			----Types: you, target, targetsource, spell, ends, endtarget, fades, adds, count, stack, cast, soon, sooncount, prewarn, bait, stage, stagechange, prestage, moveto
+			------Personal/Role (Applies to you, or your job): you, stack, bait, moveto, fades
+			------General Target Messages (informative, doesn't usually apply to you): target, targetsource
+			------Fight Changes (Stages, adds, boss buff/debuff, etc): stage, stagechange, prestage, adds, ends, endtarget
+			------General (can really apply to anything): spell, count, soon, sooncount, prewarn
 			--SpellId: Raw spell or encounter journal Id if available.
 			--Mod ID: Encounter ID as string, or a generic string for mods that don't have encounter ID (such as trash, dummy/test mods)
-			fireEvent("DBM_Announce", message, self.icon, self.type, self.spellId, self.mod.id)
+			--boolean: Whether or not this warning is a special warning.
+			fireEvent("DBM_Announce", message, self.icon, self.type, self.spellId, self.mod.id, false)
 		else
 			self.combinedcount = 0
 			self.combinedtext = {}
@@ -9546,10 +9552,18 @@ do
 				end
 			end
 			--Text: Full message text
+			--Icon: Texture path/id for icon
 			--Type: Announce type
+			----Types: spell, ends, fades, soon, bait, dispel, interrupt, interruptcount, you, youcount, youpos, soakpos, target, targetcount, defensive, taunt, close, move, keepmove, stopmove,
+			----gtfo, dodge, dodgecount, dodgeloc, moveaway, moveawaycount, moveto, soak, jump, run, cast, lookaway, reflect, count, sooncount, stack, switch, switchcount, adds, addscustom, targetchange, prewarn
+			------General Target Messages (but since it's a special warning, it applies to you in some way): target, targetcount
+			------Fight Changes (Stages, adds, boss buff/debuff, etc): adds, addscustom, targetchange, switch, switchcount, ends
+			------General (can really apply to anything): spell, count, soon, sooncount, prewarn
+			------Personal/Role (Applies to you, or your job): Everything Else
 			--SpellId: Raw spell or encounter journal Id if available.
 			--Mod ID: Encounter ID as string, or a generic string for mods that don't have encounter ID (such as trash, dummy/test mods)
-			fireEvent("DBM_Announce", text, nil, self.type, self.spellId, self.mod.id)
+			--boolean: Whether or not this warning is a special warning.
+			fireEvent("DBM_Announce", text, self.icon, self.type, self.spellId, self.mod.id, true)
 			if self.sound then
 				local soundId = self.option and self.mod.Options[self.option .. "SWSound"] or self.flash
 				if noteHasName and type(soundId) == "number" then soundId = noteHasName end--Change number to 5 if it's not a custom sound, else, do nothing with it
@@ -9887,11 +9901,11 @@ do
 	end
 
 	function bossModPrototype:NewSpecialWarningAdds(text, optionDefault, ...)
-		return newSpecialWarning(self, "Adds", text, nil, optionDefault, ...)
+		return newSpecialWarning(self, "adds", text, nil, optionDefault, ...)
 	end
 
 	function bossModPrototype:NewSpecialWarningAddsCustom(text, optionDefault, ...)
-		return newSpecialWarning(self, "Addscustom", text, nil, optionDefault, ...)
+		return newSpecialWarning(self, "addscustom", text, nil, optionDefault, ...)
 	end
 
 	function bossModPrototype:NewSpecialWarningTargetChange(text, optionDefault, ...)
