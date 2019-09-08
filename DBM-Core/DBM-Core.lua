@@ -9547,7 +9547,7 @@ do
 			--Type: Announce type
 			--SpellId: Raw spell or encounter journal Id if available.
 			--Mod ID: Encounter ID as string, or a generic string for mods that don't have encounter ID (such as trash, dummy/test mods)
-			fireEvent("DBM_Announce", text, self.type, self.spellId, self.mod.id)
+			fireEvent("DBM_Announce", text, nil, self.type, self.spellId, self.mod.id)
 			if self.sound then
 				local soundId = self.option and self.mod.Options[self.option .. "SWSound"] or self.flash
 				if noteHasName and type(soundId) == "number" then soundId = noteHasName end--Change number to 5 if it's not a custom sound, else, do nothing with it
