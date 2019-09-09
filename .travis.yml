@@ -3,7 +3,7 @@ language: minimal
 addons:
     apt:
         packages:
-            - luarocks
+        - luarocks
 
 git:
     depth: 100
