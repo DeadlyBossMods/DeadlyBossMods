@@ -6394,7 +6394,7 @@ do
 	local function playSound(self, path, ignoreSFX, validate)
 		local soundSetting = self.Options.UseSoundChannel
 		if type(path) == "number" then
-			fireEvent("DBM_PlaySound", path)
+			DBM:Debug("PlaySound playing with media "..path, 3)
 			if soundSetting == "Dialog" then
 				PlaySound(path, "Dialog", false)
 			elseif ignoreSFX or soundSetting == "Master" then
@@ -6402,6 +6402,7 @@ do
 			else
 				PlaySound(path)--using SFX channel, leave forceNoDuplicates on.
 			end
+			fireEvent("DBM_PlaySound", path)
 		else
 			if validate then
 				if not LSMMediaCacheBuilt then buildLSMFileCache() end
@@ -6410,7 +6411,7 @@ do
 					return
 				end
 			end
-			fireEvent("DBM_PlaySound", path)
+			DBM:Debug("PlaySoundFile playing with media "..path, 3)
 			if soundSetting == "Dialog" then
 				PlaySoundFile(path, "Dialog")
 			elseif ignoreSFX or soundSetting == "Master" then
@@ -6418,6 +6419,7 @@ do
 			else
 				PlaySoundFile(path)
 			end
+			fireEvent("DBM_PlaySound", path)
 		end
 	end
 
