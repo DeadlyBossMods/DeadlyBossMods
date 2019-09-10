@@ -389,8 +389,8 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS.stack			= "%%d acumulaciones de %s en ti"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.switch		= "%s - ¡cambia de objetivo!"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.switchcount	= "%s - ¡cambia de objetivo! (%%s)"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.gtfo			= "%%s a tus pies - ¡apártate!"
-DBM_CORE_AUTO_SPEC_WARN_TEXTS.Adds			= "Esbirros en breve - ¡cambia de objetivo!"
-DBM_CORE_AUTO_SPEC_WARN_TEXTS.Addscustom	= "Esbirros en breve - %%s"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.adds			= "Esbirros en breve - ¡cambia de objetivo!"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.addscustom	= "Esbirros en breve - %%s"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.targetchange	= "¡cambia de objetivo a %%s!"
 
 -- Auto-generated Special Warning Localizations
@@ -433,8 +433,8 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS.stack 			= "Mostrar aviso especial cuando tengas
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch			= "Mostrar aviso especial para cambiar de objetivo a $spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switchcount		= "Mostrar aviso especial (con contador) para cambiar de objetivo a $spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.gtfo 			= "Mostrar aviso especial para apartarte de áreas de daño en el suelo"
-DBM_CORE_AUTO_SPEC_WARN_OPTIONS.Adds			= "Mostrar aviso especial para cambiar de objetivo cuando falte poco para que aparezcan esbirros"
-DBM_CORE_AUTO_SPEC_WARN_OPTIONS.Addscustom		= "Mostrar aviso especial cuando falte poco para que aparezcan esbirros"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.adds			= "Mostrar aviso especial para cambiar de objetivo cuando falte poco para que aparezcan esbirros"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.addscustom		= "Mostrar aviso especial cuando falte poco para que aparezcan esbirros"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.targetchange	= "Mostrar aviso especial para cambiar a objetivos prioritarios"
 
 -- Auto-generated Timer Localizations

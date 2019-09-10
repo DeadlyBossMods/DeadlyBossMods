@@ -400,8 +400,8 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS.stack				= "%%d stack di %s su di te"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.switch			= "%s - cambio bersaglio"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.switchcount		= "%s - cambio bersaglio (%%s)"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.gtfo				= "%%s sotto di te - spostati"
-DBM_CORE_AUTO_SPEC_WARN_TEXTS.Adds				= "Add in Arrivo - cambio bersaglio"
-DBM_CORE_AUTO_SPEC_WARN_TEXTS.Addscustom		= "Add in Arrivo - %%s"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.adds				= "Add in Arrivo - cambio bersaglio"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.addscustom		= "Add in Arrivo - %%s"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.targetchange		= "Cambio Bersaglio - passa a %%s"
 -- DBM_CORE_AUTO_SPEC_WARN_TEXTS - FINE
 
@@ -446,8 +446,8 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS.stack 			= "Mostra avviso speciale quando affett
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch			= "Mostra avviso speciale per cambiare bersaglio con $spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switchcount		= "Mostra avviso speciale (con conteggio) per cambiare bersaglio con $spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.gtfo 			= "Mostra avviso speciale per spostarsi dalle schifezze a terra"
-DBM_CORE_AUTO_SPEC_WARN_OPTIONS.Adds			= "Mostra avviso speciale per cambiare bersaglio per l'arrivo di add"
-DBM_CORE_AUTO_SPEC_WARN_OPTIONS.Addscustom		= "Mostra avviso speciale per l'arrivo di add"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.adds			= "Mostra avviso speciale per cambiare bersaglio per l'arrivo di add"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.addscustom		= "Mostra avviso speciale per l'arrivo di add"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.targetchange	= "Mostra avviso speciale per cambio bersaglio prioritario"
 -- DBM_CORE_AUTO_SPEC_WARN_OPTIONS - FINE
 

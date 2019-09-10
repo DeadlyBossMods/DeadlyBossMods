@@ -366,8 +366,8 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS.stack				= "%%d Stapel von %s auf dir"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.switch			= "%s - Ziel wechseln"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.switchcount		= "%s - Ziel wechseln (%%s)"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.gtfo				= "%%s unter dir - lauf raus"
-DBM_CORE_AUTO_SPEC_WARN_TEXTS.Adds				= "Adds kommen - Ziel wechseln"
-DBM_CORE_AUTO_SPEC_WARN_TEXTS.Addscustom		= "Adds kommen - %%s"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.adds				= "Adds kommen - Ziel wechseln"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.addscustom		= "Adds kommen - %%s"
 
 -- Auto-generated Special Warning Localizations
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell 			= "Spezialwarnung für $spell:%s"
@@ -406,8 +406,8 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS.stack 			= "Spezialwarnung bei >=%d Stapel von $
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch			= "Spezialwarnung für Zielwechsel auf $spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switchcount		= "Spezialwarnung (mit Zählung) für Zielwechsel auf $spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.gtfo 			= "Spezialwarnung zum Rauslaufen aus schlechten Dingen auf dem Boden"
-DBM_CORE_AUTO_SPEC_WARN_OPTIONS.Adds			= "Spezialwarnung für Zielwechsel auf ankommende Adds"
-DBM_CORE_AUTO_SPEC_WARN_OPTIONS.Addscustom		= "Spezialwarnung für ankommende Adds"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.adds			= "Spezialwarnung für Zielwechsel auf ankommende Adds"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.addscustom		= "Spezialwarnung für ankommende Adds"
 
 -- Auto-generated Timer Localizations
 DBM_CORE_AUTO_TIMER_TEXTS.target		= "%s: %%s"

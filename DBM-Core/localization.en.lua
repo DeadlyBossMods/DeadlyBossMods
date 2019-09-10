@@ -99,7 +99,7 @@ DBM_CORE_NOTESHAREERRORALREADYOPEN	= "Cannot open a shared note link while note 
 DBM_CORE_ALLMOD_DEFAULT_LOADED		= "Default options for all mods in this instance have been loaded."
 DBM_CORE_ALLMOD_STATS_RESETED		= "All mod stats have been reset."
 DBM_CORE_MOD_DEFAULT_LOADED			= "Default options for this fight have been loaded."
-DBM_CORE_SOUNDKIT_MIGRATION			= "One or more of your warning/special warning sounds were reset to defaults do to incompatability with patch 8.2 and later. DBM now only supports sound files residing your addons folder, or SoundKit IDs for playing media"
+DBM_CORE_SOUNDKIT_MIGRATION			= "One or more of your warning/special warning sounds were reset to defaults do to incompatability media type or invalid sound path. DBM now only supports sound files residing your addons folder, or SoundKit IDs for playing media"
 
 DBM_CORE_WORLDBOSS_ENGAGED			= "%s was possibly engaged on your realm at %s percent health. (Sent by %s)"
 DBM_CORE_WORLDBOSS_DEFEATED			= "%s was possibly defeated on your realm (Sent by %s)."
@@ -400,8 +400,8 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 	switch			= "%s - switch targets",
 	switchcount		= "%s - switch targets (%%s)",
 	gtfo			= "%%s under you - move away",
-	Adds			= "Incoming Adds - switch targets",
-	Addscustom		= "Incoming Adds - %%s",
+	adds			= "Incoming Adds - switch targets",
+	addscustom		= "Incoming Adds - %%s",
 	targetchange	= "Target Change - switch to %%s"
 }
 
@@ -446,8 +446,8 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 	switch			= "Show special warning to switch targets for $spell:%s",
 	switchcount		= "Show special warning (with count) to switch targets for $spell:%s",
 	gtfo 			= "Show special warning to move out of bad stuff on ground",
-	Adds			= "Show special warning to switch targets for incoming adds",
-	Addscustom		= "Show special warning for incoming adds",
+	adds			= "Show special warning to switch targets for incoming adds",
+	addscustom		= "Show special warning for incoming adds",
 	targetchange	= "Show special warning for priority target changes"
 }
 

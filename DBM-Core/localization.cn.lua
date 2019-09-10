@@ -390,8 +390,8 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS.stack				= "你叠加了%%d层%s"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.switch			= "%s - 转换目标"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.switchcount		= "%s - 转换目标 (%%s)"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.gtfo				= "注意%%s - 快躲开"
-DBM_CORE_AUTO_SPEC_WARN_TEXTS.Adds				= "小怪出现 - 转换目标"
-DBM_CORE_AUTO_SPEC_WARN_TEXTS.Addscustom		= "小怪出现 - %%s"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.adds				= "小怪出现 - 转换目标"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.addscustom		= "小怪出现 - %%s"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.targetchange		= "更换目标 - 请选择 %%s"
 
 -- Auto-generated Special Warning Localizations
@@ -435,8 +435,8 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS.stackcount		= "特殊警报：当叠加了>=%d�
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch 			= "特殊警报：针对$spell:%s需要转换目标"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switchcount		= "特殊警报：针对$spell:%s需要转换目标(带计数)"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.gtfo			= "特殊警报：需要躲开地上的有害技能"
-DBM_CORE_AUTO_SPEC_WARN_OPTIONS.Adds			= "特殊警报：需要攻击小怪"
-DBM_CORE_AUTO_SPEC_WARN_OPTIONS.Addscustom		= "特殊警报：小怪(自定义)"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.adds			= "特殊警报：需要攻击小怪"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.addscustom		= "特殊警报：小怪(自定义)"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.targetchange	= "特殊警报：需要立刻切换目标时"
 
 -- Auto-generated Timer Localizations

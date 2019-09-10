@@ -391,8 +391,8 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS.stack 			= "На вас %%d стаков от %s"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.switch 			= "%s - переключитесь"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.switchcount 		= "%s - переключитесь (%%s)"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.gtfo				= "Под вами %%s - выбегите"
-DBM_CORE_AUTO_SPEC_WARN_TEXTS.Adds				= "Прибыли адды - смените цель"
-DBM_CORE_AUTO_SPEC_WARN_TEXTS.Addscustom		= "Прибыли адды - %%s"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.adds				= "Прибыли адды - смените цель"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.addscustom		= "Прибыли адды - %%s"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.targetchange		= "Смена цели - переключитесь на %%s"
 
 -- Auto-generated Special Warning Localizations
@@ -435,8 +435,8 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS.stack 			= "Спец-предупреждени�
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch			= "Спец-предупреждение о смене цели для $spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switchcount 	= "Спец-предупреждение (со счетчиком) о смене цели для $spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.gtfo 			= "Спец-предупреждение выбегите из войды на земле"
-DBM_CORE_AUTO_SPEC_WARN_OPTIONS.Adds			= "Спец-предупреждение сменить цель для прибывающих аддов"
-DBM_CORE_AUTO_SPEC_WARN_OPTIONS.Addscustom		= "Спец-предупреждение для прибывающих аддов"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.adds			= "Спец-предупреждение сменить цель для прибывающих аддов"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.addscustom		= "Спец-предупреждение для прибывающих аддов"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.targetchange	= "Спец-предупреждение для смены приоритетной цели"
 
 -- Auto-generated Timer Localizations
