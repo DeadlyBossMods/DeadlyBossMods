@@ -14,7 +14,7 @@ L.OTabBosses	= "보스"
 --L.OTabOptions	= GAMEOPTIONS_MENU
 
 L.TabCategory_Options		= "일반 설정"
-L.TabCategory_OTHER			= "기타 보스 모드"
+L.TabCategory_OTHER			= "기타 모드"
 
 L.BossModLoaded 			= "%s 통계"
 L.BossModLoad_now 			= [[보스 모드가 로딩되지 않았습니다. 
