@@ -10,6 +10,10 @@ insert_final_newline = true
 [*.md]
 trim_trailing_whitespace = false
 
-[*.yml]
+[{*.yml,.pkgmeta}]
 indent_style = space
+indent_size = 2
+
+[.luacheckrc]
+indent_style = tab
 indent_size = 4
