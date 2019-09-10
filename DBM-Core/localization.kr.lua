@@ -100,7 +100,7 @@ DBM_CORE_NOTESHAREERRORALREADYOPEN	= "메모 편집기가 이미 열려 있는 �
 DBM_CORE_ALLMOD_DEFAULT_LOADED		= "이 인스턴스에 속한 모든 모드의 기본 설정이 로딩됐습니다."
 DBM_CORE_ALLMOD_STATS_RESETED		= "모든 모드 통계가 초기화 되었습니다."
 DBM_CORE_MOD_DEFAULT_LOADED			= "이 전투의 기본 설정이 로딩됐습니다."
-DBM_CORE_SOUNDKIT_MIGRATION			= "한개 이상의 경고/특수 경고 효과음이 8.2 패치 이후의 버전과 호환되지 않아 기본값으로 초기화 되었습니다 (interface 폴더 안에 있는 효과음 파일 경로 또는 SoundKit ID를 사용해야 합니다)"
+DBM_CORE_SOUNDKIT_MIGRATION			= "한개 이상의 경고/특수 경고 효과음이 호환되지 않는 미디어 형식이거나 파일 경로가 잘못되는 등의 문제로 인해 기본값으로 초기화 되었습니다. DBM은 현재 애드온 폴더 내에 있는 효과음 파일이나 미디어 재생에 쓰이는 SoundKit ID만 지원하고 있습니다."
 
 DBM_CORE_WORLDBOSS_ENGAGED			= "당신이 속한 서버에서 %s 전투가 %s 퍼센트의 체력으로 시작된 것 같습니다. (%s|1이;가; 전송)"
 DBM_CORE_WORLDBOSS_DEFEATED			= "당신이 속한 서버에서 %s|1이;가; 잡힌 것 같습니다. (%s|1이;가; 전송)"
