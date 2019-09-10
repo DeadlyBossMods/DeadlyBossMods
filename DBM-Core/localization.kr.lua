@@ -387,8 +387,8 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS.stack		= "당신에게 %s (%%d중첩)"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.switch		= "%s - 대상 바꾸세요"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.switchcount	= "%s - 대상 바꾸세요 (%%s)"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.gtfo		= "%%s 깔림 - 피하세요"
-DBM_CORE_AUTO_SPEC_WARN_TEXTS.Adds		= "쫄 등장 - 대상 바꾸세요"
-DBM_CORE_AUTO_SPEC_WARN_TEXTS.Addscustom	= "쫄 등장 - %%s"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.adds		= "쫄 등장 - 대상 바꾸세요"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.addscustom	= "쫄 등장 - %%s"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.targetchange	= "대상 변경 - %%s 치세요"
 
 -- Auto-generated Special Warning Localizations
@@ -431,8 +431,8 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS.stack			= "당신이 $spell:%2$s %1$d중첩 이�
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch			= "$spell:%s에 대상 변경 특수 경고 보기"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switchcount 		= "$spell:%s에 대상 변경 특수 경고 보기 (횟수 포함)"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.gtfo 			= "바닥 피하기 특수 경고 보기"
-DBM_CORE_AUTO_SPEC_WARN_OPTIONS.Adds 			= "쫄 등장시 대상 변경 특수 경고 보기"
-DBM_CORE_AUTO_SPEC_WARN_OPTIONS.Addscustom		= "쫄 등장시 특수 경고 보기"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.adds 			= "쫄 등장시 대상 변경 특수 경고 보기"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.addscustom		= "쫄 등장시 특수 경고 보기"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.targetchange		= "점사 우선순위 변경시 특수 경고 보기"
 
 -- Auto-generated Timer Localizations
