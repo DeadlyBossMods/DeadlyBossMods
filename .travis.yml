@@ -1,21 +1,21 @@
 language: minimal
 
 addons:
-    apt:
-        packages:
-        - luarocks
+  apt:
+    packages:
+      - luarocks
 
 git:
-    depth: 100
+  depth: 100
 
 install: luarocks install --local luacheck
 
 script: /home/travis/.luarocks/bin/luacheck . --no-color -qo "011"
 
 after_success:
-    - curl -s https://raw.githubusercontent.com/BigWigsMods/packager/master/release.sh | bash; if [[ $? != 0 ]]; then TRAVIS_TEST_RESULT=1; fi
+  - curl -s https://raw.githubusercontent.com/BigWigsMods/packager/master/release.sh | bash; if [[ $? != 0 ]]; then TRAVIS_TEST_RESULT=1; fi
 
 notifications:
-    email:
-        on_failure: always
-        on_success: never
+  email:
+    on_failure: always
+    on_success: never
