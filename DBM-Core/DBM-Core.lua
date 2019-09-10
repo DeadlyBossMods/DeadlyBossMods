@@ -3498,42 +3498,42 @@ do
 		local migrated = false
 		if type(self.Options.RaidWarningSound) == "string" and self.Options.RaidWarningSound ~= "" then
 			local searchMsg = self.Options.RaidWarningSound:lower()
-			if not searchMsg:find("addons") or searchMsg:find("ClassicSupport") then
+			if not searchMsg:find("addons") or searchMsg:find("classicsupport") then
 				self.Options.RaidWarningSound = self.DefaultOptions.RaidWarningSound
 				migrated = true
 			end
 		end
 		if type(self.Options.SpecialWarningSound) == "string" and self.Options.SpecialWarningSound ~= "" then
 			local searchMsg = self.Options.SpecialWarningSound:lower()
-			if not searchMsg:find("addons") or searchMsg:find("ClassicSupport") then
+			if not searchMsg:find("addons") or searchMsg:find("classicsupport") then
 				self.Options.SpecialWarningSound = self.DefaultOptions.SpecialWarningSound
 				migrated = true
 			end
 		end
 		if type(self.Options.SpecialWarningSound2) == "string" and self.Options.SpecialWarningSound2 ~= "" then
 			local searchMsg = self.Options.SpecialWarningSound2:lower()
-			if not searchMsg:find("addons") or searchMsg:find("ClassicSupport") then
+			if not searchMsg:find("addons") or searchMsg:find("classicsupport") then
 				self.Options.SpecialWarningSound2 = self.DefaultOptions.SpecialWarningSound2
 				migrated = true
 			end
 		end
 		if type(self.Options.SpecialWarningSound3) == "string" and self.Options.SpecialWarningSound3 ~= "" then
 			local searchMsg = self.Options.SpecialWarningSound3:lower()
-			if not searchMsg:find("addons") or searchMsg:find("ClassicSupport") then
+			if not searchMsg:find("addons") or searchMsg:find("classicsupport") then
 				self.Options.SpecialWarningSound3 = self.DefaultOptions.SpecialWarningSound3
 				migrated = true
 			end
 		end
 		if type(self.Options.SpecialWarningSound4) == "string" and self.Options.SpecialWarningSound4 ~= "" then
 			local searchMsg = self.Options.SpecialWarningSound4:lower()
-			if not searchMsg:find("addons") or searchMsg:find("ClassicSupport") then
+			if not searchMsg:find("addons") or searchMsg:find("classicsupport") then
 				self.Options.SpecialWarningSound4 = self.DefaultOptions.SpecialWarningSound4
 				migrated = true
 			end
 		end
 		if type(self.Options.SpecialWarningSound5) == "string" and self.Options.SpecialWarningSound5 ~= "" then
 			local searchMsg = self.Options.SpecialWarningSound5:lower()
-			if not searchMsg:find("addons") or searchMsg:find("ClassicSupport") then
+			if not searchMsg:find("addons") or searchMsg:find("classicsupport") then
 				self.Options.SpecialWarningSound5 = self.DefaultOptions.SpecialWarningSound5
 				migrated = true
 			end
