@@ -28,8 +28,8 @@ local yellShockBurst				= mod:NewYell(303488)
 local yellShockBurstFades			= mod:NewShortFadesYell(303488)
 --local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 8)
 
-local timerBioelectricblastCD		= mod:NewCDTimer(19.1, 303319, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
-local timerShockburstCD				= mod:NewCDTimer(37, 303488, nil, nil, nil, 3)
+local timerBioelectricblastCD		= mod:NewCDTimer(13.9, 303319, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)--13.9 to like 30?
+local timerShockburstCD				= mod:NewCDTimer(36.6, 303488, nil, nil, nil, 3)
 local timerElectricDischargeCD		= mod:NewCDTimer(25.6, 303451, nil, nil, nil, 2, nil, DBM_CORE_HEALER_ICON)
 
 --mod:AddReadyCheckOption(37460, false)
@@ -44,7 +44,7 @@ end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 303319 then
+	if spellId == 303319 and self:AntiSpam(3, 1) then
 		specWarnBioelectricBlast:Show()
 		specWarnBioelectricBlast:Play("watchstep")
 		timerBioelectricblastCD:Start()
