@@ -222,7 +222,7 @@ L.SpecialWarnSound5			= "Suono predefinito per accisi speciali con note contenen
 
 -- Tab: Spoken Alerts Frame
 L.Panel_SpokenAlerts		= "Avvisi Parlati"
-L.Area_VoiceSelection		= "Selezioni Voce (scorri i menu con la rotellina)"
+L.Area_VoiceSelection		= "Selezioni Voce"
 L.CountdownVoice			= "Prima Voce conto alla rovescia"
 L.CountdownVoice2			= "Seconda Voce conto alla rovescia"
 L.CountdownVoice3			= "Terza Voce conto alla rovescia"
