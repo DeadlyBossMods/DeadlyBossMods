@@ -69,8 +69,8 @@ end
 
 DBM = {
 	Revision = parseCurseDate("@project-date-integer@"),
-	DisplayVersion = "8.2.17", -- the string that is shown as version
-	ReleaseRevision = releaseDate(2019, 9, 9) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	DisplayVersion = "8.2.19 alpha", -- the string that is shown as version
+	ReleaseRevision = releaseDate(2019, 9, 10) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 }
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
@@ -452,7 +452,7 @@ local delayedFunction
 local dataBroker
 local voiceSessionDisabled = false
 
-local fakeBWVersion, fakeBWHash = 162, "129ec11"
+local fakeBWVersion, fakeBWHash = 167, "4f92f10"
 local versionQueryString, versionResponseString = "Q^%d^%s", "V^%d^%s"
 
 local enableIcons = true -- set to false when a raid leader or a promoted player has a newer version of DBM
@@ -3498,42 +3498,42 @@ do
 		local migrated = false
 		if type(self.Options.RaidWarningSound) == "string" and self.Options.RaidWarningSound ~= "" then
 			local searchMsg = self.Options.RaidWarningSound:lower()
-			if not searchMsg:find("addons") or searchMsg:find("ClassicSupport") then
+			if not searchMsg:find("addons") or searchMsg:find("classicsupport") then
 				self.Options.RaidWarningSound = self.DefaultOptions.RaidWarningSound
 				migrated = true
 			end
 		end
 		if type(self.Options.SpecialWarningSound) == "string" and self.Options.SpecialWarningSound ~= "" then
 			local searchMsg = self.Options.SpecialWarningSound:lower()
-			if not searchMsg:find("addons") or searchMsg:find("ClassicSupport") then
+			if not searchMsg:find("addons") or searchMsg:find("classicsupport") then
 				self.Options.SpecialWarningSound = self.DefaultOptions.SpecialWarningSound
 				migrated = true
 			end
 		end
 		if type(self.Options.SpecialWarningSound2) == "string" and self.Options.SpecialWarningSound2 ~= "" then
 			local searchMsg = self.Options.SpecialWarningSound2:lower()
-			if not searchMsg:find("addons") or searchMsg:find("ClassicSupport") then
+			if not searchMsg:find("addons") or searchMsg:find("classicsupport") then
 				self.Options.SpecialWarningSound2 = self.DefaultOptions.SpecialWarningSound2
 				migrated = true
 			end
 		end
 		if type(self.Options.SpecialWarningSound3) == "string" and self.Options.SpecialWarningSound3 ~= "" then
 			local searchMsg = self.Options.SpecialWarningSound3:lower()
-			if not searchMsg:find("addons") or searchMsg:find("ClassicSupport") then
+			if not searchMsg:find("addons") or searchMsg:find("classicsupport") then
 				self.Options.SpecialWarningSound3 = self.DefaultOptions.SpecialWarningSound3
 				migrated = true
 			end
 		end
 		if type(self.Options.SpecialWarningSound4) == "string" and self.Options.SpecialWarningSound4 ~= "" then
 			local searchMsg = self.Options.SpecialWarningSound4:lower()
-			if not searchMsg:find("addons") or searchMsg:find("ClassicSupport") then
+			if not searchMsg:find("addons") or searchMsg:find("classicsupport") then
 				self.Options.SpecialWarningSound4 = self.DefaultOptions.SpecialWarningSound4
 				migrated = true
 			end
 		end
 		if type(self.Options.SpecialWarningSound5) == "string" and self.Options.SpecialWarningSound5 ~= "" then
 			local searchMsg = self.Options.SpecialWarningSound5:lower()
-			if not searchMsg:find("addons") or searchMsg:find("ClassicSupport") then
+			if not searchMsg:find("addons") or searchMsg:find("classicsupport") then
 				self.Options.SpecialWarningSound5 = self.DefaultOptions.SpecialWarningSound5
 				migrated = true
 			end
@@ -10984,15 +10984,32 @@ function bossModPrototype:AddSliderOption(name, minValue, maxValue, valueStep, d
 	end
 end
 
-function bossModPrototype:AddButton(name, onClick, cat, func)
+function bossModPrototype:AddEditboxOption(name, default, width, height, func)
 	cat = cat or "misc"
+	self.DefaultOptions[name] = {type = "editbox", value = default or ""}
+	self.Options[name] = default or ""
 	self:SetOptionCategory(name, cat)
-	self.buttons = self.buttons or {}
-	self.buttons[name] = onClick
+	self.editboxes = self.editboxes or {}
+	self.editboxes[name] = {
+		width = width,
+		height = height
+	}
 	if func then
 		self.optionFuncs = self.optionFuncs or {}
 		self.optionFuncs[name] = func
 	end
+end
+
+function bossModPrototype:AddButton(name, onClick, cat, width, height, fontObject)
+	cat = cat or "misc"
+	self:SetOptionCategory(name, cat)
+	self.buttons = self.buttons or {}
+	self.buttons[name] = {
+		onClick = onClick,
+		width = width,
+		height = height,
+		fontObject = fontObject
+	}
 end
 
 -- FIXME: this function does not reset any settings to default if you remove an option in a later revision and a user has selected this option in an earlier revision were it still was available
