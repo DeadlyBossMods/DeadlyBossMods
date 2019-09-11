@@ -20,7 +20,7 @@
 				</Anchors>
 				<Scripts>
 					<OnClick>
-						if DBM_GUI_DropDown then
+						if self:GetName():find("DBM_GUI_DropDown") then
 							DBM_GUI_DropDown:OnMouseWheel(1)
 						else
 							local parent = self:GetParent();
@@ -36,7 +36,7 @@
 				</Anchors>
 				<Scripts>
 					<OnClick>
-						if DBM_GUI_DropDown then
+						if self:GetName():find("DBM_GUI_DropDown") then
 							DBM_GUI_DropDown:OnMouseWheel(-1)
 						else
 							local parent = self:GetParent();
