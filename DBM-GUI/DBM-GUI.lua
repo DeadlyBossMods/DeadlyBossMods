@@ -4734,16 +4734,31 @@ do
 							end)
 							button:SetScript("OnClick", function(self)
 								mod.Options[v] = not mod.Options[v]
-								if mod.optionFuncs and mod.optionFuncs[v] then mod.optionFuncs[v]() end
+								if mod.optionFuncs and mod.optionFuncs[v] then
+									mod.optionFuncs[v]()
+								end
 							end)
+						elseif mod.buttons and mod.buttons[v] then
+							local but = mod.buttons[v]
+							button = catpanel:CreateButton(v, but.width, but.height, but.onClick, but.fontObject)
 						elseif mod.editboxes and mod.editboxes[v] then
 							local editBox = mod.editboxes[v]
 							button = catpanel:CreateEditBox(mod.localization.options[v], mod.Options[v], editBox.width, editBox.height)
+							button:SetScript("OnEditFocusLost", function(self)
+								if mod.optionFuncs and mod.optionFuncs[v] then
+									mod.optionFuncs[v]()
+								end
+							end)
 						elseif mod.sliders and mod.sliders[v] then
 							local slider = mod.sliders[v]
 							button = catpanel:CreateSlider(mod.localization.options[v], slider.minValue, slider.maxValue, slider.valueStep)
 							button:SetScript("OnShow", function(self)
 								self:SetValue(mod.Options[v])
+							end)
+							button:HookScript("OnValueChanged", function(self)
+								if mod.optionFuncs and mod.optionFuncs[v] then
+									mod.optionFuncs[v]()
+								end
 							end)
 						elseif mod.dropdowns and mod.dropdowns[v] then
 							local dropdownOptions = {}
@@ -4753,6 +4768,14 @@ do
 							button = catpanel:CreateDropdown(mod.localization.options[v], dropdownOptions, mod, v, function(value) mod.Options[v] = value end, nil, 32)
 							button:SetScript("OnShow", function(self)
 								self:SetSelectedValue(mod.Options[v])
+							end)
+							button:SetScript("OnClick", function(self)
+								-- Don't activate on first click as this is it showing, not a user clicking an option.
+								self.isFirst = self.isFirst or true
+								if not self.isFirst and mod.optionFuncs and mod.optionFuncs[v] then
+									mod.optionFuncs[v]()
+								end
+								self.isFirst = not self.isFirst
 							end)
 							if not addSpacer then
 								hasDropdowns = hasDropdowns + 7--Add 7 extra pixels per dropdown, because autodims is only reserving 25 per line, and dropdowns are 32
