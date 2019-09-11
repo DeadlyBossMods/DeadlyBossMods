@@ -227,7 +227,7 @@ do
 			self:ShowMenu(self.dropdown.values)
 		end
 		if #self.dropdown.values > MAX_BUTTONS then
-			_G[self:GetName().."ListScrollBar"]:SetMinMaxValues(0, #self.dropdown.values)
+			_G[self:GetName().."ListScrollBar"]:SetMinMaxValues(0, #self.dropdown.values - MAX_BUTTONS)
 			_G[self:GetName().."ListScrollBar"]:SetValueStep(1)
 			_G[self:GetName().."List"]:Show()
 		else
