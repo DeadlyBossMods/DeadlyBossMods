@@ -94,7 +94,7 @@ do
 			end)
 		end
 	end
-	local default_button_width = TabFrame1.buttons[1]:GetWidth()
+	local default_button_width = TabFrame1.buttons[1]:GetWidth() + 16--Adding pixels for scrollbar
 	TabFrame1:SetWidth(default_button_width+22)
 	TabFrame1:SetHeight(MAX_BUTTONS*TabFrame1.buttons[1]:GetHeight()+24)
 
@@ -139,9 +139,9 @@ do
 		local width = self.buttons[1]:GetWidth()
 		local bwidth = 0
 		for k, button in pairs(self.buttons) do
-			bwidth = button:GetTextWidth()
+			bwidth = button:GetTextWidth() + 16--Adding pixels for scrollbar
 			if bwidth > width then
-				TabFrame1:SetWidth(bwidth+60)
+				TabFrame1:SetWidth(bwidth+32)
 				width = bwidth
 			end
 		end
@@ -182,7 +182,7 @@ do
 		local width = self.fontbuttons[1]:GetWidth()
 		local bwidth = 0
 		for k, button in pairs(self.fontbuttons) do
-			bwidth = button:GetTextWidth()
+			bwidth = button:GetTextWidth() + 16--Adding pixels for scrollbar
 			if bwidth > width then
 				self:SetWidth(bwidth+32)
 				width = bwidth
