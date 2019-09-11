@@ -62,15 +62,15 @@
 		</Scripts>
 		<ThumbTexture name="$parentThumbTexture" inherits="UIPanelScrollBarButton" file="Interface\Buttons\UI-ScrollBar-Knob">
 			<Size>
-				<AbsDimension x="16" y="24"/>
+				<AbsDimension x="18" y="24"/>
 			</Size>
-			<TexCoords left="0.25" right="0.75" top="0.125" bottom="0.875"/>
+			<TexCoords left="0.20" right="0.80" top="0.125" bottom="0.875"/>
 		</ThumbTexture>
 	</Slider>
 
 	<Frame name="DBM_GUI_DropDownMenu" virtual="true">
 		<Frames>
-			<ScrollFrame name="$parentList" hidden="true">
+			<ScrollFrame name="$parentList">
 				<Size>
 					<AbsDimension x="24" y="0"/>
 				</Size>
@@ -90,7 +90,6 @@
 					<OnLoad>
 						self:SetBackdropBorderColor(.6, .6, .6, .6)
 						_G[self:GetName().."ScrollBarScrollUpButton"]:Disable()
-						_G[self:GetName().."ScrollBarScrollDownButton"]:Disable()
 					</OnLoad>
 				</Scripts>
 				<Frames>

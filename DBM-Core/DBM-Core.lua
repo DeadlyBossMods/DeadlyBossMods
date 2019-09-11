@@ -10986,7 +10986,7 @@ end
 
 function bossModPrototype:AddEditboxOption(name, default, width, height, func)
 	cat = cat or "misc"
-	self.DefaultOptions[name] or {type = "editbox", value = default or ""}
+	self.DefaultOptions[name] = {type = "editbox", value = default or ""}
 	self.Options[name] = default or ""
 	self:SetOptionCategory(name, cat)
 	self.editboxes = self.editboxes or {}
