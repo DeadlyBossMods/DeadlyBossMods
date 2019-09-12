@@ -52,9 +52,9 @@
 		<PushedTexture file="Interface\Buttons\UI-CheckBox-Down"/>
 	 	<HighlightTexture file="Interface\Buttons\UI-CheckBox-Highlight" alphaMode="ADD"/>
 		<CheckedTexture file="Interface\Buttons\UI-CheckBox-Check"/>
-		<DisabledCheckedTexture file="Interface\Buttons\UI-CheckBox-Check-Disabled"/>		
+		<DisabledCheckedTexture file="Interface\Buttons\UI-CheckBox-Check-Disabled"/>
 	</CheckButton>
-	
+
 	<CheckButton name="DBMOptionsCheckButtonTemplate" virtual="true" inherits="DBMOptionsBaseCheckButtonTemplate">
 		<Layers>
 			<Layer level="ARTWORK">
@@ -283,7 +283,7 @@
 						_G[self:GetName().."ScrollBarScrollDownButton"]:Disable()
 
 						local scrollbar = _G[self:GetName().."ScrollBar"]
-						scrollbar:SetMinMaxValues(0, 0)
+						scrollbar:SetMinMaxValues(0, 11)
 						scrollbar:SetValue(0)
 						self.offset = 0
 					</OnLoad>
