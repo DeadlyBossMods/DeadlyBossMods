@@ -13,11 +13,6 @@
 ## X-DBM-Mod-Type: RAID
 ## X-DBM-Mod-Category: BFA
 ## X-DBM-Mod-Has-Mythic : 1
-## X-DBM-Mod-Name: The Eternal Palace
-## X-DBM-Mod-Name-itIT: Palazzo Eterno
-## X-DBM-Mod-Name-koKR: 영원한 궁전
-## X-DBM-Mod-Name-zhCN: 永恒王宫
-## X-DBM-Mod-Name-zhTW: 永恆宮殿
 ## X-DBM-Mod-Sort: 405
 ## X-DBM-Mod-MapID: 2164
 ## X-DBM-Mod-MinCoreRevision: 17286

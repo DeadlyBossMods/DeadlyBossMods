@@ -222,7 +222,7 @@ L.SpecialWarnSound5			= "Set default sound for special warnings with notes conta
 
 -- Tab: Spoken Alerts Frame
 L.Panel_SpokenAlerts		= "Spoken Alerts"
-L.Area_VoiceSelection		= "Voice Selections (scroll selection menus with mouse wheel)"
+L.Area_VoiceSelection		= "Voice Selections"
 L.CountdownVoice			= "Set primary voice for count sounds"
 L.CountdownVoice2			= "Set secondary voice for count sounds"
 L.CountdownVoice3			= "Set tertiary voice for count sounds"

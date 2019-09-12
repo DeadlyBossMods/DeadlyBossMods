@@ -17,7 +17,7 @@ L.TabCategory_Options		= "일반 설정"
 L.TabCategory_OTHER			= "기타 모드"
 
 L.BossModLoaded 			= "%s 통계"
-L.BossModLoad_now 			= [[보스 모드가 로딩되지 않았습니다. 
+L.BossModLoad_now 			= [[보스 모드가 로딩되지 않았습니다.
 해당 인스턴스에 진입하면 로딩됩니다.
 아래 버튼을 클릭해서 모드를 직접 로딩할 수도 있습니다.]]
 
@@ -75,7 +75,7 @@ L.RaidWarnColor_1 			= "색상 1"
 L.RaidWarnColor_2 			= "색상 2"
 L.RaidWarnColor_3 			= "색상 3"
 L.RaidWarnColor_4 			= "색상 4"
-L.InfoRaidWarning			= [[공격대 경보 프레임의 위치와 색상을 설정할 수 있습니다. 
+L.InfoRaidWarning			= [[공격대 경보 프레임의 위치와 색상을 설정할 수 있습니다.
 본 프레임은 "플레이어 X가 Y에 걸렸습니다"와 같은 메시지를 표시하는데 사용됩니다.]]
 L.ColorResetted 			= "이 영역의 색상 설정을 초기화 합니다."
 L.ShowWarningsInChat 		= "대화창에서 경보 보기"
@@ -215,7 +215,7 @@ L.SpecialWarnSound5			= "메모에 이름이 있을때 특수 경고의 기본 �
 
 -- Tab: Spoken Alerts Frame
 L.Panel_SpokenAlerts		= "음성 경보"
-L.Area_VoiceSelection		= "음성 선택 (마우스 휠로 메뉴 스크롤)"
+L.Area_VoiceSelection		= "음성 선택"
 L.CountdownVoice			= "1순위 초읽기 음성 설정"
 L.CountdownVoice2			= "2순위 초읽기 음성 설정"
 L.CountdownVoice3			= "3순위 초읽기 음성 설정"
