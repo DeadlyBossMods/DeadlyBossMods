@@ -10984,7 +10984,7 @@ function bossModPrototype:AddSliderOption(name, minValue, maxValue, valueStep, d
 	end
 end
 
-function bossModPrototype:AddEditboxOption(name, default, width, height, func)
+function bossModPrototype:AddEditboxOption(name, default, cat, width, height, func)
 	cat = cat or "misc"
 	self.DefaultOptions[name] = {type = "editbox", value = default or ""}
 	self.Options[name] = default or ""
