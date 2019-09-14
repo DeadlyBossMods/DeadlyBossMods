@@ -82,7 +82,7 @@
 						self:SetBackdropBorderColor(.6, .6, .6, .6)
 						_G[self:GetName().."ScrollBarScrollUpButton"]:Disable()
 						local scrollbar = _G[self:GetName().."ScrollBar"]
-						scrollbar:SetMinMaxValues(0, 0)
+						scrollbar:SetMinMaxValues(0, 11)
 						scrollbar:SetValue(0)
 					</OnLoad>
 					<OnVerticalScroll>
