@@ -6023,9 +6023,9 @@ do
 				if self.Options.EventSoundWipe and self.Options.EventSoundWipe ~= "None" and self.Options.EventSoundWipe ~= "" then
 					if self.Options.EventSoundWipe == "Random" then
 						local random = fastrandom(3, #DBM.Defeat)
-						self:PlaySoundFile(DBM.Defeat[random].value)
+						self:PlaySoundFile(tonumber(DBM.Defeat[random].value))
 					else
-						self:PlaySoundFile(self.Options.EventSoundWipe)
+						self:PlaySoundFile(tonumber(self.Options.EventSoundWipe))
 					end
 				end
 			elseif not wipe and mod.stats then
