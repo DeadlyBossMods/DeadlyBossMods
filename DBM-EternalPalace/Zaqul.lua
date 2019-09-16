@@ -123,7 +123,7 @@ function mod:OnCombatStart(delay)
 	if not self:IsLFR() then
 		timerMindTetherCD:Start(3.3-delay)
 		timerDreadCD:Start(11.8-delay)--START
-		timerHorrificSummonerCD:Start(25.4-delay)--20 sec for event, but the portal happens 5 seconds AFTER event
+		timerHorrificSummonerCD:Start(20.4-delay)--20 sec for event, adds aren't attackable for another 5 seconds after
 		timerCrushingGraspCD:Start(30-delay)
 	else
 		timerDreadCD:Start(10.8-delay)--START
@@ -211,12 +211,12 @@ function mod:SPELL_CAST_SUCCESS(args)
 		--In perfect scenario, not delayed very much if ever even by phase changes
 		--"Mind Tether-295444-npc:150859 = pull:4.0, 48.2, 52.3, 48.7, 48.7", -- [8]
 		timerMindTetherCD:Start()
-	elseif spellId == 294515 and self:AntiSpam(5, 1) then
+	--[[elseif spellId == 294515 and self:AntiSpam(5, 1) then
 		specWarnHorrificSummoner:Show()
 		specWarnHorrificSummoner:Play("bigmob")
 	elseif spellId == 299708 and self:AntiSpam(5, 1) then
 		specWarnHorrificSummoner:Show()
-		specWarnHorrificSummoner:Play("bigmob")
+		specWarnHorrificSummoner:Play("bigmob")--]]
 	end
 end
 
@@ -388,9 +388,12 @@ end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 299711 then--Pick A Portal (script for horrors)
-		--"Pick a Portal-299711-npc:150859 = pull:20.3, 60.7, 92.5, 63.2", -- [5]
 		--Controller used for horrors even if we're in a phase one isn't cast, becauase we still want to know where the script is before we push boss.
-		timerHorrificSummonerCD:Schedule(5)--Script runs 5 sec before spawn events, so we need to offset it
+		timerHorrificSummonerCD:Start()
+		if self.vb.phase == 1 or self.vb.phase == 4 then
+			specWarnHorrificSummoner:Show()
+			specWarnHorrificSummoner:Play("bigmob")
+		end
 	elseif spellId == 299974 then--Pick a Dread (Script for dreads)
 		--Controller used for dreads even if we're in a phase one isn't cast, becauase we still want to know where the script is before we push boss.
 		if self.vb.Phase == 4 then
@@ -418,9 +421,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 			timerDreadCD:Stop()
 			timerManicDreadCD:Update(elapsed, total)
 		end
-		if timerHorrificSummonerCD:GetRemaining() < 24 then
+		if timerHorrificSummonerCD:GetRemaining() < 19 then
 			local elapsed, total = timerHorrificSummonerCD:GetTime()
-			local extend = 24 - (total-elapsed)
+			local extend = 19 - (total-elapsed)
 			DBM:Debug("timerHorrificSummonerCD extended by: "..extend, 2)
 			timerHorrificSummonerCD:Stop()
 			timerHorrificSummonerCD:Update(elapsed, total+extend)
