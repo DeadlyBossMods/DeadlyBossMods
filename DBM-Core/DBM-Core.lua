@@ -69,8 +69,8 @@ end
 
 DBM = {
 	Revision = parseCurseDate("@project-date-integer@"),
-	DisplayVersion = "8.2.19 alpha", -- the string that is shown as version
-	ReleaseRevision = releaseDate(2019, 9, 10) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	DisplayVersion = "8.2.19", -- the string that is shown as version
+	ReleaseRevision = releaseDate(2019, 9, 15) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 }
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
@@ -10124,10 +10124,6 @@ do
 							newPhase = true
 						end
 					end
-					--Check if last cast was from a different pull, if it was, nuke last cast timestamp
-					if (self.mod.combatInfo.pull or 0) > self.lastCast then--GetTime of last pull is greater than gettime of last cast
-						self.lastCast = nil
-					end
 					if self.lastCast and not newPhase then--We have a GetTime() on last cast and it's not affected by a phase change
 						local timeLastCast = GetTime() - self.lastCast--Get time between current cast and last cast
 						if timeLastCast > 4 then--Prevent infinite loop cpu hang. Plus anything shorter than 5 seconds doesn't need a timer
@@ -10334,6 +10330,7 @@ do
 		end
 		if self.type == "ai" then--A learning timer
 			if not DBM.Options.AITimer then return end
+			self.lastCast = nil
 			for i = 1, 4 do
 				--Check for any phase timers that are strings and never got a chance to become AI timers, then wipe them
 				if self["phase"..i.."CastTimer"] and type(self["phase"..i.."CastTimer"]) == "string" then
