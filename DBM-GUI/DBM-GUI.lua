@@ -4744,7 +4744,7 @@ do
 						elseif mod.editboxes and mod.editboxes[v] then
 							local editBox = mod.editboxes[v]
 							button = catpanel:CreateEditBox(mod.localization.options[v], mod.Options[v], editBox.width, editBox.height)
-							button:SetScript("OnEditFocusLost", function(self)
+							button:SetScript("OnTextChanged", function(self)
 								if mod.optionFuncs and mod.optionFuncs[v] then
 									mod.optionFuncs[v]()
 								end
@@ -4765,18 +4765,12 @@ do
 							for i, v in ipairs(mod.dropdowns[v]) do
 								dropdownOptions[#dropdownOptions + 1] = { text = mod.localization.options[v], value = v }
 							end
-							button = catpanel:CreateDropdown(mod.localization.options[v], dropdownOptions, mod, v, function(value) mod.Options[v] = value end, nil, 32)
-							button:SetScript("OnShow", function(self)
-								self:SetSelectedValue(mod.Options[v])
-							end)
-							button:SetScript("OnClick", function(self)
-								-- Don't activate on first click as this is it showing, not a user clicking an option.
-								self.isFirst = self.isFirst or true
-								if not self.isFirst and mod.optionFuncs and mod.optionFuncs[v] then
+							button = catpanel:CreateDropdown(mod.localization.options[v], dropdownOptions, mod, v, function(value)
+								mod.Options[v] = value
+								if mod.optionFuncs and mod.optionFuncs[v] then
 									mod.optionFuncs[v]()
 								end
-								self.isFirst = not self.isFirst
-							end)
+							end, nil, 32)
 							if not addSpacer then
 								hasDropdowns = hasDropdowns + 7--Add 7 extra pixels per dropdown, because autodims is only reserving 25 per line, and dropdowns are 32
 								button:SetPoint("TOPLEFT", lastButton, "BOTTOMLEFT", 0, -10)
