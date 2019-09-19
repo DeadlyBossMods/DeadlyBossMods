@@ -625,7 +625,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnCrushingDepths:CombinedShow(1, args.destName)
 	--Suffer (soak Orb), Obey (don't soak orb), Stand Together (group up), Stand Alone (don't group up), March (keep moving), Stay (stop moving)
 	elseif spellId == 299249 or spellId == 299251 or spellId == 299254 or spellId == 299255 or spellId == 299252 or spellId == 299253 then
-		--Temp, remove if cast event works
 		if args:IsPlayer() then
 			if self:AntiSpam(10, 1) then
 				playerDecreeCount = 0
@@ -674,10 +673,10 @@ function mod:SPELL_AURA_APPLIED(args)
 				playerDecreeYell = playerDecreeYell + 20--100s 2-Stack/1-Solo, 10s 2-Moving/1-Stay, 1s 2-Soak/1-NoSoak
 			elseif spellId == 299253 then--Stop Moving
 				specWarnQueensDecree:ScheduleVoiceOverLap(0+playerDecreeCount, "stopmove")
-				if text then
-					text = text..", "..L.DontMove
-				else
+				if text == "" then
 					text = L.DontMove
+				else
+					text = text..", "..L.DontMove
 				end
 				playerDecreeYell = playerDecreeYell + 10--100s 2-Stack/1-Solo, 10s 2-Moving/1-Stay, 1s 2-Soak/1-NoSoak
 			end

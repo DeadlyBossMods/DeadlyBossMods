@@ -6414,12 +6414,12 @@ do
 				end
 				--Validate Event packs
 				if not DBMVPSoundEventsPack and path:find("DBM-SoundEventsPack") then
-					--This users actual user print because these events only occure at start or end of instance or fight.
+					--This uses actual user print because these events only occure at start or end of instance or fight.
 					AddMsg("PlaySoundFile failed do to missing media at "..path..". To fix this, re-add/enable DBM-SoundEventsPack or change setting using this sound to a different sound.")
 					return
 				end
 				if not DBMVPSMGPack and path:find("DBM-SMGEventsPack") then
-					--This users actual user print because these events only occure at start or end of instance or fight.
+					--This uses actual user print because these events only occure at start or end of instance or fight.
 					AddMsg("PlaySoundFile failed do to missing media at "..path..". To fix this, re-add/enable DBM-SMGEventsPack or change setting using this sound to a different sound.")
 					return
 				end
