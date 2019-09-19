@@ -434,7 +434,6 @@ function mod:SPELL_CAST_START(args)
 		specWarnDivideandConquer:Show()
 		timerDivideandConquerCD:Start(self.vb.phase == 4 and 87.5 or self.vb.phase == 3 and 59.8 or 65)
 	elseif spellId == 299250 and self:AntiSpam(4, 5) then--In rare cases she stutter casts it, causing double warnings
-		playerDecreeCount = 0
 		warnQueensDecree:Show()
 	elseif spellId == 299178 and self.vb.phase < 2 then--Ward of Power
 		self.vb.phase = 2
