@@ -193,6 +193,7 @@ local playerSoulDrained = false
 local shieldName = DBM:GetSpellInfo(300620)
 local seenAdds = {}
 local castsPerGUID = {}
+local text = ""
 local playerDecreeCount = 0
 local playerDecreeYell = 0--100s 2-Stack/1-Solo, 10s 2-Moving/1-Stay, 1s 2-Soak/1-NoSoak
 --Extend add timers to be by phase as well so P2 adds can be in it as well, if ever see more than one in a single difficulty, ever
@@ -626,10 +627,10 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 299249 or spellId == 299251 or spellId == 299254 or spellId == 299255 or spellId == 299252 or spellId == 299253 then
 		if args:IsPlayer() then
 			if self:AntiSpam(10, 1) then
+				text = ""
 				playerDecreeCount = 0
 				playerDecreeYell = 0
 			end
-			local text = ""
 			if spellId == 299249 then--Soak Orbs
 				specWarnQueensDecree:ScheduleVoiceOverLap(0+playerDecreeCount, "helpsoak")
 				if text == "" then
