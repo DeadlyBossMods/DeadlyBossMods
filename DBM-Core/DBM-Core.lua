@@ -6455,7 +6455,7 @@ function DBM:EJ_GetSectionInfo(sectionID)
 	if flags then
 		flag1, flag2, flag3, flag4 = unpack(flags);
 	end
-	return	info.title, info.description, info.headerType, info.abilityIcon, info.creatureDisplayID, info.siblingSectionID, info.firstChildSectionID, info.filteredByDifficulty, info.link, info.startsOpen, flag1, flag2, flag3, flag4
+	return info.title, info.description, info.headerType, info.abilityIcon, info.creatureDisplayID, info.siblingSectionID, info.firstChildSectionID, info.filteredByDifficulty, info.link, info.startsOpen, flag1, flag2, flag3, flag4
 end
 
 --Handle new spell name requesting with wrapper, to make api changes easier to handle
