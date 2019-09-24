@@ -179,8 +179,8 @@ end
 --  Public Methods  --
 ----------------------
 
---/run DBM.Arrow:ShowRunTo(50, 50, 1, nil, true, "Waypoint")
-local function show(runAway, x, y, distance, time, legacy, title)
+--/run DBM.Arrow:ShowRunTo(50, 50, 1, nil, true, true, "Waypoint", custom local mapID)
+local function show(runAway, x, y, distance, time, legacy, dwayed, title, customAreaID)
 	if DBM:HasMapRestrictions() then return end
 	local player
 	if type(x) == "string" then
@@ -212,7 +212,7 @@ local function show(runAway, x, y, distance, time, legacy, title)
 	else
 		targetType = "fixed"
 		if legacy and x >= 0 and x <= 100 and y >= 0 and y <= 100 then
-			local localMap = C_Map.GetBestMapForUnit("player")
+			local localMap = tonumber(customAreaID) or C_Map.GetBestMapForUnit("player")
 			local vector = CreateVector2D(x/100, y/100)
 			local _, temptable = C_Map.GetWorldPosFromMapPos(localMap, vector)
 			x, y = temptable.x, temptable.y

@@ -1,5 +1,5 @@
 ﻿--Original code and concept by Antiarc. Used and modified with his permission.
---First adaptation in dbm credits to VEM team. Continued on their behalf do to no time from origiinal author to make it an external mod or DBM plugin.
+--First adaptation in dbm credits to VEM team. Continued on their behalf do to no time from original author to make it an external mod or DBM plugin.
 
 local ADDON_NAME = ...
 
@@ -1320,7 +1320,15 @@ function mod:RegisterEncounterMarker(spellid, name, marker)
 	marker.RegisterCallback(self, "Free", "FreeEncounterMarker", key)
 end
 
-function mod:RegisterPositionMarker(spellid, name, texture, x, y, radius, duration, r, g, b, a, blend)
+function mod:RegisterPositionMarker(spellid, name, texture, x, y, radius, duration, r, g, b, a, blend, localMap, AreaID)
+	if localMap then
+		if x >= 0 and x <= 100 and y >= 0 and y <= 100 then
+			local localMap = tonumber(AreaID) or C_Map.GetBestMapForUnit("player")
+			local vector = CreateVector2D(x/100, y/100)
+			local _, temptable = C_Map.GetWorldPosFromMapPos(localMap, vector)
+			x, y = temptable.x, temptable.y
+		end
+	end
 	local marker = encounterMarkers[spellid..name]
 	if marker ~= nil then return marker end
 	marker = Point:New(self.currentMap, x, y, nil, duration, texture, radius, blend, r, g, b, a)
@@ -1431,7 +1439,11 @@ function mod:SetZoom(zoom, zoomChange)
 end
 
 function mod:SetFixedZoom(zoom)
-	fixedZoomScale = zoom
+	if type(zoom) == "number" then
+		fixedZoomScale = zoom
+	else
+		fixedZoomScale = nil
+	end
 end
 
 function mod:Update()
