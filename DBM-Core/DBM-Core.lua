@@ -566,7 +566,7 @@ local function checkForSafeSender(sender, checkFriends, checkGuild, filterRaid)
 		--Check if it's a bnet friend sending a non bnet whisper
 		local _, numBNetOnline = BNGetNumFriends()
 		for i = 1, numBNetOnline do
-			local accountInfo = C_BattleNet.GetFriendAccountInfo(friendIndex)
+			local accountInfo = C_BattleNet.GetFriendAccountInfo(i)
 			if accountInfo then
 				local presenceID, isOnline = accountInfo.bnetAccountID, accountInfo.gameAccountInfo.isOnline
 				local friendIndex = BNGetFriendIndex(presenceID)--Check if they are on more than one client at once (very likely with bnet launcher or mobile)
@@ -5890,7 +5890,7 @@ do
 				local _, numBNetOnline = BNGetNumFriends()
 				for i = 1, numBNetOnline do
 					local sameRealm = false
-					local accountInfo = C_BattleNet.GetFriendAccountInfo(friendIndex)
+					local accountInfo = C_BattleNet.GetFriendAccountInfo(i)
 					if accountInfo then
 						local presenceID, client, isOnline = accountInfo.bnetAccountID, accountInfo.gameAccountInfo.clientProgram ~= "" and accountInfo.gameAccountInfo.clientProgram or nil, accountInfo.gameAccountInfo.isOnline
 						if isOnline and client == BNET_CLIENT_WOW then
@@ -6154,7 +6154,7 @@ do
 					local _, numBNetOnline = BNGetNumFriends()
 					for i = 1, numBNetOnline do
 						local sameRealm = false
-						local accountInfo = C_BattleNet.GetFriendAccountInfo(friendIndex)
+						local accountInfo = C_BattleNet.GetFriendAccountInfo(i)
 						if accountInfo then
 							local presenceID, client, isOnline = accountInfo.bnetAccountID, accountInfo.gameAccountInfo.clientProgram ~= "" and accountInfo.gameAccountInfo.clientProgram or nil, accountInfo.gameAccountInfo.isOnline
 							if isOnline and client == BNET_CLIENT_WOW then
