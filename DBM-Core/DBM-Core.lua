@@ -69,8 +69,8 @@ end
 
 DBM = {
 	Revision = parseCurseDate("@project-date-integer@"),
-	DisplayVersion = "8.2.20 alpha", -- the string that is shown as version
-	ReleaseRevision = releaseDate(2019, 9, 15) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	DisplayVersion = "8.2.20", -- the string that is shown as version
+	ReleaseRevision = releaseDate(2019, 9, 23) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 }
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
@@ -845,6 +845,10 @@ do
 
 		function unregisterSpellId(event, spellId)
 			if not registeredSpellIds[event] then return end
+			if spellId and not DBM:GetSpellInfo(spellId) then
+				DBM:AddMsg("DBM unregisterSpellId Error: "..spellId.." spell id does not exist!")
+				return
+			end
 			local refs = (registeredSpellIds[event][spellId] or 1) - 1
 			registeredSpellIds[event][spellId] = refs
 			if refs <= 0 then
