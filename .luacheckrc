@@ -105,6 +105,7 @@ globals = {
 
 	-- FrameXML misc
 	"BNET_CLIENT_WOW",
+	"C_BattleNet",
 	"C_Calendar",
 	"C_ChatInfo",
 	"C_EncounterJournal",
