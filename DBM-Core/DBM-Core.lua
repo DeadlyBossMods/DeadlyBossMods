@@ -11796,7 +11796,6 @@ end
 
 function bossModPrototype:DisableModel()
 	self.modelEnabled = nil
-	broken shit in a function that's almost never used
 end
 
 --------------------
