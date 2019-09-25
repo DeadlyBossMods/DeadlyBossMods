@@ -31,7 +31,6 @@ local warnPetrifyEnded					= mod:NewEndAnnounce(282615, 2, nil, nil, nil, nil, n
 
 local specWarnBreath					= mod:NewSpecialWarningSpell(breathId, nil, nil, nil, 1, 2)
 local specWarnShockwaveYou				= mod:NewSpecialWarningYou(282463, nil, nil, nil, 1, 2)
-local yellShockwave						= mod:NewYell(282463)
 local specWarnShockwaveClose			= mod:NewSpecialWarningClose(282463, nil, nil, nil, 1, 2)
 local specWarnShockwave					= mod:NewSpecialWarningDodge(282463, nil, nil, nil, 2, 2)
 local specWarnGroundSpell				= mod:NewSpecialWarningSpell(strikeId, nil, nil, nil, 3, 2)
@@ -40,10 +39,6 @@ local specWarnGTFO						= mod:NewSpecialWarningGTFO(gtfoId, nil, nil, nil, 1, 8)
 local timerBreathCD						= mod:NewCDTimer(71.5, breathId, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--71-76?
 local timerShockwaveCD					= mod:NewCDTimer(23, 282463, nil, nil, nil, 3)--23-25
 local timerGroundSpellCD				= mod:NewCDTimer(71.5, strikeId, nil, nil, nil, 3)--71-76?
-
---local berserkTimer					= mod:NewBerserkTimer(600)
-
---mod:AddReadyCheckOption(37460, false)
 
 function mod:ShockwaveTarget(targetname, uId)
 	if not targetname then
@@ -54,7 +49,6 @@ function mod:ShockwaveTarget(targetname, uId)
 	if targetname == UnitName("player") then
 		specWarnShockwaveYou:Show()
 		specWarnShockwaveYou:Play("runaway")
-		yellShockwave:Yell()
 	elseif self:CheckNearby(10, targetname) then
 		specWarnShockwaveClose:Show(targetname)
 		specWarnShockwaveClose:Play("runaway")

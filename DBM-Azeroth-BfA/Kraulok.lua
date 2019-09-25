@@ -22,10 +22,6 @@ local warnShakeLoose				= mod:NewSpellAnnounce(276046, 3)
 
 local specWarnSonicBellow			= mod:NewSpecialWarningDodge(275175, nil, nil, nil, 2, 2)
 local specWarnEarthSpike			= mod:NewSpecialWarningDodge(275194, nil, nil, nil, 2, 2)
---local specWarnShakeLoose			= mod:NewSpecialWarningSwitch(276046, nil, nil, nil, 1, 2)
---local specWarnClutch				= mod:NewSpecialWarningYou(261509, nil, nil, nil, 1, 2)
---local yellClutch					= mod:NewYell(261509)
---local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 8)
 
 --local timerSonicBellowCD				= mod:NewAITimer(16, 275175, nil, nil, nil, 3)--6-34?
 --local timerEarthSpikeCD				= mod:NewAITimer(16, 275194, nil, nil, nil, 3)
@@ -71,6 +67,7 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
+--[[
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 275200 then--Primal Rage
@@ -78,22 +75,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		--timerEarthSpikeCD:Stop()
 		--timerSonicBellowCD:Start(3)
 		--timerEarthSpikeCD:Start(3)
-	end
-end
-
---[[
-function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
-	if spellId == 228007 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
-		specWarnGTFO:Show()
-		specWarnGTFO:Play("watchfeet")
-	end
-end
-mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
-
-function mod:UNIT_DIED(args)
-	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 124396 then
-
 	end
 end
 --]]

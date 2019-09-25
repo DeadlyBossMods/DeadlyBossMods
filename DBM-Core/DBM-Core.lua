@@ -563,22 +563,21 @@ end
 
 local function checkForSafeSender(sender, checkFriends, checkGuild, filterRaid)
 	if checkFriends then
-		--Check if it's a bnet friend sending a non bnet whisper
 		local _, numBNetOnline = BNGetNumFriends()
+		--Check Battle.net friends
 		for i = 1, numBNetOnline do
 			local accountInfo = C_BattleNet.GetFriendAccountInfo(i)
-			if accountInfo then
-				local presenceID, isOnline = accountInfo.bnetAccountID, accountInfo.gameAccountInfo.isOnline
-				local friendIndex = BNGetFriendIndex(presenceID)--Check if they are on more than one client at once (very likely with bnet launcher or mobile)
-				for i=1, C_BattleNet.GetFriendNumGameAccounts(friendIndex) do
-					local gameAccountInfo = C_BattleNet.GetFriendGameAccountInfo(friendIndex, i)
-					if gameAccountInfo then
-						local toonName, client = gameAccountInfo.characterName, gameAccountInfo.clientProgram
-						if toonName and client == BNET_CLIENT_WOW then--Check if toon name exists and if client is wow. If yes to both, we found right client
-							if toonName == sender then--Now simply see if this is sender
-								return true
-							end
-						end
+			if accountInfo and accountInfo.gameAccountInfo then
+				local presenceID = accountInfo.bnetAccountID
+				--Check if it's a bnet friend sending a bnet whisper
+				if presenceID == sender then
+					return true
+				end
+				local toonName, client = accountInfo.gameAccountInfo.characterName, accountInfo.gameAccountInfo.clientProgram
+				--Check if it's a bnet friend sending a non bnet whisper
+				if toonName and client == BNET_CLIENT_WOW then--Check if toon name exists and if client is wow. If yes to both, we found right client
+					if toonName == sender then--Now simply see if this is sender
+						return true
 					end
 				end
 			end
@@ -9213,6 +9212,10 @@ do
 	end
 
 	function yellPrototype:Yell(...)
+		if not IsInInstance() then--as of 8.2.5, forbidden in outdoor world
+			DBM:Debug("WARNING: A mod is still trying to call chat SAY/YELL messages outdoors, FIXME")
+			return
+		end
 		if DBM.Options.DontSendYells or self.yellType and self.yellType == "position" and DBM:UnitBuff("player", voidForm) and DBM.Options.FilterVoidFormSay then return end
 		if not self.option or self.mod.Options[self.option] then
 			if self.yellType == "combo" then
@@ -9226,6 +9229,10 @@ do
 
 	--Force override to use say message, even when object defines "YELL"
 	function yellPrototype:Say(...)
+		if not IsInInstance() then--as of 8.2.5, forbidden in outdoor world
+			DBM:Debug("WARNING: A mod is still trying to call chat SAY/YELL messages outdoors, FIXME")
+			return
+		end
 		if DBM.Options.DontSendYells or self.yellType and self.yellType == "position" and DBM:UnitBuff("player", voidForm) and DBM.Options.FilterVoidFormSay then return end
 		if not self.option or self.mod.Options[self.option] then
 			SendChatMessage(pformat(self.text, ...), "SAY")

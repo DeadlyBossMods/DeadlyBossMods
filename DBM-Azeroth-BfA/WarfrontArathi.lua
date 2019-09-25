@@ -16,6 +16,7 @@ mod:RegisterEvents(
 --	"UNIT_SPELLCAST_SUCCEEDED"
 )
 
+--TODO, see if chat yells permitted in a warfront.
 --General
 local warnTownPortal				= mod:NewSpellAnnounce(302809, 1)
 --Alliance - Rokhan
