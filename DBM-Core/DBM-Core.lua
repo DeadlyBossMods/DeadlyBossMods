@@ -562,8 +562,8 @@ end
 
 local function checkForSafeSender(sender, checkFriends, checkGuild, filterRaid)
 	if checkFriends then
-		local _, numBNetOnline = BNGetNumFriends()
 		--Check Battle.net friends
+		local _, numBNetOnline = BNGetNumFriends()
 		for i = 1, numBNetOnline do
 			local accountInfo = C_BattleNet.GetFriendAccountInfo(i)
 			if accountInfo and accountInfo.gameAccountInfo then
