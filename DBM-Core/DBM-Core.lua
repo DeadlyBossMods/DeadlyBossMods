@@ -568,14 +568,19 @@ local function checkForSafeSender(sender, checkFriends, checkGuild, filterRaid)
 			local accountInfo = C_BattleNet.GetFriendAccountInfo(i)
 			if accountInfo and accountInfo.gameAccountInfo then
 				local presenceID = accountInfo.bnetAccountID
-				--Check if it's a bnet friend sending a bnet whisper
-				if presenceID == sender then
-					return true
-				end
 				local toonName, client = accountInfo.gameAccountInfo.characterName, accountInfo.gameAccountInfo.clientProgram
 				--Check if it's a bnet friend sending a non bnet whisper
 				if toonName and client == BNET_CLIENT_WOW then--Check if toon name exists and if client is wow. If yes to both, we found right client
 					if toonName == sender then--Now simply see if this is sender
+						if filterRaid and DBM:GetRaidUnitId(toonName) then--Person is in raid group and filter raid enabled
+							return false--just set sender as unsafe
+						else
+							return true
+						end
+					end
+				else--Sender is not logged into wow
+					--Check if it's a bnet friend sending a bnet whisper
+					if presenceID == sender then
 						return true
 					end
 				end
