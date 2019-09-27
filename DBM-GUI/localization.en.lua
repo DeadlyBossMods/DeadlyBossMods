@@ -115,7 +115,6 @@ L.ShowGuildMessages 		= "Show engage/kill/wipe messages for guild raids in chat 
 L.ShowGuildMessagesPlus		= "Also show Mythic+ engage/kill/wipe messages for guild groups (requires raid option)"
 L.WhisperMessages			= "Whisper Message Options"
 L.AutoRespond 				= "Auto-respond to whispers while fighting"
-L.EnableStatus 				= "Reply to 'status' whispers"
 L.WhisperStats 				= "Include kill/wipe stats in whisper responses"
 L.DisableStatusWhisper 		= "Disable status whispers for the entire group (requires Group Leader). Applies only to normal/heroic/mythic raids and mythic+ dungeons"
 L.DisableGuildStatus 		= "Disable progression messages from being sent to guild for entire group (requires Group Leader)."

@@ -102,7 +102,6 @@ L.ShowGuildMessages 		= "Mostrar mensajes de inicio de encuentro, victoria y der
 L.ShowGuildMessagesPlus		= "Mostrar también mensajes de inicio, victoria y derrota de Mítica+ de grupos de hermandad (requiere que la opción anterior esté activada)"
 L.WhisperMessages			= "Opciones de susurros"
 L.AutoRespond 				= "Responder automáticamente a susurros en encuentro"
-L.EnableStatus 				= "Responder automáticamente a susurros de 'estado'"
 L.WhisperStats 				= "Incluir estadísticas de victoria y derrota en las respuestas automáticas a susurros"
 L.DisableStatusWhisper 		= "Desactivar susurros automáticos de estado de encuentro del grupo o banda para todos los jugadores (requiere ser el líder). Solo se aplica a bandas en dificultad normal, heroica y mítica, y a mazmorras de piedra angular."
 L.DisableGuildStatus 		= "Desactivar mensajes de hermandad de estado de encuentro del grupo o banda para todos los jugadores (requiere ser el líder)."

@@ -69,8 +69,8 @@ end
 
 DBM = {
 	Revision = parseCurseDate("@project-date-integer@"),
-	DisplayVersion = "8.2.20", -- the string that is shown as version
-	ReleaseRevision = releaseDate(2019, 9, 23) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	DisplayVersion = "8.2.22 alpha", -- the string that is shown as version
+	ReleaseRevision = releaseDate(2019, 9, 24) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 }
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
@@ -160,7 +160,6 @@ DBM.DefaultOptions = {
 	ShowGuildMessages = true,
 	ShowGuildMessagesPlus = false,
 	AutoRespond = true,
-	StatusEnabled = true,
 	WhisperStats = false,
 	DisableStatusWhisper = false,
 	DisableGuildStatus = false,
@@ -563,17 +562,24 @@ end
 
 local function checkForSafeSender(sender, checkFriends, checkGuild, filterRaid)
 	if checkFriends then
-		--Check if it's a bnet friend sending a non bnet whisper
-		local _, numBNetOnline = BNGetNumFriends()
-		for i = 1, numBNetOnline do
-			local presenceID, _, _, _, _, _, _, isOnline = BNGetFriendInfo(i)
-			local friendIndex = BNGetFriendIndex(presenceID)--Check if they are on more than one client at once (very likely with bnet launcher or mobile)
-			for i=1, BNGetNumFriendGameAccounts(friendIndex) do
-				local _, toonName, client = BNGetFriendGameAccountInfo(friendIndex, i)
-				if toonName and client == BNET_CLIENT_WOW then--Check if toon name exists and if client is wow. If yes to both, we found right client
-					if toonName == sender then--Now simply see if this is sender
+		--Check Battle.net friends
+		local accountInfo = C_BattleNet.GetAccountInfoByID(sender)
+		if accountInfo and accountInfo.gameAccountInfo then
+			local presenceID = accountInfo.bnetAccountID
+			local toonName, client = accountInfo.gameAccountInfo.characterName, accountInfo.gameAccountInfo.clientProgram
+			--Check if it's a bnet friend sending a non bnet whisper
+			if toonName and client == BNET_CLIENT_WOW then--Check if toon name exists and if client is wow. If yes to both, we found right client
+				if toonName == sender then--Now simply see if this is sender
+					if filterRaid and DBM:GetRaidUnitId(toonName) then--Person is in raid group and filter raid enabled
+						return false--just set sender as unsafe
+					else
 						return true
 					end
+				end
+			else--Sender is not logged into wow
+				--Check if it's a bnet friend sending a bnet whisper
+				if presenceID == sender then
+					return true
 				end
 			end
 		end
@@ -2660,7 +2666,7 @@ do
 				sendSync("H")
 				SendAddonMessage("BigWigs", versionQueryString:format(0, fakeBWHash), IsInGroup(2) and "INSTANCE_CHAT" or "RAID")
 				self:Schedule(2, self.RoleCheck, false, self)
-				fireEvent("raidJoin", playerName)
+				fireEvent("DBM_raidJoin", playerName)
 				if BigWigs and BigWigs.db.profile.raidicon and not self.Options.DontSetIcons and self:GetRaidRank() > 0 then--Both DBM and bigwigs have raid icon marking turned on.
 					self:AddMsg(DBM_CORE_BIGWIGS_ICON_CONFLICT)--Warn that one of them should be turned off to prevent conflict (which they turn off is obviously up to raid leaders preference, dbm accepts either or turned off to stop this alert)
 				end
@@ -2673,7 +2679,7 @@ do
 					local id = "raid" .. i
 					local shortname = UnitName(id)
 					if (not raid[name]) and inRaid then
-						fireEvent("raidJoin", name)
+						fireEvent("DBM_raidJoin", name)
 					end
 					raid[name] = raid[name] or {}
 					raid[name].name = name
@@ -2695,7 +2701,7 @@ do
 					raidGuids[v.guid] = nil
 					raid[i] = nil
 					removeEntry(newerVersionPerson, i)
-					fireEvent("raidLeave", i)
+					fireEvent("DBM_raidLeave", i)
 				else
 					v.updated = nil
 					if v.revision and v.rank > 0 and (v.enabledIcons or "") == "true" then
@@ -2717,7 +2723,7 @@ do
 				sendSync("H")
 				SendAddonMessage("BigWigs", versionQueryString:format(0, fakeBWHash), IsInGroup(2) and "INSTANCE_CHAT" or "PARTY")
 				self:Schedule(2, self.RoleCheck, false, self)
-				fireEvent("partyJoin", playerName)
+				fireEvent("DBM_partyJoin", playerName)
 			end
 			for i = 0, GetNumSubgroupMembers() do
 				local id
@@ -2731,7 +2737,7 @@ do
 				local rank = UnitIsGroupLeader(id) and 2 or 0
 				local _, className = UnitClass(id)
 				if (not raid[name]) and inRaid then
-					fireEvent("partyJoin", name)
+					fireEvent("DBM_partyJoin", name)
 				end
 				raid[name] = raid[name] or {}
 				raid[name].name = name
@@ -2751,7 +2757,7 @@ do
 					raidGuids[v.guid] = nil
 					raid[i] = nil
 					removeEntry(newerVersionPerson, i)
-					fireEvent("partyLeave", i)
+					fireEvent("DBM_partyLeave", i)
 				else
 					v.updated = nil
 					if v.revision and v.rank > 0 and (v.enabledIcons or "") == "true" then
@@ -2770,7 +2776,7 @@ do
 			-- left the current group/raid
 			inRaid = false
 			enableIcons = true
-			fireEvent("raidLeave", playerName)
+			fireEvent("DBM_raidLeave", playerName)
 			twipe(raid)
 			twipe(newerVersionPerson)
 			-- restore playerinfo into raid table on raidleave. (for solo raid)
@@ -4664,7 +4670,8 @@ do
 			if lastBossEngage[modId..realm] and (GetTime() - lastBossEngage[modId..realm] < 30) then return end
 			lastBossEngage[modId..realm] = GetTime()
 			if realm == playerRealm and DBM.Options.WorldBossAlert and not IsEncounterInProgress() then
-				local _, toonName = BNGetGameAccountInfo(sender)
+				local gameAccountInfo = C_BattleNet.GetGameAccountInfoByID(sender)
+				local toonName = gameAccountInfo and gameAccountInfo.characterName or DBM_CORE_UNKNOWN
 				modId = tonumber(modId)--If it fails to convert into number, this makes it nil
 				local bossName = modId and EJ_GetEncounterInfo(modId) or name or DBM_CORE_UNKNOWN
 				DBM:AddMsg(DBM_CORE_WORLDBOSS_ENGAGED:format(bossName, floor(health), toonName))
@@ -4676,7 +4683,8 @@ do
 			if lastBossDefeat[modId..realm] and (GetTime() - lastBossDefeat[modId..realm] < 30) then return end
 			lastBossDefeat[modId..realm] = GetTime()
 			if realm == playerRealm and DBM.Options.WorldBossAlert and not IsEncounterInProgress() then
-				local _, toonName = BNGetGameAccountInfo(sender)
+				local gameAccountInfo = C_BattleNet.GetGameAccountInfoByID(sender)
+				local toonName = gameAccountInfo and gameAccountInfo.characterName or DBM_CORE_UNKNOWN
 				modId = tonumber(modId)--If it fails to convert into number, this makes it nil
 				local bossName = modId and EJ_GetEncounterInfo(modId) or name or DBM_CORE_UNKNOWN
 				DBM:AddMsg(DBM_CORE_WORLDBOSS_DEFEATED:format(bossName, toonName))
@@ -5748,7 +5756,7 @@ do
 					watchFrameRestore = true
 				end
 			end
-			fireEvent("pull", mod, delay, synced, startHp)
+			fireEvent("DBM_Pull", mod, delay, synced, startHp)
 			self:FlashClientIcon()
 			--serperate timer recovery and normal start.
 			if event ~= "TIMER_RECOVERY" then
@@ -5882,23 +5890,27 @@ do
 				local _, numBNetOnline = BNGetNumFriends()
 				for i = 1, numBNetOnline do
 					local sameRealm = false
-					local presenceID, _, _, _, _, _, client, isOnline = BNGetFriendInfo(i)
-					if isOnline and client == BNET_CLIENT_WOW then
-						local _, _, _, userRealm = BNGetGameAccountInfo(presenceID)
-						if connectedServers then
-							for i = 1, #connectedServers do
-								if userRealm == connectedServers[i] then
+					local accountInfo = C_BattleNet.GetFriendAccountInfo(i)
+					if accountInfo then
+						local gameAccountID, isOnline, userRealm = accountInfo.gameAccountInfo.gameAccountID, accountInfo.gameAccountInfo.isOnline, accountInfo.gameAccountInfo.realmName
+						if gameAccountID and isOnline and userRealm then
+							--local gameAccountInfo = C_BattleNet.GetGameAccountInfoByID(presenceID)--Just in case required, if it can't actually be pulled from sub table of accountInfo above
+							--local userRealm = accountInfo.gameAccountInfo.realmName or DBM_CORE_UNKNOWN
+							if connectedServers then
+								for i = 1, #connectedServers do
+									if userRealm == connectedServers[i] then
+										sameRealm = true
+										break
+									end
+								end
+							else
+								if userRealm == playerRealm then
 									sameRealm = true
-									break
 								end
 							end
-						else
-							if userRealm == playerRealm then
-								sameRealm = true
+							if sameRealm then
+								BNSendGameData(gameAccountID, "D4", "WBE\t"..modId.."\t"..userRealm.."\t"..startHp.."\t8\t"..name)--Just send users realm for pull, so we can eliminate connectedServers checks on sync handler
 							end
-						end
-						if sameRealm then
-							BNSendGameData(presenceID, "D4", "WBE\t"..modId.."\t"..userRealm.."\t"..startHp.."\t8\t"..name)--Just send users realm for pull, so we can eliminate connectedServers checks on sync handler
 						end
 					end
 				end
@@ -6031,7 +6043,7 @@ do
 					end
 					sendWhisper(k, msg)
 				end
-				fireEvent("wipe", mod)
+				fireEvent("DBM_Wipe", mod)
 				if self.Options.EventSoundWipe and self.Options.EventSoundWipe ~= "None" and self.Options.EventSoundWipe ~= "" then
 					if self.Options.EventSoundWipe == "Random" then
 						local random = fastrandom(3, #DBM.Defeat)
@@ -6132,7 +6144,7 @@ do
 					end
 					sendWhisper(k, msg)
 				end
-				fireEvent("kill", mod)
+				fireEvent("DBM_Kill", mod)
 				if savedDifficulty == "worldboss" and not mod.noWBEsync then
 					if lastBossDefeat[modId..playerRealm] and (GetTime() - lastBossDefeat[modId..playerRealm] < 30) then return end--Someone else synced in last 10 seconds so don't send out another sync to avoid needless sync spam.
 					lastBossDefeat[modId..playerRealm] = GetTime()--Update last defeat time before we send it, so we don't handle our own sync
@@ -6142,23 +6154,27 @@ do
 					local _, numBNetOnline = BNGetNumFriends()
 					for i = 1, numBNetOnline do
 						local sameRealm = false
-						local presenceID, _, _, _, _, _, client, isOnline = BNGetFriendInfo(i)
-						if isOnline and client == BNET_CLIENT_WOW then
-							local _, _, _, userRealm = BNGetGameAccountInfo(presenceID)
-							if connectedServers then
-								for i = 1, #connectedServers do
-									if userRealm == connectedServers[i] then
+						local accountInfo = C_BattleNet.GetFriendAccountInfo(i)
+						if accountInfo then
+							local gameAccountID, isOnline, userRealm = accountInfo.gameAccountInfo.gameAccountID, accountInfo.gameAccountInfo.isOnline, accountInfo.gameAccountInfo.realmName
+							if gameAccountID and isOnline and userRealm then
+								--local gameAccountInfo = C_BattleNet.GetGameAccountInfoByID(presenceID)--Just in case required, if it can't actually be pulled from sub table of accountInfo above
+								--local userRealm = accountInfo.gameAccountInfo.realmName or DBM_CORE_UNKNOWN
+								if connectedServers then
+									for i = 1, #connectedServers do
+										if userRealm == connectedServers[i] then
+											sameRealm = true
+											break
+										end
+									end
+								else
+									if userRealm == playerRealm then
 										sameRealm = true
-										break
 									end
 								end
-							else
-								if userRealm == playerRealm then
-									sameRealm = true
+								if sameRealm then
+									BNSendGameData(gameAccountID, "D4", "WBD\t"..modId.."\t"..userRealm.."\t8\t"..name)
 								end
-							end
-							if sameRealm then
-								BNSendGameData(presenceID, "D4", "WBD\t"..modId.."\t"..userRealm.."\t8\t"..name)
 							end
 						end
 					end
@@ -6751,7 +6767,7 @@ do
 			--Might need more validation if people figure out they can just whisper people with chatPrefix to trigger it.
 			--However if I have to add more validation it probably won't work in most languages :\ So lets hope antispam and combat check is enough
 			DBM:PlaySound(41928)--"sound\\creature\\aggron1\\VO_60_HIGHMAUL_AGGRON_1_AGGRO_1.ogg"
-		elseif msg == "status" and #inCombat > 0 and DBM.Options.StatusEnabled then
+		elseif msg == "status" and #inCombat > 0 and DBM.Options.AutoRespond then
 			if not difficultyText then -- prevent error when timer recovery function worked and etc (StartCombat not called)
 				savedDifficulty, difficultyText, difficultyIndex, LastGroupSize, difficultyModifier = DBM:GetCurrentInstanceDifficulty()
 			end
@@ -9197,6 +9213,10 @@ do
 	end
 
 	function yellPrototype:Yell(...)
+		if not IsInInstance() then--as of 8.2.5, forbidden in outdoor world
+			DBM:Debug("WARNING: A mod is still trying to call chat SAY/YELL messages outdoors, FIXME")
+			return
+		end
 		if DBM.Options.DontSendYells or self.yellType and self.yellType == "position" and DBM:UnitBuff("player", voidForm) and DBM.Options.FilterVoidFormSay then return end
 		if not self.option or self.mod.Options[self.option] then
 			if self.yellType == "combo" then
@@ -9210,6 +9230,10 @@ do
 
 	--Force override to use say message, even when object defines "YELL"
 	function yellPrototype:Say(...)
+		if not IsInInstance() then--as of 8.2.5, forbidden in outdoor world
+			DBM:Debug("WARNING: A mod is still trying to call chat SAY/YELL messages outdoors, FIXME")
+			return
+		end
 		if DBM.Options.DontSendYells or self.yellType and self.yellType == "position" and DBM:UnitBuff("player", voidForm) and DBM.Options.FilterVoidFormSay then return end
 		if not self.option or self.mod.Options[self.option] then
 			SendChatMessage(pformat(self.text, ...), "SAY")

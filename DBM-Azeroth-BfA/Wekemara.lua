@@ -13,8 +13,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 303319",
 	"SPELL_CAST_SUCCESS 303488",
-	"SPELL_AURA_APPLIED 303491 303451",
-	"SPELL_AURA_REMOVED 303491"
+	"SPELL_AURA_APPLIED 303491 303451"
 )
 
 --TODO, fix event for electric Discharge
@@ -24,8 +23,6 @@ local warnElectricDischarge			= mod:NewSpellAnnounce(303451, 2)
 
 local specWarnBioelectricBlast		= mod:NewSpecialWarningDodge(303319, nil, nil, nil, 2, 2)
 local specWarnShockBurst			= mod:NewSpecialWarningMoveAway(303488, nil, nil, nil, 1, 2)
-local yellShockBurst				= mod:NewYell(303488)
-local yellShockBurstFades			= mod:NewShortFadesYell(303488)
 --local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 8)
 
 local timerBioelectricblastCD		= mod:NewCDTimer(13.9, 303319, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)--13.9 to like 30?
@@ -64,21 +61,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnShockBurst:Show()
 			specWarnShockBurst:Play("runout")
-			yellShockBurst:Yell()
-			yellShockBurstFades:Countdown(spellId)
 		end
 	elseif spellId == 303451 then
 		warnElectricDischarge:Show()
 		timerElectricDischargeCD:Start()
-	end
-end
-
-function mod:SPELL_AURA_REMOVED(args)
-	local spellId = args.spellId
-	if spellId == 303491 then
-		if args:IsPlayer() then
-			yellShockBurstFades:Cancel()
-		end
 	end
 end
 

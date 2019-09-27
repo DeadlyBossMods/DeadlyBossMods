@@ -19,7 +19,6 @@ local warnGaleForce					= mod:NewTargetAnnounce(274829, 3)
 
 local specWarnAzurethosFury			= mod:NewSpecialWarningDodge(274839, nil, nil, nil, 2, 2)
 local specWarnGaleForce				= mod:NewSpecialWarningDodge(274829, nil, nil, nil, 2, 2)
-local yellGaleForce					= mod:NewYell(274829)
 local specWarnWingBuffet			= mod:NewSpecialWarningDodge(274832, nil, nil, nil, 1, 2)
 
 local timerAzurethosFuryCD			= mod:NewCDTimer(46.8, 274839, nil, nil, nil, 2)
@@ -34,9 +33,6 @@ local timerAzurethosFuryCD			= mod:NewCDTimer(46.8, 274839, nil, nil, nil, 2)
 function mod:GaleForce(targetname, uId)
 	if not targetname then return end
 	warnGaleForce:Show(targetname)
-	if targetname == UnitName("player") then
-		yellGaleForce:Yell()
-	end
 end
 
 function mod:OnCombatStart(delay, yellTriggered)
