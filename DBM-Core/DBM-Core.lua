@@ -606,6 +606,7 @@ local function checkForSafeSender(sender, checkFriends, checkGuild, filterRaid, 
 					end
 				end
 			end
+		end
 		--Check if it's a non bnet friend
 		local nf = C_FriendList.GetNumFriends()
 		for i = 1, nf do
