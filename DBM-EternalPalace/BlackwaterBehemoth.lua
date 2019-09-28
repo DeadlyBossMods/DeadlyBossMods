@@ -29,7 +29,7 @@ mod:RegisterEventsInCombat(
  or type = "interrupt"
 --]]
 local warnBioluminescentCloud			= mod:NewSpellAnnounce(292205, 2)
-local warnToxicSpine					= mod:NewTargetNoFilterAnnounce(292167, 2, nil, "Healer")
+local warnToxicSpine					= mod:NewTargetNoFilterAnnounce(292167, 2, nil, false, 2)--Too spammy for my liking, and mostly just ignored by healers anyways, so now off by default
 local warnPiercingBarb					= mod:NewTargetNoFilterAnnounce(301494, 2)
 
 local specWarnGazefromBelow				= mod:NewSpecialWarningYou(292307, nil, nil, nil, 3, 2)
