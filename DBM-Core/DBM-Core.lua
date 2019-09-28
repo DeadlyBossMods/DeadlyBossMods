@@ -560,26 +560,50 @@ local function removeEntry(t, val)
 	return existed
 end
 
-local function checkForSafeSender(sender, checkFriends, checkGuild, filterRaid)
+local function checkForSafeSender(sender, checkFriends, checkGuild, filterRaid, isRealIdMessage)
 	if checkFriends then
 		--Check Battle.net friends
-		local accountInfo = C_BattleNet.GetAccountInfoByID(sender)
-		if accountInfo and accountInfo.gameAccountInfo then
-			local presenceID = accountInfo.bnetAccountID
-			local toonName, client = accountInfo.gameAccountInfo.characterName, accountInfo.gameAccountInfo.clientProgram
-			--Check if it's a bnet friend sending a non bnet whisper
-			if toonName and client == BNET_CLIENT_WOW then--Check if toon name exists and if client is wow. If yes to both, we found right client
-				if toonName == sender then--Now simply see if this is sender
-					if filterRaid and DBM:GetRaidUnitId(toonName) then--Person is in raid group and filter raid enabled
-						return false--just set sender as unsafe
-					else
-						return true
+		if isRealIdMessage then
+			--Then sender is already presence ID, we only need to check ONE bnet friend
+			local accountInfo = C_BattleNet.GetAccountInfoByID(sender)
+			if accountInfo then
+				local presenceID = accountInfo.bnetAccountID
+				--Check if it's a bnet friend sending a bnet whisper
+				if presenceID and presenceID == sender then
+					return true
+				end
+				--Check if it's a bnet friend sending a non bnet whisper
+				if accountInfo.gameAccountInfo then--game account info means they are logged into a bnet game
+					local toonName, client = accountInfo.gameAccountInfo.characterName, accountInfo.gameAccountInfo.clientProgram or ""
+					if toonName and client == BNET_CLIENT_WOW then--Check if toon name exists and if client is wow. If yes to both, we found right client
+						if toonName == sender then--Now simply see if this is sender
+							if filterRaid and DBM:GetRaidUnitId(toonName) then--Person is in raid group and filter raid enabled
+								return false--just set sender as unsafe
+							else
+								return true
+							end
+						end
 					end
 				end
-			else--Sender is not logged into wow
-				--Check if it's a bnet friend sending a bnet whisper
-				if presenceID == sender then
-					return true
+			end
+		else
+			--We still need to see if it's a bnet friend, even if it's not a realID message, just have to iterate over entire friendslist to find matching toonname
+			local _, numBNetOnline = BNGetNumFriends()
+			for i = 1, numBNetOnline do
+				local accountInfo = C_BattleNet.GetFriendAccountInfo(i)
+				if accountInfo and accountInfo.gameAccountInfo then
+					local presenceID = accountInfo.bnetAccountID
+					local toonName, client = accountInfo.gameAccountInfo.characterName, accountInfo.gameAccountInfo.clientProgram or ""
+					--Check if it's a bnet friend sending a non bnet whisper
+					if toonName and client == BNET_CLIENT_WOW then--Check if toon name exists and if client is wow. If yes to both, we found right client
+						if toonName == sender then--Now simply see if this is sender
+							if filterRaid and DBM:GetRaidUnitId(toonName) then--Person is in raid group and filter raid enabled
+								return false--just set sender as unsafe
+							else
+								return true
+							end
+						end
+					end
 				end
 			end
 		end
@@ -3632,15 +3656,9 @@ do
 	function DBM:PARTY_INVITE_REQUEST(sender)
 		--First off, if you are in queue for something, lets not allow guildies or friends boot you from it.
 		if IsInInstance() or GetLFGMode(1) or GetLFGMode(2) or GetLFGMode(3) or GetLFGMode(4) or GetLFGMode(5) then return end
-		--First check realID
+		--Checks friends and guildies
 		if self.Options.AutoAcceptFriendInvite then
-			if checkForSafeSender(sender, true) then
-				AcceptPartyInvite()
-			end
-		end
-		--Second check guildies
-		if self.Options.AutoAcceptGuildInvite then
-			if checkForSafeSender(sender, false, true) then
+			if checkForSafeSender(sender, self.Options.AutoAcceptFriendInvite, self.Options.AutoAcceptGuildInvite) then
 				AcceptPartyInvite()
 			end
 		end
@@ -6762,7 +6780,7 @@ do
 	-- sender is a presenceId for real id messages, a character name otherwise
 	local function onWhisper(msg, sender, isRealIdMessage)
 		if statusWhisperDisabled then return end--RL has disabled status whispers for entire raid.
-		if not checkForSafeSender(sender, true, true, true) then return end--Automatically reject all whisper functions from non friends, non guildies, or people in group with us
+		if not checkForSafeSender(sender, true, true, true, isRealIdMessage) then return end--Automatically reject all whisper functions from non friends, non guildies, or people in group with us
 		if msg:find(chatPrefix) and not InCombatLockdown() and DBM:AntiSpam(60, "Ogron") and DBM.Options.AutoReplySound then
 			--Might need more validation if people figure out they can just whisper people with chatPrefix to trigger it.
 			--However if I have to add more validation it probably won't work in most languages :\ So lets hope antispam and combat check is enough
