@@ -26,7 +26,7 @@ local specWarnBlackPowder			= mod:NewSpecialWarningRun(257314, nil, nil, nil, 4,
 local yellBlackPowder				= mod:NewYell(257314)
 local specWarnAvastye				= mod:NewSpecialWarningSwitch(257316, "Dps", nil, nil, 1, 2)
 local specWarnSwiftwindSaber		= mod:NewSpecialWarningDodge(257278, nil, nil, nil, 2, 2)
-local specWarnCannonBarrage			= mod:NewSpecialWarningRun(257305, nil, nil, nil, 4, 2)
+local specWarnCannonBarrage			= mod:NewSpecialWarningDodge(257305, nil, nil, nil, 3, 2)
 local yellCannonBarrage				= mod:NewYell(257305)
 --local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 8)
 
@@ -61,7 +61,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if args:IsPlayer() then
 			specWarnCannonBarrage:Show()
-			specWarnCannonBarrage:Play("justrun")
+			specWarnCannonBarrage:Play("watchstep")
 			--specWarnCannonBarrage:ScheduleVoice(1.5, "keepmove")
 			yellCannonBarrage:Yell()
 		else
