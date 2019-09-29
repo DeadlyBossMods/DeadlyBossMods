@@ -55,10 +55,10 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 265881 then
 		specWarnDecayingTouch:Show()
 		specWarnDecayingTouch:Play("defensive")
-	elseif spellId == 265759 and self:AntiSpam(3, 1) then
+	elseif spellId == 265759 and self:AntiSpam(5, 1) then
 		specWarnSplinterSpike:Show()
 		specWarnSplinterSpike:Play("watchstep")
-	elseif spellId == 264038 and self:AntiSpam(3, 1) then
+	elseif spellId == 264038 and self:AntiSpam(5, 1) then
 		specWarnUproot:Show()
 		specWarnUproot:Play("watchstep")
 	elseif spellId == 263905 and self:AntiSpam(2.5, 2) then
