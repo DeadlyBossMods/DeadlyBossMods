@@ -199,7 +199,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 	elseif spellId == 292167 then
-		warnToxicSpine:CombinedShow(0.3, args.destName)
+		warnToxicSpine:CombinedShow(1, args.destName)
 	elseif spellId == 301494 then
 		if args:IsPlayer() then
 			specWarnPiercingBarb:Show()

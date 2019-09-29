@@ -148,6 +148,14 @@ do
 			if not targetX or mapId ~= targetMapId then
 				self:Hide() -- hide the arrow if the target doesn't exist. TODO: just hide the texture and add a timeout
 			end
+		--New bug in 8.2.5, unit position returns nil for position in areas there aren't restrictions
+		--this just has the arrow skip some onupdates during that
+		elseif (not x or not y) then
+			if IsInInstance() then--Somehow x and y returned on entering an instance, before restrictions kicked in?
+				frame:Hide()--Hide, if in an instance, disable arrow entirely
+			else
+				return--Not in instance, but x and y nil, just skip updates until x and y start returning
+			end
 		elseif targetType == "rotate" then
 			rotateState = rotateState + elapsed
 			targetX = x + cos(rotateState)
