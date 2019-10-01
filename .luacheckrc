@@ -95,6 +95,8 @@ globals = {
 	"DBMInfoFrame",
 	"DBMRangeCheck",
 	"DBMRangeCheckRadar",
+	"DBMVPSMGPack",
+	"DBMVPSoundEventsPack",
 	"DBT_AllPersistentOptions",
 	"DBT_PersistentOptions",
 	"DBT",
