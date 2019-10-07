@@ -6399,7 +6399,7 @@ function DBM:GetCurrentInstanceDifficulty()
 		return "heroic", difficultyName.." - ", difficulty, instanceGroupSize, keystoneLevel
 	elseif difficulty == 16 or difficulty == 40 then
 		return "mythic", difficultyName.." - ", difficulty, instanceGroupSize, keystoneLevel
-	elseif difficulty == 17 then--Variable LFR (ie post WoD zones)
+	elseif difficulty == 17 or difficulty == 151 then--Variable LFR (ie post WoD zones)/8.3+ LFR?
 		return "lfr", difficultyName.." - ", difficulty, instanceGroupSize, keystoneLevel
 	elseif difficulty == 18 then
 		return "event40", difficultyName.." - ", difficulty, instanceGroupSize, keystoneLevel
@@ -7152,7 +7152,7 @@ function DBM:FindInstanceIDs(low, peak, contains)
 end
 
 
---/run DBM:FindEncounterIDs(1179)--Eternal Palace
+--/run DBM:FindEncounterIDs(1180)--Ny'alotha
 --/run DBM:FindEncounterIDs(1178, 23)--Dungeon Template (mythic difficulty)
 --/run DBM:FindEncounterIDs(237, 1)--Classic Dungeons need diff 1 specified
 --/run DBM:FindDungeonMapIDs(1, 500)--Find Classic Dungeon Map IDs

@@ -2,6 +2,11 @@ if GetLocale() ~= "koKR" then return end
 local L
 
 -----------------------
+-- Grand Empress Shek'zara --
+-----------------------
+L= DBM:GetModLocalization(2378)
+
+-----------------------
 -- T'zane --
 -----------------------
 L= DBM:GetModLocalization(2139)

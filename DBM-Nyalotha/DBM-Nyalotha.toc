@@ -1,0 +1,31 @@
+## Interface: 80205
+## X-Min-Interface: 80300
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Ny'alotha|r
+## Author: MysticalOS
+## LoadOnDemand: 1
+## RequiredDeps: DBM-Core
+## SavedVariables: DBMNyalotha_AllSavedVars
+## SavedVariablesPerCharacter: DBMNyalotha_SavedStats
+## X-DBM-Mod: 1
+## X-DBM-Mod-Type: RAID
+## X-DBM-Mod-Category: BFA
+## X-DBM-Mod-Has-Mythic : 1
+## X-DBM-Mod-Name: Ny'alotha
+## X-DBM-Mod-Sort: 404
+## X-DBM-Mod-MapID: 2217
+## X-DBM-Mod-MinCoreRevision: 17286
+## X-DBM-Mod-MinExpansion: 7
+localization.en.lua
+Wrathion.lua
+Maut.lua
+TheProphetSkitra.lua
+DarkInquisitorXanesh.lua
+TheHivemind.lua
+ShadharTheInsatiable.lua
+Drestagath.lua
+Vexiona.lua
+RadenTheDespoiled.lua
+IlgynothCorruptionReborn.lua
+CarapaceofNZoth.lua
+NZothTheCorruptor.lua
+NyalothaTrash.lua
