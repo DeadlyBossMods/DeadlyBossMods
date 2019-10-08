@@ -43,7 +43,7 @@ mod:RegisterEventsInCombat(
 
 --mod:AddRangeFrameOption(6, 264382)
 --mod:AddInfoFrameOption(275270, true)
---mod:AddSetIconOption("SetIconOnEyeBeam", 264382, true)
+--mod:AddSetIconOption("SetIconOnEyeBeam", 264382, true, false, {1, 2})
 --mod:AddNamePlateOption("NPAuraOnChaoticGrowth", 296914)
 
 function mod:OnCombatStart(delay)

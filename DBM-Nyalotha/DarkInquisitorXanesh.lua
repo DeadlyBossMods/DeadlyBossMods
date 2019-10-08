@@ -2,7 +2,7 @@ local mod	= DBM:NewMod(2377, "DBM-Nyalotha", nil, 1180)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
---mod:SetCreatureID(152128)
+mod:SetCreatureID(160229)
 mod:SetEncounterID(2328)
 mod:SetZone()
 --mod:SetHotfixNoticeRev(20190716000000)--2019, 7, 16
@@ -43,7 +43,7 @@ mod:RegisterEventsInCombat(
 
 --mod:AddRangeFrameOption(6, 264382)
 --mod:AddInfoFrameOption(275270, true)
---mod:AddSetIconOption("SetIconOnEyeBeam", 264382, true)
+--mod:AddSetIconOption("SetIconOnEyeBeam", 264382, true, false, {1, 2})
 --mod:AddNamePlateOption("NPAuraOnChaoticGrowth", 296914)
 
 function mod:OnCombatStart(delay)

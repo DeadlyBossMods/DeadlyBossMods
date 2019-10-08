@@ -1,4 +1,4 @@
-local mod	= DBM:NewMod(2368, "DBM-Nyalotha", nil, 1180)
+local mod	= DBM:NewMod(2374, "DBM-Nyalotha", nil, 1180)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
@@ -43,7 +43,7 @@ mod:RegisterEventsInCombat(
 
 --mod:AddRangeFrameOption(6, 264382)
 --mod:AddInfoFrameOption(275270, true)
---mod:AddSetIconOption("SetIconOnEyeBeam", 264382, true)
+--mod:AddSetIconOption("SetIconOnEyeBeam", 264382, true, false, {1, 2})
 --mod:AddNamePlateOption("NPAuraOnChaoticGrowth", 296914)
 
 function mod:OnCombatStart(delay)
