@@ -457,7 +457,12 @@ local function DrawRouteLineCustom(T, C, sx, sy, ex, ey, w, extend, relPoint)
 
 	-- Set texture coordinates and anchors
 	T:ClearAllPoints();
-	T:SetTexCoord(TLx, TLy, BLx, BLy, TRx, TRy, BRx, BRy);
+	-- Hack to fix backwards arrow since it's easier to fix here than figure out wtf is going on up above
+	if reverse == 1 then
+		T:SetTexCoord(TLx, TLy, BLx, BLy, TRx, TRy, BRx, BRy);
+	else
+		T:SetTexCoord(BRx, BRy, TRx, TRy, BLx, BLy, TLx, TLy);
+	end
 	T:SetPoint("BOTTOMLEFT", C, relPoint, cx - Bwid, cy - Bhgt);
 	T:SetPoint("TOPRIGHT",   C, relPoint, cx + Bwid, cy + Bhgt);
 end

@@ -6399,7 +6399,7 @@ function DBM:GetCurrentInstanceDifficulty()
 		return "heroic", difficultyName.." - ", difficulty, instanceGroupSize, keystoneLevel
 	elseif difficulty == 16 or difficulty == 40 then
 		return "mythic", difficultyName.." - ", difficulty, instanceGroupSize, keystoneLevel
-	elseif difficulty == 17 then--Variable LFR (ie post WoD zones)
+	elseif difficulty == 17 or difficulty == 151 then--Variable LFR (ie post WoD zones)/8.3+ LFR?
 		return "lfr", difficultyName.." - ", difficulty, instanceGroupSize, keystoneLevel
 	elseif difficulty == 18 then
 		return "event40", difficultyName.." - ", difficulty, instanceGroupSize, keystoneLevel
@@ -7115,10 +7115,8 @@ do
 	function DBM:IconNumToString(number)
 		return iconStrings[number] or number
 	end
-	--8.2 TODO: FIXME if Broken
 	function DBM:IconNumToTexture(number)
 		return "|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_"..number..".blp:12:12|t" or number
-		--print("|T137001:12:12|t")--Doesn't work on live, but maybe PTR?
 	end
 end
 
@@ -7152,7 +7150,7 @@ function DBM:FindInstanceIDs(low, peak, contains)
 end
 
 
---/run DBM:FindEncounterIDs(1179)--Eternal Palace
+--/run DBM:FindEncounterIDs(1180)--Ny'alotha
 --/run DBM:FindEncounterIDs(1178, 23)--Dungeon Template (mythic difficulty)
 --/run DBM:FindEncounterIDs(237, 1)--Classic Dungeons need diff 1 specified
 --/run DBM:FindDungeonMapIDs(1, 500)--Find Classic Dungeon Map IDs
@@ -10603,7 +10601,7 @@ do
 			DBM:Debug("|cffff0000OptionVersion hack depricated, remove it from: |r"..spellId)
 			return
 		end
-		if type(colorType) == "number" and colorType > 6 then
+		if type(colorType) == "number" and colorType > 7 then
 			DBM:Debug("|cffff0000texture is in the colorType arg for: |r"..spellId)
 		end
 		--Use option optionName for optionVersion as well, no reason to split.
