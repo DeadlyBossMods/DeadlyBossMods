@@ -2,7 +2,7 @@ local mod	= DBM:NewMod(2365, "DBM-Nyalotha", nil, 1180)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
---mod:SetCreatureID(152128)
+mod:SetCreatureID(156523)
 mod:SetEncounterID(2327)--Obsidian Destroyer ID, but only one left after eliminating all others, should be correct
 mod:SetZone()
 --mod:SetHotfixNoticeRev(20190716000000)--2019, 7, 16

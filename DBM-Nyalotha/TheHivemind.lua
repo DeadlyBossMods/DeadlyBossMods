@@ -2,7 +2,7 @@ local mod	= DBM:NewMod(2372, "DBM-Nyalotha", nil, 1180)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
---mod:SetCreatureID(152128)
+mod:SetCreatureID(157253, 157254)--Ka'zir and Tek'ris
 mod:SetEncounterID(2333)
 mod:SetZone()
 --mod:SetHotfixNoticeRev(20190716000000)--2019, 7, 16
@@ -116,7 +116,9 @@ end
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 152311 then
+	if cid == 157253 then--Ka'zir
+
+	elseif cid == 157254 then--Tek'ris
 
 	end
 end

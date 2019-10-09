@@ -2,7 +2,7 @@ local mod	= DBM:NewMod(2368, "DBM-Nyalotha", nil, 1180)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
---mod:SetCreatureID(152128)
+mod:SetCreatureID(156818)
 mod:SetEncounterID(2329)
 mod:SetZone()
 mod:SetUsedIcons(1, 2, 3)--Unknown number of burning targets, guessed for now

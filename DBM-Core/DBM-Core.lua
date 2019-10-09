@@ -7115,10 +7115,8 @@ do
 	function DBM:IconNumToString(number)
 		return iconStrings[number] or number
 	end
-	--8.2 TODO: FIXME if Broken
 	function DBM:IconNumToTexture(number)
 		return "|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_"..number..".blp:12:12|t" or number
-		--print("|T137001:12:12|t")--Doesn't work on live, but maybe PTR?
 	end
 end
 
@@ -10603,7 +10601,7 @@ do
 			DBM:Debug("|cffff0000OptionVersion hack depricated, remove it from: |r"..spellId)
 			return
 		end
-		if type(colorType) == "number" and colorType > 6 then
+		if type(colorType) == "number" and colorType > 7 then
 			DBM:Debug("|cffff0000texture is in the colorType arg for: |r"..spellId)
 		end
 		--Use option optionName for optionVersion as well, no reason to split.
