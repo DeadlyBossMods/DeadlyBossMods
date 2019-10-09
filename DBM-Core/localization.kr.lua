@@ -174,6 +174,7 @@ DBM_CORE_UPDATEREMINDER_MAJORPATCH		= "경고: 대규모 패치로 인해 Deadly
 DBM_CORE_UPDATEREMINDER_TESTVERSION		= "경고: 현재 게임 버전과 맞지 않는 Deadly Boss Mods 버전을 사용중입니다. 게임 클라이언트에 맞는 버전을 deadlybossmods.com이나 Curse에서 다운로드 하시기 바랍니다."
 DBM_CORE_VEM							= "경고: Deadly Boss Mods와 Voice Encounter Mods를 함께 사용중입니다. 현재 설정으로는 DBM이 작동하지 않으며 로딩도 되지 않을 것입니다."
 DBM_CORE_3RDPROFILES					= "경고: DBM-Profiles가 이 버전의 DBM과 호환되지 않습니다. DBM이 읽기 전에 삭제해야 충돌을 방지할 수 있습니다."
+DBM_CORE_VICTORYSOUND					= "경고: DBM-VictorySound가 이 버전의 DBM과 호환되지 않습니다. DBM이 해결할 수 있기 전까진 충돌 방지를 위해 삭제해야 합니다."
 DBM_CORE_DPMCORE						= "경고: Deadly PvP 모드는 더이상 개발되지 않으며 본 DBM 버전과 호환되지 않습니다. DBM이 읽기 전에 삭제해야 충돌을 방지할 수 있습니다."
 DBM_CORE_DBMLDB							= "경고: DBM-LDB는 이제 DBM-Core에 편입되었습니다. 같이 사용해도 문제가 생기는건 아니지만 가급적 애드온 폴더에서 'DBM-LDB' 폴더를 삭제하는걸 권장합니다"
 DBM_CORE_UPDATE_REQUIRES_RELAUNCH		= "경고: 지금 업데이트한 DBM은 게임 클라이언트를 완전히 재시작하기 전까진 정상 작동하지 않습니다. 이 업데이트엔 새 파일이 포함되어 있거나 UI 재시작으로는 로딩할 수 없는 .toc 파일의 변경 사항이 있습니다. 클라이언트 재시작 없이 사용할 경우 오류가 발생하거나 작동하지 않을 수 있습니다."
@@ -520,7 +521,7 @@ DBM_CORE_HUD_USAGE	= {
 	"유효한 형식: arrow, red, blue, green, yellow, icon (대상에게 공격대 징표가 설정되어 있어야 함)",
 	"유효한 대상: target, focus, <대상이름>",
 	"유효한 시간: 아무 숫자(초단위). 지정하지 않으면 20분간 적용됩니다.",
-	"/dbm hud hide: HUD를 숨기고 비활성화"
+	"/dbm hud hide: 사용자가 생성한 HUD를 비활성화"
 }
 
 DBM_ARROW_MOVABLE						= "화살표 이동"
