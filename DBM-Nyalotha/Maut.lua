@@ -13,10 +13,10 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 308044 305663 308903 308872 314337 305722",
-	"SPELL_CAST_SUCCESS 307805 308044 310129 305681 305719",
-	"SPELL_AURA_APPLIED 307399 305675 310235 306005 306301 305682 305697",
+	"SPELL_CAST_SUCCESS 307805 308044 310129 314995",
+	"SPELL_AURA_APPLIED 307399 305675 310235 306005 306301 314993",
 	"SPELL_AURA_APPLIED_DOSE 307399",
-	"SPELL_AURA_REMOVED 305675 310235 306005 305682 305697",
+	"SPELL_AURA_REMOVED 305675 310235 306005 314993",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 --	"SPELL_INTERRUPT",
@@ -27,7 +27,6 @@ mod:RegisterEventsInCombat(
 --TODO, infoframe and auto marking on current 3 arcane feast targets at all times on mythic
 --TODO, infoframe showing players missing Devoured Abyss during big aoe cast?
 --TODO, auto icon marking of siphons if it's managable target count
---TODO, apparently blizzard already nerfed this boss so parts of this mod need removing/redoing, that has to be on hold until wowhead updates journal
 --Stage One: Obsidian Destroyer
 local warnDevourMagic						= mod:NewTargetAnnounce(307805, 3)
 local warnManaRotWounds						= mod:NewStackAnnounce(307399, 2, nil, "Tank")
@@ -35,8 +34,7 @@ local warnDarkOffering						= mod:NewCastAnnounce(308872, 2)
 local warnAncientCurse						= mod:NewSpellAnnounce(314337, 3)
 --Stage Two: Obsidian Statue
 local warnForbiddenMana						= mod:NewTargetNoFilterAnnounce(306301, 1, nil, false)
-local warnSiphonEssence						= mod:NewTargetAnnounce(305682, 3)
-local warnSiphonSpirit						= mod:NewTargetAnnounce(305697, 3)
+local warnDrainEssence						= mod:NewTargetAnnounce(314993, 3)
 
 --Stage One: Obsidian Destroyer
 local specWarnManaRotWounds					= mod:NewSpecialWarningStack(307399, nil, 9, nil, nil, 1, 6)
@@ -47,12 +45,9 @@ local specWarnStygianAnnihilation			= mod:NewSpecialWarningMoveTo(307805, nil, n
 local specWarnBlackWing						= mod:NewSpecialWarningDodge(305663, "Tank", nil, nil, 1, 2)
 local specWarnDarkManifestation				= mod:NewSpecialWarningRun(308903, nil, nil, nil, 4, 2)
 --Stage Two: Obsidian Statue
-local specWarnSiphonEssence					= mod:NewSpecialWarningMoveAway(305682, nil, nil, nil, 1, 2)
-local yellSiphonEssence						= mod:NewYell(305682)
-local yellSiphonEssenceFades				= mod:NewShortFadesYell(305682)
-local specWarnSiphonSpirit					= mod:NewSpecialWarningMoveAway(305697, nil, nil, nil, 1, 2)
-local yellSiphonSpirit						= mod:NewYell(305697)
-local yellSiphonSpiritFades					= mod:NewShortFadesYell(305697)
+local specWarnDrainEssence					= mod:NewSpecialWarningMoveAway(314993, nil, nil, nil, 1, 2)
+local yellDrainEssence						= mod:NewYell(314993)
+local yellDrainEssenceFades					= mod:NewShortFadesYell(314993)
 --local specWarnGTFO						= mod:NewSpecialWarningGTFO(270290, nil, nil, nil, 1, 8)
 --local specWarnConductivePulse				= mod:NewSpecialWarningInterrupt(295822, "HasInterrupt", nil, nil, 3, 2)
 
@@ -65,12 +60,11 @@ local timerManaRotClawsCD					= mod:NewAITimer(5.3, 310129, nil, "Tank", nil, 5,
 local timerDarkManifestationCD				= mod:NewAITimer(30.1, 308903, nil, nil, nil, 1, nil, DBM_CORE_TANK_ICON)
 local timerAncientCurseCD					= mod:NewAITimer(30.1, 314337, nil, nil, nil, 3, nil, DBM_CORE_CURSE_ICON)
 --Stage Two: Obsidian Statue
-local timerSiphonEssenceCD					= mod:NewAITimer(30.1, 305681, nil, nil, nil, 5, nil, DBM_CORE_MAGIC_ICON)
-local timerSiphonSpiritCD					= mod:NewAITimer(30.1, 305719, nil, nil, nil, 5, nil, DBM_CORE_MAGIC_ICON)
+local timerDrainEssenceCD					= mod:NewAITimer(30.1, 314993, nil, nil, nil, 5, nil, DBM_CORE_MAGIC_ICON)
 
 --local berserkTimer						= mod:NewBerserkTimer(600)
 
-mod:AddRangeFrameOption(8, 305681)
+mod:AddRangeFrameOption(8, 314995)
 mod:AddInfoFrameOption(306005, true)
 --mod:AddSetIconOption("SetIconOnEyeBeam", 264382, true, false, {1, 2})
 mod:AddNamePlateOption("NPAuraOnDarkAegis", 305675)
@@ -138,8 +132,7 @@ function mod:SPELL_CAST_START(args)
 		timerManaRotClawsCD:Stop()
 		timerDarkManifestationCD:Stop()
 		timerAncientCurseCD:Stop()
-		timerSiphonEssenceCD:Start(1)
-		timerSiphonSpiritCD:Start(1)
+		timerDrainEssenceCD:Start(1)
 	end
 end
 
@@ -151,10 +144,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.bigAoeActive = false
 	elseif spellId == 310129 then
 		timerManaRotClawsCD:Start()
-	elseif spellId == 305681 then
-		timerSiphonEssenceCD:Start()
-	elseif spellId == 305719 then
-		timerSiphonSpiritCD:Start()
+	elseif spellId == 314995 then
+		timerDrainEssenceCD:Start()
 	end
 end
 
@@ -201,24 +192,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 306301 then
 		warnForbiddenMana:Show(args.destName)
-	elseif spellId == 305682 then
-		warnSiphonEssence:CombinedShow(0.3, args.destName)
+	elseif spellId == 314993 then
+		warnDrainEssence:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
-			specWarnSiphonEssence:Show()
-			specWarnSiphonEssence:Play("runout")
-			yellSiphonEssence:Yell()
-			yellSiphonEssenceFades:Countdown(spellId)
-			if self.Options.RangeFrame then
-				DBM.RangeCheck:Show(8)
-			end
-		end
-	elseif spellId == 305697 then
-		warnSiphonSpirit:CombinedShow(0.3, args.destName)
-		if args:IsPlayer() then
-			specWarnSiphonSpirit:Show()
-			specWarnSiphonSpirit:Play("runout")
-			yellSiphonSpirit:Yell()
-			yellSiphonSpiritFades:Countdown(spellId)
+			specWarnDrainEssence:Show()
+			specWarnDrainEssence:Play("runout")
+			yellDrainEssence:Yell()
+			yellDrainEssenceFades:Countdown(spellId)
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Show(8)
 			end
@@ -247,17 +227,10 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:Hide()
 		end
-	elseif spellId == 305682 then
+	elseif spellId == 314993 then
 		if args:IsPlayer() then
-			yellSiphonEssenceFades:Cancel()
-			if self.Options.RangeFrame and not DBM:UnitDebuff("player", 305697) then
-				DBM.RangeCheck:Hide()
-			end
-		end
-	elseif spellId == 305697 then
-		if args:IsPlayer() then
-			yellSiphonSpiritFades:Cancel()
-			if self.Options.RangeFrame and not DBM:UnitDebuff("player", 305682) then
+			yellDrainEssenceFades:Cancel()
+			if self.Options.RangeFrame then
 				DBM.RangeCheck:Hide()
 			end
 		end
