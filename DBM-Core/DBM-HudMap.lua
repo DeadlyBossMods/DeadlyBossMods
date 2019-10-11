@@ -44,7 +44,7 @@ else
 	standardFont = "Fonts\\FRIZQT__.TTF"
 end
 
-local targetCanvasAlpha
+local targetCanvasAlpha, supressCanvas
 
 local textureLookup = {
 	star		= 137001,--[[Interface\TARGETINGFRAME\UI-RaidTargetingIcon_1.blp]]
@@ -252,7 +252,7 @@ do
 
 			targetZoomScale = computeNewScale()
 			local currentAlpha = mod.canvas:GetAlpha()
-			if targetCanvasAlpha and currentAlpha ~= targetCanvasAlpha then
+			if not supressCanvas and targetCanvasAlpha and currentAlpha ~= targetCanvasAlpha then
 				local newAlpha
 				if targetCanvasAlpha > currentAlpha then
 					newAlpha = min(targetCanvasAlpha, currentAlpha + 1 * elapsed / fadeInDelay)
@@ -293,7 +293,9 @@ function mod:Enable()
 	self.currentMap = select(8, GetInstanceInfo())
 	mainFrame:Show()
 	mainFrame:RegisterEvent("LOADING_SCREEN_DISABLED")
-	self.canvas:Show()
+	if not supressCanvas then
+		self.canvas:Show()
+	end
 	self.canvas:SetAlpha(1)
 	self:UpdateCanvasPosition()
 
@@ -1542,6 +1544,20 @@ end
 
 function mod:HideCanvas()
 	targetCanvasAlpha = 0
+end
+
+function mod:SupressCanvas()
+	supressCanvas = true
+	if self.HUDEnabled then
+		self.canvas:Hide()
+	end
+end
+
+function mod:UnSupressCanvas()
+	supressCanvas = nil
+	if self.HUDEnabled then
+		self.canvas:Show()
+	end
 end
 
 function mod:Toggle(flag)

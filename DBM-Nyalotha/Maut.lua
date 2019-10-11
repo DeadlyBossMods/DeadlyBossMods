@@ -27,6 +27,7 @@ mod:RegisterEventsInCombat(
 --TODO, infoframe and auto marking on current 3 arcane feast targets at all times on mythic
 --TODO, infoframe showing players missing Devoured Abyss during big aoe cast?
 --TODO, auto icon marking of siphons if it's managable target count
+--TODO, apparently blizzard already nerfed this boss so parts of this mod need removing/redoing, that has to be on hold until wowhead updates journal
 --Stage One: Obsidian Destroyer
 local warnDevourMagic						= mod:NewTargetAnnounce(307805, 3)
 local warnManaRotWounds						= mod:NewStackAnnounce(307399, 2, nil, "Tank")
@@ -168,7 +169,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 307399 then
 		local amount = args.amount or 1
-		--if adds all dead, should be swapping at about 6-7. If they aren't all dead, it'll start throwing emergency warnings at 8+
 		if amount >= 3 then
 			if args:IsPlayer() then
 				specWarnManaRotWounds:Show(amount)

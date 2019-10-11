@@ -241,7 +241,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellAquaLance:Yell()
 			yellAquaLanceFades:Countdown(spellId)
 			if self.Options.NPAuraOnAquaLance then
-				DBM.Nameplate:Show(true, args.sourceGUID, spellId)
+				DBM.Nameplate:Show(true, args.sourceGUID, spellId, nil, 30)
 			end
 		else
 			warnAquaLance:Show(args.destName)

@@ -185,7 +185,6 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 306015 then
 		local amount = args.amount or 1
-		--if adds all dead, should be swapping at about 6-7. If they aren't all dead, it'll start throwing emergency warnings at 8+
 		if amount >= 2 then
 			if args:IsPlayer() then
 				specWarnSearingArmorStack:Show(amount)
