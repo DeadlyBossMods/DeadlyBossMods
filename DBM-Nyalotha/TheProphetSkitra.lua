@@ -147,7 +147,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 313208 then
 		if self.Options.NPAuraOnIntangibleIllusion then
-			DBM.Nameplate:Show(true, args.destGUID, spellId)
+			DBM.Nameplate:Show(true, args.destGUID, spellId, nil, 30)
 		end
 	elseif spellId == 308065 or spellId == 307950 then
 		warnShredPsyche:CombinedShow(0.3, args.destName)
