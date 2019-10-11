@@ -52,7 +52,7 @@ local yellFixate							= mod:NewYell(296524, nil, false)
 --local specWarnGTFO						= mod:NewSpecialWarningGTFO(270290, nil, nil, nil, 1, 8)
 
 --mod:AddTimerLine(BOSS)
-local timerSlurryCD							= mod:NewAITimer(30.1, "ej20617", nil, nil, nil, 6, 306932)--Bubbling slurry icon used for now
+--local timerSlurryCD							= mod:NewAITimer(30.1, "ej20617", nil, nil, nil, 6, 306932)--Bubbling slurry icon used for now
 local timerCrushCD							= mod:NewAITimer(5.3, 307471, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON, nil, 2, 4)
 local timerDissolveCD						= mod:NewAITimer(5.3, 307472, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerSlurryBreathCD					= mod:NewAITimer(84, 306736, nil, nil, nil, 3, nil, nil, nil, 1, 4)
@@ -222,7 +222,7 @@ end
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if (spellId == 309725 or spellId == 309730 or spellId == 309724 or spellId == 308652) and self:AntiSpam(5, 1) then--All the slurry Visuals
 		self.vb.slurryCount = self.vb.slurryCount + 1
-		timerSlurryCD:Start()
+		--timerSlurryCD:Start()
 		if spellId == 309725 then--Bubbling Slurry Visual
 			warnBubblingSlurry:Show(self.vb.slurryCount)
 		elseif spellId == 309730 then--Entropic Slurry Visual
