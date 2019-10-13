@@ -40,6 +40,11 @@ L= DBM:GetModLocalization(2377)
 ---------------------------
 L= DBM:GetModLocalization(2372)
 
+L:SetMiscLocalization({
+	Together	= "Bosses Together",
+	Apart		= "Bosses Apart"
+})
+
 ---------------------------
 --  Shad'har the Insatiable --
 ---------------------------
