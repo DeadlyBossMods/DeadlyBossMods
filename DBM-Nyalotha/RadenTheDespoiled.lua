@@ -111,21 +111,22 @@ do
 			local mapId = GetBestMapForUnit(uId) or 0
 			--Covers all bases, exists, same map, not self, not dead, and not DCed
 			if UnitExists(uId) and playerMapId == mapId and not UnitIsUnit(uId, "player") and not UnitIsDeadOrGhost(uId) and UnitIsConnected(uId) then
-				if IsItemInRange(35278, uId) then entireRaidDistancetable[uId] = 80
-				elseif IsItemInRange(32825, uId) then entireRaidDistancetable[uId] = 60
-				elseif IsItemInRange(116139, uId)  then entireRaidDistancetable[uId] = 53
-				elseif IsItemInRange(32698, uId)  then entireRaidDistancetable[uId] = 48
-				elseif IsItemInRange(34471, uId)  then entireRaidDistancetable[uId] = 43
-				elseif IsItemInRange(1180, uId) then entireRaidDistancetable[uId] = 33
-				elseif CheckInteractDistance(uId, 1) then entireRaidDistancetable[uId] = 30
-				elseif IsItemInRange(21519, uId) then entireRaidDistancetable[uId] = 23
-				elseif IsItemInRange(6450, uId) then entireRaidDistancetable[uId] = 18
-				elseif IsItemInRange(32321, uId) then entireRaidDistancetable[uId] = 13
-				elseif CheckInteractDistance(uId, 2) then entireRaidDistancetable[uId] = 11
-				elseif CheckInteractDistance(uId, 3) then entireRaidDistancetable[uId] = 10
-				elseif IsItemInRange(8149, uId) then entireRaidDistancetable[uId] = 8
+				if IsItemInRange(90175, uId) then entireRaidDistancetable[uId] = 4
 				elseif IsItemInRange(37727, uId) then entireRaidDistancetable[uId] = 6
-				elseif IsItemInRange(90175, uId) then entireRaidDistancetable[uId] = 4 end
+				elseif IsItemInRange(8149, uId) then entireRaidDistancetable[uId] = 8
+				elseif CheckInteractDistance(uId, 3) then entireRaidDistancetable[uId] = 10
+				elseif CheckInteractDistance(uId, 2) then entireRaidDistancetable[uId] = 11
+				elseif IsItemInRange(32321, uId) then entireRaidDistancetable[uId] = 13
+				elseif IsItemInRange(6450, uId) then entireRaidDistancetable[uId] = 18
+				elseif IsItemInRange(21519, uId) then entireRaidDistancetable[uId] = 23
+				elseif CheckInteractDistance(uId, 1) then entireRaidDistancetable[uId] = 30
+				elseif IsItemInRange(1180, uId) then entireRaidDistancetable[uId] = 33
+				elseif UnitInRange(uId) then entireRaidDistancetable[uId] = 43
+				elseif IsItemInRange(32698, uId)  then entireRaidDistancetable[uId] = 48
+				elseif IsItemInRange(116139, uId)  then entireRaidDistancetable[uId] = 53
+				elseif IsItemInRange(32825, uId) then entireRaidDistancetable[uId] = 60
+				elseif IsItemInRange(35278, uId) then entireRaidDistancetable[uId] = 80
+				else entireRaidDistancetable[uId] = 81 end
 			end
 		end
 	end
