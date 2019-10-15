@@ -65,6 +65,10 @@ L= DBM:GetModLocalization(2370)
 ---------------------------
 L= DBM:GetModLocalization(2364)
 
+L:SetMiscLocalization({
+	Furthest	= "Furthest Target"
+})
+
 ---------------------------
 --  Il'gynoth, Corruption Reborn --
 ---------------------------
