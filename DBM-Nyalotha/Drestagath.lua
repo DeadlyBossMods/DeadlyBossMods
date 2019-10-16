@@ -12,92 +12,219 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
---	"SPELL_CAST_START",
---	"SPELL_CAST_SUCCESS",
---	"SPELL_AURA_APPLIED",
---	"SPELL_AURA_APPLIED_DOSE",
---	"SPELL_AURA_REMOVED",
+	"SPELL_CAST_START 308941 310246 310329",
+	"SPELL_CAST_SUCCESS 310277 310358 310406 310478",
+	"SPELL_AURA_APPLIED 310277 312595 310358 310361 310552 310563",
+	"SPELL_AURA_APPLIED_DOSE 310563",
+	"SPELL_AURA_REMOVED 310277 312595 310358",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 --	"SPELL_INTERRUPT",
---	"UNIT_DIED",
+	"UNIT_DIED"
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
+--TODO, target scan or emote for void grip?
+--TODO, track add count, show on infoframe, as well as only show Unleashed Insanity cast timer if add count was > 0
+--TODO, many spellIds/events probably wrong, such as void glare and mutterings of insanity
+--TODO, can mind flay be interrupted? remove warning if it can't be, but based on damage it does, I can't imagine
+--TODO, personal https://ptr.wowhead.com/spell=308377/void-infused-ichor tracker when infoframe code added
+--TODO, target scan acid splash?
+--Drest'agath
+local warnVoidGrip							= mod:NewSpellAnnounce(310246, 2)
+local warnVolatileSeed						= mod:NewTargetNoFilterAnnounce(310277, 2)
+local warnUnleashedInsanity					= mod:NewTargetNoFilterAnnounce(310361, 4)
 --local warnDesensitizingSting				= mod:NewStackAnnounce(298156, 2, nil, "Tank")
---local warnIncubationFluid					= mod:NewTargetNoFilterAnnounce(298306, 2)
---local warnCallofTender					= mod:NewCountAnnounce(305057, 2)
+--Tentacle of Drest'agath
+local warnObscuringCloud					= mod:NewSpellAnnounce(310478, 2)
 
---local specWarnDesensitizingSting			= mod:NewSpecialWarningStack(298156, nil, 9, nil, nil, 1, 6)
---local specWarnIncubationFluid				= mod:NewSpecialWarningMoveAway(298306, nil, nil, nil, 1, 2)
---local yellArcingCurrent					= mod:NewYell(295825)
+--Drest'agath
+local specWarnThrowsofAgony					= mod:NewSpecialWarningCount(298156, nil, nil, nil, 2, 2)
+local specWarnVolatileSeed					= mod:NewSpecialWarningYou(310277, nil, nil, nil, 1, 2)
+local yellolatileSeed						= mod:NewYell(310277)
+local yellolatileSeedFades					= mod:NewFadesYell(310277)
+local specWarnSiesmicCrash					= mod:NewSpecialWarningDodge(310329, nil, nil, nil, 2, 2)
+local specWarnMutteringsofInsanity			= mod:NewSpecialWarningTarget(310358, nil, nil, nil, 1, 2)
+local yellMutteringsofInsanity				= mod:NewFadesYell(310358, nil, false)
+local specWarnVoidGlare						= mod:NewSpecialWarningDodge(310406, nil, nil, nil, 2, 2)
+--Eye of Drest'agath
+local specWarnErrantBlast					= mod:NewSpecialWarningDodge(308953, nil, nil, nil, 2, 2)--For mythic
+local specWarnMindFlay						= mod:NewSpecialWarningInterrupt(310552, "HasInterrupt", nil, nil, 1, 2)
+--Tentacle of Drest'agath
+local specWarnTentacleSlam					= mod:NewSpecialWarningDodge(308995, nil, nil, nil, 2, 2)--For mythic
+--Maw of Dresta'gath
+local specWarnSpineEruption					= mod:NewSpecialWarningDodge(310078, nil, nil, nil, 2, 2)--For mythic
+local specWarnMutteringsofBetrayal			= mod:NewSpecialWarningStack(310563, nil, 3, nil, nil, 1, 6)
 --local specWarnGTFO						= mod:NewSpecialWarningGTFO(270290, nil, nil, nil, 1, 8)
---local specWarnConductivePulse				= mod:NewSpecialWarningInterrupt(295822, "HasInterrupt", nil, nil, 3, 2)
 
 --mod:AddTimerLine(BOSS)
---local timerTankCD							= mod:NewAITimer(5.3, 298156, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+--Drest'agath
+local timerVoidGripCD						= mod:NewAITimer(30.1, 310246, nil, nil, nil, 3)
+local timerVolatileSeedCD					= mod:NewAITimer(5.3, 310277, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON, nil, 2, 4)
+local timerMutteringsofInsanityCD			= mod:NewAITimer(30.1, 310358, nil, nil, nil, 3)
+local timerUnleashedInsanity				= mod:NewCastTimer(5, 310361, nil, nil, nil, 3)
+local timerVoidGlareCD						= mod:NewAITimer(30.1, 310406, nil, nil, nil, 3)
 --local timerTimerWithCountdownCD			= mod:NewAITimer(84, 298103, nil, nil, nil, 1, nil, nil, nil, 1, 4)
---local timerArcingCurrentCD				= mod:NewAITimer(30.1, 295825, nil, nil, nil, 3)
 
 --local berserkTimer						= mod:NewBerserkTimer(600)
 
---mod:AddRangeFrameOption(6, 264382)
+mod:AddRangeFrameOption("18/4")--Sadly, choices are 13 or 18, 13 too small so have to round 15 up to 18
 --mod:AddInfoFrameOption(275270, true)
---mod:AddSetIconOption("SetIconOnEyeBeam", 264382, true, false, {1, 2})
---mod:AddNamePlateOption("NPAuraOnChaoticGrowth", 296914)
+mod:AddSetIconOption("SetIconOnVolatileSeed", 310277, true, false, {1})
+mod:AddNamePlateOption("NPAuraOnVolatileCorruption", 312595)
+
+mod.vb.agonyCount = 0
 
 function mod:OnCombatStart(delay)
---	if self.Options.NPAuraOnChaoticGrowth then
---		DBM:FireEvent("BossMod_EnableHostileNameplates")
---	end
+	self.vb.agonyCount = 0
+	timerVoidGripCD:Start(1-delay)
+	timerVolatileSeedCD:Start(1-delay)
+	timerMutteringsofInsanityCD:Start(1-delay)
+	timerVoidGlareCD:Start(1-delay)
+	if self.Options.NPAuraOnVolatileCorruption then
+		DBM:FireEvent("BossMod_EnableHostileNameplates")
+	end
+	if self.Options.RangeFrame then
+		DBM.RangeCheck:Show(4)--For Acid Splash
+	end
 end
 
 function mod:OnCombatEnd()
 --	if self.Options.InfoFrame then
 --		DBM.InfoFrame:Hide()
 --	end
---	if self.Options.RangeFrame then
---		DBM.RangeCheck:Hide()
---	end
---	if self.Options.NPAuraOnChaoticGrowth then
---		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
---	end
+	if self.Options.RangeFrame then
+		DBM.RangeCheck:Hide()
+	end
+	if self.Options.NPAuraOnVolatileCorruption then
+		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
+	end
 end
 
-function mod:OnTimerRecovery()
+--function mod:OnTimerRecovery()
 
-end
+--end
 
---[[
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 298548 then
-
+	if spellId == 308941 then
+		self.vb.agonyCount = self.vb.agonyCount + 1
+		specWarnThrowsofAgony:Show(self.vb.agonyCount)
+		specWarnThrowsofAgony:Play("specialsoon")
+	elseif spellId == 310246 then
+		warnVoidGrip:Show()
+		timerVoidGripCD:Start()
+	elseif spellId == 310329 and self:AntiSpam(10, 1) then--Antispam, in case all tentacles echo it, or cast it at once
+		specWarnSiesmicCrash:Show()
+		specWarnSiesmicCrash:Play("watchstep")
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 298242 then
-
+	if spellId == 310277 then
+		timerVolatileSeedCD:Start()
+	elseif spellId == 310358 then
+		timerMutteringsofInsanityCD:Start()
+	elseif spellId == 310406 then--Pretty sure https://ptr.wowhead.com/spell=310396/void-glare is what adds cast since it has a parent trigger of a script
+		specWarnVoidGlare:Show()
+		specWarnVoidGlare:Play("farfromline")
+		timerVoidGlareCD:Start()
+	elseif spellId == 310478 and self:AntiSpam(5, 5) then
+		warnObscuringCloud:Show()
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 298156 then
-
+	if spellId == 310277 then
+		if args:IsPlayer() then
+			specWarnVolatileSeed:Show()
+			specWarnVolatileSeed:Play("targetyou")
+			yellolatileSeed:Yell()
+			yellolatileSeedFades:Countdown(spellId)
+			if self.Options.RangeFrame then
+				DBM.RangeCheck:Show(18)
+			end
+		else
+			warnVolatileSeed:Show(args.destName)
+		end
+		if self.Options.SetIconOnVolatileSeed then
+			self:SetIcon(args.destName, 1)
+		end
+	elseif spellId == 312595 then
+		if self.Options.NPAuraOnVolatileCorruption then
+			DBM.Nameplate:Show(true, args.destGUID, spellId, nil, 15)
+		end
+	elseif spellId == 310358 then
+		specWarnMutteringsofInsanity:Show(args.destName)
+		timerUnleashedInsanity:Start()
+		if args:IsPlayer() then
+			yellMutteringsofInsanity:Countdown(spellId)
+		end
+	elseif spellId == 310361 then
+		warnUnleashedInsanity:CombinedShow(0.3, args.destName)
+	elseif spellId == 310552 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
+		specWarnMindFlay:Show(args.sourceName)
+		specWarnMindFlay:Play("kickcast")
+	elseif spellId == 310563 then
+		if args:IsPlayer() then
+			local amount = args.amount or 1
+			if amount >= 3 then
+				specWarnMutteringsofBetrayal:Show(amount)
+				specWarnMutteringsofBetrayal:Play("stackhigh")
+			end
+		end
 	end
 end
---mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
+mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
-	if spellId == 298306 then
-
+	if spellId == 310277 then
+		if args:IsPlayer() then
+			yellolatileSeedFades:Cancel()
+			if self.Options.RangeFrame then
+				DBM.RangeCheck:Show(4)
+			end
+		end
+		if self.Options.SetIconOnVolatileSeed then
+			self:SetIcon(args.destName, 0)
+		end
+	elseif spellId == 312595 then
+		if self.Options.NPAuraOnVolatileCorruption then
+			DBM.Nameplate:Hide(true, args.destGUID, spellId)
+		end
+	elseif spellId == 310358 then
+		timerUnleashedInsanity:Stop()
+		if args:IsPlayer() then
+			yellMutteringsofInsanity:Cancel()
+		end
 	end
 end
---]]
+
+function mod:UNIT_DIED(args)
+	local cid = self:GetCIDFromGUID(args.destGUID)
+	if cid == 157612 then--eye-of-drestagath
+		--only time this isn't synced up to Throws of Agony
+		if self:IsMythic() and self:AntiSpam(5, 2) then
+			specWarnErrantBlast:Show()
+			specWarnErrantBlast:Play("watchstep")
+		end
+	elseif cid == 157614 then--tentacle-of-drestagath
+		--only time this isn't synced up to Throws of Agony
+		if self:IsMythic() and self:AntiSpam(5, 3) then
+			specWarnTentacleSlam:Show()
+			specWarnTentacleSlam:Play("watchstep")
+		end
+	elseif cid == 157613 then--maw-of-drestagath
+		--only time this isn't synced up to Throws of Agony
+		if self:IsMythic() and self:AntiSpam(5, 4) then
+			specWarnSpineEruption:Show()
+			specWarnSpineEruption:Play("watchorb")
+		end
+	end
+end
 
 --[[
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
@@ -110,13 +237,6 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
 function mod:SPELL_INTERRUPT(args)
 	if type(args.extraSpellId) == "number" and args.extraSpellId == 298548 then
-
-	end
-end
-
-function mod:UNIT_DIED(args)
-	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 152311 then
 
 	end
 end

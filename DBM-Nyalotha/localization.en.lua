@@ -40,6 +40,11 @@ L= DBM:GetModLocalization(2377)
 ---------------------------
 L= DBM:GetModLocalization(2372)
 
+L:SetMiscLocalization({
+	Together	= "Bosses Together",
+	Apart		= "Bosses Apart"
+})
+
 ---------------------------
 --  Shad'har the Insatiable --
 ---------------------------
@@ -55,10 +60,22 @@ L= DBM:GetModLocalization(2373)
 ---------------------------
 L= DBM:GetModLocalization(2370)
 
+L:SetWarningLocalization({
+	warnPlayerAnnihilation			= ">%s< is casting %s",
+})
+
+L:SetOptionLocalization({
+	warnPlayerAnnihilation			= "Show warning (with source) when $spell:306982 is cast by a player"
+})
+
 ---------------------------
 --  Ra-den the Despoiled --
 ---------------------------
 L= DBM:GetModLocalization(2364)
+
+L:SetMiscLocalization({
+	Furthest	= "Furthest Target"
+})
 
 ---------------------------
 --  Il'gynoth, Corruption Reborn --

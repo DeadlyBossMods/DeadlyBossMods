@@ -69,8 +69,8 @@ end
 
 DBM = {
 	Revision = parseCurseDate("@project-date-integer@"),
-	DisplayVersion = "8.2.23", -- the string that is shown as version
-	ReleaseRevision = releaseDate(2019, 10, 10) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	DisplayVersion = "8.2.24", -- the string that is shown as version
+	ReleaseRevision = releaseDate(2019, 10, 16) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 }
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
@@ -560,39 +560,28 @@ local function removeEntry(t, val)
 	return existed
 end
 
+--Whisper/Whisper Sync filter function
 local function checkForSafeSender(sender, checkFriends, checkGuild, filterRaid, isRealIdMessage)
 	if checkFriends then
 		--Check Battle.net friends
 		if isRealIdMessage then
-			--Then sender is already presence ID, we only need to check ONE bnet friend
-			local accountInfo = C_BattleNet.GetAccountInfoByID(sender)
-			if accountInfo then
-				local presenceID = accountInfo.bnetAccountID
-				--Check if it's a bnet friend sending a bnet whisper
-				if presenceID and presenceID == sender then
-					return true
-				end
-				--Check if it's a bnet friend sending a non bnet whisper
-				if accountInfo.gameAccountInfo then--game account info means they are logged into a bnet game
+			if filterRaid then
+				--Since filterRaid is true, we need to get tooninfo to see if they are in raid
+				local accountInfo = C_BattleNet.GetAccountInfoByID(sender)
+				if accountInfo and accountInfo.gameAccountInfo then--game account info means they are logged into a bnet game
 					local toonName, client = accountInfo.gameAccountInfo.characterName, accountInfo.gameAccountInfo.clientProgram or ""
-					if toonName and client == BNET_CLIENT_WOW then--Check if toon name exists and if client is wow. If yes to both, we found right client
-						if toonName == sender then--Now simply see if this is sender
-							if filterRaid and DBM:GetRaidUnitId(toonName) then--Person is in raid group and filter raid enabled
-								return false--just set sender as unsafe
-							else
-								return true
-							end
-						end
+					if toonName and client == BNET_CLIENT_WOW and DBM:GetRaidUnitId(toonName) then--Check if toon name exists and if client is wow and if toonName is in raid.
+						return false--just set sender as unsafe
 					end
 				end
 			end
-		else
+			return true--Basically, if not trying to filter someone who's in raid with us, always return true. Non friends can't send realid/battle.net messages
+		else--Non battle.net message
 			--We still need to see if it's a bnet friend, even if it's not a realID message, just have to iterate over entire friendslist to find matching toonname
 			local _, numBNetOnline = BNGetNumFriends()
 			for i = 1, numBNetOnline do
 				local accountInfo = C_BattleNet.GetFriendAccountInfo(i)
 				if accountInfo and accountInfo.gameAccountInfo then
-					local presenceID = accountInfo.bnetAccountID
 					local toonName, client = accountInfo.gameAccountInfo.characterName, accountInfo.gameAccountInfo.clientProgram or ""
 					--Check if it's a bnet friend sending a non bnet whisper
 					if toonName and client == BNET_CLIENT_WOW then--Check if toon name exists and if client is wow. If yes to both, we found right client

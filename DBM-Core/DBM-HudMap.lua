@@ -4,6 +4,7 @@
 local ADDON_NAME = ...
 
 DBMHudMap = {}
+DBMHudMap.Version = 2--That way external usage can querie hud api feature level of of users installed mod version
 local mainFrame = CreateFrame("Frame", "DBMHudMapFrame")
 local mod = DBMHudMap
 
@@ -13,6 +14,7 @@ local error, print = error, print
 
 local CallbackHandler = LibStub:GetLibrary("CallbackHandler-1.0")
 local updateFrame = CreateFrame("Frame", "DBMHudMapUpdateFrame")
+local fixedOnUpdateRate = 0.03
 local onUpdate, Point, Edge
 local callbacks = CallbackHandler:New(mod)
 local activeMarkers = 0
@@ -306,7 +308,7 @@ function mod:Enable()
 	self.HUDEnabled = true
 	updateFrame:Show()
 	if not updateFrame.ticker then
-		updateFrame.ticker = C_Timer.NewTicker(0.035, function() onUpdate(updateFrame, 0.035) end)
+		updateFrame.ticker = C_Timer.NewTicker(fixedOnUpdateRate, function() onUpdate(updateFrame, fixedOnUpdateRate) end)
 	end
 end
 
@@ -316,8 +318,6 @@ function mod:Disable()
 	self:FreeEncounterMarkers()
 	Edge:ClearAll()
 	if hudarActive then return end--Don't disable if hudar is open
-	--Anything else needed? maybe clear all marks, hide any frames, etc?
---	mainFrame:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
 	mainFrame:UnregisterEvent("LOADING_SCREEN_DISABLED")
 	self.canvas:Hide()
 	mainFrame:Hide()
@@ -1450,6 +1450,14 @@ function mod:SetFixedZoom(zoom)
 		fixedZoomScale = zoom
 	else
 		fixedZoomScale = nil
+	end
+end
+
+function mod:SetFixedUpdateRate(updateRate)
+	if type(updateRate) == "number" and updateRate > 0 then
+		fixedOnUpdateRate = updateRate
+	else
+		fixedOnUpdateRate = 0.03
 	end
 end
 

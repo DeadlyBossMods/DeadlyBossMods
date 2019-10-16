@@ -183,7 +183,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 310235 then
 		if self.Options.NPAuraOnDevouredAegis then
-			DBM.Nameplate:Hide(true, args.destGUID, spellId)
+			DBM.Nameplate:Show(true, args.destGUID, spellId)
 		end
 	elseif spellId == 306005 then
 		if self.Options.InfoFrame then
