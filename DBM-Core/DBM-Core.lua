@@ -69,7 +69,7 @@ end
 
 DBM = {
 	Revision = parseCurseDate("@project-date-integer@"),
-	DisplayVersion = "8.2.24", -- the string that is shown as version
+	DisplayVersion = "8.2.25 alpha", -- the string that is shown as version
 	ReleaseRevision = releaseDate(2019, 10, 16) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 }
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
@@ -2587,6 +2587,10 @@ do
 		end
 		if GetAddOnEnableState(playerName, "DPMCore") >= 1 then
 			self:AddMsg(DBM_CORE_DPMCORE)
+			return
+		end
+		if GetAddOnEnableState(playerName, "DBM-VictorySound") >= 1 then
+			self:AddMsg(DBM_CORE_VICTORYSOUND)
 			return
 		end
 		if not dbmIsEnabled then
