@@ -82,7 +82,7 @@ do
 					local voidRemaining = voidExpireTime-GetTime()
 					if voidRemaining then
 						local _, _, doomCount, _, _, doomExpireTime = DBM:UnitDebuff("player", 314298)
-						if doomCount then--Has Imminent Doom count, show count and doom remaining
+						if doomCount and doomExpireTime then--Has Imminent Doom count, show count and doom remaining
 							local doomRemaining = doomExpireTime-GetTime()
 							addLine(i.."*"..name, doomCount.."("..floor(doomRemaining)..")-"..floor(voidRemaining))
 						else--no Doom, just show void stuff
