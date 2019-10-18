@@ -14,9 +14,9 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 308044 305663 308903 308872 314337 305722",
 	"SPELL_CAST_SUCCESS 307805 308044 310129 314995",
-	"SPELL_AURA_APPLIED 307399 305675 310235 306005 306301 314993",
+	"SPELL_AURA_APPLIED 307806 307399 306005 306301 314993",
 	"SPELL_AURA_APPLIED_DOSE 307399",
-	"SPELL_AURA_REMOVED 305675 310235 306005 314993",
+	"SPELL_AURA_REMOVED 306005 314993",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 --	"SPELL_INTERRUPT",
@@ -43,7 +43,7 @@ local specWarnDevourMagic					= mod:NewSpecialWarningMoveAway(307805, nil, nil, 
 local yellDevourMagic						= mod:NewYell(307805)
 local specWarnStygianAnnihilation			= mod:NewSpecialWarningMoveTo(307805, nil, nil, nil, 3, 2)
 local specWarnBlackWing						= mod:NewSpecialWarningDodge(305663, "Tank", nil, nil, 1, 2)
-local specWarnDarkManifestation				= mod:NewSpecialWarningRun(308903, nil, nil, nil, 4, 2)
+local specWarnDarkManifestation				= mod:NewSpecialWarningDodge(308903, nil, nil, nil, 2, 2)
 --Stage Two: Obsidian Statue
 local specWarnDrainEssence					= mod:NewSpecialWarningMoveAway(314993, nil, nil, nil, 1, 2)
 local yellDrainEssence						= mod:NewYell(314993)
@@ -65,10 +65,8 @@ local timerDrainEssenceCD					= mod:NewAITimer(30.1, 314993, nil, nil, nil, 5, n
 --local berserkTimer						= mod:NewBerserkTimer(600)
 
 mod:AddRangeFrameOption(8, 314995)
-mod:AddInfoFrameOption(306005, true)
+--mod:AddInfoFrameOption(306005, true)
 --mod:AddSetIconOption("SetIconOnEyeBeam", 264382, true, false, {1, 2})
-mod:AddNamePlateOption("NPAuraOnDarkAegis", 305675)
-mod:AddNamePlateOption("NPAuraOnDevouredAegis", 310235)
 
 mod.vb.bigAoeActive = false
 mod.vb.darkManifestationCount = 0
@@ -83,20 +81,14 @@ function mod:OnCombatStart(delay)
 	timerManaRotClawsCD:Start(1-delay)
 	timerDarkManifestationCD:Start(1-delay)
 	timerAncientCurseCD:Start(1-delay)
-	if self.Options.NPAuraOnDarkAegis or self.Options.NPAuraOnDevouredAegis then
-		DBM:FireEvent("BossMod_EnableHostileNameplates")
-	end
 end
 
 function mod:OnCombatEnd()
-	if self.Options.InfoFrame then
-		DBM.InfoFrame:Hide()
-	end
+--	if self.Options.InfoFrame then
+--		DBM.InfoFrame:Hide()
+--	end
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
-	end
-	if self.Options.NPAuraOnDarkAegis or self.Options.NPAuraOnDevouredAegis then
-		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
 	end
 end
 
@@ -151,7 +143,7 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 307805 then
+	if spellId == 307806 then
 		warnDevourMagic:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			specWarnDevourMagic:Show()
@@ -177,19 +169,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			warnManaRotWounds:Show(args.destName, amount)
 		end
-	elseif spellId == 305675 then
-		if self.Options.NPAuraOnDarkAegis then
-			DBM.Nameplate:Show(true, args.destGUID, spellId)
-		end
-	elseif spellId == 310235 then
-		if self.Options.NPAuraOnDevouredAegis then
-			DBM.Nameplate:Show(true, args.destGUID, spellId)
-		end
 	elseif spellId == 306005 then
-		if self.Options.InfoFrame then
-			DBM.InfoFrame:SetHeader(args.spellName)
-			DBM.InfoFrame:Show(2, "enemyabsorb", nil, args.amount, "boss1")
-		end
+--		if self.Options.InfoFrame then
+--			DBM.InfoFrame:SetHeader(args.spellName)
+--			DBM.InfoFrame:Show(2, "enemyabsorb", nil, args.amount, "boss1")
+--		end
 	elseif spellId == 306301 then
 		warnForbiddenMana:Show(args.destName)
 	elseif spellId == 314993 then
@@ -209,24 +193,16 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
-	if spellId == 305675 then
-		if self.Options.NPAuraOnDarkAegis then
-			DBM.Nameplate:Hide(true, args.destGUID, spellId)
-		end
-	elseif spellId == 310235 then
-		if self.Options.NPAuraOnDevouredAegis then
-			DBM.Nameplate:Hide(true, args.destGUID, spellId)
-		end
-	elseif spellId == 306005 then--Obsidian Skin
+	if spellId == 306005 then--Obsidian Skin
 		timerDevourMagicCD:Start(2)
 		timerStygianAnnihilationCD:Start(2)
 		timerBlackWingsCD:Start(2)
 		timerManaRotClawsCD:Start(2)
 		timerDarkManifestationCD:Start(2)
 		timerAncientCurseCD:Start(2)
-		if self.Options.InfoFrame then
-			DBM.InfoFrame:Hide()
-		end
+--		if self.Options.InfoFrame then
+--			DBM.InfoFrame:Hide()
+--		end
 	elseif spellId == 314993 then
 		if args:IsPlayer() then
 			yellDrainEssenceFades:Cancel()

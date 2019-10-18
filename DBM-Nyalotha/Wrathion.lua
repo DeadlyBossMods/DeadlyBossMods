@@ -13,11 +13,11 @@ mod:SetUsedIcons(1, 2, 3)--Unknown number of burning targets, guessed for now
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 313973 306289 306735",
+	"SPELL_CAST_START 313973 306289 306735 306995",
 	"SPELL_CAST_SUCCESS 306111 306289 313253",
 	"SPELL_AURA_APPLIED 306015 306163 313250 313175 307013 309733 314347",
 	"SPELL_AURA_APPLIED_DOSE 306015 313250",
-	"SPELL_AURA_REMOVED 306163 313175 307013 309733",
+	"SPELL_AURA_REMOVED 306163 313175 307013 309733 306995",
 	"SPELL_PERIODIC_DAMAGE 306824 307053",
 	"SPELL_PERIODIC_MISSED 306824 307053",
 --	"SPELL_INTERRUPT",
@@ -53,13 +53,12 @@ local specWarnScalesofWrathion				= mod:NewSpecialWarningSoak(308682, nil, nil, 
 
 --Stage One: The Black Emperor
 --mod:AddTimerLine(BOSS)
-local timerSearingBreathCD					= mod:NewAITimer(5.3, 313973, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
-local timerIncinerationCD					= mod:NewAITimer(30.1, 306111, nil, nil, nil, 3)
-local timerGaleBlastCD						= mod:NewAITimer(30.1, 306289, nil, nil, nil, 3)
-local timerBurningCataclysmCD				= mod:NewAITimer(5.3, 306735, nil, nil, nil, 6, nil, DBM_CORE_DEADLY_ICON, nil, 1, 4)
+local timerSearingBreathCD					= mod:NewCDTimer(8.5, 313973, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerIncinerationCD					= mod:NewCDCountTimer(30.1, 306111, nil, nil, nil, 3)
+local timerGaleBlastCD						= mod:NewNextTimer(91.2, 306289, nil, nil, nil, 2)
+local timerBurningCataclysmCD				= mod:NewNextTimer(91.2, 306735, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON, nil, 1, 5)
 local timerBurningCataclysm					= mod:NewCastTimer(8, 306735, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
-local timerCreepingMadnessCD				= mod:NewAITimer(30.1, 313253, nil, nil, nil, 3)
---local timerTimerWithCountdownCD			= mod:NewAITimer(84, 298103, nil, nil, nil, 1, nil, nil, nil, 1, 4)
+local timerCreepingMadnessCD				= mod:NewAITimer(30.1, 313253, nil, nil, nil, 3, nil, DBM_CORE_MYTHIC_ICON)
 --Stage Two: Smoke and Mirrors
 
 --local berserkTimer						= mod:NewBerserkTimer(600)
@@ -70,6 +69,7 @@ mod:AddSetIconOption("SetIconBurningMadness", 309733, true, false, {1, 2, 3})
 mod:AddNamePlateOption("NPAuraOnHardenedCore", 313175)
 
 mod.vb.cataCast = 0
+mod.vb.incinerateCount = 0
 mod.vb.phase = 1
 local burningMadnessTargets = {}
 
@@ -120,13 +120,16 @@ end
 
 function mod:OnCombatStart(delay)
 	self.vb.cataCast = 0
+	self.vb.incinerateCount = 0
 	self.vb.phase = 1
 	table.wipe(burningMadnessTargets)
-	timerSearingBreathCD:Start(1-delay)
-	timerIncinerationCD:Start(1-delay)--SUCCESS
-	timerGaleBlastCD:Start(1-delay)--START
-	timerBurningCataclysmCD:Start(1-delay)--START
-	timerCreepingMadnessCD:Start(1-delay)--SUCCESS
+	timerSearingBreathCD:Start(8.1-delay)
+	timerIncinerationCD:Start(33.2-delay)--SUCCESS
+	timerGaleBlastCD:Start(55.7-delay)--START
+	timerBurningCataclysmCD:Start(70.3-delay)--START
+	if self:IsMythic() then
+		timerCreepingMadnessCD:Start(1-delay)--SUCCESS
+	end
 	if self.Options.NPAuraOnHardenedCore then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
@@ -165,13 +168,24 @@ function mod:SPELL_CAST_START(args)
 		specWarnBurningCataclysm:Play("specialsoon")
 		timerBurningCataclysm:Start()
 		timerBurningCataclysmCD:Start()
+	elseif spellId == 306995 and self.vb.phase == 1 then--P2
+		self.vb.phase = 2
+		timerSearingBreathCD:Stop()
+		timerIncinerationCD:Stop()
+		timerGaleBlastCD:Stop()
+		timerBurningCataclysmCD:Stop()
+		timerCreepingMadnessCD:Stop()
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 306111 then
-		timerIncinerationCD:Start()
+		self.vb.incinerateCount = self.vb.incinerateCount + 1
+		local timer = self.vb.incinerateCount == 1 and 55 or self.vb.incinerateCount == 2 and 47.5
+		if timer then
+			timerIncinerationCD:Start(timer, self.vb.incinerateCount+1)
+		end
 	elseif spellId == 306289 and self:AntiSpam(5, 2) then
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Hide()
@@ -184,23 +198,26 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 306015 then
-		local amount = args.amount or 1
-		if amount >= 2 then
-			if args:IsPlayer() then
-				specWarnSearingArmorStack:Show(amount)
-				specWarnSearingArmorStack:Play("stackhigh")
-			else
-				--Don't show taunt warning if you're 3 tanking and aren't near the boss (this means you are the add tank)
-				--Show taunt warning if you ARE near boss, or if number of alive tanks is less than 3
-				if (self:CheckNearby(8, args.destName) or self:GetNumAliveTanks() < 3) and not DBM:UnitDebuff("player", spellId) and not UnitIsDeadOrGhost("player") then--Can't taunt less you've dropped yours off, period.
-					specWarnSearingArmor:Show(args.destName)
-					specWarnSearingArmor:Play("tauntboss")
+		local uId = DBM:GetRaidUnitId(args.destName)
+		if self:IsTanking(uId) then
+			local amount = args.amount or 1
+			if amount >= 2 then
+				if args:IsPlayer() then
+					specWarnSearingArmorStack:Show(amount)
+					specWarnSearingArmorStack:Play("stackhigh")
 				else
-					warnSearingArmor:Show(args.destName, amount)
+					--Don't show taunt warning if you're 3 tanking and aren't near the boss (this means you are the add tank)
+					--Show taunt warning if you ARE near boss, or if number of alive tanks is less than 3
+					if (self:CheckNearby(8, args.destName) or self:GetNumAliveTanks() < 3) and not DBM:UnitDebuff("player", spellId) and not UnitIsDeadOrGhost("player") then--Can't taunt less you've dropped yours off, period.
+						specWarnSearingArmor:Show(args.destName)
+						specWarnSearingArmor:Play("tauntboss")
+					else
+						warnSearingArmor:Show(args.destName, amount)
+					end
 				end
+			else
+				warnSearingArmor:Show(args.destName, amount)
 			end
-		else
-			warnSearingArmor:Show(args.destName, amount)
 		end
 	elseif spellId == 306163 then
 		warnIncineration:CombinedShow(0.3, args.destName)
@@ -252,6 +269,17 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.SetIconBurningMadness then
 			self:SetIcon(args.destName, 0)
 		end
+	elseif spellId == 306995 then
+		self.vb.phase = 1
+		warnPhase:Show()
+		warnPhase:Play("phasechange")
+		timerSearingBreathCD:Start(2)
+		timerIncinerationCD:Start(2)
+		timerGaleBlastCD:Start(2)
+		timerBurningCataclysmCD:Start(2)
+		if self:IsMythic() then
+			timerCreepingMadnessCD:Start(2)
+		end
 	end
 end
 
@@ -281,23 +309,10 @@ end
 --]]
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if (spellId == 308679 or spellId == 308680 or spellId == 308797) and self.vb.phase == 1 then--Scales of Wrathion (or maybe 306998/energy-recharge-phase-b)
-		self.vb.phase = 2
+	if spellId == 308797 and self.vb.phase == 1 then--Scales of Wrathion (or maybe 306998/energy-recharge-phase-b)
 		specWarnScalesofWrathion:Show()
 		specWarnScalesofWrathion:Play("helpsoak")
-		timerSearingBreathCD:Stop()
-		timerIncinerationCD:Stop()
-		timerGaleBlastCD:Stop()
-		timerBurningCataclysmCD:Stop()
-		timerCreepingMadnessCD:Stop()
-	elseif spellId == 306947 then--Phase B End (TOTAL GUESSWORK, miracle if right)
-		self.vb.phase = 1
-		warnPhase:Show()
-		warnPhase:Play("phasechange")
-		timerSearingBreathCD:Start(2)
-		timerIncinerationCD:Start(2)
-		timerGaleBlastCD:Start(2)
-		timerBurningCataclysmCD:Start(2)
-		timerCreepingMadnessCD:Start(2)
+	elseif spellId == 312389 then--Create Assassins
+
 	end
 end

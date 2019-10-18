@@ -13,11 +13,11 @@ mod:SetUsedIcons(1, 2)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 306734 306865 306819 306866 306881 309858 310003 309985",
+	"SPELL_CAST_START 306734 306865 306819 306866 306881 309858 310003 309985 306207 306273",
 	"SPELL_CAST_SUCCESS 310019",
 	"SPELL_AURA_APPLIED 312750 306090 306168 306732 306733 312996 306257 306279 306654 306819 309860 309852",
 	"SPELL_AURA_APPLIED_DOSE 306819 309860",
-	"SPELL_AURA_REMOVED 312750 306090 306168 306732 306733 312996 306257 306279 306654",
+	"SPELL_AURA_REMOVED 312750 306090 306168 306732 306733 312996 306257 306279 306654 306207 306273",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 --	"SPELL_INTERRUPT",
@@ -315,7 +315,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerCallVoidHunterCD:Start(1)
 	elseif spellId == 312996 then--Nightmare Empowered
 		warnNightmarePhase:Show()
-	elseif spellId == 306257 then--Unstable Vita
+	elseif spellId == 306207 or spellId == 306273 then--Unstable Vita 306207 306273
 		self.vb.currentVita = args.destName
 		if args:IsPlayer() then
 			playerHasVita = true
@@ -428,7 +428,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerCallVoidHunterCD:Stop()
 	elseif spellId == 312996 then--Nightmare Empowered
 
-	elseif spellId == 306257 then--Unstable Vita
+	elseif spellId == 306207 or spellId == 306273 then--Unstable Vita
 		self.vb.currentVita = nil
 		if args:IsPlayer() then
 			playerHasVita = false
