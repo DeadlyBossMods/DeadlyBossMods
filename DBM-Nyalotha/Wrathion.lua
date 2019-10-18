@@ -102,8 +102,8 @@ do
 				local uId = DBM:GetRaidUnitId(name)
 				if uId then
 					local _, _, count, _, _, burningExpireTime = DBM:UnitDebuff("player", 307013, 309733)
-					local remaining = burningExpireTime-GetTime()
-					if remaining then
+					if burningExpireTime then
+						local remaining = burningExpireTime-GetTime()
 						if count then--Cleanup this nil check if count actually returns
 							addLine(i.."*"..name, count.."-"..floor(remaining))
 						else

@@ -186,8 +186,8 @@ do
 				local uId = DBM:GetRaidUnitId(name)
 				if uId then
 					local _, _, _, _, _, vitaVulnExpireTime = DBM:UnitDebuff("player", 306279)
-					local vitaRemaining = vitaVulnExpireTime-GetTime()
-					if vitaRemaining then
+					if vitaVulnExpireTime then
+						local vitaRemaining = vitaVulnExpireTime-GetTime()
 						addLine(i.."*"..name, floor(vitaRemaining))
 					end
 				end
@@ -201,8 +201,8 @@ do
 				local uId = DBM:GetRaidUnitId(name)
 				if uId then
 					local _, _, _, _, _, voidVulnExpireTime = DBM:UnitDebuff("player", 306654)
-					local voidRemaining = voidVulnExpireTime-GetTime()
-					if voidRemaining then
+					if voidVulnExpireTime then
+						local voidRemaining = voidVulnExpireTime-GetTime()
 						addLine(i.."*"..name, floor(voidRemaining))
 					end
 				end

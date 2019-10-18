@@ -69,7 +69,7 @@ end
 
 DBM = {
 	Revision = parseCurseDate("@project-date-integer@"),
-	DisplayVersion = "8.2.24", -- the string that is shown as version
+	DisplayVersion = "8.2.25 alpha", -- the string that is shown as version
 	ReleaseRevision = releaseDate(2019, 10, 16) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 }
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
@@ -2587,6 +2587,10 @@ do
 		end
 		if GetAddOnEnableState(playerName, "DPMCore") >= 1 then
 			self:AddMsg(DBM_CORE_DPMCORE)
+			return
+		end
+		if GetAddOnEnableState(playerName, "DBM-VictorySound") >= 1 then
+			self:AddMsg(DBM_CORE_VICTORYSOUND)
 			return
 		end
 		if not dbmIsEnabled then
@@ -5313,6 +5317,7 @@ do
 		if not checkEntry(inCombat, mob) then
 			buildTargetList()
 			if targetList[mob] then
+				if mod.noFriendlyEngagement and UnitIsFriend("player", targetList[mob]) then return end
 				if delay > 0 and UnitAffectingCombat(targetList[mob]) and not (UnitPlayerOrPetInRaid(targetList[mob]) or UnitPlayerOrPetInParty(targetList[mob])) then
 					DBM:StartCombat(mod, delay, "PLAYER_REGEN_DISABLED")
 				elseif (delay == 0) then
@@ -5956,6 +5961,7 @@ do
 				if combatInfo[LastInstanceMapID] then
 					for i, v in ipairs(combatInfo[LastInstanceMapID]) do
 						if v.mod.Options.Enabled and not v.mod.disableHealthCombat and v.type:find("combat") and (v.multiMobPullDetection and checkEntry(v.multiMobPullDetection, cId) or v.mob == cId) then
+							if v.mod.noFriendlyEngagement and UnitIsFriend("player", uId) then return end
 							-- Delay set, > 97% = 0.5 (consider as normal pulling), max dealy limited to 20s.
 							self:StartCombat(v.mod, health > 97 and 0.5 or mmin(GetTime() - lastCombatStarted, 20), "UNIT_HEALTH", nil, health)
 						end
@@ -11187,6 +11193,9 @@ function bossModPrototype:RegisterCombat(cType, ...)
 	if self.noEEDetection then
 		info.noEEDetection = self.noEEDetection
 	end
+	if self.noFriendlyEngagement then
+		info.noFriendlyEngagement = self.noFriendlyEngagement
+	end
 	if self.noRegenDetection then
 		info.noRegenDetection = self.noRegenDetection
 	end
@@ -11287,6 +11296,13 @@ function bossModPrototype:DisableEEKillDetection()
 	self.noEEDetection = true
 	if self.combatInfo then
 		self.combatInfo.noEEDetection = true
+	end
+end
+
+function bossModPrototype:DisableFriendlyDetection()
+	self.noFriendlyEngagement = true
+	if self.combatInfo then
+		self.combatInfo.noFriendlyEngagement = true
 	end
 end
 
