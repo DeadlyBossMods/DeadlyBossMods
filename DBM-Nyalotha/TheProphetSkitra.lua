@@ -5,8 +5,10 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(157620)
 mod:SetEncounterID(2334)
 mod:SetZone()
---mod:SetHotfixNoticeRev(20190716000000)--2019, 7, 16
---mod:SetMinSyncRevision(20190716000000)
+mod:SetBossHPInfoToHighest()--Must set boss HP to highest, since boss health will get screwed up during images phase
+mod.noBossDeathKill = true--Killing an image in image phase fires unit Died for boss creature ID, so must filter this
+mod:SetHotfixNoticeRev(20190918000000)--2019, 9, 18
+mod:SetMinSyncRevision(20190918000000)--2019, 9, 18
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
@@ -44,10 +46,10 @@ local yellShredPsycheFades					= mod:NewShortFadesYell(307937)
 --local specWarnGTFO						= mod:NewSpecialWarningGTFO(270290, nil, nil, nil, 1, 8)
 
 --mod:AddTimerLine(BOSS)
-local timerShadowShockCD					= mod:NewAITimer(5.3, 307977, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON, nil, 2, 4)
+local timerShadowShockCD					= mod:NewAITimer(5.3, 307977, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerIllusionaryProjectionCD			= mod:NewAITimer(84, 307445, nil, nil, nil, 6, nil, DBM_CORE_IMPORTANT_ICON, nil, 1, 5)
 local timerImagesofAbsolutionCD				= mod:NewAITimer(84, 313239, nil, nil, nil, 1, nil, DBM_CORE_HEROIC_ICON)
-local timerShredPsycheCD					= mod:NewAITimer(30.1, 307937, nil, nil, nil, 3)
+local timerShredPsycheCD					= mod:NewAITimer(30.1, 307937, nil, nil, nil, 3, nil, DBM_CORE_DAMAGE_ICON, nil, 3, 4)
 
 --local berserkTimer						= mod:NewBerserkTimer(600)
 
