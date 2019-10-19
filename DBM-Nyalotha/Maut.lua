@@ -165,10 +165,10 @@ end
 function mod:SPELL_SUMMON(args)
 	local spellId = args.spellId
 	if spellId == 305625 then
-		if not castsPerGUID[args.sourceGUID] then
-			castsPerGUID[args.sourceGUID] = 0
+		if not castsPerGUID[args.destGUID] then
+			castsPerGUID[args.destGUID] = 0
 		end
-		timerDarkOfferingCD:Start(10, 1, args.sourceGUID)
+		timerDarkOfferingCD:Start(10, 1, args.destGUID)
 	end
 end
 

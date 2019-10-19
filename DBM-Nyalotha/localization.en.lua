@@ -74,7 +74,8 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(2364)
 
 L:SetMiscLocalization({
-	Furthest	= "Furthest Target"
+	Furthest	= "Furthest Target",
+	Closest		= "Closest Target"
 })
 
 ---------------------------
