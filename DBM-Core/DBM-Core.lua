@@ -6051,6 +6051,14 @@ do
 							end
 						end
 					end
+					if self.Options.EventSoundWipe and self.Options.EventSoundWipe ~= "None" and self.Options.EventSoundWipe ~= "" then
+						if self.Options.EventSoundWipe == "Random" then
+							local random = fastrandom(3, #DBM.Defeat)
+							self:PlaySoundFile(DBM.Defeat[random].value)--Since this one hard reads table, shouldn't need to validate path
+						else
+							self:PlaySoundFile(self.Options.EventSoundWipe, nil, true)
+						end
+					end
 				end
 				if not self.Options.DontShowReminders and showConstantReminder == 2 and IsInGroup() and savedDifficulty ~= "lfr" and savedDifficulty ~= "lfr25" then
 					showConstantReminder = 1
@@ -6076,14 +6084,6 @@ do
 					sendWhisper(k, msg)
 				end
 				fireEvent("DBM_Wipe", mod)
-				if self.Options.EventSoundWipe and self.Options.EventSoundWipe ~= "None" and self.Options.EventSoundWipe ~= "" then
-					if self.Options.EventSoundWipe == "Random" then
-						local random = fastrandom(3, #DBM.Defeat)
-						self:PlaySoundFile(DBM.Defeat[random].value)--Since this one hard reads table, shouldn't need to validate path
-					else
-						self:PlaySoundFile(self.Options.EventSoundWipe, nil, true)
-					end
-				end
 			elseif not wipe and mod.stats then
 				mod.lastKillTime = GetTime()
 				local thisTime = GetTime() - (mod.combatInfo.pull or 0)
