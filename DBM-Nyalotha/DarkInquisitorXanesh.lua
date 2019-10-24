@@ -39,7 +39,6 @@ local specWarnSoulFlay						= mod:NewSpecialWarningRun(306311, nil, nil, nil, 4,
 local specWarnGTFO							= mod:NewSpecialWarningGTFO(270290, nil, nil, nil, 1, 8)
 --local specWarnConductivePulse				= mod:NewSpecialWarningInterrupt(295822, "HasInterrupt", nil, nil, 3, 2)
 
---mod:AddTimerLine(BOSS)
 local timerAbyssalStrikeCD					= mod:NewAITimer(5.3, 311551, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerVoidRitualCD						= mod:NewAITimer(84, 312336, nil, nil, nil, 5, nil, nil, nil, 1, 4)
 local timerSummonRitualObeliskCD			= mod:NewAITimer(30.1, 306495, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)

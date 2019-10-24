@@ -46,7 +46,6 @@ local yellShredPsyche						= mod:NewPosYell(307937)
 local yellShredPsycheFades					= mod:NewIconFadesYell(307937)
 --local specWarnGTFO						= mod:NewSpecialWarningGTFO(270290, nil, nil, nil, 1, 8)
 
---mod:AddTimerLine(BOSS)
 local timerImagesofAbsolutionCD				= mod:NewCDTimer(84.9, 313239, nil, nil, nil, 1, nil, DBM_CORE_HEROIC_ICON)
 local timerShredPsycheCD					= mod:NewCDTimer(32.5, 307937, nil, nil, nil, 3, nil, DBM_CORE_DAMAGE_ICON, nil, 1, 4)--32.5-34
 

@@ -78,22 +78,27 @@ local yellChargedBonds						= mod:NewYell(310019)
 local specWarnDecimated						= mod:NewSpecialWarningStack(309860, nil, 2, nil, nil, 1, 6)
 local specWarnDecimatedTaunt				= mod:NewSpecialWarningStack(309860, nil, nil, nil, 1, 2)
 
---mod:AddTimerLine(BOSS)
 --Stage 1: Gathering Power
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(20527))
 local timerCallEssenceCD					= mod:NewCDCountTimer(44.9, 306091, nil, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON, nil, 1, 5)--44.9-46.3
 ----Vita
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(20528))
 local timerTerminalStrikeCD					= mod:NewCDTimer(18.1, 306734, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON, nil, 2, 3)
 local timerCallCracklingStalkerCD			= mod:NewCDTimer(30.1, 306865, nil, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON)
 local timerUnstableVita						= mod:NewTargetTimer(5, 306257, nil, nil, nil, 5)
 ------Vita Add
+--mod:AddTimerLine(DBM:EJ_GetSectionInfo(20546))
 --local timerCrackleCD						= mod:NewCDTimer(4.8, 306874, nil, nil, nil, 3)
 ----Void
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(20529))
 local timerNullifyingStrikeCD				= mod:NewCDTimer(17.3, 306819, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON, nil, 2, 3)
 local timerCallVoidHunterCD					= mod:NewCDTimer(30.1, 306866, nil, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON)
 local timerUnstableVoidCD					= mod:NewNextCountTimer(5.9, 306634, nil, nil, nil, 5)
 ------Void Add
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(20549))
 local timerVoidCollapseCD					= mod:NewCDTimer(10.8, 306881, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
 --Stage 2: Unleashed Wrath
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(20853))
 local timerDecimatingStrikeCD				= mod:NewCDTimer(9.6, 309858, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON, nil, 2, 3)--9.6-13.3
 local timerVoidEruptionCD					= mod:NewCDTimer(20.6, 310003, nil, nil, nil, 2)--20.6-23
 local timerChargedBondsCD					= mod:NewCDTimer(10.8, 310019, nil, nil, nil, 3)--10.8-18.2

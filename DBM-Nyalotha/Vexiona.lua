@@ -63,21 +63,24 @@ local specWarnAnnihilation					= mod:NewSpecialWarningDodge(307403, nil, nil, ni
 ----Spellbound Ritualist
 local specWarnVoidBolt						= mod:NewSpecialWarningInterrupt(307177, "HasInterrupt", nil, nil, 3, 2)
 
---mod:AddTimerLine(BOSS)
 --Vexiona
 ----Stage 1: Cult of the Void
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(20661))
 local timerEncroachingShadowsCD				= mod:NewAITimer(30.1, 307314, nil, nil, nil, 3)
 local timerTwilightBreathCD					= mod:NewAITimer(5.3, 307020, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON, nil, 2, 4)
 local timerDespairCD						= mod:NewAITimer(5.3, 307359, nil, nil, nil, 5, nil, DBM_CORE_HEALER_ICON)
 local timerShatteredResolve					= mod:NewTargetTimer(6, 307371, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
 local timerDarkGatewayCD					= mod:NewAITimer(5.3, 307057, nil, nil, nil, 1, nil, nil, nil, 1, 4)
 ----Stage 2: Death From Above
+--mod:AddTimerLine(DBM:EJ_GetSectionInfo(20667))
 --local timerTwilightDecimatorCD			= mod:NewNextCountTimer(30.1, 307218, nil, nil, nil, 3)
 ----Stage 3: The Void Unleashed
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(20669))
 local timerHeartofDarknessCD				= mod:NewAITimer(30.1, 307639, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON, nil, 1, 4)
 local timerDesolationCD						= mod:NewAITimer(30.1, 310325, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
 --Adds
 ----Void Ascendant
+--mod:AddTimerLine(DBM:EJ_GetSectionInfo(20684))
 --local timerAnnihilationCD					= mod:NewCDTimer(84, 307403, nil, nil, nil, 3)
 
 --local berserkTimer						= mod:NewBerserkTimer(600)

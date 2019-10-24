@@ -52,7 +52,6 @@ local specWarnGTFO							= mod:NewSpecialWarningGTFO(306824, nil, nil, nil, 1, 8
 local warnSpawnAdds							= mod:NewSpellAnnounce(312389, 2)
 
 --Stage One: The Black Emperor
---mod:AddTimerLine(BOSS)
 local timerSearingBreathCD					= mod:NewCDTimer(8.5, 313973, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerIncinerationCD					= mod:NewCDCountTimer(30.1, 306111, nil, nil, nil, 3)
 local timerGaleBlastCD						= mod:NewNextTimer(91.2, 306289, nil, nil, nil, 2)

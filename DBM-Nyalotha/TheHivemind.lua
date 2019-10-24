@@ -60,10 +60,12 @@ local timerTekrissHiveControlCD				= mod:NewAITimer(84, 307213, nil, nil, nil, 6
 local timerKazirsHiveControlCD				= mod:NewAITimer(84, 307201, nil, nil, nil, 6, nil, nil, nil, 1, 5)
 --local timerAddsCD							= mod:NewAddsTimer(120, 31700, nil, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON)--Generic Timer
 --Ka'zir
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(20710))
 local timerVolatileEruptionCD				= mod:NewAITimer(84, 307583, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
 local timerSpawnAcidicAqirCD				= mod:NewAITimer(84, 310340, nil, nil, nil, 3)
 local timerMindNumbingNovaCD				= mod:NewAITimer(7.3, 313652, nil, "HasInterrupt", nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
 --Tek'ris
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(20713))
 local timerAcceleratedEvolutionCD			= mod:NewAITimer(84, 307637, nil, nil, nil, 3, nil, DBM_CORE_TANK_ICON)
 
 --local berserkTimer						= mod:NewBerserkTimer(600)
