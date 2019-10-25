@@ -41,6 +41,11 @@ L= DBM:GetModLocalization(2377)
 ---------------------------
 L= DBM:GetModLocalization(2372)
 
+L:SetMiscLocalization({
+	Together	= "보스 붙이세요",
+	Apart		= "보스 떨어트리세요"
+})
+
 ---------------------------
 --  Shad'har the Insatiable --
 ---------------------------
@@ -56,15 +61,36 @@ L= DBM:GetModLocalization(2373)
 ---------------------------
 L= DBM:GetModLocalization(2370)
 
+L:SetWarningLocalization({
+	warnPlayerAnnihilation			= ">%s<|1이;가; %s을 시전합니다",
+})
+
+L:SetOptionLocalization({
+	warnPlayerAnnihilation			= "플레이어에 의해 $spell:306982이 시전되면 경고 보기 (시전자 포함)"
+})
+
 ---------------------------
 --  Ra-den the Despoiled --
 ---------------------------
 L= DBM:GetModLocalization(2364)
 
+L:SetMiscLocalization({
+	Furthest	= "제일 먼 대상",
+	Closest		= "가장 가까운 대상"
+})
+
 ---------------------------
 --  Il'gynoth, Corruption Reborn --
 ---------------------------
 L= DBM:GetModLocalization(2374)
+
+L:SetOptionLocalization({
+	SetIconOnlyOnce		= "가장 생명력이 낮은 쫄을 탐지해서 징표를 한번만 지정하고 죽을때까지 징표 유지",
+	InterruptBehavior	= "혈류 공급 차단 방식 설정 (공대장일 경우 다른 사람의 설정보다 우선 적용)",
+	Three				= "3인 로테이션 ",--Default
+	Four				= "4인 로테이션 ",
+	Five				= "5인 로테이션 "
+})
 
 ---------------------------
 --  Carapace of N'Zoth --
