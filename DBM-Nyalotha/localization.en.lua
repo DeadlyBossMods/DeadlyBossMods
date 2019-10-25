@@ -74,13 +74,22 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(2364)
 
 L:SetMiscLocalization({
-	Furthest	= "Furthest Target"
+	Furthest	= "Furthest Target",
+	Closest		= "Closest Target"
 })
 
 ---------------------------
 --  Il'gynoth, Corruption Reborn --
 ---------------------------
 L= DBM:GetModLocalization(2374)
+
+L:SetOptionLocalization({
+	SetIconOnlyOnce		= "Set icon only once, per lowest health ooze scan, then disable until at least one dies",
+	InterruptBehavior	= "Set Pumping Blood interrupt behavior (Will override everyone elses setting if you are raid leader)",
+	Three				= "3 person rotation ",--Default
+	Four				= "4 person rotation ",
+	Five				= "5 person rotation "
+})
 
 ---------------------------
 --  Carapace of N'Zoth --

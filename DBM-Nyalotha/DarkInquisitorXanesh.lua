@@ -15,9 +15,9 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 312336 306495",
 	"SPELL_CAST_SUCCESS 311551 306319",
-	"SPELL_AURA_APPLIED 312406 314179 306311",
+	"SPELL_AURA_APPLIED 312406 314179 306311 309569",
 	"SPELL_AURA_APPLIED_DOSE 311551",
-	"SPELL_AURA_REMOVED 312406",
+	"SPELL_AURA_REMOVED 312406 309569",
 	"SPELL_PERIODIC_DAMAGE 305575",
 	"SPELL_PERIODIC_MISSED 305575"
 --	"SPELL_INTERRUPT",
@@ -39,7 +39,6 @@ local specWarnSoulFlay						= mod:NewSpecialWarningRun(306311, nil, nil, nil, 4,
 local specWarnGTFO							= mod:NewSpecialWarningGTFO(270290, nil, nil, nil, 1, 8)
 --local specWarnConductivePulse				= mod:NewSpecialWarningInterrupt(295822, "HasInterrupt", nil, nil, 3, 2)
 
---mod:AddTimerLine(BOSS)
 local timerAbyssalStrikeCD					= mod:NewAITimer(5.3, 311551, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerVoidRitualCD						= mod:NewAITimer(84, 312336, nil, nil, nil, 5, nil, nil, nil, 1, 4)
 local timerSummonRitualObeliskCD			= mod:NewAITimer(30.1, 306495, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
@@ -78,7 +77,7 @@ do
 				local name = voidWokenTargets[i]
 				local uId = DBM:GetRaidUnitId(name)
 				if uId then
-					local _, _, _, _, _, voidExpireTime = DBM:UnitDebuff("player", 312406)
+					local _, _, _, _, _, voidExpireTime = DBM:UnitDebuff("player", 312406, 309569)
 					local voidRemaining = voidExpireTime-GetTime()
 					if voidRemaining then
 						local _, _, doomCount, _, _, doomExpireTime = DBM:UnitDebuff("player", 314298)
@@ -158,7 +157,7 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 312406 then
+	if spellId == 312406 or spellId == 309569 then
 		if not tContains(voidWokenTargets, args.destName) then
 			table.insert(voidWokenTargets, args.destName)
 		end
@@ -198,7 +197,7 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
-	if spellId == 312406 then
+	if spellId == 312406 or spellId == 309569 then
 		tDeleteItem(voidWokenTargets, args.destName)
 		if self.Options.SetIconOnVoidWoken then
 			self:SetIcon(args.destName, 0)
