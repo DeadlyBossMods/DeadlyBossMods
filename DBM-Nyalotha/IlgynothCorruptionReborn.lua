@@ -28,7 +28,6 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4"
 )
 
---TODO, adjust tank stacks as needed
 --TODO, make sure 158328 doesn't fire UNIT_DIED until fight is open. Remove 999999 when appropriate
 --TODO, number of icons needed by MC targets. Also todo, probably change icons when BW adds icons that probably break compatability
 --TODO, Corruptors gaze has no actual unit debuff, so if it's detectable at all, it'll be by RAID_BOSS_WHISPER, or blizzard is going for an amber shaper situation
@@ -72,7 +71,7 @@ mod:AddInfoFrameOption(315094, true)
 mod:AddSetIconOption("SetIconOnMC", 311367, true, false, {1, 2, 3})
 mod:AddSetIconOption("SetIconOnOoze", "ej20988", false)--Perma disabled in LFR
 mod:AddBoolOption("SetIconOnlyOnce", true)--If disabled, as long as living oozes are up, the skull will bounce around to lowest health mob continually, which is likely not desired by most, thus this defaulted on
-mod:AddNamePlateOption("NPAuraOnPumpingBlood", 296914)
+mod:AddNamePlateOption("NPAuraOnPumpingBlood", 310788)
 mod:AddMiscLine(DBM_CORE_OPTION_CATEGORY_DROPDOWNS)
 mod:AddDropdownOption("InterruptBehavior", {"Three", "Four", "Five"}, "Three", "misc")
 
@@ -128,6 +127,7 @@ do
 		self:Unschedule(autoMarkOozes)
 		if self.vb.IchorCount == 0 then
 			autoMarkScannerActive = false
+			autoMarkBlocked = false
 			return
 		end--None left, abort scans
 		local lowestUnitID = nil
@@ -230,7 +230,7 @@ function mod:SPELL_CAST_START(args)
 		castsPerGUID[args.sourceGUID] = castsPerGUID[args.sourceGUID] + 1
 		local count = castsPerGUID[args.sourceGUID]
 		--timerPumpingBloodCD:Start(nil, count+1, args.sourceGUID)
-		if self:CheckInterruptFilter(args.sourceGUID, false, true) then
+		if self:CheckInterruptFilter(args.sourceGUID, false, false) then
 			specWarnPumpingBlood:Show(args.sourceName, count)
 			if count == 1 then
 				specWarnPumpingBlood:Play("kick1r")
@@ -283,7 +283,12 @@ function mod:SPELL_AURA_APPLIED(args)
 				else
 					--Don't show taunt warning if you're 3 tanking and aren't near the boss (this means you are the add tank)
 					--Show taunt warning if you ARE near boss, or if number of alive tanks is less than 3
-					if (self:CheckNearby(8, args.destName) or self:GetNumAliveTanks() < 3) and not DBM:UnitDebuff("player", spellId) and not UnitIsDeadOrGhost("player") then--Can't taunt less you've dropped yours off, period.
+					local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", spellId)
+					local remaining
+					if expireTime then
+						remaining = expireTime-GetTime()
+					end
+					if (self:CheckNearby(8, args.destName) or self:GetNumAliveTanks() < 3) and (not remaining or remaining and remaining < 15) and not UnitIsDeadOrGhost("player") then--Can't taunt less you've dropped yours off, period.
 						specWarnEyeofNZothTaunt:Show(args.destName)
 						specWarnEyeofNZothTaunt:Play("tauntboss")
 					else
