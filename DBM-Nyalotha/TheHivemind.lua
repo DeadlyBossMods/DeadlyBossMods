@@ -139,8 +139,14 @@ function mod:SPELL_CAST_START(args)
 			specWarnMindNumbingNova:Play("kick3r")
 		end
 	elseif spellId == 307968 then
-		specWarnNullificationBlast:Show()
-		specWarnNullificationBlast:Play("shockwave")
+		for i = 1, 2 do
+			local bossUnitID = "boss"..i
+			if UnitExists(bossUnitID) and UnitGUID(bossUnitID) == args.sourceGUID and UnitDetailedThreatSituation("player", bossUnitID) then--We are highest threat target
+				specWarnNullificationBlast:Show()--So show tank warning
+				specWarnNullificationBlast:Play("shockwave")
+				break
+			end
+		end
 	elseif spellId == 307232 then
 		specWarnEchoingVoid:Show()
 		specWarnEchoingVoid:Play("scatter")
