@@ -415,6 +415,9 @@ function mod:UNIT_DIED(args)
 			DBM:EndCombat(self)
 		else
 			self.vb.phase = self.vb.phase + 0.5
+			timerTouchoftheCorruptorCD:Stop()
+			timerCursedBloodCD:Stop()
+			timerEyeofNZothCD:Stop()
 			timerCursedBloodCD:Start(2)
 			if self:IsMythic() then
 				timerCursedBloodCD:UpdateInline(DBM_CORE_MAGIC_ICON)
@@ -423,8 +426,9 @@ function mod:UNIT_DIED(args)
 	elseif cid == 159514 then--blood-of-nyalotha
 		self.vb.IchorCount = self.vb.IchorCount - 1
 		addsTable[args.destGUID] = nil
-		if self.Options.SetIconOnOoze and not self:IsLFR() then
+		if self.Options.SetIconOnOoze and not self:IsLFR() and not autoMarkScannerActive then
 			autoMarkBlocked = false
+			autoMarkScannerActive = true
 			autoMarkOozes(self)
 		end
 		if self.Options.InfoFrame then

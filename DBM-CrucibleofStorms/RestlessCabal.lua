@@ -448,14 +448,6 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
-function mod:SPELL_INTERRUPT(args)
-	if type(args.extraSpellId) == "number" and args.extraSpellId == 290084 then
-		if self.Options.NPAuraOnWaterBolt then
-			DBM.Nameplate:Hide(true, args.destGUID)
-		end
-	end
-end
-
 function mod:SPELL_SUMMON(args)
 	local spellId = args.spellId
 	if spellId == 282515 then
