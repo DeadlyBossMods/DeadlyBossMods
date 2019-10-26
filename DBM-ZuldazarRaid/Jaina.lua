@@ -408,6 +408,7 @@ function mod:SPELL_CAST_START(args)
 			end
 		end
 		if self.Options.NPAuraOnWaterBolt then
+			DBM.Nameplate:Hide(true, args.sourceGUID)--In case spell interrupt check still isn't working
 			DBM.Nameplate:Show(true, args.sourceGUID, spellId, interruptTextures[count])
 		end
 	elseif spellId == 288619 then
