@@ -13,19 +13,18 @@ mod:SetUsedIcons(1, 2, 3)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 312336 306495",
+	"SPELL_CAST_START 312336",
 	"SPELL_CAST_SUCCESS 311551 306319",
-	"SPELL_AURA_APPLIED 312406 314179 306311 309569",
+	"SPELL_AURA_APPLIED 312406 314179 306311",
 	"SPELL_AURA_APPLIED_DOSE 311551",
-	"SPELL_AURA_REMOVED 312406 309569",
+	"SPELL_AURA_REMOVED 312406",
 	"SPELL_PERIODIC_DAMAGE 305575",
-	"SPELL_PERIODIC_MISSED 305575"
---	"SPELL_INTERRUPT",
+	"SPELL_PERIODIC_MISSED 305575",
+	"CHAT_MSG_MONSTER_YELL"
 --	"UNIT_DIED",
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, figure out the tank swaps, do they swap at stacks, or just every cast because of knockback?
 local warnAbyssalStrike						= mod:NewStackAnnounce(311551, 2, nil, "Tank")
 local warnVoidRitual						= mod:NewCountAnnounce(312336, 2)--Fallback if specwarn is disabled
 local warnFanaticism						= mod:NewTargetNoFilterAnnounce(314179, 3, nil, "Tank|Healer")
@@ -33,21 +32,20 @@ local warnSummonRitualObelisk				= mod:NewCountAnnounce(306495, 2)
 local warnSoulFlay							= mod:NewTargetAnnounce(306311, 2)
 
 local specWarnVoidRitual					= mod:NewSpecialWarningCount(312336, false, nil, nil, 1, 2)--Option in, since only certain players may be assigned
---local specWarnAbyssalStrike				= mod:NewSpecialWarningStack(311551, nil, 2, nil, nil, 1, 6)
---local specWarnAbyssalStrikeTaunt			= mod:NewSpecialWarningTaunt(311551, nil, nil, nil, 1, 2)
+local specWarnAbyssalStrike					= mod:NewSpecialWarningStack(311551, nil, 1, nil, nil, 1, 6)
+local specWarnAbyssalStrikeTaunt			= mod:NewSpecialWarningTaunt(311551, nil, nil, nil, 1, 2)
 local specWarnSoulFlay						= mod:NewSpecialWarningRun(306311, nil, nil, nil, 4, 2)
 local specWarnGTFO							= mod:NewSpecialWarningGTFO(270290, nil, nil, nil, 1, 8)
---local specWarnConductivePulse				= mod:NewSpecialWarningInterrupt(295822, "HasInterrupt", nil, nil, 3, 2)
 
-local timerAbyssalStrikeCD					= mod:NewAITimer(5.3, 311551, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
-local timerVoidRitualCD						= mod:NewAITimer(84, 312336, nil, nil, nil, 5, nil, nil, nil, 1, 4)
-local timerSummonRitualObeliskCD			= mod:NewAITimer(30.1, 306495, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
-local timerSoulFlayCD						= mod:NewAITimer(30.1, 306319, nil, nil, nil, 3)
+local timerAbyssalStrikeCD					= mod:NewCDTimer(42.9, 311551, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--42.9-47
+local timerVoidRitualCD						= mod:NewNextCountTimer(79.7, 312336, nil, nil, nil, 5, nil, nil, nil, 1, 4)
+local timerSummonRitualObeliskCD			= mod:NewNextCountTimer(79.7, 306495, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
+local timerSoulFlayCD						= mod:NewCDTimer(46.7, 306319, nil, nil, nil, 3)
 
 --local berserkTimer						= mod:NewBerserkTimer(600)
 
 --mod:AddRangeFrameOption(6, 264382)
---mod:AddInfoFrameOption(275270, true)
+mod:AddInfoFrameOption(312406, true)
 mod:AddSetIconOption("SetIconOnVoidWoken", 312406, true, false, {1, 2, 3})
 --mod:AddNamePlateOption("NPAuraOnChaoticGrowth", 296914)
 
@@ -77,7 +75,7 @@ do
 				local name = voidWokenTargets[i]
 				local uId = DBM:GetRaidUnitId(name)
 				if uId then
-					local _, _, _, _, _, voidExpireTime = DBM:UnitDebuff("player", 312406, 309569)
+					local _, _, _, _, _, voidExpireTime = DBM:UnitDebuff("player", 312406)
 					local voidRemaining = voidExpireTime-GetTime()
 					if voidRemaining then
 						local _, _, doomCount, _, _, doomExpireTime = DBM:UnitDebuff("player", 314298)
@@ -99,10 +97,12 @@ function mod:OnCombatStart(delay)
 	self.vb.ritualCount = 0
 	self.vb.obeliskCount = 0
 	table.wipe(voidWokenTargets)
-	timerVoidRitualCD:Start(1-delay)
-	timerSummonRitualObeliskCD:Start(1-delay)
-	timerAbyssalStrikeCD:Start(1-delay)
-	timerSoulFlayCD:Start(1-delay)
+	if self:IsHard() then
+		timerSummonRitualObeliskCD:Start(12-delay, 1)
+	end
+	timerSoulFlayCD:Start(14-delay)--SUCCESS
+	timerAbyssalStrikeCD:Start(33.4-delay)--SUCCESS
+	timerVoidRitualCD:Start(52.9-delay, 1)
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(OVERVIEW)
 		DBM.InfoFrame:Show(8, "function", updateInfoFrame, false, false)
@@ -138,11 +138,7 @@ function mod:SPELL_CAST_START(args)
 		else
 			warnVoidRitual:Show(self.vb.ritualCount)
 		end
-		timerVoidRitualCD:Start()
-	elseif spellId == 306495 then
-		self.vb.obeliskCount = self.vb.obeliskCount + 1
-		warnSummonRitualObelisk:Show(self.vb.obeliskCount)
-		timerSummonRitualObeliskCD:Start()
+		timerVoidRitualCD:Start(79.7, self.vb.ritualCount+1)
 	end
 end
 
@@ -157,7 +153,7 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 312406 or spellId == 309569 then
+	if spellId == 312406 then
 		if not tContains(voidWokenTargets, args.destName) then
 			table.insert(voidWokenTargets, args.destName)
 		end
@@ -168,23 +164,17 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnFanaticism:Show(args.destName)
 	elseif spellId == 311551 then
 		local amount = args.amount or 1
-		--[[if amount >= 2 then
-			if args:IsPlayer() then
-				specWarnAbyssalStrike:Show(amount)
-				specWarnAbyssalStrike:Play("stackhigh")
+		if args:IsPlayer() then
+			specWarnAbyssalStrike:Show(amount)
+			specWarnAbyssalStrike:Play("stackhigh")
+		else
+			if not UnitIsDeadOrGhost("player") then
+				specWarnAbyssalStrikeTaunt:Show(args.destName)
+				specWarnAbyssalStrikeTaunt:Play("tauntboss")
 			else
-				--Don't show taunt warning if you're 3 tanking and aren't near the boss (this means you are the add tank)
-				--Show taunt warning if you ARE near boss, or if number of alive tanks is less than 3
-				if (self:CheckNearby(8, args.destName) or self:GetNumAliveTanks() < 3) and not DBM:UnitDebuff("player", spellId) and not UnitIsDeadOrGhost("player") then--Can't taunt less you've dropped yours off, period.
-					specWarnAbyssalStrikeTaunt:Show(args.destName)
-					specWarnAbyssalStrikeTaunt:Play("tauntboss")
-				else
-					warnAbyssalStrike:Show(args.destName, amount)
-				end
+				warnAbyssalStrike:Show(args.destName, amount)
 			end
-		else--]]
-			warnAbyssalStrike:Show(args.destName, amount)
-		--end
+		end
 	elseif spellId == 306311 then
 		warnSoulFlay:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
@@ -197,7 +187,7 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
-	if spellId == 312406 or spellId == 309569 then
+	if spellId == 312406 then
 		tDeleteItem(voidWokenTargets, args.destName)
 		if self.Options.SetIconOnVoidWoken then
 			self:SetIcon(args.destName, 0)
@@ -213,13 +203,21 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spell
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
---[[
-function mod:SPELL_INTERRUPT(args)
-	if type(args.extraSpellId) == "number" and args.extraSpellId == 298548 then
-
+do
+	--"<185.26 22:54:22> [CHAT_MSG_MONSTER_YELL] Obelisks of shadow, rise!#Dark Inquisitor Xanesh###Dark Inquisitor Xanesh##0#0##0#920#nil#0#false#false#false#false", -- [1338]
+	local bossName = DBM:EJ_GetSectionInfo(20786)
+	function mod:CHAT_MSG_MONSTER_YELL(msg, _, _, _, target)
+		if not self:IsInCombat() then return end
+		--Boss only targets himself during a yell for Obelisk spawns, any other yells he targets a playername, azshara, or nobody
+		if target == bossName or msg == L.ObeliskSpawn then--Localized backup only if simply scanning auto translated target doesn't work forever or in all locals
+			self.vb.obeliskCount = self.vb.obeliskCount + 1
+			warnSummonRitualObelisk:Show(self.vb.obeliskCount)
+			timerSummonRitualObeliskCD:Start(80, self.vb.obeliskCount+1)
+		end
 	end
 end
 
+--[[
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 152311 then
