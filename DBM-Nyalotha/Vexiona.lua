@@ -60,7 +60,7 @@ local yellDesolationFades					= mod:NewShortFadesYell(310325, nil, nil, nil, "YE
 local specWarnDesolationShare				= mod:NewSpecialWarningMoveTo(310325, "-Tank", nil, nil, 1, 2)
 --Adds
 ----Void Ascendant
-local specWarnAnnihilation					= mod:NewSpecialWarningDodgeCount(307403, nil, nil, nil, 2, 2)
+local specWarnAnnihilation					= mod:NewSpecialWarningDodgeCount(307403, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.dodge:format(307403), nil, 2, 2)
 ----Spellbound Ritualist
 local specWarnVoidBolt						= mod:NewSpecialWarningInterrupt(307177, "HasInterrupt", nil, nil, 3, 2)
 

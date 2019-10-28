@@ -628,7 +628,7 @@ do
 				if restricted then--API restrictions are in play, so pretend we're back in BC
 					--Start at bottom and work way up.
 					--Definitely not most efficient way of doing it. Refactor later
-					--All ranges aer tested and compared against UnitDistanceSquared.
+					--All ranges are tested and compared against UnitDistanceSquared.
 					--Worgsaw has a tooltip of 6 but doesn't factor in hitboxes/etc. It doesn't return false until UnitDistanceSquared of 8. bandages 18 even though spell range is 15, etc. Acorn actually is 5 in both though
 					if IsItemInRange(90175, uId) then range = 4--Gin-Ji Knife Set
 					elseif IsItemInRange(37727, uId) then range = 6--Ruby Acorn
