@@ -10750,10 +10750,12 @@ do
 		return newTimer(self, "target", ...)
 	end
 
+	--Buff/Debuff/event on boss
 	function bossModPrototype:NewBuffActiveTimer(...)
 		return newTimer(self, "active", ...)
 	end
 
+	----Buff/Debuff on players
 	function bossModPrototype:NewBuffFadesTimer(...)
 		return newTimer(self, "fades", ...)
 	end
