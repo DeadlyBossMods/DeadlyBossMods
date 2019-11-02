@@ -140,7 +140,6 @@ DBM.DefaultOptions = {
 	EventSoundWipe = "None",
 	EventSoundEngage2 = "None",
 	EventSoundMusic = "None",
-	EventSoundTurle = "None",
 	EventSoundDungeonBGM = "None",
 	EventSoundMusicCombined = false,
 	EventDungMusicMythicFilter = true,
@@ -1501,8 +1500,7 @@ do
 				"PLAYER_SPECIALIZATION_CHANGED",
 				"PARTY_INVITE_REQUEST",
 				"LOADING_SCREEN_DISABLED",
-				"SCENARIO_COMPLETED",
-				"UPDATE_VEHICLE_ACTIONBAR"
+				"SCENARIO_COMPLETED"
 			)
 			if RolePollPopup:IsEventRegistered("ROLE_POLL_BEGIN") then
 				RolePollPopup:UnregisterEvent("ROLE_POLL_BEGIN")
@@ -3706,43 +3704,6 @@ function DBM:SCENARIO_COMPLETED()
 	end
 end
 
-do
-	local function delayedVehicleCheck(self)
-		if self.Options.turtlePlaying and not HasVehicleActionBar() then
-			DBM:TransitionToDungeonBGM(false, true)
-			return
-		end
-		if self:GetCIDFromGUID(UnitGUID("pet")) == 138172 then
-			fireEvent("DBM_MusicStart", "Turtle")
-			if not self.Options.tempMusicSetting then
-				self.Options.tempMusicSetting = tonumber(GetCVar("Sound_EnableMusic")) or 1
-				if self.Options.tempMusicSetting == 0 then
-					SetCVar("Sound_EnableMusic", 1)
-				else
-					self.Options.tempMusicSetting = nil--Don't actually need it
-				end
-			end
-			local path = "MISSING"
-			if self.Options.EventSoundTurle == "Random" then
-				local random = fastrandom(3, #DBM.Music)
-				path = DBM.Music[random].value
-			else
-				path = self.Options.EventSoundTurle
-			end
-			PlayMusic(path)
-			self.Options.turtlePlaying = true
-			DBM:Debug("Starting turtle music with file: "..path)
-		end
-	end
-
-	function DBM:UPDATE_VEHICLE_ACTIONBAR()
-		if self.Options.EventSoundTurle and self.Options.EventSoundTurle ~= "None" and self.Options.EventSoundTurle ~= "" then
-			self:Unschedule(delayedVehicleCheck)
-			self:Schedule(1, delayedVehicleCheck, self)
-		end
-	end
-end
-
 --------------------------------
 --  Load Boss Mods on Demand  --
 --------------------------------
@@ -3795,10 +3756,9 @@ do
 				self.Options.tempMusicSetting = nil
 				DBM:Debug("Restoring Sound_EnableMusic CVAR")
 			end
-			if self.Options.musicPlaying or self.Options.turtlePlaying then--Primarily so DBM doesn't call StopMusic unless DBM is one that started it. We don't want to screw with other addons
+			if self.Options.musicPlaying then--Primarily so DBM doesn't call StopMusic unless DBM is one that started it. We don't want to screw with other addons
 				StopMusic()
 				self.Options.musicPlaying = nil
-				self.Options.turtlePlaying = nil
 				DBM:Debug("Stopping music")
 			end
 			fireEvent("DBM_MusicStop", "ZoneOrCombatEndTransition")
