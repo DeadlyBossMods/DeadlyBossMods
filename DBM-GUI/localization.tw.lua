@@ -298,11 +298,6 @@ L.AfterFirst				= "在副本中每次動畫播放一次之後"
 L.Always					= ALWAYS
 L.CombatOnly				= "在任何戰鬥中禁用"
 L.RaidCombat				= "只在首領戰鬥中禁用"
-L.HideBonusHeader			= "隱藏額外獎勵視窗低於..."
-L.TrivialContent			= "五人地城"--Basically anything below 340
-L.NormalRaider				= "傳奇地城+5和隨機團隊"--Basically, anything below 355
-L.HeroicRaider				= "傳奇地城+10和英雄團隊和非戰爭前線首領"--Basically anything below 370
-L.MythicRaider				= "傳奇團隊"--Basically anything below 385
 
 L.Panel_ExtraFeatures		= "額外功能"
 --

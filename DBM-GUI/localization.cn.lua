@@ -307,11 +307,6 @@ L.AfterFirst				= "仅第一次播放"
 L.Always					= "总是跳过"
 L.CombatOnly				= "在任何战斗中隐藏"
 L.RaidCombat				= "只在Boss战斗中隐藏"
-L.HideBonusHeader			= "隐藏奖励拾取投掷"
-L.TrivialContent			= "低于5M掉落"--Basically anything below 340
-L.NormalRaider				= "低于5层大秘和随机团掉落"--Basically, anything below 355
-L.HeroicRaider				= "低于10层大秘，H副本"--Basically anything below 370
-L.MythicRaider				= "M副本"--Basically anything below 385
 
 L.Panel_ExtraFeatures		= "其他功能"
 --

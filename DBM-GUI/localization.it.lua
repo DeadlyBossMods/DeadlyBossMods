@@ -319,11 +319,6 @@ L.AfterFirst				= "Nelle istanze, dopo aver visto il filmato almeno una volta"
 L.Always					= "Sempre"
 L.CombatOnly				= "Disabilita in combattimento (qualunque)"
 L.RaidCombat				= "Disabilita in combattimento (solo boss)"
-L.HideBonusHeader			= "Nascondi riquadro tiro bonus in..."
-L.TrivialContent			= "Spedizioni NON-Mitiche" -- Basically anything below 340
-L.NormalRaider				= "Spedizioni Mitiche < 5 e incursioni LFR"--Basically, anything below 355
-L.HeroicRaider				= "Spedizioni Mitiche < 10, incursioni sotto eroico e boss fuori dal fronte" -- Basically anything below 370
-L.MythicRaider				= "Tutto al di sotto delle incursioni mitiche"--Basically anything below 385
 
 L.Panel_ExtraFeatures		= "Funzionalità Aggiuntive"
 --

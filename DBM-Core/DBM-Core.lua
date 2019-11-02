@@ -287,7 +287,6 @@ DBM.DefaultOptions = {
 	HelpMessageVersion = 3,
 	MoviesSeen = {},
 	MovieFilter2 = "OnlyFight",
-	BonusFilter = "Never",
 	LastRevision = 0,
 	DebugMode = false,
 	DebugLevel = 1,
@@ -7230,62 +7229,6 @@ do
 	function DBM:CINEMATIC_STOP()
 		self:Debug("CINEMATIC_STOP fired", 2)
 		DBMHudMap:UnSupressCanvas()
-	end
-end
-
--------------------
---  Bonus Filter --
--------------------
-do
-	local bonusTimeStamp = 0
-	local bonusRollForce = false
-	--[[local warFrontMaps = {
-		[14] = true, -- Arathi Highlands
-		[62] = true, -- Darkshore
-	}--]]
-	local function hideBonusRoll(self)
-		bonusTimeStamp = GetTime()
-		BonusRollFrame:Hide()
-		self:AddMsg(DBM_CORE_BONUS_SKIPPED)
-	end
-	local function showBonusRoll(self)
-		if (GetTime() - bonusTimeStamp) < 180 then--3 min timer still active
-			BonusRollFrame:Show()
-			BonusRollFrame:Show()
-			bonusTimeStamp = 0--Reset to 0, because you can't call frame back more than once, once you pass it's over
-		else--Out of Time
-			self:AddMsg(DBM_CORE_BONUS_EXPIRED)
-		end
-	end
-	SLASH_DBMBONUS1 = "/dbmbonusroll"
-	SlashCmdList["DBMBONUS"] = function(msg)
-		bonusRollForce = true
-		showBonusRoll(DBM)
-	end
-	--TODO, see where timewalking ilvl fits into filters
-	--Couldn't get any of events to work so have to hook the show script directly
-	if BonusRollFrame then
-		BonusRollFrame:HookScript("OnShow", function(self, event, ...)
-			if bonusRollForce then
-				bonusRollForce = false
-				return
-			end
-			DBM:Debug("BonusRollFrame OnShow fired", 2)
-			if DBM.Options.BonusFilter == "Never" then return end
-			local _, _, difficultyId, _, _, _, _, mapID = GetInstanceInfo()
-			local localMapID = C_Map.GetBestMapForUnit("player") or 0
-			local keystoneLevel = C_ChallengeMode.GetActiveKeystoneInfo() or 0
-			DBM:Unschedule(hideBonusRoll)
-			if DBM.Options.BonusFilter == "TrivialContent" and (difficultyId == 1 or difficultyId == 2) then--Basically anything below 370 ilvl (normal/heroic dungeons)
-				hideBonusRoll(DBM)
-			elseif DBM.Options.BonusFilter == "NormalRaider" and (difficultyId == 17 or difficultyId == 23 or (difficultyId == 8 and keystoneLevel < 5) or (difficultyId == 0 and localMapID == 14)) then--Basically, anything below 385 (normal/heroic/mythic dungeons lower than 5, LFR
-				hideBonusRoll(DBM)
-			elseif DBM.Options.BonusFilter == "HeroicRaider" and (difficultyId == 14 or difficultyId == 17 or difficultyId == 23 or (difficultyId == 8 and keystoneLevel < 10) or (difficultyId == 0 and localMapID == 14)) then--Basically, anything below 400 (normal/heroic/mythic dungeons lower than 10, LFR/Normal Raids
-				hideBonusRoll(DBM)
-			elseif DBM.Options.BonusFilter == "MythicRaider" and (difficultyId == 14 or difficultyId == 15 or difficultyId == 17 or difficultyId == 23 or difficultyId == 8 or difficultyId == 0) then--Basically, anything below Mythic Raid (ANY dungeon, LFR/Normal/Heroic Raids
-				hideBonusRoll(DBM)
-			end
-		end)
 	end
 end
 

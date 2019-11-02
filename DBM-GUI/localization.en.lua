@@ -319,11 +319,6 @@ L.AfterFirst				= "In instance, after each movie has played once"
 L.Always					= ALWAYS
 L.CombatOnly				= "Disable in combat (any)"
 L.RaidCombat				= "Disable in combat (bosses only)"
-L.HideBonusHeader			= "Hide bonus roll window in..."
-L.TrivialContent			= "NON-Mythic dungeons"--Basically anything below 340
-L.NormalRaider				= "Dungeons below Mythic+5 and LFR raids"--Basically, anything below 355
-L.HeroicRaider				= "Dungeons below Mythic+10 and raids below heroic and non warfront bosses"--Basically anything below 370
-L.MythicRaider				= "Anything below mythic difficulty raids"--Basically anything below 385
 
 L.Panel_ExtraFeatures		= "Extra Features"
 --

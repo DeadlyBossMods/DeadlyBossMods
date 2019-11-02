@@ -294,11 +294,6 @@ L.AfterFirst				= "Tras haber visto la cinemática por primera vez"
 L.Always					= ALWAYS
 L.CombatOnly				= "En combate"
 L.RaidCombat				= "En combate (solo en jefes)"
-L.HideBonusHeader			= "Ocultar ventana de tirada bonus en"
-L.TrivialContent			= "Mazmorras no míticas"
-L.NormalRaider				= "LFR y mazmorras míticas inferiores a +5"
-L.HeroicRaider				= "Bandas inferiores a heroico, mazmorras míticas inferiores a +10 y jefes de mundo (<400)"
-L.MythicRaider				= "Todo lo inferior a banda mítica"
 
 L.Panel_ExtraFeatures		= "Funciones adicionales"
 --
