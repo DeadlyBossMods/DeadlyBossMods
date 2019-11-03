@@ -3158,22 +3158,6 @@ local function CreateOptionsMenu()
 		end)
 		VictorySoundDropdown3:SetPoint("TOPLEFT", DungeonMusicDropDown, "TOPLEFT", 0, -45)
 
-		local TurtleDropDown = eventSoundsGeneralArea:CreateDropdown(L.EventTurtleMusic, DBM.Music, "DBM", "EventSoundTurle", function(value)
-			DBM.Options.EventSoundTurle = value
-			if value ~= "Random" then
-				if not DBM.Options.tempMusicSetting then
-					DBM.Options.tempMusicSetting = tonumber(GetCVar("Sound_EnableMusic"))
-					if DBM.Options.tempMusicSetting == 0 then
-						SetCVar("Sound_EnableMusic", 1)
-					else
-						DBM.Options.tempMusicSetting = nil--Don't actually need it
-					end
-				end
-				PlayMusic(value)
-			end
-		end)
-		TurtleDropDown:SetPoint("TOPLEFT", MusicDropDown, "TOPLEFT", 0, -45)
-
 		local eventSoundsExtrasArea	= eventSoundsPanel:CreateArea(L.Area_EventSoundsExtras, nil, 52, true)
 		local combineMusic			= eventSoundsExtrasArea:CreateCheckButton(L.EventMusicCombined, true, nil, "EventSoundMusicCombined")
 
@@ -3272,18 +3256,6 @@ local function CreateOptionsMenu()
 			DBM.Options.MovieFilter2 = value
 		end)
 		blockMovieDropDown:SetPoint("TOPLEFT", DisableSFX, "TOPLEFT", 0, -40)
-
-		local bonusRollOptions = {
-			{	text	= L.Disable,		value 	= "Never"},
-			{	text	= L.TrivialContent,	value 	= "TrivialContent"},
-			{	text	= L.NormalRaider,	value 	= "NormalRaider"},
-			{	text	= L.HeroicRaider,	value 	= "HeroicRaider"},
-			{	text	= L.MythicRaider,	value 	= "MythicRaider"},
-		}
-		local blockBonusDropDown = hideBlizzArea:CreateDropdown(L.HideBonusHeader, bonusRollOptions, "DBM", "BonusFilter", function(value)
-			DBM.Options.BonusFilter = value
-		end)
-		blockBonusDropDown:SetPoint("TOPLEFT", blockMovieDropDown, "TOPLEFT", 0, -40)
 
 		--hideBlizzArea:AutoSetDimension()
 		hideBlizzPanel:SetMyOwnHeight()

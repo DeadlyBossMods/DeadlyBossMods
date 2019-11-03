@@ -35,6 +35,10 @@ L= DBM:GetModLocalization(2369)
 ---------------------------
 L= DBM:GetModLocalization(2377)
 
+L:SetMiscLocalization({
+	ObeliskSpawn	= "Obelisks of shadow, rise!"--Only as backup, in case the NPC target check stops working
+})
+
 ---------------------------
 --  The Hivemind --
 ---------------------------
@@ -59,14 +63,6 @@ L= DBM:GetModLocalization(2373)
 --  Vexiona --
 ---------------------------
 L= DBM:GetModLocalization(2370)
-
-L:SetWarningLocalization({
-	warnPlayerAnnihilation			= ">%s< is casting %s",
-})
-
-L:SetOptionLocalization({
-	warnPlayerAnnihilation			= "Show warning (with source) when $spell:306982 is cast by a player"
-})
 
 ---------------------------
 --  Ra-den the Despoiled --

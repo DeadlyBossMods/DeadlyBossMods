@@ -239,7 +239,6 @@ L.EventWipeSound			= "전멸했을 때 재생할 효과음 설정"
 L.EventEngageSound			= "보스 전투 시작시 재생할 효과음 설정"
 L.EventDungeonMusic			= "던전/레이드에서 재생할 배경음 설정"
 L.EventEngageMusic			= "보스 전투 도중 재생할 배경음 설정"
-L.EventTurtleMusic			= "거북이 해변 퀘스트 배경음 설정"
 L.Area_EventSoundsExtras	= "이벤트 효과음 설정"
 L.EventMusicCombined		= "던전과 보스 전투 배경음에 모든 음악 사용 (변경사항을 적용하려면 UI 리로드 필요)"
 L.Area_EventSoundsFilters	= "이벤트 효과음 필터 적용 조건"
@@ -309,11 +308,6 @@ L.AfterFirst				= "인스턴스 던전에 있을 때 한번만 재생"
 L.Always					= "항상 끄기"
 L.CombatOnly				= "전투중 차단 (모든 전투)"
 L.RaidCombat				= "전투중 차단 (보스만)"
-L.HideBonusHeader			= "추가 전리품 주사위 굴림 창을 숨길 전리품 레벨..."
-L.TrivialContent			= "신화 미만 던전"--Basically anything below 340
-L.NormalRaider				= "신화+ 5단 미만 던전과 공격대 찾기 레이드"--Basically, anything below 355
-L.HeroicRaider				= "신화+ 10단 미만 던전과 영웅 미만 레이드와 격전지 이외 필드 레이드 보스"--Basically anything below 370
-L.MythicRaider				= "신화 레이드 미만 모든 보스"--Basically anything below 385
 
 L.Panel_ExtraFeatures		= "기타 기능"
 --

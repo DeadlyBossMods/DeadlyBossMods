@@ -230,7 +230,6 @@ L.EventWipeSound			= "Установить звук при поражении в
 L.EventEngageSound			= "Установить звук при вступлении в бой"
 L.EventDungeonMusic			= "Установить музыку в подземельях/рейдах"
 L.EventEngageMusic			= "Установить музыку во время боя"
-L.EventTurtleMusic			= "Установить музыку во время пляжных квестов черепах"
 L.Area_EventSoundsExtras	= "Настройки звуков событий"
 L.EventMusicCombined		= "Разрешить все варианты выбора музыки для подземелий и боя (изменение этой настройки требует перезагрузки интерфейса, чтобы увидеть изменения)"
 L.Area_EventSoundsFilters	= "Условия фильтра звуков событий"
@@ -299,11 +298,6 @@ L.AfterFirst				= "После одного просмотра"
 L.Always					= "Всегда"
 L.CombatOnly				= "Отключить в бою (любом)"
 L.RaidCombat				= "Отключить в бою (только боссы)"
-L.HideBonusHeader			= "Скрывать окно бонусного броска в..."
-L.TrivialContent			= "Не эпохальных подземельях"--Basically anything below 340
-L.NormalRaider				= "Подземельях ниже M+5 и поиске рейдов"--Basically, anything below 355
-L.HeroicRaider				= "Подземельях ниже M+10 и рейдах ниже героика и боссах не на фронте"--Basically anything below 370
-L.MythicRaider				= "Везде ниже рейдов эпохальной сложности"--Basically anything below 385
 
 L.Panel_ExtraFeatures		= "Дополнительные возможности"
 --

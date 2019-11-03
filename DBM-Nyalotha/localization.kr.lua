@@ -61,14 +61,6 @@ L= DBM:GetModLocalization(2373)
 ---------------------------
 L= DBM:GetModLocalization(2370)
 
-L:SetWarningLocalization({
-	warnPlayerAnnihilation			= ">%s<|1이;가; %s을 시전합니다",
-})
-
-L:SetOptionLocalization({
-	warnPlayerAnnihilation			= "플레이어에 의해 $spell:306982이 시전되면 경고 보기 (시전자 포함)"
-})
-
 ---------------------------
 --  Ra-den the Despoiled --
 ---------------------------

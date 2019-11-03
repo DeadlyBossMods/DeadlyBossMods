@@ -140,7 +140,6 @@ DBM.DefaultOptions = {
 	EventSoundWipe = "None",
 	EventSoundEngage2 = "None",
 	EventSoundMusic = "None",
-	EventSoundTurle = "None",
 	EventSoundDungeonBGM = "None",
 	EventSoundMusicCombined = false,
 	EventDungMusicMythicFilter = true,
@@ -287,7 +286,6 @@ DBM.DefaultOptions = {
 	HelpMessageVersion = 3,
 	MoviesSeen = {},
 	MovieFilter2 = "OnlyFight",
-	BonusFilter = "Never",
 	LastRevision = 0,
 	DebugMode = false,
 	DebugLevel = 1,
@@ -1502,8 +1500,7 @@ do
 				"PLAYER_SPECIALIZATION_CHANGED",
 				"PARTY_INVITE_REQUEST",
 				"LOADING_SCREEN_DISABLED",
-				"SCENARIO_COMPLETED",
-				"UPDATE_VEHICLE_ACTIONBAR"
+				"SCENARIO_COMPLETED"
 			)
 			if RolePollPopup:IsEventRegistered("ROLE_POLL_BEGIN") then
 				RolePollPopup:UnregisterEvent("ROLE_POLL_BEGIN")
@@ -3707,43 +3704,6 @@ function DBM:SCENARIO_COMPLETED()
 	end
 end
 
-do
-	local function delayedVehicleCheck(self)
-		if self.Options.turtlePlaying and not HasVehicleActionBar() then
-			DBM:TransitionToDungeonBGM(false, true)
-			return
-		end
-		if self:GetCIDFromGUID(UnitGUID("pet")) == 138172 then
-			fireEvent("DBM_MusicStart", "Turtle")
-			if not self.Options.tempMusicSetting then
-				self.Options.tempMusicSetting = tonumber(GetCVar("Sound_EnableMusic")) or 1
-				if self.Options.tempMusicSetting == 0 then
-					SetCVar("Sound_EnableMusic", 1)
-				else
-					self.Options.tempMusicSetting = nil--Don't actually need it
-				end
-			end
-			local path = "MISSING"
-			if self.Options.EventSoundTurle == "Random" then
-				local random = fastrandom(3, #DBM.Music)
-				path = DBM.Music[random].value
-			else
-				path = self.Options.EventSoundTurle
-			end
-			PlayMusic(path)
-			self.Options.turtlePlaying = true
-			DBM:Debug("Starting turtle music with file: "..path)
-		end
-	end
-
-	function DBM:UPDATE_VEHICLE_ACTIONBAR()
-		if self.Options.EventSoundTurle and self.Options.EventSoundTurle ~= "None" and self.Options.EventSoundTurle ~= "" then
-			self:Unschedule(delayedVehicleCheck)
-			self:Schedule(1, delayedVehicleCheck, self)
-		end
-	end
-end
-
 --------------------------------
 --  Load Boss Mods on Demand  --
 --------------------------------
@@ -3796,10 +3756,9 @@ do
 				self.Options.tempMusicSetting = nil
 				DBM:Debug("Restoring Sound_EnableMusic CVAR")
 			end
-			if self.Options.musicPlaying or self.Options.turtlePlaying then--Primarily so DBM doesn't call StopMusic unless DBM is one that started it. We don't want to screw with other addons
+			if self.Options.musicPlaying then--Primarily so DBM doesn't call StopMusic unless DBM is one that started it. We don't want to screw with other addons
 				StopMusic()
 				self.Options.musicPlaying = nil
-				self.Options.turtlePlaying = nil
 				DBM:Debug("Stopping music")
 			end
 			fireEvent("DBM_MusicStop", "ZoneOrCombatEndTransition")
@@ -6315,7 +6274,7 @@ do
 	local autoTLog = false
 
 	local function isCurrentContent()
-		if LastInstanceMapID == 1861 or LastInstanceMapID == 2070 or LastInstanceMapID == 2096 or LastInstanceMapID == 2164 then--BfA
+		if LastInstanceMapID == 1861 or LastInstanceMapID == 2070 or LastInstanceMapID == 2096 or LastInstanceMapID == 2164 or LastInstanceMapID == 2217 then--BfA
 			return true
 		end
 		return false
@@ -7165,7 +7124,7 @@ function DBM:FindInstanceIDs(low, peak, contains)
 end
 
 
---/run DBM:FindEncounterIDs(1180)--Ny'alotha
+--/run DBM:FindEncounterIDs(1028)--Azeroth
 --/run DBM:FindEncounterIDs(1178, 23)--Dungeon Template (mythic difficulty)
 --/run DBM:FindEncounterIDs(237, 1)--Classic Dungeons need diff 1 specified
 --/run DBM:FindDungeonMapIDs(1, 500)--Find Classic Dungeon Map IDs
@@ -7230,62 +7189,6 @@ do
 	function DBM:CINEMATIC_STOP()
 		self:Debug("CINEMATIC_STOP fired", 2)
 		DBMHudMap:UnSupressCanvas()
-	end
-end
-
--------------------
---  Bonus Filter --
--------------------
-do
-	local bonusTimeStamp = 0
-	local bonusRollForce = false
-	--[[local warFrontMaps = {
-		[14] = true, -- Arathi Highlands
-		[62] = true, -- Darkshore
-	}--]]
-	local function hideBonusRoll(self)
-		bonusTimeStamp = GetTime()
-		BonusRollFrame:Hide()
-		self:AddMsg(DBM_CORE_BONUS_SKIPPED)
-	end
-	local function showBonusRoll(self)
-		if (GetTime() - bonusTimeStamp) < 180 then--3 min timer still active
-			BonusRollFrame:Show()
-			BonusRollFrame:Show()
-			bonusTimeStamp = 0--Reset to 0, because you can't call frame back more than once, once you pass it's over
-		else--Out of Time
-			self:AddMsg(DBM_CORE_BONUS_EXPIRED)
-		end
-	end
-	SLASH_DBMBONUS1 = "/dbmbonusroll"
-	SlashCmdList["DBMBONUS"] = function(msg)
-		bonusRollForce = true
-		showBonusRoll(DBM)
-	end
-	--TODO, see where timewalking ilvl fits into filters
-	--Couldn't get any of events to work so have to hook the show script directly
-	if BonusRollFrame then
-		BonusRollFrame:HookScript("OnShow", function(self, event, ...)
-			if bonusRollForce then
-				bonusRollForce = false
-				return
-			end
-			DBM:Debug("BonusRollFrame OnShow fired", 2)
-			if DBM.Options.BonusFilter == "Never" then return end
-			local _, _, difficultyId, _, _, _, _, mapID = GetInstanceInfo()
-			local localMapID = C_Map.GetBestMapForUnit("player") or 0
-			local keystoneLevel = C_ChallengeMode.GetActiveKeystoneInfo() or 0
-			DBM:Unschedule(hideBonusRoll)
-			if DBM.Options.BonusFilter == "TrivialContent" and (difficultyId == 1 or difficultyId == 2) then--Basically anything below 370 ilvl (normal/heroic dungeons)
-				hideBonusRoll(DBM)
-			elseif DBM.Options.BonusFilter == "NormalRaider" and (difficultyId == 17 or difficultyId == 23 or (difficultyId == 8 and keystoneLevel < 5) or (difficultyId == 0 and localMapID == 14)) then--Basically, anything below 385 (normal/heroic/mythic dungeons lower than 5, LFR
-				hideBonusRoll(DBM)
-			elseif DBM.Options.BonusFilter == "HeroicRaider" and (difficultyId == 14 or difficultyId == 17 or difficultyId == 23 or (difficultyId == 8 and keystoneLevel < 10) or (difficultyId == 0 and localMapID == 14)) then--Basically, anything below 400 (normal/heroic/mythic dungeons lower than 10, LFR/Normal Raids
-				hideBonusRoll(DBM)
-			elseif DBM.Options.BonusFilter == "MythicRaider" and (difficultyId == 14 or difficultyId == 15 or difficultyId == 17 or difficultyId == 23 or difficultyId == 8 or difficultyId == 0) then--Basically, anything below Mythic Raid (ANY dungeon, LFR/Normal/Heroic Raids
-				hideBonusRoll(DBM)
-			end
-		end)
 	end
 end
 
@@ -10750,10 +10653,12 @@ do
 		return newTimer(self, "target", ...)
 	end
 
+	--Buff/Debuff/event on boss
 	function bossModPrototype:NewBuffActiveTimer(...)
 		return newTimer(self, "active", ...)
 	end
 
+	----Buff/Debuff on players
 	function bossModPrototype:NewBuffFadesTimer(...)
 		return newTimer(self, "fades", ...)
 	end

@@ -225,7 +225,6 @@ L.EventWipeSound			= "Sound gespielt nach Niederlage im Kampf"
 L.EventEngageSound			= "Sound gespielt bei Kampfbeginn"
 L.EventDungeonMusic			= "Musik gepielt innerhalb Dungeons/SZs"
 L.EventEngageMusic			= "Musik gepielt während Kämpfen"
-L.EventTurtleMusic			= "Musik gepielt während Schildkrötenquests am Strand"
 L.Area_EventSoundsExtras	= "Einstellungen für Ereignisklänge"
 L.EventMusicCombined		= "Alle Musikauswahlmöglichkeiten für Dungeons und Kämpfe zulassen (Änderungen dieser Einstellung werden erst nach \"/reload\" sichtbar.)"
 L.Area_EventSoundsFilters	= "Filter für Ereignisklänge"
@@ -292,11 +291,6 @@ L.AfterFirst				= "Nach jeweils einmaligem Abspielen"
 L.Always					= ALWAYS
 L.CombatOnly				= "im Kampf deaktivieren (alle)"
 L.RaidCombat				= "im Kampf deaktivieren (nur Bosse)"
-L.HideBonusHeader			= "Verstecke das Beutefenster für den Bonuswurf in ..."
-L.TrivialContent			= "NICHT-mythischen Dungeons (<340)"--Basically anything below 340
-L.NormalRaider				= "Dungeons unter Mythisch+5 und in Schlachtzügen auf Schwierigkeitsgrad LFR (<355)"--Basically, anything below 355
-L.HeroicRaider				= "Dungeons unter Mythisch+10, SZ unter Heroisch, Nicht-Kriegsfront Weltbosse (<370)"--Basically anything below 370
-L.MythicRaider				= "allem unterhalb Schlachtzügen auf Schwierigkeitsgrad Mythisch (<385)"--Basically anything below 385
 
 L.Panel_ExtraFeatures		= "Sonstige Funktionen"
 --

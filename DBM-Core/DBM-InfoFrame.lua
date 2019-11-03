@@ -302,7 +302,6 @@ local function updateLinesCustomSort(sortFunc)
 	end
 end
 
---8.2 TODO FIXME if broken.
 local function updateIcons()
 	twipe(icons)
 	for uId in DBM:GetGroupMembers() do
@@ -874,7 +873,7 @@ end
 ---------------
 --  Methods  --
 ---------------
---Arg 1: spellName, health/powervalue, customfunction, table type. Arg 2: TankIgnore, Powertype, SortFunction, totalAbsorb, sortmethod (table/stacks). Arg 3: SpellFilter, UseIcon. Arg 4: disable onUpdate
+--Arg 1: spellName, health/powervalue, customfunction, table type. Arg 2: TankIgnore, Powertype, SortFunction, totalAbsorb, sortmethod (table/stacks). Arg 3: SpellFilter, UseIcon. Arg 4: disable onUpdate. Arg 5: sortmethod (playerpower)
 function infoFrame:Show(maxLines, event, ...)
 	currentMapId = select(4, UnitPosition("player"))
 	if DBM.Options.DontShowInfoFrame and (event or 0) ~= "test" then return end
@@ -905,15 +904,15 @@ function infoFrame:Show(maxLines, event, ...)
 	end
 	currentEvent = event
 	if event == "playerbuff" or event == "playerbaddebuff" or event == "playergooddebuff" then
-		sortMethod = 3
+		sortMethod = 3--Sort by group ID
 	elseif event == "health" or event == "playerdebuffremaining" then
-		sortMethod = 2	-- Sort lowest first
-	elseif (event == "playerdebuffstacks" or event == "table") and value[2] then
-		if type(value[2]) == "number" then
-			sortMethod = value[2]
-		end
+		sortMethod = 2--Sort lowest first
+	elseif (event == "playerdebuffstacks" or event == "table") and value[2] and type(value[2]) == "number" then
+		sortMethod = value[2]
+	elseif event == "playerpower" and value[5] and type(value[5]) == "number" then
+		sortMethod = value[5]
 	else
-		sortMethod = 1
+		sortMethod = 1--Sort highest first
 	end
 	if events[currentEvent] then
 		events[currentEvent](value[1])
