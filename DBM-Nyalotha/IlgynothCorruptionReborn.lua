@@ -16,10 +16,10 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 309961 311401 310788",
-	"SPELL_CAST_SUCCESS 311401 311159 310788 312204",
-	"SPELL_AURA_APPLIED 309961 311367 310322 315094 311159",
+	"SPELL_CAST_SUCCESS 311401 311159 310788 312204 313759",
+	"SPELL_AURA_APPLIED 309961 311367 310322 315094 311159 313759",
 	"SPELL_AURA_APPLIED_DOSE 309961",
-	"SPELL_AURA_REMOVED 311367 315094 311159",
+	"SPELL_AURA_REMOVED 311367 315094 311159 313759",
 	"SPELL_PERIODIC_DAMAGE 310322",
 	"SPELL_PERIODIC_MISSED 310322",
 	"SPELL_INTERRUPT",
@@ -254,7 +254,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 311401 then
 		timerTouchoftheCorruptorCD:Start()
-	elseif spellId == 311159 then--or spellId == 314396
+	elseif spellId == 311159 or spellId == 313759 then--or spellId == 314396
 		timerCursedBloodCD:Start()
 		if self:IsMythic() then
 			timerCursedBloodCD:UpdateInline(DBM_CORE_MAGIC_ICON)
@@ -356,7 +356,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				DBM.InfoFrame:Update()
 			end
 		end
-	elseif spellId == 311159 then
+	elseif spellId == 311159 or spellId == 313759 then--Non Mythic, Mythic
 		warnCursedBlood:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			specWarnCursedBlood:Show()
@@ -364,7 +364,11 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellCursedBlood:Yell()
 			yellCursedBloodFades:Countdown(spellId)
 			if self.Options.RangeFrame then
-				DBM.RangeCheck:Show(11)
+				if spellId == 311159 then
+					DBM.RangeCheck:Show(11)
+				else
+					--DBM.RangeCheck:Show(11) (unknown way to handle this yet)
+				end
 			end
 		end
 	end
@@ -386,7 +390,7 @@ function mod:SPELL_AURA_REMOVED(args)
 				DBM.InfoFrame:Update()
 			end
 		end
-	elseif spellId == 311159 then
+	elseif spellId == 311159 or spellId == 313759 then
 		if args:IsPlayer() then
 			yellCursedBloodFades:Cancel()
 			if self.Options.RangeFrame then

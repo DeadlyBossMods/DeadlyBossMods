@@ -44,7 +44,7 @@ local specWarnDissolveTaunt					= mod:NewSpecialWarningTaunt(307472, nil, nil, n
 local specWarnSlurryBreath					= mod:NewSpecialWarningDodge(306736, nil, nil, nil, 2, 2)
 local specWarnDebilitatingSpit				= mod:NewSpecialWarningYou(307358, nil, nil, nil, 1, 2)
 local specWarnFixate						= mod:NewSpecialWarningRun(307260, nil, nil, nil, 4, 2)
-local yellFixate							= mod:NewYell(307260, nil, false)
+local yellFixate							= mod:NewYell(307260, nil, true, 2)
 local specWarnVolatileEruption				= mod:NewSpecialWarningDodge(308157, nil, nil, nil, 2, 2)
 local specWarnGTFO							= mod:NewSpecialWarningGTFO(308149, nil, nil, nil, 1, 8)
 
@@ -72,8 +72,8 @@ local function volatileEruptionLoop(self)
 	specWarnVolatileEruption:Show()
 	--15, 10, 10, 10, 10, 8+
 	local timer = (self.vb.eruptionCount < 4) and 10 or 8
-	timerVolatileEruptionCD:Start(10)
-	self:Schedule(10, volatileEruptionLoop, self)
+	timerVolatileEruptionCD:Start(timer)
+	self:Schedule(timer, volatileEruptionLoop, self)
 end
 
 local function entropicBuildupLoop(self)
