@@ -15,7 +15,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 312528 306928 312529 306929 312530 306930 307260 306953",
 	"SPELL_CAST_SUCCESS 307471",
-	"SPELL_AURA_APPLIED 312328 312329 307471 307472 307358 306942 307260 308157 308177 308149",
+	"SPELL_AURA_APPLIED 312328 312329 307471 307472 307358 306942 307260 308157 308177 308149 312099",
 	"SPELL_AURA_APPLIED_DOSE 312328 307358",
 	"SPELL_AURA_REMOVED 312328 307358 308157",
 	"SPELL_AURA_REMOVED_DOSE 312328 307358 308177",
@@ -27,6 +27,7 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_CHANNEL_START boss2 boss3"
 )
 
+--TODO, add tracking of tasty Morsel carriers to infoframe?
 local warnHunger							= mod:NewStackAnnounce(312328, 2)--Mythic
 local warnVolatileSlurry					= mod:NewSpellAnnounce(306447, 2)
 local warnBubblingSlurry					= mod:NewSpellAnnounce(306931, 2)
@@ -37,6 +38,7 @@ local warnDebilitatingSpit					= mod:NewTargetNoFilterAnnounce(307358, 3, nil, f
 local warnFrenzy							= mod:NewTargetNoFilterAnnounce(306942, 2)
 local warnFixate							= mod:NewTargetAnnounce(307260, 2)
 local warnEntropicBuildup					= mod:NewCountAnnounce(308177, 2)
+local warnTastyMorsel						= mod:NewTargetNoFilterAnnounce(312099, 1)
 
 local specWarnUncontrollablyRavenous		= mod:NewSpecialWarningSpell(312329, nil, nil, nil, 3, 2)--Mythic
 local specWarnCrushTaunt					= mod:NewSpecialWarningTaunt(307471, nil, nil, nil, 3, 2)
@@ -44,7 +46,7 @@ local specWarnDissolveTaunt					= mod:NewSpecialWarningTaunt(307472, nil, nil, n
 local specWarnSlurryBreath					= mod:NewSpecialWarningDodge(306736, nil, nil, nil, 2, 2)
 local specWarnDebilitatingSpit				= mod:NewSpecialWarningYou(307358, nil, nil, nil, 1, 2)
 local specWarnFixate						= mod:NewSpecialWarningRun(307260, nil, nil, nil, 4, 2)
-local yellFixate							= mod:NewYell(307260, nil, false)
+local yellFixate							= mod:NewYell(307260, nil, true, 2)
 local specWarnVolatileEruption				= mod:NewSpecialWarningDodge(308157, nil, nil, nil, 2, 2)
 local specWarnGTFO							= mod:NewSpecialWarningGTFO(308149, nil, nil, nil, 1, 8)
 
@@ -72,8 +74,8 @@ local function volatileEruptionLoop(self)
 	specWarnVolatileEruption:Show()
 	--15, 10, 10, 10, 10, 8+
 	local timer = (self.vb.eruptionCount < 4) and 10 or 8
-	timerVolatileEruptionCD:Start(10)
-	self:Schedule(10, volatileEruptionLoop, self)
+	timerVolatileEruptionCD:Start(timer)
+	self:Schedule(timer, volatileEruptionLoop, self)
 end
 
 local function entropicBuildupLoop(self)
@@ -205,6 +207,8 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 308149 and args:IsPlayer() then
 		specWarnGTFO:Show(args.spellName)
 		specWarnGTFO:Play("watchfeet")
+	elseif spellId == 312099 then
+		warnTastyMorsel:CombinedShow(1, args.destName)
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
