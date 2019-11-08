@@ -28,7 +28,7 @@ mod:RegisterEventsInCombat(
 )
 
 --TODO, add tracking of tasty Morsel carriers to infoframe?
-local warnHunger							= mod:NewStackAnnounce(312328, 2)--Mythic
+local warnHunger							= mod:NewStackAnnounce(312328, 2, nil, false, 2)--Mythic
 local warnVolatileSlurry					= mod:NewSpellAnnounce(306447, 2)
 local warnBubblingSlurry					= mod:NewSpellAnnounce(306931, 2)
 local warnEntropicSlurry					= mod:NewSpellAnnounce(306933, 2)
@@ -141,7 +141,7 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 312328 then
-		warnHunger:Show(args.amount or 1)
+		warnHunger:Show(args.destName, args.amount or 1)
 	elseif spellId == 312329 then
 		specWarnUncontrollablyRavenous:Show()
 		specWarnUncontrollablyRavenous:Play("stilldanger")
@@ -216,7 +216,7 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 312328 then
-		warnHunger:Show(args.amount or 0)
+		warnHunger:Show(args.destName, args.amount or 0)
 	elseif spellId == 307358 then
 		local amount = args.amount or 0
 		if amount == 0 then

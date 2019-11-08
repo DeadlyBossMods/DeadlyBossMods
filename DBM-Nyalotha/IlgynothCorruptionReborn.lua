@@ -362,12 +362,10 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnCursedBlood:Show()
 			specWarnCursedBlood:Play("runout")
 			yellCursedBlood:Yell()
-			yellCursedBloodFades:Countdown(spellId)
-			if self.Options.RangeFrame then
-				if spellId == 311159 then
+			if spellId == 311159 then
+				yellCursedBloodFades:Countdown(spellId)
+				if self.Options.RangeFrame then
 					DBM.RangeCheck:Show(11)
-				else
-					--DBM.RangeCheck:Show(11) (unknown way to handle this yet)
 				end
 			end
 		end
