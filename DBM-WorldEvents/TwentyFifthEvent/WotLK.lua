@@ -8,7 +8,7 @@ mod:SetModelID(30721)--Lich King
 mod:SetZone()
 
 mod:RegisterCombat("combat")
-mod:SetWipeTime(30)
+mod:SetWipeTime(60)
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 68981 72259 72262 70498 72762",

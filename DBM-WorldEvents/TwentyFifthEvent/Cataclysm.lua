@@ -10,7 +10,7 @@ mod:SetZone()
 --Short: This is my realm
 
 mod:RegisterCombat("combat")
-mod:SetWipeTime(30)
+mod:SetWipeTime(60)
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 98710 98951 98952 98953 99172 99235 99236 80734 81713 81628",

@@ -9,6 +9,6 @@ mod:SetZone()
 --mod:SetUsedIcons(8)
 
 mod:RegisterCombat("combat")
-mod:SetWipeTime(30)
+mod:SetWipeTime(60)
 
 --LUL boss, doesn't need anything
