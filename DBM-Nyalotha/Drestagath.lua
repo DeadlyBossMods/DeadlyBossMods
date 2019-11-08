@@ -39,7 +39,7 @@ local warnUnleashedInsanity					= mod:NewTargetNoFilterAnnounce(310361, 4)
 local warnObscuringCloud					= mod:NewSpellAnnounce(310478, 2)
 
 --Drest'agath
-local specWarnThrowsofAgony					= mod:NewSpecialWarningCount(298156, nil, nil, nil, 2, 2)
+local specWarnThrowsofAgony					= mod:NewSpecialWarningCount(308941, nil, nil, nil, 2, 2)
 local specWarnVolatileSeed					= mod:NewSpecialWarningYou(310277, nil, nil, nil, 1, 2)
 local yellolatileSeed						= mod:NewYell(310277)
 local yellolatileSeedFades					= mod:NewFadesYell(310277)
@@ -157,8 +157,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			DBM.Nameplate:Show(true, args.destGUID, spellId, nil, 15)
 		end
 	elseif spellId == 310358 then
-		specWarnMutteringsofInsanity:Show(args.destName)
-		timerUnleashedInsanity:Start()
+		specWarnMutteringsofInsanity:CombinedShow(0.3, args.destName)
+		timerUnleashedInsanity:Start()--TODO, FIX ME with antispam?
 		if args:IsPlayer() then
 			yellMutteringsofInsanity:Countdown(spellId)
 		end
