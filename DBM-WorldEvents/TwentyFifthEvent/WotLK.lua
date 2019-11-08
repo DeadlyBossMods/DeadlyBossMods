@@ -8,11 +8,12 @@ mod:SetModelID(30721)--Lich King
 mod:SetZone()
 
 mod:RegisterCombat("combat")
+mod:SetWipeTime(30)
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 68981 72259 72262 70498 72762",
 	"SPELL_CAST_SUCCESS 69200",
-	"SPELL_AURA_APPLIED 72754 67574",
+	"SPELL_AURA_APPLIED 72754 67574 66012",
 	"SPELL_DAMAGE 68983",
 	"SPELL_MISSED 68983"
 )
@@ -20,6 +21,7 @@ mod:RegisterEventsInCombat(
 --TODO, switch defile to even faster UNIT_TARGET scanner if boss unitIDs check out from transcriptor
 --Anub
 local warnPursue			= mod:NewTargetNoFilterAnnounce(67574, 4)
+local warnFreezingSlash		= mod:NewTargetNoFilterAnnounce(66012, 2, nil, "Tank|Healer")
 --Lich King
 local warnRemorselessWinter = mod:NewSpellAnnounce(68981, 3) --Phase Transition Start Ability
 local warnQuake				= mod:NewSpellAnnounce(72262, 4) --Phase Transition End Ability
@@ -102,6 +104,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			warnPursue:Show(args.destName)
 		end
+	elseif args.spellId == 66012 then
+		warnFreezingSlash:Show(args.destName)
 	end
 end
 

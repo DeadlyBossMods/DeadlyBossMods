@@ -10,17 +10,20 @@ mod:SetZone()
 --Short: This is my realm
 
 mod:RegisterCombat("combat")
+mod:SetWipeTime(30)
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 98710 98951 98952 98953 99172 99235 99236 80734",
+	"SPELL_CAST_START 98710 98951 98952 98953 99172 99235 99236 80734 81713 81628",
 	"SPELL_CAST_SUCCESS 100460 99268",
-	"SPELL_AURA_APPLIED 99399",
-	"SPELL_AURA_APPLIED_DOSE 99399",
+	"SPELL_AURA_APPLIED 99399 82518",
+	"SPELL_AURA_APPLIED_DOSE 99399 82518",
 	"UNIT_AURA player",
 	"UNIT_SPELLCAST_SUCCEEDED boss1",
 	"UNIT_DIED"
 )
 
+--Chogal
+local warnFury				= mod:NewStackAnnounce(82524, 2, nil, "Tank|Healer")
 --Ragnaros
 local warnBurningWound		= mod:NewStackAnnounce(99399, 3, nil, "Tank|Healer")
 local warnSulfurasSmash		= mod:NewSpellAnnounce(98710, 4)--Phase 1-3 ability.
@@ -30,15 +33,22 @@ local warnSplittingBlow		= mod:NewAnnounce("warnSplittingBlow", 3, 98951)
 local warnEngulfingFlame	= mod:NewAnnounce("warnEngulfingFlame", 4, 99171)
 local warnLivingMeteor		= mod:NewTargetNoFilterAnnounce(99268, 4)--Phase 3 only ability
 
+--Chogal
+local specWarnFury			= mod:NewSpecialWarningStack(82524, nil, 2, nil, nil, 1, 6)
+local specwarnFuryTaunt		= mod:NewSpecialWarningTaunt(82524)
+local specWarnAdherent		= mod:NewSpecialWarningSwitch(81628 "-Healer", nil, nil, 1, 2)
+local specWarnDepravity		= mod:NewSpecialWarningInterrupt(81713 "HasInterrupt", nil, nil, 1, 2)
+local specWarnSickness		= mod:NewSpecialWarningMoveAway(82235, nil, nil, nil, 1, 2)
+local yellSickness			= mod:NewYell(82235, nil, false)
 --Nef
-local specWarnBlastsNova	= mod:NewSpecialWarningInterrupt(80734, nil, nil, nil, 1, 2)
+local specWarnBlastsNova	= mod:NewSpecialWarningInterrupt(80734, "HasInterrupt", nil, nil, 1, 2)
 --Ragnaros
 local specWarnBurningWound	= mod:NewSpecialWarningStack(99399, nil, 4, nil, nil, 1, 6)
 local specWarnSplittingBlow	= mod:NewSpecialWarningSpell(98951, nil, nil, nil, 1, 2)
 local specWarnBlazingHeat	= mod:NewSpecialWarningYou(100460)--Debuff on you
 local yellBlazingHeat		= mod:NewYell(100460)
-local specWarnMoltenSeed	= mod:NewSpecialWarningDodge(98495, nil, nil, nil, 2, 2)
-local specWarnEngulfing		= mod:NewSpecialWarningDodge(99171, nil, nil, nil, 1, 2)
+local specWarnMoltenSeed	= mod:NewSpecialWarningRun(98495, nil, nil, nil, 4, 2)
+local specWarnEngulfing		= mod:NewSpecialWarningDodge(99171, nil, nil, nil, 2, 2)
 local specWarnMeteor		= mod:NewSpecialWarningDodge(99268, nil, nil, nil, 1, 2)--Spawning on you
 local specWarnMeteorNear	= mod:NewSpecialWarningClose(99268, nil, nil, nil, 1, 2)--Spawning near you
 local yellMeteor			= mod:NewYell(99268)
@@ -48,7 +58,7 @@ local yellFixate			= mod:NewYell(99849)
 mod:AddInfoFrameOption(99849, true)
 
 local meteorWarned = false
-local meteorTarget, seedCast = DBM:GetSpellInfo(99849), DBM:GetSpellInfo(98333)
+local meteorTarget = DBM:GetSpellInfo(99849)
 mod.vb.seedsActive = false
 mod.vb.meteorSpawned = 0
 mod.vb.sonsLeft = 0
@@ -121,6 +131,12 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 80734 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnBlastsNova:Show(args.sourceName)
 		specWarnBlastsNova:Play("kickcast")
+	elseif spellId == 81713 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
+		specWarnDepravity:Show(args.sourceName)
+		specWarnDepravity:Play("kickcast")
+	elseif spellId == 81628 then
+		specWarnAdherent:Show()
+		specWarnAdherent:Play("killmob")
 	end
 end
 
@@ -156,6 +172,26 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			warnBurningWound:Show(args.destName, amount)
 		end
+	elseif args.spellId == 82518 then
+		local uId = DBM:GetRaidUnitId(args.destName)
+		if self:IsTanking(uId) then
+			local amount = args.amount or 1
+			if amount >= 2 then
+				if args:IsPlayer() then
+					specwarnFury:Show(amount)
+					specwarnFury:Play("stackhigh")
+				else
+					if not UnitIsDeadOrGhost("player") and not DBM:UnitDebuff("player", spellId) then--Can't taunt less you've dropped yours off, period.
+						specwarnFuryTaunt:Show(args.destName)
+						specwarnFuryTaunt:Play("tauntboss")
+					else
+						warnFury:Show(args.destName, amount)
+					end
+				end
+			else
+				warnFury:Show(args.destName, amount)
+			end
+		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -168,6 +204,10 @@ function mod:UNIT_AURA(uId)
 		meteorWarned = true
 	elseif not DBM:UnitDebuff("player", meteorTarget) and meteorWarned then--reset warned status if you don't have debuff
 		meteorWarned = false
+	elseif DBM:UnitDebuff("player", 82235) and self:AntiSpam(7, 2) then
+		specWarnSickness:Show()
+		specWarnSickness:Play("scatter")
+		yellSickness:Yell()
 	end
 end
 
@@ -176,15 +216,9 @@ local function clearSeedsActive(self)
 end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	--TODO, switch to spellid once verified spellid is always same
-	local spellName = DBM:GetSpellInfo(spellId)--TEMP, just get right spellID at some point
-	if spellName == seedCast and not self.vb.seedsActive then -- The true molten seeds cast.
+	if spellId == 98333 then -- The true molten seeds cast.
 		self.vb.seedsActive = true
-		if self.Options.warnSeedsLand then--Warn after they are on ground, typical strat for normal mode. Time not 100% consistent.
-			self:Schedule(2.5, warnSeeds, self)--But use upper here
-		else
-			warnSeeds(self)
-		end
+		self:Schedule(2.5, warnSeeds, self)--But use upper here
 		self:Schedule(17.5, clearSeedsActive, self)--Clear active/warned seeds after they have all blown up.
 	end
 end
