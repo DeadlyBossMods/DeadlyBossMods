@@ -153,3 +153,40 @@ L = DBM:GetModLocalization("DemonInvasions")
 L:SetGeneralLocalization({
 	name = "Demonic Invasions"
 })
+
+--------------------------
+--  Memories of Azeroth: Burning Crusade  --
+--------------------------
+L = DBM:GetModLocalization("BCEvent")
+
+L:SetGeneralLocalization({
+	name = "MoA: Burning Crusade"
+})
+
+--------------------------
+--  Memories of Azeroth: Wrath of the Lich King  --
+--------------------------
+L = DBM:GetModLocalization("WrathEvent")
+
+L:SetGeneralLocalization({
+	name = "MoA: WotLK"
+})
+
+--------------------------
+--  Memories of Azeroth: Cataclysm  --
+--------------------------
+L = DBM:GetModLocalization("CataEvent")
+
+L:SetGeneralLocalization({
+	name = "MoA: Cataclysm"
+})
+
+L:SetWarningLocalization({
+	warnSplittingBlow		= "%s in %s",--Spellname in Location
+	warnEngulfingFlame		= "%s in %s"--Spellname in Location
+})
+
+L:SetOptionLocalization({
+	warnSplittingBlow			= "Show location warnings for $spell:98951",
+	warnEngulfingFlame			= "Show location warnings for $spell:99171"
+})
