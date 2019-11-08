@@ -35,9 +35,9 @@ local warnLivingMeteor		= mod:NewTargetNoFilterAnnounce(99268, 4)--Phase 3 only 
 
 --Chogal
 local specWarnFury			= mod:NewSpecialWarningStack(82524, nil, 2, nil, nil, 1, 6)
-local specwarnFuryTaunt		= mod:NewSpecialWarningTaunt(82524)
-local specWarnAdherent		= mod:NewSpecialWarningSwitch(81628 "-Healer", nil, nil, 1, 2)
-local specWarnDepravity		= mod:NewSpecialWarningInterrupt(81713 "HasInterrupt", nil, nil, 1, 2)
+local specWarnFuryTaunt		= mod:NewSpecialWarningTaunt(82524, nil, nil, nil, 1, 2)
+local specWarnAdherent		= mod:NewSpecialWarningSwitch(81628, "-Healer", nil, nil, 1, 2)
+local specWarnDepravity		= mod:NewSpecialWarningInterrupt(81713, "HasInterrupt", nil, nil, 1, 2)
 local specWarnSickness		= mod:NewSpecialWarningMoveAway(82235, nil, nil, nil, 1, 2)
 local yellSickness			= mod:NewYell(82235, nil, false)
 --Nef
@@ -178,12 +178,12 @@ function mod:SPELL_AURA_APPLIED(args)
 			local amount = args.amount or 1
 			if amount >= 2 then
 				if args:IsPlayer() then
-					specwarnFury:Show(amount)
-					specwarnFury:Play("stackhigh")
+					specWarnFury:Show(amount)
+					specWarnFury:Play("stackhigh")
 				else
 					if not UnitIsDeadOrGhost("player") and not DBM:UnitDebuff("player", spellId) then--Can't taunt less you've dropped yours off, period.
-						specwarnFuryTaunt:Show(args.destName)
-						specwarnFuryTaunt:Play("tauntboss")
+						specWarnFuryTaunt:Show(args.destName)
+						specWarnFuryTaunt:Play("tauntboss")
 					else
 						warnFury:Show(args.destName, amount)
 					end
