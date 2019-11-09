@@ -6,7 +6,7 @@ mod:SetCreatureID(156866)
 mod:SetEncounterID(2331)
 mod:SetZone()
 mod:SetUsedIcons(1, 2, 3, 4, 5)
---mod:SetHotfixNoticeRev(20190716000000)--2019, 7, 16
+mod:SetHotfixNoticeRev(20191109000000)--2019, 11, 09
 --mod:SetMinSyncRevision(20190716000000)
 --mod.respawnTime = 29
 
@@ -76,7 +76,7 @@ local specWarnDecimatingStrike				= mod:NewSpecialWarningDefensive(309858, nil, 
 local specWarnChargedBonds					= mod:NewSpecialWarningMoveAwayCount(310019, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.moveaway:format(310019), nil, 3, 2)
 local yellChargedBonds						= mod:NewYell(310019)
 local specWarnDecimated						= mod:NewSpecialWarningStack(309860, nil, 2, nil, nil, 1, 6)
-local specWarnDecimatedTaunt				= mod:NewSpecialWarningStack(309860, nil, nil, nil, 1, 2)
+local specWarnDecimatedTaunt				= mod:NewSpecialWarningTaunt(309860, nil, nil, nil, 1, 2)
 
 --Stage 1: Gathering Power
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20527))
@@ -242,7 +242,7 @@ do
 				local name = VitaVulnerableTargets[i]
 				local uId = DBM:GetRaidUnitId(name)
 				if uId then
-					local _, _, _, _, _, vitaVulnExpireTime = DBM:UnitDebuff("player", 306279)
+					local _, _, _, _, _, vitaVulnExpireTime = DBM:UnitDebuff(uId, 306279)
 					if vitaVulnExpireTime then
 						local vitaRemaining = vitaVulnExpireTime-GetTime()
 						addLine(i.."*"..name, floor(vitaRemaining))
@@ -257,7 +257,7 @@ do
 				local name = VoidVulnerableTargets[i]
 				local uId = DBM:GetRaidUnitId(name)
 				if uId then
-					local _, _, _, _, _, voidVulnExpireTime = DBM:UnitDebuff("player", 306654)
+					local _, _, _, _, _, voidVulnExpireTime = DBM:UnitDebuff(uId, 306654)
 					if voidVulnExpireTime then
 						local voidRemaining = voidVulnExpireTime-GetTime()
 						addLine(i.."*"..name, floor(voidRemaining))

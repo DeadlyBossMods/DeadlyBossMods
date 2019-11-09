@@ -7,7 +7,7 @@ mod:SetEncounterID(2334)
 mod:SetZone()
 mod:SetBossHPInfoToHighest()--Must set boss HP to highest, since boss health will get screwed up during images phase
 mod.noBossDeathKill = true--Killing an image in image phase fires unit Died for boss creature ID, so must filter this
-mod:SetHotfixNoticeRev(20190918000000)--2019, 9, 18
+mod:SetHotfixNoticeRev(20191109000000)--2019, 11, 09
 mod:SetMinSyncRevision(20190918000000)--2019, 9, 18
 --mod.respawnTime = 29
 
@@ -26,17 +26,16 @@ mod:RegisterEventsInCombat(
 )
 
 --TODO, if tanks each get a diff mind debuff, mark them, and they can be designated callers
---TODO, Shadow shocks spellIds and durations still a bit unclear from wowhead data. Add taunt warnings/etc when it becomes more clear
---TODO, there are likely mechanics missing from this encounter, that or the fight really is more simple than even most 5 man dungeon bosses
---TODO, update timers on Projection phases?
+--TODO, update timerImagesofAbsolutionCD after Projection phases
 local warnShadowShock						= mod:NewStackAnnounce(308059, 2, nil, "Tank")
 local warnImagesofAbsolution				= mod:NewCountAnnounce(313239, 3)--Spawn, not when killable
 local warnShredPsyche						= mod:NewTargetAnnounce(307937, 2)
 local warnPsychicOutburst					= mod:NewCastAnnounce(309687, 4)
 local warnProjections						= mod:NewSpellAnnounce(307725, 2)
+local warnProjectionsOver					= mod:NewEndAnnounce(307725, 2)
 
-local specWarnCloudedMind					= mod:NewSpecialWarningYouPos(307784, nil, nil, nil, 1, 2)--voice not yet decided
-local specWarnTwistedMind					= mod:NewSpecialWarningYouPos(307785, nil, nil, nil, 1, 2)--voice not yet decided
+local specWarnCloudedMind					= mod:NewSpecialWarningYou(307784, nil, nil, nil, 1, 2)--voice not yet decided
+local specWarnTwistedMind					= mod:NewSpecialWarningYou(307785, nil, nil, nil, 1, 2)--voice not yet decided
 local yellMark								= mod:NewPosYell(307784, DBM_CORE_AUTO_YELL_CUSTOM_POSITION, false)
 local specWarnImagesofAbsolutionSwitch		= mod:NewSpecialWarningSwitch(313239, "dps", nil, nil, 1, 2)--30 seconds after spawn, when killable
 local specWarnShadowShock					= mod:NewSpecialWarningStack(308059, nil, 7, nil, nil, 1, 6)
@@ -72,6 +71,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnCombatEnd()
+	self:UnregisterShortTermEvents()
 --	if self.Options.InfoFrame then
 --		DBM.InfoFrame:Hide()
 --	end
@@ -95,6 +95,11 @@ function mod:SPELL_CAST_START(args)
 		self.vb.shredIcon = 1
 	elseif spellId == 307725 then
 		warnProjections:Show()
+		timerShredPsycheCD:Stop()
+		timerImagesofAbsolutionCD:Stop()
+		self:RegisterShortTermEvents(
+			"UNIT_TARGETABLE_CHANGED"
+		)
 	end
 end
 
@@ -181,6 +186,17 @@ function mod:SPELL_AURA_REMOVED(args)
 		if args:IsPlayer() then
 			yellShredPsycheFades:Cancel()
 		end
+	end
+end
+
+function mod:UNIT_TARGETABLE_CHANGED()
+	if UnitCanAttack("player", "boss1") then--Returning from Illusions
+		warnProjectionsOver:Show()
+		self:UnregisterShortTermEvents()
+		timerShredPsycheCD:Start(17)
+		--if self:IsHard() then
+		--	timerImagesofAbsolutionCD:Start(30.5-delay)
+		--end
 	end
 end
 

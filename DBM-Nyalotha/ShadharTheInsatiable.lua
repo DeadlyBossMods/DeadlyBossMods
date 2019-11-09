@@ -23,8 +23,7 @@ mod:RegisterEventsInCombat(
 --	"SPELL_PERIODIC_MISSED",
 --	"CHAT_MSG_RAID_BOSS_EMOTE",
 --	"UNIT_SPELLCAST_SUCCEEDED boss1",
-	"UNIT_SPELLCAST_START boss1",
-	"UNIT_SPELLCAST_CHANNEL_START boss2 boss3 boss4 boss5"
+	"UNIT_SPELLCAST_START boss1"
 )
 
 --TODO, add tracking of tasty Morsel carriers to infoframe?
@@ -206,11 +205,9 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 307260 then
 		warnFixate:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
-			if self:AntiSpam(3, 2) then
-				specWarnFixate:Show()
-				specWarnFixate:Play("justrun")
-				yellFixate:Yell()
-			end
+			specWarnFixate:Show()
+			specWarnFixate:Play("justrun")
+			yellFixate:Yell()
 		end
 	elseif spellId == 306447 then
 		self.vb.phase = self.vb.phase + 1
@@ -315,22 +312,5 @@ end
 function mod:UNIT_SPELLCAST_START(uId, _, spellId)
 	if spellId == 306953 then
 		self:BossUnitTargetScanner(uId, "ZapTarget")
-	end
-end
-
---One second faster than debuff. 10 to 1 this is a bug, and backup debuff code is still in place.
---"<43.72 16:10:22> [UNIT_SPELLCAST_CHANNEL_START] Unknown(Shamarangg) - Fixate - 1s [[boss2:nil:307260]]", -- [681]
---"<44.69 16:10:23> [CLEU] SPELL_AURA_APPLIED#Creature-0-3198-2217-1118-157229-000020E1AE#Living Chow#Player-3296-001C3B1B#Shamarangg#307260#Fixate#DEBUFF#nil", -- [725]
-function mod:UNIT_SPELLCAST_CHANNEL_START(uId, _, spellId)
-	if spellId == 307260 and UnitExists(uId.."target") then--Fixate
-		--local targetName = DBM:GetUnitFullName(uId.."target")
-		--warnFixate:CombinedShow(0.3, targetName)
-		if UnitIsUnit("player", uId.."target") then
-			if self:AntiSpam(3, 2) then
-				specWarnFixate:Show()
-				specWarnFixate:Play("runout")
-				yellFixate:Yell()
-			end
-		end
 	end
 end

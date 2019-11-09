@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(151798)
 mod:SetEncounterID(2336)
 mod:SetZone()
---mod:SetHotfixNoticeRev(20190716000000)--2019, 7, 16
+mod:SetHotfixNoticeRev(20191109000000)--2019, 11, 09
 --mod:SetMinSyncRevision(20190716000000)
 --mod.respawnTime = 29
 
@@ -13,7 +13,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 307020 307403 306982 307177 307639 315762 307729",
-	"SPELL_CAST_SUCCESS 307359 307057 307828 310323 307396 307075",
+	"SPELL_CAST_SUCCESS 307359 307828 310323 307396 307075",
 	"SPELL_AURA_APPLIED 307314 307019 307359 306981 307075 310323",
 	"SPELL_AURA_APPLIED_DOSE 307019",
 	"SPELL_AURA_REMOVED 307314 307019 307359 310323",
@@ -29,7 +29,6 @@ mod:RegisterEventsInCombat(
 --TODO, verify with greater data if timers actually do reset on phase changes
 --TODO, improve timer start code for P1 abilities to not start new timers if lift off is soon
 --TODO, use https://ptr.wowhead.com/spell=306996/gift-of-the-void for initial void duder timers?
---local warnDesensitizingSting				= mod:NewStackAnnounce(298156, 2, nil, "Tank")
 ----Stage 1: Cult of the Void
 local warnGiftoftheVoid						= mod:NewTargetNoFilterAnnounce(306981, 1)
 local warnFanaticalAscension				= mod:NewCastAnnounce(307729, 4)
@@ -49,7 +48,6 @@ local yellDespairFades						= mod:NewFadesYell(307359, nil, false)
 local specWarnDespairOther					= mod:NewSpecialWarningTarget(307359, "Healer", nil, nil, 1, 2)
 local specWarnDarkGateway					= mod:NewSpecialWarningSwitchCount(307057, "-Healer", nil, nil, 1, 2)
 local specWarnGTFO							= mod:NewSpecialWarningGTFO(307343, nil, nil, nil, 1, 8)
---local specWarnVoidCorruption				= mod:NewSpecialWarningStack(307019, nil, 9, nil, nil, 1, 6)
 ----Stage 2: Death From Above
 local specWarnTwilightDecimator				= mod:NewSpecialWarningDodgeCount(307218, nil, nil, nil, 2, 2)
 ----Stage 3: The Void Unleashed
@@ -71,13 +69,13 @@ local timerEncroachingShadowsCD				= mod:NewCDTimer(14.6, 307314, nil, nil, nil,
 local timerTwilightBreathCD					= mod:NewCDTimer(18.2, 307020, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON, nil, 2, 4)
 local timerDespairCD						= mod:NewCDTimer(35.2, 307359, nil, nil, nil, 5, nil, DBM_CORE_HEALER_ICON)--35.2-36.4
 local timerShatteredResolve					= mod:NewTargetTimer(6, 307371, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
-local timerDarkGatewayCD					= mod:NewCDTimer(34, 307057, nil, nil, nil, 1, nil, nil, nil, 1, 4)
+local timerDarkGatewayCD					= mod:NewCDCountTimer(33.2, 307057, nil, nil, nil, 1, nil, nil, nil, 1, 4)
 ----Stage 2: Death From Above
 --mod:AddTimerLine(DBM:EJ_GetSectionInfo(20667))
 local timerTwilightDecimatorCD				= mod:NewNextCountTimer(12.2, 307218, nil, nil, nil, 3)
 ----Stage 3: The Void Unleashed
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20669))
-local timerHeartofDarknessCD				= mod:NewCDTimer(31.6, 307639, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON, nil, 1, 4)
+local timerHeartofDarknessCD				= mod:NewCDCountTimer(31.6, 307639, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON, nil, 1, 4)
 local timerDesolationCD						= mod:NewCDTimer(30.4, 310325, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
 --Adds
 ----Void Ascendant
@@ -96,6 +94,7 @@ local unitTracked = {}
 mod.vb.gatewayCount = 0
 mod.vb.phase = 1
 mod.vb.TwilightDCasts = 0
+mod.vb.darknessCasts = 0
 
 function mod:OnCombatStart(delay)
 	table.wipe(voidCorruptionStacks)
@@ -103,10 +102,12 @@ function mod:OnCombatStart(delay)
 	self.vb.gatewayCount = 0
 	self.vb.phase = 1
 	self.vb.TwilightDCasts = 0
+	self.vb.darknessCasts = 0
 	timerTwilightBreathCD:Start(7.2-delay)
 	timerDespairCD:Start(10.1-delay)
 	timerEncroachingShadowsCD:Start(14.8-delay)
-	timerDarkGatewayCD:Start(33.1-delay)
+	timerDarkGatewayCD:Start(32.9-delay, 1)
+	timerTwilightDecimatorCD:Start(89.7-delay)
 	if self.Options.NPAuraOnPoweroftheChosen then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 		self:RegisterOnUpdateHandler(function(self)
@@ -185,9 +186,10 @@ function mod:SPELL_CAST_START(args)
 		specWarnVoidBolt:Show(args.sourceName)
 		specWarnVoidBolt:Play("kickcast")
 	elseif spellId == 307639 then
+		self.vb.darknessCasts = self.vb.darknessCasts + 1
 		specWarnHeartofDarkness:Show()
 		specWarnHeartofDarkness:Play("justrun")
-		timerHeartofDarknessCD:Start()
+		timerHeartofDarknessCD:Start(31.6, self.vb.darknessCasts+1)
 	elseif spellId == 307729 and self:AntiSpam(3, 3) then
 		warnFanaticalAscension:Show()
 	--[[elseif spellId == 315762 then
@@ -207,11 +209,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 307359 then
 		timerDespairCD:Start()
-	elseif spellId == 307057 then
-		self.vb.gatewayCount = self.vb.gatewayCount + 1
-		specWarnDarkGateway:Show(self.vb.gatewayCount)
-		specWarnDarkGateway:Play("killmob")
-		timerDarkGatewayCD:Start()
 	elseif spellId == 307828 and self.vb.phase < 3 then
 		self.vb.phase = 3
 		warnPhase3:Show()
@@ -222,8 +219,10 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerDarkGatewayCD:Stop()
 		timerTwilightBreathCD:Start(14.5)
 		timerEncroachingShadowsCD:Start(14.6)
-		timerHeartofDarknessCD:Start(17.1)
-		timerDesolationCD:Start(28.1)
+		timerHeartofDarknessCD:Start(17.1, 1)
+		if self:IsHard() then
+			timerDesolationCD:Start(28.1)
+		end
 	elseif spellId == 310323 then
 		timerDesolationCD:Start()
 	elseif spellId == 307396 then
@@ -350,8 +349,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		self.vb.TwilightDCasts = self.vb.TwilightDCasts + 1
 		if self.vb.TwilightDCasts == 4 then--4th time doesn't actually cast a breath, it's phase ending
 			self.vb.phase = 1
+			self.vb.gatewayCount = 0
 			timerEncroachingShadowsCD:Start(7.7)
-			timerDarkGatewayCD:Start(12.2)
+			timerDarkGatewayCD:Start(12.2, 1)
 			timerTwilightBreathCD:Start(13.4)
 			timerDespairCD:Start(18)
 			timerTwilightDecimatorCD:Start(92.3, 1)
@@ -362,6 +362,11 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 				timerTwilightDecimatorCD:Start(12.2, self.vb.TwilightDCasts+1)
 			end
 		end
+	elseif spellId == 307043 then--Dark Gateway
+		self.vb.gatewayCount = self.vb.gatewayCount + 1
+		specWarnDarkGateway:Show(self.vb.gatewayCount)
+		specWarnDarkGateway:Play("killmob")
+		timerDarkGatewayCD:Start(33.2, self.vb.gatewayCount+1)
 	end
 end
 
