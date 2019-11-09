@@ -12,41 +12,38 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 308941 310246 310329",
-	"SPELL_CAST_SUCCESS 310277 310358 310406 310478",
+	"SPELL_CAST_START 308941 310246 310329 310396",
+	"SPELL_CAST_SUCCESS 310277 310478",
 	"SPELL_AURA_APPLIED 310277 312595 310358 310361 310552 310563",
 	"SPELL_AURA_APPLIED_DOSE 310563",
 	"SPELL_AURA_REMOVED 310277 312595 310358",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 --	"SPELL_INTERRUPT",
-	"UNIT_DIED"
---	"UNIT_SPELLCAST_SUCCEEDED boss1"
+	"UNIT_DIED",
+	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, target scan or emote for void grip?
 --TODO, track add count, show on infoframe, as well as only show Unleashed Insanity cast timer if add count was > 0
---TODO, many spellIds/events probably wrong, such as void glare and mutterings of insanity
---TODO, can mind flay be interrupted? remove warning if it can't be, but based on damage it does, I can't imagine
 --TODO, personal https://ptr.wowhead.com/spell=308377/void-infused-ichor tracker when infoframe code added
 --TODO, target scan acid splash?
 --Drest'agath
-local warnVoidGrip							= mod:NewSpellAnnounce(310246, 2)
+local warnVoidGrip							= mod:NewSpellAnnounce(310246, 2, nil, "Tank")--If Tank isn't in range of boss
 local warnVolatileSeed						= mod:NewTargetNoFilterAnnounce(310277, 2)
-local warnUnleashedInsanity					= mod:NewTargetNoFilterAnnounce(310361, 4)
+local warnUnleashedInsanity					= mod:NewTargetAnnounce(310361, 4)--People stunned by muttering of Insanity
 --local warnDesensitizingSting				= mod:NewStackAnnounce(298156, 2, nil, "Tank")
 --Tentacle of Drest'agath
 local warnObscuringCloud					= mod:NewSpellAnnounce(310478, 2)
 
 --Drest'agath
-local specWarnThrowsofAgony					= mod:NewSpecialWarningCount(308941, nil, nil, nil, 2, 2)
+local specWarnThrowsofAgony					= mod:NewSpecialWarningDodgeCount(308941, nil, nil, nil, 2, 2)--Acts as warning for All abilities triggered at 100 Energy
 local specWarnVolatileSeed					= mod:NewSpecialWarningYou(310277, nil, nil, nil, 1, 2)
 local yellolatileSeed						= mod:NewYell(310277)
 local yellolatileSeedFades					= mod:NewFadesYell(310277)
-local specWarnSiesmicCrash					= mod:NewSpecialWarningDodge(310329, nil, nil, nil, 2, 2)
+local specWarnEntropicCrash					= mod:NewSpecialWarningDodge(310329, nil, nil, nil, 2, 2)
 local specWarnMutteringsofInsanity			= mod:NewSpecialWarningTarget(310358, nil, nil, nil, 1, 2)
-local yellMutteringsofInsanity				= mod:NewFadesYell(310358, nil, false)
-local specWarnVoidGlare						= mod:NewSpecialWarningDodge(310406, nil, nil, nil, 2, 2)
+local yellMutteringsofInsanity				= mod:NewFadesYell(310358)
+local specWarnVoidGlare						= mod:NewSpecialWarningDodge(310406, nil, nil, nil, 3, 2)
 --Eye of Drest'agath
 local specWarnErrantBlast					= mod:NewSpecialWarningDodge(308953, nil, nil, nil, 2, 2)--For mythic
 local specWarnMindFlay						= mod:NewSpecialWarningInterrupt(310552, "HasInterrupt", nil, nil, 1, 2)
@@ -59,12 +56,11 @@ local specWarnMutteringsofBetrayal			= mod:NewSpecialWarningStack(310563, nil, 3
 
 --mod:AddTimerLine(BOSS)
 --Drest'agath
-local timerVoidGripCD						= mod:NewAITimer(30.1, 310246, nil, nil, nil, 3)
-local timerVolatileSeedCD					= mod:NewAITimer(5.3, 310277, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON, nil, 2, 4)
-local timerMutteringsofInsanityCD			= mod:NewAITimer(30.1, 310358, nil, nil, nil, 3)
+local timerVolatileSeedCD					= mod:NewCDTimer(16.6, 310277, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON, nil, 2, 4)
+local timerEntropicCrashCD					= mod:NewCDTimer(44.3, 310329, nil, nil, nil, 2)
+local timerMutteringsofInsanityCD			= mod:NewCDTimer(46.6, 310358, nil, nil, nil, 3)--45-54, it's almost always 51 but have to use the 46
 local timerUnleashedInsanity				= mod:NewCastTimer(5, 310361, nil, nil, nil, 3)
-local timerVoidGlareCD						= mod:NewAITimer(30.1, 310406, nil, nil, nil, 3)
---local timerTimerWithCountdownCD			= mod:NewAITimer(84, 298103, nil, nil, nil, 1, nil, nil, nil, 1, 4)
+local timerVoidGlareCD						= mod:NewCDTimer(45.4, 310406, nil, nil, nil, 3)
 
 --local berserkTimer						= mod:NewBerserkTimer(600)
 
@@ -77,10 +73,10 @@ mod.vb.agonyCount = 0
 
 function mod:OnCombatStart(delay)
 	self.vb.agonyCount = 0
-	timerVoidGripCD:Start(1-delay)
-	timerVolatileSeedCD:Start(1-delay)
-	timerMutteringsofInsanityCD:Start(1-delay)
-	timerVoidGlareCD:Start(1-delay)
+	timerVolatileSeedCD:Start(7.6-delay)
+	timerEntropicCrashCD:Start(15.6-delay)
+	timerMutteringsofInsanityCD:Start(30.1-delay)
+	timerVoidGlareCD:Start(45.2-delay)--45.2-53.2
 	if self.Options.NPAuraOnVolatileCorruption then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
@@ -113,10 +109,14 @@ function mod:SPELL_CAST_START(args)
 		specWarnThrowsofAgony:Play("specialsoon")
 	elseif spellId == 310246 then
 		warnVoidGrip:Show()
-		timerVoidGripCD:Start()
-	elseif spellId == 310329 and self:AntiSpam(10, 1) then--Antispam, in case all tentacles echo it, or cast it at once
-		specWarnSiesmicCrash:Show()
-		specWarnSiesmicCrash:Play("watchstep")
+	elseif spellId == 310329  then--Antispam, in case all tentacles echo it, or cast it at once
+		specWarnEntropicCrash:Show()
+		specWarnEntropicCrash:Play("watchstep")
+		timerEntropicCrashCD:Start()
+	elseif spellId == 310396 and self:AntiSpam(10, 1) then
+		specWarnVoidGlare:Show()
+		specWarnVoidGlare:Play("farfromline")
+		timerVoidGlareCD:Start()
 	end
 end
 
@@ -124,12 +124,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 310277 then
 		timerVolatileSeedCD:Start()
-	elseif spellId == 310358 then
-		timerMutteringsofInsanityCD:Start()
-	elseif spellId == 310406 then--Pretty sure https://ptr.wowhead.com/spell=310396/void-glare is what adds cast since it has a parent trigger of a script
-		specWarnVoidGlare:Show()
-		specWarnVoidGlare:Play("farfromline")
-		timerVoidGlareCD:Start()
 	elseif spellId == 310478 and self:AntiSpam(5, 5) then
 		warnObscuringCloud:Show()
 	end
@@ -158,9 +152,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 310358 then
 		specWarnMutteringsofInsanity:CombinedShow(0.3, args.destName)
-		timerUnleashedInsanity:Start()--TODO, FIX ME with antispam?
 		if args:IsPlayer() then
 			yellMutteringsofInsanity:Countdown(spellId)
+			timerUnleashedInsanity:Start()
+			if self.Options.RangeFrame then
+				DBM.RangeCheck:Show(18)
+			end
 		end
 	elseif spellId == 310361 then
 		warnUnleashedInsanity:CombinedShow(0.3, args.destName)
@@ -170,7 +167,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 310563 then
 		if args:IsPlayer() then
 			local amount = args.amount or 1
-			if amount >= 3 then
+			if (amount >= 3) and (amount < 5) then--Have to do this way because initial application doesn't report stacks, it reports absorb amount (obnoxious high number)
 				specWarnMutteringsofBetrayal:Show(amount)
 				specWarnMutteringsofBetrayal:Play("stackhigh")
 			end
@@ -196,9 +193,12 @@ function mod:SPELL_AURA_REMOVED(args)
 			DBM.Nameplate:Hide(true, args.destGUID, spellId)
 		end
 	elseif spellId == 310358 then
-		timerUnleashedInsanity:Stop()
 		if args:IsPlayer() then
 			yellMutteringsofInsanity:Cancel()
+			timerUnleashedInsanity:Stop()
+			if self.Options.RangeFrame then
+				DBM.RangeCheck:Show(4)
+			end
 		end
 	end
 end
@@ -240,10 +240,11 @@ function mod:SPELL_INTERRUPT(args)
 
 	end
 end
+--]]
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 298689 then--Absorb Fluids
-
+	--Has success event, but only if a maw-of-drestagath is up, this script runs regardless
+	if spellId == 310351 then--Mutterings of Insanity
+		timerMutteringsofInsanityCD:Start()
 	end
 end
---]]

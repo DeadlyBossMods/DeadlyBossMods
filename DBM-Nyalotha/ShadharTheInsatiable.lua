@@ -15,23 +15,26 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 312528 306928 312529 306929 312530 306930 307260 306953",
 	"SPELL_CAST_SUCCESS 307471",
-	"SPELL_AURA_APPLIED 312328 312329 307471 307472 307358 306942 307260 308157 308177 308149 312099",
+	"SPELL_AURA_APPLIED 312328 312329 307471 307472 307358 306942 307260 308149 312099 306447 306931 306933",
 	"SPELL_AURA_APPLIED_DOSE 312328 307358",
-	"SPELL_AURA_REMOVED 312328 307358 308157",
-	"SPELL_AURA_REMOVED_DOSE 312328 307358 308177",
+	"SPELL_AURA_REMOVED 312328 307358 306447 306933",
+	"SPELL_AURA_REMOVED_DOSE 312328 307358",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
-	"CHAT_MSG_RAID_BOSS_EMOTE",
-	"UNIT_SPELLCAST_SUCCEEDED boss1",
+--	"CHAT_MSG_RAID_BOSS_EMOTE",
+--	"UNIT_SPELLCAST_SUCCEEDED boss1",
 	"UNIT_SPELLCAST_START boss1",
-	"UNIT_SPELLCAST_CHANNEL_START boss2 boss3"
+	"UNIT_SPELLCAST_CHANNEL_START boss2 boss3 boss4 boss5"
 )
 
 --TODO, add tracking of tasty Morsel carriers to infoframe?
+--TODO, see if seenAdds solved the fixate timer issue, or if something else wonky still going on with it
+--TODO, first fixate Still 31 on heroic? Or is the extra one mythic exclusive for Tasty mechanic
 local warnHunger							= mod:NewStackAnnounce(312328, 2, nil, false, 2)--Mythic
-local warnVolatileSlurry					= mod:NewSpellAnnounce(306447, 2)
-local warnBubblingSlurry					= mod:NewSpellAnnounce(306931, 2)
-local warnEntropicSlurry					= mod:NewSpellAnnounce(306933, 2)
+local warnUmbralMantle						= mod:NewSpellAnnounce(306447, 2)
+local warnUmbralEruption					= mod:NewCountAnnounce(308157, 2)
+local warnNoxiousMantle						= mod:NewSpellAnnounce(306931, 2)
+local warnEntropicMantle					= mod:NewSpellAnnounce(306933, 2)
 local warnCrush								= mod:NewTargetNoFilterAnnounce(307471, 3, nil, "Tank|Healer")
 local warnDissolve							= mod:NewTargetNoFilterAnnounce(307472, 3, nil, "Tank|Healer")
 local warnDebilitatingSpit					= mod:NewTargetNoFilterAnnounce(307358, 3, nil, false)
@@ -47,14 +50,14 @@ local specWarnSlurryBreath					= mod:NewSpecialWarningDodge(306736, nil, nil, ni
 local specWarnDebilitatingSpit				= mod:NewSpecialWarningYou(307358, nil, nil, nil, 1, 2)
 local specWarnFixate						= mod:NewSpecialWarningRun(307260, nil, nil, nil, 4, 2)
 local yellFixate							= mod:NewYell(307260, nil, true, 2)
-local specWarnVolatileEruption				= mod:NewSpecialWarningDodge(308157, nil, nil, nil, 2, 2)
+local specWarnUmbralEruption				= mod:NewSpecialWarningDodge(308157, false, nil, 2, 2, 2)--Because every 8-10 seconds is excessive, let user opt in for this
 local specWarnGTFO							= mod:NewSpecialWarningGTFO(308149, nil, nil, nil, 1, 8)
 
-local timerCrushCD							= mod:NewCDTimer(25.5, 307471, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON, nil, 2, 4)
+local timerCrushCD							= mod:NewCDTimer(25.1, 307471, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON, nil, 2, 4)
 local timerSlurryBreathCD					= mod:NewCDTimer(17, 306736, nil, nil, nil, 3, nil, nil, nil, 1, 4)
 local timerDebilitatingSpitCD				= mod:NewCDTimer(30.1, 306953, nil, nil, nil, 5, nil, DBM_CORE_HEALER_ICON)
-local timerFixateCD							= mod:NewNextTimer(31, 307260, nil, nil, nil, 3, nil, DBM_CORE_DAMAGE_ICON)
-local timerVolatileEruptionCD				= mod:NewNextTimer(10, 308157, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
+local timerFixateCD							= mod:NewNextTimer(30.2, 307260, nil, nil, nil, 3, nil, DBM_CORE_DAMAGE_ICON)
+local timerUmbralEruptionCD					= mod:NewNextTimer(10, 308157, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
 local timerEntropicBuildupCD				= mod:NewNextTimer(10, 308177, nil, nil, nil, 5, nil, DBM_CORE_HEROIC_ICON)
 
 local berserkTimer							= mod:NewBerserkTimer(360)
@@ -66,16 +69,23 @@ mod:AddSetIconOption("SetIconOnDebilitating", 306953, true, false, {1, 2, 3, 4})
 mod.vb.phase = 0
 mod.vb.eruptionCount = 0
 mod.vb.buildupCount = 0
+mod.vb.fixateCount = 0
 local SpitStacks = {}
 local orbTimers = {0, 25, 25, 37, 20}
+local seenAdds = {}
 
-local function volatileEruptionLoop(self)
+local function umbralEruptionLoop(self)
 	self.vb.eruptionCount = self.vb.eruptionCount + 1
-	specWarnVolatileEruption:Show()
+	if self.Options.SpecWarn308157dodge then
+		specWarnUmbralEruption:Show()
+		specWarnUmbralEruption:Play("watchstep")
+	else
+		warnUmbralEruption:Show()
+	end
 	--15, 10, 10, 10, 10, 8+
 	local timer = (self.vb.eruptionCount < 4) and 10 or 8
-	timerVolatileEruptionCD:Start(timer)
-	self:Schedule(timer, volatileEruptionLoop, self)
+	timerUmbralEruptionCD:Start(timer)
+	self:Schedule(timer, umbralEruptionLoop, self)
 end
 
 local function entropicBuildupLoop(self)
@@ -100,11 +110,13 @@ end
 
 function mod:OnCombatStart(delay)
 	self.vb.phase = 0
+	self.vb.fixateCount = 0
 	table.wipe(SpitStacks)
+	table.wipe(seenAdds)
 	timerDebilitatingSpitCD:Start(10.7-delay)--START
 	timerCrushCD:Start(18.1-delay)--SUCCESS
 	timerSlurryBreathCD:Start(29.5-delay)
-	timerFixateCD:Start(31-delay)
+	timerFixateCD:Start(self:IsMythic() and 16.1 or 31)
 	berserkTimer:Start(360-delay)
 end
 
@@ -122,10 +134,13 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 312528 or spellId == 306928 or spellId == 312529 or spellId == 306929 or spellId == 312530 or spellId == 306930 then
 		specWarnSlurryBreath:Show()
 		specWarnSlurryBreath:Play("breathsoon")
-		local timer = (self.vb.phase < 2) and 24.3 or (self.vb.phase == 2) and 18.2 or 17
+		local timer = (self.vb.phase < 2) and 23.9 or (self.vb.phase == 2) and 18.2 or 17--Mythic was 24, 21, instead of 24, 18, recheck heroic?
 		timerSlurryBreathCD:Start(timer)
-	elseif spellId == 307260 and self:AntiSpam(5, 3) then
-		timerFixateCD:Start()
+	elseif spellId == 307260 and not seenAdds[args.sourceGUID] and self:AntiSpam(5, 3) then
+		self.vb.fixateCount = self.vb.fixateCount + 1
+		seenAdds[args.sourceGUID] = true
+		local timer = self:IsMythic() and self.vb.fixateCount == 1 and 16.1 or 30.2
+		timerFixateCD:Start(timer)
 	elseif spellId == 306953 then
 		timerDebilitatingSpitCD:Start()
 	end
@@ -197,18 +212,29 @@ function mod:SPELL_AURA_APPLIED(args)
 				yellFixate:Yell()
 			end
 		end
-	elseif spellId == 308157 then
-		self.vb.eruptionCount = 0
-		timerVolatileEruptionCD:Start(12)
-		self:Schedule(12, volatileEruptionLoop, self)
-	elseif spellId == 308177 then
-		self.vb.buildupCount = 0
-		entropicBuildupLoop(self)--Might need adjusting, harder to verifiy in transcriptor
+	elseif spellId == 306447 then
+		self.vb.phase = self.vb.phase + 1
+		warnUmbralMantle:Show()
+		if not self:IsLFR() then
+			self.vb.eruptionCount = 0
+			timerUmbralEruptionCD:Start(10)--Damage at 12, so warning 2 seconds before seems right
+			self:Schedule(10, umbralEruptionLoop, self)
+		end
+	elseif spellId == 306931 then
+		self.vb.phase = self.vb.phase + 1
+		warnNoxiousMantle:Show()
+	elseif spellId == 306933 then
+		self.vb.phase = self.vb.phase + 1
+		warnEntropicMantle:Show()
+		if not self:IsLFR() then
+			self.vb.buildupCount = 0
+			entropicBuildupLoop(self)--Might need adjusting, harder to verifiy in transcriptor
+		end
 	elseif spellId == 308149 and args:IsPlayer() then
 		specWarnGTFO:Show(args.spellName)
 		specWarnGTFO:Play("watchfeet")
 	elseif spellId == 312099 then
-		warnTastyMorsel:CombinedShow(1, args.destName)
+		warnTastyMorsel:Show(args.destName)
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -234,10 +260,10 @@ function mod:SPELL_AURA_REMOVED(args)
 				DBM.InfoFrame:UpdateTable(SpitStacks)
 			end
 		end
-	elseif spellId == 308157 then
-		timerVolatileEruptionCD:Stop()
-		self:Unschedule(volatileEruptionLoop)
-	elseif spellId == 308177 then
+	elseif spellId == 306447 then
+		timerUmbralEruptionCD:Stop()
+		self:Unschedule(umbralEruptionLoop)
+	elseif spellId == 306933 then
 		timerEntropicBuildupCD:Stop()
 		self:Unschedule(entropicBuildupLoop)
 	end
@@ -265,34 +291,26 @@ function mod:UNIT_DIED(args)
 
 	end
 end
---]]
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
-	if msg:find("spell:306448") then--Volatile Slurry
+	if msg:find("spell:306448") then--Umbral Mantle
 		self.vb.phase = self.vb.phase + 1
-		warnVolatileSlurry:Show()
-	elseif msg:find("spell:306934") then--Entropic Slurry
+		warnUmbralMantle:Show()
+	elseif msg:find("spell:306934") then--Entropic Mantle
 		self.vb.phase = self.vb.phase + 1
-		warnEntropicSlurry:Show()
-	elseif msg:find("spell:306932") then--Bubbling Slurry
+		warnEntropicMantle:Show()
+	elseif msg:find("spell:306932") then--Noxious Mantle
 		self.vb.phase = self.vb.phase + 1
-		warnBubblingSlurry:Show()
+		warnNoxiousMantle:Show()
 	end
 end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if (spellId == 309725 or spellId == 309730 or spellId == 309724 or spellId == 308652) and self:AntiSpam(5, 1) then--All the slurry Visuals
-		if spellId == 309725 then--Bubbling Slurry Visual
-			warnBubblingSlurry:Show(self.vb.slurryCount)
-		elseif spellId == 309730 then--Entropic Slurry Visual
-			warnEntropicSlurry:Show(self.vb.slurryCount)
-		else--309724 or 308652 (Volatile Slurry Visual)
-			warnVolatileSlurry:Show(self.vb.slurryCount)
-		end
-	elseif spellId == 306736 then--Slurry Breath
+	if spellId == 306736 then--Slurry Breath
 
 	end
 end
+--]]
 
 function mod:UNIT_SPELLCAST_START(uId, _, spellId)
 	if spellId == 306953 then
