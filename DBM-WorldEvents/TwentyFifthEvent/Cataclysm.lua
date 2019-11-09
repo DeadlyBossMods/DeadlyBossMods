@@ -123,11 +123,11 @@ function mod:SPELL_CAST_START(args)
 		specWarnSplittingBlow:Show()
 		specWarnSplittingBlow:Play("phasechange")
 		if spellId == 98951 then--West
-			warnSplittingBlow:Show(args.spellName, L.West)
+			warnSplittingBlow:Show(args.spellName, DBM_CORE_WEST)
 		elseif spellId == 98952 then--Middle
-			warnSplittingBlow:Show(args.spellName, L.Middle)
+			warnSplittingBlow:Show(args.spellName, DBM_CORE_MIDDLE)
 		elseif spellId == 98953 then--East
-			warnSplittingBlow:Show(args.spellName, L.East)
+			warnSplittingBlow:Show(args.spellName, DBM_CORE_EAST)
 		end
 	elseif args:IsSpellID(99172, 99235, 99236) then--Another scripted spell with a ton of spellids based on location of room.
 		--North: 99172
@@ -139,13 +139,13 @@ function mod:SPELL_CAST_START(args)
 			timerFlamesCD:Start()--40 second CD in phase 2 (phase 1 with how this event is scripted)
 		end
 		if spellId == 99172 then--North
-			warnEngulfingFlame:Show(args.spellName, L.North)
+			warnEngulfingFlame:Show(args.spellName, DBM_CORE_NORTH)
 			specWarnEngulfing:Show()
 			specWarnEngulfing:Play("watchstep")
 		elseif spellId == 99235 then--Middle
-			warnEngulfingFlame:Show(args.spellName, L.Middle)
+			warnEngulfingFlame:Show(args.spellName, DBM_CORE_MIDDLE)
 		elseif spellId == 99236 then--South
-			warnEngulfingFlame:Show(args.spellName, L.South)
+			warnEngulfingFlame:Show(args.spellName, DBM_CORE_SOUTH)
 		end
 	elseif spellId == 80734 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnBlastsNova:Show(args.sourceName)
