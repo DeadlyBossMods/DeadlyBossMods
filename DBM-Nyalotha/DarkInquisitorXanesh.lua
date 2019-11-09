@@ -209,7 +209,7 @@ do
 	function mod:CHAT_MSG_MONSTER_YELL(msg, _, _, _, target)
 		if not self:IsInCombat() then return end
 		--Boss only targets himself during a yell for Obelisk spawns, any other yells he targets a playername, azshara, or nobody
-		if target == bossName or msg == L.ObeliskSpawn then--Localized backup only if simply scanning auto translated target doesn't work forever or in all locals
+		if msg == L.ObeliskSpawn then--Localized backup only if simply scanning auto translated target doesn't work forever or in all locals
 			self.vb.obeliskCount = self.vb.obeliskCount + 1
 			warnSummonRitualObelisk:Show(self.vb.obeliskCount)
 			timerSummonRitualObeliskCD:Start(80, self.vb.obeliskCount+1)
