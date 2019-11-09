@@ -39,6 +39,7 @@ local warnFreezingSlash		= mod:NewTargetNoFilterAnnounce(66012, 2, nil, "Tank|He
 local warnRemorselessWinter = mod:NewSpellAnnounce(68981, 3) --Phase Transition Start Ability
 local warnQuake				= mod:NewSpellAnnounce(72262, 4) --Phase Transition End Ability
 local warnRagingSpirit		= mod:NewTargetNoFilterAnnounce(69200, 3) --Transition Add
+local warnDefileSoon		= mod:NewSoonAnnounce(72762, 3)	--Phase 2+ Ability
 local warnDefileCast		= mod:NewTargetNoFilterAnnounce(72762, 4) --Phase 2+ Ability
 local warnSummonValkyr		= mod:NewSpellAnnounce(69037, 3, 71844) --Phase 2 Add
 local warnSummonVileSpirit	= mod:NewSpellAnnounce(70498, 2) --Phase 3 Add
@@ -94,13 +95,17 @@ function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(68981, 72259) then -- Remorseless Winter (phase transition start)
 		warnRemorselessWinter:Show()
 		timerDefileCD:Stop()
+		warnDefileSoon:Cancel()
 	elseif args.spellId == 72262 then -- Quake (phase transition end)
 		warnQuake:Show()
+		warnDefileSoon:Schedule(32.3)
 		timerDefileCD:Start(37.3)
 	elseif args.spellId == 70498 then -- Vile Spirits
 		warnSummonVileSpirit:Show()
 	elseif args.spellId == 72762 then -- Defile
 		self:BossTargetScanner(args.sourceGUID, "DefileTarget", 0.02, 15)
+		warnDefileSoon:Cancel()
+		warnDefileSoon:Schedule(27.5)
 		timerDefileCD:Start()
 	end
 end
@@ -199,6 +204,7 @@ end
 
 function mod:ZONE_CHANGED_NEW_AREA()
 	--Cleanup timers and scheduled events
+	if IsEncounterInProgress() then return end--On frozen throne this event fires when near edge of area, we need to filter that canceling timers by mistake
 	timerDefileCD:Stop()
 	timerEmerge:Stop()
 	timerSubmerge:Stop()
@@ -206,4 +212,5 @@ function mod:ZONE_CHANGED_NEW_AREA()
 	warnTeleportSoon:Cancel()
 	warnEmergeSoon:Cancel()
 	warnSubmergeSoon:Cancel()
+	warnDefileSoon:Cancel()
 end

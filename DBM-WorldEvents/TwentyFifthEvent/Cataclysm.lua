@@ -251,8 +251,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		self:Schedule(17.5, clearSeedsActive, self)--Clear active/warned seeds after they have all blown up.
 	elseif spellId == 98860 then--Base Visual
 		self.vb.postSons = true
+		timerLivingMeteorCD:Start(9)
 		timerFlamesCD:Start(30)
-		timerLivingMeteorCD:Start(45)
 	end
 end
 
