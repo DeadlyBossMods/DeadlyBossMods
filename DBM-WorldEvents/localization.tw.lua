@@ -154,3 +154,35 @@ L = DBM:GetModLocalization("DemonInvasions")
 L:SetGeneralLocalization({
 	name = "惡魔入侵"
 })
+
+--------------------------
+--  Memories of Azeroth: Burning Crusade  --
+--------------------------
+L = DBM:GetModLocalization("BCEvent")
+
+L:SetGeneralLocalization({
+	name = "MoA: Burning Crusade"
+})
+
+--------------------------
+--  Memories of Azeroth: Wrath of the Lich King  --
+--------------------------
+L = DBM:GetModLocalization("WrathEvent")
+
+L:SetGeneralLocalization({
+	name = "MoA: WotLK"
+})
+
+L:SetMiscLocalization{
+	Emerge				= "從地底鑽出!",
+	Burrow				= "鑽進地裡!"
+}
+
+--------------------------
+--  Memories of Azeroth: Cataclysm  --
+--------------------------
+L = DBM:GetModLocalization("CataEvent")
+
+L:SetGeneralLocalization({
+	name = "MoA: Cataclysm"
+})

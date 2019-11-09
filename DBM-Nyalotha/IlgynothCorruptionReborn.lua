@@ -16,7 +16,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 309961 311401 310788",
-	"SPELL_CAST_SUCCESS 311401 311159 310788 312204 313759",
+	"SPELL_CAST_SUCCESS 311401 311159 310788 312204 314396",
 	"SPELL_AURA_APPLIED 309961 311367 310322 315094 311159 313759",
 	"SPELL_AURA_APPLIED_DOSE 309961",
 	"SPELL_AURA_REMOVED 311367 315094 311159 313759",
@@ -74,6 +74,7 @@ mod:AddDropdownOption("InterruptBehavior", {"Two", "Three", "Four", "Five"}, "Tw
 mod.vb.TouchofCorruptorIcon = 1
 mod.vb.IchorCount = 0
 mod.vb.interruptBehavior = "Two"
+mod.vb.organPhase = false
 
 local addsTable = {}
 local autoMarkScannerActive = false
@@ -165,6 +166,7 @@ function mod:OnCombatStart(delay)
 	self.vb.TouchofCorruptorIcon = 1
 	self.vb.IchorCount = 0
 	self.vb.interruptBehavior = self.Options.InterruptBehavior--Default it to whatever user has it set to, until group leader overrides it
+	self.vb.organPhase = false
 	autoMarkScannerActive = false
 	autoMarkBlocked = false
 	table.wipe(addsTable)
@@ -174,10 +176,10 @@ function mod:OnCombatStart(delay)
 	timerCorruptorsGazeCD:Start(12.5-delay)
 	if self:IsHard() then
 		timerTouchoftheCorruptorCD:Start(50.7-delay)--SUCCESS
-		--[[if self:IsMythic() then
-			timerCursedBloodCD:Start(1-delay)
+		if self:IsMythic() then
+			timerCursedBloodCD:Start(20-delay)
 			timerCursedBloodCD:UpdateInline(DBM_CORE_MAGIC_ICON)
-		end--]]
+		end
 	end
 	if UnitIsGroupLeader("player") and not self:IsLFR() then
 		if self.Options.InterruptBehavior == "Two" then
@@ -254,8 +256,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 311401 then
 		timerTouchoftheCorruptorCD:Start()
-	elseif spellId == 311159 or spellId == 313759 then--or spellId == 314396
-		timerCursedBloodCD:Start()
+	elseif spellId == 311159 or spellId == 314396 then--Non Mythic, Mythic
+		timerCursedBloodCD:Start(self:IsMythic() and 40 or 18)
 		if self:IsMythic() then
 			timerCursedBloodCD:UpdateInline(DBM_CORE_MAGIC_ICON)
 		end
@@ -267,15 +269,13 @@ function mod:SPELL_CAST_SUCCESS(args)
 		--Start timers here, not at organ death
 		--it's possible to screw up organ phase so bad that you leave it without killing any of them
 		table.wipe(castsPerGUID)
-		timerCursedBloodCD:Stop()
+		if not self:IsMythic() then
+			timerCursedBloodCD:Stop()
+		end
 		timerEyeofNZothCD:Start(6)--START
 		timerCorruptorsGazeCD:Start(12)
 		if self:IsHard() then
 			timerTouchoftheCorruptorCD:Start(51.5)--SUCCESS
-			--[[if self:IsMythic() then
-				timerCursedBloodCD:Start()
-				timerCursedBloodCD:UpdateInline(DBM_CORE_MAGIC_ICON)
-			end--]]
 		end
 		if self.Options.NPAuraOnPumpingBlood then
 			for i = 2, 4 do
@@ -362,12 +362,10 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnCursedBlood:Show()
 			specWarnCursedBlood:Play("runout")
 			yellCursedBlood:Yell()
-			yellCursedBloodFades:Countdown(spellId)
-			if self.Options.RangeFrame then
-				if spellId == 311159 then
+			if spellId == 311159 then
+				yellCursedBloodFades:Countdown(spellId)
+				if self.Options.RangeFrame then
 					DBM.RangeCheck:Show(11)
-				else
-					--DBM.RangeCheck:Show(11) (unknown way to handle this yet)
 				end
 			end
 		end
@@ -435,15 +433,15 @@ end
 --Placeholder. Maybe correct maybe totally wrong
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 310965 and self:AntiSpam(3, 1) then--Energy Regen (Organ phase begin)
+		self.vb.organPhase = true
 		--self.vb.phase = self.vb.phase + 0.5
 		timerTouchoftheCorruptorCD:Stop()
-		timerCursedBloodCD:Stop()
 		timerEyeofNZothCD:Stop()
-		timerCursedBloodCD:Start(3)
-		if self:IsMythic() then
-			timerCursedBloodCD:UpdateInline(DBM_CORE_MAGIC_ICON)
+		if not self:IsMythic() then
+			timerCursedBloodCD:Start(3)
 		end
 	elseif spellId == 311577 then--Damaged Organ (organs "dying")
+		self.vb.organPhase = false
 		self.vb.bossLeft = self.vb.bossLeft - 1
 		--self.vb.phase = self.vb.phase + 0.5
 	elseif spellId == 310433 then--Corruptor's Gaze

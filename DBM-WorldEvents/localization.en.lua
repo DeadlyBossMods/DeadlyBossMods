@@ -153,3 +153,72 @@ L = DBM:GetModLocalization("DemonInvasions")
 L:SetGeneralLocalization({
 	name = "Demonic Invasions"
 })
+
+--------------------------
+--  Memories of Azeroth: Burning Crusade  --
+--------------------------
+L = DBM:GetModLocalization("BCEvent")
+
+L:SetGeneralLocalization({
+	name = "MoA: Burning Crusade"
+})
+
+--------------------------
+--  Memories of Azeroth: Wrath of the Lich King  --
+--------------------------
+L = DBM:GetModLocalization("WrathEvent")
+
+L:SetGeneralLocalization({
+	name = "MoA: WotLK"
+})
+
+L:SetWarningLocalization{
+	WarnEmerge				= "Anub'arak emerges",
+	WarnEmergeSoon			= "Emerge in 10 seconds",
+	WarnSubmerge			= "Anub'arak submerges",
+	WarnSubmergeSoon		= "Submerge in 10 seconds",
+	WarningTeleportNow		= "Teleported",
+	WarningTeleportSoon		= "Teleport in 10 seconds"
+}
+
+L:SetTimerLocalization{
+	TimerEmerge				= "Emerge",
+	TimerSubmerge			= "Submerge",
+	TimerTeleport			= "Teleport"
+}
+
+L:SetMiscLocalization{
+	Emerge					= "emerges from the ground!",
+	Burrow					= "burrows into the ground!"
+}
+
+L:SetOptionLocalization{
+	WarnEmerge				= "Show warning for emerge",
+	WarnEmergeSoon			= "Show pre-warning for emerge",
+	WarnSubmerge			= "Show warning for submerge",
+	WarnSubmergeSoon		= "Show pre-warning for submerge",
+	TimerEmerge				= "Show timer for emerge",
+	TimerSubmerge			= "Show timer for submerge",
+	WarningTeleportNow		= "Show warning for Teleport",
+	WarningTeleportSoon		= "Show pre-warning for Teleport",
+	TimerTeleport			= "Show timer for Teleport"
+}
+
+--------------------------
+--  Memories of Azeroth: Cataclysm  --
+--------------------------
+L = DBM:GetModLocalization("CataEvent")
+
+L:SetGeneralLocalization({
+	name = "MoA: Cataclysm"
+})
+
+L:SetWarningLocalization({
+	warnSplittingBlow		= "%s in %s",--Spellname in Location
+	warnEngulfingFlame		= "%s in %s"--Spellname in Location
+})
+
+L:SetOptionLocalization({
+	warnSplittingBlow			= "Show location warnings for $spell:98951",
+	warnEngulfingFlame			= "Show location warnings for $spell:99171"
+})
