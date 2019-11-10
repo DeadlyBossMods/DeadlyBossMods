@@ -22,7 +22,7 @@
 ## X-DBM-Mod-SubCategories: Holidays,Quests,Events
 ## X-DBM-Mod-SubCategories-deDE: Feiertage,Quests,Events
 ## X-DBM-Mod-SubCategories-ruRU: Праздники,Задания,Events
-## X-DBM-Mod-SubCategories-koKR: 연간 이벤트,퀘스트,Events
+## X-DBM-Mod-SubCategories-koKR: 축제,퀘스트,이벤트
 ## X-DBM-Mod-SubCategories-zhTW: 節慶,任務,Events
 ## X-DBM-Mod-SubCategories-zhCN: 节日,任务,Events
 ## X-DBM-Mod-SubCategories-esES: Fiestas,Misiones,Events
