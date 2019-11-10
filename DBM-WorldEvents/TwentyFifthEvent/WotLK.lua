@@ -2,10 +2,11 @@ local mod	= DBM:NewMod("WrathEvent", "DBM-WorldEvents", 3)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
---mod:SetCreatureID(36597)
+mod:SetCreatureID(36597, 34564, 15936)
 mod:SetEncounterID(2321)
 mod:SetModelID(30721)--Lich King
 mod:SetZone()
+mod:SetBossHPInfoToHighest()
 mod:SetMinSyncRevision(20191108000000)--2019, November 8th
 
 mod:RegisterCombat("combat")
@@ -64,8 +65,13 @@ local timerDefileCD			= mod:NewCDTimer(32.5, 72762, nil, nil, nil, 3, nil, DBM_C
 
 local seenAdds = {}
 
+mod.vb.phase = 0
+
 function mod:OnCombatStart(delay)
 	table.wipe(seenAdds)
+	self.vb.phase = 0
+	self.vb.bossLeft = 4--Because we change it to 3 right away
+	self.numBoss = 3
 end
 
 --function mod:OnCombatEnd()
@@ -190,11 +196,17 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 			seenAdds[GUID] = true
 			local cid = self:GetCIDFromGUID(GUID)
 			if cid == 36597 then--Lich King
+				self.vb.bossLeft = self.vb.bossLeft - 1
+				self.vb.phase = self.vb.phase + 1
 				timerDefileCD:Start(29.1)
 			elseif cid == 34564 then--Anub'arak
+				self.vb.bossLeft = self.vb.bossLeft - 1
+				self.vb.phase = self.vb.phase + 1
 				warnSubmergeSoon:Schedule(5.5)
 				timerSubmerge:Start(15.5)
 			elseif cid == 15936 then--Heigan
+				self.vb.bossLeft = self.vb.bossLeft - 1
+				self.vb.phase = self.vb.phase + 1
 				timerTeleport:Start(16)
 				warnTeleportSoon:Schedule(6)
 			end

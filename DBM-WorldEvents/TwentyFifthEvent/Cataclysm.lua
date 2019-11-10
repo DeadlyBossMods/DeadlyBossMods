@@ -2,9 +2,10 @@ local mod	= DBM:NewMod("CataEvent", "DBM-WorldEvents", 3)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
---mod:SetCreatureID(52409)
+mod:SetCreatureID(52409, 41376, 43324)
 mod:SetEncounterID(2320)
 mod:SetZone()
+mod:SetBossHPInfoToHighest()
 --mod:SetModelSound("Sound\\Creature\\RAGNAROS\\VO_FL_RAGNAROS_AGGRO.ogg", "Sound\\Creature\\RAGNAROS\\VO_FL_RAGNAROS_KILL_03.ogg")
 --Long: blah blah blah (didn't feel like transcribing it)
 --Short: This is my realm
@@ -63,6 +64,7 @@ local timerFlamesCD				= mod:NewNextTimer(40, 99171, nil, nil, nil, 3, nil, nil,
 local timerLivingMeteorCD		= mod:NewNextTimer(45, 99268, nil, nil, nil, 1, nil, nil, nil, 3, 4)
 
 mod:AddInfoFrameOption(99849, true)
+mod:AddRangeFrameOption(6, 98495)
 
 local meteorWarned = false
 local meteorTarget = DBM:GetSpellInfo(99849)
@@ -71,6 +73,7 @@ mod.vb.seedsActive = false
 mod.vb.meteorSpawned = 0
 mod.vb.sonsLeft = 0
 mod.vb.postSons = false
+mod.vb.phase = 0
 
 function mod:LivingMeteorTarget(targetname)
 	if targetname == UnitName("player") then
@@ -103,11 +106,17 @@ function mod:OnCombatStart(delay)
 	self.vb.meteorSpawned = 0
 	self.vb.sonsLeft = 0
 	self.vb.postSons = false
+	self.vb.phase = 0
+	self.vb.bossLeft = 4--Because we change it to 3 right away
+	self.numBoss = 3
 end
 
 function mod:OnCombatEnd()
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
+	end
+	if self.Options.RangeFrame then
+		DBM.RangeCheck:Hide()
 	end
 end
 
@@ -128,6 +137,9 @@ function mod:SPELL_CAST_START(args)
 			warnSplittingBlow:Show(args.spellName, DBM_CORE_MIDDLE)
 		elseif spellId == 98953 then--East
 			warnSplittingBlow:Show(args.spellName, DBM_CORE_EAST)
+		end
+		if self.Options.RangeFrame then
+			DBM.RangeCheck:Hide()
 		end
 	elseif args:IsSpellID(99172, 99235, 99236) then--Another scripted spell with a ton of spellids based on location of room.
 		--North: 99172
@@ -279,13 +291,20 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 			seenAdds[GUID] = true
 			local cid = self:GetCIDFromGUID(GUID)
 			if cid == 52409 then--Ragnaros
+				self.vb.phase = self.vb.phase + 1
+				self.vb.bossLeft = self.vb.bossLeft - 1
 				--Seems to activate timers as if P2 just started
 				timerMoltenSeedCD:Start(24)--21.5+2.5
 				timerFlamesCD:Start(40)
-			--elseif cid == 34564 then
-
-			--elseif cid == 15936 then
-
+				if self.Options.RangeFrame then
+					DBM.RangeCheck:Show(6)
+				end
+			elseif cid == 41376 then--Nefarian
+				self.vb.phase = self.vb.phase + 1
+				self.vb.bossLeft = self.vb.bossLeft - 1
+			elseif cid == 43324 then--Chogal
+				self.vb.phase = self.vb.phase + 1
+				self.vb.bossLeft = self.vb.bossLeft - 1
 			end
 		end
 	end
@@ -296,4 +315,7 @@ function mod:ZONE_CHANGED_NEW_AREA()
 	timerMoltenSeedCD:Stop()
 	timerFlamesCD:Stop()
 	timerLivingMeteorCD:Stop()
+	if self.Options.RangeFrame then
+		DBM.RangeCheck:Hide()
+	end
 end

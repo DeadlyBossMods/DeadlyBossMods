@@ -7,7 +7,7 @@ mod:SetEncounterID(2333)
 mod:SetZone()
 mod:SetUsedIcons(1, 2, 3, 4, 5)--Refine when max number of mythic Volatile Eruption is known
 mod:SetHotfixNoticeRev(20191109000000)--2019, 11, 09
---mod:SetMinSyncRevision(20190716000000)
+mod:SetMinSyncRevision(20191109000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
