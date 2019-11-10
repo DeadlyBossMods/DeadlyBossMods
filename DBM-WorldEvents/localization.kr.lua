@@ -22,7 +22,7 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization({
-	TrioActiveTimer		= "각 우두머리 활성화 바 보기"
+	TrioActiveTimer		= "각 보스 활성화 타이머 바 보기"
 })
 
 L:SetMiscLocalization({
@@ -40,15 +40,15 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization{
-	SubmergTimer	= "잠수",
+	SubmergTimer	= "잠복",
 	EmergeTimer		= "등장"
 }
 
 L:SetOptionLocalization({
-	Emerged			= "등장 알림 보기",
+	Emerged			= "등장 경고 보기",
 	specWarnAttack	= "아훈 약화 특수 경고 보기",
-	SubmergTimer	= "잠수 바 보기",
-	EmergeTimer		= "등장 바 보기"
+	SubmergTimer	= "잠복 타이머 바 보기",
+	EmergeTimer		= "등장 타이머 바 보기"
 })
 
 L:SetMiscLocalization({
@@ -93,15 +93,15 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("d285")
 
 L:SetWarningLocalization({
-	WarnPhase				= "%d 단계",
+	WarnPhase				= "%d단계",
 	warnHorsemanSoldiers	= "고동치는 호박 생성",
-	warnHorsemanHead		= "저주받은 기사의 머리 생성"
+	warnHorsemanHead		= "저주받은 기사의 머리 등장"
 })
 
 L:SetOptionLocalization({
-	WarnPhase				= "단계 전환 알림 보기",
-	warnHorsemanSoldiers	= "고동치는 호박 생성 알림 보기",
-	warnHorsemanHead		= "저주받은 기사 머리 생성 알림 보기"
+	WarnPhase				= "단계 전환 경고 보기",
+	warnHorsemanSoldiers	= "고동치는 호박 등장 경고 보기",
+	warnHorsemanHead		= "저주받은 기사 머리 등장 경고 보기"
 })
 
 L:SetMiscLocalization({
@@ -139,7 +139,7 @@ L:SetTimerLocalization{
 L:SetOptionLocalization({
 	warnTotalAdds	= "각 총공격마다 이전 단계에 생성된 적 수 보기",
 	specWarnWave	= "총공격 특수 경고 보기",
-	timerWave		= "다음 총공격 바 보기"
+	timerWave		= "다음 총공격 타이머 바 보기"
 })
 
 L:SetMiscLocalization({
@@ -161,7 +161,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("BCEvent")
 
 L:SetGeneralLocalization({
-	name = "MoA: Burning Crusade"
+	name = "추억: 불타는 성전"
 })
 
 --------------------------
@@ -170,12 +170,39 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("WrathEvent")
 
 L:SetGeneralLocalization({
-	name = "MoA: WotLK"
+	name = "추억: 리치 왕의 분노"
 })
+
+L:SetWarningLocalization{
+	WarnEmerge				= "아눕아락 등장",
+	WarnEmergeSoon			= "10초 후 등장",
+	WarnSubmerge			= "아눕아락 잠복",
+	WarnSubmergeSoon		= "10초 후 잠복",
+	WarningTeleportNow		= "순간이동",
+	WarningTeleportSoon		= "10초 후 순간이동"
+}
+
+L:SetTimerLocalization{
+	TimerEmerge				= "등장",
+	TimerSubmerge			= "잠복",
+	TimerTeleport			= "순간이동"
+}
 
 L:SetMiscLocalization{
 	Emerge					= "땅속에서 모습을 드러냅니다!",
 	Burrow					= "땅속으로 숨어버립니다!"
+}
+
+L:SetOptionLocalization{
+	WarnEmerge				= "등장 경고 보기",
+	WarnEmergeSoon			= "등장 사전 경고 보기",
+	WarnSubmerge			= "잠복 경고 보기",
+	WarnSubmergeSoon		= "잠복 사전 경고 보기",
+	TimerEmerge				= "등장 타이머 바 보기",
+	TimerSubmerge			= "잠복 타이머 바 보기",
+	WarningTeleportNow		= "순간이동 경고 보기",
+	WarningTeleportSoon		= "순간이동 사전 경고 보기",
+	TimerTeleport			= "순간이동 타이머 바 보기"
 }
 
 --------------------------
@@ -184,5 +211,15 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("CataEvent")
 
 L:SetGeneralLocalization({
-	name = "MoA: Cataclysm"
+	name = "추억: 대격변"
+})
+
+L:SetWarningLocalization({
+	warnSplittingBlow		= "%2$s에 %1$s",--Spellname in Location
+	warnEngulfingFlame		= "%2$s에 %1$s"--Spellname in Location
+})
+
+L:SetOptionLocalization({
+	warnSplittingBlow			= "$spell:98951 위치 경고 보기",
+	warnEngulfingFlame			= "$spell:99171 위치 경고 보기"
 })
