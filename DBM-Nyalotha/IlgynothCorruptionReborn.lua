@@ -173,7 +173,7 @@ function mod:OnCombatStart(delay)
 	table.wipe(fixatedTargets)
 	table.wipe(castsPerGUID)
 	timerEyeofNZothCD:Start(5.2-delay)--START
-	timerCorruptorsGazeCD:Start(12.5-delay)
+	timerCorruptorsGazeCD:Start(12.2-delay)
 	if self:IsHard() then
 		timerTouchoftheCorruptorCD:Start(50.7-delay)--SUCCESS
 		if self:IsMythic() then

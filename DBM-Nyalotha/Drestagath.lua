@@ -56,11 +56,11 @@ local specWarnMutteringsofBetrayal			= mod:NewSpecialWarningStack(310563, nil, 3
 
 --mod:AddTimerLine(BOSS)
 --Drest'agath
-local timerVolatileSeedCD					= mod:NewCDTimer(16.6, 310277, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON, nil, 2, 4)
+local timerVolatileSeedCD					= mod:NewCDTimer(16.6, 310277, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON, nil, 2, 4)--16.6-26.8 (boss has some channeled abilities, spell queuing)
 local timerEntropicCrashCD					= mod:NewCDTimer(44.3, 310329, nil, nil, nil, 2)
 local timerMutteringsofInsanityCD			= mod:NewCDTimer(46.6, 310358, nil, nil, nil, 3)--45-54, it's almost always 51 but have to use the 46
 local timerUnleashedInsanity				= mod:NewCastTimer(5, 310361, nil, nil, nil, 3)
-local timerVoidGlareCD						= mod:NewCDTimer(45.4, 310406, nil, nil, nil, 3)
+local timerVoidGlareCD						= mod:NewCDTimer(45, 310406, nil, nil, nil, 3)
 
 --local berserkTimer						= mod:NewBerserkTimer(600)
 
@@ -73,8 +73,8 @@ mod.vb.agonyCount = 0
 
 function mod:OnCombatStart(delay)
 	self.vb.agonyCount = 0
-	timerVolatileSeedCD:Start(7.6-delay)
-	timerEntropicCrashCD:Start(15.6-delay)
+	timerVolatileSeedCD:Start(7.2-delay)
+	timerEntropicCrashCD:Start(15.5-delay)
 	timerMutteringsofInsanityCD:Start(30.1-delay)
 	timerVoidGlareCD:Start(45.2-delay)--45.2-53.2
 	if self.Options.NPAuraOnVolatileCorruption then

@@ -15,7 +15,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 312336",
 	"SPELL_CAST_SUCCESS 311551 306319",
-	"SPELL_AURA_APPLIED 312406 314179 306311",
+	"SPELL_AURA_APPLIED 312406 314179 306311 311551",
 	"SPELL_AURA_APPLIED_DOSE 311551",
 	"SPELL_AURA_REMOVED 312406",
 	"SPELL_PERIODIC_DAMAGE 305575",
@@ -37,7 +37,7 @@ local specWarnAbyssalStrikeTaunt			= mod:NewSpecialWarningTaunt(311551, nil, nil
 local specWarnSoulFlay						= mod:NewSpecialWarningRun(306311, nil, nil, nil, 4, 2)
 local specWarnGTFO							= mod:NewSpecialWarningGTFO(270290, nil, nil, nil, 1, 8)
 
-local timerAbyssalStrikeCD					= mod:NewCDTimer(42.9, 311551, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--42.9-47
+local timerAbyssalStrikeCD					= mod:NewCDTimer(42.6, 311551, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--42.9-47
 local timerVoidRitualCD						= mod:NewNextCountTimer(79.7, 312336, nil, nil, nil, 5, nil, nil, nil, 1, 4)
 local timerSummonRitualObeliskCD			= mod:NewNextCountTimer(79.7, 306495, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
 local timerSoulFlayCD						= mod:NewCDTimer(46.7, 306319, nil, nil, nil, 3)
@@ -75,10 +75,10 @@ do
 				local name = voidWokenTargets[i]
 				local uId = DBM:GetRaidUnitId(name)
 				if uId then
-					local _, _, _, _, _, voidExpireTime = DBM:UnitDebuff("player", 312406)
-					local voidRemaining = voidExpireTime-GetTime()
-					if voidRemaining then
-						local _, _, doomCount, _, _, doomExpireTime = DBM:UnitDebuff("player", 314298)
+					local _, _, _, _, _, voidExpireTime = DBM:UnitDebuff(uId, 312406)
+					if voidExpireTime then
+						local voidRemaining = voidExpireTime-GetTime()
+						local _, _, doomCount, _, _, doomExpireTime = DBM:UnitDebuff(uId, 314298)
 						if doomCount and doomExpireTime then--Has Imminent Doom count, show count and doom remaining
 							local doomRemaining = doomExpireTime-GetTime()
 							addLine(i.."*"..name, doomCount.."("..floor(doomRemaining)..")-"..floor(voidRemaining))
@@ -100,9 +100,14 @@ function mod:OnCombatStart(delay)
 	if self:IsHard() then
 		timerSummonRitualObeliskCD:Start(12-delay, 1)
 	end
-	timerSoulFlayCD:Start(14-delay)--SUCCESS
 	timerAbyssalStrikeCD:Start(33.4-delay)--SUCCESS
-	timerVoidRitualCD:Start(52.9-delay, 1)
+	if self:IsHard() then
+		timerSoulFlayCD:Start(14-delay)--SUCCESS
+		timerVoidRitualCD:Start(52.9-delay, 1)
+	else
+		timerSoulFlayCD:Start(18.5-delay)--SUCCESS
+		timerVoidRitualCD:Start(62-delay, 1)
+	end
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(OVERVIEW)
 		DBM.InfoFrame:Show(8, "function", updateInfoFrame, false, false)
@@ -138,7 +143,7 @@ function mod:SPELL_CAST_START(args)
 		else
 			warnVoidRitual:Show(self.vb.ritualCount)
 		end
-		timerVoidRitualCD:Start(79.7, self.vb.ritualCount+1)
+		timerVoidRitualCD:Start(self:IsHard() and 79.7 or 95.2, self.vb.ritualCount+1)
 	end
 end
 
@@ -147,7 +152,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if spellId == 311551 then
 		timerAbyssalStrikeCD:Start()
 	elseif spellId == 306319 then
-		timerSoulFlayCD:Start()
+		timerSoulFlayCD:Start(self:IsHard() and 46.7 or 57.2)
 	end
 end
 
