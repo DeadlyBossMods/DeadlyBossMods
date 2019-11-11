@@ -29,7 +29,7 @@ mod:RegisterEventsInCombat(
 --TODO, update timerImagesofAbsolutionCD after Projection phases
 local warnShadowShock						= mod:NewStackAnnounce(308059, 2, nil, "Tank")
 local warnImagesofAbsolution				= mod:NewCountAnnounce(313239, 3)--Spawn, not when killable
-local warnShredPsyche						= mod:NewTargetAnnounce(307937, 2)
+local warnShredPsyche						= mod:NewTargetNoFilterAnnounce(307937, 2)
 local warnPsychicOutburst					= mod:NewCastAnnounce(309687, 4)
 local warnProjections						= mod:NewSpellAnnounce(307725, 2)
 local warnProjectionsOver					= mod:NewEndAnnounce(307725, 2)
@@ -193,7 +193,7 @@ function mod:UNIT_TARGETABLE_CHANGED()
 	if UnitCanAttack("player", "boss1") then--Returning from Illusions
 		warnProjectionsOver:Show()
 		self:UnregisterShortTermEvents()
-		timerShredPsycheCD:Start(17)
+		timerShredPsycheCD:Start(16)
 		--if self:IsHard() then
 		--	timerImagesofAbsolutionCD:Start(30.5-delay)
 		--end

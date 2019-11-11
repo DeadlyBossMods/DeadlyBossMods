@@ -14,7 +14,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 312336",
-	"SPELL_CAST_SUCCESS 311551 306319",
+	"SPELL_CAST_SUCCESS 311551 306319 306208",
 	"SPELL_AURA_APPLIED 312406 314179 306311 311551",
 	"SPELL_AURA_APPLIED_DOSE 311551",
 	"SPELL_AURA_REMOVED 312406",
@@ -35,12 +35,14 @@ local specWarnVoidRitual					= mod:NewSpecialWarningCount(312336, false, nil, ni
 local specWarnAbyssalStrike					= mod:NewSpecialWarningStack(311551, nil, 1, nil, nil, 1, 6)
 local specWarnAbyssalStrikeTaunt			= mod:NewSpecialWarningTaunt(311551, nil, nil, nil, 1, 2)
 local specWarnSoulFlay						= mod:NewSpecialWarningRun(306311, nil, nil, nil, 4, 2)
+local specWarnTorment						= mod:NewSpecialWarningDodgeCount(306208, nil, nil, nil, 2, 2)
 local specWarnGTFO							= mod:NewSpecialWarningGTFO(270290, nil, nil, nil, 1, 8)
 
-local timerAbyssalStrikeCD					= mod:NewCDTimer(42.6, 311551, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--42.9-47
+local timerAbyssalStrikeCD					= mod:NewCDTimer(42.6, 311551, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON, nil, 2, 4)--42.9-47
 local timerVoidRitualCD						= mod:NewNextCountTimer(79.7, 312336, nil, nil, nil, 5, nil, nil, nil, 1, 4)
 local timerSummonRitualObeliskCD			= mod:NewNextCountTimer(79.7, 306495, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
 local timerSoulFlayCD						= mod:NewCDTimer(46.7, 306319, nil, nil, nil, 3)
+local timerTormentCD						= mod:NewNextCountTimer(46.7, 306208, nil, nil, nil, 3, nil, nil, nil, 3, 4)
 
 --local berserkTimer						= mod:NewBerserkTimer(600)
 
@@ -51,7 +53,10 @@ mod:AddSetIconOption("SetIconOnVoidWoken", 312406, true, false, {1, 2, 3})
 
 mod.vb.ritualCount = 0
 mod.vb.obeliskCount = 0
+mod.vb.tormentCount = 0
 local voidWokenTargets = {}
+local heroicTormentTimers = {20.5, 50.6, 29, 49.6, 30.2, 49.6, 31.1, 48.7}
+local normalTormentTimers = {20.5, 71.8, 30.4, 65.7, 30.6, 65.6, 30.5}
 
 local updateInfoFrame
 do
@@ -96,6 +101,7 @@ end
 function mod:OnCombatStart(delay)
 	self.vb.ritualCount = 0
 	self.vb.obeliskCount = 0
+	self.vb.tormentCount = 0
 	table.wipe(voidWokenTargets)
 	if self:IsHard() then
 		timerSummonRitualObeliskCD:Start(12-delay, 1)
@@ -153,6 +159,14 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerAbyssalStrikeCD:Start()
 	elseif spellId == 306319 then
 		timerSoulFlayCD:Start(self:IsHard() and 46.7 or 57.2)
+	elseif spellId == 306208 then
+		self.vb.tormentCount = self.vb.tormentCount + 1
+		specWarnTorment:Show(self.vb.tormentCount)
+		specWarnTorment:Play("watchstep")
+		local timer = self:IsHard() and heroicTormentTimers[self.vb.tormentCount+1] or self:IsEasy() and normalTormentTimers[self.vb.tormentCount+1]
+		if timer then
+			timerTormentCD:Start(timer, self.vb.tormentCount+1)
+		end
 	end
 end
 

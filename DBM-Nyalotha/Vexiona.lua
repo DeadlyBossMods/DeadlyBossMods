@@ -29,6 +29,7 @@ mod:RegisterEventsInCombat(
 --TODO, verify with greater data if timers actually do reset on phase changes
 --TODO, improve timer start code for P1 abilities to not start new timers if lift off is soon
 --TODO, use https://ptr.wowhead.com/spell=306996/gift-of-the-void for initial void duder timers?
+--TODO, faster Stage 2 detection for stopping timers
 ----Stage 1: Cult of the Void
 local warnGiftoftheVoid						= mod:NewTargetNoFilterAnnounce(306981, 1)
 local warnFanaticalAscension				= mod:NewCastAnnounce(307729, 4)
@@ -66,7 +67,7 @@ local specWarnVoidBolt						= mod:NewSpecialWarningInterrupt(307177, "HasInterru
 ----Stage 1: Cult of the Void
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20661))
 local timerEncroachingShadowsCD				= mod:NewCDTimer(14.6, 307314, nil, nil, nil, 3)
-local timerTwilightBreathCD					= mod:NewCDTimer(18.2, 307020, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON, nil, 2, 4)
+local timerTwilightBreathCD					= mod:NewCDTimer(14.8, 307020, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON, nil, 2, 4)--14.8-20.0
 local timerDespairCD						= mod:NewCDTimer(35.2, 307359, nil, nil, nil, 5, nil, DBM_CORE_HEALER_ICON)--35.2-36.4
 local timerShatteredResolve					= mod:NewTargetTimer(6, 307371, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
 local timerDarkGatewayCD					= mod:NewCDCountTimer(33.2, 307057, nil, nil, nil, 1, nil, nil, nil, 1, 4)
@@ -340,8 +341,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		if self.vb.phase == 1 then
 			self.vb.phase = 2
 			self.vb.TwilightDCasts = 0
-			timerEncroachingShadowsCD:Stop()
-			timerEncroachingShadowsCD:Start(2)
+			timerEncroachingShadowsCD:Stop()--Cast immediately when she goes up
+			--timerEncroachingShadowsCD:Start(2)
 			timerTwilightBreathCD:Stop()
 			timerDespairCD:Stop()
 			timerDarkGatewayCD:Stop()

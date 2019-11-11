@@ -31,7 +31,7 @@ mod:RegisterEventsInCombat(
 --TODO, first fixate Still 31 on heroic? Or is the extra one mythic exclusive for Tasty mechanic
 local warnHunger							= mod:NewStackAnnounce(312328, 2, nil, false, 2)--Mythic
 local warnUmbralMantle						= mod:NewSpellAnnounce(306447, 2)
-local warnUmbralEruption					= mod:NewCountAnnounce(308157, 2)
+local warnUmbralEruption					= mod:NewSpellAnnounce(308157, 2)
 local warnNoxiousMantle						= mod:NewSpellAnnounce(306931, 2)
 local warnBubblingOverflow					= mod:NewCountAnnounce(314736, 2)
 local warnEntropicMantle					= mod:NewSpellAnnounce(306933, 2)
@@ -76,6 +76,8 @@ mod.vb.fixateCount = 0
 local SpitStacks = {}
 local orbTimersHeroic = {0, 25, 25, 37, 20}
 local orbTimersNormal = {0, 25, 25, 25, 25}
+local umbralTimers = {10, 10, 10, 10, 10, 8, 8, 8, 8, 8, 6, 6, 6, 6, 6}
+local bubblingTimers = {9, 10.5, 10.5, 10.5, 10.5, 10.5, 10.5, 10.5, 8, 8, 8}
 local seenAdds = {}
 
 local function umbralEruptionLoop(self)
@@ -86,16 +88,19 @@ local function umbralEruptionLoop(self)
 	else
 		warnUmbralEruption:Show()
 	end
-	--15, 10, 10, 10, 10, 8+
-	local timer = (self:IsEasy() or self.vb.eruptionCount < 4) and 10 or 8
-	timerUmbralEruptionCD:Start(timer)
-	self:Schedule(timer, umbralEruptionLoop, self)
+	--10, 10, 10, 10, 10, 8+
+	--10, 10, 10, 10, 10, 8, 8, 8, 8, 8, 6, 6, 6, 6, 6,
+	local timer = umbralTimers[self.vb.eruptionCount+1]
+	if timer then
+		timerUmbralEruptionCD:Start(timer)
+		self:Schedule(timer, umbralEruptionLoop, self)
+	end
 end
 
 local function bubblingOverflowLoop(self)
 	self.vb.bubblingCount = self.vb.bubblingCount + 1
 	warnBubblingOverflow:Show(self.vb.bubblingCount)
-	local timer = (self:IsEasy() or self.vb.bubblingCount < 4) and 10.5 or 8
+	local timer = bubblingTimers[self.vb.bubblingCount+1]
 	if timer then
 		timerBubblingOverflowCD:Start(timer)
 		self:Schedule(timer, bubblingOverflowLoop, self)

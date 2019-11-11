@@ -64,7 +64,7 @@ local timerDarkManifestationCD				= mod:NewCDCountTimer(35.2, 308903, nil, nil, 
 local timerAncientCurseCD					= mod:NewAITimer(30.1, 314337, nil, nil, nil, 3, nil, DBM_CORE_CURSE_ICON)
 ----Add
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20655))
-local timerDarkOfferingCD					= mod:NewNextCountTimer(12.1, 305663, nil, nil, nil, 5)
+local timerDarkOfferingCD					= mod:NewNextCountTimer(12.1, 308872, nil, nil, nil, 5)
 --Stage Two: Obsidian Statue
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20553))
 local timerForbiddenRitualCD				= mod:NewCDCountTimer(6.1, 306290, nil, "Healer", nil, 5, nil, DBM_CORE_HEALER_ICON)--6.1-8.5
