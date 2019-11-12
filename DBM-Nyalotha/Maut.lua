@@ -13,11 +13,11 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 308044 305663 308903 308872 314337 305722",
-	"SPELL_CAST_SUCCESS 307805 308044 310129 306290",
+	"SPELL_CAST_SUCCESS 307805 308044 310129 306290 315025",
 	"SPELL_SUMMON 305625",
 	"SPELL_AURA_APPLIED 307806 307399 306005 306301 314993",
 	"SPELL_AURA_APPLIED_DOSE 307399",
-	"SPELL_AURA_REMOVED 306005 314993 307806",
+	"SPELL_AURA_REMOVED 306005 314993 307806 315025",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 	"UNIT_DIED",
@@ -27,10 +27,11 @@ mod:RegisterEventsInCombat(
 --TODO, infoframe showing players missing Devoured Abyss during big aoe cast?
 --TODO, auto icon marking of siphons?
 --TODO, tank swap stacks 2 or 3?
+--TODO, raid icons for ancient curse review
 --Stage One: Obsidian Destroyer
 local warnDevourMagic						= mod:NewTargetAnnounce(307805, 3)
 local warnShadowWounds						= mod:NewStackAnnounce(307399, 2, nil, "Tank")
-local warnAncientCurse						= mod:NewSpellAnnounce(314337, 3)
+local warnAncientCurse						= mod:NewTargetNoFilterAnnounce(315025, 3, nil, "RemoveCurse")
 ----Add
 local warnDarkOffering						= mod:NewCountAnnounce(308872, 2)
 --Stage Two: Obsidian Statue
@@ -47,6 +48,9 @@ local yellDevourMagicFades					= mod:NewShortFadesYell(307805)
 local specWarnStygianAnnihilation			= mod:NewSpecialWarningMoveTo(307805, nil, nil, nil, 3, 2)
 local specWarnBlackWing						= mod:NewSpecialWarningDodge(305663, nil, nil, nil, 2, 2)
 local specWarnDarkManifestation				= mod:NewSpecialWarningDodge(308903, nil, nil, nil, 2, 2)
+local specWarnAncientCurse					= mod:NewSpecialWarningYou(315025, nil, nil, nil, 1, 2)
+local yellAncientCurse						= mod:NewYell(315025)
+local yellAncientCurseFades					= mod:NewFadesYell(315025)
 --Stage Two: Obsidian Statue
 local specWarnDrainEssence					= mod:NewSpecialWarningMoveAway(314993, nil, nil, nil, 1, 2)
 local yellDrainEssence						= mod:NewYell(314993)
@@ -74,17 +78,19 @@ local timerDrainEssenceCD					= mod:NewCDTimer(13.8, 314993, nil, nil, nil, 5, n
 
 mod:AddRangeFrameOption(8, 314995)
 mod:AddInfoFrameOption(306005, true)
---mod:AddSetIconOption("SetIconOnEyeBeam", 264382, true, false, {1, 2})
+mod:AddSetIconOption("SetIconOnAncientCurse", 315025, true, false, {1, 2, 3, 4, 5})
 
 mod.vb.bigAoeActive = false
 mod.vb.darkManifestationCount = 0
 mod.vb.ritualCount = 0
+mod.vb.ancientCurseIcon = 1
 local DevouredAbyss = DBM:GetSpellInfo(307839)
 local castsPerGUID = {}
 
 function mod:OnCombatStart(delay)
 	self.vb.bigAoeActive = false
 	self.vb.darkManifestationCount = 0
+	self.vb.ancientCurseIcon = 1
 	table.wipe(castsPerGUID)
 	timerShadowClawsCD:Start(7.1-delay)--SUCCESS
 	timerDevourMagicCD:Start(11.5-delay)--SUCCESS
@@ -136,7 +142,7 @@ function mod:SPELL_CAST_START(args)
 		warnDarkOffering:Show(count)
 		timerDarkOfferingCD:Start(12.1, count+1, args.sourceGUID)
 	elseif spellId == 314337 then
-		warnAncientCurse:Show()
+		self.vb.ancientCurseIcon = 1
 		timerAncientCurseCD:Start()
 	elseif spellId == 305722 then--Obsidian Statue
 		timerDevourMagicCD:Stop()
@@ -145,7 +151,7 @@ function mod:SPELL_CAST_START(args)
 		timerShadowClawsCD:Stop()
 		timerDarkManifestationCD:Stop()
 		timerAncientCurseCD:Stop()
-		timerDrainEssenceCD:Start(1)
+		timerDrainEssenceCD:Start(1)--FIXME
 	end
 end
 
@@ -220,6 +226,18 @@ function mod:SPELL_AURA_APPLIED(args)
 				DBM.RangeCheck:Show(8)
 			end
 		end
+	elseif spellId == 315025 then
+		warnAncientCurse:CombinedShow(0.3, args.destName)
+		if args:IsPlayer() then
+			specWarnAncientCurse:Show()
+			specWarnAncientCurse:Play("targetyou")
+			yellAncientCurse:Yell()
+			yellAncientCurseFades:Countdown(spellId)
+		end
+		if self.Options.SetIconOnAncientCurse then
+			self:SetIcon(args.destName, self.vb.ancientCurseIcon)
+		end
+		self.vb.ancientCurseIcon = self.vb.ancientCurseIcon + 1
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -250,6 +268,13 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 307806 then
 		if args:IsPlayer() then
 			yellDevourMagicFades:Cancel()
+		end
+	elseif spellId == 315025 then
+		if args:IsPlayer() then
+			yellAncientCurseFades:Cancel()
+		end
+		if self.Options.SetIconOnAncientCurse then
+			self:SetIcon(args.destName, 0)
 		end
 	end
 end
