@@ -51,7 +51,7 @@ local specWarnBurningWoundTaunt	= mod:NewSpecialWarningTaunt(99399, nil, nil, ni
 local specWarnSplittingBlow		= mod:NewSpecialWarningSpell(98951, nil, nil, nil, 1, 2)
 local specWarnBlazingHeat		= mod:NewSpecialWarningYou(100460)--Debuff on you
 local yellBlazingHeat			= mod:NewYell(100460)
-local specWarnMoltenSeed		= mod:NewSpecialWarningRun(98495, nil, nil, nil, 4, 2)
+local specWarnMoltenSeed		= mod:NewSpecialWarningRun(98495, nil, nil, 2, 3, 2)
 local specWarnEngulfing			= mod:NewSpecialWarningDodge(99171, nil, nil, nil, 2, 2)
 local specWarnMeteor			= mod:NewSpecialWarningDodge(99268, nil, nil, nil, 1, 2)--Spawning on you
 local specWarnMeteorNear		= mod:NewSpecialWarningClose(99268, nil, nil, nil, 1, 2)--Spawning near you
@@ -94,12 +94,6 @@ function mod:LivingMeteorTarget(targetname)
 	end
 end
 
-local function warnSeeds()
-	specWarnMoltenSeed:Show()
-	specWarnMoltenSeed:Play("watchstep")
-	timerMoltenSeedCD:Start()
-end
-
 function mod:OnCombatStart(delay)
 	table.wipe(seenAdds)
 	self.vb.seedsActive = false
@@ -128,7 +122,6 @@ function mod:SPELL_CAST_START(args)
 		self.vb.sonsLeft = 8
 		timerMoltenSeedCD:Stop()
 		timerFlamesCD:Stop()
-		self:Unschedule(warnSeeds)
 		specWarnSplittingBlow:Show()
 		specWarnSplittingBlow:Play("phasechange")
 		if spellId == 98951 then--West
@@ -259,7 +252,9 @@ end
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 98333 then -- The true molten seeds cast.
 		self.vb.seedsActive = true
-		self:Schedule(2.5, warnSeeds, self)--But use upper here
+		specWarnMoltenSeed:Show()
+		specWarnMoltenSeed:Play("justrun")
+		timerMoltenSeedCD:Start()
 		self:Schedule(17.5, clearSeedsActive, self)--Clear active/warned seeds after they have all blown up.
 	elseif spellId == 98860 then--Base Visual
 		self.vb.postSons = true
@@ -294,7 +289,7 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 				self.vb.phase = self.vb.phase + 1
 				self.vb.bossLeft = self.vb.bossLeft - 1
 				--Seems to activate timers as if P2 just started
-				timerMoltenSeedCD:Start(24)--21.5+2.5
+				timerMoltenSeedCD:Start(21.5)
 				timerFlamesCD:Start(40)
 				if self.Options.RangeFrame then
 					DBM.RangeCheck:Show(6)
