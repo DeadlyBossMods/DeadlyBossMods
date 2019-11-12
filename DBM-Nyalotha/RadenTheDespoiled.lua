@@ -462,8 +462,10 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnChargedBondsTargets()
 			if ChargedBondsTargets[1] == UnitName("player") then
 				specWarnChargedBonds:Show(ChargedBondsTargets[2])
+				specWarnChargedBonds:Play("linegather")
 			elseif ChargedBondsTargets[2] == UnitName("player") then
 				specWarnChargedBonds:Show(ChargedBondsTargets[1])
+				specWarnChargedBonds:Play("linegather")
 			end
 		else
 			self:Schedule(0.3, warnChargedBondsTargets)

@@ -77,7 +77,7 @@ local SpitStacks = {}
 local orbTimersHeroic = {0, 25, 25, 37, 20}
 local orbTimersNormal = {0, 25, 25, 25, 25}
 local umbralTimers = {10, 10, 10, 10, 10, 8, 8, 8, 8, 8, 6, 6, 6, 6, 6}
-local bubblingTimers = {9, 10.5, 10.5, 10.5, 10.5, 10.5, 10.5, 10.5, 8, 8, 8}
+local bubblingTimers = {10, 10, 9.5, 9, 11, 10, 11, 11, 8, 8, 8}
 local seenAdds = {}
 
 local function umbralEruptionLoop(self)
@@ -88,8 +88,6 @@ local function umbralEruptionLoop(self)
 	else
 		warnUmbralEruption:Show()
 	end
-	--10, 10, 10, 10, 10, 8+
-	--10, 10, 10, 10, 10, 8, 8, 8, 8, 8, 6, 6, 6, 6, 6,
 	local timer = umbralTimers[self.vb.eruptionCount+1]
 	if timer then
 		timerUmbralEruptionCD:Start(timer)
@@ -244,6 +242,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.phase = self.vb.phase + 1
 		warnUmbralMantle:Show()
 		if not self:IsLFR() then
+			--Schedule P1 Loop
 			self.vb.eruptionCount = 0
 			timerUmbralEruptionCD:Start(10)--Damage at 12, so warning 2 seconds before seems right
 			self:Schedule(10, umbralEruptionLoop, self)
@@ -252,14 +251,25 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.phase = self.vb.phase + 1
 		warnNoxiousMantle:Show()
 		if not self:IsLFR() then
+			--Unschedule P1 loop
+			timerUmbralEruptionCD:Stop()
+			self:Unschedule(umbralEruptionLoop)
+			--Schedule P2 Loop
 			self.vb.bubblingCount = 0
-			timerBubblingOverflowCD:Start(9)
-			self:Schedule(9, bubblingOverflowLoop, self)
+			timerBubblingOverflowCD:Start(10)
+			self:Schedule(10, bubblingOverflowLoop, self)
 		end
 	elseif spellId == 306933 then
 		self.vb.phase = self.vb.phase + 1
 		warnEntropicMantle:Show()
 		if not self:IsLFR() then
+			--Unschedule P1 loop (future proofing)
+			timerUmbralEruptionCD:Stop()
+			self:Unschedule(umbralEruptionLoop)
+			--Unschedule P2 loop
+			timerBubblingOverflowCD:Stop()
+			self:Unschedule(bubblingOverflowLoop)
+			--Schedue P3 Loop
 			self.vb.buildupCount = 0
 			entropicBuildupLoop(self)--Might need adjusting, harder to verifiy in transcriptor
 		end
