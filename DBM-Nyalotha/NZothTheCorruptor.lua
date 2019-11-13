@@ -12,7 +12,7 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 311176 316711 310184 310134 310130 310331 315772 316463 309046 309698 310042 313400 308885 312866 313960",
+	"SPELL_CAST_START 311176 316711 310184 310134 310130 317292 310331 315772 316463 309046 309698 310042 313400 308885 312866 313960 317066",
 	"SPELL_CAST_SUCCESS 314889",
 	"SPELL_AURA_APPLIED 313334 307832 309991 313184 308842 309297 310073 311392 316541 316542 313793 315709 315710",
 --	"SPELL_AURA_APPLIED_DOSE",
@@ -28,7 +28,7 @@ mod:RegisterEventsInCombat(
 --TODO, figure out if mental decay cast by players can be interrupted (if they even cast it, journal for previous boss was wrong)
 --TODO, figure out phase travel with animus so players can be warned to get in and get out correctly (is it a portal? buff you click off? etc
 --TODO, find out power gains of animus and add timer for Manifest Madness that's more reliable
---TODO, verify detecting players in mind for https://ptr.wowhead.com/spell=310130/eternal-hatred
+--TODO, verify detecting players in mind for Eternal Hatred/Collapsing Mindscape
 --TODO, build infoframe up to show mind phase players if detection works and sort this to the top when mechanics that require players leaving said phase are present
 --TODO, correct void gaze spellID probably, also should it special warn to leave mind phase?
 --TODO, timer fading based on phase player is in, if phase detection stuff is doable
@@ -40,6 +40,7 @@ mod:RegisterEventsInCombat(
 --TODO, does mind gate spawn an add or not, journal is a bit conflicted with that info
 --TODO, timer fades based on whether you are in mind or not, if detection possible
 --TODO, handle visions phases
+--TODO, figure out the abilities that were removed from journal in latest update. The spells still exist and weren't removing, indicating maybe those harder mechanics were moved to mythic only
 --New Voice: "leavemind"
 --General
 local warnPhase								= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
@@ -50,6 +51,7 @@ local warnGlimpseofInfinite					= mod:NewCastAnnounce(311176, 2)
 local warnCreepingAnguish					= mod:NewCastAnnounce(310184, 4)
 local warnSynapticShock						= mod:NewTargetNoFilterAnnounce(313184, 1)
 local warnEternalHatred						= mod:NewCastAnnounce(310130, 4)
+local warnCollapsingMindscape				= mod:NewCastAnnounce(317292, 4)
 ----Exposed Synapse
 local warnProbeMind							= mod:NewTargetAnnounce(314889, 2)
 --Stage 2: Writhing Onslaught
@@ -73,9 +75,10 @@ local specWarnGTFO							= mod:NewSpecialWarningGTFO(309991, nil, nil, nil, 1, 8
 ----Animus
 local specWarnMindwrack						= mod:NewSpecialWarningDefensive(316711, nil, nil, nil, 1, 2)
 local specWarnManifestMadness				= mod:NewSpecialWarningSpell(310134, nil, nil, nil, 3)--Basically an automatic wipe unless animus was like sub 1% health, no voice because there isn't really one that says "you're fucked"
-local specWarnEternalHatred					= mod:NewSpecialWarningMoveTo(310130, nil, nil, nil, 3, 10)
-----Mind's Eye
-local specWarnVoidGaze						= mod:NewSpecialWarningSpell(310333, nil, nil, nil, 2, 2)
+local specWarnEternalHatred					= mod:NewSpecialWarningMoveTo(310130, nil, nil, nil, 3, 10)--No longer in journal, replaced by collapsing Mindscape, but maybe a hidden mythic mechanic now?
+local specWarnCollapsingMindscape			= mod:NewSpecialWarningMoveTo(317292, nil, nil, nil, 3, 10)
+----Eyes of N'zoth
+local specWarnVoidGaze						= mod:NewSpecialWarningSpell(310333, nil, nil, nil, 2, 10)
 ----Exposed Synapse
 local specWarnProbeMind						= mod:NewSpecialWarningRun(314889, nil, nil, nil, 4, 2)
 ----Reflected Self
@@ -98,6 +101,9 @@ local specWarnCataclysmicFlames				= mod:NewSpecialWarningDodge(312866, nil, nil
 ------Trecherous Bargain
 local specWarnTreadLightly					= mod:NewSpecialWarningYou(315709, nil, nil, nil, 1, 2)
 local specWarnContempt						= mod:NewSpecialWarningStopMove(315710, nil, nil, nil, 1, 6)
+--Stage 3:
+----Thought Harvester
+local specWarnHarvestThoughts				= mod:NewSpecialWarningMoveTo(317066, nil, nil, nil, 2, 2)
 
 --mod:AddTimerLine(BOSS)
 --General
@@ -108,7 +114,7 @@ local timerGlimpseofInfinityCD				= mod:NewAITimer(30.1, 311176, nil, nil, nil, 
 ----Animus
 local timerMindwrackCD						= mod:NewAITimer(5.3, 316711, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON, nil, 2, 4)
 local timerSynampticShock					= mod:NewBuffActiveTimer(15, 313184, nil, nil, nil, 5, nil, DBM_CORE_DAMAGE_ICON)
-----Mind's Eye
+----Eyes of N'zoth
 local timerVoidGazeCD						= mod:NewAITimer(30.1, 310333, nil, nil, nil, 2)
 ----Exposed Synapse
 local timerProbeMindCD						= mod:NewAITimer(30.1, 314889, nil, nil, nil, 3)
@@ -126,6 +132,9 @@ local timerCorruptedMindCD					= mod:NewAITimer(5.3, 313400, nil, "HasInterrupt|
 local timerCataclysmicFlamesCD				= mod:NewAITimer(30.1, 312866, nil, nil, nil, 3)
 ------Trecherous Bargain
 local timerBlackVlleyCD						= mod:NewAITimer(30.1, 313960, nil, nil, nil, 2)
+--Stage 3:
+----Thought Harvester
+local timerHarvestThoughtsCD				= mod:NewAITimer(30.1, 317066, nil, nil, nil, 2)
 
 
 --mod:AddRangeFrameOption(6, 264382)
@@ -197,10 +206,17 @@ function mod:SPELL_CAST_START(args)
 		else
 			warnEternalHatred:Show()
 		end
+	elseif spellId == 317292 then
+		if DBM:UnitDebuff("player", 308842) then
+			specWarnCollapsingMindscape:Show(L.ExitMind)
+			specWarnCollapsingMindscape:Play("leavemind")
+		else
+			warnCollapsingMindscape:Show()
+		end
 	elseif spellId == 310331 then
 		if DBM:UnitDebuff("player", 308842) then
 			specWarnVoidGaze:Show()
-			specWarnVoidGaze:Play("")--leavemind?
+			specWarnVoidGaze:Play("leavemind")--leavemind?
 		end
 		timerVoidGazeCD:Start(nil, args.sourceGUID)
 	elseif spellId == 315772 then
@@ -236,6 +252,10 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 313960 then
 		warnBlackVolley:Show()
 		timerBlackVlleyCD:Start()
+	elseif spellId == 317066 then
+		specWarnHarvestThoughts:Show(args.sourceName)
+		specWarnHarvestThoughts:Play("gathershare")
+		timerHarvestThoughtsCD:Start()
 	end
 end
 
@@ -362,7 +382,7 @@ function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 158376 then--animus
 		timerMindwrackCD:Stop()
-	elseif cid == 158122 then--minds-eye
+	elseif cid == 158122 then--Eyes of N'zoth
 		timerVoidGazeCD:Stop(args.destGUID)
 	elseif cid == 159578 then--exposed-synapse
 		timerProbeMindCD:Stop(args.destGUID)
