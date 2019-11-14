@@ -13,7 +13,7 @@ mod:SetMinSyncRevision(20191109000000)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 307569 307213 307201 310340 307968 307232",
+	"SPELL_CAST_START 307569 307213 307201 310340 307968 307232 313652",
 	"SPELL_CAST_SUCCESS 314583 307637 307232 312868 312710",
 	"SPELL_AURA_APPLIED 307583 307637 313460",
 --	"SPELL_AURA_APPLIED_DOSE",
@@ -255,13 +255,9 @@ function mod:SPELL_CAST_START(args)
 		self.vb.MindNumbingNovaCount = self.vb.MindNumbingNovaCount + 1
 		specWarnMindNumbingNova:Show(args.sourceName, self.vb.MindNumbingNovaCount)
 		specWarnMindNumbingNova:Play("kickcast")
-		if self:IsHard() then
-			local timer = allTimers[self.vb.difficultyName][spellId][self.vb.MindNumbingNovaCount+1]
-			if timer then
-				timerMindNumbingNovaCD:Start(timer, self.vb.MindNumbingNovaCount+1)
-			end
-		else
-			timerMindNumbingNovaCD:Start(11.9, self.vb.MindNumbingNovaCount+1)
+		local timer = allTimers[self.vb.difficultyName][spellId][self.vb.MindNumbingNovaCount+1]
+		if timer then
+			timerMindNumbingNovaCD:Start(timer, self.vb.MindNumbingNovaCount+1)
 		end
 	elseif spellId == 307968 then
 		self.vb.NullificationBlastCount = self.vb.NullificationBlastCount + 1

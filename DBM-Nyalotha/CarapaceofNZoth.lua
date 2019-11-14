@@ -47,6 +47,7 @@ local warnInsanityBomb						= mod:NewTargetAnnounce(306984, 2)
 --General
 local specWarnGiftofNzoth					= mod:NewSpecialWarningYou(313334, nil, nil, nil, 1, 2)
 local specWarnServantofNzoth				= mod:NewSpecialWarningTargetChange(307832, "-Healer", nil, nil, 1, 2)
+local yellServantofNzoth					= mod:NewYell(307832)
 local specWarnBlackScar						= mod:NewSpecialWarningStack(315954, nil, 2, nil, nil, 1, 6)
 local specWarnBlackScarTaunt				= mod:NewSpecialWarningTaunt(315954, nil, nil, nil, 1, 2)
 --local specWarnGTFO						= mod:NewSpecialWarningGTFO(270290, nil, nil, nil, 1, 8)
@@ -194,6 +195,9 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 307832 then
 		specWarnServantofNzoth:CombinedShow(1, args.destName)
 		specWarnServantofNzoth:ScheduleVoice(1, "findmc")
+		if args:IsPlayer() then
+			yellServantofNzoth:Yell()
+		end
 	elseif spellId == 306973 then
 		warnMadnessBomb:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then

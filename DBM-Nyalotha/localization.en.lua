@@ -98,6 +98,12 @@ L= DBM:GetModLocalization(2366)
 ---------------------------
 L= DBM:GetModLocalization(2375)
 
+L:SetMiscLocalization({
+	ExitMind		= "Exit Mind",
+	Away			= "Away",
+	Toward			= "Toward"
+})
+
 -------------
 --  Trash  --
 -------------

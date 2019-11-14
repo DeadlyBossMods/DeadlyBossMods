@@ -435,6 +435,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 310965 and self:AntiSpam(3, 1) then--Energy Regen (Organ phase begin)
 		self.vb.organPhase = true
 		--self.vb.phase = self.vb.phase + 0.5
+		timerCorruptorsGazeCD:Stop()
 		timerTouchoftheCorruptorCD:Stop()
 		timerEyeofNZothCD:Stop()
 		if not self:IsMythic() then
