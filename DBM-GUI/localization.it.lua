@@ -341,7 +341,7 @@ L.ShowQueuePop				= "Mostra tempo rimanente per accettare la coda (LFG, CdB, ecc
 L.Area_AutoLogging			= "Opzioni Registro Automatico"
 L.AutologBosses				= "Registra automaticamente gli incontri log con il registro di combattimento blizzard (Usa /dbm pull prima dei boss per registrare prepozze e altri eventi precedenti.)"
 L.AdvancedAutologBosses		= "Regostra automaticamente gli scontri boss con Transcriptor"
-L.LogOnlyRaidBosses			= "Registra gli scontri boss incursione solo dell'espansione attuale (esclude Ricerca Incursioni/gruppo/scenari/vecchi contenuti)"
+L.LogOnlyNonTrivial			= "Registra gli scontri boss incursione solo dell'espansione attuale (esclude Ricerca Incursioni/gruppo/scenari/vecchi contenuti)"
 --
 L.Area_3rdParty				= "Opzioni di Terze Parti"
 L.ShowBBOnCombatStart		= "Esegui controllo Big Brother a inizio combattimento"

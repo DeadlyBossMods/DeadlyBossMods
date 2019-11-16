@@ -255,7 +255,7 @@ L.AFKHealthWarning			= "Tocar som de alerta quando você estiver perdendo vida e
 L.Area_AutoLogging			= "opções de relatórios automáticos"
 L.AutologBosses				= "Gravar automaticamente o relatório de encontro com os chefes utilizando o relatório de combate da Blizzard(Requer que seja usado /dbm pull antes do chefe <a href=\"http://www.warcraftlogs.com\">|cff3588ffwarcraftlogs.com|r</a> compatibilidade)"
 L.AdvancedAutologBosses		= "Gravar automaticamente o encontro com o chefe utilizando o Transcritor"
-L.LogOnlyRaidBosses			= "Só gravar encontros com chefes de raid (exclui Localizador de Raids/Grupos/Cenários)"
+L.LogOnlyNonTrivial			= "Só gravar encontros com chefes de raid (exclui Localizador de Raids/Grupos/Cenários)"
 L.Area_3rdParty				= "opções de add0ns de terceiros"
 L.ShowBBOnCombatStart		= "Fazer checagem de Buff com Big Brother no início do combate"
 L.BigBrotherAnnounceToRaid	= "Anunciar resultados do Big Brother para a raid"

@@ -320,7 +320,7 @@ L.ShowQueuePop				= "為佇列(隨機,戰場,其他)接受時間顯示計時器"
 L.Area_AutoLogging			= "自動記錄選項"
 L.AutologBosses				= "自動使用暴雪戰鬥日誌記錄首領戰鬥(為了紀錄藥水事件等其他事件請於開打前使用/dbm pull)"
 L.AdvancedAutologBosses		= "自動使用Transcriptor紀錄首領戰鬥"
-L.LogOnlyRaidBosses			= "只記錄當前資料片團隊首領的戰鬥(除了隨機團隊/隨機隊伍/隨機事件/舊副本團隊)"
+L.LogOnlyNonTrivial			= "只記錄當前資料片團隊首領的戰鬥(除了隨機團隊/隨機隊伍/隨機事件/舊副本團隊)"
 --
 L.Area_3rdParty				= "協力插件選項"
 L.ShowBBOnCombatStart		= "戰鬥開始時顯示BigBrother(檢查團隊 增益/精煉UI)"

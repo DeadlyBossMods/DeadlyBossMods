@@ -316,7 +316,7 @@ L.ShowQueuePop				= "Mostrar temporizador para eltiempo restante para aceptar av
 L.Area_AutoLogging			= "Opciones del registro automático"
 L.AutologBosses				= "Registrar encuentros automáticamente con el registro de combate de Blizzard (usa '/dbm pull' antes de iniciar un encuentro para comenzar a grabar antes, de forma que tenga en cuenta la toma de pociones y otras acciones)"
 L.AdvancedAutologBosses		= "Registrar encuentros automáticamente con Transcriptor"
-L.LogOnlyRaidBosses			= "Registrar solo encuentros de jefe de banda de la expansión actual (excluye el buscador de bandas)"
+L.LogOnlyNonTrivial			= "Registrar solo encuentros de jefe de banda de la expansión actual (excluye el buscador de bandas)"
 --
 L.Area_3rdParty				= "Opciones de addons de terceros"
 L.ShowBBOnCombatStart		= "Realizar comprobación de beneficios de Big Brother al iniciar un encuentro"

@@ -365,16 +365,18 @@ local function updateEnemyPower()
 		if specificUnit then
 			local currentPower, maxPower = UnitPower(specificUnit, powerType), UnitPowerMax(specificUnit, powerType)
 			if maxPower and maxPower ~= 0 then--Prevent division by 0 in addition to filtering non existing units that may still return false on UnitExists()
-				if currentPower / maxPower * 100 >= threshold then
-					lines[UnitName(specificUnit)] = currentPower
+				local percent = currentPower / maxPower * 100
+				if percent >= threshold then
+					lines[UnitName(specificUnit)] = mfloor(percent).."%"
 				end
 			end
 		else
 			if specificUnit then
 				local currentPower, maxPower = UnitPower(specificUnit), UnitPowerMax(specificUnit)
 				if maxPower and maxPower ~= 0 then--Prevent division by 0 in addition to filtering non existing units that may still return false on UnitExists()
-					if currentPower / maxPower * 100 >= threshold then
-						lines[UnitName(specificUnit)] = currentPower
+					local percent = currentPower / maxPower * 100
+					if percent >= threshold then
+						lines[UnitName(specificUnit)] = mfloor(percent).."%"
 					end
 				end
 			else
@@ -382,8 +384,9 @@ local function updateEnemyPower()
 					local uId = "boss"..i
 					local currentPower, maxPower = UnitPower(uId), UnitPowerMax(uId)
 					if maxPower and maxPower ~= 0 then--Prevent division by 0 in addition to filtering non existing units that may still return false on UnitExists()
-						if currentPower / maxPower * 100 >= threshold then
-							lines[UnitName(uId)] = currentPower
+						local percent = currentPower / maxPower * 100
+						if percent >= threshold then
+							lines[UnitName(uId)] = mfloor(percent).."%"
 						end
 					end
 				end
@@ -429,10 +432,11 @@ local function updateEnemyAbsorb()
 				local text
 				if totalAbsorb then
 					text = absorbAmount / totalAbsorb * 100
+					lines[UnitName(specificUnit)] = mfloor(text).."%"
 				else
 					text = absorbAmount
+					lines[UnitName(specificUnit)] = mfloor(text)
 				end
-				lines[UnitName(specificUnit)] = mfloor(text).."%"
 			end
 		end
 	else
