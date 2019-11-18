@@ -6,7 +6,7 @@ mod:SetCreatureID(152910)
 mod:SetEncounterID(2299)
 mod:SetZone()
 mod:SetUsedIcons(4, 3, 2, 1)
-mod:SetHotfixNoticeRev(20190820000000)--2019, 8, 20
+mod:SetHotfixNoticeRev(20191118000000)--2019, 11, 18
 --mod:SetMinSyncRevision(16950)
 --mod.respawnTime = 29--Respawn is near instant on ptr, boss requires clicking to engage, no body pulling anyways
 
@@ -14,8 +14,8 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 297937 297934 298121 297972 298531 300478 299250 299178 300519 301431 299094 302141 303797 303799 300480 307331 307332",
-	"SPELL_CAST_SUCCESS 302208 298014 301078 300743 300334 300768",
-	"SPELL_AURA_APPLIED 302999 298569 297912 298014 298018 301078 300428 303825 303657 300492 300620 299094 303797 303799 300743 300866 300877 299249 299251 299254 299255 299252 299253 302141 304267 300551",
+	"SPELL_CAST_SUCCESS 302208 298014 301078 300743 300334 300768 181089 297371 297372 303986",
+	"SPELL_AURA_APPLIED 302999 298569 297912 298014 298018 301078 300428 303825 303657 300492 300620 299094 303797 303799 300743 300866 300877 299249 299251 299254 299255 299252 299253 302141 304267",
 	"SPELL_AURA_APPLIED_DOSE 302999 298569 298014 300743",
 	"SPELL_AURA_REMOVED 302999 298569 297912 301078 300428 303657 304267 299249 299251 299254 299255 299252 299253 300620",
 	"SPELL_PERIODIC_DAMAGE 297907 303981",
@@ -28,15 +28,13 @@ mod:RegisterEventsInCombat(
 --	"UPDATE_UI_WIDGET"
 )
 
---TODO, Improve detection of various adds joining fight and associated timers in stage 2+, and get LFR and mythic hulk timers in P1 as well.
 --TODO, check if multiple targets for static shock
 --TODO, add siren creature IDs so they can be auto marked and warning for shield can include which marked mob got it
---TODO, figure out cast time for https://ptr.wowhead.com/spell=301518/massive-energy-spike (ie between overload cast start, and when all remaining energy is released)
 --TODO, announce short ciruit?
 --TODO, capture UPDATE_UI_WIDGET better with modified transcriptor to get the widget values I need
 --[[
 (ability.id = 297937 or ability.id = 297934 or ability.id = 298121 or ability.id = 297972 or ability.id = 298531 or ability.id = 300478 or ability.id = 299250 or ability.id = 299178 or ability.id = 300519 or ability.id = 303629 or ability.id = 297372 or ability.id = 301431 or ability.id = 300480 or ability.id = 307331 or ability.id = 307332 or ability.id = 299094 or ability.id = 302141 or ability.id = 303797 or ability.id = 303799) and type = "begincast"
- or (ability.id = 302208 or ability.id = 298014 or ability.id = 301078 or ability.id = 303657 or ability.id = 303629 or ability.id = 300492 or ability.id = 300743 or ability.id = 303980 or ability.id = 300334 or ability.id = 300768) and type = "cast"
+ or (ability.id = 302208 or ability.id = 298014 or ability.id = 301078 or ability.id = 303657 or ability.id = 303629 or ability.id = 300492 or ability.id = 300743 or ability.id = 303980 or ability.id = 300334 or ability.id = 300768 or ability.id = 181089 or ability.id = 297371 or ability.id = 297372 or ability.id = 303986) and type = "cast"
  or type = "death" and (target.id = 153059 or target.id = 153060)
  or ability.id = 300551 and type = "applybuff"
  or (ability.id = 303657) and type = "applydebuff"
@@ -150,7 +148,7 @@ local timerAzsharasDevotedCD			= mod:NewCDTimer(95, "ej20353", nil, nil, nil, 1,
 local timerAzsharasIndomitableCD		= mod:NewCDTimer(100, "ej20410", nil, nil, nil, 1, 298531, DBM_CORE_DAMAGE_ICON)
 --Stage Three: Song of the Tides
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20340))
-local timerLoyalMyrmidonCD				= mod:NewCDTimer(95, "ej20355", nil, nil, nil, 1, 301078, DBM_CORE_DAMAGE_ICON)
+local timerLoyalMyrmidonCD				= mod:NewCDCountTimer(95, "ej20355", nil, nil, nil, 1, 301078, DBM_CORE_DAMAGE_ICON)
 local timerStageThreeBerserk			= mod:NewTimer(180, "timerStageThreeBerserk", 28131)
 --Stage Four: My Palace Is a Prison
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20361))
@@ -188,6 +186,7 @@ mod.vb.netherCount = 0
 mod.vb.piercingCount = 0
 mod.vb.controlledBurst = 0
 mod.vb.painfulMemoriesActive = false
+mod.vb.myrmidonCount = 0
 local drainedSoulStacks = {}
 local playerSoulDrained = false
 local shieldName = DBM:GetSpellInfo(300620)
@@ -197,23 +196,25 @@ local text = ""
 local playerDecreeCount = 0
 local playerDecreeYell = 0--100s 2-Stack/1-Solo, 10s 2-Moving/1-Stay, 1s 2-Soak/1-NoSoak
 --Extend add timers to be by phase as well so P2 adds can be in it as well, if ever see more than one in a single difficulty, ever
-local AddTimers = {
-	["Normal"] = {42.6, 84.7},
-	["Heroic"] = {41.7, 59.6, 89.1, 44.8, 39.4},
-	["Mythic"] = {37.7, 62.4},
+local HulkTimers = {
+	["Normal"] = {42.6, 84.7},--Normal & LFR
+	["Heroic"] = {41, 59.6, 89.1, 44.8, 39.4},
+	["Mythic"] = {35, 65},
 }
 local phase4LFROverloadTimers = {14, 69.8, 75, 65, 65, 60}
 local phase4LFRPiercingTimers = {0, 65, 65, 65, 60, 20}
 local phase4LFRBeckonTimers = {0, 90, 100, 80}--LFR and Normal (so far, greater data might find divergence)
 
 local phase4NormalPiercingTimers = {0, 65, 65, 65, 55, 20}--Not same as LFR, one is different
+local phase4NormalPortalTimers = {35, 34.9, 87.5, 32.4}
 
-local phase4HeroicOverloadTimers = {0, 44.9, 44.9, 45, 40, 40, 40}
-local phase4HeroicBeckonTimers = {0, 71.6, 84.9, 69.9}
-local phase4HeroicPiercingTimers = {0, 45, 40, 40, 35, 35, 35}
+local phase4HeroicOverloadTimers = {14, 44.9, 44.9, 45, 40, 40, 40}
+local phase4HeroicBeckonTimers = {68.1, 71.6, 84.9, 69.9}
+local phase4HeroicPiercingTimers = {43.9, 45, 40, 40, 35, 35, 35}
+local phase4HeroicPortalTimers = {23.9, 40, 35, 40, 40, 35}
 
 local phase4MythicPiercingTimers = {51.7, 56.2, 49.9, 49.98}
-local phase4MythicPortalTimers = {26.7, 50.2, 43.5, 56.3}
+local phase4MythicPortalTimers = {26.7, 50.2, 43.3, 56.2}
 local mobShielded = {}
 
 local updateInfoFrame
@@ -345,7 +346,7 @@ function mod:OnCombatStart(delay)
 		--Cyranus
 		timerChargedSpearCD:Start(23.6-delay)--23.6-26
 		--Azshara
-		timerHulkSpawnCD:Start(37.7-delay, 1)
+		timerHulkSpawnCD:Start(35-delay, 1)
 		timerDivideandConquerCD:Start(39.9-delay)
 		timerBeckonCD:Start(50-delay, 1)--START
 		timerArcaneOrbsCD:Start(64.8-delay, 1)
@@ -354,7 +355,7 @@ function mod:OnCombatStart(delay)
 		--Cyranus
 		timerChargedSpearCD:Start(27.5-delay)--27-29
 		--Azshara
-		timerHulkSpawnCD:Start(42-delay, 1)
+		timerHulkSpawnCD:Start(41-delay, 1)
 		timerBeckonCD:Start(54.6-delay, 1)--START
 		timerArcaneOrbsCD:Start(69.8-delay, 1)
 	else
@@ -362,7 +363,7 @@ function mod:OnCombatStart(delay)
 		--Cyranus
 		timerChargedSpearCD:Start(27.5-delay)--27-29
 		--Azshara
-		timerHulkSpawnCD:Start(42-delay, 1)
+		timerHulkSpawnCD:Start(41-delay, 1)
 		timerBeckonCD:Start(54.6-delay, 1)--START
 		timerArcaneOrbsCD:Start(69.8-delay, 1)
 	end
@@ -446,16 +447,16 @@ function mod:SPELL_CAST_START(args)
 		warnPhase:Play("ptwo")
 		if self:IsHard() then
 			timerBeckonCD:Start(25, 1)--START
-			timerAzsharasDevotedCD:Start(35)--35-38.5
+			timerAzsharasDevotedCD:Start(35)
 			timerReversalofFortuneCD:Start(68.1, 1)
-			timerAzsharasIndomitableCD:Start(self:IsMythic() and 115 or 105)--Confirmed they left heroic at 105, unable to confirm they ACTUALLY changed mythic to 115, but drycoding it anyways because that's what blizz said.
+			timerAzsharasIndomitableCD:Start(self:IsMythic() and 115 or 105)--Confirmed they left heroic at 105
 			if self:IsMythic() then
 				timerDivideandConquerCD:Start(45.4)
 			end
 		else
-			timerAzsharasDevotedCD:Start(35)--35-38.5
+			timerAzsharasDevotedCD:Start(35)
 			timerBeckonCD:Start(self:IsLFR() and 55 or 60, 1)--START
-			timerAzsharasIndomitableCD:Start(98.1)--98.1-110?
+			timerAzsharasIndomitableCD:Start(95.1)
 		end
 		timerArcaneBurstCD:Start(52.1, 1)--SUCCESS (same on heroic and normal and mythic)
 		timerArcaneDetonationCD:Start(self:IsMythic() and 80.1 or 75, 1)--START (same on heroic/normal/lfr but different on mythic)
@@ -532,6 +533,55 @@ function mod:SPELL_CAST_SUCCESS(args)
 		local timer = self:IsMythic() and phase4MythicPiercingTimers[self.vb.piercingCount+1] or self:IsLFR() and phase4LFRPiercingTimers[self.vb.piercingCount+1] or self:IsHeroic() and phase4HeroicPiercingTimers[self.vb.piercingCount+1] or self:IsNormal() and phase4NormalPiercingTimers[self.vb.piercingCount+1]
 		if timer then
 			timerPiercingGazeCD:Start(timer, self.vb.piercingCount+1)
+		end
+	elseif spellId == 181089 then--Encounter Event
+		local cid = self:GetCIDFromGUID(args.sourceGUID)
+		if cid == 153064 then--overzealous-hulk spawn.
+			self.vb.bigAddCount = self.vb.bigAddCount + 1
+			specWarnHulk:Show(self.vb.bigAddCount)
+			specWarnHulk:Play("bigmob")
+			local timer = self:IsMythic() and HulkTimers["Mythic"][self.vb.bigAddCount+1] or self:IsHeroic() and HulkTimers["Heroic"][self.vb.bigAddCount+1] or HulkTimers["Normal"][self.vb.bigAddCount+1]
+			if timer and self.vb.phase == 1 then
+				timerHulkSpawnCD:Start(timer, self.vb.bigAddCount+1)
+			end
+		elseif cid == 155354 then--Azshara's Indomitable
+			self.vb.bigAddCount = self.vb.bigAddCount + 1
+			specWarnAzsharasIndomitable:Show(self.vb.bigAddCount)
+			specWarnAzsharasIndomitable:Play("bigmob")
+		elseif cid == 154240 and self:AntiSpam(10, 10) then--Azshara's Devoted
+			specWarnAzsharasDevoted:Show()
+			specWarnAzsharasDevoted:Play("killmob")
+			timerAzsharasDevotedCD:Start(95)
+		elseif cid == 154565 then--Loyal Myrmidon
+			self.vb.myrmidonCount = self.vb.myrmidonCount + 1
+			specWarnLoyalMyrmidon:Show()
+			specWarnLoyalMyrmidon:Play("bigmob")
+			if self.vb.myrmidonCount == 1 then
+				timerLoyalMyrmidonCD:Start(self:IsMythic() and 59.9 or self:IsHeroic() and 94.7 or 90, 2)
+			elseif self.vb.myrmidonCount == 2 then
+				timerLoyalMyrmidonCD:Start(self:IsMythic() and 49.9 or self:IsHeroic() and 94.7 or 90, 3)
+			end
+		end
+	elseif spellId == 297371 then
+		self.vb.reversalCount = self.vb.reversalCount + 1
+		specWarnReversalofFortune:Show()
+		specWarnReversalofFortune:Play("telesoon")
+		--Mythic and heroic see this in P2, and it's 80, normal sees this in P3 and 4, and it's 70 there.
+		timerReversalofFortuneCD:Start(self.vb.phase == 2 and 80 or 70, self.vb.reversalCount+1)
+	elseif spellId == 297372 then
+		self.vb.reversalCount = self.vb.reversalCount + 1
+		specWarnGreaterReversal:Show()
+		specWarnGreaterReversal:Play("telesoon")
+		timerGreaterReversalCD:Start(self:IsMythic() and (self.vb.phase == 4 and 81.2 or 90) or 70, self.vb.reversalCount+1)
+	elseif spellId == 303986 and self:AntiSpam(5, 11) then
+		self.vb.netherCount = self.vb.netherCount + 1
+		warnNetherPortal:Show(self.vb.netherCount)
+		if self:IsHard() then
+			local timer = self:IsMythic() and phase4MythicPortalTimers[self.vb.netherCount+1] or self:IsHeroic() and phase4HeroicPortalTimers[self.vb.netherCount+1] or 35
+			timerNetherPortalCD:Start(timer, self.vb.netherCount+1)
+		else
+			local timer = phase4NormalPortalTimers[self.vb.netherCount+1] or 32
+			timerNetherPortalCD:Start(timer, self.vb.netherCount+1)
 		end
 	end
 end
@@ -736,7 +786,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.painfulMemoriesActive = true
 	--Gaining Ward of Power Buff from Blue ward when entering fight
 	--This will only work on heroic/mythic. Adds don't gain buff on normal/LFR, only azshara does
-	elseif spellId == 300551 and not seenAdds[args.destGUID] then
+	--[[elseif spellId == 300551 and not seenAdds[args.destGUID] then
 		seenAdds[args.destGUID] = true
 		local cid = self:GetCIDFromGUID(args.destGUID)
 		if cid == 155354 then--Azshara's Indomitable
@@ -751,7 +801,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnLoyalMyrmidon:Show()
 			specWarnLoyalMyrmidon:Play("bigmob")
 			timerLoyalMyrmidonCD:Start(self:IsMythic() and 57.5 or 94.7)
-		end
+		end--]]
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -918,15 +968,7 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 		if GUID and not seenAdds[GUID] then
 			seenAdds[GUID] = true
 			local cid = self:GetCIDFromGUID(GUID)
-			if cid == 153064 then--overzealous-hulk spawn.
-				self.vb.bigAddCount = self.vb.bigAddCount + 1
-				specWarnHulk:Show(self.vb.bigAddCount)
-				specWarnHulk:Play("bigmob")
-				local timer = self:IsMythic() and AddTimers["Mythic"][self.vb.bigAddCount+1] or self:IsHeroic() and AddTimers["Heroic"][self.vb.bigAddCount+1] or AddTimers["Normal"][self.vb.bigAddCount+1]
-				if timer and self.vb.phase == 1 then
-					timerHulkSpawnCD:Start(timer, self.vb.bigAddCount+1)
-				end
-			elseif cid == 153090 or cid == 153091 then--Phase 3 Sirens becoming active
+			if cid == 153090 or cid == 153091 then--Phase 3 Sirens becoming active
 				--timerStaticShockCD:Start(97.9, GUID)
 				if self.vb.phase < 3 then
 					self.vb.phase = 3
@@ -936,6 +978,14 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 						timerStageThreeBerserk:Start(174.2)
 					end
 				end
+			--[[elseif cid == 153064 then--overzealous-hulk spawn.
+				self.vb.bigAddCount = self.vb.bigAddCount + 1
+				specWarnHulk:Show(self.vb.bigAddCount)
+				specWarnHulk:Play("bigmob")
+				local timer = self:IsMythic() and HulkTimers["Mythic"][self.vb.bigAddCount+1] or self:IsHeroic() and HulkTimers["Heroic"][self.vb.bigAddCount+1] or HulkTimers["Normal"][self.vb.bigAddCount+1]
+				if timer and self.vb.phase == 1 then
+					timerHulkSpawnCD:Start(timer, self.vb.bigAddCount+1)
+				end--]]
 			end
 		end
 	end
@@ -947,6 +997,7 @@ local function startIntermissionTwo(self)
 	self.vb.arcaneBurstCount = 0
 	self.vb.arcaneDetonation = 0
 	self.vb.beckonCast = 0
+	self.vb.myrmidonCount = 0
 	warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(2.5))
 	warnPhase:Play("phasechange")
 	timerReversalofFortuneCD:Stop()
@@ -956,7 +1007,7 @@ local function startIntermissionTwo(self)
 	timerDivideandConquerCD:Stop()
 	timerAzsharasDevotedCD:Stop()
 	timerAzsharasIndomitableCD:Stop()
-	timerNextPhase:Start(29.9)--Time til P3 trigger, which is adds firing IEEU and becoming attackable
+	timerNextPhase:Start(29.9)--Time til P3 trigger, which is adds firing IEEU and becoming attackable and first myrmidon coming out as well
 	if self:IsMythic() then
 		timerBeckonCD:Start(44.7, 1)
 		timerGreaterReversalCD:Start(74.7, 1)--Same on heroic/mythic
@@ -977,18 +1028,7 @@ local function startIntermissionTwo(self)
 end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 297371 then--Reversal of Fortune
-		self.vb.reversalCount = self.vb.reversalCount + 1
-		specWarnReversalofFortune:Show()
-		specWarnReversalofFortune:Play("telesoon")
-		--Mythic and heroic see this in P2, and it's 80, normal sees this in P3 and 4, and it's 70 there.
-		timerReversalofFortuneCD:Start(self.vb.phase == 2 and 80 or 70, self.vb.reversalCount+1)
-	elseif spellId == 297372 then
-		self.vb.reversalCount = self.vb.reversalCount + 1
-		specWarnGreaterReversal:Show()
-		specWarnGreaterReversal:Play("telesoon")
-		timerGreaterReversalCD:Start(self:IsMythic() and (self.vb.phase == 4 and 81.2 or 90) or 70, self.vb.reversalCount+1)
-	elseif spellId == 303629 then--Arcane Burst
+	if spellId == 303629 then--Arcane Burst
 		self.vb.arcaneBurstIcon = 1
 		--60, 70.0, 55.3 (P2)
 		self.vb.arcaneBurstCount = self.vb.arcaneBurstCount + 1
@@ -1005,17 +1045,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		--"<338.85 14:18:47> [UNIT_SPELLCAST_SUCCEEDED] Queen Azshara(Murdocc) -Adjure- [[boss1:Cast-3-3883-2164-252-302034-001924DA87:302034]]", -- [6299]
 		--"<343.15 14:18:51> [CHAT_MSG_MONSTER_YELL] Coax the power from these ancient wards! Rattle the chains that bind him!#Queen Azshara###Omegall##0#0##0#2192#nil#0#false#false#false#false", -- [6362]
 		self:Schedule(4.3, startIntermissionTwo, self)--Needed, because timers don't cancel until yell
-	elseif spellId == 303982 then--Nether Portal
-		self.vb.netherCount = self.vb.netherCount + 1
-		warnNetherPortal:Show(self.vb.netherCount)
-		if self:IsMythic() then
-			local timer = phase4MythicPortalTimers[self.vb.netherCount+1]
-			if timer then
-				timerNetherPortalCD:Start(timer, self.vb.netherCount+1)
-			end
-		else
-			timerNetherPortalCD:Start(35, self.vb.netherCount+1)
-		end
 	elseif spellId == 302860 then --Queen Azshara (P4 trigger)
 		self.vb.phase = 4
 		self.vb.reversalCount = 0
