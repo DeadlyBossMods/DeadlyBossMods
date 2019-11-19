@@ -276,7 +276,7 @@ L.ChallengeTimerRealm		= "Serveur"
 L.Area_AutoLogging			= "Options d'enregistrement auto"
 L.AutologBosses				= "Automatiquement enregistrer le combat contre un boss en utilisant le combat log de Blizzard (Il faut utiliser la commande /dbm pull avant le boss pour que ce soit compatible avec <a href=\"http://www.warcraftlogs.com\">|cff3588ffwarcraftlogs.com|r</a>)"
 L.AdvancedAutologBosses		= "Automatiquement enregistrer le combat contre un boss en utilisant Transcriptor"
-L.LogOnlyRaidBosses			= "N'enregistrer que les combats contre un boss (exclus RdR/dongeon/scenario)"
+L.LogOnlyNonTrivial			= "N'enregistrer que les combats contre un boss (exclus RdR/dongeon/scenario)"
 --
 L.Area_3rdParty				= "Options des Addons tiers"
 L.ShowBBOnCombatStart		= "Effectuer la vérification des buffs de Big Brother au début des combats"

@@ -12,7 +12,7 @@ mod:SetHotfixNoticeRev(20191109000000)--2019, 11, 09
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 307020 307403 306982 307177 307639 315762 307729",
+	"SPELL_CAST_START 307020 307403 306982 307177 307639 315762 307729 315932",
 	"SPELL_CAST_SUCCESS 307359 307828 310323 307396 307075",
 	"SPELL_AURA_APPLIED 307314 307019 307359 306981 307075 310323",
 	"SPELL_AURA_APPLIED_DOSE 307019",
@@ -51,6 +51,8 @@ local yellDespairFades						= mod:NewFadesYell(307359, nil, false)
 local specWarnDespairOther					= mod:NewSpecialWarningTarget(307359, "Healer", nil, nil, 1, 2)
 local specWarnDarkGateway					= mod:NewSpecialWarningSwitchCount(307057, "-Healer", nil, nil, 1, 2)
 local specWarnGTFO							= mod:NewSpecialWarningGTFO(307343, nil, nil, nil, 1, 8)
+----Iron Duder
+local specWarnBrutalSmash					= mod:NewSpecialWarningDodge(315932, nil, nil, nil, 2, 2)
 ----Stage 2: Death From Above
 local specWarnTwilightDecimator				= mod:NewSpecialWarningDodgeCount(307218, nil, nil, nil, 2, 2)
 ----Stage 3: The Void Unleashed
@@ -73,6 +75,8 @@ local timerTwilightBreathCD					= mod:NewCDTimer(14.8, 307020, nil, "Tank", nil,
 local timerDespairCD						= mod:NewCDTimer(35.2, 307359, nil, nil, nil, 5, nil, DBM_CORE_HEALER_ICON)--35.2-36.4
 local timerShatteredResolve					= mod:NewTargetTimer(6, 307371, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
 local timerDarkGatewayCD					= mod:NewCDCountTimer(33.2, 307057, nil, nil, nil, 1, nil, nil, nil, 1, 4)
+----Iron Duder
+local timerBrutalSmash						= mod:NewCDTimer(11, 315932, nil, nil, nil, 3, nil, DBM_CORE_MYTHIC_ICON)
 ----Stage 2: Death From Above
 --mod:AddTimerLine(DBM:EJ_GetSectionInfo(20667))
 local timerTwilightDecimatorCD				= mod:NewNextCountTimer(12.2, 307218, nil, nil, nil, 3)
@@ -174,7 +178,7 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 307020 then
-		timerTwilightBreathCD:Start()
+		timerTwilightBreathCD:Start(self.vb.phase == 3 and 14.8 or 17)
 		if UnitDetailedThreatSituation("player", "boss1") then
 			specWarnTwilightBreath:Show()
 			specWarnTwilightBreath:Play("breathsoon")
@@ -205,6 +209,12 @@ function mod:SPELL_CAST_START(args)
 			self.vb.TwilightDCasts = 0
 			timerTwilightDecimatorCD:Start(104, 1)
 		end--]]
+	elseif spellId == 315932 then
+		if self:AntiSpam(4, 4) then
+			specWarnBrutalSmash:Show()
+			specWarnBrutalSmash:Play("watchstep")
+		end
+		timerBrutalSmash:Start(11, args.sourceGUID)
 	end
 end
 
@@ -333,6 +343,8 @@ function mod:UNIT_DIED(args)
 
 	--elseif cid == 157449 then--sinister-soulcarver (heroic+)
 
+	elseif cid == 157451 then--Mythic Iron Guy
+		timerBrutalSmash:Stop(args.destGUID)
 	end
 end
 

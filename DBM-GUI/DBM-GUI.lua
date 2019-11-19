@@ -421,9 +421,9 @@ do
 		{ sound=true, text = "BB Wolf: Run Away", value = 9278 },
 		{ sound=true, text = "Blizzard Raid Emote", value = 37666 },
 		{ sound=true, text = "C'Thun: You Will Die!", value = 8585 },
-		{ sound=true, text = "Headless Horseman: Laugh", value = 12506 },
-		{ sound=true, text = "Illidan: Not Prepared", value = 68563 },
-		{ sound=true, text = "Illidan: Not Prepared2", value = 12506 },
+		{ sound=true, text = "Headless Horseman: Laugh", value = 11965 },
+		{ sound=true, text = "Illidan: Not Prepared", value = 11466 },
+		{ sound=true, text = "Illidan: Not Prepared2", value = 68563 },
 		{ sound=true, text = "Kaz'rogal: Marked", value = 11052 },
 		{ sound=true, text = "Kil'Jaeden: Destruction", value = 12506 },
 		{ sound=true, text = "Loatheb: I see you", value = 128466 },
@@ -3281,12 +3281,13 @@ local function CreateOptionsMenu()
 		local RespawnTimer		= generaltimeroptions:CreateCheckButton(L.ShowRespawn, true, nil, "ShowRespawn")
 		local QueueTimer		= generaltimeroptions:CreateCheckButton(L.ShowQueuePop, true, nil, "ShowQueuePop")
 
-		local bossLoggingArea		= extraFeaturesPanel:CreateArea(L.Area_AutoLogging, nil, 100, true)
+		local bossLoggingArea		= extraFeaturesPanel:CreateArea(L.Area_AutoLogging, nil, 120, true)
 		local AutologBosses			= bossLoggingArea:CreateCheckButton(L.AutologBosses, true, nil, "AutologBosses")
 		if Transcriptor then
 			local AdvancedAutologBosses	= bossLoggingArea:CreateCheckButton(L.AdvancedAutologBosses, true, nil, "AdvancedAutologBosses")
 		end
-		local LogOnlyRaidBosses		= bossLoggingArea:CreateCheckButton(L.LogOnlyRaidBosses, true, nil, "LogOnlyRaidBosses")
+		local RecordOnlyBosses		= bossLoggingArea:CreateCheckButton(L.RecordOnlyBosses, true, nil, "RecordOnlyBosses")
+		local LogOnlyNonTrivial		= bossLoggingArea:CreateCheckButton(L.LogOnlyNonTrivial, true, nil, "LogOnlyNonTrivial")
 
 		local thirdPartyArea
 		if BigBrother and type(BigBrother.ConsumableCheck) == "function" then

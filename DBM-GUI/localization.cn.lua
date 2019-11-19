@@ -329,7 +329,7 @@ L.ShowQueuePop				= "显示随机小队/团队查找器确认计时条"
 L.Area_AutoLogging			= "自动日志记录选项"
 L.AutologBosses				= "自动采用官方格式记录日志。 (使用 /dbm pull 可提前记录并使得记录更准确，如提前偷药水或是召唤大军。)"
 L.AdvancedAutologBosses		= "自动采用 Transcriptor 记录日志"
-L.LogOnlyRaidBosses			= "只记录团队Boss，而不记录随机团队，5人本，场景战役。"
+L.LogOnlyNonTrivial			= "只记录团队Boss，而不记录随机团队，5人本，场景战役。"
 --
 L.Area_3rdParty				= "第三方插件选项"
 L.ShowBBOnCombatStart		= "战斗开始时使用Big Brother的buff检测"
