@@ -8,7 +8,7 @@ mod:SetZone()
 mod:SetUsedIcons(1, 2, 3, 4, 6, 7)
 mod:SetHotfixNoticeRev(20190724000000)--2019, 7, 24
 --mod:SetMinSyncRevision(16950)
---mod.respawnTime = 29
+mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
 
@@ -27,6 +27,7 @@ mod:RegisterEventsInCombat(
  or ability.id = 296650 and (type = "applybuff" or type = "removebuff")
  or ability.id = 296943 or ability.id = 296940 or ability.id = 296942 or ability.id = 296939 or ability.id = 296941 or ability.id = 296938
 --]]
+--TODO, there still exists a bug where despite being coded correctly, mod doesn't cancel shit it's supposed to. Something is probably broken in DBM-Core when calling :Stop() on a count timer
 local warnShield						= mod:NewTargetNoFilterAnnounce(296650, 2, nil, nil, nil, nil, nil, 2)
 local warnShieldOver					= mod:NewEndAnnounce(296650, 2, nil, nil, nil, nil, nil, 2)
 --local warnCoral						= mod:NewCountAnnounce(296555, 2)
@@ -127,6 +128,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.spellPicker = 0
 		--Always 15.9 seconds after in all difficulties when shield is up, but when shield is down, it's 24 seconds after on easy but still 15.9 on hard
 		timerBarnacleBashCD:Start(not self.vb.shieldDown and self:IsEasy() and 23.9 or 15.9, 1)--start to success
+		DBM:Debug("Ashvane timer debuging. New timer started for bash", 2)
 	end
 end
 
@@ -142,8 +144,10 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.spellPicker = self.vb.spellPicker + 1
 		if self.vb.spellPicker == 2 then--Two bash been cast, Briny is next
 			timerBrinyBubbleCD:Start(self.vb.shieldDown and 9.9 or self:IsLFR() and 15 or 13.9, self.vb.spellPicker+1)--Success to start
+			DBM:Debug("Ashvane timer debuging. New timer started for bubble", 2)
 		else
 			timerBarnacleBashCD:Start(14.9, self.vb.spellPicker+1)--success to success
+			DBM:Debug("Ashvane timer debuging. New timer started for bash", 2)
 		end
 	elseif spellId == 296662 then
 		self.vb.ripplingWave = self.vb.ripplingWave + 1
@@ -187,18 +191,24 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.upsurgeCast = 0
 		timerUpsurgeCD:Stop()
 		timerBarnacleBashCD:Stop()
+		timerBarnacleBashCD:Stop(1)
+		timerBarnacleBashCD:Stop(2)
 		timerBrinyBubbleCD:Stop()
+		timerBrinyBubbleCD:Stop(3)
 		timerArcingAzeriteCD:Stop()
 		timerShieldCD:Stop()
+		DBM:Debug("Ashvane timer debuging. Timers should be stopped for good this time", 2)
 		local easy = self:IsEasy() or false
 		if self.vb.shieldCount == 1 then
 			timerBarnacleBashCD:Start(easy and 10 or 8, 1)--SUCCESS
+			DBM:Debug("Ashvane timer debuging. New timer started for bash", 2)
 			timerUpsurgeCD:Start(easy and 12 or 9, 1)
 			timerRipplingwaveCD:Start(easy and 17 or 15, 1)
 			--timerCoralGrowthCD:Start(30.5, 1)
 		else
 			timerUpsurgeCD:Start(easy and 15.5 or 12, 1)
 			timerBarnacleBashCD:Start(easy and 13.8 or 11.7, 1)--SUCCESS
+			DBM:Debug("Ashvane timer debuging. New timer started for bash", 2)
 			timerRipplingwaveCD:Start(20.7, 1)
 			--timerCoralGrowthCD:Start(30.5, 1)
 		end
@@ -324,9 +334,14 @@ function mod:SPELL_AURA_REMOVED(args)
 		--timerCoralGrowthCD:Stop()
 		timerRipplingwaveCD:Stop()
 		timerBrinyBubbleCD:Stop()
+		timerBrinyBubbleCD:Stop(3)--Because calling without arg apparently doesn't work since core is broken
 		timerUpsurgeCD:Stop()
 		timerBarnacleBashCD:Stop()
+		timerBarnacleBashCD:Stop(1)--Because calling without arg apparently doesn't work since core is broken
+		timerBarnacleBashCD:Stop(2)--Because calling without arg apparently doesn't work since core is broken
+		DBM:Debug("Ashvane timer debuging. Timers should be stopped for good this time", 2)
 		timerBarnacleBashCD:Start(13, 1)--SUCCESS
+		DBM:Debug("Ashvane timer debuging. New timer started for bash", 2)
 		timerUpsurgeCD:Start(17.9, 1)
 		timerArcingAzeriteCD:Start(20.5, 1)
 		timerShieldCD:Start(70.5)
