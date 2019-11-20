@@ -295,14 +295,14 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if not tContains(playersInMind, args.destName) then
 			table.insert(playersInMind, args.destName)
 		end
-		if args.destGUID = UnitGUID("player") then
+		if args.destGUID == UnitGUID("player") then
 			selfInMind = true
 			DBM:AddMsg("Temporary debug: you have entered mind")
 		end
 	--"<82.53 23:25:52> [CLEU] SPELL_CAST_SUCCESS#Player-969-001B322E#Werdup#Creature-0-2012-2217-3244-158378-00004F25B8#Severed Consciousness#309307#Restore Consciousness#nil#nil", -- [3604]
 	elseif spellId == 309307 then--Restore Consciousness (Players leaving mind)
 		tDeleteItem(playersInMind, args.sourceName)
-		if args.sourceGUID = UnitGUID("player") then
+		if args.sourceGUID == UnitGUID("player") then
 			selfInMind = false
 			DBM:AddMsg("Temporary debug: you have exited mind")
 		end
