@@ -13,7 +13,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 311176 316711 310184 310134 310130 317292 310331 315772 309698 310042 313400 308885 317066",
-	"SPELL_CAST_SUCCESS 317292 315927 316463",
+	"SPELL_CAST_SUCCESS 317292 315927 316463 309296 309307",
 	"SPELL_AURA_APPLIED 313334 308996 309991 313184 308842 310073 311392 316541 316542 313793 315709 315710",
 	"SPELL_AURA_APPLIED_DOSE 313184",
 	"SPELL_AURA_REMOVED 313184 308842 313334",
@@ -27,9 +27,9 @@ mod:RegisterEventsInCombat(
 
 --TODO, figure out if mental decay cast by mind controled players can be interrupted (if they even cast it, journal for previous boss was wrong)
 --TODO, find out power gains of animus and add timer for Manifest Madness that's more reliable
---TODO, find a good way of detecting players in mind for Eternal Hatred/Collapsing Mindscape
+--TODO, find a good way improving detecting players in mind (currently ground work is in but do to combat log phasing it's flawed without adding syncing or blizz fixing combat log phasing
 --TODO, build infoframe up to show mind phase players if detection works and sort this to the top when mechanics that require players leaving said phase are present
---TODO, timer fading based on phase player is in, if phase detection stuff is doable
+--TODO, timer fading based on phase player is in, once further review of player realm phaseing is done and thoroughly tested
 --TODO, add AI timers will likely screw up. That will be fixed when they are converted to real timers
 --TODO, further improve paranoia with icons/chat bubbles maybe, depends how many there are on 30 man or mythic
 --TODO, handle visions phases
@@ -144,6 +144,7 @@ mod:AddInfoFrameOption(307831, true)
 --mod:AddNamePlateOption("NPAuraOnShock", 313184)
 
 local playersInMind = {}
+local selfInMind = false
 local seenAdds = {}
 local ParanoiaTargets = {}
 mod.vb.phase = 0
@@ -158,6 +159,7 @@ function mod:OnCombatStart(delay)
 	self.vb.phase = 0
 	self.vb.BasherCount = 0
 	table.wipe(playersInMind)
+	selfInMind = false
 	table.wipe(seenAdds)
 	table.wipe(ParanoiaTargets)
 	if self.Options.InfoFrame then
@@ -216,14 +218,14 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 310134 then
 		specWarnManifestMadness:Show()
 	elseif spellId == 310130 then
-		if DBM:UnitDebuff("player", 308842) then
+		if selfInMind then
 			specWarnEternalHatred:Show(L.ExitMind)
 			specWarnEternalHatred:Play("leavemind")
 		else
 			warnEternalHatred:Show()
 		end
 	elseif spellId == 317292 then
-		if self.vb.phase == 1 or DBM:UnitDebuff("player", 308842) then--TODO, phase hack is just because buff check doesn't work/exist yet
+		if selfInMind then
 			specWarnCollapsingMindscape:Show(L.ExitMind)
 			specWarnCollapsingMindscape:Play("leavemind")
 		else
@@ -288,6 +290,22 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 316463 then
 		warnMindGate:Show()
 		--timerMindgateCD:Start()
+	--"<25.90 23:24:55> [CLEU] SPELL_CAST_SUCCESS#Creature-0-2012-2217-3244-158378-00004F25B7#Severed Consciousness#Player-969-001B01A7#Nyaza#309296#Reflected Self#nil#nil", -- [169]
+	elseif spellId == 309296 then--Reflected Self (Players entering mind)
+		if not tContains(playersInMind, args.destName) then
+			table.insert(playersInMind, args.destName)
+		end
+		if args.destGUID = UnitGUID("player") then
+			selfInMind = true
+			DBM:AddMsg("Temporary debug: you have entered mind")
+		end
+	--"<82.53 23:25:52> [CLEU] SPELL_CAST_SUCCESS#Player-969-001B322E#Werdup#Creature-0-2012-2217-3244-158378-00004F25B8#Severed Consciousness#309307#Restore Consciousness#nil#nil", -- [3604]
+	elseif spellId == 309307 then--Restore Consciousness (Players leaving mind)
+		tDeleteItem(playersInMind, args.sourceName)
+		if args.sourceGUID = UnitGUID("player") then
+			selfInMind = false
+			DBM:AddMsg("Temporary debug: you have exited mind")
+		end
 	end
 end
 
@@ -315,10 +333,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnSynapticShock:Show(args.destName, amount)
 		timerSynampticShock:Stop()
 		timerSynampticShock:Start()
-	elseif spellId == 308842 then
-		if not tContains(playersInMind, args.destName) then
-			table.insert(playersInMind, args.destName)
-		end
+--	elseif spellId == 308842 then
+
 	elseif spellId == 310073 or spellId == 311392 then
 		if args:IsPlayer() then
 			local text = spellId == 310073 and L.Away or L.Toward
@@ -367,8 +383,8 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 313184 then
 		timerSynampticShock:Stop()
-	elseif spellId == 308842 then
-		tDeleteItem(playersInMind, args.destName)
+	--elseif spellId == 308842 then
+
 	elseif spellId == 313334 then
 		if args:IsPlayer() then
 			timerGiftofNzoth:Stop()
