@@ -10348,6 +10348,7 @@ do
 		return unschedule(self.Start, self.mod, self, ...)
 	end
 
+	--TODO, figure out why this function doesn't properly stop count timers when calling stop without count on count timers
 	function timerPrototype:Stop(...)
 		if select("#", ...) == 0 then
 			for i = #self.startedTimers, 1, -1 do
