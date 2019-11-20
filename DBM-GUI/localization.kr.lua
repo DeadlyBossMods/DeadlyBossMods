@@ -329,9 +329,10 @@ L.ShowRespawn				= "전멸 후 보스 재생성 타이머 표시"
 L.ShowQueuePop				= "입장 수락 남은 시간 타이머 표시 (공격대 찾기,전장 등)"
 --
 L.Area_AutoLogging			= "자동 전투 기록 설정"
-L.AutologBosses				= "보스 전투시 블리자드 전투 기록 자동 활성화 (전투 시작전 물약이나 여러 이벤트를 기록하려면 /dbm pull 명령어 사용)"
-L.AdvancedAutologBosses		= "Transcriptor 사용시 보스 전투 기록 자동 활성화"
-L.LogOnlyNonTrivial			= "현재 확장팩의 레이드 보스만 기록하기 (공격대 찾기/파티/시나리오/구 컨텐츠 제외)"
+L.AutologBosses				= "블리자드 전투 로그를 사용해 자동으로 던전/레이드 기록"
+L.AdvancedAutologBosses		= "Transcriptor를 사용해 자동으로 던전/레이드 기록"
+L.RecordOnlyBosses			= "보스만 기록 (모든 일반몹은 제외됩니다. 보스 전투 시작 물약과 ENCOUNTER_START 이벤트를 기록하고 싶으면 '/dbm pull' 명령어를 사용하세요)"
+L.LogOnlyNonTrivial			= "주요 콘텐츠만 기록 (공격대 찾기/던전/시나리오/구 확장팩 제외)"
 --
 L.Area_3rdParty				= "써드파티 애드온 설정"
 L.ShowBBOnCombatStart		= "전투 시작시 Big Brother 버프 검사 실행"
