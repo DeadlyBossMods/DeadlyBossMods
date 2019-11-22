@@ -87,7 +87,7 @@ local yellMindgrasp							= mod:NewShortYell(315772, "%s", false, 2)
 local specWarnParanoia						= mod:NewSpecialWarningMoveTo(309980, nil, nil, nil, 1, 2)
 local yellParanoia							= mod:NewYell(309980)
 ----Basher Tentacle
-local specWarnBasherTentacle				= mod:NewSpecialWarningSwitch("ej20762", "Tank", nil, nil, 1, 2)--Maybe DPS too?
+--local specWarnBasherTentacle				= mod:NewSpecialWarningSwitch("ej20762", "Tank", nil, nil, 1, 2)--Maybe DPS too?
 local specWarnVoidLash						= mod:NewSpecialWarningDefensive(309698, nil, nil, nil, 1, 2)
 ----Corruptor Tentacle
 local specWarnCorruptedMind					= mod:NewSpecialWarningInterrupt(313400, "HasInterrupt", nil, nil, 1, 2)
@@ -123,7 +123,7 @@ local timerMindgraspCD						= mod:NewCDTimer(30.1, 315772, nil, nil, nil, 3)
 local timerParanoiaCD						= mod:NewCDTimer(30.1, 309980, nil, nil, nil, 3)
 local timerMindgateCD						= mod:NewCDTimer(30.1, 309046, nil, nil, nil, 1)
 ----Basher Tentacle
-local timerBasherTentacleCD					= mod:NewCDTimer(5.3, "ej20762", nil, nil, nil, 1, 309698, DBM_CORE_DAMAGE_ICON)
+--local timerBasherTentacleCD					= mod:NewCDTimer(5.3, "ej20762", nil, nil, nil, 1, 309698, DBM_CORE_DAMAGE_ICON)
 local timerVoidLashCD						= mod:NewCDTimer(23.1, 309698, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 ----Corruptor Tentacle
 local timerCorruptorTentacleCD				= mod:NewCDTimer(5.3, "ej21107", nil, nil, nil, 1, 313400, DBM_CORE_DAMAGE_ICON)
@@ -279,7 +279,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.phase = self.vb.phase + 1
 		if self.vb.phase == 2 then
 			timerMindgraspCD:Start(10.9)
-			timerBasherTentacleCD:Start(27.1)
+			--timerBasherTentacleCD:Start(27.1)
 			timerSpikeTentacleCD:Start(27.9)
 			timerCorruptorTentacleCD:Start(32)
 			timerParanoiaCD:Start(55.9)
@@ -452,8 +452,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 315917 then--Tentacle Skirt
 		local cid = self:GetCIDFromGUID(UnitGUID(uId))
 		if cid == 158367 then--Basher Tentacle (faster than IEEU, we want timer to start here, IEEU is for counting how many of them there are since this event only fires ONCE)
-			specWarnBasherTentacle:Show()
-			specWarnBasherTentacle:Play("bigmob")
+			--specWarnBasherTentacle:Show()
+			--specWarnBasherTentacle:Play("bigmob")
 			timerVoidLashCD:Start(15)
 			--timerBasherTentacleCD:Start()
 		elseif cid == 160249 then--Spike tentacle
