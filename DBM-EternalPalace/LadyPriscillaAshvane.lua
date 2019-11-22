@@ -207,9 +207,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			--timerCoralGrowthCD:Start(30.5, 1)
 		else
 			timerUpsurgeCD:Start(easy and 15.5 or 12, 1)
-			timerBarnacleBashCD:Start(easy and 13.8 or 11.7, 1)--SUCCESS
+			timerBarnacleBashCD:Start(easy and 13.8 or 11.5, 1)--SUCCESS
 			DBM:Debug("Ashvane timer debuging. New timer started for bash", 2)
-			timerRipplingwaveCD:Start(20.7, 1)
+			timerRipplingwaveCD:Start(20.5, 1)
 			--timerCoralGrowthCD:Start(30.5, 1)
 		end
 		if self.Options.RangeFrame then
@@ -342,7 +342,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		DBM:Debug("Ashvane timer debuging. Timers should be stopped for good this time", 2)
 		timerBarnacleBashCD:Start(13, 1)--SUCCESS
 		DBM:Debug("Ashvane timer debuging. New timer started for bash", 2)
-		timerUpsurgeCD:Start(17.9, 1)
+		timerUpsurgeCD:Start(17.5s, 1)
 		timerArcingAzeriteCD:Start(20.5, 1)
 		timerShieldCD:Start(70.5)
 		if self.Options.InfoFrame then
