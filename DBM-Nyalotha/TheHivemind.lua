@@ -104,7 +104,7 @@ local allTimers = {
 		----Summon Drones Periodic (SUCCESS)
 		[312868] = {},
 		----Accelerated Evolution (SUCCESS)
-		[308227] = {},
+		[307637] = {},
 		----Echoing Void
 		[307232] = {}
 	},
@@ -124,7 +124,7 @@ local allTimers = {
 		----Summon Drones Periodic (SUCCESS)
 		[312868] = {15.0, 70.0, 75.1, 73.0, 77.1},
 		----Accelerated Evolution (SUCCESS)
-		[308227] = {},--Don't exist on Normal
+		[307637] = {},--Don't exist on Normal
 		----Echoing Void
 		[307232] = {80.1, 30.0, 58.1, 52.0, 55.0}
 	},
@@ -144,29 +144,29 @@ local allTimers = {
 		----Summon Drones Periodic (SUCCESS)
 		[312868] = {34.9, 76.5, 108.5, 95.4, 76.5},
 		----Accelerated Evolution (SUCCESS)
-		[308227] = {36.0, 280.3},
+		[307637] = {36.0, 280.3},
 		----Echoing Void
 		[307232] = {63.9, 16.0, 39.9, 45.0, 95.0, 84.5, 16.0, 40.0, 45.2}
 	},
 	["mythic"] = {
 		--Ka'zir
 		----Mind-Numbing Nova
-		[313652] = {},
+		[313652] = {12.0, 12.0, 12.0, 15.0, 12.0, 17.5, 11.5, 12.0, 12.0, 11.9, 12.0, 12.0, 12.0, 12.0, 12.0, 11.9, 12.0, 27.0, 12.0, 12.0, 12.0, 12.0, 18.0, 12.0, 12.9},
 		----Spawn Acidic Aqir
-		[310340] = {},
+		[310340] = {45.0, 52.0, 48.0, 50.0, 50.1, 49.9},
 		----Volatile Eruption (SUCCESS)
-		[314583] = {},
+		[314583] = {},--Should exist on normal based on journal, but wasn't cast?
 		----Call Flyer Swarm (SUCCESS)
-		[312710] = {},
+		[312710] = {50.0, 70.1, 75.0, 60.0},
 		--Tek'ris
 		----Nullification Blast
-		[307968] = {},
+		[307968] = {22.0, 20.0, 20.0, 40.0, 20.0, 20.0, 21.0, 20.0, 19.9, 24.0, 20.0, 20.0, 20.0, 19.9, 20.0},
 		----Summon Drones Periodic (SUCCESS)
-		[312868] = {},
+		[312868] = {15.0, 70.0, 75.1, 73.0, 77.1},
 		----Accelerated Evolution (SUCCESS)
-		[308227] = {},
+		[307637] = {},--Don't exist on Normal
 		----Echoing Void
-		[307232] = {}
+		[307232] = {80.1, 30.0, 58.1, 52.0, 55.0}
 	},
 }
 
