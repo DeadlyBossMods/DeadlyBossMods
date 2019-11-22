@@ -342,7 +342,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		DBM:Debug("Ashvane timer debuging. Timers should be stopped for good this time", 2)
 		timerBarnacleBashCD:Start(13, 1)--SUCCESS
 		DBM:Debug("Ashvane timer debuging. New timer started for bash", 2)
-		timerUpsurgeCD:Start(17.5s, 1)
+		timerUpsurgeCD:Start(17.5, 1)
 		timerArcingAzeriteCD:Start(20.5, 1)
 		timerShieldCD:Start(70.5)
 		if self.Options.InfoFrame then
