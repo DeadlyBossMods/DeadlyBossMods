@@ -194,6 +194,14 @@ function mod:OnCombatStart(delay)
 	--Tek'ris's Hivemind Control instantly on pull
 	if self:IsMythic() then
 		self.vb.difficultyName = "mythic"
+		timerMindNumbingNovaCD:Start(12-delay, 1)
+		timerSpawnAcidicAqirCD:Start(45-delay, 1)
+		--timerVolatileEruptionCD:Start(111.9-delay, 1)--Never Seen but in journal
+		timerFlyerSwarmCD:Start(50-delay, 1)
+		--Tek'ris
+		timerDronesCD:Start(15-delay, 1)
+		timerNullificationBlastCD:Start(22-delay, 1)
+		timerEchoingVoidCD:Start(80.1-delay, 1)
 	elseif self:IsHeroic() then
 		self.vb.difficultyName = "heroic"
 		--Ka'zir
