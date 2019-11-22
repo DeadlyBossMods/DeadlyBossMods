@@ -170,6 +170,15 @@ local allTimers = {
 	},
 }
 
+--/run DBM:GetModByName("2372"):SetMythicTimersToHeroic()
+function mod:SetMythicTimersToHeroic()
+	allTimers["mythic"] = allTimers["heroic"]
+end
+--/run DBM:GetModByName("2372"):SetMythicTimersToNormal()
+function mod:SetMythicTimersToNormal()
+	allTimers["mythic"] = allTimers["normal"]
+end
+
 function mod:OnCombatStart(delay)
 	self.vb.interruptCount = 0
 	self.vb.addIcon = 1
