@@ -298,7 +298,7 @@ function mod:SPELL_CAST_START(args)
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(6)
 		end
-	if spellId == 307582 then
+	elseif spellId == 307582 then
 		specWarnVolatileEruption:Show(args.sourceName)
 		specWarnVolatileEruption:Play("targetchange")
 		if self.Options.NPAuraOnVolatileEruption then
