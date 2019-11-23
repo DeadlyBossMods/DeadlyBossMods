@@ -36,7 +36,7 @@ local warnGiftofNzoth						= mod:NewTargetNoFilterAnnounce(313334, 2)
 ----Fury of N'Zoth
 local warnMadnessBomb						= mod:NewTargetAnnounce(306973, 2)
 local warnAdaptiveMembrane					= mod:NewTargetNoFilterAnnounce(306990, 4)
-local warnGazeofMadness						= mod:NewCountAnnounce(307482, 2)
+--local warnGazeofMadness						= mod:NewCountAnnounce(307482, 2)
 local warnBlackScar							= mod:NewStackAnnounce(315954, 2, nil, "Tank")
 --Stage 2: Subcutaneous Tunnel
 local warnSynthesRemaining					= mod:NewCountAnnounce(307079, 2)
@@ -79,7 +79,7 @@ local timerMentalDecayCD					= mod:NewNextTimer(28.8, 313364, nil, nil, nil, 3)
 local timerGrowthCoveredTentacleCD			= mod:NewNextCountTimer(61, 307131, nil, nil, nil, 1, nil, nil, nil, 1, 4)
 local timerMandibleSlamCD					= mod:NewNextTimer(16.6, 306990, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON, nil, 2, 4)
 ----Adds
-local timerGazeofMadnessCD					= mod:NewNextCountTimer(61, 307482, nil, nil, nil, 1)
+--local timerGazeofMadnessCD					= mod:NewNextCountTimer(61, 307482, nil, nil, nil, 1)
 ----Wrathion (for now assuming his stuff is passive not timed)
 --Stage 2: Subcutaneous Tunnel
 local timerEternalDarknessCD				= mod:NewNextTimer(22.2, 307048, nil, nil, nil, 2)

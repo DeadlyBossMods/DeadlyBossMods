@@ -5,6 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(157620)
 mod:SetEncounterID(2334)
 mod:SetZone()
+mod:SetUsedIcons(1, 2, 3)
 mod:SetBossHPInfoToHighest()--Must set boss HP to highest, since boss health will get screwed up during images phase
 mod.noBossDeathKill = true--Killing an image in image phase fires unit Died for boss creature ID, so must filter this
 mod:SetHotfixNoticeRev(20191109000000)--2019, 11, 09
@@ -156,7 +157,20 @@ function mod:SPELL_AURA_APPLIED(args)
 			DBM.Nameplate:Show(true, args.destGUID, spellId, nil, 30)
 		end
 	elseif spellId == 308065 or spellId == 307950 then
-		local icon = self.vb.shredIcon
+		--Assign icon based on debuff player has, so it can be clearly seen which add they will be spawning on mythic
+		local icon
+		if self:IsMythic() then
+			local uId = DBM:GetRaidUnitId(args.destName)
+			if DBM:UnitDebuff(uId, 307784) then--Clouded Mind
+				icon = 2--Orange Circle for clouded mind
+			elseif DBM:UnitDebuff(uId, 307785) then--Twisted Mind
+				icon = 3--Purple Diamond for Twisted Mind
+			end
+		end
+		--Non mythic will assign just ordered icon, or if mythic icon debuff scan fails acts as fallback
+		if not icon then
+			icon = self.vb.shredIcon
+		end
 		warnShredPsyche:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			specWarnShredPsyche:Show()
