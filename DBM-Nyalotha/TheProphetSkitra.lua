@@ -28,6 +28,7 @@ mod:RegisterEventsInCombat(
 
 --TODO, if tanks each get a diff mind debuff, mark them, and they can be designated callers
 --TODO, update timerImagesofAbsolutionCD after Projection phases
+--TODO, add warning to switch to add to prophet if it's yours
 local warnShadowShock						= mod:NewStackAnnounce(308059, 2, nil, "Tank")
 local warnImagesofAbsolution				= mod:NewCountAnnounce(313239, 3)--Spawn, not when killable
 local warnShredPsyche						= mod:NewTargetNoFilterAnnounce(307937, 2)
@@ -44,6 +45,7 @@ local specWarnShadowShockTaunt				= mod:NewSpecialWarningTaunt(308059, nil, nil,
 local specWarnShredPsyche					= mod:NewSpecialWarningMoveAway(307937, nil, nil, nil, 1, 2)
 local yellShredPsyche						= mod:NewPosYell(307937)
 local yellShredPsycheFades					= mod:NewIconFadesYell(307937)
+local specWarnShredPsycheSwitch				= mod:NewSpecialWarningSwitch(307937, "dps", nil, nil, 1, 2)
 --local specWarnGTFO						= mod:NewSpecialWarningGTFO(270290, nil, nil, nil, 1, 8)
 
 local timerImagesofAbsolutionCD				= mod:NewCDTimer(84.9, 313239, nil, nil, nil, 1, nil, DBM_CORE_HEROIC_ICON)
@@ -169,7 +171,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		--Non mythic will assign just ordered icon, or if mythic icon debuff scan fails acts as fallback
 		if not icon then
-			icon = self.vb.shredIcon
+			icon = self.vb.shredIcon--Starting with 1 (star). if it's still 2 adds at once at 20+ players, it'll also use circle, if blizzard fixed that shit, it'll always be star
 		end
 		warnShredPsyche:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then

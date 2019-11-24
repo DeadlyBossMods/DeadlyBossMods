@@ -108,7 +108,7 @@ function mod:OnCombatStart(delay)
 	self.vb.phase = 1
 	timerMadnessBombCD:Start(7.6-delay)--SUCCESS
 	timerMentalDecayCD:Start(11.1-delay)--SUCCESS
-	timerGazeofMadnessCD:Start(13.8-delay)
+	--timerGazeofMadnessCD:Start(13.8-delay)
 	timerMandibleSlamCD:Start(14.4-delay)
 	timerAdaptiveMembraneCD:Start(24.3-delay)--SUCCESS
 	timerGrowthCoveredTentacleCD:Start(39.1-delay)
@@ -238,7 +238,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerAdaptiveMembraneCD:Stop()
 		timerMentalDecayCD:Stop()
 		timerGrowthCoveredTentacleCD:Stop()
-		timerGazeofMadnessCD:Stop()
+		--timerGazeofMadnessCD:Stop()
 		timerMandibleSlamCD:Stop()
 		timerMentalDecayCD:Start(30.3)
 		timerAdaptiveMembraneCD:Start(33.6)
@@ -343,8 +343,9 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 	--"<23.58 17:24:45> [CHAT_MSG_RAID_BOSS_EMOTE] |TInterface\\Icons\\INV_EyeofNzothPet.blp:20|t A %s emerges!#Gaze of Madness#####0#0##0#1983#nil#0#false#false#false#false", -- [566]
 	if msg:find("INV_EyeofNzothPet.blp") then
 		self.vb.gazeCount = self.vb.gazeCount + 1
-		warnGazeofMadness:Show(self.vb.gazeCount)
-		timerGazeofMadnessCD:Start(60.5, self.vb.gazeCount+1)
+		--warnGazeofMadness:Show(self.vb.gazeCount)
+		--timerGazeofMadnessCD:Start(60.5, self.vb.gazeCount+1)
+		DBM:Debug("Gaze still used? spellID is gone, figure out what this is for now")
 	--"<48.92 17:25:10> [CHAT_MSG_RAID_BOSS_EMOTE] |TInterface\\Icons\\INV_MISC_MONSTERHORN_04.BLP:20|t A %s emerges. Look out!#Growth-Covered Tentacle#####0#0##0#1990#nil#0#false#false#false#false",
 	elseif msg:find("INV_MISC_MONSTERHORN_04.BLP") then
 		self.vb.TentacleCount = self.vb.TentacleCount + 1
