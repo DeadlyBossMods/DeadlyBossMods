@@ -33,7 +33,7 @@ local warnToxicSpine					= mod:NewTargetNoFilterAnnounce(292167, 2, nil, false, 
 local warnPiercingBarb					= mod:NewTargetNoFilterAnnounce(301494, 2)
 
 local specWarnGazefromBelow				= mod:NewSpecialWarningYou(292307, nil, nil, nil, 3, 2)
-local specWarnFeedingFrenzy				= mod:NewSpecialWarningCount(298424, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.stack:format(18, 298424), nil, 1, 2)
+local specWarnFeedingFrenzy				= mod:NewSpecialWarningCount(298424, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.stack:format(12, 298424), nil, 1, 2)
 local specWarnFeedingFrenzyOther		= mod:NewSpecialWarningTaunt(298424, nil, nil, nil, 1, 2)
 local specWarnShockPulse				= mod:NewSpecialWarningCount(292270, nil, nil, nil, 2, 2)
 local specWarnCavitation				= mod:NewSpecialWarningSpell(292083, nil, nil, nil, 2, 2)
@@ -189,7 +189,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 289699 then
 		local amount = args.amount or 1
-		if amount >= 18 and self:AntiSpam(5, 2) then
+		if amount >= 12 and self:AntiSpam(4, 2) then
 			if self:IsTanking("player", "boss1", nil, true) then
 				specWarnFeedingFrenzy:Show(amount)
 				specWarnFeedingFrenzy:Play("changemt")

@@ -2,7 +2,7 @@ local mod	= DBM:NewMod(2375, "DBM-Nyalotha", nil, 1180)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
-mod:SetCreatureID(158041)--161520?
+mod:SetCreatureID(158041)
 mod:SetEncounterID(2344)
 mod:SetZone()
 --mod:SetHotfixNoticeRev(20190716000000)--2019, 7, 16
@@ -13,20 +13,21 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 311176 316711 310184 310134 310130 317292 310331 315772 309698 310042 313400 308885 317066",
-	"SPELL_CAST_SUCCESS 317292 315927 316463 309296 309307",
-	"SPELL_AURA_APPLIED 313334 308996 309991 313184 308842 310073 311392 316541 316542 313793 315709 315710",
+	"SPELL_CAST_SUCCESS 315927 316463 309296 309307",
+	"SPELL_AURA_APPLIED 313334 308996 309991 313184 308842 310073 311392 316541 316542 313793 315709 315710 312155",
 	"SPELL_AURA_APPLIED_DOSE 313184",
-	"SPELL_AURA_REMOVED 313184 308842 313334",
+	"SPELL_AURA_REMOVED 313184 308842 313334 312155",
 	"SPELL_PERIODIC_DAMAGE 309991",
 	"SPELL_PERIODIC_MISSED 309991",
 --	"SPELL_INTERRUPT",
 	"UNIT_DIED",
 	"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
+	"CHAT_MSG_RAID_BOSS_EMOTE",
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5"
 )
 
 --TODO, figure out if mental decay cast by mind controled players can be interrupted (if they even cast it, journal for previous boss was wrong)
---TODO, find out power gains of animus and add timer for Manifest Madness that's more reliable
+--TODO, find out power gains of Psychus and add timer for Manifest Madness that's more reliable
 --TODO, find a good way improving detecting players in mind (currently ground work is in but do to combat log phasing it's flawed without adding syncing or blizz fixing combat log phasing
 --TODO, build infoframe up to show mind phase players if detection works and sort this to the top when mechanics that require players leaving said phase are present
 --TODO, timer fading based on phase player is in, once further review of player realm phaseing is done and thoroughly tested
@@ -34,13 +35,14 @@ mod:RegisterEventsInCombat(
 --TODO, further improve paranoia with icons/chat bubbles maybe, depends how many there are on 30 man or mythic
 --TODO, handle visions phases
 --TODO, figure out the abilities that were removed from journal in latest update. The spells still exist and weren't removing, indicating maybe those harder mechanics were moved to mythic only
+--TODO, warn when own sanity 50, 30, 10?
 --New Voice: "leavemind"
 --General
 local warnPhase								= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
 local warnGiftofNzoth						= mod:NewTargetNoFilterAnnounce(313334, 2)
 --Stage 1: Dominant Mind
 local warnGlimpseofInfinite					= mod:NewCastAnnounce(311176, 2)
-----Animus
+----Psychus
 local warnCreepingAnguish					= mod:NewCastAnnounce(310184, 4)
 local warnSynapticShock						= mod:NewStackAnnounce(313184, 1)
 local warnEternalHatred						= mod:NewCastAnnounce(310130, 4)
@@ -51,6 +53,7 @@ local warnVoidGaze							= mod:NewSpellAnnounce(310333, 3)
 
 --Stage 2: Writhing Onslaught
 ----N'Zoth
+local warnShatteredPsyche					= mod:NewTargetNoFilterAnnounce(312155, 1)
 local warnParanoia							= mod:NewTargetNoFilterAnnounce(309980, 3)
 local warnMindGate							= mod:NewCastAnnounce(309046, 2)
 ----Basher tentacle
@@ -58,7 +61,7 @@ local warnTumultuousBurst					= mod:NewCastAnnounce(310042, 4, nil, nil, "Tank")
 ----Corruptor Tentacle
 local warnCorruptorTentacle					= mod:NewSpellAnnounce("ej21107", 2)
 ----Spike Tentacle
-local warnSpikeTentacle						= mod:NewSpellAnnounce("ej21001", 2)
+--local warnSpikeTentacle						= mod:NewSpellAnnounce("ej21001", 2)
 ----Through the Mindgate
 ------Corruption of Deathwing
 local warnFlamesofInsanity					= mod:NewTargetNoFilterAnnounce(313793, 2, nil, "RemoveMagic")
@@ -67,13 +70,14 @@ local warnFlamesofInsanity					= mod:NewTargetNoFilterAnnounce(313793, 2, nil, "
 
 --General
 local specWarnGiftofNzoth					= mod:NewSpecialWarningYou(313334, nil, nil, nil, 1, 2)
+local yellGiftofNzothFades					= mod:NewFadesYell(313334)
 local specWarnServantofNzoth				= mod:NewSpecialWarningTargetChange(308996, "-Healer", nil, nil, 1, 2)
 local yellServantofNzoth					= mod:NewYell(308996)
 local specWarnGTFO							= mod:NewSpecialWarningGTFO(309991, nil, nil, nil, 1, 8)
 --Stage 1: Dominant Mind
-----Animus
+----Psychus
 local specWarnMindwrack						= mod:NewSpecialWarningDefensive(316711, nil, nil, nil, 1, 2)
-local specWarnManifestMadness				= mod:NewSpecialWarningSpell(310134, nil, nil, nil, 3)--Basically an automatic wipe unless animus was like sub 1% health, no voice because there isn't really one that says "you're fucked"
+local specWarnManifestMadness				= mod:NewSpecialWarningSpell(310134, nil, nil, nil, 3)--Basically an automatic wipe unless Psychus was like sub 1% health, no voice because there isn't really one that says "you're fucked"
 local specWarnEternalHatred					= mod:NewSpecialWarningMoveTo(310130, nil, nil, nil, 3, 10)--No longer in journal, replaced by collapsing Mindscape, but maybe a hidden mythic mechanic now?
 local specWarnCollapsingMindscape			= mod:NewSpecialWarningMoveTo(317292, nil, nil, nil, 2, 10)
 ----Exposed Synapse
@@ -82,7 +86,7 @@ local specWarnCollapsingMindscape			= mod:NewSpecialWarningMoveTo(317292, nil, n
 
 --Stage 2: Writhing Onslaught
 ----N'Zoth
-local specWarnMindgrasp						= mod:NewSpecialWarningYouCount(315772, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.you:format(315772), nil, 2, 2)
+local specWarnMindgrasp						= mod:NewSpecialWarningSpell(315772, nil, nil, nil, 2, 2)
 local yellMindgrasp							= mod:NewShortYell(315772, "%s", false, 2)
 local specWarnParanoia						= mod:NewSpecialWarningMoveTo(309980, nil, nil, nil, 1, 2)
 local yellParanoia							= mod:NewYell(309980)
@@ -108,9 +112,9 @@ local specWarnHarvestThoughts				= mod:NewSpecialWarningMoveTo(317066, nil, nil,
 local timerGiftofNzoth						= mod:NewBuffFadesTimer(20, 313334, nil, nil, nil, 5)
 --local berserkTimer						= mod:NewBerserkTimer(600)
 --Stage 1: Dominant Mind
-----Animus
+----Psychus
 local timerMindwrackCD						= mod:NewCDTimer(4.9, 316711, nil, "Tank", 2, 5, nil, DBM_CORE_TANK_ICON)--4.9-8.6
-local timerCreepingAnguishCD				= mod:NewNextTimer(24.4, 310184, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerCreepingAnguishCD				= mod:NewCDTimer(23.1, 310184, nil, nil, 2, 5, nil, DBM_CORE_TANK_ICON)
 local timerSynampticShock					= mod:NewBuffActiveTimer(20, 313184, nil, nil, nil, 5, nil, DBM_CORE_DAMAGE_ICON)
 ----Eyes of N'zoth
 local timerVoidGazeCD						= mod:NewCDTimer(33, 310333, nil, nil, nil, 2)--33-34.3
@@ -118,17 +122,18 @@ local timerVoidGazeCD						= mod:NewCDTimer(33, 310333, nil, nil, nil, 2)--33-34
 
 --Stage 2: Writhing Onslaught
 ----N'Zoth
+--local timerShatteredPsyche					= mod:NewTargetTimer(30, 312155, nil, nil, nil, 6)--Maybe add when duration is not as random
 local timerCollapsingMindscape				= mod:NewCastTimer(20, 317292, nil, nil, nil, 6)
 local timerMindgraspCD						= mod:NewCDTimer(30.1, 315772, nil, nil, nil, 3)
 local timerParanoiaCD						= mod:NewCDTimer(30.1, 309980, nil, nil, nil, 3)
 local timerMindgateCD						= mod:NewCDTimer(30.1, 309046, nil, nil, nil, 1)
 ----Basher Tentacle
-local timerBasherTentacleCD					= mod:NewCDTimer(5.3, "ej21286", nil, nil, nil, 1, 309698, DBM_CORE_DAMAGE_ICON)
-local timerVoidLashCD						= mod:NewCDTimer(23.1, 309698, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerBasherTentacleCD					= mod:NewCDTimer(60, "ej21286", nil, nil, nil, 1, 309698, DBM_CORE_DAMAGE_ICON)
+local timerVoidLashCD						= mod:NewCDTimer(22.9, 309698, nil, false, 2, 5, nil, DBM_CORE_TANK_ICON)
 ----Corruptor Tentacle
-local timerCorruptorTentacleCD				= mod:NewCDTimer(5.3, "ej21107", nil, nil, nil, 1, 313400, DBM_CORE_DAMAGE_ICON)
+--local timerCorruptorTentacleCD				= mod:NewCDTimer(5.3, "ej21107", nil, nil, nil, 1, 313400, DBM_CORE_DAMAGE_ICON)
 ----Spike Tentacle
-local timerSpikeTentacleCD					= mod:NewCDTimer(5.3, "ej21001", nil, nil, nil, 1, 312078, DBM_CORE_DAMAGE_ICON)
+--local timerSpikeTentacleCD					= mod:NewCDTimer(5.3, "ej21001", nil, nil, nil, 1, 312078, DBM_CORE_DAMAGE_ICON)
 ----Through the Mindgate
 ------Corruption of Deathwing
 
@@ -147,6 +152,7 @@ local playersInMind = {}
 local selfInMind = false
 local seenAdds = {}
 local ParanoiaTargets = {}
+local stage2BasherTimers = {36, 60, 40}--Repurpose into nested table if more add timers are tabled or phase 3 has spawn timers too
 mod.vb.phase = 0
 mod.vb.BasherCount = 0
 
@@ -201,7 +207,6 @@ function mod:SPELL_CAST_START(args)
 		warnGlimpseofInfinite:Show()
 		--Start P1 timers here, more accurate, especially if boss forgets to cast this :D
 		timerVoidGazeCD:Start(14.7)
-		timerMindwrackCD:Start(14.7)
 	elseif spellId == 316711 then
 		for i = 1, 5 do
 			local bossUnitID = "boss"..i
@@ -236,11 +241,11 @@ function mod:SPELL_CAST_START(args)
 		warnVoidGaze:Show()
 		timerVoidGazeCD:Start(33)
 	elseif spellId == 315772 then
+		specWarnMindgrasp:Show()
+		specWarnMindgrasp:Play("specialsoon")
 		timerMindgraspCD:Start()
 	elseif spellId == 309698 then
-		if self:AntiSpam(3, 1) then--tentacles sync their cast, so one bar for all of them
-			timerVoidLashCD:Start(23.1)
-		end
+		timerVoidLashCD:Start(23.1, args.sourceGUID)
 		for i = 1, 5 do
 			local bossUnitID = "boss"..i
 			if UnitExists(bossUnitID) and UnitGUID(bossUnitID) == args.sourceGUID and UnitDetailedThreatSituation("player", bossUnitID) then
@@ -275,17 +280,7 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 317292 then
-		self.vb.phase = self.vb.phase + 1
-		if self.vb.phase == 2 then
-			timerMindgraspCD:Start(10.9)
-			timerBasherTentacleCD:Start(27.1)
-			timerSpikeTentacleCD:Start(27.9)
-			timerCorruptorTentacleCD:Start(32)
-			timerParanoiaCD:Start(55.9)
-			timerMindgateCD:Start(75)
-		end
-	elseif spellId == 315927 then
+	if spellId == 315927 then
 		--timerParanoiaCD:Start()
 	elseif spellId == 316463 then
 		warnMindGate:Show()
@@ -316,6 +311,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnGiftofNzoth:Show()
 			specWarnGiftofNzoth:Play("targetyou")
 			timerGiftofNzoth:Start()
+			yellGiftofNzothFades:Countdown(spellId)
 		else
 			warnGiftofNzoth:CombinedShow(1, args.destName)
 		end
@@ -338,8 +334,6 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 310073 or spellId == 311392 then
 		if args:IsPlayer() then
 			local text = spellId == 310073 and L.Away or L.Toward
-			specWarnMindgrasp:Show(text)
-			specWarnMindgrasp:Play("targetyou")
 			yellMindgrasp:Yell(text)
 		end
 	elseif spellId == 316541 or spellId == 316542 then
@@ -375,6 +369,16 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnContempt:Show()
 			specWarnContempt:Play("stopmove")
 		end
+	elseif spellId == 312155 and args:GetDestCreatureID() == 158041 then--Shattered Psyche on N'Zoth
+		warnShatteredPsyche:Show(args.destName)
+		--timerShatteredPsyche:Start(args.destName)
+		if self.vb.phase == 1 then
+			self.vb.phase = 2
+			timerMindgraspCD:Start(18.7)--START (basically happens immediately after 312155 ends, but it can end 18-30?
+			timerBasherTentacleCD:Start(36, 1)
+			--timerSpikeTentacleCD:Start(27.9)
+			--timerCorruptorTentacleCD:Start(32)
+		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -388,7 +392,13 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 313334 then
 		if args:IsPlayer() then
 			timerGiftofNzoth:Stop()
+			yellGiftofNzothFades:Cancel()
 		end
+	elseif spellId == 312155 and args:GetDestCreatureID() == 158041 then--Shattered Psyche on N'Zoth
+		--timerShatteredPsyche:Stop(args.destName)
+		--These always happen after this
+		timerParanoiaCD:Start(47)--SUCCESS (45 to START)
+		timerMindgateCD:Start(60)--START
 	end
 end
 
@@ -410,7 +420,7 @@ end
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 158376 then--animus
+	if cid == 158376 then--Psychus
 		timerMindwrackCD:Stop()
 		timerCreepingAnguishCD:Stop()
 		timerSynampticShock:Stop()
@@ -423,10 +433,7 @@ function mod:UNIT_DIED(args)
 	--elseif cid == 158374 then--mindgate-tentacle
 
 	elseif cid == 158367 then--basher-tentacle
-		self.vb.BasherCount = self.vb.BasherCount - 1
-		if self.vb.BasherCount == 0 then
-			timerVoidLashCD:Stop()
-		end
+		timerVoidLashCD:Stop(args.destGUID)
 	--elseif cid == 158375 then--corruptor-tentacle
 
 	--elseif cid == 160249 then--spike-tentacle
@@ -441,10 +448,18 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 		if GUID and not seenAdds[GUID] then
 			seenAdds[GUID] = true
 			local cid = self:GetCIDFromGUID(GUID)
-			if cid == 158367 then
-				self.vb.BasherCount = self.vb.BasherCount + 1
+			if cid == 158367 then--Basher Tentacle
+				timerVoidLashCD:Start(15, GUID)
+			elseif cid == 158376 then--Psychus
+				self:SendSync("PsychusEngaged")--He doesn't create a boss frame for players not in mind so we need to sync event
 			end
 		end
+	end
+end
+
+function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
+	if msg:find("INTERFACE\\ICONS\\ACHIEVEMENT_BOSS_YOGGSARON_01.BLP") and self:AntiSpam(5, 4) then
+		self:SendSync("BasherTentacle")--Synced since event is only seen outside mind, and people in mind should at least get the timer
 	end
 end
 
@@ -454,11 +469,31 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		if cid == 158367 then--Basher Tentacle (faster than IEEU, we want timer to start here, IEEU is for counting how many of them there are since this event only fires ONCE)
 			specWarnBasherTentacle:Show()
 			specWarnBasherTentacle:Play("bigmob")
-			timerVoidLashCD:Start(15)
-			--timerBasherTentacleCD:Start()
-		elseif cid == 160249 then--Spike tentacle
-			warnSpikeTentacle:Show()
+			--timerVoidLashCD:Start(15)
+			timerBasherTentacleCD:Start(60)
+		--elseif cid == 160249 then--Spike tentacle
+			--warnSpikeTentacle:Show()
 			--timerSpikeTentacleCD:Start()
+		--elseif cid == 158375 then--corruptor-tentacle
+
 		end
+	end
+end
+
+function mod:OnSync(msg, targetName)
+	if not self:IsInCombat() then return end
+	if msg == "BasherTentacle" and self:AntiSpam(5, 4) then
+		self.vb.BasherCount = self.vb.BasherCount + 1
+		if not selfInMind then
+			specWarnBasherTentacle:Show(self.vb.BasherCount)
+			specWarnBasherTentacle:Play("bigmob")
+		end
+		local timer = stage2BasherTimers[self.vb.BasherCount+1]
+		if timer then
+			timerBasherTentacleCD:Start(timer, self.vb.BasherCount+1)
+		end
+	elseif msg == "PsychusEngaged" and self:AntiSpam(5, 5) then
+		timerMindwrackCD:Start(6)
+		timerCreepingAnguishCD:Start(12)
 	end
 end
