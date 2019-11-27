@@ -189,7 +189,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 289699 then
 		local amount = args.amount or 1
-		if amount >= 18 and self:AntiSpam(5, 2) then
+		if amount >= 12 and self:AntiSpam(4, 2) then
 			if self:IsTanking("player", "boss1", nil, true) then
 				specWarnFeedingFrenzy:Show(amount)
 				specWarnFeedingFrenzy:Play("changemt")
