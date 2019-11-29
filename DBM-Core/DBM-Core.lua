@@ -7509,6 +7509,8 @@ function bossModPrototype:IsValidWarning(sourceGUID, customunitID)
 		for uId in DBM:GetGroupMembers() do
 			local target = uId.."target"
 			if UnitExists(target) and UnitGUID(target) == sourceGUID and UnitAffectingCombat(target) then return true end
+			local targettwo = uId.."targettarget"
+			if UnitExists(targettwo) and UnitGUID(targettwo) == sourceGUID and UnitAffectingCombat(targettwo) then return true end
 		end
 	end
 	return false
