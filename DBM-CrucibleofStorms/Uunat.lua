@@ -14,11 +14,10 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 293653 285185 285416 285376 285345 285453 285820 285638 285427 285562 285685",
-	"SPELL_CAST_SUCCESS 284851 285652 285427 293653",
+	"SPELL_CAST_SUCCESS 284851 285652 293653",
 	"SPELL_SUMMON 286165",
 	"SPELL_AURA_APPLIED 286459 286457 286458 284583 293663 293662 293661 284851 285345 287693 285333 285652 286310 284768 284569 284684 284722",
 	"SPELL_AURA_REMOVED 286459 286457 286458 284583 293663 293662 293661 284851 287693 285333 286310 284768 284569 284684 284722",
-	"SPELL_INTERRUPT",
 	"UNIT_DIED"
 )
 
@@ -120,7 +119,6 @@ mod:AddInfoFrameOption(293653, true)
 mod:AddNamePlateOption("NPAuraOnBond", 287693)
 mod:AddNamePlateOption("NPAuraOnFeed", 285307)
 mod:AddNamePlateOption("NPAuraOnRegen", 285333)
-mod:AddNamePlateOption("NPAuraOnConsume", 285427)
 mod:AddSetIconOption("SetIconOnAdds", "ej19118", true, true, {1, 2, 4})
 mod:AddSetIconOption("SetIconOnRelics", "ej18970", true, false, {1, 3, 5, 6, 7})--only up to 3 are used, but it depends on what user sets UnstableBehavior2 to. 1 and 7 are not included in the default used by DBM/BW (SetTwo)
 mod:AddDropdownOption("UnstableBehavior2", {"SetOne", "SetTwo", "SetThree", "SetFour", "SetFive", "SetSix"}, "SetTwo", "misc")--SetTwo is BW default (BW default used to be SetOne)
@@ -147,7 +145,6 @@ local playerName = UnitName("player")
 local playerHasRelic = false
 local unitTracked = {}
 local castsPerGUID = {}
-local interruptTextures = {[1] = 2178508, [2] = 2178501, [3] = 2178502, [4] = 2178503, [5] = 2178504, [6] = 2178505, [7] = 2178506, [8] = 2178507,}--Fathoms Deck
 
 local updateInfoFrame
 do
@@ -294,7 +291,7 @@ function mod:OnCombatStart(delay)
 		DBM.InfoFrame:SetHeader(OVERVIEW)
 		DBM.InfoFrame:Show(10, "function", updateInfoFrame, false, false)
 	end
-	if self.Options.NPAuraOnBond or self.Options.NPAuraOnFeed or self.Options.NPAuraOnRegen or self.Options.NPAuraOnConsume then
+	if self.Options.NPAuraOnBond or self.Options.NPAuraOnFeed or self.Options.NPAuraOnRegen then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
 end
@@ -322,7 +319,7 @@ function mod:OnCombatEnd()
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
 	end
-	if self.Options.NPAuraOnBond or self.Options.NPAuraOnFeed or self.Options.NPAuraOnRegen or self.Options.NPAuraOnConsume then
+	if self.Options.NPAuraOnBond or self.Options.NPAuraOnFeed or self.Options.NPAuraOnRegen then
 		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
 	end
 end
@@ -462,10 +459,6 @@ function mod:SPELL_CAST_START(args)
 				specWarnConsumeEssence:Play("kickcast")
 			end
 		end
-		if self.Options.NPAuraOnConsume then
-			DBM.Nameplate:Hide(true, args.sourceGUID)--In case spell interrupt check still isn't working
-			DBM.Nameplate:Show(true, args.sourceGUID, spellId, interruptTextures[count])
-		end
 	end
 end
 
@@ -479,10 +472,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 		local players = DBM:GetGroupSize() or 30--If for SOME reason GetGroupSize fails, we'll use lowest possible CD
 		local timer = self:IsMythic() and 45 or 600/players
 		timerInsatiableTormentCD:Start(timer, self.vb.tormentCount+1)
-	elseif spellId == 285427 then
-		if self.Options.NPAuraOnConsume then
-			DBM.Nameplate:Hide(true, args.sourceGUID)
-		end
 	elseif spellId == 293653 then--Unstable Resonance
 		if self.Options.SetIconOnRelics then--Slghtly redundant, but in off chance they enabled an incompatible icon option such as torment icons, we want to reset icons to relics here
 			self:SetIcon(self.vb.tridentOcean, self.vb.tridentOceanicon)
@@ -799,14 +788,6 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
-function mod:SPELL_INTERRUPT(args)
-	if type(args.extraSpellId) == "number" and args.extraSpellId == 285427 then
-		if self.Options.NPAuraOnConsume then
-			DBM.Nameplate:Hide(true, args.destGUID)
-		end
-	end
-end
-
 --[[
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
 	if spellId == 228007 and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
@@ -830,9 +811,6 @@ function mod:UNIT_DIED(args)
 		end
 	elseif cid == 146940 then--Primordial Mindbender
 		castsPerGUID[args.destGUID] = nil
-		if self.Options.NPAuraOnConsume then
-			DBM.Nameplate:Hide(true, args.destGUID)
-		end
 	end
 end
 
