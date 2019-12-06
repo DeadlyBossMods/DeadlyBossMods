@@ -13,15 +13,16 @@ mod:SetUsedIcons(1, 2, 3)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 312336",
-	"SPELL_CAST_SUCCESS 311551 306319 306208",
+	"SPELL_CAST_START 312336 316211",
+	"SPELL_CAST_SUCCESS 311551 306319 306208 316211",
 	"SPELL_AURA_APPLIED 312406 314179 306311 311551",
 	"SPELL_AURA_APPLIED_DOSE 311551",
 	"SPELL_AURA_REMOVED 312406",
 	"SPELL_PERIODIC_DAMAGE 305575",
 	"SPELL_PERIODIC_MISSED 305575",
-	"CHAT_MSG_MONSTER_YELL"
---	"UNIT_DIED",
+	"CHAT_MSG_MONSTER_YELL",
+	"SPELL_INTERRUPT",
+	"UNIT_DIED"
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
@@ -36,6 +37,7 @@ local specWarnAbyssalStrike					= mod:NewSpecialWarningStack(311551, nil, 1, nil
 local specWarnAbyssalStrikeTaunt			= mod:NewSpecialWarningTaunt(311551, nil, nil, nil, 1, 2)
 local specWarnSoulFlay						= mod:NewSpecialWarningRun(306311, nil, nil, nil, 4, 2)
 local specWarnTorment						= mod:NewSpecialWarningDodgeCount(306208, nil, nil, nil, 2, 2)
+local specWarnTerrorWave					= mod:NewSpecialWarningInterruptCount(316211, "HasInterrupt", nil, nil, 1, 2)
 local specWarnGTFO							= mod:NewSpecialWarningGTFO(270290, nil, nil, nil, 1, 8)
 
 local timerAbyssalStrikeCD					= mod:NewCDTimer(42.6, 311551, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON, nil, 2, 4)--42.9-47
@@ -49,7 +51,7 @@ local timerTormentCD						= mod:NewNextCountTimer(46.7, 306208, nil, nil, nil, 3
 --mod:AddRangeFrameOption(6, 264382)
 mod:AddInfoFrameOption(312406, true)
 mod:AddSetIconOption("SetIconOnVoidWoken", 312406, true, false, {1, 2, 3})
---mod:AddNamePlateOption("NPAuraOnChaoticGrowth", 296914)
+mod:AddNamePlateOption("NPAuraOnTerrorWave", 296914)
 
 mod.vb.ritualCount = 0
 mod.vb.obeliskCount = 0
@@ -57,6 +59,8 @@ mod.vb.tormentCount = 0
 local voidWokenTargets = {}
 local heroicTormentTimers = {20.5, 50.6, 29, 49.6, 30.2, 49.6, 31.1, 48.7}
 local normalTormentTimers = {20.5, 71.8, 30.4, 65.7, 30.6, 65.6, 30.5}
+local castsPerGUID = {}
+local interruptTextures = {[1] = 2178508, [2] = 2178501, [3] = 2178502, [4] = 2178503, [5] = 2178504, [6] = 2178505, [7] = 2178506, [8] = 2178507,}--Fathoms Deck
 
 local updateInfoFrame
 do
@@ -103,6 +107,7 @@ function mod:OnCombatStart(delay)
 	self.vb.obeliskCount = 0
 	self.vb.tormentCount = 0
 	table.wipe(voidWokenTargets)
+	table.wipe(castsPerGUID)
 	if self:IsHard() then
 		timerSummonRitualObeliskCD:Start(12-delay, 1)
 	end
@@ -118,9 +123,9 @@ function mod:OnCombatStart(delay)
 		DBM.InfoFrame:SetHeader(OVERVIEW)
 		DBM.InfoFrame:Show(8, "function", updateInfoFrame, false, false)
 	end
---	if self.Options.NPAuraOnChaoticGrowth then
---		DBM:FireEvent("BossMod_EnableHostileNameplates")
---	end
+	if self.Options.NPAuraOnTerrorWave then
+		DBM:FireEvent("BossMod_EnableHostileNameplates")
+	end
 end
 
 function mod:OnCombatEnd()
@@ -130,9 +135,9 @@ function mod:OnCombatEnd()
 --	if self.Options.RangeFrame then
 --		DBM.RangeCheck:Hide()
 --	end
---	if self.Options.NPAuraOnChaoticGrowth then
---		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
---	end
+	if self.Options.NPAuraOnTerrorWave then
+		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
+	end
 end
 
 --function mod:OnTimerRecovery()
@@ -150,6 +155,32 @@ function mod:SPELL_CAST_START(args)
 			warnVoidRitual:Show(self.vb.ritualCount)
 		end
 		timerVoidRitualCD:Start(self:IsHard() and 79.7 or 95.2, self.vb.ritualCount+1)
+	elseif spellId == 316211 then
+		if not castsPerGUID[args.sourceGUID] then
+			castsPerGUID[args.sourceGUID] = 0
+		end
+		castsPerGUID[args.sourceGUID] = castsPerGUID[args.sourceGUID] + 1
+		local count = castsPerGUID[args.sourceGUID]
+		if self:CheckInterruptFilter(args.sourceGUID, false, true) then
+			specWarnTerrorWave:Show(args.sourceName, count)
+			if count == 1 then
+				specWarnTerrorWave:Play("kick1r")
+			elseif count == 2 then
+				specWarnTerrorWave:Play("kick2r")
+			elseif count == 3 then
+				specWarnTerrorWave:Play("kick3r")
+			elseif count == 4 then
+				specWarnTerrorWave:Play("kick4r")
+			elseif count == 5 then
+				specWarnTerrorWave:Play("kick5r")
+			else--Shouldn't happen, but fallback rules never hurt
+				specWarnTerrorWave:Play("kickcast")
+			end
+		end
+		if self.Options.NPAuraOnTerrorWave then
+			DBM.Nameplate:Hide(true, args.sourceGUID)--In case spell interrupt check still isn't working
+			DBM.Nameplate:Show(true, args.sourceGUID, spellId, interruptTextures[count])
+		end
 	end
 end
 
@@ -166,6 +197,10 @@ function mod:SPELL_CAST_SUCCESS(args)
 		local timer = self:IsHard() and heroicTormentTimers[self.vb.tormentCount+1] or self:IsEasy() and normalTormentTimers[self.vb.tormentCount+1]
 		if timer then
 			timerTormentCD:Start(timer, self.vb.tormentCount+1)
+		end
+	elseif spellId == 316211 then
+		if self.Options.NPAuraOnTerrorWave then
+			DBM.Nameplate:Hide(true, args.sourceGUID)
 		end
 	end
 end
@@ -222,6 +257,14 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spell
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
+function mod:SPELL_INTERRUPT(args)
+	if type(args.extraSpellId) == "number" and args.extraSpellId == 316211 then
+		if self.Options.NPAuraOnTerrorWave then
+			DBM.Nameplate:Hide(true, args.destGUID)
+		end
+	end
+end
+
 do
 	--"<185.26 22:54:22> [CHAT_MSG_MONSTER_YELL] Obelisks of shadow, rise!#Dark Inquisitor Xanesh###Dark Inquisitor Xanesh##0#0##0#920#nil#0#false#false#false#false", -- [1338]
 	local bossName = DBM:EJ_GetSectionInfo(20786)
@@ -236,14 +279,17 @@ do
 	end
 end
 
---[[
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 152311 then
-
+	if cid == 160937 then--TODO, FIXME
+		castsPerGUID[args.destGUID] = nil
+		if self.Options.NPAuraOnTerrorWave then
+			DBM.Nameplate:Hide(true, args.destGUID)
+		end
 	end
 end
 
+--[[
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 298689 then--Absorb Fluids
 
