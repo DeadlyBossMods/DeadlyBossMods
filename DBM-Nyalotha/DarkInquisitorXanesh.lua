@@ -25,6 +25,8 @@ mod:RegisterEventsInCombat(
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
+--TODO, see if heroic timers still faster. Considering mythic timers were same as normal, it may just be that timers same in all now. OR, mythic was bugged
+--TODO, add https://ptr.wowhead.com/spell=313198/void-touched when it's put in combat log
 local warnAbyssalStrike						= mod:NewStackAnnounce(311551, 2, nil, "Tank")
 local warnVoidRitual						= mod:NewCountAnnounce(312336, 2)--Fallback if specwarn is disabled
 local warnFanaticism						= mod:NewTargetNoFilterAnnounce(314179, 3, nil, "Tank|Healer")
@@ -55,8 +57,8 @@ mod.vb.ritualCount = 0
 mod.vb.obeliskCount = 0
 mod.vb.tormentCount = 0
 local voidWokenTargets = {}
-local heroicTormentTimers = {20.5, 50.6, 29, 49.6, 30.2, 49.6, 31.1, 48.7}
-local normalTormentTimers = {20.5, 71.8, 30.4, 65.7, 30.6, 65.6, 30.5}
+local heroicTormentTimers = {20.5, 50.6, 29, 49.6, 30.2, 49.6, 31.1, 48.7}--Heroic
+local normalTormentTimers = {20.5, 71.8, 30.4, 65.7, 30.6, 65.6, 30.5}--Normal and mythic
 local castsPerGUID = {}
 
 local updateInfoFrame
@@ -73,7 +75,6 @@ do
 	updateInfoFrame = function()
 		table.wipe(lines)
 		table.wipe(sortedLines)
-		--TODO, personal https://ptr.wowhead.com/spell=313198/void-touched tracker, if it has an actual duration?
 		--Void Woken Targets
 		if #voidWokenTargets > 0 then
 			addLine("---"..voidWoken.."---")
@@ -108,8 +109,8 @@ function mod:OnCombatStart(delay)
 	if self:IsHard() then
 		timerSummonRitualObeliskCD:Start(12-delay, 1)
 	end
-	timerAbyssalStrikeCD:Start(33.4-delay)--SUCCESS
-	if self:IsHard() then
+	timerAbyssalStrikeCD:Start(32.9-delay)--SUCCESS
+	if self:IsHeroic() then
 		timerSoulFlayCD:Start(14-delay)--SUCCESS
 		timerVoidRitualCD:Start(52.9-delay, 1)
 	else
@@ -151,7 +152,7 @@ function mod:SPELL_CAST_START(args)
 		else
 			warnVoidRitual:Show(self.vb.ritualCount)
 		end
-		timerVoidRitualCD:Start(self:IsHard() and 79.7 or 95.2, self.vb.ritualCount+1)
+		timerVoidRitualCD:Start(self:IsHeroic() and 79.7 or 95.2, self.vb.ritualCount+1)
 	elseif spellId == 316211 then
 		if not castsPerGUID[args.sourceGUID] then
 			castsPerGUID[args.sourceGUID] = 0
@@ -182,12 +183,12 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if spellId == 311551 then
 		timerAbyssalStrikeCD:Start()
 	elseif spellId == 306319 then
-		timerSoulFlayCD:Start(self:IsHard() and 46.7 or 57.2)
+		timerSoulFlayCD:Start(self:IsHeroic() and 46.7 or 57.2)
 	elseif spellId == 306208 then
 		self.vb.tormentCount = self.vb.tormentCount + 1
 		specWarnTorment:Show(self.vb.tormentCount)
 		specWarnTorment:Play("watchstep")
-		local timer = self:IsHard() and heroicTormentTimers[self.vb.tormentCount+1] or self:IsEasy() and normalTormentTimers[self.vb.tormentCount+1]
+		local timer = self:IsHeroic() and heroicTormentTimers[self.vb.tormentCount+1] or normalTormentTimers[self.vb.tormentCount+1]
 		if timer then
 			timerTormentCD:Start(timer, self.vb.tormentCount+1)
 		end

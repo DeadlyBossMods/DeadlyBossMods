@@ -449,6 +449,7 @@ local AddMsg
 local delayedFunction
 local dataBroker
 local voiceSessionDisabled = false
+local handleSync
 
 local fakeBWVersion, fakeBWHash = 167, "4f92f10"
 local versionQueryString, versionResponseString = "Q^%d^%s", "V^%d^%s"
@@ -639,7 +640,8 @@ local function sendSync(prefix, msg)
 		elseif IsInGroup(LE_PARTY_CATEGORY_HOME) then
 			SendAddonMessage("D4", prefix .. "\t" .. msg, "PARTY")
 		else--for solo raid
-			SendAddonMessage("D4", prefix .. "\t" .. msg, "WHISPER", playerName)
+			handleSync("WHISPER", playerName, strsplit("\t", msg))
+			--SendAddonMessage("D4", prefix .. "\t" .. msg, "WHISPER", playerName)
 		end
 	end
 end
@@ -4927,7 +4929,7 @@ do
 		end
 	end
 
-	local function handleSync(channel, sender, prefix, ...)
+	handleSync = function(channel, sender, prefix, ...)
 		if not prefix then
 			return
 		end
