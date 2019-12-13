@@ -177,6 +177,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		--Non mythic will assign just ordered icon, or if mythic icon debuff scan fails acts as fallback
 		if not icon then
 			icon = self.vb.shredIcon--Starting with 1 (star). if it's still 2 adds at once at 20+ players, it'll also use circle, if blizzard fixed that shit, it'll always be star
+		else--We have an icon from mythic assignments, prep the switch warning for phased players
+			if (DBM:UnitDebuff("player", 307784) and icon == 2) or (DBM:UnitDebuff("player", 307785) and icon == 3) then
+				specWarnShredPsycheSwitch:Schedule(5)
+				specWarnShredPsycheSwitch:ScheduleVoice(5, "killmob")
+			end
 		end
 		warnShredPsyche:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
