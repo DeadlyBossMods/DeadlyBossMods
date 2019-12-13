@@ -29,6 +29,11 @@ mod:RegisterEventsInCombat(
 --TODO, if tanks each get a diff mind debuff, mark them, and they can be designated callers
 --TODO, update timerImagesofAbsolutionCD after Projection phases
 --TODO, add warning to switch to add to prophet if it's yours
+--TODO, see if I made right call assuming slower shred psyche timer was changed in all modes, or if the 37 change is mythic only
+--[[
+(ability.id = 309687 or ability.id = 307725) and type = "begincast"
+ or (ability.id = 313239 or ability.id = 307937 or ability.id = 313276) and type = "cast"
+--]]
 local warnShadowShock						= mod:NewStackAnnounce(308059, 2, nil, "Tank")
 local warnImagesofAbsolution				= mod:NewCountAnnounce(313239, 3)--Spawn, not when killable
 local warnShredPsyche						= mod:NewTargetNoFilterAnnounce(307937, 2)
@@ -49,7 +54,7 @@ local specWarnShredPsycheSwitch				= mod:NewSpecialWarningSwitch(307937, "dps", 
 --local specWarnGTFO						= mod:NewSpecialWarningGTFO(270290, nil, nil, nil, 1, 8)
 
 local timerImagesofAbsolutionCD				= mod:NewCDTimer(84.9, 313239, nil, nil, nil, 1, nil, DBM_CORE_HEROIC_ICON)
-local timerShredPsycheCD					= mod:NewCDTimer(32.5, 307937, nil, nil, nil, 3, nil, DBM_CORE_DAMAGE_ICON, nil, 1, 4)--32.5-34
+local timerShredPsycheCD					= mod:NewCDTimer(37.7, 307937, nil, nil, nil, 3, nil, DBM_CORE_DAMAGE_ICON, nil, 1, 4)
 
 --local berserkTimer						= mod:NewBerserkTimer(600)
 
@@ -209,10 +214,10 @@ function mod:UNIT_TARGETABLE_CHANGED()
 	if UnitCanAttack("player", "boss1") then--Returning from Illusions
 		warnProjectionsOver:Show()
 		self:UnregisterShortTermEvents()
-		timerShredPsycheCD:Start(16)
-		--if self:IsHard() then
-		--	timerImagesofAbsolutionCD:Start(30.5-delay)
-		--end
+		timerShredPsycheCD:Start(15.2)--SUCCESS
+		if self:IsHard() then
+			timerImagesofAbsolutionCD:Start(33.9)
+		end
 	end
 end
 
