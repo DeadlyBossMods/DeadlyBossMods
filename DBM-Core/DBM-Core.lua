@@ -3683,8 +3683,9 @@ function DBM:UPDATE_BATTLEFIELD_STATUS(queueID)
 			if self.Options.ShowQueuePop and not self.Options.DontShowBossTimers then
 				queuedBattlefield[i] = select(2, GetBattlefieldStatus(i))
 				local expiration = GetBattlefieldPortExpiration(queueID)
-				self.Bars:CreateBar(expiration or 85, queuedBattlefield[i], 237538)
-				fireEvent("DBM_TimerStart", "DBMBFSTimer", queuedBattlefield[i], expiration or 85, GetPlayerFactionGroup("player") == "Alliance" and "132486" or "132485", "extratimer", nil, 0)
+				local timerIcon = GetPlayerFactionGroup("player") == "Alliance" and 132486 or 132485
+				self.Bars:CreateBar(expiration or 85, queuedBattlefield[i], timerIcon)
+				fireEvent("DBM_TimerStart", "DBMBFSTimer", queuedBattlefield[i], expiration or 85, tostring(timerIcon), "extratimer", nil, 0)
 			end
 			if self.Options.LFDEnhance then
 				self:PlaySound(8960, true)--Because regular sound uses SFX channel which is too low of volume most of time
