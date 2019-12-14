@@ -3677,13 +3677,14 @@ do
 	end
 end
 
-function DBM:UPDATE_BATTLEFIELD_STATUS()
+function DBM:UPDATE_BATTLEFIELD_STATUS(queueID)
 	for i = 1, 2 do
 		if GetBattlefieldStatus(i) == "confirm" then
 			if self.Options.ShowQueuePop and not self.Options.DontShowBossTimers then
 				queuedBattlefield[i] = select(2, GetBattlefieldStatus(i))
-				self.Bars:CreateBar(85, queuedBattlefield[i], 237538)	-- need to confirm the timer
-				fireEvent("DBM_TimerStart", "DBMBFSTimer", queuedBattlefield[i], 85, "237538", "extratimer", nil, 0)
+				local expiration = GetBattlefieldPortExpiration(queueID)
+				self.Bars:CreateBar(expiration or 85, queuedBattlefield[i], 237538)
+				fireEvent("DBM_TimerStart", "DBMBFSTimer", queuedBattlefield[i], expiration or 85, GetPlayerFactionGroup("player") == "Alliance" and "132486" or "132485", "extratimer", nil, 0)
 			end
 			if self.Options.LFDEnhance then
 				self:PlaySound(8960, true)--Because regular sound uses SFX channel which is too low of volume most of time
