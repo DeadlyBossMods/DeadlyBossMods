@@ -27,6 +27,12 @@ mod:RegisterEventsInCombat(
 --TODO, fine tune range checker with more robust checks, if mythic has more than 1 add spawn at a time
 --TODO, fix charged bonds if non heroic difficulties use a diff spellId
 --TODO, Chain Lightning timer? at the moment add stutter casts it so coding it with success means only starting a 3 second timer. If stutter casting is fixed I might put the timer in at START event
+--[[
+(ability.id = 306865 or ability.id = 306819 or ability.id = 306866 or ability.id = 306881 or ability.id = 313213 or ability.id = 310003 or ability.id = 309985 or ability.id = 314484 or ability.id = 317276) and type = "begincast"
+ or (ability.id = 310019 or ability.id = 306603 or ability.id = 313213 or ability.id = 316913) and type = "cast"
+ or (ability.id = 306732 or ability.id = 306733 or ability.id = 312996 or ability.id = 309852) and type = "applybuff"
+ or (ability.id = 313077 or ability.id = 306207 or ability.id = 306273) and type = "applydebuff"
+--]]
 --Stage 1: Gathering Power
 ----Vita
 local warnVitaPhase							= mod:NewSpellAnnounce(306732, 2)
@@ -125,11 +131,11 @@ mod:AddNamePlateOption("NPAuraOnDraws", 312750)
 mod.vb.callEssenceCount = 0
 mod.vb.callActive = false
 mod.vb.currentVita = nil
-mod.vb.lastHighest = "Unknown"
+mod.vb.lastHighest = "^^ No DBM"
 mod.vb.unstableVoidCount = 0
 mod.vb.voidEruptionCount = 0
 mod.vb.currentNightmare = nil
-mod.vb.lastLowest = "Unknown"
+mod.vb.lastLowest = "^^ No DBM"
 mod.vb.corruptedExistenceIcon = 6
 local playerHasVita, playerHasNightmare = false, false
 local ExposureTargets = {}
@@ -288,10 +294,10 @@ function mod:OnCombatStart(delay)
 	self.vb.callEssenceCount = 0
 	self.vb.callActive = false
 	self.vb.currentVita = nil
-	self.vb.lastHighest = "Unknown"
+	self.vb.lastHighest = "^^ No DBM"
 	self.vb.voidEruptionCount = 0
 	self.vb.currentNightmare = nil
-	self.vb.lastLowest = "Unknown"
+	self.vb.lastLowest = "^^ No DBM"
 	playerHasVita, playerHasNightmare = false, false
 	table.wipe(ExposureTargets)
 	table.wipe(ChargedBondsTargets)
@@ -419,14 +425,14 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerCallNightTerrorCD:Start(7.2)
 	elseif spellId == 306207 or spellId == 306273 then--Unstable Vita (Initial, hop)
 		self.vb.currentVita = args.destName
-		self.vb.lastHighest = "Unknown"
+		self.vb.lastHighest = "^^ No DBM"
 		if args:IsPlayer() then
 			playerHasVita = true
-			furthestPlayerScanner(self)
 			specWarnUnstableVita:Show()
 			specWarnUnstableVita:Play("targetyou")
 			yellUnstableVita:Yell()
 			yellUnstableVitaFades:Countdown(spellId)
+			furthestPlayerScanner(self)
 		else
 			warnUnstableVita:Show(args.destName)
 		end
@@ -436,14 +442,14 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerUnstableVita:Start(self:IsMythic() and 6 or 7, args.destName)
 	elseif spellId == 313077 then--Unstable Nightmare
 		self.vb.currentNightmare = args.destName
-		self.vb.lastLowest = "Unknown"
+		self.vb.lastLowest = "^^ No DBM"
 		if args:IsPlayer() then
 			playerHasNightmare = true
-			closestPlayerScanner(self)
 			specWarnUnstableNightmare:Show()
 			specWarnUnstableNightmare:Play("targetyou")
 			yellUnstableNightmare:Yell()
 			yellUnstableNightmareFades:Countdown(spellId)
+			closestPlayerScanner(self)
 		else
 			warnUnstableNightmare:Show(args.destName)
 		end

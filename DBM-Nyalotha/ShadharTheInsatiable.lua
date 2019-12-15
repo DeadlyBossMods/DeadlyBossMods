@@ -29,6 +29,11 @@ mod:RegisterEventsInCombat(
 --TODO, add tracking of tasty Morsel carriers to infoframe?
 --TODO, see if seenAdds solved the fixate timer issue, or if something else wonky still going on with it
 --TODO, first fixate Still 31 on heroic? Or is the extra one mythic exclusive for Tasty mechanic
+--[[
+(ability.id = 312528 or ability.id = 306928 or ability.id = 312529 or ability.id = 306929 or ability.id = 307260 or ability.id = 306953) and type = "begincast"
+ or (ability.id = 307471 or ability.id = 312530 or ability.id = 306930) and type = "cast"
+ or (ability.id = 306447 or ability.id = 306931 or ability.id = 306933) and type = "applybuff"
+--]]
 local warnHunger							= mod:NewStackAnnounce(312328, 2, nil, false, 2)--Mythic
 local warnUmbralMantle						= mod:NewSpellAnnounce(306447, 2)
 local warnUmbralEruption					= mod:NewSpellAnnounce(308157, 2)
@@ -121,7 +126,7 @@ function mod:ZapTarget(targetname, uId)
 		specWarnDebilitatingSpit:Show()
 		specWarnDebilitatingSpit:Play("targetyou")
 	else
-		warnDebilitatingSpit:Show(self.vb.zapCount, targetname)
+		warnDebilitatingSpit:Show(targetname)
 	end
 end
 
@@ -324,12 +329,6 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spell
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
-
-function mod:SPELL_INTERRUPT(args)
-	if type(args.extraSpellId) == "number" and args.extraSpellId == 298548 then
-
-	end
-end
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)

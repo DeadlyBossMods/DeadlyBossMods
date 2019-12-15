@@ -29,6 +29,12 @@ mod:RegisterEventsInCombat(
 --TODO, Cyst Genesis still listed in overview but removed from P3 in latest build, see if it still exists. 313118/307064
 --TODO, Insanity Bomb CD, only saw the first case of phase, not time between casts
 --TODO, escalated tank warning for adaptive membrane on Fury, if you're tanking it
+--TODO, review CLEU for a phase 3 trigger that can be used in WCL expression in place of the faster UNIT event mod uses
+--[[
+(ability.id = 315820 or ability.id = 307809 or ability.id = 313039 or ability.id = 307092 or ability.id = 315891 or ability.id = 315947) and type = "begincast"
+ or (ability.id = 313362 or ability.id = 306973 or ability.id = 306986 or ability.id = 306988) and type = "cast"
+ or ability.id = 307079 and (type = "applybuff" or type = "removebuff")
+--]]
 --General
 local warnPhase								= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
 local warnGiftofNzoth						= mod:NewTargetNoFilterAnnounce(313334, 2)
@@ -160,7 +166,6 @@ function mod:SPELL_CAST_START(args)
 		specWarnOccipitalBlast:Play("shockwave")
 		timerOccipitalBlastCD:Start()
 	elseif spellId == 315947 then
-
 		timerMandibleSlamCD:Start()
 	end
 end

@@ -27,6 +27,10 @@ mod:RegisterEventsInCombat(
 
 --TODO, see if heroic timers still faster. Considering mythic timers were same as normal, it may just be that timers same in all now. OR, mythic was bugged
 --TODO, add https://ptr.wowhead.com/spell=313198/void-touched when it's put in combat log
+--[[
+(ability.id = 312336 or ability.id = 316211) and type = "begincast"
+ or (ability.id = 311551 or ability.id = 306319 or ability.id = 306208) and type = "cast"
+--]]
 local warnAbyssalStrike						= mod:NewStackAnnounce(311551, 2, nil, "Tank")
 local warnVoidRitual						= mod:NewCountAnnounce(312336, 2)--Fallback if specwarn is disabled
 local warnFanaticism						= mod:NewTargetNoFilterAnnounce(314179, 3, nil, "Tank|Healer")
