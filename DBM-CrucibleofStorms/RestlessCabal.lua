@@ -15,12 +15,11 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 282675 282589 282515 282517 282617 283540 282621 285154",
-	"SPELL_CAST_SUCCESS 282561 282384 282407 285416 283066 283540 282621",
+	"SPELL_CAST_SUCCESS 282561 282384 282407 285416 283066",
 	"SPELL_AURA_APPLIED 282741 282742 282914 283524 282386 282540 282561 282384 282432 287876 282621 282566",
 	"SPELL_AURA_APPLIED_DOSE 282384 282566 282386",
 	"SPELL_AURA_REFRESH 282384 282386",
 	"SPELL_AURA_REMOVED 282741 282742 282386 282561 282432 282741 282621 282566",
-	"SPELL_INTERRUPT",
 	"SPELL_SUMMON 282515",
 --	"SPELL_PERIODIC_DAMAGE 287876",
 --	"SPELL_PERIODIC_MISSED 287876",
@@ -100,7 +99,6 @@ mod:AddSetIconOption("SetIconOnAdds", 282617, true, true, {3, 4, 5})
 mod:AddRangeFrameOption(6, 283524)
 mod:AddInfoFrameOption(282741, true)
 mod:AddNamePlateOption("NPAuraOnEcho", 282517)
-mod:AddNamePlateOption("NPAuraOnWitness", 282621)
 
 --mod.vb.phase = 1
 mod.vb.shieldCount = 0
@@ -114,7 +112,6 @@ mod.vb.heraldTarget = nil
 local castsPerGUID = {}
 local playerWitness = false
 local playerPromise = false
-local interruptTextures = {[1] = 2178508, [2] = 2178501, [3] = 2178502, [4] = 2178503, [5] = 2178504, [6] = 2178505, [7] = 2178506, [8] = 2178507,}--Fathoms Deck
 
 local updateInfoFrame
 do
@@ -187,7 +184,7 @@ function mod:OnCombatStart(delay)
 	timerVoidCrashCD:Start(13-delay)--SUCCESS
 	timerCrushingDoubtCD:Start(18.1-delay, 1)
 	berserkTimer:Start(self:IsMythic() and 570 or 780-delay)--Mythic and normal berserks verified. LFR still unknown if bererks at 13 min.
-	if self.Options.NPAuraOnPresence or self.Options.NPAuraOnWitness then
+	if self.Options.NPAuraOnPresence then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
 	if self.Options.InfoFrame then
@@ -203,7 +200,7 @@ function mod:OnCombatEnd()
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
 	end
-	if self.Options.NPAuraOnPresence or self.Options.NPAuraOnWitness then
+	if self.Options.NPAuraOnPresence then
 		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
 	end
 end
@@ -274,18 +271,6 @@ function mod:SPELL_CAST_START(args)
 				specWarnWitnesstheEnd:Play("kickcast")
 			end
 		end
-		if self.Options.NPAuraOnWitness then
-			DBM.Nameplate:Hide(true, args.sourceGUID)--In case spell interrupt check still isn't working
-			DBM.Nameplate:Show(true, args.sourceGUID, spellId, interruptTextures[count])
-		end
-	end
-end
-
-function mod:SPELL_INTERRUPT(args)
-	if type(args.extraSpellId) == "number" and (args.extraSpellId == 283540 or args.extraSpellId == 282621) then
-		if self.Options.NPAuraOnWitness then
-			DBM.Nameplate:Hide(true, args.destGUID)
-		end
 	end
 end
 
@@ -304,10 +289,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.shieldCount = self.vb.shieldCount + 1
 		warnCustodyoftheDeep:Show(self.vb.shieldCount)
 		timerAbyssalCollapse:Start()
-	elseif (spellId == 283540 or spellId == 282621) then
-		if self.Options.NPAuraOnWitness then
-			DBM.Nameplate:Hide(true, args.sourceGUID)
-		end
 	end
 end
 
@@ -479,9 +460,6 @@ function mod:UNIT_DIED(args)
 		timerVisageActive:Stop(args.destGUID)
 	elseif cid == 145053 then--Eldritch Abomination
 		castsPerGUID[args.destGUID] = nil
-		if self.Options.NPAuraOnWitness then
-			DBM.Nameplate:Hide(true, args.destGUID)
-		end
 	end
 end
 

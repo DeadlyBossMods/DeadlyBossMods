@@ -27,6 +27,11 @@ mod:RegisterEventsInCombat(
 --TODO, update tank stacks if 2 isn't right. Also to do, if the 3 tank check is overkill or not, for now, might as well go all in
 --TODO, does range check always need to be up or just show it during gale blast?
 --TODO, more stuff with Stage 2 adds, maybe timers for their spawns, and spawn announces? Warnings for their ambushes?
+--[[
+(ability.id = 313973 or ability.id = 306289 or ability.id = 306735 or ability.id = 306995) and type = "begincast"
+ or (ability.id = 306111 or ability.id = 306289) and type = "cast"
+ or ability.id = 306995
+ --]]
 local warnPhase								= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
 --Stage One: The Black Emperor
 local warnSearingArmor						= mod:NewStackAnnounce(306015, 2, nil, "Tank")

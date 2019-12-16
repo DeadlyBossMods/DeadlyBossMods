@@ -69,7 +69,7 @@ end
 
 DBM = {
 	Revision = parseCurseDate("@project-date-integer@"),
-	DisplayVersion = "8.2.30", -- the string that is shown as version
+	DisplayVersion = "8.2.31 alpha", -- the string that is shown as version
 	ReleaseRevision = releaseDate(2019, 12, 5) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 }
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
@@ -449,6 +449,7 @@ local AddMsg
 local delayedFunction
 local dataBroker
 local voiceSessionDisabled = false
+local handleSync
 
 local fakeBWVersion, fakeBWHash = 167, "4f92f10"
 local versionQueryString, versionResponseString = "Q^%d^%s", "V^%d^%s"
@@ -639,7 +640,8 @@ local function sendSync(prefix, msg)
 		elseif IsInGroup(LE_PARTY_CATEGORY_HOME) then
 			SendAddonMessage("D4", prefix .. "\t" .. msg, "PARTY")
 		else--for solo raid
-			SendAddonMessage("D4", prefix .. "\t" .. msg, "WHISPER", playerName)
+			handleSync("WHISPER", playerName, strsplit("\t", msg))
+			--SendAddonMessage("D4", prefix .. "\t" .. msg, "WHISPER", playerName)
 		end
 	end
 end
@@ -3675,13 +3677,15 @@ do
 	end
 end
 
-function DBM:UPDATE_BATTLEFIELD_STATUS()
+function DBM:UPDATE_BATTLEFIELD_STATUS(queueID)
 	for i = 1, 2 do
 		if GetBattlefieldStatus(i) == "confirm" then
 			if self.Options.ShowQueuePop and not self.Options.DontShowBossTimers then
 				queuedBattlefield[i] = select(2, GetBattlefieldStatus(i))
-				self.Bars:CreateBar(85, queuedBattlefield[i], 237538)	-- need to confirm the timer
-				fireEvent("DBM_TimerStart", "DBMBFSTimer", queuedBattlefield[i], 85, "237538", "extratimer", nil, 0)
+				local expiration = GetBattlefieldPortExpiration(queueID)
+				local timerIcon = GetPlayerFactionGroup("player") == "Alliance" and 132486 or 132485
+				self.Bars:CreateBar(expiration or 85, queuedBattlefield[i], timerIcon)
+				fireEvent("DBM_TimerStart", "DBMBFSTimer", queuedBattlefield[i], expiration or 85, tostring(timerIcon), "extratimer", nil, 0)
 			end
 			if self.Options.LFDEnhance then
 				self:PlaySound(8960, true)--Because regular sound uses SFX channel which is too low of volume most of time
@@ -4927,7 +4931,7 @@ do
 		end
 	end
 
-	local function handleSync(channel, sender, prefix, ...)
+	handleSync = function(channel, sender, prefix, ...)
 		if not prefix then
 			return
 		end

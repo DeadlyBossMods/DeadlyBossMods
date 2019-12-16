@@ -25,11 +25,10 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 282399 285994 282533 286435 282243 285660 281936 290574",
-	"SPELL_CAST_SUCCESS 282543 282526 286450 282179 282247 282082 289292 285875 282083 289307 282533 282243",
+	"SPELL_CAST_SUCCESS 282543 282526 286450 282179 282247 282082 289292 285875 282083 289307",
 	"SPELL_AURA_APPLIED 285671 285875 286434 285659",
 	"SPELL_AURA_APPLIED_DOSE 285875 285671",
 	"SPELL_AURA_REMOVED 286434 285659",
-	"SPELL_INTERRUPT",
 	"UNIT_DIED",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
@@ -65,7 +64,7 @@ local yellThrowTargetFades				= mod:NewShortFadesYell(289307)
 
 --mod:AddTimerLine(DBM:EJ_GetSectionInfo(18527))
 mod:AddTimerLine(DBM_BOSS)
---local timerEnergyAOECD					= mod:NewCDCountTimer(100, energyAOESpellId, nil, nil, nil, 2)
+--local timerEnergyAOECD				= mod:NewCDCountTimer(100, energyAOESpellId, nil, nil, nil, 2)
 local timerTankComboCD					= mod:NewCDTimer(30.3, tankComboId, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON, nil, 2, 4)
 local timerSlamCD						= mod:NewCDTimer(27, slamSpellId, nil, nil, nil, 3)
 local timerFerociousRoarCD				= mod:NewCDTimer(36.5, 285994, nil, nil, nil, 2, nil, nil, nil, 3, 3)
@@ -76,14 +75,12 @@ local timerAddAttackCD					= mod:NewCDTimer(23.8, addProjectileId, nil, nil, nil
 --local berserkTimer					= mod:NewBerserkTimer(600)
 
 mod:AddRangeFrameOption(8, 285994)
-mod:AddNamePlateOption("NPAuraOnInterrupt", addCastId)
 mod:AddInfoFrameOption(energyAOESpellId, true)
 
 mod.vb.EnergyAOECount = 0
 mod.vb.comboCount = 0
 local coreTargets = {}
 local castsPerGUID = {}
-local interruptTextures = {[1] = 2178517, [2] = 2178510, [3] = 2178511, [4] = 2178512, [5] = 2178513, [6] = 2178514, [7] = 2178515, [8] = 2178516,}--Squalls Deck
 
 local updateInfoFrame
 do
@@ -139,9 +136,6 @@ function mod:OnCombatStart(delay)
 		DBM.InfoFrame:SetHeader(OVERVIEW)
 		DBM.InfoFrame:Show(8, "function", updateInfoFrame, false, false)
 	end
-	if self.Options.NPAuraOnInterrupt then
-		DBM:FireEvent("BossMod_EnableHostileNameplates")
-	end
 end
 
 function mod:OnCombatEnd()
@@ -150,9 +144,6 @@ function mod:OnCombatEnd()
 	end
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
-	end
-	if self.Options.NPAuraOnInterrupt then
-		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
 	end
 end
 
@@ -189,9 +180,6 @@ function mod:SPELL_CAST_START(args)
 			else
 				specWarnAddInterrupt:Play("kickcast")
 			end
-		end
-		if self.Options.NPAuraOnInterrupt and count < 9 then
-			DBM.Nameplate:Show(true, args.sourceGUID, spellId, interruptTextures[count])
 		end
 	elseif spellId == 286435 or spellId == 285660 then
 		--timerEnergyAOECD:Stop()
@@ -232,10 +220,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 			yellThrowTargetFades:Countdown(spellId, 3)
 		else
 			warnThrowTarget:Show(args.destName)
-		end
-	elseif spellId == 282533 or spellId == 282243 then
-		if self.Options.NPAuraOnInterrupt then
-			DBM.Nameplate:Hide(true, args.sourceGUID)
 		end
 	end
 end
@@ -290,21 +274,10 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
-function mod:SPELL_INTERRUPT(args)
-	if type(args.extraSpellId) == "number" and (args.extraSpellId == 282533 or args.extraSpellId == 282243) then
-		if self.Options.NPAuraOnInterrupt then
-			DBM.Nameplate:Hide(true, args.destGUID)
-		end
-	end
-end
-
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 144998 or cid == 149617 or cid == 144876 or cid == 149611 then--Death Specter/Apetagonizer 3000
 		castsPerGUID[args.destGUID] = nil
-		if self.Options.NPAuraOnInterrupt then
-			DBM.Nameplate:Hide(true, args.destGUID)
-		end
 	end
 end
 

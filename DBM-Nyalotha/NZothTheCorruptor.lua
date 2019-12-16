@@ -37,6 +37,12 @@ mod:RegisterEventsInCombat(
 --TODO, figure out the abilities that were removed from journal in latest update. The spells still exist and weren't removing, indicating maybe those harder mechanics were moved to mythic only
 --TODO, warn when own sanity 50, 30, 10?
 --New Voice: "leavemind"
+--[[
+(ability.id = 311176 or ability.id = 316711 or ability.id = 310184 or ability.id = 310134 or ability.id = 310130 or ability.id = 317292 or ability.id = 310331 or ability.id = 315772 or ability.id = 309698 or ability.id = 313400 or ability.id = 308885 or ability.id = 317066) and type = "begincast"
+ or (ability.id = 315927 or ability.id = 316463) and type = "cast"
+ or (ability.id = 309296 or ability.id = 309307) and type = "cast"
+ or ability.id = 312155 and (type = "applydebuff" or type = "removedebuff")
+--]]
 --General
 local warnPhase								= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
 local warnGiftofNzoth						= mod:NewTargetNoFilterAnnounce(313334, 2)
@@ -162,7 +168,16 @@ local function warnParanoiaTargets()
 end
 
 function mod:OnCombatStart(delay)
-	self.vb.phase = 0
+	if self:IsMythic() then
+		self.vb.phase = 1
+		--Assumptions from phase 2 start timers for non mythic
+		timerMindgraspCD:Start(18.7)
+		timerBasherTentacleCD:Start(36, 1)
+		--timerSpikeTentacleCD:Start(27.9)
+		--timerCorruptorTentacleCD:Start(32)
+	else
+		self.vb.phase = 0
+	end
 	self.vb.BasherCount = 0
 	table.wipe(playersInMind)
 	selfInMind = false
@@ -203,7 +218,7 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 311176 then
-		self.vb.phase = 1
+		self.vb.phase = 1--Non Mythic
 		warnGlimpseofInfinite:Show()
 		--Start P1 timers here, more accurate, especially if boss forgets to cast this :D
 		timerVoidGazeCD:Start(14.7)
@@ -358,13 +373,11 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 313793 then
 		warnFlamesofInsanity:CombinedShow(0.3, args.destName)
 	elseif spellId == 315709 then
-
 		if args:IsPlayer() then
 			specWarnTreadLightly:Show()
 			specWarnTreadLightly:Play("targetyou")
 		end
 	elseif spellId == 315710 then
-
 		if args:IsPlayer() then
 			specWarnContempt:Show()
 			specWarnContempt:Play("stopmove")
@@ -372,7 +385,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 312155 and args:GetDestCreatureID() == 158041 then--Shattered Psyche on N'Zoth
 		warnShatteredPsyche:Show(args.destName)
 		--timerShatteredPsyche:Start(args.destName)
-		if self.vb.phase == 1 then
+		if not self:IsMythic() and self.vb.phase == 1 then
 			self.vb.phase = 2
 			timerMindgraspCD:Start(18.7)--START (basically happens immediately after 312155 ends, but it can end 18-30?
 			timerBasherTentacleCD:Start(36, 1)

@@ -28,6 +28,11 @@ mod:RegisterEventsInCombat(
 --TODO, auto icon marking of siphons?
 --TODO, tank swap stacks 2 or 3?
 --TODO, raid icons for ancient curse review
+--[[
+(ability.id = 308044 or ability.id = 305663 or ability.id = 308903 or ability.id = 308872 or ability.id = 314337 or ability.id = 305722) and type = "begincast"
+ or (ability.id = 307805 or ability.id = 308044 or ability.id = 310129 or ability.id = 306290)
+ or ability.id = 306005 and (type = "applybuff" or type = "removebuff")
+--]]
 --Stage One: Obsidian Destroyer
 local warnDevourMagic						= mod:NewTargetAnnounce(307805, 3)
 local warnShadowWounds						= mod:NewStackAnnounce(307399, 2, nil, "Tank")

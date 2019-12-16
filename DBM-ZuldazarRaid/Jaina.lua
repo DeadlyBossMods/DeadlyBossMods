@@ -14,14 +14,13 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 287565 285177 285459 290036 288221 288345 288441 288719 289219 289940 290084 288619 288747 289488 289220 287626",
-	"SPELL_CAST_SUCCESS 285725 287925 287626 289220 288374 288211 290084",
+	"SPELL_CAST_SUCCESS 285725 287925 287626 289220 288374 288211",
 	"SPELL_AURA_APPLIED 287993 287490 289387 287925 285253 288199 288219 288212 288374 288412 288434 289220 285254 288038 287322 288169 290053",
 	"SPELL_AURA_APPLIED_DOSE 287993 285253",
 	"SPELL_AURA_REMOVED 287993 287925 288199 288219 288212 288374 288038 290001 289387 287322 285254 290053",
 	"SPELL_AURA_REMOVED_DOSE 287993",
 	"SPELL_PERIODIC_DAMAGE 288297",
 	"SPELL_PERIODIC_MISSED 288297",
-	"SPELL_INTERRUPT",
 	"UNIT_DIED",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
@@ -137,7 +136,6 @@ local timerCrystallineDustCD			= mod:NewCDCountTimer(14.1, 289940, nil, nil, 2, 
 mod:AddNamePlateOption("NPAuraOnMarkedTarget2", 288038, false)
 mod:AddNamePlateOption("NPAuraOnTimeWarp", 287925)
 mod:AddNamePlateOption("NPAuraOnRefractiveIce", 288219)
-mod:AddNamePlateOption("NPAuraOnWaterBolt", 290084)
 mod:AddNamePlateOption("NPAuraOnHowlingWinds2", 290053, false)
 mod:AddSetIconOption("SetIconAvalanche", 287565, true, false, {1, 2, 3})
 mod:AddSetIconOption("SetIconBroadside", 288212, true, false, {1, 2, 3})
@@ -171,7 +169,6 @@ local graspActive = false
 local castsPerGUID = {}
 local rangeThreshold = 1
 local fixStupid = {}
-local interruptTextures = {[1] = 2178508, [2] = 2178501, [3] = 2178502, [4] = 2178503, [5] = 2178504, [6] = 2178505, [7] = 2178506, [8] = 2178507,}--Fathoms Deck
 local CVAR1, CVAR2 = nil, nil
 
 --/run DBM:GetModByName("2343"):TimerTestFunction(30)
@@ -273,7 +270,7 @@ function mod:OnCombatStart(delay)
 		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(287993))
 		DBM.InfoFrame:Show(10, "table", ChillingTouchStacks, 1)
 	end
-	if self.Options.NPAuraOnMarkedTarget2 or self.Options.NPAuraOnTimeWarp or self.Options.NPAuraOnRefractiveIce or self.Options.NPAuraOnWaterBolt or self.Options.NPAuraOnHowlingWinds2 then
+	if self.Options.NPAuraOnMarkedTarget2 or self.Options.NPAuraOnTimeWarp or self.Options.NPAuraOnRefractiveIce or self.Options.NPAuraOnHowlingWinds2 then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
 	--Group leader decides interrupt behavior
@@ -301,7 +298,7 @@ function mod:OnCombatEnd()
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
 	end
-	if self.Options.NPAuraOnMarkedTarget2 or self.Options.NPAuraOnTimeWarp or self.Options.NPAuraOnRefractiveIce or self.Options.NPAuraOnWaterBolt or self.Options.NPAuraOnHowlingWinds2 then
+	if self.Options.NPAuraOnMarkedTarget2 or self.Options.NPAuraOnTimeWarp or self.Options.NPAuraOnRefractiveIce or self.Options.NPAuraOnHowlingWinds2 then
 		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
 	end
 	if CVAR1 or CVAR2 then
@@ -407,10 +404,6 @@ function mod:SPELL_CAST_START(args)
 				specWarnWaterBoltVolley:Play("kickcast")
 			end
 		end
-		if self.Options.NPAuraOnWaterBolt then
-			DBM.Nameplate:Hide(true, args.sourceGUID)--In case spell interrupt check still isn't working
-			DBM.Nameplate:Show(true, args.sourceGUID, spellId, interruptTextures[count])
-		end
 	elseif spellId == 288619 then
 		self.vb.orbCount = self.vb.orbCount + 1
 		specWarnOrbofFrost:Show(self.vb.orbCount)
@@ -454,10 +447,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.broadsideIcon = 0
 		self.vb.broadsideCount = self.vb.broadsideCount + 1
 		timerBroadsideCD:Start(nil, self.vb.broadsideCount+1)
-	elseif spellId == 290084 then
-		if self.Options.NPAuraOnWaterBolt then
-			DBM.Nameplate:Hide(true, args.sourceGUID)
-		end
 	end
 end
 
@@ -726,23 +715,12 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spell
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
-function mod:SPELL_INTERRUPT(args)
-	if type(args.extraSpellId) == "number" and args.extraSpellId == 290084 then
-		if self.Options.NPAuraOnWaterBolt then
-			DBM.Nameplate:Hide(true, args.destGUID)
-		end
-	end
-end
-
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 149144 or cid == 149558 then--Jaina's Tide Elemental
 		castsPerGUID[args.destGUID] = nil
 		timerHeartofFrostCD:Stop()
 		timerWaterBoltVolleyCD:Stop()
-		if self.Options.NPAuraOnWaterBolt then
-			DBM.Nameplate:Hide(true, args.destGUID)
-		end
 	elseif cid == 148965 then--Kul Tiran Marine
 		if self.Options.NPAuraOnMarkedTarget2 then
 			DBM.Nameplate:Hide(true, args.destGUID)

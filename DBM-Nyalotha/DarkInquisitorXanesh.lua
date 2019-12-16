@@ -14,18 +14,23 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 312336 316211",
-	"SPELL_CAST_SUCCESS 311551 306319 306208 316211",
+	"SPELL_CAST_SUCCESS 311551 306319 306208",
 	"SPELL_AURA_APPLIED 312406 314179 306311 311551",
 	"SPELL_AURA_APPLIED_DOSE 311551",
 	"SPELL_AURA_REMOVED 312406",
 	"SPELL_PERIODIC_DAMAGE 305575",
 	"SPELL_PERIODIC_MISSED 305575",
 	"CHAT_MSG_MONSTER_YELL",
-	"SPELL_INTERRUPT",
 	"UNIT_DIED"
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
+--TODO, see if heroic timers still faster. Considering mythic timers were same as normal, it may just be that timers same in all now. OR, mythic was bugged
+--TODO, add https://ptr.wowhead.com/spell=313198/void-touched when it's put in combat log
+--[[
+(ability.id = 312336 or ability.id = 316211) and type = "begincast"
+ or (ability.id = 311551 or ability.id = 306319 or ability.id = 306208) and type = "cast"
+--]]
 local warnAbyssalStrike						= mod:NewStackAnnounce(311551, 2, nil, "Tank")
 local warnVoidRitual						= mod:NewCountAnnounce(312336, 2)--Fallback if specwarn is disabled
 local warnFanaticism						= mod:NewTargetNoFilterAnnounce(314179, 3, nil, "Tank|Healer")
@@ -51,16 +56,14 @@ local timerTormentCD						= mod:NewNextCountTimer(46.7, 306208, nil, nil, nil, 3
 --mod:AddRangeFrameOption(6, 264382)
 mod:AddInfoFrameOption(312406, true)
 mod:AddSetIconOption("SetIconOnVoidWoken", 312406, true, false, {1, 2, 3})
-mod:AddNamePlateOption("NPAuraOnTerrorWave", 296914)
 
 mod.vb.ritualCount = 0
 mod.vb.obeliskCount = 0
 mod.vb.tormentCount = 0
 local voidWokenTargets = {}
-local heroicTormentTimers = {20.5, 50.6, 29, 49.6, 30.2, 49.6, 31.1, 48.7}
-local normalTormentTimers = {20.5, 71.8, 30.4, 65.7, 30.6, 65.6, 30.5}
+local heroicTormentTimers = {20.5, 50.6, 29, 49.6, 30.2, 49.6, 31.1, 48.7}--Heroic
+local normalTormentTimers = {20.5, 71.8, 30.4, 65.7, 30.6, 65.6, 30.5}--Normal and mythic
 local castsPerGUID = {}
-local interruptTextures = {[1] = 2178508, [2] = 2178501, [3] = 2178502, [4] = 2178503, [5] = 2178504, [6] = 2178505, [7] = 2178506, [8] = 2178507,}--Fathoms Deck
 
 local updateInfoFrame
 do
@@ -76,7 +79,6 @@ do
 	updateInfoFrame = function()
 		table.wipe(lines)
 		table.wipe(sortedLines)
-		--TODO, personal https://ptr.wowhead.com/spell=313198/void-touched tracker, if it has an actual duration?
 		--Void Woken Targets
 		if #voidWokenTargets > 0 then
 			addLine("---"..voidWoken.."---")
@@ -111,8 +113,8 @@ function mod:OnCombatStart(delay)
 	if self:IsHard() then
 		timerSummonRitualObeliskCD:Start(12-delay, 1)
 	end
-	timerAbyssalStrikeCD:Start(33.4-delay)--SUCCESS
-	if self:IsHard() then
+	timerAbyssalStrikeCD:Start(32.9-delay)--SUCCESS
+	if self:IsHeroic() then
 		timerSoulFlayCD:Start(14-delay)--SUCCESS
 		timerVoidRitualCD:Start(52.9-delay, 1)
 	else
@@ -154,7 +156,7 @@ function mod:SPELL_CAST_START(args)
 		else
 			warnVoidRitual:Show(self.vb.ritualCount)
 		end
-		timerVoidRitualCD:Start(self:IsHard() and 79.7 or 95.2, self.vb.ritualCount+1)
+		timerVoidRitualCD:Start(self:IsHeroic() and 79.7 or 95.2, self.vb.ritualCount+1)
 	elseif spellId == 316211 then
 		if not castsPerGUID[args.sourceGUID] then
 			castsPerGUID[args.sourceGUID] = 0
@@ -177,10 +179,6 @@ function mod:SPELL_CAST_START(args)
 				specWarnTerrorWave:Play("kickcast")
 			end
 		end
-		if self.Options.NPAuraOnTerrorWave then
-			DBM.Nameplate:Hide(true, args.sourceGUID)--In case spell interrupt check still isn't working
-			DBM.Nameplate:Show(true, args.sourceGUID, spellId, interruptTextures[count])
-		end
 	end
 end
 
@@ -189,18 +187,14 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if spellId == 311551 then
 		timerAbyssalStrikeCD:Start()
 	elseif spellId == 306319 then
-		timerSoulFlayCD:Start(self:IsHard() and 46.7 or 57.2)
+		timerSoulFlayCD:Start(self:IsHeroic() and 46.7 or 57.2)
 	elseif spellId == 306208 then
 		self.vb.tormentCount = self.vb.tormentCount + 1
 		specWarnTorment:Show(self.vb.tormentCount)
 		specWarnTorment:Play("watchstep")
-		local timer = self:IsHard() and heroicTormentTimers[self.vb.tormentCount+1] or self:IsEasy() and normalTormentTimers[self.vb.tormentCount+1]
+		local timer = self:IsHeroic() and heroicTormentTimers[self.vb.tormentCount+1] or normalTormentTimers[self.vb.tormentCount+1]
 		if timer then
 			timerTormentCD:Start(timer, self.vb.tormentCount+1)
-		end
-	elseif spellId == 316211 then
-		if self.Options.NPAuraOnTerrorWave then
-			DBM.Nameplate:Hide(true, args.sourceGUID)
 		end
 	end
 end
@@ -257,14 +251,6 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spell
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
-function mod:SPELL_INTERRUPT(args)
-	if type(args.extraSpellId) == "number" and args.extraSpellId == 316211 then
-		if self.Options.NPAuraOnTerrorWave then
-			DBM.Nameplate:Hide(true, args.destGUID)
-		end
-	end
-end
-
 do
 	--"<185.26 22:54:22> [CHAT_MSG_MONSTER_YELL] Obelisks of shadow, rise!#Dark Inquisitor Xanesh###Dark Inquisitor Xanesh##0#0##0#920#nil#0#false#false#false#false", -- [1338]
 	local bossName = DBM:EJ_GetSectionInfo(20786)
@@ -283,9 +269,6 @@ function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 160937 then--TODO, FIXME
 		castsPerGUID[args.destGUID] = nil
-		if self.Options.NPAuraOnTerrorWave then
-			DBM.Nameplate:Hide(true, args.destGUID)
-		end
 	end
 end
 

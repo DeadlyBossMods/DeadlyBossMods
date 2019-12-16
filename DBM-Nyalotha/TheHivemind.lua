@@ -29,6 +29,10 @@ mod:RegisterEventsInCombat(
 --TODO, GTFO shit on the ground
 --TODO, warn for fixate (308360)?
 --TODO, normal timers were RADICALLY different from heroic, to point that makes me think they probably changed up fight some. Heroic timers probably need redoing
+--[[
+(ability.id = 307569 or ability.id = 307213 or ability.id = 307201 or ability.id = 310340 or ability.id = 313652 or ability.id = 307968 or ability.id = 307232 or ability.id = 307582) and type = "begincast"
+ or (ability.id = 308178 or ability.id = 308227 or ability.id = 307232 or ability.id = 312868 or ability.id = 312710) and type = "cast"
+--]]
 --General
 local warnDarkRecon							= mod:NewCastAnnounce(307569, 4)
 --Ka'zir
@@ -128,25 +132,25 @@ local allTimers = {
 		----Echoing Void
 		[307232] = {80.1, 30.0, 58.1, 52.0, 55.0}
 	},
-	["heroic"] = {--10-26-19 Timers (probably now wrong and same as mythic)
+	["heroic"] = {--Unknown, so mythic timers are used for now
 		--Ka'zir
 		----Mind-Numbing Nova
-		[313652] = {9.8, 50.1, 39.9, 45.0, 45.3, 100.2, 50.2, 39.8, 45.0, 45.0},
+		[313652] = {12.0, 12.0, 12.0, 15.0, 12.0, 17.5, 11.5, 12.0, 12.0, 11.9, 12.0, 12.0, 12.0, 12.0, 12.0, 11.9, 12.0, 27.0, 12.0, 12.0, 12.0, 12.0, 18.0, 12.0, 12.9},
 		----Spawn Acidic Aqir
-		[310340] = {14.9, 30.1, 39.8, 20.0, 25.2, 34.8, 30.0, 100.5, 29.9, 40.1, 20.0, 24.8, 35.2, 29.9},
+		[310340] = {45.0, 52.0, 48.0, 50.0, 50.1, 49.9},
 		----Volatile Eruption (SUCCESS)
-		[308178] = {111.9, 108.5, 172.0},
+		[308178] = {87.6},
 		----Call Flyer Swarm (SUCCESS)
-		[312710] = {121.9, 37.9, 95.0, 147.5, 38.1},
+		[312710] = {50.0, 70.1, 75.0, 60.0},
 		--Tek'ris
 		----Nullification Blast
-		[307968] = {26.9, 28.0, 44.9, 25.0, 25.0, 32.0, 17.9, 25.0, 82.5, 28.2, 44.9, 25.0, 25.0, 32.1, 17.9},
+		[307968] = {22.0, 20.0, 20.0, 40.0, 20.0, 20.0, 21.0, 20.0, 19.9, 24.0, 20.0, 20.0, 20.0, 19.9, 20.0},
 		----Summon Drones Periodic (SUCCESS)
-		[312868] = {34.9, 76.5, 108.5, 95.4, 76.5},
+		[312868] = {15.0, 70.0, 75.1, 73.0, 77.1},
 		----Accelerated Evolution (SUCCESS)
-		[308227] = {36.0, 280.3},
+		[308227] = {17.7},
 		----Echoing Void
-		[307232] = {63.9, 16.0, 39.9, 45.0, 95.0, 84.5, 16.0, 40.0, 45.2}
+		[307232] = {80.1, 30.0, 58.1, 52.0, 55.0}
 	},
 	["mythic"] = {--11-22-19 Timers
 		--Ka'zir
@@ -170,14 +174,29 @@ local allTimers = {
 	},
 }
 
---/run DBM:GetModByName("2372"):SetMythicTimersToHeroic()
-function mod:SetMythicTimersToHeroic()
-	allTimers["mythic"] = allTimers["heroic"]
-end
---/run DBM:GetModByName("2372"):SetMythicTimersToNormal()
-function mod:SetMythicTimersToNormal()
-	allTimers["mythic"] = allTimers["normal"]
-end
+--[[
+OLD HEROIC 10-26-19 Timers
+	["heroic"] = {--10-26-19 Timers (probably now wrong and same as mythic)
+		--Ka'zir
+		----Mind-Numbing Nova
+		[313652] = {9.8, 50.1, 39.9, 45.0, 45.3, 100.2, 50.2, 39.8, 45.0, 45.0},
+		----Spawn Acidic Aqir
+		[310340] = {14.9, 30.1, 39.8, 20.0, 25.2, 34.8, 30.0, 100.5, 29.9, 40.1, 20.0, 24.8, 35.2, 29.9},
+		----Volatile Eruption (SUCCESS)
+		[308178] = {111.9, 108.5, 172.0},
+		----Call Flyer Swarm (SUCCESS)
+		[312710] = {121.9, 37.9, 95.0, 147.5, 38.1},
+		--Tek'ris
+		----Nullification Blast
+		[307968] = {26.9, 28.0, 44.9, 25.0, 25.0, 32.0, 17.9, 25.0, 82.5, 28.2, 44.9, 25.0, 25.0, 32.1, 17.9},
+		----Summon Drones Periodic (SUCCESS)
+		[312868] = {34.9, 76.5, 108.5, 95.4, 76.5},
+		----Accelerated Evolution (SUCCESS)
+		[308227] = {36.0, 280.3},
+		----Echoing Void
+		[307232] = {63.9, 16.0, 39.9, 45.0, 95.0, 84.5, 16.0, 40.0, 45.2}
+	},
+--]]
 
 function mod:OnCombatStart(delay)
 	self.vb.interruptCount = 0

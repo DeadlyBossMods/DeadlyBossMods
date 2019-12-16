@@ -32,6 +32,14 @@ mod:RegisterEventsInCombat(
 --TODO, faster Stage 2 detection for stopping timers
 --TODO, detection of No Escape?
 --TODO, right way to detect phase 3 mythic twilight decimator
+--[[
+(ability.id = 307020 or ability.id = 307403 or ability.id = 307639 or ability.id = 315762) and type = "begincast"
+ or (ability.id = 307359 or ability.id = 307828 or ability.id = 310323) and type = "cast"
+ or ability.id = 307314 and type = "applydebuff"
+
+ or (ability.id = 307177 or ability.id = 307729) and type = "begincast"
+ or ability.id = 307396 and type = "cast"
+--]]
 ----Stage 1: Cult of the Void
 local warnGiftoftheVoid						= mod:NewTargetNoFilterAnnounce(306981, 1)
 local warnFanaticalAscension				= mod:NewCastAnnounce(307729, 4)

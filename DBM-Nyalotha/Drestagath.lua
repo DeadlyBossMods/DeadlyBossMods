@@ -27,6 +27,11 @@ mod:RegisterEventsInCombat(
 --TODO, track add count, show on infoframe, as well as only show Unleashed Insanity cast timer if add count was > 0
 --TODO, personal https://ptr.wowhead.com/spell=308377/void-infused-ichor tracker when infoframe code added
 --TODO, target scan acid splash?
+--[[
+(ability.id = 308941 or ability.id = 310246 or ability.id = 310329 or ability.id = 310396) and type = "begincast"
+ or (ability.id = 310277 or ability.id = 310478) and type = "cast"
+ or ability.id = 310358 and type = "applydebuff"
+--]]
 --Drest'agath
 local warnVoidGrip							= mod:NewSpellAnnounce(310246, 2, nil, "Tank")--If Tank isn't in range of boss
 local warnVolatileSeed						= mod:NewTargetNoFilterAnnounce(310277, 2)
