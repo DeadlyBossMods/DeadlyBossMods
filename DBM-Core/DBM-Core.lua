@@ -1414,7 +1414,7 @@ do
 						if loaded and insertFunction then
 							insertFunction()
 						else
-							DBM:Debug(addonName.." failed to load at time CountPack function ran", 2)
+							DBM:Debug(addonName.." failed to load at time CountPack function "..voiceGlobal.."ran", 2)
 						end
 					end
 				end
@@ -1428,7 +1428,7 @@ do
 						if loaded and insertFunction then
 							insertFunction()
 						else
-							DBM:Debug(addonName.." failed to load at time CountPack function ran", 2)
+							DBM:Debug(addonName.." failed to load at time VictoryPack function "..victoryGlobal.." ran", 2)
 						end
 					end
 				end
@@ -1442,7 +1442,7 @@ do
 						if loaded and insertFunction then
 							insertFunction()
 						else
-							DBM:Debug(addonName.." failed to load at time CountPack function ran", 2)
+							DBM:Debug(addonName.." failed to load at time DefeatPack function "..defeatGlobal.." ran", 2)
 						end
 					end
 				end
@@ -1456,7 +1456,7 @@ do
 						if loaded and insertFunction then
 							insertFunction()
 						else
-							DBM:Debug(addonName.." failed to load at time CountPack function ran", 2)
+							DBM:Debug(addonName.." failed to load at time MusicPack function "..musicGlobal.." ran", 2)
 						end
 					end
 				end
@@ -4901,9 +4901,10 @@ do
 
 	whisperSyncHandlers["RT"] = function(sender)
 		if UnitInBattleground("player") then
-			return
+			DBM:SendPVPTimers(sender)
+		else
+			DBM:SendTimers(sender)
 		end
-		DBM:SendTimers(sender)
 	end
 
 	whisperSyncHandlers["CI"] = function(sender, mod, time)
@@ -6676,6 +6677,34 @@ do
 		self:SendCombatInfo(mod, target)
 		self:SendVariableInfo(mod, target)
 		self:SendTimerInfo(mod, target)
+	end
+	function DBM:SendPVPTimers(target)
+		self:Debug("SendPVPTimers requested by "..target, 2)
+		local spamForTarget = spamProtection[target] or 0
+		-- just try to clean up the table, that should keep the hash table at max. 4 entries or something :)
+		for k, v in pairs(spamProtection) do
+			if GetTime() - v >= 1 then
+				spamProtection[k] = nil
+			end
+		end
+		if GetTime() - spamForTarget < 1 then -- just to prevent players from flooding this on purpose
+			return
+		end
+		spamProtection[target] = GetTime()
+		local mod
+		--Acquire correct pvp mod for zone we are in
+		if LastInstanceMapID == 529 or LastInstanceMapID == 1681 or LastInstanceMapID == 2107 or LastInstanceMapID == 2177 then--Arathi
+			mod = self:GetModByName("z2107")
+		elseif LastInstanceMapID == 30 or LastInstanceMapID == 2197 then--Alteract Valley
+			mod = self:GetModByName("z30")
+		elseif LastInstanceMapID == 566 or LastInstanceMapID == 968 then--Eye of the Storm
+			mod = self:GetModByName("z566")
+		else--Any other BG we can just use current MapID as mod ID
+			mod = self:GetModByName("z"..tostring(LastInstanceMapID))
+		end
+		if mod then
+			self:SendTimerInfo(mod, target)
+		end
 	end
 end
 
