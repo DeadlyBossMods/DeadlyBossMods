@@ -1484,7 +1484,7 @@ function barPrototype:Announce()
 	end
 	local text = tostring(_G[self.frame:GetName().."BarName"]:GetText())
 	text = text:gsub("|T.-|t", "")
-	msg = msg or ("%s  %d:%02d"):format(text, math.floor(self.timer / 60), self.timer % 60)
+	msg = msg or ("%s %d:%02d"):format(text, math.floor(self.timer / 60), self.timer % 60)
 	local chatWindow = ChatEdit_GetActiveWindow()
 	if chatWindow then
 		chatWindow:Insert(msg)

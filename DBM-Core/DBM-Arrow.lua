@@ -142,19 +142,19 @@ do
 		end
 
 		local x, y, _, mapId = UnitPosition("player")
-
-		if targetType == "player" then
-			targetX, targetY, _, targetMapId = UnitPosition(targetPlayer)
-			if not targetX or mapId ~= targetMapId then
-				self:Hide() -- hide the arrow if the target doesn't exist. TODO: just hide the texture and add a timeout
-			end
-		--New bug in 8.2.5, unit position returns nil for position in areas there aren't restrictions
+ 		--New bug in 8.2.5, unit position returns nil for position in areas there aren't restrictions for first few frames in that new area
 		--this just has the arrow skip some onupdates during that
-		elseif (not x or not y) then
+		if (not x or not y) then
 			if IsInInstance() then--Somehow x and y returned on entering an instance, before restrictions kicked in?
 				frame:Hide()--Hide, if in an instance, disable arrow entirely
 			else
 				return--Not in instance, but x and y nil, just skip updates until x and y start returning
+			end
+		end
+		if targetType == "player" then
+			targetX, targetY, _, targetMapId = UnitPosition(targetPlayer)
+			if not targetX or not targetY or mapId ~= targetMapId then
+				self:Hide() -- hide the arrow if the target doesn't exist. TODO: just hide the texture and add a timeout
 			end
 		elseif targetType == "rotate" then
 			rotateState = rotateState + elapsed
