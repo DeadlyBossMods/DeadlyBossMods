@@ -81,7 +81,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 265889 and args:IsDestTypePlayer() and self:CheckDispelFilter() and self:AntiSpam(5, 2) then
 		specWarnTorchStrike:Show(args.destName)
 		specWarnTorchStrike:Play("helpdispel")
-	elseif spellId == 259188 and self:AntiSpam(5, 4) then
+	elseif spellId == 259188 and self:IsValidWarning(args.sourceGUID) and self:AntiSpam(5, 4) then
 		specWarnHeavilyArmed:Show()
 		specWarnHeavilyArmed:Play("justrun")
 	end
