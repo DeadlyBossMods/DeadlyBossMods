@@ -51,11 +51,11 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnUpheaval:Play("runout")
 			yellUpheaval:Yell()
 			yellUpheavalFades:Countdown(6)
-		elseif self:CheckNearby(8, args.destName) then
-			specWarnUpheavalNear:Show(args.destName)
-			specWarnUpheavalNear:Play("runaway")
+		elseif self:CheckNearby(8, args.destName) and not DBM:UnitDebuff("player", spellId) then
+			specWarnUpheavalNear:CombinedShow(0.3, args.destName)
+			specWarnUpheavalNear:ScheduleVoice(0.3, "runaway")
 		else
-			warnUpheaval:Show(args.destName)
+			warnUpheaval:CombinedShow(0.3, args.destName)
 		end
 	end
 end
