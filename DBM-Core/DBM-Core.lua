@@ -4188,7 +4188,7 @@ do
 		end
 		if (lastMapID and tonumber(lastMapID) ~= LastInstanceMapID) or (not lastMapID and DBM.Options.DontShowPTNoID) then return end
 		timer = tonumber(timer or 0)
-		if timer > 60 then
+		if timer > 60 or timer < 0 then -- Avoid negative numbers
 			return
 		end
 		if not dummyMod then
