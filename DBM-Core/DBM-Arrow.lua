@@ -147,9 +147,8 @@ do
 		if (not x or not y) then
 			if IsInInstance() then--Somehow x and y returned on entering an instance, before restrictions kicked in?
 				frame:Hide()--Hide, if in an instance, disable arrow entirely
-			else
-				return--Not in instance, but x and y nil, just skip updates until x and y start returning
 			end
+			return--Not in instance, but x and y nil, just skip updates until x and y start returning
 		end
 		if targetType == "player" then
 			targetX, targetY, _, targetMapId = UnitPosition(targetPlayer)
