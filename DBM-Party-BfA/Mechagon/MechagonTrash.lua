@@ -8,9 +8,9 @@ mod:SetZone()
 mod.isTrashMod = true
 
 mod:RegisterEvents(
-	"SPELL_CAST_START 300687 300764 300777 300650 300159 300177 300171 299588 300087 300188 300207 299475 300414 300514 300436 300424 301681 301667 301629 284219",
+	"SPELL_CAST_START 300687 300764 300777 300650 300159 300177 300171 299588 300087 300188 300207 299475 300414 300514 300436 300424 301681 301667 301629 284219 301088 294064 294290 294324 294349",
 	"SPELL_CAST_SUCCESS 299525",
-	"SPELL_AURA_APPLIED 300650 299588 300414 301629 284219 303941",
+	"SPELL_AURA_APPLIED 300650 299588 300414 301629 284219 303941 294103 294180",
 	"SPELL_AURA_APPLIED_DOSE 299438 299474 299502",
 	"SPELL_AURA_REMOVED 284219",
 	"UNIT_DIED"
@@ -21,12 +21,16 @@ mod:RegisterEvents(
 --TODO, target scan https://www.wowhead.com/spell=299525/scrap-grenade used by Pistonhead Blaster? Cast is a bit short so it's more iffy
 --TODO, add https://www.wowhead.com/spell=301689/charged-coil ?
 --TODO, verify target scans on Scrap Cannon and B.O.R.K.
+--TODO, https://www.wowhead.com/spell=301712/pounce is instant cast, can we scan target and is it worth it on something that probably isn't avoidable?
+--TODO, https://www.wowhead.com/spell=282945/buzz-saw is environmental and probably not detectable, but add of it is
+--TODO, verify peck target scanning
 local warnExhaust					= mod:NewSpellAnnounce(300177, 2)--Heavy Scrapbot
 local warnScrapGrenade				= mod:NewSpellAnnounce(299525, 3)--Pistonhead Blaster (upgrade to specwarn/yell if target scan possible)
 local warnSledgehammer				= mod:NewStackAnnounce(299438, 2, nil, "Tank|Healer")--Pistonhead Scrapper
 local warnRippingSlash				= mod:NewStackAnnounce(299474, 2, nil, "Tank|Healer")--Saurolisk Bonenipper
 local warnNanoslicer				= mod:NewStackAnnounce(299502, 2, nil, "Tank|Healer")--Mechagon Trooper
 local warnCharge					= mod:NewCastAnnounce(301681, 3)--Mechagon Cavalry
+local warnVolatileWaste				= mod:NewCastAnnounce(294349, 4)--Living Waste
 local warnShrunk					= mod:NewTargetNoFilterAnnounce(284219, 1)
 
 local specWarnShockCoil				= mod:NewSpecialWarningSpell(300207, nil, nil, nil, 2, 2)--Weaponized Crawler
@@ -35,10 +39,15 @@ local specWarnScrapCannon			= mod:NewSpecialWarningDodge(300188, nil, nil, nil, 
 local yellScrapCannon				= mod:NewYell(300188)--Weaponized Crawler
 local specWarnBORK					= mod:NewSpecialWarningDodge(299475, nil, nil, nil, 2, 2)--Scraphound
 local yellBORK						= mod:NewYell(299475)--Scraphound
+local specWarnFlyingPeck			= mod:NewSpecialWarningDodge(294064, nil, nil, nil, 2, 2)--Strider Tonk
+local yellFlyingPeck				= mod:NewYell(294064)--Strider Tonk
 local specWarnShockwave				= mod:NewSpecialWarningDodge(300424, nil, nil, nil, 2, 2)--Scrapbone Bully
 local specWarnRapidFire				= mod:NewSpecialWarningDodge(301667, nil, nil, nil, 2, 2)--Mechagon Cavalry
+local specWarnRocketBarrage			= mod:NewSpecialWarningDodge(294103, nil, nil, nil, 2, 2)--Rocket Tonk
 local specWarnConsume				= mod:NewSpecialWarningRun(300687, nil, nil, nil, 4, 2)--Toxic Monstrosity
 local specWarnGyroScrap				= mod:NewSpecialWarningRun(300159, "Melee", nil, nil, 4, 2)--Heavy Scrapbot
+local specWarnMegaDrill				= mod:NewSpecialWarningRun(294324, "Tank", nil, nil, 4, 2)--Waste Processing Unit
+local specWarnProcessWaste			= mod:NewSpecialWarningDefensive(294290, nil, nil, nil, 1, 2)--Waste Processing Unit
 local specWarnSlimeBolt				= mod:NewSpecialWarningInterrupt(300764, "HasInterrupt", nil, nil, 1, 2)--Slime Elemental
 local specWarnSuffocatingSmog		= mod:NewSpecialWarningInterrupt(300650, "HasInterrupt", nil, nil, 1, 2)--Toxic Lurker
 local specWarnRepairProtocol		= mod:NewSpecialWarningInterrupt(300171, "HasInterrupt", nil, nil, 1, 2)--Heavy Scrapbot
@@ -49,6 +58,7 @@ local specWarnStoneskin				= mod:NewSpecialWarningInterrupt(300514, "HasInterrup
 local specWarnGraspingHex			= mod:NewSpecialWarningInterrupt(300436, "HasInterrupt", nil, nil, 1, 2)--Scrapbone Shaman
 local specWarnEnlarge				= mod:NewSpecialWarningInterrupt(301629, "HasInterrupt", nil, nil, 1, 2)--Mechagon Renormalizer
 local specWarnShrink				= mod:NewSpecialWarningInterrupt(284219, "HasInterrupt", nil, nil, 1, 2)--Mechagon Renormalizer
+local specWarnDetonate				= mod:NewSpecialWarningInterrupt(301088, "HasInterrupt", nil, nil, 1, 2)--Bomb Tonk
 local specWarnShrinkYou				= mod:NewSpecialWarningYou(284219, nil, nil, nil, 1, 2)
 local yellShrunk					= mod:NewShortYell(284219)--Shrunk will just say with white letters
 local yellShrunkRepeater			= mod:NewYell(284219, UnitName("player"))
@@ -57,6 +67,7 @@ local specWarnOverclockDispel		= mod:NewSpecialWarningDispel(299588, "MagicDispe
 local specWarnEnlargeDispel			= mod:NewSpecialWarningDispel(301629, "MagicDispeller", nil, nil, 1, 2)--Mechagon Renormalizer
 local specWarnDefensiveCounter		= mod:NewSpecialWarningDispel(303941, "MagicDispeller", nil, nil, 1, 2)--Anodized Coilbearer
 local specWarnShrinkDispel			= mod:NewSpecialWarningDispel(284219, "RemoveMagic", nil, nil, 1, 2)--Mechagon Renormalizer
+local specWarnFlamingRefuseDispel	= mod:NewSpecialWarningDispel(294180, "RemoveMagic", nil, nil, 1, 2)--Junkyard D.0.G.
 local specWarnEnrageDispel			= mod:NewSpecialWarningDispel(300414, "RemoveEnrage", nil, nil, 1, 2)--Scrapbone Grinder/Scrapbone Bully
 --local specWarnRiotShield			= mod:NewSpecialWarningReflect(258317, "CasterDps", nil, nil, 1, 2)
 
@@ -78,6 +89,13 @@ function mod:BORKtarget(targetname, uId)
 	if not targetname then return end
 	if targetname == UnitName("player") and self:AntiSpam(4, 5) then
 		yellBORK:Yell()
+	end
+end
+
+function mod:Pecktarget(targetname, uId)
+	if not targetname then return end
+	if targetname == UnitName("player") and self:AntiSpam(4, 5) then
+		yellFlyingPeck:Yell()
 	end
 end
 
@@ -127,6 +145,9 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 284219 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnShrink:Show(args.sourceName)
 		specWarnShrink:Play("kickcast")
+	elseif spellId == 301088 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
+		specWarnDetonate:Show(args.sourceName)
+		specWarnDetonate:Play("kickcast")
 	elseif spellId == 300177 and self:IsValidWarning(args.sourceGUID) and self:AntiSpam(3, 6) then
 		warnExhaust:Show()
 	elseif spellId == 300188 and self:IsValidWarning(args.sourceGUID) then
@@ -141,6 +162,12 @@ function mod:SPELL_CAST_START(args)
 			specWarnBORK:Play("shockwave")
 		end
 		self:ScheduleMethod(0.1, "BossTargetScanner", args.sourceGUID, "BORKtarget", 0.1, 8)
+	elseif spellId == 294064 and self:IsValidWarning(args.sourceGUID) then
+		if self:AntiSpam(3, 2) then
+			specWarnFlyingPeck:Show()
+			specWarnFlyingPeck:Play("shockwave")
+		end
+		self:ScheduleMethod(0.1, "BossTargetScanner", args.sourceGUID, "Pecktarget", 0.1, 8)
 	elseif spellId == 300424 and self:IsValidWarning(args.sourceGUID) and self:AntiSpam(3, 2) then
 		specWarnShockwave:Show()
 		specWarnShockwave:Play("shockwave")
@@ -152,6 +179,11 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 301667 and self:AntiSpam(3, 2) then
 		specWarnRapidFire:Show()
 		specWarnRapidFire:Play("shockwave")--Or watchstep?
+	elseif spellId == 294290 and self:AntiSpam(3, 5) then
+		specWarnMegaDrill:Show()
+		specWarnMegaDrill:Play("defensive")
+	elseif spellId == 294349 and self:AntiSpam(5, 4) then
+		warnVolatileWaste:Show()
 	end
 end
 
@@ -196,6 +228,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			warnShrunk:Show(args.destName)
 		end
+	elseif spellId == 294180 and self:CheckDispelFilter() then
+		specWarnFlamingRefuseDispel:Show(args.destName)
+		specWarnFlamingRefuseDispel:Play("helpdispel")
+	elseif spellId == 294103 and self:AntiSpam(3, 2) then
+		specWarnRocketBarrage:Show()
+		specWarnRocketBarrage:Play("watchstep")
 	end
 end
 

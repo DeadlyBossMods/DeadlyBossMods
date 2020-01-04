@@ -29,7 +29,7 @@ DBM_CORE_LOOT_SPEC_REMINDER			= "Your current spec is %s. Your current loot choi
 
 DBM_CORE_BIGWIGS_ICON_CONFLICT		= "DBM has detected that you have raid icons turned on in both BigWigs and DBM. Please disable icons in one of them to avoid conflicts"
 
-DBM_CORE_MOD_AVAILABLE				= "%s is available for this zone. You can find download on Curse/Twitch or WoWI or deadlybossmods.com"
+DBM_CORE_MOD_AVAILABLE				= "%s is available for this zone. You can find download on Curse/Twitch or WoWI"
 
 DBM_CORE_COMBAT_STARTED				= "%s engaged. Good luck and have fun! :)"
 DBM_CORE_COMBAT_STARTED_IN_PROGRESS	= "Engaged an in progress fight against %s. Good luck and have fun! :)"

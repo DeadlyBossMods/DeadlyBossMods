@@ -3715,6 +3715,7 @@ end
 --  Load Boss Mods on Demand  --
 --------------------------------
 do
+	local modAdvertisementShown = false
 	local classicZones = {[509]=true,[531]=true,[469]=true,[409]=true}
 	local bcZones = {[564]=true,[534]=true,[532]=true,[565]=true,[544]=true,[548]=true,[580]=true,[550]=true}
 	local wrathZones = {[615]=true,[724]=true,[649]=true,[616]=true,[631]=true,[533]=true,[249]=true,[603]=true,[624]=true}
@@ -3723,6 +3724,7 @@ do
 	local wodZones = {[1205]=true,[1448]=true,[1228]=true}
 	local legionZones = {[1712]=true,[1520]=true,[1530]=true,[1676]=true,[1648]=true}
 	local challengeScenarios = {[1148]=true,[1698]=true,[1710]=true,[1703]=true,[1702]=true,[1684]=true,[1673]=true,[1616]=true}
+	local pvpZones = {[30]=true,[489]=true,[529]=true,[559]=true,[562]=true,[566]=true,[572]=true,[617]=true,[618]=true,[628]=true,[726]=true,[727]=true,[761]=true,[968]=true,[980]=true,[998]=true,[1105]=true,[1134]=true,[1681]=true,[1803]=true,[2107]=true,[2118]=true,[2177]=true,[2197]=true}
 	local oldDungeons = {
 		[48]=true,[230]=true,[429]=true,[389]=true,[34]=true,--Classic
 		[540]=true,[558]=true,[556]=true,[555]=true,[542]=true,[546]=true,[545]=true,[547]=true,[553]=true,[554]=true,[552]=true,[557]=true,[269]=true,[560]=true,[543]=true,[585]=true,--BC
@@ -3735,24 +3737,35 @@ do
 	--This never wants to spam you to use mods for trivial content you don't need mods for.
 	--It's intended to suggest mods for content that's relevant to your level (TW, leveling up in dungeons, or even older raids you can't just shit on)
 	function DBM:CheckAvailableMods()
-		if BigWigs then return end--If they are running two boss mods at once, lets assume they are only using DBM for a specific feature (such as brawlers) and not nag
+		if BigWigs or modAdvertisementShown then return end--If they are running two boss mods at once, lets assume they are only using DBM for a specific feature (such as brawlers) and not nag
 		local timeWalking = difficultyIndex == 24 or difficultyIndex == 33 or false
 		if oldDungeons[LastInstanceMapID] and (timeWalking or playerLevel < 110) and not GetAddOnInfo("DBM-Party-BC") then
 			AddMsg(self, DBM_CORE_MOD_AVAILABLE:format("DBM Old Dungeon mods"))
+			modAdvertisementShown = true
 		elseif (classicZones[LastInstanceMapID] or bcZones[LastInstanceMapID]) and (timeWalking or playerLevel < 71) and not GetAddOnInfo("DBM-BlackTemple") then
 			AddMsg(self, DBM_CORE_MOD_AVAILABLE:format("DBM BC/Vanilla mods"))
+			modAdvertisementShown = true
 		elseif wrathZones[LastInstanceMapID] and (timeWalking or playerLevel < 86) and not GetAddOnInfo("DBM-Ulduar") then
 			AddMsg(self, DBM_CORE_MOD_AVAILABLE:format("DBM Wrath of the Lich King mods"))
+			modAdvertisementShown = true
 		elseif cataZones[LastInstanceMapID] and (timeWalking or playerLevel < 91) and not GetAddOnInfo("DBM-Firelands") then
 			AddMsg(self, DBM_CORE_MOD_AVAILABLE:format("DBM Cataclysm mods"))
+			modAdvertisementShown = true
 		elseif mopZones[LastInstanceMapID] and (timeWalking or playerLevel < 101) and not GetAddOnInfo("DBM-SiegeOfOrgrimmarV2") then
 			AddMsg(self, DBM_CORE_MOD_AVAILABLE:format("DBM Mists of Pandaria mods"))
+			modAdvertisementShown = true
 		elseif wodZones[LastInstanceMapID] and (timeWalking or playerLevel < 111) and not GetAddOnInfo("DBM-HellfireCitadel") then
 			AddMsg(self, DBM_CORE_MOD_AVAILABLE:format("DBM Warlords of Draenor mods"))
+			modAdvertisementShown = true
 		elseif legionZones[LastInstanceMapID] and (timeWalking or playerLevel < 121) and not GetAddOnInfo("DBM-AntorusBurningThrone") then
 			AddMsg(self, DBM_CORE_MOD_AVAILABLE:format("DBM Legion mods"))
+			modAdvertisementShown = true
 		elseif challengeScenarios[LastInstanceMapID] and not GetAddOnInfo("DBM-Challenges") then
 			AddMsg(self, DBM_CORE_MOD_AVAILABLE:format("DBM-Challenges"))
+			modAdvertisementShown = true
+		elseif pvpZones[LastInstanceMapID] and not GetAddOnInfo("DBM-PvP") then
+			AddMsg(self, DBM_CORE_MOD_AVAILABLE:format("DBM-PvP"))
+			modAdvertisementShown = true
 		end
 	end
 	function DBM:TransitionToDungeonBGM(force, cleanup)
@@ -4188,7 +4201,7 @@ do
 		end
 		if (lastMapID and tonumber(lastMapID) ~= LastInstanceMapID) or (not lastMapID and DBM.Options.DontShowPTNoID) then return end
 		timer = tonumber(timer or 0)
-		if timer > 60 or timer < 0 then -- Avoid negative numbers
+		if timer > 60 or timer < 3 then
 			return
 		end
 		if not dummyMod then
