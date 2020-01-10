@@ -12,36 +12,49 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
---	"SPELL_CAST_START",
---	"SPELL_CAST_SUCCESS"
+	"SPELL_CAST_START 314304 314333",
+	"SPELL_CAST_SUCCESS 314307"
 )
 
 --TODO, see which instance ID she's in, 2275,870
---local warnPetrify						= mod:NewSpellAnnounce(282615, 2, nil, nil, nil, nil, nil, 2)
+local specWarnSongoftheEmpress			= mod:NewSpecialWarningDodge(314304, nil, nil, nil, 2, 2)
+local specWarnForceandVerve				= mod:NewSpecialWarningMoveTo(314333, nil, nil, nil, 3, 2)
+local specWarnSummonSwarmguard			= mod:NewSpecialWarningSwitch(314307, "-Healer", nil, nil, 1, 2)
 
---local specWarnStormWing				= mod:NewSpecialWarningSpell(260908, nil, nil, nil, 2, 2)
+local timerSongoftheEmpressCD			= mod:NewAITimer(46.2, 314304, nil, nil, nil, 3)
+local timerForceandVerveCD				= mod:NewAITimer(46.2, 314333, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
+local timerSummonSwarmguardCD			= mod:NewAITimer(46.2, 314307, nil, nil, nil, 1, nil, DBM_CORE_TANK_ICON..DBM_CORE_DAMAGE_ICON)
 
---local timerStormWingCD				= mod:NewCDTimer(46.2, 260908, nil, nil, nil, 2)
---local timerHurricaneCrashCD			= mod:NewCDTimer(46.2, 261088, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
+local BarrierName = DBM:GetSpellInfo(314323)
 
 --[[
 function mod:OnCombatStart(delay, yellTriggered)
 	if yellTriggered then
-
+		--timerSongoftheEmpressCD:Start(1-delay)
+		--timerForceandVerveCD:Start(1-delay)
+		--timerSummonSwarmguardCD:Start(1-delay)
 	end
 end
+--]]
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 260908 then
-
+	if spellId == 314304 then
+		specWarnSongoftheEmpress:Show()
+		specWarnSongoftheEmpress:Play("watchwave")
+		timerSongoftheEmpressCD:Start()
+	elseif spellId == 314333 then
+		specWarnForceandVerve:Show(BarrierName)
+		specWarnForceandVerve:Play("findshelter")
+		timerForceandVerveCD:Start()
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 261467 then
-
+	if spellId == 314307 then
+		specWarnSummonSwarmguard:Show()
+		specWarnSummonSwarmguard:Play("killmob")
+		timerSummonSwarmguardCD:Start()
 	end
 end
---]]
