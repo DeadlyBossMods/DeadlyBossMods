@@ -8,10 +8,10 @@ mod:SetZone()
 mod.isTrashMod = true
 
 mod:RegisterEvents(
-	"SPELL_CAST_START 300687 300764 300777 300650 300159 300177 300171 299588 300087 300188 300207 299475 300414 300514 300436 300424 301681 301667 301629 284219 301088 294064 294290 294324 294349",
-	"SPELL_CAST_SUCCESS 299525",
-	"SPELL_AURA_APPLIED 300650 299588 300414 301629 284219 303941 294103 294180",
-	"SPELL_AURA_APPLIED_DOSE 299438 299474 299502",
+	"SPELL_CAST_START 300687 300764 300777 300650 300159 300177 300171 299588 300087 300188 300207 299475 300414 300514 300436 300424 301681 301667 301629 284219 301088 294064 294290 294324 294349 293854 293986 293729",
+	"SPELL_CAST_SUCCESS 299525 294015 295169",
+	"SPELL_AURA_APPLIED 300650 299588 293930 300414 301629 284219 303941 294103 294180 294195 297133",
+	"SPELL_AURA_APPLIED_DOSE 299438 299474 299502 293670",
 	"SPELL_AURA_REMOVED 284219",
 	"UNIT_DIED"
 )
@@ -29,9 +29,11 @@ local warnScrapGrenade				= mod:NewSpellAnnounce(299525, 3)--Pistonhead Blaster 
 local warnSledgehammer				= mod:NewStackAnnounce(299438, 2, nil, "Tank|Healer")--Pistonhead Scrapper
 local warnRippingSlash				= mod:NewStackAnnounce(299474, 2, nil, "Tank|Healer")--Saurolisk Bonenipper
 local warnNanoslicer				= mod:NewStackAnnounce(299502, 2, nil, "Tank|Healer")--Mechagon Trooper
+local warnChainblade				= mod:NewStackAnnounce(293670, 2, nil, "Tank|Healer")--Workshop Defender
 local warnCharge					= mod:NewCastAnnounce(301681, 3)--Mechagon Cavalry
 local warnVolatileWaste				= mod:NewCastAnnounce(294349, 4)--Living Waste
 local warnShrunk					= mod:NewTargetNoFilterAnnounce(284219, 1)
+local warnSummonSquirrel			= mod:NewSpellAnnounce(293854, 4)
 
 local specWarnShockCoil				= mod:NewSpecialWarningSpell(300207, nil, nil, nil, 2, 2)--Weaponized Crawler
 local specWarnSlimewave				= mod:NewSpecialWarningDodge(300777, nil, nil, nil, 2, 2)--Slime Elemental
@@ -44,6 +46,9 @@ local yellFlyingPeck				= mod:NewYell(294064)--Strider Tonk
 local specWarnShockwave				= mod:NewSpecialWarningDodge(300424, nil, nil, nil, 2, 2)--Scrapbone Bully
 local specWarnRapidFire				= mod:NewSpecialWarningDodge(301667, nil, nil, nil, 2, 2)--Mechagon Cavalry
 local specWarnRocketBarrage			= mod:NewSpecialWarningDodge(294103, nil, nil, nil, 2, 2)--Rocket Tonk
+local specWarnSonicPulse			= mod:NewSpecialWarningDodge(293986, nil, nil, nil, 2, 2)--Blastatron X-80/Spider Tank
+local specWarnLaunchHERockets		= mod:NewSpecialWarningDodge(294015, nil, nil, nil, 2, 2)--Blastatron X-80/Spider Tank
+local specWarnCapacitorDischarge	= mod:NewSpecialWarningDodge(295169, nil, nil, nil, 3, 2)--Blastatron X-80
 local specWarnConsume				= mod:NewSpecialWarningRun(300687, nil, nil, nil, 4, 2)--Toxic Monstrosity
 local specWarnGyroScrap				= mod:NewSpecialWarningRun(300159, "Melee", nil, nil, 4, 2)--Heavy Scrapbot
 local specWarnMegaDrill				= mod:NewSpecialWarningRun(294324, "Tank", nil, nil, 4, 2)--Waste Processing Unit
@@ -59,15 +64,17 @@ local specWarnGraspingHex			= mod:NewSpecialWarningInterrupt(300436, "HasInterru
 local specWarnEnlarge				= mod:NewSpecialWarningInterrupt(301629, "HasInterrupt", nil, nil, 1, 2)--Mechagon Renormalizer
 local specWarnShrink				= mod:NewSpecialWarningInterrupt(284219, "HasInterrupt", nil, nil, 1, 2)--Mechagon Renormalizer
 local specWarnDetonate				= mod:NewSpecialWarningInterrupt(301088, "HasInterrupt", nil, nil, 1, 2)--Bomb Tonk
+local specWarnTuneUp				= mod:NewSpecialWarningInterrupt(293729, "HasInterrupt", nil, nil, 1, 2)--
 local specWarnShrinkYou				= mod:NewSpecialWarningYou(284219, nil, nil, nil, 1, 2)
 local yellShrunk					= mod:NewShortYell(284219)--Shrunk will just say with white letters
 local yellShrunkRepeater			= mod:NewYell(284219, UnitName("player"))
 local specWarnSuffocatingSmogDispel	= mod:NewSpecialWarningDispel(300650, "RemoveDisease", nil, nil, 1, 2)--Toxic Lurker
-local specWarnOverclockDispel		= mod:NewSpecialWarningDispel(299588, "MagicDispeller", nil, nil, 1, 2)--Pistonhead Mechanic
+local specWarnOverclockDispel		= mod:NewSpecialWarningDispel(299588, "MagicDispeller", nil, nil, 1, 2)--Pistonhead Mechanic/Mechagon Mechanic
 local specWarnEnlargeDispel			= mod:NewSpecialWarningDispel(301629, "MagicDispeller", nil, nil, 1, 2)--Mechagon Renormalizer
-local specWarnDefensiveCounter		= mod:NewSpecialWarningDispel(303941, "MagicDispeller", nil, nil, 1, 2)--Anodized Coilbearer
+local specWarnDefensiveCounter		= mod:NewSpecialWarningDispel(303941, "MagicDispeller", nil, nil, 1, 2)--Anodized Coilbearer/Defense Bot Mk III
 local specWarnShrinkDispel			= mod:NewSpecialWarningDispel(284219, "RemoveMagic", nil, nil, 1, 2)--Mechagon Renormalizer
 local specWarnFlamingRefuseDispel	= mod:NewSpecialWarningDispel(294180, "RemoveMagic", nil, nil, 1, 2)--Junkyard D.0.G.
+local specWarnArcingZap				= mod:NewSpecialWarningDispel(294195, "RemoveMagic", nil, nil, 1, 2)--Defense Bot Mk I/Defense Bot Mk III
 local specWarnEnrageDispel			= mod:NewSpecialWarningDispel(300414, "RemoveEnrage", nil, nil, 1, 2)--Scrapbone Grinder/Scrapbone Bully
 --local specWarnRiotShield			= mod:NewSpecialWarningReflect(258317, "CasterDps", nil, nil, 1, 2)
 
@@ -148,6 +155,9 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 301088 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnDetonate:Show(args.sourceName)
 		specWarnDetonate:Play("kickcast")
+	elseif spellId == 293729 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
+		specWarnTuneUp:Show(args.sourceName)
+		specWarnTuneUp:Play("kickcast")
 	elseif spellId == 300177 and self:IsValidWarning(args.sourceGUID) and self:AntiSpam(3, 6) then
 		warnExhaust:Show()
 	elseif spellId == 300188 and self:IsValidWarning(args.sourceGUID) then
@@ -184,6 +194,8 @@ function mod:SPELL_CAST_START(args)
 		specWarnMegaDrill:Play("defensive")
 	elseif spellId == 294349 and self:AntiSpam(5, 4) then
 		warnVolatileWaste:Show()
+	elseif spellId == 293854 and self:AntiSpam(3, 6) then
+		warnSummonSquirrel:Show()
 	end
 end
 
@@ -192,6 +204,12 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 299525 and self:AntiSpam(3, 2) then
 		warnScrapGrenade:Show()--SUCCESS, because this needs to be dodged when it hits ground, not when it's traveling toward a target that's moving
+	elseif spellId == 294015 and self:AntiSpam(3, 2) then
+		specWarnLaunchHERockets:Show()
+		specWarnLaunchHERockets:Play("watchstep")
+	elseif spellId == 295169 and self:AntiSpam(3, 2) then
+		specWarnCapacitorDischarge:Show()
+		specWarnCapacitorDischarge:Play("farfromline")
 	end
 end
 
@@ -201,13 +219,13 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 300650 and args:IsDestTypePlayer() and self:CheckDispelFilter() and self:AntiSpam(5, 3) then
 		specWarnSuffocatingSmogDispel:Show()
 		specWarnSuffocatingSmogDispel:Play("helpdispel")
-	elseif spellId == 299588 and not args:IsDestTypePlayer() and self:AntiSpam(3, 3) then
+	elseif (spellId == 299588 or spellId == 293930) and not args:IsDestTypePlayer() and self:AntiSpam(3, 3) then
 		specWarnOverclockDispel:Show(args.destName)
 		specWarnOverclockDispel:Play("helpdispel")
 	elseif spellId == 301629 and not args:IsDestTypePlayer() and self:AntiSpam(3, 3) then
 		specWarnEnlargeDispel:Show(args.destName)
 		specWarnEnlargeDispel:Play("helpdispel")
-	elseif spellId == 303941 and not args:IsDestTypePlayer() and self:AntiSpam(3, 3) then
+	elseif (spellId == 303941 or spellId == 297133) and not args:IsDestTypePlayer() and self:AntiSpam(3, 3) then
 		specWarnDefensiveCounter:Show(args.destName)
 		specWarnDefensiveCounter:Play("helpdispel")
 	elseif spellId == 300414 and not args:IsDestTypePlayer() and self:AntiSpam(3, 3) then
@@ -231,9 +249,15 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 294180 and self:CheckDispelFilter() then
 		specWarnFlamingRefuseDispel:Show(args.destName)
 		specWarnFlamingRefuseDispel:Play("helpdispel")
+	elseif spellId == 294195 and self:CheckDispelFilter() then
+		specWarnArcingZap:CombinedShow(1, args.destName)
+		specWarnArcingZap:ScheduleVoice(1, "helpdispel")
 	elseif spellId == 294103 and self:AntiSpam(3, 2) then
 		specWarnRocketBarrage:Show()
 		specWarnRocketBarrage:Play("watchstep")
+	elseif spellId == 293986 and self:AntiSpam(3, 2) then
+		specWarnSonicPulse:Show()
+		specWarnSonicPulse:Play("shockwave")
 	end
 end
 
@@ -254,6 +278,11 @@ function mod:SPELL_AURA_APPLIED_DOSE(args)
 		local amount = args.amount or 1
 		if (amount >= 3) and self:AntiSpam(3, 5) then
 			warnNanoslicer:Show(args.destName, amount)
+		end
+	elseif spellId == 293670 then
+		local amount = args.amount or 1
+		if (amount >= 3) and self:AntiSpam(3, 5) then
+			warnChainblade:Show(args.destName, amount)
 		end
 	end
 end

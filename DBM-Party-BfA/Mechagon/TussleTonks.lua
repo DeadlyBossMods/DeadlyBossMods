@@ -14,11 +14,14 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS 285344 285152",
 	"SPELL_AURA_REMOVED 282801 285388",
 	"SPELL_AURA_REMOVED_DOSE 282801",
-	"UNIT_DIED",
-	"UNIT_SPELLCAST_START boss1 boss2"
+	"UNIT_DIED"
+--	"UNIT_SPELLCAST_START boss1 boss2"
 )
 
 --TODO, Foe Flipper target?
+--TODO, new mine timer with 8.3
+--TODO, thrust scan was changed to slower scan method, because UNIT_TARGET scan method relies on boss changing target after cast begins, but 8.3 notes now say boss changes target before cast starts
+--TODO, the two part of above is need to verify whether or not a target scanner is even needed at all now. If boss is already looking at atarget at cast start then all we need is boss1target and no scan what so ever
 --[[
 (ability.id = 285020 or ability.id = 283422 or ability.id = 285388) and type = "begincast"
  or (ability.id = 285344 or ability.id = 285152) and type = "cast"
@@ -63,6 +66,7 @@ function mod:OnCombatStart(delay)
 	timerLayMineCD:Start(15.5-delay)
 	--timerFoeFlipperCD:Start(16.7-delay)
 	timerVentJetsCD:Start(22.8-delay)
+	DBM:AddMsg("Mine timer was changed with 8.3, this mod will be updated as soon as it can be post patch launch")
 end
 
 function mod:OnCombatEnd()
@@ -79,6 +83,7 @@ function mod:SPELL_CAST_START(args)
 		timerWhirlingEdgeCD:Start()
 	elseif spellId == 283422 then
 		timerMaxThrustCD:Start()
+		self:BossTargetScanner(args.sourceGUID, "ThrustTarget", 0.2, 14)
 	elseif spellId == 285388 then
 		specWarnVentJets:Show()
 		specWarnVentJets:Play("watchstep")
@@ -136,9 +141,11 @@ function mod:UNIT_DIED(args)
 	end
 end
 
+--[[
 --Used for auto acquiring of unitID and absolute fastest auto target scan using UNIT_TARGET events
 function mod:UNIT_SPELLCAST_START(uId, _, spellId)
 	if spellId == 283422 then--Maximum Thrust
 		self:BossUnitTargetScanner(uId, "ThrustTarget")
 	end
 end
+--]]
