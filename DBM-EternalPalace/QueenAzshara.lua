@@ -31,7 +31,6 @@ mod:RegisterEventsInCombat(
 --TODO, check if multiple targets for static shock
 --TODO, add siren creature IDs so they can be auto marked and warning for shield can include which marked mob got it
 --TODO, announce short ciruit?
---TODO, capture UPDATE_UI_WIDGET better with modified transcriptor to get the widget values I need
 --[[
 (ability.id = 297937 or ability.id = 297934 or ability.id = 298121 or ability.id = 297972 or ability.id = 298531 or ability.id = 300478 or ability.id = 299250 or ability.id = 299178 or ability.id = 300519 or ability.id = 303629 or ability.id = 297372 or ability.id = 301431 or ability.id = 300480 or ability.id = 307331 or ability.id = 307332 or ability.id = 299094 or ability.id = 302141 or ability.id = 303797 or ability.id = 303799) and type = "begincast"
  or (ability.id = 302208 or ability.id = 298014 or ability.id = 301078 or ability.id = 303657 or ability.id = 303629 or ability.id = 300492 or ability.id = 300743 or ability.id = 303980 or ability.id = 300334 or ability.id = 300768 or ability.id = 181089 or ability.id = 297371 or ability.id = 297372 or ability.id = 303986) and type = "cast"
@@ -163,7 +162,6 @@ local berserkTimer						= mod:NewBerserkTimer(600)
 
 mod:AddNamePlateOption("NPAuraOnTorment", 297912)
 mod:AddNamePlateOption("NPAuraOnInfuriated", 300428)
---mod:AddRangeFrameOption(6, 264382)
 mod:AddInfoFrameOption(298569, true)
 mod:AddBoolOption("SortDesc", false)
 mod:AddBoolOption("ShowTimeNotStacks", false)
@@ -385,9 +383,6 @@ function mod:OnCombatEnd()
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
 	end
---	if self.Options.RangeFrame then
---		DBM.RangeCheck:Hide()
---	end
 	if self.Options.NPAuraOnTorment or self.Options.NPAuraOnInfuriated then
 		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
 	end
@@ -911,14 +906,6 @@ do
 			end
 		elseif cid == 155643 or cid == 153064 then--overzealous-hulk
 			castsPerGUID[args.destGUID] = nil
---		elseif cid == 153090 then--Lady Venomtongue#
-
---		elseif cid == 153091 then--Serena Scarscale
-
---		elseif cid == 154240 then--azsharas-devoted
-
---		elseif cid == 155354 then--Azshara's Indomitable
-
 		elseif cid == 154565 then--Loyal Myrmidon
 			timerChargedSpearCD:Stop(args.destGUID)
 		end
@@ -1088,13 +1075,3 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		end
 	end
 end
-
---[[
-function mod:UPDATE_UI_WIDGET(table)
-	local id = table.widgetID
-	if id ~= 1901 and id ~= 1904 and id ~= 2043 and id ~= 2043 then return end
-	local widgetInfo = C_UIWidgetManager.GetIconAndTextWidgetVisualizationInfo(id)
-	local text = widgetInfo.text
-	if not text then return end
-end
---]]

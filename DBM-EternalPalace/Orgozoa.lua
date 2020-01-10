@@ -18,8 +18,6 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 298156 298306 296914 295779",
 	"SPELL_AURA_APPLIED_DOSE 298156",
 	"SPELL_AURA_REMOVED 298306 296914 295779",
---	"SPELL_PERIODIC_DAMAGE",
---	"SPELL_PERIODIC_MISSED",
 	"SPELL_INTERRUPT",
 	"UNIT_DIED",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
@@ -74,9 +72,6 @@ local timerPowerfulStompCD					= mod:NewCDTimer(29.1, 296691, nil, nil, nil, 2, 
 
 local berserkTimer							= mod:NewBerserkTimer(600)
 
---mod:AddRangeFrameOption(6, 264382)
---mod:AddInfoFrameOption(275270, true)
---mod:AddSetIconOption("SetIconOnEyeBeam", 264382, true)
 mod:AddNamePlateOption("NPAuraOnAquaLance", 282209)
 mod:AddNamePlateOption("NPAuraOnChaoticGrowth", 296914)
 
@@ -110,12 +105,6 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnCombatEnd()
---	if self.Options.InfoFrame then
---		DBM.InfoFrame:Hide()
---	end
---	if self.Options.RangeFrame then
---		DBM.RangeCheck:Hide()
---	end
 	if self.Options.NPAuraOnChaoticGrowth or self.Options.NPAuraOnAquaLance then
 		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
 	end
@@ -269,16 +258,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	end
 end
-
---[[
-function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
-	if spellId == 270290 and destGUID == UnitGUID("player") and self:AntiSpam(2, 2) then
-		specWarnGTFO:Show(spellName)
-		specWarnGTFO:Play("watchfeet")
-	end
-end
-mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
---]]
 
 function mod:SPELL_INTERRUPT(args)
 	if type(args.extraSpellId) == "number" and args.extraSpellId == 298548 then

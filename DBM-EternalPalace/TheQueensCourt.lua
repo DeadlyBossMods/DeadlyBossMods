@@ -19,25 +19,17 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 296704 301244 297656 297585 301828 299914 296851 304409",
 	"SPELL_AURA_APPLIED_DOSE 301828",
 	"SPELL_AURA_REMOVED 296704 301244 297656 299914 296851",
---	"SPELL_PERIODIC_DAMAGE",
---	"SPELL_PERIODIC_MISSED",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5"
 )
 
---TODO, verify value of general unfiltered target announces for azshara's bullshit
---TODO, maybe add delay and list all form ranks players in each players individual form ranks warning.
---TODO, infoframe that shows Deferred Sentence+amount on affected players
---TODO, track https://ptr.wowhead.com/spell=297836/potent-spark on infoframe, like cabal
 --TODO, better detection of when player is standing still too long with sentence, and re-show keep move warning if they aren't moving enough
 --TODO, Frenetic Charge soak priority
---TODO, assess where to put other two countdowns, right now one is on charge, and undecided on 3rd if it should be the run in aoe or run out one
 --[[
 (ability.id = 300088 or ability.id = 301807 or ability.id = 297325 or ability.id = 301947 or ability.id = 299915) and type = "begincast"
  or (ability.id = 296850) and type = "cast"
  or source.name = "Queen Azshara" and type = "applydebuff"
 --]]
---local warnPoweringDown				= mod:NewSpellAnnounce(271965, 2, nil, nil, nil, nil, nil, 2)
 --General
 local warnDesperateMeasures				= mod:NewCastAnnounce(300088, 4)
 --Queen Azshara
@@ -100,8 +92,6 @@ local timerPotentSparkCD				= mod:NewCDTimer(92.2, 301947, nil, nil, nil, 1)
 local berserkTimer						= mod:NewBerserkTimer(600)
 
 mod:AddNamePlateOption("NPAuraOnSoP", 296704)
---mod:AddRangeFrameOption(6, 264382)
---mod:AddInfoFrameOption(297566, true)
 mod:AddSetIconOption("SetIconFreneticCharge", 299914, true, false, {4})
 mod:AddSetIconOption("SetIconSparks", 301947, true, true, {1, 2, 3})
 
@@ -146,12 +136,6 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnCombatEnd()
---	if self.Options.InfoFrame then
---		DBM.InfoFrame:Hide()
---	end
---	if self.Options.RangeFrame then
---		DBM.RangeCheck:Hide()
---	end
 	if self.Options.NPAuraOnSoP then
 		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
 	end
@@ -334,23 +318,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	end
 end
-
---[[
-function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
-	if spellId == 270290 and destGUID == UnitGUID("player") and self:AntiSpam(2, 5) then
-		specWarnGTFO:Show(spellName)
-		specWarnGTFO:Play("watchfeet")
-	end
-end
-mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
-
-function mod:UNIT_DIED(args)
-	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 153335 then--Potent Spark
-
-	end
-end
---]]
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 	if msg:find("spell:298050") then--Form Ranks (Repeat Performance is next)
