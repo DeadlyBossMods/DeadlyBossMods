@@ -167,7 +167,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 310361 then
 		warnUnleashedInsanity:CombinedShow(0.3, args.destName)
-	--They all cast it at same time so it causes every add to get through CheckInterruptFilter since it's all in same frame, thus the AntiSpam
+	--All mobs with same name now have same GUID, this basically makes CheckInterruptFilter half useless, thus the AntiSpam need.
 	elseif spellId == 310552 and self:CheckInterruptFilter(args.sourceGUID, false, true) and self:AntiSpam(3, 6) then
 		specWarnMindFlay:Show(args.sourceName)
 		specWarnMindFlay:Play("kickcast")
