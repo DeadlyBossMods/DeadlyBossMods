@@ -8,7 +8,7 @@ mod:SetZone()
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
 mod:SetBossHPInfoToHighest()
 mod.noBossDeathKill = true--Instructs mod to ignore 158328 deaths, since it might die 4x on this fight
---mod:SetHotfixNoticeRev(20190716000000)--2019, 7, 16
+mod:SetHotfixNoticeRev(20200112000000)--2020, 1, 12
 --mod:SetMinSyncRevision(20190716000000)
 --mod.respawnTime = 29
 
@@ -16,7 +16,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 309961 311401 310788",
-	"SPELL_CAST_SUCCESS 311401 311159 312204 314396",
+	"SPELL_CAST_SUCCESS 311401 311159 314396",
 	"SPELL_AURA_APPLIED 309961 311367 310322 315094 311159 313759",
 	"SPELL_AURA_APPLIED_DOSE 309961",
 	"SPELL_AURA_REMOVED 311367 315094 311159 313759",
@@ -52,7 +52,7 @@ local specWarnPumpingBlood					= mod:NewSpecialWarningInterruptCount(310788, "Ha
 
 --mod:AddTimerLine(BOSS)
 --Stage 01: The Corruptor, Reborn
-local timerEyeofNZothCD						= mod:NewCDTimer(16.6, 309961, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON, nil, 2, 4)--16.6-17.4
+local timerEyeofNZothCD						= mod:NewCDTimer(17, 309961, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON, nil, 2, 4)--16.6-17.4 (0ld), new seems more stable 17
 local timerTouchoftheCorruptorCD			= mod:NewCDTimer(64.4, 311401, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON, nil, 1, 4)--64.4-68
 local timerCorruptorsGazeCD					= mod:NewCDTimer(32.8, 310319, nil, nil, nil, 3)--32.8-34
 --Stage 02: The Organs of Corruption
@@ -248,18 +248,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if self:IsMythic() then
 			timerCursedBloodCD:UpdateInline(DBM_CORE_MAGIC_ICON)
 		end
-	elseif spellId == 312204 then--Il'gynoth's Morass (Boss Re-activating)
-		--Start timers here, not at organ death
-		--it's possible to screw up organ phase so bad that you leave it without killing any of them
-		table.wipe(castsPerGUID)
-		if not self:IsMythic() then
-			timerCursedBloodCD:Stop()
-		end
-		timerEyeofNZothCD:Start(6)--START
-		timerCorruptorsGazeCD:Start(12)
-		if self:IsHard() then
-			timerTouchoftheCorruptorCD:Start(51.5)--SUCCESS
-		end
 	end
 end
 
@@ -416,6 +404,18 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		specWarnCorruptorsGaze:Show()
 		specWarnCorruptorsGaze:Play("watchstep")
 		timerCorruptorsGazeCD:Start()
+	elseif spellId == 312204 then--Il'gynoth's Morass
+		--Start timers here, not at organ death
+		--it's possible to screw up organ phase so bad that you leave it without killing any of them
+		table.wipe(castsPerGUID)
+		if not self:IsMythic() then
+			timerCursedBloodCD:Stop()
+		end
+		timerEyeofNZothCD:Start(6)--START
+		timerCorruptorsGazeCD:Start(12)
+		if self:IsHard() then
+			timerTouchoftheCorruptorCD:Start(51.5)--SUCCESS
+		end
 	end
 end
 
