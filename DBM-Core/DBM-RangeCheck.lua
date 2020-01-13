@@ -154,9 +154,17 @@ end
 local function itsBCAgain(uId, checkrange)
 	if checkrange then--Specified range, this check only cares whether unit is within specific range
 		if itemRanges[checkrange] then--Only query item range for requested active range check
-			if IsItemInRange(itemRanges[checkrange], uId) then return checkrange end
+			if IsItemInRange(itemRanges[checkrange], uId) then
+				return checkrange
+			else
+				return 1000
+			end
 		elseif apiRanges[checkrange] then--Only query item range for requested active range if no item found for it
-			if CheckInteractDistance(uId, apiRanges[checkrange]) then return checkrange end
+			if CheckInteractDistance(uId, apiRanges[checkrange]) then
+				return checkrange
+			else
+				return 1000
+			end
 		else
 			 return 1000--Just so it has a numeric value, even if it's unknown to protect from nil errors
 		end
