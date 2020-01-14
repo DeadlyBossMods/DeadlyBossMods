@@ -1,4 +1,4 @@
-## Interface: 80205
+## Interface: 80300
 ## X-Min-Interface: 80300
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Ny'alotha|r
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0나이알로사|r
