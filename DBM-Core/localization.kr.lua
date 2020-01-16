@@ -30,7 +30,7 @@ DBM_CORE_LOOT_SPEC_REMINDER			= "현재 전문화는 %s입니다. 현재 지정�
 
 DBM_CORE_BIGWIGS_ICON_CONFLICT		= "DBM이 BigWigs와 DBM 모두 공격대 징표 기능을 사용하고 있음을 감지했습니다. 충돌을 방지하기 위해 공대장이 두 애드온중 하나의 징표 설정을 비활성화해야 합니다."
 
-DBM_CORE_MOD_AVAILABLE				= "이 지역에서 %s|1을;를; 사용할 수 있습니다. Curse/Twitch, WoWI, deadlybossmods.com에서 다운로드 받으실 수 있습니다."
+DBM_CORE_MOD_AVAILABLE				= "이 지역에서 %s|1을;를; 사용할 수 있습니다. Curse/Twitch 또는 WoWI에서 다운로드 받으실 수 있습니다."
 
 DBM_CORE_COMBAT_STARTED				= "%s 전투 시작. 행운을 빕니다! :)";
 DBM_CORE_COMBAT_STARTED_IN_PROGRESS	= "%s 전투 진행 도중 참가했습니다. 행운을 빕니다! :)"
@@ -186,7 +186,7 @@ DBM_CORE_MOVABLE_BAR				= "드래그 하세요!"
 
 DBM_PIZZA_SYNC_INFO					= "|Hplayer:%1$s|h[%1$s]|h님이 당신에게 DBM 타이머를 전송했습니다"
 DBM_PIZZA_CONFIRM_IGNORE			= "정말 %s의 DBM 타이머를 차단하시겠습니까? 이 공격대에 있는 동안에만 적용됩니다."
-DBM_PIZZA_ERROR_USAGE				= "사용법: /dbm [broadcast] timer <시간> <텍스트>. <시간>은 1초 이상이어야 합니다."
+DBM_PIZZA_ERROR_USAGE				= "사용법: /dbm [broadcast] timer <시간> <텍스트>. <시간>은 3초 이상이어야 합니다."
 
 DBM_CORE_MINIMAP_TOOLTIP_FOOTER		= "쉬프트 누르고 드래그로 이동"
 
