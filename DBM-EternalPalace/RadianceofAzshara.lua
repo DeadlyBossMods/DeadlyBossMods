@@ -18,8 +18,6 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 296566 296737",
 	"SPELL_AURA_REMOVED 296737",
 	"SPELL_INTERRUPT",
---	"SPELL_PERIODIC_DAMAGE",
---	"SPELL_PERIODIC_MISSED",
 	"UNIT_DIED",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
@@ -59,8 +57,6 @@ local timerGaleBuffetCD					= mod:NewCDTimer(22.6, 304098, nil, nil, nil, 2)
 
 local berserkTimer						= mod:NewBerserkTimer(600)
 
---mod:AddRangeFrameOption(6, 264382)
---mod:AddInfoFrameOption(275270, true)
 mod:AddSetIconOption("SetIconOnArcaneBomb", 296737, true, false, {1, 2})
 
 mod.vb.unshackledCount = 0
@@ -89,15 +85,6 @@ function mod:OnCombatStart(delay)
 	timerTideFistCD:Start(15-delay, 1)
 	timerAncientTempestCD:Start(95.6)
 	berserkTimer:Start(self:IsMythic() and 540 or 720-delay)
-end
-
-function mod:OnCombatEnd()
---	if self.Options.InfoFrame then
---		DBM.InfoFrame:Hide()
---	end
---	if self.Options.RangeFrame then
---		DBM.RangeCheck:Hide()
---	end
 end
 
 function mod:SPELL_CAST_START(args)
@@ -182,7 +169,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.arcaneBombicon = self.vb.arcaneBombicon + 1
 	end
 end
---mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
@@ -195,16 +181,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	end
 end
-
---[[
-function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
-	if spellId == 270290 and destGUID == UnitGUID("player") and self:AntiSpam(2, 2) then
-		specWarnGTFO:Show(spellName)
-		specWarnGTFO:Play("watchfeet")
-	end
-end
-mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
---]]
 
 function mod:SPELL_INTERRUPT(args)
 	if type(args.extraSpellId) == "number" and args.extraSpellId == 304951 then--Focus Power

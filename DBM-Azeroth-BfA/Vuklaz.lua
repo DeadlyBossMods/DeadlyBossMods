@@ -12,17 +12,21 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
---	"SPELL_CAST_START",
---	"SPELL_CAST_SUCCESS"
+	"SPELL_CAST_START 314527 314698 314618",
+	"SPELL_CAST_SUCCESS 314659"
 )
 
 --TODO, see which instance ID she's in, 2275,870
---local warnPetrify						= mod:NewSpellAnnounce(282615, 2, nil, nil, nil, nil, nil, 2)
+local warnRazorSpines					= mod:NewSpellAnnounce(314698, 3)
 
---local specWarnStormWing				= mod:NewSpecialWarningSpell(260908, nil, nil, nil, 2, 2)
+local specWarnTremorWave				= mod:NewSpecialWarningDodge(314527, nil, nil, nil, 2, 2)
+local specWarnWrithingSands				= mod:NewSpecialWarningSwitch(314659, "Dps", nil, nil, 1, 2)
+local specWarnCrushingClaws				= mod:NewSpecialWarningDefensive(314618, "Tank", nil, nil, 1, 2)
 
---local timerStormWingCD				= mod:NewCDTimer(46.2, 260908, nil, nil, nil, 2)
---local timerHurricaneCrashCD			= mod:NewCDTimer(46.2, 261088, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
+local timerTremorWaveCD					= mod:NewAITimer(46.2, 314527, nil, nil, nil, 3)
+local timerWrithingSandsCD				= mod:NewAITimer(46.2, 314659, nil, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON)
+local timerRazorSpinesCD				= mod:NewAITimer(46.2, 314698, nil, nil, nil, 2, nil, DBM_CORE_HEALER_ICON)
+local timerCrushingClawsCD				= mod:NewAITimer(46.2, 314618, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON..DBM_CORE_HEALER_ICON)
 
 --[[
 function mod:OnCombatStart(delay, yellTriggered)
@@ -30,18 +34,29 @@ function mod:OnCombatStart(delay, yellTriggered)
 
 	end
 end
+--]]
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 260908 then
-
+	if spellId == 314527 then
+		specWarnTremorWave:Show()
+		specWarnTremorWave:Play("shockwave")
+		timerTremorWaveCD:Start()
+	elseif spellId == 314698 then
+		warnRazorSpines:Show()
+		timerRazorSpinesCD:Start()
+	elseif spellId == 314618 then
+		specWarnCrushingClaws:Show()
+		specWarnCrushingClaws:Play("defensive")
+		timerCrushingClawsCD:Start()
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 261467 then
-
+	if spellId == 314659 then
+		specWarnWrithingSands:Show()
+		specWarnWrithingSands:Play("killmob")
+		timerWrithingSandsCD:Start()
 	end
 end
---]]

@@ -1,4 +1,4 @@
-## Interface: 80205
+## Interface: 80300
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Dungeons (BfA)|r
 ## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Gruppe-BfA|r
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf05인 던전-격전의 아제로스|r

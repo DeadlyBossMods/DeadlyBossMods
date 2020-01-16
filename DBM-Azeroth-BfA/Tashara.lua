@@ -12,17 +12,24 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
---	"SPELL_CAST_START",
---	"SPELL_CAST_SUCCESS"
+	"SPELL_CAST_START 314474 314524",
+	"SPELL_CAST_SUCCESS 314587",
+	"SPELL_AURA_APPLIED 314589",
+	"SPELL_AURA_REMOVED 314589"
 )
 
 --TODO, see which instance ID she's in, 2275,870
---local warnPetrify						= mod:NewSpellAnnounce(282615, 2, nil, nil, nil, nil, nil, 2)
+local warnFleshtoStone					= mod:NewTargetAnnounce(314589, 2)
 
---local specWarnStormWing				= mod:NewSpecialWarningSpell(260908, nil, nil, nil, 2, 2)
+local specWarnLandSlide					= mod:NewSpecialWarningSpell(314474, "Tank", nil, nil, 1, 2)
+local specWarnGroundShatter				= mod:NewSpecialWarningDodge(314524, nil, nil, nil, 2, 2)
+local specWarnFleshtoStone				= mod:NewSpecialWarningMoveAway(314524, nil, nil, nil, 1, 2)
 
---local timerStormWingCD				= mod:NewCDTimer(46.2, 260908, nil, nil, nil, 2)
---local timerHurricaneCrashCD			= mod:NewCDTimer(46.2, 261088, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
+local timerLandslideCD					= mod:NewAITimer(46.2, 314474, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerGroundShatterCD				= mod:NewAITimer(46.2, 314524, nil, nil, nil, 3)
+local timerFleshtoStoneCD				= mod:NewAITimer(46.2, 314587, nil, nil, nil, 3)
+
+mod:AddRangeFrameOption(10, 314524)
 
 --[[
 function mod:OnCombatStart(delay, yellTriggered)
@@ -30,18 +37,53 @@ function mod:OnCombatStart(delay, yellTriggered)
 
 	end
 end
+--]]
+
+function mod:OnCombatEnd()
+	if self.Options.RangeFrame then
+		DBM.RangeCheck:Hide()
+	end
+end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 260908 then
-
+	if spellId == 314474 then
+		specWarnLandSlide:Show()
+		specWarnLandSlide:Play("carefly")
+		timerLandslideCD:Start()
+	elseif spellId == 314524 then
+		specWarnGroundShatter:Show()
+		specWarnGroundShatter:Play("watchstep")
+		timerGroundShatterCD:Start()
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 261467 then
-
+	if spellId == 314587 then
+		timerFleshtoStoneCD:Start()
 	end
 end
---]]
+
+function mod:SPELL_AURA_APPLIED(args)
+	local spellId = args.spellId
+	if spellId == 314589 then
+		warnFleshtoStone:CombinedShow(0.3, args.destName)
+		if args:IsPlayer() then
+			specWarnFleshtoStone:Show()
+			specWarnFleshtoStone:Play("runout")
+			if self.Options.RangeFrame then
+				DBM.RangeCheck:Show(10)
+			end
+		end
+	end
+end
+
+function mod:SPELL_AURA_REMOVED(args)
+	local spellId = args.spellId
+	if spellId == 314589 then
+		if args:IsPlayer() and self.Options.RangeFrame then
+			DBM.RangeCheck:Hide()
+		end
+	end
+end

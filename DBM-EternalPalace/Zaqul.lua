@@ -20,17 +20,12 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED_DOSE 292971",
 	"SPELL_AURA_REMOVED 292971 292963 293509 303543 296018 295249 295099",
 	"SPELL_AURA_REMOVED_DOSE 292971",
---	"SPELL_PERIODIC_DAMAGE",
---	"SPELL_PERIODIC_MISSED",
 	"UNIT_DIED",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, https://ptr.wowhead.com/spell=300635/gathering-nightmare track via nameplate number of stacks
 --TODO, dark pulse absorb shield on custom infoframe
---TODO, warning filters/timer fades for images/split on mythic stage 4?
---TODO, void slam, who does it target? random or the tank? if random, can we target scan it?
 --TODO, pause/resume (or reset) timers for boss shielding/split phase in stage 4 mythic?
 --[[
 (ability.id = 302504 or ability.id = 302503 or ability.id = 301141 or ability.id = 303543 or ability.id = 296018 or ability.id = 292963 or ability.id = 296257 or ability.id = 304733 or ability.id = 303978 or ability.id = 302593 or ability.id = 296078 or ability.id = 295814) and type = "begincast"
@@ -101,7 +96,6 @@ local timerVoidSlam						= mod:NewCastTimer(4.1, 302593, nil, nil, nil, 3)--Myth
 
 local berserkTimer						= mod:NewBerserkTimer(600)
 
---mod:AddRangeFrameOption(6, 264382)
 mod:AddInfoFrameOption(292971, true)
 mod:AddSetIconOption("SetIconDread", 292963, true, false, {1, 2, 3, 4})
 mod:AddSetIconOption("SetIconDreadScream", 303543, true, false, {1, 2, 3, 4})
@@ -110,7 +104,6 @@ mod:AddSetIconOption("SetIconManicDreadScream", 296018, true, false, {1, 2, 3, 4
 mod.vb.phase = 1
 mod.vb.dreadIcon = 1
 mod.vb.DeliriumsDescentCount = 0
---mod.vb.nightmaresCount = 0
 local HysteriaStacks = {}
 local playerDRealm = false
 
@@ -119,7 +112,6 @@ function mod:OnCombatStart(delay)
 	self.vb.phase = 1
 	self.vb.dreadIcon = 1
 	self.vb.DeliriumsDescentCount = 0
-	--self.vb.nightmaresCount = 0
 	if not self:IsLFR() then
 		timerMindTetherCD:Start(3.3-delay)
 		timerDreadCD:Start(11.8-delay)--START
@@ -142,9 +134,6 @@ function mod:OnCombatEnd()
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
 	end
---	if self.Options.RangeFrame then
---		DBM.RangeCheck:Hide()
---	end
 end
 
 function mod:SPELL_CAST_START(args)
@@ -283,7 +272,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		self.vb.dreadIcon = self.vb.dreadIcon + 1
 	elseif spellId == 293509 then
-		--self.vb.nightmaresCount = self.vb.nightmaresCount + 1
 		if self:AntiSpam(5, 2) then
 			timerManifestNightmaresCD:Start()
 		end
@@ -357,23 +345,12 @@ function mod:SPELL_AURA_REMOVED_DOSE(args)
 	end
 end
 
---[[
-function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
-	if spellId == 270290 and destGUID == UnitGUID("player") and self:AntiSpam(2, 2) then
-		specWarnGTFO:Show(spellName)
-		specWarnGTFO:Play("watchfeet")
-	end
-end
-mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
---]]
-
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 154682 then--echo-of-fear
 		timerDreadScreamCD:Stop()
 	elseif cid == 154685 then--echo-of-delirium
 		timerVoidSlam:Stop()
-	--elseif cid == 154175 then--Horric Summoner
 	end
 end
 

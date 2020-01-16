@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(157602)
 mod:SetEncounterID(2343)
 mod:SetZone()
---mod:SetHotfixNoticeRev(20190716000000)--2019, 7, 16
+mod:SetHotfixNoticeRev(20200112000000)--2020, 1, 12
 --mod:SetMinSyncRevision(20190716000000)
 --mod.respawnTime = 29
 
@@ -19,7 +19,6 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_REMOVED 310277 312595 310358",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
---	"SPELL_INTERRUPT",
 	"UNIT_DIED",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
@@ -27,6 +26,7 @@ mod:RegisterEventsInCombat(
 --TODO, track add count, show on infoframe, as well as only show Unleashed Insanity cast timer if add count was > 0
 --TODO, personal https://ptr.wowhead.com/spell=308377/void-infused-ichor tracker when infoframe code added
 --TODO, target scan acid splash?
+--TODO, Add spawn timers
 --[[
 (ability.id = 308941 or ability.id = 310246 or ability.id = 310329 or ability.id = 310396) and type = "begincast"
  or (ability.id = 310277 or ability.id = 310478) and type = "cast"
@@ -63,7 +63,7 @@ local specWarnMutteringsofBetrayal			= mod:NewSpecialWarningStack(310563, nil, 3
 --Drest'agath
 local timerVolatileSeedCD					= mod:NewCDTimer(16.6, 310277, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON, nil, 2, 4)--16.6-26.8 (boss has some channeled abilities, spell queuing)
 local timerEntropicCrashCD					= mod:NewCDTimer(44.3, 310329, nil, nil, nil, 2)
-local timerMutteringsofInsanityCD			= mod:NewCDTimer(46.6, 310358, nil, nil, nil, 3)--45-54, it's almost always 51 but have to use the 46
+local timerMutteringsofInsanityCD			= mod:NewCDTimer(46.6, 310358, nil, nil, nil, 3)--45-54, it's almost always 50.3+ but have to use the 46
 local timerUnleashedInsanity				= mod:NewCastTimer(5, 310361, nil, nil, nil, 3)
 local timerVoidGlareCD						= mod:NewCDTimer(45, 310406, nil, nil, nil, 3)
 
@@ -157,6 +157,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 310358 then
 		specWarnMutteringsofInsanity:CombinedShow(0.3, args.destName)
+		specWarnMutteringsofInsanity:ScheduleVoice(0.3, "runaway")
 		if args:IsPlayer() then
 			yellMutteringsofInsanity:Countdown(spellId)
 			timerUnleashedInsanity:Start()
@@ -166,7 +167,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 310361 then
 		warnUnleashedInsanity:CombinedShow(0.3, args.destName)
-	elseif spellId == 310552 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
+	--All mobs with same name now have same GUID, this basically makes CheckInterruptFilter half useless, thus the AntiSpam need.
+	elseif spellId == 310552 and self:CheckInterruptFilter(args.sourceGUID, false, true) and self:AntiSpam(3, 6) then
 		specWarnMindFlay:Show(args.sourceName)
 		specWarnMindFlay:Play("kickcast")
 	elseif spellId == 310563 then
@@ -239,12 +241,6 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spell
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
-
-function mod:SPELL_INTERRUPT(args)
-	if type(args.extraSpellId) == "number" and args.extraSpellId == 298548 then
-
-	end
-end
 --]]
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
