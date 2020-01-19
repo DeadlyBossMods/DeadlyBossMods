@@ -70,7 +70,7 @@ local timerStygianAnnihilationCD			= mod:NewCDTimer(35.3, 308044, nil, nil, nil,
 local timerBlackWingsCD						= mod:NewCDTimer(20.6, 305663, nil, nil, nil, 3)
 local timerShadowClawsCD					= mod:NewCDTimer(13, 310129, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerDarkManifestationCD				= mod:NewCDCountTimer(35.2, 308903, nil, nil, nil, 1, nil, DBM_CORE_TANK_ICON)
-local timerAncientCurseCD					= mod:NewCDTimer(30.1, 314337, nil, nil, nil, 3, nil, DBM_CORE_CURSE_ICON)
+local timerAncientCurseCD					= mod:NewCDTimer(30.1, 314337, nil, nil, nil, 3, nil, DBM_CORE_CURSE_ICON, nil, 3, 4)
 ----Add
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20655))
 local timerDarkOfferingCD					= mod:NewNextCountTimer(12.1, 308872, nil, nil, nil, 5)

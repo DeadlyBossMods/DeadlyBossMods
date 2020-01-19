@@ -12,11 +12,11 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 311176 316711 310184 310134 310130 317292 310331 315772 309698 310042 313400 308885 317066",
-	"SPELL_CAST_SUCCESS 315927 316463 309296 309307",
-	"SPELL_AURA_APPLIED 313334 308996 309991 313184 308842 310073 311392 316541 316542 313793 315709 315710 312155",
-	"SPELL_AURA_APPLIED_DOSE 313184",
-	"SPELL_AURA_REMOVED 313184 308842 313334 312155",
+	"SPELL_CAST_START 311176 316711 310184 310134 310130 317292 310331 315772 309698 310042 313400 308885 317066 318196 319349 319350 319351 316970",
+	"SPELL_CAST_SUCCESS 315927 316463 309296 309307 319257 319348",
+	"SPELL_AURA_APPLIED 313334 308996 309991 313184 308842 310073 311392 316541 316542 313793 315709 315710 312155 318196 318459 319309 319015 319348",
+	"SPELL_AURA_APPLIED_DOSE 313184 319309",
+	"SPELL_AURA_REMOVED 313184 308842 313334 312155 318459 319348",
 	"SPELL_PERIODIC_DAMAGE 309991",
 	"SPELL_PERIODIC_MISSED 309991",
 --	"SPELL_INTERRUPT",
@@ -28,20 +28,22 @@ mod:RegisterEventsInCombat(
 )
 
 --TODO, figure out if mental decay cast by mind controled players can be interrupted (if they even cast it, journal for previous boss was wrong)
---TODO, find out power gains of Psychus and add timer for Manifest Madness that's more reliable
+--TODO, find out power gains of Psychus and add timer for Manifest Madness that's more reliable (his energy soft enrage)
 --TODO, find a good way improving detecting players in mind (currently ground work is in but do to combat log phasing it's flawed without adding syncing or blizz fixing combat log phasing
---TODO, build infoframe up to show mind phase players if detection works and sort this to the top when mechanics that require players leaving said phase are present
---TODO, timer fading based on phase player is in, once further review of player realm phaseing is done and thoroughly tested
---TODO, add AI timers will likely screw up. That will be fixed when they are converted to real timers
+--TODO, build infoframe up to show mind phase players if detection works and sort this to the top when mechanics that require players leaving said phase are present?
+--TODO, timer fading based on phase player is in, once further review of player realm phasing is done and thoroughly tested
+--TODO, the Add AI timers will likely screw up. That will be fixed when they are converted to real timers
 --TODO, further improve paranoia with icons/chat bubbles maybe, depends how many there are on 30 man or mythic
 --TODO, handle visions phases
 --TODO, figure out the abilities that were removed from journal in latest update. The spells still exist and weren't removing, indicating maybe those harder mechanics were moved to mythic only
---New Voice: "leavemind"
+--TODO, verify mythic drycodes.
+--TODO, phase 3 trigger is still needed for both mythic and non mythic. Simply using 2 mind phases defeated may not be reliable enough
+--New Voice: "leavemind" and "lowsanity"
 --[[
-(ability.id = 311176 or ability.id = 316711 or ability.id = 310184 or ability.id = 310134 or ability.id = 310130 or ability.id = 317292 or ability.id = 310331 or ability.id = 315772 or ability.id = 309698 or ability.id = 313400 or ability.id = 308885 or ability.id = 317066) and type = "begincast"
- or (ability.id = 315927 or ability.id = 316463) and type = "cast"
+(ability.id = 311176 or ability.id = 316711 or ability.id = 310184 or ability.id = 310134 or ability.id = 310130 or ability.id = 317292 or ability.id = 310331 or ability.id = 315772 or ability.id = 309698 or ability.id = 313400 or ability.id = 308885 or ability.id = 317066 or ability.id = 318196 or ability.id = 316970 or ability.id = 319351 or ability.id = 319350 or ability.id = 319349 or ability.id = 318460) and type = "begincast"
+ or (ability.id = 315927 or ability.id = 316463 or ability.id = 319348) and type = "cast"
  or (ability.id = 309296 or ability.id = 309307) and type = "cast"
- or ability.id = 312155 and (type = "applydebuff" or type = "removedebuff")
+ or (ability.id = 312155 or ability.id = 319015) and (type = "applydebuff" or type = "removedebuff")
 --]]
 --General
 local warnPhase								= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
@@ -74,6 +76,10 @@ local warnCorruptorTentacle					= mod:NewSpellAnnounce("ej21107", 2)
 local warnFlamesofInsanity					= mod:NewTargetNoFilterAnnounce(313793, 2, nil, "RemoveMagic")
 ------Trecherous Bargain
 --local warnBlackVolley						= mod:NewCastAnnounce(313960, 2)
+--Stage 3 Mythic
+local warnAnnihilate						= mod:NewTargetAnnounce(318459, 2)
+local warnEvokeAnguish						= mod:NewTargetAnnounce(319348, 3)
+local warnCleansingProtocol					= mod:NewCastAnnounce(319349, 2)
 
 --General
 local specWarnGiftofNzoth					= mod:NewSpecialWarningYou(313334, nil, nil, nil, 1, 2)
@@ -114,6 +120,15 @@ local specWarnContempt						= mod:NewSpecialWarningStopMove(315710, nil, nil, ni
 --Stage 3:
 ----Thought Harvester
 local specWarnHarvestThoughts				= mod:NewSpecialWarningMoveTo(317066, nil, nil, nil, 2, 2)
+--Stage 3 Mythic
+local specWarnEventHorizon					= mod:NewSpecialWarningDefensive(318196, nil, nil, nil, 1, 2)
+local specWarnEventHorizonSwap				= mod:NewSpecialWarningTaunt(318196, nil, nil, nil, 1, 2)
+local specWarnAnnihilate					= mod:NewSpecialWarningMoveAway(318459, nil, nil, nil, 1, 2)
+local yellAnnihilate						= mod:NewYell(318459)
+local yellAnnihilateFades					= mod:NewShortFadesYell(318459)
+local specWarnEvokeAnguish					= mod:NewSpecialWarningMoveAway(319348, nil, nil, nil, 1, 2)
+local yellEvokeAnguish						= mod:NewYell(319348)
+local yellEvokeAnguishFades					= mod:NewShortFadesYell(319348)
 
 --mod:AddTimerLine(BOSS)
 --General
@@ -125,7 +140,7 @@ mod:AddTimerLine(DBM:EJ_GetSectionInfo(20957))
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(21455))
 local timerMindwrackCD						= mod:NewCDTimer(4.9, 316711, nil, "Tank", 2, 5, nil, DBM_CORE_TANK_ICON)--4.9-8.6
 local timerCreepingAnguishCD				= mod:NewCDTimer(23.1, 310184, nil, nil, 2, 5, nil, DBM_CORE_TANK_ICON)
-local timerSynampticShock					= mod:NewBuffActiveTimer(20, 313184, nil, nil, nil, 5, nil, DBM_CORE_DAMAGE_ICON)
+local timerSynampticShock					= mod:NewBuffActiveTimer(30, 313184, nil, nil, nil, 5, nil, DBM_CORE_DAMAGE_ICON)--, nil, 1, 4
 ----Mind's Eye
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20977))
 local timerVoidGazeCD						= mod:NewCDTimer(33, 310333, nil, nil, nil, 2)--33-34.3
@@ -135,19 +150,19 @@ local timerVoidGazeCD						= mod:NewCDTimer(33, 310333, nil, nil, nil, 2)--33-34
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20970))
 ----N'Zoth
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20917))
---local timerShatteredPsyche					= mod:NewTargetTimer(30, 312155, nil, nil, nil, 6)--Maybe add when duration is not as random
 local timerCollapsingMindscape				= mod:NewCastTimer(20, 317292, nil, nil, nil, 6)
 local timerMindgraspCD						= mod:NewCDTimer(30.1, 315772, nil, nil, nil, 3)
 local timerParanoiaCD						= mod:NewCDTimer(30.1, 309980, nil, nil, nil, 3)
 local timerMindgateCD						= mod:NewCDTimer(30.1, 309046, nil, nil, nil, 1)
+local timerShatteredEgo						= mod:NewBuffActiveTimer(30, 319015, nil, nil, nil, 6)
 ----Basher Tentacle
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(21286))
 local timerBasherTentacleCD					= mod:NewCDTimer(60, "ej21286", nil, nil, nil, 1, 309698, DBM_CORE_DAMAGE_ICON)
 local timerVoidLashCD						= mod:NewCDTimer(22.9, 309698, nil, false, 2, 5, nil, DBM_CORE_TANK_ICON)
 ----Corruptor Tentacle
---local timerCorruptorTentacleCD				= mod:NewCDTimer(5.3, "ej21107", nil, nil, nil, 1, 313400, DBM_CORE_DAMAGE_ICON)
+--local timerCorruptorTentacleCD			= mod:NewCDTimer(5.3, "ej21107", nil, nil, nil, 1, 313400, DBM_CORE_DAMAGE_ICON)
 ----Spike Tentacle
---local timerSpikeTentacleCD					= mod:NewCDTimer(5.3, "ej21001", nil, nil, nil, 1, 312078, DBM_CORE_DAMAGE_ICON)
+--local timerSpikeTentacleCD				= mod:NewCDTimer(5.3, "ej21001", nil, nil, nil, 1, 312078, DBM_CORE_DAMAGE_ICON)
 ----Through the Mindgate
 ------Corruption of Deathwing
 
@@ -157,6 +172,12 @@ local timerVoidLashCD						= mod:NewCDTimer(22.9, 309698, nil, false, 2, 5, nil,
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20767))
 ----Thought Harvester
 local timerHarvestThoughtsCD				= mod:NewAITimer(30.1, 317066, nil, nil, nil, 2)
+--Stage 3 Mythic
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(21435))
+local timerEventHorizonCD					= mod:NewAITimer(22.9, 318196, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)--, nil, 2, 4
+local timerAnnihilateCD						= mod:NewAITimer(22.9, 318460, nil, nil, nil, 3)
+local timerEvokeAnguishCD					= mod:NewAITimer(22.9, 319348, nil, nil, nil, 3)
+local timerCleansingProtocol				= mod:NewCastTimer(50, 319349, nil, nil, nil, 2)
 
 --mod:AddRangeFrameOption(6, 264382)
 mod:AddInfoFrameOption(307831, true)
@@ -301,6 +322,13 @@ function mod:SPELL_CAST_START(args)
 		specWarnHarvestThoughts:Show(args.sourceName)
 		specWarnHarvestThoughts:Play("gathershare")
 		timerHarvestThoughtsCD:Start()
+	elseif spellId == 318196 then
+		timerEventHorizonCD:Start()
+	elseif (spellId == 316970 or spellId == 319351 or spellId == 319350 or spellId == 319349) and self:AntiSpam(3, 9) then--All spellIds until we know which one is valid. Filtered by antispam in case more than one of these fires for it
+		warnCleansingProtocol:Show()
+		timerCleansingProtocol:Start()
+	elseif spellId == 318460 then
+		timerAnnihilateCD:Start()
 	end
 end
 
@@ -327,6 +355,10 @@ function mod:SPELL_CAST_SUCCESS(args)
 			selfInMind = false
 			DBM:AddMsg("Temporary debug: you have exited mind")
 		end
+	elseif spellId == 319257 then
+		--timerCleansingProtocol:Stop()
+	elseif spellId == 319348 then
+		timerEvokeAnguishCD:Start()
 	end
 end
 
@@ -350,11 +382,11 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 309991 and args:IsPlayer() and self:AntiSpam(2, 2) then
 		specWarnGTFO:Show(args.spellName)
 		specWarnGTFO:Play("watchfeet")
-	elseif spellId == 313184 then
+	elseif spellId == 313184 or spellId == 319309 then
 		local amount = args.amount or 1
 		warnSynapticShock:Show(args.destName, amount)
 		timerSynampticShock:Stop()
-		timerSynampticShock:Start()
+		timerSynampticShock:Start(spellId == 313184 and 30 or 15)--Non Mythic/Mythic
 --	elseif spellId == 308842 then
 
 	elseif spellId == 310073 or spellId == 311392 then
@@ -393,15 +425,42 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnContempt:Show()
 			specWarnContempt:Play("stopmove")
 		end
-	elseif spellId == 312155 and args:GetDestCreatureID() == 158041 then--Shattered Psyche on N'Zoth
+	elseif (spellId == 312155 or spellId == 319015) and args:GetDestCreatureID() == 158041 then--Shattered Psyche on N'Zoth
 		warnShatteredPsyche:Show(args.destName)
-		--timerShatteredPsyche:Start(args.destName)
+		timerShatteredEgo:Start(30)
 		if not self:IsMythic() and self.vb.phase == 1 then
 			self.vb.phase = 2
 			timerMindgraspCD:Start(18.7)--START (basically happens immediately after 312155 ends, but it can end 18-30?
 			timerBasherTentacleCD:Start(36, 1)
 			--timerSpikeTentacleCD:Start(27.9)
 			--timerCorruptorTentacleCD:Start(32)
+		end
+	elseif spellId == 318196 then
+		if args:IsPlayer() then
+			specWarnEventHorizon:Show()
+			specWarnEventHorizon:Play("defensive")
+		else
+			local uId = DBM:GetRaidUnitId(args.destName)
+			if self:IsTanking(uId) then--Just in case it can go on non tanks
+				specWarnEventHorizonSwap:Show(args.destName)
+				specWarnEventHorizonSwap:Play("tauntboss")
+			end
+		end
+	elseif spellId == 318459 then
+		warnAnnihilate:CombinedShow(0.3, args.destName)
+		if args:IsPlayer() then
+			specWarnAnnihilate:Show()
+			specWarnAnnihilate:Play("runout")
+			yellAnnihilate:Yell()
+			yellAnnihilateFades:Countdown(spellId)
+		end
+	elseif spellId == 319348 then
+		warnEvokeAnguish:CombinedShow(0.3, args.destName)
+		if args:IsPlayer() then
+			specWarnEvokeAnguish:Show()
+			specWarnEvokeAnguish:Play("runout")
+			yellEvokeAnguish:Yell()
+			yellEvokeAnguishFades:Countdown(spellId)
 		end
 	end
 end
@@ -418,11 +477,19 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerGiftofNzoth:Stop()
 			yellGiftofNzothFades:Cancel()
 		end
-	elseif spellId == 312155 and args:GetDestCreatureID() == 158041 then--Shattered Psyche on N'Zoth
-		--timerShatteredPsyche:Stop(args.destName)
+	elseif (spellId == 312155 or spellId == 319015) and args:GetDestCreatureID() == 158041 then--Shattered Psyche on N'Zoth
 		--These always happen after this
+		timerShatteredEgo:Stop()
 		timerParanoiaCD:Start(47)--SUCCESS (45 to START)
 		timerMindgateCD:Start(60)--START
+	elseif spellId == 318459 then
+		if args:IsPlayer() then
+			yellAnnihilateFades:Cancel()
+		end
+	elseif spellId == 319348 then
+		if args:IsPlayer() then
+			yellEvokeAnguishFades:Cancel()
+		end
 	end
 end
 
