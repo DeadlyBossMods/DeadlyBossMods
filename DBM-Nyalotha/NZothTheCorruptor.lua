@@ -23,7 +23,8 @@ mod:RegisterEventsInCombat(
 	"UNIT_DIED",
 	"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
-	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5"
+	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5",
+	"UNIT_POWER_FREQUENT player"
 )
 
 --TODO, figure out if mental decay cast by mind controled players can be interrupted (if they even cast it, journal for previous boss was wrong)
@@ -35,7 +36,6 @@ mod:RegisterEventsInCombat(
 --TODO, further improve paranoia with icons/chat bubbles maybe, depends how many there are on 30 man or mythic
 --TODO, handle visions phases
 --TODO, figure out the abilities that were removed from journal in latest update. The spells still exist and weren't removing, indicating maybe those harder mechanics were moved to mythic only
---TODO, warn when own sanity 50, 30, 10?
 --New Voice: "leavemind"
 --[[
 (ability.id = 311176 or ability.id = 316711 or ability.id = 310184 or ability.id = 310134 or ability.id = 310130 or ability.id = 317292 or ability.id = 310331 or ability.id = 315772 or ability.id = 309698 or ability.id = 313400 or ability.id = 308885 or ability.id = 317066) and type = "begincast"
@@ -46,6 +46,7 @@ mod:RegisterEventsInCombat(
 --General
 local warnPhase								= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
 local warnGiftofNzoth						= mod:NewTargetNoFilterAnnounce(313334, 2)
+local warnSanity							= mod:NewCountAnnounce(307831, 3)
 --Stage 1: Dominant Mind
 local warnGlimpseofInfinite					= mod:NewCastAnnounce(311176, 2)
 ----Psychus
@@ -79,6 +80,7 @@ local specWarnGiftofNzoth					= mod:NewSpecialWarningYou(313334, nil, nil, nil, 
 local yellGiftofNzothFades					= mod:NewFadesYell(313334)
 local specWarnServantofNzoth				= mod:NewSpecialWarningTargetChange(308996, "-Healer", nil, nil, 1, 2)
 local yellServantofNzoth					= mod:NewYell(308996)
+local specwarnSanity						= mod:NewSpecialWarningCount(307831, nil, nil, nil, 1, 10)
 local specWarnGTFO							= mod:NewSpecialWarningGTFO(309991, nil, nil, nil, 1, 8)
 --Stage 1: Dominant Mind
 ----Psychus
@@ -156,6 +158,7 @@ mod:AddInfoFrameOption(307831, true)
 
 local playersInMind = {}
 local selfInMind = false
+local lastSanity = 100
 local seenAdds = {}
 local ParanoiaTargets = {}
 local stage2BasherTimers = {36, 60, 40}--Repurpose into nested table if more add timers are tabled or phase 3 has spawn timers too
@@ -181,6 +184,7 @@ function mod:OnCombatStart(delay)
 	self.vb.BasherCount = 0
 	table.wipe(playersInMind)
 	selfInMind = false
+	lastSanity = 100
 	table.wipe(seenAdds)
 	table.wipe(ParanoiaTargets)
 	if self.Options.InfoFrame then
@@ -489,6 +493,33 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 			--timerSpikeTentacleCD:Start()
 		--elseif cid == 158375 then--corruptor-tentacle
 
+		end
+	end
+end
+
+function mod:UNIT_POWER_FREQUENT(uId)
+	local currentSanity = UnitPower(uId, ALTERNATE_POWER_INDEX)
+	if currentSanity > lastSanity then
+		lastSanity = currentSanity
+		return
+	end
+	if self:AntiSpam(5, 6) then--Additional throttle in case you lose sanity VERY rapidly with increased ICD for special warning
+		if currentSanity == 15 and lastSanity > 15 then
+			lastSanity = 15
+			specwarnSanity:Show(lastSanity)
+			specwarnSanity:Play("lowsanity")
+		elseif currentSanity == 30 and lastSanity > 30 then
+			lastSanity = 30
+			specwarnSanity:Show(lastSanity)
+			specwarnSanity:Play("lowsanity")
+		end
+	elseif self:AntiSpam(3, 7) then--Additional throttle in case you lose sanity VERY rapidly
+		if currentSanity == 45 and lastSanity > 45 then
+			lastSanity = 45
+			warnSanity:Show(lastSanity)
+		elseif currentSanity == 60 and lastSanity > 60 then
+			lastSanity = 60
+			warnSanity:Show(lastSanity)
 		end
 	end
 end
