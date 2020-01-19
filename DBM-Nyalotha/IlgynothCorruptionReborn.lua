@@ -28,6 +28,11 @@ mod:RegisterEventsInCombat(
 
 --TODO, https://ptr.wowhead.com/spell=312486/recurring-nightmare need DBM hand holding? Maybe we can track them on infoframe if required?
 --TODO, accurate mythic tracking of mythic version of CursedBlood
+--[[
+(ability.id = 309961 or ability.id = 311401) and type = "begincast"
+ or (ability.id = 311401 or ability.id = 311159 or ability.id = 314396) and type = "cast"
+ or ability.id = 310788
+--]]
 --Stage 01: The Corruptor, Reborn
 local warnEyeofNZoth						= mod:NewStackAnnounce(309961, 2, nil, "Tank")
 local warnTouchoftheCorruptor				= mod:NewTargetNoFilterAnnounce(311367, 4)

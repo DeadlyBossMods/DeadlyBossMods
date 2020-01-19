@@ -23,7 +23,8 @@ mod:RegisterEventsInCombat(
 --	"SPELL_INTERRUPT",
 --	"UNIT_DIED",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
-	"UNIT_SPELLCAST_SUCCEEDED boss1"
+	"UNIT_SPELLCAST_SUCCEEDED boss1",
+	"UNIT_POWER_FREQUENT player"
 )
 
 --TODO, Cyst Genesis still listed in overview but removed from P3 in latest build, see if it still exists. 313118/307064
@@ -38,6 +39,7 @@ mod:RegisterEventsInCombat(
 --General
 local warnPhase								= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
 local warnGiftofNzoth						= mod:NewTargetNoFilterAnnounce(313334, 2)
+local warnWillPower							= mod:NewCountAnnounce(307831, 3)
 --Stage 1: Exterior Carapace
 ----Fury of N'Zoth
 local warnMadnessBomb						= mod:NewTargetAnnounce(306973, 2)
@@ -56,6 +58,7 @@ local specWarnServantofNzoth				= mod:NewSpecialWarningTargetChange(307832, "-He
 local yellServantofNzoth					= mod:NewYell(307832)
 local specWarnBlackScar						= mod:NewSpecialWarningStack(315954, nil, 2, nil, nil, 1, 6)
 local specWarnBlackScarTaunt				= mod:NewSpecialWarningTaunt(315954, nil, nil, nil, 1, 2)
+local specwarnWillPower						= mod:NewSpecialWarningCount(307831, nil, nil, nil, 1, 10)
 --local specWarnGTFO						= mod:NewSpecialWarningGTFO(270290, nil, nil, nil, 1, 8)
 --Stage 1: Exterior Carapace
 ----Fury of N'Zoth
@@ -106,12 +109,14 @@ mod.vb.TentacleCount = 0
 mod.vb.gazeCount = 0
 mod.vb.DarknessCount = 0
 mod.vb.phase = 1
+local lastSanity = 100
 
 function mod:OnCombatStart(delay)
 	self.vb.TentacleCount = 0
 	self.vb.gazeCount = 0
 	self.vb.DarknessCount = 0
 	self.vb.phase = 1
+	lastSanity = 100
 	timerMadnessBombCD:Start(7.6-delay)--SUCCESS
 	timerMentalDecayCD:Start(11.1-delay)--SUCCESS
 	--timerGazeofMadnessCD:Start(13.8-delay)
@@ -300,10 +305,31 @@ function mod:SPELL_AURA_REMOVED(args)
 			DBM.Nameplate:Hide(true, args.destGUID, spellId)
 		end
 	elseif spellId == 307079 then--Synthesis
-		self.vb.phase = 2.5
-		warnSynthesisOver:Show()
-		timerOccipitalBlastCD:Start(5)
-		timerMandibleSlamCD:Start(15.6)
+		if self:IsMythic() then
+			--He Retreats into Phase 3 immediately
+			warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(3))
+			warnPhase:Play("pthree")
+			timerMentalDecayCD:Stop()
+			timerAdaptiveMembraneCD:Stop()
+			timerEternalDarknessCD:Stop()
+			timerMadnessBombCD:Stop()
+			timerOccipitalBlastCD:Stop()
+			timerMandibleSlamCD:Stop()
+			--Timers assumed from heroic phase 3, might be different since boss mechanics differ on mythic
+			timerMentalDecayCD:Start(6.6)
+			timerAdaptiveMembraneCD:Start(13.1)
+			timerInfiniteDarknessCD:Start(16.7)
+			timerMandibleSlamCD:Start(21.1)
+			timerThrashingTentacleCD:Start(22.3)
+			timerInsanityBombCD:Start(26)
+			timerOccipitalBlastCD:Start(36.7)
+		else
+			--he hangs around in tunnel for 10%
+			self.vb.phase = 2.5
+			warnSynthesisOver:Show()
+			timerOccipitalBlastCD:Start(5)
+			timerMandibleSlamCD:Start(15.6)
+		end
 	end
 end
 
@@ -380,5 +406,32 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		timerThrashingTentacleCD:Start(22.3)
 		timerInsanityBombCD:Start(26)
 		timerOccipitalBlastCD:Start(36.7)
+	end
+end
+
+function mod:UNIT_POWER_FREQUENT(uId)
+	local currentSanity = UnitPower(uId, ALTERNATE_POWER_INDEX)
+	if currentSanity > lastSanity then
+		lastSanity = currentSanity
+		return
+	end
+	if self:AntiSpam(5, 6) then--Additional throttle in case you lose sanity VERY rapidly with increased ICD for special warning
+		if currentSanity == 15 and lastSanity > 15 then
+			lastSanity = 15
+			specwarnWillPower:Show(lastSanity)
+			specwarnWillPower:Play("lowsanity")
+		elseif currentSanity == 30 and lastSanity > 30 then
+			lastSanity = 30
+			specwarnWillPower:Show(lastSanity)
+			specwarnWillPower:Play("lowsanity")
+		end
+	elseif self:AntiSpam(3, 7) then--Additional throttle in case you lose sanity VERY rapidly
+		if currentSanity == 45 and lastSanity > 45 then
+			lastSanity = 45
+			warnWillPower:Show(lastSanity)
+		elseif currentSanity == 60 and lastSanity > 60 then
+			lastSanity = 60
+			warnWillPower:Show(lastSanity)
+		end
 	end
 end
