@@ -120,22 +120,28 @@ local specWarnHarvestThoughts				= mod:NewSpecialWarningMoveTo(317066, nil, nil,
 local timerGiftofNzoth						= mod:NewBuffFadesTimer(20, 313334, nil, nil, nil, 5)
 --local berserkTimer						= mod:NewBerserkTimer(600)
 --Stage 1: Dominant Mind
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(20957))
 ----Psychus
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(21455))
 local timerMindwrackCD						= mod:NewCDTimer(4.9, 316711, nil, "Tank", 2, 5, nil, DBM_CORE_TANK_ICON)--4.9-8.6
 local timerCreepingAnguishCD				= mod:NewCDTimer(23.1, 310184, nil, nil, 2, 5, nil, DBM_CORE_TANK_ICON)
 local timerSynampticShock					= mod:NewBuffActiveTimer(20, 313184, nil, nil, nil, 5, nil, DBM_CORE_DAMAGE_ICON)
-----Eyes of N'zoth
+----Mind's Eye
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(20977))
 local timerVoidGazeCD						= mod:NewCDTimer(33, 310333, nil, nil, nil, 2)--33-34.3
 ----Exposed Synapse
 
 --Stage 2: Writhing Onslaught
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(20970))
 ----N'Zoth
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(20917))
 --local timerShatteredPsyche					= mod:NewTargetTimer(30, 312155, nil, nil, nil, 6)--Maybe add when duration is not as random
 local timerCollapsingMindscape				= mod:NewCastTimer(20, 317292, nil, nil, nil, 6)
 local timerMindgraspCD						= mod:NewCDTimer(30.1, 315772, nil, nil, nil, 3)
 local timerParanoiaCD						= mod:NewCDTimer(30.1, 309980, nil, nil, nil, 3)
 local timerMindgateCD						= mod:NewCDTimer(30.1, 309046, nil, nil, nil, 1)
 ----Basher Tentacle
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(21286))
 local timerBasherTentacleCD					= mod:NewCDTimer(60, "ej21286", nil, nil, nil, 1, 309698, DBM_CORE_DAMAGE_ICON)
 local timerVoidLashCD						= mod:NewCDTimer(22.9, 309698, nil, false, 2, 5, nil, DBM_CORE_TANK_ICON)
 ----Corruptor Tentacle
@@ -147,7 +153,8 @@ local timerVoidLashCD						= mod:NewCDTimer(22.9, 309698, nil, false, 2, 5, nil,
 
 ------Trecherous Bargain
 --local timerBlackVolleyCD					= mod:NewAITimer(30.1, 313960, nil, nil, nil, 2)
---Stage 3:
+--Stage 3: Convergence:
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(20767))
 ----Thought Harvester
 local timerHarvestThoughtsCD				= mod:NewAITimer(30.1, 317066, nil, nil, nil, 2)
 

@@ -76,10 +76,10 @@ local yellInsanityBombFades					= mod:NewShortFadesYell(306984)
 local specWarnInfiniteDarkness				= mod:NewSpecialWarningCount(313040, nil, nil, nil, 2, 2)
 local specWarnThrashingTentacle				= mod:NewSpecialWarningCount(315820, nil, nil, nil, 2, 2)
 
---mod:AddTimerLine(BOSS)
 --General
 local timerGiftofNzoth						= mod:NewBuffFadesTimer(20, 313334, nil, nil, nil, 5)
 --Stage 1: Exterior Carapace
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(20558))
 ----Fury of N'Zoth
 local timerMadnessBombCD					= mod:NewNextTimer(26.6, 306973, nil, nil, nil, 3)
 local timerAdaptiveMembraneCD				= mod:NewNextTimer(27.7, 306990, nil, nil, nil, 5, nil, DBM_CORE_DAMAGE_ICON..DBM_CORE_TANK_ICON, nil, 3, 4)
@@ -91,9 +91,11 @@ local timerMandibleSlamCD					= mod:NewNextTimer(16.6, 306990, nil, nil, nil, 5,
 --local timerGazeofMadnessCD					= mod:NewNextCountTimer(61, 307482, nil, nil, nil, 1)
 ----Wrathion (for now assuming his stuff is passive not timed)
 --Stage 2: Subcutaneous Tunnel
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(20566))
 local timerEternalDarknessCD				= mod:NewNextTimer(22.2, 307048, nil, nil, nil, 2)
 local timerOccipitalBlastCD					= mod:NewNextTimer(33.3, 307092, nil, nil, nil, 3)
 --Stage 3: Nightmare Chamber
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(20569))
 local timerInsanityBombCD					= mod:NewCDTimer(30.1, 306984, nil, nil, nil, 3)
 local timerInfiniteDarknessCD				= mod:NewCDTimer(34.5, 313040, nil, nil, nil, 2)
 local timerThrashingTentacleCD				= mod:NewCDTimer(27.8, 315820, nil, nil, nil, 3)

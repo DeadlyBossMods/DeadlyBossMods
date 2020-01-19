@@ -98,7 +98,7 @@ local timerUnstableVita						= mod:NewTargetTimer(5, 306257, nil, nil, nil, 5)
 ------Vita Add
 --mod:AddTimerLine(DBM:EJ_GetSectionInfo(20546))
 --local timerChainLightningCD					= mod:NewCDTimer(4.8, 306874, nil, nil, nil, 3)
-----Void
+----Nightmare
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20529))
 local timerCallVoidHunterCD					= mod:NewCDTimer(30.1, 306866, nil, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON)
 local timerUnstableVoidCD					= mod:NewNextCountTimer(5.9, 306634, nil, nil, nil, 5)
