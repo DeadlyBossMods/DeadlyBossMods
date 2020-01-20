@@ -36,7 +36,6 @@ local warnPhase								= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 
 --Stage One: The Black Emperor
 local warnSearingArmor						= mod:NewStackAnnounce(306015, 2, nil, "Tank")
 local warnIncineration						= mod:NewTargetAnnounce(306111, 3)
-local warnCreepingMadness					= mod:NewTargetAnnounce(313250, 2)
 local warnBurningCata						= mod:NewPreWarnAnnounce(306735, 10, 4)
 --Stage Two: Smoke and Mirrors
 local warnScales							= mod:NewSpellAnnounce(308682, 2)
@@ -51,7 +50,7 @@ local yellIncineration						= mod:NewYell(306111)
 local yellIncinerationFades					= mod:NewShortFadesYell(306111)
 local specWarnGaleBlast						= mod:NewSpecialWarningDodge(306289, nil, nil, nil, 2, 2)
 local specWarnBurningCataclysm				= mod:NewSpecialWarningCount(306735, nil, nil, nil, 2, 2)
-local specWarnCreepingMadness				= mod:NewSpecialWarningStopMove(313250, nil, nil, nil, 1, 2)
+local specWarnCreepingMadness				= mod:NewSpecialWarningStack(313250, nil, 32, nil, nil, 1, 2)
 local specWarnGTFO							= mod:NewSpecialWarningGTFO(306824, nil, nil, nil, 1, 8)
 --Stage Two: Smoke and Mirrors
 local warnSpawnAdds							= mod:NewSpellAnnounce(312389, 2)
@@ -232,12 +231,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 313250 then
 		local amount = args.amount or 1
-		if amount == 1 then--Initial applications
-			warnCreepingMadness:CombinedShow(0.3, args.destName)
-		end
-		if args:IsPlayer() and amount == 1 or (amount % 10 == 0) then--Warn on apply and every 10 stacks
-			specWarnCreepingMadness:Show()
-			specWarnCreepingMadness:Play("stopmove")
+		if args:IsPlayer() and (amount == 32 or amount == 40 or amount >= 50) and self:AntiSpam(4, 3) then--Warn at 32, 40, > 50 with ICD of 4 seconds
+			specWarnCreepingMadness:Show(amount)
+			specWarnCreepingMadness:Play("stackhigh")
 		end
 	elseif spellId == 313175 then
 		if self.Options.NPAuraOnHardenedCore then

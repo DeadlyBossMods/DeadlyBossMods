@@ -105,7 +105,7 @@ local berserkTimer							= mod:NewBerserkTimer(720)
 mod:AddRangeFrameOption("10")
 mod:AddInfoFrameOption(307831, true)
 --mod:AddSetIconOption("SetIconOnEyeBeam", 264382, true, false, {1, 2})
-mod:AddNamePlateOption("NPAuraOnMembrane", 306990)
+mod:AddNamePlateOption("NPAuraOnMembrane2", 306990, false)
 
 mod.vb.TentacleCount = 0
 mod.vb.gazeCount = 0
@@ -130,7 +130,7 @@ function mod:OnCombatStart(delay)
 		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(307831))
 		DBM.InfoFrame:Show(8, "playerpower", 1, ALTERNATE_POWER_INDEX, nil, nil, 2)--Sorting lowest to highest
 	end
-	if self.Options.NPAuraOnMembrane then
+	if self.Options.NPAuraOnMembrane2 then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
 end
@@ -142,7 +142,7 @@ function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
-	if self.Options.NPAuraOnMembrane then
+	if self.Options.NPAuraOnMembrane2 then
 		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
 	end
 end
@@ -239,7 +239,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			DBM.InfoFrame:SetHeader(args.spellName)
 			DBM.InfoFrame:Show(2, "enemyabsorb", nil, args.amount, "boss1")
 		end
-		if self.Options.NPAuraOnMembrane then
+		if self.Options.NPAuraOnMembrane2 then
 			DBM.Nameplate:Show(true, args.destGUID, spellId, nil, 12)
 		end
 	elseif spellId == 307079 and self.vb.phase < 2 then--Synthesis
@@ -303,7 +303,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(307831))
 			DBM.InfoFrame:Show(8, "playerpower", 1, ALTERNATE_POWER_INDEX, nil, nil, 2)--Sorting lowest to highest
 		end
-		if self.Options.NPAuraOnMembrane then
+		if self.Options.NPAuraOnMembrane2 then
 			DBM.Nameplate:Hide(true, args.destGUID, spellId)
 		end
 	elseif spellId == 307079 then--Synthesis

@@ -21,7 +21,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_PERIODIC_MISSED 307343",
 --	"SPELL_INTERRUPT",
 	"UNIT_DIED",
-	"UNIT_SPELLCAST_SUCCEEDED boss1"
+	"UNIT_SPELLCAST_SUCCEEDED"
 )
 
 --TODO, Improve add spawn detection and their initial ability timers.
@@ -30,8 +30,7 @@ mod:RegisterEventsInCombat(
 --TODO, improve timer start code for P1 abilities to not start new timers if lift off is soon
 --TODO, use https://ptr.wowhead.com/spell=306996/gift-of-the-void for initial void duder timers?
 --TODO, faster Stage 2 detection for stopping timers
---TODO, detection of No Escape?
---TODO, right way to detect phase 3 mythic twilight decimator
+--TODO, right way to detect phase 3 mythic twilight decimator on mythic
 --[[
 (ability.id = 307020 or ability.id = 307403 or ability.id = 307639 or ability.id = 315762) and type = "begincast"
  or (ability.id = 307359 or ability.id = 307828 or ability.id = 310323) and type = "cast"
@@ -45,6 +44,7 @@ local warnGiftoftheVoid						= mod:NewTargetNoFilterAnnounce(306981, 1)
 local warnFanaticalAscension				= mod:NewCastAnnounce(307729, 4)
 local warnPoweroftheChosen					= mod:NewTargetNoFilterAnnounce(307075, 3)
 local warnSpitefulAssault					= mod:NewSpellAnnounce(307396, 2)
+local warnBrutalSmash						= mod:NewSpellAnnounce(315932, 4)--Fall back warning that'll only fire if special warning for brutal smash disabled
 ----Stage 3: The Void Unleashed
 local warnPhase3							= mod:NewPhaseAnnounce(3, 2)
 
@@ -59,8 +59,8 @@ local yellDespairFades						= mod:NewFadesYell(307359, nil, false)
 local specWarnDespairOther					= mod:NewSpecialWarningTarget(307359, "Healer", nil, nil, 1, 2)
 local specWarnDarkGateway					= mod:NewSpecialWarningSwitchCount(307057, "-Healer", nil, nil, 1, 2)
 local specWarnGTFO							= mod:NewSpecialWarningGTFO(307343, nil, nil, nil, 1, 8)
-----Iron Duder
-local specWarnBrutalSmash					= mod:NewSpecialWarningDodge(315932, nil, nil, nil, 2, 2)
+----Iron-Willed Enforcer
+local specWarnBrutalSmash					= mod:NewSpecialWarningDodge(315932, false, nil, 2, 2, 2)--May feel spammy if multiple adds are up so elect in instead of out
 ----Stage 2: Death From Above
 local specWarnTwilightDecimator				= mod:NewSpecialWarningDodgeCount(307218, nil, nil, nil, 2, 2)
 ----Stage 3: The Void Unleashed
@@ -83,8 +83,8 @@ local timerTwilightBreathCD					= mod:NewCDTimer(14.8, 307020, nil, "Tank", nil,
 local timerDespairCD						= mod:NewCDTimer(35.2, 307359, nil, nil, nil, 5, nil, DBM_CORE_HEALER_ICON)--35.2-36.4
 local timerShatteredResolve					= mod:NewTargetTimer(6, 307371, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
 local timerDarkGatewayCD					= mod:NewCDCountTimer(33.2, 307057, nil, nil, nil, 1, nil, nil, nil, 1, 4)
-----Iron Duder
-local timerBrutalSmash						= mod:NewCDTimer(11, 315932, nil, nil, nil, 3, nil, DBM_CORE_MYTHIC_ICON)
+----Iron-Willed Enforcer
+local timerNoEscapeCD						= mod:NewCDCountTimer(11, 316437, nil, nil, nil, 3, nil, DBM_CORE_MYTHIC_ICON)
 ----Stage 2: Death From Above
 --mod:AddTimerLine(DBM:EJ_GetSectionInfo(20667))
 local timerTwilightDecimatorCD				= mod:NewNextCountTimer(12.2, 307218, nil, nil, nil, 3)
@@ -106,6 +106,8 @@ mod:AddNamePlateOption("NPAuraOnPoweroftheChosen", 307729, false)
 
 local voidCorruptionStacks = {}
 local unitTracked = {}
+local seenAdds = {}
+local enforcerCount = 0
 mod.vb.gatewayCount = 0
 mod.vb.phase = 1
 mod.vb.TwilightDCasts = 0
@@ -114,6 +116,7 @@ mod.vb.darknessCasts = 0
 function mod:OnCombatStart(delay)
 	table.wipe(voidCorruptionStacks)
 	table.wipe(unitTracked)
+	table.wipe(seenAdds)
 	self.vb.gatewayCount = 0
 	self.vb.phase = 1
 	self.vb.TwilightDCasts = 0
@@ -219,10 +222,13 @@ function mod:SPELL_CAST_START(args)
 		end--]]
 	elseif spellId == 315932 then
 		if self:AntiSpam(4, 4) then
-			specWarnBrutalSmash:Show()
-			specWarnBrutalSmash:Play("watchstep")
+			if self.Options.SpecWarn315932dodge then
+				specWarnBrutalSmash:Show()
+				specWarnBrutalSmash:Play("watchstep")
+			else
+				warnBrutalSmash:Show()
+			end
 		end
-		timerBrutalSmash:Start(11, args.sourceGUID)
 	end
 end
 
@@ -347,49 +353,70 @@ function mod:UNIT_DIED(args)
 	elseif cid == 157447 then --fanatical-cultist
 		unitTracked[args.destGUID] = nil
 		DBM.Nameplate:Hide(true, args.destGUID)
+	elseif cid == 157451 then--Mythic Iron Guy
+		if seenAdds[args.destGUID] then
+			timerNoEscapeCD:Stop(seenAdds[args.destGUID])
+			seenAdds[args.destGUID] = nil
+		end
 	--elseif cid == 157450 then--spellbound-ritualist
 
 	--elseif cid == 157449 then--sinister-soulcarver (heroic+)
 
-	elseif cid == 157451 then--Mythic Iron Guy
-		timerBrutalSmash:Stop(args.destGUID)
 	end
 end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	--More robust than using SPELL_CAST_START which only starts when breath attack actually begins
 	--This comes about 2.5 seconds sooner. In addition, this also acts as an end script (basically a dummy cast) at end of it all
-	if spellId == 310225 then--Twilight Decimator
-		if self.vb.phase == 1 then
-			self.vb.phase = 2
-			self.vb.TwilightDCasts = 0
-			timerEncroachingShadowsCD:Stop()--Cast immediately when she goes up
-			--timerEncroachingShadowsCD:Start(2)
-			timerTwilightBreathCD:Stop()
-			timerDespairCD:Stop()
-			timerDarkGatewayCD:Stop()
-		end
-		self.vb.TwilightDCasts = self.vb.TwilightDCasts + 1
-		if (self.vb.phase ~= 3) and self.vb.TwilightDCasts == 4 then--4th time doesn't actually cast a breath, it's phase ending
-			self.vb.phase = 1
-			self.vb.gatewayCount = 0
-			timerEncroachingShadowsCD:Start(7.7)
-			timerDarkGatewayCD:Start(12.2, 1)
-			timerTwilightBreathCD:Start(13.4)
-			timerDespairCD:Start(18)
-			timerTwilightDecimatorCD:Start(92.3, 1)
-		else
-			specWarnTwilightDecimator:Show(self.vb.TwilightDCasts)
-			specWarnTwilightDecimator:Play("breathsoon")
-			if (self.vb.phase ~= 3) and self.vb.TwilightDCasts < 3 then
-				timerTwilightDecimatorCD:Start(12.2, self.vb.TwilightDCasts+1)
+	if uId == "boss1" then
+		if spellId == 310225 then--Twilight Decimator
+			if self.vb.phase == 1 then
+				self.vb.phase = 2
+				self.vb.TwilightDCasts = 0
+				timerEncroachingShadowsCD:Stop()--Cast immediately when she goes up
+				--timerEncroachingShadowsCD:Start(2)
+				timerTwilightBreathCD:Stop()
+				timerDespairCD:Stop()
+				timerDarkGatewayCD:Stop()
 			end
+			self.vb.TwilightDCasts = self.vb.TwilightDCasts + 1
+			if (self.vb.phase ~= 3) and self.vb.TwilightDCasts == 4 then--4th time doesn't actually cast a breath, it's phase ending
+				self.vb.phase = 1
+				self.vb.gatewayCount = 0
+				timerEncroachingShadowsCD:Start(7.7)
+				timerDarkGatewayCD:Start(12.2, 1)
+				timerTwilightBreathCD:Start(13.4)
+				timerDespairCD:Start(18)
+				timerTwilightDecimatorCD:Start(92.3, 1)
+			else
+				specWarnTwilightDecimator:Show(self.vb.TwilightDCasts)
+				specWarnTwilightDecimator:Play("breathsoon")
+				if (self.vb.phase ~= 3) and self.vb.TwilightDCasts < 3 then
+					timerTwilightDecimatorCD:Start(12.2, self.vb.TwilightDCasts+1)
+				end
+			end
+		elseif spellId == 307043 then--Dark Gateway
+			self.vb.gatewayCount = self.vb.gatewayCount + 1
+			specWarnDarkGateway:Show(self.vb.gatewayCount)
+			specWarnDarkGateway:Play("killmob")
+			timerDarkGatewayCD:Start(33.2, self.vb.gatewayCount+1)
 		end
-	elseif spellId == 307043 then--Dark Gateway
-		self.vb.gatewayCount = self.vb.gatewayCount + 1
-		specWarnDarkGateway:Show(self.vb.gatewayCount)
-		specWarnDarkGateway:Play("killmob")
-		timerDarkGatewayCD:Start(33.2, self.vb.gatewayCount+1)
+	elseif spellId == 316437 then--No Escape
+		local guid = UnitGUID(uId)
+		if self:AntiSpam(3, guid) then
+			self:SendSync("NoEscape", guid)
+		end
 	end
 end
 
+function mod:OnSync(msg, guid)
+	if msg == "NoEscape" and guid then
+		if not seenAdds[guid] then
+			enforcerCount = enforcerCount + 1
+			seenAdds[guid] = enforcerCount--Store add count by guid
+		end
+		if seenAdds[guid] then
+			timerNoEscapeCD:Start(11, seenAdds[guid])
+		end
+	end
+end

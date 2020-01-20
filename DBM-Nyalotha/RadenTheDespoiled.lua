@@ -155,6 +155,7 @@ do
 			local mapId = GetBestMapForUnit(uId) or 0
 			--Covers all bases, exists, same map, not self, not dead, and not DCed
 			if UnitExists(uId) and playerMapId == mapId and not UnitIsUnit(uId, "player") and not UnitIsDeadOrGhost(uId) and UnitIsConnected(uId) then
+				--This is a bit ugly, but only way to determine most approximate range of a unit from player
 				if IsItemInRange(90175, uId) then entireRaidDistancetable[uId] = 4
 				elseif IsItemInRange(37727, uId) then entireRaidDistancetable[uId] = 6
 				elseif IsItemInRange(8149, uId) then entireRaidDistancetable[uId] = 8
