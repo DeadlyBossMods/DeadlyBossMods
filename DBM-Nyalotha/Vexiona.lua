@@ -229,6 +229,9 @@ function mod:SPELL_CAST_START(args)
 				warnBrutalSmash:Show()
 			end
 		end
+		if self:AntiSpam(3, args.sourceGUID) then
+			self:SendSync("NoEscape", args.sourceGUID)
+		end
 	end
 end
 
