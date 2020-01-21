@@ -46,13 +46,28 @@ L= DBM:GetModLocalization(2102)
 -----------------------
 L= DBM:GetModLocalization(2093)
 
+L:SetWarningLocalization({
+	warnGoodBrew		= "%s en 3 segundos",
+	specWarnBrewOnBoss	= "Brebaje beneficioso - ¡ve a %s!"
+})
+
+L:SetOptionLocalization({
+	warnGoodBrew		= "Mostrar aviso especial cuando se esté lanzando un brebaje beneficioso",
+	specWarnBrewOnBoss	= "Mostrar aviso especial cuando se esté lanzando un brebaje positivo sobre la ubicación de uno de los jefes"
+})
+
+L:SetMiscLocalization({
+	critBrew		= "Brebaje de crítico",
+	hasteBrew		= "Brebaje de celeridad"
+})
+
 -----------------------
 -- Ring of Booty --
 -----------------------
 L= DBM:GetModLocalization(2094)
 
 L:SetMiscLocalization({
-	openingRP = "¡Hagan sus apuestas! Tneemos un nuevo grupo de victi... perdón... ¡competidores! ¡Gurthok, Wodin, que empiece la cosa!"
+	openingRP = "¡Hagan sus apuestas! Tenemos un nuevo grupo de victi... perdón... ¡competidores! ¡Gurthok, Wodin, que empiece la cosa!"
 })
 
 -----------------------
@@ -329,6 +344,58 @@ L= DBM:GetModLocalization(2129)
 -- Enemigos menores --
 ----------------------
 L = DBM:GetModLocalization("WaycrestTrash")
+
+L:SetGeneralLocalization({
+	name =	"Enemigos menores"
+})
+
+--------------------------------
+-- <<<Operación: Mecandria>>> --
+--------------------------------
+-----------------------
+-- King Gobbamak --
+-----------------------
+L= DBM:GetModLocalization(2357)
+
+-----------------------
+-- Gunker --
+-----------------------
+L= DBM:GetModLocalization(2358)
+
+-----------------------
+-- Trixie & Naeno --
+-----------------------
+L= DBM:GetModLocalization(2360)
+
+-----------------------
+-- HK-8 Aerial Oppression Unit --
+-----------------------
+L= DBM:GetModLocalization(2355)
+
+-----------------------
+-- Tussle Tonks --
+-----------------------
+L= DBM:GetModLocalization(2336)
+
+-----------------------
+-- K.U.-J.0. --
+-----------------------
+L= DBM:GetModLocalization(2339)
+
+-----------------------
+-- Machinist's Garden --
+-----------------------
+L= DBM:GetModLocalization(2348)
+
+-----------------------
+-- King Mechagon --
+-----------------------
+L= DBM:GetModLocalization(2331)
+
+---------
+--Trash--
+---------
+L = DBM:GetModLocalization("MechagonTrash")
 
 L:SetGeneralLocalization({
 	name =	"Enemigos menores"
