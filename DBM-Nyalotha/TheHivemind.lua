@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(157253, 157254)--Ka'zir and Tek'ris
 mod:SetEncounterID(2333)
 mod:SetZone()
-mod:SetUsedIcons(1, 2, 3, 4, 5)--Refine when max number of mythic Volatile Eruption is known
+mod:SetUsedIcons(1, 2, 3, 4, 5, 6)--Refine when max number of mythic Volatile Eruption is known
 mod:SetHotfixNoticeRev(20191109000000)--2019, 11, 09
 mod:SetMinSyncRevision(20191109000000)
 --mod.respawnTime = 29
@@ -28,7 +28,8 @@ mod:RegisterEventsInCombat(
 --TODO, if https://ptr.wowhead.com/spell=313129/mindless applies to players, nameplate aura it
 --TODO, GTFO shit on the ground
 --TODO, warn for fixate (308360)?
---TODO, normal timers were RADICALLY different from heroic, to point that makes me think they probably changed up fight some. Heroic timers probably need redoing
+--TODO, normal/lfr/mythic timers were RADICALLY different from heroic, but all the same. Heroic timers are VERY likely changed, so this mod assumes they are. if not, roll back to old heroic timers
+--TODO, related to above, if all 4 difficulties have same timers now (minus heroic+ mechanics), combine the tables and cleanup mod
 --[[
 (ability.id = 307569 or ability.id = 307213 or ability.id = 307201 or ability.id = 310340 or ability.id = 313652 or ability.id = 307968 or ability.id = 307232 or ability.id = 307582) and type = "begincast"
  or (ability.id = 308178 or ability.id = 308227 or ability.id = 307232 or ability.id = 312868 or ability.id = 312710) and type = "cast"
@@ -56,6 +57,7 @@ local specWarnEtropicEhco					= mod:NewSpecialWarningDodge(313692, nil, nil, nil
 --General
 local timerTekrissHiveControlCD				= mod:NewNextTimer(69.6, 307213, nil, nil, nil, 6, nil, nil, nil, 1, 5)
 local timerKazirsHiveControlCD				= mod:NewNextTimer(69.6, 307201, nil, nil, nil, 6, nil, nil, nil, 1, 5)
+local timerDarkReconCast					= mod:NewNextTimer(10, 307569, nil, nil, nil, 5, nil, DBM_CORE_DAMAGE_ICON, nil, 1, 5)
 --Ka'zir
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20710))
 local timerVolatileEruptionCD				= mod:NewNextTimer(84, 307583, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
@@ -73,7 +75,7 @@ local timerDronesCD							= mod:NewNextTimer(120, 312868, nil, nil, nil, 1, nil,
 
 mod:AddRangeFrameOption(6, 307232)--While 4 yards is supported, we want wiggle room
 --mod:AddInfoFrameOption(275270, true)
-mod:AddSetIconOption("SetIconOnAdds", 307637, true, true, {1, 2, 3, 4, 5})
+mod:AddSetIconOption("SetIconOnAdds", 307637, true, true, {1, 2, 3, 4, 5, 6})
 mod:AddNamePlateOption("NPAuraOnVolatileEruption", 307583)
 mod:AddNamePlateOption("NPAuraOnAcceleratedEvolution", 307637)
 
@@ -89,7 +91,6 @@ mod.vb.DronesCount = 0
 mod.vb.VolatileEruptionCount = 0
 mod.vb.difficultyName = "None"
 --local seenAdds = {}
---Timers (at least on heroic) have a point where you can just loop them, but since the loops don't match with other difficulties, it's a bit ugly to do
 --Better to just hard code timers up until berserk as much as possible and not rely on loops that can change at any time
 local allTimers = {
 	["lfr"] = {--Unknown, so normal timers are used for now
@@ -268,6 +269,7 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 307569 then
 		warnDarkRecon:Show()
+		timerDarkReconCast:Start()
 	elseif spellId == 307213 then
 		specWarnTekrissHiveControl:Show(L.Together)
 		specWarnTekrissHiveControl:Play("phasechange")
@@ -323,19 +325,27 @@ function mod:SPELL_CAST_START(args)
 		if self.Options.NPAuraOnVolatileEruption then
 			DBM.Nameplate:Show(true, args.sourceGUID, spellId, nil, 20)
 		end
+		if self.Options.SetIconOnAdds then
+			self:ScanForMobs(args.sourceGUID, 2, self.vb.addIcon, 1, 0.2, 12)
+		end
+		self.vb.addIcon = self.vb.addIcon + 1
+		if self.vb.addIcon == 7 then
+			self.vb.addIcon = 1
+		end
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 308178 then
+		--self.vb.addIcon = 1
 		self.vb.VolatileEruptionCount = self.vb.VolatileEruptionCount + 1
 		local timer = allTimers[self.vb.difficultyName][spellId][self.vb.VolatileEruptionCount+1]
 		if timer then
 			timerVolatileEruptionCD:Start(timer, self.vb.VolatileEruptionCount+1)
 		end
 	elseif spellId == 308227 then
-		self.vb.addIcon = 1
+		--self.vb.addIcon = 1
 		self.vb.AccEvolutionCount = self.vb.AccEvolutionCount + 1
 		local timer = allTimers[self.vb.difficultyName][spellId][self.vb.AccEvolutionCount+1]
 		if timer then
@@ -372,13 +382,16 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.NPAuraOnAcceleratedEvolution then
 			DBM.Nameplate:Show(true, args.destGUID, spellId)
 		end
-		if self:AntiSpam(20, 1) then--TODO, better add icon reset location?
-			self.vb.addIcon = 1
-		end
+		--if self:AntiSpam(20, 1) then--TODO, better add icon reset location?
+		--	self.vb.addIcon = 1
+		--end
 		if self.Options.SetIconOnAdds then
 			self:ScanForMobs(args.destGUID, 2, self.vb.addIcon, 1, 0.2, 12)
 		end
 		self.vb.addIcon = self.vb.addIcon + 1
+		if self.vb.addIcon == 7 then
+			self.vb.addIcon = 1
+		end
 	elseif spellId == 313460 then
 		warnNullification:CombinedShow(0.5, args.destName)
 	--Backup add detection in case they remove the add scripts from combat log

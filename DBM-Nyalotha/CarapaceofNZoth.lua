@@ -76,10 +76,10 @@ local yellInsanityBombFades					= mod:NewShortFadesYell(306984)
 local specWarnInfiniteDarkness				= mod:NewSpecialWarningCount(313040, nil, nil, nil, 2, 2)
 local specWarnThrashingTentacle				= mod:NewSpecialWarningCount(315820, nil, nil, nil, 2, 2)
 
---mod:AddTimerLine(BOSS)
 --General
 local timerGiftofNzoth						= mod:NewBuffFadesTimer(20, 313334, nil, nil, nil, 5)
 --Stage 1: Exterior Carapace
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(20558))
 ----Fury of N'Zoth
 local timerMadnessBombCD					= mod:NewNextTimer(26.6, 306973, nil, nil, nil, 3)
 local timerAdaptiveMembraneCD				= mod:NewNextTimer(27.7, 306990, nil, nil, nil, 5, nil, DBM_CORE_DAMAGE_ICON..DBM_CORE_TANK_ICON, nil, 3, 4)
@@ -91,9 +91,11 @@ local timerMandibleSlamCD					= mod:NewNextTimer(16.6, 306990, nil, nil, nil, 5,
 --local timerGazeofMadnessCD					= mod:NewNextCountTimer(61, 307482, nil, nil, nil, 1)
 ----Wrathion (for now assuming his stuff is passive not timed)
 --Stage 2: Subcutaneous Tunnel
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(20566))
 local timerEternalDarknessCD				= mod:NewNextTimer(22.2, 307048, nil, nil, nil, 2)
 local timerOccipitalBlastCD					= mod:NewNextTimer(33.3, 307092, nil, nil, nil, 3)
 --Stage 3: Nightmare Chamber
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(20569))
 local timerInsanityBombCD					= mod:NewCDTimer(30.1, 306984, nil, nil, nil, 3)
 local timerInfiniteDarknessCD				= mod:NewCDTimer(34.5, 313040, nil, nil, nil, 2)
 local timerThrashingTentacleCD				= mod:NewCDTimer(27.8, 315820, nil, nil, nil, 3)
@@ -103,7 +105,7 @@ local berserkTimer							= mod:NewBerserkTimer(720)
 mod:AddRangeFrameOption("10")
 mod:AddInfoFrameOption(307831, true)
 --mod:AddSetIconOption("SetIconOnEyeBeam", 264382, true, false, {1, 2})
-mod:AddNamePlateOption("NPAuraOnMembrane", 306990)
+mod:AddNamePlateOption("NPAuraOnMembrane2", 306990, false)
 
 mod.vb.TentacleCount = 0
 mod.vb.gazeCount = 0
@@ -128,7 +130,7 @@ function mod:OnCombatStart(delay)
 		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(307831))
 		DBM.InfoFrame:Show(8, "playerpower", 1, ALTERNATE_POWER_INDEX, nil, nil, 2)--Sorting lowest to highest
 	end
-	if self.Options.NPAuraOnMembrane then
+	if self.Options.NPAuraOnMembrane2 then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
 end
@@ -140,7 +142,7 @@ function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
-	if self.Options.NPAuraOnMembrane then
+	if self.Options.NPAuraOnMembrane2 then
 		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
 	end
 end
@@ -237,7 +239,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			DBM.InfoFrame:SetHeader(args.spellName)
 			DBM.InfoFrame:Show(2, "enemyabsorb", nil, args.amount, "boss1")
 		end
-		if self.Options.NPAuraOnMembrane then
+		if self.Options.NPAuraOnMembrane2 then
 			DBM.Nameplate:Show(true, args.destGUID, spellId, nil, 12)
 		end
 	elseif spellId == 307079 and self.vb.phase < 2 then--Synthesis
@@ -301,7 +303,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(307831))
 			DBM.InfoFrame:Show(8, "playerpower", 1, ALTERNATE_POWER_INDEX, nil, nil, 2)--Sorting lowest to highest
 		end
-		if self.Options.NPAuraOnMembrane then
+		if self.Options.NPAuraOnMembrane2 then
 			DBM.Nameplate:Hide(true, args.destGUID, spellId)
 		end
 	elseif spellId == 307079 then--Synthesis
@@ -389,7 +391,7 @@ end
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 315673 then--Thrashing Tentacle
 		timerThrashingTentacleCD:Start()--27.8
-	elseif spellId == 45313 and self.vb.phase == 2.5 then--Anchor Here (this can be used for other phase changes too, but it's slower)
+	elseif spellId == 45313 and (self.vb.phase == 2 and self:IsMythic()) or self.vb.phase == 2.5 then--Anchor Here (this can be used for other phase changes too, but it's slower)
 		self.vb.phase = 3
 		warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(3))
 		warnPhase:Play("pthree")

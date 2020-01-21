@@ -30,7 +30,7 @@ mod:RegisterEventsInCombat(
 --TODO, raid icons for ancient curse review
 --[[
 (ability.id = 308044 or ability.id = 305663 or ability.id = 308903 or ability.id = 308872 or ability.id = 314337 or ability.id = 305722) and type = "begincast"
- or (ability.id = 307805 or ability.id = 308044 or ability.id = 310129 or ability.id = 306290)
+ or (ability.id = 307805 or ability.id = 308044 or ability.id = 310129 or ability.id = 306290) and type = "cast"
  or ability.id = 306005 and (type = "applybuff" or type = "removebuff")
 --]]
 --Stage One: Obsidian Destroyer
@@ -70,13 +70,13 @@ local timerStygianAnnihilationCD			= mod:NewCDTimer(35.3, 308044, nil, nil, nil,
 local timerBlackWingsCD						= mod:NewCDTimer(20.6, 305663, nil, nil, nil, 3)
 local timerShadowClawsCD					= mod:NewCDTimer(13, 310129, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerDarkManifestationCD				= mod:NewCDCountTimer(35.2, 308903, nil, nil, nil, 1, nil, DBM_CORE_TANK_ICON)
-local timerAncientCurseCD					= mod:NewCDTimer(30.1, 314337, nil, nil, nil, 3, nil, DBM_CORE_CURSE_ICON)
+local timerAncientCurseCD					= mod:NewNextTimer(50, 314337, nil, nil, nil, 3, nil, DBM_CORE_CURSE_ICON, nil, 3, 4)
 ----Add
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20655))
 local timerDarkOfferingCD					= mod:NewNextCountTimer(12.1, 308872, nil, nil, nil, 5)
 --Stage Two: Obsidian Statue
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20553))
-local timerForbiddenRitualCD				= mod:NewCDCountTimer(6.1, 306290, nil, "Healer", nil, 5, nil, DBM_CORE_HEALER_ICON)--6.1-8.5
+local timerForbiddenRitualCD				= mod:NewCDCountTimer(7, 306290, nil, "Healer", nil, 5, nil, DBM_CORE_HEALER_ICON)--6.1-8.5 (7)
 local timerDrainEssenceCD					= mod:NewCDTimer(13.8, 314993, nil, nil, nil, 5, nil, DBM_CORE_MAGIC_ICON)--13.8-15.8
 
 --local berserkTimer						= mod:NewBerserkTimer(600)
@@ -149,7 +149,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 314337 then
 		warnAncientCurse:Show()
 		--self.vb.ancientCurseIcon = 1
-		--timerAncientCurseCD:Start()
+		timerAncientCurseCD:Start()
 	elseif spellId == 305722 then--Obsidian Statue
 		timerDevourMagicCD:Stop()
 		timerStygianAnnihilationCD:Stop()
@@ -253,13 +253,13 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.darkManifestationCount = 0
 		timerForbiddenRitualCD:Stop()
 		timerDrainEssenceCD:Stop()
-		timerShadowClawsCD:Start(7.6)--SUCCESS
-		timerDevourMagicCD:Start(12.2)--SUCCESS
+		timerShadowClawsCD:Start(7.6)--SUCCESS (7.6-10)
+		timerDevourMagicCD:Start(12.1)--SUCCESS
 		timerDarkManifestationCD:Start(12.6, 1)
 		if self:IsHard() then
 			timerBlackWingsCD:Start(19.9)
 			if self:IsMythic() then
-				timerAncientCurseCD:Start(17.3)
+				timerAncientCurseCD:Start(16.9)
 			end
 		end
 		timerStygianAnnihilationCD:Start(40.6)

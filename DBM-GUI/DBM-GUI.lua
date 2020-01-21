@@ -775,7 +775,7 @@ function PanelPrototype:CreateColorSelect(dimension, withalpha, alphawidth)
 
 	-- create the colorpicker
 	local colorwheelthumbtexture = colorselect:CreateTexture()
-	colorwheelthumbtexture:SetTexture(137056)--"Interface\\Buttons\\UI-ColorPicker-Buttons"
+	colorwheelthumbtexture:SetTexture(130756)--"Interface\\Buttons\\UI-ColorPicker-Buttons"
 	colorwheelthumbtexture:SetWidth(10)
 	colorwheelthumbtexture:SetHeight(10)
 	colorwheelthumbtexture:SetTexCoord(0,0.15625, 0, 0.625)

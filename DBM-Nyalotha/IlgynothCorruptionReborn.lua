@@ -15,7 +15,7 @@ mod:SetHotfixNoticeRev(20200112000000)--2020, 1, 12
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 309961 311401 310788",
+	"SPELL_CAST_START 309961 311401 310788 318383",
 	"SPELL_CAST_SUCCESS 311401 311159 314396",
 	"SPELL_AURA_APPLIED 309961 311367 310322 315094 311159 313759",
 	"SPELL_AURA_APPLIED_DOSE 309961",
@@ -28,6 +28,7 @@ mod:RegisterEventsInCombat(
 
 --TODO, https://ptr.wowhead.com/spell=312486/recurring-nightmare need DBM hand holding? Maybe we can track them on infoframe if required?
 --TODO, accurate mythic tracking of mythic version of CursedBlood
+--TODO, Absorbing charge on tank or random target? if random, target scanning work to identify and warn target?
 --[[
 (ability.id = 309961 or ability.id = 311401) and type = "begincast"
  or (ability.id = 311401 or ability.id = 311159 or ability.id = 314396) and type = "cast"
@@ -39,6 +40,7 @@ local warnTouchoftheCorruptor				= mod:NewTargetNoFilterAnnounce(311367, 4)
 local warnFixate							= mod:NewTargetAnnounce(315094, 2)
 --Stage 02: The Organs of Corruption
 local warnCursedBlood						= mod:NewTargetAnnounce(311159, 2)
+local warnAbsorbingCharge					= mod:NewSpellAnnounce(318383, 2)
 
 --Stage 01: The Corruptor, Reborn
 local specWarnEyeofNZoth					= mod:NewSpecialWarningStack(309961, nil, 2, nil, nil, 1, 6)
@@ -54,6 +56,8 @@ local specWarnCursedBlood					= mod:NewSpecialWarningMoveAway(311159, nil, nil, 
 local yellCursedBlood						= mod:NewYell(311159)
 local yellCursedBloodFades					= mod:NewShortFadesYell(311159)
 local specWarnPumpingBlood					= mod:NewSpecialWarningInterruptCount(310788, "HasInterrupt", nil, nil, 1, 2)
+--local specWarnAbsorbingCharge				= mod:NewSpecialWarningMoveAway(318383, nil, nil, nil, 1, 2)
+--local yellAbsorbingCharge					= mod:NewYell(318383)
 
 --mod:AddTimerLine(BOSS)
 --Stage 01: The Corruptor, Reborn
@@ -62,6 +66,7 @@ local timerTouchoftheCorruptorCD			= mod:NewCDTimer(64.4, 311401, nil, nil, nil,
 local timerCorruptorsGazeCD					= mod:NewCDTimer(32.8, 310319, nil, nil, nil, 3)--32.8-34
 --Stage 02: The Organs of Corruption
 local timerCursedBloodCD					= mod:NewNextTimer(18, 311159, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
+local timerAbsorbingChargeCD				= mod:NewAITimer(18, 318383, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
 
 --local berserkTimer						= mod:NewBerserkTimer(600)
 
@@ -159,6 +164,16 @@ do
 	end
 end
 
+function mod:AbsorbingChargeTarget(targetname, uId)
+	if not targetname then return end
+	DBM:Debug("Absorbing Charge possibly on "..targetname)
+	--if targetname == UnitName("player") then
+		--specWarnAbsorbingCharge:Show()
+		--specWarnAbsorbingCharge:Play("targetyou")
+		--yellAbsorbingCharge:Yell()
+	--end
+end
+
 function mod:OnCombatStart(delay)
 	--DBM Core Special Variables
 	self.vb.bossLeft = 4--Ilgynoth plus 3 organs
@@ -241,6 +256,10 @@ function mod:SPELL_CAST_START(args)
 				specWarnPumpingBlood:Play("kickcast")
 			end
 		end
+	elseif spellId == 318383 then
+		warnAbsorbingCharge:Show()
+		timerAbsorbingChargeCD:Start(nil, args.sourceGUID)
+		self:BossTargetScanner(args.sourceGUID, "AbsorbingChargeTarget", 0.1, 8)
 	end
 end
 
@@ -387,6 +406,8 @@ function mod:UNIT_DIED(args)
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:Update()
 		end
+	elseif cid == 163678 then--Clotted Corruption
+		timerAbsorbingChargeCD:Stop(args.destGUID)
 	end
 end
 

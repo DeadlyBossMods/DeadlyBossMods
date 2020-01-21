@@ -23,6 +23,7 @@ localization.cn.lua
 localization.de.lua
 localization.tw.lua
 localization.it.lua
+localization.es.lua
 AbyssalCommanderSivara.lua
 RadianceofAzshara.lua
 BlackwaterBehemoth.lua
