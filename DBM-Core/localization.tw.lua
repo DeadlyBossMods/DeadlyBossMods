@@ -332,7 +332,7 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS.bait					= "%s即將到來 - 快引誘"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage				= "第%s階段"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.prestage			= "第%s階段即將到來"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.count				= "%s (%%s)"
-DBM_CORE_AUTO_ANNOUNCE_TEXTS.stack				 ">%%s<中了%s (%%d)"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.stack				=">%%s<中了%s (%%d)"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.moveto			= "%s - 移動到>%%s<"
 
 local prewarnOption			= "預先警告：$spell:%s"
