@@ -64,8 +64,7 @@ mod.vb.obeliskCount = 0
 mod.vb.tormentCount = 0
 mod.vb.addIcon = 8
 local voidWokenTargets = {}
-local heroicTormentTimers = {20.5, 50.6, 29, 49.6, 30.2, 49.6, 31.1, 48.7}--Heroic
-local normalTormentTimers = {20.5, 71.8, 30.4, 65.7, 30.6, 65.6, 30.5}--Normal and mythic
+local tormentTimers = {20.5, 71.8, 30.4, 65.7, 30.6, 65.6, 30.5}--Normal and mythic
 local castsPerGUID = {}
 
 local updateInfoFrame
@@ -117,14 +116,9 @@ function mod:OnCombatStart(delay)
 	if self:IsHard() then
 		timerSummonRitualObeliskCD:Start(12-delay, 1)
 	end
+	timerSoulFlayCD:Start(18.5-delay)--SUCCESS
 	timerAbyssalStrikeCD:Start(32.9-delay)--SUCCESS
-	if self:IsHeroic() then
-		timerSoulFlayCD:Start(14-delay)--SUCCESS
-		timerVoidRitualCD:Start(52.9-delay, 1)
-	else
-		timerSoulFlayCD:Start(18.5-delay)--SUCCESS
-		timerVoidRitualCD:Start(62-delay, 1)
-	end
+	timerVoidRitualCD:Start(61.8-delay, 1)
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(OVERVIEW)
 		DBM.InfoFrame:Show(8, "function", updateInfoFrame, false, false)
@@ -154,7 +148,7 @@ function mod:SPELL_CAST_START(args)
 		else
 			warnVoidRitual:Show(self.vb.ritualCount)
 		end
-		timerVoidRitualCD:Start(self:IsHeroic() and 79.7 or 95.2, self.vb.ritualCount+1)
+		timerVoidRitualCD:Start(95.2, self.vb.ritualCount+1)
 	elseif spellId == 316211 then
 		if not castsPerGUID[args.sourceGUID] then
 			castsPerGUID[args.sourceGUID] = 0
@@ -193,12 +187,12 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if spellId == 311551 then
 		timerAbyssalStrikeCD:Start()
 	elseif spellId == 306319 then
-		timerSoulFlayCD:Start(self:IsHeroic() and 46.7 or 57.2)
+		timerSoulFlayCD:Start(57.2)
 	elseif spellId == 306208 then
 		self.vb.tormentCount = self.vb.tormentCount + 1
 		specWarnTorment:Show(self.vb.tormentCount)
 		specWarnTorment:Play("watchstep")
-		local timer = self:IsHeroic() and heroicTormentTimers[self.vb.tormentCount+1] or normalTormentTimers[self.vb.tormentCount+1]
+		local timer = tormentTimers[self.vb.tormentCount+1]
 		if timer then
 			timerTormentCD:Start(timer, self.vb.tormentCount+1)
 		end
