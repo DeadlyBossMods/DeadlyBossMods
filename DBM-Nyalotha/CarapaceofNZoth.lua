@@ -391,7 +391,7 @@ end
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 315673 then--Thrashing Tentacle
 		timerThrashingTentacleCD:Start()--27.8
-	elseif spellId == 45313 and self.vb.phase == 2.5 then--Anchor Here (this can be used for other phase changes too, but it's slower)
+	elseif spellId == 45313 and (self.vb.phase == 2 and self:IsMythic()) or self.vb.phase == 2.5 then--Anchor Here (this can be used for other phase changes too, but it's slower)
 		self.vb.phase = 3
 		warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(3))
 		warnPhase:Play("pthree")
