@@ -37,7 +37,7 @@ L= DBM:GetModLocalization(2369)
 L= DBM:GetModLocalization(2377)
 
 L:SetMiscLocalization({
-	ObeliskSpawn	= "Obelisks of shadow, rise!"--Only as backup, in case the NPC target check stops working
+	ObeliskSpawn	= "솟아나라, 어둠의 방첨탑이여!"--Only as backup, in case the NPC target check stops working
 })
 
 ---------------------------
