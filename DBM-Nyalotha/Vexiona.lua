@@ -402,7 +402,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 			self.vb.gatewayCount = self.vb.gatewayCount + 1
 			specWarnDarkGateway:Show(self.vb.gatewayCount)
 			specWarnDarkGateway:Play("killmob")
-			timerDarkGatewayCD:Start(33.2, self.vb.gatewayCount+1)
+			timerDarkGatewayCD:Start(33, self.vb.gatewayCount+1)
 		end
 	elseif spellId == 316437 then--No Escape
 		local guid = UnitGUID(uId)
