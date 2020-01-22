@@ -190,15 +190,16 @@ function mod:OnCombatStart(delay)
 	--Tek'ris's Hivemind Control instantly on pull
 	if self:IsMythic() then
 		self.vb.difficultyName = "mythic"
-		timerMindNumbingNovaCD:Start(12-delay, 1)
-		timerSpawnAcidicAqirCD:Start(45-delay, 1)
-		timerFlyerSwarmCD:Start(50-delay, 1)
-		timerVolatileEruptionCD:Start(87.6-delay, 1)
+		--Ka'zir
+		timerMindNumbingNovaCD:Start(15-delay, 1)
+		timerSpawnAcidicAqirCD:Start(56.3-delay, 1)
+		timerFlyerSwarmCD:Start(63-delay, 1)
+		timerVolatileEruptionCD:Start(110-delay, 1)
 		--Tek'ris
-		timerDronesCD:Start(15-delay, 1)
-		timerAcceleratedEvolutionCD:Start(17.7-delay, 1)
-		timerNullificationBlastCD:Start(22-delay, 1)
-		timerEchoingVoidCD:Start(80.1-delay, 1)
+		timerDronesCD:Start(20.2-delay, 1)
+		timerAcceleratedEvolutionCD:Start(19.6-delay, 1)
+		timerNullificationBlastCD:Start(26.3-delay, 1)
+		timerEchoingVoidCD:Start(33.8-delay, 1)
 	elseif self:IsHeroic() then
 		self.vb.difficultyName = "heroic"
 		--Ka'zir
@@ -216,7 +217,7 @@ function mod:OnCombatStart(delay)
 		timerMindNumbingNovaCD:Start(16-delay, 1)
 		timerSpawnAcidicAqirCD:Start(60-delay, 1)
 		--timerVolatileEruptionCD:Start(111.9-delay, 1)--Never Seen in normal in journal
-		timerFlyerSwarmCD:Start(50-delay, 1)
+		timerFlyerSwarmCD:Start(67.7-delay, 1)
 		--Tek'ris
 		timerDronesCD:Start(21-delay, 1)
 		timerNullificationBlastCD:Start(28-delay, 1)
