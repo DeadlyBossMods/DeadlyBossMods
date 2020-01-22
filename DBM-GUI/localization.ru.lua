@@ -216,11 +216,11 @@ L.SWFAll					= "когда спец-предупреждения использ�
 L.SpecWarn_AlwaysVoice		= "Всегда воспроизводить все голосовые предупреждения (даже если спец предупреждения отключены. Полезно для рейд лидера, иначе не рекомендуется.)"
 --TODO, maybe add URLS right to GUI panel on where to acquire 3rd party voice packs?
 L.Area_GetVEM				= "Получить голосовой пакет VEM"
-L.VEMDownload				= "|cFF73C2FBhttps://wow.curseforge.com/projects/dbm-voicepack-vem|r"
+L.VEMDownload				= "|cFF73C2FBhttps://www.curseforge.com/wow/addons/dbm-voicepack-vem|r"
 L.Area_BrowseOtherVP		= "Посмотреть другие голосовые пакеты на Curse"
-L.BrowseOtherVPs			= "|cFF73C2FBhttps://wow.curseforge.com/search?search=dbm+voice|r"
+L.BrowseOtherVPs			= "|cFF73C2FBhttps://www.curseforge.com/wow/addons/search?search=dbm+voice|r"
 L.Area_BrowseOtherCT		= "Посмотреть пакеты обратного отсчета на Curse"
-L.BrowseOtherCTs			= "|cFF73C2FBhttps://wow.curseforge.com/search?search=dbm+count+pack|r"
+L.BrowseOtherCTs			= "|cFF73C2FBhttps://www.curseforge.com/wow/addons/search?search=dbm+count+pack|r"
 
 -- Tab: Event Sounds
 L.Panel_EventSounds			= "Звуки событий"
