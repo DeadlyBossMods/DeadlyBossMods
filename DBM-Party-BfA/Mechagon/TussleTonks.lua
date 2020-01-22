@@ -83,7 +83,7 @@ function mod:SPELL_CAST_START(args)
 		timerWhirlingEdgeCD:Start()
 	elseif spellId == 283422 then
 		timerMaxThrustCD:Start()
-		self:BossTargetScanner(args.sourceGUID, "ThrustTarget", 0.2, 14)
+		self:BossTargetScanner(args.sourceGUID, "ThrustTarget", 0.1, 7)
 	elseif spellId == 285388 then
 		specWarnVentJets:Show()
 		specWarnVentJets:Play("watchstep")

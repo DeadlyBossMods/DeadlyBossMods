@@ -15,8 +15,8 @@ mod:RegisterEventsInCombat(
 --	"SPELL_AURA_APPLIED 283143",
 --	"SPELL_AURA_REMOVED 283143",
 	"UNIT_DIED",
-	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3",
-	"UNIT_SPELLCAST_START boss1 boss2 boss3"
+	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3"
+--	"UNIT_SPELLCAST_START boss1 boss2 boss3"
 )
 
 --TODO, warn tank if not in range in p2 for Ninety-Nine?
@@ -114,7 +114,7 @@ function mod:SPELL_CAST_START(args)
 		else--Stage 1
 			timerGigaZapCD:Start(15.8)--15-20, but not sequencable enough because it differs pull from pull
 		end
-		--self:ScheduleMethod(0.2, "BossTargetScanner", args.sourceGUID, "ZapTarget", 0.1, 8, true)
+		self:ScheduleMethod(0.1, "BossTargetScanner", args.sourceGUID, "ZapTarget", 0.1, 7, true)
 	elseif spellId == 291613 then
 		specWarnTakeOff:Show()
 		specWarnTakeOff:Play("justrun")
@@ -196,9 +196,11 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	end
 end
 
+--[[
 --Used for auto acquiring of unitID and absolute fastest auto target scan using UNIT_TARGET events
 function mod:UNIT_SPELLCAST_START(uId, _, spellId)
 	if spellId == 291928 or spellId == 292264 then--Stage 1 Zap, Stage 2 Zap
 		self:BossUnitTargetScanner(uId, "ZapTarget")
 	end
 end
+--]]
