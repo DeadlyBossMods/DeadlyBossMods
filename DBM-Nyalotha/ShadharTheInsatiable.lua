@@ -13,8 +13,7 @@ mod:SetHotfixNoticeRev(20191109000000)--2019, 11, 09
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 312528 306928 312529 306929 307260 306953 318078",
-	"SPELL_CAST_SUCCESS 307471 312530 306930",
+	"SPELL_CAST_START 312528 306928 312529 306929 307260 306953 318078 312530 306930",
 	"SPELL_AURA_APPLIED 312328 312329 307471 307472 307358 306942 318078 308149 312099 306447 306931 306933",
 	"SPELL_AURA_APPLIED_DOSE 312328 307358",
 	"SPELL_AURA_REMOVED 312328 307358 306447 306933 306931",
@@ -22,15 +21,13 @@ mod:RegisterEventsInCombat(
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 --	"CHAT_MSG_RAID_BOSS_EMOTE",
---	"UNIT_SPELLCAST_SUCCEEDED boss1",
-	"UNIT_SPELLCAST_START boss1"
+	"UNIT_SPELLCAST_SUCCEEDED boss1",
+	"UNIT_SPELLCAST_START boss1",
+	"UNIT_POWER_FREQUENT boss1"
 )
 
 --TODO, add tracking of tasty Morsel carriers to infoframe?
 --TODO, see if seenAdds solved the fixate timer issue, or if something else wonky still going on with it
---TODO, first fixate Still 31 on heroic? Or is the extra one mythic exclusive for Tasty mechanic
---TODO, see if timer adjustments around phase transitions are possible to improve timers for things when boss changes phases
---TODO, breath timers stll need more work to figure out their sequence or why they spell queue/variate
 --[[
 (ability.id = 312528 or ability.id = 306928 or ability.id = 312529 or ability.id = 306929 or ability.id = 307260 or ability.id = 306953) and type = "begincast"
  or (ability.id = 307471 or ability.id = 312530 or ability.id = 306930) and type = "cast"
@@ -80,6 +77,7 @@ mod.vb.eruptionCount = 0
 mod.vb.bubblingCount = 0
 mod.vb.buildupCount = 0
 mod.vb.fixateCount = 0
+mod.vb.bossPowerUpdateRate = 4
 local SpitStacks = {}
 local orbTimersHeroic = {0, 25, 25, 37, 20}
 local orbTimersNormal = {0, 25, 25, 25, 25}
@@ -122,6 +120,15 @@ local function entropicBuildupLoop(self)
 	end
 end
 
+local function updateBreathTimer(self)
+	--Update Breath timer
+	local bossPower = UnitPower("boss1")
+	local breathTimerTotal = 100 / self.vb.bossPowerUpdateRate
+	local bossProgress = (100 - bossPower) / self.vb.bossPowerUpdateRate
+	--Using update method to both start a new timer and update an existing one because it supports both
+	timerSlurryBreathCD:Update(bossProgress, breathTimerTotal)
+end
+
 function mod:SpitTarget(targetname, uId)
 	if not targetname then return end
 	if targetname == UnitName("player") and self:AntiSpam(5, 5) then
@@ -135,11 +142,12 @@ end
 function mod:OnCombatStart(delay)
 	self.vb.phase = 0
 	self.vb.fixateCount = 0
+	self.vb.bossPowerUpdateRate = 4
 	table.wipe(SpitStacks)
 	table.wipe(seenAdds)
 	timerDebilitatingSpitCD:Start(10.7-delay)--START
-	timerCrushCD:Start(18.1-delay)--SUCCESS
-	timerSlurryBreathCD:Start(26.6-delay)
+	timerCrushCD:Start(15.1-delay)--Time til script begins
+	timerSlurryBreathCD:Start(26.6-delay)--Technically it should be 25 but there is a pause before boss begins gaining power
 	timerFixateCD:Start(self:IsMythic() and 16.1 or 31)
 	berserkTimer:Start(360-delay)
 end
@@ -158,15 +166,10 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 312528 or spellId == 306928 or spellId == 312529 or spellId == 306929 then--Umbral and Bubbling Breaths
 		specWarnSlurryBreath:Show()
 		specWarnSlurryBreath:Play("breathsoon")
-		local timer
-		if self:IsMythic() then
-			timer = (self.vb.phase == 1) and 23.4 or 19.8
-		elseif self:IsHeroic() then
-			timer = (self.vb.phase == 1) and 23.9 or 17
-		else--Normal, LFR assumed
-			timer = 29.2
-		end
-		timerSlurryBreathCD:Start(timer)
+		--timerSlurryBreathCD:Start(timer)
+	elseif spellId == 312530 or spellId == 306930 then--Entropic Breaths
+		warnEntropicBreath:Show()
+		--timerSlurryBreathCD:Start(timer)
 	elseif (spellId == 318078 or spellId == 307260) and not seenAdds[args.sourceGUID] and self:AntiSpam(5, 3) then
 		self.vb.fixateCount = self.vb.fixateCount + 1
 		seenAdds[args.sourceGUID] = true
@@ -174,17 +177,6 @@ function mod:SPELL_CAST_START(args)
 		timerFixateCD:Start(timer)
 	elseif spellId == 306953 then
 		timerDebilitatingSpitCD:Start()
-	end
-end
-
-function mod:SPELL_CAST_SUCCESS(args)
-	local spellId = args.spellId
-	if spellId == 307471 then
-		timerCrushCD:Start()
-	elseif spellId == 312530 or spellId == 306930 then--Entropic Breaths
-		warnEntropicBreath:Show()
-		local timer = self:IsMythic() and 13.3 or self:IsHeroic() and 17 or 24.4
-		timerSlurryBreathCD:Start(timer)
 	end
 end
 
@@ -254,6 +246,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			timerUmbralEruptionCD:Start(10)--Damage at 12, so warning 2 seconds before seems right
 			self:Schedule(10, umbralEruptionLoop, self)
 		end
+		updateBreathTimer(self)
 	elseif spellId == 306931 then
 		self.vb.phase = self.vb.phase + 1
 		warnNoxiousMantle:Show()
@@ -266,6 +259,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			timerBubblingOverflowCD:Start(10)
 			self:Schedule(10, bubblingOverflowLoop, self)
 		end
+		updateBreathTimer(self)
 	elseif spellId == 306933 then
 		self.vb.phase = self.vb.phase + 1
 		warnEntropicMantle:Show()
@@ -280,6 +274,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			self.vb.buildupCount = 0
 			entropicBuildupLoop(self)--Might need adjusting, harder to verifiy in transcriptor
 		end
+		updateBreathTimer(self)
 	elseif spellId == 308149 and args:IsPlayer() then
 		specWarnGTFO:Show(args.spellName)
 		specWarnGTFO:Play("watchfeet")
@@ -351,16 +346,38 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 		warnNoxiousMantle:Show()
 	end
 end
+--]]
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 306736 then--Slurry Breath
-
+	if spellId == 307469 then--Crush & Dissolve Cover
+		timerCrushCD:Start()
+	elseif spellId == 306736 then--Slurry Breath
+		updateBreathTimer(self)
 	end
 end
---]]
+
 
 function mod:UNIT_SPELLCAST_START(uId, _, spellId)
 	if spellId == 306953 then
 		self:BossUnitTargetScanner(uId, "SpitTarget")
+	end
+end
+
+do
+	local lastPower = 0
+	--Starts at 4 per second and increases to 5, etc as fight progresses
+	--Still not perfect because it seems to support non even numbers internally but api isn't gonna report only whole numbers
+	--I have two logs that have energy rate/timing pegged at exactly 5.85 where as it'd end up rounding to 6 since blizz would only send whole number energy updates thus shorting timer by teeny bit
+	--Case and point to above issue 17.0, 17.1, 21.9, 17.0, 17.1. to get 17.1 update rate would HAVE to be less than 6 but greater than 5. About 5.85
+	function mod:UNIT_POWER_FREQUENT(uId, type)
+		local bossPower = UnitPower("boss1") --Get Boss Power
+		if bossPower > lastPower then
+			local currentRate = bossPower - lastPower
+			if currentRate ~= self.vb.bossPowerUpdateRate then
+				self.vb.bossPowerUpdateRate = currentRate
+				updateBreathTimer(self)
+			end
+		end
+		lastPower = bossPower
 	end
 end
