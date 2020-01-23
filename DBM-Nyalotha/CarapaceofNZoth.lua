@@ -5,16 +5,16 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(157439)--Fury of N'Zoth
 mod:SetEncounterID(2337)
 mod:SetZone()
-mod:SetHotfixNoticeRev(20200122000000)--2020, 1, 22
-mod:SetMinSyncRevision(20200122000000)
+mod:SetHotfixNoticeRev(20200122000001)--2020, 1, 22 and 1
+mod:SetMinSyncRevision(20200122000001)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 307809 307092 313039 315820 315891 315947",
-	"SPELL_CAST_SUCCESS 313362 306973 306986 306988",
-	"SPELL_AURA_APPLIED 313334 307832 306973 306990 307079 306984 315954",
+	"SPELL_CAST_SUCCESS 313362 306971 306986 306988",
+	"SPELL_AURA_APPLIED 313334 307832 306973 306990 306984 315954",
 	"SPELL_AURA_APPLIED_DOSE 315954",
 	"SPELL_AURA_REMOVED 313334 306973 306990 307079 306984",
 	"SPELL_AURA_REMOVED_DOSE 307079",
@@ -28,14 +28,13 @@ mod:RegisterEventsInCombat(
 )
 
 --TODO, Cyst Genesis still listed in overview but removed from P3 in latest build, see if it still exists. 313118/307064
---TODO, Insanity Bomb CD, only saw the first case of phase, not time between casts
 --TODO, escalated tank warning for adaptive membrane on Fury, if you're tanking it
---TODO, review CLEU for a phase 3 trigger that can be used in WCL expression in place of the faster UNIT event mod uses
 --TODO, Thrashing Tentacles no longer detectable unless people die to them, which is not exactly practical. scheduling?
 --[[
 (ability.id = 315820 or ability.id = 307809 or ability.id = 313039 or ability.id = 307092 or ability.id = 315891 or ability.id = 315947) and type = "begincast"
- or (ability.id = 313362 or ability.id = 306973 or ability.id = 306986 or ability.id = 306988) and type = "cast"
+ or (ability.id = 313362 or ability.id = 306971 or ability.id = 306986 or ability.id = 306988) and type = "cast"
  or ability.id = 307079 and (type = "applybuff" or type = "removebuff")
+ or ability.id = 318108 and type = "applybuff"
 --]]
 --General
 local warnPhase								= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
@@ -123,15 +122,22 @@ function mod:OnCombatStart(delay)
 	self.vb.phase = 1
 	self.vb.anchorCount = 0
 	lastSanity = 100
-	timerMadnessBombCD:Start(7.6-delay)--SUCCESS
-	timerMentalDecayCD:Start(11.1-delay)--SUCCESS 12.1?
-	timerMandibleSlamCD:Start(14.4-delay)
-	timerAdaptiveMembraneCD:Start(16.1-delay)--SUCCESS
-	timerGrowthCoveredTentacleCD:Start(30-delay)
-	berserkTimer:Start(720-delay)
-	if self:IsHard() then
+	if self:IsHard() then--Heroic confirmed, mythic assumed
+		timerMadnessBombCD:Start(5-delay)--SUCCESS
 		timerGazeofMadnessCD:Start(10-delay, 1)
+		timerMentalDecayCD:Start(12-delay)--SUCCESS
+		timerAdaptiveMembraneCD:Start(16-delay)--SUCCESS
+		timerMandibleSlamCD:Start(16-delay)
+		timerGrowthCoveredTentacleCD:Start(30-delay)
+	else--Normal confirmed, LFR assumed
+		timerMadnessBombCD:Start(5.8-delay)--SUCCESS
+		timerGazeofMadnessCD:Start(12.1-delay, 1)--Unknown, guessed by 0.82 adjustment
+		timerMentalDecayCD:Start(14.8-delay)--SUCCESS 12.1?
+		timerAdaptiveMembraneCD:Start(19.5-delay)--SUCCESS
+		timerMandibleSlamCD:Start(20-delay)
+		timerGrowthCoveredTentacleCD:Start(36-delay)--Unknown, guessed by 0.82 adjustment
 	end
+	berserkTimer:Start(720-delay)
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(307831))
 		DBM.InfoFrame:Show(8, "playerpower", 1, ALTERNATE_POWER_INDEX, nil, nil, 2)--Sorting lowest to highest
@@ -168,18 +174,26 @@ function mod:SPELL_CAST_START(args)
 		self.vb.DarknessCount = self.vb.DarknessCount + 1
 		specWarnEternalDarkness:Show(self.vb.DarknessCount)
 		specWarnEternalDarkness:Play("aesoon")
-		timerEternalDarknessCD:Start()
+		--Only Phase 2/2.5 on heroic and mythic, but on normal and LFR it's also phase 3
+		local timer = self:IsHard() and 22.2 or (self.vb.phase == 3) and 67.4 or 25
+		timerEternalDarknessCD:Start(timer)
 	elseif spellId == 313039 then
 		self.vb.DarknessCount = self.vb.DarknessCount + 1
 		specWarnInfiniteDarkness:Show(self.vb.DarknessCount)
 		specWarnInfiniteDarkness:Play("aesoon")
-		timerInfiniteDarknessCD:Start(53.9)
+		timerInfiniteDarknessCD:Start(53.9)--Heroic+ only
 	elseif (spellId == 307092 or spellId == 315891) and args:GetSrcCreatureID() == 157439  then--Stage 2/Stage 3 (so we ignore 162285 casts)
 		specWarnOccipitalBlast:Show()
 		specWarnOccipitalBlast:Play("shockwave")
-		timerOccipitalBlastCD:Start()
+		timerOccipitalBlastCD:Start(self:IsHard() and 33.3 or 37.5)
 	elseif spellId == 315947 then
-		local timer = (self.vb.phase == 3) and 10.7 or (self.vb.phase == 2) and 22.2 or 12.7
+		--Not case in phase 2, just 1, 2.5, and 3
+		local timer
+		if self:IsHard() then
+			timer = (self.vb.phase == 3) and 10.7 or (self.vb.phase == 2.5) and 22.2 or 12.7
+		else
+			timer = (self.vb.phase == 3) and 13.7 or (self.vb.phase == 2.5) and 25 or 16.2
+		end
 		timerMandibleSlamCD:Start(timer)
 	end
 end
@@ -187,18 +201,35 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 313362 then
-		if args:GetSrcCreatureID() == 157439 then--Fury of N'Zoth
-			timerMentalDecayCD:Start()
-		--elseif self:CheckInterruptFilter(args.sourceGUID, false, true) then
-		--	specWarnMentalDecay:Show(args.sourceName)
+		--Requires antispam because sometimes boss double casts
+		if args:GetSrcCreatureID() == 157439 and self:AntiSpam(5, 8) then--Fury of N'Zoth
+			local timer
+			if self:IsHard() then
+				timer = (self.vb.phase == 3) and 26.7 or (self.vb.phase == 2) and 22.2 or (self.vb.phase == 2.5) and 42.2 or 21
+			else
+				timer = (self.vb.phase == 3) and 33.7 or (self.vb.phase == 2) and 22.6 or (self.vb.phase == 2.5) and 47.5 or 26.2
+			end
+			timerMentalDecayCD:Start(timer)
 		end
-	elseif spellId == 306973 then
-		local timer = (self.vb.phase == 3) and 22.2 or (self.vb.phase == 2) and 33.3 or 24
+	elseif spellId == 306971 then
+		local timer
+		--Not case in phase 3, just 1, 2, and 2.5
+		if self:IsHard() then
+			timer = (self.vb.phase == 2.5) and 22.2 or (self.vb.phase == 2) and 33.3 or 24
+		else
+			timer = (self.vb.phase == 2.5) and 24.9 or (self.vb.phase == 2) and 37.4 or 30
+		end
 		timerMadnessBombCD:Start(timer)
 	elseif spellId == 306986 then
-		timerInsanityBombCD:Start()
+		timerInsanityBombCD:Start(self:IsHard() and 66.9 or 83.7)
 	elseif spellId == 306988 then
-		local timer = (self.vb.phase == 3) and 32 or (self.vb.phase == 2) and 33.3 or 27.6
+		--Yes this has 4 distinct timers. Verified in multiple logs that the second stage 2 in fact does have it's own CD
+		local timer
+		if self:IsHard() then
+			timer = (self.vb.phase == 3) and 32 or (self.vb.phase == 2) and 21.1 or (self.vb.phase == 2.5) and 33.3 or 27.6
+		else
+			timer = (self.vb.phase == 3) and 40 or (self.vb.phase == 2) and 25 or (self.vb.phase == 2.5) and 37.4 or 36.2
+		end
 		timerAdaptiveMembraneCD:Start(timer)
 	end
 end
@@ -261,10 +292,17 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerGrowthCoveredTentacleCD:Stop()
 		timerGazeofMadnessCD:Stop()
 		timerMandibleSlamCD:Stop()
-		timerMentalDecayCD:Start(17.2)--SUCCESS
-		timerAdaptiveMembraneCD:Start(20.4)--SUCCESS
-		timerEternalDarknessCD:Start(24)
-		timerMadnessBombCD:Start(29.3)--SUCCESS
+		if self:IsHard() then
+			timerMentalDecayCD:Start(17.2)--SUCCESS
+			timerAdaptiveMembraneCD:Start(20.4)--SUCCESS
+			timerEternalDarknessCD:Start(24)
+			timerMadnessBombCD:Start(29.3)--SUCCESS
+		else
+			timerMentalDecayCD:Start(18.4)--SUCCESS
+			timerAdaptiveMembraneCD:Start(21.9)--SUCCESS
+			timerEternalDarknessCD:Start(26.2)
+			timerMadnessBombCD:Start(32)--SUCCESS
+		end
 	elseif spellId == 315954 then
 		local amount = args.amount or 1
 		if amount >= 2 then
@@ -315,8 +353,8 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.NPAuraOnMembrane2 then
 			DBM.Nameplate:Hide(true, args.destGUID, spellId)
 		end
-	elseif spellId == 307079 then--Synthesis
-		--Do nothing
+	--elseif spellId == 307079 then--Synthesis
+		--Do nothing, handled in anchor event
 	end
 end
 
@@ -363,16 +401,19 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 		self.vb.gazeCount = self.vb.gazeCount + 1
 		specWarnGazeOfMadness:Show(self.vb.gazeCount)
 		specWarnGazeOfMadness:Play("killmob")
-		timerGazeofMadnessCD:Start(58, self.vb.gazeCount+1)
+		timerGazeofMadnessCD:Start(self:IsHard() and 58 or 70.7, self.vb.gazeCount+1)--Normal mode guessed by 0.82 adjustment
 	--"<48.92 17:25:10> [CHAT_MSG_RAID_BOSS_EMOTE] |TInterface\\Icons\\INV_MISC_MONSTERHORN_04.BLP:20|t A %s emerges. Look out!#Growth-Covered Tentacle#####0#0##0#1990#nil#0#false#false#false#false",
 	elseif msg:find("INV_MISC_MONSTERHORN_04.BLP") then
 		self.vb.TentacleCount = self.vb.TentacleCount + 1
 		specWarnGrowthCoveredTentacle:Show(self.vb.TentacleCount)
 		specWarnGrowthCoveredTentacle:Play("watchstep")
-		timerGrowthCoveredTentacleCD:Start(60, self.vb.TentacleCount+1)
+		timerGrowthCoveredTentacleCD:Start(self:IsHard() and 60 or 73.1, self.vb.TentacleCount+1)--Normal mode guessed by 0.82 adjustment
 	end
 end
 
+--"<415.03 15:50:30> [CLEU] SPELL_AURA_APPLIED#Player-3685-0A675506#Hulahoops-Turalyon#Player-3685-0A675506#Hulahoops-Turalyon#318108#Boon of the Black Prince#BUFF#nil", -- [17297]
+--"<415.38 15:50:30> [CHAT_MSG_MONSTER_YELL] I dare not enter that foul place, lest I lose myself to his madness. Strike him down!#Wrathion###Siory##0#0##0#1325#nil#0#false#false#false#false", -- [17314]
+--"<423.12 15:50:38> [UNIT_SPELLCAST_SUCCEEDED] Fury of N'Zoth(??) -Anchor Here- [[boss1:Cast-3-3886-2217-7151-45313-0017A8B59E:45313]]", -- [17461]
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 315673 then--Thrashing Tentacle
 		--timerThrashingTentacleCD:Start()--27.8
@@ -382,6 +423,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		if self.vb.anchorCount == 1 then return end
 		--Non mythic has an extra 'Anchor Here' cast that isn't cast on mythic
 		if (self.vb.anchorCount == 2 and self:IsMythic()) or self.vb.anchorCount == 3 then
+			--Boon of Black Prince can be used as a backup but it's NOT as consistent and introduces a 3 second variation to elements. Should only be used if this can't be
+			--It may be wise to move timer canceling for phase 2/2.5 to boon but timer starting stay at anchor event
 			self.vb.phase = 3
 			warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(3))
 			warnPhase:Play("pthree")
@@ -392,18 +435,45 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 			timerOccipitalBlastCD:Stop()
 			timerMandibleSlamCD:Stop()
 			--Timers assumed from heroic phase 3, might be different since boss mechanics differ on mythic
-			timerMentalDecayCD:Start(6.6)--SUCCESS
-			timerMandibleSlamCD:Start(17.1)
-			timerInsanityBombCD:Start(21.6)--SUCCESS
-			timerAdaptiveMembraneCD:Start(38.1)--SUCCESS
-			--timerThrashingTentacleCD:Start(38.7)--Needs fixing, no event for spawn in logs
-			timerInfiniteDarknessCD:Start(54)
-			--timerOccipitalBlastCD:Start(36.7)--No longer used in Phase 3?
+			if self:IsHard() then
+				timerMentalDecayCD:Start(12.1)--SUCCESS
+				timerMandibleSlamCD:Start(17.1)
+				timerInsanityBombCD:Start(21.6)--SUCCESS
+				timerAdaptiveMembraneCD:Start(38.1)--SUCCESS
+				--timerThrashingTentacleCD:Start(38.7)--Needs fixing, no event for spawn in logs
+				timerInfiniteDarknessCD:Start(54)
+			else
+				--These are probably off by 1-3 seconds, it's impossible to perfect this, even using boon, without transcriptor log to capture anchor here event
+				timerMentalDecayCD:Start(14.5)--SUCCESS
+				timerMandibleSlamCD:Start(20.9)
+				timerInsanityBombCD:Start(26.1)--SUCCESS
+				timerAdaptiveMembraneCD:Start(46.6)--SUCCESS
+				--timerThrashingTentacleCD:Start(38.7)--Needs fixing, no event for spawn in logs
+				timerEternalDarknessCD:Start(67)
+			end
 		else
 			--he hangs around in tunnel for 10%
+			self.vb.phase = 2.5
 			warnSynthesisOver:Show()
-			timerOccipitalBlastCD:Start(5)
-			timerMandibleSlamCD:Start(15.5)
+			timerMadnessBombCD:Stop()
+			timerAdaptiveMembraneCD:Stop()
+			timerEternalDarknessCD:Stop()
+			timerMentalDecayCD:Stop()
+			if self:IsHard() then
+				timerOccipitalBlastCD:Start(5)
+				timerMadnessBombCD:Start(13.1)--SUCCESS
+				timerMandibleSlamCD:Start(15.5)
+				timerAdaptiveMembraneCD:Start(18.7)--SUCCESS
+				timerEternalDarknessCD:Start(22.3)
+				timerMentalDecayCD:Start(28.7)--SUCCESS
+			else
+				timerOccipitalBlastCD:Start(6.2)
+				timerMadnessBombCD:Start(14.6)--SUCCESS
+				timerMandibleSlamCD:Start(17.5)
+				timerAdaptiveMembraneCD:Start(20.8)--SUCCESS
+				timerEternalDarknessCD:Start(25)
+				timerMentalDecayCD:Start(32.3)--SUCCESS
+			end
 		end
 	end
 end
