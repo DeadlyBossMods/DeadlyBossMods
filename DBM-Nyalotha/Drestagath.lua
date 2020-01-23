@@ -70,7 +70,7 @@ local timerVoidGlareCD						= mod:NewCDTimer(45, 310406, nil, nil, nil, 3)
 --local berserkTimer						= mod:NewBerserkTimer(600)
 
 mod:AddRangeFrameOption("18/4")--Sadly, choices are 13 or 18, 13 too small so have to round 15 up to 18
---mod:AddInfoFrameOption(275270, true)
+mod:AddInfoFrameOption(275270, false)
 mod:AddSetIconOption("SetIconOnVolatileSeed", 310277, true, false, {1})
 mod:AddNamePlateOption("NPAuraOnVolatileCorruption", 312595)
 
@@ -88,12 +88,16 @@ function mod:OnCombatStart(delay)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(4)--For Acid Splash
 	end
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(308377))
+		DBM.InfoFrame:Show(10, "playerdebuffremaining", 308377)
+	end
 end
 
 function mod:OnCombatEnd()
---	if self.Options.InfoFrame then
---		DBM.InfoFrame:Hide()
---	end
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:Hide()
+	end
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
