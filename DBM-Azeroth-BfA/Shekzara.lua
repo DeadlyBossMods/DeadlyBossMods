@@ -1,4 +1,3 @@
-if not WorldMap_EventOverlayDataProviderMixin then return end--Random 8.3 api check
 local mod	= DBM:NewMod(2378, "DBM-Azeroth-BfA", 6, 1028)
 local L		= mod:GetLocalizedStrings()
 

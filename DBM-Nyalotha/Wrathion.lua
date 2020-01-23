@@ -13,7 +13,7 @@ mod:SetHotfixNoticeRev(20191109000000)--2019, 11, 09
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 313973 306289 306735 306995",
+	"SPELL_CAST_START 306289 306735 306995 305978",
 	"SPELL_CAST_SUCCESS 306111 306289 313253",
 	"SPELL_AURA_APPLIED 306015 306163 313250 313175 307013 314347",
 	"SPELL_AURA_APPLIED_DOSE 306015 313250",
@@ -28,8 +28,8 @@ mod:RegisterEventsInCombat(
 --TODO, does range check always need to be up or just show it during gale blast?
 --TODO, more stuff with Stage 2 adds, maybe timers for their spawns, and spawn announces? Warnings for their ambushes?
 --[[
-(ability.id = 313973 or ability.id = 306289 or ability.id = 306735 or ability.id = 306995) and type = "begincast"
- or (ability.id = 306111 or ability.id = 306289) and type = "cast"
+(ability.id = 305978 or ability.id = 306289 or ability.id = 306735 or ability.id = 306995) and type = "begincast"
+ or (ability.id = 306111) and type = "cast"
  or ability.id = 306995
  --]]
 local warnPhase								= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
@@ -48,7 +48,7 @@ local specWarnSearingArmor					= mod:NewSpecialWarningTaunt(306015, nil, nil, ni
 local specWarnIncineration					= mod:NewSpecialWarningMoveAway(306111, nil, nil, nil, 1, 2)
 local yellIncineration						= mod:NewYell(306111)
 local yellIncinerationFades					= mod:NewShortFadesYell(306111)
-local specWarnGaleBlast						= mod:NewSpecialWarningDodge(306289, nil, nil, nil, 2, 2)
+local specWarnGaleBlast						= mod:NewSpecialWarningDodgeCount(306289, nil, nil, nil, 2, 2)
 local specWarnBurningCataclysm				= mod:NewSpecialWarningCount(306735, nil, nil, nil, 2, 2)
 local specWarnCreepingMadness				= mod:NewSpecialWarningStack(313250, nil, 32, nil, nil, 1, 2)
 local specWarnGTFO							= mod:NewSpecialWarningGTFO(306824, nil, nil, nil, 1, 8)
@@ -56,12 +56,13 @@ local specWarnGTFO							= mod:NewSpecialWarningGTFO(306824, nil, nil, nil, 1, 8
 local warnSpawnAdds							= mod:NewSpellAnnounce(312389, 2)
 
 --Stage One: The Black Emperor
-local timerSearingBreathCD					= mod:NewCDTimer(8.5, 313973, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
-local timerIncinerationCD					= mod:NewCDCountTimer(30.1, 306111, nil, nil, nil, 3)
-local timerGaleBlastCD						= mod:NewNextTimer(90.9, 306289, nil, nil, nil, 2)
-local timerBurningCataclysmCD				= mod:NewNextTimer(90.9, 306735, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON, nil, 1, 5)
+local timerSearingBreathCD					= mod:NewCDTimer(8.5, 305978, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerIncinerationCD					= mod:NewCDCountTimer(19.4, 306111, nil, nil, nil, 3)--19-24 variation even when not delayed by other casts
+local timerGaleBlastCD						= mod:NewCDCountTimer(90.9, 306289, nil, nil, nil, 2)
+local timerBurningCataclysmCD				= mod:NewCDCountTimer(90.9, 306735, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON, nil, 1, 5)
 local timerBurningCataclysm					= mod:NewCastTimer(8, 306735, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
 --Stage Two: Smoke and Mirrors
+local timerSmokeandMirrorsCD				= mod:NewNextTimer(155, 306995, nil, nil, nil, 6)
 
 --local berserkTimer						= mod:NewBerserkTimer(600)
 
@@ -72,8 +73,21 @@ mod:AddNamePlateOption("NPAuraOnHardenedCore", 313175)
 
 mod.vb.cataCast = 0
 mod.vb.incinerateCount = 0
+mod.vb.galeCount = 0
 mod.vb.phase = 1
 local burningMadnessTargets = {}
+local incinerateTimers = {9.1, 19.5, 44.8, 19.4, 21.9}--Lowest in the variations
+--[[
+--Pull incinerate Timers
+14, 24.7, 44.8, 19.5, 22
+9.4, 20.7, 53.7, 19.5, 21.9
+9.2, 19.5, 56.1, 19.4, 21.9
+
+--After Smoke and MIrrors incinerate Timers
+13.3, 24.4, 46.2
+9.7, 23.8, 52.4, 19.4, 21.8
+9.1, 24.4,
+--]]
 
 local updateInfoFrame
 do
@@ -122,13 +136,15 @@ end
 
 function mod:OnCombatStart(delay)
 	self.vb.cataCast = 0
+	self.vb.galeCount = 0
 	self.vb.incinerateCount = 0
 	self.vb.phase = 1
 	table.wipe(burningMadnessTargets)
-	timerSearingBreathCD:Start(8.1-delay)
-	timerIncinerationCD:Start(32.6-delay, 1)--SUCCESS
-	timerGaleBlastCD:Start(55.7-delay)--START
-	timerBurningCataclysmCD:Start(70.3-delay)--START
+	timerSearingBreathCD:Start(7.3-delay)--7-13
+	timerIncinerationCD:Start(9.1-delay, 1)--SUCCESS
+	timerGaleBlastCD:Start(45-delay, 1)--45-50 START
+	timerBurningCataclysmCD:Start(59.7-delay, 1)--START
+	timerSmokeandMirrorsCD:Start(155-delay)
 	if self.Options.NPAuraOnHardenedCore then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
@@ -152,13 +168,14 @@ end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 313973 then
+	if spellId == 305978 then
 		timerSearingBreathCD:Start()
 	elseif spellId == 306289 and self:AntiSpam(5, 1) then
-		specWarnGaleBlast:Show()
+		self.vb.galeCount = self.vb.galeCount + 1
+		specWarnGaleBlast:Show(self.vb.galeCount)
 		specWarnGaleBlast:Play("watchstep")
-		if self.vb.incinerateCount == 0 then
-			timerGaleBlastCD:Start(91.2, 2)
+		if self.vb.galeCount == 1 then
+			timerGaleBlastCD:Start(74.3, 2)
 		end
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(6)
@@ -168,10 +185,10 @@ function mod:SPELL_CAST_START(args)
 		specWarnBurningCataclysm:Show(self.vb.cataCast)
 		specWarnBurningCataclysm:Play("specialsoon")
 		timerBurningCataclysm:Start()
-		if self.vb.incinerateCount == 1 then
-			timerBurningCataclysmCD:Start(91.2, 2)
+		if self.vb.cataCast == 1 then
+			timerBurningCataclysmCD:Start(75.6, 2)
 		end
-	elseif spellId == 306995 and self.vb.phase == 1 then--P2
+	elseif spellId == 306995 and self.vb.phase == 1 then--P2 Smoke and Mirrors
 		self.vb.phase = 2
 		warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(2))
 		warnPhase:Play("phasechange")
@@ -186,7 +203,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 306111 then
 		self.vb.incinerateCount = self.vb.incinerateCount + 1
-		local timer = self.vb.incinerateCount == 1 and 55 or self.vb.incinerateCount == 2 and 47.5
+		local timer = incinerateTimers[self.vb.incinerateCount+1]
 		if timer then
 			timerIncinerationCD:Start(timer, self.vb.incinerateCount+1)
 		end
@@ -271,13 +288,15 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 306995 then
 		self.vb.phase = 1
 		self.vb.cataCast = 0
+		self.vb.galeCount = 0
 		self.vb.incinerateCount = 0
 		warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(1))
 		warnPhase:Play("phasechange")
-		timerSearingBreathCD:Start(8.6)
-		timerIncinerationCD:Start(33.2, 1)--SUCCESS
-		timerGaleBlastCD:Start(55.6)
-		timerBurningCataclysmCD:Start(70.1)
+		timerSearingBreathCD:Start(7.3)
+		timerIncinerationCD:Start(9.1, 1)--SUCCESS 9.1-14
+		timerGaleBlastCD:Start(45, 1)
+		timerBurningCataclysmCD:Start(59.7, 1)
+		timerSmokeandMirrorsCD:Start(155)
 	end
 end
 

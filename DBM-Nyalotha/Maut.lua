@@ -30,7 +30,7 @@ mod:RegisterEventsInCombat(
 --TODO, raid icons for ancient curse review
 --[[
 (ability.id = 308044 or ability.id = 305663 or ability.id = 308903 or ability.id = 308872 or ability.id = 314337 or ability.id = 305722) and type = "begincast"
- or (ability.id = 307805 or ability.id = 308044 or ability.id = 310129 or ability.id = 306290) and type = "cast"
+ or (ability.id = 307805 or ability.id = 310129 or ability.id = 306290) and type = "cast"
  or ability.id = 306005 and (type = "applybuff" or type = "removebuff")
 --]]
 --Stage One: Obsidian Destroyer
@@ -50,7 +50,7 @@ local specWarnShadowWoundsTaunt				= mod:NewSpecialWarningTaunt(307399, nil, nil
 local specWarnDevourMagic					= mod:NewSpecialWarningMoveAway(307805, nil, nil, nil, 1, 2)
 local yellDevourMagic						= mod:NewYell(307805)
 local yellDevourMagicFades					= mod:NewShortFadesYell(307805)
-local specWarnStygianAnnihilation			= mod:NewSpecialWarningMoveTo(307805, nil, nil, nil, 3, 2)
+local specWarnStygianAnnihilation			= mod:NewSpecialWarningMoveTo(308044, nil, nil, nil, 3, 2)
 local specWarnBlackWing						= mod:NewSpecialWarningDodge(305663, nil, nil, nil, 2, 2)
 local specWarnDarkManifestation				= mod:NewSpecialWarningDodge(308903, nil, nil, nil, 2, 2)
 local specWarnAncientCurse					= mod:NewSpecialWarningYou(315025, nil, nil, nil, 1, 2)
@@ -65,10 +65,10 @@ local yellDrainEssenceFades					= mod:NewShortFadesYell(314993)
 
 --Stage One: Obsidian Destroyer
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20594))
-local timerDevourMagicCD					= mod:NewCDTimer(24.4, 307805, nil, nil, nil, 3)
-local timerStygianAnnihilationCD			= mod:NewCDTimer(35.3, 308044, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON, nil, 1, 4)
-local timerBlackWingsCD						= mod:NewCDTimer(20.6, 305663, nil, nil, nil, 3)
-local timerShadowClawsCD					= mod:NewCDTimer(13, 310129, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerDevourMagicCD					= mod:NewCDTimer(22, 307805, nil, nil, nil, 3)
+local timerStygianAnnihilationCD			= mod:NewCDTimer(55.3, 308044, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON, nil, 1, 4)
+local timerBlackWingsCD						= mod:NewCDTimer(20.6, 305663, nil, nil, nil, 3)--20-30
+local timerShadowClawsCD					= mod:NewCDTimer(12.3, 310129, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerDarkManifestationCD				= mod:NewCDCountTimer(35.2, 308903, nil, nil, nil, 1, nil, DBM_CORE_TANK_ICON)
 local timerAncientCurseCD					= mod:NewNextTimer(50, 314337, nil, nil, nil, 3, nil, DBM_CORE_CURSE_ICON, nil, 3, 4)
 ----Add
@@ -109,7 +109,7 @@ function mod:OnCombatStart(delay)
 	timerStygianAnnihilationCD:Start(40.2-delay)--40-42
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(DBM_CORE_INFOFRAME_POWER)
-		DBM.InfoFrame:Show(3, "enemypower", 0)
+		DBM.InfoFrame:Show(3, "enemypower", 0, 0)
 	end
 end
 

@@ -212,6 +212,9 @@ function mod:SPELL_AURA_REMOVED(args)
 		if args:IsPlayer() then
 			yellShredPsycheFades:Cancel()
 		end
+		if self.Options.SetIconOnAdds then
+			self:SetIcon(args.destName, 0)
+		end
 	end
 end
 

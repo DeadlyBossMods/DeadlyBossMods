@@ -29,7 +29,6 @@ localization.cn.lua
 localization.tw.lua
 localization.it.lua
 Shekzara.lua
-Tashara.lua
 Vuklaz.lua
 Tzane.lua
 Jiarak.lua

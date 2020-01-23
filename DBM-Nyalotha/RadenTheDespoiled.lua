@@ -89,7 +89,7 @@ local specWarnCorruptedExistence			= mod:NewSpecialWarningYou(316065, nil, nil, 
 
 --Stage 1: Gathering Power
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20527))
-local timerCallEssenceCD					= mod:NewCDCountTimer(44.9, 306091, nil, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON, nil, 1, 5)--44.9-46.3
+local timerCallEssenceCD					= mod:NewCDCountTimer(55, 306091, nil, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON, nil, 1, 5)--44.9-46.3
 local timerNullifyingStrikeCD				= mod:NewCDTimer(15.8, 306819, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON, nil, 2, 3)--16-19
 ----Vita
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20528))
@@ -627,7 +627,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		self.vb.callActive = true
 		self.vb.callEssenceCount = self.vb.callEssenceCount + 1
 		specWarnCallEssence:Show(self.vb.callEssenceCount)
-		timerCallEssenceCD:Start(self:IsHeroic() and 45 or 56, self.vb.callEssenceCount+1)--Normal and mythic both 56, mythic probably slow again cause it's 3
+		timerCallEssenceCD:Start(55.2, self.vb.callEssenceCount+1)--Normal and mythic both 56, mythic probably slow again cause it's 3
 		if self:IsMythic() and not DBM.RangeCheck:IsShown() then
 			DBM.RangeCheck:Show(5)
 		end

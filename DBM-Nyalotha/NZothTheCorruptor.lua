@@ -84,7 +84,7 @@ local warnCleansingProtocol					= mod:NewCastAnnounce(319349, 2)
 --General
 local specWarnGiftofNzoth					= mod:NewSpecialWarningYou(313334, nil, nil, nil, 1, 2)
 local yellGiftofNzothFades					= mod:NewFadesYell(313334)
-local specWarnServantofNzoth				= mod:NewSpecialWarningTargetChange(308996, "-Healer", nil, nil, 1, 2)
+local specWarnServantofNzoth				= mod:NewSpecialWarningTargetChange(308996, false, nil, 2, 1, 2)
 local yellServantofNzoth					= mod:NewYell(308996)
 local specwarnSanity						= mod:NewSpecialWarningCount(307831, nil, nil, nil, 1, 10)
 local specWarnGTFO							= mod:NewSpecialWarningGTFO(309991, nil, nil, nil, 1, 8)
