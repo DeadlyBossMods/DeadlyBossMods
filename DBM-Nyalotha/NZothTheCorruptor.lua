@@ -474,7 +474,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerParanoiaCD:Start(50)--SUCCESS (45 to START)
 			timerMindgateCD:Start(72.9)--START
 		else
-			self.vb.phase == 3
+			self.vb.phase = 3
 
 		end
 	elseif spellId == 318459 then
