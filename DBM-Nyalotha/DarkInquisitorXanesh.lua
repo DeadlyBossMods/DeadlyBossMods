@@ -46,7 +46,7 @@ local specWarnTorment						= mod:NewSpecialWarningDodgeCount(306208, nil, nil, n
 local specWarnTerrorWave					= mod:NewSpecialWarningInterruptCount(316211, "HasInterrupt", nil, nil, 1, 2)
 local specWarnGTFO							= mod:NewSpecialWarningGTFO(270290, nil, nil, nil, 1, 8)
 
-local timerAbyssalStrikeCD					= mod:NewCDTimer(42.6, 311551, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON, nil, 2, 4)--42.9-47
+local timerAbyssalStrikeCD					= mod:NewCDTimer(40, 311551, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON, nil, 2, 4)--42.9-47
 local timerVoidRitualCD						= mod:NewNextCountTimer(79.7, 312336, nil, nil, nil, 5, nil, nil, nil, 1, 4)
 local timerSummonRitualObeliskCD			= mod:NewNextCountTimer(79.7, 306495, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
 local timerSoulFlayCD						= mod:NewCDTimer(46.7, 306319, nil, nil, nil, 3)
