@@ -60,7 +60,7 @@ local warnVoidGaze							= mod:NewSpellAnnounce(310333, 3)
 
 --Stage 2: Writhing Onslaught
 ----N'Zoth
-local warnShatteredEgo					= mod:NewTargetNoFilterAnnounce(312155, 1)
+local warnShatteredEgo						= mod:NewTargetNoFilterAnnounce(312155, 1)
 local warnParanoia							= mod:NewTargetNoFilterAnnounce(309980, 3)
 local warnMindGate							= mod:NewCastAnnounce(309046, 2)
 ----Basher tentacle
@@ -132,7 +132,7 @@ local yellAnnihilateFades					= mod:NewShortFadesYell(318459)
 --mod:AddTimerLine(BOSS)
 --General
 local timerGiftofNzoth						= mod:NewBuffFadesTimer(20, 313334, nil, nil, nil, 5)
---local berserkTimer						= mod:NewBerserkTimer(600)
+local berserkTimer							= mod:NewBerserkTimer(720)
 --Stage 1: Dominant Mind
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20957))
 ----Psychus
@@ -244,6 +244,7 @@ function mod:OnCombatStart(delay)
 	table.wipe(seenAdds)
 	table.wipe(ParanoiaTargets)
 	UpdateTimerFades(self)
+	berserkTimer:Start(720-delay)
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(307831))
 		DBM.InfoFrame:Show(8, "playerpower", 1, ALTERNATE_POWER_INDEX, nil, nil, 2)--Sorting lowest to highest
