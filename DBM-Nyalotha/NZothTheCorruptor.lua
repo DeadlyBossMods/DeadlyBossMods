@@ -353,7 +353,9 @@ function mod:SPELL_CAST_START(args)
 		end
 		if not seenAdds[args.sourceGUID] then
 			seenAdds[args.sourceGUID] = true
-			warnCorruptorTentacle:Show()
+			if self:AntiSpam(3, 11) then
+				warnCorruptorTentacle:Show()
+			end
 		end
 	elseif spellId == 308885 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnMindFlay:Show(args.sourceGUID)
