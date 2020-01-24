@@ -305,7 +305,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 	elseif spellId == 311367 then
-		warnTouchoftheCorruptor:CombinedShow(0.3, args.destName)
+		warnTouchoftheCorruptor:CombinedShow(1, args.destName)
 		if args:IsPlayer() then
 			specWarnTouchoftheCorruptor:Show()
 			specWarnTouchoftheCorruptor:Play("targetyou")
