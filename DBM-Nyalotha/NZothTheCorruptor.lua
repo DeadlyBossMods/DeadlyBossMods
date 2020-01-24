@@ -5,8 +5,8 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(158041)
 mod:SetEncounterID(2344)
 mod:SetZone()
---mod:SetHotfixNoticeRev(20190716000000)--2019, 7, 16
---mod:SetMinSyncRevision(20190716000000)
+mod:SetHotfixNoticeRev(20200124000000)--2020, 1, 24
+mod:SetMinSyncRevision(20200124000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
@@ -98,7 +98,8 @@ local specWarnCollapsingMindscape			= mod:NewSpecialWarningMoveTo(317292, nil, n
 local specWarnMindgrasp						= mod:NewSpecialWarningSpell(315772, nil, nil, nil, 2, 2)
 local yellMindgrasp							= mod:NewShortYell(315772, "%s", false, 2)
 local specWarnParanoia						= mod:NewSpecialWarningMoveTo(309980, nil, nil, nil, 1, 2)
-local yellParanoia							= mod:NewYell(309980)
+local yellParanoia							= mod:NewShortYell(309980)
+local yellParanoiaRepeater					= mod:NewYell(309980, UnitName("player"))
 local specWarnEternalTorment				= mod:NewSpecialWarningCount(318449, nil, nil, nil, 2, 2)
 ----Basher Tentacle
 local specWarnBasherTentacle				= mod:NewSpecialWarningSwitch("ej21286", "-Healer", nil, 2, 1, 2)
@@ -208,6 +209,11 @@ mod.vb.paranoiaCount = 0
 local function warnParanoiaTargets()
 	warnParanoia:Show(table.concat(ParanoiaTargets, "<, >"))
 	table.wipe(ParanoiaTargets)
+end
+
+local function paranoiaYellRepeater(self)
+	yellParanoiaRepeater:Yell()
+	self:Schedule(2, paranoiaYellRepeater, self)
 end
 
 local function UpdateTimerFades(self)
@@ -484,6 +490,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if args:IsPlayer() then
 			yellParanoia:Yell()
+			if not self:IsLFR() then--Only repeat yell on mythic and mythic+
+				self:Unschedule(paranoiaYellRepeater)
+				self:Schedule(2, paranoiaYellRepeater, self)
+			end
 		end
 	elseif spellId == 313400 and args:IsDestTypePlayer() and self:CheckDispelFilter() and self:AntiSpam(3, 3) then
 		specWarnCorruptedMindDispel:Show(args.destName)
@@ -597,6 +607,10 @@ function mod:SPELL_AURA_REMOVED(args)
 		if args.destGUID == UnitGUID("player") then
 			selfInMind = true
 			UpdateTimerFades(self)
+		end
+	elseif spellId == 316541 or spellId == 316542 then
+		if args:IsPlayer() then
+			self:Unschedule(paranoiaYellRepeater)
 		end
 	end
 end
