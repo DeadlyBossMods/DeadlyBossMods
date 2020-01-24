@@ -376,8 +376,10 @@ function mod:SPELL_CAST_START(args)
 		timerAnnihilateCD:Start()
 	elseif spellId == 318449 then
 		self.vb.eternalTormentCount = self.vb.eternalTormentCount + 1
-		specWarnEternalTorment:Show(self.vb.eternalTormentCount)
-		specWarnEternalTorment:Play("aesoon")
+		if not selfInMind then
+			specWarnEternalTorment:Show(self.vb.eternalTormentCount)
+			specWarnEternalTorment:Play("aesoon")
+		end
 		local timer = self.vb.phase == 2 and stage2EternalTormentTimers[self.vb.eternalTormentCount+1] or stage3EternalTormentTimers[self.vb.eternalTormentCount+1]
 		if timer then
 			timerEternalTormentCD:Start(timer, self.vb.eternalTormentCount+1)
