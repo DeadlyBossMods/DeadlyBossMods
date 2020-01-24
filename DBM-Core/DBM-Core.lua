@@ -10845,7 +10845,11 @@ do
 				spellName = DBM:GetSpellInfo(spellId)
 			end
 		end
-		return pformat(DBM_CORE_AUTO_TIMER_TEXTS[timerType], spellName)
+		if DBM_CORE_AUTO_TIMER_TEXTS[timerType.."short"] and DBM.Bars:GetOption("StripCDText") then
+			return pformat(DBM_CORE_AUTO_TIMER_TEXTS[timerType.."short"], spellName)
+		else
+			return pformat(DBM_CORE_AUTO_TIMER_TEXTS[timerType], spellName)
+		end
 	end
 end
 

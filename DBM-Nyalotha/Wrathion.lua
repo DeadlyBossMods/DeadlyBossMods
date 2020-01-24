@@ -36,7 +36,6 @@ local warnPhase								= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 
 --Stage One: The Black Emperor
 local warnSearingArmor						= mod:NewStackAnnounce(306015, 2, nil, "Tank")
 local warnIncineration						= mod:NewTargetAnnounce(306111, 3)
-local warnBurningCata						= mod:NewPreWarnAnnounce(306735, 10, 4)
 --Stage Two: Smoke and Mirrors
 local warnScales							= mod:NewSpellAnnounce(308682, 2)
 local warnBurningMadness					= mod:NewTargetNoFilterAnnounce(307013, 1)
@@ -324,7 +323,5 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		warnScales:Show()
 	elseif spellId == 312389 then--Create Assassins
 		warnSpawnAdds:Show()
-	elseif spellId == 306948 then--Burning Cataclysm
-		warnBurningCata:Show()
 	end
 end

@@ -224,6 +224,15 @@ function mod:OnCombatStart(delay)
 		timerEchoingVoidCD:Start(36-delay, 1)
 	else--LFR
 		self.vb.difficultyName = "lfr"
+		--Copied from normal for now
+		timerMindNumbingNovaCD:Start(16-delay, 1)
+		timerSpawnAcidicAqirCD:Start(60-delay, 1)
+		--timerVolatileEruptionCD:Start(111.9-delay, 1)--Never Seen in normal in journal
+		timerFlyerSwarmCD:Start(67.7-delay, 1)
+		--Tek'ris
+		timerDronesCD:Start(21-delay, 1)
+		timerNullificationBlastCD:Start(28-delay, 1)
+		timerEchoingVoidCD:Start(36-delay, 1)
 	end
 	if self.Options.NPAuraOnVolatileEruption or self.Options.NPAuraOnAcceleratedEvolution then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
