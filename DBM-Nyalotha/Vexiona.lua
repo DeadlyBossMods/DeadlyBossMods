@@ -91,7 +91,7 @@ local timerTwilightDecimatorCD				= mod:NewNextCountTimer(12.2, 307218, nil, nil
 ----Stage 3: The Void Unleashed
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20669))
 local timerHeartofDarknessCD				= mod:NewCDCountTimer(31.6, 307639, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON, nil, 1, 4)
-local timerDesolationCD						= mod:NewCDTimer(30.4, 310325, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
+local timerDesolationCD						= mod:NewCDTimer(32.3, 310325, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
 --Adds
 ----Void Ascendant
 --mod:AddTimerLine(DBM:EJ_GetSectionInfo(20684))
@@ -249,9 +249,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerDarkGatewayCD:Stop()
 		timerTwilightBreathCD:Start(14.5)
 		timerEncroachingShadowsCD:Start(14.6)
-		timerHeartofDarknessCD:Start(17.1, 1)
+		timerHeartofDarknessCD:Start(16.5, 1)
 		if self:IsHard() then
-			timerDesolationCD:Start(28.1)
+			timerDesolationCD:Start(32.9)
 		end
 	elseif spellId == 310323 then
 		timerDesolationCD:Start()
