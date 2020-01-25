@@ -122,7 +122,7 @@ local timerCorruptedExistenceCD				= mod:NewAITimer(10.8, 317276, nil, nil, nil,
 mod:AddRangeFrameOption(6, 306874)
 mod:AddInfoFrameOption(306257, true)
 mod:AddSetIconOption("SetIconOnUnstableVita", 306257, true, false, {1, 2})
-mod:AddSetIconOption("SetIconOnChargedBonds", 310019, true, false, {1, 2, 3, 4})
+mod:AddSetIconOption("SetIconOnChargedBonds", 310019, true, false, {1})
 mod:AddSetIconOption("SetIconOnVoidCollapse", 306881, true, false, {3})
 mod:AddSetIconOption("SetIconOnUnstableNightmare", 313077, true, false, {4, 5})
 mod:AddSetIconOption("SetIconOnCorruptedExistence", 316065, true, false, {6, 7, 8})
@@ -512,6 +512,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		if spellId == 310019 then--Primary target
 			self.vb.bondsTarget = args.destName
 			specWarnChargedBonds:Show(DBM_ALLIES)
+			if self.Options.SetIconOnChargedBonds then
+				self:SetIcon(args.destName, 1)
+			end
 		else--310022 one of allies tethered to primary
 			specWarnChargedBonds:Show(self.vb.bondsTarget)
 		end
@@ -521,9 +524,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		--else
 			self:Schedule(0.3, warnChargedBondsTargets)
 		--end
-		if self.Options.SetIconOnChargedBonds then
-			self:SetIcon(args.destName, #ChargedBondsTargets)
-		end
 	elseif spellId == 315252 then
 		warnDreadInferno:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
@@ -590,9 +590,9 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 310019 or spellId == 310022 then
 		if spellId == 310019 then--Primary target
 			self.vb.bondsTarget = nil
-		end
-		if self.Options.SetIconOnChargedBonds then
-			self:SetIcon(args.destName, #ChargedBondsTargets)
+			if self.Options.SetIconOnChargedBonds then
+				self:SetIcon(args.destName, 0)
+			end
 		end
 	end
 end
