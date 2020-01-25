@@ -226,10 +226,8 @@ do
 			if self.Options.SetIconOnUnstableVita then
 				if self.vb.lastIcon == 1 then
 					self:SetIcon(self.vb.lastHighes, 2, 4.5)
-					self.vb.lastIcon = 2
 				else
 					self:SetIcon(self.vb.lastHighes, 1, 4.5)
-					self.vb.lastIcon = 1
 				end
 			end
 		elseif msg == "NightmareUpdate" and target then
