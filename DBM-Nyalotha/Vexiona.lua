@@ -125,7 +125,7 @@ function mod:OnCombatStart(delay)
 	timerDespairCD:Start(10.1-delay)
 	timerEncroachingShadowsCD:Start(14.8-delay)
 	timerDarkGatewayCD:Start(32.9-delay, 1)
-	timerTwilightDecimatorCD:Start(89.7-delay)
+	timerTwilightDecimatorCD:Start(89.7-delay, 1)
 	if self.Options.NPAuraOnPoweroftheChosen then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 		self:RegisterOnUpdateHandler(function(self)
@@ -255,7 +255,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		end
 	elseif spellId == 310323 then
 		timerDesolationCD:Start()
-	elseif spellId == 307396 then
+	elseif spellId == 307396 and self:AntiSpam(3, 5) then
 		warnSpitefulAssault:Show()
 	end
 end
