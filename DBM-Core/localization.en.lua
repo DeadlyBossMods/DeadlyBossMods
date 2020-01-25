@@ -457,8 +457,11 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 DBM_CORE_AUTO_TIMER_TEXTS = {
 	target			= "%s: %%s",
 	cast			= "%s",
+	castshort		= "%s ",--if short timers enabled, cast and next are same timer text, this is a conflict. the space resolves it
 	castcount		= "%s (%%s)",
+	castcountshort	= "%s (%%s) ",--Resolve short timer conflict with next timers
 	castsource		= "%s: %%s",
+	castsourceshort	= "%s: %%s ",--Resolve short timer conflict with next timers
 	active			= "%s ends",--Buff/Debuff/event on boss
 	fades			= "%s fades",--Buff/Debuff on players
 	ai				= "%s AI",
@@ -482,7 +485,9 @@ DBM_CORE_AUTO_TIMER_TEXTS = {
 	stage			= "Next Stage",
 	stageshort		= "Stage",
 	adds			= "Incoming Adds",
+	addsshort		= "Adds",
 	addscustom		= "Incoming Adds (%%s)",
+	addscustomshort	= "Adds (%%s)",
 	roleplay		= GUILD_INTEREST_RP
 }
 
