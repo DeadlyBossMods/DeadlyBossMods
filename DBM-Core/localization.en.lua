@@ -283,6 +283,7 @@ DBM_CORE_ORB						= "Orb"
 DBM_CHEST							= "Chest"--As in Treasure 'Chest'. Not Chest as in body part.
 DBM_NO_DEBUFF						= "Not %s"--For use in places like info frame where you put "Not Spellname"
 DBM_ALLY							= "Ally"--Such as "Move to Ally"
+DBM_ALLIES							= "Allies"--Such as "Move to Ally"
 DBM_ADD								= "Add"--A fight Add as in "boss spawned extra adds"
 DBM_ADDS							= "Adds"
 DBM_BIG_ADD							= "Big Add"

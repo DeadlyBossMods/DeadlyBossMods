@@ -16,9 +16,9 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 306865 306866 313213 310003 309985 317276",
 	"SPELL_CAST_SUCCESS 310019 313213 306603 316913 306819",
 	"SPELL_SUMMON 306866 314484",
-	"SPELL_AURA_APPLIED 312750 306090 306168 306732 306733 312996 306257 306279 306819 313227 309852 306207 306273 313077 315252 316065",
+	"SPELL_AURA_APPLIED 312750 306090 306168 306732 306733 312996 306257 306279 306819 313227 309852 306207 306273 313077 315252 316065 310019 310022",
 	"SPELL_AURA_APPLIED_DOSE 306819 313227",
-	"SPELL_AURA_REMOVED 312750 306090 306168 306732 306733 312996 306257 306279 306207 306273 313077 316065",
+	"SPELL_AURA_REMOVED 312750 306090 306168 306732 306733 312996 306257 306279 306207 306273 313077 316065 310019 310022",
 	"UNIT_DIED",
 	"UNIT_SPELLCAST_START boss2 boss3 boss4 boss5",--if you have 4 adds up, you're doing shit wrong. Just in case
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
@@ -122,7 +122,7 @@ local timerCorruptedExistenceCD				= mod:NewAITimer(10.8, 317276, nil, nil, nil,
 mod:AddRangeFrameOption(6, 306874)
 mod:AddInfoFrameOption(306257, true)
 mod:AddSetIconOption("SetIconOnUnstableVita", 306257, true, false, {1, 2})
-mod:AddSetIconOption("SetIconOnChargedBonds", 310019, true, false, {1, 2})
+mod:AddSetIconOption("SetIconOnChargedBonds", 310019, true, false, {1, 2, 3, 4})
 mod:AddSetIconOption("SetIconOnVoidCollapse", 306881, true, false, {3})
 mod:AddSetIconOption("SetIconOnUnstableNightmare", 313077, true, false, {4, 5})
 mod:AddSetIconOption("SetIconOnCorruptedExistence", 316065, true, false, {6, 7, 8})
@@ -137,6 +137,7 @@ mod.vb.voidEruptionCount = 0
 mod.vb.currentNightmare = nil
 mod.vb.lastLowest = "^^ No DBM"
 mod.vb.corruptedExistenceIcon = 6
+mod.vb.bondsTarget = nil
 local playerHasVita, playerHasNightmare = false, false
 local ExposureTargets = {}
 local consumingVoid = DBM:GetSpellInfo(306645)
@@ -299,6 +300,7 @@ function mod:OnCombatStart(delay)
 	self.vb.voidEruptionCount = 0
 	self.vb.currentNightmare = nil
 	self.vb.lastLowest = "^^ No DBM"
+	self.vb.bondsTarget = nil
 	playerHasVita, playerHasNightmare = false, false
 	table.wipe(ExposureTargets)
 	table.wipe(ChargedBondsTargets)
@@ -504,21 +506,21 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self:IsMythic() then
 			timerCorruptedExistenceCD:start(2)
 		end
-	elseif spellId == 310019 or spellId == 310022 then--310019 heroic confirmed, 310022 unknown, not used on heroic
+	elseif spellId == 310019 or spellId == 310022 then
 		ChargedBondsTargets[#ChargedBondsTargets + 1] = args.destName
 		self:Unschedule(warnChargedBondsTargets)
-		if #ChargedBondsTargets == 2 then
-			warnChargedBondsTargets()
-			if ChargedBondsTargets[1] == UnitName("player") then
-				specWarnChargedBonds:Show(ChargedBondsTargets[2])
-				specWarnChargedBonds:Play("linegather")
-			elseif ChargedBondsTargets[2] == UnitName("player") then
-				specWarnChargedBonds:Show(ChargedBondsTargets[1])
-				specWarnChargedBonds:Play("linegather")
-			end
-		else
-			self:Schedule(0.3, warnChargedBondsTargets)
+		if spellId == 310019 then--Primary target
+			self.vb.bondsTarget = args.destName
+			specWarnChargedBonds:Show(DBM_ALLIES)
+		else--310022 one of allies tethered to primary
+			specWarnChargedBonds:Show(self.vb.bondsTarget)
 		end
+		specWarnChargedBonds:Play("runaway")
+		--if #ChargedBondsTargets == 4 then--This is not definitive yet that it can cap at 4
+		--	warnChargedBondsTargets()
+		--else
+			self:Schedule(0.3, warnChargedBondsTargets)
+		--end
 		if self.Options.SetIconOnChargedBonds then
 			self:SetIcon(args.destName, #ChargedBondsTargets)
 		end
@@ -584,6 +586,13 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 316065 then
 		if self.Options.SetIconOnCorruptedExistence then
 			self:SetIcon(args.destName, 0)
+		end
+	elseif spellId == 310019 or spellId == 310022 then
+		if spellId == 310019 then--Primary target
+			self.vb.bondsTarget = nil
+		end
+		if self.Options.SetIconOnChargedBonds then
+			self:SetIcon(args.destName, #ChargedBondsTargets)
 		end
 	end
 end
