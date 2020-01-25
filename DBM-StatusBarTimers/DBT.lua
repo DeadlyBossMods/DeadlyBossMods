@@ -483,6 +483,10 @@ options = {
 		type = "boolean",
 		default = true,
 	},
+	StripCDText = {
+		type = "boolean",
+		default = false,
+	},
 }
 
 
