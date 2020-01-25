@@ -8,14 +8,14 @@ mod:SetZone()
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6)--Refine when max number of mythic Volatile Eruption is known
 mod:SetHotfixNoticeRev(20191109000000)--2019, 11, 09
 mod:SetMinSyncRevision(20191109000000)
---mod.respawnTime = 29
+mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 307569 307213 307201 310340 307968 307232 313652 307582",
 	"SPELL_CAST_SUCCESS 308178 307232 312868 312710 307635",
-	"SPELL_AURA_APPLIED 307637 313460",
+	"SPELL_AURA_APPLIED 307637 313460 307377 307227",
 --	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 307637"
 --	"SPELL_PERIODIC_DAMAGE",
