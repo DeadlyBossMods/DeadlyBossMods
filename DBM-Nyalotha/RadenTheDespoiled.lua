@@ -132,6 +132,7 @@ mod.vb.callEssenceCount = 0
 mod.vb.callActive = false
 mod.vb.currentVita = nil
 mod.vb.lastHighest = "^^ No DBM"
+mod.vb.lastIcon = 1
 mod.vb.unstableVoidCount = 0
 mod.vb.voidEruptionCount = 0
 mod.vb.currentNightmare = nil
@@ -190,8 +191,11 @@ do
 		self:SendSync("VitaUpdate", self.vb.lastHighest)
 		if playerHasVita then--As long as debuff present, keep looping
 			self:Schedule(0.5, furthestPlayerScanner, self)
-		elseif not playerHasNightmare then
-			table.wipe(entireRaidDistancetable)
+		else
+			self:Unschedule(furthestPlayerScanner)
+			if not playerHasNightmare then
+				table.wipe(entireRaidDistancetable)
+			end
 		end
 	end
 	closestPlayerScanner = function(self)
@@ -208,8 +212,11 @@ do
 		self:SendSync("NightmareUpdate", self.vb.lastLowest)
 		if playerHasNightmare then--As long as debuff present, keep looping
 			self:Schedule(0.5, closestPlayerScanner, self)
-		elseif not playerHasVita then
-			table.wipe(entireRaidDistancetable)
+		else
+			self:Unschedule(closestPlayerScanner)
+			if not playerHasVita then
+				table.wipe(entireRaidDistancetable)
+			end
 		end
 	end
 	function mod:OnSync(msg, target)
@@ -217,7 +224,13 @@ do
 			target = Ambiguate(target, "None")--in cross realm situations, an off realmer would send -realmname on units for units for our realm, we need to correct this
 			self.vb.lastHighest = target
 			if self.Options.SetIconOnUnstableVita then
-				self:SetIcon(self.vb.lastHighest, 2, 5)
+				if self.vb.lastIcon == 1 then
+					self:SetIcon(self.vb.lastHighes, 2, 4.5)
+					self.vb.lastIcon = 2
+				else
+					self:SetIcon(self.vb.lastHighes, 1, 4.5)
+					self.vb.lastIcon = 1
+				end
 			end
 		elseif msg == "NightmareUpdate" and target then
 			target = Ambiguate(target, "None")--in cross realm situations, an off realmer would send -realmname on units for units for our realm, we need to correct this
@@ -297,6 +310,7 @@ function mod:OnCombatStart(delay)
 	self.vb.callActive = false
 	self.vb.currentVita = nil
 	self.vb.lastHighest = "^^ No DBM"
+	self.vb.lastIcon = 1
 	self.vb.voidEruptionCount = 0
 	self.vb.currentNightmare = nil
 	self.vb.lastLowest = "^^ No DBM"
@@ -428,6 +442,27 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerCallNightTerrorCD:Start(7.2)
 	elseif spellId == 306207 or spellId == 306273 then--Unstable Vita (Initial, hop)
 		self.vb.currentVita = args.destName
+		if self.Options.SetIconOnUnstableVita then
+			--vita marking uses circle and star. Here are Rules
+			--1. First icon used is star on initial vita application
+			--2. Circle will be set on furthest target
+			--3. When Vita jumps, IF it jumpsto the target that had circle, that target will KEEP circle
+			--But if it jumps to someone that wasn't circle, it'll reset back to rule 1, starting at star.
+			--4. if the 3 step was aple to keep circle on new vita target, then star will now be icon set on furthest target.
+			--5. So long as the jumps go to targets DBM estimated it'll continue doing 3 and 4 but with appropriate icon.
+			if self.vb.lastHighest == args.destName then
+				if self.vb.lastIcon == 1 then
+					self:SetIcon(args.destName, 2)
+					self.vb.lastIcon = 2
+				else
+					self:SetIcon(args.destName, 1)
+					self.vb.lastIcon = 1
+				end
+			else--Reset icons because vita didn't go where it was expected to or this is initial application
+				self:SetIcon(args.destName, 1)
+				self.vb.lastIcon = 1
+			end
+		end
 		self.vb.lastHighest = "^^ No DBM"
 		if args:IsPlayer() then
 			playerHasVita = true
@@ -438,9 +473,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			furthestPlayerScanner(self)
 		else
 			warnUnstableVita:Show(args.destName)
-		end
-		if self.Options.SetIconOnUnstableVita then
-			self:SetIcon(args.destName, 1)
 		end
 		timerUnstableVita:Start(self:IsMythic() and 6 or 7, args.destName)
 	elseif spellId == 313077 then--Unstable Nightmare
