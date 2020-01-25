@@ -10,9 +10,9 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 297834 297835",
-	"SPELL_CAST_SUCCESS 297821 297985",
-	"SPELL_AURA_APPLIED 298259 297913",
-	"SPELL_AURA_REMOVED 298259"
+	"SPELL_CAST_SUCCESS 297985",
+	"SPELL_AURA_APPLIED 298259 297913"
+--	"SPELL_AURA_REMOVED 298259"
 )
 
 --[[
@@ -30,25 +30,23 @@ local specWarnToxicGoopDispel		= mod:NewSpecialWarningDispel(297913, false, nil,
 local specWarnCoalesce				= mod:NewSpecialWarningDodge(297835, nil, nil, nil, 2, 2)
 --local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 8)
 
-local timerToxicGoopCD				= mod:NewAITimer(31.6, 297913, nil, nil, nil, 3, nil, DBM_CORE_DISEASE_ICON)
-local timerToxicWaveCD				= mod:NewAITimer(31.6, 297834, nil, nil, nil, 2)
-local timerSplatterCD				= mod:NewAITimer(31.6, 297985, nil, nil, nil, 3)
-local timerCoalesceCD				= mod:NewAITimer(31.6, 297835, nil, nil, nil, 3)
+local timerToxicWaveCD				= mod:NewCDTimer(49.8, 297834, nil, nil, nil, 2)
+local timerSplatterCD				= mod:NewCDTimer(25.1, 297985, nil, nil, nil, 3)
+local timerCoalesceCD				= mod:NewCDTimer(49.8, 297835, nil, nil, nil, 3)
 
 --mod:AddRangeFrameOption(5, 194966)
 
 function mod:OnCombatStart(delay)
-	timerToxicGoopCD:Start(1-delay)
-	timerToxicWaveCD:Start(1-delay)
-	timerSplatterCD:Start(1-delay)
-	timerCoalesceCD:Start(1-delay)
+	timerSplatterCD:Start(8.7-delay)
+	timerCoalesceCD:Start(20.6-delay)
+	timerToxicWaveCD:Start(44.8-delay)
 end
 
-function mod:OnCombatEnd()
+--function mod:OnCombatEnd()
 --	if self.Options.RangeFrame then
 --		DBM.RangeCheck:Hide()
 --	end
-end
+--end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
@@ -65,9 +63,7 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 297821 then
-		timerToxicGoopCD:Start()
-	elseif spellId == 297985 then
+	if spellId == 297985 then
 		warnSplatter:Show()
 		timerSplatterCD:Start()
 	end
@@ -97,6 +93,7 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 --mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
+--[[
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 257827 then
@@ -104,7 +101,6 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
---[[
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 228007 and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
 		specWarnGTFO:Show()

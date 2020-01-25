@@ -13,8 +13,8 @@ mod:SetMinSyncRevision(20191109000000)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 306865 306819 306866 313213 310003 309985 317276",
-	"SPELL_CAST_SUCCESS 310019 313213 306603 316913",
+	"SPELL_CAST_START 306865 306866 313213 310003 309985 317276",
+	"SPELL_CAST_SUCCESS 310019 313213 306603 316913 306819",
 	"SPELL_SUMMON 306866 314484",
 	"SPELL_AURA_APPLIED 312750 306090 306168 306732 306733 312996 306257 306279 306819 313227 309852 306207 306273 313077 315252 316065",
 	"SPELL_AURA_APPLIED_DOSE 306819 313227",
@@ -351,8 +351,6 @@ function mod:SPELL_CAST_START(args)
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(self:IsMythic() and 8 or 6)
 		end
-	elseif spellId == 306819 then
-		timerNullifyingStrikeCD:Start(16)
 	elseif spellId == 306866 then
 		specWarnCallVoidHunter:Show()
 		specWarnCallVoidHunter:Play("bigmob")
@@ -390,6 +388,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 		end
 	elseif spellId == 313213 then--Because he can stutter cast and restart cast, timer can't be reliable started in SPELL_CAST_START
 		timerDecayingStrikeCD:Start(8.1)
+	elseif spellId == 306819 then--Same reason as above
+		timerNullifyingStrikeCD:Start(14.3)
 	elseif spellId == 316913 and self:AntiSpam(3, 1) then
 		timerDreadInfernoCD:Start(11.7, args.sourceGUID)
 	end

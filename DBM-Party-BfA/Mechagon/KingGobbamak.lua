@@ -21,7 +21,7 @@ ability.id = 297254 and type = "cast"
 --]]
 --TODO, add nameplate aura for https://ptr.wowhead.com/spell=297318/powered-up if it's on a unit with nameplate
 local warnElectricalCharge			= mod:NewTargetAnnounce(297257, 2)
-local warnGetEm						= mod:NewSpellAnnounce(297465, 2)
+--local warnGetEm						= mod:NewSpellAnnounce(297465, 2)
 
 local specWarnChargedSmash			= mod:NewSpecialWarningSpell(297254, nil, nil, nil, 2, 2)
 --local specWarnHowlingFear			= mod:NewSpecialWarningInterrupt(257791, "HasInterrupt", nil, nil, 1, 2)
@@ -31,16 +31,16 @@ local specWarnRumble				= mod:NewSpecialWarningSpell(297261, nil, nil, nil, 2, 2
 --local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 8)
 
 --local timerHowlingFearCD			= mod:NewAITimer(13.4, 257791, nil, "HasInterrupt", nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
-local timerChargedSmashCD			= mod:NewAITimer(31.6, 297254, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
-local timerRumbleCD					= mod:NewAITimer(31.6, 297261, nil, nil, nil, 2, nil, DBM_CORE_HEALER_ICON)
-local timerGetEmCD					= mod:NewAITimer(31.6, 297465, nil, nil, nil, 1)
+local timerChargedSmashCD			= mod:NewNextTimer(32.7, 297254, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerRumbleCD					= mod:NewCDTimer(51, 297261, nil, nil, nil, 2, nil, DBM_CORE_HEALER_ICON)--51-54 (based on one pull of one log)
+--local timerGetEmCD					= mod:NewAITimer(31.6, 297465, nil, nil, nil, 1)
 
 --mod:AddRangeFrameOption(5, 194966)
 
 function mod:OnCombatStart(delay)
-	timerChargedSmashCD:Start(1-delay)
-	timerRumbleCD:Start(1-delay)
-	timerGetEmCD:Start(1-delay)
+	timerRumbleCD:Start(8.3-delay)
+	timerChargedSmashCD:Start(24.7-delay)
+	--timerGetEmCD:Start(1-delay)
 end
 
 function mod:OnCombatEnd()
@@ -61,8 +61,8 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 297465 then
-		warnGetEm:Show()
-		timerGetEmCD:Start()
+		--warnGetEm:Show()
+		--timerGetEmCD:Start()
 	elseif spellId == 297261 then
 		specWarnRumble:Show()
 		specWarnRumble:Play("aesoon")
