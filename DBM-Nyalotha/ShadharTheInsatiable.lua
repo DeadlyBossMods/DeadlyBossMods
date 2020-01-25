@@ -34,7 +34,7 @@ mod:RegisterEventsInCombat(
  or (ability.id = 306447 or ability.id = 306931 or ability.id = 306933) and type = "applybuff"
 --]]
 local warnHunger							= mod:NewStackAnnounce(312328, 2, nil, false, 2)--Mythic
-local warnUmbralMantle						= mod:NewSpellAnnounce(306447, 2)
+--local warnUmbralMantle						= mod:NewSpellAnnounce(306447, 2)
 local warnUmbralEruption					= mod:NewSpellAnnounce(308157, 2)
 local warnNoxiousMantle						= mod:NewSpellAnnounce(306931, 2)
 local warnBubblingOverflow					= mod:NewCountAnnounce(314736, 2)
@@ -140,16 +140,24 @@ function mod:SpitTarget(targetname, uId)
 end
 
 function mod:OnCombatStart(delay)
-	self.vb.phase = 0
+	self.vb.phase = 1
 	self.vb.fixateCount = 0
 	self.vb.bossPowerUpdateRate = 4
 	table.wipe(SpitStacks)
 	table.wipe(seenAdds)
-	timerDebilitatingSpitCD:Start(10.7-delay)--START
+	timerDebilitatingSpitCD:Start(10.1-delay)--START
 	timerCrushCD:Start(15.1-delay)--Time til script begins
-	timerSlurryBreathCD:Start(26.6-delay)--Technically it should be 25 but there is a pause before boss begins gaining power
+	timerSlurryBreathCD:Start(26.1-delay)--Technically it should be 25 but there is a pause before boss begins gaining power
 	timerFixateCD:Start(self:IsMythic() and 16.1 or 31)
 	berserkTimer:Start(360-delay)
+	--Umbral stuff now running on engage
+	if not self:IsLFR() then
+		--Schedule P1 Loop
+		self.vb.eruptionCount = 0
+		timerUmbralEruptionCD:Start(10)--Damage at 12, so warning 2 seconds before seems right
+		self:Schedule(10, umbralEruptionLoop, self)
+	end
+	--updateBreathTimer(self)
 end
 
 function mod:OnCombatEnd()
@@ -238,12 +246,13 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellFixate:Yell()
 		end
 	elseif spellId == 306447 then
-		self.vb.phase = self.vb.phase + 1
-		warnUmbralMantle:Show()
+		--If this event fires delayed and not on pull, we want to update timers again
 		if not self:IsLFR() then
 			--Schedule P1 Loop
 			self.vb.eruptionCount = 0
+			timerUmbralEruptionCD:Stop()
 			timerUmbralEruptionCD:Start(10)--Damage at 12, so warning 2 seconds before seems right
+			self:Unschedule(umbralEruptionLoop)
 			self:Schedule(10, umbralEruptionLoop, self)
 		end
 		updateBreathTimer(self)
