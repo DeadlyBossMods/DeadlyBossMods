@@ -14,6 +14,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 312528 306928 312529 306929 307260 306953 318078 312530 306930",
+	"SPELL_CAST_SUCCESS 312528 306928 312529 306929 312530 306930",
 	"SPELL_AURA_APPLIED 312328 312329 307471 307472 307358 306942 318078 308149 312099 306447 306931 306933",
 	"SPELL_AURA_APPLIED_DOSE 312328 307358",
 	"SPELL_AURA_REMOVED 312328 307358 306447 306933 306931",
@@ -185,6 +186,13 @@ function mod:SPELL_CAST_START(args)
 		timerFixateCD:Start(timer)
 	elseif spellId == 306953 then
 		timerDebilitatingSpitCD:Start()
+	end
+end
+
+function mod:SPELL_CAST_SUCCESS(args)
+	local spellId = args.spellId
+	if spellId == 312528 or spellId == 306928 or spellId == 312529 or spellId == 306929 or spellId == 312530 or spellId == 306930 then--Breaths
+		updateBreathTimer(self)
 	end
 end
 
@@ -360,8 +368,8 @@ end
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 307469 then--Crush & Dissolve Cover
 		timerCrushCD:Start()
-	elseif spellId == 306736 then--Slurry Breath
-		updateBreathTimer(self)
+	--elseif spellId == 306736 then--Slurry Breath
+		--updateBreathTimer(self)
 	end
 end
 
