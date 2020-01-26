@@ -97,7 +97,7 @@ local timerDesolationCD						= mod:NewCDTimer(32.3, 310325, nil, nil, nil, 3, ni
 --mod:AddTimerLine(DBM:EJ_GetSectionInfo(20684))
 local timerAnnihilationCD					= mod:NewCDTimer(14.6, 307403, nil, nil, nil, 3)
 
---local berserkTimer						= mod:NewBerserkTimer(600)
+local berserkTimer							= mod:NewBerserkTimer(600)
 
 --mod:AddRangeFrameOption(6, 264382)
 mod:AddInfoFrameOption(307019, true)
@@ -126,6 +126,7 @@ function mod:OnCombatStart(delay)
 	timerEncroachingShadowsCD:Start(14.8-delay)
 	timerDarkGatewayCD:Start(32.9-delay, 1)
 	timerTwilightDecimatorCD:Start(89.7-delay, 1)
+	berserkTimer:Start(720-delay)--Normal confirmed, heroic people didn't have parses that far yet, but likely same
 	if self.Options.NPAuraOnPoweroftheChosen then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 		self:RegisterOnUpdateHandler(function(self)

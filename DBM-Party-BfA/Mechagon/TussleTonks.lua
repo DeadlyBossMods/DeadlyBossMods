@@ -19,7 +19,6 @@ mod:RegisterEventsInCombat(
 )
 
 --TODO, Foe Flipper target?
---TODO, new mine timer with 8.3
 --TODO, thrust scan was changed to slower scan method, because UNIT_TARGET scan method relies on boss changing target after cast begins, but 8.3 notes now say boss changes target before cast starts
 --TODO, the two part of above is need to verify whether or not a target scanner is even needed at all now. If boss is already looking at atarget at cast start then all we need is boss1target and no scan what so ever
 --[[
@@ -41,7 +40,7 @@ local yellFoeFlipper				= mod:NewYell(285153)
 --local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 8)
 
 
-local timerLayMineCD				= mod:NewNextTimer(15.8, 285351, nil, nil, nil, 3)
+local timerLayMineCD				= mod:NewCDTimer(12.1, 285351, nil, nil, nil, 3)
 local timerWhirlingEdgeCD			= mod:NewNextTimer(32.8, 285020, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 --local timerFoeFlipperCD				= mod:NewAITimer(13.4, 285153, nil, nil, nil, 3)
 local timerVentJetsCD				= mod:NewCDTimer(43.8, 285388, nil, nil, nil, 2)
@@ -66,7 +65,6 @@ function mod:OnCombatStart(delay)
 	timerLayMineCD:Start(15.5-delay)
 	--timerFoeFlipperCD:Start(16.7-delay)
 	timerVentJetsCD:Start(22.8-delay)
-	DBM:AddMsg("Mine timer was changed with 8.3, this mod will be updated as soon as it can be post patch launch")
 end
 
 function mod:OnCombatEnd()

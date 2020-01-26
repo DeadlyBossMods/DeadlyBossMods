@@ -101,7 +101,7 @@ local timerInsanityBombCD					= mod:NewCDTimer(66.9, 306984, nil, nil, nil, 3)
 local timerInfiniteDarknessCD				= mod:NewCDTimer(53.9, 313040, nil, nil, nil, 2)
 --local timerThrashingTentacleCD				= mod:NewCDTimer(27.8, 315820, nil, nil, nil, 3)
 
-local berserkTimer							= mod:NewBerserkTimer(720)
+--local berserkTimer							= mod:NewBerserkTimer(720)
 
 mod:AddRangeFrameOption("10")
 mod:AddInfoFrameOption(307831, true)
@@ -137,7 +137,7 @@ function mod:OnCombatStart(delay)
 		timerMandibleSlamCD:Start(20-delay)
 		timerGrowthCoveredTentacleCD:Start(36-delay)--Unknown, guessed by 0.82 adjustment
 	end
-	berserkTimer:Start(720-delay)
+	--berserkTimer:Start(720-delay)
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(307831))
 		DBM.InfoFrame:Show(8, "playerpower", 1, ALTERNATE_POWER_INDEX, nil, nil, 2)--Sorting lowest to highest

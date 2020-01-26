@@ -79,7 +79,7 @@ mod:AddTimerLine(DBM:EJ_GetSectionInfo(20553))
 local timerForbiddenRitualCD				= mod:NewCDCountTimer(7, 306290, nil, "Healer", nil, 5, nil, DBM_CORE_HEALER_ICON)--6.1-8.5 (7)
 local timerDrainEssenceCD					= mod:NewCDTimer(13.8, 314993, nil, nil, nil, 5, nil, DBM_CORE_MAGIC_ICON)--13.8-15.8
 
---local berserkTimer						= mod:NewBerserkTimer(600)
+local berserkTimer						= mod:NewBerserkTimer(600)
 
 mod:AddRangeFrameOption(8, 314995)
 mod:AddInfoFrameOption(306005, true)
@@ -111,6 +111,7 @@ function mod:OnCombatStart(delay)
 		DBM.InfoFrame:SetHeader(DBM_CORE_INFOFRAME_POWER)
 		DBM.InfoFrame:Show(3, "enemypower", 0, 0)
 	end
+	berserkTimer:Start(self:IsHard() and 600 or 660)--Heroic and Normal confirmed, LFR and mythic unknown
 end
 
 function mod:OnCombatEnd()

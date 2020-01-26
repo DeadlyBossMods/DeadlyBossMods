@@ -150,7 +150,9 @@ function mod:OnCombatStart(delay)
 	timerCrushCD:Start(15.1-delay)--Time til script begins
 	timerSlurryBreathCD:Start(26.1-delay)--Technically it should be 25 but there is a pause before boss begins gaining power
 	timerFixateCD:Start(self:IsMythic() and 16.1 or 31)
-	berserkTimer:Start(360-delay)
+	if self:IsHard() then
+		berserkTimer:Start(360-delay)--Heroic confirmed, normal unknown
+	end
 	--Umbral stuff now running on engage
 	if not self:IsLFR() then
 		--Schedule P1 Loop

@@ -68,7 +68,7 @@ local timerCorruptorsGazeCD					= mod:NewCDTimer(32.8, 310319, nil, nil, nil, 3)
 local timerCursedBloodCD					= mod:NewNextTimer(18, 311159, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
 local timerAbsorbingChargeCD				= mod:NewAITimer(18, 318383, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
 
---local berserkTimer						= mod:NewBerserkTimer(600)
+local berserkTimer							= mod:NewBerserkTimer(600)
 
 mod:AddRangeFrameOption(11, 311159)
 mod:AddInfoFrameOption(315094, true)
@@ -191,6 +191,7 @@ function mod:OnCombatStart(delay)
 	table.wipe(castsPerGUID)
 	timerEyeofNZothCD:Start(5.2-delay)--START
 	timerCorruptorsGazeCD:Start(12.2-delay)
+	berserkTimer:Start(600-delay)--Confirmed heroic and normal
 	if self:IsHard() then
 		timerTouchoftheCorruptorCD:Start(50.7-delay)--SUCCESS
 		if self:IsMythic() then
