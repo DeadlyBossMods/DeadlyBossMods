@@ -541,14 +541,19 @@ function mod:SPELL_AURA_APPLIED(args)
 		self:Unschedule(warnChargedBondsTargets)
 		if spellId == 310019 then--Primary target
 			self.vb.bondsTarget = args.destName
-			specWarnChargedBonds:Show(DBM_ALLIES)
+			if args:IsPlayer() then
+				specWarnChargedBonds:Show(DBM_ALLIES)
+				specWarnChargedBonds:Play("runaway")
+			end
 			if self.Options.SetIconOnChargedBonds then
 				self:SetIcon(args.destName, 1)
 			end
 		else--310022 one of allies tethered to primary
-			specWarnChargedBonds:Show(self.vb.bondsTarget)
+			if args:IsPlayer() then
+				specWarnChargedBonds:Show(self.vb.bondsTarget)
+				specWarnChargedBonds:Play("runaway")
+			end
 		end
-		specWarnChargedBonds:Play("runaway")
 		--if #ChargedBondsTargets == 4 then--This is not definitive yet that it can cap at 4
 		--	warnChargedBondsTargets()
 		--else
