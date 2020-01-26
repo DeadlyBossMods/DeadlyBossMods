@@ -197,7 +197,7 @@ local stage2BasherTimers = {23, 55.0, 50.0}
 local stage2ParanoiaTimers = {50, 56.1, 48.9}
 local stage2EternalTormentTimers = {35.3, 56, 29.3, 19.5}
 local stage3EternalTormentTimers = {35.3, 72, 11, 24.5, 10.9}
-local stage3ThoughtHarvesterTimers = {26.6, 28.1, 25.5}
+local stage3ThoughtHarvesterTimers = {23.1, 25.5, 42.7, 29.2, 4.4}--Still a bit variable and needs more review
 mod.vb.phase = 0
 mod.vb.BasherCount = 0
 mod.vb.egoCount = 0
@@ -587,7 +587,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerMindgateCD:Stop()
 			timerParanoiaCD:Stop()
 			timerEvokeAnguishCD:Start(17)
-			timerThoughtHarvesterCD:Start(26.6, 1)
+			timerThoughtHarvesterCD:Start(23.1, 1)
 			timerEternalTormentCD:Start(35.3, 1)
 			timerMindgraspCD:Start(74.5)
 			--timerStupefyingGlareCD:Start()

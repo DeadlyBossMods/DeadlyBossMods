@@ -147,10 +147,6 @@ function mod:OnCombatStart(delay)
 	if self.Options.NPAuraOnHardenedCore then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
-	if self.Options.InfoFrame then
-		DBM.InfoFrame:SetHeader(OVERVIEW)
-		DBM.InfoFrame:Show(8, "function", updateInfoFrame, false, false)
-	end
 end
 
 function mod:OnCombatEnd()
@@ -185,7 +181,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnBurningCataclysm:Play("specialsoon")
 		timerBurningCataclysm:Start()
 		if self.vb.cataCast == 1 then
-			timerBurningCataclysmCD:Start(75.6, 2)
+			timerBurningCataclysmCD:Start(75.6, 2)--75-77.32
 		end
 	elseif spellId == 306995 and self.vb.phase == 1 then--P2 Smoke and Mirrors
 		self.vb.phase = 2
@@ -195,6 +191,10 @@ function mod:SPELL_CAST_START(args)
 		timerIncinerationCD:Stop()
 		timerGaleBlastCD:Stop()
 		timerBurningCataclysmCD:Stop()
+		if self.Options.InfoFrame then
+			DBM.InfoFrame:SetHeader(OVERVIEW)
+			DBM.InfoFrame:Show(8, "function", updateInfoFrame, false, false)
+		end
 	end
 end
 
@@ -296,6 +296,9 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerGaleBlastCD:Start(45, 1)
 		timerBurningCataclysmCD:Start(59.7, 1)
 		timerSmokeandMirrorsCD:Start(155)
+		if self.Options.InfoFrame then
+			DBM.InfoFrame:Hide()
+		end
 	end
 end
 

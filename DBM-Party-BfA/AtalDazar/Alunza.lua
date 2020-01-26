@@ -57,8 +57,10 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 255579 then
-		specWarnClaws:Show()
-		specWarnClaws:Play("defensive")
+		if not self.Options.SpecWarn255579dispel then
+			specWarnClaws:Show()
+			specWarnClaws:Play("defensive")
+		end
 		timerGildedClawsCD:Start()
 	elseif spellId == 255591 then
 		warnMoltenGold:Show()

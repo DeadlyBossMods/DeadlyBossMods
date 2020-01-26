@@ -14,6 +14,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 312528 306928 312529 306929 307260 306953 318078 312530 306930",
+	"SPELL_CAST_SUCCESS 312528 306928 312529 306929 312530 306930",
 	"SPELL_AURA_APPLIED 312328 312329 307471 307472 307358 306942 318078 308149 312099 306447 306931 306933",
 	"SPELL_AURA_APPLIED_DOSE 312328 307358",
 	"SPELL_AURA_REMOVED 312328 307358 306447 306933 306931",
@@ -34,7 +35,7 @@ mod:RegisterEventsInCombat(
  or (ability.id = 306447 or ability.id = 306931 or ability.id = 306933) and type = "applybuff"
 --]]
 local warnHunger							= mod:NewStackAnnounce(312328, 2, nil, false, 2)--Mythic
-local warnUmbralMantle						= mod:NewSpellAnnounce(306447, 2)
+--local warnUmbralMantle						= mod:NewSpellAnnounce(306447, 2)
 local warnUmbralEruption					= mod:NewSpellAnnounce(308157, 2)
 local warnNoxiousMantle						= mod:NewSpellAnnounce(306931, 2)
 local warnBubblingOverflow					= mod:NewCountAnnounce(314736, 2)
@@ -79,10 +80,10 @@ mod.vb.buildupCount = 0
 mod.vb.fixateCount = 0
 mod.vb.bossPowerUpdateRate = 4
 local SpitStacks = {}
-local orbTimersHeroic = {0, 25, 25, 37, 20}
-local orbTimersNormal = {0, 25, 25, 25, 25}
-local umbralTimers = {10, 10, 10, 10, 10, 8, 8, 8, 8, 8, 6, 6, 6, 6, 6}
-local bubblingTimers = {10, 10, 9.5, 9, 11, 10, 11, 11, 8, 8, 8}
+local orbTimersHeroic = {4, 22, 25, 28, 21, 26}
+local orbTimersNormal = {4, 25, 25, 25, 25}
+local umbralTimers = {10, 10, 10, 10, 10, 8, 8, 8, 8, 8, 6, 6, 6, 6, 6, 4, 4, 4, 4, 4, 2, 2, 2, 2, 2}
+local bubblingTimers = {10, 11.5, 10, 10, 10, 10, 10, 9, 10, 8, 8, 8, 8, 8, 8, 8, 8}
 local seenAdds = {}
 
 local function umbralEruptionLoop(self)
@@ -140,16 +141,24 @@ function mod:SpitTarget(targetname, uId)
 end
 
 function mod:OnCombatStart(delay)
-	self.vb.phase = 0
+	self.vb.phase = 1
 	self.vb.fixateCount = 0
 	self.vb.bossPowerUpdateRate = 4
 	table.wipe(SpitStacks)
 	table.wipe(seenAdds)
-	timerDebilitatingSpitCD:Start(10.7-delay)--START
+	timerDebilitatingSpitCD:Start(10.1-delay)--START
 	timerCrushCD:Start(15.1-delay)--Time til script begins
-	timerSlurryBreathCD:Start(26.6-delay)--Technically it should be 25 but there is a pause before boss begins gaining power
+	timerSlurryBreathCD:Start(26.1-delay)--Technically it should be 25 but there is a pause before boss begins gaining power
 	timerFixateCD:Start(self:IsMythic() and 16.1 or 31)
 	berserkTimer:Start(360-delay)
+	--Umbral stuff now running on engage
+	if not self:IsLFR() then
+		--Schedule P1 Loop
+		self.vb.eruptionCount = 0
+		timerUmbralEruptionCD:Start(10)--Damage at 12, so warning 2 seconds before seems right
+		self:Schedule(10, umbralEruptionLoop, self)
+	end
+	--updateBreathTimer(self)
 end
 
 function mod:OnCombatEnd()
@@ -177,6 +186,13 @@ function mod:SPELL_CAST_START(args)
 		timerFixateCD:Start(timer)
 	elseif spellId == 306953 then
 		timerDebilitatingSpitCD:Start()
+	end
+end
+
+function mod:SPELL_CAST_SUCCESS(args)
+	local spellId = args.spellId
+	if spellId == 312528 or spellId == 306928 or spellId == 312529 or spellId == 306929 or spellId == 312530 or spellId == 306930 then--Breaths
+		updateBreathTimer(self)
 	end
 end
 
@@ -238,12 +254,13 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellFixate:Yell()
 		end
 	elseif spellId == 306447 then
-		self.vb.phase = self.vb.phase + 1
-		warnUmbralMantle:Show()
+		--If this event fires delayed and not on pull, we want to update timers again
 		if not self:IsLFR() then
 			--Schedule P1 Loop
 			self.vb.eruptionCount = 0
+			timerUmbralEruptionCD:Stop()
 			timerUmbralEruptionCD:Start(10)--Damage at 12, so warning 2 seconds before seems right
+			self:Unschedule(umbralEruptionLoop)
 			self:Schedule(10, umbralEruptionLoop, self)
 		end
 		updateBreathTimer(self)
@@ -272,7 +289,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:Unschedule(bubblingOverflowLoop)
 			--Schedue P3 Loop
 			self.vb.buildupCount = 0
-			entropicBuildupLoop(self)--Might need adjusting, harder to verifiy in transcriptor
+			timerEntropicBuildupCD:Start(4)
+			self:Schedule(4, entropicBuildupLoop, self)
 		end
 		updateBreathTimer(self)
 	elseif spellId == 308149 and args:IsPlayer() then
@@ -351,8 +369,8 @@ end
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 307469 then--Crush & Dissolve Cover
 		timerCrushCD:Start()
-	elseif spellId == 306736 then--Slurry Breath
-		updateBreathTimer(self)
+	--elseif spellId == 306736 then--Slurry Breath
+		--updateBreathTimer(self)
 	end
 end
 

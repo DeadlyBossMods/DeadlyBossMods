@@ -6,7 +6,7 @@ mod:SetCreatureID(156866)
 mod:SetEncounterID(2331)
 mod:SetZone()
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
-mod:SetHotfixNoticeRev(20191204000000)--2019, 12, 04
+mod:SetHotfixNoticeRev(20200125000000)--2020, 1, 25
 mod:SetMinSyncRevision(20191109000000)
 --mod.respawnTime = 29
 
@@ -16,9 +16,9 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 306865 306866 313213 310003 309985 317276",
 	"SPELL_CAST_SUCCESS 310019 313213 306603 316913 306819",
 	"SPELL_SUMMON 306866 314484",
-	"SPELL_AURA_APPLIED 312750 306090 306168 306732 306733 312996 306257 306279 306819 313227 309852 306207 306273 313077 315252 316065",
+	"SPELL_AURA_APPLIED 312750 306090 306168 306732 306733 312996 306257 306279 306819 313227 309852 306207 306273 313077 315252 316065 310019 310022",
 	"SPELL_AURA_APPLIED_DOSE 306819 313227",
-	"SPELL_AURA_REMOVED 312750 306090 306168 306732 306733 312996 306257 306279 306207 306273 313077 316065",
+	"SPELL_AURA_REMOVED 312750 306090 306168 306732 306733 312996 306257 306279 306207 306273 313077 316065 310019 310022",
 	"UNIT_DIED",
 	"UNIT_SPELLCAST_START boss2 boss3 boss4 boss5",--if you have 4 adds up, you're doing shit wrong. Just in case
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
@@ -122,7 +122,7 @@ local timerCorruptedExistenceCD				= mod:NewAITimer(10.8, 317276, nil, nil, nil,
 mod:AddRangeFrameOption(6, 306874)
 mod:AddInfoFrameOption(306257, true)
 mod:AddSetIconOption("SetIconOnUnstableVita", 306257, true, false, {1, 2})
-mod:AddSetIconOption("SetIconOnChargedBonds", 310019, true, false, {1, 2})
+mod:AddSetIconOption("SetIconOnChargedBonds", 310019, true, false, {1})
 mod:AddSetIconOption("SetIconOnVoidCollapse", 306881, true, false, {3})
 mod:AddSetIconOption("SetIconOnUnstableNightmare", 313077, true, false, {4, 5})
 mod:AddSetIconOption("SetIconOnCorruptedExistence", 316065, true, false, {6, 7, 8})
@@ -132,11 +132,13 @@ mod.vb.callEssenceCount = 0
 mod.vb.callActive = false
 mod.vb.currentVita = nil
 mod.vb.lastHighest = "^^ No DBM"
+mod.vb.lastIcon = 1
 mod.vb.unstableVoidCount = 0
 mod.vb.voidEruptionCount = 0
 mod.vb.currentNightmare = nil
 mod.vb.lastLowest = "^^ No DBM"
 mod.vb.corruptedExistenceIcon = 6
+mod.vb.bondsTarget = nil
 local playerHasVita, playerHasNightmare = false, false
 local ExposureTargets = {}
 local consumingVoid = DBM:GetSpellInfo(306645)
@@ -189,8 +191,11 @@ do
 		self:SendSync("VitaUpdate", self.vb.lastHighest)
 		if playerHasVita then--As long as debuff present, keep looping
 			self:Schedule(0.5, furthestPlayerScanner, self)
-		elseif not playerHasNightmare then
-			table.wipe(entireRaidDistancetable)
+		else
+			self:Unschedule(furthestPlayerScanner)
+			if not playerHasNightmare then
+				table.wipe(entireRaidDistancetable)
+			end
 		end
 	end
 	closestPlayerScanner = function(self)
@@ -207,8 +212,11 @@ do
 		self:SendSync("NightmareUpdate", self.vb.lastLowest)
 		if playerHasNightmare then--As long as debuff present, keep looping
 			self:Schedule(0.5, closestPlayerScanner, self)
-		elseif not playerHasVita then
-			table.wipe(entireRaidDistancetable)
+		else
+			self:Unschedule(closestPlayerScanner)
+			if not playerHasVita then
+				table.wipe(entireRaidDistancetable)
+			end
 		end
 	end
 	function mod:OnSync(msg, target)
@@ -216,7 +224,11 @@ do
 			target = Ambiguate(target, "None")--in cross realm situations, an off realmer would send -realmname on units for units for our realm, we need to correct this
 			self.vb.lastHighest = target
 			if self.Options.SetIconOnUnstableVita then
-				self:SetIcon(self.vb.lastHighest, 2, 5)
+				if self.vb.lastIcon == 1 then
+					self:SetIcon(self.vb.lastHighes, 2, 4.5)
+				else
+					self:SetIcon(self.vb.lastHighes, 1, 4.5)
+				end
 			end
 		elseif msg == "NightmareUpdate" and target then
 			target = Ambiguate(target, "None")--in cross realm situations, an off realmer would send -realmname on units for units for our realm, we need to correct this
@@ -296,9 +308,11 @@ function mod:OnCombatStart(delay)
 	self.vb.callActive = false
 	self.vb.currentVita = nil
 	self.vb.lastHighest = "^^ No DBM"
+	self.vb.lastIcon = 1
 	self.vb.voidEruptionCount = 0
 	self.vb.currentNightmare = nil
 	self.vb.lastLowest = "^^ No DBM"
+	self.vb.bondsTarget = nil
 	playerHasVita, playerHasNightmare = false, false
 	table.wipe(ExposureTargets)
 	table.wipe(ChargedBondsTargets)
@@ -426,6 +440,27 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerCallNightTerrorCD:Start(7.2)
 	elseif spellId == 306207 or spellId == 306273 then--Unstable Vita (Initial, hop)
 		self.vb.currentVita = args.destName
+		if self.Options.SetIconOnUnstableVita then
+			--vita marking uses circle and star. Here are Rules
+			--1. First icon used is star on initial vita application
+			--2. Circle will be set on furthest target
+			--3. When Vita jumps, IF it jumpsto the target that had circle, that target will KEEP circle
+			--But if it jumps to someone that wasn't circle, it'll reset back to rule 1, starting at star.
+			--4. if the 3 step was aple to keep circle on new vita target, then star will now be icon set on furthest target.
+			--5. So long as the jumps go to targets DBM estimated it'll continue doing 3 and 4 but with appropriate icon.
+			if self.vb.lastHighest == args.destName then
+				if self.vb.lastIcon == 1 then
+					self:SetIcon(args.destName, 2)
+					self.vb.lastIcon = 2
+				else
+					self:SetIcon(args.destName, 1)
+					self.vb.lastIcon = 1
+				end
+			else--Reset icons because vita didn't go where it was expected to or this is initial application
+				self:SetIcon(args.destName, 1)
+				self.vb.lastIcon = 1
+			end
+		end
 		self.vb.lastHighest = "^^ No DBM"
 		if args:IsPlayer() then
 			playerHasVita = true
@@ -436,9 +471,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			furthestPlayerScanner(self)
 		else
 			warnUnstableVita:Show(args.destName)
-		end
-		if self.Options.SetIconOnUnstableVita then
-			self:SetIcon(args.destName, 1)
 		end
 		timerUnstableVita:Start(self:IsMythic() and 6 or 7, args.destName)
 	elseif spellId == 313077 then--Unstable Nightmare
@@ -504,24 +536,29 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self:IsMythic() then
 			timerCorruptedExistenceCD:start(2)
 		end
-	elseif spellId == 310019 or spellId == 310022 then--310019 heroic confirmed, 310022 unknown, not used on heroic
+	elseif spellId == 310019 or spellId == 310022 then
 		ChargedBondsTargets[#ChargedBondsTargets + 1] = args.destName
 		self:Unschedule(warnChargedBondsTargets)
-		if #ChargedBondsTargets == 2 then
-			warnChargedBondsTargets()
-			if ChargedBondsTargets[1] == UnitName("player") then
-				specWarnChargedBonds:Show(ChargedBondsTargets[2])
-				specWarnChargedBonds:Play("linegather")
-			elseif ChargedBondsTargets[2] == UnitName("player") then
-				specWarnChargedBonds:Show(ChargedBondsTargets[1])
-				specWarnChargedBonds:Play("linegather")
+		if spellId == 310019 then--Primary target
+			self.vb.bondsTarget = args.destName
+			if args:IsPlayer() then
+				specWarnChargedBonds:Show(DBM_ALLIES)
+				specWarnChargedBonds:Play("runaway")
 			end
-		else
+			if self.Options.SetIconOnChargedBonds then
+				self:SetIcon(args.destName, 1)
+			end
+		else--310022 one of allies tethered to primary
+			if args:IsPlayer() then
+				specWarnChargedBonds:Show(self.vb.bondsTarget)
+				specWarnChargedBonds:Play("runaway")
+			end
+		end
+		--if #ChargedBondsTargets == 4 then--This is not definitive yet that it can cap at 4
+		--	warnChargedBondsTargets()
+		--else
 			self:Schedule(0.3, warnChargedBondsTargets)
-		end
-		if self.Options.SetIconOnChargedBonds then
-			self:SetIcon(args.destName, #ChargedBondsTargets)
-		end
+		--end
 	elseif spellId == 315252 then
 		warnDreadInferno:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
@@ -584,6 +621,13 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 316065 then
 		if self.Options.SetIconOnCorruptedExistence then
 			self:SetIcon(args.destName, 0)
+		end
+	elseif spellId == 310019 or spellId == 310022 then
+		if spellId == 310019 then--Primary target
+			self.vb.bondsTarget = nil
+			if self.Options.SetIconOnChargedBonds then
+				self:SetIcon(args.destName, 0)
+			end
 		end
 	end
 end

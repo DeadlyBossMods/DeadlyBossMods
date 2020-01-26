@@ -142,6 +142,7 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 312336 then
 		self.vb.ritualCount = self.vb.ritualCount + 1
+		self.vb.addIcon = 8
 		if self.Options.SpecWarn312336count then
 			specWarnVoidRitual:Show(self.vb.ritualCount)
 			specWarnVoidRitual:Play("specialsoon")
@@ -154,14 +155,10 @@ function mod:SPELL_CAST_START(args)
 			castsPerGUID[args.sourceGUID] = 0
 		end
 		castsPerGUID[args.sourceGUID] = castsPerGUID[args.sourceGUID] + 1
-		if self.Options.SetIconOnAdds then
+		if self.Options.SetIconOnAdds and self.vb.addIcon > 3 then--Only use up to 5 icons
 			self:ScanForMobs(args.sourceGUID, 2, self.vb.addIcon, 1, 0.2, 12)
 		end
-		--Increment icon for next cast/seticon
-		self.vb.addIcon = self.vb.addIcon + 1
-		if self.vb.addIcon == 3 then--4, 5, 6, 7, 8
-			self.vb.addIcon = 8--Reset to 8 if its 3
-		end
+		self.vb.addIcon = self.vb.addIcon - 1
 		local count = castsPerGUID[args.sourceGUID]
 		if self:CheckInterruptFilter(args.sourceGUID, false, true) then
 			specWarnTerrorWave:Show(args.sourceName, count)
