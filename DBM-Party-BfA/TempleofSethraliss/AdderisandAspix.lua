@@ -103,6 +103,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 263246 then--Lightning Shield
 		warnLightningShield:Show(args.destName)
+		warnLightningShield:Play("targetchange")
 		local cid = self:GetCIDFromGUID(args.destGUID)
 		--Start lightning timers and stop wind
 		if cid == 133379 then--Adderis
