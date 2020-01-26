@@ -243,7 +243,7 @@ local function UpdateTimerFades(self)
 end
 
 function mod:OnCombatStart(delay)
-	self.vb.eternalTormentCount = 0--Variable used in P2 and P3
+	self.vb.eternalTormentCount = 0
 	self.vb.BasherCount = 0
 	self.vb.paranoiaCount = 0
 	if self:IsMythic() then
@@ -256,7 +256,7 @@ function mod:OnCombatStart(delay)
 		timerParanoiaCD:Start(50, 1)--SUCCESS (45 to START)
 		--Mindgate probably opens on pull or else it wouldn't be doable, but stills cheduling this one for 2nd gate
 		timerMindgateCD:Start(72.9)--START
-		DBM:AddMsg("Starting drycoded Phase 1/2 mythic hybrid timers based on heroic P2 timers, could and probably will be wrong")
+		DBM:AddMsg("Starting drycoded Phase 1/2 mythic hybrid timers based on heroic P2 timers. Could, and probably will, be wrong")
 	else
 		self.vb.phase = 0
 	end
