@@ -24,6 +24,7 @@ local specWarnSlobberKnocker		= mod:NewSpecialWarningDodge(256627, "Tank", nil, 
 local specWarnSingingSteel			= mod:NewSpecialWarningDodge(256709, "Tank", nil, nil, 1, 2)
 local specWarnCrushingSlam			= mod:NewSpecialWarningDodge(272711, "Tank", nil, nil, 1, 2)
 local specWarnTrample				= mod:NewSpecialWarningDodge(272874, nil, nil, nil, 2, 2)
+local specWarnBroadside				= mod:NewSpecialWarningDodge(268260, nil, nil, nil, 2, 2)
 local specWarnSavageTempest			= mod:NewSpecialWarningRun(257170, nil, nil, nil, 4, 2)--can tank run out too? or does it follow tank
 local specWarnSightedArt			= mod:NewSpecialWarningYou(272421, nil, nil, nil, 1, 2)
 local yellSightedArt				= mod:NewYell(272421)
@@ -114,6 +115,11 @@ function mod:UNIT_SPELLCAST_START(uId, _, spellId)
 		if self:IsValidWarning(guid, uId) then
 			self:SendSync("CrushingSlam")
 		end
+	elseif spellId == 268260 then
+		local guid = UnitGUID(uId)
+		if self:IsValidWarning(guid, uId) then
+			self:SendSync("Broadside")
+		end
 	end
 end
 
@@ -124,5 +130,8 @@ function mod:OnSync(msg)
 	elseif msg == "CrushingSlam" and self:AntiSpam(2.5, 2) then
 		specWarnCrushingSlam:Show()
 		specWarnCrushingSlam:Play("shockwave")
+	elseif msg == "Broadside" then
+		specWarnBroadside:Show()
+		specWarnBroadside:Play("watchstep")
 	end
 end
