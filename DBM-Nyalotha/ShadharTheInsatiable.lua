@@ -80,10 +80,10 @@ mod.vb.buildupCount = 0
 mod.vb.fixateCount = 0
 mod.vb.bossPowerUpdateRate = 4
 local SpitStacks = {}
-local orbTimersHeroic = {0, 25, 25, 37, 20}
-local orbTimersNormal = {0, 25, 25, 25, 25}
-local umbralTimers = {10, 10, 10, 10, 10, 8, 8, 8, 8, 8, 6, 6, 6, 6, 6}
-local bubblingTimers = {10, 10, 9.5, 9, 11, 10, 11, 11, 8, 8, 8}
+local orbTimersHeroic = {4, 22, 25, 28, 21, 26}
+local orbTimersNormal = {4, 25, 25, 25, 25}
+local umbralTimers = {10, 10, 10, 10, 10, 8, 8, 8, 8, 8, 6, 6, 6, 6, 6, 4, 4, 4, 4, 4, 2, 2, 2, 2, 2}
+local bubblingTimers = {10, 11.5, 10, 10, 10, 10, 10, 9, 10, 8, 8, 8, 8, 8, 8, 8, 8}
 local seenAdds = {}
 
 local function umbralEruptionLoop(self)
@@ -289,7 +289,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:Unschedule(bubblingOverflowLoop)
 			--Schedue P3 Loop
 			self.vb.buildupCount = 0
-			entropicBuildupLoop(self)--Might need adjusting, harder to verifiy in transcriptor
+			timerEntropicBuildupCD:Start(4)
+			self:Schedule(4, entropicBuildupLoop, self)
 		end
 		updateBreathTimer(self)
 	elseif spellId == 308149 and args:IsPlayer() then
