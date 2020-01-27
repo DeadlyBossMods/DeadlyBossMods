@@ -56,8 +56,8 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 311550 then
 		specWarnFeartheVoid:Show()
 		specWarnFeartheVoid:Play("fearsoon")
-	elseif spellId == 307403 or spellId == 306982 then--Enemy, Player
-		specWarnAnnihilation:Show(args.sourceName)
+	elseif (spellId == 307403 or spellId == 306982) and self:AntiSpam(3, args.sourceName) then--Enemy, Player
+		specWarnAnnihilation:CombinedShow(args.sourceName)
 		specWarnAnnihilation:Play("shockwave")
 	elseif spellId == 310839 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnDirgefromBelow:Show(args.sourceName)
