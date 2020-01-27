@@ -14,7 +14,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 311176 316711 310184 310134 310130 317292 310331 315772 309698 310042 313400 308885 317066 318196 319349 319350 319351 316970 318449 312782",
 	"SPELL_CAST_SUCCESS 315927 316463 319257 317102 318714",
-	"SPELL_AURA_APPLIED 313334 308996 309991 313184 310073 311392 316541 316542 313793 315709 315710 312155 318196 318459 319309 319015 317112 319346",
+	"SPELL_AURA_APPLIED 313334 308996 309991 313184 310073 311392 316541 316542 313793 315709 315710 312155 318196 318459 319309 319015 317112 319346 316711",
 	"SPELL_AURA_APPLIED_DOSE 313184 319309",
 	"SPELL_AURA_REMOVED 313184 313334 312155 318459 317112 319346 316541 316542",
 	"SPELL_PERIODIC_DAMAGE 309991",
@@ -53,6 +53,7 @@ local warnCreepingAnguish					= mod:NewCastAnnounce(310184, 4)
 local warnSynapticShock						= mod:NewStackAnnounce(313184, 1)
 local warnEternalHatred						= mod:NewCastAnnounce(310130, 4)
 local warnCollapsingMindscape				= mod:NewCastAnnounce(317292, 2)
+local warnMindwrack							= mod:NewTargetNoFilterAnnounce(316711, 4, nil, "Tank|Healer")
 ----Eyes of N'zoth
 local warnVoidGaze							= mod:NewSpellAnnounce(310333, 3)
 ----Exposed Synapse
@@ -85,7 +86,8 @@ local specwarnSanity						= mod:NewSpecialWarningCount(307831, nil, nil, nil, 1,
 local specWarnGTFO							= mod:NewSpecialWarningGTFO(309991, nil, nil, nil, 1, 8)
 --Stage 1: Dominant Mind
 ----Psychus
-local specWarnMindwrack						= mod:NewSpecialWarningDefensive(316711, false, nil, 2, 1, 2)
+local specWarnMindwrack						= mod:NewSpecialWarningInterrupt(316711, "HasInterrupt", nil, nil, 1, 2)
+local specWarnMindwrackTaunt				= mod:NewSpecialWarningTaunt(316711, nil, nil, nil, 1, 2)
 local specWarnManifestMadness				= mod:NewSpecialWarningSpell(310134, nil, nil, nil, 3)--Basically an automatic wipe unless Psychus was like sub 1% health, no voice because there isn't really one that says "you're fucked"
 local specWarnEternalHatred					= mod:NewSpecialWarningMoveTo(310130, nil, nil, nil, 3, 10)--No longer in journal, replaced by collapsing Mindscape, but maybe a hidden mythic mechanic now?
 local specWarnCollapsingMindscape			= mod:NewSpecialWarningMoveTo(317292, nil, nil, nil, 2, 10)
@@ -228,6 +230,7 @@ mod.vb.evokeAnguishCount = 0
 mod.vb.eternalTormentCount = 0
 mod.vb.harvesterCount = 0
 mod.vb.harvestThoughtsCount = 0
+mod.vb.harvestersAlive = 0
 mod.vb.paranoiaCount = 0
 mod.vb.stupefyingGlareCount = 0
 
@@ -348,19 +351,12 @@ function mod:SPELL_CAST_START(args)
 		--Start P1 timers here, more accurate, especially if boss forgets to cast this :D
 		timerVoidGazeCD:Start(14.7)
 	elseif spellId == 316711 then
-		for i = 1, 5 do
-			local bossUnitID = "boss"..i
-			if UnitExists(bossUnitID) and UnitGUID(bossUnitID) == args.sourceGUID and UnitDetailedThreatSituation("player", bossUnitID) then
-				specWarnMindwrack:Show()
-				specWarnMindwrack:Play("defensive")
-				break
-			end
-		end
 		timerMindwrackCD:Start(4.9, args.sourceGUID)
 		if (args:GetSrcCreatureID() == 162933) and not seenAdds[args.sourceGUID] then
 			seenAdds[args.sourceGUID] = true
 			if self:AntiSpam(3, 11) then
 				self.vb.harvesterCount = self.vb.harvesterCount + 1
+				self.vb.harvestersAlive = self.vb.harvestersAlive + 1
 				if self.Options.SpecWarnej21308switch then
 					specWarnThoughtHarvester:Show()
 					specWarnThoughtHarvester:Play("killmob")
@@ -371,6 +367,11 @@ function mod:SPELL_CAST_START(args)
 				if timer then
 					timerThoughtHarvesterCD:Start(timer, self.vb.harvesterCount+1)
 				end
+			end
+		else--Not thought harvester, actually interruptable
+			if self:CheckInterruptFilter(args.sourceGUID, false, true) then
+				specWarnMindwrack:Show()
+				specWarnMindwrack:Play("kickcast")
 			end
 		end
 	elseif spellId == 310184 then
@@ -458,6 +459,7 @@ function mod:SPELL_CAST_START(args)
 			warnPhase:Play("pthree")
 		end
 		self.vb.harvesterCount = 0
+		self.vb.harvestersAlive = 0
 		self.vb.harvestThoughtsCount = 0
 		self.vb.evokeAnguishCount = 0
 		timerMindgraspCD:Stop()--Shouldn't even be running but just in case
@@ -618,6 +620,14 @@ function mod:SPELL_AURA_APPLIED(args)
 			selfInMind = false
 			UpdateTimerFades(self)
 		end
+	elseif spellId == 316711 then
+		--It's phase 1 non mythic which means both tanks are with Psychus, or it's Convergence phase and only 1 harvester is up
+		if (not self:IsMythic() and self.vb.phase == 1) or ((self:IsMythic() and self.vb.phase == 2) or self.vb.phase == 3) and self.vb.harvestersAlive == 1 then
+			specWarnMindwrackTaunt:Show(args.destName)
+			specWarnMindwrackTaunt:Play("changemt")
+		else--In a situation 2nd tank can't taunt do to being in different phase from one another or there being 2 or more adds up with mind wrack ability
+			warnMindwrack:Show(args.destName)
+		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -700,6 +710,7 @@ function mod:UNIT_DIED(args)
 	elseif cid == 158367 then--basher-tentacle
 		timerVoidLashCD:Stop(args.destGUID)
 	elseif cid == 162933 then--Thought Harvester
+		self.vb.harvestersAlive = self.vb.harvestersAlive - 1
 		timerHarvestThoughtsCD:Stop(args.destGUID)
 	--elseif cid == 158375 then--corruptor-tentacle
 
