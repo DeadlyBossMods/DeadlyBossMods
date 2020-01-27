@@ -55,7 +55,7 @@ mod:AddNamePlateOption("NPAuraOnWalkieShockie", 296522, false)
 mod.vb.hard = false
 local unitTracked = {}
 
-local function checkHardMode(self, delay)
+local function checkHardMode(self)
 	local found = false
 	for i = 1, 5 do
 		local unitID = "boss"..i

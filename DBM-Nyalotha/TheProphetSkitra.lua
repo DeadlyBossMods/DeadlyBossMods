@@ -56,7 +56,7 @@ local specWarnShredPsycheSwitch				= mod:NewSpecialWarningSwitch(307937, "dps", 
 local timerImagesofAbsolutionCD				= mod:NewCDTimer(84.9, 313239, nil, nil, nil, 1, nil, DBM_CORE_HEROIC_ICON)
 local timerShredPsycheCD					= mod:NewCDTimer(37.7, 307937, nil, nil, nil, 3, nil, DBM_CORE_DAMAGE_ICON, nil, 1, 4)
 
---local berserkTimer						= mod:NewBerserkTimer(600)
+local berserkTimer							= mod:NewBerserkTimer(600)--He only gains a 300% damage increase on his berserk, and that's surviable since he doesn't melee and his adds don't gain it
 
 --mod:AddRangeFrameOption(6, 264382)
 --mod:AddInfoFrameOption(275270, true)
@@ -76,6 +76,7 @@ function mod:OnCombatStart(delay)
 	if self.Options.NPAuraOnIntangibleIllusion then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
+	berserkTimer:Start(480-delay)--Confirmed on heroic and normal
 end
 
 function mod:OnCombatEnd()

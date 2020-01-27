@@ -67,7 +67,7 @@ local timerMutteringsofInsanityCD			= mod:NewCDTimer(46.6, 310358, nil, nil, nil
 local timerUnleashedInsanity				= mod:NewCastTimer(5, 310361, nil, nil, nil, 3)
 local timerVoidGlareCD						= mod:NewCDTimer(45, 310406, nil, nil, nil, 3)
 
---local berserkTimer						= mod:NewBerserkTimer(600)
+local berserkTimer							= mod:NewBerserkTimer(600)
 
 mod:AddRangeFrameOption("18/4")--Sadly, choices are 13 or 18, 13 too small so have to round 15 up to 18
 mod:AddInfoFrameOption(275270, false)
@@ -92,6 +92,7 @@ function mod:OnCombatStart(delay)
 		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(308377))
 		DBM.InfoFrame:Show(10, "playerdebuffremaining", 308377)
 	end
+	berserkTimer:Start(900-delay)--Confirmed normal and heroic
 end
 
 function mod:OnCombatEnd()
