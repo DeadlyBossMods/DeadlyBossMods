@@ -5,14 +5,14 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(158041)
 mod:SetEncounterID(2344)
 mod:SetZone()
-mod:SetHotfixNoticeRev(20200124000000)--2020, 1, 24
+mod:SetHotfixNoticeRev(20200126000000)--2020, 1, 26
 mod:SetMinSyncRevision(20200124000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 311176 316711 310184 310134 310130 317292 310331 315772 309698 310042 313400 308885 317066 318196 319349 319350 319351 316970 318449",
+	"SPELL_CAST_START 311176 316711 310184 310134 310130 317292 310331 315772 309698 310042 313400 308885 317066 318196 319349 319350 319351 316970 318449 312782",
 	"SPELL_CAST_SUCCESS 315927 316463 319257 317102 318714",
 	"SPELL_AURA_APPLIED 313334 308996 309991 313184 310073 311392 316541 316542 313793 315709 315710 312155 318196 318459 319309 319015 317112 319346",
 	"SPELL_AURA_APPLIED_DOSE 313184 319309",
@@ -33,10 +33,10 @@ mod:RegisterEventsInCombat(
 --TODO, further improve paranoia with icons/chat bubbles maybe, depends how many there are on 30 man or mythic
 --TODO, verify mythic drycodes.
 --TODO, P3 spells with no detection like Stupefying Glare need scheduling
---TODO, Need mythic phase trigger verification, especially stage 3
+--TODO, Need mythic stage trigger and verification of other stage handling
 --New Voice: "leavemind" and "lowsanity"
 --[[
-(ability.id = 318449 or ability.id = 311176 or ability.id = 316711 or ability.id = 310184 or ability.id = 310134 or ability.id = 310130 or ability.id = 317292 or ability.id = 310331 or ability.id = 315772 or ability.id = 309698 or ability.id = 313400 or ability.id = 308885 or ability.id = 317066 or ability.id = 318196 or ability.id = 316970 or ability.id = 319351 or ability.id = 319350 or ability.id = 319349 or ability.id = 318460) and type = "begincast"
+(ability.id = 318449 or ability.id = 311176 or ability.id = 316711 or ability.id = 310184 or ability.id = 310134 or ability.id = 310130 or ability.id = 317292 or ability.id = 310331 or ability.id = 315772 or ability.id = 309698 or ability.id = 313400 or ability.id = 308885 or ability.id = 317066 or ability.id = 318196 or ability.id = 316970 or ability.id = 319351 or ability.id = 319350 or ability.id = 319349 or ability.id = 318460 or ability.id = 312782) and type = "begincast"
  or (ability.id = 315927 or ability.id = 316463 or ability.id = 317102 or ability.id = 318714) and type = "cast"
  or (ability.id = 312155 or ability.id = 319015)
  or ability.id = 319346 and (type = "applydebuff" or type = "removedebuff")
@@ -119,6 +119,7 @@ local specWarnContempt						= mod:NewSpecialWarningStopMove(315710, nil, nil, ni
 local specWarnEvokeAnguish					= mod:NewSpecialWarningMoveAway(317112, nil, nil, nil, 1, 2)
 local yellEvokeAnguish						= mod:NewYell(317112, nil, false, 2)
 local yellEvokeAnguishFades					= mod:NewShortFadesYell(317112, nil, false, 2)
+local specWarnStupefyingGlare				= mod:NewSpecialWarningDodgeCount(317874, nil, nil, nil, 2, 2)
 ----Thought Harvester
 local specWarnThoughtHarvester				= mod:NewSpecialWarningSwitch("ej21308", false, nil, nil, 1, 2)
 local specWarnHarvestThoughts				= mod:NewSpecialWarningMoveTo(317066, nil, nil, nil, 2, 2)
@@ -159,10 +160,6 @@ local timerEternalTormentCD					= mod:NewCDCountTimer(56.1, 318449, nil, nil, ni
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(21286))
 local timerBasherTentacleCD					= mod:NewCDCountTimer(60, "ej21286", nil, nil, nil, 1, "319441", DBM_CORE_DAMAGE_ICON)
 local timerVoidLashCD						= mod:NewCDTimer(22.9, 309698, nil, false, 2, 5, nil, DBM_CORE_TANK_ICON)
-----Corruptor Tentacle
---local timerCorruptorTentacleCD			= mod:NewCDTimer(5.3, "ej21107", nil, nil, nil, 1, 313400, DBM_CORE_DAMAGE_ICON)
-----Spike Tentacle
---local timerSpikeTentacleCD				= mod:NewCDTimer(5.3, "ej21001", nil, nil, nil, 1, 312078, DBM_CORE_DAMAGE_ICON)
 ----Through the Mindgate
 ------Corruption of Deathwing
 
@@ -171,10 +168,10 @@ local timerVoidLashCD						= mod:NewCDTimer(22.9, 309698, nil, false, 2, 5, nil,
 --Stage 3: Convergence:
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20767))
 ----N'Zoth
-local timerEvokeAnguishCD					= mod:NewCDTimer(30.5, 317102, nil, nil, nil, 3)--30.5-44.9, delayed by boss doing other stuff?
---local timerStupefyingGlareCD				= mod:NewAITimer(22.9, 317874, nil, nil, nil, 3)
+local timerEvokeAnguishCD					= mod:NewCDCountTimer(30.5, 317102, nil, nil, nil, 3)--30.5-44.9, delayed by boss doing other stuff?
+local timerStupefyingGlareCD				= mod:NewCDCountTimer(22.9, 317874, nil, nil, nil, 3)
 ----Thought Harvester
-local timerThoughtHarvesterCD				= mod:NewCDTimer(30.1, "ej21308", nil, nil, nil, 1, 231298)
+local timerThoughtHarvesterCD				= mod:NewCDCountTimer(30.1, "ej21308", nil, nil, nil, 1, 231298)
 local timerHarvestThoughtsCD				= mod:NewCDTimer(35.2, 317066, nil, nil, nil, 3)
 --Stage 3 Mythic
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(21435))
@@ -193,11 +190,37 @@ local selfInMind = false
 local lastSanity = 100
 local seenAdds = {}
 local ParanoiaTargets = {}
-local stage2BasherTimers = {23, 55.0, 50.0}
-local stage2ParanoiaTimers = {50, 56.1, 48.9}
-local stage2EternalTormentTimers = {35.3, 56, 29.3, 19.5}
-local stage3EternalTormentTimers = {35.3, 72, 11, 24.5, 10.9}
-local stage3ThoughtHarvesterTimers = {23.1, 25.5, 42.7, 29.2, 4.4}--Still a bit variable and needs more review
+--At this time stage 2 normal and stage 3 heroic seem to be the same
+--TODO: Stage 2 timer sequences likely all go longer if a successful shattered ego doesn't trigger to restart the shattered ego timer cycles
+local stage2Timers = {
+	--Basher tentacles
+	[318714] = {23, 55.0, 50.0},
+	--Paranoia
+	[315927] = {50, 56.1, 48.6},
+	--Eternal Torment
+	[318449] = {35.3, 56, 29.3, 19.5},
+}
+--Stage 3 is where normal and heroic diverge
+local stage3NormalTimers = {
+	--Eternal Torment
+	[318449] = {32.8, 70.9, 10.9, 34.1, 60.7, 10.5, 33.2},
+	--Thought Harvester spawns
+	[316711] = {21.1, 25.5, 45.3, 31.2, 35.2, 37.7, 32},
+	--Evoke Anquish
+	[317102] = {15.3, 46.2, 31.6, 44.9, 37.7, 15.8, 51, 37.7},
+	--Stupefying Glare
+	[317874] = {},
+}
+local stage3HeroicTimers = {
+	--Eternal Torment
+	[318449] = {32.8, 70.9, 10.5, 24.5, 10.9, 23.2, 11},
+	--Thought Harvester spawns
+	[316711] = {21.1, 25.5, 42.7, 29.2, 3.6, 31.6, 3.7},
+	--Evoke Anquish
+	[317102] = {15.3, 45.2, 32.6, 30.6, 35.3},
+	--Stupefying Glare
+	[317874] = {40.5, 67.5},
+}
 mod.vb.phase = 0
 mod.vb.BasherCount = 0
 mod.vb.egoCount = 0
@@ -205,6 +228,7 @@ mod.vb.evokeAnguishCount = 0
 mod.vb.eternalTormentCount = 0
 mod.vb.harvesterCount = 0
 mod.vb.paranoiaCount = 0
+mod.vb.stupefyingGlareCount = 0
 
 local function warnParanoiaTargets()
 	warnParanoia:Show(table.concat(ParanoiaTargets, "<, >"))
@@ -228,6 +252,7 @@ local function UpdateTimerFades(self)
 		timerMindwrackCD:SetFade(false)
 		timerCreepingAnguishCD:SetFade(false)
 		timerVoidGazeCD:SetFade(false)
+		timerSynampticShock:SetFade(false)
 	else
 		--Outside
 		timerMindgraspCD:SetFade(false)
@@ -239,6 +264,18 @@ local function UpdateTimerFades(self)
 		timerMindwrackCD:SetFade(true)
 		timerCreepingAnguishCD:SetFade(true)
 		timerVoidGazeCD:SetFade(true)
+		timerSynampticShock:SetFade(true)
+	end
+end
+
+local function stupefyingGlareLoop(self)
+	self.vb.stupefyingGlareCount = self.vb.stupefyingGlareCount + 1
+	specWarnStupefyingGlare:Show(self.vb.stupefyingGlareCount)
+	specWarnStupefyingGlare:Play("farfromline")
+	local timer = self:IsHard() and stage3HeroicTimers[317874][self.vb.stupefyingGlareCount+1] or self:IsEasy() and stage3NormalTimers[317874][self.vb.stupefyingGlareCount+1]
+	if timer then
+		timerStupefyingGlareCD:Start(timer, self.vb.stupefyingGlareCount+1)
+		self:Schedule(timer, stupefyingGlareLoop, self)
 	end
 end
 
@@ -246,9 +283,10 @@ function mod:OnCombatStart(delay)
 	self.vb.eternalTormentCount = 0
 	self.vb.BasherCount = 0
 	self.vb.paranoiaCount = 0
+	self.vb.stupefyingGlareCount = 0
+	self.vb.egoCount = 0
 	if self:IsMythic() then
 		self.vb.phase = 1
-		self.vb.egoCount = 0
 		--Assumptions from phase 2 start timers for non mythic
 		timerMindgraspCD:Start(8.1)--START (basically happens immediately after 312155 ends, but it can end 18-30?
 		timerBasherTentacleCD:Start(23, 1)
@@ -318,7 +356,7 @@ function mod:SPELL_CAST_START(args)
 			end
 		end
 		timerMindwrackCD:Start(4.9, args.sourceGUID)
-		if args:GetSrcCreatureID() == 162933 and not seenAdds[args.sourceGUID] then
+		if (args:GetSrcCreatureID() == 162933) and not seenAdds[args.sourceGUID] then
 			seenAdds[args.sourceGUID] = true
 			if self:AntiSpam(3, 11) then
 				self.vb.harvesterCount = self.vb.harvesterCount + 1
@@ -328,7 +366,7 @@ function mod:SPELL_CAST_START(args)
 				else
 					warnThoughtHarvester:Show()
 				end
-				local timer = stage3ThoughtHarvesterTimers[self.vb.harvesterCount+1]
+				local timer = self:IsHard() and stage3HeroicTimers[316711][self.vb.harvesterCount+1] or self:IsEasy() and stage3NormalTimers[316711][self.vb.harvesterCount+1]
 				if timer then
 					timerThoughtHarvesterCD:Start(timer, self.vb.harvesterCount+1)
 				end
@@ -403,9 +441,32 @@ function mod:SPELL_CAST_START(args)
 			specWarnEternalTorment:Show(self.vb.eternalTormentCount)
 			specWarnEternalTorment:Play("aesoon")
 		end
-		local timer = self.vb.phase == 2 and stage2EternalTormentTimers[self.vb.eternalTormentCount+1] or stage3EternalTormentTimers[self.vb.eternalTormentCount+1]
+		local timer = self.vb.phase == 2 and stage2Timers[318449][self.vb.eternalTormentCount+1] or self:IsHard() and stage3HeroicTimers[318449][self.vb.eternalTormentCount+1] or self:IsEasy() and stage3NormalTimers[318449][self.vb.eternalTormentCount+1]
 		if timer then
 			timerEternalTormentCD:Start(timer, self.vb.eternalTormentCount+1)
+		end
+	elseif spellId == 312782 then--Convergence (2-2.5 seconds slower than shattered ego, but likely more reliable for mythic)
+		if self:IsMythic() then
+			self.vb.phase = 2
+			warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(2))
+			warnPhase:Play("ptwo")
+		else
+			self.vb.phase = 3
+			warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(3))
+			warnPhase:Play("pthree")
+		end
+		self.vb.harvesterCount = 0
+		self.vb.evokeAnguishCount = 0
+		timerMindgraspCD:Stop()--Shouldn't even be running but just in case
+		timerMindgateCD:Stop()
+		timerParanoiaCD:Stop()
+		timerEvokeAnguishCD:Start(15, 1)
+		timerThoughtHarvesterCD:Start(21.1, 1)
+		timerEternalTormentCD:Start(32.8, 1)
+		timerMindgraspCD:Start(71.7)
+		if self:IsHard() then--Only place I've verified, need to find some normal videos/vods
+			timerStupefyingGlareCD:Start(40.5)
+			self:Schedule(40.5, stupefyingGlareLoop, self)
 		end
 	end
 end
@@ -414,18 +475,20 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 315927 then
 		self.vb.paranoiaCount = self.vb.paranoiaCount + 1
-		local timer = stage2ParanoiaTimers[self.vb.paranoiaCount+1]
+		local timer = stage2Timers[315927][self.vb.paranoiaCount+1]
 		if timer then
 			timerParanoiaCD:Start(timer, self.vb.paranoiaCount+1)
 		end
 	elseif spellId == 316463 then
 		warnMindGate:Show()
-		--timerMindgateCD:Start()
 	elseif spellId == 319257 then
 		--timerCleansingProtocol:Stop()
 	elseif spellId == 317102 then
 		self.vb.evokeAnguishCount = self.vb.evokeAnguishCount + 1
-		timerEvokeAnguishCD:Start(self.vb.evokeAnguishCount == 1 and 45.1 or 30.5)
+		local timer = self:IsHard() and stage3HeroicTimers[317102][self.vb.evokeAnguishCount+1] or self:IsEasy() and stage3NormalTimers[317102][self.vb.evokeAnguishCount+1]
+		if timer then
+			timerEvokeAnguishCD:Start(timer, self.vb.harvesterCount+1)
+		end
 	elseif spellId == 318714 then--Corrupted Viscera
 		local cid = self:GetCIDFromGUID(args.destGUID)
 		if cid == 158367 then--Basher Tentacle
@@ -435,7 +498,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 					specWarnBasherTentacle:Show(self.vb.BasherCount)
 					specWarnBasherTentacle:Play("bigmob")
 				end
-				local timer = stage2BasherTimers[self.vb.BasherCount+1]
+				local timer = stage2Timers[318714][self.vb.BasherCount+1]
 				if timer then
 					timerBasherTentacleCD:Start(timer, self.vb.BasherCount+1)
 				end
@@ -577,20 +640,6 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerEternalTormentCD:Start(35.3, 1)
 			timerParanoiaCD:Start(50, 1)--SUCCESS (45 to START)
 			timerMindgateCD:Start(72.9)--START
-		else
-			self.vb.phase = 3
-			self.vb.harvesterCount = 0
-			self.vb.evokeAnguishCount = 0
-			warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(3))
-			warnPhase:Play("pthree")
-			timerMindgraspCD:Stop()--Shouldn't even be running but just in case
-			timerMindgateCD:Stop()
-			timerParanoiaCD:Stop()
-			timerEvokeAnguishCD:Start(17)
-			timerThoughtHarvesterCD:Start(23.1, 1)
-			timerEternalTormentCD:Start(35.3, 1)
-			timerMindgraspCD:Start(74.5)
-			--timerStupefyingGlareCD:Start()
 		end
 	elseif spellId == 318459 then
 		if args:IsPlayer() then

@@ -6,8 +6,8 @@ mod:SetCreatureID(157231)
 mod:SetEncounterID(2335)
 mod:SetZone()
 mod:SetUsedIcons(4, 3, 2, 1)
-mod:SetHotfixNoticeRev(20191109000000)--2019, 11, 09
---mod:SetMinSyncRevision(20190716000000)
+mod:SetHotfixNoticeRev(20200126000000)--2020, 1, 26
+mod:SetMinSyncRevision(20200126000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
@@ -292,7 +292,11 @@ function mod:SPELL_AURA_APPLIED(args)
 			--Schedue P3 Loop
 			self.vb.buildupCount = 0
 			timerEntropicBuildupCD:Start(4)
-			self:Schedule(4, entropicBuildupLoop, self)
+			if self:IsHard() then
+				self:Schedule(4, entropicBuildupLoop, self)
+			else
+				entropicBuildupLoop(self)
+			end
 		end
 		updateBreathTimer(self)
 	elseif spellId == 308149 and args:IsPlayer() then

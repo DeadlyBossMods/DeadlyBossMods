@@ -6,7 +6,7 @@ mod:SetCreatureID(156866)
 mod:SetEncounterID(2331)
 mod:SetZone()
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
-mod:SetHotfixNoticeRev(20200125000000)--2020, 1, 25
+mod:SetHotfixNoticeRev(20200126000000)--2020, 1, 26
 mod:SetMinSyncRevision(20191109000000)
 --mod.respawnTime = 29
 
@@ -225,9 +225,9 @@ do
 			self.vb.lastHighest = target
 			if self.Options.SetIconOnUnstableVita then
 				if self.vb.lastIcon == 1 then
-					self:SetIcon(self.vb.lastHighes, 2, 4.5)
+					self:SetIcon(self.vb.lastHighest, 2, 4.5)
 				else
-					self:SetIcon(self.vb.lastHighes, 1, 4.5)
+					self:SetIcon(self.vb.lastHighest, 1, 4.5)
 				end
 			end
 		elseif msg == "NightmareUpdate" and target then

@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(157439)--Fury of N'Zoth
 mod:SetEncounterID(2337)
 mod:SetZone()
-mod:SetHotfixNoticeRev(20200122000001)--2020, 1, 22 and 1
+mod:SetHotfixNoticeRev(20200126000000)--2020, 1, 26
 mod:SetMinSyncRevision(20200122000001)
 --mod.respawnTime = 29
 
@@ -29,7 +29,6 @@ mod:RegisterEventsInCombat(
 
 --TODO, Cyst Genesis still listed in overview but removed from P3 in latest build, see if it still exists. 313118/307064
 --TODO, escalated tank warning for adaptive membrane on Fury, if you're tanking it
---TODO, Thrashing Tentacles no longer detectable unless people die to them, which is not exactly practical. scheduling?
 --[[
 (ability.id = 315820 or ability.id = 307809 or ability.id = 313039 or ability.id = 307092 or ability.id = 315891 or ability.id = 315947) and type = "begincast"
  or (ability.id = 313362 or ability.id = 306971 or ability.id = 306986 or ability.id = 306988) and type = "cast"
@@ -76,7 +75,7 @@ local specWarnInsanityBomb					= mod:NewSpecialWarningMoveAway(306984, nil, nil,
 local yellInsanityBomb						= mod:NewYell(306984)
 local yellInsanityBombFades					= mod:NewShortFadesYell(306984)
 local specWarnInfiniteDarkness				= mod:NewSpecialWarningCount(313040, nil, nil, nil, 2, 2)
---local specWarnThrashingTentacle				= mod:NewSpecialWarningCount(315820, nil, nil, nil, 2, 2)
+local specWarnThrashingTentacle				= mod:NewSpecialWarningCount(315820, nil, nil, nil, 2, 2)
 
 --General
 local timerGiftofNzoth						= mod:NewBuffFadesTimer(20, 313334, nil, nil, nil, 5)
@@ -99,7 +98,7 @@ local timerOccipitalBlastCD					= mod:NewCDTimer(33.3, 307092, nil, nil, nil, 3)
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20569))
 local timerInsanityBombCD					= mod:NewCDTimer(66.9, 306984, nil, nil, nil, 3)
 local timerInfiniteDarknessCD				= mod:NewCDTimer(53.9, 313040, nil, nil, nil, 2)
---local timerThrashingTentacleCD				= mod:NewCDTimer(27.8, 315820, nil, nil, nil, 3)
+local timerThrashingTentacleCD				= mod:NewCDCountTimer(20, 315820, nil, nil, nil, 3)
 
 --local berserkTimer							= mod:NewBerserkTimer(720)
 
@@ -114,6 +113,14 @@ mod.vb.DarknessCount = 0
 mod.vb.phase = 1
 mod.vb.anchorCount = 0
 local lastSanity = 100
+
+local function thrashingTentacleLoop(self)
+	self.vb.TentacleCount = self.vb.TentacleCount + 1
+	specWarnThrashingTentacle:Show(self.vb.TentacleCount)
+	specWarnThrashingTentacle:Play("watchstep")
+	timerThrashingTentacleCD:Start(20, self.vb.TentacleCount+1)
+	self:Schedule(20, thrashingTentacleLoop, self)
+end
 
 function mod:OnCombatStart(delay)
 	self.vb.TentacleCount = 0
@@ -166,7 +173,7 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 315820 then
-		self.vb.TentacleCount = self.vb.TentacleCount + 1
+		--self.vb.TentacleCount = self.vb.TentacleCount + 1
 		--specWarnThrashingTentacle:Show(self.vb.TentacleCount)
 		--specWarnThrashingTentacle:Play("watchstep")--???
 		--timerThrashingTentacleCD:Start()
@@ -426,6 +433,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 			--Boon of Black Prince can be used as a backup but it's NOT as consistent and introduces a 3 second variation to elements. Should only be used if this can't be
 			--It may be wise to move timer canceling for phase 2/2.5 to boon but timer starting stay at anchor event
 			self.vb.phase = 3
+			self.vb.TentacleCount = 0
 			warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(3))
 			warnPhase:Play("pthree")
 			timerMentalDecayCD:Stop()
@@ -439,16 +447,18 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 				timerMentalDecayCD:Start(12.1)--SUCCESS
 				timerMandibleSlamCD:Start(17.1)
 				timerInsanityBombCD:Start(21.6)--SUCCESS
+				timerThrashingTentacleCD:Start(32, 1)--Confirmed from https://www.twitch.tv/videos/541753121 from 00:54:06 onward
+				self:Schedule(32, thrashingTentacleLoop, self)
 				timerAdaptiveMembraneCD:Start(38.1)--SUCCESS
-				--timerThrashingTentacleCD:Start(38.7)--Needs fixing, no event for spawn in logs
 				timerInfiniteDarknessCD:Start(54)
 			else
 				--These are probably off by 1-3 seconds, it's impossible to perfect this, even using boon, without transcriptor log to capture anchor here event
 				timerMentalDecayCD:Start(14.5)--SUCCESS
 				timerMandibleSlamCD:Start(20.9)
 				timerInsanityBombCD:Start(26.1)--SUCCESS
+				timerThrashingTentacleCD:Start(32, 1)
+				self:Schedule(32, thrashingTentacleLoop, self)
 				timerAdaptiveMembraneCD:Start(46.6)--SUCCESS
-				--timerThrashingTentacleCD:Start(38.7)--Needs fixing, no event for spawn in logs
 				timerEternalDarknessCD:Start(67)
 			end
 		else
