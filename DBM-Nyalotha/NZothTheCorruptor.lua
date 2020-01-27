@@ -122,7 +122,7 @@ local yellEvokeAnguishFades					= mod:NewShortFadesYell(317112, nil, false, 2)
 local specWarnStupefyingGlare				= mod:NewSpecialWarningDodgeCount(317874, nil, nil, nil, 2, 2)
 ----Thought Harvester
 local specWarnThoughtHarvester				= mod:NewSpecialWarningSwitch("ej21308", false, nil, nil, 1, 2)
-local specWarnHarvestThoughts				= mod:NewSpecialWarningMoveTo(317066, nil, nil, nil, 2, 2)
+local specWarnHarvestThoughts				= mod:NewSpecialWarningCount(317066, nil, nil, nil, 2, 2)
 --Stage 3 Mythic
 local specWarnEventHorizon					= mod:NewSpecialWarningDefensive(318196, nil, nil, nil, 1, 2)
 local specWarnEventHorizonSwap				= mod:NewSpecialWarningTaunt(318196, nil, nil, nil, 1, 2)
@@ -227,6 +227,7 @@ mod.vb.egoCount = 0
 mod.vb.evokeAnguishCount = 0
 mod.vb.eternalTormentCount = 0
 mod.vb.harvesterCount = 0
+mod.vb.harvestThoughtsCount = 0
 mod.vb.paranoiaCount = 0
 mod.vb.stupefyingGlareCount = 0
 
@@ -423,8 +424,9 @@ function mod:SPELL_CAST_START(args)
 		--warnBlackVolley:Show()
 		--timerBlackVolleyCD:Start()
 	elseif spellId == 317066 then
+		self.vb.harvestThoughtsCount = self.vb.harvestThoughtsCount + 1
 		if self:AntiSpam(5, 10) then
-			specWarnHarvestThoughts:Show(DBM_ALLY)
+			specWarnHarvestThoughts:Show(self.vb.harvestThoughtsCount)
 			specWarnHarvestThoughts:Play("gathershare")
 		end
 		timerHarvestThoughtsCD:Start(35.2, args.sourceGUID)
@@ -456,6 +458,7 @@ function mod:SPELL_CAST_START(args)
 			warnPhase:Play("pthree")
 		end
 		self.vb.harvesterCount = 0
+		self.vb.harvestThoughtsCount = 0
 		self.vb.evokeAnguishCount = 0
 		timerMindgraspCD:Stop()--Shouldn't even be running but just in case
 		timerMindgateCD:Stop()
