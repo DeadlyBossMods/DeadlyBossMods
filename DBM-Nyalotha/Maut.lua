@@ -7,7 +7,7 @@ mod:SetEncounterID(2327)--Obsidian Destroyer ID, but only one left after elimina
 mod:SetZone()
 --mod:SetHotfixNoticeRev(20190716000000)--2019, 7, 16
 --mod:SetMinSyncRevision(20190716000000)
---mod.respawnTime = 29
+mod.respawnTime = 20
 
 mod:RegisterCombat("combat")
 
