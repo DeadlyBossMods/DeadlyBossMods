@@ -87,7 +87,7 @@ local timerAdaptiveMembraneCD				= mod:NewCDTimer(27.7, 306990, nil, nil, nil, 5
 local timerAdaptiveMembrane					= mod:NewBuffActiveTimer(12, 306990, nil, false, 2, 5, nil, DBM_CORE_DAMAGE_ICON)
 local timerMentalDecayCD					= mod:NewCDTimer(21, 313364, nil, nil, nil, 3)
 local timerGrowthCoveredTentacleCD			= mod:NewNextCountTimer(60, 307131, nil, nil, nil, 1, nil, nil, nil, 1, 3)
-local timerMandibleSlamCD					= mod:NewCDTimer(12.7, 315947, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON, nil, 2, 3)--12.7
+local timerMandibleSlamCD					= mod:NewCDTimer(12.7, 315947, nil, "Tank", 2, 5, nil, DBM_CORE_TANK_ICON)--12.7
 ----Adds
 local timerGazeofMadnessCD					= mod:NewCDCountTimer(58, "ej20565", nil, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON)
 --Stage 2: Subcutaneous Tunnel
@@ -229,7 +229,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerMadnessBombCD:Start(timer)
 	elseif spellId == 306986 then
 		timerInsanityBombCD:Start(self:IsHard() and 66.9 or 83.7)
-	elseif spellId == 306988 then
+	elseif spellId == 306988 and self:AntiSpam(3, 9) then
 		--Yes this has 4 distinct timers. Verified in multiple logs that the second stage 2 in fact does have it's own CD
 		local timer
 		if self:IsHard() then
