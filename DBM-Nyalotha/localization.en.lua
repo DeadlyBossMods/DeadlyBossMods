@@ -69,6 +69,10 @@ L= DBM:GetModLocalization(2370)
 ---------------------------
 L= DBM:GetModLocalization(2364)
 
+L:SetOptionLocalization({
+	OnlyParentBondMoves		= "Only show special warning for Charged Bonds if you are the parent point"
+})
+
 L:SetMiscLocalization({
 	Furthest	= "Furthest Target",
 	Closest		= "Closest Target"

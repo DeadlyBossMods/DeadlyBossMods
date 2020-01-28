@@ -127,7 +127,7 @@ local function updateBreathTimer(self)
 	local breathTimerTotal = 100 / self.vb.bossPowerUpdateRate
 	local bossProgress = (100 - bossPower) / self.vb.bossPowerUpdateRate
 	--Using update method to both start a new timer and update an existing one because it supports both
-	timerSlurryBreathCD:Update(bossProgress, breathTimerTotal)
+	timerSlurryBreathCD:Update(bossProgress, breathTimerTotal)--7.5/25
 end
 
 function mod:SpitTarget(targetname, uId)
@@ -395,13 +395,12 @@ do
 	--Case and point to above issue 17.0, 17.1, 21.9, 17.0, 17.1. to get 17.1 update rate would HAVE to be less than 6 but greater than 5. About 5.85
 	function mod:UNIT_POWER_FREQUENT(uId, type)
 		local bossPower = UnitPower("boss1") --Get Boss Power
-		if bossPower > lastPower then
-			local currentRate = bossPower - lastPower
-			if currentRate ~= self.vb.bossPowerUpdateRate then
-				self.vb.bossPowerUpdateRate = currentRate
-				updateBreathTimer(self)
-			end
-		end
+		if bossPower == 0 then return end--Avoid 0 - 0
+		local currentRate = bossPower - lastPower
 		lastPower = bossPower
+		if currentRate > self.vb.bossPowerUpdateRate then
+			self.vb.bossPowerUpdateRate = currentRate
+			updateBreathTimer(self)
+		end
 	end
 end
