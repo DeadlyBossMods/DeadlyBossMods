@@ -282,6 +282,7 @@ L.FilterInterruptsHeader	= "상황에 따라 주문 차단 경고를 표시하�
 L.FilterInterrupts			= "주문 시전 몹이 현재 대상/주시 대상이 아닐 때 (항상)"
 L.FilterInterrupts2			= "주문 시전 몹이 현재 대상/주시 대상이 아니거나 (항상) 차단기가 쿨타임일 때 (보스 전투만)"
 L.FilterInterrupts3			= "주문 시전 몹이 현재 대상/주시 대상이 아니거나 (항상) 차단기가 쿨타임일 때 (보스 및 쫄 정리시)"
+L.FilterInterrupts4			= "모든 차단 경고 표시하지 않음 (아예 보고 싶지 않을때)"
 L.FilterInterruptNoteName	= "사용자 메모에 자기 이름이 포함되지 않은 경우 차단 가능 주문의 경고 보지 않기"
 L.FilterDispels				= "해제 주문이 쿨타임일땐 해제 경고 보지 않기"
 L.FilterTrashWarnings		= "일반 &amp; 영웅 던전에선 일반몹 경고 보지 않기"
