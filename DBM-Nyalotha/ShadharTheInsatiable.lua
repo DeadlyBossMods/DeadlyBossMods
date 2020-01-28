@@ -6,8 +6,8 @@ mod:SetCreatureID(157231)
 mod:SetEncounterID(2335)
 mod:SetZone()
 mod:SetUsedIcons(4, 3, 2, 1)
-mod:SetHotfixNoticeRev(20200126000000)--2020, 1, 26
-mod:SetMinSyncRevision(20200126000000)
+mod:SetHotfixNoticeRev(20200127000000)--2020, 1, 26
+mod:SetMinSyncRevision(20200127000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
@@ -127,7 +127,7 @@ local function updateBreathTimer(self)
 	local breathTimerTotal = 100 / self.vb.bossPowerUpdateRate
 	local bossProgress = (100 - bossPower) / self.vb.bossPowerUpdateRate
 	--Using update method to both start a new timer and update an existing one because it supports both
-	timerSlurryBreathCD:Update(bossProgress, breathTimerTotal)--7.5/25
+	timerSlurryBreathCD:Update(bossProgress, breathTimerTotal)
 end
 
 function mod:SpitTarget(targetname, uId)
@@ -395,7 +395,6 @@ do
 	--Case and point to above issue 17.0, 17.1, 21.9, 17.0, 17.1. to get 17.1 update rate would HAVE to be less than 6 but greater than 5. About 5.85
 	function mod:UNIT_POWER_FREQUENT(uId, type)
 		local bossPower = UnitPower("boss1") --Get Boss Power
-		if bossPower == 0 then return end--Avoid 0 - 0
 		local currentRate = bossPower - lastPower
 		lastPower = bossPower
 		if currentRate > self.vb.bossPowerUpdateRate then
