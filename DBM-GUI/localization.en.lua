@@ -292,6 +292,7 @@ L.FilterInterruptsHeader	= "Filter warnings for interruptable spells based on be
 L.FilterInterrupts			= "If caster is not current target/focus (Always)."
 L.FilterInterrupts2			= "if caster is not current target/focus (Always) or interrupt on CD (Boss Only)"
 L.FilterInterrupts3			= "if caster is not current target/focus (Always) or interrupt on CD (Boss & Trash)"
+L.FilterInterrupts4			= "Always filter interrupt warnings (you don't want to see them period)"
 L.FilterInterruptNoteName	= "Filter warnings for interruptable spells (with count) if warning does not contain your name in the custom note"
 L.FilterDispels				= "Filter warnings for dispelable spells if your dispel is on cooldown"
 L.FilterTrashWarnings		= "Filter all trash mob warnings in normal &amp; heroic dungeons"
