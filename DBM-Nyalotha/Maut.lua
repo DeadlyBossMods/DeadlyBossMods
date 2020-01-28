@@ -54,7 +54,7 @@ local specWarnStygianAnnihilation			= mod:NewSpecialWarningMoveTo(308044, nil, n
 local specWarnBlackWing						= mod:NewSpecialWarningDodge(305663, nil, nil, nil, 2, 2)
 local specWarnDarkManifestation				= mod:NewSpecialWarningDodge(308903, nil, nil, nil, 2, 2)
 local specWarnAncientCurse					= mod:NewSpecialWarningYou(315025, nil, nil, nil, 1, 2)
-local yellAncientCurse						= mod:NewYell(315025)
+local yellAncientCurse						= mod:NewYell(315025 nil, false, 2)
 local yellAncientCurseFades					= mod:NewFadesYell(315025)
 --Stage Two: Obsidian Statue
 local specWarnDrainEssence					= mod:NewSpecialWarningMoveAway(314993, nil, nil, nil, 1, 2)
