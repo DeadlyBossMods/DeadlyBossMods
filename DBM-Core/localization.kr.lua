@@ -1,14 +1,14 @@
 if (GetLocale() == "koKR") then
 
-DBM_HOW_TO_USE_MOD					= "DBM을 사용해 주셔서 감사합니다. 대화창에서 /dbm help를 입력하면 사용 가능한 명령어 목록을 볼 수 있습니다. 설정을 하시려면 /dbm을 입력하세요. 보스 알림 설정을 기호에 맞게 변경하려면 해당 던전을 직접 선택해서 로딩해야 합니다. DBM이 당신의 현재 전문화에 맞는 기본값을 설정하겠지만 일부 옵션은 직접 조정을 할 필요도 있습니다."
-DBM_SILENT_REMINDER					= "알림: DBM이 아직도 조용함 모드입니다."
+DBM_HOW_TO_USE_MOD					= DBM_DBM.."을 사용해 주셔서 감사합니다. 대화창에서 /dbm help를 입력하면 사용 가능한 명령어 목록을 볼 수 있습니다. 설정을 하시려면 /dbm을 입력하세요. 보스 알림 설정을 기호에 맞게 변경하려면 원하는 던전을 직접 선택해서 로딩을 클릭하세요. DBM이 당신의 현재 전문화에 맞는 기본값을 설정하지만 일부 옵션은 자신에게 맞게 조정해야 할 수도 있습니다."
+DBM_SILENT_REMINDER					= "알림: "..DBM_DBM.."이 아직 조용함 모드입니다."
 
 DBM_CORE_LOAD_MOD_ERROR				= "%s 보스 모드 로딩중 오류 발생: %s"
 DBM_CORE_LOAD_MOD_SUCCESS			= "'%s' 모드가 로딩됐습니다. 사용자 지정 경고 효과음을 설정하거나 개인적으로 메모를 적어놓고 싶다면 /dbm을 입력하세요."
 DBM_CORE_LOAD_MOD_COMBAT			= "전투가 종료될 때까지 %s|1을;를; 로딩하지 않습니다."
 DBM_CORE_LOAD_GUI_ERROR				= "GUI를 로딩할 수 없음: %s"
 DBM_CORE_LOAD_GUI_COMBAT			= "전투중에는 GUI의 최초 로딩을 할 수 없습니다. 전투가 종료되면 GUI가 로딩됩니다. GUI가 로딩된 다음부턴 전투중에도 GUI를 열 수 있습니다."
-DBM_CORE_BAD_LOAD					= "DBM이 전투로 인해 현재 인스턴스의 모드를 완전히 로딩하지 못했습니다. 전투가 종료된 후 가능한 빨리 /console reloadui 명령어를 입력해주세요."
+DBM_CORE_BAD_LOAD					= DBM_DBM.."이 전투로 인해 현재 인스턴스의 모드를 완전히 로딩하지 못했습니다. 전투가 종료된 후 가능한 빨리 /console reloadui 명령어를 입력해주세요."
 DBM_CORE_LOAD_MOD_VER_MISMATCH		= "DBM-Core가 로딩 조건과 맞지 않아 %s|1을;를; 로딩하지 못했습니다. 최신 버전을 설치하세요"
 DBM_CORE_LOAD_MOD_EXP_MISMATCH		= "아직 출시되지 않은 WoW 확장팩용으로 설계되었으므로 %s|1을;를; 로딩하지 못했습니다. 확장팩이 출시되면 해당 모드는 자동으로 작동합니다."
 DBM_CORE_LOAD_MOD_TOC_MISMATCH		= "아직 나오지 않은 WoW 패치 (%2$s) 용으로 설계되었으므로 %1$s|1을;를; 로딩하지 못했습니다. 패치가 나오면 해당 모드는 자동으로 작동합니다."
@@ -22,13 +22,13 @@ DBM_CORE_NO_RANGE					= "거리 레이더를 인스턴스 던전에서 사용할
 DBM_CORE_NO_ARROW					= "화살표 기능을 인스턴스 던전에서 사용할 수 없습니다"
 DBM_CORE_NO_HUD						= "HUD 기능을 인스턴스 던전에서 사용할 수 없습니다"
 
-DBM_CORE_DYNAMIC_DIFFICULTY_CLUMP	= "현재 공격대 규모에 맞는 필요한 플레이어 숫자 관련 정보가 부족하여 DBM이 이 전투에서 동적 거리창을 비활성화 했습니다."
-DBM_CORE_DYNAMIC_ADD_COUNT			= "현재 공격대 규모에 맞는 쫄 등장 정보가 부족하여 DBM이 이 전투에서 쫄 마릿수 정보를 비활성화 했습니다."
-DBM_CORE_DYNAMIC_MULTIPLE			= "현재 공격대 규모에 맞는 보스 기술 작동 원리 정보가 부족하여 DBM이 이 전투에서 다수의 기능을 비활성화 했습니다."
+DBM_CORE_DYNAMIC_DIFFICULTY_CLUMP	= "현재 공격대 규모에 맞는 필요한 플레이어 숫자 관련 정보가 부족하여"..DBM_DBM.."이 이 전투에서 동적 거리창을 비활성화 했습니다."
+DBM_CORE_DYNAMIC_ADD_COUNT			= "현재 공격대 규모에 맞는 쫄 등장 정보가 부족하여"..DBM_DBM.."이 이 전투에서 쫄 마릿수 정보를 비활성화 했습니다."
+DBM_CORE_DYNAMIC_MULTIPLE			= "현재 공격대 규모에 맞는 보스 기술 작동 원리 정보가 부족하여"..DBM_DBM.."이 이 전투에서 다수의 기능을 비활성화 했습니다."
 
 DBM_CORE_LOOT_SPEC_REMINDER			= "현재 전문화는 %s입니다. 현재 지정한 전리품 획득 전문화는 %s입니다."
 
-DBM_CORE_BIGWIGS_ICON_CONFLICT		= "DBM이 BigWigs와 DBM 모두 공격대 징표 기능을 사용하고 있음을 감지했습니다. 충돌을 방지하기 위해 공대장이 두 애드온중 하나의 징표 설정을 비활성화해야 합니다."
+DBM_CORE_BIGWIGS_ICON_CONFLICT		= DBM_DBM.."이 BigWigs와"..DBM_DBM.." 모두 공격대 징표 기능을 사용하고 있음을 감지했습니다. 충돌을 방지하기 위해 공대장이 두 애드온중 하나의 징표 설정을 비활성화해야 합니다."
 
 DBM_CORE_MOD_AVAILABLE				= "이 지역에서 %s|1을;를; 사용할 수 있습니다. Curse/Twitch 또는 WoWI에서 다운로드 받으실 수 있습니다."
 
@@ -55,15 +55,15 @@ DBM_CORE_COMBAT_STATE_RECOVERED		= "%s 전투가 %s전에 시작됐습니다. �
 DBM_CORE_TRANSCRIPTOR_LOG_START		= "Transcriptor 기록이 시작됐습니다."
 DBM_CORE_TRANSCRIPTOR_LOG_END		= "Transcriptor 기록이 종료됐습니다."
 
-DBM_CORE_MOVIE_SKIPPED				= "DBM이 동영상 자동 생략 기능을 작동시켰습니다."
-DBM_CORE_BONUS_SKIPPED				= "DBM이 자동으로 추가 전리품 주사위 굴림 창을 닫았습니다. 창을 열고 싶으면 3분 안에 /dbmbonusroll 명령어를 입력하세요"
+DBM_CORE_MOVIE_SKIPPED				= DBM_DBM.."이 동영상 자동 생략 기능을 작동시켰습니다."
+DBM_CORE_BONUS_SKIPPED				= DBM_DBM.."이 자동으로 추가 전리품 주사위 굴림 창을 닫았습니다. 창을 열고 싶으면 3분 안에 /dbmbonusroll 명령어를 입력하세요"
 DBM_CORE_BONUS_EXPIRED				= "/dbmbonusroll 명령어를 사용해 추가 전리품 주사위 굴림 창을 열려고 했으나 현재 굴릴 수 있는 추가 전리품 주사위가 없습니다."
 
 DBM_CORE_AFK_WARNING				= "자리 비움 상태에서 전투에 돌입하여 (남은 생명력 %d퍼센트) 경고음을 재생중입니다. 자리를 비우고 있는게 아니라면 자리 비움 상태를 해제하거나 '기타 기능' 항목에서 해당 설정을 비활성화 해주세요."
 
 DBM_CORE_COMBAT_STARTED_AI_TIMER	= "내 CPU는 신경망 프로세서. 기계학습형 컴퓨터 (이 전투에선 새로운 타이머 인공지능 기능을 사용해서 예상 타이머 바를 생성합니다)"
 
-DBM_CORE_PROFILE_NOT_FOUND			= "<DBM> 현재 설정된 프로필이 손상되었습니다. DBM이 'Default' 프로필을 로딩할 것입니다."
+DBM_CORE_PROFILE_NOT_FOUND			= "<"..DBM_DBM.."> 현재 설정된 프로필이 손상되었습니다. "..DBM_DBM.."이 'Default' 프로필을 로딩할 것입니다."
 DBM_CORE_PROFILE_CREATED			= "'%s' 프로필을 생성했습니다."
 DBM_CORE_PROFILE_CREATE_ERROR		= "프로필 생성 실패. 프로필 이름이 올바르지 않습니다."
 DBM_CORE_PROFILE_CREATE_ERROR_D		= "프로필 생성 실패. '%s' 프로필이 이미 존재합니다."
@@ -155,31 +155,31 @@ DBM_CORE_VERSIONCHECK_HEADER		= "보스 모드 - 버전"
 DBM_CORE_VERSIONCHECK_ENTRY_NO_DBM	= "%s: 설치된 보스 모드 없음"
 DBM_CORE_VERSIONCHECK_FOOTER		= "DBM을 설치한 플레이어 %d명과 Bigwigs를 설치한 플레이어 %d명을 발견했습니다."
 DBM_CORE_VERSIONCHECK_OUTDATED		= "다음 %d명의 플레이어가 구버전 보스 모드를 사용중: %s"
-DBM_CORE_YOUR_VERSION_OUTDATED      = "사용중인 Deadly Boss Mods 버전이 사용 기한을 지났습니다. http://www.deadlybossmods.com에서 최신 버전을 받으세요."
+DBM_CORE_YOUR_VERSION_OUTDATED      = "사용중인 "..DBM_DEADLY_BOSS_MODS.." 버전이 사용 기한을 지났습니다. http://www.deadlybossmods.com에서 최신 버전을 받으세요."
 DBM_CORE_VOICE_PACK_OUTDATED		= "선택한 DBM 음성팩에 일부 음성이 들어있지 않습니다. 몇가지 경고 음성이 기본 효과음으로 재생됩니다. 최신 음성팩을 다운로드 받거나 제작자에게 누락된 음성 파일 업데이트를 요청하시기 바랍니다"
 DBM_CORE_VOICE_MISSING				= "선택한 DBM 음성팩을 찾을 수 없습니다. 오류일 경우 음성팩이 제대로 설치되어 있고 애드온 목록에서 활성화되어 있는지 확인해 보시기 바랍니다."
 DBM_CORE_VOICE_DISABLED				= "현재 DBM 음성팩이 한 개 이상 설치되어 있지만 사용하고 있는게 없습니다. 음성팩을 사용하려면 '음성 경보' 항목에서 음성팩이 지정되어 있는지 확인하세요. 음성팩을 사용할 의사가 없으면 음성팩을 삭제하시면 이 메시지는 더이상 출력되지 않습니다"
 DBM_CORE_VOICE_COUNT_MISSING		= "초읽기 음성 %d번으로 설정된 음성/초읽기 팩을 찾을 수 없습니다. 기본 설정으로 초기화 되었습니다: %s"
 
-DBM_CORE_UPDATEREMINDER_HEADER			= "사용중인 Deadly Boss Mods 버전의 사용 기한이 지났습니다.\n Curse/Twitch, WoWI, deadlybossmods.com 등에서 %s (%s) 버전을 다운로드 할 수 있습니다."
-DBM_CORE_UPDATEREMINDER_HEADER_ALPHA	= "사용중인 Deadly Boss Mods ALPHA 버전의 사용 기한이 지났습니다.\n 적어도 %s 테스트 버전 이상은 사용해야 합니다. ALPHA 버전을 선택한 DBM 이용자는 최신 ALPHA 버전을 실행하는걸 권장합니다. 아니면 최신 RELEASE 버전을 사용하는 것도 좋습니다. 오래된 ALPHA 버전은 개발용인 관계로 버전 검사 기능이 제한되어 있기 때문입니다."
+DBM_CORE_UPDATEREMINDER_HEADER			= "사용중인 "..DBM_DEADLY_BOSS_MODS.." 버전의 사용 기한이 지났습니다.\n Curse/Twitch, WoWI, deadlybossmods.com 등에서 %s (%s) 버전을 다운로드 할 수 있습니다."
+DBM_CORE_UPDATEREMINDER_HEADER_ALPHA	= "사용중인 "..DBM_DEADLY_BOSS_MODS.." ALPHA 버전의 사용 기한이 지났습니다.\n 적어도 %s 테스트 버전 이상은 사용해야 합니다. ALPHA 버전을 선택한 DBM 이용자는 최신 ALPHA 버전을 실행하는걸 권장합니다. 아니면 최신 RELEASE 버전을 사용하는 것도 좋습니다. 오래된 ALPHA 버전은 개발용인 관계로 버전 검사 기능이 제한되어 있기 때문입니다."
 DBM_CORE_UPDATEREMINDER_FOOTER			= (IsMacClient() and "Cmd-C" or "Ctrl-C").. "를 누르면 주소를 복사할 수 있습니다."
 DBM_CORE_UPDATEREMINDER_FOOTER_GENERIC	= (IsMacClient() and "Cmd-C" or "Ctrl-C").. "를 누르면 주소를 복사할 수 있습니다."
 --DBM_CORE_UPDATEREMINDER_URL				= "http://www.inven.co.kr/board/powerbbs.php?come_idx=3716" -- No longer updated by the website
-DBM_CORE_UPDATEREMINDER_DISABLE			= "경고: 지금 사용중인 Deadly Boss Mods가 지나치게 오래되어 강제로 비활성화되며 업데이트 전 까진 사용할 수 없습니다. 이는 오래되고 호환되지 않는 모드가 당신과 파티/공대원의 플레이에 악영향을 미치지 않게 하기 위함입니다."
---DBM_CORE_UPDATEREMINDER_NODISABLE		= "경고: 설치한 Deadly Boss Mods가 사용 기한을 지났습니다. 업데이트 알림이 꺼져있거나 해서 특정 기한을 지나면 본 메시지가 등장하는 것이며 이 알림은 끌 수 없습니다. 반드시 업데이트 하시기 바랍니다."
-DBM_CORE_UPDATEREMINDER_HOTFIX			= "지금 사용하는 DBM 버전은 이 보스 전투에서 알려진 오류를 가지고 있습니다. 이 오류는 최신 버전으로 업데이트하면 수정됩니다."
-DBM_CORE_UPDATEREMINDER_HOTFIX_ALPHA	= "지금 사용하는 DBM 버전은 이 보스 전투에서 알려진 오류를 가지고 있습니다. 이 오류는 향후 출시될 버전 (또는 최신 ALPHA 버전)에서 수정되어있을 것입니다."
-DBM_CORE_UPDATEREMINDER_MAJORPATCH		= "경고: 대규모 패치로 인해 Deadly Boss Mods 버전이 사용 기한이 지나 업데이트하기 전까진 비활성화됩니다. 이는 오래되고 호환되지 않는 코드로 인해 당신과 공격대원이 조악한 플레이 경험을 겪지 않게 하기 위함입니다. 당장 deadlybossmods.com이나 Curse에서 최신 버전을 다운로드 하시기 바랍니다."
-DBM_CORE_UPDATEREMINDER_TESTVERSION		= "경고: 현재 게임 버전과 맞지 않는 Deadly Boss Mods 버전을 사용중입니다. 게임 클라이언트에 맞는 버전을 deadlybossmods.com이나 Curse에서 다운로드 하시기 바랍니다."
-DBM_CORE_VEM							= "경고: Deadly Boss Mods와 Voice Encounter Mods를 함께 사용중입니다. 현재 설정으로는 DBM이 작동하지 않으며 로딩도 되지 않을 것입니다."
+DBM_CORE_UPDATEREMINDER_DISABLE			= "경고: 지금 사용중인 "..DBM_DEADLY_BOSS_MODS.."가 지나치게 오래되어 강제로 비활성화되며 업데이트 전 까진 사용할 수 없습니다. 이는 오래되고 호환되지 않는 모드가 당신과 파티/공대원의 플레이에 악영향을 미치지 않게 하기 위함입니다."
+--DBM_CORE_UPDATEREMINDER_NODISABLE		= "경고: 설치한 "..DBM_DEADLY_BOSS_MODS.."가 사용 기한을 지났습니다. 업데이트 알림이 꺼져있거나 해서 특정 기한을 지나면 본 메시지가 등장하는 것이며 이 알림은 끌 수 없습니다. 반드시 업데이트 하시기 바랍니다."
+DBM_CORE_UPDATEREMINDER_HOTFIX			= "지금 사용하는 "..DBM_DBM.." 버전은 이 보스 전투에서 알려진 오류를 가지고 있습니다. 이 오류는 최신 버전으로 업데이트하면 수정됩니다."
+DBM_CORE_UPDATEREMINDER_HOTFIX_ALPHA	= "지금 사용하는 "..DBM_DBM.." 버전은 이 보스 전투에서 알려진 오류를 가지고 있습니다. 이 오류는 향후 출시될 버전 (또는 최신 ALPHA 버전)에서 수정되어있을 것입니다."
+DBM_CORE_UPDATEREMINDER_MAJORPATCH		= "경고: 대규모 패치로 인해 "..DBM_DEADLY_BOSS_MODS.." 버전이 사용 기한이 지나 업데이트하기 전까진 비활성화됩니다. 이는 오래되고 호환되지 않는 코드로 인해 당신과 공격대원이 조악한 플레이 경험을 겪지 않게 하기 위함입니다. 당장 deadlybossmods.com이나 Curse에서 최신 버전을 다운로드 하시기 바랍니다."
+DBM_CORE_UPDATEREMINDER_TESTVERSION		= "경고: 현재 게임 버전과 맞지 않는 "..DBM_DEADLY_BOSS_MODS.." 버전을 사용중입니다. 게임 클라이언트에 맞는 버전을 deadlybossmods.com이나 Curse에서 다운로드 하시기 바랍니다."
+DBM_CORE_VEM							= "경고: "..DBM_DEADLY_BOSS_MODS.."와 Voice Encounter Mods를 함께 사용중입니다. 현재 설정으로는 DBM이 작동하지 않으며 로딩도 되지 않을 것입니다."
 DBM_CORE_3RDPROFILES					= "경고: DBM-Profiles가 이 버전의 DBM과 호환되지 않습니다. DBM이 읽기 전에 삭제해야 충돌을 방지할 수 있습니다."
 DBM_CORE_VICTORYSOUND					= "경고: DBM-VictorySound가 이 버전의 DBM과 호환되지 않습니다. DBM이 해결할 수 있기 전까진 충돌 방지를 위해 삭제해야 합니다."
 DBM_CORE_DPMCORE						= "경고: Deadly PvP 모드는 더이상 개발되지 않으며 본 DBM 버전과 호환되지 않습니다. DBM이 읽기 전에 삭제해야 충돌을 방지할 수 있습니다."
 DBM_CORE_DBMLDB							= "경고: DBM-LDB는 이제 DBM-Core에 편입되었습니다. 같이 사용해도 문제가 생기는건 아니지만 가급적 애드온 폴더에서 'DBM-LDB' 폴더를 삭제하는걸 권장합니다"
 DBM_CORE_DBMLOOTREMINDER				= "경고: 써드파티 모드인 DBM-LootReminder가 설치되었습니다. 이 애드온은 격아 WoW 클라이언트에 더이상 호환되지 않으며 DBM이 오작동하여 풀링 타이머를 전송하지 못하게 될 수 있습니다. 애드온 삭제를 권장합니다"
 DBM_CORE_UPDATE_REQUIRES_RELAUNCH		= "경고: 지금 업데이트한 DBM은 게임 클라이언트를 완전히 재시작하기 전까진 정상 작동하지 않습니다. 이 업데이트엔 새 파일이 포함되어 있거나 UI 재시작으로는 로딩할 수 없는 .toc 파일의 변경 사항이 있습니다. 클라이언트 재시작 없이 사용할 경우 오류가 발생하거나 작동하지 않을 수 있습니다."
-DBM_CORE_OUT_OF_DATE_NAG				= "현재 사용중인 Deadly Boss Mods 버전이 오래되었습니다. 업데이트를 해야 이 전투의 중요한 알림이나 타이머 그리고 공격대원 모두가 보는 외침 등이 빠지지 않게 나옵니다."
+DBM_CORE_OUT_OF_DATE_NAG				= "현재 사용중인 "..DBM_DEADLY_BOSS_MODS.." 버전이 오래되었습니다. 업데이트를 해야 이 전투의 중요한 알림이나 타이머 그리고 공격대원 모두가 보는 외침 등이 빠지지 않게 나옵니다."
 DBM_CORE_RETAIL_ONLY					= "경고: 이 DBM 버전은 월드 오브 워크래프트 최신 버전용입니다. 삭제하시고 클래식 WoW 전용 DBM을 설치하세요."
 
 DBM_CORE_MOVABLE_BAR				= "드래그 하세요!"
@@ -481,9 +481,9 @@ DBM_CORE_AUTO_TIMER_OPTIONS.roleplay		= "역할 수행(롤플레이) 지속 시�
 
 DBM_CORE_AUTO_ICONS_OPTION_TEXT			= "$spell:%s 대상에 공격대 징표 설정"
 DBM_CORE_AUTO_ICONS_OPTION_TEXT2		= "$spell:%s에 공격대 징표 설정"
-DBM_CORE_AUTO_ARROW_OPTION_TEXT			= "$spell:%s 대상을 향하는 DBM 화살표 표시"
-DBM_CORE_AUTO_ARROW_OPTION_TEXT2		= "$spell:%s 대상과 반대 방향의 DBM 화살표 표시"
-DBM_CORE_AUTO_ARROW_OPTION_TEXT3		= "$spell:%s 특정 지점을 가리키는 DBM 화살표 표시"
+DBM_CORE_AUTO_ARROW_OPTION_TEXT			= "$spell:%s 대상을 향하는 "..DBM_DBM.." 화살표 표시"
+DBM_CORE_AUTO_ARROW_OPTION_TEXT2		= "$spell:%s 대상과 반대 방향의 "..DBM_DBM.." 화살표 표시"
+DBM_CORE_AUTO_ARROW_OPTION_TEXT3		= "$spell:%s 특정 지점을 가리키는 "..DBM_DBM.." 화살표 표시"
 DBM_CORE_AUTO_YELL_OPTION_TEXT.shortyell	= "$spell:%s 대상일 때 말풍선으로 알리기"
 DBM_CORE_AUTO_YELL_OPTION_TEXT.yell		= "$spell:%s 대상일 때 말풍선으로 알리기 (플레이어 이름 포함)"
 DBM_CORE_AUTO_YELL_OPTION_TEXT.count		= "$spell:%s 대상일 때 말풍선으로 알리기 (횟수 포함)"
@@ -511,7 +511,7 @@ DBM_CORE_AUTO_READY_CHECK_OPTION_TEXT	= "보스가 풀링되면 전투 준비 �
 
 -- New special warnings
 DBM_CORE_MOVE_WARNING_BAR				= "알림 이동"
-DBM_CORE_MOVE_WARNING_MESSAGE			= "Deadly Boss Mods를 이용해 주셔셔 감사합니다."
+DBM_CORE_MOVE_WARNING_MESSAGE			= DBM_DEADLY_BOSS_MODS.."를 이용해 주셔셔 감사합니다."
 DBM_CORE_MOVE_SPECIAL_WARNING_BAR		= "특수 경고 이동"
 DBM_CORE_MOVE_SPECIAL_WARNING_TEXT		= "특수 경고"
 
@@ -561,22 +561,22 @@ DBM_INSTANCE_INFO_DETAIL_INSTANCE2	= "    처치 %d: %s"
 DBM_INSTANCE_INFO_NOLOCKOUT			= "공격대 인스턴스에 귀속된 공격대원이 없습니다."
 DBM_INSTANCE_INFO_STATS_DENIED		= "확인 요청 거부: %s"
 DBM_INSTANCE_INFO_STATS_AWAY		= "자리 비움: %s"
-DBM_INSTANCE_INFO_STATS_NO_RESPONSE	= "최근 버전 DBM 미설치: %s"
+DBM_INSTANCE_INFO_STATS_NO_RESPONSE	= "최근 버전 "..DBM_DBM.." 미설치: %s"
 DBM_INSTANCE_INFO_RESULTS			= "인스턴스 ID 검사가 끝났습니다. 다른 언어의 WoW 클라이언트를 사용 중인 공격대원이 있다면 같은 인스턴스가 여러개 보일 수 있습니다."
 DBM_INSTANCE_INFO_SHOW_RESULTS		= "응답 안한 플레이어: %s"
 
 DBM_CORE_LAG_CHECKING				= "공격대의 지연시간 확인중..."
-DBM_CORE_LAG_HEADER					= "Deadly Boss Mods - 지연시간 확인 결과"
+DBM_CORE_LAG_HEADER					= DBM_DEADLY_BOSS_MODS.." - 지연시간 확인 결과"
 DBM_CORE_LAG_ENTRY					= "%s: 서버 지연시간 [%d ms] / 개인 지연시간 [%d ms]"
 DBM_CORE_LAG_FOOTER					= "응답없음: %s"
 
 DBM_CORE_DUR_CHECKING				= "공격대 내구도 검사중..."
-DBM_CORE_DUR_HEADER					= "Deadly Boss Mods - 내구도 검사 결과"
+DBM_CORE_DUR_HEADER					= DBM_DEADLY_BOSS_MODS.." - 내구도 검사 결과"
 DBM_CORE_DUR_ENTRY					= "%s: 내구도 [%d 퍼센트] / 깨진 장비 [%s]"
 DBM_CORE_LAG_FOOTER					= "응답 없음: %s"
 
 --LDB
-DBM_LDB_TOOLTIP_HELP1	= "왼쪽 클릭으로 DBM 열기"
+DBM_LDB_TOOLTIP_HELP1	= "왼쪽 클릭으로 "..DBM_DBM.." 열기"
 DBM_LDB_TOOLTIP_HELP2	= "오른쪽 클릭으로 설정 메뉴 열기"
 
 DBM_LDB_LOAD_MODS		= "보스 모드 로드"
