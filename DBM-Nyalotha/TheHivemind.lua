@@ -58,7 +58,7 @@ local specWarnEtropicEhco					= mod:NewSpecialWarningDodge(313692, nil, nil, nil
 --General
 local timerTekrissHiveControlCD				= mod:NewNextTimer(98.7, 307213, nil, nil, nil, 6, nil, nil, nil, 1, 5)
 local timerKazirsHiveControlCD				= mod:NewNextTimer(98.7, 307201, nil, nil, nil, 6, nil, nil, nil, 1, 5)
-local timerDarkReconCast					= mod:NewNextTimer(10, 307569, nil, nil, nil, 5, nil, DBM_CORE_DAMAGE_ICON, nil, 1, 5)
+local timerDarkReconCast					= mod:NewNextTimer(10, 307569, nil, nil, nil, 5, nil, DBM_CORE_DAMAGE_ICON, nil, 3, 4)
 --Ka'zir
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20710))
 local timerVolatileEruptionCD				= mod:NewNextTimer(84, 307583, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
@@ -68,8 +68,8 @@ local timerFlyerSwarmCD						= mod:NewNextTimer(120, 312710, nil, nil, nil, 1, n
 --Tek'ris
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20713))
 local timerAcceleratedEvolutionCD			= mod:NewNextTimer(84, 307637, nil, nil, nil, 3, nil, DBM_CORE_TANK_ICON)
-local timerNullificationBlastCD				= mod:NewNextTimer(84, 307968, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
-local timerEchoingVoidCD					= mod:NewNextTimer(84, 307232, nil, nil, nil, 2)
+local timerNullificationBlastCD				= mod:NewNextTimer(84, 307968, nil, "Tank", 2, 5, nil, DBM_CORE_TANK_ICON)
+local timerEchoingVoidCD					= mod:NewNextTimer(84, 307232, nil, nil, nil, 2, nil, nil, nil, 3, 4)
 local timerDronesCD							= mod:NewNextTimer(120, 312868, nil, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON)
 
 --local berserkTimer						= mod:NewBerserkTimer(600)

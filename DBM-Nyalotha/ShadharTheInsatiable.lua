@@ -6,8 +6,8 @@ mod:SetCreatureID(157231)
 mod:SetEncounterID(2335)
 mod:SetZone()
 mod:SetUsedIcons(4, 3, 2, 1)
-mod:SetHotfixNoticeRev(20200126000000)--2020, 1, 26
-mod:SetMinSyncRevision(20200126000000)
+mod:SetHotfixNoticeRev(20200127000000)--2020, 1, 26
+mod:SetMinSyncRevision(20200127000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
@@ -59,8 +59,8 @@ local yellFixate							= mod:NewYell(307260, nil, true, 2)
 local specWarnUmbralEruption				= mod:NewSpecialWarningDodge(308157, false, nil, 2, 2, 2)--Because every 8-10 seconds is excessive, let user opt in for this
 local specWarnGTFO							= mod:NewSpecialWarningGTFO(308149, nil, nil, nil, 1, 8)
 
-local timerCrushCD							= mod:NewCDTimer(25.1, 307471, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON, nil, 2, 4)
-local timerSlurryBreathCD					= mod:NewCDTimer(17, 306736, nil, nil, nil, 3, nil, nil, nil, 1, 4)
+local timerCrushCD							= mod:NewCDTimer(25.1, 307471, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON, nil, 2, 3)
+local timerSlurryBreathCD					= mod:NewCDTimer(17, 306736, nil, nil, nil, 3, nil, nil, nil, 1, 3)
 local timerDebilitatingSpitCD				= mod:NewCDTimer(30.1, 306953, nil, nil, nil, 5, nil, DBM_CORE_HEALER_ICON)
 local timerFixateCD							= mod:NewCDTimer(30.2, 307260, nil, nil, nil, 3, nil, DBM_CORE_DAMAGE_ICON)
 local timerUmbralEruptionCD					= mod:NewNextTimer(10, 308157, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
@@ -395,13 +395,11 @@ do
 	--Case and point to above issue 17.0, 17.1, 21.9, 17.0, 17.1. to get 17.1 update rate would HAVE to be less than 6 but greater than 5. About 5.85
 	function mod:UNIT_POWER_FREQUENT(uId, type)
 		local bossPower = UnitPower("boss1") --Get Boss Power
-		if bossPower > lastPower then
-			local currentRate = bossPower - lastPower
-			if currentRate ~= self.vb.bossPowerUpdateRate then
-				self.vb.bossPowerUpdateRate = currentRate
-				updateBreathTimer(self)
-			end
-		end
+		local currentRate = bossPower - lastPower
 		lastPower = bossPower
+		if currentRate > self.vb.bossPowerUpdateRate then
+			self.vb.bossPowerUpdateRate = currentRate
+			updateBreathTimer(self)
+		end
 	end
 end

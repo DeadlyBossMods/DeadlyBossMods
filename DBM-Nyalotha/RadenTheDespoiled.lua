@@ -127,6 +127,7 @@ mod:AddSetIconOption("SetIconOnVoidCollapse", 306881, true, false, {3})
 mod:AddSetIconOption("SetIconOnUnstableNightmare", 313077, true, false, {4, 5})
 mod:AddSetIconOption("SetIconOnCorruptedExistence", 316065, true, false, {6, 7, 8})
 mod:AddNamePlateOption("NPAuraOnDraws", 312750)
+mod:AddBoolOption("OnlyParentBondMoves", false)
 
 mod.vb.callEssenceCount = 0
 mod.vb.callActive = false
@@ -549,7 +550,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				self:SetIcon(args.destName, 1)
 			end
 		else--310022 one of allies tethered to primary
-			if args:IsPlayer() then
+			if args:IsPlayer() and not self.Options.OnlyParentBondMoves then
 				specWarnChargedBonds:Show(self.vb.bondsTarget)
 				specWarnChargedBonds:Play("runaway")
 			end

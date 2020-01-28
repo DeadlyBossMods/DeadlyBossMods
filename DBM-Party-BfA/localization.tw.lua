@@ -46,6 +46,21 @@ L= DBM:GetModLocalization(2102)
 -----------------------
 L= DBM:GetModLocalization(2093)
 
+L:SetWarningLocalization({
+	warnGoodBrew		= "正施放 %s: 3秒鐘",
+	specWarnBrewOnBoss	= "好酒 - 移動到 %s"
+})
+
+L:SetOptionLocalization({
+	warnGoodBrew		= "當開始施放好酒時顯示警告",
+	specWarnBrewOnBoss	= "當好酒位於首領下方時顯示特別警告"
+})
+
+L:SetMiscLocalization({
+	critBrew		= "致命酒",
+	hasteBrew		= "加速酒"
+})
+
 -----------------------
 -- Ring of Booty --
 -----------------------
@@ -334,4 +349,56 @@ L = DBM:GetModLocalization("WaycrestTrash")
 
 L:SetGeneralLocalization({
 	name =	"威奎斯特莊園小怪"
+})
+
+-----------------------
+-- <<<Operation: Mechagon>>> --
+-----------------------
+-----------------------
+-- King Gobbamak --
+-----------------------
+L= DBM:GetModLocalization(2357)
+
+-----------------------
+-- Gunker --
+-----------------------
+L= DBM:GetModLocalization(2358)
+
+-----------------------
+-- Trixie & Naeno --
+-----------------------
+L= DBM:GetModLocalization(2360)
+
+-----------------------
+-- HK-8 Aerial Oppression Unit --
+-----------------------
+L= DBM:GetModLocalization(2355)
+
+-----------------------
+-- Tussle Tonks --
+-----------------------
+L= DBM:GetModLocalization(2336)
+
+-----------------------
+-- K.U.-J.0. --
+-----------------------
+L= DBM:GetModLocalization(2339)
+
+-----------------------
+-- Machinist's Garden --
+-----------------------
+L= DBM:GetModLocalization(2348)
+
+-----------------------
+-- King Mechagon --
+-----------------------
+L= DBM:GetModLocalization(2331)
+
+---------
+--Trash--
+---------
+L = DBM:GetModLocalization("MechagonTrash")
+
+L:SetGeneralLocalization({
+	name =	"機械岡小怪"
 })
