@@ -34,6 +34,7 @@ mod:RegisterEventsInCombat(
 --TODO, verify mythic drycodes.
 --TODO, P3 spells with no detection like Stupefying Glare need scheduling
 --TODO, Need mythic stage trigger and verification of other stage handling
+--TODO, harvester timers would be more reliable with IEEU, but that can't be pulled from public logs, which is a bit more difficult since the kind of guilds that will use transcriptor tend not to get 7 of them
 --New Voice: "leavemind" and "lowsanity"
 --[[
 (ability.id = 318449 or ability.id = 311176 or ability.id = 316711 or ability.id = 310184 or ability.id = 310134 or ability.id = 310130 or ability.id = 317292 or ability.id = 310331 or ability.id = 315772 or ability.id = 309698 or ability.id = 313400 or ability.id = 308885 or ability.id = 317066 or ability.id = 318196 or ability.id = 316970 or ability.id = 319351 or ability.id = 319350 or ability.id = 319349 or ability.id = 318460 or ability.id = 312782) and type = "begincast"
@@ -207,7 +208,7 @@ local stage3NormalTimers = {
 	--Eternal Torment
 	[318449] = {32.8, 70.9, 10.9, 34.1, 60.7, 10.5, 33.2},
 	--Thought Harvester spawns
-	[316711] = {21.1, 25.5, 45.3, 31.2, 35.2, 37.7, 32},
+	[316711] = {20.3, 25.5, 44.6, 31.2, 30.4, 43, 31.7},
 	--Evoke Anquish
 	[317102] = {15.3, 46.2, 31.6, 44.9, 37.7, 15.8, 51, 37.7},
 	--Stupefying Glare
@@ -215,11 +216,11 @@ local stage3NormalTimers = {
 }
 local stage3HeroicTimers = {
 	--Eternal Torment
-	[318449] = {32.8, 70.9, 10.5, 24.5, 10.9, 23.2, 11},
+	[318449] = {32.8, 70.9, 10.5, 24.5, 10.9, 23.2, 11, 23.1},--It might be that after first two casts it just alternates between 10.5 and 23.1?
 	--Thought Harvester spawns
-	[316711] = {21.1, 25.5, 42.7, 29.2, 3.6, 31.6, 3.7},
+	[316711] = {21.1, 25.5, 42.7, 29.2, 3.6, 31.6, 3.7, 30.4, 4.8},--It might be that after 3rd cast, it just alternates between 29-30 and 3.7-4.8
 	--Evoke Anquish
-	[317102] = {15.3, 45.2, 32.6, 30.6, 35.3},
+	[317102] = {15.3, 45.2, 32.6, 30.6, 35.3, 35.3},
 	--Stupefying Glare
 	[317874] = {40.5, 67.5},
 }
@@ -233,6 +234,9 @@ mod.vb.harvestThoughtsCount = 0
 mod.vb.harvestersAlive = 0
 mod.vb.paranoiaCount = 0
 mod.vb.stupefyingGlareCount = 0
+local lastHarvesterTime = 0
+local debugSpawnTable = {}
+local harvesterDebugTriggered = 0
 
 local function warnParanoiaTargets()
 	warnParanoia:Show(table.concat(ParanoiaTargets, "<, >"))
@@ -289,6 +293,9 @@ function mod:OnCombatStart(delay)
 	self.vb.paranoiaCount = 0
 	self.vb.stupefyingGlareCount = 0
 	self.vb.egoCount = 0
+	lastHarvesterTime = 0
+	table.wipe(debugSpawnTable)
+	harvesterDebugTriggered = 0
 	if self:IsMythic() then
 		self.vb.phase = 1
 		--Assumptions from phase 2 start timers for non mythic
@@ -328,6 +335,10 @@ function mod:OnCombatEnd()
 	--if self.Options.NPAuraOnShock then
 	--	DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
 	--end
+	--We either collected a new timer in which case we want user to report it, or we're running debug code which means we just want to see data regardless
+	if DBM.Options.DebugMode or harvesterDebugTriggered == 2 then
+		DBM:AddMsg("New Harvester Spawn Timers collected. If you see this message, Please report these numbers and raid difficulty to DBM author: " .. table.concat(debugSpawnTable, ", "))
+	end
 end
 
 function mod:OnTimerRecovery()
@@ -352,21 +363,20 @@ function mod:SPELL_CAST_START(args)
 		timerVoidGazeCD:Start(14.7)
 	elseif spellId == 316711 then
 		timerMindwrackCD:Start(4.9, args.sourceGUID)
+		--Backup, if they have a pile of harvesters the game might run out of boss unit IDs and not assign one
 		if (args:GetSrcCreatureID() == 162933) and not seenAdds[args.sourceGUID] then
 			seenAdds[args.sourceGUID] = true
-			if self:AntiSpam(3, 11) then
-				self.vb.harvesterCount = self.vb.harvesterCount + 1
-				self.vb.harvestersAlive = self.vb.harvestersAlive + 1
-				if self.Options.SpecWarnej21308switch then
-					specWarnThoughtHarvester:Show()
-					specWarnThoughtHarvester:Play("killmob")
-				else
-					warnThoughtHarvester:Show()
-				end
-				local timer = self:IsHard() and stage3HeroicTimers[316711][self.vb.harvesterCount+1] or self:IsEasy() and stage3NormalTimers[316711][self.vb.harvesterCount+1]
-				if timer then
-					timerThoughtHarvesterCD:Start(timer, self.vb.harvesterCount+1)
-				end
+			self.vb.harvesterCount = self.vb.harvesterCount + 1
+			self.vb.harvestersAlive = self.vb.harvestersAlive + 1
+			if self.Options.SpecWarnej21308switch then
+				specWarnThoughtHarvester:Show()
+				specWarnThoughtHarvester:Play("killmob")
+			else
+				warnThoughtHarvester:Show()
+			end
+			local timer = self:IsHard() and stage3HeroicTimers[316711][self.vb.harvesterCount+1] or self:IsEasy() and stage3NormalTimers[316711][self.vb.harvesterCount+1]
+			if timer then
+				timerThoughtHarvesterCD:Start(timer, self.vb.harvesterCount+1)
 			end
 		else--Not thought harvester, actually interruptable
 			if self:CheckInterruptFilter(args.sourceGUID, false, true) then
@@ -462,6 +472,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.harvestersAlive = 0
 		self.vb.harvestThoughtsCount = 0
 		self.vb.evokeAnguishCount = 0
+		lastHarvesterTime = GetTime()
 		timerMindgraspCD:Stop()--Shouldn't even be running but just in case
 		timerMindgateCD:Stop()
 		timerParanoiaCD:Stop()
@@ -730,6 +741,26 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 				timerMindwrackCD:Start(6)
 				timerCreepingAnguishCD:Start(12)
 				--self:SendSync("PsychusEngaged")--He doesn't create a boss frame for players not in mind so we need to sync event
+			elseif cid == 162933 and not seenAdds[GUID] then--Thought Harvester
+				seenAdds[GUID] = true
+				self.vb.harvesterCount = self.vb.harvesterCount + 1
+				self.vb.harvestersAlive = self.vb.harvestersAlive + 1
+				if self.Options.SpecWarnej21308switch then
+					specWarnThoughtHarvester:Show()
+					specWarnThoughtHarvester:Play("killmob")
+				else
+					warnThoughtHarvester:Show()
+				end
+				local timer = self:IsHard() and stage3HeroicTimers[316711][self.vb.harvesterCount+1] or self:IsEasy() and stage3NormalTimers[316711][self.vb.harvesterCount+1]
+				if timer then
+					timerThoughtHarvesterCD:Start(timer, self.vb.harvesterCount+1)
+				else
+					--incriment because at only harvesterDebugTriggered = 1 it just means we ran out of timers to show, but we haven't collected a new timer until we've incrimented this twice
+					harvesterDebugTriggered = harvesterDebugTriggered + 1
+				end
+				local currentTime = GetTime() - lastHarvesterTime
+				debugSpawnTable[self.vb.harvesterCount] = math.floor(currentTime*10)/10--Floored but only after trying to preserve at least one decimal place
+				lastHarvesterTime = GetTime()
 			end
 		end
 	end
