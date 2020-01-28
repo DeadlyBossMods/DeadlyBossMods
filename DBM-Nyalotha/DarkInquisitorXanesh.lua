@@ -56,7 +56,7 @@ local berserkTimer							= mod:NewBerserkTimer(600)
 
 --mod:AddRangeFrameOption(6, 264382)
 mod:AddInfoFrameOption(312406, true)
-mod:AddSetIconOption("SetIconOnVoidWoken", 312406, true, false, {1, 2, 3})
+mod:AddSetIconOption("SetIconOnVoidWoken2", 312406, false, false, {1, 2, 3})
 mod:AddSetIconOption("SetIconOnAdds", "ej21227", true, true, {4, 5, 6, 7, 8})
 
 mod.vb.ritualCount = 0
@@ -208,7 +208,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if not tContains(voidWokenTargets, args.destName) then
 			table.insert(voidWokenTargets, args.destName)
 		end
-		if self.Options.SetIconOnVoidWoken then
+		if self.Options.SetIconOnVoidWoken2 then
 			self:SetIcon(args.destName, #voidWokenTargets)
 		end
 	elseif spellId == 314179 then
@@ -240,7 +240,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 312406 then
 		tDeleteItem(voidWokenTargets, args.destName)
-		if self.Options.SetIconOnVoidWoken then
+		if self.Options.SetIconOnVoidWoken2 then
 			self:SetIcon(args.destName, 0)
 		end
 	end

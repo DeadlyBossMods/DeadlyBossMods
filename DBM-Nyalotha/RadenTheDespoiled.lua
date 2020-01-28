@@ -13,7 +13,7 @@ mod:SetMinSyncRevision(20191109000000)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 306865 306866 313213 310003 309985 317276",
+	"SPELL_CAST_START 306865 306866 313213 310003 309985 317276 306874",
 	"SPELL_CAST_SUCCESS 310019 313213 306603 316913 306819",
 	"SPELL_SUMMON 306866 314484",
 	"SPELL_AURA_APPLIED 312750 306090 306168 306732 306733 312996 306257 306279 306819 313227 309852 306207 306273 313077 315252 316065 310019 310022",
@@ -97,7 +97,7 @@ local timerCallCracklingStalkerCD			= mod:NewCDTimer(30.1, 306865, nil, nil, nil
 local timerUnstableVita						= mod:NewTargetTimer(5, 306257, nil, nil, nil, 5)
 ------Vita Add
 --mod:AddTimerLine(DBM:EJ_GetSectionInfo(20546))
---local timerChainLightningCD					= mod:NewCDTimer(4.8, 306874, nil, nil, nil, 3)
+local timerChainLightningCD					= mod:NewCDTimer(4.8, 306874, nil, nil, nil, 3)
 ----Nightmare
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20529))
 local timerCallVoidHunterCD					= mod:NewCDTimer(30.1, 306866, nil, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON)
@@ -134,6 +134,7 @@ mod.vb.callActive = false
 mod.vb.currentVita = nil
 mod.vb.lastHighest = "^^ No DBM"
 mod.vb.lastIcon = 1
+mod.vb.lastMythicIcon = 4
 mod.vb.unstableVoidCount = 0
 mod.vb.voidEruptionCount = 0
 mod.vb.currentNightmare = nil
@@ -233,9 +234,13 @@ do
 			end
 		elseif msg == "NightmareUpdate" and target then
 			target = Ambiguate(target, "None")--in cross realm situations, an off realmer would send -realmname on units for units for our realm, we need to correct this
-			self.vb.lastClosest = target
+			self.vb.lastLowest = target
 			if self.Options.SetIconOnUnstableNightmare then
-				self:SetIcon(self.vb.lastClosest, 5, 5)
+				if self.vb.lastMythicIcon == 5 then
+					self:SetIcon(self.vb.lastLowest, 4, 4.5)
+				else
+					self:SetIcon(self.vb.lastLowest, 5, 4.5)
+				end
 			end
 		end
 	end
@@ -263,7 +268,7 @@ do
 		--Unstable Nightmare Tracker
 		if mod.vb.currentNightmare then
 			addLine(unstableNightmare, mod.vb.currentNightmare)
-			addLine(L.Closest, mod.vb.lastClosest)
+			addLine(L.Closest, mod.vb.lastLowest)
 		end
 		--Vulnerability
 		if #ExposureTargets > 0 then
@@ -310,6 +315,7 @@ function mod:OnCombatStart(delay)
 	self.vb.currentVita = nil
 	self.vb.lastHighest = "^^ No DBM"
 	self.vb.lastIcon = 1
+	self.vb.lastMythicIcon = 4
 	self.vb.voidEruptionCount = 0
 	self.vb.currentNightmare = nil
 	self.vb.lastLowest = "^^ No DBM"
@@ -388,6 +394,8 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 317276 then
 		self.vb.corruptedExistenceIcon = 6
 		timerCorruptedExistenceCD:Start()
+	elseif spellId == 306874 then
+		timerChainLightningCD:Start(4.8, args.sourceGUID)
 	end
 end
 
@@ -441,26 +449,24 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerCallNightTerrorCD:Start(7.2)
 	elseif spellId == 306207 or spellId == 306273 then--Unstable Vita (Initial, hop)
 		self.vb.currentVita = args.destName
-		if self.Options.SetIconOnUnstableVita then
-			--vita marking uses circle and star. Here are Rules
-			--1. First icon used is star on initial vita application
-			--2. Circle will be set on furthest target
-			--3. When Vita jumps, IF it jumpsto the target that had circle, that target will KEEP circle
-			--But if it jumps to someone that wasn't circle, it'll reset back to rule 1, starting at star.
-			--4. if the 3 step was aple to keep circle on new vita target, then star will now be icon set on furthest target.
-			--5. So long as the jumps go to targets DBM estimated it'll continue doing 3 and 4 but with appropriate icon.
-			if self.vb.lastHighest == args.destName then
-				if self.vb.lastIcon == 1 then
-					self:SetIcon(args.destName, 2)
-					self.vb.lastIcon = 2
-				else
-					self:SetIcon(args.destName, 1)
-					self.vb.lastIcon = 1
-				end
-			else--Reset icons because vita didn't go where it was expected to or this is initial application
-				self:SetIcon(args.destName, 1)
+		--vita marking uses circle and star. Here are Rules
+		--1. First icon used is star on initial vita application
+		--2. Circle will be set on furthest target
+		--3. When Vita jumps, IF it jumpsto the target that had circle, that target will KEEP circle
+		--But if it jumps to someone that wasn't circle, it'll reset back to rule 1, starting at star.
+		--4. if the 3 step was aple to keep circle on new vita target, then star will now be icon set on furthest target.
+		--5. So long as the jumps go to targets DBM estimated it'll continue doing 3 and 4 but with appropriate icon.
+		if self.vb.lastHighest == args.destName then
+			if self.vb.lastIcon == 1 then
+				self.vb.lastIcon = 2
+			else
 				self.vb.lastIcon = 1
 			end
+		else--Reset icons because vita didn't go where it was expected to or this is initial application
+			self.vb.lastIcon = 1
+		end
+		if self.Options.SetIconOnUnstableVita then
+			self:SetIcon(args.destName, self.vb.lastIcon)
 		end
 		self.vb.lastHighest = "^^ No DBM"
 		if args:IsPlayer() then
@@ -476,6 +482,18 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerUnstableVita:Start(self:IsMythic() and 6 or 7, args.destName)
 	elseif spellId == 313077 then--Unstable Nightmare
 		self.vb.currentNightmare = args.destName
+		if self.vb.lastLowest == args.destName then
+			if self.vb.lastMythicIcon == 4 then
+				self.vb.lastMythicIcon = 5
+			else
+				self.vb.lastMythicIcon = 4
+			end
+		else--Reset icons because nightmare didn't go where it was expected to or this is initial application
+			self.vb.lastMythicIcon = 4
+		end
+		if self.Options.SetIconOnUnstableNightmare then
+			self:SetIcon(args.destName, self.vb.lastMythicIcon)
+		end
 		self.vb.lastLowest = "^^ No DBM"
 		if args:IsPlayer() then
 			playerHasNightmare = true
@@ -486,9 +504,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			closestPlayerScanner(self)
 		else
 			warnUnstableNightmare:Show(args.destName)
-		end
-		if self.Options.SetIconOnUnstableNightmare then
-			self:SetIcon(args.destName, 4)
 		end
 	elseif spellId == 306279 then
 		if args:IsPlayer() then
@@ -646,6 +661,7 @@ function mod:UNIT_DIED(args)
 	if cid == 157366 then--void-hunter
 		timerVoidCollapseCD:Stop(args.destGUID)
 	elseif cid == 157365 then--crackling-stalker
+		timerChainLightningCD:Stop(args.destGUID)
 		if self.Options.RangeFrame then
 			if self:IsMythic() and self.vb.callActive then
 				DBM.RangeCheck:Show(5)
