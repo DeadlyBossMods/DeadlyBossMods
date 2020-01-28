@@ -73,6 +73,10 @@ L= DBM:GetModLocalization(2370)
 ---------------------------
 L= DBM:GetModLocalization(2364)
 
+L:SetOptionLocalization({
+	OnlyParentBondMoves		= "只有當你是帶電者時才顯示電鍊連結的特別警告"
+})
+
 L:SetMiscLocalization({
 	Furthest	= "最遠的目標",
 	Closest		= "最近的目標"
@@ -103,7 +107,7 @@ L= DBM:GetModLocalization(2366)
 L= DBM:GetModLocalization(2375)
 
 L:SetMiscLocalization({
-	ExitMind		= "離開神思",
+	ExitMind		= "離開精神世界",
 	Away			  = "遠離",
 	Toward			= "向前"
 })
