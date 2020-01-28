@@ -116,9 +116,14 @@ function mod:OnCombatStart(delay)
 	if self:IsHard() then
 		timerSummonRitualObeliskCD:Start(12-delay, 1)
 	end
-	timerSoulFlayCD:Start(18.5-delay)--SUCCESS
 	timerAbyssalStrikeCD:Start(32.9-delay)--SUCCESS
-	timerVoidRitualCD:Start(61.8-delay, 1)
+	if self:IsMythic() then
+		timerVoidRitualCD:Start(18.1-delay, 1)
+		timerSoulFlayCD:Start(24.9-delay)--SUCCESS
+	else
+		timerSoulFlayCD:Start(18.5-delay)--SUCCESS
+		timerVoidRitualCD:Start(61.8-delay, 1)
+	end
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(OVERVIEW)
 		DBM.InfoFrame:Show(8, "function", updateInfoFrame, false, false)
