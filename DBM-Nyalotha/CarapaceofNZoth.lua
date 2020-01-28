@@ -87,7 +87,7 @@ local timerAdaptiveMembraneCD				= mod:NewCDTimer(27.7, 306990, nil, nil, nil, 5
 local timerAdaptiveMembrane					= mod:NewBuffActiveTimer(12, 306990, nil, false, 2, 5, nil, DBM_CORE_DAMAGE_ICON)
 local timerMentalDecayCD					= mod:NewCDTimer(21, 313364, nil, nil, nil, 3)
 local timerGrowthCoveredTentacleCD			= mod:NewNextCountTimer(60, 307131, nil, nil, nil, 1, nil, nil, nil, 1, 3)
-local timerMandibleSlamCD					= mod:NewCDTimer(12.7, 306990, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON, nil, 2, 3)--12.7
+local timerMandibleSlamCD					= mod:NewCDTimer(12.7, 315947, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON, nil, 2, 3)--12.7
 ----Adds
 local timerGazeofMadnessCD					= mod:NewCDCountTimer(58, "ej20565", nil, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON)
 --Stage 2: Subcutaneous Tunnel
