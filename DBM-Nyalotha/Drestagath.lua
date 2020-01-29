@@ -71,7 +71,7 @@ local timerVoidGlareCD						= mod:NewCDTimer(45, 310406, nil, nil, nil, 3)
 local berserkTimer							= mod:NewBerserkTimer(600)
 
 mod:AddRangeFrameOption("18/4")--Sadly, choices are 13 or 18, 13 too small so have to round 15 up to 18
-mod:AddInfoFrameOption(275270, false)
+mod:AddInfoFrameOption(308377, false)
 mod:AddSetIconOption("SetIconOnVolatileSeed", 310277, true, false, {1})
 mod:AddNamePlateOption("NPAuraOnVolatileCorruption", 312595)
 
