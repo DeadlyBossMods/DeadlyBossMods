@@ -44,7 +44,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 159409 and self:AntiSpam(5, 1) then
 		specWarnDreadWind:Show()
 		specWarnDreadWind:Play("watchstep")
-	elseif spellId == 315932 and self:AntiSpam(5, 1) then
+	elseif spellId == 315932 and self:AntiSpam(3, 1) then
 		specWarnBrutalSmash:Show()
 		specWarnBrutalSmash:Play("watchstep")
 	elseif spellId == 311544 and self:AntiSpam(5, 1) then
@@ -57,7 +57,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnFeartheVoid:Show()
 		specWarnFeartheVoid:Play("fearsoon")
 	elseif (spellId == 307403 or spellId == 306982) and self:AntiSpam(3, args.sourceName) then--Enemy, Player
-		specWarnAnnihilation:CombinedShow(args.sourceName)
+		specWarnAnnihilation:Show(args.sourceName)
 		specWarnAnnihilation:Play("shockwave")
 	elseif spellId == 310839 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnDirgefromBelow:Show(args.sourceName)
