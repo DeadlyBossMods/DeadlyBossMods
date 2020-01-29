@@ -66,7 +66,7 @@ local yellDrainEssenceFades					= mod:NewShortFadesYell(314993)
 --Stage One: Obsidian Destroyer
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20594))
 local timerDevourMagicCD					= mod:NewCDTimer(22, 307805, nil, nil, nil, 3)
-local timerStygianAnnihilationCD			= mod:NewCDTimer(55.3, 308044, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON, nil, 1, 4)
+local timerStygianAnnihilationCD			= mod:NewCDTimer(55.3, 308044, 307421, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON, nil, 1, 4)
 local timerBlackWingsCD						= mod:NewCDTimer(20.6, 305663, nil, nil, nil, 3)--20-30
 local timerShadowClawsCD					= mod:NewCDTimer(12.3, 310129, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerDarkManifestationCD				= mod:NewCDCountTimer(35.2, 308903, nil, nil, nil, 1, nil, DBM_CORE_TANK_ICON)

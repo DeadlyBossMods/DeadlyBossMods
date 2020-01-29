@@ -61,14 +61,14 @@ local timerKazirsHiveControlCD				= mod:NewNextTimer(98.7, 307201, nil, nil, nil
 local timerDarkReconCast					= mod:NewNextTimer(10, 307569, nil, nil, nil, 5, nil, DBM_CORE_DAMAGE_ICON, nil, 3, 4)
 --Ka'zir
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20710))
-local timerVolatileEruptionCD				= mod:NewNextCountTimer(84, 307583, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
+local timerVolatileEruptionCD				= mod:NewNextCountTimer(84, 307583, 155037, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
 local timerSpawnAcidicAqirCD				= mod:NewNextCountTimer(84, 310340, nil, nil, nil, 3)
-local timerMindNumbingNovaCD				= mod:NewNextCountTimer(7.3, 313652, nil, "HasInterrupt", nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
+local timerMindNumbingNovaCD				= mod:NewNextCountTimer(7.3, 313652, 242396, "HasInterrupt", nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
 local timerFlyerSwarmCD						= mod:NewNextCountTimer(120, 312710, nil, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON)
 --Tek'ris
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20713))
-local timerAcceleratedEvolutionCD			= mod:NewNextCountTimer(84, 307637, nil, nil, nil, 3, nil, DBM_CORE_TANK_ICON)
-local timerNullificationBlastCD				= mod:NewNextCountTimer(84, 307968, nil, "Tank", 2, 5, nil, DBM_CORE_TANK_ICON)
+local timerAcceleratedEvolutionCD			= mod:NewNextCountTimer(84, 307637, 75610, nil, nil, 3, nil, DBM_CORE_TANK_ICON)
+local timerNullificationBlastCD				= mod:NewNextCountTimer(84, 307968, 158259, "Tank", 2, 5, nil, DBM_CORE_TANK_ICON)
 local timerEchoingVoidCD					= mod:NewNextCountTimer(84, 307232, nil, nil, nil, 2, nil, nil, nil, 3, 4)
 local timerDronesCD							= mod:NewNextCountTimer(120, 312868, nil, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON)
 

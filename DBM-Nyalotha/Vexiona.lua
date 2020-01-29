@@ -76,7 +76,7 @@ local specWarnVoidBolt						= mod:NewSpecialWarningInterrupt(307177, "HasInterru
 ----Stage 1: Cult of the Void
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20661))
 local timerEncroachingShadowsCD				= mod:NewCDTimer(14.6, 307314, nil, nil, nil, 3)
-local timerTwilightBreathCD					= mod:NewCDTimer(14.8, 307020, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON, nil, 2, 3)--14.8-20.0
+local timerTwilightBreathCD					= mod:NewCDTimer(14.8, 307020, 18620, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON, nil, 2, 3)--14.8-20.0
 local timerDespairCD						= mod:NewCDTimer(35.2, 307359, nil, nil, nil, 5, nil, DBM_CORE_HEALER_ICON)--35.2-36.4
 local timerShatteredResolve					= mod:NewTargetTimer(6, 307371, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
 local timerDarkGatewayCD					= mod:NewCDCountTimer(33.2, 307057, nil, nil, nil, 1, nil, nil, nil, 1, 4)
@@ -84,7 +84,7 @@ local timerDarkGatewayCD					= mod:NewCDCountTimer(33.2, 307057, nil, nil, nil, 
 local timerNoEscapeCD						= mod:NewCDCountTimer(11, 316437, nil, nil, nil, 3, nil, DBM_CORE_MYTHIC_ICON)
 ----Stage 2: Death From Above
 --mod:AddTimerLine(DBM:EJ_GetSectionInfo(20667))
-local timerTwilightDecimatorCD				= mod:NewNextCountTimer(12.2, 307218, nil, nil, nil, 3)
+local timerTwilightDecimatorCD				= mod:NewNextCountTimer(12.2, 307218, 125030, nil, nil, 3)--Deep Breath shorttext
 ----Stage 3: The Void Unleashed
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20669))
 local timerHeartofDarknessCD				= mod:NewCDCountTimer(31.6, 307639, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON, nil, 1, 4)
