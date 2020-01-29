@@ -51,12 +51,12 @@ local specWarnMutteringsofInsanity			= mod:NewSpecialWarningTarget(310358, nil, 
 local yellMutteringsofInsanity				= mod:NewFadesYell(310358)
 local specWarnVoidGlare						= mod:NewSpecialWarningDodge(310406, nil, nil, nil, 3, 2)
 --Eye of Drest'agath
-local specWarnErrantBlast					= mod:NewSpecialWarningDodge(308953, false, nil, 2, 2, 2)--For mythic
+local specWarnErrantBlast					= mod:NewSpecialWarningDodge(308953, false, nil, 2, 2, 2, 4)--For mythic
 local specWarnMindFlay						= mod:NewSpecialWarningInterrupt(310552, "HasInterrupt", nil, nil, 1, 2)
 --Tentacle of Drest'agath
-local specWarnTentacleSlam					= mod:NewSpecialWarningDodge(308995, false, nil, 2, 2, 2)--For mythic
+local specWarnTentacleSlam					= mod:NewSpecialWarningDodge(308995, false, nil, 2, 2, 2, 4)--For mythic
 --Maw of Dresta'gath
-local specWarnSpineEruption					= mod:NewSpecialWarningDodge(310078, false, nil, 2, 2, 2)--For mythic
+local specWarnSpineEruption					= mod:NewSpecialWarningDodge(310078, false, nil, 2, 2, 2, 4)--For mythic
 local specWarnMutteringsofBetrayal			= mod:NewSpecialWarningStack(310563, nil, 3, nil, nil, 1, 6)
 --local specWarnGTFO						= mod:NewSpecialWarningGTFO(270290, nil, nil, nil, 1, 8)
 

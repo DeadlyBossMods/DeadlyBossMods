@@ -57,7 +57,7 @@ local specWarnDespairOther					= mod:NewSpecialWarningTarget(307359, "Healer", n
 local specWarnDarkGateway					= mod:NewSpecialWarningSwitchCount(307057, "-Healer", nil, nil, 1, 2)
 local specWarnGTFO							= mod:NewSpecialWarningGTFO(307343, nil, nil, nil, 1, 8)
 ----Iron-Willed Enforcer
-local specWarnBrutalSmash					= mod:NewSpecialWarningDodge(315932, false, nil, 2, 2, 2)--May feel spammy if multiple adds are up so elect in instead of out
+local specWarnBrutalSmash					= mod:NewSpecialWarningDodge(315932, false, nil, 2, 2, 2, 4)--May feel spammy if multiple adds are up so elect in instead of out
 ----Stage 2: Death From Above
 local specWarnTwilightDecimator				= mod:NewSpecialWarningDodgeCount(307218, nil, nil, nil, 2, 2)
 ----Stage 3: The Void Unleashed

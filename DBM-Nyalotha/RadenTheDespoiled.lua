@@ -77,10 +77,10 @@ local specWarnVoidCollapse					= mod:NewSpecialWarningYou(306881, nil, nil, nil,
 local yellVoidCollapse						= mod:NewYell(306881, nil, nil, nil, "YELL")
 local yellVoidCollapseFades					= mod:NewShortFadesYell(306881, nil, nil, nil, "YELL")
 ----Nightmare
-local specWarnUnstableNightmare				= mod:NewSpecialWarningYou(313077, nil, nil, nil, 3, 2)
+local specWarnUnstableNightmare				= mod:NewSpecialWarningYou(313077, nil, nil, nil, 3, 2, 4)
 local yellUnstableNightmare					= mod:NewYell(313077)
 local yellUnstableNightmareFades			= mod:NewShortFadesYell(313077)
-local specWarnCallNightTerror				= mod:NewSpecialWarningSwitch("ej21176", "-Healer", nil, nil, 1, 2)
+local specWarnCallNightTerror				= mod:NewSpecialWarningSwitch("ej21176", "-Healer", nil, nil, 1, 2, 4)
 ------Night Terror
 local specWarnDreadInferno					= mod:NewSpecialWarningYou(315252, nil, nil, nil, 1, 2)
 local yellDreadInferno						= mod:NewYell(315252)
@@ -89,7 +89,7 @@ local specWarnDecayingStrike				= mod:NewSpecialWarningDefensive(313213, nil, ni
 local specWarnChargedBonds					= mod:NewSpecialWarningMoveAwayCount(310019, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.moveaway:format(310019), nil, 3, 2)
 local yellChargedBonds						= mod:NewYell(310019)
 local specWarnDecayingWoundTaunt			= mod:NewSpecialWarningTaunt(313227, nil, nil, nil, 1, 2)
-local specWarnCorruptedExistence			= mod:NewSpecialWarningYou(316065, nil, nil, nil, 3, 2)--Mythic Only
+local specWarnCorruptedExistence			= mod:NewSpecialWarningYou(316065, nil, nil, nil, 3, 2, 4)--Mythic Only
 --local yellCorruptedExistence				= mod:NewYell(316065)
 
 --Stage 1: Gathering Power

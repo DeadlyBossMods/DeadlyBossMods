@@ -49,7 +49,7 @@ local yellIncineration						= mod:NewYell(306111)
 local yellIncinerationFades					= mod:NewShortFadesYell(306111)
 local specWarnGaleBlast						= mod:NewSpecialWarningDodgeCount(306289, nil, nil, nil, 2, 2)
 local specWarnBurningCataclysm				= mod:NewSpecialWarningCount(306735, nil, nil, nil, 2, 2)
-local specWarnCreepingMadness				= mod:NewSpecialWarningStack(313250, nil, 32, nil, nil, 1, 2)
+local specWarnCreepingMadness				= mod:NewSpecialWarningStack(313250, nil, 32, nil, nil, 1, 2, 4)
 local specWarnGTFO							= mod:NewSpecialWarningGTFO(306824, nil, nil, nil, 1, 8)
 --Stage Two: Smoke and Mirrors
 local warnSpawnAdds							= mod:NewSpellAnnounce(312389, 2)

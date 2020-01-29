@@ -127,9 +127,9 @@ local specWarnStupefyingGlare				= mod:NewSpecialWarningDodgeCount(317874, nil, 
 local specWarnThoughtHarvester				= mod:NewSpecialWarningSwitch("ej21308", false, nil, nil, 1, 2)
 local specWarnHarvestThoughts				= mod:NewSpecialWarningCount(317066, nil, nil, nil, 2, 2)
 --Stage 3 Mythic
-local specWarnEventHorizon					= mod:NewSpecialWarningDefensive(318196, nil, nil, nil, 1, 2)
-local specWarnEventHorizonSwap				= mod:NewSpecialWarningTaunt(318196, nil, nil, nil, 1, 2)
-local specWarnAnnihilate					= mod:NewSpecialWarningMoveAway(318459, nil, nil, nil, 1, 2)
+local specWarnEventHorizon					= mod:NewSpecialWarningDefensive(318196, nil, nil, nil, 1, 2, 4)
+local specWarnEventHorizonSwap				= mod:NewSpecialWarningTaunt(318196, nil, nil, nil, 1, 2, 4)
+local specWarnAnnihilate					= mod:NewSpecialWarningMoveAway(318459, nil, nil, nil, 1, 2, 4)
 local yellAnnihilate						= mod:NewYell(318459)
 local yellAnnihilateFades					= mod:NewShortFadesYell(318459)
 

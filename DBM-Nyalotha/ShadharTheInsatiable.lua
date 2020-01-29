@@ -50,7 +50,7 @@ local warnEntropicBuildup					= mod:NewCountAnnounce(308177, 2)
 local warnEntropicBreath					= mod:NewSpellAnnounce(306930, 2, nil, "Tank")
 local warnTastyMorsel						= mod:NewTargetNoFilterAnnounce(312099, 1)
 
-local specWarnUncontrollablyRavenous		= mod:NewSpecialWarningSpell(312329, nil, nil, nil, 3, 2)--Mythic
+local specWarnUncontrollablyRavenous		= mod:NewSpecialWarningSpell(312329, nil, nil, nil, 3, 2, 4)--Mythic
 local specWarnCrushTaunt					= mod:NewSpecialWarningTaunt(307471, nil, nil, nil, 3, 2)
 local specWarnDissolveTaunt					= mod:NewSpecialWarningTaunt(307472, nil, nil, nil, 1, 2)
 local specWarnSlurryBreath					= mod:NewSpecialWarningDodge(306736, nil, nil, nil, 2, 2)
