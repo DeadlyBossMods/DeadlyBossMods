@@ -51,12 +51,12 @@ local specWarnMutteringsofInsanity			= mod:NewSpecialWarningTarget(310358, nil, 
 local yellMutteringsofInsanity				= mod:NewFadesYell(310358)
 local specWarnVoidGlare						= mod:NewSpecialWarningDodge(310406, nil, nil, nil, 3, 2)
 --Eye of Drest'agath
---local specWarnErrantBlast					= mod:NewSpecialWarningDodge(308953, nil, nil, nil, 2, 2)--For mythic
+local specWarnErrantBlast					= mod:NewSpecialWarningDodge(308953, false, nil, 2, 2, 2)--For mythic
 local specWarnMindFlay						= mod:NewSpecialWarningInterrupt(310552, "HasInterrupt", nil, nil, 1, 2)
 --Tentacle of Drest'agath
---local specWarnTentacleSlam					= mod:NewSpecialWarningDodge(308995, nil, nil, nil, 2, 2)--For mythic
+local specWarnTentacleSlam					= mod:NewSpecialWarningDodge(308995, false, nil, 2, 2, 2)--For mythic
 --Maw of Dresta'gath
---local specWarnSpineEruption					= mod:NewSpecialWarningDodge(310078, nil, nil, nil, 2, 2)--For mythic
+local specWarnSpineEruption					= mod:NewSpecialWarningDodge(310078, false, nil, 2, 2, 2)--For mythic
 local specWarnMutteringsofBetrayal			= mod:NewSpecialWarningStack(310563, nil, 3, nil, nil, 1, 6)
 --local specWarnGTFO						= mod:NewSpecialWarningGTFO(270290, nil, nil, nil, 1, 8)
 
@@ -138,27 +138,32 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 310478 and self:AntiSpam(5, 5) then
 		warnObscuringCloud:Show()
 	elseif spellId == 315712 then
-		warnThroesofDismemberment:Show(args.sourceName)
-		--[[local cid = self:GetCIDFromGUID(args.sourceGUID)
+		local cid = self:GetCIDFromGUID(args.sourceGUID)
 		if cid == 157612 then--eye-of-drestagath
 			--only time this isn't synced up to Throws of Agony
-			if self:IsMythic() and self:AntiSpam(9, 2) then
+			if self:AntiSpam(9, 2) and self.Options.SpecWarn308953dodge then
 				specWarnErrantBlast:Show()
 				specWarnErrantBlast:Play("watchstep")
+			else
+				warnThroesofDismemberment:Show(args.sourceName)
 			end
 		elseif cid == 157614 then--tentacle-of-drestagath
 			--only time this isn't synced up to Throws of Agony
-			if self:IsMythic() and self:AntiSpam(5, 3) then
+			if self:AntiSpam(5, 3) and self.Options.SpecWarn308995dodge then
 				specWarnTentacleSlam:Show()
 				specWarnTentacleSlam:Play("watchstep")
+			else
+				warnThroesofDismemberment:Show(args.sourceName)
 			end
 		elseif cid == 157613 then--maw-of-drestagath
 			--only time this isn't synced up to Throws of Agony
-			if self:IsMythic() and self:AntiSpam(5, 4) then
+			if self:AntiSpam(5, 4) and self.Options.SpecWarn310078dodge then
 				specWarnSpineEruption:Show()
 				specWarnSpineEruption:Play("watchorb")
+			else
+				warnThroesofDismemberment:Show(args.sourceName)
 			end
-		end--]]
+		end
 	end
 end
 
