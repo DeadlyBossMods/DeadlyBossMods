@@ -15,9 +15,9 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 306289 306735 306995 305978",
 	"SPELL_CAST_SUCCESS 306111 306289 313253",
-	"SPELL_AURA_APPLIED 306015 306163 313250 313175 307013 314347",
+	"SPELL_AURA_APPLIED 306015 306163 313250 313175 307013 314347 309733",
 	"SPELL_AURA_APPLIED_DOSE 306015 313250",
-	"SPELL_AURA_REMOVED 306163 313175 307013 306995",
+	"SPELL_AURA_REMOVED 306163 313175 307013 306995 309733",
 	"SPELL_PERIODIC_DAMAGE 306824 307053",
 	"SPELL_PERIODIC_MISSED 306824 307053",
 --	"UNIT_DIED",
@@ -76,6 +76,7 @@ mod.vb.galeCount = 0
 mod.vb.phase = 1
 local burningMadnessTargets = {}
 local incinerateTimers = {9.1, 19.5, 44.8, 19.4, 21.9}--Lowest in the variations
+local mythicincinerateTimers = {28.6, 71.6}
 --[[
 --Pull incinerate Timers
 14, 24.7, 44.8, 19.5, 22
@@ -139,8 +140,12 @@ function mod:OnCombatStart(delay)
 	self.vb.incinerateCount = 0
 	self.vb.phase = 1
 	table.wipe(burningMadnessTargets)
-	timerSearingBreathCD:Start(7.3-delay)--7-13
-	timerIncinerationCD:Start(9.1-delay, 1)--SUCCESS
+	timerSearingBreathCD:Start(7-delay)--7-13
+	if self:IsMythic() then
+		timerIncinerationCD:Start(28.6-delay, 1)--SUCCESS
+	else
+		timerIncinerationCD:Start(9.1-delay, 1)--SUCCESS
+	end
 	timerGaleBlastCD:Start(45-delay, 1)--45-50 START
 	timerBurningCataclysmCD:Start(59.7-delay, 1)--START
 	timerSmokeandMirrorsCD:Start(155-delay)
@@ -202,7 +207,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 306111 then
 		self.vb.incinerateCount = self.vb.incinerateCount + 1
-		local timer = incinerateTimers[self.vb.incinerateCount+1]
+		local timer = self:IsMythic() and mythicincinerateTimers[self.vb.incinerateCount+1] or not self:IsMythic() and incinerateTimers[self.vb.incinerateCount+1]
 		if timer then
 			timerIncinerationCD:Start(timer, self.vb.incinerateCount+1)
 		end
@@ -255,7 +260,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.NPAuraOnHardenedCore then
 			DBM.Nameplate:Show(true, args.destGUID, spellId)
 		end
-	elseif spellId == 307013 then
+	elseif spellId == 307013 or spellId == 309733 then
 		warnBurningMadness:CombinedShow(1, args.destName)
 		if not tContains(burningMadnessTargets, args.destName) then
 			table.insert(burningMadnessTargets, args.destName)
@@ -279,7 +284,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.NPAuraOnHardenedCore then
 			DBM.Nameplate:Hide(true, args.destGUID, spellId)
 		end
-	elseif spellId == 307013 then
+	elseif spellId == 307013 or spellId == 309733 then
 		tDeleteItem(burningMadnessTargets, args.destName)
 		if self.Options.SetIconBurningMadness then
 			self:SetIcon(args.destName, 0)
@@ -292,7 +297,11 @@ function mod:SPELL_AURA_REMOVED(args)
 		warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(1))
 		warnPhase:Play("phasechange")
 		timerSearingBreathCD:Start(7.3)
-		timerIncinerationCD:Start(9.1, 1)--SUCCESS 9.1-14
+		if self:IsMythic() then
+			timerIncinerationCD:Start(28.6, 1)
+		else
+			timerIncinerationCD:Start(9.1, 1)--SUCCESS 9.1-14
+		end
 		timerGaleBlastCD:Start(45, 1)
 		timerBurningCataclysmCD:Start(59.7, 1)
 		timerSmokeandMirrorsCD:Start(155)

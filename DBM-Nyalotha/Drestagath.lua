@@ -13,10 +13,10 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 308941 310246 310329 310396",
-	"SPELL_CAST_SUCCESS 310277 310478",
-	"SPELL_AURA_APPLIED 310277 312595 310358 310361 310552 310563",
+	"SPELL_CAST_SUCCESS 310277 310478 315712",
+	"SPELL_AURA_APPLIED 310277 310358 310361 310552 310563 312595",
 	"SPELL_AURA_APPLIED_DOSE 310563",
-	"SPELL_AURA_REMOVED 310277 312595 310358",
+	"SPELL_AURA_REMOVED 310277 310358 312595",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 	"UNIT_DIED",
@@ -27,6 +27,7 @@ mod:RegisterEventsInCombat(
 --TODO, personal https://ptr.wowhead.com/spell=308377/void-infused-ichor tracker when infoframe code added
 --TODO, target scan acid splash?
 --TODO, Add spawn timers
+--TODO, all adds of same name still have same GUID, so nameplate auras and icons still not reliable. If this ever changes, nameplate aura and stuff can return
 --[[
 (ability.id = 308941 or ability.id = 310246 or ability.id = 310329 or ability.id = 310396) and type = "begincast"
  or (ability.id = 310277 or ability.id = 310478) and type = "cast"
@@ -36,9 +37,9 @@ mod:RegisterEventsInCombat(
 local warnVoidGrip							= mod:NewSpellAnnounce(310246, 2, nil, "Tank")--If Tank isn't in range of boss
 local warnVolatileSeed						= mod:NewTargetNoFilterAnnounce(310277, 2)
 local warnUnleashedInsanity					= mod:NewTargetAnnounce(310361, 4)--People stunned by muttering of Insanity
---local warnDesensitizingSting				= mod:NewStackAnnounce(298156, 2, nil, "Tank")
 --Tentacle of Drest'agath
 local warnObscuringCloud					= mod:NewSpellAnnounce(310478, 2)
+local warnThroesofDismemberment				= mod:NewTargetNoFilterAnnounce(315712, 4)
 
 --Drest'agath
 local specWarnThrowsofAgony					= mod:NewSpecialWarningDodgeCount(308941, nil, nil, nil, 2, 2)--Acts as warning for All abilities triggered at 100 Energy
@@ -50,12 +51,12 @@ local specWarnMutteringsofInsanity			= mod:NewSpecialWarningTarget(310358, nil, 
 local yellMutteringsofInsanity				= mod:NewFadesYell(310358)
 local specWarnVoidGlare						= mod:NewSpecialWarningDodge(310406, nil, nil, nil, 3, 2)
 --Eye of Drest'agath
-local specWarnErrantBlast					= mod:NewSpecialWarningDodge(308953, nil, nil, nil, 2, 2)--For mythic
+--local specWarnErrantBlast					= mod:NewSpecialWarningDodge(308953, nil, nil, nil, 2, 2)--For mythic
 local specWarnMindFlay						= mod:NewSpecialWarningInterrupt(310552, "HasInterrupt", nil, nil, 1, 2)
 --Tentacle of Drest'agath
-local specWarnTentacleSlam					= mod:NewSpecialWarningDodge(308995, nil, nil, nil, 2, 2)--For mythic
+--local specWarnTentacleSlam					= mod:NewSpecialWarningDodge(308995, nil, nil, nil, 2, 2)--For mythic
 --Maw of Dresta'gath
-local specWarnSpineEruption					= mod:NewSpecialWarningDodge(310078, nil, nil, nil, 2, 2)--For mythic
+--local specWarnSpineEruption					= mod:NewSpecialWarningDodge(310078, nil, nil, nil, 2, 2)--For mythic
 local specWarnMutteringsofBetrayal			= mod:NewSpecialWarningStack(310563, nil, 3, nil, nil, 1, 6)
 --local specWarnGTFO						= mod:NewSpecialWarningGTFO(270290, nil, nil, nil, 1, 8)
 
@@ -63,7 +64,7 @@ local specWarnMutteringsofBetrayal			= mod:NewSpecialWarningStack(310563, nil, 3
 --Drest'agath
 local timerVolatileSeedCD					= mod:NewCDTimer(16.6, 310277, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON, nil, 2, 3)--16.6-26.8 (boss has some channeled abilities, spell queuing)
 local timerEntropicCrashCD					= mod:NewCDTimer(44.3, 310329, nil, nil, nil, 2)
-local timerMutteringsofInsanityCD			= mod:NewCDTimer(46.6, 310358, nil, nil, nil, 3)--45-54, it's almost always 50.3+ but have to use the 46
+local timerMutteringsofInsanityCD			= mod:NewCDTimer(50.2, 310358, nil, nil, nil, 3)--45-60, it's almost always 50.3+ but have to use the 46
 local timerUnleashedInsanity				= mod:NewCastTimer(5, 310361, nil, nil, nil, 3)
 local timerVoidGlareCD						= mod:NewCDTimer(45, 310406, nil, nil, nil, 3)
 
@@ -136,6 +137,28 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerVolatileSeedCD:Start()
 	elseif spellId == 310478 and self:AntiSpam(5, 5) then
 		warnObscuringCloud:Show()
+	elseif spellId == 315712 then
+		warnThroesofDismemberment:Show(args.sourceName)
+		--[[local cid = self:GetCIDFromGUID(args.sourceGUID)
+		if cid == 157612 then--eye-of-drestagath
+			--only time this isn't synced up to Throws of Agony
+			if self:IsMythic() and self:AntiSpam(9, 2) then
+				specWarnErrantBlast:Show()
+				specWarnErrantBlast:Play("watchstep")
+			end
+		elseif cid == 157614 then--tentacle-of-drestagath
+			--only time this isn't synced up to Throws of Agony
+			if self:IsMythic() and self:AntiSpam(5, 3) then
+				specWarnTentacleSlam:Show()
+				specWarnTentacleSlam:Play("watchstep")
+			end
+		elseif cid == 157613 then--maw-of-drestagath
+			--only time this isn't synced up to Throws of Agony
+			if self:IsMythic() and self:AntiSpam(5, 4) then
+				specWarnSpineEruption:Show()
+				specWarnSpineEruption:Play("watchorb")
+			end
+		end--]]
 	end
 end
 
@@ -215,6 +238,8 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
+--This code probably doesn't work, do to GUID obfuscation on fight, because fight is stupid
+--[[
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 157612 then--eye-of-drestagath
@@ -238,7 +263,6 @@ function mod:UNIT_DIED(args)
 	end
 end
 
---[[
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
 	if spellId == 270290 and destGUID == UnitGUID("player") and self:AntiSpam(2, 2) then
 		specWarnGTFO:Show(spellName)
@@ -251,6 +275,6 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	--Has success event, but only if a maw-of-drestagath is up, this script runs regardless
 	if spellId == 310351 then--Mutterings of Insanity
-		timerMutteringsofInsanityCD:Start()
+		timerMutteringsofInsanityCD:Start(50.2)
 	end
 end

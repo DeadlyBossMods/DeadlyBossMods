@@ -54,8 +54,8 @@ local specWarnStygianAnnihilation			= mod:NewSpecialWarningMoveTo(308044, nil, n
 local specWarnBlackWing						= mod:NewSpecialWarningDodge(305663, nil, nil, nil, 2, 2)
 local specWarnDarkManifestation				= mod:NewSpecialWarningDodge(308903, nil, nil, nil, 2, 2)
 local specWarnAncientCurse					= mod:NewSpecialWarningYou(315025, nil, nil, nil, 1, 2)
-local yellAncientCurse						= mod:NewYell(315025)
-local yellAncientCurseFades					= mod:NewFadesYell(315025)
+local yellAncientCurse						= mod:NewYell(315025, nil, false, 2)
+local yellAncientCurseFades					= mod:NewShortFadesYell(315025)
 --Stage Two: Obsidian Statue
 local specWarnDrainEssence					= mod:NewSpecialWarningMoveAway(314993, nil, nil, nil, 1, 2)
 local yellDrainEssence						= mod:NewYell(314993, nil, false, 2)
@@ -79,7 +79,7 @@ mod:AddTimerLine(DBM:EJ_GetSectionInfo(20553))
 local timerForbiddenRitualCD				= mod:NewCDCountTimer(7, 306290, nil, "Healer", nil, 5, nil, DBM_CORE_HEALER_ICON)--6.1-8.5 (7)
 local timerDrainEssenceCD					= mod:NewCDTimer(13.8, 314993, nil, nil, nil, 5, nil, DBM_CORE_MAGIC_ICON)--13.8-15.8
 
-local berserkTimer						= mod:NewBerserkTimer(600)
+local berserkTimer							= mod:NewBerserkTimer(600)
 
 mod:AddRangeFrameOption(8, 314995)
 mod:AddInfoFrameOption(306005, true)

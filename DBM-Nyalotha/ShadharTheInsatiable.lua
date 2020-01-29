@@ -13,12 +13,12 @@ mod:SetMinSyncRevision(20200127000000)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 312528 306928 312529 306929 307260 306953 318078 312530 306930",
+	"SPELL_CAST_START 312528 306928 312529 306929 307260 306953 318078 312530 306930 307478 307476",
 	"SPELL_CAST_SUCCESS 312528 306928 312529 306929 312530 306930",
 	"SPELL_AURA_APPLIED 312328 312329 307471 307472 307358 306942 318078 308149 312099 306447 306931 306933",
-	"SPELL_AURA_APPLIED_DOSE 312328 307358",
+	"SPELL_AURA_APPLIED_DOSE 312328 307358 307471",
 	"SPELL_AURA_REMOVED 312328 307358 306447 306933 306931",
-	"SPELL_AURA_REMOVED_DOSE 312328 307358",
+	"SPELL_AURA_REMOVED_DOSE 312328 307358 307472",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 --	"CHAT_MSG_RAID_BOSS_EMOTE",
@@ -30,12 +30,13 @@ mod:RegisterEventsInCombat(
 --TODO, add tracking of tasty Morsel carriers to infoframe?
 --TODO, see if seenAdds solved the fixate timer issue, or if something else wonky still going on with it
 --[[
-(ability.id = 312528 or ability.id = 306928 or ability.id = 312529 or ability.id = 306929 or ability.id = 307260 or ability.id = 306953) and type = "begincast"
+(ability.id = 312528 or ability.id = 306928 or ability.id = 312529 or ability.id = 306929 or ability.id = 307260 or ability.id = 306953 or ability.id = 318078) and type = "begincast"
  or (ability.id = 307471 or ability.id = 312530 or ability.id = 306930) and type = "cast"
  or (ability.id = 306447 or ability.id = 306931 or ability.id = 306933) and type = "applybuff"
+ or (ability.id = 307476 or ability.id = 307478) and type = "begincast"
 --]]
 local warnHunger							= mod:NewStackAnnounce(312328, 2, nil, false, 2)--Mythic
---local warnUmbralMantle						= mod:NewSpellAnnounce(306447, 2)
+--local warnUmbralMantle					= mod:NewSpellAnnounce(306447, 2)
 local warnUmbralEruption					= mod:NewSpellAnnounce(308157, 2)
 local warnNoxiousMantle						= mod:NewSpellAnnounce(306931, 2)
 local warnBubblingOverflow					= mod:NewCountAnnounce(314736, 2)
@@ -79,6 +80,7 @@ mod.vb.bubblingCount = 0
 mod.vb.buildupCount = 0
 mod.vb.fixateCount = 0
 mod.vb.bossPowerUpdateRate = 4
+mod.vb.comboCount = 0
 local SpitStacks = {}
 local orbTimersHeroic = {4, 22, 25, 28, 21, 26}
 local orbTimersNormal = {4, 25, 25, 25, 25}
@@ -121,13 +123,24 @@ local function entropicBuildupLoop(self)
 	end
 end
 
-local function updateBreathTimer(self)
+local function updateBreathTimer(self, start)
 	--Update Breath timer
 	local bossPower = UnitPower("boss1")
+	if bossPower == 100 then--Don't start a timer if full energy
+		timerSlurryBreathCD:Stop()
+		DBM:Debug("Boss power was full, so updateBreathTimer exited with no timer update")
+		return
+	end
 	local breathTimerTotal = 100 / self.vb.bossPowerUpdateRate
 	local bossProgress = (100 - bossPower) / self.vb.bossPowerUpdateRate
 	--Using update method to both start a new timer and update an existing one because it supports both
 	timerSlurryBreathCD:Update(bossProgress, breathTimerTotal)
+	DBM:Debug("updateBreathTimer fired with: "..bossProgress..", "..breathTimerTotal)
+	--[[if start then
+		timerSlurryBreathCD:Start(breathTimerTotal)
+	else
+		timerSlurryBreathCD:Update(bossProgress, breathTimerTotal)
+	end--]]
 end
 
 function mod:SpitTarget(targetname, uId)
@@ -144,12 +157,13 @@ function mod:OnCombatStart(delay)
 	self.vb.phase = 1
 	self.vb.fixateCount = 0
 	self.vb.bossPowerUpdateRate = 4
+	self.vb.comboCount = 0
 	table.wipe(SpitStacks)
 	table.wipe(seenAdds)
 	timerDebilitatingSpitCD:Start(10.1-delay)--START
 	timerCrushCD:Start(15.1-delay)--Time til script begins
 	timerSlurryBreathCD:Start(26.1-delay)--Technically it should be 25 but there is a pause before boss begins gaining power
-	timerFixateCD:Start(self:IsMythic() and 16.1 or 31)
+	timerFixateCD:Start(self:IsMythic() and 16 or 31)
 	if self:IsHard() then
 		berserkTimer:Start(360-delay)--Heroic confirmed, normal unknown
 	end
@@ -184,17 +198,36 @@ function mod:SPELL_CAST_START(args)
 	elseif (spellId == 318078 or spellId == 307260) and not seenAdds[args.sourceGUID] and self:AntiSpam(5, 3) then
 		self.vb.fixateCount = self.vb.fixateCount + 1
 		seenAdds[args.sourceGUID] = true
-		local timer = self:IsMythic() and self.vb.fixateCount == 1 and 16.1 or 30.2
-		timerFixateCD:Start(timer)
+		timerFixateCD:Start(self:IsMythic() and 16 or 30.2)
 	elseif spellId == 306953 then
 		timerDebilitatingSpitCD:Start()
+	elseif spellId == 307478 then--Dissolve
+		if self:AntiSpam(11, 1) then
+			self.vb.comboCount = 0
+		end
+		self.vb.comboCount = self.vb.comboCount + 1
+		--Only show taunt warning if you don't have debuff and it's 2nd or 3rd cast and you aren't already tanking
+		if self.vb.comboCount >= 1 and not DBM:UnitDebuff("player", 307471) and not self:IsTanking("player", "boss1", nil, true) then--Crush
+			specWarnCrushTaunt:Show(L.name)
+			specWarnCrushTaunt:Play("tauntboss")
+		end
+	elseif spellId == 307476 then--Crush
+		if self:AntiSpam(11, 1) then
+			self.vb.comboCount = 0
+		end
+		self.vb.comboCount = self.vb.comboCount + 1
+		--Only show taunt warning if you don't have debuff and it's 2nd or 3rd cast and you aren't already tanking
+		if self.vb.comboCount >= 1 and not DBM:UnitDebuff("player", 307472) and not self:IsTanking("player", "boss1", nil, true) then--Dissolve
+			specWarnCrushTaunt:Show(L.name)
+			specWarnCrushTaunt:Play("tauntboss")
+		end
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 312528 or spellId == 306928 or spellId == 312529 or spellId == 306929 or spellId == 312530 or spellId == 306930 then--Breaths
-		updateBreathTimer(self)
+		self:Schedule(1.5, updateBreathTimer, self, true)--Delay so we do not get the boss at 100/100 energy
 	end
 end
 
@@ -206,25 +239,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnUncontrollablyRavenous:Show()
 		specWarnUncontrollablyRavenous:Play("stilldanger")
 	elseif spellId == 307471 then
-		if args:IsPlayer() then
-			warnCrush:Show(args.destName)
-		--Not dead, and the nearby tank in a 3 tank setup (or any tank in 2 tank setup)
-		elseif self:IsTank() and (self:CheckNearby(8, args.destName) or self:GetNumAliveTanks() < 3) and not UnitIsDeadOrGhost("player") then
-			specWarnCrushTaunt:Show(args.destName)
-			specWarnCrushTaunt:Play("tauntboss")
-		else
-			warnCrush:Show(args.destName)
-		end
+		warnCrush:Show(args.destName)
 	elseif spellId == 307472 then
-		if args:IsPlayer() then
-			warnDissolve:Show(args.destName)
-		--Not dead, and the nearby tank in a 3 tank setup (or any tank in 2 tank setup)
-		elseif self:IsTank() and (self:CheckNearby(8, args.destName) or self:GetNumAliveTanks() < 3) and not UnitIsDeadOrGhost("player") then
-			specWarnDissolveTaunt:Show(args.destName)
-			specWarnDissolveTaunt:Play("tauntboss")
-		else
-			warnDissolve:Show(args.destName)
-		end
+		warnDissolve:Show(args.destName)
 	elseif spellId == 307358 then
 		local amount = args.amount or 1
 		SpitStacks[args.destName] = amount
@@ -248,11 +265,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 306942 then
 		warnFrenzy:Show(args.destName)
-	elseif spellId == 318078 then
+	elseif spellId == 318078 or spellId == 307260 then
 		warnFixate:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			specWarnFixate:Show()
-			specWarnFixate:Play("justrun")
+			specWarnFixate:Play("targetyou")
 			yellFixate:Yell()
 		end
 	elseif spellId == 306447 then
@@ -399,6 +416,7 @@ do
 		lastPower = bossPower
 		if currentRate > self.vb.bossPowerUpdateRate then
 			self.vb.bossPowerUpdateRate = currentRate
+			DBM:Debug("Energy rate updated to: ".. self.vb.bossPowerUpdateRate)
 			updateBreathTimer(self)
 		end
 	end
