@@ -72,7 +72,7 @@ local specWarnEternalDarkness				= mod:NewSpecialWarningCount(307048, nil, nil, 
 local specWarnOccipitalBlast				= mod:NewSpecialWarningDodge(307092, nil, nil, nil, 2, 2)
 --Stage 3: Nightmare Chamber
 local specWarnInsanityBomb					= mod:NewSpecialWarningMoveAway(306984, nil, nil, nil, 1, 2)
-local yellInsanityBomb						= mod:NewYell(306984)
+local yellInsanityBomb						= mod:NewYell(306984, nil, false, 2)
 local yellInsanityBombFades					= mod:NewShortFadesYell(306984)
 local specWarnInfiniteDarkness				= mod:NewSpecialWarningCount(313040, nil, nil, nil, 2, 2)
 local specWarnThrashingTentacle				= mod:NewSpecialWarningCount(315820, nil, nil, nil, 2, 2)
