@@ -64,7 +64,7 @@ local specWarnMutteringsofBetrayal			= mod:NewSpecialWarningStack(310563, nil, 3
 --Drest'agath
 local timerVolatileSeedCD					= mod:NewCDTimer(16.6, 310277, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON, nil, 2, 3)--16.6-26.8 (boss has some channeled abilities, spell queuing)
 local timerEntropicCrashCD					= mod:NewCDTimer(44.3, 310329, nil, nil, nil, 2)
-local timerMutteringsofInsanityCD			= mod:NewCDTimer(46.6, 310358, nil, nil, nil, 3)--45-54, it's almost always 50.3+ but have to use the 46
+local timerMutteringsofInsanityCD			= mod:NewCDTimer(50.2, 310358, nil, nil, nil, 3)--45-60, it's almost always 50.3+ but have to use the 46
 local timerUnleashedInsanity				= mod:NewCastTimer(5, 310361, nil, nil, nil, 3)
 local timerVoidGlareCD						= mod:NewCDTimer(45, 310406, nil, nil, nil, 3)
 
@@ -252,6 +252,6 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	--Has success event, but only if a maw-of-drestagath is up, this script runs regardless
 	if spellId == 310351 then--Mutterings of Insanity
-		timerMutteringsofInsanityCD:Start()
+		timerMutteringsofInsanityCD:Start(50.2)
 	end
 end
