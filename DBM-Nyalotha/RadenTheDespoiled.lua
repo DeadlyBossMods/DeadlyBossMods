@@ -8,7 +8,7 @@ mod:SetZone()
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
 mod:SetHotfixNoticeRev(20200126000000)--2020, 1, 26
 mod:SetMinSyncRevision(20191109000000)
---mod.respawnTime = 29
+mod.respawnTime = 15
 
 mod:RegisterCombat("combat")
 
@@ -118,10 +118,10 @@ local timerDreadInfernoCD					= mod:NewCDTimer(11.7, 315252, nil, nil, nil, 3)
 --Stage 2: Unleashed Wrath
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20853))
 local timerDecayingStrikeCD					= mod:NewCDTimer(16.9, 313213, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON, nil, 2, 3)
-local timerVoidEruptionCD					= mod:NewCDTimer(18.5, 310003, nil, nil, nil, 2)--20.6-23
-local timerChargedBondsCD					= mod:NewCDTimer(10.8, 310019, nil, nil, nil, 3)--10.8-18.2
-local timerGorgeEssenceCD					= mod:NewCDTimer(29.1, 309985, nil, nil, nil, 6)
-local timerCorruptedExistenceCD				= mod:NewCDTimer(12.2, 317276, nil, nil, nil, 3, nil, DBM_CORE_MYTHIC_ICON..DBM_CORE_DEADLY_ICON)
+local timerVoidEruptionCD					= mod:NewCDTimer(19.4, 310003, nil, nil, nil, 2)--20.6-23
+local timerChargedBondsCD					= mod:NewCDCountTimer(10.2, 310019, nil, nil, nil, 3)--10.8-18.2
+local timerGorgeEssenceCD					= mod:NewCDCountTimer(29.1, 309985, nil, nil, nil, 6)
+local timerCorruptedExistenceCD				= mod:NewCDCountTimer(12.2, 317276, nil, nil, nil, 3, nil, DBM_CORE_MYTHIC_ICON..DBM_CORE_DEADLY_ICON)
 --local berserkTimer						= mod:NewBerserkTimer(600)
 
 mod:AddRangeFrameOption(6, 306874)
@@ -145,12 +145,18 @@ mod.vb.voidEruptionCount = 0
 mod.vb.currentNightmare = nil
 mod.vb.lastLowest = "^^ No DBM"
 mod.vb.corruptedExistenceIcon = 2
+mod.vb.corruptedExistenceCount = 0
+mod.vb.bondsCount = 0
 mod.vb.bondsTarget = nil
+mod.vb.gorgedCount = 0
 mod.vb.phase = 1
 local playerHasVita, playerHasNightmare = false, false
 local ExposureTargets = {}
 local consumingVoid = DBM:GetSpellInfo(306645)
 local ChargedBondsTargets = {}
+local corruptedExistence = {11.2, 13.3, 12.1, 12.1, 14.6, 12.1, 15.7, 12.1, 12.1}
+local mythicBondstimers = {15, 15.8, 13.3, 10.9, 11.0, 12.1, 13.3, 10.2, 10.4, 10.9}
+--Void Eruption: 22.1, 19.5, 19.4, 19.4, 19.4, 20.6. less important to sequence out i think
 
 local furthestPlayerScanner, closestPlayerScanner
 do
@@ -405,13 +411,16 @@ function mod:SPELL_CAST_START(args)
 		warnVoidEruption:Show(self.vb.voidEruptionCount)
 		timerVoidEruptionCD:Start()
 	elseif spellId == 309985 then
-		timerGorgeEssenceCD:Start()
+		self.vb.gorgedCount = self.vb.gorgedCount + 1
+		timerGorgeEssenceCD:Start(19.4, self.vb.gorgedCount+1)
 	elseif spellId == 314484 then
 		specWarnCallNightTerror:Show()
 		specWarnCallNightTerror:Play("bigmob")
 	elseif spellId == 317276 then
 		self.vb.corruptedExistenceIcon = 2
-		timerCorruptedExistenceCD:Start()
+		self.vb.corruptedExistenceCount = self.vb.corruptedExistenceCount + 1
+		local timer = corruptedExistence[self.vb.corruptedExistenceCount+1] or 12.1
+		timerCorruptedExistenceCD:Start(timer, self.vb.corruptedExistenceCount+1)
 	elseif spellId == 306874 then
 		timerChainLightningCD:Start(4.8, args.sourceGUID)
 	end
@@ -420,7 +429,9 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 310019 then
-		timerChargedBondsCD:Start()
+		self.vb.bondsCount = self.vb.bondsCount + 1
+		local timer = self:IsMythic() and mythicBondstimers[self.vb.bondsCount+1] or 10.2
+		timerChargedBondsCD:Start(timer, self.vb.bondsCount+1)
 	elseif spellId == 306603 then
 		self.vb.unstableVoidCount = self.vb.unstableVoidCount + 1
 		warnUnstableVoid:Show(args.sourceName, self.vb.unstableVoidCount)
@@ -560,16 +571,19 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 309852 and self.vb.phase < 2 then--Ruin (CLEU event, 10 seconds slower than UNIT event)
 		self.vb.callActive = false
 		self.vb.phase = 2
+		self.vb.corruptedExistenceCount = 0
+		self.vb.bondsCount = 0
+		self.vb.gorgedCount = 0
 		warnPhase2:Show()
 		warnPhase2:Play("ptwo")
 		timerCallEssenceCD:Stop()
 		timerNullifyingStrikeCD:Stop()
-		timerChargedBondsCD:Start(4.7)
+		timerChargedBondsCD:Start(4.7, 1)
 		timerDecayingStrikeCD:Start(7.4)--SUCCESS
 		timerVoidEruptionCD:Start(12.1)
-		timerGorgeEssenceCD:Start(15.8)
+		timerGorgeEssenceCD:Start(15.8, 1)
 		if self:IsMythic() then
-			timerCorruptedExistenceCD:start(2)
+			timerCorruptedExistenceCD:start(1.2, 1)
 		end
 	elseif spellId == 310019 or spellId == 310022 then
 		ChargedBondsTargets[#ChargedBondsTargets + 1] = args.destName
@@ -719,16 +733,19 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	elseif spellId == 317123 then--Phase 2 Transition
 		self.vb.callActive = false
 		self.vb.phase = 2
+		self.vb.corruptedExistenceCount = 0
+		self.vb.bondsCount = 0
+		self.vb.gorgedCount = 0
 		warnPhase2:Show()
 		warnPhase2:Play("ptwo")
 		timerCallEssenceCD:Stop()
 		timerNullifyingStrikeCD:Stop()
-		timerChargedBondsCD:Start(14.7)
+		timerChargedBondsCD:Start(14.7, 1)
 		timerDecayingStrikeCD:Start(17.4)--SUCCESS
 		timerVoidEruptionCD:Start(22.1)
-		timerGorgeEssenceCD:Start(25.8)
+		timerGorgeEssenceCD:Start(25.8, 1)
 		if self:IsMythic() then
-			timerCorruptedExistenceCD:start(12)
+			timerCorruptedExistenceCD:start(11.2, 1)
 		end
 	end
 end
