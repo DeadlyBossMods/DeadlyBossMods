@@ -14,9 +14,9 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 308941 310246 310329 310396",
 	"SPELL_CAST_SUCCESS 310277 310478",
-	"SPELL_AURA_APPLIED 310277 310358 310361 310552 310563",
+	"SPELL_AURA_APPLIED 310277 310358 310361 310552 310563 312595",
 	"SPELL_AURA_APPLIED_DOSE 310563",
-	"SPELL_AURA_REMOVED 310277 310358",
+	"SPELL_AURA_REMOVED 310277 310358 312595",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 	"UNIT_DIED",
@@ -37,7 +37,6 @@ mod:RegisterEventsInCombat(
 local warnVoidGrip							= mod:NewSpellAnnounce(310246, 2, nil, "Tank")--If Tank isn't in range of boss
 local warnVolatileSeed						= mod:NewTargetNoFilterAnnounce(310277, 2)
 local warnUnleashedInsanity					= mod:NewTargetAnnounce(310361, 4)--People stunned by muttering of Insanity
---local warnDesensitizingSting				= mod:NewStackAnnounce(298156, 2, nil, "Tank")
 --Tentacle of Drest'agath
 local warnObscuringCloud					= mod:NewSpellAnnounce(310478, 2)
 
@@ -73,7 +72,7 @@ local berserkTimer							= mod:NewBerserkTimer(600)
 mod:AddRangeFrameOption("18/4")--Sadly, choices are 13 or 18, 13 too small so have to round 15 up to 18
 mod:AddInfoFrameOption(275270, false)
 mod:AddSetIconOption("SetIconOnVolatileSeed", 310277, true, false, {1})
---mod:AddNamePlateOption("NPAuraOnVolatileCorruption", 312595)
+mod:AddNamePlateOption("NPAuraOnVolatileCorruption", 312595)
 
 mod.vb.agonyCount = 0
 
@@ -83,9 +82,9 @@ function mod:OnCombatStart(delay)
 	timerEntropicCrashCD:Start(15.5-delay)
 	timerMutteringsofInsanityCD:Start(30.1-delay)
 	timerVoidGlareCD:Start(45.2-delay)--45.2-53.2
-	--if self.Options.NPAuraOnVolatileCorruption then
-	--	DBM:FireEvent("BossMod_EnableHostileNameplates")
-	--end
+	if self.Options.NPAuraOnVolatileCorruption then
+		DBM:FireEvent("BossMod_EnableHostileNameplates")
+	end
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(4)--For Acid Splash
 	end
@@ -103,9 +102,9 @@ function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
-	--if self.Options.NPAuraOnVolatileCorruption then
-	--	DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
-	--end
+	if self.Options.NPAuraOnVolatileCorruption then
+		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
+	end
 end
 
 --function mod:OnTimerRecovery()
@@ -157,10 +156,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.SetIconOnVolatileSeed then
 			self:SetIcon(args.destName, 1)
 		end
-	--elseif spellId == 312595 then
-		--if self.Options.NPAuraOnVolatileCorruption then
-			--DBM.Nameplate:Show(true, args.destGUID, spellId, nil, 15)
-		--end
+	elseif spellId == 312595 then
+		if self.Options.NPAuraOnVolatileCorruption then
+			DBM.Nameplate:Show(true, args.destGUID, spellId, nil, 15)
+		end
 	elseif spellId == 310358 then
 		specWarnMutteringsofInsanity:CombinedShow(0.3, args.destName)
 		specWarnMutteringsofInsanity:ScheduleVoice(0.3, "runaway")
@@ -201,10 +200,10 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.SetIconOnVolatileSeed then
 			self:SetIcon(args.destName, 0)
 		end
-	--elseif spellId == 312595 then
-		--if self.Options.NPAuraOnVolatileCorruption then
-		--	DBM.Nameplate:Hide(true, args.destGUID, spellId)
-		--end
+	elseif spellId == 312595 then
+		if self.Options.NPAuraOnVolatileCorruption then
+			DBM.Nameplate:Hide(true, args.destGUID, spellId)
+		end
 	elseif spellId == 310358 then
 		if args:IsPlayer() then
 			yellMutteringsofInsanity:Cancel()
@@ -216,6 +215,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
+--This code probably doesn't work, do to GUID obfuscation on fight, because fight is stupid
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 157612 then--eye-of-drestagath
