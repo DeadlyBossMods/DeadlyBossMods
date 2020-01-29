@@ -62,8 +62,6 @@ mod.vb.obeliskCount = 0
 mod.vb.tormentCount = 0
 mod.vb.addIcon = 8
 local voidWokenTargets = {}
-local tormentTimers = {20.3, 71.6, 30.4, 64.1, 30.3, 64.1, 30.3}--Alternating from then on, at least assumed, leaving hard codes for now in case assumption is false
-local mythictormentTimers = {49.6, 30.4, 63.4, 30.3}--Alternating from then on, at least assumed, leaving hard codes for now in case assumption is false
 local castsPerGUID = {}
 
 local updateInfoFrame
@@ -197,21 +195,20 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.tormentCount = self.vb.tormentCount + 1
 		specWarnTorment:Show(self.vb.tormentCount)
 		specWarnTorment:Play("watchstep")
-		local timer = self:IsMythic() and mythictormentTimers[self.vb.tormentCount+1] or not self:IsMythic() and tormentTimers[self.vb.tormentCount+1]
-		if timer then
-			timerTormentCD:Start(timer, self.vb.tormentCount+1)
+		if self:IsMythic() then
+			if self.vb.tormentCount % 2 == 0 then
+				timerTormentCD:Start(63.4, self.vb.tormentCount+1)--63.4-65
+			else
+				timerTormentCD:Start(30.0, self.vb.tormentCount+1)--30-31
+			end
 		else
-			if self:IsMythic() then
+			if self.vb.tormentCount == 1 then
+				timerTormentCD:Start(76.1, 2)
+			else
 				if self.vb.tormentCount % 2 == 0 then
 					timerTormentCD:Start(30.3, self.vb.tormentCount+1)
 				else
 					timerTormentCD:Start(64.1, self.vb.tormentCount+1)
-				end
-			else
-				if self.vb.tormentCount % 2 == 0 then
-					timerTormentCD:Start(63.4, self.vb.tormentCount+1)
-				else
-					timerTormentCD:Start(30.3, self.vb.tormentCount+1)
 				end
 			end
 		end
