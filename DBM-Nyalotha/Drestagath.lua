@@ -20,7 +20,8 @@ mod:RegisterEventsInCombat(
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 	"UNIT_DIED",
-	"UNIT_SPELLCAST_SUCCEEDED boss1"
+	"UNIT_SPELLCAST_SUCCEEDED boss1",
+	"UNIT_POWER_UPDATE boss1"
 )
 
 --TODO, track add count, show on infoframe, as well as only show Unleashed Insanity cast timer if add count was > 0
@@ -37,6 +38,7 @@ mod:RegisterEventsInCombat(
 local warnVoidGrip							= mod:NewSpellAnnounce(310246, 2, nil, "Tank")--If Tank isn't in range of boss
 local warnVolatileSeed						= mod:NewTargetNoFilterAnnounce(310277, 2)
 local warnUnleashedInsanity					= mod:NewTargetAnnounce(310361, 4)--People stunned by muttering of Insanity
+local warnThrowsSoon						= mod:NewSoonAnnounce(308941, 4)
 --Tentacle of Drest'agath
 local warnObscuringCloud					= mod:NewSpellAnnounce(310478, 2)
 local warnThroesofDismemberment				= mod:NewTargetNoFilterAnnounce(315712, 4)
@@ -76,9 +78,11 @@ mod:AddSetIconOption("SetIconOnVolatileSeed", 310277, true, false, {1})
 mod:AddNamePlateOption("NPAuraOnVolatileCorruption", 312595)
 
 mod.vb.agonyCount = 0
+local warnedSoon = false
 
 function mod:OnCombatStart(delay)
 	self.vb.agonyCount = 0
+	warnedSoon = false
 	timerVolatileSeedCD:Start(7.2-delay)
 	timerEntropicCrashCD:Start(15.5-delay)
 	timerMutteringsofInsanityCD:Start(30.1-delay)
@@ -93,7 +97,7 @@ function mod:OnCombatStart(delay)
 		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(308377))
 		DBM.InfoFrame:Show(10, "playerdebuffremaining", 308377)
 	end
-	berserkTimer:Start(900-delay)--Confirmed normal and heroic
+	berserkTimer:Start(self:IsMythic() and 600 or 900-delay)--Confirmed normal and heroic
 end
 
 function mod:OnCombatEnd()
@@ -281,5 +285,19 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	--Has success event, but only if a maw-of-drestagath is up, this script runs regardless
 	if spellId == 310351 then--Mutterings of Insanity
 		timerMutteringsofInsanityCD:Start(50.2)
+	end
+end
+
+do
+	local lastPower = 0
+	function mod:UNIT_POWER_UPDATE(uId)
+		local bossPower = UnitPower("boss1") --Get Boss Power
+		if (lastPower > bossPower) and bossPower < 85 then
+			warnedSoon = false
+		elseif bossPower >= 85 then--One 15 energy tentacle away, or 2 10 energy ones
+			warnedSoon = true
+			warnThrowsSoon:Show()
+		end
+		lastPower = bossPower
 	end
 end

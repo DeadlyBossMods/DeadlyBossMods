@@ -412,7 +412,7 @@ do
 	--Still not perfect because it seems to support non even numbers internally but api isn't gonna report only whole numbers
 	--I have two logs that have energy rate/timing pegged at exactly 5.85 where as it'd end up rounding to 6 since blizz would only send whole number energy updates thus shorting timer by teeny bit
 	--Case and point to above issue 17.0, 17.1, 21.9, 17.0, 17.1. to get 17.1 update rate would HAVE to be less than 6 but greater than 5. About 5.85
-	function mod:UNIT_POWER_UPDATE(uId, type)
+	function mod:UNIT_POWER_UPDATE(uId)
 		local bossPower = UnitPower("boss1") --Get Boss Power
 		local currentRate = bossPower - lastPower
 		lastPower = bossPower
