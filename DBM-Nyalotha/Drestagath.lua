@@ -13,7 +13,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 308941 310246 310329 310396",
-	"SPELL_CAST_SUCCESS 310277 310478",
+	"SPELL_CAST_SUCCESS 310277 310478 315712",
 	"SPELL_AURA_APPLIED 310277 310358 310361 310552 310563 312595",
 	"SPELL_AURA_APPLIED_DOSE 310563",
 	"SPELL_AURA_REMOVED 310277 310358 312595",
@@ -39,6 +39,7 @@ local warnVolatileSeed						= mod:NewTargetNoFilterAnnounce(310277, 2)
 local warnUnleashedInsanity					= mod:NewTargetAnnounce(310361, 4)--People stunned by muttering of Insanity
 --Tentacle of Drest'agath
 local warnObscuringCloud					= mod:NewSpellAnnounce(310478, 2)
+local warnThroesofDismemberment				= mod:NewTargetNoFilterAnnounce(315712, 4)
 
 --Drest'agath
 local specWarnThrowsofAgony					= mod:NewSpecialWarningDodgeCount(308941, nil, nil, nil, 2, 2)--Acts as warning for All abilities triggered at 100 Energy
@@ -50,12 +51,12 @@ local specWarnMutteringsofInsanity			= mod:NewSpecialWarningTarget(310358, nil, 
 local yellMutteringsofInsanity				= mod:NewFadesYell(310358)
 local specWarnVoidGlare						= mod:NewSpecialWarningDodge(310406, nil, nil, nil, 3, 2)
 --Eye of Drest'agath
-local specWarnErrantBlast					= mod:NewSpecialWarningDodge(308953, nil, nil, nil, 2, 2)--For mythic
+--local specWarnErrantBlast					= mod:NewSpecialWarningDodge(308953, nil, nil, nil, 2, 2)--For mythic
 local specWarnMindFlay						= mod:NewSpecialWarningInterrupt(310552, "HasInterrupt", nil, nil, 1, 2)
 --Tentacle of Drest'agath
-local specWarnTentacleSlam					= mod:NewSpecialWarningDodge(308995, nil, nil, nil, 2, 2)--For mythic
+--local specWarnTentacleSlam					= mod:NewSpecialWarningDodge(308995, nil, nil, nil, 2, 2)--For mythic
 --Maw of Dresta'gath
-local specWarnSpineEruption					= mod:NewSpecialWarningDodge(310078, nil, nil, nil, 2, 2)--For mythic
+--local specWarnSpineEruption					= mod:NewSpecialWarningDodge(310078, nil, nil, nil, 2, 2)--For mythic
 local specWarnMutteringsofBetrayal			= mod:NewSpecialWarningStack(310563, nil, 3, nil, nil, 1, 6)
 --local specWarnGTFO						= mod:NewSpecialWarningGTFO(270290, nil, nil, nil, 1, 8)
 
@@ -136,6 +137,28 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerVolatileSeedCD:Start()
 	elseif spellId == 310478 and self:AntiSpam(5, 5) then
 		warnObscuringCloud:Show()
+	elseif spellId == 315712 then
+		warnThroesofDismemberment:Show(args.sourceName)
+		--[[local cid = self:GetCIDFromGUID(args.sourceGUID)
+		if cid == 157612 then--eye-of-drestagath
+			--only time this isn't synced up to Throws of Agony
+			if self:IsMythic() and self:AntiSpam(9, 2) then
+				specWarnErrantBlast:Show()
+				specWarnErrantBlast:Play("watchstep")
+			end
+		elseif cid == 157614 then--tentacle-of-drestagath
+			--only time this isn't synced up to Throws of Agony
+			if self:IsMythic() and self:AntiSpam(5, 3) then
+				specWarnTentacleSlam:Show()
+				specWarnTentacleSlam:Play("watchstep")
+			end
+		elseif cid == 157613 then--maw-of-drestagath
+			--only time this isn't synced up to Throws of Agony
+			if self:IsMythic() and self:AntiSpam(5, 4) then
+				specWarnSpineEruption:Show()
+				specWarnSpineEruption:Play("watchorb")
+			end
+		end--]]
 	end
 end
 
@@ -216,6 +239,7 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 --This code probably doesn't work, do to GUID obfuscation on fight, because fight is stupid
+--[[
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 157612 then--eye-of-drestagath
@@ -239,7 +263,6 @@ function mod:UNIT_DIED(args)
 	end
 end
 
---[[
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
 	if spellId == 270290 and destGUID == UnitGUID("player") and self:AntiSpam(2, 2) then
 		specWarnGTFO:Show(spellName)

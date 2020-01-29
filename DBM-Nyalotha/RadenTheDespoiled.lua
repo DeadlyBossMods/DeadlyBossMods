@@ -37,6 +37,8 @@ mod:RegisterEventsInCombat(
 ----Vita
 local warnVitaPhase							= mod:NewSpellAnnounce(306732, 2)
 local warnUnstableVita						= mod:NewTargetNoFilterAnnounce(306257, 4)
+------Vita Add
+local warnChainLightning					= mod:NewTargetNoFilterAnnounce(306874, 3)
 ----Void
 local warnVoidPhase							= mod:NewSpellAnnounce(306733, 2)
 local warnUnstableVoid						= mod:NewStackAnnounce(306634, 2)
@@ -65,6 +67,9 @@ local specWarnUnstableVita					= mod:NewSpecialWarningYou(306257, nil, nil, nil,
 local yellUnstableVita						= mod:NewYell(306257)
 local yellUnstableVitaFades					= mod:NewShortFadesYell(306257)
 local specWarnCallCracklingStalker			= mod:NewSpecialWarningSwitch(306865, "-Healer", nil, nil, 1, 2)
+----Vita Add
+local specWarnChainLightning				= mod:NewSpecialWarningYou(306874, nil, nil, nil, 1, 2)
+local yellChainLightning					= mod:NewYell(306874)
 ----Void
 local specWarnCallVoidHunter				= mod:NewSpecialWarningSwitch(306866, "-Healer", nil, nil, 1, 2)
 ------Void Hunter
@@ -306,6 +311,17 @@ function mod:CollapseTarget(targetname, uId)
 	end
 	if self.Options.SetIconOnVoidCollapse then
 		self:SetIcon(targetname, 3, 3.5)
+	end
+end
+
+function mod:ChainTarget(targetname, uId)
+	if not targetname then return end
+	if targetname == UnitName("player") then
+		specWarnChainLightning:Show()
+		specWarnChainLightning:Play("targetyou")
+		yellChainLightning:Yell()
+	else
+		warnChainLightning:Show(targetname)
 	end
 end
 
@@ -680,6 +696,9 @@ function mod:UNIT_SPELLCAST_START(uId, _, spellId)
 	if spellId == 306881 then--Void Collapse
 		self:BossUnitTargetScanner(uId, "CollapseTarget")
 		timerVoidCollapseCD:Start(10.9, UnitGUID(uId))
+	elseif spellId == 306874 then--Chain Lighting
+		self:BossUnitTargetScanner(uId, "ChainTarget")
+
 	end
 end
 
