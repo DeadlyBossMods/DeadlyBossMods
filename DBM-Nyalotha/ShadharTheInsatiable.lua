@@ -214,8 +214,8 @@ function mod:SPELL_CAST_START(args)
 		self.vb.comboCount = self.vb.comboCount + 1
 		--Only show taunt warning if you don't have debuff and it's 2nd or 3rd cast and you aren't already tanking
 		if self.vb.comboCount >= 2 and not DBM:UnitDebuff("player", 307471) and not self:IsTanking("player", "boss1", nil, true) then--Crush
-			specWarnCrushTaunt:Show(L.name)
-			specWarnCrushTaunt:Play("tauntboss")
+			specWarnDissolveTaunt:Show(L.name)
+			specWarnDissolveTaunt:Play("tauntboss")
 		end
 	elseif spellId == 307476 then--Crush
 		if self:AntiSpam(11, 1) then
