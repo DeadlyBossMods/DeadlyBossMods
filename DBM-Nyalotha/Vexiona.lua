@@ -44,6 +44,7 @@ local warnSpitefulAssault					= mod:NewSpellAnnounce(307396, 2)
 local warnBrutalSmash						= mod:NewSpellAnnounce(315932, 4)--Fall back warning that'll only fire if special warning for brutal smash disabled
 ----Stage 3: The Void Unleashed
 local warnPhase3							= mod:NewPhaseAnnounce(3, 2)
+local warnDesolation						= mod:NewTargetNoFilterAnnounce(310325, 4)
 
 --Vexiona
 ----Stage 1: Cult of the Void
@@ -65,7 +66,7 @@ local specWarnHeartofDarkness				= mod:NewSpecialWarningRun(307639, nil, nil, ni
 local specWarnDesolation					= mod:NewSpecialWarningYou(310325, nil, nil, nil, 1, 2)
 local yellDesolation						= mod:NewYell(310325, nil, nil, nil, "YELL")
 local yellDesolationFades					= mod:NewShortFadesYell(310325, nil, nil, nil, "YELL")
-local specWarnDesolationShare				= mod:NewSpecialWarningMoveTo(310325, "-Tank", nil, nil, 1, 2)
+local specWarnDesolationShare				= mod:NewSpecialWarningMoveTo(310325, false, nil, 2, 1, 2)
 --Adds
 ----Void Ascendant
 local specWarnAnnihilation					= mod:NewSpecialWarningDodgeCount(307403, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.dodge:format(307403), nil, 2, 2)
@@ -307,9 +308,11 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnDesolation:Play("targetyou")
 			yellDesolation:Yell()
 			yellDesolationFades:Countdown(spellId)
-		else
+		elseif self.Options.SpecWarn310325moveto then
 			specWarnDesolationShare:Show(args.destName)
 			specWarnDesolationShare:Play("gathershare")
+		else
+			warnDesolation:Show(args.destName)
 		end
 	end
 end
