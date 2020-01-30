@@ -121,7 +121,7 @@ local timerDreadInfernoCD					= mod:NewCDTimer(11.7, 315252, nil, nil, nil, 3)
 --Stage 2: Unleashed Wrath
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20853))
 local timerDecayingStrikeCD					= mod:NewCDTimer(16.9, 313213, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON, nil, 2, 3)
-local timerVoidEruptionCD					= mod:NewCDTimer(19.4, 310003, nil, nil, nil, 2)--20.6-23
+local timerVoidEruptionCD					= mod:NewCDCountTimer(19.4, 310003, nil, nil, nil, 2)--20.6-23
 local timerChargedBondsCD					= mod:NewCDCountTimer(10.2, 310019, nil, nil, nil, 3)--10.8-18.2
 local timerGorgeEssenceCD					= mod:NewCDCountTimer(29.1, 309985, nil, nil, nil, 6)
 local timerCorruptedExistenceCD				= mod:NewCDCountTimer(12.2, 317276, nil, nil, nil, 3, nil, DBM_CORE_MYTHIC_ICON..DBM_CORE_DEADLY_ICON)
@@ -420,7 +420,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 310003 then
 		self.vb.voidEruptionCount = self.vb.voidEruptionCount + 1
 		warnVoidEruption:Show(self.vb.voidEruptionCount)
-		timerVoidEruptionCD:Start()
+		timerVoidEruptionCD:Start(19.4, self.vb.voidEruptionCount+1)
 	elseif spellId == 309985 then
 		self.vb.gorgedCount = self.vb.gorgedCount + 1
 		timerGorgeEssenceCD:Start(19.4, self.vb.gorgedCount+1)
