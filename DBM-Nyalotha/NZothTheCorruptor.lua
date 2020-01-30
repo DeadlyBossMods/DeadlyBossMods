@@ -506,7 +506,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			timerEvokeAnguishCD:Start(timer, self.vb.harvesterCount+1)
 		end
 	elseif spellId == 318714 then--Corrupted Viscera
-		local cid = self:GetCIDFromGUID(args.destGUID)
+		local cid = self:GetCIDFromGUID(args.sourceGUID)
 		if cid == 158367 then--Basher Tentacle
 			if self:AntiSpam(5, 4) then
 				self.vb.BasherCount = self.vb.BasherCount + 1
