@@ -125,7 +125,7 @@ end
 
 local function updateBreathTimer(self, start)
 	self:Unschedule(updateBreathTimer)
-	--Update Breath timer
+	--Start or Update Breath timer
 	local bossPower = UnitPower("boss1")
 	if bossPower == 100 then--Don't start a timer if full energy
 		timerSlurryBreathCD:Stop()
@@ -133,21 +133,20 @@ local function updateBreathTimer(self, start)
 		self:Schedule(1, updateBreathTimer, self, start)--check again up until energy is not 100
 		return
 	end
-	local breathTimerTotal = 100 / self.vb.bossPowerUpdateRate
 	local bossRemaining = (100 - bossPower) / self.vb.bossPowerUpdateRate
-	local bossProgress = breathTimerTotal - bossRemaining
-	--Adjust to 10th decimal only
-	DBM:Debug("updateBreathTimer unadjusted timers: "..bossProgress..", "..breathTimerTotal)
-	bossProgress = math.floor(bossProgress*10)/10
-	breathTimerTotal = math.floor(breathTimerTotal*10)/10
-	--Using update method to both start a new timer and update an existing one because it supports both
-	timerSlurryBreathCD:Update(bossProgress, breathTimerTotal)
-	DBM:Debug("updateBreathTimer fired with: "..bossProgress..", "..breathTimerTotal)
-	--[[if start then
+	if start then--Starting a new bar
 		timerSlurryBreathCD:Start(bossRemaining)
-	else
+		DBM:Debug("updateBreathTimer started with: "..bossRemaining)
+	else--Updating an existing bar instead of starting new/replacing
+		local breathTimerTotal = 100 / self.vb.bossPowerUpdateRate
+		local bossProgress = breathTimerTotal - bossRemaining
+		DBM:Debug("updateBreathTimer unadjusted timers: "..bossProgress..", "..breathTimerTotal)
+		--Adjust to 10th decimal only
+		bossProgress = math.floor(bossProgress*10)/10
+		breathTimerTotal = math.floor(breathTimerTotal*10)/10
 		timerSlurryBreathCD:Update(bossProgress, breathTimerTotal)
-	end--]]
+		DBM:Debug("updateBreathTimer updated with: "..bossProgress..", "..breathTimerTotal)
+	end
 end
 
 function mod:SpitTarget(targetname, uId)
@@ -234,7 +233,7 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 312528 or spellId == 306928 or spellId == 312529 or spellId == 306929 or spellId == 312530 or spellId == 306930 then--Breaths
-		updateBreathTimer(self)
+		updateBreathTimer(self, true)
 	end
 end
 
