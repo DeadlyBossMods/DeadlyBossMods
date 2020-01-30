@@ -130,16 +130,21 @@ local function updateBreathTimer(self, start)
 	if bossPower == 100 then--Don't start a timer if full energy
 		timerSlurryBreathCD:Stop()
 		DBM:Debug("Boss power was full, so updateBreathTimer scheduled another check in 1 second")
-		self:Schedule(1, updateBreathTimer, self, true)--check again up until energy is not 100
+		self:Schedule(1, updateBreathTimer, self, start)--check again up until energy is not 100
 		return
 	end
 	local breathTimerTotal = 100 / self.vb.bossPowerUpdateRate
-	local bossProgress = (100 - bossPower) / self.vb.bossPowerUpdateRate
+	local bossRemaining = (100 - bossPower) / self.vb.bossPowerUpdateRate
+	local bossProgress = breathTimerTotal - bossRemaining
+	--Adjust to 10th decimal only
+	DBM:Debug("updateBreathTimer unadjusted timers: "..bossProgress..", "..breathTimerTotal)
+	bossProgress = math.floor(bossProgress*10)/10
+	breathTimerTotal = math.floor(breathTimerTotal*10)/10
 	--Using update method to both start a new timer and update an existing one because it supports both
 	timerSlurryBreathCD:Update(bossProgress, breathTimerTotal)
 	DBM:Debug("updateBreathTimer fired with: "..bossProgress..", "..breathTimerTotal)
 	--[[if start then
-		timerSlurryBreathCD:Start(breathTimerTotal)
+		timerSlurryBreathCD:Start(bossRemaining)
 	else
 		timerSlurryBreathCD:Update(bossProgress, breathTimerTotal)
 	end--]]
