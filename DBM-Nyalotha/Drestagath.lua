@@ -50,7 +50,7 @@ local yellolatileSeed						= mod:NewYell(310277)
 local yellolatileSeedFades					= mod:NewFadesYell(310277)
 local specWarnEntropicCrash					= mod:NewSpecialWarningDodge(310329, nil, nil, nil, 2, 2)
 local specWarnMutteringsofInsanity			= mod:NewSpecialWarningTarget(310358, nil, nil, nil, 1, 2)
-local yellMutteringsofInsanity				= mod:NewFadesYell(310358)
+local yellMutteringsofInsanity				= mod:NewShortFadesYell(310358)
 local specWarnVoidGlare						= mod:NewSpecialWarningDodge(310406, nil, nil, nil, 3, 2)
 --Eye of Drest'agath
 local specWarnErrantBlast					= mod:NewSpecialWarningDodge(308953, false, nil, 2, 2, 2, 4)--For mythic
