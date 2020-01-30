@@ -3092,6 +3092,21 @@ function DBM:GetUnitIdFromGUID(cidOrGuid, bossOnly)
 	return returnUnitID
 end
 
+function DBM:CheckNearby(range, targetname)
+	if not targetname and DBM.RangeCheck:GetDistanceAll(range) then
+		return true--No target name means check if anyone is near self, period
+	else
+		local uId = DBM:GetRaidUnitId(targetname)
+		if uId and not UnitIsUnit("player", uId) then
+			local inRange = DBM.RangeCheck:GetDistance(uId)
+			if inRange and inRange < range+0.5 then
+				return true
+			end
+		end
+	end
+	return false
+end
+
 ---------------
 --  Options  --
 ---------------
@@ -7645,6 +7660,7 @@ bossModPrototype.GetUnitCreatureId = DBM.GetUnitCreatureId
 bossModPrototype.GetCIDFromGUID = DBM.GetCIDFromGUID
 bossModPrototype.IsCreatureGUID = DBM.IsCreatureGUID
 bossModPrototype.GetUnitIdFromGUID = DBM.GetUnitIdFromGUID
+bossModPrototype.CheckNearby = DBM.CheckNearby
 
 do
 	local bossTargetuIds = {
@@ -7855,21 +7871,6 @@ do
 	function bossModPrototype:StopRepeatedScan(returnFunc)
 		repeatedScanEnabled[returnFunc] = nil
 	end
-end
-
-function bossModPrototype:CheckNearby(range, targetname)
-	if not targetname and DBM.RangeCheck:GetDistanceAll(range) then
-		return true--No target name means check if anyone is near self, period
-	else
-		local uId = DBM:GetRaidUnitId(targetname)
-		if uId and not UnitIsUnit("player", uId) then
-			local inRange = DBM.RangeCheck:GetDistance(uId)
-			if inRange and inRange < range+0.5 then
-				return true
-			end
-		end
-	end
-	return false
 end
 
 do
