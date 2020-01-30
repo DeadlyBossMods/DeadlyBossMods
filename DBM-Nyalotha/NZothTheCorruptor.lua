@@ -127,9 +127,9 @@ local specWarnStupefyingGlare				= mod:NewSpecialWarningDodgeCount(317874, nil, 
 local specWarnThoughtHarvester				= mod:NewSpecialWarningSwitch("ej21308", false, nil, nil, 1, 2)
 local specWarnHarvestThoughts				= mod:NewSpecialWarningCount(317066, nil, nil, nil, 2, 2)
 --Stage 3 Mythic
-local specWarnEventHorizon					= mod:NewSpecialWarningDefensive(318196, nil, nil, nil, 1, 2)
-local specWarnEventHorizonSwap				= mod:NewSpecialWarningTaunt(318196, nil, nil, nil, 1, 2)
-local specWarnAnnihilate					= mod:NewSpecialWarningMoveAway(318459, nil, nil, nil, 1, 2)
+local specWarnEventHorizon					= mod:NewSpecialWarningDefensive(318196, nil, nil, nil, 1, 2, 4)
+local specWarnEventHorizonSwap				= mod:NewSpecialWarningTaunt(318196, nil, nil, nil, 1, 2, 4)
+local specWarnAnnihilate					= mod:NewSpecialWarningMoveAway(318459, nil, nil, nil, 1, 2, 4)
 local yellAnnihilate						= mod:NewYell(318459)
 local yellAnnihilateFades					= mod:NewShortFadesYell(318459)
 
@@ -172,7 +172,7 @@ local timerVoidLashCD						= mod:NewCDTimer(22.9, 309698, nil, false, 2, 5, nil,
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20767))
 ----N'Zoth
 local timerEvokeAnguishCD					= mod:NewCDCountTimer(30.5, 317102, nil, nil, nil, 3)--30.5-44.9, delayed by boss doing other stuff?
-local timerStupefyingGlareCD				= mod:NewCDCountTimer(22.9, 317874, nil, nil, nil, 3)
+local timerStupefyingGlareCD				= mod:NewCDCountTimer(22.9, 317874, 239918, nil, nil, 3)
 ----Thought Harvester
 local timerThoughtHarvesterCD				= mod:NewCDCountTimer(30.1, "ej21308", nil, nil, nil, 1, 231298)
 local timerHarvestThoughtsCD				= mod:NewCDTimer(35.2, 317066, nil, nil, nil, 3)

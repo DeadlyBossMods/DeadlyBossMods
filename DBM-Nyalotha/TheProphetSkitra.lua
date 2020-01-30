@@ -44,7 +44,7 @@ local warnProjectionsOver					= mod:NewEndAnnounce(307725, 2)
 local specWarnCloudedMind					= mod:NewSpecialWarningYou(307784, nil, nil, nil, 1, 2)--voice not yet decided
 local specWarnTwistedMind					= mod:NewSpecialWarningYou(307785, nil, nil, nil, 1, 2)--voice not yet decided
 local yellMark								= mod:NewPosYell(307784, DBM_CORE_AUTO_YELL_CUSTOM_POSITION, false)
-local specWarnImagesofAbsolutionSwitch		= mod:NewSpecialWarningSwitch(313239, "dps", nil, nil, 1, 2)--30 seconds after spawn, when killable
+local specWarnImagesofAbsolutionSwitch		= mod:NewSpecialWarningSwitch(313239, "dps", nil, nil, 1, 2, 3)--30 seconds after spawn, when killable
 local specWarnShadowShock					= mod:NewSpecialWarningStack(308059, nil, 7, nil, nil, 1, 6)
 local specWarnShadowShockTaunt				= mod:NewSpecialWarningTaunt(308059, nil, nil, nil, 1, 2)
 local specWarnShredPsyche					= mod:NewSpecialWarningMoveAway(307937, nil, nil, nil, 1, 2)
@@ -53,7 +53,7 @@ local yellShredPsycheFades					= mod:NewIconFadesYell(307937)
 local specWarnShredPsycheSwitch				= mod:NewSpecialWarningSwitch(307937, "dps", nil, nil, 1, 2)
 --local specWarnGTFO						= mod:NewSpecialWarningGTFO(270290, nil, nil, nil, 1, 8)
 
-local timerImagesofAbsolutionCD				= mod:NewCDTimer(84.9, 313239, nil, nil, nil, 1, nil, DBM_CORE_HEROIC_ICON)
+local timerImagesofAbsolutionCD				= mod:NewCDTimer(84.9, 313239, 127876, nil, nil, 1, nil, DBM_CORE_HEROIC_ICON)
 local timerShredPsycheCD					= mod:NewCDTimer(37.7, 307937, nil, nil, nil, 3, nil, DBM_CORE_DAMAGE_ICON, nil, 1, 4)
 
 local berserkTimer							= mod:NewBerserkTimer(600)--He only gains a 300% damage increase on his berserk, and that's surviable since he doesn't melee and his adds don't gain it

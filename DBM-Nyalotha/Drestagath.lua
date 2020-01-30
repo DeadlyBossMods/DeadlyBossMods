@@ -20,7 +20,8 @@ mod:RegisterEventsInCombat(
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 	"UNIT_DIED",
-	"UNIT_SPELLCAST_SUCCEEDED boss1"
+	"UNIT_SPELLCAST_SUCCEEDED boss1",
+	"UNIT_POWER_UPDATE boss1"
 )
 
 --TODO, track add count, show on infoframe, as well as only show Unleashed Insanity cast timer if add count was > 0
@@ -37,6 +38,7 @@ mod:RegisterEventsInCombat(
 local warnVoidGrip							= mod:NewSpellAnnounce(310246, 2, nil, "Tank")--If Tank isn't in range of boss
 local warnVolatileSeed						= mod:NewTargetNoFilterAnnounce(310277, 2)
 local warnUnleashedInsanity					= mod:NewTargetAnnounce(310361, 4)--People stunned by muttering of Insanity
+local warnThrowsSoon						= mod:NewSoonAnnounce(308941, 4)
 --Tentacle of Drest'agath
 local warnObscuringCloud					= mod:NewSpellAnnounce(310478, 2)
 local warnThroesofDismemberment				= mod:NewTargetNoFilterAnnounce(315712, 4)
@@ -51,12 +53,12 @@ local specWarnMutteringsofInsanity			= mod:NewSpecialWarningTarget(310358, nil, 
 local yellMutteringsofInsanity				= mod:NewFadesYell(310358)
 local specWarnVoidGlare						= mod:NewSpecialWarningDodge(310406, nil, nil, nil, 3, 2)
 --Eye of Drest'agath
---local specWarnErrantBlast					= mod:NewSpecialWarningDodge(308953, nil, nil, nil, 2, 2)--For mythic
+local specWarnErrantBlast					= mod:NewSpecialWarningDodge(308953, false, nil, 2, 2, 2, 4)--For mythic
 local specWarnMindFlay						= mod:NewSpecialWarningInterrupt(310552, "HasInterrupt", nil, nil, 1, 2)
 --Tentacle of Drest'agath
---local specWarnTentacleSlam					= mod:NewSpecialWarningDodge(308995, nil, nil, nil, 2, 2)--For mythic
+local specWarnTentacleSlam					= mod:NewSpecialWarningDodge(308995, false, nil, 2, 2, 2, 4)--For mythic
 --Maw of Dresta'gath
---local specWarnSpineEruption					= mod:NewSpecialWarningDodge(310078, nil, nil, nil, 2, 2)--For mythic
+local specWarnSpineEruption					= mod:NewSpecialWarningDodge(310078, false, nil, 2, 2, 2, 4)--For mythic
 local specWarnMutteringsofBetrayal			= mod:NewSpecialWarningStack(310563, nil, 3, nil, nil, 1, 6)
 --local specWarnGTFO						= mod:NewSpecialWarningGTFO(270290, nil, nil, nil, 1, 8)
 
@@ -71,14 +73,16 @@ local timerVoidGlareCD						= mod:NewCDTimer(45, 310406, nil, nil, nil, 3)
 local berserkTimer							= mod:NewBerserkTimer(600)
 
 mod:AddRangeFrameOption("18/4")--Sadly, choices are 13 or 18, 13 too small so have to round 15 up to 18
-mod:AddInfoFrameOption(275270, false)
+mod:AddInfoFrameOption(308377, false)
 mod:AddSetIconOption("SetIconOnVolatileSeed", 310277, true, false, {1})
 mod:AddNamePlateOption("NPAuraOnVolatileCorruption", 312595)
 
 mod.vb.agonyCount = 0
+local warnedSoon = false
 
 function mod:OnCombatStart(delay)
 	self.vb.agonyCount = 0
+	warnedSoon = false
 	timerVolatileSeedCD:Start(7.2-delay)
 	timerEntropicCrashCD:Start(15.5-delay)
 	timerMutteringsofInsanityCD:Start(30.1-delay)
@@ -93,7 +97,7 @@ function mod:OnCombatStart(delay)
 		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(308377))
 		DBM.InfoFrame:Show(10, "playerdebuffremaining", 308377)
 	end
-	berserkTimer:Start(900-delay)--Confirmed normal and heroic
+	berserkTimer:Start(self:IsMythic() and 600 or 900-delay)--Confirmed normal and heroic
 end
 
 function mod:OnCombatEnd()
@@ -138,27 +142,32 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 310478 and self:AntiSpam(5, 5) then
 		warnObscuringCloud:Show()
 	elseif spellId == 315712 then
-		warnThroesofDismemberment:Show(args.sourceName)
-		--[[local cid = self:GetCIDFromGUID(args.sourceGUID)
+		local cid = self:GetCIDFromGUID(args.sourceGUID)
 		if cid == 157612 then--eye-of-drestagath
 			--only time this isn't synced up to Throws of Agony
-			if self:IsMythic() and self:AntiSpam(9, 2) then
+			if self:AntiSpam(9, 2) and self.Options.SpecWarn308953dodge then
 				specWarnErrantBlast:Show()
 				specWarnErrantBlast:Play("watchstep")
+			else
+				warnThroesofDismemberment:Show(args.sourceName)
 			end
 		elseif cid == 157614 then--tentacle-of-drestagath
 			--only time this isn't synced up to Throws of Agony
-			if self:IsMythic() and self:AntiSpam(5, 3) then
+			if self:AntiSpam(5, 3) and self.Options.SpecWarn308995dodge then
 				specWarnTentacleSlam:Show()
 				specWarnTentacleSlam:Play("watchstep")
+			else
+				warnThroesofDismemberment:Show(args.sourceName)
 			end
 		elseif cid == 157613 then--maw-of-drestagath
 			--only time this isn't synced up to Throws of Agony
-			if self:IsMythic() and self:AntiSpam(5, 4) then
+			if self:AntiSpam(5, 4) and self.Options.SpecWarn310078dodge then
 				specWarnSpineEruption:Show()
 				specWarnSpineEruption:Play("watchorb")
+			else
+				warnThroesofDismemberment:Show(args.sourceName)
 			end
-		end--]]
+		end
 	end
 end
 
@@ -276,5 +285,19 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	--Has success event, but only if a maw-of-drestagath is up, this script runs regardless
 	if spellId == 310351 then--Mutterings of Insanity
 		timerMutteringsofInsanityCD:Start(50.2)
+	end
+end
+
+do
+	local lastPower = 0
+	function mod:UNIT_POWER_UPDATE(uId)
+		local bossPower = UnitPower("boss1") --Get Boss Power
+		if (lastPower > bossPower) and bossPower < 85 then
+			warnedSoon = false
+		elseif bossPower >= 85 then--One 15 energy tentacle away, or 2 10 energy ones
+			warnedSoon = true
+			warnThrowsSoon:Show()
+		end
+		lastPower = bossPower
 	end
 end

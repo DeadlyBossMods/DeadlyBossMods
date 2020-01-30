@@ -49,17 +49,17 @@ local yellIncineration						= mod:NewYell(306111)
 local yellIncinerationFades					= mod:NewShortFadesYell(306111)
 local specWarnGaleBlast						= mod:NewSpecialWarningDodgeCount(306289, nil, nil, nil, 2, 2)
 local specWarnBurningCataclysm				= mod:NewSpecialWarningCount(306735, nil, nil, nil, 2, 2)
-local specWarnCreepingMadness				= mod:NewSpecialWarningStack(313250, nil, 32, nil, nil, 1, 2)
+local specWarnCreepingMadness				= mod:NewSpecialWarningStack(313250, nil, 32, nil, nil, 1, 2, 4)
 local specWarnGTFO							= mod:NewSpecialWarningGTFO(306824, nil, nil, nil, 1, 8)
 --Stage Two: Smoke and Mirrors
 local warnSpawnAdds							= mod:NewSpellAnnounce(312389, 2)
 
 --Stage One: The Black Emperor
-local timerSearingBreathCD					= mod:NewCDTimer(8.5, 305978, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerSearingBreathCD					= mod:NewCDTimer(8.5, 305978, 18620, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerIncinerationCD					= mod:NewCDCountTimer(19.4, 306111, nil, nil, nil, 3)--19-24 variation even when not delayed by other casts
 local timerGaleBlastCD						= mod:NewCDCountTimer(90.9, 306289, nil, nil, nil, 2)
-local timerBurningCataclysmCD				= mod:NewCDCountTimer(90.9, 306735, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON, nil, 1, 5)
-local timerBurningCataclysm					= mod:NewCastTimer(8, 306735, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
+local timerBurningCataclysmCD				= mod:NewCDCountTimer(90.9, 306735, 138565, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON, nil, 1, 5)
+local timerBurningCataclysm					= mod:NewCastTimer(8, 306735, 138565, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
 --Stage Two: Smoke and Mirrors
 local timerSmokeandMirrorsCD				= mod:NewNextTimer(155, 306995, nil, nil, nil, 6)
 
