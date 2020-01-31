@@ -48,7 +48,7 @@ local specWarnImagesofAbsolutionSwitch		= mod:NewSpecialWarningSwitch(313239, "d
 local specWarnShadowShock					= mod:NewSpecialWarningStack(308059, nil, 7, nil, nil, 1, 6)
 local specWarnShadowShockTaunt				= mod:NewSpecialWarningTaunt(308059, nil, nil, nil, 1, 2)
 local specWarnShredPsyche					= mod:NewSpecialWarningMoveAway(307937, nil, nil, nil, 1, 2)
-local yellShredPsyche						= mod:NewPosYell(307937)
+local yellShredPsyche						= mod:NewPosYell(307937, DBM_CORE_AUTO_YELL_CUSTOM_POSITION2)
 local yellShredPsycheFades					= mod:NewIconFadesYell(307937)
 local specWarnShredPsycheSwitch				= mod:NewSpecialWarningSwitch(307937, "dps", nil, nil, 1, 2)
 --local specWarnGTFO						= mod:NewSpecialWarningGTFO(270290, nil, nil, nil, 1, 8)
@@ -188,7 +188,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnShredPsyche:Show()
 			specWarnShredPsyche:Play("runout")
-			yellShredPsyche:Yell(icon, icon, icon)
+			yellShredPsyche:Yell(icon, args.spellName, icon)
 			yellShredPsycheFades:Countdown(spellId, nil, icon)
 		end
 		if self.Options.SetIconOnAdds then

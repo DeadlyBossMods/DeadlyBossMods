@@ -121,7 +121,7 @@ local specWarnContempt						= mod:NewSpecialWarningStopMove(315710, nil, nil, ni
 ----N'Zoth
 local specWarnEvokeAnguish					= mod:NewSpecialWarningMoveAway(317112, nil, nil, nil, 1, 2)
 local yellEvokeAnguish						= mod:NewYell(317112, nil, false, 2)
-local yellEvokeAnguishFades					= mod:NewShortFadesYell(317112, nil, false, 2)
+local yellEvokeAnguishFades					= mod:NewShortFadesYell(317112, nil, true, 3)
 local specWarnStupefyingGlare				= mod:NewSpecialWarningDodgeCount(317874, nil, nil, nil, 2, 2)
 ----Thought Harvester
 local specWarnThoughtHarvester				= mod:NewSpecialWarningSwitch("ej21308", false, nil, nil, 1, 2)
