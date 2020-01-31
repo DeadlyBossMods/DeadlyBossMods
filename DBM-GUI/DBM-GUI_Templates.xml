@@ -328,7 +328,7 @@
 
 	<Frame name="DBM_GUI_OptionsFrame" parent="UIParent" hidden="true" enableMouse="true" frameStrata="DIALOG" movable="true">
 		<Size>
-			<AbsDimension x="800" y="510"/>
+			<AbsDimension x="800" y="600"/>
 		</Size>
 		<Anchors>
 			<Anchor point="CENTER"/>
@@ -444,7 +444,7 @@
 			</Button>
 			<Frame name="$parentBossMods" inherits="DBM_GUI_OptionsFrameListTemplate">
 				<Size>
-					<AbsDimension x="205" y="409"/>
+					<AbsDimension x="205" y="499"/>
 				</Size>
 				<Anchors>
 					<Anchor point="TOPLEFT">
@@ -464,7 +464,7 @@
 			</Frame>
 			<Frame name="$parentDBMOptions" inherits="DBM_GUI_OptionsFrameListTemplate" hidden="true">
 				<Size>
-					<AbsDimension x="205" y="409"/>
+					<AbsDimension x="205" y="499"/>
 				</Size>
 				<Anchors>
 					<Anchor point="TOPLEFT">

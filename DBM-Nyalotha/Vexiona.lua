@@ -234,11 +234,12 @@ function mod:SPELL_CAST_START(args)
 			self:SendSync("NoEscape", args.sourceGUID)
 		end
 	--TODO, i want to say there was a reason i was using SUCCESS instead of START, DO gateway or something persist until this spell finishes?
-	elseif spellId == 307453 and (self.vb.phase < 3) then
+	elseif spellId == 307453 then
 		self.vb.phase = 3
 		self.vb.TwilightDCasts = 0
 		warnPhase3:Show()
 		warnPhase3:Play("pthree")
+		timerTwilightDecimatorCD:Stop()
 		timerEncroachingShadowsCD:Stop()
 		timerTwilightBreathCD:Stop()
 		timerDespairCD:Stop()

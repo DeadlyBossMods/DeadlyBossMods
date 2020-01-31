@@ -335,10 +335,7 @@ function mod:OnCombatEnd()
 	--if self.Options.NPAuraOnShock then
 	--	DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
 	--end
-	--We either collected a new timer in which case we want user to report it, or we're running debug code which means we just want to see data regardless
-	if DBM.Options.DebugMode or harvesterDebugTriggered == 2 then
-		DBM:AddMsg("New Harvester Spawn Timers collected. If you see this message, Please report these numbers and raid difficulty to DBM author: " .. table.concat(debugSpawnTable, ", "))
-	end
+	DBM:AddMsg("Harvester Spawn Timers collected. If you see this message, Please report these numbers and raid difficulty to DBM author: " .. table.concat(debugSpawnTable, ", "))
 end
 
 function mod:OnTimerRecovery()
@@ -506,7 +503,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			timerEvokeAnguishCD:Start(timer, self.vb.harvesterCount+1)
 		end
 	elseif spellId == 318714 then--Corrupted Viscera
-		local cid = self:GetCIDFromGUID(args.destGUID)
+		local cid = self:GetCIDFromGUID(args.sourceGUID)
 		if cid == 158367 then--Basher Tentacle
 			if self:AntiSpam(5, 4) then
 				self.vb.BasherCount = self.vb.BasherCount + 1
@@ -754,9 +751,6 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 				local timer = self:IsHard() and stage3HeroicTimers[316711][self.vb.harvesterCount+1] or self:IsEasy() and stage3NormalTimers[316711][self.vb.harvesterCount+1]
 				if timer then
 					timerThoughtHarvesterCD:Start(timer, self.vb.harvesterCount+1)
-				else
-					--incriment because at only harvesterDebugTriggered = 1 it just means we ran out of timers to show, but we haven't collected a new timer until we've incrimented this twice
-					harvesterDebugTriggered = harvesterDebugTriggered + 1
 				end
 				local currentTime = GetTime() - lastHarvesterTime
 				debugSpawnTable[self.vb.harvesterCount] = math.floor(currentTime*10)/10--Floored but only after trying to preserve at least one decimal place

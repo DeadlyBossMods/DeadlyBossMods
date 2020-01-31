@@ -8,7 +8,7 @@ mod:SetZone()
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
 mod:SetHotfixNoticeRev(20200126000000)--2020, 1, 26
 mod:SetMinSyncRevision(20191109000000)
-mod.respawnTime = 15
+mod.respawnTime = 12
 
 mod:RegisterCombat("combat")
 
@@ -37,6 +37,7 @@ mod:RegisterEventsInCombat(
 ----Vita
 local warnVitaPhase							= mod:NewSpellAnnounce(306732, 2)
 local warnUnstableVita						= mod:NewTargetNoFilterAnnounce(306257, 4)
+local warnCallCracklingStalker				= mod:NewSpellAnnounce("ej20546", 2)
 ------Vita Add
 local warnChainLightning					= mod:NewTargetNoFilterAnnounce(306874, 3)
 ----Void
@@ -44,9 +45,11 @@ local warnVoidPhase							= mod:NewSpellAnnounce(306733, 2)
 local warnUnstableVoid						= mod:NewStackAnnounce(306634, 2)
 local warnNullifyingStrike					= mod:NewStackAnnounce(306819, 2, nil, "Tank")
 local warnVoidCollapse						= mod:NewTargetNoFilterAnnounce(306881, 4)
+local warnCallVoidHunter					= mod:NewSpellAnnounce("ej20549", 2)
 ----Nightmare
 local warnNightmarePhase					= mod:NewSpellAnnounce(312996, 2)
 local warnUnstableNightmare					= mod:NewTargetNoFilterAnnounce(313077, 4)
+local warnCallNightTerror					= mod:NewSpellAnnounce("ej21176", 2)
 ------Night Terror
 local warnDreadInferno						= mod:NewTargetNoFilterAnnounce(315252, 4)
 --Stage 2: Unleashed Wrath
@@ -80,7 +83,7 @@ local yellVoidCollapseFades					= mod:NewShortFadesYell(306881, nil, nil, nil, "
 local specWarnUnstableNightmare				= mod:NewSpecialWarningYou(313077, nil, nil, nil, 3, 2, 4)
 local yellUnstableNightmare					= mod:NewYell(313077)
 local yellUnstableNightmareFades			= mod:NewShortFadesYell(313077)
-local specWarnCallNightTerror				= mod:NewSpecialWarningSwitch("ej21176", "-Healer", nil, nil, 1, 2, 4)
+local specWarnCallNightTerror				= mod:NewSpecialWarningSwitch("ej21176", false, nil, 2, 1, 2, 4)
 ------Night Terror
 local specWarnDreadInferno					= mod:NewSpecialWarningYou(315252, nil, nil, nil, 1, 2)
 local yellDreadInferno						= mod:NewYell(315252)
@@ -118,7 +121,7 @@ local timerDreadInfernoCD					= mod:NewCDTimer(11.7, 315252, nil, nil, nil, 3)
 --Stage 2: Unleashed Wrath
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20853))
 local timerDecayingStrikeCD					= mod:NewCDTimer(16.9, 313213, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON, nil, 2, 3)
-local timerVoidEruptionCD					= mod:NewCDTimer(19.4, 310003, nil, nil, nil, 2)--20.6-23
+local timerVoidEruptionCD					= mod:NewCDCountTimer(19.4, 310003, nil, nil, nil, 2)--20.6-23
 local timerChargedBondsCD					= mod:NewCDCountTimer(10.2, 310019, nil, nil, nil, 3)--10.8-18.2
 local timerGorgeEssenceCD					= mod:NewCDCountTimer(29.1, 309985, nil, nil, nil, 6)
 local timerCorruptedExistenceCD				= mod:NewCDCountTimer(12.2, 317276, nil, nil, nil, 3, nil, DBM_CORE_MYTHIC_ICON..DBM_CORE_DEADLY_ICON)
@@ -391,14 +394,22 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 306865 then
-		specWarnCallCracklingStalker:Show()
-		specWarnCallCracklingStalker:Play("bigmob")
+		if self.Options.SpecWarnej20546switch then
+			specWarnCallCracklingStalker:Show()
+			specWarnCallCracklingStalker:Play("bigmob")
+		else
+			warnCallCracklingStalker:Show()
+		end
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(self:IsMythic() and 8 or 6)
 		end
 	elseif spellId == 306866 then
-		specWarnCallVoidHunter:Show()
-		specWarnCallVoidHunter:Play("bigmob")
+		if self.Options.SpecWarnej20549switch then
+			specWarnCallVoidHunter:Show()
+			specWarnCallVoidHunter:Play("bigmob")
+		else
+			warnCallVoidHunter:Show()
+		end
 	elseif spellId == 306881 then
 		warnVoidCollapse:Show()
 	elseif spellId == 313213 then
@@ -409,13 +420,17 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 310003 then
 		self.vb.voidEruptionCount = self.vb.voidEruptionCount + 1
 		warnVoidEruption:Show(self.vb.voidEruptionCount)
-		timerVoidEruptionCD:Start()
+		timerVoidEruptionCD:Start(19.4, self.vb.voidEruptionCount+1)
 	elseif spellId == 309985 then
 		self.vb.gorgedCount = self.vb.gorgedCount + 1
 		timerGorgeEssenceCD:Start(19.4, self.vb.gorgedCount+1)
 	elseif spellId == 314484 then
-		specWarnCallNightTerror:Show()
-		specWarnCallNightTerror:Play("bigmob")
+		if self.Options.SpecWarnej21176switch then
+			specWarnCallNightTerror:Show()
+			specWarnCallNightTerror:Play("bigmob")
+		else
+			warnCallNightTerror:Show()
+		end
 	elseif spellId == 317276 then
 		self.vb.corruptedExistenceIcon = 2
 		self.vb.corruptedExistenceCount = self.vb.corruptedExistenceCount + 1
