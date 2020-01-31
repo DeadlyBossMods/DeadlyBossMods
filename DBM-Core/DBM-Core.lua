@@ -11420,7 +11420,7 @@ function bossModPrototype:SendSync(event, ...)
 	--Mod syncs are more strict and enforce latency threshold always.
 	--Do not put latency check in main sendSync local function (line 313) though as we still want to get version information, etc from these users.
 	if not modSyncSpam[spamId] or (time - modSyncSpam[spamId]) > 8 then
-		self:ReceiveSync(event, nil, self.revision or DBM.Revision, tostringall(...))
+		self:ReceiveSync(event, nil, self.revision or 0, tostringall(...))
 		sendSync("M", str)
 	end
 end
@@ -11457,7 +11457,7 @@ end
 
 function bossModPrototype:SetRevision(revision)
 	revision = parseCurseDate(revision or "")
-	if not revision then
+	if not revision or revision == "@project-date-integer@" then
 		-- bad revision: either forgot the svn keyword or using github
 		revision = DBM.Revision
 	end
