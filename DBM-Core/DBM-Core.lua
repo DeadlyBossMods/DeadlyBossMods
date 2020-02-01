@@ -49,6 +49,7 @@ local function releaseDate(year, month, day, hour, minute, second)
 end
 
 local function parseCurseDate(date)
+	date = tostring(date)
 	if #date == 13 then
 		-- support for broken curse timestamps: leading 0 in hours is missing...
 		date = date:sub(1, 8) .. "0" .. date:sub(9, #date)
@@ -11456,7 +11457,7 @@ end
 
 function bossModPrototype:SetRevision(revision)
 	revision = parseCurseDate(revision or "")
-	if not revision then
+	if not revision or revision == "@project-date-integer@" then
 		-- bad revision: either forgot the svn keyword or using github
 		revision = DBM.Revision
 	end
