@@ -276,6 +276,7 @@ DBM_CORE_NORTH						= "북쪽"
 DBM_CORE_SOUTH						= "남쪽"
 DBM_CORE_INTERMISSION				= "사잇 단계"
 DBM_CORE_ORB						= "구슬"
+DBM_CORE_ORBS						= "구슬"
 DBM_CHEST							= "상자"--As in Treasure 'Chest'. Not Chest as in body part.
 DBM_NO_DEBUFF						= "%s 없음"--For use in places like info frame where you put "Not Spellname"
 DBM_ALLY							= "공대원"--Such as "Move to Ally"
