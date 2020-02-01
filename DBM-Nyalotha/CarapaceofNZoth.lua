@@ -312,7 +312,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 315954 then
 		local amount = args.amount or 1
-		if amount >= 2 then
+		if amount >= 3 then
 			if args:IsPlayer() then
 				specWarnBlackScar:Show(amount)
 				specWarnBlackScar:Play("stackhigh")
