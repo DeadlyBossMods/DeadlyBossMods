@@ -339,6 +339,8 @@ local function updatePlayerPower()
 	local threshold = value[1]
 	local powerType = value[2]
 	local spellFilter = value[3]
+	--Value 4 is the noUpdate handler
+	--Value 5 is sorting method, handled in show handler
 	for uId in DBM:GetGroupMembers() do
 		if spellFilter and DBM:UnitDebuff(uId, spellFilter) then
 			--Do nothing

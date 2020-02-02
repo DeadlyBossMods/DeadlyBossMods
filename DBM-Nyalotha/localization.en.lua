@@ -5,21 +5,6 @@ local L
 ---------------------------
 L= DBM:GetModLocalization(2368)
 
-L:SetWarningLocalization({
-
-})
-
-L:SetTimerLocalization({
-
-})
-
-L:SetOptionLocalization({
-
-})
-
-L:SetMiscLocalization({
-})
-
 ---------------------------
 --  Maut --
 ---------------------------
@@ -101,6 +86,14 @@ L= DBM:GetModLocalization(2366)
 --  N'Zoth, the Corruptor --
 ---------------------------
 L= DBM:GetModLocalization(2375)
+
+L:SetOptionLocalization({
+	InterruptBehavior	= "Set Mind Wrack interrupt behavior (Will override everyone elses setting if you are raid leader)",
+	Four				= "4 person rotation ",
+	Five				= "5 person rotation ",--Default
+	Six					= "6 person rotation ",
+	NoReset				= "endless increment "
+})
 
 L:SetMiscLocalization({
 	ExitMind		= "Exit Mind",
