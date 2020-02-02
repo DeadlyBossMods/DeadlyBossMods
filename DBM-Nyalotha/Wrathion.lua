@@ -15,8 +15,8 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 306289 306735 306995 305978",
 	"SPELL_CAST_SUCCESS 306111 306289 313253",
-	"SPELL_AURA_APPLIED 306015 306163 313250 313175 307013 314347 309733",
-	"SPELL_AURA_APPLIED_DOSE 306015 313250",
+	"SPELL_AURA_APPLIED 306015 306163 313175 307013 314347 309733",
+	"SPELL_AURA_APPLIED_DOSE 306015",
 	"SPELL_AURA_REMOVED 306163 313175 307013 306995 309733",
 	"SPELL_PERIODIC_DAMAGE 306824 307053",
 	"SPELL_PERIODIC_MISSED 306824 307053",
@@ -49,7 +49,7 @@ local yellIncineration						= mod:NewYell(306111)
 local yellIncinerationFades					= mod:NewShortFadesYell(306111)
 local specWarnGaleBlast						= mod:NewSpecialWarningDodgeCount(306289, nil, nil, nil, 2, 2)
 local specWarnBurningCataclysm				= mod:NewSpecialWarningCount(306735, nil, nil, nil, 2, 2)
-local specWarnCreepingMadness				= mod:NewSpecialWarningStack(313250, nil, 32, nil, nil, 1, 2, 4)
+--local specWarnCreepingMadness				= mod:NewSpecialWarningStack(313250, nil, 32, nil, nil, 1, 2, 4)
 local specWarnGTFO							= mod:NewSpecialWarningGTFO(306824, nil, nil, nil, 1, 8)
 --Stage Two: Smoke and Mirrors
 local warnSpawnAdds							= mod:NewSpellAnnounce(312389, 2)
@@ -152,6 +152,10 @@ function mod:OnCombatStart(delay)
 	if self.Options.NPAuraOnHardenedCore then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
+	if self.Options.InfoFrame and self:IsMythic() then
+		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(313255))
+		DBM.InfoFrame:Show(6, "playerdebuffstacks", 313255)--Sorted lowest first (highest first is default of arg not given)
+	end
 end
 
 function mod:OnCombatEnd()
@@ -250,12 +254,12 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellIncineration:Yell()
 			yellIncinerationFades:Countdown(spellId)
 		end
-	elseif spellId == 313250 then
+	--[[elseif spellId == 313250 then
 		local amount = args.amount or 1
-		if args:IsPlayer() and (amount == 32 or amount == 40 or amount >= 50) and self:AntiSpam(4, 3) then--Warn at 32, 40, > 50 with ICD of 4 seconds
+		if args:IsPlayer() and (amount == 30 or amount >= 40) and self:AntiSpam(4, 3) then
 			specWarnCreepingMadness:Show(amount)
 			specWarnCreepingMadness:Play("stackhigh")
-		end
+		end--]]
 	elseif spellId == 313175 then
 		if self.Options.NPAuraOnHardenedCore then
 			DBM.Nameplate:Show(true, args.destGUID, spellId)
@@ -306,7 +310,12 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerBurningCataclysmCD:Start(59.7, 1)
 		timerSmokeandMirrorsCD:Start(155)
 		if self.Options.InfoFrame then
-			DBM.InfoFrame:Hide()
+			if self:IsMythic() then
+				DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(313255))
+				DBM.InfoFrame:Show(6, "playerdebuffstacks", 313255)
+			else
+				DBM.InfoFrame:Hide()
+			end
 		end
 	end
 end
