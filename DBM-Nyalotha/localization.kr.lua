@@ -97,9 +97,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	ExitMind		= "정신세계 출구",
-	Away			= "뒤로",
-	Toward			= "앞으로"
+	ExitMind		= "정신세계 출구"
 })
 
 -------------

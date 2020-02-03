@@ -100,9 +100,7 @@ L= DBM:GetModLocalization(2366)
 L= DBM:GetModLocalization(2375)
 
 L:SetMiscLocalization({
-	ExitMind		= "Sal de la mente",
-	Away			= "hacia el borde",
-	Toward			= "hacia N'Zoth"
+	ExitMind		= "Sal de la mente"
 })
 
 -------------

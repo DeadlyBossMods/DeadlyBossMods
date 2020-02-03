@@ -14,7 +14,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 307020 307403 306982 307177 307639 315762 307729 315932 307453",
 	"SPELL_CAST_SUCCESS 307359 310323 307396 307075",
-	"SPELL_AURA_APPLIED 307314 307019 307359 306981 307075 310323",
+	"SPELL_AURA_APPLIED 307314 307019 307359 306981 307075 310323 307343",
 	"SPELL_AURA_APPLIED_DOSE 307019",
 	"SPELL_AURA_REMOVED 307314 307019 307359 310323",
 	"SPELL_PERIODIC_DAMAGE 307343",
@@ -187,10 +187,6 @@ function mod:OnCombatEnd()
 --	end
 end
 
---function mod:OnTimerRecovery()
-
---end
-
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 307020 then
@@ -222,7 +218,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnTwilightDecimator:ScheduleVoice(16.3, "breathsoon")
 		timerTwilightDecimatorCD:Start(16.3, self.vb.TwilightDCasts+1)--Actually 18.3-19.1, but we make timer line up with pre scheduling
 	elseif spellId == 315932 then
-		if self:AntiSpam(4, 4) then
+		if self:AntiSpam(3, 4) then
 			if self.Options.SpecWarn315932dodge then
 				specWarnBrutalSmash:Show()
 				specWarnBrutalSmash:Play("watchstep")
@@ -315,6 +311,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			warnDesolation:Show(args.destName)
 		end
+	elseif spellId == 307343 and args:IsPlayer() and self:AntiSpam(2, 2) then
+		specWarnGTFO:Show(args.spellName)
+		specWarnGTFO:Play("watchfeet")
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -364,10 +363,6 @@ function mod:UNIT_DIED(args)
 			timerNoEscapeCD:Stop(seenAdds[args.destGUID])
 			seenAdds[args.destGUID] = nil
 		end
-	--elseif cid == 157450 then--spellbound-ritualist
-
-	--elseif cid == 157449 then--sinister-soulcarver (heroic+)
-
 	end
 end
 
