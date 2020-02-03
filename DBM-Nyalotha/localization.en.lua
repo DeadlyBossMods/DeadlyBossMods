@@ -92,13 +92,12 @@ L:SetOptionLocalization({
 	Four				= "4 person rotation ",
 	Five				= "5 person rotation ",--Default
 	Six					= "6 person rotation ",
-	NoReset				= "endless increment "
+	NoReset				= "endless increment ",
+	ArrowOnGlare		= "Show left/right arrow for direction of $spell:317874
 })
 
 L:SetMiscLocalization({
-	ExitMind		= "Exit Mind",
-	Away			= "Away",
-	Toward			= "Toward"
+	ExitMind		= "Exit Mind"
 })
 
 -------------

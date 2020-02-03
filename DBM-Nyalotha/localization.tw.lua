@@ -107,9 +107,7 @@ L= DBM:GetModLocalization(2366)
 L= DBM:GetModLocalization(2375)
 
 L:SetMiscLocalization({
-	ExitMind		= "離開精神世界",
-	Away			  = "遠離",
-	Toward			= "向前"
+	ExitMind		= "離開精神世界"
 })
 
 -------------
