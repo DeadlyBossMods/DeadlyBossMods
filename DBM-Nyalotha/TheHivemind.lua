@@ -14,22 +14,16 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 307569 307213 307201 310340 307968 307232 313652 307582",
-	"SPELL_CAST_SUCCESS 308178 307232 312868 312710 307635",
-	"SPELL_AURA_APPLIED 307637 313460 307377 307227",
---	"SPELL_AURA_APPLIED_DOSE",
-	"SPELL_AURA_REMOVED 307637"
---	"SPELL_PERIODIC_DAMAGE",
---	"SPELL_PERIODIC_MISSED",
---	"UNIT_DIED",
---	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4"
+	"SPELL_CAST_SUCCESS 308178 307232 312868 312710 307635 308360",
+	"SPELL_AURA_APPLIED 307637 313460 307377 307227 313672",
+	"SPELL_AURA_REMOVED 307637",
+	"SPELL_PERIODIC_DAMAGE 313672",
+	"SPELL_PERIODIC_MISSED 313672"
 )
 
---TODO, nameplate aura if units too close or too far from one another
+--TODO, nameplate aura if units too close or too far from one another?
 --TODO, if https://ptr.wowhead.com/spell=313129/mindless applies to players, nameplate aura it
---TODO, GTFO shit on the ground
---TODO, warn for fixate (308360)?
---TODO, normal/lfr/mythic timers were RADICALLY different from heroic, but all the same. Heroic timers are VERY likely changed, so this mod assumes they are. if not, roll back to old heroic timers
---TODO, related to above, if all 4 difficulties have same timers now (minus heroic+ mechanics), combine the tables and cleanup mod
+--TODO, lfr timers
 --[[
 (ability.id = 307569 or ability.id = 307213 or ability.id = 307201 or ability.id = 310340 or ability.id = 313652 or ability.id = 307968 or ability.id = 307232 or ability.id = 307582) and type = "begincast"
  or (ability.id = 308178 or ability.id = 307635 or ability.id = 307232 or ability.id = 312868 or ability.id = 312710) and type = "cast"
@@ -44,7 +38,7 @@ local warnNullification						= mod:NewTargetNoFilterAnnounce(313460, 4)--Might f
 --General
 local specWarnTekrissHiveControl			= mod:NewSpecialWarningCount(307213, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell:format(307213), nil, 2, 2)--Keep Together
 local specWarnKazirsHiveControl				= mod:NewSpecialWarningCount(307201, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell:format(307201), nil, 2, 2)--Keep Apart
---local specWarnGTFO						= mod:NewSpecialWarningGTFO(270290, nil, nil, nil, 1, 8)
+local specWarnGTFO							= mod:NewSpecialWarningGTFO(313672, nil, nil, nil, 1, 8)
 --Ka'zir
 local specWarnVolatileEruption				= mod:NewSpecialWarningTargetChange(307583, nil, nil, nil, 1, 2)
 local specWarnSpawnAcidicAqir				= mod:NewSpecialWarningDodgeCount(310340, nil, nil, nil, 2, 2)
@@ -53,6 +47,7 @@ local specWarnMindNumbingNova				= mod:NewSpecialWarningInterruptCount(313652, "
 local specWarnAcceleratedEvolution			= mod:NewSpecialWarningTargetChange(307637, nil, nil, nil, 1, 2)
 local specWarnNullificationBlast			= mod:NewSpecialWarningDodgeCount(307968, nil, nil, nil, 2, 2)
 local specWarnEchoingVoid					= mod:NewSpecialWarningMoveAway(307232, nil, nil, nil, 2, 2)
+local specWarnFixate						= mod:NewSpecialWarningYou(308360, false, nil, nil, 1, 2)
 local specWarnEtropicEhco					= mod:NewSpecialWarningDodge(313692, nil, nil, nil, 3, 2)--Mythic
 
 --General
@@ -75,7 +70,7 @@ local timerDronesCD							= mod:NewNextCountTimer(120, 312868, nil, nil, nil, 1,
 --local berserkTimer						= mod:NewBerserkTimer(600)
 
 mod:AddRangeFrameOption(6, 307232)--While 4 yards is supported, we want wiggle room
---mod:AddInfoFrameOption(275270, true)
+--mod:AddInfoFrameOption(308360, false)
 mod:AddSetIconOption("SetIconOnAdds", 307637, true, true, {1, 2, 3, 4, 5, 6})
 mod:AddNamePlateOption("NPAuraOnVolatileEruption", 307583)
 mod:AddNamePlateOption("NPAuraOnAcceleratedEvolution", 307637)
@@ -345,6 +340,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Hide()
 		end
+	elseif spellId == 308360 and args:IsPlayer() then
+		specWarnFixate:Show()
+		specWarnFixate:Play("targetyou")
 	elseif spellId == 312868 then--Summon Drones Periodic
 		DBM:Debug("Summon Drones Periodic is back in combat Log, tell MysticalOS")
 		--self.vb.DronesCount = self.vb.DronesCount + 1
@@ -399,9 +397,11 @@ function mod:SPELL_AURA_APPLIED(args)
 				timerDronesCD:Start(timer, self.vb.DronesCount+1)
 			end
 		end
+	elseif spellId == 313672 and args:IsPlayer() and self:AntiSpam(3, 2) then
+		specWarnGTFO:Show(args.spellName)
+		specWarnGTFO:Play("watchfeet")
 	end
 end
---mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
@@ -416,27 +416,10 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
---[[
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
-	if spellId == 270290 and destGUID == UnitGUID("player") and self:AntiSpam(2, 2) then
+	if spellId == 313672 and destGUID == UnitGUID("player") and self:AntiSpam(3, 2) then
 		specWarnGTFO:Show(spellName)
 		specWarnGTFO:Play("watchfeet")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
-
-function mod:UNIT_DIED(args)
-	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 157253 then--Ka'zir
-
-	elseif cid == 157254 then--Tek'ris
-
-	end
-end
-
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 307369 then
-
-	end
-end
---]]

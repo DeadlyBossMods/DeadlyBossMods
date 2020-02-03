@@ -28,7 +28,7 @@ mod:RegisterEventsInCombat(
 --TODO, personal https://ptr.wowhead.com/spell=308377/void-infused-ichor tracker when infoframe code added
 --TODO, target scan acid splash?
 --TODO, Add spawn timers
---TODO, all adds of same name still have same GUID, so nameplate auras and icons still not reliable. If this ever changes, nameplate aura and stuff can return
+--TODO, all adds of same name still have same GUID, so nameplate auras and icons still not reliable. If this ever changes, nameplate aura will work.
 --[[
 (ability.id = 308941 or ability.id = 310246 or ability.id = 310329 or ability.id = 310396) and type = "begincast"
  or (ability.id = 310277 or ability.id = 310478) and type = "cast"
@@ -111,10 +111,6 @@ function mod:OnCombatEnd()
 		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
 	end
 end
-
---function mod:OnTimerRecovery()
-
---end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId

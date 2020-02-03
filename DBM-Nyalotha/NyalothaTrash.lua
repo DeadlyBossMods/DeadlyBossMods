@@ -5,7 +5,6 @@ mod:SetRevision("@file-date-integer@")
 --mod:SetModelID(47785)
 mod:SetZone()
 mod.isTrashMod = true
---mod:SetUsedIcons(1, 2, 3, 4, 5)
 
 mod:RegisterEvents(
 	"SPELL_CAST_START 310780 315011 159409 310839 315932 311550 311576 307403 306982 311544 314433",
@@ -30,8 +29,6 @@ local yellPsychicDetonationFades			= mod:NewShortFadesYell(316623)
 local specWarnAnnihilation					= mod:NewSpecialWarningDodgeCount(307403, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.dodge:format(307403), nil, 2, 2)
 local specWarnDirgefromBelow				= mod:NewSpecialWarningInterrupt(310839, "HasInterrupt", nil, nil, 1, 2)
 local specWarnVoidBoltVolley				= mod:NewSpecialWarningInterrupt(311576, "HasInterrupt", nil, nil, 1, 2)
-
---mod:AddSetIconOption("SetIconDread", 303619, true, false, {1, 2, 3, 4, 5})
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId

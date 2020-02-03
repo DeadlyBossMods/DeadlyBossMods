@@ -97,9 +97,7 @@ local timerAnnihilationCD					= mod:NewCDTimer(14.6, 307403, nil, nil, nil, 3)
 
 local berserkTimer							= mod:NewBerserkTimer(600)
 
---mod:AddRangeFrameOption(6, 264382)
 mod:AddInfoFrameOption(307019, true)
---mod:AddSetIconOption("SetIconOnEyeBeam", 264382, true, false, {1, 2})
 mod:AddNamePlateOption("NPAuraOnPoweroftheChosen", 307729, false)
 
 local voidCorruptionStacks = {}
@@ -179,12 +177,6 @@ function mod:OnCombatEnd()
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
 	end
---	if self.Options.RangeFrame then
---		DBM.RangeCheck:Hide()
---	end
---	if self.Options.NPAuraOnChaoticGrowth then
---		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
---	end
 end
 
 function mod:SPELL_CAST_START(args)

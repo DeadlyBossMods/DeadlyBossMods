@@ -15,13 +15,12 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 312528 306928 312529 306929 307260 306953 318078 312530 306930 307478 307476",
 	"SPELL_CAST_SUCCESS 312528 306928 312529 306929 312530 306930",
-	"SPELL_AURA_APPLIED 312328 312329 307471 307472 307358 306942 318078 308149 312099 306447 306931 306933",
+	"SPELL_AURA_APPLIED 312328 312329 307471 307472 307358 306942 318078 314736 312099 306447 306931 306933",
 	"SPELL_AURA_APPLIED_DOSE 312328 307358 307471",
 	"SPELL_AURA_REMOVED 312328 307358 306447 306933 306931",
 	"SPELL_AURA_REMOVED_DOSE 312328 307358 307472",
---	"SPELL_PERIODIC_DAMAGE",
---	"SPELL_PERIODIC_MISSED",
---	"CHAT_MSG_RAID_BOSS_EMOTE",
+	"SPELL_PERIODIC_DAMAGE 314736",
+	"SPELL_PERIODIC_MISSED 314736",
 	"UNIT_SPELLCAST_SUCCEEDED boss1",
 	"UNIT_SPELLCAST_START boss1",
 	"UNIT_POWER_UPDATE boss1"
@@ -58,12 +57,12 @@ local specWarnDebilitatingSpit				= mod:NewSpecialWarningYou(307358, nil, nil, n
 local specWarnFixate						= mod:NewSpecialWarningRun(307260, nil, nil, nil, 4, 2)
 local yellFixate							= mod:NewYell(307260, nil, true, 2)
 local specWarnUmbralEruption				= mod:NewSpecialWarningDodge(308157, false, nil, 2, 2, 2)--Because every 8-10 seconds is excessive, let user opt in for this
-local specWarnGTFO							= mod:NewSpecialWarningGTFO(308149, nil, nil, nil, 1, 8)
+local specWarnGTFO							= mod:NewSpecialWarningGTFO(314736, nil, nil, nil, 1, 8)
 
 local timerCrushCD							= mod:NewCDTimer(25.1, 307471, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON, nil, 2, 3)
 local timerSlurryBreathCD					= mod:NewCDTimer(17, 306736, nil, nil, nil, 3, nil, nil, nil, 1, 3)
 local timerDebilitatingSpitCD				= mod:NewCDTimer(30.1, 306953, 58519, nil, nil, 5, nil, DBM_CORE_HEALER_ICON)
-local timerFixateCD							= mod:NewCDTimer(30.2, 307260, nil, nil, nil, 3, nil, DBM_CORE_DAMAGE_ICON)
+local timerFixateCD							= mod:NewCDCountTimer(30.2, 307260, nil, nil, nil, 3, nil, DBM_CORE_DAMAGE_ICON)
 local timerUmbralEruptionCD					= mod:NewNextTimer(10, 308157, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
 local timerBubblingOverflowCD				= mod:NewNextTimer(10, 314736, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
 local timerEntropicBuildupCD				= mod:NewNextTimer(10, 308177, nil, nil, nil, 5, nil, DBM_CORE_HEROIC_ICON)
@@ -169,7 +168,7 @@ function mod:OnCombatStart(delay)
 	timerDebilitatingSpitCD:Start(10.1-delay)--START
 	timerCrushCD:Start(15.1-delay)--Time til script begins
 	timerSlurryBreathCD:Start(26.1-delay)--Technically it should be 25 but there is a pause before boss begins gaining power
-	timerFixateCD:Start(self:IsMythic() and 16 or 31)
+	timerFixateCD:Start(self:IsMythic() and 16 or 31, 1)
 	if self:IsHard() then
 		berserkTimer:Start(360-delay)--Heroic confirmed, normal unknown
 	end
@@ -204,7 +203,7 @@ function mod:SPELL_CAST_START(args)
 	elseif (spellId == 318078 or spellId == 307260) and not seenAdds[args.sourceGUID] and self:AntiSpam(5, 3) then
 		self.vb.fixateCount = self.vb.fixateCount + 1
 		seenAdds[args.sourceGUID] = true
-		timerFixateCD:Start(self:IsMythic() and 16 or 30.2)
+		timerFixateCD:Start(self:IsMythic() and 16 or 30.2, self.vb.fixateCount+1)
 	elseif spellId == 306953 then
 		timerDebilitatingSpitCD:Start()
 	elseif spellId == 307478 then--Dissolve
@@ -322,7 +321,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 		updateBreathTimer(self)
-	elseif spellId == 308149 and args:IsPlayer() then
+	elseif spellId == 314736 and args:IsPlayer() and self:AntiSpam(3, 4) then
 		specWarnGTFO:Show(args.spellName)
 		specWarnGTFO:Play("watchfeet")
 	elseif spellId == 312099 then
@@ -365,41 +364,17 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 mod.SPELL_AURA_REMOVED_DOSE = mod.SPELL_AURA_REMOVED
 
---[[
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
-	if spellId == 270290 and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
+	if spellId == 314736 and destGUID == UnitGUID("player") and self:AntiSpam(3, 4) then
 		specWarnGTFO:Show(spellName)
 		specWarnGTFO:Play("watchfeet")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
-function mod:UNIT_DIED(args)
-	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 152311 then
-
-	end
-end
-
-function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
-	if msg:find("spell:306448") then--Umbral Mantle
-		self.vb.phase = self.vb.phase + 1
-		warnUmbralMantle:Show()
-	elseif msg:find("spell:306934") then--Entropic Mantle
-		self.vb.phase = self.vb.phase + 1
-		warnEntropicMantle:Show()
-	elseif msg:find("spell:306932") then--Noxious Mantle
-		self.vb.phase = self.vb.phase + 1
-		warnNoxiousMantle:Show()
-	end
-end
---]]
-
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 307469 then--Crush & Dissolve Cover
 		timerCrushCD:Start()
-	--elseif spellId == 306736 then--Slurry Breath
-		--updateBreathTimer(self)
 	end
 end
 

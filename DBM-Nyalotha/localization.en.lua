@@ -97,7 +97,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	ExitMind		= "Exit Mind"
+	ExitMind		= "Exit Mind",
+	Gate			= "Gate"
 })
 
 -------------
