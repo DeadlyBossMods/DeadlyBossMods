@@ -335,7 +335,7 @@ function mod:ToggleHudar(r, hide)
 		self:FreeEncounterMarkerByTarget(143430, playerName)
 	else
 		hudarActive = true
-		self:RegisterRangeMarkerOnPartyMember(143430, "timer", playerName, r+0.5, nil, 0, 1, 0, 0.3):Appear():RegisterForAlerts("all"):Rotate(360, 9.5)
+		self:RegisterRangeMarkerOnPartyMember(143430, "timer", playerName, 1.5, nil, 0, 1, 0, 0.3):Appear():RegisterForAlerts("all"):Rotate(360, 9.5)
 	end
 end
 
