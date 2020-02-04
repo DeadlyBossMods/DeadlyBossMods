@@ -20,9 +20,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_REMOVED 312406",
 	"SPELL_PERIODIC_DAMAGE 305575",
 	"SPELL_PERIODIC_MISSED 305575",
-	"CHAT_MSG_MONSTER_YELL",
-	"UNIT_DIED"
---	"UNIT_SPELLCAST_SUCCEEDED boss1"
+	"CHAT_MSG_MONSTER_YELL"
+--	"UNIT_DIED"
 )
 
 --TODO, add https://ptr.wowhead.com/spell=313198/void-touched when it's put in combat log
@@ -46,13 +45,11 @@ local specWarnGTFO							= mod:NewSpecialWarningGTFO(270290, nil, nil, nil, 1, 8
 
 local timerAbyssalStrikeCD					= mod:NewCDTimer(40, 311551, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON, nil, 2, 3)--42.9-47
 local timerVoidRitualCD						= mod:NewNextCountTimer(79.7, 312336, nil, nil, nil, 5, nil, nil, nil, 1, 4)
---local timerSummonRitualObeliskCD			= mod:NewNextCountTimer(79.7, 306495, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
 local timerSoulFlayCD						= mod:NewCDTimer(57, 306319, nil, nil, nil, 3)--57 but will spell queue behind other spells
 local timerTormentCD						= mod:NewNextCountTimer(46.5, 306208, nil, nil, nil, 3, nil, nil, nil, 3, 4)
 
 local berserkTimer							= mod:NewBerserkTimer(600)
 
---mod:AddRangeFrameOption(6, 264382)
 mod:AddInfoFrameOption(312406, true)
 mod:AddSetIconOption("SetIconOnVoidWoken2", 312406, false, false, {1, 2, 3})
 mod:AddSetIconOption("SetIconOnAdds", "ej21227", true, true, {4, 5, 6, 7, 8})
@@ -110,9 +107,6 @@ function mod:OnCombatStart(delay)
 	self.vb.addIcon = 8
 	table.wipe(voidWokenTargets)
 	table.wipe(castsPerGUID)
-	--if self:IsHard() then
-	--	timerSummonRitualObeliskCD:Start(12-delay, 1)
-	--end
 	timerAbyssalStrikeCD:Start(30-delay)--START
 	if self:IsMythic() then
 		timerVoidRitualCD:Start(18.1-delay, 1)
@@ -135,14 +129,7 @@ function mod:OnCombatEnd()
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
 	end
---	if self.Options.RangeFrame then
---		DBM.RangeCheck:Hide()
---	end
 end
-
---function mod:OnTimerRecovery()
-
---end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
@@ -284,22 +271,15 @@ do
 		if msg == L.ObeliskSpawn then--Localized backup only if simply scanning auto translated target doesn't work forever or in all locals
 			self.vb.obeliskCount = self.vb.obeliskCount + 1
 			warnSummonRitualObelisk:Show(self.vb.obeliskCount)
-			--timerSummonRitualObeliskCD:Start(80, self.vb.obeliskCount+1)
 		end
 	end
 end
 
+--[[
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 162432 then
 		--castsPerGUID[args.destGUID] = nil
-	end
-end
-
---[[
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 298689 then--Absorb Fluids
-
 	end
 end
 --]]

@@ -5,42 +5,38 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(158041)
 mod:SetEncounterID(2344)
 mod:SetZone()
-mod:SetHotfixNoticeRev(20200201000000)--2020, 2, 01
-mod:SetMinSyncRevision(20200201000000)
---mod.respawnTime = 29
+mod:SetHotfixNoticeRev(20200203000000)--2020, 2, 02
+mod:SetMinSyncRevision(20200202000000)
+mod.respawnTime = 49
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 311176 316711 310184 310134 310130 317292 310331 315772 309698 310042 313400 308885 317066 318196 319349 319350 319351 316970 318449 312782 316463",
-	"SPELL_CAST_SUCCESS 315927 319257 317102",
-	"SPELL_AURA_APPLIED 313334 308996 309991 313184 310073 311392 316541 316542 313793 315709 315710 312155 318196 318459 319309 319015 317112 319346 316711 318714",
+	"SPELL_CAST_START 311176 316711 310184 310134 310130 317292 310331 315772 309698 310042 313400 308885 317066 319349 319350 319351 316970 318449 312782 316463",
+	"SPELL_CAST_SUCCESS 315927 317102 317066 316970 318460",
+	"SPELL_AURA_APPLIED 313334 308996 309991 313184 316541 316542 313793 315709 315710 312155 318196 318459 319309 319015 317112 319346 316711 318714",
 	"SPELL_AURA_APPLIED_DOSE 313184 319309",
-	"SPELL_AURA_REMOVED 313184 313334 312155 318459 317112 319346 316541 316542 319015",
+	"SPELL_AURA_REMOVED 313184 313334 312155 318459 317112 319346 316541 316542 319015 319309 318196",
 	"SPELL_PERIODIC_DAMAGE 309991",
 	"SPELL_PERIODIC_MISSED 309991",
---	"SPELL_INTERRUPT",
 	"UNIT_DIED",
 	"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
---	"CHAT_MSG_RAID_BOSS_EMOTE",
---	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5",
-	"UNIT_POWER_FREQUENT player"
+	"UNIT_POWER_FREQUENT player",
+	"CINEMATIC_STOP"
 )
 
 --TODO, figure out if mental decay cast by mind controled players can be interrupted (if they even cast it, journal for previous boss was wrong)
---TODO, find out power gains of Psychus and add timer for Manifest Madness that's more reliable (his energy soft enrage)
---TODO, build infoframe for something?
---TODO, further improve paranoia with icons/chat bubbles maybe, depends how many there are on 30 man or mythic
---TODO, verify mythic drycodes.
---TODO, P3 spells with no detection like Stupefying Glare need scheduling
---TODO, Need mythic stage trigger and verification of other stage handling
---TODO, harvester timers would be more reliable with IEEU, but that can't be pulled from public logs, which is a bit more difficult since the kind of guilds that will use transcriptor tend not to get 7 of them
+--TODO, find out power gains of Psychus and add timer for Manifest Madness that's more reliable? (his energy soft enrage)
+--TODO, test infoframe for sanity+neck status
+--TODO, P3 spells with no detection like Stupefying Glare need scheduling for remaining modes
 --New Voice: "leavemind" and "lowsanity"
 --[[
-(ability.id = 318449 or ability.id = 311176 or ability.id = 316711 or ability.id = 310184 or ability.id = 316463 or ability.id = 310134 or ability.id = 310130 or ability.id = 317292 or ability.id = 310331 or ability.id = 315772 or ability.id = 309698 or ability.id = 313400 or ability.id = 308885 or ability.id = 317066 or ability.id = 318196 or ability.id = 316970 or ability.id = 319351 or ability.id = 319350 or ability.id = 319349 or ability.id = 318460 or ability.id = 312782) and type = "begincast"
- or (ability.id = 315927 or ability.id = 317102) and type = "cast"
+(ability.id = 318449 or ability.id = 311176 or ability.id = 316711 or ability.id = 310184 or ability.id = 316463 or ability.id = 310134 or ability.id = 310130 or ability.id = 317292 or ability.id = 310331 or ability.id = 315772 or ability.id = 309698 or ability.id = 313400 or ability.id = 308885 or ability.id = 317066 or ability.id = 318196 or ability.id = 316970 or ability.id = 319351 or ability.id = 319350 or ability.id = 319349 or ability.id = 312782) and type = "begincast"
+ or (ability.id = 315927 or ability.id = 317102 or ability.id = 318460) and type = "cast"
  or ability.id = 318714 and type = "applybuff"
- or (ability.id = 312155 or ability.id = 319015)
+ or ability.id = 318196 and type = "applydebuff"
+ or ability.id = 312155 or ability.id = 319015 or ability.id = 318091
+ or target.id = 163612 and type = "death"
  or ability.id = 319346 and (type = "applydebuff" or type = "removedebuff")
  or (ability.id = 309296 or ability.id = 309307) and type = "cast"
 --]]
@@ -49,7 +45,6 @@ local warnPhase								= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 
 local warnGiftofNzoth						= mod:NewTargetNoFilterAnnounce(313334, 2)
 local warnSanity							= mod:NewCountAnnounce(307831, 3)
 --Stage 1: Dominant Mind
-local warnGlimpseofInfinite					= mod:NewCastAnnounce(311176, 2)
 ----Psychus
 local warnCreepingAnguish					= mod:NewCastAnnounce(310184, 4)
 local warnSynapticShock						= mod:NewStackAnnounce(313184, 1)
@@ -58,7 +53,6 @@ local warnCollapsingMindscape				= mod:NewCastAnnounce(317292, 2)
 local warnMindwrack							= mod:NewTargetNoFilterAnnounce(316711, 4, nil, "Tank|Healer")
 ----Eyes of N'zoth
 local warnVoidGaze							= mod:NewSpellAnnounce(310333, 3)
-----Exposed Synapse
 
 --Stage 2: Writhing Onslaught
 ----N'Zoth
@@ -70,14 +64,12 @@ local warnTumultuousBurst					= mod:NewCastAnnounce(310042, 4, nil, nil, "Tank")
 ----Through the Mindgate
 ------Corruption of Deathwing
 local warnFlamesofInsanity					= mod:NewTargetNoFilterAnnounce(313793, 2, nil, "RemoveMagic")
-------Trecherous Bargain
---local warnBlackVolley						= mod:NewCastAnnounce(313960, 2)
 --Stage 3 Non Mythic
-local warnThoughtHarvester					= mod:NewSpellAnnounce("ej21308", 3, 231298)
+local warnThoughtHarvester					= mod:NewCountAnnounce("ej21308", 3, 231298)
 --Stage 3 Mythic
-local warnAnnihilate						= mod:NewTargetAnnounce(318459, 2)
+local warnAnnihilate						= mod:NewTargetNoFilterAnnounce(318459, 2)
 local warnEvokeAnguish						= mod:NewTargetAnnounce(317112, 3)
-local warnCleansingProtocol					= mod:NewCastAnnounce(319349, 2)
+local warnCleansingProtocol					= mod:NewSpellAnnounce(316970, 2)
 
 --General
 local specWarnGiftofNzoth					= mod:NewSpecialWarningYou(313334, nil, nil, nil, 1, 2)
@@ -93,14 +85,9 @@ local specWarnMindwrackTaunt				= mod:NewSpecialWarningTaunt(316711, nil, nil, n
 local specWarnManifestMadness				= mod:NewSpecialWarningSpell(310134, nil, nil, nil, 3)--Basically an automatic wipe unless Psychus was like sub 1% health, no voice because there isn't really one that says "you're fucked"
 local specWarnEternalHatred					= mod:NewSpecialWarningMoveTo(310130, nil, nil, nil, 3, 10)--No longer in journal, replaced by collapsing Mindscape, but maybe a hidden mythic mechanic now?
 local specWarnCollapsingMindscape			= mod:NewSpecialWarningMoveTo(317292, nil, nil, nil, 2, 10)
-----Exposed Synapse
-
-----Reflected Self
-
 --Stage 2: Writhing Onslaught
 ----N'Zoth
 local specWarnMindgrasp						= mod:NewSpecialWarningSpell(315772, nil, nil, nil, 2, 2)
-local yellMindgrasp							= mod:NewShortYell(315772, "%s", false, 2)
 local specWarnParanoia						= mod:NewSpecialWarningMoveTo(309980, nil, nil, nil, 1, 2)
 local yellParanoia							= mod:NewShortYell(309980)
 local yellParanoiaRepeater					= mod:NewPosYell(309980, DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.shortyell)
@@ -113,8 +100,6 @@ local specWarnCorruptedMind					= mod:NewSpecialWarningInterruptCount(313400, "H
 local specWarnCorruptedMindDispel			= mod:NewSpecialWarningDispel(313400, "RemoveMagic", nil, nil, 1, 2)
 local specWarnMindFlay						= mod:NewSpecialWarningInterrupt(308885, false, nil, nil, 1, 2)
 ----Through the Mindgate
-------Corruption of Deathwing
-
 ------Trecherous Bargain
 local specWarnTreadLightly					= mod:NewSpecialWarningYou(315709, nil, nil, nil, 1, 2)
 local specWarnContempt						= mod:NewSpecialWarningStopMove(315710, nil, nil, nil, 1, 6)
@@ -125,7 +110,7 @@ local yellEvokeAnguish						= mod:NewYell(317112, nil, false, 2)
 local yellEvokeAnguishFades					= mod:NewShortFadesYell(317112, nil, true, 3)
 local specWarnStupefyingGlare				= mod:NewSpecialWarningDodgeCount(317874, nil, nil, nil, 2, 2)
 ----Thought Harvester
-local specWarnThoughtHarvester				= mod:NewSpecialWarningSwitch("ej21308", false, nil, nil, 1, 2)
+local specWarnThoughtHarvester				= mod:NewSpecialWarningSwitchCount("ej21308", false, nil, nil, 1, 2)
 local specWarnHarvestThoughts				= mod:NewSpecialWarningCount(317066, nil, nil, nil, 2, 2)
 --Stage 3 Mythic
 local specWarnEventHorizon					= mod:NewSpecialWarningDefensive(318196, nil, nil, nil, 1, 2, 4)
@@ -164,12 +149,7 @@ local timerEternalTormentCD					= mod:NewCDCountTimer(56.1, 318449, 311383, nil,
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(21286))
 local timerBasherTentacleCD					= mod:NewCDCountTimer(60, "ej21286", nil, nil, nil, 1, "319441", DBM_CORE_DAMAGE_ICON)
 local timerVoidLashCD						= mod:NewCDTimer(22.9, 309698, nil, false, 2, 5, nil, DBM_CORE_TANK_ICON)
-----Through the Mindgate
-------Corruption of Deathwing
-
-------Trecherous Bargain
---local timerBlackVolleyCD					= mod:NewAITimer(30.1, 313960, nil, nil, nil, 2)
---Stage 3: Convergence:
+--Stage 3 (2Mythic): Convergence:
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20767))
 ----N'Zoth
 local timerEvokeAnguishCD					= mod:NewCDCountTimer(30.5, 317102, nil, nil, nil, 3)--30.5-44.9, delayed by boss doing other stuff?
@@ -179,82 +159,16 @@ local timerThoughtHarvesterCD				= mod:NewCDCountTimer(30.1, "ej21308", nil, nil
 local timerHarvestThoughtsCD				= mod:NewCDTimer(35.2, 317066, nil, nil, nil, 3)
 --Stage 3 Mythic
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(21435))
-local timerEventHorizonCD					= mod:NewAITimer(22.9, 318196, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)--, nil, 2, 4
-local timerAnnihilateCD						= mod:NewAITimer(22.9, 318460, nil, nil, nil, 3)
-local timerCleansingProtocol				= mod:NewCastTimer(50, 319349, nil, nil, nil, 2)
---local timerSpawnPsychusCD					= mod:NewCDTimer(45, 311609, nil, nil, nil, 1)
+local timerEventHorizonCD					= mod:NewCDCountTimer(22.9, 318196, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)--, nil, 2, 4
+local timerAnnihilateCD						= mod:NewCDCountTimer(22.9, 318460, nil, nil, nil, 3)
+local timerCleansingProtocol				= mod:NewCastTimer(8, 316970, nil, nil, nil, 2)
 
---mod:AddRangeFrameOption(6, 264382)
 mod:AddInfoFrameOption(307831, true)
 mod:AddSetIconOption("SetIconOnCorruptor", "ej21441", true, true, {1, 2, 3, 4})
---mod:AddNamePlateOption("NPAuraOnShock", 313184)
+mod:AddBoolOption("ArrowOnGlare", true)
+mod:AddMiscLine(DBM_CORE_OPTION_CATEGORY_DROPDOWNS)
+mod:AddDropdownOption("InterruptBehavior", {"Four", "Five", "Six", "NoReset"}, "Five", "misc")
 
-local playersInMind = {}
-local selfInMind = false
-local lastSanity = 100
-local seenAdds = {}
-local ParanoiaTargets = {}
-local castsPerGUID = {}
-local mythicTimers = {
-	[1] = {--TODO: Stage 1 timer sequences likely all go longer if a successful shattered ego doesn't trigger to restart the shattered ego timer cycles
-		--Basher tentacles
-		[318714] = {},
-		--Paranoia
-		[315927] = {},
-		--Eternal Torment
-		[318449] = {},
-	},
-	[2] = {
-		--Eternal Torment
-		[318449] = {},
-		--Thought Harvester spawns
-		[316711] = {},
-		--Evoke Anquish
-		[317102] = {},
-		--Stupefying Glare
-		[317874] = {},
-	},
-}
-local heroicTimers = {
-	[2] = {--TODO: Stage 2 timer sequences likely all go longer if a successful shattered ego doesn't trigger to restart the shattered ego timer cycles
-		--Basher tentacles
-		[318714] = {23, 55.0, 50.0},
-		--Paranoia
-		[315927] = {50, 56.1, 48.6},
-		--Eternal Torment
-		[318449] = {35.3, 56, 29.3, 19.5},
-	},
-	[3] = {
-		--Eternal Torment
-		[318449] = {32.8, 70.9, 10.5, 24.5, 10.9, 23.2, 11, 23.1},--It might be that after first two casts it just alternates between 10.5 and 23.1?
-		--Thought Harvester spawns
-		[316711] = {21.1, 25.5, 42.7, 29.2, 3.6, 31.6, 3.7, 30.4, 4.8},--It might be that after 3rd cast, it just alternates between 29-30 and 3.7-4.8
-		--Evoke Anquish
-		[317102] = {15.3, 45.2, 32.6, 30.6, 35.3, 35.3},
-		--Stupefying Glare
-		[317874] = {40.5, 67.5},
-	},
-}
-local normalTimers = {
-	[2] = {--Same as heroic
-		--Basher tentacles
-		[318714] = {23, 55.0, 50.0},
-		--Paranoia
-		[315927] = {50, 56.1, 48.6},
-		--Eternal Torment
-		[318449] = {35.3, 56, 29.3, 19.5},
-	},
-	[3] = {--Different from heroic
-		--Eternal Torment
-		[318449] = {32.8, 70.9, 10.9, 34.1, 60.7, 10.5, 33.2},
-		--Thought Harvester spawns
-		[316711] = {20.3, 25.5, 44.6, 31.2, 30.4, 43, 31.7},
-		--Evoke Anquish
-		[317102] = {15.3, 46.2, 31.6, 44.9, 37.7, 15.8, 51, 37.7},
-		--Stupefying Glare
-		[317874] = {},
-	},
-}
 mod.vb.phase = 0
 mod.vb.BasherCount = 0
 mod.vb.egoCount = 0
@@ -266,10 +180,118 @@ mod.vb.harvestersAlive = 0
 mod.vb.paranoiaCount = 0
 mod.vb.stupefyingGlareCount = 0
 mod.vb.addIcon = 1
+mod.vb.interruptBehavior = "Five"
+mod.vb.difficultyName = "None"
+local selfInMind = false
+local lastSanity = 100
 local lastHarvesterTime = 0
 local debugSpawnTable = {}
 local harvesterDebugTriggered = 0
 local playerName = UnitName("player")
+local neckAvailable = {}
+local seenAdds = {}
+local ParanoiaTargets = {}
+local castsPerGUID = {}
+local allTimers = {
+	["lfr"] = {
+		[2] = {--Unknown, using same ones as normal
+			--Basher tentacles
+			[318714] = {23, 55.0, 50.0},
+			--Paranoia
+			[315927] = {50, 56.1, 48.6},
+			--Eternal Torment
+			[318449] = {35.3, 56, 29.3, 19.5},
+		},
+		[3] = {--Unknown, using same ones as normal
+			--Eternal Torment
+			[318449] = {32.8, 70.9, 10.9, 34.1, 60.7, 10.5, 33.2},
+			--Thought Harvester spawns
+			[316711] = {20.3, 25.5, 44.6, 31.2, 30.4, 43, 31.7},
+			--Evoke Anquish
+			[317102] = {15.3, 46.2, 31.6, 44.9, 37.7, 15.8, 51, 37.7},
+			--Stupefying Glare
+			[317874] = {},
+		},
+	},
+	["normal"] = {
+		[2] = {--Same as heroic
+			--Basher tentacles
+			[318714] = {23, 55.0, 50.0},
+			--Paranoia
+			[315927] = {50, 56.1, 48.6},
+			--Eternal Torment
+			[318449] = {35.3, 56, 29.3, 19.5},
+		},
+		[3] = {--Different from heroic
+			--Eternal Torment
+			[318449] = {32.8, 70.9, 10.9, 34.1, 60.7, 10.5, 33.2},
+			--Thought Harvester spawns
+			[316711] = {20.3, 25.5, 44.6, 31.2, 30.4, 43, 31.7},
+			--Evoke Anquish
+			[317102] = {15.3, 46.2, 31.6, 44.9, 37.7, 15.8, 51, 37.7},
+			--Stupefying Glare
+			[317874] = {},
+		},
+	},
+	["heroic"] = {
+		[2] = {--TODO: Stage 2 timer sequences likely all go longer if a successful shattered ego doesn't trigger to restart the shattered ego timer cycles
+			--Basher tentacles
+			[318714] = {23, 55.0, 50.0},
+			--Paranoia
+			[315927] = {50, 56.1, 48.6},
+			--Eternal Torment
+			[318449] = {35.3, 56, 29.3, 19.5},
+		},
+		[3] = {
+			--Eternal Torment
+			[318449] = {32.8, 70.9, 10.5, 24.5, 10.9, 23.2, 11, 23.1},--It might be that after first two casts it just alternates between 10.5 and 23.1?
+			--Thought Harvester spawns
+			[316711] = {21.1, 25.5, 42.7, 29.2, 3.6, 31.6, 3.7, 30.4, 4.8},--It might be that after 3rd cast, it just alternates between 29-30 and 3.7-4.8
+			--Evoke Anquish
+			[317102] = {15.3, 45.2, 32.6, 30.6, 35.3, 35.3},
+			--Stupefying Glare
+			[317874] = {40.5, 67.5},
+		},
+	},
+	["mythic"] = {
+		[1] = {
+			--Basher tentacles
+			[318714] = {},
+			--Paranoia
+			[315927] = {},
+			--Eternal Torment
+			[318449] = {},
+		},
+		[2] = {
+			--Thought Harvester spawns
+			[316711] = {},
+			--Evoke Anquish
+			[317102] = {},
+			--Stupefying Glare
+			[317874] = {},
+			--Paranoia
+			[315927] = {},
+		},
+		[3] = {
+			--Eternal Torment (Nzoth)
+			[318449] = {},
+			--Cleansing Protocol (Chamber)
+			[318449] = {},
+			--Event Horizon (Chamber)
+			[318196] = {},
+			--Annihilate (Chamber)
+			[318460] = {},
+			--Thought Harvester spawns
+			[316711] = {},
+			--Evoke Anquish
+			[317102] = {},
+			--Stupefying Glare
+			[317874] = {},
+			--Paranoia
+			[315927] = {},
+		},
+	},
+}
 
 local function warnParanoiaTargets(self)
 	if not self:IsMythic() then--Entire raid gets it, no point in announcing this
@@ -313,12 +335,74 @@ end
 
 local function stupefyingGlareLoop(self)
 	self.vb.stupefyingGlareCount = self.vb.stupefyingGlareCount + 1
-	specWarnStupefyingGlare:Show(self.vb.stupefyingGlareCount)
+	local direction = ""
+	if self:IsMythic() then
+
+	else--Not mythic
+		--Guessed same as mythic stage 2, but if wrong I'm sure i'll get feedback quickly
+		if self.vb.stupefyingGlareCount % 2 == 0 then
+			direction = "R"--ie counter clockwise
+		else
+			direction = "L"--ie Clockwise
+		end
+	end
+	specWarnStupefyingGlare:Show(self.vb.stupefyingGlareCount .. direction)
 	specWarnStupefyingGlare:Play("farfromline")
-	local timer = self:Mythic() and mythicTimers[self.vb.phase][317874][self.vb.stupefyingGlareCount+1] or self:IsHeroic() and heroicTimers[self.vb.phase][317874][self.vb.stupefyingGlareCount+1] or self:IsEasy() and normalTimers[self.vb.phase][317874][self.vb.stupefyingGlareCount+1]
+	if self.Options.ArrowOnGlare then
+		--Assuming facing boss
+		if direction == "L" then
+			DBM.Arrow:ShowStatic(90, 8)
+		elseif direction == "R" then
+			DBM.Arrow:ShowStatic(270, 8)
+		end
+	end
+	local timer = allTimers[self.vb.difficultyName][self.vb.phase][317874][self.vb.stupefyingGlareCount+1]
 	if timer then
-		timerStupefyingGlareCD:Start(timer, self.vb.stupefyingGlareCount+1)
+		--Flip direction for next timer
+		if direction == "R" then
+			direction = "L"
+		elseif direction == "L" then
+			direction = "R"
+		end
+		timerStupefyingGlareCD:Start(timer, self.vb.stupefyingGlareCount+1 .. direction)
 		self:Schedule(timer, stupefyingGlareLoop, self)
+	end
+end
+
+
+local updateInfoFrame
+do
+	local floor, tsort = math.floor, table.sort
+	local lines = {}
+	local sortedLines = {}
+	local tempLines = {}
+	local tempLinesSorted = {}
+	local function sortFuncAsc(a, b) return tempLines[a] < tempLines[b] end
+	local function addLine(key, value)
+		-- sort by insertion order
+		lines[key] = value
+		sortedLines[#sortedLines + 1] = key
+	end
+	updateInfoFrame = function()
+		table.wipe(lines)
+		table.wipe(sortedLines)
+		table.wipe(tempLines)
+		table.wipe(tempLinesSorted)
+		--Build Sanity Table
+		for uId in DBM:GetGroupMembers() do
+			local unitName = DBM:GetUnitFullName(uId)
+			local count = UnitPower(uId, ALTERNATE_POWER_INDEX)
+			tempLines[unitName] = count
+			tempLinesSorted[#tempLinesSorted + 1] = unitName
+		end
+		--Sort it by lowest sorted to top
+		tsort(tempLinesSorted, sortFuncAsc)
+		--Move into regular infoframe table now
+		for _, name in ipairs(tempLinesSorted) do
+			local neckAvailable = neckAvailable[name] and "|cFF088A08"..YES.."|r" or "|cffff0000"..NO.."|r"
+			addLine(neckAvailable.."*"..name, tempLines[name])
+		end
+		return lines, sortedLines
 	end
 end
 
@@ -326,57 +410,79 @@ function mod:OnCombatStart(delay)
 	self.vb.eternalTormentCount = 0
 	self.vb.BasherCount = 0
 	self.vb.paranoiaCount = 0
-	self.vb.stupefyingGlareCount = 0
 	self.vb.egoCount = 0
 	self.vb.addIcon = 1
+	self.vb.interruptBehavior = self.Options.InterruptBehavior--Default it to whatever user has it set to, until group leader overrides it
 	lastHarvesterTime = 0
 	table.wipe(debugSpawnTable)
 	table.wipe(castsPerGUID)
-	harvesterDebugTriggered = 0
-	if self:IsMythic() then
-		self.vb.phase = 1
-	else
-		self.vb.phase = 0
-	end
-	table.wipe(playersInMind)
+	table.wipe(neckAvailable)
 	selfInMind = false
 	lastSanity = 100
 	table.wipe(seenAdds)
 	table.wipe(ParanoiaTargets)
+	harvesterDebugTriggered = 0
+	if self:IsMythic() then
+		self.vb.phase = 1
+		self.vb.difficultyName = "mythic"
+	else
+		if self:IsHeroic() then
+			self.vb.difficultyName = "heroic"
+		elseif self:IsNormal() then
+			self.vb.difficultyName = "normal"
+		else
+			self.vb.difficultyName = "lfr"
+		end
+		self.vb.phase = 0
+		berserkTimer:Start(720-delay)
+	end
 	UpdateTimerFades(self)
-	berserkTimer:Start(720-delay)
+	if UnitIsGroupLeader("player") and not self:IsLFR() then
+		if self.Options.InterruptBehavior == "Four" then
+			self:SendSync("Four")
+		elseif self.Options.InterruptBehavior == "Five" then
+			self:SendSync("Five")
+		elseif self.Options.InterruptBehavior == "Six" then
+			self:SendSync("Six")
+		elseif self.Options.InterruptBehavior == "NoReset" then
+			self:SendSync("NoReset")
+		end
+	end
+	for uId in DBM:GetGroupMembers() do
+		local name = DBM:GetUnitFullName(uId)
+		neckAvailable[name] = true
+	end
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(307831))
-		DBM.InfoFrame:Show(8, "playerpower", 1, ALTERNATE_POWER_INDEX, nil, nil, 2)--Sorting lowest to highest
+		if DBM.Options.DebugMode then
+			DBM.InfoFrame:Show(self:IsMythic() and 20 or 8, "function", updateInfoFrame, false)
+		else
+			DBM.InfoFrame:Show(8, "playerpower", 1, ALTERNATE_POWER_INDEX, nil, nil, 2)--Sorting lowest to highest
+		end
 	end
-	--if self.Options.NPAuraOnShock then
-	--	DBM:FireEvent("BossMod_EnableHostileNameplates")
-	--end
 end
 
 function mod:OnCombatEnd()
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
 	end
---	if self.Options.RangeFrame then
---		DBM.RangeCheck:Hide()
---	end
-	--if self.Options.NPAuraOnShock then
-	--	DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
-	--end
-	DBM:AddMsg("Harvester Spawn Timers collected. If you see this message, Please report these numbers and raid difficulty to DBM author: " .. table.concat(debugSpawnTable, ", "))
+	if self.Options.ArrowOnGlare then
+		DBM.Arrow:Hide()
+	end
+	if (harvesterDebugTriggered >= 2) and (#debugSpawnTable > 0) then
+		local message = table.concat(debugSpawnTable, ", ")
+		DBM:AddMsg("Harvester Spawns collected. Please report these numbers and raid difficulty to DBM author: "..message)
+	end
 end
 
 function mod:OnTimerRecovery()
+	if not DBM:UnitDebuff("player", 319346) and not UnitIsDeadOrGhost("player") then
+		selfInMind = true
+	end
+	--On recovery no way to know neck status, so set all to false
 	for uId in DBM:GetGroupMembers() do
-		if not DBM:UnitDebuff(uId, 319346) then
-			local name = DBM:GetUnitFullName(uId)
-			table.insert(playersInMind, name)
-			if UnitIsUnit("player", uId) and not UnitIsDeadOrGhost("player") then
-				selfInMind = true
-				UpdateTimerFades(self)
-			end
-		end
+		local name = DBM:GetUnitFullName(uId)
+		neckAvailable[name] = false
 	end
 end
 
@@ -384,28 +490,15 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 311176 then
 		self.vb.phase = 1--Non Mythic
-		warnGlimpseofInfinite:Show()
 		--Start P1 timers here, more accurate, especially if boss forgets to cast this :D
 		timerVoidGazeCD:Start(14.7)
 	elseif spellId == 316711 then
-		timerMindwrackCD:Start(4.9, args.sourceGUID)
-		--Backup, if they have a pile of harvesters the game might run out of boss unit IDs and not assign one
-		if (args:GetSrcCreatureID() == 162933) and not seenAdds[args.sourceGUID] then
-			seenAdds[args.sourceGUID] = true
-			self.vb.harvesterCount = self.vb.harvesterCount + 1
-			self.vb.harvestersAlive = self.vb.harvestersAlive + 1
-			if self.Options.SpecWarnej21308switch then
-				specWarnThoughtHarvester:Show()
-				specWarnThoughtHarvester:Play("killmob")
-			else
-				warnThoughtHarvester:Show()
-			end
-			local timer = self:Mythic() and mythicTimers[self.vb.phase][316711][self.vb.harvesterCount+1] or self:IsHeroic() and heroicTimers[self.vb.phase][316711][self.vb.harvesterCount+1] or self:IsEasy() and normalTimers[self.vb.phase][316711][self.vb.harvesterCount+1]
-			if timer then
-				timerThoughtHarvesterCD:Start(timer, self.vb.harvesterCount+1)
-			end
-		else--Not thought harvester, actually interruptable
+		if args:GetSrcCreatureID() == 158376 then--Psychus
+			timerMindwrackCD:Start(4.9, args.sourceGUID)
 			if not castsPerGUID[args.sourceGUID] then
+				castsPerGUID[args.sourceGUID] = 0
+			end
+			if (self.vb.interruptBehavior == "Four" and castsPerGUID[args.sourceGUID] == 4) or (self.vb.interruptBehavior == "Five" and castsPerGUID[args.sourceGUID] == 5) or (self.vb.interruptBehavior == "Six" and castsPerGUID[args.sourceGUID] == 6) then
 				castsPerGUID[args.sourceGUID] = 0
 			end
 			castsPerGUID[args.sourceGUID] = castsPerGUID[args.sourceGUID] + 1
@@ -493,58 +586,50 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 308885 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnMindFlay:Show(args.sourceGUID)
 		specWarnMindFlay:Play("kickcast")
-	--elseif spellId == 313960 then
-		--warnBlackVolley:Show()
-		--timerBlackVolleyCD:Start()
 	elseif spellId == 317066 then
-		self.vb.harvestThoughtsCount = self.vb.harvestThoughtsCount + 1
 		if self:AntiSpam(5, 10) then
+			self.vb.harvestThoughtsCount = self.vb.harvestThoughtsCount + 1
 			specWarnHarvestThoughts:Show(self.vb.harvestThoughtsCount)
 			specWarnHarvestThoughts:Play("gathershare")
 		end
-		timerHarvestThoughtsCD:Start(35.2, args.sourceGUID)
-	elseif spellId == 318196 then
-		timerEventHorizonCD:Start()
-	elseif (spellId == 316970 or spellId == 319351 or spellId == 319350 or spellId == 319349) and self:AntiSpam(3, 9) then--All spellIds until we know which one is valid. Filtered by antispam in case more than one of these fires for it
-		warnCleansingProtocol:Show()
-		timerCleansingProtocol:Start()
-	elseif spellId == 318460 then
-		timerAnnihilateCD:Start()
+	elseif spellId == 316970 or spellId == 319349 or spellId == 319350 or spellId == 319351 then
+		if self:AntiSpam(3, 9) then
+			warnCleansingProtocol:Show()
+		end
 	elseif spellId == 318449 then
 		self.vb.eternalTormentCount = self.vb.eternalTormentCount + 1
 		if not selfInMind then
 			specWarnEternalTorment:Show(self.vb.eternalTormentCount)
 			specWarnEternalTorment:Play("aesoon")
 		end
-		local timer = self:IsMythic() and mythicTimers[self.vb.phase][318449][self.vb.eternalTormentCount+1] or self:IsHeroic() and heroicTimers[self.vb.phase][318449][self.vb.eternalTormentCount+1] or self:IsEasy() and normalTimers[self.vb.phase][318449][self.vb.eternalTormentCount+1]
+		local timer = allTimers[self.vb.difficultyName][self.vb.phase][318449][self.vb.eternalTormentCount+1]
 		if timer then
 			timerEternalTormentCD:Start(timer, self.vb.eternalTormentCount+1)
 		end
 	elseif spellId == 312782 then--Convergence (2-2.5 seconds slower than shattered ego, but likely more reliable for mythic)
-		if self:IsMythic() then
-			self.vb.phase = 2
-			warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(2))
-			warnPhase:Play("ptwo")
-		else
-			self.vb.phase = 3
-			warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(3))
-			warnPhase:Play("pthree")
-		end
 		self.vb.harvesterCount = 0
 		self.vb.harvestersAlive = 0
 		self.vb.harvestThoughtsCount = 0
 		self.vb.evokeAnguishCount = 0
+		self.vb.stupefyingGlareCount = 0
 		lastHarvesterTime = GetTime()
 		timerMindgraspCD:Stop()--Shouldn't even be running but just in case
 		timerMindgateCD:Stop()
 		timerParanoiaCD:Stop()
-		timerEvokeAnguishCD:Start(15, 1)
-		timerThoughtHarvesterCD:Start(21.1, 1)
-		timerEternalTormentCD:Start(32.8, 1)
-		timerMindgraspCD:Start(71.7)
-		if self:IsHard() then--Only place I've verified, need to find some normal videos/vods
-			timerStupefyingGlareCD:Start(40.5)
-			self:Schedule(40.5, stupefyingGlareLoop, self)
+		if self:IsMythic() then
+
+		else
+			self.vb.phase = 3
+			warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(3))
+			warnPhase:Play("pthree")
+			timerEvokeAnguishCD:Start(15, 1)
+			timerThoughtHarvesterCD:Start(21.1, 1)
+			timerEternalTormentCD:Start(32.8, 1)
+			timerMindgraspCD:Start(71.7)
+			if self:IsHeroic() then--Only place I've verified, need to find some normal videos/vods
+				timerStupefyingGlareCD:Start(40.5, 1 .. "L")--direction not confirmed
+				self:Schedule(40.5, stupefyingGlareLoop, self)
+			end
 		end
 	elseif spellId == 316463 then
 		warnMindGate:Show()
@@ -555,19 +640,29 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 315927 then
 		self.vb.paranoiaCount = self.vb.paranoiaCount + 1
-		local timer = self:IsMythic() and mythicTimers[self.vb.phase][315927][self.vb.paranoiaCount+1] or self:IsHeroic() and heroicTimers[self.vb.phase][315927][self.vb.paranoiaCount+1] or self:IsEasy() and normalTimers[self.vb.phase][315927][self.vb.paranoiaCount+1]
+		local timer = allTimers[self.vb.difficultyName][self.vb.phase][315927][self.vb.paranoiaCount+1]
 		if timer then
 			timerParanoiaCD:Start(timer, self.vb.paranoiaCount+1)
 		end
-
-	elseif spellId == 319257 then
-		--timerCleansingProtocol:Stop()
 	elseif spellId == 317102 then
 		self.vb.evokeAnguishCount = self.vb.evokeAnguishCount + 1
-		local timer = self:Mythic() and mythicTimers[self.vb.phase][317102][self.vb.evokeAnguishCount+1] or self:IsHeroic() and heroicTimers[self.vb.phase][317102][self.vb.evokeAnguishCount+1] or self:IsEasy() and normalTimers[self.vb.phase][317102][self.vb.evokeAnguishCount+1]
+		local timer = allTimers[self.vb.difficultyName][self.vb.phase][317102][self.vb.evokeAnguishCount+1]
 		if timer then
-			timerEvokeAnguishCD:Start(timer, self.vb.harvesterCount+1)
+			timerEvokeAnguishCD:Start(timer, self.vb.evokeAnguishCount+1)
 		end
+		if self.Options.InfoFrame and not DBM.InfoFrame:IsShown() then
+			DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(307831))
+			if DBM.Options.DebugMode then
+				DBM.InfoFrame:Show(self:IsMythic() and 20 or 8, "function", updateInfoFrame, false)
+			else
+				DBM.InfoFrame:Show(8, "playerpower", 1, ALTERNATE_POWER_INDEX, nil, nil, 2)--Sorting lowest to highest
+			end
+		end
+	elseif spellId == 317066 then
+		--Timer started here because if people are dying it can trigger stutter/recasts of this
+		timerHarvestThoughtsCD:Start(30.2, args.sourceGUID)
+	elseif spellId == 318741 then--Neck Used
+		neckAvailable[args.sourceName] = false
 	end
 end
 
@@ -596,11 +691,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnSynapticShock:Show(args.destName, amount)
 		timerSynampticShock:Stop()
 		timerSynampticShock:Start(spellId == 313184 and 30 or 15)--Non Mythic/Mythic
-	elseif spellId == 310073 or spellId == 311392 then
-		if args:IsPlayer() then
-			local text = spellId == 310073 and L.Away or L.Toward
-			yellMindgrasp:Yell(text)
-		end
 	elseif spellId == 316541 or spellId == 316542 then
 		ParanoiaTargets[#ParanoiaTargets + 1] = args.destName
 		self:Unschedule(warnParanoiaTargets)
@@ -610,7 +700,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			icon = #ParanoiaTargets / 2--Generate icon on the evens, because then we can divide it by 2 to assign raid icon to that pair
 			--On mythic, two pairs won't have an icon available, so we just assign it SOMETHING
 			if icon == 9 then
-				icon = "(ツ)"--(စ‿စ)
+				icon = "(°,,°)"
 			elseif icon == 10 then
 				icon = "(•_•)"
 			end
@@ -664,13 +754,12 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnEventHorizon:Play("defensive")
 		else
 			local uId = DBM:GetRaidUnitId(args.destName)
-			if self:IsTanking(uId) then--Just in case it can go on non tanks
+			if self:IsTank() then
 				specWarnEventHorizonSwap:Show(args.destName)
 				specWarnEventHorizonSwap:Play("tauntboss")
 			end
 		end
-	elseif spellId == 318459 then
-		warnAnnihilate:CombinedShow(0.3, args.destName)
+	elseif spellId == 318459 and self:AntiSpam(1, args.destName) then
 		if args:IsPlayer() then
 			specWarnAnnihilate:Show()
 			specWarnAnnihilate:Play("runout")
@@ -686,7 +775,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellEvokeAnguishFades:Countdown(spellId)
 		end
 	elseif spellId == 319346 then--Infinity's Toll being applied (Players leaving mind)
-		tDeleteItem(playersInMind, args.sourceName)
 		if args.sourceGUID == UnitGUID("player") then
 			selfInMind = false
 			UpdateTimerFades(self)
@@ -708,7 +796,7 @@ function mod:SPELL_AURA_APPLIED(args)
 					specWarnBasherTentacle:Show(self.vb.BasherCount)
 					specWarnBasherTentacle:Play("bigmob")
 				end
-				local timer = self:IsMythic() and mythicTimers[self.vb.phase][318714][self.vb.BasherCount+1] or self:IsHeroic() and heroicTimers[self.vb.phase][318714][self.vb.BasherCount+1] or self:IsEasy() and normalTimers[self.vb.phase][318714][self.vb.BasherCount+1]
+				local timer = allTimers[self.vb.difficultyName][self.vb.phase][318714][self.vb.BasherCount+1]
 				if timer then
 					timerBasherTentacleCD:Start(timer, self.vb.BasherCount+1)
 				end
@@ -739,10 +827,12 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif (spellId == 312155 or spellId == 319015) and args:GetDestCreatureID() == 158041 then--Shattered Ego on N'Zoth
 		--These always happen after this
 		timerShatteredEgo:Stop()
-		self.vb.eternalTormentCount = 0--Variable used in P2 (P1 Mythic) and P3 (P2 Mythic)
-		if self.vb.egoCount < 3 then
+		--Basically below only runs after first psychus phase in Stage 1 mythic/Stage 2 non mythic. 2nd one ending is start of next phase
+		if (self:IsMythic() and self.vb.egoCount == 1) or (not self:IsMythic() and self.vb.egoCount == 2) then
 			self.vb.BasherCount = 0
 			self.vb.paranoiaCount = 0
+			self.vb.eternalTormentCount = 0
+			timerVoidGazeCD:Stop()
 			if self:IsMythic() then
 
 			else
@@ -762,9 +852,6 @@ function mod:SPELL_AURA_REMOVED(args)
 			yellEvokeAnguishFades:Cancel()
 		end
 	elseif spellId == 319346 then--Infinity's Toll fading (players entering mind)
-		if not tContains(playersInMind, args.destName) then
-			table.insert(playersInMind, args.destName)
-		end
 		if args.destGUID == UnitGUID("player") and not UnitIsDeadOrGhost("player") then
 			selfInMind = true
 			UpdateTimerFades(self)
@@ -784,35 +871,17 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spell
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
---[[
-function mod:SPELL_INTERRUPT(args)
-	if type(args.extraSpellId) == "number" and args.extraSpellId == 298548 then
-
-	end
-end
---]]
-
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 158376 then--Psychus
 		timerMindwrackCD:Stop(args.destGUID)
 		timerCreepingAnguishCD:Stop()
 		timerSynampticShock:Stop()
-	--elseif cid == 158122 then--Eyes of N'zoth
-		--timerVoidGazeCD:Stop(args.destGUID)
-	--elseif cid == 159578 then--exposed-synapse
-
-	--elseif cid == 158374 then--mindgate-tentacle
-
 	elseif cid == 158367 then--basher-tentacle
 		timerVoidLashCD:Stop(args.destGUID)
 	elseif cid == 162933 then--Thought Harvester
 		self.vb.harvestersAlive = self.vb.harvestersAlive - 1
 		timerHarvestThoughtsCD:Stop(args.destGUID)
-	--elseif cid == 158375 then--corruptor-tentacle
-
-	--elseif cid == 160249 then--spike-tentacle
-
 	end
 end
 
@@ -826,41 +895,39 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 			if cid == 158376 then--Psychus
 				timerMindwrackCD:Start(6)
 				timerCreepingAnguishCD:Start(12)
-			elseif cid == 162933 and not seenAdds[GUID] then--Thought Harvester
-				seenAdds[GUID] = true
-				self.vb.harvesterCount = self.vb.harvesterCount + 1
+			elseif cid == 162933 then--Thought Harvester
 				self.vb.harvestersAlive = self.vb.harvestersAlive + 1
-				if self.Options.SpecWarnej21308switch then
-					specWarnThoughtHarvester:Show()
-					specWarnThoughtHarvester:Play("killmob")
-				else
-					warnThoughtHarvester:Show()
+				if self:AntiSpam(3, 1) then
+					self.vb.harvesterCount = self.vb.harvesterCount + 1
+					if self.Options.SpecWarnej21308switch then
+						specWarnThoughtHarvester:Show(self.vb.harvesterCount)
+						specWarnThoughtHarvester:Play("killmob")
+					else
+						warnThoughtHarvester:Show(self.vb.harvesterCount)
+					end
+					local timer = allTimers[self.vb.difficultyName][self.vb.phase][316711][self.vb.harvesterCount+1]
+					if timer then
+						timerThoughtHarvesterCD:Start(timer, self.vb.harvesterCount+1)
+					else
+						harvesterDebugTriggered = harvesterDebugTriggered + 1
+					end
+					local currentTime = GetTime() - lastHarvesterTime
+					debugSpawnTable[#debugSpawnTable + 1] = math.floor(currentTime*10)/10--Floored but only after trying to preserve at least one decimal place
+					lastHarvesterTime = GetTime()
+					if self.Options.InfoFrame and not DBM.InfoFrame:IsShown() then
+						DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(307831))
+						if DBM.Options.DebugMode then
+							DBM.InfoFrame:Show(self:IsMythic() and 20 or 8, "function", updateInfoFrame, false)
+						else
+							DBM.InfoFrame:Show(8, "playerpower", 1, ALTERNATE_POWER_INDEX, nil, nil, 2)--Sorting lowest to highest
+						end
+					end
 				end
-				local timer = self:Mythic() and mythicTimers[self.vb.phase][316711][self.vb.harvesterCount+1] or self:IsHeroic() and heroicTimers[self.vb.phase][316711][self.vb.harvesterCount+1] or self:IsEasy() and normalTimers[self.vb.phase][316711][self.vb.harvesterCount+1]
-				if timer then
-					timerThoughtHarvesterCD:Start(timer, self.vb.harvesterCount+1)
-				end
-				local currentTime = GetTime() - lastHarvesterTime
-				debugSpawnTable[self.vb.harvesterCount] = math.floor(currentTime*10)/10--Floored but only after trying to preserve at least one decimal place
-				lastHarvesterTime = GetTime()
+				timerHarvestThoughtsCD:Start(8.2, GUID)
 			end
 		end
 	end
 end
-
---[[
-function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
-	if msg:find("INTERFACE\\ICONS\\ACHIEVEMENT_BOSS_YOGGSARON_01.BLP") and self:AntiSpam(5, 4) then
-		self:SendSync("BasherTentacle")--Synced since event is only seen outside mind, and people in mind should at least get the timer
-	end
-end
-
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 311609 then--Spawn Psychus (used in Stage 3 by Thought Harvesters?)
-		timerSpawnPsychusCD:Start()
-	end
-end
---]]
 
 function mod:UNIT_POWER_FREQUENT(uId)
 	local currentSanity = UnitPower(uId, ALTERNATE_POWER_INDEX)
@@ -886,5 +953,29 @@ function mod:UNIT_POWER_FREQUENT(uId)
 			lastSanity = 60
 			warnSanity:Show(lastSanity)
 		end
+	end
+end
+
+function mod:CINEMATIC_STOP()
+	if self.Options.InfoFrame and not DBM.InfoFrame:IsShown() then
+		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(307831))
+		if DBM.Options.DebugMode then
+			DBM.InfoFrame:Show(self:IsMythic() and 20 or 8, "function", updateInfoFrame, false)
+		else
+			DBM.InfoFrame:Show(8, "playerpower", 1, ALTERNATE_POWER_INDEX, nil, nil, 2)--Sorting lowest to highest
+		end
+	end
+end
+
+function mod:OnSync(msg)
+	if self:IsLFR() then return end
+	if msg == "Four" then
+		self.vb.interruptBehavior = "Four"
+	elseif msg == "Five" then
+		self.vb.interruptBehavior = "Five"
+	elseif msg == "Six" then
+		self.vb.interruptBehavior = "Six"
+	elseif msg == "NoReset" then
+		self.vb.interruptBehavior = "NoReset"
 	end
 end

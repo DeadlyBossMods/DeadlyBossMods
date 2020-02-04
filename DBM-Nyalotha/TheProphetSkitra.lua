@@ -20,16 +20,9 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 307784 307785 313208 308065 307950",
 	"SPELL_AURA_APPLIED_DOSE 308059",
 	"SPELL_AURA_REMOVED 313208 308065 307950",--307784 307785
---	"SPELL_PERIODIC_DAMAGE",
---	"SPELL_PERIODIC_MISSED",
---	"UNIT_DIED",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, if tanks each get a diff mind debuff, mark them, and they can be designated callers
---TODO, update timerImagesofAbsolutionCD after Projection phases
---TODO, add warning to switch to add to prophet if it's yours
---TODO, see if I made right call assuming slower shred psyche timer was changed in all modes, or if the 37 change is mythic only
 --[[
 (ability.id = 309687 or ability.id = 307725) and type = "begincast"
  or (ability.id = 313239 or ability.id = 307937 or ability.id = 313276) and type = "cast"
@@ -51,15 +44,12 @@ local specWarnShredPsyche					= mod:NewSpecialWarningMoveAway(307937, nil, nil, 
 local yellShredPsyche						= mod:NewPosYell(307937, DBM_CORE_AUTO_YELL_CUSTOM_POSITION2)
 local yellShredPsycheFades					= mod:NewIconFadesYell(307937)
 local specWarnShredPsycheSwitch				= mod:NewSpecialWarningSwitch(307937, "dps", nil, nil, 1, 2)
---local specWarnGTFO						= mod:NewSpecialWarningGTFO(270290, nil, nil, nil, 1, 8)
 
 local timerImagesofAbsolutionCD				= mod:NewCDTimer(84.9, 313239, 127876, nil, nil, 1, nil, DBM_CORE_HEROIC_ICON)
 local timerShredPsycheCD					= mod:NewCDTimer(37.7, 307937, nil, nil, nil, 3, nil, DBM_CORE_DAMAGE_ICON, nil, 1, 4)
 
 local berserkTimer							= mod:NewBerserkTimer(600)--He only gains a 300% damage increase on his berserk, and that's surviable since he doesn't melee and his adds don't gain it
 
---mod:AddRangeFrameOption(6, 264382)
---mod:AddInfoFrameOption(275270, true)
 mod:AddSetIconOption("SetIconOnAdds", 307937, true, false, {1, 2})
 mod:AddNamePlateOption("NPAuraOnIntangibleIllusion", 313208)
 
@@ -81,20 +71,10 @@ end
 
 function mod:OnCombatEnd()
 	self:UnregisterShortTermEvents()
---	if self.Options.InfoFrame then
---		DBM.InfoFrame:Hide()
---	end
---	if self.Options.RangeFrame then
---		DBM.RangeCheck:Hide()
---	end
 	if self.Options.NPAuraOnIntangibleIllusion then
 		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
 	end
 end
-
---function mod:OnTimerRecovery()
-
---end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
@@ -229,26 +209,3 @@ function mod:UNIT_TARGETABLE_CHANGED()
 		end
 	end
 end
-
---[[
-function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
-	if spellId == 270290 and destGUID == UnitGUID("player") and self:AntiSpam(2, 2) then
-		specWarnGTFO:Show(spellName)
-		specWarnGTFO:Play("watchfeet")
-	end
-end
-mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
-
-function mod:UNIT_DIED(args)
-	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 152311 then
-
-	end
-end
-
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 307445 and self:AntiSpam(8, 1) then--Illusionary Projection (or 313349 or 307861)
-
-	end
-end
---]]

@@ -27,7 +27,6 @@ mod:RegisterEventsInCombat(
 )
 
 --TODO, https://ptr.wowhead.com/spell=312486/recurring-nightmare need DBM hand holding? Maybe we can track them on infoframe if required?
---TODO, accurate mythic tracking of mythic version of CursedBlood
 --[[
 (ability.id = 309961 or ability.id = 311401) and type = "begincast"
  or (ability.id = 311401 or ability.id = 311159 or ability.id = 314396 or ability.id = 319005) and type = "cast"
@@ -47,7 +46,6 @@ local specWarnEyeofNZothTaunt				= mod:NewSpecialWarningTaunt(309961, nil, nil, 
 local specWarnTouchoftheCorruptor			= mod:NewSpecialWarningYou(311367, nil, nil, nil, 1, 2)
 local yellTouchoftheCorruptor				= mod:NewYell(311367)
 local specWarnCorruptorsGaze				= mod:NewSpecialWarningSpell(310319, nil, nil, nil, 2, 2)
---local yellCorruptorsGaze					= mod:NewYell(310319)
 local specWarnGTFO							= mod:NewSpecialWarningGTFO(310322, nil, nil, nil, 1, 8)
 local specWarnFixate						= mod:NewSpecialWarningYou(315094, nil, nil, nil, 1, 2)
 --Stage 02: The Organs of Corruption
@@ -229,10 +227,6 @@ function mod:OnCombatEnd()
 		DBM.RangeCheck:Hide()
 	end
 end
-
---function mod:OnTimerRecovery()
-
---end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId

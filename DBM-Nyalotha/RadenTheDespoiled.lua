@@ -25,8 +25,6 @@ mod:RegisterEventsInCombat(
 )
 
 --TODO, fine tune range checker with more robust checks, if mythic has more than 1 add spawn at a time
---TODO, fix charged bonds if non heroic difficulties use a diff spellId
---TODO, Chain Lightning timer? at the moment add stutter casts it so coding it with success means only starting a 3 second timer. If stutter casting is fixed I might put the timer in at START event
 --[[
 (ability.id = 306865 or ability.id = 306819 or ability.id = 306866 or ability.id = 306881 or ability.id = 313213 or ability.id = 310003 or ability.id = 309985 or ability.id = 314484 or ability.id = 317276) and type = "begincast"
  or (ability.id = 310019 or ability.id = 306603 or ability.id = 313213 or ability.id = 316913) and type = "cast"
@@ -93,7 +91,6 @@ local specWarnChargedBonds					= mod:NewSpecialWarningMoveAwayCount(310019, nil,
 local yellChargedBonds						= mod:NewYell(310019)
 local specWarnDecayingWoundTaunt			= mod:NewSpecialWarningTaunt(313227, nil, nil, nil, 1, 2)
 local specWarnCorruptedExistence			= mod:NewSpecialWarningYou(316065, nil, nil, nil, 3, 2, 4)--Mythic Only
---local yellCorruptedExistence				= mod:NewYell(316065)
 
 --Stage 1: Gathering Power
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20527))
