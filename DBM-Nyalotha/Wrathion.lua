@@ -247,7 +247,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 	elseif spellId == 306163 then
-		warnIncineration:CombinedShow(0.3, args.destName)
+		warnIncineration:CombinedShow(1, args.destName)
 		if args:IsPlayer() then
 			specWarnIncineration:Show()
 			specWarnIncineration:Play("runout")
