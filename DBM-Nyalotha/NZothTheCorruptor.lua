@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(158041)
 mod:SetEncounterID(2344)
 mod:SetZone()
-mod:SetHotfixNoticeRev(20200202000000)--2020, 2, 02
+mod:SetHotfixNoticeRev(20200203000000)--2020, 2, 02
 mod:SetMinSyncRevision(20200202000000)
 mod.respawnTime = 49
 
@@ -469,9 +469,9 @@ function mod:OnCombatEnd()
 	if self.Options.ArrowOnGlare then
 		DBM.Arrow:Hide()
 	end
-	if #debugSpawnTable > 0 then
+	if (harvesterDebugTriggered >= 2) and (#debugSpawnTable > 0) then
 		local message = table.concat(debugSpawnTable, ", ")
-		DBM:AddMsg("Harvester Spawn Timers collected. If you see this message, Please report these numbers and raid difficulty to DBM author: "..message)
+		DBM:AddMsg("Harvester Spawns collected. Please report these numbers and raid difficulty to DBM author: "..message)
 	end
 end
 
@@ -908,6 +908,8 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 					local timer = allTimers[self.vb.difficultyName][self.vb.phase][316711][self.vb.harvesterCount+1]
 					if timer then
 						timerThoughtHarvesterCD:Start(timer, self.vb.harvesterCount+1)
+					else
+						harvesterDebugTriggered = harvesterDebugTriggered + 1
 					end
 					local currentTime = GetTime() - lastHarvesterTime
 					debugSpawnTable[#debugSpawnTable + 1] = math.floor(currentTime*10)/10--Floored but only after trying to preserve at least one decimal place
