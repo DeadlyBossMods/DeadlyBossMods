@@ -292,7 +292,7 @@ do
 		local bossPower = UnitPower("boss1") --Get Boss Power
 		if (lastPower > bossPower) and bossPower < 85 then
 			warnedSoon = false
-		elseif bossPower >= 85 then--One 15 energy tentacle away, or 2 10 energy ones
+		elseif not warnedSoon and bossPower >= 85 then--One 15 energy tentacle away, or 2 10 energy ones
 			warnedSoon = true
 			warnThrowsSoon:Show()
 		end
