@@ -191,10 +191,6 @@ function mod:OnCombatEnd()
 	end
 end
 
---function mod:OnTimerRecovery()
-
---end
-
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 315820 then
