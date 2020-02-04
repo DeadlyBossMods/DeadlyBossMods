@@ -460,7 +460,7 @@ function mod:SPELL_AURA_REMOVED_DOSE(args)
 	local spellId = args.spellId
 	if spellId == 307079 then
 		local amount = args.amount or 0
-		if amount ~= 0 then
+		if (amount % 3 == 0) or amount < 5 then
 			warnSynthesRemaining:Show(amount)
 		end
 	end
