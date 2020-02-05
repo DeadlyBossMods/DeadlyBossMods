@@ -93,11 +93,13 @@ L:SetOptionLocalization({
 	Four				= "4인 로테이션 ",
 	Five				= "5인 로테이션 ",--Default
 	Six					= "6인 로테이션 ",
-	NoReset				= "로테이션 없음 "
+	NoReset				= "로테이션 없음 ",
+	ArrowOnGlare		= "$spell:317874을 피할 방향을 좌우 화살표로 표시"
 })
 
 L:SetMiscLocalization({
-	ExitMind		= "정신세계 출구"
+	ExitMind		= "정신세계 출구",
+	Gate			= "관문"
 })
 
 -------------
