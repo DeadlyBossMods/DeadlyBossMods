@@ -1,4 +1,4 @@
---2020/01/22
+--2020/02/04
 --三皈依-暗影之月
 
 if GetLocale() ~= "zhTW" then return end
@@ -8,21 +8,6 @@ local L
 --  Wrathion, the Black Emperor --
 ---------------------------
 L= DBM:GetModLocalization(2368)
-
-L:SetWarningLocalization({
-
-})
-
-L:SetTimerLocalization({
-
-})
-
-L:SetOptionLocalization({
-
-})
-
-L:SetMiscLocalization({
-})
 
 ---------------------------
 --  Maut --
@@ -40,7 +25,7 @@ L= DBM:GetModLocalization(2369)
 L= DBM:GetModLocalization(2377)
 
 L:SetMiscLocalization({
-	--ObeliskSpawn	= "暗影之碑，起來吧！"--Only as backup, in case the NPC target check stops working
+	ObeliskSpawn	= "出現吧，暗影方尖碑！"--Only as backup, in case the NPC target check stops working
 })
 
 ---------------------------
@@ -90,10 +75,10 @@ L= DBM:GetModLocalization(2374)
 L:SetOptionLocalization({
 	SetIconOnlyOnce		= "僅設置一次圖示，除非一個淤泥死亡，否則不刷新標記圖示",
 	InterruptBehavior	= "設置脈動之血的打斷方式（團長的設置將覆蓋全團）",
-	Two					= "2人輪流",--Default
-	Three				= "3人輪流",
-	Four				= "4人輪流",
-	Five				= "5人輪流"
+	Two					= "2人輪流 ",--Default
+	Three				= "3人輪流 ",
+	Four				= "4人輪流 ",
+	Five				= "5人輪流 "
 })
 
 ---------------------------
@@ -106,8 +91,18 @@ L= DBM:GetModLocalization(2366)
 ---------------------------
 L= DBM:GetModLocalization(2375)
 
+L:SetOptionLocalization({
+	InterruptBehavior	= "設置心志破壞的打斷方式（團長的設置將覆蓋全團）",
+	Four				= "4人輪流 ",
+	Five				= "5人輪流 ",--Default
+	Six					= "6人輪流 ",
+	NoReset				= "無盡增長 ",
+	ArrowOnGlare		= "為 $spell:317874 顯示左/右方向箭頭"
+})
+
 L:SetMiscLocalization({
-	ExitMind		= "離開精神世界"
+	ExitMind		= "離開精神世界",
+	Gate			= "心門"
 })
 
 -------------

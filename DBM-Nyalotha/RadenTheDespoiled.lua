@@ -8,7 +8,7 @@ mod:SetZone()
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
 mod:SetHotfixNoticeRev(20200126000000)--2020, 1, 26
 mod:SetMinSyncRevision(20191109000000)
-mod.respawnTime = 14
+mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
 
@@ -592,7 +592,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerNullifyingStrikeCD:Stop()
 		timerChargedBondsCD:Start(4.7, 1)
 		timerDecayingStrikeCD:Start(7.4)--SUCCESS
-		timerVoidEruptionCD:Start(12.1)
+		timerVoidEruptionCD:Start(12.1, 1)
 		timerGorgeEssenceCD:Start(15.8, 1)
 		if self:IsMythic() then
 			timerCorruptedExistenceCD:start(1.2, 1)
@@ -754,7 +754,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		timerNullifyingStrikeCD:Stop()
 		timerChargedBondsCD:Start(14.7, 1)
 		timerDecayingStrikeCD:Start(17.4)--SUCCESS
-		timerVoidEruptionCD:Start(22.1)
+		timerVoidEruptionCD:Start(22.1, 1)
 		timerGorgeEssenceCD:Start(25.8, 1)
 		if self:IsMythic() then
 			timerCorruptedExistenceCD:start(11.2, 1)

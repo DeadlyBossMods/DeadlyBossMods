@@ -1,7 +1,7 @@
 DBM_DEADLY_BOSS_MODS				= "Deadly Boss Mods"
 DBM_DBM								= "DBM"
-local day, _, month = C_DateAndTime and C_DateAndTime.GetCurrentCalendarTime()
-if day and month and  day == 1 and month == 4 then
+local day, _, month = C_DateAndTime and C_DateAndTime.GetCurrentCalendarTime and C_DateAndTime.GetCurrentCalendarTime()
+if day and month and day == 1 and month == 4 then
 	DBM_DEADLY_BOSS_MODS				= "Harmless Boss Mods"
 	DBM_DBM								= "HBM"
 end
@@ -337,6 +337,7 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
 	cast		= "Casting %s: %.1f sec",
 	soon		= "%s soon",
 	sooncount	= "%s (%%s) soon",
+	countdown	= "%s in %%ds",
 	prewarn		= "%s in %s",
 	bait		= "%s soon - bait now",
 	stage		= "Stage %s",
@@ -360,6 +361,7 @@ DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
 	cast		= "Show warning when $spell:%s is being cast",
 	soon		= prewarnOption,
 	sooncount	= prewarnOption,
+	countdown	= "Show pre-warning countdown spam for $spell:%s",
 	prewarn 	= prewarnOption,
 	bait		= "Show pre-warning (to bait) for $spell:%s",
 	stage		= "Announce Stage %s",
