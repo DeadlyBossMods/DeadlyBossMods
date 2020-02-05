@@ -9198,6 +9198,10 @@ do
 		return newAnnounce(self, "sooncount", spellId, color or 2, ...)
 	end
 
+	function bossModPrototype:NewCountdownAnnounce(spellId, color, ...)
+		return newAnnounce(self, "countdown", spellId, color or 4, ...)
+	end
+
 	function bossModPrototype:NewPreWarnAnnounce(spellId, time, color, icon, optionDefault, optionName, noArg, soundOption)
 		return newAnnounce(self, "prewarn", spellId, color or 2, icon, optionDefault, optionName, nil, time, soundOption)
 	end
