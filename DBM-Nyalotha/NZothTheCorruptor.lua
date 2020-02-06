@@ -280,7 +280,7 @@ local allTimers = {
 			--Basher tentacles
 			[318714] = {0, 35, 35, 50, 35},
 			--Paranoia
-			[315927] = {15, 86},
+			[315927] = {15, 85.1},
 			--Eternal Torment
 			[318449] = {25, 25, 25, 50, 25},
 		},
@@ -296,7 +296,7 @@ local allTimers = {
 		},
 		[3] = {
 			--Eternal Torment (Nzoth)
-			--[318449] = {20, 6.1},--6.1 repeating
+			[318449] = {20, 6.1},--6.1 repeating
 			--Cleansing Protocol (Chamber)
 			[318449] = {25, 16, 12, 27, 29.9},
 			--Event Horizon (Chamber)
@@ -741,7 +741,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if timer then
 			timerParanoiaCD:Start(timer, self.vb.paranoiaCount+1)
 		end
-
 	elseif spellId == 319257 then
 		neckAvailable[args.sourceName] = false
 		warnDisarmCountermeasure:CombinedShow(1, args.sourceName)
