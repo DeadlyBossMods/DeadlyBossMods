@@ -46,10 +46,10 @@ local warnBurrow						= mod:NewSpellAnnounce(267579, 2)
 local warnBurstingBoil					= mod:NewCountAnnounce(277007, 4)--Mythic
 
 --Arena Floor
-local specWarnBloodHost					= mod:NewSpecialWarningClose(267813, nil, nil, nil, 1, 2)--Mythic
+local specWarnBloodHost					= mod:NewSpecialWarningClose(267813, nil, nil, nil, 1, 2, 4)--Mythic
 --local specWarnSpawnofGhuun			= mod:NewSpecialWarningSwitch("ej13699", "Dps", nil, nil, 1, 2)
 local yellBloodHost						= mod:NewYell(267813)--Mythic
-local specWarnDarkPurpose				= mod:NewSpecialWarningRun(268074, nil, nil, nil, 4, 2)--Mythic
+local specWarnDarkPurpose				= mod:NewSpecialWarningRun(268074, nil, nil, nil, 4, 2, 4)--Mythic
 local yellDarkPurpose					= mod:NewYell(268074)--Mythic
 local specWarnExplosiveCorruption		= mod:NewSpecialWarningMoveAway(272506, nil, nil, 2, 1, 2)
 local specWarnVirulentCorruption		= mod:NewSpecialWarningDodge(277081, nil, nil, nil, 2, 2)--Orbs spawned by ExplosiveCorruption
@@ -61,7 +61,7 @@ local specWarnMassiveSmash				= mod:NewSpecialWarningSpell(267412, "Tank", nil, 
 local specWarnDarkBargain				= mod:NewSpecialWarningDodge(267409, nil, nil, 2, 3, 2)
 local specWarnDarkBargainOther			= mod:NewSpecialWarningTaunt(267409, false, nil, 2, 1, 2)
 local specWarnGTFO						= mod:NewSpecialWarningGTFO(270287, nil, nil, nil, 1, 8)
-local specWarnDecayingEruption			= mod:NewSpecialWarningInterruptCount(267462, "HasInterrupt", nil, nil, 1, 2)--Mythic
+local specWarnDecayingEruption			= mod:NewSpecialWarningInterruptCount(267462, "HasInterrupt", nil, nil, 1, 2, 4)--Mythic
 ----Arena Floor P2+
 local specWarnGrowingCorruption			= mod:NewSpecialWarningCount(270447, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.stack:format(5, 270447), nil, 1, 2)
 local specWarnGrowingCorruptionOther	= mod:NewSpecialWarningTaunt(270447, nil, nil, nil, 1, 2)
@@ -72,7 +72,7 @@ local yellBloodFeastFades				= mod:NewIconFadesYell(263235, nil, nil, nil, "YELL
 local specWarnBloodFeastTarget			= mod:NewSpecialWarningTargetCount(263235, nil, nil, nil, 1, 8)
 local specWarnMindNumbingChatter		= mod:NewSpecialWarningCast(263307, "SpellCaster", nil, nil, 1, 2)
 local specWarnBurstingBoilCast			= mod:NewSpecialWarningDodge(277007, nil, nil, nil, 2, 2)
-local specWarnBurstingBoil				= mod:NewSpecialWarningYou(277007, nil, nil, nil, 1, 2)--Mythic
+local specWarnBurstingBoil				= mod:NewSpecialWarningYou(277007, nil, nil, nil, 1, 2, 4)--Mythic
 ----Arena Floor P3
 local specWarnCollapse					= mod:NewSpecialWarningDodge(276839, nil, nil, nil, 2, 2)
 local specWarnMalignantGrowth			= mod:NewSpecialWarningDodge(274582, nil, nil, nil, 2, 2)

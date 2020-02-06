@@ -52,7 +52,7 @@ local yellGrosslyIncandescent			= mod:NewYell(284798)
 --Stage One: Raiding The Vault
 ----General
 local specWarnCrush						= mod:NewSpecialWarningDodge(283606, nil, nil, nil, 2, 2)
-local specWarnChaoticDisplacement		= mod:NewSpecialWarningYou(289383, nil, nil, nil, 3, 2)
+local specWarnChaoticDisplacement		= mod:NewSpecialWarningYou(289383, nil, nil, nil, 3, 2, 4)
 local yellChaoticDisplacement			= mod:NewYell(289383, nil, false)
 ----The Hand of In'zashi
 local specWarnVolatileCharge			= mod:NewSpecialWarningMoveAway(283507, nil, nil, nil, 1, 2)
