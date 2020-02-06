@@ -3307,7 +3307,6 @@ local function CreateOptionsMenu()
 		local advancedArea			= extraFeaturesPanel:CreateArea(L.Area_Advanced, nil, 100, true)
 		local FakeBW				= advancedArea:CreateCheckButton(L.FakeBW, true, nil, "FakeBWVersion")
 		local AITimers				= advancedArea:CreateCheckButton(L.AITimer, true, nil, "AITimer")
-		local ACTimers				= advancedArea:CreateCheckButton(L.AutoCorrectTimer, true, nil, "AutoCorrectTimer")
 
 		chatAlertsArea:AutoSetDimension()
 		soundAlertsArea:AutoSetDimension()

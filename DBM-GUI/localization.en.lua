@@ -355,7 +355,6 @@ L.AutoAcceptGuildInvite		= "Automatically accept group invites from guild member
 L.Area_Advanced				= "Advanced Options"
 L.FakeBW					= "Pretend to be BigWigs in version checks instead of DBM (Useful for guilds that force using BigWigs)"
 L.AITimer					= "Automatically generate timers for never before seen fights using DBM's built in timer AI (Useful for pulling a test boss for the very first time such as beta or PTR). Recommended to always leave this turned ON"
-L.AutoCorrectTimer			= "Attempt to Automatically correct timers that are too long (Useful for when boss mods aren't updated for yet). Note: This option may also make some timers worse if boss has phase changes that affect timers. NOT recommended for general use."
 
 L.Panel_Profile				= "Profiles"
 L.Area_CreateProfile		= "Profile Creation for DBM Core Options"

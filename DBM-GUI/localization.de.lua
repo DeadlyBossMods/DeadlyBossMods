@@ -325,7 +325,6 @@ L.AutoAcceptGuildInvite		= "Automatisch Gruppeneinladungen von Gildenmitgliedern
 L.Area_Advanced				= "Erweiterte Einstellungen"
 L.FakeBW					= "Bei Versionsprüfungen als \"BigWigs\" ausgeben, statt als DBM (nützlich für Gilden, die die Nutzung von \"BigWigs\" erzwingen)"
 L.AITimer					= "Erzeuge automatisch Timer für unbekannte Kämpfe mit der in DBM eingebauten Timer-KI (nützlich beim erstmaligen Pullen eines Test-Bosses, etwa auf Beta- oder PTR-Servern) Hinweis: Dies funktioniert nicht richtig bei mehreren Gegnern mit derselben Fähigkeit."
-L.AutoCorrectTimer			= "Korrigiere automatisch zu lange Timer (nützlich für Gilden, die Kämpfe im topaktuellen \"End-Content\" bestreiten, für die noch keine aktualisierten Boss Mods verfügbar sind) Hinweis: Diese Einstellung kann auch einige Timer verschlechtern, falls bei Phasenwechseln, deren Behandlung in DBM bislang noch nicht geeignet programmiert wurde, Timerrücksetzungen stattfinden."
 
 L.Panel_Profile				= "Profile"
 L.Area_CreateProfile		= "Profilerzeugung für DBM Core Einstellungen"
