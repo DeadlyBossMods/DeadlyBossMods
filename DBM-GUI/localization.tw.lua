@@ -351,7 +351,6 @@ L.AutoAcceptGuildInvite		= "自動接受來自公會成員的隊伍邀請"
 L.Area_Advanced				= "進階選項"
 L.FakeBW					= "假裝使用BigWigs版本檢查而不是用DBM版本(適合用在工會強制使用BigWigs時)"
 L.AITimer					= "DBM為從未遭遇的戰鬥使用內建的AI計時器來自動生成計時條(在初期Beta或PTR首次遭遇首領時之測試非常有幫助)。注意：這可能不能正確運作在有著相同技能的多重目標上。"
-L.AutoCorrectTimer			= "自動校正時間過長的計時器(適合在公會正在進行全新副本而首領模組還沒被更新至可靠的程度). 注意此選項也可能使某些計時器錯亂，如首領重置計時器或階段轉換而DBM編碼還不能夠去處理。"
 
 L.Panel_Profile				= "配置檔"
 L.Area_CreateProfile        = "建立核心選項配置檔"

@@ -1,8 +1,8 @@
 if GetLocale() ~= "zhTW" then return end
 DBM_DEADLY_BOSS_MODS				= "Deadly Boss Mods"
 DBM_DBM								= "DBM"
-local day, _, month = C_DateAndTime.GetCurrentCalendarTime()
-if day == 1 and month == 4 then
+local day, _, month = C_DateAndTime and C_DateAndTime.GetCurrentCalendarTime and C_DateAndTime.GetCurrentCalendarTime()
+if day and month and day == 1 and month == 4 then
 	DBM_DEADLY_BOSS_MODS				= "Harmless Boss Mods"
 	DBM_DBM								= "HBM"
 end
@@ -286,6 +286,7 @@ DBM_CORE_NORTH					= "北"
 DBM_CORE_SOUTH					= "南"
 DBM_CORE_INTERMISSION		= "中場時間"
 DBM_CORE_ORB							= "球"
+DBM_CORE_ORBS						= "球"
 DBM_CHEST									= "獎勵箱"
 DBM_NO_DEBUFF						= "沒有%s"
 DBM_ALLY									= "隊友"
@@ -334,6 +335,7 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS.adds				= "%s還剩下:%%d"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.cast					= "施放%s:%.1f秒"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.soon				= "%s即將到來"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.sooncount		= "%s (%%s)即將到來"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.countdown	= "%s還有%%ds"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.prewarn			= "%s在%s"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.bait					= "%s即將到來 - 快引誘"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage				= "第%s階段"
@@ -355,6 +357,7 @@ DBM_CORE_AUTO_ANNOUNCE_OPTIONS.adds				= "警告：$spell:%s剩餘數量"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.cast				= "警告：$spell:%s的施放"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.soon				= prewarnOption
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.sooncount		= prewarnOption
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.countdown	= "預先警告：$spell:%s的倒數計時訊息"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.prewarn			= prewarnOption
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.bait				= "警告：$spell:%s去引誘的預先警告"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.stage				= "警告：第%s階段"

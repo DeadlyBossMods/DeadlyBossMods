@@ -255,7 +255,7 @@ function mod:SPELL_AURA_APPLIED(args)
 					warnRendingBite:Show(args.destName, amount)
 				end
 			else
-				warnCrushed:Show(args.destName, amount)
+				warnRendingBite:Show(args.destName, amount)
 			end
 		end
 	elseif spellId == 286434 or spellId == 285659 then
