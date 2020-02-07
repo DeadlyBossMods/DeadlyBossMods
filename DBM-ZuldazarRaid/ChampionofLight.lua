@@ -53,7 +53,7 @@ local specWarnHeal						= mod:NewSpecialWarningInterrupt(283628, "HasInterrupt",
 local specWarnDivineBurst				= mod:NewSpecialWarningInterrupt(283626, false, nil, 2, 1, 2)
 local specWarnBlindingFaith				= mod:NewSpecialWarningLookAway(283650, nil, nil, nil, 3, 2)
 local specWarnGTFO						= mod:NewSpecialWarningGTFO(283582, nil, nil, nil, 1, 8)
-local specWarnPrayerfortheFallen		= mod:NewSpecialWarningSpell(287469, nil, nil, nil, 3, 2)--Mythic
+local specWarnPrayerfortheFallen		= mod:NewSpecialWarningSpell(287469, nil, nil, nil, 3, 2, 4)--Mythic
 
 mod:AddTimerLine(DBM_BOSS)
 local timerWaveofLightCD				= mod:NewCDTimer(10.5, 283598, nil, nil, nil, 3, nil, DBM_CORE_MAGIC_ICON)

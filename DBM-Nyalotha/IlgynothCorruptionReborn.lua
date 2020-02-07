@@ -45,7 +45,7 @@ local specWarnEyeofNZoth					= mod:NewSpecialWarningStack(309961, nil, 2, nil, n
 local specWarnEyeofNZothTaunt				= mod:NewSpecialWarningTaunt(309961, nil, nil, nil, 1, 2)
 local specWarnTouchoftheCorruptor			= mod:NewSpecialWarningYou(311367, nil, nil, nil, 1, 2)
 local yellTouchoftheCorruptor				= mod:NewYell(311367)
-local specWarnCorruptorsGaze				= mod:NewSpecialWarningSpell(310319, nil, nil, nil, 2, 2)
+local specWarnCorruptorsGaze				= mod:NewSpecialWarningSpell(310319, nil, 202046, nil, 2, 2)
 local specWarnGTFO							= mod:NewSpecialWarningGTFO(310322, nil, nil, nil, 1, 8)
 local specWarnFixate						= mod:NewSpecialWarningYou(315094, nil, nil, nil, 1, 2)
 --Stage 02: The Organs of Corruption

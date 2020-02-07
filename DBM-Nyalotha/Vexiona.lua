@@ -51,7 +51,7 @@ local warnDesolation						= mod:NewTargetNoFilterAnnounce(310325, 4)
 local specWarnEncroachingShadows			= mod:NewSpecialWarningMoveAway(307314, nil, nil, nil, 1, 2)
 local yellEncroachingShadows				= mod:NewYell(307314)
 local yellEncroachingShadowsFades			= mod:NewShortFadesYell(307314)
-local specWarnTwilightBreath				= mod:NewSpecialWarningDefensive(307020, nil, nil, nil, 1, 2)
+local specWarnTwilightBreath				= mod:NewSpecialWarningDefensive(307020, nil, 18620, nil, 1, 2)
 local specWarnDespair						= mod:NewSpecialWarningYou(307359, nil, nil, nil, 1, 2)
 local yellDespairFades						= mod:NewFadesYell(307359, nil, false)
 local specWarnDespairOther					= mod:NewSpecialWarningTarget(307359, "Healer", nil, nil, 1, 2)
@@ -60,7 +60,7 @@ local specWarnGTFO							= mod:NewSpecialWarningGTFO(307343, nil, nil, nil, 1, 8
 ----Iron-Willed Enforcer
 local specWarnBrutalSmash					= mod:NewSpecialWarningDodge(315932, false, nil, 2, 2, 2, 4)--May feel spammy if multiple adds are up so elect in instead of out
 ----Stage 2: Death From Above
-local specWarnTwilightDecimator				= mod:NewSpecialWarningDodgeCount(307218, nil, nil, nil, 2, 2)
+local specWarnTwilightDecimator				= mod:NewSpecialWarningDodgeCount(307218, nil, 125030, nil, 2, 2)
 ----Stage 3: The Void Unleashed
 local specWarnHeartofDarkness				= mod:NewSpecialWarningRun(307639, nil, nil, nil, 4, 2)
 local specWarnDesolation					= mod:NewSpecialWarningYou(310325, nil, nil, nil, 1, 2)

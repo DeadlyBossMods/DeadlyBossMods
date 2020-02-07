@@ -48,8 +48,8 @@ local specWarnImminentRuin				= mod:NewSpecialWarningYouPos(272536, nil, nil, ni
 local yellImminentRuin					= mod:NewPosYell(272536, 139073)--Short name "Ruin"
 local yellImminentRuinFades				= mod:NewIconFadesYell(272536, 139073)
 local specWarnImminentRuinNear			= mod:NewSpecialWarningClose(272536, false, nil, 2, 1, 2)
-local specWarnLivingWeapon				= mod:NewSpecialWarningSwitch(276922, "RangedDps", nil, nil, 1, 2)--Mythic (include melee dps too? asuming do to spheres, a big no)
-local specWarnVoidEchoes				= mod:NewSpecialWarningCount(279157, false, nil, 2, 2, 2)--Mythic
+local specWarnLivingWeapon				= mod:NewSpecialWarningSwitch(276922, "RangedDps", nil, nil, 1, 2, 4)--Mythic (include melee dps too? asuming do to spheres, a big no)
+local specWarnVoidEchoes				= mod:NewSpecialWarningCount(279157, false, nil, 2, 2, 2, 4)--Mythic
 --Stage Two: Fury of the C'thraxxi
 local specWarnObliterationbeam			= mod:NewSpecialWarningDodgeCount(272115, nil, nil, nil, 2, 2)--Generic for now
 --local specWarnObliterationbeamYou		= mod:NewSpecialWarningRun(272115, nil, nil, nil, 4, 2)--Generic for now

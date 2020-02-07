@@ -5,15 +5,16 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(158041)
 mod:SetEncounterID(2344)
 mod:SetZone()
-mod:SetHotfixNoticeRev(20200205000000)--2020, 2, 05
-mod:SetMinSyncRevision(20200204000000)
+mod:SetHotfixNoticeRev(20200206000001)--2020, 2, 06
+mod:SetMinSyncRevision(20200206000001)
 mod.respawnTime = 49
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 311176 316711 310184 310134 310130 317292 310331 315772 309698 310042 313400 308885 317066 319349 319350 319351 316970 318449 312782 316463 318971",
+	"SPELL_CAST_START 311176 316711 310184 310134 310130 317292 310331 315772 309698 310042 313400 308885 317066 319349 319350 319351 316970 318449 312782 316463 318971 313611",
 	"SPELL_CAST_SUCCESS 315927 319257 317102 317066 316970 319349 319350 319351 318460 312866",
+	"SPELL_SUMMON 318091",
 	"SPELL_AURA_APPLIED 313334 308996 309991 313184 316541 316542 313793 315709 315710 312155 318196 318459 319309 319015 317112 319346 316711 318714 313960",
 	"SPELL_AURA_APPLIED_DOSE 313184 319309",
 	"SPELL_AURA_REMOVED 313184 313334 312155 318459 317112 319346 316541 316542 319015 319309 318196",
@@ -21,23 +22,24 @@ mod:RegisterEventsInCombat(
 	"SPELL_PERIODIC_MISSED 309991",
 	"UNIT_DIED",
 	"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
+	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5",
 	"UNIT_POWER_FREQUENT player",
 	"CINEMATIC_STOP"
 )
 
---TODO, figure out if mental decay cast by mind controled players can be interrupted (if they even cast it, journal for previous boss was wrong)
 --TODO, find out power gains of Psychus and add timer for Manifest Madness that's more reliable? (his energy soft enrage)
 --TODO, test infoframe for sanity+neck status
 --TODO, P3 spells with no detection like Stupefying Glare need scheduling for remaining difficulties
---TODO, fix canceling cleansing timer if one is blown up by annihilate
+--TODO, fix canceling cleansing timer if one is blown up by annihilate?
 --New Voice: "leavemind" and "lowsanity"
 --[[
-(ability.id = 318449 or ability.id = 311176 or ability.id = 316711 or ability.id = 310184 or ability.id = 316463 or ability.id = 310134 or ability.id = 310130 or ability.id = 317292 or ability.id = 310331 or ability.id = 315772 or ability.id = 309698 or ability.id = 313400 or ability.id = 308885 or ability.id = 317066 or ability.id = 318196 or ability.id = 316970 or ability.id = 319351 or ability.id = 319350 or ability.id = 319349 or ability.id = 312782 or ability.id = 318971) and type = "begincast"
+(ability.id = 318449 or ability.id = 311176 or ability.id = 310184 or ability.id = 316463 or ability.id = 310134 or ability.id = 310130 or ability.id = 317292 or ability.id = 310331 or ability.id = 315772 or ability.id = 309698 or ability.id = 313400 or ability.id = 308885 or ability.id = 317066 or ability.id = 318196 or ability.id = 316970 or ability.id = 319351 or ability.id = 319350 or ability.id = 319349 or ability.id = 312782 or ability.id = 318971) and type = "begincast"
  or (ability.id = 315927 or ability.id = 317102 or ability.id = 318460) and type = "cast"
  or ability.id = 318714 and type = "applybuff"
  or ability.id = 318196 and type = "applydebuff"
  or ability.id = 312155 or ability.id = 319015 or ability.id = 318091
  or target.id = 163612 and type = "death"
+ or ability.id = 316711 and type = "begincast"
  or ability.id = 319346 and (type = "applydebuff" or type = "removedebuff")
  or (ability.id = 309296 or ability.id = 309307) and type = "cast"
 --]]
@@ -50,11 +52,9 @@ local warnSanity							= mod:NewCountAnnounce(307831, 3)
 local warnCreepingAnguish					= mod:NewCastAnnounce(310184, 4)
 local warnSynapticShock						= mod:NewStackAnnounce(313184, 1)
 local warnEternalHatred						= mod:NewCastAnnounce(310130, 4)
-local warnCollapsingMindscape				= mod:NewCastAnnounce(317292, 2)
 local warnMindwrack							= mod:NewTargetNoFilterAnnounce(316711, 4, nil, "Tank|Healer")
 ----Eyes of N'zoth
 local warnVoidGaze							= mod:NewSpellAnnounce(310333, 3)
-
 --Stage 2: Writhing Onslaught
 ----N'Zoth
 local warnShatteredEgo						= mod:NewTargetNoFilterAnnounce(312155, 1)
@@ -69,7 +69,7 @@ local warnBlackVolley						= mod:NewCountAnnounce(313960, 3)
 local warnFlamesofInsanity					= mod:NewTargetNoFilterAnnounce(313793, 2, nil, "RemoveMagic")
 --Stage 3 Non Mythic
 local warnThoughtHarvester					= mod:NewCountAnnounce("ej21308", 3, 231298)
-local warnStupefyingGlareSoon				= mod:NewCountdownAnnounce(317874, 4)
+local warnStupefyingGlareSoon				= mod:NewCountdownAnnounce(317874, 4, nil, nil, 239918)--warning will be shortened to "Glare"
 --Stage 3 Mythic
 local warnEventHorizon						= mod:NewTargetNoFilterAnnounce(318196, 3)
 local warnAnnihilate						= mod:NewTargetNoFilterAnnounce(318459, 2)
@@ -80,9 +80,10 @@ local warnDisarmCountermeasure				= mod:NewTargetNoFilterAnnounce(319257, 1)
 --General
 local specWarnGiftofNzoth					= mod:NewSpecialWarningYou(313334, nil, nil, nil, 1, 2)
 local yellGiftofNzothFades					= mod:NewFadesYell(313334)
-local specWarnServantofNzoth				= mod:NewSpecialWarningTargetChange(308996, false, nil, 2, 1, 2)
+local specWarnServantofNzoth				= mod:NewSpecialWarningSwitch(308996, false, nil, 3, 1, 2)
 local yellServantofNzoth					= mod:NewYell(308996)
 local specwarnSanity						= mod:NewSpecialWarningCount(307831, nil, nil, nil, 1, 10)
+local specWarnMentalDecay					= mod:NewSpecialWarningInterrupt(313611, "HasInterrupt", nil, nil, 1, 2)
 local specWarnGTFO							= mod:NewSpecialWarningGTFO(309991, nil, nil, nil, 1, 8)
 --Stage 1: Dominant Mind
 ----Psychus
@@ -97,7 +98,7 @@ local specWarnMindgrasp						= mod:NewSpecialWarningSpell(315772, nil, nil, nil,
 local specWarnParanoia						= mod:NewSpecialWarningMoveTo(309980, nil, nil, nil, 1, 2)
 local yellParanoia							= mod:NewShortYell(309980)
 local yellParanoiaRepeater					= mod:NewPosYell(309980, DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.shortyell)
-local specWarnEternalTorment				= mod:NewSpecialWarningCount(318449, nil, nil, nil, 2, 2)
+local specWarnEternalTorment				= mod:NewSpecialWarningCount(318449, nil, 311383, nil, 2, 2)
 ----Basher Tentacle
 local specWarnBasherTentacle				= mod:NewSpecialWarningSwitch("ej21286", "-Healer", nil, 2, 1, 2)
 local specWarnVoidLash						= mod:NewSpecialWarningDefensive(309698, nil, nil, nil, 1, 2)
@@ -111,14 +112,15 @@ local specWarnTreadLightly					= mod:NewSpecialWarningYou(315709, nil, nil, nil,
 local specWarnContempt						= mod:NewSpecialWarningStopMove(315710, nil, nil, nil, 1, 6)
 --Stage 3:
 ----N'Zoth
-local specWarnEvokeAnguish					= mod:NewSpecialWarningMoveAway(317112, nil, nil, nil, 1, 2)
+local specWarnEvokeAnguish					= mod:NewSpecialWarningYou(317112, nil, nil, nil, 1, 2)
 local yellEvokeAnguish						= mod:NewYell(317112, nil, false, 2)
 local yellEvokeAnguishFades					= mod:NewShortFadesYell(317112, nil, true, 3)
-local specWarnStupefyingGlare				= mod:NewSpecialWarningDodgeCount(317874, nil, nil, nil, 2, 2)
+local specWarnStupefyingGlare				= mod:NewSpecialWarningDodgeCount(317874, nil, 239918, nil, 2, 2)--warning will be shortened to "Glare"
 ----Thought Harvester
 local specWarnThoughtHarvester				= mod:NewSpecialWarningSwitchCount("ej21308", false, nil, nil, 1, 2)
 local specWarnHarvestThoughts				= mod:NewSpecialWarningCount(317066, nil, nil, nil, 2, 2)
 --Stage 3 Mythic
+local specWarnSummonGateway					= mod:NewSpecialWarningMoveTo(318091, nil, nil, nil, 3, 5)
 local specWarnEventHorizon					= mod:NewSpecialWarningDefensive(318196, nil, nil, nil, 1, 2, 4)
 local specWarnEventHorizonSwap				= mod:NewSpecialWarningTaunt(318196, nil, nil, nil, 1, 2, 4)
 local specWarnDarkMatter					= mod:NewSpecialWarningDodgeCount(318971, nil, nil, nil, 2, 2, 4)
@@ -140,8 +142,6 @@ local timerSynampticShock					= mod:NewBuffActiveTimer(30, 313184, nil, nil, nil
 ----Mind's Eye
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20977))
 local timerVoidGazeCD						= mod:NewCDTimer(33, 310333, nil, nil, nil, 2)--33-34.3
-----Exposed Synapse
-
 --Stage 2: Writhing Onslaught
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20970))
 ----N'Zoth
@@ -170,10 +170,11 @@ local timerThoughtHarvesterCD				= mod:NewCDCountTimer(30.1, "ej21308", nil, nil
 local timerHarvestThoughtsCD				= mod:NewCDTimer(35.2, 317066, nil, nil, nil, 3)
 --Stage 3 Mythic
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(21435))
-local timerEventHorizonCD					= mod:NewNextCountTimer(99, 318196, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)--, nil, 2, 4
-local timerDarkMatterCD						= mod:NewNextCountTimer(99, 318971, nil, nil, nil, 3)
-local timerAnnihilateCD						= mod:NewNextCountTimer(99, 318460, nil, nil, nil, 3)
-local timerCleansingProtocolCD				= mod:NewNextCountTimer(99, 316970, nil, nil, nil, 5)
+local timerSummongateway					= mod:NewNextTimer(153.9, 318091, nil, nil, nil, 6)
+local timerEventHorizonCD					= mod:NewNextCountTimer(22.9, 318196, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)--, nil, 2, 4
+local timerDarkMatterCD						= mod:NewNextCountTimer(16, 318971, nil, nil, nil, 3)
+local timerAnnihilateCD						= mod:NewNextCountTimer(22.9, 318460, nil, nil, nil, 3)
+local timerCleansingProtocolCD				= mod:NewNextCountTimer(16, 316970, nil, nil, nil, 5)
 local timerCleansingProtocol				= mod:NewCastTimer(8, 316970, nil, nil, nil, 2)
 
 mod:AddRangeFrameOption(4, 317112)
@@ -227,7 +228,7 @@ local allTimers = {
 			--Eternal Torment
 			[318449] = {32.8, 70.9, 10.9, 34.1, 60.7, 10.5, 33.2},
 			--Thought Harvester spawns
-			[316711] = {20.3, 25.5, 44.6, 31.2, 30.4, 43, 31.7},
+			[316711] = {15, 27, 45},
 			--Evoke Anquish
 			[317102] = {15.3, 46.2, 31.6, 44.9, 37.7, 15.8, 51, 37.7},
 			--Stupefying Glare
@@ -247,7 +248,7 @@ local allTimers = {
 			--Eternal Torment
 			[318449] = {32.8, 70.9, 10.9, 34.1, 60.7, 10.5, 33.2},
 			--Thought Harvester spawns
-			[316711] = {15, 27, 45},--, 31.2, 30.4, 43, 31.7
+			[316711] = {15, 25.6, 45},--, 31.2, 30.4, 43, 31.7
 			--Evoke Anquish
 			[317102] = {15.3, 46.2, 31.6, 44.9, 37.7, 15.8, 51, 37.7},
 			--Stupefying Glare
@@ -267,7 +268,7 @@ local allTimers = {
 			--Eternal Torment
 			[318449] = {32.8, 70.9, 10.5, 24.5, 10.9, 23.2, 11, 23.1},--It might be that after first two casts it just alternates between 10.5 and 23.1?
 			--Thought Harvester spawns
-			[316711] = {21.1, 25.5, 42.7, 29.2, 3.6, 31.6, 3.7, 30.4, 4.8},--It might be that after 3rd cast, it just alternates between 29-30 and 3.7-4.8
+			[316711] = {15.1, 25.1, 45, 31, 3.9},--, 31.6, 3.7, 30.4, 4.8 It might be that after 3rd cast, it just alternates between 29-30 and 3.7-4.8
 			--Evoke Anquish
 			[317102] = {15.3, 45.2, 32.6, 30.6, 35.3, 35.3},
 			--Stupefying Glare
@@ -277,42 +278,42 @@ local allTimers = {
 	["mythic"] = {
 		[1] = {--TODO: Stage 1 timer sequences likely all go longer if a successful shattered ego doesn't trigger to restart the shattered ego timer cycles
 			--Basher tentacles
-			[318714] = {},
+			[318714] = {0, 35, 35, 50, 35},
 			--Paranoia
-			[315927] = {},
+			[315927] = {15, 85.1},
 			--Eternal Torment
-			[318449] = {},
+			[318449] = {25, 25, 25, 50, 25},
 		},
 		[2] = {
 			--Thought Harvester spawns
-			[316711] = {},
+			[316711] = {9.5, 76.9, 26.7},
 			--Evoke Anquish
-			[317102] = {},
+			[317102] = {25, 19.5, 33.9, 20.6},
 			--Stupefying Glare
-			[317874] = {},
+			[317874] = {35, 70},
 			--Paranoia
-			[315927] = {},
+			[315927] = {56.6},
 		},
 		[3] = {
 			--Eternal Torment (Nzoth)
-			[318449] = {},
+			[318449] = {20, 6.1},--6.1 repeating
 			--Cleansing Protocol (Chamber)
-			[318449] = {},
+			[318449] = {25, 16, 12, 27, 29.9},
 			--Event Horizon (Chamber)
-			[318196] = {},
+			[318196] = {20, 30, 30, 30},
 			--Dark Matter (Chamber)
-			[318971] = {},
+			[318971] = {39, 60},
 			--Annihilate (Chamber)
-			[318460] = {},
+			[318460] = {60, 26.7},
 			----Returning to nzoth after Chamber (ie phase 2, 2.0)
 			--Thought Harvester spawns
-			[316711] = {},
+			[316711] = {12.3, 82.1, 26.3, 44.9, 26.6, 44.9},--second one might still be 76.9 and 82.1 was a fluke do to trolling the boss
 			--Evoke Anquish
-			[317102] = {},
+			[317102] = {27.7, 19.5, 33.9, 20.6, 42.5, 30.4, 41.2, 30.4, 42.5, 29.1},
 			--Stupefying Glare
-			[317874] = {},
+			[317874] = {38, 70},
 			--Paranoia
-			[315927] = {},
+			[315927] = {59.5, 71.6, 71.7},
 		},
 	},
 }
@@ -365,35 +366,47 @@ local function stupefyingGlareLoop(self)
 	self.vb.stupefyingGlareCount = self.vb.stupefyingGlareCount + 1
 	local direction = ""
 	if self:IsMythic() then
-
+		if self.vb.phase == 2 then
+			if self.vb.stupefyingGlareCount % 2 == 0 then
+				direction = DBM_CORE_RIGHT--ie counter clockwise
+			else
+				direction = DBM_CORE_LEFT--ie Clockwise
+			end
+		else--Phase 3
+			if self.vb.stupefyingGlareCount % 2 == 0 then
+				direction = DBM_CORE_LEFT--ie counter clockwise
+			else
+				direction = DBM_CORE_RIGHT--ie Clockwise
+			end
+		end
 	else--Not mythic
 		--Guessed same as mythic stage 2, but if wrong I'm sure i'll get feedback quickly
 		if self.vb.stupefyingGlareCount % 2 == 0 then
-			direction = "R"--ie counter clockwise
+			direction = DBM_CORE_RIGHT--ie counter clockwise
 		else
-			direction = "L"--ie Clockwise
+			direction = DBM_CORE_LEFT--ie Clockwise
 		end
 	end
 	specWarnStupefyingGlare:Show(self.vb.stupefyingGlareCount .. direction)
 	specWarnStupefyingGlare:Play("farfromline")
 	if self.Options.ArrowOnGlare then
 		--Assuming facing boss
-		if direction == "L" then
-			DBM.Arrow:ShowStatic(90, 9)
-		elseif direction == "R" then
-			DBM.Arrow:ShowStatic(270, 9)
+		if direction == DBM_CORE_LEFT then
+			DBM.Arrow:ShowStatic(90, 10)
+		elseif direction == DBM_CORE_RIGHT then
+			DBM.Arrow:ShowStatic(270, 10)
 		end
 	end
 	local timer = allTimers[self.vb.difficultyName][self.vb.phase][317874][self.vb.stupefyingGlareCount+1]
 	if timer then
 		--Flip direction for next timer
-		if direction == "R" then
-			direction = "L"
-		elseif direction == "L" then
-			direction = "R"
+		if direction == DBM_CORE_RIGHT then
+			direction = DBM_CORE_LEFT
+		elseif direction == DBM_CORE_LEFT then
+			direction = DBM_CORE_RIGHT
 		end
 		warnStupefyingGlareSoon:Countdown(timer, 5)
-		timerStupefyingGlareCD:Start(timer, self.vb.stupefyingGlareCount+1 .. direction)
+		timerStupefyingGlareCD:Start(timer, self.vb.stupefyingGlareCount+1 .. "-" .. direction)
 		self:Schedule(timer, stupefyingGlareLoop, self)
 	end
 end
@@ -435,6 +448,12 @@ do
 	end
 end
 
+--/run DBM:GetModByName("2375"):Test()
+function mod:Test()
+	specWarnStupefyingGlare:Show(1)
+	warnStupefyingGlareSoon:Countdown(10, 5)
+end
+
 function mod:OnCombatStart(delay)
 	self.vb.eternalTormentCount = 0
 	self.vb.BasherCount = 0
@@ -456,6 +475,11 @@ function mod:OnCombatStart(delay)
 	if self:IsMythic() then
 		self.vb.phase = 1
 		self.vb.difficultyName = "mythic"
+		timerParanoiaCD:Start(15.5, 1)--SUCCESS
+		timerEternalTormentCD:Start(25, 1)
+		timerMindgateCD:Start(55)--START
+		timerMindgraspCD:Start(103)
+		berserkTimer:Start(780-delay)
 	else
 		if self:IsHeroic() then
 			self.vb.difficultyName = "heroic"
@@ -553,12 +577,14 @@ function mod:SPELL_CAST_START(args)
 					specWarnMindwrack:Play("kickcast")
 				end
 			end
+		else
+			timerMindwrackCD:Start(8.4, args.sourceGUID)
 		end
 	elseif spellId == 310184 then
 		if selfInMind then
 			warnCreepingAnguish:Show()
 		end
-		timerCreepingAnguishCD:Start(28.2)
+		timerCreepingAnguishCD:Start(self:IsMythic() and 26.6 or 28.2)
 	elseif spellId == 310134 then
 		specWarnManifestMadness:Show()
 	elseif spellId == 310130 then
@@ -572,8 +598,6 @@ function mod:SPELL_CAST_START(args)
 		if selfInMind then
 			specWarnCollapsingMindscape:Show(L.ExitMind)
 			specWarnCollapsingMindscape:Play("leavemind")
-		else
-			warnCollapsingMindscape:Show()
 		end
 		timerCollapsingMindscape:Start(20)
 		timerCataclysmicFlamesCD:Stop()
@@ -622,8 +646,11 @@ function mod:SPELL_CAST_START(args)
 			end
 		end
 	elseif spellId == 308885 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
-		specWarnMindFlay:Show(args.sourceGUID)
+		specWarnMindFlay:Show(args.sourceName)
 		specWarnMindFlay:Play("kickcast")
+	elseif spellId == 313611 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
+		specWarnMentalDecay:Show(args.sourceName)
+		specWarnMentalDecay:Play("kickcast")
 	elseif spellId == 317066 then
 		if self:AntiSpam(5, 10) then
 			self.vb.harvestThoughtsCount = self.vb.harvestThoughtsCount + 1
@@ -651,6 +678,10 @@ function mod:SPELL_CAST_START(args)
 		local timer = allTimers[self.vb.difficultyName][self.vb.phase][318449][self.vb.eternalTormentCount+1]
 		if timer then
 			timerEternalTormentCD:Start(timer, self.vb.eternalTormentCount+1)
+		else
+			if self:IsMythic() and self.vb.phase == 3 then
+				timerEternalTormentCD:Start(6.1, self.vb.eternalTormentCount+1)
+			end
 		end
 	elseif spellId == 312782 then--Convergence (2-2.5 seconds slower than shattered ego, but likely more reliable for mythic)
 		self.vb.harvesterCount = 0
@@ -667,16 +698,24 @@ function mod:SPELL_CAST_START(args)
 			self.vb.paranoiaCount = 0
 			warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(2))
 			warnPhase:Play("ptwo")
+			timerThoughtHarvesterCD:Start(9.5, 1)
+			timerEvokeAnguishCD:Start(25, 1)
+			warnStupefyingGlareSoon:Countdown(35, 5)
+			timerStupefyingGlareCD:Start(35, 1 .. "L")
+			self:Schedule(35, stupefyingGlareLoop, self)
+			timerParanoiaCD:Start(56.6, 1)
+			timerMindgraspCD:Start(58.5)
+			timerSummongateway:Start(153.9)
 		else
 			self.vb.phase = 3
 			warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(3))
 			warnPhase:Play("pthree")
 			timerEvokeAnguishCD:Start(15, 1)
-			timerThoughtHarvesterCD:Start(21.1, 1)
+			timerThoughtHarvesterCD:Start(15, 1)
 			timerEternalTormentCD:Start(32.8, 1)
 			timerMindgraspCD:Start(71.7)
 			if self:IsHeroic() then--Only place I've verified, need to find some normal videos/vods
-				warnStupefyingGlareSoon:Schedule(40.5, 5)
+				warnStupefyingGlareSoon:Countdown(40.5, 5)
 				timerStupefyingGlareCD:Start(40.5, 1 .. "L")--direction not confirmed
 				self:Schedule(40.5, stupefyingGlareLoop, self)
 			end
@@ -702,7 +741,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if timer then
 			timerParanoiaCD:Start(timer, self.vb.paranoiaCount+1)
 		end
-
 	elseif spellId == 319257 then
 		neckAvailable[args.sourceName] = false
 		warnDisarmCountermeasure:CombinedShow(1, args.sourceName)
@@ -742,7 +780,31 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if selfInMind then
 			warnCataclysmicFlames:Show(self.vb.cataclysmCount)
 		end
-		timerCataclysmicFlamesCD:Start(13, self.vb.cataclysmCount+1)
+		timerCataclysmicFlamesCD:Start(22.4, self.vb.cataclysmCount+1)
+	end
+end
+
+function mod:SPELL_SUMMON(args)
+	local spellId = args.spellId
+	if spellId == 318091 then
+		specWarnSummonGateway:Show(L.Gate or "Gate")
+		specWarnSummonGateway:Play("telesoon")
+		if self.vb.phase < 3 then
+			self.vb.darkMatterCount = 0
+			self.vb.eventHorrizonCount = 0
+			self.vb.cleansingActive = 0
+			self.vb.cleansingCastCount = 0
+			self.vb.annihilateCastCount = 0
+			self.vb.eternalTormentCount = 0
+			self.vb.phase = 3
+			warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(3))
+			warnPhase:Play("pthree")
+			timerEternalTormentCD:Start(20, 1)
+			timerEventHorizonCD:Start(20, 1)
+			timerCleansingProtocolCD:Start(25, 1)
+			timerDarkMatterCD:Start(39, 1)
+			timerAnnihilateCD:Start(60, 1)--SUCCESS
+		end
 	end
 end
 
@@ -860,7 +922,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnEvokeAnguish:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			specWarnEvokeAnguish:Show()
-			specWarnEvokeAnguish:Play("runout")
+			specWarnEvokeAnguish:Play("targetyou")
 			yellEvokeAnguish:Yell()
 			yellEvokeAnguishFades:Countdown(spellId)
 			if self.Options.RangeFrame and self:IsMythic() then
@@ -909,7 +971,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if selfInMind then
 			warnBlackVolley:Show(self.vb.blackVolleyCount)
 		end
-		timerBlackVolleyCD:Start(19, self.vb.blackVolleyCount+1)
+		timerBlackVolleyCD:Start(self:IsMythic() and 20 or 19, self.vb.blackVolleyCount+1)
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -927,19 +989,23 @@ function mod:SPELL_AURA_REMOVED(args)
 		--These always happen after this
 		timerShatteredEgo:Stop()
 		--Basically below only runs after first psychus phase in Stage 1 mythic/Stage 2 non mythic. 2nd one ending is start of next phase
-		if (self:IsMythic() and self.vb.egoCount == 1) or (not self:IsMythic() and self.vb.egoCount == 2) then
+		if (self:IsMythic() and self.vb.egoCount == 1) or (not self:IsMythic() and self.vb.egoCount <= 2) then
 			self.vb.BasherCount = 0
 			self.vb.paranoiaCount = 0
 			self.vb.eternalTormentCount = 0
 			timerVoidGazeCD:Stop()
 			if self:IsMythic() then
-
+				--Basher tentacle is instant
+				timerParanoiaCD:Start(15.1, 1)--SUCCESS
+				timerEternalTormentCD:Start(25.5, 1)
+				timerMindgateCD:Start(55)--START
+				timerMindgraspCD:Start(103)--START
 			else
 				timerMindgraspCD:Start(7.5)--START (basically happens immediately after 312155 ends, but it can end 18-30?
 				timerBasherTentacleCD:Start(23, 1)
 				timerEternalTormentCD:Start(35.3, 1)
 				timerParanoiaCD:Start(50, 1)--SUCCESS (45 to START)
-				timerMindgateCD:Start(72.9)--START
+				timerMindgateCD:Start(68)--START
 			end
 		end
 	elseif spellId == 318459 then
@@ -962,12 +1028,11 @@ function mod:SPELL_AURA_REMOVED(args)
 		if args:IsPlayer() then
 			self:Unschedule(paranoiaYellRepeater)
 		end
-	elseif spellId == 318196 and self:AntiSpam(1, args.destName) then--This is to work around a bug where FIRST event horizon (and only the first) doesn't apply a debuff afterwards even though it does annihilate afterwards
+	elseif spellId == 318196 and self:AntiSpam(1, args.destName) then--Just to announce that event horizon is spawning an annihilate since it ended
 		if args:IsPlayer() then
 			specWarnAnnihilate:Show()
 			specWarnAnnihilate:Play("watchstep")
 			yellAnnihilate:Yell()
-			--yellAnnihilateFades:Countdown(318459)
 		else
 			warnAnnihilate:Show(args.destName)--Combined show just to fix double message bug, since this work around is ONLY required for first one
 		end
@@ -993,6 +1058,25 @@ function mod:UNIT_DIED(args)
 	elseif cid == 162933 then--Thought Harvester
 		self.vb.harvestersAlive = self.vb.harvestersAlive - 1
 		timerHarvestThoughtsCD:Stop(args.destGUID)
+		timerMindwrackCD:Stop(args.destGUID)
+	elseif cid == 163612 then--Voidspawn Annihilator
+		self.vb.harvesterCount = 0
+		self.vb.harvestersAlive = 0
+		self.vb.harvestThoughtsCount = 0
+		self.vb.evokeAnguishCount = 0
+		self.vb.paranoiaCount = 0
+		self.vb.stupefyingGlareCount = 0
+		timerDarkMatterCD:Stop()
+		timerAnnihilateCD:Stop()
+		timerEventHorizonCD:Stop()
+		timerEternalTormentCD:Stop()
+		timerThoughtHarvesterCD:Start(12.3, 1)--12.6
+		timerEvokeAnguishCD:Start(27.7, 1)--28
+		warnStupefyingGlareSoon:Countdown(38, 5)
+		timerStupefyingGlareCD:Start(38, 1 .. "R")
+		self:Schedule(38, stupefyingGlareLoop, self)
+		timerParanoiaCD:Start(59.5, 1)
+		timerMindgraspCD:Start(61.4)
 	end
 end
 
@@ -1004,7 +1088,7 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 			seenAdds[GUID] = true
 			local cid = self:GetCIDFromGUID(GUID)
 			if cid == 158376 then--Psychus
-				timerMindwrackCD:Start(6)
+				timerMindwrackCD:Start(6, GUID)
 				timerCreepingAnguishCD:Start(12)
 				if (self:IsMythic() and self.vb.egoCount == 0) or (not self:IsMythic() and self.vb.egoCount == 1) then
 					timerCataclysmicFlamesCD:Start(19.3, 1)
@@ -1039,8 +1123,39 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 						end
 					end
 				end
-				timerHarvestThoughtsCD:Start(8.2, GUID)
+				timerHarvestThoughtsCD:Start(self:IsMythic() and 6.4 or 8.2, GUID)
+				timerMindwrackCD:Start(self:IsMythic() and 12 or 5, GUID)--Cast immediately on heroic but on mythic they cast harvest thoughts first
+			elseif cid == 163612 then--Voidspawn Annihilator
+				if self.vb.phase == 3 then
+					--self.vb.darkMatterCount = 0
+					--self.vb.eventHorrizonCount = 0
+					--self.vb.cleansingActive = 0
+					--self.vb.cleansingCastCount = 0
+					--self.vb.annihilateCastCount = 0
+					--timerEventHorizonCD:Start(9.1)
+					--timerCleansingProtocolCD:Start(14.1, 1)
+					--timerDarkMatterCD:Start(28.1, 1)
+					--timerAnnihilateCD:Start(50)
+					if self.Options.InfoFrame and not DBM.InfoFrame:IsShown() then
+						DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(307831))
+						if DBM.Options.DebugMode then
+							DBM.InfoFrame:Show(self:IsMythic() and 20 or 8, "function", updateInfoFrame, false)
+						else
+							DBM.InfoFrame:Show(8, "playerpower", 1, ALTERNATE_POWER_INDEX, nil, nil, 2)--Sorting lowest to highest
+						end
+					end
+				end
 			end
+		end
+	end
+end
+
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
+	if spellId == 318196 then--Event Horizon (cast not in combat log only debuff is)
+		self.vb.eventHorrizonCount = self.vb.eventHorrizonCount + 1
+		local timer = allTimers[self.vb.difficultyName][self.vb.phase][318196][self.vb.eventHorrizonCount+1] or 30
+		if timer then
+			timerEventHorizonCD:Start(timer, self.vb.eventHorrizonCount+1)
 		end
 	end
 end

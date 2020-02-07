@@ -89,7 +89,7 @@ local specWarnArcaneOrbs				= mod:NewSpecialWarningCount(298787, nil, nil, nil, 
 local specWarnBeckon					= mod:NewSpecialWarningRun(299094, nil, nil, nil, 4, 8)
 local yellBeckon						= mod:NewYell(299094)--Yell goes off when player loses control of self, not pre warning player gets
 local specWarnBeckonNear				= mod:NewSpecialWarningClose(303799, nil, nil, nil, 1, 8)
-local specWarnDivideandConquer			= mod:NewSpecialWarningDodge(300478, nil, nil, nil, 3, 2)--Mythic
+local specWarnDivideandConquer			= mod:NewSpecialWarningDodge(300478, nil, nil, nil, 3, 2, 4)--Mythic
 --Intermission One: Queen's Decree
 local specWarnQueensDecree				= mod:NewSpecialWarningYouCount(299250, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.you:format(299250), nil, 3, 2)
 local yellQueensDecree					= mod:NewYell(299250, "%s", false, nil, "YELL")
