@@ -5,8 +5,8 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(158041)
 mod:SetEncounterID(2344)
 mod:SetZone()
-mod:SetHotfixNoticeRev(20200206000000)--2020, 2, 06
-mod:SetMinSyncRevision(20200204000000)
+mod:SetHotfixNoticeRev(20200206000001)--2020, 2, 06
+mod:SetMinSyncRevision(20200206000001)
 mod.respawnTime = 49
 
 mod:RegisterCombat("combat")
@@ -112,7 +112,7 @@ local specWarnTreadLightly					= mod:NewSpecialWarningYou(315709, nil, nil, nil,
 local specWarnContempt						= mod:NewSpecialWarningStopMove(315710, nil, nil, nil, 1, 6)
 --Stage 3:
 ----N'Zoth
-local specWarnEvokeAnguish					= mod:NewSpecialWarningMoveAway(317112, nil, nil, nil, 1, 2)
+local specWarnEvokeAnguish					= mod:NewSpecialWarningYou(317112, nil, nil, nil, 1, 2)
 local yellEvokeAnguish						= mod:NewYell(317112, nil, false, 2)
 local yellEvokeAnguishFades					= mod:NewShortFadesYell(317112, nil, true, 3)
 local specWarnStupefyingGlare				= mod:NewSpecialWarningDodgeCount(317874, nil, 239918, nil, 2, 2)--warning will be shortened to "Glare"
@@ -922,7 +922,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnEvokeAnguish:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			specWarnEvokeAnguish:Show()
-			specWarnEvokeAnguish:Play("runout")
+			specWarnEvokeAnguish:Play("targetyou")
 			yellEvokeAnguish:Yell()
 			yellEvokeAnguishFades:Countdown(spellId)
 			if self.Options.RangeFrame and self:IsMythic() then
@@ -989,7 +989,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		--These always happen after this
 		timerShatteredEgo:Stop()
 		--Basically below only runs after first psychus phase in Stage 1 mythic/Stage 2 non mythic. 2nd one ending is start of next phase
-		if (self:IsMythic() and self.vb.egoCount == 1) or (not self:IsMythic() and self.vb.egoCount == 2) then
+		if (self:IsMythic() and self.vb.egoCount == 1) or (not self:IsMythic() and self.vb.egoCount <= 2) then
 			self.vb.BasherCount = 0
 			self.vb.paranoiaCount = 0
 			self.vb.eternalTormentCount = 0
@@ -1005,7 +1005,7 @@ function mod:SPELL_AURA_REMOVED(args)
 				timerBasherTentacleCD:Start(23, 1)
 				timerEternalTormentCD:Start(35.3, 1)
 				timerParanoiaCD:Start(50, 1)--SUCCESS (45 to START)
-				timerMindgateCD:Start(72.9)--START
+				timerMindgateCD:Start(68)--START
 			end
 		end
 	elseif spellId == 318459 then
