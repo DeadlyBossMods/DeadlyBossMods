@@ -2,7 +2,7 @@
 -- yleaf(yaroot@gmail.com)
 -- sunlcy@NGA
 -- Mini Dragon(projecteurs@gmail.com)
--- Last update: 2019/08/09
+-- Last update: 2020/02/07
 
 if GetLocale() ~= "zhCN" then return end
 if not DBM_GUI_Translations then DBM_GUI_Translations = {} end
@@ -154,6 +154,18 @@ L.Bar7Header				= "自定义计时条选项"
 L.Bar7ForceLarge			= "总是使用大型计时条"
 L.Bar7CustomInline			= "使用自定义 '!' 图标"
 L.Bar7Footer				= "(测试用计时条)"
+--Dropdown Options
+L.CBTGeneric				= "基本"
+L.CBTAdd					= "小怪入场"
+L.CBTAOE					= "AOE"
+L.CBTTargeted				= "点名技能"
+L.CBTInterrupt				= "打断"
+L.CBTRole					= "剧情"
+L.CBTPhase					= "阶段转换"
+L.CBTImportant				= "重要"
+L.CVoiceOne					= "倒计时语音1"
+L.CVoiceTwo					= "倒计时语音2"
+L.CVoiceThree				= "倒计时语音3"
 
 -- Tab: Timers
 L.AreaTitle_BarColors		= "按类型分类着色"
@@ -177,6 +189,7 @@ L.BarSort					= "按剩余时间排序"
 L.BarColorByType			= "按类着色"
 L.BarInlineIcons			= "显示条内图标"
 L.ShortTimerText			= "使用更短的计时条文字 (当可行时)"
+L.StripTimerText			= "分离CD/下一次 计时条"
 L.KeepBar					= "保持计时条显示直到技能被释放"
 L.KeepBar2					= "(当被模组支持时)"
 L.FadeBar					= "隐藏超出技能范围的计时条"
@@ -188,6 +201,7 @@ L.SpecWarn_ClassColor		= "为特殊警报启用分职业着色"
 L.ShowSWarningsInChat 		= "在聊天窗口中显示特殊警报"
 L.SWarnNameInNote			= "使用自定义注记的特殊警报请选择SW5"
 L.SpecialWarningIcon		= "特殊警报使用技能图标"
+L.ShortTextSpellname		= "当可用时，使用更短的技能名称"
 L.SpecWarn_FlashFrame		= "特殊警报时屏幕边缘泛光"
 L.SpecWarn_FlashFrameRepeat	= "重复 %d 次 (如果开启的话)"
 L.SpecWarn_Font				= "特殊警报字体"
@@ -279,6 +293,7 @@ L.FilterInterruptsHeader	= "基于行为偏好的打断技能提示过滤"
 L.FilterInterrupts			= "如果被打断对象不是当前目标/焦点(总是)"
 L.FilterInterrupts2			= "如果被打断对象不是当前目标/焦点(总是)或者打断技能正在冷却(限Boss)"
 L.FilterInterrupts3			= "如果被打断对象不是当前目标/焦点(总是)或者打断技能正在冷却(Boss和小怪)"
+L.FilterInterrupts4			= "过滤全部中断警告"
 L.FilterInterruptNoteName	= "当自定义注记内没有包含你的名字的时候，过滤掉打断提示 (带计数)"
 L.FilterDispels				= "当驱散技能在冷却时, 过滤掉驱散提示"
 L.FilterTrashWarnings		= "当进入普通或英雄副本时，过滤掉所有小怪警报"
@@ -329,6 +344,7 @@ L.ShowQueuePop				= "显示随机小队/团队查找器确认计时条"
 L.Area_AutoLogging			= "自动日志记录选项"
 L.AutologBosses				= "自动采用官方格式记录日志。 (使用 /dbm pull 可提前记录并使得记录更准确，如提前偷药水或是召唤大军。)"
 L.AdvancedAutologBosses		= "自动采用 Transcriptor 记录日志"
+L.RecordOnlyBosses			= "只记录Boss日志 (除掉小怪，请使用 '/dbm pull' 来确保完整记录战斗状态前记录)"
 L.LogOnlyNonTrivial			= "只记录团队Boss，而不记录随机团队，5人本，场景战役。"
 --
 L.Area_3rdParty				= "第三方插件选项"

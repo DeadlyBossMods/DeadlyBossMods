@@ -2,7 +2,7 @@
 -- Diablohu(diablohudream@gmail.com)
 -- yleaf(yaroot@gmail.com)
 -- Mini Dragon(projecteurs@gmail.com)
--- Last update: 2019/02/22
+-- Last update: 2020/02/07
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -279,8 +279,9 @@ DBM_CORE_NORTH						= "北"
 DBM_CORE_SOUTH						= "南"
 DBM_CORE_INTERMISSION				= "中场时间"
 DBM_CORE_ORB						= "球"
+DBM_CORE_ORBS						= "球"
 DBM_CHEST							= "奖励宝箱"
-DBM_NO_DEBUFF						= "不是%s"
+DBM_NO_DEBUFF						= "没有%s"
 DBM_ALLY							= "队友"
 DBM_ADD								= "小怪"
 DBM_ADDS							= "小怪"
@@ -324,12 +325,14 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS.adds				= "%s剩余：%%d"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.cast				= "正在施放 %s：%.1f秒"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.soon				= "即将 %s"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.sooncount			= "即将 %s (%%s)"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.countdown			= "%%ds后 %s"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.prewarn			= "%2$s后 %1$s"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.bait				= "%s 即将到来 - 快引诱"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage				= "第%s阶段"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.prestage			= "第%s阶段 即将到来"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.count				= "%s (%%s)"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.stack				= "%s -> >%%s< (%%d)"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.moveto				= "%s - 移动到 >%%s<"
 
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.you				= "警报：中了%s时"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target			= "警报：$spell:%s的目标"
@@ -343,6 +346,7 @@ DBM_CORE_AUTO_ANNOUNCE_OPTIONS.adds				= "警报：$spell:%s剩余数量"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.cast				= "警报：$spell:%s的施放"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.soon				= "预警：$spell:%s"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.sooncount		= "预警：$spell:%s(带计数)"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.countdown		= "预警：$spell:%s(带计数)"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.prewarn			= "预警：$spell:%s"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.bait				= "预警: $spell:%s需要引诱"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.stage			= "警报：第%s阶段"
@@ -350,6 +354,7 @@ DBM_CORE_AUTO_ANNOUNCE_OPTIONS.stagechange		= "警报：阶段转换"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.prestage			= "预警：第%s阶段"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.count			= "警报：$spell:%s(带计数)"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.stack			= "警报：$spell:%s叠加层数"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.moveto			= "警告：$spell:%s需要移动到某人或某个地方"
 
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.spell				= "%s!"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.ends				= "%s 结束"
