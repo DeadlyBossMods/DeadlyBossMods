@@ -218,9 +218,11 @@ function mod:SPELL_CAST_START(args)
 		self.vb.comboCount = self.vb.comboCount + 1
 		--there is already a crush debuffed tank, and it is not us, therefor WE must taunt dissolve
 		--or, we are the dissolve debuffed tank and we need to tank this dissolve too
-		if (self.vb.firstCrush and self.vb.firstCrush ~= playerName) or (self.vb.firstDissolve and self.vb.firstDissolve == playerName) then
-			specWarnDissolveTaunt:Show(self.vb.firstCrush)
-			specWarnDissolveTaunt:Play("tauntboss")
+		if not self:IsTanking("player", "boss1", nil, true) then
+			if (self.vb.firstCrush and self.vb.firstCrush ~= playerName) or (self.vb.firstDissolve and self.vb.firstDissolve == playerName) then
+				specWarnDissolveTaunt:Show(self.vb.firstCrush)
+				specWarnDissolveTaunt:Play("tauntboss")
+			end
 		end
 	elseif spellId == 307476 then--Crush
 		if self:AntiSpam(11, 1) then
@@ -229,9 +231,11 @@ function mod:SPELL_CAST_START(args)
 		self.vb.comboCount = self.vb.comboCount + 1
 		--there is already a dissolve debuffed tank, and it is not us, therefor WE must taunt crush
 		--or, we are the crush debuffed tank and we need to tank this crush too
-		if (self.vb.firstDissolve and self.vb.firstDissolve ~= playerName) or (self.vb.firstCrush and self.vb.firstCrush == playerName) then
-			specWarnCrushTaunt:Show(self.vb.firstCrush)
-			specWarnCrushTaunt:Play("tauntboss")
+		if not self:IsTanking("player", "boss1", nil, true) then
+			if (self.vb.firstDissolve and self.vb.firstDissolve ~= playerName) or (self.vb.firstCrush and self.vb.firstCrush == playerName) then
+				specWarnCrushTaunt:Show(self.vb.firstCrush)
+				specWarnCrushTaunt:Play("tauntboss")
+			end
 		end
 	end
 end
