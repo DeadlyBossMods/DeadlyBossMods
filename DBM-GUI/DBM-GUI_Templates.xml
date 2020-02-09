@@ -656,6 +656,7 @@
 				self:SetMovable(true)
 				self:SetUserPlaced(true)
 				self:RegisterForDrag("LeftButton")
+				tinsert(_G["UISpecialFrames"], self:GetName())
 			</OnLoad>
 			<OnShow>
 				if self.firstshow then
