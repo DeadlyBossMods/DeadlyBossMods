@@ -292,7 +292,7 @@ local allTimers = {
 			--Stupefying Glare
 			[317874] = {35, 70},
 			--Paranoia
-			[315927] = {56.6},
+			[315927] = {56.6, 65.7},
 		},
 		[3] = {
 			--Eternal Torment (Nzoth)
@@ -307,7 +307,7 @@ local allTimers = {
 			[318460] = {60, 26.7},
 			----Returning to nzoth after Chamber (ie phase 2, 2.0)
 			--Thought Harvester spawns
-			[316711] = {12.3, 82.1, 26.3, 44.9, 26.6, 44.9},--second one might still be 76.9 and 82.1 was a fluke do to trolling the boss
+			[316711] = {12.3, 76.9, 26.3, 44.9, 26.6, 44.9},
 			--Evoke Anquish
 			[317102] = {27.7, 19.5, 33.9, 20.6, 42.5, 30.4, 41.2, 30.4, 42.5, 29.1},
 			--Stupefying Glare

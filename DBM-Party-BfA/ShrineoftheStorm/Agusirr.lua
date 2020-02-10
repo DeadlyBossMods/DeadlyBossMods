@@ -23,13 +23,10 @@ local specWarnSurgingRush			= mod:NewSpecialWarningDodge(264101, nil, nil, nil, 
 local specWarnChokingBrine			= mod:NewSpecialWarningDodge(264560, nil, nil, nil, 1, 2)
 local yellChokingBrine				= mod:NewFadesYell(264560, DBM_CORE_AUTO_YELL_CUSTOM_FADE)
 local specWarnUndertow				= mod:NewSpecialWarningYou(264144, nil, nil, nil, 3, 2)
---local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 8)
 
 local timerSurgingRushCD			= mod:NewCDTimer(13, 264101, nil, nil, nil, 3)
 local timerChokingBrineCD			= mod:NewCDTimer(13, 264560, nil, nil, nil, 5, nil, DBM_CORE_HEALER_ICON..DBM_CORE_MAGIC_ICON)
 local timerUndertowCD				= mod:NewCDTimer(13, 264144, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
-
---mod:AddRangeFrameOption(5, 194966)
 
 function mod:UndertowTarget(targetname, uId)
 	if not targetname then return end
@@ -50,12 +47,6 @@ function mod:OnCombatStart(delay)
 	timerUndertowCD:Start(30-delay)
 end
 
-function mod:OnCombatEnd()
---	if self.Options.RangeFrame then
---		DBM.RangeCheck:Hide()
---	end
-end
-
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if (spellId == 264144 or spellId == 264166) and self:AntiSpam(4, args.destName) then--Backup warning if scan failed
@@ -69,7 +60,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnChokingBrine:CombinedShow(0.5, args.destName)
 	end
 end
---mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
@@ -106,33 +96,3 @@ function mod:SPELL_CAST_START(args)
 		self:ScheduleMethod(0.2, "BossTargetScanner", args.sourceGUID, "UndertowTarget", 0.1, 12, true, nil, nil, nil, true)
 	end
 end
-
---[[
-function mod:SPELL_CAST_SUCCESS(args)
-	local spellId = args.spellId
-	if spellId == 264560 then
-		timerChokingBrineCD:Start()
-	end
-end
-
-function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
-	if spellId == 228007 and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
-		specWarnGTFO:Show()
-		specWarnGTFO:Play("watchfeet")
-	end
-end
-mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
-
-function mod:UNIT_DIED(args)
-	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 124396 then
-
-	end
-end
-
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 264941 then--Erupting Waters (ending)
-
-	end
-end
---]]
