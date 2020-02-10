@@ -485,7 +485,7 @@ options = {
 	},
 	StripCDText = {
 		type = "boolean",
-		default = false,
+		default = true,
 	},
 }
 
