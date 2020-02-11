@@ -53,11 +53,14 @@ local berserkTimer							= mod:NewBerserkTimer(600)
 mod:AddInfoFrameOption(312406, true)
 mod:AddSetIconOption("SetIconOnVoidWoken2", 312406, false, false, {1, 2, 3})
 mod:AddSetIconOption("SetIconOnAdds", "ej21227", true, true, {4, 5, 6, 7, 8})
+mod:AddMiscLine(DBM_CORE_OPTION_CATEGORY_DROPDOWNS)
+mod:AddDropdownOption("InterruptBehavior", {"Four", "Five", "Six", "NoReset"}, "Four", "misc")
 
 mod.vb.ritualCount = 0
 mod.vb.obeliskCount = 0
 mod.vb.tormentCount = 0
 mod.vb.addIcon = 8
+mod.vb.interruptBehavior = "Four"
 local voidWokenTargets = {}
 local castsPerGUID = {}
 
@@ -105,6 +108,7 @@ function mod:OnCombatStart(delay)
 	self.vb.obeliskCount = 0
 	self.vb.tormentCount = 0
 	self.vb.addIcon = 8
+	self.vb.interruptBehavior = self.Options.InterruptBehavior--Default it to whatever user has it set to, until group leader overrides it
 	table.wipe(voidWokenTargets)
 	table.wipe(castsPerGUID)
 	timerAbyssalStrikeCD:Start(30-delay)--START
@@ -122,6 +126,17 @@ function mod:OnCombatStart(delay)
 		DBM.InfoFrame:Show(8, "function", updateInfoFrame, false, false)
 	end
 	berserkTimer:Start(900-delay)
+	if UnitIsGroupLeader("player") and not self:IsLFR() then
+		if self.Options.InterruptBehavior == "Four" then
+			self:SendSync("Four")
+		elseif self.Options.InterruptBehavior == "Five" then
+			self:SendSync("Five")
+		elseif self.Options.InterruptBehavior == "Six" then
+			self:SendSync("Six")
+		elseif self.Options.InterruptBehavior == "NoReset" then
+			self:SendSync("NoReset")
+		end
+	end
 end
 
 function mod:OnCombatEnd()
@@ -150,6 +165,9 @@ function mod:SPELL_CAST_START(args)
 				self:ScanForMobs(args.sourceGUID, 2, self.vb.addIcon, 1, 0.2, 12)
 			end
 			self.vb.addIcon = self.vb.addIcon - 1
+		end
+		if (self.vb.interruptBehavior == "Four" and castsPerGUID[args.sourceGUID] == 4) or (self.vb.interruptBehavior == "Five" and castsPerGUID[args.sourceGUID] == 5) or (self.vb.interruptBehavior == "Six" and castsPerGUID[args.sourceGUID] == 6) then
+			castsPerGUID[args.sourceGUID] = 0
 		end
 		castsPerGUID[args.sourceGUID] = castsPerGUID[args.sourceGUID] + 1
 		local count = castsPerGUID[args.sourceGUID]
@@ -283,3 +301,16 @@ function mod:UNIT_DIED(args)
 	end
 end
 --]]
+
+function mod:OnSync(msg)
+	if self:IsLFR() then return end
+	if msg == "Four" then
+		self.vb.interruptBehavior = "Four"
+	elseif msg == "Five" then
+		self.vb.interruptBehavior = "Five"
+	elseif msg == "Six" then
+		self.vb.interruptBehavior = "Six"
+	elseif msg == "NoReset" then
+		self.vb.interruptBehavior = "NoReset"
+	end
+end

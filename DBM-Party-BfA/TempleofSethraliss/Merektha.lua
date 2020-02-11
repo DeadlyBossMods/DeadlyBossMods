@@ -10,7 +10,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 267050 263957 263958",
-	"SPELL_AURA_REMOVED 267050 263958",
+	"SPELL_AURA_REMOVED 267050",
 	"SPELL_CAST_START 272657 263914 264239 264233",
 	"SPELL_CAST_SUCCESS 263957",
 	"SPELL_PERIODIC_DAMAGE 263927",
@@ -40,7 +40,6 @@ local timerNoxiousBreathCD			= mod:NewCDTimer(89.3, 272657, nil, nil, nil, 3)
 --local timerBurrowCD					= mod:NewCDTimer(13, 264206, nil, nil, nil, 6)--Health based apparently
 --local timerBurrowEnds				= mod:NewBuffActiveTimer(13, 264206, nil, nil, nil, 6)
 
---mod:AddRangeFrameOption(5, 194966)
 mod:AddNamePlateOption("NPAuraOnObscured", 267050)
 
 
@@ -54,9 +53,6 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnCombatEnd()
---	if self.Options.RangeFrame then
---		DBM.RangeCheck:Hide()
---	end
 	if self.Options.NPAuraOnObscured then
 		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
 	end
@@ -82,7 +78,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	end
 end
---mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
@@ -90,8 +85,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.NPAuraOnObscured then
 			DBM.Nameplate:Hide(true, args.destGUID, spellId)
 		end
-	--elseif spellId == 263958 then
-
 	end
 end
 
@@ -127,17 +120,6 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spell
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
-
---[[
-function mod:UNIT_DIED(args)
-	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 135562 then--venomous-ophidian
-
-	elseif cid == 134390 then--sand-crusted-striker
-
-	end
-end
---]]
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 264172 then--Summon (cast when he burrows)

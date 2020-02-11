@@ -30,6 +30,8 @@ local specWarnAnnihilation					= mod:NewSpecialWarningDodgeCount(307403, nil, DB
 local specWarnDirgefromBelow				= mod:NewSpecialWarningInterrupt(310839, "HasInterrupt", nil, nil, 1, 2)
 local specWarnVoidBoltVolley				= mod:NewSpecialWarningInterrupt(311576, "HasInterrupt", nil, nil, 1, 2)
 
+local playerName = UnitName("player")
+
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 310780 and self:AntiSpam(5, 1) then
@@ -54,6 +56,8 @@ function mod:SPELL_CAST_START(args)
 		specWarnFeartheVoid:Show()
 		specWarnFeartheVoid:Play("fearsoon")
 	elseif (spellId == 307403 or spellId == 306982) and self:AntiSpam(3, args.sourceName) then--Enemy, Player
+		if spellId == 306982 and args.sourceName == playerName then return end--Don't warn, you're the caster
+		--Can't filter/smart warn tanking though, well could but it'd be ugly without boss unit ID to fall on, so skipped for trash. Boss will use smarter warnings
 		specWarnAnnihilation:Show(args.sourceName)
 		specWarnAnnihilation:Play("shockwave")
 	elseif spellId == 310839 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
