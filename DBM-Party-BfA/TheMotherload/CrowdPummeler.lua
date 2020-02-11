@@ -12,7 +12,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 256493",
 	"SPELL_AURA_APPLIED_DOSE 256493",
 	"SPELL_AURA_REFRESH 256493",
-	"SPELL_CAST_START 262347 257337 271784 271903",
+	"SPELL_CAST_START 262347 257337 271903",
 	"SPELL_CAST_SUCCESS 269493",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
@@ -33,7 +33,6 @@ local timerBlazingAzeriteCD			= mod:NewBuffFadesTimer(15, 256493, nil, nil, nil,
 local timerShockingClawCD			= mod:NewAITimer(13, 257337, nil, nil, nil, 3)--14.3, 41.3 (not enough timer data, leaving AI for now)
 local timerThrowCoinsCD				= mod:NewCDTimer(17.4, 271784, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON..DBM_CORE_TANK_ICON)--18.8, 17.4, 25.5, 25.5
 
---mod:AddRangeFrameOption(5, 194966)
 
 mod.vb.coinCast = 0
 
@@ -45,12 +44,6 @@ function mod:OnCombatStart(delay)
 	if not self:IsNormal() then
 		timerThrowCoinsCD:Start(18-delay)
 	end
-end
-
-function mod:OnCombatEnd()
---	if self.Options.RangeFrame then
---		DBM.RangeCheck:Hide()
---	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
@@ -73,10 +66,6 @@ function mod:SPELL_CAST_START(args)
 		specWarnShockingClaw:Show()
 		specWarnShockingClaw:Play("shockwave")
 		timerShockingClawCD:Start()
---	elseif spellId == 271784 and self:AntiSpam(5, 1) then
---		specWarnThrowCoins:Show()
---		specWarnThrowCoins:Play("moveboss")
---		timerThrowCoinsCD:Start()
 	elseif spellId == 271903 then
 		warnCoinMagnet:Show()
 	end
@@ -89,23 +78,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerFootbombLauncherCD:Start()
 	end
 end
-
---[[
-function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
-	if spellId == 228007 and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
-		specWarnGTFO:Show()
-		specWarnGTFO:Play("watchfeet")
-	end
-end
-mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
-
-function mod:UNIT_DIED(args)
-	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 124396 then
-
-	end
-end
---]]
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 271859 then--Pay to Win

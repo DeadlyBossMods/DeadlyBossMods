@@ -180,6 +180,7 @@ local timerCleansingProtocol				= mod:NewCastTimer(8, 316970, nil, nil, nil, 2)
 mod:AddRangeFrameOption(4, 317112)
 mod:AddInfoFrameOption(307831, true)
 mod:AddSetIconOption("SetIconOnCorruptor", "ej21441", true, true, {1, 2, 3, 4})
+mod:AddSetIconOption("SetIconOnHarvester", "ej21308", true, true, {1, 2, 3, 4})
 mod:AddBoolOption("ArrowOnGlare", true)
 mod:AddMiscLine(DBM_CORE_OPTION_CATEGORY_DROPDOWNS)
 mod:AddDropdownOption("InterruptBehavior", {"Four", "Five", "Six", "NoReset"}, "Five", "misc")
@@ -689,6 +690,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.harvestThoughtsCount = 0
 		self.vb.evokeAnguishCount = 0
 		self.vb.stupefyingGlareCount = 0
+		self.vb.addIcon = 1
 		lastHarvesterTime = GetTime()
 		timerMindgraspCD:Stop()--Shouldn't even be running but just in case
 		timerMindgateCD:Stop()
@@ -1125,17 +1127,15 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 				end
 				timerHarvestThoughtsCD:Start(self:IsMythic() and 6.4 or 8.2, GUID)
 				timerMindwrackCD:Start(self:IsMythic() and 12 or 5, GUID)--Cast immediately on heroic but on mythic they cast harvest thoughts first
+				if self.Options.SetIconOnCorruptor then
+					SetRaidTarget(unitID, self.vb.addIcon)
+				end
+				self.vb.addIcon = self.vb.addIcon + 1
+				if self.vb.addIcon > 4 then--Cycle through 4 icons as they spawn. On mythic 2 spawn at a time so every other set it should cycle icons back to 1
+					self.vb.addIcon = 1
+				end
 			elseif cid == 163612 then--Voidspawn Annihilator
 				if self.vb.phase == 3 then
-					--self.vb.darkMatterCount = 0
-					--self.vb.eventHorrizonCount = 0
-					--self.vb.cleansingActive = 0
-					--self.vb.cleansingCastCount = 0
-					--self.vb.annihilateCastCount = 0
-					--timerEventHorizonCD:Start(9.1)
-					--timerCleansingProtocolCD:Start(14.1, 1)
-					--timerDarkMatterCD:Start(28.1, 1)
-					--timerAnnihilateCD:Start(50)
 					if self.Options.InfoFrame and not DBM.InfoFrame:IsShown() then
 						DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(307831))
 						if DBM.Options.DebugMode then

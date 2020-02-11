@@ -31,18 +31,11 @@ local timerBurnCorruptionCD			= mod:NewCDTimer(15.8, 267639, nil, "Melee", nil, 
 local timerDrainFluidsCD			= mod:NewCDTimer(17, 267618, nil, nil, nil, 3)
 local timerEntombCD					= mod:NewCDTimer(60, 267702, nil, nil, nil, 3)
 
---mod:AddRangeFrameOption(5, 194966)
 
 function mod:OnCombatStart(delay)
 	timerBurnCorruptionCD:Start(10.8-delay)
 	timerDrainFluidsCD:Start(17.6-delay)--SUCCESS
 	timerEntombCD:Start(26.5-delay)
-end
-
-function mod:OnCombatEnd()
---	if self.Options.RangeFrame then
---		DBM.RangeCheck:Hide()
---	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
@@ -62,7 +55,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerEntombCD:Stop()
 	end
 end
---mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
@@ -116,17 +108,3 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, targetname)
 		end
 	end
 end
-
---[[
-function mod:UNIT_DIED(args)
-	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 124396 then
-
-	end
-end
-
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 257939 then
-	end
-end
---]]

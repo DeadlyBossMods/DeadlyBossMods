@@ -23,15 +23,11 @@ local warnUnstableOrdnance			= mod:NewSpellAnnounce(268995, 1)
 local specWarnCleartheDeck			= mod:NewSpecialWarningDodge(269029, "Tank", nil, nil, 3, 2)
 local specWarnHeavySlash			= mod:NewSpecialWarningDodge(257288, "Tank", nil, nil, 1, 2)
 local specWarnBroadside				= mod:NewSpecialWarningDodge(268260, "Tank", nil, nil, 1, 2)
---local yellSwirlingScythe			= mod:NewYell(195254)
---local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 8)
 
 local timerWithdrawCD				= mod:NewCDTimer(40, 268752, nil, nil, nil, 6)
 local timerCleartheDeckCD			= mod:NewCDTimer(20, 269029, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--Need more data
 local timerCrimsonSwipeCD			= mod:NewCDTimer(9, 268230, nil, false, 2, 5, nil, DBM_CORE_TANK_ICON)
 local timerBroadsideCD				= mod:NewCDTimer(9, 268260, nil, nil, nil, 3)--Need more data
-
---mod:AddRangeFrameOption(5, 194966)
 
 mod.vb.bossGone = false
 
@@ -40,22 +36,6 @@ function mod:OnCombatStart(delay)
 	timerCleartheDeckCD:Start(4.3-delay)
 	timerWithdrawCD:Start(13.1-delay)
 end
-
-function mod:OnCombatEnd()
---	if self.Options.RangeFrame then
---		DBM.RangeCheck:Hide()
---	end
-end
-
---[[
-function mod:SPELL_AURA_APPLIED(args)
-	local spellId = args.spellId
-	if spellId == 194966 then
-
-	end
-end
---mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
---]]
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
@@ -70,16 +50,6 @@ function mod:SPELL_CAST_START(args)
 		timerCrimsonSwipeCD:Start(nil, args.sourceGUID)
 	end
 end
-
---[[
-function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
-	if spellId == 228007 and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
-		specWarnGTFO:Show()
-		specWarnGTFO:Play("watchfeet")
-	end
-end
-mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
---]]
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
