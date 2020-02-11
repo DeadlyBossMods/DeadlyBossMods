@@ -21,6 +21,14 @@ L= DBM:GetModLocalization(2369)
 ---------------------------
 L= DBM:GetModLocalization(2377)
 
+L:SetOptionLocalization({
+	InterruptBehavior	= "공포의 물결 차단 방식 설정 (공대장일 경우 다른 사람의 설정보다 우선 적용)",
+	Four				= "4인 로테이션 ",--Default
+	Five				= "5인 로테이션 ",
+	Six					= "6인 로테이션 ",
+	NoReset				= "로테이션 없음 "
+})
+
 L:SetMiscLocalization({
 	ObeliskSpawn	= "솟아나라, 어둠의 방첨탑이여!"--Only as backup, in case the NPC target check stops working
 })
