@@ -70,6 +70,7 @@ local specWarnDesolationShare				= mod:NewSpecialWarningMoveTo(310325, false, ni
 --Adds
 ----Void Ascendant
 local specWarnAnnihilation					= mod:NewSpecialWarningDodgeCount(307403, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.dodge:format(307403), nil, 2, 2)
+local specWarnAnnihilationDefensive			= mod:NewSpecialWarningDefensive(307403, nil, nil, nil, 1, 2)
 ----Spellbound Ritualist
 local specWarnVoidBolt						= mod:NewSpecialWarningInterrupt(307177, "HasInterrupt", nil, nil, 3, 2)
 
@@ -104,6 +105,7 @@ local voidCorruptionStacks = {}
 local unitTracked = {}
 local seenAdds = {}
 local enforcerCount = 0
+local playerName = UnitName("player")
 mod.vb.gatewayCount = 0
 mod.vb.phase = 1
 mod.vb.TwilightDCasts = 0
@@ -188,8 +190,21 @@ function mod:SPELL_CAST_START(args)
 			specWarnTwilightBreath:Play("breathsoon")
 		end
 	elseif (spellId == 307403 or spellId == 306982) and self:AntiSpam(3, args.sourceName) then--Enemy, Player
-		specWarnAnnihilation:Show(args.sourceName)
-		specWarnAnnihilation:Play("shockwave")
+		if spellId == 307403 then--Enemy
+			local bossUnitID = self:GetUnitIdFromGUID(args.sourceGUID)
+			--First check if we're tanking the caster, if we are, DBM should tell you to pop defensive, not dodge it (tank can't dodge it)
+			if self:IsTanking("player", bossUnitID, nil, true) then
+				specWarnAnnihilationDefensive:Show()
+				specWarnAnnihilationDefensive:Play("defensive")
+			else--Not tanking it, you can dodge it
+				specWarnAnnihilation:Show(args.sourceName)
+				specWarnAnnihilation:Play("shockwave")
+			end
+		--Source is a player, now we make sure that the player casting it isn't ourselves. Can't be hit by our own cast so shouldn't be told to dodge it
+		elseif args.sourceName ~= playerName then
+			specWarnAnnihilation:Show(args.sourceName)
+			specWarnAnnihilation:Play("shockwave")
+		end
 		if spellId == 307403 then--Cast by mob not player
 			timerAnnihilationCD:Start(14.6, args.sourceGUID)
 		end
