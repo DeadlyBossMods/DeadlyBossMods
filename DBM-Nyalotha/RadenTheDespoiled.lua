@@ -757,7 +757,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		timerVoidEruptionCD:Start(22.1, 1)
 		timerGorgeEssenceCD:Start(25.8, 1)
 		if self:IsMythic() then
-			timerCorruptedExistenceCD:start(11.2, 1)
+			timerCorruptedExistenceCD:Start(11.2, 1)
 		end
 	end
 end
