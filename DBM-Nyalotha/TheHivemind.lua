@@ -88,45 +88,25 @@ mod.vb.VolatileEruptionCount = 0
 mod.vb.difficultyName = "None"
 local seenAdds = {}
 local allTimers = {
-	["lfr"] = {--Unknown, so normal timers are used for now, might be slightly slower and need to divide normal timers by 0.9379 to get them
+	["easy"] = {--(Heroic timers are just normal *0.9379 so I ported heroic timers back to normal by dividing them by 0.9379 and this checks out)
 		--Ka'zir
 		----Mind-Numbing Nova
-		[313652] = {16.0, 16.0, 16.0, 20.0, 16.0, 23.3, 15.2, 16.0, 16.0, 16.0, 16.0, 16.0, 16.0, 16.0, 16.0, 16.0, 16.0, 36.0, 16.0, 16.0, 16.0, 16.0, 23.9, 16.0, 17.3},
+		[313652] = {15.9, 16.0, 16.0, 20.0, 16.0, 23.3, 15.2, 16.0, 16.0, 16.0, 16.0, 16.0, 16.0, 16.0, 16.0, 16.0, 16.0, 36.0, 16.0, 16.0, 16.0, 16.0, 23.9, 16.0, 17.3},
 		----Spawn Acidic Aqir
-		[310340] = {60.0, 69.3, 63.9, 66.6, 66.6, 66.6},
+		[310340] = {59.6, 69.3, 63.9, 66.6, 66.6, 66.6},
 		----Volatile Eruption (SUCCESS)
 		[308178] = {},--Not on Normal/LFR
 		----Call Flyer Swarm (SUCCESS)
-		[312710] = {67.7, 108.3, 98.3, 78.9},
+		[312710] = {67.6, 108.3, 98.3, 78.9},
 		--Tek'ris
 		----Nullification Blast
 		[307968] = {28.0, 29.3, 25.2, 53.3, 26.6, 26.6, 27.9, 26.6, 26.6, 31.9, 26.6, 26.6, 26.6, 26.6, 26.6},
 		----Accelerated Evolution (SUCCESS)
 		[307635] = {},--Not on Normal/LFR
 		----Echoing Void
-		[307232] = {36, 70.6, 39.9, 77.3, 69.3, 73.3, 73.2},
+		[307232] = {35.7, 70.6, 39.9, 77.3, 69.3, 73.3, 73.2},
 		----Summon Drones Periodic (SUCCESS)
-		[312868] = {21.3, 92.4, 101.2, 96.2, 103.6}
-	},
-	["normal"] = {--(Heroic timers are just normal *0.9379 so I ported heroic timers back to normal by dividing them by 0.9379 and this checks out)
-		--Ka'zir
-		----Mind-Numbing Nova
-		[313652] = {16.0, 16.0, 16.0, 20.0, 16.0, 23.3, 15.2, 16.0, 16.0, 16.0, 16.0, 16.0, 16.0, 16.0, 16.0, 16.0, 16.0, 36.0, 16.0, 16.0, 16.0, 16.0, 23.9, 16.0, 17.3},
-		----Spawn Acidic Aqir
-		[310340] = {60.0, 69.3, 63.9, 66.6, 66.6, 66.6},
-		----Volatile Eruption (SUCCESS)
-		[308178] = {},--Not on Normal/LFR
-		----Call Flyer Swarm (SUCCESS)
-		[312710] = {67.7, 108.3, 98.3, 78.9},
-		--Tek'ris
-		----Nullification Blast
-		[307968] = {28.0, 29.3, 25.2, 53.3, 26.6, 26.6, 27.9, 26.6, 26.6, 31.9, 26.6, 26.6, 26.6, 26.6, 26.6},
-		----Accelerated Evolution (SUCCESS)
-		[307635] = {},--Not on Normal/LFR
-		----Echoing Void
-		[307232] = {36, 70.6, 39.9, 77.3, 69.3, 73.3, 73.2},
-		----Summon Drones Periodic (SUCCESS)
-		[312868] = {21.3, 92.4, 101.2, 96.2, 103.6}
+		[312868] = {21.2, 92.4, 101.2, 96.2, 103.6}
 	},
 	["heroic"] = {--UPDATED on Live Jan 21
 		--Ka'zir
@@ -207,27 +187,17 @@ function mod:OnCombatStart(delay)
 		timerAcceleratedEvolutionCD:Start(19.6-delay, 1)
 		timerNullificationBlastCD:Start(26.3-delay, 1)
 		timerEchoingVoidCD:Start(33.8-delay, 1)
-	elseif self:IsNormal() then
-		self.vb.difficultyName = "normal"
-		timerMindNumbingNovaCD:Start(16-delay, 1)
-		timerSpawnAcidicAqirCD:Start(60-delay, 1)
-		--timerVolatileEruptionCD:Start(111.9-delay, 1)--Never Seen in normal in journal
-		timerFlyerSwarmCD:Start(67.7-delay, 1)
-		--Tek'ris
-		timerDronesCD:Start(21-delay, 1)
-		timerNullificationBlastCD:Start(28-delay, 1)
-		timerEchoingVoidCD:Start(36-delay, 1)
-	else--LFR
-		self.vb.difficultyName = "lfr"
+	else--Normal & LFR
+		self.vb.difficultyName = "easy"
 		--Copied from normal for now
-		timerMindNumbingNovaCD:Start(16-delay, 1)
-		timerSpawnAcidicAqirCD:Start(60-delay, 1)
+		timerMindNumbingNovaCD:Start(15.9-delay, 1)
+		timerSpawnAcidicAqirCD:Start(59.6-delay, 1)
 		--timerVolatileEruptionCD:Start(111.9-delay, 1)--Never Seen in normal in journal
-		timerFlyerSwarmCD:Start(67.7-delay, 1)
+		timerFlyerSwarmCD:Start(67.6-delay, 1)
 		--Tek'ris
 		timerDronesCD:Start(21-delay, 1)
 		timerNullificationBlastCD:Start(28-delay, 1)
-		timerEchoingVoidCD:Start(36-delay, 1)
+		timerEchoingVoidCD:Start(35.7-delay, 1)
 	end
 	if self.Options.NPAuraOnVolatileEruption or self.Options.NPAuraOnAcceleratedEvolution then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
