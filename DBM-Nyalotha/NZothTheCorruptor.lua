@@ -205,6 +205,7 @@ mod.vb.blackVolleyCount = 0
 mod.vb.addIcon = 1
 mod.vb.interruptBehavior = "Five"
 mod.vb.difficultyName = "None"
+mod.vb.egoActive = false
 local selfInMind = false
 local lastSanity = 100
 local lastHarvesterTime = 0
@@ -464,6 +465,7 @@ function mod:OnCombatStart(delay)
 	self.vb.cataclysmCount = 0
 	self.vb.blackVolleyCount = 0
 	self.vb.interruptBehavior = self.Options.InterruptBehavior--Default it to whatever user has it set to, until group leader overrides it
+	self.vb.egoActive = false
 	lastHarvesterTime = 0
 	table.wipe(debugSpawnTable)
 	table.wipe(castsPerGUID)
@@ -550,7 +552,9 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 311176 then
 		self.vb.phase = 1--Non Mythic
 		--Start P1 timers here, more accurate, especially if boss forgets to cast this :D
-		timerVoidGazeCD:Start(14.7)
+		if not self.vb.egoActive then
+			timerVoidGazeCD:Start(14.7)
+		end
 	elseif spellId == 316711 then
 		if args:GetSrcCreatureID() == 158376 then--Psychus
 			timerMindwrackCD:Start(4.9, args.sourceGUID)
@@ -782,7 +786,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if selfInMind then
 			warnCataclysmicFlames:Show(self.vb.cataclysmCount)
 		end
-		timerCataclysmicFlamesCD:Start(22.4, self.vb.cataclysmCount+1)
+		if not self.vb.egoActive then
+			timerCataclysmicFlamesCD:Start(22.4, self.vb.cataclysmCount+1)
+		end
 	end
 end
 
@@ -887,6 +893,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif (spellId == 312155 or spellId == 319015) and args:GetDestCreatureID() == 158041 then--Shattered Ego on N'Zoth
 		self.vb.egoCount = self.vb.egoCount + 1
+		self.vb.egoActive = true
 		warnShatteredEgo:Show(args.destName)
 		timerShatteredEgo:Start(30)
 		if not self:IsMythic() and self.vb.phase == 1 then
@@ -973,7 +980,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		if selfInMind then
 			warnBlackVolley:Show(self.vb.blackVolleyCount)
 		end
-		timerBlackVolleyCD:Start(self:IsMythic() and 20 or 19, self.vb.blackVolleyCount+1)
+		if not self.vb.egoActive then
+			timerBlackVolleyCD:Start(self:IsMythic() and 20 or 19, self.vb.blackVolleyCount+1)
+		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -988,6 +997,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			yellGiftofNzothFades:Cancel()
 		end
 	elseif (spellId == 312155 or spellId == 319015) and args:GetDestCreatureID() == 158041 then--Shattered Ego on N'Zoth
+		self.vb.egoActive = false
 		--These always happen after this
 		timerShatteredEgo:Stop()
 		--Basically below only runs after first psychus phase in Stage 1 mythic/Stage 2 non mythic. 2nd one ending is start of next phase
