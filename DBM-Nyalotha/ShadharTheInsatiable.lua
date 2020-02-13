@@ -79,7 +79,6 @@ mod.vb.bubblingCount = 0
 mod.vb.buildupCount = 0
 mod.vb.fixateCount = 0
 mod.vb.bossPowerUpdateRate = 4
-mod.vb.comboCount = 0
 mod.vb.firstCrush = nil
 mod.vb.firstDissolve = nil
 local playerName = UnitName("player")
@@ -165,7 +164,6 @@ function mod:OnCombatStart(delay)
 	self.vb.phase = 1
 	self.vb.fixateCount = 0
 	self.vb.bossPowerUpdateRate = 4
-	self.vb.comboCount = 0
 	self.vb.firstCrush = nil
 	self.vb.firstDissolve = nil
 	table.wipe(SpitStacks)
@@ -213,7 +211,8 @@ function mod:SPELL_CAST_START(args)
 		timerDebilitatingSpitCD:Start()
 	elseif spellId == 307478 then--Dissolve
 		if self:AntiSpam(11, 1) then
-			self.vb.comboCount = 0
+			self.vb.firstCrush = nil
+			self.vb.firstDissolve = nil
 		end
 		self.vb.comboCount = self.vb.comboCount + 1
 		--there is already a crush debuffed tank, and it is not us, therefor WE must taunt dissolve
@@ -226,7 +225,8 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 307476 then--Crush
 		if self:AntiSpam(11, 1) then
-			self.vb.comboCount = 0
+			self.vb.firstCrush = nil
+			self.vb.firstDissolve = nil
 		end
 		self.vb.comboCount = self.vb.comboCount + 1
 		--there is already a dissolve debuffed tank, and it is not us, therefor WE must taunt crush
