@@ -595,7 +595,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerVoidEruptionCD:Start(12.1, 1)
 		timerGorgeEssenceCD:Start(15.8, 1)
 		if self:IsMythic() then
-			timerCorruptedExistenceCD:start(1.2, 1)
+			timerCorruptedExistenceCD:Start(1.2, 1)
 		end
 	elseif spellId == 310019 or spellId == 310022 then
 		ChargedBondsTargets[#ChargedBondsTargets + 1] = args.destName
