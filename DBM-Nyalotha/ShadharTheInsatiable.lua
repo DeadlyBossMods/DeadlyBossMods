@@ -214,7 +214,6 @@ function mod:SPELL_CAST_START(args)
 			self.vb.firstCrush = nil
 			self.vb.firstDissolve = nil
 		end
-		self.vb.comboCount = self.vb.comboCount + 1
 		--there is already a crush debuffed tank, and it is not us, therefor WE must taunt dissolve
 		--or, we are the dissolve debuffed tank and we need to tank this dissolve too
 		if not self:IsTanking("player", "boss1", nil, true) then
