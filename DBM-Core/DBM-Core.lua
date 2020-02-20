@@ -987,7 +987,7 @@ do
 	local function unregisterUEvent(mod, event)
 		if event:sub(0, 5) == "UNIT_" and event ~= "UNIT_DIED" and event ~= "UNIT_DESTROYED" then
 			local eventName, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8 = strsplit(" ", event)
-			if eventName:sub(event:len() - 10) == "_UNFILTERED" then
+			if eventName:sub(eventName:len() - 10) == "_UNFILTERED" then
 				mainFrame:UnregisterEvent(eventName:sub(0, -12))
 			else
 				unregisterUnitEvent(mod, eventName, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8)
