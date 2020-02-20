@@ -112,6 +112,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnCombatEnd()
+	table.wipe(castsPerGUID)
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
 	end
@@ -141,8 +142,8 @@ function mod:SPELL_CAST_START(args)
 			castsPerGUID[args.sourceGUID] = 0
 		end
 		castsPerGUID[args.sourceGUID] = castsPerGUID[args.sourceGUID] + 1
-		local count = castsPerGUID[args.sourceGUID]
-		warnDarkOffering:Show(count)
+		local addnumber, count = #castsPerGUID, castsPerGUID[args.sourceGUID]
+		warnDarkOffering:Show(addnumber.."-"..count)
 		timerDarkOfferingCD:Start(12.1, count+1, args.sourceGUID)
 	elseif spellId == 314337 then
 		warnAncientCurse:Show()
@@ -289,7 +290,7 @@ function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 156650 then--dark-manifestation
 		timerDarkOfferingCD:Stop(castsPerGUID[args.destGUID]+1, args.destGUID)
-		castsPerGUID[args.destGUID] = nil
+		--castsPerGUID[args.destGUID] = nil
 	end
 end
 
