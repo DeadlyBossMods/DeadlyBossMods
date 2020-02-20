@@ -1062,7 +1062,7 @@ do
 				local f, s, m = self.text:GetFont()
 				local font = f or standardFont
 				local size = fontSize or s or 20
-				local outline = outline or m or "THICKOUTLINE"
+				outline = outline or m or "THICKOUTLINE"
 				self.text:SetFont(font, size, outline)
 				self.text:SetText(text)
 			end
@@ -1330,9 +1330,9 @@ end
 function mod:RegisterPositionMarker(spellid, name, texture, x, y, radius, duration, r, g, b, a, blend, localMap, AreaID)
 	if localMap then
 		if x >= 0 and x <= 100 and y >= 0 and y <= 100 then
-			local localMap = tonumber(AreaID) or C_Map.GetBestMapForUnit("player")
+			local playerMap = tonumber(AreaID) or C_Map.GetBestMapForUnit("player")
 			local vector = CreateVector2D(x/100, y/100)
-			local _, temptable = C_Map.GetWorldPosFromMapPos(localMap, vector)
+			local _, temptable = C_Map.GetWorldPosFromMapPos(playerMap, vector)
 			x, y = temptable.x, temptable.y
 		end
 	end

@@ -142,7 +142,7 @@ do
 		end
 
 		local x, y, _, mapId = UnitPosition("player")
- 		--New bug in 8.2.5, unit position returns nil for position in areas there aren't restrictions for first few frames in that new area
+		--New bug in 8.2.5, unit position returns nil for position in areas there aren't restrictions for first few frames in that new area
 		--this just has the arrow skip some onupdates during that
 		if (not x or not y) then
 			if IsInInstance() then--Somehow x and y returned on entering an instance, before restrictions kicked in?

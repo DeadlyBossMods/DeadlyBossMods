@@ -1,10 +1,12 @@
 if GetLocale() ~= "zhTW" then return end
 DBM_DEADLY_BOSS_MODS				= "Deadly Boss Mods"
 DBM_DBM								= "DBM"
-local day, _, month = C_DateAndTime and C_DateAndTime.GetCurrentCalendarTime and C_DateAndTime.GetCurrentCalendarTime()
-if day and month and day == 1 and month == 4 then
-	DBM_DEADLY_BOSS_MODS				= "Harmless Boss Mods"
-	DBM_DBM								= "HBM"
+if C_DateAndTime and C_DateAndTime.GetCurrentCalendarTime then
+	local day, _, month = C_DateAndTime.GetCurrentCalendarTime()
+	if day and month and day == 1 and month == 4 then
+		DBM_DEADLY_BOSS_MODS				= "Harmless Boss Mods"
+		DBM_DBM								= "HBM"
+	end
 end
 
 DBM_HOW_TO_USE_MOD							= "歡迎使用"..DBM_DBM.."。在聊天頻道輸入 /dbm 打開設定開始設定。你可以載入特定區域後為任何首領設定你喜歡的特別設置。DBM會在設定你的職業天賦的預設值，但有些選項可能需要調整。"
@@ -528,7 +530,7 @@ DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.count	= "" .. UnitName("player") .. "中了%s(%
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.fade	= "%s %%d秒後消退!"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.shortfade	= "%%d"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.iconfade		= "{rt%%2$d}%%1$d"
-DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.position = UnitName("player").." ({rt%%3$d})中了%1$s! (%%1$s - {rt%%2$d})" 
+DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.position = UnitName("player").." ({rt%%3$d})中了%1$s! (%%1$s - {rt%%2$d})"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.combo			= "%s與%%s"--Spell name (from option, plus spellname given in arg)
 
 DBM_CORE_AUTO_YELL_CUSTOM_FADE			= "%s已消退"

@@ -59,3 +59,13 @@ L= DBM:GetModLocalization(2362)
 -- Wekemara --
 -----------------------
 L= DBM:GetModLocalization(2363)
+
+---------
+--Warfront: Arathi--
+---------
+L = DBM:GetModLocalization("WarfrontArathi")
+
+L:SetGeneralLocalization({
+	name =	"WF: Arathi"
+})
+

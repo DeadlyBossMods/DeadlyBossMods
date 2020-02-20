@@ -4663,7 +4663,7 @@ do
 	local Categories = {}
 	local subTabId = 0
 	function DBM_GUI:UpdateModList()
-		for k, addon in ipairs(DBM.AddOns) do
+		for z, addon in ipairs(DBM.AddOns) do
 			if not Categories[addon.category] then
 				-- Create a Panel for "Wrath of the Lich King" "Burning Crusade" ...
 				local expLevel = GetExpansionLevel()
@@ -4836,8 +4836,8 @@ do
 							end)
 						elseif mod.dropdowns and mod.dropdowns[v] then
 							local dropdownOptions = {}
-							for i, v in ipairs(mod.dropdowns[v]) do
-								dropdownOptions[#dropdownOptions + 1] = { text = mod.localization.options[v], value = v }
+							for i, val in ipairs(mod.dropdowns[v]) do
+								dropdownOptions[#dropdownOptions + 1] = { text = mod.localization.options[val], value = val }
 							end
 							button = catpanel:CreateDropdown(mod.localization.options[v], dropdownOptions, mod, v, function(value)
 								mod.Options[v] = value
