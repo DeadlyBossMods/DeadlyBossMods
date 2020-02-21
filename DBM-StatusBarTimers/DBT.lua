@@ -1447,8 +1447,8 @@ do
 			if #skinTextures ~= #skinTextureNames then
 				geterrorhandler()(id .. ": toc file defines " .. #skinTextures .. " textures but " .. #skinTextureNames .. " names for textures")
 			else
-				for i = 1, #skinTextures do
-					textures[skinTextureNames[i]:trim()] = skinTextures[i]:trim()
+				for j = 1, #skinTextures do
+					textures[skinTextureNames[j]:trim()] = skinTextures[j]:trim()
 				end
 			end
 			local skinFonts = { strsplit(",", GetAddOnMetadata(i, "X-DBM-Timer-Skin-Fonts") or "") }
@@ -1456,8 +1456,8 @@ do
 			if #skinFonts ~= #skinFontNames then
 				geterrorhandler()(id .. ": toc file defines " .. #skinFonts .. " fonts but " .. #skinFontNames .. " names for fonts")
 			else
-				for i = 1, #skinFonts do
-					fonts[skinFontNames[i]:trim()] = skinFonts[i]:trim()
+				for j = 1, #skinFonts do
+					fonts[skinFontNames[j]:trim()] = skinFonts[j]:trim()
 				end
 			end
 

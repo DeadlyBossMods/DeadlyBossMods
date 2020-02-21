@@ -10,12 +10,12 @@ git:
 
 install: luarocks install --local luacheck
 
-script: /home/travis/.luarocks/bin/luacheck . --no-color -qo "011"
+script: /home/travis/.luarocks/bin/luacheck . --no-color -q
 
 after_success:
   - curl -s https://raw.githubusercontent.com/BigWigsMods/packager/master/release.sh | bash; if [[ $? != 0 ]]; then TRAVIS_TEST_RESULT=1; fi
 
-after_script: 
+after_script:
   - if [[ "$TRAVIS_TEST_RESULT" == 1 ]]; then curl -s https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh | bash -s -- failure $WEBHOOK_URL; fi
 
 

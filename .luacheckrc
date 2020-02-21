@@ -18,7 +18,8 @@ ignore = {
 	"213", -- Unused loop variable
 	"231/_.*", -- unused variables starting with _
 	"311", -- Value assigned to a local variable is unused
-	"431", -- shadowing upvalue
+--	"431", -- shadowing upvalue
+	"43.", -- Shadowing an upvalue, an upvalue argument, an upvalue loop variable.
 	"542", -- An empty if branch
 }
 globals = {
@@ -104,13 +105,18 @@ globals = {
 	"LOCALE_zhTW",
 
 	-- FrameXML misc
+	"ALTERNATE_POWER_INDEX",
 	"BNET_CLIENT_WOW",
-	"C_BattleNet",
+	"CHALLENGE_MODE_MEDAL1",
+	"CHALLENGE_MODE_MEDAL2",
+	"CHALLENGE_MODE_MEDAL3",
 	"C_Calendar",
 	"C_ChatInfo",
+	"C_DateAndTime",
 	"C_EncounterJournal",
 	"C_FriendList",
 	"C_Timer",
+	"C_QuestLog",
 	"ChatEdit_GetActiveWindow",
 	"ChatFrame_AddMessageEventFilter",
 	"CinematicFrame_CancelCinematic",
@@ -123,7 +129,6 @@ globals = {
 	"FCFTab_UpdateAlpha",
 	"GameFontHighlight",
 	"GameFontHighlightSmall",
-	"GameFontNormal",
 	"GameFontNormalSmall",
 	"GameTooltip_Hide",
 	"GameTooltip_OnLoad",
@@ -168,7 +173,9 @@ globals = {
 
 	-- FrameXML globals
 	"ChatFontNormal",
+	"GameFontNormal",
 	"FONT_COLOR_CODE_CLOSE",
+	"ICON_TAG_LIST",
 	"MAX_PVP_TALENT_COLUMNS",
 	"MAX_PVP_TALENT_TIERS",
 	"MAX_TALENT_TIERS",
@@ -178,10 +185,10 @@ globals = {
 	"STANDARD_TEXT_FONT",
 
 	-- ENUMS
-	"UPPER_RIGHT_VERTEX",
-	"UPPER_LEFT_VERTEX",
-	"LOWER_RIGHT_VERTEX",
 	"LOWER_LEFT_VERTEX",
+	"LOWER_RIGHT_VERTEX",
+	"UPPER_LEFT_VERTEX",
+	"UPPER_RIGHT_VERTEX",
 
 	-- API functions
 	"AbandonQuest",
@@ -294,6 +301,7 @@ globals = {
 	"BuyReagentBank",
 	"BuyTrainerService",
 	"BuybackItem",
+	"C_ActionBar",
 	"C_AdventureJournal",
 	"C_AdventureJournal.ActivateEntry",
 	"C_AdventureJournal.CanBeShown",
@@ -374,6 +382,7 @@ globals = {
 	"C_AuthChallenge.OnTabPressed",
 	"C_AuthChallenge.SetFrame",
 	"C_AuthChallenge.Submit",
+	"C_BattleNet",
 	"C_BlackMarket",
 	"C_BlackMarket.Close",
 	"C_BlackMarket.GetHotItem",
@@ -1450,6 +1459,7 @@ globals = {
 	"CancelUnitBuff",
 	"CannotBeResurrected",
 	"CaseAccentInsensitiveParse",
+	"CastingInfo",
 	"CastPetAction",
 	"CastShapeshiftForm",
 	"CastSpell",
@@ -1458,6 +1468,7 @@ globals = {
 	"ChangeActionBarPage",
 	"ChangeChatColor",
 	"ChannelBan",
+	"ChannelInfo",
 	"ChannelInvite",
 	"ChannelKick",
 	"ChannelModerator",
@@ -1956,6 +1967,7 @@ globals = {
 	"GetFactionInfoByID",
 	"GetFailedPVPTalentIDs",
 	"GetFailedTalentIDs",
+	"GetFileIDFromPath",
 	"GetFileStreamingStatus",
 	"GetFilteredAchievementID",
 	"GetFlexRaidDungeonInfo",
@@ -2333,6 +2345,8 @@ globals = {
 	"GetNumSpecializationsForClassID",
 	"GetNumSpellTabs",
 	"GetNumSubgroupMembers",
+	"GetNumTalents",
+	"GetNumTalentTabs",
 	"GetNumTitles",
 	"GetNumTrackedAchievements",
 	"GetNumTrackingTypes",
@@ -4041,6 +4055,7 @@ globals = {
 	"GetBindingFromClick",
 	"GetBindingText",
 	"GetChatUnitColor",
+	"GetClassColor",
 	"GetColoredName",
 	"GetDenominationsFromCopper",
 	"GetDisplayedAllyFrames",
@@ -4349,6 +4364,7 @@ globals = {
 	"VideoOptionsValueChanged",
 	"VoiceChatShineFadeIn",
 	"VoiceChatShineFadeOut",
+	"WrapTextInColorCode",
 	"escapePatternSymbols",
 	"getglobal",
 	"getprinthandler",
@@ -19453,6 +19469,9 @@ globals = {
 	"WOW_FRIEND",
 	"WOW_MOUSE",
 	"WOW_MOUSE_NOT_FOUND",
+	"WOW_PROJECT_CLASSIC",
+	"WOW_PROJECT_ID",
+	"WOW_PROJECT_MAINLINE",
 	"WRISTSLOT",
 	"WRONG_SLOT_FOR_ITEM",
 	"XP",

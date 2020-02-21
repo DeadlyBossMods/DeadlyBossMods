@@ -4,32 +4,17 @@ local L
 ---------------------------
 --  Wrathion, the Black Emperor --
 ---------------------------
-L= DBM:GetModLocalization(2368)
-
-L:SetWarningLocalization({
-
-})
-
-L:SetTimerLocalization({
-
-})
-
-L:SetOptionLocalization({
-
-})
-
-L:SetMiscLocalization({
-})
+--L= DBM:GetModLocalization(2368)
 
 ---------------------------
 --  Maut --
 ---------------------------
-L= DBM:GetModLocalization(2365)
+--L= DBM:GetModLocalization(2365)
 
 ---------------------------
 --  The Prophet Skitra --
 ---------------------------
-L= DBM:GetModLocalization(2369)
+--L= DBM:GetModLocalization(2369)
 
 ---------------------------
 --  Dark Inquisitor Xanesh --
@@ -53,17 +38,17 @@ L:SetMiscLocalization({
 ---------------------------
 --  Shad'har the Insatiable --
 ---------------------------
-L= DBM:GetModLocalization(2367)
+--L= DBM:GetModLocalization(2367)
 
 ---------------------------
 -- Drest'agath --
 ---------------------------
-L= DBM:GetModLocalization(2373)
+--L= DBM:GetModLocalization(2373)
 
 ---------------------------
 --  Vexiona --
 ---------------------------
-L= DBM:GetModLocalization(2370)
+--L= DBM:GetModLocalization(2370)
 
 ---------------------------
 --  Ra-den the Despoiled --
@@ -92,7 +77,7 @@ L:SetOptionLocalization({
 ---------------------------
 --  Carapace of N'Zoth --
 ---------------------------
-L= DBM:GetModLocalization(2366)
+--L= DBM:GetModLocalization(2366)
 
 ---------------------------
 --  N'Zoth, the Corruptor --

@@ -33,7 +33,7 @@ local warnAbyssalStrike						= mod:NewStackAnnounce(311551, 2, nil, "Tank")
 local warnVoidRitual						= mod:NewCountAnnounce(312336, 2)--Fallback if specwarn is disabled
 local warnFanaticism						= mod:NewTargetNoFilterAnnounce(314179, 3, nil, "Tank|Healer")
 local warnSummonRitualObelisk				= mod:NewCountAnnounce(306495, 2)
-local warnSoulFlay							= mod:NewTargetAnnounce(306311, 2)
+local warnSoulFlay							= mod:NewTargetCountAnnounce(306311, 2)
 
 local specWarnVoidRitual					= mod:NewSpecialWarningCount(312336, false, nil, nil, 1, 2)--Option in, since only certain players may be assigned
 local specWarnAbyssalStrike					= mod:NewSpecialWarningStack(311551, nil, 2, nil, nil, 1, 6)
@@ -45,7 +45,7 @@ local specWarnGTFO							= mod:NewSpecialWarningGTFO(270290, nil, nil, nil, 1, 8
 
 local timerAbyssalStrikeCD					= mod:NewCDTimer(40, 311551, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON, nil, 2, 3)--42.9-47
 local timerVoidRitualCD						= mod:NewNextCountTimer(79.7, 312336, nil, nil, nil, 5, nil, nil, nil, 1, 4)
-local timerSoulFlayCD						= mod:NewCDTimer(57, 306319, nil, nil, nil, 3)--57 but will spell queue behind other spells
+local timerSoulFlayCD						= mod:NewCDCountTimer(57, 306319, nil, nil, nil, 3)--57 but will spell queue behind other spells
 local timerTormentCD						= mod:NewNextCountTimer(46.5, 306208, nil, nil, nil, 3, nil, nil, nil, 3, 4)
 
 local berserkTimer							= mod:NewBerserkTimer(600)
@@ -59,6 +59,7 @@ mod:AddDropdownOption("InterruptBehavior", {"Four", "Five", "Six", "NoReset"}, "
 mod.vb.ritualCount = 0
 mod.vb.obeliskCount = 0
 mod.vb.tormentCount = 0
+mod.vb.soulFlayCount = 0
 mod.vb.addIcon = 8
 mod.vb.interruptBehavior = "Four"
 local voidWokenTargets = {}
@@ -107,6 +108,7 @@ function mod:OnCombatStart(delay)
 	self.vb.ritualCount = 0
 	self.vb.obeliskCount = 0
 	self.vb.tormentCount = 0
+	self.vb.soulFlayCount = 0
 	self.vb.addIcon = 8
 	self.vb.interruptBehavior = self.Options.InterruptBehavior--Default it to whatever user has it set to, until group leader overrides it
 	table.wipe(voidWokenTargets)
@@ -114,10 +116,10 @@ function mod:OnCombatStart(delay)
 	timerAbyssalStrikeCD:Start(30-delay)--START
 	if self:IsMythic() then
 		timerVoidRitualCD:Start(18.1-delay, 1)
-		timerSoulFlayCD:Start(24.9-delay)--SUCCESS
+		timerSoulFlayCD:Start(24.9-delay, 1)--SUCCESS
 		timerTormentCD:Start(49.6, 1)
 	else
-		timerSoulFlayCD:Start(18.5-delay)--SUCCESS
+		timerSoulFlayCD:Start(18.5-delay, 1)--SUCCESS
 		timerTormentCD:Start(20.3, 1)
 		timerVoidRitualCD:Start(61.8-delay, 1)
 	end
@@ -195,7 +197,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if spellId == 311551 then
 		timerAbyssalStrikeCD:Start(self:IsMythic() and 20.6 or 40.5)
 	elseif spellId == 306319 then
-		timerSoulFlayCD:Start(57)
+		self.vb.soulFlayCount = self.vb.soulFlayCount + 1
+		timerSoulFlayCD:Start(57, self.vb.soulFlayCount+1)
 	elseif spellId == 306208 then
 		self.vb.tormentCount = self.vb.tormentCount + 1
 		specWarnTorment:Show(self.vb.tormentCount)
@@ -253,7 +256,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 	elseif spellId == 306311 then
-		warnSoulFlay:CombinedShow(0.3, args.destName)
+		warnSoulFlay:CombinedShow(0.3, self.vb.soulFlayCount, args.destName)
 		if args:IsPlayer() then
 			specWarnSoulFlay:Show()
 			specWarnSoulFlay:Play("justrun")

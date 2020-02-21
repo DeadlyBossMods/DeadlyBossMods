@@ -5,27 +5,27 @@ local L
 ---------------------------
 --  Abyssal Commander Sivara --
 ---------------------------
-L= DBM:GetModLocalization(2352)
+--L= DBM:GetModLocalization(2352)
 
 ---------------------------
 --  Rage of Azshara --
 ---------------------------
-L= DBM:GetModLocalization(2353)
+--L= DBM:GetModLocalization(2353)
 
 ---------------------------
 --  Underwater Monstrosity --
 ---------------------------
-L= DBM:GetModLocalization(2347)
+--L= DBM:GetModLocalization(2347)
 
 ---------------------------
 --  Lady Priscilla Ashvane --
 ---------------------------
-L= DBM:GetModLocalization(2354)
+--L= DBM:GetModLocalization(2354)
 
 ---------------------------
 --  Orgozoa --
 ---------------------------
-L= DBM:GetModLocalization(2351)
+--L= DBM:GetModLocalization(2351)
 
 ---------------------------
 --  The Queen's Court --
