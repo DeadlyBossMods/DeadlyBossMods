@@ -270,7 +270,7 @@ local allTimers = {
 			--Eternal Torment
 			[318449] = {32.8, 70.9, 10.5, 24.5, 10.9, 23.2, 11, 23.1},--It might be that after first two casts it just alternates between 10.5 and 23.1?
 			--Thought Harvester spawns
-			[316711] = {15.1, 25.1, 45, 31, 3.3, 30.2, 3.8},--, 31.6, 3.7, 30.4, 4.8 It might be that after 3rd cast, it just alternates between 29-30 and 3.7-4.8
+			[316711] = {15.1, 25.1, 45, 29.4, 3.3, 30.2, 3.8},--, 31.6, 3.7, 30.4, 4.8 It might be that after 3rd cast, it just alternates between 29-30 and 3.7-4.8
 			--Evoke Anquish
 			[317102] = {15.3, 45.2, 32.6, 30.6, 35.3, 35.3},
 			--Stupefying Glare
