@@ -6,22 +6,22 @@ local L
 -----------------------
 -- Priestess Alun'za --
 -----------------------
-L= DBM:GetModLocalization(2082)
+--L= DBM:GetModLocalization(2082)
 
 -----------------------
 -- Vol'kaal --
 -----------------------
-L= DBM:GetModLocalization(2036)
+--L= DBM:GetModLocalization(2036)
 
 -----------------------
 -- Rezan --
 -----------------------
-L= DBM:GetModLocalization(2083)
+--L= DBM:GetModLocalization(2083)
 
 -----------------------
 -- Yazma --
 -----------------------
-L= DBM:GetModLocalization(2030)
+--L= DBM:GetModLocalization(2030)
 
 ---------
 --Trash--
@@ -38,7 +38,7 @@ L:SetGeneralLocalization({
 -----------------------
 -- Skycap'n Kragg --
 -----------------------
-L= DBM:GetModLocalization(2102)
+--L= DBM:GetModLocalization(2102)
 
 -----------------------
 -- Council o' Captains --
@@ -72,7 +72,7 @@ L:SetMiscLocalization({
 -----------------------
 -- Harlan Sweete --
 -----------------------
-L= DBM:GetModLocalization(2095)
+--L= DBM:GetModLocalization(2095)
 
 ---------
 --Trash--
@@ -89,22 +89,22 @@ L:SetGeneralLocalization({
 -----------------------
 -- The Golden Serpent --
 -----------------------
-L= DBM:GetModLocalization(2165)
+--L= DBM:GetModLocalization(2165)
 
 -----------------------
 -- Mummification Construct --
 -----------------------
-L= DBM:GetModLocalization(2171)
+--L= DBM:GetModLocalization(2171)
 
 -----------------------
 -- The Warring Warlords --
 -----------------------
-L= DBM:GetModLocalization(2170)
+--L= DBM:GetModLocalization(2170)
 
 -----------------------
 -- Dazar, The First King --
 -----------------------
-L= DBM:GetModLocalization(2172)
+--L= DBM:GetModLocalization(2172)
 
 ---------
 --Trash--
@@ -121,12 +121,12 @@ L:SetGeneralLocalization({
 -----------------------
 -- Agu'sirr --
 -----------------------
-L= DBM:GetModLocalization(2153)
+--L= DBM:GetModLocalization(2153)
 
 -----------------------
 -- Tidesage Council --
 -----------------------
-L= DBM:GetModLocalization(2154)
+--L= DBM:GetModLocalization(2154)
 
 -----------------------
 -- Lord Stormsong --
@@ -140,7 +140,7 @@ L:SetMiscLocalization({
 -----------------------
 -- Vol'zith the Whisperer --
 -----------------------
-L= DBM:GetModLocalization(2156)
+--L= DBM:GetModLocalization(2156)
 
 ---------
 --Trash--
@@ -157,24 +157,24 @@ L:SetGeneralLocalization({
 -----------------------
 -- Dread Captain Lockwood --
 -----------------------
-L= DBM:GetModLocalization(2173)
+--L= DBM:GetModLocalization(2173)
 
 -----------------------
 -- Chopper Redhook / Sergeant Bainbridge --
 -----------------------
-L= DBM:GetModLocalization(2132)
+--L= DBM:GetModLocalization(2132)
 
-L= DBM:GetModLocalization(2133)
+--L= DBM:GetModLocalization(2133)
 
 -----------------------
 -- Hadal Darkfathom --
 -----------------------
-L= DBM:GetModLocalization(2134)
+--L= DBM:GetModLocalization(2134)
 
 -----------------------
 -- Kraken --
 -----------------------
-L= DBM:GetModLocalization(2140)
+--L= DBM:GetModLocalization(2140)
 
 ---------
 --Trash--
@@ -191,22 +191,22 @@ L:SetGeneralLocalization({
 -----------------------
 -- Adderis and Aspix --
 -----------------------
-L= DBM:GetModLocalization(2142)
+--L= DBM:GetModLocalization(2142)
 
 -----------------------
 -- Merektha --
 -----------------------
-L= DBM:GetModLocalization(2143)
+--L= DBM:GetModLocalization(2143)
 
 -----------------------
 -- Lighting Elemental --
 -----------------------
-L= DBM:GetModLocalization(2144)
+--L= DBM:GetModLocalization(2144)
 
 -----------------------
 -- Avaar of Sethraliss --
 -----------------------
-L= DBM:GetModLocalization(2145)
+--L= DBM:GetModLocalization(2145)
 
 ---------
 --Trash--
@@ -223,22 +223,22 @@ L:SetGeneralLocalization({
 -----------------------
 -- Coin-operated Crowd Pummeler --
 -----------------------
-L= DBM:GetModLocalization(2109)
+--L= DBM:GetModLocalization(2109)
 
 -----------------------
 -- Tik'ali --
 -----------------------
-L= DBM:GetModLocalization(2114)
+--L= DBM:GetModLocalization(2114)
 
 -----------------------
 -- Rixxa Fluxflame --
 -----------------------
-L= DBM:GetModLocalization(2115)
+--L= DBM:GetModLocalization(2115)
 
 -----------------------
 -- Mogul Razzdunk --
 -----------------------
-L= DBM:GetModLocalization(2116)
+--L= DBM:GetModLocalization(2116)
 
 ---------
 --Trash--
@@ -255,22 +255,22 @@ L:SetGeneralLocalization({
 -----------------------
 -- Elder Leaxa --
 -----------------------
-L= DBM:GetModLocalization(2157)
+--L= DBM:GetModLocalization(2157)
 
 -----------------------
 -- Infested Crawg --
 -----------------------
-L= DBM:GetModLocalization(2131)
+--L= DBM:GetModLocalization(2131)
 
 -----------------------
 -- Sporecaller Zancha --
 -----------------------
-L= DBM:GetModLocalization(2130)
+--L= DBM:GetModLocalization(2130)
 
 -----------------------
 -- Unbound Monstrosity --
 -----------------------
-L= DBM:GetModLocalization(2158)
+--L= DBM:GetModLocalization(2158)
 
 ---------
 --Trash--
@@ -287,22 +287,22 @@ L:SetGeneralLocalization({
 -----------------------
 -- The Sand Queen --
 -----------------------
-L= DBM:GetModLocalization(2097)
+--L= DBM:GetModLocalization(2097)
 
 -----------------------
 -- Jes Howlis --
 -----------------------
-L= DBM:GetModLocalization(2098)
+--L= DBM:GetModLocalization(2098)
 
 -----------------------
 -- Knight Captain Valyri --
 -----------------------
-L= DBM:GetModLocalization(2099)
+--L= DBM:GetModLocalization(2099)
 
 -----------------------
 -- Overseer Korgus --
 -----------------------
-L= DBM:GetModLocalization(2096)
+--L= DBM:GetModLocalization(2096)
 
 ---------
 --Trash--
@@ -319,27 +319,27 @@ L:SetGeneralLocalization({
 -----------------------
 -- Heartsbane Triad --
 -----------------------
-L= DBM:GetModLocalization(2125)
+--L= DBM:GetModLocalization(2125)
 
 -----------------------
 -- Soulbound Goliath --
 -----------------------
-L= DBM:GetModLocalization(2126)
+--L= DBM:GetModLocalization(2126)
 
 -----------------------
 -- Raal the Gluttonous --
 -----------------------
-L= DBM:GetModLocalization(2127)
+--L= DBM:GetModLocalization(2127)
 
 -----------------------
 -- Lord and Lady Waycrest --
 -----------------------
-L= DBM:GetModLocalization(2128)
+--L= DBM:GetModLocalization(2128)
 
 -----------------------
 -- Gorak Tul --
 -----------------------
-L= DBM:GetModLocalization(2129)
+--L= DBM:GetModLocalization(2129)
 
 ---------
 --Trash--
@@ -356,42 +356,42 @@ L:SetGeneralLocalization({
 -----------------------
 -- King Gobbamak --
 -----------------------
-L= DBM:GetModLocalization(2357)
+--L= DBM:GetModLocalization(2357)
 
 -----------------------
 -- Gunker --
 -----------------------
-L= DBM:GetModLocalization(2358)
+--L= DBM:GetModLocalization(2358)
 
 -----------------------
 -- Trixie & Naeno --
 -----------------------
-L= DBM:GetModLocalization(2360)
+--L= DBM:GetModLocalization(2360)
 
 -----------------------
 -- HK-8 Aerial Oppression Unit --
 -----------------------
-L= DBM:GetModLocalization(2355)
+--L= DBM:GetModLocalization(2355)
 
 -----------------------
 -- Tussle Tonks --
 -----------------------
-L= DBM:GetModLocalization(2336)
+--L= DBM:GetModLocalization(2336)
 
 -----------------------
 -- K.U.-J.0. --
 -----------------------
-L= DBM:GetModLocalization(2339)
+--L= DBM:GetModLocalization(2339)
 
 -----------------------
 -- Machinist's Garden --
 -----------------------
-L= DBM:GetModLocalization(2348)
+--L= DBM:GetModLocalization(2348)
 
 -----------------------
 -- King Mechagon --
 -----------------------
-L= DBM:GetModLocalization(2331)
+--L= DBM:GetModLocalization(2331)
 
 ---------
 --Trash--

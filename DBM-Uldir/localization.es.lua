@@ -13,7 +13,7 @@ L:SetMiscLocalization({
 -----------
 -- MADRE --
 -----------
-L= DBM:GetModLocalization(2167)
+--L= DBM:GetModLocalization(2167)
 
 ----------------------
 -- Devorador fétido --
@@ -66,7 +66,7 @@ L:SetMiscLocalization({
 ------------------------------
 -- Mythrax el Desintegrador --
 ------------------------------
-L= DBM:GetModLocalization(2194)
+--L= DBM:GetModLocalization(2194)
 
 ---------------------
 -- Zul el Renacido --

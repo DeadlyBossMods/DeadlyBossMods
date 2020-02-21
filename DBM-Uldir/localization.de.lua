@@ -13,12 +13,25 @@ L:SetMiscLocalization({
 ---------------------------
 -- MOTHER --
 ---------------------------
-L= DBM:GetModLocalization(2167)
+--L= DBM:GetModLocalization(2167)
 
 ---------------------------
 -- Fetid Devourer --
 ---------------------------
 L= DBM:GetModLocalization(2146)
+
+L:SetWarningLocalization({
+	addsSoon		= "Chute has opened - Adds Soon"--Translate
+})
+
+L:SetTimerLocalization({
+	chuteTimer		= "Next Chute (%s)"--Translate
+})
+
+L:SetOptionLocalization({
+	addsSoon		= "Show pre warning for when chutes open and start spawning adds",--Translate
+	chuteTimer		= "Show timer for when Chutes open"--Translate
+})
 
 ---------------------------
 -- Zek'vhozj --
@@ -56,7 +69,7 @@ L:SetMiscLocalization({
 ---------------
 -- Mythrax the Unraveler --
 ---------------
-L= DBM:GetModLocalization(2194)
+--L= DBM:GetModLocalization(2194)
 
 ---------------------------
 -- Zul --
