@@ -11,7 +11,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 259853",
 	"SPELL_CAST_START 260669 259940",
-	"SPELL_CAST_SUCCESS 259022 270042",
+	"SPELL_CAST_SUCCESS 259022 270042 259856",
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2"
 )
 
@@ -23,7 +23,7 @@ local specWarnChemBurn				= mod:NewSpecialWarningDispel(259853, "Healer", nil, n
 local specWarnPoropellantBlast		= mod:NewSpecialWarningDodge(259940, nil, nil, nil, 2, 2)
 
 local timerAxeriteCatalystCD		= mod:NewCDTimer(13, 259022, nil, nil, nil, 3)
-local timerChemBurnCD				= mod:NewCDTimer(13, 259853, nil, "Healer", nil, 5, nil, DBM_CORE_HEALER_ICON..DBM_CORE_MAGIC_ICON)
+local timerChemBurnCD				= mod:NewCDTimer(13, 259853, nil, nil, 2, 5, nil, DBM_CORE_HEALER_ICON..DBM_CORE_MAGIC_ICON)
 --local timerPropellantBlastCD		= mod:NewCDTimer(13, 259940, nil, nil, nil, 3)--Longer pull/more data needed (32.5, 6.0, 36.1)
 --local timerGushingCatalystCD		= mod:NewCDTimer(13, 275992, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
 
@@ -36,7 +36,7 @@ function mod:OnCombatStart(delay)
 	self.vb.chemBurnCast = 0
 	self.vb.azeriteCataCast = 0
 	timerAxeriteCatalystCD:Start(4-delay)
-	timerChemBurnCD:Start(12-delay)
+	timerChemBurnCD:Start(12-delay)--SUCCESS
 	--timerPropellantBlastCD:Start(31-delay)
 --	if not self:IsNormal() then
 --		timerGushingCatalystCD:Start(1-delay)
@@ -48,14 +48,6 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 259853 and self:CheckDispelFilter() then
 		specWarnChemBurn:CombinedShow(1, args.destName)
 		specWarnChemBurn:ScheduleVoice(1, "dispelnow")
-		if self:AntiSpam(5, 1) then
-			self.vb.chemBurnCast = self.vb.chemBurnCast + 1
-			if self.vb.chemBurnCast % 2 == 0 then
-				timerChemBurnCD:Start(27)
-			else
-				timerChemBurnCD:Start(15)
-			end
-		end
 	end
 end
 
@@ -73,6 +65,13 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if spellId == 259022 or spellId == 270042 then
 		warnAxeriteCatalyst:Show()
 		timerAxeriteCatalystCD:Start()
+	elseif spellId == 259856 and self:AntiSpam(5, 1) then
+		self.vb.chemBurnCast = self.vb.chemBurnCast + 1
+		if self.vb.chemBurnCast % 2 == 0 then
+			timerChemBurnCD:Start(27)
+		else
+			timerChemBurnCD:Start(15)
+		end
 	end
 end
 
