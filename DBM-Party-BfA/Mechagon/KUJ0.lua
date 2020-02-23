@@ -12,8 +12,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 291946 291973",
 	"SPELL_CAST_SUCCESS 291918 294929",
 	"SPELL_AURA_APPLIED 291972 294929",
-	"SPELL_AURA_APPLIED_DOSE 294929",
-	"SPELL_AURA_REMOVED 291946"
+	"SPELL_AURA_APPLIED_DOSE 294929"
 )
 
 --[[
@@ -36,7 +35,6 @@ local timerVentingFlamesCD			= mod:NewCDTimer(13.4, 291946, nil, nil, nil, 2, ni
 local timerBlazingChompCD			= mod:NewCDTimer(15.8, 294929, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_TANK_ICON)
 
 mod:AddRangeFrameOption(10, 291972)
-mod:AddInfoFrameOption(291937, true)
 
 mod.vb.airDropCount = 0
 
@@ -64,10 +62,6 @@ function mod:SPELL_CAST_START(args)
 		specWarnVentingFlames:Play("findshelter")
 		--15.5, 33.9, 34.0, 34.0"
 		timerVentingFlamesCD:Start()
-		if self.Options.InfoFrame then
-			DBM.InfoFrame:SetHeader(DBM_CORE_NOTSAFE)
-			DBM.InfoFrame:Show(5, "playergooddebuff", 291937)
-		end
 	elseif spellId == 291973 then
 		--38.6, 33.9, 34.0, 33.4
 		timerExplosiveLeapCD:Start()
@@ -105,32 +99,3 @@ function mod:SPELL_AURA_APPLIED(args)
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
-
-function mod:SPELL_AURA_REMOVED(args)
-	local spellId = args.spellId
-	if spellId == 291946 and self.Options.InfoFrame then
-		DBM.InfoFrame:Hide()
-	end
-end
-
---[[
-function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
-	if spellId == 228007 and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
-		specWarnGTFO:Show()
-		specWarnGTFO:Play("watchfeet")
-	end
-end
-mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
-
-function mod:UNIT_DIED(args)
-	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 124396 then
-
-	end
-end
-
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 257939 then
-	end
-end
---]]
