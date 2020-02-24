@@ -148,6 +148,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.earthTotemActive = true
 		specWarnTotems:Show()
 		specWarnTotems:Play("changetarget")
+		local cid = self:GetCIDFromGUID(args.sourceGUID)
 		if cid ~= self.vb.bossOne and cid ~= self.vb.bossTwo then
 			timerTotemsCD:Start(53.5)
 		end
