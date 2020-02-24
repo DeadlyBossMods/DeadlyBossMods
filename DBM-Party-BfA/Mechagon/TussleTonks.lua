@@ -22,9 +22,9 @@ mod:RegisterEventsInCombat(
 --	"UNIT_SPELLCAST_START boss1 boss2"
 )
 
---TODO, Foe Flipper target?
+--TODO, Foe Flipper success target valid?
 --TODO, thrust scan was changed to slower scan method, because UNIT_TARGET scan method relies on boss changing target after cast begins, but 8.3 notes now say boss changes target before cast starts
---TODO, the two part of above is need to verify whether or not a target scanner is even needed at all now. If boss is already looking at atarget at cast start then all we need is boss1target and no scan what so ever
+--TODO, the part two of above is need to verify whether or not a target scanner is even needed at all now. If boss is already looking at atarget at cast start then all we need is boss1target and no scan what so ever
 --[[
 (ability.id = 285020 or ability.id = 283422 or ability.id = 285388) and type = "begincast"
  or (ability.id = 285344 or ability.id = 285152) and type = "cast"

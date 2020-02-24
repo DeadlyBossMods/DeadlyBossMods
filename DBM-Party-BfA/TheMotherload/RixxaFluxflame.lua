@@ -18,9 +18,12 @@ mod:RegisterEventsInCombat(
 --TODO, video fight to figure out whats going on with azerite and gushing and what makes them diff.
 --TODO, more work on blast timings, two casts isn't enough to establish a timer
 local warnAxeriteCatalyst			= mod:NewSpellAnnounce(259022, 2)--Cast often, so general warning not special
+local warnPoropellantBlast			= mod:NewTargetNoFilterAnnounce(259940, 2)
 
 local specWarnChemBurn				= mod:NewSpecialWarningDispel(259853, "Healer", nil, nil, 1, 2)
-local specWarnPoropellantBlast		= mod:NewSpecialWarningDodge(259940, nil, nil, nil, 2, 2)
+local specWarnPoropellantBlast		= mod:NewSpecialWarningYou(259940, nil, nil, nil, 1, 2)
+local yellPoropellantBlast			= mod:NewYell(259940)
+local specWarnPoropellantBlastNear	= mod:NewSpecialWarningClose(259940, nil, nil, nil, 1, 2)
 
 local timerAxeriteCatalystCD		= mod:NewCDTimer(13, 259022, nil, nil, nil, 3)
 local timerChemBurnCD				= mod:NewCDTimer(13, 259853, nil, nil, 2, 5, nil, DBM_CORE_HEALER_ICON..DBM_CORE_MAGIC_ICON)
@@ -31,6 +34,20 @@ local timerChemBurnCD				= mod:NewCDTimer(13, 259853, nil, nil, 2, 5, nil, DBM_C
 
 mod.vb.chemBurnCast = 0
 mod.vb.azeriteCataCast = 0
+
+function mod:BlastTarget(targetname, uId)
+	if not targetname then return end
+	if targetname == UnitName("player") then
+		specWarnPoropellantBlast:Show()
+		specWarnPoropellantBlast:Play("targetyou")
+		yellPoropellantBlast:Yell()
+	elseif self:CheckNearby(10, targetname) then
+		specWarnPoropellantBlastNear:Show(targetname)
+		specWarnPoropellantBlastNear:Play("runaway")
+	else
+		warnPoropellantBlast:Show(targetname)
+	end
+end
 
 function mod:OnCombatStart(delay)
 	self.vb.chemBurnCast = 0
@@ -54,8 +71,7 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 260669 or spellId == 259940 then
-		specWarnPoropellantBlast:Show()
-		specWarnPoropellantBlast:Play("watchstep")
+		self:BossTargetScanner(args.sourceGUID, "BlastTarget", 0.1, 8)
 		--timerPropellantBlastCD:Start()
 	end
 end

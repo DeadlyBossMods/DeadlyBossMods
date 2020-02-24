@@ -23,6 +23,10 @@ mod:RegisterEventsInCombat(
 
 --TODO, finish accurate detection of who starts fight, and bosses swapping in and out.
 --TODO, I believe the inactive bosses assisting is health based off the enabled boss, so timers only work for ACTIVE boss.
+--[[
+(ability.id = 266206 or ability.id = 266951 or ability.id = 266237 or ability.id = 267273 or ability.id = 267060) and type = "begincast"
+ or ability.id = 266231 and type = "cast"
+--]]
 local warnSeveringAxe				= mod:NewTargetNoFilterAnnounce(266231, 3, nil, "Healer")
 
 --Kula the Butcher
@@ -44,11 +48,11 @@ local specWarnEarthwall				= mod:NewSpecialWarningDispel(267256, "MagicDispeller
 local timerWhirlingAxesCD			= mod:NewCDTimer(10.8, 266206, nil, nil, nil, 3)--Used inactive
 local timerSeveringAxeCD			= mod:NewCDTimer(21.8, 266231, nil, nil, nil, 3)
 --Aka'ali the Conqueror
-local timerBarrelThroughCD			= mod:NewCDTimer(23.1, 266951, nil, nil, nil, 3)--Used inactive
+local timerBarrelThroughCD			= mod:NewCDTimer(23, 266951, nil, nil, nil, 3)--Used inactive
 local timerDebilitatingBackhandCD	= mod:NewCDTimer(24.3, 266237, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON..DBM_CORE_DEADLY_ICON)
 --Zanazal the Wise
-local timerPoisonNovaCD				= mod:NewCDTimer(133, 267273, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)--Used inactive
-local timerTotemsCD					= mod:NewCDTimer(13, 267060, nil, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON)--Actual timer needs doing
+local timerPoisonNovaCD				= mod:NewCDTimer(26.7, 267273, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)--Used inactive
+local timerTotemsCD					= mod:NewCDTimer(53.5, 267060, nil, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON)--Actual timer needs doing
 
 mod:AddSetIconOption("SetIconOnBarrel", 266951, true, false, {1})
 
@@ -138,13 +142,15 @@ function mod:SPELL_CAST_START(args)
 		end
 		local cid = self:GetCIDFromGUID(args.sourceGUID)
 		if cid ~= self.vb.bossOne and cid ~= self.vb.bossTwo then
-			--timerPoisonNovaCD:Start()--Not enough data
+			timerPoisonNovaCD:Start(26.7)
 		end
 	elseif spellId == 267060 then
 		self.vb.earthTotemActive = true
 		specWarnTotems:Show()
 		specWarnTotems:Play("changetarget")
-		--timerTotemsCD:Start()--Not enough data
+		if cid ~= self.vb.bossOne and cid ~= self.vb.bossTwo then
+			timerTotemsCD:Start(53.5)
+		end
 	end
 end
 
