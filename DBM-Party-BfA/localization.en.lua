@@ -376,7 +376,11 @@ L:SetGeneralLocalization({
 -----------------------
 -- Tussle Tonks --
 -----------------------
---L= DBM:GetModLocalization(2336)
+L= DBM:GetModLocalization(2336)
+
+L:SetMiscLocalization({
+	openingRP		= "Now this is a statistical anomaly! Our visitors are still alive!"
+})
 
 -----------------------
 -- K.U.-J.0. --

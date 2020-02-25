@@ -483,7 +483,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnVoidPhase:Show()
 		self.vb.unstableVoidCount = 0
 		--timerUnstableVoidCD:Start(6, 1)--No longer started here, ra-den's cast will trigger first timer
-		timerCallVoidHunterCD:Start(6.9)--6.9-7.1
+		timerCallVoidHunterCD:Start(6)--6-7.1
 	elseif spellId == 312996 then--Nightmare Empowered
 		self.vb.callActive = false
 		warnNightmarePhase:Show()
