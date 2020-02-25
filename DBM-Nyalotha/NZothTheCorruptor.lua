@@ -87,6 +87,7 @@ local specWarnMentalDecay					= mod:NewSpecialWarningInterrupt(313611, "HasInter
 local specWarnGTFO							= mod:NewSpecialWarningGTFO(309991, nil, nil, nil, 1, 8)
 --Stage 1: Dominant Mind
 ----Psychus
+local specWarnCreepingAnguish				= mod:NewSpecialWarningMove(310184, "Tank", nil, nil, 3, 2)
 local specWarnMindwrack						= mod:NewSpecialWarningInterruptCount(316711, "HasInterrupt", nil, nil, 1, 2)
 local specWarnMindwrackTaunt				= mod:NewSpecialWarningTaunt(316711, nil, nil, nil, 1, 2)
 local specWarnManifestMadness				= mod:NewSpecialWarningSpell(310134, nil, nil, nil, 3)--Basically an automatic wipe unless Psychus was like sub 1% health, no voice because there isn't really one that says "you're fucked"
@@ -250,7 +251,7 @@ local allTimers = {
 			--Eternal Torment
 			[318449] = {32.8, 70.9, 10.9, 34.1, 60.7, 10.5, 33.2},
 			--Thought Harvester spawns
-			[316711] = {15, 25.6, 44.9, 29.7, 30.1},--, 43, 31.7
+			[316711] = {15, 25.6, 44.9, 29.7, 30.1, 43, 30.5, 30.4},
 			--Evoke Anquish
 			[317102] = {15.3, 46.2, 31.6, 44.9, 37.7, 15.8, 51, 37.7},
 			--Stupefying Glare
@@ -486,13 +487,13 @@ function mod:OnCombatStart(delay)
 	else
 		if self:IsHeroic() then
 			self.vb.difficultyName = "heroic"
+			berserkTimer:Start(720-delay)
 		elseif self:IsNormal() then
 			self.vb.difficultyName = "normal"
 		else
 			self.vb.difficultyName = "lfr"
 		end
 		self.vb.phase = 0
-		berserkTimer:Start(720-delay)
 	end
 	UpdateTimerFades(self)
 	if UnitIsGroupLeader("player") and not self:IsLFR() then
@@ -587,7 +588,12 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 310184 then
 		if selfInMind then
-			warnCreepingAnguish:Show()
+			if self.Options.SpecWarn310184move then
+				specWarnCreepingAnguish:Show()
+				specWarnCreepingAnguish:Play("moveboss")
+			else
+				warnCreepingAnguish:Show()
+			end
 		end
 		timerCreepingAnguishCD:Start(self:IsMythic() and 26.6 or 28.2)
 	elseif spellId == 310134 then
