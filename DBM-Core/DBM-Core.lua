@@ -5124,7 +5124,7 @@ do
 	end
 
 	function DBM:ShowUpdateReminder(newVersion, newRevision, text, url)
-		urlText = url or DBM_CORE_UPDATEREMINDER_URL or "http://www.deadlybossmods.com"
+		urlText = url or "https://github.com/DeadlyBossMods/DeadlyBossMods/wiki"
 		if not frame then
 			createFrame()
 		else
