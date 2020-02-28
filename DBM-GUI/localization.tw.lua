@@ -251,8 +251,8 @@ L.EventFilterDungMythicMusic	= "不要在傳奇/傳奇+難度播放地城音樂"
 L.EventFilterMythicMusic	= "不要在傳奇/傳奇+難度播放戰鬥音樂"
 
 -- Tab: Global Filter
-L.Panel_SpamFilter			= "DBM全局禁用及過濾"
-L.Area_SpamFilter_Outgoing	= "DBM全局禁用及過濾選項"
+L.Panel_SpamFilter			= "全局禁用及過濾"
+L.Area_SpamFilter_Outgoing	= "全局禁用及過濾選項"
 L.SpamBlockNoShowAnnounce	= "不顯示任何提示文字或播放警告音效"
 L.SpamBlockNoShowTgtAnnounce= "不顯示目標的提示文字或播放警告音效 (上列選項會覆蓋此選項)"
 L.SpamBlockNoSpecWarn		= "不顯示特別警告或播放特別警告音效"

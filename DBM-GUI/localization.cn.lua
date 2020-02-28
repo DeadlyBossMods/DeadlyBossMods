@@ -252,8 +252,8 @@ L.EventFilterDungMythicMusic= "不要在M/M+难度下播放副本音乐"
 L.EventFilterMythicMusic	= "不要在M/M+难度下播放战斗音乐"
 
 -- Tab: Global Filter
-L.Panel_SpamFilter			= "DBM全局过滤"
-L.Area_SpamFilter_Outgoing	= "DBM全局过滤设置"
+L.Panel_SpamFilter			= "全局过滤"
+L.Area_SpamFilter_Outgoing	= "全局过滤设置"
 L.SpamBlockNoShowAnnounce	= "不显示警报或播放警报音效"
 L.SpamBlockNoShowTgtAnnounce= "不显示针对目标类型的警报或播放警报音效(上面那个优先级比这个高)"
 L.SpamBlockNoSpecWarn		= "不要显示特殊警报和特殊警报音效"

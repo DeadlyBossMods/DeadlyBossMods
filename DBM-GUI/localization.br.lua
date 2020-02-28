@@ -192,8 +192,8 @@ L.SpecWarn_AlwaysVoice		= "Sempre tocar todos os avisos falados (Substitui opç�
 
 
 -- Tab: Global Filter
-L.Panel_SpamFilter			= "DBM Desligamentos globais & filtros"
-L.Area_SpamFilter_Outgoing	= "DBM opções de desligamentos globais & filtros"
+L.Panel_SpamFilter			= "Desligamentos globais & filtros"
+L.Area_SpamFilter_Outgoing	= "opções de desligamentos globais & filtros"
 L.SpamBlockNoShowAnnounce	= "Não exibir anúncios ou tocar avisos sonoros"
 L.SpamBlockNoSetIcon		= "Não marcar jogadores com ícones"
 L.SpamBlockNoRangeFrame		= "Não exibir quadro de distancia"

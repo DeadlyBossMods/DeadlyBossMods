@@ -250,8 +250,8 @@ L.EventFilterDungMythicMusic= "Non riprodurre musica spedizioni nelle difficolt√
 L.EventFilterMythicMusic	= "Non riprodurre musica scontro nelle difficolt√† Mitica/Mitica+"
 -- TODO: TRADURRE DA QUI
 -- Tab: Global Filter
-L.Panel_SpamFilter			= "Forzamenti & Filtri DBM"
-L.Area_SpamFilter_Outgoing	= "Opzioni Forzamenti & Filtri DBM"
+L.Panel_SpamFilter			= "Forzamenti & Filtri"
+L.Area_SpamFilter_Outgoing	= "Opzioni Forzamenti & Filtri"
 L.SpamBlockNoShowAnnounce	= "Niente testo o suoni per QUALUNQUE annuncio generale"
 L.SpamBlockNoShowTgtAnnounce= "Niente testo o suoni per annuncio generale BERSAGLIO (filtro sopra sovrascrive questo)"
 L.SpamBlockNoSpecWarn		= "Niente annunci o suoni speciali"
