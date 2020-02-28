@@ -273,7 +273,7 @@ do
 		dropdown.callfunc = callfunc
 		if not width then
 			width = 120 -- minimum size
-			if title ~= L.Warn_FontType then--Force font menus to always be fixed 120 width
+			if title ~= L.Warn_FontType and title ~= L.Warn_FontStyle and title ~= L.Bar_Font then--Force font menus to always be fixed 120 width
 				for i, v in ipairs(values) do
 					_G[dropdown:GetName().."Text"]:SetText(v.text)
 					width = math.max(width, _G[dropdown:GetName().."Text"]:GetStringWidth())

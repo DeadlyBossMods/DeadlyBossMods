@@ -205,6 +205,10 @@ local frameBackdrop = {
 	insets = { left = 2, right = 14, top = 2, bottom = 2 },
 }
 
+--BIG TODO. Using GameTooltip is improper and this frame needs rewriting to be a stand alone frame
+--Blizzard force closes any and ALL GameTooltip frames any time UI is hidden, including cinematics mid fight or user simply hitting alt-z.
+--Normal addon frames are not force closed when hidden, they are just hidden.
+--On top of this. infoframe features have been stuck limited for a while now because it's limited to what GameTooltip supports
 function createFrame()
 	local elapsed = 0
 	local frame = CreateFrame("GameTooltip", "DBMInfoFrame", UIParent, "GameTooltipTemplate")

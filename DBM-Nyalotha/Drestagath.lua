@@ -36,7 +36,7 @@ mod:RegisterEventsInCombat(
 --]]
 --Drest'agath
 local warnVoidGrip							= mod:NewSpellAnnounce(310246, 2, nil, "Tank")--If Tank isn't in range of boss
-local warnVolatileSeed						= mod:NewTargetNoFilterAnnounce(310277, 2)
+local warnVolatileSeed						= mod:NewTargetCountAnnounce(310277, 2, nil, nil, nil, nil, nil, nil, true)
 local warnUnleashedInsanity					= mod:NewTargetAnnounce(310361, 4)--People stunned by muttering of Insanity
 local warnThrowsSoon						= mod:NewSoonAnnounce(308941, 4)
 --Tentacle of Drest'agath
@@ -45,7 +45,7 @@ local warnThroesofDismemberment				= mod:NewTargetNoFilterAnnounce(315712, 4)
 
 --Drest'agath
 local specWarnThrowsofAgony					= mod:NewSpecialWarningDodgeCount(308941, nil, nil, nil, 2, 2)--Acts as warning for All abilities triggered at 100 Energy
-local specWarnVolatileSeed					= mod:NewSpecialWarningYou(310277, nil, nil, nil, 1, 2)
+local specWarnVolatileSeed					= mod:NewSpecialWarningYouCount(310277, nil, nil, nil, 1, 2)
 local yellolatileSeed						= mod:NewYell(310277)
 local yellolatileSeedFades					= mod:NewFadesYell(310277)
 local specWarnEntropicCrash					= mod:NewSpecialWarningDodge(310329, nil, nil, nil, 2, 2)
@@ -64,7 +64,7 @@ local specWarnMutteringsofBetrayal			= mod:NewSpecialWarningStack(310563, nil, 3
 
 --mod:AddTimerLine(BOSS)
 --Drest'agath
-local timerVolatileSeedCD					= mod:NewCDTimer(16.6, 310277, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON, nil, 2, 3)--16.6-26.8 (boss has some channeled abilities, spell queuing)
+local timerVolatileSeedCD					= mod:NewCDCountTimer(16.6, 310277, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON, nil, 2, 3)--16.6-26.8 (boss has some channeled abilities, spell queuing)
 local timerEntropicCrashCD					= mod:NewCDTimer(44.3, 310329, nil, nil, nil, 2)
 local timerMutteringsofInsanityCD			= mod:NewCDTimer(50.2, 310358, nil, nil, nil, 3)--45-60, it's almost always 50.3+ but have to use the 46
 local timerUnleashedInsanity				= mod:NewCastTimer(5, 310361, nil, nil, nil, 3)
@@ -78,12 +78,14 @@ mod:AddSetIconOption("SetIconOnVolatileSeed", 310277, true, false, {1})
 mod:AddNamePlateOption("NPAuraOnVolatileCorruption", 312595)
 
 mod.vb.agonyCount = 0
+mod.vb.volatileSeedCount = 0
 local warnedSoon = false
 
 function mod:OnCombatStart(delay)
 	self.vb.agonyCount = 0
+	self.vb.volatileSeedCount = 0
 	warnedSoon = false
-	timerVolatileSeedCD:Start(7.2-delay)
+	timerVolatileSeedCD:Start(7.2-delay, 1)
 	timerEntropicCrashCD:Start(15.5-delay)
 	timerMutteringsofInsanityCD:Start(30.1-delay)
 	timerVoidGlareCD:Start(45.2-delay)--45.2-53.2
@@ -134,7 +136,8 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 310277 then
-		timerVolatileSeedCD:Start()
+		self.vb.volatileSeedCount = self.vb.volatileSeedCount + 1
+		timerVolatileSeedCD:Start(nil, self.vb.volatileSeedCount+1)
 	elseif spellId == 310478 and self:AntiSpam(5, 5) then
 		warnObscuringCloud:Show()
 	elseif spellId == 315712 then
@@ -173,7 +176,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 310277 then
 		if args:IsPlayer() then
-			specWarnVolatileSeed:Show()
+			specWarnVolatileSeed:Show(self.vb.volatileSeedCount)
 			specWarnVolatileSeed:Play("targetyou")
 			yellolatileSeed:Yell()
 			yellolatileSeedFades:Countdown(spellId)
@@ -181,7 +184,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				DBM.RangeCheck:Show(18)
 			end
 		else
-			warnVolatileSeed:Show(args.destName)
+			warnVolatileSeed:Show(self.vb.volatileSeedCount, args.destName)
 		end
 		if self.Options.SetIconOnVolatileSeed then
 			self:SetIcon(args.destName, 1)
