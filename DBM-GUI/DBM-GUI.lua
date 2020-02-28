@@ -3172,7 +3172,7 @@ local function CreateOptionsMenu()
 		}
 		local SWFilterDropDown		= voiceFilterArea:CreateDropdown(L.SpecWarn_NoSoundsWVoice, voiceSWOptions, "DBM", "VoiceOverSpecW2", function(value)
 			DBM.Options.VoiceOverSpecW2 = value
-		end)
+		end, 420)
 		SWFilterDropDown:SetPoint("TOPLEFT", VPF1, "TOPLEFT", 0, -45)
 
 		local VPUrlArea1		= spokenAlertsPanel:CreateArea(L.Area_GetVEM, nil, 28, true)
