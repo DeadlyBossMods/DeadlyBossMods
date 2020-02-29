@@ -379,6 +379,10 @@ L= DBM:GetModLocalization(2355)
 -----------------------
 L= DBM:GetModLocalization(2336)
 
+L:SetMiscLocalization({
+	openingRP		= "통계상으로 아주 이례적인 일이군요! 방문객들이 아직 살아 있었습니다!"
+})
+
 -----------------------
 -- K.U.-J.0. --
 -----------------------
