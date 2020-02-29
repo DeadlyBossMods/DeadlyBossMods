@@ -259,8 +259,8 @@ L.EventFilterDungMythicMusic= "Do not play dungeon music on Mythic/Mythic+ diffi
 L.EventFilterMythicMusic	= "Do not play encounter music on Mythic/Mythic+ difficulty"
 
 -- Tab: Global Filter
-L.Panel_SpamFilter			= "DBM Global Disables & Filters"
-L.Area_SpamFilter_Outgoing	= "DBM Global Disable & Filter Options"
+L.Panel_SpamFilter			= "Global Disables & Filters"
+L.Area_SpamFilter_Outgoing	= "Global Disable & Filter Options"
 L.SpamBlockNoShowAnnounce	= "Do not show text or play sound for ANY general announces"
 L.SpamBlockNoShowTgtAnnounce= "Do not show text or play sound for TARGET general announces (above filter overrides this one)"
 L.SpamBlockNoSpecWarn		= "Do not show special warnings or play special warning sounds"

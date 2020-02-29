@@ -231,7 +231,7 @@ L.EventFilterDungMythicMusic= "Не проигрывать музыку подз
 L.EventFilterMythicMusic	= "Не проигрывать музыку боя на эпохальной/эпохальной+ сложности"
 
 -- Tab: Global Filter
-L.Panel_SpamFilter			= "Глобальные отключения и фильтры DBM"
+L.Panel_SpamFilter			= "Глобальные отключения и фильтры"
 L.Area_SpamFilter_Outgoing	= "Настройки глобальных отключений и фильтров"
 L.SpamBlockNoShowAnnounce	= "Не показывать текст или проигрывать звук для ЛЮБЫХ общих объявлений"
 L.SpamBlockNoShowTgtAnnounce= "Не показывать текст или проигрывать звук для общих объявлений ЦЕЛИ (фильтр выше переопределяет этот)"

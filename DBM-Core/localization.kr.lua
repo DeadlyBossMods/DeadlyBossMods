@@ -165,7 +165,6 @@ DBM_CORE_UPDATEREMINDER_HEADER			= "사용중인 "..DBM_DEADLY_BOSS_MODS.." 버�
 DBM_CORE_UPDATEREMINDER_HEADER_ALPHA	= "사용중인 "..DBM_DEADLY_BOSS_MODS.." ALPHA 버전의 사용 기한이 지났습니다.\n 적어도 %s 테스트 버전 이상은 사용해야 합니다. ALPHA 버전을 선택한 DBM 이용자는 최신 ALPHA 버전을 실행하는걸 권장합니다. 아니면 최신 RELEASE 버전을 사용하는 것도 좋습니다. 오래된 ALPHA 버전은 개발용인 관계로 버전 검사 기능이 제한되어 있기 때문입니다."
 DBM_CORE_UPDATEREMINDER_FOOTER			= (IsMacClient() and "Cmd-C" or "Ctrl-C").. "를 누르면 주소를 복사할 수 있습니다."
 DBM_CORE_UPDATEREMINDER_FOOTER_GENERIC	= (IsMacClient() and "Cmd-C" or "Ctrl-C").. "를 누르면 주소를 복사할 수 있습니다."
---DBM_CORE_UPDATEREMINDER_URL				= "http://www.inven.co.kr/board/powerbbs.php?come_idx=3716" -- No longer updated by the website
 DBM_CORE_UPDATEREMINDER_DISABLE			= "경고: 지금 사용중인 "..DBM_DEADLY_BOSS_MODS.."가 지나치게 오래되어 강제로 비활성화되며 업데이트 전 까진 사용할 수 없습니다. 이는 오래되고 호환되지 않는 모드가 당신과 파티/공대원의 플레이에 악영향을 미치지 않게 하기 위함입니다."
 --DBM_CORE_UPDATEREMINDER_NODISABLE		= "경고: 설치한 "..DBM_DEADLY_BOSS_MODS.."가 사용 기한을 지났습니다. 업데이트 알림이 꺼져있거나 해서 특정 기한을 지나면 본 메시지가 등장하는 것이며 이 알림은 끌 수 없습니다. 반드시 업데이트 하시기 바랍니다."
 DBM_CORE_UPDATEREMINDER_HOTFIX			= "지금 사용하는 "..DBM_DBM.." 버전은 이 보스 전투에서 알려진 오류를 가지고 있습니다. 이 오류는 최신 버전으로 업데이트하면 수정됩니다."

@@ -249,8 +249,8 @@ L.EventFilterDungMythicMusic= "신화/신화+ 난이도에선 던전 배경음�
 L.EventFilterMythicMusic	= "신화/신화+ 난이도에선 보스 전투 배경음을 재생하지 않음"
 
 -- Tab: Global Filter
-L.Panel_SpamFilter			= "DBM 전역 기능 끄기 및 필터"
-L.Area_SpamFilter_Outgoing	= "DBM 전역 기능 끄기 및 필터 설정"
+L.Panel_SpamFilter			= "전역 기능 끄기 및 필터"
+L.Area_SpamFilter_Outgoing	= "전역 기능 끄기 및 필터 설정"
 L.SpamBlockNoShowAnnounce	= "모든 알림 및 효과음 재생 안함"
 L.SpamBlockNoShowTgtAnnounce = "대상 관련 알림 및 효과음만 재생 안함 (위의 옵션 체크시 자동 적용)"
 L.SpamBlockNoSpecWarn		= "특수 경고 및 효과음 재생 안함"

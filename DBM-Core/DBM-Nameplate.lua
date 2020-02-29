@@ -232,7 +232,7 @@ end)
 
 --Add more nameplate mods as they gain support
 function nameplateFrame:SupportedNPMod()
-    if KuiNameplates or TidyPlatesThreatDBM then return true end
+    if KuiNameplates or TidyPlatesThreatDBM or Plater then return true end
     return false
 end
 

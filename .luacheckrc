@@ -34,6 +34,7 @@ globals = {
 	"Transcriptor",
 	"KuiNameplates",
 	"TidyPlatesThreatDBM",
+	"Plater",
 
 	-- DBM
 	"DBM_ADD",
