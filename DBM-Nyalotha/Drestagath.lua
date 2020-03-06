@@ -5,6 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(157602)
 mod:SetEncounterID(2343)
 mod:SetZone()
+mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
 mod:SetHotfixNoticeRev(20200112000000)--2020, 1, 12
 --mod:SetMinSyncRevision(20190716000000)
 --mod.respawnTime = 29
@@ -16,7 +17,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS 310277 310478 315712",
 	"SPELL_AURA_APPLIED 310277 310358 310361 310552 310563 312595",
 	"SPELL_AURA_APPLIED_DOSE 310563",
-	"SPELL_AURA_REMOVED 310277 310358 312595",
+	"SPELL_AURA_REMOVED 310277 310358 312595 310361",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 	"UNIT_DIED",
@@ -75,15 +76,18 @@ local berserkTimer							= mod:NewBerserkTimer(600)
 mod:AddRangeFrameOption("18/4")--Sadly, choices are 13 or 18, 13 too small so have to round 15 up to 18
 mod:AddInfoFrameOption(308377, false)
 mod:AddSetIconOption("SetIconOnVolatileSeed", 310277, true, false, {1})
+mod:AddSetIconOption("SetIconOnMuttering", 310358, false, false, {2, 3, 4, 5, 6, 7, 8})--Depends on number of maws up. Shouldn't need to use all 7 but CAN use up to 7
 mod:AddNamePlateOption("NPAuraOnVolatileCorruption", 312595)
 
 mod.vb.agonyCount = 0
 mod.vb.volatileSeedCount = 0
+mod.vb.mutteringIcon = 2
 local warnedSoon = false
 
 function mod:OnCombatStart(delay)
 	self.vb.agonyCount = 0
 	self.vb.volatileSeedCount = 0
+	self.vb.mutteringIcon = 2
 	warnedSoon = false
 	timerVolatileSeedCD:Start(7.2-delay, 1)
 	timerEntropicCrashCD:Start(15.5-delay)
@@ -203,6 +207,10 @@ function mod:SPELL_AURA_APPLIED(args)
 				DBM.RangeCheck:Show(18)
 			end
 		end
+		if self.Options.SetIconOnMuttering and self.vb.mutteringIcon < 9 then
+			self:SetIcon(args.destName, self.vb.mutteringIcon)
+		end
+		self.vb.mutteringIcon = self.vb.mutteringIcon + 1
 	elseif spellId == 310361 then
 		warnUnleashedInsanity:CombinedShow(0.3, args.destName)
 	--All mobs with same name now have same GUID, this basically makes CheckInterruptFilter half useless, thus the AntiSpam need.
@@ -245,6 +253,10 @@ function mod:SPELL_AURA_REMOVED(args)
 				DBM.RangeCheck:Show(4)
 			end
 		end
+	elseif spellId == 310361 then--Unleashed Insanity
+		if self.Options.SetIconOnMuttering then
+			self:SetIcon(args.destName, 0)
+		end
 	end
 end
 
@@ -285,6 +297,7 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	--Has success event, but only if a maw-of-drestagath is up, this script runs regardless
 	if spellId == 310351 then--Mutterings of Insanity
+		self.vb.mutteringIcon = 2
 		timerMutteringsofInsanityCD:Start(50.2)
 	end
 end

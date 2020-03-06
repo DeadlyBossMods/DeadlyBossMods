@@ -20,6 +20,10 @@ mod:RegisterEventsInCombat(
 	"UNIT_TARGET_UNFILTERED"
 )
 
+--[[
+(ability.id = 260741 or ability.id = 260907 or ability.id = 260703) and (type = "begincast" or type = "cast")
+ or ability.id = 260805 and (type = "applybuff" or type = "removebuff")
+--]]
 local warnActiveTriad				= mod:NewTargetNoFilterAnnounce(260805, 2)
 local warnUnstableMark				= mod:NewTargetAnnounce(260703, 2)
 local warnAuraofDreadOver			= mod:NewEndAnnounce(268088, 1)
@@ -94,7 +98,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		--Prevent timer from starting if Cast start started before transfer of power, but Iris sister changed by time fast finished
 		local bossUnitID = self:GetUnitIdFromGUID(args.sourceGUID)
 		if bossUnitID and not DBM:UnitBuff(bossUnitID, IrisBuff) and not DBM:UnitDebuff(bossUnitID, IrisBuff) then
-			timerJaggedNettlesCD:Start()
+			timerJaggedNettlesCD:Start()--13.3, Time until cast START
 		end
 	--[[elseif spellId == 260907 then
 		--Prevent timer from starting if Cast start started before transfer of power, but Iris sister changed by time fast finished
@@ -106,7 +110,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		--Prevent timer from starting if Cast start started before transfer of power, but Iris sister changed by time fast finished
 		local bossUnitID = self:GetUnitIdFromGUID(args.sourceGUID)
 		if bossUnitID and not DBM:UnitBuff(bossUnitID, IrisBuff) and not DBM:UnitDebuff(bossUnitID, IrisBuff) then
-			timerJaggedNettlesCD:Start()
+			timerUnstableRunicMarkCD:Start()
 		end
 	elseif spellId == 268088 then
 		specWarnAuraofDread:Show()
@@ -121,11 +125,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnActiveTriad:Show(args.destName)
 		local cid = self:GetCIDFromGUID(args.destGUID)
 		if cid == 135360 or cid == 131825 then--Sister Briar
-			timerJaggedNettlesCD:Start(7.8)--CAST SUCCESS
+			timerJaggedNettlesCD:Start(7.7)--CAST START
 		elseif cid == 135358 or cid == 131823 then--Sister Malady
 			timerSoulManipulationCD:Start(11.3)--CAST SUCCESS
 		elseif cid == 135359 or cid == 131824 then--Sister Solena
-			timerUnstableRunicMarkCD:Start(8.5)
+			timerUnstableRunicMarkCD:Start(10.5)--CAST SUCCESS
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Show(6)
 			end
