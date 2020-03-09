@@ -379,6 +379,10 @@ L= DBM:GetModLocalization(2355)
 -----------------------
 L= DBM:GetModLocalization(2336)
 
+L:SetMiscLocalization({
+	openingRP		= "真是一反常態，這群不速之客竟然還活著！"
+})
+
 -----------------------
 -- K.U.-J.0. --
 -----------------------

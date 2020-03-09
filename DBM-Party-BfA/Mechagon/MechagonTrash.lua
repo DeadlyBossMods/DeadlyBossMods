@@ -23,7 +23,7 @@ mod:RegisterEvents(
 --TODO, verify target scans on Scrap Cannon and B.O.R.K.
 --TODO, https://www.wowhead.com/spell=301712/pounce is instant cast, can we scan target and is it worth it on something that probably isn't avoidable?
 --TODO, https://www.wowhead.com/spell=282945/buzz-saw is environmental and probably not detectable, but add of it is
---TODO, verify peck target scanning
+--TODO, verify peck target scanning (didn't seem to be working on towelliee's stream, just always announced aggro target)
 local warnExhaust					= mod:NewSpellAnnounce(300177, 2)--Heavy Scrapbot
 local warnScrapGrenade				= mod:NewSpellAnnounce(299525, 3)--Pistonhead Blaster (upgrade to specwarn/yell if target scan possible)
 local warnSledgehammer				= mod:NewStackAnnounce(299438, 2, nil, "Tank|Healer")--Pistonhead Scrapper
@@ -42,7 +42,7 @@ local yellScrapCannon				= mod:NewYell(300188)--Weaponized Crawler
 local specWarnBORK					= mod:NewSpecialWarningDodge(299475, nil, nil, nil, 2, 2)--Scraphound
 local yellBORK						= mod:NewYell(299475)--Scraphound
 local specWarnFlyingPeck			= mod:NewSpecialWarningDodge(294064, nil, nil, nil, 2, 2)--Strider Tonk
-local yellFlyingPeck				= mod:NewYell(294064)--Strider Tonk
+--local yellFlyingPeck				= mod:NewYell(294064)--Strider Tonk
 local specWarnShockwave				= mod:NewSpecialWarningDodge(300424, nil, nil, nil, 2, 2)--Scrapbone Bully
 local specWarnRapidFire				= mod:NewSpecialWarningDodge(301667, nil, nil, nil, 2, 2)--Mechagon Cavalry
 local specWarnRocketBarrage			= mod:NewSpecialWarningDodge(294103, nil, nil, nil, 2, 2)--Rocket Tonk
@@ -99,12 +99,14 @@ function mod:BORKtarget(targetname, uId)
 	end
 end
 
+--[[
 function mod:Pecktarget(targetname, uId)
 	if not targetname then return end
 	if targetname == UnitName("player") and self:AntiSpam(4, 5) then
 		yellFlyingPeck:Yell()
 	end
 end
+--]]
 
 --Antispam IDs for this mod: 1 run away, 2 dodge, 3 dispel, 4 incoming damage, 5 you/role, 6 misc
 function mod:SPELL_CAST_START(args)
@@ -177,7 +179,7 @@ function mod:SPELL_CAST_START(args)
 			specWarnFlyingPeck:Show()
 			specWarnFlyingPeck:Play("shockwave")
 		end
-		self:ScheduleMethod(0.1, "BossTargetScanner", args.sourceGUID, "Pecktarget", 0.1, 8)
+		--self:ScheduleMethod(0.1, "BossTargetScanner", args.sourceGUID, "Pecktarget", 0.1, 8)
 	elseif spellId == 300424 and self:IsValidWarning(args.sourceGUID) and self:AntiSpam(3, 2) then
 		specWarnShockwave:Show()
 		specWarnShockwave:Play("shockwave")
