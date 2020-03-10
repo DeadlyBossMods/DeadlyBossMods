@@ -340,3 +340,59 @@ L = DBM:GetModLocalization("WaycrestTrash")
 L:SetGeneralLocalization({
 	name =	"维克雷斯庄园小怪"
 })
+
+-----------------------
+-- <<<Operation: Mechagon>>> --
+-----------------------
+-----------------------
+-- King Gobbamak --
+-----------------------
+--L= DBM:GetModLocalization(2357)
+
+-----------------------
+-- Gunker --
+-----------------------
+--L= DBM:GetModLocalization(2358)
+
+-----------------------
+-- Trixie & Naeno --
+-----------------------
+--L= DBM:GetModLocalization(2360)
+
+-----------------------
+-- HK-8 Aerial Oppression Unit --
+-----------------------
+--L= DBM:GetModLocalization(2355)
+
+-----------------------
+-- Tussle Tonks --
+-----------------------
+L= DBM:GetModLocalization(2336)
+
+L:SetMiscLocalization({
+	openingRP		= "这完全不符合统计学！我们的访客还活着！"
+})
+
+-----------------------
+-- K.U.-J.0. --
+-----------------------
+--L= DBM:GetModLocalization(2339)
+
+-----------------------
+-- Machinist's Garden --
+-----------------------
+--L= DBM:GetModLocalization(2348)
+
+-----------------------
+-- King Mechagon --
+-----------------------
+--L= DBM:GetModLocalization(2331)
+
+---------
+--Trash--
+---------
+L = DBM:GetModLocalization("MechagonTrash")
+
+L:SetGeneralLocalization({
+	name =	"麦卡贡行动小怪"
+})
