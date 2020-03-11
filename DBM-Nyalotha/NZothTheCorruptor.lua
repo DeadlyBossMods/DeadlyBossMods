@@ -873,7 +873,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnParanoia:Play("gather")
 				playerIsInPair = true
 			end
-			if not self:IsLFR() and playerIsInPair then--Only repeat yell on mythic and mythic+
+			if playerIsInPair then--Only repeat yell on mythic and mythic+
 				self:Unschedule(paranoiaYellRepeater)
 				if type(icon) == "number" then icon = DBM_CORE_AUTO_YELL_CUSTOM_POSITION:format(icon, "") end
 				self:Schedule(2, paranoiaYellRepeater, self, icon)
@@ -1183,7 +1183,11 @@ function mod:UNIT_POWER_FREQUENT(uId)
 		return
 	end
 	if self:AntiSpam(5, 6) then--Additional throttle in case you lose sanity VERY rapidly with increased ICD for special warning
-		if currentSanity == 15 and lastSanity > 15 then
+		if currentSanity == 5 and lastSanity > 5 then
+			lastSanity = 5
+			specwarnSanity:Show(lastSanity)
+			specwarnSanity:Play("lowsanity")
+		elseif currentSanity == 15 and lastSanity > 15 then
 			lastSanity = 15
 			specwarnSanity:Show(lastSanity)
 			specwarnSanity:Play("lowsanity")
