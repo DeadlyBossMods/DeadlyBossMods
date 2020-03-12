@@ -2283,7 +2283,7 @@ local function CreateOptionsMenu()
 		-- Functions for bar setup
 		local function createDBTOnShowHandler(option)
 			return function(self)
-				if option == "EnlargeBarsPercent" then
+				if option == "EnlargeBarsPercentage" then
 					self:SetValue(DBM.Bars:GetOption(option) * 100)
 				else
 					self:SetValue(DBM.Bars:GetOption(option))
@@ -2292,7 +2292,7 @@ local function CreateOptionsMenu()
 		end
 		local function createDBTOnValueChangedHandler(option)
 			return function(self)
-				if option == "EnlargeBarsPercent" then
+				if option == "EnlargeBarsPercentage" then
 					DBM.Bars:SetOption(option, self:GetValue() / 100)
 					self:SetValue(DBM.Bars:GetOption(option) * 100)
 				else
@@ -2323,7 +2323,7 @@ local function CreateOptionsMenu()
 		DecimalSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("TDecimal"))
 
 		-------
-		local BarSetupDBMClassic = BarSetupPanel:CreateArea(L.Bar_DBMOnly, nil, 100, true)
+		local BarSetupDBMClassic = BarSetupPanel:CreateArea(L.Bar_AnimOptions, nil, 100, true)
 
 		local EnlargeTimeSlider = BarSetup:CreateSlider(L.Bar_EnlargeTime, 6, 30, 1)
 		EnlargeTimeSlider:SetPoint("TOPLEFT", BarSetupDBMClassic.frame, "TOPLEFT", 30, -20)
@@ -2332,13 +2332,13 @@ local function CreateOptionsMenu()
 
 		local EnlargePerecntSlider = BarSetup:CreateSlider(L.Bar_EnlargePercent, 0, 50, 0.5)
 		EnlargePerecntSlider:SetPoint("TOPLEFT", BarSetupDBMClassic.frame, "TOPLEFT", 30, -65)
-		EnlargePerecntSlider:SetScript("OnShow", createDBTOnShowHandler("EnlargeBarsPercent"))
-		EnlargePerecntSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("EnlargeBarsPercent"))
+		EnlargePerecntSlider:SetScript("OnShow", createDBTOnShowHandler("EnlargeBarsPercentage"))
+		EnlargePerecntSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("EnlargeBarsPercentage"))
 
 		local SparkBars = BarSetup:CreateCheckButton(L.BarSpark, false, nil, nil, "Spark")
 		SparkBars:SetPoint("TOPLEFT", BarSetupDBMClassic.frame, "TOPLEFT", 270, -20)
 
-		local FlashBars = BarSetup:CreateCheckButton(L.BarFlash, false, nil, nil, "Flash")
+		local FlashBars = BarSetup:CreateCheckButton(L.BarFlash, false, nil, nil, "FlashBar")
 		FlashBars:SetPoint("TOPLEFT", SparkBars, "BOTTOMLEFT", 0, 0)
 
 		-----------------------

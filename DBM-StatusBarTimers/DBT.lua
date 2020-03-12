@@ -112,9 +112,9 @@ options = {
 		type = "boolean",
 		default = false,
 	},
-	Flash = {
+	FlashBar = {
 		type = "boolean",
-		default = true,
+		default = false,
 	},
 	Spark = {
 		type = "boolean",
@@ -435,9 +435,9 @@ options = {
 		type = "number",
 		default = 11,
 	},
-	EnlargeBarsPercent = {
+	EnlargeBarsPercentage = {
 		type = "number",
-		default = 0.125,
+		default = 0,
 	},
 	FillUpBars = {
 		type = "boolean",
@@ -817,7 +817,7 @@ do
 			end
 			newFrame.obj = newBar
 			self.numBars = (self.numBars or 0) + 1
-			local enlargeTime = self.options.BarStyle ~= "NoAnim" and self.options.EnlargeBarTime or 11
+			local enlargeTime = self.options.EnlargeBarTime or 11
 			local importantBar = colorType and colorType == 7 and self:GetOption("Bar7ForceLarge")
 			if (importantBar or (timer <= enlargeTime or huge)) and self:GetOption("HugeBarsEnabled") then -- start enlarged
 				newBar.enlarged = true
@@ -954,8 +954,8 @@ end
 
 function barPrototype:SetElapsed(elapsed)
 	self.timer = self.totalTime - elapsed
-	local enlargeTime = self.owner.options.BarStyle ~= "NoAnim" and self.owner.options.EnlargeBarTime or 11
-	local enlargePer = self.owner.options.BarStyle ~= "NoAnim" and self.owner.options.EnlargeBarsPercent or 0
+	local enlargeTime = self.owner.options.EnlargeBarTime or 11
+	local enlargePer = self.owner.options.EnlargeBarsPercentage or 0
 	if (self.enlarged or self.moving == "enlarge") and not (self.timer <= enlargeTime or (self.timer/self.totalTime) <= enlargePer) then
 		self:ResetAnimations()
 		DBM:Debug("ResetAnimations firing for a a bar :Update() call", 2)
@@ -1011,7 +1011,7 @@ function barPrototype:Update(elapsed)
 	local obj = self.owner
 	local barOptions = obj.options
 	local currentStyle = barOptions.BarStyle
-	local sparkEnabled = currentStyle ~= "NoAnim" and barOptions.Spark
+	local sparkEnabled = barOptions.Spark
 	local isMoving = self.moving
 	local isFadingIn = self.fadingIn
 	local isEnlarged = self.enlarged
@@ -1071,12 +1071,14 @@ function barPrototype:Update(elapsed)
 		return self:Cancel()
 	else
 		if fillUpBars then
+			--TODO, still needed? what do?
 			if currentStyle == "NoAnim" and isEnlarged and not enlargeHack then
 				bar:SetValue(1 - timerValue/(totaltimeValue < 11 and totaltimeValue or 11))
 			else
 				bar:SetValue(1 - timerValue/totaltimeValue)
 			end
 		else
+			--TODO, still needed? what do?
 			if currentStyle == "NoAnim" and isEnlarged and not enlargeHack then
 				bar:SetValue(timerValue/(totaltimeValue < 11 and totaltimeValue or 11))
 			else
@@ -1093,7 +1095,7 @@ function barPrototype:Update(elapsed)
 	elseif isFadingIn then
 		self.fadingIn = nil
 	end
-	if timerValue <= 7.75 and not self.flashing and barOptions.Flash and currentStyle ~= "NoAnim" then
+	if timerValue <= 7.75 and not self.flashing and barOptions.FlashBar then
 		self.flashing = true
 		self.ftimer = 0
 	elseif self.flashing and timerValue > 7.75 then
@@ -1165,8 +1167,8 @@ function barPrototype:Update(elapsed)
 		obj.hugeBars:Append(self)
 		self:ApplyStyle()
 	end
-	local enlargeTime = currentStyle ~= "NoAnim" and barOptions.EnlargeBarTime or 11
-	local enlargePer = currentStyle ~= "NoAnim" and barOptions.EnlargeBarsPercent or 0
+	local enlargeTime = barOptions.EnlargeBarTime or 11
+	local enlargePer = barOptions.EnlargeBarsPercentage or 0
 	if (timerValue <= enlargeTime or (timerValue/totaltimeValue) <= enlargePer) and not self.small and not isEnlarged and isMoving ~= "enlarge" and obj:GetOption("HugeBarsEnabled") then
 		self:RemoveFromList()
 		self:Enlarge()
@@ -1260,7 +1262,7 @@ function barPrototype:ApplyStyle()
 	local name = _G[frame_name.."BarName"]
 	local timer = _G[frame_name.."BarTimer"]
 	local barOptions = self.owner.options
-	local sparkEnabled = barOptions.BarStyle ~= "NoAnim" and barOptions.Spark
+	local sparkEnabled = barOptions.Spark
 	local enlarged = self.enlarged
 	texture:SetTexture(barOptions.Texture)
 	if self.color then
