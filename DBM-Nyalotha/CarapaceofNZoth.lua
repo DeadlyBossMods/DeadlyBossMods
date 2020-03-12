@@ -114,6 +114,11 @@ mod.vb.adaptiveCount = 0
 mod.vb.adaptiveIcon = 1
 mod.vb.madnessBombCount = 0
 local lastSanity = 100
+--Debug
+local lastGazeTime = 0
+local debugSpawnTable = {}
+local lastGrowthTime = 0
+local debugSpawnTable2 = {}
 
 local function thrashingTentacleLoop(self)
 	self.vb.TentacleCount = self.vb.TentacleCount + 1
@@ -142,6 +147,10 @@ function mod:OnCombatStart(delay)
 	self.vb.adaptiveIcon = 1
 	self.vb.madnessBombCount = 0
 	lastSanity = 100
+	lastGazeTime = GetTime()
+	table.wipe(debugSpawnTable)
+	lastGrowthTime = GetTime()
+	table.wipe(debugSpawnTable2)
 	if self:IsMythic() then
 		timerMentalDecayCD:Start(9.1-delay)--SUCCESS
 		timerMandibleSlamCD:Start(9.3-delay)
@@ -160,13 +169,20 @@ function mod:OnCombatStart(delay)
 		timerAdaptiveMembraneCD:Start(16-delay, 1)--SUCCESS
 		timerMandibleSlamCD:Start(16-delay)
 		timerGrowthCoveredTentacleCD:Start(30-delay, 1)
-	else--Normal confirmed, LFR assumed
+	elseif self:IsNormal() then--Normal confirmed, LFR assumed
 		timerMadnessBombCD:Start(5.8-delay, 1)--SUCCESS
 		timerGazeofMadnessCD:Start(12.1-delay, 1)--Unknown, guessed by 0.82 adjustment
 		timerMentalDecayCD:Start(14.8-delay)--SUCCESS 12.1?
 		timerAdaptiveMembraneCD:Start(19.5-delay, 1)--SUCCESS
 		timerMandibleSlamCD:Start(20-delay)
 		timerGrowthCoveredTentacleCD:Start(36-delay, 1)--Unknown, guessed by 0.82 adjustment
+	else--LFR
+		timerMadnessBombCD:Start(6.3-delay, 1)--SUCCESS
+		timerGazeofMadnessCD:Start(13.7-delay, 1)--Unknown, guessed by 0.88 adjustment
+		timerMentalDecayCD:Start(16.7-delay)--SUCCESS 12.1?
+		timerAdaptiveMembraneCD:Start(22-delay, 1)--SUCCESS
+		timerMandibleSlamCD:Start(22.8-delay)
+		timerGrowthCoveredTentacleCD:Start(41-delay, 1)--Unknown, guessed by 0.88 adjustment
 	end
 	berserkTimer:Start(780-delay)
 	if self.Options.InfoFrame then
@@ -189,6 +205,14 @@ function mod:OnCombatEnd()
 	if self.Options.NPAuraOnMembrane2 then
 		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
 	end
+	if #debugSpawnTable > 0 then
+		local message = table.concat(debugSpawnTable, ", ")
+		DBM:AddMsg("Gaze Spawns collected. Please report these numbers and raid difficulty to DBM author: "..message)
+	end
+	if #debugSpawnTable2 > 0 then
+		local message = table.concat(debugSpawnTable2, ", ")
+		DBM:AddMsg("Growth Spawns collected. Please report these numbers and raid difficulty to DBM author: "..message)
+	end
 end
 
 function mod:SPELL_CAST_START(args)
@@ -203,8 +227,16 @@ function mod:SPELL_CAST_START(args)
 		self.vb.DarknessCount = self.vb.DarknessCount + 1
 		specWarnEternalDarkness:Show(self.vb.DarknessCount)
 		specWarnEternalDarkness:Play("aesoon")
-		--Only Phase 2/2.5 on heroic and mythic, but on normal and LFR it's also phase 3
-		local timer = self:IsMythic() and 19.7 or self:IsHard() and 22.2 or (self.vb.phase == 3) and 67.4 or 25
+		local timer
+		if self:IsMythic() then
+			timer = 19.7--Mythic only Has it in stage 2 (there is no stage 2.5)
+		elseif self:IsHeroic() then--(Heroic only has it in 2 and 2.5)
+			timer = 22.2--Same in 2 and 2.5
+		elseif self:IsNormal() then--(Not case in phase 1, just 3, 2.5, and 2)
+			timer = (self.vb.phase == 3) and 67.4 or 25--Same in 2 and 2.5
+		else--LFR (Not case in phase 1, just 3, 2.5, and 2)
+			timer = (self.vb.phase == 3) and 77.1 or 28.5--Same in 2 and 2.5
+		end
 		timerEternalDarknessCD:Start(timer, self.vb.DarknessCount+1)
 	elseif spellId == 313039 then
 		self.vb.DarknessCount = self.vb.DarknessCount + 1
@@ -214,7 +246,7 @@ function mod:SPELL_CAST_START(args)
 	elseif (spellId == 307092 or spellId == 315891) and args:GetSrcCreatureID() == 157439  then--Stage 2/Stage 3 (so we ignore 162285 casts)
 		specWarnOccipitalBlast:Show()
 		specWarnOccipitalBlast:Play("shockwave")
-		timerOccipitalBlastCD:Start(self:IsHard() and 33.3 or 37.5)
+		timerOccipitalBlastCD:Start(self:IsHard() and 33.3 or self:IsNormal() and 37.5 or 42.8)
 	elseif spellId == 315947 then
 		--Not case in phase 2, just 1, 2.5, and 3
 		local timer
@@ -222,8 +254,10 @@ function mod:SPELL_CAST_START(args)
 			timer = (self.vb.phase == 3) and 14.7 or 15.7
 		elseif self:IsHard() then
 			timer = (self.vb.phase == 3) and 10.7 or (self.vb.phase == 2.5) and 22.2 or 12.7
-		else
+		elseif self:IsNormal() then
 			timer = (self.vb.phase == 3) and 13.7 or (self.vb.phase == 2.5) and 25 or 16.2
+		else--LFR
+			timer = (self.vb.phase == 3) and 15.6 or (self.vb.phase == 2.5) and 28.5 or 18.5
 		end
 		timerMandibleSlamCD:Start(timer)
 	elseif spellId == 307064 then
@@ -241,8 +275,10 @@ function mod:SPELL_CAST_SUCCESS(args)
 				timer = (self.vb.phase == 3) and 15.2 or (self.vb.phase == 2) and 18.4 or 20.8--Phase 3 not confirmed yet
 			elseif self:IsHard() then
 				timer = (self.vb.phase == 3) and 26.7 or (self.vb.phase == 2) and 22.2 or (self.vb.phase == 2.5) and 42.2 or 21
-			else
+			elseif self:IsNormal() then
 				timer = (self.vb.phase == 3) and 33.7 or (self.vb.phase == 2) and 22.6 or (self.vb.phase == 2.5) and 47.5 or 26.2
+			else--LFR
+				timer = (self.vb.phase == 3) and 38.5 or (self.vb.phase == 2) and 28.5 or (self.vb.phase == 2.5) and 54.2 or 29.9
 			end
 			timerMentalDecayCD:Start(timer)
 		end
@@ -262,12 +298,14 @@ function mod:SPELL_CAST_SUCCESS(args)
 			end
 		elseif self:IsHard() then
 			timer = (self.vb.phase == 2.5) and 22.2 or (self.vb.phase == 2) and 33.3 or 24
-		else
+		elseif self:IsNormal() then
 			timer = (self.vb.phase == 2.5) and 24.9 or (self.vb.phase == 2) and 37.4 or 30
+		else--LFR
+			timer = (self.vb.phase == 2.5) and 28.5 or (self.vb.phase == 2) and 42.8 or 34.2
 		end
 		timerMadnessBombCD:Start(timer, self.vb.madnessBombCount+1)
 	elseif spellId == 306986 then
-		timerInsanityBombCD:Start(self:IsHard() and 66.9 or 83.7)
+		timerInsanityBombCD:Start(self:IsHard() and 66.9 or self:IsNormal() and 83.7 or 95.7)
 	elseif spellId == 306988 and self:AntiSpam(3, 9) then
 		self.vb.adaptiveCount = self.vb.adaptiveCount + 1
 		self.vb.adaptiveIcon = 1
@@ -291,8 +329,10 @@ function mod:SPELL_CAST_SUCCESS(args)
 			end
 		elseif self:IsHeroic() then
 			timer = (self.vb.phase == 3) and 32 or (self.vb.phase == 2) and 21.1 or (self.vb.phase == 2.5) and 33.3 or 27.6
-		else
+		elseif self:IsNormal() then
 			timer = (self.vb.phase == 3) and 40 or (self.vb.phase == 2) and 25 or (self.vb.phase == 2.5) and 37.4 or 36.2
+		else--LFR
+			timer = (self.vb.phase == 3) and 45.6 or (self.vb.phase == 2) and 28.5 or (self.vb.phase == 2.5) and 42.7 or 41.4
 		end
 		timerAdaptiveMembraneCD:Start(timer, self.vb.adaptiveCount+1)
 	end
@@ -378,17 +418,23 @@ function mod:SPELL_AURA_APPLIED(args)
 			--timerMadnessBombCD:Start(41.2, 1)--SUCCESS
 			--timerMentalDecayCD:Start(49.2)--SUCCESS
 		elseif self:IsHeroic() then
-			--TODO, move these to anchor here
+			--Started here, but updated in Anchor Here cast
 			timerMentalDecayCD:Start(17.2)--SUCCESS
 			timerAdaptiveMembraneCD:Start(20.4, 1)--SUCCESS
 			timerEternalDarknessCD:Start(24, 1)
 			timerMadnessBombCD:Start(29.3, 1)--SUCCESS
-		else
-			--TODO, move these to anchor here
+		elseif self:IsNormal() then
+			--TODO, Update these in Anchor here
 			timerMentalDecayCD:Start(18.4)--SUCCESS
 			timerAdaptiveMembraneCD:Start(21.9, 1)--SUCCESS
 			timerEternalDarknessCD:Start(26.2, 1)
 			timerMadnessBombCD:Start(32, 1)--SUCCESS
+		else
+			--TODO, Update these in Anchor here
+			timerMentalDecayCD:Start(16.8)--SUCCESS
+			timerAdaptiveMembraneCD:Start(20.6, 1)--SUCCESS
+			timerEternalDarknessCD:Start(25.8, 1)
+			timerMadnessBombCD:Start(32.1, 1)--SUCCESS
 		end
 	elseif spellId == 315954 then
 		local amount = args.amount or 1
@@ -472,13 +518,25 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 		self.vb.gazeCount = self.vb.gazeCount + 1
 		specWarnGazeOfMadness:Show(self.vb.gazeCount)
 		specWarnGazeOfMadness:Play("killmob")
-		timerGazeofMadnessCD:Start(self:IsMythic() and 65 or self:IsHeroic() and 58 or 70.7, self.vb.gazeCount+1)--Normal mode guessed by 0.82 adjustment
+		if self:IsHard() then
+			timerGazeofMadnessCD:Start(self:IsMythic() and 65 or self:IsHeroic() and 58, self.vb.gazeCount+1)
+		else
+			local currentTime = GetTime() - lastGazeTime
+			debugSpawnTable[#debugSpawnTable + 1] = math.floor(currentTime*10)/10--Floored but only after trying to preserve at least one decimal place
+			lastGazeTime = GetTime()
+		end
 	--"<48.92 17:25:10> [CHAT_MSG_RAID_BOSS_EMOTE] |TInterface\\Icons\\INV_MISC_MONSTERHORN_04.BLP:20|t A %s emerges. Look out!#Growth-Covered Tentacle#####0#0##0#1990#nil#0#false#false#false#false",
 	elseif msg:find("INV_MISC_MONSTERHORN_04.BLP") and not self:IsMythic() then
 		self.vb.TentacleCount = self.vb.TentacleCount + 1
 		specWarnGrowthCoveredTentacle:Show(self.vb.TentacleCount)
 		specWarnGrowthCoveredTentacle:Play("watchstep")
-		timerGrowthCoveredTentacleCD:Start(self:IsHard() and 60 or 73.1, self.vb.TentacleCount+1)--Normal mode guessed by 0.82 adjustment
+		if self:IsHard() then
+			timerGrowthCoveredTentacleCD:Start(60, self.vb.TentacleCount+1)
+		else
+			local currentTime = GetTime() - lastGrowthTime
+			debugSpawnTable2[#debugSpawnTable2 + 1] = math.floor(currentTime*10)/10--Floored but only after trying to preserve at least one decimal place
+			lastGrowthTime = GetTime()
+		end
 	end
 end
 
@@ -488,9 +546,10 @@ end
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 315673 then--Thrashing Tentacle
 		--timerThrashingTentacleCD:Start()--27.8
-	elseif spellId == 45313 then--Anchor Here (this can be used for phase 2 start as well, but it's slower)
+	elseif spellId == 45313 then--Anchor Here
 		self.vb.anchorCount = self.vb.anchorCount + 1
-		--We need to ignore first anchor, and do nothing with it since we start P2 much earlier with Synthesis
+		--Initial timers on most difficulties start on Synthesis, but get updated here since synthesis accuracy isn't great
+		--(the variation for how long it takes boss to get into position and cast anchor here)
 		if self.vb.anchorCount == 1 then
 			if self:IsMythic() then
 				timerAdaptiveMembraneCD:Start(17, 1)--SUCCESS
@@ -498,15 +557,25 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 				timerMadnessBombCD:Start(25, 1)--SUCCESS
 				timerMentalDecayCD:Start(33)--SUCCESS
 			elseif self:IsHeroic() then
-				--timerMentalDecayCD:Start(17.2)--SUCCESS
-				--timerAdaptiveMembraneCD:Start(20.4, 1)--SUCCESS
-				--timerEternalDarknessCD:Start(24)
-				--timerMadnessBombCD:Start(29.3, 1)--SUCCESS
-			else
-				--timerMentalDecayCD:Start(18.4)--SUCCESS
-				--timerAdaptiveMembraneCD:Start(21.9, 1)--SUCCESS
-				--timerEternalDarknessCD:Start(26.2)
-				--timerMadnessBombCD:Start(32, 1)--SUCCESS
+				timerMentalDecayCD:Update(16.2, 17.2)--SUCCESS
+				timerAdaptiveMembraneCD:Update(16.2, 20.4, 1)--SUCCESS
+				timerEternalDarknessCD:Update(16.2, 24, 1)
+				timerMadnessBombCD:Update(16.2, 29.3, 1)--SUCCESS
+
+				--timerMentalDecayCD:Start(1)--SUCCESS
+				--timerAdaptiveMembraneCD:Start(4.2, 1)--SUCCESS
+				--timerEternalDarknessCD:Start(7.8)
+				--timerMadnessBombCD:Start(13.1, 1)--SUCCESS
+			elseif self:IsNormal() then
+				--timerMentalDecayCD:Start(1)--SUCCESS
+				--timerAdaptiveMembraneCD:Start(4.2, 1)--SUCCESS
+				--timerEternalDarknessCD:Start(7.8)
+				--timerMadnessBombCD:Start(13.1, 1)--SUCCESS
+			else--LFR
+				--timerMentalDecayCD:Start(1)--SUCCESS
+				--timerAdaptiveMembraneCD:Start(4.2, 1)--SUCCESS
+				--timerEternalDarknessCD:Start(7.8)
+				--timerMadnessBombCD:Start(13.1, 1)--SUCCESS
 			end
 		elseif (self.vb.anchorCount == 2 and self:IsMythic()) or self.vb.anchorCount == 3 then
 			--Boon of Black Prince can be used as a backup but it's NOT as consistent and introduces a 3 second variation to elements. Should only be used if this can't be
@@ -539,15 +608,24 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 				self:Schedule(32, thrashingTentacleLoop, self)
 				timerAdaptiveMembraneCD:Start(38.1, 1)--SUCCESS
 				timerInfiniteDarknessCD:Start(54, 1)
-			else
+			elseif self:IsNormal() then
 				--These are probably off by 1-3 seconds, it's impossible to perfect this, even using boon, without transcriptor log to capture anchor here event
 				timerMentalDecayCD:Start(14.5)--SUCCESS
 				timerMandibleSlamCD:Start(20.9)
 				timerInsanityBombCD:Start(26.1)--SUCCESS
-				timerThrashingTentacleCD:Start(32, 1)
-				self:Schedule(32, thrashingTentacleLoop, self)
+				timerThrashingTentacleCD:Start(32, 1)--Probably wrong
+				self:Schedule(32, thrashingTentacleLoop, self)--Probably wrong
 				timerAdaptiveMembraneCD:Start(46.6, 1)--SUCCESS
 				timerEternalDarknessCD:Start(67, 1)
+			else--LFR
+				--These are probably off by 1-3 seconds, it's impossible to perfect this, even using boon, without transcriptor log to capture anchor here event
+				timerMentalDecayCD:Start(14.3)--SUCCESS
+				timerMandibleSlamCD:Start(21.8)
+				timerInsanityBombCD:Start(27.6)--SUCCESS
+				timerThrashingTentacleCD:Start(32, 1)--Probably wrong
+				self:Schedule(32, thrashingTentacleLoop, self)--Probably wrong
+				timerAdaptiveMembraneCD:Start(51, 1)--SUCCESS
+				timerEternalDarknessCD:Start(74.7, 1)
 			end
 		else
 			--he hangs around in tunnel for 10%
@@ -566,13 +644,20 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 				timerAdaptiveMembraneCD:Start(18.7, 1)--SUCCESS
 				timerEternalDarknessCD:Start(22.3, self.vb.DarknessCount+1)
 				timerMentalDecayCD:Start(28.7)--SUCCESS
-			else
+			elseif self:IsNormal() then--(timers need actual transcriptor log to verify, created by energy calculation of 0.82 from heroic)
 				timerOccipitalBlastCD:Start(6.2)
 				timerMadnessBombCD:Start(14.6, 1)--SUCCESS
 				timerMandibleSlamCD:Start(17.5)
 				timerAdaptiveMembraneCD:Start(20.8, 1)--SUCCESS
 				timerEternalDarknessCD:Start(25, self.vb.DarknessCount+1)
 				timerMentalDecayCD:Start(32.3)--SUCCESS
+			else--LFR (timers need actual transcriptor log to verify, created by energy calculation of 0.88 from normal)
+				timerOccipitalBlastCD:Start(7)
+				timerMadnessBombCD:Start(16.6, 1)--SUCCESS
+				timerMandibleSlamCD:Start(19.9)
+				timerAdaptiveMembraneCD:Start(23.7, 1)--SUCCESS
+				timerEternalDarknessCD:Start(28.5, self.vb.DarknessCount+1)
+				timerMentalDecayCD:Start(36.8)--SUCCESS
 			end
 		end
 	end

@@ -44,7 +44,7 @@ local warnCrush								= mod:NewTargetNoFilterAnnounce(307471, 3, nil, "Tank")
 local warnDissolve							= mod:NewTargetNoFilterAnnounce(307472, 3, nil, "Tank")
 local warnDebilitatingSpit					= mod:NewTargetNoFilterAnnounce(307358, 3, nil, false, 58519)
 local warnFrenzy							= mod:NewTargetNoFilterAnnounce(306942, 2)
-local warnFixate							= mod:NewTargetAnnounce(307260, 2)
+local warnFixate							= mod:NewTargetCountAnnounce(307260, 2)
 local warnEntropicBuildup					= mod:NewCountAnnounce(308177, 2)
 local warnEntropicBreath					= mod:NewSpellAnnounce(306930, 2, nil, "Tank")
 local warnTastyMorsel						= mod:NewTargetNoFilterAnnounce(312099, 1)
@@ -286,7 +286,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 306942 then
 		warnFrenzy:Show(args.destName)
 	elseif spellId == 318078 or spellId == 307260 then
-		warnFixate:CombinedShow(0.3, args.destName)
+		warnFixate:CombinedShow(0.3, self.vb.fixateCount, args.destName)
 		if args:IsPlayer() then
 			specWarnFixate:Show()
 			specWarnFixate:Play("targetyou")
