@@ -125,7 +125,8 @@ local function thrashingTentacleLoop(self)
 	specWarnThrashingTentacle:Show(self.vb.TentacleCount)
 	specWarnThrashingTentacle:Play("watchstep")
 	timerThrashingTentacleCD:Start(20, self.vb.TentacleCount+1)
-	self:Schedule(20, thrashingTentacleLoop, self)
+	--LFR confirmed, mythic confirmed. heroic and normal iffy
+	self:Schedule(self:IsLFR() and 28 or self:IsNormal() and 24 or 20, thrashingTentacleLoop, self)
 end
 
 local function phaseOneTentacleLoop(self)
@@ -178,11 +179,11 @@ function mod:OnCombatStart(delay)
 		timerGrowthCoveredTentacleCD:Start(36-delay, 1)--Unknown, guessed by 0.82 adjustment
 	else--LFR
 		timerMadnessBombCD:Start(6.3-delay, 1)--SUCCESS
-		timerGazeofMadnessCD:Start(13.7-delay, 1)--Unknown, guessed by 0.88 adjustment
+		--timerGazeofMadnessCD:Start(13.7-delay, 1)--Not in LFR?
 		timerMentalDecayCD:Start(16.7-delay)--SUCCESS 12.1?
 		timerAdaptiveMembraneCD:Start(22-delay, 1)--SUCCESS
 		timerMandibleSlamCD:Start(22.8-delay)
-		timerGrowthCoveredTentacleCD:Start(41-delay, 1)--Unknown, guessed by 0.88 adjustment
+		timerGrowthCoveredTentacleCD:Start(43-delay, 1)--Confirmed via debug
 	end
 	berserkTimer:Start(780-delay)
 	if self.Options.InfoFrame then
@@ -532,10 +533,12 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 		specWarnGrowthCoveredTentacle:Play("watchstep")
 		if self:IsHard() then
 			timerGrowthCoveredTentacleCD:Start(60, self.vb.TentacleCount+1)
-		else
+		elseif self:IsNormal() then
 			local currentTime = GetTime() - lastGrowthTime
 			debugSpawnTable2[#debugSpawnTable2 + 1] = math.floor(currentTime*10)/10--Floored but only after trying to preserve at least one decimal place
 			lastGrowthTime = GetTime()
+		else--LFR
+			timerGrowthCoveredTentacleCD:Start(85.7, self.vb.TentacleCount+1)
 		end
 	end
 end
@@ -613,8 +616,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 				timerMentalDecayCD:Start(14.5)--SUCCESS
 				timerMandibleSlamCD:Start(20.9)
 				timerInsanityBombCD:Start(26.1)--SUCCESS
-				timerThrashingTentacleCD:Start(32, 1)--Probably wrong
-				self:Schedule(32, thrashingTentacleLoop, self)--Probably wrong
+				timerThrashingTentacleCD:Start(39, 1)--Probably wrong (Guessed by 0.82 calculation from heroic)
+				self:Schedule(39, thrashingTentacleLoop, self)--Probably wrong
 				timerAdaptiveMembraneCD:Start(46.6, 1)--SUCCESS
 				timerEternalDarknessCD:Start(67, 1)
 			else--LFR
@@ -622,8 +625,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 				timerMentalDecayCD:Start(14.3)--SUCCESS
 				timerMandibleSlamCD:Start(21.8)
 				timerInsanityBombCD:Start(27.6)--SUCCESS
-				timerThrashingTentacleCD:Start(32, 1)--Probably wrong
-				self:Schedule(32, thrashingTentacleLoop, self)--Probably wrong
+				timerThrashingTentacleCD:Start(43, 1)
+				self:Schedule(43, thrashingTentacleLoop, self)
 				timerAdaptiveMembraneCD:Start(51, 1)--SUCCESS
 				timerEternalDarknessCD:Start(74.7, 1)
 			end
