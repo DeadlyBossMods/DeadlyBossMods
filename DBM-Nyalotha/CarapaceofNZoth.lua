@@ -185,7 +185,7 @@ function mod:OnCombatStart(delay)
 		timerMandibleSlamCD:Start(22.8-delay)
 		timerGrowthCoveredTentacleCD:Start(43-delay, 1)--Confirmed via debug
 	end
-	berserkTimer:Start(780-delay)
+	berserkTimer:Start(self:IsEasy() and 840 or 780)
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(307831))
 		DBM.InfoFrame:Show(8, "playerpower", 1, ALTERNATE_POWER_INDEX, nil, nil, 2)--Sorting lowest to highest
