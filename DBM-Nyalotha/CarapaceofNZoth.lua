@@ -129,7 +129,7 @@ end
 
 local function phaseOneTentacleLoop(self)
 	self.vb.TentacleCount = self.vb.TentacleCount + 1
-	local timer = self:IsMythic() and 63.5 or self:IsHeroic() and 60 or self:IsNormal() and 74.9 or 85.7
+	local timer = self:IsMythic() and 63.5 or self:IsHeroic() and 60 or self:IsNormal() and 74.9 or 85.6
 	specWarnGrowthCoveredTentacle:Show(self.vb.TentacleCount)
 	specWarnGrowthCoveredTentacle:Play("watchstep")
 	timerGrowthCoveredTentacleCD:Start(timer, self.vb.TentacleCount+1)
@@ -523,7 +523,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 		self.vb.TentacleCount = self.vb.TentacleCount + 1
 		specWarnGrowthCoveredTentacle:Show(self.vb.TentacleCount)
 		specWarnGrowthCoveredTentacle:Play("watchstep")
-		timerGrowthCoveredTentacleCD:Start(self:IsMythic() and 63.5 or self:IsHeroic() and 60 or self:IsNormal() and 74.9 or 85.7, self.vb.TentacleCount+1)
+		timerGrowthCoveredTentacleCD:Start(self:IsMythic() and 63.5 or self:IsHeroic() and 60 or self:IsNormal() and 74.9 or 85.6, self.vb.TentacleCount+1)
 	end
 end
 
