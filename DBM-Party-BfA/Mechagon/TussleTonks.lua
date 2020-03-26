@@ -113,9 +113,9 @@ end
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 282801 then
-		local amount = args.amount or 1
+		local amount = args.amount or 0
 		warnPlatinumPlating:Cancel()
-		warnPlatinumPlating:Schedule(0.5, args.amount or 0)
+		warnPlatinumPlating:Schedule(0.5, amount)
 	elseif spellId == 285388 then
 		warnVentJets:Show()
 		timerVentJetsCD:Stop()
