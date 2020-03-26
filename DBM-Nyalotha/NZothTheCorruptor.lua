@@ -5,6 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(158041)
 mod:SetEncounterID(2344)
 mod:SetZone()
+mod:SetUsedIcons(1, 2, 3, 4)
 mod:SetHotfixNoticeRev(20200311000001)--2020, 3, 11
 mod:SetMinSyncRevision(20200311000001)
 mod.respawnTime = 49
@@ -1150,7 +1151,7 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 				end
 				timerHarvestThoughtsCD:Start(self:IsMythic() and 6.4 or 8.2, GUID)
 				timerMindwrackCD:Start(self:IsMythic() and 12 or 5, GUID)--Cast immediately on heroic but on mythic they cast harvest thoughts first
-				if self.Options.SetIconOnCorruptor then
+				if self.Options.SetIconOnHarvester then
 					SetRaidTarget(unitID, self.vb.addIcon)
 				end
 				self.vb.addIcon = self.vb.addIcon + 1
