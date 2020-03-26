@@ -5,14 +5,14 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(135475, 135470, 135472)
 mod:SetEncounterID(2140)
 mod:SetZone()
-mod:SetUsedIcons(1)
+mod:SetUsedIcons(1, 2)
 mod:SetBossHPInfoToHighest()
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 267256 266231",
-	"SPELL_AURA_REMOVED 267256",
+	"SPELL_AURA_REMOVED 267256 266231",
 	"SPELL_CAST_START 266206 266951 266237 267273 267060",
 	"SPELL_CAST_SUCCESS 266231",
 	"UNIT_DIED",
@@ -55,6 +55,7 @@ local timerPoisonNovaCD				= mod:NewCDTimer(26.7, 267273, nil, nil, nil, 4, nil,
 local timerTotemsCD					= mod:NewCDTimer(53.5, 267060, nil, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON)--Actual timer needs doing
 
 mod:AddSetIconOption("SetIconOnBarrel", 266951, true, false, {1})
+mod:AddSetIconOption("SetIconOnAxe", 266231, false, false, {2})
 
 mod.vb.phase = 1
 mod.vb.bossOne = 0
@@ -97,12 +98,15 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnEarthwall:Show(args.destName)
 		specWarnEarthwall:Play("dispelboss")
 		self.vb.bossName = args.destName
-	elseif spellId == specWarnSeveringAxe then
+	elseif spellId == 266231 then
 		if args:IsPlayer() then
 			specWarnSeveringAxe:Show()
 			specWarnSeveringAxe:Play("defensive")
 		else
 			warnSeveringAxe:Show(args.destName)
+		end
+		if self.Options.SetIconOnAxe then
+			self:SetIcon(args.destName, 2)
 		end
 	end
 end
@@ -111,6 +115,10 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 267256  then
 		self.vb.bossName = "nil"
+	elseif spellId == 266231 then
+		if self.Options.SetIconOnAxe then
+			self:SetIcon(args.destName, 0)
+		end
 	end
 end
 
