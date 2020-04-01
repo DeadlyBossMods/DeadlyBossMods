@@ -1,8 +1,8 @@
 DBM_DEADLY_BOSS_MODS				= "Deadly Boss Mods"
 DBM_DBM								= "DBM"
 if C_DateAndTime and C_DateAndTime.GetCurrentCalendarTime then
-	local day, _, month = C_DateAndTime.GetCurrentCalendarTime()
-	if day and month and day == 1 and month == 4 then
+	local dateTable = C_DateAndTime.GetCurrentCalendarTime()
+	if dateTable.monthDay and dateTable.month and dateTable.monthDay == 1 and dateTable.month == 4 then
 		DBM_DEADLY_BOSS_MODS				= "Harmless Boss Mods"
 		DBM_DBM								= "HBM"
 	end
