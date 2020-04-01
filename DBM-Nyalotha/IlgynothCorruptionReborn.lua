@@ -200,7 +200,7 @@ function mod:OnCombatStart(delay)
 	timerCorruptorsGazeCD:Start(12.2-delay, 1)
 	berserkTimer:Start(600-delay)--Confirmed heroic and normal
 	if self:IsHard() then
-		timerTouchoftheCorruptorCD:Start(50.7-delay, 1)--SUCCESS
+		timerTouchoftheCorruptorCD:Start(47.7-delay, 1)--START
 		if self:IsMythic() then
 			timerCursedBloodCD:Start(20-delay)
 			timerCursedBloodCD:UpdateInline(DBM_CORE_MAGIC_ICON)
@@ -270,7 +270,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 311401 then
 		self.vb.mcCount = self.vb.mcCount + 1
-		timerTouchoftheCorruptorCD:Start(nil, self.vb.mcCount+1)
+		timerTouchoftheCorruptorCD:Start(61.4, self.vb.mcCount+1)--Timer adjusted by 3 because we want it to expire at START
 	elseif spellId == 311159 or spellId == 314396 then--Non Mythic, Mythic
 		self.vb.bloodCount = self.vb.bloodCount + 1
 		timerCursedBloodCD:Start(self:IsMythic() and 45 or 18, self.vb.bloodCount+1)
@@ -463,7 +463,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		timerCorruptorsGazeCD:Start(12, 1)
 		if self:IsHard() then
 			self.vb.mcCount = 0
-			timerTouchoftheCorruptorCD:Start(51.5, 1)--SUCCESS
+			timerTouchoftheCorruptorCD:Start(48.5, 1)--START
 		end
 	end
 end

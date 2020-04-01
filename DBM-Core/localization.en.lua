@@ -1,8 +1,8 @@
 DBM_DEADLY_BOSS_MODS				= "Deadly Boss Mods"
 DBM_DBM								= "DBM"
 if C_DateAndTime and C_DateAndTime.GetCurrentCalendarTime then
-	local day, _, month = C_DateAndTime.GetCurrentCalendarTime()
-	if day and month and day == 1 and month == 4 then
+	local dateTable = C_DateAndTime.GetCurrentCalendarTime()
+	if dateTable.monthDay and dateTable.month and dateTable.monthDay == 1 and dateTable.month == 4 then
 		DBM_DEADLY_BOSS_MODS				= "Harmless Boss Mods"
 		DBM_DBM								= "HBM"
 	end
@@ -163,7 +163,7 @@ DBM_CORE_VERSIONCHECK_HEADER		= "Boss Mod - Versions"
 DBM_CORE_VERSIONCHECK_ENTRY			= "%s: %s (%s) %s"--One Boss mod
 DBM_CORE_VERSIONCHECK_ENTRY_TWO		= "%s: %s (%s) & %s (%s)"--Two Boss mods
 DBM_CORE_VERSIONCHECK_ENTRY_NO_DBM	= "%s: No boss mod installed"
-DBM_CORE_VERSIONCHECK_FOOTER		= "Found %d player(s) with DBM & %d player(s) with Bigwigs"
+DBM_CORE_VERSIONCHECK_FOOTER		= "Found %d player(s) with "..DBM_DBM.." & %d player(s) with Bigwigs"
 DBM_CORE_VERSIONCHECK_OUTDATED		= "Following %d player(s) have outdated boss mod version: %s"
 DBM_CORE_YOUR_VERSION_OUTDATED      = "Your version of "..DBM_DEADLY_BOSS_MODS.." is out-of-date. Please visit http://www.deadlybossmods.com to get the latest version."
 DBM_CORE_VOICE_PACK_OUTDATED		= "Your selected DBM voice pack is missing some sounds supported by DBM. Some warning sounds will still play default sounds. Please download a newer version of voice pack or pack contact author for an update that contains missing audio"
