@@ -5693,7 +5693,7 @@ do
 		["mythic"] = "mythic",
 		["worldboss"] = "normal",
 		["timewalker"] = "timewalker",
-		["progressivechallenges"] = "normal"
+		["progressivechallenges"] = "normal",
 		--BFA
 		["normalwarfront"] = "normal",
 		["heroicwarfront"] = "heroic",
