@@ -191,9 +191,12 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 301667 and self:AntiSpam(3, 2) then
 		specWarnRapidFire:Show()
 		specWarnRapidFire:Play("shockwave")--Or watchstep?
-	elseif spellId == 294290 and self:AntiSpam(3, 5) then
+	elseif spellId == 294324 and self:AntiSpam(3, 1) then
 		specWarnMegaDrill:Show()
-		specWarnMegaDrill:Play("defensive")
+		specWarnMegaDrill:Play("justrun")
+	elseif spellId == 294290 and self:AntiSpam(3, 5) then
+		specWarnProcessWaste:Show()
+		specWarnProcessWaste:Play("defensive")
 	elseif spellId == 294349 and self:AntiSpam(5, 4) then
 		warnVolatileWaste:Show()
 	elseif spellId == 293854 and self:AntiSpam(3, 6) then
