@@ -158,7 +158,7 @@ function mod:OnCombatStart(delay)
 		self:Schedule(30, phaseOneTentacleLoop, self)--Only started on mythic for now
 		timerGazeofMadnessCD:Start(41.2-delay, 1)
 		self:RegisterShortTermEvents(
-			"UNIT_HEALTH_FREQUENT boss1"
+			"UNIT_HEALTH boss1"
 		)
 	elseif self:IsHeroic() then--Heroic confirmed, mythic assumed
 		timerMadnessBombCD:Start(5-delay, 1)--SUCCESS
@@ -678,7 +678,7 @@ function mod:UNIT_POWER_FREQUENT(uId)
 	end
 end
 
-function mod:UNIT_HEALTH_FREQUENT(uId)
+function mod:UNIT_HEALTH(uId)
 	local hp = UnitHealth(uId) / UnitHealthMax(uId)
 	if hp < 0.56 then
 		self:Unschedule(phaseOneTentacleLoop)
