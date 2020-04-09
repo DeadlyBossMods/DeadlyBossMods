@@ -5693,11 +5693,14 @@ do
 		["mythic"] = "mythic",
 		["worldboss"] = "normal",
 		["timewalker"] = "timewalker",
+		["progressivechallenges"] = "normal"
+		--BFA
 		["normalwarfront"] = "normal",
 		["heroicwarfront"] = "heroic",
 		["normalisland"] = "normal",
 		["heroicisland"] = "heroic",
 		["mythicisland"] = "mythic",
+		["teamingisland"] = "mythic",--Blizz uses mythic as fallback, so I will too
 		--Legacy
 		["lfr25"] = "lfr25",
 		["normal10"] = "normal",
@@ -6420,7 +6423,7 @@ function DBM:GetCurrentInstanceDifficulty()
 		return "heroic", difficultyName.." - ", difficulty, instanceGroupSize, 0
 	elseif difficulty == 16 then--Mythic 20 man Raid
 		return "mythic", difficultyName.." - ", difficulty, instanceGroupSize, 0
-	elseif difficulty == 17 or difficulty == 151 then--Flexible LFR (ie post WoD zones)/8.3+ LFR?
+	elseif difficulty == 17 or difficulty == 151 then--Flexible LFR (ie post WoD zones)/8.3+ LFR
 		return "lfr", difficultyName.." - ", difficulty, instanceGroupSize, 0
 	elseif difficulty == 18 then--Special event 40 player LFR Queue (used by molten core aniversery event)
 		return "event40", difficultyName.." - ", difficulty, instanceGroupSize, 0
@@ -6444,6 +6447,10 @@ function DBM:GetCurrentInstanceDifficulty()
 		return "normal20", difficultyName.." - ",difficulty, instanceGroupSize, 0
 	elseif difficulty == 149 then--Heroic BfA Warfront
 		return "heroicwarfront", difficultyName.." - ",difficulty, instanceGroupSize, 0
+	elseif difficulty == 152 or difficulty == 167 then--Visions of Nzoth (bfa), Torghast (shadowlands)
+		return "progressivechallenges", difficultyName.." - ",difficulty, instanceGroupSize, 0
+	elseif difficulty == 153 then---Teaming BfA? Island expedition
+		return "teamingisland", difficultyName.." - ",difficulty, instanceGroupSize, 0
 	else--failsafe
 		return "normal", "", difficulty, instanceGroupSize, 0
 	end
