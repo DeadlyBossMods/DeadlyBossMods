@@ -19,7 +19,6 @@ mod:RegisterEventsInCombat(
 )
 
 --TODO, verify comet of storm trigger
---TODO, Ice Shard, Enfeeble, chilled warnings?
 local warnIceboundAegis				= mod:NewTargetNoFilterAnnounce(321754, 4)
 local warnFrozenBinds				= mod:NewTargetNoFilterAnnounce(323730, 3)
 local warnDarkExile					= mod:NewTargetNoFilterAnnounce(321894, 3)

@@ -21,7 +21,7 @@ mod:RegisterEventsInCombat(
 --TODO, get right meat hook spell to warn who it's targetting etc and get a yell/target warning operational. Too many to guess/drycode
 local warnSummonCreation			= mod:NewSpellAnnounce(320358, 2)
 local warnMutilate					= mod:NewCastAnnounce(320376, 4, nil, nil, "Tank|Healer")--Upgrade to special warning if needed
-local warnObscuringGas				= mod:NewSpellAnnounce(326629, 2)
+--local warnObscuringGas				= mod:NewSpellAnnounce(326629, 2)
 local warnEscape					= mod:NewCastAnnounce(320359, 3)
 local warnEmbalmingIchor			= mod:NewTargetNoFilterAnnounce(322681, 3)
 local warnStichNeedle				= mod:NewTargetNoFilterAnnounce(320200, 3, nil, "Healer")
@@ -80,7 +80,7 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 326629 then
-		warnObscuringGas:Show()
+		--warnObscuringGas:Show()
 		--timerSummonCreationCD:Stop()
 		--TODO, phase change/timer stuff?
 	elseif spellId == 320200 then
