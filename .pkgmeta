@@ -20,6 +20,7 @@ move-folders:
   DBM-Core/DBM-StatusBarTimers: DBM-StatusBarTimers
   DBM-Core/DBM-WorldEvents: DBM-WorldEvents
   DBM-Core/DBM-Party-BfA: DBM-Party-BfA
+  DBM-Core/DBM-Party-Shadowlands: DBM-Party-Shadowlands
   DBM-Core/DBM-Azeroth-BfA: DBM-Azeroth-BfA
   DBM-Core/DBM-Uldir: DBM-Uldir
   DBM-Core/DBM-CrucibleofStorms: DBM-CrucibleofStorms
