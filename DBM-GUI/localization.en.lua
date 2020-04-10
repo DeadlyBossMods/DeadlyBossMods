@@ -12,7 +12,8 @@ L.WebsiteButton				= "Website"
 L.OTabBosses	= "Bosses"
 L.OTabOptions	= GAMEOPTIONS_MENU
 
-L.TabCategory_SL			= EXPANSION_NAME8 or "Shadowlands"
+L.TabCategory_Options	 	= "General Options"
+L.TabCategory_SHADOWLANDS	= EXPANSION_NAME8 or "Shadowlands"
 L.TabCategory_BFA	 		= EXPANSION_NAME7
 L.TabCategory_LEG	 		= EXPANSION_NAME6
 L.TabCategory_WOD	 		= EXPANSION_NAME5
