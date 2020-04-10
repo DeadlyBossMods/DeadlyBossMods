@@ -492,7 +492,7 @@ local frameBackdrop = {
 function createTextFrame()
 	local elapsed = 0
 	local textFrame
-	if wowTOC >= 90001 then
+	if DBM:GetTOC() >= 90001 then
 		textFrame = CreateFrame("GameTooltip", "DBMRangeCheck", UIParent, "SharedTooltipTemplate")
 	else
 		textFrame = CreateFrame("GameTooltip", "DBMRangeCheck", UIParent, "GameTooltipTemplate")
