@@ -6506,6 +6506,7 @@ do
 			end
 			fireEvent("DBM_PlaySound", path)
 		else
+			if wowTOC >= 90001 then return end--PlaySoundFile Crashes alpha client at present, so this is needed to avoid DBM causing user crashes
 			if validate then
 				--Validate LibSharedMedia
 				if not LSMMediaCacheBuilt then buildLSMFileCache() end
@@ -8024,7 +8025,7 @@ do
 		["RaidCooldown"] = true,
 		["RemovePoison"] = true,--from ally
 		["RemoveDisease"] = true,--from ally
-		["RemoveEnrage"] = true,--Can remove enemy enrage. returned in 8.x!
+		["RemoveEnrage"] = true,--Can remove enemy enrage. returned in 8.x+!
 		["RemoveCurse"] = true,--from ally
 		["RemoveMagic"] = true,--from ally
 		["MagicDispeller"] = true,--from ENEMY, not debuffs on players. use "Healer" or "RemoveMagic" for ally magic dispels. ALL healers can do that on retail, and warlock Imps
@@ -8160,6 +8161,7 @@ do
 			["RangedDps"] = true,
 			["Physical"] = true,
 			["HasInterrupt"] = true,
+			--["RemoveEnrage"] = true,--Enable in 9.0
 		},
 		[255] = {	--Survival Hunter (Legion+)
 			["Dps"] = true,
