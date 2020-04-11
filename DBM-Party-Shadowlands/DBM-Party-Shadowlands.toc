@@ -6,7 +6,7 @@
 ## SavedVariablesPerCharacter: DBMPartyShadowlands_SavedStats
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Type: PARTY
-## X-DBM-Mod-Category: SL
+## X-DBM-Mod-Category: SHADOWLANDS
 ## X-DBM-Mod-Has-Challenge: 1
 ## X-DBM-Mod-Has-Mythic : 1
 ## X-DBM-Mod-SubCategoriesID: 2286, 2289, 2290, 2287, 2285, 2293, 2291, 2284
