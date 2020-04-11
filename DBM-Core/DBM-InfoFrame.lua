@@ -81,8 +81,8 @@ local select, tonumber = select, tonumber
 local mfloor = math.floor
 local getGroupId = DBM.GetGroupId
 
--- for Phanx' Class Colors
-local RAID_CLASS_COLORS = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS
+local RAID_CLASS_COLORS = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS-- for Phanx' Class Colors
+local NORMAL_FONT_COLOR = NORMAL_FONT_COLOR or CreateColor(1.0, 0.82, 0.0)
 
 ---------------------
 --  Dropdown Menu  --
@@ -211,7 +211,12 @@ local frameBackdrop = {
 --On top of this. infoframe features have been stuck limited for a while now because it's limited to what GameTooltip supports
 function createFrame()
 	local elapsed = 0
-	local frame = CreateFrame("GameTooltip", "DBMInfoFrame", UIParent, "GameTooltipTemplate")
+	local frame
+	if DBM:GetTOC() >= 90001 then
+		frame = CreateFrame("GameTooltip", "DBMInfoFrame", UIParent, "SharedTooltipTemplate")
+	else
+		frame = CreateFrame("GameTooltip", "DBMInfoFrame", UIParent, "GameTooltipTemplate")
+	end
 	dropdownFrame = CreateFrame("Frame", "DBMInfoFrameDropdown", frame, "UIDropDownMenuTemplate")
 	frame:SetFrameStrata("DIALOG")
 	frame:SetBackdrop(frameBackdrop)

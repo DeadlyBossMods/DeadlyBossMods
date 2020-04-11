@@ -1,0 +1,58 @@
+## Interface: 80300
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Dungeons (Shadowlands)|r
+## LoadOnDemand: 1
+## RequiredDeps: DBM-Core
+## SavedVariables: DBMPartyShadowlands_AllSavedVars
+## SavedVariablesPerCharacter: DBMPartyShadowlands_SavedStats
+## X-DBM-Mod: 1
+## X-DBM-Mod-Type: PARTY
+## X-DBM-Mod-Category: SHADOWLANDS
+## X-DBM-Mod-Has-Challenge: 1
+## X-DBM-Mod-Has-Mythic : 1
+## X-DBM-Mod-SubCategoriesID: 2286, 2289, 2290, 2287, 2285, 2293, 2291, 2284
+## X-DBM-Mod-Name: Dungeons (Shadowlands)
+## X-DBM-Mod-Sort: 315
+## X-DBM-Mod-MapID: 2286, 2289, 2290, 2287, 2285, 2293, 2291, 2284
+## X-DBM-Mod-MinCoreRevision: 17286
+## X-DBM-Mod-MinExpansion: 8
+localization.en.lua
+TheNecroticWake\Blightbone.lua
+TheNecroticWake\Amarth.lua
+TheNecroticWake\SurgeonStitchflesh.lua
+TheNecroticWake\Nalthor.lua
+TheNecroticWake\NecroticWakeTrash.lua
+Plaguefall\Globgrog.lua
+Plaguefall\DoctorIckus.lua
+Plaguefall\DominaVenomblade.lua
+Plaguefall\StradamaMargrave.lua
+Plaguefall\PlaguefallTrash.lua
+MistsofTirnaScithe\IngraMaloch.lua
+MistsofTirnaScithe\Mistcaller.lua
+MistsofTirnaScithe\Tredova.lua
+MistsofTirnaScithe\TirnaScitheTrash.lua
+HallsofAtonement\Halkias.lua
+HallsofAtonement\Echelon.lua
+HallsofAtonement\HighPriestess.lua
+HallsofAtonement\LordChamberlain.lua
+HallsofAtonement\AtonementTrash.lua
+SpiresofAscension\KinTara.lua
+SpiresofAscension\Ventunax.lua
+SpiresofAscension\Oryphrion.lua
+SpiresofAscension\ParagonofLoyalty.lua
+SpiresofAscension\SpiresofAscensionTrash.lua
+TheaterofPain\AffrontofChallengers.lua
+TheaterofPain\Gorechop.lua
+TheaterofPain\Hazak.lua
+TheaterofPain\Kultharok.lua
+TheaterofPain\Mordretha.lua
+TheaterofPain\TheaterofPainTrash.lua
+DeOtherSide\Hakkar.lua
+DeOtherSide\TheManastorms.lua
+DeOtherSide\DealerGexa.lua
+DeOtherSide\Muehzala.lua
+DeOtherSide\DeOtherSideTrash.lua
+SanguineDepths\Kryxis.lua
+SanguineDepths\ExecutorTarvold.lua
+SanguineDepths\GrandProctorBeryllia.lua
+SanguineDepths\GeneralKaal.lua
+SanguineDepths\SanguineDepthsTrash.lua
