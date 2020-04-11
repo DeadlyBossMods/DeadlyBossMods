@@ -20,8 +20,8 @@ mod:RegisterEventsInCombat(
 --local warnBlackPowder				= mod:NewTargetAnnounce(257314, 4)
 
 local specWarnLandoftheDead			= mod:NewSpecialWarningSwitch(321226, "-Healer", nil, nil, 1, 2)
-local specWarnFinalHarvest			= mod:NewSpecialWarningSpell(321247, nil, nil, nil, 2, 2)
-local specWarnBoneSpikes			= mod:NewSpecialWarningSpell(322519, nil, nil, nil, 2, 2)
+local specWarnFinalHarvest			= mod:NewSpecialWarningDodge(321247, nil, nil, nil, 2, 2)
+local specWarnBoneSpikes			= mod:NewSpecialWarningDodge(322519, nil, nil, nil, 2, 2)
 --local yellBlackPowder				= mod:NewYell(257314)
 local specWarnFrostboltVolley		= mod:NewSpecialWarningInterrupt(322493, "HasInterrupt", nil, nil, 1, 2)
 local specWarnUnholyFrenzy			= mod:NewSpecialWarningDispel(320012, "RemoveEnrage", nil, nil, 1, 2)
@@ -47,7 +47,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnFrostboltVolley:Play("kickcast")
 	elseif spellId == 321247 then
 		specWarnFinalHarvest:Show()
-		specWarnFinalHarvest:Play("specialsoon")
+		specWarnFinalHarvest:Play("watchstep")
 		timerFinalHarvestCD:Start()
 	elseif spellId == 322519 then
 		specWarnBoneSpikes:Show()
