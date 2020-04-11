@@ -14,7 +14,7 @@
 ## X-DBM-Mod-Has-Single-Format: 1
 ## X-DBM-Mod-SubCategoriesID: 1643, 1642, 1943, 2105, 1718, 1779
 ## X-DBM-Mod-Name: Azeroth (BfA)
-## X-DBM-Mod-Name-koKR: 아제로스 (격전의 아제로스)
+## X-DBM-Mod-Name-koKR: 아제로스 (격아)
 ## X-DBM-Mod-Name-zhTW: 艾澤拉斯 (決戰艾澤拉斯)
 ## X-DBM-Mod-World-Boss: 1
 ## X-DBM-Mod-Sort: 410

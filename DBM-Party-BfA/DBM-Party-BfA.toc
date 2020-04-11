@@ -1,7 +1,7 @@
 ## Interface: 80300
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Dungeons (BfA)|r
 ## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Gruppe-BfA|r
-## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf05인 던전-격전의 아제로스|r
+## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0던전 (격아)|r
 ## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0隊伍首領-決戰艾澤拉斯|r
 ## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf05人小队-争霸艾泽拉斯|r
 ## Title-itIT:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Gruppo-BfA|r
@@ -19,7 +19,7 @@
 ## X-DBM-Mod-Name-esES: Mazmorras (BfA)
 ## X-DBM-Mod-Name-esMX: Mazmorras (BfA)
 ## X-DBM-Mod-Name-deDE: Gruppe (BfA)
-## X-DBM-Mod-Name-koKR: 5인 던전 (격전의 아제로스)
+## X-DBM-Mod-Name-koKR: 던전 (격아)
 ## X-DBM-Mod-Name-zhTW: 隊伍首領 (決戰艾澤拉斯)
 ## X-DBM-Mod-Name-zhCN: 5人小队 (争霸艾泽拉斯)
 ## X-DBM-Mod-Name-itiT: Gruppo (BfA)
