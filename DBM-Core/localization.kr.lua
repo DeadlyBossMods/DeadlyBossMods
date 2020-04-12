@@ -153,7 +153,7 @@ DBM_CORE_WHISPER_SCENARIO_END_WIPE_STATS	= "%s님이 %s 시나리오를 완료�
 
 DBM_CORE_VERSIONCHECK_HEADER		= "보스 모드 - 버전"
 DBM_CORE_VERSIONCHECK_ENTRY_NO_DBM	= "%s: 설치된 보스 모드 없음"
-DBM_CORE_VERSIONCHECK_FOOTER		= "DBM을 설치한 플레이어 %d명과 Bigwigs를 설치한 플레이어 %d명을 발견했습니다."
+DBM_CORE_VERSIONCHECK_FOOTER		= DBM_DBM.."을 설치한 플레이어 %d명과 Bigwigs를 설치한 플레이어 %d명을 발견했습니다."
 DBM_CORE_VERSIONCHECK_OUTDATED		= "다음 %d명의 플레이어가 구버전 보스 모드를 사용중: %s"
 DBM_CORE_YOUR_VERSION_OUTDATED      = "사용중인 "..DBM_DEADLY_BOSS_MODS.." 버전이 사용 기한을 지났습니다. http://www.deadlybossmods.com에서 최신 버전을 받으세요."
 DBM_CORE_VOICE_PACK_OUTDATED		= "선택한 DBM 음성팩에 일부 음성이 들어있지 않습니다. 몇가지 경고 음성이 기본 효과음으로 재생됩니다. 최신 음성팩을 다운로드 받거나 제작자에게 누락된 음성 파일 업데이트를 요청하시기 바랍니다"
