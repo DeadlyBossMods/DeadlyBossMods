@@ -13,7 +13,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 320358 320376 320359 327664 323016",
 	"SPELL_CAST_SUCCESS 326629 320200",
 	"SPELL_PERIODIC_DAMAGE 320366",
-	"SPELL_PERIODIC_MISSED 320366"
+	"SPELL_PERIODIC_MISSED 320366",
+	"RAID_BOSS_WHISPER"
 --	"UNIT_DIED"
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
@@ -24,11 +25,14 @@ local warnMutilate					= mod:NewCastAnnounce(320376, 4, nil, nil, "Tank|Healer")
 --local warnObscuringGas				= mod:NewSpellAnnounce(326629, 2)
 local warnEscape					= mod:NewCastAnnounce(320359, 3)
 local warnEmbalmingIchor			= mod:NewTargetNoFilterAnnounce(322681, 3)
+local warnMeatHook					= mod:NewTargetNoFilterAnnounce(327461, 3)
 local warnStichNeedle				= mod:NewTargetNoFilterAnnounce(320200, 3, nil, "Healer")
 local warnDarkInfusion				= mod:NewCastAnnounce(323016, 3)
 
 local specWarnEmbalmingIchor		= mod:NewSpecialWarningMoveAway(322681, nil, nil, nil, 1, 2)
 local yellEmbalmingIchor			= mod:NewYell(322681)
+local specWarnMeatHook				= mod:NewSpecialWarningMoveTo(327461, nil, nil, nil, 3, 2)
+local yellMeatHook					= mod:NewYell(327461)
 --local specWarnHealingBalm			= mod:NewSpecialWarningInterrupt(257397, "HasInterrupt", nil, nil, 1, 2)
 local specWarnGTFO					= mod:NewSpecialWarningGTFO(320366, nil, nil, nil, 1, 8)
 
@@ -102,6 +106,22 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spell
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
+
+function mod:RAID_BOSS_WHISPER(msg)
+	if msg:find("spell:327461") then
+		specWarnMeatHook:Show(DBM_BOSS)
+		specWarnMeatHook:Play("targetyou")
+		yellMeatHook:Yell()
+	end
+end
+
+function mod:OnTranscriptorSync(msg, targetName)
+	if msg:find("327461") and targetName then
+		targetName = Ambiguate(targetName, "none")
+		if UnitName("player") == targetName then return end--Player already got warned
+		warnMeatHook:Show(targetName)
+	end
+end
 
 --[[
 function mod:UNIT_DIED(args)
