@@ -2,39 +2,54 @@ local mod	= DBM:NewMod(2416, "DBM-Party-Shadowlands", 5, 1186)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
---mod:SetCreatureID(126983)
+mod:SetCreatureID(162058)
 mod:SetEncounterID(2356)
 mod:SetZone()
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
---	"SPELL_AURA_APPLIED",
---	"SPELL_CAST_START",
---	"SPELL_CAST_SUCCESS",
+	"SPELL_AURA_APPLIED 325424",
+	"SPELL_CAST_START 324205",
+	"SPELL_CAST_SUCCESS 324148"
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
+--TODO, do more with dark stride if targetting possible
 --local warnBlackPowder				= mod:NewTargetAnnounce(257314, 4)
 
---local specWarnBlackPowder			= mod:NewSpecialWarningRun(257314, nil, nil, nil, 4, 2)
---local yellBlackPowder				= mod:NewYell(257314)
---local specWarnHealingBalm			= mod:NewSpecialWarningInterrupt(257397, "HasInterrupt", nil, nil, 1, 2)
+local specWarnDarkStride			= mod:NewSpecialWarningTaunt(324148, nil, nil, nil, 1, 2)
+local specWarnAnimaflash			= mod:NewSpecialWarningDodge(324205, nil, nil, nil, 2, 2)
+local yellAnimaflash				= mod:NewYell(324205)
+local specWarnReabsorbAnima			= mod:NewSpecialWarningDodge(325424, nil, nil, nil, 2, 2)
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(257274, nil, nil, nil, 1, 8)
 
---local timerAvastyeCD				= mod:NewCDTimer(13, 257316, nil, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON)
---local timerSwiftwindSaberCD			= mod:NewCDTimer(15.8, 257316, nil, nil, nil, 3)
+local timerDarkStrideCD				= mod:NewAITimer(13, 324148, nil, nil, nil, 3, nil, DBM_CORE_TANK_ICON)
+local timerAnimaflashCD				= mod:NewAITimer(15.8, 324205, nil, nil, nil, 3)
+local timerReabsorbAnimaCD			= mod:NewAITimer(15.8, 325424, nil, nil, nil, 6)
+
+function mod:FlashTarget(targetname, uId)
+	if not targetname then return end
+	if targetname == UnitName("player") then
+		yellAnimaflash:Yell()
+	end
+end
 
 function mod:OnCombatStart(delay)
-
+	timerDarkStrideCD:Start(1-delay)
+	timerAnimaflashCD:Start(1-delay)
+	timerReabsorbAnimaCD:Start(1-delay)
 end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 257402 then
-
+	if spellId == 324205 then
+		specWarnAnimaflash:Show()
+		specWarnAnimaflash:Play("shockwave")
+		timerAnimaflashCD:Start()
+		self:ScheduleMethod(0.1, "BossTargetScanner", args.sourceGUID, "FlashTarget", 0.1, 6)
 --	elseif spellId == 257397 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 --		specWarnHealingBalm:Show(args.sourceName)
 --		specWarnHealingBalm:Play("kickcast")
@@ -43,15 +58,20 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 257316 then
-
+	if spellId == 324148 then
+		specWarnDarkStride:Show(args.destName or "Unknown")
+		specWarnDarkStride:Play("tauntboss")
+		timerDarkStrideCD:Start()
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 194966 then
-
+	if spellId == 325424 then
+		specWarnReabsorbAnima:Show()
+		specWarnReabsorbAnima:Play("watchstep")
+		timerReabsorbAnimaCD:Start()
+		--Possibly reset anima flash and darkstride timers?
 	end
 end
 
