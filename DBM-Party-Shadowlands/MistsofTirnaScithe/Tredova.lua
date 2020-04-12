@@ -2,7 +2,7 @@ local mod	= DBM:NewMod(2405, "DBM-Party-Shadowlands", 3, 1184)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
---mod:SetCreatureID(126983)
+mod:SetCreatureID(164517)
 mod:SetEncounterID(2393)
 mod:SetZone()
 
@@ -17,6 +17,7 @@ mod:RegisterEventsInCombat(
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
+--TODO: Whole Mod. Kind of want to wait for a journal update first, but if no journal update in next build, this mod will be drycoded without it (just be less acurate)
 --local warnBlackPowder				= mod:NewTargetAnnounce(257314, 4)
 
 --local specWarnBlackPowder			= mod:NewSpecialWarningRun(257314, nil, nil, nil, 4, 2)

@@ -2,7 +2,7 @@ local mod	= DBM:NewMod(2395, "DBM-Party-Shadowlands", 1, 1182)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
---mod:SetCreatureID(126983)
+mod:SetCreatureID(166880)
 mod:SetEncounterID(2387)
 mod:SetZone()
 
@@ -16,6 +16,7 @@ mod:RegisterEventsInCombat(
 )
 
 --TODO, https://shadowlands.wowhead.com/spell=320614/blood-gorge stuff?
+--TODO, improve target warnings if target scanning is successful
 local warnFetidGas					= mod:NewSpellAnnounce(320637, 2)
 
 local specWarnHeavingRetch			= mod:NewSpecialWarningDodge(320596, nil, nil, nil, 2, 2)
