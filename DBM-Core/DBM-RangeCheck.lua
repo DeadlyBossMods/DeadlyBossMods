@@ -79,7 +79,6 @@ local max, sin, cos, pi, pi2 = math.max, math.sin, math.cos, math.pi, math.pi * 
 local GetBestMapForUnit = C_Map.GetBestMapForUnit
 
 local RAID_CLASS_COLORS = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS-- for Phanx' Class Colors
-local NORMAL_FONT_COLOR = NORMAL_FONT_COLOR or CreateColor(1.0, 0.82, 0.0)
 local BLIP_TEX_COORDS = {
 	["WARRIOR"]		 = { 0, 0.125, 0, 0.25 },
 	["PALADIN"]		 = { 0.125, 0.25, 0, 0.25 },

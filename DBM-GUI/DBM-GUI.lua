@@ -74,7 +74,6 @@ end
 --------------------------------------------------------
 local tinsert, tremove, tsort, twipe = table.insert, table.remove, table.sort, table.wipe
 local mfloor, mmax = math.floor, math.max
-local NORMAL_FONT_COLOR = NORMAL_FONT_COLOR or CreateColor(1.0, 0.82, 0.0)
 
 function DBM_GUI:ShowHide(forceshow)
 	if forceshow == true then

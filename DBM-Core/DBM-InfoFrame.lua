@@ -82,7 +82,6 @@ local mfloor = math.floor
 local getGroupId = DBM.GetGroupId
 
 local RAID_CLASS_COLORS = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS-- for Phanx' Class Colors
-local NORMAL_FONT_COLOR = NORMAL_FONT_COLOR or CreateColor(1.0, 0.82, 0.0)
 
 ---------------------
 --  Dropdown Menu  --
