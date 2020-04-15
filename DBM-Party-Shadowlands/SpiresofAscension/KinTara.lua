@@ -68,6 +68,7 @@ function mod:ChargeTarget(targetname, uId)
 		specWarnSavageCharge:Play("targetyou")
 		yellSavageCharge:Yell()
 	end
+	DBM:AddMsg("ChargeTarget returned: "..targetname.." Report if accurate or inaccurate to DBM Author")
 end
 
 function mod:OnCombatStart(delay)
