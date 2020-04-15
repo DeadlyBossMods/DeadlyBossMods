@@ -226,7 +226,7 @@ function mod:SPELL_CAST_START(args)
 		timerTwilightDecimatorCD:Start(16.3, self.vb.TwilightDCasts+1)--Actually 18.3-19.1, but we make timer line up with pre scheduling
 	elseif spellId == 315932 then
 		if self:AntiSpam(3, 4) then
-			if self.Options.SpecWarn315932dodge then
+			if self.Options.SpecWarn315932dodge2 then
 				specWarnBrutalSmash:Show()
 				specWarnBrutalSmash:Play("watchstep")
 			else
