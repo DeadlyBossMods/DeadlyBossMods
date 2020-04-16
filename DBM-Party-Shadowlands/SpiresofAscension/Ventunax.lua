@@ -35,6 +35,7 @@ function mod:FlashTarget(targetname, uId)
 	if targetname == UnitName("player") then
 		yellAnimaflash:Yell()
 	end
+	DBM:AddMsg("FlashTarget returned: "..targetname.." Report if accurate or inaccurate to DBM Author")
 end
 
 function mod:OnCombatStart(delay)

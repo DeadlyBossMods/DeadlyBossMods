@@ -33,6 +33,7 @@ function mod:RetchTarget(targetname, uId)
 	if targetname == UnitName("player") then
 		yellHeavingRetch:Yell()
 	end
+	DBM:AddMsg("RetchTarget returned: "..targetname.." Report if accurate or inaccurate to DBM Author")
 end
 
 function mod:OnCombatStart(delay)

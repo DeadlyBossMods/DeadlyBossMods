@@ -40,6 +40,7 @@ function mod:BallTarget(targetname, uId)
 	if targetname == UnitName("player") then
 		yellDodgeBall:Yell()
 	end
+	DBM:AddMsg("BallTarget returned: "..targetname.." Report if accurate or inaccurate to DBM Author")
 end
 
 function mod:OnCombatStart(delay)

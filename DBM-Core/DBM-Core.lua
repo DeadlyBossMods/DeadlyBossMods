@@ -527,7 +527,6 @@ local IsQuestFlaggedCompleted = C_QuestLog and C_QuestLog.IsQuestFlaggedComplete
 local SendAddonMessage = C_ChatInfo.SendAddonMessage
 
 local RAID_CLASS_COLORS = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS-- for Phanx' Class Colors
-local NORMAL_FONT_COLOR = NORMAL_FONT_COLOR or CreateColor(1.0, 0.82, 0.0)
 
 ---------------------------------
 --  General (local) functions  --

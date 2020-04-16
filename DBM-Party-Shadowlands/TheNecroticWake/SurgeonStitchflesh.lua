@@ -52,6 +52,7 @@ function mod:IchorTarget(targetname, uId)
 	else
 		warnEmbalmingIchor:Show(targetname)
 	end
+	DBM:AddMsg("IchorTarget returned: "..targetname.." Report if accurate or inaccurate to DBM Author")
 end
 
 function mod:OnCombatStart(delay)
