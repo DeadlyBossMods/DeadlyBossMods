@@ -115,9 +115,9 @@ L.DisableGuildStatus 		= "길드에 진행 상황 알림 메시지를 전송하�
 -- Tab: Barsetup
 L.BarSetup  				= "타이머 바 설정"
 L.BarTexture 				= "바 텍스쳐"
-L.BarStyle 					= "바 스타일"
-L.BarDBM					= "DBM (애니메이션)"
-L.BarSimple					= "Simple (애니메이션 없음)"
+L.BarStyle 					= "바 작동 방식"
+L.BarDBM					= "Classic (처음 생긴 바가 확대 표시될 위치로 스르륵 이동)"
+L.BarSimple					= "Simple (처음 바는 사라지고 큰 바가 새로 생성)"
 L.BarStartColor	 			= "시작 색상"
 L.BarEndColor 				= "종료 색상"
 L.Bar_Font					= "바 글꼴"
