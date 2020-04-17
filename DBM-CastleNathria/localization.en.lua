@@ -6,7 +6,7 @@ local L
 --L= DBM:GetModLocalization(2424)
 
 ---------------------------
---  Bat Gargoyle --
+--  Shriekwing --
 ---------------------------
 --L= DBM:GetModLocalization(2393)
 

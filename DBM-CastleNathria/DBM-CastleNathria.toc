@@ -17,7 +17,7 @@
 ## X-DBM-Mod-MinExpansion: 8
 localization.en.lua
 SireDenathrius.lua
-BatGargoyle.lua
+Shriekwing.lua
 BrokerCurator.lua
 Kaelthas.lua
 LadyInervaDarkvein.lua

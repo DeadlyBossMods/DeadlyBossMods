@@ -35,13 +35,13 @@ MistsofTirnaScithe\Tredova.lua
 MistsofTirnaScithe\TirnaScitheTrash.lua
 HallsofAtonement\Halkias.lua
 HallsofAtonement\Echelon.lua
-HallsofAtonement\HighPriestess.lua
+HallsofAtonement\HighAdjudicatorAlee.lua
 HallsofAtonement\LordChamberlain.lua
 HallsofAtonement\AtonementTrash.lua
 SpiresofAscension\KinTara.lua
 SpiresofAscension\Ventunax.lua
 SpiresofAscension\Oryphrion.lua
-SpiresofAscension\ParagonofLoyalty.lua
+SpiresofAscension\Devos.lua
 SpiresofAscension\SpiresofAscensionTrash.lua
 TheaterofPain\AffrontofChallengers.lua
 TheaterofPain\Gorechop.lua
