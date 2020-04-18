@@ -222,7 +222,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if not self.Options.Enabled then return end
 	local spellId = args.spellId
 	if spellId == 300650 and args:IsDestTypePlayer() and self:CheckDispelFilter() and self:AntiSpam(5, 3) then
-		specWarnSuffocatingSmogDispel:Show()
+		specWarnSuffocatingSmogDispel:Show(args.destName)
 		specWarnSuffocatingSmogDispel:Play("helpdispel")
 	elseif (spellId == 299588 or spellId == 293930) and not args:IsDestTypePlayer() and self:AntiSpam(3, 3) then
 		specWarnOverclockDispel:Show(args.destName)
