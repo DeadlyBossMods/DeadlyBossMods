@@ -6505,7 +6505,6 @@ do
 			end
 			fireEvent("DBM_PlaySound", path)
 		else
-			if wowTOC >= 90001 then return end--PlaySoundFile Crashes alpha client at present, so this is needed to avoid DBM causing user crashes
 			if validate then
 				--Validate LibSharedMedia
 				if not LSMMediaCacheBuilt then buildLSMFileCache() end
@@ -7609,7 +7608,7 @@ function bossModPrototype:IsValidWarning(sourceGUID, customunitID)
 	return false
 end
 
---Skip param is used when CheckInterruptFilter is actually being used for a simpe target/focus check and nothing more.
+--force param is used when CheckInterruptFilter is actually being used for a simpe target/focus check and nothing more.
 --checkCooldown should never be passed with skip or COUNT interrupt warnings. It should be passed with any other interrupt filter
 function bossModPrototype:CheckInterruptFilter(sourceGUID, force, checkCooldown, ignoreTandF)
 	if DBM.Options.FilterInterrupt2 == "None" and not force then return true end--user doesn't want to use interrupt filter, always return true
@@ -8024,10 +8023,11 @@ do
 		["RaidCooldown"] = true,
 		["RemovePoison"] = true,--from ally
 		["RemoveDisease"] = true,--from ally
-		["RemoveEnrage"] = true,--Can remove enemy enrage. returned in 8.x+!
 		["RemoveCurse"] = true,--from ally
 		["RemoveMagic"] = true,--from ally
+		["RemoveEnrage"] = true,--Can remove enemy enrage. returned in 8.x+!
 		["MagicDispeller"] = true,--from ENEMY, not debuffs on players. use "Healer" or "RemoveMagic" for ally magic dispels. ALL healers can do that on retail, and warlock Imps
+		["ImmunityDispeller"] = true,--Priest mass dispel or Warrior Shattering Throw (shadowlands)
 		["HasInterrupt"] = true,--Has an interrupt that is 24 seconds or less CD that is BASELINE (not a talent)
 		["HasImmunity"] = true,--Has an immunity that can prevent or remove a spell effect (not just one that reduces damage like turtle or dispursion)
 	}]]
@@ -8084,13 +8084,15 @@ do
 			["RaidCooldown"] = true,--Rallying Cry
 			["Physical"] = true,
 			["HasInterrupt"] = true,
+			["ImmunityDispeller"] = true,
 		},
 		[73] = {	--Protection Warrior
 			["Tank"] = true,
 			["Melee"] = true,
 			["Physical"] = true,
 			["HasInterrupt"] = true,
-			["RaidCooldown"] = true,--Rallying Cry (in 8.x)
+			["RaidCooldown"] = true,--Rallying Cry
+			["ImmunityDispeller"] = true,
 		},
 		[102] = {	--Balance Druid
 			["Dps"] = true,
@@ -8180,6 +8182,7 @@ do
 			["RemoveDisease"] = true,
 			["RemoveMagic"] = true,
 			["MagicDispeller"] = true,
+			["ImmunityDispeller"] = true,
 		},
 		[258] = {	--Shadow Priest
 			["Dps"] = true,
@@ -8189,6 +8192,7 @@ do
 			["SpellCaster"] = true,
 			["CasterDps"] = true,
 			["MagicDispeller"] = true,
+			["ImmunityDispeller"] = true,
 			["HasInterrupt"] = true,
 			["RemoveDisease"] = true,
 		},

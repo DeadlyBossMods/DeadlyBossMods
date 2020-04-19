@@ -105,7 +105,7 @@ L:SetGeneralLocalization({
 --L= DBM:GetModLocalization(2387)
 
 -----------------------
--- The High Priestess of Nathria --
+-- High Adjudicator Alee --
 -----------------------
 --L= DBM:GetModLocalization(2411)
 
@@ -142,7 +142,7 @@ L:SetGeneralLocalization({
 --L= DBM:GetModLocalization(2414)
 
 -----------------------
--- Paragon of Loyalty --
+-- Devos, Paragon of Doubt --
 -----------------------
 --L= DBM:GetModLocalization(2412)
 
