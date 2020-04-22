@@ -1,17 +1,12 @@
 local L
 
 ---------------------------
---  Sire Denathrius --
----------------------------
---L= DBM:GetModLocalization(2424)
-
----------------------------
 --  Shriekwing --
 ---------------------------
 --L= DBM:GetModLocalization(2393)
 
 ---------------------------
---  Broker Curator --
+--  Artificer Xy'Mox --
 ---------------------------
 --L= DBM:GetModLocalization(2418)
 
@@ -35,6 +30,11 @@ local L
 
 --L:SetMiscLocalization({
 --})
+
+---------------------------
+--  Sire Denathrius --
+---------------------------
+--L= DBM:GetModLocalization(2424)
 
 -------------
 --  Trash  --

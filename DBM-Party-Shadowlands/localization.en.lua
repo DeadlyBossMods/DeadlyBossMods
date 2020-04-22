@@ -105,7 +105,7 @@ L:SetGeneralLocalization({
 --L= DBM:GetModLocalization(2387)
 
 -----------------------
--- High Adjudicator Alee --
+-- High Adjudicator Aleez --
 -----------------------
 --L= DBM:GetModLocalization(2411)
 
