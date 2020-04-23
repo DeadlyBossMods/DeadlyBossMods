@@ -35,7 +35,7 @@ MistsofTirnaScithe\Tredova.lua
 MistsofTirnaScithe\TirnaScitheTrash.lua
 HallsofAtonement\Halkias.lua
 HallsofAtonement\Echelon.lua
-HallsofAtonement\HighAdjudicatorAlee.lua
+HallsofAtonement\HighAdjudicatorAleez.lua
 HallsofAtonement\LordChamberlain.lua
 HallsofAtonement\AtonementTrash.lua
 SpiresofAscension\KinTara.lua

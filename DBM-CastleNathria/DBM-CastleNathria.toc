@@ -16,10 +16,10 @@
 ## X-DBM-Mod-MinCoreRevision: 17286
 ## X-DBM-Mod-MinExpansion: 8
 localization.en.lua
-SireDenathrius.lua
 Shriekwing.lua
-BrokerCurator.lua
 Kaelthas.lua
+ArtificerXyMox.lua
 LadyInervaDarkvein.lua
 DredgerGiant.lua
+SireDenathrius.lua
 CastleNathriaTrash.lua
