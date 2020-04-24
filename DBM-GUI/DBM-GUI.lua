@@ -1692,7 +1692,7 @@ local function CreateOptionsMenu()
 			color2Type1text:SetTextColor(self:GetColorRGB())
 		end)
 
-		local dummybarcolor1 = DBM.Bars:CreateDummyBar(1)
+		local dummybarcolor1 = DBM.Bars:CreateDummyBar(1, nil, L.CBTAdd)
 		dummybarcolor1.frame:SetParent(BarColors.frame)
 		dummybarcolor1.frame:SetPoint("TOP", color2Type1text, "LEFT", 10, 40)
 		dummybarcolor1.frame:SetScript("OnUpdate", function(self, elapsed) dummybarcolor1:Update(elapsed) end)
@@ -1760,7 +1760,7 @@ local function CreateOptionsMenu()
 			color2Type2text:SetTextColor(self:GetColorRGB())
 		end)
 
-		local dummybarcolor2 = DBM.Bars:CreateDummyBar(2)
+		local dummybarcolor2 = DBM.Bars:CreateDummyBar(2, nil, L.CBTAOE)
 		dummybarcolor2.frame:SetParent(BarColors.frame)
 		dummybarcolor2.frame:SetPoint("TOP", color2Type2text, "LEFT", 10, 40)
 		dummybarcolor2.frame:SetScript("OnUpdate", function(self, elapsed) dummybarcolor2:Update(elapsed) end)
@@ -1828,7 +1828,7 @@ local function CreateOptionsMenu()
 			color2Type3text:SetTextColor(self:GetColorRGB())
 		end)
 
-		local dummybarcolor3 = DBM.Bars:CreateDummyBar(3)
+		local dummybarcolor3 = DBM.Bars:CreateDummyBar(3, nil, L.CBTTargeted)
 		dummybarcolor3.frame:SetParent(BarColors.frame)
 		dummybarcolor3.frame:SetPoint("TOP", color2Type3text, "LEFT", 10, 40)
 		dummybarcolor3.frame:SetScript("OnUpdate", function(self, elapsed) dummybarcolor3:Update(elapsed) end)
@@ -1896,7 +1896,7 @@ local function CreateOptionsMenu()
 			color2Type4text:SetTextColor(self:GetColorRGB())
 		end)
 
-		local dummybarcolor4 = DBM.Bars:CreateDummyBar(4)
+		local dummybarcolor4 = DBM.Bars:CreateDummyBar(4, nil, L.CBTInterrupt)
 		dummybarcolor4.frame:SetParent(BarColors.frame)
 		dummybarcolor4.frame:SetPoint("TOP", color2Type4text, "LEFT", 10, 40)
 		dummybarcolor4.frame:SetScript("OnUpdate", function(self, elapsed) dummybarcolor4:Update(elapsed) end)
@@ -1964,7 +1964,7 @@ local function CreateOptionsMenu()
 			color2Type5text:SetTextColor(self:GetColorRGB())
 		end)
 
-		local dummybarcolor5 = DBM.Bars:CreateDummyBar(5)
+		local dummybarcolor5 = DBM.Bars:CreateDummyBar(5, nil, L.CBTRole)
 		dummybarcolor5.frame:SetParent(BarColors.frame)
 		dummybarcolor5.frame:SetPoint("TOP", color2Type5text, "LEFT", 10, 40)
 		dummybarcolor5.frame:SetScript("OnUpdate", function(self, elapsed) dummybarcolor5:Update(elapsed) end)
@@ -2032,7 +2032,7 @@ local function CreateOptionsMenu()
 			color2Type6text:SetTextColor(self:GetColorRGB())
 		end)
 
-		local dummybarcolor6 = DBM.Bars:CreateDummyBar(6)
+		local dummybarcolor6 = DBM.Bars:CreateDummyBar(6, nil, L.CBTPhase)
 		dummybarcolor6.frame:SetParent(BarColors.frame)
 		dummybarcolor6.frame:SetPoint("TOP", color2Type6text, "LEFT", 10, 40)
 		dummybarcolor6.frame:SetScript("OnUpdate", function(self, elapsed) dummybarcolor6:Update(elapsed) end)
@@ -2101,7 +2101,7 @@ local function CreateOptionsMenu()
 			color2Type7text:SetTextColor(self:GetColorRGB())
 		end)
 
-		local dummybarcolor7 = DBM.Bars:CreateDummyBar(7)
+		local dummybarcolor7 = DBM.Bars:CreateDummyBar(7, nil, L.CBTImportant)
 		dummybarcolor7.frame:SetParent(BarColors.frame)
 		dummybarcolor7.frame:SetPoint("TOP", color2Type7text, "LEFT", 10, 40)
 		dummybarcolor7.frame:SetScript("OnUpdate", function(self, elapsed) dummybarcolor7:Update(elapsed) end)
@@ -2126,12 +2126,14 @@ local function CreateOptionsMenu()
 		local bar7OptionsText2 = BarColors:CreateText(L.Bar7Footer, 405, nil, nil, "LEFT")
 		bar7OptionsText2:SetPoint("TOPLEFT", customInline, "TOPLEFT", 0, -60)
 
-		--General Options
-		local BarSetup = BarSetupPanel:CreateArea(L.AreaTitle_BarSetup, nil, 460, true)
+		-----------------------
+		-- Bar Appearance --
+		-----------------------
+		local BarSetup = BarSetupPanel:CreateArea(L.AreaTitle_BarSetup, nil, 325, true)
 
 		local color1 = BarSetup:CreateColorSelect(64)
 		local color2 = BarSetup:CreateColorSelect(64)
-		color1:SetPoint('TOPLEFT', BarSetup.frame, "TOPLEFT", 30, -60)
+		color1:SetPoint('TOPLEFT', BarSetup.frame, "TOPLEFT", 30, -80)
 		color2:SetPoint('TOPLEFT', color1, "TOPRIGHT", 20, 0)
 
 		local color1reset = BarSetup:CreateButton(L.Reset, 64, 10, nil, GameFontNormalSmall)
@@ -2182,14 +2184,31 @@ local function CreateOptionsMenu()
 			color2text:SetTextColor(self:GetColorRGB())
 		end)
 
-		local maindummybar = DBM.Bars:CreateDummyBar()
+		local maindummybar = DBM.Bars:CreateDummyBar(nil, nil, SMALL)
 		maindummybar.frame:SetParent(BarSetup.frame)
-		maindummybar.frame:SetPoint("TOP", color2text, "LEFT", 10, 40)
+		maindummybar.frame:SetPoint("TOP", color2text, "LEFT", 10, 60)
 		maindummybar.frame:SetScript("OnUpdate", function(self, elapsed) maindummybar:Update(elapsed) end)
 		do
 			-- little hook to prevent this bar from changing size/scale
 			local old = maindummybar.ApplyStyle
 			function maindummybar:ApplyStyle(...)
+				old(self, ...)
+				self.frame:SetWidth(183)
+				self.frame:SetScale(0.9)
+				_G[self.frame:GetName().."Bar"]:SetWidth(183)
+			end
+		end
+		local maindummybarHuge = DBM.Bars:CreateDummyBar(nil, nil, LARGE)
+		maindummybarHuge.frame:SetParent(BarSetup.frame)
+		maindummybarHuge.frame:SetPoint("TOP", color2text, "LEFT", 10, 35)
+		maindummybarHuge.frame:SetScript("OnUpdate", function(self, elapsed) maindummybarHuge:Update(elapsed) end)
+		maindummybarHuge.enlarged = true
+		maindummybarHuge.enlargeHack = true
+		maindummybarHuge:ApplyStyle()
+		do
+			-- little hook to prevent this bar from changing size/scale
+			local old = maindummybarHuge.ApplyStyle
+			function maindummybarHuge:ApplyStyle(...)
 				old(self, ...)
 				self.frame:SetWidth(183)
 				self.frame:SetScale(0.9)
@@ -2258,35 +2277,11 @@ local function CreateOptionsMenu()
 		local FlashBars = BarSetup:CreateCheckButton(L.BarFlash, false, nil, nil, "FlashBar")
 		FlashBars:SetPoint("TOPLEFT", SparkBars, "BOTTOMLEFT", 0, 0)
 
-		local ClickThrough = BarSetup:CreateCheckButton(L.ClickThrough, false, nil, nil, "ClickThrough")
-		ClickThrough:SetPoint("TOPLEFT", FlashBars, "BOTTOMLEFT", 0, 0)
-
-		local SortBars = BarSetup:CreateCheckButton(L.BarSort, false, nil, nil, "Sort")
-		SortBars:SetPoint("TOPLEFT", ClickThrough, "BOTTOMLEFT", 0, 0)
-
 		local ColorBars = BarSetup:CreateCheckButton(L.BarColorByType, false, nil, nil, "ColorByType")
-		ColorBars:SetPoint("TOPLEFT", SortBars, "BOTTOMLEFT", 0, 0)
+		ColorBars:SetPoint("TOPLEFT", FlashBars, "BOTTOMLEFT", 0, 0)
 
 		local InlineIcons = BarSetup:CreateCheckButton(L.BarInlineIcons, false, nil, nil, "InlineIcons")
 		InlineIcons:SetPoint("LEFT", ColorBars, "LEFT", 130, 0)
-
-		local ShortTimers = BarSetup:CreateCheckButton(L.ShortTimerText, false, nil, "ShortTimerText")
-		ShortTimers:SetPoint("TOPLEFT", ColorBars, "BOTTOMLEFT", 0, 0)
-
-		local StripTimers = BarSetup:CreateCheckButton(L.StripTimerText, false, nil, nil, "StripCDText")
-		StripTimers:SetPoint("TOPLEFT", ShortTimers, "BOTTOMLEFT", 0, 0)
-
-		local KeepTimers = BarSetup:CreateCheckButton(L.KeepBar, false, nil, nil, "KeepBars")
-		KeepTimers:SetPoint("TOPLEFT", StripTimers, "BOTTOMLEFT", 0, 0)
-
-		local KeepTimers2 = BarSetup:CreateText(L.KeepBar2, 405, nil, nil, "LEFT")
-		KeepTimers2:SetPoint("TOPLEFT", KeepTimers, "BOTTOMLEFT", 25, 10)
-
-		local FadeTimers = BarSetup:CreateCheckButton(L.FadeBar, false, nil, nil, "FadeBars")
-		FadeTimers:SetPoint("TOPLEFT", KeepTimers, "BOTTOMLEFT", 0, 0)
-
-		local FadeTimers2 = BarSetup:CreateText(L.KeepBar2, 405, nil, nil, "LEFT")
-		FadeTimers2:SetPoint("TOPLEFT", FadeTimers, "BOTTOMLEFT", 25, 10)
 
 		-- Functions for bar setup
 		local function createDBTOnShowHandler(option)
@@ -2316,22 +2311,54 @@ local function CreateOptionsMenu()
 		BarHeightSlider:SetScript("OnShow", createDBTOnShowHandler("Height"))
 		BarHeightSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("Height"))
 
-		local DecimalSlider = BarSetup:CreateSlider(L.Bar_Decimal, 5, 60, 1)
-		DecimalSlider:SetPoint("TOPLEFT", BarSetup.frame, "TOPLEFT", 20, -265)
+		local DisableBarFade = BarSetup:CreateCheckButton(L.NoBarFade, false, nil, nil, "NoBarFade")
+		DisableBarFade:SetPoint("TOPLEFT", BarHeightSlider, "BOTTOMLEFT", 0, -50)
+
+		-----------------------
+		-- Bar Behaviors --
+		-----------------------
+		local BarBehaviors = BarSetupPanel:CreateArea(L.AreaTitle_Behavior, nil, 225, true)
+
+		local DecimalSlider = BarBehaviors:CreateSlider(L.Bar_Decimal, 5, 60, 1)
+		DecimalSlider:SetPoint("TOPLEFT", BarBehaviors.frame, "TOPLEFT", 20, -25)
 		DecimalSlider:SetScript("OnShow", createDBTOnShowHandler("TDecimal"))
 		DecimalSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("TDecimal"))
 
-		local EnlargeTimeSlider = BarSetup:CreateSlider(L.Bar_EnlargeTime, 6, 30, 1)
-		EnlargeTimeSlider:SetPoint("TOPLEFT", BarSetup.frame, "TOPLEFT", 20, -310)
+		local EnlargeTimeSlider = BarBehaviors:CreateSlider(L.Bar_EnlargeTime, 6, 30, 1)
+		EnlargeTimeSlider:SetPoint("TOPLEFT", BarBehaviors.frame, "TOPLEFT", 230, -25)
 		EnlargeTimeSlider:SetScript("OnShow", createDBTOnShowHandler("EnlargeBarTime"))
 		EnlargeTimeSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("EnlargeBarTime"))
+
+		local ClickThrough = BarBehaviors:CreateCheckButton(L.ClickThrough, false, nil, nil, "ClickThrough")
+		ClickThrough:SetPoint("TOPLEFT", DecimalSlider, "BOTTOMLEFT", 0, -15)
+
+		local SortBars = BarBehaviors:CreateCheckButton(L.BarSort, false, nil, nil, "Sort")
+		SortBars:SetPoint("TOPLEFT", ClickThrough, "BOTTOMLEFT", 0, 0)
+
+		local ShortTimers = BarBehaviors:CreateCheckButton(L.ShortTimerText, false, nil, "ShortTimerText")
+		ShortTimers:SetPoint("TOPLEFT", SortBars, "BOTTOMLEFT", 0, 0)
+
+		local StripTimers = BarBehaviors:CreateCheckButton(L.StripTimerText, false, nil, nil, "StripCDText")
+		StripTimers:SetPoint("TOPLEFT", ShortTimers, "BOTTOMLEFT", 0, 0)
+
+		local KeepTimers = BarBehaviors:CreateCheckButton(L.KeepBar, false, nil, nil, "KeepBars")
+		KeepTimers:SetPoint("TOPLEFT", StripTimers, "BOTTOMLEFT", 0, 0)
+
+		--local KeepTimers2 = BarBehaviors:CreateText(L.KeepBar2, 405, nil, nil, "LEFT")
+		--KeepTimers2:SetPoint("TOPLEFT", KeepTimers, "BOTTOMLEFT", 25, 10)
+
+		local FadeTimers = BarBehaviors:CreateCheckButton(L.FadeBar, false, nil, nil, "FadeBars")
+		FadeTimers:SetPoint("TOPLEFT", KeepTimers, "BOTTOMLEFT", 0, 0)
+
+		--local FadeTimers2 = BarBehaviors:CreateText(L.KeepBar2, 405, nil, nil, "LEFT")
+		--FadeTimers2:SetPoint("TOPLEFT", FadeTimers, "BOTTOMLEFT", 25, 10)
 
 		-----------------------
 		-- Small Bar Options --
 		-----------------------
 		local BarSetupSmall = BarSetupPanel:CreateArea(L.AreaTitle_BarSetupSmall, nil, 205, true)
 
-		local smalldummybar = DBM.Bars:CreateDummyBar()
+		local smalldummybar = DBM.Bars:CreateDummyBar(nil, nil, SMALL)
 		smalldummybar.frame:SetParent(BarSetupSmall.frame)
 		smalldummybar.frame:SetPoint('BOTTOM', BarSetupSmall.frame, "TOP", 0, -35)
 		smalldummybar.frame:SetScript("OnUpdate", function(self, elapsed) smalldummybar:Update(elapsed) end)
@@ -2389,7 +2416,7 @@ local function CreateOptionsMenu()
 
 		local enablebar = BarSetupHuge:CreateCheckButton(L.EnableHugeBar, true, nil, nil, "HugeBarsEnabled")
 
-		local hugedummybar = DBM.Bars:CreateDummyBar()
+		local hugedummybar = DBM.Bars:CreateDummyBar(nil, nil, LARGE)
 		hugedummybar.frame:SetParent(BarSetupSmall.frame)
 		hugedummybar.frame:SetPoint('BOTTOM', BarSetupHuge.frame, "TOP", 0, -50)
 		hugedummybar.frame:SetScript("OnUpdate", function(self, elapsed) hugedummybar:Update(elapsed) end)
