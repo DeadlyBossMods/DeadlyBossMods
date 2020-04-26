@@ -7,7 +7,7 @@ DBM.InfoFrame = {}
 --  Locals  --
 --------------
 local infoFrame = DBM.InfoFrame
-local frame, initializeDropdown, currentMapId, currentEvent
+local frame, initializeDropdown, currentMapId, currentEvent, createFrame
 local maxlines, modLines, maxWidth = 5, 5, 0
 local sortMethod = 1--1 Default, 2 SortAsc, 3 GroupId
 local lines, sortedLines, icons, value = {}, {}, {}, {}
@@ -141,7 +141,7 @@ end
 ------------------------
 --  Create the frame  --
 ------------------------
-local function createFrame()
+function createFrame()
 	frame = CreateFrame("Frame", "DBMInfoFrame", UIParent)
 	frame:SetFrameStrata("DIALOG")
 	frame:SetBackdrop({
