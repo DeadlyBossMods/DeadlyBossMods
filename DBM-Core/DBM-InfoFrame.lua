@@ -977,8 +977,10 @@ function infoFrame:SetLine(lineNum, leftText, rightText, colorR, colorG, colorB,
 	local rightTextWidth = frame.lines[lineNum + 1]:GetStringWidth()
 	frame.lines[lineNum]:SetSize(leftTextWidth, 12)
 	frame.lines[lineNum + 1]:SetSize(rightTextWidth, 12)
-	if leftTextWidth + rightTextWidth + 24 > maxWidth then
-		frame:SetWidth(leftTextWidth + rightTextWidth + 24)
+	local testWidth = leftTextWidth + rightTextWidth + 24
+	if testWidth > maxWidth then
+		frame:SetWidth(testWidth)
+		maxWidth = testWidth
 	end
 end
 
