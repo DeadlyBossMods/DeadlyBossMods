@@ -2,56 +2,84 @@ local mod	= DBM:NewMod(2407, "DBM-Party-Shadowlands", 8, 1189)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
---mod:SetCreatureID(126983)
+mod:SetCreatureID(168112)
 mod:SetEncounterID(2363)
 mod:SetZone()
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
---	"SPELL_AURA_APPLIED",
---	"SPELL_CAST_START",
---	"SPELL_CAST_SUCCESS",
+	"SPELL_CAST_START 323810 324103",
+	"SPELL_CAST_SUCCESS 323845",
+	"SPELL_AURA_APPLIED 323845",
+	"SPELL_AURA_REMOVED 323845"
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---local warnBlackPowder				= mod:NewTargetAnnounce(257314, 4)
+local warnWickedRush				= mod:NewTargetAnnounce(323845, 3)
 
---local specWarnBlackPowder			= mod:NewSpecialWarningRun(257314, nil, nil, nil, 4, 2)
---local yellBlackPowder				= mod:NewYell(257314)
---local specWarnHealingBalm			= mod:NewSpecialWarningInterrupt(257397, "HasInterrupt", nil, nil, 1, 2)
+local specWarnWickedRush			= mod:NewSpecialWarningMoveAway(323845, nil, nil, nil, 1, 2)
+local yellWickedRush				= mod:NewYell(323845)
+local yellWickedRushFades			= mod:NewShortFadesYell(323845)
+local specWarnPiercingBlur			= mod:NewSpecialWarningDodge(323810, nil, nil, nil, 2, 2)
+local specWarnGloomSquall			= mod:NewSpecialWarningSpell(324103, nil, nil, nil, 3, 2)
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(257274, nil, nil, nil, 1, 8)
 
---local timerAvastyeCD				= mod:NewCDTimer(13, 257316, nil, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON)
---local timerSwiftwindSaberCD			= mod:NewCDTimer(15.8, 257316, nil, nil, nil, 3)
+local timerWickedRushCD				= mod:NewAITimer(15.8, 323845, nil, nil, nil, 3)
+local timerPiercingBlurCD			= mod:NewAITimer(13, 323810, nil, nil, nil, 3)
+local timerGloomSquallCD			= mod:NewAITimer(13, 324103, nil, nil, nil, 2, nil, DBM_CORE_IMPORTANT_ICON)
 
 function mod:OnCombatStart(delay)
-
+	timerWickedRushCD:Start(1-delay)
+	timerPiercingBlurCD:Start(1-delay)
+	timerGloomSquallCD:Start(1-delay)
 end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 257402 then
-
---	elseif spellId == 257397 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
---		specWarnHealingBalm:Show(args.sourceName)
---		specWarnHealingBalm:Play("kickcast")
+	if spellId == 323810 then
+		specWarnPiercingBlur:Show()
+		specWarnPiercingBlur:Play("watchstep")
+		timerPiercingBlurCD:Start()
+	elseif spellId == 324103 or spellId == 322903 then
+		specWarnGloomSquall:Show()
+		if spellId == 324103 then--5 second cast with knockback
+			specWarnGloomSquall:Play("carefly")
+		else--3 second cast with just aoe damage
+			specWarnGloomSquall:Play("aesoon")
+		end
+		timerGloomSquallCD:Start()
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 257316 then
-
+	if spellId == 323845 then
+		timerWickedRushCD:Start()
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 194966 then
+	if spellId == 323845 then
+		warnWickedRush:CombinedShow(0.3, args.destName)
+		if args:IsPlayer() then
+			specWarnWickedRush:Show()
+			specWarnWickedRush:Play("runout")
+			yellWickedRush:Yell()
+			yellWickedRushFades:Countdown(spellId)
+		end
+	end
+end
 
+function mod:SPELL_AURA_REMOVED(args)
+	local spellId = args.spellId
+	if spellId == 323845 then
+		if args:IsPlayer() then
+			yellWickedRushFades:Cancel()
+		end
 	end
 end
 
