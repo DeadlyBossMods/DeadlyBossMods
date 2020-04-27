@@ -7,8 +7,9 @@ DBM.RangeCheck = {}
 --  Locals  --
 --------------
 local rangeCheck = DBM.RangeCheck
-local mainFrame, activeRange, dots = CreateFrame("Frame"), 0, {}
+local mainFrame = CreateFrame("Frame")
 local textFrame, radarFrame, updateIcon, updateRangeFrame, initializeDropdown
+local RAID_CLASS_COLORS = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS -- for Phanx' Class Colors
 
 --Function for automatically converting inputed ranges from old mods to be ones that have valid item/api checks
 local function setCompatibleRestrictedRange(range)
@@ -444,6 +445,19 @@ local function createTextFrame()
 			ToggleDropDownMenu(1, nil, dropdownFrame, "cursor", 5, -10)
 		end
 	end)
+
+	textFrame.lines = {}
+	for i = 0, 6 do
+		local line = textFrame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+		line:SetSize(64, 12)
+		line:SetJustifyH("LEFT")
+		if i == 1 then -- 1st entry
+			line:SetPoint("TOPLEFT", textFrame, "TOPLEFT", 6, -6)
+		else
+			line:SetPoint("TOPLEFT", textFrame.lines[i - 1], "LEFT", 0, -6)
+		end
+		textFrame.lines[i] = line
+	end
 end
 
 local function createRadarFrame()
@@ -512,16 +526,16 @@ local function createRadarFrame()
 	inRangeText:Hide()
 	radarFrame.inRangeText = inRangeText
 
+	radarFrame.dots = {}
 	for i = 1, 40 do
 		local dot = radarFrame:CreateTexture(nil, "OVERLAY")
 		dot:SetSize(24, 24)
 		dot:SetTexture(249183)--"Interface\\Minimap\\PartyRaidBlips"
 		dot:Hide()
-		dots[i] = dot
+		radarFrame.dots[i] = dot
 	end
 
 	radarFrame:Hide()
-	return radarFrame
 end
 
 ----------------
@@ -530,7 +544,7 @@ end
 do
 	local UnitExists, UnitIsUnit, UnitIsDeadOrGhost, UnitIsConnected, UnitInPhase, GetPlayerFacing, UnitName, UnitClass, IsInRaid, GetNumGroupMembers, GetRaidTargetIndex, GetBestMapForUnit = UnitExists, UnitIsUnit, UnitIsDeadOrGhost, UnitIsConnected, UnitInPhase, GetPlayerFacing, UnitName, UnitClass, IsInRaid, GetNumGroupMembers, GetRaidTargetIndex, C_Map.GetBestMapForUnit
 	local max, sin, cos, pi2 = math.max, math.sin, math.cos, math.pi * 2
-	local rotation, pixelsperyard, activeDots, prevRange, prevThreshold, prevNumClosePlayer, prevclosestRange, prevColor, prevType = 0, 0, 0, 0, 0, 0, 0, 0, 0
+	local circleColor, rotation, pixelsperyard, activeDots, prevRange, prevThreshold, prevNumClosePlayer, prevclosestRange, prevColor, prevType = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 	local unitList = {}
 	local BLIP_TEX_COORDS = {
 		["WARRIOR"]		 = { 0, 0.125, 0, 0.25 },
@@ -546,24 +560,21 @@ do
 		["MONK"]		 = { 0.125, 0.25, 0.25, 0.5 },
 		["DEMONHUNTER"]	 = { 0.375, 0.5, 0.25, 0.5 },
 	}
-	local RAID_CLASS_COLORS = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS -- for Phanx' Class Colors
 
 	local function setDot(id, sinTheta, cosTheta)
-		local dot = dots[id]
-		local x = dots[id].x
-		local y = dots[id].y
-		local range = dots[id].range
-		if range < (activeRange * 1.5) then -- if person is closer than 1.5 * range, show the dot. Else hide it
+		local dot = radarFrame.dots[id]
+		local x = dot.x
+		local y = dot.y
+		local range = dot.range
+		if range < (mainFrame.range * 1.5) then -- if person is closer than 1.5 * range, show the dot. Else hide it
 			local dx = ((x * cosTheta) - (-y * sinTheta)) * pixelsperyard -- Rotate the X,Y based on player facing
 			local dy = ((x * sinTheta) + (-y * cosTheta)) * pixelsperyard
 			dot:ClearAllPoints()
 			dot:SetPoint("CENTER", radarFrame, "CENTER", dx, dy)
-			if not dot.isShown then
-				dot.isShown = true
+			if not dot:IsShown() then
 				dot:Show()
 			end
-		elseif dot.isShown then
-			dot.isShown = nil
+		elseif dot:IsShown() then
 			dot:Hide()
 		end
 	end
@@ -572,7 +583,7 @@ do
 		local numPlayers = GetNumGroupMembers()
 		activeDots = max(numPlayers, activeDots)
 		for i = 1, activeDots do
-			local dot = dots[i]
+			local dot = radarFrame.dots[i]
 			if i <= numPlayers then
 				unitList[i] = IsInRaid() and "raid" .. i or "party" .. i
 				local uId = unitList[i]
@@ -593,8 +604,7 @@ do
 					dot:SetSize(24, 24)
 					dot:SetDrawLayer("OVERLAY", 0)
 				end
-			elseif dot.isShown then
-				dot.isShown = nil
+			elseif dot:IsShown() then
 				dot:Hide()
 			end
 		end
@@ -605,25 +615,28 @@ do
 			rangeCheck:Hide()
 			return
 		end
-		activeRange = mainFrame.range
+		local activeRange = mainFrame.range
 		local restricted = mainFrame.restrictions
-		local tEnabled = textFrame.isShown
-		local rEnabled = radarFrame.isShown
+		local tEnabled = textFrame:IsShown()
+		local rEnabled = radarFrame:IsShown()
 		local reverse = mainFrame.reverse
 		local warnThreshold = mainFrame.redCircleNumPlayers
 		if tEnabled then
-			textFrame:ClearLines()
+			for i = 1, 6 do
+				textFrame.lines[i]:SetText("")
+				textFrame.lines[i]:Hide()
+			end
 			if reverse then
 				if warnThreshold > 1 then
-					textFrame:SetText(DBM_CORE_RANGECHECK_RHEADERT:format(activeRange, warnThreshold), 1, 1, 1)
+					textFrame.lines[0]:SetText(DBM_CORE_RANGECHECK_RHEADERT:format(activeRange, warnThreshold))
 				else
-					textFrame:SetText(DBM_CORE_RANGECHECK_RHEADER:format(activeRange), 1, 1, 1)
+					textFrame.lines[0]:SetText(DBM_CORE_RANGECHECK_RHEADER:format(activeRange))
 				end
 			else
 				if warnThreshold > 1 then
-					textFrame:SetText(DBM_CORE_RANGECHECK_HEADERT:format(activeRange, warnThreshold), 1, 1, 1)
+					textFrame.lines[0]:SetText(DBM_CORE_RANGECHECK_HEADERT:format(activeRange, warnThreshold))
 				else
-					textFrame:SetText(DBM_CORE_RANGECHECK_HEADER:format(activeRange), 1, 1, 1)
+					textFrame.lines[0]:SetText(DBM_CORE_RANGECHECK_HEADER:format(activeRange))
 				end
 			end
 		end
@@ -652,7 +665,7 @@ do
 		local onlySummary = mainFrame.onlySummary
 		for i = 1, GetNumGroupMembers() do
 			local uId = unitList[i]
-			local dot = dots[i]
+			local dot = radarFrame.dots[i]
 			local mapId = GetBestMapForUnit(uId) or 0
 			if UnitExists(uId) and playerMapId == mapId and not UnitIsUnit(uId, "player") and not UnitIsDeadOrGhost(uId) and UnitIsConnected(uId) and UnitInPhase(uId) and (not filter or filter(uId)) then
 				local range--Just set to a number in case any api fails and returns nil
@@ -672,14 +685,17 @@ do
 							closestRange = range
 						end
 					end
-					if not closetName then closetName = UnitName(uId) end
+					if not closetName then
+						closetName = UnitName(uId)
+					end
 				end
 				if tEnabled and inRange and not onlySummary and closePlayer < 6 then -- display up to 5 players in text range frame.
 					local playerName = UnitName(uId)
 					local color = RAID_CLASS_COLORS[dot.class] or NORMAL_FONT_COLOR
 					local icon = dot.icon
-					local text = icon and ("|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t %s"):format(icon, playerName) or playerName
-					textFrame:AddLine(text, color.r, color.g, color.b)
+					textFrame.lines[closePlayer]:SetText(icon and ("|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t %s"):format(icon, playerName) or playerName)
+					textFrame.lines[closePlayer]:SetTextColor(color.r, color.g, color.b)
+					textFrame.lines[closePlayer]:Show()
 				end
 				if rEnabled then
 					local playerX, playerY = UnitPosition("player")
@@ -695,25 +711,25 @@ do
 					dot.range = range
 					setDot(i, sinTheta, cosTheta)
 				end
-			elseif rEnabled and dot.isShown then
-				dot.isShown = nil
+			elseif rEnabled and dot:IsShown() then
 				dot:Hide()
 			end
 		end
 
 		if tEnabled then
 			--Green Text (Regular range frame and not near too many players, or reverse range frame and we ARE near enough)
+			textFrame.lines[6]:SetText(DBM_CORE_RANGECHECK_IN_RANGE_TEXT:format(closePlayer, activeRange))
+			textFrame.lines[6]:Show()
 			if (reverse and closePlayer >= warnThreshold) or (not reverse and closePlayer < warnThreshold) then
-				textFrame:AddLine(DBM_CORE_RANGECHECK_IN_RANGE_TEXT:format(closePlayer, activeRange), 0, 1, 0)
+				textFrame.lines[6]:SetTextColor(0, 1, 0)
 			--Red Text (Regular range frame and we are near too many players, or reverse range frame and we aren't near enough)
 			else
 				updateSound(closePlayer)
-				textFrame:AddLine(DBM_CORE_RANGECHECK_IN_RANGE_TEXT:format(closePlayer, activeRange), 1, 0, 0)
+				textFrame.lines[6]:SetTextColor(1, 0, 0)
 			end
 			textFrame:Show()
 		end
 		if rEnabled then
-			local circleColor
 			if prevNumClosePlayer ~= closePlayer or prevclosestRange ~= closestRange or prevType ~= type then
 				if closePlayer == 1 then
 					radarFrame.inRangeText:SetText(DBM_CORE_RANGERADAR_IN_RANGE_TEXTONE:format(closetName, closestRange))
@@ -758,6 +774,7 @@ updater:SetLooping("REPEAT")
 local anim = updater:CreateAnimation()
 anim:SetDuration(0.05)
 
+mainFrame:SetSize(0, 0)
 mainFrame:SetScript("OnEvent", function(self, event, ...)
 	if event == "GROUP_ROSTER_UPDATE" or event == "RAID_TARGET_UPDATE" then
 		updateIcon()
@@ -853,17 +870,14 @@ function rangeCheck:Show(range, filter, forceshow, redCircleNumPlayers, reverse,
 		createRadarFrame()
 	end
 	local restrictionsActive = DBM:HasMapRestrictions()
-	if (DBM.Options.RangeFrameFrames == "text" or DBM.Options.RangeFrameFrames == "both" or restrictionsActive) and not textFrame.isShown then
+	if (DBM.Options.RangeFrameFrames == "text" or DBM.Options.RangeFrameFrames == "both" or restrictionsActive) and not textFrame:IsShown() then
 		if restrictionsActive then
 			range = setCompatibleRestrictedRange(range)
 		end
-		textFrame.isShown = true
 		textFrame:Show()
-		textFrame:SetOwner(UIParent, "ANCHOR_PRESERVE")
 	end
 	--TODO, add check for restricted area here so we can prevent radar frame loading.
-	if not restrictionsActive and (DBM.Options.RangeFrameFrames == "radar" or DBM.Options.RangeFrameFrames == "both") and not radarFrame.isShown then
-		radarFrame.isShown = true
+	if not restrictionsActive and (DBM.Options.RangeFrameFrames == "radar" or DBM.Options.RangeFrameFrames == "both") and not radarFrame:IsShown() then
 		radarFrame:Show()
 	end
 	mainFrame.range = range
@@ -893,28 +907,25 @@ function rangeCheck:Hide(force)
 		restoreRange, restoreFilter, restoreThreshold, restoreReverse = nil, nil, nil, nil
 		DBM.Options.RestoreRange = nil--Set nil here because it means force was passed.
 		updater:Stop()
-		activeRange = 0
 		if mainFrame.eventRegistered then
 			mainFrame.eventRegistered = nil
 			mainFrame:UnregisterAllEvents()
 		end
 		if textFrame then
-			textFrame.isShown = nil
 			textFrame:Hide()
 		end
 		if radarFrame then
-			radarFrame.isShown = nil
 			radarFrame:Hide()
 		end
 	end
 end
 
 function rangeCheck:IsShown()
-	return textFrame and textFrame.isShown or radarFrame and radarFrame.isShown
+	return textFrame and textFrame:IsShown() or radarFrame and radarFrame:IsShown()
 end
 
 function rangeCheck:IsRadarShown()
-	return radarFrame and radarFrame.isShown
+	return radarFrame and radarFrame:IsShown()
 end
 
 function rangeCheck:UpdateRestrictions(force)
