@@ -11,7 +11,8 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 323650",
 	"SPELL_AURA_REMOVED 323650",
-	"SPELL_CAST_START 323552 323538 323597"
+	"SPELL_CAST_START 323552 323538",
+	"SPELL_SUMMON 323597"
 --	"SPELL_CAST_SUCCESS",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
@@ -19,6 +20,11 @@ mod:RegisterEventsInCombat(
 )
 
 --TODO, DBM need to do anything for Vessel of Atonement? Maybe have fixate warning be MoveTo?
+--TODO, transcriptor log to get actual castof spectral maybe? only event i see in combat log is add popping out of players
+--[[
+(ability.id = 323552) and type = "begincast"
+ or ability.id = 323597
+--]]
 local warnSpecralProcession			= mod:NewCastAnnounce(323597, 3)
 local warnFixate					= mod:NewTargetAnnounce(323650, 4)
 
@@ -28,14 +34,14 @@ local specWarnBoltofPower			= mod:NewSpecialWarningInterrupt(323538, false, nil,
 local specWarnVolleyofPower			= mod:NewSpecialWarningInterrupt(323552, "HasInterrupt", nil, nil, 1, 2)
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(257274, nil, nil, nil, 1, 8)
 
-local timerVolleyofPowerCD				= mod:NewCDTimer(13, 323552, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
-local timerSpectralProcessionCD			= mod:NewCDTimer(15.8, 323597, nil, nil, nil, 1)
+local timerVolleyofPowerCD				= mod:NewCDTimer(12, 323552, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)--12-18
+local timerSpectralProcessionCD			= mod:NewCDTimer(20.6, 323597, nil, nil, nil, 1)
 
 mod:AddNamePlateOption("NPAuraOnFixate", 323650, true)
 
 function mod:OnCombatStart(delay)
-	timerVolleyofPowerCD:Start(1-delay)
-	timerSpectralProcessionCD:Start(1-delay)
+	timerVolleyofPowerCD:Start(12-delay)
+	timerSpectralProcessionCD:Start(15.8-delay)
 	if self.Options.NPAuraOnFixate then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
@@ -60,18 +66,25 @@ function mod:SPELL_CAST_START(args)
 			specWarnVolleyofPower:Show(args.sourceName)
 			specWarnVolleyofPower:Play("kickcast")
 		end
-	elseif spellId == 323597 then
+	end
+end
+
+function mod:SPELL_SUMMON(args)
+	local spellId = args.spellId
+	if spellId == 323597 then
 		warnSpecralProcession:Show()
 		timerSpectralProcessionCD:Start()
 	end
 end
 
+--[[
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 257316 then
 
 	end
 end
+--]]
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
