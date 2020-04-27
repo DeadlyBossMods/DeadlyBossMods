@@ -7,7 +7,7 @@ DBM.RangeCheck = {}
 --  Locals  --
 --------------
 local rangeCheck = DBM.RangeCheck
-local mainFrame, activeRange = CreateFrame("Frame"), 0
+local mainFrame, activeRange, dots = CreateFrame("Frame"), 0, {}
 local textFrame, radarFrame, updateIcon, updateRangeFrame, initializeDropdown
 
 --Function for automatically converting inputed ranges from old mods to be ones that have valid item/api checks
@@ -531,7 +531,7 @@ do
 	local UnitExists, UnitIsUnit, UnitIsDeadOrGhost, UnitIsConnected, UnitInPhase, GetPlayerFacing, UnitName, UnitClass, IsInRaid, GetNumGroupMembers, GetRaidTargetIndex, GetBestMapForUnit = UnitExists, UnitIsUnit, UnitIsDeadOrGhost, UnitIsConnected, UnitInPhase, GetPlayerFacing, UnitName, UnitClass, IsInRaid, GetNumGroupMembers, GetRaidTargetIndex, C_Map.GetBestMapForUnit
 	local max, sin, cos, pi2 = math.max, math.sin, math.cos, math.pi * 2
 	local rotation, pixelsperyard, activeDots, prevRange, prevThreshold, prevNumClosePlayer, prevclosestRange, prevColor, prevType = 0, 0, 0, 0, 0, 0, 0, 0, 0
-	local unitList, dots = {}, {}
+	local unitList = {}
 	local BLIP_TEX_COORDS = {
 		["WARRIOR"]		 = { 0, 0.125, 0, 0.25 },
 		["PALADIN"]		 = { 0.125, 0.25, 0, 0.25 },
@@ -650,7 +650,7 @@ do
 		local filter = mainFrame.filter
 		local type = reverse and 2 or filter and 1 or 0
 		local onlySummary = mainFrame.onlySummary
-		for i = 1, numPlayers do
+		for i = 1, GetNumGroupMembers() do
 			local uId = unitList[i]
 			local dot = dots[i]
 			local mapId = GetBestMapForUnit(uId) or 0
