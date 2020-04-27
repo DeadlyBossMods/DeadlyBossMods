@@ -51,6 +51,7 @@ do
 
 	function initializeDropdown(_, level, menu)
 		local info
+
 		if level == 1 then
 			info = UIDropDownMenu_CreateInfo()
 			info.text = LOCK_FRAME
@@ -173,7 +174,7 @@ function createFrame()
 			infoFrame[event](self, ...)
 		end
 	end)
-	frame:SetScript("OnMouseDown", function(self, button)
+	frame:SetScript("OnMouseDown", function(_, button)
 		if button == "RightButton" then
 			local dropdownFrame = CreateFrame("Frame", "DBMInfoFrameDropdown", frame, "UIDropDownMenuTemplate")
 			UIDropDownMenu_Initialize(dropdownFrame, initializeDropdown)

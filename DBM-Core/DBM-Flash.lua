@@ -1,18 +1,23 @@
-﻿-- globals
+﻿---------------
+--  Globals  --
+---------------
 DBM.Flash = {}
--- locals
+
+--------------
+--  Locals  --
+--------------
 local flashFrame = DBM.Flash
-local r, g, b, t, a
-local duration
-local elapsed = 0
-local totalRepeat = 0
+local frame, r, g, b, t, a, duration
+local elapsed, totalRepeat = 0, 0
 
 --------------------
 --  Create Frame  --
 --------------------
-local frame = CreateFrame("Frame", "DBMFlash", UIParent)
+frame = CreateFrame("Frame", "DBMFlash", UIParent)
 frame:Hide()
-frame:SetBackdrop({bgFile = "Interface\\Tooltips\\UI-Tooltip-Background",})--137056
+frame:SetBackdrop({
+	bgFile = "Interface\\Tooltips\\UI-Tooltip-Background"--137056
+})
 frame:SetAllPoints(UIParent)
 frame:SetFrameStrata("BACKGROUND")
 
@@ -26,12 +31,12 @@ do
 			self:Hide()
 			self:SetAlpha(0)
 			if totalRepeat >= 1 then--Keep repeating until totalRepeat = 0
-				flashFrame:Show(r, g, b, t, a, totalRepeat-1)
+				flashFrame:Show(r, g, b, t, a, totalRepeat - 1)
 			end
 			return
 		end
 		-- quadratic fade in/out
-		self:SetAlpha(-(elapsed / (duration / 2) - 1)^2 + 1)
+		self:SetAlpha(-(elapsed / (duration / 2) - 1) ^ 2 + 1)
 	end)
 	frame:Hide()
 end
