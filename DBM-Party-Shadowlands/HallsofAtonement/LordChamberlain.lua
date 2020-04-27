@@ -20,19 +20,22 @@ mod:RegisterEventsInCombat(
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, this mod is on hold since journal is grossly incomplete. Lots of assumptions made that could be wrong
-local warnSymbolofPride				= mod:NewTargetNoFilterAnnounce(323437, 4)
+--TODO, this mod needs to be mostly redone/updated from logs
+--[[
 
-local specWarnAnimaBlast			= mod:NewSpecialWarningDodge(323236, nil, nil, nil, 2, 2)
-local specWarnAnimaOvercharge		= mod:NewSpecialWarningSpell(323393, nil, nil, nil, 2, 2)
+--]]
+local warnStigmaofPride				= mod:NewTargetNoFilterAnnounce(323437, 4)
+
+local specWarnUnleashedSuffering	= mod:NewSpecialWarningDodge(323236, nil, nil, nil, 2, 2)
+local specWarnRitualofWoe			= mod:NewSpecialWarningSpell(323393, nil, nil, nil, 2, 2)
 --local yellBlackPowder				= mod:NewYell(257314)
 --local specWarnHealingBalm			= mod:NewSpecialWarningInterrupt(257397, "HasInterrupt", nil, nil, 1, 2)
 --local specWarnVulnerabilityStack	= mod:NewSpecialWarningStack(323410, nil, 12, nil, nil, 1, 6)
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(257274, nil, nil, nil, 1, 8)
 
-local timerAnimaBlastCD				= mod:NewAITimer(15.8, 323236, nil, nil, nil, 3)
-local timerAnimaOverchargeCD		= mod:NewAITimer(15.8, 323393, nil, nil, nil, 3)
-local timerSymbolofPrideCD			= mod:NewAITimer(15.8, 323437, nil, nil, nil, 5, nil, DBM_CORE_HEALER_ICON)
+local timerUnleashedSufferingCD		= mod:NewAITimer(15.8, 323236, nil, nil, nil, 3)
+--local timerRitualofWoeCD			= mod:NewAITimer(15.8, 323393, nil, nil, nil, 3)
+local timerStigmaofPrideCD			= mod:NewAITimer(15.8, 323437, nil, nil, nil, 5, nil, DBM_CORE_HEALER_ICON)
 
 mod:AddInfoFrameOption(323410, true)
 
@@ -40,9 +43,9 @@ local VulnerabilityStacks = {}
 
 function mod:OnCombatStart(delay)
 	table.wipe(VulnerabilityStacks)
-	timerAnimaBlastCD:Start(1-delay)
-	timerAnimaOverchargeCD:Start(1-delay)
-	timerSymbolofPrideCD:Start(1-delay)--SUCCESS
+	timerUnleashedSufferingCD:Start(1-delay)
+--	timerRitualofWoeCD:Start(1-delay)
+	timerStigmaofPrideCD:Start(1-delay)--SUCCESS
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(323410))
 		DBM.InfoFrame:Show(5, "table", VulnerabilityStacks, 1)
@@ -58,13 +61,13 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 323393 then
-		specWarnAnimaOvercharge:Show()
-		specWarnAnimaOvercharge:Play("specialsoon")
-		timerAnimaOverchargeCD:Start()
+		specWarnRitualofWoe:Show()
+		specWarnRitualofWoe:Play("specialsoon")
+--		timerRitualofWoeCD:Start()
 	elseif spellId == 323236 then
-		specWarnAnimaBlast:Show()
-		specWarnAnimaBlast:Play("shockwave")
-		timerAnimaBlastCD:Start()
+		specWarnUnleashedSuffering:Show()
+		specWarnUnleashedSuffering:Play("shockwave")
+		timerUnleashedSufferingCD:Start()
 --	elseif spellId == 257397 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 --		specWarnHealingBalm:Show(args.sourceName)
 --		specWarnHealingBalm:Play("kickcast")
@@ -74,7 +77,7 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 323437 then
-		timerSymbolofPrideCD:Start()
+		timerStigmaofPrideCD:Start()
 	end
 end
 
@@ -91,7 +94,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			DBM.InfoFrame:UpdateTable(VulnerabilityStacks)
 		end
 	elseif spellId == 323437 then
-		warnSymbolofPride:CombinedShow(0.3, args.destName)
+		warnStigmaofPride:CombinedShow(0.3, args.destName)
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
