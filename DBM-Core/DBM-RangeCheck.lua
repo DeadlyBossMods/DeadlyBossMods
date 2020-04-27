@@ -73,7 +73,7 @@ do
 		[30] = 1,--CheckInteractDistance (Inspect)
 	}
 
-	local function itsBCAgain(uId, checkrange)
+	function itsBCAgain(uId, checkrange)
 		if checkrange then--Specified range, this check only cares whether unit is within specific range
 			if itemRanges[checkrange] then--Only query item range for requested active range check
 				if IsItemInRange(itemRanges[checkrange], uId) then
@@ -390,7 +390,7 @@ local soundUpdate = 0
 do
 	local UnitAffectingCombat = UnitAffectingCombat
 
-	local function updateSound(num)
+	function updateSound(num)
 		if not UnitAffectingCombat("player") or (GetTime() - soundUpdate) < 5 then
 			return
 		end
@@ -528,24 +528,24 @@ end
 --  OnUpdate  --
 ----------------
 do
-	local UnitExists, UnitIsUnit, UnitIsDeadOrGhost, UnitIsConnected, UnitInPhase, GetPlayerFacing, UnitName, UnitClass = GetPlayerFacing, UnitName, UnitClass, IsInRaid, GetNumGroupMembers, GetRaidTargetIndex, C_Map.GetBestMapForUnit
+	local UnitExists, UnitIsUnit, UnitIsDeadOrGhost, UnitIsConnected, UnitInPhase, GetPlayerFacing, UnitName, UnitClass, IsInRaid, GetNumGroupMembers, GetRaidTargetIndex, GetBestMapForUnit = UnitExists, UnitIsUnit, UnitIsDeadOrGhost, UnitIsConnected, UnitInPhase, GetPlayerFacing, UnitName, UnitClass, IsInRaid, GetNumGroupMembers, GetRaidTargetIndex, C_Map.GetBestMapForUnit
 	local max, sin, cos, pi2 = math.max, math.sin, math.cos, math.pi * 2
 	local rotation, pixelsperyard, activeDots, prevRange, prevThreshold, prevNumClosePlayer, prevclosestRange, prevColor, prevType = 0, 0, 0, 0, 0, 0, 0, 0, 0
 	local unitList, dots = {}, {}
 	local BLIP_TEX_COORDS = {
-    	["WARRIOR"]		 = { 0, 0.125, 0, 0.25 },
-    	["PALADIN"]		 = { 0.125, 0.25, 0, 0.25 },
-    	["HUNTER"]		 = { 0.25, 0.375, 0, 0.25 },
-    	["ROGUE"]		 = { 0.375, 0.5, 0, 0.25 },
-    	["PRIEST"]		 = { 0.5, 0.625, 0, 0.25 },
-    	["DEATHKNIGHT"]	 = { 0.625, 0.75, 0, 0.25 },
-    	["SHAMAN"]		 = { 0.75, 0.875, 0, 0.25 },
-    	["MAGE"]		 = { 0.875, 1, 0, 0.25 },
-    	["WARLOCK"]		 = { 0, 0.125, 0.25, 0.5 },
-    	["DRUID"]		 = { 0.25, 0.375, 0.25, 0.5 },
-    	["MONK"]		 = { 0.125, 0.25, 0.25, 0.5 },
-    	["DEMONHUNTER"]	 = { 0.375, 0.5, 0.25, 0.5 },
-    }
+		["WARRIOR"]		 = { 0, 0.125, 0, 0.25 },
+		["PALADIN"]		 = { 0.125, 0.25, 0, 0.25 },
+		["HUNTER"]		 = { 0.25, 0.375, 0, 0.25 },
+		["ROGUE"]		 = { 0.375, 0.5, 0, 0.25 },
+		["PRIEST"]		 = { 0.5, 0.625, 0, 0.25 },
+		["DEATHKNIGHT"]	 = { 0.625, 0.75, 0, 0.25 },
+		["SHAMAN"]		 = { 0.75, 0.875, 0, 0.25 },
+		["MAGE"]		 = { 0.875, 1, 0, 0.25 },
+		["WARLOCK"]		 = { 0, 0.125, 0.25, 0.5 },
+		["DRUID"]		 = { 0.25, 0.375, 0.25, 0.5 },
+		["MONK"]		 = { 0.125, 0.25, 0.25, 0.5 },
+		["DEMONHUNTER"]	 = { 0.375, 0.5, 0.25, 0.5 },
+	}
 	local RAID_CLASS_COLORS = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS -- for Phanx' Class Colors
 
 	local function setDot(id, sinTheta, cosTheta)
