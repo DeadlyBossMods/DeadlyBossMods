@@ -213,9 +213,9 @@ DBM_CORE_RANGECHECK_OPTION_TEXT		= "Mostrar marco de texto"
 DBM_CORE_RANGECHECK_OPTION_BOTH		= "Mostrar ambos"
 DBM_CORE_RANGERADAR_HEADER			= "Distancia: %d / Jugadores: %d"
 DBM_CORE_RANGERADAR_RHEADER			= "Distancia inversa: %d / Jugadores: %d"
-DBM_CORE_RANGERADAR_IN_RANGE_TEXT	= "%d a distancia (%dD)"--Multi
+DBM_CORE_RANGERADAR_IN_RANGE_TEXT	= "%d a distancia (%0.1fm)"--Multi
 DBM_CORE_RANGECHECK_IN_RANGE_TEXT	= "%d a distancia"--Text based doesn't need (%dyd), especially since it's not very accurate to the specific yard anyways
-DBM_CORE_RANGERADAR_IN_RANGE_TEXTONE= "%s (%0.1fD)"--One target
+DBM_CORE_RANGERADAR_IN_RANGE_TEXTONE= "%s (%0.1fm)"--One target
 
 DBM_CORE_INFOFRAME_SHOW_SELF		= "Mostrar siempre tu información"		-- Always show your own power value even if you are below the threshold
 DBM_CORE_INFOFRAME_SETLINES			= "Líneas máximas"

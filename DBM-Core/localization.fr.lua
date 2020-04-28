@@ -173,7 +173,7 @@ DBM_CORE_RANGECHECK_OPTION_TEXT		= "Afficher le cadre textuel"
 DBM_CORE_RANGECHECK_OPTION_BOTH		= "Afficher les deux cadres"
 DBM_CORE_RANGERADAR_HEADER			= "Radar de portée (%d m)"
 DBM_CORE_RANGERADAR_IN_RANGE_TEXT	= "%d joueurs à portée"
-DBM_CORE_RANGERADAR_IN_RANGE_TEXTONE= "%s (%0.1fyd)"--One target
+DBM_CORE_RANGERADAR_IN_RANGE_TEXTONE= "%s (%0.1fm)"--One target
 
 DBM_CORE_INFOFRAME_SHOW_SELF		= "Toujours afficher votre puissance"		-- Always show your own power value even if you are below the threshold
 

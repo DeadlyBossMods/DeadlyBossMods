@@ -208,7 +208,7 @@ DBM_CORE_RANGECHECK_OPTION_TEXT		= "텍스트 창 표시"
 DBM_CORE_RANGECHECK_OPTION_BOTH		= "모두 표시"
 DBM_CORE_RANGERADAR_HEADER			= "거리:%d, 플레이어:%d"
 DBM_CORE_RANGERADAR_RHEADER			= "반전-거리:%d 플레이어:%d"
-DBM_CORE_RANGERADAR_IN_RANGE_TEXT	= "거리 내 %d명 (%dm)"
+DBM_CORE_RANGERADAR_IN_RANGE_TEXT	= "거리 내 %d명 (%0.1fm)"
 DBM_CORE_RANGECHECK_IN_RANGE_TEXT	= "거리 내 %d명"--Text based doesn't need (%dyd), especially since it's not very accurate to the specific yard anyways
 DBM_CORE_RANGERADAR_IN_RANGE_TEXTONE	= "%s (%0.1fm)"--One target
 

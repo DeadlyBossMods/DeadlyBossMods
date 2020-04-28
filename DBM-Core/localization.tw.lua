@@ -202,10 +202,10 @@ DBM_PIZZA_ERROR_USAGE				= "命令：/dbm [broadcast] timer <時間（秒）> <�
 --DBM_CORE_MINIMAP_TOOLTIP_HEADER (Same as English locales)
 DBM_CORE_MINIMAP_TOOLTIP_FOOTER		= "按下Shift並拖曳即可移動"
 
-DBM_CORE_RANGECHECK_HEADER			= "距離監視(%dD)"
-DBM_CORE_RANGECHECK_HEADERT			= "距離監視 (%dD-%dP)"
-DBM_CORE_RANGECHECK_RHEADER			= "R-距離監視 (%dD)"
-DBM_CORE_RANGECHECK_RHEADERT		= "R-距離監視 (%dD-%dP)"
+DBM_CORE_RANGECHECK_HEADER			= "距離監視(%dm)"
+DBM_CORE_RANGECHECK_HEADERT			= "距離監視 (%dm-%dP)"
+DBM_CORE_RANGECHECK_RHEADER			= "R-距離監視 (%dm)"
+DBM_CORE_RANGECHECK_RHEADERT		= "R-距離監視 (%dm-%dP)"
 DBM_CORE_RANGECHECK_SETRANGE		= "設置距離"
 DBM_CORE_RANGECHECK_SETTHRESHOLD	= "設置玩家數量門檻"
 DBM_CORE_RANGECHECK_SOUNDS			= "音效"
@@ -214,16 +214,16 @@ DBM_CORE_RANGECHECK_SOUND_OPTION_2	= "當多於一位玩家在範圍內時播放
 DBM_CORE_RANGECHECK_SOUND_0			= "沒有音效"
 DBM_CORE_RANGECHECK_SOUND_1			= "預設音效"
 DBM_CORE_RANGECHECK_SOUND_2			= "蜂鳴聲"
-DBM_CORE_RANGECHECK_SETRANGE_TO		= "%d D"
+DBM_CORE_RANGECHECK_SETRANGE_TO		= "%d m"
 DBM_CORE_RANGECHECK_OPTION_FRAMES	= "框架"
 DBM_CORE_RANGECHECK_OPTION_RADAR	= "顯示雷達框架"
 DBM_CORE_RANGECHECK_OPTION_TEXT		= "顯示文字框"
 DBM_CORE_RANGECHECK_OPTION_BOTH		= "兩者都顯示"
 DBM_CORE_RANGERADAR_HEADER			= "距離:%d玩家(%d)"
 DBM_CORE_RANGERADAR_RHEADER			= "反距離:%d玩家:%d"
-DBM_CORE_RANGERADAR_IN_RANGE_TEXT	= "%d在範圍內(%dD)"--Multi
+DBM_CORE_RANGERADAR_IN_RANGE_TEXT	= "%d在範圍內(%0.1fm)"--Multi
 DBM_CORE_RANGECHECK_IN_RANGE_TEXT	= "%d在範圍內"--Text based doesn't need (%dyd), especially since it's not very accurate to the specific yard anyways
-DBM_CORE_RANGERADAR_IN_RANGE_TEXTONE= "%s (%0.1fD)"--One target
+DBM_CORE_RANGERADAR_IN_RANGE_TEXTONE= "%s (%0.1fm)"--One target
 
 DBM_CORE_INFOFRAME_SHOW_SELF		= "總是顯示你的能量"
 DBM_CORE_INFOFRAME_SETLINES			= "設定最大行數"
