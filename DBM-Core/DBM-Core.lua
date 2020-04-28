@@ -1193,6 +1193,11 @@ do
 	local onLoadCallbacks = {}
 	local disabledMods = {}
 
+	local function infniteLoopNotice(self, message)
+		AddMsg(message)
+		self:Schedule(15, infniteLoopNotice, self, message)
+	end
+
 	local function runDelayedFunctions(self)
 		--Check if voice pack missing
 		local activeVP = self.Options.ChosenVoicePack
@@ -1274,7 +1279,7 @@ do
 			loadOptions(self)
 			if WOW_PROJECT_ID == WOW_PROJECT_CLASSIC then
 				self:Disable(true)
-				C_TimerAfter(15, function() AddMsg(self, DBM_CORE_RETAIL_ONLY) end)
+				self:Schedule(15, infniteLoopNotice, self, DBM_CORE_RETAIL_ONLY)
 				return
 			end
 			if GetAddOnEnableState(playerName, "VEM-Core") >= 1 then
