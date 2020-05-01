@@ -20,6 +20,8 @@ Shriekwing.lua
 Kaelthas.lua
 ArtificerXyMox.lua
 LadyInervaDarkvein.lua
-DredgerGiant.lua
+TheCouncilofBlood.lua
+Sludgefist.lua
+StoneborneGenerals.lua
 SireDenathrius.lua
 CastleNathriaTrash.lua

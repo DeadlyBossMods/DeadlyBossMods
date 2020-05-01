@@ -5,6 +5,12 @@ local L
 ---------------------------
 --L= DBM:GetModLocalization(2393)
 
+--L:SetOptionLocalization({
+--})
+
+--L:SetMiscLocalization({
+--})
+
 ---------------------------
 --  Artificer Xy'Mox --
 ---------------------------
@@ -21,15 +27,19 @@ local L
 --L= DBM:GetModLocalization(2420)
 
 ---------------------------
---  Dredger Giant --
+--  The Council of Blood --
+---------------------------
+--L= DBM:GetModLocalization(2426)
+
+---------------------------
+--  Sludgefist --
 ---------------------------
 --L= DBM:GetModLocalization(2394)
 
---L:SetOptionLocalization({
---})
-
---L:SetMiscLocalization({
---})
+---------------------------
+--  Stoneborne Generals --
+---------------------------
+--L= DBM:GetModLocalization(2425)
 
 ---------------------------
 --  Sire Denathrius --

@@ -211,7 +211,7 @@ DBM_CORE_RANGECHECK_OPTION_TEXT		= "Показывать текстовый фр
 DBM_CORE_RANGECHECK_OPTION_BOTH		= "Показывать оба фрейма"
 DBM_CORE_RANGERADAR_HEADER			= "Радар:%d Игроков:%d"
 DBM_CORE_RANGERADAR_RHEADER			= "R-Радар:%d Игроков:%d"
-DBM_CORE_RANGERADAR_IN_RANGE_TEXT	= "%d в радиусе (%dм)"
+DBM_CORE_RANGERADAR_IN_RANGE_TEXT	= "%d в радиусе (%0.1fм)"
 DBM_CORE_RANGECHECK_IN_RANGE_TEXT	= "%d в радиусе"--Text based doesn't need (%dyd), especially since it's not very accurate to the specific yard anyways
 DBM_CORE_RANGERADAR_IN_RANGE_TEXTONE= "%s (%0.1fм)"--One target
 

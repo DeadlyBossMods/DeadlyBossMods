@@ -783,13 +783,13 @@ do
 		end
 		if rEnabled then
 			if prevNumClosePlayer ~= closePlayer or prevclosestRange ~= closestRange or prevType ~= type then
-				if closePlayer == 1 then
-					radarFrame.inRangeText:SetText(DBM_CORE_RANGERADAR_IN_RANGE_TEXTONE:format(closetName, closestRange))
-				else
-					radarFrame.inRangeText:SetText(DBM_CORE_RANGERADAR_IN_RANGE_TEXT:format(closePlayer, closestRange))
-				end
 				if closePlayer >= warnThreshold then -- only show the text if the circle is red
 					circleColor = reverse and 1 or 2
+					if closePlayer == 1 then
+						radarFrame.inRangeText:SetText(DBM_CORE_RANGERADAR_IN_RANGE_TEXTONE:format(closetName, closestRange))
+					else
+						radarFrame.inRangeText:SetText(DBM_CORE_RANGERADAR_IN_RANGE_TEXT:format(closePlayer, closestRange))
+					end
 					radarFrame.inRangeText:Show()
 				else
 					circleColor = reverse and 2 or 1

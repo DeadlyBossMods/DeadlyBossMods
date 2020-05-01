@@ -195,9 +195,9 @@ DBM_CORE_MINIMAP_TOOLTIP_HEADER		= "Deadly Boss Mods"
 DBM_CORE_MINIMAP_TOOLTIP_FOOTER		= "MAYÚS-Clic izquierdo o Clic derecho para mover este botón.\nAlt-MAYÚS-Clic izquierdo para moverlo libremente."
 
 DBM_CORE_RANGECHECK_HEADER			= "Comprobación de distancia (%d m)"
-DBM_CORE_RANGECHECK_HEADERT			= "Comprobación de distancia (%dD-%dP)"
-DBM_CORE_RANGECHECK_RHEADER			= "Comprobación inversa de distancia (%dD)"
-DBM_CORE_RANGECHECK_RHEADERT		= "Comprobación inversa de distancia (%dD-%dP)"
+DBM_CORE_RANGECHECK_HEADERT			= "Comprobación de distancia (%dm-%dP)"
+DBM_CORE_RANGECHECK_RHEADER			= "Comprobación inversa de distancia (%dm)"
+DBM_CORE_RANGECHECK_RHEADERT		= "Comprobación inversa de distancia (%dm-%dP)"
 DBM_CORE_RANGECHECK_SETRANGE		= "Ajustar distancia"
 DBM_CORE_RANGECHECK_SETTHRESHOLD	= "Ajustar límite de jugadores"
 DBM_CORE_RANGECHECK_SOUNDS			= "Sonidos"
@@ -213,9 +213,9 @@ DBM_CORE_RANGECHECK_OPTION_TEXT		= "Mostrar marco de texto"
 DBM_CORE_RANGECHECK_OPTION_BOTH		= "Mostrar ambos"
 DBM_CORE_RANGERADAR_HEADER			= "Distancia: %d / Jugadores: %d"
 DBM_CORE_RANGERADAR_RHEADER			= "Distancia inversa: %d / Jugadores: %d"
-DBM_CORE_RANGERADAR_IN_RANGE_TEXT	= "%d a distancia (%dD)"--Multi
+DBM_CORE_RANGERADAR_IN_RANGE_TEXT	= "%d a distancia (%0.1fm)"--Multi
 DBM_CORE_RANGECHECK_IN_RANGE_TEXT	= "%d a distancia"--Text based doesn't need (%dyd), especially since it's not very accurate to the specific yard anyways
-DBM_CORE_RANGERADAR_IN_RANGE_TEXTONE= "%s (%0.1fD)"--One target
+DBM_CORE_RANGERADAR_IN_RANGE_TEXTONE= "%s (%0.1fm)"--One target
 
 DBM_CORE_INFOFRAME_SHOW_SELF		= "Mostrar siempre tu información"		-- Always show your own power value even if you are below the threshold
 DBM_CORE_INFOFRAME_SETLINES			= "Líneas máximas"

@@ -198,7 +198,7 @@ DBM_CORE_RANGECHECK_OPTION_RADAR	= "Zeige Radarfenster"
 DBM_CORE_RANGECHECK_OPTION_TEXT		= "Zeige Textfenster"
 DBM_CORE_RANGECHECK_OPTION_BOTH		= "Zeige beide Fenster"
 DBM_CORE_RANGERADAR_HEADER			= "Abstand:%dm Spieler:%d"
-DBM_CORE_RANGERADAR_IN_RANGE_TEXT	= "%d in Reichweite (%dm)"
+DBM_CORE_RANGERADAR_IN_RANGE_TEXT	= "%d in Reichweite (%0.1fm)"
 DBM_CORE_RANGERADAR_IN_RANGE_TEXTONE= "%s (%0.1fm)"
 
 DBM_CORE_INFOFRAME_SHOW_SELF		= "Eigene Stärke immer anzeigen" -- Always show your own power value even if you are below the threshold
