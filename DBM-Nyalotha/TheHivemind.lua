@@ -85,7 +85,7 @@ mod.vb.NullBlastCount = 0
 mod.vb.AqirCount = 0
 mod.vb.DronesCount = 0
 mod.vb.VolEruptionCount = 0
-mod.vb.diffName = "easy"
+local diffName = "easy"
 local seenAdds = {}
 local allTimers = {
 	["easy"] = {--(Heroic timers are just normal *0.9379 so I ported heroic timers back to normal by dividing them by 0.9379 and this checks out)
@@ -164,7 +164,7 @@ function mod:OnCombatStart(delay)
 	table.wipe(seenAdds)
 	--Tek'ris's Hivemind Control instantly on pull
 	if self:IsMythic() then
-		self.vb.diffName = "mythic"
+		diffName = "mythic"
 		--Ka'zir
 		timerMindNumbingNovaCD:Start(12.1-delay, 1)
 		timerSpawnAcidicAqirCD:Start(45.1-delay, 1)
@@ -176,7 +176,7 @@ function mod:OnCombatStart(delay)
 		timerNullificationBlastCD:Start(22.1-delay, 1)
 		timerEchoingVoidCD:Start(27.1-delay, 1)
 	elseif self:IsHeroic() then
-		self.vb.diffName = "heroic"
+		diffName = "heroic"
 		--Ka'zir
 		timerMindNumbingNovaCD:Start(15-delay, 1)
 		timerSpawnAcidicAqirCD:Start(56.3-delay, 1)
@@ -188,7 +188,7 @@ function mod:OnCombatStart(delay)
 		timerNullificationBlastCD:Start(26.3-delay, 1)
 		timerEchoingVoidCD:Start(33.8-delay, 1)
 	else--Normal & LFR
-		self.vb.diffName = "easy"
+		diffName = "easy"
 		--Copied from normal for now
 		timerMindNumbingNovaCD:Start(15.9-delay, 1)
 		timerSpawnAcidicAqirCD:Start(59.6-delay, 1)
@@ -218,11 +218,11 @@ end
 
 function mod:OnTimerRecovery()
 	if self:IsMythic() then
-		self.vb.diffName = "mythic"
+		diffName = "mythic"
 	elseif self:IsHeroic() then
-		self.vb.diffName = "heroic"
+		diffName = "heroic"
 	else--Normal & LFR
-		self.vb.diffName = "easy"
+		diffName = "easy"
 	end
 end
 
@@ -243,7 +243,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.AqirCount = self.vb.AqirCount + 1
 		specWarnSpawnAcidicAqir:Show(self.vb.AqirCount)
 		specWarnSpawnAcidicAqir:Play("watchstep")--or farfromline
-		local timer = allTimers[self.vb.diffName][spellId][self.vb.AqirCount+1]
+		local timer = allTimers[diffName][spellId][self.vb.AqirCount+1]
 		if timer then
 			timerSpawnAcidicAqirCD:Start(timer, self.vb.AqirCount+1)
 		end
@@ -251,7 +251,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.MindNovaCount = self.vb.MindNovaCount + 1
 		specWarnMindNumbingNova:Show(args.sourceName, self.vb.MindNovaCount)
 		specWarnMindNumbingNova:Play("kickcast")
-		local timer = allTimers[self.vb.diffName][spellId][self.vb.MindNovaCount+1]
+		local timer = allTimers[diffName][spellId][self.vb.MindNovaCount+1]
 		if timer then
 			timerMindNumbingNovaCD:Start(timer, self.vb.MindNovaCount+1)
 		end
@@ -265,7 +265,7 @@ function mod:SPELL_CAST_START(args)
 				break
 			end
 		end
-		local timer = allTimers[self.vb.diffName][spellId][self.vb.NullBlastCount+1]
+		local timer = allTimers[diffName][spellId][self.vb.NullBlastCount+1]
 		if timer then
 			timerNullificationBlastCD:Start(timer, self.vb.NullBlastCount+1)
 		end
@@ -273,7 +273,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.EchoVoidCount = self.vb.EchoVoidCount + 1
 		specWarnEchoingVoid:Show(self.vb.EchoVoidCount)
 		specWarnEchoingVoid:Play("scatter")
-		local timer = allTimers[self.vb.diffName][spellId][self.vb.EchoVoidCount+1]
+		local timer = allTimers[diffName][spellId][self.vb.EchoVoidCount+1]
 		if timer then
 			timerEchoingVoidCD:Start(timer, self.vb.EchoVoidCount+1)
 		end
@@ -301,14 +301,14 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if spellId == 308178 then
 		--self.vb.addIcon = 1
 		self.vb.VolEruptionCount = self.vb.VolEruptionCount + 1
-		local timer = allTimers[self.vb.diffName][spellId][self.vb.VolEruptionCount+1]
+		local timer = allTimers[diffName][spellId][self.vb.VolEruptionCount+1]
 		if timer then
 			timerVolatileEruptionCD:Start(timer, self.vb.VolEruptionCount+1)
 		end
 	elseif spellId == 307635 then
 		--self.vb.addIcon = 1
 		self.vb.AccEvoCount = self.vb.AccEvoCount + 1
-		local timer = allTimers[self.vb.diffName][spellId][self.vb.AccEvoCount+1]
+		local timer = allTimers[diffName][spellId][self.vb.AccEvoCount+1]
 		if timer then
 			timerAcceleratedEvolutionCD:Start(timer, self.vb.AccEvoCount+1)
 		end
@@ -326,14 +326,14 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 312868 then--Summon Drones Periodic
 		DBM:Debug("Summon Drones Periodic is back in combat Log, tell MysticalOS")
 		--self.vb.DronesCount = self.vb.DronesCount + 1
-		--local timer = allTimers[self.vb.diffName][spellId][self.vb.DronesCount+1]
+		--local timer = allTimers[diffName][spellId][self.vb.DronesCount+1]
 		--if timer then
 		--	timerDronesCD:Start(timer, self.vb.DronesCount+1)
 		--end
 	elseif spellId == 312710 then--Call Flyer Swarm
 		DBM:Debug("Call Flyer Swarm is back in combat Log, tell MysticalOS")
 		--self.vb.FlyerCount = self.vb.FlyerCount + 1
-		--local timer = allTimers[self.vb.diffName][spellId][self.vb.FlyerCount+1]
+		--local timer = allTimers[diffName][spellId][self.vb.FlyerCount+1]
 		--if timer then
 		--	timerFlyerSwarmCD:Start(timer, self.vb.FlyerCount+1)
 		--end
@@ -366,13 +366,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		local cid = self:GetCIDFromGUID(args.destGUID)
 		if cid == 157256 and self:AntiSpam(10, 10) then--Aqir Darter
 			self.vb.FlyerCount = self.vb.FlyerCount + 1
-			local timer = allTimers[self.vb.diffName][312710][self.vb.FlyerCount+1]
+			local timer = allTimers[diffName][312710][self.vb.FlyerCount+1]
 			if timer then
 				timerFlyerSwarmCD:Start(timer, self.vb.FlyerCount+1)
 			end
 		elseif cid == 157255 and self:AntiSpam(10, 11) then--Aqir Drone
 			self.vb.DronesCount = self.vb.DronesCount + 1
-			local timer = allTimers[self.vb.diffName][312868][self.vb.DronesCount+1]
+			local timer = allTimers[diffName][312868][self.vb.DronesCount+1]
 			if timer then
 				timerDronesCD:Start(timer, self.vb.DronesCount+1)
 			end
