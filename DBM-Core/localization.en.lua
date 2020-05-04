@@ -172,7 +172,7 @@ DBM_CORE_VOICE_DISABLED				= "You currently have at least one DBM voice pack ins
 DBM_CORE_VOICE_COUNT_MISSING		= "Countdown voice %d is set to a voice/count pack that could not be found. It has be reset to default setting: %s."
 DBM_BIG_WIGS						= "BigWigs"
 
-DBM_CORE_UPDATEREMINDER_HEADER			= "Your version of "..DBM_DEADLY_BOSS_MODS.." is out-of-date.\n Version %s (%s) is available for download through Curse/Twitch, WoWI, or from deadlybossmods.com"
+DBM_CORE_UPDATEREMINDER_HEADER			= "Your version of "..DBM_DEADLY_BOSS_MODS.." is out-of-date.\n Version %s (%s) is available for download through Curse/Twitch, WoWI, or from GitHub project page"
 DBM_CORE_UPDATEREMINDER_HEADER_ALPHA	= "Your ALPHA version of "..DBM_DEADLY_BOSS_MODS.." is out-of-date.\n You are at least %s test versions behind. It is recommended that DBM users that choose ALPHA versions run the latest ALPHA. Otherwise, they should run latest RELEASE version. Out of date ALPHAs have a stricter version check because they are development versions of DBM."
 DBM_CORE_UPDATEREMINDER_FOOTER			= "Press " .. (IsMacClient() and "Cmd-C" or "Ctrl-C")  ..  " to copy the download link to your clipboard."
 DBM_CORE_UPDATEREMINDER_FOOTER_GENERIC	= "Press " .. (IsMacClient() and "Cmd-C" or "Ctrl-C")  ..  " to copy the link to your clipboard."
@@ -353,6 +353,7 @@ local prewarnOption = "Show pre-warning for $spell:%s"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
 	you			= "Announce when $spell:%s on you",
 	target		= "Announce $spell:%s targets",
+	targetNF	= "Announce $spell:%s targets (ignores global target filter)",
 	targetsource= "Announce $spell:%s targets (with source)",
 	targetcount	= "Announce $spell:%s targets (with count)",
 	spell		= "Show warning for $spell:%s",
