@@ -12,6 +12,11 @@ local L
 --})
 
 ---------------------------
+--  Hungering Destroyer --
+---------------------------
+--L= DBM:GetModLocalization(2428)
+
+---------------------------
 --  Artificer Xy'Mox --
 ---------------------------
 --L= DBM:GetModLocalization(2418)

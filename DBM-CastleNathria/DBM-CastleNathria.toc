@@ -17,8 +17,9 @@
 ## X-DBM-Mod-MinExpansion: 8
 localization.en.lua
 Shriekwing.lua
-Kaelthas.lua
+HungeringDestroyer.lua
 ArtificerXyMox.lua
+Kaelthas.lua
 LadyInervaDarkvein.lua
 TheCouncilofBlood.lua
 Sludgefist.lua
