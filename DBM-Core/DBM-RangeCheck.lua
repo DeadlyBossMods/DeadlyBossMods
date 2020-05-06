@@ -420,7 +420,7 @@ local function createTextFrame()
 		tileSize = 16
 	})
 	textFrame:SetPoint(DBM.Options.RangeFramePoint, UIParent, DBM.Options.RangeFramePoint, DBM.Options.RangeFrameX, DBM.Options.RangeFrameY)
-	textFrame:SetSize(64, 64)
+	textFrame:SetSize(128, 12)
 	textFrame:SetClampedToScreen(true)
 	textFrame:EnableMouse(true)
 	textFrame:SetToplevel(true)
@@ -446,10 +446,26 @@ local function createTextFrame()
 		end
 	end)
 
+	local text = textFrame:CreateFontString(nil, "OVERLAY", "GameTooltipText")
+	text:SetWidth(128)
+	text:SetHeight(15)
+	text:SetPoint("BOTTOMLEFT", textFrame, "TOPLEFT")
+	text:SetTextColor(1, 1, 1, 1)
+	text:Show()
+	textFrame.text = text
+
+	local inRangeText = textFrame:CreateFontString(nil, "OVERLAY", "GameTooltipText")
+	inRangeText:SetWidth(128)
+	inRangeText:SetHeight(15)
+	inRangeText:SetPoint("TOPLEFT", textFrame, "BOTTOMLEFT")
+	inRangeText:SetTextColor(1, 1, 1, 1)
+	inRangeText:Hide()
+	textFrame.inRangeText = inRangeText
+
 	textFrame.lines = {}
-	for i = 0, 6 do
+	for i = 1, 5 do
 		local line = textFrame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-		line:SetSize(64, 12)
+		line:SetSize(128, 12)
 		line:SetJustifyH("LEFT")
 		if i == 1 then -- 1st entry
 			line:SetPoint("TOPLEFT", textFrame, "TOPLEFT", 6, -6)
@@ -513,7 +529,7 @@ local function createRadarFrame()
 	local text = radarFrame:CreateFontString(nil, "OVERLAY", "GameTooltipText")
 	text:SetWidth(128)
 	text:SetHeight(15)
-	text:SetPoint("BOTTOMLEFT", radarFrame, "TOPLEFT", 0,0)
+	text:SetPoint("BOTTOMLEFT", radarFrame, "TOPLEFT")
 	text:SetTextColor(1, 1, 1, 1)
 	text:Show()
 	radarFrame.text = text
@@ -521,7 +537,7 @@ local function createRadarFrame()
 	local inRangeText = radarFrame:CreateFontString(nil, "OVERLAY", "GameTooltipText")
 	inRangeText:SetWidth(128)
 	inRangeText:SetHeight(15)
-	inRangeText:SetPoint("TOPLEFT", radarFrame, "BOTTOMLEFT", 0,0)
+	inRangeText:SetPoint("TOPLEFT", radarFrame, "BOTTOMLEFT")
 	inRangeText:SetTextColor(1, 1, 1, 1)
 	inRangeText:Hide()
 	radarFrame.inRangeText = inRangeText
@@ -622,21 +638,21 @@ do
 		local reverse = mainFrame.reverse
 		local warnThreshold = mainFrame.redCircleNumPlayers
 		if tEnabled then
-			for i = 1, 6 do
+			for i = 1, 5 do
 				textFrame.lines[i]:SetText("")
 				textFrame.lines[i]:Hide()
 			end
 			if reverse then
 				if warnThreshold > 1 then
-					textFrame.lines[0]:SetText(DBM_CORE_RANGECHECK_RHEADERT:format(activeRange, warnThreshold))
+					textFrame.text:SetText(DBM_CORE_RANGECHECK_RHEADERT:format(activeRange, warnThreshold))
 				else
-					textFrame.lines[0]:SetText(DBM_CORE_RANGECHECK_RHEADER:format(activeRange))
+					textFrame.text:SetText(DBM_CORE_RANGECHECK_RHEADER:format(activeRange))
 				end
 			else
 				if warnThreshold > 1 then
-					textFrame.lines[0]:SetText(DBM_CORE_RANGECHECK_HEADERT:format(activeRange, warnThreshold))
+					textFrame.text:SetText(DBM_CORE_RANGECHECK_HEADERT:format(activeRange, warnThreshold))
 				else
-					textFrame.lines[0]:SetText(DBM_CORE_RANGECHECK_HEADER:format(activeRange))
+					textFrame.text:SetText(DBM_CORE_RANGECHECK_HEADER:format(activeRange))
 				end
 			end
 		end
@@ -696,6 +712,7 @@ do
 					textFrame.lines[closePlayer]:SetText(icon and ("|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t %s"):format(icon, playerName) or playerName)
 					textFrame.lines[closePlayer]:SetTextColor(color.r, color.g, color.b)
 					textFrame.lines[closePlayer]:Show()
+					textFrame:SetHeight((closePlayer * 12) + 12)
 				end
 				if rEnabled then
 					local playerX, playerY = UnitPosition("player")
@@ -718,14 +735,14 @@ do
 
 		if tEnabled then
 			--Green Text (Regular range frame and not near too many players, or reverse range frame and we ARE near enough)
-			textFrame.lines[6]:SetText(DBM_CORE_RANGECHECK_IN_RANGE_TEXT:format(closePlayer, activeRange))
-			textFrame.lines[6]:Show()
+			textFrame.inRangeText:SetText(DBM_CORE_RANGECHECK_IN_RANGE_TEXT:format(closePlayer, activeRange))
+			textFrame.inRangeText:Show()
 			if (reverse and closePlayer >= warnThreshold) or (not reverse and closePlayer < warnThreshold) then
-				textFrame.lines[6]:SetTextColor(0, 1, 0)
+				textFrame.inRangeText:SetTextColor(0, 1, 0)
 			--Red Text (Regular range frame and we are near too many players, or reverse range frame and we aren't near enough)
 			else
 				updateSound(closePlayer)
-				textFrame.lines[6]:SetTextColor(1, 0, 0)
+				textFrame.inRangeText:SetTextColor(1, 0, 0)
 			end
 			textFrame:Show()
 		end
