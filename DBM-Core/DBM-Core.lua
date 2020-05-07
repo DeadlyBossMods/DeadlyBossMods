@@ -99,7 +99,7 @@ function DBM:GetTOC()
 end
 
 function DBM:IsAlpha()
-	return tonumber(GetAddOnMetadata("DBM-Core", "X-Min-Interface")) + 100 < DBM:GetTOC()
+	return DBM:GetTOC() >= 90000 -- 9.x.x
 end
 
 -- dual profile setup
