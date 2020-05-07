@@ -40,7 +40,6 @@
 -------------------------------
 --  Globals/Default Options  --
 -------------------------------
-
 local function releaseDate(year, month, day, hour, minute, second)
 	hour = hour or 0
 	minute = minute or 0
@@ -4530,11 +4529,15 @@ do
 		local savedSender
 
 		local inspopup = CreateFrame("Frame", "DBMPopupLockout", UIParent)
-		inspopup:SetBackdrop({bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background-Dark",--312922
+		inspopup.backdropInfo = {
+			bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background-Dark",--312922
 			edgeFile = 131072,--"Interface\\DialogFrame\\UI-DialogBox-Border"
 			tile = true, tileSize = 16, edgeSize = 16,
 			insets = {left = 1, right = 1, top = 1, bottom = 1}}
 		)
+		if not DBM:IsAlpha() then
+			inspopup:SetBackdrop(inspopup.backdropInfo)
+		end
 		inspopup:SetSize(500, 120)
 		inspopup:SetPoint("TOP", UIParent, "TOP", 0, -200)
 		inspopup:SetFrameStrata("DIALOG")
@@ -5066,11 +5069,17 @@ do
 		frame:SetWidth(430)
 		frame:SetHeight(140)
 		frame:SetPoint("TOP", 0, -230)
-		frame:SetBackdrop({
+		frame.backdropInfo = {
 			bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background",--131071
-			edgeFile = "Interface\\DialogFrame\\UI-DialogBox-Border", tile = true, tileSize = 32, edgeSize = 32,--131072
+			edgeFile = "Interface\\DialogFrame\\UI-DialogBox-Border",--131072
+			tile = true,
+			tileSize = 32,
+			edgeSize = 32,
 			insets = {left = 11, right = 12, top = 12, bottom = 11},
-		})
+		}
+		if not DBM:IsAlpha() then
+			frame:SetBackdrop(frame.backdropInfo)
+		end
 		fontstring = frame:CreateFontString(nil, "ARTWORK", "GameFontNormal")
 		fontstring:SetWidth(410)
 		fontstring:SetHeight(0)
@@ -5160,11 +5169,14 @@ do
 		frame:SetWidth(430)
 		frame:SetHeight(140)
 		frame:SetPoint("TOP", 0, -230)
-		frame:SetBackdrop({
+		frame.backdropInfo = {
 			bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background",--131071
 			edgeFile = "Interface\\DialogFrame\\UI-DialogBox-Border", tile = true, tileSize = 32, edgeSize = 32,--131072
 			insets = {left = 11, right = 12, top = 12, bottom = 11},
-		})
+		}
+		if not DBM:IsAlpha() then
+			frame:SetBackdrop(frame.backdropInfo)
+		end
 		fontstring = frame:CreateFontString(nil, "ARTWORK", "GameFontNormal")
 		fontstring:SetWidth(410)
 		fontstring:SetHeight(0)
@@ -7165,6 +7177,10 @@ end
 
 function DBM:GetTOC()
 	return wowTOC, testBuild, wowVersionString, wowBuild
+end
+
+function DBM:IsAlpha()
+	return tonumber(GetAddOnMetadata("DBM-Core", "Interface")) + 100 < DBM:GetTOC()
 end
 
 function DBM:InCombat()

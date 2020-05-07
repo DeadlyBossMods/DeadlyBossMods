@@ -79,7 +79,11 @@
 				</Anchors>
 				<Scripts>
 					<OnLoad>
-						self:SetBackdropBorderColor(.6, .6, .6, .6)
+						self.backdropBorderColor = CreateColor(0.6, 0.6, 0.6)
+						self.backdropBorderColorAlpha = 0.6
+						if not DBM:IsAlpha() then
+							self:SetBackdropBorderColor(0.6, 0.6, 0.6, 0.6)
+						end
 						_G[self:GetName().."ScrollBarScrollUpButton"]:Disable()
 						local scrollbar = _G[self:GetName().."ScrollBar"]
 						scrollbar:SetMinMaxValues(0, 11)

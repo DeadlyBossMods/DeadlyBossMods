@@ -312,7 +312,9 @@ function mod:Enable()
 end
 
 function mod:Disable()
-	if not self.HUDEnabled then return end
+	if not self.HUDEnabled then
+		return
+	end
 	DBM:Debug("HudMap Deactivating", 2)
 	self:FreeEncounterMarkers()
 	Edge:ClearAll()

@@ -44,12 +44,17 @@ do
 	local TabFrame1 = CreateFrame("Frame", "DBM_GUI_DropDown", UIParent, "DBM_GUI_DropDownMenu")
 	local ClickFrame = CreateFrame("Button", nil, UIParent)
 
-	TabFrame1:SetBackdrop({
-		bgFile="Interface\\DialogFrame\\UI-DialogBox-Background",--131071
-		edgeFile="Interface\\DialogFrame\\UI-DialogBox-Border",--131072
-		tile=1, tileSize=32, edgeSize=32,
-		insets={left=11, right=12, top=12, bottom=11}
-	});
+	TabFrame1.backdropInfo = {
+		bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background",--131071
+		edgeFile = "Interface\\DialogFrame\\UI-DialogBox-Border",--131072
+		tile = 1,
+		tileSize = 32,
+		edgeSize = 32,
+		insets = { left = 11, right = 12, top = 12, bottom = 11 }
+	}
+	if not DBM:IsAlpha() then
+		TabFrame1:SetBackdrop(TabFrame1.backdropInfo)
+	end
 
 	TabFrame1:EnableMouseWheel(1)
 	function TabFrame1:OnMouseWheel(delta)
@@ -129,7 +134,10 @@ do
 				self.buttons[i].entry = values[i+self.offset]
 				if values[i+self.offset].texture then
 					BackDropTable.bgFile = values[i+self.offset].texture
-					self.buttons[i]:SetBackdrop(BackDropTable)
+					self.buttons[i].backdropInfo = BackDropTable
+					if not DBM:IsAlpha() then
+						self.buttons[i]:SetBackdrop(BackDropTable)
+					end
 				end
 				self.buttons[i]:Show()
 			else
@@ -195,15 +203,18 @@ do
 	end
 
 	function TabFrame1:HideMenu()
-		for i=1, MAX_BUTTONS, 1 do
+		for i = 1, MAX_BUTTONS, 1 do
 			self.buttons[i]:Hide()
-			self.buttons[i]:SetBackdrop(nil)
+			self.buttons[i].backdropInfo = nil
+			if not DBM:IsAlpha() then
+				self.buttons[i]:SetBackdrop(nil)
+			end
 			self.buttons[i]:SetWidth(default_button_width)
 			_G[self.buttons[i]:GetName().."NormalText"]:SetFontObject(GameFontHighlightSmall)
 			self.fontbuttons[i]:Hide()
 			self.fontbuttons[i]:SetWidth(default_button_width)
 		end
-		self:SetWidth(default_button_width+22)
+		self:SetWidth(default_button_width + 22)
 		self:Hide()
 		self.text:Hide()
 		ClickFrame:Hide()

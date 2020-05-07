@@ -166,8 +166,13 @@ do
 	function PanelPrototype:CreateArea(name, width, height, autoplace)
 		local area = CreateFrame('Frame', FrameTitle..self:GetNewID(), self.frame, 'OptionsBoxTemplate')
 		area.mytype = "area"
-		area:SetBackdropBorderColor(0.4, 0.4, 0.4)
-		area:SetBackdropColor(0.15, 0.15, 0.15, 0.5)
+		area.backdropColor = CreateColor(0.15, 0.15, 0.15)
+		area.backdropColorAlpha = .5
+		area.backdropBorderColor = CreateColor(0.4, 0.4, 0.4)
+		if not DBM:IsAlpha() then
+			area:SetBackdropColor(0.15, 0.15, 0.15, 0.5)
+			area:SetBackdropBorderColor(0.4, 0.4, 0.4)
+		end
 		_G[FrameTitle..self:GetCurrentID()..'Title']:SetText(name)
 		if width ~= nil and width < 0 then
 			area:SetWidth( self.frame:GetWidth() -12 + width)
@@ -1205,7 +1210,11 @@ do
 		local name = frame:GetName()
 
 		frame.scrollBar = _G[name.."ListScrollBar"]
-		frame:SetBackdropBorderColor(0.6, 0.6, 0.6, 1)
+		frame.backdropBorderColor = CreateColor(.6, .6, .6)
+		frame.backdropBorderColorAlpha = 1
+		if not DBM:IsAlpha() then
+			frame:SetBackdropBorderColor(0.6, 0.6, 0.6, 1)
+		end
 		_G[name.."Bottom"]:SetVertexColor(0.66, 0.66, 0.66)
 
 		local buttons = {}
