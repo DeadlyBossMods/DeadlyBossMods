@@ -164,7 +164,7 @@ do
 	--  arg4 = autoplace
 	--
 	function PanelPrototype:CreateArea(name, width, height, autoplace)
-		local area = CreateFrame('Frame', FrameTitle..self:GetNewID(), self.frame, 'OptionsBoxTemplate')
+		local area = CreateFrame('Frame', FrameTitle..self:GetNewID(), self.frame, 'OptionsBoxTemplate' .. (DBM:IsAlpha() and ",BackdropTemplate" or ""))
 		area.mytype = "area"
 		area.backdropColor = CreateColor(0.15, 0.15, 0.15)
 		area.backdropColorAlpha = .5

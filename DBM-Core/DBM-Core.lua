@@ -4536,7 +4536,7 @@ do
 		local accessList = {}
 		local savedSender
 
-		local inspopup = CreateFrame("Frame", "DBMPopupLockout", UIParent)
+		local inspopup = CreateFrame("Frame", "DBMPopupLockout", UIParent, DBM:IsAlpha() and "BackdropTemplate")
 		inspopup.backdropInfo = {
 			bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background-Dark",--312922
 			edgeFile = 131072,--"Interface\\DialogFrame\\UI-DialogBox-Border"
@@ -5074,7 +5074,7 @@ do
 	local frame, fontstring, fontstringFooter, editBox, urlText
 
 	local function createFrame()
-		frame = CreateFrame("Frame", "DBMUpdateReminder", UIParent)
+		frame = CreateFrame("Frame", "DBMUpdateReminder", UIParent, DBM:IsAlpha() and "BackdropTemplate")
 		frame:SetFrameStrata("FULLSCREEN_DIALOG") -- yes, this isn't a fullscreen dialog, but I want it to be in front of other DIALOG frames (like DBM GUI which might open this frame...)
 		frame:SetWidth(430)
 		frame:SetHeight(140)
@@ -5174,7 +5174,7 @@ do
 	local frame, fontstring, fontstringFooter, editBox, button3
 
 	local function createFrame()
-		frame = CreateFrame("Frame", "DBMNotesEditor", UIParent)
+		frame = CreateFrame("Frame", "DBMNotesEditor", UIParent, DBM:IsAlpha() and "BackdropTemplate")
 		frame:SetFrameStrata("FULLSCREEN_DIALOG") -- yes, this isn't a fullscreen dialog, but I want it to be in front of other DIALOG frames (like DBM GUI which might open this frame...)
 		frame:SetWidth(430)
 		frame:SetHeight(140)
