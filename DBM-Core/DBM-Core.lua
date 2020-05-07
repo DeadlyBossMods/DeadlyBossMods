@@ -4532,9 +4532,11 @@ do
 		inspopup.backdropInfo = {
 			bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background-Dark",--312922
 			edgeFile = 131072,--"Interface\\DialogFrame\\UI-DialogBox-Border"
-			tile = true, tileSize = 16, edgeSize = 16,
-			insets = {left = 1, right = 1, top = 1, bottom = 1}}
-		)
+			tile = true,
+			tileSize = 16,
+			edgeSize = 16,
+			insets = {left = 1, right = 1, top = 1, bottom = 1}
+		}
 		if not DBM:IsAlpha() then
 			inspopup:SetBackdrop(inspopup.backdropInfo)
 		end
