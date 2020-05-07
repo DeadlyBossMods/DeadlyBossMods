@@ -58,8 +58,8 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 319654 then
 		timerHungeringDrainCD:Start()
 		self.vb.interruptCount = self.vb.interruptCount + 1
-		local count = self.vb.interruptCount
 		if self:CheckInterruptFilter(args.sourceGUID, false, true) then
+			local count = self.vb.interruptCount
 			specWarnHungeringDrain:Show(args.sourceName, count)
 			if count == 1 then
 				specWarnHungeringDrain:Play("kick1r")

@@ -40,7 +40,7 @@ local warnReverberatingShriek					= mod:NewSpellAnnounce(329780, 2, nil, false)-
 --Stage One - Thirst for Blood
 local specWarnExsanguinated						= mod:NewSpecialWarningStack(328897, nil, 3, nil, nil, 1, 6)
 local specWarnExsanguinatedTaunt				= mod:NewSpecialWarningTaunt(328897, nil, nil, nil, 1, 2)
-local specWarnEarthenSpikes						= mod:NewSpecialWarningDodge(329386, nil, nil, nil, 2, 2)
+local specWarnBloodSpikes						= mod:NewSpecialWarningDodge(329386, nil, nil, nil, 2, 2)
 local specWarnStoneClaws						= mod:NewSpecialWarningDodge(329382, nil, nil, nil, 2, 2)
 --Stage Two - Terror of Castle Nathria
 local specWarnBloodgorge						= mod:NewSpecialWarningSpell(328921, nil, nil, nil, 2, 2)
@@ -53,7 +53,7 @@ local specWarnCowerNear							= mod:NewSpecialWarningClose(329370, nil, nil, nil
 --Stage One - Thirst for Blood
 --mod:AddTimerLine(BOSS)
 local timerExsanguinatingBiteCD					= mod:NewAITimer(16.6, 328857, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_TANK_ICON, nil, 2, 3)
-local timerEarthenSpikesCD						= mod:NewAITimer(44.3, 329386, nil, nil, nil, 3)
+local timerBloodSpikesCD						= mod:NewAITimer(44.3, 329386, nil, nil, nil, 3)
 local timerStoneClawsCD							= mod:NewAITimer(44.3, 329382, nil, nil, nil, 3)
 --Stage Two - Terror of Castle Nathria
 local timerReverberatingShriekCD				= mod:NewAITimer(44.3, 329780, nil, nil, nil, 3)
@@ -67,7 +67,7 @@ mod:AddInfoFrameOption(328921, true)
 
 function mod:OnCombatStart(delay)
 	timerExsanguinatingBiteCD:Start(1-delay)
-	timerEarthenSpikesCD:Start(1-delay)
+	timerBloodSpikesCD:Start(1-delay)
 	timerStoneClawsCD:Start(1-delay)
 --	if self.Options.NPAuraOnVolatileCorruption then
 --		DBM:FireEvent("BossMod_EnableHostileNameplates")
@@ -99,7 +99,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnBloodgorge:Show()
 		specWarnBloodgorge:Play("phasechange")
 		timerExsanguinatingBiteCD:Stop()
-		timerEarthenSpikesCD:Stop()
+		timerBloodSpikesCD:Stop()
 		timerStoneClawsCD:Stop()
 		timerReverberatingShriekCD:Start(2)
 		if self.Options.RangeFrame then
@@ -118,9 +118,9 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 329386 then
-		specWarnEarthenSpikes:Show()
-		specWarnEarthenSpikes:Play("watchstep")
-		timerEarthenSpikesCD:Start()
+		specWarnBloodSpikes:Show()
+		specWarnBloodSpikes:Play("watchstep")
+		timerBloodSpikesCD:Start()
 	elseif spellId == 321511 then
 		warnDarkSonar:Show()
 	end
@@ -178,7 +178,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerReverberatingShriekCD:Stop()
 		warnBloodgorgeOver:Show()
 		timerExsanguinatingBiteCD:Start(2)
-		timerEarthenSpikesCD:Start(2)
+		timerBloodSpikesCD:Start(2)
 		timerStoneClawsCD:Start(2)
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Hide()
