@@ -94,6 +94,14 @@ if IsTestBuild() then
 	testBuild = true
 end
 
+function DBM:GetTOC()
+	return wowTOC, testBuild, wowVersionString, wowBuild
+end
+
+function DBM:IsAlpha()
+	return tonumber(GetAddOnMetadata("DBM-Core", "Interface")) + 100 < DBM:GetTOC()
+end
+
 -- dual profile setup
 local _, playerClass = UnitClass("player")
 DBM_UseDualProfile = true
@@ -7175,14 +7183,6 @@ function DBM:AntiSpam(time, id)
 	else
 		return false
 	end
-end
-
-function DBM:GetTOC()
-	return wowTOC, testBuild, wowVersionString, wowBuild
-end
-
-function DBM:IsAlpha()
-	return tonumber(GetAddOnMetadata("DBM-Core", "Interface")) + 100 < DBM:GetTOC()
 end
 
 function DBM:InCombat()
