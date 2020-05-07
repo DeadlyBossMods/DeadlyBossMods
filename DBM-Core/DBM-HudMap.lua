@@ -304,7 +304,6 @@ function mod:Enable()
 	targetZoomScale = 6
 	self.pixelsPerYard = WorldFrame:GetHeight() / self:GetMinimapSize()
 	self:SetZoom()
-	self.canvas:SetBackdrop(nil)
 	self.HUDEnabled = true
 	updateFrame:Show()
 	if not updateFrame.ticker then

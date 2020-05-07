@@ -6,6 +6,7 @@ DBM.InfoFrame = {}
 --------------
 --  Locals  --
 --------------
+local isAlpha = number(GetAddOnMetadata("DBM-Core", "Interface")) + 100 < DBM:GetTOC()
 local infoFrame = DBM.InfoFrame
 local frame, initializeDropdown, currentMapId, currentEvent, createFrame
 local maxlines, modLines, maxWidth = 5, 5, 0
@@ -143,13 +144,16 @@ end
 --  Create the frame  --
 ------------------------
 function createFrame()
-	frame = CreateFrame("Frame", "DBMInfoFrame", UIParent)
+	frame = CreateFrame("Frame", "DBMInfoFrame", UIParent, isAlpha and "BackdropTemplate")
 	frame:SetFrameStrata("DIALOG")
-	frame:SetBackdrop({
+	frame.backdropInfo = {
 		bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background",--131071
 		tile = true,
 		tileSize = 16
-	})
+	}
+	if not isAlpha then
+		frame:SetBackdrop(frame.backdropInfo)
+	end
 	frame:SetPoint(DBM.Options.InfoFramePoint, UIParent, DBM.Options.InfoFramePoint, DBM.Options.InfoFrameX, DBM.Options.InfoFrameY)
 	frame:SetSize(10, 10)
 	frame:SetClampedToScreen(true)

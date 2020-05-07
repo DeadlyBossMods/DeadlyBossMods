@@ -6,6 +6,7 @@ DBM.RangeCheck = {}
 --------------
 --  Locals  --
 --------------
+local isAlpha = number(GetAddOnMetadata("DBM-Core", "Interface")) + 100 < DBM:GetTOC()
 local rangeCheck = DBM.RangeCheck
 local mainFrame = CreateFrame("Frame")
 local textFrame, radarFrame, updateIcon, updateRangeFrame, initializeDropdown
@@ -412,13 +413,16 @@ end
 --  Create the frame  --
 ------------------------
 local function createTextFrame()
-	textFrame = CreateFrame("Frame", "DBMRangeCheck", UIParent)
+	textFrame = CreateFrame("Frame", "DBMRangeCheck", UIParent, isAlpha and "BackdropTemplate")
 	textFrame:SetFrameStrata("DIALOG")
-	textFrame:SetBackdrop({
+	textFrame.backdropInfo = {
 		bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background",
 		tile = true,
 		tileSize = 16
-	})
+	}
+	if not isAlpha then
+		textFrame:SetBackdrop(textFrame.backdropInfo)
+	end
 	textFrame:SetPoint(DBM.Options.RangeFramePoint, UIParent, DBM.Options.RangeFramePoint, DBM.Options.RangeFrameX, DBM.Options.RangeFrameY)
 	textFrame:SetSize(128, 12)
 	textFrame:SetClampedToScreen(true)
