@@ -249,7 +249,7 @@
 			</Layer>
 		</Layers>
 		<Frames>
-			<ScrollFrame name="$parentList" hidden="true">
+			<ScrollFrame name="$parentList" inherits="BackdropTemplate" hidden="true">
 				<Size>
 					<AbsDimension x="24" y="0"/>
 				</Size>
