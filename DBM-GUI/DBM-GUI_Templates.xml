@@ -482,7 +482,7 @@
 					</OnShow>
 				</Scripts>
 			</Frame>
-			<Frame name="$parentPanelContainer">
+			<Frame name="$parentPanelContainer" inherits="BackdropTemplate">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="$parentBossMods" relativePoint="TOPRIGHT">
 						<Offset>
