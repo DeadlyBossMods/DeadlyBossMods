@@ -69,7 +69,7 @@
 		</ThumbTexture>
 	</Slider>
 
-	<Frame name="DBM_GUI_DropDownMenu" virtual="true">
+	<Frame name="DBM_GUI_DropDownMenu" inherits="BackdropTemplate" virtual="true">
 		<Frames>
 			<ScrollFrame name="$parentList" hidden="true">
 				<Size x="24" y="0"/>
@@ -209,7 +209,7 @@
 		</Frames>
 	</Frame>
 
-	<Button name="DBM_GUI_DropDownMenuButtonTemplate" virtual="true">
+	<Button name="DBM_GUI_DropDownMenuButtonTemplate" inherits="BackdropTemplate" virtual="true">
 		<Size x="100" y="16"/>
 		<Layers>
 			<Layer level="BACKGROUND">

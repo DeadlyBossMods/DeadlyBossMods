@@ -167,7 +167,7 @@
 		</HighlightTexture>
 	</Button>
 
-	<Frame name="DBM_GUI_OptionsFrameListTemplate" virtual="true">
+	<Frame name="DBM_GUI_OptionsFrameListTemplate" inherits="BackdropTemplate" virtual="true">
 		<Layers>
 			<Layer level="BACKGROUND">
 				<Texture name="$parentTopLeft" file="Interface\Tooltips\UI-Tooltip-Border">

@@ -41,7 +41,7 @@ do
 	local BackDropTable = { bgFile = "" }
 	local L = DBM_GUI_Translations
 
-	local TabFrame1 = CreateFrame("Frame", "DBM_GUI_DropDown", UIParent, "DBM_GUI_DropDownMenu" .. (DBM:IsAlpha() and ",BackdropTemplate" or ""))
+	local TabFrame1 = CreateFrame("Frame", "DBM_GUI_DropDown", UIParent, "DBM_GUI_DropDownMenu")
 	local ClickFrame = CreateFrame("Button", nil, UIParent)
 
 	TabFrame1.backdropInfo = {
@@ -78,7 +78,7 @@ do
 	local buttonTable = {"buttons", "fontbuttons"}
 	for i=1, MAX_BUTTONS, 1 do
 		for _, buttonName in ipairs(buttonTable) do
-			TabFrame1[buttonName][i] = CreateFrame("Button", TabFrame1:GetName().."Button"..buttonName..i, TabFrame1, "DBM_GUI_DropDownMenuButtonTemplate" .. (DBM:IsAlpha() and ",BackdropTemplate" or ""))
+			TabFrame1[buttonName][i] = CreateFrame("Button", TabFrame1:GetName().."Button"..buttonName..i, TabFrame1, "DBM_GUI_DropDownMenuButtonTemplate")
 			if i == 1 then
 				TabFrame1[buttonName][i]:SetPoint("TOPLEFT", TabFrame1, "TOPLEFT", 11, -13)
 			else
