@@ -4548,7 +4548,7 @@ do
 		if not DBM:IsAlpha() then
 			inspopup:SetBackdrop(inspopup.backdropInfo)
 		else
-			frame:ApplyBackdrop()
+			inspopup:ApplyBackdrop()
 		end
 		inspopup:SetSize(500, 120)
 		inspopup:SetPoint("TOP", UIParent, "TOP", 0, -200)

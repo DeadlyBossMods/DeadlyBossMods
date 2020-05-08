@@ -422,7 +422,7 @@ local function createTextFrame()
 	if not DBM:IsAlpha() then
 		textFrame:SetBackdrop(textFrame.backdropInfo)
 	else
-		frame:ApplyBackdrop()
+		textFrame:ApplyBackdrop()
 	end
 	textFrame:SetPoint(DBM.Options.RangeFramePoint, UIParent, DBM.Options.RangeFramePoint, DBM.Options.RangeFrameX, DBM.Options.RangeFrameY)
 	textFrame:SetSize(128, 12)
