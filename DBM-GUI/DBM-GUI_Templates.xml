@@ -278,13 +278,7 @@
 				</Backdrop>
 				<Scripts>
 					<OnLoad>
-						self.backdropBorderColor = CreateColor(0.6, 0.6, 0.6)
-						self.backdropBorderColorAlpha = 0.6
-						if not DBM:IsAlpha() then
-							self:SetBackdropBorderColor(0.6, 0.6, 0.6, 0.6)
-						else
-							self:ApplyBackdrop()
-						end
+						self:SetBackdropBorderColor(0.6, 0.6, 0.6, 0.6)
 						_G[self:GetName().."ScrollBarScrollUpButton"]:Disable()
 						_G[self:GetName().."ScrollBarScrollDownButton"]:Disable()
 
@@ -574,11 +568,7 @@
 				</Frames>
 				<Scripts>
 					<OnLoad>
-						self.backdropBorderColor = CreateColor(.6, .6, .6)
-						self.backdropBorderColorAlpha = 1
-						if not DBM:IsAlpha() then
-							self:SetBackdropBorderColor(.6, .6, .6, 1);
-						end
+						self:SetBackdropBorderColor(.6, .6, .6, 1);
 					</OnLoad>
 				</Scripts>
 			</Frame>
