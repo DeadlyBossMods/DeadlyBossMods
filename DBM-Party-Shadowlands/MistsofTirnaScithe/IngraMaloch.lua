@@ -11,7 +11,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 321952 323059 323137",
 	"SPELL_AURA_REMOVED 321952 323059",
-	"SPELL_CAST_START 323057 323146 323137",
+	"SPELL_CAST_START 323057 323149 323137 328756",
 	"SPELL_CAST_SUCCESS 323177",
 	"SPELL_PERIODIC_DAMAGE 323250",
 	"SPELL_PERIODIC_MISSED 323250"
@@ -27,7 +27,8 @@ local warnDromansWrath				= mod:NewTargetNoFIlterAnnounce(323059, 1)
 
 --Boss
 local specWarnSpiritBolt			= mod:NewSpecialWarningInterrupt(323057, "HasInterrupt", nil, nil, 1, 2)
-local specWarnEmbraceDarkness		= mod:NewSpecialWarningSpell(323146, nil, nil, nil, 2, 2)
+local specWarnEmbraceDarkness		= mod:NewSpecialWarningSpell(323149, nil, nil, nil, 2, 2)
+local specWarnRepulsiveVisage		= mod:NewSpecialWarningSpell(328756, nil, nil, nil, 2, 2)
 --Droman Oulfarran
 local specWarnEnchantedPollen		= mod:NewSpecialWarningSpell(323137, "Tank", nil, nil, 1, 2)
 local specWarnEnchantedPollenDispel	= mod:NewSpecialWarningDispel(323137, "RemoveMagic", nil, nil, 1, 2)
@@ -37,7 +38,8 @@ local specWarnGTFO					= mod:NewSpecialWarningGTFO(323250, nil, nil, nil, 1, 8)
 --Phases
 local timerDromansWrath				= mod:NewBuffActiveTimer(15, 323059, nil, nil, nil, 6)
 local timerSpiritBoltCD				= mod:NewAITimer(13, 323057, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
-local timerEmbraceDarknessCD		= mod:NewAITimer(15.8, 323146, nil, nil, nil, 2, nil, DBM_CORE_HEALER_ICON)
+local timerEmbraceDarknessCD		= mod:NewAITimer(15.8, 323149, nil, nil, nil, 2, nil, DBM_CORE_HEALER_ICON)
+local timerRepulsiveVisageCD		= mod:NewAITimer(15.8, 328756, nil, nil, nil, 2, nil, DBM_CORE_MAGIC_ICON)
 --Droman Oulfarran
 local timerEnchantedPollenCD		= mod:NewAITimer(15.8, 323137, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerTearsoftheForestCD		= mod:NewAITimer(15.8, 323177, nil, nil, nil, 3)
@@ -45,6 +47,7 @@ local timerTearsoftheForestCD		= mod:NewAITimer(15.8, 323177, nil, nil, nil, 3)
 function mod:OnCombatStart(delay)
 --	timerSpiritBoltCD:Start(1-delay)
 --	timerEmbraceDarknessCD:Start(1-delay)
+--	timerRepulsiveVisageCD:Start(1-delay)
 end
 
 function mod:SPELL_CAST_START(args)
@@ -55,13 +58,17 @@ function mod:SPELL_CAST_START(args)
 			specWarnSpiritBolt:Show(args.sourceName)
 			specWarnSpiritBolt:Play("kickcast")
 		end
-	elseif spellId == 323146 then
+	elseif spellId == 323149 then
 		specWarnEmbraceDarkness:Show()
 		specWarnEmbraceDarkness:Play("aesoon")
 	elseif spellId == 323137 then
 		specWarnEnchantedPollen:Show()
 		specWarnEnchantedPollen:Play("shockwave")
 		timerEnchantedPollenCD:Start()
+	elseif spellId == 328756 then
+		specWarnRepulsiveVisage:Show()
+		specWarnRepulsiveVisage:Play("fearsoon")
+		timerRepulsiveVisageCD:Start()
 	end
 end
 
@@ -87,6 +94,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		--Boss
 		timerSpiritBoltCD:Stop()
 		timerEmbraceDarknessCD:Stop()
+		timerRepulsiveVisageCD:Stop()
 	elseif spellId == 323137 and self:CheckDispelFilter() then
 		specWarnEnchantedPollenDispel:CombinedShow(0.3, args.destName)
 		specWarnEnchantedPollenDispel:ScheduleVoice(0.3, "helpdispel")
@@ -103,6 +111,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		--Boss (if they reset)
 		timerSpiritBoltCD:Start(2)
 		timerEmbraceDarknessCD:Start(2)
+		timerRepulsiveVisageCD:Start(2)
 	end
 end
 
