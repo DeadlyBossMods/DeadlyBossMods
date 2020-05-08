@@ -20,6 +20,8 @@ frame.backdropInfo = {
 }
 if not DBM:IsAlpha() then
 	frame:SetBackdrop(frame.backdropInfo)
+else
+	frame:ApplyBackdrop()
 end
 frame:SetAllPoints(UIParent)
 frame:SetFrameStrata("BACKGROUND")
@@ -54,6 +56,8 @@ function flashFrame:Show(red, green, blue, dur, alpha, repeatFlash)
 	frame.backdropColorAlpha = a
 	if not DBM:IsAlpha() then
 		frame:SetBackdropColor(r, g, b, a)
+	else
+		frame:ApplyBackdrop()
 	end
 	frame:Show()
 end

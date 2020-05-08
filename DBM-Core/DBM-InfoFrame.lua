@@ -152,6 +152,8 @@ function createFrame()
 	}
 	if not DBM:IsAlpha() then
 		frame:SetBackdrop(frame.backdropInfo)
+	else
+		frame:ApplyBackdrop()
 	end
 	frame:SetPoint(DBM.Options.InfoFramePoint, UIParent, DBM.Options.InfoFramePoint, DBM.Options.InfoFrameX, DBM.Options.InfoFrameY)
 	frame:SetSize(10, 10)

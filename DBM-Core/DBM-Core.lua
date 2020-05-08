@@ -4547,6 +4547,8 @@ do
 		}
 		if not DBM:IsAlpha() then
 			inspopup:SetBackdrop(inspopup.backdropInfo)
+		else
+			frame:ApplyBackdrop()
 		end
 		inspopup:SetSize(500, 120)
 		inspopup:SetPoint("TOP", UIParent, "TOP", 0, -200)
@@ -5089,6 +5091,8 @@ do
 		}
 		if not DBM:IsAlpha() then
 			frame:SetBackdrop(frame.backdropInfo)
+		else
+			frame:ApplyBackdrop()
 		end
 		fontstring = frame:CreateFontString(nil, "ARTWORK", "GameFontNormal")
 		fontstring:SetWidth(410)
@@ -5186,6 +5190,8 @@ do
 		}
 		if not DBM:IsAlpha() then
 			frame:SetBackdrop(frame.backdropInfo)
+		else
+			frame:ApplyBackdrop()
 		end
 		fontstring = frame:CreateFontString(nil, "ARTWORK", "GameFontNormal")
 		fontstring:SetWidth(410)

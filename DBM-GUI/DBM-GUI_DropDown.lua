@@ -54,6 +54,8 @@ do
 	}
 	if not DBM:IsAlpha() then
 		TabFrame1:SetBackdrop(TabFrame1.backdropInfo)
+	else
+		TabFrame1:ApplyBackdrop()
 	end
 
 	TabFrame1:EnableMouseWheel(1)
@@ -137,6 +139,8 @@ do
 					self.buttons[i].backdropInfo = BackDropTable
 					if not DBM:IsAlpha() then
 						self.buttons[i]:SetBackdrop(BackDropTable)
+					else
+						self.buttons[i]:ApplyBackdrop()
 					end
 				end
 				self.buttons[i]:Show()
@@ -208,6 +212,8 @@ do
 			self.buttons[i].backdropInfo = nil
 			if not DBM:IsAlpha() then
 				self.buttons[i]:SetBackdrop(nil)
+			else
+				self.buttons[i]:ApplyBackdrop()
 			end
 			self.buttons[i]:SetWidth(default_button_width)
 			_G[self.buttons[i]:GetName().."NormalText"]:SetFontObject(GameFontHighlightSmall)
