@@ -1079,7 +1079,7 @@ do
 	-- Function to update the left scrollframe buttons with the menu entries
 	function DBM_GUI_OptionsFrame:UpdateMenuFrame(listframe)
 		local frameName = listframe:GetName()
-		local offset = _G[frameName.."List"].offset
+		local offset = _G[frameName.."List"].offset or 0
 		local buttons = listframe.buttons
 		local TABLE
 

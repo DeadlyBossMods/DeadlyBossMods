@@ -87,7 +87,7 @@
 					</OnLoad>
 					<OnVerticalScroll>
 						_G[self:GetName().."ScrollBar"]:SetValue(offset)
-						DBM_GUI_DropDown.offset = floor(offset)
+						DBM_GUI_DropDown.offset = math.floor(offset)
 						DBM_GUI_DropDown:Refresh()
 					</OnVerticalScroll>
 				</Scripts>

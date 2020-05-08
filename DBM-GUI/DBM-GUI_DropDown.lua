@@ -135,8 +135,9 @@ do
 				self.buttons[i]:SetText(ind..values[i+self.offset].text)
 				self.buttons[i].entry = values[i+self.offset]
 				if values[i+self.offset].texture then
-					BackDropTable.bgFile = values[i+self.offset].texture
-					self.buttons[i].backdropInfo = BackDropTable
+					self.buttons[i].backdropInfo = {
+						bgFile = values[i + self.offset].texture
+					}
 					if not DBM:IsAlpha() then
 						self.buttons[i]:SetBackdrop(BackDropTable)
 					else

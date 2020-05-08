@@ -290,7 +290,7 @@
 					<OnVerticalScroll>
 						local scrollbar = _G[self:GetName().."ScrollBar"]
 						scrollbar:SetValue(offset)
-						self.offset = floor((offset / 18) + 0.5)
+						self.offset = math.floor((offset / 18) + 0.5)
 						DBM_GUI_OptionsFrame:UpdateMenuFrame(self:GetParent())
 					</OnVerticalScroll>
 				</Scripts>
