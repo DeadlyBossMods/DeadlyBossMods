@@ -4530,6 +4530,9 @@ do
 		local savedSender
 
 		local inspopup = CreateFrame("Frame", "DBMPopupLockout", UIParent)
+		if BackdropTemplateMixin then
+			Mixin(inspopup, BackdropTemplateMixin)
+		end
 		inspopup:SetBackdrop({bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background-Dark",--312922
 			edgeFile = 131072,--"Interface\\DialogFrame\\UI-DialogBox-Border"
 			tile = true, tileSize = 16, edgeSize = 16,
@@ -5062,6 +5065,9 @@ do
 
 	local function createFrame()
 		frame = CreateFrame("Frame", "DBMUpdateReminder", UIParent)
+		if BackdropTemplateMixin then
+			Mixin(frame, BackdropTemplateMixin)
+		end
 		frame:SetFrameStrata("FULLSCREEN_DIALOG") -- yes, this isn't a fullscreen dialog, but I want it to be in front of other DIALOG frames (like DBM GUI which might open this frame...)
 		frame:SetWidth(430)
 		frame:SetHeight(140)
@@ -5156,6 +5162,9 @@ do
 
 	local function createFrame()
 		frame = CreateFrame("Frame", "DBMNotesEditor", UIParent)
+		if BackdropTemplateMixin then
+			Mixin(frame, BackdropTemplateMixin)
+		end
 		frame:SetFrameStrata("FULLSCREEN_DIALOG") -- yes, this isn't a fullscreen dialog, but I want it to be in front of other DIALOG frames (like DBM GUI which might open this frame...)
 		frame:SetWidth(430)
 		frame:SetHeight(140)

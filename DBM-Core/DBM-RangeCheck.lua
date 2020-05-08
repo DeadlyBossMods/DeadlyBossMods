@@ -496,6 +496,9 @@ function createTextFrame()
 	else
 		textFrame = CreateFrame("GameTooltip", "DBMRangeCheck", UIParent, "GameTooltipTemplate")
 	end
+	if BackdropTemplateMixin then
+		Mixin(textFrame, BackdropTemplateMixin)
+	end
 	dropdownFrame = CreateFrame("Frame", "DBMRangeCheckDropdown", textFrame, "UIDropDownMenuTemplate")
 	textFrame:SetFrameStrata("DIALOG")
 	textFrame:SetBackdrop(frameBackdrop)

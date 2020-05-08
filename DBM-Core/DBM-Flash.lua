@@ -12,6 +12,9 @@ local totalRepeat = 0
 --------------------
 local frame = CreateFrame("Frame", "DBMFlash", UIParent)
 frame:Hide()
+if BackdropTemplateMixin then
+	Mixin(frame, BackdropTemplateMixin)
+end
 frame:SetBackdrop({bgFile = "Interface\\Tooltips\\UI-Tooltip-Background",})--137056
 frame:SetAllPoints(UIParent)
 frame:SetFrameStrata("BACKGROUND")

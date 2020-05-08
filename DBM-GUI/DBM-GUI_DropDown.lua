@@ -42,6 +42,9 @@ do
 	local L = DBM_GUI_Translations
 
 	local TabFrame1 = CreateFrame("Frame", "DBM_GUI_DropDown", UIParent, "DBM_GUI_DropDownMenu")
+	if BackdropTemplateMixin then
+		Mixin(TabFrame1, BackdropTemplateMixin)
+	end
 	local ClickFrame = CreateFrame("Button", nil, UIParent)
 
 	TabFrame1:SetBackdrop({
