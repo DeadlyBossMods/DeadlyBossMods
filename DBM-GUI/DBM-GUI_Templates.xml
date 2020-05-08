@@ -332,7 +332,7 @@
 		</Scripts>
 	</Frame>
 
-	<Frame name="DBM_GUI_OptionsFrame" parent="UIParent" hidden="true" enableMouse="true" frameStrata="DIALOG" movable="true">
+	<Frame name="DBM_GUI_OptionsFrame" parent="UIParent" inherits="BackdropTemplate" hidden="true" enableMouse="true" frameStrata="DIALOG" movable="true">
 		<Size>
 			<AbsDimension x="800" y="600"/>
 		</Size>
