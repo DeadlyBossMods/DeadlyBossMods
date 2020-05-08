@@ -209,11 +209,10 @@ do
 	function TabFrame1:HideMenu()
 		for i = 1, MAX_BUTTONS, 1 do
 			self.buttons[i]:Hide()
-			self.buttons[i].backdropInfo = nil
 			if not DBM:IsAlpha() then
 				self.buttons[i]:SetBackdrop(nil)
 			else
-				self.buttons[i]:ApplyBackdrop()
+				self.buttons[i]:ClearBackdrop()
 			end
 			self.buttons[i]:SetWidth(default_button_width)
 			_G[self.buttons[i]:GetName().."NormalText"]:SetFontObject(GameFontHighlightSmall)
