@@ -107,6 +107,7 @@ globals = {
 
 	-- FrameXML misc
 	"ALTERNATE_POWER_INDEX",
+	"BackdropTemplateMixin",
 	"BNET_CLIENT_WOW",
 	"CHALLENGE_MODE_MEDAL1",
 	"CHALLENGE_MODE_MEDAL2",

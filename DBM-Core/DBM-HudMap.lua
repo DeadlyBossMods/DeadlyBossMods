@@ -283,6 +283,9 @@ end
 
 function mod:OnInitialize()
 	self.canvas = CreateFrame("Frame", "DBMHudMapCanvas", WorldFrame)
+	if BackdropTemplateMixin then
+		Mixin(self.canvas, BackdropTemplateMixin)
+	end
 	self.canvas:SetSize(WorldFrame:GetWidth(), WorldFrame:GetHeight())
 	self.canvas:SetPoint("CENTER")
 	self.canvas:Hide()
