@@ -677,6 +677,10 @@ local function strFromTime(time)
 	end
 end
 
+function DBM:strFromTime(time)
+	return strFromTime(time)
+end
+
 do
 	-- fail-safe format, replaces missing arguments with unknown
 	-- note: doesn't handle cases like %%%s correctly at the moment (should become %unknown, but becomes %%s)

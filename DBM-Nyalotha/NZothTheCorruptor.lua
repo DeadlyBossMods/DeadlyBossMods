@@ -207,6 +207,8 @@ mod.vb.blackVolleyCount = 0
 mod.vb.addIcon = 1
 mod.vb.interruptBehavior = "Five"
 mod.vb.egoActive = false
+local currentMapId = select(4, UnitPosition("player"))
+local playerGUID = UnitGUID("player")
 local difficultyName = "None"
 local selfInMind = false
 local lastSanity = 100
@@ -445,10 +447,12 @@ do
 		table.wipe(tempLinesSorted)
 		--Build Sanity Table
 		for uId in DBM:GetGroupMembers() do
-			local unitName = DBM:GetUnitFullName(uId)
-			local count = UnitPower(uId, ALTERNATE_POWER_INDEX)
-			tempLines[unitName] = count
-			tempLinesSorted[#tempLinesSorted + 1] = unitName
+			if select(4, UnitPosition(uId)) == currentMapId then
+				local unitName = DBM:GetUnitFullName(uId)
+				local count = UnitPower(uId, ALTERNATE_POWER_INDEX)
+				tempLines[unitName] = count
+				tempLinesSorted[#tempLinesSorted + 1] = unitName
+			end
 		end
 		--Sort it by lowest sorted to top
 		tsort(tempLinesSorted, sortFuncAsc)
@@ -521,6 +525,7 @@ function mod:OnCombatStart(delay)
 		local name = DBM:GetUnitFullName(uId)
 		neckAvailable[name] = true
 	end
+	currentMapId = select(4, UnitPosition("player"))
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(307831))
 		if DBM.Options.DebugMode then
@@ -962,7 +967,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 	elseif spellId == 319346 then--Infinity's Toll being applied (Players leaving mind)
-		if args.sourceGUID == UnitGUID("player") then
+		if args.sourceGUID == playerGUID then
 			selfInMind = false
 			UpdateTimerFades(self)
 		end
@@ -1055,7 +1060,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			end
 		end
 	elseif spellId == 319346 then--Infinity's Toll fading (players entering mind)
-		if args.destGUID == UnitGUID("player") and not UnitIsDeadOrGhost("player") then
+		if args.destGUID == playerGUID and not UnitIsDeadOrGhost("player") then
 			selfInMind = true
 			UpdateTimerFades(self)
 		end
@@ -1075,7 +1080,7 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
-	if spellId == 309991 and destGUID == UnitGUID("player") and self:AntiSpam(2, 2) then
+	if spellId == 309991 and destGUID == playerGUID and self:AntiSpam(2, 2) then
 		specWarnGTFO:Show(spellName)
 		specWarnGTFO:Play("watchfeet")
 	end
@@ -1112,6 +1117,9 @@ function mod:UNIT_DIED(args)
 		self:Schedule(38, stupefyingGlareLoop, self)
 		timerParanoiaCD:Start(59.5, 1)
 		timerMindgraspCD:Start(61.4)
+	elseif args.destGUID == playerGUID then
+		selfInMind = false
+		UpdateTimerFades(self)
 	end
 end
 
