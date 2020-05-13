@@ -6,7 +6,7 @@ mod:SetCreatureID(158041)
 mod:SetEncounterID(2344)
 mod:SetZone()
 mod:SetUsedIcons(1, 2, 3, 4)
-mod:SetHotfixNoticeRev(20200311000001)--2020, 3, 11
+mod:SetHotfixNoticeRev(20200512000001)--2020, 5, 12
 mod:SetMinSyncRevision(20200311000001)
 mod.respawnTime = 49
 
@@ -14,7 +14,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 311176 316711 310184 310134 310130 317292 310331 315772 309698 310042 313400 308885 317066 319349 319350 319351 316970 318449 312782 316463 318971 313611",
-	"SPELL_CAST_SUCCESS 315927 319257 317102 317066 316970 319349 319350 319351 318460 312866",
+	"SPELL_CAST_SUCCESS 315927 319257 317102 317066 316970 319349 319350 319351 318460 312866 318741",
 	"SPELL_SUMMON 318091",
 	"SPELL_AURA_APPLIED 313334 308996 309991 313184 316541 316542 313793 315709 315710 312155 318196 318459 319309 319015 317112 319346 316711 318714 313960",
 	"SPELL_AURA_APPLIED_DOSE 313184 319309",
@@ -288,11 +288,11 @@ local allTimers = {
 			--Paranoia
 			[315927] = {15, 85.1},
 			--Eternal Torment
-			[318449] = {25, 25, 25, 50, 25},
+			[318449] = {25, 24.3, 25, 50, 25},
 		},
 		[2] = {--Unique to Mythic
 			--Thought Harvester spawns
-			[316711] = {9.5, 76.9, 26.7},
+			[316711] = {9.5, 76.5, 26.7},
 			--Evoke Anquish
 			[317102] = {25, 19.5, 33.9, 20.6},
 			--Stupefying Glare
@@ -313,7 +313,7 @@ local allTimers = {
 			[318460] = {60, 26.7},
 			----Returning to nzoth after Chamber (ie phase 2, 2.0)
 			--Thought Harvester spawns
-			[316711] = {12.3, 76.9, 26.3, 44.9, 26.6, 44.9},
+			[316711] = {12.3, 76.5, 26.3, 44.9, 26.6, 44.9},
 			--Evoke Anquish
 			[317102] = {27.7, 19.5, 33.9, 20.6, 42.5, 30.4, 41.2, 30.4, 42.5, 29.1},
 			--Stupefying Glare
@@ -528,11 +528,7 @@ function mod:OnCombatStart(delay)
 	currentMapId = select(4, UnitPosition("player"))
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(307831))
-		if DBM.Options.DebugMode then
-			DBM.InfoFrame:Show(self:IsMythic() and 20 or 8, "function", updateInfoFrame, false)
-		else
-			DBM.InfoFrame:Show(8, "playerpower", 1, ALTERNATE_POWER_INDEX, nil, nil, 2)--Sorting lowest to highest
-		end
+		DBM.InfoFrame:Show(self:IsMythic() and 20 or 8, "function", updateInfoFrame, false)
 	end
 end
 
