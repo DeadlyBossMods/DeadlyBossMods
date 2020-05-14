@@ -569,6 +569,7 @@ DBM_CORE_AUTO_RRANGE_OPTION_TEXT_SHORT	= "Show reverse range frame (%s)"
 DBM_CORE_AUTO_INFO_FRAME_OPTION_TEXT	= "Show info frame for $spell:%s"
 DBM_CORE_AUTO_INFO_FRAME_OPTION_TEXT2	= "Show info frame for encounter overview"
 DBM_CORE_AUTO_READY_CHECK_OPTION_TEXT	= "Play ready check sound when boss is pulled (even if it's not targeted)"
+DBM_CORE_AUTO_SPEEDCLEAR_OPTION_TEXT	= "Show timer for fastest clear of %s"
 
 -- New special warnings
 DBM_CORE_MOVE_WARNING_BAR			= "Announce movable"
