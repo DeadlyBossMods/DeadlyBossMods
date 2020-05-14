@@ -93,7 +93,7 @@ local seenAdds = {}
 
 local function umbralEruptionLoop(self)
 	self.vb.eruptionCount = self.vb.eruptionCount + 1
-	if self.Options.SpecWarn308157dodge then
+	if self.Options.SpecWarn308157dodge2 then
 		specWarnUmbralEruption:Show()
 		specWarnUmbralEruption:Play("watchstep")
 	else
