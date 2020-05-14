@@ -514,7 +514,7 @@ DBM_CORE_AUTO_RRANGE_OPTION_TEXT_SHORT	= "반전 거리 창 보기 (%sm)"
 DBM_CORE_AUTO_INFO_FRAME_OPTION_TEXT	= "$spell:%s|1을;를; 정보 창에 표시"
 DBM_CORE_AUTO_INFO_FRAME_OPTION_TEXT2	= "전투 전반에 관한 사항을 정보 창에 표시"
 DBM_CORE_AUTO_READY_CHECK_OPTION_TEXT	= "보스가 풀링되면 전투 준비 효과음 듣기 (보스를 대상으로 잡지 않아도 재생)"
-DBM_CORE_AUTO_SPEEDCLEAR_OPTION_TEXT	= "%s의 완료 신기록 타이머를 표시합니다"
+DBM_CORE_AUTO_SPEEDCLEAR_OPTION_TEXT	= "%s의 완료 신기록 타이머 표시"
 
 -- New special warnings
 DBM_CORE_MOVE_WARNING_BAR				= "알림 이동"
