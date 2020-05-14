@@ -30,7 +30,7 @@ local L
 L = DBM:GetModLocalization("NecroticWakeTrash")
 
 L:SetGeneralLocalization({
-	name =	"Necrotic Wake 일반몹"
+	name =	"죽음의 각성 일반몹"
 })
 
 -----------------------
@@ -62,7 +62,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("PlaguefallTrash")
 
 L:SetGeneralLocalization({
-	name =	"Plaguefall 일반몹"
+	name =	"역병 몰락지 일반몹"
 })
 
 -----------------------
@@ -89,7 +89,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("TirnaScitheTrash")
 
 L:SetGeneralLocalization({
-	name =	"Tirna Scithe 일반몹"--Or MOTS Trash?
+	name =	"티르나 사이드 일반몹"--Or MOTS Trash?
 })
 
 -----------------------
@@ -121,7 +121,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("AtonementTrash")
 
 L:SetGeneralLocalization({
-	name =	"Halls of Atonement 일반몹"--HoA Trash?
+	name =	"속죄의 전당 일반몹"--HoA Trash?
 })
 
 -----------------------
@@ -153,7 +153,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("SpiresofAscensionTrash")
 
 L:SetGeneralLocalization({
-	name =	"Spires of Ascension 일반몹"--SoA Trash?
+	name =	"승천의 첨탑 일반몹"--SoA Trash?
 })
 
 -----------------------
@@ -190,7 +190,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("TheaterofPainTrash")
 
 L:SetGeneralLocalization({
-	name =	"Theater of Pain 일반몹"
+	name =	"고통의 투기장 일반몹"
 })
 
 -----------------------
@@ -222,7 +222,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("DeOtherSideTrash")
 
 L:SetGeneralLocalization({
-	name =	"De Other Side 일반몹"
+	name =	"저편 일반몹"
 })
 
 -----------------------
@@ -254,5 +254,5 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("SanguineDepthsTrash")
 
 L:SetGeneralLocalization({
-	name =	"Sanguine Depths 일반몹"
+	name =	"핏빛 심연 일반몹"
 })
