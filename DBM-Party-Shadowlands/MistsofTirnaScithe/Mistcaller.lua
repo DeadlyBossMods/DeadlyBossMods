@@ -49,7 +49,7 @@ function mod:OnCombatStart(delay)
 	timerGuessingGameCD:Start(1-delay)
 	timerDodgeBallCD:Start(1-delay)
 	timerFreezeTagCD:Start(1-delay)
-	timerPattyCakesCD:Start(1-delay)(
+	timerPattyCakesCD:Start(1-delay)
 	if self.Options.NPAuraOnFixate then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
