@@ -4480,8 +4480,10 @@ do
 
 	syncHandlers["GH"] = function(sender)
 		if DBM.ReleaseRevision >= DBM.HighestRelease then--Do not send version to guild if it's not up to date, since this is only used for update notifcation
+			local total, online = GetNumGuildMembers()
 			DBM:Unschedule(SendVersion, true)--Throttle so we don't needlessly send tons of comms during initial raid invites
-			DBM:Schedule(10, SendVersion, true)--Send version if 10 seconds have past since last "Hi" sync
+			local throttle = (online < 50) and 10 or (online < 100) and 15 or (online < 150) and 20 or 30
+			DBM:Schedule(throttle, SendVersion, true)--Send version if 10 seconds have past since last "Hi" sync
 		end
 	end
 
