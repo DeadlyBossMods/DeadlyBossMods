@@ -2655,7 +2655,12 @@ do
 
 		function dataBroker.OnClick(self, button)
 			if IsShiftKeyDown() then return end
-			DBM:LoadGUI()
+			if button == "RightButton" then
+				DBM.Options.SilentMode = DBM.Options.SilentMode == false and true or false
+				DBM:AddMsg("SilentMode is " .. (DBM.Options.SilentMode and "ON" or "OFF"))
+			else
+				DBM:LoadGUI()
+			end
 		end
 
 		function dataBroker.OnTooltipShow(GameTooltip)
@@ -2664,7 +2669,7 @@ do
 			GameTooltip:AddLine(" ")
 			GameTooltip:AddLine(DBM_CORE_MINIMAP_TOOLTIP_FOOTER, RAID_CLASS_COLORS.MAGE.r, RAID_CLASS_COLORS.MAGE.g, RAID_CLASS_COLORS.MAGE.b, 1)
 			GameTooltip:AddLine(DBM_LDB_TOOLTIP_HELP1, RAID_CLASS_COLORS.MAGE.r, RAID_CLASS_COLORS.MAGE.g, RAID_CLASS_COLORS.MAGE.b)
-		--	GameTooltip:AddLine(DBM_LDB_TOOLTIP_HELP2, RAID_CLASS_COLORS.MAGE.r, RAID_CLASS_COLORS.MAGE.g, RAID_CLASS_COLORS.MAGE.b)
+			GameTooltip:AddLine(DBM_LDB_TOOLTIP_HELP2, RAID_CLASS_COLORS.MAGE.r, RAID_CLASS_COLORS.MAGE.g, RAID_CLASS_COLORS.MAGE.b)
 		end
 	end
 
@@ -10142,13 +10147,13 @@ do
 		local activeVP = self.Options.ChosenVoicePack
 		--Check if voice pack out of date
 		if activeVP ~= "None" and activeVP == value then
-			if self.VoiceVersions[value] < 10 then--Version will be bumped when new voice packs released that contain new voices.
+			if self.VoiceVersions[value] < 11 then--Version will be bumped when new voice packs released that contain new voices.
 				if not self.Options.DontShowReminders then
 					self:AddMsg(DBM_CORE_VOICE_PACK_OUTDATED)
 				end
 				SWFilterDisabed = self.VoiceVersions[value]--Set disable to version on current voice pack
 			else
-				SWFilterDisabed = 10
+				SWFilterDisabed = 11
 			end
 		end
 	end
