@@ -19,7 +19,6 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_REMOVED 282801 285388",
 	"SPELL_AURA_REMOVED_DOSE 282801",
 	"UNIT_DIED"
---	"UNIT_SPELLCAST_START boss1 boss2"
 )
 
 --TODO, Foe Flipper success target valid?
@@ -50,8 +49,6 @@ local timerWhirlingEdgeCD			= mod:NewNextTimer(32.8, 285020, nil, "Tank", nil, 5
 local timerVentJetsCD				= mod:NewCDTimer(43.8, 285388, nil, nil, nil, 2)
 local timerMaxThrustCD				= mod:NewCDTimer(45.8, 283565, nil, nil, nil, 3)
 
---mod:AddRangeFrameOption(5, 194966)
-
 function mod:ThrustTarget(targetname, uId)
 	if not targetname then return end
 	if targetname == UnitName("player") then
@@ -69,12 +66,6 @@ function mod:OnCombatStart(delay)
 	timerLayMineCD:Start(15.5-delay)
 	--timerFoeFlipperCD:Start(16.7-delay)
 	timerVentJetsCD:Start(22.8-delay)
-end
-
-function mod:OnCombatEnd()
---	if self.Options.RangeFrame then
---		DBM.RangeCheck:Hide()
---	end
 end
 
 function mod:SPELL_CAST_START(args)
@@ -122,16 +113,6 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 mod.SPELL_AURA_REMOVED_DOSE = mod.SPELL_AURA_REMOVED
-
---[[
-function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
-	if spellId == 228007 and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
-		specWarnGTFO:Show()
-		specWarnGTFO:Play("watchfeet")
-	end
-end
-mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
---]]
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)

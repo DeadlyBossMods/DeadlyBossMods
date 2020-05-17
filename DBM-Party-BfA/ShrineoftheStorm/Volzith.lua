@@ -9,7 +9,6 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
---	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED 267444",
 	"SPELL_CAST_START 269399 267299 267385 267360",
 	"SPELL_ENERGIZE 267310"

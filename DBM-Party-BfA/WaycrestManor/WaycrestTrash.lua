@@ -95,13 +95,3 @@ function mod:SPELL_AURA_APPLIED(args)
 		yellRunicMarkFades:Cancel()
 	end
 end
-
---[[
-function mod:SPELL_CAST_SUCCESS(args)
-	if not self.Options.Enabled then return end
-	local spellId = args.spellId
-	if spellId == 200343 then
-
-	end
-end
---]]

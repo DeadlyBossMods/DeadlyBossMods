@@ -11,9 +11,6 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 298669 302682 298897 298940 298651 298571 298946 299164",--298898
---	"SPELL_CAST_SUCCESS",
---	"SPELL_AURA_APPLIED",
---	"SPELL_AURA_REMOVED",
 	"UNIT_DIED"
 )
 
@@ -44,8 +41,6 @@ local timerRoadKillCD				= mod:NewCDTimer(27, 298946, nil, nil, nil, 3)
 local timerBoltBusterCD				= mod:NewCDTimer(18.2, 298940, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerPedaltotheMetalCD		= mod:NewCDTimer(60, 298651, nil, nil, nil, 3)
 
---mod:AddRangeFrameOption(5, 194966)
-
 mod.vb.MetalCast = 0
 
 local SmokeBombName = DBM:GetSpellInfo(298573)
@@ -69,12 +64,6 @@ function mod:OnCombatStart(delay)
 	timerMegaTazeCD:Start(25.5-delay)
 	timerBoltBusterCD:Start(36.4-delay)
 	timerRoadKillCD:Start(31.6-delay)
-end
-
-function mod:OnCombatEnd()
---	if self.Options.RangeFrame then
---		DBM.RangeCheck:Hide()
---	end
 end
 
 function mod:SPELL_CAST_START(args)
@@ -114,38 +103,6 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
---[[
-function mod:SPELL_CAST_SUCCESS(args)
-	local spellId = args.spellId
-	if spellId == 257777 then
-
-	end
-end
-
-function mod:SPELL_AURA_APPLIED(args)
-	local spellId = args.spellId
-	if spellId == 257777 then
-
-	end
-end
---mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
-
-function mod:SPELL_AURA_REMOVED(args)
-	local spellId = args.spellId
-	if spellId == 257827 then
-
-	end
-end
-
-function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
-	if spellId == 228007 and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
-		specWarnGTFO:Show()
-		specWarnGTFO:Play("watchfeet")
-	end
-end
-mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
---]]
-
 --https://www.wowhead.com/npc=153756/mechacycle#abilities
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
@@ -157,10 +114,3 @@ function mod:UNIT_DIED(args)
 		timerMegaTazeCD:Stop()
 	end
 end
-
---[[
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 257939 then
-	end
-end
---]]
