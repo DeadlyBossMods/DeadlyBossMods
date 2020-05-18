@@ -150,7 +150,7 @@ local frameListScrollBar = _G[frameListList:GetName() .. "ScrollBar"]
 frameListScrollBar:SetMinMaxValues(0, 11)
 frameListScrollBar:SetValue(0)
 frameList.scrollBar = frameListScrollBar
-frameListList:SetScript("OnVerticalScroll", function()
+frameListList:SetScript("OnVerticalScroll", function(self, offset)
 	frameListScrollBar:SetValue(offset)
 	self.offset = math.floor((offset / 18) + 0.5)
 	frame:UpdateMenuFrame(self:GetParent())

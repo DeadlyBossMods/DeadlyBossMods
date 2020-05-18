@@ -47,7 +47,7 @@ function PanelPrototype:CreateCreatureModelFrame(width, height, creatureid)
 	model:SetSize(width or 100, height or 200)
 	model:SetCreature(tonumber(creatureid) or 448) -- Hogger!!! he kills all of you
 	self:SetLastObj(model)
-	return ModelFrame
+	return model
 end
 
 function PanelPrototype:CreateText(text, width, autoplaced, style, justify)
@@ -101,13 +101,13 @@ function PanelPrototype:CreateColorSelect(dimension, useAlpha, alphaWidth)
 		local colorValue = colorSelect:CreateTexture()
 		colorValue:SetWidth(alphaWidth or 32)
 		colorValue:SetHeight(dimension or 128)
-		colorValue:SetPoint("LEFT", colorwheel:GetName(), "RIGHT", 10, -3)
+		colorValue:SetPoint("LEFT", colorWheel:GetName(), "RIGHT", 10, -3)
 		colorSelect:SetColorValueTexture(colorValue)
-		local colorTexture = colorSelect:CreateTexture()
-		colorTexture:SetTexture(130756) -- "Interface\\Buttons\\UI-ColorPicker-Buttons"
-		colorTexture:SetSize(alphaWidth / 32 * 48, alphaWidth / 32 * 14)
-		colorTexture:SetTexCoord(0.25, 1, 0.875, 0)
-		colorSelect:SetColorValueThumbTexture(colorTexture)
+		local colorTexture2 = colorSelect:CreateTexture()
+		colorTexture2:SetTexture(130756) -- "Interface\\Buttons\\UI-ColorPicker-Buttons"
+		colorTexture2:SetSize(alphaWidth / 32 * 48, alphaWidth / 32 * 14)
+		colorTexture2:SetTexCoord(0.25, 1, 0.875, 0)
+		colorSelect:SetColorValueThumbTexture(colorTexture2)
 	end
 	self:SetLastObj(colorSelect)
 	return colorSelect

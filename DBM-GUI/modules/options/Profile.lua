@@ -1,23 +1,6 @@
 local L = DBM_GUI_Translations
 
-local function dbm_profilePanel_create()
-	if createTextbox:GetText() then
-		local text = createTextbox:GetText()
-		text = text:gsub(" ", "")
-		if text ~= "" then
-			DBM:CreateProfile(createTextbox:GetText())
-			createTextbox:SetText("")
-			createTextbox:ClearFocus()
-			DBM_GUI:dbm_profilePanel_refresh()
-		end
-	end
-end
-
-local function dbm_profilePanel_refresh()
-	copyProfile:GetScript("OnShow")()
-	deleteProfile:GetScript("OnShow")()
-end
-
+local dbm_profilePanel_create, dbm_profilePanel_refresh
 local profileDropdown = {}
 
 local profilePanel			= DBM_GUI_Frame:CreateNewPanel(L.Panel_Profile, "option")
@@ -84,3 +67,21 @@ end)
 dualProfile:SetChecked(DBM_UseDualProfile)
 
 profilePanel:SetMyOwnHeight()
+
+function dbm_profilePanel_create()
+	if createTextbox:GetText() then
+		local text = createTextbox:GetText()
+		text = text:gsub(" ", "")
+		if text ~= "" then
+			DBM:CreateProfile(createTextbox:GetText())
+			createTextbox:SetText("")
+			createTextbox:ClearFocus()
+			DBM_GUI:dbm_profilePanel_refresh()
+		end
+	end
+end
+
+function dbm_profilePanel_refresh()
+	copyProfile:GetScript("OnShow")()
+	deleteProfile:GetScript("OnShow")()
+end
