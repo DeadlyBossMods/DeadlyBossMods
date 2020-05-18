@@ -133,6 +133,7 @@ globals = {
 	"ObjectiveTracker_Collapse",
 	"ObjectiveTracker_Expand",
 	"ObjectiveTrackerFrame",
+	"OptionsList_OnLoad",
 	"RolePollPopup",
 	"Round",
 	"SecureButton_GetModifiedUnit",
