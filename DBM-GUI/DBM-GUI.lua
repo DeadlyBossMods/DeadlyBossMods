@@ -129,22 +129,6 @@ function DBM_GUI:ShowHide(forceshow)
 	end
 end
 
-function DBM_GUI:GetLastObj()
-	return self.lastobject
-end
-
-function DBM_GUI:SetLastObj(obj)
-	self.lastobject = obj
-end
-
-function DBM_GUI:GetParentsLastObj()
-	if self.frame.mytype == "area" then
-		return self.parent:GetLastObj()
-	else
-		return self:GetLastObj()
-	end
-end
-
 do
 	local frames = {}
 

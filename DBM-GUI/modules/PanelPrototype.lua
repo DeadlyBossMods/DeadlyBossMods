@@ -5,6 +5,14 @@ setmetatable(PanelPrototype, {
 	__index = DBM_GUI
 })
 
+function PanelPrototype:GetLastObj()
+	return self.lastobject
+end
+
+function PanelPrototype:SetLastObj(obj)
+	self.lastobject = obj
+end
+
 function PanelPrototype:SetMyOwnHeight()
 	if not self.frame.mytype == "panel" then
 		return
@@ -411,16 +419,6 @@ do
 			end)
 			buttonText:SetHeight(25)
 			name = "<html><body><p>" .. name .. "</p></body></html>"
-			if not textLeft then
-				buttonText:SetJustifyH("LEFT")
-				buttonText:SetHeight(1)
-				buttonText:SetPoint("TOPLEFT", UIParent)
-				local ht = select(4, buttonText:GetBoundsRect())
-				buttonText:ClearAllPoints()
-				buttonText:SetPoint("TOPLEFT", frame2 or button, "TOPRIGHT", textPad or 0, -4)
-				buttonText:SetHeight(ht or 25)
-				button.myheight = math.max(ht or 0 + 12, button.myheight)
-			end
 		end
 		buttonText:SetWidth(self.frame:GetWidth() - 57 - (frame and frame:GetWidth() + frame2:GetWidth() or 0))
 		buttonText:SetText(name or DBM_CORE_UNKNOWN)
@@ -428,6 +426,10 @@ do
 			buttonText:ClearAllPoints()
 			buttonText:SetPoint("RIGHT", frame2 or button, "LEFT")
 			buttonText:SetJustifyH("RIGHT")
+		else
+			buttonText:SetJustifyH("LEFT")
+			buttonText:SetPoint("TOPLEFT", button:GetName(), "TOPRIGHT", textPad or 0, -4)
+			button.myheight = math.max(buttonText:GetContentHeight() + 12, button.myheight)
 		end
 		if dbmvar and DBM.Options[dbmvar] ~= nil then
 			button:SetScript("OnShow", function(self)
@@ -455,11 +457,9 @@ do
 		end
 		if autoplace then
 			local x = self:GetLastObj()
-			if x.mytype == "checkbutton" or x.mytype == "line" then
-				button:ClearAllPoints()
+			if x.myheight then
 				button:SetPoint("TOPLEFT", x, "TOPLEFT", 0, -x.myheight)
 			else
-				button:ClearAllPoints()
 				button:SetPoint("TOPLEFT", 10, -12)
 			end
 		end
@@ -525,7 +525,7 @@ do
 		end
 		panel.categoryid = DBM_GUI.frameTypes[frameType or 1]:CreateCategory(panel, self and self.frame and self.frame.name)
 		panel.frameType = frameType
-		self:SetLastObj(panel)
+		PanelPrototype:SetLastObj(panel)
 		self.panels = self.panels or {}
 		table.insert(self.panels, {
 			frame	= panel,
