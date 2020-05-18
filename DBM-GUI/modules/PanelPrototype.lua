@@ -415,11 +415,11 @@ do
 				buttonText:SetJustifyH("LEFT")
 				buttonText:SetHeight(1)
 				buttonText:SetPoint("TOPLEFT", UIParent)
-				local ht = select(4, buttonText:GetBoundsRect()) or 25
+				local ht = select(4, buttonText:GetBoundsRect())
 				buttonText:ClearAllPoints()
 				buttonText:SetPoint("TOPLEFT", frame2 or button, "TOPRIGHT", textPad or 0, -4)
-				buttonText:SetHeight(ht)
-				button.myheight = math.max(ht + 12, button.myheight)
+				buttonText:SetHeight(ht or 25)
+				button.myheight = math.max(ht or 0 + 12, button.myheight)
 			end
 		end
 		buttonText:SetWidth(self.frame:GetWidth() - 57 - (frame and frame:GetWidth() + frame2:GetWidth() or 0))
