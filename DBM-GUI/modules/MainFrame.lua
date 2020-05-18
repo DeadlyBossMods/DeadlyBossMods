@@ -99,6 +99,13 @@ local DBMOptions = CreateFrame("Frame", "$parentDBMOptions", frame)
 DBMOptions.name = DBM_GUI_Translations.OTabOptions
 frame:CreateTab(DBMOptions)
 
+local hack = OptionsList_OnLoad
+function OptionsList_OnLoad(self, ...)
+	print(self:GetName())
+	if self:GetName() ~= frame:GetName() .. "List" then
+		hack(self, ...)
+	end
+end
 local frameList = CreateFrame("Frame", "$parentList", frame, "OptionsFrameListTemplate")
 frameList:SetSize(205, 499)
 frameList:SetPoint("TOPLEFT", 22, -40)
