@@ -17,8 +17,6 @@ mod:RegisterEventsInCombat(
 
 --ability.id = 260508 and type = "begincast" or ability.id = 260551 and type = "cast" or ability.id = 260541
 --TODO, review wildfire/burning bush stuff for heroic+ to see if blizzards warning is good enough.
---local warnSwirlingScythe			= mod:NewTargetAnnounce(195254, 2)
-
 local specWarnCrush					= mod:NewSpecialWarningDefensive(260508, "Tank", nil, nil, 1, 2)
 local specWarnThorns				= mod:NewSpecialWarningSwitch(267907, "Dps", nil, nil, 1, 2)
 local yellThorns					= mod:NewYell(267907)

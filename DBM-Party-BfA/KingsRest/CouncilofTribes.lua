@@ -222,39 +222,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 			end
 		else
 			self.vb.bossTwo = cid
-			--Start Boss 1 Timer (17.9-25.5-28.9sec)
-			if self.vb.bossOne == 135475 then -- Kula the Butcher
-			--	timerWhirlingAxesCD:Start(25.5)
-			elseif self.vb.bossOne == 135470 then -- Aka'ali the Conqueror
-			--	timerBarrelThroughCD:Start(25.5)
-			elseif self.vb.bossOne == 135472 then -- Zanazal the Wise
-			--	timerPoisonNovaCD:Start(25.5)
-			end
-			--Start Boss 2 Timer (47.1/55.5 seconds)
-			if cid == 135475 then -- Kula the Butcher
-			--	timerWhirlingAxesCD:Start(55.5)
-			elseif cid == 135470 then -- Aka'ali the Conqueror
-			--	timerBarrelThroughCD:Start(55.5)
-			elseif cid == 135472 then -- Zanazal the Wise
-			--	timerPoisonNovaCD:Start(55.5)
-			end
 		end
-	--[[elseif spellID == 267422 then--Boss 1 Assist
-		if self.vb.bossOne == 135475 then -- Kula the Butcher
-
-		elseif self.vb.bossOne == 135470 then -- Aka'ali the Conqueror
-
-		elseif self.vb.bossOne == 135472 then -- Zanazal the Wise
-
-		end
-	elseif spellId == 267437 then--Boss 2 Assist
-		if cid == 135475 then -- Kula the Butcher
-
-		elseif cid == 135470 then -- Aka'ali the Conqueror
-
-		elseif cid == 135472 then -- Zanazal the Wise
-
-		end--]]
 	end
 end
 

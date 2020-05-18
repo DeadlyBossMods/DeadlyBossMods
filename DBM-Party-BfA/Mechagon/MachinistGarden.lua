@@ -43,10 +43,6 @@ function mod:OnCombatStart(delay)
 	timerFlameCannonCD:Start(13.1-delay)
 end
 
---function mod:OnCombatEnd()
-
---end
-
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 285440 then
@@ -71,16 +67,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnDiscomBomb:Play("helpdispel")
 	end
 end
-
---[[
-function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
-	if spellId == 228007 and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
-		specWarnGTFO:Show()
-		specWarnGTFO:Play("watchfeet")
-	end
-end
-mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
---]]
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 294853 then--Activate Plant
