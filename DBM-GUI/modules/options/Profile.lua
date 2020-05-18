@@ -18,12 +18,6 @@ createButton:SetPoint("LEFT", createTextbox, "RIGHT", 10, 0)
 createButton:SetScript("OnClick", function()
 	dbm_profilePanel_create()
 end)
-for name, _ in pairs(DBM_AllSavedOptions) do
-	table.insert(profileDropdown, {
-		text	= name,
-		value	= name
-	})
-end
 
 local applyProfileArea		= profilePanel:CreateArea(L.Area_ApplyProfile, nil, 65, true)
 local applyProfile			= applyProfileArea:CreateDropdown(L.SelectProfileToApply, profileDropdown, nil, nil, function(value)
@@ -32,7 +26,9 @@ local applyProfile			= applyProfileArea:CreateDropdown(L.SelectProfileToApply, p
 	dbm_profilePanel_refresh()
 end)
 applyProfile:SetPoint("TOPLEFT", 0, -20)
-applyProfile:SetSelectedValue(DBM_UsedProfile)
+applyProfile:SetScript("OnShow", function()
+	applyProfile:SetSelectedValue(DBM_UsedProfile)
+end)
 
 local copyProfileArea		= profilePanel:CreateArea(L.Area_CopyProfile, nil, 65, true)
 local copyProfile			= copyProfileArea:CreateDropdown(L.SelectProfileToCopy, profileDropdown, nil, nil, function(value)
@@ -76,12 +72,21 @@ function dbm_profilePanel_create()
 			DBM:CreateProfile(createTextbox:GetText())
 			createTextbox:SetText("")
 			createTextbox:ClearFocus()
-			DBM_GUI:dbm_profilePanel_refresh()
+			dbm_profilePanel_refresh()
 		end
 	end
 end
 
 function dbm_profilePanel_refresh()
+	table.wipe(profileDropdown)
+	for name, _ in pairs(DBM_AllSavedOptions) do
+		table.insert(profileDropdown, {
+			text	= name,
+			value	= name
+		})
+	end
+	applyProfile:GetScript("OnShow")()
 	copyProfile:GetScript("OnShow")()
 	deleteProfile:GetScript("OnShow")()
 end
+dbm_profilePanel_refresh()
