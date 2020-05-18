@@ -139,15 +139,11 @@ do
 		if not frame then
 			return
 		end
-		local new_frame = {
-			parent = frame
-		}
 		return setmetatable({
 			parent = frame
 		}, {
 			__index = AuraFramePrototype
 		})
-		return new_frame
 	end
 end
 
