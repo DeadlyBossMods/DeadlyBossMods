@@ -101,7 +101,6 @@ frame:CreateTab(DBMOptions)
 
 local hack = OptionsList_OnLoad
 function OptionsList_OnLoad(self, ...)
-	print(self:GetName())
 	if self:GetName() ~= frame:GetName() .. "List" then
 		hack(self, ...)
 	end

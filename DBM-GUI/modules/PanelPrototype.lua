@@ -150,13 +150,13 @@ function PanelPrototype:CreateScrollingMessageFrame(width, height, insertmode, f
 end
 
 function PanelPrototype:CreateEditBox(text, value, width, height)
-	local textbox = CreateFrame("EditBox", "DBM_GUI_Option_" .. self:GetNewID(), self.frame)
+	local textbox = CreateFrame("EditBox", "DBM_GUI_Option_" .. self:GetNewID(), self.frame, "InputBoxTemplate")
 	textbox.mytype = "textbox"
 	textbox:SetSize(width or 100, height or 20)
-	textbox:SetScript("OnEscapePressed", function()
+	textbox:SetScript("OnEscapePressed", function(self)
 		self:ClearFocus()
 	end)
-	textbox:SetScript("OnTabPressed", function()
+	textbox:SetScript("OnTabPressed", function(self)
 		self:ClearFocus()
 	end)
 	if type(value) == "string" then
