@@ -23,7 +23,7 @@ DBMNameplateFrame:Hide()
 --------------------------
 local CreateAuraFrame
 do
-	local AuraFramePrototype
+	local AuraFramePrototype = {}
 
 	function AuraFramePrototype:CreateIcon(frame)
 		local icon = DBMNameplateFrame:CreateTexture(nil, "BACKGROUND")
