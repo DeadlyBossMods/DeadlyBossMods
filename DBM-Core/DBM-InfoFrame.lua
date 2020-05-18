@@ -146,9 +146,9 @@ function createFrame()
 	frame = CreateFrame("Frame", "DBMInfoFrame", UIParent, DBM:IsAlpha() and "BackdropTemplate")
 	frame:SetFrameStrata("DIALOG")
 	frame.backdropInfo = {
-		bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background",--131071
-		tile = true,
-		tileSize = 16
+		bgFile		= "Interface\\DialogFrame\\UI-DialogBox-Background", -- 131071
+		tile		= true,
+		tileSize	= 16
 	}
 	if not DBM:IsAlpha() then
 		frame:SetBackdrop(frame.backdropInfo)

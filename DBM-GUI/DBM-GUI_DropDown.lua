@@ -6,12 +6,12 @@ do
 	local ClickFrame = CreateFrame("Button", nil, UIParent)
 
 	TabFrame1.backdropInfo = {
-		bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background", -- 131071
-		edgeFile = "Interface\\DialogFrame\\UI-DialogBox-Border", -- 131072
-		tile = 1,
-		tileSize = 32,
-		edgeSize = 32,
-		insets = { left = 11, right = 12, top = 12, bottom = 11 }
+		bgFile		= "Interface\\DialogFrame\\UI-DialogBox-Background", -- 131071
+		edgeFile	= "Interface\\DialogFrame\\UI-DialogBox-Border", -- 131072
+		tile		= 1,
+		tileSize	= 32,
+		edgeSize	= 32,
+		insets		= { left = 11, right = 12, top = 12, bottom = 11 }
 	}
 	if not DBM:IsAlpha() then
 		TabFrame1:SetBackdrop(TabFrame1.backdropInfo)
@@ -97,7 +97,7 @@ do
 				self.buttons[i].entry = values[i + self.offset]
 				if values[i + self.offset].texture then
 					self.buttons[i].backdropInfo = {
-						bgFile = values[i + self.offset].texture
+						bgFile	= values[i + self.offset].texture
 					}
 					if not DBM:IsAlpha() then
 						self.buttons[i]:SetBackdrop(self.buttons[i].backdropInfo)

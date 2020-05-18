@@ -16,7 +16,7 @@ local elapsed, totalRepeat = 0, 0
 frame = CreateFrame("Frame", "DBMFlash", UIParent, DBM:IsAlpha() and "BackdropTemplate")
 frame:Hide()
 frame.backdropInfo = {
-	bgFile = "Interface\\Tooltips\\UI-Tooltip-Background"
+	bgFile	= "Interface\\Tooltips\\UI-Tooltip-Background" -- 137056
 }
 if not DBM:IsAlpha() then
 	frame:SetBackdrop(frame.backdropInfo)

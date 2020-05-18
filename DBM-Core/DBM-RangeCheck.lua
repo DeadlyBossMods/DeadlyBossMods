@@ -407,7 +407,7 @@ local function createTextFrame()
 	textFrame = CreateFrame("Frame", "DBMRangeCheck", UIParent, DBM:IsAlpha() and "BackdropTemplate")
 	textFrame:SetFrameStrata("DIALOG")
 	textFrame.backdropInfo = {
-		bgFile		= "Interface\\DialogFrame\\UI-DialogBox-Background",
+		bgFile		= "Interface\\DialogFrame\\UI-DialogBox-Background",--131071
 		tile		= true,
 		tileSize	= 16
 	}

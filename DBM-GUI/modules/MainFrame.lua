@@ -10,12 +10,12 @@ frame:RegisterForDrag("LeftButton")
 frame:SetFrameLevel(frame:GetFrameLevel() + 4)
 frame:Hide()
 frame.backdropInfo = {
-	bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background", -- 131071
-	edgeFile = "Interface\\DialogFrame\\UI-DialogBox-Border", -- 131072
-	tile = true,
-	tileSize = 32,
-	edgeSize = 32,
-	insets = { left = 11, right = 12, top = 12, bottom = 11 }
+	bgFile		= "Interface\\DialogFrame\\UI-DialogBox-Background", -- 131071
+	edgeFile	= "Interface\\DialogFrame\\UI-DialogBox-Border", -- 131072
+	tile		= true,
+	tileSize	= 32,
+	edgeSize	= 32,
+	insets		= { left = 11, right = 12, top = 12, bottom = 11 }
 }
 if DBM:IsAlpha() then
 	frame:ApplyBackdrop()
@@ -170,11 +170,11 @@ frameContainer:SetPoint("BOTTOMLEFT", frameList:GetName(), "BOTTOMRIGHT", 16, 1)
 frameContainer:SetPoint("RIGHT", -22, 0)
 frameContainer:SetBackdropBorderColor(0.6, 0.6, 0.6, 1)
 frameContainer.backdropInfo = {
-	edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border",
-	tile = true,
-	tileSize = 16,
-	edgeSize = 16,
-	insets = { left = 5, right = 5, top = 5, bottom = 5 }
+	edgeFile	= "Interface\\Tooltips\\UI-Tooltip-Border", -- 137057
+	tile		= true,
+	tileSize	= 16,
+	edgeSize	= 16,
+	insets		= { left = 5, right = 5, top = 5, bottom = 5 }
 }
 if DBM:IsAlpha() then
 	frameContainer:ApplyBackdrop()
