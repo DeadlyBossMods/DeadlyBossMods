@@ -9,9 +9,9 @@ DBM.RangeCheck = {}
 local rangeCheck = DBM.RangeCheck
 local mainFrame = CreateFrame("Frame")
 local textFrame, radarFrame, updateIcon, updateRangeFrame, initializeDropdown
-local RAID_CLASS_COLORS = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS -- for Phanx' Class Colors
+local RAID_CLASS_COLORS = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS -- For Phanx' Class Colors
 
---Function for automatically converting inputed ranges from old mods to be ones that have valid item/api checks
+-- Function for automatically converting inputed ranges from old mods to be ones that have valid item/api checks
 local function setCompatibleRestrictedRange(range)
 	if range <= 4 then
 		range = 4
@@ -51,47 +51,39 @@ local itsBCAgain
 
 do
 	local CheckInteractDistance, IsItemInRange, UnitInRange = CheckInteractDistance, IsItemInRange, UnitInRange
-	--All ranges are tested and compared against UnitDistanceSquared.
-	--Example: Worgsaw has a tooltip of 6 but doesn't factor in hitboxes/etc. It doesn't return false until UnitDistanceSquared of 8.
+	-- All ranges are tested and compared against UnitDistanceSquared.
+	-- Example: Worgsaw has a tooltip of 6 but doesn't factor in hitboxes/etc. It doesn't return false until UnitDistanceSquared of 8.
 	local itemRanges = {
-		[4] = 90175,--Gin-Ji Knife Set
-		[6] = 37727,--Ruby Acorn
-		[8] = 8149,--Voodoo Charm
-		[13] = 32321,--Sparrowhawk Net
-		[18] = 6450,--Silk Bandage
-		[23] = 21519,--Mistletoe
-		[33] = 1180,--Scroll of Stamina
-		[43] = 34471,--Vial of the Sunwell (UnitInRange api alternate if item checks break)
-		[48] = 32698,--Wrangling Rope
-		[53] = 116139,--Haunting Memento
-		[60] = 32825,--Soul Cannon
-		[80] = 35278,--Reinforced Net
+		[4] = 90175, -- Gin-Ji Knife Set
+		[6] = 37727, -- Ruby Acorn
+		[8] = 8149, -- Voodoo Charm
+		[13] = 32321, -- Sparrowhawk Net
+		[18] = 6450, -- Silk Bandage
+		[23] = 21519, -- Mistletoe
+		[33] = 1180, -- Scroll of Stamina
+		[43] = 34471, -- Vial of the Sunwell (UnitInRange api alternate if item checks break)
+		[48] = 32698, -- Wrangling Rope
+		[53] = 116139, -- Haunting Memento
+		[60] = 32825, -- Soul Cannon
+		[80] = 35278, -- Reinforced Net
 	}
 
 	local apiRanges = {
-		[10] = 3,--CheckInteractDistance (Duel)
-		[11] = 2,--CheckInteractDistance (Trade)
-		[30] = 1,--CheckInteractDistance (Inspect)
+		[10] = 3, -- CheckInteractDistance (Duel)
+		[11] = 2, -- CheckInteractDistance (Trade)
+		[30] = 1, -- CheckInteractDistance (Inspect)
 	}
 
 	function itsBCAgain(uId, checkrange)
-		if checkrange then--Specified range, this check only cares whether unit is within specific range
-			if itemRanges[checkrange] then--Only query item range for requested active range check
-				if IsItemInRange(itemRanges[checkrange], uId) then
-					return checkrange
-				else
-					return 1000
-				end
-			elseif apiRanges[checkrange] then--Only query item range for requested active range if no item found for it
-				if CheckInteractDistance(uId, apiRanges[checkrange]) then
-					return checkrange
-				else
-					return 1000
-				end
+		if checkrange then -- Specified range, this check only cares whether unit is within specific range
+			if itemRanges[checkrange] then -- Only query item range for requested active range check
+				return IsItemInRange(itemRanges[checkrange], uId) and checkrange or 1000
+			elseif apiRanges[checkrange] then -- Only query item range for requested active range if no item found for it
+				return CheckInteractDistance(uId, apiRanges[checkrange]) and checkrange or 1000
 			else
-				 return 1000--Just so it has a numeric value, even if it's unknown to protect from nil errors
+				 return 1000 -- Just so it has a numeric value, even if it's unknown to protect from nil errors
 			end
-		else--No range passed, this is being used by a getDistanceBetween function that needs to calculate precise distances of members of raid (well as precise as possible with a crappy api)
+		else -- No range passed, this is being used by a getDistanceBetween function that needs to calculate precise distances of members of raid (well as precise as possible with a crappy api)
 			if IsItemInRange(90175, uId) then return 4
 			elseif IsItemInRange(37727, uId) then return 6
 			elseif IsItemInRange(8149, uId) then return 8
@@ -107,7 +99,7 @@ do
 			elseif IsItemInRange(116139, uId) then return 53
 			elseif IsItemInRange(32825, uId) then return 60
 			elseif IsItemInRange(35278, uId) then return 80
-			else return 1000 end--Just so it has a numeric value, even if it's unknown to protect from nil errors
+			else return 1000 end -- Just so it has a numeric value, even if it's unknown to protect from nil errors
 		end
 	end
 end
@@ -415,9 +407,9 @@ local function createTextFrame()
 	textFrame = CreateFrame("Frame", "DBMRangeCheck", UIParent, DBM:IsAlpha() and "BackdropTemplate")
 	textFrame:SetFrameStrata("DIALOG")
 	textFrame.backdropInfo = {
-		bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background",
-		tile = true,
-		tileSize = 16
+		bgFile		= "Interface\\DialogFrame\\UI-DialogBox-Background",
+		tile		= true,
+		tileSize	= 16
 	}
 	if not DBM:IsAlpha() then
 		textFrame:SetBackdrop(textFrame.backdropInfo)
@@ -472,7 +464,7 @@ local function createTextFrame()
 		local line = textFrame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
 		line:SetSize(128, 12)
 		line:SetJustifyH("LEFT")
-		if i == 1 then -- 1st entry
+		if i == 1 then
 			line:SetPoint("TOPLEFT", textFrame, "TOPLEFT", 6, -6)
 		else
 			line:SetPoint("TOPLEFT", textFrame.lines[i - 1], "LEFT", 0, -6)
@@ -527,7 +519,7 @@ local function createRadarFrame()
 
 	local player = radarFrame:CreateTexture(nil, "OVERLAY")
 	player:SetSize(32, 32)
-	player:SetTexture(136431)--"Interface\\Minimap\\MinimapArrow.blp"
+	player:SetTexture(136431) -- "Interface\\Minimap\\MinimapArrow.blp"
 	player:SetBlendMode("ADD")
 	player:SetPoint("CENTER")
 
@@ -551,7 +543,7 @@ local function createRadarFrame()
 	for i = 1, 40 do
 		local dot = radarFrame:CreateTexture(nil, "OVERLAY")
 		dot:SetSize(24, 24)
-		dot:SetTexture(249183)--"Interface\\Minimap\\PartyRaidBlips"
+		dot:SetTexture(249183) -- "Interface\\Minimap\\PartyRaidBlips"
 		dot:Hide()
 		radarFrame.dots[i] = dot
 	end
@@ -584,17 +576,10 @@ do
 
 	local function setDot(id, sinTheta, cosTheta)
 		local dot = radarFrame.dots[id]
-		local x = dot.x
-		local y = dot.y
-		local range = dot.range
-		if range < (mainFrame.range * 1.5) then -- if person is closer than 1.5 * range, show the dot. Else hide it
-			local dx = ((x * cosTheta) - (-y * sinTheta)) * pixelsperyard -- Rotate the X,Y based on player facing
-			local dy = ((x * sinTheta) + (-y * cosTheta)) * pixelsperyard
+		if dot.range < (mainFrame.range * 1.5) then -- If person is closer than 1.5 * range, show the dot. Else hide it
 			dot:ClearAllPoints()
-			dot:SetPoint("CENTER", radarFrame, "CENTER", dx, dy)
-			if not dot:IsShown() then
-				dot:Show()
-			end
+			dot:SetPoint("CENTER", radarFrame, "CENTER", ((dot.x * cosTheta) - (-dot.y * sinTheta)) * pixelsperyard, ((dot.x * sinTheta) + (-dot.y * cosTheta)) * pixelsperyard)
+			dot:Show()
 		elseif dot:IsShown() then
 			dot:Hide()
 		end
@@ -607,20 +592,19 @@ do
 			local dot = radarFrame.dots[i]
 			if i <= numPlayers then
 				unitList[i] = IsInRaid() and "raid" .. i or "party" .. i
-				local uId = unitList[i]
-				local _, class = UnitClass(uId)
-				local icon = GetRaidTargetIndex(uId)
+				local _, class = UnitClass(unitList[i])
+				local icon = GetRaidTargetIndex(unitList[i])
 				dot.class = class
 				if icon and icon < 9 then
 					dot.icon = icon
-					dot:SetTexture(13700 .. icon)--format("Interface\\TargetingFrame\\UI-RaidTargetingIcon_%d", icon)
+					dot:SetTexture(13700 .. icon) -- "Interface\\TargetingFrame\\UI-RaidTargetingIcon_" .. icon
 					dot:SetTexCoord(0, 1, 0, 1)
 					dot:SetSize(16, 16)
 					dot:SetDrawLayer("OVERLAY", 1)
 				else
 					dot.icon = nil
 					class = class or "PRIEST"
-					dot:SetTexture(249183)--"Interface\\Minimap\\PartyRaidBlips"
+					dot:SetTexture(249183) -- "Interface\\Minimap\\PartyRaidBlips"
 					dot:SetTexCoord(BLIP_TEX_COORDS[class][1], BLIP_TEX_COORDS[class][2], BLIP_TEX_COORDS[class][3], BLIP_TEX_COORDS[class][4])
 					dot:SetSize(24, 24)
 					dot:SetDrawLayer("OVERLAY", 0)
@@ -689,17 +673,12 @@ do
 			local dot = radarFrame.dots[i]
 			local mapId = GetBestMapForUnit(uId) or 0
 			if UnitExists(uId) and playerMapId == mapId and not UnitIsUnit(uId, "player") and not UnitIsDeadOrGhost(uId) and UnitIsConnected(uId) and UnitInPhase(uId) and (not filter or filter(uId)) then
-				local range--Just set to a number in case any api fails and returns nil
-				if restricted then--API restrictions are in play, so pretend we're back in BC
-					range = itsBCAgain(uId, activeRange)
-				else
-					range = UnitDistanceSquared(uId) ^ 0.5
-				end
+				local range = restricted and itsBCAgain(uId, activeRange) or UnitDistanceSquared(uId) ^ 0.5
 				local inRange = false
-				if range < (activeRange + 0.5) then
+				if range < activeRange + 0.5 then
 					closePlayer = closePlayer + 1
 					inRange = true
-					if rEnabled then--Only used by radar
+					if rEnabled then -- Only used by radar
 						if not closestRange then
 							closestRange = range
 						elseif range < closestRange then
@@ -710,11 +689,10 @@ do
 						closetName = UnitName(uId)
 					end
 				end
-				if tEnabled and inRange and not onlySummary and closePlayer < 6 then -- display up to 5 players in text range frame.
+				if tEnabled and inRange and not onlySummary and closePlayer < 6 then -- Display up to 5 players in text range frame.
 					local playerName = UnitName(uId)
 					local color = RAID_CLASS_COLORS[dot.class] or NORMAL_FONT_COLOR
-					local icon = dot.icon
-					textFrame.lines[closePlayer]:SetText(icon and ("|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t %s"):format(icon, playerName) or playerName)
+					textFrame.lines[closePlayer]:SetText(dot.icon and ("|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t %s"):format(dot.icon, playerName) or playerName)
 					textFrame.lines[closePlayer]:SetTextColor(color.r, color.g, color.b)
 					textFrame.lines[closePlayer]:Show()
 					textFrame:SetHeight((closePlayer * 12) + 12)
@@ -726,10 +704,8 @@ do
 						rangeCheck:Hide(true)
 						return
 					end
-					local cy = x - playerX
-					local cx = y - playerY
-					dot.x = -cx
-					dot.y = -cy
+					dot.x = -(x - playerX)
+					dot.y = -(y - playerY)
 					dot.range = range
 					setDot(i, sinTheta, cosTheta)
 				end
@@ -739,12 +715,12 @@ do
 		end
 
 		if tEnabled then
-			--Green Text (Regular range frame and not near too many players, or reverse range frame and we ARE near enough)
+			-- Green Text (Regular range frame and not near too many players, or reverse range frame and we ARE near enough)
 			textFrame.inRangeText:SetText(DBM_CORE_RANGECHECK_IN_RANGE_TEXT:format(closePlayer, activeRange))
 			textFrame.inRangeText:Show()
 			if (reverse and closePlayer >= warnThreshold) or (not reverse and closePlayer < warnThreshold) then
 				textFrame.inRangeText:SetTextColor(0, 1, 0)
-			--Red Text (Regular range frame and we are near too many players, or reverse range frame and we aren't near enough)
+			-- Red Text (Regular range frame and we are near too many players, or reverse range frame and we aren't near enough)
 			else
 				updateSound(closePlayer)
 				textFrame.inRangeText:SetTextColor(1, 0, 0)
@@ -753,7 +729,7 @@ do
 		end
 		if rEnabled then
 			if prevNumClosePlayer ~= closePlayer or prevclosestRange ~= closestRange or prevType ~= type then
-				if closePlayer >= warnThreshold then -- only show the text if the circle is red
+				if closePlayer >= warnThreshold then -- Only show the text if the circle is red
 					circleColor = reverse and 1 or 2
 					if closePlayer == 1 then
 						radarFrame.inRangeText:SetText(DBM_CORE_RANGERADAR_IN_RANGE_TEXTONE:format(closetName, closestRange))
@@ -784,7 +760,7 @@ do
 				end
 				prevColor = circleColor
 			end
-			if circleColor == 2 then--Red
+			if circleColor == 2 then -- Red
 				updateSound(closePlayer)
 			end
 		end
@@ -815,44 +791,30 @@ do
 		local range = 1000
 		for uId in DBM:GetGroupMembers() do
 			if UnitExists(uId) and not UnitIsUnit(uId, "player") and not UnitIsDeadOrGhost(uId) and UnitIsConnected(uId) and UnitInPhase(uId) then
-				if DBM:HasMapRestrictions() then--API restrictions are in play, so pretend we're back in BC
-					range = itsBCAgain(uId, checkrange)
-				else
-					range = UnitDistanceSquared(uId) ^ 0.5
-				end
+				range = BM:HasMapRestrictions() and itsBCAgain(uId, checkrange) or UnitDistanceSquared(uId) * 0.5
 				if checkrange < (range + 0.5) then
-					return true--return and end once anyone found
+					return true
 				end
 			end
 		end
-		return false--No one was found in range
+		return false
 	end
 
 	function getDistanceBetween(uId, x, y)
 		local restrictionsActive = DBM:HasMapRestrictions()
-		if not x then--If only one arg then 2nd arg is always assumed to be player
-			if restrictionsActive then
-				return itsBCAgain(uId)
-			else
-				return UnitDistanceSquared(uId) ^ 0.5
-			end
+		if not x then -- If only one arg then 2nd arg is always assumed to be player
+			return restrictionsActive and itsBCAgain(uId) or UnitDistanceSquared(uId) ^ 0.5
 		end
 		if type(x) == "string" and UnitExists(x) then -- arguments: uId, uId2
-			--First attempt to avoid UnitPosition if any of args is player UnitDistanceSquared should work
+			-- First attempt to avoid UnitPosition if any of args is player UnitDistanceSquared should work
 			if UnitIsUnit("player", uId) then
-				if restrictionsActive then
-					return itsBCAgain(x)
-				else
-					return UnitDistanceSquared(x) ^ 0.5
-				end
+				return restrictionsActive and itsBCAgain(x) or UnitDistanceSquared(x) ^ 0.5
 			elseif UnitIsUnit("player", x) then
-				if restrictionsActive then
-					return itsBCAgain(uId)
-				else
-					return UnitDistanceSquared(uId) ^ 0.5
+				return restrictionsActive and itsBCAgain(uId) or UnitDistanceSquared(uId) ^ 0.5
+			else -- Neither unit is player, no way to avoid UnitPosition
+				if restrictionsActive then -- Cannot compare two units that don't involve player with restrictions, just fail quietly
+					return 1000
 				end
-			else--Neither unit is player, no way to avoid UnitPosition
-				if restrictionsActive then return 1000 end--Cannot compare two units that don't involve player with restrictions, just fail quietly
 				local uId2 = x
 				x, y = UnitPosition(uId2)
 				if not x then
@@ -861,7 +823,7 @@ do
 				end
 			end
 		end
-		if restrictionsActive then--Cannot check distance between player and a location (not another unit, again, fail quietly)
+		if restrictionsActive then -- Cannot check distance between player and a location (not another unit, again, fail quietly)
 			return 1000
 		end
 		local startX, startY = UnitPosition(uId)
@@ -880,7 +842,7 @@ function rangeCheck:Show(range, filter, forceshow, redCircleNumPlayers, reverse,
 	if (DBM:GetNumRealGroupMembers() < 2 or DBM.Options.DontShowRangeFrame) and not forceshow then
 		return
 	end
-	if type(range) == "function" then -- the first argument is optional
+	if type(range) == "function" then -- The first argument is optional
 		return self:Show(nil, range)
 	end
 	range = range or 10
@@ -898,7 +860,7 @@ function rangeCheck:Show(range, filter, forceshow, redCircleNumPlayers, reverse,
 		end
 		textFrame:Show()
 	end
-	--TODO, add check for restricted area here so we can prevent radar frame loading.
+	-- TODO, add check for restricted area here so we can prevent radar frame loading.
 	if not restrictionsActive and (DBM.Options.RangeFrameFrames == "radar" or DBM.Options.RangeFrameFrames == "both") and not radarFrame:IsShown() then
 		radarFrame:Show()
 	end
@@ -917,17 +879,17 @@ function rangeCheck:Show(range, filter, forceshow, redCircleNumPlayers, reverse,
 	end
 	updater:SetScript("OnLoop", updateRangeFrame)
 	updater:Play()
-	if forceshow and not DBM.Options.DontRestoreRange then--Force means user activated range frame, store user value for restore function
+	if forceshow and not DBM.Options.DontRestoreRange then -- Force means user activated range frame, store user value for restore function
 		restoreRange, restoreFilter, restoreThreshold, restoreReverse = mainFrame.range, mainFrame.filter, mainFrame.redCircleNumPlayers, mainFrame.reverse
 	end
 end
 
 function rangeCheck:Hide(force)
-	if restoreRange and not force then--Restore range frame to way it was when boss mod is done with it
+	if restoreRange and not force then -- Restore range frame to way it was when boss mod is done with it
 		rangeCheck:Show(restoreRange, restoreFilter, true, restoreThreshold, restoreReverse)
 	else
 		restoreRange, restoreFilter, restoreThreshold, restoreReverse = nil, nil, nil, nil
-		DBM.Options.RestoreRange = nil--Set nil here because it means force was passed.
+		DBM.Options.RestoreRange = nil -- Set nil here because it means force was passed.
 		updater:Stop()
 		if mainFrame.eventRegistered then
 			mainFrame.eventRegistered = nil
@@ -958,9 +920,6 @@ function rangeCheck:SetHideTime(hideTime)
 	mainFrame.hideTime = hideTime and (GetTime() + hideTime) or 0
 end
 
--- GetDistance(uId) -- distance between you and the given uId
--- GetDistance(uId, x, y) -- distance between uId and the coordinates
--- GetDistance(uId, uId2) -- distance between the two uIds
 function rangeCheck:GetDistance(...)
 	return getDistanceBetween(...)
 end

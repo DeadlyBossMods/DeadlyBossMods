@@ -16,7 +16,7 @@ local elapsed, totalRepeat = 0, 0
 frame = CreateFrame("Frame", "DBMFlash", UIParent, DBM:IsAlpha() and "BackdropTemplate")
 frame:Hide()
 frame.backdropInfo = {
-	bgFile = "Interface\\Tooltips\\UI-Tooltip-Background"--137056
+	bgFile = "Interface\\Tooltips\\UI-Tooltip-Background"
 }
 if not DBM:IsAlpha() then
 	frame:SetBackdrop(frame.backdropInfo)
@@ -35,12 +35,11 @@ do
 		if elapsed >= t then
 			self:Hide()
 			self:SetAlpha(0)
-			if totalRepeat >= 1 then--Keep repeating until totalRepeat = 0
+			if totalRepeat >= 1 then
 				flashFrame:Show(r, g, b, t, a, totalRepeat - 1)
 			end
 			return
 		end
-		-- quadratic fade in/out
 		self:SetAlpha(-(elapsed / (duration / 2) - 1) ^ 2 + 1)
 	end)
 	frame:Hide()
