@@ -49,7 +49,6 @@ local timerFulminatingBurstCD		= mod:NewCDTimer(17.0, 303885, nil, nil, nil, 3, 
 local timerHaywire					= mod:NewBuffActiveTimer(30, 296080, nil, nil, nil, 6)
 --local timerHowlingFearCD			= mod:NewAITimer(13.4, 257791, nil, "HasInterrupt", nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
 
---mod:AddRangeFrameOption(5, 194966)
 mod:AddNamePlateOption("NPAuraOnWalkieShockie", 296522, false)
 
 mod.vb.hard = false
@@ -126,9 +125,6 @@ end
 
 function mod:OnCombatEnd()
 	table.wipe(unitTracked)
---	if self.Options.RangeFrame then
---		DBM.RangeCheck:Hide()
---	end
 	if self.Options.NPAuraOnWalkieShockie then
 		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
 	end
@@ -198,7 +194,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnAntiTresField:Play("gathershare")
 	end
 end
---mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
@@ -211,16 +206,6 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
---[[
-function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
-	if spellId == 228007 and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
-		specWarnGTFO:Show()
-		specWarnGTFO:Play("watchfeet")
-	end
-end
-mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
---]]
-
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 150295 or cid == 155760 then--tank-buster-mk1/tank-buster-mk2
@@ -230,10 +215,3 @@ function mod:UNIT_DIED(args)
 		timerFulminatingBurstCD:Stop()
 	end
 end
-
---[[
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 257939 then
-	end
-end
---]]

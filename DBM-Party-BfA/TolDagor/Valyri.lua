@@ -14,8 +14,6 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS 257028"
 )
 
---local warnSwirlingScythe			= mod:NewTargetAnnounce(195254, 2)
-
 local specWarnCinderflame			= mod:NewSpecialWarningDodge(256955, nil, nil, nil, 2, 2)
 local specWarnFuselighter			= mod:NewSpecialWarningYou(257028, nil, nil, nil, 1, 2)
 local yellFuselighter				= mod:NewYell(257028, nil, false)
