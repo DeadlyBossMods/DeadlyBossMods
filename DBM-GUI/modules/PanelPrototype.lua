@@ -120,9 +120,10 @@ function PanelPrototype:CreateSlider(text, low, high, step, width)
 	slider:SetMinMaxValues(low, high)
 	slider:SetValueStep(step)
 	slider:SetWidth(width or 180)
-	_G[slider:GetName() .. "Text"]:SetText(text)
-	slider:SetScript("OnValueChanged", function()
-		_G[slider:GetName() .. "Text"]:SetText(text)
+	local sliderText = _G[slider:GetName() .. "Text"]
+	sliderText:SetText(text)
+	slider:SetScript("OnValueChanged", function(_, value)
+		sliderText:SetFormattedText(text, value)
 	end)
 	self:SetLastObj(slider)
 	return slider
