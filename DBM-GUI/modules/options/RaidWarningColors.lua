@@ -16,7 +16,7 @@ end
 
 local RaidWarningPanel = DBM_GUI_Frame:CreateNewPanel(L.Tab_RaidWarning, "option")
 
-local raidwarnoptions = RaidWarningPanel:CreateArea(L.RaidWarning_Header, nil, 375, true)
+local raidwarnoptions = RaidWarningPanel:CreateArea(L.RaidWarning_Header, nil, 375)
 
 local ShowWarningsInChat	= raidwarnoptions:CreateCheckButton(L.ShowWarningsInChat, true, nil, "ShowWarningsInChat")
 local WarningIconLeft		= raidwarnoptions:CreateCheckButton(L.WarningIconLeft, true, nil, "WarningIconLeft")
@@ -151,7 +151,7 @@ movemebutton:SetHighlightFontObject(GameFontNormalSmall)
 movemebutton:SetScript("OnClick", function() DBM:MoveWarning() end)
 
 --Raid Warning Colors
-local raidwarncolors = RaidWarningPanel:CreateArea(L.RaidWarnColors, nil, 150, true)
+local raidwarncolors = RaidWarningPanel:CreateArea(L.RaidWarnColors, nil, 150)
 
 local color1 = raidwarncolors:CreateColorSelect(64)
 local color2 = raidwarncolors:CreateColorSelect(64)
@@ -179,7 +179,7 @@ local function UpdateColor(self)
 	DBM.Options.WarningColors[self.myid].b = b
 end
 local function ResetColor(id, frame)
-	return function(self)
+	return function()
 		DBM.Options.WarningColors[id].r = DBM.DefaultOptions.WarningColors[id].r
 		DBM.Options.WarningColors[id].g = DBM.DefaultOptions.WarningColors[id].g
 		DBM.Options.WarningColors[id].b = DBM.DefaultOptions.WarningColors[id].b

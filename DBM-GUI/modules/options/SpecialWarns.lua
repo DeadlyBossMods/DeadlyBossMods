@@ -15,7 +15,7 @@ else
 end
 
 local specPanel = DBM_GUI_Frame:CreateNewPanel(L.Panel_SpecWarnFrame, "option")
-local specArea = specPanel:CreateArea(L.Area_SpecWarn, nil, 300, true)
+local specArea = specPanel:CreateArea(L.Area_SpecWarn, nil, 300)
 
 local check1 = specArea:CreateCheckButton(L.SpecWarn_ClassColor, true, nil, "SWarnClassColor")
 local check2 = specArea:CreateCheckButton(L.WarningAlphabetical, true, nil, "SWarningAlphabetical")
@@ -36,7 +36,7 @@ local color0text = specArea:CreateText(L.SpecWarn_FontColor, 80)
 color0text:SetPoint("BOTTOM", color0, "TOP", 5, 4)
 local color0reset = specArea:CreateButton(L.Reset, 64, 10, nil, GameFontNormalSmall)
 color0reset:SetPoint("TOP", color0, "BOTTOM", 5, -10)
-color0reset:SetScript("OnClick", function(self)
+color0reset:SetScript("OnClick", function()
 	DBM.Options.SpecialWarningFontCol[1] = DBM.DefaultOptions.SpecialWarningFontCol[1]
 	DBM.Options.SpecialWarningFontCol[2] = DBM.DefaultOptions.SpecialWarningFontCol[2]
 	DBM.Options.SpecialWarningFontCol[3] = DBM.DefaultOptions.SpecialWarningFontCol[3]
@@ -156,7 +156,7 @@ local Sounds = DBM_GUI:MixinSharedMedia3("sound", {
 	{ sound	= true, text = "Yogg Saron: Laugh", value = 15757 },
 })
 
-local specWarnOne = specPanel:CreateArea(L.SpecialWarnHeader1, nil, 160, true)
+local specWarnOne = specPanel:CreateArea(L.SpecialWarnHeader1, nil, 160)
 
 local showbuttonOne = specWarnOne:CreateButton(L.SpecWarn_DemoButton, 120, 16)
 showbuttonOne:SetPoint("BOTTOMRIGHT", specWarnOne.frame, "BOTTOMRIGHT", -5, 5)
@@ -166,11 +166,11 @@ showbuttonOne:SetScript("OnClick", function() DBM:ShowTestSpecialWarning(nil, 1)
 
 local color1 = specWarnOne:CreateColorSelect(64)
 color1:SetPoint("TOPLEFT", specWarnOne.frame, "TOPLEFT", 20, -30)
-local color1text = specWarnOne:CreateText(L.SpecWarn_FlashColor:format(1), 80)
+local color1text = specWarnOne:CreateText(L.SpecWarn_FlashColor:format(1), 85)
 color1text:SetPoint("BOTTOM", color1, "TOP", 5, 4)
 local color1reset = specWarnOne:CreateButton(L.Reset, 64, 10, nil, GameFontNormalSmall)
 color1reset:SetPoint("TOP", color1, "BOTTOM", 5, -10)
-color1reset:SetScript("OnClick", function(self)
+color1reset:SetScript("OnClick", function()
 	DBM.Options.SpecialWarningFlashCol1[1] = DBM.DefaultOptions.SpecialWarningFlashCol1[1]
 	DBM.Options.SpecialWarningFlashCol1[2] = DBM.DefaultOptions.SpecialWarningFlashCol1[2]
 	DBM.Options.SpecialWarningFlashCol1[3] = DBM.DefaultOptions.SpecialWarningFlashCol1[3]
@@ -217,21 +217,23 @@ flashRepSlider:HookScript("OnValueChanged", function(self)
 end)
 
 --Special Warning Area 2
-local specWarnTwo = specPanel:CreateArea(L.SpecialWarnHeader2, nil, 160, true)
+local specWarnTwo = specPanel:CreateArea(L.SpecialWarnHeader2, nil, 160)
 
 local showbuttonTwo = specWarnTwo:CreateButton(L.SpecWarn_DemoButton, 120, 16)
 showbuttonTwo:SetPoint("BOTTOMRIGHT", specWarnTwo.frame, "BOTTOMRIGHT", -5, 5)
 showbuttonTwo:SetNormalFontObject(GameFontNormalSmall)
 showbuttonTwo:SetHighlightFontObject(GameFontNormalSmall)
-showbuttonTwo:SetScript("OnClick", function() DBM:ShowTestSpecialWarning(nil, 2) end)
+showbuttonTwo:SetScript("OnClick", function()
+	DBM:ShowTestSpecialWarning(nil, 2)
+end)
 
 local color2 = specWarnTwo:CreateColorSelect(64)
 color2:SetPoint("TOPLEFT", specWarnTwo.frame, "TOPLEFT", 20, -30)
-local color2text = specWarnTwo:CreateText(L.SpecWarn_FlashColor:format(2), 80)
+local color2text = specWarnTwo:CreateText(L.SpecWarn_FlashColor:format(2), 85)
 color2text:SetPoint("BOTTOM", color2, "TOP", 5, 4)
 local color2reset = specWarnTwo:CreateButton(L.Reset, 64, 10, nil, GameFontNormalSmall)
 color2reset:SetPoint("TOP", color2, "BOTTOM", 5, -10)
-color2reset:SetScript("OnClick", function(self)
+color2reset:SetScript("OnClick", function()
 	DBM.Options.SpecialWarningFlashCol2[1] = DBM.DefaultOptions.SpecialWarningFlashCol2[1]
 	DBM.Options.SpecialWarningFlashCol2[2] = DBM.DefaultOptions.SpecialWarningFlashCol2[2]
 	DBM.Options.SpecialWarningFlashCol2[3] = DBM.DefaultOptions.SpecialWarningFlashCol2[3]
@@ -276,21 +278,23 @@ flashRepSlider2:HookScript("OnValueChanged", function(self)
 end)
 
 --Special Warning Area 3
-local specWarnThree = specPanel:CreateArea(L.SpecialWarnHeader3, nil, 160, true)
+local specWarnThree = specPanel:CreateArea(L.SpecialWarnHeader3, nil, 160)
 
 local showbuttonThree = specWarnThree:CreateButton(L.SpecWarn_DemoButton, 120, 16)
 showbuttonThree:SetPoint("BOTTOMRIGHT", specWarnThree.frame, "BOTTOMRIGHT", -5, 5)
 showbuttonThree:SetNormalFontObject(GameFontNormalSmall)
 showbuttonThree:SetHighlightFontObject(GameFontNormalSmall)
-showbuttonThree:SetScript("OnClick", function() DBM:ShowTestSpecialWarning(nil, 3) end)
+showbuttonThree:SetScript("OnClick", function()
+	DBM:ShowTestSpecialWarning(nil, 3)
+end)
 
 local color3 = specWarnThree:CreateColorSelect(64)
 color3:SetPoint("TOPLEFT", specWarnThree.frame, "TOPLEFT", 20, -30)
-local color3text = specWarnThree:CreateText(L.SpecWarn_FlashColor:format(3), 80)
+local color3text = specWarnThree:CreateText(L.SpecWarn_FlashColor:format(3), 85)
 color3text:SetPoint("BOTTOM", color3, "TOP", 5, 4)
 local color3reset = specWarnThree:CreateButton(L.Reset, 64, 10, nil, GameFontNormalSmall)
 color3reset:SetPoint("TOP", color3, "BOTTOM", 5, -10)
-color3reset:SetScript("OnClick", function(self)
+color3reset:SetScript("OnClick", function()
 	DBM.Options.SpecialWarningFlashCol3[1] = DBM.DefaultOptions.SpecialWarningFlashCol3[1]
 	DBM.Options.SpecialWarningFlashCol3[2] = DBM.DefaultOptions.SpecialWarningFlashCol3[2]
 	DBM.Options.SpecialWarningFlashCol3[3] = DBM.DefaultOptions.SpecialWarningFlashCol3[3]
@@ -337,21 +341,23 @@ flashRepSlider3:HookScript("OnValueChanged", function(self)
 	DBM:UpdateSpecialWarningOptions()
 end)
 
-local specWarnFour = specPanel:CreateArea(L.SpecialWarnHeader4, nil, 160, true)
+local specWarnFour = specPanel:CreateArea(L.SpecialWarnHeader4, nil, 160)
 
 local showbuttonFour = specWarnFour:CreateButton(L.SpecWarn_DemoButton, 120, 16)
 showbuttonFour:SetPoint("BOTTOMRIGHT", specWarnFour.frame, "BOTTOMRIGHT", -5, 5)
 showbuttonFour:SetNormalFontObject(GameFontNormalSmall)
 showbuttonFour:SetHighlightFontObject(GameFontNormalSmall)
-showbuttonFour:SetScript("OnClick", function() DBM:ShowTestSpecialWarning(nil, 4) end)
+showbuttonFour:SetScript("OnClick", function()
+	DBM:ShowTestSpecialWarning(nil, 4)
+end)
 
 local color4 = specWarnFour:CreateColorSelect(64)
 color4:SetPoint("TOPLEFT", specWarnFour.frame, "TOPLEFT", 20, -30)
-local color4text = specWarnFour:CreateText(L.SpecWarn_FlashColor:format(4), 80)
+local color4text = specWarnFour:CreateText(L.SpecWarn_FlashColor:format(4), 85)
 color4text:SetPoint("BOTTOM", color4, "TOP", 5, 4)
 local color4reset = specWarnFour:CreateButton(L.Reset, 64, 10, nil, GameFontNormalSmall)
 color4reset:SetPoint("TOP", color4, "BOTTOM", 5, -10)
-color4reset:SetScript("OnClick", function(self)
+color4reset:SetScript("OnClick", function()
 	DBM.Options.SpecialWarningFlashCol4[1] = DBM.DefaultOptions.SpecialWarningFlashCol4[1]
 	DBM.Options.SpecialWarningFlashCol4[2] = DBM.DefaultOptions.SpecialWarningFlashCol4[2]
 	DBM.Options.SpecialWarningFlashCol4[3] = DBM.DefaultOptions.SpecialWarningFlashCol4[3]
@@ -398,21 +404,23 @@ flashRepSlider4:HookScript("OnValueChanged", function(self)
 	DBM:UpdateSpecialWarningOptions()
 end)
 
-local specWarnFive = specPanel:CreateArea(L.SpecialWarnHeader5, nil, 160, true)
+local specWarnFive = specPanel:CreateArea(L.SpecialWarnHeader5, nil, 160)
 
 local showbuttonFive = specWarnFive:CreateButton(L.SpecWarn_DemoButton, 120, 16)
 showbuttonFive:SetPoint("BOTTOMRIGHT", specWarnFive.frame, "BOTTOMRIGHT", -5, 5)
 showbuttonFive:SetNormalFontObject(GameFontNormalSmall)
 showbuttonFive:SetHighlightFontObject(GameFontNormalSmall)
-showbuttonFive:SetScript("OnClick", function() DBM:ShowTestSpecialWarning(nil, 5) end)
+showbuttonFive:SetScript("OnClick", function()
+	DBM:ShowTestSpecialWarning(nil, 5)
+end)
 
 local color5 = specWarnFive:CreateColorSelect(64)
 color5:SetPoint("TOPLEFT", specWarnFive.frame, "TOPLEFT", 20, -30)
-local color5text = specWarnFive:CreateText(L.SpecWarn_FlashColor:format(5), 80)
+local color5text = specWarnFive:CreateText(L.SpecWarn_FlashColor:format(5), 85)
 color5text:SetPoint("BOTTOM", color5, "TOP", 5, 4)
 local color5reset = specWarnFive:CreateButton(L.Reset, 64, 10, nil, GameFontNormalSmall)
 color5reset:SetPoint("TOP", color5, "BOTTOM", 5, -10)
-color5reset:SetScript("OnClick", function(self)
+color5reset:SetScript("OnClick", function()
 	DBM.Options.SpecialWarningFlashCol5[1] = DBM.DefaultOptions.SpecialWarningFlashCol5[1]
 	DBM.Options.SpecialWarningFlashCol5[2] = DBM.DefaultOptions.SpecialWarningFlashCol5[2]
 	DBM.Options.SpecialWarningFlashCol5[3] = DBM.DefaultOptions.SpecialWarningFlashCol5[3]

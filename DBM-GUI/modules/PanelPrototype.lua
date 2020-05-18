@@ -424,11 +424,11 @@ do
 		buttonText:SetText(name or DBM_CORE_UNKNOWN)
 		if textLeft then
 			buttonText:ClearAllPoints()
-			buttonText:SetPoint("RIGHT", frame2 or button, "LEFT")
+			buttonText:SetPoint("RIGHT", frame2 and frame2:GetName() or button:GetName(), "LEFT")
 			buttonText:SetJustifyH("RIGHT")
 		else
 			buttonText:SetJustifyH("LEFT")
-			buttonText:SetPoint("TOPLEFT", button:GetName(), "TOPRIGHT", textPad or 0, -4)
+			buttonText:SetPoint("TOPLEFT", frame2 and frame2:GetName() or button:GetName(), "TOPRIGHT", textPad or 0, -4)
 			button.myheight = math.max(buttonText:GetContentHeight() + 12, button.myheight)
 		end
 		if dbmvar and DBM.Options[dbmvar] ~= nil then

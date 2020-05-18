@@ -16,7 +16,7 @@ end
 
 local BarSetupPanel = DBM_GUI_Frame:CreateNewPanel(L.BarSetup, "option")
 
-local BarColors = BarSetupPanel:CreateArea(L.AreaTitle_BarColors, nil, 635, true)
+local BarColors = BarSetupPanel:CreateArea(L.AreaTitle_BarColors, nil, 635)
 local movemebutton = BarColors:CreateButton(L.MoveMe, 100, 16)
 movemebutton:SetPoint("BOTTOMRIGHT", BarColors.frame, "TOPRIGHT", 0, -1)
 movemebutton:SetNormalFontObject(GameFontNormalSmall)
@@ -33,10 +33,10 @@ local color1Type1reset = BarColors:CreateButton(L.Reset, 64, 10, nil, GameFontNo
 local color2Type1reset = BarColors:CreateButton(L.Reset, 64, 10, nil, GameFontNormalSmall)
 color1Type1reset:SetPoint("TOP", color1Type1, "BOTTOM", 5, -10)
 color2Type1reset:SetPoint("TOP", color2Type1, "BOTTOM", 5, -10)
-color1Type1reset:SetScript("OnClick", function(self)
+color1Type1reset:SetScript("OnClick", function()
 	color1Type1:SetColorRGB(DBM.Bars:GetDefaultOption("StartColorAR"), DBM.Bars:GetDefaultOption("StartColorAG"), DBM.Bars:GetDefaultOption("StartColorAB"))
 end)
-color2Type1reset:SetScript("OnClick", function(self)
+color2Type1reset:SetScript("OnClick", function()
 	color2Type1:SetColorRGB(DBM.Bars:GetDefaultOption("EndColorAR"), DBM.Bars:GetDefaultOption("EndColorAG"), DBM.Bars:GetDefaultOption("EndColorAB"))
 end)
 
@@ -64,7 +64,7 @@ end)
 local dummybarcolor1 = DBM.Bars:CreateDummyBar(1, nil, L.CBTAdd)
 dummybarcolor1.frame:SetParent(BarColors.frame)
 dummybarcolor1.frame:SetPoint("TOP", color2Type1text, "LEFT", 10, 40)
-dummybarcolor1.frame:SetScript("OnUpdate", function(self, elapsed)
+dummybarcolor1.frame:SetScript("OnUpdate", function(_, elapsed)
 	dummybarcolor1:Update(elapsed)
 end)
 do
@@ -88,10 +88,10 @@ local color1Type2reset = BarColors:CreateButton(L.Reset, 64, 10, nil, GameFontNo
 local color2Type2reset = BarColors:CreateButton(L.Reset, 64, 10, nil, GameFontNormalSmall)
 color1Type2reset:SetPoint("TOP", color1Type2, "BOTTOM", 5, -10)
 color2Type2reset:SetPoint("TOP", color2Type2, "BOTTOM", 5, -10)
-color1Type2reset:SetScript("OnClick", function(self)
+color1Type2reset:SetScript("OnClick", function()
 	color1Type2:SetColorRGB(DBM.Bars:GetDefaultOption("StartColorAER"), DBM.Bars:GetDefaultOption("StartColorAEG"), DBM.Bars:GetDefaultOption("StartColorAEB"))
 end)
-color2Type2reset:SetScript("OnClick", function(self)
+color2Type2reset:SetScript("OnClick", function()
 	color2Type2:SetColorRGB(DBM.Bars:GetDefaultOption("EndColorAER"), DBM.Bars:GetDefaultOption("EndColorAEG"), DBM.Bars:GetDefaultOption("EndColorAEB"))
 end)
 
@@ -119,7 +119,7 @@ end)
 local dummybarcolor2 = DBM.Bars:CreateDummyBar(2, nil, L.CBTAOE)
 dummybarcolor2.frame:SetParent(BarColors.frame)
 dummybarcolor2.frame:SetPoint("TOP", color2Type2text, "LEFT", 10, 40)
-dummybarcolor2.frame:SetScript("OnUpdate", function(self, elapsed)
+dummybarcolor2.frame:SetScript("OnUpdate", function(_, elapsed)
 	dummybarcolor2:Update(elapsed)
 end)
 do
@@ -143,10 +143,10 @@ local color1Type3reset = BarColors:CreateButton(L.Reset, 64, 10, nil, GameFontNo
 local color2Type3reset = BarColors:CreateButton(L.Reset, 64, 10, nil, GameFontNormalSmall)
 color1Type3reset:SetPoint("TOP", color1Type3, "BOTTOM", 5, -10)
 color2Type3reset:SetPoint("TOP", color2Type3, "BOTTOM", 5, -10)
-color1Type3reset:SetScript("OnClick", function(self)
+color1Type3reset:SetScript("OnClick", function()
 	color1Type3:SetColorRGB(DBM.Bars:GetDefaultOption("StartColorDR"), DBM.Bars:GetDefaultOption("StartColorDG"), DBM.Bars:GetDefaultOption("StartColorDB"))
 end)
-color2Type3reset:SetScript("OnClick", function(self)
+color2Type3reset:SetScript("OnClick", function()
 	color2Type3:SetColorRGB(DBM.Bars:GetDefaultOption("EndColorDR"), DBM.Bars:GetDefaultOption("EndColorDG"), DBM.Bars:GetDefaultOption("EndColorDB"))
 end)
 
@@ -174,7 +174,7 @@ end)
 local dummybarcolor3 = DBM.Bars:CreateDummyBar(3, nil, L.CBTTargeted)
 dummybarcolor3.frame:SetParent(BarColors.frame)
 dummybarcolor3.frame:SetPoint("TOP", color2Type3text, "LEFT", 10, 40)
-dummybarcolor3.frame:SetScript("OnUpdate", function(self, elapsed)
+dummybarcolor3.frame:SetScript("OnUpdate", function(_, elapsed)
 	dummybarcolor3:Update(elapsed)
 end)
 do
@@ -198,10 +198,10 @@ local color1Type4reset = BarColors:CreateButton(L.Reset, 64, 10, nil, GameFontNo
 local color2Type4reset = BarColors:CreateButton(L.Reset, 64, 10, nil, GameFontNormalSmall)
 color1Type4reset:SetPoint("TOP", color1Type4, "BOTTOM", 5, -10)
 color2Type4reset:SetPoint("TOP", color2Type4, "BOTTOM", 5, -10)
-color1Type4reset:SetScript("OnClick", function(self)
+color1Type4reset:SetScript("OnClick", function()
 	color1Type4:SetColorRGB(DBM.Bars:GetDefaultOption("StartColorIR"), DBM.Bars:GetDefaultOption("StartColorIG"), DBM.Bars:GetDefaultOption("StartColorIB"))
 end)
-color2Type4reset:SetScript("OnClick", function(self)
+color2Type4reset:SetScript("OnClick", function()
 	color2Type4:SetColorRGB(DBM.Bars:GetDefaultOption("EndColorIR"), DBM.Bars:GetDefaultOption("EndColorIG"), DBM.Bars:GetDefaultOption("EndColorIB"))
 end)
 
@@ -229,7 +229,7 @@ end)
 local dummybarcolor4 = DBM.Bars:CreateDummyBar(4, nil, L.CBTInterrupt)
 dummybarcolor4.frame:SetParent(BarColors.frame)
 dummybarcolor4.frame:SetPoint("TOP", color2Type4text, "LEFT", 10, 40)
-dummybarcolor4.frame:SetScript("OnUpdate", function(self, elapsed)
+dummybarcolor4.frame:SetScript("OnUpdate", function(_, elapsed)
 	dummybarcolor4:Update(elapsed)
 end)
 do
@@ -253,10 +253,10 @@ local color1Type5reset = BarColors:CreateButton(L.Reset, 64, 10, nil, GameFontNo
 local color2Type5reset = BarColors:CreateButton(L.Reset, 64, 10, nil, GameFontNormalSmall)
 color1Type5reset:SetPoint("TOP", color1Type5, "BOTTOM", 5, -10)
 color2Type5reset:SetPoint("TOP", color2Type5, "BOTTOM", 5, -10)
-color1Type5reset:SetScript("OnClick", function(self)
+color1Type5reset:SetScript("OnClick", function()
 	color1Type5:SetColorRGB(DBM.Bars:GetDefaultOption("StartColorRR"), DBM.Bars:GetDefaultOption("StartColorRG"), DBM.Bars:GetDefaultOption("StartColorRB"))
 end)
-color2Type5reset:SetScript("OnClick", function(self)
+color2Type5reset:SetScript("OnClick", function()
 	color2Type5:SetColorRGB(DBM.Bars:GetDefaultOption("EndColorRR"), DBM.Bars:GetDefaultOption("EndColorRG"), DBM.Bars:GetDefaultOption("EndColorRB"))
 end)
 
@@ -284,7 +284,9 @@ end)
 local dummybarcolor5 = DBM.Bars:CreateDummyBar(5, nil, L.CBTRole)
 dummybarcolor5.frame:SetParent(BarColors.frame)
 dummybarcolor5.frame:SetPoint("TOP", color2Type5text, "LEFT", 10, 40)
-dummybarcolor5.frame:SetScript("OnUpdate", function(self, elapsed) dummybarcolor5:Update(elapsed) end)
+dummybarcolor5.frame:SetScript("OnUpdate", function(_, elapsed)
+	dummybarcolor5:Update(elapsed)
+end)
 do
 	-- little hook to prevent this bar from changing size/scale
 	local old = dummybarcolor5.ApplyStyle
@@ -306,10 +308,10 @@ local color1Type6reset = BarColors:CreateButton(L.Reset, 64, 10, nil, GameFontNo
 local color2Type6reset = BarColors:CreateButton(L.Reset, 64, 10, nil, GameFontNormalSmall)
 color1Type6reset:SetPoint("TOP", color1Type6, "BOTTOM", 5, -10)
 color2Type6reset:SetPoint("TOP", color2Type6, "BOTTOM", 5, -10)
-color1Type6reset:SetScript("OnClick", function(self)
+color1Type6reset:SetScript("OnClick", function()
 	color1Type6:SetColorRGB(DBM.Bars:GetDefaultOption("StartColorPR"), DBM.Bars:GetDefaultOption("StartColorPG"), DBM.Bars:GetDefaultOption("StartColorPB"))
 end)
-color2Type6reset:SetScript("OnClick", function(self)
+color2Type6reset:SetScript("OnClick", function()
 	color2Type6:SetColorRGB(DBM.Bars:GetDefaultOption("EndColorPR"), DBM.Bars:GetDefaultOption("EndColorPG"), DBM.Bars:GetDefaultOption("EndColorPB"))
 end)
 
@@ -337,7 +339,9 @@ end)
 local dummybarcolor6 = DBM.Bars:CreateDummyBar(6, nil, L.CBTPhase)
 dummybarcolor6.frame:SetParent(BarColors.frame)
 dummybarcolor6.frame:SetPoint("TOP", color2Type6text, "LEFT", 10, 40)
-dummybarcolor6.frame:SetScript("OnUpdate", function(self, elapsed) dummybarcolor6:Update(elapsed) end)
+dummybarcolor6.frame:SetScript("OnUpdate", function(_, elapsed)
+	dummybarcolor6:Update(elapsed)
+end)
 do
 	-- little hook to prevent this bar from changing size/scale
 	local old = dummybarcolor6.ApplyStyle
@@ -359,10 +363,10 @@ local color1Type7reset = BarColors:CreateButton(L.Reset, 64, 10, nil, GameFontNo
 local color2Type7reset = BarColors:CreateButton(L.Reset, 64, 10, nil, GameFontNormalSmall)
 color1Type7reset:SetPoint("TOP", color1Type7, "BOTTOM", 5, -10)
 color2Type7reset:SetPoint("TOP", color2Type7, "BOTTOM", 5, -10)
-color1Type7reset:SetScript("OnClick", function(self)
+color1Type7reset:SetScript("OnClick", function()
 	color1Type7:SetColorRGB(DBM.Bars:GetDefaultOption("StartColorUIR"), DBM.Bars:GetDefaultOption("StartColorUIG"), DBM.Bars:GetDefaultOption("StartColorUIB"))
 end)
-color2Type7reset:SetScript("OnClick", function(self)
+color2Type7reset:SetScript("OnClick", function()
 	color2Type7:SetColorRGB(DBM.Bars:GetDefaultOption("EndColorUIR"), DBM.Bars:GetDefaultOption("EndColorUIG"), DBM.Bars:GetDefaultOption("EndColorUIB"))
 end)
 
@@ -390,7 +394,9 @@ end)
 local dummybarcolor7 = DBM.Bars:CreateDummyBar(7, nil, L.CBTImportant)
 dummybarcolor7.frame:SetParent(BarColors.frame)
 dummybarcolor7.frame:SetPoint("TOP", color2Type7text, "LEFT", 10, 40)
-dummybarcolor7.frame:SetScript("OnUpdate", function(self, elapsed) dummybarcolor7:Update(elapsed) end)
+dummybarcolor7.frame:SetScript("OnUpdate", function(_, elapsed)
+	dummybarcolor7:Update(elapsed)
+end)
 do
 	-- little hook to prevent this bar from changing size/scale
 	local old = dummybarcolor7.ApplyStyle
@@ -412,7 +418,7 @@ customInline:SetPoint("TOPLEFT", forceLarge, "BOTTOMLEFT")
 local bar7OptionsText2 = BarColors:CreateText(L.Bar7Footer, 405, nil, nil, "LEFT")
 bar7OptionsText2:SetPoint("TOPLEFT", customInline, "TOPLEFT", 0, -60)
 
-local BarSetup = BarSetupPanel:CreateArea(L.AreaTitle_BarSetup, nil, 325, true)
+local BarSetup = BarSetupPanel:CreateArea(L.AreaTitle_BarSetup, nil, 325)
 
 local color1 = BarSetup:CreateColorSelect(64)
 local color2 = BarSetup:CreateColorSelect(64)
@@ -423,10 +429,10 @@ local color1reset = BarSetup:CreateButton(L.Reset, 64, 10, nil, GameFontNormalSm
 local color2reset = BarSetup:CreateButton(L.Reset, 64, 10, nil, GameFontNormalSmall)
 color1reset:SetPoint("TOP", color1, "BOTTOM", 5, -10)
 color2reset:SetPoint("TOP", color2, "BOTTOM", 5, -10)
-color1reset:SetScript("OnClick", function(self)
+color1reset:SetScript("OnClick", function()
 	color1:SetColorRGB(DBM.Bars:GetDefaultOption("StartColorR"), DBM.Bars:GetDefaultOption("StartColorG"), DBM.Bars:GetDefaultOption("StartColorB"))
 end)
-color2reset:SetScript("OnClick", function(self)
+color2reset:SetScript("OnClick", function()
 	color2:SetColorRGB(DBM.Bars:GetDefaultOption("EndColorR"), DBM.Bars:GetDefaultOption("EndColorG"), DBM.Bars:GetDefaultOption("EndColorB"))
 end)
 
@@ -454,7 +460,9 @@ end)
 local maindummybar = DBM.Bars:CreateDummyBar(nil, nil, SMALL)
 maindummybar.frame:SetParent(BarSetup.frame)
 maindummybar.frame:SetPoint("TOP", color2text, "LEFT", 10, 60)
-maindummybar.frame:SetScript("OnUpdate", function(self, elapsed) maindummybar:Update(elapsed) end)
+maindummybar.frame:SetScript("OnUpdate", function(_, elapsed)
+	maindummybar:Update(elapsed)
+end)
 do
 	-- little hook to prevent this bar from changing size/scale
 	local old = maindummybar.ApplyStyle
@@ -469,7 +477,9 @@ end
 local maindummybarHuge = DBM.Bars:CreateDummyBar(nil, nil, LARGE)
 maindummybarHuge.frame:SetParent(BarSetup.frame)
 maindummybarHuge.frame:SetPoint("TOP", color2text, "LEFT", 10, 35)
-maindummybarHuge.frame:SetScript("OnUpdate", function(self, elapsed) maindummybarHuge:Update(elapsed) end)
+maindummybarHuge.frame:SetScript("OnUpdate", function(_, elapsed)
+	maindummybarHuge:Update(elapsed)
+end)
 maindummybarHuge.enlarged = true
 maindummybarHuge.enlargeHack = true
 maindummybarHuge:ApplyStyle()
@@ -634,7 +644,7 @@ BarHeightSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("Hei
 local DisableBarFade = BarSetup:CreateCheckButton(L.NoBarFade, false, nil, nil, "NoBarFade")
 DisableBarFade:SetPoint("TOPLEFT", BarHeightSlider, "BOTTOMLEFT", 0, -50)
 
-local BarBehaviors = BarSetupPanel:CreateArea(L.AreaTitle_Behavior, nil, 225, true)
+local BarBehaviors = BarSetupPanel:CreateArea(L.AreaTitle_Behavior, nil, 225)
 
 local DecimalSlider = BarBehaviors:CreateSlider(L.Bar_Decimal, 5, 60, 1)
 DecimalSlider:SetPoint("TOPLEFT", BarBehaviors.frame, "TOPLEFT", 20, -25)
@@ -664,12 +674,14 @@ KeepTimers:SetPoint("TOPLEFT", StripTimers, "BOTTOMLEFT")
 local FadeTimers = BarBehaviors:CreateCheckButton(L.FadeBar, false, nil, nil, "FadeBars")
 FadeTimers:SetPoint("TOPLEFT", KeepTimers, "BOTTOMLEFT")
 
-local BarSetupSmall = BarSetupPanel:CreateArea(L.AreaTitle_BarSetupSmall, nil, 205, true)
+local BarSetupSmall = BarSetupPanel:CreateArea(L.AreaTitle_BarSetupSmall, nil, 205)
 
 local smalldummybar = DBM.Bars:CreateDummyBar(nil, nil, SMALL)
 smalldummybar.frame:SetParent(BarSetupSmall.frame)
 smalldummybar.frame:SetPoint("BOTTOM", BarSetupSmall.frame, "TOP", 0, -35)
-smalldummybar.frame:SetScript("OnUpdate", function(self, elapsed) smalldummybar:Update(elapsed) end)
+smalldummybar.frame:SetScript("OnUpdate", function(_, elapsed)
+	smalldummybar:Update(elapsed)
+end)
 
 local ExpandUpwards = BarSetup:CreateCheckButton(L.ExpandUpwards, false, nil, nil, "ExpandUpwards")
 ExpandUpwards:SetPoint("TOPLEFT", smalldummybar.frame, "BOTTOMLEFT", -50, -15)
@@ -714,14 +726,16 @@ barResetbutton:SetScript("OnClick", function()
 	resetDBTValueToDefault(AlphaSlider, "Alpha")
 end)
 
-local BarSetupHuge = BarSetupPanel:CreateArea(L.AreaTitle_BarSetupHuge, nil, 220, true)
+local BarSetupHuge = BarSetupPanel:CreateArea(L.AreaTitle_BarSetupHuge, nil, 220)
 
 local enablebar = BarSetupHuge:CreateCheckButton(L.EnableHugeBar, true, nil, nil, "HugeBarsEnabled")
 
 local hugedummybar = DBM.Bars:CreateDummyBar(nil, nil, LARGE)
 hugedummybar.frame:SetParent(BarSetupSmall.frame)
 hugedummybar.frame:SetPoint("BOTTOM", BarSetupHuge.frame, "TOP", 0, -50)
-hugedummybar.frame:SetScript("OnUpdate", function(self, elapsed) hugedummybar:Update(elapsed) end)
+hugedummybar.frame:SetScript("OnUpdate", function(_, elapsed)
+	hugedummybar:Update(elapsed)
+end)
 hugedummybar.enlarged = true
 hugedummybar.enlargeHack = true
 hugedummybar:ApplyStyle()

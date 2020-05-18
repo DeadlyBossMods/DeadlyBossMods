@@ -1,5 +1,5 @@
 local L = DBM_GUI_Translations
-local generaloptions = DBM_GUI_Frame:CreateArea(L.General, nil, 180, true)
+local generaloptions = DBM_GUI_Frame:CreateArea(L.General, nil, 180)
 
 local MiniMapIcon = generaloptions:CreateCheckButton(L.EnableMiniMapIcon, true)
 MiniMapIcon:SetScript("OnClick", function(self)
@@ -29,7 +29,7 @@ SoundChannelDropdown:SetPoint("TOPLEFT", generaloptions.frame, "TOPLEFT", 0, -55
 
 local bmrange = generaloptions:CreateButton(L.Button_RangeFrame, 120, 30)
 bmrange:SetPoint("TOPLEFT", SoundChannelDropdown, "BOTTOMLEFT", 15, -5)
-bmrange:SetScript("OnClick", function(self)
+bmrange:SetScript("OnClick", function()
 	if DBM.RangeCheck:IsShown() then
 		DBM.RangeCheck:Hide(true)
 	else
@@ -39,7 +39,7 @@ end)
 
 local bminfo = generaloptions:CreateButton(L.Button_InfoFrame, 120, 30)
 bminfo:SetPoint("LEFT", bmrange, "RIGHT", 2, 0)
-bminfo:SetScript("OnClick", function(self)
+bminfo:SetScript("OnClick", function()
 	if DBM.InfoFrame:IsShown() then
 		DBM.InfoFrame:Hide()
 	else
@@ -49,7 +49,7 @@ end)
 
 local bmtestmode = generaloptions:CreateButton(L.Button_TestBars, 150, 30)
 bmtestmode:SetPoint("LEFT", bminfo, "RIGHT", 2, 0)
-bmtestmode:SetScript("OnClick", function(self)
+bmtestmode:SetScript("OnClick", function()
 	DBM:DemoMode()
 end)
 
@@ -77,7 +77,7 @@ resetbutton:SetScript("OnClick", function()
 	DBM:RepositionFrames()
 end)
 
-local modelarea = DBM_GUI_Frame:CreateArea(L.ModelOptions, nil, 90, true)
+local modelarea = DBM_GUI_Frame:CreateArea(L.ModelOptions, nil, 90)
 
 local enablemodels = modelarea:CreateCheckButton(L.EnableModels, true, nil, "EnableModels")
 
