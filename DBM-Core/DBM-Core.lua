@@ -4539,7 +4539,7 @@ do
 		local inspopup = CreateFrame("Frame", "DBMPopupLockout", UIParent, DBM:IsAlpha() and "BackdropTemplate")
 		inspopup.backdropInfo = {
 			bgFile		= "Interface\\DialogFrame\\UI-DialogBox-Background-Dark", -- 312922
-			edgeFile	= 131072,--"Interface\\DialogFrame\\UI-DialogBox-Border"
+			edgeFile	= "Interface\\DialogFrame\\UI-DialogBox-Border", -- 131072
 			tile		= true,
 			tileSize	= 16,
 			edgeSize	= 16,
@@ -5185,7 +5185,10 @@ do
 		frame:SetPoint("TOP", 0, -230)
 		frame.backdropInfo = {
 			bgFile		= "Interface\\DialogFrame\\UI-DialogBox-Background", -- 131071
-			edgeFile	= "Interface\\DialogFrame\\UI-DialogBox-Border", tile = true, tileSize = 32, edgeSize = 32, -- 131072
+			edgeFile	= "Interface\\DialogFrame\\UI-DialogBox-Border", -- 131072
+			tile		= true,
+			tileSize	= 32,
+			edgeSize	= 32,
 			insets		= { left = 11, right = 12, top = 12, bottom = 11 }
 		}
 		if not DBM:IsAlpha() then
