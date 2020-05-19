@@ -654,6 +654,9 @@ do
 		if not self.options.Font then -- Fix font if it's nil
 			self.options.Font = standardFont
 		end
+		if self.options.Template == "DBTBarTemplate" then -- Kill internal default template
+			self.options.Template = "DBMDefaultSkinTimerTemplate"
+		end
 	end
 
 	function DBT:CreateProfile(id)
@@ -721,45 +724,6 @@ end
 function DBT:GetDefaultOption(option)
 	return self.defaultOptions[option]
 end
-
-------------------------
---  Default Template  --
-------------------------
-local defaultTemplate = CreateFrame("Frame", "DBTBarTemplate")
-defaultTemplate:SetFrameStrata("MEDIUM")
-defaultTemplate:SetFrameLevel(9999) -- It's over 9000!!!
-defaultTemplate:SetSize(195, 20)
-
-local defaultTemplateBar = CreateFrame("StatusBar", "$parentBar", defaultTemplate)
-defaultTemplateBar:SetSize(195, 20)
-defaultTemplateBar:SetPoint("CENTER", defaultTemplate, "CENTER")
-defaultTemplateBar:SetStatusBarTexture("Interface\\AddOns\\DBM-Core\\textures\\default.blp")
-defaultTemplateBar:SetStatusBarColor(1, 0.7, 0)
-
-local defaultTemplateBarBackground = defaultTemplateBar:CreateTexture("$parentBackground", "BACKGROUND")
-defaultTemplateBarBackground:SetColorTexture(0, 0, 0, 0.3)
-
-local defaultTemplateBarSpark = defaultTemplateBar:CreateTexture("$parentSpark", "OVERLAY")
-defaultTemplateBarSpark:SetSize(32, 64)
-defaultTemplateBarSpark:SetPoint("CENTER")
-defaultTemplateBarSpark:SetTexture("Interface\\AddOns\\DBM-Core\\textures\\Spark.blp")
-defaultTemplateBarSpark:SetBlendMode("ADD")
-
-local defaultTemplateTimer = defaultTemplate:CreateFontString("$parentTimer", "OVERLAY", "GameFontHighlightSmall")
-defaultTemplateTimer:SetPoint("RIGHT", defaultTemplate, "RIGHT", -1, 0.5)
-
-local defaultTemplateName = defaultTemplate:CreateFontString("$parentName", "OVERLAY", "GameFontHighlightSmall")
-defaultTemplateName:SetJustifyH("LEFT")
-defaultTemplateName:SetPoint("LEFT", defaultTemplate, "LEFT", 7, 0.5)
-defaultTemplateName:SetPoint("RIGHT", defaultTemplateTimer, "LEFT", -7, 0)
-
-local defaultTemplateIcon1 = defaultTemplate:CreateTexture("$parentIcon1", "OVERLAY")
-defaultTemplateIcon1:SetSize(20, 20)
-defaultTemplateIcon1:SetPoint("RIGHT", defaultTemplate, "LEFT")
-
-local defaultTemplateIcon2 = defaultTemplate:CreateTexture("$parentIcon2", "OVERLAY")
-defaultTemplateIcon2:SetSize(20, 20)
-defaultTemplateIcon2:SetPoint("LEFT", defaultTemplate, "RIGHT")
 
 -----------------------
 --  Bar Constructor  --
