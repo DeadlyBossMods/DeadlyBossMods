@@ -38,9 +38,6 @@ localization.kr.lua
 localization.es.lua
 localization.br.lua
 
-# TODO: Remove these
-DBM-GUI_DropDown.xml
-
 DBM-GUI.lua
 DBM-GUI_DropDown.lua
 
