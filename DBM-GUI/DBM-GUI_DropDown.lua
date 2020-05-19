@@ -68,12 +68,12 @@ end)
 
 tabFrame1.buttons = {}
 for i = 1, 10 do
-	local button = CreateFrame("Button", tabFrame1:GetName() .. "Button" .. buttonName .. i, tabFrame1, "UIDropDownMenuButtonTemplate")
+	local button = CreateFrame("Button", tabFrame1:GetName() .. "Button" .. i, tabFrame1, "UIDropDownMenuButtonTemplate")
 	button:SetSize(100, 16)
 	if i == 1 then
 		button:SetPoint("TOPLEFT", tabFrame1, "TOPLEFT", 11, -13)
 	else
-		button:SetPoint("TOPLEFT", tabFrame1[buttonName][i - 1]:GetName(), "BOTTOMLEFT")
+		button:SetPoint("TOPLEFT", tabFrame1.buttons[i - 1]:GetName(), "BOTTOMLEFT")
 	end
 	button:SetScript("OnEnter", function(self)
 		_G[self:GetName() .. "Highlight"]:Show()
