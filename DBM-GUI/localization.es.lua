@@ -140,7 +140,6 @@ L.BarEndColorUI				= "Color final (usuario)"
 L.Bar7Header				= "Opciones de barras de usuario"
 L.Bar7ForceLarge			= "Usar siempre barras grandes"
 L.Bar7CustomInline			= "Usar icono '!' personalizado"
-L.Bar7Footer				= "(la barra de muestra no se\nactualiza en vivo)"
 --Dropdown Options
 L.CBTGeneric				= "Genérico"
 L.CBTAdd					= "Esbirro"

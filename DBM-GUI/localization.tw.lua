@@ -145,7 +145,6 @@ L.BarEndColorUI				= "結束顏色(自訂)"
 L.Bar7Header				= "自訂計時條選項"
 L.Bar7ForceLarge			= "總是使用大計時條"
 L.Bar7CustomInline			= "使用自訂的'!'圖示"
-L.Bar7Footer				= "(測試計時條)"
 --Dropdown Options
 L.CBTGeneric				= "一般"
 L.CBTAdd					= "小怪"

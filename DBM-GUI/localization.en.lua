@@ -154,7 +154,6 @@ L.BarEndColorUI				= "End color (User)"
 L.Bar7Header				= "User Bar Options"
 L.Bar7ForceLarge			= "Always use large bar"
 L.Bar7CustomInline			= "Use custom '!' inline icon"
-L.Bar7Footer				= "(Dummy Bar won't live update)"
 --Dropdown Options
 L.CBTGeneric				= "Generic"
 L.CBTAdd					= "Add"

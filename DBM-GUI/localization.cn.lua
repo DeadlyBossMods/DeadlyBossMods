@@ -153,7 +153,6 @@ L.BarEndColorUI				= "结束颜色 (自定义)"
 L.Bar7Header				= "自定义计时条选项"
 L.Bar7ForceLarge			= "总是使用大型计时条"
 L.Bar7CustomInline			= "使用自定义 '!' 图标"
-L.Bar7Footer				= "(测试用计时条)"
 --Dropdown Options
 L.CBTGeneric				= "基本"
 L.CBTAdd					= "小怪入场"

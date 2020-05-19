@@ -146,7 +146,6 @@ L.BarEndColorUI				= "Конечный цвет (Польз.)"
 L.Bar7Header				= "Параметры пользовательского индикатора"
 L.Bar7ForceLarge			= "Всегда использовать большой индикатор"
 L.Bar7CustomInline			= "Использовать пользовательскую '!' встроенную иконку"
-L.Bar7Footer				= "(Dummy Bar won't live update)"
 
 -- Tab: Timers
 L.AreaTitle_BarColors		= "Цвета индикатора по типу таймера"

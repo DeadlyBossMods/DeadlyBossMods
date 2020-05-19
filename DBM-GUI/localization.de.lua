@@ -145,7 +145,6 @@ L.BarEndColorUI				= "Endfarbe (Nutzer)"
 L.Bar7Header				= "Einstellungen für Nutzerbalken"
 L.Bar7ForceLarge			= "Nutze immer großen Balken"
 L.Bar7CustomInline			= "Zeichen '!' einbetten"
-L.Bar7Footer				= "(keine Live-Aktual. der Dummy-Balken)"
 
 -- Tab: Timers
 L.AreaTitle_BarColors		= "Balkenfarben nach Timertyp"

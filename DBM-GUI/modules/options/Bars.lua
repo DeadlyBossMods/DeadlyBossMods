@@ -407,6 +407,7 @@ do
 		_G[self.frame:GetName() .. "Bar"]:SetWidth(183)
 	end
 end
+dummybarcolor7:ApplyStyle()
 
 --Type 7 Extra Options
 local bar7OptionsText = BarColors:CreateText(L.Bar7Header, 405, nil, nil, "LEFT")
@@ -415,8 +416,12 @@ local forceLarge = BarColors:CreateCheckButton(L.Bar7ForceLarge, false, nil, nil
 forceLarge:SetPoint("TOPLEFT", bar7OptionsText, "BOTTOMLEFT")
 local customInline = BarColors:CreateCheckButton(L.Bar7CustomInline, false, nil, nil, "Bar7CustomInline")
 customInline:SetPoint("TOPLEFT", forceLarge, "BOTTOMLEFT")
-local bar7OptionsText2 = BarColors:CreateText(L.Bar7Footer, 405, nil, nil, "LEFT")
-bar7OptionsText2:SetPoint("TOPLEFT", customInline, "TOPLEFT", 0, -60)
+customInline:SetScript("OnClick", function(self)
+	DBM.Bars:SetOption("Bar7CustomInline", not DBM.Bars:GetOption("Bar7CustomInline"))
+	local ttext = _G[dummybarcolor7.frame:GetName().."BarName"]:GetText() or ""
+	ttext = ttext:gsub("|T.-|t", "")
+	dummybarcolor7:SetText(ttext)
+end)
 
 local BarSetup = BarSetupPanel:CreateArea(L.AreaTitle_BarSetup, nil, 325)
 
@@ -473,6 +478,7 @@ do
 		_G[self.frame:GetName() .. "Bar"]:SetWidth(183)
 	end
 end
+maindummybar:ApplyStyle()
 
 local maindummybarHuge = DBM.Bars:CreateDummyBar(nil, nil, LARGE)
 maindummybarHuge.frame:SetParent(BarSetup.frame)
@@ -481,8 +487,7 @@ maindummybarHuge.frame:SetScript("OnUpdate", function(_, elapsed)
 	maindummybarHuge:Update(elapsed)
 end)
 maindummybarHuge.enlarged = true
-maindummybarHuge.enlargeHack = true
-maindummybarHuge:ApplyStyle()
+maindummybarHuge.dummyEnlarge = true
 do
 	-- little hook to prevent this bar from changing size/scale
 	local old = maindummybarHuge.ApplyStyle
@@ -493,6 +498,7 @@ do
 		_G[self.frame:GetName() .. "Bar"]:SetWidth(183)
 	end
 end
+maindummybarHuge:ApplyStyle()
 
 local Styles = {
 	{
@@ -737,7 +743,7 @@ hugedummybar.frame:SetScript("OnUpdate", function(_, elapsed)
 	hugedummybar:Update(elapsed)
 end)
 hugedummybar.enlarged = true
-hugedummybar.enlargeHack = true
+hugedummybar.dummyEnlarge = true
 hugedummybar:ApplyStyle()
 
 local ExpandUpwardsLarge = BarSetup:CreateCheckButton(L.ExpandUpwards, false, nil, nil, "ExpandUpwardsLarge")
