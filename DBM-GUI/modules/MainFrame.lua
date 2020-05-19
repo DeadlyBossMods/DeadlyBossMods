@@ -105,7 +105,7 @@ function OptionsList_OnLoad(self, ...)
 		hack(self, ...)
 	end
 end
-local frameList = CreateFrame("Frame", "$parentList", frame, "OptionsFrameListTemplate")
+local frameList = CreateFrame("Frame", "$parentList", frame, DBM:IsAlpha() and "BackdropTemplate,OptionsFrameListTemplate" or "OptionsFrameListTemplate")
 frameList:SetSize(205, 499)
 frameList:SetPoint("TOPLEFT", 22, -40)
 frameList:SetScript("OnShow", function()
@@ -194,16 +194,46 @@ frameContainerHeaderText:SetPoint("BOTTOMLEFT", frame:GetName(), "TOPLEFT", 10, 
 local frameContainerFOV = CreateFrame("ScrollFrame", "$parentFOV", frameContainer)
 frameContainerFOV:SetPoint("TOPLEFT", frameContainer:GetName(), "TOPLEFT", 5, -5)
 frameContainerFOV:SetPoint("BOTTOMRIGHT", frameContainer:GetName(), "BOTTOMRIGHT", -20, 7)
-frameContainerFOV:SetScript("OnMouseWheel", function(self, delta)
-	local scrollBar = _G[self:GetName() .. "ScrollBar"]
-	if delta > 0 then
-		scrollBar:SetValue(scrollBar:GetValue() - (scrollBar:GetHeight() / 2))
+frameContainerFOV:SetScript("OnVerticalScroll", function(self, offset)
+	_G[self:GetName() .. "ScrollBar"]:SetValue(offset)
+end)
+
+local frameContainerFOVScrollBar = CreateFrame("Slider", "$parentScrollBar", frameContainerFOV)
+frameContainerFOVScrollBar:SetSize(16, 0)
+frameContainerFOVScrollBar:SetPoint("TOPRIGHT", 15, -15)
+frameContainerFOVScrollBar:SetPoint("BOTTOMRIGHT", 15, 13)
+frameContainerFOVScrollBar:SetScript("OnValueChanged", function(self, value)
+	self:GetParent():SetVerticalScroll(value)
+	local min, max = self:GetMinMaxValues()
+	if value == min then
+		_G[self:GetName() .. "ScrollUpButton"]:Disable()
 	else
-		scrollBar:SetValue(scrollBar:GetValue() + (scrollBar:GetHeight() / 2))
+		_G[self:GetName() .. "ScrollUpButton"]:Enable()
+	end
+	if value == max then
+		_G[self:GetName() .. "ScrollDownButton"]:Disable()
+	else
+		_G[self:GetName() .. "ScrollDownButton"]:Enable()
 	end
 end)
 
--- TODO: Deprecate XML usage inheritance
-local frameContainerFOVScrollBar = CreateFrame("Slider", "$parentScrollBar", frameContainerFOV, "DBM_GUI_PanelScrollBarTemplate")
-frameContainerFOVScrollBar:SetPoint("TOPRIGHT", 15, -15)
-frameContainerFOVScrollBar:SetPoint("BOTTOMRIGHT", 15, 13)
+local frameContainerFOVScrollBarUp = CreateFrame("Button", "$parentScrollUpButton", frameContainerFOVScrollBar, "UIPanelScrollUpButtonTemplate")
+frameContainerFOVScrollBarUp:SetPoint("TOP", 0, 15)
+frameContainerFOVScrollBarUp:SetScript("OnClick", function(self)
+	local parent = self:GetParent()
+	parent:SetValue(parent:GetValue() - (parent:GetHeight() / 2))
+	PlaySound(1115)
+end)
+
+local frameContainerFOVScrollBarDown = CreateFrame("Button", "$parentScrollDownButton", frameContainerFOVScrollBar, "UIPanelScrollDownButtonTemplate")
+frameContainerFOVScrollBarDown:SetPoint("BOTTOM", 0, -15)
+frameContainerFOVScrollBarDown:SetScript("OnClick", function(self)
+	local parent = self:GetParent()
+	parent:SetValue(parent:GetValue() + (parent:GetHeight() / 2))
+	PlaySound(1115)
+end)
+
+local frameContainerFOVScrollBarThumb = frameContainerFOVScrollBar:CreateTexture("$parentThumbTexture")
+frameContainerFOVScrollBarThumb:SetSize(18, 24)
+frameContainerFOVScrollBarThumb:SetTexCoord(0.2, 0.8, 0.125, 0.875)
+frameContainerFOVScrollBarThumb:SetTexture(130849) -- "Interface\\Buttons\\UI-ScrollBar-Knob"
