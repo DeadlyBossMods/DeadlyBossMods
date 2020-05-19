@@ -3240,7 +3240,16 @@ local function CreateOptionsMenu()
 		local useCombined = DBM.Options.EventSoundMusicCombined
 		local DungeonMusicDropDown = eventSoundsGeneralArea:CreateDropdown(L.EventDungeonMusic, useCombined and DBM.Music or DBM.DungeonMusic, "DBM", "EventSoundDungeonBGM", function(value)
 			DBM.Options.EventSoundDungeonBGM = value
-			if value ~= "Random" then
+			if value == "Random" or value == "None" then
+				if DBM.Options.tempMusicSetting then
+					SetCVar("Sound_EnableMusic", DBM.Options.tempMusicSetting)
+					DBM.Options.tempMusicSetting = nil
+				end
+				if DBM.Options.musicPlaying then
+					StopMusic()
+					DBM.Options.musicPlaying = nil
+				end
+			else
 				if not DBM.Options.tempMusicSetting then
 					DBM.Options.tempMusicSetting = tonumber(GetCVar("Sound_EnableMusic"))
 					if DBM.Options.tempMusicSetting == 0 then
@@ -3257,7 +3266,16 @@ local function CreateOptionsMenu()
 
 		local MusicDropDown = eventSoundsGeneralArea:CreateDropdown(L.EventEngageMusic, useCombined and DBM.Music or DBM.BattleMusic, "DBM", "EventSoundMusic", function(value)
 			DBM.Options.EventSoundMusic = value
-			if value ~= "Random" then
+			if value == "Random" or value == "None" then
+				if DBM.Options.tempMusicSetting then
+					SetCVar("Sound_EnableMusic", DBM.Options.tempMusicSetting)
+					DBM.Options.tempMusicSetting = nil
+				end
+				if DBM.Options.musicPlaying then
+					StopMusic()
+					DBM.Options.musicPlaying = nil
+				end
+			else
 				if not DBM.Options.tempMusicSetting then
 					DBM.Options.tempMusicSetting = tonumber(GetCVar("Sound_EnableMusic"))
 					if DBM.Options.tempMusicSetting == 0 then
