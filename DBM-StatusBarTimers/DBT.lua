@@ -640,10 +640,10 @@ do
 	end
 
 	function DBT:LoadOptions(id)
-		--init
+		-- init
 		if not DBT_AllPersistentOptions then DBT_AllPersistentOptions = {} end
 		if not DBT_AllPersistentOptions[_G["DBM_UsedProfile"]] then DBT_AllPersistentOptions[_G["DBM_UsedProfile"]] = {} end
-		--migrate old options
+		-- migrate old options
 		if DBT_PersistentOptions and DBT_PersistentOptions[id] and not DBT_AllPersistentOptions[_G["DBM_UsedProfile"]][id] then
 			DBT_AllPersistentOptions[_G["DBM_UsedProfile"]][id] = DBT_PersistentOptions[id]
 		end
@@ -653,9 +653,6 @@ do
 		DBM:Schedule(2, delaySkinCheck, self)
 		if not self.options.Font then -- Fix font if it's nil
 			self.options.Font = standardFont
-		end
-		if self.options.Template == "DBMDefaultSkinTimerTemplate" then -- Fix old DefaultSkin template
-			self.options.Template = "DBTBarTemplate"
 		end
 	end
 
