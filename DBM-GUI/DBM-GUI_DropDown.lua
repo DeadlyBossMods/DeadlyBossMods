@@ -89,7 +89,7 @@ tabFrame1.fontbuttons = {}
 local buttonTable = { "buttons", "fontbuttons" }
 for i = 1, MAX_BUTTONS do
 	for _, buttonName in ipairs(buttonTable) do
-		local button = CreateFrame("Button", tabFrame1:GetName() .. "Button" .. buttonName .. i, tabFrame1, "GlueContextMenuButtonTemplate")
+		local button = CreateFrame("Button", tabFrame1:GetName() .. "Button" .. buttonName .. i, tabFrame1, "UIDropDownMenuButtonTemplate")
 		button:SetSize(100, 16)
 		if i == 1 then
 			button:SetPoint("TOPLEFT", tabFrame1, "TOPLEFT", 11, -13)
@@ -117,8 +117,6 @@ for i = 1, MAX_BUTTONS do
 			end
 			_G[self:GetParent().dropdown:GetName() .. "Text"]:SetText(self.entry.text)
 		end)
-		local buttonNormalText = CreateFrame("Frame", "$parentNormalText", button)
-		buttonNormalText:SetPoint("LEFT", 5, 0)
 		tabFrame1[buttonName][i] = button
 	end
 end
@@ -275,7 +273,7 @@ function tabFrame1:Refresh()
 	end
 end
 
-local dropdownPrototype = {}
+local dropdownPrototype = CreateFrame("Frame")
 
 function dropdownPrototype:SetSelectedValue(selected)
 	if selected and self.values and type(self.values) == "table" then

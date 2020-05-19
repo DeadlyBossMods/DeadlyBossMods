@@ -651,8 +651,11 @@ do
 		self.options = setmetatable(DBT_AllPersistentOptions[_G["DBM_UsedProfile"]][id], optionMT)
 		self:Rearrange()
 		DBM:Schedule(2, delaySkinCheck, self)
-		if not self.options.Font then--Fix font if it's nil
+		if not self.options.Font then -- Fix font if it's nil
 			self.options.Font = standardFont
+		end
+		if self.options.Template == "DBMDefaultSkinTimerTemplate" then -- Fix old DefaultSkin template
+			self.options.Template = "DBTBarTemplate"
 		end
 	end
 
