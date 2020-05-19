@@ -727,7 +727,7 @@ end
 ------------------------
 local defaultTemplate = CreateFrame("Frame", "DBTBarTemplate")
 defaultTemplate:SetFrameStrata("MEDIUM")
-defaultTemplate:SetTopLevel(true)
+defaultTemplate:SetFrameLevel(9999) -- It's over 9000!!!
 defaultTemplate:SetSize(195, 20)
 
 local defaultTemplateBar = CreateFrame("StatusBar", "$parentBar", defaultTemplate)
