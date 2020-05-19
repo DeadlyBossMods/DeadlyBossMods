@@ -74,10 +74,10 @@ function DBM_GUI_OptionsFrame:SelectButton(button)
 end
 
 function DBM_GUI_OptionsFrame:DisplayFrame(frame, forceChange)
-	local container = _G[self:GetName() .. "PanelContainer"]
 	if not (type(frame) == "table" and type(frame[0]) == "userdata") or select("#", frame:GetChildren()) == 0 then
 		return
 	end
+	local container = _G[self:GetName() .. "PanelContainer"]
 	local changed = forceChange or container.displayedFrame ~= frame
 	if container.displayedFrame then
 		container.displayedFrame:Hide()
@@ -89,36 +89,29 @@ function DBM_GUI_OptionsFrame:DisplayFrame(frame, forceChange)
 	if mymax <= 0 then
 		mymax = 0
 	end
+	local FOV = _G[container:GetName() .. "FOV"]
 	if mymax > 0 then
-		_G[container:GetName() .. "FOV"]:Show()
-		_G[container:GetName() .. "FOV"]:SetScrollChild(frame)
-		_G[container:GetName() .. "FOVScrollBar"]:SetMinMaxValues(0, mymax)
+		FOV:SetScrollChild(frame)
+		FOV:Show()
+		local scrollBar = _G[FOV:GetName() .. "ScrollBar"]
+		scrollBar:SetMinMaxValues(0, mymax)
 		if changed then
-			_G[container:GetName() .. "FOVScrollBar"]:SetValue(0)
+			scrollBar:SetValue(0)
 		end
-		if frame.isfixed then
-			frame.isfixed = nil
-			local listwidth = _G[container:GetName() .. "FOVScrollBar"]:GetWidth()
-			for i = 1, select("#", frame:GetChildren()) do
-				local child = select(i, frame:GetChildren())
-				if child.mytype == "area" then
-					child:SetWidth(child:GetWidth() - listwidth - 1)
-				end
+		local width = container:GetWidth() - 30
+		for i = 1, select("#", frame:GetChildren()) do
+			local child = select(i, frame:GetChildren())
+			if child.mytype == "area" then
+				child:SetWidth(width)
 			end
 		end
 	else
-		_G[container:GetName() .. "FOV"]:Hide()
-		frame:ClearAllPoints()
-		frame:SetPoint("TOPLEFT", container:GetName(), "TOPLEFT", 5, -5)
-		frame:SetPoint("BOTTOMRIGHT", container:GetName(), "BOTTOMRIGHT")
-		if not frame.isfixed then
-			frame.isfixed = true
-			local listwidth = _G[container:GetName() .. "FOVScrollBar"]:GetWidth()
-			for i = 1, select("#", frame:GetChildren()) do
-				local child = select(i, frame:GetChildren())
-				if child.mytype == "area" then
-					child:SetWidth(child:GetWidth() + listwidth)
-				end
+		FOV:Hide()
+		local width = container:GetWidth() - 10
+		for i = 1, select("#", frame:GetChildren()) do
+			local child = select(i, frame:GetChildren())
+			if child.mytype == "area" then
+				child:SetWidth(width)
 			end
 		end
 	end
@@ -184,7 +177,7 @@ function DBM_GUI_OptionsFrame:CreateTab(tab)
 	buttonText:Show()
 	button:Show()
 	if i == 1 then
-		button:SetPoint("TOPLEFT", self:GetName(), 20, -19)
+		button:SetPoint("TOPLEFT", self:GetName(), 20, -18)
 	else
 		button:SetPoint("TOPLEFT", "DBM_GUI_OptionsFrameTab" .. (i - 1), "TOPRIGHT", -15, 0)
 	end

@@ -148,61 +148,31 @@ for i = 1, (frameList:GetHeight() - 8) / 18 do
 	end)
 end
 local frameListList = _G[frameList:GetName() .. "List"]
-frameListList:SetBackdropBorderColor(0.6, 0.6, 0.6, 0.6)
-frameListList.offset = 0
-_G[frameListList:GetName() .. "ScrollBarScrollUpButton"]:Disable()
-_G[frameListList:GetName() .. "ScrollBarScrollDownButton"]:Disable()
-local frameListScrollBar = _G[frameListList:GetName() .. "ScrollBar"]
-frameListScrollBar:SetMinMaxValues(0, 11)
-frameListScrollBar:SetValue(0)
-frameList.scrollBar = frameListScrollBar
-frameListList:SetScript("OnVerticalScroll", function(self, offset)
-	frameListScrollBar:SetValue(offset)
-	self.offset = math.floor((offset / 18) + 0.5)
-	frame:UpdateMenuFrame(self:GetParent())
-end)
-frameList:SetScript("OnMouseWheel", function(self, delta)
-	if delta > 0 then
-		frameListScrollBar:SetValue(frameListScrollBar:GetValue() - (frameListScrollBar:GetHeight() / 2))
-	else
-		frameListScrollBar:SetValue(frameListScrollBar:GetValue() + (frameListScrollBar:GetHeight() / 2))
-	end
-	frame:UpdateMenuFrame()
-end)
-
-local frameContainer = CreateFrame("Frame", "$parentPanelContainer", frame, DBM:IsAlpha() and "BackdropTemplate")
-frameContainer:SetPoint("TOPLEFT", frameList:GetName(), "TOPRIGHT", 16, 0)
-frameContainer:SetPoint("BOTTOMLEFT", frameList:GetName(), "BOTTOMRIGHT", 16, 1)
-frameContainer:SetPoint("RIGHT", -22, 0)
-frameContainer:SetBackdropBorderColor(0.6, 0.6, 0.6, 1)
-frameContainer.backdropInfo = {
+frameListList.backdropInfo = {
 	edgeFile	= "Interface\\Tooltips\\UI-Tooltip-Border", -- 137057
 	tile		= true,
 	tileSize	= 16,
-	edgeSize	= 16,
-	insets		= { left = 5, right = 5, top = 5, bottom = 5 }
+	edgeSize	= 12,
+	insets		= { left = 0, right = 0, top = 5, bottom = 5 }
 }
 if DBM:IsAlpha() then
-	frameContainer:ApplyBackdrop()
+	frameListList:ApplyBackdrop()
 else
-	frameContainer:SetBackdrop(frameContainer.backdropInfo)
+	frameListList:SetBackdrop(frameListList.backdropInfo)
 end
-
-local frameContainerHeaderText = frameContainer:CreateFontString("$parentHeaderText", "BACKGROUND", "GameFontHighlightSmall")
-frameContainerHeaderText:SetPoint("BOTTOMLEFT", frame:GetName(), "TOPLEFT", 10, 1);
-
-local frameContainerFOV = CreateFrame("ScrollFrame", "$parentFOV", frameContainer)
-frameContainerFOV:SetPoint("TOPLEFT", frameContainer:GetName(), "TOPLEFT", 5, -5)
-frameContainerFOV:SetPoint("BOTTOMRIGHT", frameContainer:GetName(), "BOTTOMRIGHT", -20, 7)
-frameContainerFOV:SetScript("OnVerticalScroll", function(self, offset)
+frameListList:SetBackdropBorderColor(0.6, 0.6, 0.6, 0.6)
+frameListList.offset = 0
+frameListList:SetScript("OnVerticalScroll", function(self, offset)
 	_G[self:GetName() .. "ScrollBar"]:SetValue(offset)
+	self.offset = math.floor((offset / 18) + 0.5)
+	frame:UpdateMenuFrame(self:GetParent())
 end)
-
-local frameContainerFOVScrollBar = CreateFrame("Slider", "$parentScrollBar", frameContainerFOV)
-frameContainerFOVScrollBar:SetSize(16, 0)
-frameContainerFOVScrollBar:SetPoint("TOPRIGHT", 15, -15)
-frameContainerFOVScrollBar:SetPoint("BOTTOMRIGHT", 15, 13)
-frameContainerFOVScrollBar:SetScript("OnValueChanged", function(self, value)
+_G[frameListList:GetName() .. "ScrollBarScrollUpButton"]:Disable()
+_G[frameListList:GetName() .. "ScrollBarScrollDownButton"]:Enable()
+local frameListScrollBar = _G[frameListList:GetName() .. "ScrollBar"]
+frameListScrollBar:SetMinMaxValues(0, 11)
+frameListScrollBar:SetValue(0)
+frameListScrollBar:SetScript("OnValueChanged", function(self, value)
 	self:GetParent():SetVerticalScroll(value)
 	local min, max = self:GetMinMaxValues()
 	if value == min then
@@ -216,24 +186,60 @@ frameContainerFOVScrollBar:SetScript("OnValueChanged", function(self, value)
 		_G[self:GetName() .. "ScrollDownButton"]:Enable()
 	end
 end)
-
-local frameContainerFOVScrollBarUp = CreateFrame("Button", "$parentScrollUpButton", frameContainerFOVScrollBar, "UIPanelScrollUpButtonTemplate")
-frameContainerFOVScrollBarUp:SetPoint("TOP", 0, 15)
-frameContainerFOVScrollBarUp:SetScript("OnClick", function(self)
-	local parent = self:GetParent()
-	parent:SetValue(parent:GetValue() - (parent:GetHeight() / 2))
-	PlaySound(1115)
+frameList:SetScript("OnMouseWheel", function(self, delta)
+	if delta > 0 then
+		frameListScrollBar:SetValue(frameListScrollBar:GetValue() - (frameListScrollBar:GetHeight() / 2))
+	else
+		frameListScrollBar:SetValue(frameListScrollBar:GetValue() + (frameListScrollBar:GetHeight() / 2))
+	end
+	frame:UpdateMenuFrame()
 end)
 
-local frameContainerFOVScrollBarDown = CreateFrame("Button", "$parentScrollDownButton", frameContainerFOVScrollBar, "UIPanelScrollDownButtonTemplate")
-frameContainerFOVScrollBarDown:SetPoint("BOTTOM", 0, -15)
-frameContainerFOVScrollBarDown:SetScript("OnClick", function(self)
-	local parent = self:GetParent()
-	parent:SetValue(parent:GetValue() + (parent:GetHeight() / 2))
-	PlaySound(1115)
-end)
+local frameContainer = CreateFrame("ScrollFrame", "$parentPanelContainer", frame, DBM:IsAlpha() and "BackdropTemplate")
+frameContainer:SetPoint("TOPLEFT", frameList:GetName(), "TOPRIGHT", 16, 0)
+frameContainer:SetPoint("BOTTOMLEFT", frameList:GetName(), "BOTTOMRIGHT", 16, 0)
+frameContainer:SetPoint("RIGHT", -22, 0)
+frameContainer.backdropInfo = {
+	edgeFile	= "Interface\\Tooltips\\UI-Tooltip-Border", -- 137057
+	edgeSize	= 16,
+	tileEdge	= true
+}
+if DBM:IsAlpha() then
+	frameContainer:ApplyBackdrop()
+else
+	frameContainer:SetBackdrop(frameContainer.backdropInfo)
+end
+frameContainer:SetBackdropBorderColor(0.6, 0.6, 0.6, 1)
 
-local frameContainerFOVScrollBarThumb = frameContainerFOVScrollBar:CreateTexture("$parentThumbTexture")
-frameContainerFOVScrollBarThumb:SetSize(18, 24)
-frameContainerFOVScrollBarThumb:SetTexCoord(0.2, 0.8, 0.125, 0.875)
-frameContainerFOVScrollBarThumb:SetTexture(130849) -- "Interface\\Buttons\\UI-ScrollBar-Knob"
+local frameContainerHeaderText = frameContainer:CreateFontString("$parentHeaderText", "BACKGROUND", "GameFontHighlightSmall")
+frameContainerHeaderText:SetPoint("BOTTOMLEFT", frame:GetName(), "TOPLEFT", 10, 1)
+
+local frameContainerFOV = CreateFrame("ScrollFrame", "$parentFOV", frameContainer, "FauxScrollFrameTemplate")
+frameContainerFOV:Hide()
+frameContainerFOV:SetPoint("TOPLEFT", frameContainer, "TOPLEFT", 0, -5)
+frameContainerFOV:SetPoint("BOTTOMRIGHT", frameContainer, "BOTTOMRIGHT", 0, 5)
+
+_G[frameContainerFOV:GetName() .. "ScrollBarScrollUpButton"]:Disable()
+_G[frameContainerFOV:GetName() .. "ScrollBarScrollDownButton"]:Enable()
+
+local frameContainerScrollBar = _G[frameContainerFOV:GetName() .. "ScrollBar"]
+frameContainerScrollBar:ClearAllPoints()
+frameContainerScrollBar:SetPoint("TOPRIGHT", -4, -15)
+frameContainerScrollBar:SetPoint("BOTTOMRIGHT", 0, 15)
+
+local frameContainerScrollBarBackdrop = CreateFrame("Frame", nil, frameContainerScrollBar)
+frameContainerScrollBarBackdrop:SetPoint("TOPLEFT", -4, 20)
+frameContainerScrollBarBackdrop:SetPoint("BOTTOMRIGHT", 4, -20)
+frameContainerScrollBarBackdrop.backdropInfo = {
+	edgeFile	= "Interface\\Tooltips\\UI-Tooltip-Border", -- 137057
+	tile		= true,
+	tileSize	= 16,
+	edgeSize	= 16,
+	insets		= { left = 0, right = 0, top = 5, bottom = 5 }
+}
+if DBM:IsAlpha() then
+	frameContainerScrollBarBackdrop:ApplyBackdrop()
+else
+	frameContainerScrollBarBackdrop:SetBackdrop(frameContainerScrollBarBackdrop.backdropInfo)
+end
+frameContainerScrollBarBackdrop:SetBackdropBorderColor(0.6, 0.6, 0.6, 0.6)

@@ -508,7 +508,7 @@ do
 		local panel = CreateFrame("Frame", "DBM_GUI_Option_" .. self:GetNewID(), DBM_GUI_OptionsFramePanelContainer)
 		panel.mytype = "panel"
 		panel.sortID = self:GetCurrentID()
-		panel:SetSize(DBM_GUI_OptionsFramePanelContainerFOV:GetWidth(), DBM_GUI_OptionsFramePanelContainerFOV:GetHeight())
+		panel:SetSize(DBM_GUI_OptionsFramePanelContainer:GetWidth(), DBM_GUI_OptionsFramePanelContainer:GetHeight())
 		panel:SetPoint("TOPLEFT", DBM_GUI_OptionsFramePanelContainer, "TOPLEFT")
 		panel.name = frameName
 		panel.displayName = displayName or frameName
