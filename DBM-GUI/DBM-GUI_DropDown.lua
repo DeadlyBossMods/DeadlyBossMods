@@ -19,7 +19,7 @@ else
 	tabFrame1:ApplyBackdrop()
 end
 
-local tabFrame1List = CreateFrame("Frame", "$parentList", tabFrame1, DBM:IsAlpha() and "BackdropTemplate")
+local tabFrame1List = CreateFrame("ScrollFrame", "$parentList", tabFrame1, DBM:IsAlpha() and "BackdropTemplate")
 tabFrame1List:SetSize(24, 0)
 tabFrame1List:SetPoint("TOPRIGHT", -11, -11)
 tabFrame1List:SetPoint("BOTTOMRIGHT", -11, 11)
