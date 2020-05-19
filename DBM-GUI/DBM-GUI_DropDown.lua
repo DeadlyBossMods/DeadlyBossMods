@@ -266,7 +266,7 @@ function tabFrame1:Refresh()
 		self:ShowMenu(self.dropdown.values)
 	end
 	if #self.dropdown.values > MAX_BUTTONS then
-		_tabFrame1List:Show()
+		tabFrame1List:Show()
 		tabFrame1ScrollBar:SetMinMaxValues(0, valuesWOButtons)
 		tabFrame1ScrollBar:SetValueStep(1)
 	else
@@ -328,9 +328,9 @@ function DBM_GUI:CreateDropdown(title, values, vartype, var, callfunc, width, he
 	end)
 	if title ~= nil and title ~= "" then
 		local titleText = dropdown:CreateFontString(dropdown:GetName() .. "TitleText", "BACKGROUND")
-		titletext:SetPoint("BOTTOMLEFT", dropdown, "TOPLEFT", 21, 1)
-		titletext:SetFontObject(GameFontNormalSmall)
-		titletext:SetText(title)
+		titleText:SetPoint("BOTTOMLEFT", dropdown, "TOPLEFT", 21, 1)
+		titleText:SetFontObject(GameFontNormalSmall)
+		titleText:SetText(title)
 	end
 	if vartype and vartype == "DBM" and DBM.Options[var] ~= nil then
 		dropdown:SetScript("OnShow", function()
