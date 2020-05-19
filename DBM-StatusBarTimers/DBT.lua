@@ -465,7 +465,7 @@ options = {
 	},
 	Template = {
 		type = "string",
-		default = "DBTBarTemplate"
+		default = "DBMDefaultSkinTimerTemplate"
 	},
 	Skin = {
 		type = "string",
