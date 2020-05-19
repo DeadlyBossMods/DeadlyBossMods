@@ -349,7 +349,7 @@ function mod:ToggleHudar(r, hide)
 end
 
 do
-	mainFrame:SetScript("OnEvent", function onEvent(_, event, addon)
+	mainFrame:SetScript("OnEvent", function(_, event, addon)
 		if event == "ADDON_LOADED" and addon == ADDON_NAME then
 			mod:OnInitialize()
 			mainFrame:UnregisterEvent("ADDON_LOADED")
