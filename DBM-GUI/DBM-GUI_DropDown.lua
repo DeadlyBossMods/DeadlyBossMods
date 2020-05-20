@@ -42,33 +42,21 @@ local scrollDownButton = _G[tabFrame1List:GetName() .. "ScrollBarScrollDownButto
 scrollDownButton:SetSize(12, 12)
 scrollDownButton:Enable()
 
-_G[tabFrame1List:GetName() .. "ScrollBarThumbTexture"]:SetSize(12, 16)
+local scrollThumb = _G[tabFrame1List:GetName() .. "ScrollBarThumbTexture"]
+scrollThumb:SetSize(12, 16)
 
 local tabFrame1ScrollBar = _G[tabFrame1List:GetName() .. "ScrollBar"]
+tabFrame1ScrollBar:SetFrameLevel(10)
 tabFrame1ScrollBar:SetValueStep(16)
 tabFrame1ScrollBar:SetValue(0)
-tabFrame1ScrollBar:SetScript("OnValueChanged", function(self, value)
-	self:GetParent():SetVerticalScroll(value)
-	local min, max = self:GetMinMaxValues()
-	if value == min then
-		scrollUpButton:Disable()
-	else
-		scrollUpButton:Enable()
-	end
-	if value == max then
-		scrollDownButton:Disable()
-	else
-		scrollDownButton:Enable()
-	end
-end)
 
-tabFrame1List:SetScript("OnMouseWheel", function(self, delta)
+tabFrame1:EnableMouseWheel(true)
+tabFrame1:SetScript("OnMouseWheel", function(self, delta)
 	if delta > 0 then
 		tabFrame1ScrollBar:SetValue(tabFrame1ScrollBar:GetValue() - (tabFrame1ScrollBar:GetHeight() / 2))
 	else
 		tabFrame1ScrollBar:SetValue(tabFrame1ScrollBar:GetValue() + (tabFrame1ScrollBar:GetHeight() / 2))
 	end
-	tabFrame1:Refresh()
 end)
 
 local ClickFrame = CreateFrame("Button", nil, UIParent)
@@ -77,7 +65,10 @@ ClickFrame:SetFrameStrata("TOOLTIP")
 ClickFrame:RegisterForClicks("AnyDown")
 ClickFrame:Hide()
 ClickFrame:SetScript("OnClick", function()
-	tabFrame1:HideMenu()
+	tabFrame1:Hide()
+end)
+tabFrame1:SetScript("OnHide", function()
+	ClickFrame:Hide()
 end)
 
 tabFrame1.buttons = {}
@@ -95,7 +86,7 @@ for i = 1, 10 do
 		_G[self:GetName() .. "Highlight"]:Hide()
 	end)
 	button:SetScript("OnClick", function(self)
-		self:GetParent():HideMenu()
+		self:GetParent():Hide()
 		self:GetParent().dropdown.value = self.entry.value
 		self:GetParent().dropdown.text = self.entry.text
 		if self.entry.sound then
@@ -113,7 +104,6 @@ for i = 1, 10 do
 end
 
 function tabFrame1:ShowMenu()
-	self:Show()
 	for i = 1, #self.buttons do
 		local button = self.buttons[i]
 		local entry = self.dropdown.values[i + self.offset]
@@ -160,18 +150,13 @@ function tabFrame1:ShowFontMenu()
 	end
 end
 
-function tabFrame1:HideMenu()
-	self:Hide()
-	ClickFrame:Hide()
-end
-
 function tabFrame1:Refresh()
 	self:Show()
 	if self.offset < 0 then
 		self.offset = 0
 	end
 	local valuesWOButtons = (#self.dropdown.values - #self.buttons)
-	if self.offset > valuesWOButtons then
+	if #self.dropdown.values > #self.buttons and self.offset > valuesWOButtons then
 		self.offset = valuesWOButtons
 	end
 	if self.dropdown.values[1].font then
@@ -241,7 +226,7 @@ function DBM_GUI:CreateDropdown(title, values, vartype, var, callfunc, width, he
 	_G[dropdown:GetName() .. "Button"]:SetScript("OnClick", function(self)
 		DBM:PlaySound(856)
 		if tabFrame1:IsShown() then
-			tabFrame1:HideMenu()
+			tabFrame1:Hide()
 			tabFrame1.dropdown = nil
 		else
 			tabFrame1:ClearAllPoints()

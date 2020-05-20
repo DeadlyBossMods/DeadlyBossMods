@@ -30,6 +30,9 @@ frame:SetScript("OnShow", function(self)
 		self:UpdateMenuFrame()
 	end
 end)
+frame:SetScript("OnHide", function()
+	DBM_GUI_DropDown:Hide()
+end)
 frame:SetScript("OnDragStart", frame.StartMoving)
 frame:SetScript("OnDragStop", frame.StopMovingOrSizing)
 frame.tabs = {}
@@ -173,27 +176,12 @@ local frameListScrollBar = _G[frameListList:GetName() .. "ScrollBar"]
 frameListScrollBar:SetMinMaxValues(0, 11)
 frameListScrollBar:SetValueStep(18)
 frameListScrollBar:SetValue(0)
-frameListScrollBar:SetScript("OnValueChanged", function(self, value)
-	self:GetParent():SetVerticalScroll(value)
-	local min, max = self:GetMinMaxValues()
-	if value == min then
-		_G[self:GetName() .. "ScrollUpButton"]:Disable()
-	else
-		_G[self:GetName() .. "ScrollUpButton"]:Enable()
-	end
-	if value == max then
-		_G[self:GetName() .. "ScrollDownButton"]:Disable()
-	else
-		_G[self:GetName() .. "ScrollDownButton"]:Enable()
-	end
-end)
 frameList:SetScript("OnMouseWheel", function(self, delta)
 	if delta > 0 then
 		frameListScrollBar:SetValue(frameListScrollBar:GetValue() - (frameListScrollBar:GetHeight() / 2))
 	else
 		frameListScrollBar:SetValue(frameListScrollBar:GetValue() + (frameListScrollBar:GetHeight() / 2))
 	end
-	frame:UpdateMenuFrame()
 end)
 
 local frameContainer = CreateFrame("ScrollFrame", "$parentPanelContainer", frame, DBM:IsAlpha() and "BackdropTemplate")

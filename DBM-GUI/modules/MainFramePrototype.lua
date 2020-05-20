@@ -83,7 +83,7 @@ function DBM_GUI_OptionsFrame:DisplayFrame(frame, forceChange)
 	end
 	container.displayedFrame = frame
 	DBM_GUI_OptionsFramePanelContainerHeaderText:SetText(frame.displayName)
-	DBM_GUI_DropDown:HideMenu()
+	DBM_GUI_DropDown:Hide()
 	local mymax = (frame.actualHeight or frame:GetHeight()) - container:GetHeight()
 	if mymax <= 0 then
 		mymax = 0
