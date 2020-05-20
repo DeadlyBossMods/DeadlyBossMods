@@ -172,7 +172,7 @@ L.KeepBar2					= "(когда поддерживается модулем)"
 L.FadeBar					= "Fade timers for out of range abilities"
 
 -- Tab: Spec Warn Frame
-L.Panel_SpecWarnFrame		= "Специальные предупреждения"
+L.Panel_SpecWarnFrame		= "Специальные предупреждения для рейда"
 L.Area_SpecWarn				= "Настройка специальных предупреждений"
 L.SpecWarn_ClassColor		= "Использовать цвета классов для спец-предупреждений"
 L.ShowSWarningsInChat 		= "Показывать спец-предупреждения в окне чата"

@@ -181,12 +181,12 @@ frameListScrollBar:SetValue(0)
 frameList:SetScript("OnMouseWheel", function(_, delta)
 	frameListScrollBar:SetValue(frameListScrollBar:GetValue() + (delta * 18))
 end)
-local scrollUpButton = _G[r:SetValu:GetName() .. "ScrollUpButton"]
+local scrollUpButton = _G[frameListScrollBar:GetName() .. "ScrollUpButton"]
 scrollUpButton:Disable()
 scrollUpButton:SetScript("OnClick", function(self)
 	self:GetParent():SetValue(self:GetParent():GetValue() - 18)
 end)
-local scrollDownButton = _G[r:SetValu:GetName() .. "ScrollDownButton"]
+local scrollDownButton = _G[frameListScrollBar:GetName() .. "ScrollDownButton"]
 scrollDownButton:Enable()
 scrollDownButton:SetScript("OnClick", function(self)
 	self:GetParent():SetValue(self:GetParent():GetValue() + 18)

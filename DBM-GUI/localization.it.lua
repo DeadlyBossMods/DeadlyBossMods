@@ -191,7 +191,7 @@ L.KeepBar2					= "(se supportato dalla mod)"
 L.FadeBar					= "Fai sparire temporizzatori per abilità fuori portata"
 
 -- Tab: Spec Warn Frame
-L.Panel_SpecWarnFrame		= "Avvisi Speciali"
+L.Panel_SpecWarnFrame		= "Avvisi Speciali di Incursione"
 L.Area_SpecWarn				= "Opzioni Avvisi Speciali"
 L.SpecWarn_ClassColor		= "Usa colore classe per avvisi speciali"
 L.ShowSWarningsInChat 		= "Mostra avvisi speciali nella chat"

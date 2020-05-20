@@ -178,7 +178,7 @@ L.KeepBar2					= "(siempre que el módulo lo permita)"
 L.FadeBar					= "Desteñir barras de habilidades lejanas"
 
 -- Tab: Spec Warn Frame
-L.Panel_SpecWarnFrame		= "Avisos especiales"
+L.Panel_SpecWarnFrame		= "Avisos especiales de banda"
 L.Area_SpecWarn				= "Opciones de avisos especiales"
 L.SpecWarn_ClassColor		= "Usar colores de clase para avisos especiales"
 L.ShowSWarningsInChat 		= "Mostrar avisos especiales en el chat"

@@ -184,7 +184,7 @@ L.KeepBar2					= "(모드에서 지원할 경우에만)"
 L.FadeBar					= "사정거리 밖의 스킬에 대한 타이머 바 숨김"
 
 -- Tab: Spec Warn Frame
-L.Panel_SpecWarnFrame		= "특수 경고"
+L.Panel_SpecWarnFrame		= "공격대 특수 경고"
 L.Area_SpecWarn				= "특수 경고 설정"
 L.SpecWarn_ClassColor		= "특수 경고에 직업 색상 사용"
 L.ShowSWarningsInChat 		= "대화창에 특수 경고 보기"
