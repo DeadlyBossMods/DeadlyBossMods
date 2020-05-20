@@ -167,7 +167,7 @@ L.BarInlineIcons			= "Zeichen einbetten"
 L.ShortTimerText			= "Nutze kurzen Timertext (falls verfügbar)"
 
 -- Tab: Spec Warn Frame
-L.Panel_SpecWarnFrame		= "Schlachtzug Spezialwarnungen"
+L.Panel_SpecWarnFrame		= "Spezial Schlachtzug Warnungen"
 L.Area_SpecWarn				= "Einstellungen für Spezialwarnungen"
 L.SpecWarn_ClassColor		= "Benutze Klassenfarben für Spezialwarnungen"
 L.ShowSWarningsInChat 		= "Zeige Spezialwarnungen im Chatfenster"

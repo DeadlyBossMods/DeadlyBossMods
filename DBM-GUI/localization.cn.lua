@@ -192,7 +192,7 @@ L.KeepBar2					= "(当被模组支持时)"
 L.FadeBar					= "隐藏超出技能范围的计时条"
 
 -- Tab: Spec Warn Frame
-L.Panel_SpecWarnFrame		= "团队特殊警报"
+L.Panel_SpecWarnFrame		= "特殊团队警报"
 L.Area_SpecWarn				= "特殊警报设置"
 L.SpecWarn_ClassColor		= "为特殊警报启用分职业着色"
 L.ShowSWarningsInChat 		= "在聊天窗口中显示特殊警报"
