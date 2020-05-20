@@ -55,11 +55,7 @@ _G[tabFrame1ScrollBar:GetName() .. "ThumbTexture"]:SetSize(12, 16)
 
 tabFrame1:EnableMouseWheel(true)
 tabFrame1:SetScript("OnMouseWheel", function(self, delta)
-	if delta > 0 then
-		tabFrame1ScrollBar:SetValue(tabFrame1ScrollBar:GetValue() - (tabFrame1ScrollBar:GetHeight() / 2))
-	else
-		tabFrame1ScrollBar:SetValue(tabFrame1ScrollBar:GetValue() + (tabFrame1ScrollBar:GetHeight() / 2))
-	end
+	tabFrame1ScrollBar:SetValue(tabFrame1ScrollBar:GetValue() + (delta > 0 and -4 or 4)
 end)
 
 local ClickFrame = CreateFrame("Button", nil, UIParent)
