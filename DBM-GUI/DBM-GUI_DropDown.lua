@@ -1,22 +1,31 @@
 local L = DBM_GUI_Translations
 
+local hack = OptionsList_OnLoad
+function OptionsList_OnLoad(self, ...)
+	if self:GetName() ~= "DBM_GUI_DropDown" then
+		hack(self, ...)
+	end
+end
+
 local tabFrame1 = CreateFrame("Frame", "DBM_GUI_DropDown", DBM_GUI_OptionsFrame, DBM:IsAlpha() and "BackdropTemplateMixin,OptionsFrameListTemplate" or "OptionsFrameListTemplate")
 tabFrame1:Hide()
 tabFrame1:SetFrameStrata("TOOLTIP")
 tabFrame1.offset = 0
 tabFrame1.backdropInfo = {
-	bgFile		= "Interface\\DialogFrame\\UI-DialogBox-Background", -- 131071
-	edgeFile	= "Interface\\DialogFrame\\UI-DialogBox-Border", -- 131072
-	tile		= 1,
-	tileSize	= 32,
-	edgeSize	= 32,
-	insets		= { left = 11, right = 12, top = 12, bottom = 11 }
+	bgFile		= "Interface\\ChatFrame\\ChatFrameBackground", -- 130937
+	edgeFile	= "Interface\\Tooltips\\UI-Tooltip-Border", -- 137057
+	tile		= true,
+	tileSize	= 16,
+	edgeSize	= 16,
+	insets		= { left = 3, right = 3, top = 5, bottom = 3 }
 }
 if not DBM:IsAlpha() then
 	tabFrame1:SetBackdrop(tabFrame1.backdropInfo)
 else
 	tabFrame1:ApplyBackdrop()
 end
+tabFrame1:SetBackdropColor(0.1, 0.1, 0.1, 0.6)
+tabFrame1:SetBackdropBorderColor(0.4, 0.4, 0.4)
 
 local tabFrame1List = _G[tabFrame1:GetName() .. "List"]
 tabFrame1List:SetScript("OnVerticalScroll", function(self, offset)
@@ -26,25 +35,30 @@ tabFrame1List:SetScript("OnVerticalScroll", function(self, offset)
 end)
 tabFrame1List:SetBackdropBorderColor(0.6, 0.6, 0.6, 0.6)
 
-_G[tabFrame1List:GetName() .. "ScrollBarScrollUpButton"]:Disable()
-_G[tabFrame1List:GetName() .. "ScrollBarScrollDownButton"]:Enable()
+local scrollUpButton = _G[tabFrame1List:GetName() .. "ScrollBarScrollUpButton"]
+scrollUpButton:SetSize(12, 12)
+scrollUpButton:Disable()
+local scrollDownButton = _G[tabFrame1List:GetName() .. "ScrollBarScrollDownButton"]
+scrollDownButton:SetSize(12, 12)
+scrollDownButton:Enable()
+
+_G[tabFrame1List:GetName() .. "ScrollBarThumbTexture"]:SetSize(12, 16)
 
 local tabFrame1ScrollBar = _G[tabFrame1List:GetName() .. "ScrollBar"]
-tabFrame1ScrollBar:SetMinMaxValues(0, 11)
 tabFrame1ScrollBar:SetValueStep(16)
 tabFrame1ScrollBar:SetValue(0)
 tabFrame1ScrollBar:SetScript("OnValueChanged", function(self, value)
 	self:GetParent():SetVerticalScroll(value)
 	local min, max = self:GetMinMaxValues()
 	if value == min then
-		_G[self:GetName() .. "ScrollUpButton"]:Disable()
+		scrollUpButton:Disable()
 	else
-		_G[self:GetName() .. "ScrollUpButton"]:Enable()
+		scrollUpButton:Enable()
 	end
 	if value == max then
-		_G[self:GetName() .. "ScrollDownButton"]:Disable()
+		scrollDownButton:Disable()
 	else
-		_G[self:GetName() .. "ScrollDownButton"]:Enable()
+		scrollDownButton:Enable()
 	end
 end)
 
@@ -69,9 +83,8 @@ end)
 tabFrame1.buttons = {}
 for i = 1, 10 do
 	local button = CreateFrame("Button", tabFrame1:GetName() .. "Button" .. i, tabFrame1, "UIDropDownMenuButtonTemplate")
-	button:SetSize(100, 16)
 	if i == 1 then
-		button:SetPoint("TOPLEFT", tabFrame1, "TOPLEFT", 11, -13)
+		button:SetPoint("TOPLEFT", tabFrame1, 11, -4)
 	else
 		button:SetPoint("TOPLEFT", tabFrame1.buttons[i - 1]:GetName(), "BOTTOMLEFT")
 	end
@@ -99,36 +112,11 @@ for i = 1, 10 do
 	tabFrame1.buttons[i] = button
 end
 
-tabFrame1.text = tabFrame1:CreateFontString("$parentText", "BACKGROUND")
-tabFrame1.text:SetPoint("CENTER", tabFrame1, "BOTTOM")
-tabFrame1.text:SetFontObject(GameFontNormalSmall)
-tabFrame1.text:SetText("Scroll with mouse")
-tabFrame1.text:Hide()
-
-function tabFrame1:ShowMenu(values)
+function tabFrame1:ShowMenu()
 	self:Show()
-	if self.offset > #values - #self.buttons then
-		self.offset = #values - #self.buttons
-	end
-	if self.offset < 0 then
-		self.offset = 0
-	end
-	if #values > #self.buttons then
-		self:SetHeight(#self.buttons * 16 + 24)
-		tabFrame1ScrollBar:SetMinMaxValues(0, (#values - #self.buttons) * 16)
-		self.text:Show()
-	elseif #values == #self.buttons then
-		self:SetHeight(#self.buttons * 16 + 24)
-		tabFrame1ScrollBar:SetMinMaxValues(0, 160)
-		self.text:Hide()
-	elseif #values < #self.buttons then
-		self:SetHeight(#values * 16 + 24)
-		tabFrame1ScrollBar:SetMinMaxValues(0, #values * 16)
-		self.text:Hide()
-	end
 	for i = 1, #self.buttons do
 		local button = self.buttons[i]
-		local entry = values[i + self.offset]
+		local entry = self.dropdown.values[i + self.offset]
 		if not entry then
 			button:SetText("")
 			button:Hide()
@@ -149,41 +137,12 @@ function tabFrame1:ShowMenu(values)
 			button:Show()
 		end
 	end
-	local bwidth = 0
-	for _, button in pairs(self.buttons) do
-		bwidth = math.max(bwidth, button:GetTextWidth() + 16)
-	end
-	for _, button in pairs(self.buttons) do
-		button:SetWidth(bwidth)
-	end
-	self:SetWidth(bwidth + 16)
-	ClickFrame:Show()
 end
 
-function tabFrame1:ShowFontMenu(values)
-	self:Show()
-	if self.offset > #values - #self.buttons then
-		self.offset = #values - #self.buttons
-	end
-	if self.offset < 0 then
-		self.offset = 0
-	end
-	if #values > #self.buttons then
-		self:SetHeight(#self.buttons * 16 + 24)
-		tabFrame1ScrollBar:SetMinMaxValues(0, (#values - #self.buttons) * 16)
-		self.text:Show()
-	elseif #values == #self.buttons then
-		self:SetHeight(#self.buttons * 16 + 24)
-		tabFrame1ScrollBar:SetMinMaxValues(0, 160)
-		self.text:Hide()
-	elseif #values < #self.buttons then
-		self:SetHeight(#values * 16 + 24)
-		tabFrame1ScrollBar:SetMinMaxValues(0, #values * 16)
-		self.text:Hide()
-	end
+function tabFrame1:ShowFontMenu()
 	for i = 1, #self.buttons do
 		local button = self.buttons[i]
-		local entry = values[i + self.offset]
+		local entry = self.dropdown.values[i + self.offset]
 		if not entry then
 			button:SetText("")
 			button:Hide()
@@ -199,6 +158,36 @@ function tabFrame1:ShowFontMenu(values)
 			button:Show()
 		end
 	end
+end
+
+function tabFrame1:HideMenu()
+	self:Hide()
+	ClickFrame:Hide()
+end
+
+function tabFrame1:Refresh()
+	self:Show()
+	if self.offset < 0 then
+		self.offset = 0
+	end
+	local valuesWOButtons = (#self.dropdown.values - #self.buttons)
+	if self.offset > valuesWOButtons then
+		self.offset = valuesWOButtons
+	end
+	if self.dropdown.values[1].font then
+		self:ShowFontMenu()
+	else
+		self:ShowMenu()
+	end
+	tabFrame1List:Hide()
+	self:SetHeight(#self.buttons * 16 + 8)
+	if #self.dropdown.values > #self.buttons then
+		tabFrame1List:Show()
+		tabFrame1ScrollBar:SetMinMaxValues(0, valuesWOButtons * 16)
+	elseif #self.dropdown.values < #self.buttons then
+		self:SetHeight(#self.dropdown.values * 16 + 8)
+		tabFrame1ScrollBar:SetValue(0)
+	end
 	local bwidth = 0
 	for _, button in pairs(self.buttons) do
 		bwidth = math.max(bwidth, button:GetTextWidth() + 16)
@@ -208,34 +197,6 @@ function tabFrame1:ShowFontMenu(values)
 	end
 	self:SetWidth(bwidth + 16)
 	ClickFrame:Show()
-end
-
-function tabFrame1:HideMenu()
-	self:Hide()
-	ClickFrame:Hide()
-end
-
-function tabFrame1:Refresh()
-	if self.offset < 0 then
-		self.offset = 0
-	end
-	local valuesWOButtons = #self.dropdown.values - #self.buttons
-	if self.offset > valuesWOButtons then
-		self.offset = valuesWOButtons
-	end
-	if self.dropdown.values[1].font then
-		self:ShowFontMenu(self.dropdown.values)
-	else
-		self:ShowMenu(self.dropdown.values)
-	end
-	if #self.dropdown.values > #self.buttons then
-		tabFrame1List:Show()
-		tabFrame1ScrollBar:SetMinMaxValues(0, valuesWOButtons)
-		tabFrame1ScrollBar:SetValueStep(1)
-	else
-		tabFrame1List:Hide()
-		tabFrame1ScrollBar:SetValue(0)
-	end
 end
 
 local dropdownPrototype = CreateFrame("Frame")

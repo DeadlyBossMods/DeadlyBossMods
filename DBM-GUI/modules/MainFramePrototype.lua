@@ -21,8 +21,7 @@ function DBM_GUI_OptionsFrame:UpdateMenuFrame()
 		button:SetWidth(bigList and 185 or 209)
 	end
 	if #displayedElements > #listFrame.buttons then
-		_G[listFrame:GetName() .. "ListScrollBar"]:SetMinMaxValues(0, (#displayedElements - #listFrame.buttons) * listFrame.buttons[1]:GetHeight())
-		_G[listFrame:GetName() .. "ListScrollBar"]:SetValueStep(listFrame.buttons[1]:GetHeight())
+		_G[listFrame:GetName() .. "ListScrollBar"]:SetMinMaxValues(0, (#displayedElements - #listFrame.buttons) * 18)
 	else
 		_G[listFrame:GetName() .. "ListScrollBar"]:SetValue(0)
 	end

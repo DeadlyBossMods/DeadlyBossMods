@@ -171,6 +171,7 @@ _G[frameListList:GetName() .. "ScrollBarScrollUpButton"]:Disable()
 _G[frameListList:GetName() .. "ScrollBarScrollDownButton"]:Enable()
 local frameListScrollBar = _G[frameListList:GetName() .. "ScrollBar"]
 frameListScrollBar:SetMinMaxValues(0, 11)
+frameListScrollBar:SetValueStep(18)
 frameListScrollBar:SetValue(0)
 frameListScrollBar:SetScript("OnValueChanged", function(self, value)
 	self:GetParent():SetVerticalScroll(value)
