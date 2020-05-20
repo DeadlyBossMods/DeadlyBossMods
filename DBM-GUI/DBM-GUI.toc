@@ -49,8 +49,8 @@ modules\PanelPrototype.lua
 
 modules\options\Options.lua
 modules\options\GeneralWarnings.lua
-modules\options\RaidWarnings.lua
-modules\options\RaidWarningsSpecial.lua
+modules\options\RaidWarning.lua
+modules\options\RaidWarningSpecial.lua
 modules\options\Bars.lua
 modules\options\SpokenAlerts.lua
 modules\options\EventSounds.lua
