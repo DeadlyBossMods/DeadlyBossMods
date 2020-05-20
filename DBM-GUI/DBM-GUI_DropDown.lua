@@ -47,9 +47,15 @@ tabFrame1ScrollBar:SetValue(0)
 local scrollUpButton = _G[tabFrame1ScrollBar:GetName() .. "ScrollUpButton"]
 scrollUpButton:SetSize(12, 12)
 scrollUpButton:Disable()
+scrollUpButton:SetScript("OnClick", function(self)
+	self:GetParent():SetValue(self:GetParent():GetValue() - 16)
+end)
 local scrollDownButton = _G[tabFrame1ScrollBar:GetName() .. "ScrollDownButton"]
 scrollDownButton:SetSize(12, 12)
 scrollDownButton:Enable()
+scrollDownButton:SetScript("OnClick", function(self)
+	self:GetParent():SetValue(self:GetParent():GetValue() + 16)
+end)
 
 _G[tabFrame1ScrollBar:GetName() .. "ThumbTexture"]:SetSize(12, 16)
 
