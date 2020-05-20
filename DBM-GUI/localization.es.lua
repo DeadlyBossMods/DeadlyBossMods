@@ -140,7 +140,6 @@ L.BarEndColorUI				= "Color final (usuario)"
 L.Bar7Header				= "Opciones de barras de usuario"
 L.Bar7ForceLarge			= "Usar siempre barras grandes"
 L.Bar7CustomInline			= "Usar icono '!' personalizado"
-L.Bar7Footer				= "(la barra de muestra no se\nactualiza en vivo)"
 --Dropdown Options
 L.CBTGeneric				= "Genérico"
 L.CBTAdd					= "Esbirro"
@@ -179,7 +178,7 @@ L.KeepBar2					= "(siempre que el módulo lo permita)"
 L.FadeBar					= "Desteñir barras de habilidades lejanas"
 
 -- Tab: Spec Warn Frame
-L.Panel_SpecWarnFrame		= "Avisos especiales"
+L.Panel_SpecWarnFrame		= "Avisos especiales de banda"
 L.Area_SpecWarn				= "Opciones de avisos especiales"
 L.SpecWarn_ClassColor		= "Usar colores de clase para avisos especiales"
 L.ShowSWarningsInChat 		= "Mostrar avisos especiales en el chat"

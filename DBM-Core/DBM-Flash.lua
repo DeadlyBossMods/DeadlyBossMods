@@ -1,21 +1,28 @@
-﻿-- globals
+﻿---------------
+--  Globals  --
+---------------
 DBM.Flash = {}
--- locals
+
+--------------
+--  Locals  --
+--------------
 local flashFrame = DBM.Flash
-local r, g, b, t, a
-local duration
-local elapsed = 0
-local totalRepeat = 0
+local frame, r, g, b, t, a, duration
+local elapsed, totalRepeat = 0, 0
 
 --------------------
 --  Create Frame  --
 --------------------
-local frame = CreateFrame("Frame", "DBMFlash", UIParent)
+frame = CreateFrame("Frame", "DBMFlash", UIParent, DBM:IsAlpha() and "BackdropTemplate")
 frame:Hide()
-if BackdropTemplateMixin then
-	Mixin(frame, BackdropTemplateMixin)
+frame.backdropInfo = {
+	bgFile	= "Interface\\Tooltips\\UI-Tooltip-Background" -- 137056
+}
+if not DBM:IsAlpha() then
+	frame:SetBackdrop(frame.backdropInfo)
+else
+	frame:ApplyBackdrop()
 end
-frame:SetBackdrop({bgFile = "Interface\\Tooltips\\UI-Tooltip-Background",})--137056
 frame:SetAllPoints(UIParent)
 frame:SetFrameStrata("BACKGROUND")
 
@@ -28,13 +35,12 @@ do
 		if elapsed >= t then
 			self:Hide()
 			self:SetAlpha(0)
-			if totalRepeat >= 1 then--Keep repeating until totalRepeat = 0
-				flashFrame:Show(r, g, b, t, a, totalRepeat-1)
+			if totalRepeat >= 1 then
+				flashFrame:Show(r, g, b, t, a, totalRepeat - 1)
 			end
 			return
 		end
-		-- quadratic fade in/out
-		self:SetAlpha(-(elapsed / (duration / 2) - 1)^2 + 1)
+		self:SetAlpha(-(elapsed / (duration / 2) - 1) ^ 2 + 1)
 	end)
 	frame:Hide()
 end
@@ -45,7 +51,13 @@ function flashFrame:Show(red, green, blue, dur, alpha, repeatFlash)
 	elapsed = 0
 	totalRepeat = repeatFlash or 0
 	frame:SetAlpha(0)
-	frame:SetBackdropColor(r, g, b, a)
+	frame.backdropColor = CreateColor(r, g, b)
+	frame.backdropColorAlpha = a
+	if not DBM:IsAlpha() then
+		frame:SetBackdropColor(r, g, b, a)
+	else
+		frame:ApplyBackdrop()
+	end
 	frame:Show()
 end
 

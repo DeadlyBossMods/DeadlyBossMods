@@ -1,46 +1,3 @@
--- **             DBM Info Frame             **
--- **     http://www.deadlybossmods.com      **
--- ********************************************
---
--- This addon is written and copyrighted by:
---    * Paul Emmerich (Tandanu @ EU-Aegwynn) (DBM-Core)
---    * Martin Verges (Nitram @ EU-Azshara) (DBM-GUI)
---
--- The localizations are written by:
---    * enGB/enUS: Tandanu				http://www.deadlybossmods.com
---    * deDE: Tandanu					http://www.deadlybossmods.com
---    * zhCN: Diablohu					http://wow.gamespot.com.cn
---    * ruRU: BootWin					bootwin@gmail.com
---    * ruRU: Vampik					admin@vampik.ru
---    * zhTW: Hman						herman_c1@hotmail.com
---    * zhTW: Azael/kc10577				paul.poon.kw@gmail.com
---    * koKR: BlueNyx/nBlueWiz			bluenyx@gmail.com / everfinale@gmail.com
---    * esES: Snamor/1nn7erpLaY      	romanscat@hotmail.com
---
--- Special thanks to:
---    * Arta
---    * Omegal @ US-Kel'Thuzad (continuing mod support for 3.2+)
---    * Tennberg (a lot of fixes in the enGB/enUS localization)
---
---
--- The code of this addon is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 3.0 License. (see license.txt)
--- All included textures and sounds are copyrighted by their respective owners.
---
---
---  You are free:
---    * to Share ?to copy, distribute, display, and perform the work
---    * to Remix ?to make derivative works
---  Under the following conditions:
---    * Attribution. You must attribute the work in the manner specified by the author or licensor (but not in any way that suggests that they endorse you or your use of the work).
---    * Noncommercial. You may not use this work for commercial purposes.
---    * Share Alike. If you alter, transform, or build upon this work, you may distribute the resulting work only under the same or similar license to this one.
---
---
--- This file makes use of the following free (Creative Commons Sampling Plus 1.0) sounds:
---    * alarmclockbeeps.ogg by tedthetrumpet (http://www.freesound.org/usersViewSingle.php?id=177)
---    * blip_8.ogg by Corsica_S (http://www.freesound.org/usersViewSingle.php?id=7037)
---  The full of text of the license can be found in the file "Sounds\Creative Commons Sampling Plus 1.0.txt".
-
 ---------------
 --  Globals  --
 ---------------
@@ -50,52 +7,40 @@ DBM.InfoFrame = {}
 --  Locals  --
 --------------
 local infoFrame = DBM.InfoFrame
-local frame
-local createFrame
-local onUpdate
-local dropdownFrame
-local initializeDropdown
-local currentMapId
-local maxlines = 5
-local modLines = 5
-local currentEvent
-local headerText = "DBM Info Frame"	-- this is only used if DBM.InfoFrame:SetHeader(text) is not called before :Show()
-local lines = {}
+local frame, initializeDropdown, currentMapId, currentEvent, createFrame
+local maxlines, modLines, maxWidth = 5, 5, 0
 local sortMethod = 1--1 Default, 2 SortAsc, 3 GroupId
-local sortedLines = {}
-local icons = {}
-local value = {}
+local lines, sortedLines, icons, value = {}, {}, {}, {}
 local playerName = UnitName("player")
 
 -------------------
 -- Local Globals --
 -------------------
---Entire InfoFrame is a looping onupdate function. All of these globals get used several times a second
-local GetRaidTargetIndex = GetRaidTargetIndex
-local UnitName = UnitName
-local UnitHealth, UnitPower, UnitPowerMax = UnitHealth, UnitPower, UnitPowerMax
-local UnitIsDeadOrGhost, UnitThreatSituation = UnitIsDeadOrGhost, UnitThreatSituation
-local UnitPosition = UnitPosition
-local twipe = table.wipe
-local select, tonumber = select, tonumber
-local mfloor = math.floor
-local getGroupId = DBM.GetGroupId
-
+local GetRaidTargetIndex, UnitName, UnitHealth, UnitPower, UnitPowerMax, UnitIsDeadOrGhost, UnitThreatSituation, UnitPosition = GetRaidTargetIndex, UnitName, UnitHealth, UnitPower, UnitPowerMax, UnitIsDeadOrGhost, UnitThreatSituation, UnitPosition
+local select, tonumber, twipe, mfloor = select, tonumber, table.wipe, math.floor
 local RAID_CLASS_COLORS = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS-- for Phanx' Class Colors
 
 ---------------------
 --  Dropdown Menu  --
 ---------------------
--- todo: this dropdown menu is somewhat ugly and unflexible....
 do
 	local function toggleLocked()
 		DBM.Options.InfoFrameLocked = not DBM.Options.InfoFrameLocked
 	end
+
 	local function toggleShowSelf()
 		DBM.Options.InfoFrameShowSelf = not DBM.Options.InfoFrameShowSelf
 	end
 
-	local function setLines(self, line)
+	local function setLines(_, line)
+		if not frame then
+			createFrame()
+		end
+		if line > #frame.lines then
+			for i = #frame.lines + 1, line * 2 + 1 do
+				infoFrame:CreateLine(i)
+			end
+		end
 		DBM.Options.InfoFrameLines = line
 		if line ~= 0 then
 			maxlines = line
@@ -104,8 +49,9 @@ do
 		end
 	end
 
-	function initializeDropdown(dropdownFrame, level, menu)
+	function initializeDropdown(_, level, menu)
 		local info
+
 		if level == 1 then
 			info = UIDropDownMenu_CreateInfo()
 			info.text = LOCK_FRAME
@@ -193,43 +139,28 @@ do
 	end
 end
 
-
 ------------------------
 --  Create the frame  --
 ------------------------
-local frameBackdrop = {
-	bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background",--131071
-	tile = true,
-	tileSize = 16,
-	insets = { left = 2, right = 14, top = 2, bottom = 2 },
-}
-
---BIG TODO. Using GameTooltip is improper and this frame needs rewriting to be a stand alone frame
---Blizzard force closes any and ALL GameTooltip frames any time UI is hidden, including cinematics mid fight or user simply hitting alt-z.
---Normal addon frames are not force closed when hidden, they are just hidden.
---On top of this. infoframe features have been stuck limited for a while now because it's limited to what GameTooltip supports
 function createFrame()
-	local elapsed = 0
-	local frame
-	if DBM:GetTOC() >= 90001 then
-		frame = CreateFrame("GameTooltip", "DBMInfoFrame", UIParent, "SharedTooltipTemplate")
-	else
-		frame = CreateFrame("GameTooltip", "DBMInfoFrame", UIParent, "GameTooltipTemplate")
-	end
-	if BackdropTemplateMixin then
-		Mixin(frame, BackdropTemplateMixin)
-	end
-	dropdownFrame = CreateFrame("Frame", "DBMInfoFrameDropdown", frame, "UIDropDownMenuTemplate")
+	frame = CreateFrame("Frame", "DBMInfoFrame", UIParent, DBM:IsAlpha() and "BackdropTemplate")
 	frame:SetFrameStrata("DIALOG")
-	frame:SetBackdrop(frameBackdrop)
+	frame.backdropInfo = {
+		bgFile		= "Interface\\DialogFrame\\UI-DialogBox-Background", -- 131071
+		tile		= true,
+		tileSize	= 16
+	}
+	if not DBM:IsAlpha() then
+		frame:SetBackdrop(frame.backdropInfo)
+	else
+		frame:ApplyBackdrop()
+	end
 	frame:SetPoint(DBM.Options.InfoFramePoint, UIParent, DBM.Options.InfoFramePoint, DBM.Options.InfoFrameX, DBM.Options.InfoFrameY)
-	frame:SetHeight(maxlines*12)
-	frame:SetWidth(64)
+	frame:SetSize(10, 10)
+	frame:SetClampedToScreen(true)
 	frame:EnableMouse(true)
 	frame:SetToplevel(true)
-	frame:SetMovable(1)
-	GameTooltip_OnLoad(frame)
-	frame:SetPadding(16, 0)
+	frame:SetMovable(true)
 	frame:RegisterForDrag("LeftButton")
 	frame:SetScript("OnDragStart", function(self)
 		if not DBM.Options.InfoFrameLocked then
@@ -238,7 +169,6 @@ function createFrame()
 	end)
 	frame:SetScript("OnDragStop", function(self)
 		self:StopMovingOrSizing()
-		--ValidateFramePosition(self)
 		local point, _, _, x, y = self:GetPoint(1)
 		DBM.Options.InfoFrameX = x
 		DBM.Options.InfoFrameY = y
@@ -249,24 +179,47 @@ function createFrame()
 			infoFrame[event](self, ...)
 		end
 	end)
-	frame:SetScript("OnMouseDown", function(self, button)
+	frame:SetScript("OnMouseDown", function(_, button)
 		if button == "RightButton" then
+			local dropdownFrame = CreateFrame("Frame", "DBMInfoFrameDropdown", frame, "UIDropDownMenuTemplate")
 			UIDropDownMenu_Initialize(dropdownFrame, initializeDropdown)
 			ToggleDropDownMenu(1, nil, dropdownFrame, "cursor", 5, -10)
 		end
 	end)
-	return frame
-end
 
+	local header = frame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+	header:SetTextColor(1, 1, 1)
+	header:SetPoint("BOTTOMLEFT", frame, "TOPLEFT", 2, 2)
+	frame.header = header
+	infoFrame:SetHeader()
+
+	frame.lines = {}
+	for i = 1, (DBM.Options.InfoFrameLines or 5) * 2 do
+		infoFrame:CreateLine(i)
+	end
+end
 
 ------------------------
 --  Update functions  --
 ------------------------
 local updateCallbacks = {}
-local function sortFuncDesc(a, b) return lines[a] > lines[b] end
-local function sortFuncAsc(a, b) return lines[a] < lines[b] end
-local function namesortFuncAsc(a, b) return a < b end
-local function sortGroupId(a, b) return getGroupId(DBM, a) < getGroupId(DBM, b) end
+
+local function sortFuncDesc(a, b)
+	return lines[a] > lines[b]
+end
+
+local function sortFuncAsc(a, b)
+	return lines[a] < lines[b]
+end
+
+local function namesortFuncAsc(a, b)
+	return a < b
+end
+
+local function sortGroupId(a, b)
+	return DBM.GetGroupId(DBM, a) < DBM.GetGroupId(DBM, b)
+end
+
 local function updateLines(preSorted)
 	twipe(sortedLines)
 	if preSorted then
@@ -317,18 +270,18 @@ local function updateIcons()
 	twipe(icons)
 	for uId in DBM:GetGroupMembers() do
 		local icon = GetRaidTargetIndex(uId)
-		local icon2 = GetRaidTargetIndex(uId.."target")
+		local icon2 = GetRaidTargetIndex(uId .. "target")
 		if icon then
 			icons[UnitName(uId)] = ("|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t"):format(icon)
 		end
 		if icon2 then
-			icons[UnitName(uId.."target")] = ("|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t"):format(icon2)
+			icons[UnitName(uId .. "target")] = ("|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t"):format(icon2)
 		end
 	end
 	for i = 1, 5 do
-		local icon = GetRaidTargetIndex("boss"..i)
+		local icon = GetRaidTargetIndex("boss" .. i)
 		if icon then
-			icons[UnitName("boss"..i)] = ("|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t"):format(icon)
+			icons[UnitName("boss" .. i)] = ("|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t"):format(icon)
 		end
 	end
 end
@@ -377,29 +330,29 @@ local function updateEnemyPower()
 	if powerType then--Only do power type defined
 		if specificUnit then
 			local currentPower, maxPower = UnitPower(specificUnit, powerType), UnitPowerMax(specificUnit, powerType)
-			if maxPower and maxPower ~= 0 then--Prevent division by 0 in addition to filtering non existing units that may still return false on UnitExists()
+			if maxPower and maxPower > 0 then
 				local percent = currentPower / maxPower * 100
 				if percent >= threshold then
-					lines[UnitName(specificUnit)] = mfloor(percent).."%"
+					lines[UnitName(specificUnit)] = mfloor(percent) .. "%"
 				end
 			end
 		else
 			if specificUnit then
 				local currentPower, maxPower = UnitPower(specificUnit), UnitPowerMax(specificUnit)
-				if maxPower and maxPower ~= 0 then--Prevent division by 0 in addition to filtering non existing units that may still return false on UnitExists()
+				if maxPower and maxPower > 0 then
 					local percent = currentPower / maxPower * 100
 					if percent >= threshold then
-						lines[UnitName(specificUnit)] = mfloor(percent).."%"
+						lines[UnitName(specificUnit)] = mfloor(percent) .. "%"
 					end
 				end
 			else
 				for i = 1, 5 do
-					local uId = "boss"..i
+					local uId = "boss" .. i
 					local currentPower, maxPower = UnitPower(uId), UnitPowerMax(uId)
-					if maxPower and maxPower ~= 0 then--Prevent division by 0 in addition to filtering non existing units that may still return false on UnitExists()
+					if maxPower and maxPower > 0 then
 						local percent = currentPower / maxPower * 100
 						if percent >= threshold then
-							lines[UnitName(uId)] = mfloor(percent).."%"
+							lines[UnitName(uId)] = mfloor(percent) .. "%"
 						end
 					end
 				end
@@ -407,19 +360,19 @@ local function updateEnemyPower()
 		end
 	else--Check primary power type and alternate power types together. This should only be used if BOTH power types exist on same boss, else fix your shit MysticalOS
 		for i = 1, 5 do
-			local uId = "boss"..i
+			local uId = "boss" .. i
 			--Primary Power
 			local currentPower, maxPower = UnitPower(uId), UnitPowerMax(uId)
-			if maxPower and maxPower ~= 0 then--Prevent division by 0 in addition to filtering non existing units that may still return false on UnitExists()
+			if maxPower and maxPower > 0 then
 				if currentPower / maxPower * 100 >= threshold then
 					lines[UnitName(uId)] = currentPower
 				end
 			end
 			--Alternate Power
 			local currentAltPower, maxAltPower = UnitPower(uId, 10), UnitPowerMax(uId, 10)
-			if maxAltPower and maxAltPower ~= 0 then--Prevent division by 0 in addition to filtering non existing units that may still return false on UnitExists()
+			if maxAltPower and maxAltPower > 0 then
 				if currentAltPower / maxAltPower * 100 >= threshold then
-					lines[UnitName(uId)] = DBM_CORE_INFOFRAME_ALT..currentAltPower
+					lines[UnitName(uId)] = DBM_CORE_INFOFRAME_ALT .. currentAltPower
 				end
 			end
 		end
@@ -445,7 +398,7 @@ local function updateEnemyAbsorb()
 				local text
 				if totalAbsorb then
 					text = absorbAmount / totalAbsorb * 100
-					lines[UnitName(specificUnit)] = mfloor(text).."%"
+					lines[UnitName(specificUnit)] = mfloor(text) .. "%"
 				else
 					text = absorbAmount
 					lines[UnitName(specificUnit)] = mfloor(text)
@@ -454,7 +407,7 @@ local function updateEnemyAbsorb()
 		end
 	else
 		for i = 1, 5 do
-			local uId = "boss"..i
+			local uId = "boss" .. i
 			if UnitExists(uId) then
 				local absorbAmount
 				if spellInput then--Get specific spell absorb
@@ -469,7 +422,7 @@ local function updateEnemyAbsorb()
 					else
 						text = absorbAmount
 					end
-					lines[UnitName(uId)] = mfloor(text).."%"
+					lines[UnitName(uId)] = mfloor(text) .. "%"
 				end
 			end
 		end
@@ -484,7 +437,7 @@ local function updateAllAbsorb()
 	local totalAbsorb = value[2]
 	local totalAbsorb2 = value[3]
 	for i = 1, 5 do
-		local uId = "boss"..i
+		local uId = "boss" .. i
 		if UnitExists(uId) then
 			local absorbAmount
 			if spellInput then--Get specific spell absorb
@@ -499,7 +452,7 @@ local function updateAllAbsorb()
 				else
 					text = absorbAmount
 				end
-				lines[UnitName(uId)] = mfloor(text).."%"
+				lines[UnitName(uId)] = mfloor(text) .. "%"
 			end
 		end
 	end
@@ -513,7 +466,7 @@ local function updateAllAbsorb()
 				else
 					text = absorbAmount
 				end
-				lines[UnitName(uId)] = mfloor(text).."%"
+				lines[UnitName(uId)] = mfloor(text) .. "%"
 			end
 		end
 	end
@@ -696,7 +649,7 @@ local function updatePlayerTargets()
 	twipe(lines)
 	local cId = value[1]
 	for uId, i in DBM:GetGroupMembers() do
-		if DBM:GetUnitCreatureId(uId.."target") ~= cId and (UnitGroupRolesAssigned(uId) == "DAMAGER" or UnitGroupRolesAssigned(uId) == "NONE") then
+		if DBM:GetUnitCreatureId(uId .. "target") ~= cId and (UnitGroupRolesAssigned(uId) == "DAMAGER" or UnitGroupRolesAssigned(uId) == "NONE") then
 			lines[UnitName(uId)] = ""
 		end
 	end
@@ -790,20 +743,16 @@ local friendlyEvents = {
 	["playertargets"] = true
 }
 
-function onUpdate(frame, table)
+local function onUpdate(frame, table)
 	if events[currentEvent] then
 		events[currentEvent](table)
 	else
 		if frame then
 			frame:Hide()
-			--error("DBM-InfoFrame: Unsupported event", 2)
 		end
 	end
 	local color = NORMAL_FONT_COLOR
-	frame:ClearLines()
-	if headerText then
-		frame:AddLine(headerText, 255, 255, 255, 0)
-	end
+	infoFrame:ClearLines()
 	local linesShown = 0
 	for i = 1, #sortedLines do
 		if linesShown >= maxlines then
@@ -812,14 +761,14 @@ function onUpdate(frame, table)
 		local leftText = sortedLines[i]
 		if not leftText then
 			error("DBM InfoFrame: leftText cannot be nil, Notify DBM author. Infoframe force shutting down ", 2)
-			frame:Hide()--Force close infoframe so it doesn't keep throwing 100s of errors onupdate. If leftText is broken the frame needs to be shut down
+			frame:Hide()
 			return
 		elseif leftText and type(leftText) ~= "string" then
 			tostring(leftText)
 		end
 		local rightText = lines[leftText]
 		local extra, extraName = string.split("*", leftText)--Find just unit name, if extra info had to be added to make unique
-		local icon = icons[extraName or leftText] and icons[extraName or leftText]..leftText
+		local icon = icons[extraName or leftText] and icons[extraName or leftText] .. leftText
 		if friendlyEvents[currentEvent] then
 			local unitId = DBM:GetRaidUnitId(DBM:GetUnitFullName(extraName or leftText)) or "player"--Prevent nil logical error
 			if unitId and select(4, UnitPosition(unitId)) == currentMapId then
@@ -832,26 +781,26 @@ function onUpdate(frame, table)
 				linesShown = linesShown + 1
 				if (extraName or leftText) == playerName then--It's player.
 					if currentEvent == "health" or currentEvent == "playerpower" or currentEvent == "playerabsorb" or currentEvent == "playerbuff" or currentEvent == "playergooddebuff" or currentEvent == "playerbaddebuff" or currentEvent == "playerdebuffremaining" or currentEvent == "playerdebuffstacks" or currentEvent == "playerbuffremaining" or currentEvent == "playertargets" or currentEvent == "playeraggro" then--Red
-						frame:AddDoubleLine(icon or leftText, rightText, 255, 0, 0, 255, 255, 255)-- (leftText, rightText, left.R, left.G, left.B, right.R, right.G, right.B)
+						infoFrame:SetLine(linesShown, icon or leftText, rightText, 255, 0, 0, 255, 255, 255)
 					else--Green
-						frame:AddDoubleLine(icon or leftText, rightText, 0, 255, 0, 255, 255, 255)
+						infoFrame:SetLine(linesShown, icon or leftText, rightText, 0, 255, 0, 255, 255, 255)
 					end
 				else--It's not player, do nothing special with it. Ordinary class colored text.
 					if currentEvent == "playerdebuffremaining" or currentEvent == "playerbuffremaining" then
 						local numberValue = tonumber(rightText)
 						if numberValue < 6 then
-							frame:AddDoubleLine(icon or leftText, rightText, color.r, color.g, color.b, 255, 0, 0)--Red
+							infoFrame:SetLine(linesShown, icon or leftText, rightText, color.r, color.g, color.b, 255, 0, 0)--Red
 						elseif numberValue < 11 then
-							frame:AddDoubleLine(icon or leftText, rightText, color.r, color.g, color.b, 255, 127.5, 0)--Orange
+							infoFrame:SetLine(linesShown, icon or leftText, rightText, color.r, color.g, color.b, 255, 127.5, 0)--Orange
 						else
 							if numberValue == 9000 then--the out of range players
-								frame:AddDoubleLine(icon or leftText, SPELL_FAILED_OUT_OF_RANGE, color.r, color.g, color.b, 255, 0, 0)--Red
+								infoFrame:SetLine(linesShown, icon or leftText, SPELL_FAILED_OUT_OF_RANGE, color.r, color.g, color.b, 255, 0, 0)--Red
 							else
-								frame:AddDoubleLine(icon or leftText, rightText, color.r, color.g, color.b, 255, 255, 255)--White
+								infoFrame:SetLine(linesShown, icon or leftText, rightText, color.r, color.g, color.b, 255, 255, 255)--White
 							end
 						end
 					else
-						frame:AddDoubleLine(icon or leftText, rightText, color.r, color.g, color.b, 255, 255, 255)
+						infoFrame:SetLine(linesShown, icon or leftText, rightText, color.r, color.g, color.b, 255, 255, 255)
 					end
 				end
 			end
@@ -881,9 +830,10 @@ function onUpdate(frame, table)
 				color2 = NORMAL_FONT_COLOR
 			end
 			linesShown = linesShown + 1
-			frame:AddDoubleLine(icon or leftText, rightText, color.r, color.g, color.b, color2.r, color2.g, color2.b)
+			infoFrame:SetLine(linesShown, icon or leftText, rightText, color.r, color.g, color.b, color2.r, color2.g, color2.b)
 		end
 	end
+	frame:SetHeight((linesShown * 12) + 12)
 	frame:Show()
 end
 
@@ -904,7 +854,9 @@ function infoFrame:Show(maxLines, event, ...)
 	for i = 1, select("#", ...) do
 		value[i] = select(i, ...)
 	end
-	frame = frame or createFrame()
+	if not frame then
+		createFrame()
+	end
 	--Orders event to use spellID no matter what and not spell name
 	if event:find("byspellid") then
 		event = event:gsub("byspellid", "")--just strip off the byspellid, it served it's purpose, it simply told infoframe to not convert to spellName
@@ -941,7 +893,6 @@ function infoFrame:Show(maxLines, event, ...)
 		twipe(icons)
 	end
 	frame:Show()
-	frame:SetOwner(UIParent, "ANCHOR_PRESERVE")
 	onUpdate(frame, value[1])
 	if not frame.ticker and not value[4] and event ~= "table" then
 		frame.ticker = C_Timer.NewTicker(0.5, function() onUpdate(frame) end)
@@ -956,7 +907,9 @@ function infoFrame:RegisterCallback(cb)
 end
 
 function infoFrame:Update(time)
-	frame = frame or createFrame()
+	if not frame then
+		createFrame()
+	end
 	if frame:IsShown() then
 		if time then
 			C_Timer.After(time, function() onUpdate(frame) end)
@@ -967,9 +920,73 @@ function infoFrame:Update(time)
 end
 
 function infoFrame:UpdateTable(table)
-	frame = frame or createFrame()
+	if not frame then
+		createFrame()
+	end
 	if frame:IsShown() and table then
 		onUpdate(frame, table)
+	end
+end
+
+function infoFrame:SetHeader(text)
+	if not frame then
+		createFrame()
+	end
+	frame.header:SetText(text or "DBM Info Frame")
+end
+
+function infoFrame:ClearLines()
+	if not frame then
+		createFrame()
+	end
+	for i = 1, #frame.lines do
+		frame.lines[i]:SetText("")
+		frame.lines[i]:Hide()
+	end
+	maxWidth = 0
+end
+
+function infoFrame:CreateLine(lineNum)
+	local line = frame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+	line:SetSize(32, 12)
+	if lineNum == 1 then -- 1st entry left
+		line:SetPoint("TOPLEFT", frame, "TOPLEFT", 6, -6)
+		line:SetJustifyH("LEFT")
+	elseif lineNum == 2 then -- 1st entry right
+		line:SetPoint("TOPRIGHT", frame, "TOPRIGHT", -6, -6)
+		line:SetJustifyH("RIGHT")
+	else
+		line:SetPoint("TOPLEFT", frame.lines[lineNum - 2], "LEFT", 0, -6)
+		line:SetJustifyH(lineNum % 2 == 0 and "RIGHT" or "LEFT")
+	end
+	frame.lines[lineNum] = line
+end
+
+function infoFrame:SetLine(lineNum, leftText, rightText, colorR, colorG, colorB, color2R, color2G, color2B)
+	if not frame then
+		createFrame()
+	end
+	lineNum = lineNum * 2 - 1
+	if not frame.lines[lineNum] then
+		infoFrame:CreateLine(lineNum)
+		infoFrame:CreateLine(lineNum + 1)
+	end
+	frame.lines[lineNum]:SetText(leftText)
+	frame.lines[lineNum]:SetTextColor(colorR or 255, colorG or 255, colorB or 255)
+	frame.lines[lineNum]:Show()
+	frame.lines[lineNum]:SetSize(100, 12)
+	local leftTextWidth = frame.lines[lineNum]:GetStringWidth()
+	frame.lines[lineNum + 1]:SetText(rightText)
+	frame.lines[lineNum + 1]:SetTextColor(color2R or 255, color2G or 255, color2B or 255)
+	frame.lines[lineNum + 1]:Show()
+	frame.lines[lineNum + 1]:SetSize(100, 12)
+	local rightTextWidth = frame.lines[lineNum + 1]:GetStringWidth()
+	frame.lines[lineNum]:SetSize(leftTextWidth, 12)
+	frame.lines[lineNum + 1]:SetSize(rightTextWidth, 12)
+	local testWidth = leftTextWidth + rightTextWidth + 24
+	if testWidth > maxWidth then
+		frame:SetWidth(testWidth)
+		maxWidth = testWidth
 	end
 end
 
@@ -978,7 +995,7 @@ function infoFrame:Hide()
 	twipe(icons)
 	twipe(sortedLines)
 	twipe(updateCallbacks)
-	headerText = "DBM Info Frame"
+	infoFrame:SetHeader()
 	twipe(value)
 	if frame then
 		if frame.ticker then
@@ -993,11 +1010,6 @@ end
 
 function infoFrame:IsShown()
 	return frame and frame:IsShown()
-end
-
-function infoFrame:SetHeader(text)
-	if not text then return end
-	headerText = text
 end
 
 function infoFrame:SetSortingAsc()

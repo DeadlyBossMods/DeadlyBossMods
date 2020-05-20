@@ -143,7 +143,6 @@ L.BarEndColorUI				= "종료 색상 (사용자)"
 L.Bar7Header				= "사용자 바 설정"
 L.Bar7ForceLarge			= "항상 커다란 바 사용"
 L.Bar7CustomInline			= "바 안쪽에 사용자 지정 '!' 아이콘 사용"
-L.Bar7Footer				= "(Dummy 바는 시간이 끝나면 사라집니다)"
 --Dropdown Options
 L.CBTGeneric				= "일반"
 L.CBTAdd					= "쫄 등장"
@@ -185,7 +184,7 @@ L.KeepBar2					= "(모드에서 지원할 경우에만)"
 L.FadeBar					= "사정거리 밖의 스킬에 대한 타이머 바 숨김"
 
 -- Tab: Spec Warn Frame
-L.Panel_SpecWarnFrame		= "특수 경고"
+L.Panel_SpecWarnFrame		= "특수 공격대 경고"
 L.Area_SpecWarn				= "특수 경고 설정"
 L.SpecWarn_ClassColor		= "특수 경고에 직업 색상 사용"
 L.ShowSWarningsInChat 		= "대화창에 특수 경고 보기"

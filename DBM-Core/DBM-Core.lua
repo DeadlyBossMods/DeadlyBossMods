@@ -40,7 +40,6 @@
 -------------------------------
 --  Globals/Default Options  --
 -------------------------------
-
 local function releaseDate(year, month, day, hour, minute, second)
 	hour = hour or 0
 	minute = minute or 0
@@ -93,6 +92,14 @@ local wowVersionString, wowBuild, _, wowTOC = GetBuildInfo()
 local testBuild = false
 if IsTestBuild() then
 	testBuild = true
+end
+
+function DBM:GetTOC()
+	return wowTOC, testBuild, wowVersionString, wowBuild
+end
+
+function DBM:IsAlpha()
+	return DBM:GetTOC() >= 90000 -- 9.x.x
 end
 
 -- dual profile setup
@@ -675,10 +682,6 @@ local function strFromTime(time)
 	else
 		return DBM_CORE_TIMER_FORMAT:format(time/60, time % 60)
 	end
-end
-
-function DBM:strFromTime(time)
-	return strFromTime(time)
 end
 
 do
@@ -2655,12 +2658,7 @@ do
 
 		function dataBroker.OnClick(self, button)
 			if IsShiftKeyDown() then return end
-			if button == "RightButton" then
-				DBM.Options.SilentMode = DBM.Options.SilentMode == false and true or false
-				DBM:AddMsg("SilentMode is " .. (DBM.Options.SilentMode and "ON" or "OFF"))
-			else
-				DBM:LoadGUI()
-			end
+			DBM:LoadGUI()
 		end
 
 		function dataBroker.OnTooltipShow(GameTooltip)
@@ -2669,7 +2667,7 @@ do
 			GameTooltip:AddLine(" ")
 			GameTooltip:AddLine(DBM_CORE_MINIMAP_TOOLTIP_FOOTER, RAID_CLASS_COLORS.MAGE.r, RAID_CLASS_COLORS.MAGE.g, RAID_CLASS_COLORS.MAGE.b, 1)
 			GameTooltip:AddLine(DBM_LDB_TOOLTIP_HELP1, RAID_CLASS_COLORS.MAGE.r, RAID_CLASS_COLORS.MAGE.g, RAID_CLASS_COLORS.MAGE.b)
-			GameTooltip:AddLine(DBM_LDB_TOOLTIP_HELP2, RAID_CLASS_COLORS.MAGE.r, RAID_CLASS_COLORS.MAGE.g, RAID_CLASS_COLORS.MAGE.b)
+		--	GameTooltip:AddLine(DBM_LDB_TOOLTIP_HELP2, RAID_CLASS_COLORS.MAGE.r, RAID_CLASS_COLORS.MAGE.g, RAID_CLASS_COLORS.MAGE.b)
 		end
 	end
 
@@ -3247,7 +3245,7 @@ function DBM:LoadModOptions(modId, inCombat, first)
 	--clean unused saved variables (do not work on combat load)
 	if not inCombat then
 		for id, table in pairs(savedOptions) do
-			if not existId[id] and not (id:find("talent") or id:find("FastestClear")) then
+			if not existId[id] and not id:find("talent") then
 				savedOptions[id] = nil
 			end
 		end
@@ -4485,10 +4483,8 @@ do
 
 	syncHandlers["GH"] = function(sender)
 		if DBM.ReleaseRevision >= DBM.HighestRelease then--Do not send version to guild if it's not up to date, since this is only used for update notifcation
-			local total, online = GetNumGuildMembers()
 			DBM:Unschedule(SendVersion, true)--Throttle so we don't needlessly send tons of comms during initial raid invites
-			local throttle = (online < 50) and 10 or (online < 100) and 15 or (online < 150) and 20 or 30
-			DBM:Schedule(throttle, SendVersion, true)--Send version if 10 seconds have past since last "Hi" sync
+			DBM:Schedule(10, SendVersion, true)--Send version if 10 seconds have past since last "Hi" sync
 		end
 	end
 
@@ -4540,15 +4536,20 @@ do
 		local accessList = {}
 		local savedSender
 
-		local inspopup = CreateFrame("Frame", "DBMPopupLockout", UIParent)
-		if BackdropTemplateMixin then
-			Mixin(inspopup, BackdropTemplateMixin)
+		local inspopup = CreateFrame("Frame", "DBMPopupLockout", UIParent, DBM:IsAlpha() and "BackdropTemplate")
+		inspopup.backdropInfo = {
+			bgFile		= "Interface\\DialogFrame\\UI-DialogBox-Background-Dark", -- 312922
+			edgeFile	= "Interface\\DialogFrame\\UI-DialogBox-Border", -- 131072
+			tile		= true,
+			tileSize	= 16,
+			edgeSize	= 16,
+			insets		= { left = 1, right = 1, top = 1, bottom = 1 }
+		}
+		if not DBM:IsAlpha() then
+			inspopup:SetBackdrop(inspopup.backdropInfo)
+		else
+			inspopup:ApplyBackdrop()
 		end
-		inspopup:SetBackdrop({bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background-Dark",--312922
-			edgeFile = 131072,--"Interface\\DialogFrame\\UI-DialogBox-Border"
-			tile = true, tileSize = 16, edgeSize = 16,
-			insets = {left = 1, right = 1, top = 1, bottom = 1}}
-		)
 		inspopup:SetSize(500, 120)
 		inspopup:SetPoint("TOP", UIParent, "TOP", 0, -200)
 		inspopup:SetFrameStrata("DIALOG")
@@ -5075,19 +5076,24 @@ do
 	local frame, fontstring, fontstringFooter, editBox, urlText
 
 	local function createFrame()
-		frame = CreateFrame("Frame", "DBMUpdateReminder", UIParent)
-		if BackdropTemplateMixin then
-			Mixin(frame, BackdropTemplateMixin)
-		end
+		frame = CreateFrame("Frame", "DBMUpdateReminder", UIParent, DBM:IsAlpha() and "BackdropTemplate")
 		frame:SetFrameStrata("FULLSCREEN_DIALOG") -- yes, this isn't a fullscreen dialog, but I want it to be in front of other DIALOG frames (like DBM GUI which might open this frame...)
 		frame:SetWidth(430)
 		frame:SetHeight(140)
 		frame:SetPoint("TOP", 0, -230)
-		frame:SetBackdrop({
-			bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background",--131071
-			edgeFile = "Interface\\DialogFrame\\UI-DialogBox-Border", tile = true, tileSize = 32, edgeSize = 32,--131072
-			insets = {left = 11, right = 12, top = 12, bottom = 11},
-		})
+		frame.backdropInfo = {
+			bgFile		= "Interface\\DialogFrame\\UI-DialogBox-Background", -- 131071
+			edgeFile	= "Interface\\DialogFrame\\UI-DialogBox-Border", -- 131072
+			tile		= true,
+			tileSize	= 32,
+			edgeSize	= 32,
+			insets		= { left = 11, right = 12, top = 12, bottom = 11 },
+		}
+		if not DBM:IsAlpha() then
+			frame:SetBackdrop(frame.backdropInfo)
+		else
+			frame:ApplyBackdrop()
+		end
 		fontstring = frame:CreateFontString(nil, "ARTWORK", "GameFontNormal")
 		fontstring:SetWidth(410)
 		fontstring:SetHeight(0)
@@ -5172,19 +5178,24 @@ do
 	local frame, fontstring, fontstringFooter, editBox, button3
 
 	local function createFrame()
-		frame = CreateFrame("Frame", "DBMNotesEditor", UIParent)
-		if BackdropTemplateMixin then
-			Mixin(frame, BackdropTemplateMixin)
-		end
+		frame = CreateFrame("Frame", "DBMNotesEditor", UIParent, DBM:IsAlpha() and "BackdropTemplate")
 		frame:SetFrameStrata("FULLSCREEN_DIALOG") -- yes, this isn't a fullscreen dialog, but I want it to be in front of other DIALOG frames (like DBM GUI which might open this frame...)
 		frame:SetWidth(430)
 		frame:SetHeight(140)
 		frame:SetPoint("TOP", 0, -230)
-		frame:SetBackdrop({
-			bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background",--131071
-			edgeFile = "Interface\\DialogFrame\\UI-DialogBox-Border", tile = true, tileSize = 32, edgeSize = 32,--131072
-			insets = {left = 11, right = 12, top = 12, bottom = 11},
-		})
+		frame.backdropInfo = {
+			bgFile		= "Interface\\DialogFrame\\UI-DialogBox-Background", -- 131071
+			edgeFile	= "Interface\\DialogFrame\\UI-DialogBox-Border", -- 131072
+			tile		= true,
+			tileSize	= 32,
+			edgeSize	= 32,
+			insets		= { left = 11, right = 12, top = 12, bottom = 11 }
+		}
+		if not DBM:IsAlpha() then
+			frame:SetBackdrop(frame.backdropInfo)
+		else
+			frame:ApplyBackdrop()
+		end
 		fontstring = frame:CreateFontString(nil, "ARTWORK", "GameFontNormal")
 		fontstring:SetWidth(410)
 		fontstring:SetHeight(0)
@@ -7183,10 +7194,6 @@ function DBM:AntiSpam(time, id)
 	end
 end
 
-function DBM:GetTOC()
-	return wowTOC, testBuild, wowVersionString, wowBuild
-end
-
 function DBM:InCombat()
 	if #inCombat > 0 then
 		return true
@@ -8871,7 +8878,7 @@ do
 				anchorFrame:SetClampedToScreen()
 				anchorFrame:Hide()
 				local texture = anchorFrame:CreateTexture()
-				texture:SetTexture("Interface\\Addons\\DBM-GUI\\textures\\dot.blp")
+				texture:SetTexture("Interface\\Addons\\DBM-Core\\textures\\dot.blp")
 				texture:SetPoint("CENTER", anchorFrame, "CENTER", 0, 0)
 				texture:SetWidth(32)
 				texture:SetHeight(32)
@@ -9540,7 +9547,7 @@ do
 				anchorFrame:SetClampedToScreen()
 				anchorFrame:Hide()
 				local texture = anchorFrame:CreateTexture()
-				texture:SetTexture("Interface\\Addons\\DBM-GUI\\textures\\dot.blp")
+				texture:SetTexture("Interface\\Addons\\DBM-Core\\textures\\dot.blp")
 				texture:SetPoint("CENTER", anchorFrame, "CENTER", 0, 0)
 				texture:SetWidth(32)
 				texture:SetHeight(32)
@@ -10147,13 +10154,13 @@ do
 		local activeVP = self.Options.ChosenVoicePack
 		--Check if voice pack out of date
 		if activeVP ~= "None" and activeVP == value then
-			if self.VoiceVersions[value] < 11 then--Version will be bumped when new voice packs released that contain new voices.
+			if self.VoiceVersions[value] < 8 then--Version will be bumped when new voice packs released that contain new voices.
 				if not self.Options.DontShowReminders then
 					self:AddMsg(DBM_CORE_VOICE_PACK_OUTDATED)
 				end
 				SWFilterDisabed = self.VoiceVersions[value]--Set disable to version on current voice pack
 			else
-				SWFilterDisabed = 11
+				SWFilterDisabed = 8
 			end
 		end
 	end
@@ -11160,16 +11167,6 @@ function bossModPrototype:AddReadyCheckOption(questId, default, maxLevel)
 	self.Options["ReadyCheck"] = (default == nil) or default
 	self.localization.options["ReadyCheck"] = DBM_CORE_AUTO_READY_CHECK_OPTION_TEXT
 	self:SetOptionCategory("ReadyCheck", "misc")
-end
-
-function bossModPrototype:AddSpeedClearOption(name, default)
-	self.DefaultOptions["SpeedClearTimer"] = (default == nil) or default
-	if default and type(default) == "string" then
-		default = self:GetRoleFlagValue(default)
-	end
-	self.Options["SpeedClearTimer"] = (default == nil) or default
-	self:SetOptionCategory("SpeedClearTimer", "timer")
-	self.localization.options["SpeedClearTimer"] = DBM_CORE_AUTO_SPEEDCLEAR_OPTION_TEXT:format(name)
 end
 
 function bossModPrototype:AddSliderOption(name, minValue, maxValue, valueStep, default, cat, func)

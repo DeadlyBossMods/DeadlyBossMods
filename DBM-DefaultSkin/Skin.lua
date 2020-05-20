@@ -8,8 +8,7 @@ local skin = DBT:RegisterSkin("DefaultSkin")
 -- Options that are not set here will be reset to their default value (as defined in DBT.lua) when the skin is selected (except for the positioning options).
 skin.defaults = {
 	-- Most skins want to set the "Template" option which sets the XML template to use (note that you could also create a template which doesn't have a custom template, just custom other settings)
-	Template = "DBMDefaultSkinTimerTemplate",
+	Template = "DBTBarTemplate",
 	-- Most skins probably also want this option: the default texture (the user can still change this to any other texture from any DBT skin or LibSharedMedia)
 	Texture = "Interface\\AddOns\\DBM-DefaultSkin\\textures\\default.blp",
 }
-

@@ -156,7 +156,7 @@ L.BarSort					= "selecionar pelo tempo restante"
 
 
 -- Tab: Spec Warn Frame
-L.Panel_SpecWarnFrame		= "Avisos Especiais"
+L.Panel_SpecWarnFrame		= "Avisos Raid Especiais"
 L.Area_SpecWarn				= "Opções de Avisos Especiais"
 L.ShowSWarningsInChat 		= "Exibir avisos especiais no quadro de chat"
 L.SpecWarn_FlashFrameRepeat	= "Repetir %d vezes (se habilitado)"
