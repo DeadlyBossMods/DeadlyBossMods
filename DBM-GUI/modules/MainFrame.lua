@@ -174,18 +174,22 @@ frameListList:SetScript("OnVerticalScroll", function(self, offset)
 	self.offset = math.floor((offset / 18) + 0.5)
 	frame:UpdateMenuFrame(self:GetParent())
 end)
-_G[frameListList:GetName() .. "ScrollBarScrollUpButton"]:Disable()
-_G[frameListList:GetName() .. "ScrollBarScrollDownButton"]:Enable()
 local frameListScrollBar = _G[frameListList:GetName() .. "ScrollBar"]
 frameListScrollBar:SetMinMaxValues(0, 11)
 frameListScrollBar:SetValueStep(18)
 frameListScrollBar:SetValue(0)
-frameList:SetScript("OnMouseWheel", function(self, delta)
-	if delta > 0 then
-		frameListScrollBar:SetValue(frameListScrollBar:GetValue() - (frameListScrollBar:GetHeight() / 2))
-	else
-		frameListScrollBar:SetValue(frameListScrollBar:GetValue() + (frameListScrollBar:GetHeight() / 2))
-	end
+frameList:SetScript("OnMouseWheel", function(_, delta)
+	frameListScrollBar:SetValue(frameListScrollBar:GetValue() + (delta * 18))
+end)
+local scrollUpButton = _G[r:SetValu:GetName() .. "ScrollUpButton"]
+scrollUpButton:Disable()
+scrollUpButton:SetScript("OnClick", function(self)
+	self:GetParent():SetValue(self:GetParent():GetValue() - 18)
+end)
+local scrollDownButton = _G[r:SetValu:GetName() .. "ScrollDownButton"]
+scrollDownButton:Enable()
+scrollDownButton:SetScript("OnClick", function(self)
+	self:GetParent():SetValue(self:GetParent():GetValue() + 18)
 end)
 
 local frameContainer = CreateFrame("ScrollFrame", "$parentPanelContainer", frame, DBM:IsAlpha() and "BackdropTemplate")
