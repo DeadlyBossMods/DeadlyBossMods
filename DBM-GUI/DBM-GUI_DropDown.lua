@@ -29,26 +29,29 @@ tabFrame1:SetBackdropBorderColor(0.4, 0.4, 0.4)
 
 local tabFrame1List = _G[tabFrame1:GetName() .. "List"]
 tabFrame1List:SetScript("OnVerticalScroll", function(self, offset)
-	_G[self:GetName() .. "ScrollBar"]:SetValue(offset)
+	local scrollbar = _G[self:GetName() .. "ScrollBar"]
+	local _, max = scrollbar:GetMinMaxValues()
+	scrollbar:SetValue(offset)
+	_G[self:GetName() .. "ScrollBarScrollUpButton"]:SetEnabled(offset ~= 0)
+	_G[self:GetName() .. "ScrollBarScrollDownButton"]:SetEnabled(scrollbar:GetValue() - max ~= 0)
 	tabFrame1.offset = math.floor((offset / 16) + 0.5)
 	tabFrame1:Refresh()
 end)
 tabFrame1List:SetBackdropBorderColor(0.6, 0.6, 0.6, 0.6)
 
-local scrollUpButton = _G[tabFrame1List:GetName() .. "ScrollBarScrollUpButton"]
+local tabFrame1ScrollBar = _G[tabFrame1List:GetName() .. "ScrollBar"]
+tabFrame1ScrollBar:SetMinMaxValues(0, 11)
+tabFrame1ScrollBar:SetValueStep(16)
+tabFrame1ScrollBar:SetValue(0)
+
+local scrollUpButton = _G[tabFrame1ScrollBar:GetName() .. "ScrollUpButton"]
 scrollUpButton:SetSize(12, 12)
 scrollUpButton:Disable()
-local scrollDownButton = _G[tabFrame1List:GetName() .. "ScrollBarScrollDownButton"]
+local scrollDownButton = _G[tabFrame1ScrollBar:GetName() .. "ScrollDownButton"]
 scrollDownButton:SetSize(12, 12)
 scrollDownButton:Enable()
 
-local scrollThumb = _G[tabFrame1List:GetName() .. "ScrollBarThumbTexture"]
-scrollThumb:SetSize(12, 16)
-
-local tabFrame1ScrollBar = _G[tabFrame1List:GetName() .. "ScrollBar"]
-tabFrame1ScrollBar:SetFrameLevel(10)
-tabFrame1ScrollBar:SetValueStep(16)
-tabFrame1ScrollBar:SetValue(0)
+_G[tabFrame1ScrollBar:GetName() .. "ThumbTexture"]:SetSize(12, 16)
 
 tabFrame1:EnableMouseWheel(true)
 tabFrame1:SetScript("OnMouseWheel", function(self, delta)
@@ -63,10 +66,10 @@ local ClickFrame = CreateFrame("Button", nil, UIParent)
 ClickFrame:SetAllPoints(DBM_GUI_OptionsFrame)
 ClickFrame:SetFrameStrata("TOOLTIP")
 ClickFrame:RegisterForClicks("AnyDown")
-ClickFrame:Hide()
 ClickFrame:SetScript("OnClick", function()
 	tabFrame1:Hide()
 end)
+ClickFrame:Hide()
 tabFrame1:SetScript("OnHide", function()
 	ClickFrame:Hide()
 end)
@@ -74,6 +77,7 @@ end)
 tabFrame1.buttons = {}
 for i = 1, 10 do
 	local button = CreateFrame("Button", tabFrame1:GetName() .. "Button" .. i, tabFrame1, "UIDropDownMenuButtonTemplate")
+	button:SetFrameLevel(0)
 	if i == 1 then
 		button:SetPoint("TOPLEFT", tabFrame1, 11, -4)
 	else
@@ -164,13 +168,15 @@ function tabFrame1:Refresh()
 	else
 		self:ShowMenu()
 	end
-	tabFrame1List:Hide()
 	self:SetHeight(#self.buttons * 16 + 8)
 	if #self.dropdown.values > #self.buttons then
 		tabFrame1List:Show()
 		tabFrame1ScrollBar:SetMinMaxValues(0, valuesWOButtons * 16)
-	elseif #self.dropdown.values < #self.buttons then
-		self:SetHeight(#self.dropdown.values * 16 + 8)
+	else
+		if #self.dropdown.values < #self.buttons then
+			tabFrame1List:Hide()
+			self:SetHeight(#self.dropdown.values * 16 + 8)
+		end
 		tabFrame1ScrollBar:SetValue(0)
 	end
 	local bwidth = 0

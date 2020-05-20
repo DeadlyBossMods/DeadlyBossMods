@@ -161,8 +161,6 @@ function DBM_GUI_OptionsFrame:SelectTab(i)
 	_G["DBM_GUI_OptionsFrameTab" .. i .. "MiddleDisabled"]:Show();
 	_G["DBM_GUI_OptionsFrameTab" .. i .. "RightDisabled"]:Show();
 	self.tabs[i]:Show()
-	self.tab = i
-	self:UpdateMenuFrame()
 end
 
 function DBM_GUI_OptionsFrame:CreateTab(tab)
@@ -186,6 +184,9 @@ function DBM_GUI_OptionsFrame:CreateTab(tab)
 end
 
 function DBM_GUI_OptionsFrame:ShowTab(tab)
+	self:ClearSelection()
+	self.tab = tab
+	self:UpdateMenuFrame()
 	for i = 1, #self.tabs do
 		if i == tab then
 			self:SelectTab(i)

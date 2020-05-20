@@ -166,7 +166,11 @@ end
 frameListList:SetBackdropBorderColor(0.6, 0.6, 0.6, 0.6)
 frameListList.offset = 0
 frameListList:SetScript("OnVerticalScroll", function(self, offset)
-	_G[self:GetName() .. "ScrollBar"]:SetValue(offset)
+	local scrollbar = _G[self:GetName() .. "ScrollBar"]
+	local _, max = scrollbar:GetMinMaxValues()
+	scrollbar:SetValue(offset)
+	_G[self:GetName() .. "ScrollBarScrollUpButton"]:SetEnabled(offset ~= 0)
+	_G[self:GetName() .. "ScrollBarScrollDownButton"]:SetEnabled(scrollbar:GetValue() - max ~= 0)
 	self.offset = math.floor((offset / 18) + 0.5)
 	frame:UpdateMenuFrame(self:GetParent())
 end)
