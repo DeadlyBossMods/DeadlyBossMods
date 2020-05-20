@@ -73,7 +73,7 @@ end)
 tabFrame1.buttons = {}
 for i = 1, 10 do
 	local button = CreateFrame("Button", tabFrame1:GetName() .. "Button" .. i, tabFrame1, "UIDropDownMenuButtonTemplate")
-	button:SetFrameLevel(0)
+	button:SetFrameLevel(tabFrame1ScrollBar:GetFrameLevel() - 1)
 	if i == 1 then
 		button:SetPoint("TOPLEFT", tabFrame1, 11, -4)
 	else
