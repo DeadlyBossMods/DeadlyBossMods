@@ -1198,8 +1198,8 @@ do
 	local disabledMods = {}
 
 	local function infniteLoopNotice(self, message)
-		AddMsg(message)
-		self:Schedule(15, infniteLoopNotice, self, message)
+		AddMsg(self, message)
+		self:Schedule(30, infniteLoopNotice, self, message)
 	end
 
 	local function runDelayedFunctions(self)
