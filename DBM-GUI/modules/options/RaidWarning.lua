@@ -56,7 +56,8 @@ FontDropDown:SetPoint("TOPLEFT", WarningShortText, "BOTTOMLEFT", 0, -10)
 local FontStyles = {
 	{
 		text	= L.None,
-		value	= "None"
+		value	= "None",
+		font	= true
 	},
 	{
 		text	= L.Outline,
