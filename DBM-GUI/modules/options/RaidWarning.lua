@@ -29,23 +29,19 @@ local WarningShortText		= raidwarnoptions:CreateCheckButton(L.ShortTextSpellname
 local Fonts = DBM_GUI:MixinSharedMedia3("font", {
 	{
 		text	= "Default",
-		value	= standardFont,
-		font	= standardFont
+		value	= standardFont
 	},
 	{
 		text	= "Arial",
-		value	= "Fonts\\ARIALN.TTF",
-		font	= "Fonts\\ARIALN.TTF"
+		value	= "Fonts\\ARIALN.TTF"
 	},
 	{
 		text	= "Skurri",
-		value	= "Fonts\\skurri.ttf",
-		font	= "Fonts\\skurri.ttf"
+		value	= "Fonts\\skurri.ttf"
 	},
 	{
 		text	= "Morpheus",
-		value	= "Fonts\\MORPHEUS.ttf",
-		font	= "Fonts\\MORPHEUS.ttf"
+		value	= "Fonts\\MORPHEUS.ttf"
 	}
 })
 
@@ -104,18 +100,15 @@ local Sounds = DBM_GUI:MixinSharedMedia3("sound", {
 	},
 	{
 		text	= "RaidWarning",
-		value	= 8959, -- "Sound\\interface\\RaidWarning.ogg"
-		sound	= true
+		value	= 8959 -- "Sound\\interface\\RaidWarning.ogg"
 	},
 	{
 		text	= "Classic",
-		value	= 11742, -- "Sound\\Doodad\\BellTollNightElf.ogg"
-		sound	= true
+		value	= 11742 -- "Sound\\Doodad\\BellTollNightElf.ogg"
 	},
 	{
 		text	= "Ding",
-		value	= 12889, -- "Sound\\interface\\AlarmClockWarning3.ogg"
-		sound	= true
+		value	= 12889 -- "Sound\\interface\\AlarmClockWarning3.ogg"
 	}
 })
 

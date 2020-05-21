@@ -519,28 +519,23 @@ StyleDropDown:SetPoint("TOPLEFT", BarSetup.frame, "TOPLEFT", 210, -25)
 local Textures = DBM_GUI:MixinSharedMedia3("statusbar", {
 	{
 		text	= "Default",
-		value	= "Interface\\AddOns\\DBM-DefaultSkin\\textures\\default.blp",
-		texture	= "Interface\\AddOns\\DBM-DefaultSkin\\textures\\default.blp"
+		value	= "Interface\\AddOns\\DBM-DefaultSkin\\textures\\default.blp"
 	},
 	{
 		text	= "Blizzad",
-		value	= "Interface\\PaperDollInfoFrame\\UI-Character-Skills-Bar",
-		texture	= 136570
+		value	= "Interface\\PaperDollInfoFrame\\UI-Character-Skills-Bar" -- 136570
 	},
 	{
 		text	= "Glaze",
-		value	= "Interface\\AddOns\\DBM-Core\\textures\\glaze.blp",
-		texture	= "Interface\\AddOns\\DBM-Core\\textures\\glaze.blp"
+		value	= "Interface\\AddOns\\DBM-Core\\textures\\glaze.blp"
 	},
 	{
 		text	= "Otravi",
-		value	= "Interface\\AddOns\\DBM-Core\\textures\\otravi.blp",
-		texture	= "Interface\\AddOns\\DBM-Core\\textures\\otravi.blp"
+		value	= "Interface\\AddOns\\DBM-Core\\textures\\otravi.blp"
 	},
 	{
 		text	= "Smooth",
-		value	= "Interface\\AddOns\\DBM-Core\\textures\\smooth.blp",
-		texture	= "Interface\\AddOns\\DBM-Core\\textures\\smooth.blp"
+		value	= "Interface\\AddOns\\DBM-Core\\textures\\smooth.blp"
 	}
 })
 
@@ -552,23 +547,19 @@ TextureDropDown:SetPoint("TOPLEFT", StyleDropDown, "BOTTOMLEFT", 0, -10)
 local Fonts = DBM_GUI:MixinSharedMedia3("font", {
 	{
 		text	= "Default",
-		value	= standardFont,
-		font = standardFont
+		value	= standardFont
 	},
 	{
 		text	= "Arial",
-		value	= "Fonts\\ARIALN.TTF",
-		font = "Fonts\\ARIALN.TTF"
+		value	= "Fonts\\ARIALN.TTF"
 	},
 	{
 		text	= "Skurri",
-		value	= "Fonts\\skurri.ttf",
-		font = "Fonts\\skurri.ttf"
+		value	= "Fonts\\skurri.ttf"
 	},
 	{
 		text	= "Morpheus",
-		value	= "Fonts\\MORPHEUS.ttf",
-		font = "Fonts\\MORPHEUS.ttf"
+		value	= "Fonts\\MORPHEUS.ttf"
 	}
 })
 

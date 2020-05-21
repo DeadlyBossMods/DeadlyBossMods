@@ -55,23 +55,19 @@ end)
 local Fonts = DBM_GUI:MixinSharedMedia3("font", {
 	{
 		text	= "Default",
-		value	= standardFont,
-		font	= standardFont
+		value	= standardFont
 	},
 	{
 		text	= "Arial",
-		value	= "Fonts\\ARIALN.TTF",
-		font = "Fonts\\ARIALN.TTF"
+		value	= "Fonts\\ARIALN.TTF"
 	},
 	{
 		text	= "Skurri",
-		value	= "Fonts\\skurri.ttf",
-		font = "Fonts\\skurri.ttf"
+		value	= "Fonts\\skurri.ttf"
 	},
 	{
 		text	= "Morpheus",
-		value	= "Fonts\\MORPHEUS.ttf",
-		font = "Fonts\\MORPHEUS.ttf"
+		value	= "Fonts\\MORPHEUS.ttf"
 	}
 })
 
@@ -138,22 +134,22 @@ end)
 
 local Sounds = DBM_GUI:MixinSharedMedia3("sound", {
 	{ text = L.NoSound, value = "" },
-	{ sound	= true, text = "Algalon: Beware!", value = 15391 },
-	{ sound	= true, text = "BB Wolf: Run Away", value = 9278 },
-	{ sound	= true, text = "Blizzard Raid Emote", value = 37666 },
-	{ sound	= true, text = "C'Thun: You Will Die!", value = 8585 },
-	{ sound	= true, text = "Headless Horseman: Laugh", value = 12506 },
-	{ sound	= true, text = "Illidan: Not Prepared", value = 68563 },
-	{ sound	= true, text = "Illidan: Not Prepared2", value = 12506 },
-	{ sound	= true, text = "Kaz'rogal: Marked", value = 11052 },
-	{ sound	= true, text = "Kil'Jaeden: Destruction", value = 12506 },
-	{ sound	= true, text = "Loatheb: I see you", value = 128466 },
-	{ sound	= true, text = "Lady Malande: Flee", value = 11482 },
-	{ sound	= true, text = "Milhouse: Light You Up", value = 49764 },
-	{ sound	= true, text = "Night Elf Bell", value = 11742 },
-	{ sound	= true, text = "PvP Flag", value = 8174 },
-	{ sound	= true, text = "Void Reaver: Marked", value = 11213 },
-	{ sound	= true, text = "Yogg Saron: Laugh", value = 15757 },
+	{ text = "Algalon: Beware!", value = 15391 },
+	{ text = "BB Wolf: Run Away", value = 9278 },
+	{ text = "Blizzard Raid Emote", value = 37666 },
+	{ text = "C'Thun: You Will Die!", value = 8585 },
+	{ text = "Headless Horseman: Laugh", value = 12506 },
+	{ text = "Illidan: Not Prepared", value = 68563 },
+	{ text = "Illidan: Not Prepared2", value = 12506 },
+	{ text = "Kaz'rogal: Marked", value = 11052 },
+	{ text = "Kil'Jaeden: Destruction", value = 12506 },
+	{ text = "Loatheb: I see you", value = 128466 },
+	{ text = "Lady Malande: Flee", value = 11482 },
+	{ text = "Milhouse: Light You Up", value = 49764 },
+	{ text = "Night Elf Bell", value = 11742 },
+	{ text = "PvP Flag", value = 8174 },
+	{ text = "Void Reaver: Marked", value = 11213 },
+	{ text = "Yogg Saron: Laugh", value = 15757 },
 })
 
 local specWarnOne = specPanel:CreateArea(L.SpecialWarnHeader1, nil, 160)

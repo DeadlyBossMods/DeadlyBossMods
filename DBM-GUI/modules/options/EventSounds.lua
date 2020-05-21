@@ -7,8 +7,7 @@ local Sounds = DBM_GUI:MixinSharedMedia3("sound", {
 	},
 	{
 		text	= "Muradin: Charge",
-		value	= 16971, -- "Sound\\Creature\\MuradinBronzebeard\\IC_Muradin_Saurfang02.ogg"
-		sound	= true
+		value	= 16971 -- "Sound\\Creature\\MuradinBronzebeard\\IC_Muradin_Saurfang02.ogg"
 	}
 })
 
