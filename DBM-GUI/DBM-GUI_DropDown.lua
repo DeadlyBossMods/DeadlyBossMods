@@ -106,23 +106,29 @@ for i = 1, 10 do
 		end
 		_G[self:GetParent().dropdown:GetName() .. "Text"]:SetText(self.entry.text)
 	end)
+	button:SetScript("OnHide", function(self)
+		self:SetText("")
+		if DBM:IsAlpha() then
+			self:ClearBackdrop()
+		else
+			self:SetBackdrop(nil)
+		end
+	end)
 	tabFrame1.buttons[i] = button
 end
 
 function tabFrame1:ShowMenu()
 	for i = 1, #self.buttons do
-		local button = self.buttons[i]
-		local entry = self.dropdown.values[i + self.offset]
-		if not entry then
-			button:SetText("")
-			button:Hide()
-		else
+		local button, entry = self.buttons[i], self.dropdown.values[i + self.offset]
+		button:Hide()
+		if entry then
+			button:Show()
 			_G[button:GetName() .. "NormalText"]:SetFontObject(GameFontHighlightSmall)
 			button:SetText((entry.value == self.dropdown.value and "|TInterface\\Buttons\\UI-CheckBox-Check:0|t" or "   ") .. entry.text)
 			button.entry = entry
 			if entry.texture then
 				button.backdropInfo = {
-					bgFile	= entry.texture
+					bgFile	= entry.value
 				}
 				if not DBM:IsAlpha() then
 					button:SetBackdrop(button.backdropInfo)
@@ -130,28 +136,19 @@ function tabFrame1:ShowMenu()
 					button:ApplyBackdrop()
 				end
 			end
-			button:Show()
 		end
 	end
 end
 
 function tabFrame1:ShowFontMenu()
 	for i = 1, #self.buttons do
-		local button = self.buttons[i]
-		local entry = self.dropdown.values[i + self.offset]
-		if not entry then
-			button:SetText("")
-			button:Hide()
-		else
-			if not DBM:IsAlpha() then
-				button:SetBackdrop(nil)
-			else
-				button:ClearBackdrop()
-			end
-			_G[button:GetName() .. "NormalText"]:SetFont(type(entry.font) == "string" and entry.font or "GameFontHighlightSmall", entry.fontsize or 14)
+		local button, entry = self.buttons[i], self.dropdown.values[i + self.offset]
+		button:Hide()
+		if entry then
+			button:Show()
+			_G[button:GetName() .. "NormalText"]:SetFont(entry.value or "GameFontHighlightSmall", entry.fontsize or 14)
 			button:SetText((entry.value == self.dropdown.value and "|TInterface\\Buttons\\UI-CheckBox-Check:0|t" or "   ") .. entry.text)
 			button.entry = entry
-			button:Show()
 		end
 	end
 end
