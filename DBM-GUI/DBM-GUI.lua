@@ -66,10 +66,19 @@ do
 		end);
 		-- DBM values (mediatable) first, LibSharedMedia values (sorted alphabetically) afterwards
 		local result = mediatable
+		for i = 1, #result do
+			if mediatype == "statusbar" then
+				result[i].texture = true
+			elseif mediatype == "font" then
+				result[i].font = true
+			elseif mediatype == "sound" then
+				result[i].sound = true
+			end
+		end
 		for i = 1, #keytable do
 			if mediatype ~= "sound" or (keytable[i] ~= "None" and keytable[i] ~= "NPCScan") then
 				local v = LibStub("LibSharedMedia-3.0", true):HashTable(mediatype)[keytable[i]]
-				-- filter duplicates
+				-- Filter duplicates
 				local insertme = true
 				for _, v2 in next, result do
 					if v2.value == v then

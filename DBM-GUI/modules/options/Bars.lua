@@ -489,7 +489,7 @@ end)
 maindummybarHuge.enlarged = true
 maindummybarHuge.dummyEnlarge = true
 do
-	-- little hook to prevent this bar from changing size/scale
+	-- Little hook to prevent this bar from changing size/scale
 	local old = maindummybarHuge.ApplyStyle
 	function maindummybarHuge:ApplyStyle(...)
 		old(self, ...)

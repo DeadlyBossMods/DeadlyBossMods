@@ -1,5 +1,7 @@
 local L = DBM_GUI_Translations
 
+local defaultFont, defaultFontSize = GameFontHighlightSmall:GetFont()
+
 local hack = OptionsList_OnLoad
 function OptionsList_OnLoad(self, ...)
 	if self:GetName() ~= "DBM_GUI_DropDown" then
@@ -79,6 +81,8 @@ end)
 tabFrame1.buttons = {}
 for i = 1, 10 do
 	local button = CreateFrame("Button", tabFrame1:GetName() .. "Button" .. i, tabFrame1, "UIDropDownMenuButtonTemplate")
+	_G[button:GetName() .. "Check"]:Hide()
+	_G[button:GetName() .. "UnCheck"]:Hide()
 	button:SetFrameLevel(tabFrame1ScrollBar:GetFrameLevel() - 1)
 	if i == 1 then
 		button:SetPoint("TOPLEFT", tabFrame1, 11, -4)
@@ -106,34 +110,35 @@ for i = 1, 10 do
 		end
 		_G[self:GetParent().dropdown:GetName() .. "Text"]:SetText(self.entry.text)
 	end)
-	button:SetScript("OnHide", function(self)
+	function button:Reset()
+		_G[self:GetName() .. "NormalText"]:SetFont(defaultFont, defaultFontSize)
+		self:SetHeight(0)
 		self:SetText("")
 		if DBM:IsAlpha() then
 			self:ClearBackdrop()
 		else
 			self:SetBackdrop(nil)
 		end
-	end)
+	end
 	tabFrame1.buttons[i] = button
 end
 
 function tabFrame1:ShowMenu()
 	for i = 1, #self.buttons do
 		local button, entry = self.buttons[i], self.dropdown.values[i + self.offset]
-		button:Hide()
+		button:Reset()
 		if entry then
-			button:Show()
-			_G[button:GetName() .. "NormalText"]:SetFontObject(GameFontHighlightSmall)
+			button:SetHeight(16)
 			button:SetText((entry.value == self.dropdown.value and "|TInterface\\Buttons\\UI-CheckBox-Check:0|t" or "   ") .. entry.text)
 			button.entry = entry
 			if entry.texture then
 				button.backdropInfo = {
 					bgFile	= entry.value
 				}
-				if not DBM:IsAlpha() then
-					button:SetBackdrop(button.backdropInfo)
-				else
+				if DBM:IsAlpha() then
 					button:ApplyBackdrop()
+				else
+					button:SetBackdrop(button.backdropInfo)
 				end
 			end
 		end
@@ -143,10 +148,10 @@ end
 function tabFrame1:ShowFontMenu()
 	for i = 1, #self.buttons do
 		local button, entry = self.buttons[i], self.dropdown.values[i + self.offset]
-		button:Hide()
+		button:Reset()
 		if entry then
-			button:Show()
-			_G[button:GetName() .. "NormalText"]:SetFont(entry.value or "GameFontHighlightSmall", entry.fontsize or 14)
+			button:SetHeight(16)
+			_G[button:GetName() .. "NormalText"]:SetFont(entry.value or defaultFont, entry.fontsize or defaultFontSize)
 			button:SetText((entry.value == self.dropdown.value and "|TInterface\\Buttons\\UI-CheckBox-Check:0|t" or "   ") .. entry.text)
 			button.entry = entry
 		end
