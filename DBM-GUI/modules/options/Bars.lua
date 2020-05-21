@@ -571,8 +571,7 @@ FontDropDown:SetPoint("TOPLEFT", TextureDropDown, "BOTTOMLEFT", 0, -10)
 local FontFlags = {
 	{
 		text	= L.None,
-		value	= "None",
-		font	= true
+		value	= "None"
 	},
 	{
 		text	= L.Outline,

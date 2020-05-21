@@ -81,8 +81,7 @@ FontDropDown:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 95, -198)
 local FontStyles = {
 	{
 		text	= L.None,
-		value	= "None",
-		font	= true
+		value	= "None"
 	},
 	{
 		text	= L.Outline,
