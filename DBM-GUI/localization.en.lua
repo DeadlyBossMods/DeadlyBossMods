@@ -154,7 +154,6 @@ L.BarEndColorUI				= "End color (User)"
 L.Bar7Header				= "User Bar Options"
 L.Bar7ForceLarge			= "Always use large bar"
 L.Bar7CustomInline			= "Use custom '!' inline icon"
-L.Bar7Footer				= "(Dummy Bar won't live update)"
 --Dropdown Options
 L.CBTGeneric				= "Generic"
 L.CBTAdd					= "Add"
@@ -196,7 +195,7 @@ L.KeepBar2					= "(when supported by mod)"
 L.FadeBar					= "Fade timers for out of range abilities"
 
 -- Tab: Spec Warn Frame
-L.Panel_SpecWarnFrame		= "Special Warnings"
+L.Panel_SpecWarnFrame		= "Special Raid Warnings"
 L.Area_SpecWarn				= "Special Warning Options"
 L.SpecWarn_ClassColor		= "Use class coloring for special warnings"
 L.ShowSWarningsInChat 		= "Show special warnings in chat frame"

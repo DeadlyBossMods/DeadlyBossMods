@@ -9,9 +9,9 @@
 ## X-DBM-Timer-Skin: 1
 ## X-DBM-Timer-Skin-Name: Classic
 ## X-DBM-Timer-Skin-Name-itIT: Classica
-## X-DBM-Timer-Skin-Textures: Interface\AddOns\DBM-DefaultSkin\textures\default.tga
+## X-DBM-Timer-Skin-Textures: Interface\AddOns\DBM-DefaultSkin\textures\default.blp
 ## X-DBM-Timer-Skin-Texture-Names: Default
 ## X-DBM-Timer-Skin-Texture-Names-itIT: Predefinita
+
 Skin.lua
 TimerSkin.xml
-

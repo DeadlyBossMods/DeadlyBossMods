@@ -145,7 +145,6 @@ L.BarEndColorUI				= "結束顏色(自訂)"
 L.Bar7Header				= "自訂計時條選項"
 L.Bar7ForceLarge			= "總是使用大計時條"
 L.Bar7CustomInline			= "使用自訂的'!'圖示"
-L.Bar7Footer				= "(測試計時條)"
 --Dropdown Options
 L.CBTGeneric				= "一般"
 L.CBTAdd					= "小怪"
@@ -187,7 +186,7 @@ L.KeepBar2					= "(當有支援的模組時)"
 L.FadeBar					= "淡出已超出距離技能的計時器"
 
 -- Tab: Spec Warn Frame
-L.Panel_SpecWarnFrame		= "特別警告"
+L.Panel_SpecWarnFrame		= "特別團隊警告"
 L.Area_SpecWarn				= "特別警告選項"
 L.SpecWarn_ClassColor		= "為特別警告套用職業顏色"
 L.ShowSWarningsInChat 		= "在聊天視窗中顯示特別警告"

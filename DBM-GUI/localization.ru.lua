@@ -146,7 +146,6 @@ L.BarEndColorUI				= "Конечный цвет (Польз.)"
 L.Bar7Header				= "Параметры пользовательского индикатора"
 L.Bar7ForceLarge			= "Всегда использовать большой индикатор"
 L.Bar7CustomInline			= "Использовать пользовательскую '!' встроенную иконку"
-L.Bar7Footer				= "(Dummy Bar won't live update)"
 
 -- Tab: Timers
 L.AreaTitle_BarColors		= "Цвета индикатора по типу таймера"
@@ -173,7 +172,7 @@ L.KeepBar2					= "(когда поддерживается модулем)"
 L.FadeBar					= "Fade timers for out of range abilities"
 
 -- Tab: Spec Warn Frame
-L.Panel_SpecWarnFrame		= "Специальные предупреждения"
+L.Panel_SpecWarnFrame		= "Специальные предупреждения для рейда"
 L.Area_SpecWarn				= "Настройка специальных предупреждений"
 L.SpecWarn_ClassColor		= "Использовать цвета классов для спец-предупреждений"
 L.ShowSWarningsInChat 		= "Показывать спец-предупреждения в окне чата"

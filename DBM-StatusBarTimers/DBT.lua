@@ -465,7 +465,7 @@ options = {
 	},
 	Template = {
 		type = "string",
-		default = "DBTBarTemplate"
+		default = "DBMDefaultSkinTimerTemplate"
 	},
 	Skin = {
 		type = "string",
@@ -640,10 +640,10 @@ do
 	end
 
 	function DBT:LoadOptions(id)
-		--init
+		-- init
 		if not DBT_AllPersistentOptions then DBT_AllPersistentOptions = {} end
 		if not DBT_AllPersistentOptions[_G["DBM_UsedProfile"]] then DBT_AllPersistentOptions[_G["DBM_UsedProfile"]] = {} end
-		--migrate old options
+		-- migrate old options
 		if DBT_PersistentOptions and DBT_PersistentOptions[id] and not DBT_AllPersistentOptions[_G["DBM_UsedProfile"]][id] then
 			DBT_AllPersistentOptions[_G["DBM_UsedProfile"]][id] = DBT_PersistentOptions[id]
 		end
@@ -651,18 +651,11 @@ do
 		self.options = setmetatable(DBT_AllPersistentOptions[_G["DBM_UsedProfile"]][id], optionMT)
 		self:Rearrange()
 		DBM:Schedule(2, delaySkinCheck, self)
-		if not self.options.Font then--Fix font if it's nil
+		if not self.options.Font then -- Fix font if it's nil
 			self.options.Font = standardFont
 		end
-		--Repair options from texture conversions
-		if self.options.Texture == "Interface\\AddOns\\DBM-DefaultSkin\\textures\\default.tga" then
-			self.options.Texture = "Interface\\AddOns\\DBM-DefaultSkin\\textures\\default.blp"
-		elseif self.options.Texture == "Interface\\AddOns\\DBM-DefaultSkin\\textures\\smooth.tga" then
-			self.options.Texture = "Interface\\AddOns\\DBM-DefaultSkin\\textures\\smooth.blp"
-		elseif self.options.Texture == "Interface\\AddOns\\DBM-DefaultSkin\\textures\\glaze.tga" then
-			self.options.Texture = "Interface\\AddOns\\DBM-DefaultSkin\\textures\\glaze.blp"
-		elseif self.options.Texture == "Interface\\AddOns\\DBM-DefaultSkin\\textures\\otravi.tga" then
-			self.options.Texture = "Interface\\AddOns\\DBM-DefaultSkin\\textures\\otravi.blp"
+		if self.options.Template == "DBTBarTemplate" then -- Kill internal default template
+			self.options.Template = "DBMDefaultSkinTimerTemplate"
 		end
 	end
 
@@ -731,7 +724,6 @@ end
 function DBT:GetDefaultOption(option)
 	return self.defaultOptions[option]
 end
-
 
 -----------------------
 --  Bar Constructor  --
@@ -822,9 +814,6 @@ do
 			if (importantBar or (timer <= enlargeTime or huge)) and self:GetOption("HugeBarsEnabled") then -- start enlarged
 				newBar.enlarged = true
 				newBar.huge = true
-				if huge then
-					self.enlargeHack = true
-				end
 				self.hugeBars:Append(newBar)
 			else
 				newBar.huge = nil
@@ -1008,19 +997,30 @@ function barPrototype:Update(elapsed)
 	local spark = _G[frame_name.."BarSpark"]
 	local timer = _G[frame_name.."BarTimer"]
 	local obj = self.owner
+	self.timer = self.timer - elapsed
+	local timerValue = self.timer
+	local totaltimeValue = self.totalTime
 	local barOptions = obj.options
 	local currentStyle = barOptions.BarStyle
 	local sparkEnabled = barOptions.Spark
 	local isMoving = self.moving
 	local isFadingIn = self.fadingIn
+	local colorCount = self.colorType
+	local enlargeHack = (self.dummyEnlarge or colorCount == 7 and barOptions.Bar7ForceLarge) and true or false
+	local enlargeTime = barOptions.EnlargeBarTime or 11
+	local shouldBeEnlarged = timerValue <= enlargeTime
+	--Begin ugly check to auto correct user bars to the correct anchor when user toggles "Always Use Huge Bar" option for them
+	if self.enlarged and not shouldBeEnlarged and not enlargeHack then
+		self.enlarged = false
+		self:ApplyStyle()
+	elseif not self.enlarged and enlargeHack then
+		self.enlarged = true
+		self:ApplyStyle()
+	end
+	--End ugly check to auto correct user bars to the correct anchor when user toggles "Always Use Huge Bar" option for them
 	local isEnlarged = self.enlarged
 	local fillUpBars = isEnlarged and barOptions.FillUpLargeBars or not isEnlarged and barOptions.FillUpBars
 	local ExpandUpwards = isEnlarged and barOptions.ExpandUpwardsLarge or not isEnlarged and barOptions.ExpandUpwards
-	self.timer = self.timer - elapsed
-	local timerValue = self.timer
-	local totaltimeValue = self.totalTime
-	local colorCount = self.colorType
-	local enlargeHack = self.enlargeHack or false
 	if barOptions.DynamicColor and not self.color then
 		local r, g, b
 		if colorCount and colorCount >= 1 then
@@ -1085,9 +1085,6 @@ function barPrototype:Update(elapsed)
 					b = barOptions.StartColorPB  + (barOptions.EndColorPB - barOptions.StartColorPB) * (1 - timerValue/totaltimeValue)
 				end
 			elseif colorCount == 7 then--Important
-				if barOptions.Bar7ForceLarge then
-					enlargeHack = true
-				end
 				if barOptions.NoBarFade then
 					r = isEnlarged and barOptions.EndColorUIR or barOptions.StartColorUIR
 					g = isEnlarged and barOptions.EndColorUIG or barOptions.StartColorUIG
@@ -1118,7 +1115,6 @@ function barPrototype:Update(elapsed)
 		return self:Cancel()
 	else
 		if fillUpBars then
-			local enlargeTime = barOptions.EnlargeBarTime or 11
 			if currentStyle == "NoAnim" and isEnlarged and not enlargeHack then
 				--Simple/NoAnim Bar mimics BW in creating a new bar on large bar anchor instead of just moving the small bar
 				bar:SetValue(1 - timerValue/(totaltimeValue < enlargeTime and totaltimeValue or enlargeTime))
@@ -1126,7 +1122,6 @@ function barPrototype:Update(elapsed)
 				bar:SetValue(1 - timerValue/totaltimeValue)
 			end
 		else
-			local enlargeTime = barOptions.EnlargeBarTime or 11
 			if currentStyle == "NoAnim" and isEnlarged and not enlargeHack then
 				--Simple/NoAnim Bar mimics BW in creating a new bar on large bar anchor instead of just moving the small bar
 				bar:SetValue(timerValue/(totaltimeValue < enlargeTime and totaltimeValue or enlargeTime))
@@ -1216,8 +1211,7 @@ function barPrototype:Update(elapsed)
 		obj.hugeBars:Append(self)
 		self:ApplyStyle()
 	end
-	local enlargeTime = barOptions.EnlargeBarTime or 11
-	if (timerValue <= enlargeTime) and not self.small and not isEnlarged and isMoving ~= "enlarge" and obj:GetOption("HugeBarsEnabled") then
+	if shouldBeEnlarged and not self.small and not isEnlarged and isMoving ~= "enlarge" and obj:GetOption("HugeBarsEnabled") then
 		self:RemoveFromList()
 		self:Enlarge()
 	end

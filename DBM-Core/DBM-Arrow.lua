@@ -1,34 +1,30 @@
--- This file uses models and textures taken from TomTom. The 3d arrow model was created by Guillotine (curse.guillotine@gmail.com) and 2d minimap textures by Cladhaire.
+-- This file uses models and textures taken from TomTom. The 3D arrow model was created by Guillotine (curse.guillotine@gmail.com) and 2D minimap textures by Cladhaire.
 
-----------------------------
---  Initialize variables  --
-----------------------------
--- globals
+---------------
+--  Globals  --
+---------------
 DBM.Arrow = {}
 
--- locals
+--------------
+--  Locals  --
+--------------
 local arrowFrame = DBM.Arrow
-local runAwayArrow
-local targetType
-local targetPlayer
-local targetX, targetY, targetMapId
-local hideTime, hideDistance
+local frame, runAwayArrow, targetType, targetPlayer, targetX, targetY, targetMapId, hideTime, hideDistance
 
--- cached variables
+--------------------------------------------------------
+--  Cache frequently used global variables in locals  --
+--------------------------------------------------------
 local pi, pi2 = math.pi, math.pi * 2
-local floor = math.floor
-local sin, cos, atan2, sqrt, min = math.sin, math.cos, math.atan2, math.sqrt, math.min
-local UnitPosition = UnitPosition
-local GetTime = GetTime
+local floor, sin, cos, atan2, sqrt, min = math.floor, math.sin, math.cos, math.atan2, math.sqrt, math.min
+local UnitPosition, GetTime = UnitPosition, GetTime
 
 --------------------
 --  Create Frame  --
 --------------------
-local frame = CreateFrame("Button", "DBMArrow", UIParent)
+frame = CreateFrame("Button", "DBMArrow", UIParent)
 frame:Hide()
 frame:SetFrameStrata("HIGH")
-frame:SetWidth(56)
-frame:SetHeight(42)
+frame:SetSize(56, 42)
 frame:SetMovable(true)
 frame:EnableMouse(false)
 frame:RegisterForDrag("LeftButton", "RightButton")
@@ -44,11 +40,10 @@ frame:SetScript("OnDragStop", function(self)
 end)
 
 local textframe = CreateFrame("Frame", nil, frame)
-
 frame.distance = textframe:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
 frame.title = textframe:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
-frame.title:SetPoint("TOP", frame, "BOTTOM", 0, 0)
-frame.distance:SetPoint("TOP", frame.title, "BOTTOM", 0, 0)
+frame.title:SetPoint("TOP", frame, "BOTTOM")
+frame.distance:SetPoint("TOP", frame.title, "BOTTOM")
 textframe:Hide()
 
 local arrow = frame:CreateTexture(nil, "OVERLAY")
@@ -126,12 +121,8 @@ end
 ------------------------
 do
 	local rotateState = 0
---	local skipFrame -- todo: skipping frames makes the arrow laggy, maybe skip frames if frame rate >= 45
+
 	frame:SetScript("OnUpdate", function(self, elapsed)
---		skipFrame = not skipFrame
---		if skipFrame then
---			return
---		end
 		if hideTime and GetTime() > hideTime then
 			frame:Hide()
 		end
@@ -144,7 +135,7 @@ do
 		local x, y, _, mapId = UnitPosition("player")
 		--New bug in 8.2.5, unit position returns nil for position in areas there aren't restrictions for first few frames in that new area
 		--this just has the arrow skip some onupdates during that
-		if (not x or not y) then
+		if not x or not y then
 			if IsInInstance() then--Somehow x and y returned on entering an instance, before restrictions kicked in?
 				frame:Hide()--Hide, if in an instance, disable arrow entirely
 			end
@@ -219,9 +210,7 @@ local function show(runAway, x, y, distance, time, legacy, dwayed, title, custom
 	else
 		targetType = "fixed"
 		if legacy and x >= 0 and x <= 100 and y >= 0 and y <= 100 then
-			local localMap = tonumber(customAreaID) or C_Map.GetBestMapForUnit("player")
-			local vector = CreateVector2D(x/100, y/100)
-			local _, temptable = C_Map.GetWorldPosFromMapPos(localMap, vector)
+			local _, temptable = C_Map.GetWorldPosFromMapPos(tonumber(customAreaID) or C_Map.GetBestMapForUnit("player"), CreateVector2D(x / 100, y / 100))
 			x, y = temptable.x, temptable.y
 		end
 		targetX, targetY = x, y

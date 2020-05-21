@@ -153,7 +153,6 @@ L.BarEndColorUI				= "结束颜色 (自定义)"
 L.Bar7Header				= "自定义计时条选项"
 L.Bar7ForceLarge			= "总是使用大型计时条"
 L.Bar7CustomInline			= "使用自定义 '!' 图标"
-L.Bar7Footer				= "(测试用计时条)"
 --Dropdown Options
 L.CBTGeneric				= "基本"
 L.CBTAdd					= "小怪入场"
@@ -193,7 +192,7 @@ L.KeepBar2					= "(当被模组支持时)"
 L.FadeBar					= "隐藏超出技能范围的计时条"
 
 -- Tab: Spec Warn Frame
-L.Panel_SpecWarnFrame		= "特殊警报"
+L.Panel_SpecWarnFrame		= "特殊团队警报"
 L.Area_SpecWarn				= "特殊警报设置"
 L.SpecWarn_ClassColor		= "为特殊警报启用分职业着色"
 L.ShowSWarningsInChat 		= "在聊天窗口中显示特殊警报"
