@@ -584,7 +584,7 @@ DBM_CORE_LAG_FOOTER					= "응답 없음: %s"
 
 --LDB
 DBM_LDB_TOOLTIP_HELP1	= "왼쪽 클릭으로 "..DBM_DBM.." 열기"
-DBM_LDB_TOOLTIP_HELP2	= "오른쪽 클릭으로 설정 메뉴 열기"
+DBM_LDB_TOOLTIP_HELP2	= "오른쪽 클릭으로 조용함 모드 켜고 끄기"
 
 DBM_LDB_LOAD_MODS		= "보스 모드 로드"
 

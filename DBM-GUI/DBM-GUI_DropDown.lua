@@ -151,7 +151,7 @@ function tabFrame1:ShowFontMenu()
 		button:Reset()
 		if entry then
 			button:SetHeight(16)
-			_G[button:GetName() .. "NormalText"]:SetFont(entry.value or defaultFont, entry.fontsize or defaultFontSize)
+			_G[button:GetName() .. "NormalText"]:SetFont(entry.font and entry.value or defaultFont, entry.fontsize or defaultFontSize, entry.flag and entry.value)
 			button:SetText((entry.value == self.dropdown.value and "|TInterface\\Buttons\\UI-CheckBox-Check:0|t" or "   ") .. entry.text)
 			button.entry = entry
 		end
@@ -167,7 +167,7 @@ function tabFrame1:Refresh()
 	if #self.dropdown.values > #self.buttons and self.offset > valuesWOButtons then
 		self.offset = valuesWOButtons
 	end
-	if self.dropdown.values[1].font then
+	if self.dropdown.values[1].font or self.dropdown.values[1].flag then
 		self:ShowFontMenu()
 	else
 		self:ShowMenu()
