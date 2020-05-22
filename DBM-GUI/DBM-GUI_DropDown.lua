@@ -198,9 +198,10 @@ local dropdownPrototype = CreateFrame("Frame")
 
 function dropdownPrototype:SetSelectedValue(selected)
 	if selected and self.values and type(self.values) == "table" then
+		local text = _G[self:GetName() .. "Text"]
 		for _, v in next, self.values do
 			if v.value ~= nil and v.value == selected or v.text == selected then
-				_G[self:GetName() .. "Text"]:SetText(v.text)
+				text:SetText(v.text)
 				self.value = v.value
 				self.text = v.text
 			end
@@ -218,22 +219,25 @@ function DBM_GUI:CreateDropdown(title, values, vartype, var, callfunc, width, he
 	local dropdown = CreateFrame("Frame", "DBM_GUI_DropDown" .. self:GetNewID(), parent or self.frame, "UIDropDownMenuTemplate")
 	dropdown.values = values
 	dropdown.callfunc = callfunc
+	local dropdownText = _G[dropdown:GetName() .. "Text"]
 	if not width then
 		width = 120
 		if title ~= L.Warn_FontType and title ~= L.Warn_FontStyle and title ~= L.Bar_Font then
 			for _, v in ipairs(values) do
-				_G[dropdown:GetName() .. "Text"]:SetText(v.text)
-				width = math.max(width, _G[dropdown:GetName() .. "Text"]:GetStringWidth())
+				dropdownText:SetText(v.text)
+				width = math.max(width, dropdownText:GetStringWidth())
 			end
 		end
 	end
 	dropdown:SetSize(width + 30, height or 32)
 	dropdown:SetScript("OnHide", nil)
-	_G[dropdown:GetName() .. "Text"]:SetWidth(width + 30)
-	_G[dropdown:GetName() .. "Text"]:SetJustifyH("LEFT")
-	_G[dropdown:GetName() .. "Text"]:SetPoint("LEFT", dropdown:GetName() .. "Left", 30, 2)
+	dropdownText:SetWidth(width + 30)
+	dropdownText:SetJustifyH("LEFT")
+	dropdownText:SetPoint("LEFT", dropdown:GetName() .. "Left", 30, 2)
 	_G[dropdown:GetName() .. "Middle"]:SetWidth(width + 30)
-	_G[dropdown:GetName() .. "Button"]:SetScript("OnClick", function(self)
+	local dropdownButton = _G[dropdown:GetName() .. "Button"]
+	dropdownButton:SetScript("OnMouseDown", nil)
+	dropdownButton:SetScript("OnClick", function(self)
 		DBM:PlaySound(856)
 		if tabFrame1:IsShown() then
 			tabFrame1:Hide()
@@ -266,7 +270,7 @@ function DBM_GUI:CreateDropdown(title, values, vartype, var, callfunc, width, he
 	else -- For external modules like DBM-RaidLeadTools
 		for _, v in next, dropdown.values do
 			if v.value ~= nil and v.value == var or v.text == var then
-				_G[dropdown:GetName() .. "Text"]:SetText(v.text)
+				dropdownText:SetText(v.text)
 				dropdown.value = v.value
 				dropdown.text = v.text
 			end

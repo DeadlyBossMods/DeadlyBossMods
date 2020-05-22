@@ -66,7 +66,7 @@ function PanelPrototype:CreateText(text, width, autoplaced, style, justify)
 	textblock:SetJustifyH(justify or "CENTER")
 	textblock:SetWidth(width or self.frame:GetWidth())
 	if autoplaced then
-		textblock:SetPoint("TOPLEFT", self.frame:GetName(), "TOPLEFT", 10, -10)
+		textblock:SetPoint("TOPLEFT", self.frame, "TOPLEFT", 10, -10)
 	end
 	self:SetLastObj(textblock)
 	return textblock
@@ -98,7 +98,7 @@ function PanelPrototype:CreateColorSelect(dimension, useAlpha, alphaWidth)
 	colorSelect:SetSize((dimension or 128) + (useAlpha and 38 or 0), dimension or 128)
 	local colorWheel = colorSelect:CreateTexture()
 	colorWheel:SetSize(dimension or 128, dimension or 128)
-	colorWheel:SetPoint("TOPLEFT", colorSelect:GetName(), "TOPLEFT", 5, 0)
+	colorWheel:SetPoint("TOPLEFT", colorSelect, "TOPLEFT", 5, 0)
 	colorSelect:SetColorWheelTexture(colorWheel)
 	local colorTexture = colorSelect:CreateTexture()
 	colorTexture:SetTexture(130756) -- "Interface\\Buttons\\UI-ColorPicker-Buttons"
@@ -109,7 +109,7 @@ function PanelPrototype:CreateColorSelect(dimension, useAlpha, alphaWidth)
 		local colorValue = colorSelect:CreateTexture()
 		colorValue:SetWidth(alphaWidth or 32)
 		colorValue:SetHeight(dimension or 128)
-		colorValue:SetPoint("LEFT", colorWheel:GetName(), "RIGHT", 10, -3)
+		colorValue:SetPoint("LEFT", colorWheel, "RIGHT", 10, -3)
 		colorSelect:SetColorValueTexture(colorValue)
 		local colorTexture2 = colorSelect:CreateTexture()
 		colorTexture2:SetTexture(130756) -- "Interface\\Buttons\\UI-ColorPicker-Buttons"
@@ -184,11 +184,11 @@ function PanelPrototype:CreateEditBox(text, value, width, height)
 	local textboxMiddle = textbox:CreateTexture("$parentMiddle", "BACKGROUND")
 	textboxMiddle:SetTexture(130960) -- "Interface\ChatFrame\UI-ChatInputBorder-Right"
 	textboxMiddle:SetSize(1, 32)
-	textboxMiddle:SetPoint("LEFT", textboxLeft:GetName(), "RIGHT")
-	textboxMiddle:SetPoint("RIGHT", textboxRight:GetName(), "LEFT")
+	textboxMiddle:SetPoint("LEFT", textboxLeft, "RIGHT")
+	textboxMiddle:SetPoint("RIGHT", textboxRight, "LEFT")
 	textboxMiddle:SetTexCoord(0, 0.9375, 0, 1)
 	local textboxText = textbox:CreateFontString("$parentText", "BACKGROUND", "GameFontNormalSmall")
-	textboxText:SetPoint("TOPLEFT", textbox:GetName(), "TOPLEFT", -4, 14)
+	textboxText:SetPoint("TOPLEFT", textbox, "TOPLEFT", -4, 14)
 	textboxText:SetText(text)
 	return textbox
 end
@@ -200,7 +200,7 @@ function PanelPrototype:CreateLine(text)
 	line.myheight = 20
 	line.mytype = "line"
 	local linetext = line:CreateFontString(line:GetName() .. "Text", "ARTWORK", "GameFontNormal")
-	linetext:SetPoint("TOPLEFT", line:GetName(), "TOPLEFT")
+	linetext:SetPoint("TOPLEFT", line, "TOPLEFT")
 	linetext:SetJustifyH("LEFT")
 	linetext:SetHeight(18)
 	linetext:SetTextColor(0.67, 0.83, 0.48)
@@ -208,7 +208,7 @@ function PanelPrototype:CreateLine(text)
 	local linebg = line:CreateTexture()
 	linebg:SetTexture(137056) -- "Interface\\Tooltips\\UI-Tooltip-Background"
 	linebg:SetSize(self.frame:GetWidth() - linetext:GetWidth() - 25, 2)
-	linebg:SetPoint("RIGHT", line:GetName(), "RIGHT", 0, 0)
+	linebg:SetPoint("RIGHT", line, "RIGHT", 0, 0)
 	local x = self:GetLastObj()
 	if x.mytype == "checkbutton" or x.mytype == "line" then
 		line:ClearAllPoints()
@@ -287,9 +287,17 @@ do
 			return DBM:AddMsg("CreateCheckButton: error: expected string, received number. You probably called mod:NewTimer(optionId) with a spell id." .. name)
 		end
 		local button = CreateFrame("CheckButton", "DBM_GUI_Option_" .. self:GetNewID(), self.frame, "OptionsBaseCheckButtonTemplate")
-		button:SetHitRectInsets(0, -26, 0, 0)
+		button:SetHitRectInsets(0, 0, 0, 0)
 		button.myheight = 25
 		button.mytype = "checkbutton"
+		if autoplace then
+			local x = self:GetLastObj()
+			if x.myheight then
+				button:SetPoint("TOPLEFT", x, "TOPLEFT", 0, -x.myheight)
+			else
+				button:SetPoint("TOPLEFT", 10, -12)
+			end
+		end
 		local noteSpellName = name
 		if name:find("%$spell:ej") then -- It is journal link :-)
 			name = name:gsub("%$spell:ej(%d+)", "$journal:%1")
@@ -324,13 +332,8 @@ do
 		local frame, frame2, textPad
 		if modvar then -- Special warning, has modvar for sound and note
 			if isTimer then
-				frame = self:CreateDropdown(nil, tcolors, nil, nil, function(value)
-					mod.Options[modvar .. "TColor"] = value
-				end, 20, 25, button)
-				frame:SetScript("OnShow", function(self)
-					self:SetSelectedValue(mod.Options[modvar .. "TColor"])
-				end)
-				frame2 = self:CreateDropdown(nil, cvoice, nil, nil, function(value)
+				frame = self:CreateDropdown(nil, tcolors, mod, modvar .. "TColor", nil, 20, 25, button)
+				frame2 = self:CreateDropdown(nil, cvoice, mod, modvar .. "CVoice", function(value)
 					mod.Options[modvar.."CVoice"] = value
 					if type(value) == "string" then
 						DBM:PlayCountSound(1, nil, value)
@@ -338,22 +341,19 @@ do
 						DBM:PlayCountSound(1, value == 3 and DBM.Options.CountdownVoice3 or value == 2 and DBM.Options.CountdownVoice2 or DBM.Options.CountdownVoice)
 					end
 				end, 20, 25, button)
-				frame2:SetScript("OnShow", function(self)
-					self:SetSelectedValue(mod.Options[modvar .. "CVoice"])
-				end)
-				frame2:SetPoint("LEFT", frame:GetName(), "RIGHT", 18, 0)
+				frame:SetPoint("LEFT", button, "RIGHT", -20, 2)
+				frame2:SetPoint("LEFT", frame, "RIGHT", 18, 0)
 				textPad = 35
 			else
-				frame = self:CreateDropdown(nil, sounds, nil, nil, function(value)
+				frame = self:CreateDropdown(nil, sounds, mod, modvar .. "SWSound", function(value)
 					mod.Options[modvar.."SWSound"] = value
 					DBM:PlaySpecialWarningSound(value)
 				end, 20, 25, button)
-				frame:SetScript("OnShow", function(self)
-					self:SetSelectedValue(mod.Options[modvar.."SWSound"])
-				end)
+				frame:ClearAllPoints()
+				frame:SetPoint("LEFT", button, "RIGHT", -20, 2)
 				if mod.Options[modvar .. "SWNote"] then -- Mod has note, insert note hack
 					frame2 = CreateFrame("Button", "DBM_GUI_Option_" .. self:GetNewID(), self.frame, "UIPanelButtonTemplate")
-					frame2:SetPoint("LEFT", frame:GetName(), "RIGHT", 35, 0)
+					frame2:SetPoint("LEFT", frame, "RIGHT", 35, 0)
 					frame2:SetSize(25, 25)
 					frame2.myheight = 0 -- Tells SetAutoDims that this button needs no additional space
 					frame2:SetText("|TInterface/FriendsFrame/UI-FriendsFrame-Note.blp:14:0:2:-1|t")
@@ -364,12 +364,11 @@ do
 					textPad = 2
 				end
 			end
-			frame:SetPoint("LEFT", button:GetName(), "RIGHT", -20, 2)
 		end
 		local buttonText = button:CreateFontString("$parentText", "ARTWORK", "GameFontNormal")
-		buttonText:SetPoint("LEFT", button:GetName(), "RIGHT", 0, 1)
+		buttonText:SetPoint("LEFT", button, "RIGHT", 0, 1)
 		if name then -- Switch all checkbutton frame to SimpleHTML frame (auto wrap)
-			buttonText = CreateFrame("SimpleHTML", buttonText:GetName(), button)
+			buttonText = CreateFrame("SimpleHTML", buttonText, button)
 			buttonText:SetFontObject("GameFontNormal")
 			buttonText:SetHyperlinksEnabled(true)
 			buttonText:SetScript("OnHyperlinkEnter", function(self, data, link)
@@ -424,11 +423,11 @@ do
 		buttonText:SetText(name or DBM_CORE_UNKNOWN)
 		if textLeft then
 			buttonText:ClearAllPoints()
-			buttonText:SetPoint("RIGHT", frame2 and frame2:GetName() or button:GetName(), "LEFT")
+			buttonText:SetPoint("RIGHT", frame2 or frame or button, "LEFT")
 			buttonText:SetJustifyH("RIGHT")
 		else
 			buttonText:SetJustifyH("LEFT")
-			buttonText:SetPoint("TOPLEFT", frame2 and frame2:GetName() or button:GetName(), "TOPRIGHT", textPad or 0, -4)
+			buttonText:SetPoint("TOPLEFT", frame2 or frame or button, "TOPRIGHT", textPad or 0, -4)
 			button.myheight = math.max(buttonText:GetContentHeight() + 12, button.myheight)
 		end
 		if dbmvar and DBM.Options[dbmvar] ~= nil then
@@ -455,14 +454,6 @@ do
 				_G[globalvar] = not _G[globalvar]
 			end)
 		end
-		if autoplace then
-			local x = self:GetLastObj()
-			if x.myheight then
-				button:SetPoint("TOPLEFT", x, "TOPLEFT", 0, -x.myheight)
-			else
-				button:SetPoint("TOPLEFT", 10, -12)
-			end
-		end
 		self:SetLastObj(button)
 		return button
 	end
@@ -476,9 +467,9 @@ function PanelPrototype:CreateArea(name, width, height)
 	_G[area:GetName() .. "Title"]:SetText(name)
 	area:SetSize(width or self.frame:GetWidth() - 12, height or self.frame:GetHeight() - 10)
 	if select("#", self.frame:GetChildren()) == 1 then
-		area:SetPoint("TOPLEFT", self.frame:GetName(), 5, -20)
+		area:SetPoint("TOPLEFT", self.frame, 5, -20)
 	else
-		area:SetPoint("TOPLEFT", select(-2, self.frame:GetChildren()) or self.frame:GetName(), "BOTTOMLEFT", 0, -20)
+		area:SetPoint("TOPLEFT", select(-2, self.frame:GetChildren()) or self.frame, "BOTTOMLEFT", 0, -20)
 	end
 	self:SetLastObj(area)
 	self.areas = self.areas or {}
