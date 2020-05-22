@@ -85,19 +85,23 @@ local FontStyles = {
 	},
 	{
 		text	= L.Outline,
-		value	= "OUTLINE"
+		value	= "OUTLINE",
+		flag	= true
 	},
 	{
 		text	= L.ThickOutline,
-		value	= "THICKOUTLINE"
+		value	= "THICKOUTLINE",
+		flag	= true
 	},
 	{
 		text	= L.MonochromeOutline,
-		value	= "MONOCHROME,OUTLINE"
+		value	= "MONOCHROME,OUTLINE",
+		flag	= true
 	},
 	{
 		text	= L.MonochromeThickOutline,
-		value	= "MONOCHROME,THICKOUTLINE"
+		value	= "MONOCHROME,THICKOUTLINE",
+		flag	= true
 	}
 }
 
