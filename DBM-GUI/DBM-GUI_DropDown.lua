@@ -167,7 +167,7 @@ function tabFrame1:Refresh()
 	if #self.dropdown.values > #self.buttons and self.offset > valuesWOButtons then
 		self.offset = valuesWOButtons
 	end
-	if self.dropdown.values[1].font or self.dropdown.values[1].flag then
+	if self.dropdown.values[1].font or (#self.dropdown.values > 1 and self.dropdown.values[2].flag) then
 		self:ShowFontMenu()
 	else
 		self:ShowMenu()
