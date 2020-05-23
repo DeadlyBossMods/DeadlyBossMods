@@ -21,7 +21,7 @@ local specWarnFreezingTempest		= mod:NewSpecialWarningMoveTo(274895, nil, nil, 2
 
 local timerPermafrostSpikeCD		= mod:NewCDTimer(10.2, 274896, nil, nil, nil, 3)
 local timerGlacialBreathCD			= mod:NewCDTimer(43.2, 274891, nil, nil, nil, 3)
-local timerFreezingTempestCD		= mod:NewCDTimer(65.5, 274895, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
+local timerFreezingTempestCD		= mod:NewCDTimer(65.5, 274895, nil, nil, nil, 2, nil, DBM_CORE_Translations.DEADLY_ICON)
 
 --mod:AddReadyCheckOption(37460, false)
 local spikeName = DBM:GetSpellInfo(274896)

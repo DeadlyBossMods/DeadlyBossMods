@@ -51,8 +51,8 @@ local specWarnShadowfury			= mod:NewSpecialWarningMoveTo(320132, nil, nil, nil, 
 
 --Stage One: Millhouse's Magics
 local timerSummonPowerCrystalCD			= mod:NewAITimer(13, 320787, nil, nil, nil, 5)
-local timerDoomCD						= mod:NewAITimer(15.8, 320142, 226243, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)--Shortname Doom!!!
-local timerLaserCD						= mod:NewAITimer(15.8, 323877, 143444, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)--Shortname Laser
+local timerDoomCD						= mod:NewAITimer(15.8, 320142, 226243, nil, nil, 2, nil, DBM_CORE_Translations.DEADLY_ICON)--Shortname Doom!!!
+local timerLaserCD						= mod:NewAITimer(15.8, 323877, 143444, nil, nil, 2, nil, DBM_CORE_Translations.DEADLY_ICON)--Shortname Laser
 --Stage Two: Millificent's Gadgets
 local timerMechanicalBombSquirrelCD		= mod:NewAITimer(13, 320825, nil, nil, nil, 3)
 local timerExperimentalSquirrelBombCD	= mod:NewAITimer(13, 320811, nil, nil, nil, 5)

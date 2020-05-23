@@ -21,12 +21,12 @@ local warnEruptingWaters			= mod:NewSpellAnnounce(264903, 2, nil, nil, nil, nil,
 
 local specWarnSurgingRush			= mod:NewSpecialWarningDodge(264101, nil, nil, nil, 1, 2)
 local specWarnChokingBrine			= mod:NewSpecialWarningDodge(264560, nil, nil, nil, 1, 2)
-local yellChokingBrine				= mod:NewFadesYell(264560, DBM_CORE_AUTO_YELL_CUSTOM_FADE)
+local yellChokingBrine				= mod:NewFadesYell(264560, DBM_CORE_Translations.AUTO_YELL_CUSTOM_FADE)
 local specWarnUndertow				= mod:NewSpecialWarningYou(264144, nil, nil, nil, 3, 2)
 
 local timerSurgingRushCD			= mod:NewCDTimer(13, 264101, nil, nil, nil, 3)
-local timerChokingBrineCD			= mod:NewCDTimer(13, 264560, nil, nil, nil, 5, nil, DBM_CORE_HEALER_ICON..DBM_CORE_MAGIC_ICON)
-local timerUndertowCD				= mod:NewCDTimer(13, 264144, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
+local timerChokingBrineCD			= mod:NewCDTimer(13, 264560, nil, nil, nil, 5, nil, DBM_CORE_Translations.HEALER_ICON..DBM_CORE_Translations.MAGIC_ICON)
+local timerUndertowCD				= mod:NewCDTimer(13, 264144, nil, nil, nil, 3, nil, DBM_CORE_Translations.DEADLY_ICON)
 
 function mod:UndertowTarget(targetname, uId)
 	if not targetname then return end

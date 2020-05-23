@@ -26,10 +26,10 @@ local specWarnAncientMindbenderYou	= mod:NewSpecialWarningMoveTo(269131, nil, ni
 local yellAncientMindbender			= mod:NewYell(269131)
 
 local timerRP						= mod:NewRPTimer(68)
-local timerVoidBoltCD				= mod:NewCDTimer(7.3, 268347, nil, "HasInterrupt", nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
-local timerMindRendCD				= mod:NewCDTimer(10.5, 268896, nil, nil, nil, 3, nil, DBM_CORE_HEALER_ICON..DBM_CORE_MAGIC_ICON)
+local timerVoidBoltCD				= mod:NewCDTimer(7.3, 268347, nil, "HasInterrupt", nil, 4, nil, DBM_CORE_Translations.INTERRUPT_ICON)
+local timerMindRendCD				= mod:NewCDTimer(10.5, 268896, nil, nil, nil, 3, nil, DBM_CORE_Translations.HEALER_ICON..DBM_CORE_Translations.MAGIC_ICON)
 --local timerWakentheVoidCD			= mod:NewCDTimer(52.3, 269097, nil, nil, nil, 3)--IFFY, could be health based
-local timerAncientMindbenderCD		= mod:NewCDTimer(42.5, 269131, nil, nil, nil, 3, nil, DBM_CORE_DAMAGE_ICON)--Health based?
+local timerAncientMindbenderCD		= mod:NewCDTimer(42.5, 269131, nil, nil, nil, 3, nil, DBM_CORE_Translations.DAMAGE_ICON)--Health based?
 
 mod.vb.interruptCount = 0
 
@@ -47,7 +47,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnMindRend:Play("helpdispel")
 	elseif spellId == 269131 then
 		if args:IsPlayer() then
-			specWarnAncientMindbenderYou:Show(DBM_CORE_ORB)
+			specWarnAncientMindbenderYou:Show(DBM_CORE_Translations.ORB)
 			specWarnAncientMindbenderYou:Play("takedamage")
 			yellAncientMindbender:Yell()
 		else

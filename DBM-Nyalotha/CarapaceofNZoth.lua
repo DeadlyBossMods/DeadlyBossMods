@@ -82,13 +82,13 @@ local timerGiftofNzoth						= mod:NewBuffFadesTimer(20, 313334, nil, nil, nil, 5
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20558))
 ----Fury of N'Zoth
 local timerMadnessBombCD					= mod:NewCDCountTimer(22.2, 306973, nil, nil, nil, 3)--22-24
-local timerAdaptiveMembraneCD				= mod:NewCDCountTimer(27.7, 306990, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON, nil, 3, 3)
-local timerAdaptiveMembrane					= mod:NewBuffActiveTimer(12, 306990, nil, false, 2, 5, nil, DBM_CORE_DAMAGE_ICON)
+local timerAdaptiveMembraneCD				= mod:NewCDCountTimer(27.7, 306990, nil, nil, nil, 5, nil, DBM_CORE_Translations.TANK_ICON, nil, 3, 3)
+local timerAdaptiveMembrane					= mod:NewBuffActiveTimer(12, 306990, nil, false, 2, 5, nil, DBM_CORE_Translations.DAMAGE_ICON)
 local timerMentalDecayCD					= mod:NewCDTimer(21, 313364, nil, nil, nil, 3)
 local timerGrowthCoveredTentacleCD			= mod:NewNextCountTimer(60, 307131, nil, nil, nil, 1, nil, nil, nil, 1, 3)
-local timerMandibleSlamCD					= mod:NewCDTimer(12.7, 315947, nil, "Tank", 2, 5, nil, DBM_CORE_TANK_ICON)--12.7
+local timerMandibleSlamCD					= mod:NewCDTimer(12.7, 315947, nil, "Tank", 2, 5, nil, DBM_CORE_Translations.TANK_ICON)--12.7
 ----Adds
-local timerGazeofMadnessCD					= mod:NewCDCountTimer(58, "ej20565", nil, nil, nil, 1, 307008, DBM_CORE_DAMAGE_ICON)
+local timerGazeofMadnessCD					= mod:NewCDCountTimer(58, "ej20565", nil, nil, nil, 1, 307008, DBM_CORE_Translations.DAMAGE_ICON)
 --Stage 2: Subcutaneous Tunnel
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20566))
 local timerEternalDarknessCD				= mod:NewCDTimer(22.2, 307048, nil, nil, nil, 2)--Can be delayed if it overlaps with blast, otherwise dead on
@@ -395,7 +395,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.phase = 2
 		self.vb.adaptiveCount = 0
 		self.vb.madnessBombCount = 0
-		warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(2))
+		warnPhase:Show(DBM_CORE_Translations.AUTO_ANNOUNCE_TEXTS.stage:format(2))
 		warnPhase:Play("ptwo")
 		timerMadnessBombCD:Stop()
 		timerAdaptiveMembraneCD:Stop()
@@ -572,7 +572,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 			self.vb.adaptiveCount = 0
 			self.vb.TentacleCount = 0
 			self.vb.DarknessCount = 0
-			warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(3))
+			warnPhase:Show(DBM_CORE_Translations.AUTO_ANNOUNCE_TEXTS.stage:format(3))
 			warnPhase:Play("pthree")
 			timerMentalDecayCD:Stop()
 			timerAdaptiveMembraneCD:Stop()

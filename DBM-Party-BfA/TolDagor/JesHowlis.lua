@@ -23,9 +23,9 @@ local specWarnCripShiv				= mod:NewSpecialWarningDispel(257777, "RemovePoison", 
 local specWarnHowlingFear			= mod:NewSpecialWarningInterrupt(257791, "HasInterrupt", nil, nil, 1, 2)
 local specWarnFlashingDagger		= mod:NewSpecialWarningMoveTo(257785, nil, nil, nil, 3, 2)
 
-local timerCripShivCD				= mod:NewCDTimer(16.1, 257777, nil, "Healer|RemovePoison", nil, 5, nil, DBM_CORE_HEALER_ICON..DBM_CORE_POISON_ICON)
-local timerHowlingFearCD			= mod:NewCDTimer(13.4, 257791, nil, "HasInterrupt", nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
-local timerFlashingDaggerCD			= mod:NewCDTimer(31.6, 257785, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
+local timerCripShivCD				= mod:NewCDTimer(16.1, 257777, nil, "Healer|RemovePoison", nil, 5, nil, DBM_CORE_Translations.HEALER_ICON..DBM_CORE_Translations.POISON_ICON)
+local timerHowlingFearCD			= mod:NewCDTimer(13.4, 257791, nil, "HasInterrupt", nil, 4, nil, DBM_CORE_Translations.INTERRUPT_ICON)
+local timerFlashingDaggerCD			= mod:NewCDTimer(31.6, 257785, nil, nil, nil, 2, nil, DBM_CORE_Translations.DEADLY_ICON)
 
 function mod:OnCombatStart(delay)
 	timerCripShivCD:Start(7.2-delay)--SUCCESS
@@ -68,7 +68,7 @@ function mod:SPELL_CAST_START(args)
 		timerCripShivCD:Stop()
 		timerFlashingDaggerCD:Stop()
 	elseif spellId == 257785 then
-		specWarnFlashingDagger:Show(DBM_CORE_BREAK_LOS)
+		specWarnFlashingDagger:Show(DBM_CORE_Translations.BREAK_LOS)
 		specWarnFlashingDagger:Play("findshelter")
 		timerFlashingDaggerCD:Start()
 	end

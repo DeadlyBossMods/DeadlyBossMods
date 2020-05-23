@@ -37,11 +37,11 @@ local specWarnGTFO					= mod:NewSpecialWarningGTFO(323250, nil, nil, nil, 1, 8)
 
 --Phases
 local timerDromansWrath				= mod:NewBuffActiveTimer(15, 323059, nil, nil, nil, 6)
-local timerSpiritBoltCD				= mod:NewAITimer(13, 323057, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
-local timerEmbraceDarknessCD		= mod:NewAITimer(15.8, 323149, nil, nil, nil, 2, nil, DBM_CORE_HEALER_ICON)
-local timerRepulsiveVisageCD		= mod:NewAITimer(15.8, 328756, nil, nil, nil, 2, nil, DBM_CORE_MAGIC_ICON)
+local timerSpiritBoltCD				= mod:NewAITimer(13, 323057, nil, nil, nil, 4, nil, DBM_CORE_Translations.INTERRUPT_ICON)
+local timerEmbraceDarknessCD		= mod:NewAITimer(15.8, 323149, nil, nil, nil, 2, nil, DBM_CORE_Translations.HEALER_ICON)
+local timerRepulsiveVisageCD		= mod:NewAITimer(15.8, 328756, nil, nil, nil, 2, nil, DBM_CORE_Translations.MAGIC_ICON)
 --Droman Oulfarran
-local timerEnchantedPollenCD		= mod:NewAITimer(15.8, 323137, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerEnchantedPollenCD		= mod:NewAITimer(15.8, 323137, nil, nil, nil, 5, nil, DBM_CORE_Translations.TANK_ICON)
 local timerTearsoftheForestCD		= mod:NewAITimer(15.8, 323177, nil, nil, nil, 3)
 
 function mod:OnCombatStart(delay)

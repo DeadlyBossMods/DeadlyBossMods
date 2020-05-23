@@ -31,7 +31,7 @@ local warnToxicSpine					= mod:NewTargetNoFilterAnnounce(292167, 2, nil, false, 
 local warnPiercingBarb					= mod:NewTargetNoFilterAnnounce(301494, 2)
 
 local specWarnGazefromBelow				= mod:NewSpecialWarningYou(292307, nil, nil, nil, 3, 2)
-local specWarnFeedingFrenzy				= mod:NewSpecialWarningCount(298424, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.stack:format(12, 298424), nil, 1, 2)
+local specWarnFeedingFrenzy				= mod:NewSpecialWarningCount(298424, nil, DBM_CORE_Translations.AUTO_SPEC_WARN_OPTIONS.stack:format(12, 298424), nil, 1, 2)
 local specWarnFeedingFrenzyOther		= mod:NewSpecialWarningTaunt(298424, nil, nil, nil, 1, 2)
 local specWarnShockPulse				= mod:NewSpecialWarningCount(292270, nil, nil, nil, 2, 2)
 local specWarnCavitation				= mod:NewSpecialWarningSpell(292083, nil, nil, nil, 2, 2)
@@ -41,11 +41,11 @@ local yellPiercingBarbFades				= mod:NewShortFadesYell(301494)
 --local specWarnGTFO						= mod:NewSpecialWarningGTFO(270290, nil, nil, nil, 1, 8)
 
 local timerBioluminescentCloud			= mod:NewCastCountTimer(30.4, 292205, nil, nil, nil, 5)
-local timerToxicSpineCD					= mod:NewNextTimer(20, 292167, nil, "Healer", nil, 5, nil, DBM_CORE_HEALER_ICON)
+local timerToxicSpineCD					= mod:NewNextTimer(20, 292167, nil, "Healer", nil, 5, nil, DBM_CORE_Translations.HEALER_ICON)
 local timerShockPulseCD					= mod:NewNextCountTimer(30, 292270, nil, nil, nil, 2, nil, nil, nil, 1, 4)
-local timerPiercingBarbCD				= mod:NewNextTimer(29.9, 301494, nil, nil, nil, 3, nil, DBM_CORE_MYTHIC_ICON, nil, 3, 4)--Mythic
+local timerPiercingBarbCD				= mod:NewNextTimer(29.9, 301494, nil, nil, nil, 3, nil, DBM_CORE_Translations.MYTHIC_ICON, nil, 3, 4)--Mythic
 local timerNextPhase					= mod:NewPhaseTimer(100)
-local timerCavitation					= mod:NewCastTimer(32, 292083, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON, nil, 1, 4)
+local timerCavitation					= mod:NewCastTimer(32, 292083, nil, nil, nil, 4, nil, DBM_CORE_Translations.INTERRUPT_ICON, nil, 1, 4)
 
 local berserkTimer						= mod:NewBerserkTimer(720)
 

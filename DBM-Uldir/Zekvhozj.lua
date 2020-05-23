@@ -62,10 +62,10 @@ local specWarnWillofCorruptor			= mod:NewSpecialWarningSwitch(265646, "Dps", nil
 local specWarnEntropicBlast				= mod:NewSpecialWarningInterrupt(270620, "HasInterrupt", nil, nil, 1, 2)
 
 mod:AddTimerLine(GENERAL)
-local timerSurgingDarknessCD			= mod:NewCDTimer(82.8, 265451, nil, "Melee", nil, 2, nil, DBM_CORE_DEADLY_ICON, nil, 1, 3)--60 based on energy math
-local timerMightofVoidCD				= mod:NewCDTimer(37.6, 267312, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON, nil, 2, 3)
+local timerSurgingDarknessCD			= mod:NewCDTimer(82.8, 265451, nil, "Melee", nil, 2, nil, DBM_CORE_Translations.DEADLY_ICON, nil, 1, 3)--60 based on energy math
+local timerMightofVoidCD				= mod:NewCDTimer(37.6, 267312, nil, "Tank", nil, 5, nil, DBM_CORE_Translations.TANK_ICON, nil, 2, 3)
 local timerTitanSparkCD					= mod:NewCDTimer(37.6, 264954, nil, "Healer", nil, 2)
-local timerAddsCD						= mod:NewAddsTimer(120, 31700, nil, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON)--Generic Timer only used on Mythic
+local timerAddsCD						= mod:NewAddsTimer(120, 31700, nil, nil, nil, 1, nil, DBM_CORE_Translations.DAMAGE_ICON)--Generic Timer only used on Mythic
 mod:AddTimerLine(SCENARIO_STAGE:format(1))
 local timerQirajiWarriorCD				= mod:NewCDTimer(60, "ej18071", nil, nil, nil, 1, 31700)--UNKNOWN, TODO
 local timerEyeBeamCD					= mod:NewCDTimer(40, 264382, nil, nil, nil, 3, nil, nil, nil, not mod:IsTank() and 3, 5)
@@ -108,7 +108,7 @@ end
 function mod:RollingTarget(targetname, uId)
 	if not targetname then return end
 	if targetname == UnitName("player") and self:AntiSpam(5, 6) then
-		specWarnRoilingDeceit:Show(DBM_CORE_ROOM_EDGE)
+		specWarnRoilingDeceit:Show(DBM_CORE_Translations.ROOM_EDGE)
 		specWarnRoilingDeceit:Play("runtoedge")
 		yellRoilingDeceit:Yell(self.vb.roilingCount)
 		yellRoilingDeceitFades:Countdown(12)
@@ -209,7 +209,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerSurgingDarknessCD:Stop()
 		timerSurgingDarknessCD:Start(79.1)
 		if self.vb.phase == 2 then
-			warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(2))
+			warnPhase:Show(DBM_CORE_Translations.AUTO_ANNOUNCE_TEXTS.stage:format(2))
 			warnPhase:Play("ptwo")
 			if not self:IsMythic() then
 				timerQirajiWarriorCD:Stop()
@@ -223,7 +223,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 				timerOrbofCorruptionCD:Start(12, 1)--Assumed
 			end
 		elseif self.vb.phase == 3 then--Should only happen on non mythic
-			warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(3))
+			warnPhase:Show(DBM_CORE_Translations.AUTO_ANNOUNCE_TEXTS.stage:format(3))
 			warnPhase:Play("pthree")
 			timerAnubarCasterCD:Stop()
 			timerRoilingDeceitCD:Cancel()
@@ -250,7 +250,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 265360 then
 		if args:IsPlayer() and self:AntiSpam(5, 6) then
-			specWarnRoilingDeceit:Show(DBM_CORE_ROOM_EDGE)
+			specWarnRoilingDeceit:Show(DBM_CORE_Translations.ROOM_EDGE)
 			specWarnRoilingDeceit:Play("runtoedge")
 			yellRoilingDeceit:Yell(self.vb.roilingCount)
 			yellRoilingDeceitFades:Countdown(spellId)

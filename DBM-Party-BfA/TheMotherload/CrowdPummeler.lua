@@ -31,7 +31,7 @@ local timerStaticPulseCD			= mod:NewCDTimer(23.1, 262347, nil, nil, nil, 2)
 local timerFootbombLauncherCD		= mod:NewCDTimer(36.5, 269493, nil, nil, nil, 5)
 local timerBlazingAzeriteCD			= mod:NewBuffFadesTimer(15, 256493, nil, nil, nil, 5)
 local timerShockingClawCD			= mod:NewAITimer(13, 257337, nil, nil, nil, 3)--14.3, 41.3 (not enough timer data, leaving AI for now)
-local timerThrowCoinsCD				= mod:NewCDTimer(17.4, 271784, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON..DBM_CORE_TANK_ICON)--18.8, 17.4, 25.5, 25.5
+local timerThrowCoinsCD				= mod:NewCDTimer(17.4, 271784, nil, nil, nil, 3, nil, DBM_CORE_Translations.HEROIC_ICON..DBM_CORE_Translations.TANK_ICON)--18.8, 17.4, 25.5, 25.5
 
 
 mod.vb.coinCast = 0

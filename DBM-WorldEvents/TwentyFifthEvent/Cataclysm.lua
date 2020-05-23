@@ -59,7 +59,7 @@ local yellMeteor				= mod:NewYell(99268)
 local specWarnFixate			= mod:NewSpecialWarningRun(99849, nil, nil, nil, 4, 2)--Chasing you after it spawned
 local yellFixate				= mod:NewYell(99849)
 
-local timerMoltenSeedCD			= mod:NewCDTimer(60, 98495, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON, nil, 1, 5)--60-63
+local timerMoltenSeedCD			= mod:NewCDTimer(60, 98495, nil, nil, nil, 3, nil, DBM_CORE_Translations.DEADLY_ICON, nil, 1, 5)--60-63
 local timerFlamesCD				= mod:NewNextTimer(40, 99171, nil, nil, nil, 3, nil, nil, nil, 2, 4)
 local timerLivingMeteorCD		= mod:NewNextTimer(45, 99268, nil, nil, nil, 1, nil, nil, nil, 3, 4)
 
@@ -125,11 +125,11 @@ function mod:SPELL_CAST_START(args)
 		specWarnSplittingBlow:Show()
 		specWarnSplittingBlow:Play("phasechange")
 		if spellId == 98951 then--West
-			warnSplittingBlow:Show(args.spellName, DBM_CORE_WEST)
+			warnSplittingBlow:Show(args.spellName, DBM_CORE_Translations.WEST)
 		elseif spellId == 98952 then--Middle
-			warnSplittingBlow:Show(args.spellName, DBM_CORE_MIDDLE)
+			warnSplittingBlow:Show(args.spellName, DBM_CORE_Translations.MIDDLE)
 		elseif spellId == 98953 then--East
-			warnSplittingBlow:Show(args.spellName, DBM_CORE_EAST)
+			warnSplittingBlow:Show(args.spellName, DBM_CORE_Translations.EAST)
 		end
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Hide()
@@ -144,13 +144,13 @@ function mod:SPELL_CAST_START(args)
 			timerFlamesCD:Start()--40 second CD in phase 2 (phase 1 with how this event is scripted)
 		end
 		if spellId == 99172 then--North
-			warnEngulfingFlame:Show(args.spellName, DBM_CORE_NORTH)
+			warnEngulfingFlame:Show(args.spellName, DBM_CORE_Translations.NORTH)
 			specWarnEngulfing:Show()
 			specWarnEngulfing:Play("watchstep")
 		elseif spellId == 99235 then--Middle
-			warnEngulfingFlame:Show(args.spellName, DBM_CORE_MIDDLE)
+			warnEngulfingFlame:Show(args.spellName, DBM_CORE_Translations.MIDDLE)
 		elseif spellId == 99236 then--South
-			warnEngulfingFlame:Show(args.spellName, DBM_CORE_SOUTH)
+			warnEngulfingFlame:Show(args.spellName, DBM_CORE_Translations.SOUTH)
 		end
 	elseif spellId == 80734 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnBlastsNova:Show(args.sourceName)

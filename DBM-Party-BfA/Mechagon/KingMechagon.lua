@@ -50,7 +50,7 @@ local timerTakeOffCD				= mod:NewCDTimer(35.2, 291613, nil, nil, nil, 6)
 local timerCuttingBeam				= mod:NewCastTimer(6, 291626, nil, nil, nil, 3)
 --Stage Two: Omega Buster
 local timerMagnetoArmCD				= mod:NewCDTimer(61.9, 283143, nil, nil, nil, 2)
-local timerHardModeCD				= mod:NewCDTimer(42.5, 292750, nil, nil, nil, 5, nil, DBM_CORE_MYTHIC_ICON)--42.5-46.1
+local timerHardModeCD				= mod:NewCDTimer(42.5, 292750, nil, nil, nil, 5, nil, DBM_CORE_Translations.MYTHIC_ICON)--42.5-46.1
 
 --mod:AddRangeFrameOption(5, 194966)
 

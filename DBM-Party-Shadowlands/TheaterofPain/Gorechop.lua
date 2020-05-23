@@ -28,8 +28,8 @@ local specWarnTenderizingSmash		= mod:NewSpecialWarningRun(318406, nil, nil, nil
 --local specWarnHealingBalm			= mod:NewSpecialWarningInterrupt(257397, "HasInterrupt", nil, nil, 1, 2)
 local specWarnGTFO					= mod:NewSpecialWarningGTFO(323130, nil, nil, nil, 1, 8)
 
-local timerHatefulStrikeCD			= mod:NewAITimer(13, 323515, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_TANK_ICON)
-local timerTenderizingSmashCD		= mod:NewAITimer(15.8, 318406, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
+local timerHatefulStrikeCD			= mod:NewAITimer(13, 323515, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_Translations.TANK_ICON)
+local timerTenderizingSmashCD		= mod:NewAITimer(15.8, 318406, nil, nil, nil, 3, nil, DBM_CORE_Translations.DEADLY_ICON)
 
 function mod:OnCombatStart(delay)
 	timerHatefulStrikeCD:Start(1-delay)

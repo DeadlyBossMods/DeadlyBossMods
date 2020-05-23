@@ -25,7 +25,7 @@ local specWarnTouchofSlime			= mod:NewSpecialWarningSoak(257314, "Tank", nil, ni
 local specWarnPlagueCrash			= mod:NewSpecialWarningDodge(322477, nil, nil, nil, 3, 2)--Maybe run away sound instead depending on effect
 --local specWarnGTFO				= mod:NewSpecialWarningGTFO(257274, nil, nil, nil, 1, 8)
 
-local timerTouchofSlimeCD				= mod:NewCDTimer(13, 322236, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerTouchofSlimeCD				= mod:NewCDTimer(13, 322236, nil, nil, nil, 5, nil, DBM_CORE_Translations.TANK_ICON)
 
 function mod:OnCombatStart(delay)
 	timerTouchofSlimeCD:Start(1-delay)

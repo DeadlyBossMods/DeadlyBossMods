@@ -49,15 +49,15 @@ local specWarnAnimaJolt				= mod:NewSpecialWarningInterrupt(317661, "HasInterrup
 
 --Kin-Tara
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(21637))
-local timerSweepingStrikeCD			= mod:NewAITimer(13, 320866, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerSweepingStrikeCD			= mod:NewAITimer(13, 320866, nil, nil, nil, 5, nil, DBM_CORE_Translations.TANK_ICON)
 local timerFlightCD					= mod:NewAITimer(13, 313606, nil, nil, nil, 6)
-local timerChargedSpearCD			= mod:NewAITimer(15.8, 321009, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
+local timerChargedSpearCD			= mod:NewAITimer(15.8, 321009, nil, nil, nil, 3, nil, DBM_CORE_Translations.DEADLY_ICON)
 --Janari
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(21638))
 local timerSavageChargeCD			= mod:NewAITimer(15.8, 317665, nil, nil, nil, 3)
 --Azules
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(21639))
-local timerAnimaJoltCD				= mod:NewAITimer(15.8, 317661, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
+local timerAnimaJoltCD				= mod:NewAITimer(15.8, 317661, nil, nil, nil, 4, nil, DBM_CORE_Translations.INTERRUPT_ICON)
 
 mod:AddSetIconOption("SetIconOnCrashDown", 321035, true, false, {1})
 

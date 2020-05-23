@@ -19,7 +19,7 @@ local warnVoidNova					= mod:NewSpellAnnounce(274842, 3)
 local specWarnEndlessAbyss			= mod:NewSpecialWarningRun(274932, nil, nil, nil, 4, 2)
 
 local timerVoidNovaCD				= mod:NewCDTimer(22.3, 274842, nil, nil, nil, 2)
-local timerEndlessAbyssCD			= mod:NewCDTimer(45.7, 274932, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
+local timerEndlessAbyssCD			= mod:NewCDTimer(45.7, 274932, nil, nil, nil, 2, nil, DBM_CORE_Translations.DEADLY_ICON)
 
 --mod:AddReadyCheckOption(37460, false)
 
