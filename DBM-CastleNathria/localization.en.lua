@@ -39,7 +39,11 @@ local L
 ---------------------------
 --  Sludgefist --
 ---------------------------
---L= DBM:GetModLocalization(2394)
+L= DBM:GetModLocalization(2394)
+
+L:SetMiscLocalization({
+	Pillar	= "Pillar"
+})
 
 ---------------------------
 --  Stoneborne Generals --
