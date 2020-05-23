@@ -24,8 +24,7 @@ mod:RegisterEventsInCombat(
 	"UNIT_DIED",
 	"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5",
-	"UNIT_POWER_FREQUENT player",
-	"CINEMATIC_STOP"
+	"UNIT_POWER_FREQUENT player"
 )
 
 --TODO, find out power gains of Psychus and add timer for Manifest Madness that's more reliable? (his energy soft enrage)
@@ -784,14 +783,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if timer then
 			timerEvokeAnguishCD:Start(timer, self.vb.evokeAnguishCount+1)
 		end
-		if self.Options.InfoFrame and not DBM.InfoFrame:IsShown() then
-			DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(307831))
-			if DBM.Options.DebugMode then
-				DBM.InfoFrame:Show(self:IsMythic() and 20 or 8, "function", updateInfoFrame, false)
-			else
-				DBM.InfoFrame:Show(8, "playerpower", 1, ALTERNATE_POWER_INDEX, nil, nil, 2)--Sorting lowest to highest
-			end
-		end
 	elseif spellId == 317066 then
 		--Timer started here because if people are dying it can trigger stutter/recasts of this
 		timerHarvestThoughtsCD:Start(30.2, args.sourceGUID)
@@ -1153,14 +1144,6 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 					local currentTime = GetTime() - lastHarvesterTime
 					debugSpawnTable[#debugSpawnTable + 1] = math.floor(currentTime*10)/10--Floored but only after trying to preserve at least one decimal place
 					lastHarvesterTime = GetTime()
-					if self.Options.InfoFrame and not DBM.InfoFrame:IsShown() then
-						DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(307831))
-						if DBM.Options.DebugMode then
-							DBM.InfoFrame:Show(self:IsMythic() and 20 or 8, "function", updateInfoFrame, false)
-						else
-							DBM.InfoFrame:Show(8, "playerpower", 1, ALTERNATE_POWER_INDEX, nil, nil, 2)--Sorting lowest to highest
-						end
-					end
 				end
 				timerHarvestThoughtsCD:Start(self:IsMythic() and 6.4 or 8.2, GUID)
 				timerMindwrackCD:Start(self:IsMythic() and 12 or 5, GUID)--Cast immediately on heroic but on mythic they cast harvest thoughts first
@@ -1170,17 +1153,6 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 				self.vb.addIcon = self.vb.addIcon + 1
 				if self.vb.addIcon > 4 then--Cycle through 4 icons as they spawn. On mythic 2 spawn at a time so every other set it should cycle icons back to 1
 					self.vb.addIcon = 1
-				end
-			elseif cid == 163612 then--Voidspawn Annihilator
-				if self.vb.phase == 3 then
-					if self.Options.InfoFrame and not DBM.InfoFrame:IsShown() then
-						DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(307831))
-						if DBM.Options.DebugMode then
-							DBM.InfoFrame:Show(self:IsMythic() and 20 or 8, "function", updateInfoFrame, false)
-						else
-							DBM.InfoFrame:Show(8, "playerpower", 1, ALTERNATE_POWER_INDEX, nil, nil, 2)--Sorting lowest to highest
-						end
-					end
 				end
 			end
 		end
@@ -1224,17 +1196,6 @@ function mod:UNIT_POWER_FREQUENT(uId)
 		elseif currentSanity == 60 and lastSanity > 60 then
 			lastSanity = 60
 			warnSanity:Show(lastSanity)
-		end
-	end
-end
-
-function mod:CINEMATIC_STOP()
-	if self.Options.InfoFrame and not DBM.InfoFrame:IsShown() then
-		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(307831))
-		if DBM.Options.DebugMode then
-			DBM.InfoFrame:Show(self:IsMythic() and 20 or 8, "function", updateInfoFrame, false)
-		else
-			DBM.InfoFrame:Show(8, "playerpower", 1, ALTERNATE_POWER_INDEX, nil, nil, 2)--Sorting lowest to highest
 		end
 	end
 end
