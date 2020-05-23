@@ -1436,7 +1436,7 @@ do
 				end
 				if L["TabCategory_" .. addon.category:upper()] then
 					local ptext = Categories[addon.category]:CreateText(L["TabCategory_" .. addon.category:upper()])
-					ptext:SetPoint("TOPLEFT", Categories[addon.category].frame:GetName(), "TOPLEFT", 10, -10)
+					ptext:SetPoint("TOPLEFT", Categories[addon.category].frame, "TOPLEFT", 10, -10)
 				end
 			end
 
@@ -1449,7 +1449,7 @@ do
 					button.modid = addon
 					button.headline = addon.panel:CreateText(L.BossModLoad_now, 350)
 					button.headline:SetHeight(50)
-					button.headline:SetPoint("CENTER", button:GetName(), "CENTER", 0, 80)
+					button.headline:SetPoint("CENTER", button, "CENTER", 0, 80)
 
 					button:SetScript("OnClick", function(self)
 						if DBM:LoadMod(self.modid, true) then
