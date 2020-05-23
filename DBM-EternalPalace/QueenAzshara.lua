@@ -924,7 +924,7 @@ function mod:OnTranscriptorSync(msg, targetName)
 	if msg:find("299094") and targetName then
 		targetName = Ambiguate(targetName, "none")
 		if self:AntiSpam(4, targetName) then
-			warnBeckon:CombinedShow(0.5, targetName)
+			warnBeckon:CombinedShow(0.75, targetName)
 		end
 	end
 end
