@@ -1,4 +1,4 @@
--- DBM_Core
+-- L.Core
 -- Diablohu(diablohudream@gmail.com)
 -- yleaf(yaroot@gmail.com)
 -- Mini Dragon(projecteurs@gmail.com)
@@ -8,8 +8,8 @@ if GetLocale() ~= "zhCN" then return end
 
 local L = DBM_CORE_Translations
 
-L.HOW_TO_USE_MOD					= "欢迎使用DBM。在聊天框输入 /dbm help 以获取可用命令的帮助。输入 /dbm 可打开设置窗口，并对各个Boss模块进行设置，也可以浏览首领击杀记录。DBM 会自动按你的专精做出相应配置，但是你可以进行微调。"
-L.SILENT_REMINDER					= "提示：DBM 正处于安静模式。"
+L.HOW_TO_USE_MOD					= "欢迎使用" .. L.DBM .. "。在聊天框输入 /dbm help 以获取可用命令的帮助。输入 /dbm 可打开设置窗口，并对各个Boss模块进行设置，也可以浏览首领击杀记录。DBM 会自动按你的专精做出相应配置，但是你可以进行微调。"
+L.SILENT_REMINDER					= "提示：" .. L.DBM .. " 正处于安静模式。"
 
 L.LOAD_MOD_ERROR				= "读取%s模块时发生错误：%s"
 L.LOAD_MOD_SUCCESS			= "'%s' 模块已加载。在聊天框输入 /dbm 可设置自定义语音或注记等选项。"
@@ -49,6 +49,9 @@ L.BOSS_DOWN					= "%s战斗胜利！用时%s！"
 L.BOSS_DOWN_I				= "%s战斗胜利！总计%d次胜利。"
 L.BOSS_DOWN_L				= "%s战斗胜利！用时%s！上次用时%s，最快用时%s。总计%d次胜利。"
 L.BOSS_DOWN_NR				= "%s战斗胜利！用时%s！新的纪录诞生了！原纪录为%s。总计%d次胜利。"
+L.RAID_DOWN					= "%s目标达成，用时%s！"
+L.RAID_DOWN_L				= "%s目标达成，用时%s！最快用时%s！"
+L.RAID_DOWN_NR				= "%s目标达成，用时%s！最快用时%s！新的纪录诞生了！原纪录为%s！"
 L.GUILD_BOSS_DOWN			= "公会版%s战斗胜利！用时%s！"
 L.SCENARIO_COMPLETE			= "场景战役-%s战斗胜利！用时%s!"
 L.SCENARIO_COMPLETE_I		= "场景战役-%s战斗胜利！总计%d次胜利。"
@@ -65,13 +68,12 @@ L.TRANSCRIPTOR_LOG_END		= "Transcriptor logging ended."
 
 L.MOVIE_SKIPPED				= "该场景已被跳过。"
 L.BONUS_SKIPPED				= "DBM已经自动关闭奖励拾取窗口。如果需要的话，3分钟内输入 /dbmbonusroll "
-L.BONUS_EXPIRED				= "你尝试着召回奖励拾取窗口但是目前并没有激活的奖励拾取。"
 
 L.AFK_WARNING				= "你在战斗中暂离(百分之%d生命值)。如果你真的没有暂离，动一下或者在'其他功能'中关闭本设置。"
 
 L.COMBAT_STARTED_AI_TIMER	= "我的CPU是类神经网络处理器，一种学习型电脑。(本场战斗DBM将会使用人工智能来估计时间轴)。" --Terminator
 
-L.PROFILE_NOT_FOUND			= "<DBM> 你当前的配置文件已损坏. 'Default' 默认配置文件会被应用."
+L.PROFILE_NOT_FOUND			= "<" .. L.DBM .. "> 你当前的配置文件已损坏. 'Default' 默认配置文件会被应用."
 L.PROFILE_CREATED			= "配置文件 '%s' 已经创建."
 L.PROFILE_CREATE_ERROR		= "配置文件创建失败. 无效的配置文件名."
 L.PROFILE_CREATE_ERROR_D		= "配置文件创建失败. '%s' 已经存在."
@@ -108,6 +110,7 @@ L.NOTESHAREERRORALREADYOPEN	= "为防止未保存的改变，当注记编辑器�
 L.ALLMOD_DEFAULT_LOADED		= "本副本里的所有Boss配置已经被初始化"
 L.ALLMOD_STATS_RESETED		= "所有模组的状态已被重置"
 L.MOD_DEFAULT_LOADED			= "将会使用默认设置来进行本场战斗"
+L.SOUNDKIT_MIGRATION			= "一个或多个警报的声音因文件丢失而被设置成默认。DBM只支持放在插件目录下的声音文件，或者是SoundKit ID的重放"
 
 L.WORLDBOSS_ENGAGED			= "世界Boss-%s可能正在作战。当前还有%s的生命值。 (由%s的DBM发送)"
 L.WORLDBOSS_DEFEATED			= "世界Boss-%s可能战斗结束了。 (由%s的DBM发送)"
@@ -135,6 +138,7 @@ L.OPTION_CATEGORY_WARNINGS	= "警报"
 L.OPTION_CATEGORY_WARNINGS_YOU	= "个人警报"
 L.OPTION_CATEGORY_WARNINGS_OTHER	= "目标警报"
 L.OPTION_CATEGORY_WARNINGS_ROLE	= "角色警报"
+
 L.OPTION_CATEGORY_MISC		= "其它"
 L.OPTION_CATEGORY_SOUNDS		= "声音"
 L.OPTION_CATEGORY_DROPDOWNS		= "下拉"
@@ -161,30 +165,32 @@ L.VERSIONCHECK_HEADER		= "DBM - 版本检测"
 L.VERSIONCHECK_ENTRY			= "%s: %s (r%d) %s"--One Boss mod
 L.VERSIONCHECK_ENTRY_TWO		= "%s: %s (r%d) & %s (r%d)"--Two Boss mods
 L.VERSIONCHECK_ENTRY_NO_DBM	= "%s：未安装DBM"
-L.VERSIONCHECK_FOOTER		= "团队中有%d名成员正在使用DBM， %d名成员正在使用Bigwigs"
+L.VERSIONCHECK_FOOTER		= "团队中有%d名成员正在使用" .. L.DBM .. "， %d名成员正在使用Bigwigs"
 L.VERSIONCHECK_OUTDATED		= "下列%d名玩家的DBM版本已经过期:%s"
-L.YOUR_VERSION_OUTDATED		= "你的DBM已经过期。请访问 http://dev.deadlybossmods.com 下载最新版本。"
+L.YOUR_VERSION_OUTDATED		= "你的 " .. L.DEADLY_BOSS_MODS .. " 已经过期。请访问 http://dev.deadlybossmods.com 下载最新版本。"
 L.VOICE_PACK_OUTDATED		= "你当前使用的DBM语音包已经过期。有些特殊警告的屏蔽（当心，毁灭）已被禁用。请下载最新语音包，或联系语音包作者更新。"
 L.VOICE_MISSING				= "DBM找不到你当前选择的语音包。语音包选项已经被设置成'None'。请确保你的语音包被正确安装和启用。"
 L.VOICE_DISABLED				= "你安装了语音包但是没有启动它。请在选项中的语音报警菜单中开启语音包。如果不需要语音报警请卸载语音包。"
 L.VOICE_COUNT_MISSING		= "在 %d 语音包中找不到倒计时语音。倒计时已恢复为默认值"
 
-L.UPDATEREMINDER_HEADER			= "您的DBM版本已过期。\n您可以在Curse/Twitch, WOWI, 或者deadlybossmods.com下载到新版本：%s（%s）。如果您使用整合包，请使用更新器更新。"
-L.UPDATEREMINDER_HEADER_ALPHA	= "您正在使用的Alpha DBM 版本已至少落后主干%d个版本。\n 我们建议使用Alpha版本的用户时刻追随主干更新，否则请切换到正式发行版。Alpha版的版本检查会比正式发行版严格。"
-L.UPDATEREMINDER_FOOTER			= "按下 " .. (IsMacClient() and "Cmd-C" or "Ctrl-C")  ..  "复制下载地址到剪切板。"
-L.UPDATEREMINDER_FOOTER_GENERIC	= "按下 " .. (IsMacClient() and "Cmd-C" or "Ctrl-C")  ..  "复制链接到剪切板。"
---L.UPDATEREMINDER_DISABLE			= "警告：你的DBM已经过期太久，它已被强制禁用，直到你更新。这是为了确保它不会导致你或其他团队成员出错。"
-L.UPDATEREMINDER_NODISABLE		= "警告：你的DBM已经过期太久，此消息过了某些指标后不能被禁用，直到你更新。"
-L.UPDATEREMINDER_HOTFIX			= "你的DBM版本会在这首领战斗中有问题。最新版的DBM已经修复了这个问题。"
-L.UPDATEREMINDER_HOTFIX_ALPHA	= "你的DBM版本会在这首领战斗中有问题。最新版的DBM（或Alpha版本）已经修复了这个问题。"
-L.UPDATEREMINDER_MAJORPATCH		= "你的DBM已经过期,它已被禁用,直到你更新.这是为了确保它不会导致你或其他团队成员出错.这次更新是一个非常重要的补丁,请确保你得到的是最新版."
-L.UPDATEREMINDER_TESTVERSION		= "警告：你使用了不正确版本的DBM。请确保DBM版本和游戏版本一致。"
+L.UPDATEREMINDER_HEADER			= "您的 " .. L.DEADLY_BOSS_MODS .. " 版本已过期。\n您可以在Curse/Twitch, WOWI, 或者deadlybossmods.com下载到新版本：%s（%s）。如果您使用整合包，请使用更新器更新。"
+L.UPDATEREMINDER_HEADER_ALPHA	= "您正在使用的Alpha " .. L.DEADLY_BOSS_MODS .. " 版本已至少落后主干%d个版本。\n 我们建议使用Alpha版本的用户时刻追随主干更新，否则请切换到正式发行版。Alpha版的版本检查会比正式发行版严格。"
+L.UPDATEREMINDER_FOOTER			= "按下 " .. (IsMacClient() and "Cmd-C" or "Ctrl-C") .. "复制下载地址到剪切板。"
+L.UPDATEREMINDER_FOOTER_GENERIC	= "按下 " .. (IsMacClient() and "Cmd-C" or "Ctrl-C") .. "复制链接到剪切板。"
+L.UPDATEREMINDER_DISABLE			= "警告：你的 " .. L.DEADLY_BOSS_MODS .. " 已经过期太久，它已被强制禁用，直到你更新。这是为了确保它不会导致你或其他团队成员出错。"
+--L.UPDATEREMINDER_NODISABLE		= "警告：你的DBM已经过期太久，此消息过了某些指标后不能被禁用，直到你更新。"
+L.UPDATEREMINDER_HOTFIX			= "你的 " .. L.DEADLY_BOSS_MODS .. " 版本会在这首领战斗中有问题。最新版的DBM已经修复了这个问题。"
+L.UPDATEREMINDER_HOTFIX_ALPHA	= "你的 " .. L.DEADLY_BOSS_MODS .. " 版本会在这首领战斗中有问题。最新版的DBM（或Alpha版本）已经修复了这个问题。"
+L.UPDATEREMINDER_MAJORPATCH		= "你的 " .. L.DEADLY_BOSS_MODS .. " 已经过期,它已被禁用,直到你更新.这是为了确保它不会导致你或其他团队成员出错.这次更新是一个非常重要的补丁,请确保你得到的是最新版."
+L.UPDATEREMINDER_TESTVERSION		= "警告：你使用了不正确版本的 " .. L.DEADLY_BOSS_MODS .. " 。请确保 " .. L.DEADLY_BOSS_MODS .. " 版本和游戏版本一致。"
 L.VEM							= "你好像在使用VEM。DBM在这种情况下无法被载入。"
-L.OUTDATEDPROFILES					= "警告: DBM-Profiles已经无法和本版本DBM兼容。DBM核心已经自带配置文件管理系统，请移除DBM-Profiles避免冲突。"
+L.3RDPROFILES					= "警告: DBM-Profiles已经无法和本版本DBM兼容。DBM核心已经自带配置文件管理系统，请移除DBM-Profiles避免冲突。"
 L.DPMCORE						= "警告: DBM-PVP已经已经很久没人维护了,并无法兼容。请移除DBM-PVP避免冲突。"
 L.DBMLDB							= "警告: DBM-LDB 已经集成入DBM核心。建议在插件目录删掉'DBM-LDB'。"
 L.UPDATE_REQUIRES_RELAUNCH		= "警告: 如果你不完全重启游戏，DBM可能会工作不正常。此次更新包含了新的文件，或者toc文件的改变，这是重载界面无法加载的。不重启游戏可能导致作战模块功能错误。"
 L.OUT_OF_DATE_NAG				= "你的DBM已经过期并且你决定不弹出升级提示窗口。这可能导致你或其他团队成员出错。千万不要成为害群之马！"
+L.RETAIL_ONLY					= "警告: 你所用的是正式版本的DBM。请删掉这个DBM并下载怀旧服DBM。"
+
 
 L.MOVABLE_BAR				= "拖动我！"
 
@@ -338,10 +344,11 @@ L.AUTO_ANNOUNCE_TEXTS.moveto				= "%s - 移动到 >%%s<"
 
 L.AUTO_ANNOUNCE_OPTIONS.you				= "警报：中了%s时"
 L.AUTO_ANNOUNCE_OPTIONS.target			= "警报：$spell:%s的目标"
+L.AUTO_ANNOUNCE_OPTIONS.targetNF			= "警报：$spell:%s的目标(忽略全局目标过滤器)"
 L.AUTO_ANNOUNCE_OPTIONS.targetsource		= "警报：$spell:%s的目标(带来源)"
 L.AUTO_ANNOUNCE_OPTIONS.targetcount		= "警报：$spell:%s的目标(带计数)"
 L.AUTO_ANNOUNCE_OPTIONS.spell			= "警报：$spell:%s"
-L.AUTO_ANNOUNCE_OPTIONS.ends				= "警报：$spell:%s结束"
+L.AUTO_ANNOUNCE_OPTIONS.ends				= "警报：$spell:%s束"
 L.AUTO_ANNOUNCE_OPTIONS.endtarget		= "警报：$spell:%s结束"
 L.AUTO_ANNOUNCE_OPTIONS.fades			= "警报：$spell:%s消失"
 L.AUTO_ANNOUNCE_OPTIONS.adds				= "警报：$spell:%s剩余数量"
@@ -504,13 +511,13 @@ L.AUTO_YELL_OPTION_TEXT.iconfade		= "当你身上的$spell:%s即将消失时大�
 L.AUTO_YELL_OPTION_TEXT.position		= "当你受到$spell:%s影响时大喊（带位置）"
 L.AUTO_YELL_OPTION_TEXT.combo		= "当你受到$spell:%s影响时大喊（带一个自定义文本）"
 --
-L.AUTO_YELL_ANNOUNCE_TEXT.shortyell  = "%s"
+L.AUTO_YELL_ANNOUNCE_TEXT.shortyell	= "%s"
 L.AUTO_YELL_ANNOUNCE_TEXT.yell		= UnitName("player") .. " 中了%s"
 L.AUTO_YELL_ANNOUNCE_TEXT.count		= UnitName("player") .. " 中了%s (%%d)"
 L.AUTO_YELL_ANNOUNCE_TEXT.fade		= "%s 剩%%d秒"
 L.AUTO_YELL_ANNOUNCE_TEXT.shortfade	= "%%d秒"
-L.AUTO_YELL_ANNOUNCE_TEXT.iconfade	= "{rt%%2$d}%%1$d秒" --应该对的吧。
-L.AUTO_YELL_ANNOUNCE_TEXT.position	= UnitName("player").." ({rt%%3$d})中了%1$s (%%1$s - {rt%%2$d})" --리동윤
+L.AUTO_YELL_ANNOUNCE_TEXT.iconfade	= "{rt%%2$d}%%1$d秒"
+L.AUTO_YELL_ANNOUNCE_TEXT.position	= UnitName("player").. " ({rt%%3$d})中了%1$s (%%1$s - {rt%%2$d})"
 L.AUTO_YELL_ANNOUNCE_TEXT.combo		= "%s, %%s"
 
 --
@@ -527,10 +534,11 @@ L.AUTO_RRANGE_OPTION_TEXT_SHORT		= "反转距离监视(%s码)"
 L.AUTO_INFO_FRAME_OPTION_TEXT		= "信息框：$spell:%s"
 L.AUTO_INFO_FRAME_OPTION_TEXT2		= "信息框：战斗总览"
 L.AUTO_READY_CHECK_OPTION_TEXT		= "当首领开打时播放准备检查的音效（即使没有选定目标）"
+L.AUTO_SPEEDCLEAR_OPTION_TEXT		= "为%s显示快速消除计数器"
 
 -- New special warnings
 L.MOVE_WARNING_BAR				= "可拖动的团队警报"
-L.MOVE_WARNING_MESSAGE			= "感谢您使用Deadly Boss Mods"
+L.MOVE_WARNING_MESSAGE			= "感谢您使用" .. L.DEADLY_BOSS_MODS
 L.MOVE_SPECIAL_WARNING_BAR		= "可拖动的特别警报"
 L.MOVE_SPECIAL_WARNING_TEXT		= "特别警报"
 
@@ -542,7 +550,7 @@ L.HUD_SUCCESS					= "HUD成功地使用了你的参数启动了。HUD会在%s关
 L.HUD_USAGE	= {
 	"DBM-HudMap 可用命令：",
 	"-----------------",
-	"/dbm hud <类型> <目标> <持续时间>  新建一个指向玩家的HUD指示器",
+	"/dbm hud <类型> <目标> <持续时间> 新建一个指向玩家的HUD指示器",
 	"变量-类型: arrow, dot, red, blue, green, yellow, icon (请输入英语。需要相应的带团队标记的目标。)",
 	"变量-目标: target, focus, <玩家名字> (如果是玩家名字是拉丁字母请区分大小写)",
 	"变量-持续时间: 秒数. 如果这个参数留空, 默认为20分钟",
@@ -555,11 +563,11 @@ L.ARROW_WAY_SUCCESS			= "输入 '/dbm arrow hide' 隐藏箭头, 或到达位置"
 L.ARROW_ERROR_USAGE	= {
 	"DBM-Arrow 可用命令：",
 	"-----------------",
-	"/dbm arrow <x> <y>  新建一个箭头到指定位置(使用世界坐标系)",
-	"/dbm arrow map <x> <y>  新建一个箭头到指定位置 (使用区域地图坐标系)",
-	"/dbm arrow <玩家名字>  新建一个箭头并指向你队伍或团队中特定的玩家。请区分大小写。",
-	"/dbm arrow hide  隐藏箭头",
-	"/dbm arrow move  移动或锁定箭头"
+	"/dbm arrow <x> <y> 新建一个箭头到指定位置(使用世界坐标系)",
+	"/dbm arrow map <x> <y> 新建一个箭头到指定位置 (使用区域地图坐标系)",
+	"/dbm arrow <玩家名字> 新建一个箭头并指向你队伍或团队中特定的玩家。请区分大小写。",
+	"/dbm arrow hide 隐藏箭头",
+	"/dbm arrow move 移动或锁定箭头"
 }
 
 L.SPEED_KILL_TIMER_TEXT	= "击杀记录"
@@ -583,19 +591,19 @@ L.INSTANCE_INFO_STATS_NO_RESPONSE	= "未安装DBM：%s"
 L.INSTANCE_INFO_RESULTS			= "副本进度扫描结果。" --Note that instances might show up more than once if there are players with localized WoW clients in your raid.
 L.INSTANCE_INFO_SHOW_RESULTS		= "仍未回复的玩家: %s"
 
-L.LAG_CHECKING				= "延时检测请稍后..."
+L.LAG_CHECKING				= "延时检测请稍后... "
 L.LAG_HEADER					= "DBM - 延时检测"
 L.LAG_ENTRY					= "%s：世界延时[%d毫秒] / 本地延时[%d毫秒]"
 L.LAG_FOOTER					= "未反馈此次检测的团员:%s"
 
-L.DUR_CHECKING				= "全团装备耐久度检测请稍后..."
+L.DUR_CHECKING				= "全团装备耐久度检测请稍后... "
 L.DUR_HEADER					= "DBM - 装备耐久度检测结果"
 L.DUR_ENTRY					= "%s: %d 耐久度 / %s件装备损坏"
 L.DUR_FOOTER					= "未反馈此次检测的团员:%s"
 
 --LDB
-L.LDB_TOOLTIP_HELP1	= "左键 打开DBM"
-L.LDB_TOOLTIP_HELP2	= "右键 打开设置"
+L.LDB_TOOLTIP_HELP1	= "左键 打开" .. L.DBM
+L.LDB_TOOLTIP_HELP2	= "右键 启用安静模式"
 
 L.LDB_LOAD_MODS		= "载入首领模块"
 
