@@ -7441,7 +7441,7 @@ function bossModPrototype:SetZone(...)
 				self.zones[v] = true
 			end
 		end
-	elseif select(1, ...) ~= L.DISABLE_ZONE_DETECTION then
+	elseif select(1, ...) ~= DBM_DISABLE_ZONE_DETECTION then
 		self.zones = {}
 		for i = 1, select("#", ...) do
 			self.zones[select(i, ...)] = true
