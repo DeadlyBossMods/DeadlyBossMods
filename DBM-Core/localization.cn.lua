@@ -6,8 +6,8 @@
 
 if GetLocale() ~= "zhCN" then return end
 
-DBM_HOW_TO_USE_MOD					= "欢迎使用DBM。在聊天框输入 /dbm help 以获取可用命令的帮助。输入 /dbm 可打开设置窗口，并对各个Boss模块进行设置，也可以浏览首领击杀记录。DBM 会自动按你的专精做出相应配置，但是你可以进行微调。"
-DBM_SILENT_REMINDER					= "提示：DBM 正处于安静模式。"
+DBM_HOW_TO_USE_MOD					= "欢迎使用"..DBM_DBM.."。在聊天框输入 /dbm help 以获取可用命令的帮助。输入 /dbm 可打开设置窗口，并对各个Boss模块进行设置，也可以浏览首领击杀记录。DBM 会自动按你的专精做出相应配置，但是你可以进行微调。"
+DBM_SILENT_REMINDER					= "提示："..DBM_DBM.." 正处于安静模式。"
 
 DBM_CORE_LOAD_MOD_ERROR				= "读取%s模块时发生错误：%s"
 DBM_CORE_LOAD_MOD_SUCCESS			= "'%s' 模块已加载。在聊天框输入 /dbm 可设置自定义语音或注记等选项。"
@@ -47,6 +47,9 @@ DBM_CORE_BOSS_DOWN					= "%s战斗胜利！用时%s！"
 DBM_CORE_BOSS_DOWN_I				= "%s战斗胜利！总计%d次胜利。"
 DBM_CORE_BOSS_DOWN_L				= "%s战斗胜利！用时%s！上次用时%s，最快用时%s。总计%d次胜利。"
 DBM_CORE_BOSS_DOWN_NR				= "%s战斗胜利！用时%s！新的纪录诞生了！原纪录为%s。总计%d次胜利。"
+DBM_CORE_RAID_DOWN					= "%s目标达成，用时%s！"
+DBM_CORE_RAID_DOWN_L				= "%s目标达成，用时%s！最快用时%s！"
+DBM_CORE_RAID_DOWN_NR				= "%s目标达成，用时%s！最快用时%s！新的纪录诞生了！原纪录为%s！"
 DBM_CORE_GUILD_BOSS_DOWN			= "公会版%s战斗胜利！用时%s！"
 DBM_CORE_SCENARIO_COMPLETE			= "场景战役-%s战斗胜利！用时%s!"
 DBM_CORE_SCENARIO_COMPLETE_I		= "场景战役-%s战斗胜利！总计%d次胜利。"
@@ -63,13 +66,12 @@ DBM_CORE_TRANSCRIPTOR_LOG_END		= "Transcriptor logging ended."
 
 DBM_CORE_MOVIE_SKIPPED				= "该场景已被跳过。"
 DBM_CORE_BONUS_SKIPPED				= "DBM已经自动关闭奖励拾取窗口。如果需要的话，3分钟内输入 /dbmbonusroll "
-DBM_CORE_BONUS_EXPIRED				= "你尝试着召回奖励拾取窗口但是目前并没有激活的奖励拾取。"
 
 DBM_CORE_AFK_WARNING				= "你在战斗中暂离(百分之%d生命值)。如果你真的没有暂离，动一下或者在'其他功能'中关闭本设置。"
 
 DBM_CORE_COMBAT_STARTED_AI_TIMER	= "我的CPU是类神经网络处理器，一种学习型电脑。(本场战斗DBM将会使用人工智能来估计时间轴)。" --Terminator
 
-DBM_CORE_PROFILE_NOT_FOUND			= "<DBM> 你当前的配置文件已损坏. 'Default' 默认配置文件会被应用."
+DBM_CORE_PROFILE_NOT_FOUND			= "<"..DBM_DBM.."> 你当前的配置文件已损坏. 'Default' 默认配置文件会被应用."
 DBM_CORE_PROFILE_CREATED			= "配置文件 '%s' 已经创建."
 DBM_CORE_PROFILE_CREATE_ERROR		= "配置文件创建失败. 无效的配置文件名."
 DBM_CORE_PROFILE_CREATE_ERROR_D		= "配置文件创建失败. '%s' 已经存在."
@@ -106,6 +108,7 @@ DBM_CORE_NOTESHAREERRORALREADYOPEN	= "为防止未保存的改变，当注记编
 DBM_CORE_ALLMOD_DEFAULT_LOADED		= "本副本里的所有Boss配置已经被初始化"
 DBM_CORE_ALLMOD_STATS_RESETED		= "所有模组的状态已被重置"
 DBM_CORE_MOD_DEFAULT_LOADED			= "将会使用默认设置来进行本场战斗"
+DBM_CORE_SOUNDKIT_MIGRATION			= "一个或多个警报的声音因文件丢失而被设置成默认。DBM只支持放在插件目录下的声音文件，或者是SoundKit ID的重放"
 
 DBM_CORE_WORLDBOSS_ENGAGED			= "世界Boss-%s可能正在作战。当前还有%s的生命值。 (由%s的DBM发送)"
 DBM_CORE_WORLDBOSS_DEFEATED			= "世界Boss-%s可能战斗结束了。 (由%s的DBM发送)"
@@ -133,6 +136,7 @@ DBM_CORE_OPTION_CATEGORY_WARNINGS	= "警报"
 DBM_CORE_OPTION_CATEGORY_WARNINGS_YOU	= "个人警报"
 DBM_CORE_OPTION_CATEGORY_WARNINGS_OTHER	= "目标警报"
 DBM_CORE_OPTION_CATEGORY_WARNINGS_ROLE	= "角色警报"
+
 DBM_CORE_OPTION_CATEGORY_MISC		= "其它"
 DBM_CORE_OPTION_CATEGORY_SOUNDS		= "声音"
 DBM_CORE_OPTION_CATEGORY_DROPDOWNS		= "下拉"
@@ -159,30 +163,32 @@ DBM_CORE_VERSIONCHECK_HEADER		= "DBM - 版本检测"
 DBM_CORE_VERSIONCHECK_ENTRY			= "%s: %s (r%d) %s"--One Boss mod
 DBM_CORE_VERSIONCHECK_ENTRY_TWO		= "%s: %s (r%d) & %s (r%d)"--Two Boss mods
 DBM_CORE_VERSIONCHECK_ENTRY_NO_DBM	= "%s：未安装DBM"
-DBM_CORE_VERSIONCHECK_FOOTER		= "团队中有%d名成员正在使用DBM， %d名成员正在使用Bigwigs"
+DBM_CORE_VERSIONCHECK_FOOTER		= "团队中有%d名成员正在使用"..DBM_DBM.."， %d名成员正在使用Bigwigs"
 DBM_CORE_VERSIONCHECK_OUTDATED		= "下列%d名玩家的DBM版本已经过期:%s"
-DBM_CORE_YOUR_VERSION_OUTDATED		= "你的DBM已经过期。请访问 http://dev.deadlybossmods.com 下载最新版本。"
+DBM_CORE_YOUR_VERSION_OUTDATED		= "你的 "..DBM_DEADLY_BOSS_MODS.." 已经过期。请访问 http://dev.deadlybossmods.com 下载最新版本。"
 DBM_CORE_VOICE_PACK_OUTDATED		= "你当前使用的DBM语音包已经过期。有些特殊警告的屏蔽（当心，毁灭）已被禁用。请下载最新语音包，或联系语音包作者更新。"
 DBM_CORE_VOICE_MISSING				= "DBM找不到你当前选择的语音包。语音包选项已经被设置成'None'。请确保你的语音包被正确安装和启用。"
 DBM_CORE_VOICE_DISABLED				= "你安装了语音包但是没有启动它。请在选项中的语音报警菜单中开启语音包。如果不需要语音报警请卸载语音包。"
 DBM_CORE_VOICE_COUNT_MISSING		= "在 %d 语音包中找不到倒计时语音。倒计时已恢复为默认值"
 
-DBM_CORE_UPDATEREMINDER_HEADER			= "您的DBM版本已过期。\n您可以在Curse/Twitch, WOWI, 或者deadlybossmods.com下载到新版本：%s（%s）。如果您使用整合包，请使用更新器更新。"
-DBM_CORE_UPDATEREMINDER_HEADER_ALPHA	= "您正在使用的Alpha DBM 版本已至少落后主干%d个版本。\n 我们建议使用Alpha版本的用户时刻追随主干更新，否则请切换到正式发行版。Alpha版的版本检查会比正式发行版严格。"
+DBM_CORE_UPDATEREMINDER_HEADER			= "您的 "..DBM_DEADLY_BOSS_MODS.." 版本已过期。\n您可以在Curse/Twitch, WOWI, 或者deadlybossmods.com下载到新版本：%s（%s）。如果您使用整合包，请使用更新器更新。"
+DBM_CORE_UPDATEREMINDER_HEADER_ALPHA	= "您正在使用的Alpha  "..DBM_DEADLY_BOSS_MODS.."  版本已至少落后主干%d个版本。\n 我们建议使用Alpha版本的用户时刻追随主干更新，否则请切换到正式发行版。Alpha版的版本检查会比正式发行版严格。"
 DBM_CORE_UPDATEREMINDER_FOOTER			= "按下 " .. (IsMacClient() and "Cmd-C" or "Ctrl-C")  ..  "复制下载地址到剪切板。"
 DBM_CORE_UPDATEREMINDER_FOOTER_GENERIC	= "按下 " .. (IsMacClient() and "Cmd-C" or "Ctrl-C")  ..  "复制链接到剪切板。"
---DBM_CORE_UPDATEREMINDER_DISABLE			= "警告：你的DBM已经过期太久，它已被强制禁用，直到你更新。这是为了确保它不会导致你或其他团队成员出错。"
-DBM_CORE_UPDATEREMINDER_NODISABLE		= "警告：你的DBM已经过期太久，此消息过了某些指标后不能被禁用，直到你更新。"
-DBM_CORE_UPDATEREMINDER_HOTFIX			= "你的DBM版本会在这首领战斗中有问题。最新版的DBM已经修复了这个问题。"
-DBM_CORE_UPDATEREMINDER_HOTFIX_ALPHA	= "你的DBM版本会在这首领战斗中有问题。最新版的DBM（或Alpha版本）已经修复了这个问题。"
-DBM_CORE_UPDATEREMINDER_MAJORPATCH		= "你的DBM已经过期,它已被禁用,直到你更新.这是为了确保它不会导致你或其他团队成员出错.这次更新是一个非常重要的补丁,请确保你得到的是最新版."
-DBM_CORE_UPDATEREMINDER_TESTVERSION		= "警告：你使用了不正确版本的DBM。请确保DBM版本和游戏版本一致。"
+DBM_CORE_UPDATEREMINDER_DISABLE			= "警告：你的 "..DBM_DEADLY_BOSS_MODS.." 已经过期太久，它已被强制禁用，直到你更新。这是为了确保它不会导致你或其他团队成员出错。"
+--DBM_CORE_UPDATEREMINDER_NODISABLE		= "警告：你的DBM已经过期太久，此消息过了某些指标后不能被禁用，直到你更新。"
+DBM_CORE_UPDATEREMINDER_HOTFIX			= "你的 "..DBM_DEADLY_BOSS_MODS.." 版本会在这首领战斗中有问题。最新版的DBM已经修复了这个问题。"
+DBM_CORE_UPDATEREMINDER_HOTFIX_ALPHA	= "你的 "..DBM_DEADLY_BOSS_MODS.." 版本会在这首领战斗中有问题。最新版的DBM（或Alpha版本）已经修复了这个问题。"
+DBM_CORE_UPDATEREMINDER_MAJORPATCH		= "你的 "..DBM_DEADLY_BOSS_MODS.." 已经过期,它已被禁用,直到你更新.这是为了确保它不会导致你或其他团队成员出错.这次更新是一个非常重要的补丁,请确保你得到的是最新版."
+DBM_CORE_UPDATEREMINDER_TESTVERSION		= "警告：你使用了不正确版本的 "..DBM_DEADLY_BOSS_MODS.." 。请确保 "..DBM_DEADLY_BOSS_MODS.." 版本和游戏版本一致。"
 DBM_CORE_VEM							= "你好像在使用VEM。DBM在这种情况下无法被载入。"
 DBM_CORE_3RDPROFILES					= "警告: DBM-Profiles已经无法和本版本DBM兼容。DBM核心已经自带配置文件管理系统，请移除DBM-Profiles避免冲突。"
 DBM_CORE_DPMCORE						= "警告: DBM-PVP已经已经很久没人维护了,并无法兼容。请移除DBM-PVP避免冲突。"
 DBM_CORE_DBMLDB							= "警告: DBM-LDB 已经集成入DBM核心。建议在插件目录删掉'DBM-LDB'。"
 DBM_CORE_UPDATE_REQUIRES_RELAUNCH		= "警告: 如果你不完全重启游戏，DBM可能会工作不正常。此次更新包含了新的文件，或者toc文件的改变，这是重载界面无法加载的。不重启游戏可能导致作战模块功能错误。"
 DBM_CORE_OUT_OF_DATE_NAG				= "你的DBM已经过期并且你决定不弹出升级提示窗口。这可能导致你或其他团队成员出错。千万不要成为害群之马！"
+DBM_CORE_RETAIL_ONLY					= "警告: 你所用的是正式版本的DBM。请删掉这个DBM并下载怀旧服DBM。"
+
 
 DBM_CORE_MOVABLE_BAR				= "拖动我！"
 
@@ -336,10 +342,11 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS.moveto				= "%s - 移动到 >%%s<"
 
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.you				= "警报：中了%s时"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target			= "警报：$spell:%s的目标"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.targetNF			= "警报：$spell:%s的目标(忽略全局目标过滤器)"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.targetsource		= "警报：$spell:%s的目标(带来源)"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.targetcount		= "警报：$spell:%s的目标(带计数)"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell			= "警报：$spell:%s"
-DBM_CORE_AUTO_ANNOUNCE_OPTIONS.ends				= "警报：$spell:%s结束"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.ends				= "警报：$spell:%s束"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.endtarget		= "警报：$spell:%s结束"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.fades			= "警报：$spell:%s消失"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.adds				= "警报：$spell:%s剩余数量"
@@ -507,8 +514,8 @@ DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.yell		= UnitName("player") .. " 中了%s"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.count		= UnitName("player") .. " 中了%s (%%d)"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.fade		= "%s 剩%%d秒"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.shortfade	= "%%d秒"
-DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.iconfade	= "{rt%%2$d}%%1$d秒" --应该对的吧。
-DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.position	= UnitName("player").." ({rt%%3$d})中了%1$s (%%1$s - {rt%%2$d})" --리동윤
+DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.iconfade	= "{rt%%2$d}%%1$d秒"
+DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.position	= UnitName("player").." ({rt%%3$d})中了%1$s (%%1$s - {rt%%2$d})"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.combo		= "%s, %%s"
 
 --
@@ -525,10 +532,11 @@ DBM_CORE_AUTO_RRANGE_OPTION_TEXT_SHORT		= "反转距离监视(%s码)"
 DBM_CORE_AUTO_INFO_FRAME_OPTION_TEXT		= "信息框：$spell:%s"
 DBM_CORE_AUTO_INFO_FRAME_OPTION_TEXT2		= "信息框：战斗总览"
 DBM_CORE_AUTO_READY_CHECK_OPTION_TEXT		= "当首领开打时播放准备检查的音效（即使没有选定目标）"
+DBM_CORE_AUTO_SPEEDCLEAR_OPTION_TEXT		= "为%s显示快速消除计数器"
 
 -- New special warnings
 DBM_CORE_MOVE_WARNING_BAR				= "可拖动的团队警报"
-DBM_CORE_MOVE_WARNING_MESSAGE			= "感谢您使用Deadly Boss Mods"
+DBM_CORE_MOVE_WARNING_MESSAGE			= "感谢您使用"..DBM_DEADLY_BOSS_MODS
 DBM_CORE_MOVE_SPECIAL_WARNING_BAR		= "可拖动的特别警报"
 DBM_CORE_MOVE_SPECIAL_WARNING_TEXT		= "特别警报"
 
@@ -592,8 +600,8 @@ DBM_CORE_DUR_ENTRY					= "%s: %d 耐久度 / %s件装备损坏"
 DBM_CORE_DUR_FOOTER					= "未反馈此次检测的团员:%s"
 
 --LDB
-DBM_LDB_TOOLTIP_HELP1	= "左键 打开DBM"
-DBM_LDB_TOOLTIP_HELP2	= "右键 打开设置"
+DBM_LDB_TOOLTIP_HELP1	= "左键 打开"..DBM_DBM
+DBM_LDB_TOOLTIP_HELP2	= "右键 启用安静模式"
 
 DBM_LDB_LOAD_MODS		= "载入首领模块"
 
