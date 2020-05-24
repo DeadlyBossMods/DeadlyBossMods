@@ -1,6 +1,6 @@
 if GetLocale() ~= "zhTW" then return end
 
-local L = DBM_CORE_Translations
+local L = DBM_CORE_L
 
 L.HOW_TO_USE_MOD							= "歡迎使用"..L.DBM.."。在聊天頻道輸入 /dbm 打開設定開始設定。你可以載入特定區域後為任何首領設定你喜歡的特別設置。DBM會在設定你的職業天賦的預設值，但有些選項可能需要調整。"
 L.SILENT_REMINDER								= "提醒："..L.DBM.."正處於無聲模式。"

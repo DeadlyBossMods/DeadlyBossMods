@@ -28,10 +28,10 @@ local specWarnUnholyFrenzy			= mod:NewSpecialWarningDispel(320012, "RemoveEnrage
 local specWarnUnholyFrenzyTank		= mod:NewSpecialWarningDefensive(320012, "Tank", nil, nil, 1, 2)
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(257274, nil, nil, nil, 1, 8)
 
-local timerLandoftheDeadCD			= mod:NewAITimer(13, 321226, nil, nil, nil, 1, nil, DBM_CORE_Translations.DAMAGE_ICON)
+local timerLandoftheDeadCD			= mod:NewAITimer(13, 321226, nil, nil, nil, 1, nil, DBM_CORE_L.DAMAGE_ICON)
 local timerFinalHarvestCD			= mod:NewAITimer(15.8, 321247, nil, nil, nil, 2)
 local timerBoneSpikesCD				= mod:NewAITimer(15.8, 322519, nil, nil, nil, 3)
-local timerUnholyFrenzyCD			= mod:NewAITimer(13, 320012, nil, nil, nil, 5, nil, DBM_CORE_Translations.ENRAGE_ICON..DBM_CORE_Translations.TANK_ICON)
+local timerUnholyFrenzyCD			= mod:NewAITimer(13, 320012, nil, nil, nil, 5, nil, DBM_CORE_L.ENRAGE_ICON..DBM_CORE_L.TANK_ICON)
 
 function mod:OnCombatStart(delay)
 	timerLandoftheDeadCD:Start(1-delay)--SUCCESS

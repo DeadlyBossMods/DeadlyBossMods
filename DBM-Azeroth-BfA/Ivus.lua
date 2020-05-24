@@ -36,7 +36,7 @@ local specWarnShockwave					= mod:NewSpecialWarningDodge(282463, nil, nil, nil, 
 local specWarnGroundSpell				= mod:NewSpecialWarningSpell(strikeId, nil, nil, nil, 3, 2)
 local specWarnGTFO						= mod:NewSpecialWarningGTFO(gtfoId, nil, nil, nil, 1, 8)
 
-local timerBreathCD						= mod:NewCDTimer(71.5, breathId, nil, "Tank", nil, 5, nil, DBM_CORE_Translations.TANK_ICON)--71-76?
+local timerBreathCD						= mod:NewCDTimer(71.5, breathId, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)--71-76?
 local timerShockwaveCD					= mod:NewCDTimer(23, 282463, nil, nil, nil, 3)--23-25
 local timerGroundSpellCD				= mod:NewCDTimer(71.5, strikeId, nil, nil, nil, 3)--71-76?
 

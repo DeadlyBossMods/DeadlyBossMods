@@ -84,7 +84,7 @@ local timerFreneticChargeCD				= mod:NewNextTimer(40, 299914, nil, nil, nil, 3, 
 local timerZealousEruptionCD			= mod:NewNextTimer(104.4, 301807, nil, nil, nil, 2)
 --Pashmar the Fanatical
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20235))
-local timerFerventBoltCD				= mod:NewCDTimer(11.3, 300395, nil, "Tank", nil, 5, nil, DBM_CORE_Translations.TANK_ICON)
+local timerFerventBoltCD				= mod:NewCDTimer(11.3, 300395, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)
 local timerFanaticalVerdictCD			= mod:NewNextTimer(26.7, 296850, nil, nil, nil, 3)
 local timerViolentOutburstCD			= mod:NewNextTimer(104.4, 297325, nil, nil, nil, 2)
 local timerPotentSparkCD				= mod:NewCDTimer(92.2, 301947, nil, nil, nil, 1)

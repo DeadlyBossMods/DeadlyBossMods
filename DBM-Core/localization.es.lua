@@ -1,6 +1,6 @@
 if GetLocale() ~= "esES" and GetLocale() ~= "esMX" then return end
 
-local L = DBM_CORE_Translations
+local L = DBM_CORE_L
 
 L.HOW_TO_USE_MOD					= "Bienvenido a DBM. Escribe '/dbm help' para ver la lista de comandos. Para acceder a la configuración no tienes más que escribir '/dbm'."
 L.SILENT_REMINDER					= "Recordatorio: DBM sigue en modo silencioso."

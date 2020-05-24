@@ -1,5 +1,5 @@
 local L		= DBM_GUI_Translations
-local CL	= DBM_CORE_Translations
+local CL	= DBM_CORE_L
 
 local frame = DBM_GUI_OptionsFrame
 table.insert(_G["UISpecialFrames"], frame:GetName())

@@ -75,19 +75,19 @@ local specWarnWitnesstheEnd				= mod:NewSpecialWarningInterruptCount(282621, fal
 local specWarnGTFO						= mod:NewSpecialWarningGTFO(287876, nil, nil, nil, 1, 8)
 
 --mod:AddTimerLine(DBM:EJ_GetSectionInfo(18527))
-local timerAbyssalCollapse				= mod:NewCastTimer(20, 282886, nil, nil, nil, 2, nil, DBM_CORE_Translations.DEADLY_ICON)
-local timerStormofAnnihilation			= mod:NewCastTimer(15, 286755, 196871, nil, nil, 2, nil, DBM_CORE_Translations.HEALER_ICON)--Short text "Storm"
-local timerPact							= mod:NewCastSourceTimer(12, 282675, nil, nil, nil, 2, nil, DBM_CORE_Translations.IMPORTANT_ICON)
+local timerAbyssalCollapse				= mod:NewCastTimer(20, 282886, nil, nil, nil, 2, nil, DBM_CORE_L.DEADLY_ICON)
+local timerStormofAnnihilation			= mod:NewCastTimer(15, 286755, 196871, nil, nil, 2, nil, DBM_CORE_L.HEALER_ICON)--Short text "Storm"
+local timerPact							= mod:NewCastSourceTimer(12, 282675, nil, nil, nil, 2, nil, DBM_CORE_L.IMPORTANT_ICON)
 local timerVisageActive					= mod:NewBuffActiveTimer(60, 282515, nil, nil, nil, 1)
 --Zaxasj the Speaker
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(18974))
 local timerCerebralAssaultCD			= mod:NewCDCountTimer(31.5, 282589, nil, nil, nil, 3, nil, nil, nil, 1, 5)--inlineIcon, keep, countdown, countdownMax
 local timerDarkherald					= mod:NewTargetTimer(20, 282561, nil, nil, nil, 5)
 local timerDarkheraldCD					= mod:NewCDCountTimer(32.7, 282561, nil, nil, nil, 3, nil, nil, nil, 3, 3)
-local timerTerrifyingEcho				= mod:NewCastTimer(15, 282517, nil, nil, nil, 4, nil, DBM_CORE_Translations.INTERRUPT_ICON)
+local timerTerrifyingEcho				= mod:NewCastTimer(15, 282517, nil, nil, nil, 4, nil, DBM_CORE_L.INTERRUPT_ICON)
 --Fa'thuul the Feared
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(18983))
-local timerShearMindCD					= mod:NewCDTimer(8.4, 282384, nil, "Tank", nil, 5, nil, DBM_CORE_Translations.TANK_ICON)
+local timerShearMindCD					= mod:NewCDTimer(8.4, 282384, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)
 local timerVoidCrashCD					= mod:NewCDTimer(13.3, 285416, nil, nil, nil, 3)
 local timerCrushingDoubtCD				= mod:NewCDCountTimer(40.1, 282432, nil, nil, nil, 3, nil, nil, nil, 2, 3)
 
@@ -138,7 +138,7 @@ do
 			local spellName, _, _, _, _, expireTime = DBM:UnitDebuff("player", 282621)
 			local remaining = expireTime-GetTime()
 			if spellName and expireTime then
-				addLine(DBM_CORE_Translations.DEADLY_ICON..spellName, math.floor(remaining))
+				addLine(DBM_CORE_L.DEADLY_ICON..spellName, math.floor(remaining))
 			end
 		end
 		--Herald

@@ -42,14 +42,14 @@ local specWarnMassTransference		= mod:NewSpecialWarningSpell(320281, nil, nil, n
 local specWarnOneWithDeath			= mod:NewSpecialWarningDispel(320293, "ImmunityDispeller", nil, nil, 1, 2)
 
 --Dessia the Decapitator
-local timerMortalStrikeCD				= mod:NewAITimer(13, 320069, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_Translations.TANK_ICON)
-local timerSlamCD						= mod:NewAITimer(13, 320063, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_Translations.TANK_ICON)
+local timerMortalStrikeCD				= mod:NewAITimer(13, 320069, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)
+local timerSlamCD						= mod:NewAITimer(13, 320063, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)
 --Paceran the Virulent
 local timerNoxiousSporeCD				= mod:NewAITimer(15.8, 320180, nil, nil, nil, 3)
-local timerFungalBloomCD				= mod:NewAITimer(15.8, 320164, nil, nil, nil, 3, nil, DBM_CORE_Translations.DEADLY_ICON..DBM_CORE_Translations.DAMAGE_ICON)
+local timerFungalBloomCD				= mod:NewAITimer(15.8, 320164, nil, nil, nil, 3, nil, DBM_CORE_L.DEADLY_ICON..DBM_CORE_L.DAMAGE_ICON)
 --Sathel the Accursed
-local timerPainSpikeCD					= mod:NewAITimer(15.8, 320269, nil, nil, nil, 4, nil, DBM_CORE_Translations.INTERRUPT_ICON)
-local timerSpectralTransferenceCD		= mod:NewAITimer(15.8, 320272, nil, nil, nil, 5, nil, DBM_CORE_Translations.MAGIC_ICON)
+local timerPainSpikeCD					= mod:NewAITimer(15.8, 320269, nil, nil, nil, 4, nil, DBM_CORE_L.INTERRUPT_ICON)
+local timerSpectralTransferenceCD		= mod:NewAITimer(15.8, 320272, nil, nil, nil, 5, nil, DBM_CORE_L.MAGIC_ICON)
 
 function mod:OnCombatStart(delay)
 	--Dessia

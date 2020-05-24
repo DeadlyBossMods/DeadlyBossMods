@@ -27,7 +27,7 @@ local specWarnEntombOther			= mod:NewSpecialWarningSwitch(267702, nil, nil, nil,
 local specWarnWretchedDischarge		= mod:NewSpecialWarningInterrupt(267763, "HasInterrupt", nil, nil, 1, 2)
 local specWarnGTFO					= mod:NewSpecialWarningGTFO(267874, nil, nil, nil, 1, 8)
 
-local timerBurnCorruptionCD			= mod:NewCDTimer(15.8, 267639, nil, "Melee", nil, 2, nil, DBM_CORE_Translations.TANK_ICON..DBM_CORE_Translations.DEADLY_ICON)
+local timerBurnCorruptionCD			= mod:NewCDTimer(15.8, 267639, nil, "Melee", nil, 2, nil, DBM_CORE_L.TANK_ICON..DBM_CORE_L.DEADLY_ICON)
 local timerDrainFluidsCD			= mod:NewCDTimer(17, 267618, nil, nil, nil, 3)
 local timerEntombCD					= mod:NewCDTimer(60, 267702, nil, nil, nil, 3)
 

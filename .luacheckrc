@@ -37,7 +37,7 @@ globals = {
 	"Plater",
 
 	-- DBM
-	"DBM_CORE_Translations",
+	"DBM_CORE_L",
 	"DBM_GUI_Bosses",
 	"DBM_GUI_Frame",
 	"DBM_GUI_Options",

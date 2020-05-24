@@ -49,12 +49,12 @@ local timerTendingBarCD				= mod:NewNextTimer(8, 264605, nil, nil, nil, 3)
 --Raoul
 ----Hostile
 local timerBarrelSmashCD			= mod:NewCDTimer(22.9, 256589, nil, "Melee", nil, 3)--22.9-24.5
-local timerBlackoutBarrelCD			= mod:NewCDTimer(47.3, 258338, nil, nil, nil, 3, nil, DBM_CORE_Translations.DAMAGE_ICON)
+local timerBlackoutBarrelCD			= mod:NewCDTimer(47.3, 258338, nil, nil, nil, 3, nil, DBM_CORE_L.DAMAGE_ICON)
 ----Friendly
 local timerTappedKegCD				= mod:NewNextTimer(22.3, 272884, nil, nil, nil, 5)
 --Eudora
 ----Hostile
-local timerGrapeShotCD				= mod:NewNextTimer(30.3, 258381, nil, nil, nil, 3, nil, DBM_CORE_Translations.DEADLY_ICON)
+local timerGrapeShotCD				= mod:NewNextTimer(30.3, 258381, nil, nil, nil, 3, nil, DBM_CORE_L.DEADLY_ICON)
 ----Friendly
 local timerChainShotCD				= mod:NewAITimer(29.1, 272902, nil, nil, nil, 5)
 --Jolly

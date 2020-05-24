@@ -68,17 +68,17 @@ local specWarnDeathwishNear				= mod:NewSpecialWarningClose(274271, nil, nil, ni
 
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(18527))
 local timerDarkRevolationCD				= mod:NewCDCountTimer(55, 273365, nil, nil, nil, 3, nil, nil, nil, not mod:IsTank() and 1, 4)--55-63 (might get delayed by other casts)
-local timerPoolofDarknessCD				= mod:NewCDCountTimer(30.6, 273361, nil, nil, nil, 5, nil, DBM_CORE_Translations.DEADLY_ICON)
-local timerCallofCrawgCD				= mod:NewTimer(42.6, "timerCallofCrawgCD", 273889, nil, nil, 1, DBM_CORE_Translations.DAMAGE_ICON)--Spawn trigger
-local timerCallofHexerCD				= mod:NewTimer(62.1, "timerCallofHexerCD", 273889, nil, nil, 1, DBM_CORE_Translations.DAMAGE_ICON)--Spawn trigger
-local timerCallofCrusherCD				= mod:NewTimer(62.1, "timerCallofCrusherCD", 273889, nil, nil, 1, DBM_CORE_Translations.DAMAGE_ICON)--Spawn trigger
-local timerAddIncoming					= mod:NewTimer(12, "timerAddIncoming", 273889, nil, nil, 1, DBM_CORE_Translations.DAMAGE_ICON)--Even if you push the boss before add appears, if this timer has started, add IS coming
+local timerPoolofDarknessCD				= mod:NewCDCountTimer(30.6, 273361, nil, nil, nil, 5, nil, DBM_CORE_L.DEADLY_ICON)
+local timerCallofCrawgCD				= mod:NewTimer(42.6, "timerCallofCrawgCD", 273889, nil, nil, 1, DBM_CORE_L.DAMAGE_ICON)--Spawn trigger
+local timerCallofHexerCD				= mod:NewTimer(62.1, "timerCallofHexerCD", 273889, nil, nil, 1, DBM_CORE_L.DAMAGE_ICON)--Spawn trigger
+local timerCallofCrusherCD				= mod:NewTimer(62.1, "timerCallofCrusherCD", 273889, nil, nil, 1, DBM_CORE_L.DAMAGE_ICON)--Spawn trigger
+local timerAddIncoming					= mod:NewTimer(12, "timerAddIncoming", 273889, nil, nil, 1, DBM_CORE_L.DAMAGE_ICON)--Even if you push the boss before add appears, if this timer has started, add IS coming
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(18538))
-local timerBloodyCleaveCD				= mod:NewCDTimer(14.1, 273316, nil, "Tank", nil, 5, nil, DBM_CORE_Translations.TANK_ICON)
-local timerCongealBloodCD				= mod:NewCDTimer(22.7, 273451, nil, "Dps", nil, 5, nil, DBM_CORE_Translations.DAMAGE_ICON)
+local timerBloodyCleaveCD				= mod:NewCDTimer(14.1, 273316, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)
+local timerCongealBloodCD				= mod:NewCDTimer(22.7, 273451, nil, "Dps", nil, 5, nil, DBM_CORE_L.DAMAGE_ICON)
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(18550))
-local timerRupturingBloodCD				= mod:NewCDTimer(6.1, 274358, nil, "Tank", nil, 5, nil, DBM_CORE_Translations.TANK_ICON)
-local timerDeathwishCD					= mod:NewNextCountTimer(27.9, 274271, nil, nil, nil, 3, nil, DBM_CORE_Translations.DEADLY_ICON..DBM_CORE_Translations.MAGIC_ICON, nil, not mod:IsTank() and 1, 4)
+local timerRupturingBloodCD				= mod:NewCDTimer(6.1, 274358, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)
+local timerDeathwishCD					= mod:NewNextCountTimer(27.9, 274271, nil, nil, nil, 3, nil, DBM_CORE_L.DEADLY_ICON..DBM_CORE_L.MAGIC_ICON, nil, not mod:IsTank() and 1, 4)
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
 
@@ -177,7 +177,7 @@ function mod:OnCombatStart(delay)
 	timerCallofHexerCD:Start(50.5, 1)--50.5-54
 	timerCallofCrusherCD:Start(70, 1)--70-73
 	if self.Options.InfoFrame then
-		DBM.InfoFrame:SetHeader(DBM_CORE_Translations.INFOFRAME_POWER)
+		DBM.InfoFrame:SetHeader(DBM_CORE_L.INFOFRAME_POWER)
 		DBM.InfoFrame:Show(8, "function", updateInfoFrame, false, false)
 	end
 	table.wipe(unitTracked)
@@ -378,7 +378,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellRupturingBloodFades:Cancel()
 			yellRupturingBloodFades:Countdown(spellId)
 			specWarnRupturingBloodEdge:Cancel()
-			specWarnRupturingBloodEdge:Schedule(15, DBM_CORE_Translations.ROOM_EDGE)
+			specWarnRupturingBloodEdge:Schedule(15, DBM_CORE_L.ROOM_EDGE)
 			specWarnRupturingBloodEdge:ScheduleVoice(15, "runtoedge")
 		end
 	elseif spellId == 273365 or spellId == 271640 then--Two versions of debuff, one that spawns an add and one that does not (so probably LFR/normal version vs heroic/mythic version)

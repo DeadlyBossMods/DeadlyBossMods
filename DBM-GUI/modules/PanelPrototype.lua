@@ -1,5 +1,5 @@
 local L		= DBM_GUI_Translations
-local CL	= DBM_CORE_Translations
+local CL	= DBM_CORE_L
 
 local PanelPrototype = {}
 setmetatable(PanelPrototype, {

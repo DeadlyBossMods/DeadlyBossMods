@@ -35,7 +35,7 @@ mod:RegisterEventsInCombat(
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(270290, nil, nil, nil, 1, 8)
 
 --mod:AddTimerLine(BOSS)
---local timerVolatileSeedCD						= mod:NewAITimer(16.6, 310277, nil, "Tank", nil, 5, nil, DBM_CORE_Translations.TANK_ICON, nil, 2, 3)
+--local timerVolatileSeedCD						= mod:NewAITimer(16.6, 310277, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON, nil, 2, 3)
 --local timerEntropicCrashCD					= mod:NewAITimer(44.3, 310329, nil, nil, nil, 3)
 
 --local berserkTimer							= mod:NewBerserkTimer(600)

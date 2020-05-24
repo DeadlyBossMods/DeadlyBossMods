@@ -40,14 +40,14 @@ local specWarnAntiTresField			= mod:NewSpecialWarningMoveTo(303252, nil, nil, ni
 local yellAntiTresField				= mod:NewYell(303252)
 --local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 8)
 
---local timerCannonBlastCD			= mod:NewCDTimer(7.7, 295536, nil, nil, nil, 3, nil, DBM_CORE_Translations.DEADLY_ICON)--7.7-13.4 variation, useless timer
+--local timerCannonBlastCD			= mod:NewCDTimer(7.7, 295536, nil, nil, nil, 3, nil, DBM_CORE_L.DEADLY_ICON)--7.7-13.4 variation, useless timer
 local timerReinforcementRelayCD		= mod:NewCDTimer(32.8, 301351, nil, nil, nil, 1)
-local timerWreckCD					= mod:NewCDTimer(24.3, 295445, nil, nil, nil, 5, nil, DBM_CORE_Translations.TANK_ICON)
-local timerFulminatingZapCD			= mod:NewCDTimer(17.0, 302274, nil, nil, nil, 3, nil, DBM_CORE_Translations.HEALER_ICON)--Assumed
-local timerFulminatingBurstCD		= mod:NewCDTimer(17.0, 303885, nil, nil, nil, 3, nil, DBM_CORE_Translations.HEALER_ICON)--Hard Mode
+local timerWreckCD					= mod:NewCDTimer(24.3, 295445, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON)
+local timerFulminatingZapCD			= mod:NewCDTimer(17.0, 302274, nil, nil, nil, 3, nil, DBM_CORE_L.HEALER_ICON)--Assumed
+local timerFulminatingBurstCD		= mod:NewCDTimer(17.0, 303885, nil, nil, nil, 3, nil, DBM_CORE_L.HEALER_ICON)--Hard Mode
 --Stage 2
 local timerHaywire					= mod:NewBuffActiveTimer(30, 296080, nil, nil, nil, 6)
---local timerHowlingFearCD			= mod:NewAITimer(13.4, 257791, nil, "HasInterrupt", nil, 4, nil, DBM_CORE_Translations.INTERRUPT_ICON)
+--local timerHowlingFearCD			= mod:NewAITimer(13.4, 257791, nil, "HasInterrupt", nil, 4, nil, DBM_CORE_L.INTERRUPT_ICON)
 
 mod:AddNamePlateOption("NPAuraOnWalkieShockie", 296522, false)
 

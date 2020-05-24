@@ -65,8 +65,8 @@ local specWarnUnstableResonance			= mod:NewSpecialWarningMoveAway(293653, nil, n
 local specWarnUnstableResonanceVoid		= mod:NewSpecialWarningYouPos(293663, nil, nil, nil, 1, 6)
 local specWarnUnstableResonanceOcean	= mod:NewSpecialWarningYouPos(293662, nil, nil, nil, 1, 6)
 local specWarnUnstableResonanceStorm	= mod:NewSpecialWarningYouPos(293661, nil, nil, nil, 1, 6)
-local yellUnstableResonanceSign			= mod:NewPosYell(293653, DBM_CORE_Translations.AUTO_YELL_CUSTOM_POSITION)
-local yellUnstableResonanceRelic		= mod:NewPosYell("ej18970", DBM_CORE_Translations.AUTO_YELL_CUSTOM_POSITION2, nil, nil, "YELL")
+local yellUnstableResonanceSign			= mod:NewPosYell(293653, DBM_CORE_L.AUTO_YELL_CUSTOM_POSITION)
+local yellUnstableResonanceRelic		= mod:NewPosYell("ej18970", DBM_CORE_L.AUTO_YELL_CUSTOM_POSITION2, nil, nil, "YELL")
 --Stage One: His All-Seeing Eyes
 local specWarnTouchoftheEnd				= mod:NewSpecialWarningYou(284851, nil, nil, nil, 1, 2)
 local specWarnTouchoftheEndTaunt		= mod:NewSpecialWarningTaunt(284851, nil, nil, nil, 1, 6)
@@ -88,12 +88,12 @@ local specWarnGiftofNzothLunacy			= mod:NewSpecialWarningCount(285685, nil, nil,
 
 --Relics of Power
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(19055))
-local timerStormofAnnihilation			= mod:NewTargetTimer(15, 284583, 196871, nil, nil, 2, nil, DBM_CORE_Translations.HEALER_ICON)--Short text "Storm"
-local timerUnstableResonanceCD			= mod:NewCDCountTimer(40.8, 293653, nil, nil, nil, 3, nil, DBM_CORE_Translations.DEADLY_ICON)--40.8-45
-local timerUnstableResonance			= mod:NewBuffFadesTimer(15, 293653, nil, nil, nil, 5, nil, DBM_CORE_Translations.DEADLY_ICON, nil, 1, 5)--inlineIcon, keep, countdown, countdownMax
+local timerStormofAnnihilation			= mod:NewTargetTimer(15, 284583, 196871, nil, nil, 2, nil, DBM_CORE_L.HEALER_ICON)--Short text "Storm"
+local timerUnstableResonanceCD			= mod:NewCDCountTimer(40.8, 293653, nil, nil, nil, 3, nil, DBM_CORE_L.DEADLY_ICON)--40.8-45
+local timerUnstableResonance			= mod:NewBuffFadesTimer(15, 293653, nil, nil, nil, 5, nil, DBM_CORE_L.DEADLY_ICON, nil, 1, 5)--inlineIcon, keep, countdown, countdownMax
 --Stage One: His All-Seeing Eyes
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(19104))
-local timerTouchoftheEndCD				= mod:NewCDCountTimer(25, 284851, nil, "Tank", nil, 5, nil, DBM_CORE_Translations.TANK_ICON)--25, but heavily affected by spell queueing or some kind of ability overlap protection
+local timerTouchoftheEndCD				= mod:NewCDCountTimer(25, 284851, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)--25, but heavily affected by spell queueing or some kind of ability overlap protection
 local timerOblivionTearCD				= mod:NewCDCountTimer(12.1, 285185, nil, nil, nil, 3)--12.1 but often delayed by other casts
 local timerVoidCrashCD					= mod:NewCDCountTimer(31, 285416, nil, nil, nil, 3)
 --local timerEyesofNzothCD				= mod:NewCDCountTimer(32.7, 285376, nil, nil, nil, 3)--32.7-36.4 (probably spell queuing)
@@ -104,7 +104,7 @@ local timerGiftofNzothObscurityCD		= mod:NewCDCountTimer(42.1, 285453, 285477, n
 --Stage Two: His Dutiful Servants
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(19105))
 local timerUnknowableTerrorCD			= mod:NewCDTimer(40.1, 285562, nil, nil, nil, 3)
-local timerMindBenderCD					= mod:NewCDCountTimer(61.1, "ej19118", 284485, nil, nil, 1, 285427, DBM_CORE_Translations.DAMAGE_ICON)--Shorttext "Mindbender"
+local timerMindBenderCD					= mod:NewCDCountTimer(61.1, "ej19118", 284485, nil, nil, 1, 285427, DBM_CORE_L.DAMAGE_ICON)--Shorttext "Mindbender"
 local timerGiftofNzothHysteriaCD		= mod:NewCDCountTimer(42.5, 285638, 55975, nil, nil, 2)--Short text "Hysteria"
 --Stage Three: His Unwavering Gaze
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(19106))
@@ -723,7 +723,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif spellId == 286310 and self:IsInCombat() then--Void Shield
 		self.vb.phase = self.vb.phase + 1
-		warnPhase:Show(DBM_CORE_Translations.AUTO_ANNOUNCE_TEXTS.stage:format(self.vb.phase))
+		warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(self.vb.phase))
 		warnPhase:Play("phasechange")
 		self.vb.tearCount = 0--Maybe not reset?
 		self.vb.touchCount = 0--Maybe not reset?

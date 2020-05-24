@@ -1,6 +1,6 @@
 if GetLocale() ~= "itIT" then return end
 
-local L = DBM_CORE_Translations
+local L = DBM_CORE_L
 
 L.HOW_TO_USE_MOD					= "Benvenuto in DBM. Scrivi /dbm help per avere una lista dei comandi supportati. Per accedere alle opzioni scrivi in chat /dbm. Carica le zone specifiche per configurare manualmente ogni settaggio di ogni boss. DBM prova a farlo per te controllando la tua specializzazione alla prima esecuzione, ma alcuni potrebbero volere alcune opzioni attivate."
 L.SILENT_REMINDER					= "Avviso: DBM è in modalità silente."

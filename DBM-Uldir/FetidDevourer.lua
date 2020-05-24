@@ -41,11 +41,11 @@ local yellPutridParoxysm				= mod:NewYell(262314)
 local yellPutridParoxysmFades			= mod:NewFadesYell(262314)
 local specWarnAdds						= mod:NewSpecialWarningAdds(262364, "Dps", nil, nil, 1, 2)
 
-local timerThrashCD						= mod:NewCDTimer(6, 262277, 74979, "Tank", nil, 5, nil, DBM_CORE_Translations.TANK_ICON)--Short Name "Thrash"
+local timerThrashCD						= mod:NewCDTimer(6, 262277, 74979, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)--Short Name "Thrash"
 local timerRottingRegurgCD				= mod:NewCDTimer(40.1, 262292, 21131, nil, nil, 3, nil, nil, nil, 1, 4)--Short Name "Breath"
 local timerShockwaveStompCD				= mod:NewCDCountTimer(28.8, 262288, 116969, nil, nil, 2)--Short Name "Stomp"
 local timerPreAddsCD					= mod:NewTimer(54.8, "chuteTimer", 262364, false, nil, 5)
-local timerAddsCD						= mod:NewAddsTimer(54.8, 262364, nil, nil, nil, 1, nil, DBM_CORE_Translations.DAMAGE_ICON, nil, 3, 5)
+local timerAddsCD						= mod:NewAddsTimer(54.8, 262364, nil, nil, nil, 1, nil, DBM_CORE_L.DAMAGE_ICON, nil, 3, 5)
 
 local berserkTimer						= mod:NewBerserkTimer(330)
 

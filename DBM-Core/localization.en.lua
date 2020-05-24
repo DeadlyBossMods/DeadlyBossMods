@@ -1,6 +1,6 @@
-DBM_CORE_Translations = {}
+DBM_CORE_L = {}
 
-local L = DBM_CORE_Translations
+local L = DBM_CORE_L
 
 L.DEADLY_BOSS_MODS	= "Deadly Boss Mods"
 L.DBM				= "DBM"

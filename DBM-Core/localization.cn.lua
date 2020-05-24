@@ -6,7 +6,7 @@
 
 if GetLocale() ~= "zhCN" then return end
 
-local L = DBM_CORE_Translations
+local L = DBM_CORE_L
 
 L.HOW_TO_USE_MOD					= "欢迎使用" .. L.DBM .. "。在聊天框输入 /dbm help 以获取可用命令的帮助。输入 /dbm 可打开设置窗口，并对各个Boss模块进行设置，也可以浏览首领击杀记录。DBM 会自动按你的专精做出相应配置，但是你可以进行微调。"
 L.SILENT_REMINDER					= "提示：" .. L.DBM .. " 正处于安静模式。"

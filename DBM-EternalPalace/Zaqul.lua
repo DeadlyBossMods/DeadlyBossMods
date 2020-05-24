@@ -74,24 +74,24 @@ local yellManicDreadFades				= mod:NewIconFadesYell(296018)
 
 --mod:AddTimerLine(BOSS)
 --Stage One: The Herald
-local timerHorrificSummonerCD			= mod:NewCDTimer(80.1, "ej20172", nil, nil, nil, 1, 294515, DBM_CORE_Translations.DAMAGE_ICON)
+local timerHorrificSummonerCD			= mod:NewCDTimer(80.1, "ej20172", nil, nil, nil, 1, 294515, DBM_CORE_L.DAMAGE_ICON)
 local timerCrushingGraspCD				= mod:NewCDTimer(31.4, 292565, nil, nil, nil, 3)
-local timerDreadCD						= mod:NewCDTimer(75.4, 292963, nil, "Healer", nil, 5, nil, DBM_CORE_Translations.MAGIC_ICON)--One dread timer used for all versions (cast by boss)
-local timerMindTetherCD					= mod:NewCDTimer(47.8, 295444, nil, "Tank", nil, 5, nil, DBM_CORE_Translations.TANK_ICON)--52.3
+local timerDreadCD						= mod:NewCDTimer(75.4, 292963, nil, "Healer", nil, 5, nil, DBM_CORE_L.MAGIC_ICON)--One dread timer used for all versions (cast by boss)
+local timerMindTetherCD					= mod:NewCDTimer(47.8, 295444, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)--52.3
 --Stage Two: Grip of Fear
 local timerManifestNightmaresCD			= mod:NewCDTimer(35, 293509, nil, nil, nil, 3)
-local timerMaddeningEruptionCD			= mod:NewCDTimer(66.4, 292996, nil, nil, nil, 5, nil, DBM_CORE_Translations.TANK_ICON)
-local timerPuncturedDarkness			= mod:NewNextTimer(25, 295099, nil, nil, nil, 5, nil, DBM_CORE_Translations.DAMAGE_ICON)
-local timerPuncturedDarknessActive		= mod:NewBuffActiveTimer(20, 295099, nil, nil, nil, 5, nil, DBM_CORE_Translations.DAMAGE_ICON)
+local timerMaddeningEruptionCD			= mod:NewCDTimer(66.4, 292996, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON)
+local timerPuncturedDarkness			= mod:NewNextTimer(25, 295099, nil, nil, nil, 5, nil, DBM_CORE_L.DAMAGE_ICON)
+local timerPuncturedDarknessActive		= mod:NewBuffActiveTimer(20, 295099, nil, nil, nil, 5, nil, DBM_CORE_L.DAMAGE_ICON)
 --Stage Three: Delirium's Descent
-local timerDeliriumsDescentCD			= mod:NewCDTimer(35, 304733, nil, nil, nil, 5, nil, DBM_CORE_Translations.DAMAGE_ICON)
+local timerDeliriumsDescentCD			= mod:NewCDTimer(35, 304733, nil, nil, nil, 5, nil, DBM_CORE_L.DAMAGE_ICON)
 --Stage Four: All Pathways Open
-local timerDarkPulseCD					= mod:NewCDTimer(93.5, 303978, nil, nil, nil, 6, nil, DBM_CORE_Translations.DEADLY_ICON)
-local timerManicDreadCD					= mod:NewCDTimer(75.4, 296018, nil, "Healer", nil, 5, nil, DBM_CORE_Translations.MAGIC_ICON)--75-83
+local timerDarkPulseCD					= mod:NewCDTimer(93.5, 303978, nil, nil, nil, 6, nil, DBM_CORE_L.DEADLY_ICON)
+local timerManicDreadCD					= mod:NewCDTimer(75.4, 296018, nil, "Healer", nil, 5, nil, DBM_CORE_L.MAGIC_ICON)--75-83
 ----Mythic
-local timerPsychoticSplitCD				= mod:NewCDTimer(100, 301068, nil, nil, nil, 6, nil, DBM_CORE_Translations.MYTHIC_ICON..DBM_CORE_Translations.DEADLY_ICON)--Mythic
-local timerPsychoticSplit				= mod:NewCastTimer(25, 301068, nil, nil, nil, 5, nil, DBM_CORE_Translations.MYTHIC_ICON..DBM_CORE_Translations.DAMAGE_ICON)
-local timerDreadScreamCD				= mod:NewCDTimer(8.5, 303543, nil, "Healer", nil, 5, nil, DBM_CORE_Translations.MYTHIC_ICON..DBM_CORE_Translations.MAGIC_ICON)--Mythic
+local timerPsychoticSplitCD				= mod:NewCDTimer(100, 301068, nil, nil, nil, 6, nil, DBM_CORE_L.MYTHIC_ICON..DBM_CORE_L.DEADLY_ICON)--Mythic
+local timerPsychoticSplit				= mod:NewCastTimer(25, 301068, nil, nil, nil, 5, nil, DBM_CORE_L.MYTHIC_ICON..DBM_CORE_L.DAMAGE_ICON)
+local timerDreadScreamCD				= mod:NewCDTimer(8.5, 303543, nil, "Healer", nil, 5, nil, DBM_CORE_L.MYTHIC_ICON..DBM_CORE_L.MAGIC_ICON)--Mythic
 local timerVoidSlam						= mod:NewCastTimer(4.1, 302593, nil, nil, nil, 3)--Mythic
 
 local berserkTimer						= mod:NewBerserkTimer(600)
@@ -148,7 +148,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.dreadIcon = 1
 	elseif spellId == 296257 and self.vb.phase < 2 then--Opening Fear Realm
 		self.vb.phase = 2
-		warnPhase:Show(DBM_CORE_Translations.AUTO_ANNOUNCE_TEXTS.stage:format(2))
+		warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(2))
 		warnPhase:Play("ptwo")
 		--Timers that never stop, but might need time added to them if they come off cd during transition
 		--timerDreadCD:Stop()
@@ -159,7 +159,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 304733 then--Delirium's Descent
 		if self.vb.phase < 3 then
 			self.vb.phase = 3
-			warnPhase:Show(DBM_CORE_Translations.AUTO_ANNOUNCE_TEXTS.stage:format(3))
+			warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(3))
 			warnPhase:Play("pthree")
 			--Timers don't stop/reset here, but they will be extended if below a threshold
 			local dreadICD = self:IsHard() and 20 or 12

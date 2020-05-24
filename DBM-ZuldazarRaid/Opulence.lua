@@ -82,22 +82,22 @@ mod:AddTimerLine(DBM:EJ_GetSectionInfo(19495))
 local timerThiefsBane					= mod:NewBuffFadesTimer(30, 287424, nil, nil, nil, 3)
 --Stage One: Raiding The Vault
 local timerCrushCD						= mod:NewCDSourceTimer(55, 283604, nil, nil, nil, 3)--Both
-local timerChaoticDisplacementCD		= mod:NewCDTimer(30.3, 289383, nil, nil, nil, 3, nil, DBM_CORE_Translations.MYTHIC_ICON)--Mythic
+local timerChaoticDisplacementCD		= mod:NewCDTimer(30.3, 289383, nil, nil, nil, 3, nil, DBM_CORE_L.MYTHIC_ICON)--Mythic
 ----The Hand of In'zashi
 local timerVolatileChargeCD				= mod:NewCDTimer(12.1, 283507, nil, nil, nil, 3)
 ----Yalat's Bulwark
 local timerFlamesofPunishmentCD			= mod:NewCDTimer(23, 282939, nil, nil, nil, 3)
 ----Traps
 local timerRubyBeam						= mod:NewBuffActiveTimer(8, 284081, nil, nil, nil, 3)
-local timerHexofLethargyCD					= mod:NewCDTimer(21.8, 284470, nil, nil, nil, 3, nil, DBM_CORE_Translations.MAGIC_ICON)
+local timerHexofLethargyCD					= mod:NewCDTimer(21.8, 284470, nil, nil, nil, 3, nil, DBM_CORE_L.MAGIC_ICON)
 --Stage Two: Toppling the Guardian
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(19496))
 local timerDrawPower					= mod:NewCastTimer(5, 282939, nil, nil, nil, 6)
 local timerLiquidGoldCD					= mod:NewCDTimer(15.6, 287072, nil, nil, nil, 3)
 local timerSpiritsofGoldCD				= mod:NewCDTimer(65.6, 285995, nil, nil, nil, 1)
-local timerCoinShowerCD					= mod:NewCDTimer(30.3, 285014, nil, nil, nil, 5, nil, DBM_CORE_Translations.DEADLY_ICON)
-local timerWailofGreedCD				= mod:NewCDTimer(71, 284941, nil, nil, nil, 2, nil, DBM_CORE_Translations.HEALER_ICON)--71-75
-local timerCoinSweepCD					= mod:NewCDTimer(10.9, 287037, nil, "Tank", nil, 5, nil, DBM_CORE_Translations.TANK_ICON)
+local timerCoinShowerCD					= mod:NewCDTimer(30.3, 285014, nil, nil, nil, 5, nil, DBM_CORE_L.DEADLY_ICON)
+local timerWailofGreedCD				= mod:NewCDTimer(71, 284941, nil, nil, nil, 2, nil, DBM_CORE_L.HEALER_ICON)--71-75
+local timerCoinSweepCD					= mod:NewCDTimer(10.9, 287037, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)
 local timerSurgingGoldCD				= mod:NewCDTimer(42.5, 289155, nil, nil, nil, 3)--Real timer needed, using AI tech for now
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
@@ -134,7 +134,7 @@ do
 			local absorb = diamondTargets[unitName]
 			if absorb then
 				local absorbAmount = select(16, DBM:UnitDebuff(uId, 284527)) or 0
-				addLine(unitName, DBM_CORE_Translations.SHIELD.."--"..math.floor(absorbAmount))
+				addLine(unitName, DBM_CORE_L.SHIELD.."--"..math.floor(absorbAmount))
 			end
 		end
 		--Incandescent Stacks

@@ -40,7 +40,7 @@ local timerSummonCreationCD			= mod:NewAITimer(13, 320358, nil, nil, nil, 1)
 --local timerMeatHookCD				= mod:NewAITimer(15.8, 322681, nil, nil, nil, 3)
 --local timerMutilateCD				= mod:NewCDTimer(13, 320376, nil, nil, nil, 3)--Can't AI timer, multiple adds might be up, enable later
 local timerEmbalmingIchorCD			= mod:NewAITimer(15.8, 322681, nil, nil, nil, 3)
-local timerStichNeedleCD			= mod:NewAITimer(15.8, 320200, nil, nil, nil, 5, nil, DBM_CORE_Translations.HEALER_ICON)
+local timerStichNeedleCD			= mod:NewAITimer(15.8, 320200, nil, nil, nil, 5, nil, DBM_CORE_L.HEALER_ICON)
 local timerDarkinfusionCD			= mod:NewAITimer(13, 323016, nil, nil, nil, 2)
 
 function mod:IchorTarget(targetname, uId)

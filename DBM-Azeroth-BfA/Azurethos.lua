@@ -25,7 +25,7 @@ local timerAzurethosFuryCD			= mod:NewCDTimer(46.8, 274839, nil, nil, nil, 2)
 --"Gale Force-274829-npc:136385 = pull:40.7, 47.1, 19.8, 33.7, 47.5, 19.6, 31.9, 18.4, 32.2", --
 --local timerGaleForceCD			= mod:NewAITimer(16, 274829, nil, nil, nil, 3)--2 timers alternating, problem is, joining mid fight you don't know what count you're on
 --"Wing Buffet-274832-npc:136385 = pull:2.8, 42.1, 11.2, 35.9, 11.1, 42.8, 11.5, 35.8, 11.4, 39.8, 10.7, 40.0"
---local timerWingBuffetCD				= mod:NewAITimer(16, 274832, nil, "Tank", nil, 5, nil, DBM_CORE_Translations.TANK_ICON)--Also alternating timers. on a world boss this just won't work
+--local timerWingBuffetCD				= mod:NewAITimer(16, 274832, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)--Also alternating timers. on a world boss this just won't work
 
 --mod:AddRangeFrameOption(5, 194966)
 --mod:AddReadyCheckOption(37460, false)

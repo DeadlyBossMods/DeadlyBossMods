@@ -34,7 +34,7 @@ local yellMindLink					= mod:NewYell(322648)
 local specWarnMarkthePrey			= mod:NewSpecialWarningYou(322563, nil, nil, nil, 1, 2)
 local specWarnGTFO					= mod:NewSpecialWarningGTFO(326309, nil, nil, nil, 1, 8)
 
-local timerAcceleratedIncubationCD	= mod:NewAITimer(13, 322550, nil, nil, nil, 1, nil, DBM_CORE_Translations.DAMAGE_ICON)
+local timerAcceleratedIncubationCD	= mod:NewAITimer(13, 322550, nil, nil, nil, 1, nil, DBM_CORE_L.DAMAGE_ICON)
 local timerMindLinkCD				= mod:NewAITimer(15.8, 322614, nil, nil, nil, 3)
 local timerAcidSpittleCD			= mod:NewAITimer(15.8, 322558, nil, nil, nil, 3)
 local timerMarkthePreyCD			= mod:NewAITimer(15.8, 322563, nil, nil, nil, 3)

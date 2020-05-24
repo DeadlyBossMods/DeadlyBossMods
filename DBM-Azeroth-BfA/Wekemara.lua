@@ -25,9 +25,9 @@ local specWarnBioelectricBlast		= mod:NewSpecialWarningDodge(303319, nil, nil, n
 local specWarnShockBurst			= mod:NewSpecialWarningMoveAway(303488, nil, nil, nil, 1, 2)
 --local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 8)
 
-local timerBioelectricblastCD		= mod:NewCDTimer(13.9, 303319, nil, nil, nil, 3, nil, DBM_CORE_Translations.DEADLY_ICON)--13.9 to like 30?
+local timerBioelectricblastCD		= mod:NewCDTimer(13.9, 303319, nil, nil, nil, 3, nil, DBM_CORE_L.DEADLY_ICON)--13.9 to like 30?
 local timerShockburstCD				= mod:NewCDTimer(36.6, 303488, nil, nil, nil, 3)
-local timerElectricDischargeCD		= mod:NewCDTimer(25.6, 303451, nil, nil, nil, 2, nil, DBM_CORE_Translations.HEALER_ICON)
+local timerElectricDischargeCD		= mod:NewCDTimer(25.6, 303451, nil, nil, nil, 2, nil, DBM_CORE_L.HEALER_ICON)
 
 --mod:AddReadyCheckOption(37460, false)
 

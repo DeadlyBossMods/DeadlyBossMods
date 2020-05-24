@@ -55,11 +55,11 @@ local specWarnGTFO							= mod:NewSpecialWarningGTFO(306824, nil, nil, nil, 1, 8
 local warnSpawnAdds							= mod:NewSpellAnnounce(312389, 2)
 
 --Stage One: The Black Emperor
-local timerSearingBreathCD					= mod:NewCDTimer(8.5, 305978, 18620, "Tank", nil, 5, nil, DBM_CORE_Translations.TANK_ICON)
+local timerSearingBreathCD					= mod:NewCDTimer(8.5, 305978, 18620, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)
 local timerIncinerationCD					= mod:NewCDCountTimer(19.4, 306111, nil, nil, nil, 3)--19-24 variation even when not delayed by other casts
 local timerGaleBlastCD						= mod:NewCDCountTimer(90.9, 306289, nil, nil, nil, 2)
-local timerBurningCataclysmCD				= mod:NewCDCountTimer(90.9, 306735, 138565, nil, nil, 3, nil, DBM_CORE_Translations.DEADLY_ICON, nil, 1, 5)
-local timerBurningCataclysm					= mod:NewCastTimer(8, 306735, 138565, nil, nil, 2, nil, DBM_CORE_Translations.DEADLY_ICON)
+local timerBurningCataclysmCD				= mod:NewCDCountTimer(90.9, 306735, 138565, nil, nil, 3, nil, DBM_CORE_L.DEADLY_ICON, nil, 1, 5)
+local timerBurningCataclysm					= mod:NewCastTimer(8, 306735, 138565, nil, nil, 2, nil, DBM_CORE_L.DEADLY_ICON)
 --Stage Two: Smoke and Mirrors
 local timerSmokeandMirrorsCD				= mod:NewNextTimer(155, 306995, nil, nil, nil, 6)
 
@@ -194,7 +194,7 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 306995 and self.vb.phase == 1 then--P2 Smoke and Mirrors
 		self.vb.phase = 2
-		warnPhase:Show(DBM_CORE_Translations.AUTO_ANNOUNCE_TEXTS.stage:format(2))
+		warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(2))
 		warnPhase:Play("phasechange")
 		timerSearingBreathCD:Stop()
 		timerIncinerationCD:Stop()
@@ -298,7 +298,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.cataCast = 0
 		self.vb.galeCount = 0
 		self.vb.incinerateCount = 0
-		warnPhase:Show(DBM_CORE_Translations.AUTO_ANNOUNCE_TEXTS.stage:format(1))
+		warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(1))
 		warnPhase:Play("phasechange")
 		timerSearingBreathCD:Start(7.3)
 		if self:IsMythic() then

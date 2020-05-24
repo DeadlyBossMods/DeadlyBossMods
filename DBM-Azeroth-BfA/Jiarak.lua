@@ -20,8 +20,8 @@ local specWarnHurricaneCrash		= mod:NewSpecialWarningRun(261088, nil, nil, nil, 
 local specWarnMatriarchsCall		= mod:NewSpecialWarningSwitch(261467, "-Healer", nil, 2, 1, 2)
 
 local timerStormWingCD				= mod:NewCDTimer(46.2, 260908, nil, nil, nil, 2)
-local timerHurricaneCrashCD			= mod:NewCDTimer(46.2, 261088, nil, nil, nil, 2, nil, DBM_CORE_Translations.DEADLY_ICON)
-local timerMatriarchCallCD			= mod:NewCDTimer(46.2, 261467, nil, nil, nil, 1, nil, DBM_CORE_Translations.DAMAGE_ICON)
+local timerHurricaneCrashCD			= mod:NewCDTimer(46.2, 261088, nil, nil, nil, 2, nil, DBM_CORE_L.DEADLY_ICON)
+local timerMatriarchCallCD			= mod:NewCDTimer(46.2, 261467, nil, nil, nil, 1, nil, DBM_CORE_L.DAMAGE_ICON)
 
 
 function mod:OnCombatStart(delay, yellTriggered)
