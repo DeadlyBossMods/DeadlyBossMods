@@ -26,7 +26,7 @@ local specWarnGTFO					= mod:NewSpecialWarningGTFO(320646, nil, nil, nil, 1, 8)
 
 local timerHeavingRetchCD			= mod:NewAITimer(15.8, 320596, nil, nil, nil, 3)
 local timerFetidGasCD				= mod:NewAITimer(15.8, 320637, nil, nil, nil, 3)
-local timerCrunchCD					= mod:NewAITimer(13, 320655, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerCrunchCD					= mod:NewAITimer(13, 320655, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_Translations.TANK_ICON)
 
 function mod:RetchTarget(targetname, uId)
 	if not targetname then return end

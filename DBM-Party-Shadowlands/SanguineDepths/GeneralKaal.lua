@@ -29,7 +29,7 @@ local specWarnGloomSquall			= mod:NewSpecialWarningSpell(324103, nil, nil, nil, 
 
 local timerWickedRushCD				= mod:NewAITimer(15.8, 323845, nil, nil, nil, 3)
 local timerPiercingBlurCD			= mod:NewAITimer(13, 323810, nil, nil, nil, 3)
-local timerGloomSquallCD			= mod:NewAITimer(13, 324103, nil, nil, nil, 2, nil, DBM_CORE_IMPORTANT_ICON)
+local timerGloomSquallCD			= mod:NewAITimer(13, 324103, nil, nil, nil, 2, nil, DBM_CORE_Translations.IMPORTANT_ICON)
 
 function mod:OnCombatStart(delay)
 	timerWickedRushCD:Start(1-delay)

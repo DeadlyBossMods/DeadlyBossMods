@@ -27,10 +27,10 @@ local specWarnSlicingBlast			= mod:NewSpecialWarningInterrupt(267818, "HasInterr
 local specWarnHinderingCleave		= mod:NewSpecialWarningDefensive(267899, "Tank", nil, nil, 1, 2)
 local specWarnBlessingofIronsides	= mod:NewSpecialWarningRun(267901, "Tank", nil, 2, 4, 2)
 
-local timerReinforcingWardCD		= mod:NewCDTimer(30.2, 267905, nil, nil, nil, 5, nil, DBM_CORE_IMPORTANT_ICON)
+local timerReinforcingWardCD		= mod:NewCDTimer(30.2, 267905, nil, nil, nil, 5, nil, DBM_CORE_Translations.IMPORTANT_ICON)
 local timerSwiftnessWardCD			= mod:NewCDTimer(36.4, 267891, nil, nil, nil, 5)--More data needed
-local timerHinderingCleaveCD		= mod:NewCDTimer(18.2, 267899, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
-local timerBlessingofIronsidesCD	= mod:NewCDTimer(32.4, 267901, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerHinderingCleaveCD		= mod:NewCDTimer(18.2, 267899, nil, nil, nil, 5, nil, DBM_CORE_Translations.TANK_ICON)
+local timerBlessingofIronsidesCD	= mod:NewCDTimer(32.4, 267901, nil, "Tank", nil, 5, nil, DBM_CORE_Translations.TANK_ICON)
 
 mod.vb.bossTempest = false
 

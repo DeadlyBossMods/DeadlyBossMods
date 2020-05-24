@@ -31,7 +31,7 @@ local specWarnSoulBolt				= mod:NewSpecialWarningInterrupt(324589, "HasInterrupt
 local specWarnGraspingRift			= mod:NewSpecialWarningRun(323685, nil, nil, nil, 4, 2)
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(257274, nil, nil, nil, 1, 8)
 
-local timerReapingScytheCD			= mod:NewAITimer(15.8, 324079, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerReapingScytheCD			= mod:NewAITimer(15.8, 324079, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_Translations.TANK_ICON)
 local timerDarkDevastationCD		= mod:NewAITimer(15.8, 323608, nil, nil, nil, 3)
 local timerManifesstDeathCD			= mod:NewAITimer(15.8, 324449, nil, nil, nil, 3)
 local timerGraspingriftCD			= mod:NewAITimer(15.8, 323685, nil, nil, nil, 3)

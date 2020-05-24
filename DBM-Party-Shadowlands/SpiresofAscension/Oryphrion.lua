@@ -37,7 +37,7 @@ local specWarnChargedStomp			= mod:NewSpecialWarningRun(324608, "Melee", nil, ni
 
 local timerEmpyrealOrdnanceCD		= mod:NewAITimer(15.8, 321936, nil, nil, nil, 3)
 local timerPurifyingBlastCD			= mod:NewAITimer(15.8, 323072, nil, nil, nil, 3)
-local timerChargedStompCD			= mod:NewAITimer(15.8, 324608, nil, nil, nil, 3, nil, DBM_CORE_MAGIC_ICON)
+local timerChargedStompCD			= mod:NewAITimer(15.8, 324608, nil, nil, nil, 3, nil, DBM_CORE_Translations.MAGIC_ICON)
 
 mod:AddRangeFrameOption(10, 323072)
 mod:AddInfoFrameOption(324046, true)
@@ -58,7 +58,7 @@ function mod:OnCombatStart(delay)
 		DBM.RangeCheck:Show(10)
 	end
 	if self.Options.InfoFrame then
-		DBM.InfoFrame:SetHeader(DBM_CORE_INFOFRAME_POWER)
+		DBM.InfoFrame:SetHeader(DBM_CORE_Translations.INFOFRAME_POWER)
 		DBM.InfoFrame:Show(3, "enemypower", 2)
 	end
 end

@@ -47,11 +47,11 @@ local specWarnCannonBarrage			= mod:NewSpecialWarningDodge(257540, nil, nil, nil
 --Chopper Redhook
 --local timerOntheHookCD				= mod:NewAITimer(13, 257459, nil, nil, nil, 3)
 --local timerGoreCrashCD				= mod:NewAITimer(13, 257326, nil, nil, nil, 3)--24.9, 43.3
---local timerHeavySlashCD				= mod:NewAITimer(13, 279761, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--Shared
+--local timerHeavySlashCD				= mod:NewAITimer(13, 279761, nil, "Tank", nil, 5, nil, DBM_CORE_Translations.TANK_ICON)--Shared
 --Sergeant Bainbridge
 --local timerIronGazeCD				= mod:NewAITimer(13, 260954, nil, nil, nil, 3)
 --local timerSteelTempestCD			= mod:NewAITimer(13, 260924, nil, nil, nil, 3)
---local timerHangmansNooseCD			= mod:NewAITimer(13, 261428, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
+--local timerHangmansNooseCD			= mod:NewAITimer(13, 261428, nil, nil, nil, 3, nil, DBM_CORE_Translations.DEADLY_ICON)
 
 --mod:AddRangeFrameOption(5, 194966)
 

@@ -27,7 +27,7 @@ local specWarnTerrorWall			= mod:NewSpecialWarningDodge(261552, nil, nil, nil, 3
 
 --local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 8)
 
-local timerCrushingSlamCD			= mod:NewCDTimer(23.2, 262004, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--24.8-31?
+local timerCrushingSlamCD			= mod:NewCDTimer(23.2, 262004, nil, "Tank", nil, 5, nil, DBM_CORE_Translations.TANK_ICON)--24.8-31?
 local timerCoalescedEssenceCD		= mod:NewCDTimer(23.6, 261600, nil, nil, nil, 3)--25-28?
 local timerConsumingSpiritsCD		= mod:NewCDTimer(21.9, 261605, nil, nil, nil, 3)--21-35?
 local timerTerrorWallCD				= mod:NewCDTimer(23.2, 261552, nil, nil, nil, 3)--24-29?

@@ -37,7 +37,7 @@ local specWarnRitualofWoe			= mod:NewSpecialWarningSoak(323393, nil, nil, nil, 1
 
 local timerUnleashedSufferingCD		= mod:NewCDTimer(15.8, 323236, nil, nil, nil, 3)
 --local timerRitualofWoeCD			= mod:NewAITimer(15.8, 323393, nil, nil, nil, 3)--Based on boss health
-local timerStigmaofPrideCD			= mod:NewCDTimer(60, 323437, nil, nil, nil, 5, nil, DBM_CORE_HEALER_ICON)
+local timerStigmaofPrideCD			= mod:NewCDTimer(60, 323437, nil, nil, nil, 5, nil, DBM_CORE_Translations.HEALER_ICON)
 
 --mod:AddInfoFrameOption(323410, true)
 

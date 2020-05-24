@@ -26,9 +26,9 @@ local specWarnCharge				= mod:NewSpecialWarningDodge(260292, nil, nil, nil, 3, 2
 local specWarnTantrum				= mod:NewSpecialWarningCount(260333, nil, nil, nil, 2, 2)
 --local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 8)
 
-local timerIndigestionCD			= mod:NewCDTimer(70, 260793, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
-local timerChargeCD					= mod:NewCDTimer(20.7, 260292, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
-local timerTantrumCD				= mod:NewCDTimer(13, 260333, nil, nil, nil, 2, nil, DBM_CORE_HEALER_ICON)
+local timerIndigestionCD			= mod:NewCDTimer(70, 260793, nil, nil, nil, 5, nil, DBM_CORE_Translations.TANK_ICON)
+local timerChargeCD					= mod:NewCDTimer(20.7, 260292, nil, nil, nil, 3, nil, DBM_CORE_Translations.DEADLY_ICON)
+local timerTantrumCD				= mod:NewCDTimer(13, 260333, nil, nil, nil, 2, nil, DBM_CORE_Translations.HEALER_ICON)
 
 mod:AddNamePlateOption("NPAuraMetamorphosis", 260416)
 

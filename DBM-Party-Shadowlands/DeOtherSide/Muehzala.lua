@@ -24,7 +24,7 @@ mod:RegisterEventsInCombat(
 --local specWarnHealingBalm			= mod:NewSpecialWarningInterrupt(257397, "HasInterrupt", nil, nil, 1, 2)
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(257274, nil, nil, nil, 1, 8)
 
---local timerAvastyeCD				= mod:NewCDTimer(13, 257316, nil, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON)
+--local timerAvastyeCD				= mod:NewCDTimer(13, 257316, nil, nil, nil, 1, nil, DBM_CORE_Translations.DAMAGE_ICON)
 --local timerSwiftwindSaberCD			= mod:NewCDTimer(15.8, 257316, nil, nil, nil, 3)
 
 function mod:OnCombatStart(delay)

@@ -49,7 +49,7 @@ local timerFlameExhaustsCD			= mod:NewCDTimer(12.1, 277598, nil, nil, nil, 3)
 local timerSiegeUpCD				= mod:NewCDTimer(84.5, 271223, nil, nil, nil, 6)--84.5-86.2
 --Siege
 local timerSiegeUp					= mod:NewBuffActiveTimer(64, 271223, nil, nil, nil, 6)--64-66
-local timerDemoCannonCD				= mod:NewCDTimer(5.8, 271246, nil, false, nil, 5, nil, DBM_CORE_HEALER_ICON)
+local timerDemoCannonCD				= mod:NewCDTimer(5.8, 271246, nil, false, nil, 5, nil, DBM_CORE_Translations.HEALER_ICON)
 
 mod:AddRangeFrameOption(8, 271192)
 mod:AddNamePlateOption("NPAuraOnSentry", 271783)

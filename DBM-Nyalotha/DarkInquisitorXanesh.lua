@@ -43,7 +43,7 @@ local specWarnTorment						= mod:NewSpecialWarningDodgeCount(306208, nil, nil, n
 local specWarnTerrorWave					= mod:NewSpecialWarningInterruptCount(316211, "HasInterrupt", nil, nil, 1, 2)
 local specWarnGTFO							= mod:NewSpecialWarningGTFO(270290, nil, nil, nil, 1, 8)
 
-local timerAbyssalStrikeCD					= mod:NewCDTimer(40, 311551, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON, nil, 2, 3)--42.9-47
+local timerAbyssalStrikeCD					= mod:NewCDTimer(40, 311551, nil, "Tank", nil, 5, nil, DBM_CORE_Translations.TANK_ICON, nil, 2, 3)--42.9-47
 local timerVoidRitualCD						= mod:NewNextCountTimer(79.7, 312336, nil, nil, nil, 5, nil, nil, nil, 1, 4)
 local timerSoulFlayCD						= mod:NewCDCountTimer(57, 306319, nil, nil, nil, 3)--57 but will spell queue behind other spells
 local timerTormentCD						= mod:NewNextCountTimer(46.5, 306208, nil, nil, nil, 3, nil, nil, nil, 3, 4)
@@ -53,7 +53,7 @@ local berserkTimer							= mod:NewBerserkTimer(600)
 mod:AddInfoFrameOption(312406, true)
 mod:AddSetIconOption("SetIconOnVoidWoken2", 312406, false, false, {1, 2, 3})
 mod:AddSetIconOption("SetIconOnAdds", "ej21227", true, true, {4, 5, 6, 7, 8})
-mod:AddMiscLine(DBM_CORE_OPTION_CATEGORY_DROPDOWNS)
+mod:AddMiscLine(DBM_CORE_Translations.OPTION_CATEGORY_DROPDOWNS)
 mod:AddDropdownOption("InterruptBehavior", {"Four", "Five", "Six", "NoReset"}, "Four", "misc")
 
 mod.vb.ritualCount = 0

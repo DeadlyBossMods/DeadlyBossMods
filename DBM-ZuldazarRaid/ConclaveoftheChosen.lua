@@ -56,10 +56,10 @@ local warnAkundasWrath					= mod:NewTargetAnnounce(286811, 2)
 local warnBwonsamdisWrath				= mod:NewTargetNoFilterAnnounce(284663, 4, nil, false, 2)--Spammy latter fight, opt in, not opt out
 
 --General
-local specWarnActivated					= mod:NewSpecialWarningSwitchCount(118212, "Tank", DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch:format(118212), nil, 3, 2)
+local specWarnActivated					= mod:NewSpecialWarningSwitchCount(118212, "Tank", DBM_CORE_Translations.AUTO_SPEC_WARN_OPTIONS.switch:format(118212), nil, 3, 2)
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 8)
 --Pa'ku's Aspect
-local specWarnHasteningWinds			= mod:NewSpecialWarningCount(285945, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.stack:format(12, 270447), nil, 1, 2)
+local specWarnHasteningWinds			= mod:NewSpecialWarningCount(285945, nil, DBM_CORE_Translations.AUTO_SPEC_WARN_OPTIONS.stack:format(12, 270447), nil, 1, 2)
 local specWarnHasteningWindsOther		= mod:NewSpecialWarningTaunt(285945, nil, nil, nil, 1, 2)--Should be dispelled vs tank swapped, but in super low case a 10 man group has no dispeller, we need tank warning
 local specWarnPakusWrath				= mod:NewSpecialWarningMoveTo(282107, nil, nil, nil, 3, 2)
 --Gonk's Aspect
@@ -95,19 +95,19 @@ local specWarnBwonsamdisWrathDispel		= mod:NewSpecialWarningDispel(284663, "Remo
 --Pa'ku's Aspect
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(19013))
 local timerGiftofWindCD					= mod:NewCDTimer(31.6, 282098, nil, nil, nil, 2)
-local timerPakusWrathCD					= mod:NewCDCountTimer(60, 282107, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON, nil, 1, 5)
+local timerPakusWrathCD					= mod:NewCDCountTimer(60, 282107, nil, nil, nil, 2, nil, DBM_CORE_Translations.DEADLY_ICON, nil, 1, 5)
 --Gonk's Aspect
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(19016))
-local timerCrawlingHexCD				= mod:NewCDTimer(25.4, 282135, nil, nil, nil, 3, nil, DBM_CORE_CURSE_ICON)
-local timerRaptorFormCD					= mod:NewCDTimer(15.8, 285889, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--15.8-17
-local timerGonksWrathCD					= mod:NewCDTimer(60, 282155, nil, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON)
+local timerCrawlingHexCD				= mod:NewCDTimer(25.4, 282135, nil, nil, nil, 3, nil, DBM_CORE_Translations.CURSE_ICON)
+local timerRaptorFormCD					= mod:NewCDTimer(15.8, 285889, nil, "Tank", nil, 5, nil, DBM_CORE_Translations.TANK_ICON)--15.8-17
+local timerGonksWrathCD					= mod:NewCDTimer(60, 282155, nil, nil, nil, 1, nil, DBM_CORE_Translations.DAMAGE_ICON)
 --Kimbul's Aspect
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(19021))
-local timerLaceratingClawsCD			= mod:NewCDTimer(26.8, 282444, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--26.8-31.6
+local timerLaceratingClawsCD			= mod:NewCDTimer(26.8, 282444, nil, "Tank", nil, 5, nil, DBM_CORE_Translations.TANK_ICON)--26.8-31.6
 local timerKinbulsWrathCD				= mod:NewCDTimer(60, 282834, nil, nil, nil, 3)
 --Akunda's Aspect
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(19024))
-local timerThunderingStormCD			= mod:NewCDTimer(19.5, 282411, nil, "Melee", nil, 3, nil, DBM_CORE_TANK_ICON)
+local timerThunderingStormCD			= mod:NewCDTimer(19.5, 282411, nil, "Melee", nil, 3, nil, DBM_CORE_Translations.TANK_ICON)
 local timerMindWipeCD					= mod:NewCDTimer(33.7, 285878, nil, nil, nil, 3)
 local timerAkundasWrathCD				= mod:NewCDTimer(60, 283685, nil, nil, nil, 3)
 --Krag'wa
@@ -115,7 +115,7 @@ mod:AddTimerLine(DBM:EJ_GetSectionInfo(19193))
 local timerKragwasWrathCD				= mod:NewCDTimer(49.8, 282636, nil, nil, nil, 3, nil, nil, nil, 3, 3)
 --Bwonsamdi
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(19195))
-local timerBwonsamdisWrathCD			= mod:NewCDCountTimer(50, 284666, nil, nil, nil, 3, nil, DBM_CORE_CURSE_ICON..DBM_CORE_HEALER_ICON)
+local timerBwonsamdisWrathCD			= mod:NewCDCountTimer(50, 284666, nil, nil, nil, 3, nil, DBM_CORE_Translations.CURSE_ICON..DBM_CORE_Translations.HEALER_ICON)
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
 
@@ -150,7 +150,7 @@ function mod:OnCombatStart(delay)
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
 	if self.Options.InfoFrame then
-		DBM.InfoFrame:SetHeader(DBM_CORE_INFOFRAME_POWER)
+		DBM.InfoFrame:SetHeader(DBM_CORE_Translations.INFOFRAME_POWER)
 		DBM.InfoFrame:Show(4, "enemypower", 2)
 	end
 	if self:IsHard() then

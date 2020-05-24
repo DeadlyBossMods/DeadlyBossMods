@@ -52,7 +52,7 @@ local specWarnCowerNear							= mod:NewSpecialWarningClose(329370, nil, nil, nil
 
 --Stage One - Thirst for Blood
 --mod:AddTimerLine(BOSS)
-local timerExsanguinatingBiteCD					= mod:NewAITimer(16.6, 328857, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_TANK_ICON, nil, 2, 3)
+local timerExsanguinatingBiteCD					= mod:NewAITimer(16.6, 328857, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_Translations.TANK_ICON, nil, 2, 3)
 local timerBloodSpikesCD						= mod:NewAITimer(44.3, 329386, nil, nil, nil, 3)
 local timerStoneClawsCD							= mod:NewAITimer(44.3, 329382, nil, nil, nil, 3)
 --Stage Two - Terror of Castle Nathria
@@ -74,7 +74,7 @@ function mod:OnCombatStart(delay)
 --	end
 --	berserkTimer:Start(-delay)--Confirmed normal and heroic
 	if self.Options.InfoFrame then
-		DBM.InfoFrame:SetHeader(DBM_CORE_INFOFRAME_POWER)
+		DBM.InfoFrame:SetHeader(DBM_CORE_Translations.INFOFRAME_POWER)
 		DBM.InfoFrame:Show(2, "enemypower", 1)--ALTERNATE_POWER_INDEX?
 	end
 end

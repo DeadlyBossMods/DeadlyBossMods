@@ -28,7 +28,7 @@ local timerSpitAcidCD				= mod:NewNextTimer(20, 141013)--Nibbleh
 local timerEightChompsCD			= mod:NewCDTimer(8.5, 142788, nil, nil, nil, 3)--Mecha-Bruce
 local timerBetterStrongerFasterCD	= mod:NewCDTimer(20, 142795)--Mecha-Bruce
 local timerStasisBeamCD				= mod:NewCDTimer(19.4, 142769, nil, nil, nil, 3)--Mecha-Bruce
-local timerDisrobingStrikeCD		= mod:NewCDTimer(8.4, 282081, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)--Robe-Robber Robert
+local timerDisrobingStrikeCD		= mod:NewCDTimer(8.4, 282081, nil, nil, nil, 4, nil, DBM_CORE_Translations.INTERRUPT_ICON)--Robe-Robber Robert
 
 local brawlersMod = DBM:GetModByName("Brawlers")
 
