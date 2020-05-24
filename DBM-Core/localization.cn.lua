@@ -342,11 +342,11 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS.moveto				= "%s - 移动到 >%%s<"
 
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.you				= "警报：中了%s时"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target			= "警报：$spell:%s的目标"
-DBM_CORE_AUTO_ANNOUNCE_OPTIONStargetNF			= "警报：$spell:%s的目标(忽略全局目标过滤器)",
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.targetNF			= "警报：$spell:%s的目标(忽略全局目标过滤器)"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.targetsource		= "警报：$spell:%s的目标(带来源)"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.targetcount		= "警报：$spell:%s的目标(带计数)"
-DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell			= "警报：$spell:%s"
-DBM_CORE_AUTO_ANNOUNCE_OPTIONS.ends				= "警报：$spell:%s结束"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell			= "警报：$spell:%s",
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.ends				= "警报：$spell:%s束"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.endtarget		= "警报：$spell:%s结束"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.fades			= "警报：$spell:%s消失"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.adds				= "警报：$spell:%s剩余数量"
