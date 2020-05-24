@@ -11234,7 +11234,7 @@ end
 function bossModPrototype:AddOptionSpacer(cat)
 	cat = cat or "misc"
 	if self.optionCategories[cat] then
-		tinsert(self.optionCategories[cat], L.OPTION_SPACER)
+		tinsert(self.optionCategories[cat], DBM_OPTION_SPACER)
 	end
 end
 
