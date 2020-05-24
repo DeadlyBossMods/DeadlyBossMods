@@ -1008,16 +1008,6 @@ function barPrototype:Update(elapsed)
 	local colorCount = self.colorType
 	local enlargeHack = (self.dummyEnlarge or colorCount == 7 and barOptions.Bar7ForceLarge) and true or false
 	local enlargeTime = barOptions.EnlargeBarTime or 11
-	local shouldBeEnlarged = timerValue <= enlargeTime
-	--Begin ugly check to auto correct user bars to the correct anchor when user toggles "Always Use Huge Bar" option for them
-	if self.enlarged and not shouldBeEnlarged and not enlargeHack then
-		self.enlarged = false
-		self:ApplyStyle()
-	elseif not self.enlarged and enlargeHack then
-		self.enlarged = true
-		self:ApplyStyle()
-	end
-	--End ugly check to auto correct user bars to the correct anchor when user toggles "Always Use Huge Bar" option for them
 	local isEnlarged = self.enlarged
 	local fillUpBars = isEnlarged and barOptions.FillUpLargeBars or not isEnlarged and barOptions.FillUpBars
 	local ExpandUpwards = isEnlarged and barOptions.ExpandUpwardsLarge or not isEnlarged and barOptions.ExpandUpwards
@@ -1211,7 +1201,7 @@ function barPrototype:Update(elapsed)
 		obj.hugeBars:Append(self)
 		self:ApplyStyle()
 	end
-	if shouldBeEnlarged and not self.small and not isEnlarged and isMoving ~= "enlarge" and obj:GetOption("HugeBarsEnabled") then
+	if (timerValue <= enlargeTime) and not self.small and not isEnlarged and isMoving ~= "enlarge" and obj:GetOption("HugeBarsEnabled") then
 		self:RemoveFromList()
 		self:Enlarge()
 	end
