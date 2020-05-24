@@ -37,13 +37,13 @@ globals = {
 	"Plater",
 
 	-- DBM
+	"DBM_CORE_Translations",
 	"DBM_GUI_Bosses",
 	"DBM_GUI_Frame",
 	"DBM_GUI_Options",
 	"DBM_GUI_OptionsFrame",
 	"DBM_GUI_OptionsFrameBossMods",
 	"DBM_GUI_OptionsFramePanelContainer",
-	"DBM_GUI_OptionsFramePanelContainerFOV",
 	"DBM_GUI_Translations",
 	"DBM_GUI",
 	"DBM",
@@ -63,7 +63,6 @@ globals = {
 
 	-- FrameXML misc
 	"ALTERNATE_POWER_INDEX",
-	"BackdropTemplateMixin",
 	"BNET_CLIENT_WOW",
 	"CHALLENGE_MODE_MEDAL1",
 	"CHALLENGE_MODE_MEDAL2",

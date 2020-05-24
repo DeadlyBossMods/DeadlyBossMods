@@ -1298,7 +1298,7 @@ do
 			end
 			if GetAddOnEnableState(playerName, "DBM-Profiles") >= 1 then
 				self:Disable(true)
-				C_TimerAfter(15, function() AddMsg(self, L.3RDPROFILES) end)
+				C_TimerAfter(15, function() AddMsg(self, L.OUTDATEDPROFILES) end)
 				return
 			end
 			if GetAddOnEnableState(playerName, "DPMCore") >= 1 then
@@ -2601,7 +2601,7 @@ do
 			return
 		end
 		if GetAddOnEnableState(playerName, "DBM-Profiles") >= 1 then
-			self:AddMsg(L.3RDPROFILES)
+			self:AddMsg(L.OUTDATEDPROFILES)
 			return
 		end
 		if GetAddOnEnableState(playerName, "DPMCore") >= 1 then
