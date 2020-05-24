@@ -1552,6 +1552,9 @@ end
 function barPrototype:SetPosition()
 	if self.moving == "enlarge" then return end
 	local anchor = (self.prev and self.prev.frame) or (self.enlarged and self.owner.secAnchor) or self.owner.mainAnchor
+	if anchor:GetName() == self.frame:GetName() then
+		anchor = self.owner.mainAnchor
+	end
 	local Enlarged = self.enlarged
 	local ExpandUpwards = Enlarged and self.owner.options.ExpandUpwardsLarge or not Enlarged and self.owner.options.ExpandUpwards
 	self.frame:ClearAllPoints()
@@ -1565,6 +1568,9 @@ end
 function barPrototype:MoveToNextPosition()
 	if self.moving == "enlarge" then return end
 	local newAnchor = (self.prev and self.prev.frame) or (self.enlarged and self.owner.secAnchor) or self.owner.mainAnchor
+	if newAnchor:GetName() == self.frame:GetName() then
+		newAnchor = self.owner.mainAnchor
+	end
 	local oldX = self.frame:GetRight() - self.frame:GetWidth()/2
 	local oldY = self.frame:GetTop()
 	local Enlarged = self.enlarged
@@ -1594,6 +1600,9 @@ end
 
 function barPrototype:Enlarge()
 	local newAnchor = (self.owner.hugeBars.last and self.owner.hugeBars.last.frame) or self.owner.secAnchor
+	if newAnchor:GetName() == self.frame:GetName() then
+		newAnchor = self.owner.secAnchor
+	end
 	local oldX = self.frame:GetRight() - self.frame:GetWidth()/2
 	local oldY = self.frame:GetTop()
 	local Enlarged = self.enlarged
