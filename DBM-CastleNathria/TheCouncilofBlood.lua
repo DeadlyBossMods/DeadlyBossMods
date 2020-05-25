@@ -78,20 +78,28 @@ local yellDarkRecitalRepeater					= mod:NewPosYell(331634, DBM_CORE_L.AUTO_YELL_
 local specWarnDanseMacabre						= mod:NewSpecialWarningSpell(331005, nil, nil, nil, 3, 2)
 
 --Castellan Niklaus
---mod:AddTimerLine(BOSS)
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(22147))
 local timerTacticalAdvanceCD					= mod:NewAITimer(44.3, 328334, nil, nil, nil, 3)
 local timerUnyieldingGuardCD					= mod:NewAITimer(44.3, 327828, nil, nil, nil, 5, nil, DBM_CORE_L.DAMAGE_ICON)
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(22201))
 local timerUnstoppableChargeCD					= mod:NewAITimer(44.3, 330963, nil, nil, nil, 3)
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(22199))
 local timerCastellansCadreCD					= mod:NewAITimer(44.3, 330965, nil, nil, nil, 1)
 --Baroness Frieda
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(22148))
 local timerDrainEssenceCD						= mod:NewAITimer(16.6, 327052, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)--, nil, 2, 3
 --local timerAnimaFountainCD					= mod:NewAITimer(44.3, 327475, nil, nil, nil, 3)
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(22202))
 local timerScarletLetterCD						= mod:NewAITimer(44.3, 331706, nil, nil, nil, 3)
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(22205))
 local timerDredgerServantsCD					= mod:NewAITimer(44.3, 330978, nil, nil, nil, 1)
 --Lord Stavros
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(22149))
 local timerEvasiveLungeCD						= mod:NewAITimer(16.6, 327497, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)
 local timerWaltzofBloodCD						= mod:NewAITimer(44.3, 327616, nil, nil, nil, 3)
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(22203))
 local timerDarkRecitalCD						= mod:NewAITimer(44.3, 331634, nil, nil, nil, 3)
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(22206))
 local timerDancingFoolsCD						= mod:NewAITimer(44.3, 330964, nil, nil, nil, 1)
 
 --local berserkTimer							= mod:NewBerserkTimer(600)
@@ -136,7 +144,7 @@ end
 
 local function warndarkRecitalTargets(self)
 	--if not self:IsMythic() then
-		warndarkRecital:Show(table.concat(darkRecitalTargets, "<, >"))
+		warnDarkRecital:Show(table.concat(darkRecitalTargets, "<, >"))
 	--end
 	table.wipe(darkRecitalTargets)
 end
