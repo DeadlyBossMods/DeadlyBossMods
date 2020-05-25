@@ -25,7 +25,7 @@ function DBM_GUI_OptionsFrame:UpdateMenuFrame()
 	else
 		_G[listFrame:GetName() .. "ListScrollBar"]:SetValue(0)
 	end
-	if DBM_GUI_OptionsFrameBossMods.selection then
+	if listFrame.selection then
 		DBM_GUI_OptionsFrame:ClearSelection()
 	end
 	local offset = listFrame.offset or 0
@@ -73,8 +73,18 @@ function DBM_GUI_OptionsFrame:SelectButton(button)
 end
 
 function DBM_GUI_OptionsFrame:DisplayFrame(frame, forceChange)
-	if not (type(frame) == "table" and type(frame[0]) == "userdata") or select("#", frame:GetChildren()) == 0 then
+	if select("#", frame:GetChildren()) == 0 then
 		return
+	end
+	local frameHeight = frame.initheight or 20
+	for _, child in pairs({ frame:GetChildren() }) do
+		if child.mytype == "area" and child.myheight then
+			frameHeight = frameHeight + child.myheight
+		elseif child.mytype == "area" then
+			frameHeight = frameHeight + child:GetHeight() + 20
+		elseif child.myheight then
+			frameHeight = frameHeight + child.myheight
+		end
 	end
 	local container = _G[self:GetName() .. "PanelContainer"]
 	local changed = forceChange or container.displayedFrame ~= frame
@@ -84,37 +94,34 @@ function DBM_GUI_OptionsFrame:DisplayFrame(frame, forceChange)
 	container.displayedFrame = frame
 	DBM_GUI_OptionsFramePanelContainerHeaderText:SetText(frame.displayName)
 	DBM_GUI_DropDown:Hide()
-	local mymax = (frame.actualHeight or frame:GetHeight()) - container:GetHeight()
+	local mymax = frameHeight - container:GetHeight()
 	if mymax <= 0 then
 		mymax = 0
 	end
 	local FOV = _G[container:GetName() .. "FOV"]
+	FOV:SetScrollChild(frame)
+	FOV:Show()
+	frame:Show()
+	local scrollBar = _G[FOV:GetName() .. "ScrollBar"]
 	if mymax > 0 then
-		FOV:SetScrollChild(frame)
-		FOV:Show()
-		local scrollBar = _G[FOV:GetName() .. "ScrollBar"]
+		scrollBar:Show()
 		scrollBar:SetMinMaxValues(0, mymax)
 		if changed then
 			scrollBar:SetValue(0)
 		end
-		local width = container:GetWidth() - 30
-		for i = 1, select("#", frame:GetChildren()) do
-			local child = select(i, frame:GetChildren())
+		for _, child in pairs({ frame:GetChildren() }) do
 			if child.mytype == "area" then
-				child:SetWidth(width)
+				child:SetPoint("TOPRIGHT", scrollBar, "TOPLEFT", -5, 0)
 			end
 		end
 	else
-		FOV:Hide()
-		local width = container:GetWidth() - 10
-		for i = 1, select("#", frame:GetChildren()) do
-			local child = select(i, frame:GetChildren())
+		scrollBar:Hide()
+		for _, child in pairs({ frame:GetChildren() }) do
 			if child.mytype == "area" then
-				child:SetWidth(width)
+				child:SetPoint("TOPRIGHT", DBM_GUI_OptionsFramePanelContainerFOV, "TOPRIGHT", -5, 0)
 			end
 		end
 	end
-	frame:Show()
 	if DBM.Options.EnableModels then
 		if not DBM_BossPreview then
 			local mobstyle = CreateFrame("PlayerModel", "DBM_BossPreview", DBM_GUI_OptionsFramePanelContainer)

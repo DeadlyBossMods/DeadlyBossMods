@@ -5,9 +5,9 @@
 -- Last update: 2020/05/22
 
 if GetLocale() ~= "zhCN" then return end
-if not DBM_GUI_Translations then DBM_GUI_Translations = {} end
+if not DBM_GUI_L then DBM_GUI_L = {} end
 
-local L = DBM_GUI_Translations
+local L = DBM_GUI_L
 
 L.MainFrame 				= "Deadly Boss Mods"
 

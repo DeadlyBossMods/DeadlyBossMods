@@ -1,6 +1,6 @@
-DBM_GUI_Translations = {}
+DBM_GUI_L = {}
 
-local L = DBM_GUI_Translations
+local L = DBM_GUI_L
 
 L.MainFrame = "Deadly Boss Mods"
 
