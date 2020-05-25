@@ -414,6 +414,15 @@ local bar7OptionsText = BarColors:CreateText(L.Bar7Header, 405, nil, nil, "LEFT"
 bar7OptionsText:SetPoint("TOPLEFT", color2Type7text, "TOPLEFT", 150, 0)
 local forceLarge = BarColors:CreateCheckButton(L.Bar7ForceLarge, false, nil, nil, "Bar7ForceLarge")
 forceLarge:SetPoint("TOPLEFT", bar7OptionsText, "BOTTOMLEFT")
+forceLarge:SetScript("OnClick", function(self)
+	DBM.Bars:SetOption("Bar7ForceLarge", not DBM.Bars:GetOption("Bar7ForceLarge"))
+	if DBM.Bars:GetOption("Bar7ForceLarge") then
+		dummybarcolor7.enlarged = true
+	else
+		dummybarcolor7.enlarged = false
+	end
+	dummybarcolor7:ApplyStyle()
+end)
 local customInline = BarColors:CreateCheckButton(L.Bar7CustomInline, false, nil, nil, "Bar7CustomInline")
 customInline:SetPoint("TOPLEFT", forceLarge, "BOTTOMLEFT")
 customInline:SetScript("OnClick", function(self)

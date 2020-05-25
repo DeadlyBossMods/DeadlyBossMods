@@ -5,6 +5,7 @@
 -- Last update: 2020/02/07
 
 if GetLocale() ~= "zhCN" then return end
+if not DBM_CORE_L then DBM_CORE_L = {} end
 
 local L = DBM_CORE_L
 

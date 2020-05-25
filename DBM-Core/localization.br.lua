@@ -1,5 +1,6 @@
 ﻿-- Last update by GlitterStorm @ Azralon on Feb,28th,2015
 if GetLocale() ~= "ptBR" then return end
+if not DBM_CORE_L then DBM_CORE_L = {} end
 
 local L = DBM_CORE_L
 
