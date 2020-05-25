@@ -28,9 +28,9 @@ local specWarnMightofMaldraxxus		= mod:NewSpecialWarningDodge(320050, nil, nil, 
 local specWarnBloodandGlory			= mod:NewSpecialWarningYou(320102, nil, nil, nil, 1, 2)
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(257274, nil, nil, nil, 1, 8)
 
-local timerBrutalComboCD			= mod:NewAITimer(13, 320644, nil, nil, nil, 1, nil, DBM_CORE_TANK_ICON)
-local timerMightofMaldraxxusCD		= mod:NewAITimer(15.8, 320050, nil, nil, nil, 6, nil, DBM_CORE_DEADLY_ICON)
-local timerBloodandGloryCD			= mod:NewAITimer(15.8, 320102, nil, nil, nil, 3, nil, DBM_CORE_DAMAGE_ICON)
+local timerBrutalComboCD			= mod:NewAITimer(13, 320644, nil, nil, nil, 1, nil, DBM_CORE_L.TANK_ICON)
+local timerMightofMaldraxxusCD		= mod:NewAITimer(15.8, 320050, nil, nil, nil, 6, nil, DBM_CORE_L.DEADLY_ICON)
+local timerBloodandGloryCD			= mod:NewAITimer(15.8, 320102, nil, nil, nil, 3, nil, DBM_CORE_L.DAMAGE_ICON)
 
 mod.vb.MightCount = 0
 

@@ -42,10 +42,10 @@ local specWarnSpreadingEpidemic			= mod:NewSpecialWarningMoveAway(279663, nil, n
 local yellSpreadingEpidemic				= mod:NewYell(279663)
 
 --mod:AddTimerLine(Nexus)
-local timerSanitizingStrikeCD			= mod:NewNextTimer(23.1, 267787, 191540, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON, nil, 2, 3)--Short name "Strike"
-local timerPurifyingFlameCD				= mod:NewNextTimer(20.1, 267795, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON, nil, 1, 3)
+local timerSanitizingStrikeCD			= mod:NewNextTimer(23.1, 267787, 191540, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON, nil, 2, 3)--Short name "Strike"
+local timerPurifyingFlameCD				= mod:NewNextTimer(20.1, 267795, nil, nil, nil, 3, nil, DBM_CORE_L.DEADLY_ICON, nil, 1, 3)
 local timerWindTunnelCD					= mod:NewNextTimer(39.5, 267945, nil, nil, nil, 2)
-local timerSurgicalBeamCD				= mod:NewCDSourceTimer(30, 269827, 143444, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON, nil, 3, 3)--Shortname "Laser"
+local timerSurgicalBeamCD				= mod:NewCDSourceTimer(30, 269827, 143444, nil, nil, 3, nil, DBM_CORE_L.DEADLY_ICON, nil, 3, 3)--Shortname "Laser"
 local timerCleansingFlameCD				= mod:NewCastSourceTimer(180, 268095, nil, nil, nil, 6)
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
@@ -83,27 +83,27 @@ local function updateAllTimers(self, ICD)
 	end
 	if self.vb.phase >= 2 then
 		if self:IsMythic() then
-			if timerSurgicalBeamCD:GetRemaining(DBM_CORE_BOTH) < ICD then
-				local elapsed, total = timerSurgicalBeamCD:GetTime(DBM_CORE_BOTH)
+			if timerSurgicalBeamCD:GetRemaining(DBM_CORE_L.BOTH) < ICD then
+				local elapsed, total = timerSurgicalBeamCD:GetTime(DBM_CORE_L.BOTH)
 				local extend = ICD - (total-elapsed)
 				DBM:Debug("timerSurgicalBeamCD BOTH extended by: "..extend, 2)
 				timerSurgicalBeamCD:Stop()
-				timerSurgicalBeamCD:Update(elapsed, total+extend, DBM_CORE_BOTH)
+				timerSurgicalBeamCD:Update(elapsed, total+extend, DBM_CORE_L.BOTH)
 			end
 		else
-			if (self.vb.nextLaser == 1) and timerSurgicalBeamCD:GetRemaining(DBM_CORE_SIDE) < ICD then
-				local elapsed, total = timerSurgicalBeamCD:GetTime(DBM_CORE_SIDE)
+			if (self.vb.nextLaser == 1) and timerSurgicalBeamCD:GetRemaining(DBM_CORE_L.SIDE) < ICD then
+				local elapsed, total = timerSurgicalBeamCD:GetTime(DBM_CORE_L.SIDE)
 				local extend = ICD - (total-elapsed)
 				DBM:Debug("timerSurgicalBeamCD SIDE extended by: "..extend, 2)
 				timerSurgicalBeamCD:Stop()
-				timerSurgicalBeamCD:Update(elapsed, total+extend, DBM_CORE_SIDE)
+				timerSurgicalBeamCD:Update(elapsed, total+extend, DBM_CORE_L.SIDE)
 			end
-			if (self.vb.nextLaser == 2) and timerSurgicalBeamCD:GetRemaining(DBM_CORE_TOP) < ICD then
-				local elapsed, total = timerSurgicalBeamCD:GetTime(DBM_CORE_TOP)
+			if (self.vb.nextLaser == 2) and timerSurgicalBeamCD:GetRemaining(DBM_CORE_L.TOP) < ICD then
+				local elapsed, total = timerSurgicalBeamCD:GetTime(DBM_CORE_L.TOP)
 				local extend = ICD - (total-elapsed)
 				DBM:Debug("timerSurgicalBeamCD TOP extended by: "..extend, 2)
 				timerSurgicalBeamCD:Stop()
-				timerSurgicalBeamCD:Update(elapsed, total+extend, DBM_CORE_TOP)
+				timerSurgicalBeamCD:Update(elapsed, total+extend, DBM_CORE_L.TOP)
 			end
 		end
 	end
@@ -162,7 +162,7 @@ function mod:OnCombatStart(delay)
 	timerPurifyingFlameCD:Start(10.8-delay)
 	timerWindTunnelCD:Start(20.6-delay)
 	if self.Options.InfoFrame then
-		DBM.InfoFrame:SetHeader(DBM_CORE_INFOFRAME_POWER)
+		DBM.InfoFrame:SetHeader(DBM_CORE_L.INFOFRAME_POWER)
 		DBM.InfoFrame:Show(5, "function", updateInfoFrame, false, false)
 	end
 	if self:AntiSpam(3, 1) then
@@ -218,32 +218,32 @@ function mod:SPELL_CAST_SUCCESS(args)
 		updateAllTimers(self, 5.6)
 	elseif spellId == 269827 or spellId == 277973 or spellId == 277961 or spellId == 277742 then
 		if self:IsMythic() then--All the things
-			specWarnSurgicalBeam:Show(DBM_CORE_BOTH)
+			specWarnSurgicalBeam:Show(DBM_CORE_L.BOTH)
 			if self.vb.phase == 3 then
-				timerSurgicalBeamCD:Start(20.5, DBM_CORE_BOTH)--20, but almost always delayed by ICD
+				timerSurgicalBeamCD:Start(20.5, DBM_CORE_L.BOTH)--20, but almost always delayed by ICD
 			else
-				timerSurgicalBeamCD:Start(50, DBM_CORE_BOTH)--50, but often delayed by ICD
+				timerSurgicalBeamCD:Start(50, DBM_CORE_L.BOTH)--50, but often delayed by ICD
 			end
 			updateAllTimers(self, 8.5)
 		elseif self:IsEasy() then--Only side
-			specWarnSurgicalBeam:Show(DBM_CORE_SIDE)
-			timerSurgicalBeamCD:Start(30, DBM_CORE_SIDE)--30-31
+			specWarnSurgicalBeam:Show(DBM_CORE_L.SIDE)
+			timerSurgicalBeamCD:Start(30, DBM_CORE_L.SIDE)--30-31
 			self.vb.nextLaser = 1
 			updateAllTimers(self, 8.5)
 		else--Heroic (alternating)
 			if spellId == 277961 or spellId == 277742 or spellId == 269827 then--Top spellIds
-				specWarnSurgicalBeam:Show(DBM_CORE_TOP)
+				specWarnSurgicalBeam:Show(DBM_CORE_L.TOP)
 				--Next Beam side
-				timerSurgicalBeamCD:Start(11, DBM_CORE_SIDE)--Usually delayed, but yes it's 11
+				timerSurgicalBeamCD:Start(11, DBM_CORE_L.SIDE)--Usually delayed, but yes it's 11
 				self.vb.nextLaser = 1
 				updateAllTimers(self, 10.9)--Top down beams on non mythic granted even MORE extend
 			else--Sides (277973 all)
-				specWarnSurgicalBeam:Show(DBM_CORE_SIDE)
+				specWarnSurgicalBeam:Show(DBM_CORE_L.SIDE)
 				self.vb.nextLaser = 2
 				if self.vb.phase == 3 then
-					timerSurgicalBeamCD:Start(24, DBM_CORE_TOP)
+					timerSurgicalBeamCD:Start(24, DBM_CORE_L.TOP)
 				else--TODO, confirm it's 29 here and not just always delayed by 6/5 second ICD (I'm even more confident it's 24 here too based on watching stream, think it's usually 30 cause of ICD)
-					timerSurgicalBeamCD:Start(29, DBM_CORE_TOP)
+					timerSurgicalBeamCD:Start(29, DBM_CORE_L.TOP)
 				end
 				updateAllTimers(self, 8.5)
 			end
@@ -279,15 +279,15 @@ function mod:SPELL_AURA_APPLIED(args)
 			--"<177.86 23:14:27> [CLEU] SPELL_AURA_APPLIED##nil#Creature-0-3019-1861-22695-137022-00000F4965#Chamber 02#269051#Cleansing Purge#BUFF#nil", -- [4372]
 			--"<183.09 23:14:32> [CLEU] SPELL_CAST_SUCCESS#Creature-0-3019-1861-22695-135452-00000F44FF#MOTHER##nil#277973#Uldir Defensive Beam#nil#nil", -- [4534]
 			if not self.vb.bossInICD then
-				timerSurgicalBeamCD:Start(5, DBM_CORE_SIDE)
+				timerSurgicalBeamCD:Start(5, DBM_CORE_L.SIDE)
 			else
-				timerSurgicalBeamCD:Start(10, DBM_CORE_SIDE)
+				timerSurgicalBeamCD:Start(10, DBM_CORE_L.SIDE)
 			end
 		elseif cid == 137023 then
 			self.vb.phase = 3
 			self.vb.nextLaser = 1
 			timerSurgicalBeamCD:Stop()--Resets, kinda
-			timerSurgicalBeamCD:Start(15, DBM_CORE_SIDE)--15 if delayed by nothing, but can be longer if flames ICD gets triggered
+			timerSurgicalBeamCD:Start(15, DBM_CORE_L.SIDE)--15 if delayed by nothing, but can be longer if flames ICD gets triggered
 			timerCleansingFlameCD:Start(time, 3)
 		end
 	elseif spellId == 279662 then

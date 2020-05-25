@@ -33,9 +33,9 @@ local specWarnBloodTorrent			= mod:NewSpecialWarningSpell(319702, nil, nil, nil,
 --local yellBlackPowder				= mod:NewYell(257314)
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(257274, nil, nil, nil, 1, 8)
 
-local timerStoneCallCD				= mod:NewCDTimer(37.6, 319733, nil, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON)--37.6-43.6
+local timerStoneCallCD				= mod:NewCDTimer(37.6, 319733, nil, nil, nil, 1, nil, DBM_CORE_L.DAMAGE_ICON)--37.6-43.6
 local timerStoneShatteringLeapCD	= mod:NewCDTimer(29, 319592, nil, nil, nil, 3)
-local timerCurseofStoneCD			= mod:NewCDTimer(29.1, 327411, nil, nil, nil, 3, nil, DBM_CORE_CURSE_ICON)
+local timerCurseofStoneCD			= mod:NewCDTimer(29.1, 327411, nil, nil, nil, 3, nil, DBM_CORE_L.CURSE_ICON)
 local timerBloodTorrentCD			= mod:NewCDTimer(16.9, 319702, nil, nil, nil, 2)--16.9 unless delayed by one of other casts
 
 mod:AddNamePlateOption("NPAuraOnStoneForm", 319724)

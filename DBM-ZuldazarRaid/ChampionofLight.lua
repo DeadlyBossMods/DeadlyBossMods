@@ -56,11 +56,11 @@ local specWarnGTFO						= mod:NewSpecialWarningGTFO(283582, nil, nil, nil, 1, 8)
 local specWarnPrayerfortheFallen		= mod:NewSpecialWarningSpell(287469, nil, nil, nil, 3, 2, 4)--Mythic
 
 mod:AddTimerLine(DBM_BOSS)
-local timerWaveofLightCD				= mod:NewCDTimer(10.5, 283598, nil, nil, nil, 3, nil, DBM_CORE_MAGIC_ICON)
+local timerWaveofLightCD				= mod:NewCDTimer(10.5, 283598, nil, nil, nil, 3, nil, DBM_CORE_L.MAGIC_ICON)
 local timerJudgmentRetCD				= mod:NewNextTimer(50.3, 283933, nil, nil, nil, 3, nil, nil, nil, 1, 5)
 local timerJudgmentReckoningCD			= mod:NewNextTimer(50.3, 284474, nil, nil, nil, 2, nil, nil, nil, 1, 5)
 --local timerCallToArmsCD					= mod:NewCDTimer(104.6, 283662, nil, nil, nil, 1)--Adds come with phase change, redundant
-local timerPrayerfortheFallenCD			= mod:NewCDTimer(50.2, 287469, nil, nil, nil, 2, nil, DBM_CORE_MYTHIC_ICON, nil, 2, 4)
+local timerPrayerfortheFallenCD			= mod:NewCDTimer(50.2, 287469, nil, nil, nil, 2, nil, DBM_CORE_L.MYTHIC_ICON, nil, 2, 4)
 mod:AddTimerLine(DBM_ADDS)
 local timerBlindingFaithCD				= mod:NewCDTimer(13.4, 284474, nil, nil, nil, 2)
 

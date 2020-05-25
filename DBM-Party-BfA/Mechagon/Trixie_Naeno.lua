@@ -35,10 +35,10 @@ local specWarnPedaltotheMetal		= mod:NewSpecialWarningDodge(298651, nil, nil, ni
 --local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 8)
 
 --Trixie "The Tech" Tazer
-local timerMegaTazeCD				= mod:NewCDTimer(40.1, 302682, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
+local timerMegaTazeCD				= mod:NewCDTimer(40.1, 302682, nil, nil, nil, 3, nil, DBM_CORE_L.DEADLY_ICON)
 --Naeno Megacrash
 local timerRoadKillCD				= mod:NewCDTimer(27, 298946, nil, nil, nil, 3)
-local timerBoltBusterCD				= mod:NewCDTimer(18.2, 298940, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerBoltBusterCD				= mod:NewCDTimer(18.2, 298940, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)
 local timerPedaltotheMetalCD		= mod:NewCDTimer(60, 298651, nil, nil, nil, 3)
 
 mod.vb.MetalCast = 0

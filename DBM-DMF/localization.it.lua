@@ -87,8 +87,3 @@ L:SetWarningLocalization({
 	specWarnCallPack		= "Chiamata del Branco - Corri > 40 m da Zannastrale!",
 	specWarnMoonfangCurse	= "Maledizione di Zannastrale - Corri > 10 m da Zannastrale!"
 })
-
-L:SetOptionLocalization({
-	specWarnCallPack		= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.run:format(144602),
-	specWarnMoonfangCurse	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.run:format(144590)
-})

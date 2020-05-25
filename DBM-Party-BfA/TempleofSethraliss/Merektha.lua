@@ -33,7 +33,7 @@ local specWarnKnotofSnakesYou		= mod:NewSpecialWarningYou(263958, nil, nil, nil,
 local yellKnotofSnakes				= mod:NewYell(263958)
 local specWarnGTFO					= mod:NewSpecialWarningGTFO(263927, nil, nil, nil, 1, 8)
 
-local timerHadotoxinCD				= mod:NewAITimer(13, 263957, nil, "Tank|Healer|RemovePoison", nil, 5, nil, DBM_CORE_TANK_ICON..DBM_CORE_POISON_ICON)
+local timerHadotoxinCD				= mod:NewAITimer(13, 263957, nil, "Tank|Healer|RemovePoison", nil, 5, nil, DBM_CORE_L.TANK_ICON..DBM_CORE_L.POISON_ICON)
 local timerNoxiousBreathCD			= mod:NewCDTimer(89.3, 272657, nil, nil, nil, 3)
 --local timerBlindingSandCD			= mod:NewCDTimer(51, 263914, nil, nil, nil, 2)
 --local timerHatchCD					= mod:NewCDTimer(43.9, 264239, nil, nil, nil, 1)--even need a CD bar or just cast bar?

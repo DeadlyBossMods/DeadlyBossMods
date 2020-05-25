@@ -48,14 +48,14 @@ local timerSmolderingHeatCD			= mod:NewCDTimer(20, 142400)--Anthracite
 local timerCooled					= mod:NewTargetTimer(20, 141371, nil, nil, nil, 6)--Anthracite
 local timerRockpaperScissorsCD		= mod:NewCDTimer(42, 141206, nil, nil, nil, 6)--Ro-Shambo
 local timerPowerCrystalCD			= mod:NewCDTimer(13, 133398)--Millhouse Manastorm
-local timerBlueCrushCD				= mod:NewCDTimer(19.4, 133262, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)--Epicus Maximus
+local timerBlueCrushCD				= mod:NewCDTimer(19.4, 133262, nil, nil, nil, 4, nil, DBM_CORE_L.INTERRUPT_ICON)--Epicus Maximus
 local timerDestructolaserCD			= mod:NewNextTimer(30, 133250, nil, nil, nil, 3)--Epicus Maximus
-local timerConsumeEssenceCD			= mod:NewCDTimer(22.3, 294665, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)--Xan-Sallish
+local timerConsumeEssenceCD			= mod:NewCDTimer(22.3, 294665, nil, nil, nil, 4, nil, DBM_CORE_L.INTERRUPT_ICON)--Xan-Sallish
 
 mod:AddBoolOption("ArrowOnBoxing")--Ro-Shambo
 
 local brawlersMod = DBM:GetModByName("Brawlers")
-local lastRPS = DBM_CORE_UNKNOWN
+local lastRPS = DBM_CORE_L.UNKNOWN
 
 --"<39.8 01:37:33> [CHAT_MSG_RAID_BOSS_EMOTE] CHAT_MSG_RAID_BOSS_EMOTE#|TInterface\\Icons\\inv_inscription_scroll.blp:20|t %s Chooses |cFFFF0000Paper|r! You |cFF00FF00Win|r!#Ro-Shambo
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
@@ -69,7 +69,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 end
 
 brawlersMod:OnMatchStart(function()
-	lastRPS = DBM_CORE_UNKNOWN
+	lastRPS = DBM_CORE_L.UNKNOWN
 end)
 
 function mod:SPELL_AURA_APPLIED(args)

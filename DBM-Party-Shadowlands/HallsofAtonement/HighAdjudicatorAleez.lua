@@ -34,7 +34,7 @@ local specWarnBoltofPower			= mod:NewSpecialWarningInterrupt(323538, false, nil,
 local specWarnVolleyofPower			= mod:NewSpecialWarningInterrupt(323552, "HasInterrupt", nil, nil, 1, 2)
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(257274, nil, nil, nil, 1, 8)
 
-local timerVolleyofPowerCD				= mod:NewCDTimer(12, 323552, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)--12-18
+local timerVolleyofPowerCD				= mod:NewCDTimer(12, 323552, nil, nil, nil, 4, nil, DBM_CORE_L.INTERRUPT_ICON)--12-18
 local timerSpectralProcessionCD			= mod:NewCDTimer(20.6, 323597, nil, nil, nil, 1)
 
 mod:AddNamePlateOption("NPAuraOnFixate", 323650, true)

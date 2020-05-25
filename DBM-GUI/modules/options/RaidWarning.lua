@@ -1,4 +1,5 @@
-local L = DBM_GUI_Translations
+local L		= DBM_GUI_Translations
+local CL	= DBM_CORE_L
 
 --Hard code STANDARD_TEXT_FONT since skinning mods like to taint it (or worse, set it to nil, wtf?)
 local standardFont = STANDARD_TEXT_FONT
@@ -48,7 +49,7 @@ local Fonts = DBM_GUI:MixinSharedMedia3("font", {
 local FontDropDown = raidwarnoptions:CreateDropdown(L.Warn_FontType, Fonts, "DBM", "WarningFont", function(value)
 	DBM.Options.WarningFont = value
 	DBM:UpdateWarningOptions()
-	DBM:AddWarning(DBM_CORE_MOVE_WARNING_MESSAGE)
+	DBM:AddWarning(CL.MOVE_WARNING_MESSAGE)
 end)
 FontDropDown:SetPoint("TOPLEFT", WarningShortText, "BOTTOMLEFT", 0, -10)
 
@@ -83,7 +84,7 @@ local FontStyles = {
 local FontStyleDropDown = raidwarnoptions:CreateDropdown(L.Warn_FontStyle, FontStyles, "DBM", "WarningFontStyle", function(value)
 	DBM.Options.WarningFontStyle = value
 	DBM:UpdateWarningOptions()
-	DBM:AddWarning(DBM_CORE_MOVE_WARNING_MESSAGE)
+	DBM:AddWarning(CL.MOVE_WARNING_MESSAGE)
 end)
 FontStyleDropDown:SetPoint("TOPLEFT", FontDropDown, "BOTTOMLEFT", 0, -10)
 
@@ -92,7 +93,7 @@ local FontShadow = raidwarnoptions:CreateCheckButton(L.Warn_FontShadow, nil, nil
 FontShadow:SetScript("OnClick", function()
 	DBM.Options.WarningFontShadow = not DBM.Options.WarningFontShadow
 	DBM:UpdateWarningOptions()
-	DBM:AddWarning(DBM_CORE_MOVE_WARNING_MESSAGE)
+	DBM:AddWarning(CL.MOVE_WARNING_MESSAGE)
 end)
 FontShadow:SetPoint("LEFT", FontStyleDropDown, "RIGHT", 35, 0)
 
@@ -128,7 +129,7 @@ fontSizeSlider:SetValue(DBM.Options.WarningFontSize)
 fontSizeSlider:HookScript("OnValueChanged", function(self)
 	DBM.Options.WarningFontSize = self:GetValue()
 	DBM:UpdateWarningOptions()
-	DBM:AddWarning(DBM_CORE_MOVE_WARNING_MESSAGE)
+	DBM:AddWarning(CL.MOVE_WARNING_MESSAGE)
 end)
 
 -- RaidWarn Duration
@@ -138,7 +139,7 @@ durationSlider:SetValue(DBM.Options.WarningDuration2)
 durationSlider:HookScript("OnValueChanged", function(self)
 	DBM.Options.WarningDuration2 = self:GetValue()
 	DBM:UpdateWarningOptions()
-	DBM:AddWarning(DBM_CORE_MOVE_WARNING_MESSAGE)
+	DBM:AddWarning(CL.MOVE_WARNING_MESSAGE)
 end)
 
 local movemebutton = raidwarnoptions:CreateButton(L.MoveMe, 100, 16)

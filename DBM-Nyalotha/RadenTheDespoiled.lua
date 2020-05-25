@@ -87,41 +87,41 @@ local specWarnDreadInferno					= mod:NewSpecialWarningYou(315252, nil, nil, nil,
 local yellDreadInferno						= mod:NewYell(315252)
 --Stage 2: Unleashed Wrath
 local specWarnDecayingStrike				= mod:NewSpecialWarningDefensive(313213, nil, nil, nil, 1, 2)
-local specWarnChargedBonds					= mod:NewSpecialWarningMoveAwayCount(310019, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.moveaway:format(310019), nil, 3, 2)
+local specWarnChargedBonds					= mod:NewSpecialWarningMoveAwayCount(310019, nil, DBM_CORE_L.AUTO_SPEC_WARN_OPTIONS.moveaway:format(310019), nil, 3, 2)
 local yellChargedBonds						= mod:NewYell(310019)
 local specWarnDecayingWoundTaunt			= mod:NewSpecialWarningTaunt(313227, nil, nil, nil, 1, 2)
 local specWarnCorruptedExistence			= mod:NewSpecialWarningYou(316065, nil, nil, nil, 3, 2, 4)--Mythic Only
 
 --Stage 1: Gathering Power
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20527))
-local timerCallEssenceCD					= mod:NewNextCountTimer(55, 306091, DBM_CORE_ORBS, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON, nil, 1, 5)--44.9-46.3
-local timerNullifyingStrikeCD				= mod:NewCDTimer(15.8, 306819, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON, nil, 2, 3)--16-19
+local timerCallEssenceCD					= mod:NewNextCountTimer(55, 306091, DBM_CORE_L.ORBS, nil, nil, 1, nil, DBM_CORE_L.DAMAGE_ICON, nil, 1, 5)--44.9-46.3
+local timerNullifyingStrikeCD				= mod:NewCDTimer(15.8, 306819, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON, nil, 2, 3)--16-19
 ----Vita
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20528))
-local timerCallCracklingStalkerCD			= mod:NewNextTimer(30.1, "ej20546", nil, nil, nil, 1, 306865, DBM_CORE_DAMAGE_ICON)
+local timerCallCracklingStalkerCD			= mod:NewNextTimer(30.1, "ej20546", nil, nil, nil, 1, 306865, DBM_CORE_L.DAMAGE_ICON)
 local timerUnstableVita						= mod:NewTargetTimer(5, 306257, nil, nil, nil, 5)
 ------Vita Add
 --mod:AddTimerLine(DBM:EJ_GetSectionInfo(20546))
 local timerChainLightningCD					= mod:NewCDTimer(4.8, 306874, nil, nil, nil, 3)
 ----Nightmare
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20529))
-local timerCallVoidHunterCD					= mod:NewNextTimer(30.1, "ej20549", nil, nil, nil, 1, 306866, DBM_CORE_DAMAGE_ICON)
+local timerCallVoidHunterCD					= mod:NewNextTimer(30.1, "ej20549", nil, nil, nil, 1, 306866, DBM_CORE_L.DAMAGE_ICON)
 local timerUnstableVoidCD					= mod:NewNextCountTimer(5.9, 306634, nil, nil, nil, 5)
 ------Void Add
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20549))
-local timerVoidCollapseCD					= mod:NewNextTimer(10.8, 306881, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
+local timerVoidCollapseCD					= mod:NewNextTimer(10.8, 306881, nil, nil, nil, 3, nil, DBM_CORE_L.DEADLY_ICON)
 ----Nightmare
-local timerCallNightTerrorCD				= mod:NewNextTimer(30.1, "ej21176", nil, nil, nil, 1, 314484, DBM_CORE_DAMAGE_ICON)
+local timerCallNightTerrorCD				= mod:NewNextTimer(30.1, "ej21176", nil, nil, nil, 1, 314484, DBM_CORE_L.DAMAGE_ICON)
 ------Night Terror
 --mod:AddTimerLine(DBM:EJ_GetSectionInfo(20549))
 local timerDreadInfernoCD					= mod:NewCDTimer(11.7, 315252, nil, nil, nil, 3)
 --Stage 2: Unleashed Wrath
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20853))
-local timerDecayingStrikeCD					= mod:NewCDTimer(16.9, 313213, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON, nil, 2, 3)
+local timerDecayingStrikeCD					= mod:NewCDTimer(16.9, 313213, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON, nil, 2, 3)
 local timerVoidEruptionCD					= mod:NewCDCountTimer(19.4, 310003, nil, nil, nil, 2)--20.6-23
 local timerChargedBondsCD					= mod:NewCDCountTimer(10.2, 310019, nil, nil, nil, 3)--10.8-18.2
 local timerGorgeEssenceCD					= mod:NewCDCountTimer(29.1, 309985, nil, nil, nil, 6)
-local timerCorruptedExistenceCD				= mod:NewCDCountTimer(12.2, 317276, nil, nil, nil, 3, nil, DBM_CORE_MYTHIC_ICON..DBM_CORE_DEADLY_ICON)
+local timerCorruptedExistenceCD				= mod:NewCDCountTimer(12.2, 317276, nil, nil, nil, 3, nil, DBM_CORE_L.MYTHIC_ICON..DBM_CORE_L.DEADLY_ICON)
 --local berserkTimer						= mod:NewBerserkTimer(600)
 
 mod:AddRangeFrameOption(6, 306874)

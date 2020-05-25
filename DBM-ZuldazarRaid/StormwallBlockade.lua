@@ -87,19 +87,19 @@ mod:AddTimerLine(DBM:EJ_GetSectionInfo(19261))
 local timerVoltaicFlashCD				= mod:NewCDTimer(17, 284262, nil, nil, nil, 3)--17-35 wtf?
 local timerCracklingLightningCD			= mod:NewCDTimer(12.1, 284106, nil, nil, nil, 3)--12.1 and 22 alternating
 --local timerThunderousBoomCD			= mod:NewCastTimer(55, 284120, nil, nil, nil, 2)--After timing is figured out after crackling
-local timerElecShroudCD					= mod:NewCDTimer(34, 287995, nil, nil, nil, 4, nil, DBM_CORE_DAMAGE_ICON..DBM_CORE_INTERRUPT_ICON)--34-41, maybe health based?
+local timerElecShroudCD					= mod:NewCDTimer(34, 287995, nil, nil, nil, 4, nil, DBM_CORE_L.DAMAGE_ICON..DBM_CORE_L.INTERRUPT_ICON)--34-41, maybe health based?
 ----Brother Joseph
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(19262))
 local timerSeaStormCD					= mod:NewCDTimer(10.9, 284360, nil, nil, nil, 3)
-local timerSeasTemptationCD				= mod:NewCDCountTimer(34, 284383, nil, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON)--Might be health based
-local timerTidalShroudCD				= mod:NewCDTimer(36.5, 286558, nil, nil, nil, 4, nil, DBM_CORE_DAMAGE_ICON..DBM_CORE_INTERRUPT_ICON)--Probalby health based
+local timerSeasTemptationCD				= mod:NewCDCountTimer(34, 284383, nil, nil, nil, 1, nil, DBM_CORE_L.DAMAGE_ICON)--Might be health based
+local timerTidalShroudCD				= mod:NewCDTimer(36.5, 286558, nil, nil, nil, 4, nil, DBM_CORE_L.DAMAGE_ICON..DBM_CORE_L.INTERRUPT_ICON)--Probalby health based
 --Stage Two: Laminaria
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(19258))
-local timerCataTides					= mod:NewCastTimer(15, 288696, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
-local timerSeaSwellCD					= mod:NewCDTimer(20.6, 285118, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON, nil, 1, 3)
+local timerCataTides					= mod:NewCastTimer(15, 288696, nil, nil, nil, 4, nil, DBM_CORE_L.INTERRUPT_ICON)
+local timerSeaSwellCD					= mod:NewCDTimer(20.6, 285118, nil, nil, nil, 3, nil, DBM_CORE_L.DEADLY_ICON, nil, 1, 3)
 local timerIreoftheDeepCD				= mod:NewCDTimer(32.8, 285017, nil, nil, nil, 5)
 local timerStormsWailCD					= mod:NewCDTimer(120.2, 285350, nil, nil, nil, 3)
-local timerJoltingVolleyCD				= mod:NewCDCountTimer(43.6, 287169, nil, nil, nil, 2, nil, DBM_CORE_HEALER_ICON)
+local timerJoltingVolleyCD				= mod:NewCDCountTimer(43.6, 287169, nil, nil, nil, 2, nil, DBM_CORE_L.HEALER_ICON)
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
 
@@ -436,7 +436,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			local spellName, _, _, _, _, expireTime = DBM:UnitDebuff("player", 285350, 285426)
 			if expireTime then
 				local remaining = expireTime-GetTime()
-				specWarnStormsWail:Schedule(remaining-4.5, DBM_CORE_BACK)
+				specWarnStormsWail:Schedule(remaining-4.5, DBM_CORE_L.BACK)
 				yellStormsWailFades:Countdown(remaining)
 			end
 		else

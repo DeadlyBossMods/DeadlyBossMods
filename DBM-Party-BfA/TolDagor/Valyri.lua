@@ -22,7 +22,7 @@ local specWarnIgnition				= mod:NewSpecialWarningSpell(256970, nil, nil, nil, 1,
 --local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 8)
 
 local timerCinderflameCD			= mod:NewCDTimer(20.5, 256955, nil, nil, nil, 3)
-local timerFuselighterCD			= mod:NewCDTimer(14.7, 257028, nil, nil, nil, 3, nil, DBM_CORE_MAGIC_ICON)--14.7-23, health based?
+local timerFuselighterCD			= mod:NewCDTimer(14.7, 257028, nil, nil, nil, 3, nil, DBM_CORE_L.MAGIC_ICON)--14.7-23, health based?
 local timerIgnitionCD				= mod:NewCDTimer(32.7, 256970, nil, nil, nil, 5)--Health based?
 
 function mod:OnCombatStart(delay)

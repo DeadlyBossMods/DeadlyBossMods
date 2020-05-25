@@ -6,6 +6,7 @@ DBM.RangeCheck = {}
 --------------
 --  Locals  --
 --------------
+local L = DBM_CORE_L
 local rangeCheck = DBM.RangeCheck
 local mainFrame = CreateFrame("Frame")
 local textFrame, radarFrame, updateIcon, updateRangeFrame, initializeDropdown
@@ -144,7 +145,7 @@ do
 
 		if level == 1 then
 			info = UIDropDownMenu_CreateInfo()
-			info.text = DBM_CORE_RANGECHECK_SETRANGE
+			info.text = L.RANGECHECK_SETRANGE
 			info.notCheckable = true
 			info.hasArrow = true
 			info.keepShownOnClick = true
@@ -152,7 +153,7 @@ do
 			UIDropDownMenu_AddButton(info, 1)
 
 			info = UIDropDownMenu_CreateInfo()
-			info.text = DBM_CORE_RANGECHECK_SETTHRESHOLD
+			info.text = L.RANGECHECK_SETTHRESHOLD
 			info.notCheckable = true
 			info.hasArrow = true
 			info.keepShownOnClick = true
@@ -160,7 +161,7 @@ do
 			UIDropDownMenu_AddButton(info, 1)
 
 			info = UIDropDownMenu_CreateInfo()
-			info.text = DBM_CORE_RANGECHECK_SOUNDS
+			info.text = L.RANGECHECK_SOUNDS
 			info.notCheckable = true
 			info.hasArrow = true
 			info.keepShownOnClick = true
@@ -168,7 +169,7 @@ do
 			UIDropDownMenu_AddButton(info, 1)
 
 			info = UIDropDownMenu_CreateInfo()
-			info.text = DBM_CORE_RANGECHECK_OPTION_FRAMES
+			info.text = L.RANGECHECK_OPTION_FRAMES
 			info.notCheckable = true
 			info.hasArrow = true
 			info.keepShownOnClick = true
@@ -192,70 +193,70 @@ do
 		elseif level == 2 then
 			if menu == "range" then
 				info = UIDropDownMenu_CreateInfo()
-				info.text = DBM_CORE_RANGECHECK_SETRANGE_TO:format(4)
+				info.text = L.RANGECHECK_SETRANGE_TO:format(4)
 				info.func = setRange
 				info.arg1 = 4
 				info.checked = (mainFrame.range == 4)
 				UIDropDownMenu_AddButton(info, 2)
 
 				info = UIDropDownMenu_CreateInfo()
-				info.text = DBM_CORE_RANGECHECK_SETRANGE_TO:format(6)
+				info.text = L.RANGECHECK_SETRANGE_TO:format(6)
 				info.func = setRange
 				info.arg1 = 6
 				info.checked = (mainFrame.range == 6)
 				UIDropDownMenu_AddButton(info, 2)
 
 				info = UIDropDownMenu_CreateInfo()
-				info.text = DBM_CORE_RANGECHECK_SETRANGE_TO:format(8)
+				info.text = L.RANGECHECK_SETRANGE_TO:format(8)
 				info.func = setRange
 				info.arg1 = 8
 				info.checked = (mainFrame.range == 8)
 				UIDropDownMenu_AddButton(info, 2)
 
 				info = UIDropDownMenu_CreateInfo()
-				info.text = DBM_CORE_RANGECHECK_SETRANGE_TO:format(10)
+				info.text = L.RANGECHECK_SETRANGE_TO:format(10)
 				info.func = setRange
 				info.arg1 = 10
 				info.checked = (mainFrame.range == 10)
 				UIDropDownMenu_AddButton(info, 2)
 
 				info = UIDropDownMenu_CreateInfo()
-				info.text = DBM_CORE_RANGECHECK_SETRANGE_TO:format(13)
+				info.text = L.RANGECHECK_SETRANGE_TO:format(13)
 				info.func = setRange
 				info.arg1 = 13
 				info.checked = (mainFrame.range == 13)
 				UIDropDownMenu_AddButton(info, 2)
 
 				info = UIDropDownMenu_CreateInfo()
-				info.text = DBM_CORE_RANGECHECK_SETRANGE_TO:format(18)
+				info.text = L.RANGECHECK_SETRANGE_TO:format(18)
 				info.func = setRange
 				info.arg1 = 18
 				info.checked = (mainFrame.range == 18)
 				UIDropDownMenu_AddButton(info, 2)
 
 				info = UIDropDownMenu_CreateInfo()
-				info.text = DBM_CORE_RANGECHECK_SETRANGE_TO:format(23)
+				info.text = L.RANGECHECK_SETRANGE_TO:format(23)
 				info.func = setRange
 				info.arg1 = 23
 				info.checked = (mainFrame.range == 23)
 				UIDropDownMenu_AddButton(info, 2)
 
 				info = UIDropDownMenu_CreateInfo()
-				info.text = DBM_CORE_RANGECHECK_SETRANGE_TO:format(30)
+				info.text = L.RANGECHECK_SETRANGE_TO:format(30)
 				info.func = setRange
 				info.arg1 = 30
 				info.checked = (mainFrame.range == 30)
 				UIDropDownMenu_AddButton(info, 2)
 
 				info = UIDropDownMenu_CreateInfo()
-				info.text = DBM_CORE_RANGECHECK_SETRANGE_TO:format(33)
+				info.text = L.RANGECHECK_SETRANGE_TO:format(33)
 				info.func = setRange
 				info.arg1 = 33
 				info.checked = (mainFrame.range == 33)
 				UIDropDownMenu_AddButton(info, 2)
 
 				info = UIDropDownMenu_CreateInfo()
-				info.text = DBM_CORE_RANGECHECK_SETRANGE_TO:format(43)
+				info.text = L.RANGECHECK_SETRANGE_TO:format(43)
 				info.func = setRange
 				info.arg1 = 43
 				info.checked = (mainFrame.range == 43)
@@ -311,35 +312,35 @@ do
 				UIDropDownMenu_AddButton(info, 2)
 			elseif menu == "sounds" then
 				info = UIDropDownMenu_CreateInfo()
-				info.text = DBM_CORE_RANGECHECK_SOUND_OPTION_1
+				info.text = L.RANGECHECK_SOUND_OPTION_1
 				info.notCheckable = true
 				info.hasArrow = true
 				info.menuList = "RangeFrameSound1"
 				UIDropDownMenu_AddButton(info, 2)
 
 				info = UIDropDownMenu_CreateInfo()
-				info.text = DBM_CORE_RANGECHECK_SOUND_OPTION_2
+				info.text = L.RANGECHECK_SOUND_OPTION_2
 				info.notCheckable = true
 				info.hasArrow = true
 				info.menuList = "RangeFrameSound2"
 				UIDropDownMenu_AddButton(info, 2)
 			elseif menu == "frames" then
 				info = UIDropDownMenu_CreateInfo()
-				info.text = DBM_CORE_RANGECHECK_OPTION_TEXT
+				info.text = L.RANGECHECK_OPTION_TEXT
 				info.func = setFrames
 				info.arg1 = "text"
 				info.checked = (DBM.Options.RangeFrameFrames == "text")
 				UIDropDownMenu_AddButton(info, 2)
 
 				info = UIDropDownMenu_CreateInfo()
-				info.text = DBM_CORE_RANGECHECK_OPTION_RADAR
+				info.text = L.RANGECHECK_OPTION_RADAR
 				info.func = setFrames
 				info.arg1 = "radar"
 				info.checked = (DBM.Options.RangeFrameFrames == "radar")
 				UIDropDownMenu_AddButton(info, 2)
 
 				info = UIDropDownMenu_CreateInfo()
-				info.text = DBM_CORE_RANGECHECK_OPTION_BOTH
+				info.text = L.RANGECHECK_OPTION_BOTH
 				info.func = setFrames
 				info.arg1 = "both"
 				info.checked = (DBM.Options.RangeFrameFrames == "both")
@@ -348,7 +349,7 @@ do
 		elseif level == 3 then
 			local option = menu
 			info = UIDropDownMenu_CreateInfo()
-			info.text = DBM_CORE_RANGECHECK_SOUND_0
+			info.text = L.RANGECHECK_SOUND_0
 			info.func = setSound
 			info.arg1 = option
 			info.arg2 = sound0
@@ -356,7 +357,7 @@ do
 			UIDropDownMenu_AddButton(info, 3)
 
 			info = UIDropDownMenu_CreateInfo()
-			info.text = DBM_CORE_RANGECHECK_SOUND_1
+			info.text = L.RANGECHECK_SOUND_1
 			info.func = setSound
 			info.arg1 = option
 			info.arg2 = sound1
@@ -364,7 +365,7 @@ do
 			UIDropDownMenu_AddButton(info, 3)
 
 			info = UIDropDownMenu_CreateInfo()
-			info.text = DBM_CORE_RANGECHECK_SOUND_2
+			info.text = L.RANGECHECK_SOUND_2
 			info.func = setSound
 			info.arg1 = option
 			info.arg2 = sound2
@@ -633,15 +634,15 @@ do
 			end
 			if reverse then
 				if warnThreshold > 1 then
-					textFrame.text:SetText(DBM_CORE_RANGECHECK_RHEADERT:format(activeRange, warnThreshold))
+					textFrame.text:SetText(L.RANGECHECK_RHEADERT:format(activeRange, warnThreshold))
 				else
-					textFrame.text:SetText(DBM_CORE_RANGECHECK_RHEADER:format(activeRange))
+					textFrame.text:SetText(L.RANGECHECK_RHEADER:format(activeRange))
 				end
 			else
 				if warnThreshold > 1 then
-					textFrame.text:SetText(DBM_CORE_RANGECHECK_HEADERT:format(activeRange, warnThreshold))
+					textFrame.text:SetText(L.RANGECHECK_HEADERT:format(activeRange, warnThreshold))
 				else
-					textFrame.text:SetText(DBM_CORE_RANGECHECK_HEADER:format(activeRange))
+					textFrame.text:SetText(L.RANGECHECK_HEADER:format(activeRange))
 				end
 			end
 		end
@@ -650,9 +651,9 @@ do
 			pixelsperyard = min(radarFrame:GetWidth(), radarFrame:GetHeight()) / (activeRange * 3)
 			radarFrame.circle:SetSize(activeRange * pixelsperyard * 2, activeRange * pixelsperyard * 2)
 			if reverse then
-				radarFrame.text:SetText(DBM_CORE_RANGERADAR_RHEADER:format(activeRange, mainFrame.redCircleNumPlayers))
+				radarFrame.text:SetText(L.RANGERADAR_RHEADER:format(activeRange, mainFrame.redCircleNumPlayers))
 			else
-				radarFrame.text:SetText(DBM_CORE_RANGERADAR_HEADER:format(activeRange, mainFrame.redCircleNumPlayers))
+				radarFrame.text:SetText(L.RANGERADAR_HEADER:format(activeRange, mainFrame.redCircleNumPlayers))
 			end
 		end
 
@@ -716,7 +717,7 @@ do
 
 		if tEnabled then
 			-- Green Text (Regular range frame and not near too many players, or reverse range frame and we ARE near enough)
-			textFrame.inRangeText:SetText(DBM_CORE_RANGECHECK_IN_RANGE_TEXT:format(closePlayer, activeRange))
+			textFrame.inRangeText:SetText(L.RANGECHECK_IN_RANGE_TEXT:format(closePlayer, activeRange))
 			textFrame.inRangeText:Show()
 			if (reverse and closePlayer >= warnThreshold) or (not reverse and closePlayer < warnThreshold) then
 				textFrame.inRangeText:SetTextColor(0, 1, 0)
@@ -732,9 +733,9 @@ do
 				if closePlayer >= warnThreshold then -- Only show the text if the circle is red
 					circleColor = reverse and 1 or 2
 					if closePlayer == 1 then
-						radarFrame.inRangeText:SetText(DBM_CORE_RANGERADAR_IN_RANGE_TEXTONE:format(closetName, closestRange))
+						radarFrame.inRangeText:SetText(L.RANGERADAR_IN_RANGE_TEXTONE:format(closetName, closestRange))
 					else
-						radarFrame.inRangeText:SetText(DBM_CORE_RANGERADAR_IN_RANGE_TEXT:format(closePlayer, closestRange))
+						radarFrame.inRangeText:SetText(L.RANGERADAR_IN_RANGE_TEXT:format(closePlayer, closestRange))
 					end
 					radarFrame.inRangeText:Show()
 				else

@@ -28,7 +28,7 @@ local specWarnLucreCallTank			= mod:NewSpecialWarningMove(265923, nil, nil, nil,
 local specWarnSerpentine			= mod:NewSpecialWarningRun(265781, nil, nil, nil, 4, 2)
 local specWarnGTFO					= mod:NewSpecialWarningGTFO(265914, nil, nil, nil, 1, 8)
 
-local timerTailThrashCD				= mod:NewCDTimer(16.6, 265910, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON..DBM_CORE_DEADLY_ICON)
+local timerTailThrashCD				= mod:NewCDTimer(16.6, 265910, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON..DBM_CORE_L.DEADLY_ICON)
 local timerSpitGoldCD				= mod:NewCDTimer(10.9, 265773, nil, nil, nil, 3)
 local timerLucreCallCD				= mod:NewCDTimer(38.8, 265923, nil, nil, nil, 3)
 local timerSerpentineCD				= mod:NewCDTimer(21.8, 265781, nil, nil, nil, 2)

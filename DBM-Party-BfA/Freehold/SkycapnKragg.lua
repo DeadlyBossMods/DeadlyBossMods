@@ -34,7 +34,7 @@ local timerChargeCD					= mod:NewCDTimer(8.4, 255952, nil, nil, nil, 3)
 local timerDiveBombCD				= mod:NewCDTimer(17, 272046, nil, nil, nil, 3)
 local timerPowderShotCD				= mod:NewCDTimer(10.8, 256106, nil, nil, nil, 3)
 local timerVilebombardmentCD		= mod:NewCDTimer(5.9, 256005, nil, nil, nil, 3)
-local timerBrewCD					= mod:NewCDTimer(20.6, 256060, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
+local timerBrewCD					= mod:NewCDTimer(20.6, 256060, nil, nil, nil, 4, nil, DBM_CORE_L.INTERRUPT_ICON)
 
 function mod:OnCombatStart(delay)
 	timerChargeCD:Start(4.7-delay)

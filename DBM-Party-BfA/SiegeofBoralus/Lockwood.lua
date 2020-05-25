@@ -25,8 +25,8 @@ local specWarnHeavySlash			= mod:NewSpecialWarningDodge(257288, "Tank", nil, nil
 local specWarnBroadside				= mod:NewSpecialWarningDodge(268260, "Tank", nil, nil, 1, 2)
 
 local timerWithdrawCD				= mod:NewCDTimer(40, 268752, nil, nil, nil, 6)
-local timerCleartheDeckCD			= mod:NewCDTimer(20, 269029, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--Need more data
-local timerCrimsonSwipeCD			= mod:NewCDTimer(9, 268230, nil, false, 2, 5, nil, DBM_CORE_TANK_ICON)
+local timerCleartheDeckCD			= mod:NewCDTimer(20, 269029, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)--Need more data
+local timerCrimsonSwipeCD			= mod:NewCDTimer(9, 268230, nil, false, 2, 5, nil, DBM_CORE_L.TANK_ICON)
 local timerBroadsideCD				= mod:NewCDTimer(9, 268260, nil, nil, nil, 3)--Need more data
 
 mod.vb.bossGone = false

@@ -26,9 +26,9 @@ local yellPoropellantBlast			= mod:NewYell(259940)
 local specWarnPoropellantBlastNear	= mod:NewSpecialWarningClose(259940, nil, nil, nil, 1, 2)
 
 local timerAxeriteCatalystCD		= mod:NewCDTimer(13, 259022, nil, nil, nil, 3)
-local timerChemBurnCD				= mod:NewCDTimer(13, 259853, nil, nil, 2, 5, nil, DBM_CORE_HEALER_ICON..DBM_CORE_MAGIC_ICON)
+local timerChemBurnCD				= mod:NewCDTimer(13, 259853, nil, nil, 2, 5, nil, DBM_CORE_L.HEALER_ICON..DBM_CORE_L.MAGIC_ICON)
 --local timerPropellantBlastCD		= mod:NewCDTimer(13, 259940, nil, nil, nil, 3)--Longer pull/more data needed (32.5, 6.0, 36.1)
---local timerGushingCatalystCD		= mod:NewCDTimer(13, 275992, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
+--local timerGushingCatalystCD		= mod:NewCDTimer(13, 275992, nil, nil, nil, 3, nil, DBM_CORE_L.HEROIC_ICON)
 
 --mod:AddRangeFrameOption(5, 194966)
 

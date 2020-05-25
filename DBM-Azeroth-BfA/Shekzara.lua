@@ -21,8 +21,8 @@ local specWarnForceandVerve				= mod:NewSpecialWarningMoveTo(314333, nil, nil, n
 local specWarnSummonSwarmguard			= mod:NewSpecialWarningSwitch(314307, "-Healer", nil, nil, 1, 2)
 
 local timerSongoftheEmpressCD			= mod:NewCDTimer(82.0, 314304, nil, nil, nil, 3)
-local timerForceandVerveCD				= mod:NewCDTimer(82.0, 314333, nil, nil, 2, 2, nil, DBM_CORE_DEADLY_ICON, nil, 1, 5)
-local timerSummonSwarmguardCD			= mod:NewCDTimer(30.5, 314307, nil, nil, nil, 1, nil, DBM_CORE_TANK_ICON..DBM_CORE_DAMAGE_ICON)
+local timerForceandVerveCD				= mod:NewCDTimer(82.0, 314333, nil, nil, 2, 2, nil, DBM_CORE_L.DEADLY_ICON, nil, 1, 5)
+local timerSummonSwarmguardCD			= mod:NewCDTimer(30.5, 314307, nil, nil, nil, 1, nil, DBM_CORE_L.TANK_ICON..DBM_CORE_L.DAMAGE_ICON)
 
 local BarrierName = DBM:GetSpellInfo(314323)
 

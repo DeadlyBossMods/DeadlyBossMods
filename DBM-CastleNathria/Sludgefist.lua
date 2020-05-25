@@ -42,12 +42,12 @@ local specWarnCrushedArmor						= mod:NewSpecialWarningStack(332991, nil, 12, ni
 local specWarnCrushedArmorTaunt					= mod:NewSpecialWarningTaunt(332991, nil, nil, nil, 1, 2)
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(270290, nil, nil, nil, 1, 8)
 
-local timerHatefulGazeCD						= mod:NewAITimer(44.3, 331209, nil, nil, nil, 3, nil, DBM_CORE_IMPORTANT_ICON, nil, 1, 4)
-local timerStunnedImpact						= mod:NewTargetTimer(8, 331314, nil, nil, nil, 5, nil, DBM_CORE_DAMAGE_ICON)
+local timerHatefulGazeCD						= mod:NewAITimer(44.3, 331209, nil, nil, nil, 3, nil, DBM_CORE_L.IMPORTANT_ICON, nil, 1, 4)
+local timerStunnedImpact						= mod:NewTargetTimer(8, 331314, nil, nil, nil, 5, nil, DBM_CORE_L.DAMAGE_ICON)
 local timerDestructiveStompCD					= mod:NewAITimer(44.3, 332318, nil, nil, nil, 3)
 local timerFallingDebrisCD						= mod:NewAITimer(44.3, 332362, nil, nil, nil, 3)
 local timerWrathfulRoarCD						= mod:NewAITimer(44.3, 332687, nil, nil, nil, 2)
-local timerCrushArmorCD							= mod:NewAITimer(16.6, 332911, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON, nil, 2, 3)
+local timerCrushArmorCD							= mod:NewAITimer(16.6, 332911, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON, nil, 2, 3)
 
 --local berserkTimer							= mod:NewBerserkTimer(600)
 

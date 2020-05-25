@@ -25,8 +25,8 @@ local specWarnVirulentPathogen		= mod:NewSpecialWarningMoveAway(261440, nil, nil
 local yellVirulentPathogen			= mod:NewShortYell(261440)
 --local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 8)
 
-local timerWastingStrikeCD			= mod:NewCDTimer(16.5, 261438, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON, nil, 2, 3)--16.5-17.1
-local timerVirulentPathogenCD		= mod:NewCDTimer(15.4, 261440, nil, nil, nil, 3, nil, DBM_CORE_DISEASE_ICON, nil, 1, 3)--15.4-17
+local timerWastingStrikeCD			= mod:NewCDTimer(16.5, 261438, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON, nil, 2, 3)--16.5-17.1
+local timerVirulentPathogenCD		= mod:NewCDTimer(15.4, 261440, nil, nil, nil, 3, nil, DBM_CORE_L.DISEASE_ICON, nil, 1, 3)--15.4-17
 local timerDiscordantCadenzaCD		= mod:NewCDTimer(22.6, 268306, nil, nil, nil, 3)--pull:16.1, 3.6, 19.4, 17.0
 
 mod:AddRangeFrameOption(6, 261440)

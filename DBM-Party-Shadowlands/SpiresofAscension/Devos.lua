@@ -35,7 +35,7 @@ local specWarnActivate				= mod:NewSpecialWarningSpell(322999, nil, nil, nil, 2,
 
 --Stage 1
 local timerSeedofDoubtCD			= mod:NewAITimer(15.8, 322814, nil, nil, nil, 3)
-local timerLingeringDoubtCD			= mod:NewAITimer(13, 322818, nil, nil, nil, 3, nil, DBM_CORE_MAGIC_ICON..DBM_CORE_HEALER_ICON)
+local timerLingeringDoubtCD			= mod:NewAITimer(13, 322818, nil, nil, nil, 3, nil, DBM_CORE_L.MAGIC_ICON..DBM_CORE_L.HEALER_ICON)
 --Stage 2
 
 mod:AddInfoFrameOption(323013, true)

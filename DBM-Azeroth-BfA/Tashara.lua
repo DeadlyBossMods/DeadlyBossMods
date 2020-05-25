@@ -24,7 +24,7 @@ local specWarnLandSlide					= mod:NewSpecialWarningSpell(314474, "Tank", nil, ni
 local specWarnGroundShatter				= mod:NewSpecialWarningDodge(314524, nil, nil, nil, 2, 2)
 local specWarnFleshtoStone				= mod:NewSpecialWarningMoveAway(314524, nil, nil, nil, 1, 2)
 
-local timerLandslideCD					= mod:NewAITimer(46.2, 314474, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerLandslideCD					= mod:NewAITimer(46.2, 314474, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON)
 local timerGroundShatterCD				= mod:NewAITimer(46.2, 314524, nil, nil, nil, 3)
 local timerFleshtoStoneCD				= mod:NewAITimer(46.2, 314587, nil, nil, nil, 3)
 

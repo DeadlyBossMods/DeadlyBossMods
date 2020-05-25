@@ -29,7 +29,7 @@ local specWarnVenomlanceTank		= mod:NewSpecialWarningDefensive(325552, nil, nil,
 
 local timerShadowcloneCD			= mod:NewAITimer(13, 325457, nil, nil, nil, 6)
 local timerAmbushCD					= mod:NewAITimer(15.8, 325196, nil, nil, nil, 3)
-local timerVenomlanceCD				= mod:NewAITimer(13, 325552, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerVenomlanceCD				= mod:NewAITimer(13, 325552, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON)
 
 mod:AddRangeFrameOption(5, 325196)
 

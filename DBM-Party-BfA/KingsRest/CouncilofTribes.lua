@@ -49,10 +49,10 @@ local timerWhirlingAxesCD			= mod:NewCDTimer(10.8, 266206, nil, nil, nil, 3)--Us
 local timerSeveringAxeCD			= mod:NewCDTimer(21.8, 266231, nil, nil, nil, 3)
 --Aka'ali the Conqueror
 local timerBarrelThroughCD			= mod:NewCDTimer(23, 266951, nil, nil, nil, 3)--Used inactive
-local timerDebilitatingBackhandCD	= mod:NewCDTimer(24.3, 266237, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON..DBM_CORE_DEADLY_ICON)
+local timerDebilitatingBackhandCD	= mod:NewCDTimer(24.3, 266237, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON..DBM_CORE_L.DEADLY_ICON)
 --Zanazal the Wise
-local timerPoisonNovaCD				= mod:NewCDTimer(26.7, 267273, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)--Used inactive
-local timerTotemsCD					= mod:NewCDTimer(53.5, 267060, nil, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON)--Actual timer needs doing
+local timerPoisonNovaCD				= mod:NewCDTimer(26.7, 267273, nil, nil, nil, 4, nil, DBM_CORE_L.INTERRUPT_ICON)--Used inactive
+local timerTotemsCD					= mod:NewCDTimer(53.5, 267060, nil, nil, nil, 1, nil, DBM_CORE_L.DAMAGE_ICON)--Actual timer needs doing
 
 mod:AddSetIconOption("SetIconOnBarrel", 266951, true, false, {1})
 mod:AddSetIconOption("SetIconOnAxe", 266231, false, false, {2})

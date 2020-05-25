@@ -1,3 +1,6 @@
+local L		= DBM_GUI_Translations
+local CL	= DBM_CORE_L
+
 local frame = DBM_GUI_OptionsFrame
 table.insert(_G["UISpecialFrames"], frame:GetName())
 frame:SetSize(800, 600)
@@ -49,25 +52,25 @@ frameHeaderText:SetText("Deadly Boss Mods")
 local frameRevision = frame:CreateFontString("$parentRevision", "ARTWORK", "GameFontDisableSmall")
 frameRevision:SetPoint("BOTTOMLEFT", frame:GetName(), "BOTTOMLEFT", 20, 18)
 if DBM.NewerVersion then
-	frameRevision:SetText(DBM_DEADLY_BOSS_MODS.. " " .. DBM.DisplayVersion.. " (" .. DBM:ShowRealDate(DBM.Revision) .. "). |cffff0000Version " .. DBM.NewerVersion.. " is available.|r")
+	frameRevision:SetText(CL.DEADLY_BOSS_MODS.. " " .. DBM.DisplayVersion.. " (" .. DBM:ShowRealDate(DBM.Revision) .. "). |cffff0000Version " .. DBM.NewerVersion.. " is available.|r")
 else
-	frameRevision:SetText(DBM_DEADLY_BOSS_MODS.. " " .. DBM.DisplayVersion.. " (" .. DBM:ShowRealDate(DBM.Revision) .. ")")
+	frameRevision:SetText(CL.DEADLY_BOSS_MODS.. " " .. DBM.DisplayVersion.. " (" .. DBM:ShowRealDate(DBM.Revision) .. ")")
 end
 
 local frameTranslation = frame:CreateFontString("$parentTranslation", "ARTWORK", "GameFontDisableSmall")
 frameTranslation:SetPoint("LEFT", frameRevision:GetName(), "RIGHT", 20, 0)
-if DBM_GUI_Translations.TranslationBy then
-	frameTranslation:SetText(DBM_GUI_Translations.TranslationByPrefix .. DBM_GUI_Translations.TranslationBy)
+if L.TranslationBy then
+	frameTranslation:SetText(L.TranslationByPrefix .. L.TranslationBy)
 end
 
 local frameWebsite = frame:CreateFontString("$parentWebsite", "ARTWORK", "GameFontNormal")
 frameWebsite:SetPoint("BOTTOMLEFT", frameRevision:GetName(), "TOPLEFT", 0, 15)
-frameWebsite:SetText(DBM_GUI_Translations.Website)
+frameWebsite:SetText(L.Website)
 
 local frameWebsiteButtonA = CreateFrame("Frame", nil, frame)
 frameWebsiteButtonA:SetAllPoints(frameWebsite)
 frameWebsiteButtonA:SetScript("OnMouseUp", function()
-	DBM:ShowUpdateReminder(nil, nil, DBM_COPY_URL_DIALOG, "https://discord.gg/deadlybossmods")
+	DBM:ShowUpdateReminder(nil, nil, CL.COPY_URL_DIALOG, "https://discord.gg/deadlybossmods")
 end)
 
 local frameOkay = CreateFrame("Button", "$parentOkay", frame, "UIPanelButtonTemplate")
@@ -89,17 +92,17 @@ end)
 local frameWebsiteButton = CreateFrame("Button", "$parentWebsiteButton", frame, "UIPanelButtonTemplate")
 frameWebsiteButton:SetSize(96, 22)
 frameWebsiteButton:SetPoint("BOTTOMRIGHT", frameOkay:GetName(), "BOTTOMLEFT", -20, 0)
-frameWebsiteButton:SetText(DBM_GUI_Translations.WebsiteButton)
+frameWebsiteButton:SetText(L.WebsiteButton)
 frameWebsiteButton:SetScript("OnClick", function()
 	DBM:ShowUpdateReminder(nil, nil, DBM_COPY_URL_DIALOG)
 end)
 
 local bossMods = CreateFrame("Frame", "$parentBossMods", frame)
-bossMods.name = DBM_GUI_Translations.OTabBosses
+bossMods.name = L.OTabBosses
 frame:CreateTab(bossMods)
 
 local DBMOptions = CreateFrame("Frame", "$parentDBMOptions", frame)
-DBMOptions.name = DBM_GUI_Translations.OTabOptions
+DBMOptions.name = L.OTabOptions
 frame:CreateTab(DBMOptions)
 
 local hack = OptionsList_OnLoad

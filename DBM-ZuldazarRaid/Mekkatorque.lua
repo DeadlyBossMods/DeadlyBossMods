@@ -46,7 +46,7 @@ local warnHyperDrive					= mod:NewTargetNoFilterAnnounce(286051, 3)
 local specWarnBusterCannon				= mod:NewSpecialWarningDodgeCount(282153, nil, nil, nil, 2, 2)
 local specWarnBlastOff					= mod:NewSpecialWarningDodgeCount(282205, nil, nil, nil, 4, 2)
 --local specWarnCrashDown					= mod:NewSpecialWarningDodge(287797, nil, nil, nil, 2, 2)
-local specWarnElectroshockAmp			= mod:NewSpecialWarningCount(289699, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.stack:format(8, 289699), nil, 1, 2)
+local specWarnElectroshockAmp			= mod:NewSpecialWarningCount(289699, nil, DBM_CORE_L.AUTO_SPEC_WARN_OPTIONS.stack:format(8, 289699), nil, 1, 2)
 local specWarnElectroshockAmpOther		= mod:NewSpecialWarningTaunt(289699, nil, nil, nil, 1, 2)
 local specWarnGigaVoltCharge			= mod:NewSpecialWarningYouPos(286646, nil, nil, nil, 1, 2)
 local yellGigaVoltCharge				= mod:NewPosYell(286646)
@@ -76,8 +76,8 @@ local specWarnExplodingSheep			= mod:NewSpecialWarningDodge(287929, nil, nil, ni
 local timerBusterCannonCD				= mod:NewNextCountTimer(25, 282153, 88891, nil, nil, 3)--Shorttext "Cannon"
 local timerBlastOffCD					= mod:NewNextCountTimer(55, 282205, nil, nil, nil, 2)
 local timerCrashDownCD					= mod:NewCastTimer(4.5, 287797, nil, nil, nil, 3)
-local timerGigaVoltChargeCD				= mod:NewNextCountTimer(14.1, 286646, nil, nil, nil, 3, nil, DBM_CORE_TANK_ICON, nil, 2, 4)
-local timerWormholeGeneratorCD			= mod:NewNextCountTimer(55, 287952, 67833, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON, nil, 3, 4)--Shorttext "Wormhole"
+local timerGigaVoltChargeCD				= mod:NewNextCountTimer(14.1, 286646, nil, nil, nil, 3, nil, DBM_CORE_L.TANK_ICON, nil, 2, 4)
+local timerWormholeGeneratorCD			= mod:NewNextCountTimer(55, 287952, 67833, nil, nil, 3, nil, DBM_CORE_L.HEROIC_ICON, nil, 3, 4)--Shorttext "Wormhole"
 local timerDeploySparkBotCD				= mod:NewNextCountTimer(55, 288410, nil, nil, nil, 1)
 local timerWorldEnlargerCD				= mod:NewNextCountTimer(90, 288049, nil, nil, nil, 3, nil, nil, nil, 1, 4)
 --Intermission: Evasive Maneuvers!
@@ -433,7 +433,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.gigaCount = 0
 		self.vb.shrinkCount = 0
 		self.vb.sheepCount = 0
-		warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(self.vb.phase))
+		warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(self.vb.phase))
 		warnPhase:Play("phasechange")
 		timerCrashDownCD:Stop()
 		timerDeploySparkBotCD:Stop()
@@ -468,7 +468,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.gigaCount = 0
 		self.vb.shrinkCount = 0
 		self.vb.sheepCount = 0
-		warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.stage:format(self.vb.phase))
+		warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(self.vb.phase))
 		warnPhase:Play("phasechange")
 		timerExplodingSheepCD:Stop()
 		timerDeploySparkBotCD:Stop()
@@ -528,7 +528,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnGigaVoltCharge:Show(self:IconNumToTexture(icon))
 			specWarnGigaVoltCharge:Play("targetyou")
-			specWarnGigaVoltChargeFading:Schedule(8.5, DBM_CORE_BREAK_LOS)
+			specWarnGigaVoltChargeFading:Schedule(8.5, DBM_CORE_L.BREAK_LOS)
 			specWarnGigaVoltChargeFading:ScheduleVoice(8.5, "mm"..icon)
 			yellGigaVoltCharge:Yell(icon, icon, icon)
 			yellGigaVoltChargeFades:Countdown(spellId, nil, icon)

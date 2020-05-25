@@ -261,7 +261,7 @@ function arrowFrame:Move()
 	hideDistance = 0
 	frame:EnableMouse(true)
 	frame:Show()
-	DBM.Bars:CreateBar(25, DBM_ARROW_MOVABLE, 237538)
+	DBM.Bars:CreateBar(25, DBM_CORE_L.ARROW_MOVABLE, 237538)
 	DBM:Unschedule(endMove)
 	DBM:Schedule(25, endMove)
 end

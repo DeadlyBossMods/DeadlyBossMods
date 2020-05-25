@@ -21,13 +21,13 @@ local warnCapacitance				= mod:NewCountAnnounce(266511, 2)
 local specWarnConsumeCharge			= mod:NewSpecialWarningSpell(266512, nil, nil, nil, 2, 2)
 local specWarnElectroshock			= mod:NewSpecialWarningStack(266923, nil, 5, nil, nil, 1, 6)
 
---local timerReapSoulCD				= mod:NewNextTimer(13, 194956, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON..DBM_CORE_DEADLY_ICON)
+--local timerReapSoulCD				= mod:NewNextTimer(13, 194956, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON..DBM_CORE_L.DEADLY_ICON)
 
 mod:AddInfoFrameOption(265973, true)
 
 function mod:OnCombatStart(delay)
 	if self.Options.InfoFrame then
-		DBM.InfoFrame:SetHeader(DBM_CORE_INFOFRAME_POWER)
+		DBM.InfoFrame:SetHeader(DBM_CORE_L.INFOFRAME_POWER)
 		DBM.InfoFrame:Show(2, "enemypower", 2, 10)
 	end
 end

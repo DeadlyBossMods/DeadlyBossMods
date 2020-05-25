@@ -28,7 +28,7 @@ local specWarnCoalesceManifestation	= mod:NewSpecialWarningSwitch(322574, "-Heal
 --local specWarnGTFO				= mod:NewSpecialWarningGTFO(257274, nil, nil, nil, 1, 8)
 
 local timerCastigateCD				= mod:NewAITimer(13, 322554, nil, nil, nil, 3)
-local timerCoalesceManifestationCD	= mod:NewAITimer(15.8, 322574, nil, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON)
+local timerCoalesceManifestationCD	= mod:NewAITimer(15.8, 322574, nil, nil, nil, 1, nil, DBM_CORE_L.DAMAGE_ICON)
 
 mod:AddRangeFrameOption(8, 322554)
 mod:AddNamePlateOption("NPAuraOnEnergy", 323548)

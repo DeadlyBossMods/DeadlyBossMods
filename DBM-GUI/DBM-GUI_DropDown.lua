@@ -9,7 +9,7 @@ function OptionsList_OnLoad(self, ...)
 	end
 end
 
-local tabFrame1 = CreateFrame("Frame", "DBM_GUI_DropDown", DBM_GUI_OptionsFrame, DBM:IsAlpha() and "BackdropTemplateMixin,OptionsFrameListTemplate" or "OptionsFrameListTemplate")
+local tabFrame1 = CreateFrame("Frame", "DBM_GUI_DropDown", DBM_GUI_OptionsFrame, DBM:IsAlpha() and "BackdropTemplate,OptionsFrameListTemplate" or "OptionsFrameListTemplate")
 tabFrame1:Hide()
 tabFrame1:SetFrameStrata("TOOLTIP")
 tabFrame1.offset = 0

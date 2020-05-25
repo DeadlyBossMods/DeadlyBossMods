@@ -958,7 +958,7 @@ end
 function barPrototype:SetText(text, inlineIcon)
 	if not self.owner.options.InlineIcons then inlineIcon = nil end
 	--Force change color type 7 yo custom inlineIcon
-	local forcedIcon = (self.colorType and self.colorType == 7 and self.owner.options.Bar7CustomInline) and DBM_CORE_IMPORTANT_ICON or inlineIcon or ""
+	local forcedIcon = (self.colorType and self.colorType == 7 and self.owner.options.Bar7CustomInline) and DBM_CORE_L.IMPORTANT_ICON or inlineIcon or ""
 	_G[self.frame:GetName().."BarName"]:SetText(forcedIcon..text)
 end
 
@@ -1008,16 +1008,6 @@ function barPrototype:Update(elapsed)
 	local colorCount = self.colorType
 	local enlargeHack = (self.dummyEnlarge or colorCount == 7 and barOptions.Bar7ForceLarge) and true or false
 	local enlargeTime = barOptions.EnlargeBarTime or 11
-	local shouldBeEnlarged = timerValue <= enlargeTime
-	--Begin ugly check to auto correct user bars to the correct anchor when user toggles "Always Use Huge Bar" option for them
-	if self.enlarged and not shouldBeEnlarged and not enlargeHack then
-		self.enlarged = false
-		self:ApplyStyle()
-	elseif not self.enlarged and enlargeHack then
-		self.enlarged = true
-		self:ApplyStyle()
-	end
-	--End ugly check to auto correct user bars to the correct anchor when user toggles "Always Use Huge Bar" option for them
 	local isEnlarged = self.enlarged
 	local fillUpBars = isEnlarged and barOptions.FillUpLargeBars or not isEnlarged and barOptions.FillUpBars
 	local ExpandUpwards = isEnlarged and barOptions.ExpandUpwardsLarge or not isEnlarged and barOptions.ExpandUpwards
@@ -1211,7 +1201,7 @@ function barPrototype:Update(elapsed)
 		obj.hugeBars:Append(self)
 		self:ApplyStyle()
 	end
-	if shouldBeEnlarged and not self.small and not isEnlarged and isMoving ~= "enlarge" and obj:GetOption("HugeBarsEnabled") then
+	if (timerValue <= enlargeTime) and not self.small and not isEnlarged and isMoving ~= "enlarge" and obj:GetOption("HugeBarsEnabled") then
 		self:RemoveFromList()
 		self:Enlarge()
 	end
@@ -1243,11 +1233,11 @@ do
 	function DBT:ShowMovableBar(small, large)
 		if small or small == nil then
 			local bar1 = self:CreateBar(20, "Move1", 136116, nil, true)
-			bar1:SetText(DBM_CORE_MOVABLE_BAR)
+			bar1:SetText(DBM_CORE_L.MOVABLE_BAR)
 		end
 		if large or large == nil then
 			local bar2 = self:CreateBar(20, "Move2", 136116, true)
-			bar2:SetText(DBM_CORE_MOVABLE_BAR)
+			bar2:SetText(DBM_CORE_L.MOVABLE_BAR)
 		end
 		updateClickThrough(self, false)
 		self.movable = true

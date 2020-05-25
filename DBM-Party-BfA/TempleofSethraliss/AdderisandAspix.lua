@@ -46,15 +46,15 @@ local specWarnPearlofThunder		= mod:NewSpecialWarningRun(263365, nil, nil, nil, 
 --Aspix
 ----Lighting
 local timerConductionCD				= mod:NewCDTimer(13, 263371, nil, nil, nil, 3)--NYI
-local timerStaticShockCD			= mod:NewCDTimer(13, 263257, nil, nil, nil, 2, nil, DBM_CORE_HEALER_ICON)
+local timerStaticShockCD			= mod:NewCDTimer(13, 263257, nil, nil, nil, 2, nil, DBM_CORE_L.HEALER_ICON)
 ----Wind
-local timerGaleForceCD				= mod:NewCDTimer(16.4, 263776, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
+local timerGaleForceCD				= mod:NewCDTimer(16.4, 263776, nil, nil, nil, 3, nil, DBM_CORE_L.HEROIC_ICON)
 --Adderis
 ----Wind
-local timerArcingBladeCD			= mod:NewCDTimer(13.4, 263234, nil, nil, nil, 5, nil, DBM_CORE_HEROIC_ICON)
-local timerCycloneStrikeCD			= mod:NewCDTimer(14.6, 263573, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
+local timerArcingBladeCD			= mod:NewCDTimer(13.4, 263234, nil, nil, nil, 5, nil, DBM_CORE_L.HEROIC_ICON)
+local timerCycloneStrikeCD			= mod:NewCDTimer(14.6, 263573, nil, nil, nil, 3, nil, DBM_CORE_L.DEADLY_ICON)
 ----Lighting
-local timerPearlofThunderCD			= mod:NewAITimer(13, 263365, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
+local timerPearlofThunderCD			= mod:NewAITimer(13, 263365, nil, nil, nil, 2, nil, DBM_CORE_L.DEADLY_ICON)
 local timerArcDashCD				= mod:NewCDTimer(23, 263424, nil, nil, nil, 3)
 
 mod:AddRangeFrameOption("8")
@@ -85,7 +85,7 @@ function mod:OnCombatStart(delay)
 	--Aspix
 	timerArcDashCD:Start(14-delay)--Seems to be used regardless of shield
 	if self.Options.InfoFrame then
-		DBM.InfoFrame:SetHeader(DBM_CORE_INFOFRAME_POWER)
+		DBM.InfoFrame:SetHeader(DBM_CORE_L.INFOFRAME_POWER)
 		DBM.InfoFrame:Show(3, "enemypower", 10)
 	end
 end

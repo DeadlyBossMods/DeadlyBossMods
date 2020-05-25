@@ -87,8 +87,3 @@ L:SetWarningLocalization({
 	specWarnCallPack		= "Llamar a la manada - ¡Aléjate a más de 40 m de Dienteluna!",
 	specWarnMoonfangCurse	= "Maldición de Dienteluna - ¡Aléjate a más de 10 m de Dienteluna!"
 })
-
-L:SetOptionLocalization({
-	specWarnCallPack		= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.run:format(144602),
-	specWarnMoonfangCurse	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.run:format(144590)
-})

@@ -38,9 +38,9 @@ local specWarnZealous				= mod:NewSpecialWarningRun(328987, nil, nil, nil, 4, 2)
 
 --Hakkar the Soulflayer
 local timerBloodBarrierCD			= mod:NewAITimer(15.8, 322773, nil, nil, nil, 6)
-local timerBloodBarrageCD			= mod:NewAITimer(13, 323064, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
+local timerBloodBarrageCD			= mod:NewAITimer(13, 323064, nil, nil, nil, 4, nil, DBM_CORE_L.INTERRUPT_ICON)
 local timerCorruptedBloodCD			= mod:NewAITimer(13, 322746, nil, nil, nil, 3)
-local timerPiercingBarbCD			= mod:NewAITimer(13, 322736, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerPiercingBarbCD			= mod:NewAITimer(13, 322736, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)
 --Son of Hakkar:
 
 mod:AddRangeFrameOption(8, 322746)--Spell is 7, but can't do 7 in api

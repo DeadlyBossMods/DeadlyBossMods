@@ -6,6 +6,7 @@ DBM.InfoFrame = {}
 --------------
 --  Locals  --
 --------------
+local L = DBM_CORE_L
 local infoFrame = DBM.InfoFrame
 local frame, initializeDropdown, currentMapId, currentEvent, createFrame
 local maxlines, modLines, maxWidth = 5, 5, 0
@@ -63,7 +64,7 @@ do
 
 			info = UIDropDownMenu_CreateInfo()
 			info.keepShownOnClick = true
-			info.text = DBM_CORE_INFOFRAME_SHOW_SELF
+			info.text = L.INFOFRAME_SHOW_SELF
 			if DBM.Options.InfoFrameShowSelf then
 				info.checked = true
 			end
@@ -71,7 +72,7 @@ do
 			UIDropDownMenu_AddButton(info, 1)
 
 			info = UIDropDownMenu_CreateInfo()
-			info.text = DBM_CORE_INFOFRAME_SETLINES
+			info.text = L.INFOFRAME_SETLINES
 			info.notCheckable = true
 			info.hasArrow = true
 			info.keepShownOnClick = true
@@ -87,49 +88,49 @@ do
 		elseif level == 2 then
 			if menu == "lines" then
 				info = UIDropDownMenu_CreateInfo()
-				info.text = DBM_CORE_INFOFRAME_LINESDEFAULT
+				info.text = L.INFOFRAME_LINESDEFAULT
 				info.func = setLines
 				info.arg1 = 0
 				info.checked = (DBM.Options.InfoFrameLines == 0)
 				UIDropDownMenu_AddButton(info, 2)
 
 				info = UIDropDownMenu_CreateInfo()
-				info.text = DBM_CORE_INFOFRAME_LINES_TO:format(3)
+				info.text = L.INFOFRAME_LINES_TO:format(3)
 				info.func = setLines
 				info.arg1 = 3
 				info.checked = (DBM.Options.InfoFrameLines == 3)
 				UIDropDownMenu_AddButton(info, 2)
 
 				info = UIDropDownMenu_CreateInfo()
-				info.text = DBM_CORE_INFOFRAME_LINES_TO:format(5)
+				info.text = L.INFOFRAME_LINES_TO:format(5)
 				info.func = setLines
 				info.arg1 = 5
 				info.checked = (DBM.Options.InfoFrameLines == 5)
 				UIDropDownMenu_AddButton(info, 2)
 
 				info = UIDropDownMenu_CreateInfo()
-				info.text = DBM_CORE_INFOFRAME_LINES_TO:format(8)
+				info.text = L.INFOFRAME_LINES_TO:format(8)
 				info.func = setLines
 				info.arg1 = 8
 				info.checked = (DBM.Options.InfoFrameLines == 8)
 				UIDropDownMenu_AddButton(info, 2)
 
 				info = UIDropDownMenu_CreateInfo()
-				info.text = DBM_CORE_INFOFRAME_LINES_TO:format(10)
+				info.text = L.INFOFRAME_LINES_TO:format(10)
 				info.func = setLines
 				info.arg1 = 10
 				info.checked = (DBM.Options.InfoFrameLines == 10)
 				UIDropDownMenu_AddButton(info, 2)
 
 				info = UIDropDownMenu_CreateInfo()
-				info.text = DBM_CORE_INFOFRAME_LINES_TO:format(15)
+				info.text = L.INFOFRAME_LINES_TO:format(15)
 				info.func = setLines
 				info.arg1 = 15
 				info.checked = (DBM.Options.InfoFrameLines == 15)
 				UIDropDownMenu_AddButton(info, 2)
 
 				info = UIDropDownMenu_CreateInfo()
-				info.text = DBM_CORE_INFOFRAME_LINES_TO:format(20)
+				info.text = L.INFOFRAME_LINES_TO:format(20)
 				info.func = setLines
 				info.arg1 = 20
 				info.checked = (DBM.Options.InfoFrameLines == 20)
@@ -372,7 +373,7 @@ local function updateEnemyPower()
 			local currentAltPower, maxAltPower = UnitPower(uId, 10), UnitPowerMax(uId, 10)
 			if maxAltPower and maxAltPower > 0 then
 				if currentAltPower / maxAltPower * 100 >= threshold then
-					lines[UnitName(uId)] = DBM_CORE_INFOFRAME_ALT .. currentAltPower
+					lines[UnitName(uId)] = L.INFOFRAME_ALT .. currentAltPower
 				end
 			end
 		end

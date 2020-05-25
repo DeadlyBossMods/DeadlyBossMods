@@ -26,7 +26,7 @@ local yellAnimaflash				= mod:NewYell(324205)
 local specWarnReabsorbAnima			= mod:NewSpecialWarningDodge(325424, nil, nil, nil, 2, 2)
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(257274, nil, nil, nil, 1, 8)
 
-local timerDarkStrideCD				= mod:NewAITimer(13, 324148, nil, nil, nil, 3, nil, DBM_CORE_TANK_ICON)
+local timerDarkStrideCD				= mod:NewAITimer(13, 324148, nil, nil, nil, 3, nil, DBM_CORE_L.TANK_ICON)
 local timerAnimaflashCD				= mod:NewAITimer(15.8, 324205, nil, nil, nil, 3)
 local timerReabsorbAnimaCD			= mod:NewAITimer(15.8, 325424, nil, nil, nil, 6)
 
