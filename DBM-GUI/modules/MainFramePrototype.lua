@@ -1,6 +1,6 @@
 CreateFrame("Frame", "DBM_GUI_OptionsFrame", UIParent, DBM:IsAlpha() and "BackdropTemplate")
 
-function DBM_GUI_OptionsFrame:UpdateMenuFrame(list)
+function DBM_GUI_OptionsFrame:UpdateMenuFrame()
 	local listFrame = list or _G["DBM_GUI_OptionsFrameList"]
 	if not listFrame.buttons then
 		return
@@ -11,30 +11,27 @@ function DBM_GUI_OptionsFrame:UpdateMenuFrame(list)
 			table.insert(displayedElements, element.frame)
 		end
 	end
-	local bigList = #displayedElements > #listFrame.buttons
-	if bigList then
+	local bigList = math.floor((listFrame:GetHeight() - 8) / 18)
+	if #displayedElements > bigList then
 		_G[listFrame:GetName() .. "List"]:Show()
+		_G[listFrame:GetName() .. "ListScrollBar"]:SetMinMaxValues(0, (#displayedElements - test) * 18)
 	else
 		_G[listFrame:GetName() .. "List"]:Hide()
-	end
-	for _, button in next, listFrame.buttons do
-		button:SetWidth(bigList and 185 or 209)
-	end
-	if #displayedElements > #listFrame.buttons then
-		_G[listFrame:GetName() .. "ListScrollBar"]:SetMinMaxValues(0, (#displayedElements - #listFrame.buttons) * 18)
-	else
 		_G[listFrame:GetName() .. "ListScrollBar"]:SetValue(0)
 	end
-	if listFrame.selection then
-		DBM_GUI_OptionsFrame:ClearSelection()
+	for _, button in ipairs(listFrame.buttons) do
+		button:SetWidth(bigList and 185 or 209)
+	end
+	if self.selection then
+		self:SelectButton(self.selection)
 	end
 	local offset = listFrame.offset or 0
 	for i = 1, #listFrame.buttons do
 		local element = displayedElements[i + offset]
-		if not element then
+		if not element or i > bigList then
 			listFrame.buttons[i]:Hide()
 		else
-			DBM_GUI_OptionsFrame:DisplayButton(listFrame.buttons[i], element)
+			self:DisplayButton(listFrame.buttons[i], element)
 		end
 	end
 end
@@ -59,17 +56,12 @@ function DBM_GUI_OptionsFrame:DisplayButton(button, element)
 	button.text:Show()
 end
 
-function DBM_GUI_OptionsFrame:ClearSelection()
-	local listFrame = _G["DBM_GUI_OptionsFrameList"]
-	for _, button in ipairs(listFrame.buttons) do
+function DBM_GUI_OptionsFrame:SelectButton(button)
+	for _, button in ipairs(_G["DBM_GUI_OptionsFrameList"].buttons) do
 		button:UnlockHighlight()
 	end
-	listFrame.selection = nil
-end
-
-function DBM_GUI_OptionsFrame:SelectButton(button)
 	button:LockHighlight()
-	_G["DBM_GUI_OptionsFrameList"].selection = button.element
+	self.selection = button
 end
 
 function DBM_GUI_OptionsFrame:DisplayFrame(frame, forceChange)

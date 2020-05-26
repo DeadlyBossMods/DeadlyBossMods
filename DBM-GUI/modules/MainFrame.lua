@@ -66,6 +66,7 @@ frameResize:SetScript("OnMouseDown", function()
 end)
 frameResize:SetScript("OnMouseUp", function()
 	frame:StopMovingOrSizing()
+	frame:UpdateMenuFrame()
 	local container = _G[frame:GetName() .. "PanelContainer"]
 	if container.displayedFrame then
 		frame:DisplayFrame(container.displayedFrame)
@@ -152,15 +153,15 @@ frameList:SetPoint("BOTTOMLEFT", frameWebsite, "BOTTOMLEFT", 0, 14)
 frameList:SetScript("OnShow", function()
 	frame:UpdateMenuFrame()
 end)
+frameList.offset = 0
 frameList:SetBackdropBorderColor(0.6, 0.6, 0.6, 1)
 frameList.buttons = {}
-for i = 1, (frameList:GetHeight() - 8) / 18 do
+for i = 1, math.floor(UIParent:GetHeight() / 18) do
 	local button = CreateFrame("Button", frameList:GetName() .. "Button" .. i, frameList)
 	button:SetHeight(18)
 	button.text = button:CreateFontString(button:GetName() .. "Text", "ARTWORK", "GameFontNormalSmall")
 	button:RegisterForClicks("LeftButtonUp")
 	button:SetScript("OnClick", function(self)
-		frame:ClearSelection()
 		frame:SelectButton(button)
 		DBM_GUI.currentViewing = self.element
 		frame:DisplayFrame(self.element)
@@ -202,22 +203,21 @@ else
 	frameListList:SetBackdrop(frameListList.backdropInfo)
 end
 frameListList:SetBackdropBorderColor(0.6, 0.6, 0.6, 0.6)
-frameListList.offset = 0
 frameListList:SetScript("OnVerticalScroll", function(self, offset)
 	local scrollbar = _G[self:GetName() .. "ScrollBar"]
 	local _, max = scrollbar:GetMinMaxValues()
 	scrollbar:SetValue(offset)
 	_G[self:GetName() .. "ScrollBarScrollUpButton"]:SetEnabled(offset ~= 0)
 	_G[self:GetName() .. "ScrollBarScrollDownButton"]:SetEnabled(scrollbar:GetValue() - max ~= 0)
-	self.offset = math.floor((offset / 18) + 0.5)
-	frame:UpdateMenuFrame(self:GetParent())
+	frameList.offset = math.floor((offset / 18) + 0.5)
+	frame:UpdateMenuFrame()
 end)
 local frameListScrollBar = _G[frameListList:GetName() .. "ScrollBar"]
 frameListScrollBar:SetMinMaxValues(0, 11)
 frameListScrollBar:SetValueStep(18)
 frameListScrollBar:SetValue(0)
 frameList:SetScript("OnMouseWheel", function(_, delta)
-	frameListScrollBar:SetValue(frameListScrollBar:GetValue() + (delta * 18))
+	frameListScrollBar:SetValue(frameListScrollBar:GetValue() - (delta * 18))
 end)
 local scrollUpButton = _G[frameListScrollBar:GetName() .. "ScrollUpButton"]
 scrollUpButton:Disable()
