@@ -1,4 +1,4 @@
-local L = DBM_GUI_Translations
+local L = DBM_GUI_L
 
 local defaultFont, defaultFontSize = GameFontHighlightSmall:GetFont()
 

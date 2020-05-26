@@ -1,4 +1,4 @@
-local L		= DBM_GUI_Translations
+local L		= DBM_GUI_L
 local CL	= DBM_CORE_L
 
 --Hard code STANDARD_TEXT_FONT since skinning mods like to taint it (or worse, set it to nil, wtf?)
@@ -17,13 +17,13 @@ end
 
 local RaidWarningPanel = DBM_GUI_Frame:CreateNewPanel(L.Tab_RaidWarning, "option")
 
-local raidwarnoptions = RaidWarningPanel:CreateArea(L.RaidWarning_Header, nil, 375)
+local raidwarnoptions = RaidWarningPanel:CreateArea(L.RaidWarning_Header, 375)
 
-local ShowWarningsInChat	= raidwarnoptions:CreateCheckButton(L.ShowWarningsInChat, true, nil, "ShowWarningsInChat")
-local WarningIconLeft		= raidwarnoptions:CreateCheckButton(L.WarningIconLeft, true, nil, "WarningIconLeft")
-local WarningIconRight		= raidwarnoptions:CreateCheckButton(L.WarningIconRight, true, nil, "WarningIconRight")
-local WarningIconChat		= raidwarnoptions:CreateCheckButton(L.WarningIconChat, true, nil, "WarningIconChat")
-local WarningAlphabetical	= raidwarnoptions:CreateCheckButton(L.WarningAlphabetical, true, nil, "WarningAlphabetical")
+raidwarnoptions:CreateCheckButton(L.ShowWarningsInChat, true, nil, "ShowWarningsInChat")
+raidwarnoptions:CreateCheckButton(L.WarningIconLeft, true, nil, "WarningIconLeft")
+raidwarnoptions:CreateCheckButton(L.WarningIconRight, true, nil, "WarningIconRight")
+raidwarnoptions:CreateCheckButton(L.WarningIconChat, true, nil, "WarningIconChat")
+raidwarnoptions:CreateCheckButton(L.WarningAlphabetical, true, nil, "WarningAlphabetical")
 local WarningShortText		= raidwarnoptions:CreateCheckButton(L.ShortTextSpellname, true, nil, "WarningShortText")
 
 -- RaidWarn Font
@@ -143,13 +143,13 @@ durationSlider:HookScript("OnValueChanged", function(self)
 end)
 
 local movemebutton = raidwarnoptions:CreateButton(L.MoveMe, 100, 16)
-movemebutton:SetPoint("TOPRIGHT", raidwarnoptions.frame, "TOPRIGHT", -5, -5)
+movemebutton:SetPoint("TOPRIGHT", raidwarnoptions.frame, "TOPRIGHT", -2, -4)
 movemebutton:SetNormalFontObject(GameFontNormalSmall)
 movemebutton:SetHighlightFontObject(GameFontNormalSmall)
 movemebutton:SetScript("OnClick", function() DBM:MoveWarning() end)
 
 --Raid Warning Colors
-local raidwarncolors = RaidWarningPanel:CreateArea(L.RaidWarnColors, nil, 150)
+local raidwarncolors = RaidWarningPanel:CreateArea(L.RaidWarnColors, 150)
 
 local color1 = raidwarncolors:CreateColorSelect(64)
 local color2 = raidwarncolors:CreateColorSelect(64)
@@ -201,5 +201,3 @@ UpdateColorFrames(color4, color4text, color4reset, 4)
 
 local infotext = raidwarncolors:CreateText(L.InfoRaidWarning, 380, false, GameFontNormalSmall, "LEFT")
 infotext:SetPoint("BOTTOMLEFT", raidwarncolors.frame, "BOTTOMLEFT", 10, 10)
-
-RaidWarningPanel:SetMyOwnHeight()

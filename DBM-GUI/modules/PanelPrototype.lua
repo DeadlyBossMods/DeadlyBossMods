@@ -1,4 +1,4 @@
-local L		= DBM_GUI_Translations
+local L		= DBM_GUI_L
 local CL	= DBM_CORE_L
 
 local PanelPrototype = {}
@@ -12,25 +12,6 @@ end
 
 function PanelPrototype:SetLastObj(obj)
 	self.lastobject = obj
-end
-
-function PanelPrototype:SetMyOwnHeight()
-	if not self.frame.mytype == "panel" then
-		return
-	end
-	local need_height = self.initheight or 20
-
-	for _, child in pairs({ self.frame:GetChildren() }) do
-		if child.mytype == "area" and child.myheight then
-			need_height = need_height + child.myheight
-		elseif child.mytype == "area" then
-			need_height = need_height + child:GetHeight() + 20
-		elseif child.myheight then
-			need_height = need_height + child.myheight
-		end
-	end
-	self.frame.actualHeight = need_height
-	self.frame:SetHeight(need_height)
 end
 
 function PanelPrototype:AutoSetDimension(additionalHeight)
@@ -368,7 +349,7 @@ do
 		local buttonText = button:CreateFontString("$parentText", "ARTWORK", "GameFontNormal")
 		buttonText:SetPoint("LEFT", button, "RIGHT", 0, 1)
 		if name then -- Switch all checkbutton frame to SimpleHTML frame (auto wrap)
-			buttonText = CreateFrame("SimpleHTML", buttonText, button)
+			buttonText = CreateFrame("SimpleHTML", buttonText:GetName(), button)
 			buttonText:SetFontObject("GameFontNormal")
 			buttonText:SetHyperlinksEnabled(true)
 			buttonText:SetScript("OnHyperlinkEnter", function(self, data, link)
@@ -459,13 +440,13 @@ do
 	end
 end
 
-function PanelPrototype:CreateArea(name, width, height)
+function PanelPrototype:CreateArea(name, height)
 	local area = CreateFrame("Frame", "DBM_GUI_Option_" .. self:GetNewID(), self.frame, DBM:IsAlpha() and "BackdropTemplate,OptionsBoxTemplate" or "OptionsBoxTemplate")
 	area.mytype = "area"
 	area:SetBackdropColor(0.15, 0.15, 0.15, 0.5)
 	area:SetBackdropBorderColor(0.4, 0.4, 0.4)
 	_G[area:GetName() .. "Title"]:SetText(name)
-	area:SetSize(width or self.frame:GetWidth() - 12, height or self.frame:GetHeight() - 10)
+	area:SetSize(self.frame:GetWidth() - 12, height or self.frame:GetHeight() - 10)
 	if select("#", self.frame:GetChildren()) == 1 then
 		area:SetPoint("TOPLEFT", self.frame, 5, -20)
 	else

@@ -1,4 +1,4 @@
-DBM_GUI_Frame = DBM_GUI:CreateNewPanel(DBM_GUI_Translations.TabCategory_Options, "option")
+DBM_GUI_Frame = DBM_GUI:CreateNewPanel(DBM_GUI_L.TabCategory_Options, "option")
 
 if DBM.Options.EnableModels then
 	local mobstyle = CreateFrame("PlayerModel", "DBM_BossPreview", DBM_GUI_OptionsFramePanelContainer)
