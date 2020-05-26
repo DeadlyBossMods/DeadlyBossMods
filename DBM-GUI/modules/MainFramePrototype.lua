@@ -1,7 +1,7 @@
 CreateFrame("Frame", "DBM_GUI_OptionsFrame", UIParent, DBM:IsAlpha() and "BackdropTemplate")
 
 function DBM_GUI_OptionsFrame:UpdateMenuFrame()
-	local listFrame = list or _G["DBM_GUI_OptionsFrameList"]
+	local listFrame = _G["DBM_GUI_OptionsFrameList"]
 	if not listFrame.buttons then
 		return
 	end
@@ -18,7 +18,7 @@ function DBM_GUI_OptionsFrame:UpdateMenuFrame()
 	local bigList = math.floor((listFrame:GetHeight() - 8) / 18)
 	if #displayedElements > bigList then
 		_G[listFrame:GetName() .. "List"]:Show()
-		_G[listFrame:GetName() .. "ListScrollBar"]:SetMinMaxValues(0, (#displayedElements - test) * 18)
+		_G[listFrame:GetName() .. "ListScrollBar"]:SetMinMaxValues(0, (#displayedElements - bigList) * 18)
 	else
 		_G[listFrame:GetName() .. "List"]:Hide()
 		_G[listFrame:GetName() .. "ListScrollBar"]:SetValue(0)
