@@ -162,7 +162,9 @@ for i = 1, math.floor(UIParent:GetHeight() / 18) do
 	button.text = button:CreateFontString(button:GetName() .. "Text", "ARTWORK", "GameFontNormalSmall")
 	button:RegisterForClicks("LeftButtonUp")
 	button:SetScript("OnClick", function(self)
-		frame:SelectButton(button)
+		frame:ClearSelection()
+		frame.tabs[frame.tab].selection = button
+		button:LockHighlight()
 		DBM_GUI.currentViewing = self.element
 		frame:DisplayFrame(self.element)
 	end)
