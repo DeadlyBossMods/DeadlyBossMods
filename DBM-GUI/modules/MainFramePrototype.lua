@@ -6,9 +6,13 @@ function DBM_GUI_OptionsFrame:UpdateMenuFrame()
 		return
 	end
 	local displayedElements = {}
+	self:ClearSelection()
 	if self.tab then
 		for _, element in ipairs(DBM_GUI.frameTypes[self.tab]:GetVisibleTabs()) do
 			table.insert(displayedElements, element.frame)
+		end
+		if self.tabs[self.tab].selection then
+			self.tabs[self.tab].selection:LockHighlight()
 		end
 	end
 	local bigList = math.floor((listFrame:GetHeight() - 8) / 18)
@@ -21,9 +25,6 @@ function DBM_GUI_OptionsFrame:UpdateMenuFrame()
 	end
 	for _, button in ipairs(listFrame.buttons) do
 		button:SetWidth(bigList and 185 or 209)
-	end
-	if self.selection then
-		self:SelectButton(self.selection)
 	end
 	local offset = listFrame.offset or 0
 	for i = 1, #listFrame.buttons do
@@ -56,12 +57,10 @@ function DBM_GUI_OptionsFrame:DisplayButton(button, element)
 	button.text:Show()
 end
 
-function DBM_GUI_OptionsFrame:SelectButton(button)
+function DBM_GUI_OptionsFrame:ClearSelection()
 	for _, button in ipairs(_G["DBM_GUI_OptionsFrameList"].buttons) do
 		button:UnlockHighlight()
 	end
-	button:LockHighlight()
-	self.selection = button
 end
 
 function DBM_GUI_OptionsFrame:DisplayFrame(frame, forceChange)
@@ -183,7 +182,6 @@ function DBM_GUI_OptionsFrame:CreateTab(tab)
 end
 
 function DBM_GUI_OptionsFrame:ShowTab(tab)
-	self:ClearSelection()
 	self.tab = tab
 	self:UpdateMenuFrame()
 	for i = 1, #self.tabs do
