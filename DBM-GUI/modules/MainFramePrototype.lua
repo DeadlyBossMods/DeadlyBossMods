@@ -1,7 +1,7 @@
 CreateFrame("Frame", "DBM_GUI_OptionsFrame", UIParent, DBM:IsAlpha() and "BackdropTemplate")
 
-function DBM_GUI_OptionsFrame:UpdateMenuFrame()
-	local listFrame = _G["DBM_GUI_OptionsFrameList"]
+function DBM_GUI_OptionsFrame:UpdateMenuFrame(list)
+	local listFrame = list or _G["DBM_GUI_OptionsFrameList"]
 	if not listFrame.buttons then
 		return
 	end
