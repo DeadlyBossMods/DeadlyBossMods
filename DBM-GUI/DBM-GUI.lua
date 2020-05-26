@@ -165,15 +165,14 @@ function DBM_GUI:CreateBossModPanel(mod)
 	local category
 
 	local iconstat = panel.frame:CreateFontString("DBM_GUI_Mod_Icons" .. mod.localization.general.name, "ARTWORK")
-	iconstat:SetPoint("TOPRIGHT", panel.frame, "TOPRIGHT", -168, -10)
+	iconstat:SetPoint("TOP", panel.frame, 0, -10)
 	iconstat:SetFontObject(GameFontNormal)
 	iconstat:SetText(L.IconsInUse)
 	for i = 1, 8 do
 		local icon = panel.frame:CreateTexture()
 		icon:SetTexture(137009) -- "Interface\\TargetingFrame\\UI-RaidTargetingIcons.blp"
-		icon:SetPoint("TOPRIGHT", panel.frame, "TOPRIGHT", -150 - (i * 18), -26)
-		icon:SetWidth(16)
-		icon:SetHeight(16)
+        icon:SetPoint("TOP", panel.frame, 81 - (i * 18), -26)
+        icon:SetSize(16, 16)
 		if not mod.usedIcons or not mod.usedIcons[i] then
 			icon:SetAlpha(0.25)
 		end
@@ -189,7 +188,7 @@ function DBM_GUI:CreateBossModPanel(mod)
 	end
 
 	local reset = panel:CreateButton(L.Mod_Reset, 155, 30, nil, GameFontNormalSmall)
-	reset:SetPoint("TOPRIGHT", panel.frame, "TOPRIGHT", -2, -4)
+	reset:SetPoint("TOPRIGHT", panel.frame, "TOPRIGHT", -24, -4)
 	reset:SetScript("OnClick", function(self)
 		DBM:LoadModDefaultOption(mod)
 	end)
