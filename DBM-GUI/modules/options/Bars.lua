@@ -18,7 +18,7 @@ local BarSetupPanel = DBM_GUI_Frame:CreateNewPanel(L.BarSetup, "option")
 
 local BarColors = BarSetupPanel:CreateArea(L.AreaTitle_BarColors, 635)
 local movemebutton = BarColors:CreateButton(L.MoveMe, 100, 16)
-movemebutton:SetPoint("BOTTOMRIGHT", BarColors.frame, "TOPRIGHT", 0, -1)
+movemebutton:SetPoint("TOPRIGHT", BarColors.frame, "TOPRIGHT", -2, -4)
 movemebutton:SetNormalFontObject(GameFontNormalSmall)
 movemebutton:SetHighlightFontObject(GameFontNormalSmall)
 movemebutton:SetScript("OnClick", function() DBM.Bars:ShowMovableBar() end)
