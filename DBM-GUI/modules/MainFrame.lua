@@ -5,7 +5,7 @@ local frame = DBM_GUI_OptionsFrame
 table.insert(_G["UISpecialFrames"], frame:GetName())
 frame:SetFrameStrata("DIALOG")
 if DBM.Options.GUIPoint then
-	self.mainAnchor:SetPoint(DBM.Options.GUIPoint, UIParent, DBM.Options.GUIPoint, self.options.GUIX, self.options.GUIY)
+	frame:SetPoint(DBM.Options.GUIPoint, UIParent, DBM.Options.GUIPoint, DBM.Options.GUIX, DBM.Options.GUIY)
 else
 	frame:SetPoint("CENTER")
 end
