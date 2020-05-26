@@ -11,19 +11,16 @@ function DBM_GUI_OptionsFrame:UpdateMenuFrame(list)
 			table.insert(displayedElements, element.frame)
 		end
 	end
-	local bigList = #displayedElements > #listFrame.buttons
-	if bigList then
+	local test = math.floor((listFrame:GetHeight() - 8) / 18)
+	if #displayedElements > test then
 		_G[listFrame:GetName() .. "List"]:Show()
+		_G[listFrame:GetName() .. "ListScrollBar"]:SetMinMaxValues(0, (#displayedElements - test) * 18)
 	else
 		_G[listFrame:GetName() .. "List"]:Hide()
+		_G[listFrame:GetName() .. "ListScrollBar"]:SetValue(0)
 	end
 	for _, button in next, listFrame.buttons do
 		button:SetWidth(bigList and 185 or 209)
-	end
-	if #displayedElements > #listFrame.buttons then
-		_G[listFrame:GetName() .. "ListScrollBar"]:SetMinMaxValues(0, (#displayedElements - #listFrame.buttons) * 18)
-	else
-		_G[listFrame:GetName() .. "ListScrollBar"]:SetValue(0)
 	end
 	if listFrame.selection then
 		DBM_GUI_OptionsFrame:ClearSelection()
@@ -31,7 +28,7 @@ function DBM_GUI_OptionsFrame:UpdateMenuFrame(list)
 	local offset = listFrame.offset or 0
 	for i = 1, #listFrame.buttons do
 		local element = displayedElements[i + offset]
-		if not element then
+		if not element or i > test then
 			listFrame.buttons[i]:Hide()
 		else
 			DBM_GUI_OptionsFrame:DisplayButton(listFrame.buttons[i], element)
