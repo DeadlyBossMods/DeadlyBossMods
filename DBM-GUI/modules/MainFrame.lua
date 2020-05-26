@@ -3,16 +3,25 @@ local CL	= DBM_CORE_L
 
 local frame = DBM_GUI_OptionsFrame
 table.insert(_G["UISpecialFrames"], frame:GetName())
-frame:SetSize(800, 600)
 frame:SetFrameStrata("DIALOG")
-frame:SetPoint("CENTER")
+if DBM.Options.GUIPoint then
+	self.mainAnchor:SetPoint(DBM.Options.GUIPoint, UIParent, DBM.Options.GUIPoint, self.options.GUIX, self.options.GUIY)
+else
+	frame:SetPoint("CENTER")
+end
+if DBM.Options.GUIWidth then
+	frame:SetSize(DBM.Options.GUIWidth, DBM.Options.GUIHeight)
+else
+	frame:SetSize(800, 600)
+end
 frame:EnableMouse(true)
 frame:SetMovable(true)
 frame:SetResizable(true)
+frame:SetClampedToScreen(true)
 frame:SetUserPlaced(true)
 frame:RegisterForDrag("LeftButton")
 frame:SetFrameLevel(frame:GetFrameLevel() + 4)
-frame:SetMinResize(300, 300)
+frame:SetMinResize(800, 600)
 frame:Hide()
 frame.backdropInfo = {
 	bgFile		= "Interface\\DialogFrame\\UI-DialogBox-Background", -- 131071
@@ -39,7 +48,13 @@ frame:SetScript("OnHide", function()
 	DBM_GUI_DropDown:Hide()
 end)
 frame:SetScript("OnDragStart", frame.StartMoving)
-frame:SetScript("OnDragStop", frame.StopMovingOrSizing)
+frame:SetScript("OnDragStop", function(self)
+	frame:StopMovingOrSizing()
+	local point, _, _, x, y = self:GetPoint(1)
+	DBM.Options.GUIPoint = point
+	DBM.Options.GUIX = x
+	DBM.Options.GUIY = y
+end)
 frame.tabs = {}
 
 local frameResize = CreateFrame("Frame", nil, frame)
@@ -55,6 +70,8 @@ frameResize:SetScript("OnMouseUp", function()
 	if container.displayedFrame then
 		frame:DisplayFrame(container.displayedFrame)
 	end
+	DBM.Options.GUIWidth = frame:GetWidth()
+	DBM.Options.GUIHeight = frame:GetHeight()
 end)
 
 local frameHeader = frame:CreateTexture("$parentHeader", "ARTWORK")
