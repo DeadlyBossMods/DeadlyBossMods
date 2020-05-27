@@ -4500,8 +4500,8 @@ do
 			--150 people on, only 33% chance a DBM user replies to request
 			--1000 people online, only 5% chance a DBM user replies to request
 			local _, online = GetNumGuildMembers()
-			local chances = online / 50
-			chances = ceiling(chances)--Round up to nearest whole number, it should never be less than 1
+			local chances = (online or 1) / 50
+			if chances < 1 then chances = 1 end
 			if mrandom(1, chances) == 1 then
 				DBM:Schedule(5, SendVersion, true)--Send version if 5 seconds have past since last "Hi" sync
 			end
