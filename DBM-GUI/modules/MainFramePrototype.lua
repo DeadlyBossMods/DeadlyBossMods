@@ -107,6 +107,8 @@ function DBM_GUI_OptionsFrame:DisplayFrame(frame, forceChange)
 		end
 	else
 		scrollBar:Hide()
+		scrollBar:SetValue(0)
+		scrollBar:SetMinMaxValues(0, 0)
 		for _, child in pairs({ frame:GetChildren() }) do
 			if child.mytype == "area" then
 				child:SetPoint("TOPRIGHT", DBM_GUI_OptionsFramePanelContainerFOV, "TOPRIGHT", -5, 0)
