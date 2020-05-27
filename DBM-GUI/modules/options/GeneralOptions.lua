@@ -95,7 +95,21 @@ local modelSounds = {
 		value	= "Long"
 	}
 }
-local ModelSoundDropDown = generaloptions:CreateDropdown(L.ModelSoundOptions, modelSounds, "DBM", "ModelSoundValue", function(value)
+local ModelSoundDropDown = modelarea:CreateDropdown(L.ModelSoundOptions, modelSounds, "DBM", "ModelSoundValue", function(value)
 	DBM.Options.ModelSoundValue = value
 end)
 ModelSoundDropDown:SetPoint("TOPLEFT", modelarea.frame, "TOPLEFT", 0, -50)
+
+local resizeOptions = DBM_GUI_Frame:CreateArea(L.ResizeOptions, 120)
+
+--TODO, add EDIT field lines for user manually entering pixel size of window should they choose. Some users are real OCD about pixel perfection
+--This would also need a hook for ondrag to update pixel sizes in the edit boxes when window is resized
+
+local resetbutton2 = generaloptions:CreateButton(L.Button_ResetWindowSize, 120, 16)
+resetbutton2:SetPoint("BOTTOMRIGHT", resizeOptions.frame, "BOTTOMRIGHT", -5, 5)
+resetbutton2:SetNormalFontObject(GameFontNormalSmall)
+resetbutton2:SetHighlightFontObject(GameFontNormalSmall)
+resetbutton2:SetScript("OnClick", function()
+	DBM.Options.GUIWidth = DBM.DefaultOptions.GUIWidth
+	DBM.Options.GUIHeight = DBM.DefaultOptions.GUIHeight
+end)

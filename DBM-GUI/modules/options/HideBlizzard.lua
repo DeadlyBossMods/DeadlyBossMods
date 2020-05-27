@@ -21,3 +21,5 @@ local blockMovieDropDown = hideBlizzArea:CreateDropdown(L.DisableCinematics, mov
 	DBM.Options.MovieFilter2 = value
 end, 350)
 blockMovieDropDown:SetPoint("TOPLEFT", DisableSFX, "TOPLEFT", 0, -40)
+
+hideBlizzArea:AutoSetDimension()
