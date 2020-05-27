@@ -41,7 +41,6 @@ frame:SetScript("OnShow", function(self)
 	if self.firstshow then
 		self.firstshow = false
 		self:ShowTab(1)
-		self:UpdateMenuFrame()
 	end
 end)
 frame:SetScript("OnHide", function()
@@ -49,11 +48,14 @@ frame:SetScript("OnHide", function()
 end)
 frame:SetScript("OnDragStart", frame.StartMoving)
 frame:SetScript("OnDragStop", function(self)
-	frame:StopMovingOrSizing()
+	self:StopMovingOrSizing()
 	local point, _, _, x, y = self:GetPoint(1)
 	DBM.Options.GUIPoint = point
 	DBM.Options.GUIX = x
 	DBM.Options.GUIY = y
+end)
+frame:SetScript("OnSizeChanged", function(self)
+	self:UpdateMenuFrame()
 end)
 frame.tabs = {}
 
@@ -163,6 +165,9 @@ for i = 1, math.floor(UIParent:GetHeight() / 18) do
 	button:RegisterForClicks("LeftButtonUp")
 	button:SetScript("OnClick", function(self)
 		frame:ClearSelection()
+		for _, tab in ipairs(frame.tabs) do
+			tab.selection = nil
+		end
 		frame.tabs[frame.tab].selection = button
 		button:LockHighlight()
 		DBM_GUI.currentViewing = self.element
