@@ -7,14 +7,15 @@ mod:SetZone()
 mod.isTrashMod = true
 
 mod:RegisterEvents(
-	"SPELL_CAST_START 310780 315011 159409 310839 315932 311550 311576 307403 306982 311544 314433",
-	"SPELL_AURA_APPLIED 316623",
-	"SPELL_AURA_REMOVED 316623"
+	"SPELL_CAST_START 310780 315011 159409 310839 315932 311576 307403 306982 311544 314433",
+	"SPELL_AURA_APPLIED 316623 311550",
+	"SPELL_AURA_REMOVED 316623 311550"
 )
 
 --TODO, Burning Torrent-311623?
 --TODO, verify trash version of annihilation uses same spellIds as boss
 local warnPsychicDetonation					= mod:NewTargetNoFilterAnnounce(316623, 3)
+local warnFearTheVoid						= mod:NewTargetAnnounce(311550, 3)
 
 local specWarnShadowSmash					= mod:NewSpecialWarningDodge(310780, nil, nil, nil, 2, 2)
 local specWarnBurstingShadows				= mod:NewSpecialWarningDodge(315011, nil, nil, nil, 2, 2)
@@ -22,7 +23,9 @@ local specWarnDreadWind						= mod:NewSpecialWarningDodge(159409, nil, nil, nil,
 local specWarnBrutalSmash					= mod:NewSpecialWarningDodge(315932, nil, nil, nil, 3, 2)--This will wreck even a tank, it does over 900k damage, airhorn
 local specWarnRainofBlood					= mod:NewSpecialWarningDodge(311544, nil, nil, nil, 2, 2)
 local specWarnSanguineFountain				= mod:NewSpecialWarningDodge(314433, nil, nil, nil, 2, 2)
-local specWarnFeartheVoid					= mod:NewSpecialWarningSpell(311550, nil, nil, nil, 2, 2)--Aoe Fear
+local specWarnFeartheVoid					= mod:NewSpecialWarningMoveAway(311550, nil, nil, nil, 1, 2)--Aoe Fear
+local yellFeartheVoid						= mod:NewYell(311550)
+local yellFeartheVoidFades					= mod:NewShortFadesYell(316623)
 local specWarnPsychicDetonation				= mod:NewSpecialWarningMoveAway(316623, nil, nil, nil, 1, 2)
 local yellPsychicDetonation					= mod:NewYell(316623)
 local yellPsychicDetonationFades			= mod:NewShortFadesYell(316623)
@@ -80,6 +83,14 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellPsychicDetonation:Yell()
 			yellPsychicDetonationFades:Countdown(spellId)
 		end
+	elseif spellId == 311550 then
+		warnFearTheVoid:CombinedShow(0.3, args.destName)
+		if args:IsPlayer() then
+			specWarnFeartheVoid:Show()
+			specWarnFeartheVoid:Play("runout")
+			yellFeartheVoid:Yell()
+			yellFeartheVoidFades:Countdown(spellId)
+		end
 	end
 end
 --mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -88,5 +99,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 316623 and args:IsPlayer() then
 		yellPsychicDetonationFades:Cancel()
+	elseif spellId == 311550 and args:IsPlayer() then
+		yellFeartheVoidFades:Cancel()
 	end
 end
