@@ -112,4 +112,6 @@ resetbutton2:SetHighlightFontObject(GameFontNormalSmall)
 resetbutton2:SetScript("OnClick", function()
 	DBM.Options.GUIWidth = DBM.DefaultOptions.GUIWidth
 	DBM.Options.GUIHeight = DBM.DefaultOptions.GUIHeight
+	DBM_GUI_OptionsFrame:SetSize(DBM.Options.GUIWidth, DBM.Options.GUIHeight)
+	DBM_GUI_OptionsFrame:UpdateMenuFrame()
 end)
