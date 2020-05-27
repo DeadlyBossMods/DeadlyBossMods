@@ -1,4 +1,4 @@
-local L = DBM_GUI_Translations
+local L = DBM_GUI_L
 
 --Hard code STANDARD_TEXT_FONT since skinning mods like to taint it (or worse, set it to nil, wtf?)
 local standardFont = STANDARD_TEXT_FONT
@@ -16,9 +16,9 @@ end
 
 local BarSetupPanel = DBM_GUI_Frame:CreateNewPanel(L.BarSetup, "option")
 
-local BarColors = BarSetupPanel:CreateArea(L.AreaTitle_BarColors, nil, 635)
+local BarColors = BarSetupPanel:CreateArea(L.AreaTitle_BarColors, 635)
 local movemebutton = BarColors:CreateButton(L.MoveMe, 100, 16)
-movemebutton:SetPoint("BOTTOMRIGHT", BarColors.frame, "TOPRIGHT", 0, -1)
+movemebutton:SetPoint("TOPRIGHT", BarColors.frame, "TOPRIGHT", -2, -4)
 movemebutton:SetNormalFontObject(GameFontNormalSmall)
 movemebutton:SetHighlightFontObject(GameFontNormalSmall)
 movemebutton:SetScript("OnClick", function() DBM.Bars:ShowMovableBar() end)
@@ -432,7 +432,7 @@ customInline:SetScript("OnClick", function(self)
 	dummybarcolor7:SetText(ttext)
 end)
 
-local BarSetup = BarSetupPanel:CreateArea(L.AreaTitle_BarSetup, nil, 325)
+local BarSetup = BarSetupPanel:CreateArea(L.AreaTitle_BarSetup, 325)
 
 local color1 = BarSetup:CreateColorSelect(64)
 local color2 = BarSetup:CreateColorSelect(64)
@@ -654,7 +654,7 @@ BarHeightSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("Hei
 local DisableBarFade = BarSetup:CreateCheckButton(L.NoBarFade, false, nil, nil, "NoBarFade")
 DisableBarFade:SetPoint("TOPLEFT", BarHeightSlider, "BOTTOMLEFT", 0, -50)
 
-local BarBehaviors = BarSetupPanel:CreateArea(L.AreaTitle_Behavior, nil, 225)
+local BarBehaviors = BarSetupPanel:CreateArea(L.AreaTitle_Behavior, 225)
 
 local DecimalSlider = BarBehaviors:CreateSlider(L.Bar_Decimal, 5, 60, 1)
 DecimalSlider:SetPoint("TOPLEFT", BarBehaviors.frame, "TOPLEFT", 20, -25)
@@ -684,7 +684,7 @@ KeepTimers:SetPoint("TOPLEFT", StripTimers, "BOTTOMLEFT")
 local FadeTimers = BarBehaviors:CreateCheckButton(L.FadeBar, false, nil, nil, "FadeBars")
 FadeTimers:SetPoint("TOPLEFT", KeepTimers, "BOTTOMLEFT")
 
-local BarSetupSmall = BarSetupPanel:CreateArea(L.AreaTitle_BarSetupSmall, nil, 205)
+local BarSetupSmall = BarSetupPanel:CreateArea(L.AreaTitle_BarSetupSmall, 205)
 
 local smalldummybar = DBM.Bars:CreateDummyBar(nil, nil, SMALL)
 smalldummybar.frame:SetParent(BarSetupSmall.frame)
@@ -725,7 +725,7 @@ BarOffsetYSlider:SetValue(DBM.Bars:GetOption("BarYOffset"))
 BarOffsetYSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("BarYOffset"))
 
 local barResetbutton = BarSetup:CreateButton(L.SpecWarn_ResetMe, 120, 16)
-barResetbutton:SetPoint("BOTTOMRIGHT", BarSetupSmall.frame, "BOTTOMRIGHT", -5, 5)
+barResetbutton:SetPoint("BOTTOMRIGHT", BarSetupSmall.frame, "BOTTOMRIGHT", -2, 4)
 barResetbutton:SetNormalFontObject(GameFontNormalSmall)
 barResetbutton:SetHighlightFontObject(GameFontNormalSmall)
 barResetbutton:SetScript("OnClick", function()
@@ -736,7 +736,7 @@ barResetbutton:SetScript("OnClick", function()
 	resetDBTValueToDefault(AlphaSlider, "Alpha")
 end)
 
-local BarSetupHuge = BarSetupPanel:CreateArea(L.AreaTitle_BarSetupHuge, nil, 220)
+local BarSetupHuge = BarSetupPanel:CreateArea(L.AreaTitle_BarSetupHuge, 220)
 
 local enablebar = BarSetupHuge:CreateCheckButton(L.EnableHugeBar, true, nil, nil, "HugeBarsEnabled")
 
@@ -782,7 +782,7 @@ HugeBarOffsetYSlider:SetValue(DBM.Bars:GetOption("HugeBarYOffset"))
 HugeBarOffsetYSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("HugeBarYOffset"))
 
 local hugeBarResetbutton = BarSetupHuge:CreateButton(L.SpecWarn_ResetMe, 120, 16)
-hugeBarResetbutton:SetPoint("BOTTOMRIGHT", BarSetupHuge.frame, "BOTTOMRIGHT", -5, 5)
+hugeBarResetbutton:SetPoint("BOTTOMRIGHT", BarSetupHuge.frame, "BOTTOMRIGHT", -2, 4)
 hugeBarResetbutton:SetNormalFontObject(GameFontNormalSmall)
 hugeBarResetbutton:SetHighlightFontObject(GameFontNormalSmall)
 hugeBarResetbutton:SetScript("OnClick", function()
@@ -792,5 +792,3 @@ hugeBarResetbutton:SetScript("OnClick", function()
 	resetDBTValueToDefault(HugeBarOffsetYSlider, "HugeBarYOffset")
 	resetDBTValueToDefault(HugeAlphaSlider, "HugeAlpha")
 end)
-
-BarSetupPanel:SetMyOwnHeight()

@@ -44,7 +44,7 @@ globals = {
 	"DBM_GUI_OptionsFrame",
 	"DBM_GUI_OptionsFrameBossMods",
 	"DBM_GUI_OptionsFramePanelContainer",
-	"DBM_GUI_Translations",
+	"DBM_GUI_L",
 	"DBM_GUI",
 	"DBM",
 	"DBMHudMap",

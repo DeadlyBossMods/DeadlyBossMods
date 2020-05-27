@@ -1,4 +1,4 @@
-local L = DBM_GUI_Translations
+local L = DBM_GUI_L
 
 DBM_GUI = {
 	frameTypes = {}
@@ -165,15 +165,14 @@ function DBM_GUI:CreateBossModPanel(mod)
 	local category
 
 	local iconstat = panel.frame:CreateFontString("DBM_GUI_Mod_Icons" .. mod.localization.general.name, "ARTWORK")
-	iconstat:SetPoint("TOPRIGHT", panel.frame, "TOPRIGHT", -168, -10)
+	iconstat:SetPoint("TOP", panel.frame, 0, -10)
 	iconstat:SetFontObject(GameFontNormal)
 	iconstat:SetText(L.IconsInUse)
 	for i = 1, 8 do
 		local icon = panel.frame:CreateTexture()
 		icon:SetTexture(137009) -- "Interface\\TargetingFrame\\UI-RaidTargetingIcons.blp"
-		icon:SetPoint("TOPRIGHT", panel.frame, "TOPRIGHT", -150 - (i * 18), -26)
-		icon:SetWidth(16)
-		icon:SetHeight(16)
+        icon:SetPoint("TOP", panel.frame, 81 - (i * 18), -26)
+        icon:SetSize(16, 16)
 		if not mod.usedIcons or not mod.usedIcons[i] then
 			icon:SetAlpha(0.25)
 		end
@@ -189,7 +188,7 @@ function DBM_GUI:CreateBossModPanel(mod)
 	end
 
 	local reset = panel:CreateButton(L.Mod_Reset, 155, 30, nil, GameFontNormalSmall)
-	reset:SetPoint("TOPRIGHT", panel.frame, "TOPRIGHT", -6, -6)
+	reset:SetPoint("TOPRIGHT", panel.frame, "TOPRIGHT", -24, -4)
 	reset:SetScript("OnClick", function(self)
 		DBM:LoadModDefaultOption(mod)
 	end)
@@ -203,7 +202,7 @@ function DBM_GUI:CreateBossModPanel(mod)
 	for _, catident in pairs(mod.categorySort) do
 		category = mod.optionCategories[catident]
 		if category then
-			local catpanel = panel:CreateArea(mod.localization.cats[catident], nil, nil, true)
+			local catpanel = panel:CreateArea(mod.localization.cats[catident])
 			local catbutton, lastButton, addSpacer
 			local hasDropdowns = 0
 			for _, v in ipairs(category) do
@@ -274,7 +273,6 @@ function DBM_GUI:CreateBossModPanel(mod)
 				end
 			end
 			catpanel:AutoSetDimension(hasDropdowns)
-			panel:SetMyOwnHeight()
 		end
 	end
 end
@@ -470,7 +468,7 @@ do
 		local modProfileArea
 		if not subtab then
 			local modProfileDropdown = {}
-			modProfileArea = panel:CreateArea(L.Area_ModProfile, panel.frame:GetWidth() - 20, 135, true)
+			modProfileArea = panel:CreateArea(L.Area_ModProfile, 135)
 			modProfileArea.frame:SetPoint("TOPLEFT", 10, -25)
 			local resetButton = modProfileArea:CreateButton(L.ModAllReset, 200, 20)
 			resetButton:SetPoint("TOPLEFT", 10, -14)
@@ -567,7 +565,7 @@ do
 
 		local singleline = 0
 		local doubleline = 0
-		local area = panel:CreateArea(nil, panel.frame:GetWidth() - 20, 0)
+		local area = panel:CreateArea()
 		area.frame:SetPoint("TOPLEFT", 10, modProfileArea and -180 or -25)
 		area.onshowcall = {}
 
@@ -1403,7 +1401,6 @@ do
 				v()
 			end
 		end)
-		panel:SetMyOwnHeight()
 		DBM_GUI_OptionsFrame:DisplayFrame(panel.frame, true)
 	end
 
@@ -1456,8 +1453,6 @@ do
 							self:Hide()
 							self.headline:Hide()
 							CreateBossModTab(self.modid, self.modid.panel)
-							DBM_GUI_OptionsFrameBossMods:Hide()
-							DBM_GUI_OptionsFrameBossMods:Show()
 						end
 					end)
 					button:SetPoint("CENTER", 0, -20)

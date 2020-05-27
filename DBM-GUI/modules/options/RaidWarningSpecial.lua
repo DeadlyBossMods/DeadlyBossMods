@@ -1,4 +1,4 @@
-local L = DBM_GUI_Translations
+local L = DBM_GUI_L
 
 --Hard code STANDARD_TEXT_FONT since skinning mods like to taint it (or worse, set it to nil, wtf?)
 local standardFont = STANDARD_TEXT_FONT
@@ -15,7 +15,7 @@ else
 end
 
 local specPanel = DBM_GUI_Frame:CreateNewPanel(L.Panel_SpecWarnFrame, "option")
-local specArea = specPanel:CreateArea(L.Area_SpecWarn, nil, 300)
+local specArea = specPanel:CreateArea(L.Area_SpecWarn, 300)
 
 local check1 = specArea:CreateCheckButton(L.SpecWarn_ClassColor, true, nil, "SWarnClassColor")
 local check2 = specArea:CreateCheckButton(L.WarningAlphabetical, true, nil, "SWarningAlphabetical")
@@ -25,7 +25,7 @@ local check5 = specArea:CreateCheckButton(L.SpecialWarningIcon, true, nil, "Spec
 local check6 = specArea:CreateCheckButton(L.ShortTextSpellname, true, nil, "SpecialWarningShortText")
 
 local movemebutton = specArea:CreateButton(L.SpecWarn_MoveMe, 120, 16)
-movemebutton:SetPoint("TOPRIGHT", specArea.frame, "TOPRIGHT", 0, -5)
+movemebutton:SetPoint("TOPRIGHT", specArea.frame, "TOPRIGHT", -2, -4)
 movemebutton:SetNormalFontObject(GameFontNormalSmall)
 movemebutton:SetHighlightFontObject(GameFontNormalSmall)
 movemebutton:SetScript("OnClick", function() DBM:MoveSpecialWarning() end)
@@ -156,13 +156,15 @@ local Sounds = DBM_GUI:MixinSharedMedia3("sound", {
 	{ text = "Yogg Saron: Laugh", value = 15757 },
 })
 
-local specWarnOne = specPanel:CreateArea(L.SpecialWarnHeader1, nil, 160)
+local specWarnOne = specPanel:CreateArea(L.SpecialWarnHeader1, 160)
 
 local showbuttonOne = specWarnOne:CreateButton(L.SpecWarn_DemoButton, 120, 16)
-showbuttonOne:SetPoint("BOTTOMRIGHT", specWarnOne.frame, "BOTTOMRIGHT", -5, 5)
+showbuttonOne:SetPoint("BOTTOMRIGHT", specWarnOne.frame, "BOTTOMRIGHT", -2, 4)
 showbuttonOne:SetNormalFontObject(GameFontNormalSmall)
 showbuttonOne:SetHighlightFontObject(GameFontNormalSmall)
-showbuttonOne:SetScript("OnClick", function() DBM:ShowTestSpecialWarning(nil, 1) end)
+showbuttonOne:SetScript("OnClick", function()
+	DBM:ShowTestSpecialWarning(nil, 1)
+end)
 
 local color1 = specWarnOne:CreateColorSelect(64)
 color1:SetPoint("TOPLEFT", specWarnOne.frame, "TOPLEFT", 20, -30)
@@ -217,10 +219,10 @@ flashRepSlider:HookScript("OnValueChanged", function(self)
 end)
 
 --Special Warning Area 2
-local specWarnTwo = specPanel:CreateArea(L.SpecialWarnHeader2, nil, 160)
+local specWarnTwo = specPanel:CreateArea(L.SpecialWarnHeader2, 160)
 
 local showbuttonTwo = specWarnTwo:CreateButton(L.SpecWarn_DemoButton, 120, 16)
-showbuttonTwo:SetPoint("BOTTOMRIGHT", specWarnTwo.frame, "BOTTOMRIGHT", -5, 5)
+showbuttonTwo:SetPoint("BOTTOMRIGHT", specWarnTwo.frame, "BOTTOMRIGHT", -2, 4)
 showbuttonTwo:SetNormalFontObject(GameFontNormalSmall)
 showbuttonTwo:SetHighlightFontObject(GameFontNormalSmall)
 showbuttonTwo:SetScript("OnClick", function()
@@ -278,10 +280,10 @@ flashRepSlider2:HookScript("OnValueChanged", function(self)
 end)
 
 --Special Warning Area 3
-local specWarnThree = specPanel:CreateArea(L.SpecialWarnHeader3, nil, 160)
+local specWarnThree = specPanel:CreateArea(L.SpecialWarnHeader3, 160)
 
 local showbuttonThree = specWarnThree:CreateButton(L.SpecWarn_DemoButton, 120, 16)
-showbuttonThree:SetPoint("BOTTOMRIGHT", specWarnThree.frame, "BOTTOMRIGHT", -5, 5)
+showbuttonThree:SetPoint("BOTTOMRIGHT", specWarnThree.frame, "BOTTOMRIGHT", -2, 4)
 showbuttonThree:SetNormalFontObject(GameFontNormalSmall)
 showbuttonThree:SetHighlightFontObject(GameFontNormalSmall)
 showbuttonThree:SetScript("OnClick", function()
@@ -341,10 +343,10 @@ flashRepSlider3:HookScript("OnValueChanged", function(self)
 	DBM:UpdateSpecialWarningOptions()
 end)
 
-local specWarnFour = specPanel:CreateArea(L.SpecialWarnHeader4, nil, 160)
+local specWarnFour = specPanel:CreateArea(L.SpecialWarnHeader4, 160)
 
 local showbuttonFour = specWarnFour:CreateButton(L.SpecWarn_DemoButton, 120, 16)
-showbuttonFour:SetPoint("BOTTOMRIGHT", specWarnFour.frame, "BOTTOMRIGHT", -5, 5)
+showbuttonFour:SetPoint("BOTTOMRIGHT", specWarnFour.frame, "BOTTOMRIGHT", -2, 4)
 showbuttonFour:SetNormalFontObject(GameFontNormalSmall)
 showbuttonFour:SetHighlightFontObject(GameFontNormalSmall)
 showbuttonFour:SetScript("OnClick", function()
@@ -404,10 +406,10 @@ flashRepSlider4:HookScript("OnValueChanged", function(self)
 	DBM:UpdateSpecialWarningOptions()
 end)
 
-local specWarnFive = specPanel:CreateArea(L.SpecialWarnHeader5, nil, 160)
+local specWarnFive = specPanel:CreateArea(L.SpecialWarnHeader5, 160)
 
 local showbuttonFive = specWarnFive:CreateButton(L.SpecWarn_DemoButton, 120, 16)
-showbuttonFive:SetPoint("BOTTOMRIGHT", specWarnFive.frame, "BOTTOMRIGHT", -5, 5)
+showbuttonFive:SetPoint("BOTTOMRIGHT", specWarnFive.frame, "BOTTOMRIGHT", -2, 4)
 showbuttonFive:SetNormalFontObject(GameFontNormalSmall)
 showbuttonFive:SetHighlightFontObject(GameFontNormalSmall)
 showbuttonFive:SetScript("OnClick", function()
@@ -466,7 +468,7 @@ flashRepSlider5:HookScript("OnValueChanged", function(self)
 end)
 
 local resetbutton = specArea:CreateButton(L.SpecWarn_ResetMe, 120, 16)
-resetbutton:SetPoint("BOTTOMRIGHT", specArea.frame, "BOTTOMRIGHT", -5, 5)
+resetbutton:SetPoint("BOTTOMRIGHT", specArea.frame, "BOTTOMRIGHT", -2, 4)
 resetbutton:SetNormalFontObject(GameFontNormalSmall)
 resetbutton:SetHighlightFontObject(GameFontNormalSmall)
 resetbutton:SetScript("OnClick", function()
@@ -559,4 +561,3 @@ resetbutton:SetScript("OnClick", function()
 	flashRepSlider5:SetValue(DBM.DefaultOptions.SpecialWarningFlashCount5)
 	DBM:UpdateSpecialWarningOptions()
 end)
-specPanel:SetMyOwnHeight()

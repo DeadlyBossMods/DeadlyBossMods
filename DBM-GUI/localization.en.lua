@@ -1,6 +1,6 @@
-DBM_GUI_Translations = {}
+DBM_GUI_L = {}
 
-local L = DBM_GUI_Translations
+local L = DBM_GUI_L
 
 L.MainFrame = "Deadly Boss Mods"
 
@@ -64,16 +64,19 @@ L.UseDialogChannel			= "Dialog audio channel."
 L.UseSFXChannel				= "Sound Effects (SFX) audio channel."
 L.Latency_Text				= "Set max latency sync threshold: %d"
 
+L.Button_RangeFrame			= "Show/hide range frame"
+L.Button_InfoFrame			= "Show/hide info frame"
+L.Button_TestBars			= "Start test bars"
+L.Button_ResetInfoRange		= "Reset Info/Range frames"
+
 L.ModelOptions				= "3D Model Viewer Options"
 L.EnableModels				= "Enable 3D models in boss options"
 L.ModelSoundOptions			= "Set sound option for model viewer"
 L.ModelSoundShort			= SHORT
 L.ModelSoundLong			= TOAST_DURATION_LONG
 
-L.Button_RangeFrame			= "Show/hide range frame"
-L.Button_InfoFrame			= "Show/hide info frame"
-L.Button_TestBars			= "Start test bars"
-L.Button_ResetInfoRange		= "Reset Info/Range frames"
+L.ResizeOptions			 	= "Resize Options"
+L.Button_ResetWindowSize	= "Reset GUI window size"
 
 -- Tab: Raidwarning
 L.Tab_RaidWarning 			= "Raid Warnings"
