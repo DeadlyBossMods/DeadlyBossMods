@@ -3976,6 +3976,44 @@ function DBM:ScenarioCheck()
 	end
 end
 
+--For loading pluginss (WIP/Example)
+function DBM:LoadPlugin(mod, force)
+	if mod.minRevision > self.Revision then
+		if self:AntiSpam(60, "VER_MISMATCH") then--Throttle message in case person keeps trying to load mod (or it's a world boss player keeps targeting
+			self:AddMsg(L.LOAD_MOD_VER_MISMATCH:format(mod.name))
+		end
+		return
+	end
+	if mod.minExpansion > GetExpansionLevel() then
+		self:AddMsg(L.LOAD_MOD_EXP_MISMATCH:format(mod.name))
+		return
+	elseif not testBuild and mod.minToc > wowTOC then
+		self:AddMsg(L.LOAD_MOD_TOC_MISMATCH:format(mod.name, mod.minToc))
+		return
+	end
+	local loaded, reason = LoadAddOn(mod.modId)
+	if not loaded then
+		if reason then
+			self:AddMsg(L.LOAD_MOD_ERROR:format(tostring(mod.name), tostring(_G["ADDON_"..reason or ""])))
+		else
+			self:Debug("LoadAddOn failed and did not give reason")
+		end
+		return false
+	else
+		self:Debug("LoadAddOn should have succeeded for "..mod.name, 2)
+		self:AddMsg(L.LOAD_MOD_SUCCESS:format(tostring(mod.name)))
+		--self:LoadModOptions(mod.modId, InCombatLockdown(), true)
+		--if DBM_GUI then
+		--	DBM_GUI:UpdateModList()
+		--end
+		if not InCombatLockdown() and not UnitAffectingCombat("player") and not IsFalling() then--We loaded in combat but still need to avoid garbage collect in combat
+			collectgarbage("collect")
+		end
+		return true
+	end
+end
+
+--For loading content/encounter mods
 function DBM:LoadMod(mod, force)
 	if type(mod) ~= "table" then
 		self:Debug("LoadMod failed because mod table not valid")
