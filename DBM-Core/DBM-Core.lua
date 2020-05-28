@@ -1308,7 +1308,7 @@ do
 				version = tonumber(string.sub(version, 2))
 				if version < 121 then
 					self:Disable(true)
-					C_TimerAfter(15, function() AddMsg(self, L.OUTDATEDSPELLTIMERS) end)
+					self:Schedule(15, infniteLoopNotice, self, L.OUTDATEDSPELLTIMERS)
 					return
 				end
 			end
