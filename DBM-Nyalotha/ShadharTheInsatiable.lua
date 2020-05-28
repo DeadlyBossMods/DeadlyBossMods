@@ -315,8 +315,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:Unschedule(umbralEruptionLoop)
 			--Schedule P2 Loop
 			self.vb.bubblingCount = 0
-			timerBubblingOverflowCD:Start(10)
-			self:Schedule(10, bubblingOverflowLoop, self)
+			timerBubblingOverflowCD:Start(8)
+			self:Schedule(8, bubblingOverflowLoop, self)
 		end
 		updateBreathTimer(self)
 	elseif spellId == 306933 then

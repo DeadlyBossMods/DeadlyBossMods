@@ -71,8 +71,8 @@ end
 
 DBM = {
 	Revision = parseCurseDate("@project-date-integer@"),
-	DisplayVersion = "8.3.22 alpha", -- the string that is shown as version
-	ReleaseRevision = releaseDate(2020, 5, 1) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	DisplayVersion = "8.3.24 alpha", -- the string that is shown as version
+	ReleaseRevision = releaseDate(2020, 5, 27, 12) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 }
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
@@ -485,6 +485,7 @@ local bannedMods = { -- a list of "banned" (meaning they are replaced by another
 	"DBM-Suramar",--Renamed to DBM-Nighthold
 	"DBM-KulTiras",--Merged to DBM-Azeroth-BfA
 	"DBM-Zandalar",--Merged to DBM-Azeroth-BfA
+	"DBM-SpellTimers",
 }
 
 
@@ -512,7 +513,7 @@ local tinsert, tremove, twipe, tsort, tconcat = table.insert, table.remove, tabl
 local type, select = type, select
 local GetTime = GetTime
 local bband = bit.band
-local floor, ceiling, mhuge, mmin, mmax, mrandom = math.floor, math.ceil, math.huge, math.min, math.max, math.random
+local floor, mhuge, mmin, mmax, mrandom = math.floor, math.huge, math.min, math.max, math.random
 local GetNumGroupMembers, GetRaidRosterInfo = GetNumGroupMembers, GetRaidRosterInfo
 local UnitName, GetUnitName = UnitName, GetUnitName
 local IsInRaid, IsInGroup, IsInInstance = IsInRaid, IsInGroup, IsInInstance
@@ -1301,6 +1302,11 @@ do
 			if GetAddOnEnableState(playerName, "DBM-Profiles") >= 1 then
 				self:Disable(true)
 				C_TimerAfter(15, function() AddMsg(self, L.OUTDATEDPROFILES) end)
+				return
+			end
+			if GetAddOnEnableState(playerName, "DBM-SpellTimers") >= 1 then
+				self:Disable(true)
+				C_TimerAfter(15, function() AddMsg(self, "DBM-SpellTimers currently breaks DBM so it must be disabled") end)
 				return
 			end
 			if GetAddOnEnableState(playerName, "DPMCore") >= 1 then
@@ -2606,6 +2612,10 @@ do
 			self:AddMsg(L.OUTDATEDPROFILES)
 			return
 		end
+		if GetAddOnEnableState(playerName, "DBM-SpellTimers") >= 1 then
+			self:AddMsg("DBM-SpellTimers currently breaks DBM so it must be disabled")
+			return
+		end
 		if GetAddOnEnableState(playerName, "DPMCore") >= 1 then
 			self:AddMsg(L.DPMCORE)
 			return
@@ -2662,7 +2672,12 @@ do
 
 		function dataBroker.OnClick(self, button)
 			if IsShiftKeyDown() then return end
-			DBM:LoadGUI()
+			if button == "RightButton" then
+				DBM.Options.SilentMode = DBM.Options.SilentMode == false and true or false
+				DBM:AddMsg("SilentMode is " .. (DBM.Options.SilentMode and "ON" or "OFF"))
+			else
+				DBM:LoadGUI()
+			end
 		end
 
 		function dataBroker.OnTooltipShow(GameTooltip)
@@ -2671,7 +2686,7 @@ do
 			GameTooltip:AddLine(" ")
 			GameTooltip:AddLine(L.MINIMAP_TOOLTIP_FOOTER, RAID_CLASS_COLORS.MAGE.r, RAID_CLASS_COLORS.MAGE.g, RAID_CLASS_COLORS.MAGE.b, 1)
 			GameTooltip:AddLine(L.LDB_TOOLTIP_HELP1, RAID_CLASS_COLORS.MAGE.r, RAID_CLASS_COLORS.MAGE.g, RAID_CLASS_COLORS.MAGE.b)
-		--	GameTooltip:AddLine(L.LDB_TOOLTIP_HELP2, RAID_CLASS_COLORS.MAGE.r, RAID_CLASS_COLORS.MAGE.g, RAID_CLASS_COLORS.MAGE.b)
+			GameTooltip:AddLine(L.LDB_TOOLTIP_HELP2, RAID_CLASS_COLORS.MAGE.r, RAID_CLASS_COLORS.MAGE.g, RAID_CLASS_COLORS.MAGE.b)
 		end
 	end
 
@@ -4495,8 +4510,8 @@ do
 			--150 people on, only 33% chance a DBM user replies to request
 			--1000 people online, only 5% chance a DBM user replies to request
 			local _, online = GetNumGuildMembers()
-			local chances = online / 50
-			chances = ceiling(chances)--Round up to nearest whole number, it should never be less than 1
+			local chances = (online or 1) / 50
+			if chances < 1 then chances = 1 end
 			if mrandom(1, chances) == 1 then
 				DBM:Schedule(5, SendVersion, true)--Send version if 5 seconds have past since last "Hi" sync
 			end
