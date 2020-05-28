@@ -1349,6 +1349,7 @@ do
 								sort			= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Sort") or mhuge) or mhuge,
 								type			= GetAddOnMetadata(i, "X-DBM-Mod-Type") or "OTHER",
 								category		= GetAddOnMetadata(i, "X-DBM-Mod-Category") or "Other",
+								optionsTab		= GetAddOnMetadata(i, "X-DBM-Mod-OptionsTab"),
 								name			= GetAddOnMetadata(i, "X-DBM-Mod-Name") or GetRealZoneText(tonumber(mapIdTable[1])) or L.UNKNOWN,
 								mapId			= mapIdTable,
 								subTabs			= GetAddOnMetadata(i, "X-DBM-Mod-SubCategoriesID") and {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-SubCategoriesID"))} or GetAddOnMetadata(i, "X-DBM-Mod-SubCategories") and {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-SubCategories"))},
@@ -2618,6 +2619,7 @@ do
 			DBM:AddMsg(L.UPDATEREMINDER_DISABLE)
 			return
 		end
+		local firstLoad = false
 		if not IsAddOnLoaded("DBM-GUI") then
 			local enabled = GetAddOnEnableState(playerName, "DBM-GUI")
 			if enabled == 0 then
@@ -2632,13 +2634,17 @@ do
 				end
 				return false
 			end
-			tsort(callOnLoad, function(v1, v2) return v1[2] < v2[2] end)
-			for i, v in ipairs(callOnLoad) do v[1]() end
 			if not InCombatLockdown() and not UnitAffectingCombat("player") and not IsFalling() then--We loaded in combat but still need to avoid garbage collect in combat
 				collectgarbage("collect")
 			end
+			firstLoad = true
 		end
-		return DBM_GUI:ShowHide()
+		DBM_GUI:ShowHide()
+		if firstLoad then
+			firstLoad = false
+			tsort(callOnLoad, function(v1, v2) return v1[2] < v2[2] end)
+			for i, v in ipairs(callOnLoad) do v[1]() end
+		end
 	end
 
 	function DBM:RegisterOnGuiLoadCallback(f, sort)
@@ -11302,6 +11308,7 @@ function bossModPrototype:SetOptionCategory(name, cat)
 		self.optionCategories[cat] = {}
 	end
 	tinsert(self.optionCategories[cat], name)
+	tinsert(self.categorySort, cat)
 end
 
 --------------
