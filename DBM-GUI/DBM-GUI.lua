@@ -484,11 +484,7 @@ do
 			resetButton:SetScript("OnClick", function()
 				DBM:LoadAllModDefaultOption(addon.modId)
 			end)
-			local savedVarsName = addon.modId:gsub("-", "") .. "_AllSavedVars"
-			if not _G[savedVarsName] then
-				_G[savedVarsName] = {}
-			end
-			for charname, charTable in pairs(_G[savedVarsName]) do
+			for charname, charTable in pairs(_G[addon.modId:gsub("-", "") .. "_AllSavedVars"] or {}) do
 				for bossid, optionTable in pairs(charTable) do
 					if type(optionTable) == "table" then
 						for i = 0, 3 do
