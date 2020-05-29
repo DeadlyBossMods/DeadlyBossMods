@@ -1312,6 +1312,11 @@ do
 					return
 				end
 			end
+			if GetAddOnEnableState(playerName, "DBM-RaidLeadTools") >= 1 then
+				self:Disable(true)
+				self:Schedule(15, infniteLoopNotice, self, L.OUTDATEDRLT)
+				return
+			end
 			if GetAddOnEnableState(playerName, "DPMCore") >= 1 then
 				self:Disable(true)
 				C_TimerAfter(15, function() AddMsg(self, L.DPMCORE) end)
@@ -2623,6 +2628,10 @@ do
 				self:AddMsg(L.OUTDATEDSPELLTIMERS)
 				return
 			end
+		end
+		if GetAddOnEnableState(playerName, "DBM-RaidLeadTools") >= 1 then
+			self:AddMsg(L.OUTDATEDRLT)
+			return
 		end
 		if GetAddOnEnableState(playerName, "DPMCore") >= 1 then
 			self:AddMsg(L.DPMCORE)
