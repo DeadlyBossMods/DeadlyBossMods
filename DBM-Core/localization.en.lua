@@ -13,7 +13,7 @@ if C_DateAndTime and C_DateAndTime.GetCurrentCalendarTime then
 	end
 end
 
-L.HOW_TO_USE_MOD					= "Welcome to " .. L.DBM .. ". Type /dbm help for a list of supported commands. To access options type /dbm in your chat to begin configuration. Load specific zones manually to configure any boss specific settings to your liking as well. DBM will setup defaults for your spec, but you may want to fine tune these."
+L.HOW_TO_USE_MOD					= "Welcome to " .. L.DBM .. ". Type /dbm help for a list of supported commands. To access options type /dbm in your chat to begin configuration. Load specific zones manually to configure any boss specific settings to your liking as well. " .. L.DBM .. " will setup defaults for your spec, but you may want to fine tune these."
 L.SILENT_REMINDER					= "Reminder: " .. L.DBM .. " is still in silent mode."
 
 L.LOAD_MOD_ERROR					= "Error while loading boss mods for %s: %s"
@@ -115,7 +115,7 @@ L.NOTESHAREERRORALREADYOPEN			= "Cannot open a shared note link while note edito
 L.ALLMOD_DEFAULT_LOADED				= "Default options for all mods in this instance have been loaded."
 L.ALLMOD_STATS_RESETED				= "All mod stats have been reset."
 L.MOD_DEFAULT_LOADED				= "Default options for this fight have been loaded."
-L.SOUNDKIT_MIGRATION				= "One or more of your warning/special warning sounds were reset to defaults do to incompatability media type or invalid sound path. DBM now only supports sound files residing your addons folder, or SoundKit IDs for playing media"
+L.SOUNDKIT_MIGRATION				= "One or more of your warning/special warning sounds were reset to defaults do to incompatability media type or invalid sound path. " .. L.DBM .. " now only supports sound files residing your addons folder, or SoundKit IDs for playing media"
 
 L.WORLDBOSS_ENGAGED					= "%s was possibly engaged on your realm at %s percent health. (Sent by %s)"
 L.WORLDBOSS_DEFEATED				= "%s was possibly defeated on your realm (Sent by %s)."
@@ -174,38 +174,39 @@ L.VERSIONCHECK_ENTRY_NO_DBM			= "%s: No boss mod installed"
 L.VERSIONCHECK_FOOTER				= "Found %d player(s) with " .. L.DBM .. " & %d player(s) with Bigwigs"
 L.VERSIONCHECK_OUTDATED				= "Following %d player(s) have outdated boss mod version: %s"
 L.YOUR_VERSION_OUTDATED				= "Your version of " .. L.DEADLY_BOSS_MODS.. " is out-of-date. Please visit http://www.deadlybossmods.com to get the latest version."
-L.VOICE_PACK_OUTDATED				= "Your selected DBM voice pack is missing some sounds supported by DBM. Some warning sounds will still play default sounds. Please download a newer version of voice pack or pack contact author for an update that contains missing audio"
-L.VOICE_MISSING						= "You have a DBM voice pack selected that could not be found. If this is an error, make sure your voice pack is properly installed and enabled in addons."
-L.VOICE_DISABLED					= "You currently have at least one DBM voice pack installed but none enabled. If you intend to use a voice pack, make sure it's chosen in 'Spoken Alerts', else uninstall unused voice packs to hide this message"
+L.VOICE_PACK_OUTDATED				= "Your selected " .. L.DBM .. " voice pack is missing some sounds supported by " .. L.DBM .. ". Some warning sounds will still play default sounds. Please download a newer version of voice pack or pack contact author for an update that contains missing audio"
+L.VOICE_MISSING						= "You have a " .. L.DBM .. " voice pack selected that could not be found. If this is an error, make sure your voice pack is properly installed and enabled in addons."
+L.VOICE_DISABLED					= "You currently have at least one " .. L.DBM .. " voice pack installed but none enabled. If you intend to use a voice pack, make sure it's chosen in 'Spoken Alerts', else uninstall unused voice packs to hide this message"
 L.VOICE_COUNT_MISSING				= "Countdown voice %d is set to a voice/count pack that could not be found. It has be reset to default setting: %s."
 L.BIG_WIGS							= "BigWigs"
 
 L.UPDATEREMINDER_HEADER				= "Your version of " .. L.DEADLY_BOSS_MODS.. " is out-of-date.\n Version %s (%s) is available for download through Curse/Twitch, WoWI, or from GitHub project page"
-L.UPDATEREMINDER_HEADER_ALPHA		= "Your ALPHA version of " .. L.DEADLY_BOSS_MODS.. " is out-of-date.\n You are at least %s test versions behind. It is recommended that DBM users that choose ALPHA versions run the latest ALPHA. Otherwise, they should run latest RELEASE version. Out of date ALPHAs have a stricter version check because they are development versions of DBM."
+L.UPDATEREMINDER_HEADER_ALPHA		= "Your ALPHA version of " .. L.DEADLY_BOSS_MODS.. " is out-of-date.\n You are at least %s test versions behind. It is recommended that " .. L.DBM .. " users that choose ALPHA versions run the latest ALPHA. Otherwise, they should run latest RELEASE version. Out of date ALPHAs have a stricter version check because they are development versions of " .. L.DBM .. "."
 L.UPDATEREMINDER_FOOTER				= "Press " .. (IsMacClient() and "Cmd-C" or "Ctrl-C")  ..  " to copy the download link to your clipboard."
 L.UPDATEREMINDER_FOOTER_GENERIC		= "Press " .. (IsMacClient() and "Cmd-C" or "Ctrl-C")  ..  " to copy the link to your clipboard."
 L.UPDATEREMINDER_DISABLE			= "WARNING: Due to your " .. L.DEADLY_BOSS_MODS.. " being too out of date, it has been force disabled and cannot be used until updated. This is to ensure outdated or incompatible mods do not cause poor play experience for yourself or fellow group members."
 --L.UPDATEREMINDER_NODISABLE		= "WARNING: Your " .. L.DEADLY_BOSS_MODS.. " install is very out of date. While you may have disabled update notification, this message starts to appear after a certain threshold and cannot be disabled. Updating is HIGHLY recommended."
 L.UPDATEREMINDER_HOTFIX				= L.DBM .. " version you are on has known issues during this boss encounter that are corrected if you update to latest release"
 L.UPDATEREMINDER_HOTFIX_ALPHA		= L.DBM .. " version you are on has known issues during this boss encounter that are corrected in an upcoming release (or latest alpha version)"
-L.UPDATEREMINDER_MAJORPATCH			= "WARNING: Do to your " .. L.DEADLY_BOSS_MODS.. " being out of date, DBM has been disabled until updated, since this is a major game patch. This is to ensure old and incompatible code doesn't cause poor play experience for yourself or fellow group members. Make sure you download a newer version from deadlybossmods.com or curse as soon as possible."
+L.UPDATEREMINDER_MAJORPATCH			= "WARNING: Do to your " .. L.DEADLY_BOSS_MODS.. " being out of date, " .. L.DBM .. " has been disabled until updated, since this is a major game patch. This is to ensure old and incompatible code doesn't cause poor play experience for yourself or fellow group members. Make sure you download a newer version from deadlybossmods.com or curse as soon as possible."
 L.UPDATEREMINDER_TESTVERSION		= "WARNING: You are using a version of " .. L.DEADLY_BOSS_MODS.. " not intended to be used with this game version. Please make sure you download the appropriate version for your game client from deadlybossmods.com or curse."
 L.VEM								= "WARNING: You are running both " .. L.DEADLY_BOSS_MODS.. " and Voice Encounter Mods. DBM will not run in this configuration and therefore will not be loaded."
-L.OUTDATEDPROFILES					= "WARNING: DBM-Profiles not compatible with this version of DBM. It must be removed before DBM can proceed, to avoid conflict."
-L.OUTDATEDSPELLTIMERS				= "WARNING: An old version of DBM-SpellTimers is present that breaks DBM. DBM-SpellTimers must be updated or removed for DBM to function properly. Update will require a game restart."
-L.VICTORYSOUND						= "WARNING: DBM-VictorySound not compatible with this version of DBM. It must be removed before DBM can proceed, to avoid conflict."
-L.DPMCORE							= "WARNING: Deadly PvP mods is discontinued and not compatible with this version of DBM. It must be removed before DBM can proceed, to avoid conflict."
+L.OUTDATEDPROFILES					= "WARNING: DBM-Profiles not compatible with this version of " .. L.DBM .. ". It must be removed before DBM can proceed, to avoid conflict."
+L.OUTDATEDSPELLTIMERS				= "WARNING: An old version of DBM-SpellTimers is present that breaks " .. L.DBM .. ". DBM-SpellTimers must be updated or removed for " .. L.DBM .. " to function properly. Update will require a game restart."
+L.OUTDATEDRLT						= "WARNING: DBM-RaidLeadTools is not compatible with this version of " .. L.DBM .. ". It must be removed before " .. L.DBM .. " can proceed, to avoid conflict."
+L.VICTORYSOUND						= "WARNING: DBM-VictorySound is not compatible with this version of " .. L.DBM .. ". It must be removed before " .. L.DBM .. " can proceed, to avoid conflict."
+L.DPMCORE							= "WARNING: Deadly PvP mods is discontinued and not compatible with this version of " .. L.DBM .. ". It must be removed before " .. L.DBM .. " can proceed, to avoid conflict."
 L.DBMLDB							= "WARNING: DBM-LDB is now built into DBM-Core. While it won't do any harm, it's recommended to remove 'DBM-LDB' from your addons folder"
 L.DBMLOOTREMINDER					= "WARNING: 3rd party mod DBM-LootReminder is installed. This addon is no longer compatible with retail wow client and will cause DBM to break and not be able to send pull timers. Uninstall of this addon recommended"
-L.UPDATE_REQUIRES_RELAUNCH			= "WARNING: This DBM update will not work correctly if you don't fully restart your game client. This update contains new files or .toc file changes that cannot be loaded via ReloadUI. You may encounter broken functionality or errors if you continue without a client restart."
+L.UPDATE_REQUIRES_RELAUNCH			= "WARNING: This " .. L.DBM .. " update will not work correctly if you don't fully restart your game client. This update contains new files or .toc file changes that cannot be loaded via ReloadUI. You may encounter broken functionality or errors if you continue without a client restart."
 L.OUT_OF_DATE_NAG					= "Your version of " .. L.DEADLY_BOSS_MODS.. " is out-of-date. It is recommended you update for this fight so you are not missing an important alert or timer or a yell rest of raid is expecting to see from you."
-L.RETAIL_ONLY						= "WARNING: This version of DBM is only meant to be used with latest retail version World of Warcraft. Uninstall this version and install correct version of DBM for Classic WoW."
+L.RETAIL_ONLY						= "WARNING: This version of " .. L.DBM .. " is only meant to be used with latest retail version World of Warcraft. Uninstall this version and install correct version of " .. L.DBM .. " for Classic WoW."
 
 L.MOVABLE_BAR						= "Drag me!"
 
---L.PIZZA_SYNC_INFO					= "|Hplayer:%1$s|h[%1$s]|h sent you a DBM timer: '%2$s'\n|HDBM:cancel:%2$s:nil|h|cff3588ff[Cancel this timer]|r|h  |HDBM:ignore:%2$s:%1$s|h|cff3588ff[Ignore timers from %1$s]|r|h"
-L.PIZZA_SYNC_INFO					= "|Hplayer:%1$s|h[%1$s]|h sent you a DBM timer"
-L.PIZZA_CONFIRM_IGNORE				= "Do you really want to ignore DBM timers from %s for this session?"
+--L.PIZZA_SYNC_INFO					= "|Hplayer:%1$s|h[%1$s]|h sent you a " .. L.DBM .. " timer: '%2$s'\n|HDBM:cancel:%2$s:nil|h|cff3588ff[Cancel this timer]|r|h  |HDBM:ignore:%2$s:%1$s|h|cff3588ff[Ignore timers from %1$s]|r|h"
+L.PIZZA_SYNC_INFO					= "|Hplayer:%1$s|h[%1$s]|h sent you a " .. L.DBM .. " timer"
+L.PIZZA_CONFIRM_IGNORE				= "Do you really want to ignore " .. L.DBM .. " timers from %s for this session?"
 L.PIZZA_ERROR_USAGE					= "Usage: /dbm [broadcast] timer <time> <text>. <time> must be 3 or greater."
 
 L.MINIMAP_TOOLTIP_HEADER			= L.DEADLY_BOSS_MODS--Technically redundant
@@ -251,9 +252,9 @@ L.SLASHCMD_HELP						= {
 	"/dbm unlock: Shows a movable status bar timer (alias: move).",
 	"/range <number> or /distance <number>: Shows range frame. /rrange or /rdistance to reverse colors.",
 	"/hudar <number>: Shows HUD based range finder.",
-	"/dbm timer: Starts a custom DBM timer, see '/dbm timer' for details.",
-	"/dbm arrow: Shows the DBM arrow, see '/dbm arrow help' for details.",
-	"/dbm hud: Shows the DBM hud, see '/dbm hud' for details.",
+	"/dbm timer: Starts a custom " .. L.DBM .. " timer, see '/dbm timer' for details.",
+	"/dbm arrow: Shows the " .. L.DBM .. " arrow, see '/dbm arrow help' for details.",
+	"/dbm hud: Shows the " .. L.DBM .. " hud, see '/dbm hud' for details.",
 	"/dbm help2: Shows raid management slash commands"
 }
 L.SLASHCMD_HELP2					= {
@@ -268,7 +269,7 @@ L.SLASHCMD_HELP2					= {
 	"/dbm durability: Performs a raid-wide durability check."
 }
 L.TIMER_USAGE						= {
-	"DBM timer commands:",
+	L.DBM .. " timer commands:",
 	"-----------------",
 	"/dbm timer <sec> <text>: Starts a <sec> second timer with your <text>.",
 	"/dbm ltimer <sec> <text>: Starts a timer that also automatically loops until canceled.",
@@ -591,7 +592,7 @@ L.HUD_INVALID_SELF					= "Cannot use self as target for HUD"
 L.HUD_INVALID_ICON					= "Cannot use icon method for HUD on a target with no icon"
 L.HUD_SUCCESS						= "HUD successful started with your parameters. This will cancel after %s, or by calling '/dbm hud hide'."
 L.HUD_USAGE							= {
-	"DBM-HudMap usage:",
+	L.DBM .. "-HudMap usage:",
 	"-----------------",
 	"/dbm hud <type> <target> <duration>: Creates a HUD that points to a player for the desired duration",
 	"Valid types: arrow, dot, red, blue, green, yellow, icon (requires a target with raid icon)",
@@ -604,7 +605,7 @@ L.ARROW_MOVABLE						= "Arrow movable"
 L.ARROW_WAY_USAGE					= "/dway <x> <y>: Creates an arrow that points to a specific location (using local zone map coordinates)"
 L.ARROW_WAY_SUCCESS					= "To hide arrow, do '/dbm arrow hide' or reach arrow"
 L.ARROW_ERROR_USAGE					= {
-	"DBM-Arrow usage:",
+	L.DBM .. "-Arrow usage:",
 	"-----------------",
 	"/dbm arrow <x> <y>: Creates an arrow that points to a specific location (using world coordinates)",
 	"/dbm arrow map <x> <y>: Creates an arrow that points to a specific location (using zone map coordinates)",
@@ -622,7 +623,7 @@ L.TIMER_RESPAWN						= "%s Respawn"
 L.REQ_INSTANCE_ID_PERMISSION		= "%s requested to see your current instance IDs and progress.\nDo you want to send this information to %s? He or she will be able to request this information during your current session (i. e. until you relog)."
 L.ERROR_NO_RAID						= "You need to be in a raid group to use this feature."
 L.INSTANCE_INFO_REQUESTED			= "Sent request for raid lockout information to the raid group.\nPlease note that the users will be asked for permission before sending the data to you, so it might take a minute until we get all responses."
-L.INSTANCE_INFO_STATUS_UPDATE		= "Got responses from %d players of %d DBM users: %d sent data, %d denied the request. Waiting %d more seconds for responses... "
+L.INSTANCE_INFO_STATUS_UPDATE		= "Got responses from %d players of %d " .. L.DBM .. " users: %d sent data, %d denied the request. Waiting %d more seconds for responses... "
 L.INSTANCE_INFO_ALL_RESPONSES		= "Received responses from all raid members"
 L.INSTANCE_INFO_DETAIL_DEBUG		= "Sender: %s ResultType: %s InstanceName: %s InstanceID: %s Difficulty: %d Size: %d Progress: %s"
 L.INSTANCE_INFO_DETAIL_HEADER		= "%s, difficulty %s:"
