@@ -71,7 +71,7 @@ end
 
 DBM = {
 	Revision = parseCurseDate("@project-date-integer@"),
-	DisplayVersion = "8.3.24", -- the string that is shown as version
+	DisplayVersion = "8.3.25 alpha", -- the string that is shown as version
 	ReleaseRevision = releaseDate(2020, 5, 27, 12) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 }
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
@@ -1305,7 +1305,7 @@ do
 			end
 			if GetAddOnEnableState(playerName, "DBM-SpellTimers") >= 1 then
 				local version = GetAddOnMetadata("DBM-SpellTimers", "Version") or "r0"
-				version = tonumber(string.sub(version, 2))
+				version = tonumber(string.sub(version, 2, 4)) or 0
 				if version < 122 then
 					self:Disable(true)
 					self:Schedule(15, infniteLoopNotice, self, L.OUTDATEDSPELLTIMERS)
@@ -2623,7 +2623,7 @@ do
 		end
 		if GetAddOnEnableState(playerName, "DBM-SpellTimers") >= 1 then
 			local version = GetAddOnMetadata("DBM-SpellTimers", "Version") or "r0"
-			version = tonumber(string.sub(version, 2))
+			version = tonumber(string.sub(version, 2, 4)) or 0
 			if version < 122 then
 				self:AddMsg(L.OUTDATEDSPELLTIMERS)
 				return
