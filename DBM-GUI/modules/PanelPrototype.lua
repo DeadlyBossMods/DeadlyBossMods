@@ -142,6 +142,7 @@ function PanelPrototype:CreateEditBox(text, value, width, height)
 	local textbox = CreateFrame("EditBox", "DBM_GUI_Option_" .. self:GetNewID(), self.frame, "InputBoxTemplate")
 	textbox.mytype = "textbox"
 	textbox:SetSize(width or 100, height or 20)
+	textbox:SetAutoFocus(false)
 	textbox:SetScript("OnEscapePressed", function(self)
 		self:ClearFocus()
 	end)
