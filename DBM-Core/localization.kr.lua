@@ -3,15 +3,15 @@ if not DBM_CORE_L then DBM_CORE_L = {} end
 
 local L = DBM_CORE_L
 
-L.HOW_TO_USE_MOD					= L.DBM.."을 사용해 주셔서 감사합니다. 대화창에서 /dbm help를 입력하면 사용 가능한 명령어 목록을 볼 수 있습니다. 설정을 하시려면 /dbm을 입력하세요. 보스 알림 설정을 기호에 맞게 변경하려면 원하는 던전을 직접 선택해서 로딩을 클릭하세요. DBM이 당신의 현재 전문화에 맞는 기본값을 설정하지만 일부 옵션은 자신에게 맞게 조정해야 할 수도 있습니다."
-L.SILENT_REMINDER					= "알림: "..L.DBM.."이 아직 조용함 모드입니다."
+L.HOW_TO_USE_MOD					= L.DBM .. "을 사용해 주셔서 감사합니다. 대화창에서 /dbm help를 입력하면 사용 가능한 명령어 목록을 볼 수 있습니다. 설정을 하시려면 /dbm을 입력하세요. 보스 알림 설정을 기호에 맞게 변경하려면 원하는 던전을 직접 선택해서 로딩을 클릭하세요. " .. L.DBM .. "이 당신의 현재 전문화에 맞는 기본값을 설정하지만 일부 옵션은 자신에게 맞게 조정해야 할 수도 있습니다."
+L.SILENT_REMINDER					= "알림: " .. L.DBM .. "이 아직 조용함 모드입니다."
 
 L.LOAD_MOD_ERROR				= "%s 보스 모드 로딩중 오류 발생: %s"
 L.LOAD_MOD_SUCCESS			= "'%s' 모드가 로딩됐습니다. 사용자 지정 경고 효과음을 설정하거나 개인적으로 메모를 적어놓고 싶다면 /dbm을 입력하세요."
 L.LOAD_MOD_COMBAT			= "전투가 종료될 때까지 %s|1을;를; 로딩하지 않습니다."
 L.LOAD_GUI_ERROR				= "GUI를 로딩할 수 없음: %s"
 L.LOAD_GUI_COMBAT			= "전투중에는 GUI의 최초 로딩을 할 수 없습니다. 전투가 종료되면 GUI가 로딩됩니다. GUI가 로딩된 다음부턴 전투중에도 GUI를 열 수 있습니다."
-L.BAD_LOAD					= L.DBM.."이 전투로 인해 현재 인스턴스의 모드를 완전히 로딩하지 못했습니다. 전투가 종료된 후 가능한 빨리 /console reloadui 명령어를 입력해주세요."
+L.BAD_LOAD					= L.DBM .. "이 전투로 인해 현재 인스턴스의 모드를 완전히 로딩하지 못했습니다. 전투가 종료된 후 가능한 빨리 /console reloadui 명령어를 입력해주세요."
 L.LOAD_MOD_VER_MISMATCH		= "DBM-Core가 로딩 조건과 맞지 않아 %s|1을;를; 로딩하지 못했습니다. 최신 버전을 설치하세요"
 L.LOAD_MOD_EXP_MISMATCH		= "아직 출시되지 않은 WoW 확장팩용으로 설계되었으므로 %s|1을;를; 로딩하지 못했습니다. 확장팩이 출시되면 해당 모드는 자동으로 작동합니다."
 L.LOAD_MOD_TOC_MISMATCH		= "아직 나오지 않은 WoW 패치 (%2$s) 용으로 설계되었으므로 %1$s|1을;를; 로딩하지 못했습니다. 패치가 나오면 해당 모드는 자동으로 작동합니다."
@@ -25,13 +25,13 @@ L.NO_RANGE					= "거리 레이더를 인스턴스 던전에서 사용할 수 �
 L.NO_ARROW					= "화살표 기능을 인스턴스 던전에서 사용할 수 없습니다"
 L.NO_HUD						= "HUD 기능을 인스턴스 던전에서 사용할 수 없습니다"
 
-L.DYNAMIC_DIFFICULTY_CLUMP	= "현재 공격대 규모에 맞는 필요한 플레이어 숫자 관련 정보가 부족하여"..L.DBM.."이 이 전투에서 동적 거리창을 비활성화 했습니다."
-L.DYNAMIC_ADD_COUNT			= "현재 공격대 규모에 맞는 쫄 등장 정보가 부족하여"..L.DBM.."이 이 전투에서 쫄 마릿수 정보를 비활성화 했습니다."
-L.DYNAMIC_MULTIPLE			= "현재 공격대 규모에 맞는 보스 기술 작동 원리 정보가 부족하여"..L.DBM.."이 이 전투에서 다수의 기능을 비활성화 했습니다."
+L.DYNAMIC_DIFFICULTY_CLUMP	= "현재 공격대 규모에 맞는 필요한 플레이어 숫자 관련 정보가 부족하여" .. L.DBM .. "이 이 전투에서 동적 거리창을 비활성화 했습니다."
+L.DYNAMIC_ADD_COUNT			= "현재 공격대 규모에 맞는 쫄 등장 정보가 부족하여" .. L.DBM .. "이 이 전투에서 쫄 마릿수 정보를 비활성화 했습니다."
+L.DYNAMIC_MULTIPLE			= "현재 공격대 규모에 맞는 보스 기술 작동 원리 정보가 부족하여" .. L.DBM .. "이 이 전투에서 다수의 기능을 비활성화 했습니다."
 
 L.LOOT_SPEC_REMINDER			= "현재 전문화는 %s입니다. 현재 지정한 전리품 획득 전문화는 %s입니다."
 
-L.BIGWIGS_ICON_CONFLICT		= L.DBM.."이 BigWigs와"..L.DBM.." 모두 공격대 징표 기능을 사용하고 있음을 감지했습니다. 충돌을 방지하기 위해 공대장이 두 애드온중 하나의 징표 설정을 비활성화해야 합니다."
+L.BIGWIGS_ICON_CONFLICT		= L.DBM .. "이 BigWigs와" .. L.DBM .. " 모두 공격대 징표 기능을 사용하고 있음을 감지했습니다. 충돌을 방지하기 위해 공대장이 두 애드온중 하나의 징표 설정을 비활성화해야 합니다."
 
 L.MOD_AVAILABLE				= "이 지역에서 %s|1을;를; 사용할 수 있습니다. Curse/Twitch 또는 WoWI에서 다운로드 받으실 수 있습니다."
 
@@ -61,15 +61,15 @@ L.COMBAT_STATE_RECOVERED		= "%s 전투가 %s전에 시작됐습니다. 타이머
 L.TRANSCRIPTOR_LOG_START		= "Transcriptor 기록이 시작됐습니다."
 L.TRANSCRIPTOR_LOG_END		= "Transcriptor 기록이 종료됐습니다."
 
-L.MOVIE_SKIPPED				= L.DBM.."이 동영상 자동 생략 기능을 작동시켰습니다."
-L.BONUS_SKIPPED				= L.DBM.."이 자동으로 추가 전리품 주사위 굴림 창을 닫았습니다. 창을 열고 싶으면 3분 안에 /dbmbonusroll 명령어를 입력하세요"
+L.MOVIE_SKIPPED				= L.DBM .. "이 동영상 자동 생략 기능을 작동시켰습니다."
+L.BONUS_SKIPPED				= L.DBM .. "이 자동으로 추가 전리품 주사위 굴림 창을 닫았습니다. 창을 열고 싶으면 3분 안에 /dbmbonusroll 명령어를 입력하세요"
 L.BONUS_EXPIRED				= "/dbmbonusroll 명령어를 사용해 추가 전리품 주사위 굴림 창을 열려고 했으나 현재 굴릴 수 있는 추가 전리품 주사위가 없습니다."
 
 L.AFK_WARNING				= "자리 비움 상태에서 전투에 돌입하여 (남은 생명력 %d퍼센트) 경고음을 재생중입니다. 자리를 비우고 있는게 아니라면 자리 비움 상태를 해제하거나 '기타 기능' 항목에서 해당 설정을 비활성화 해주세요."
 
 L.COMBAT_STARTED_AI_TIMER	= "내 CPU는 신경망 프로세서. 기계학습형 컴퓨터 (이 전투에선 새로운 타이머 인공지능 기능을 사용해서 예상 타이머 바를 생성합니다)"
 
-L.PROFILE_NOT_FOUND			= "<"..L.DBM.."> 현재 설정된 프로필이 손상되었습니다. "..L.DBM.."이 'Default' 프로필을 로딩할 것입니다."
+L.PROFILE_NOT_FOUND			= "<" .. L.DBM .. "> 현재 설정된 프로필이 손상되었습니다. " .. L.DBM .. "이 'Default' 프로필을 로딩할 것입니다."
 L.PROFILE_CREATED			= "'%s' 프로필을 생성했습니다."
 L.PROFILE_CREATE_ERROR		= "프로필 생성 실패. 프로필 이름이 올바르지 않습니다."
 L.PROFILE_CREATE_ERROR_D		= "프로필 생성 실패. '%s' 프로필이 이미 존재합니다."
@@ -106,7 +106,7 @@ L.NOTESHAREERRORALREADYOPEN	= "메모 편집기가 이미 열려 있는 동안�
 L.ALLMOD_DEFAULT_LOADED		= "이 인스턴스에 속한 모든 모드의 기본 설정이 로딩됐습니다."
 L.ALLMOD_STATS_RESETED		= "모든 모드 통계가 초기화 되었습니다."
 L.MOD_DEFAULT_LOADED			= "이 전투의 기본 설정이 로딩됐습니다."
-L.SOUNDKIT_MIGRATION			= "한개 이상의 경고/특수 경고 효과음이 호환되지 않는 미디어 형식이거나 파일 경로가 잘못되는 등의 문제로 인해 기본값으로 초기화 되었습니다. DBM은 현재 애드온 폴더 내에 있는 효과음 파일이나 미디어 재생에 쓰이는 SoundKit ID만 지원하고 있습니다."
+L.SOUNDKIT_MIGRATION			= "한개 이상의 경고/특수 경고 효과음이 호환되지 않는 미디어 형식이거나 파일 경로가 잘못되는 등의 문제로 인해 기본값으로 초기화 되었습니다. " .. L.DBM .. "은 현재 애드온 폴더 내에 있는 효과음 파일이나 미디어 재생에 쓰이는 SoundKit ID만 지원하고 있습니다."
 
 L.WORLDBOSS_ENGAGED			= "당신이 속한 서버에서 %s 전투가 %s 퍼센트의 체력으로 시작된 것 같습니다. (%s|1이;가; 전송)"
 L.WORLDBOSS_DEFEATED			= "당신이 속한 서버에서 %s|1이;가; 잡힌 것 같습니다. (%s|1이;가; 전송)"
@@ -159,38 +159,40 @@ L.WHISPER_SCENARIO_END_WIPE_STATS	= "%s님이 %s 시나리오를 완료하지 �
 
 L.VERSIONCHECK_HEADER		= "보스 모드 - 버전"
 L.VERSIONCHECK_ENTRY_NO_DBM	= "%s: 설치된 보스 모드 없음"
-L.VERSIONCHECK_FOOTER		= L.DBM.."을 설치한 플레이어 %d명과 Bigwigs를 설치한 플레이어 %d명을 발견했습니다."
+L.VERSIONCHECK_FOOTER		= L.DBM .. "을 설치한 플레이어 %d명과 Bigwigs를 설치한 플레이어 %d명을 발견했습니다."
 L.VERSIONCHECK_OUTDATED		= "다음 %d명의 플레이어가 구버전 보스 모드를 사용중: %s"
-L.YOUR_VERSION_OUTDATED      = "사용중인 "..L.DEADLY_BOSS_MODS.." 버전이 사용 기한을 지났습니다. http://www.deadlybossmods.com에서 최신 버전을 받으세요."
-L.VOICE_PACK_OUTDATED		= "선택한 DBM 음성팩에 일부 음성이 들어있지 않습니다. 몇가지 경고 음성이 기본 효과음으로 재생됩니다. 최신 음성팩을 다운로드 받거나 제작자에게 누락된 음성 파일 업데이트를 요청하시기 바랍니다"
-L.VOICE_MISSING				= "선택한 DBM 음성팩을 찾을 수 없습니다. 오류일 경우 음성팩이 제대로 설치되어 있고 애드온 목록에서 활성화되어 있는지 확인해 보시기 바랍니다."
-L.VOICE_DISABLED				= "현재 DBM 음성팩이 한 개 이상 설치되어 있지만 사용하고 있는게 없습니다. 음성팩을 사용하려면 '음성 경보' 항목에서 음성팩이 지정되어 있는지 확인하세요. 음성팩을 사용할 의사가 없으면 음성팩을 삭제하시면 이 메시지는 더이상 출력되지 않습니다"
+L.YOUR_VERSION_OUTDATED      = "사용중인 " .. L.DEADLY_BOSS_MODS .. " 버전이 사용 기한을 지났습니다. http://www.deadlybossmods.com에서 최신 버전을 받으세요."
+L.VOICE_PACK_OUTDATED		= "선택한 " .. L.DBM .. " 음성팩에 일부 음성이 들어있지 않습니다. 몇가지 경고 음성이 기본 효과음으로 재생됩니다. 최신 음성팩을 다운로드 받거나 제작자에게 누락된 음성 파일 업데이트를 요청하시기 바랍니다"
+L.VOICE_MISSING				= "선택한 " .. L.DBM .. " 음성팩을 찾을 수 없습니다. 오류일 경우 음성팩이 제대로 설치되어 있고 애드온 목록에서 활성화되어 있는지 확인해 보시기 바랍니다."
+L.VOICE_DISABLED				= "현재 " .. L.DBM .. " 음성팩이 한 개 이상 설치되어 있지만 사용하고 있는게 없습니다. 음성팩을 사용하려면 '음성 경보' 항목에서 음성팩이 지정되어 있는지 확인하세요. 음성팩을 사용할 의사가 없으면 음성팩을 삭제하시면 이 메시지는 더이상 출력되지 않습니다"
 L.VOICE_COUNT_MISSING		= "초읽기 음성 %d번으로 설정된 음성/초읽기 팩을 찾을 수 없습니다. 기본 설정으로 초기화 되었습니다: %s"
 
-L.UPDATEREMINDER_HEADER			= "사용중인 "..L.DEADLY_BOSS_MODS.." 버전의 사용 기한이 지났습니다.\n Curse/Twitch, WoWI, GitHub 프로젝트 페이지 등에서 %s (%s) 버전을 다운로드 할 수 있습니다."
-L.UPDATEREMINDER_HEADER_ALPHA	= "사용중인 "..L.DEADLY_BOSS_MODS.." ALPHA 버전의 사용 기한이 지났습니다.\n 적어도 %s 테스트 버전 이상은 사용해야 합니다. ALPHA 버전을 선택한 DBM 이용자는 최신 ALPHA 버전을 실행하는걸 권장합니다. 아니면 최신 RELEASE 버전을 사용하는 것도 좋습니다. 오래된 ALPHA 버전은 개발용인 관계로 버전 검사 기능이 제한되어 있기 때문입니다."
+L.UPDATEREMINDER_HEADER			= "사용중인 " .. L.DEADLY_BOSS_MODS .. " 버전의 사용 기한이 지났습니다.\n Curse/Twitch, WoWI, GitHub 프로젝트 페이지 등에서 %s (%s) 버전을 다운로드 할 수 있습니다."
+L.UPDATEREMINDER_HEADER_ALPHA	= "사용중인 " .. L.DEADLY_BOSS_MODS .. " ALPHA 버전의 사용 기한이 지났습니다.\n 적어도 %s 테스트 버전 이상은 사용해야 합니다. ALPHA 버전을 선택한 " .. L.DBM .. " 이용자는 최신 ALPHA 버전을 실행하는걸 권장합니다. 아니면 최신 RELEASE 버전을 사용하는 것도 좋습니다. 오래된 ALPHA 버전은 개발용인 관계로 버전 검사 기능이 제한되어 있기 때문입니다."
 L.UPDATEREMINDER_FOOTER			= (IsMacClient() and "Cmd-C" or "Ctrl-C").. "를 누르면 주소를 복사할 수 있습니다."
 L.UPDATEREMINDER_FOOTER_GENERIC	= (IsMacClient() and "Cmd-C" or "Ctrl-C").. "를 누르면 주소를 복사할 수 있습니다."
-L.UPDATEREMINDER_DISABLE			= "경고: 지금 사용중인 "..L.DEADLY_BOSS_MODS.."가 지나치게 오래되어 강제로 비활성화되며 업데이트 전까진 사용할 수 없습니다. 이는 오래되고 호환되지 않는 모드가 당신과 파티/공대원의 플레이에 악영향을 미치지 않게 하기 위함입니다."
---L.UPDATEREMINDER_NODISABLE		= "경고: 설치한 "..L.DEADLY_BOSS_MODS.."가 사용 기한을 지났습니다. 업데이트 알림이 꺼져있거나 해서 특정 기한을 지나면 본 메시지가 등장하는 것이며 이 알림은 끌 수 없습니다. 반드시 업데이트 하시기 바랍니다."
-L.UPDATEREMINDER_HOTFIX			= "지금 사용하는 "..L.DBM.." 버전은 이 보스 전투에서 알려진 오류를 가지고 있습니다. 이 오류는 최신 버전으로 업데이트하면 수정됩니다."
-L.UPDATEREMINDER_HOTFIX_ALPHA	= "지금 사용하는 "..L.DBM.." 버전은 이 보스 전투에서 알려진 오류를 가지고 있습니다. 이 오류는 향후 출시될 버전 (또는 최신 ALPHA 버전)에서 수정되어있을 것입니다."
-L.UPDATEREMINDER_MAJORPATCH		= "경고: 대규모 패치로 인해 "..L.DEADLY_BOSS_MODS.." 버전이 사용 기한이 지나 업데이트하기 전까진 비활성화됩니다. 이는 오래되고 호환되지 않는 코드로 인해 당신과 공격대원이 조악한 플레이 경험을 겪지 않게 하기 위함입니다. 당장 deadlybossmods.com이나 Curse에서 최신 버전을 다운로드 하시기 바랍니다."
-L.UPDATEREMINDER_TESTVERSION		= "경고: 현재 게임 버전과 맞지 않는 "..L.DEADLY_BOSS_MODS.." 버전을 사용중입니다. 게임 클라이언트에 맞는 버전을 deadlybossmods.com이나 Curse에서 다운로드 하시기 바랍니다."
-L.VEM							= "경고: "..L.DEADLY_BOSS_MODS.."와 Voice Encounter Mods를 함께 사용중입니다. 현재 설정으로는 DBM이 작동하지 않으며 로딩도 되지 않을 것입니다."
-L.OUTDATEDPROFILES					= "경고: DBM-Profiles가 이 버전의 DBM과 호환되지 않습니다. DBM이 읽기 전에 삭제해야 충돌을 방지할 수 있습니다."
-L.VICTORYSOUND					= "경고: DBM-VictorySound가 이 버전의 DBM과 호환되지 않습니다. DBM이 해결할 수 있기 전까진 충돌 방지를 위해 삭제해야 합니다."
-L.DPMCORE						= "경고: Deadly PvP 모드는 더이상 개발되지 않으며 본 DBM 버전과 호환되지 않습니다. DBM이 읽기 전에 삭제해야 충돌을 방지할 수 있습니다."
+L.UPDATEREMINDER_DISABLE			= "경고: 지금 사용중인 " .. L.DEADLY_BOSS_MODS .. "가 지나치게 오래되어 강제로 비활성화되며 업데이트 전까진 사용할 수 없습니다. 이는 오래되고 호환되지 않는 모드가 당신과 파티/공대원의 플레이에 악영향을 미치지 않게 하기 위함입니다."
+--L.UPDATEREMINDER_NODISABLE		= "경고: 설치한 " .. L.DEADLY_BOSS_MODS .. "가 사용 기한을 지났습니다. 업데이트 알림이 꺼져있거나 해서 특정 기한을 지나면 본 메시지가 등장하는 것이며 이 알림은 끌 수 없습니다. 반드시 업데이트 하시기 바랍니다."
+L.UPDATEREMINDER_HOTFIX			= "지금 사용하는 " .. L.DBM .. " 버전은 이 보스 전투에서 알려진 오류를 가지고 있습니다. 이 오류는 최신 버전으로 업데이트하면 수정됩니다."
+L.UPDATEREMINDER_HOTFIX_ALPHA	= "지금 사용하는 " .. L.DBM .. " 버전은 이 보스 전투에서 알려진 오류를 가지고 있습니다. 이 오류는 향후 출시될 버전 (또는 최신 ALPHA 버전)에서 수정되어있을 것입니다."
+L.UPDATEREMINDER_MAJORPATCH		= "경고: 대규모 패치로 인해 " .. L.DEADLY_BOSS_MODS .. " 버전이 사용 기한이 지나 업데이트하기 전까진 " .. L.DBM .. "이 비활성화됩니다. 이는 오래되고 호환되지 않는 코드로 인해 당신과 공격대원이 조악한 플레이 경험을 겪지 않게 하기 위함입니다. 당장 deadlybossmods.com이나 Curse에서 최신 버전을 다운로드 하시기 바랍니다."
+L.UPDATEREMINDER_TESTVERSION		= "경고: 현재 게임 버전과 맞지 않는 " .. L.DEADLY_BOSS_MODS .. " 버전을 사용중입니다. 게임 클라이언트에 맞는 버전을 deadlybossmods.com이나 Curse에서 다운로드 하시기 바랍니다."
+L.VEM							= "경고: " .. L.DEADLY_BOSS_MODS .. "와 Voice Encounter Mods를 함께 사용중입니다. 현재 설정으로는 DBM이 작동하지 않으며 로딩도 되지 않을 것입니다."
+L.OUTDATEDPROFILES				= "경고: DBM-Profiles가 이 버전의 " .. L.DBM .. "과 호환되지 않습니다. " .. L.DBM .. "이 읽기 전에 삭제해야 충돌을 방지할 수 있습니다."
+L.OUTDATEDSPELLTIMERS				= "경고: DBM-SpellTimers가 " .. L.DBM .. "의 작동을 중단시켰습니다. DBM-SpellTimers는 더이상 지원되지 않기 때문에 반드시 삭제해야 " .. L.DBM .. "이 정상 작동합니다."
+L.OUTDATEDRLT						= "경고: DBM-RaidLeadTools가 " .. L.DBM .. "의 작동을 중단시켰습니다. DBM-RaidLeadTools는 더이상 지원되지 않기 때문에 반드시 삭제해야 " .. L.DBM .. "이 정상 작동합니다."
+L.VICTORYSOUND						= "경고: DBM-VictorySound가 이 버전의 " .. L.DBM .. "과 호환되지 않습니다. 반드시 삭제해야 " .. L.DBM .. "이 정상 작동합니다."
+L.DPMCORE						= "경고: Deadly PvP 모드는 더이상 개발되지 않으며 이 버전의 " .. L.DBM .. "과 호환되지 않습니다. 반드시 삭제해야 " .. L.DBM .. "이 정상 작동합니다."
 L.DBMLDB							= "경고: DBM-LDB는 이제 DBM-Core에 편입되었습니다. 같이 사용해도 문제가 생기는건 아니지만 가급적 애드온 폴더에서 'DBM-LDB' 폴더를 삭제하는걸 권장합니다"
 L.DBMLOOTREMINDER				= "경고: 써드파티 모드인 DBM-LootReminder가 설치되었습니다. 이 애드온은 격아 WoW 클라이언트에 더이상 호환되지 않으며 DBM이 오작동하여 풀링 타이머를 전송하지 못하게 될 수 있습니다. 애드온 삭제를 권장합니다"
-L.UPDATE_REQUIRES_RELAUNCH		= "경고: 지금 업데이트한 DBM은 게임 클라이언트를 완전히 재시작하기 전까진 정상 작동하지 않습니다. 이 업데이트엔 새 파일이 포함되어 있거나 UI 재시작으로는 로딩할 수 없는 .toc 파일의 변경 사항이 있습니다. 클라이언트 재시작 없이 사용할 경우 오류가 발생하거나 작동하지 않을 수 있습니다."
-L.OUT_OF_DATE_NAG				= "현재 사용중인 "..L.DEADLY_BOSS_MODS.." 버전이 오래되었습니다. 업데이트를 해야 이 전투의 중요한 알림이나 타이머 그리고 공격대원 모두가 보는 외침 등이 빠지지 않게 나옵니다."
-L.RETAIL_ONLY					= "경고: 이 DBM 버전은 월드 오브 워크래프트 최신 버전용입니다. 삭제하시고 클래식 WoW 전용 DBM을 설치하세요."
+L.UPDATE_REQUIRES_RELAUNCH		= "경고: 지금 업데이트한 " .. L.DBM .. "은 게임 클라이언트를 완전히 재시작하기 전까진 정상 작동하지 않습니다. 이 업데이트엔 새 파일이 포함되어 있거나 UI 재시작으로는 로딩할 수 없는 .toc 파일의 변경 사항이 있습니다. 클라이언트 재시작 없이 사용할 경우 오류가 발생하거나 작동하지 않을 수 있습니다."
+L.OUT_OF_DATE_NAG				= "현재 사용중인 " .. L.DEADLY_BOSS_MODS .. " 버전이 오래되었습니다. 업데이트를 해야 이 전투의 중요한 알림이나 타이머 그리고 공격대원 모두가 보는 외침 등이 빠지지 않게 나옵니다."
+L.RETAIL_ONLY					= "경고: 이 " .. L.DBM .. " 버전은 월드 오브 워크래프트 최신 버전용입니다. 삭제하시고 클래식 WoW 전용 DBM을 설치하세요."
 
 L.MOVABLE_BAR				= "드래그 하세요!"
 
-L.PIZZA_SYNC_INFO					= "|Hplayer:%1$s|h[%1$s]|h님이 당신에게 DBM 타이머를 전송했습니다"
-L.PIZZA_CONFIRM_IGNORE			= "정말 %s의 DBM 타이머를 차단하시겠습니까? 이 공격대에 있는 동안에만 적용됩니다."
+L.PIZZA_SYNC_INFO					= "|Hplayer:%1$s|h[%1$s]|h님이 당신에게 " .. L.DBM .. " 타이머를 전송했습니다"
+L.PIZZA_CONFIRM_IGNORE			= "정말 %s의 " .. L.DBM .. " 타이머를 차단하시겠습니까? 이 공격대에 있는 동안에만 적용됩니다."
 L.PIZZA_ERROR_USAGE				= "사용법: /dbm [broadcast] timer <시간> <텍스트>. <시간>은 3초 이상이어야 합니다."
 
 L.MINIMAP_TOOLTIP_FOOTER		= "쉬프트 누르고 드래그로 이동"
@@ -235,9 +237,9 @@ L.SLASHCMD_HELP				= {
 	"/dbm unlock: 움직일 수 있는 상태 바 타이머를 표시합니다. (단축 명령어: move)",
 	"/range <숫자> 또는 /distance <숫자>: 거리 창을 표시합니다. /rrange 또는 /rdistance는 색상을 반대로 표시합니다.",
 	"/hudar <number>: HUD 기반 거리 탐지기를 표시합니다.",
-	"/dbm timer: 사용자 지정 DBM 타이머를 시작합니다. 자세한 내용은 '/dbm timer'를 참고하세요.",
-	"/dbm arrow: DBM 화살표를 표시합니다. 자세한 내용은 '/dbm arrow help'를 참고하세요.",
-	"/dbm hud: DBM HUD를 표시합니다. 자세한 내용은 '/dbm hud'를 참고하세요.",
+	"/dbm timer: 사용자 지정 " .. L.DBM .. " 타이머를 시작합니다. 자세한 내용은 '/dbm timer'를 참고하세요.",
+	"/dbm arrow: " .. L.DBM .. " 화살표를 표시합니다. 자세한 내용은 '/dbm arrow help'를 참고하세요.",
+	"/dbm hud: " .. L.DBM .. " HUD를 표시합니다. 자세한 내용은 '/dbm hud'를 참고하세요.",
 	"/dbm help2: 공격대 관리와 관련된 슬래시 명령어를 표시합니다."
 }
 L.SLASHCMD_HELP2				= {
@@ -252,7 +254,7 @@ L.SLASHCMD_HELP2				= {
 	"/dbm durability: 공대원의 내구도 검사를 실시합니다."
 }
 L.TIMER_USAGE	= {
-	"DBM 타이머 명령어:",
+	L.DBM .. " 타이머 명령어:",
 	"--------------",
 	"/dbm timer <초> <텍스트>: <초> 만큼 지속되는 <텍스트> 타이머가 시작됩니다.",
 	"/dbm ltimer <초> <텍스트>: 취소하기 전까진 자동 반복되는 타이머가 시작됩니다.",
@@ -263,17 +265,18 @@ L.TIMER_USAGE	= {
 L.ERROR_NO_PERMISSION				= "이 명령어를 실행하기 위한 권한을 가지고 있지 않습니다."
 
 --Common Locals
-L.NEXT							= "다음 %s"
-L.COOLDOWN						= "%s 쿨타임"
+L.NEXT						= "다음 %s"
+L.COOLDOWN					= "%s 쿨타임"
 L.UNKNOWN					= "알 수 없음"--UNKNOWN
 L.LEFT						= "왼쪽"
 L.RIGHT						= "오른쪽"
 L.BOTH						= "양쪽"
+L.BEHIND					= "뒤쪽"
 L.BACK						= "뒤쪽"--BACK
 L.SIDE						= "옆쪽"
 L.TOP						= "위쪽"
-L.BOTTOM						= "아래쪽"
-L.MIDDLE						= "가운데"
+L.BOTTOM					= "아래쪽"
+L.MIDDLE					= "가운데"
 L.FRONT						= "앞쪽"
 L.EAST						= "동쪽"
 L.WEST						= "서쪽"
@@ -282,21 +285,22 @@ L.SOUTH						= "남쪽"
 L.INTERMISSION				= "사잇 단계"
 L.ORB						= "구슬"
 L.ORBS						= "구슬"
-L.CHEST							= "상자"--As in Treasure 'Chest'. Not Chest as in body part.
-L.NO_DEBUFF						= "%s 없음"--For use in places like info frame where you put "Not Spellname"
-L.ALLY							= "공대원"--Such as "Move to Ally"
-L.ADD								= "쫄"--A fight Add as in "boss spawned extra adds"
-L.ADDS							= "쫄"
-L.BIG_ADD							= "큰 쫄"
-L.BOSS							= "보스"
+L.CHEST						= "상자"--As in Treasure 'Chest'. Not Chest as in body part.
+L.NO_DEBUFF					= "%s 없음"--For use in places like info frame where you put "Not Spellname"
+L.ALLY					= "공대원"--Such as "Move to Ally"
+L.ADD						= "쫄"--A fight Add as in "boss spawned extra adds"
+L.ADDS						= "쫄"
+L.BIG_ADD					= "큰 쫄"
+L.BOSS						= "보스"
 L.ROOM_EDGE					= "구석"
 L.FAR_AWAY					= "먼 곳"
 L.BREAK_LOS					= "시야를 가리는 곳"
 L.RESTORE_LOS				= "시야가 나오는 곳"
 L.SAFE						= "안전함"
 L.NOTSAFE					= "위험함"
-L.SHIELD						= "보호막"
-L.INCOMING						= "%s 등장"
+L.SHIELD					= "보호막"
+L.PILLAR					= "기둥"
+L.INCOMING					= "%s 등장"
 --Common Locals end
 
 L.BREAK_USAGE				= "쉬는 시간은 60분을 초과할 수 없습니다. 쉬는 시간은 초단위가 아니라 분단위로 입력해야 합니다."
@@ -490,9 +494,9 @@ L.AUTO_TIMER_OPTIONS.roleplay		= "역할 수행(롤플레이) 지속 시간 타�
 
 L.AUTO_ICONS_OPTION_TEXT			= "$spell:%s 대상에 공격대 징표 설정"
 L.AUTO_ICONS_OPTION_TEXT2		= "$spell:%s에 공격대 징표 설정"
-L.AUTO_ARROW_OPTION_TEXT			= "$spell:%s 대상을 향하는 "..L.DBM.." 화살표 표시"
-L.AUTO_ARROW_OPTION_TEXT2		= "$spell:%s 대상과 반대 방향의 "..L.DBM.." 화살표 표시"
-L.AUTO_ARROW_OPTION_TEXT3		= "$spell:%s 특정 지점을 가리키는 "..L.DBM.." 화살표 표시"
+L.AUTO_ARROW_OPTION_TEXT			= "$spell:%s 대상을 향하는 " .. L.DBM .. " 화살표 표시"
+L.AUTO_ARROW_OPTION_TEXT2		= "$spell:%s 대상과 반대 방향의 " .. L.DBM .. " 화살표 표시"
+L.AUTO_ARROW_OPTION_TEXT3		= "$spell:%s 특정 지점을 가리키는 " .. L.DBM .. " 화살표 표시"
 L.AUTO_YELL_OPTION_TEXT.shortyell	= "$spell:%s 대상일 때 말풍선으로 알리기"
 L.AUTO_YELL_OPTION_TEXT.yell		= "$spell:%s 대상일 때 말풍선으로 알리기 (플레이어 이름 포함)"
 L.AUTO_YELL_OPTION_TEXT.count		= "$spell:%s 대상일 때 말풍선으로 알리기 (횟수 포함)"
@@ -504,7 +508,7 @@ L.AUTO_YELL_OPTION_TEXT.combo		= "$spell:%s|1과;와; 다른 디버프가 같이
 L.AUTO_YELL_ANNOUNCE_TEXT.yell	= UnitName("player") .. "에게 %s"
 L.AUTO_YELL_ANNOUNCE_TEXT.count	= UnitName("player") .. "에게 %s (%%d)"
 L.AUTO_YELL_ANNOUNCE_TEXT.fade	= "%s %%d초 후 사라짐"
-L.AUTO_YELL_ANNOUNCE_TEXT.position	= "{rt%%3$d}"..UnitName("player").."{rt%%3$d}에게 %1$s %%2$s"
+L.AUTO_YELL_ANNOUNCE_TEXT.position	= "{rt%%3$d}" .. UnitName("player") .. "{rt%%3$d}에게 %1$s %%2$s"
 L.AUTO_YELL_ANNOUNCE_TEXT.combo		= "%s랑 %%s 걸림"
 L.AUTO_YELL_CUSTOM_FADE			= "%s 사라짐"
 L.AUTO_HUD_OPTION_TEXT			= "$spell:%s에 HUD 표시 (중단됨)"
@@ -521,7 +525,7 @@ L.AUTO_SPEEDCLEAR_OPTION_TEXT	= "%s의 완료 신기록 타이머 표시"
 
 -- New special warnings
 L.MOVE_WARNING_BAR				= "알림 이동"
-L.MOVE_WARNING_MESSAGE			= L.DEADLY_BOSS_MODS.."를 이용해 주셔셔 감사합니다."
+L.MOVE_WARNING_MESSAGE			= L.DEADLY_BOSS_MODS .. "를 이용해 주셔셔 감사합니다."
 L.MOVE_SPECIAL_WARNING_BAR		= "특수 경고 이동"
 L.MOVE_SPECIAL_WARNING_TEXT		= "특수 경고"
 
@@ -531,7 +535,7 @@ L.HUD_INVALID_SELF			= "자신을 HUD 대상으로 설정할 수 없습니다"
 L.HUD_INVALID_ICON			= "공격대 징표가 없는 대상엔 징표 기반 HUD 기능을 사용할 수 없습니다"
 L.HUD_SUCCESS				= "HUD가 입력한 정보를 표시하기 시작합니다. %s 후 자동으로 사라지며 '/dbm hud hide'를 입력하면 즉시 숨길 수 있습니다."
 L.HUD_USAGE	= {
-	"DBM-HudMap 사용법:",
+	L.DBM .. " HUD 사용법:",
 	"--------------------",
 	"/dbm hud <형식> <대상> <지속시간>: 지정한 시간 동안 대상을 가리키는 HUD를 생성",
 	"유효한 형식: arrow, red, blue, green, yellow, icon (대상에게 공격대 징표가 설정되어 있어야 함)",
@@ -544,7 +548,7 @@ L.ARROW_MOVABLE						= "화살표 이동"
 L.ARROW_WAY_USAGE					= "/dway <x> <y>: 특정 지점을 가리키는 화살표를 생성합니다 (로컬 지역 지도 좌표 사용)"
 L.ARROW_WAY_SUCCESS				= "화살표를 숨기려면 '/dbm arrow hide' 또는 화살표 지점까지 도달하세요"
 L.ARROW_ERROR_USAGE	= {
-	"DBM 화살표 사용법:",
+	L.DBM .. " 화살표 사용법:",
 	"------------------",
 	"/dbm arrow <x> <y>: 지정된 위치를 가리키는 화살표 생성 (세계지도 좌표 사용)",
 	"/dbm arrow map <x> <y>: 지정된 위치를 가리키는 화살표 생성 (지역지도 좌표 사용)",
@@ -562,7 +566,7 @@ L.TIMER_RESPAWN		= "%s 재생성"
 L.REQ_INSTANCE_ID_PERMISSION		= "%s|1이;가; 당신의 현재 인스턴스 ID와 진행 상태 열람을 요청했습니다.\n해당 정보를 %s에게 전송할까요? 현재 접속한 세션 동안에는 해당 정보의 요청은 항상 받아들여집니다. (예: 재접속 전까지)"
 L.ERROR_NO_RAID					= "이 기능을 사용하려면 공격대에 있어야 합니다."
 L.INSTANCE_INFO_REQUESTED			= "공격대에 공격대 귀속 정보 요청을 전송했습니다.\n사용자들은 데이터를 전송하기에 앞서 권한 승인 여부를 결정하므로 모두의 응답을 받기까지 1분이 소요될 수 있습니다."
-L.INSTANCE_INFO_STATUS_UPDATE		= "DBM 사용자 %2$d명 중 %1$d명 응답: %3$d명이 데이터 전송, %4$d명이 요청을 거부했습니다. 응답까지 %5$d초 대기중..."
+L.INSTANCE_INFO_STATUS_UPDATE		= L.DBM .. " 사용자 %2$d명 중 %1$d명 응답: %3$d명이 데이터 전송, %4$d명이 요청을 거부했습니다. 응답까지 %5$d초 대기중..."
 L.INSTANCE_INFO_ALL_RESPONSES		= "받은 응답 결과"
 L.INSTANCE_INFO_DETAIL_DEBUG		= "전송자: %s, 응답형식: %s, 인스턴스명: %s, 인스턴스ID: %s, 난이도: %d, 인원: %d, 처치수: %s"
 L.INSTANCE_INFO_DETAIL_HEADER		= "%s, 난이도 %s:"
@@ -571,22 +575,22 @@ L.INSTANCE_INFO_DETAIL_INSTANCE2	= "    처치 %d: %s"
 L.INSTANCE_INFO_NOLOCKOUT			= "공격대 인스턴스에 귀속된 공격대원이 없습니다."
 L.INSTANCE_INFO_STATS_DENIED		= "확인 요청 거부: %s"
 L.INSTANCE_INFO_STATS_AWAY		= "자리 비움: %s"
-L.INSTANCE_INFO_STATS_NO_RESPONSE	= "최근 버전 "..L.DBM.." 미설치: %s"
+L.INSTANCE_INFO_STATS_NO_RESPONSE	= "최근 버전 " .. L.DBM .. " 미설치: %s"
 L.INSTANCE_INFO_RESULTS			= "인스턴스 ID 검사가 끝났습니다. 다른 언어의 WoW 클라이언트를 사용 중인 공격대원이 있다면 같은 인스턴스가 여러개 보일 수 있습니다."
 L.INSTANCE_INFO_SHOW_RESULTS		= "응답 안한 플레이어: %s"
 
 L.LAG_CHECKING				= "공격대의 지연시간 확인중..."
-L.LAG_HEADER					= L.DEADLY_BOSS_MODS.." - 지연시간 확인 결과"
+L.LAG_HEADER					= L.DEADLY_BOSS_MODS .. " - 지연시간 확인 결과"
 L.LAG_ENTRY					= "%s: 서버 지연시간 [%d ms] / 개인 지연시간 [%d ms]"
 L.LAG_FOOTER					= "응답없음: %s"
 
 L.DUR_CHECKING				= "공격대 내구도 검사중..."
-L.DUR_HEADER					= L.DEADLY_BOSS_MODS.." - 내구도 검사 결과"
+L.DUR_HEADER					= L.DEADLY_BOSS_MODS .. " - 내구도 검사 결과"
 L.DUR_ENTRY					= "%s: 내구도 [%d 퍼센트] / 깨진 장비 [%s]"
 L.LAG_FOOTER					= "응답 없음: %s"
 
 --LDB
-L.LDB_TOOLTIP_HELP1	= "왼쪽 클릭으로 "..L.DBM.." 열기"
+L.LDB_TOOLTIP_HELP1	= "왼쪽 클릭으로 " .. L.DBM .. " 열기"
 L.LDB_TOOLTIP_HELP2	= "오른쪽 클릭으로 조용함 모드 켜고 끄기"
 
 L.LDB_LOAD_MODS		= "보스 모드 로드"
