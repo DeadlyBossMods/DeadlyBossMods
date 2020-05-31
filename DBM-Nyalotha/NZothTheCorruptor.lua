@@ -430,7 +430,6 @@ end
 local updateInfoFrame
 do
 	local floor, tsort = math.floor, table.sort
-	local isMythic = DBM:GetCurrentInstanceDifficulty() == "mythic"
 	local lines = {}
 	local sortedLines = {}
 	local tempLines = {}
@@ -448,7 +447,7 @@ do
 		table.wipe(tempLinesSorted)
 		--Build Sanity Table
 		for uId in DBM:GetGroupMembers() do
-			if select(4, UnitPosition(uId)) == currentMapId and ((mod.Options.HideDead and not isMythic) or not UnitIsDead(uId)) then
+			if select(4, UnitPosition(uId)) == currentMapId and ((mod.Options.HideDead and not self:IsMythic()) or not UnitIsDead(uId)) then
 				local unitName = DBM:GetUnitFullName(uId)
 				local count = UnitPower(uId, ALTERNATE_POWER_INDEX)
 				tempLines[unitName] = count
