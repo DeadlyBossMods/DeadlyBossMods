@@ -447,7 +447,7 @@ do
 		table.wipe(tempLinesSorted)
 		--Build Sanity Table
 		for uId in DBM:GetGroupMembers() do
-			if select(4, UnitPosition(uId)) == currentMapId and ((difficultyName == "mythic" or not mod.Options.HideDead) or (mod.Options.HideDead and not UnitIsDeadOrGhost(uId)) then
+			if select(4, UnitPosition(uId)) == currentMapId and (difficultyName == "mythic" or not mod.Options.HideDead or not UnitIsDeadOrGhost(uId)) then
 				local unitName = DBM:GetUnitFullName(uId)
 				local count = UnitPower(uId, ALTERNATE_POWER_INDEX)
 				tempLines[unitName] = count
