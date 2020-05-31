@@ -183,6 +183,7 @@ mod:AddInfoFrameOption(307831, true)
 mod:AddSetIconOption("SetIconOnCorruptor", "ej21441", true, true, {1, 2, 3, 4})
 mod:AddSetIconOption("SetIconOnHarvester", "ej21308", true, true, {1, 2, 3, 4})
 mod:AddBoolOption("ArrowOnGlare", true)
+mod:AddBoolOption("HideDead", false)
 mod:AddMiscLine(DBM_CORE_L.OPTION_CATEGORY_DROPDOWNS)
 mod:AddDropdownOption("InterruptBehavior", {"Four", "Five", "Six", "NoReset"}, "Five", "misc")
 
@@ -429,6 +430,7 @@ end
 local updateInfoFrame
 do
 	local floor, tsort = math.floor, table.sort
+	local isMythic = DBM:GetCurrentInstanceDifficulty() == "mythic"
 	local lines = {}
 	local sortedLines = {}
 	local tempLines = {}
@@ -446,7 +448,7 @@ do
 		table.wipe(tempLinesSorted)
 		--Build Sanity Table
 		for uId in DBM:GetGroupMembers() do
-			if select(4, UnitPosition(uId)) == currentMapId and not UnitIsDead(uId) then
+			if select(4, UnitPosition(uId)) == currentMapId and ((mod.Options.HideDead and not isMythic) or not UnitIsDead(uId)) then
 				local unitName = DBM:GetUnitFullName(uId)
 				local count = UnitPower(uId, ALTERNATE_POWER_INDEX)
 				tempLines[unitName] = count
