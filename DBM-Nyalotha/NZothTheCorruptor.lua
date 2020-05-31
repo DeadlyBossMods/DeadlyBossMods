@@ -446,7 +446,7 @@ do
 		table.wipe(tempLinesSorted)
 		--Build Sanity Table
 		for uId in DBM:GetGroupMembers() do
-			if select(4, UnitPosition(uId)) == currentMapId then
+			if select(4, UnitPosition(uId)) == currentMapId and not UnitIsDead(uId) then
 				local unitName = DBM:GetUnitFullName(uId)
 				local count = UnitPower(uId, ALTERNATE_POWER_INDEX)
 				tempLines[unitName] = count
