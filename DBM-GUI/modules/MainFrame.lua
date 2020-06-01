@@ -56,9 +56,10 @@ frame:SetScript("OnDragStop", function(self)
 end)
 frame:SetScript("OnSizeChanged", function(self)
 	self:UpdateMenuFrame()
-	local container = _G[frame:GetName() .. "PanelContainer"]
+	local container = _G[self:GetName() .. "PanelContainer"]
 	if container.displayedFrame then
-		frame:DisplayFrame(container.displayedFrame)
+		self:OnResize(container.displayedFrame)
+		self:DisplayFrame(container.displayedFrame)
 	end
 end)
 frame.tabs = {}

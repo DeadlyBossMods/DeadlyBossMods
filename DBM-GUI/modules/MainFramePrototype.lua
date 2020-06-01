@@ -63,7 +63,7 @@ function DBM_GUI_OptionsFrame:ClearSelection()
 	end
 end
 
-function DBM_GUI_OptionsFrame:DisplayFrame(frame, forceChange)
+function DBM_GUI_OptionsFrame:OnResize(frame)
 	if select("#", frame:GetChildren()) == 0 then
 		return
 	end
@@ -87,6 +87,12 @@ function DBM_GUI_OptionsFrame:DisplayFrame(frame, forceChange)
 				end
 			end
 		end
+	end
+end
+
+function DBM_GUI_OptionsFrame:DisplayFrame(frame, forceChange)
+	if select("#", frame:GetChildren()) == 0 then
+		return
 	end
 	local frameHeight = frame.initheight or 20
 	for _, child in pairs({ frame:GetChildren() }) do
