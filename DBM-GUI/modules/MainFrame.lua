@@ -56,10 +56,6 @@ frame:SetScript("OnDragStop", function(self)
 end)
 frame:SetScript("OnSizeChanged", function(self)
 	self:UpdateMenuFrame()
-	local container = _G[frame:GetName() .. "PanelContainer"]
-	if container.displayedFrame then
-		frame:DisplayFrame(container.displayedFrame)
-	end
 end)
 frame.tabs = {}
 
@@ -73,6 +69,10 @@ end)
 frameResize:SetScript("OnMouseUp", function()
 	frame:StopMovingOrSizing()
 	frame:UpdateMenuFrame()
+	local container = _G[frame:GetName() .. "PanelContainer"]
+	if container.displayedFrame then
+		frame:DisplayFrame(container.displayedFrame)
+	end
 	DBM.Options.GUIWidth = frame:GetWidth()
 	DBM.Options.GUIHeight = frame:GetHeight()
 end)
