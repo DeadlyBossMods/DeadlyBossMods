@@ -15,7 +15,7 @@ local movieOptions = {
 	{	text	= L.Disable,	value	= "Never"},
 	{	text	= L.OnlyFight,	value	= "OnlyFight"},
 	{	text	= L.AfterFirst,	value	= "AfterFirst"},
-	{	text	= L.Always,		value	= "Block"},
+	{	text	= ALWAYS,		value	= "Block"},
 }
 local blockMovieDropDown = hideBlizzArea:CreateDropdown(L.DisableCinematics, movieOptions, "DBM", "MovieFilter2", function(value)
 	DBM.Options.MovieFilter2 = value

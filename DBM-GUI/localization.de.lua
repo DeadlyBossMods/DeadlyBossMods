@@ -279,7 +279,6 @@ L.HideTooltips				= "Verberge Tooltips vollständig während Bosskämpfen"
 L.DisableSFX				= "Deaktiviere Soundeffekte während Bosskämpfen"
 L.DisableCinematics			= "Verberge Videosequenzen"
 L.AfterFirst				= "Nach jeweils einmaligem Abspielen"
-L.Always					= ALWAYS
 L.CombatOnly				= "im Kampf deaktivieren (alle)"
 L.RaidCombat				= "im Kampf deaktivieren (nur Bosse)"
 

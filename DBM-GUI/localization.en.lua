@@ -322,7 +322,6 @@ L.DisableSFX				= "Disable sound effects channel during boss fights"
 L.DisableCinematics			= "Hide in-game cinematics"
 L.OnlyFight					= "Only during fight, after each movie has played once"
 L.AfterFirst				= "In instance, after each movie has played once"
-L.Always					= ALWAYS
 L.CombatOnly				= "Disable in combat (any)"
 L.RaidCombat				= "Disable in combat (bosses only)"
 
