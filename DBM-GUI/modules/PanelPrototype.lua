@@ -272,6 +272,7 @@ do
 		button:SetHitRectInsets(0, 0, 0, 0)
 		button.myheight = 25
 		button.mytype = "checkbutton"
+		button.autoplace = autoplace or false
 		if autoplace then
 			local x = self:GetLastObj()
 			if x.myheight then
@@ -347,10 +348,9 @@ do
 				end
 			end
 		end
-		local buttonText = button:CreateFontString("$parentText", "ARTWORK", "GameFontNormal")
-		buttonText:SetPoint("LEFT", button, "RIGHT", 0, 1)
+		local buttonText
 		if name then -- Switch all checkbutton frame to SimpleHTML frame (auto wrap)
-			buttonText = CreateFrame("SimpleHTML", buttonText:GetName(), button)
+			buttonText = CreateFrame("SimpleHTML", "$parentText", button)
 			buttonText:SetFontObject("GameFontNormal")
 			buttonText:SetHyperlinksEnabled(true)
 			buttonText:SetScript("OnHyperlinkEnter", function(self, data, link)
@@ -400,9 +400,15 @@ do
 			end)
 			buttonText:SetHeight(25)
 			name = "<html><body><p>" .. name .. "</p></body></html>"
+		else
+			buttonText = button:CreateFontString("$parentText", "ARTWORK", "GameFontNormal")
+			buttonText:SetPoint("LEFT", button, "RIGHT", 0, 1)
 		end
 		buttonText:SetWidth(self.frame:GetWidth() - 57 - (frame and frame:GetWidth() + frame2:GetWidth() or 0))
-		buttonText:SetText(name or CL.UNKNOWN)
+		buttonText.text = name or CL.UNKNOWN
+		buttonText.frameWidth = frame and frame:GetWidth() or 0
+		buttonText.frame2Width = frame2 and frame2:GetWidth() or 0
+		buttonText:SetText(buttonText.text)
 		if textLeft then
 			buttonText:ClearAllPoints()
 			buttonText:SetPoint("RIGHT", frame2 or frame or button, "LEFT")

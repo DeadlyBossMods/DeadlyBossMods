@@ -573,7 +573,7 @@ do
 
 		local singleline = 0
 		local doubleline = 0
-		local area = panel:CreateArea()
+		local area = panel:CreateArea(0)
 		area.frame:SetPoint("TOPLEFT", 10, modProfileArea and -180 or -25)
 		area.onshowcall = {}
 
@@ -1389,7 +1389,7 @@ do
 						bottom2value2:SetPoint("TOPLEFT", bottom2text2, "TOPLEFT", 80, 0)
 						bottom2value3:SetPoint("TOPLEFT", bottom2text3, "TOPLEFT", 80, 0)
 						-- Set header text.
-						top1header:SetText(PLAYER_DIFFICULTY3 )-- Raid Finder
+						top1header:SetText(PLAYER_DIFFICULTY3) -- Raid Finder
 						top2header:SetText(PLAYER_DIFFICULTY1) -- Normal
 						bottom1header:SetText(PLAYER_DIFFICULTY2) -- Heroic
 						bottom1header:SetFontObject(GameFontHighlightSmall)
