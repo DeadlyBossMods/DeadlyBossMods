@@ -14,7 +14,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 311176 316711 310184 310134 310130 317292 310331 315772 309698 310042 313400 308885 317066 319349 319350 319351 316970 318449 312782 316463 318971 313611",
-	"SPELL_CAST_SUCCESS 315927 319257 317102 317066 316970 319349 319350 319351 318460 312866 318741",
+	"SPELL_CAST_SUCCESS 315927 319257 317102 317066 316970 319349 319350 319351 318460 312866 318741 318763",
 	"SPELL_SUMMON 318091",
 	"SPELL_AURA_APPLIED 313334 308996 309991 313184 316541 316542 313793 315709 315710 312155 318196 318459 319309 319015 317112 319346 316711 318714 313960",
 	"SPELL_AURA_APPLIED_DOSE 313184 319309",
@@ -183,6 +183,7 @@ mod:AddInfoFrameOption(307831, true)
 mod:AddSetIconOption("SetIconOnCorruptor", "ej21441", true, true, {1, 2, 3, 4})
 mod:AddSetIconOption("SetIconOnHarvester", "ej21308", true, true, {1, 2, 3, 4})
 mod:AddBoolOption("ArrowOnGlare", true)
+mod:AddBoolOption("HideDead", true)
 mod:AddMiscLine(DBM_CORE_L.OPTION_CATEGORY_DROPDOWNS)
 mod:AddDropdownOption("InterruptBehavior", {"Four", "Five", "Six", "NoReset"}, "Five", "misc")
 
@@ -446,7 +447,7 @@ do
 		table.wipe(tempLinesSorted)
 		--Build Sanity Table
 		for uId in DBM:GetGroupMembers() do
-			if select(4, UnitPosition(uId)) == currentMapId then
+			if select(4, UnitPosition(uId)) == currentMapId and (difficultyName == "mythic" or not mod.Options.HideDead or not UnitIsDeadOrGhost(uId)) then
 				local unitName = DBM:GetUnitFullName(uId)
 				local count = UnitPower(uId, ALTERNATE_POWER_INDEX)
 				tempLines[unitName] = count
@@ -788,7 +789,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerHarvestThoughtsCD:Start(30.2, args.sourceGUID)
 	elseif spellId == 316970 or spellId == 319349 or spellId == 319350 or spellId == 319351 then
 		self.vb.cleansingActive = self.vb.cleansingActive - 1
-	elseif spellId == 318741 then--Neck Used
+	elseif spellId == 318741 or spellId == 318763 then--Neck Used
 		neckAvailable[args.sourceName] = false
 	elseif spellId == 318460 then
 		self.vb.annihilateCastCount = self.vb.annihilateCastCount + 1
