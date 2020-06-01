@@ -128,8 +128,8 @@ resizeWidth:SetScript("OnEnterPressed", function(self)
 		self:SetText(minWidth)
 		return
 	end
-	if value > UIFrame:GetWidth() then
-		self:SetText(UIFrame:GetWidth())
+	if value > UIParent:GetWidth() then
+		self:SetText(UIParent:GetWidth())
 	end
 	DBM.Options.GUIWidth = value
 	DBM_GUI_OptionsFrame:SetSize(DBM.Options.GUIWidth, DBM.Options.GUIHeight)
@@ -146,8 +146,8 @@ resizeHeight:SetScript("OnEnterPressed", function(self)
 		self:SetText(minHeight)
 		return
 	end
-	if value > UIFrame:GetHeight() then
-		self:SetText(UIFrame:GetHeight())
+	if value > UIParent:GetHeight() then
+		self:SetText(UIParent:GetHeight())
 	end
 	DBM.Options.GUIHeight = value
 	DBM_GUI_OptionsFrame:SetSize(DBM.Options.GUIWidth, DBM.Options.GUIHeight)
