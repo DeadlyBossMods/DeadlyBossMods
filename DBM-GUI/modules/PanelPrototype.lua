@@ -1,6 +1,10 @@
 local L		= DBM_GUI_L
 local CL	= DBM_CORE_L
 
+local setmetatable, select, type, pairs, tonumber, strsplit, mmax, tinsert, tremove = setmetatable, select, type, pairs, tonumber, strsplit, math.max, table.insert, table.remove
+local CreateFrame, GetCursorPosition, UIParent, GameTooltip, NORMAL_FONT_COLOR, GameFontNormal = CreateFrame, GetCursorPosition, UIParent, GameTooltip, NORMAL_FONT_COLOR, GameFontNormal
+local DBM, DBM_GUI = DBM, DBM_GUI
+
 local PanelPrototype = {}
 setmetatable(PanelPrototype, {
 	__index = DBM_GUI
@@ -416,7 +420,7 @@ do
 		else
 			buttonText:SetJustifyH("LEFT")
 			buttonText:SetPoint("TOPLEFT", frame2 or frame or button, "TOPRIGHT", textPad or 0, -4)
-			button.myheight = math.max(buttonText:GetContentHeight() + 12, button.myheight)
+			button.myheight = mmax(buttonText:GetContentHeight() + 12, button.myheight)
 		end
 		if dbmvar and DBM.Options[dbmvar] ~= nil then
 			button:SetScript("OnShow", function(self)
@@ -461,7 +465,7 @@ function PanelPrototype:CreateArea(name, height)
 	end
 	self:SetLastObj(area)
 	self.areas = self.areas or {}
-	table.insert(self.areas, {
+	tinsert(self.areas, {
 		frame	= area,
 		parent	= self
 	})
@@ -475,8 +479,8 @@ function PanelPrototype:Rename(newname)
 end
 
 function PanelPrototype:Destroy()
-	table.remove(DBM_GUI.frameTypes[self.frame.frameType], self.frame.categoryid)
-	table.remove(self.parent.panels, self.frame.panelid)
+	tremove(DBM_GUI.frameTypes[self.frame.frameType], self.frame.categoryid)
+	tremove(self.parent.panels, self.frame.panelid)
 	self.frame:Hide()
 end
 

@@ -1,3 +1,7 @@
+local select, pairs, ipairs, mfloor, mmax, tinsert = select, pairs, ipairs, math.floor, math.max, table.insert
+local CreateFrame, GameFontHighlightSmall, GameFontNormalSmall, GameFontNormal = CreateFrame, GameFontHighlightSmall, GameFontNormalSmall, GameFontNormal
+local DBM, DBM_GUI = DBM, DBM_GUI
+
 CreateFrame("Frame", "DBM_GUI_OptionsFrame", UIParent, DBM:IsAlpha() and "BackdropTemplate")
 
 function DBM_GUI_OptionsFrame:UpdateMenuFrame()
@@ -9,13 +13,13 @@ function DBM_GUI_OptionsFrame:UpdateMenuFrame()
 	self:ClearSelection()
 	if self.tab then
 		for _, element in ipairs(DBM_GUI.frameTypes[self.tab]:GetVisibleTabs()) do
-			table.insert(displayedElements, element.frame)
+			tinsert(displayedElements, element.frame)
 		end
 		if self.tabs[self.tab].selection then
 			self.tabs[self.tab].selection:LockHighlight()
 		end
 	end
-	local bigList = math.floor((listFrame:GetHeight() - 8) / 18)
+	local bigList = mfloor((listFrame:GetHeight() - 8) / 18)
 	if #displayedElements > bigList then
 		_G[listFrame:GetName() .. "List"]:Show()
 		_G[listFrame:GetName() .. "ListScrollBar"]:SetMinMaxValues(0, (#displayedElements - bigList) * 18)
@@ -81,7 +85,7 @@ function DBM_GUI_OptionsFrame:OnResize(frame)
 					buttonText:SetWidth(child:GetWidth() - 57 - buttonText.frameWidth - buttonText.frame2Width)
 					buttonText:SetText(buttonText.text)
 					if buttonText:GetJustifyH() == "LEFT" then
-						child2.myheight = math.max(buttonText:GetContentHeight() + 12, 25)
+						child2.myheight = mmax(buttonText:GetContentHeight() + 12, 25)
 					end
 					lastObject = child2
 				end

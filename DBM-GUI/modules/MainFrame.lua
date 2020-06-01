@@ -1,6 +1,9 @@
 local L		= DBM_GUI_L
 local CL	= DBM_CORE_L
 
+local DBM = DBM
+local CreateFrame = CreateFrame
+
 local frame = DBM_GUI_OptionsFrame
 table.insert(_G["UISpecialFrames"], frame:GetName())
 frame:SetFrameStrata("DIALOG")
@@ -160,9 +163,9 @@ frameList.offset = 0
 frameList:SetBackdropBorderColor(0.6, 0.6, 0.6, 1)
 frameList.buttons = {}
 for i = 1, math.floor(UIParent:GetHeight() / 18) do
-	local button = CreateFrame("Button", frameList:GetName() .. "Button" .. i, frameList)
+	local button = CreateFrame("Button", "$parentButton" .. i, frameList)
 	button:SetHeight(18)
-	button.text = button:CreateFontString(button:GetName() .. "Text", "ARTWORK", "GameFontNormalSmall")
+	button.text = button:CreateFontString("$parentText", "ARTWORK", "GameFontNormalSmall")
 	button:RegisterForClicks("LeftButtonUp")
 	button:SetScript("OnClick", function(self)
 		frame:ClearSelection()
