@@ -273,6 +273,11 @@ do
 			return DBM:AddMsg("CreateCheckButton: error: expected string, received number. You probably called mod:NewTimer(optionId) with a spell id." .. name)
 		end
 		local button = CreateFrame("CheckButton", "DBM_GUI_Option_" .. self:GetNewID(), self.frame, "OptionsBaseCheckButtonTemplate")
+		local SetPoint = button.SetPoint
+		button.SetPoint = function(...)
+			button.customPoint = true
+			SetPoint(...)
+		end
 		button:SetHitRectInsets(0, 0, 0, 0)
 		button.myheight = 25
 		button.mytype = "checkbutton"
@@ -410,8 +415,7 @@ do
 		end
 		buttonText:SetWidth(self.frame:GetWidth() - 57 - (frame and frame:GetWidth() + frame2:GetWidth() or 0))
 		buttonText.text = name or CL.UNKNOWN
-		buttonText.frameWidth = frame and frame:GetWidth() or 0
-		buttonText.frame2Width = frame2 and frame2:GetWidth() or 0
+		buttonText.widthPad = frame and frame:GetWidth() + frame2:GetWidth() or 0
 		buttonText:SetText(buttonText.text)
 		if textLeft then
 			buttonText:ClearAllPoints()

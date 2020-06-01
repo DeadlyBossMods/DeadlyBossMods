@@ -76,17 +76,16 @@ function DBM_GUI_OptionsFrame:OnResize(frame)
 			local lastObject
 			for _, child2 in pairs({ child:GetChildren() }) do
 				if child2.mytype == "checkbutton" then
-					if lastObject and lastObject.myheight then
-						child2:SetPoint("TOPLEFT", lastObject, "TOPLEFT", 0, -lastObject.myheight)
-					else
-						child2:SetPoint("TOPLEFT", 10, -12)
+					if lastObject and not lastObject.customPoint then
+						if lastObject.myheight then
+							child2:SetPoint("TOPLEFT", lastObject, "TOPLEFT", 0, -lastObject.myheight)
+						else
+							child2:SetPoint("TOPLEFT", 10, -12)
+						end
 					end
 					local buttonText = _G[child2:GetName() .. "Text"]
-					buttonText:SetWidth(child:GetWidth() - 57 - buttonText.frameWidth - buttonText.frame2Width)
+					buttonText:SetWidth(child:GetWidth() - 57 - buttonText.widthPad)
 					buttonText:SetText(buttonText.text)
-					if buttonText:GetJustifyH() == "LEFT" then
-						child2.myheight = mmax(buttonText:GetContentHeight() + 12, 25)
-					end
 					lastObject = child2
 				end
 			end
