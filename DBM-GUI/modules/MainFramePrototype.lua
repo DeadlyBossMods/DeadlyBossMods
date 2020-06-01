@@ -1,3 +1,7 @@
+local select, pairs, ipairs, mfloor, mmax, tinsert = select, pairs, ipairs, math.floor, math.max, table.insert
+local CreateFrame, GameFontHighlightSmall, GameFontNormalSmall, GameFontNormal = CreateFrame, GameFontHighlightSmall, GameFontNormalSmall, GameFontNormal
+local DBM, DBM_GUI = DBM, DBM_GUI
+
 CreateFrame("Frame", "DBM_GUI_OptionsFrame", UIParent, DBM:IsAlpha() and "BackdropTemplate")
 
 function DBM_GUI_OptionsFrame:UpdateMenuFrame()
@@ -9,13 +13,13 @@ function DBM_GUI_OptionsFrame:UpdateMenuFrame()
 	self:ClearSelection()
 	if self.tab then
 		for _, element in ipairs(DBM_GUI.frameTypes[self.tab]:GetVisibleTabs()) do
-			table.insert(displayedElements, element.frame)
+			tinsert(displayedElements, element.frame)
 		end
 		if self.tabs[self.tab].selection then
 			self.tabs[self.tab].selection:LockHighlight()
 		end
 	end
-	local bigList = math.floor((listFrame:GetHeight() - 8) / 18)
+	local bigList = mfloor((listFrame:GetHeight() - 8) / 18)
 	if #displayedElements > bigList then
 		_G[listFrame:GetName() .. "List"]:Show()
 		_G[listFrame:GetName() .. "ListScrollBar"]:SetMinMaxValues(0, (#displayedElements - bigList) * 18)
@@ -63,10 +67,40 @@ function DBM_GUI_OptionsFrame:ClearSelection()
 	end
 end
 
+function DBM_GUI_OptionsFrame:OnResize(frame)
+	if select("#", frame:GetChildren()) == 0 then
+		return
+	end
+	for _, child in pairs({ frame:GetChildren() }) do
+		if child.mytype == "area" then
+			local lastObject
+			for _, child2 in pairs({ child:GetChildren() }) do
+				if child2.mytype == "checkbutton" then
+					if lastObject and not lastObject.customPoint then
+						if lastObject.myheight then
+							child2:SetPoint("TOPLEFT", lastObject, "TOPLEFT", 0, -lastObject.myheight)
+						else
+							child2:SetPoint("TOPLEFT", 10, -12)
+						end
+					end
+					local buttonText = _G[child2:GetName() .. "Text"]
+					buttonText:SetWidth(child:GetWidth() - 57 - buttonText.widthPad)
+					buttonText:SetText(buttonText.text)
+					lastObject = child2
+				end
+			end
+		end
+	end
+end
+
 function DBM_GUI_OptionsFrame:DisplayFrame(frame, forceChange)
 	if select("#", frame:GetChildren()) == 0 then
 		return
 	end
+	if forceChange then
+		self:OnResize(frame)
+	end
+
 	local frameHeight = frame.initheight or 20
 	for _, child in pairs({ frame:GetChildren() }) do
 		if child.mytype == "area" and child.myheight then
@@ -93,6 +127,8 @@ function DBM_GUI_OptionsFrame:DisplayFrame(frame, forceChange)
 	FOV:SetScrollChild(frame)
 	FOV:Show()
 	frame:Show()
+	frame:SetWidth(FOV:GetWidth())
+	frame:SetHeight(FOV:GetHeight())
 	local scrollBar = _G[FOV:GetName() .. "ScrollBar"]
 	if mymax > 0 then
 		scrollBar:Show()

@@ -1,6 +1,9 @@
 local L		= DBM_GUI_L
 local CL	= DBM_CORE_L
 
+local DBM = DBM
+local CreateFrame = CreateFrame
+
 local frame = DBM_GUI_OptionsFrame
 table.insert(_G["UISpecialFrames"], frame:GetName())
 frame:SetFrameStrata("DIALOG")
@@ -56,6 +59,11 @@ frame:SetScript("OnDragStop", function(self)
 end)
 frame:SetScript("OnSizeChanged", function(self)
 	self:UpdateMenuFrame()
+	local container = _G[self:GetName() .. "PanelContainer"]
+	if container.displayedFrame then
+		self:OnResize(container.displayedFrame)
+		self:DisplayFrame(container.displayedFrame)
+	end
 end)
 frame.tabs = {}
 
@@ -68,11 +76,6 @@ frameResize:SetScript("OnMouseDown", function()
 end)
 frameResize:SetScript("OnMouseUp", function()
 	frame:StopMovingOrSizing()
-	frame:UpdateMenuFrame()
-	local container = _G[frame:GetName() .. "PanelContainer"]
-	if container.displayedFrame then
-		frame:DisplayFrame(container.displayedFrame)
-	end
 	DBM.Options.GUIWidth = frame:GetWidth()
 	DBM.Options.GUIHeight = frame:GetHeight()
 end)
@@ -159,9 +162,9 @@ frameList.offset = 0
 frameList:SetBackdropBorderColor(0.6, 0.6, 0.6, 1)
 frameList.buttons = {}
 for i = 1, math.floor(UIParent:GetHeight() / 18) do
-	local button = CreateFrame("Button", frameList:GetName() .. "Button" .. i, frameList)
+	local button = CreateFrame("Button", "$parentButton" .. i, frameList)
 	button:SetHeight(18)
-	button.text = button:CreateFontString(button:GetName() .. "Text", "ARTWORK", "GameFontNormalSmall")
+	button.text = button:CreateFontString("$parentText", "ARTWORK", "GameFontNormalSmall")
 	button:RegisterForClicks("LeftButtonUp")
 	button:SetScript("OnClick", function(self)
 		frame:ClearSelection()
@@ -171,7 +174,7 @@ for i = 1, math.floor(UIParent:GetHeight() / 18) do
 		frame.tabs[frame.tab].selection = button
 		button:LockHighlight()
 		DBM_GUI.currentViewing = self.element
-		frame:DisplayFrame(self.element)
+		frame:DisplayFrame(self.element, true)
 	end)
 	if i == 1 then
 		button:SetPoint("TOPLEFT", frameList, 0, -8)

@@ -295,7 +295,6 @@ L.DisableSFX				= "Desactivar el canal de efectos de sonido en encuentros"
 L.DisableCinematics			= "Saltar cinemáticas automáticamente"
 L.OnlyFight					= "Solo en combate, tras haber visto la cinemática por primera vez"
 L.AfterFirst				= "Tras haber visto la cinemática por primera vez"
-L.Always					= ALWAYS
 L.CombatOnly				= "En combate"
 L.RaidCombat				= "En combate (solo en jefes)"
 

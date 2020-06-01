@@ -317,7 +317,6 @@ L.DisableSFX				= "Boss战斗中关闭音效"
 L.DisableCinematics			= "自动跳过游戏内过场动画"
 L.OnlyFight					= "当每个动画被播放国一次后，只在战斗中放"
 L.AfterFirst				= "仅第一次播放"
-L.Always					= "总是跳过"
 L.CombatOnly				= "在任何战斗中隐藏"
 L.RaidCombat				= "只在Boss战斗中隐藏"
 

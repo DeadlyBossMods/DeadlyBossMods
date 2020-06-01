@@ -1,6 +1,10 @@
 local L		= DBM_GUI_L
 local CL	= DBM_CORE_L
 
+local setmetatable, select, type, pairs, tonumber, strsplit, mmax, tinsert, tremove = setmetatable, select, type, pairs, tonumber, strsplit, math.max, table.insert, table.remove
+local CreateFrame, GetCursorPosition, UIParent, GameTooltip, NORMAL_FONT_COLOR, GameFontNormal = CreateFrame, GetCursorPosition, UIParent, GameTooltip, NORMAL_FONT_COLOR, GameFontNormal
+local DBM, DBM_GUI = DBM, DBM_GUI
+
 local PanelPrototype = {}
 setmetatable(PanelPrototype, {
 	__index = DBM_GUI
@@ -149,9 +153,7 @@ function PanelPrototype:CreateEditBox(text, value, width, height)
 	textbox:SetScript("OnTabPressed", function(self)
 		self:ClearFocus()
 	end)
-	if type(value) == "string" then
-		textbox:SetText(value)
-	end
+	textbox:SetText(value)
 	self:SetLastObj(textbox)
 	local textboxLeft = textbox:CreateTexture("$parentLeft", "BACKGROUND")
 	textboxLeft:SetTexture(130959) -- "Interface\ChatFrame\UI-ChatInputBorder-Left"
@@ -269,9 +271,15 @@ do
 			return DBM:AddMsg("CreateCheckButton: error: expected string, received number. You probably called mod:NewTimer(optionId) with a spell id." .. name)
 		end
 		local button = CreateFrame("CheckButton", "DBM_GUI_Option_" .. self:GetNewID(), self.frame, "OptionsBaseCheckButtonTemplate")
+		local SetPoint = button.SetPoint
+		button.SetPoint = function(...)
+			button.customPoint = true
+			SetPoint(...)
+		end
 		button:SetHitRectInsets(0, 0, 0, 0)
 		button.myheight = 25
 		button.mytype = "checkbutton"
+		button.autoplace = autoplace or false
 		if autoplace then
 			local x = self:GetLastObj()
 			if x.myheight then
@@ -347,10 +355,9 @@ do
 				end
 			end
 		end
-		local buttonText = button:CreateFontString("$parentText", "ARTWORK", "GameFontNormal")
-		buttonText:SetPoint("LEFT", button, "RIGHT", 0, 1)
+		local buttonText
 		if name then -- Switch all checkbutton frame to SimpleHTML frame (auto wrap)
-			buttonText = CreateFrame("SimpleHTML", buttonText:GetName(), button)
+			buttonText = CreateFrame("SimpleHTML", "$parentText", button)
 			buttonText:SetFontObject("GameFontNormal")
 			buttonText:SetHyperlinksEnabled(true)
 			buttonText:SetScript("OnHyperlinkEnter", function(self, data, link)
@@ -400,9 +407,14 @@ do
 			end)
 			buttonText:SetHeight(25)
 			name = "<html><body><p>" .. name .. "</p></body></html>"
+		else
+			buttonText = button:CreateFontString("$parentText", "ARTWORK", "GameFontNormal")
+			buttonText:SetPoint("LEFT", button, "RIGHT", 0, 1)
 		end
 		buttonText:SetWidth(self.frame:GetWidth() - 57 - (frame and frame:GetWidth() + frame2:GetWidth() or 0))
-		buttonText:SetText(name or CL.UNKNOWN)
+		buttonText.text = name or CL.UNKNOWN
+		buttonText.widthPad = frame and frame:GetWidth() + frame2:GetWidth() or 0
+		buttonText:SetText(buttonText.text)
 		if textLeft then
 			buttonText:ClearAllPoints()
 			buttonText:SetPoint("RIGHT", frame2 or frame or button, "LEFT")
@@ -410,7 +422,7 @@ do
 		else
 			buttonText:SetJustifyH("LEFT")
 			buttonText:SetPoint("TOPLEFT", frame2 or frame or button, "TOPRIGHT", textPad or 0, -4)
-			button.myheight = math.max(buttonText:GetContentHeight() + 12, button.myheight)
+			button.myheight = mmax(buttonText:GetContentHeight() + 12, button.myheight)
 		end
 		if dbmvar and DBM.Options[dbmvar] ~= nil then
 			button:SetScript("OnShow", function(self)
@@ -455,7 +467,7 @@ function PanelPrototype:CreateArea(name, height)
 	end
 	self:SetLastObj(area)
 	self.areas = self.areas or {}
-	table.insert(self.areas, {
+	tinsert(self.areas, {
 		frame	= area,
 		parent	= self
 	})
@@ -469,8 +481,8 @@ function PanelPrototype:Rename(newname)
 end
 
 function PanelPrototype:Destroy()
-	table.remove(DBM_GUI.frameTypes[self.frame.frameType], self.frame.categoryid)
-	table.remove(self.parent.panels, self.frame.panelid)
+	tremove(DBM_GUI.frameTypes[self.frame.frameType], self.frame.categoryid)
+	tremove(self.parent.panels, self.frame.panelid)
 	self.frame:Hide()
 end
 

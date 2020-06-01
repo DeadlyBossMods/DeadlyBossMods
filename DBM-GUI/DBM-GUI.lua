@@ -4,6 +4,11 @@ DBM_GUI = {
 	frameTypes = {}
 }
 
+local next, type, pairs, strsplit, tonumber, tostring, ipairs, tinsert, tsort, mfloor = next, type, pairs, strsplit, tonumber, tostring, ipairs, table.insert, table.sort, math.floor
+local C_Timer, GetExpansionLevel, IsAddOnLoaded, GameFontNormal, GameFontNormalSmall, GameFontHighlight, GameFontHighlightSmall = C_Timer, GetExpansionLevel, IsAddOnLoaded, GameFontNormal, GameFontNormalSmall, GameFontHighlight, GameFontHighlightSmall
+local RAID_DIFFICULTY1, RAID_DIFFICULTY2, RAID_DIFFICULTY3, RAID_DIFFICULTY4, PLAYER_DIFFICULTY1, PLAYER_DIFFICULTY2, PLAYER_DIFFICULTY3, PLAYER_DIFFICULTY6, PLAYER_DIFFICULTY_TIMEWALKER, CHALLENGE_MODE, ALL, SPECIALIZATION = RAID_DIFFICULTY1, RAID_DIFFICULTY2, RAID_DIFFICULTY3, RAID_DIFFICULTY4, PLAYER_DIFFICULTY1, PLAYER_DIFFICULTY2, PLAYER_DIFFICULTY3, PLAYER_DIFFICULTY6, PLAYER_DIFFICULTY_TIMEWALKER, CHALLENGE_MODE, ALL, SPECIALIZATION
+local LibStub, DBM, DBM_GUI, DBM_OPTION_SPACER = LibStub, DBM, DBM_GUI, DBM_OPTION_SPACER
+
 do
 	local soundsRegistered = false
 
@@ -59,9 +64,9 @@ do
 		-- Sort LibSharedMedia keys alphabetically (case-insensitive)
 		local keytable = {}
 		for k in next, LibStub("LibSharedMedia-3.0", true):HashTable(mediatype) do
-			table.insert(keytable, k)
+			tinsert(keytable, k)
 		end
-		table.sort(keytable, function(a, b)
+		tsort(keytable, function(a, b)
 			return a:lower() < b:lower()
 		end);
 		-- DBM values (mediatable) first, LibSharedMedia values (sorted alphabetically) afterwards
@@ -100,7 +105,7 @@ do
 						ins.sound = true
 					end
 					if ins.texture or ins.font or ins.sound then
-						table.insert(result, ins)
+						tinsert(result, ins)
 					end
 				end
 			end
@@ -142,7 +147,7 @@ do
 	local frames = {}
 
 	function DBM_GUI:AddFrame(name)
-		table.insert(frames, name)
+		tinsert(frames, name)
 	end
 
 	function DBM_GUI:IsPresent(name)
@@ -294,177 +299,177 @@ do
 			if statsType == 1 then -- Party: normal, heroic, challenge)
 				top1value1:SetText(stats.normalKills)
 				top1value2:SetText(stats.normalPulls - stats.normalKills)
-				top1value3:SetText(stats.normalBestTime and ("%d:%02d"):format(math.floor(stats.normalBestTime / 60), stats.normalBestTime % 60) or "-")
+				top1value3:SetText(stats.normalBestTime and ("%d:%02d"):format(mfloor(stats.normalBestTime / 60), stats.normalBestTime % 60) or "-")
 				top2value1:SetText(stats.heroicKills)
 				top2value2:SetText(stats.heroicPulls - stats.heroicKills)
-				top2value3:SetText(stats.heroicBestTime and ("%d:%02d"):format(math.floor(stats.heroicBestTime / 60), stats.heroicBestTime % 60) or "-")
+				top2value3:SetText(stats.heroicBestTime and ("%d:%02d"):format(mfloor(stats.heroicBestTime / 60), stats.heroicBestTime % 60) or "-")
 				top3value1:SetText(stats.challengeKills)
 				top3value2:SetText(stats.challengePulls - stats.challengeKills)
 				if stats.challengeBestRank and stats.challengeBestRank > 0 then
-					top3value3:SetText(stats.challengeBestTime and ("%d:%02d (%d)"):format(math.floor(stats.challengeBestTime / 60), stats.challengeBestTime % 60) or "-", stats.challengeBestRank)
+					top3value3:SetText(stats.challengeBestTime and ("%d:%02d (%d)"):format(mfloor(stats.challengeBestTime / 60), stats.challengeBestTime % 60) or "-", stats.challengeBestRank)
 				else
-					top3value3:SetText(stats.challengeBestTime and ("%d:%02d"):format(math.floor(stats.challengeBestTime / 60), stats.challengeBestTime % 60) or "-")
+					top3value3:SetText(stats.challengeBestTime and ("%d:%02d"):format(mfloor(stats.challengeBestTime / 60), stats.challengeBestTime % 60) or "-")
 				end
 			elseif statsType == 2 and stats.normal25Pulls and stats.normal25Pulls > 0 and stats.normal25Pulls > stats.normalPulls then -- Fix for BC instance
 				top1value1:SetText(stats.normal25Kills)
 				top1value2:SetText(stats.normal25Pulls - stats.normal25Kills)
-				top1value3:SetText(stats.normal25BestTime and ("%d:%02d"):format(math.floor(stats.normal25BestTime / 60), stats.normal25BestTime % 60) or "-")
+				top1value3:SetText(stats.normal25BestTime and ("%d:%02d"):format(mfloor(stats.normal25BestTime / 60), stats.normal25BestTime % 60) or "-")
 			elseif statsType == 3 then -- WoD RAID difficulty stats, TOP: Normal, LFR. BOTTOM. Heroic, Mythic
 				top1value1:SetText(stats.lfr25Kills)
 				top1value2:SetText(stats.lfr25Pulls - stats.lfr25Kills)
-				top1value3:SetText(stats.lfr25BestTime and ("%d:%02d"):format(math.floor(stats.lfr25BestTime / 60), stats.lfr25BestTime % 60) or "-")
+				top1value3:SetText(stats.lfr25BestTime and ("%d:%02d"):format(mfloor(stats.lfr25BestTime / 60), stats.lfr25BestTime % 60) or "-")
 				top2value1:SetText(stats.normalKills)
 				top2value2:SetText(stats.normalPulls - stats.normalKills)
-				top2value3:SetText(stats.normalBestTime and ("%d:%02d"):format(math.floor(stats.normalBestTime / 60), stats.normalBestTime % 60) or "-")
+				top2value3:SetText(stats.normalBestTime and ("%d:%02d"):format(mfloor(stats.normalBestTime / 60), stats.normalBestTime % 60) or "-")
 				bottom1value1:SetText(stats.heroicKills)
 				bottom1value2:SetText(stats.heroicPulls - stats.heroicKills)
-				bottom1value3:SetText(stats.heroicBestTime and ("%d:%02d"):format(math.floor(stats.heroicBestTime / 60), stats.heroicBestTime % 60) or "-")
+				bottom1value3:SetText(stats.heroicBestTime and ("%d:%02d"):format(mfloor(stats.heroicBestTime / 60), stats.heroicBestTime % 60) or "-")
 				bottom2value1:SetText(stats.mythicKills)
 				bottom2value2:SetText(stats.mythicPulls - stats.mythicKills)
-				bottom2value3:SetText(stats.mythicBestTime and ("%d:%02d"):format(math.floor(stats.mythicBestTime / 60), stats.mythicBestTime % 60) or "-")
+				bottom2value3:SetText(stats.mythicBestTime and ("%d:%02d"):format(mfloor(stats.mythicBestTime / 60), stats.mythicBestTime % 60) or "-")
 			elseif statsType == 4 then -- Party: Normal, heroic, mythic, mythic+ (Ie standard dungeons 6.2/7.x/8.x)
 				top1value1:SetText(stats.normalKills)
 				top1value2:SetText(stats.normalPulls - stats.normalKills)
-				top1value3:SetText(stats.normalBestTime and ("%d:%02d"):format(math.floor(stats.normalBestTime / 60), stats.normalBestTime % 60) or "-")
+				top1value3:SetText(stats.normalBestTime and ("%d:%02d"):format(mfloor(stats.normalBestTime / 60), stats.normalBestTime % 60) or "-")
 				top2value1:SetText(stats.heroicKills)
 				top2value2:SetText(stats.heroicPulls - stats.heroicKills)
-				top2value3:SetText(stats.heroicBestTime and ("%d:%02d"):format(math.floor(stats.heroicBestTime / 60), stats.heroicBestTime % 60) or "-")
+				top2value3:SetText(stats.heroicBestTime and ("%d:%02d"):format(mfloor(stats.heroicBestTime / 60), stats.heroicBestTime % 60) or "-")
 				bottom1value1:SetText(stats.mythicKills)
 				bottom1value2:SetText(stats.mythicPulls - stats.mythicKills)
-				bottom1value3:SetText(stats.mythicBestTime and ("%d:%02d"):format(math.floor(stats.mythicBestTime / 60), stats.mythicBestTime % 60) or "-")
+				bottom1value3:SetText(stats.mythicBestTime and ("%d:%02d"):format(mfloor(stats.mythicBestTime / 60), stats.mythicBestTime % 60) or "-")
 				bottom2value1:SetText(stats.challengeKills)
 				bottom2value2:SetText(stats.challengePulls - stats.challengeKills)
 				if stats.challengeBestRank and stats.challengeBestRank > 0 then
-					bottom2value3:SetText(stats.challengeBestTime and ("%d:%02d (%d)"):format(math.floor(stats.challengeBestTime / 60), stats.challengeBestTime % 60) or "-", stats.challengeBestRank)
+					bottom2value3:SetText(stats.challengeBestTime and ("%d:%02d (%d)"):format(mfloor(stats.challengeBestTime / 60), stats.challengeBestTime % 60) or "-", stats.challengeBestRank)
 				else
-					bottom2value3:SetText(stats.challengeBestTime and ("%d:%02d"):format(math.floor(stats.challengeBestTime / 60), stats.challengeBestTime % 60) or "-")
+					bottom2value3:SetText(stats.challengeBestTime and ("%d:%02d"):format(mfloor(stats.challengeBestTime / 60), stats.challengeBestTime % 60) or "-")
 				end
 			elseif statsType == 5 then -- Party/TW Raid: Normal, TimeWalker (some normal only dungeons with timewalker such as classic)
 				top1value1:SetText(stats.normalKills)
 				top1value2:SetText(stats.normalPulls - stats.normalKills)
-				top1value3:SetText(stats.normalBestTime and ("%d:%02d"):format(math.floor(stats.normalBestTime / 60), stats.normalBestTime % 60) or "-")
+				top1value3:SetText(stats.normalBestTime and ("%d:%02d"):format(mfloor(stats.normalBestTime / 60), stats.normalBestTime % 60) or "-")
 				top2value1:SetText(stats.timewalkerKills)
 				top2value2:SetText(stats.timewalkerPulls - stats.timewalkerKills)
-				top2value3:SetText(stats.timewalkerBestTime and ("%d:%02d"):format(math.floor(stats.timewalkerBestTime / 60), stats.timewalkerBestTime % 60) or "-")
+				top2value3:SetText(stats.timewalkerBestTime and ("%d:%02d"):format(mfloor(stats.timewalkerBestTime / 60), stats.timewalkerBestTime % 60) or "-")
 			elseif statsType == 6 then -- Party: Heroic, TimeWalker instance (some heroic only dungeons with timewalker)
 				top1value1:SetText(stats.heroicKills)
 				top1value2:SetText(stats.heroicPulls-stats.heroicKills)
-				top1value3:SetText(stats.heroicBestTime and ("%d:%02d"):format(math.floor(stats.heroicBestTime / 60), stats.heroicBestTime % 60) or "-")
+				top1value3:SetText(stats.heroicBestTime and ("%d:%02d"):format(mfloor(stats.heroicBestTime / 60), stats.heroicBestTime % 60) or "-")
 				top2value1:SetText(stats.timewalkerKills)
 				top2value2:SetText(stats.timewalkerPulls - stats.timewalkerKills)
-				top2value3:SetText(stats.timewalkerBestTime and ("%d:%02d"):format(math.floor(stats.timewalkerBestTime / 60), stats.timewalkerBestTime % 60) or "-")
+				top2value3:SetText(stats.timewalkerBestTime and ("%d:%02d"):format(mfloor(stats.timewalkerBestTime / 60), stats.timewalkerBestTime % 60) or "-")
 			elseif statsType == 7 then -- Party: Normal, Heroic, TimeWalker instance (most wrath and cata dungeons)
 				top1value1:SetText(stats.normalKills)
 				top1value2:SetText(stats.normalPulls - stats.normalKills)
-				top1value3:SetText(stats.normalBestTime and ("%d:%02d"):format(math.floor(stats.normalBestTime / 60), stats.normalBestTime % 60) or "-")
+				top1value3:SetText(stats.normalBestTime and ("%d:%02d"):format(mfloor(stats.normalBestTime / 60), stats.normalBestTime % 60) or "-")
 				top2value1:SetText(stats.heroicKills)
 				top2value2:SetText(stats.heroicPulls - stats.heroicKills)
-				top2value3:SetText(stats.heroicBestTime and ("%d:%02d"):format(math.floor(stats.heroicBestTime / 60), stats.heroicBestTime % 60) or "-")
+				top2value3:SetText(stats.heroicBestTime and ("%d:%02d"):format(mfloor(stats.heroicBestTime / 60), stats.heroicBestTime % 60) or "-")
 				top3value1:SetText(stats.timewalkerKills)
 				top3value2:SetText(stats.timewalkerPulls - stats.timewalkerKills)
-				top3value3:SetText(stats.timewalkerBestTime and ("%d:%02d"):format(math.floor(stats.timewalkerBestTime / 60), stats.timewalkerBestTime % 60) or "-")
+				top3value3:SetText(stats.timewalkerBestTime and ("%d:%02d"):format(mfloor(stats.timewalkerBestTime / 60), stats.timewalkerBestTime % 60) or "-")
 			elseif statsType == 8 then -- Party: Normal, Heroic, Challenge, TimeWalker instance (Mop Dungeons. I realize CM is technically gone, but we still retain stats for users)
 				top1value1:SetText(stats.normalKills)
 				top1value2:SetText(stats.normalPulls - stats.normalKills)
-				top1value3:SetText(stats.normalBestTime and ("%d:%02d"):format(math.floor(stats.normalBestTime / 60), stats.normalBestTime % 60) or "-")
+				top1value3:SetText(stats.normalBestTime and ("%d:%02d"):format(mfloor(stats.normalBestTime / 60), stats.normalBestTime % 60) or "-")
 				top2value1:SetText(stats.heroicKills)
 				top2value2:SetText(stats.heroicPulls - stats.heroicKills)
-				top2value3:SetText(stats.heroicBestTime and ("%d:%02d"):format(math.floor(stats.heroicBestTime / 60), stats.heroicBestTime % 60) or "-")
+				top2value3:SetText(stats.heroicBestTime and ("%d:%02d"):format(mfloor(stats.heroicBestTime / 60), stats.heroicBestTime % 60) or "-")
 				bottom1value1:SetText(stats.challengeKills)
 				bottom1value2:SetText(stats.challengePulls - stats.challengeKills)
 				if stats.challengeBestRank and stats.challengeBestRank > 0 then
-					bottom1value3:SetText(stats.challengeBestTime and ("%d:%02d (%d)"):format(math.floor(stats.challengeBestTime / 60), stats.challengeBestTime % 60) or "-", stats.challengeBestRank)
+					bottom1value3:SetText(stats.challengeBestTime and ("%d:%02d (%d)"):format(mfloor(stats.challengeBestTime / 60), stats.challengeBestTime % 60) or "-", stats.challengeBestRank)
 				else
-					bottom1value3:SetText(stats.challengeBestTime and ("%d:%02d"):format(math.floor(stats.challengeBestTime / 60), stats.challengeBestTime % 60) or "-")
+					bottom1value3:SetText(stats.challengeBestTime and ("%d:%02d"):format(mfloor(stats.challengeBestTime / 60), stats.challengeBestTime % 60) or "-")
 				end
 				bottom2value1:SetText(stats.timewalkerKills)
 				bottom2value2:SetText(stats.timewalkerPulls - stats.timewalkerKills)
-				bottom2value3:SetText(stats.timewalkerBestTime and ("%d:%02d"):format(math.floor(stats.timewalkerBestTime / 60), stats.timewalkerBestTime % 60) or "-")
+				bottom2value3:SetText(stats.timewalkerBestTime and ("%d:%02d"):format(mfloor(stats.timewalkerBestTime / 60), stats.timewalkerBestTime % 60) or "-")
 			elseif statsType == 9 then -- Party: Heroic, Challenge, TimeWalker instance (Special heroic only Mop or WoD bosses)
 				top1value1:SetText(stats.heroicKills)
 				top1value2:SetText(stats.heroicPulls - stats.heroicKills)
-				top1value3:SetText(stats.heroicBestTime and ("%d:%02d"):format(math.floor(stats.heroicBestTime / 60), stats.heroicBestTime % 60) or "-")
+				top1value3:SetText(stats.heroicBestTime and ("%d:%02d"):format(mfloor(stats.heroicBestTime / 60), stats.heroicBestTime % 60) or "-")
 				top2value1:SetText(stats.challengeKills)
 				top2value2:SetText(stats.challengePulls - stats.challengeKills)
 				if stats.challengeBestRank and stats.challengeBestRank > 0 then
-					top2value3:SetText(stats.challengeBestTime and ("%d:%02d (%d)"):format(math.floor(stats.challengeBestTime / 60), stats.challengeBestTime % 60) or "-", stats.challengeBestRank)
+					top2value3:SetText(stats.challengeBestTime and ("%d:%02d (%d)"):format(mfloor(stats.challengeBestTime / 60), stats.challengeBestTime % 60) or "-", stats.challengeBestRank)
 				else
-					top2value3:SetText(stats.challengeBestTime and ("%d:%02d"):format(math.floor(stats.challengeBestTime / 60), stats.challengeBestTime % 60) or "-")
+					top2value3:SetText(stats.challengeBestTime and ("%d:%02d"):format(mfloor(stats.challengeBestTime / 60), stats.challengeBestTime % 60) or "-")
 				end
 				top3value1:SetText(stats.timewalkerKills)
 				top3value2:SetText(stats.timewalkerPulls - stats.timewalkerKills)
-				top3value3:SetText(stats.timewalkerBestTime and ("%d:%02d"):format(math.floor(stats.timewalkerBestTime / 60), stats.timewalkerBestTime % 60) or "-")
+				top3value3:SetText(stats.timewalkerBestTime and ("%d:%02d"):format(mfloor(stats.timewalkerBestTime / 60), stats.timewalkerBestTime % 60) or "-")
 			elseif statsType == 10 then -- Party: Normal, Heroic, Mythic, Mythic+, TimeWalker instance (Wod timewalking Dungeon)
 				top1value1:SetText(stats.normalKills)
 				top1value2:SetText(stats.normalPulls - stats.normalKills)
-				top1value3:SetText(stats.normalBestTime and ("%d:%02d"):format(math.floor(stats.normalBestTime / 60), stats.normalBestTime % 60) or "-")
+				top1value3:SetText(stats.normalBestTime and ("%d:%02d"):format(mfloor(stats.normalBestTime / 60), stats.normalBestTime % 60) or "-")
 				top2value1:SetText(stats.heroicKills)
 				top2value2:SetText(stats.heroicPulls - stats.heroicKills)
-				top2value3:SetText(stats.heroicBestTime and ("%d:%02d"):format(math.floor(stats.heroicBestTime / 60), stats.heroicBestTime % 60) or "-")
+				top2value3:SetText(stats.heroicBestTime and ("%d:%02d"):format(mfloor(stats.heroicBestTime / 60), stats.heroicBestTime % 60) or "-")
 				top3value1:SetText(stats.mythicKills)
 				top3value2:SetText(stats.mythicPulls - stats.mythicKills)
-				top3value3:SetText(stats.mythicBestTime and ("%d:%02d"):format(math.floor(stats.mythicBestTime / 60), stats.mythicBestTime % 60) or "-")
+				top3value3:SetText(stats.mythicBestTime and ("%d:%02d"):format(mfloor(stats.mythicBestTime / 60), stats.mythicBestTime % 60) or "-")
 				bottom1value1:SetText(stats.challengeKills)
 				bottom1value2:SetText(stats.challengePulls - stats.challengeKills)
 				if stats.challengeBestRank and stats.challengeBestRank > 0 then
-					bottom1value3:SetText(stats.challengeBestTime and ("%d:%02d (%d)"):format(math.floor(stats.challengeBestTime / 60), stats.challengeBestTime % 60) or "-", stats.challengeBestRank)
+					bottom1value3:SetText(stats.challengeBestTime and ("%d:%02d (%d)"):format(mfloor(stats.challengeBestTime / 60), stats.challengeBestTime % 60) or "-", stats.challengeBestRank)
 				else
-					bottom1value3:SetText(stats.challengeBestTime and ("%d:%02d"):format(math.floor(stats.challengeBestTime / 60), stats.challengeBestTime % 60) or "-")
+					bottom1value3:SetText(stats.challengeBestTime and ("%d:%02d"):format(mfloor(stats.challengeBestTime / 60), stats.challengeBestTime % 60) or "-")
 				end
 				bottom2value1:SetText(stats.timewalkerKills)
 				bottom2value2:SetText(stats.timewalkerPulls - stats.timewalkerKills)
-				bottom2value3:SetText(stats.timewalkerBestTime and ("%d:%02d"):format(math.floor(stats.timewalkerBestTime / 60), stats.timewalkerBestTime % 60) or "-")
+				bottom2value3:SetText(stats.timewalkerBestTime and ("%d:%02d"):format(mfloor(stats.timewalkerBestTime / 60), stats.timewalkerBestTime % 60) or "-")
 			elseif statsType == 11 then -- Party: Mythic, Mythic+ (7.0/8.0 mythic only dungeons)
 				top1value1:SetText(stats.mythicKills)
 				top1value2:SetText(stats.mythicPulls - stats.mythicKills)
-				top1value3:SetText(stats.mythicBestTime and ("%d:%02d"):format(math.floor(stats.mythicBestTime / 60), stats.mythicBestTime % 60) or "-")
+				top1value3:SetText(stats.mythicBestTime and ("%d:%02d"):format(mfloor(stats.mythicBestTime / 60), stats.mythicBestTime % 60) or "-")
 				top2value1:SetText(stats.challengeKills)
 				top2value2:SetText(stats.challengePulls - stats.challengeKills)
 				if stats.challengeBestRank and stats.challengeBestRank > 0 then
-					top2value3:SetText(stats.challengeBestTime and ("%d:%02d (%d)"):format(math.floor(stats.challengeBestTime / 60), stats.challengeBestTime % 60) or "-", stats.challengeBestRank)
+					top2value3:SetText(stats.challengeBestTime and ("%d:%02d (%d)"):format(mfloor(stats.challengeBestTime / 60), stats.challengeBestTime % 60) or "-", stats.challengeBestRank)
 				else
-					top2value3:SetText(stats.challengeBestTime and ("%d:%02d"):format(math.floor(stats.challengeBestTime / 60), stats.challengeBestTime % 60) or "-")
+					top2value3:SetText(stats.challengeBestTime and ("%d:%02d"):format(mfloor(stats.challengeBestTime / 60), stats.challengeBestTime % 60) or "-")
 				end
 			elseif statsType == 12 then -- Party: Normal, Heroic, Mythic instance (Basically a mythic dungeon that has no challenge mode/mythic+ or an isle expedition)
 				top1value1:SetText(stats.normalKills)
 				top1value2:SetText(stats.normalPulls - stats.normalKills)
-				top1value3:SetText(stats.normalBestTime and ("%d:%02d"):format(math.floor(stats.normalBestTime / 60), stats.normalBestTime % 60) or "-")
+				top1value3:SetText(stats.normalBestTime and ("%d:%02d"):format(mfloor(stats.normalBestTime / 60), stats.normalBestTime % 60) or "-")
 				top2value1:SetText(stats.heroicKills)
 				top2value2:SetText(stats.heroicPulls - stats.heroicKills)
-				top2value3:SetText(stats.heroicBestTime and ("%d:%02d"):format(math.floor(stats.heroicBestTime / 60), stats.heroicBestTime % 60) or "-")
+				top2value3:SetText(stats.heroicBestTime and ("%d:%02d"):format(mfloor(stats.heroicBestTime / 60), stats.heroicBestTime % 60) or "-")
 				top3value1:SetText(stats.mythicKills)
 				top3value2:SetText(stats.mythicPulls - stats.mythicKills)
-				top3value3:SetText(stats.mythicBestTime and ("%d:%02d"):format(math.floor(stats.mythicBestTime / 60), stats.mythicBestTime % 60) or "-")
+				top3value3:SetText(stats.mythicBestTime and ("%d:%02d"):format(mfloor(stats.mythicBestTime / 60), stats.mythicBestTime % 60) or "-")
 			elseif statsType == 13 then -- Party: Heroic, Mythic, Mythic+ instance (Karazhan, Court of Stars, Arcway 7.1.5/7.2 changes)
 				top1value1:SetText(stats.heroicKills)
 				top1value2:SetText(stats.heroicPulls - stats.heroicKills)
-				top1value3:SetText(stats.heroicBestTime and ("%d:%02d"):format(math.floor(stats.heroicBestTime / 60), stats.heroicBestTime % 60) or "-")
+				top1value3:SetText(stats.heroicBestTime and ("%d:%02d"):format(mfloor(stats.heroicBestTime / 60), stats.heroicBestTime % 60) or "-")
 				top2value1:SetText(stats.mythicKills)
 				top2value2:SetText(stats.mythicPulls - stats.mythicKills)
-				top2value3:SetText(stats.mythicBestTime and ("%d:%02d"):format(math.floor(stats.mythicBestTime / 60), stats.mythicBestTime % 60) or "-")
+				top2value3:SetText(stats.mythicBestTime and ("%d:%02d"):format(mfloor(stats.mythicBestTime / 60), stats.mythicBestTime % 60) or "-")
 				top3value1:SetText(stats.challengeKills)
 				top3value2:SetText(stats.challengePulls - stats.challengeKills)
 				if stats.challengeBestRank and stats.challengeBestRank > 0 then
-					top3value3:SetText(stats.challengeBestTime and ("%d:%02d (%d)"):format(math.floor(stats.challengeBestTime / 60), stats.challengeBestTime % 60) or "-", stats.challengeBestRank)
+					top3value3:SetText(stats.challengeBestTime and ("%d:%02d (%d)"):format(mfloor(stats.challengeBestTime / 60), stats.challengeBestTime % 60) or "-", stats.challengeBestRank)
 				else
-					top3value3:SetText(stats.challengeBestTime and ("%d:%02d"):format(math.floor(stats.challengeBestTime / 60), stats.challengeBestTime % 60) or "-")
+					top3value3:SetText(stats.challengeBestTime and ("%d:%02d"):format(mfloor(stats.challengeBestTime / 60), stats.challengeBestTime % 60) or "-")
 				end
 			else -- Legacy 10/25 raids
 				top1value1:SetText(stats.normalKills)
 				top1value2:SetText(stats.normalPulls - stats.normalKills)
-				top1value3:SetText(stats.normalBestTime and ("%d:%02d"):format(math.floor(stats.normalBestTime / 60), stats.normalBestTime % 60) or "-")
+				top1value3:SetText(stats.normalBestTime and ("%d:%02d"):format(mfloor(stats.normalBestTime / 60), stats.normalBestTime % 60) or "-")
 				top2value1:SetText(stats.normal25Kills)
 				top2value2:SetText(stats.normal25Pulls - stats.normal25Kills)
-				top2value3:SetText(stats.normal25BestTime and ("%d:%02d"):format(math.floor(stats.normal25BestTime / 60), stats.normal25BestTime % 60) or "-")
+				top2value3:SetText(stats.normal25BestTime and ("%d:%02d"):format(mfloor(stats.normal25BestTime / 60), stats.normal25BestTime % 60) or "-")
 				top3value1:SetText(stats.timewalkerKills)
 				top3value2:SetText(stats.timewalkerPulls - stats.timewalkerKills)
-				top3value3:SetText(stats.timewalkerBestTime and ("%d:%02d"):format(math.floor(stats.timewalkerBestTime / 60), stats.timewalkerBestTime % 60) or "-")
+				top3value3:SetText(stats.timewalkerBestTime and ("%d:%02d"):format(mfloor(stats.timewalkerBestTime / 60), stats.timewalkerBestTime % 60) or "-")
 				bottom1value1:SetText(stats.heroicKills)
 				bottom1value2:SetText(stats.heroicPulls - stats.heroicKills)
-				bottom1value3:SetText(stats.heroicBestTime and ("%d:%02d"):format(math.floor(stats.heroicBestTime / 60), stats.heroicBestTime % 60) or "-")
+				bottom1value3:SetText(stats.heroicBestTime and ("%d:%02d"):format(mfloor(stats.heroicBestTime / 60), stats.heroicBestTime % 60) or "-")
 				bottom2value1:SetText(stats.heroic25Kills)
 				bottom2value2:SetText(stats.heroic25Pulls - stats.heroic25Kills)
-				bottom2value3:SetText(stats.heroic25BestTime and ("%d:%02d"):format(math.floor(stats.heroic25BestTime / 60), stats.heroic25BestTime % 60) or "-")
+				bottom2value3:SetText(stats.heroic25BestTime and ("%d:%02d"):format(mfloor(stats.heroic25BestTime / 60), stats.heroic25BestTime % 60) or "-")
 			end
 		end
 	end
@@ -489,7 +494,7 @@ do
 					if type(optionTable) == "table" then
 						for i = 0, 3 do
 							if optionTable[i] then
-								table.insert(modProfileDropdown, {
+								tinsert(modProfileDropdown, {
 									text	= (i == 0 and charname .. " (" .. ALL.. ")") or charname .. " (" .. SPECIALIZATION .. i .. "-" .. (charTable["talent" .. i] or "") .. ")",
 									value	= charname .. "|" .. tostring(i)
 								})
@@ -573,7 +578,7 @@ do
 
 		local singleline = 0
 		local doubleline = 0
-		local area = panel:CreateArea()
+		local area = panel:CreateArea(nil, 0)
 		area.frame:SetPoint("TOPLEFT", 10, modProfileArea and -180 or -25)
 		area.onshowcall = {}
 
@@ -1389,7 +1394,7 @@ do
 						bottom2value2:SetPoint("TOPLEFT", bottom2text2, "TOPLEFT", 80, 0)
 						bottom2value3:SetPoint("TOPLEFT", bottom2text3, "TOPLEFT", 80, 0)
 						-- Set header text.
-						top1header:SetText(PLAYER_DIFFICULTY3 )-- Raid Finder
+						top1header:SetText(PLAYER_DIFFICULTY3) -- Raid Finder
 						top2header:SetText(PLAYER_DIFFICULTY1) -- Normal
 						bottom1header:SetText(PLAYER_DIFFICULTY2) -- Heroic
 						bottom1header:SetFontObject(GameFontHighlightSmall)

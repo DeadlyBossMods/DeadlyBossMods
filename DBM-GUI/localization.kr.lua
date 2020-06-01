@@ -308,7 +308,6 @@ L.DisableSFX				= "보스 전투중 소리 채널 (효과음) 끄기"
 L.DisableCinematics			= "게임 내 영상 끄기"
 L.OnlyFight					= "전투중일 때 한번만 재생"
 L.AfterFirst				= "인스턴스 던전에 있을 때 한번만 재생"
-L.Always					= "항상 끄기"
 L.CombatOnly				= "전투중 차단 (모든 전투)"
 L.RaidCombat				= "전투중 차단 (보스만)"
 
