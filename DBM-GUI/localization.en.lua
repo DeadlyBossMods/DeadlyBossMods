@@ -77,6 +77,8 @@ L.ModelSoundLong			= TOAST_DURATION_LONG
 
 L.ResizeOptions			 	= "Resize Options"
 L.Button_ResetWindowSize	= "Reset GUI window size"
+L.Editbox_WindowWidth		= "GUI window width"
+L.Editbox_WindowHeight		= "GUI window height"
 
 -- Tab: Raidwarning
 L.Tab_RaidWarning 			= "Raid Warnings"

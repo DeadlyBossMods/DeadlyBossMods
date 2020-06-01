@@ -153,9 +153,7 @@ function PanelPrototype:CreateEditBox(text, value, width, height)
 	textbox:SetScript("OnTabPressed", function(self)
 		self:ClearFocus()
 	end)
-	if type(value) == "string" then
-		textbox:SetText(value)
-	end
+	textbox:SetText(value)
 	self:SetLastObj(textbox)
 	local textboxLeft = textbox:CreateTexture("$parentLeft", "BACKGROUND")
 	textboxLeft:SetTexture(130959) -- "Interface\ChatFrame\UI-ChatInputBorder-Left"
