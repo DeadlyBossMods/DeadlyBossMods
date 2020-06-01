@@ -98,6 +98,10 @@ function DBM_GUI_OptionsFrame:DisplayFrame(frame, forceChange)
 	if select("#", frame:GetChildren()) == 0 then
 		return
 	end
+	if forceChange then
+		self:OnResize(frame)
+	end
+
 	local frameHeight = frame.initheight or 20
 	for _, child in pairs({ frame:GetChildren() }) do
 		if child.mytype == "area" and child.myheight then
