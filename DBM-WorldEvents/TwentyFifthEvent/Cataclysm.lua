@@ -94,7 +94,7 @@ function mod:LivingMeteorTarget(targetname)
 	end
 end
 
-function mod:OnCombatStart(delay)
+function mod:OnCombatStart()
 	table.wipe(seenAdds)
 	self.vb.seedsActive = false
 	self.vb.meteorSpawned = 0
@@ -230,7 +230,7 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
-function mod:UNIT_AURA(uId)
+function mod:UNIT_AURA()
 	if DBM:UnitDebuff("player", meteorTarget) and not meteorWarned then--Warn you that you have a meteor
 		specWarnFixate:Show()
 		specWarnFixate:Play("justrun")
@@ -249,7 +249,7 @@ local function clearSeedsActive(self)
 	self.vb.seedsActive = false
 end
 
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
+function mod:UNIT_SPELLCAST_SUCCEEDED(_, _, spellId)
 	if spellId == 98333 then -- The true molten seeds cast.
 		self.vb.seedsActive = true
 		specWarnMoltenSeed:Show()

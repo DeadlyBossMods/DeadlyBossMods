@@ -28,7 +28,7 @@ local timerSurgingRushCD			= mod:NewCDTimer(13, 264101, nil, nil, nil, 3)
 local timerChokingBrineCD			= mod:NewCDTimer(13, 264560, nil, nil, nil, 5, nil, DBM_CORE_L.HEALER_ICON..DBM_CORE_L.MAGIC_ICON)
 local timerUndertowCD				= mod:NewCDTimer(13, 264144, nil, nil, nil, 3, nil, DBM_CORE_L.DEADLY_ICON)
 
-function mod:UndertowTarget(targetname, uId)
+function mod:UndertowTarget(targetname)
 	if not targetname then return end
 	if self:AntiSpam(4, targetname) then--Antispam to lock out redundant later warning from firing if this one succeeds
 		if targetname == UnitName("player") then

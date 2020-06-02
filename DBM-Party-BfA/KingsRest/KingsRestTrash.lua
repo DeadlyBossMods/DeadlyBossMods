@@ -55,7 +55,7 @@ local yellFixate					= mod:NewYell(269936, nil, false)
 local specWarnHiddenBlade			= mod:NewSpecialWarningMoveAway(270865, nil, nil, nil, 1, 2)
 local specWarnHealingTideTotem		= mod:NewSpecialWarningSwitch(143474, "-Healer", nil, nil, 1, 2)
 
-function mod:BarrageTarget(targetname, uId)
+function mod:BarrageTarget(targetname)
 	if not targetname then return end
 	if targetname == UnitName("player") and self:AntiSpam(4, 8) then
 		specWarnPoisonBarrage:Show()

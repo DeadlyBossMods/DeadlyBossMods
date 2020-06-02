@@ -20,7 +20,6 @@ mod:RegisterEventsInCombat(
 
 --TODO, work on Cds if adds long enough for more than 1 cast each wave
 local warnTaint						= mod:NewSpellAnnounce(273677, 2)
-local warnPlague					= mod:NewTargetAnnounce(269686, 2)
 local warnPulse						= mod:NewSpellAnnounce(268024, 3)
 local warnLifeForce					= mod:NewSpellAnnounce(274149, 1)
 

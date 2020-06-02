@@ -59,7 +59,7 @@ function mod:UNIT_DIED(args)
 end
 
 --Not in combat log what so ever
-function mod:UNIT_SPELLCAST_START(uId, _, spellId)
+function mod:UNIT_SPELLCAST_START(_, _, spellId)
 	if spellId == 257288 and self:AntiSpam(3, 1) then
 		specWarnHeavySlash:Show()
 		specWarnHeavySlash:Play("shockwave")
@@ -70,7 +70,7 @@ function mod:UNIT_SPELLCAST_START(uId, _, spellId)
 	end
 end
 
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
+function mod:UNIT_SPELLCAST_SUCCEEDED(_, _, spellId)
 	if spellId == 268752 then--Withdraw (boss Leaving)
 		self.vb.bossGone = true
 		warnWithdraw:Show()

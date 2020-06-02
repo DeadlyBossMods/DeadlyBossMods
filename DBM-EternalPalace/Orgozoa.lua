@@ -289,7 +289,7 @@ end
 
 --"<216.58 17:04:01> [UNIT_SPELLCAST_SUCCEEDED] Orgozoa(??) -Absorb Fluids- [[boss1:Cast-3-3198-2164-287-298689-0041D5E741:298689]]", -- [6915]
 --"<236.77 17:04:22> [UNIT_SPELLCAST_START] Orgozoa(??) - Massive Incubator - 45s [[boss1:Cast-3-3198-2164-287-298548-005955E755:298548]]", -- [7466]
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
+function mod:UNIT_SPELLCAST_SUCCEEDED(_, _, spellId)
 	if spellId == 298689 then--Absorb Fluids
 		self.vb.phase = 2
 		self.vb.addCount = 0

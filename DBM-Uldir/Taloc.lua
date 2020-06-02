@@ -69,7 +69,7 @@ mod.vb.cudgelCount = 0
 mod.vb.enlargedCount = 0
 mod.vb.phase = 1
 
-function mod:StaticTarget(targetname, uId)
+function mod:StaticTarget(targetname)
 	if not targetname then return end
 	if targetname == UnitName("player") then
 		specWarnSanguineStaticYou:Show()

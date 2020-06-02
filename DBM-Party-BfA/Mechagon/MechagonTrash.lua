@@ -85,14 +85,14 @@ local function shrunkYellRepeater(self)
 	self:Schedule(2, shrunkYellRepeater, self)
 end
 
-function mod:Scraptarget(targetname, uId)
+function mod:Scraptarget(targetname)
 	if not targetname then return end
 	if targetname == UnitName("player") and self:AntiSpam(4, 5) then
 		yellScrapCannon:Yell()
 	end
 end
 
-function mod:BORKtarget(targetname, uId)
+function mod:BORKtarget(targetname)
 	if not targetname then return end
 	if targetname == UnitName("player") and self:AntiSpam(4, 5) then
 		yellBORK:Yell()

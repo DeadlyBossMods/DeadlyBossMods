@@ -664,8 +664,8 @@ do
 		local sinTheta = sin(rotation)
 		local cosTheta = cos(rotation)
 		local closePlayer = 0
-		local closestRange = nil
-		local closetName = nil
+		local closestRange
+		local closetName
 		local filter = mainFrame.filter
 		local type = reverse and 2 or filter and 1 or 0
 		local onlySummary = mainFrame.onlySummary

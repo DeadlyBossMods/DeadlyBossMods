@@ -18,7 +18,7 @@ mod:AddBoolOption("NormalizeVolume", true, "misc")
 local setActive = false
 local function CheckEventActive()
 	local date = C_Calendar.GetDate()
-	local month, day, year = date.month, date.monthDay, date.year
+	local month, day = date.month, date.monthDay
 	if month == 9 then
 		if day >= 20 then
 			setActive = true

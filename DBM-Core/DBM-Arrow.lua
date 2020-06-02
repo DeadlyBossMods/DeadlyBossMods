@@ -178,7 +178,7 @@ end
 ----------------------
 
 --/run DBM.Arrow:ShowRunTo(50, 50, 1, nil, true, true, "Waypoint", custom local mapID)
-local function show(runAway, x, y, distance, time, legacy, dwayed, title, customAreaID)
+local function show(runAway, x, y, distance, time, legacy, _, title, customAreaID)
 	if DBM:HasMapRestrictions() then return end
 	local player
 	if type(x) == "string" then
@@ -245,7 +245,7 @@ function arrowFrame:IsShown()
 	return frame and frame:IsShown()
 end
 
-function arrowFrame:Hide(autoHide)
+function arrowFrame:Hide()
 	textframe:Hide()
 	frame:Hide()
 end

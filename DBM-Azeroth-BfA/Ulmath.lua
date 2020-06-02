@@ -28,6 +28,7 @@ local timerVoidDanceCD				= mod:NewCDTimer(21.4, 301840, nil, nil, nil, 3)
 --mod:AddRangeFrameOption(8, 261605)
 --mod:AddReadyCheckOption(37460, false)
 
+--[[
 function mod:OnCombatStart(delay, yellTriggered)
 	if yellTriggered then
 --		timerEndlessDoomCD:Start(1-delay)
@@ -35,6 +36,7 @@ function mod:OnCombatStart(delay, yellTriggered)
 --		timerVoidDanceCD:Start(1-delay)
 	end
 end
+--]]
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId

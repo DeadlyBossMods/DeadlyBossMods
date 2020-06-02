@@ -42,7 +42,7 @@ do
                 return frame.texture_index[texture]
             else
                 -- find unused icon:
-                for i,icon in ipairs(frame.icons) do
+                for _,icon in ipairs(frame.icons) do
                     if not icon:IsShown() then
                         return icon
                     end
@@ -57,7 +57,7 @@ do
         if not frame.icons or #frame.icons == 0 then return end
 
         local prev,total_width,first_icon
-        for i,icon in ipairs(frame.icons) do
+        for _,icon in ipairs(frame.icons) do
             if icon:IsShown() then
                 icon:ClearAllPoints()
 
@@ -139,7 +139,7 @@ do
     local function AuraFrame_RemoveAll(frame)
         if not frame.icons or not frame.texture_index then return end
 
-        for texture,icon in pairs(frame.texture_index) do
+        for texture,_ in pairs(frame.texture_index) do
             frame:RemoveAura(texture,true)
         end
         twipe(frame.texture_index)
@@ -203,7 +203,7 @@ local function Nameplate_UnitAdded(frame,unit)
     end
 
     if unit_tbl and #unit_tbl > 0 then
-        for k,aura_tbl in ipairs(unit_tbl) do
+        for _,aura_tbl in ipairs(unit_tbl) do
             frame.DBMAuraFrame:AddAura(aura_tbl)
         end
     end
@@ -211,7 +211,7 @@ end
 ----------------
 --  On Event  --
 ----------------
-DBMNameplateFrame:SetScript("OnEvent", function(self, event, ...)
+DBMNameplateFrame:SetScript("OnEvent", function(_, event, ...)
     if event == 'NAME_PLATE_UNIT_ADDED' then
         local unit = ...
         if not unit then return end

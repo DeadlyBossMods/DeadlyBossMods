@@ -339,7 +339,7 @@ function mod:UNIT_DIED(args)
 end
 --]]
 
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
+function mod:UNIT_SPELLCAST_SUCCEEDED(_, _, spellId)
 	if spellId == 308797 then--Scales of Wrathion
 		warnScales:Show()
 	elseif spellId == 312389 then--Create Assassins
