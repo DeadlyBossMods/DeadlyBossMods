@@ -112,7 +112,7 @@ mod.vb.bulwarkCrush = 0
 local incandescentStacks = {}
 local grosslyIncandescentTargets = {}
 local diamondTargets = {}
-local trackedGemBuff = nil
+local trackedGemBuff
 
 local updateInfoFrame
 do

@@ -55,7 +55,7 @@ local specWarnCannonBarrage			= mod:NewSpecialWarningDodge(257540, nil, nil, nil
 
 --mod:AddRangeFrameOption(5, 194966)
 
-function mod:OnCombatStart(delay)
+function mod:OnCombatStart()
 	if dungeonID == 2132 then--Redhook
 		--timerOntheHookCD:Start(1-delay)
 		--timerGoreCrashCD:Start(1-delay)
@@ -139,7 +139,7 @@ function mod:UNIT_DIED(args)
 end
 --]]
 
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
+function mod:UNIT_SPELLCAST_SUCCEEDED(_, _, spellId)
 	if spellId == 257540 then--Cannon Barrage
 		specWarnCannonBarrage:Show()
 		specWarnCannonBarrage:Play("watchstep")

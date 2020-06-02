@@ -169,7 +169,7 @@ local graspActive = false
 local castsPerGUID = {}
 local rangeThreshold = 1
 local fixStupid = {}
-local CVAR1, CVAR2 = nil, nil
+local CVAR1, CVAR2
 
 --/run DBM:GetModByName("2343"):TimerTestFunction(30)
 --This will auto loop, just run it once and wait to see how keep timers behave.

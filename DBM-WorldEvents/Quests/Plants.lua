@@ -23,7 +23,7 @@ local specWarnWave				= mod:NewSpecialWarning("specWarnWave", nil, nil, nil, 2, 
 local wave = 0
 local addCount = 0
 
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
+function mod:UNIT_SPELLCAST_SUCCEEDED(_, _, spellId)
 	if spellId == 92816 then--Create Battery (Game Start)
 		wave = 0
 		addCount = 0

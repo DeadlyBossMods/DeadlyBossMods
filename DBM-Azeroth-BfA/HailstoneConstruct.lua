@@ -26,6 +26,7 @@ local timerFreezingTempestCD		= mod:NewCDTimer(65.5, 274895, nil, nil, nil, 2, n
 --mod:AddReadyCheckOption(37460, false)
 local spikeName = DBM:GetSpellInfo(274896)
 
+--[[
 function mod:OnCombatStart(delay, yellTriggered)
 	if yellTriggered then
 		--timerPermafrostSpikeCD:Start(1-delay)
@@ -33,6 +34,7 @@ function mod:OnCombatStart(delay, yellTriggered)
 		--timerFreezingTempestCD:Start(1-delay)
 	end
 end
+--]]
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId

@@ -42,9 +42,7 @@ local timerHomingMissileCD			= mod:NewCDTimer(22, 260811, nil, nil, nil, 3)
 --Stage Two: Drill
 local timerDrillSmashCD				= mod:NewCDTimer(8.4, 271456, nil, nil, nil, 3)--8.4--9.9
 
-local bigRedRocket = DBM:GetSpellInfo(270282)
-
-function mod:DrillTarget(targetname, uId)
+function mod:DrillTarget(targetname)
 	if not targetname then return end
 	if self:AntiSpam(4, targetname) then--Antispam to lock out redundant later warning from firing if this one succeeds
 		if targetname == UnitName("player") then

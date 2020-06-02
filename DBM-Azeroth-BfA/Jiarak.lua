@@ -23,12 +23,13 @@ local timerStormWingCD				= mod:NewCDTimer(46.2, 260908, nil, nil, nil, 2)
 local timerHurricaneCrashCD			= mod:NewCDTimer(46.2, 261088, nil, nil, nil, 2, nil, DBM_CORE_L.DEADLY_ICON)
 local timerMatriarchCallCD			= mod:NewCDTimer(46.2, 261467, nil, nil, nil, 1, nil, DBM_CORE_L.DAMAGE_ICON)
 
-
+--[[
 function mod:OnCombatStart(delay, yellTriggered)
 	if yellTriggered then
 
 	end
 end
+--]]
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId

@@ -294,7 +294,7 @@ end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 --]]
 
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
+function mod:UNIT_SPELLCAST_SUCCEEDED(_, _, spellId)
 	--Has success event, but only if a maw-of-drestagath is up, this script runs regardless
 	if spellId == 310351 then--Mutterings of Insanity
 		self.vb.mutteringIcon = 2
@@ -304,7 +304,7 @@ end
 
 do
 	local lastPower = 0
-	function mod:UNIT_POWER_UPDATE(uId)
+	function mod:UNIT_POWER_UPDATE()
 		local bossPower = UnitPower("boss1") --Get Boss Power
 		if (lastPower > bossPower) and bossPower < 85 then
 			warnedSoon = false

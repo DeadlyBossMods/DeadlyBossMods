@@ -45,7 +45,7 @@ mod.vb.MetalCast = 0
 
 local SmokeBombName = DBM:GetSpellInfo(298573)
 
-function mod:MegaTazeTarget(targetname, uId)
+function mod:MegaTazeTarget(targetname)
 	if not targetname then return end
 	if self:AntiSpam(4, targetname) then--Antispam to lock out redundant later warning from firing if this one succeeds
 		if targetname == UnitName("player") then

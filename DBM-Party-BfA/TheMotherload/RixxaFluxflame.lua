@@ -35,7 +35,7 @@ local timerChemBurnCD				= mod:NewCDTimer(13, 259853, nil, nil, 2, 5, nil, DBM_C
 mod.vb.chemBurnCast = 0
 mod.vb.azeriteCataCast = 0
 
-function mod:BlastTarget(targetname, uId)
+function mod:BlastTarget(targetname)
 	if not targetname then return end
 	if targetname == UnitName("player") then
 		specWarnPoropellantBlast:Show()
@@ -91,7 +91,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
+function mod:UNIT_SPELLCAST_SUCCEEDED(_, _, spellId)
 	if spellId == 270028 then
 		self.vb.azeriteCataCast = self.vb.azeriteCataCast + 1
 		warnAxeriteCatalyst:Show()

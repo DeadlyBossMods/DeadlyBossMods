@@ -135,7 +135,7 @@ do
 			autoMarkBlocked = false
 			return
 		end--None left, abort scans
-		local lowestUnitID = nil
+		local lowestUnitID
 		local lowestHealth = 100
 		local found = false
 		for i = 1, 40 do

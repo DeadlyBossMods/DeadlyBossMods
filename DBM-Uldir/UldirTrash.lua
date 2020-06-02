@@ -24,7 +24,7 @@ local specWarnCrushingDarkness			= mod:NewSpecialWarningRun(277548, "Tank", nil,
 local specWarnBloodShield				= mod:NewSpecialWarningInterrupt(276540, "HasInterrupt", nil, nil, 1, 2)
 local specWarnMindFlay					= mod:NewSpecialWarningInterrupt(277358, "HasInterrupt", nil, nil, 1, 2)
 
-function mod:GazeTarget(targetname, uId)
+function mod:GazeTarget(targetname)
 	if not targetname then return end
 	if self:AntiSpam(5, targetname) then
 		if targetname == UnitName("player") then

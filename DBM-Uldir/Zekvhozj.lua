@@ -91,7 +91,7 @@ mod.vb.roilingCount = 0
 mod.vb.corruptorsPactCount = 0
 mod.vb.casterAddsRemaining = 0
 
-function mod:EyeBeamTarget(targetname, uId)
+function mod:EyeBeamTarget(targetname)
 	if not targetname then return end
 	if targetname == UnitName("player") and self:AntiSpam(5, 5) then
 		specWarnEyeBeam:Show(self.vb.eyeCount)
@@ -105,7 +105,7 @@ function mod:EyeBeamTarget(targetname, uId)
 	end
 end
 
-function mod:RollingTarget(targetname, uId)
+function mod:RollingTarget(targetname)
 	if not targetname then return end
 	if targetname == UnitName("player") and self:AntiSpam(5, 6) then
 		specWarnRoilingDeceit:Show(DBM_CORE_L.ROOM_EDGE)

@@ -40,7 +40,7 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
+function mod:UNIT_SPELLCAST_SUCCEEDED(_, _, spellId)
 	if spellId == 257861 then--Crashing Tide
 		specWarnCrashingTide:Show()
 		specWarnCrashingTide:Play("shockwave")

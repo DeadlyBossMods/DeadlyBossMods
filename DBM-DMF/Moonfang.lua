@@ -27,7 +27,7 @@ local timerLeapCD			= mod:NewCDTimer(12, 144546, nil, nil, nil, 3)
 local timerMoonfangsTearCD	= mod:NewNextTimer(23, 144702, nil, nil, nil, 2)
 
 
-function mod:LeapTarget(targetname, uId)
+function mod:LeapTarget(targetname)
 	if not targetname then return end
 	warnLeap:Show(targetname)
 	if targetname == UnitName("player") then

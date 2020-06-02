@@ -63,7 +63,7 @@ mod:AddSetIconOption("SetIconOnNoLit", 263246, true, true, {8})
 
 mod.vb.noLitShield = nil
 
-function mod:CycloneTarget(targetname, uId)
+function mod:CycloneTarget(targetname)
 	if not targetname then return end
 	if targetname == UnitName("player") then
 		specWarnCycloneStrike:Show()
@@ -215,7 +215,7 @@ function mod:UNIT_DIED(args)
 	end
 end
 
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
+function mod:UNIT_SPELLCAST_SUCCEEDED(_, _, spellId)
 	if spellId == 263776 then--Gale Force
 		specWarnGaleForce:Show()
 		specWarnGaleForce:Play("specialsoon")
