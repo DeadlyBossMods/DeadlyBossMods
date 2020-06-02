@@ -1,3 +1,6 @@
+local setmetatable, type, ipairs, tinsert = setmetatable, type, ipairs, table.insert
+local DBM, DBM_GUI = DBM, DBM_GUI
+
 local ListFrameButtonsPrototype = {}
 
 function ListFrameButtonsPrototype:CreateCategory(frame, parent)
@@ -13,7 +16,7 @@ function ListFrameButtonsPrototype:CreateCategory(frame, parent)
 	end
 	frame.depth = parent and self:GetDepth(parent) or 1
 	self:SetParentHasChilds(parent)
-	table.insert(self.Buttons, {
+	tinsert(self.Buttons, {
 		frame	= frame,
 		parent	= parent
 	})
@@ -58,7 +61,7 @@ function ListFrameButtonsPrototype:GetVisibleTabs()
 	local tabs = {}
 	for _, v in ipairs(self.Buttons) do
 		if v.parent == nil then
-			table.insert(tabs, v)
+			tinsert(tabs, v)
 			if v.frame.showSub then
 				self:GetVisibleSubTabs(v.frame.name, tabs)
 			end
@@ -70,7 +73,7 @@ end
 function ListFrameButtonsPrototype:GetVisibleSubTabs(parent, tabs)
 	for _, v in ipairs(self.Buttons) do
 		if v.parent == parent then
-			table.insert(tabs, v)
+			tinsert(tabs, v)
 			if v.frame.showSub then
 				self:GetVisibleSubTabs(v.frame.name, tabs)
 			end

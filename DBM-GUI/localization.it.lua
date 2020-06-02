@@ -306,7 +306,6 @@ L.DisableSFX				= "Disabilita canale effetti sonori durante i boss"
 L.DisableCinematics			= "Nascondi cinematiche in gioco"
 L.OnlyFight					= "Solo durante i combattimenti, dopo aver visto il filmato almeno una volta"
 L.AfterFirst				= "Nelle istanze, dopo aver visto il filmato almeno una volta"
-L.Always					= "Sempre"
 L.CombatOnly				= "Disabilita in combattimento (qualunque)"
 L.RaidCombat				= "Disabilita in combattimento (solo boss)"
 

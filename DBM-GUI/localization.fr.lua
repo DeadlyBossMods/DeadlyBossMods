@@ -240,7 +240,6 @@ L.HideTooltips				= "Masquer le cadre d'information pendant les combats contre u
 L.DisableSFX				= "Désactive le canal des effets sonores pendant les boss" --was missing
 L.DisableCinematics			= "Désactiver les cinématiques en jeu"
 L.AfterFirst				= "Après que la cinématique ait été jouée une fois"
-L.Always					= "Toujours"
 
 L.Panel_ExtraFeatures		= "Fonctionnalités supplémentaires"
 --

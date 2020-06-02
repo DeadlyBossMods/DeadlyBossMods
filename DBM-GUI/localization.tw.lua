@@ -310,7 +310,6 @@ L.DisableSFX				= "首領戰鬥時禁用音效頻道"
 L.DisableCinematics			= "禁用遊戲中的過場動畫"
 L.OnlyFight					= "只有戰鬥中，每次動畫播放一次之後"
 L.AfterFirst				= "在副本中，每次動畫播放一次之後"
-L.Always					= ALWAYS
 L.CombatOnly				= "在任何戰鬥中停用"
 L.RaidCombat				= "只在首領戰鬥中停用"
 

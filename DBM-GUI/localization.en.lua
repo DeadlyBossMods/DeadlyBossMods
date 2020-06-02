@@ -77,6 +77,8 @@ L.ModelSoundLong			= TOAST_DURATION_LONG
 
 L.ResizeOptions			 	= "Resize Options"
 L.Button_ResetWindowSize	= "Reset GUI window size"
+L.Editbox_WindowWidth		= "GUI window width"
+L.Editbox_WindowHeight		= "GUI window height"
 
 -- Tab: Raidwarning
 L.Tab_RaidWarning 			= "Raid Warnings"
@@ -295,8 +297,8 @@ L.Area_SpecFilter			= "Role Filter Options"
 L.FilterTankSpec			= "Filter warnings designated for Tank role when not tank spec. (Note: Disabling this is not recommended for most users as 'taunt' warnings are now all on by default.)"
 L.FilterInterruptsHeader	= "Filter warnings for interruptable spells based on behavior preference."
 L.FilterInterrupts			= "If caster is not current target/focus (Always)."
-L.FilterInterrupts2			= "if caster is not current target/focus (Always) or interrupt on CD (Boss Only)"
-L.FilterInterrupts3			= "if caster is not current target/focus (Always) or interrupt on CD (Boss & Trash)"
+L.FilterInterrupts2			= "If caster is not current target/focus (Always) or interrupt on CD (Boss Only)"
+L.FilterInterrupts3			= "If caster is not current target/focus (Always) or interrupt on CD (Boss & Trash)"
 L.FilterInterrupts4			= "Always filter interrupt warnings (you don't want to see them period)"
 L.FilterInterruptNoteName	= "Filter warnings for interruptable spells (with count) if warning does not contain your name in the custom note"
 L.FilterDispels				= "Filter warnings for dispelable spells if your dispel is on cooldown"
@@ -322,7 +324,6 @@ L.DisableSFX				= "Disable sound effects channel during boss fights"
 L.DisableCinematics			= "Hide in-game cinematics"
 L.OnlyFight					= "Only during fight, after each movie has played once"
 L.AfterFirst				= "In instance, after each movie has played once"
-L.Always					= ALWAYS
 L.CombatOnly				= "Disable in combat (any)"
 L.RaidCombat				= "Disable in combat (bosses only)"
 

@@ -182,6 +182,8 @@ L.UPDATEREMINDER_MAJORPATCH		= "警告: 你的DBM已經過期，DBM已被禁用�
 L.UPDATEREMINDER_TESTVERSION		= "警告: 你使用的DBM版本和遊戲版本不相容。請到deadlybossmods.com或是curse下載符合你遊戲版本的DBM。"
 L.VEM							= "警告: 你同時使用DBM和VEM。DBM將停用而無法執行。"
 L.OUTDATEDPROFILES					= "警告: DBM-Profiles不相容此版本DBM。請移除避免衝突。"
+L.OUTDATEDSPELLTIMERS				= "警告：DBM-SpellTimers breaks " .. L.DBM .. ". DBM-SpellTimers已經不再支援並且必須移除" .. L.DBM .. "才能正常運作。"
+L.OUTDATEDRLT						= "警告：DBM-RaidLeadTools breaks " .. L.DBM .. ". DBM-RaidLeadTools已經不再支援並且必須移除" .. L.DBM .. "才能正常運作。"
 L.VICTORYSOUND				= "警告：DBM-VictorySound不相容此版本DBM。請移除避免衝突。"
 L.DPMCORE						= "警告: Deadly PvP 模組已經停止更新而且不相容此版本的DBM。請先移除以避免衝突。"
 L.DBMLDB						= "警告: DBM-LDB已內建在DBM-核心。雖然它不會造成任何傷害，但建議從addons資料夾中刪除“DBM-LDB”"
@@ -301,6 +303,7 @@ L.RESTORE_LOS		= "恢復/保持視角"
 L.SAFE						= "安全"
 L.NOTSAFE				= "不安全"
 L.SHIELD					= "護盾"
+L.PILLAR							= "柱子"
 L.INCOMING						= "%s 來了"
 --Common Locals end
 
