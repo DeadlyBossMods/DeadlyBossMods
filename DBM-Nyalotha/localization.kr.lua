@@ -102,7 +102,8 @@ L:SetOptionLocalization({
 	Five				= "5인 로테이션 ",--Default
 	Six					= "6인 로테이션 ",
 	NoReset				= "로테이션 없음 ",
-	ArrowOnGlare		= "$spell:317874을 피할 방향을 좌우 화살표로 표시"
+	ArrowOnGlare		= "$spell:317874을 피할 방향을 좌우 화살표로 표시",
+	HideDead			= "신화 이외 난이도에서 죽은 공대원은 정보 창에서 제외"
 })
 
 L:SetMiscLocalization({

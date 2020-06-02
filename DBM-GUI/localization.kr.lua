@@ -64,8 +64,10 @@ L.ModelSoundOptions			= "모델 뷰어에서 사용할 효과음 설정"
 L.ModelSoundShort			= "짧은 효과음"
 L.ModelSoundLong			= "긴 효과음"
 
-L.ResizeOptions			 	= "창 크기 설정"
-L.Button_ResetWindowSize	= "GUI 창 크기 초기화"
+L.ResizeOptions			 	= "설정 창 크기 설정"
+L.Button_ResetWindowSize	= "설정 창 크기 초기화"
+L.Editbox_WindowWidth		= "설정 창 너비"
+L.Editbox_WindowHeight		= "설정 창 높이"
 
 -- Tab: Raidwarning
 L.Tab_RaidWarning 			= "공격대 경보"
