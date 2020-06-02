@@ -45,7 +45,7 @@ local interruptOptions = {
 local interruptDropDown		= spamSpecArea:CreateDropdown(L.FilterInterruptsHeader, interruptOptions, "DBM", "FilterInterrupt2", function(value)
 	DBM.Options.FilterInterrupt2 = value
 end, 410)
-interruptDropDown:SetPoint("TOPLEFT", FilterInterruptNote, "TOPLEFT", 0, -45)
+interruptDropDown:SetPoint("TOPLEFT", _G[FilterInterruptNote:GetName() .. "Text"], "BOTTOMLEFT", -26, -5)
 interruptDropDown.myheight = 50
 
 local spamPTArea = spamPanel:CreateArea(L.Area_PullTimer)
