@@ -133,9 +133,6 @@ function DBM_GUI_OptionsFrame:DisplayFrame(frame)
 	end
 	frameHeight = 20
 	for _, child in pairs({ frame:GetChildren() }) do
-		if child.mytype == "panel" then
-			print("PANEL")
-		end
 		if child.mytype == "area" then
 			if not child.isStats then
 				local neededHeight, lastObject = 25, nil
@@ -168,7 +165,6 @@ function DBM_GUI_OptionsFrame:DisplayFrame(frame)
 			end
 			frameHeight = frameHeight + child:GetHeight() + 20
 		elseif child.myheight then
-			print(child.myheight)
 			frameHeight = frameHeight + child.myheight
 		end
 	end
