@@ -157,7 +157,7 @@ resizeHeight:SetScript("OnEnterPressed", function(self)
 	DBM_GUI_OptionsFrame:SetSize(DBM.Options.GUIWidth, DBM.Options.GUIHeight)
 end)
 
-DBM_GUI_OptionsFrame:HookScript("OnSizeChanged", function(self)
+DBM_GUI_OptionsFrame:HookScript("OnSizeChanged", function()
 	resizeWidth:SetText(math.floor(DBM.Options.GUIWidth * 10 ^ 2 + 0.5) / 10 ^ 2)
 	resizeHeight:SetText(math.floor(DBM.Options.GUIHeight * 10 ^ 2 + 0.5) / 10 ^ 2)
 end)
