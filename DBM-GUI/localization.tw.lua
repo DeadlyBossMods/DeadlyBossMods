@@ -55,16 +55,21 @@ L.UseDialogChannel			= "對話聲道"
 L.UseSFXChannel				= "音效聲道"
 L.Latency_Text				= "設定最高延遲同步門檻:%d"
 
+L.Button_RangeFrame			= "顯示/隱藏距離監視器"
+L.Button_InfoFrame			= "顯示/隱藏訊息監視器"
+L.Button_TestBars			= "測試計時條"
+L.Button_ResetInfoRange		= "重置訊息/距離監視器"
+
 L.ModelOptions				= "3D模型預覽選項"
 L.EnableModels				= "在首領選項中啟用3D模型預覽"
 L.ModelSoundOptions			= "為模型預覽設置聲音"
 L.ModelSoundShort			= SHORT
 L.ModelSoundLong			= TOAST_DURATION_LONG
 
-L.Button_RangeFrame			= "顯示/隱藏距離監視器"
-L.Button_InfoFrame			= "顯示/隱藏訊息監視器"
-L.Button_TestBars			= "測試計時條"
-L.Button_ResetInfoRange		= "重置訊息/距離監視器"
+L.ResizeOptions			 	= "尺寸調整選項"
+L.Button_ResetWindowSize	= "重設GUI視窗大小"
+L.Editbox_WindowWidth		= "GUI視窗寬度"
+L.Editbox_WindowHeight		= "GUI視窗高度"
 
 -- Tab: Raidwarning
 L.Tab_RaidWarning 			= "團隊警告"
