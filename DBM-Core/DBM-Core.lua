@@ -430,7 +430,7 @@ local playerRealm = GetRealmName()
 local connectedServers = GetAutoCompleteRealms()
 local LastInstanceMapID = -1
 local LastGroupSize = 0
-local LastInstanceType = nil
+local LastInstanceType
 local queuedBattlefield = {}
 local watchFrameRestore = false
 local bossHealth = {}
@@ -1616,7 +1616,7 @@ do
 	local popCachedTable, pushCachedTable
 	local numChachedTables = 0
 	do
-		local tableCache = nil
+		local tableCache
 
 		-- gets a table from the stack, it will then be recycled.
 		function popCachedTable()
@@ -7978,7 +7978,7 @@ end
 
 do
 	local bossCache = {}
-	local lastTank = nil
+	local lastTank
 
 	function bossModPrototype:GetCurrentTank(cidOrGuid)
 		if lastTank and GetTime() - (bossCache[cidOrGuid] or 0) < 2 then -- return last tank within 2 seconds of call
@@ -10255,9 +10255,9 @@ end
 do
 	local timerPrototype = {}
 	local mt = {__index = timerPrototype}
-	local countvoice1, countvoice2, countvoice3 = nil, nil, nil
+	local countvoice1, countvoice2, countvoice3
 	local countvoice1max, countvoice2max, countvoice3max = 5, 5, 5
-	local countpath1, countpath2, countpath3 = nil, nil, nil
+	local countpath1, countpath2, countpath3
 
 	--Merged countdown object for timers with build-in countdown
 	function DBM:BuildVoiceCountdownCache()
