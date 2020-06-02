@@ -271,11 +271,6 @@ do
 			return DBM:AddMsg("CreateCheckButton: error: expected string, received number. You probably called mod:NewTimer(optionId) with a spell id." .. name)
 		end
 		local button = CreateFrame("CheckButton", "DBM_GUI_Option_" .. self:GetNewID(), self.frame, "OptionsBaseCheckButtonTemplate")
-		local SetPoint = button.SetPoint
-		button.SetPoint = function(...)
-			button.customPoint = true
-			SetPoint(...)
-		end
 		button:SetHitRectInsets(0, 0, 0, 0)
 		button.myheight = 25
 		button.mytype = "checkbutton"
@@ -287,6 +282,11 @@ do
 			else
 				button:SetPoint("TOPLEFT", 10, -12)
 			end
+		end
+		local SetPoint = button.SetPoint
+		button.SetPoint = function(...)
+			button.customPoint = true
+			SetPoint(...)
 		end
 		local noteSpellName = name
 		if name:find("%$spell:ej") then -- It is journal link :-)
