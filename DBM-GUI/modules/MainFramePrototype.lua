@@ -86,6 +86,9 @@ function DBM_GUI_OptionsFrame:OnResize(frame)
 					local buttonText = _G[child2:GetName() .. "Text"]
 					buttonText:SetWidth(child:GetWidth() - 57 - buttonText.widthPad)
 					buttonText:SetText(buttonText.text)
+					if buttonText:GetJustifyH() == "LEFT" then
+						child2.myheight = mmax(buttonText:GetContentHeight() + 12, 25)
+					end
 					lastObject = child2
 				end
 			end
@@ -100,7 +103,6 @@ function DBM_GUI_OptionsFrame:DisplayFrame(frame, forceChange)
 	if forceChange then
 		self:OnResize(frame)
 	end
-
 	local frameHeight = frame.initheight or 20
 	for _, child in pairs({ frame:GetChildren() }) do
 		if child.mytype == "area" and child.myheight then
