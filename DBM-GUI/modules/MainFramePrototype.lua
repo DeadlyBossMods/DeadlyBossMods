@@ -67,54 +67,25 @@ function DBM_GUI_OptionsFrame:ClearSelection()
 	end
 end
 
-function DBM_GUI_OptionsFrame:OnResize(frame)
+function DBM_GUI_OptionsFrame:DisplayFrame(frame)
 	if select("#", frame:GetChildren()) == 0 then
 		return
-	end
-	for _, child in pairs({ frame:GetChildren() }) do
-		if child.mytype == "area" then
-			local lastObject
-			for _, child2 in pairs({ child:GetChildren() }) do
-				if child2.mytype == "checkbutton" then
-					if lastObject and not lastObject.customPoint then
-						if lastObject.myheight then
-							child2:SetPointOld("TOPLEFT", lastObject, "TOPLEFT", 0, -lastObject.myheight)
-						else
-							child2:SetPointOld("TOPLEFT", 10, -12)
-						end
-					end
-					local buttonText = _G[child2:GetName() .. "Text"]
-					buttonText:SetWidth(child:GetWidth() - 57 - buttonText.widthPad)
-					buttonText:SetText(buttonText.text)
-					if buttonText:GetJustifyH() == "LEFT" then
-						child2.myheight = mmax(buttonText:GetContentHeight() + 12, 25)
-					end
-					lastObject = child2
-				end
-			end
-		end
-	end
-end
-
-function DBM_GUI_OptionsFrame:DisplayFrame(frame, forceChange)
-	if select("#", frame:GetChildren()) == 0 then
-		return
-	end
-	if forceChange then
-		self:OnResize(frame)
 	end
 	local frameHeight = frame.initheight or 20
 	for _, child in pairs({ frame:GetChildren() }) do
-		if child.mytype == "area" and child.myheight then
-			frameHeight = frameHeight + child.myheight
-		elseif child.mytype == "area" then
-			frameHeight = frameHeight + child:GetHeight() + 20
+		if child.mytype == "area" then
+			local neededHeight = 25
+			for _, child2 in pairs({ child:GetChildren() }) do
+				neededHeight = neededHeight + (child2.myheight or child2:GetHeight())
+			end
+			child:SetHeight(neededHeight)
+			frameHeight = frameHeight + neededHeight + 20
 		elseif child.myheight then
 			frameHeight = frameHeight + child.myheight
 		end
 	end
 	local container = _G[self:GetName() .. "PanelContainer"]
-	local changed = forceChange or container.displayedFrame ~= frame
+	local changed = container.displayedFrame ~= frame
 	if container.displayedFrame then
 		container.displayedFrame:Hide()
 	end
@@ -152,6 +123,44 @@ function DBM_GUI_OptionsFrame:DisplayFrame(frame, forceChange)
 				child:SetPoint("TOPRIGHT", DBM_GUI_OptionsFramePanelContainerFOV, "TOPRIGHT", -5, 0)
 			end
 		end
+	end
+	frameHeight = frame.initheight or 20
+	for _, child in pairs({ frame:GetChildren() }) do
+		if child.mytype == "area" then
+			local neededHeight, lastObject = 25, nil
+			for _, child2 in pairs({ child:GetRegions() }) do
+				if child2.mytype == "textblock" then
+					if child2.autowidth then
+						child2:SetWidth(child:GetWidth())
+					end
+					neededHeight = neededHeight + (child2.myheight or child2:GetStringHeight())
+				end
+			end
+			for _, child2 in pairs({ child:GetChildren() }) do
+				if child2.mytype == "checkbutton" then
+					local buttonText = _G[child2:GetName() .. "Text"]
+					buttonText:SetWidth(child:GetWidth() - buttonText.widthPad)
+					buttonText:SetText(buttonText.text)
+					if not child2.customPoint then
+						if lastObject and lastObject.myheight then
+							child2:SetPointOld("TOPLEFT", lastObject, "TOPLEFT", 0, -lastObject.myheight)
+						else
+							child2:SetPointOld("TOPLEFT", 10, -12)
+						end
+						child2.myheight = mmax(buttonText:GetContentHeight() + 12, 25)
+					end
+				end
+				lastObject = child2
+				neededHeight = neededHeight + (child2.myheight or child2:GetHeight())
+			end
+			child:SetHeight(neededHeight)
+			frameHeight = frameHeight + neededHeight + 20
+		elseif child.myheight then
+			frameHeight = frameHeight + child.myheight
+		end
+	end
+	if scrollBar:IsShown() then
+		scrollBar:SetMinMaxValues(0, frameHeight - container:GetHeight())
 	end
 	if DBM.Options.EnableModels then
 		if not DBM_BossPreview then

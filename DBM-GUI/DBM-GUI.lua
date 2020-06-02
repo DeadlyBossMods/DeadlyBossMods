@@ -211,7 +211,6 @@ function DBM_GUI:CreateBossModPanel(mod)
 			scannedCategories[catident] = true
 			local catpanel = panel:CreateArea(mod.localization.cats[catident])
 			local catbutton, lastButton, addSpacer
-			local hasDropdowns = 0
 			for _, v in ipairs(category) do
 				if v == DBM_OPTION_SPACER then
 					addSpacer = true
@@ -276,7 +275,6 @@ function DBM_GUI:CreateBossModPanel(mod)
 							end
 						end, nil, 32)
 						if not addSpacer then
-							hasDropdowns = hasDropdowns + 7
 							catbutton:SetPoint("TOPLEFT", lastButton, "BOTTOMLEFT", 0, -10)
 						end
 					end
@@ -286,7 +284,6 @@ function DBM_GUI:CreateBossModPanel(mod)
 					end
 				end
 			end
-			catpanel:AutoSetDimension(hasDropdowns)
 		end
 	end
 end
@@ -482,7 +479,7 @@ do
 		local modProfileArea
 		if not subtab then
 			local modProfileDropdown = {}
-			modProfileArea = panel:CreateArea(L.Area_ModProfile, 135)
+			modProfileArea = panel:CreateArea(L.Area_ModProfile)
 			modProfileArea.frame:SetPoint("TOPLEFT", 10, -25)
 			local resetButton = modProfileArea:CreateButton(L.ModAllReset, 200, 20)
 			resetButton:SetPoint("TOPLEFT", 10, -14)
@@ -578,7 +575,7 @@ do
 
 		local singleline = 0
 		local doubleline = 0
-		local area = panel:CreateArea(nil, 0)
+		local area = panel:CreateArea()
 		area.frame:SetPoint("TOPLEFT", 10, modProfileArea and -180 or -25)
 		area.onshowcall = {}
 
@@ -1414,7 +1411,7 @@ do
 				v()
 			end
 		end)
-		DBM_GUI_OptionsFrame:DisplayFrame(panel.frame, true)
+		DBM_GUI_OptionsFrame:DisplayFrame(panel.frame)
 	end
 
 	local Categories = {}
