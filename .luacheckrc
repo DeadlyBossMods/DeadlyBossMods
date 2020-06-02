@@ -7,7 +7,7 @@ exclude_files = {
 ignore = {
 	"11./SLASH_.*", -- Setting an undefined (Slash handler) global variable
 	"11./BINDING_.*", -- Setting an undefined (Keybinding header) global variable
-	"11./DBM_.*", -- Setting an undefined (DBM) global variable
+--	"11./DBM_.*", -- Setting an undefined (DBM) global variable
 	"113/LE_.*", -- Accessing an undefined (Lua ENUM type) global variable
 	"113/NUM_LE_.*", -- Accessing an undefined (Lua ENUM type) global variable
 	"113/DBM_.*", -- Accessing an undefined (DBM) global variable
@@ -37,7 +37,11 @@ globals = {
 	"Plater",
 
 	-- DBM
+	"DBM_AllSavedOptions",
+	"DBM_BossPreview",
+	"DBM_CharSavedRevision",
 	"DBM_CORE_L",
+	"DBM_DISABLE_ZONE_DETECTION",
 	"DBM_GUI_Bosses",
 	"DBM_GUI_Frame",
 	"DBM_GUI_Options",
@@ -46,6 +50,10 @@ globals = {
 	"DBM_GUI_OptionsFramePanelContainer",
 	"DBM_GUI_L",
 	"DBM_GUI",
+	"DBM_MinimapIcon",
+	"DBM_UsedProfile",
+	"DBM_UseDualProfile",
+	"DBM_OPTION_SPACER",
 	"DBM",
 	"DBMHudMap",
 	"DBMInfoFrame",

@@ -18,7 +18,7 @@ local warnRings		= mod:NewCountAnnounce(170823, 1, nil, false)--Spammy, so off b
 local timerGame		= mod:NewBuffActiveTimer(10, 170820, nil, nil, nil, 5, nil, nil, nil, 1, 5)
 
 local function checkBuff()
-	wingsName = DBM:GetSpellInfo(170820)
+	local wingsName = DBM:GetSpellInfo(170820)
 	local name, _, _, _, _, expires, _, _, _, spellId = DBM:UnitBuff("player", wingsName)
 	if name and spellId == 170820 then
 		local time = expires-GetTime()
