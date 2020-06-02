@@ -71,7 +71,7 @@ function DBM_GUI_OptionsFrame:DisplayFrame(frame)
 	if select("#", frame:GetChildren()) == 0 then
 		return
 	end
-	local frameHeight = frame.initheight or 20
+	local frameHeight = 20
 	for _, child in pairs({ frame:GetChildren() }) do
 		if child.mytype == "area" then
 			if not child.isStats then
@@ -131,8 +131,11 @@ function DBM_GUI_OptionsFrame:DisplayFrame(frame)
 			end
 		end
 	end
-	frameHeight = frame.initheight or 20
+	frameHeight = 20
 	for _, child in pairs({ frame:GetChildren() }) do
+		if child.mytype == "panel" then
+			print("PANEL")
+		end
 		if child.mytype == "area" then
 			if not child.isStats then
 				local neededHeight, lastObject = 25, nil
@@ -157,14 +160,15 @@ function DBM_GUI_OptionsFrame:DisplayFrame(frame)
 							end
 							child2.myheight = mmax(buttonText:GetContentHeight() + 12, 25)
 						end
+						lastObject = child2
 					end
-					lastObject = child2
 					neededHeight = neededHeight + (child2.myheight or child2:GetHeight())
 				end
 				child:SetHeight(neededHeight)
 			end
 			frameHeight = frameHeight + child:GetHeight() + 20
 		elseif child.myheight then
+			print(child.myheight)
 			frameHeight = frameHeight + child.myheight
 		end
 	end

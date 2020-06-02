@@ -267,6 +267,14 @@ do
 		button:SetHitRectInsets(0, 0, 0, 0)
 		button.myheight = 25
 		button.mytype = "checkbutton"
+		if autoplace then
+			local x = self:GetLastObj()
+			if x.myheight then
+				button:SetPoint("TOPLEFT", x, "TOPLEFT", 0, -x.myheight)
+			else
+				button:SetPoint("TOPLEFT", 10, -12)
+			end
+		end
 		button.SetPointOld = button.SetPoint
 		button.SetPoint = function(...)
 			button.customPoint = true
@@ -338,6 +346,8 @@ do
 					textPad = 2
 				end
 			end
+			frame.myheight = 0
+			frame2.myheight = 0
 		end
 		local buttonText
 		if name then -- Switch all checkbutton frame to SimpleHTML frame (auto wrap)
@@ -397,8 +407,18 @@ do
 		end
 		buttonText.text = name or CL.UNKNOWN
 		buttonText.widthPad = frame and frame:GetWidth() + frame2:GetWidth() or 0
-		buttonText:SetJustifyH("LEFT")
-		buttonText:SetPoint("TOPLEFT", frame2 or frame or button, "TOPRIGHT", textPad or 0, -4)
+		buttonText:SetWidth(self.frame:GetWidth() - buttonText.widthPad)
+		if textLeft then
+			buttonText:ClearAllPoints()
+			buttonText:SetPoint("RIGHT", frame2 or frame or button, "LEFT")
+			buttonText:SetJustifyH("RIGHT")
+		else
+			buttonText:SetJustifyH("LEFT")
+			buttonText:SetPoint("TOPLEFT", frame2 or frame or button, "TOPRIGHT", textPad or 0, -4)
+			button.myheight = mmax(buttonText:GetContentHeight() + 12, button.myheight)
+		end
+		buttonText:SetText(buttonText.text)
+		button.myheight = mmax(buttonText:GetContentHeight() + 12, 25)
 		if dbmvar and DBM.Options[dbmvar] ~= nil then
 			button:SetScript("OnShow", function(self)
 				button:SetChecked(DBM.Options[dbmvar])

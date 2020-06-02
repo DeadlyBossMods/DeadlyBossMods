@@ -166,7 +166,6 @@ function DBM_GUI:CreateBossModPanel(mod)
 		return false
 	end
 	local panel = mod.panel
-	panel.initheight = 35
 	local category
 
 	local iconstat = panel.frame:CreateFontString("DBM_GUI_Mod_Icons" .. mod.localization.general.name, "ARTWORK")
@@ -193,6 +192,7 @@ function DBM_GUI:CreateBossModPanel(mod)
 	end
 
 	local reset = panel:CreateButton(L.Mod_Reset, 155, 30, nil, GameFontNormalSmall)
+	reset.myheight = 40
 	reset:SetPoint("TOPRIGHT", panel.frame, "TOPRIGHT", -24, -4)
 	reset:SetScript("OnClick", function(self)
 		DBM:LoadModDefaultOption(mod)
