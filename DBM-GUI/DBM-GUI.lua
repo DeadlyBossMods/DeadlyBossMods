@@ -503,6 +503,7 @@ do
 			end
 
 			local resetStatButton = modProfileArea:CreateButton(L.ModAllStatReset, 200, 20)
+			resetStatButton.myheight = 0
 			resetStatButton:SetPoint("LEFT", resetButton, "RIGHT", 40, 0)
 			resetStatButton:SetScript("OnClick", function()
 				DBM:ClearAllStats(addon.modId)
@@ -525,6 +526,7 @@ do
 				DBM:CopyAllModTypeOption(addon.modId, name, tonumber(profile), "SWSound")
 				C_Timer.After(0.10, DBM_GUI.dbm_modProfilePanel_refresh)
 			end, 100)
+			copyModSoundProfile.myheight = 0
 			copyModSoundProfile:SetPoint("LEFT", copyModProfile, "RIGHT", 27, 0)
 			copyModSoundProfile:SetScript("OnShow", function()
 				copyModSoundProfile.value = nil
@@ -537,6 +539,7 @@ do
 				DBM:CopyAllModTypeOption(addon.modId, name, tonumber(profile), "SWNote")
 				C_Timer.After(0.10, DBM_GUI.dbm_modProfilePanel_refresh)
 			end, 100)
+			copyModNoteProfile.myheight = 0
 			copyModNoteProfile:SetPoint("LEFT", copyModSoundProfile, "RIGHT", 27, 0)
 			copyModNoteProfile:SetScript("OnShow", function()
 				copyModNoteProfile.value = nil
@@ -549,7 +552,7 @@ do
 				DBM:DeleteAllModOption(addon.modId, name, tonumber(profile))
 				C_Timer.After(0.05, DBM_GUI.dbm_modProfilePanel_refresh)
 			end, 100)
-
+			deleteModProfile.myheight = 60
 			deleteModProfile:SetPoint("TOPLEFT", copyModSoundProfile, "BOTTOMLEFT", 0, -10)
 			deleteModProfile:SetScript("OnShow", function()
 				deleteModProfile.value = nil
@@ -576,6 +579,7 @@ do
 		local singleline = 0
 		local doubleline = 0
 		local area = panel:CreateArea()
+		area.frame.isStats = true
 		area.frame:SetPoint("TOPLEFT", 10, modProfileArea and -180 or -25)
 		area.onshowcall = {}
 

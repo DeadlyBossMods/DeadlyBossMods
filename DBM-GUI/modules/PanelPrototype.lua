@@ -35,9 +35,10 @@ function PanelPrototype:CreateCreatureModelFrame(width, height, creatureid)
 	return model
 end
 
-function PanelPrototype:CreateText(text, width, autoplaced, style, justify)
+function PanelPrototype:CreateText(text, width, autoplaced, style, justify, myheight)
 	local textblock = self.frame:CreateFontString("DBM_GUI_Option_" .. self:GetNewID(), "ARTWORK")
 	textblock.mytype = "textblock"
+	textblock.myheight = myheight
 	textblock:SetFontObject(style or GameFontNormal)
 	textblock:SetText(text)
 	textblock:SetJustifyH(justify or "CENTER")

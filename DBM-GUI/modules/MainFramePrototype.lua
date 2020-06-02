@@ -74,12 +74,19 @@ function DBM_GUI_OptionsFrame:DisplayFrame(frame)
 	local frameHeight = frame.initheight or 20
 	for _, child in pairs({ frame:GetChildren() }) do
 		if child.mytype == "area" then
-			local neededHeight = 25
-			for _, child2 in pairs({ child:GetChildren() }) do
-				neededHeight = neededHeight + (child2.myheight or child2:GetHeight())
+			if not child.isStats then
+				local neededHeight = 25
+				for _, child2 in pairs({ child:GetRegions() }) do
+					if child2.mytype == "textblock" then
+						neededHeight = neededHeight + (child2.myheight or child2:GetStringHeight())
+					end
+				end
+				for _, child2 in pairs({ child:GetChildren() }) do
+					neededHeight = neededHeight + (child2.myheight or child2:GetHeight())
+				end
+				child:SetHeight(neededHeight)
 			end
-			child:SetHeight(neededHeight)
-			frameHeight = frameHeight + neededHeight + 20
+			frameHeight = frameHeight + child:GetHeight() + 20
 		elseif child.myheight then
 			frameHeight = frameHeight + child.myheight
 		end
@@ -127,34 +134,36 @@ function DBM_GUI_OptionsFrame:DisplayFrame(frame)
 	frameHeight = frame.initheight or 20
 	for _, child in pairs({ frame:GetChildren() }) do
 		if child.mytype == "area" then
-			local neededHeight, lastObject = 25, nil
-			for _, child2 in pairs({ child:GetRegions() }) do
-				if child2.mytype == "textblock" then
-					if child2.autowidth then
-						child2:SetWidth(child:GetWidth())
-					end
-					neededHeight = neededHeight + (child2.myheight or child2:GetStringHeight())
-				end
-			end
-			for _, child2 in pairs({ child:GetChildren() }) do
-				if child2.mytype == "checkbutton" then
-					local buttonText = _G[child2:GetName() .. "Text"]
-					buttonText:SetWidth(child:GetWidth() - buttonText.widthPad)
-					buttonText:SetText(buttonText.text)
-					if not child2.customPoint then
-						if lastObject and lastObject.myheight then
-							child2:SetPointOld("TOPLEFT", lastObject, "TOPLEFT", 0, -lastObject.myheight)
-						else
-							child2:SetPointOld("TOPLEFT", 10, -12)
+			if not child.isStats then
+				local neededHeight, lastObject = 25, nil
+				for _, child2 in pairs({ child:GetRegions() }) do
+					if child2.mytype == "textblock" then
+						if child2.autowidth then
+							child2:SetWidth(child:GetWidth())
 						end
-						child2.myheight = mmax(buttonText:GetContentHeight() + 12, 25)
+						neededHeight = neededHeight + (child2.myheight or child2:GetStringHeight())
 					end
 				end
-				lastObject = child2
-				neededHeight = neededHeight + (child2.myheight or child2:GetHeight())
+				for _, child2 in pairs({ child:GetChildren() }) do
+					if child2.mytype == "checkbutton" then
+						local buttonText = _G[child2:GetName() .. "Text"]
+						buttonText:SetWidth(child:GetWidth() - buttonText.widthPad)
+						buttonText:SetText(buttonText.text)
+						if not child2.customPoint then
+							if lastObject and lastObject.myheight then
+								child2:SetPointOld("TOPLEFT", lastObject, "TOPLEFT", 0, -lastObject.myheight)
+							else
+								child2:SetPointOld("TOPLEFT", 10, -12)
+							end
+							child2.myheight = mmax(buttonText:GetContentHeight() + 12, 25)
+						end
+					end
+					lastObject = child2
+					neededHeight = neededHeight + (child2.myheight or child2:GetHeight())
+				end
+				child:SetHeight(neededHeight)
 			end
-			child:SetHeight(neededHeight)
-			frameHeight = frameHeight + neededHeight + 20
+			frameHeight = frameHeight + child:GetHeight() + 20
 		elseif child.myheight then
 			frameHeight = frameHeight + child.myheight
 		end
