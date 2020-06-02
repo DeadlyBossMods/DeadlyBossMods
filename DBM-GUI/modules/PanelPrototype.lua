@@ -283,10 +283,10 @@ do
 				button:SetPoint("TOPLEFT", 10, -12)
 			end
 		end
-		local SetPoint = button.SetPoint
+		button.SetPointOld = button.SetPoint
 		button.SetPoint = function(...)
 			button.customPoint = true
-			SetPoint(...)
+			button.SetPointOld(...)
 		end
 		local noteSpellName = name
 		if name:find("%$spell:ej") then -- It is journal link :-)
