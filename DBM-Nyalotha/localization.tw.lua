@@ -1,4 +1,4 @@
---2020/02/04
+--2020/06/02
 --三皈依-暗影之月
 
 if GetLocale() ~= "zhTW" then return end
@@ -23,6 +23,14 @@ local L
 --  Dark Inquisitor Xanesh --
 ---------------------------
 L= DBM:GetModLocalization(2377)
+
+L:SetOptionLocalization({
+	InterruptBehavior	= "設置小怪的打斷方式（團長的設置將覆蓋全團）",
+	Four				= "4人輪流 ",
+	Five				= "5人輪流 ",--Default
+	Six					= "6人輪流 ",
+	NoReset				= "無盡增長 "
+})
 
 L:SetMiscLocalization({
 	ObeliskSpawn	= "出現吧，暗影方尖碑！"--Only as backup, in case the NPC target check stops working
@@ -97,7 +105,8 @@ L:SetOptionLocalization({
 	Five				= "5人輪流 ",--Default
 	Six					= "6人輪流 ",
 	NoReset				= "無盡增長 ",
-	ArrowOnGlare		= "為 $spell:317874 顯示左/右方向箭頭"
+	ArrowOnGlare		= "為 $spell:317874 顯示左/右方向箭頭",
+	HideDead			= "在非傳奇難度隱藏資訊框架中死亡的玩家"
 })
 
 L:SetMiscLocalization({
