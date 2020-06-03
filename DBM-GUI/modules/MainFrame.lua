@@ -25,6 +25,7 @@ frame:SetUserPlaced(true)
 frame:RegisterForDrag("LeftButton")
 frame:SetFrameLevel(frame:GetFrameLevel() + 4)
 frame:SetMinResize(800, 600)
+frame:SetMaxResize(UIParent:GetWidth(), UIParent:GetHeight())
 frame:Hide()
 frame.backdropInfo = {
 	bgFile		= "Interface\\DialogFrame\\UI-DialogBox-Background", -- 131071
