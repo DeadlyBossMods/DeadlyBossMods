@@ -159,6 +159,14 @@ function DBM_GUI_OptionsFrame:DisplayFrame(frame)
 							buttonText:SetHeight(child2.myheight)
 						end
 						lastObject = child2
+					elseif child2.mytype == "line" then
+						child2:SetWidth(child:GetWidth() - 20)
+						if lastObject and lastObject.myheight then
+							child2:ClearAllPoints()
+							child2:SetPoint("TOPLEFT", lastObject, "TOPLEFT", 0, -lastObject.myheight)
+							_G[child2:GetName() .. "BG"]:SetWidth(child:GetWidth() - _G[child2:GetName() .. "Text"]:GetWidth() - 25)
+						end
+						lastObject = child2
 					end
 					neededHeight = neededHeight + (child2.myheight or child2:GetHeight())
 				end

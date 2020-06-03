@@ -182,7 +182,7 @@ function PanelPrototype:CreateLine(text)
 	linetext:SetHeight(18)
 	linetext:SetTextColor(0.67, 0.83, 0.48)
 	linetext:SetText(text or "")
-	local linebg = line:CreateTexture()
+	local linebg = line:CreateTexture("$parentBG")
 	linebg:SetTexture(137056) -- "Interface\\Tooltips\\UI-Tooltip-Background"
 	linebg:SetSize(self.frame:GetWidth() - linetext:GetWidth() - 25, 2)
 	linebg:SetPoint("RIGHT", line, "RIGHT", 0, 0)
@@ -190,9 +190,6 @@ function PanelPrototype:CreateLine(text)
 	if x.mytype == "checkbutton" or x.mytype == "line" then
 		line:ClearAllPoints()
 		line:SetPoint("TOPLEFT", x, "TOPLEFT", 0, -x.myheight)
-	else
-		line:ClearAllPoints()
-		line:SetPoint("TOPLEFT", 10, -12)
 	end
 	self:SetLastObj(line)
 	return line
