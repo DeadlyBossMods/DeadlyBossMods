@@ -15,7 +15,7 @@ end
 if DBM.Options.GUIWidth then
 	frame:SetSize(DBM.Options.GUIWidth, DBM.Options.GUIHeight)
 else
-	frame:SetSize(800, 600)
+	frame:SetSize(800, 400)
 end
 frame:EnableMouse(true)
 frame:SetMovable(true)
@@ -94,7 +94,7 @@ frameHeaderText:SetText(L.MainFrame)
 local frameRevision = frame:CreateFontString("$parentRevision", "ARTWORK", "GameFontDisableSmall")
 frameRevision:SetPoint("BOTTOMLEFT", frame, "BOTTOMLEFT", 20, 18)
 if DBM.NewerVersion then
-	frameRevision:SetText(CL.DEADLY_BOSS_MODS.. " " .. DBM.DisplayVersion.. " (" .. DBM:ShowRealDate(DBM.Revision) .. "). |cffff0000Version " .. DBM.NewerVersion.. " is available.|r")
+	frameRevision:SetText(CL.DEADLY_BOSS_MODS.. " " .. DBM.DisplayVersion.. " (" .. DBM:ShowRealDate(DBM.Revision) .. "). |cffff0000Version " .. DBM.NewerVersion .. " is available.|r")
 else
 	frameRevision:SetText(CL.DEADLY_BOSS_MODS.. " " .. DBM.DisplayVersion.. " (" .. DBM:ShowRealDate(DBM.Revision) .. ")")
 end
@@ -104,16 +104,6 @@ frameTranslation:SetPoint("LEFT", frameRevision, "RIGHT", 20, 0)
 if L.TranslationBy then
 	frameTranslation:SetText(L.TranslationByPrefix .. L.TranslationBy)
 end
-
-local frameWebsite = frame:CreateFontString("$parentWebsite", "ARTWORK", "GameFontNormal")
-frameWebsite:SetPoint("BOTTOMLEFT", frameRevision, "TOPLEFT", 0, 15)
-frameWebsite:SetText(L.Website)
-
-local frameWebsiteButtonA = CreateFrame("Frame", nil, frame)
-frameWebsiteButtonA:SetAllPoints(frameWebsite)
-frameWebsiteButtonA:SetScript("OnMouseUp", function()
-	DBM:ShowUpdateReminder(nil, nil, CL.COPY_URL_DIALOG, "https://discord.gg/deadlybossmods")
-end)
 
 local frameOkay = CreateFrame("Button", "$parentOkay", frame, "UIPanelButtonTemplate")
 frameOkay:SetSize(96, 22)
@@ -129,6 +119,17 @@ frameOkay:SetScript("OnClick", function()
 		StopMusic()
 		DBM.Options.musicPlaying = nil
 	end
+end)
+
+local frameWebsite = frame:CreateFontString("$parentWebsite", "ARTWORK", "GameFontNormal")
+frameWebsite:SetPoint("BOTTOMLEFT", frameRevision, "TOPLEFT", 0, 15)
+frameWebsite:SetPoint("RIGHT", frameOkay, "RIGHT")
+frameWebsite:SetText(L.Website)
+
+local frameWebsiteButtonA = CreateFrame("Frame", nil, frame)
+frameWebsiteButtonA:SetAllPoints(frameWebsite)
+frameWebsiteButtonA:SetScript("OnMouseUp", function()
+	DBM:ShowUpdateReminder(nil, nil, CL.COPY_URL_DIALOG, "https://discord.gg/deadlybossmods")
 end)
 
 local frameWebsiteButton = CreateFrame("Button", "$parentWebsiteButton", frame, "UIPanelButtonTemplate")
@@ -156,7 +157,7 @@ end
 local frameList = CreateFrame("Frame", "$parentList", frame, DBM:IsAlpha() and "BackdropTemplate,OptionsFrameListTemplate" or "OptionsFrameListTemplate")
 frameList:SetWidth(205)
 frameList:SetPoint("TOPLEFT", 22, -40)
-frameList:SetPoint("BOTTOMLEFT", frameWebsite, "BOTTOMLEFT", 0, 14)
+frameList:SetPoint("BOTTOMLEFT", frameWebsite, "TOPLEFT", 0, 5)
 frameList:SetScript("OnShow", function()
 	frame:UpdateMenuFrame()
 end)
