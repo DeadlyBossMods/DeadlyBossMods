@@ -140,6 +140,21 @@ function PanelPrototype:CreateEditBox(text, value, width, height)
 	textbox.mytype = "textbox"
 	textbox:SetSize(width or 100, height or 20)
 	textbox:SetAutoFocus(false)
+	textbox.backdropInfo = {
+		bgFile		= "Interface\\Tooltips\\UI-Tooltip-Background", -- 137056
+		edgeFile	= "Interface\\Tooltips\\UI-Tooltip-Border", -- 137057
+		tile		= true,
+		tileSize	= 16,
+		edgeSize	= 16,
+		insets		= { left = 3, right = 3, top = 5, bottom = 3 }
+	}
+	if not DBM:IsAlpha() then
+		textbox:SetBackdrop(textbox.backdropInfo)
+	else
+		textbox:ApplyBackdrop()
+	end
+	textbox:SetBackdropColor(0.1, 0.1, 0.1, 0.6)
+	textbox:SetBackdropBorderColor(0.4, 0.4, 0.4)
 	textbox:SetScript("OnEscapePressed", function(self)
 		self:ClearFocus()
 	end)
@@ -147,26 +162,10 @@ function PanelPrototype:CreateEditBox(text, value, width, height)
 		self:ClearFocus()
 	end)
 	textbox:SetText(value)
-	self:SetLastObj(textbox)
-	local textboxLeft = textbox:CreateTexture("$parentLeft", "BACKGROUND")
-	textboxLeft:SetTexture(130959) -- "Interface\ChatFrame\UI-ChatInputBorder-Left"
-	textboxLeft:SetSize(32, 32)
-	textboxLeft:SetPoint("LEFT", -14, 0)
-	textboxLeft:SetTexCoord(0, 0.125, 0, 1)
-	local textboxRight = textbox:CreateTexture("$parentRight", "BACKGROUND")
-	textboxRight:SetTexture(130960) -- "Interface\ChatFrame\UI-ChatInputBorder-Right"
-	textboxRight:SetSize(32, 32)
-	textboxRight:SetPoint("RIGHT", 6, 0)
-	textboxRight:SetTexCoord(0.875, 1, 0, 1)
-	local textboxMiddle = textbox:CreateTexture("$parentMiddle", "BACKGROUND")
-	textboxMiddle:SetTexture(130960) -- "Interface\ChatFrame\UI-ChatInputBorder-Right"
-	textboxMiddle:SetSize(1, 32)
-	textboxMiddle:SetPoint("LEFT", textboxLeft, "RIGHT")
-	textboxMiddle:SetPoint("RIGHT", textboxRight, "LEFT")
-	textboxMiddle:SetTexCoord(0, 0.9375, 0, 1)
 	local textboxText = textbox:CreateFontString("$parentText", "BACKGROUND", "GameFontNormalSmall")
 	textboxText:SetPoint("TOPLEFT", textbox, "TOPLEFT", -4, 14)
 	textboxText:SetText(text)
+	self:SetLastObj(textbox)
 	return textbox
 end
 
