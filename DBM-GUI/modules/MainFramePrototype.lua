@@ -147,7 +147,7 @@ function DBM_GUI_OptionsFrame:DisplayFrame(frame)
 				for _, child2 in pairs({ child:GetChildren() }) do
 					if child2.mytype == "checkbutton" then
 						local buttonText = _G[child2:GetName() .. "Text"]
-						buttonText:SetWidth(child:GetWidth() - buttonText.widthPad - 40)
+						buttonText:SetWidth(child:GetWidth() - buttonText.widthPad - 57)
 						buttonText:SetText(buttonText.text)
 						if not child2.customPoint then
 							if lastObject and lastObject.myheight then
@@ -157,6 +157,14 @@ function DBM_GUI_OptionsFrame:DisplayFrame(frame)
 							end
 							child2.myheight = mmax(buttonText:GetContentHeight() + 12, 25)
 							buttonText:SetHeight(child2.myheight)
+						end
+						lastObject = child2
+					elseif child2.mytype == "line" then
+						child2:SetWidth(child:GetWidth() - 20)
+						if lastObject and lastObject.myheight then
+							child2:ClearAllPoints()
+							child2:SetPoint("TOPLEFT", lastObject, "TOPLEFT", 0, -lastObject.myheight)
+							_G[child2:GetName() .. "BG"]:SetWidth(child:GetWidth() - _G[child2:GetName() .. "Text"]:GetWidth() - 25)
 						end
 						lastObject = child2
 					end
