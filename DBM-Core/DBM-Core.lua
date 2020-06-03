@@ -1851,7 +1851,7 @@ do
 	function scheduleRepeat(time, spellId, func, mod, self, ...)
 		--Loops until debuff is gone
 		if DBM:UnitAura("player", spellId) then
-			func:(...)--Probably not going to work, this is going to need to get a lot more hacky
+			func(...)--Probably not going to work, this is going to need to get a lot more hacky
 			schedule(time or 2, scheduleRepeat, time, spellId, func, mod, self, ...)
 		end
 	end
