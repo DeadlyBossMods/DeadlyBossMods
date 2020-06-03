@@ -49,7 +49,7 @@ local timerWhirlingEdgeCD			= mod:NewNextTimer(32.8, 285020, nil, "Tank", nil, 5
 local timerVentJetsCD				= mod:NewCDTimer(43.8, 285388, nil, nil, nil, 2)
 local timerMaxThrustCD				= mod:NewCDTimer(45.8, 283565, nil, nil, nil, 3)
 
-function mod:ThrustTarget(targetname, uId)
+function mod:ThrustTarget(targetname)
 	if not targetname then return end
 	if targetname == UnitName("player") then
 		specWarnMaxThrust:Show()
@@ -125,7 +125,7 @@ function mod:UNIT_DIED(args)
 	end
 end
 
-function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
+function mod:CHAT_MSG_MONSTER_YELL(msg)
 	--"<745.04 00:25:22> [CHAT_MSG_MONSTER_YELL] Now this is a statistical anomaly! Our visitors are still alive!#Deuce Mecha-Buffer###Anshlun##0#0##0#2667#nil#0#false#false#false#false", -- [3780]
 	--"<769.56 00:25:47> [ENCOUNTER_START] 2257#Tussle Tonks#23#5", -- [3807]
 	if (msg == L.openingRP or msg:find(L.openingRP)) and self:LatencyCheck(1000) then
@@ -133,7 +133,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 	end
 end
 
-function mod:OnSync(msg, targetname)
+function mod:OnSync(msg)
 	if msg == "openingRP" and self:AntiSpam(10, 1) then
 		timerRP:Start(24.5)
 	end

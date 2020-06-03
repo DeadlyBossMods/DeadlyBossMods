@@ -161,7 +161,7 @@ local function debuffSwapAggregation(self, spellId)
 	end
 end
 
-local function debuffSwapAggregationTwo(self, spellId)
+local function debuffSwapAggregationTwo(_, spellId)
 	if spellId == 294711 then--Frost
 		yellMark:Yell(6, "")--Square
 	else--Toxic
@@ -275,7 +275,7 @@ end
 
 do
 	local frostJav, toxicJav = DBM:GetSpellInfo(295606), DBM:GetSpellInfo(295607)
-	function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, targetname)
+	function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, targetname)
 		if msg:find("spell:295607") then--Toxic Jav
 			if targetname and self:AntiSpam(5, targetname) then
 				if targetname == UnitName("player") then
@@ -311,7 +311,7 @@ function mod:UNIT_POWER_FREQUENT(uId, type)
 	end
 end
 
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
+function mod:UNIT_SPELLCAST_SUCCEEDED(_, _, spellId)
 	if spellId == 295346 and self:AntiSpam(5, 3) then
 		--"Overflow-295346-npc:151881 = pull:16.9, 34.4, 41.3, 39.7, 40.6, 47.3, 37.6", -- [3]
 		--"Overflow-295346-npc:151881 = pull:17.1, 38.9, 36.4, 40.1, 45.0, 35.3", -- [3]

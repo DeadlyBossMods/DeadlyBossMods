@@ -319,7 +319,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
-function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
+function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	if msg:find("spell:298050") then--Form Ranks (Repeat Performance is next)
 		specWarnFormRanks:Show(L.Circles)
 		specWarnFormRanks:Play("gathershare")

@@ -30,11 +30,12 @@ local timerAzurethosFuryCD			= mod:NewCDTimer(46.8, 274839, nil, nil, nil, 2)
 --mod:AddRangeFrameOption(5, 194966)
 --mod:AddReadyCheckOption(37460, false)
 
-function mod:GaleForce(targetname, uId)
+function mod:GaleForce(targetname)
 	if not targetname then return end
 	warnGaleForce:Show(targetname)
 end
 
+--[[
 function mod:OnCombatStart(delay, yellTriggered)
 	if yellTriggered then
 		--timerAzurethosFuryCD:Start(1-delay)
@@ -44,10 +45,11 @@ function mod:OnCombatStart(delay, yellTriggered)
 end
 
 function mod:OnCombatEnd()
---	if self.Options.RangeFrame then
---		DBM.RangeCheck:Hide()
---	end
+	if self.Options.RangeFrame then
+		DBM.RangeCheck:Hide()
+	end
 end
+]]--
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId

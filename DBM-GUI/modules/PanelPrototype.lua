@@ -18,21 +18,12 @@ function PanelPrototype:SetLastObj(obj)
 	self.lastobject = obj
 end
 
-function PanelPrototype:AutoSetDimension(additionalHeight)
-	if not self.frame.mytype == "area" then
-		return
-	end
-	local need_height = 25 + (additionalHeight or 0)
+function PanelPrototype:AutoSetDimension() -- TODO: Remove in 9.x
+	DBM:Debug(self.frame:GetName() .. " is calling a deprecated function AutoSetDimension")
+end
 
-	for _, child in pairs({ self.frame:GetChildren() }) do
-		if child.myheight and type(child.myheight) == "number" then
-			need_height = need_height + child.myheight
-		else
-			need_height = need_height + child:GetHeight()
-		end
-	end
-	self.frame.myheight = need_height + 20
-	self.frame:SetHeight(need_height)
+function PanelPrototype:SetMyOwnHeight() -- TODO: remove in 9.x
+	DBM:Debug(self.frame:GetName() .. " is calling a deprecated function SetMyOwnHeight")
 end
 
 function PanelPrototype:CreateCreatureModelFrame(width, height, creatureid)
@@ -44,12 +35,14 @@ function PanelPrototype:CreateCreatureModelFrame(width, height, creatureid)
 	return model
 end
 
-function PanelPrototype:CreateText(text, width, autoplaced, style, justify)
+function PanelPrototype:CreateText(text, width, autoplaced, style, justify, myheight)
 	local textblock = self.frame:CreateFontString("DBM_GUI_Option_" .. self:GetNewID(), "ARTWORK")
 	textblock.mytype = "textblock"
+	textblock.myheight = myheight
 	textblock:SetFontObject(style or GameFontNormal)
 	textblock:SetText(text)
 	textblock:SetJustifyH(justify or "CENTER")
+	textblock.autowidth = not width
 	textblock:SetWidth(width or self.frame:GetWidth())
 	if autoplaced then
 		textblock:SetPoint("TOPLEFT", self.frame, "TOPLEFT", 10, -10)
@@ -274,7 +267,6 @@ do
 		button:SetHitRectInsets(0, 0, 0, 0)
 		button.myheight = 25
 		button.mytype = "checkbutton"
-		button.autoplace = autoplace or false
 		if autoplace then
 			local x = self:GetLastObj()
 			if x.myheight then
@@ -286,6 +278,7 @@ do
 		button.SetPointOld = button.SetPoint
 		button.SetPoint = function(...)
 			button.customPoint = true
+			button.myheight = 0
 			button.SetPointOld(...)
 		end
 		local noteSpellName = name
@@ -345,7 +338,6 @@ do
 					frame2 = CreateFrame("Button", "DBM_GUI_Option_" .. self:GetNewID(), self.frame, "UIPanelButtonTemplate")
 					frame2:SetPoint("LEFT", frame, "RIGHT", 35, 0)
 					frame2:SetSize(25, 25)
-					frame2.myheight = 0 -- Tells SetAutoDims that this button needs no additional space
 					frame2:SetText("|TInterface/FriendsFrame/UI-FriendsFrame-Note.blp:14:0:2:-1|t")
 					frame2.mytype = "button"
 					frame2:SetScript("OnClick", function(self)
@@ -354,6 +346,8 @@ do
 					textPad = 2
 				end
 			end
+			frame.myheight = 0
+			frame2.myheight = 0
 		end
 		local buttonText
 		if name then -- Switch all checkbutton frame to SimpleHTML frame (auto wrap)
@@ -411,10 +405,9 @@ do
 			buttonText = button:CreateFontString("$parentText", "ARTWORK", "GameFontNormal")
 			buttonText:SetPoint("LEFT", button, "RIGHT", 0, 1)
 		end
-		buttonText:SetWidth(self.frame:GetWidth() - 57 - (frame and frame:GetWidth() + frame2:GetWidth() or 0))
 		buttonText.text = name or CL.UNKNOWN
 		buttonText.widthPad = frame and frame:GetWidth() + frame2:GetWidth() or 0
-		buttonText:SetText(buttonText.text)
+		buttonText:SetWidth(self.frame:GetWidth() - buttonText.widthPad)
 		if textLeft then
 			buttonText:ClearAllPoints()
 			buttonText:SetPoint("RIGHT", frame2 or frame or button, "LEFT")
@@ -424,6 +417,8 @@ do
 			buttonText:SetPoint("TOPLEFT", frame2 or frame or button, "TOPRIGHT", textPad or 0, -4)
 			button.myheight = mmax(buttonText:GetContentHeight() + 12, button.myheight)
 		end
+		buttonText:SetText(buttonText.text)
+		button.myheight = mmax(buttonText:GetContentHeight() + 12, 25)
 		if dbmvar and DBM.Options[dbmvar] ~= nil then
 			button:SetScript("OnShow", function(self)
 				button:SetChecked(DBM.Options[dbmvar])
@@ -453,13 +448,12 @@ do
 	end
 end
 
-function PanelPrototype:CreateArea(name, height)
+function PanelPrototype:CreateArea(name)
 	local area = CreateFrame("Frame", "DBM_GUI_Option_" .. self:GetNewID(), self.frame, DBM:IsAlpha() and "BackdropTemplate,OptionsBoxTemplate" or "OptionsBoxTemplate")
 	area.mytype = "area"
 	area:SetBackdropColor(0.15, 0.15, 0.15, 0.5)
 	area:SetBackdropBorderColor(0.4, 0.4, 0.4)
 	_G[area:GetName() .. "Title"]:SetText(name)
-	area:SetSize(self.frame:GetWidth() - 12, height or self.frame:GetHeight() - 10)
 	if select("#", self.frame:GetChildren()) == 1 then
 		area:SetPoint("TOPLEFT", self.frame, 5, -20)
 	else
@@ -512,7 +506,7 @@ do
 		panel.frameType = frameType
 		PanelPrototype:SetLastObj(panel)
 		self.panels = self.panels or {}
-		table.insert(self.panels, {
+		tinsert(self.panels, {
 			frame	= panel,
 			parent	= self
 		})

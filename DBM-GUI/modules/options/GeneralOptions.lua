@@ -1,5 +1,5 @@
 local L = DBM_GUI_L
-local generaloptions = DBM_GUI_Frame:CreateArea(L.General, 180)
+local generaloptions = DBM_GUI_Frame:CreateArea(L.General)
 
 local MiniMapIcon = generaloptions:CreateCheckButton(L.EnableMiniMapIcon, true)
 MiniMapIcon:SetScript("OnClick", function(self)
@@ -38,6 +38,7 @@ bmrange:SetScript("OnClick", function()
 end)
 
 local bminfo = generaloptions:CreateButton(L.Button_InfoFrame, 120, 30)
+bminfo.myheight = 0
 bminfo:SetPoint("LEFT", bmrange, "RIGHT", 2, 0)
 bminfo:SetScript("OnClick", function()
 	if DBM.InfoFrame:IsShown() then
@@ -48,6 +49,7 @@ bminfo:SetScript("OnClick", function()
 end)
 
 local bmtestmode = generaloptions:CreateButton(L.Button_TestBars, 150, 30)
+bmtestmode.myheight = 0
 bmtestmode:SetPoint("LEFT", bminfo, "RIGHT", 2, 0)
 bmtestmode:SetScript("OnClick", function()
 	DBM:DemoMode()
@@ -77,7 +79,7 @@ resetbutton:SetScript("OnClick", function()
 	DBM:RepositionFrames()
 end)
 
-local modelarea = DBM_GUI_Frame:CreateArea(L.ModelOptions, 90)
+local modelarea = DBM_GUI_Frame:CreateArea(L.ModelOptions)
 
 modelarea:CreateCheckButton(L.EnableModels, true, nil, "EnableModels")
 
@@ -98,6 +100,7 @@ local modelSounds = {
 local ModelSoundDropDown = modelarea:CreateDropdown(L.ModelSoundOptions, modelSounds, "DBM", "ModelSoundValue", function(value)
 	DBM.Options.ModelSoundValue = value
 end)
+ModelSoundDropDown.myheight = 40
 ModelSoundDropDown:SetPoint("TOPLEFT", modelarea.frame, "TOPLEFT", 0, -50)
 
 local resizeOptions = DBM_GUI_Frame:CreateArea(L.ResizeOptions)
@@ -136,6 +139,7 @@ resizeWidth:SetScript("OnEnterPressed", function(self)
 end)
 
 local resizeHeight = resizeOptions:CreateEditBox(L.Editbox_WindowHeight, math.floor(DBM.Options.GUIHeight * 10 ^ 2 + 0.5) / 10 ^ 2)
+resizeHeight.myheight = 0
 resizeHeight:SetPoint("LEFT", resizeWidth, "RIGHT", 40, 0)
 resizeHeight:SetScript("OnChar", function(self)
 	self:SetText(self:GetText():gsub("[^%.%d]", ""))
@@ -153,4 +157,7 @@ resizeHeight:SetScript("OnEnterPressed", function(self)
 	DBM_GUI_OptionsFrame:SetSize(DBM.Options.GUIWidth, DBM.Options.GUIHeight)
 end)
 
-resizeOptions:AutoSetDimension()
+DBM_GUI_OptionsFrame:HookScript("OnSizeChanged", function(self)
+	resizeWidth:SetText(math.floor(self:GetWidth() * 10 ^ 2 + 0.5) / 10 ^ 2)
+	resizeHeight:SetText(math.floor(self:GetHeight() * 10 ^ 2 + 0.5) / 10 ^ 2)
+end)

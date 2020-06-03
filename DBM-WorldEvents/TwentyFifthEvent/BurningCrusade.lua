@@ -37,7 +37,7 @@ mod:AddRangeFrameOption(10, 38280)
 mod.vb.phase = 0
 local seenAdds = {}
 
-function mod:OnCombatStart(delay)
+function mod:OnCombatStart()
 	table.wipe(seenAdds)
 	self.vb.phase = 0
 	self.vb.bossLeft = 4--Because we change it to 3 right away

@@ -100,7 +100,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
+function mod:UNIT_SPELLCAST_SUCCEEDED(_, _, spellId)
 	if spellId == 273271 then--Volatile Pods
 		specWarnVolatilePods:Show()
 		specWarnVolatilePods:Play("watchstep")

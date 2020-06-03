@@ -87,7 +87,7 @@ do
 		end
 		return lines, sortedLines
 	end
-	openInfoFrame = function(self, spellName)
+	openInfoFrame = function(_, spellName)
 		DBM.InfoFrame:SetHeader(spellName)
 		DBM.InfoFrame:Show(5, "function", updateInfoFrame, false, false)
 	end

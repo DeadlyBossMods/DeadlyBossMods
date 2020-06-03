@@ -16,7 +16,7 @@ end
 
 local BarSetupPanel = DBM_GUI_Frame:CreateNewPanel(L.BarSetup, "option")
 
-local BarColors = BarSetupPanel:CreateArea(L.AreaTitle_BarColors, 635)
+local BarColors = BarSetupPanel:CreateArea(L.AreaTitle_BarColors)
 local movemebutton = BarColors:CreateButton(L.MoveMe, 100, 16)
 movemebutton:SetPoint("TOPRIGHT", BarColors.frame, "TOPRIGHT", -2, -4)
 movemebutton:SetNormalFontObject(GameFontNormalSmall)
@@ -28,6 +28,8 @@ local color1Type1 = BarColors:CreateColorSelect(64)
 local color2Type1 = BarColors:CreateColorSelect(64)
 color1Type1:SetPoint("TOPLEFT", BarColors.frame, "TOPLEFT", 30, -65)
 color2Type1:SetPoint("TOPLEFT", color1Type1, "TOPRIGHT", 20, 0)
+color1Type1.myheight = 84
+color2Type1.myheight = 0
 
 local color1Type1reset = BarColors:CreateButton(L.Reset, 64, 10, nil, GameFontNormalSmall)
 local color2Type1reset = BarColors:CreateButton(L.Reset, 64, 10, nil, GameFontNormalSmall)
@@ -44,6 +46,8 @@ local color1Type1text = BarColors:CreateText(L.BarStartColorAdd, 80)
 local color2Type1text = BarColors:CreateText(L.BarEndColorAdd, 80)
 color1Type1text:SetPoint("BOTTOM", color1Type1, "TOP", 0, 4)
 color2Type1text:SetPoint("BOTTOM", color2Type1, "TOP", 0, 4)
+color1Type1text.myheight = 0
+color2Type1text.myheight = 0
 color1Type1:SetColorRGB(DBM.Bars:GetOption("StartColorAR"), DBM.Bars:GetOption("StartColorAG"), DBM.Bars:GetOption("StartColorAB"))
 color1Type1text:SetTextColor(DBM.Bars:GetOption("StartColorAR"), DBM.Bars:GetOption("StartColorAG"), DBM.Bars:GetOption("StartColorAB"))
 color2Type1:SetColorRGB(DBM.Bars:GetOption("EndColorAR"), DBM.Bars:GetOption("EndColorAG"), DBM.Bars:GetOption("EndColorAB"))
@@ -83,6 +87,8 @@ local color1Type2 = BarColors:CreateColorSelect(64)
 local color2Type2 = BarColors:CreateColorSelect(64)
 color1Type2:SetPoint("TOPLEFT", BarColors.frame, "TOPLEFT", 250, -65)
 color2Type2:SetPoint("TOPLEFT", color1Type2, "TOPRIGHT", 20, 0)
+color1Type2.myheight = 0
+color2Type2.myheight = 0
 
 local color1Type2reset = BarColors:CreateButton(L.Reset, 64, 10, nil, GameFontNormalSmall)
 local color2Type2reset = BarColors:CreateButton(L.Reset, 64, 10, nil, GameFontNormalSmall)
@@ -99,6 +105,8 @@ local color1Type2text = BarColors:CreateText(L.BarStartColorAOE, 80)
 local color2Type2text = BarColors:CreateText(L.BarEndColorAOE, 80)
 color1Type2text:SetPoint("BOTTOM", color1Type2, "TOP", 0, 4)
 color2Type2text:SetPoint("BOTTOM", color2Type2, "TOP", 0, 4)
+color1Type2text.myheight = 0
+color2Type2text.myheight = 0
 color1Type2:SetColorRGB(DBM.Bars:GetOption("StartColorAER"), DBM.Bars:GetOption("StartColorAEG"), DBM.Bars:GetOption("StartColorAEB"))
 color1Type2text:SetTextColor(DBM.Bars:GetOption("StartColorAER"), DBM.Bars:GetOption("StartColorAEG"), DBM.Bars:GetOption("StartColorAEB"))
 color2Type2:SetColorRGB(DBM.Bars:GetOption("EndColorAER"), DBM.Bars:GetOption("EndColorAEG"), DBM.Bars:GetOption("EndColorAEB"))
@@ -138,6 +146,8 @@ local color1Type3 = BarColors:CreateColorSelect(64)
 local color2Type3 = BarColors:CreateColorSelect(64)
 color1Type3:SetPoint("TOPLEFT", BarColors.frame, "TOPLEFT", 30, -220)
 color2Type3:SetPoint("TOPLEFT", color1Type3, "TOPRIGHT", 20, 0)
+color1Type3.myheight = 74
+color2Type3.myheight = 0
 
 local color1Type3reset = BarColors:CreateButton(L.Reset, 64, 10, nil, GameFontNormalSmall)
 local color2Type3reset = BarColors:CreateButton(L.Reset, 64, 10, nil, GameFontNormalSmall)
@@ -154,6 +164,8 @@ local color1Type3text = BarColors:CreateText(L.BarStartColorDebuff, 80)
 local color2Type3text = BarColors:CreateText(L.BarEndColorDebuff, 80)
 color1Type3text:SetPoint("BOTTOM", color1Type3, "TOP", 0, 4)
 color2Type3text:SetPoint("BOTTOM", color2Type3, "TOP", 0, 4)
+color1Type3text.myheight = 0
+color2Type3text.myheight = 0
 color1Type3:SetColorRGB(DBM.Bars:GetOption("StartColorDR"), DBM.Bars:GetOption("StartColorDG"), DBM.Bars:GetOption("StartColorDB"))
 color1Type3text:SetTextColor(DBM.Bars:GetOption("StartColorDR"), DBM.Bars:GetOption("StartColorDG"), DBM.Bars:GetOption("StartColorDB"))
 color2Type3:SetColorRGB(DBM.Bars:GetOption("EndColorDR"), DBM.Bars:GetOption("EndColorDG"), DBM.Bars:GetOption("EndColorDB"))
@@ -193,6 +205,8 @@ local color1Type4 = BarColors:CreateColorSelect(64)
 local color2Type4 = BarColors:CreateColorSelect(64)
 color1Type4:SetPoint("TOPLEFT", BarColors.frame, "TOPLEFT", 250, -220)
 color2Type4:SetPoint("TOPLEFT", color1Type4, "TOPRIGHT", 20, 0)
+color1Type4.myheight = 0
+color2Type4.myheight = 0
 
 local color1Type4reset = BarColors:CreateButton(L.Reset, 64, 10, nil, GameFontNormalSmall)
 local color2Type4reset = BarColors:CreateButton(L.Reset, 64, 10, nil, GameFontNormalSmall)
@@ -209,6 +223,8 @@ local color1Type4text = BarColors:CreateText(L.BarStartColorInterrupt, 80)
 local color2Type4text = BarColors:CreateText(L.BarEndColorInterrupt, 80)
 color1Type4text:SetPoint("BOTTOM", color1Type4, "TOP", 0, 4)
 color2Type4text:SetPoint("BOTTOM", color2Type4, "TOP", 0, 4)
+color1Type4text.myheight = 0
+color2Type4text.myheight = 0
 color1Type4:SetColorRGB(DBM.Bars:GetOption("StartColorIR"), DBM.Bars:GetOption("StartColorIG"), DBM.Bars:GetOption("StartColorIB"))
 color1Type4text:SetTextColor(DBM.Bars:GetOption("StartColorIR"), DBM.Bars:GetOption("StartColorIG"), DBM.Bars:GetOption("StartColorIB"))
 color2Type4:SetColorRGB(DBM.Bars:GetOption("EndColorIR"), DBM.Bars:GetOption("EndColorIG"), DBM.Bars:GetOption("EndColorIB"))
@@ -248,6 +264,8 @@ local color1Type5 = BarColors:CreateColorSelect(64)
 local color2Type5 = BarColors:CreateColorSelect(64)
 color1Type5:SetPoint("TOPLEFT", BarColors.frame, "TOPLEFT", 30, -375)
 color2Type5:SetPoint("TOPLEFT", color1Type5, "TOPRIGHT", 20, 0)
+color1Type5.myheight = 74
+color2Type5.myheight = 0
 
 local color1Type5reset = BarColors:CreateButton(L.Reset, 64, 10, nil, GameFontNormalSmall)
 local color2Type5reset = BarColors:CreateButton(L.Reset, 64, 10, nil, GameFontNormalSmall)
@@ -264,6 +282,8 @@ local color1Type5text = BarColors:CreateText(L.BarStartColorRole, 80)
 local color2Type5text = BarColors:CreateText(L.BarEndColorRole, 80)
 color1Type5text:SetPoint("BOTTOM", color1Type5, "TOP", 0, 4)
 color2Type5text:SetPoint("BOTTOM", color2Type5, "TOP", 0, 4)
+color1Type5text.myheight = 0
+color2Type5text.myheight = 0
 color1Type5:SetColorRGB(DBM.Bars:GetOption("StartColorRR"), DBM.Bars:GetOption("StartColorRG"), DBM.Bars:GetOption("StartColorRB"))
 color1Type5text:SetTextColor(DBM.Bars:GetOption("StartColorRR"), DBM.Bars:GetOption("StartColorRG"), DBM.Bars:GetOption("StartColorRB"))
 color2Type5:SetColorRGB(DBM.Bars:GetOption("EndColorRR"), DBM.Bars:GetOption("EndColorRG"), DBM.Bars:GetOption("EndColorRB"))
@@ -303,6 +323,8 @@ local color1Type6 = BarColors:CreateColorSelect(64)
 local color2Type6 = BarColors:CreateColorSelect(64)
 color1Type6:SetPoint("TOPLEFT", BarColors.frame, "TOPLEFT", 250, -375)
 color2Type6:SetPoint("TOPLEFT", color1Type6, "TOPRIGHT", 20, 0)
+color1Type6.myheight = 0
+color2Type6.myheight = 0
 
 local color1Type6reset = BarColors:CreateButton(L.Reset, 64, 10, nil, GameFontNormalSmall)
 local color2Type6reset = BarColors:CreateButton(L.Reset, 64, 10, nil, GameFontNormalSmall)
@@ -319,6 +341,8 @@ local color1Type6text = BarColors:CreateText(L.BarStartColorPhase, 80)
 local color2Type6text = BarColors:CreateText(L.BarEndColorPhase, 80)
 color1Type6text:SetPoint("BOTTOM", color1Type6, "TOP", 0, 4)
 color2Type6text:SetPoint("BOTTOM", color2Type6, "TOP", 0, 4)
+color1Type6text.myheight = 0
+color2Type6text.myheight = 0
 color1Type6:SetColorRGB(DBM.Bars:GetOption("StartColorPR"), DBM.Bars:GetOption("StartColorPG"), DBM.Bars:GetOption("StartColorPB"))
 color1Type6text:SetTextColor(DBM.Bars:GetOption("StartColorPR"), DBM.Bars:GetOption("StartColorPG"), DBM.Bars:GetOption("StartColorPB"))
 color2Type6:SetColorRGB(DBM.Bars:GetOption("EndColorPR"), DBM.Bars:GetOption("EndColorPG"), DBM.Bars:GetOption("EndColorPB"))
@@ -358,6 +382,8 @@ local color1Type7 = BarColors:CreateColorSelect(64)
 local color2Type7 = BarColors:CreateColorSelect(64)
 color1Type7:SetPoint("TOPLEFT", BarColors.frame, "TOPLEFT", 30, -530)
 color2Type7:SetPoint("TOPLEFT", color1Type7, "TOPRIGHT", 20, 0)
+color1Type7.myheight = 74
+color2Type7.myheight = 0
 
 local color1Type7reset = BarColors:CreateButton(L.Reset, 64, 10, nil, GameFontNormalSmall)
 local color2Type7reset = BarColors:CreateButton(L.Reset, 64, 10, nil, GameFontNormalSmall)
@@ -374,6 +400,8 @@ local color1Type7text = BarColors:CreateText(L.BarStartColorUI, 80)
 local color2Type7text = BarColors:CreateText(L.BarEndColorUI, 80)
 color1Type7text:SetPoint("BOTTOM", color1Type7, "TOP", 0, 4)
 color2Type7text:SetPoint("BOTTOM", color2Type7, "TOP", 0, 4)
+color1Type7text.myheight = 0
+color2Type7text.myheight = 0
 color1Type7:SetColorRGB(DBM.Bars:GetOption("StartColorUIR"), DBM.Bars:GetOption("StartColorUIG"), DBM.Bars:GetOption("StartColorUIB"))
 color1Type7text:SetTextColor(DBM.Bars:GetOption("StartColorUIR"), DBM.Bars:GetOption("StartColorUIG"), DBM.Bars:GetOption("StartColorUIB"))
 color2Type7:SetColorRGB(DBM.Bars:GetOption("EndColorUIR"), DBM.Bars:GetOption("EndColorUIG"), DBM.Bars:GetOption("EndColorUIB"))
@@ -412,6 +440,8 @@ dummybarcolor7:ApplyStyle()
 --Type 7 Extra Options
 local bar7OptionsText = BarColors:CreateText(L.Bar7Header, 405, nil, nil, "LEFT")
 bar7OptionsText:SetPoint("TOPLEFT", color2Type7text, "TOPLEFT", 150, 0)
+bar7OptionsText.myheight = 0
+
 local forceLarge = BarColors:CreateCheckButton(L.Bar7ForceLarge, false, nil, nil, "Bar7ForceLarge")
 forceLarge:SetPoint("TOPLEFT", bar7OptionsText, "BOTTOMLEFT")
 forceLarge:SetScript("OnClick", function(self)
@@ -423,6 +453,7 @@ forceLarge:SetScript("OnClick", function(self)
 	end
 	dummybarcolor7:ApplyStyle()
 end)
+
 local customInline = BarColors:CreateCheckButton(L.Bar7CustomInline, false, nil, nil, "Bar7CustomInline")
 customInline:SetPoint("TOPLEFT", forceLarge, "BOTTOMLEFT")
 customInline:SetScript("OnClick", function(self)
@@ -432,12 +463,14 @@ customInline:SetScript("OnClick", function(self)
 	dummybarcolor7:SetText(ttext)
 end)
 
-local BarSetup = BarSetupPanel:CreateArea(L.AreaTitle_BarSetup, 325)
+local BarSetup = BarSetupPanel:CreateArea(L.AreaTitle_BarSetup)
 
 local color1 = BarSetup:CreateColorSelect(64)
 local color2 = BarSetup:CreateColorSelect(64)
 color1:SetPoint("TOPLEFT", BarSetup.frame, "TOPLEFT", 30, -80)
 color2:SetPoint("TOPLEFT", color1, "TOPRIGHT", 20, 0)
+color1.myheight = 84
+color2.myheight = 0
 
 local color1reset = BarSetup:CreateButton(L.Reset, 64, 10, nil, GameFontNormalSmall)
 local color2reset = BarSetup:CreateButton(L.Reset, 64, 10, nil, GameFontNormalSmall)
@@ -454,6 +487,8 @@ local color1text = BarSetup:CreateText(L.BarStartColor, 80)
 local color2text = BarSetup:CreateText(L.BarEndColor, 80)
 color1text:SetPoint("BOTTOM", color1, "TOP", 0, 4)
 color2text:SetPoint("BOTTOM", color2, "TOP", 0, 4)
+color1text.myheight = 0
+color2text.myheight = 0
 color1:SetColorRGB(DBM.Bars:GetOption("StartColorR"), DBM.Bars:GetOption("StartColorG"), DBM.Bars:GetOption("StartColorB"))
 color1text:SetTextColor(DBM.Bars:GetOption("StartColorR"), DBM.Bars:GetOption("StartColorG"), DBM.Bars:GetOption("StartColorB"))
 color2:SetColorRGB(DBM.Bars:GetOption("EndColorR"), DBM.Bars:GetOption("EndColorG"), DBM.Bars:GetOption("EndColorB"))
@@ -524,6 +559,7 @@ local StyleDropDown = BarSetup:CreateDropdown(L.BarStyle, Styles, "DBT", "BarSty
 	DBM.Bars:SetOption("BarStyle", value)
 end, 210)
 StyleDropDown:SetPoint("TOPLEFT", BarSetup.frame, "TOPLEFT", 210, -25)
+StyleDropDown.myheight = 0
 
 local Textures = DBM_GUI:MixinSharedMedia3("statusbar", {
 	{
@@ -552,6 +588,7 @@ local TextureDropDown = BarSetup:CreateDropdown(L.BarTexture, Textures, "DBT", "
 	DBM.Bars:SetOption("Texture", value)
 end)
 TextureDropDown:SetPoint("TOPLEFT", StyleDropDown, "BOTTOMLEFT", 0, -10)
+TextureDropDown.myheight = 0
 
 local Fonts = DBM_GUI:MixinSharedMedia3("font", {
 	{
@@ -576,6 +613,7 @@ local FontDropDown = BarSetup:CreateDropdown(L.Bar_Font, Fonts, "DBT", "Font", f
 	DBM.Bars:SetOption("Font", value)
 end)
 FontDropDown:SetPoint("TOPLEFT", TextureDropDown, "BOTTOMLEFT", 0, -10)
+FontDropDown.myheight = 0
 
 local FontFlags = {
 	{
@@ -609,6 +647,7 @@ local FontFlagDropDown = BarSetup:CreateDropdown(L.Warn_FontStyle, FontFlags, "D
 		DBM.Bars:SetOption("FontFlag", value)
 	end)
 FontFlagDropDown:SetPoint("TOPLEFT", FontDropDown, "BOTTOMLEFT", 0, -10)
+FontFlagDropDown.myheight = 0
 
 local iconleft = BarSetup:CreateCheckButton(L.BarIconLeft, nil, nil, nil, "IconLeft")
 iconleft:SetPoint("TOPLEFT", FontFlagDropDown, "BOTTOMLEFT", 10, 0)
@@ -642,7 +681,7 @@ local function resetDBTValueToDefault(slider, option)
 end
 
 local FontSizeSlider = BarSetup:CreateSlider(L.Bar_FontSize, 7, 18, 1)
-FontSizeSlider:SetPoint("TOPLEFT", BarSetup.frame, "TOPLEFT", 20, -175)
+FontSizeSlider:SetPoint("TOPLEFT", BarSetup.frame, "TOPLEFT", 20, -180)
 FontSizeSlider:SetValue(DBM.Bars:GetOption("FontSize"))
 FontSizeSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("FontSize"))
 
@@ -653,8 +692,9 @@ BarHeightSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("Hei
 
 local DisableBarFade = BarSetup:CreateCheckButton(L.NoBarFade, false, nil, nil, "NoBarFade")
 DisableBarFade:SetPoint("TOPLEFT", BarHeightSlider, "BOTTOMLEFT", 0, -50)
+DisableBarFade.myheight = 50 -- Extra padding because right buttons are offset from sliders
 
-local BarBehaviors = BarSetupPanel:CreateArea(L.AreaTitle_Behavior, 225)
+local BarBehaviors = BarSetupPanel:CreateArea(L.AreaTitle_Behavior)
 
 local DecimalSlider = BarBehaviors:CreateSlider(L.Bar_Decimal, 5, 60, 1)
 DecimalSlider:SetPoint("TOPLEFT", BarBehaviors.frame, "TOPLEFT", 20, -25)
@@ -665,26 +705,19 @@ local EnlargeTimeSlider = BarBehaviors:CreateSlider(L.Bar_EnlargeTime, 6, 30, 1)
 EnlargeTimeSlider:SetPoint("TOPLEFT", BarBehaviors.frame, "TOPLEFT", 230, -25)
 EnlargeTimeSlider:SetValue(DBM.Bars:GetOption("EnlargeBarTime"))
 EnlargeTimeSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("EnlargeBarTime"))
+EnlargeTimeSlider.myheight = 0
 
-local ClickThrough = BarBehaviors:CreateCheckButton(L.ClickThrough, false, nil, nil, "ClickThrough")
+local ClickThrough = BarBehaviors:CreateCheckButton(L.ClickThrough, true, nil, nil, "ClickThrough")
 ClickThrough:SetPoint("TOPLEFT", DecimalSlider, "BOTTOMLEFT", 0, -15)
+ClickThrough.myheight = 25
 
-local SortBars = BarBehaviors:CreateCheckButton(L.BarSort, false, nil, nil, "Sort")
-SortBars:SetPoint("TOPLEFT", ClickThrough, "BOTTOMLEFT")
+BarBehaviors:CreateCheckButton(L.BarSort, true, nil, nil, "Sort")
+BarBehaviors:CreateCheckButton(L.ShortTimerText, true, nil, "ShortTimerText")
+BarBehaviors:CreateCheckButton(L.StripTimerText, true, nil, nil, "StripCDText")
+BarBehaviors:CreateCheckButton(L.KeepBar, true, nil, nil, "KeepBars")
+BarBehaviors:CreateCheckButton(L.FadeBar, true, nil, nil, "FadeBars")
 
-local ShortTimers = BarBehaviors:CreateCheckButton(L.ShortTimerText, false, nil, "ShortTimerText")
-ShortTimers:SetPoint("TOPLEFT", SortBars, "BOTTOMLEFT")
-
-local StripTimers = BarBehaviors:CreateCheckButton(L.StripTimerText, false, nil, nil, "StripCDText")
-StripTimers:SetPoint("TOPLEFT", ShortTimers, "BOTTOMLEFT")
-
-local KeepTimers = BarBehaviors:CreateCheckButton(L.KeepBar, false, nil, nil, "KeepBars")
-KeepTimers:SetPoint("TOPLEFT", StripTimers, "BOTTOMLEFT")
-
-local FadeTimers = BarBehaviors:CreateCheckButton(L.FadeBar, false, nil, nil, "FadeBars")
-FadeTimers:SetPoint("TOPLEFT", KeepTimers, "BOTTOMLEFT")
-
-local BarSetupSmall = BarSetupPanel:CreateArea(L.AreaTitle_BarSetupSmall, 205)
+local BarSetupSmall = BarSetupPanel:CreateArea(L.AreaTitle_BarSetupSmall)
 
 local smalldummybar = DBM.Bars:CreateDummyBar(nil, nil, SMALL)
 smalldummybar.frame:SetParent(BarSetupSmall.frame)
@@ -693,38 +726,40 @@ smalldummybar.frame:SetScript("OnUpdate", function(_, elapsed)
 	smalldummybar:Update(elapsed)
 end)
 
-local ExpandUpwards = BarSetup:CreateCheckButton(L.ExpandUpwards, false, nil, nil, "ExpandUpwards")
+local ExpandUpwards = BarSetupSmall:CreateCheckButton(L.ExpandUpwards, false, nil, nil, "ExpandUpwards")
 ExpandUpwards:SetPoint("TOPLEFT", smalldummybar.frame, "BOTTOMLEFT", -50, -15)
 
-local FillUpBars = BarSetup:CreateCheckButton(L.FillUpBars, false, nil, nil, "FillUpBars")
+local FillUpBars = BarSetupSmall:CreateCheckButton(L.FillUpBars, false, nil, nil, "FillUpBars")
 FillUpBars:SetPoint("TOPLEFT", smalldummybar.frame, "BOTTOMLEFT", 100, -15)
 
-local BarWidthSlider = BarSetup:CreateSlider(L.Slider_BarWidth, 100, 400, 1, 310)
+local BarWidthSlider = BarSetupSmall:CreateSlider(L.Slider_BarWidth, 100, 400, 1, 310)
 BarWidthSlider:SetPoint("TOPLEFT", BarSetupSmall.frame, "TOPLEFT", 20, -90)
 BarWidthSlider:SetValue(DBM.Bars:GetOption("Width"))
 BarWidthSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("Width"))
 
-local BarScaleSlider = BarSetup:CreateSlider(L.Slider_BarScale, 0.75, 2, 0.05, 310)
+local BarScaleSlider = BarSetupSmall:CreateSlider(L.Slider_BarScale, 0.75, 2, 0.05, 310)
 BarScaleSlider:SetPoint("TOPLEFT", BarWidthSlider, "BOTTOMLEFT", 0, -10)
 BarScaleSlider:SetValue(DBM.Bars:GetOption("Scale"))
 BarScaleSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("Scale"))
 
-local AlphaSlider = BarSetup:CreateSlider(L.Bar_Alpha, 0, 1, 0.1)
+local AlphaSlider = BarSetupSmall:CreateSlider(L.Bar_Alpha, 0, 1, 0.1)
 AlphaSlider:SetPoint("TOPLEFT", BarScaleSlider, "BOTTOMLEFT", 0, -10)
 AlphaSlider:SetValue(DBM.Bars:GetOption("Alpha"))
 AlphaSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("Alpha"))
 
-local BarOffsetXSlider = BarSetup:CreateSlider(L.Slider_BarOffSetX, -50, 50, 1, 120)
+local BarOffsetXSlider = BarSetupSmall:CreateSlider(L.Slider_BarOffSetX, -50, 50, 1, 120)
 BarOffsetXSlider:SetPoint("TOPLEFT", BarSetupSmall.frame, "TOPLEFT", 350, -90)
 BarOffsetXSlider:SetValue(DBM.Bars:GetOption("BarXOffset"))
 BarOffsetXSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("BarXOffset"))
+BarOffsetXSlider.myheight = 0
 
-local BarOffsetYSlider = BarSetup:CreateSlider(L.Slider_BarOffSetY, -5, 35, 1, 120)
+local BarOffsetYSlider = BarSetupSmall:CreateSlider(L.Slider_BarOffSetY, -5, 35, 1, 120)
 BarOffsetYSlider:SetPoint("TOPLEFT", BarOffsetXSlider, "BOTTOMLEFT", 0, -10)
 BarOffsetYSlider:SetValue(DBM.Bars:GetOption("BarYOffset"))
 BarOffsetYSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("BarYOffset"))
+BarOffsetYSlider.myheight = 0
 
-local barResetbutton = BarSetup:CreateButton(L.SpecWarn_ResetMe, 120, 16)
+local barResetbutton = BarSetupSmall:CreateButton(L.SpecWarn_ResetMe, 120, 16)
 barResetbutton:SetPoint("BOTTOMRIGHT", BarSetupSmall.frame, "BOTTOMRIGHT", -2, 4)
 barResetbutton:SetNormalFontObject(GameFontNormalSmall)
 barResetbutton:SetHighlightFontObject(GameFontNormalSmall)
@@ -736,12 +771,12 @@ barResetbutton:SetScript("OnClick", function()
 	resetDBTValueToDefault(AlphaSlider, "Alpha")
 end)
 
-local BarSetupHuge = BarSetupPanel:CreateArea(L.AreaTitle_BarSetupHuge, 220)
+local BarSetupHuge = BarSetupPanel:CreateArea(L.AreaTitle_BarSetupHuge)
 
 local enablebar = BarSetupHuge:CreateCheckButton(L.EnableHugeBar, true, nil, nil, "HugeBarsEnabled")
 
 local hugedummybar = DBM.Bars:CreateDummyBar(nil, nil, LARGE)
-hugedummybar.frame:SetParent(BarSetupSmall.frame)
+hugedummybar.frame:SetParent(BarSetupHuge.frame)
 hugedummybar.frame:SetPoint("BOTTOM", BarSetupHuge.frame, "TOP", 0, -50)
 hugedummybar.frame:SetScript("OnUpdate", function(_, elapsed)
 	hugedummybar:Update(elapsed)
@@ -750,10 +785,10 @@ hugedummybar.enlarged = true
 hugedummybar.dummyEnlarge = true
 hugedummybar:ApplyStyle()
 
-local ExpandUpwardsLarge = BarSetup:CreateCheckButton(L.ExpandUpwards, false, nil, nil, "ExpandUpwardsLarge")
+local ExpandUpwardsLarge = BarSetupHuge:CreateCheckButton(L.ExpandUpwards, false, nil, nil, "ExpandUpwardsLarge")
 ExpandUpwardsLarge:SetPoint("TOPLEFT", hugedummybar.frame, "BOTTOMLEFT", -50, -15)
 
-local FillUpBarsLarge = BarSetup:CreateCheckButton(L.FillUpBars, false, nil, nil, "FillUpLargeBars")
+local FillUpBarsLarge = BarSetupHuge:CreateCheckButton(L.FillUpBars, false, nil, nil, "FillUpLargeBars")
 FillUpBarsLarge:SetPoint("TOPLEFT", hugedummybar.frame, "BOTTOMLEFT", 100, -15)
 
 local HugeBarWidthSlider = BarSetupHuge:CreateSlider(L.Slider_BarWidth, 100, 400, 1, 310)
@@ -766,7 +801,7 @@ HugeBarScaleSlider:SetPoint("TOPLEFT", HugeBarWidthSlider, "BOTTOMLEFT", 0, -10)
 HugeBarScaleSlider:SetValue(DBM.Bars:GetOption("HugeScale"))
 HugeBarScaleSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("HugeScale"))
 
-local HugeAlphaSlider = BarSetup:CreateSlider(L.Bar_Alpha, 0.1, 1, 0.1)
+local HugeAlphaSlider = BarSetupHuge:CreateSlider(L.Bar_Alpha, 0.1, 1, 0.1)
 HugeAlphaSlider:SetPoint("TOPLEFT", HugeBarScaleSlider, "BOTTOMLEFT", 0, -10)
 HugeAlphaSlider:SetValue(DBM.Bars:GetOption("HugeAlpha"))
 HugeAlphaSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("HugeAlpha"))
@@ -775,11 +810,13 @@ local HugeBarOffsetXSlider = BarSetupHuge:CreateSlider(L.Slider_BarOffSetX, -50,
 HugeBarOffsetXSlider:SetPoint("TOPLEFT", BarSetupHuge.frame, "TOPLEFT", 350, -105)
 HugeBarOffsetXSlider:SetValue(DBM.Bars:GetOption("HugeBarXOffset"))
 HugeBarOffsetXSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("HugeBarXOffset"))
+HugeBarOffsetXSlider.myheight = 0
 
 local HugeBarOffsetYSlider = BarSetupHuge:CreateSlider(L.Slider_BarOffSetY, -5, 35, 1, 120)
 HugeBarOffsetYSlider:SetPoint("TOPLEFT", HugeBarOffsetXSlider, "BOTTOMLEFT", 0, -10)
 HugeBarOffsetYSlider:SetValue(DBM.Bars:GetOption("HugeBarYOffset"))
 HugeBarOffsetYSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("HugeBarYOffset"))
+HugeBarOffsetYSlider.myheight = 0
 
 local hugeBarResetbutton = BarSetupHuge:CreateButton(L.SpecWarn_ResetMe, 120, 16)
 hugeBarResetbutton:SetPoint("BOTTOMRIGHT", BarSetupHuge.frame, "BOTTOMRIGHT", -2, 4)

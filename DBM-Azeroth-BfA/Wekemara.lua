@@ -31,6 +31,7 @@ local timerElectricDischargeCD		= mod:NewCDTimer(25.6, 303451, nil, nil, nil, 2,
 
 --mod:AddReadyCheckOption(37460, false)
 
+--[[
 function mod:OnCombatStart(delay, yellTriggered)
 	if yellTriggered then
 --		timerBioelectricblastCD:Start(1-delay)
@@ -38,6 +39,7 @@ function mod:OnCombatStart(delay, yellTriggered)
 --		timerElectricDischargeCD:Start(1-delay)
 	end
 end
+--]]
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId

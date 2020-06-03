@@ -169,7 +169,7 @@ local graspActive = false
 local castsPerGUID = {}
 local rangeThreshold = 1
 local fixStupid = {}
-local CVAR1, CVAR2 = nil, nil
+local CVAR1, CVAR2
 
 --/run DBM:GetModByName("2343"):TimerTestFunction(30)
 --This will auto loop, just run it once and wait to see how keep timers behave.
@@ -629,7 +629,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif spellId == 288219 then
 		if self.Options.NPAuraOnRefractiveIce then
-			DBM.Nameplate:Hide(true, args.sourceGUID)--Passed without spellId/tecture to force remove all, in event there are multiple (shouldn't be but doesn't hurt)
+			DBM.Nameplate:Hide(true, args.sourceGUID, spellId)
 		end
 	elseif spellId == 288212 then
 		if args:IsPlayer() then
@@ -703,15 +703,15 @@ function mod:UNIT_DIED(args)
 		timerWaterBoltVolleyCD:Stop()
 	elseif cid == 148965 then--Kul Tiran Marine
 		if self.Options.NPAuraOnMarkedTarget2 then
-			DBM.Nameplate:Hide(true, args.destGUID)
+			DBM.Nameplate:Hide(true, args.destGUID, 288038)
 		end
 	elseif cid == 149535 then--Icebound Image
 		if self.Options.NPAuraOnHowlingWinds2 then
-			DBM.Nameplate:Hide(true, args.destGUID)
+			DBM.Nameplate:Hide(true, args.destGUID, 290053)
 		end
 	elseif cid == 148631 then--Unexploded Ordinance
 		if self.Options.NPAuraOnRefractiveIce then
-			DBM.Nameplate:Hide(true, args.destGUID)
+			DBM.Nameplate:Hide(true, args.destGUID, 288219)
 		end
 	end
 end

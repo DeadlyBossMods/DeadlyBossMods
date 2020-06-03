@@ -1,7 +1,7 @@
 local L = DBM_GUI_L
 
 local spamPanel = DBM_GUI_Frame:CreateNewPanel(L.Panel_SpamFilter, "option")
-local spamOutArea = spamPanel:CreateArea(L.Area_SpamFilter_Outgoing, 250)
+local spamOutArea = spamPanel:CreateArea(L.Area_SpamFilter_Outgoing)
 
 spamOutArea:CreateCheckButton(L.SpamBlockNoShowAnnounce, true, nil, "DontShowBossAnnounces")
 spamOutArea:CreateCheckButton(L.SpamBlockNoShowTgtAnnounce, true, nil, "DontShowTargetAnnouncements")
@@ -20,16 +20,16 @@ spamOutArea:CreateCheckButton(L.SpamBlockNoYells, true, nil, "DontSendYells")
 spamOutArea:CreateCheckButton(L.SpamBlockNoNoteSync, true, nil, "BlockNoteShare")
 spamOutArea:CreateCheckButton(L.SpamBlockNoReminders, true, nil, "DontShowReminders")
 
-local spamRestoreArea = spamPanel:CreateArea(L.Area_Restore, 170)
+local spamRestoreArea = spamPanel:CreateArea(L.Area_Restore)
 spamRestoreArea:CreateCheckButton(L.SpamBlockNoIconRestore, true, nil, "DontRestoreIcons")
 spamRestoreArea:CreateCheckButton(L.SpamBlockNoRangeRestore, true, nil, "DontRestoreRange")
 
-local spamArea = spamPanel:CreateArea(L.Area_SpamFilter, 170)
+local spamArea = spamPanel:CreateArea(L.Area_SpamFilter)
 spamArea:CreateCheckButton(L.DontShowFarWarnings, true, nil, "DontShowFarWarnings")
 spamArea:CreateCheckButton(L.StripServerName, true, nil, "StripServerName")
 spamArea:CreateCheckButton(L.FilterVoidFormSay, true, nil, "FilterVoidFormSay")
 
-local spamSpecArea = spamPanel:CreateArea(L.Area_SpecFilter, 140)
+local spamSpecArea = spamPanel:CreateArea(L.Area_SpecFilter)
 spamSpecArea:CreateCheckButton(L.FilterTankSpec, true, nil, "FilterTankSpec")
 spamSpecArea:CreateCheckButton(L.FilterDispels, true, nil, "FilterDispel")
 spamSpecArea:CreateCheckButton(L.FilterTrashWarnings, true, nil, "FilterTrashWarnings2")
@@ -45,9 +45,10 @@ local interruptOptions = {
 local interruptDropDown		= spamSpecArea:CreateDropdown(L.FilterInterruptsHeader, interruptOptions, "DBM", "FilterInterrupt2", function(value)
 	DBM.Options.FilterInterrupt2 = value
 end, 410)
-interruptDropDown:SetPoint("TOPLEFT", FilterInterruptNote, "TOPLEFT", 0, -45)
+interruptDropDown:SetPoint("TOPLEFT", _G[FilterInterruptNote:GetName() .. "Text"], "BOTTOMLEFT", -26, -5)
+interruptDropDown.myheight = 50
 
-local spamPTArea = spamPanel:CreateArea(L.Area_PullTimer, 180)
+local spamPTArea = spamPanel:CreateArea(L.Area_PullTimer)
 spamPTArea:CreateCheckButton(L.DontShowPTNoID, true, nil, "DontShowPTNoID")
 spamPTArea:CreateCheckButton(L.DontShowPT, true, nil, "DontShowPT2")
 spamPTArea:CreateCheckButton(L.DontShowPTText, true, nil, "DontShowPTText")
@@ -60,9 +61,3 @@ PTSlider:SetValue(math.floor(DBM.Options.PTCountThreshold2))
 PTSlider:HookScript("OnValueChanged", function(self)
 	DBM.Options.PTCountThreshold2 = math.floor(self:GetValue())
 end)
-
-spamPTArea:AutoSetDimension()
-spamRestoreArea:AutoSetDimension()
-spamArea:AutoSetDimension()
-spamSpecArea:AutoSetDimension()
-spamOutArea:AutoSetDimension()

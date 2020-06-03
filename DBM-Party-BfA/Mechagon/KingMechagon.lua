@@ -63,7 +63,7 @@ local P1RecalibrateTimers = {5.9, 13.3, 27.9, 15.6, 19.4}
 --5.9, 13.3, 28.8, 17.0, 19.4
 --5.9, 13.3, 31.4, 16.9, 20.7
 
-function mod:ZapTarget(targetname, uId)
+function mod:ZapTarget(targetname)
 	if not targetname then return end
 	if targetname == UnitName("player") and self:AntiSpam(5, 5) then
 		specWarnGigaZap:Show(self.vb.zapCount)
@@ -153,7 +153,7 @@ function mod:UNIT_DIED(args)
 	end
 end
 
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
+function mod:UNIT_SPELLCAST_SUCCEEDED(_, _, spellId)
 	if spellId == 296323 then--Activate Omega Buster (Needed? Stage 2 should already be started by stage 1 boss death)
 		self.vb.phase = 2
 		self.vb.zapCount = 0

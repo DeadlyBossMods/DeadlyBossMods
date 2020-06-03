@@ -115,7 +115,7 @@ local function scanCaptains(self, isPull, delay)
 	end
 end
 
-function mod:PowderShotTarget(targetname, uId)
+function mod:PowderShotTarget(targetname)
 	if not targetname then return end
 	if targetname == UnitName("player") then
 		specWarnPowderShot:Show()

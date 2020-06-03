@@ -294,7 +294,7 @@ function mod:UNIT_DIED(args)
 	end
 end
 
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
+function mod:UNIT_SPELLCAST_SUCCEEDED(_, _, spellId)
 	if spellId == 314992 then--Drain Essence cast not in combat log, only debuffs
 		timerDrainEssenceCD:Start()
 	end

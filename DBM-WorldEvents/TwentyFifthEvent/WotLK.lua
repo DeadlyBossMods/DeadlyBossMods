@@ -67,7 +67,7 @@ local seenAdds = {}
 
 mod.vb.phase = 0
 
-function mod:OnCombatStart(delay)
+function mod:OnCombatStart()
 	table.wipe(seenAdds)
 	self.vb.phase = 0
 	self.vb.bossLeft = 4--Because we change it to 3 right away
@@ -173,12 +173,12 @@ end
 
 do
 	--Back in room has an emote, but that requires translation, scheduling works better
-	local function BackInRoom(time)
+	local function BackInRoom()
 		warnTeleportNow:Show()
 		timerTeleport:Start(88.5)
 		warnTeleportSoon:Schedule(78.5)
 	end
-	function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
+	function mod:UNIT_SPELLCAST_SUCCEEDED(_, _, spellId)
 		if spellId == 30211 then--Teleport Self
 			warnTeleportNow:Show()
 			warnTeleportSoon:Schedule(37.5)

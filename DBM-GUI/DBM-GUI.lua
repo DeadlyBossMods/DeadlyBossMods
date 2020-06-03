@@ -166,7 +166,6 @@ function DBM_GUI:CreateBossModPanel(mod)
 		return false
 	end
 	local panel = mod.panel
-	panel.initheight = 35
 	local category
 
 	local iconstat = panel.frame:CreateFontString("DBM_GUI_Mod_Icons" .. mod.localization.general.name, "ARTWORK")
@@ -193,6 +192,7 @@ function DBM_GUI:CreateBossModPanel(mod)
 	end
 
 	local reset = panel:CreateButton(L.Mod_Reset, 155, 30, nil, GameFontNormalSmall)
+	reset.myheight = 40
 	reset:SetPoint("TOPRIGHT", panel.frame, "TOPRIGHT", -24, -4)
 	reset:SetScript("OnClick", function(self)
 		DBM:LoadModDefaultOption(mod)
@@ -211,7 +211,6 @@ function DBM_GUI:CreateBossModPanel(mod)
 			scannedCategories[catident] = true
 			local catpanel = panel:CreateArea(mod.localization.cats[catident])
 			local catbutton, lastButton, addSpacer
-			local hasDropdowns = 0
 			for _, v in ipairs(category) do
 				if v == DBM_OPTION_SPACER then
 					addSpacer = true
@@ -276,7 +275,6 @@ function DBM_GUI:CreateBossModPanel(mod)
 							end
 						end, nil, 32)
 						if not addSpacer then
-							hasDropdowns = hasDropdowns + 7
 							catbutton:SetPoint("TOPLEFT", lastButton, "BOTTOMLEFT", 0, -10)
 						end
 					end
@@ -286,7 +284,6 @@ function DBM_GUI:CreateBossModPanel(mod)
 					end
 				end
 			end
-			catpanel:AutoSetDimension(hasDropdowns)
 		end
 	end
 end
@@ -482,7 +479,7 @@ do
 		local modProfileArea
 		if not subtab then
 			local modProfileDropdown = {}
-			modProfileArea = panel:CreateArea(L.Area_ModProfile, 135)
+			modProfileArea = panel:CreateArea(L.Area_ModProfile)
 			modProfileArea.frame:SetPoint("TOPLEFT", 10, -25)
 			local resetButton = modProfileArea:CreateButton(L.ModAllReset, 200, 20)
 			resetButton:SetPoint("TOPLEFT", 10, -14)
@@ -506,6 +503,7 @@ do
 			end
 
 			local resetStatButton = modProfileArea:CreateButton(L.ModAllStatReset, 200, 20)
+			resetStatButton.myheight = 0
 			resetStatButton:SetPoint("LEFT", resetButton, "RIGHT", 40, 0)
 			resetStatButton:SetScript("OnClick", function()
 				DBM:ClearAllStats(addon.modId)
@@ -528,6 +526,7 @@ do
 				DBM:CopyAllModTypeOption(addon.modId, name, tonumber(profile), "SWSound")
 				C_Timer.After(0.10, DBM_GUI.dbm_modProfilePanel_refresh)
 			end, 100)
+			copyModSoundProfile.myheight = 0
 			copyModSoundProfile:SetPoint("LEFT", copyModProfile, "RIGHT", 27, 0)
 			copyModSoundProfile:SetScript("OnShow", function()
 				copyModSoundProfile.value = nil
@@ -540,6 +539,7 @@ do
 				DBM:CopyAllModTypeOption(addon.modId, name, tonumber(profile), "SWNote")
 				C_Timer.After(0.10, DBM_GUI.dbm_modProfilePanel_refresh)
 			end, 100)
+			copyModNoteProfile.myheight = 0
 			copyModNoteProfile:SetPoint("LEFT", copyModSoundProfile, "RIGHT", 27, 0)
 			copyModNoteProfile:SetScript("OnShow", function()
 				copyModNoteProfile.value = nil
@@ -552,7 +552,7 @@ do
 				DBM:DeleteAllModOption(addon.modId, name, tonumber(profile))
 				C_Timer.After(0.05, DBM_GUI.dbm_modProfilePanel_refresh)
 			end, 100)
-
+			deleteModProfile.myheight = 60
 			deleteModProfile:SetPoint("TOPLEFT", copyModSoundProfile, "BOTTOMLEFT", 0, -10)
 			deleteModProfile:SetScript("OnShow", function()
 				deleteModProfile.value = nil
@@ -578,7 +578,8 @@ do
 
 		local singleline = 0
 		local doubleline = 0
-		local area = panel:CreateArea(nil, 0)
+		local area = panel:CreateArea()
+		area.frame.isStats = true
 		area.frame:SetPoint("TOPLEFT", 10, modProfileArea and -180 or -25)
 		area.onshowcall = {}
 
@@ -1414,7 +1415,7 @@ do
 				v()
 			end
 		end)
-		DBM_GUI_OptionsFrame:DisplayFrame(panel.frame, true)
+		DBM_GUI_OptionsFrame:DisplayFrame(panel.frame)
 	end
 
 	local Categories = {}

@@ -24,7 +24,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
-function mod:UNIT_AURA(uId)
+function mod:UNIT_AURA()
 	if DBM:UnitBuff("player", DBM:GetSpellInfo(102116)) and not markWings then
 		timerMagicWings:Start()
 		markWings = true

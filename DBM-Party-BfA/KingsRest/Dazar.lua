@@ -43,7 +43,7 @@ local timerDeathlyRoarCD			= mod:NewCDTimer(13.6, 269369, nil, nil, nil, 2)
 local seenMobs = {}
 
 --Handles the ICD that Boss triggers on other abilities
-local function updateAllTimers(self, ICD)
+local function updateAllTimers(_, ICD)
 	DBM:Debug("updateAllTimers running", 3)
 	if timerGaleSlashCD:GetRemaining() < ICD then
 		local elapsed, total = timerGaleSlashCD:GetTime()
@@ -68,7 +68,7 @@ local function updateAllTimers(self, ICD)
 	end
 end
 
-function mod:LeapTarget(targetname, uId)
+function mod:LeapTarget(targetname)
 	if not targetname then return end
 	if targetname == UnitName("player") then
 		specWarnQuakingLeap:Show()

@@ -45,7 +45,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
+function mod:UNIT_SPELLCAST_SUCCEEDED(_, _, spellId)
 	if spellId == 102044 then--Hogger
 		gameMaxPoints = gameMaxPoints + 3
 		if self:AntiSpam(2, 1) then
@@ -57,7 +57,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	end
 end
 
-function mod:UNIT_POWER_FREQUENT(uId, type)
+function mod:UNIT_POWER_FREQUENT(_, type)
 	if type == "ALTERNATE" then
 		local playerPower = UnitPower("player", 10)
 		if playerPower > gameEarnedPoints then

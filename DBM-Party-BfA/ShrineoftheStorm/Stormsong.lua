@@ -86,7 +86,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
-function mod:CHAT_MSG_MONSTER_SAY(msg, npc, _, _, target)
+function mod:CHAT_MSG_MONSTER_SAY(msg)
 	--"<5.12 02:26:06> [CHAT_MSG_MONSTER_SAY] It would seem you have guests, Lord Stormsong.#Queen Azshara###Omegal##0#0##0#979#nil#0#false#false#false#false", -- [11]
 	--"<34.74 02:26:36> [ENCOUNTER_START] ENCOUNTER_START#2132#Lord Stormsong#1#5", -- [20]
 	if (msg == L.openingRP or msg:find(L.openingRP)) and self:LatencyCheck() then
@@ -94,7 +94,7 @@ function mod:CHAT_MSG_MONSTER_SAY(msg, npc, _, _, target)
 	end
 end
 
-function mod:OnSync(msg, targetname)
+function mod:OnSync(msg)
 	if msg == "openingRP" and self:AntiSpam(10, 6) then
 		timerRP:Start(24.6)
 	end
