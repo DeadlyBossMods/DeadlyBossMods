@@ -45,7 +45,7 @@ SpiresofAscension\Devos.lua
 SpiresofAscension\SpiresofAscensionTrash.lua
 TheaterofPain\AffrontofChallengers.lua
 TheaterofPain\Gorechop.lua
-TheaterofPain\Hazak.lua
+TheaterofPain\XavtheUnfallen.lua
 TheaterofPain\Kultharok.lua
 TheaterofPain\Mordretha.lua
 TheaterofPain\TheaterofPainTrash.lua
