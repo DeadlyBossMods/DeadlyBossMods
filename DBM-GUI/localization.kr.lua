@@ -250,22 +250,25 @@ L.EventFilterDungMythicMusic= "신화/신화+ 난이도에선 던전 배경음�
 L.EventFilterMythicMusic	= "신화/신화+ 난이도에선 보스 전투 배경음을 재생하지 않음"
 
 -- Tab: Global Filter
-L.Panel_SpamFilter			= "전역 기능 끄기 및 필터"
-L.Area_SpamFilter_Outgoing	= "전역 기능 끄기 및 필터 설정"
+L.Panel_SpamFilter			= "기능 끄기 및 필터"
+L.Area_SpamFilter_Anounces	= "알림 관련 기능 끄기 및 필터 설정"
 L.SpamBlockNoShowAnnounce	= "모든 알림 및 효과음 재생 안함"
 L.SpamBlockNoShowTgtAnnounce = "대상 관련 알림 및 효과음만 재생 안함 (위의 옵션 체크시 자동 적용)"
 L.SpamBlockNoSpecWarn		= "특수 경고 및 효과음 재생 안함"
 L.SpamBlockNoSpecWarnText	= "특수 경고 텍스트는 표시하지 않지만 음성팩 효과음은 재생 (위의 옵션들보다 우선적으로 적용)"
+
+L.Area_SpamFilter_Timers	= "타이머 관련 기능 끄기 및 필터 설정"
 L.SpamBlockNoShowTimers		= "모드 타이머 표시 안함 (보스 모드/도전모드/파티찾기/재생성)"
 L.SpamBlockNoShowUTimers	= "사용자 전송 타이머 표시 안함 (사용자 지정/풀링/휴식)"
+L.SpamBlockNoCountdowns		= "초읽기 음성 재생 안함"
+
+L.Area_SpamFilter_Misc		= "기타 여러 기능 끄기 및 필터 설정"
 L.SpamBlockNoSetIcon		= "대상에 공격대 징표를 설정하지 않음"
 L.SpamBlockNoRangeFrame		= "거리 창 표시 안함"
 L.SpamBlockNoInfoFrame		= "정보 창 표시 안함"
 L.SpamBlockNoHudMap			= "HUD 표시 안함"
-L.SpamBlockNoNameplate		= "이름표 오라 표시 안함 (완전히 작동 중단)"
-L.SpamBlockNoNameplateLines	= "이름표 오라에 선 표시 안함 (오라 아이콘은 계속 표시됨)"
-L.SpamBlockNoCountdowns		= "초읽기 효과음 재생 안함"
-L.SpamBlockNoYells			= "대화 알림 사용 안함"
+L.SpamBlockNoNameplate		= "이름표 오라 표시 안함"
+L.SpamBlockNoYells			= "말풍선 알림 사용 안함"
 L.SpamBlockNoNoteSync		= "메모 공유 수락 안함"
 L.SpamBlockNoReminders		= "로그인, 권장사항, 모드 없음, 핫픽스 메시지 표시 안함"
 
@@ -274,12 +277,12 @@ L.SpamBlockNoIconRestore	= "아이콘 설정 상태를 저장하지 않고 전�
 L.SpamBlockNoRangeRestore	= "모드가 '숨김' 명령을 내렸을 때 이전 설정 상태로 거리 창 복구 안함"
 
 -- Tab: Spam Filter
-L.Area_SpamFilter			= "스팸 필터 설정"
+L.Area_SpamFilter			= "스팸 방지 필터 설정"
 L.DontShowFarWarnings		= "멀리 떨어진 곳의 이벤트에 대한 알림 및 바 표시 안함"
 L.StripServerName			= "경고와 타이머에서 서버명 지우기"
-L.FilterVoidFormSay			= "공허의 형상일땐 위치/초읽기 대화 전송 안함"
+L.FilterVoidFormSay			= "공허의 형상일땐 공격대 징표나 초읽기를 말풍선으로 표시 안함 (그 외 말풍선 알림은 작동)"
 
-L.Area_SpecFilter			= "역할 필터 설정"
+L.Area_SpecFilter			= "역할 관련 필터 설정"
 L.FilterTankSpec			= "방어 전담이 아닐땐 방어 전담용 경고 보지 않기 (참고: '도발' 경고는 현재 전부 기본값으로 켜짐 상태이기 때문에 대부분의 이용자는 설정을 끄지 않는 것을 권장합니다.)"
 L.FilterInterruptsHeader	= "상황에 따라 주문 차단 경고를 표시하지 않기"
 L.FilterInterrupts			= "주문 시전 몹이 현재 대상/주시 대상이 아닐 때 (항상)"
@@ -290,7 +293,7 @@ L.FilterInterruptNoteName	= "사용자 메모에 자기 이름이 포함되지 �
 L.FilterDispels				= "해제 주문이 쿨타임일땐 해제 경고 보지 않기"
 L.FilterTrashWarnings		= "일반 &amp; 영웅 던전에선 일반몹 경고 보지 않기"
 
-L.Area_PullTimer			= "풀링, 휴식, 전투, 사용자 지정 바 필터 설정"
+L.Area_PullTimer			= "풀링, 휴식, 전투, 사용자 지정 바 관련 필터 설정"
 L.DontShowPTNoID			= "같은 지역에 없는 사용자가 보낸 풀링 타이머 차단"
 L.DontShowPT				= "풀링/휴식 타이머 표시 안함"
 L.DontShowPTText			= "풀링/휴식 알림 텍스트 표시 안함"
