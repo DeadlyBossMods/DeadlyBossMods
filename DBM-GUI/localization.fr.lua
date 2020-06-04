@@ -193,16 +193,20 @@ L.SpecWarn_AlwaysVoice		= "Toujours jouer toutes les alertes vocales (Outrepasse
 
 -- Tab: Global Filter
 L.Panel_SpamFilter			= "Filtres globaux et de spam"
-L.Area_SpamFilter_Outgoing	= "Options des filtres globaux"
+L.Area_SpamFilter_Anounces	= "Announce Global Disable & Filter Options"
 L.SpamBlockNoShowAnnounce	= "Ne pas afficher d'annonces ou jouer de sons d'alerte"
 L.SpamBlockNoSpecWarn		= "Ne pas afficher d'annonces ou jouer de sons d'alerte spéciales"
+
+L.Area_SpamFilter_Timers	= "Timer Global Disable & Filter Options"
 L.SpamBlockNoShowTimers		= "Ne pas afficher les timers de module (Boss Mod/CM/LFG/Respawn)"
 L.SpamBlockNoShowUTimers	= "Ne pas afficher au joueur les timers envoyés (Personnalisés/Pull/Pause)"
+L.SpamBlockNoCountdowns		= "Ne pas jouer le son du compte à rebours"
+
+L.Area_SpamFilter_Misc		= "Misc Global Disable & Filter Options"
 L.SpamBlockNoSetIcon		= "Ne pas placer d'icônes sur les cibles"
 L.SpamBlockNoRangeFrame		= "Ne pas afficher le cadre des portées"
 L.SpamBlockNoInfoFrame		= "Ne pas afficher le cadre d'information"
 L.SpamBlockNoHudMap			= "Do not show HudMap"
-L.SpamBlockNoCountdowns		= "Ne pas jouer le son du compte à rebours"
 L.SpamBlockNoYells			= "Ne pas envoyer de cris dans le chat"
 L.SpamBlockNoNoteSync		= "Ne pas accepter les notes partagées"
 
