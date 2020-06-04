@@ -9715,7 +9715,7 @@ do
 		--Check if option for this warning is even enabled
 		if (not self.option or self.mod.Options[self.option]) and not moving and frame then
 			--Now, check if all special warning filters are enabled to save cpu and abort immediately if true.
-			if not DBM.Options.DontPlaySpecialWarningSound and not DBM.Options.DontShowSpecialWarningFlash and not DBM.Options.DontShowSpecialWarningText then return end
+			if DBM.Options.DontPlaySpecialWarningSound and DBM.Options.DontShowSpecialWarningFlash and DBM.Options.DontShowSpecialWarningText then return end
 			--Next, we check if trash mod warning and if so check the filter trash warning filter for trivial difficulties
 			if self.mod:IsEasyDungeon() and self.mod.isTrashMod and DBM.Options.FilterTrashWarnings2 then return end
 			--Lastly, we check if it's a tank warning and filter if not in tank spec. This is done because tank warnings on by default and handled fluidly by spec, not option setting
@@ -9801,13 +9801,13 @@ do
 					text = text:gsub(">.-<", classColoringFunction)
 				end
 				DBM:AddSpecialWarning(text)
-				self.combinedcount = 0
-				self.combinedtext = {}
 				if DBM.Options.ShowSWarningsInChat then
 					local colorCode = ("|cff%.2x%.2x%.2x"):format(DBM.Options.SpecialWarningFontCol[1] * 255, DBM.Options.SpecialWarningFontCol[2] * 255, DBM.Options.SpecialWarningFontCol[3] * 255)
 					self.mod:AddMsg(colorCode.."["..L.MOVE_SPECIAL_WARNING_TEXT.."] "..text.."|r", nil)
 				end
 			end
+			self.combinedcount = 0
+			self.combinedtext = {}
 			if not UnitIsDeadOrGhost("player") and not DBM.Options.DontShowSpecialWarningFlash then
 				if noteHasName then
 					if DBM.Options.SpecialWarningFlash5 then--Not included in above if statement on purpose. we don't want to trigger else rule if noteHasName is true but SpecialWarningFlash5 is false
@@ -9854,7 +9854,7 @@ do
 		--Check if option for this warning is even enabled
 		if self.option and not self.mod.Options[self.option] then return end
 		--Now, check if all special warning filters are enabled to save cpu and abort immediately if true.
-		if not DBM.Options.DontPlaySpecialWarningSound and not DBM.Options.DontShowSpecialWarningFlash and not DBM.Options.DontShowSpecialWarningText then return end
+		if DBM.Options.DontPlaySpecialWarningSound and DBM.Options.DontShowSpecialWarningFlash and DBM.Options.DontShowSpecialWarningText then return end
 		--Next, we check if trash mod warning and if so check the filter trash warning filter for trivial difficulties
 		if self.mod:IsEasyDungeon() and self.mod.isTrashMod and DBM.Options.FilterTrashWarnings2 then return end
 		local argTable = {...}
