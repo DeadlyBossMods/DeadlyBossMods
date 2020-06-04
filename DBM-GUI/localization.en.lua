@@ -265,20 +265,23 @@ L.EventFilterMythicMusic	= "Do not play encounter music on Mythic/Mythic+ diffic
 
 -- Tab: Global Filter
 L.Panel_SpamFilter			= "Global Disables & Filters"
-L.Area_SpamFilter_Outgoing	= "Global Disable & Filter Options"
+L.Area_SpamFilter_Anounces	= "Announce Global Disable & Filter Options"
 L.SpamBlockNoShowAnnounce	= "Do not show text or play sound for ANY general announces"
 L.SpamBlockNoShowTgtAnnounce= "Do not show text or play sound for TARGET general announces (above filter overrides this one)"
 L.SpamBlockNoSpecWarn		= "Do not show special warnings or play special warning sounds"
 L.SpamBlockNoSpecWarnText	= "Do not show special warning text, but still allow voice packs (above filter overrides this one)"
+
+L.Area_SpamFilter_Timers	= "Timer Global Disable & Filter Options"
 L.SpamBlockNoShowTimers		= "Do not show mod timers (Boss Mod/CM/LFG/Respawn)"
 L.SpamBlockNoShowUTimers	= "Do not show user sent timers (Custom/Pull/Break)"
+L.SpamBlockNoCountdowns		= "Do not play countdown sounds"
+
+L.Area_SpamFilter_Misc		= "Misc Global Disable & Filter Options"
 L.SpamBlockNoSetIcon		= "Do not set icons on targets"
 L.SpamBlockNoRangeFrame		= "Do not show range frame"
 L.SpamBlockNoInfoFrame		= "Do not show info frame"
 L.SpamBlockNoHudMap			= "Do not show HudMap"
-L.SpamBlockNoNameplate		= "Do not show Nameplate Auras (disables completely)"
-L.SpamBlockNoNameplateLines	= "Do not show Nameplate Aura lines (aura icons still show)"
-L.SpamBlockNoCountdowns		= "Do not play countdown sounds"
+L.SpamBlockNoNameplate		= "Do not show Nameplate Auras"
 L.SpamBlockNoYells			= "Do not send chat yells"
 L.SpamBlockNoNoteSync		= "Do not accept shared notes"
 L.SpamBlockNoReminders		= "Do not show any login, recommendation, missing mod, or hotfix messages"
@@ -291,7 +294,7 @@ L.SpamBlockNoRangeRestore	= "Do not restore range frame to previous state when m
 L.Area_SpamFilter			= "Spam Filter Options"
 L.DontShowFarWarnings		= "Do not show announces/timers for events that are far away"
 L.StripServerName			= "Strip realm name in warnings and timers"
-L.FilterVoidFormSay			= "Do not send chat position/count chat yells when in Void Form"
+L.FilterVoidFormSay			= "Do not send chat icon or countdown chat yells when in Void Form (regular chat yells still sent)"
 
 L.Area_SpecFilter			= "Role Filter Options"
 L.FilterTankSpec			= "Filter warnings designated for Tank role when not tank spec. (Note: Disabling this is not recommended for most users as 'taunt' warnings are now all on by default.)"
