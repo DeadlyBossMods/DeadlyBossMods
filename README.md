@@ -19,18 +19,20 @@ Older content is split into multiple addons to reduce mod update size. These are
 
 ## Additional Mods
 * [Event Sound Pack](https://curseforge.com/wow/addons/deadly-boss-mods-dbm-event-sound-pack)
-* [SpellTimers](https://curseforge.com/wow/addons/dbm-spelltimers)
 * [DBM-Archeology](https://curseforge.com/wow/addons/dbm-archaeology)
 * [DBM-Challenges](https://curseforge.com/wow/addons/dbm-challenges)
 * [DBM-TimelessIsle](https://curseforge.com/wow/addons/dbm-timeless-isle)
 * [DBM-PvP](https://curseforge.com/wow/addons/dbm-pvp)
+<!--
+* [SpellTimers](https://curseforge.com/wow/addons/dbm-spelltimers)
+* [RaidLeadTools](https://curseforge.com/wow/addons/dbm-raidleadtools)
+-->
 
 ## Countdown Packs
 * [Countpack Overwatch](https://curseforge.com/wow/addons/deadly-boss-mods-dbm-overwatch-countdown-pack)
 * [Countpack HoTS](https://curseforge.com/wow/addons/deadly-boss-mods-dbm-heroes-of-the-storm-hots)
 
 ## Voice Packs
-
 * [Voicepack VEM (English TTS Female)](https://curseforge.com/wow/addons/dbm-voicepack-vem)
 * [Voicepack Yike (Chinese TTS Female)](https://curseforge.com/wow/addons/dbm-voicepack-yike)
 * [Voicepack German (German Male)](http://curseforge.com/wow/addons/dbm-voicepack-german)

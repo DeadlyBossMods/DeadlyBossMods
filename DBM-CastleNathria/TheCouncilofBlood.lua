@@ -73,7 +73,7 @@ local specWarnEvasiveLunge						= mod:NewSpecialWarningSpell(327497, "Tank", nil
 local specWarnWaltzofBlood						= mod:NewSpecialWarningDodge(327616, nil, nil, nil, 2, 2)
 local specWarnDarkRecital						= mod:NewSpecialWarningMoveTo(331634, nil, nil, nil, 1, 2)--One boss dead
 local yellDarkRecital							= mod:NewShortYell(331634)--One boss dead
-local yellDarkRecitalRepeater					= mod:NewPosYell(331634, DBM_CORE_L.AUTO_YELL_ANNOUNCE_TEXT.shortyell)--One boss dead
+local yellDarkRecitalRepeater					= mod:NewPosYell(331634, DBM_CORE_L.AUTO_YELL_ANNOUNCE_TEXT.repeaticon)--One boss dead (TODO, change to NewIconRepeatYell object if it's 16 or less targets)
 --Intermission
 local specWarnDanseMacabre						= mod:NewSpecialWarningSpell(331005, nil, nil, nil, 3, 2)
 
