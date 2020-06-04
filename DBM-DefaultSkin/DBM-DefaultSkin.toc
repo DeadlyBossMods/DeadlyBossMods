@@ -1,5 +1,7 @@
 ﻿## Interface: 80300
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FFDefault Skin (REQUIRED)|r
+## Title-esES:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FFSkin Predeterminada (REQUERIDO)|r
+## Title-esMX:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FFSkin Predeterminada (REQUERIDO)|r
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM 스킨|r|cffffe00a>|r |cff69ccf0기본 바 스킨|r
 ## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM皮肤|r|cffffe00a>|r |cff69ccf0经典计时条|r
 ## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM外觀|r|cffffe00a>|r |cff69ccf0傳統計時器|r
