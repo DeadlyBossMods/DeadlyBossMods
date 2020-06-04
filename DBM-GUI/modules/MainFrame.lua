@@ -15,7 +15,7 @@ end
 if DBM.Options.GUIWidth then
 	frame:SetSize(DBM.Options.GUIWidth, DBM.Options.GUIHeight)
 else
-	frame:SetSize(800, 400)
+	frame:SetSize(800, 600)
 end
 frame:EnableMouse(true)
 frame:SetMovable(true)
@@ -24,7 +24,7 @@ frame:SetClampedToScreen(true)
 frame:SetUserPlaced(true)
 frame:RegisterForDrag("LeftButton")
 frame:SetFrameLevel(frame:GetFrameLevel() + 4)
-frame:SetMinResize(800, 600)
+frame:SetMinResize(800, 400)
 frame:SetMaxResize(UIParent:GetWidth(), UIParent:GetHeight())
 frame:Hide()
 frame.backdropInfo = {
