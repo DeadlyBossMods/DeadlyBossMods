@@ -271,8 +271,9 @@ DBM.DefaultOptions = {
 	-- global boss mod settings (overrides mod-specific settings for some options)
 	DontShowBossAnnounces = false,
 	DontShowTargetAnnouncements = true,
-	DontShowSpecialWarnings = false,
 	DontShowSpecialWarningText = false,
+	DontShowSpecialWarningFlash = false,
+	DontShowSpecialWarningSound = false,
 	DontShowBossTimers = false,
 	DontShowUserTimers = false,
 	DontShowFarWarnings = true,
@@ -9711,8 +9712,13 @@ do
 	end
 
 	function specialWarningPrototype:Show(...)
-		if not DBM.Options.DontShowSpecialWarnings and not DBM.Options.DontShowSpecialWarningText and (not self.option or self.mod.Options[self.option]) and not moving and frame then
+		--Check if option for this warning is even enabled
+		if (not self.option or self.mod.Options[self.option]) and not moving and frame then
+			--Now, check if all special warning filters are enabled to save cpu and abort immediately if true.
+			if not DBM.Options.DontPlaySpecialWarningSound and not DBM.Options.DontShowSpecialWarningFlash and not DBM.Options.DontShowSpecialWarningText then return end
+			--Next, we check if trash mod warning and if so check the filter trash warning filter for trivial difficulties
 			if self.mod:IsEasyDungeon() and self.mod.isTrashMod and DBM.Options.FilterTrashWarnings2 then return end
+			--Lastly, we check if it's a tank warning and filter if not in tank spec. This is done because tank warnings on by default and handled fluidly by spec, not option setting
 			if self.announceType == "taunt" and DBM.Options.FilterTankSpec and not self.mod:IsTank() then return end--Don't tell non tanks to taunt, ever.
 			local argTable = {...}
 			-- add a default parameter for move away warnings
@@ -9788,18 +9794,21 @@ do
 					end
 				end
 			end
-			--No stripping on switch warnings, ever. They will NEVER have player name, but often have adds with "-" in name
-			if self.announceType and not self.announceType:find("switch") then
-				text = text:gsub(">.-<", classColoringFunction)
+			--Text is disabled, suresss text from screen and chat frame
+			if not DBM.Options.DontShowSpecialWarningText then
+				--No stripping on switch warnings, ever. They will NEVER have player name, but often have adds with "-" in name
+				if self.announceType and not self.announceType:find("switch") then
+					text = text:gsub(">.-<", classColoringFunction)
+				end
+				DBM:AddSpecialWarning(text)
+				self.combinedcount = 0
+				self.combinedtext = {}
+				if DBM.Options.ShowSWarningsInChat then
+					local colorCode = ("|cff%.2x%.2x%.2x"):format(DBM.Options.SpecialWarningFontCol[1] * 255, DBM.Options.SpecialWarningFontCol[2] * 255, DBM.Options.SpecialWarningFontCol[3] * 255)
+					self.mod:AddMsg(colorCode.."["..L.MOVE_SPECIAL_WARNING_TEXT.."] "..text.."|r", nil)
+				end
 			end
-			DBM:AddSpecialWarning(text)
-			self.combinedcount = 0
-			self.combinedtext = {}
-			if DBM.Options.ShowSWarningsInChat then
-				local colorCode = ("|cff%.2x%.2x%.2x"):format(DBM.Options.SpecialWarningFontCol[1] * 255, DBM.Options.SpecialWarningFontCol[2] * 255, DBM.Options.SpecialWarningFontCol[3] * 255)
-				self.mod:AddMsg(colorCode.."["..L.MOVE_SPECIAL_WARNING_TEXT.."] "..text.."|r", nil)
-			end
-			if not UnitIsDeadOrGhost("player") then
+			if not UnitIsDeadOrGhost("player") and not DBM.Options.DontShowSpecialWarningFlash then
 				if noteHasName then
 					if DBM.Options.SpecialWarningFlash5 then--Not included in above if statement on purpose. we don't want to trigger else rule if noteHasName is true but SpecialWarningFlash5 is false
 						local repeatCount = DBM.Options.SpecialWarningFlashCount5 or 1
@@ -9827,7 +9836,7 @@ do
 			--Mod ID: Encounter ID as string, or a generic string for mods that don't have encounter ID (such as trash, dummy/test mods)
 			--boolean: Whether or not this warning is a special warning (higher priority).
 			fireEvent("DBM_Announce", text, self.icon, self.type, self.spellId, self.mod.id, true)
-			if self.sound then
+			if self.sound and not DBM.Options.DontPlaySpecialWarningSound then
 				local soundId = self.option and self.mod.Options[self.option .. "SWSound"] or self.flash
 				if noteHasName and type(soundId) == "number" then soundId = noteHasName end--Change number to 5 if it's not a custom sound, else, do nothing with it
 				if self.hasVoice and DBM.Options.ChosenVoicePack ~= "None" and not voiceSessionDisabled and self.hasVoice <= SWFilterDisabed and (type(soundId) == "number" and soundId < 5 and DBM.Options.VoiceOverSpecW2 == "DefaultOnly" or DBM.Options.VoiceOverSpecW2 == "All") then return end
@@ -9842,8 +9851,11 @@ do
 	end
 
 	function specialWarningPrototype:CombinedShow(delay, ...)
-		if DBM.Options.DontShowSpecialWarnings or DBM.Options.DontShowSpecialWarningText then return end
+		--Check if option for this warning is even enabled
 		if self.option and not self.mod.Options[self.option] then return end
+		--Now, check if all special warning filters are enabled to save cpu and abort immediately if true.
+		if not DBM.Options.DontPlaySpecialWarningSound and not DBM.Options.DontShowSpecialWarningFlash and not DBM.Options.DontShowSpecialWarningText then return end
+		--Next, we check if trash mod warning and if so check the filter trash warning filter for trivial difficulties
 		if self.mod:IsEasyDungeon() and self.mod.isTrashMod and DBM.Options.FilterTrashWarnings2 then return end
 		local argTable = {...}
 		for i = 1, #argTable do
@@ -9883,7 +9895,7 @@ do
 		local voice = DBM.Options.ChosenVoicePack
 		if voiceSessionDisabled or voice == "None" then return end
 		if self.mod:IsEasyDungeon() and self.mod.isTrashMod and DBM.Options.FilterTrashWarnings2 then return end
-		if (not DBM.Options.DontShowSpecialWarnings and (not self.option or self.mod.Options[self.option]) or always) and self.hasVoice <= SWFilterDisabed then
+		if (not self.option or self.mod.Options[self.option]) or always) and self.hasVoice <= SWFilterDisabed then
 			--Filter tank specific voice alerts for non tanks if tank filter enabled
 			--But still allow AlwaysPlayVoice to play as well.
 			if (name == "changemt" or name == "tauntboss") and DBM.Options.FilterTankSpec and not self.mod:IsTank() and not always then return end
