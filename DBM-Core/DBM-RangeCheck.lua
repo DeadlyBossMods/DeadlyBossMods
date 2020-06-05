@@ -688,16 +688,12 @@ do
 					end
 					if not closetName then
 						closetName = DBM:GetUnitFullName(uId)
-						if DBM.Options.StripServerName then
-							closetName = DBM:GetShortServerName(closetName)
-						end
+						closetName = DBM:GetShortServerName(closetName)
 					end
 				end
 				if tEnabled and inRange and not onlySummary and closePlayer < 6 then -- Display up to 5 players in text range frame.
 					local playerName = DBM:GetUnitFullName(uId)
-					if DBM.Options.StripServerName then
-						playerName = DBM:GetShortServerName(playerName)
-					end
+					playerName = DBM:GetShortServerName(playerName)
 					local color = RAID_CLASS_COLORS[dot.class] or NORMAL_FONT_COLOR
 					textFrame.lines[closePlayer]:SetText(dot.icon and ("|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t %s"):format(dot.icon, playerName) or playerName)
 					textFrame.lines[closePlayer]:SetTextColor(color.r, color.g, color.b)

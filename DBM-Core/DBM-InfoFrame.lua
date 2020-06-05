@@ -776,7 +776,7 @@ local function onUpdate(frame, table)
 				local _, class = UnitClass(unitId)
 				if class then
 					color = RAID_CLASS_COLORS[class]
-					if DBM.Options.StripServerName then
+					if DBM.Options.StripServerName then--This still needs it's own check because it has to run custom code for the ugly 3rd column hack
 						local shortName = DBM:GetShortServerName(extraName or leftText)
 						if extraName then--3 column hack is present, we need to reconstruct leftText with shortened name
 							leftText = extra.."*"..shortName.."*"

@@ -723,9 +723,7 @@ local BNSendWhisper = sendWhisper
 --Another custom server name strip function that first strips out the "><" DBM wraps around playernames
 local function stripServerName(cap)
 	cap = cap:sub(2, -2)
-	if DBM.Options.StripServerName then
-		cap = DBM:GetShortServerName(cap)
-	end
+	cap = DBM:GetShortServerName(cap)
 	return cap
 end
 
@@ -2994,9 +2992,10 @@ do
 	--Shortens name but custom so we add * to off realmers instead of stripping it entirely like Ambiguate does
 	--Technically GetUnitName without "true" can be used to shorten name to "name (*)" but "name*" is even shorter which is why we do this
 	function DBM:GetShortServerName(name)
-		local shortName, serverName = string.split("-", extractedName)
+		if not DBM.Options.StripServerName then return name end--If strip is disabled, just return name
+		local shortName, serverName = string.split("-", name)
 		if serverName then
-			return name.."*"
+			return shortName.."*"
 		else
 			return name
 		end
@@ -9079,9 +9078,7 @@ do
 					local noStrip = cap:match("noStrip ")
 					if not noStrip then
 						local name = cap
-						if DBM.Options.StripServerName then
-							cap = DBM:GetShortServerName(cap)
-						end
+						cap = DBM:GetShortServerName(cap)
 						local playerColor = RAID_CLASS_COLORS[DBM:GetRaidClass(name)] or color
 						if playerColor then
 							cap = ("|r|cff%.2x%.2x%.2x%s|r|cff%.2x%.2x%.2x"):format(playerColor.r * 255, playerColor.g * 255, playerColor.b * 255, cap, color.r * 255, color.g * 255, color.b * 255)
@@ -9688,9 +9685,7 @@ do
 		local noStrip = cap:match("noStrip ")
 		if not noStrip then
 			local name = cap
-			if DBM.Options.StripServerName then
-				cap = DBM:GetShortServerName(cap)
-			end
+			cap = DBM:GetShortServerName(cap)
 			if DBM.Options.SWarnClassColor then
 				local playerColor = RAID_CLASS_COLORS[DBM:GetRaidClass(name)]
 				if playerColor then
