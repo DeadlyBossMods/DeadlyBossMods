@@ -17,7 +17,7 @@ local playerName = UnitName("player")
 -------------------
 -- Local Globals --
 -------------------
-local GetRaidTargetIndex, UnitName, UnitHealth, UnitPower, UnitPowerMax, UnitIsDeadOrGhost, UnitThreatSituation, UnitPosition, UnitIsUnit, Ambiguate = GetRaidTargetIndex, UnitName, UnitHealth, UnitPower, UnitPowerMax, UnitIsDeadOrGhost, UnitThreatSituation, UnitPosition, UnitIsUnit, Ambiguate
+local GetRaidTargetIndex, UnitName, UnitHealth, UnitPower, UnitPowerMax, UnitIsDeadOrGhost, UnitThreatSituation, UnitPosition = GetRaidTargetIndex, UnitName, UnitHealth, UnitPower, UnitPowerMax, UnitIsDeadOrGhost, UnitThreatSituation, UnitPosition
 local select, tonumber, twipe, mfloor = select, tonumber, table.wipe, math.floor
 local RAID_CLASS_COLORS = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS-- for Phanx' Class Colors
 
@@ -776,19 +776,11 @@ local function onUpdate(frame, table)
 				local _, class = UnitClass(unitId)
 				if class then
 					color = RAID_CLASS_COLORS[class]
-					if DBM.Options.StripServerName then
-						local shortName = Ambiguate(extraName or leftText, "short")
-						if extraName then--3 column hack is present, we need to reconstruct leftText with shortened name
-							leftText = extra.."*"..shortName
-						else--LeftText is name, just replace it with shortname
-							leftText = shortName
-						end
-					end
 				else
 					color = NORMAL_FONT_COLOR
 				end
 				linesShown = linesShown + 1
-				if unitId and UnitIsUnit(unitId, "player") then--It's player.
+				if (extraName or leftText) == playerName then--It's player.
 					if currentEvent == "health" or currentEvent == "playerpower" or currentEvent == "playerabsorb" or currentEvent == "playerbuff" or currentEvent == "playergooddebuff" or currentEvent == "playerbaddebuff" or currentEvent == "playerdebuffremaining" or currentEvent == "playerdebuffstacks" or currentEvent == "playerbuffremaining" or currentEvent == "playertargets" or currentEvent == "playeraggro" then--Red
 						infoFrame:SetLine(linesShown, icon or leftText, rightText, 255, 0, 0, 255, 255, 255)
 					else--Green
