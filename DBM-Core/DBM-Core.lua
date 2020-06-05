@@ -720,10 +720,11 @@ local function sendWhisper(target, msg)
 end
 local BNSendWhisper = sendWhisper
 
+--Another custom server name strip function that first strips out the "><" DBM wraps around playernames
 local function stripServerName(cap)
 	cap = cap:sub(2, -2)
 	if DBM.Options.StripServerName then
-		cap = Ambiguate(cap, "none")
+		cap = DBM:GetShortServerName(cap)
 	end
 	return cap
 end
@@ -2984,9 +2985,21 @@ do
 		return playerName, playerLevel, playerRealm
 	end
 
+	--Intentionally grabs server name at all times, usually to make sure warning/infoframe target info can name match the combat log in the table
 	function DBM:GetUnitFullName(uId)
 		if not uId then return nil end
 		return GetUnitName(uId, true)
+	end
+
+	--Shortens name but custom so we add * to off realmers instead of stripping it entirely like Ambiguate does
+	--Technically GetUnitName without "true" can be used to shorten name to "name (*)" but "name*" is even shorter which is why we do this
+	function DBM:GetShortServerName(name)
+		local shortName, serverName = string.split("-", extractedName)
+		if serverName then
+			return name.."*"
+		else
+			return name
+		end
 	end
 
 	function DBM:GetFullPlayerNameByGUID(guid)
@@ -9067,7 +9080,7 @@ do
 					if not noStrip then
 						local name = cap
 						if DBM.Options.StripServerName then
-							cap = Ambiguate(cap, "short")
+							cap = DBM:GetShortServerName(cap)
 						end
 						local playerColor = RAID_CLASS_COLORS[DBM:GetRaidClass(name)] or color
 						if playerColor then
@@ -9676,7 +9689,7 @@ do
 		if not noStrip then
 			local name = cap
 			if DBM.Options.StripServerName then
-				cap = Ambiguate(cap, "short")
+				cap = DBM:GetShortServerName(cap)
 			end
 			if DBM.Options.SWarnClassColor then
 				local playerColor = RAID_CLASS_COLORS[DBM:GetRaidClass(name)]

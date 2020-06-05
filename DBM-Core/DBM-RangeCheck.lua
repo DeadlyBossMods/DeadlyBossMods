@@ -556,7 +556,7 @@ end
 --  OnUpdate  --
 ----------------
 do
-	local UnitExists, UnitIsUnit, UnitIsDeadOrGhost, UnitIsConnected, UnitInPhase, GetPlayerFacing, UnitName, UnitClass, IsInRaid, GetNumGroupMembers, GetRaidTargetIndex, GetBestMapForUnit, Ambiguate = UnitExists, UnitIsUnit, UnitIsDeadOrGhost, UnitIsConnected, UnitInPhase, GetPlayerFacing, UnitName, UnitClass, IsInRaid, GetNumGroupMembers, GetRaidTargetIndex, C_Map.GetBestMapForUnit, Ambiguate
+	local UnitExists, UnitIsUnit, UnitIsDeadOrGhost, UnitIsConnected, UnitInPhase, GetPlayerFacing, UnitClass, IsInRaid, GetNumGroupMembers, GetRaidTargetIndex, GetBestMapForUnit, Ambiguate = UnitExists, UnitIsUnit, UnitIsDeadOrGhost, UnitIsConnected, UnitInPhase, GetPlayerFacing, UnitClass, IsInRaid, GetNumGroupMembers, GetRaidTargetIndex, C_Map.GetBestMapForUnit, Ambiguate
 	local max, sin, cos, pi2 = math.max, math.sin, math.cos, math.pi * 2
 	local circleColor, rotation, pixelsperyard, activeDots, prevRange, prevThreshold, prevNumClosePlayer, prevclosestRange, prevColor, prevType = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 	local unitList = {}
@@ -687,13 +687,16 @@ do
 						end
 					end
 					if not closetName then
-						closetName = UnitName(uId)
+						closetName = DBM:GetUnitFullName(uId)
+						if DBM.Options.StripServerName then
+							closetName = DBM:GetShortServerName(closetName)
+						end
 					end
 				end
 				if tEnabled and inRange and not onlySummary and closePlayer < 6 then -- Display up to 5 players in text range frame.
-					local playerName = UnitName(uId)
+					local playerName = DBM:GetUnitFullName(uId)
 					if DBM.Options.StripServerName then
-						playerName = Ambiguate(playerName, "short")
+						playerName = DBM:GetShortServerName(playerName)
 					end
 					local color = RAID_CLASS_COLORS[dot.class] or NORMAL_FONT_COLOR
 					textFrame.lines[closePlayer]:SetText(dot.icon and ("|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t %s"):format(dot.icon, playerName) or playerName)
