@@ -771,7 +771,7 @@ local function onUpdate(frame, table)
 		local extra, extraName = string.split("*", leftText)--Find just unit name, if extra info had to be added to make unique
 		local icon = icons[extraName or leftText] and icons[extraName or leftText] .. leftText
 		if friendlyEvents[currentEvent] then
-			local unitId = DBM:GetRaidUnitId(DBM:GetUnitFullName(extraName or leftText) or "player"--Prevent nil logical error
+			local unitId = DBM:GetRaidUnitId(DBM:GetUnitFullName(extraName or leftText)) or "player"--Prevent nil logical error
 			if unitId and select(4, UnitPosition(unitId)) == currentMapId then
 				local _, class = UnitClass(unitId)
 				if class then
