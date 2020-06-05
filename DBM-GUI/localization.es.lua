@@ -235,20 +235,24 @@ L.EventFilterMythicMusic	= "Desactivar música personalizada de encuentros en di
 
 -- Tab: Global Filter
 L.Panel_SpamFilter			= "Filtros globales"
-L.Area_SpamFilter_Outgoing	= "Opciones de filtros globales"
+L.Area_SpamFilter_Anounces	= "Announce Global Disable & Filter Options"
 L.SpamBlockNoShowAnnounce	= "Ocultar anuncios generales y desactivar los sonidos asociados"
 L.SpamBlockNoShowTgtAnnounce= "Ocultar anuncios generales de objetivos y desactivar los sonidos asociados (la opción anterior anula esta)"
 L.SpamBlockNoSpecWarn		= "Ocultar avisos especiales y desactivar los sonidos asociados"
 L.SpamBlockNoSpecWarnText	= "Ocultar avisos especiales pero sí reproducir sonidos de paquetes de voces (la opción anterior anula esta)"
+
+L.Area_SpamFilter_Timers	= "Timer Global Disable & Filter Options"
 L.SpamBlockNoShowTimers		= "Ocultar temporizadores de módulos"
 L.SpamBlockNoShowUTimers	= "Ocultar temporizadores de usuario"
+L.SpamBlockNoCountdowns		= "Desactivar sonidos de cuenta atrás"
+
+L.Area_SpamFilter_Misc		= "Misc Global Disable & Filter Options"
 L.SpamBlockNoSetIcon		= "Desactivar asignación automática de iconos"
 L.SpamBlockNoRangeFrame		= "Ocultar marcos de distancia"
 L.SpamBlockNoInfoFrame		= "Ocultar marcos de información"
 L.SpamBlockNoHudMap			= "Ocultar indicadores"
 L.SpamBlockNoNameplate		= "Ocultar auras de placas de nombres (las deshabilita por completo)"
 L.SpamBlockNoNameplateLines	= "Ocultar texto de auras de placas de nombres (se seguirán mostrando los iconos)"
-L.SpamBlockNoCountdowns		= "Desactivar sonidos de cuenta atrás"
 L.SpamBlockNoYells			= "Desactivar envío automático de mensajes en el chat"
 L.SpamBlockNoNoteSync		= "Rechazar automáticamente notas compartidas"
 L.SpamBlockNoReminders		= "Ocultar mensajes de carga, recomendaciones y actualizaciones (no recomendado)"

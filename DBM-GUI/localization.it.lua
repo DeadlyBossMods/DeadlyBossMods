@@ -248,20 +248,24 @@ L.EventFilterMythicMusic	= "Non riprodurre musica scontro nelle difficoltà Miti
 -- TODO: TRADURRE DA QUI
 -- Tab: Global Filter
 L.Panel_SpamFilter			= "Forzamenti & Filtri"
-L.Area_SpamFilter_Outgoing	= "Opzioni Forzamenti & Filtri"
+L.Area_SpamFilter_Anounces	= "Announce Global Disable & Filter Options"
 L.SpamBlockNoShowAnnounce	= "Niente testo o suoni per QUALUNQUE annuncio generale"
 L.SpamBlockNoShowTgtAnnounce= "Niente testo o suoni per annuncio generale BERSAGLIO (filtro sopra sovrascrive questo)"
 L.SpamBlockNoSpecWarn		= "Niente annunci o suoni speciali"
 L.SpamBlockNoSpecWarnText	= "Niente annunci speciali, ma permetti pacchetti vocali (filtro sopra sovrascrive questo)"
+
+L.Area_SpamFilter_Timers	= "Timer Global Disable & Filter Options"
 L.SpamBlockNoShowTimers		= "Niente temporizzatori mod (Boss Mod/CM/LFG/Respawn)"
 L.SpamBlockNoShowUTimers	= "Niente temporizzatori utente (Personalizzato/Pull/Pausa)"
+L.SpamBlockNoCountdowns		= "Niente suoni conto alla rovescia"
+
+L.Area_SpamFilter_Misc		= "Misc Global Disable & Filter Options"
 L.SpamBlockNoSetIcon		= "Nessuna icona sui bersagli"
 L.SpamBlockNoRangeFrame		= "Non mostrare distanziometro"
 L.SpamBlockNoInfoFrame		= "Non mostrare riquadro info"
 L.SpamBlockNoHudMap			= "Non mostrare HudMap"
 L.SpamBlockNoNameplate		= "Non mostrare Auree Barre Vitali (disabilita completamente)"
 L.SpamBlockNoNameplateLines	= "Non mostrare linee Aura Barre Vitali (icone aura visibili)"
-L.SpamBlockNoCountdowns		= "Niente suoni conto alla rovescia"
 L.SpamBlockNoYells			= "Non urlare in chat"
 L.SpamBlockNoNoteSync		= "Non accettare note condivise"
 L.SpamBlockNoReminders		= "Non mostrare messaggi di accesso, raccomandazioni o aggiornamenti (SCONSIGLIATO)"
