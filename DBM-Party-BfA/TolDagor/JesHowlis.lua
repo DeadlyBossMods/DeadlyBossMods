@@ -9,7 +9,7 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_AURA_APPLIED 257777 257827",
+	"SPELL_AURA_APPLIED 257777 257827 260067",
 	"SPELL_AURA_REMOVED 257827",
 	"SPELL_CAST_START 257791 257793 257785",
 	"SPELL_CAST_SUCCESS 257777"
@@ -17,6 +17,7 @@ mod:RegisterEventsInCombat(
 
 local warnSmokePowder				= mod:NewSpellAnnounce(257793, 2)
 local warnMotivatingCry				= mod:NewTargetNoFilterAnnounce(257827, 2)
+local warnViciousMauling			= mod:NewTargetNoFilterAnnounce(260067, 4)
 local warnPhase2					= mod:NewPhaseAnnounce(2, 2)
 
 local specWarnCripShiv				= mod:NewSpecialWarningDispel(257777, "RemovePoison", nil, nil, 1, 2)
@@ -40,6 +41,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnCripShiv:Play("helpdispel")
 	elseif spellId == 257827 then
 		warnMotivatingCry:Show(args.destName)
+	elseif spellId == 260067 then
+		warnViciousMauling:Show(args.destName)
 	end
 end
 

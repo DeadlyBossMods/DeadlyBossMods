@@ -294,7 +294,7 @@ L.SpamBlockNoRangeRestore	= "Do not restore range frame to previous state when m
 -- Tab: Spam Filter
 L.Area_SpamFilter			= "Spam Filter Options"
 L.DontShowFarWarnings		= "Do not show announces/timers for events that are far away"
-L.StripServerName			= "Strip realm name in warnings and timers"
+L.StripServerName			= "Strip realm name from warnings, timers, range check, and infoframe"
 L.FilterVoidFormSay			= "Do not send chat icon or countdown chat yells when in Void Form (regular chat yells still sent)"
 
 L.Area_SpecFilter			= "Role Filter Options"
