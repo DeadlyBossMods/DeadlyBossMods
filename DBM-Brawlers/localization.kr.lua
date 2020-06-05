@@ -19,10 +19,10 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	warnQueuePosition2	= "대기 순번 갱신시 몇번째에 있는지 알림",
-	specWarnYourNext	= "다음 차례일 때 특수 경고 보기",
-	specWarnYourTurn	= "내 차례가 되면 특수 경고 보기",
-	specWarnRumble		= "누군가 난장을 시작했을 때 특수 경고 보기",
-	SpectatorMode		= "관전시에도 경고/타이머 바 보기<br/>(개인용 '특수 경고' 메시지는 관전자에겐 보이지 않습니다)",
+	specWarnYourNext	= "다음 차례일 때 특별 경고 보기",
+	specWarnYourTurn	= "내 차례가 되면 특별 경고 보기",
+	specWarnRumble		= "누군가 난장을 시작했을 때 특별 경고 보기",
+	SpectatorMode		= "관전시에도 경고/타이머 바 보기<br/>(개인용 '특별 경고' 메시지는 관전자에겐 보이지 않습니다)",
 	SpeakOutQueue		= "대기 순번 갱신시 내 차례를 불러줍니다",
 	NormalizeVolume		= "싸움꾼 조합에 들어오면 자동으로 대화 채널의 음량을 소리(효과음) 채널 음량과 균일하게 만들어 관중의 환호성 소리를 줄입니다."
 })
@@ -190,7 +190,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	ArrowOnBoxing		= "$spell:140868, $spell:140862, $spell:140886|1을;를; 시전하는 동안 DBM 화살표 보기",
-	specWarnRPS			= "$spell:141206에서 내야하는 것 특수 경고 보기"
+	specWarnRPS			= "$spell:141206에서 내야하는 것 특별 경고 보기"
 })
 
 L:SetMiscLocalization({

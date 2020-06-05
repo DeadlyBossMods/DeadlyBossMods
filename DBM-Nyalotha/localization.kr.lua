@@ -64,7 +64,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(2364)
 
 L:SetOptionLocalization({
-	OnlyParentBondMoves		= "충전된 결속의 기준점이 될 때만 특수 경고 표시"
+	OnlyParentBondMoves		= "충전된 결속의 기준점이 될 때만 특별 경고 표시"
 })
 
 L:SetMiscLocalization({

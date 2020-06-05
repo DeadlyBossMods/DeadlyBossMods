@@ -46,7 +46,7 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization({
 	Emerged			= "등장 경고 보기",
-	specWarnAttack	= "아훈 약화 특수 경고 보기",
+	specWarnAttack	= "아훈 약화 특별 경고 보기",
 	SubmergTimer	= "잠복 타이머 바 보기",
 	EmergeTimer		= "등장 타이머 바 보기"
 })
@@ -66,8 +66,8 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	specWarnBrew		= "$spell:47376 특수 경고 보기",
-	specWarnBrewStun	= "$spell:47340 특수 경고 보기"
+	specWarnBrew		= "$spell:47376 특별 경고 보기",
+	specWarnBrewStun	= "$spell:47340 특별 경고 보기"
 })
 
 L:SetMiscLocalization{
@@ -138,7 +138,7 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization({
 	warnTotalAdds	= "각 총공격마다 이전 단계에 생성된 적 수 보기",
-	specWarnWave	= "총공격 특수 경고 보기",
+	specWarnWave	= "총공격 특별 경고 보기",
 	timerWave		= "다음 총공격 타이머 바 보기"
 })
 
