@@ -494,9 +494,9 @@ L.AUTO_TIMER_OPTIONS.roleplay		= "역할 수행(롤플레이) 지속 시간 타�
 
 L.AUTO_ICONS_OPTION_TEXT			= "$spell:%s 대상에 공격대 징표 설정"
 L.AUTO_ICONS_OPTION_TEXT2		= "$spell:%s에 공격대 징표 설정"
-L.AUTO_ARROW_OPTION_TEXT			= "$spell:%s 대상을 향하는 " .. L.DBM .. " 화살표 표시"
-L.AUTO_ARROW_OPTION_TEXT2		= "$spell:%s 대상과 반대 방향의 " .. L.DBM .. " 화살표 표시"
-L.AUTO_ARROW_OPTION_TEXT3		= "$spell:%s 특정 지점을 가리키는 " .. L.DBM .. " 화살표 표시"
+L.AUTO_ARROW_OPTION_TEXT			= "$spell:%s 대상을 향하는 " .. L.DBM .. " 화살표 보기"
+L.AUTO_ARROW_OPTION_TEXT2		= "$spell:%s 대상과 반대 방향의 " .. L.DBM .. " 화살표 보기"
+L.AUTO_ARROW_OPTION_TEXT3		= "$spell:%s 특정 지점을 가리키는 " .. L.DBM .. " 화살표 보기"
 L.AUTO_YELL_OPTION_TEXT.shortyell	= "$spell:%s 대상일 때 말풍선으로 알리기"
 L.AUTO_YELL_OPTION_TEXT.yell		= "$spell:%s 대상일 때 말풍선으로 알리기 (플레이어 이름 포함)"
 L.AUTO_YELL_OPTION_TEXT.count		= "$spell:%s 대상일 때 말풍선으로 알리기 (횟수 포함)"
