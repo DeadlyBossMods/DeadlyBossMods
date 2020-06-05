@@ -28,7 +28,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	warnGoodBrew		= "버프 맥주가 시전되면 경고 보기",
-	specWarnBrewOnBoss	= "보스 자리에 버프 맥주가 나오면 특수 경고 보기"
+	specWarnBrewOnBoss	= "보스 자리에 버프 맥주가 나오면 특별 경고 보기"
 })
 
 L:SetMiscLocalization({
