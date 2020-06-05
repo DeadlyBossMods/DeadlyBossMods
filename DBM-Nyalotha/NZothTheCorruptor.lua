@@ -98,7 +98,7 @@ local specWarnCollapsingMindscape			= mod:NewSpecialWarningMoveTo(317292, nil, n
 local specWarnMindgrasp						= mod:NewSpecialWarningSpell(315772, nil, nil, nil, 2, 2)
 local specWarnParanoia						= mod:NewSpecialWarningMoveTo(309980, nil, nil, nil, 1, 2)
 local yellParanoia							= mod:NewShortYell(309980)
-local yellParanoiaRepeater					= mod:NewPosYell(309980, DBM_CORE_L.AUTO_YELL_ANNOUNCE_TEXT.repeaticon)--not using NewIconRepeatYell object because of custom needs (it has to use not only icons but two asci emoji
+local yellParanoiaRepeater					= mod:NewIconRepeatYell(309980, DBM_CORE_L.AUTO_YELL_ANNOUNCE_TEXT.shortyell)--using custom yell text "%s" because of custom needs (it has to use not only icons but two asci emoji
 local specWarnEternalTorment				= mod:NewSpecialWarningCount(318449, nil, 311383, nil, 2, 2)
 ----Basher Tentacle
 local specWarnBasherTentacle				= mod:NewSpecialWarningSwitch("ej21286", "-Healer", nil, 2, 1, 2)
