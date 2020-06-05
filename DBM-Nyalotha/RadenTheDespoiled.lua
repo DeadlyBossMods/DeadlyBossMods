@@ -274,13 +274,13 @@ do
 		table.wipe(sortedLines)
 		--Unstable Vita Tracker
 		if mod.vb.currentVita then
-			addLine(unstableVita, mod.vb.currentVita)
-			addLine(L.Furthest, mod.vb.lastHighest)
+			addLine(unstableVita, DBM:GetShortServerName(mod.vb.currentVita))
+			addLine(L.Furthest, DBM:GetShortServerName(mod.vb.lastHighest))
 		end
 		--Unstable Nightmare Tracker
 		if mod.vb.currentNightmare then
-			addLine(unstableNightmare, mod.vb.currentNightmare)
-			addLine(L.Closest, mod.vb.lastLowest)
+			addLine(unstableNightmare, DBM:GetShortServerName(mod.vb.currentNightmare))
+			addLine(L.Closest, DBM:GetShortServerName(mod.vb.lastLowest))
 		end
 		--Vulnerability
 		if #ExposureTargets > 0 then
