@@ -261,7 +261,6 @@ L.Panel_SpamFilter			= "全局过滤"
 L.Area_SpamFilter_Anounces	= "Announce Global Disable & Filter Options"
 L.SpamBlockNoShowAnnounce	= "不显示警报或播放警报音效"
 L.SpamBlockNoShowTgtAnnounce= "不显示针对目标类型的警报或播放警报音效(上面那个优先级比这个高)"
-L.SpamBlockNoSpecWarn		= "不要显示特殊警报和特殊警报音效"
 L.SpamBlockNoSpecWarnText	= "不要显示特殊警报，但允许语音包(上面那个优先级比这个高)"
 
 L.Area_SpamFilter_Timers	= "Timer Global Disable & Filter Options"

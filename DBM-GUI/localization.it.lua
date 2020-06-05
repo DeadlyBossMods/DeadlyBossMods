@@ -251,7 +251,6 @@ L.Panel_SpamFilter			= "Forzamenti & Filtri"
 L.Area_SpamFilter_Anounces	= "Announce Global Disable & Filter Options"
 L.SpamBlockNoShowAnnounce	= "Niente testo o suoni per QUALUNQUE annuncio generale"
 L.SpamBlockNoShowTgtAnnounce= "Niente testo o suoni per annuncio generale BERSAGLIO (filtro sopra sovrascrive questo)"
-L.SpamBlockNoSpecWarn		= "Niente annunci o suoni speciali"
 L.SpamBlockNoSpecWarnText	= "Niente annunci speciali, ma permetti pacchetti vocali (filtro sopra sovrascrive questo)"
 
 L.Area_SpamFilter_Timers	= "Timer Global Disable & Filter Options"

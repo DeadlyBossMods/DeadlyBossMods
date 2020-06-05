@@ -227,7 +227,6 @@ L.Panel_SpamFilter			= "Deaktivierung von DBM-Funktionen"
 L.Area_SpamFilter_Anounces	= "Announce Global Disable & Filter Options"
 L.SpamBlockNoShowAnnounce	= "Zeige keinen Text und spiele keine Sounds für JEGLICHE allgemeine Meldungen"
 L.SpamBlockNoShowTgtAnnounce= "Zeige keinen Text und spiele keine Sounds für allgemeine ZIEL-Meldungen (wird durch obigen Filter überschrieben)"
-L.SpamBlockNoSpecWarn		= "Zeige keine Spezialwarnungen und spiele keine Spezialwarnungssounds"
 L.SpamBlockNoSpecWarnText	= "Zeige keinen Spezialwarnungstext, aber erlaube dennoch Sprachpacks (wird durch obigen Filter überschrieben)"
 
 L.Area_SpamFilter_Timers	= "Timer Global Disable & Filter Options"
