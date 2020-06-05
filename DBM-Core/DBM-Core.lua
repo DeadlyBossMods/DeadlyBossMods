@@ -1304,7 +1304,8 @@ do
 				return
 			end
 			if GetAddOnEnableState(playerName, "DBM-SpellTimers") >= 1 then
-				local version = tonumber(string.sub(version, 2, 4)) or 0
+				local version = GetAddOnMetadata("DBM-SpellTimers", "Version") or "r0"
+				version = tonumber(string.sub(version, 2, 4)) or 0
 				if version < 122 then
 					self:Disable(true)
 					self:Schedule(15, infniteLoopNotice, self, L.OUTDATEDSPELLTIMERS)
@@ -2629,7 +2630,8 @@ do
 			return
 		end
 		if GetAddOnEnableState(playerName, "DBM-SpellTimers") >= 1 then
-			local version = tonumber(string.sub(version, 2, 4)) or 0
+			local version = GetAddOnMetadata("DBM-SpellTimers", "Version") or "r0"
+			version = tonumber(string.sub(version, 2, 4)) or 0
 			if version < 122 then
 				self:AddMsg(L.OUTDATEDSPELLTIMERS)
 				return
