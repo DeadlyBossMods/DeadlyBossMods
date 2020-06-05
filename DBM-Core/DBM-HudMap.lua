@@ -966,9 +966,7 @@ do
 				local _, cls = UnitClass(text)
 				if cls and RAID_CLASS_COLORS[cls] then
 					r, g, b = RAID_CLASS_COLORS[cls].r, RAID_CLASS_COLORS[cls].g, RAID_CLASS_COLORS[cls].b
-					if DBM.Options.StripServerName then
-						text = Ambiguate(text, "short")
-					end
+					text = DBM:GetShortServerName(text)
 				end
 			end
 			self.text.r = r or self.text.r

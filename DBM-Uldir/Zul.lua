@@ -143,7 +143,7 @@ do
 				local uId = DBM:GetRaidUnitId(name)
 				local spellName, _, count = DBM:UnitDebuff(uId, 274195)
 				if spellName and count then
-					local unitName = UnitName(uId)
+					local unitName = DBM:GetUnitFullName(uId)
 					tempLines[unitName] = count
 					tempLinesSorted[#tempLinesSorted + 1] = unitName
 				end
