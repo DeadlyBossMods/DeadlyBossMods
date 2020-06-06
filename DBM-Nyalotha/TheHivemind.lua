@@ -70,7 +70,6 @@ local timerDronesCD							= mod:NewNextCountTimer(120, 312868, nil, nil, nil, 1,
 --local berserkTimer						= mod:NewBerserkTimer(600)
 
 mod:AddRangeFrameOption(6, 307232)--While 4 yards is supported, we want wiggle room
---mod:AddInfoFrameOption(308360, false)
 mod:AddSetIconOption("SetIconOnAdds", 307637, true, true, {1, 2, 3, 4, 5, 6})
 mod:AddNamePlateOption("NPAuraOnVolatileEruption", 307583)
 mod:AddNamePlateOption("NPAuraOnAcceleratedEvolution", 307637)
@@ -205,9 +204,6 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnCombatEnd()
---	if self.Options.InfoFrame then
---		DBM.InfoFrame:Hide()
---	end
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end

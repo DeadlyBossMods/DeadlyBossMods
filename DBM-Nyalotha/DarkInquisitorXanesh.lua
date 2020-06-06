@@ -99,6 +99,8 @@ do
 					end
 				end
 			end
+		else--Nothing left to track, auto hide
+			DBM.InfoFrame:Hide()
 		end
 		return lines, sortedLines
 	end
@@ -231,6 +233,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if self.Options.SetIconOnVoidWoken2 then
 			self:SetIcon(args.destName, #voidWokenTargets)
+		end
+		if self.Options.InfoFrame and not DBM.InfoFrame:IsShown() then
+			DBM.InfoFrame:SetHeader(OVERVIEW)
+			DBM.InfoFrame:Show(8, "function", updateInfoFrame, false, false)
 		end
 	elseif spellId == 314179 then
 		warnFanaticism:Show(args.destName)
