@@ -4,6 +4,7 @@ local generalWarningPanel = DBM_GUI_Frame:CreateNewPanel(L.Tab_GeneralMessages, 
 local generalCoreArea = generalWarningPanel:CreateArea(L.CoreMessages)
 generalCoreArea:CreateCheckButton(L.ShowPizzaMessage, true, nil, "ShowPizzaMessage")
 generalCoreArea:CreateCheckButton(L.ShowAllVersions, true, nil, "ShowAllVersions")
+generalCoreArea:CreateCheckButton(L.ShowReminders, true, nil, "ShowReminders")
 
 local generalMessagesArea = generalWarningPanel:CreateArea(L.CombatMessages)
 generalMessagesArea:CreateCheckButton(L.ShowEngageMessage, true, nil, "ShowEngageMessage")

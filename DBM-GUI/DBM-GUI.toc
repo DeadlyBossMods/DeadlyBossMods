@@ -48,7 +48,6 @@ modules\ListFrameButtonsPrototype.lua
 modules\PanelPrototype.lua
 
 modules\options\Options.lua
-modules\options\GeneralWarnings.lua
 modules\options\RaidWarning.lua
 modules\options\RaidWarningSpecial.lua
 modules\options\Bars.lua
@@ -56,6 +55,7 @@ modules\options\SpokenAlerts.lua
 modules\options\EventSounds.lua
 modules\options\GeneralOptions.lua
 modules\options\Spam.lua
+modules\options\GeneralWarnings.lua
 modules\options\HideBlizzard.lua
 modules\options\ExtraFeatures.lua
 modules\options\Profile.lua
