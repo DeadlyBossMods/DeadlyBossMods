@@ -781,7 +781,7 @@ local function onUpdate(frame, table)
 						if extraName then--3 column hack is present, we need to reconstruct leftText with shortened name
 							leftText = extra.."*"..shortName
 						else--LeftText is name, just replace it with shortname
-							leftText = shortName.."*"
+							leftText = shortName
 						end
 					end
 				else
