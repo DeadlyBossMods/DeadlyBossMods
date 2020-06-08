@@ -143,16 +143,17 @@ L.CoreMessages				= "Core Message Options"
 L.ShowPizzaMessage 			= "Show timer broadcast messages in chat frame"
 L.ShowAllVersions	 		= "Show boss mod versions for all group members in chat frame when doing a version check. (If disabled, still does out of date/current summery)"
 L.ShowReminders				= "Show reminder messages for missing sub-mods, disabled sub-mods, sub-mod hotfixes, out of date sub-mods, and silent mode still being enabled"
+
 L.CombatMessages			= "Combat Message Options"
 L.ShowEngageMessage 		= "Show engage messages in chat frame"
 L.ShowDefeatMessage 		= "Show kill/wipe messages in chat frame"
 L.ShowGuildMessages 		= "Show engage/kill/wipe messages for guild raids in chat frame"
 L.ShowGuildMessagesPlus		= "Also show Mythic+ engage/kill/wipe messages for guild groups (requires raid option)"
-L.WhisperMessages			= "Whisper Message Options"
-L.AutoRespond 				= "Auto-respond to whispers while fighting"
-L.WhisperStats 				= "Include kill/wipe stats in whisper responses"
-L.DisableStatusWhisper 		= "Disable status whispers for the entire group (requires Group Leader). Applies only to normal/heroic/mythic raids and mythic+ dungeons"
-L.DisableGuildStatus 		= "Disable progression messages from being sent to guild for entire group (requires Group Leader)."
+
+L.Area_ChatAlerts			= "Additional Alert Options"
+L.RoleSpecAlert				= "Show alert message on raid join when your loot spec does not match current spec"
+L.CheckGear					= "Show gear alert message during pull (when your equipped ilvl is much lower than bag ilvl (40+) or main weapon is not equipped)"
+L.WorldBossAlert			= "Show alert message when world bosses might have been engaged on your realm by guildies or friends (inaccurate if sender is CRZed)"
 
 -- Tab: Barsetup
 L.BarSetup					= "Timers"
@@ -316,6 +317,7 @@ L.DontShowPTCountdownText	= "Do not show Pull countdown text"
 L.DontPlayPTCountdown		= "Do not play Pull/Break/Combat/Custom Timer countdown audio at all"
 L.PT_Threshold				= "Do not play Pull/Break/Combat/Custom Timer countdown audio above: %d"
 
+-- Tab: Blizzard Disable & Hide
 L.Panel_HideBlizzard		= "Blizzard Disable & Hide"
 L.Area_HideBlizzard			= "Blizzard Disable & Hide Options"
 L.HideBossEmoteFrame		= "Hide raid boss emote frame during boss fights"
@@ -331,13 +333,19 @@ L.AfterFirst				= "In instance, after each movie has played once"
 L.CombatOnly				= "Disable in combat (any)"
 L.RaidCombat				= "Disable in combat (bosses only)"
 
+-- Tab: Privacy
+L.Tab_Privacy 				= "Privacy"
+L.Area_WhisperMessages		= "Whisper Message Options"
+L.AutoRespond 				= "Auto-respond to whispers while fighting"
+L.WhisperStats 				= "Include kill/wipe stats in whisper responses"
+L.DisableStatusWhisper 		= "Disable status whispers for the entire group (requires Group Leader). Applies only to normal/heroic/mythic raids and mythic+ dungeons"
+L.Area_SyncMessages			= "Addon Sync Options"
+L.DisableGuildStatus 		= "Disable progression messages from being synced to guild. If group leader, this disables it for all DBM users in your group"
+L.EnableWBSharing 			= "Share when you pull/defeat a world boss with your guild and your battle.net friends that are on same realm."
+
+-- Tab: Extra Features
 L.Panel_ExtraFeatures		= "Extra Features"
---
-L.Area_ChatAlerts			= "Text Alert Options"
-L.RoleSpecAlert				= "Show alert message on raid join when your loot spec does not match current spec"
-L.CheckGear					= "Show gear alert message during pull (when your equipped ilvl is much lower than bag ilvl (40+) or main weapon is not equipped)"
-L.WorldBossAlert			= "Show alert message when world bosses might have been engaged on your realm by guildies or friends (inaccurate if sender is CRZed)"
---
+
 L.Area_SoundAlerts			= "Sound/Flash Alert Options"
 L.LFDEnhance				= "Play ready check sound and flash application icon for role checks &amp; BG/LFG proposals in Master or Dialog audio channel (I.E. sounds work even if SFX are off and are generally louder)"
 L.WorldBossNearAlert		= "Play ready check sound and flash application icon when world bosses you are near to are pulled that you need"
@@ -366,6 +374,7 @@ L.Area_Advanced				= "Advanced Options"
 L.FakeBW					= "Pretend to be BigWigs in version checks instead of DBM (Useful for guilds that force using BigWigs)"
 L.AITimer					= "Automatically generate timers for never before seen fights using DBM's built in timer AI (Useful for pulling a test boss for the very first time such as beta or PTR). Recommended to always leave this turned ON"
 
+-- Tab: Profiles
 L.Panel_Profile				= "Profiles"
 L.Area_CreateProfile		= "Profile Creation for DBM Core Options"
 L.EnterProfileName			= "Enter profile name"

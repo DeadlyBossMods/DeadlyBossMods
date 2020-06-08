@@ -57,5 +57,6 @@ modules\options\GeneralOptions.lua
 modules\options\Spam.lua
 modules\options\GeneralWarnings.lua
 modules\options\HideBlizzard.lua
+modules\options\Privacy.lua
 modules\options\ExtraFeatures.lua
 modules\options\Profile.lua
