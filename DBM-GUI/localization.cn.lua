@@ -16,8 +16,12 @@ L.TranslationBy 			= "Mini_Dragon(Brilla@金色平原) 原翻译：Diablohu & yl
 L.Website					= "拜访我们的Discord |cFF73C2FBhttps://discord.gg/deadlybossmods|r. 在Twitter上关注 @deadlybossmods 或 @MysticalOS"
 L.WebsiteButton				= "网页"
 
-L.OTabBosses				= "模块"
-L.OTabOptions				= "选项"
+L.OTabBosses	            = "模块"--Deprecated and will be deleted once tabs no longer use this
+L.OTabRaids		            = "副本 & PVP"--Raids & PVP
+L.OTabDungeons	            = "地下城"--Might still need editing since it doesn't mention scenarios
+L.OTabPlugins	            = "插件"
+L.OTabOptions	            = "选项"
+L.OTabAbout		            = "关于"
 
 L.TabCategory_Options 		= "综合设置"
 L.TabCategory_OTHER    		= "其它"
