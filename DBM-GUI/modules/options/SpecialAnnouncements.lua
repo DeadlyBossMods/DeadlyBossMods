@@ -18,9 +18,9 @@ local specPanel = DBM_GUI_Frame:CreateNewPanel(L.Panel_SpecWarnFrame, "option")
 
 local specArea = specPanel:CreateArea(L.Area_SpecWarn)
 
-local check1 = specArea:CreateCheckButton(L.SpecWarn_ClassColor, true, nil, "SWarnClassColor")
-local check2 = specArea:CreateCheckButton(L.WarningAlphabetical, true, nil, "SWarningAlphabetical")
-local check3 = specArea:CreateCheckButton(L.ShowSWarningsInChat, true, nil, "ShowSWarningsInChat")
+local check1 = specArea:CreateCheckButton(L.ShowSWarningsInChat, true, nil, "ShowSWarningsInChat")
+local check2 = specArea:CreateCheckButton(L.SpecWarn_ClassColor, true, nil, "SWarnClassColor")
+local check3 = specArea:CreateCheckButton(L.WarningAlphabetical, true, nil, "SWarningAlphabetical")
 local check4 = specArea:CreateCheckButton(L.SWarnNameInNote, true, nil, "SWarnNameInNote")
 local check5 = specArea:CreateCheckButton(L.SpecialWarningIcon, true, nil, "SpecialWarningIcon")
 local check6 = specArea:CreateCheckButton(L.ShortTextSpellname, true, nil, "SpecialWarningShortText")
@@ -554,9 +554,9 @@ resetbutton:SetScript("OnClick", function()
 	DBM.Options.SpecialWarningX = DBM.DefaultOptions.SpecialWarningX
 	DBM.Options.SpecialWarningY = DBM.DefaultOptions.SpecialWarningY
 	-- Set UI visuals
-	check1:SetChecked(DBM.Options.SWarnClassColor)
-	check2:SetChecked(DBM.Options.SWarningAlphabetical)
-	check3:SetChecked(DBM.Options.ShowSWarningsInChat)
+	check1:SetChecked(DBM.Options.ShowSWarningsInChat)
+	check2:SetChecked(DBM.Options.SWarnClassColor)
+	check3:SetChecked(DBM.Options.SWarningAlphabetical)
 	check4:SetChecked(DBM.Options.SWarnNameInNote)
 	check5:SetChecked(DBM.Options.SpecialWarningIcon)
 	check6:SetChecked(DBM.Options.SpecialWarningShortText)

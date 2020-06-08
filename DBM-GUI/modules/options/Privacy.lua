@@ -7,5 +7,5 @@ privacyWhispersArea:CreateCheckButton(L.WhisperStats, true, nil, "WhisperStats")
 privacyWhispersArea:CreateCheckButton(L.DisableStatusWhisper, true, nil, "DisableStatusWhisper")
 
 local privacySyncArea = privacyPanel:CreateArea(L.Area_SyncMessages)
-privacySyncArea:CreateCheckButton(L.DisableGuildStatus, true, nil, "DisableGuildStatus")
 privacySyncArea:CreateCheckButton(L.EnableWBSharing, true, nil, "EnableWBSharing")
+privacySyncArea:CreateCheckButton(L.DisableGuildStatus, true, nil, "DisableGuildStatus")
