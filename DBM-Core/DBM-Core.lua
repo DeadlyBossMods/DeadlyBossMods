@@ -3043,7 +3043,7 @@ do
 	function DBM:GetShortServerName(name)
 		if not DBM.Options.StripServerName then return name end--If strip is disabled, just return name
 		local shortName, serverName = string.split("-", name)
-		if serverName then
+		if serverName and serverName ~= playerRealm then
 			return shortName.."*"
 		else
 			return name
