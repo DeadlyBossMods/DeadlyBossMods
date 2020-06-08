@@ -4,6 +4,7 @@ local generalWarningPanel = DBM_GUI_Frame:CreateNewPanel(L.Tab_GeneralMessages, 
 local generalCoreArea = generalWarningPanel:CreateArea(L.CoreMessages)
 generalCoreArea:CreateCheckButton(L.ShowPizzaMessage, true, nil, "ShowPizzaMessage")
 generalCoreArea:CreateCheckButton(L.ShowAllVersions, true, nil, "ShowAllVersions")
+generalCoreArea:CreateCheckButton(L.ShowReminders, true, nil, "ShowReminders")
 
 local generalMessagesArea = generalWarningPanel:CreateArea(L.CombatMessages)
 generalMessagesArea:CreateCheckButton(L.ShowEngageMessage, true, nil, "ShowEngageMessage")
@@ -11,8 +12,7 @@ generalMessagesArea:CreateCheckButton(L.ShowDefeatMessage, true, nil, "ShowDefea
 generalMessagesArea:CreateCheckButton(L.ShowGuildMessages, true, nil, "ShowGuildMessages")
 generalMessagesArea:CreateCheckButton(L.ShowGuildMessagesPlus, true, nil, "ShowGuildMessagesPlus")
 
-local generalWhispersArea = generalWarningPanel:CreateArea(L.WhisperMessages)
-generalWhispersArea:CreateCheckButton(L.AutoRespond, true, nil, "AutoRespond")
-generalWhispersArea:CreateCheckButton(L.WhisperStats, true, nil, "WhisperStats")
-generalWhispersArea:CreateCheckButton(L.DisableStatusWhisper, true, nil, "DisableStatusWhisper")
-generalWhispersArea:CreateCheckButton(L.DisableGuildStatus, true, nil, "DisableGuildStatus")
+local generalExtraAlerts = generalWarningPanel:CreateArea(L.Area_ChatAlerts)
+generalExtraAlerts:CreateCheckButton(L.RoleSpecAlert, true, nil, "RoleSpecAlert")
+generalExtraAlerts:CreateCheckButton(L.CheckGear, true, nil, "CheckGear")
+generalExtraAlerts:CreateCheckButton(L.WorldBossAlert, true, nil, "WorldBossAlert")

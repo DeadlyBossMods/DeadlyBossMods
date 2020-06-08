@@ -2,11 +2,6 @@ local L = DBM_GUI_L
 
 local extraFeaturesPanel	= DBM_GUI_Frame:CreateNewPanel(L.Panel_ExtraFeatures, "option")
 
-local chatAlertsArea		= extraFeaturesPanel:CreateArea(L.Area_ChatAlerts)
-chatAlertsArea:CreateCheckButton(L.RoleSpecAlert, true, nil, "RoleSpecAlert")
-chatAlertsArea:CreateCheckButton(L.CheckGear, true, nil, "CheckGear")
-chatAlertsArea:CreateCheckButton(L.WorldBossAlert, true, nil, "WorldBossAlert")
-
 local soundAlertsArea		= extraFeaturesPanel:CreateArea(L.Area_SoundAlerts)
 soundAlertsArea:CreateCheckButton(L.LFDEnhance, true, nil, "LFDEnhance")
 soundAlertsArea:CreateCheckButton(L.WorldBossNearAlert, true, nil, "WorldBossNearAlert")

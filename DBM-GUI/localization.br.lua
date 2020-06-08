@@ -120,7 +120,7 @@ L.CombatMessages			= "Opções de mensagens de combate"
 L.ShowEngageMessage 		= "Exibir mensagens ao iniciar combate no quadro de chat"
 L.ShowDefeatMessage 		= "Exibir mensagens ao vencer chefes no quadro de chat"
 L.ShowGuildMessages 		= "Exibir mensagens de puxada/vitória/derrota no quadro de chat"
-L.WhisperMessages			= "Opções de mensagens de sussurro"
+L.Area_WhisperMessages		= "Opções de mensagens de sussurro"
 L.AutoRespond 				= "Responder automaticamente a sussurros durante a luta"
 L.WhisperStats 				= "Incluir estatísticas de derrotas/vitórias nas respostas a sussurros"
 

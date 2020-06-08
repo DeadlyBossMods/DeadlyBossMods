@@ -48,14 +48,15 @@ modules\ListFrameButtonsPrototype.lua
 modules\PanelPrototype.lua
 
 modules\options\Options.lua
-modules\options\GeneralWarnings.lua
-modules\options\RaidWarning.lua
-modules\options\RaidWarningSpecial.lua
-modules\options\Bars.lua
+modules\options\GeneralOptions.lua
+modules\options\Announcements.lua
+modules\options\SpecialAnnouncements.lua
+modules\options\Timers.lua
 modules\options\SpokenAlerts.lua
 modules\options\EventSounds.lua
-modules\options\GeneralOptions.lua
-modules\options\Spam.lua
+modules\options\ChatframeMessages.lua
+modules\options\GlobalDisables.lua
 modules\options\HideBlizzard.lua
+modules\options\Privacy.lua
 modules\options\ExtraFeatures.lua
 modules\options\Profile.lua

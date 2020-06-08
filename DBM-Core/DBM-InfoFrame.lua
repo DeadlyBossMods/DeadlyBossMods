@@ -779,9 +779,9 @@ local function onUpdate(frame, table)
 					if DBM.Options.StripServerName then--This still needs it's own check because it has to run custom code for the ugly 3rd column hack
 						local shortName = DBM:GetShortServerName(extraName or leftText)
 						if extraName then--3 column hack is present, we need to reconstruct leftText with shortened name
-							leftText = extra.."*"..shortName.."*"
+							leftText = extra.."*"..shortName
 						else--LeftText is name, just replace it with shortname
-							leftText = shortName.."*"
+							leftText = shortName
 						end
 					end
 				else
