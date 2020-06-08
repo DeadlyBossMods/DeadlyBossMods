@@ -687,6 +687,7 @@ local function SendWorldSync(self, prefix, msg, noBNet)
 	end
 	if not noBNet then
 		local _, numBNetOnline = BNGetNumFriends()
+		local connectedServers = GetAutoCompleteRealms()
 		for i = 1, numBNetOnline do
 			local sameRealm = false
 			local accountInfo = C_BattleNet.GetFriendAccountInfo(i)
@@ -695,7 +696,6 @@ local function SendWorldSync(self, prefix, msg, noBNet)
 				if gameAccountID and isOnline and userRealm then
 					--local gameAccountInfo = C_BattleNet.GetGameAccountInfoByID(presenceID)--Just in case required, if it can't actually be pulled from sub table of accountInfo above
 					--local userRealm = accountInfo.gameAccountInfo.realmName or L.UNKNOWN
-					local connectedServers = GetAutoCompleteRealms()
 					if connectedServers then
 						for j = 1, #connectedServers do
 							if userRealm == connectedServers[j] then

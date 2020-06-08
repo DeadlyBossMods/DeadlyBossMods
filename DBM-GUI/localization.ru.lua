@@ -248,7 +248,6 @@ L.SpamBlockNoNameplate		= "Не показывать Nameplate Auras (отклю
 L.SpamBlockNoNameplateLines	= "Не показывать линии Nameplate Aura (иконки аур будут отображаться)"
 L.SpamBlockNoYells			= "Не отправлять крики в чат"
 L.SpamBlockNoNoteSync		= "Не принимать заметки"
-L.SpamBlockNoReminders		= "Не показывать никаких сообшений при входе в игру, рекомендаций или об обновлениях (НЕ рекомендуется)"
 
 L.Area_Restore				= "Параметры DBM для возврата настроек (восстанавливать ли предыдущее пользов. состояние по окончание работы модулей)"
 L.SpamBlockNoIconRestore	= "Не сохранять состояние меток и восстанавливать их после боя"

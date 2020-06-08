@@ -254,7 +254,6 @@ L.SpamBlockNoNameplate		= "Ocultar auras de placas de nombres (las deshabilita p
 L.SpamBlockNoNameplateLines	= "Ocultar texto de auras de placas de nombres (se seguirán mostrando los iconos)"
 L.SpamBlockNoYells			= "Desactivar envío automático de mensajes en el chat"
 L.SpamBlockNoNoteSync		= "Rechazar automáticamente notas compartidas"
-L.SpamBlockNoReminders		= "Ocultar mensajes de carga, recomendaciones y actualizaciones (no recomendado)"
 
 L.Area_Restore				= "Opciones de restauración"
 L.SpamBlockNoIconRestore	= "Restaurar iconos al acabar el encuentro"

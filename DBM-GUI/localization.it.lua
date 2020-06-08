@@ -267,7 +267,6 @@ L.SpamBlockNoNameplate		= "Non mostrare Auree Barre Vitali (disabilita completam
 L.SpamBlockNoNameplateLines	= "Non mostrare linee Aura Barre Vitali (icone aura visibili)"
 L.SpamBlockNoYells			= "Non urlare in chat"
 L.SpamBlockNoNoteSync		= "Non accettare note condivise"
-L.SpamBlockNoReminders		= "Non mostrare messaggi di accesso, raccomandazioni o aggiornamenti (SCONSIGLIATO)"
 
 L.Area_Restore				= "Ripristino Opzioni DBM (Se DBM ripristina lo stato utente al termine della mod)"
 L.SpamBlockNoIconRestore	= "Non salvare stato icone e ripristinale al termine del combattimento"

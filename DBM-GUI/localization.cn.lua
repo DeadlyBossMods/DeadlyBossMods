@@ -277,7 +277,6 @@ L.SpamBlockNoNameplate		= "不要显示姓名板高亮(完全取消)"
 L.SpamBlockNoNameplateLines	= "不要显示姓名版高亮(效果图标继续显示)"
 L.SpamBlockNoYells			= "不要再战斗中大喊"
 L.SpamBlockNoNoteSync		= "不接受别人分享的自定义注记"
-L.SpamBlockNoReminders		= "不显示任何登陆, 过期信息(不推荐)"
 
 L.Area_Restore				= "DBM战斗结束重置设置"
 L.SpamBlockNoIconRestore	= "当战斗结束后不保存团队标记状态并重置"

@@ -275,7 +275,6 @@ L.SpamBlockNoNameplate		= "不要顯示名條光環 (完全禁用)"
 L.SpamBlockNoNameplateLines	= "不要顯示名條光環行 (光環圖示仍然顯示)"
 L.SpamBlockNoYells			= "不送出大喊至頻道"
 L.SpamBlockNoNoteSync		= "不接受註記分享"
-L.SpamBlockNoReminders		= "不顯示任何登入，推薦、模組缺失或更新訊息"
 
 L.Area_Restore				= "DBM還原選項(DBM是否還原至使用者過去狀態)"
 L.SpamBlockNoIconRestore	= "不在戰鬥結束後記住和還原團隊圖示狀態"
