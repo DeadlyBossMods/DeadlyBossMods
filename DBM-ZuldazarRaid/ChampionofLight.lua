@@ -55,7 +55,7 @@ local specWarnBlindingFaith				= mod:NewSpecialWarningLookAway(283650, nil, nil,
 local specWarnGTFO						= mod:NewSpecialWarningGTFO(283582, nil, nil, nil, 1, 8)
 local specWarnPrayerfortheFallen		= mod:NewSpecialWarningSpell(287469, nil, nil, nil, 3, 2, 4)--Mythic
 
-mod:AddTimerLine(DBM_CORE_L.DBM_BOSS)
+mod:AddTimerLine(DBM_CORE_L.BOSS)
 local timerWaveofLightCD				= mod:NewCDTimer(10.5, 283598, nil, nil, nil, 3, nil, DBM_CORE_L.MAGIC_ICON)
 local timerJudgmentRetCD				= mod:NewNextTimer(50.3, 283933, nil, nil, nil, 3, nil, nil, nil, 1, 5)
 local timerJudgmentReckoningCD			= mod:NewNextTimer(50.3, 284474, nil, nil, nil, 2, nil, nil, nil, 1, 5)
@@ -122,7 +122,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnTargetChange:Show(DBM_CORE_L.ADDS)
 		specWarnTargetChange:Play("targetchange")
 	elseif spellId == 284474 then--Judgment: Reckoning
-		specWarnTargetChange:Show(DBM_CORE_L.DBM_BOSS)
+		specWarnTargetChange:Show(DBM_CORE_L.BOSS)
 		specWarnTargetChange:Play("targetchange")
 	elseif spellId == 283662 then
 		specWarnCalltoArms:Show()

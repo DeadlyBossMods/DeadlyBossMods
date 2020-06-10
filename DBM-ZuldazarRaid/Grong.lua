@@ -63,7 +63,7 @@ local yellThrowTargetFades				= mod:NewShortFadesYell(289307)
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 8)
 
 --mod:AddTimerLine(DBM:EJ_GetSectionInfo(18527))
-mod:AddTimerLine(DBM_CORE_L.DBM_BOSS)
+mod:AddTimerLine(DBM_CORE_L.BOSS)
 --local timerEnergyAOECD				= mod:NewCDCountTimer(100, energyAOESpellId, nil, nil, nil, 2)
 local timerTankComboCD					= mod:NewCDTimer(30.3, tankComboId, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON, nil, 2, 4)
 local timerSlamCD						= mod:NewCDTimer(27, slamSpellId, nil, nil, nil, 3)
