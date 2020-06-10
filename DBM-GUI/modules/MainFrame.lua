@@ -60,9 +60,8 @@ frame:SetScript("OnDragStop", function(self)
 end)
 frame:SetScript("OnSizeChanged", function(self)
 	self:UpdateMenuFrame()
-	local container = _G[self:GetName() .. "PanelContainer"]
-	if container.displayedFrame then
-		self:DisplayFrame(container.displayedFrame)
+	if DBM_GUI.currentViewing then
+		self:DisplayFrame(DBM_GUI.currentViewing)
 	end
 end)
 frame:SetScript("OnMouseUp", function(self)
@@ -177,8 +176,8 @@ for i = 1, math.floor(UIParent:GetHeight() / 18) do
 		end
 		frame.tabs[frame.tab].selection = button
 		button:LockHighlight()
-		DBM_GUI.currentViewing = self.element
 		frame:DisplayFrame(self.element)
+		DBM_GUI.currentViewing = self.element
 	end)
 	if i == 1 then
 		button:SetPoint("TOPLEFT", frameList, 0, -8)
