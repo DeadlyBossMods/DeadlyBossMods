@@ -13,7 +13,7 @@ L:SetMiscLocalization({
 ---------------------------
 -- MOTHER --
 ---------------------------
-L= DBM:GetModLocalization(2167)
+--L= DBM:GetModLocalization(2167)
 
 ---------------------------
 -- Fetid Devourer --
@@ -71,7 +71,7 @@ L:SetMiscLocalization({
 ---------------
 -- Mythrax the Unraveler --
 ---------------
-L= DBM:GetModLocalization(2194)
+--L= DBM:GetModLocalization(2194)
 
 ---------------------------
 -- Zul --
@@ -82,7 +82,7 @@ L:SetTimerLocalization({
 	timerCallofCrawgCD		= "下一次粉碎者鮮血池(%s)",
 	timerCallofHexerCD 		= "下一次血咒師鮮血池(%s)",
 	timerCallofCrusherCD	= "下一次克洛格鮮血池(%s)",
-	timerAddIncoming		= DBM_INCOMING
+	timerAddIncoming		= DBM_CORE_L.INCOMING
 })
 
 L:SetOptionLocalization({

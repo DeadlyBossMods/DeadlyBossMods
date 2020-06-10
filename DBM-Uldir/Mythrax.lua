@@ -159,7 +159,7 @@ function mod:SPELL_CAST_START(args)
 			timerEssenceShearCD:Start(19.5, BOSS, args.sourceGUID)
 		else--Big Adds (cid==139381)
 			if self:AntiSpam(3, 1) then
-				timerEssenceShearCD:Start(19.5, DBM_ADD)
+				timerEssenceShearCD:Start(19.5, DBM_CORE_L.ADD)
 			end
 		end
 	elseif spellId == 273538 then--Antispammed since he casts double on mythic
@@ -175,7 +175,7 @@ function mod:SPELL_CAST_START(args)
 				timerObliterationBlastCD:Start(14.9, BOSS)
 			end
 		else--Big Adds (cid==139381)
-			timerObliterationBlastCD:Start(12, DBM_ADD)
+			timerObliterationBlastCD:Start(12, DBM_CORE_L.ADD)
 		end
 	elseif spellId == 273810 then--Timers start here, because we have to factor boss movement
 		timerOblivionSphereCD:Start(7, self.vb.sphereCast+1)--Resets to 7
@@ -257,7 +257,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		specWarnLivingWeapon:Show()
 		specWarnLivingWeapon:Play("bigmob")
 		timerVoidEchoesCD:Start(2.5, 1)
-		timerObliterationBlastCD:Start(16.5, DBM_ADD)
+		timerObliterationBlastCD:Start(16.5, DBM_CORE_L.ADD)
 		timerLivingWeaponCD:Start(60)
 	elseif spellId == 272404 then
 		self.vb.sphereCast = self.vb.sphereCast + 1
@@ -328,7 +328,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif spellId == 279157 then--CLEU method of detecting add leaving, TODO, see if can detect it with IEEU or UNIT_TARGETABLE_CHANGED so it's reliable when add can be killed in 3 seconds (so, like next expansion :D)
 		timerVoidEchoesCD:Stop()
-		timerObliterationBlastCD:Stop(DBM_ADD)
+		timerObliterationBlastCD:Stop(DBM_CORE_L.ADD)
 	elseif spellId == 272146 then
 		infoframeTable[args.destName] = nil
 		if self.Options.InfoFrame then
@@ -355,7 +355,7 @@ function mod:UNIT_DIED(args)
 		warnDestroyerRemaining:Show(self.vb.destroyersRemaining)
 		--TODO, infoframe add tracking
 		if self.vb.destroyersRemaining == 0 then
-			timerEssenceShearCD:Stop(DBM_ADD)
+			timerEssenceShearCD:Stop(DBM_CORE_L.ADD)
 		end
 	end
 end

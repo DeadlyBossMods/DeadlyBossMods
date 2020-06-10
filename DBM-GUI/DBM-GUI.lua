@@ -7,7 +7,7 @@ DBM_GUI = {
 local next, type, pairs, strsplit, tonumber, tostring, ipairs, tinsert, tsort, mfloor = next, type, pairs, strsplit, tonumber, tostring, ipairs, table.insert, table.sort, math.floor
 local C_Timer, GetExpansionLevel, IsAddOnLoaded, GameFontNormal, GameFontNormalSmall, GameFontHighlight, GameFontHighlightSmall = C_Timer, GetExpansionLevel, IsAddOnLoaded, GameFontNormal, GameFontNormalSmall, GameFontHighlight, GameFontHighlightSmall
 local RAID_DIFFICULTY1, RAID_DIFFICULTY2, RAID_DIFFICULTY3, RAID_DIFFICULTY4, PLAYER_DIFFICULTY1, PLAYER_DIFFICULTY2, PLAYER_DIFFICULTY3, PLAYER_DIFFICULTY6, PLAYER_DIFFICULTY_TIMEWALKER, CHALLENGE_MODE, ALL, SPECIALIZATION = RAID_DIFFICULTY1, RAID_DIFFICULTY2, RAID_DIFFICULTY3, RAID_DIFFICULTY4, PLAYER_DIFFICULTY1, PLAYER_DIFFICULTY2, PLAYER_DIFFICULTY3, PLAYER_DIFFICULTY6, PLAYER_DIFFICULTY_TIMEWALKER, CHALLENGE_MODE, ALL, SPECIALIZATION
-local LibStub, DBM, DBM_GUI, DBM_OPTION_SPACER = LibStub, DBM, DBM_GUI, DBM_OPTION_SPACER
+local LibStub, DBM, DBM_GUI, DBM_OPTION_SPACER = _G["LibStub"], DBM, DBM_GUI, DBM_OPTION_SPACER
 
 do
 	local soundsRegistered = false
@@ -128,17 +128,18 @@ do
 end
 
 function DBM_GUI:ShowHide(forceshow)
+	local optionsFrame = _G["DBM_GUI_OptionsFrame"]
 	if forceshow == true then
 		self:UpdateModList()
-		DBM_GUI_OptionsFrame:Show()
+		optionsFrame:Show()
 	elseif forceshow == false then
-		DBM_GUI_OptionsFrame:Hide()
+		optionsFrame:Hide()
 	else
-		if DBM_GUI_OptionsFrame:IsShown() then
-			DBM_GUI_OptionsFrame:Hide()
+		if optionsFrame:IsShown() then
+			optionsFrame:Hide()
 		else
 			self:UpdateModList()
-			DBM_GUI_OptionsFrame:Show()
+			optionsFrame:Show()
 		end
 	end
 end
@@ -262,7 +263,7 @@ function DBM_GUI:CreateBossModPanel(mod)
 						end)
 					elseif mod.dropdowns and mod.dropdowns[v] then
 						local dropdownOptions = {}
-						for i, val in ipairs(mod.dropdowns[v]) do
+						for _, val in ipairs(mod.dropdowns[v]) do
 							dropdownOptions[#dropdownOptions + 1] = {
 								text	= mod.localization.options[val],
 								value	= val
@@ -487,7 +488,7 @@ do
 				DBM:LoadAllModDefaultOption(addon.modId)
 			end)
 			for charname, charTable in pairs(_G[addon.modId:gsub("-", "") .. "_AllSavedVars"] or {}) do
-				for bossid, optionTable in pairs(charTable) do
+				for _, optionTable in pairs(charTable) do
 					if type(optionTable) == "table" then
 						for i = 0, 3 do
 							if optionTable[i] then
@@ -1415,14 +1416,14 @@ do
 				v()
 			end
 		end)
-		DBM_GUI_OptionsFrame:DisplayFrame(panel.frame)
+		_G["DBM_GUI_OptionsFrame"]:DisplayFrame(panel.frame)
 	end
 
 	local Categories = {}
 	local subTabId = 0
 
 	function DBM_GUI:UpdateModList()
-		for z, addon in ipairs(DBM.AddOns) do
+		for _, addon in ipairs(DBM.AddOns) do
 			if not Categories[addon.category] then
 				-- Create a Panel for "Wrath of the Lich King" "Burning Crusade" ...
 				local expLevel = GetExpansionLevel()
@@ -1507,9 +1508,10 @@ do
 				end
 			end
 		end
-		if DBM_GUI_OptionsFrame:IsShown() then
-			DBM_GUI_OptionsFrame:Hide()
-			DBM_GUI_OptionsFrame:Show()
+		local optionsFrame = _G["DBM_GUI_OptionsFrame"]
+		if optionsFrame:IsShown() then
+			optionsFrame:Hide()
+			optionsFrame:Show()
 		end
 	end
 end

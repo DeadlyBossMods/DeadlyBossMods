@@ -4,7 +4,7 @@ local CL	= DBM_CORE_L
 local DBM = DBM
 local CreateFrame = CreateFrame
 
-local frame = DBM_GUI_OptionsFrame
+local frame = _G["DBM_GUI_OptionsFrame"]
 table.insert(_G["UISpecialFrames"], frame:GetName())
 frame:SetFrameStrata("DIALOG")
 if DBM.Options.GUIPoint then
@@ -48,7 +48,7 @@ frame:SetScript("OnShow", function(self)
 	end
 end)
 frame:SetScript("OnHide", function()
-	DBM_GUI_DropDown:Hide()
+	_G["DBM_GUI_DropDown"]:Hide()
 end)
 frame:SetScript("OnDragStart", frame.StartMoving)
 frame:SetScript("OnDragStop", function(self)
@@ -60,9 +60,8 @@ frame:SetScript("OnDragStop", function(self)
 end)
 frame:SetScript("OnSizeChanged", function(self)
 	self:UpdateMenuFrame()
-	local container = _G[self:GetName() .. "PanelContainer"]
-	if container.displayedFrame then
-		self:DisplayFrame(container.displayedFrame)
+	if DBM_GUI.currentViewing then
+		self:DisplayFrame(DBM_GUI.currentViewing)
 	end
 end)
 frame:SetScript("OnMouseUp", function(self)
@@ -177,8 +176,8 @@ for i = 1, math.floor(UIParent:GetHeight() / 18) do
 		end
 		frame.tabs[frame.tab].selection = button
 		button:LockHighlight()
-		DBM_GUI.currentViewing = self.element
 		frame:DisplayFrame(self.element)
+		DBM_GUI.currentViewing = self.element
 	end)
 	if i == 1 then
 		button:SetPoint("TOPLEFT", frameList, 0, -8)

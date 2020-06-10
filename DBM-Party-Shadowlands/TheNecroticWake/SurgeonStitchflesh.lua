@@ -110,7 +110,7 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
 function mod:RAID_BOSS_WHISPER(msg)
 	if msg:find("spell:327461") then
-		specWarnMeatHook:Show(DBM_BOSS)
+		specWarnMeatHook:Show(DBM_CORE_L.BOSS)
 		specWarnMeatHook:Play("targetyou")
 		yellMeatHook:Yell()
 	end
