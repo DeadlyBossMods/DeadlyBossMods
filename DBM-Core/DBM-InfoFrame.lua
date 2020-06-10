@@ -19,7 +19,7 @@ local playerName = UnitName("player")
 -------------------
 local GetRaidTargetIndex, UnitName, UnitHealth, UnitPower, UnitPowerMax, UnitIsDeadOrGhost, UnitThreatSituation, UnitPosition, UnitIsUnit = GetRaidTargetIndex, UnitName, UnitHealth, UnitPower, UnitPowerMax, UnitIsDeadOrGhost, UnitThreatSituation, UnitPosition, UnitIsUnit
 local select, tonumber, twipe, mfloor = select, tonumber, table.wipe, math.floor
-local RAID_CLASS_COLORS = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS-- for Phanx' Class Colors
+local RAID_CLASS_COLORS = _G["CUSTOM_CLASS_COLORS"] or RAID_CLASS_COLORS-- for Phanx' Class Colors
 
 ---------------------
 --  Dropdown Menu  --
@@ -240,6 +240,23 @@ local function updateLines(preSorted)
 		v(sortedLines)
 	end
 end
+
+--[[
+local function namesortFuncAsc(a, b)
+	return a < b
+end
+
+local function updateNamesortLines()
+	twipe(sortedLines)
+	for i in pairs(lines) do
+		sortedLines[#sortedLines + 1] = i
+	end
+	table.sort(sortedLines, namesortFuncAsc)
+	for _, v in ipairs(updateCallbacks) do
+		v(sortedLines)
+	end
+end
+]]--
 
 local function updateLinesCustomSort(sortFunc)
 	twipe(sortedLines)

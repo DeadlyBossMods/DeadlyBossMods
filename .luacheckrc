@@ -19,13 +19,6 @@ ignore = {
 globals = {
 	"_G",
 
-	-- misc custom
-	"CUSTOM_CLASS_COLORS",
-	"LibStub",
-	"BigWigs",
-	"BigBrother",
-	"Transcriptor",
-
 	-- Saved Variables
 	"DBM_AllSavedOptions",
 	"DBM_MinimapIcon",

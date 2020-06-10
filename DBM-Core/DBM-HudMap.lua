@@ -13,7 +13,7 @@ local wipe, type, pairs, ipairs, tinsert, tremove, tonumber, setmetatable, selec
 local abs, pow, sqrt, sin, cos, atan2, floor, ceil, min, max, pi2 = math.abs, math.pow, math.sqrt, math.sin, math.cos, math.atan2, math.floor, math.ceil, math.min, math.max, math.pi * 2
 local error = error
 
-local CallbackHandler = LibStub:GetLibrary("CallbackHandler-1.0")
+local CallbackHandler = _G["LibStub"]:GetLibrary("CallbackHandler-1.0")
 local updateFrame = CreateFrame("Frame", "DBMHudMapUpdateFrame")
 local fixedOnUpdateRate = 0.03
 local onUpdate, Point, Edge
@@ -28,7 +28,7 @@ local GetTime, WorldFrame = GetTime, WorldFrame
 local UnitExists, UnitIsUnit, UnitPosition, UnitIsConnected, GetPlayerFacing = UnitExists, UnitIsUnit, UnitPosition, UnitIsConnected, GetPlayerFacing
 local GetInstanceInfo = GetInstanceInfo
 
-local RAID_CLASS_COLORS = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS
+local RAID_CLASS_COLORS = _G["CUSTOM_CLASS_COLORS"] or RAID_CLASS_COLORS
 
 -- TAXIROUTE_LINEFACTOR_2 global is removed in legion, but TAXIROUTE_LINEFACTOR still exists, so we create our own
 local TAXIROUTE_LINEFACTOR_2 = TAXIROUTE_LINEFACTOR_2 or TAXIROUTE_LINEFACTOR / 2
@@ -1377,6 +1377,17 @@ do
 		end
 		return dx, dy
 	end
+
+	--[[
+	local function ClipPointToEdges(dx, dy, offset)
+		local nx, ny
+		local z2 = (WorldFrame:GetHeight() * 0.48)
+		dx, dy = ClipPointToRadius(dx, dy, offset)
+		nx = min(max(dx, -z2 + offset), z2 - offset)
+		ny = min(max(dy, -z2 + offset), z2 - offset)
+		return nx, ny, nx ~= dx or ny ~= dy
+	end
+	--]]
 
 	function mod:GetFacing()
 		return GetPlayerFacing() or 0
