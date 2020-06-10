@@ -64,7 +64,7 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(2195)
 
 L:SetTimerLocalization({
-	timerAddIncoming		= DBM_INCOMING
+	timerAddIncoming		= DBM_CORE_L.INCOMING
 })
 
 L:SetOptionLocalization({

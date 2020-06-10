@@ -82,7 +82,7 @@ L:SetTimerLocalization({
 	timerCallofCrawgCD		= "Prossima Pozza Crog (%s)",
 	timerCallofHexerCD 		= "Prossima Pozza Sanguemalefico (%s)",
 	timerCallofCrusherCD	= "Prossima Pozza Frantumatrice (%s)",
-	timerAddIncoming		= DBM_INCOMING
+	timerAddIncoming		= DBM_CORE_L.INCOMING
 })
 
 L:SetOptionLocalization({

@@ -83,7 +83,7 @@ L:SetTimerLocalization({
 	timerCallofCrawgCD		= "下一个嗜血抱齿兽池 (%s)",
 	timerCallofHexerCD 		= "下一个鲜血妖术师池 (%s)",
 	timerCallofCrusherCD	= "下一个碾压者池 (%s)",
-	timerAddIncoming		= DBM_INCOMING
+	timerAddIncoming		= DBM_CORE_L.INCOMING
 })
 
 L:SetOptionLocalization({

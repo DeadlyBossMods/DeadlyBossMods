@@ -483,7 +483,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 289387 then
 		if args:IsPlayer() then
-			specWarnFreezingBlood:Show(DBM_ALLY)
+			specWarnFreezingBlood:Show(DBM_CORE_L.ALLY)
 			specWarnFreezingBlood:Play("gathershare")
 			yellFreezingBlood:Countdown(spellId)
 		end
