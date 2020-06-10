@@ -74,7 +74,7 @@ local yellChainLightning					= mod:NewYell(306874)
 ----Void
 local specWarnCallVoidHunter				= mod:NewSpecialWarningSwitch("ej20549", "-Healer", nil, nil, 1, 2)
 ------Void Hunter
-local specWarnVoidCollapse					= mod:NewSpecialWarningYou(306881, nil, nil, nil, 3, 2)
+local specWarnVoidCollapse					= mod:NewSpecialWarningMoveTo(306881, nil, nil, nil, 3, 2)
 local yellVoidCollapse						= mod:NewYell(306881, nil, nil, nil, "YELL")
 local yellVoidCollapseFades					= mod:NewShortFadesYell(306881, nil, nil, nil, "YELL")
 ----Nightmare
@@ -309,8 +309,8 @@ end
 function mod:CollapseTarget(targetname, uId)
 	if not targetname then return end
 	if targetname == UnitName("player") then
-		specWarnVoidCollapse:Show()
-		specWarnVoidCollapse:Play("targetyou")
+		specWarnVoidCollapse:Show(DBM_CORE_L.ALLIES)
+		specWarnVoidCollapse:Play("gathershare")
 		yellVoidCollapse:Yell()
 		yellVoidCollapseFades:Countdown(3.5)
 	else
