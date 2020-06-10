@@ -71,7 +71,6 @@ tabFrame1:SetScript("OnMouseWheel", function(_, delta)
 end)
 
 local ClickFrame = CreateFrame("Button", nil, UIParent)
-ClickFrame:SetAllPoints("DBM_GUI_OptionsFrame")
 ClickFrame:SetFrameStrata("TOOLTIP")
 ClickFrame:RegisterForClicks("AnyDown")
 ClickFrame:SetScript("OnClick", function()

@@ -91,14 +91,13 @@ function frame:DisplayFrame(frame)
 			frameHeight = frameHeight + child.myheight
 		end
 	end
-	local container = _G[self:GetName() .. "PanelContainer"]
-	local changed = container.displayedFrame ~= frame
-	if container.displayedFrame then
-		container.displayedFrame:Hide()
+	local changed = DBM_GUI.currentViewing ~= frame
+	if DBM_GUI.currentViewing then
+		DBM_GUI.currentViewing:Hide()
 	end
-	container.displayedFrame = frame
 	_G["DBM_GUI_OptionsFramePanelContainerHeaderText"]:SetText(frame.displayName)
 	_G["DBM_GUI_DropDown"]:Hide()
+	local container = _G[self:GetName() .. "PanelContainer"]
 	local mymax = frameHeight - container:GetHeight()
 	if mymax <= 0 then
 		mymax = 0
