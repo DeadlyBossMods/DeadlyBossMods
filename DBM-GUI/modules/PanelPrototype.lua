@@ -1,7 +1,7 @@
 local L		= DBM_GUI_L
 local CL	= DBM_CORE_L
 
-local setmetatable, select, type, pairs, tonumber, strsplit, mmax, tinsert, tremove = setmetatable, select, type, pairs, tonumber, strsplit, math.max, table.insert, table.remove
+local setmetatable, select, type, tonumber, strsplit, mmax, tinsert, tremove = setmetatable, select, type, tonumber, strsplit, math.max, table.insert, table.remove
 local CreateFrame, GetCursorPosition, UIParent, GameTooltip, NORMAL_FONT_COLOR, GameFontNormal = CreateFrame, GetCursorPosition, UIParent, GameTooltip, NORMAL_FONT_COLOR, GameFontNormal
 local DBM, DBM_GUI = DBM, DBM_GUI
 
@@ -480,11 +480,12 @@ do
 	local myid = 100
 
 	function DBM_GUI:CreateNewPanel(frameName, frameType, showSub, sortID, displayName)
-		local panel = CreateFrame("Frame", "DBM_GUI_Option_" .. self:GetNewID(), DBM_GUI_OptionsFramePanelContainer)
+		local panel = CreateFrame("Frame", "DBM_GUI_Option_" .. self:GetNewID(), _G["DBM_GUI_OptionsFramePanelContainer"])
 		panel.mytype = "panel"
 		panel.sortID = self:GetCurrentID()
-		panel:SetSize(DBM_GUI_OptionsFramePanelContainer:GetWidth(), DBM_GUI_OptionsFramePanelContainer:GetHeight())
-		panel:SetPoint("TOPLEFT", DBM_GUI_OptionsFramePanelContainer, "TOPLEFT")
+		local container = _G["DBM_GUI_OptionsFramePanelContainer"]
+		panel:SetSize(container:GetWidth(), container:GetHeight())
+		panel:SetPoint("TOPLEFT", "DBM_GUI_OptionsFramePanelContainer", "TOPLEFT")
 		panel.name = frameName
 		panel.displayName = displayName or frameName
 		panel.showSub = showSub or showSub == nil

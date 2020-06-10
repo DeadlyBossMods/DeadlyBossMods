@@ -4,7 +4,7 @@ local CL	= DBM_CORE_L
 local DBM = DBM
 local CreateFrame = CreateFrame
 
-local frame = DBM_GUI_OptionsFrame
+local frame = _G["DBM_GUI_OptionsFrame"]
 table.insert(_G["UISpecialFrames"], frame:GetName())
 frame:SetFrameStrata("DIALOG")
 if DBM.Options.GUIPoint then
@@ -48,7 +48,7 @@ frame:SetScript("OnShow", function(self)
 	end
 end)
 frame:SetScript("OnHide", function()
-	DBM_GUI_DropDown:Hide()
+	_G["DBM_GUI_DropDown"]:Hide()
 end)
 frame:SetScript("OnDragStart", frame.StartMoving)
 frame:SetScript("OnDragStop", function(self)

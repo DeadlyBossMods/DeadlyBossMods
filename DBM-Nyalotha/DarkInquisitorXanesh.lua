@@ -291,7 +291,7 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
 do
 	--"<185.26 22:54:22> [CHAT_MSG_MONSTER_YELL] Obelisks of shadow, rise!#Dark Inquisitor Xanesh###Dark Inquisitor Xanesh##0#0##0#920#nil#0#false#false#false#false", -- [1338]
-	local bossName = DBM:EJ_GetSectionInfo(20786)
+	--local bossName = DBM:EJ_GetSectionInfo(20786)
 	function mod:CHAT_MSG_MONSTER_YELL(msg, _, _, _, target)
 		if not self:IsInCombat() then return end
 		--Boss only targets himself during a yell for Obelisk spawns, any other yells he targets a playername, azshara, or nobody

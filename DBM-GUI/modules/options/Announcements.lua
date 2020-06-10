@@ -2,7 +2,7 @@ local L		= DBM_GUI_L
 local CL	= DBM_CORE_L
 
 --Hard code STANDARD_TEXT_FONT since skinning mods like to taint it (or worse, set it to nil, wtf?)
-local standardFont = STANDARD_TEXT_FONT
+local standardFont
 if LOCALE_koKR then
 	standardFont = "Fonts\\2002.TTF"
 elseif LOCALE_zhCN then

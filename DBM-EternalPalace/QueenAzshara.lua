@@ -217,7 +217,7 @@ local mobShielded = {}
 
 local updateInfoFrame
 do
-	local floor, tsort = math.floor, table.sort
+	local twipe, tsort = table.wipe, table.sort
 	local lines = {}
 	local tempLines = {}
 	local tempLinesSorted = {}
@@ -230,10 +230,10 @@ do
 		sortedLines[#sortedLines + 1] = key
 	end
 	updateInfoFrame = function()
-		table.wipe(lines)
-		table.wipe(tempLines)
-		table.wipe(tempLinesSorted)
-		table.wipe(sortedLines)
+		twipe(lines)
+		twipe(tempLines)
+		twipe(tempLinesSorted)
+		twipe(sortedLines)
 		--Power levels pulled from widgets?
 		----TODO
 		--Player Personal Checks

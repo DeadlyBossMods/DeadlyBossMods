@@ -7,24 +7,17 @@ exclude_files = {
 ignore = {
 	"11./SLASH_.*", -- Setting an undefined (Slash handler) global variable
 	"11./BINDING_.*", -- Setting an undefined (Keybinding header) global variable
---	"11./DBM_.*", -- Setting an undefined (DBM) global variable
 	"113/LE_.*", -- Accessing an undefined (Lua ENUM type) global variable
 	"113/NUM_LE_.*", -- Accessing an undefined (Lua ENUM type) global variable
---	"113/DBM_.*", -- Accessing an undefined (DBM) global variable
 	"211", -- Unused local variable
 	"211/L", -- Unused local variable "L"
 	"211/CL", -- Unused local variable "CL"
 	"212", -- Unused argument
-	"213", -- Unused loop variable
-	"231/_.*", -- unused variables starting with _
-	"311", -- Value assigned to a local variable is unused
---	"431", -- shadowing upvalue
 	"43.", -- Shadowing an upvalue, an upvalue argument, an upvalue loop variable.
 	"542", -- An empty if branch
 }
 globals = {
 	"_G",
-	"bit",
 
 	-- misc custom
 	"CUSTOM_CLASS_COLORS",
@@ -32,41 +25,24 @@ globals = {
 	"BigWigs",
 	"BigBrother",
 	"Transcriptor",
-	"KuiNameplates",
-	"TidyPlatesThreatDBM",
-	"Plater",
+
+	-- Saved Variables
+    "DBM_AllSavedOptions",
+    "DBM_MinimapIcon",
+    "DBM_UsedProfile",
+    "DBM_UseDualProfile",
+    "DBM_CharSavedRevision",
+	"DBT_AllPersistentOptions",
 
 	-- DBM
-	"DBM_AllSavedOptions",
-	"DBM_BossPreview",
-	"DBM_CharSavedRevision",
 	"DBM_CORE_L",
 	"DBM_DISABLE_ZONE_DETECTION",
-	"DBM_GUI_Bosses",
-	"DBM_GUI_DropDown",
-	"DBM_GUI_Frame",
-	"DBM_GUI_Options",
-	"DBM_GUI_OptionsFrame",
-	"DBM_GUI_OptionsFrameBossMods",
-	"DBM_GUI_OptionsFramePanelContainer",
-	"DBM_GUI_OptionsFramePanelContainerFOV",
-	"DBM_GUI_OptionsFramePanelContainerHeaderText",
 	"DBM_GUI_L",
 	"DBM_GUI",
-	"DBM_MinimapIcon",
-	"DBM_UsedProfile",
-	"DBM_UseDualProfile",
+	"DBM_GUI_Frame",
 	"DBM_OPTION_SPACER",
-	"DBM_SavedOptions",
 	"DBM",
 	"DBMHudMap",
-	"DBMInfoFrame",
-	"DBMRangeCheck",
-	"DBMRangeCheckRadar",
-	"DBMVPSMGPack",
-	"DBMVPSoundEventsPack",
-	"DBT_AllPersistentOptions",
-	"DBT_PersistentOptions",
 	"DBT",
 	"LOCALE_koKR",
 	"LOCALE_ruRU",
