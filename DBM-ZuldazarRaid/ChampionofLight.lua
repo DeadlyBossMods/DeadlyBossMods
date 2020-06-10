@@ -55,13 +55,13 @@ local specWarnBlindingFaith				= mod:NewSpecialWarningLookAway(283650, nil, nil,
 local specWarnGTFO						= mod:NewSpecialWarningGTFO(283582, nil, nil, nil, 1, 8)
 local specWarnPrayerfortheFallen		= mod:NewSpecialWarningSpell(287469, nil, nil, nil, 3, 2, 4)--Mythic
 
-mod:AddTimerLine(DBM_BOSS)
+mod:AddTimerLine(DBM_CORE_L.DBM_BOSS)
 local timerWaveofLightCD				= mod:NewCDTimer(10.5, 283598, nil, nil, nil, 3, nil, DBM_CORE_L.MAGIC_ICON)
 local timerJudgmentRetCD				= mod:NewNextTimer(50.3, 283933, nil, nil, nil, 3, nil, nil, nil, 1, 5)
 local timerJudgmentReckoningCD			= mod:NewNextTimer(50.3, 284474, nil, nil, nil, 2, nil, nil, nil, 1, 5)
 --local timerCallToArmsCD					= mod:NewCDTimer(104.6, 283662, nil, nil, nil, 1)--Adds come with phase change, redundant
 local timerPrayerfortheFallenCD			= mod:NewCDTimer(50.2, 287469, nil, nil, nil, 2, nil, DBM_CORE_L.MYTHIC_ICON, nil, 2, 4)
-mod:AddTimerLine(DBM_ADDS)
+mod:AddTimerLine(DBM_CORE_L.ADDS)
 local timerBlindingFaithCD				= mod:NewCDTimer(13.4, 284474, nil, nil, nil, 2)
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
@@ -119,10 +119,10 @@ function mod:SPELL_CAST_START(args)
 		timerWaveofLightCD:Start()
 		self:ScheduleMethod(0.1, "BossTargetScanner", args.sourceGUID, "WaveofLightTarget", 0.1, 8, true, nil, nil, nil, true)--cidOrGuid, returnFunc, scanInterval, scanTimes, scanOnlyBoss, isEnemyScan, isFinalScan, targetFilter, tankFilter
 	elseif spellId == 283933 then--Judgment: Righteousness
-		specWarnTargetChange:Show(DBM_ADDS)
+		specWarnTargetChange:Show(DBM_CORE_L.ADDS)
 		specWarnTargetChange:Play("targetchange")
 	elseif spellId == 284474 then--Judgment: Reckoning
-		specWarnTargetChange:Show(DBM_BOSS)
+		specWarnTargetChange:Show(DBM_CORE_L.DBM_BOSS)
 		specWarnTargetChange:Play("targetchange")
 	elseif spellId == 283662 then
 		specWarnCalltoArms:Show()

@@ -603,7 +603,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if spellId == 310019 then--Primary target
 			self.vb.bondsTarget = args.destName
 			if args:IsPlayer() then
-				specWarnChargedBonds:Show(DBM_ALLIES)
+				specWarnChargedBonds:Show(DBM_CORE_L.ALLIES)
 				specWarnChargedBonds:Play("runaway")
 			end
 			if self.Options.SetIconOnChargedBonds then

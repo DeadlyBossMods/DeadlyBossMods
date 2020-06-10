@@ -122,10 +122,10 @@ function mod:OnCombatStart(delay)
 		timerRottingRegurgCD:Start(31.4-delay)
 	end
 	timerAddsCD:Start(55-delay)--Until Attackable, not the chute visuals
-	timerPreAddsCD:Start(45, DBM_ADDS)
+	timerPreAddsCD:Start(45, DBM_CORE_L.ADDS)
 	if self:IsMythic() then
 		updateRangeFrame(self)
-		timerPreAddsCD:Start(35, DBM_BIG_ADD)
+		timerPreAddsCD:Start(35, DBM_CORE_L.DBM_BIG_ADD)
 	end
 	berserkTimer:Start()--Until rumor confirmed, use this berserk timer in all modes
 end
@@ -168,9 +168,9 @@ function mod:SPELL_CAST_START(args)
 			specWarnAdds:Play("killmob")
 			local timer = self:IsMythic() and 75 or self:IsEasy() and 60 or 54.8
 			timerAddsCD:Start(timer)
-			timerPreAddsCD:Start(timer-10, DBM_ADDS)
+			timerPreAddsCD:Start(timer-10, DBM_CORE_L.ADDS)
 			if self:IsMythic() then
-				timerPreAddsCD:Start(timer-20, DBM_BIG_ADD)
+				timerPreAddsCD:Start(timer-20, DBM_CORE_L.DBM_BIG_ADD)
 			end
 		end
 	elseif spellId == 262277 then
