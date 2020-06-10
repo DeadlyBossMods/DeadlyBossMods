@@ -121,7 +121,7 @@ local stormTargets = {}
 
 local updateInfoFrame
 do
-	local stormsWail = DBM:GetSpellInfo(285350)
+	--local stormsWail = DBM:GetSpellInfo(285350)
 	local lines = {}
 	local sortedLines = {}
 	local function addLine(key, value)
@@ -433,7 +433,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnStormsWail:Show(freezingTidePod)
 			specWarnStormsWail:Play("targetyou")
 			yellStormsWail:Yell()
-			local spellName, _, _, _, _, expireTime = DBM:UnitDebuff("player", 285350, 285426)
+			local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", 285350, 285426)
 			if expireTime then
 				local remaining = expireTime-GetTime()
 				specWarnStormsWail:Schedule(remaining-4.5, DBM_CORE_L.BACK)

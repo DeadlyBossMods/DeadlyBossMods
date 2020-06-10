@@ -92,5 +92,5 @@ function DBM_GUI:CreateNewFauxScrollFrameList()
 end
 
 -- TODO: Should this go somewhere else?
-DBM_GUI_Bosses = DBM_GUI:CreateNewFauxScrollFrameList()
-DBM_GUI_Options = DBM_GUI:CreateNewFauxScrollFrameList()
+_G["DBM_GUI_Bosses"] = DBM_GUI:CreateNewFauxScrollFrameList()
+_G["DBM_GUI_Options"] = DBM_GUI:CreateNewFauxScrollFrameList()

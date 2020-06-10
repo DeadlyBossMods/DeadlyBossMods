@@ -404,13 +404,13 @@ function mod:SPELL_CAST_SUCCESS(args)
 		else--Drive cast in Phase 2
 			if self.vb.waveCast == 2 then--Current timer is blood feast
 				local elapsed, total = timerBloodFeastCD:GetTime(self.vb.bloodFeastCount+1)
-				local extend = (total+25) - elapsed
+				--local extend = (total+25) - elapsed
 				timerBloodFeastCD:Update(elapsed, total+25, self.vb.bloodFeastCount+1)
 			else--Current timer is wave of corruption
 				timerWaveofCorruptionCD:AddTime(25, self.vb.waveCast+1)
 			end
 			local elapsed2, total2 = timerExplosiveCorruptionCD:GetTime(self.vb.explosiveCount+1)
-			local extend2 = (total2+25) - elapsed2
+			--local extend2 = (total2+25) - elapsed2
 			timerExplosiveCorruptionCD:Update(elapsed2, total2+25, self.vb.explosiveCount+1)
 			if self:IsMythic() then
 				timerBurstingBoilCD:AddTime(25, self.vb.burstingCount+1)

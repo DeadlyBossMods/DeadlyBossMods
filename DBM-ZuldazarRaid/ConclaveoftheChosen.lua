@@ -434,8 +434,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 			timerMindWipeCD:Stop()
 		end
 		if timerPakusWrathCD:GetRemaining(self.vb.pakuWrathCount+1) > 40 then
-			local elapsed, total = timerPakusWrathCD:GetTime(self.vb.pakuWrathCount+1)
-			local remaining = total - elapsed
+			--local elapsed, total = timerPakusWrathCD:GetTime(self.vb.pakuWrathCount+1)
+			--local remaining = total - elapsed
 			DBM:Debug("timerPakusWrathCD extended by: 10 seconds do to boss death with > 40 remaining", 2)
 			timerPakusWrathCD:AddTime(10, self.vb.pakuWrathCount+1)
 		end

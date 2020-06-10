@@ -36,13 +36,10 @@
 --    * Noncommercial. You may not use this work for commercial purposes.
 --    * Share Alike. If you alter, transform, or build upon this work, you may distribute the resulting work only under the same or similar license to this one.
 
-
 ---------------
 --  Globals  --
 ---------------
 DBT = {}
-DBT_PersistentOptions = {}
-
 
 --------------
 --  Locals  --
@@ -53,7 +50,6 @@ local unusedBarObjects = setmetatable({}, {__mode = "kv"})
 local updateClickThrough
 local options
 local setupHandlers
-local applyFailed = false
 local barIsAnimating = false
 local function stringFromTimer(t)
 	if t <= DBM.Bars:GetOption("TDecimal") then
@@ -65,24 +61,23 @@ local function stringFromTimer(t)
 	end
 end
 
-local ipairs, pairs, next, type = ipairs, pairs, next, type
+local pairs, next, type = pairs, next, type
 local tinsert = table.insert
 local GetTime = GetTime
 
 --Hard code STANDARD_TEXT_FONT since skinning mods like to taint it (or worse, set it to nil, wtf?)
-local standardFont = STANDARD_TEXT_FONT
-if (LOCALE_koKR) then
+local standardFont
+if LOCALE_koKR then
 	standardFont = "Fonts\\2002.TTF"
-elseif (LOCALE_zhCN) then
+elseif LOCALE_zhCN then
 	standardFont = "Fonts\\ARKai_T.ttf"
-elseif (LOCALE_zhTW) then
+elseif LOCALE_zhTW then
 	standardFont = "Fonts\\blei00d.TTF"
-elseif (LOCALE_ruRU) then
+elseif LOCALE_ruRU then
 	standardFont = "Fonts\\FRIZQT___CYR.TTF"
 else
 	standardFont = "Fonts\\FRIZQT__.TTF"
 end
-
 
 -----------------------
 --  Default Options  --
@@ -644,9 +639,6 @@ do
 		if not DBT_AllPersistentOptions then DBT_AllPersistentOptions = {} end
 		if not DBT_AllPersistentOptions[_G["DBM_UsedProfile"]] then DBT_AllPersistentOptions[_G["DBM_UsedProfile"]] = {} end
 		-- migrate old options
-		if DBT_PersistentOptions and DBT_PersistentOptions[id] and not DBT_AllPersistentOptions[_G["DBM_UsedProfile"]][id] then
-			DBT_AllPersistentOptions[_G["DBM_UsedProfile"]][id] = DBT_PersistentOptions[id]
-		end
 		DBT_AllPersistentOptions[_G["DBM_UsedProfile"]][id] = DBT_AllPersistentOptions[_G["DBM_UsedProfile"]][id] or {}
 		self.options = setmetatable(DBT_AllPersistentOptions[_G["DBM_UsedProfile"]][id], optionMT)
 		self:Rearrange()

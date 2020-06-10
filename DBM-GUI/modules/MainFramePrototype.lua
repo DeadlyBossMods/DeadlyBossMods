@@ -2,9 +2,9 @@ local select, pairs, ipairs, mfloor, mmax, tinsert = select, pairs, ipairs, math
 local CreateFrame, GameFontHighlightSmall, GameFontNormalSmall, GameFontNormal = CreateFrame, GameFontHighlightSmall, GameFontNormalSmall, GameFontNormal
 local DBM, DBM_GUI = DBM, DBM_GUI
 
-CreateFrame("Frame", "DBM_GUI_OptionsFrame", UIParent, DBM:IsAlpha() and "BackdropTemplate")
+local frame = CreateFrame("Frame", "DBM_GUI_OptionsFrame", UIParent, DBM:IsAlpha() and "BackdropTemplate")
 
-function DBM_GUI_OptionsFrame:UpdateMenuFrame()
+function frame:UpdateMenuFrame()
 	local listFrame = _G["DBM_GUI_OptionsFrameList"]
 	if not listFrame.buttons then
 		return
@@ -41,7 +41,7 @@ function DBM_GUI_OptionsFrame:UpdateMenuFrame()
 	end
 end
 
-function DBM_GUI_OptionsFrame:DisplayButton(button, element)
+function frame:DisplayButton(button, element)
 	button:Show()
 	button.element = element
 	button.text:ClearAllPoints()
@@ -61,13 +61,13 @@ function DBM_GUI_OptionsFrame:DisplayButton(button, element)
 	button.text:Show()
 end
 
-function DBM_GUI_OptionsFrame:ClearSelection()
+function frame:ClearSelection()
 	for _, button in ipairs(_G["DBM_GUI_OptionsFrameList"].buttons) do
 		button:UnlockHighlight()
 	end
 end
 
-function DBM_GUI_OptionsFrame:DisplayFrame(frame)
+function frame:DisplayFrame(frame)
 	if select("#", frame:GetChildren()) == 0 then
 		return
 	end
@@ -97,8 +97,8 @@ function DBM_GUI_OptionsFrame:DisplayFrame(frame)
 		container.displayedFrame:Hide()
 	end
 	container.displayedFrame = frame
-	DBM_GUI_OptionsFramePanelContainerHeaderText:SetText(frame.displayName)
-	DBM_GUI_DropDown:Hide()
+	_G["DBM_GUI_OptionsFramePanelContainerHeaderText"]:SetText(frame.displayName)
+	_G["DBM_GUI_DropDown"]:Hide()
 	local mymax = frameHeight - container:GetHeight()
 	if mymax <= 0 then
 		mymax = 0
@@ -127,7 +127,7 @@ function DBM_GUI_OptionsFrame:DisplayFrame(frame)
 		scrollBar:SetMinMaxValues(0, 0)
 		for _, child in pairs({ frame:GetChildren() }) do
 			if child.mytype == "area" then
-				child:SetPoint("TOPRIGHT", DBM_GUI_OptionsFramePanelContainerFOV, "TOPRIGHT", -5, 0)
+				child:SetPoint("TOPRIGHT", "DBM_GUI_OptionsFramePanelContainerFOV", "TOPRIGHT", -5, 0)
 			end
 		end
 	end
@@ -181,23 +181,24 @@ function DBM_GUI_OptionsFrame:DisplayFrame(frame)
 		scrollBar:SetMinMaxValues(0, frameHeight - container:GetHeight())
 	end
 	if DBM.Options.EnableModels then
-		if not DBM_BossPreview then
-			local mobstyle = CreateFrame("PlayerModel", "DBM_BossPreview", DBM_GUI_OptionsFramePanelContainer)
-			mobstyle:SetPoint("BOTTOMRIGHT", DBM_GUI_OptionsFramePanelContainer, "BOTTOMRIGHT", -5, 5)
+		local bossPreview = _G["DBM_BossPreview"]
+		if not bossPreview then
+			local mobstyle = CreateFrame("PlayerModel", "DBM_BossPreview", _G["DBM_GUI_OptionsFramePanelContainer"])
+			mobstyle:SetPoint("BOTTOMRIGHT", "DBM_GUI_OptionsFramePanelContainer", "BOTTOMRIGHT", -5, 5)
 			mobstyle:SetSize(300, 230)
 			mobstyle:SetPortraitZoom(0.4)
 			mobstyle:SetRotation(0)
 			mobstyle:SetClampRectInsets(0, 0, 24, 0)
 		end
-		DBM_BossPreview.enabled = false
-		DBM_BossPreview:Hide()
+		bossPreview.enabled = false
+		bossPreview:Hide()
 		for _, mod in ipairs(DBM.Mods) do
 			if mod.panel and mod.panel.frame and mod.panel.frame == frame then
-				DBM_BossPreview.currentMod = mod
-				DBM_BossPreview:Show()
-				DBM_BossPreview:ClearModel()
-				DBM_BossPreview:SetDisplayInfo(mod.modelId or 0)
-				DBM_BossPreview:SetSequence(4)
+				bossPreview.currentMod = mod
+				bossPreview:Show()
+				bossPreview:ClearModel()
+				bossPreview:SetDisplayInfo(mod.modelId or 0)
+				bossPreview:SetSequence(4)
 				if mod.modelSoundShort and DBM.Options.ModelSoundValue == "Short" then
 					DBM:PlaySoundFile(mod.modelSoundShort)
 				elseif mod.modelSoundLong and DBM.Options.ModelSoundValue == "Long" then
@@ -208,7 +209,7 @@ function DBM_GUI_OptionsFrame:DisplayFrame(frame)
 	end
 end
 
-function DBM_GUI_OptionsFrame:DeselectTab(i)
+function frame:DeselectTab(i)
 	_G["DBM_GUI_OptionsFrameTab" .. i .. "Left"]:Show();
 	_G["DBM_GUI_OptionsFrameTab" .. i .. "Middle"]:Show();
 	_G["DBM_GUI_OptionsFrameTab" .. i .. "Right"]:Show();
@@ -218,7 +219,7 @@ function DBM_GUI_OptionsFrame:DeselectTab(i)
 	self.tabs[i]:Hide()
 end
 
-function DBM_GUI_OptionsFrame:SelectTab(i)
+function frame:SelectTab(i)
 	_G["DBM_GUI_OptionsFrameTab" .. i .. "Left"]:Hide();
 	_G["DBM_GUI_OptionsFrameTab" .. i .. "Middle"]:Hide();
 	_G["DBM_GUI_OptionsFrameTab" .. i .. "Right"]:Hide();
@@ -228,7 +229,7 @@ function DBM_GUI_OptionsFrame:SelectTab(i)
 	self.tabs[i]:Show()
 end
 
-function DBM_GUI_OptionsFrame:CreateTab(tab)
+function frame:CreateTab(tab)
 	tab:Hide()
 	local i = #self.tabs + 1
 	self.tabs[i] = tab
@@ -248,7 +249,7 @@ function DBM_GUI_OptionsFrame:CreateTab(tab)
 	end)
 end
 
-function DBM_GUI_OptionsFrame:ShowTab(tab)
+function frame:ShowTab(tab)
 	self.tab = tab
 	self:UpdateMenuFrame()
 	for i = 1, #self.tabs do

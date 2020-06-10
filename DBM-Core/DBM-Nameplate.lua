@@ -234,7 +234,7 @@ end)
 
 --Add more nameplate mods as they gain support
 function nameplateFrame:SupportedNPMod()
-    if KuiNameplates or TidyPlatesThreatDBM or Plater then return true end
+    if _G["KuiNameplates"] or _G["TidyPlatesThreatDBM"] or _G["Plater"] then return true end
     return false
 end
 
