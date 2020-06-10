@@ -27,11 +27,11 @@ globals = {
 	"Transcriptor",
 
 	-- Saved Variables
-    "DBM_AllSavedOptions",
-    "DBM_MinimapIcon",
-    "DBM_UsedProfile",
-    "DBM_UseDualProfile",
-    "DBM_CharSavedRevision",
+	"DBM_AllSavedOptions",
+	"DBM_MinimapIcon",
+	"DBM_UsedProfile",
+	"DBM_UseDualProfile",
+	"DBM_CharSavedRevision",
 	"DBT_AllPersistentOptions",
 
 	-- DBM
