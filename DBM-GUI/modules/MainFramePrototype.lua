@@ -95,6 +95,7 @@ function frame:DisplayFrame(frame)
 	if DBM_GUI.currentViewing then
 		DBM_GUI.currentViewing:Hide()
 	end
+	DBM_GUI.currentViewing = frame
 	_G["DBM_GUI_OptionsFramePanelContainerHeaderText"]:SetText(frame.displayName)
 	_G["DBM_GUI_DropDown"]:Hide()
 	local container = _G[self:GetName() .. "PanelContainer"]

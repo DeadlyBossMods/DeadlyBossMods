@@ -177,7 +177,6 @@ for i = 1, math.floor(UIParent:GetHeight() / 18) do
 		frame.tabs[frame.tab].selection = button
 		button:LockHighlight()
 		frame:DisplayFrame(self.element)
-		DBM_GUI.currentViewing = self.element
 	end)
 	if i == 1 then
 		button:SetPoint("TOPLEFT", frameList, 0, -8)
