@@ -111,7 +111,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 331209 then
 		timerHatefulGazeCD:Start()
 		if args:IsPlayer() then
-			specWarnHatefulGaze:Show(L.Pillar)
+			specWarnHatefulGaze:Show(DBM_CORE_L.PILLAR)
 			specWarnHatefulGaze:Play("targetyou")
 			yellHatefulGaze:Yell()
 			yellHatefulGazeFades:Countdown(spellId)
