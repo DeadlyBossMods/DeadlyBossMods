@@ -657,8 +657,8 @@ do
 				local bottom3value3		= area:CreateText("", nil, nil, GameFontNormalSmall, "LEFT")
 
 				-- Set enable or disable per mods.
-				if mod.addon.oneFormat then -- Classic/BC Raids
-					if mod.addon.hasTimeWalker then -- Time walking classic raid (ie Black Temple)
+				if mod.addon.oneFormat then -- Classic/BC Raids, Classic dungeons that don't have heroic mode
+					if mod.addon.hasTimeWalker then -- Time walking classic/BC raid (ie Black Temple)
 						statsType = 5
 						-- (Normal, Timewalking)
 						-- Use top1 and top2 area.
@@ -825,7 +825,13 @@ do
 								top1header:SetText(PLAYER_DIFFICULTY1)
 								top2header:SetText(PLAYER_DIFFICULTY2)
 								top3header:SetText(PLAYER_DIFFICULTY6)
-								bottom1header:SetText(PLAYER_DIFFICULTY6.. "+")
+								--Wod dungeons have same format as legion and bfa, but had a different name for the timed dungeon mode
+								--This simply sets the text based on expansion assignment of mod
+								if mod.addon.MinExpansion < 6 then--WoD
+									bottom1header:SetText(CHALLENGE_MODE)
+								else--Legion and BFA
+									bottom1header:SetText(PLAYER_DIFFICULTY6.. "+")
+								end
 								bottom2header:SetText(PLAYER_DIFFICULTY_TIMEWALKER)
 								-- Set Dims
 								Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10 - (L.FontHeight * 6 * singleline) - (L.FontHeight * 10 * doubleline))
@@ -1015,8 +1021,9 @@ do
 								singleline = singleline + 1
 							end
 						end
-					elseif mod.onlyNormal then -- Classic Dungeons
+					elseif mod.onlyNormal then -- This identical to mod.addon.oneFormat but used to set certain mods to this that exist in a mod NOT using mod.addon.oneFormat mod (such as world bosses in cataclysm mods)
 						if mod.addon.hasTimeWalker then
+							-- Normal, Heroic (far as I know no mod is using this over oneFormat with timewalking.
 							statsType = 5
 							-- (Normal, TimeWalker)
 							-- Use top1 and top2 area.
@@ -1039,7 +1046,7 @@ do
 							top2header:SetText(PLAYER_DIFFICULTY_TIMEWALKER)
 						else
 							-- (Normal)
-							-- Like one format
+							-- Like one format, but for specific mods within a pack, such as cataclysm world bosses
 							top1header:SetPoint("TOPLEFT", Title, "BOTTOMLEFT", 20, -5)
 							top1text1:SetPoint("TOPLEFT", top1header, "BOTTOMLEFT", 20, -5)
 							top1text2:SetPoint("TOPLEFT", top1text1, "BOTTOMLEFT", 0, -5)
@@ -1077,7 +1084,7 @@ do
 							top1header:SetText(PLAYER_DIFFICULTY2)
 							top2header:SetText(PLAYER_DIFFICULTY_TIMEWALKER)
 						else
-							-- (Normal)
+							-- (Heroic)
 							-- Like one format
 							top2header:SetPoint("TOPLEFT", Title, "BOTTOMLEFT", 20, -5)
 							top2text1:SetPoint("TOPLEFT", top2header, "BOTTOMLEFT", 20, -5)
@@ -1204,8 +1211,40 @@ do
 					area.frame:SetHeight(area.frame:GetHeight() + L.FontHeight * 6)
 					singleline = singleline + 1
 				elseif mod.addon.type == "RAID" and not mod.addon.hasLFR and not mod.addon.hasMythic then -- Cata(except DS) and some wrath raids (ICC, ToGC)
-					Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10 - (L.FontHeight * 6 * singleline) - (L.FontHeight * 10 * doubleline))
-					if mod.onlyHeroic then -- Sinestra
+					if mod.addon.hasTimeWalker then--Firelands
+						statsType = 7
+						-- (Normal, Heroic, TimeWalker)
+						-- Use top1 and top2 and top 3 area.
+						top1header:SetPoint("TOPLEFT", Title, "BOTTOMLEFT", 20, -5)
+						top1text1:SetPoint("TOPLEFT", top1header, "BOTTOMLEFT", 20, -5)
+						top1text2:SetPoint("TOPLEFT", top1text1, "BOTTOMLEFT", 0, -5)
+						top1text3:SetPoint("TOPLEFT", top1text2, "BOTTOMLEFT", 0, -5)
+						top1value1:SetPoint("TOPLEFT", top1text1, "TOPLEFT", 80, 0)
+						top1value2:SetPoint("TOPLEFT", top1text2, "TOPLEFT", 80, 0)
+						top1value3:SetPoint("TOPLEFT", top1text3, "TOPLEFT", 80, 0)
+						top2header:SetPoint("LEFT", top1header, "LEFT", 150, 0)
+						top2text1:SetPoint("LEFT", top1text1, "LEFT", 150, 0)
+						top2text2:SetPoint("LEFT", top1text2, "LEFT", 150, 0)
+						top2text3:SetPoint("LEFT", top1text3, "LEFT", 150, 0)
+						top2value1:SetPoint("TOPLEFT", top2text1, "TOPLEFT", 80, 0)
+						top2value2:SetPoint("TOPLEFT", top2text2, "TOPLEFT", 80, 0)
+						top2value3:SetPoint("TOPLEFT", top2text3, "TOPLEFT", 80, 0)
+						top3header:SetPoint("LEFT", top2header, "LEFT", 150, 0)
+						top3text1:SetPoint("LEFT", top2text1, "LEFT", 150, 0)
+						top3text2:SetPoint("LEFT", top2text2, "LEFT", 150, 0)
+						top3text3:SetPoint("LEFT", top2text3, "LEFT", 150, 0)
+						top3value1:SetPoint("TOPLEFT", top3text1, "TOPLEFT", 80, 0)
+						top3value2:SetPoint("TOPLEFT", top3text2, "TOPLEFT", 80, 0)
+						top3value3:SetPoint("TOPLEFT", top3text3, "TOPLEFT", 80, 0)
+						-- Set header text.
+						top1header:SetText(PLAYER_DIFFICULTY1)
+						top2header:SetText(PLAYER_DIFFICULTY2)
+						top3header:SetText(PLAYER_DIFFICULTY_TIMEWALKER)
+						-- Set Dims
+						Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10 - (L.FontHeight * 6 * singleline))
+						area.frame:SetHeight(area.frame:GetHeight() + L.FontHeight * 6)
+						singleline = singleline + 1
+					elseif mod.onlyHeroic then -- Sinestra & Ra-den
 						-- Use top1, top2 area
 						bottom1header:SetPoint("TOPLEFT", Title, "BOTTOMLEFT", 20, -5)
 						bottom1text1:SetPoint("TOPLEFT", bottom1header, "BOTTOMLEFT", 20, -5)
@@ -1227,6 +1266,7 @@ do
 						bottom2header:SetText(RAID_DIFFICULTY4)
 						bottom2header:SetFontObject(GameFontHighlightSmall)
 						-- Set Dims
+						Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10 - (L.FontHeight * 6 * singleline) - (L.FontHeight * 10 * doubleline))
 						area.frame:SetHeight(area.frame:GetHeight() + L.FontHeight * 6)
 						singleline = singleline + 1
 					elseif mod.onlyNormal then -- Used?
@@ -1250,6 +1290,7 @@ do
 						top1header:SetText(RAID_DIFFICULTY1)
 						top2header:SetText(RAID_DIFFICULTY2)
 						-- Set Dims
+						Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10 - (L.FontHeight * 6 * singleline) - (L.FontHeight * 10 * doubleline))
 						area.frame:SetHeight(area.frame:GetHeight() + L.FontHeight * 6)
 						singleline = singleline + 1
 					else
@@ -1289,6 +1330,7 @@ do
 						bottom1header:SetText(PLAYER_DIFFICULTY2)
 						bottom2header:SetText(PLAYER_DIFFICULTY2)
 						-- Set Dims
+						Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10 - (L.FontHeight * 6 * singleline) - (L.FontHeight * 10 * doubleline))
 						area.frame:SetHeight(area.frame:GetHeight() + L.FontHeight * 10)
 						doubleline = doubleline + 1
 					end
@@ -1370,6 +1412,7 @@ do
 					statsType = 3
 					Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10 - (L.FontHeight * 6 * singleline) - (L.FontHeight * 10 * doubleline))
 					if mod.onlyMythic then -- Future use
+						--Mythic Only, unused
 						bottom2header:SetPoint("TOPLEFT", Title, "BOTTOMLEFT", 20, -5)
 						bottom2text1:SetPoint("TOPLEFT", bottom2header, "BOTTOMLEFT", 20, -5)
 						bottom2text2:SetPoint("TOPLEFT", bottom2text1, "BOTTOMLEFT", 0, -5)
@@ -1384,6 +1427,7 @@ do
 						area.frame:SetHeight(area.frame:GetHeight() + L.FontHeight * 10)
 						singleline = singleline + 1
 					else
+						-- Normal, Heroic, Mythic, LFR
 						-- Use top1, top2, bottom1 and bottom2 area.
 						top1header:SetPoint("TOPLEFT", Title, "BOTTOMLEFT", 20, -5)
 						top1text1:SetPoint("TOPLEFT", top1header, "BOTTOMLEFT", 20, -5)
