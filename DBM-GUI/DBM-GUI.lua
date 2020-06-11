@@ -690,7 +690,7 @@ do
 					end
 					-- Set Dims
 					Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10 - (L.FontHeight * 5 * singleline))
-					area.frame:SetHeight(area.frame:GetHeight() + L.FontHeight * 5)
+					area.frame:SetHeight(area.frame:GetHeight() + L.FontHeight * 6)
 					singleline = singleline + 1
 				elseif mod.addon.type == "PARTY" or mod.addon.type == "SCENARIO" then -- If party or scenario instance have no heroic, we should use oneFormat.
 					statsType = 1
@@ -887,7 +887,7 @@ do
 								top3header:SetText(PLAYER_DIFFICULTY6.. "+")
 								-- Set Dims
 								Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10 - (L.FontHeight * 6 *singleline) - (L.FontHeight * 10 * doubleline))
-								area.frame:SetHeight(area.frame:GetHeight() + L.FontHeight*6)
+								area.frame:SetHeight(area.frame:GetHeight() + L.FontHeight * 6)
 								singleline = singleline + 1
 							else
 								statsType = 4 -- (Normal, Heroic, Mythic, Mythic+)

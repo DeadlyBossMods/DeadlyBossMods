@@ -16,7 +16,7 @@ function frame:UpdateMenuFrame()
 			tinsert(displayedElements, element.frame)
 		end
 		if self.tabs[self.tab].selection then
-			self.tabs[self.tab].selection:LockHighlight()
+			self.buttons[self.tabs[self.tab].selection]:LockHighlight()
 		end
 	end
 	local bigList = mfloor((listFrame:GetHeight() - 8) / 18)
