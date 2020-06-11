@@ -827,7 +827,7 @@ do
 								top3header:SetText(PLAYER_DIFFICULTY6)
 								--Wod dungeons have same format as legion and bfa, but had a different name for the timed dungeon mode
 								--This simply sets the text based on expansion assignment of mod
-								if mod.addon.MinExpansion < 6 then--WoD
+								if mod.addon.minExpansion < 6 then--WoD
 									bottom1header:SetText(CHALLENGE_MODE)
 								else--Legion and BFA
 									bottom1header:SetText(PLAYER_DIFFICULTY6.. "+")
