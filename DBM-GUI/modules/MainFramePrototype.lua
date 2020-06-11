@@ -16,7 +16,7 @@ function frame:UpdateMenuFrame()
 			tinsert(displayedElements, element.frame)
 		end
 		if self.tabs[self.tab].selection then
-			self.tabs[self.tab].selection:LockHighlight()
+			listFrame.buttons[self.tabs[self.tab].selection]:LockHighlight()
 		end
 	end
 	local bigList = mfloor((listFrame:GetHeight() - 8) / 18)
@@ -95,6 +95,7 @@ function frame:DisplayFrame(frame)
 	if DBM_GUI.currentViewing then
 		DBM_GUI.currentViewing:Hide()
 	end
+	DBM_GUI.currentViewing = frame
 	_G["DBM_GUI_OptionsFramePanelContainerHeaderText"]:SetText(frame.displayName)
 	_G["DBM_GUI_DropDown"]:Hide()
 	local container = _G[self:GetName() .. "PanelContainer"]

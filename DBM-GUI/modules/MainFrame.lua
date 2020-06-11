@@ -174,10 +174,9 @@ for i = 1, math.floor(UIParent:GetHeight() / 18) do
 		for _, tab in ipairs(frame.tabs) do
 			tab.selection = nil
 		end
-		frame.tabs[frame.tab].selection = button
+		frame.tabs[frame.tab].selection = i
 		button:LockHighlight()
 		frame:DisplayFrame(self.element)
-		DBM_GUI.currentViewing = self.element
 	end)
 	if i == 1 then
 		button:SetPoint("TOPLEFT", frameList, 0, -8)
@@ -230,16 +229,19 @@ frameListScrollBar:SetMinMaxValues(0, 11)
 frameListScrollBar:SetValueStep(18)
 frameListScrollBar:SetValue(0)
 frameList:SetScript("OnMouseWheel", function(_, delta)
+	frame.tabs[frame.tab].selection = frame.tabs[frame.tab].selection - delta
 	frameListScrollBar:SetValue(frameListScrollBar:GetValue() - (delta * 18))
 end)
 local scrollUpButton = _G[frameListScrollBar:GetName() .. "ScrollUpButton"]
 scrollUpButton:Disable()
 scrollUpButton:SetScript("OnClick", function(self)
+	frame.tabs[frame.tab].selection = frame.tabs[frame.tab].selection - 1
 	self:GetParent():SetValue(self:GetParent():GetValue() - 18)
 end)
 local scrollDownButton = _G[frameListScrollBar:GetName() .. "ScrollDownButton"]
 scrollDownButton:Enable()
 scrollDownButton:SetScript("OnClick", function(self)
+	frame.tabs[frame.tab].selection = frame.tabs[frame.tab].selection + 1
 	self:GetParent():SetValue(self:GetParent():GetValue() + 18)
 end)
 

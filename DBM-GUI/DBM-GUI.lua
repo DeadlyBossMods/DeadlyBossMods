@@ -660,6 +660,7 @@ do
 				if mod.addon.oneFormat then -- Classic/BC Raids
 					if mod.addon.hasTimeWalker then -- Time walking classic raid (ie Black Temple)
 						statsType = 5
+						-- (Normal, Timewalking)
 						-- Use top1 and top2 area.
 						top1header:SetPoint("TOPLEFT", Title, "BOTTOMLEFT", 20, -5)
 						top1text1:SetPoint("TOPLEFT", top1header, "BOTTOMLEFT", 20, -5)
@@ -679,6 +680,7 @@ do
 						top1header:SetText(PLAYER_DIFFICULTY1)
 						top2header:SetText(PLAYER_DIFFICULTY_TIMEWALKER)
 					else
+						-- (Normal)
 						statsType = 2 -- Fix for BC instance
 						-- Do not use top1 header.
 						top1text1:SetPoint("TOPLEFT", Title, "BOTTOMLEFT", 20, -5)
@@ -690,7 +692,7 @@ do
 					end
 					-- Set Dims
 					Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10 - (L.FontHeight * 5 * singleline))
-					area.frame:SetHeight(area.frame:GetHeight() + L.FontHeight * 5)
+					area.frame:SetHeight(area.frame:GetHeight() + L.FontHeight * 6)
 					singleline = singleline + 1
 				elseif mod.addon.type == "PARTY" or mod.addon.type == "SCENARIO" then -- If party or scenario instance have no heroic, we should use oneFormat.
 					statsType = 1
@@ -698,7 +700,8 @@ do
 						if mod.onlyHeroic then
 							if mod.addon.hasTimeWalker then
 								statsType = 9
-								-- Use top1 and top2 and top3 area. (Heroic, Challenge, Timewalker)
+								-- (Heroic, Challenge, Timewalker)
+								-- Use top1 and top2 and top3 area.
 								top1header:SetPoint("TOPLEFT", Title, "BOTTOMLEFT", 20, -5)
 								top1text1:SetPoint("TOPLEFT", top1header, "BOTTOMLEFT", 20, -5)
 								top1text2:SetPoint("TOPLEFT", top1text1, "BOTTOMLEFT", 0, -5)
@@ -729,7 +732,8 @@ do
 								area.frame:SetHeight(area.frame:GetHeight() + L.FontHeight * 6)
 								singleline = singleline + 1
 							else -- No such dungeon exists. Good thing too cause this shit is broken here
-								-- Use top1 and top2 area. (Heroic, Challenge)
+								-- (Heroic, Challenge)
+								-- Use top1 and top2 area.
 								top2header:SetPoint("TOPLEFT", Title, "BOTTOMLEFT", 20, -5)
 								top2text1:SetPoint("TOPLEFT", top2header, "BOTTOMLEFT", 20, -5)
 								top2text2:SetPoint("TOPLEFT", top2text1, "BOTTOMLEFT", 0, -5)
@@ -754,7 +758,8 @@ do
 							end
 						elseif mod.onlyMythic then
 							statsType = 11
-							-- Use top1 and top2 area. (Mythic, Mythic+)
+							-- (Mythic, Mythic+)
+							-- Use top1 and top2 area.
 							top1header:SetPoint("TOPLEFT", Title, "BOTTOMLEFT", 20, -5)
 							top1text1:SetPoint("TOPLEFT", top1header, "BOTTOMLEFT", 20, -5)
 							top1text2:SetPoint("TOPLEFT", top1text1, "BOTTOMLEFT", 0, -5)
@@ -778,7 +783,8 @@ do
 							singleline = singleline + 1
 						elseif mod.addon.hasMythic then -- WoD (and later) dungeons with mythic mode (6.2+)
 							if mod.addon.hasTimeWalker then
-								statsType = 10 -- (Normal, Heroic, Mythic, Mythic+, Timewalker)
+								statsType = 10
+								-- (Normal, Heroic, Mythic, Mythic+, Timewalker)
 								-- Use top1, top2, top3, bottom1 and bottom2 area.
 								top1header:SetPoint("TOPLEFT", Title, "BOTTOMLEFT", 20, -5)
 								top1text1:SetPoint("TOPLEFT", top1header, "BOTTOMLEFT", 20, -5)
@@ -825,8 +831,9 @@ do
 								Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10 - (L.FontHeight * 6 * singleline) - (L.FontHeight * 10 * doubleline))
 								area.frame:SetHeight(area.frame:GetHeight() + L.FontHeight * 10)
 								doubleline = doubleline + 1
-							elseif mod.imaspecialsnowflake or mod.addon.isExpedition then -- Normal, heroic, Mythic. Assault of violetHold or island expeditions
+							elseif mod.imaspecialsnowflake or mod.addon.isExpedition then -- Assault of violet Hold or island expeditions
 								statsType = 12
+								-- (Normal, heroic, Mythic)
 								-- Use top1, top2, top3 area.
 								top1header:SetPoint("TOPLEFT", Title, "BOTTOMLEFT", 20, -5)
 								top1text1:SetPoint("TOPLEFT", top1header, "BOTTOMLEFT", 20, -5)
@@ -857,8 +864,9 @@ do
 								Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10 - (L.FontHeight * 6 * singleline) - (L.FontHeight * 10 * doubleline))
 								area.frame:SetHeight(area.frame:GetHeight() + L.FontHeight * 6)
 								singleline = singleline + 1
-							elseif mod.noNormal then -- Heroic, Mythic, Mythic+. Basically any dungeon with everything BUT normal mode (CoS, Kara, Arcway)
+							elseif mod.noNormal then -- Basically any dungeon with everything BUT normal mode (CoS, Kara, Arcway)
 								statsType = 13
+								-- Heroic, Mythic, Mythic+
 								-- Use top1, top2, top3 area.
 								top1header:SetPoint("TOPLEFT", Title, "BOTTOMLEFT", 20, -5)
 								top1text1:SetPoint("TOPLEFT", top1header, "BOTTOMLEFT", 20, -5)
@@ -887,10 +895,11 @@ do
 								top3header:SetText(PLAYER_DIFFICULTY6.. "+")
 								-- Set Dims
 								Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10 - (L.FontHeight * 6 *singleline) - (L.FontHeight * 10 * doubleline))
-								area.frame:SetHeight(area.frame:GetHeight() + L.FontHeight*6)
+								area.frame:SetHeight(area.frame:GetHeight() + L.FontHeight * 6)
 								singleline = singleline + 1
 							else
-								statsType = 4 -- (Normal, Heroic, Mythic, Mythic+)
+								statsType = 4
+								-- (Normal, Heroic, Mythic, Mythic+)
 								-- Use top1, top2, bottom1, bottom2 area.
 								top1header:SetPoint("TOPLEFT", Title, "BOTTOMLEFT", 20, -5)
 								top1text1:SetPoint("TOPLEFT", top1header, "BOTTOMLEFT", 20, -5)
@@ -932,7 +941,8 @@ do
 							end
 						else
 							if mod.addon.hasTimeWalker then
-								statsType = 8 -- MoP dungeons (Normal, Heroic, Challenge, TimeWalker)
+								statsType = 8 -- MoP dungeons
+								-- (Normal, Heroic, Challenge, TimeWalker)
 								-- Use top1, top2, bottom1, bottom2 area.
 								top1header:SetPoint("TOPLEFT", Title, "BOTTOMLEFT", 20, -5)
 								top1text1:SetPoint("TOPLEFT", top1header, "BOTTOMLEFT", 20, -5)
@@ -972,6 +982,7 @@ do
 								area.frame:SetHeight(area.frame:GetHeight() + L.FontHeight * 10)
 								doubleline = doubleline + 1
 							else
+								-- (Normal, Heroic, Challenge)
 								-- Use top1, top2 and top3 area. (Normal, Heroic, Challenge)
 								top1header:SetPoint("TOPLEFT", Title, "BOTTOMLEFT", 20, -5)
 								top1text1:SetPoint("TOPLEFT", top1header, "BOTTOMLEFT", 20, -5)
@@ -1006,7 +1017,8 @@ do
 						end
 					elseif mod.onlyNormal then -- Classic Dungeons
 						if mod.addon.hasTimeWalker then
-							statsType = 5 -- Normal, TimeWalker
+							statsType = 5
+							-- (Normal, TimeWalker)
 							-- Use top1 and top2 area.
 							top1header:SetPoint("TOPLEFT", Title, "BOTTOMLEFT", 20, -5)
 							top1text1:SetPoint("TOPLEFT", top1header, "BOTTOMLEFT", 20, -5)
@@ -1026,6 +1038,7 @@ do
 							top1header:SetText(PLAYER_DIFFICULTY1)
 							top2header:SetText(PLAYER_DIFFICULTY_TIMEWALKER)
 						else
+							-- (Normal)
 							-- Like one format
 							top1header:SetPoint("TOPLEFT", Title, "BOTTOMLEFT", 20, -5)
 							top1text1:SetPoint("TOPLEFT", top1header, "BOTTOMLEFT", 20, -5)
@@ -1043,7 +1056,8 @@ do
 						singleline = singleline + 1
 					elseif mod.onlyHeroic then -- Some special BC, Wrath, Cata bosses
 						if mod.addon.hasTimeWalker then
-							statsType = 6 -- Heroic, TimeWalker
+							statsType = 6
+							-- (Heroic, TimeWalker)
 							-- Use top1 and top2 area.
 							top1header:SetPoint("TOPLEFT", Title, "BOTTOMLEFT", 20, -5)
 							top1text1:SetPoint("TOPLEFT", top1header, "BOTTOMLEFT", 20, -5)
@@ -1063,6 +1077,7 @@ do
 							top1header:SetText(PLAYER_DIFFICULTY2)
 							top2header:SetText(PLAYER_DIFFICULTY_TIMEWALKER)
 						else
+							-- (Normal)
 							-- Like one format
 							top2header:SetPoint("TOPLEFT", Title, "BOTTOMLEFT", 20, -5)
 							top2text1:SetPoint("TOPLEFT", top2header, "BOTTOMLEFT", 20, -5)
@@ -1080,7 +1095,8 @@ do
 						singleline = singleline + 1
 					else -- Dungeons that are Normal, Heroic
 						if mod.addon.hasTimeWalker then
-							statsType = 7 -- Normal, Heroic, TimeWalker
+							statsType = 7
+							-- (Normal, Heroic, TimeWalker)
 							-- Use top1 and top2 and top 3 area.
 							top1header:SetPoint("TOPLEFT", Title, "BOTTOMLEFT", 20, -5)
 							top1text1:SetPoint("TOPLEFT", top1header, "BOTTOMLEFT", 20, -5)
@@ -1108,7 +1124,8 @@ do
 							top2header:SetText(PLAYER_DIFFICULTY2)
 							top3header:SetText(PLAYER_DIFFICULTY_TIMEWALKER)
 						else
-							-- Use top1 and top2 area. (normal, Heroic)
+							-- (Normal, Heroic)
+							-- Use top1 and top2 area.
 							top1header:SetPoint("TOPLEFT", Title, "BOTTOMLEFT", 20, -5)
 							top1text1:SetPoint("TOPLEFT", top1header, "BOTTOMLEFT", 20, -5)
 							top1text2:SetPoint("TOPLEFT", top1text1, "BOTTOMLEFT", 0, -5)
@@ -1134,8 +1151,8 @@ do
 					end
 				elseif mod.addon.type == "RAID" and mod.addon.noHeroic and not mod.addon.hasMythic then -- Early wrath
 					if mod.addon.hasTimeWalker then -- Timewalking wrath raid like Ulduar
+						-- (10 Player, 25 Player, TimeWalker)
 						-- Use top1 and top2 and top 3 area.
-						-- 10 Player, 25 Player, TimeWalker
 						top1header:SetPoint("TOPLEFT", Title, "BOTTOMLEFT", 20, -5)
 						top1text1:SetPoint("TOPLEFT", top1header, "BOTTOMLEFT", 20, -5)
 						top1text2:SetPoint("TOPLEFT", top1text1, "BOTTOMLEFT", 0, -5)
@@ -1162,8 +1179,8 @@ do
 						top2header:SetText(RAID_DIFFICULTY2)
 						top3header:SetText(PLAYER_DIFFICULTY_TIMEWALKER)
 					else
+						-- (10 Player, 25 Player)
 						-- Use top1 and top2 area.
-						-- 10 Player, 25 Player
 						top1header:SetPoint("TOPLEFT", Title, "BOTTOMLEFT", 20, -5)
 						top1text1:SetPoint("TOPLEFT", top1header, "BOTTOMLEFT", 20, -5)
 						top1text2:SetPoint("TOPLEFT", top1text1, "BOTTOMLEFT", 0, -5)
@@ -1213,8 +1230,8 @@ do
 						area.frame:SetHeight(area.frame:GetHeight() + L.FontHeight * 6)
 						singleline = singleline + 1
 					elseif mod.onlyNormal then -- Used?
+						-- (10 Player, 25 Player)
 						-- Use top1, top2 area
-						-- 10 Player, 25 Player
 						top1header:SetPoint("TOPLEFT", Title, "BOTTOMLEFT", 20, -5)
 						top1text1:SetPoint("TOPLEFT", top1header, "BOTTOMLEFT", 20, -5)
 						top1text2:SetPoint("TOPLEFT", top1text1, "BOTTOMLEFT", 0, -5)
@@ -1236,8 +1253,8 @@ do
 						area.frame:SetHeight(area.frame:GetHeight() + L.FontHeight * 6)
 						singleline = singleline + 1
 					else
+						-- (10 Player, 25 Player, 10 Player Heroic, 25 Player Heroic)
 						-- Use top1, top2, bottom1 and bottom2 area.
-						-- 10 Player, 25 Player, 10 Player Heroic, 25 Player Heroic
 						top1header:SetPoint("TOPLEFT", Title, "BOTTOMLEFT", 20, -5)
 						top1text1:SetPoint("TOPLEFT", top1header, "BOTTOMLEFT", 20, -5)
 						top1text2:SetPoint("TOPLEFT", top1text1, "BOTTOMLEFT", 0, -5)
@@ -1277,7 +1294,8 @@ do
 					end
 				elseif mod.addon.type == "RAID" and not mod.addon.hasMythic then -- DS + All MoP raids(except SoO)
 					Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10 - (L.FontHeight * 6 * singleline) - (L.FontHeight * 10 * doubleline))
-					if mod.onlyHeroic then
+					if mod.onlyHeroic then--Ra-den
+						-- (Heroic 10, Heroic 25)
 						-- Use top1, top2 area
 						bottom1header:SetPoint("TOPLEFT", Title, "BOTTOMLEFT", 20, -5)
 						bottom1text1:SetPoint("TOPLEFT", bottom1header, "BOTTOMLEFT", 20, -5)
