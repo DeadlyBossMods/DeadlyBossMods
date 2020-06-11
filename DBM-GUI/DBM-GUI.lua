@@ -356,7 +356,7 @@ do
 				top2value1:SetText(stats.timewalkerKills)
 				top2value2:SetText(stats.timewalkerPulls - stats.timewalkerKills)
 				top2value3:SetText(stats.timewalkerBestTime and ("%d:%02d"):format(mfloor(stats.timewalkerBestTime / 60), stats.timewalkerBestTime % 60) or "-")
-			elseif statsType == 7 then -- Party: Normal, Heroic, TimeWalker instance (most wrath and cata dungeons)
+			elseif statsType == 7 then -- Party: Normal, Heroic, TimeWalker instance (most wrath and cata dungeons). Raid: Firelands and likely Throne of Thunder when blizz adds it
 				top1value1:SetText(stats.normalKills)
 				top1value2:SetText(stats.normalPulls - stats.normalKills)
 				top1value3:SetText(stats.normalBestTime and ("%d:%02d"):format(mfloor(stats.normalBestTime / 60), stats.normalBestTime % 60) or "-")
@@ -1327,8 +1327,8 @@ do
 						-- Set header text.
 						top1header:SetText(RAID_DIFFICULTY1)
 						top2header:SetText(RAID_DIFFICULTY2)
-						bottom1header:SetText(PLAYER_DIFFICULTY2)
-						bottom2header:SetText(PLAYER_DIFFICULTY2)
+						bottom1header:SetText(RAID_DIFFICULTY3)
+						bottom2header:SetText(RAID_DIFFICULTY4)
 						-- Set Dims
 						Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10 - (L.FontHeight * 6 * singleline) - (L.FontHeight * 10 * doubleline))
 						area.frame:SetHeight(area.frame:GetHeight() + L.FontHeight * 10)
@@ -1362,6 +1362,7 @@ do
 						area.frame:SetHeight(area.frame:GetHeight() + L.FontHeight * 6)
 						singleline = singleline + 1
 					else
+						-- Normal 10, Normal 25, Heroic 10, Heroic 25, LFR
 						-- Use top1, top2, top3, bottom1 and bottom2 area.
 						top1header:SetPoint("TOPLEFT", Title, "BOTTOMLEFT", 20, -5)
 						top1text1:SetPoint("TOPLEFT", top1header, "BOTTOMLEFT", 20, -5)
@@ -1402,8 +1403,8 @@ do
 						top1header:SetText(RAID_DIFFICULTY1)
 						top2header:SetText(RAID_DIFFICULTY2)
 						top3header:SetText(PLAYER_DIFFICULTY3)
-						bottom1header:SetText(PLAYER_DIFFICULTY2)
-						bottom2header:SetText(PLAYER_DIFFICULTY2)
+						bottom1header:SetText(RAID_DIFFICULTY3)
+						bottom2header:SetText(RAID_DIFFICULTY4)
 						-- Set Dims
 						area.frame:SetHeight(area.frame:GetHeight() + L.FontHeight * 10)
 						doubleline = doubleline + 1
