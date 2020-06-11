@@ -1,4 +1,4 @@
-local select, pairs, ipairs, mfloor, mmax, tinsert = select, pairs, ipairs, math.floor, math.max, table.insert
+local select, ipairs, mfloor, mmax = select, pairs, math.floor, math.max
 local CreateFrame, GameFontHighlightSmall, GameFontNormalSmall, GameFontNormal = CreateFrame, GameFontHighlightSmall, GameFontNormalSmall, GameFontNormal
 local DBM, DBM_GUI = DBM, DBM_GUI
 
@@ -9,16 +9,7 @@ function frame:UpdateMenuFrame()
 	if not listFrame.buttons then
 		return
 	end
-	local displayedElements = {}
-	self:ClearSelection()
-	if self.tab then
-		for _, element in ipairs(DBM_GUI.frameTypes[self.tab]:GetVisibleTabs()) do
-			tinsert(displayedElements, element.frame)
-		end
-		if self.tabs[self.tab].selection then
-			listFrame.buttons[self.tabs[self.tab].selection]:LockHighlight()
-		end
-	end
+	local displayedElements = self.tab and DBM_GUI.frameTypes[self.tab]:GetVisibleTabs() or {}
 	local bigList = mfloor((listFrame:GetHeight() - 8) / 18)
 	if #displayedElements > bigList then
 		_G[listFrame:GetName() .. "List"]:Show()
@@ -27,16 +18,18 @@ function frame:UpdateMenuFrame()
 		_G[listFrame:GetName() .. "List"]:Hide()
 		_G[listFrame:GetName() .. "ListScrollBar"]:SetValue(0)
 	end
-	for _, button in ipairs(listFrame.buttons) do
-		button:SetWidth(bigList and 185 or 209)
-	end
-	local offset = listFrame.offset or 0
 	for i = 1, #listFrame.buttons do
-		local element = displayedElements[i + offset]
+		local button = listFrame.buttons[i]
+		button:SetWidth(bigList and 185 or 209)
+		button:UnlockHighlight()
+		local element = displayedElements[i + (listFrame.offset or 0)]
 		if not element or i > bigList then
-			listFrame.buttons[i]:Hide()
+			button:Hide()
 		else
-			self:DisplayButton(listFrame.buttons[i], element)
+			self:DisplayButton(button, element.frame)
+			if (self.tab and self.tabs[self.tab].selection) == element.frame then
+				button:LockHighlight()
+			end
 		end
 	end
 end
@@ -72,16 +65,16 @@ function frame:DisplayFrame(frame)
 		return
 	end
 	local frameHeight = 20
-	for _, child in pairs({ frame:GetChildren() }) do
+	for _, child in ipairs({ frame:GetChildren() }) do
 		if child.mytype == "area" then
 			if not child.isStats then
 				local neededHeight = 25
-				for _, child2 in pairs({ child:GetRegions() }) do
+				for _, child2 in ipairs({ child:GetRegions() }) do
 					if child2.mytype == "textblock" then
 						neededHeight = neededHeight + (child2.myheight or child2:GetStringHeight())
 					end
 				end
-				for _, child2 in pairs({ child:GetChildren() }) do
+				for _, child2 in ipairs({ child:GetChildren() }) do
 					neededHeight = neededHeight + (child2.myheight or child2:GetHeight())
 				end
 				child:SetHeight(neededHeight)
@@ -116,7 +109,7 @@ function frame:DisplayFrame(frame)
 		if changed then
 			scrollBar:SetValue(0)
 		end
-		for _, child in pairs({ frame:GetChildren() }) do
+		for _, child in ipairs({ frame:GetChildren() }) do
 			if child.mytype == "area" then
 				child:SetPoint("TOPRIGHT", scrollBar, "TOPLEFT", -5, 0)
 			end
@@ -125,18 +118,18 @@ function frame:DisplayFrame(frame)
 		scrollBar:Hide()
 		scrollBar:SetValue(0)
 		scrollBar:SetMinMaxValues(0, 0)
-		for _, child in pairs({ frame:GetChildren() }) do
+		for _, child in ipairs({ frame:GetChildren() }) do
 			if child.mytype == "area" then
 				child:SetPoint("TOPRIGHT", "DBM_GUI_OptionsFramePanelContainerFOV", "TOPRIGHT", -5, 0)
 			end
 		end
 	end
 	frameHeight = 20
-	for _, child in pairs({ frame:GetChildren() }) do
+	for _, child in ipairs({ frame:GetChildren() }) do
 		if child.mytype == "area" then
 			if not child.isStats then
 				local neededHeight, lastObject = 25, nil
-				for _, child2 in pairs({ child:GetRegions() }) do
+				for _, child2 in ipairs({ child:GetChildren() }) do
 					if child2.mytype == "textblock" then
 						if child2.autowidth then
 							child2:SetWidth(child:GetWidth())
