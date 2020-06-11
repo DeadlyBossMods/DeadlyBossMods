@@ -164,7 +164,7 @@ local color2reset = raidwarncolors:CreateButton(L.Reset, 60, 10, nil, GameFontNo
 local color3reset = raidwarncolors:CreateButton(L.Reset, 60, 10, nil, GameFontNormalSmall)
 local color4reset = raidwarncolors:CreateButton(L.Reset, 60, 10, nil, GameFontNormalSmall)
 
-color1.myheight = 64
+color1.myheight = 84
 color2.myheight = 0
 color3.myheight = 0
 color4.myheight = 0
