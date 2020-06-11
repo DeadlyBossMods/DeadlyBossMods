@@ -193,7 +193,7 @@ color1:SetScript("OnColorSelect", function(self)
 	color1text:SetTextColor(self:GetColorRGB())
 	DBM:UpdateSpecialWarningOptions()
 end)
-color1.myheight = 94
+color1.myheight = 104
 
 local SpecialWarnSoundDropDown = specWarnOne:CreateDropdown(L.SpecialWarnSoundOption, Sounds, "DBM", "SpecialWarningSound", function(value)
 	DBM.Options.SpecialWarningSound = value
@@ -259,7 +259,7 @@ color2:SetScript("OnColorSelect", function(self)
 	color2text:SetTextColor(self:GetColorRGB())
 	DBM:UpdateSpecialWarningOptions()
 end)
-color2.myheight = 94
+color2.myheight = 104
 
 local SpecialWarnSoundDropDown2 = specWarnTwo:CreateDropdown(L.SpecialWarnSoundOption, Sounds, "DBM", "SpecialWarningSound2", function(value)
 	DBM.Options.SpecialWarningSound2 = value
@@ -329,7 +329,7 @@ color3:SetScript("OnColorSelect", function(self)
 	DBM:UpdateSpecialWarningOptions()
 	DBM:ShowTestSpecialWarning(nil, 3)
 end)
-color3.myheight = 94
+color3.myheight = 104
 
 local SpecialWarnSoundDropDown3 = specWarnThree:CreateDropdown(L.SpecialWarnSoundOption, Sounds, "DBM", "SpecialWarningSound3", function(value)
 	DBM.Options.SpecialWarningSound3 = value
@@ -398,7 +398,7 @@ color4:SetScript("OnColorSelect", function(self)
 	DBM:UpdateSpecialWarningOptions()
 	DBM:ShowTestSpecialWarning(nil, 4)
 end)
-color4.myheight = 94
+color4.myheight = 104
 
 local SpecialWarnSoundDropDown4 = specWarnFour:CreateDropdown(L.SpecialWarnSoundOption, Sounds, "DBM", "SpecialWarningSound4", function(value)
 	DBM.Options.SpecialWarningSound4 = value
@@ -465,7 +465,7 @@ color5:SetScript("OnColorSelect", function(self)
 	color5text:SetTextColor(self:GetColorRGB())
 	DBM:UpdateSpecialWarningOptions()
 end)
-color5.myheight = 94
+color5.myheight = 104
 
 local SpecialWarnSoundDropDown5 = specWarnFive:CreateDropdown(L.SpecialWarnSoundOption, Sounds, "DBM", "SpecialWarningSound5", function(value)
 	DBM.Options.SpecialWarningSound5 = value
