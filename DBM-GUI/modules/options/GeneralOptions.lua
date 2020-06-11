@@ -105,9 +105,6 @@ ModelSoundDropDown:SetPoint("TOPLEFT", modelarea.frame, "TOPLEFT", 0, -50)
 
 local resizeOptions = DBM_GUI_Frame:CreateArea(L.ResizeOptions)
 
---TODO, add EDIT field lines for user manually entering pixel size of window should they choose. Some users are real OCD about pixel perfection
---This would also need a hook for ondrag to update pixel sizes in the edit boxes when window is resized
-
 local optionsFrame = _G["DBM_GUI_OptionsFrame"]
 
 local resetbutton2 = resizeOptions:CreateButton(L.Button_ResetWindowSize, 120, 16)

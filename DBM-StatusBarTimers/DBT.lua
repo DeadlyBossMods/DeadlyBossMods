@@ -638,7 +638,6 @@ do
 		-- init
 		if not DBT_AllPersistentOptions then DBT_AllPersistentOptions = {} end
 		if not DBT_AllPersistentOptions[_G["DBM_UsedProfile"]] then DBT_AllPersistentOptions[_G["DBM_UsedProfile"]] = {} end
-		-- migrate old options
 		DBT_AllPersistentOptions[_G["DBM_UsedProfile"]][id] = DBT_AllPersistentOptions[_G["DBM_UsedProfile"]][id] or {}
 		self.options = setmetatable(DBT_AllPersistentOptions[_G["DBM_UsedProfile"]][id], optionMT)
 		self:Rearrange()
