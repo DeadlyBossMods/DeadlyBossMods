@@ -121,7 +121,6 @@ local stormTargets = {}
 
 local updateInfoFrame
 do
-	--local stormsWail = DBM:GetSpellInfo(285350)
 	local lines = {}
 	local sortedLines = {}
 	local function addLine(key, value)
@@ -140,7 +139,6 @@ do
 			end
 		end
 		if #stormTargets > 0 then
-			--addLine("", "")
 			for i=1, #stormTargets do
 				local name = stormTargets[i]
 				local uId = DBM:GetRaidUnitId(name)
