@@ -12,6 +12,11 @@ local L
 --})
 
 ---------------------------
+--  Altimor the Huntsman --
+---------------------------
+--L= DBM:GetModLocalization(2429)
+
+---------------------------
 --  Hungering Destroyer --
 ---------------------------
 --L= DBM:GetModLocalization(2428)
@@ -22,7 +27,7 @@ local L
 --L= DBM:GetModLocalization(2418)
 
 ---------------------------
---  Kael'thas --
+--  Sun King's Salvation/Kael'thas --
 ---------------------------
 --L= DBM:GetModLocalization(2422)
 
@@ -39,11 +44,7 @@ local L
 ---------------------------
 --  Sludgefist --
 ---------------------------
-L= DBM:GetModLocalization(2394)
-
-L:SetMiscLocalization({
-	Pillar	= "Pillar"
-})
+--L= DBM:GetModLocalization(2394)
 
 ---------------------------
 --  Stoneborne Generals --

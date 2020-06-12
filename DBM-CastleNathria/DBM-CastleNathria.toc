@@ -18,6 +18,7 @@
 localization.en.lua
 Shriekwing.lua
 HungeringDestroyer.lua
+AltimortheHuntsman.lua
 ArtificerXyMox.lua
 Kaelthas.lua
 LadyInervaDarkvein.lua
