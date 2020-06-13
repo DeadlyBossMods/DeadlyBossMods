@@ -51,7 +51,7 @@ L:SetGeneralLocalization({
 --L= DBM:GetModLocalization(2423)
 
 -----------------------
--- Stradama Margrave --
+-- Margrave Stradama --
 -----------------------
 --L= DBM:GetModLocalization(2404)
 
