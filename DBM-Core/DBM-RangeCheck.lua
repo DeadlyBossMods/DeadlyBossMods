@@ -892,7 +892,6 @@ function rangeCheck:Hide(force)
 		rangeCheck:Show(restoreRange, restoreFilter, true, restoreThreshold, restoreReverse)
 	else
 		restoreRange, restoreFilter, restoreThreshold, restoreReverse = nil, nil, nil, nil
-		DBM.Options.RestoreRange = nil -- Set nil here because it means force was passed.
 		updater:Stop()
 		if mainFrame.eventRegistered then
 			mainFrame.eventRegistered = nil
