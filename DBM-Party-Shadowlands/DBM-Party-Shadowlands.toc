@@ -27,7 +27,7 @@ TheNecroticWake\NecroticWakeTrash.lua
 Plaguefall\Globgrog.lua
 Plaguefall\DoctorIckus.lua
 Plaguefall\DominaVenomblade.lua
-Plaguefall\StradamaMargrave.lua
+Plaguefall\MargraveStradama.lua
 Plaguefall\PlaguefallTrash.lua
 MistsofTirnaScithe\IngraMaloch.lua
 MistsofTirnaScithe\Mistcaller.lua
