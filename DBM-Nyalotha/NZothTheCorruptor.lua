@@ -1121,7 +1121,7 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 				end
 			elseif cid == 162933 then--Thought Harvester
 				self.vb.harvestersAlive = self.vb.harvestersAlive + 1
-				if self:IsMythic() and self:AntiSpam(5, 1) or self:AntiSpam(3, 1) then
+				if self:IsMythic() and self:AntiSpam(6, 1) or self:AntiSpam(3, 1) then
 					self.vb.harvesterCount = self.vb.harvesterCount + 1
 					if self.Options.SpecWarnej21308switch then
 						specWarnThoughtHarvester:Show(self.vb.harvesterCount)
