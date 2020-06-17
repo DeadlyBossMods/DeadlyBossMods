@@ -5,7 +5,7 @@
 
 # Deadly Boss Mods
 ### [Supporter Benefits](https://www.deadlybossmods.com/forum/viewtopic.php?f=7&t=428#p1180)
-### [Some basic DBM setup/advanced features guides](https://www.deadlybossmods.com/forum/viewforum.php?f=7)
+### [Some basic DBM setup/advanced features guides](https://github.com/DeadlyBossMods/DeadlyBossMods/wiki)
 
 ## Old Content mods are split into multiple packages
 Older content is split into multiple addons to reduce mod update size. These are often far less updated as DBM Core packages and are better as optional extra packages. You can get them here:
