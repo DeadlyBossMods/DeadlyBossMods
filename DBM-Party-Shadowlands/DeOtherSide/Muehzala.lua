@@ -21,13 +21,12 @@ mod:RegisterEventsInCombat(
 
 --TODO, might use 324698 (Deathgate) instead of Shatter Reality for Phase 2 trigger
 --TODO, do anything with https://shadowlands.wowhead.com/spell=335000/stellar-cloud ? I suspect it's just a mechanic for going too far out
---TODO, what causes https://shadowlands.wowhead.com/spell=327426/shattered-dominion , does it need timer or is it triggered by visages dying? warning?
+--TODO, restart phase 1 timers when Phase 2 phases end
 --Stage 1: The Master of Death
 local warnCosmicArtifice			= mod:NewTargetAnnounce(325725, 3)
 local warnShatterReality			= mod:NewCastAnnounce(326171, 4)
 --Stage 2: Shattered Reality
 local warnAddsRemaining				= mod:NewAddsLeftAnnounce("ej22186", 2, 264049)--A nice shackle icon
-local warnShatteredDominion			= mod:NewSpellAnnounce(327426, 3)
 
 --Stage 1: The Master of Death
 local specWarnMasterofDeath			= mod:NewSpecialWarningDodge(325258, nil, nil, nil, 2, 2)
@@ -44,7 +43,6 @@ local timerMasterofDeathCD			= mod:NewAITimer(15.8, 325258, nil, nil, nil, 3)
 local timerCosmicArtificeCD			= mod:NewAITimer(13, 325725, nil, nil, nil, 3, nil, DBM_CORE_L.MAGIC_ICON)
 local timerSoulcrusherCD			= mod:NewAITimer(13, 327646, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)
 --Stage 2: Shattered Reality
-local timerShatteredDominionCD		= mod:NewAITimer(15.8, 327426, nil, nil, nil, 3)
 
 mod.vb.addsLeft = 3
 
@@ -79,12 +77,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 324698 then--Deathgate finished
 		specWarnDeathgate:Show(args.spellName)
 	elseif spellId == 326171 then--Shattered Reality ending (Phase 2 begin)
-		self.vb.addsLeft = 3
 		timerCosmicArtificeCD:Start(2)
-		timerShatteredDominionCD:Start(2)
-	elseif spellId == 327426 and self:AntiSpam(5, 1) then
-		warnShatteredDominion:Show()
-		timerShatteredDominionCD:Start()
 	end
 end
 
