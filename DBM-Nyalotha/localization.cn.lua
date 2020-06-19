@@ -1,5 +1,5 @@
 --Mini Dragon
---2020/02/07
+--2020/06/19
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -24,6 +24,14 @@ local L
 ---------------------------
 L= DBM:GetModLocalization(2377)
 
+L:SetOptionLocalization({
+	InterruptBehavior	= "设置恐惧浪潮的打断方式（团长覆盖全团）",
+	Four				= "4人轮流",--Default
+	Five				= "5人轮流",
+	Six					= "6人轮流",
+	NoReset				= "无限增加"
+})
+
 L:SetMiscLocalization({
 	ObeliskSpawn	= "暗影之碑，起来吧！"--Only as backup, in case the NPC target check stops working
 })
@@ -34,8 +42,8 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(2372)
 
 L:SetMiscLocalization({
-	Together	= "拉近Boss",
-	Apart		= "分开Boss"
+	Together	= "Boss靠近",
+	Apart		= "Boss分开"
 })
 
 ---------------------------
@@ -97,7 +105,8 @@ L:SetOptionLocalization({
 	Five				= "5人轮流",--Default
 	Six					= "6人轮流",
 	NoReset				= "无限增加",
-	ArrowOnGlare		= "为 $spell:317874 显示左右箭头指引方向"
+	ArrowOnGlare		= "为 $spell:317874 显示左右箭头指引方向",
+	HideDead			= "非神话难度下隐藏阵亡队友的信息窗内容"
 })
 
 L:SetMiscLocalization({
