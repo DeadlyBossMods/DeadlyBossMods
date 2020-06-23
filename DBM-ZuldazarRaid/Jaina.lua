@@ -475,7 +475,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 	elseif spellId == 287490 then
-		warnFrozenSolid:CombinedShow(0.5, args.destName)
+		warnFrozenSolid:CombinedShow(1.5, args.destName)
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId) and not args:IsPlayer() then
 			specWarnIceBlockTaunt:Show(args.destName)
