@@ -3296,7 +3296,7 @@ function DBM:LoadModOptions(modId, inCombat, first)
 			--Why are saved options cleaned twice?
 			if not inCombat then
 				for option, _ in pairs(savedOptions[id][profileNum]) do
-					if (mod.DefaultOptions[option] == nil) and not (option:find("talent") or option:find("FastestClear")) then
+					if (mod.DefaultOptions[option] == nil) and not (option:find("talent") or option:find("FastestClear") or option:find("CVAR")) then
 						savedOptions[id][profileNum][option] = nil
 					elseif mod.DefaultOptions[option] and (type(mod.DefaultOptions[option]) == "table") then--recover broken dropdown option
 						if savedOptions[id][profileNum][option] and (type(savedOptions[id][profileNum][option]) == "boolean") then
@@ -3354,7 +3354,7 @@ function DBM:LoadModOptions(modId, inCombat, first)
 	--Why are saved options cleaned twice?
 	if not inCombat then
 		for id, _ in pairs(savedOptions) do
-			if not existId[id] and not (id:find("talent") or id:find("FastestClear")) then
+			if not existId[id] and not (id:find("talent") or id:find("FastestClear") or id:find("CVAR")) then
 				savedOptions[id] = nil
 			end
 		end
