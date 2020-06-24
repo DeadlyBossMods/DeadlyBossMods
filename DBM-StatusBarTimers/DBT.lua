@@ -1214,10 +1214,14 @@ function DBT:SavePosition()
 end
 
 do
+	local oldInfoFrameLocked, oldRangeFrameLocked
+
 	local function moveEnd(self)
 		updateClickThrough(self, self:GetOption("ClickThrough"))
 		self.movable = false
+		DBM.Options.InfoFrameLocked = oldInfoFrameLocked
 		DBM.InfoFrame:Hide()
+		DBM.Options.RangeFrameLocked = oldRangeFrameLocked
 		DBM.RangeCheck:Hide(true)
 	end
 
@@ -1234,7 +1238,11 @@ do
 		self.movable = true
 		DBM:Unschedule(moveEnd, self)
 		DBM:Schedule(20, moveEnd, self)
+		oldInfoFrameLocked = DBM.Options.InfoFrameLocked
+		DBM.Options.InfoFrameLocked = false
 		DBM.InfoFrame:Show(5, "test")
+		oldRangeFrameLocked = DBM.Options.RangeFrameLocked
+		DBM.Options.RangeFrameLocked = false
 		DBM.RangeCheck:Show(nil, nil, true)
 	end
 end
