@@ -10,7 +10,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 320200",
-	"SPELL_CAST_START 320358 320376 320359 327664 323016",
+	"SPELL_CAST_START 320358 320376 320359 327664",
 	"SPELL_CAST_SUCCESS 326629 320200",
 	"SPELL_PERIODIC_DAMAGE 320366",
 	"SPELL_PERIODIC_MISSED 320366",
@@ -19,6 +19,7 @@ mod:RegisterEventsInCombat(
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
+--TODO, where did 323016 go?
 --TODO, get right meat hook spell to warn who it's targetting etc and get a yell/target warning operational. Too many to guess/drycode
 local warnSummonCreation			= mod:NewSpellAnnounce(320358, 2)
 local warnMutilate					= mod:NewCastAnnounce(320376, 4, nil, nil, "Tank|Healer")--Upgrade to special warning if needed
@@ -27,7 +28,7 @@ local warnEscape					= mod:NewCastAnnounce(320359, 3)
 local warnEmbalmingIchor			= mod:NewTargetNoFilterAnnounce(322681, 3)
 local warnMeatHook					= mod:NewTargetNoFilterAnnounce(327461, 3)
 local warnStichNeedle				= mod:NewTargetNoFilterAnnounce(320200, 3, nil, "Healer")
-local warnDarkInfusion				= mod:NewCastAnnounce(323016, 3)
+--local warnDarkInfusion				= mod:NewCastAnnounce(323016, 3)
 
 local specWarnEmbalmingIchor		= mod:NewSpecialWarningMoveAway(322681, nil, nil, nil, 1, 2)
 local yellEmbalmingIchor			= mod:NewYell(322681)
@@ -41,7 +42,7 @@ local timerSummonCreationCD			= mod:NewAITimer(13, 320358, nil, nil, nil, 1)
 --local timerMutilateCD				= mod:NewCDTimer(13, 320376, nil, nil, nil, 3)--Can't AI timer, multiple adds might be up, enable later
 local timerEmbalmingIchorCD			= mod:NewAITimer(15.8, 322681, nil, nil, nil, 3)
 local timerStichNeedleCD			= mod:NewAITimer(15.8, 320200, nil, nil, nil, 5, nil, DBM_CORE_L.HEALER_ICON)
-local timerDarkinfusionCD			= mod:NewAITimer(13, 323016, nil, nil, nil, 2)
+--local timerDarkinfusionCD			= mod:NewAITimer(13, 323016, nil, nil, nil, 2)
 
 function mod:IchorTarget(targetname, uId)
 	if not targetname then return end
@@ -76,9 +77,9 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 327664 then
 		self:ScheduleMethod(0.1, "BossTargetScanner", args.sourceGUID, "IchorTarget", 0.1, 6)
 		timerEmbalmingIchorCD:Start()
-	elseif spellId == 323016 then
-		warnDarkInfusion:Show()
-		timerDarkinfusionCD:Start()
+--	elseif spellId == 323016 then
+--		warnDarkInfusion:Show()
+--		timerDarkinfusionCD:Start()
 	end
 end
 

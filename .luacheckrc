@@ -92,6 +92,7 @@ globals = {
 
 	-- FrameXML frames
 	"AlertFrame",
+	"BackdropTemplateMixin",
 	"BonusRollFrame",
 	"GameTooltip",
 	"ItemRefTooltip",
