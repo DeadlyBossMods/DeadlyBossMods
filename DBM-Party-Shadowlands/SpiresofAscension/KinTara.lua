@@ -28,6 +28,7 @@ mod:RegisterEventsInCombat(
 --TODO, verify/fix crash down detection
 --TODO, verify/fix savage charge
 --TODO, https://shadowlands.wowhead.com/spell=324369/attenuated-barrage ?
+--TODO, just review everything again when dungeon opens up, it's had some changes
 --Kin-Tara
 local warnDeepWound					= mod:NewTargetNoFilterAnnounce(320965, 4, nil, "Tank|Healer")
 local warnChargedSpear				= mod:NewTargetNoFilterAnnounce(321009, 4)
@@ -45,19 +46,19 @@ local specWarnSavageCharge			= mod:NewSpecialWarningYou(317665, nil, nil, nil, 1
 local yellSavageCharge				= mod:NewYell(317665)
 --Azules
 local specWarnGTFO					= mod:NewSpecialWarningGTFO(317626, nil, nil, nil, 1, 8)
-local specWarnAnimaJolt				= mod:NewSpecialWarningInterrupt(317661, "HasInterrupt", nil, nil, 1, 2)
+--local specWarnInsidiousVenom		= mod:NewSpecialWarningInterrupt(317661, "HasInterrupt", nil, nil, 1, 2)
 
 --Kin-Tara
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(21637))
 local timerSweepingStrikeCD			= mod:NewAITimer(13, 320866, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON)
 local timerFlightCD					= mod:NewAITimer(13, 313606, nil, nil, nil, 6)
 local timerChargedSpearCD			= mod:NewAITimer(15.8, 321009, nil, nil, nil, 3, nil, DBM_CORE_L.DEADLY_ICON)
---Janari
-mod:AddTimerLine(DBM:EJ_GetSectionInfo(21638))
-local timerSavageChargeCD			= mod:NewAITimer(15.8, 317665, nil, nil, nil, 3)
+--Janari removed?
+--mod:AddTimerLine(DBM:EJ_GetSectionInfo(21638))
+local timerSavageChargeCD			= mod:NewAITimer(15.8, 317665, nil, nil, nil, 3)--Removed?
 --Azules
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(21639))
-local timerAnimaJoltCD				= mod:NewAITimer(15.8, 317661, nil, nil, nil, 4, nil, DBM_CORE_L.INTERRUPT_ICON)
+local timerInsidiousVenomCD			= mod:NewAITimer(15.8, 317661, nil, nil, nil, 4, nil, DBM_CORE_L.INTERRUPT_ICON)
 
 mod:AddSetIconOption("SetIconOnCrashDown", 321035, true, false, {1})
 
@@ -76,10 +77,10 @@ function mod:OnCombatStart(delay)
 	timerSweepingStrikeCD:Start(1-delay)
 	timerFlightCD:Start(1-delay)
 	timerChargedSpearCD:Start(1-delay)--TODO, Move to flight event
-	--Janari
+	--Janari?
 	timerSavageChargeCD:Start(1-delay)
 	--Azules
-	timerAnimaJoltCD:Start(1-delay)
+	timerInsidiousVenomCD:Start(1-delay)
 end
 
 function mod:SPELL_CAST_START(args)
@@ -91,11 +92,11 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 317665 then
 		self:ScheduleMethod(0.1, "BossTargetScanner", args.sourceGUID, "ChargeTarget", 0.1, 6)
 	elseif spellId == 317661 then
-		timerAnimaJoltCD:Start()
-		if self:CheckInterruptFilter(args.sourceGUID, false, true) then
-			specWarnAnimaJolt:Show(args.sourceName)
-			specWarnAnimaJolt:Play("kickcast")
-		end
+		timerInsidiousVenomCD:Start()
+--		if self:CheckInterruptFilter(args.sourceGUID, false, true) then
+--			specWarnInsidiousVenom:Show(args.sourceName)
+--			specWarnInsidiousVenom:Play("kickcast")
+--		end
 	end
 end
 
@@ -154,8 +155,8 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 163077 then--Azules
-		timerAnimaJoltCD:Stop()
-	elseif cid == 163061 then--Janari
+		timerInsidiousVenomCD:Stop()
+	elseif cid == 163061 then--Janari?
 		timerSavageChargeCD:Stop()
 	end
 end

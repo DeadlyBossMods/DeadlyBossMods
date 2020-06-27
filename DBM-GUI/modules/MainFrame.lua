@@ -207,6 +207,7 @@ frameListList.backdropInfo = {
 	insets		= { left = 0, right = 0, top = 5, bottom = 5 }
 }
 if DBM:IsAlpha() then
+	Mixin(frameListList, BackdropTemplateMixin)
 	frameListList:ApplyBackdrop()
 else
 	frameListList:SetBackdrop(frameListList.backdropInfo)
@@ -271,7 +272,7 @@ frameContainerScrollBar:ClearAllPoints()
 frameContainerScrollBar:SetPoint("TOPRIGHT", -4, -15)
 frameContainerScrollBar:SetPoint("BOTTOMRIGHT", 0, 15)
 
-local frameContainerScrollBarBackdrop = CreateFrame("Frame", nil, frameContainerScrollBar)
+local frameContainerScrollBarBackdrop = CreateFrame("Frame", nil, frameContainerScrollBar, DBM:IsAlpha() and "BackdropTemplate")
 frameContainerScrollBarBackdrop:SetPoint("TOPLEFT", -4, 20)
 frameContainerScrollBarBackdrop:SetPoint("BOTTOMRIGHT", 4, -20)
 frameContainerScrollBarBackdrop.backdropInfo = {
