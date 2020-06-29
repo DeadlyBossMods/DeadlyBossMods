@@ -10,9 +10,9 @@ L.Website					= "Visit us on discord at |cFF73C2FBhttps://discord.gg/deadlybossm
 L.WebsiteButton				= "Website"
 
 L.OTabBosses	= "Bosses"--Deprecated and will be deleted once tabs no longer use this
-L.OTabRaids		= "Raids & PVP"--Raids & PVP
-L.OTabDungeons	= "Dungeons & Scenarios"--Dungeons and group/solo Scenarios (MoP, Proving Grounds, Visions, Torghast, etc)
-L.OTabPlugins	= "Plugins"
+L.OTabRaids		= "Raid"--Raids & PVP
+L.OTabDungeons	= "Party/Solo"--1-5 person content (Dungeons, MoP Scenarios, World Events, Brawlers, Proving Grounds, Visions, Torghast, etc)
+L.OTabPlugins	= "Core Plugins"
 L.OTabOptions	= GAMEOPTIONS_MENU
 L.OTabAbout		= "About"
 
