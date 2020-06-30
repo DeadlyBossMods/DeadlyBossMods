@@ -3,11 +3,12 @@
 
 local ADDON_NAME = ...
 
-DBMHudMap = {
+DBM.HudMap = {
 	Version = 2 -- That way external usage can querie hud api feature level of of users installed mod version
 }
+DBMHudMap = DBM.HudMap--Compat, til Questie, and older modules have updated their references
 local mainFrame = CreateFrame("Frame", "DBMHudMapFrame")
-local mod = DBMHudMap
+local mod = DBM.HudMap
 
 local wipe, type, pairs, ipairs, tinsert, tremove, tonumber, setmetatable, select, unpack = table.wipe, type, pairs, ipairs, table.insert, table.remove, tonumber, setmetatable, select, unpack
 local abs, pow, sqrt, sin, cos, atan2, floor, ceil, min, max, pi2 = math.abs, math.pow, math.sqrt, math.sin, math.cos, math.atan2, math.floor, math.ceil, math.min, math.max, math.pi * 2

@@ -10,7 +10,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 325258 327646 326171",
-	"SPELL_CAST_SUCCESS 325725 324698 326171 327426",
+	"SPELL_CAST_SUCCESS 325725 324698 326171 327426 334970",
 	"SPELL_AURA_APPLIED 325725",
 	"SPELL_AURA_REMOVED 325725",
 	"UNIT_DIED"
@@ -78,6 +78,10 @@ function mod:SPELL_CAST_SUCCESS(args)
 		specWarnDeathgate:Show(args.spellName)
 	elseif spellId == 326171 then--Shattered Reality ending (Phase 2 begin)
 		timerCosmicArtificeCD:Start(2)
+	elseif spellId == 334970 then--Phase 2 end?
+		timerMasterofDeathCD:Start(2)
+		timerCosmicArtificeCD:Start(2)
+		timerSoulcrusherCD:Start(2)
 	end
 end
 
