@@ -10,9 +10,9 @@ L.Website					= "拜訪討論/支援論壇:|cFF73C2FBwww.deadlybossmods.com|r �
 L.WebsiteButton				= "論壇"
 
 L.OTabBosses	            = "模組"
-L.OTabRaids		            = "副本 & PVP"
-L.OTabDungeons	            = "地下城"
-L.OTabPlugins	            = "插件"
+L.OTabRaids		            = "團隊"
+L.OTabDungeons	            = "隊伍/單獨"
+L.OTabPlugins	            = "核心插件"
 L.OTabOptions	            = "選項"
 L.OTabAbout		            = "關於"
 
