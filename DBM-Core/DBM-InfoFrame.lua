@@ -854,8 +854,10 @@ end
 ---------------
 --Arg 1: spellName, health/powervalue, customfunction, table type. Arg 2: TankIgnore, Powertype, SortFunction, totalAbsorb, sortmethod (table/stacks). Arg 3: SpellFilter, UseIcon. Arg 4: disable onUpdate. Arg 5: sortmethod (playerpower)
 function infoFrame:Show(maxLines, event, ...)
+	if DBM.Options.DontShowInfoFrame and (event or 0) ~= "test" then
+		return
+	end
 	currentMapId = select(4, UnitPosition("player"))
-	if DBM.Options.DontShowInfoFrame and (event or 0) ~= "test" then return end
 	modLines = maxLines
 	if DBM.Options.InfoFrameLines and DBM.Options.InfoFrameLines ~= 0 then
 		maxlines = DBM.Options.InfoFrameLines
@@ -919,6 +921,9 @@ function infoFrame:RegisterCallback(cb)
 end
 
 function infoFrame:Update(time)
+	if not DBM.Options.DontShowInfoFrame then
+		return
+	end
 	if not frame then
 		createFrame()
 	end
@@ -932,6 +937,9 @@ function infoFrame:Update(time)
 end
 
 function infoFrame:UpdateTable(table)
+	if not DBM.Options.DontShowInfoFrame then
+		return
+	end
 	if not frame then
 		createFrame()
 	end
@@ -941,6 +949,9 @@ function infoFrame:UpdateTable(table)
 end
 
 function infoFrame:SetHeader(text)
+	if not DBM.Options.DontShowInfoFrame then
+		return
+	end
 	if not frame then
 		createFrame()
 	end
@@ -948,6 +959,9 @@ function infoFrame:SetHeader(text)
 end
 
 function infoFrame:ClearLines()
+	if not DBM.Options.DontShowInfoFrame then
+		return
+	end
 	if not frame then
 		createFrame()
 	end
@@ -975,6 +989,9 @@ function infoFrame:CreateLine(lineNum)
 end
 
 function infoFrame:SetLine(lineNum, leftText, rightText, colorR, colorG, colorB, color2R, color2G, color2B)
+	if not DBM.Options.DontShowInfoFrame then
+		return
+	end
 	if not frame then
 		createFrame()
 	end
