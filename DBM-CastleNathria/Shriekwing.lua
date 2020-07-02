@@ -13,11 +13,11 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 328857 328921 329780 329382",
-	"SPELL_CAST_SUCCESS 329386 321511",
-	"SPELL_AURA_APPLIED 328897 329370",
+	"SPELL_CAST_START 328857 328921 329780",
+	"SPELL_CAST_SUCCESS 329386 321511 336337",
+	"SPELL_AURA_APPLIED 328897 329370 336338",
 	"SPELL_AURA_APPLIED_DOSE 328897",
-	"SPELL_AURA_REMOVED 329370 328921"
+	"SPELL_AURA_REMOVED 329370 328921 336338"
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 --	"UNIT_DIED",
@@ -29,8 +29,11 @@ mod:RegisterEventsInCombat(
 --TODO, do more with descend and murder pray if the cower targets have enough time to still get away
 --TODO, who do stone claws target? says a frontal cone but it doesn't indicate it's a tank ability so boss can easily spin toward random player for this attack
 --TODO, reverberating shriek is what exactly? dodgable? spamable aoe damage just to give healers a purpose during this phase?
+--TODO, dark descent is probably just players who get too much sound in phase 1?
+--TODO, icons for Sanguine curse? depends on how many get it
 --Stage One - Thirst for Blood
 local warnExsanguinated							= mod:NewStackAnnounce(328897, 2, nil, "Tank|Healer")
+local warnSanguineCurse							= mod:NewTargetNoFilterAnnounce(336338, 3, nil, "RemoveCurse")
 --Stage Two - Terror of Castle Nathria
 local warnDarkSonar								= mod:NewSpellAnnounce(321511, 4, nil, false)--Probably spammy?
 local warnCower									= mod:NewTargetNoFilterAnnounce(329370, 4)
@@ -41,7 +44,9 @@ local warnReverberatingShriek					= mod:NewSpellAnnounce(329780, 2, nil, false)-
 local specWarnExsanguinated						= mod:NewSpecialWarningStack(328897, nil, 3, nil, nil, 1, 6)
 local specWarnExsanguinatedTaunt				= mod:NewSpecialWarningTaunt(328897, nil, nil, nil, 1, 2)
 local specWarnBloodSpikes						= mod:NewSpecialWarningDodge(329386, nil, nil, nil, 2, 2)
-local specWarnStoneClaws						= mod:NewSpecialWarningDodge(329382, nil, nil, nil, 2, 2)
+local specWarnSanguineCurse						= mod:NewSpecialWarningMoveAway(336338, nil, nil, nil, 1, 2)
+local yellSanguineCurse							= mod:NewYell(336338)
+local yellSanguineCurseFades					= mod:NewShortFadesYell(336338)
 --Stage Two - Terror of Castle Nathria
 local specWarnBloodgorge						= mod:NewSpecialWarningSpell(328921, nil, nil, nil, 2, 2)
 local specWarnCower								= mod:NewSpecialWarningYou(329370, nil, nil, nil, 3, 2)
@@ -54,7 +59,7 @@ local specWarnCowerNear							= mod:NewSpecialWarningClose(329370, nil, nil, nil
 --mod:AddTimerLine(BOSS)
 local timerExsanguinatingBiteCD					= mod:NewAITimer(16.6, 328857, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON, nil, 2, 3)
 local timerBloodSpikesCD						= mod:NewAITimer(44.3, 329386, nil, nil, nil, 3)
-local timerStoneClawsCD							= mod:NewAITimer(44.3, 329382, nil, nil, nil, 3)
+local timerSanguineCurseCD						= mod:NewAITimer(44.3, 336337, nil, nil, nil, 3, nil, DBM_CORE_L.CURSE_ICON)
 --Stage Two - Terror of Castle Nathria
 local timerReverberatingShriekCD				= mod:NewAITimer(44.3, 329780, nil, nil, nil, 3)
 --local berserkTimer							= mod:NewBerserkTimer(600)
@@ -68,7 +73,7 @@ mod:AddInfoFrameOption(328921, true)
 function mod:OnCombatStart(delay)
 	timerExsanguinatingBiteCD:Start(1-delay)
 	timerBloodSpikesCD:Start(1-delay)
-	timerStoneClawsCD:Start(1-delay)
+	timerSanguineCurseCD:Start(1-delay)
 --	if self.Options.NPAuraOnVolatileCorruption then
 --		DBM:FireEvent("BossMod_EnableHostileNameplates")
 --	end
@@ -100,7 +105,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnBloodgorge:Play("phasechange")
 		timerExsanguinatingBiteCD:Stop()
 		timerBloodSpikesCD:Stop()
-		timerStoneClawsCD:Stop()
+		timerSanguineCurseCD:Stop()
 		timerReverberatingShriekCD:Start(2)
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(12)
@@ -108,10 +113,6 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 329780 then
 		warnReverberatingShriek:Show()
 		timerReverberatingShriekCD:Start()
-	elseif spellId == 329382 then
-		specWarnStoneClaws:Show()
-		specWarnStoneClaws:Play("shockwave")
-		timerStoneClawsCD:Start()
 	end
 end
 
@@ -123,6 +124,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerBloodSpikesCD:Start()
 	elseif spellId == 321511 then
 		warnDarkSonar:Show()
+	elseif spellId == 336337 then
+		timerSanguineCurseCD:Start()
 	end
 end
 
@@ -164,6 +167,14 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			warnCower:CombinedShow(0.3, args.destName)
 		end
+	elseif spellId == 336338 then
+		warnSanguineCurse:CombinedShow(0.3, args.destName)
+		if args:IsPlayer() then
+			specWarnSanguineCurse:Show()
+			specWarnSanguineCurse:Play("runout")
+			yellSanguineCurse:Yell()
+			yellSanguineCurseFades:Countdown(spellId)
+		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -179,9 +190,13 @@ function mod:SPELL_AURA_REMOVED(args)
 		warnBloodgorgeOver:Show()
 		timerExsanguinatingBiteCD:Start(2)
 		timerBloodSpikesCD:Start(2)
-		timerStoneClawsCD:Start(2)
+		timerSanguineCurseCD:Start(2)
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Hide()
+		end
+	elseif spellId == 336338 then
+		if args:IsPlayer() then
+			yellSanguineCurseFades:Cancel()
 		end
 	end
 end
