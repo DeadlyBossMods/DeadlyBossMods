@@ -35,6 +35,10 @@ do
 
 	local function setLines(_, line)
 		if not frame then
+			--Probably not needed here, but for good measure, mods would never call this method directly
+			if DBM.Options.DontShowInfoFrame then
+				return
+			end
 			createFrame()
 		end
 		if line > #frame.lines then
@@ -854,8 +858,8 @@ end
 ---------------
 --Arg 1: spellName, health/powervalue, customfunction, table type. Arg 2: TankIgnore, Powertype, SortFunction, totalAbsorb, sortmethod (table/stacks). Arg 3: SpellFilter, UseIcon. Arg 4: disable onUpdate. Arg 5: sortmethod (playerpower)
 function infoFrame:Show(maxLines, event, ...)
-	currentMapId = select(4, UnitPosition("player"))
 	if DBM.Options.DontShowInfoFrame and (event or 0) ~= "test" then return end
+	currentMapId = select(4, UnitPosition("player"))
 	modLines = maxLines
 	if DBM.Options.InfoFrameLines and DBM.Options.InfoFrameLines ~= 0 then
 		maxlines = DBM.Options.InfoFrameLines
@@ -920,6 +924,10 @@ end
 
 function infoFrame:Update(time)
 	if not frame then
+		--Needed because mods DO call this method directly
+		if DBM.Options.DontShowInfoFrame then
+			return
+		end
 		createFrame()
 	end
 	if frame:IsShown() then
@@ -933,6 +941,10 @@ end
 
 function infoFrame:UpdateTable(table)
 	if not frame then
+		--Needed because mods DO call this method directly
+		if DBM.Options.DontShowInfoFrame then
+			return
+		end
 		createFrame()
 	end
 	if frame:IsShown() and table then
@@ -942,6 +954,10 @@ end
 
 function infoFrame:SetHeader(text)
 	if not frame then
+		--Needed because mods DO call this method directly
+		if DBM.Options.DontShowInfoFrame then
+			return
+		end
 		createFrame()
 	end
 	frame.header:SetText(text or "DBM Info Frame")
@@ -949,6 +965,10 @@ end
 
 function infoFrame:ClearLines()
 	if not frame then
+		--Probably not needed here, but for good measure, mods would never call this method directly
+		if DBM.Options.DontShowInfoFrame then
+			return
+		end
 		createFrame()
 	end
 	for i = 1, #frame.lines do
@@ -976,6 +996,10 @@ end
 
 function infoFrame:SetLine(lineNum, leftText, rightText, colorR, colorG, colorB, color2R, color2G, color2B)
 	if not frame then
+		--Probably not needed here, but for good measure, mods would never call this method directly
+		if DBM.Options.DontShowInfoFrame then
+			return
+		end
 		createFrame()
 	end
 	lineNum = lineNum * 2 - 1
