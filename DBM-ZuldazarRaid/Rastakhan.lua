@@ -147,7 +147,7 @@ local infoframeTable = {}
 function mod:MeteorLeapTarget(targetname, uId, bossuid, scanningTime)
 	if not targetname then return end
 	if targetname == UnitName("player") then
-		specWarnMeteorLeap:Show(GROUP)
+		specWarnMeteorLeap:Show(DBM_CORE_L.ALLIES)
 		specWarnMeteorLeap:Play("gathershare")
 		yellMeteorLeap:Yell()
 		yellMeteorLeapFades:Countdown(5-scanningTime)

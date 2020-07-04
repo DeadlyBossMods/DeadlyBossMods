@@ -125,10 +125,6 @@ function mod:OnCombatStart(delay)
 		timerTormentCD:Start(20.3, 1)
 		timerVoidRitualCD:Start(61.8-delay, 1)
 	end
-	if self.Options.InfoFrame then
-		DBM.InfoFrame:SetHeader(OVERVIEW)
-		DBM.InfoFrame:Show(8, "function", updateInfoFrame, false, false)
-	end
 	berserkTimer:Start(900-delay)
 	if UnitIsGroupLeader("player") and not self:IsLFR() then
 		if self.Options.InterruptBehavior == "Four" then
