@@ -176,7 +176,7 @@ end
 function mod:OnCombatEnd()
 	table.wipe(seenAdds)
 	table.wipe(castsPerGUID)
-	table.wipe(chillingCollector)
+	table.wipe(infuserTargets)
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
 	end
