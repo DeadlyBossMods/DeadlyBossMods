@@ -969,7 +969,6 @@ function infoFrame:ClearLines()
 		frame.lines[i]:SetText("")
 		frame.lines[i]:Hide()
 	end
-	maxWidth = 0
 end
 
 function infoFrame:CreateLine(lineNum)
