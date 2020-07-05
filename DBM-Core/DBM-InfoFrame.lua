@@ -856,8 +856,8 @@ local function onUpdate(frame, table)
 		maxWidth2 = mmax(maxWidth2, frame.lines[i * 2]:GetStringWidth())
 	end
 	for i = 1, linesShown do
-		frame.lines[i * 2 - 1]:SetSize(maxWidth1, 12)
-		frame.lines[i * 2]:SetSize(maxWidth2, 12)
+		frame.lines[i * 2 - 1]:SetSize(maxWidth1+12, 12)
+		frame.lines[i * 2]:SetSize(maxWidth2+12, 12)
 	end
 	frame:SetSize(maxWidth1 + maxWidth2 + 24, (linesShown * 12) + 12)
 	frame:Show()
