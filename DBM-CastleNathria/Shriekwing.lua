@@ -31,6 +31,7 @@ mod:RegisterEventsInCombat(
 --TODO, reverberating shriek is what exactly? dodgable? spamable aoe damage just to give healers a purpose during this phase?
 --TODO, dark descent is probably just players who get too much sound in phase 1?
 --TODO, icons for Sanguine curse? depends on how many get it
+--TODO, honestly, should this mod watch player power or boss power? I have a feeling fight will have a noise level alternate power setup like atramedes so going with player for now
 --Stage One - Thirst for Blood
 local warnExsanguinated							= mod:NewStackAnnounce(328897, 2, nil, "Tank|Healer")
 local warnSanguineCurse							= mod:NewTargetNoFilterAnnounce(336338, 3, nil, "RemoveCurse")
@@ -79,8 +80,8 @@ function mod:OnCombatStart(delay)
 --	end
 --	berserkTimer:Start(-delay)--Confirmed normal and heroic
 	if self.Options.InfoFrame then
-		DBM.InfoFrame:SetHeader(DBM_CORE_L.INFOFRAME_POWER)
-		DBM.InfoFrame:Show(2, "enemypower", 1)--ALTERNATE_POWER_INDEX?
+--		DBM.InfoFrame:SetHeader(DBM_CORE_L.INFOFRAME_POWER)
+		DBM.InfoFrame:Show(2, "playerpower", 1, ALTERNATE_POWER_INDEX)
 	end
 end
 
