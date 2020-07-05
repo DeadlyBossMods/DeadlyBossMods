@@ -9470,11 +9470,9 @@ do
 		return obj
 	end
 
+	--Standard "Yell" object that will use SAY/YELL based on what's defined in the object (Defaulting to SAY if nil)
+	--I realize object being :Yell is counter intuitive to default being "SAY" but for many years the default was YELL and it's too many years of mods to change now
 	function yellPrototype:Yell(...)
-		if not IsInInstance() then--as of 8.2.5, forbidden in outdoor world
-			DBM:Debug("WARNING: A mod is still trying to call chat SAY/YELL messages outdoors, FIXME")
-			return
-		end
 		if DBM.Options.DontSendYells or self.yellType and self.yellType == "position" and DBM:UnitBuff("player", voidForm) and DBM.Options.FilterVoidFormSay then return end
 		if not self.option or self.mod.Options[self.option] then
 			SendChatMessage(pformat(self.text, ...), self.chatType or "SAY")
@@ -9484,10 +9482,6 @@ do
 
 	--Force override to use say message, even when object defines "YELL"
 	function yellPrototype:Say(...)
-		if not IsInInstance() then--as of 8.2.5, forbidden in outdoor world
-			DBM:Debug("WARNING: A mod is still trying to call chat SAY/YELL messages outdoors, FIXME")
-			return
-		end
 		if DBM.Options.DontSendYells or self.yellType and self.yellType == "position" and DBM:UnitBuff("player", voidForm) and DBM.Options.FilterVoidFormSay then return end
 		if not self.option or self.mod.Options[self.option] then
 			SendChatMessage(pformat(self.text, ...), "SAY")
@@ -9498,6 +9492,7 @@ do
 		return schedule(t, self.Yell, self.mod, self, ...)
 	end
 
+	--Standard schedule object to schedule a say/yell based on what's defined in object
 	function yellPrototype:Countdown(time, numAnnounces, ...)
 		if time > 60 then--It's a spellID not a time
 			local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", time)
@@ -9507,6 +9502,19 @@ do
 			end
 		else
 			scheduleCountdown(time, numAnnounces, self.Yell, self.mod, self, ...)
+		end
+	end
+
+	--Scheduled Force override to use SAY message, even when object defines "YELL"
+	function yellPrototype:CountdownSay(time, numAnnounces, ...)
+		if time > 60 then--It's a spellID not a time
+			local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", time)
+			if expireTime then
+				local remaining = expireTime-GetTime()
+				scheduleCountdown(remaining, numAnnounces, self.Yell, self.mod, self, ...)
+			end
+		else
+			scheduleCountdown(time, numAnnounces, self.Say, self.mod, self, ...)
 		end
 	end
 
