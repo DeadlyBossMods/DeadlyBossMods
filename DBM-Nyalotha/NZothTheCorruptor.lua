@@ -97,7 +97,6 @@ local specWarnCollapsingMindscape			= mod:NewSpecialWarningMoveTo(317292, nil, n
 ----N'Zoth
 local specWarnMindgrasp						= mod:NewSpecialWarningSpell(315772, nil, nil, nil, 2, 2)
 local specWarnParanoia						= mod:NewSpecialWarningMoveTo(309980, nil, nil, nil, 1, 2)
-local yellParanoia							= mod:NewShortYell(309980)
 local yellParanoiaRepeater					= mod:NewIconRepeatYell(309980, DBM_CORE_L.AUTO_YELL_ANNOUNCE_TEXT.shortyell)--using custom yell text "%s" because of custom needs (it has to use not only icons but two asci emoji
 local specWarnEternalTorment				= mod:NewSpecialWarningCount(318449, nil, 311383, nil, 2, 2)
 ----Basher Tentacle
@@ -877,14 +876,12 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnParanoia:Play("gather")
 				playerIsInPair = true
 			end
-			if playerIsInPair then--Only repeat yell on mythic and mythic+
+			if playerIsInPair then
 				self:Unschedule(paranoiaYellRepeater)
 				if type(icon) == "number" then icon = DBM_CORE_L.AUTO_YELL_CUSTOM_POSITION:format(icon, "") end
 				self:Schedule(2, paranoiaYellRepeater, self, icon)
+				yellParanoiaRepeater:Yell(icon)
 			end
-		end
-		if args:IsPlayer() then
-			yellParanoia:Yell()
 		end
 	elseif spellId == 313400 and args:IsDestTypePlayer() and self:CheckDispelFilter() and self:AntiSpam(3, 3) then
 		specWarnCorruptedMindDispel:Show(args.destName)
