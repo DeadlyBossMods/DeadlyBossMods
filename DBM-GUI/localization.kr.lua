@@ -9,9 +9,9 @@ L.Website					= "디스코드 채널 |cFF73C2FBhttps://discord.gg/deadlybossmods
 L.WebsiteButton				= "웹사이트"
 
 L.OTabBosses	= "보스"--Deprecated and will be deleted once tabs no longer use this
-L.OTabRaids		= "레이드와 PVP"--Raids & PVP
-L.OTabDungeons	= "던전과 시나리오"--Dungeons and group/solo Scenarios (MoP, Proving Grounds, Visions, Torghast, etc)
-L.OTabPlugins	= "플러그인"
+L.OTabRaids		= "레이드"--Raids & PVP
+L.OTabDungeons	= "파티/1인"--1-5 person content (Dungeons, MoP Scenarios, World Events, Brawlers, Proving Grounds, Visions, Torghast, etc)
+L.OTabPlugins	= "핵심 플러그인"
 L.OTabAbout		= "소개"
 
 L.TabCategory_Options		= "일반 설정"
