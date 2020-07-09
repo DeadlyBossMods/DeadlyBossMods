@@ -171,7 +171,14 @@ function frame:DisplayFrame(frame)
 		end
 	end
 	if scrollBar:IsShown() then
-		scrollBar:SetMinMaxValues(0, frameHeight - container:GetHeight())
+		local maxVal = frameHeight - container:GetHeight()
+		if maxVal > 0 then
+			scrollBar:SetMinMaxValues(0, maxVal)
+		else
+			scrollBar:Hide()
+			scrollBar:SetValue(0)
+			scrollBar:SetMinMaxValues(0, 0)
+		end
 	end
 	if DBM.Options.EnableModels then
 		local bossPreview = _G["DBM_BossPreview"]
