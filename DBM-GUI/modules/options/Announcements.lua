@@ -166,6 +166,9 @@ resetbutton:SetScript("OnClick", function()
 	DBM.Options.WarningDuration2 = DBM.DefaultOptions.WarningDuration2
 	DBM.Options.WarningFontShadow = DBM.DefaultOptions.WarningFontShadow
 	DBM.Options.RaidWarningSound = DBM.DefaultOptions.RaidWarningSound
+	DBM.Options.WarningPoint = DBM.DefaultOptions.WarningPoint
+	DBM.Options.WarningX = DBM.DefaultOptions.WarningX
+	DBM.Options.WarningY = DBM.DefaultOptions.WarningY
 	-- Set UI visuals
 	check1:SetChecked(DBM.Options.ShowWarningsInChat)
 	check2:SetChecked(DBM.Options.WarningIconLeft)
