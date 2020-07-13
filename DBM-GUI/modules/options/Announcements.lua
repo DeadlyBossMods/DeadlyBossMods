@@ -19,12 +19,12 @@ local RaidWarningPanel = DBM_GUI_Frame:CreateNewPanel(L.Tab_RaidWarning, "option
 
 local raidwarnoptions = RaidWarningPanel:CreateArea(L.RaidWarning_Header)
 
-raidwarnoptions:CreateCheckButton(L.ShowWarningsInChat, true, nil, "ShowWarningsInChat")
-raidwarnoptions:CreateCheckButton(L.WarningIconLeft, true, nil, "WarningIconLeft")
-raidwarnoptions:CreateCheckButton(L.WarningIconRight, true, nil, "WarningIconRight")
-raidwarnoptions:CreateCheckButton(L.WarningIconChat, true, nil, "WarningIconChat")
-raidwarnoptions:CreateCheckButton(L.WarningAlphabetical, true, nil, "WarningAlphabetical")
-local WarningShortText		= raidwarnoptions:CreateCheckButton(L.ShortTextSpellname, true, nil, "WarningShortText")
+local check1 = raidwarnoptions:CreateCheckButton(L.ShowWarningsInChat, true, nil, "ShowWarningsInChat")
+local check2 = raidwarnoptions:CreateCheckButton(L.WarningIconLeft, true, nil, "WarningIconLeft")
+local check3 = raidwarnoptions:CreateCheckButton(L.WarningIconRight, true, nil, "WarningIconRight")
+local check4 = raidwarnoptions:CreateCheckButton(L.WarningIconChat, true, nil, "WarningIconChat")
+local check5 = raidwarnoptions:CreateCheckButton(L.WarningAlphabetical, true, nil, "WarningAlphabetical")
+local check6 = raidwarnoptions:CreateCheckButton(L.ShortTextSpellname, true, nil, "WarningShortText")
 
 -- RaidWarn Font
 local Fonts = DBM_GUI:MixinSharedMedia3("font", {
@@ -51,7 +51,7 @@ local FontDropDown = raidwarnoptions:CreateDropdown(L.Warn_FontType, Fonts, "DBM
 	DBM:UpdateWarningOptions()
 	DBM:AddWarning(CL.MOVE_WARNING_MESSAGE)
 end)
-FontDropDown:SetPoint("TOPLEFT", WarningShortText, "BOTTOMLEFT", 0, -10)
+FontDropDown:SetPoint("TOPLEFT", check6, "BOTTOMLEFT", 0, -10)
 
 -- RaidWarn Font Style
 local FontStyles = {
@@ -147,6 +147,43 @@ movemebutton:SetPoint("TOPRIGHT", raidwarnoptions.frame, "TOPRIGHT", -2, -4)
 movemebutton:SetNormalFontObject(GameFontNormalSmall)
 movemebutton:SetHighlightFontObject(GameFontNormalSmall)
 movemebutton:SetScript("OnClick", function() DBM:MoveWarning() end)
+
+local resetbutton = raidwarnoptions:CreateButton(L.SpecWarn_ResetMe, 120, 16)
+resetbutton:SetPoint("BOTTOMRIGHT", raidwarnoptions.frame, "BOTTOMRIGHT", -2, 4)
+resetbutton:SetNormalFontObject(GameFontNormalSmall)
+resetbutton:SetHighlightFontObject(GameFontNormalSmall)
+resetbutton:SetScript("OnClick", function()
+	-- Set Options
+	DBM.Options.ShowWarningsInChat = DBM.DefaultOptions.ShowWarningsInChat
+	DBM.Options.WarningIconLeft = DBM.DefaultOptions.WarningIconLeft
+	DBM.Options.WarningIconRight = DBM.DefaultOptions.WarningIconRight
+	DBM.Options.WarningIconChat = DBM.DefaultOptions.WarningIconChat
+	DBM.Options.WarningAlphabetical = DBM.DefaultOptions.WarningAlphabetical
+	DBM.Options.WarningShortText = DBM.DefaultOptions.WarningShortText
+	DBM.Options.WarningFont = DBM.DefaultOptions.WarningFont
+	DBM.Options.FontStyles = DBM.DefaultOptions.FontStyles
+	DBM.Options.WarningFontSize = DBM.DefaultOptions.WarningFontSize
+	DBM.Options.WarningDuration2 = DBM.DefaultOptions.WarningDuration2
+	DBM.Options.WarningFontShadow = DBM.DefaultOptions.WarningFontShadow
+	DBM.Options.RaidWarningSound = DBM.DefaultOptions.RaidWarningSound
+	DBM.Options.WarningPoint = DBM.DefaultOptions.WarningPoint
+	DBM.Options.WarningX = DBM.DefaultOptions.WarningX
+	DBM.Options.WarningY = DBM.DefaultOptions.WarningY
+	-- Set UI visuals
+	check1:SetChecked(DBM.Options.ShowWarningsInChat)
+	check2:SetChecked(DBM.Options.WarningIconLeft)
+	check3:SetChecked(DBM.Options.WarningIconRight)
+	check4:SetChecked(DBM.Options.WarningIconChat)
+	check5:SetChecked(DBM.Options.WarningAlphabetical)
+	check6:SetChecked(DBM.Options.WarningShortText)
+	FontDropDown:SetSelectedValue(DBM.Options.WarningFont)
+	FontStyleDropDown:SetSelectedValue(DBM.Options.FontStyles)
+	fontSizeSlider:SetValue(DBM.DefaultOptions.WarningFontSize)
+	durationSlider:SetValue(DBM.DefaultOptions.WarningDuration2)
+	FontShadow:SetChecked(DBM.Options.WarningFontShadow)
+	RaidWarnSoundDropDown:SetSelectedValue(DBM.Options.RaidWarningSound)
+	DBM:UpdateWarningOptions()
+end)
 
 --Raid Warning Colors
 local raidwarncolors = RaidWarningPanel:CreateArea(L.RaidWarnColors)
