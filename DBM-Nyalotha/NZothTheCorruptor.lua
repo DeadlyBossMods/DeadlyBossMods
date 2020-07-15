@@ -446,11 +446,13 @@ do
 		twipe(tempLinesSorted)
 		--Build Sanity Table
 		for uId in DBM:GetGroupMembers() do
-			if select(4, UnitPosition(uId)) == currentMapId and (difficultyName == "mythic" or not mod.Options.HideDead or not UnitIsDeadOrGhost(uId)) then
-				local unitName = DBM:GetUnitFullName(uId)
-				local count = UnitPower(uId, ALTERNATE_POWER_INDEX)
-				tempLines[unitName] = count
-				tempLinesSorted[#tempLinesSorted + 1] = unitName
+			if select(4, UnitPosition(uId)) == currentMapId then
+				if (difficultyName == "mythic" or not mod.Options.HideDead or not UnitIsDeadOrGhost(uId)) then
+					local unitName = DBM:GetUnitFullName(uId)
+					local count = UnitPower(uId, ALTERNATE_POWER_INDEX)
+					tempLines[unitName] = count
+					tempLinesSorted[#tempLinesSorted + 1] = unitName
+				end
 			end
 		end
 		--Sort it by lowest sorted to top
