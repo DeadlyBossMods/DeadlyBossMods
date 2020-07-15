@@ -6,7 +6,6 @@ local ADDON_NAME = ...
 DBM.HudMap = {
 	Version = 2 -- That way external usage can querie hud api feature level of of users installed mod version
 }
-DBMHudMap = DBM.HudMap--Compat, til Questie, and older modules have updated their references
 local mainFrame = CreateFrame("Frame", "DBMHudMapFrame")
 local mod = DBM.HudMap
 
