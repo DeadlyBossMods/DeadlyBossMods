@@ -384,7 +384,7 @@ local function stupefyingGlareLoop(self)
 				direction = DBM_CORE_L.RIGHT--ie Clockwise
 			end
 		end
-	else--Not mythic
+	elseif self:IsLFR() then--LFR
 		--Right, Left, Left (for LFR at least), assumed rest same since timers are
 		--TODO, verify normal and heroic one day, or maybe users will at least report it if it's wrong
 		if self.vb.stupefyingGlareCount == 1 then
@@ -412,7 +412,7 @@ local function stupefyingGlareLoop(self)
 			elseif direction == DBM_CORE_L.LEFT then
 				direction = DBM_CORE_L.RIGHT
 			end
-		else
+		elseif self:IsLFR() then
 			--Right, Left, Left for LFR at least, assumed rest same since timers are
 			--TODO, verify normal and heroic one day, or maybe users will at least report it if it's wrong
 			if self.vb.stupefyingGlareCount == 1 or self.vb.stupefyingGlareCount == 2 then
