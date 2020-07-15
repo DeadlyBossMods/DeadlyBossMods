@@ -718,7 +718,7 @@ local function SendWorldSync(self, prefix, msg, noBNet)
 	end
 end
 
-local function strFromTime(time)
+function DBM:strFromTime(time)
 	if type(time) ~= "number" then time = 0 end
 	time = floor(time*100)/100
 	if time < 60 then
@@ -729,6 +729,7 @@ local function strFromTime(time)
 		return L.TIMER_FORMAT:format(time/60, time % 60)
 	end
 end
+local strFromTime = DBM.strFromTime
 
 do
 	-- fail-safe format, replaces missing arguments with unknown
