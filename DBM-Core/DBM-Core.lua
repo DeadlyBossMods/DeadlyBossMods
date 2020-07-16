@@ -718,7 +718,8 @@ local function SendWorldSync(self, prefix, msg, noBNet)
 	end
 end
 
-function DBM:strFromTime(time)
+DBM.strFromTime = function(time, time2)
+	local time = time2 or time -- DBM:strFromTime(time, nil) or `local` DBM.strFromTime(table, time)... Magic
 	if type(time) ~= "number" then time = 0 end
 	time = floor(time*100)/100
 	if time < 60 then
