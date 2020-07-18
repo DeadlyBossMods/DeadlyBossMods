@@ -90,10 +90,10 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellFrozenBinds:Yell()
 			yellFrozenBindsFades:Countdown(spellId)
 		elseif self:CheckNearby(16, args.destName) and not DBM:UnitDebuff("player", spellId) then
-			specWarnFrozenBindsNear:CombinedShow(0.3, args.destName)
-			specWarnFrozenBindsNear:ScheduleVoice(0.3, "runaway")
+			specWarnFrozenBindsNear:CombinedShow(0.5, args.destName)
+			specWarnFrozenBindsNear:ScheduleVoice(0.5, "runaway")
 		else
-			warnFrozenBinds:CombinedShow(0.3, args.destName)
+			warnFrozenBinds:CombinedShow(0.5, args.destName)
 		end
 	elseif spellId == 323198 then
 		timerDarkExile:Start(50, args.destName)

@@ -51,13 +51,9 @@ function flashFrame:Show(red, green, blue, dur, alpha, repeatFlash)
 	elapsed = 0
 	totalRepeat = repeatFlash or 0
 	frame:SetAlpha(0)
-	frame.backdropColor = CreateColor(r, g, b)
-	frame.backdropColorAlpha = a
-	if not DBM:IsAlpha() then
-		frame:SetBackdropColor(r, g, b, a)
-	else
-		frame:ApplyBackdrop()
-	end
+--	frame.backdropColor = CreateColor(r, g, b)
+--	frame.backdropColorAlpha = a
+	frame:SetBackdropColor(r, g, b, a)
 	frame:Show()
 end
 
