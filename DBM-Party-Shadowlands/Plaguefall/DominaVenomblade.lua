@@ -24,7 +24,6 @@ mod:RegisterEventsInCombat(
  or (ability.id = 325245) and type = "cast"
 --]]
 --TODO, shadowclone removed and replaced with adds?
---TODO, obviously better timer data, plus make sure stuff even is time based and not health
 local warnAmbush					= mod:NewTargetNoFilterAnnounce(325245, 4)
 
 --local specWarnShadowclone			= mod:NewSpecialWarningSpell(325457, nil, nil, nil, 2, 2)

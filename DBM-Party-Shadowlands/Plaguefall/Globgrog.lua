@@ -21,6 +21,8 @@ mod:RegisterEventsInCombat(
 --[[
 (ability.id = 324527 or ability.id = 324667) and type = "begincast"
  or (ability.id = 324459 or ability.id = 324490) and type = "cast"
+ or ability.id = 335514
+ --327598 is trash version of spell
 --]]
 local warnPlaguestomp				= mod:NewCastAnnounce(324527, 2)
 local warnSlimeWave					= mod:NewCastAnnounce(324667, 2)
@@ -33,8 +35,8 @@ local specWarnBeckonSlime			= mod:NewSpecialWarningSwitch(327608, "-Healer", nil
 --local specWarnHealingBalm			= mod:NewSpecialWarningInterrupt(257397, "HasInterrupt", nil, nil, 1, 2)
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(257274, nil, nil, nil, 1, 8)
 
-local timerPlaguestompCD			= mod:NewCDTimer(15.8, 324527, nil, nil, nil, 3)
-local timerBeckonSlimeCD			= mod:NewCDTimer(54.2, 327608, nil, nil, nil, 1, nil, DBM_CORE_L.DAMAGE_ICON)
+local timerPlaguestompCD			= mod:NewCDTimer(15.8, 324527, nil, nil, nil, 3)--38.8, 19.4
+local timerBeckonSlimeCD			= mod:NewCDTimer(54.2, 327608, nil, nil, nil, 1, nil, DBM_CORE_L.DAMAGE_ICON)--54-55
 local timerBeckonSlime				= mod:NewCastTimer(9, 327608, nil, nil, nil, 5, nil, DBM_CORE_L.DAMAGE_ICON)
 local timerSlimeWaveCD				= mod:NewCDTimer(10.5, 324667, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)
 
@@ -76,7 +78,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		else
 			specWarnBeckonSlime:Play("killmob")
 		end
-		--Likely not right place to do this
+		--Likely not right place to do this but seems somewhat accurate for now
 		timerPlaguestompCD:Start(18)
 		timerSlimeWaveCD:Start(25)
 	end
