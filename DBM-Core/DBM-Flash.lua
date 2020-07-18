@@ -32,7 +32,7 @@ frame:Hide()
 frame:SetScript("OnUpdate", function(self, e)
 	elapsed = elapsed + e
 	if elapsed >= duration then
-		if totalRepeat == then
+		if totalRepeat == 0 then
 			self:Hide()
 			return
 		end
