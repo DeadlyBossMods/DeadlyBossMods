@@ -36,7 +36,7 @@ local specWarnTearsoftheForrest		= mod:NewSpecialWarningDodge(323177, nil, nil, 
 local specWarnGTFO					= mod:NewSpecialWarningGTFO(323250, nil, nil, nil, 1, 8)
 
 --Phases
-local timerDromansWrath				= mod:NewBuffActiveTimer(15, 323059, nil, nil, nil, 6)
+local timerDromansWrath				= mod:NewBuffActiveTimer(12, 323059, nil, nil, nil, 6)
 local timerSpiritBoltCD				= mod:NewAITimer(13, 323057, nil, nil, nil, 4, nil, DBM_CORE_L.INTERRUPT_ICON)
 local timerEmbraceDarknessCD		= mod:NewAITimer(15.8, 323149, nil, nil, nil, 2, nil, DBM_CORE_L.HEALER_ICON)
 local timerRepulsiveVisageCD		= mod:NewAITimer(15.8, 328756, nil, nil, nil, 2, nil, DBM_CORE_L.MAGIC_ICON)
@@ -90,11 +90,14 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerTearsoftheForestCD:Start(2)
 	elseif spellId == 323059 then
 		warnDromansWrath:Show(args.destName)
-		timerDromansWrath:Start(15)
+		timerDromansWrath:Start(12)
 		--Boss
 		timerSpiritBoltCD:Stop()
 		timerEmbraceDarknessCD:Stop()
 		timerRepulsiveVisageCD:Stop()
+		--Droman
+		timerEnchantedPollenCD:Stop()
+		timerTearsoftheForestCD:Stop()
 	elseif spellId == 323137 and self:CheckDispelFilter() then
 		specWarnEnchantedPollenDispel:CombinedShow(0.3, args.destName)
 		specWarnEnchantedPollenDispel:ScheduleVoice(0.3, "helpdispel")

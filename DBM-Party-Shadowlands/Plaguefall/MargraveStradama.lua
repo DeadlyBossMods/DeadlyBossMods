@@ -21,7 +21,7 @@ mod:RegisterEventsInCombat(
 --TODO, https://shadowlands.wowhead.com/spell=322490/plague-rot is passive, does it need an infoframe?
 --TODO, add https://shadowlands.wowhead.com/spell=322232/infectious-rain ?
 --TODO, Fix Plague Crash to be less spammy, when trigger event for phase start/end is known and can be cleaned up to use special warning for begin, then general announce for each cast within
---TODO, timer correction on plague crash phase end
+--TODO, timer correction on phase begins/ends
 --TODO, even more timer correction on mythic phase
 --[[
 (ability.id = 322236 or ability.id = 322475) and type = "begincast"
@@ -39,7 +39,7 @@ mod.vb.crashCount = 0
 
 function mod:OnCombatStart(delay)
 	self.vb.crashCount = 0
-	timerSpawnCD:Start(5.8-delay)
+	timerSpawnCD:Start(5.6-delay)
 end
 
 function mod:SPELL_CAST_START(args)
@@ -48,7 +48,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnTouchofSlime:Show()
 		specWarnTouchofSlime:Play("helpsoak")
 		timerTouchofSlimeCD:Start(6, args.sourceGUID)
-	elseif spellId == 322475 and self:AntiSpam(4, 1) then
+	elseif spellId == 322475 and self:AntiSpam(5, 1) then
 		self.vb.crashCount = self.vb.crashCount + 1
 		specWarnPlagueCrash:Show(self.vb.crashCount)
 		specWarnPlagueCrash:Play("watchstep")
