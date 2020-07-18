@@ -8,6 +8,7 @@ DBM.Flash = {}
 --------------
 local flashFrame = DBM.Flash
 local frame, duration, elapsed, totalRepeat
+local isAlpha = DBM:IsAlpha()
 
 --------------------
 --  Create Frame  --
@@ -17,10 +18,10 @@ frame:Hide()
 frame.backdropInfo = {
 	bgFile	= "Interface\\Tooltips\\UI-Tooltip-Background" -- 137056
 }
-if not DBM:IsAlpha() then
-	frame:SetBackdrop(frame.backdropInfo)
-else
+if DBM:IsAlpha() then
 	frame:ApplyBackdrop()
+else
+	frame:SetBackdrop(frame.backdropInfo)
 end
 frame:SetAllPoints(UIParent)
 frame:SetFrameStrata("BACKGROUND")
@@ -48,7 +49,11 @@ function flashFrame:Show(red, green, blue, dur, alpha, repeatFlash)
 	duration = dur or 0.4
 	elapsed = 0
 	totalRepeat = repeatFlash or 0
-	frame.Center:SetVertexColor(red or 1, green or 0, blue or 0, alpha or 0.3)
+	if isAlpha then
+		frame.Center:SetVertexColor(red or 1, green or 0, blue or 0, alpha or 0.3)
+	else
+		frame:SetBackDropColor(red or 1, green or 0, blue or 0, alpha or 0.3)
+	end
 	frame:Show()
 end
 
