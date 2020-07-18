@@ -52,7 +52,7 @@ function flashFrame:Show(red, green, blue, dur, alpha, repeatFlash)
 	if isAlpha then
 		frame.Center:SetVertexColor(red or 1, green or 0, blue or 0, alpha or 0.3)
 	else
-		frame:SetBackDropColor(red or 1, green or 0, blue or 0, alpha or 0.3)
+		frame:SetBackdropColor(red or 1, green or 0, blue or 0, alpha or 0.3)
 	end
 	frame:Show()
 end
