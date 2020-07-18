@@ -8,7 +8,6 @@ DBM.Flash = {}
 --------------
 local flashFrame = DBM.Flash
 local frame, duration, elapsed, totalRepeat
-local isAlpha = DBM:IsAlpha()
 
 --------------------
 --  Create Frame  --
@@ -49,11 +48,8 @@ function flashFrame:Show(red, green, blue, dur, alpha, repeatFlash)
 	duration = dur or 0.4
 	elapsed = 0
 	totalRepeat = repeatFlash or 0
-	if isAlpha then
-		frame.Center:SetVertexColor(red or 1, green or 0, blue or 0, alpha or 0.3)
-	else
-		frame:SetBackdropColor(red or 1, green or 0, blue or 0, alpha or 0.3)
-	end
+	-- frame.Center:SetVertexColor(red or 1, green or 0, blue or 0, alpha or 0.3) -- Uncomment in 9.0
+	frame:SetBackdropColor(red or 1, green or 0, blue or 0, alpha or 0.3)
 	frame:Show()
 end
 
