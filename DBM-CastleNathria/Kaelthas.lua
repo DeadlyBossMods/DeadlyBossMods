@@ -91,6 +91,7 @@ mod:AddInfoFrameOption(326078, true)
 mod:AddSetIconOption("SetIconOnEmberBlast", 325877, true, false, {1})
 mod:AddNamePlateOption("NPAuraOnPhoenixEmbers", 328731)
 
+mod.vb.addCount = 0
 local seenAdds = {}
 local castsPerGUID = {}
 local infuserTargets = {}
@@ -160,6 +161,7 @@ do
 end
 
 function mod:OnCombatStart(delay)
+	self.vb.addCount = 0
 	table.wipe(seenAdds)
 	table.wipe(castsPerGUID)
 	table.wipe(infuserTargets)
@@ -206,9 +208,10 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 325506 then
 		if not castsPerGUID[args.sourceGUID] then
 			castsPerGUID[args.sourceGUID] = 0
+			self.vb.addCount = self.vb.addCount + 1
 		end
 		castsPerGUID[args.sourceGUID] = castsPerGUID[args.sourceGUID] + 1
-		local addnumber, count = #castsPerGUID, castsPerGUID[args.sourceGUID]
+		local addnumber, count = self.vb.addCount, castsPerGUID[args.sourceGUID]
 		warnConcussiveSmash:Show(addnumber.."-"..count)
 --		timerConcussiveSmashCD:Start(12.1, count+1, args.sourceGUID)
 	elseif spellId == 333002 then
