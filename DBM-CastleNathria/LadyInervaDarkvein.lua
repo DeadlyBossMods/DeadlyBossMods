@@ -67,6 +67,7 @@ mod:AddSetIconOption("SetIconOnAdds", "ej21227", true, true, {4, 5, 6, 7, 8})
 --mod:AddDropdownOption("InterruptBehavior", {"Four", "Five", "Six", "NoReset"}, "Four", "misc")
 
 mod.vb.addIcon = 8
+mod.vb.addCount = 0
 local sharedCogIcons = {}
 local SharedSufferingTargets = {}
 local castsPerGUID = {}
@@ -92,6 +93,7 @@ local function sharedSufferingYellRepeater(self, text)
 end
 
 function mod:OnCombatStart(delay)
+	self.vb.addCount = 0
 	table.wipe(sharedCogIcons)
 	table.wipe(SharedSufferingTargets)
 	table.wipe(castsPerGUID)
@@ -149,12 +151,13 @@ function mod:SPELL_CAST_START(args)
 				self:ScanForMobs(args.sourceGUID, 2, self.vb.addIcon, 1, 0.2, 12)
 			end
 			self.vb.addIcon = self.vb.addIcon - 1
+			self.vb.addCount = self.vb.addCount + 1
 		end
 --		if (self.vb.interruptBehavior == "Four" and castsPerGUID[args.sourceGUID] == 4) or (self.vb.interruptBehavior == "Five" and castsPerGUID[args.sourceGUID] == 5) or (self.vb.interruptBehavior == "Six" and castsPerGUID[args.sourceGUID] == 6) then
 --			castsPerGUID[args.sourceGUID] = 0
 --		end
 		castsPerGUID[args.sourceGUID] = castsPerGUID[args.sourceGUID] + 1
-		local addnumber, count = #castsPerGUID, castsPerGUID[args.sourceGUID]
+		local addnumber, count = self.vb.addCount, castsPerGUID[args.sourceGUID]
 		if self.Options.SpecWarn331550interrupt and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 			specWarnCondemn:Show(args.sourceName, count)
 			if count == 1 then

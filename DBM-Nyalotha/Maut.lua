@@ -142,7 +142,7 @@ function mod:SPELL_CAST_START(args)
 			castsPerGUID[args.sourceGUID] = 0
 		end
 		castsPerGUID[args.sourceGUID] = castsPerGUID[args.sourceGUID] + 1
-		local addnumber, count = #castsPerGUID, castsPerGUID[args.sourceGUID]
+		local addnumber, count = self.vb.darkManifestationCount, castsPerGUID[args.sourceGUID]
 		warnDarkOffering:Show(addnumber.."-"..count)
 		timerDarkOfferingCD:Start(12.1, count+1, args.sourceGUID)
 	elseif spellId == 314337 then
