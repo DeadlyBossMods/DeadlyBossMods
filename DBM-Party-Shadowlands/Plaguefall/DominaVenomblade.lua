@@ -9,9 +9,10 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_AURA_APPLIED 325552 333353",
 	"SPELL_CAST_START 325552 332313",
-	"SPELL_CAST_SUCCESS 325245"
+	"SPELL_CAST_SUCCESS 325245",
+	"SPELL_AURA_APPLIED 325552 333353 336258",
+	"SPELL_AURA_REMOVED 333353 336258"
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
@@ -25,8 +26,12 @@ mod:RegisterEventsInCombat(
 --]]
 --TODO, shadowclone removed and replaced with adds?
 local warnAmbush					= mod:NewTargetNoFilterAnnounce(325245, 4)
+local warnSolitaryPrey				= mod:NewYouAnnounce(336258, 4)
 
---local specWarnShadowclone			= mod:NewSpecialWarningSpell(325457, nil, nil, nil, 2, 2)
+local specWarnAmbush				= mod:NewSpecialWarningYou(325245, nil, nil, nil, 1, 2)
+local yellAmbush					= mod:NewYell(325245)
+local yellAmbushFades				= mod:NewShortFadesYell(325245)
+local specWarnSolitaryPrey			= mod:NewSpecialWarningYou(336258, false, nil, nil, 1, 2)--Off by default since it may feel excessively spammy if they move a lot
 local specWarnCytotoxicSlash		= mod:NewSpecialWarningDispel(325552, "RemovePoison", nil, nil, 1, 2)
 local specWarnCytotoxicSlashTank	= mod:NewSpecialWarningDefensive(325552, nil, nil, nil, 1, 2)
 --local specWarnGTFO				= mod:NewSpecialWarningGTFO(257274, nil, nil, nil, 1, 8)
@@ -34,6 +39,7 @@ local specWarnCytotoxicSlashTank	= mod:NewSpecialWarningDefensive(325552, nil, n
 --local timerShadowcloneCD			= mod:NewAITimer(13, 325457, nil, nil, nil, 6)
 local timerBroodAssassinsCD			= mod:NewCDTimer(36.4, 332313, nil, nil, nil, 1)
 local timerAmbushCD					= mod:NewCDTimer(20.6, 325245, nil, nil, nil, 3)--20-23
+local timerSolitaryPrey				= mod:NewBuffFadesTimer(6, 336258, nil, nil, nil, 5)
 local timerCytotoxicSlashCD			= mod:NewCDTimer(20.6, 325552, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON)--20-23
 
 mod:AddRangeFrameOption(5, 325245)
@@ -80,7 +86,33 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnCytotoxicSlashTank:Play("defensive")
 		end
 	elseif spellId == 333353 then
-		warnAmbush:CombinedShow(0.3, args.destName)
+		if args:IsPlayer() then
+			specWarnAmbush:Show()
+			specWarnAmbush:Play("targetyou")
+			yellAmbush:Yell()
+			yellAmbushFades:Countdown(spellId)
+		else
+			warnAmbush:Show(args.destName)
+		end
+	elseif spellId == 336258 and args:IsPlayer() then
+		if self.Options.SpecWarn336258you then
+			specWarnSolitaryPrey:Show()
+			specWarnSolitaryPrey:Play("targetyou")
+		else
+			warnSolitaryPrey:Show()
+		end
+		timerSolitaryPrey:Start()
+	end
+end
+
+function mod:SPELL_AURA_REMOVED(args)
+	local spellId = args.spellId
+	if spellId == 333353 then
+		if args:IsPlayer() then
+			yellAmbushFades:Cancel()
+		end
+	elseif spellId == 336258 and args:IsPlayer() then
+		timerSolitaryPrey:Stop()
 	end
 end
 
