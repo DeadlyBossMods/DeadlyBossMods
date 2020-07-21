@@ -8619,7 +8619,7 @@ function bossModPrototype:IsHealer(uId)
 	end
 end
 
-function bossModPrototype:IsTanking(unit, boss, isName, onlyRequested, bossGUID)
+function bossModPrototype:IsTanking(unit, boss, isName, onlyRequested, bossGUID, includeTarget)
 	if isName then--Passed combat log name, so pull unit ID
 		unit = DBM:GetRaidUnitId(unit)
 	end
@@ -8629,15 +8629,37 @@ function bossModPrototype:IsTanking(unit, boss, isName, onlyRequested, bossGUID)
 	end
 	--Prefer threat target first
 	if boss then--Only checking one bossID as requested
+		--Check threat first
 		local tanking, status = UnitDetailedThreatSituation(unit, boss)
 		if tanking or (status == 3) then
 			return true
 		end
+		--Non threat fallback
+		if includeTarget and UnitExists(boss) then
+			local guid = UnitGUID(boss)
+			local _, targetuid = self:GetBossTarget(guid, true)
+			if UnitIsUnit(unit, targetuid) then
+				return true
+			end
+		end
 	else--Check all of them if one isn't defined
 		for i = 1, 5 do
-			local tanking, status = UnitDetailedThreatSituation(unit, "boss"..i)
-			if tanking or (status == 3) then
-				return true
+			local unitID = "boss"..i
+			local guid = UnitGUID(unitID)
+			--No GUID, any unit having threat returns true, GUID, only specific unit matching guid
+			if not bossGUID or (guid and guid == bossGUID) then
+				--Check threat first
+				local tanking, status = UnitDetailedThreatSituation(unit, unitID)
+				if tanking or (status == 3) then
+					return true
+				end
+				--Non threat fallback
+				if includeTarget and UnitExists(unitID) then
+					local _, targetuid = self:GetBossTarget(guid, true)
+					if UnitIsUnit(unit, targetuid) then
+						return true
+					end
+				end
 			end
 		end
 		--Check group targets if no boss unitIDs found and bossGUID passed.
@@ -8654,9 +8676,11 @@ function bossModPrototype:IsTanking(unit, boss, isName, onlyRequested, bossGUID)
 						return true
 					end
 					--Non threat fallback
-					local _, targetuid = self:GetBossTarget(bossGUID, true)
-					if UnitIsUnit(unit, targetuid) then
-						return true
+					if includeTarget and UnitExists(unitID) then
+						local _, targetuid = self:GetBossTarget(guid, true)
+						if UnitIsUnit(unit, targetuid) then
+							return true
+						end
 					end
 				end
 			end
