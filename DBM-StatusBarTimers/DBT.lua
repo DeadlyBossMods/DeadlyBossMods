@@ -1526,7 +1526,7 @@ function barPrototype:Announce()
 	if chatWindow then
 		chatWindow:Insert(msg)
 	else
-		SendChatMessage(msg, (IsInGroup(LE_PARTY_CATEGORY_INSTANCE) and "INSTANCE_CHAT") or (IsInRaid() and "RAID") or "PARTY")
+		SendChatMessage(msg, (IsInGroup(2) and "INSTANCE_CHAT") or (IsInRaid() and "RAID") or "PARTY")
 	end
 end
 
