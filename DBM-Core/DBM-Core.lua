@@ -10036,7 +10036,7 @@ do
 				flash = runSound,--Set flash color to hard coded runsound (even if user sets custom sounds)
 				hasVoice = hasVoice,
 				difficulty = difficulty,
-				icon = seticon
+				icon = seticon,
 			},
 			mt
 		)

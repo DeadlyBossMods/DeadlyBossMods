@@ -30,6 +30,7 @@ mod:RegisterEventsInCombat(
 --TODO, tank debuff swapping seems removed, remove it from code if it doesn't return by testing
 --TODO, correct Ids for Chain link, maybe raid icons and such
 --TODO, do timers pause during stun? or just queue up?
+--TODO, one chain link pair is established, maybe add a spam repeat icon yell to the afflicted pair
 local warnHatefulGaze							= mod:NewTargetNoFilterAnnounce(331209, 4)
 local warnStunnedImpact							= mod:NewTargetNoFilterAnnounce(331314, 1)
 local warnChainLink								= mod:NewTargetAnnounce(335293, 3)

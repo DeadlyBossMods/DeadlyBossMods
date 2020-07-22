@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(167517)
 mod:SetEncounterID(2406)
 mod:SetZone()
---mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
+mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
 --mod:SetHotfixNoticeRev(20200112000000)--2020, 1, 12
 --mod:SetMinSyncRevision(20190716000000)
 --mod.respawnTime = 29
@@ -31,7 +31,7 @@ mod:RegisterEventsInCombat(
 --TODO, does https://shadowlands.wowhead.com/spell=331573/unconscionable-guilt need anything?
 local warnSharedCognition						= mod:NewTargetNoFilterAnnounce(325936, 4, nil, "Healer")
 local warnBottledAnima							= mod:NewSpellAnnounce(325769, 2)
-local warnSharedSuffering						= mod:NewTargetNoFilterAnnounce(309980, 3)
+local warnSharedSuffering						= mod:NewTargetNoFilterAnnounce(324983, 3)
 local warnConcentrateAnima						= mod:NewTargetAnnounce(332664, 3)
 --Anima Constructs
 local warnCondemn								= mod:NewCountAnnounce(331550, 2, nil, "HasInterrupt")
@@ -181,7 +181,7 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 325379 then
+	if spellId == 325382 then
 		if args:IsPlayer() then
 			self:Schedule(16, delayedWarpedDesiresCheck, self)--21-5, giving 5 seconds to run out
 		else
@@ -254,7 +254,7 @@ end
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
-	if spellId == 325379 then
+	if spellId == 325382 then
 		if args:IsPlayer() then
 			yellChangeofHeartFades:Cancel()
 		end
