@@ -40,6 +40,11 @@ mod.vb.crashCount = 0
 function mod:OnCombatStart(delay)
 	self.vb.crashCount = 0
 	timerSpawnCD:Start(5.6-delay)
+	DBM:AddMsg("This mod won't have even remotely accurate timers/phase change detection without Transcriptor logs of fight. If you want to help improve DBM and know how to do this, please help out")
+end
+
+function mod:OnCombatEnd()
+	DBM:AddMsg("This mod won't have even remotely accurate timers/phase change detection without Transcriptor logs of fight. If you want to help improve DBM and know how to do this, please help out")
 end
 
 function mod:SPELL_CAST_START(args)

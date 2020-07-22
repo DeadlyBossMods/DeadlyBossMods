@@ -71,8 +71,8 @@ end
 
 DBM = {
 	Revision = parseCurseDate("@project-date-integer@"),
-	DisplayVersion = "8.3.28 alpha", -- the string that is shown as version
-	ReleaseRevision = releaseDate(2020, 7, 14) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	DisplayVersion = "8.3.29 alpha", -- the string that is shown as version
+	ReleaseRevision = releaseDate(2020, 7, 21) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 }
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
@@ -646,12 +646,12 @@ end
 -- automatically sends an addon message to the appropriate channel (INSTANCE_CHAT, RAID or PARTY)
 local function sendSync(prefix, msg)
 	msg = msg or ""
-	if IsInGroup(LE_PARTY_CATEGORY_INSTANCE) and IsInInstance() then--For BGs, LFR and LFG (we also check IsInInstance() so if you're in queue but fighting something outside like a world boss, it'll sync in "RAID" instead)
+	if IsInGroup(2) and IsInInstance() then--For BGs, LFR and LFG (we also check IsInInstance() so if you're in queue but fighting something outside like a world boss, it'll sync in "RAID" instead)
 		SendAddonMessage("D4", prefix .. "\t" .. msg, "INSTANCE_CHAT")
 	else
 		if IsInRaid() then
 			SendAddonMessage("D4", prefix .. "\t" .. msg, "RAID")
-		elseif IsInGroup(LE_PARTY_CATEGORY_HOME) then
+		elseif IsInGroup(1) then
 			SendAddonMessage("D4", prefix .. "\t" .. msg, "PARTY")
 		else--for solo raid
 			handleSync("SOLO", playerName, prefix, strsplit("\t", msg))
@@ -662,12 +662,12 @@ end
 --Custom sync function that should only be used for user generated sync messages
 local function sendLoggedSync(prefix, msg)
 	msg = msg or ""
-	if IsInGroup(LE_PARTY_CATEGORY_INSTANCE) and IsInInstance() then--For BGs, LFR and LFG (we also check IsInInstance() so if you're in queue but fighting something outside like a world boss, it'll sync in "RAID" instead)
+	if IsInGroup(2) and IsInInstance() then--For BGs, LFR and LFG (we also check IsInInstance() so if you're in queue but fighting something outside like a world boss, it'll sync in "RAID" instead)
 		C_ChatInfo.SendAddonMessageLogged("D4", prefix .. "\t" .. msg, "INSTANCE_CHAT")
 	else
 		if IsInRaid() then
 			C_ChatInfo.SendAddonMessageLogged("D4", prefix .. "\t" .. msg, "RAID")
-		elseif IsInGroup(LE_PARTY_CATEGORY_HOME) then
+		elseif IsInGroup(1) then
 			C_ChatInfo.SendAddonMessageLogged("D4", prefix .. "\t" .. msg, "PARTY")
 		else--for solo raid
 			C_ChatInfo.SendAddonMessageLogged("D4", prefix .. "\t" .. msg, "WHISPER", playerName)
@@ -680,7 +680,7 @@ local function SendWorldSync(self, prefix, msg, noBNet)
 	DBM:Debug("SendWorldSync running for "..prefix)
 	if IsInRaid() then
 		SendAddonMessage("D4", prefix.."\t"..msg, "RAID")
-	elseif IsInGroup(LE_PARTY_CATEGORY_HOME) then
+	elseif IsInGroup(1) then
 		SendAddonMessage("D4", prefix.."\t"..msg, "PARTY")
 	end
 	if IsInGuild() then
@@ -4240,7 +4240,7 @@ do
 	syncHandlers["NS"] = function(sender, modid, modvar, text, abilityName)
 		if sender == playerName then return end
 		if DBM.Options.BlockNoteShare or InCombatLockdown() or UnitAffectingCombat("player") or IsFalling() or DBM:GetRaidRank(sender) == 0 then return end
-		if IsInGroup(LE_PARTY_CATEGORY_INSTANCE) and IsInInstance() then return end
+		if IsInGroup(2) and IsInInstance() then return end
 		--^^You are in LFR, BG, or LFG. Block note syncs. They shouldn't be sendable, but in case someone edits DBM^^
 		local mod = DBM:GetModByName(modid or "")
 		local ability = abilityName or L.UNKNOWN
@@ -5418,7 +5418,7 @@ do
 			local syncText = editBox:GetText() or ""
 			if syncText == "" then
 				DBM:AddMsg(L.NOTESHAREERRORBLANK)
-			elseif IsInGroup(LE_PARTY_CATEGORY_INSTANCE) and IsInInstance() then--For BGs, LFR and LFG (we also check IsInInstance() so if you're in queue but fighting something outside like a world boss, it'll sync in "RAID" instead)
+			elseif IsInGroup(2) and IsInInstance() then--For BGs, LFR and LFG (we also check IsInInstance() so if you're in queue but fighting something outside like a world boss, it'll sync in "RAID" instead)
 				DBM:AddMsg(L.NOTESHAREERRORGROUPFINDER)
 			else
 				local msg = modid.."\t"..modvar.."\t"..syncText.."\t"..abilityName
@@ -5429,7 +5429,7 @@ do
 						SendAddonMessage("D4", "NS\t" .. msg, "RAID")
 						DBM:AddMsg(L.NOTESHARED)
 					end
-				elseif IsInGroup(LE_PARTY_CATEGORY_HOME) then
+				elseif IsInGroup(1) then
 					if DBM:GetRaidRank(playerName) == 0 then
 						DBM:AddMsg(L.ERROR_NO_PERMISSION)
 					else
@@ -8619,7 +8619,7 @@ function bossModPrototype:IsHealer(uId)
 	end
 end
 
-function bossModPrototype:IsTanking(unit, boss, isName, onlyRequested, bossGUID)
+function bossModPrototype:IsTanking(unit, boss, isName, onlyRequested, bossGUID, includeTarget)
 	if isName then--Passed combat log name, so pull unit ID
 		unit = DBM:GetRaidUnitId(unit)
 	end
@@ -8629,15 +8629,37 @@ function bossModPrototype:IsTanking(unit, boss, isName, onlyRequested, bossGUID)
 	end
 	--Prefer threat target first
 	if boss then--Only checking one bossID as requested
+		--Check threat first
 		local tanking, status = UnitDetailedThreatSituation(unit, boss)
 		if tanking or (status == 3) then
 			return true
 		end
+		--Non threat fallback
+		if includeTarget and UnitExists(boss) then
+			local guid = UnitGUID(boss)
+			local _, targetuid = self:GetBossTarget(guid, true)
+			if UnitIsUnit(unit, targetuid) then
+				return true
+			end
+		end
 	else--Check all of them if one isn't defined
 		for i = 1, 5 do
-			local tanking, status = UnitDetailedThreatSituation(unit, "boss"..i)
-			if tanking or (status == 3) then
-				return true
+			local unitID = "boss"..i
+			local guid = UnitGUID(unitID)
+			--No GUID, any unit having threat returns true, GUID, only specific unit matching guid
+			if not bossGUID or (guid and guid == bossGUID) then
+				--Check threat first
+				local tanking, status = UnitDetailedThreatSituation(unit, unitID)
+				if tanking or (status == 3) then
+					return true
+				end
+				--Non threat fallback
+				if includeTarget and UnitExists(unitID) then
+					local _, targetuid = self:GetBossTarget(guid, true)
+					if UnitIsUnit(unit, targetuid) then
+						return true
+					end
+				end
 			end
 		end
 		--Check group targets if no boss unitIDs found and bossGUID passed.
@@ -8654,9 +8676,11 @@ function bossModPrototype:IsTanking(unit, boss, isName, onlyRequested, bossGUID)
 						return true
 					end
 					--Non threat fallback
-					local _, targetuid = self:GetBossTarget(bossGUID, true)
-					if UnitIsUnit(unit, targetuid) then
-						return true
+					if includeTarget and UnitExists(unitID) then
+						local _, targetuid = self:GetBossTarget(guid, true)
+						if UnitIsUnit(unit, targetuid) then
+							return true
+						end
 					end
 				end
 			end
@@ -9981,7 +10005,7 @@ do
 		return unschedule(self.Play, self.mod, self, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarning(text, optionDefault, optionName, optionVersion, runSound, hasVoice, difficulty)
+	function bossModPrototype:NewSpecialWarning(text, optionDefault, optionName, optionVersion, runSound, hasVoice, difficulty, texture)
 		if not text then
 			error("NewSpecialWarning: you must provide special warning text", 2)
 			return
@@ -9998,6 +10022,10 @@ do
 		if hasVoice == true then--if not a number, set it to 2, old mods that don't use new numbered system
 			hasVoice = 2
 		end
+		local seticon
+		if texture then
+			seticon = (type(texture) == "string" and texture:match("ej%d+") and select(4, DBM:EJ_GetSectionInfo(string.sub(texture, 3))) ~= "" and select(4, DBM:EJ_GetSectionInfo(string.sub(texture, 3)))) or (type(texture) == "number" and GetSpellTexture(texture)) or nil
+		end
 		local obj = setmetatable(
 			{
 				text = self.localization.warnings[text],
@@ -10008,6 +10036,7 @@ do
 				flash = runSound,--Set flash color to hard coded runsound (even if user sets custom sounds)
 				hasVoice = hasVoice,
 				difficulty = difficulty,
+				icon = seticon,
 			},
 			mt
 		)

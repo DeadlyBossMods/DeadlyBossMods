@@ -69,19 +69,23 @@ local specWarnCrimsonTorment					= mod:NewSpecialWarningDodge(326586, false, nil
 local specWarnVulgarBrand						= mod:NewSpecialWarningInterrupt(333002, "HasInterrupt", nil, nil, 1, 2)
 
 --Shade of Kael'thas
---mod:AddTimerLine(BOSS)
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(21966))
 local timerEmberBlastCD							= mod:NewAITimer(44.3, 325877, nil, nil, nil, 3)
 local timerBlazingSurgeCD						= mod:NewAITimer(44.3, 329509, nil, nil, nil, 3)
 local timerRebornPhoenixCD						= mod:NewAITimer(44.3, "ej22090", nil, nil, nil, 1, 328659, DBM_CORE_L.DAMAGE_ICON)
 --High Torturor Darithos
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(22089))
 local timerGreaterCastigationCD					= mod:NewAITimer(44.3, 328885, nil, nil, nil, 2)
 --Adds
 ----Rockbound Vanquisher
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(21954))
 local timerVanquishingStrikeCD					= mod:NewAITimer(16.6, 325440, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON, nil, 2, 3)
 --local timerConcussiveSmashCD					= mod:NewNextCountTimer(12.1, 325506, nil, nil, nil, 5)
-----Assasssin
+----Bleakwing Assassin
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(21993))
 local timerRapidStrikesCD						= mod:NewAITimer(44.3, 326583, nil, nil, nil, 3)
-----occultist
+----Vile Occultist
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(21952))
 local timerVulgarBrandCD						= mod:NewAITimer(44.3, 333002, nil, nil, nil, 3)--TODO, give it a relative icon based on difficulty (Magic/Curse)
 
 --local berserkTimer							= mod:NewBerserkTimer(600)

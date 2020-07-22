@@ -5,13 +5,13 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(164517)
 mod:SetEncounterID(2393)
 mod:SetZone()
-mod:SetUsedIcons(1, 2, 3, 4, 5)--Probably doesn't use all 5, unsure number of mind link targets at max inteligence
+mod:SetUsedIcons(1, 2, 3, 4, 5)--Probably doesn't use all 5, unsure number of mind link targets at max inteligence/energy
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 322550 322614 322558 322563",
-	"SPELL_CAST_SUCCESS 322614",
+	"SPELL_CAST_START 322550 322614 337235 337249 337255",
+	"SPELL_CAST_SUCCESS 322614 322654 322563",
 	"SPELL_AURA_APPLIED 322527 331172 322648 322563",
 	"SPELL_AURA_REMOVED 322450 322527 331172 322648",
 	"SPELL_PERIODIC_DAMAGE 326309",
@@ -19,36 +19,56 @@ mod:RegisterEventsInCombat(
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, do you need to manually interrupt Consumption on shield breaking, or does breaking shield interrupt it?
---TODO, do timers reset on 70 and 40% transitions or just pause/delay but resume from previous timing?
---TODO, possibly rework mind link icons if current method is a problem for groups that don't break them before next set go out
---TODO, target scan Acid Spittle?
---TODO, is acid explulsion spammed? Not gonna add until I know 322651
-local warnAcidSpittle				= mod:NewCastAnnounce(322558, 3)
+--Timers can't be fixed until transcriptor log, without boss energy can't start mark prey timer up mid fight or update CD on other abilities cast more often at higher energy
+--[[
+ability.id = 322550 and type = "begincast"
+ or (ability.id = 322614 or ability.id = 322654 or ability.id = 322563) and type = "cast"
+ or (ability.id = 322527 or ability.id = 322450) and (type = "applybuff" or type = "removebuff" or type = "applydebuff" or type = "removedebuff")
+ or (ability.id = 337235 or ability.id = 337249 or ability.id = 337255) and type = "begincast"
+--]]
 local warnMarkthePrey				= mod:NewTargetNoFilterAnnounce(322563, 3)
 
-local specWarnConsumption			= mod:NewSpecialWarningSpell(322450, nil, nil, nil, 2, 2)
+local specWarnConsumption			= mod:NewSpecialWarningDodge(322450, nil, nil, nil, 2, 2)
+local specWarnConsumptionKick		= mod:NewSpecialWarningInterrupt(322450, "HasInterrupt", nil, nil, 2, 2)
 local specWarnAcceleratedIncubation	= mod:NewSpecialWarningSwitch(322550, "Dps", nil, nil, 1, 2)
 local specWarnMindLink				= mod:NewSpecialWarningMoveAway(322648, nil, nil, nil, 1, 11)
 local yellMindLink					= mod:NewYell(322648)
 local specWarnMarkthePrey			= mod:NewSpecialWarningYou(322563, nil, nil, nil, 1, 2)
+local specWarnAcidExpulsion			= mod:NewSpecialWarningDodge(322654, nil, nil, nil, 2, 2)
+local specWarnParasiticInfester		= mod:NewSpecialWarning("specWarnParasiticInfester", nil, nil, nil, 1, 2, 4, 337235)
+local yellParasiticInfester			= mod:NewYell(337235, L.Infester, true, "yellParasiticInfester")
 local specWarnGTFO					= mod:NewSpecialWarningGTFO(326309, nil, nil, nil, 1, 8)
 
-local timerAcceleratedIncubationCD	= mod:NewAITimer(13, 322550, nil, nil, nil, 1, nil, DBM_CORE_L.DAMAGE_ICON)
-local timerMindLinkCD				= mod:NewAITimer(15.8, 322614, nil, nil, nil, 3)
-local timerAcidSpittleCD			= mod:NewAITimer(15.8, 322558, nil, nil, nil, 3)
-local timerMarkthePreyCD			= mod:NewAITimer(15.8, 322563, nil, nil, nil, 3)
+local timerAcceleratedIncubationCD	= mod:NewCDTimer(25.5, 322550, nil, nil, nil, 1, nil, nil, true)--25 unless spell queued
+local timerMindLinkCD				= mod:NewCDTimer(18, 322614, nil, nil, nil, 3, nil, nil, true)--18 unless spell queued, will also not be cast at all if previous link isn't gone
+local timerMarkthePreyCD			= mod:NewCDTimer(25, 322563, nil, nil, nil, 3, nil, nil, true)--25 unless spell queued, doesn't start until boss is above certain energy threshold
+local timerAcidExpulsionCD			= mod:NewCDTimer(15, 322654, nil, nil, nil, 3, nil, nil, true)--15 unless spell queued
+local timerParasiticInfesterCD		= mod:NewTimer(21.9, "timerParasiticInfesterCD", 337235, nil, nil, 1, DBM_CORE_L.MYTHIC_ICON, true)
 
-mod:AddInfoFrameOption(296650, true)
+mod:AddInfoFrameOption(322527, true)
 mod:AddSetIconOption("SetIconOnMindLink", 296944, true, false, {1, 2, 3, 4, 5})
 
 mod.vb.mindLinkIcon = 1
+mod.vb.firstPray = false
+
+function mod:InfesterTarget(targetname, uId)
+	if not targetname then return end
+	if targetname == UnitName("player") then
+		specWarnParasiticInfester:Show()
+		specWarnParasiticInfester:Play("targetyou")
+		yellParasiticInfester:Yell()
+	end
+end
 
 function mod:OnCombatStart(delay)
 	self.vb.mindLinkIcon = 1
-	timerAcceleratedIncubationCD:Start(1-delay)
-	timerMindLinkCD:Start(1-delay)
-	timerAcidSpittleCD:Start(1-delay)
+	self.vb.firstPray = false
+	timerMindLinkCD:Start(15-delay)
+	timerAcidExpulsionCD:Start(10-delay)
+	timerAcceleratedIncubationCD:Start(20.7-delay)
+	if self:IsMythic() then
+		timerParasiticInfesterCD:Start(26.3-delay)
+	end
 end
 
 function mod:OnCombatEnd()
@@ -65,11 +85,9 @@ function mod:SPELL_CAST_START(args)
 		timerAcceleratedIncubationCD:Start()
 	elseif spellId == 322614 then
 		self.vb.mindLinkIcon = 2
-	elseif spellId == 322558 then
-		warnAcidSpittle:Show()
-		timerAcidSpittleCD:Start()
-	elseif spellId == 322563 then
-		timerMarkthePreyCD:Start()
+	elseif spellId == 337235 or spellId == 337249 or spellId == 337255 then
+		self:ScheduleMethod(0.2, "BossTargetScanner", args.sourceGUID, "InfesterTarget", 0.1, 8)
+		timerParasiticInfesterCD:Start()
 	end
 end
 
@@ -78,17 +96,23 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if spellId == 322614 then
 		self.vb.mindLinkIcon = 2
 		timerMindLinkCD:Start()
+	elseif spellId == 322654 and self:AntiSpam(3, 1) then
+		specWarnAcidExpulsion:Show()
+		specWarnAcidExpulsion:Play("watchstep")
+		timerAcidExpulsionCD:Start()
+	elseif spellId == 322563 then
+		timerMarkthePreyCD:Start()
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 322527 then
-		timerAcceleratedIncubationCD:Stop()
 		timerMindLinkCD:Stop()
-		timerAcidSpittleCD:Stop()
+		timerAcidExpulsionCD:Stop()
+		timerMarkthePreyCD:Stop()
 		specWarnConsumption:Show()
-		specWarnConsumption:Play("phasechange")
+		specWarnConsumption:Play("watchstep")
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:SetHeader(args.spellName)
 			DBM.InfoFrame:Show(2, "enemyabsorb", nil, args.amount, "boss1")
@@ -104,7 +128,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:SetIcon(args.destName, spellId == 322648 and 1 or self.vb.mindLinkIcon)
 		end
 		if spellId == 331172 then
-			--Non parents use icons 2-5
 			self.vb.mindLinkIcon = self.vb.mindLinkIcon + 1
 			--if self.vb.mindLinkIcon == 6 then
 			--	self.vb.mindLinkIcon = 2
@@ -122,15 +145,11 @@ end
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
-	if spellId == 322450 then--Consumption
-		timerAcceleratedIncubationCD:Start(2)
-		timerMindLinkCD:Start(2)
-		--If stuff then--Start the advanced version of timer if inteligence high enough (alternate power?)
-			--timerMarkthePreyCD:Start(2)
-		--elsei--Start normal version
-			timerAcidSpittleCD:Start(2)
-		--end
+	if spellId == 322450 then--Consumption ended
+		--TODO, maybe update timers that are all spell queued at this point, which will
 	elseif spellId == 322527 then--Gorging Shield
+		specWarnConsumptionKick:Show(args.destName)
+		specWarnConsumptionKick:Play("kickcast")
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:Hide()
 		end
