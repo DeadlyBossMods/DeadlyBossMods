@@ -2749,7 +2749,7 @@ do
 
 		function dataBroker.OnClick(self, button)
 			if IsShiftKeyDown() then return end
-			if IsAltKeyDown() then
+			if IsAltKeyDown() and button == "RightButton" then
 				DBM.Options.SilentMode = DBM.Options.SilentMode == false and true or false
 				DBM:AddMsg(L.SILENTMODE_IS .. (DBM.Options.SilentMode and "ON" or "OFF"))
 			else

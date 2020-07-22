@@ -678,7 +678,7 @@ L.ENRAGE_ICON						= "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:20:20:0:0:2
 
 --LDB
 L.LDB_TOOLTIP_HELP1					= "Click to open " .. L.DBM
-L.LDB_TOOLTIP_HELP2					= "Alt-click to toggle Silent Mode"
+L.LDB_TOOLTIP_HELP2					= "Alt+right click to toggle Silent Mode"
 L.SILENTMODE_IS						= "SilentMode is "
 
 L.LDB_LOAD_MODS						= "Load boss mods"
