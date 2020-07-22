@@ -15,7 +15,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 325877 329509 329518 328885 325440 325506 333002",
-	"SPELL_CAST_SUCCESS 326583 326586",
+	"SPELL_CAST_SUCCESS 326583 326586 325665",
 	"SPELL_AURA_APPLIED 326456 328659 328731 325442 333145 326078",
 	"SPELL_AURA_APPLIED_DOSE 326456 325442 326078",
 	"SPELL_AURA_REMOVED 328731 326078",
@@ -31,7 +31,7 @@ mod:RegisterEventsInCombat(
 --TODO, figure out which spellId is the tank only one for Blazing Surge and just use primary target instead of target scanning
 --TODO, improve bird spawn handling?
 --TODO, is High Torturor Darithos always active? Improve Greater Castigation handling when known
---TODO, detect soul infuser spawns and warn like hell to slow/kill them
+--TODO, detect soul infuser spawns and warn like hell to slow/kill them, Currently their cast is kinda used this way which maybe/probably won't work fully
 --TODO, rapid strikes target scanning or is it like the adds on vexiona where they charge then cast something on arrival and we can't get that target
 --TODO, essence tracking of energy for Cultists?
 --TODO, dispel warnings for Vulgar brand based on difficulty (magic non mythic, curse mythic)?
@@ -47,6 +47,8 @@ local warnConcussiveSmash						= mod:NewCountAnnounce(325506, 3)
 ----Assassin
 local warnCrimsonTorment						= mod:NewSpellAnnounce(326586, 4)--Fall back warning that'll only fire if special warning is disabled
 local warnReturnToStone							= mod:NewTargetNoFilterAnnounce(333145, 4)
+--Soul Infusor
+local warnSoulInfusion							= mod:NewSpellAnnounce(325665, 4)
 
 --Shade of Kael'thas
 local specWarnBurningRemnants					= mod:NewSpecialWarningStack(326456, nil, 18, nil, nil, 1, 6)
@@ -87,6 +89,9 @@ local timerRapidStrikesCD						= mod:NewAITimer(44.3, 326583, nil, nil, nil, 3)
 ----Vile Occultist
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(21952))
 local timerVulgarBrandCD						= mod:NewAITimer(44.3, 333002, nil, nil, nil, 3)--TODO, give it a relative icon based on difficulty (Magic/Curse)
+----Soul Infuser
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(21953))
+local timerSoulInfusionCD						= mod:NewAITimer(44.3, 325665, nil, nil, nil, 1, nil, DBM_CORE_L.DAMAGE_ICON)
 
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
@@ -240,6 +245,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 				warnCrimsonTorment:Show()
 			end
 		end
+	elseif spellId == 325665 and self:AntiSpam(3, 3) then
+		warnSoulInfusion:Show()
+		timerSoulInfusionCD:Start()
 	end
 end
 
