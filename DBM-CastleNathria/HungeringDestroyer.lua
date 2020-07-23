@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(164261)
 mod:SetEncounterID(2383)
 mod:SetZone()
-mod:SetUsedIcons(1, 2, 3)
+mod:SetUsedIcons(1, 2, 3, 4, 5, 6)
 --mod:SetHotfixNoticeRev(20200112000000)--2020, 1, 12
 --mod:SetMinSyncRevision(20190716000000)
 --mod.respawnTime = 29
@@ -14,7 +14,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 334522 329758 334266 329455 329774",
-	"SPELL_CAST_SUCCESS 329298",
+--	"SPELL_CAST_SUCCESS 329298",
 	"SPELL_AURA_APPLIED 329298 334755 329725 334228 332295",
 	"SPELL_AURA_APPLIED_DOSE 334755 332295",
 	"SPELL_AURA_REMOVED 329298 334755 334228",
@@ -40,7 +40,7 @@ local specWarnEssenceSap						= mod:NewSpecialWarningStack(334755, nil, 5, nil, 
 local specWarnConsume							= mod:NewSpecialWarningRun(334522, nil, nil, nil, 4, 2)
 local specWarnExpunge							= mod:NewSpecialWarningMoveAway(329725, nil, nil, nil, 1, 2)
 local specWarnVolatileEjection					= mod:NewSpecialWarningYou(334266, nil, nil, nil, 1, 2)
---local yellVolatileEjection						= mod:NewPosYell(334266)
+local yellVolatileEjection						= mod:NewYell(334266)
 local specWarnGrowingHunger						= mod:NewSpecialWarningCount(332295, nil, DBM_CORE_L.AUTO_SPEC_WARN_OPTIONS.stack:format(12, 332295), nil, 1, 2)
 local specWarnGrowingHungerOther				= mod:NewSpecialWarningTaunt(332295, nil, nil, nil, 1, 2)
 local specWarnOverwhelm							= mod:NewSpecialWarningDefensive(329774, "Tank", nil, nil, 1, 2)
@@ -58,7 +58,7 @@ local timerOverwhelmCD							= mod:NewAITimer(16.6, 329774, nil, "Tank", nil, 5,
 
 --mod:AddRangeFrameOption(10, 310277)
 mod:AddSetIconOption("SetIconOnGluttonousMiasma", 329298, true, false, {1, 2, 3})
---mod:AddSetIconOption("SetIconOnVolatileEjection", 334266, true, false, {6, 7, 8})
+mod:AddSetIconOption("SetIconOnVolatileEjection", 334266, false, false, {4, 5, 6})--off by default since it will break if not EVERYONE in raid is running DBM or BW
 --mod:AddNamePlateOption("NPAuraOnVolatileCorruption", 312595)
 mod:AddInfoFrameOption(334755, true)
 mod:AddBoolOption("SortDesc", false)
@@ -67,6 +67,7 @@ mod:AddBoolOption("ShowTimeNotStacks", false)
 local GluttonousTargets = {}
 local essenceSapStacks = {}
 local playerEssenceSap, playerVolatile = false, false
+mod.vb.volatileIcon = 4
 
 local updateInfoFrame
 do
@@ -148,6 +149,7 @@ function mod:OnCombatStart(delay)
 	playerEssenceSap = false
 	table.wipe(GluttonousTargets)
 	table.wipe(essenceSapStacks)
+	self.vb.volatileIcon = 4
 	timerGluttonousMiasmaCD:Start(1-delay)--6.9
 	timerConsumeCD:Start(1-delay)--111.9
 	timerExpungeCD:Start(1-delay)
@@ -218,7 +220,8 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 329758 then
 		timerExpungeCD:Start()
 	elseif spellId == 334266 then
-		--TODO, if not target, warn to avoid those who are
+		--TODO, if not target, warn to avoid those who are?
+		self.vb.volatileIcon = 4
 		timerVolatileEjectionCD:Start()
 	elseif spellId == 329455 then
 		timerDesolateCD:Start()
@@ -231,12 +234,14 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
+--[[
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 329298 and self:AntiSpam(5, 1) then
 --		timerGluttonousMiasmaCD:Start()
 	end
 end
+--]]
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
@@ -311,17 +316,22 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 function mod:RAID_BOSS_WHISPER(msg)
-	if msg:find("334266") then
+	if msg:find("334064") then
 		specWarnVolatileEjection:Show()
 		specWarnVolatileEjection:Play("targetyou")
+		yellVolatileEjection:Yell()
 	end
 end
 
 function mod:OnTranscriptorSync(msg, targetName)
-	if msg:find("334266") and targetName then
+	if msg:find("334064") and targetName then
 		targetName = Ambiguate(targetName, "none")
 		if self:AntiSpam(4, targetName) then
 			warnVolatileEjection:CombinedShow(0.75, targetName)
+			if self.Options.SetIconOnVolatileEjection then
+				self:SetIcon(targetName, self.vb.volatileIcon)
+			end
+			self.vb.volatileIcon = self.vb.volatileIcon + 1
 		end
 	end
 end
