@@ -28,7 +28,7 @@ mod:RegisterEventsInCombat(
 --TODO, find out correct powere type for boss, or alternate means of detecting the bosses spell ranks
 --TODO, near 100% chance trigger for bottled anima is wrong. it's really hard to guess the correct one with no clear cast spellId, it's probably not a CLEU trigger
 --TODO, verify shared suffering spellIds and combat log order being valid way of attributing links
---TODO, does https://shadowlands.wowhead.com/spell=331573/unconscionable-guilt need anything?
+--TODO, does https://shadowlands.wowhead.com/spell=331573/unconscionable-guilt need anything? doesn't say it stacks
 local warnSharedCognition						= mod:NewTargetNoFilterAnnounce(325936, 4, nil, "Healer")
 local warnBottledAnima							= mod:NewSpellAnnounce(325769, 2)
 local warnSharedSuffering						= mod:NewTargetNoFilterAnnounce(324983, 3)
