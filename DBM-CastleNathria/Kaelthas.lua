@@ -25,6 +25,7 @@ mod:RegisterEventsInCombat(
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
+--TODO, Burning remnant timer? if it's not just spammed that is
 --TODO, adjust tank stacks for two swap mechanics
 --TODO, Switch Ember Blast to UnitTargetScanner for max scan speed/efficiency, if shade has boss unit ID and isn't already targetting victim when cast starts
 --TODO, adjust ember blast warning to reduce number told to soak it if it's not conventional to just tell everyone but the tanks to do it
@@ -35,6 +36,7 @@ mod:RegisterEventsInCombat(
 --TODO, rapid strikes target scanning or is it like the adds on vexiona where they charge then cast something on arrival and we can't get that target
 --TODO, essence tracking of energy for Cultists?
 --TODO, dispel warnings for Vulgar brand based on difficulty (magic non mythic, curse mythic)?
+--TODO, improved infoframe with https://shadowlands.wowhead.com/spell=339251/drained-soul tracking
 --Shade of Kael'thas
 local warnBurningRemnants						= mod:NewStackAnnounce(326456, 2, nil, "Tank")
 local warnEmberBlast							= mod:NewTargetNoFilterAnnounce(325877, 4)
