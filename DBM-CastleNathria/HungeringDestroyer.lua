@@ -40,7 +40,7 @@ local specWarnEssenceSap						= mod:NewSpecialWarningStack(334755, nil, 5, nil, 
 local specWarnConsume							= mod:NewSpecialWarningRun(334522, nil, nil, nil, 4, 2)
 local specWarnExpunge							= mod:NewSpecialWarningMoveAway(329725, nil, nil, nil, 1, 2)
 local specWarnVolatileEjection					= mod:NewSpecialWarningYou(334266, nil, nil, nil, 1, 2)
-local yellVolatileEjection						= mod:NewPosYell(334266)
+--local yellVolatileEjection						= mod:NewPosYell(334266)
 local specWarnGrowingHunger						= mod:NewSpecialWarningCount(332295, nil, DBM_CORE_L.AUTO_SPEC_WARN_OPTIONS.stack:format(12, 332295), nil, 1, 2)
 local specWarnGrowingHungerOther				= mod:NewSpecialWarningTaunt(332295, nil, nil, nil, 1, 2)
 local specWarnOverwhelm							= mod:NewSpecialWarningDefensive(329774, "Tank", nil, nil, 1, 2)
@@ -148,11 +148,11 @@ function mod:OnCombatStart(delay)
 	playerEssenceSap = false
 	table.wipe(GluttonousTargets)
 	table.wipe(essenceSapStacks)
-	timerGluttonousMiasmaCD:Start(1-delay)
-	timerConsumeCD:Start(1-delay)
+	timerGluttonousMiasmaCD:Start(1-delay)--6.9
+	timerConsumeCD:Start(1-delay)--111.9
 	timerExpungeCD:Start(1-delay)
-	timerVolatileEjectionCD:Start(1-delay)
-	timerOverwhelmCD:Start(1-delay)
+	timerVolatileEjectionCD:Start(1-delay)--10.7
+	timerOverwhelmCD:Start(1-delay)--5.9
 --	if self.Options.NPAuraOnVolatileCorruption then
 --		DBM:FireEvent("BossMod_EnableHostileNameplates")
 --	end
@@ -234,7 +234,7 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 329298 and self:AntiSpam(5, 1) then
-		timerGluttonousMiasmaCD:Start()
+--		timerGluttonousMiasmaCD:Start()
 	end
 end
 
@@ -254,6 +254,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if self.Options.SetIconOnGluttonousMiasma then
 			self:SetIcon(args.destName, icon)
+		end
+		if self:AntiSpam(5, 3) then
+			timerGluttonousMiasmaCD:Start()
 		end
 	elseif spellId == 334755 then
 		local amount = args.amount or 1
