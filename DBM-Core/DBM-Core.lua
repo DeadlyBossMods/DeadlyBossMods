@@ -4528,7 +4528,7 @@ do
 		end
 	end
 
-	local function HandleVersion(revision, version, displayVersion, sender, noRaid)
+	local function HandleVersion(revision, version, displayVersion, sender)
 		if version > DBM.Revision then -- Update reminder
 			if #newerVersionPerson < 4 then
 				if not checkEntry(newerVersionPerson, sender) then
@@ -4558,7 +4558,7 @@ do
 					AddMsg(DBM, L.UPDATEREMINDER_HEADER:match("([^\n]*)"))
 					AddMsg(DBM, L.UPDATEREMINDER_HEADER:match("\n(.*)"):format(displayVersion, showRealDate(version)))
 					showConstantReminder = 1
-				elseif not noRaid and #newerVersionPerson == 3 and raid[newerVersionPerson[1]] and raid[newerVersionPerson[2]] and raid[newerVersionPerson[3]] and updateNotificationDisplayed < 3 then--The following code requires at least THREE people to send that higher revision. That should be more than adaquate
+				elseif #newerVersionPerson >= 3 and raid[newerVersionPerson[1]] and raid[newerVersionPerson[2]] and raid[newerVersionPerson[3]] and updateNotificationDisplayed < 3 then--The following code requires at least THREE people to send that higher revision. That should be more than adaquate
 					--Disable if revision grossly out of date even if not major patch.
 					local revDifference = mmin(((raid[newerVersionPerson[1]].revision or 0) - DBM.Revision), ((raid[newerVersionPerson[2]].revision or 0) - DBM.Revision), ((raid[newerVersionPerson[3]].revision or 0) - DBM.Revision))
 					if revDifference > 100000000 then--Approx 1 month old 20190416172622
@@ -4645,7 +4645,7 @@ do
 		revision, version = tonumber(revision), tonumber(version)
 		if revision and version and displayVersion then
 			DBM:Debug("Received G version info from "..sender.." : Rev - "..revision..", Ver - "..version..", Rev Diff - "..(revision - DBM.Revision), 3)
-			HandleVersion(revision, version, displayVersion, sender, true)
+			HandleVersion(revision, version, displayVersion, sender)
 		end
 	end
 
