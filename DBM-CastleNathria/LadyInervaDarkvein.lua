@@ -17,7 +17,7 @@ mod:RegisterEventsInCombat(
 --	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED 325382 325936 324983 332664 335396",
 	"SPELL_AURA_APPLIED_DOSE 325382",
-	"SPELL_AURA_REMOVED 325382 332664",
+	"SPELL_AURA_REMOVED 325382 332664 324983",
 	"SPELL_PERIODIC_DAMAGE 325713",
 	"SPELL_PERIODIC_MISSED 325713",
 --	"UNIT_DIED"
@@ -255,6 +255,10 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 332664 then
 		if args:IsPlayer() then
 			yellConcentrateAnimaFades:Cancel()
+		end
+	elseif spellId == 324983 then
+		if self.Options.SetIconOnSharedSuffering then
+			self:SetIcon(args.destName, 0)
 		end
 	end
 end
