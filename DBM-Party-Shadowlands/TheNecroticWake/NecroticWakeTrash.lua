@@ -11,7 +11,7 @@ mod:RegisterEvents(
 	"SPELL_CAST_START 324293 327240 327399",
 --	"SPELL_CAST_SUCCESS"
 	"SPELL_AURA_APPLIED 327401",
-	"SPELL_AURA_REMOVED 327401
+	"SPELL_AURA_REMOVED 327401"
 )
 
 --TODO targetscan shared agony during cast and get at least one of targets early? for fade/invis and feign death?
