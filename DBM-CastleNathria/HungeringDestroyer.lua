@@ -18,6 +18,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 329298 334755 329725 334228 332295",
 	"SPELL_AURA_APPLIED_DOSE 334755 332295",
 	"SPELL_AURA_REMOVED 329298 334755 334228",
+	"SPELL_DAMAGE 329742",
+	"SPELL_MISSED 329742",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 	"RAID_BOSS_WHISPER"
@@ -28,9 +30,7 @@ mod:RegisterEventsInCombat(
 --TODO, fine tune icons for Miasma when number of affected targets is known
 --TODO, if Gluttonous Miasma has shorter than a 24 second cd, the current icon code will break if any players die
 --TODO, fine tune stacks for essence sap
---TODO, better way to detect expunge, 6 second debuff or 5 second cast? which comes first?
---TODO, detect volatile ejection targets? probably uses RAID_BOSS_WHISPER, it's drycoded but may have wrong spellId
---TODO, is desolate a mechanic just to have more to heal? or a failure mechanic like "no tank in melee range" one
+--TODO, better way to detect expunge?
 local warnGluttonousMiasma						= mod:NewTargetNoFilterAnnounce(329298, 4)
 local warnVolatileEjection						= mod:NewTargetNoFilterAnnounce(334266, 4)
 
@@ -47,12 +47,12 @@ local specWarnOverwhelm							= mod:NewSpecialWarningDefensive(329774, "Tank", n
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(270290, nil, nil, nil, 1, 8)
 
 --mod:AddTimerLine(BOSS)
-local timerGluttonousMiasmaCD					= mod:NewAITimer(44.3, 329298, nil, nil, nil, 3)
-local timerConsumeCD							= mod:NewAITimer(44.3, 334522, nil, nil, nil, 2)
-local timerExpungeCD							= mod:NewAITimer(44.3, 329725, nil, nil, nil, 3)
-local timerVolatileEjectionCD					= mod:NewAITimer(44.3, 334266, nil, nil, nil, 3)
-local timerDesolateCD							= mod:NewAITimer(44.3, 329455, nil, nil, nil, 2, nil, DBM_CORE_L.HEALER_ICON)
-local timerOverwhelmCD							= mod:NewAITimer(16.6, 329774, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON, nil, 2, 3)
+local timerGluttonousMiasmaCD					= mod:NewCDTimer(22.1, 329298, nil, nil, nil, 3)
+local timerConsumeCD							= mod:NewNextCountTimer(120, 334522, nil, nil, nil, 2)
+local timerExpungeCD							= mod:NewNextCountTimer(44.3, 329725, nil, nil, nil, 3)
+local timerVolatileEjectionCD					= mod:NewNextCountTimer(44.3, 334266, nil, nil, nil, 3)
+local timerDesolateCD							= mod:NewNextCountTimer(60, 329455, nil, nil, nil, 2, nil, DBM_CORE_L.HEALER_ICON)
+local timerOverwhelmCD							= mod:NewCDTimer(11.2, 329774, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON, nil, 2, 3)
 
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
@@ -68,6 +68,10 @@ local GluttonousTargets = {}
 local essenceSapStacks = {}
 local playerEssenceSap, playerVolatile = false, false
 mod.vb.volatileIcon = 4
+mod.vb.volatileCast = 2
+mod.vb.expungeCount = 0
+mod.vb.consumeCount = 0
+mod.vb.desolateCount = 0
 
 local updateInfoFrame
 do
@@ -150,11 +154,15 @@ function mod:OnCombatStart(delay)
 	table.wipe(GluttonousTargets)
 	table.wipe(essenceSapStacks)
 	self.vb.volatileIcon = 4
-	timerGluttonousMiasmaCD:Start(1-delay)--6.9
-	timerConsumeCD:Start(1-delay)--111.9
-	timerExpungeCD:Start(1-delay)
-	timerVolatileEjectionCD:Start(1-delay)--10.7
-	timerOverwhelmCD:Start(1-delay)--5.9
+	self.vb.volatileCast = 2--it starts at 2 in the cycle for timer handling
+	self.vb.expungeCount = 0
+	self.vb.consumeCount = 0
+	self.vb.desolateCount = 0
+	timerGluttonousMiasmaCD:Start(3.2-delay)--3-6?
+	timerOverwhelmCD:Start(5.1-delay)
+	timerVolatileEjectionCD:Start(10.1-delay, 1)
+	timerExpungeCD:Start(33-delay, 1)--Hit or miss
+	timerConsumeCD:Start(111-delay, 1)
 --	if self.Options.NPAuraOnVolatileCorruption then
 --		DBM:FireEvent("BossMod_EnableHostileNameplates")
 --	end
@@ -214,17 +222,25 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 334522 then
-		specWarnConsume:Show()
+		self.vb.consumeCount = self.vb.consumeCount + 1
+		specWarnConsume:Show(self.vb.consumeCount)
 		specWarnConsume:Play("justrun")
-		timerConsumeCD:Start()
-	elseif spellId == 329758 then
-		timerExpungeCD:Start()
+		timerConsumeCD:Start(120, self.vb.consumeCount+1)
+--	elseif spellId == 329758 then
+--		timerExpungeCD:Start()
 	elseif spellId == 334266 then
-		--TODO, if not target, warn to avoid those who are?
 		self.vb.volatileIcon = 4
-		timerVolatileEjectionCD:Start()
+		self.vb.volatileCast = self.vb.volatileCast + 1
+		--10.1, 36.1, 12.0, 36.0, 36.0, 36.0, 12.0, 36.0, 36.1, 35.9, 12.1, 35.9, 36.0
+		--2, 6, 10, 14, etc
+		if self.vb.volatileCast % 4 == 0 then
+			timerVolatileEjectionCD:Start(12, self.vb.volatileCast-1)
+		else
+			timerVolatileEjectionCD:Start(35.9, self.vb.volatileCast-1)
+		end
 	elseif spellId == 329455 then
-		timerDesolateCD:Start()
+		self.vb.desolateCount = self.vb.desolateCount + 1
+		timerDesolateCD:Start(60, self.vb.desolateCount+1)
 	elseif spellId == 329774 then
 		if self:IsTanking("player", "boss1", nil, true) then
 			specWarnOverwhelm:Show()
@@ -246,6 +262,10 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 329298 then
+		if self:AntiSpam(10, 3) then
+			table.wipe(GluttonousTargets)
+			timerGluttonousMiasmaCD:Start()
+		end
 		if not tContains(GluttonousTargets, args.destName) then
 			table.insert(GluttonousTargets, args.destName)
 		end
@@ -259,9 +279,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if self.Options.SetIconOnGluttonousMiasma then
 			self:SetIcon(args.destName, icon)
-		end
-		if self:AntiSpam(5, 3) then
-			timerGluttonousMiasmaCD:Start()
 		end
 	elseif spellId == 334755 then
 		local amount = args.amount or 1
@@ -336,14 +353,26 @@ function mod:OnTranscriptorSync(msg, targetName)
 	end
 end
 
---[[
-function mod:UNIT_DIED(args)
-	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 157612 then
-
+--38, 36.1, 35.87, 48, 36, 36, 48, 36, 36, 48
+function mod:SPELL_DAMAGE(_, _, _, _, _, _, _, _, spellId)
+	if spellId == 329742 and self:AntiSpam(10, 5) then
+		self.vb.expungeCount = self.vb.expungeCount + 1
+		specWarnExpunge:Cancel()
+		specWarnExpunge:CancelVoice()
+		if (self.vb.expungeCount) % 3 == 0 then
+			specWarnExpunge:Schedule(43)
+			specWarnExpunge:ScheduleVoice(43, "scatter")
+			timerExpungeCD:StarT(43, self.vb.expungeCount+1)
+		else
+			specWarnExpunge:Schedule(43)
+			specWarnExpunge:ScheduleVoice(30.8, "scatter")
+			timerExpungeCD:Start(30.8, self.vb.expungeCount+1)
+		end
 	end
 end
+mod.SPELL_MISSED = mod.SPELL_DAMAGE
 
+--[[
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
 	if spellId == 270290 and destGUID == UnitGUID("player") and self:AntiSpam(2, 2) then
 		specWarnGTFO:Show(spellName)
