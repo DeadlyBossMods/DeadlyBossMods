@@ -14,12 +14,13 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 332318 332687",
-	"SPELL_CAST_SUCCESS 332362 335354 335293",
-	"SPELL_AURA_APPLIED 331209 331314 335293",
+	"SPELL_CAST_SUCCESS 332362 335354 335491",
+	"SPELL_AURA_APPLIED 331209 331314",
 --	"SPELL_AURA_APPLIED_DOSE",
-	"SPELL_AURA_REMOVED 331209 331314"
+	"SPELL_AURA_REMOVED 331209 331314",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
+	"RAID_BOSS_WHISPER"
 --	"UNIT_DIED",
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
@@ -33,7 +34,7 @@ mod:RegisterEventsInCombat(
 --TODO, one chain link pair is established, maybe add a spam repeat icon yell to the afflicted pair
 local warnHatefulGaze							= mod:NewTargetNoFilterAnnounce(331209, 4)
 local warnStunnedImpact							= mod:NewTargetNoFilterAnnounce(331314, 1)
-local warnChainLink								= mod:NewTargetAnnounce(335293, 3)
+local warnChainLink								= mod:NewTargetAnnounce(335491, 3)
 local warnFallingDebris							= mod:NewSpellAnnounce(332362, 3)
 --local warnCrushedArmor							= mod:NewStackAnnounce(332991, 2, nil, "Tank|Healer")
 
@@ -41,8 +42,8 @@ local specWarnHatefulGaze						= mod:NewSpecialWarningMoveTo(331209, nil, nil, n
 local specWarnHeedlessCharge					= mod:NewSpecialWarningSoon(331211, nil, nil, nil, 2, 2)
 local yellHatefulGaze							= mod:NewYell(331209)
 local yellHatefulGazeFades						= mod:NewFadesYell(331209)
-local specWarnChainLink							= mod:NewSpecialWarningYou(335293, nil, nil, nil, 1, 2)
-local yellChainLink								= mod:NewYell(335293)
+local specWarnChainLink							= mod:NewSpecialWarningYou(335491, nil, nil, nil, 1, 2)
+local yellChainLink								= mod:NewYell(335491)
 local specWarnDestructiveStomp					= mod:NewSpecialWarningRun(332318, "Melee", nil, nil, 4, 2)
 local specWarnColossalRoar						= mod:NewSpecialWarningSpell(332687, nil, nil, nil, 2, 2)
 --local specWarnCrushedArmor						= mod:NewSpecialWarningStack(332991, nil, 12, nil, nil, 1, 6)
@@ -51,7 +52,7 @@ local specWarnColossalRoar						= mod:NewSpecialWarningSpell(332687, nil, nil, n
 
 local timerHatefulGazeCD						= mod:NewAITimer(44.3, 331209, nil, nil, nil, 3, nil, DBM_CORE_L.IMPORTANT_ICON, nil, 1, 4)
 local timerStunnedImpact						= mod:NewTargetTimer(8, 331314, nil, nil, nil, 5, nil, DBM_CORE_L.DAMAGE_ICON)
-local timerChainLinkCD							= mod:NewAITimer(44.3, 335293, nil, nil, nil, 3)
+local timerChainLinkCD							= mod:NewAITimer(44.3, 335491, nil, nil, nil, 3)
 local timerDestructiveStompCD					= mod:NewAITimer(44.3, 332318, nil, nil, nil, 3)
 local timerFallingDebrisCD						= mod:NewAITimer(44.3, 332362, nil, nil, nil, 3)
 local timerColossalRoarCD						= mod:NewAITimer(44.3, 332687, nil, nil, nil, 2)
@@ -112,7 +113,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerFallingDebrisCD:Start()
 	elseif spellId == 335354 then
 		timerChainSlamCD:Start()
-	elseif spellId == 335293 then
+	elseif spellId == 335491 then
 		timerChainLinkCD:Start()
 	end
 end
@@ -137,13 +138,6 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 331314 then
 		warnStunnedImpact:Show(args.destName)
 		timerStunnedImpact:Start(args.destName)
-	elseif spellId == 335293 then
-		warnChainLink:CombinedShow(0.3, args.destName)
-		if args:IsPlayer() then
-			specWarnChainLink:Show()
-			specWarnChainLink:Play("targetyou")
-			yellChainLink:Yell()
-		end
 	--[[elseif spellId == 332991 then
 		local amount = args.amount or 1
 		if amount % 3 == 0 then
@@ -178,6 +172,23 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif spellId == 331314 then
 		timerStunnedImpact:Stop(args.destName)
+	end
+end
+
+function mod:RAID_BOSS_WHISPER(msg)
+	if msg:find("335293") or msg:find("335491") or msg:find("335292") or msg:find("335294") or msg:find("335468") or msg:find("335779") then
+		specWarnChainLink:Show()
+		specWarnChainLink:Play("targetyou")
+		yellChainLink:Yell()
+	end
+end
+
+function mod:OnTranscriptorSync(msg, targetName)
+	if (msg:find("335293") or msg:find("335491") or msg:find("335292") or msg:find("335294") or msg:find("335468") or msg:find("335779")) and targetName then
+		targetName = Ambiguate(targetName, "none")
+		if self:AntiSpam(4, targetName) then
+			warnChainLink:CombinedShow(0.75, targetName)
+		end
 	end
 end
 
