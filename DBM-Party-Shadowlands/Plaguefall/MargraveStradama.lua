@@ -2,7 +2,7 @@ local mod	= DBM:NewMod(2404, "DBM-Party-Shadowlands", 2, 1183)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
-mod:SetCreatureID(163958)--Or 164267
+mod:SetCreatureID(164267)
 mod:SetEncounterID(2386)
 mod:SetZone()
 
@@ -10,41 +10,54 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 --	"SPELL_AURA_APPLIED",
-	"SPELL_CAST_START 322236 322475",
+	"SPELL_CAST_START 322236 322232 322475",
 	"SPELL_CAST_SUCCESS 322304",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
-	"UNIT_DIED"
---	"UNIT_SPELLCAST_SUCCEEDED boss1"
+	"UNIT_DIED",
+	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5"--Register all in case boss leaving coming back changes order with the spawns
 )
 
 --TODO, https://shadowlands.wowhead.com/spell=322490/plague-rot is passive, does it need an infoframe?
---TODO, add https://shadowlands.wowhead.com/spell=322232/infectious-rain ?
---TODO, Fix Plague Crash to be less spammy, when trigger event for phase start/end is known and can be cleaned up to use special warning for begin, then general announce for each cast within
---TODO, timer correction on phase begins/ends
---TODO, even more timer correction on mythic phase
 --[[
 (ability.id = 322236 or ability.id = 322475) and type = "begincast"
  or ability.id = 322304 and type = "cast"
 --]]
-local specWarnSpawn					= mod:NewSpecialWarningSwitch(322304, "-Healer", nil, nil, 1, 7)
+local warnPlagueCrash				= mod:NewCountAnnounce(322473, 4)--Announces each cast of the sequence in regular warning
+
+local specWarnMalignantGrowth		= mod:NewSpecialWarningSwitch(322304, "-Healer", nil, nil, 1, 7)
 local specWarnTouchofSlime			= mod:NewSpecialWarningSoak(257314, "Tank", nil, nil, 1, 7)
-local specWarnPlagueCrash			= mod:NewSpecialWarningDodgeCount(322477, nil, nil, nil, 2, 2)
+local specWarnPlagueCrash			= mod:NewSpecialWarningDodge(322473, nil, nil, nil, 2, 2)--Announces beginning of sequence in special warning
 --local specWarnGTFO				= mod:NewSpecialWarningGTFO(257274, nil, nil, nil, 1, 8)
 
-local timerSpawnCD					= mod:NewCDTimer(20.6, 322304, nil, nil, nil, 1, nil, DBM_CORE_L.TANK_ICON .. DBM_CORE_L.DAMAGE_ICON)
+local timerMalignantGrowthCD		= mod:NewCDTimer(20.6, 322304, nil, nil, nil, 1, nil, DBM_CORE_L.TANK_ICON .. DBM_CORE_L.DAMAGE_ICON)
+local timerInfectiousRainCD			= mod:NewCDTimer(17, 322232, nil, nil, nil, 3)
+local timerSinkPhase				= mod:NewPhaseTimer(27)
+--Tentacle Add
 local timerTouchofSlimeCD			= mod:NewCDTimer(6, 322236, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON)
 
 mod.vb.crashCount = 0
+mod.vb.sinkPhase = false
+mod.vb.sinkPhaseCount = 0
 
 function mod:OnCombatStart(delay)
 	self.vb.crashCount = 0
-	timerSpawnCD:Start(5.6-delay)
-	DBM:AddMsg("This mod won't have even remotely accurate timers/phase change detection without Transcriptor logs of fight. If you want to help improve DBM and know how to do this, please help out")
+	self.vb.sinkPhase = false
+	self.vb.sinkPhaseCount = 0
+	timerMalignantGrowthCD:Start(5.6-delay)
+	timerInfectiousRainCD:Start(15.4-delay)
 end
 
 function mod:OnCombatEnd()
-	DBM:AddMsg("This mod won't have even remotely accurate timers/phase change detection without Transcriptor logs of fight. If you want to help improve DBM and know how to do this, please help out")
+	self:UnregisterShortTermEvents()
+end
+
+function mod:OnTimerRecovery()
+	if self.vb.sinkPhase then
+		self:RegisterShortTermEvents(
+			"UNIT_TARGETABLE_CHANGED boss1 boss2 boss3 boss4 boss5"
+		)
+	end
 end
 
 function mod:SPELL_CAST_START(args)
@@ -53,27 +66,30 @@ function mod:SPELL_CAST_START(args)
 		specWarnTouchofSlime:Show()
 		specWarnTouchofSlime:Play("helpsoak")
 		timerTouchofSlimeCD:Start(6, args.sourceGUID)
+	elseif spellId == 322232 then
+		timerInfectiousRainCD:Start()
 	elseif spellId == 322475 and self:AntiSpam(5, 1) then
 		self.vb.crashCount = self.vb.crashCount + 1
-		specWarnPlagueCrash:Show(self.vb.crashCount)
-		specWarnPlagueCrash:Play("watchstep")
---		timerSpawnCD:Stop()--On mythic this will need code changes this should only actually be stopped at health triggers
+		warnPlagueCrash:Show(self.vb.crashCount)
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 322304 then
-		specWarnSpawn:Show()
-		specWarnSpawn:Play("killmob")
-		timerSpawnCD:Start()
+		specWarnMalignantGrowth:Show()
+		specWarnMalignantGrowth:Play("killmob")
+		timerMalignantGrowthCD:Start()
 		timerTouchofSlimeCD:Start(6)
+		--if self:IsMythic() then
+			--TODO, plague crash castbar?
+		--end
 	end
 end
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 165430 then--Malignant Spawn
+	if cid == 165430 then--Malignant MalignantGrowth
 		timerTouchofSlimeCD:Stop(args.destGUID)
 	end
 end
@@ -93,10 +109,34 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spell
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
+--]]
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 257453  then
-
+	if spellId == 322477 then--Start Plague Crash Phase
+		self.vb.sinkPhase = true
+		self.vb.sinkPhaseCount = self.vb.sinkPhaseCount + 1
+		timerMalignantGrowthCD:Stop()
+		timerInfectiousRainCD:Stop()
+		timerSinkPhase:Start(27)
+		self:RegisterShortTermEvents(
+			"UNIT_TARGETABLE_CHANGED boss1 boss2 boss3 boss4 boss5"
+		)
+	elseif spellId == 322473 then--Plague Crash
+		specWarnPlagueCrash:Show()
+		specWarnPlagueCrash:Play("watchstep")
 	end
 end
---]]
+
+function mod:UNIT_TARGETABLE_CHANGED(uId)
+	local cid = self:GetUnitCreatureId(uId)
+	if cid == 164267 and UnitCanAttack("player", uId) then
+		self:UnregisterShortTermEvents()
+		self.vb.sinkPhase = false
+		if self.vb.sinkPhaseCount == 1 then
+			timerMalignantGrowthCD:Start(5.6)
+			timerInfectiousRainCD:Start(15.4)
+		else--2
+			timerInfectiousRainCD:Start(6)
+		end
+	end
+end
