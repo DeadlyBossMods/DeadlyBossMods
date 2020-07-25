@@ -87,7 +87,7 @@ local timerVanquishingStrikeCD					= mod:NewAITimer(16.6, 325440, nil, "Tank", n
 --local timerConcussiveSmashCD					= mod:NewNextCountTimer(12.1, 325506, nil, nil, nil, 5)
 ----Bleakwing Assassin
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(21993))
-local timerRapidStrikesCD						= mod:NewAITimer(44.3, 326583, nil, nil, nil, 3)
+local timerRapidStrikesCD						= mod:NewAITimer(44.3, 326583, nil, false, nil, 3)--Too many to track via normal bars, this needs nameplate bars/icon
 ----Vile Occultist
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(21952))
 local timerVulgarBrandCD						= mod:NewAITimer(44.3, 333002, nil, nil, nil, 3)--TODO, give it a relative icon based on difficulty (Magic/Curse)
@@ -301,7 +301,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.NPAuraOnPhoenixEmbers then
 			DBM.Nameplate:Show(true, args.sourceGUID, spellId, nil, 20)
 		end
-	elseif spellId == 333145 then
+	elseif spellId == 333145 and self:AntiSpam(5, args.destName) then
 		warnReturnToStone:Show(args.destName)
 	elseif spellId == 326078 then
 		if not tContains(infuserTargets, args.destName) then
