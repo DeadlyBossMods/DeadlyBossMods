@@ -619,7 +619,7 @@ L.LAG_FOOTER					= "無回應:%s"
 
 --LDB
 L.LDB_TOOLTIP_HELP1					= "點擊開啟" .. L.DBM
-L.LDB_TOOLTIP_HELP2					= "Alt-點擊以切換無聲模式"
+L.LDB_TOOLTIP_HELP2					= "Alt-右鍵點擊以切換無聲模式"
 L.SILENTMODE_IS                     = "無聲模式是 "
 L.LDB_LOAD_MODS		= "載入首領模組"
 L.LDB_CAT_OTHER		= "其他首領模組"
