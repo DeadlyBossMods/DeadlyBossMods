@@ -14,10 +14,10 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 328857 328921 329780",
-	"SPELL_CAST_SUCCESS 329386 321511 336337",
-	"SPELL_AURA_APPLIED 328897 329370 336338",
+	"SPELL_CAST_SUCCESS 329386 321511 336337 336235",
+	"SPELL_AURA_APPLIED 328897 329370 336338 336235",
 	"SPELL_AURA_APPLIED_DOSE 328897",
-	"SPELL_AURA_REMOVED 329370 328921 336338"
+	"SPELL_AURA_REMOVED 329370 328921 336338 336235"
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 --	"UNIT_DIED",
@@ -35,6 +35,7 @@ mod:RegisterEventsInCombat(
 --Stage One - Thirst for Blood
 local warnExsanguinated							= mod:NewStackAnnounce(328897, 2, nil, "Tank|Healer")
 local warnSanguineCurse							= mod:NewTargetNoFilterAnnounce(336338, 3, nil, "RemoveCurse")
+local warnDarkDescent							= mod:NewTargetAnnounce(336235, 3)
 --Stage Two - Terror of Castle Nathria
 local warnDarkSonar								= mod:NewSpellAnnounce(321511, 4, nil, false)--Probably spammy?
 local warnCower									= mod:NewTargetNoFilterAnnounce(329370, 4)
@@ -45,6 +46,9 @@ local warnReverberatingShriek					= mod:NewSpellAnnounce(329780, 2, nil, false)-
 local specWarnExsanguinated						= mod:NewSpecialWarningStack(328897, nil, 3, nil, nil, 1, 6)
 local specWarnExsanguinatedTaunt				= mod:NewSpecialWarningTaunt(328897, nil, nil, nil, 1, 2)
 local specWarnBloodSpikes						= mod:NewSpecialWarningDodge(329386, nil, nil, nil, 2, 2)
+local specWarnDarkDescent						= mod:NewSpecialWarningMoveAway(336235, nil, nil, nil, 1, 2)
+local yellDarkDescent							= mod:NewYell(336235)
+local yellDarkDescentFades						= mod:NewShortFadesYell(336235)
 local specWarnSanguineCurse						= mod:NewSpecialWarningMoveAway(336338, nil, nil, nil, 1, 2)
 local yellSanguineCurse							= mod:NewYell(336338)
 local yellSanguineCurseFades					= mod:NewShortFadesYell(336338)
@@ -61,20 +65,25 @@ local specWarnCowerNear							= mod:NewSpecialWarningClose(329370, nil, nil, nil
 local timerExsanguinatingBiteCD					= mod:NewAITimer(16.6, 328857, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON, nil, 2, 3)
 local timerBloodSpikesCD						= mod:NewAITimer(44.3, 329386, nil, nil, nil, 3)
 local timerSanguineCurseCD						= mod:NewAITimer(44.3, 336337, nil, nil, nil, 3, nil, DBM_CORE_L.CURSE_ICON)
+local timerDarkDescentCD						= mod:NewAITimer(44.3, 336235, nil, nil, nil, 3)
 --Stage Two - Terror of Castle Nathria
 local timerReverberatingShriekCD				= mod:NewAITimer(44.3, 329780, nil, nil, nil, 3)
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
 mod:AddRangeFrameOption(12, 329373)
 mod:AddInfoFrameOption(328921, true)
---mod:AddSetIconOption("SetIconOnMuttering", 310358, true, false, {2, 3, 4, 5, 6, 7, 8})
+mod:AddSetIconOption("SetIconOnSanguineCurse", 336338, true, false, {1, 2, 3, 4, 5, 6, 7, 8})
 --mod:AddNamePlateOption("NPAuraOnVolatileCorruption", 312595)
 --mod:AddDropdownOption("TauntBehavior", {"TwoHardThreeEasy", "TwoAlways", "ThreeAlways"}, "TwoHardThreeEasy", "misc")
 
+mod.vb.curseIcon = 1
+
 function mod:OnCombatStart(delay)
+	self.vb.curseIcon = 1
 	timerExsanguinatingBiteCD:Start(1-delay)
 	timerBloodSpikesCD:Start(1-delay)
 	timerSanguineCurseCD:Start(1-delay)
+	timerDarkDescentCD:Start(1-delay)
 --	if self.Options.NPAuraOnVolatileCorruption then
 --		DBM:FireEvent("BossMod_EnableHostileNameplates")
 --	end
@@ -107,6 +116,7 @@ function mod:SPELL_CAST_START(args)
 		timerExsanguinatingBiteCD:Stop()
 		timerBloodSpikesCD:Stop()
 		timerSanguineCurseCD:Stop()
+		timerDarkDescentCD:Stop()
 		timerReverberatingShriekCD:Start(2)
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(12)
@@ -126,7 +136,10 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 321511 then
 		warnDarkSonar:Show()
 	elseif spellId == 336337 then
+		self.vb.curseIcon = 1
 		timerSanguineCurseCD:Start()
+	elseif spellId == 336235 then
+		timerDarkDescentCD:Start()
 	end
 end
 
@@ -176,6 +189,18 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellSanguineCurse:Yell()
 			yellSanguineCurseFades:Countdown(spellId)
 		end
+		if self.Options.SetIconOnSanguineCurse then
+			self:SetIcon(args.destName, self.vb.curseIcon)
+		end
+		self.vb.curseIcon = self.vb.curseIcon + 1
+	elseif spellId == 336235 then
+		warnDarkDescent:CombinedShow(1, args.destName)
+		if args:IsPlayer() then
+			specWarnDarkDescent:Show()
+			specWarnDarkDescent:Play("runout")
+			yellDarkDescent:Yell()
+			yellDarkDescentFades:Countdown(spellId)
+		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -198,6 +223,13 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 336338 then
 		if args:IsPlayer() then
 			yellSanguineCurseFades:Cancel()
+		end
+		if self.Options.SetIconOnSanguineCurse then
+			self:SetIcon(args.destName, 0)
+		end
+	elseif spellId == 336235 then
+		if args:IsPlayer() then
+			yellDarkDescentFades:Cancel()
 		end
 	end
 end

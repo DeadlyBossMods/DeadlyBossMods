@@ -2,13 +2,14 @@ local mod	= DBM:NewMod(2422, "DBM-CastleNathria", nil, 1190)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
---mod:SetCreatureID(157602)--Who dies for this fight to win?
---mod:SetMainBossID(131545)--Maybe used, with highest health seen reported for kael at time of wipe?
+mod:SetCreatureID(165759)--Who dies for this fight to win?
 mod:SetEncounterID(2402)
 mod:SetZone()
---mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
---mod:SetHotfixNoticeRev(20200112000000)--2020, 1, 12
---mod:SetMinSyncRevision(20190716000000)
+mod:SetUsedIcons(1)
+mod.onlyHighest = true--Instructs DBM health tracking to literally only store highest value seen during fight, even if it drops below that
+mod.noBossDeathKill = true--Instructs mod to ignore 165759 deaths, since goal is to heal kael, not kill him
+mod:SetHotfixNoticeRev(20200726000000)--2020, 7, 26
+mod:SetMinSyncRevision(20200726000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
@@ -35,6 +36,7 @@ mod:RegisterEventsInCombat(
 --TODO, dispel warnings for Vulgar brand (333002) based on difficulty (magic non mythic, curse mythic)?
 --TODO, improved infoframe with https://shadowlands.wowhead.com/spell=339251/drained-soul tracking
 --TODO, auto mark essence spawns? friendly nameplates?
+--TODO, Add Spawn Warnings at the very least for Vile Occultists
 --[[
 (source.type = "NPC" and source.firstSeen = timestamp) or (target.type = "NPC" and target.firstSeen = timestamp)
 --]]

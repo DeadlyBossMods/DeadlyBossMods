@@ -28,12 +28,7 @@ L:SetMiscLocalization({
 ---------------------------
 --  The Hivemind --
 ---------------------------
-L= DBM:GetModLocalization(2372)
-
-L:SetMiscLocalization({
-	Together	= "Jefes juntos",
-	Apart		= "Jefes separados"
-})
+--L= DBM:GetModLocalization(2372)
 
 ---------------------------
 --  Shad'har the Insatiable --

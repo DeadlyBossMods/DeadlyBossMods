@@ -276,6 +276,8 @@ L.BREAK_LOS					= "Meide Sichtlinie"
 L.SAFE						= "Sicher"
 L.SHIELD						= "Schutzschild"
 L.INCOMING						= "%s kommt"
+L.BOSSTOGETHER				= "Bosses Together"
+L.BOSSAPART					= "Bosses Apart"
 --Common Locals end
 
 L.BREAK_USAGE				= "Ein Pause-Timer kann nicht länger als 60 Minuten sein. Beachte bitte, dass für Pausen-Timer die Zeit in Minuten (und nicht in Sekunden) anzugeben ist."

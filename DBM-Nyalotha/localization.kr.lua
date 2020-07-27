@@ -36,12 +36,7 @@ L:SetMiscLocalization({
 ---------------------------
 --  The Hivemind --
 ---------------------------
-L= DBM:GetModLocalization(2372)
-
-L:SetMiscLocalization({
-	Together	= "보스 붙이세요",
-	Apart		= "보스 떨어트리세요"
-})
+--L= DBM:GetModLocalization(2372)
 
 ---------------------------
 --  Shad'har the Insatiable --

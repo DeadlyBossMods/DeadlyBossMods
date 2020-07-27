@@ -294,6 +294,8 @@ L.BREAK_LOS					= "Break LOS"
 L.SAFE						= "Безопасно"
 L.SHIELD						= "Щит"
 L.INCOMING						= "Прибытие %s"
+L.BOSSTOGETHER				= "Bosses Together"
+L.BOSSAPART					= "Bosses Apart"
 --Common Locals end
 
 L.BREAK_USAGE				= "Перерыв не может быть дольше 60 минут. Убедитесь что вы вводите время в минутах, а не секундах."

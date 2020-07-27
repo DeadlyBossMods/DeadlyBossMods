@@ -22,8 +22,10 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, do timers pause during stun? or just queue up? Does failing to stun boss vs stunning affect the alternating timers?
---TODO, one chain link pair is established, maybe add a spam repeat icon yell to the afflicted pair
+--TODO, this straght up needs an updateAllTimers function like archimonde to be perfect.
+--Timers delaying other timers, some abilities being skipped entirely if coming off cd during stun or another ability cast
+--The timers COULD be perfected, I'm just not sure it's worth the effort to. Not an end boss, or even a hard one.
+--I'll return to perfecting timers if things don't change on live and can analylize dozens more logs to verify patterns
 local warnHatefulGaze							= mod:NewTargetNoFilterAnnounce(331209, 4)
 local warnStunnedImpact							= mod:NewTargetNoFilterAnnounce(331314, 1)
 local warnChainThisOne							= mod:NewTargetAnnounce(335270, 3)--Targetting debuff
@@ -43,15 +45,17 @@ local yellChainSlam								= mod:NewYell(335470, nil, nil, nil, "YELL")
 local yellChainSlamFades						= mod:NewFadesYell(335470, nil, nil, nil, "YELL")
 local specWarnDestructiveStomp					= mod:NewSpecialWarningRun(332318, "Melee", nil, nil, 4, 2)
 local specWarnColossalRoar						= mod:NewSpecialWarningSpell(332687, nil, nil, nil, 2, 2)
+local specWarnStonequake						= mod:NewSpecialWarningDodge(335433, nil, nil, nil, 2, 2)
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(270290, nil, nil, nil, 1, 8)
 
 local timerHatefulGazeCD						= mod:NewNextTimer(67.3, 331209, nil, nil, nil, 3, nil, DBM_CORE_L.IMPORTANT_ICON, nil, 1, 4)
 local timerStunnedImpact						= mod:NewTargetTimer(8, 331314, nil, nil, nil, 5, nil, DBM_CORE_L.DAMAGE_ICON)
-local timerChainLinkCD							= mod:NewCDTimer(20.8, 335491, nil, nil, nil, 3)
-local timerChainSlamCD							= mod:NewCDTimer(34, 335354, nil, nil, nil, 3)
+local timerChainLinkCD							= mod:NewCDCountTimer(20.8, 335491, nil, nil, nil, 3)
+local timerChainSlamCD							= mod:NewCDCountTimer(34, 335354, nil, nil, nil, 3)
 local timerDestructiveStompCD					= mod:NewNextCountTimer(44.3, 332318, nil, nil, nil, 3)
 local timerFallingDebrisCD						= mod:NewCDTimer(11, 332362, nil, nil, nil, 3)
-local timerColossalRoarCD						= mod:NewNextCountTimer(44.3, 332687, nil, nil, nil, 2)
+local timerColossalRoarCD						= mod:NewCDCountTimer(44.3, 332687, nil, nil, nil, 2)
+local timerStoneQuakeCD							= mod:NewCDCountTimer(34, 335433, nil, nil, nil, 3)
 
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
@@ -59,18 +63,27 @@ local timerColossalRoarCD						= mod:NewNextCountTimer(44.3, 332687, nil, nil, n
 --mod:AddInfoFrameOption(308377, true)
 mod:AddSetIconOption("SetIconGaze", 331209, true, false, {1})
 
+mod.vb.gazeCount = 0
 mod.vb.stompCount = 0
 mod.vb.roarCount = 0
+mod.vb.linkCount = 0
+mod.vb.chainSlaimCount = 0
+mod.vb.quakeCount = 0
 
 function mod:OnCombatStart(delay)
+	self.vb.gazeCount = 0
 	self.vb.stompCount = 0
 	self.vb.roarCount = 0
-	timerHatefulGazeCD:Start(53-delay)
-	timerChainLinkCD:Start(6.4-delay)
-	timerDestructiveStompCD:Start(22.4-delay, 1)
+	self.vb.linkCount = 0
+	self.vb.chainSlaimCount = 0
+	self.vb.quakeCount = 0
+	timerChainLinkCD:Start(6.4-delay, 1)
 	timerFallingDebrisCD:Start(10.1-delay)
+	timerStoneQuakeCD:Start(14.8)
+	timerDestructiveStompCD:Start(22.4-delay, 1)
 --	timerColossalRoarCD:Start(1-delay)--Cast instantly on pull
-	timerChainSlamCD:Start(34-delay)
+	timerChainSlamCD:Start(34-delay, 1)
+	timerHatefulGazeCD:Start(53-delay, 1)
 --	if self.Options.RangeFrame then
 --		DBM.RangeCheck:Show(4)
 --	end
@@ -93,6 +106,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnDestructiveStomp:Show()
 		specWarnDestructiveStomp:Play("justrun")
 		--pull:22.4, 23.3, 44.2, 23.1, 45.5, 22.0, 45.3, 22.1"
+		--pull:27.0, 22.1, 44.6, 22.1, 44.2, 22.1, 47.1, 22.6, 45.2, 23.1"
 		if self.vb.stompCount == 1 or (self.vb.stompCount % 2 == 0) then
 			timerDestructiveStompCD:Start(44, self.vb.stompCount+1)
 		else
@@ -110,10 +124,12 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.roarCount = self.vb.roarCount + 1
 		specWarnColossalRoar:Show()
 		specWarnColossalRoar:Play("aesoon")
-		if self.vb.roarCount % 2 == 0 then
-			timerColossalRoarCD:Start(36.5, self.vb.roarCount+1)
+		--"Colossal Roar-332687-npc:164407 = pull:0.0, 30.3, 37.0, 30.8, 36.1, 30.2, 36.8, 30.4, 38.9, 30.6, 30.9", -- [2]
+		if self.vb.roarCount < 10 and (self.vb.roarCount % 2 == 0) then
+			--Logic almost works, except when it doesn't
+			timerColossalRoarCD:Start(36.1, self.vb.roarCount+1)
 		else
-			timerColossalRoarCD:Start(30.8, self.vb.roarCount+1)
+			timerColossalRoarCD:Start(30.2, self.vb.roarCount+1)
 		end
 	end
 end
@@ -121,7 +137,8 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 331209 then
-		timerHatefulGazeCD:Start()
+		self.vb.gazeCount = self.vb.gazeCount + 1
+		timerHatefulGazeCD:Start(67.3, self.vb.gazeCount+1)
 		if args:IsPlayer() then
 			specWarnHatefulGaze:Show(DBM_CORE_L.PILLAR)
 			specWarnHatefulGaze:Play("targetyou")
@@ -144,13 +161,19 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnChainLink:Play("targetyou")
 			yellChainLink:Yell()
 			yellChainLinkFades:Countdown(spellId)
+			self:AntiSpam(6, 1)
 		else
 			warnChainThisOne:Show(args.destName)
 		end
 	elseif spellId == 335293 then
 		warnChainLink:CombinedShow(0.5, args.destName)
+		if args:IsPlayer() and self:AntiSpam(6, 1) then
+			specWarnChainLink:Show()
+			specWarnChainLink:Play("targetyou")
+		end
 	elseif spellId == 335470 then
-		--timerChainSlamCD:Start()
+		self.vb.chainSlaimCount = self.vb.chainSlaimCount + 1
+		--timerChainSlamCD:Start(nil, self.vb.chainSlaimCount+1)
 		if args:IsPlayer() then
 			specWarnChainSlam:Show()
 			specWarnChainSlam:Play("targetyou")
@@ -186,11 +209,27 @@ end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 --]]
 
+local function skippedQuake(self)
+	self.vb.quakeCount = self.vb.quakeCount + 1
+	--Lowest time addition for sipped quake is 29.4, plus minus the extra 5.8 over scheduling
+	timerStoneQuakeCD:Start(23.6, self.vb.quakeCount+1)
+end
+
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 335491 then--Chain link
-		timerChainLinkCD:Start()
+		self.vb.linkCount = self.vb.linkCount + 1
+		timerChainLinkCD:Start(nil, self.vb.linkCount+1)
 	elseif spellId == 332362 then
 		warnFallingDebris:Show()
 		timerFallingDebrisCD:Start()
+	elseif spellId == 335433 then--Stonequake
+		self:Unschedule(skippedQuake)
+		self.vb.quakeCount = self.vb.quakeCount + 1
+		specWarnStonequake:Show()
+		specWarnStonequake:Play("watchstep")
+		--"Stonequake-335433-npc:164407 = pull:14.8, 35.5, 34.4, 63.8, 67.4, 37.8, 34.2, 34.2", -- [7]
+		--"Stonequake-335433-npc:164407 = pull:14.6, 36.7, 34.7, 65.2, 35.6, 34.2, 65.0", -- [7]
+		timerStoneQuakeCD:Start(34.2, self.vb.quakeCount+1)
+		self:Schedule(40, skippedQuake, self)
 	end
 end
