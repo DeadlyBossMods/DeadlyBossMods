@@ -298,6 +298,8 @@ L.SAFE						= "Zona segura"
 L.NOTSAFE					= "Zona no segura"
 L.SHIELD						= "Escudo"
 L.INCOMING						= "%s en breve"
+L.BOSSTOGETHER				= "Jefes juntos"
+L.BOSSAPART					= "Jefes separados"
 --Common Locals end
 
 L.BREAK_USAGE				= "El temporizador de descanso no puede durar más de 60 minutos. Asegúrate de que has escrito el tiempo en minutos y no en segundos."

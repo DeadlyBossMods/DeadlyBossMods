@@ -295,8 +295,10 @@ L.BREAK_LOS					= "Interrompi LOS"
 L.RESTORE_LOS				= "Ripristina/Mantieni LOS"
 L.SAFE						= "Sicuro"
 L.NOTSAFE					= "Non Sicuro"
-L.SHIELD						= "Scudo"
-L.INCOMING						= "%s in Arrivo"
+L.SHIELD					= "Scudo"
+L.INCOMING					= "%s in Arrivo"
+L.BOSSTOGETHER				= "Bosses Together"
+L.BOSSAPART					= "Bosses Apart"
 --Common Locals end
 
 L.BREAK_USAGE				= "Il temporizzatore della pausa non può durare più di 60 minuti. Assicurati di aver inserito il tempo in minuti e non in secondi."

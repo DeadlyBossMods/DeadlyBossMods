@@ -39,12 +39,7 @@ L:SetMiscLocalization({
 ---------------------------
 --  The Hivemind --
 ---------------------------
-L= DBM:GetModLocalization(2372)
-
-L:SetMiscLocalization({
-	Together	= "Boss靠近",
-	Apart		= "Boss分开"
-})
+--L= DBM:GetModLocalization(2372)
 
 ---------------------------
 --  Shad'har the Insatiable --

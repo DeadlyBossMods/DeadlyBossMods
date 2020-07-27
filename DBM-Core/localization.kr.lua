@@ -287,7 +287,7 @@ L.ORB						= "구슬"
 L.ORBS						= "구슬"
 L.CHEST						= "상자"--As in Treasure 'Chest'. Not Chest as in body part.
 L.NO_DEBUFF					= "%s 없음"--For use in places like info frame where you put "Not Spellname"
-L.ALLY					= "공대원"--Such as "Move to Ally"
+L.ALLY						= "공대원"--Such as "Move to Ally"
 L.ADD						= "쫄"--A fight Add as in "boss spawned extra adds"
 L.ADDS						= "쫄"
 L.BIG_ADD					= "큰 쫄"
@@ -301,6 +301,8 @@ L.NOTSAFE					= "위험함"
 L.SHIELD					= "보호막"
 L.PILLAR					= "기둥"
 L.INCOMING					= "%s 등장"
+L.BOSSTOGETHER				= "보스 붙이세요"
+L.BOSSAPART					= "보스 떨어트리세요"
 --Common Locals end
 
 L.BREAK_USAGE				= "쉬는 시간은 60분을 초과할 수 없습니다. 쉬는 시간은 초단위가 아니라 분단위로 입력해야 합니다."

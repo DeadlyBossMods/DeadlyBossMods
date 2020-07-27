@@ -305,6 +305,8 @@ L.NOTSAFE				= "不安全"
 L.SHIELD					= "護盾"
 L.PILLAR							= "柱子"
 L.INCOMING						= "%s 來了"
+L.BOSSTOGETHER				= "首領靠近"
+L.BOSSAPART					= "首領分開"
 --Common Locals end
 
 L.BREAK_USAGE					= "休息時間不可以長過60分鐘。請確定您輸入的時間是分鐘而不是秒。"

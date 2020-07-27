@@ -317,6 +317,8 @@ L.NOTSAFE							= "Not Safe"
 L.SHIELD							= "Shield"
 L.PILLAR							= "Pillar"
 L.INCOMING							= "%s Incoming"
+L.BOSSTOGETHER						= "Bosses Together"
+L.BOSSAPART							= "Bosses Apart"
 --Common Locals end
 
 L.BREAK_USAGE						= "Break timer cannot be longer than 60 minutes. Make sure you're inputting time in minutes and not seconds."
