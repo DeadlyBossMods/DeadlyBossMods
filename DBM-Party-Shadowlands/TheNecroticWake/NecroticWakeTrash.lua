@@ -16,7 +16,7 @@ mod:RegisterEvents(
 
 --TODO targetscan shared agony during cast and get at least one of targets early? for fade/invis and feign death?
 local warnSharedAgony						= mod:NewCastAnnounce(274400, 3)
-local warnSharedAgonyTargets				= mod:NewTargetnnounce(274400, 4)
+local warnSharedAgonyTargets				= mod:NewTargetAnnounce(274400, 4)
 
 local specWarnSharedAgony					= mod:NewSpecialWarningMoveAway(274400, nil, nil, nil, 1, 11)
 local yellSharedAgony						= mod:NewYell(274400)
