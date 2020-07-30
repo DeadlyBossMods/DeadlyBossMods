@@ -13,61 +13,64 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 328857 328921 329780",
-	"SPELL_CAST_SUCCESS 329386 321511 336337 336235",
+	"SPELL_CAST_START 328857 328921 340047 330711",
+	"SPELL_CAST_SUCCESS 321511 336337 336235",
 	"SPELL_AURA_APPLIED 328897 329370 336338 336235",
 	"SPELL_AURA_APPLIED_DOSE 328897",
-	"SPELL_AURA_REMOVED 329370 328921 336338 336235"
+	"SPELL_AURA_REMOVED 329370 328921 336338 336235",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 --	"UNIT_DIED",
---	"UNIT_SPELLCAST_SUCCEEDED boss1"
+	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
 --TODO, determine actual tank swap stacks, 3 assumed for now but this could be inaccurate
---TODO, probably fix spikes event
---TODO, do more with descend and murder pray if the cower targets have enough time to still get away
+--TODO, probably fix Feast event
+--TODO, do more with descend and murder pray if the Deadly Descent targets have enough time to still get away
 --TODO, who do stone claws target? says a frontal cone but it doesn't indicate it's a tank ability so boss can easily spin toward random player for this attack
---TODO, reverberating shriek is what exactly? dodgable? spamable aoe damage just to give healers a purpose during this phase?
+--TODO, Sonar shriek is what exactly? dodgable? spamable aoe damage just to give healers a purpose during this phase?
 --TODO, dark descent is probably just players who get too much sound in phase 1?
---TODO, icons for Sanguine curse? depends on how many get it
+--TODO, icons for Sanguine curse? depends on how many get it and if it still exists
 --TODO, honestly, should this mod watch player power or boss power? I have a feeling fight will have a noise level alternate power setup like atramedes so going with player for now
+--TODO, echo screech cast how often? what event? timer/warning?
 --Stage One - Thirst for Blood
 local warnExsanguinated							= mod:NewStackAnnounce(328897, 2, nil, "Tank|Healer")
+local warnSanguineFeast							= mod:NewSpellAnnounce(340322, 2)
 local warnSanguineCurse							= mod:NewTargetNoFilterAnnounce(336338, 3, nil, "RemoveCurse")
 local warnDarkDescent							= mod:NewTargetAnnounce(336235, 3)
 --Stage Two - Terror of Castle Nathria
 local warnDarkSonar								= mod:NewSpellAnnounce(321511, 4, nil, false)--Probably spammy?
-local warnCower									= mod:NewTargetNoFilterAnnounce(329370, 4)
+local warnDeadlyDescent							= mod:NewTargetNoFilterAnnounce(329370, 4)
 local warnBloodgorgeOver						= mod:NewEndAnnounce(328921, 1)
-local warnReverberatingShriek					= mod:NewSpellAnnounce(329780, 2, nil, false)--My theory was this ability was added because phase 2 left healers nothing to do, so it probably spams
+local warnSonarShriek							= mod:NewCastAnnounce(340047, 2)
 
 --Stage One - Thirst for Blood
-local specWarnExsanguinated						= mod:NewSpecialWarningStack(328897, nil, 3, nil, nil, 1, 6)
+local specWarnExsanguinated						= mod:NewSpecialWarningStack(328897, nil, 4, nil, nil, 1, 6)
 local specWarnExsanguinatedTaunt				= mod:NewSpecialWarningTaunt(328897, nil, nil, nil, 1, 2)
-local specWarnBloodSpikes						= mod:NewSpecialWarningDodge(329386, nil, nil, nil, 2, 2)
 local specWarnDarkDescent						= mod:NewSpecialWarningMoveAway(336235, nil, nil, nil, 1, 2)
 local yellDarkDescent							= mod:NewYell(336235)
 local yellDarkDescentFades						= mod:NewShortFadesYell(336235)
 local specWarnSanguineCurse						= mod:NewSpecialWarningMoveAway(336338, nil, nil, nil, 1, 2)
 local yellSanguineCurse							= mod:NewYell(336338)
 local yellSanguineCurseFades					= mod:NewShortFadesYell(336338)
+local specWarnEarsplittingShriek				= mod:NewSpecialWarningMoveTo(330711, nil, nil, nil, 1, 2)
 --Stage Two - Terror of Castle Nathria
 local specWarnBloodgorge						= mod:NewSpecialWarningSpell(328921, nil, nil, nil, 2, 2)
-local specWarnCower								= mod:NewSpecialWarningYou(329370, nil, nil, nil, 3, 2)
-local yellCower									= mod:NewYell(329370)
-local yellCowerFades							= mod:NewShortFadesYell(329370)
-local specWarnCowerNear							= mod:NewSpecialWarningClose(329370, nil, nil, nil, 3, 2)
+local specWarnDeadlyDescent						= mod:NewSpecialWarningYou(329370, nil, nil, nil, 3, 2)
+local yellDeadlyDescent							= mod:NewYell(329370)
+local yellDeadlyDescentFades					= mod:NewShortFadesYell(329370)
+local specWarnDeadlyDescentNear					= mod:NewSpecialWarningClose(329370, nil, nil, nil, 3, 2)
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(270290, nil, nil, nil, 1, 8)
 
 --Stage One - Thirst for Blood
 --mod:AddTimerLine(BOSS)
 local timerExsanguinatingBiteCD					= mod:NewAITimer(16.6, 328857, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON, nil, 2, 3)
-local timerBloodSpikesCD						= mod:NewAITimer(44.3, 329386, nil, nil, nil, 3)
+local timerSanguineFeastCD						= mod:NewAITimer(44.3, 340322, nil, nil, nil, 2)
 local timerSanguineCurseCD						= mod:NewAITimer(44.3, 336337, nil, nil, nil, 3, nil, DBM_CORE_L.CURSE_ICON)
 local timerDarkDescentCD						= mod:NewAITimer(44.3, 336235, nil, nil, nil, 3)
+local timerEarsplittingShriekCD					= mod:NewAITimer(44.3, 330711, nil, nil, nil, 2)
 --Stage Two - Terror of Castle Nathria
-local timerReverberatingShriekCD				= mod:NewAITimer(44.3, 329780, nil, nil, nil, 3)
+local timerSonarShriekCD						= mod:NewAITimer(44.3, 340047, nil, nil, nil, 3)
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
 mod:AddRangeFrameOption(12, 329373)
@@ -81,8 +84,11 @@ mod.vb.curseIcon = 1
 function mod:OnCombatStart(delay)
 	self.vb.curseIcon = 1
 	timerExsanguinatingBiteCD:Start(1-delay)
-	timerBloodSpikesCD:Start(1-delay)
-	timerSanguineCurseCD:Start(1-delay)
+	timerSanguineFeastCD:Start(1-delay)
+	timerEarsplittingShriekCD:Start(1-delay)
+--	if self:IsMythic() then
+		timerSanguineCurseCD:Start(1-delay)--Likely now mythic only
+--	end
 	timerDarkDescentCD:Start(1-delay)
 --	if self.Options.NPAuraOnVolatileCorruption then
 --		DBM:FireEvent("BossMod_EnableHostileNameplates")
@@ -114,26 +120,26 @@ function mod:SPELL_CAST_START(args)
 		specWarnBloodgorge:Show()
 		specWarnBloodgorge:Play("phasechange")
 		timerExsanguinatingBiteCD:Stop()
-		timerBloodSpikesCD:Stop()
+		timerSanguineFeastCD:Stop()
 		timerSanguineCurseCD:Stop()
 		timerDarkDescentCD:Stop()
-		timerReverberatingShriekCD:Start(2)
+		timerSonarShriekCD:Start(2)
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(12)
 		end
-	elseif spellId == 329780 then
-		warnReverberatingShriek:Show()
-		timerReverberatingShriekCD:Start()
+	elseif spellId == 340047 then
+		warnSonarShriek:Show()
+		timerSonarShriekCD:Start()
+	elseif spellId == 330711 then
+		specWarnEarsplittingShriek:Show(DBM_CORE_L.BREAK_LOS)
+		specWarnEarsplittingShriek:Play("findshelter")
+		timerEarsplittingShriekCD:Start()
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 329386 then
-		specWarnBloodSpikes:Show()
-		specWarnBloodSpikes:Play("watchstep")
-		timerBloodSpikesCD:Start()
-	elseif spellId == 321511 then
+	if spellId == 321511 then
 		warnDarkSonar:Show()
 	elseif spellId == 336337 then
 		self.vb.curseIcon = 1
@@ -153,7 +159,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			--if self:IsHard() and self.Options.TauntBehavior == "TwoHardThreeEasy" or self.Options.TauntBehavior == "TwoAlways" then
 			--	tauntStack = 2
 			--end
-			if amount >= 3 then
+			if amount >= 4 then
 				if args:IsPlayer() then
 					specWarnExsanguinated:Show(amount)
 					specWarnExsanguinated:Play("stackhigh")
@@ -171,15 +177,15 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 329370 then
 		if args:IsPlayer() then
-			specWarnCower:Show()
-			specWarnCower:Play("targetyou")
-			yellCower:Yell()
-			yellCowerFades:Countdown(spellId)
+			specWarnDeadlyDescent:Show()
+			specWarnDeadlyDescent:Play("targetyou")
+			yellDeadlyDescent:Yell()
+			yellDeadlyDescentFades:Countdown(spellId)
 		elseif self:CheckNearby(12, args.destName) then
-			specWarnCowerNear:CombinedShow(0.3, args.destName)
-			specWarnCowerNear:ScheduleVoice(0.3, "runaway")
+			specWarnDeadlyDescentNear:CombinedShow(0.3, args.destName)
+			specWarnDeadlyDescentNear:ScheduleVoice(0.3, "runaway")
 		else
-			warnCower:CombinedShow(0.3, args.destName)
+			warnDeadlyDescent:CombinedShow(0.3, args.destName)
 		end
 	elseif spellId == 336338 then
 		warnSanguineCurse:CombinedShow(0.3, args.destName)
@@ -209,13 +215,13 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 329370 then
 		if args:IsPlayer() then
-			yellCowerFades:Cancel()
+			yellDeadlyDescentFades:Cancel()
 		end
 	elseif spellId == 328921 then--Bloodgorge removed
-		timerReverberatingShriekCD:Stop()
+		timerSonarShriekCD:Stop()
 		warnBloodgorgeOver:Show()
 		timerExsanguinatingBiteCD:Start(2)
-		timerBloodSpikesCD:Start(2)
+		timerSanguineFeastCD:Start(2)
 		timerSanguineCurseCD:Start(2)
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Hide()
@@ -249,10 +255,11 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spell
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
+--]]
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 310351 then
-
+	if spellId == 340322 then--Sanguine Feast
+		warnSanguineFeast:Show()
+		timerSanguineFeastCD:Start()
 	end
 end
---]]

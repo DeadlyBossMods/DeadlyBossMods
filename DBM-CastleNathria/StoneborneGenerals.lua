@@ -14,9 +14,9 @@ mod:SetBossHPInfoToHighest()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 333387 334765 334929 334004 334498",
-	"SPELL_CAST_SUCCESS 334541",
-	"SPELL_AURA_APPLIED 329636 333913 334765 338156 338153 329808 334541",
+	"SPELL_CAST_START 333387 334765 334929 334004 334498 339690 339728 337741 339398",
+	"SPELL_CAST_SUCCESS 334541 332150",
+	"SPELL_AURA_APPLIED 329636 333913 334765 338156 338153 329808 334541 334616",
 	"SPELL_AURA_APPLIED_DOSE 333913",
 	"SPELL_AURA_REMOVED 329636 333913 334765 329808 334541",
 	"SPELL_AURA_REMOVED_DOSE 333913",
@@ -29,16 +29,13 @@ mod:RegisterEventsInCombat(
 
 --https://shadowlands.wowhead.com/spell=334616/petrified
 --TODO, verify boss Ids, multiple exist
---TODO, does BeSalty form and Granite form affect timers? Do the forms themselves need timers?
 --TODO, fix Wicked Blade targeting and if fix valid, icon mark them
 --TODO, does Wicked Lactation stack? if not, rethink infoframe
 --TODO, Serrated Swipe a tank mechanic or a random target one? seems too fast of cast for random
 --TODO, optimize events for formations to eliminate antispam calls
 --TODO, alternate the Stratagem timers, don't overlap them like AI timers require
 --TODO, verify leap scripts. 334004 is a parent script, if used it's probably used in all difficulties 339164 is an easy mode sub script (removes mechanic) and 334009 is heroic/mythic sub script
---TODO, adds that cast shit like https://shadowlands.wowhead.com/spell=330061/cluster-bombardment and https://shadowlands.wowhead.com/spell=337741/breath-of-corruption
 --General Kaal
---local warnVoidGrip							= mod:NewSpellAnnounce(310246, 2)
 local warnBasaltForm							= mod:NewTargetNoFilterAnnounce(329636, 2)
 local warnBasaltFormOver						= mod:NewEndAnnounce(329636, 1)
 local warnWickedBlade							= mod:NewTargetNoFilterAnnounce(333376, 4)
@@ -48,6 +45,9 @@ local warnGraniteForm							= mod:NewTargetNoFilterAnnounce(329808, 2)
 local warnGraniteFormOver						= mod:NewEndAnnounce(329808, 1)
 local warnReverberatingLeap						= mod:NewTargetNoFilterAnnounce(329808, 3)
 local warnCurseofPetrification					= mod:NewTargetNoFilterAnnounce(334541, 4)
+local warnPulverize								= mod:NewCastAnnounce(339728, 3)
+--Intermission Adds
+local warnBreathofCorruption					= mod:NewCastAnnounce(337741, 3)
 
 --General Kaal
 local specWarnWickedBlade						= mod:NewSpecialWarningYou(333376, nil, nil, nil, 1, 2)
@@ -56,8 +56,8 @@ local yellWickedBladeFades						= mod:NewFadesYell(333376)
 local specWarnStoneShatterer					= mod:NewSpecialWarningYou(334765, false, nil, nil, 1, 2)
 local yellStoneShattererFades					= mod:NewFadesYell(334765)
 local specWarnSerratedSwipe						= mod:NewSpecialWarningDefensive(334929, nil, nil, nil, 1, 2)
-local specWarnOutFlankStratagem					= mod:NewSpecialWarningCount(338156, nil, DBM_CORE_L.AUTO_SPEC_WARN_OPTIONS.spell:format(338156), nil, 2, 2)--Keep Together
-local specWarnTightFormationStratagem			= mod:NewSpecialWarningCount(338153, nil, DBM_CORE_L.AUTO_SPEC_WARN_OPTIONS.spell:format(338153), nil, 2, 2)--Keep Apart
+local specWarnOutFlankStratagem					= mod:NewSpecialWarningCount(338156, nil, DBM_CORE_L.AUTO_SPEC_WARN_OPTIONS.spell:format(338156), nil, 2, 2, 4)--Keep Together
+local specWarnTightFormationStratagem			= mod:NewSpecialWarningCount(338153, nil, DBM_CORE_L.AUTO_SPEC_WARN_OPTIONS.spell:format(338153), nil, 2, 2, 4)--Keep Apart
 --local specWarnMutteringsofBetrayal			= mod:NewSpecialWarningStack(310563, nil, 3, nil, nil, 1, 6)
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(270290, nil, nil, nil, 1, 8)
 --General Grashaal
@@ -68,12 +68,14 @@ local specWarnSeismicUpheaval					= mod:NewSpecialWarningDodge(334498, nil, nil,
 local specWarnCurseofPetrification				= mod:NewSpecialWarningYou(334541, nil, nil, nil, 3, 2)
 local yellCurseofPetrification					= mod:NewYell(334541)
 local yellCurseofPetrificationFades				= mod:NewFadesYell(334541)
+local specWarnStoneBreakersCombo				= mod:NewSpecialWarningDefensive(339690, nil, nil, nil, 1, 2)
+local specWarnPetrifiedTaunt					= mod:NewSpecialWarningTaunt(334616, nil, nil, nil, 3, 2)
 
 --General Kaal
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22284))
 local timerWickedBladeCD						= mod:NewAITimer(44.3, 333387, nil, nil, nil, 3)
 local timerStoneShattererCD						= mod:NewAITimer(44.3, 334765, nil, nil, nil, 3, nil, DBM_CORE_L.DEADLY_ICON)
-local timerSerratedSwipeCD						= mod:NewAITimer(16.6, 334929, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON, nil, 2, 3)
+local timerSerratedSwipeCD						= mod:NewAITimer(16.6, 334929, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)
 local timerOutFlankCD							= mod:NewAITimer(44.3, 338156, nil, nil, nil, 6)--Keep Together
 local timerTightFormationCD						= mod:NewAITimer(44.3, 338153, nil, nil, nil, 6)--Keep Apart
 --General Grashaal
@@ -81,6 +83,9 @@ mod:AddTimerLine(DBM:EJ_GetSectionInfo(22288))
 local timerReverberatingLeapCD					= mod:NewAITimer(44.3, 334004, 183611, nil, nil, 3)--Short text "Leap"
 local timerSeismicUpheavalCD					= mod:NewAITimer(44.3, 334498, nil, nil, nil, 3)
 local timerCurseofPetrificationCD				= mod:NewAITimer(44.3, 334541, nil, nil, nil, 3)
+local timerStoneBreakersComboCD					= mod:NewAITimer(16.6, 339690, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON, nil, 2, 3)
+--Add Intermissions
+local timerClusterBombardmentCD					= mod:NewAITimer(44.3, 332150, nil, nil, nil, 3)
 
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
@@ -93,6 +98,7 @@ mod:AddSetIconOption("SetIconOnCurse", 334541, true, false, {4})
 
 local LacerationStacks = {}
 mod.vb.ShattererIcon = 1
+mod.vb.phase = 1
 
 function mod:LeapTarget(targetname, uId, bossuid, scanningTime)
 	if not targetname then return end
@@ -112,6 +118,7 @@ end
 function mod:OnCombatStart(delay)
 	table.wipe(LacerationStacks)
 	self.vb.ShattererIcon = 1
+	self.vb.phase = 1
 	--General Kaal
 	timerWickedBladeCD:Start(1-delay)
 	timerStoneShattererCD:Start(1-delay)
@@ -122,6 +129,7 @@ function mod:OnCombatStart(delay)
 	timerReverberatingLeapCD:Start(1-delay)
 	timerSeismicUpheavalCD:Start(1-delay)
 	timerCurseofPetrificationCD:Start(1-delay)--SUCCESS
+	timerStoneBreakersComboCD:Start(1-delay)
 --	if self.Options.NPAuraOnVolatileCorruption then
 --		DBM:FireEvent("BossMod_EnableHostileNameplates")
 --	end
@@ -167,6 +175,16 @@ function mod:SPELL_CAST_START(args)
 		specWarnSeismicUpheaval:Show()
 		specWarnSeismicUpheaval:Play("watchstep")
 		timerSeismicUpheavalCD:Start()
+	elseif spellId == 339690 then
+		timerStoneBreakersComboCD:Start()
+		if self:IsTanking("player", nil, nil, nil, args.sourceGUID) then
+			specWarnStoneBreakersCombo:Show()
+			specWarnStoneBreakersCombo:Play("defensive")
+		end
+	elseif spellId == 339728 then
+		warnPulverize:Show()
+	elseif spellId == 337741 or spellId == 339398 then
+		warnBreathofCorruption:Show()
 	end
 end
 
@@ -174,13 +192,32 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 334541 then
 		timerCurseofPetrificationCD:Start()
+	elseif spellId == 332150 and self:AntiSpam(5, 3) then
+		timerClusterBombardmentCD:Start()
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 329636 then
-		warnBasaltForm:Show(args.destName)
+	if spellId == 329636 or spellId == 329808 then--70% and 40% transitions
+		if spellId == 329636 then
+			warnBasaltForm:Show(args.destName)
+		else
+			warnGraniteForm:Show(args.destName)
+		end
+		--Stop all timers
+		--General Kaal
+		timerWickedBladeCD:Stop()
+		timerStoneShattererCD:Stop()
+		timerSerratedSwipeCD:Stop()
+		timerOutFlankCD:Stop()
+		timerTightFormationCD:Stop()
+		--General Grashaal
+		timerReverberatingLeapCD:Stop()
+		timerSeismicUpheavalCD:Stop()
+		timerCurseofPetrificationCD:Stop()
+		timerStoneBreakersComboCD:Stop()
+		timerClusterBombardmentCD:Start(1)
 	elseif spellId == 329808 then
 		warnGraniteForm:Show(args.destName)
 	elseif spellId == 333913 then
@@ -217,16 +254,48 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.SetIconOnCurse then
 			self:SetIcon(args.destName, 4)
 		end
+	elseif spellId == 334616 then
+		local uId = DBM:GetRaidUnitId(args.destName)
+		if self:IsTanking(uId) then
+			if not args:IsPlayer() then
+				specWarnPetrifiedTaunt:Show(args.destName)
+				specWarnPetrifiedTaunt:Play("tauntboss")
+			end
+		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
-	if spellId == 329636 then
+	if spellId == 329636 then--phase 2
+		self.vb.phase = 2
+		timerClusterBombardmentCD:Stop()--Probably stop in actual death counter later
 		warnBasaltFormOver:Show()
-	elseif spellId == 329808 then
+		timerWickedBladeCD:Start(2)
+		timerStoneShattererCD:Start(2)
+		timerSerratedSwipeCD:Start(2)
+		timerOutFlankCD:Start(2)
+		timerTightFormationCD:Start(2)
+		--General Grashaal
+		timerReverberatingLeapCD:Start(2)
+		timerSeismicUpheavalCD:Start(2)
+		timerCurseofPetrificationCD:Start(2)--SUCCESS
+		timerStoneBreakersComboCD:Start(2)
+	elseif spellId == 329808 then--Phase 3
+		self.vb.phase = 3
+		timerClusterBombardmentCD:Stop()--Probably stop in actual death counter later
 		warnGraniteFormOver:Show()
+		timerWickedBladeCD:Start(3)
+		timerStoneShattererCD:Start(3)
+		timerSerratedSwipeCD:Start(3)
+		timerOutFlankCD:Start(3)
+		timerTightFormationCD:Start(3)
+		--General Grashaal
+		timerReverberatingLeapCD:Start(3)
+		timerSeismicUpheavalCD:Start(3)
+		timerCurseofPetrificationCD:Start(3)--SUCCESS
+		timerStoneBreakersComboCD:Start(3)
 	elseif spellId == 333913 then
 		LacerationStacks[args.destName] = nil
 		if self.Options.InfoFrame then
