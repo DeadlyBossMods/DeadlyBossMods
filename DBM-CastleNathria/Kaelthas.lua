@@ -2,7 +2,7 @@ local mod	= DBM:NewMod(2422, "DBM-CastleNathria", nil, 1190)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
-mod:SetCreatureID(165759)--Who dies for this fight to win?
+mod:SetCreatureID(165759)
 mod:SetEncounterID(2402)
 mod:SetZone()
 mod:SetUsedIcons(1)
