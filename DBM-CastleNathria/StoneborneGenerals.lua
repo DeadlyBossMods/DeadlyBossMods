@@ -14,7 +14,7 @@ mod:SetBossHPInfoToHighest()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 333387 334765 334929 334004 334498 339690 339728 337741 339398",
+	"SPELL_CAST_START 333387 334765 334929 334004 334498 339690 339728 337741 339398 339164 334009",
 	"SPELL_CAST_SUCCESS 334541 332150",
 	"SPELL_AURA_APPLIED 329636 333913 334765 338156 338153 329808 334541 334616",
 	"SPELL_AURA_APPLIED_DOSE 333913",
@@ -164,11 +164,11 @@ function mod:SPELL_CAST_START(args)
 		timerStoneShattererCD:Start()
 	elseif spellId == 334929 then
 		timerSerratedSwipeCD:Start()
-		if self:IsTanking("player", nil, nil, nil, args.sourceGUID) then
+		if self:IsTanking("player", nil, nil, true, args.sourceGUID) then
 			specWarnSerratedSwipe:Show()
 			specWarnSerratedSwipe:Play("defensive")
 		end
-	elseif spellId == 334004 or spellId == 339164 or spellId == 334004 then
+	elseif spellId == 334004 or spellId == 339164 or spellId == 334009 then
 		timerReverberatingLeapCD:Start()
 		self:BossTargetScanner(args.sourceGUID, "LeapTarget", 0.2, 10)--Scans for 2.0 of 4.0 second cast, will adjust later
 	elseif spellId == 334498 then
@@ -202,22 +202,21 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 329636 or spellId == 329808 then--70% and 40% transitions
 		if spellId == 329636 then
 			warnBasaltForm:Show(args.destName)
+			--General Kaal
+			timerWickedBladeCD:Stop()
+			timerStoneShattererCD:Stop()
+			timerSerratedSwipeCD:Stop()
+			timerOutFlankCD:Stop()
+			timerTightFormationCD:Stop()
 		else
 			warnGraniteForm:Show(args.destName)
+			--General Grashaal
+			timerReverberatingLeapCD:Stop()
+			timerSeismicUpheavalCD:Stop()
+			timerCurseofPetrificationCD:Stop()
+			timerStoneBreakersComboCD:Stop()
+			timerClusterBombardmentCD:Start(1)
 		end
-		--Stop all timers
-		--General Kaal
-		timerWickedBladeCD:Stop()
-		timerStoneShattererCD:Stop()
-		timerSerratedSwipeCD:Stop()
-		timerOutFlankCD:Stop()
-		timerTightFormationCD:Stop()
-		--General Grashaal
-		timerReverberatingLeapCD:Stop()
-		timerSeismicUpheavalCD:Stop()
-		timerCurseofPetrificationCD:Stop()
-		timerStoneBreakersComboCD:Stop()
-		timerClusterBombardmentCD:Start(1)
 	elseif spellId == 329808 then
 		warnGraniteForm:Show(args.destName)
 	elseif spellId == 333913 then
@@ -272,25 +271,16 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.phase = 2
 		timerClusterBombardmentCD:Stop()--Probably stop in actual death counter later
 		warnBasaltFormOver:Show()
+		--General Kaal
 		timerWickedBladeCD:Start(2)
 		timerStoneShattererCD:Start(2)
 		timerSerratedSwipeCD:Start(2)
 		timerOutFlankCD:Start(2)
 		timerTightFormationCD:Start(2)
-		--General Grashaal
-		timerReverberatingLeapCD:Start(2)
-		timerSeismicUpheavalCD:Start(2)
-		timerCurseofPetrificationCD:Start(2)--SUCCESS
-		timerStoneBreakersComboCD:Start(2)
 	elseif spellId == 329808 then--Phase 3
 		self.vb.phase = 3
 		timerClusterBombardmentCD:Stop()--Probably stop in actual death counter later
 		warnGraniteFormOver:Show()
-		timerWickedBladeCD:Start(3)
-		timerStoneShattererCD:Start(3)
-		timerSerratedSwipeCD:Start(3)
-		timerOutFlankCD:Start(3)
-		timerTightFormationCD:Start(3)
 		--General Grashaal
 		timerReverberatingLeapCD:Start(3)
 		timerSeismicUpheavalCD:Start(3)
