@@ -5912,6 +5912,7 @@ do
 				end
 			else
 				self:Debug("StartCombat called by individual mod or unknown reason. LastInstanceMapID is "..LastInstanceMapID)
+				event = ""
 			end
 			--check completed. starting combat
 			tinsert(inCombat, mod)
@@ -5936,7 +5937,7 @@ do
 			mod.inCombat = true
 			mod.blockSyncs = nil
 			mod.combatInfo.pull = GetTime() - (delay or 0)
-			bossuIdFound = (event or "") == "IEEU"
+			bossuIdFound = event == "IEEU"
 			if mod.minCombatTime then
 				self:Schedule(mmax((mod.minCombatTime - delay), 3), checkWipe, self)
 			else
