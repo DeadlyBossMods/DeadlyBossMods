@@ -14,7 +14,7 @@ mod:SetBossHPInfoToHighest()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 333387 334765 334929 334004 334498 339690 339728 337741 339398 339164 334009",
+	"SPELL_CAST_START 333387 334765 334929 334004 334498 339690 339728 337741 339398",
 	"SPELL_CAST_SUCCESS 334541 332150",
 	"SPELL_AURA_APPLIED 329636 333913 334765 338156 338153 329808 334541 334616",
 	"SPELL_AURA_APPLIED_DOSE 333913",
@@ -168,7 +168,7 @@ function mod:SPELL_CAST_START(args)
 			specWarnSerratedSwipe:Show()
 			specWarnSerratedSwipe:Play("defensive")
 		end
-	elseif spellId == 334004 or spellId == 339164 or spellId == 334009 then
+	elseif spellId == 334004 then--or spellId == 339164 or spellId == 334009
 		timerReverberatingLeapCD:Start()
 		self:BossTargetScanner(args.sourceGUID, "LeapTarget", 0.2, 10)--Scans for 2.0 of 4.0 second cast, will adjust later
 	elseif spellId == 334498 then
