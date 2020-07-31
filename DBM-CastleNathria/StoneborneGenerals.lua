@@ -43,7 +43,7 @@ local warnStoneShatterer						= mod:NewTargetNoFilterAnnounce(334765, 4)
 --General Grashaal
 local warnGraniteForm							= mod:NewTargetNoFilterAnnounce(329808, 2)
 local warnGraniteFormOver						= mod:NewEndAnnounce(329808, 1)
-local warnReverberatingLeap						= mod:NewTargetNoFilterAnnounce(329808, 3)
+local warnReverberatingLeap						= mod:NewTargetNoFilterAnnounce(334004, 3)
 local warnCurseofPetrification					= mod:NewTargetNoFilterAnnounce(334541, 4)
 local warnPulverize								= mod:NewCastAnnounce(339728, 3)
 --Intermission Adds
