@@ -15,10 +15,10 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 328334 334948 330965 330978 327497 327052",
-	"SPELL_CAST_SUCCESS 335777 331704 331634",
+	"SPELL_CAST_SUCCESS 335777 331704 331634 330959",
 	"SPELL_AURA_APPLIED 330967 327773 331706 331636 331637 332535 335775",
 	"SPELL_AURA_APPLIED_DOSE 327773 332535",
-	"SPELL_AURA_REMOVED 330967 331706 331636 331637 335775",
+	"SPELL_AURA_REMOVED 330967 331706 331636 331637 335775 330959",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 	"UNIT_DIED",
@@ -50,6 +50,8 @@ local warnDredgerServants						= mod:NewSpellAnnounce(330978, 2)--Two bosses dea
 --Lord Stavros
 local warnDarkRecital							= mod:NewTargetNoFilterAnnounce(331634, 3)
 local warnDancingFools							= mod:NewSpellAnnounce(330964, 2)--Two bosses dead
+--Intermission
+local warnDanceOver								= mod:NewEndAnnounce(330959, 2)
 
 --General
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(327475, nil, nil, nil, 1, 8)
@@ -215,7 +217,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerScarletLetterCD:Start()
 	elseif spellId == 331634 then
 		timerDarkRecitalCD:Start()
-	elseif spellId == 330959 and self:AntiSpam(5, 1) then
+	elseif spellId == 330959 and self:AntiSpam(10, 1) then
 		specWarnDanseMacabre:Show()
 		specWarnDanseMacabre:Play("specialsoon")
 	end
@@ -374,6 +376,9 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.NPAuraOnShield then
 			DBM.Nameplate:Hide(true, args.destGUID, spellId)
 		end
+	elseif spellId == 330959 and self:AntiSpam(10, 2) then
+		warnDanceOver:Show()
+		--TODO, timer correction if blizzard changes how they work
 	end
 end
 
@@ -398,7 +403,7 @@ end
 
 --[[
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
-	if spellId == 270290 and destGUID == UnitGUID("player") and self:AntiSpam(2, 2) then
+	if spellId == 270290 and destGUID == UnitGUID("player") and self:AntiSpam(2, 3) then
 		specWarnGTFO:Show(spellName)
 		specWarnGTFO:Play("watchfeet")
 	end

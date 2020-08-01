@@ -28,6 +28,7 @@ mod:RegisterEventsInCombat(
 --TODO, verify tank stuff (power levels for runout, number of targets of shared cog, etc)
 --TODO, also figure out optimized tank swap priority
 --TODO, find out correct powere type for boss, which looks to be a widget api
+--TODO, add pre debuff if blizz adds it for shared suffering
 --TODO, rework timers further to include fact that timers differ at different energy levels (or is it based on which container is currently focused?)
 --TODO, does https://shadowlands.wowhead.com/spell=331573/unconscionable-guilt need anything? doesn't say it stacks
 local warnWarpedDesires							= mod:NewStackAnnounce(325382, 2, nil, "Tank|Healer")
