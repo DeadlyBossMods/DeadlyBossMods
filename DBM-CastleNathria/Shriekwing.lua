@@ -73,7 +73,7 @@ local timerEarsplittingShriekCD					= mod:NewAITimer(44.3, 330711, nil, nil, nil
 local timerSonarShriekCD						= mod:NewAITimer(44.3, 340047, nil, nil, nil, 3)
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
-mod:AddRangeFrameOption(12, 329373)
+mod:AddRangeFrameOption(12, 328921)
 mod:AddInfoFrameOption(328921, true)
 mod:AddSetIconOption("SetIconOnSanguineCurse", 336338, true, false, {1, 2, 3, 4, 5, 6, 7, 8})
 --mod:AddNamePlateOption("NPAuraOnVolatileCorruption", 312595)
