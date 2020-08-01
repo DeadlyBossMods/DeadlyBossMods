@@ -1891,7 +1891,11 @@ do
 		time = time or 5
 		numAnnounces = numAnnounces or 3
 		for i = 1, numAnnounces do
-			schedule(time - i, func, mod, self, i, ...)
+			--In event time is < numbmer of announces (ie 2 second time, with 3 announces)
+			local validTime = time - i
+			if validTime >= 1 then
+				schedule(validTime, func, mod, self, i, ...)
+			end
 		end
 	end
 
