@@ -12,6 +12,15 @@ local mainFrame = CreateFrame("Frame")
 local textFrame, radarFrame, updateIcon, updateRangeFrame, initializeDropdown
 local RAID_CLASS_COLORS = _G["CUSTOM_CLASS_COLORS"] or RAID_CLASS_COLORS -- For Phanx' Class Colors
 
+--retail/beta compat
+local UnitInPhase = UnitInPhase or function(unit)
+	local reason = UnitPhaseReason(unit)--9.x replacement for UnitinPhase
+	if reason then--Any reason, means they are out of phase
+		return false
+	end
+	return true
+end
+
 -- Function for automatically converting inputed ranges from old mods to be ones that have valid item/api checks
 local function setCompatibleRestrictedRange(range)
 	if range <= 4 then
@@ -556,7 +565,7 @@ end
 --  OnUpdate  --
 ----------------
 do
-	local UnitExists, UnitIsUnit, UnitIsDeadOrGhost, UnitIsConnected, UnitInPhase, GetPlayerFacing, UnitClass, IsInRaid, GetNumGroupMembers, GetRaidTargetIndex, GetBestMapForUnit = UnitExists, UnitIsUnit, UnitIsDeadOrGhost, UnitIsConnected, UnitInPhase, GetPlayerFacing, UnitClass, IsInRaid, GetNumGroupMembers, GetRaidTargetIndex, C_Map.GetBestMapForUnit
+	local UnitExists, UnitIsUnit, UnitIsDeadOrGhost, UnitIsConnected, GetPlayerFacing, UnitClass, IsInRaid, GetNumGroupMembers, GetRaidTargetIndex, GetBestMapForUnit = UnitExists, UnitIsUnit, UnitIsDeadOrGhost, UnitIsConnected, GetPlayerFacing, UnitClass, IsInRaid, GetNumGroupMembers, GetRaidTargetIndex, C_Map.GetBestMapForUnit
 	local max, sin, cos, pi2 = math.max, math.sin, math.cos, math.pi * 2
 	local circleColor, rotation, pixelsperyard, activeDots, prevRange, prevThreshold, prevNumClosePlayer, prevclosestRange, prevColor, prevType = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 	local unitList = {}
@@ -788,7 +797,7 @@ end)
 local getDistanceBetween, getDistanceBetweenAll
 
 do
-	local UnitPosition, UnitExists, UnitIsUnit, UnitIsDeadOrGhost, UnitIsConnected, UnitInPhase = UnitPosition, UnitExists, UnitIsUnit, UnitIsDeadOrGhost, UnitIsConnected, UnitInPhase
+	local UnitPosition, UnitExists, UnitIsUnit, UnitIsDeadOrGhost, UnitIsConnected = UnitPosition, UnitExists, UnitIsUnit, UnitIsDeadOrGhost, UnitIsConnected
 
 	function getDistanceBetweenAll(checkrange)
 		local range

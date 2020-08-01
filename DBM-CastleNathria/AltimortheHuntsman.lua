@@ -134,7 +134,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 334971 then
 		timerJaggedClawsCD:Start()
 	elseif spellId == 334797 then
-		if self:IsTanking("player", nil, nil, nil, args.sourceGUID) then
+		if self:IsTanking("player", nil, nil, true, args.sourceGUID) then
 			specWarnRipSoul:Show()
 			specWarnRipSoul:Play("defensive")
 		end

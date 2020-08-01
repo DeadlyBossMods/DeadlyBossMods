@@ -3615,6 +3615,7 @@ globals = {
 	"UnitInOtherParty",
 	"UnitInParty",
 	"UnitInPhase",
+	"UnitPhaseReason",
 	"UnitInRaid",
 	"UnitInRange",
 	"UnitInVehicle",
