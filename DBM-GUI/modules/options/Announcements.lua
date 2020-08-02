@@ -1,20 +1,6 @@
 local L		= DBM_GUI_L
 local CL	= DBM_CORE_L
 
---Hard code STANDARD_TEXT_FONT since skinning mods like to taint it (or worse, set it to nil, wtf?)
-local standardFont
-if LOCALE_koKR then
-	standardFont = "Fonts\\2002.TTF"
-elseif LOCALE_zhCN then
-	standardFont = "Fonts\\ARKai_T.ttf"
-elseif LOCALE_zhTW then
-	standardFont = "Fonts\\blei00d.TTF"
-elseif LOCALE_ruRU then
-	standardFont = "Fonts\\FRIZQT___CYR.TTF"
-else
-	standardFont = "Fonts\\FRIZQT__.TTF"
-end
-
 local RaidWarningPanel = DBM_GUI_Frame:CreateNewPanel(L.Tab_RaidWarning, "option")
 
 local raidwarnoptions = RaidWarningPanel:CreateArea(L.RaidWarning_Header)
@@ -30,7 +16,7 @@ local check6 = raidwarnoptions:CreateCheckButton(L.ShortTextSpellname, true, nil
 local Fonts = DBM_GUI:MixinSharedMedia3("font", {
 	{
 		text	= "Default",
-		value	= standardFont
+		value	= "standardFont"
 	},
 	{
 		text	= "Arial",
