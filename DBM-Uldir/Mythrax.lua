@@ -4,7 +4,6 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(134546)--138324 Xalzaix
 mod:SetEncounterID(2135)
-mod:SetZone()
 mod:SetBossHPInfoToHighest()
 mod:SetUsedIcons(1, 2)
 mod:SetHotfixNoticeRev(17895)

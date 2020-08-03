@@ -5,7 +5,6 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(135358, 135359, 135360, 131823, 131824, 131825)--All versions so we can pull boss
 mod:SetEncounterID(2113)
 mod:DisableESCombatDetection()--ES fires For entryway trash pull sometimes, for some reason.
-mod:SetZone()
 mod:SetUsedIcons(8)
 mod:SetBossHPInfoToHighest()
 mod:SetMinSyncRevision(17703)

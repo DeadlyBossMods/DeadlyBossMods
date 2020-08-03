@@ -4,7 +4,6 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(126845, 126847, 126848)--Captain Jolly, Captain Raoul, Captain Eudora
 mod:SetEncounterID(2094)
-mod:SetZone()
 mod:DisableRegenDetection()
 mod:SetMinSyncRevision(20190806000000)--2019, 08, 06
 

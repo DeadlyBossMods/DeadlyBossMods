@@ -3,7 +3,6 @@ local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
 mod:SetModelID(28649)
-mod:SetZone()
 
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED 228855 229593"

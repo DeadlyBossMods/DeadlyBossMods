@@ -2,7 +2,6 @@ local mod	= DBM:NewMod("Cannon", "DBM-DMF")
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
-mod:SetZone()
 
 mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS 102120",

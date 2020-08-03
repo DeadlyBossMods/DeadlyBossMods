@@ -13,10 +13,6 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(creatureID)
 mod:SetEncounterID(2263, 2284)--2263 Alliance, 2284 Horde
---mod:DisableESCombatDetection()
-mod:SetZone()
---mod:SetBossHPInfoToHighest()
---mod:SetUsedIcons(1, 2, 8)
 mod:SetHotfixNoticeRev(18176)
 --mod:SetMinSyncRevision(16950)
 --mod.respawnTime = 35

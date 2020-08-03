@@ -5,7 +5,6 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(17968, 21212, 19622)
 mod:SetEncounterID(2319)
 mod:SetModelID(20939)--Archimond
-mod:SetZone()
 mod:SetBossHPInfoToHighest()
 
 mod:RegisterCombat("combat")

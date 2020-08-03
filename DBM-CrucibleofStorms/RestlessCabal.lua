@@ -4,7 +4,6 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(144755, 144754)--144755 Zaxasj, 144754 Fa'thuul
 mod:SetEncounterID(2269)
-mod:SetZone()
 mod:SetBossHPInfoToHighest()
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6)--Refine when max number of doubt targets is known
 --mod:SetHotfixNoticeRev(17775)

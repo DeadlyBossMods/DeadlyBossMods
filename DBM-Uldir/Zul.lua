@@ -5,7 +5,6 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(138967)
 mod:SetEncounterID(2145)
 mod:DisableESCombatDetection()--ES fires moment you throw out CC, so it can't be trusted for combatstart
-mod:SetZone()
 mod:SetUsedIcons(1, 2, 8)
 mod:SetHotfixNoticeRev(17775)
 --mod:SetMinSyncRevision(16950)

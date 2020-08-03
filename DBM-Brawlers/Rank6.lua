@@ -3,7 +3,6 @@ local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
 --mod:SetModelID(39166)
-mod:SetZone()
 
 mod:RegisterEvents(
 	"SPELL_CAST_START 142788 142795 142769 282081",

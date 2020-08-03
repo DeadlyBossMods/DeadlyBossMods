@@ -5,7 +5,6 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(129227)
 mod:SetEncounterID(2106)
 mod:DisableESCombatDetection()--ES fires for nearby trash even if boss isn't pulled
-mod:SetZone()
 mod:SetMinSyncRevision(17732)
 
 mod:RegisterCombat("combat")

@@ -3,7 +3,6 @@ local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
 mod:SetModelID(48465)--Blind Hero
-mod:SetZone()
 
 mod:RegisterEvents(
 	"SPELL_CAST_START 134740 133607 134777 135621 133346 134743 133286 141104 124860 124935 134795 125212 133465 133017 246120 246121 246127 39945 133212 232252",

@@ -14,7 +14,6 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(creatureID)
 --mod:SetEncounterID(2263)
 --mod:DisableESCombatDetection()
-mod:SetZone()
 --mod:SetHotfixNoticeRev(17775)
 --mod:SetMinSyncRevision(16950)
 

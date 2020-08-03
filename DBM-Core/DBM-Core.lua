@@ -841,10 +841,10 @@ do
 		end
 		if not registeredEvents[event] or not dbmIsEnabled then return end
 		for _, v in ipairs(registeredEvents[event]) do
---			local zones = v.zones
+			local zones = v.zones
 			local handler = v[event]
 			local modEvents = v.registeredUnitEvents
-			if handler and (not isUnitEvent or not modEvents or modEvents[event .. ...]) and not (v.isTrashMod and #inCombat > 0) then--and (not zones or zones[LastInstanceMapID])
+			if handler and (not isUnitEvent or not modEvents or modEvents[event .. ...]) and (not zones or zones[LastInstanceMapID]) and not (v.isTrashMod and #inCombat > 0) then
 				handler(v, ...)
 			end
 		end
