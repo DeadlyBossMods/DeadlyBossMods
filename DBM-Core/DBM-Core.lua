@@ -6477,7 +6477,7 @@ do
 	local autoTLog = false
 
 	local function isCurrentContent()
-		if LastInstanceMapID == 1861 or LastInstanceMapID == 2070 or LastInstanceMapID == 2096 or LastInstanceMapID == 2164 or LastInstanceMapID == 2217 or LastInstanceMapID == 2296 then--BfA/Shadowlands
+		if LastInstanceMapID == 1861 or LastInstanceMapID == 2070 or LastInstanceMapID == 2096 or LastInstanceMapID == 2164 or LastInstanceMapID == 2217 or LastInstanceMapID == 2296 or difficultyModifier > 0 then--BfA/Shadowlands raids and any M+ dungeon
 			return true
 		end
 		return false
@@ -6485,7 +6485,7 @@ do
 
 	function DBM:StartLogging(timer, checkFunc)
 		self:Unschedule(DBM.StopLogging)
-		if self.Options.LogOnlyNonTrivial and ((LastInstanceType ~= "raid") or IsPartyLFG() or not isCurrentContent()) then return end
+		if self.Options.LogOnlyNonTrivial and ((LastInstanceType ~= "raid" and difficultyModifier == 0) or IsPartyLFG() or not isCurrentContent()) then return end
 		if self.Options.AutologBosses then--Start logging here to catch pre pots.
 			if not LoggingCombat() then
 				autoLog = true
