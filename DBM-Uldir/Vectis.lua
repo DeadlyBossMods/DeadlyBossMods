@@ -4,7 +4,6 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(134442)--135016 Plague Amalgam
 mod:SetEncounterID(2134)
-mod:SetZone()
 mod:SetUsedIcons(1, 2, 3, 4)
 --mod:SetHotfixNoticeRev(16950)
 --mod:SetMinSyncRevision(16950)

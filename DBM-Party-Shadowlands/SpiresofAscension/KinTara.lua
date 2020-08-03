@@ -4,7 +4,6 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(162059, 163077, 163061)--162059 Kin-Tara, 163077 Azules, 163061 Janari
 mod:SetEncounterID(2357)
-mod:SetZone()
 mod:SetBossHPInfoToHighest()
 mod:SetUsedIcons(1)
 

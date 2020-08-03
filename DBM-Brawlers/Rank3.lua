@@ -3,7 +3,6 @@ local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
 --mod:SetModelID(28649)
-mod:SetZone()
 mod:SetUsedIcons(8)
 
 mod:RegisterEvents(

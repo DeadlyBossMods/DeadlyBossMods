@@ -4,7 +4,6 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(156818)
 mod:SetEncounterID(2329)
-mod:SetZone()
 mod:SetUsedIcons(1, 2, 3)--Unknown number of burning targets, guessed for now
 mod:SetHotfixNoticeRev(20191109000000)--2019, 11, 09
 --mod:SetMinSyncRevision(20190716000000)

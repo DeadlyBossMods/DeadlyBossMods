@@ -4,7 +4,6 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(158328)
 mod:SetEncounterID(2345)
-mod:SetZone()
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
 mod:SetBossHPInfoToHighest()
 mod.noBossDeathKill = true--Instructs mod to ignore 158328 deaths, since it might die 4x on this fight

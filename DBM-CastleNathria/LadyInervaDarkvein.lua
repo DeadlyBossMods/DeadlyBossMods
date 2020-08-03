@@ -4,7 +4,6 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(165521)
 mod:SetEncounterID(2406)
-mod:SetZone()
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
 --mod:SetHotfixNoticeRev(20200112000000)--2020, 1, 12
 --mod:SetMinSyncRevision(20190716000000)
@@ -28,6 +27,7 @@ mod:RegisterEventsInCombat(
 --TODO, verify tank stuff (power levels for runout, number of targets of shared cog, etc)
 --TODO, also figure out optimized tank swap priority
 --TODO, find out correct powere type for boss, which looks to be a widget api
+--TODO, add pre debuff if blizz adds it for shared suffering
 --TODO, rework timers further to include fact that timers differ at different energy levels (or is it based on which container is currently focused?)
 --TODO, does https://shadowlands.wowhead.com/spell=331573/unconscionable-guilt need anything? doesn't say it stacks
 local warnWarpedDesires							= mod:NewStackAnnounce(325382, 2, nil, "Tank|Healer")

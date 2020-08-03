@@ -10,7 +10,6 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(creatureID)
 mod:SetEncounterID(2265)
-mod:SetZone()
 --mod:SetHotfixNoticeRev(17775)
 mod.respawnTime = 17--Ish, from stream watching.
 

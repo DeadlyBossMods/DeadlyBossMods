@@ -4,7 +4,6 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision("@file-date-integer@")
 --mod:SetCreatureID(60491)
 --mod:SetModelID(48465)
-mod:SetZone()
 
 mod:RegisterEvents(
 	"CHAT_MSG_RAID_BOSS_EMOTE",
