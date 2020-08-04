@@ -28,6 +28,7 @@ mod:RegisterEventsInCombat(
 --TODO, handling of mythic Sinseeker buffs by detecting which hound buffs it currently has (by using phase probably)
 --TODO, energy tracker on nameplates for https://shadowlands.wowhead.com/spell=335303/unyielding
 --TODO, watch for final behavior of timers. in first test pulls boss timers changed/reset on dog deaths, on second half of testing, they didn't.
+--TODO, add icons 4-7 for howl to match BW
 --[[
 (ability.id = 335114 or ability.id = 334404 or ability.id = 334971 or ability.id = 334797 or ability.id = 334757 or ability.id = 334852) and type = "begincast"
  or ability.id = 334945 and type = "cast"
