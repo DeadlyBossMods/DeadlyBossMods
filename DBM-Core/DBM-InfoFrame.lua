@@ -760,9 +760,9 @@ local function updateTest2()
 	twipe(lines)
 	if not test2Table then
 		test2Table = {}
-		for i = 1, 40 do
+		for _ = 1, 40 do
 			local ident = ""
-			for ii = 1, math.random(5, 12) do
+			for _ = 1, math.random(5, 12) do
 				ident = ident .. string.char(math.random(65, 90))
 			end
 			test2Table[ident] = math.random(1, 10) * 10
