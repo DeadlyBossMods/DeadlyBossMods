@@ -957,7 +957,9 @@ function infoFrame:Show(modMaxLines, event, ...)
 	if DBM.Options.InfoFrameCols and DBM.Options.InfoFrameCols ~= 0 then
 		maxCols = DBM.Options.InfoFrameCols
 	else
-		maxCols = modMaxLines and modMaxLines / 5 or 1
+		--TODO, still needs more finite control via gui later on
+		--I think dynamic options modMaxLines/10 modMaxLines/5 are both valid options, as well as just capping at 2 >= 10
+		maxCols = modMaxLines and modMaxLines >= 10 and 2 or 1
 	end
 	table.wipe(value)
 	for i = 1, select("#", ...) do
