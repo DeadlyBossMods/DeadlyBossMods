@@ -522,7 +522,7 @@ function mod:OnCombatStart(delay)
 	currentMapId = select(4, UnitPosition("player"))
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(307831))
-		DBM.InfoFrame:Show(self:IsMythic() and 20 or 8, "function", updateInfoFrame, false)
+		DBM.InfoFrame:Show(self:IsLFR() and 10 or 30, "function", updateInfoFrame, false)
 	end
 end
 

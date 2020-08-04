@@ -15,9 +15,9 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 333387 334765 334929 334498 339690 339728 337741 339398 339164 334009",
 	"SPELL_CAST_SUCCESS 334541 334765 334929",
-	"SPELL_AURA_APPLIED 329636 333913 334765 338156 338153 329808 334541 334616",
+	"SPELL_AURA_APPLIED 329636 333913 334765 338156 338153 329808 334541 334616 333377",
 	"SPELL_AURA_APPLIED_DOSE 333913",
-	"SPELL_AURA_REMOVED 329636 333913 334765 329808 334541",
+	"SPELL_AURA_REMOVED 329636 333913 334765 329808 334541 333377",
 	"SPELL_AURA_REMOVED_DOSE 333913",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
@@ -269,6 +269,18 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnPetrifiedTaunt:Play("tauntboss")
 			end
 		end
+	elseif spellId == 333377 and self:AntiSpam(4, args.destName .. "1") then
+		warnWickedBlade:CombinedShow(0.3, args.destName)
+		if args:IsPlayer() then
+			specWarnWickedBlade:Show()
+			specWarnWickedBlade:Play("targetyou")
+			yellWickedBlade:Yell()
+			yellWickedBladeFades:Countdown(4)
+		end
+		if self.Options.SetIconOnWickedBlade then
+			self:SetIcon(args.destName, self.vb.wickedBladeIcon, 5)
+		end
+		self.vb.wickedBladeIcon = self.vb.wickedBladeIcon + 1
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -327,20 +339,18 @@ function mod:SPELL_AURA_REMOVED_DOSE(args)
 end
 
 function mod:RAID_BOSS_WHISPER(msg)
-	if msg:find("333908") then
+	if msg:find("333908") and self:AntiSpam(4, playerName.."1") then
 		specWarnWickedBlade:Show()
 		specWarnWickedBlade:Play("targetyou")
 		yellWickedBlade:Yell()
 		yellWickedBladeFades:Countdown(4)
-	elseif msg:find("334094") then--Leap Backup (if scan fails)
-		if self:AntiSpam(4, playerName.."2") then
-			specWarnReverberatingLeap:Show()
-			specWarnReverberatingLeap:Play("runout")
-			yellReverberatingLeap:Yell()
-			yellReverberatingLeapFades:Countdown(3.5)--A good 0.5 sec slower
-			if self.Options.SetIconOnLeap then
-				self:SetIcon(playerName, 8, 4.5)--So icon clears 1 second after
-			end
+	elseif msg:find("334094") and self:AntiSpam(4, playerName.."2") then--Leap Backup (if scan fails)
+		specWarnReverberatingLeap:Show()
+		specWarnReverberatingLeap:Play("runout")
+		yellReverberatingLeap:Yell()
+		yellReverberatingLeapFades:Countdown(3.5)--A good 0.5 sec slower
+		if self.Options.SetIconOnLeap then
+			self:SetIcon(playerName, 8, 4.5)--So icon clears 1 second after
 		end
 	end
 end
@@ -350,12 +360,13 @@ function mod:OnTranscriptorSync(msg, targetName)
 		targetName = Ambiguate(targetName, "none")
 		if self:AntiSpam(4, targetName.."1") then
 			warnWickedBlade:CombinedShow(0.75, targetName)
+			if self.Options.SetIconOnWickedBlade then
+				self:SetIcon(targetName, self.vb.wickedBladeIcon, 5)
+			end
+			self.vb.wickedBladeIcon = self.vb.wickedBladeIcon + 1
 		end
-		if self.Options.SetIconOnWickedBlade then
-			self:SetIcon(targetName, self.vb.wickedBladeIcon, 5)
-		end
-		self.vb.wickedBladeIcon = self.vb.wickedBladeIcon + 1
-	elseif msg:find("334094") then--Leap Backup (if scan fails)
+	elseif msg:find("334094") and targetName then--Leap Backup (if scan fails)
+		targetName = Ambiguate(targetName, "none")
 		if self:AntiSpam(4, targetName.."2") then--Same antispam as RAID_BOSS_WHISPER on purpose. if player got personal warning they don't need this one
 			warnReverberatingLeap:Show(targetName)
 			if self.Options.SetIconOnLeap then

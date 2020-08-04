@@ -13,7 +13,7 @@ L.MainFrame 				= "Deadly Boss Mods"
 
 L.TranslationByPrefix		= "翻译:"
 L.TranslationBy 			= "Mini_Dragon(Brilla@金色平原) 原翻译：Diablohu & yleaf & sunlcy"
-L.Website					= "拜访我们的Discord |cFF73C2FBhttps://discord.gg/deadlybossmods|r. 在Twitter上关注 @deadlybossmods 或 @MysticalOS"
+L.Website					= "拜访我们的Discord |cFF73C2FBhttps://discord.gg/DF5mffk|r. 在Twitter上关注 @deadlybossmods 或 @MysticalOS"
 L.WebsiteButton				= "网页"
 
 L.OTabBosses	            = "模块"--Deprecated and will be deleted once tabs no longer use this

@@ -5,7 +5,7 @@ local L = DBM_GUI_L
 
 L.TranslationByPrefix		= "번역: "
 L.TranslationBy 			= "Elnarfim"
-L.Website					= "디스코드 채널 |cFF73C2FBhttps://discord.gg/deadlybossmods|r를 방문해 보세요. 트위터 팔로우 @deadlybossmods 또는 @MysticalOS"
+L.Website					= "디스코드 채널 |cFF73C2FBhttps://discord.gg/DF5mffk|r를 방문해 보세요. 트위터 팔로우 @deadlybossmods 또는 @MysticalOS"
 L.WebsiteButton				= "웹사이트"
 
 L.OTabBosses	= "보스"--Deprecated and will be deleted once tabs no longer use this
