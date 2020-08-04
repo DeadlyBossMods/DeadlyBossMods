@@ -99,7 +99,7 @@ mod:AddSetIconOption("SetIconOnNightHunter", 327796, true, false, {1, 2, 3})
 mod:AddNamePlateOption("NPAuraOnSpiteful", 338510)
 
 local SinStacks = {}
-local playerDebuff = false
+--local playerDebuff = false
 mod.vb.phase = 1
 mod.vb.cleansingPainCount = 0
 mod.vb.RavageCount = 0
@@ -107,7 +107,7 @@ mod.vb.HunterIcon = 1
 
 function mod:OnCombatStart(delay)
 	table.wipe(SinStacks)
-	playerDebuff = false
+--	playerDebuff = false
 	self.vb.phase = 1
 	self.vb.cleansingPainCount = 0
 	self.vb.RavageCount = 0
@@ -168,6 +168,9 @@ function mod:SPELL_CAST_START(args)
 		timerNightHunterCD:Stop()
 		timerFeedingTimeCD:Stop()
 		timerNextPhase:Start(16.5)
+--		if playerDebuff then
+			--Do some shit?
+--		end
 	elseif spellId == 329181 then
 		specWarnWrackingPain:Show()
 		specWarnWrackingPain:Play("shockwave")
@@ -219,9 +222,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:UpdateTable(SinStacks)
 		end
-		if args:IsPlayer() then
-			playerDebuff = true
-		end
+--		if args:IsPlayer() then
+--			playerDebuff = true
+--		end
 	elseif spellId == 338510 then
 		if self.Options.NPAuraOnShield then
 			DBM.Nameplate:Show(true, args.destGUID, spellId, nil, 14)
@@ -275,7 +278,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 327992 and args:IsPlayer() and self:AntiSpam(2, 2) then
 		specWarnGTFO:Show(args.spellName)
 		specWarnGTFO:Play("watchfeet")
-	elseif spellid == 329906 then
+	elseif spellId == 329906 then
 		local amount = args.amount or 1
 		if (amount % 3 == 0) then
 			if amount >= 12 then
@@ -315,12 +318,12 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:UpdateTable(SinStacks)
 		end
-		if args:IsPlayer() then
-			playerDebuff = false
-		end
+--		if args:IsPlayer() then
+--			playerDebuff = false
+--		end
 	elseif spellId == 338510 then
 		if self.Options.NPAuraOnShield then
-			DBM.Nameplate:Show(Hide, args.destGUID, spellId)
+			DBM.Nameplate:Hide(true, args.destGUID, spellId)
 		end
 	elseif spellId == 327039 then
 		if args:IsPlayer() then
