@@ -358,7 +358,7 @@ L.Area_AutoLogging			= "자동 전투 기록 설정"
 L.AutologBosses				= "블리자드 전투 로그를 사용해 자동으로 던전/레이드 기록"
 L.AdvancedAutologBosses		= "Transcriptor를 사용해 자동으로 던전/레이드 기록"
 L.RecordOnlyBosses			= "보스만 기록 (모든 일반몹은 제외됩니다. 보스 전투 시작 물약과 ENCOUNTER_START 이벤트를 기록하고 싶으면 '/dbm pull' 명령어를 사용하세요)"
-L.LogOnlyNonTrivial			= "주요 콘텐츠만 기록 (공격대 찾기/던전/시나리오/구 확장팩 제외)"
+L.LogOnlyNonTrivial			= "주요 콘텐츠만 기록 (최신 확장팩 일반 이상 레이드와 신화+ 던전)"
 --
 L.Area_3rdParty				= "써드파티 애드온 설정"
 L.ShowBBOnCombatStart		= "전투 시작시 Big Brother 버프 검사 실행"
