@@ -30,6 +30,10 @@ mod:RegisterEventsInCombat(
 --TODO, if Gluttonous Miasma has shorter than a 24 second cd, the current icon code will break if any players die
 --TODO, fine tune stacks for essence sap
 --TODO, better way to detect expunge?
+--[[
+(ability.id = 334522 or ability.id = 334266 or ability.id = 329455 or ability.id = 329774) and type = "begincast"
+ or ability.id = 329298 and type = "applydebuff"
+--]]
 local warnGluttonousMiasma						= mod:NewTargetNoFilterAnnounce(329298, 4)
 local warnVolatileEjection						= mod:NewTargetNoFilterAnnounce(334266, 4)
 
@@ -46,7 +50,7 @@ local specWarnOverwhelm							= mod:NewSpecialWarningDefensive(329774, "Tank", n
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(270290, nil, nil, nil, 1, 8)
 
 --mod:AddTimerLine(BOSS)
-local timerGluttonousMiasmaCD					= mod:NewCDTimer(22.1, 329298, nil, nil, nil, 3)
+local timerGluttonousMiasmaCD					= mod:NewCDCountTimer(22.1, 329298, nil, nil, nil, 3)
 local timerConsumeCD							= mod:NewNextCountTimer(120, 334522, nil, nil, nil, 2)
 local timerExpungeCD							= mod:NewNextCountTimer(44.3, 329725, nil, nil, nil, 3)
 local timerVolatileEjectionCD					= mod:NewNextCountTimer(44.3, 334266, nil, nil, nil, 3)
@@ -56,8 +60,8 @@ local timerOverwhelmCD							= mod:NewCDTimer(11.2, 329774, nil, "Tank", nil, 5,
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
 --mod:AddRangeFrameOption(10, 310277)
-mod:AddSetIconOption("SetIconOnGluttonousMiasma", 329298, true, false, {1, 2, 3})
-mod:AddSetIconOption("SetIconOnVolatileEjection", 334266, false, false, {4, 5, 6})--off by default since it will break if not EVERYONE in raid is running DBM or BW
+mod:AddSetIconOption("SetIconOnGluttonousMiasma", 329298, true, false, {1, 2, 3, 4})
+mod:AddSetIconOption("SetIconOnVolatileEjection", 334266, false, false, {5, 6, 7, 8})--off by default since it will break if not EVERYONE in raid is running DBM or BW
 --mod:AddNamePlateOption("NPAuraOnVolatileCorruption", 312595)
 mod:AddInfoFrameOption(334755, true)
 mod:AddBoolOption("SortDesc", false)
@@ -66,8 +70,9 @@ mod:AddBoolOption("ShowTimeNotStacks", false)
 local GluttonousTargets = {}
 local essenceSapStacks = {}
 local playerEssenceSap, playerVolatile = false, false
-mod.vb.volatileIcon = 4
+mod.vb.volatileIcon = 5
 mod.vb.volatileCast = 2
+mod.vb.miasmaCount = 0
 mod.vb.expungeCount = 0
 mod.vb.consumeCount = 0
 mod.vb.desolateCount = 0
@@ -152,14 +157,16 @@ function mod:OnCombatStart(delay)
 	playerEssenceSap = false
 	table.wipe(GluttonousTargets)
 	table.wipe(essenceSapStacks)
-	self.vb.volatileIcon = 4
+	self.vb.volatileIcon = 5
 	self.vb.volatileCast = 2--it starts at 2 in the cycle for timer handling
 	self.vb.expungeCount = 0
 	self.vb.consumeCount = 0
 	self.vb.desolateCount = 0
-	timerGluttonousMiasmaCD:Start(3.2-delay)--3-6?
-	timerOverwhelmCD:Start(5.1-delay)
+	self.vb.miasmaCount = 0
+	timerGluttonousMiasmaCD:Start(3.2-delay, 1)--3-6?
+	timerOverwhelmCD:Start(5-delay)
 	timerVolatileEjectionCD:Start(10.1-delay, 1)
+	timerDesolateCD:Start(22.2-delay, 1)
 	timerExpungeCD:Start(33-delay, 1)--Hit or miss
 	timerConsumeCD:Start(111-delay, 1)
 --	if self.Options.NPAuraOnVolatileCorruption then
@@ -228,14 +235,14 @@ function mod:SPELL_CAST_START(args)
 --	elseif spellId == 329758 then
 --		timerExpungeCD:Start()
 	elseif spellId == 334266 then
-		self.vb.volatileIcon = 4
+		self.vb.volatileIcon = 5
 		self.vb.volatileCast = self.vb.volatileCast + 1
 		--10.1, 36.1, 12.0, 36.0, 36.0, 36.0, 12.0, 36.0, 36.1, 35.9, 12.1, 35.9, 36.0
 		--2, 6, 10, 14, etc
 		if self.vb.volatileCast % 4 == 0 then
-			timerVolatileEjectionCD:Start(12, self.vb.volatileCast-1)
+			timerVolatileEjectionCD:Start(12, self.vb.volatileCast-1)--Minus isn't a bug, the counter is off by 2 for perfect timers
 		else
-			timerVolatileEjectionCD:Start(35.9, self.vb.volatileCast-1)
+			timerVolatileEjectionCD:Start(35.9, self.vb.volatileCast-1)--Minus isn't a bug, the counter is off by 2 for perfect timers
 		end
 	elseif spellId == 329455 then
 		self.vb.desolateCount = self.vb.desolateCount + 1
@@ -245,7 +252,7 @@ function mod:SPELL_CAST_START(args)
 			specWarnOverwhelm:Show()
 			specWarnOverwhelm:Play("defensive")
 		end
-		timerOverwhelmCD:Start()
+		timerOverwhelmCD:Start()--11.2
 	end
 end
 
@@ -263,7 +270,8 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 329298 then
 		if self:AntiSpam(10, 3) then
 			table.wipe(GluttonousTargets)
-			timerGluttonousMiasmaCD:Start()
+			self.vb.miasmaCount = self.vb.miasmaCount + 1
+			timerGluttonousMiasmaCD:Start(22.1, self.vb.miasmaCount+1)
 		end
 		if not tContains(GluttonousTargets, args.destName) then
 			table.insert(GluttonousTargets, args.destName)

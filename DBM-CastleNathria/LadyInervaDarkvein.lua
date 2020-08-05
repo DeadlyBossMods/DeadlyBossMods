@@ -30,6 +30,11 @@ mod:RegisterEventsInCombat(
 --TODO, add pre debuff if blizz adds it for shared suffering
 --TODO, rework timers further to include fact that timers differ at different energy levels (or is it based on which container is currently focused?)
 --TODO, does https://shadowlands.wowhead.com/spell=331573/unconscionable-guilt need anything? doesn't say it stacks
+--[[
+--Sadly, most of timers not in combat log
+(ability.id = 325379 or ability.id = 332665) and type = "begincast"
+ or (ability.id = 331550 or ability.id = 334017) and type = "begincast"
+--]]
 local warnWarpedDesires							= mod:NewStackAnnounce(325382, 2, nil, "Tank|Healer")
 local warnSharedCognition						= mod:NewTargetNoFilterAnnounce(325936, 4, nil, "Healer")
 local warnBottledAnima							= mod:NewSpellAnnounce(325769, 2)
@@ -41,7 +46,7 @@ local specWarnWarpedDesires						= mod:NewSpecialWarningTaunt(325382, false, nil
 local specWarnHiddenDesire						= mod:NewSpecialWarningYou(335396, nil, nil, nil, 1, 2)
 local specWarnHiddenDesireTaunt					= mod:NewSpecialWarningTaunt(335396, nil, nil, nil, 1, 2)
 local yellHiddenDesire							= mod:NewYell(335396)--Remove if they fix bug with it splash damaging
---local specWarnChangeofHeart						= mod:NewSpecialWarningMoveAway(325384, nil, nil, nil, 3, 2)--Triggered by rank 3 Exposed Desires
+--local specWarnChangeofHeart					= mod:NewSpecialWarningMoveAway(325384, nil, nil, nil, 3, 2)--Triggered by rank 3 Exposed Desires
 --local yellChangeofHeartFades					= mod:NewFadesYell(325384)--^^
 local specWarnSharedSuffering					= mod:NewSpecialWarningMoveTo(324983, nil, nil, nil, 1, 2)
 local yellSharedSuffering						= mod:NewShortYell(324983)
