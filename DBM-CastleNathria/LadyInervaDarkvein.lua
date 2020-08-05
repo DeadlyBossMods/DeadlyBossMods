@@ -217,25 +217,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		self.vb.sufferingIcon = self.vb.sufferingIcon + 1
 	elseif spellId == 332664 or spellId == 340477 or spellId == 339525 then--332664 was used on heroic, i suspect 339525 340477 are new do to root mechanic addition
-		local bossPower = UnitPower("boss1")--Alternate power or main boss powere?
 		if args:IsPlayer() then
---			if bossPower and bossPower >= 75 then--Verify. rank 3 activating at 75 is total assumption
---				specWarnConcentrateAnimaTo:Show(DBM_CORE_L.ALLIES)
---				specWarnConcentrateAnimaTo:Play("gathershare")
---				yellConcentrateAnimaFades:Countdown(spellId)--YELL (RED letters for soak)
---			else
-				specWarnConcentrateAnimaAway:Show()
-				specWarnConcentrateAnimaAway:Play("runout")
-				yellConcentrateAnimaFades:CountdownSay(spellId)--SAY (white letters for avoid)
---			end
+			specWarnConcentrateAnimaAway:Show()
+			specWarnConcentrateAnimaAway:Play("runout")
+			yellConcentrateAnimaFades:CountdownSay(spellId)--SAY (white letters for avoid)
 		else
-			--Need allies to soak
---			if bossPower and bossPower >= 75 then
---				specWarnConcentrateAnimaTo:Show(args.destName)
---				specWarnConcentrateAnimaTo:Play("gathershare")
---			else
-				warnConcentrateAnima:Show(args.destName)
---			end
+			warnConcentrateAnima:Show(args.destName)
 		end
 	elseif spellId == 335396 then
 		if args:IsPlayer() then
