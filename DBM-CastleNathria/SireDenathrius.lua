@@ -13,10 +13,10 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 326707 326851 327227 328117 329181 333932 330042 326005",
-	"SPELL_CAST_SUCCESS 327039 327796 329951",
-	"SPELL_AURA_APPLIED 326699 338510 327039 327796 327992 329906",
-	"SPELL_AURA_APPLIED_DOSE 326699 329906",
-	"SPELL_AURA_REMOVED 326699 338510 327039 327796 328117",
+	"SPELL_CAST_SUCCESS 327039 327796 329951 332794 339196 333979",
+	"SPELL_AURA_APPLIED 326699 338510 327039 327796 327992 329906 332585 332794",
+	"SPELL_AURA_APPLIED_DOSE 326699 329906 332585",
+	"SPELL_AURA_REMOVED 326699 338510 327039 327796 328117 332794",
 	"SPELL_AURA_REMOVED_DOSE 326699",
 	"SPELL_PERIODIC_DAMAGE 327992",
 	"SPELL_PERIODIC_MISSED 327992",
@@ -31,10 +31,14 @@ mod:RegisterEventsInCombat(
 --TODO, warnings and timers for Crimson Cabalist? All that stuff seems passive so nothing to really do for it besides Crescendo maybe
 --TODO, fine tune Carnage stacks
 --TODO, when boss commands Remornia, does it affect remornia's normal cast sequence/timers
+--TODO, https://shadowlands.wowhead.com/spell=336008/smoldering-ire need anything special?
+--TODO, verify spellIds for two different blood prices, and make sure there isn't overlap/double triggering for any of them
+--TODO, handle sinister reflection better? for time being sub warnings don't exist, just a generic dodge warning for reflection spawn itself
 --General
 local warnPhase									= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
 --Stage One: Sinners Be Cleansed
-local warnBloodPrice							= mod:NewTargetCountAnnounce(326851, 3, nil, nil, nil, nil, nil, nil, true)--No Filter Warning
+local warnBloodPrice							= mod:NewSpellAnnounce(326851, 4)
+--local warnBloodPrice							= mod:NewTargetCountAnnounce(326851, 3, nil, nil, nil, nil, nil, nil, true)--No Filter Warning
 local warnFeedingTime							= mod:NewTargetAnnounce(327039, 2)--On this difficulty you don't need to help soak it so don't really NEED to know who it's on
 local warnNightHunter							= mod:NewTargetNoFilterAnnounce(327796, 4)--General announce, if target special warning not enabled
 --Stage Two: The Crimson Chorus
@@ -45,6 +49,8 @@ local warnCarnage								= mod:NewStackAnnounce(329906, 2, nil, "Tank|Healer")
 local warnImpale								= mod:NewTargetAnnounce(329951, 2)
 ----Sire Denathrius
 --Stage Three: Indignation
+local warnScorn									= mod:NewStackAnnounce(332585, 2, nil, "Tank|Healer")
+local warnFatalFinesse							= mod:NewTargetNoFilterAnnounce(332794, 2)
 
 --Stage One: Sinners Be Cleansed
 local specWarnCleansingPain						= mod:NewSpecialWarningCount(326707, nil, nil, nil, 2, 2)
@@ -72,6 +78,13 @@ local specWarnWrackingPain						= mod:NewSpecialWarningDodge(329181, "Tank", nil
 local specWarnHandofDestruction					= mod:NewSpecialWarningRun(333932, nil, nil, nil, 4, 2)
 local specWarnCommandMassacre					= mod:NewSpecialWarningDodge(330042, nil, nil, nil, 2, 2)
 --Stage Three: Indignation
+local specWarnScorn								= mod:NewSpecialWarningStack(332585, nil, 12, nil, nil, 1, 6)
+local specWarnScorneOther						= mod:NewSpecialWarningTaunt(332585, nil, nil, nil, 1, 6)
+local specWarnShatteringPain					= mod:NewSpecialWarningCount(332619, nil, nil, nil, 2, 2)
+local specWarnFatalfFinesse						= mod:NewSpecialWarningMoveAway(332794, nil, nil, nil, 1, 2)
+local yellFatalfFinesse							= mod:NewYell(332794)
+local yellFatalfFinesseFades					= mod:NewFadesYell(332794)
+local specWarnSinisterReflection				= mod:NewSpecialWarningDodge(333979, nil, nil, nil, 3, 2)
 
 --Stage One: Sinners Be Cleansed
 --mod:AddTimerLine(BOSS)
@@ -90,6 +103,9 @@ local timerWrackingPainCD						= mod:NewAITimer(16.6, 329181, nil, nil, nil, 5, 
 local timerHandofDestructionCD					= mod:NewAITimer(44.3, 333932, nil, nil, nil, 2)
 local timerCommandMassacreCD					= mod:NewAITimer(44.3, 330042, nil, nil, nil, 3, nil, DBM_CORE_L.DEADLY_ICON)
 --Stage Three: Indignation
+local timerShatteringPainCD						= mod:NewAITimer(16.6, 332619, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON)
+local timerFatalFitnesseCD						= mod:NewAITimer(44.3, 332794, nil, nil, nil, 3)
+local timerSinisterReflectionCD					= mod:NewAITimer(44.3, 333979, nil, nil, nil, 3, nil, DBM_CORE_L.DEADLY_ICON)
 
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
@@ -101,7 +117,7 @@ mod:AddNamePlateOption("NPAuraOnSpiteful", 338510)
 local SinStacks = {}
 --local playerDebuff = false
 mod.vb.phase = 1
-mod.vb.cleansingPainCount = 0
+mod.vb.painCount = 0
 mod.vb.RavageCount = 0
 mod.vb.HunterIcon = 1
 
@@ -109,7 +125,7 @@ function mod:OnCombatStart(delay)
 	table.wipe(SinStacks)
 --	playerDebuff = false
 	self.vb.phase = 1
-	self.vb.cleansingPainCount = 0
+	self.vb.painCount = 0
 	self.vb.RavageCount = 0
 	self.vb.HunterIcon = 1
 	timerCleansingPainCD:Start(1-delay)
@@ -148,8 +164,8 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 326707 then--Sire Cleansing Pain
-		self.vb.cleansingPainCount = self.vb.cleansingPainCount + 1
-		specWarnCleansingPain:Show(self.vb.cleansingPainCount)
+		self.vb.painCount = self.vb.painCount + 1
+		specWarnCleansingPain:Show(self.vb.painCount)
 		specWarnCleansingPain:Play("shockwave")
 		timerCleansingPainCD:Start()
 	elseif spellId == 326851 then
@@ -185,6 +201,7 @@ function mod:SPELL_CAST_START(args)
 		timerCommandMassacreCD:Start()
 	elseif spellId == 326005 then
 		self.vb.phase = 3
+		self.vb.painCount = 0--reused for shattering pain
 		warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(3))
 		warnPhase:Play("pthree")
 		--Remornia
@@ -193,6 +210,20 @@ function mod:SPELL_CAST_START(args)
 		timerWrackingPainCD:Stop()
 		timerHandofDestructionCD:Stop()
 		timerCommandMassacreCD:Stop()
+		timerShatteringPainCD:Start(3)
+		timerFatalFitnesseCD:Start(3)
+		timerHandofDestructionCD:Start(3)
+		timerBloodPriceCD:Start(3)
+		timerSinisterReflectionCD:Start(3)
+	elseif spellId == 332619 then
+		self.vb.painCount = self.vb.painCount + 1
+		specWarnShatteringPain:Show(self.vb.painCount)
+		--if self:IsTanking("player", "boss1", nil, true) then
+	--		specWarnShatteringPain:Play("defensive")
+		--else
+			specWarnShatteringPain:Play("carefly")
+	--	end
+		timerShatteringPainCD:Start()
 --	elseif spellId == 337785 then--Echo Cleansing Pain
 --		specWarnCleansingPain:Show(0)
 --		specWarnCleansingPain:Play("shockwave")
@@ -211,6 +242,15 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerNightHunterCD:Start()
 	elseif spellId == 329951 then
 		timerImpaleCD:Start()
+	elseif spellId == 332794 then
+		timerFatalFitnesseCD:Start()
+	elseif spellId == 339196 and self.vb.phase == 3 then
+		warnBloodPrice:Show()
+		timerBloodPriceCD:Start()
+	elseif spellId == 333979 then
+		specWarnSinisterReflection:Show()
+		specWarnSinisterReflection:Play("watchstep")
+		timerSinisterReflectionCD:Start()
 	end
 end
 
@@ -231,7 +271,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 326851 then
 		local affectedCount = SinStacks[args.destName]
-		warnBloodPrice:Show(args.destName, affectedCount)
+		--warnBloodPrice:Show(args.destName, affectedCount)
+		warnBloodPrice:Show()
 		--for name, count in pairs(SinStacks) do
 			--if count == affectedCount then
 
@@ -299,13 +340,43 @@ function mod:SPELL_AURA_APPLIED(args)
 				warnCarnage:Show(args.destName, amount)
 			end
 		end
+	elseif spellId == 332585 then
+		local amount = args.amount or 1
+		if (amount % 3 == 0) then
+			if amount >= 12 then
+				if args:IsPlayer() then
+					specWarnScorn:Show(amount)
+					specWarnScorn:Play("stackhigh")
+				else
+					--Don't show taunt warning if you're 3 tanking and aren't near the boss (this means you are the add tank)
+					--Show taunt warning if you ARE near boss, or if number of alive tanks is less than 3
+					if (self:CheckNearby(8, args.destName) or self:GetNumAliveTanks() < 3) and not DBM:UnitDebuff("player", spellId) and not UnitIsDeadOrGhost("player") then--Can't taunt less you've dropped yours off, period.
+						specWarnScorneOther:Show(args.destName)
+						specWarnScorneOther:Play("tauntboss")
+					else
+						warnScorn:Show(args.destName, amount)
+					end
+				end
+			else
+				warnScorn:Show(args.destName, amount)
+			end
+		end
 	elseif spellId == 329951 then
-
+		warnImpale:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			specWarnImpale:Show()
 			specWarnImpale:Play("runout")
 			yellImpale:Yell()
 			yellImpaleFades:Countdown(spellId)
+		end
+	elseif spellId == 332794 then
+		if args:IsPlayer() then
+			specWarnFatalfFinesse:Show()
+			specWarnFatalfFinesse:Play("runout")
+			yellFatalfFinesse:Yell()
+			yellFatalfFinesseFades:Countdown(spellId)
+		else
+			warnFatalFinesse:Show(args.destName)
 		end
 	end
 end
@@ -346,6 +417,10 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 329951 then
 		if args:IsPlayer() then
 			yellImpaleFades:Cancel()
+		end
+	elseif spellId == 332794 then
+		if args:IsPlayer() then
+			yellFatalfFinesseFades:Cancel()
 		end
 	end
 end

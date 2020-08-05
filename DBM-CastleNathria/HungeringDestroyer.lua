@@ -14,7 +14,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 334522 329758 334266 329455 329774",
 --	"SPELL_CAST_SUCCESS 329298",
-	"SPELL_AURA_APPLIED 329298 334755 329725 334228 332295",
+	"SPELL_AURA_APPLIED 329298 334755 334228 332295",
 	"SPELL_AURA_APPLIED_DOSE 334755 332295",
 	"SPELL_AURA_REMOVED 329298 334755 334228",
 	"SPELL_DAMAGE 329742",
@@ -291,11 +291,11 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnEssenceSap:Play("stackhigh")
 			end
 		end
-	elseif spellId == 329725 then
-		if args:IsPlayer() then
-			specWarnExpunge:Show()
-			specWarnExpunge:Play("scatter")
-		end
+--	elseif spellId == 329725 then
+--		if args:IsPlayer() then
+--			specWarnExpunge:Show()
+--			specWarnExpunge:Play("scatter")
+--		end
 	elseif spellId == 334228 then
 		if args:IsPlayer() then
 			playerVolatile = true
