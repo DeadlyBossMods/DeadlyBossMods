@@ -14,9 +14,9 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 325379 332665 331550 334017",
 --	"SPELL_CAST_SUCCESS",
-	"SPELL_AURA_APPLIED 325382 325936 324983 332664 335396",
+	"SPELL_AURA_APPLIED 325382 325936 324983 332664 335396 339525 340477",
 	"SPELL_AURA_APPLIED_DOSE 325382",
-	"SPELL_AURA_REMOVED 325382 332664 324983",
+	"SPELL_AURA_REMOVED 325382 332664 324983 339525 340477",
 	"SPELL_PERIODIC_DAMAGE 325713",
 	"SPELL_PERIODIC_MISSED 325713",
 --	"UNIT_DIED"
@@ -216,7 +216,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:SetIcon(args.destName, self.vb.sufferingIcon)
 		end
 		self.vb.sufferingIcon = self.vb.sufferingIcon + 1
-	elseif spellId == 332664 then
+	elseif spellId == 332664 or spellId == 340477 or spellId == 339525 then--332664 was used on heroic, i suspect 339525 340477 are new do to root mechanic addition
 		local bossPower = UnitPower("boss1")--Alternate power or main boss powere?
 		if args:IsPlayer() then
 --			if bossPower and bossPower >= 75 then--Verify. rank 3 activating at 75 is total assumption
@@ -257,7 +257,7 @@ function mod:SPELL_AURA_REMOVED(args)
 --			self:Unschedule(delayedWarpedDesiresCheck)
 			--yellChangeofHeartFades:Cancel()
 --		end
-	elseif spellId == 332664 then
+	elseif spellId == 332664 or spellId == 340477 or spellId == 339525 then
 		if args:IsPlayer() then
 			yellConcentrateAnimaFades:Cancel()
 		end
