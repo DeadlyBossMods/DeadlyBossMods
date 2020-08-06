@@ -2,18 +2,18 @@ local mod	= DBM:NewMod(2424, "DBM-CastleNathria", nil, 1190)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
-mod:SetCreatureID(168938)
+mod:SetCreatureID(167406)
 mod:SetEncounterID(2407)
 mod:SetUsedIcons(1, 2, 3)
---mod:SetHotfixNoticeRev(20200112000000)--2020, 1, 12
---mod:SetMinSyncRevision(20190716000000)
+mod:SetHotfixNoticeRev(20200806000000)--2020, 8, 6
+mod:SetMinSyncRevision(20200806000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 326707 326851 327227 328117 329181 333932 330042 326005",
-	"SPELL_CAST_SUCCESS 327039 327796 329951 332794 339196 333979 329943",
+	"SPELL_CAST_START 326707 326851 327227 328117 329181 333932 326005",
+	"SPELL_CAST_SUCCESS 327039 327796 332794 339196 333979 329943 330042",
 	"SPELL_AURA_APPLIED 326699 338510 327039 327796 327992 329906 332585 332794 329951",
 	"SPELL_AURA_APPLIED_DOSE 326699 329906 332585",
 	"SPELL_AURA_REMOVED 326699 338510 327039 327796 328117 332794 329951",
@@ -198,10 +198,6 @@ function mod:SPELL_CAST_START(args)
 		specWarnHandofDestruction:Show()
 		specWarnHandofDestruction:Play("justrun")
 		timerHandofDestructionCD:Start()
-	elseif spellId == 330042 then
-		specWarnCommandMassacre:Show()
-		specWarnCommandMassacre:Play("watchstep")--Perhaps farfromline?
-		timerCommandMassacreCD:Start()
 	elseif spellId == 326005 then
 		self.vb.phase = 3
 		self.vb.painCount = 0--reused for shattering pain
@@ -256,6 +252,10 @@ function mod:SPELL_CAST_SUCCESS(args)
 		specWarnSinisterReflection:Show()
 		specWarnSinisterReflection:Play("watchstep")
 		timerSinisterReflectionCD:Start()
+	elseif spellId == 330042 then
+		specWarnCommandMassacre:Show()
+		specWarnCommandMassacre:Play("watchstep")--Perhaps farfromline?
+		timerCommandMassacreCD:Start()
 	end
 end
 
