@@ -111,7 +111,7 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 328437 then
 		tempIconVariable = 1
 		timerDimensionalTearCD:Start()
-	elseif spellId == 329256 then--335013 alternate ID
+	elseif spellId == 329256 and self:AntiSpam(10, 2) then--335013 alternate ID
 		specWarnRiftBlast:Show()
 		specWarnRiftBlast:Play("farfromline")
 		timerRiftBlastCD:Start()
