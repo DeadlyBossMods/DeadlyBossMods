@@ -34,6 +34,7 @@ mod:RegisterEventsInCombat(
 --TODO, https://shadowlands.wowhead.com/spell=336008/smoldering-ire need anything special?
 --TODO, verify spellIds for two different blood prices, and make sure there isn't overlap/double triggering for any of them
 --TODO, handle sinister reflection better? for time being sub warnings don't exist, just a generic dodge warning for reflection spawn itself
+--TODO, verify icon reset methods for all 3 icon debuffs
 --General
 local warnPhase									= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
 --Stage One: Sinners Be Cleansed
@@ -71,8 +72,8 @@ local specWarnMarchofthePenitent				= mod:NewSpecialWarningSpell(328117, nil, ni
 local specWarnCarnage							= mod:NewSpecialWarningStack(329906, nil, 12, nil, nil, 1, 6)
 local specWarnCarnageOther						= mod:NewSpecialWarningTaunt(329906, nil, nil, nil, 1, 6)
 local specWarnImpale							= mod:NewSpecialWarningMoveAway(329951, nil, nil, nil, 1, 2)
-local yellImpale								= mod:NewYell(329951)
-local yellImpaleFades							= mod:NewFadesYell(329951)
+local yellImpale								= mod:NewPosYell(329951)
+local yellImpaleFades							= mod:NewIconFadesYell(329951)
 ----Sire Denathrius
 local specWarnWrackingPain						= mod:NewSpecialWarningDodge(329181, "Tank", nil, nil, 1, 2)--Change to defensive if it can't be dodged
 local specWarnHandofDestruction					= mod:NewSpecialWarningRun(333932, nil, nil, nil, 4, 2)
@@ -82,8 +83,8 @@ local specWarnScorn								= mod:NewSpecialWarningStack(332585, nil, 12, nil, ni
 local specWarnScorneOther						= mod:NewSpecialWarningTaunt(332585, nil, nil, nil, 1, 6)
 local specWarnShatteringPain					= mod:NewSpecialWarningCount(332619, nil, nil, nil, 2, 2)
 local specWarnFatalfFinesse						= mod:NewSpecialWarningMoveAway(332794, nil, nil, nil, 1, 2)
-local yellFatalfFinesse							= mod:NewYell(332794)
-local yellFatalfFinesseFades					= mod:NewFadesYell(332794)
+local yellFatalfFinesse							= mod:NewPosYell(332794)
+local yellFatalfFinesseFades					= mod:NewIconFadesYell(332794)
 local specWarnSinisterReflection				= mod:NewSpecialWarningDodge(333979, nil, nil, nil, 3, 2)
 
 --Stage One: Sinners Be Cleansed
@@ -112,6 +113,8 @@ local timerSinisterReflectionCD					= mod:NewAITimer(44.3, 333979, nil, nil, nil
 --mod:AddRangeFrameOption(10, 310277)
 mod:AddInfoFrameOption(326699, true)
 mod:AddSetIconOption("SetIconOnNightHunter", 327796, true, false, {1, 2, 3})
+mod:AddSetIconOption("SetIconOnImpale", 329951, true, false, {1, 2, 3})
+mod:AddSetIconOption("SetIconOnFatalFinesse", 332794, true, false, {1, 2, 3})
 mod:AddNamePlateOption("NPAuraOnSpiteful", 338510)
 
 local SinStacks = {}
@@ -119,7 +122,7 @@ local SinStacks = {}
 mod.vb.phase = 1
 mod.vb.painCount = 0
 mod.vb.RavageCount = 0
-mod.vb.HunterIcon = 1
+mod.vb.DebuffIcon = 1
 
 function mod:OnCombatStart(delay)
 	table.wipe(SinStacks)
@@ -127,7 +130,7 @@ function mod:OnCombatStart(delay)
 	self.vb.phase = 1
 	self.vb.painCount = 0
 	self.vb.RavageCount = 0
-	self.vb.HunterIcon = 1
+	self.vb.DebuffIcon = 1
 	timerCleansingPainCD:Start(1-delay)
 	timerBloodPriceCD:Start(1-delay)
 	timerCommandRavageCD:Start(1-delay)
@@ -238,11 +241,13 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if spellId == 326851 then
 		timerFeedingTimeCD:Start()
 	elseif spellId == 327796 then
-		self.vb.HunterIcon = 1--Correct spot, if right event
+		self.vb.DebuffIcon = 1--Correct spot, if right event
 		timerNightHunterCD:Start()
 	elseif spellId == 329951 then
+		self.vb.DebuffIcon = 1
 		timerImpaleCD:Start()
 	elseif spellId == 332794 then
+		self.vb.DebuffIcon = 1
 		timerFatalFitnesseCD:Start()
 	elseif spellId == 339196 and self.vb.phase == 3 then
 		warnBloodPrice:Show()
@@ -288,7 +293,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnFeedingTime:Show(args.destName)
 		end
 	elseif spellId == 327796 then
-		local icon = self.vb.HunterIcon
+		local icon = self.vb.DebuffIcon
 		if args:IsPlayer() then
 			--Unschedule target warning if you've become one of victims
 			specWarnNightHunterTarget:Cancel()
@@ -311,9 +316,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.SetIconOnNightHunter then
 			self:SetIcon(args.destName, icon)
 		end
-		self.vb.HunterIcon = self.vb.HunterIcon + 1
-		if self.vb.HunterIcon > 8 then
-			self.vb.HunterIcon = 1
+		self.vb.DebuffIcon = self.vb.DebuffIcon + 1
+		if self.vb.DebuffIcon > 8 then
+			self.vb.DebuffIcon = 1
 			DBM:AddMsg("Cast event for Night Hunter is wrong, doing backup icon reset")
 		end
 	elseif spellId == 327992 and args:IsPlayer() and self:AntiSpam(2, 2) then
@@ -363,21 +368,31 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 329951 then
 		warnImpale:CombinedShow(0.3, args.destName)
+		local icon = self.vb.DebuffIcon
 		if args:IsPlayer() then
 			specWarnImpale:Show()
 			specWarnImpale:Play("runout")
-			yellImpale:Yell()
-			yellImpaleFades:Countdown(spellId)
+			yellImpale:Yell(icon, icon, icon)
+			yellImpaleFades:Countdown(spellId, nil, icon)
 		end
+		if self.Options.SetIconOnImpale then
+			self:SetIcon(args.destName, icon)
+		end
+		self.vb.DebuffIcon = self.vb.DebuffIcon + 1
 	elseif spellId == 332794 then
+		local icon = self.vb.DebuffIcon
 		if args:IsPlayer() then
 			specWarnFatalfFinesse:Show()
 			specWarnFatalfFinesse:Play("runout")
-			yellFatalfFinesse:Yell()
-			yellFatalfFinesseFades:Countdown(spellId)
+			yellFatalfFinesse:Yell(icon, icon, icon)
+			yellFatalfFinesseFades:Countdown(spellId, nil, icon)
 		else
 			warnFatalFinesse:Show(args.destName)
 		end
+		if self.Options.SetIconOnFatalFinesse then
+			self:SetIcon(args.destName, icon)
+		end
+		self.vb.DebuffIcon = self.vb.DebuffIcon + 1
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -418,9 +433,15 @@ function mod:SPELL_AURA_REMOVED(args)
 		if args:IsPlayer() then
 			yellImpaleFades:Cancel()
 		end
+		if self.Options.SetIconOnImpale then
+			self:SetIcon(args.destName, 0)
+		end
 	elseif spellId == 332794 then
 		if args:IsPlayer() then
 			yellFatalfFinesseFades:Cancel()
+		end
+		if self.Options.SetIconOnFatalFinesse then
+			self:SetIcon(args.destName, 0)
 		end
 	end
 end
