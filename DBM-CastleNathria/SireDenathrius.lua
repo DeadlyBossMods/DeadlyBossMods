@@ -12,8 +12,8 @@ mod:SetMinSyncRevision(20200806000000)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 326707 326851 327227 328117 329181 333932 326005",
-	"SPELL_CAST_SUCCESS 327039 327796 332794 339196 333979 329943 330042",
+	"SPELL_CAST_START 326707 326851 327227 328117 329181 333932",
+	"SPELL_CAST_SUCCESS 327039 327796 332794 339196 333979 329943 330042 326005",
 	"SPELL_AURA_APPLIED 326699 338510 327039 327796 327992 329906 332585 332794 329951",
 	"SPELL_AURA_APPLIED_DOSE 326699 329906 332585",
 	"SPELL_AURA_REMOVED 326699 338510 327039 327796 328117 332794 329951",
@@ -93,7 +93,7 @@ local timerCleansingPainCD						= mod:NewAITimer(16.6, 326707, nil, nil, nil, 5,
 local timerBloodPriceCD							= mod:NewAITimer(44.3, 326851, nil, nil, nil, 2, nil, DBM_CORE_L.HEALER_ICON)
 local timerFeedingTimeCD						= mod:NewAITimer(44.3, 327039, nil, nil, nil, 3)--Normal/LFR
 local timerNightHunterCD						= mod:NewAITimer(44.3, 327796, nil, nil, nil, 3, nil, DBM_CORE_L.HEROIC_ICON)--Heroic/mythic
-local timerCommandRavageCD						= mod:NewAITimer(44.3, 327227, nil, nil, nil, 2, nil, DBM_CORE_L.DEADLY_ICON)
+local timerCommandRavageCD						= mod:NewAITimer(44.3, 327227, nil, nil, nil, 2, nil, DBM_CORE_L.DEADLY_ICON, nil, 1, 4)
 --Intermission: March of the Penitent
 local timerNextPhase							= mod:NewPhaseTimer(16.5, 328117, nil, nil, nil, 6, nil, nil, nil, 1, 4)
 --Stage Two: The Crimson Chorus
@@ -198,22 +198,6 @@ function mod:SPELL_CAST_START(args)
 		specWarnHandofDestruction:Show()
 		specWarnHandofDestruction:Play("justrun")
 		timerHandofDestructionCD:Start()
-	elseif spellId == 326005 then
-		self.vb.phase = 3
-		self.vb.painCount = 0--reused for shattering pain
-		warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(3))
-		warnPhase:Play("pthree")
-		--Remornia
-		timerImpaleCD:Stop()
-		--Denathrius
-		timerWrackingPainCD:Stop()
-		timerHandofDestructionCD:Stop()
-		timerCommandMassacreCD:Stop()
-		timerShatteringPainCD:Start(3)
-		timerFatalFitnesseCD:Start(3)
-		timerHandofDestructionCD:Start(3)
-		timerBloodPriceCD:Start(3)
-		timerSinisterReflectionCD:Start(3)
 	elseif spellId == 332619 then
 		self.vb.painCount = self.vb.painCount + 1
 		specWarnShatteringPain:Show(self.vb.painCount)
@@ -256,6 +240,22 @@ function mod:SPELL_CAST_SUCCESS(args)
 		specWarnCommandMassacre:Show()
 		specWarnCommandMassacre:Play("watchstep")--Perhaps farfromline?
 		timerCommandMassacreCD:Start()
+	elseif spellId == 326005 then
+		self.vb.phase = 3
+		self.vb.painCount = 0--reused for shattering pain
+		warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(3))
+		warnPhase:Play("pthree")
+		--Remornia
+		timerImpaleCD:Stop()
+		--Denathrius
+		timerWrackingPainCD:Stop()
+		timerHandofDestructionCD:Stop()
+		timerCommandMassacreCD:Stop()
+		timerShatteringPainCD:Start(3)
+		timerFatalFitnesseCD:Start(3)
+		timerHandofDestructionCD:Start(3)
+		timerBloodPriceCD:Start(3)
+		timerSinisterReflectionCD:Start(3)
 	end
 end
 
