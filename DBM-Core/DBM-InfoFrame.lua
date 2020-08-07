@@ -963,6 +963,7 @@ function infoFrame:Show(modMaxLines, event, ...)
 	linesUpdate = true
 	currentMapId = select(4, UnitPosition("player"))
 	modLines = modMaxLines
+	modCols = modMaxLines and modMaxLines >= 10 and 2 or 1
 	if DBM.Options.InfoFrameLines and DBM.Options.InfoFrameLines ~= 0 then
 		maxLines = DBM.Options.InfoFrameLines
 	else
@@ -973,7 +974,7 @@ function infoFrame:Show(modMaxLines, event, ...)
 	else
 		-- TODO, still needs more finite control via gui later on
 		-- I think dynamic options modMaxLines/10 modMaxLines/5 are both valid options, as well as just capping at 2 >= 10
-		maxCols = modMaxLines and modMaxLines >= 10 and 2 or 1
+		maxCols = modCols
 	end
 	twipe(value)
 	for i = 1, select("#", ...) do
