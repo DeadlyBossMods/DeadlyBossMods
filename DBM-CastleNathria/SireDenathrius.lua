@@ -68,6 +68,8 @@ local specWarnGTFO								= mod:NewSpecialWarningGTFO(327992, nil, nil, nil, 1, 
 --Intermission: March of the Penitent
 local specWarnMarchofthePenitent				= mod:NewSpecialWarningSpell(328117, nil, nil, nil, 2, 2)
 --Stage Two: The Crimson Chorus
+----Crimson Cabalist and horsemen
+local specWarnCrescendo							= mod:NewSpecialWarningDodge(336162, false, nil, nil, 2, 2)
 ----Remornia
 local specWarnCarnage							= mod:NewSpecialWarningStack(329906, nil, 12, nil, nil, 1, 6)
 local specWarnCarnageOther						= mod:NewSpecialWarningTaunt(329906, nil, nil, nil, 1, 6)
@@ -381,13 +383,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.DebuffIcon = self.vb.DebuffIcon + 1
 	elseif spellId == 332794 then
 		local icon = self.vb.DebuffIcon
+		warnFatalFinesse:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			specWarnFatalfFinesse:Show()
 			specWarnFatalfFinesse:Play("runout")
 			yellFatalfFinesse:Yell(icon, icon, icon)
 			yellFatalfFinesseFades:Countdown(spellId, nil, icon)
-		else
-			warnFatalFinesse:Show(args.destName)
 		end
 		if self.Options.SetIconOnFatalFinesse then
 			self:SetIcon(args.destName, icon)
@@ -462,7 +463,12 @@ end
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 169196 and self:AntiSpam(3, 3) then--crimson-cabalist
-		warnCrescendo:Show()
+		if self.Options.SpecWarn336162dodge then
+			specWarnCrescendo:Show()
+			specWarnCrescendo:Play("watchstep")
+		else
+			warnCrescendo:Show()
+		end
 	elseif cid == 169855 then--Remornia
 		timerImpaleCD:Stop()
 	end
