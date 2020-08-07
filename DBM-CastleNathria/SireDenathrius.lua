@@ -2,21 +2,21 @@ local mod	= DBM:NewMod(2424, "DBM-CastleNathria", nil, 1190)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
-mod:SetCreatureID(168938)
+mod:SetCreatureID(167406)
 mod:SetEncounterID(2407)
 mod:SetUsedIcons(1, 2, 3)
---mod:SetHotfixNoticeRev(20200112000000)--2020, 1, 12
---mod:SetMinSyncRevision(20190716000000)
+mod:SetHotfixNoticeRev(20200806000000)--2020, 8, 6
+mod:SetMinSyncRevision(20200806000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 326707 326851 327227 328117 329181 333932 330042 326005",
-	"SPELL_CAST_SUCCESS 327039 327796 329951 332794 339196 333979",
-	"SPELL_AURA_APPLIED 326699 338510 327039 327796 327992 329906 332585 332794",
+	"SPELL_CAST_START 326707 326851 327227 328117 329181 333932",
+	"SPELL_CAST_SUCCESS 327039 327796 332794 339196 333979 329943 330042 326005",
+	"SPELL_AURA_APPLIED 326699 338510 327039 327796 327992 329906 332585 332794 329951",
 	"SPELL_AURA_APPLIED_DOSE 326699 329906 332585",
-	"SPELL_AURA_REMOVED 326699 338510 327039 327796 328117 332794",
+	"SPELL_AURA_REMOVED 326699 338510 327039 327796 328117 332794 329951",
 	"SPELL_AURA_REMOVED_DOSE 326699",
 	"SPELL_PERIODIC_DAMAGE 327992",
 	"SPELL_PERIODIC_MISSED 327992",
@@ -68,6 +68,8 @@ local specWarnGTFO								= mod:NewSpecialWarningGTFO(327992, nil, nil, nil, 1, 
 --Intermission: March of the Penitent
 local specWarnMarchofthePenitent				= mod:NewSpecialWarningSpell(328117, nil, nil, nil, 2, 2)
 --Stage Two: The Crimson Chorus
+----Crimson Cabalist and horsemen
+local specWarnCrescendo							= mod:NewSpecialWarningDodge(336162, false, nil, nil, 2, 2)
 ----Remornia
 local specWarnCarnage							= mod:NewSpecialWarningStack(329906, nil, 12, nil, nil, 1, 6)
 local specWarnCarnageOther						= mod:NewSpecialWarningTaunt(329906, nil, nil, nil, 1, 6)
@@ -93,7 +95,7 @@ local timerCleansingPainCD						= mod:NewAITimer(16.6, 326707, nil, nil, nil, 5,
 local timerBloodPriceCD							= mod:NewAITimer(44.3, 326851, nil, nil, nil, 2, nil, DBM_CORE_L.HEALER_ICON)
 local timerFeedingTimeCD						= mod:NewAITimer(44.3, 327039, nil, nil, nil, 3)--Normal/LFR
 local timerNightHunterCD						= mod:NewAITimer(44.3, 327796, nil, nil, nil, 3, nil, DBM_CORE_L.HEROIC_ICON)--Heroic/mythic
-local timerCommandRavageCD						= mod:NewAITimer(44.3, 327227, nil, nil, nil, 2, nil, DBM_CORE_L.DEADLY_ICON)
+local timerCommandRavageCD						= mod:NewAITimer(44.3, 327227, nil, nil, nil, 2, nil, DBM_CORE_L.DEADLY_ICON, nil, 1, 4)
 --Intermission: March of the Penitent
 local timerNextPhase							= mod:NewPhaseTimer(16.5, 328117, nil, nil, nil, 6, nil, nil, nil, 1, 4)
 --Stage Two: The Crimson Chorus
@@ -198,26 +200,6 @@ function mod:SPELL_CAST_START(args)
 		specWarnHandofDestruction:Show()
 		specWarnHandofDestruction:Play("justrun")
 		timerHandofDestructionCD:Start()
-	elseif spellId == 330042 then
-		specWarnCommandMassacre:Show()
-		specWarnCommandMassacre:Play("watchstep")--Perhaps farfromline?
-		timerCommandMassacreCD:Start()
-	elseif spellId == 326005 then
-		self.vb.phase = 3
-		self.vb.painCount = 0--reused for shattering pain
-		warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(3))
-		warnPhase:Play("pthree")
-		--Remornia
-		timerImpaleCD:Stop()
-		--Denathrius
-		timerWrackingPainCD:Stop()
-		timerHandofDestructionCD:Stop()
-		timerCommandMassacreCD:Stop()
-		timerShatteringPainCD:Start(3)
-		timerFatalFitnesseCD:Start(3)
-		timerHandofDestructionCD:Start(3)
-		timerBloodPriceCD:Start(3)
-		timerSinisterReflectionCD:Start(3)
 	elseif spellId == 332619 then
 		self.vb.painCount = self.vb.painCount + 1
 		specWarnShatteringPain:Show(self.vb.painCount)
@@ -243,7 +225,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 327796 then
 		self.vb.DebuffIcon = 1--Correct spot, if right event
 		timerNightHunterCD:Start()
-	elseif spellId == 329951 then
+	elseif spellId == 329943 then
 		self.vb.DebuffIcon = 1
 		timerImpaleCD:Start()
 	elseif spellId == 332794 then
@@ -256,6 +238,26 @@ function mod:SPELL_CAST_SUCCESS(args)
 		specWarnSinisterReflection:Show()
 		specWarnSinisterReflection:Play("watchstep")
 		timerSinisterReflectionCD:Start()
+	elseif spellId == 330042 then
+		specWarnCommandMassacre:Show()
+		specWarnCommandMassacre:Play("watchstep")--Perhaps farfromline?
+		timerCommandMassacreCD:Start()
+	elseif spellId == 326005 then
+		self.vb.phase = 3
+		self.vb.painCount = 0--reused for shattering pain
+		warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(3))
+		warnPhase:Play("pthree")
+		--Remornia
+		timerImpaleCD:Stop()
+		--Denathrius
+		timerWrackingPainCD:Stop()
+		timerHandofDestructionCD:Stop()
+		timerCommandMassacreCD:Stop()
+		timerShatteringPainCD:Start(3)
+		timerFatalFitnesseCD:Start(3)
+		timerHandofDestructionCD:Start(3)
+		timerBloodPriceCD:Start(3)
+		timerSinisterReflectionCD:Start(3)
 	end
 end
 
@@ -381,13 +383,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.DebuffIcon = self.vb.DebuffIcon + 1
 	elseif spellId == 332794 then
 		local icon = self.vb.DebuffIcon
+		warnFatalFinesse:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			specWarnFatalfFinesse:Show()
 			specWarnFatalfFinesse:Play("runout")
 			yellFatalfFinesse:Yell(icon, icon, icon)
 			yellFatalfFinesseFades:Countdown(spellId, nil, icon)
-		else
-			warnFatalFinesse:Show(args.destName)
 		end
 		if self.Options.SetIconOnFatalFinesse then
 			self:SetIcon(args.destName, icon)
@@ -418,6 +419,9 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 327796 then
 		if args:IsPlayer() then
 			yellNightHunterFades:Cancel()
+		end
+		if self.Options.SetIconOnNightHunter then
+			self:SetIcon(args.destName, 0)
 		end
 	elseif spellId == 328117 then--March of the Penitent
 		self.vb.phase = 2
@@ -459,7 +463,12 @@ end
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 169196 and self:AntiSpam(3, 3) then--crimson-cabalist
-		warnCrescendo:Show()
+		if self.Options.SpecWarn336162dodge then
+			specWarnCrescendo:Show()
+			specWarnCrescendo:Play("watchstep")
+		else
+			warnCrescendo:Show()
+		end
 	elseif cid == 169855 then--Remornia
 		timerImpaleCD:Stop()
 	end
