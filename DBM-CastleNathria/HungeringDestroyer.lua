@@ -30,6 +30,7 @@ mod:RegisterEventsInCombat(
 --TODO, if Gluttonous Miasma has shorter than a 24 second cd, the current icon code will break if any players die
 --TODO, fine tune stacks for essence sap
 --TODO, better way to detect expunge?
+--TODO, choose what infoframe tracks, sap, or volatile, volatile will be new default sine it's useful to more difficulties
 --[[
 (ability.id = 334522 or ability.id = 334266 or ability.id = 329455 or ability.id = 329774) and type = "begincast"
  or ability.id = 329298 and type = "applydebuff"
@@ -39,7 +40,7 @@ local warnVolatileEjection						= mod:NewTargetNoFilterAnnounce(334266, 4)
 
 local specWarnGluttonousMiasma					= mod:NewSpecialWarningYouPos(329298, nil, nil, nil, 1, 2)
 local yellGluttonousMiasma						= mod:NewPosYell(329298)
-local specWarnEssenceSap						= mod:NewSpecialWarningStack(334755, nil, 5, nil, nil, 1, 6)--Mythic
+local specWarnEssenceSap						= mod:NewSpecialWarningStack(334755, false, 8, nil, 2, 1, 6)--Mythic, spammy, opt in
 local specWarnConsume							= mod:NewSpecialWarningRun(334522, nil, nil, nil, 4, 2)
 local specWarnExpunge							= mod:NewSpecialWarningMoveAway(329725, nil, nil, nil, 1, 2)
 local specWarnVolatileEjection					= mod:NewSpecialWarningYou(334266, nil, nil, nil, 1, 2)
@@ -61,7 +62,7 @@ local timerOverwhelmCD							= mod:NewCDTimer(11.2, 329774, nil, "Tank", nil, 5,
 
 --mod:AddRangeFrameOption(10, 310277)
 mod:AddSetIconOption("SetIconOnGluttonousMiasma", 329298, true, false, {1, 2, 3, 4})
-mod:AddSetIconOption("SetIconOnVolatileEjection", 334266, false, false, {5, 6, 7, 8})--off by default since it will break if not EVERYONE in raid is running DBM or BW
+mod:AddSetIconOption("SetIconOnVolatileEjection2", 334266, true, false, {5, 6, 7, 8})--off by default since it will break if not EVERYONE in raid is running DBM or BW
 --mod:AddNamePlateOption("NPAuraOnVolatileCorruption", 312595)
 mod:AddInfoFrameOption(334755, true)
 mod:AddBoolOption("SortDesc", false)
@@ -294,7 +295,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			if not playerEssenceSap then
 				playerEssenceSap = true
 			end
-			if amount >= 5 then
+			if amount >= 8 then
 				specWarnEssenceSap:Show(amount)
 				specWarnEssenceSap:Play("stackhigh")
 			end
@@ -352,8 +353,8 @@ function mod:OnTranscriptorSync(msg, targetName)
 		targetName = Ambiguate(targetName, "none")
 		if self:AntiSpam(4, targetName) then
 			warnVolatileEjection:CombinedShow(0.75, targetName)
-			if self.Options.SetIconOnVolatileEjection and self.vb.volatileIcon < 9 then
-				self:SetIcon(targetName, self.vb.volatileIcon)
+			if self.Options.SetIconOnVolatileEjection2 then
+				self:SetIcon(targetName, self.vb.volatileIcon, 5)
 			end
 			self.vb.volatileIcon = self.vb.volatileIcon + 1
 		end
