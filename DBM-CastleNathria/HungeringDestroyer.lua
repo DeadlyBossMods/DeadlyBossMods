@@ -352,7 +352,7 @@ function mod:OnTranscriptorSync(msg, targetName)
 		targetName = Ambiguate(targetName, "none")
 		if self:AntiSpam(4, targetName) then
 			warnVolatileEjection:CombinedShow(0.75, targetName)
-			if self.Options.SetIconOnVolatileEjection then
+			if self.Options.SetIconOnVolatileEjection and self.vb.volatileIcon < 9 then
 				self:SetIcon(targetName, self.vb.volatileIcon)
 			end
 			self.vb.volatileIcon = self.vb.volatileIcon + 1
