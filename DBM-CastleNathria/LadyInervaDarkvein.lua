@@ -40,6 +40,7 @@ local warnSharedCognition						= mod:NewTargetNoFilterAnnounce(325936, 4, nil, "
 local warnBottledAnima							= mod:NewSpellAnnounce(325769, 2)
 local warnSharedSuffering						= mod:NewTargetNoFilterAnnounce(324983, 3)
 local warnConcentrateAnima						= mod:NewTargetNoFilterAnnounce(332664, 3)
+local warnCondemnTank							= mod:NewCastAnnounce(334017, 3, nil, nil, "Tank")
 
 local specWarnExposeDesires						= mod:NewSpecialWarningDefensive(325379, false, nil, nil, 1, 2)--Optional warning that the cast is happening toward you
 local specWarnWarpedDesires						= mod:NewSpecialWarningTaunt(325382, false, nil, 2, 1, 2)
@@ -158,7 +159,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.addIcon = 8
 		--1 Expose Desires (tank), 2 Bottled Anima (bouncing bottles), 3 Sins and Suffering (links), 4 Concentrate Anima (adds)
 		timerConcentratedAnimaCD:Start(self.vb.containerActive == 4 and 35.3 or 35.3)--Not enough data to determine if it changes or not
-	elseif spellId == 331550 or spellId == 334017 then--Conjured Manifestation / Harnessed Specter (only used if not actively tanked)
+	elseif spellId == 331550 then--Conjured Manifestation
 		if not castsPerGUID[args.sourceGUID] then
 			castsPerGUID[args.sourceGUID] = 0
 			if self.Options.SetIconOnAdds and self.vb.addIcon > 3 then--Only use up to 5 icons
@@ -187,6 +188,8 @@ function mod:SPELL_CAST_START(args)
 				specWarnCondemn:Play("kickcast")
 			end
 		end
+	elseif spellId == 334017 then--Harnessed Specter (only used if not actively tanked)
+		warnCondemnTank:Show()
 	end
 end
 
