@@ -924,12 +924,14 @@ local function onUpdate(frame, table)
 		maxWidth2[m] = mmax(maxWidth2[m] or 0, frame.lines[i * 2]:GetStringWidth())
 	end
 	local width = 0
+	local iiNum = mmin(maxLines, linesShown)
 	for i, _ in pairs(maxWidth1) do
 		width = width + maxWidth1[i] + maxWidth2[i] + 18
-		for ii = 1, maxLines do
+		local maxWid = maxWidth1[i]
+		for ii = 1, iiNum do
 			local m = ((i - 1) * maxLines * 2) + (ii * 2)
-			frame.lines[m - 1]:SetSize(maxWidth1[i], 12)
-			frame.lines[m]:SetSize(maxWidth2[i], 12)
+			frame.lines[m - 1]:SetSize(maxWid, 12)
+			frame.lines[m]:SetSize(maxWid, 12)
 		end
 	end
 	frame:SetSize(width, (mmin(linesShown, maxLines) * 12) + 12)
@@ -957,7 +959,9 @@ function infoFrame:Show(modMaxLines, event, ...)
 	if DBM.Options.InfoFrameCols and DBM.Options.InfoFrameCols ~= 0 then
 		maxCols = DBM.Options.InfoFrameCols
 	else
-		maxCols = modMaxLines and modMaxLines / 5 or 1
+		--TODO, still needs more finite control via gui later on
+		--I think dynamic options modMaxLines/10 modMaxLines/5 are both valid options, as well as just capping at 2 >= 10
+		maxCols = modMaxLines and modMaxLines >= 10 and 2 or 1
 	end
 	table.wipe(value)
 	for i = 1, select("#", ...) do

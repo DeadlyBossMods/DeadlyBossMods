@@ -14,9 +14,9 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 325379 332665 331550 334017",
 --	"SPELL_CAST_SUCCESS",
-	"SPELL_AURA_APPLIED 325382 325936 324983 332664 335396",
+	"SPELL_AURA_APPLIED 325382 325936 324983 332664 335396 339525 340477",
 	"SPELL_AURA_APPLIED_DOSE 325382",
-	"SPELL_AURA_REMOVED 325382 332664 324983",
+	"SPELL_AURA_REMOVED 325382 332664 324983 339525 340477",
 	"SPELL_PERIODIC_DAMAGE 325713",
 	"SPELL_PERIODIC_MISSED 325713",
 --	"UNIT_DIED"
@@ -30,6 +30,11 @@ mod:RegisterEventsInCombat(
 --TODO, add pre debuff if blizz adds it for shared suffering
 --TODO, rework timers further to include fact that timers differ at different energy levels (or is it based on which container is currently focused?)
 --TODO, does https://shadowlands.wowhead.com/spell=331573/unconscionable-guilt need anything? doesn't say it stacks
+--[[
+--Sadly, most of timers not in combat log
+(ability.id = 325379 or ability.id = 332665) and type = "begincast"
+ or (ability.id = 331550 or ability.id = 334017) and type = "begincast"
+--]]
 local warnWarpedDesires							= mod:NewStackAnnounce(325382, 2, nil, "Tank|Healer")
 local warnSharedCognition						= mod:NewTargetNoFilterAnnounce(325936, 4, nil, "Healer")
 local warnBottledAnima							= mod:NewSpellAnnounce(325769, 2)
@@ -41,7 +46,7 @@ local specWarnWarpedDesires						= mod:NewSpecialWarningTaunt(325382, false, nil
 local specWarnHiddenDesire						= mod:NewSpecialWarningYou(335396, nil, nil, nil, 1, 2)
 local specWarnHiddenDesireTaunt					= mod:NewSpecialWarningTaunt(335396, nil, nil, nil, 1, 2)
 local yellHiddenDesire							= mod:NewYell(335396)--Remove if they fix bug with it splash damaging
---local specWarnChangeofHeart						= mod:NewSpecialWarningMoveAway(325384, nil, nil, nil, 3, 2)--Triggered by rank 3 Exposed Desires
+--local specWarnChangeofHeart					= mod:NewSpecialWarningMoveAway(325384, nil, nil, nil, 3, 2)--Triggered by rank 3 Exposed Desires
 --local yellChangeofHeartFades					= mod:NewFadesYell(325384)--^^
 local specWarnSharedSuffering					= mod:NewSpecialWarningMoveTo(324983, nil, nil, nil, 1, 2)
 local yellSharedSuffering						= mod:NewShortYell(324983)
@@ -211,26 +216,13 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:SetIcon(args.destName, self.vb.sufferingIcon)
 		end
 		self.vb.sufferingIcon = self.vb.sufferingIcon + 1
-	elseif spellId == 332664 then
-		local bossPower = UnitPower("boss1")--Alternate power or main boss powere?
+	elseif spellId == 332664 or spellId == 340477 or spellId == 339525 then--332664 was used on heroic, i suspect 339525 340477 are new do to root mechanic addition
 		if args:IsPlayer() then
---			if bossPower and bossPower >= 75 then--Verify. rank 3 activating at 75 is total assumption
---				specWarnConcentrateAnimaTo:Show(DBM_CORE_L.ALLIES)
---				specWarnConcentrateAnimaTo:Play("gathershare")
---				yellConcentrateAnimaFades:Countdown(spellId)--YELL (RED letters for soak)
---			else
-				specWarnConcentrateAnimaAway:Show()
-				specWarnConcentrateAnimaAway:Play("runout")
-				yellConcentrateAnimaFades:CountdownSay(spellId)--SAY (white letters for avoid)
---			end
+			specWarnConcentrateAnimaAway:Show()
+			specWarnConcentrateAnimaAway:Play("runout")
+			yellConcentrateAnimaFades:CountdownSay(spellId)--SAY (white letters for avoid)
 		else
-			--Need allies to soak
---			if bossPower and bossPower >= 75 then
---				specWarnConcentrateAnimaTo:Show(args.destName)
---				specWarnConcentrateAnimaTo:Play("gathershare")
---			else
-				warnConcentrateAnima:Show(args.destName)
---			end
+			warnConcentrateAnima:Show(args.destName)
 		end
 	elseif spellId == 335396 then
 		if args:IsPlayer() then
@@ -252,7 +244,7 @@ function mod:SPELL_AURA_REMOVED(args)
 --			self:Unschedule(delayedWarpedDesiresCheck)
 			--yellChangeofHeartFades:Cancel()
 --		end
-	elseif spellId == 332664 then
+	elseif spellId == 332664 or spellId == 340477 or spellId == 339525 then
 		if args:IsPlayer() then
 			yellConcentrateAnimaFades:Cancel()
 		end
