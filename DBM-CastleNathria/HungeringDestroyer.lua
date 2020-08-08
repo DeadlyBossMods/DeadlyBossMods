@@ -51,7 +51,7 @@ local specWarnOverwhelm							= mod:NewSpecialWarningDefensive(329774, "Tank", n
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(270290, nil, nil, nil, 1, 8)
 
 --mod:AddTimerLine(BOSS)
-local timerGluttonousMiasmaCD					= mod:NewCDCountTimer(22.1, 329298, nil, nil, nil, 3)
+local timerGluttonousMiasmaCD					= mod:NewCDCountTimer(22.1, 329298, nil, nil, nil, 3, nil, nil, nil, 1, 3)
 local timerConsumeCD							= mod:NewNextCountTimer(120, 334522, nil, nil, nil, 2)
 local timerExpungeCD							= mod:NewNextCountTimer(44.3, 329725, nil, nil, nil, 3)
 local timerVolatileEjectionCD					= mod:NewNextCountTimer(44.3, 334266, nil, nil, nil, 3)

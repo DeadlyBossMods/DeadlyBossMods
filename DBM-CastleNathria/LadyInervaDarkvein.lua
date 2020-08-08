@@ -20,16 +20,15 @@ mod:RegisterEventsInCombat(
 	"SPELL_PERIODIC_DAMAGE 325713",
 	"SPELL_PERIODIC_MISSED 325713",
 --	"UNIT_DIED"
-	"UNIT_SPELLCAST_SUCCEEDED boss1"
-	--"UPDATE_UI_WIDGET"
+	"UNIT_SPELLCAST_SUCCEEDED boss1",
+	"UPDATE_UI_WIDGET"
 )
 
---TODO, verify tank stuff (power levels for runout, number of targets of shared cog, etc)
 --TODO, also figure out optimized tank swap priority
---TODO, find out correct powere type for boss, which looks to be a widget api
 --TODO, add pre debuff if blizz adds it for shared suffering
---TODO, rework timers further to include fact that timers differ at different energy levels (or is it based on which container is currently focused?)
+--TODO, rework timers further since they are still hardly that accurate and blizz will no doubt change power rates again.
 --TODO, does https://shadowlands.wowhead.com/spell=331573/unconscionable-guilt need anything? doesn't say it stacks
+--TODO, if container fill timers work, maybe support doing it with infoframe instead
 --[[
 --Sadly, most of timers not in combat log
 (ability.id = 325379 or ability.id = 332665) and type = "begincast"
@@ -37,6 +36,7 @@ mod:RegisterEventsInCombat(
 --]]
 local warnWarpedDesires							= mod:NewStackAnnounce(325382, 2, nil, "Tank|Healer")
 local warnSharedCognition						= mod:NewTargetNoFilterAnnounce(325936, 4, nil, "Healer")
+local warnChangeofHeart							= mod:NewTargetNoFilterAnnounce(340452, 3)
 local warnBottledAnima							= mod:NewSpellAnnounce(325769, 2)
 local warnSharedSuffering						= mod:NewTargetNoFilterAnnounce(324983, 3)
 local warnConcentrateAnima						= mod:NewTargetNoFilterAnnounce(332664, 3)
@@ -46,80 +46,152 @@ local specWarnExposeDesires						= mod:NewSpecialWarningDefensive(325379, false,
 local specWarnWarpedDesires						= mod:NewSpecialWarningTaunt(325382, false, nil, 2, 1, 2)
 local specWarnHiddenDesire						= mod:NewSpecialWarningYou(335396, nil, nil, nil, 1, 2)
 local specWarnHiddenDesireTaunt					= mod:NewSpecialWarningTaunt(335396, nil, nil, nil, 1, 2)
-local yellHiddenDesire							= mod:NewYell(335396)--Remove if they fix bug with it splash damaging
+local yellHiddenDesire							= mod:NewYell(335396, nil, false)--Remove?
 local specWarnChangeofHeart						= mod:NewSpecialWarningMoveAway(340452, nil, nil, nil, 3, 2)--Triggered by rank 3 Exposed Desires
 local yellChangeofHeartFades					= mod:NewFadesYell(340452)--^^
 local specWarnSharedSuffering					= mod:NewSpecialWarningMoveTo(324983, nil, nil, nil, 1, 2)
 local yellSharedSuffering						= mod:NewShortYell(324983)
 local specWarnConcentrateAnima					= mod:NewSpecialWarningMoveAway(332664, nil, nil, nil, 1, 2)--Rank 1-2
-local yellConcentrateAnimaFades					= mod:NewFadesYell(332664, nil, nil, nil, "YELL")--^^
+local yellConcentrateAnimaFades					= mod:NewShortFadesYell(332664)--^^
 local specWarnGTFO								= mod:NewSpecialWarningGTFO(325713, nil, nil, nil, 1, 8)
 --Anima Constructs
 local specWarnCondemn							= mod:NewSpecialWarningInterrupt(331550, "HasInterrupt", nil, nil, 1, 2)--Don't really want to hard interrupt warning for something with 10 second cast, this is opt in
 
 --mod:AddTimerLine(BOSS)
-local timerFocusContainerCD						= mod:NewNextTimer(120, "ej22424", nil, nil, nil, 6, 331456)
+local timerDesiresContainer						= mod:NewTimer(120, "timerDesiresContainer", 325379, false, "timerContainers")
+local timerBottledContainer						= mod:NewTimer(120, "timerBottledContainer", 325769, false, "timerContainers")
+local timerSinsContainer						= mod:NewTimer(120, "timerSinsContainer", 325064, false, "timerContainers")
+local timerConcentrateContainer					= mod:NewTimer(120, "timerConcentrateContainer", 332665, false, "timerContainers")
+local timerFocusContainerCD						= mod:NewCDTimer(100, "ej22424", nil, nil, nil, 6, 331456)
 local timerExposedDesiresCD						= mod:NewCDTimer(8.5, 325379, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)--8.5-25 because yeah, boss spell queuing+CD even changing when higher rank
 local timerBottledAnimaCD						= mod:NewCDTimer(10.8, 325769, nil, nil, nil, 3)--10-36
 local timerSinsandSufferingCD					= mod:NewCDTimer(44.3, 325064, nil, nil, nil, 3)
 local timerConcentratedAnimaCD					= mod:NewCDTimer(35.4, 332665, nil, nil, nil, 1, nil, nil, nil, 1, 3)--Technically targetted(3) bar type as well, but since bar is both, and 2 other bars are already 3s, 1 makes more sense
+local timerChangeofHeart						= mod:NewTargetTimer(4, 340452, nil, nil, nil, 5, nil, DBM_CORE_L.HEALER_ICON)
 
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
 --mod:AddRangeFrameOption(10, 310277)
-mod:AddInfoFrameOption(325225, true)
+mod:AddBoolOption("timerContainers", true, "timer", nil, 6)
+--mod:AddInfoFrameOption(325225, true)
 mod:AddSetIconOption("SetIconOnSharedSuffering", 324983, true, false, {1, 2, 3})
 mod:AddSetIconOption("SetIconOnAdds", "ej21227", true, true, {5, 6, 7, 8})
 --mod:AddNamePlateOption("NPAuraOnVolatileCorruption", 312595)
---mod:AddMiscLine(DBM_CORE_L.OPTION_CATEGORY_DROPDOWNS)
---mod:AddDropdownOption("InterruptBehavior", {"Four", "Five", "Six", "NoReset"}, "Four", "misc")
 
 mod.vb.sufferingIcon = 1
 mod.vb.addIcon = 8
 mod.vb.containerActive = 0
 local castsPerGUID = {}
 local playerName = UnitName("player")
-
+local containerProgress = {
+	[2380] = {--Hidden Desires
+		[1] = 0,--Current container value
+		[2] = 0,--Previous Congtainer Value
+		[3] = 0,--Previous Container rate
+	},
+	[2399] = {--Bottled Anima
+		[1] = 0,
+		[2] = 0,
+		[3] = 0,
+	},
+	[2400] = {--Sins and Suffering
+		[1] = 0,
+		[2] = 0,
+		[3] = 0,
+	},
+	[2401] = {--Concentrate Anima
+		[1] = 0,
+		[2] = 0,
+		[3] = 0,
+	},
+}
 --[[
 Notes:
-1. Sequencing looks good at first, but it falls apart when changes to container power levels ranks must affect timers
-2. It seems abilities get faster when the container for that ability is active, but that might be purely related to energy level
-Possibility: Basetimer*energymodifier
-Possibility2: Each ability just has two cds based on if container empowered or not and spell queuing + standard variations account for other variances
-Possibility3: Same as 2, only each ability has 4 CDs, not 2 and timers of all 4 change with each container empowerment
-Mod currently deploys number 2 for now since a lot more data needed to substanciate number 1, namely a working widget api for transcriptor or DBM debug to do more accessment
+1. Sequencing looks good at first, but there is clearly more to it then that.
+2. Only super clear thing is the empowered container is always shorter CD, but still many variationsn to explain
+
+--Heroic
 "Bottled Anima-325774-npc:165521 = pull:29.4, 34.0, 19.6, 26.8, 10.8, 14.9, 18.3, 17.4, 18.3, 33.7, 36.9, 36.5", -- [2]
 "Bottled Anima-325774-npc:165521 = pull:29.3, 34.1, 19.6, 21.1, 17.9, 14.7, 18.4, 17.4, 17.9, 28.8, 38.3, 38.3", -- [2]
+--Mythic
+"Bottled Anima-325774-npc:165521 = pull:35.9, 32.5, 32.4, 18.3, 33.1, 27.3, 37.8, 31.9, 34.3, 42.7", -- [2]
+"Bottled Anima-325774-npc:165521 = pull:35.9, 34.8, 26.4, 22.1, 31.9, 24.4, 38.1, 56.6, 32.5", -- [2]
+"Bottled Anima-325774-npc:165521 = pull:35.6, 32.6, 32.2, 18.8, 27.8, 17.1, 46.2, 41.5", -- [2]
 
+--Heroic
 "Concentrate Anima-332665-npc:165521 = pull:54.6, 35.4, 36.6, 35.7, 35.4, 41.4, 37.7, 35.3", -- [1]
 "Concentrate Anima-332665-npc:165521 = pull:54.6, 35.4, 37.8, 35.5, 73.1, 37.8, 35.8", -- [1]
+--Mythic
+"Concentrate Anima-332665-npc:165521 = pull:44.0, 62.3, 100.4, 74.8, 42.8", -- [1]
+"Concentrate Anima-332665-npc:165521 = pull:44.0, 65.1, 98.0, 73.7", -- [1]
+"Concentrate Anima-332665-npc:165521 = pull:44.2, 62.3, 74.9, 62.3, 64.7", -- [1]
 
+--Heroic
 "Hidden Desire-335322-npc:171801 = pull:13.9, 9.4, 8.5, 8.9, 9.3, 8.9, 9.7, 8.2, 9.8, 8.5, 17.1, 10.9, 11.0, 11.0, 11.7, 10.6, 13.4, 11.0, 25.2, 15.0, 13.4, 13.4, 13.4, 15.4, 12.6", -- [5]
 "Hidden Desire-335322-npc:171801 = pull:13.9, 9.7, 9.8, 8.5, 9.3, 8.5, 9.8, 9.8, 8.6, 19.9, 11.8, 12.2, 11.0, 11.0, 13.2, 11.2, 11.0, 24.4, 14.6, 13.8, 13.0, 13.5, 13.0, 13.0", -- [5]
+--Mythic
+"Expose Desires-325379-npc:165521 = pull:12.4, 8.6, 9.7, 8.6, 8.7, 9.8, 14.8, 10.8, 11.0, 11.0, 11.2, 11.0, 12.3, 12.2, 18.3, 13.5, 13.4, 13.4, 12.2, 13.5, 13.5, 13.4, 13.5, 12.2, 14.7, 12.2, 19.5, 13.5", -- [3]
 
+--Heroic
 "Sins and Suffering-325064-npc:165521 = pull:18.0, 26.8, 26.5, 40.2, 33.0, 35.3, 29.3, 17.4, 19.5, 19.1, 18.3", -- [13]
 "Sins and Suffering-325064-npc:165521 = pull:18.9, 26.8, 26.8, 26.9, 43.9, 35.7, 33.8, 17.5, 18.3, 19.5, 18.2", -- [18]
+--Mythic
+"Sins and Suffering-325064-npc:165521 = pull:18.1, 60.6, 53.9, 62.4, 32.4, 52.6, 53.2", -- [19]
+"Sins and Suffering-325064-npc:165521 = pull:17.6, 65.1, 53.2, 53.9, 37.3, 33.9, 41.3", -- [13]
 --]]
 
 --[[
---TODO, rework this
-local function delayedWarpedDesiresCheck(self)
-	local bossPower = UnitPower("boss1")--Alternate power or main boss powere?
-	if bossPower and bossPower >= 75 then--Verify. rank 3 activating at 75 is total assumption
-		specWarnChangeofHeart:Show()
-		specWarnChangeofHeart:Play("runout")
-		yellChangeofHeartFades:Countdown(5)
+local updateInfoFrame
+do
+	local twipe = table.wipe
+	local lines = {}
+	local sortedLines = {}
+	local function addLine(key, value)
+		-- sort by insertion order
+		lines[key] = value
+		sortedLines[#sortedLines + 1] = key
+	end
+	updateInfoFrame = function()
+		twipe(lines)
+		twipe(sortedLines)
+		--Do Stuff?
+		return lines, sortedLines
 	end
 end
 --]]
 
 function mod:OnCombatStart(delay)
+	--Reset on pull for a reason, no touch
+	containerProgress[2380][1] = 0
+	containerProgress[2380][2] = 0
+	containerProgress[2380][3] = 0
+
+	containerProgress[2399][1] = 0
+	containerProgress[2399][2] = 0
+	containerProgress[2399][3] = 0
+
+	containerProgress[2400][1] = 0
+	containerProgress[2400][2] = 0
+	containerProgress[2400][3] = 0
+
+	containerProgress[2401][1] = 0
+	containerProgress[2401][2] = 0
+	containerProgress[2401][3] = 0
 	self.vb.containerActive = 0
 	table.wipe(castsPerGUID)
-	timerExposedDesiresCD:Start(13.9-delay)
-	timerSinsandSufferingCD:Start(18-delay)
-	timerBottledAnimaCD:Start(29.3-delay)
-	timerConcentratedAnimaCD:Start(54.6-delay)
+--	if self:IsMythic() then
+		timerFocusContainerCD:Start(3.7-delay)
+		timerExposedDesiresCD:Start(12.4-delay)
+		timerSinsandSufferingCD:Start(17.6-delay)
+		timerBottledAnimaCD:Start(35.6-delay)
+		timerConcentratedAnimaCD:Start(44-delay)
+--	else
+--		timerFocusContainerCD:Start(3.8-delay)
+--		timerExposedDesiresCD:Start(13.9-delay)
+--		timerSinsandSufferingCD:Start(18-delay)
+--		timerBottledAnimaCD:Start(29.3-delay)
+--		timerConcentratedAnimaCD:Start(54.6-delay)
+--	end
 --	if self.Options.NPAuraOnVolatileCorruption then
 --		DBM:FireEvent("BossMod_EnableHostileNameplates")
 --	end
@@ -158,7 +230,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 332665 then
 		self.vb.addIcon = 8
 		--1 Expose Desires (tank), 2 Bottled Anima (bouncing bottles), 3 Sins and Suffering (links), 4 Concentrate Anima (adds)
-		timerConcentratedAnimaCD:Start(self.vb.containerActive == 4 and 35.3 or 35.3)--Not enough data to determine if it changes or not
+		timerConcentratedAnimaCD:Start(self.vb.containerActive == 4 and 42.8 or 62.3)
 	elseif spellId == 331550 then--Conjured Manifestation
 		if not castsPerGUID[args.sourceGUID] then
 			castsPerGUID[args.sourceGUID] = 0
@@ -209,7 +281,10 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnChangeofHeart:Show()
 			specWarnChangeofHeart:Play("runout")
 			yellChangeofHeartFades:Countdown(spellId)
+		else
+			warnChangeofHeart:Show(args.destName)
 		end
+		timerChangeofHeart:Start(args.destName)
 	elseif spellId == 325936 then
 		warnSharedCognition:CombinedShow(0.3, args.destName)
 	elseif spellId == 324983 then
@@ -223,13 +298,12 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:SetIcon(args.destName, self.vb.sufferingIcon)
 		end
 		self.vb.sufferingIcon = self.vb.sufferingIcon + 1
-	elseif spellId == 332664 or spellId == 340477 or spellId == 339525 then--332664 was used on heroic, i suspect 339525 340477 are new do to root mechanic addition
+	elseif spellId == 332664 or spellId == 340477 or spellId == 339525 then--332664 was used on heroic testing, 340477 and 332664 both occured on mythic, not seen 339525 yet
+		warnConcentrateAnima:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			specWarnConcentrateAnima:Show()
 			specWarnConcentrateAnima:Play("runout")
 			yellConcentrateAnimaFades:CountdownSay(spellId)--SAY (white letters for avoid)
-		else
-			warnConcentrateAnima:Show(args.destName)
 		end
 	elseif spellId == 335396 then
 		if args:IsPlayer() then
@@ -250,6 +324,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		if args:IsPlayer() then
 			yellChangeofHeartFades:Cancel()
 		end
+		timerChangeofHeart:Stop(args.destName)
 	elseif spellId == 332664 or spellId == 340477 or spellId == 339525 then
 		if args:IsPlayer() then
 			yellConcentrateAnimaFades:Cancel()
@@ -285,13 +360,13 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 325774 then--Bottled Anima
 		warnBottledAnima:Show()
-		timerBottledAnimaCD:Start(self.vb.containerActive == 2 and 14.7 or 33.7)
+		timerBottledAnimaCD:Start(self.vb.containerActive == 2 and 17.1 or 32.2)
 	elseif spellId == 325064 then--Sins and Suffering
 		self.vb.sufferingIcon = 1
 		--1 Expose Desires (tank), 2 Bottled Anima (bouncing bottles), 3 Sins and Suffering (links), 4 Concentrate Anima (adds)
-		timerSinsandSufferingCD:Start(self.vb.containerActive == 3 and 17.5 or 26.8)
+		timerSinsandSufferingCD:Start(self.vb.containerActive == 3 and 32.4 or 53.9)
 	elseif spellId == 338749 then--Disable Container
-		timerFocusContainerCD:Start(99.5)
+--		timerFocusContainerCD:Start(99.5)--62-99.5
 		--1 Expose Desires (tank), 2 Bottled Anima (bouncing bottles), 3 Sins and Suffering (links), 4 Concentrate Anima (adds)
 		self.vb.containerActive = self.vb.containerActive + 1
 		if self.vb.containerActive == 5 then
@@ -300,10 +375,44 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	end
 end
 
---[[
-	--Assmonkey
-	"<1.02 18:39:08> [UPDATE_UI_WIDGET] widgetID:2401, widgetType:2, widgetSetID:2", -- [33]
-	"<1.03 18:39:08> [UPDATE_UI_WIDGET] widgetID:2380, widgetType:2, widgetSetID:2", -- [34]
-	"<1.03 18:39:08> [UPDATE_UI_WIDGET] widgetID:2399, widgetType:2, widgetSetID:2", -- [35]
-	"<1.04 18:39:08> [UPDATE_UI_WIDGET] widgetID:2400, widgetType:2, widgetSetID:2", -- [36]
---]]
+function mod:UPDATE_UI_WIDGET(table)
+	local id = table.widgetID
+	if not containerProgress[id] then return end
+	local widgetInfo = C_UIWidgetManager.GetIconAndTextWidgetVisualizationInfo(id)
+	local value = widgetInfo.barValue
+	if not value then return end
+	containerProgress[id][1] = value
+	if self.Options.timerContainers then
+		if value ~= containerProgress[id][2] then--Make sure value isn't same as previous value, if it is there is nothing to do
+			local energyRate = containerProgress[id][1] - containerProgress[id][2]--Current progress minus previous progress
+			if containerProgress[id][3] ~= energyRate then--Energy rate has changed, we don't want to perform below operations if energy rate is the same
+				if energyRate > 0 then--Gaining
+					local timeElapsed, timeTotal = value / energyRate, 1600 / energyRate
+					--Create/Update a bar with time left and progress relative to container fill status
+					if id == 2380 then
+						timerDesiresContainer:Update(timeElapsed, timeTotal)
+					elseif id == 2380 then
+						timerBottledContainer:Update(timeElapsed, timeTotal)
+					elseif id == 2380 then
+						timerSinsContainer:Update(timeElapsed, timeTotal)
+					else--2401
+						timerConcentrateContainer:Update(timeElapsed, timeTotal)
+					end
+				else--Draining
+					--If container is currently being drained, terminate timer until they begin to fill again
+					if id == 2380 then
+						timerDesiresContainer:Stop()
+					elseif id == 2380 then
+						timerBottledContainer:Stop()
+					elseif id == 2380 then
+						timerSinsContainer:Stop()
+					else--2401
+						timerConcentrateContainer:Stop()
+					end
+				end
+				containerProgress[id][3] = energyRate
+			end
+			containerProgress[id][2] = value--Set previous progress for next cycle, even if energy rate hasn't changed
+		end
+	end
+end
