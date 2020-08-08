@@ -8,8 +8,9 @@ DBM.InfoFrame = {}
 -------------------
 local DBM = DBM
 local L = DBM_CORE_L
-local GetRaidTargetIndex, UnitName, UnitHealth, UnitPower, UnitPowerMax, UnitIsDeadOrGhost, UnitThreatSituation, UnitPosition, UnitIsUnit, UIDropDownMenu_CreateInfo, UIDropDownMenu_AddButton = GetRaidTargetIndex, UnitName, UnitHealth, UnitPower, UnitPowerMax, UnitIsDeadOrGhost, UnitThreatSituation, UnitPosition, UnitIsUnit, UIDropDownMenu_CreateInfo, UIDropDownMenu_AddButton
-local pairs, ipairs, select, tonumber, tsort, twipe, mfloor, mmax, mmin = pairs, ipairs, select, tonumber, table.sort, table.wipe, math.floor, math.max, math.min
+local UnitClass, GetTime, GetPartyAssignment, UnitGroupRolesAssigned, GetRaidTargetIndex, UnitExists, UnitGetTotalAbsorbs, UnitName, UnitHealth, UnitPower, UnitPowerMax, UnitIsDeadOrGhost, UnitThreatSituation, UnitPosition, UnitIsUnit, UIDropDownMenu_CreateInfo, UIDropDownMenu_AddButton = UnitClass, GetTime, GetPartyAssignment, UnitGroupRolesAssigned, GetRaidTargetIndex, UnitExists, UnitGetTotalAbsorbs, UnitName, UnitHealth, UnitPower, UnitPowerMax, UnitIsDeadOrGhost, UnitThreatSituation, UnitPosition, UnitIsUnit, UIDropDownMenu_CreateInfo, UIDropDownMenu_AddButton
+local error, tostring, type, pairs, ipairs, select, tonumber, tsort, twipe, mfloor, mmax, mmin, mrandom, schar, ssplit, CAfter = error, tostring, type, pairs, ipairs, select, tonumber, table.sort, table.wipe, math.floor, math.max, math.min, math.random, string.char, string.split, C_Timer.After
+local NORMAL_FONT_COLOR, SPELL_FAILED_OUT_OF_RANGE = NORMAL_FONT_COLOR, SPELL_FAILED_OUT_OF_RANGE
 local RAID_CLASS_COLORS = _G["CUSTOM_CLASS_COLORS"] or RAID_CLASS_COLORS-- for Phanx' Class Colors
 
 --------------
@@ -18,6 +19,7 @@ local RAID_CLASS_COLORS = _G["CUSTOM_CLASS_COLORS"] or RAID_CLASS_COLORS-- for P
 local infoFrame = DBM.InfoFrame
 local frame, initializeDropdown, currentMapId, currentEvent, createFrame
 local maxLines, modLines, maxCols, modCols = 5, 5, 1, 1
+local linesUpdate = false
 local sortMethod = 1--1 Default, 2 SortAsc, 3 GroupId
 local lines, sortedLines, icons, value = {}, {}, {}, {}
 local playerName = UnitName("player")
@@ -35,6 +37,7 @@ do
 	end
 
 	local function setLines(_, line)
+		linesUpdate = true
 		DBM.Options.InfoFrameLines = line
 		if line ~= 0 then
 			maxLines = line
@@ -44,6 +47,7 @@ do
 	end
 
 	local function setCols(_, col)
+		linesUpdate = true
 		DBM.Options.InfoFrameCols = col
 		if col ~= 0 then
 			maxCols = col
@@ -270,7 +274,7 @@ end
 local function updateLines(preSorted)
 	twipe(sortedLines)
 	if preSorted then
-		-- copy table as code from mod keeps around references this this and the "normal" table is wiped regularly
+		-- Copy table as code from mod keeps around references this this and the "normal" table is wiped regularly
 		for i, v in ipairs(preSorted) do
 			sortedLines[i] = v
 		end
@@ -301,7 +305,7 @@ local function updateNamesortLines()
 	for i in pairs(lines) do
 		sortedLines[#sortedLines + 1] = i
 	end
-	table.sort(sortedLines, namesortFuncAsc)
+	tsort(sortedLines, namesortFuncAsc)
 	for _, v in ipairs(updateCallbacks) do
 		v(sortedLines)
 	end
@@ -313,7 +317,7 @@ local function updateLinesCustomSort(sortFunc)
 	for i in pairs(lines) do
 		sortedLines[#sortedLines + 1] = i
 	end
-	table.sort(sortedLines, sortFunc)
+	tsort(sortedLines, sortFunc)
 	for _, v in ipairs(updateCallbacks) do
 		v(sortedLines)
 	end
@@ -356,12 +360,10 @@ local function updatePlayerPower()
 	local threshold = value[1]
 	local powerType = value[2]
 	local spellFilter = value[3]
-	--Value 4 is the noUpdate handler
-	--Value 5 is sorting method, handled in show handler
+	-- Value 4 is the noUpdate handler
+	-- Value 5 is sorting method, handled in show handler
 	for uId in DBM:GetGroupMembers() do
-		if spellFilter and DBM:UnitDebuff(uId, spellFilter) then
-			--Do nothing
-		else
+		if not spellFilter or not DBM:UnitDebuff(uId, spellFilter) then
 			local maxPower = UnitPowerMax(uId, powerType)
 			if maxPower ~= 0 and not UnitIsDeadOrGhost(uId) and UnitPower(uId, powerType) / UnitPowerMax(uId, powerType) * 100 >= threshold then
 				lines[DBM:GetUnitFullName(uId)] = UnitPower(uId, powerType)
@@ -380,7 +382,7 @@ local function updateEnemyPower()
 	local threshold = value[1]
 	local powerType = value[2]
 	local specificUnit = value[3]
-	if powerType then--Only do power type defined
+	if powerType then -- Only do power type defined
 		if specificUnit then
 			local currentPower, maxPower = UnitPower(specificUnit, powerType), UnitPowerMax(specificUnit, powerType)
 			if maxPower and maxPower > 0 then
@@ -411,17 +413,17 @@ local function updateEnemyPower()
 				end
 			end
 		end
-	else--Check primary power type and alternate power types together. This should only be used if BOTH power types exist on same boss, else fix your shit MysticalOS
+	else -- Check primary power type and alternate power types together. This should only be used if BOTH power types exist on same boss, else fix your shit MysticalOS
 		for i = 1, 5 do
 			local uId = "boss" .. i
-			--Primary Power
+			-- Primary Power
 			local currentPower, maxPower = UnitPower(uId), UnitPowerMax(uId)
 			if maxPower and maxPower > 0 then
 				if currentPower / maxPower * 100 >= threshold then
 					lines[UnitName(uId)] = currentPower
 				end
 			end
-			--Alternate Power
+			-- Alternate Power
 			local currentAltPower, maxAltPower = UnitPower(uId, 10), UnitPowerMax(uId, 10)
 			if maxAltPower and maxAltPower > 0 then
 				if currentAltPower / maxAltPower * 100 >= threshold then
@@ -442,9 +444,9 @@ local function updateEnemyAbsorb()
 	if specificUnit then
 		if UnitExists(specificUnit) then
 			local absorbAmount
-			if spellInput then--Get specific spell absorb
+			if spellInput then -- Get specific spell absorb
 				absorbAmount = select(16, DBM:UnitBuff(specificUnit, spellInput)) or select(16, DBM:UnitDebuff(specificUnit, spellInput))
-			else--Get all of them
+			else -- Get all of them
 				absorbAmount = UnitGetTotalAbsorbs(specificUnit)
 			end
 			if absorbAmount and absorbAmount > 0 then
@@ -463,19 +465,13 @@ local function updateEnemyAbsorb()
 			local uId = "boss" .. i
 			if UnitExists(uId) then
 				local absorbAmount
-				if spellInput then--Get specific spell absorb
+				if spellInput then -- Get specific spell absorb
 					absorbAmount = select(16, DBM:UnitBuff(uId, spellInput)) or select(16, DBM:UnitDebuff(uId, spellInput))
-				else--Get all of them
+				else -- Get all of them
 					absorbAmount = UnitGetTotalAbsorbs(uId)
 				end
 				if absorbAmount and absorbAmount > 0 then
-					local text
-					if totalAbsorb then
-						text = absorbAmount / totalAbsorb * 100
-					else
-						text = absorbAmount
-					end
-					lines[UnitName(uId)] = mfloor(text) .. "%"
+					lines[UnitName(uId)] = mfloor(totalAbsorb and absorbAmount / totalAbsorb * 100 or absorbAmount) .. "%"
 				end
 			end
 		end
@@ -493,19 +489,13 @@ local function updateAllAbsorb()
 		local uId = "boss" .. i
 		if UnitExists(uId) then
 			local absorbAmount
-			if spellInput then--Get specific spell absorb
+			if spellInput then -- Get specific spell absorb
 				absorbAmount = select(16, DBM:UnitBuff(uId, spellInput)) or select(16, DBM:UnitDebuff(uId, spellInput))
-			else--Get all of them
+			else -- Get all of them
 				absorbAmount = UnitGetTotalAbsorbs(uId)
 			end
 			if absorbAmount then
-				local text
-				if totalAbsorb then
-					text = absorbAmount / totalAbsorb * 100
-				else
-					text = absorbAmount
-				end
-				lines[UnitName(uId)] = mfloor(text) .. "%"
+				lines[UnitName(uId)] = mfloor(totalAbsorb and absorbAmount / totalAbsorb * 100 or absorbAmount) .. "%"
 			end
 		end
 	end
@@ -513,13 +503,7 @@ local function updateAllAbsorb()
 		for uId in DBM:GetGroupMembers() do
 			local absorbAmount = select(16, DBM:UnitBuff(uId, spellInput)) or select(16, DBM:UnitDebuff(uId, spellInput))
 			if absorbAmount then
-				local text
-				if totalAbsorb2 then
-					text = absorbAmount / totalAbsorb2 * 100
-				else
-					text = absorbAmount
-				end
-				lines[DBM:GetUnitFullName(uId)] = mfloor(text) .. "%"
+				lines[DBM:GetUnitFullName(uId)] = mfloor(totalAbsorb and absorbAmount / totalAbsorb2 * 100 or absorbAmount) .. "%"
 			end
 		end
 	end
@@ -534,20 +518,14 @@ local function updatePlayerAbsorb()
 	for uId in DBM:GetGroupMembers() do
 		local absorbAmount = select(16, DBM:UnitBuff(uId, spellInput)) or select(16, DBM:UnitDebuff(uId, spellInput))
 		if absorbAmount then
-			local text
-			if totalAbsorb then
-				text = absorbAmount / totalAbsorb * 100
-			else
-				text = absorbAmount
-			end
-			lines[DBM:GetUnitFullName(uId)] = mfloor(text)
+			lines[DBM:GetUnitFullName(uId)] = mfloor(totalAbsorb and absorbAmount / totalAbsorb * 100 or absorbAmount)
 		end
 	end
 	updateLines()
 	updateIcons()
 end
 
---Buffs that are good to have, therefor bad not to have them.
+-- Buffs that are good to have, therefor bad not to have them.
 local function updatePlayerBuffs()
 	twipe(lines)
 	local spellName = value[1]
@@ -564,7 +542,7 @@ local function updatePlayerBuffs()
 	updateIcons()
 end
 
---Debuffs that are good to have, therefor it's bad NOT to have them.
+-- Debuffs that are good to have, therefor it's bad NOT to have them.
 local function updateGoodPlayerDebuffs()
 	twipe(lines)
 	local spellInput = value[1]
@@ -581,8 +559,8 @@ local function updateGoodPlayerDebuffs()
 	updateIcons()
 end
 
---Debuffs that are bad to have, therefor it is bad to have them.
---Function will auto handle spellName or spellId via DBMs unit debuff handler and spellInput type
+-- Debuffs that are bad to have, therefor it is bad to have them.
+-- Function will auto handle spellName or spellId via DBMs unit debuff handler and spellInput type
 local function updateBadPlayerDebuffs()
 	twipe(lines)
 	local spellInput = value[1]
@@ -618,7 +596,7 @@ local function updatePlayerDebuffRemaining()
 	updateIcons()
 end
 
---Buffs with important durations that we track
+-- Buffs with important durations that we track
 local function updatePlayerBuffRemaining()
 	twipe(lines)
 	local spellInput = value[1]
@@ -637,8 +615,8 @@ local function updatePlayerBuffRemaining()
 	updateIcons()
 end
 
---Debuffs that are bad to have, but we want to show players who do NOT have them
---Function will auto handle spellName or spellId via DBMs unit debuff handler and spellInput type
+-- Debuffs that are bad to have, but we want to show players who do NOT have them
+-- Function will auto handle spellName or spellId via DBMs unit debuff handler and spellInput type
 local function updateReverseBadPlayerDebuffs()
 	twipe(lines)
 	local spellInput = value[1]
@@ -719,28 +697,26 @@ local function updateByFunction()
 	if sortFunc then
 		if type(sortFunc) == "function" then
 			updateLinesCustomSort(sortFunc)
-		else--Sort function is a bool/true
-			updateLines()--regular update lines with regular sort code
+		else
+			updateLines()
 		end
-	else--Nil, or bool/false
-		updateLines(presortedLines)--Update lines with sorting if provided by the custom function
+	else
+		updateLines(presortedLines)
 	end
 	if useIcon then
 		updateIcons()
 	end
 end
 
---Unsorted table maintained by mod and just sent here.
---Never updated by onupdate method, requires manual updates when mod updates table
+-- Unsorted table maintained by mod and just sent here.
+-- Never updated by onupdate method, requires manual updates when mod updates table
 local function updateByTable(table)
 	twipe(lines)
-	--Copy table into lines
 	if table then
 		for i, v in pairs(table) do
 			lines[i] = v
 		end
 	end
-	--Pass to update lines for sort handling
 	updateLines()
 	updateIcons()
 end
@@ -762,14 +738,41 @@ local function updateTest2()
 		test2Table = {}
 		for _ = 1, 40 do
 			local ident = ""
-			for _ = 1, math.random(5, 12) do
-				ident = ident .. string.char(math.random(65, 90))
+			for _ = 1, mrandom(5, 12) do
+				ident = ident .. schar(mrandom(65, 90))
 			end
-			test2Table[ident] = math.random(1, 10) * 10
+			test2Table[ident] = mrandom(1, 10) * 10
 		end
 	end
 	for k, v in pairs(test2Table) do
 		lines[k] = v
+	end
+	updateLines()
+end
+
+local test3Counter = 0
+local function updateTest3()
+	twipe(lines)
+	if not test2Table then
+		test2Table = {}
+		for _ = 1, 40 do
+			local ident = ""
+			for _ = 1, mrandom(5, 12) do
+				ident = ident .. schar(mrandom(65, 90))
+			end
+			test2Table[ident] = mrandom(1, 10) * 10
+		end
+	end
+	if test3Counter < 40 then
+		local count = 0
+		for k, v in pairs(test2Table) do
+			if count > 40 - test3Counter then
+				break
+			end
+			count = count + 1
+			lines[k] = v
+		end
+		test3Counter = test3Counter + 1
 	end
 	updateLines()
 end
@@ -794,14 +797,13 @@ local events = {
 	["function"] = updateByFunction,
 	["table"] = updateByTable,
 	["test"] = updateTest,
-	["test2"] = updateTest2
+	["test2"] = updateTest2,
+	["test3"] = updateTest3
 }
 
 ----------------
 --  OnUpdate  --
 ----------------
-local freshUpdate = false
-
 local friendlyEvents = {
 	["health"] = true,
 	["playerpower"] = true,
@@ -842,7 +844,7 @@ local function onUpdate(frame, table)
 			tostring(leftText)
 		end
 		local rightText = lines[leftText]
-		local extra, extraName = string.split("*", leftText)--Find just unit name, if extra info had to be added to make unique
+		local extra, extraName = ssplit("*", leftText) -- Find just unit name, if extra info had to be added to make unique
 		local icon = icons[extraName or leftText] and icons[extraName or leftText] .. leftText
 		if friendlyEvents[currentEvent] then
 			local unitId = DBM:GetRaidUnitId(DBM:GetUnitFullName(extraName or leftText)) or "player"--Prevent nil logical error
@@ -850,23 +852,23 @@ local function onUpdate(frame, table)
 				local _, class = UnitClass(unitId)
 				if class then
 					color = RAID_CLASS_COLORS[class]
-					if DBM.Options.StripServerName then--StripServerName option is checked here, even though it's checked in GetShortServerName function, because we have to apply custom 3rd column hack reconstruction
+					if DBM.Options.StripServerName then -- StripServerName option is checked here, even though it's checked in GetShortServerName function, because we have to apply custom 3rd column hack reconstruction
 						local shortName = DBM:GetShortServerName(extraName or leftText)
-						if extraName then--3 column hack is present, we need to reconstruct leftText with shortened name
+						if extraName then -- 3 column hack is present, we need to reconstruct leftText with shortened name
 							leftText = extra.."*"..shortName
-						else--LeftText is name, just replace it with shortname
+						else -- LeftText is name, just replace it with shortname
 							leftText = shortName
 						end
 					end
 				end
 				linesShown = linesShown + 1
-				if unitId and UnitIsUnit(unitId, "player") then--It's player.
+				if unitId and UnitIsUnit(unitId, "player") then -- It's player.
 					if currentEvent == "health" or currentEvent == "playerpower" or currentEvent == "playerabsorb" or currentEvent == "playerbuff" or currentEvent == "playergooddebuff" or currentEvent == "playerbaddebuff" or currentEvent == "playerdebuffremaining" or currentEvent == "playerdebuffstacks" or currentEvent == "playerbuffremaining" or currentEvent == "playertargets" or currentEvent == "playeraggro" then--Red
 						infoFrame:SetLine(linesShown, icon or leftText, rightText, 255, 0, 0, 255, 255, 255)
-					else--Green
+					else -- Green
 						infoFrame:SetLine(linesShown, icon or leftText, rightText, 0, 255, 0, 255, 255, 255)
 					end
-				else--It's not player, do nothing special with it. Ordinary class colored text.
+				else -- It's not player, do nothing special with it. Ordinary class colored text.
 					if currentEvent == "playerdebuffremaining" or currentEvent == "playerbuffremaining" then
 						local numberValue = tonumber(rightText)
 						if numberValue < 6 then
@@ -874,7 +876,7 @@ local function onUpdate(frame, table)
 						elseif numberValue < 11 then
 							infoFrame:SetLine(linesShown, icon or leftText, rightText, color.r, color.g, color.b, 255, 127.5, 0)--Orange
 						else
-							if numberValue == 9000 then--the out of range players
+							if numberValue == 9000 then -- Out of range players
 								infoFrame:SetLine(linesShown, icon or leftText, SPELL_FAILED_OUT_OF_RANGE, color.r, color.g, color.b, 255, 0, 0)--Red
 							else
 								infoFrame:SetLine(linesShown, icon or leftText, rightText, color.r, color.g, color.b, 255, 255, 255)--White
@@ -886,19 +888,19 @@ local function onUpdate(frame, table)
 				end
 			end
 		else
-			local color2 = NORMAL_FONT_COLOR--Only custom into frames will have chance of putting player names on right side
+			local color2 = NORMAL_FONT_COLOR -- Only custom into frames will have chance of putting player names on right side
 			local unitId = DBM:GetRaidUnitId(DBM:GetUnitFullName(extraName or leftText))
 			local unitId2 = DBM:GetRaidUnitId(DBM:GetUnitFullName(rightText))
-			--Class color names in custom functions too, IF unitID exists
-			if unitId then--Check left text
+			-- Class color names in custom functions too, IF unitID exists
+			if unitId then -- Check left text
 				local _, class = UnitClass(unitId)
 				if class then
 					color = RAID_CLASS_COLORS[class]
 					if DBM.Options.StripServerName then--StripServerName option is checked here, even though it's checked in GetShortServerName function, because we have to apply custom 3rd column hack reconstruction
 						local shortName = DBM:GetShortServerName(extraName or leftText)
-						if extraName then--3 column hack is present, we need to reconstruct leftText with shortened name
+						if extraName then -- 3 column hack is present, we need to reconstruct leftText with shortened name
 							leftText = extra.."*"..shortName
-						else--LeftText is name, just replace it with shortname
+						else -- LeftText is name, just replace it with shortname
 							leftText = shortName
 						end
 					end
@@ -906,7 +908,7 @@ local function onUpdate(frame, table)
 			else
 				color = NORMAL_FONT_COLOR
 			end
-			if unitId2 then--Check right text
+			if unitId2 then -- Check right text
 				local _, class = UnitClass(unitId2)
 				if class then
 					color2 = RAID_CLASS_COLORS[class]
@@ -918,25 +920,35 @@ local function onUpdate(frame, table)
 		end
 	end
 	local maxWidth1, maxWidth2 = {}, {}
+	local linesPerRow = mmin(maxLines, mfloor(linesShown / maxCols + 0.99))
 	for i = 1, linesShown do
-		local m = mfloor(i / maxLines + 0.99)
+		if linesUpdate then
+			infoFrame:AlignLine(i * 2 - 1, linesPerRow * 2)
+			infoFrame:AlignLine(i * 2, linesPerRow * 2)
+		end
+		local m = mfloor(i / linesPerRow + 0.99)
 		maxWidth1[m] = mmax(maxWidth1[m] or 0, frame.lines[i * 2 - 1]:GetStringWidth())
 		maxWidth2[m] = mmax(maxWidth2[m] or 0, frame.lines[i * 2]:GetStringWidth())
 	end
 	local width = 0
-	local iiNum = mmin(maxLines, linesShown)
 	for i, _ in pairs(maxWidth1) do
-		width = width + maxWidth1[i] + maxWidth2[i] + 18
-		local maxWid = maxWidth1[i]
-		for ii = 1, iiNum do
-			local m = ((i - 1) * maxLines * 2) + (ii * 2)
+		local maxWid, maxWid2 = maxWidth1[i], maxWidth2[i]
+		width = width + maxWid + maxWid2 + 18
+		for ii = 1, linesPerRow do
+			local m = ((i - 1) * linesPerRow * 2) + (ii * 2)
+			if not frame.lines[m] then
+				break
+			end
 			frame.lines[m - 1]:SetSize(maxWid, 12)
-			frame.lines[m]:SetSize(maxWid, 12)
+			frame.lines[m]:SetSize(maxWid2, 12)
 		end
 	end
-	frame:SetSize(width, (mmin(linesShown, maxLines) * 12) + 12)
+	if width == 0 then
+		width = 105
+	end
+	frame:SetSize(width, (linesPerRow * 12) + 12)
 	frame:Show()
-	freshUpdate = false
+	linesUpdate = false
 end
 
 ---------------
@@ -945,12 +957,13 @@ end
 --Arg 1: spellName, health/powervalue, customfunction, table type. Arg 2: TankIgnore, Powertype, SortFunction, totalAbsorb, sortmethod (table/stacks). Arg 3: SpellFilter, UseIcon. Arg 4: disable onUpdate. Arg 5: sortmethod (playerpower)
 function infoFrame:Show(modMaxLines, event, ...)
 	if DBM.Options.DontShowInfoFrame and not (event or ""):find("test") then
-		print("Invalid event: " .. event or "nil")
+		error("Invalid event: " .. event or "nil")
 		return
 	end
-	freshUpdate = true
+	linesUpdate = true
 	currentMapId = select(4, UnitPosition("player"))
 	modLines = modMaxLines
+	modCols = modMaxLines and modMaxLines >= 10 and 2 or 1
 	if DBM.Options.InfoFrameLines and DBM.Options.InfoFrameLines ~= 0 then
 		maxLines = DBM.Options.InfoFrameLines
 	else
@@ -959,42 +972,42 @@ function infoFrame:Show(modMaxLines, event, ...)
 	if DBM.Options.InfoFrameCols and DBM.Options.InfoFrameCols ~= 0 then
 		maxCols = DBM.Options.InfoFrameCols
 	else
-		--TODO, still needs more finite control via gui later on
-		--I think dynamic options modMaxLines/10 modMaxLines/5 are both valid options, as well as just capping at 2 >= 10
-		maxCols = modMaxLines and modMaxLines >= 10 and 2 or 1
+		-- TODO, still needs more finite control via gui later on
+		-- I think dynamic options modMaxLines/10 modMaxLines/5 are both valid options, as well as just capping at 2 >= 10
+		maxCols = modCols
 	end
-	table.wipe(value)
+	twipe(value)
 	for i = 1, select("#", ...) do
 		value[i] = select(i, ...)
 	end
 	if not frame then
 		createFrame()
 	end
-	--Orders event to use spellID no matter what and not spell name
+	-- Orders event to use spellID no matter what and not spell name
 	if event:find("byspellid") then
-		event = event:gsub("byspellid", "")--just strip off the byspellid, it served it's purpose, it simply told infoframe to not convert to spellName
+		event = event:gsub("byspellid", "") -- Strip off the byspellid, it served it's purpose, it simply told infoframe to not convert to spellName
 		if type(value[1]) ~= "number" then
 			error("DBM-InfoFrame: byspellid method must use spellId", 2)
 			return
 		end
-	--If spellId is given as value one and it's not a byspellid event, convert to spellname
-	--this also allows spell name to be given by mod, since value 1 verifies it's a number
+	-- If spellId is given as value one and it's not a byspellid event, convert to spellname
+	-- This also allows spell name to be given by mod, since value 1 verifies it's a number
 	elseif type(value[1]) == "number" and event ~= "health" and event ~= "function" and event ~= "table" and event ~= "playertargets" and event ~= "playeraggro" and event ~= "playerpower" and event ~= "enemypower" and event ~= "test" and event ~= "test2" then
-		--Outside of "byspellid" functions, typical frames will still use spell NAME matching not spellID.
-		--This just determines if we convert the spell input to a spell Name, if a spellId was provided for a non byspellid infoframe
+		-- Outside of "byspellid" functions, typical frames will still use spell NAME matching not spellID.
+		-- This just determines if we convert the spell input to a spell Name, if a spellId was provided for a non byspellid infoframe
 		value[1] = DBM:GetSpellInfo(value[1])
 	end
 	currentEvent = event
 	if event == "playerbuff" or event == "playerbaddebuff" or event == "playergooddebuff" then
-		sortMethod = 3--Sort by group ID
+		sortMethod = 3 -- Sort by group ID
 	elseif event == "health" or event == "playerdebuffremaining" then
-		sortMethod = 2--Sort lowest first
+		sortMethod = 2 -- Sort lowest first
 	elseif (event == "playerdebuffstacks" or event == "table") and value[2] and type(value[2]) == "number" then
 		sortMethod = value[2]
 	elseif event == "playerpower" and value[5] and type(value[5]) == "number" then
 		sortMethod = value[5]
 	else
-		sortMethod = 1--Sort highest first
+		sortMethod = 1 -- Sort highest first
 	end
 	if events[currentEvent] then
 		events[currentEvent](value[1])
@@ -1008,8 +1021,10 @@ function infoFrame:Show(modMaxLines, event, ...)
 	frame:Show()
 	onUpdate(frame, value[1])
 	if not frame.ticker and not value[4] and event ~= "table" then
-		frame.ticker = C_Timer.NewTicker(0.5, function() onUpdate(frame) end)
-	elseif frame.ticker and value[4] then--Redundancy, in event calling a non onupdate infoframe show without a hide event to unschedule ticker based infoframe
+		frame.ticker = C_Timer.NewTicker(0.5, function()
+			onUpdate(frame)
+		end)
+	elseif frame.ticker and value[4] then -- Redundancy, in event calling a non onupdate infoframe show without a hide event to unschedule ticker based infoframe
 		frame.ticker:Cancel()
 		frame.ticker = nil
 	end
@@ -1025,7 +1040,7 @@ function infoFrame:Update(time)
 	end
 	if frame:IsShown() then
 		if time then
-			C_Timer.After(time, function()
+			CAfter(time, function()
 				onUpdate(frame)
 			end)
 		else
@@ -1060,24 +1075,21 @@ function infoFrame:ClearLines()
 	end
 end
 
-function infoFrame:CreateLine(lineNum)
-	frame.lines[lineNum] = frame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-	self:AlignLine(lineNum)
-end
-
-function infoFrame:AlignLine(lineNum)
+function infoFrame:AlignLine(lineNum, linesPerRow)
 	local line = frame.lines[lineNum]
 	line:SetJustifyH(lineNum % 2 == 0 and "RIGHT" or "LEFT")
 	if lineNum == 1 then -- 1st entry left
 		line:SetPoint("TOPLEFT", frame, "TOPLEFT", 6, -6)
 	elseif lineNum == 2 then -- 1st entry right
 		line:SetPoint("TOPLEFT", frame.lines[1], "TOPRIGHT", 6, 0)
-	elseif lineNum % (maxLines * 2) == 1 then -- Column 2-x, 1st entry left
-		line:SetPoint("TOPLEFT", frame.lines[lineNum - (maxLines * 2) + 1], "TOPRIGHT", 12, 0)
-	elseif lineNum % (maxLines * 2) == 2 then -- Column 2-x, 1nd entry right
-		line:SetPoint("TOPLEFT", frame.lines[lineNum - 1], "TOPRIGHT", 6, 0)
 	else
-		line:SetPoint("TOPLEFT", frame.lines[lineNum - 2], "LEFT", 0, -6)
+		if lineNum % linesPerRow == 1 then -- Column 2-x, 1st entry left
+			line:SetPoint("TOPLEFT", frame.lines[lineNum - linesPerRow + 1], "TOPRIGHT", 12, 0)
+		elseif lineNum % 2 == 0 then -- Column 2-x, Right entry
+			line:SetPoint("TOPLEFT", frame.lines[lineNum - 1], "TOPRIGHT", 6, 0)
+		else -- Column 2-x, Left entry
+			line:SetPoint("TOPLEFT", frame.lines[lineNum - 2], "LEFT", 0, -6)
+		end
 	end
 end
 
@@ -1087,10 +1099,8 @@ function infoFrame:SetLine(lineNum, leftText, rightText, colorR, colorG, colorB,
 	end
 	lineNum = lineNum * 2 - 1
 	if not frame.lines[lineNum] then
-		self:CreateLine(lineNum)
-		self:CreateLine(lineNum + 1)
-	elseif freshUpdate then
-		self:AlignLine(lineNum)
+		frame.lines[lineNum] = frame:CreateFontString("Line" .. lineNum, "OVERLAY", "GameFontNormal")
+		frame.lines[lineNum + 1] = frame:CreateFontString("Line" .. lineNum + 1, "OVERLAY", "GameFontNormal")
 	end
 	frame.lines[lineNum]:SetText(leftText)
 	frame.lines[lineNum]:SetTextColor(colorR or 255, colorG or 255, colorB or 255)

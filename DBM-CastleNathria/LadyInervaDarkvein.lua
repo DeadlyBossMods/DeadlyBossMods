@@ -14,9 +14,9 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 325379 332665 331550 334017",
 --	"SPELL_CAST_SUCCESS",
-	"SPELL_AURA_APPLIED 325382 325936 324983 332664 335396 339525 340477",
+	"SPELL_AURA_APPLIED 325382 325936 324983 332664 335396 339525 340477 340452",
 	"SPELL_AURA_APPLIED_DOSE 325382",
-	"SPELL_AURA_REMOVED 325382 332664 324983 339525 340477",
+	"SPELL_AURA_REMOVED 340452 332664 324983 339525 340477",
 	"SPELL_PERIODIC_DAMAGE 325713",
 	"SPELL_PERIODIC_MISSED 325713",
 --	"UNIT_DIED"
@@ -40,18 +40,18 @@ local warnSharedCognition						= mod:NewTargetNoFilterAnnounce(325936, 4, nil, "
 local warnBottledAnima							= mod:NewSpellAnnounce(325769, 2)
 local warnSharedSuffering						= mod:NewTargetNoFilterAnnounce(324983, 3)
 local warnConcentrateAnima						= mod:NewTargetNoFilterAnnounce(332664, 3)
+local warnCondemnTank							= mod:NewCastAnnounce(334017, 3, nil, nil, "Tank")
 
 local specWarnExposeDesires						= mod:NewSpecialWarningDefensive(325379, false, nil, nil, 1, 2)--Optional warning that the cast is happening toward you
 local specWarnWarpedDesires						= mod:NewSpecialWarningTaunt(325382, false, nil, 2, 1, 2)
 local specWarnHiddenDesire						= mod:NewSpecialWarningYou(335396, nil, nil, nil, 1, 2)
 local specWarnHiddenDesireTaunt					= mod:NewSpecialWarningTaunt(335396, nil, nil, nil, 1, 2)
 local yellHiddenDesire							= mod:NewYell(335396)--Remove if they fix bug with it splash damaging
---local specWarnChangeofHeart					= mod:NewSpecialWarningMoveAway(325384, nil, nil, nil, 3, 2)--Triggered by rank 3 Exposed Desires
---local yellChangeofHeartFades					= mod:NewFadesYell(325384)--^^
+local specWarnChangeofHeart						= mod:NewSpecialWarningMoveAway(340452, nil, nil, nil, 3, 2)--Triggered by rank 3 Exposed Desires
+local yellChangeofHeartFades					= mod:NewFadesYell(340452)--^^
 local specWarnSharedSuffering					= mod:NewSpecialWarningMoveTo(324983, nil, nil, nil, 1, 2)
 local yellSharedSuffering						= mod:NewShortYell(324983)
-local specWarnConcentrateAnimaAway				= mod:NewSpecialWarningMoveAway(332664, nil, nil, nil, 1, 2)--Rank 1-2
---local specWarnConcentrateAnimaTo				= mod:NewSpecialWarningMoveTo(332664, nil, nil, nil, 1, 2)--Rank 3 (rank 3 no longer in journal)
+local specWarnConcentrateAnima					= mod:NewSpecialWarningMoveAway(332664, nil, nil, nil, 1, 2)--Rank 1-2
 local yellConcentrateAnimaFades					= mod:NewFadesYell(332664, nil, nil, nil, "YELL")--^^
 local specWarnGTFO								= mod:NewSpecialWarningGTFO(325713, nil, nil, nil, 1, 8)
 --Anima Constructs
@@ -159,7 +159,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.addIcon = 8
 		--1 Expose Desires (tank), 2 Bottled Anima (bouncing bottles), 3 Sins and Suffering (links), 4 Concentrate Anima (adds)
 		timerConcentratedAnimaCD:Start(self.vb.containerActive == 4 and 35.3 or 35.3)--Not enough data to determine if it changes or not
-	elseif spellId == 331550 or spellId == 334017 then--Conjured Manifestation / Harnessed Specter (only used if not actively tanked)
+	elseif spellId == 331550 then--Conjured Manifestation
 		if not castsPerGUID[args.sourceGUID] then
 			castsPerGUID[args.sourceGUID] = 0
 			if self.Options.SetIconOnAdds and self.vb.addIcon > 3 then--Only use up to 5 icons
@@ -188,6 +188,8 @@ function mod:SPELL_CAST_START(args)
 				specWarnCondemn:Play("kickcast")
 			end
 		end
+	elseif spellId == 334017 then--Harnessed Specter (only used if not actively tanked)
+		warnCondemnTank:Show()
 	end
 end
 
@@ -197,11 +199,16 @@ function mod:SPELL_AURA_APPLIED(args)
 		local amount = args.amount or 1
 		warnWarpedDesires:Show(args.destName, amount)
 		if args:IsPlayer() then
---			self:Unschedule(delayedWarpedDesiresCheck)
---			self:Schedule(16, delayedWarpedDesiresCheck, self)--21-5, giving 5 seconds to run out
+			--Nothing
 		else
 			specWarnWarpedDesires:Show(args.destName)
 			specWarnWarpedDesires:Play("tauntboss")
+		end
+	elseif spellId == 340452 then
+		if args:IsPlayer() then
+			specWarnChangeofHeart:Show()
+			specWarnChangeofHeart:Play("runout")
+			yellChangeofHeartFades:Countdown(spellId)
 		end
 	elseif spellId == 325936 then
 		warnSharedCognition:CombinedShow(0.3, args.destName)
@@ -218,8 +225,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.sufferingIcon = self.vb.sufferingIcon + 1
 	elseif spellId == 332664 or spellId == 340477 or spellId == 339525 then--332664 was used on heroic, i suspect 339525 340477 are new do to root mechanic addition
 		if args:IsPlayer() then
-			specWarnConcentrateAnimaAway:Show()
-			specWarnConcentrateAnimaAway:Play("runout")
+			specWarnConcentrateAnima:Show()
+			specWarnConcentrateAnima:Play("runout")
 			yellConcentrateAnimaFades:CountdownSay(spellId)--SAY (white letters for avoid)
 		else
 			warnConcentrateAnima:Show(args.destName)
@@ -239,11 +246,10 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
-	if spellId == 325382 then
---		if args:IsPlayer() then
---			self:Unschedule(delayedWarpedDesiresCheck)
-			--yellChangeofHeartFades:Cancel()
---		end
+	if spellId == 340452 then
+		if args:IsPlayer() then
+			yellChangeofHeartFades:Cancel()
+		end
 	elseif spellId == 332664 or spellId == 340477 or spellId == 339525 then
 		if args:IsPlayer() then
 			yellConcentrateAnimaFades:Cancel()
