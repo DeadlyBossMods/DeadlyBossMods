@@ -3944,6 +3944,7 @@ globals = {
 	"C_ClassColor.GetClassColor",
 	"C_PartyInfo.CanGroupInvite",
 	"C_PartyInfo.InviteToGroup",
+	"C_UIWidgetManager",
 	"CallRestrictedClosure",
 	"CanCooperateWithToon",
 	"CanCreateFilters",
