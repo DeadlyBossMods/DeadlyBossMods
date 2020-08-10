@@ -13,7 +13,7 @@ local textFrame, radarFrame, updateIcon, updateRangeFrame, initializeDropdown
 local RAID_CLASS_COLORS = _G["CUSTOM_CLASS_COLORS"] or RAID_CLASS_COLORS -- For Phanx' Class Colors
 
 --retail/beta compat
-local UnitInPhase = UnitInPhase or function(unit)
+local UnitInPhase = _G["UnitInPhase"] or function(unit)
 	local reason = UnitPhaseReason(unit)--9.x replacement for UnitinPhase
 	if reason then--Any reason, means they are out of phase
 		return false

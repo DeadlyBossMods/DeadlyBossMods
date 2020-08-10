@@ -5,12 +5,6 @@ local L
 ---------------------------
 --L= DBM:GetModLocalization(2393)
 
---L:SetOptionLocalization({
---})
-
---L:SetMiscLocalization({
---})
-
 ---------------------------
 --  Altimor the Huntsman --
 ---------------------------
@@ -39,7 +33,18 @@ L:SetOptionLocalization({
 ---------------------------
 --  Lady Inerva Darkvein --
 ---------------------------
---L= DBM:GetModLocalization(2420)
+L= DBM:GetModLocalization(2420)
+
+L:SetTimerLocalization{
+	timerDesiresContainer		= "Desires full",
+	timerBottledContainer		= "Bottled full",
+	timerSinsContainer			= "Sins full",
+	timerConcentrateContainer	= "Concentrate full"
+}
+
+L:SetOptionLocalization({
+	timerContainers				= "Show timer that will show container fill progress and time remaining until full"
+})
 
 ---------------------------
 --  The Council of Blood --
@@ -59,7 +64,12 @@ L:SetOptionLocalization({
 ---------------------------
 --  Sire Denathrius --
 ---------------------------
---L= DBM:GetModLocalization(2424)
+L= DBM:GetModLocalization(2424)
+
+L:SetMiscLocalization({
+	CrimsonSpawn	= "Crimson Cabalists answer the call of Denathrius."
+})
+
 
 -------------
 --  Trash  --
