@@ -927,8 +927,8 @@ local function onUpdate(frame, table)
 			infoFrame:AlignLine(i * 2, linesPerRow * 2)
 		end
 		local m = mfloor(i / linesPerRow + 0.99)
-		maxWidth1[m] = mmax(maxWidth1[m] or 0, frame.lines[i * 2 - 1]:GetStringWidth())
-		maxWidth2[m] = mmax(maxWidth2[m] or 0, frame.lines[i * 2]:GetStringWidth())
+		maxWidth1[m] = (mmax(maxWidth1[m] or 0, frame.lines[i * 2 - 1]:GetStringWidth()))+4
+		maxWidth2[m] = (mmax(maxWidth2[m] or 0, frame.lines[i * 2]:GetStringWidth()))+4
 	end
 	local width = 0
 	for i, _ in pairs(maxWidth1) do
