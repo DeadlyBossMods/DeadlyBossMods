@@ -54,7 +54,7 @@ local specWarnEdgeofAnnihilation					= mod:NewSpecialWarningRun(328789, nil, 307
 --local specWarnGTFO								= mod:NewSpecialWarningGTFO(270290, nil, nil, nil, 1, 8)
 
 mod:AddTimerLine(BOSS)
-local timerDimensionalTearCD						= mod:NewCDTimer(45.7, 328437, nil, nil, nil, 3)--just the mean average, timer is actually COMPLETELY unknown since it's reset by so many mechanics
+local timerDimensionalTearCD						= mod:NewCDTimer(25, 328437, nil, nil, nil, 3, nil, nil, true)
 local timerGlyphofDestructionCD						= mod:NewCDTimer(27.9, 325361, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)--27.9-58.6 for now
 local timerStasisTrapCD								= mod:NewCDTimer(30.3, 326271, nil, nil, nil, 3)--30, except when its 24
 local timerRiftBlastCD								= mod:NewCDTimer(36.3, 335013, nil, nil, nil, 3)--36.3 except when it's 26.8
@@ -74,6 +74,11 @@ mod:AddSetIconOption("SetIconOnCypher", 328437, true, false, {1, 2})
 
 mod.vb.spartCount = 0
 mod.vb.annihilationCount = 0
+
+--Timer Notes
+--Stasis trap triggers a 3.7 ICD when cast, so any ability coming off cd near stasis trap will be pushed back 3.7 seconds
+--Tear seems to have a base CD of 25, but rarely is 25 except when stars align. The reason it's rarely 25 is that any time one of 3 crystals uses their special, x seconds are added to CD. In addition ICDs and spell queuing and all, it can be 35-47
+--Tear also has initial timers for each crystal spawn as well and pull. 12, 20, 30, 25 respectively
 
 function mod:OnCombatStart(delay)
 	self.vb.spartCount = 0
@@ -117,21 +122,20 @@ function mod:SPELL_CAST_START(args)
 		self.vb.spartCount = self.vb.spartCount + 1
 		warnHyperlightSpark:Show(self.vb.spartCount)
 --		timerHyperlightSparkCD:Start()
-	elseif spellId == 327887 then
+	elseif spellId == 327887 then--Phase Change
 		warnCrystalofPhantasmsActivation:Show()
 		--Start first timer
 		timerFleetingSpiritsCD:Start(37.6)
 		timerDimensionalTearCD:Stop()
-		timerDimensionalTearCD:Start(20)--regardless of what was left on timer, it's cancelled and set to 20 seconds
+		timerDimensionalTearCD:Start(20)
 	elseif spellId == 340758 then
 		timerFleetingSpiritsCD:Start()
-		timerDimensionalTearCD:Stop()
-		timerDimensionalTearCD:Start(20)--regardless of what was left on timer, it's cancelled and set to 20-30 seconds, or something. i don't fucking know anymore. This script only runs sometimes so I'm missing part of condition
-	elseif spellId == 329770 then
+		timerDimensionalTearCD:AddTime(12.9)--In this phase it'll often end up being 40-45
+	elseif spellId == 329770 then--Phase Change
 		warnRootofExtinction:Show()
 		timerRootofExtinctionCD:Start(4.5)
 		timerDimensionalTearCD:Stop()
-		timerDimensionalTearCD:Start(30)--regardless of what was left on timer, it's cancelled and set to 30 seconds
+		timerDimensionalTearCD:Start(30)
 		if not self:IsMythic() then
 			timerFleetingSpiritsCD:Stop()
 		--else
@@ -139,13 +143,12 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 329834 then
 		timerRootofExtinctionCD:Start()
-		timerDimensionalTearCD:Stop()
-		timerDimensionalTearCD:Start(19.1)--regardless of what was left on timer, it's cancelled and set to 19.1 seconds
-	elseif spellId == 328880 then
+		timerDimensionalTearCD:Addtime(10)--In this phase it'll often end up being 35-37, spell queuing doesn't end up as bad in phase 2 as other phases
+	elseif spellId == 328880 then--Phase Change
 		warnAnnihilationActivation:Show()
 		timerEdgeofAnnihilationCD:Start(8.1)
-		--timerDimensionalTearCD:Stop()
-		--timerDimensionalTearCD:Start(19.1)--regardless of what was left on timer, it's cancelled and set to 19.1 seconds
+		timerDimensionalTearCD:Stop()
+		timerDimensionalTearCD:Start(25.5)
 		if not self:IsMythic() then
 			timerRootofExtinctionCD:Stop()
 		--else
@@ -158,6 +161,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnEdgeofAnnihilation:ScheduleVoice(2, "keepmove")
 		--"Edge of Annihilation-328789-npc:169062 = pull:253.0, 36.2, 45.7, 46.8, 46.1", -- [4]
 		timerEdgeofAnnihilationCD:Start(self.vb.annihilationCount == 1 and 36.2 or 45.7)
+		timerDimensionalTearCD:AddTime(15)--Often it'll be +18-20 do to spell queuing/ICD during phase 3 of other abilities
 	end
 end
 
