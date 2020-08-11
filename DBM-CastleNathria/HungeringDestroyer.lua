@@ -4,9 +4,9 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(164261)
 mod:SetEncounterID(2383)
-mod:SetUsedIcons(1, 2, 3, 4, 5, 6)
---mod:SetHotfixNoticeRev(20200112000000)--2020, 1, 12
---mod:SetMinSyncRevision(20190716000000)
+mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
+mod:SetHotfixNoticeRev(20200810000000)--2020, 8, 10
+mod:SetMinSyncRevision(20200810000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
@@ -26,11 +26,9 @@ mod:RegisterEventsInCombat(
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, fine tune icons for Miasma when number of affected targets is known
---TODO, if Gluttonous Miasma has shorter than a 24 second cd, the current icon code will break if any players die
 --TODO, fine tune stacks for essence sap
---TODO, better way to detect expunge?
---TODO, choose what infoframe tracks, sap, or volatile, volatile will be new default sine it's useful to more difficulties
+--TODO, better way to detect expunge? It needs to be added to combat log
+--TODO, choose what infoframe tracks, sap, or volatile. volatile will be new default sine it's useful to more difficulties. This is on hold until it's in combat log though
 --[[
 (ability.id = 334522 or ability.id = 334266 or ability.id = 329455 or ability.id = 329774) and type = "begincast"
  or ability.id = 329298 and type = "applydebuff"
@@ -44,25 +42,25 @@ local specWarnEssenceSap						= mod:NewSpecialWarningStack(334755, false, 8, nil
 local specWarnConsume							= mod:NewSpecialWarningRun(334522, nil, nil, nil, 4, 2)
 local specWarnExpunge							= mod:NewSpecialWarningMoveAway(329725, nil, nil, nil, 1, 2)
 local specWarnVolatileEjection					= mod:NewSpecialWarningYou(334266, nil, nil, nil, 1, 2)
-local yellVolatileEjection						= mod:NewYell(334266)
+local yellVolatileEjection						= mod:NewYell(334266)--Change to NewPosYell if it's ever added to combat log, can't be trusted as icon yell when relying on syncing
 local specWarnGrowingHunger						= mod:NewSpecialWarningCount(332295, nil, DBM_CORE_L.AUTO_SPEC_WARN_OPTIONS.stack:format(12, 332295), nil, 1, 2)
 local specWarnGrowingHungerOther				= mod:NewSpecialWarningTaunt(332295, nil, nil, nil, 1, 2)
 local specWarnOverwhelm							= mod:NewSpecialWarningDefensive(329774, "Tank", nil, nil, 1, 2)
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(270290, nil, nil, nil, 1, 8)
 
 --mod:AddTimerLine(BOSS)
-local timerGluttonousMiasmaCD					= mod:NewCDCountTimer(22.1, 329298, nil, nil, nil, 3, nil, nil, nil, 1, 3)
-local timerConsumeCD							= mod:NewNextCountTimer(120, 334522, nil, nil, nil, 2)
+local timerGluttonousMiasmaCD					= mod:NewCDCountTimer(23.8, 329298, nil, nil, nil, 3, nil, nil, nil, 1, 3)
+local timerConsumeCD							= mod:NewNextCountTimer(119.8, 334522, nil, nil, nil, 2)
 local timerExpungeCD							= mod:NewNextCountTimer(44.3, 329725, nil, nil, nil, 3)
-local timerVolatileEjectionCD					= mod:NewNextCountTimer(44.3, 334266, nil, nil, nil, 3)
-local timerDesolateCD							= mod:NewNextCountTimer(60, 329455, nil, nil, nil, 2, nil, DBM_CORE_L.HEALER_ICON)
-local timerOverwhelmCD							= mod:NewCDTimer(11.2, 329774, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON, nil, 2, 3)
+local timerVolatileEjectionCD					= mod:NewNextCountTimer(35.9, 334266, nil, nil, nil, 3)
+local timerDesolateCD							= mod:NewNextCountTimer(59.8, 329455, nil, nil, nil, 2, nil, DBM_CORE_L.HEALER_ICON)
+local timerOverwhelmCD							= mod:NewCDTimer(11.9, 329774, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON, nil, 2, 3)
 
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
 --mod:AddRangeFrameOption(10, 310277)
 mod:AddSetIconOption("SetIconOnGluttonousMiasma", 329298, true, false, {1, 2, 3, 4})
-mod:AddSetIconOption("SetIconOnVolatileEjection2", 334266, true, false, {5, 6, 7, 8})--off by default since it will break if not EVERYONE in raid is running DBM or BW
+mod:AddSetIconOption("SetIconOnVolatileEjection2", 334266, true, false, {5, 6, 7, 8})--Will still break if people missing BW/DBM, but it's too important to have off by default
 --mod:AddNamePlateOption("NPAuraOnVolatileCorruption", 312595)
 mod:AddInfoFrameOption(334755, true)
 mod:AddBoolOption("SortDesc", false)
@@ -164,7 +162,7 @@ function mod:OnCombatStart(delay)
 	self.vb.consumeCount = 0
 	self.vb.desolateCount = 0
 	self.vb.miasmaCount = 0
-	timerGluttonousMiasmaCD:Start(3.2-delay, 1)--3-6?
+	timerGluttonousMiasmaCD:Start(3-delay, 1)--3-6?
 	timerOverwhelmCD:Start(5-delay)
 	timerVolatileEjectionCD:Start(10.1-delay, 1)
 	timerDesolateCD:Start(22.2-delay, 1)
@@ -272,7 +270,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self:AntiSpam(10, 3) then
 			table.wipe(GluttonousTargets)
 			self.vb.miasmaCount = self.vb.miasmaCount + 1
-			timerGluttonousMiasmaCD:Start(22.1, self.vb.miasmaCount+1)
+			timerGluttonousMiasmaCD:Start(23.8, self.vb.miasmaCount+1)
 		end
 		if not tContains(GluttonousTargets, args.destName) then
 			table.insert(GluttonousTargets, args.destName)
