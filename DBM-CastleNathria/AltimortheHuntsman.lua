@@ -103,7 +103,7 @@ do
 			return true
 		end
 	end
-	updateRangeFrame = function(self)
+	updateRangeFrame = function(self, force)
 		if not self.Options.RangeFrame then return end
 		if DBM:UnitDebuff("player", 334852) then--Petrifying Howl
 			DBM.RangeCheck:Show(10)
