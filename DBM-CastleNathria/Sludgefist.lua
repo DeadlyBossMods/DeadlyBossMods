@@ -13,24 +13,26 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 332318",
-	"SPELL_CAST_SUCCESS 332362 332687",
-	"SPELL_AURA_APPLIED 331209 331314 335270 335293 335491",
-	"SPELL_AURA_REMOVED 331209 331314 335270",
+	"SPELL_CAST_SUCCESS 332362 332687 340803",
+	"SPELL_AURA_APPLIED 331209 331314 342419 342420 335470 341294",
+	"SPELL_AURA_REMOVED 331209 331314 342419 342420",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
 --TODO, this straght up needs an updateAllTimers function like archimonde to be perfect.
+--TODO, add warning for Seismic shift if it's not spammy
 --Timers delaying other timers, some abilities being skipped entirely if coming off cd during stun or another ability cast
 --The timers COULD be perfected, I'm just not sure it's worth the effort to. Not an end boss, or even a hard one.
 --I'll return to perfecting timers if things don't change on live and can analylize dozens more logs to verify patterns
 local warnHatefulGaze							= mod:NewTargetNoFilterAnnounce(331209, 4)
 local warnStunnedImpact							= mod:NewTargetNoFilterAnnounce(331314, 1)
-local warnChainThisOne							= mod:NewTargetAnnounce(335270, 3)--Targetting debuff
-local warnChainLink								= mod:NewTargetAnnounce(335293, 3)--Affected players when targetting ends
+local warnChainThisOne							= mod:NewTargetAnnounce(342419, 3)--Targetting debuff
+--local warnChainLink							= mod:NewTargetAnnounce(335293, 3)--Affected players when targetting ends
 local warnChainSlam								= mod:NewTargetNoFilterAnnounce(164407, 3)
 local warnFallingDebris							= mod:NewSpellAnnounce(332362, 3)
+local warnVengefulRage							= mod:NewTargetNoFilterAnnounce(341294, 4)
 
 local specWarnHatefulGaze						= mod:NewSpecialWarningMoveTo(331209, nil, nil, nil, 3, 2)
 local specWarnHeedlessCharge					= mod:NewSpecialWarningSoon(331212, nil, nil, nil, 2, 2)
@@ -45,6 +47,7 @@ local yellChainSlamFades						= mod:NewFadesYell(335470, nil, nil, nil, "YELL")
 local specWarnDestructiveStomp					= mod:NewSpecialWarningRun(332318, "Melee", nil, nil, 4, 2)
 local specWarnColossalRoar						= mod:NewSpecialWarningSpell(332687, nil, nil, nil, 2, 2)
 local specWarnStonequake						= mod:NewSpecialWarningDodge(335433, nil, nil, nil, 2, 2)
+--local specWarnSiesmicShift						= mod:NewSpecialWarningDodge(340803, nil, nil, nil, 2, 2, 4)
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(270290, nil, nil, nil, 1, 8)
 
 local timerHatefulGazeCD						= mod:NewNextTimer(67.3, 331209, nil, nil, nil, 3, nil, DBM_CORE_L.IMPORTANT_ICON, nil, 1, 4)
@@ -55,11 +58,12 @@ local timerDestructiveStompCD					= mod:NewNextCountTimer(44.3, 332318, nil, nil
 local timerFallingDebrisCD						= mod:NewCDTimer(11, 332362, nil, nil, nil, 3)
 local timerColossalRoarCD						= mod:NewCDCountTimer(44.3, 332687, nil, nil, nil, 2)
 local timerStoneQuakeCD							= mod:NewCDCountTimer(34, 335433, nil, nil, nil, 3)
+local timerSiesmicShiftCD						= mod:NewAITimer(34, 340803, nil, nil, nil, 3, nil, DBM_CORE_L.MYTHIC_ICON)--Mythic
 
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
 --mod:AddRangeFrameOption(10, 310277)
---mod:AddInfoFrameOption(308377, true)
+mod:AddInfoFrameOption(342410, true)
 mod:AddSetIconOption("SetIconGaze", 331209, true, false, {1})
 
 mod.vb.gazeCount = 0
@@ -83,6 +87,13 @@ function mod:OnCombatStart(delay)
 --	timerColossalRoarCD:Start(1-delay)--Cast instantly on pull
 	timerChainSlamCD:Start(34-delay, 1)
 	timerHatefulGazeCD:Start(53-delay, 1)
+	if self:IsMythic() then
+		timerSiesmicShiftCD:Start()
+		if self.Options.InfoFrame then
+			DBM.InfoFrame:SetHeader(DBM_CORE_L.NO_DEBUFF:format(DBM:GetSpellInfo(342410)))
+			DBM.InfoFrame:Show(5, "playergooddebuff", 342410)--TODO, change number when columns work again
+		end
+	end
 --	if self.Options.RangeFrame then
 --		DBM.RangeCheck:Show(4)
 --	end
@@ -90,9 +101,9 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnCombatEnd()
---	if self.Options.InfoFrame then
---		DBM.InfoFrame:Hide()
---	end
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:Hide()
+	end
 --	if self.Options.RangeFrame then
 --		DBM.RangeCheck:Hide()
 --	end
@@ -130,6 +141,10 @@ function mod:SPELL_CAST_SUCCESS(args)
 		else
 			timerColossalRoarCD:Start(30.2, self.vb.roarCount+1)
 		end
+	elseif spellId == 340803 then
+--		specWarnSiesmicShift:Show()
+--		specWarnSiesmicShift:Play("watchstep")
+		timerSiesmicShiftCD:Start()
 	end
 end
 
@@ -154,7 +169,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 331314 then
 		warnStunnedImpact:Show(args.destName)
 		timerStunnedImpact:Start(args.destName)
-	elseif spellId == 335270 then
+	elseif spellId == 342419 or spellId == 342420 then
 		if args:IsPlayer() then
 			specWarnChainLink:Show()
 			specWarnChainLink:Play("targetyou")
@@ -164,12 +179,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			warnChainThisOne:Show(args.destName)
 		end
-	elseif spellId == 335293 then
-		warnChainLink:CombinedShow(0.5, args.destName)
-		if args:IsPlayer() and self:AntiSpam(6, 1) then
-			specWarnChainLink:Show()
-			specWarnChainLink:Play("targetyou")
-		end
+--	elseif spellId == 335293 then
+--		warnChainLink:CombinedShow(0.5, args.destName)
+--		if args:IsPlayer() and self:AntiSpam(6, 1) then
+--			specWarnChainLink:Show()
+--			specWarnChainLink:Play("targetyou")
+--		end
 	elseif spellId == 335470 then
 		self.vb.chainSlaimCount = self.vb.chainSlaimCount + 1
 		--timerChainSlamCD:Start(nil, self.vb.chainSlaimCount+1)
@@ -181,6 +196,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			warnChainSlam:Show(args.destName)
 		end
+	elseif spellId == 341294 then
+		warnVengefulRage:Show(args.destName)
 	end
 end
 
@@ -195,6 +212,10 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif spellId == 331314 then
 		timerStunnedImpact:Stop(args.destName)
+	elseif spellId == 342419 or spellId == 342420 then
+		if args:IsPlayer() then
+			yellChainLinkFades:Cancel()
+		end
 	end
 end
 
