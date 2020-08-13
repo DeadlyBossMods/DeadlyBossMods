@@ -175,7 +175,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnChainLink:Play("targetyou")
 			yellChainLink:Yell()
 			yellChainLinkFades:Countdown(spellId)
-			self:AntiSpam(6, 1)
 		else
 			warnChainThisOne:Show(args.destName)
 		end
