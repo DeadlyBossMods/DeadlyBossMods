@@ -13,7 +13,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 332318",
-	"SPELL_CAST_SUCCESS 332362 332687 340803",
+	"SPELL_CAST_SUCCESS 332687 340803",
 	"SPELL_AURA_APPLIED 331209 331314 342419 342420 335470 341294",
 	"SPELL_AURA_REMOVED 331209 331314 342419 342420",
 --	"SPELL_PERIODIC_DAMAGE",
@@ -31,7 +31,7 @@ local warnStunnedImpact							= mod:NewTargetNoFilterAnnounce(331314, 1)
 local warnChainThisOne							= mod:NewTargetAnnounce(342419, 3)--Targetting debuff
 --local warnChainLink							= mod:NewTargetAnnounce(335293, 3)--Affected players when targetting ends
 local warnChainSlam								= mod:NewTargetNoFilterAnnounce(164407, 3)
-local warnFallingDebris							= mod:NewSpellAnnounce(332362, 3)
+local warnFallingRubble							= mod:NewSpellAnnounce(332572, 3)
 local warnVengefulRage							= mod:NewTargetNoFilterAnnounce(341294, 4)
 
 local specWarnHatefulGaze						= mod:NewSpecialWarningMoveTo(331209, nil, nil, nil, 3, 2)
@@ -55,7 +55,7 @@ local timerStunnedImpact						= mod:NewTargetTimer(8, 331314, nil, nil, nil, 5, 
 local timerChainLinkCD							= mod:NewCDCountTimer(20.8, 335491, nil, nil, nil, 3)
 local timerChainSlamCD							= mod:NewCDCountTimer(34, 335354, nil, nil, nil, 3)
 local timerDestructiveStompCD					= mod:NewNextCountTimer(44.3, 332318, nil, nil, nil, 3)
-local timerFallingDebrisCD						= mod:NewCDTimer(11, 332362, nil, nil, nil, 3)
+local timerFallingRubbleCD						= mod:NewAITimer(11, 332572, nil, nil, nil, 3)
 local timerColossalRoarCD						= mod:NewCDCountTimer(44.3, 332687, nil, nil, nil, 2)
 local timerStoneQuakeCD							= mod:NewCDCountTimer(34, 335433, nil, nil, nil, 3)
 local timerSiesmicShiftCD						= mod:NewAITimer(34, 340803, nil, nil, nil, 3, nil, DBM_CORE_L.MYTHIC_ICON)--Mythic
@@ -81,7 +81,7 @@ function mod:OnCombatStart(delay)
 	self.vb.chainSlaimCount = 0
 	self.vb.quakeCount = 0
 	timerChainLinkCD:Start(6.4-delay, 1)
-	timerFallingDebrisCD:Start(10.1-delay)
+	timerFallingRubbleCD:Start(10.1-delay)
 	timerStoneQuakeCD:Start(14.8)
 	timerDestructiveStompCD:Start(22.4-delay, 1)
 --	timerColossalRoarCD:Start(1-delay)--Cast instantly on pull
@@ -127,9 +127,9 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 332362 then
-		warnFallingDebris:Show()
-		timerFallingDebrisCD:Start()
+	if spellId == 332572 then
+--		warnFallingRubble:Show()
+--		timerFallingRubbleCD:Start()
 	elseif spellId == 332687 then
 		self.vb.roarCount = self.vb.roarCount + 1
 		specWarnColossalRoar:Show()
@@ -238,9 +238,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 335491 then--Chain link
 		self.vb.linkCount = self.vb.linkCount + 1
 		timerChainLinkCD:Start(nil, self.vb.linkCount+1)
-	elseif spellId == 332362 then
-		warnFallingDebris:Show()
-		timerFallingDebrisCD:Start()
+	elseif spellId == 332552 then
+		warnFallingRubble:Show()
+		timerFallingRubbleCD:Start()
 	elseif spellId == 335433 then--Stonequake
 		self:Unschedule(skippedQuake)
 		self.vb.quakeCount = self.vb.quakeCount + 1
