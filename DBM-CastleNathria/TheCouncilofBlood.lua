@@ -173,7 +173,11 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 328334 then
-		timerTacticalAdvanceCD:Start()
+--		if args:GetSrcCreatureID() == 166971 then--Main boss
+			timerTacticalAdvanceCD:Start()
+--		else
+			--Probably used less often by after image? Just coding this so it can be applyed fast
+--		end
 	elseif spellId == 334948 then
 		if self:IsTanking("player", nil, nil, true, args.sourceGUID) then
 			specWarnUnstoppableCharge:Show()
@@ -203,7 +207,11 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 327465 then
 		specWarnAnimaFountain:Show()
 		specWarnAnimaFountain:Play("watchstep")
-		timerAnimaFountainCD:Start()
+--		if args:GetSrcCreatureID() == 166969 then--Main boss
+			timerAnimaFountainCD:Start()
+--		else
+			--Probably used less often by after image? Just coding this so it can be applyed fast
+--		end
 	end
 end
 
@@ -215,7 +223,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 331704 then
 		timerScarletLetterCD:Start()
 	elseif spellId == 331634 then
-		timerDarkRecitalCD:Start()
+--		if args:GetSrcCreatureID() == 166970 then--Main boss
+			timerDarkRecitalCD:Start()
+--		else
+			--Probably used less often by after image? Just coding this so it can be applyed fast
+--		end
 	elseif spellId == 330959 and self:AntiSpam(10, 1) then
 		specWarnDanseMacabre:Show()
 		specWarnDanseMacabre:Play("specialsoon")

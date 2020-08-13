@@ -14,12 +14,12 @@ mod:SetMinSyncRevision(20200726000000)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 325877 329509 329518 328885 325440 325506 333002 326455",
+	"SPELL_CAST_START 325877 329509 329518 328885 325440 325506 333002 326455 337865",
 	"SPELL_CAST_SUCCESS 326583 325665",
 	"SPELL_SUMMON 329565 326075",
-	"SPELL_AURA_APPLIED 326456 328659 328731 325442 333145 326078 332871 326583 328479 323402",
+	"SPELL_AURA_APPLIED 326456 328659 341254 328731 325442 333145 326078 332871 326583 328479 323402 335581 338600",
 	"SPELL_AURA_APPLIED_DOSE 326456 325442 326078",
-	"SPELL_AURA_REMOVED 328731 326078 328479 323402",
+	"SPELL_AURA_REMOVED 328731 326078 328479 323402 338600",
 	"SPELL_PERIODIC_DAMAGE 328579",
 	"SPELL_PERIODIC_MISSED 328579",
 	"UNIT_DIED"
@@ -30,12 +30,11 @@ mod:RegisterEventsInCombat(
 --TODO, Switch Ember Blast to UnitTargetScanner for max scan speed/efficiency, if shade has boss unit ID and isn't already targetting victim when cast starts
 --TODO, adjust ember blast warning to reduce number told to soak it if it's not conventional to just tell everyone but the tanks to do it
 --TODO, figure out which spellId is the tank only one for Blazing Surge and just use primary target instead of target scanning
---TODO, detect soul infuser spawns and warn like hell to slow/kill them, Currently their cast is kinda used this way which maybe/probably won't work fully
 --TODO, essence tracking of energy for Cultists?
 --TODO, dispel warnings for Vulgar brand (333002) based on difficulty (magic non mythic, curse mythic)?
 --TODO, improved infoframe with https://shadowlands.wowhead.com/spell=339251/drained-soul tracking
 --TODO, auto mark essence spawns? friendly nameplates?
---TODO, Add Spawn Warnings at the very least for Vile Occultists
+--TODO, Add Spawn Warnings for remaining adds if clean ways can be done to do so. Vile adds already added
 --[[
 (source.type = "NPC" and source.firstSeen = timestamp) or (target.type = "NPC" and target.firstSeen = timestamp)
 --]]
@@ -51,6 +50,7 @@ local warnConcussiveSmash						= mod:NewCountAnnounce(325506, 3)
 local warnReturnToStone							= mod:NewTargetNoFilterAnnounce(333145, 4)
 local warnRapidStrikes							= mod:NewTargetAnnounce(326583, 3)
 --Vile Occultist
+local warnVileOccultists						= mod:NewSpellAnnounce("ej21952", 2, 329565)
 local warnSummonEssenceFont						= mod:NewSpellAnnounce(329565, 2, nil, "Healer")
 --Soul Infusor
 local warnSoulInfusion							= mod:NewSpellAnnounce(325665, 4)
@@ -69,6 +69,8 @@ local yellEmberBlastFades						= mod:NewFadesYell(325877, nil, nil, nil, "YELL")
 --local specWarnBlazingSurge						= mod:NewSpecialWarningMoveAway(329509, nil, nil, nil, 1, 2)
 --local yellBlazingSurge							= mod:NewYell(329509)
 local specWarnGTFO								= mod:NewSpecialWarningGTFO(328579, nil, nil, nil, 1, 8)
+----Kael
+local specWarnUnleashedPyroclasm				= mod:NewSpecialWarningInterrupt(337865, nil, nil, nil, 1, 2)
 --High Torturor Darithos
 local specWarnGreaterCastigation				= mod:NewSpecialWarningMoveAway(328885, nil, nil, nil, 1, 2)
 --Adds
@@ -104,7 +106,7 @@ mod:AddTimerLine(DBM:EJ_GetSectionInfo(21993))
 local timerRapidStrikesCD						= mod:NewAITimer(44.3, 326583, nil, false, nil, 3)--Too many to track via normal bars, this needs nameplate bars/icon
 ----Vile Occultist
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(21952))
---local timerVileOccultistCD						= mod:NewCDTimer(10, "ej21952", nil, nil, nil, 1, 333002, DBM_CORE_L.DAMAGE_ICON)
+--local timerVileOccultistCD						= mod:NewCDTimer(10, "ej21952", nil, nil, nil, 1, 329565, DBM_CORE_L.DAMAGE_ICON)
 --local timerVulgarBrandCD						= mod:NewAITimer(44.3, 333002, nil, nil, nil, 3)--TODO, give it a relative icon based on difficulty (Magic/Curse)
 ----Soul Infuser
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(21953))
@@ -123,6 +125,8 @@ mod:AddNamePlateOption("NPAuraOnPhoenixFixate", 328479)
 
 mod.vb.addCount = 0
 mod.vb.healerOrbCount = 0
+mod.vb.shieldActive = false
+local infusersBoon = DBM:GetSpellInfo(326078)
 local seenAdds = {}
 local castsPerGUID = {}
 local infuserTargets = {}
@@ -170,7 +174,6 @@ end
 
 local updateInfoFrame
 do
-	local infusersBoon = DBM:GetSpellInfo(326078)
 	local floor = math.floor
 	local lines = {}
 	local sortedLines = {}
@@ -184,7 +187,7 @@ do
 		table.wipe(sortedLines)
 		--Infuser's Boon targets
 		if #infuserTargets > 0 then
-			addLine("---"..infusersBoon.."---")
+--			addLine("---"..infusersBoon.."---")
 			for i=1, #infuserTargets do
 				local name = infuserTargets[i]
 				local uId = DBM:GetRaidUnitId(name)
@@ -206,6 +209,7 @@ end
 function mod:OnCombatStart(delay)
 	self.vb.addCount = 0
 	self.vb.healerOrbCount = 0
+	self.vb.shieldActive = false
 	table.wipe(seenAdds)
 	table.wipe(castsPerGUID)
 	table.wipe(infuserTargets)
@@ -328,7 +332,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			warnVanquished:Show(args.destName, amount)
 		end
-	elseif spellId == 328659 and not seenAdds[args.destGUID] then--Smoldering Plumage
+	elseif (spellId == 328659 or spellId == 341254) and not seenAdds[args.destGUID] then--Smoldering Plumage
 		seenAdds[args.destGUID] = true
 		if self:AntiSpam(10, 1) then--In case more than one spawn at once
 			warnRebornPhoenix:Show()
@@ -343,8 +347,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		if not tContains(infuserTargets, args.destName) then
 			table.insert(infuserTargets, args.destName)
 		end
-		if self.Options.InfoFrame and not DBM.InfoFrame:IsShown() then
-			DBM.InfoFrame:SetHeader(OVERVIEW)
+		if self.Options.InfoFrame and not DBM.InfoFrame:IsShown() and not self.vb.shieldActive then
+			DBM.InfoFrame:SetHeader(infusersBoon)
 			DBM.InfoFrame:Show(8, "function", updateInfoFrame, false, false)
 		end
 	elseif spellId == 332871 and args:IsPlayer() then
@@ -374,7 +378,15 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnShadeSpawned:Play("bigmob")
 		timerFieryStrikeCD:Start(14)
 		timerEmberBlastCD:Start(20.1)
-		timerBlazingSurgeCD:Stop(28.8)
+		timerBlazingSurgeCD:Start(28.8)
+	elseif spellId == 335581 and self:AntiSpam(5, 6) then
+		warnVileOccultists:Show()
+	elseif spellId == 338600 then
+		self.vb.shieldActive = true
+		if self.Options.InfoFrame then
+			DBM.InfoFrame:SetHeader(args.spellName)
+			DBM.InfoFrame:Show(2, "enemyabsorb", nil, args.amount, "boss1")
+		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -397,6 +409,18 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerFieryStrikeCD:Stop()
 		--TODO, some data supports this but still needs more thorough vetting
 		timerSoulInfuserCD:Start(10)
+	elseif spellId == 338600 then
+		self.vb.shieldActive = false
+		specWarnUnleashedPyroclasm:Show(args.destName)
+		specWarnUnleashedPyroclasm:Play("kickcast")
+		if self.Options.InfoFrame then
+			if #infuserTargets > 0 then
+				DBM.InfoFrame:SetHeader(infusersBoon)
+				DBM.InfoFrame:Show(8, "function", updateInfoFrame, false, false)
+			else
+				DBM.InfoFrame:Hide()
+			end
+		end
 	end
 end
 
