@@ -81,7 +81,7 @@ function mod:OnCombatStart(delay)
 	self.vb.chainSlaimCount = 0
 	self.vb.quakeCount = 0
 	timerChainLinkCD:Start(6.4-delay, 1)
-	timerFallingRubbleCD:Start(10.1-delay)
+	timerFallingRubbleCD:Start(1-delay)
 	timerStoneQuakeCD:Start(14.8)
 	timerDestructiveStompCD:Start(22.4-delay, 1)
 --	timerColossalRoarCD:Start(1-delay)--Cast instantly on pull
