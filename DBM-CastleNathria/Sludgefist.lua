@@ -187,12 +187,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		if spellId == 342420 then
 			icon = #ChainLinkTargetTwo--Generate icon on the evens, because then we can divide it by 2 to assign raid icon to that pair
 			local playerIsInPair = false
-			--On mythic, two pairs won't have an icon available, so we just assign it SOMETHING
-			if icon == 9 then
-				icon = "(°,,°)"
-			elseif icon == 10 then
-				icon = "(•_•)"
-			end
 			if ChainLinkTargetOne[icon] == playerName then
 				specWarnChainLink:Show(ChainLinkTargetTwo[icon])
 				specWarnChainLink:Play("gather")
