@@ -8,7 +8,7 @@ mod:SetEncounterID(2395)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 323064 322736",
+	"SPELL_CAST_START 323064 322736 332329",
 	"SPELL_CAST_SUCCESS 322746",
 	"SPELL_AURA_APPLIED 322773 322746 328987",
 	"SPELL_AURA_REMOVED 322773 322746",
@@ -19,11 +19,13 @@ mod:RegisterEventsInCombat(
 )
 
 --TODO, blood barrier probably has a CD before it goes back up
+--TODO, longer pull with more timers
 --Hakkar the Soulflayer
 local warnBloodBarrier				= mod:NewTargetNoFilterAnnounce(322773, 2)
 local warnBloodBarrierEnded			= mod:NewEndAnnounce(322773, 1)
 local warnCorruptedBlood			= mod:NewTargetAnnounce(322746, 3)
 --Son of Hakkar:
+local warnDevotedSacrifice			= mod:NewCastAnnounce(332329, 2)
 local warnZealous					= mod:NewTargetAnnounce(328987, 2)
 
 --Hakkar the Soulflayer
@@ -36,11 +38,12 @@ local specWarnGTFO					= mod:NewSpecialWarningGTFO(323569, nil, nil, nil, 1, 8)
 local specWarnZealous				= mod:NewSpecialWarningRun(328987, nil, nil, nil, 4, 2)
 
 --Hakkar the Soulflayer
-local timerBloodBarrierCD			= mod:NewAITimer(15.8, 322773, nil, nil, nil, 6)
-local timerBloodBarrageCD			= mod:NewAITimer(13, 323064, nil, nil, nil, 4, nil, DBM_CORE_L.INTERRUPT_ICON)
-local timerCorruptedBloodCD			= mod:NewAITimer(13, 322746, nil, nil, nil, 3)
-local timerPiercingBarbCD			= mod:NewAITimer(13, 322736, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)
+local timerBloodBarrierCD			= mod:NewCDTimer(15.8, 322773, nil, nil, nil, 6)
+--local timerBloodBarrageCD			= mod:NewCDTimer(13, 323064, nil, nil, nil, 4, nil, DBM_CORE_L.INTERRUPT_ICON)
+local timerCorruptedBloodCD			= mod:NewCDTimer(36.4, 322746, nil, nil, nil, 3)
+local timerPiercingBarbCD			= mod:NewCDTimer(9.7, 322736, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)
 --Son of Hakkar:
+--local timerDevotedSacrificeCD		= mod:NewAITimer(46, 332329, nil, nil, nil, 1)
 
 mod:AddRangeFrameOption(8, 322746)--Spell is 7, but can't do 7 in api
 mod:AddNamePlateOption("NPAuraOnFixate", 328987)
@@ -60,10 +63,10 @@ end
 
 function mod:OnCombatStart(delay)
 	self.vb.barrierActive = false
-	timerBloodBarrierCD:Start(1-delay)
-	timerBloodBarrageCD:Start(1-delay)
-	timerCorruptedBloodCD:Start(1-delay)
-	timerPiercingBarbCD:Start(1-delay)
+	timerCorruptedBloodCD:Start(5.5-delay)--SUCCESS
+	timerPiercingBarbCD:Start(7.2-delay)
+	timerBloodBarrierCD:Start(22.5-delay)--SUCCESS
+--	timerBloodBarrageCD:Start(22.5-delay)--It's cast instantly on barrier application, redundant timer
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(8)
 	end
@@ -88,11 +91,13 @@ function mod:SPELL_CAST_START(args)
 		specWarnPiercingBarb:Play("defensive")
 		timerPiercingBarbCD:Start()
 	elseif spellId == 323064 then
-		timerBloodBarrageCD:Start()
+		--timerBloodBarrageCD:Start()
 		if not self.vb.barrierActive and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 			specWarnBloodBarrage:Show(args.sourceName)
 			specWarnBloodBarrage:Play("kickcast")
 		end
+	elseif spellId == 332329 and self:AntiSpam(3, 1) then
+		warnDevotedSacrifice:Show()
 	end
 end
 
@@ -107,7 +112,8 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 322773 then
 		self.vb.barrierActive = true
-		timerBloodBarrierCD:Start()
+		timerPiercingBarbCD:Stop()
+		timerCorruptedBloodCD:Stop()
 		warnBloodBarrier:Show(args.destName)
 	elseif spellId == 322746 then
 		if args:IsPlayer() then
@@ -138,6 +144,9 @@ function mod:SPELL_AURA_REMOVED(args)
 	if spellId == 322773 then
 		self.vb.barrierActive = false
 		warnBloodBarrierEnded:Show()
+		timerPiercingBarbCD:Start(7.4)
+		timerCorruptedBloodCD:Start(11.8)
+		--timerBloodBarrierCD:Start()
 	elseif spellId == 328987 then
 		if args:IsPlayer() then
 			if self.Options.NPAuraOnFixate then

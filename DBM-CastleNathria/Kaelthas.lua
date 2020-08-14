@@ -48,7 +48,7 @@ local warnBlazingSurge							= mod:NewSpellAnnounce(329509, 3)
 local warnVanquished							= mod:NewStackAnnounce(325442, 2, nil, "Tank")
 local warnConcussiveSmash						= mod:NewCountAnnounce(325506, 3)
 ----Assassin
-local warnReturnToStone							= mod:NewTargetNoFilterAnnounce(333145, 4)
+local warnReturnToStone							= mod:NewTargetNoFilterAnnounce(333145, 4, nil, "-Healer")
 local warnCrimsonFury							= mod:NewTargetAnnounce(326583, 3)
 --Vile Occultist
 local warnVileOccultists						= mod:NewSpellAnnounce("ej21952", 2, 329565)
@@ -64,7 +64,7 @@ local warnEyeOnTarget							= mod:NewTargetAnnounce(328479, 2)
 local specWarnShadeSpawned						= mod:NewSpecialWarningSwitch("ej21966", nil, nil, nil, 1, 2)
 local specWarnBurningRemnants					= mod:NewSpecialWarningStack(326456, nil, 18, nil, nil, 1, 6)
 local specWarnBurningRemnantsTaunt				= mod:NewSpecialWarningTaunt(326456, nil, nil, nil, 1, 2)
-local specWarnEmberBlast						= mod:NewSpecialWarningMoveTo(325877, nil, nil, nil, 1, 2)
+local specWarnEmberBlast						= mod:NewSpecialWarningMoveTo(325877, false, nil, nil, 1, 2)--Opt in as needed
 local yellEmberBlast							= mod:NewYell(325877, nil, nil, nil, "YELL")
 local yellEmberBlastFades						= mod:NewFadesYell(325877, nil, nil, nil, "YELL")
 --local specWarnBlazingSurge						= mod:NewSpecialWarningMoveAway(329509, nil, nil, nil, 1, 2)
@@ -149,7 +149,7 @@ function mod:EmberBlastTarget(targetname, uId, bossuid, scanningTime)
 		specWarnEmberBlast:Play("gathershare")
 		yellEmberBlast:Yell()
 		yellEmberBlastFades:Countdown(5-scanningTime)
-	elseif not self:IsTank() then
+	elseif self.Options.SpecWarn325877moveto then
 		specWarnEmberBlast:Show(targetname)
 		specWarnEmberBlast:Play("gathershare")
 	else
