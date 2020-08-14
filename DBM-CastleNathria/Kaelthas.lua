@@ -17,9 +17,9 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 325877 329509 329518 328885 325440 325506 333002 326455 337865",
 	"SPELL_CAST_SUCCESS 326583 325665",
 	"SPELL_SUMMON 329565 326075",
-	"SPELL_AURA_APPLIED 326456 328659 341254 328731 325442 333145 326078 332871 326583 328479 323402 335581 338600",
+	"SPELL_AURA_APPLIED 326456 328659 341254 328731 325442 333145 326078 332871 326583 328479 323402 335581 337859",
 	"SPELL_AURA_APPLIED_DOSE 326456 325442 326078",
-	"SPELL_AURA_REMOVED 328731 326078 328479 323402 338600",
+	"SPELL_AURA_REMOVED 328731 326078 328479 323402 337859",
 	"SPELL_PERIODIC_DAMAGE 328579",
 	"SPELL_PERIODIC_MISSED 328579",
 	"UNIT_DIED"
@@ -35,6 +35,7 @@ mod:RegisterEventsInCombat(
 --TODO, improved infoframe with https://shadowlands.wowhead.com/spell=339251/drained-soul tracking
 --TODO, auto mark essence spawns? friendly nameplates?
 --TODO, Add Spawn Warnings for remaining adds if clean ways can be done to do so. Vile adds already added
+--TODO, add nameplate aura for assassins fixate/attack?
 --[[
 (source.type = "NPC" and source.firstSeen = timestamp) or (target.type = "NPC" and target.firstSeen = timestamp)
 --]]
@@ -47,8 +48,8 @@ local warnBlazingSurge							= mod:NewSpellAnnounce(329509, 3)
 local warnVanquished							= mod:NewStackAnnounce(325442, 2, nil, "Tank")
 local warnConcussiveSmash						= mod:NewCountAnnounce(325506, 3)
 ----Assassin
-local warnReturnToStone							= mod:NewTargetNoFilterAnnounce(333145, 4)
-local warnRapidStrikes							= mod:NewTargetAnnounce(326583, 3)
+local warnReturnToStone							= mod:NewTargetNoFilterAnnounce(333145, 4, nil, "-Healer")
+local warnCrimsonFury							= mod:NewTargetAnnounce(326583, 3)
 --Vile Occultist
 local warnVileOccultists						= mod:NewSpellAnnounce("ej21952", 2, 329565)
 local warnSummonEssenceFont						= mod:NewSpellAnnounce(329565, 2, nil, "Healer")
@@ -63,7 +64,7 @@ local warnEyeOnTarget							= mod:NewTargetAnnounce(328479, 2)
 local specWarnShadeSpawned						= mod:NewSpecialWarningSwitch("ej21966", nil, nil, nil, 1, 2)
 local specWarnBurningRemnants					= mod:NewSpecialWarningStack(326456, nil, 18, nil, nil, 1, 6)
 local specWarnBurningRemnantsTaunt				= mod:NewSpecialWarningTaunt(326456, nil, nil, nil, 1, 2)
-local specWarnEmberBlast						= mod:NewSpecialWarningMoveTo(325877, nil, nil, nil, 1, 2)
+local specWarnEmberBlast						= mod:NewSpecialWarningMoveTo(325877, false, nil, nil, 1, 2)--Opt in as needed
 local yellEmberBlast							= mod:NewYell(325877, nil, nil, nil, "YELL")
 local yellEmberBlastFades						= mod:NewFadesYell(325877, nil, nil, nil, "YELL")
 --local specWarnBlazingSurge						= mod:NewSpecialWarningMoveAway(329509, nil, nil, nil, 1, 2)
@@ -78,8 +79,8 @@ local specWarnGreaterCastigation				= mod:NewSpecialWarningMoveAway(328885, nil,
 local specWarnVanquished						= mod:NewSpecialWarningStack(325442, nil, 18, nil, nil, 1, 6)
 local specWarnVanquishedTaunt					= mod:NewSpecialWarningTaunt(325442, nil, nil, nil, 1, 2)
 --Assassin
-local specWarnRapidStrikes						= mod:NewSpecialWarningMoveAway(326583, nil, nil, nil, 1, 2)
-local yellRapidStrikes							= mod:NewYell(326583)
+local specWarnCrimsonFury						= mod:NewSpecialWarningMoveAway(326583, nil, nil, nil, 1, 2)
+local yellCrimsonFury							= mod:NewYell(326583)
 --Vile Occultist
 local specWarnVulgarBrand						= mod:NewSpecialWarningInterrupt(333002, "HasInterrupt", nil, nil, 1, 2)
 --Phoenix
@@ -103,7 +104,7 @@ local timerVanquishingStrikeCD					= mod:NewCDTimer(5.5, 325440, nil, "Tank", ni
 ----Bleakwing Assassin
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(21993))
 --local timerBleakwingAssassinCD					= mod:NewCDTimer(80, "ej21993", nil, nil, nil, 1, 326583, DBM_CORE_L.DAMAGE_ICON)
-local timerRapidStrikesCD						= mod:NewAITimer(44.3, 326583, nil, false, nil, 3)--Too many to track via normal bars, this needs nameplate bars/icon
+--local timerCrimsonFuryCD						= mod:NewAITimer(44.3, 326583, nil, false, nil, 3)--Too many to track via normal bars, this needs nameplate bars/icon
 ----Vile Occultist
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(21952))
 --local timerVileOccultistCD						= mod:NewCDTimer(10, "ej21952", nil, nil, nil, 1, 329565, DBM_CORE_L.DAMAGE_ICON)
@@ -148,7 +149,7 @@ function mod:EmberBlastTarget(targetname, uId, bossuid, scanningTime)
 		specWarnEmberBlast:Play("gathershare")
 		yellEmberBlast:Yell()
 		yellEmberBlastFades:Countdown(5-scanningTime)
-	elseif not self:IsTank() then
+	elseif self.Options.SpecWarn325877moveto then
 		specWarnEmberBlast:Show(targetname)
 		specWarnEmberBlast:Play("gathershare")
 	else
@@ -277,7 +278,7 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 326583 then
-		timerRapidStrikesCD:Start(15, args.sourceGUID)
+--		timerCrimsonFuryCD:Start(15, args.sourceGUID)
 	elseif spellId == 325665 and self:AntiSpam(3, 3) then
 		warnSoulInfusion:Show()
 	end
@@ -355,11 +356,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnGreaterCastigation:Show()
 		specWarnGreaterCastigation:Play("scatter")
 	elseif spellId == 326583 then
-		warnRapidStrikes:CombinedShow(0.5, args.destName)
-		if args:IsPlayer() then
-			specWarnRapidStrikes:Show()
-			specWarnRapidStrikes:Play("runout")
-			yellRapidStrikes:Yell()
+		warnCrimsonFury:CombinedShow(0.5, args.destName)
+		if args:IsPlayer() and self:AntiSpam(3, 8) then
+			specWarnCrimsonFury:Show()
+			specWarnCrimsonFury:Play("runout")
+			yellCrimsonFury:Yell()
 		end
 	elseif spellId == 328479 then
 		warnEyeOnTarget:CombinedShow(1, args.destName)
@@ -373,7 +374,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				DBM.Nameplate:Show(true, args.sourceGUID, spellId, nil, 10)
 			end
 		end
-	elseif spellId == 323402 then--Reflection of Guilt (Shade Coming out)
+	elseif spellId == 323402 and self:AntiSpam(3, 7) then--Reflection of Guilt (Shade Coming out)
 		specWarnShadeSpawned:Show()
 		specWarnShadeSpawned:Play("bigmob")
 		timerFieryStrikeCD:Start(14)
@@ -381,7 +382,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerBlazingSurgeCD:Start(28.8)
 	elseif spellId == 335581 and self:AntiSpam(5, 6) then
 		warnVileOccultists:Show()
-	elseif spellId == 338600 then
+	elseif spellId == 337859 then
 		self.vb.shieldActive = true
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:SetHeader(args.spellName)
@@ -409,7 +410,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerFieryStrikeCD:Stop()
 		--TODO, some data supports this but still needs more thorough vetting
 		timerSoulInfuserCD:Start(10)
-	elseif spellId == 338600 then
+	elseif spellId == 337859 then
 		self.vb.shieldActive = false
 		specWarnUnleashedPyroclasm:Show(args.destName)
 		specWarnUnleashedPyroclasm:Play("kickcast")
@@ -433,8 +434,8 @@ function mod:UNIT_DIED(args)
 	elseif cid == 165764 then--Rockbound Vanquisher
 		timerVanquishingStrikeCD:Stop(args.destGUID)
 		--timerConcussiveSmashCD:Stop(castsPerGUID[args.destGUID]+1, args.destGUID)
-	elseif cid == 167566 then--bleakwing-assassin
-		timerRapidStrikesCD:Stop(args.destGUID)
+--	elseif cid == 167566 then--bleakwing-assassin
+--		timerCrimsonFuryCD:Stop(args.destGUID)
 --	elseif cid == 165763 then--vile-occultist
 --		timerVulgarBrandCD:Stop(args.destGUID)
 --	elseif cid == 168962 then--Reborn Phoenix

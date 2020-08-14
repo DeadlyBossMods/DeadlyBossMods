@@ -11,9 +11,9 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 322818 323013",
 	"SPELL_AURA_REMOVED 323013",
 	"SPELL_CAST_START 322814 322999",
-	"SPELL_CAST_SUCCESS 322818",
-	"SPELL_PERIODIC_DAMAGE 322817",
-	"SPELL_PERIODIC_MISSED 322817"
+	"SPELL_CAST_SUCCESS 322818"
+--	"SPELL_PERIODIC_DAMAGE 322817",
+--	"SPELL_PERIODIC_MISSED 322817"
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
@@ -28,7 +28,7 @@ local warnAnimaShield				= mod:NewTargetNoFilterAnnounce(323013, 3)
 --Stage 1
 local specWarnLingeringDoubt		= mod:NewSpecialWarningMoveAway(322818, nil, nil, nil, 1, 2)
 local yellLingeringDoubt			= mod:NewYell(322818)
-local specWarnGTFO					= mod:NewSpecialWarningGTFO(322817, nil, nil, nil, 1, 8)
+--local specWarnGTFO					= mod:NewSpecialWarningGTFO(322817, nil, nil, nil, 1, 8)
 --Stage 2
 local specWarnActivate				= mod:NewSpecialWarningSpell(322999, nil, nil, nil, 2, 2)
 
@@ -98,6 +98,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
+--[[
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
 	if spellId == 322817 and destGUID == UnitGUID("player") and self:AntiSpam(2, 2) then
 		specWarnGTFO:Show(spellName)
@@ -106,7 +107,6 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spell
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
---[[
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 257453  then
 

@@ -15,9 +15,9 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 328334 334948 330965 330978 327497 327052",
 	"SPELL_CAST_SUCCESS 335777 331704 331634 330959",
-	"SPELL_AURA_APPLIED 330967 327773 331706 331636 331637 332535 335775",
+	"SPELL_AURA_APPLIED 330967 327773 331706 331636 331637 332535 335775 342457 342861 342456",
 	"SPELL_AURA_APPLIED_DOSE 327773 332535",
-	"SPELL_AURA_REMOVED 330967 331706 331636 331637 335775 330959",
+	"SPELL_AURA_REMOVED 330967 331706 331636 331637 335775 330959 342457 342861 342456",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 	"UNIT_DIED",
@@ -27,6 +27,8 @@ mod:RegisterEventsInCombat(
 --TODO, upgrade Cadre to special warning for melee/everyone based on where they spawn?
 --TODO, tune the tank stack warning for drain essence
 --TODO, dance helper?
+--TODO, refine dancing fever, it was a last minute hotfix after all
+--TODO, refine dark recital with nameplate auras instead, and have icons off by default?
 --TODO, Handling of boss timers with dance. Currently they just mass queue up and don't reset, pause or anything, resulting in bosses chaining abilities after dance.
 --		As such, keep an eye on this changing, if it doesn't, just add "keep" to all timers to show they are all queued up. if it changes, update timers to either reset, or pause
 --[[
@@ -51,6 +53,7 @@ local warnDarkRecital							= mod:NewTargetNoFilterAnnounce(331634, 3)
 local warnDancingFools							= mod:NewSpellAnnounce(330964, 2)--Two bosses dead
 --Intermission
 local warnDanceOver								= mod:NewEndAnnounce(330959, 2)
+local warnDancingFever							= mod:NewTargetAnnounce(342457, 3)
 
 --General
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(327475, nil, nil, nil, 1, 8)
@@ -73,10 +76,11 @@ local yellScarletLetterFades					= mod:NewShortFadesYell(331706)--One boss dead
 local specWarnEvasiveLunge						= mod:NewSpecialWarningSpell(327497, "Tank", nil, nil, 1, 2)
 local specWarnWaltzofBlood						= mod:NewSpecialWarningDodge(327616, nil, nil, nil, 2, 2)
 local specWarnDarkRecital						= mod:NewSpecialWarningMoveTo(331634, nil, nil, nil, 1, 2)--One boss dead
-local yellDarkRecital							= mod:NewShortYell(331634)--One boss dead
 local yellDarkRecitalRepeater					= mod:NewIconRepeatYell(331634, DBM_CORE_L.AUTO_YELL_ANNOUNCE_TEXT.shortyell)--One boss dead (TODO, remove custom yell text if less than 16 targets)
 --Intermission
 local specWarnDanseMacabre						= mod:NewSpecialWarningSpell(331005, nil, nil, nil, 3, 2)
+local specWarnDancingFever						= mod:NewSpecialWarningMoveAway(342457, nil, nil, nil, 1, 2, 4)
+local yellDancingFever							= mod:NewYell(342457, nil, false)--Off by default do to potential to spam when spread, going to dry run nameplate auras for this
 
 --Castellan Niklaus
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22147))
@@ -110,6 +114,7 @@ local timerDancingFoolsCD						= mod:NewCDTimer(30.7, 330964, nil, nil, nil, 1)
 --mod:AddSetIconOption("SetIconOnMuttering", 310358, true, false, {2, 3, 4, 5, 6, 7, 8})
 mod:AddNamePlateOption("NPAuraOnFixate", 330967)
 mod:AddNamePlateOption("NPAuraOnShield", 335775)
+mod:AddNamePlateOption("NPAuraOnFever", 342457)
 
 mod.vb.phase = 1
 local darkRecitalTargets = {}
@@ -152,6 +157,9 @@ function mod:OnCombatStart(delay)
 	if self.Options.NPAuraOnFixate or self.Options.NPAuraOnShield then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
+	if self.Options.NPAuraOnFever then
+		DBM:FireEvent("BossMod_EnableFriendlyNameplates")
+	end
 --	if self.Options.RangeFrame then
 --		DBM.RangeCheck:Show(4)
 --	end
@@ -165,8 +173,8 @@ function mod:OnCombatEnd()
 --	if self.Options.RangeFrame then
 --		DBM.RangeCheck:Hide()
 --	end
-	if self.Options.NPAuraOnFixate or self.Options.NPAuraOnShield then
-		DBM.Nameplate:Hide(false, nil, nil, nil, true, true)
+	if self.Options.NPAuraOnFixate or self.Options.NPAuraOnShield or self.Options.NPAuraOnFever then
+		DBM.Nameplate:Hide(false, nil, nil, nil, true, self.Options.NPAuraOnFixate or self.Options.NPAuraOnShield, self.Options.NPAuraOnFever)
 	end
 end
 
@@ -301,10 +309,8 @@ function mod:SPELL_AURA_APPLIED(args)
 				self:Unschedule(darkRecitalYellRepeater)
 				if type(icon) == "number" then icon = DBM_CORE_L.AUTO_YELL_CUSTOM_POSITION:format(icon, "") end
 				self:Schedule(2, darkRecitalYellRepeater, self, icon)
+				yellDarkRecitalRepeater:Yell(icon)
 			end
-		end
-		if args:IsPlayer() then
-			yellDarkRecital:Yell()
 		end
 	elseif spellId == 332535 then--Anima Infusion
 		if self:AntiSpam(30, spellId) then
@@ -365,6 +371,16 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.NPAuraOnShield then
 			DBM.Nameplate:Show(true, args.destGUID, spellId)
 		end
+	elseif spellId == 342457 or spellId == 342861 or spellId == 342456 then
+		warnDancingFever:CombinedShow(1, args.destName)
+		if args:IsPlayer() then
+			specWarnDancingFever:Show()
+			specWarnDancingFever:Play("runout")
+			yellDancingFever:Yell()
+		end
+		if self.Options.NPAuraOnFever then
+			DBM.Nameplate:Show(true, args.destGUID, spellId, nil, 300)
+		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -390,6 +406,10 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 330959 and self:AntiSpam(10, 2) then
 		warnDanceOver:Show()
 		--TODO, timer correction if blizzard changes how they work
+	elseif spellId == 342457 or spellId == 342861 or spellId == 342456 then
+		if self.Options.NPAuraOnFever then
+			DBM.Nameplate:Hide(true, args.destGUID, spellId)
+		end
 	end
 end
 

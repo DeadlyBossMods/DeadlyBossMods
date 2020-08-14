@@ -71,7 +71,7 @@ end
 
 DBM = {
 	Revision = parseCurseDate("@project-date-integer@"),
-	DisplayVersion = "8.3.31", -- the string that is shown as version
+	DisplayVersion = "8.3.32 alpha", -- the string that is shown as version
 	ReleaseRevision = releaseDate(2020, 8, 12) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 }
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
@@ -6690,7 +6690,7 @@ do
 	end
 
 	function DBM:PlaySound(path, ignoreSFX, validate)
-		if self.Options.SilentMode then return end
+		if self.Options.SilentMode or path == "" or path == "None" then return end
 		playSound(self, path, ignoreSFX, validate)
 	end
 end
@@ -9211,7 +9211,7 @@ do
 		local argTable = {...}
 		for i = 1, #argTable do
 			if type(argTable[i]) == "string" then
-				if #self.combinedtext < 8 then--Throttle spam. We may not need more than 9 targets..
+				if #self.combinedtext < 7 then--Throttle spam. We may not need more than 6 targets..
 					if not checkEntry(self.combinedtext, argTable[i]) then
 						self.combinedtext[#self.combinedtext + 1] = argTable[i]
 					end
@@ -9966,7 +9966,7 @@ do
 		local argTable = {...}
 		for i = 1, #argTable do
 			if type(argTable[i]) == "string" then
-				if #self.combinedtext < 8 then--Throttle spam. We may not need more than 9 targets..
+				if #self.combinedtext < 6 then--Throttle spam. We may not need more than 5 targets..
 					if not checkEntry(self.combinedtext, argTable[i]) then
 						self.combinedtext[#self.combinedtext + 1] = argTable[i]
 					end
