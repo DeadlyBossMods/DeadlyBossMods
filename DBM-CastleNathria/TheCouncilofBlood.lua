@@ -28,6 +28,7 @@ mod:RegisterEventsInCombat(
 --TODO, tune the tank stack warning for drain essence
 --TODO, dance helper?
 --TODO, refine dancing fever, it was a last minute hotfix after all
+--TODO, refine dark recital with nameplate auras instead, and have icons off by default?
 --TODO, Handling of boss timers with dance. Currently they just mass queue up and don't reset, pause or anything, resulting in bosses chaining abilities after dance.
 --		As such, keep an eye on this changing, if it doesn't, just add "keep" to all timers to show they are all queued up. if it changes, update timers to either reset, or pause
 --[[
@@ -75,7 +76,6 @@ local yellScarletLetterFades					= mod:NewShortFadesYell(331706)--One boss dead
 local specWarnEvasiveLunge						= mod:NewSpecialWarningSpell(327497, "Tank", nil, nil, 1, 2)
 local specWarnWaltzofBlood						= mod:NewSpecialWarningDodge(327616, nil, nil, nil, 2, 2)
 local specWarnDarkRecital						= mod:NewSpecialWarningMoveTo(331634, nil, nil, nil, 1, 2)--One boss dead
-local yellDarkRecital							= mod:NewShortYell(331634)--One boss dead
 local yellDarkRecitalRepeater					= mod:NewIconRepeatYell(331634, DBM_CORE_L.AUTO_YELL_ANNOUNCE_TEXT.shortyell)--One boss dead (TODO, remove custom yell text if less than 16 targets)
 --Intermission
 local specWarnDanseMacabre						= mod:NewSpecialWarningSpell(331005, nil, nil, nil, 3, 2)
@@ -309,10 +309,8 @@ function mod:SPELL_AURA_APPLIED(args)
 				self:Unschedule(darkRecitalYellRepeater)
 				if type(icon) == "number" then icon = DBM_CORE_L.AUTO_YELL_CUSTOM_POSITION:format(icon, "") end
 				self:Schedule(2, darkRecitalYellRepeater, self, icon)
+				yellDarkRecitalRepeater:Yell(icon)
 			end
-		end
-		if args:IsPlayer() then
-			yellDarkRecital:Yell()
 		end
 	elseif spellId == 332535 then--Anima Infusion
 		if self:AntiSpam(30, spellId) then
