@@ -498,11 +498,11 @@ function mod:UNIT_DIED(args)
 	if cid == 168973 then--High Torturer Darithos
 		timerGreaterCastigationCD:Stop()
 		if not self.vb.shadeActive then
-			timerVanquisherCD:Start(8-delay, 1)
-			timerSoulInfuserCD:Start(8-delay, 1)
-			timerPesteringFiendCD:Start(8-delay, 1)
-			timerBleakwingAssassinCD:Start(28-delay, 1)
-			timerVileOccultistCD:Start(70-delay, 1)
+			timerVanquisherCD:Start(8, 1)
+			timerSoulInfuserCD:Start(8, 1)
+			timerPesteringFiendCD:Start(8, 1)
+			timerBleakwingAssassinCD:Start(28, 1)
+			timerVileOccultistCD:Start(70, 1)
 		end
 	elseif cid == 165764 then--Rockbound Vanquisher
 		timerVanquishingStrikeCD:Stop(args.destGUID)
