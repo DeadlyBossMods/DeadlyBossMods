@@ -12,7 +12,7 @@ mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 325379 332665 331550 334017",
+	"SPELL_CAST_START 325379 342321 332665 331550 334017 339521 341621",
 --	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED 325382 325936 324983 332664 335396 339525 340477 340452",
 	"SPELL_AURA_APPLIED_DOSE 325382",
@@ -29,10 +29,12 @@ mod:RegisterEventsInCombat(
 --TODO, rework timers further since they are still hardly that accurate and blizz will no doubt change power rates again.
 --TODO, does https://shadowlands.wowhead.com/spell=331573/unconscionable-guilt need anything? doesn't say it stacks
 --TODO, if container fill timers work, maybe support doing it with infoframe instead
+--TODO, fix initial timers using a valid transcriptor log that resets boss and repulls boss to cleanup the bad first pull data from bugged ES event
 --[[
 --Sadly, most of timers not in combat log
-(ability.id = 325379 or ability.id = 332665) and type = "begincast"
- or (ability.id = 331550 or ability.id = 334017) and type = "begincast"
+(ability.id = 325379 or ability.id = 332665 or ability.id = 342321 or ability.id = 342280 or ability.id = 341621) and type = "begincast"
+ or ability.id = 324983 and type = "applydebuff"
+ or (ability.id = 331550 or ability.id = 334017 or ability.id = 339521) and type = "begincast"
 --]]
 local warnWarpedDesires							= mod:NewStackAnnounce(325382, 2, nil, "Tank|Healer")
 local warnSharedCognition						= mod:NewTargetNoFilterAnnounce(325936, 4, nil, "Healer")
@@ -181,10 +183,10 @@ function mod:OnCombatStart(delay)
 	table.wipe(castsPerGUID)
 --	if self:IsMythic() then
 		timerFocusContainerCD:Start(3.7-delay)
-		timerExposedDesiresCD:Start(12.4-delay)
-		timerSinsandSufferingCD:Start(17.6-delay)
-		timerBottledAnimaCD:Start(35.6-delay)
-		timerConcentratedAnimaCD:Start(44-delay)
+		timerExposedDesiresCD:Start(10.9-delay)
+		timerSinsandSufferingCD:Start(17.6-delay)--23.6
+		timerBottledAnimaCD:Start(35.6-delay)--31.5
+		timerConcentratedAnimaCD:Start(44-delay)--Not cast on normal until near end of fight
 --	else
 --		timerFocusContainerCD:Start(3.8-delay)
 --		timerExposedDesiresCD:Start(13.9-delay)
@@ -220,18 +222,18 @@ end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 325379 then
+	if spellId == 325379 or spellId == 341621 then
 		--1 Expose Desires (tank), 2 Bottled Anima (bouncing bottles), 3 Sins and Suffering (links), 4 Concentrate Anima (adds)
-		timerExposedDesiresCD:Start(self.vb.containerActive == 1 and 8.2 or 10.6)
+		timerExposedDesiresCD:Start(self.vb.containerActive == 1 and 8.2 or 10.6)--Possibly 8, 10, and 13
 		if self:IsTanking("player", "boss1", nil, true) then
 			specWarnExposeDesires:Show()
 			specWarnExposeDesires:Play("defensive")
 		end
-	elseif spellId == 332665 then
+	elseif spellId == 342321 or spellId == 332665 then
 		self.vb.addIcon = 8
 		--1 Expose Desires (tank), 2 Bottled Anima (bouncing bottles), 3 Sins and Suffering (links), 4 Concentrate Anima (adds)
 		timerConcentratedAnimaCD:Start(self.vb.containerActive == 4 and 42.8 or 62.3)
-	elseif spellId == 331550 then--Conjured Manifestation
+	elseif spellId == 331550 or spellId == 339521 then--Conjured Manifestation
 		if not castsPerGUID[args.sourceGUID] then
 			castsPerGUID[args.sourceGUID] = 0
 			if self.Options.SetIconOnAdds and self.vb.addIcon > 3 then--Only use up to 5 icons
@@ -360,11 +362,11 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 325774 then--Bottled Anima
 		warnBottledAnima:Show()
-		timerBottledAnimaCD:Start(self.vb.containerActive == 2 and 17.1 or 32.2)
+		timerBottledAnimaCD:Start(self.vb.containerActive == 2 and 17.1 or 30)
 	elseif spellId == 325064 then--Sins and Suffering
 		self.vb.sufferingIcon = 1
 		--1 Expose Desires (tank), 2 Bottled Anima (bouncing bottles), 3 Sins and Suffering (links), 4 Concentrate Anima (adds)
-		timerSinsandSufferingCD:Start(self.vb.containerActive == 3 and 32.4 or 53.9)
+		timerSinsandSufferingCD:Start(self.vb.containerActive == 3 and 32.4 or 53.4)
 	elseif spellId == 338749 then--Disable Container
 --		timerFocusContainerCD:Start(99.5)--62-99.5
 		--1 Expose Desires (tank), 2 Bottled Anima (bouncing bottles), 3 Sins and Suffering (links), 4 Concentrate Anima (adds)
