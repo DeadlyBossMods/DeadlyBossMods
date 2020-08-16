@@ -315,8 +315,8 @@ function mod:UNIT_DIED(args)
 		timerShadesofBargastCD:Stop()
 		--Start Next Dog. Move if order changes or is variable
 		timerPetrifyingHowlCD:Start(20)
-		--Timer is decreased from 60 to 50, but NOT existing timer. If that changes, simply uncomment code
 		if self:IsMythic() then
+			--Timer is decreased from 60 to 50, but NOT existing timer. If that changes, simply uncomment code
 			--local elapsed, total = timerSinseekerCD:GetTime(self.vb.sinSeekerCount+1)
 			--if remaining > 10 then
 			--	timerSinseekerCD:Update(elapsed, total-10, self.vb.sinSeekerCount+1)

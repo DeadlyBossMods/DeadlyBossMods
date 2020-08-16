@@ -313,7 +313,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				yellDarkRecitalRepeater:Yell(icon)
 			end
 		end
-	elseif spellId == 332535 or spellId == 332535 then--Anima Infusion
+	elseif spellId == 332535 then--Anima Infusion
 		if self:AntiSpam(30, spellId) then
 			--Bump phase and stop all timers since regardless of kills, phase changes reset anyone that's still up
 			self.vb.phase = self.vb.phase + 1
