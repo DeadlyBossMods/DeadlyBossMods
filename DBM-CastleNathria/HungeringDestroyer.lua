@@ -163,11 +163,19 @@ function mod:OnCombatStart(delay)
 	self.vb.desolateCount = 0
 	self.vb.miasmaCount = 0
 	timerGluttonousMiasmaCD:Start(3-delay, 1)--3-6?
-	timerOverwhelmCD:Start(5-delay)
-	timerVolatileEjectionCD:Start(10.1-delay, 1)
-	timerDesolateCD:Start(22.2-delay, 1)
-	timerExpungeCD:Start(33-delay, 1)--Hit or miss
-	timerConsumeCD:Start(111-delay, 1)
+	if self:IsEasy() then
+		timerOverwhelmCD:Start(6.2-delay)
+		timerVolatileEjectionCD:Start(12.4-delay, 1)
+		timerDesolateCD:Start(27.5-delay, 1)
+		timerExpungeCD:Start(41-delay, 1)
+		timerConsumeCD:Start(139-delay, 1)
+	else
+		timerOverwhelmCD:Start(5-delay)
+		timerVolatileEjectionCD:Start(10.1-delay, 1)
+		timerDesolateCD:Start(22.2-delay, 1)
+		timerExpungeCD:Start(33-delay, 1)
+		timerConsumeCD:Start(111-delay, 1)
+	end
 --	if self.Options.NPAuraOnVolatileCorruption then
 --		DBM:FireEvent("BossMod_EnableHostileNameplates")
 --	end
@@ -230,18 +238,21 @@ function mod:SPELL_CAST_START(args)
 		self.vb.consumeCount = self.vb.consumeCount + 1
 		specWarnConsume:Show(self.vb.consumeCount)
 		specWarnConsume:Play("justrun")
-		timerConsumeCD:Start(120, self.vb.consumeCount+1)
+		timerConsumeCD:Start(self:IsEasy() and 150 or 120, self.vb.consumeCount+1)
 --	elseif spellId == 329758 then
 --		timerExpungeCD:Start()
 	elseif spellId == 334266 then
 		self.vb.volatileIcon = 5
 		self.vb.volatileCast = self.vb.volatileCast + 1
+		--Heroic, Mythic
 		--10.1, 36.1, 12.0, 36.0, 36.0, 36.0, 12.0, 36.0, 36.1, 35.9, 12.1, 35.9, 36.0
+		--Normal, LFR?
+		--12.4, 45, 14.9, 45,
 		--2, 6, 10, 14, etc
 		if self.vb.volatileCast % 4 == 0 then
-			timerVolatileEjectionCD:Start(12, self.vb.volatileCast-1)--Minus isn't a bug, the counter is off by 2 for perfect timers
+			timerVolatileEjectionCD:Start(self:IsEasy() and 14.9 or 12, self.vb.volatileCast-1)--Minus isn't a bug, the counter is off by 2 for perfect timers
 		else
-			timerVolatileEjectionCD:Start(35.9, self.vb.volatileCast-1)--Minus isn't a bug, the counter is off by 2 for perfect timers
+			timerVolatileEjectionCD:Start(self:IsEasy() and 45 or 35.9, self.vb.volatileCast-1)--Minus isn't a bug, the counter is off by 2 for perfect timers
 		end
 	elseif spellId == 329455 then
 		self.vb.desolateCount = self.vb.desolateCount + 1
@@ -251,7 +262,7 @@ function mod:SPELL_CAST_START(args)
 			specWarnOverwhelm:Show()
 			specWarnOverwhelm:Play("defensive")
 		end
-		timerOverwhelmCD:Start()--11.2
+		timerOverwhelmCD:Start(self:IsEasy() and 15 or 11.2)--11.2
 	end
 end
 
@@ -270,7 +281,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self:AntiSpam(10, 3) then
 			table.wipe(GluttonousTargets)
 			self.vb.miasmaCount = self.vb.miasmaCount + 1
-			timerGluttonousMiasmaCD:Start(23.8, self.vb.miasmaCount+1)
+			timerGluttonousMiasmaCD:Start(23.8, self.vb.miasmaCount+1)--Same in all difficulties
 		end
 		if not tContains(GluttonousTargets, args.destName) then
 			table.insert(GluttonousTargets, args.destName)
@@ -366,13 +377,17 @@ function mod:SPELL_DAMAGE(_, _, _, _, _, _, _, _, spellId)
 		specWarnExpunge:Cancel()
 		specWarnExpunge:CancelVoice()
 		if (self.vb.expungeCount) % 3 == 0 then
-			specWarnExpunge:Schedule(43)
-			specWarnExpunge:ScheduleVoice(43, "scatter")
-			timerExpungeCD:StarT(43, self.vb.expungeCount+1)
+			--Actual timers are +5, but since we trigger off damage, have to make adjustment
+			local timer = self:IsEasy() and 55 or 43
+			specWarnExpunge:Schedule(timer)
+			specWarnExpunge:ScheduleVoice(timer, "scatter")
+			timerExpungeCD:StarT(timer, self.vb.expungeCount+1)
 		else
-			specWarnExpunge:Schedule(43)
-			specWarnExpunge:ScheduleVoice(30.8, "scatter")
-			timerExpungeCD:Start(30.8, self.vb.expungeCount+1)
+			--Actual timers are +5, but since we trigger off damage, have to make adjustment
+			local timer = self:IsEasy() and 40 or 30.8
+			specWarnExpunge:Schedule(timer)
+			specWarnExpunge:ScheduleVoice(timer, "scatter")
+			timerExpungeCD:Start(timer, self.vb.expungeCount+1)
 		end
 	end
 end

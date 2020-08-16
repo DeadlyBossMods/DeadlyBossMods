@@ -14,7 +14,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 328334 334948 330965 330978 327497 327052",
-	"SPELL_CAST_SUCCESS 335777 331704 331634 330959",
+	"SPELL_CAST_SUCCESS 335777 331704 331634 330959 334948",
 	"SPELL_AURA_APPLIED 330967 327773 331706 331636 331637 332535 335775 342457 342861 342456",
 	"SPELL_AURA_APPLIED_DOSE 327773 332535",
 	"SPELL_AURA_REMOVED 330967 331706 331636 331637 335775 330959 342457 342861 342456",
@@ -33,7 +33,7 @@ mod:RegisterEventsInCombat(
 --		As such, keep an eye on this changing, if it doesn't, just add "keep" to all timers to show they are all queued up. if it changes, update timers to either reset, or pause
 --[[
 (ability.id = 328334 or ability.id = 334948 or ability.id = 330965 or ability.id = 330978 or ability.id = 327497 or ability.id = 327052 or ability.id = 327465) and type = "begincast"
- or (ability.id = 335777 or ability.id = 331704 or ability.id = 331634) and type = "cast"
+ or (ability.id = 335777 or ability.id = 331704 or ability.id = 331634 or ability.id = 334948) and type = "cast"
  or ability.id = 332535 or ability.id = 330959
  or (ability.id = 330964 or ability.id = 335773) and type = "cast"
  or (target.id = 166971 or target.id = 166969 or target.id = 166970) and type = "death"
@@ -87,7 +87,7 @@ mod:AddTimerLine(DBM:EJ_GetSectionInfo(22147))
 local timerTacticalAdvanceCD					= mod:NewCDTimer(4, 328334, nil, nil, nil, 3)--Continues on Mythic after death
 local timerUnyieldingShieldCD					= mod:NewCDTimer(18.2, 335777, nil, nil, nil, 5, nil, DBM_CORE_L.DAMAGE_ICON)
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22201))
-local timerUnstoppableChargeCD					= mod:NewCDTimer(19.5, 334948, nil, nil, nil, 3)
+local timerUnstoppableChargeCD					= mod:NewCDTimer(15.9, 334948, nil, nil, nil, 3)
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22199))
 local timerCastellansCadreCD					= mod:NewCDTimer(27.1, 330965, nil, nil, nil, 1)
 --Baroness Frieda
@@ -146,8 +146,8 @@ function mod:OnCombatStart(delay)
 	self.vb.phase = 1
 	table.wipe(darkRecitalTargets)
 	--Castellan Niklaus
-	timerTacticalAdvanceCD:Start(4.5-delay)
-	timerUnyieldingShieldCD:Start(15.3-delay)
+	timerTacticalAdvanceCD:Start(4.3-delay)
+	timerUnyieldingShieldCD:Start(15.1-delay)
 	--Baroness Frieda
 	timerDrainEssenceCD:Start(6.9-delay)
 	timerAnimaFountainCD:Start(15.5-delay)
@@ -199,7 +199,6 @@ function mod:SPELL_CAST_START(args)
 				warnUnstoppableCharge:Show()
 			end
 		end
-		timerUnstoppableChargeCD:Start()
 	elseif spellId == 330965 then
 		warnCastellansCadre:Show()
 		timerCastellansCadreCD:Start()
@@ -239,6 +238,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 330959 and self:AntiSpam(10, 1) then
 		specWarnDanseMacabre:Show()
 		specWarnDanseMacabre:Play("specialsoon")
+	elseif spellId == 334948 then
+		timerUnstoppableChargeCD:Start()
 	end
 end
 
@@ -312,7 +313,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				yellDarkRecitalRepeater:Yell(icon)
 			end
 		end
-	elseif spellId == 332535 then--Anima Infusion
+	elseif spellId == 332535 or spellId == 332535 then--Anima Infusion
 		if self:AntiSpam(30, spellId) then
 			--Bump phase and stop all timers since regardless of kills, phase changes reset anyone that's still up
 			self.vb.phase = self.vb.phase + 1
@@ -352,7 +353,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				--timerUnyieldingShieldCD:Stop()
 				--timerTacticalAdvanceCD:Start(2)
 				--timerUnyieldingShieldCD:Start(2)
-				timerUnstoppableChargeCD:Start(6.2)
+				timerUnstoppableChargeCD:Start(6)
 			elseif cid == 166969 then--Baroness Frieda
 				--timerDrainEssenceCD:Stop()
 				--timerAnimaFountainCD:Stop()

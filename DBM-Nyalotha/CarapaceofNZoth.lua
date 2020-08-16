@@ -436,7 +436,12 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnBlackScar:Show(amount)
 				specWarnBlackScar:Play("stackhigh")
 			else
-				if not UnitIsDeadOrGhost("player") and not DBM:UnitDebuff("player", spellId) then
+				local _, _, _, _, expireTime = DBM:UnitDebuff("player", spellId)
+				local remaining
+				if expireTime then
+					remaining = expireTime-GetTime()
+				end
+				if not UnitIsDeadOrGhost("player") and (not remaining or remaining and remaining < 12.7) then
 					specWarnBlackScarTaunt:Show(args.destName)
 					specWarnBlackScarTaunt:Play("tauntboss")
 				else

@@ -5,8 +5,8 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(165066)
 mod:SetEncounterID(2418)
 mod:SetUsedIcons(1, 2, 3)
-mod:SetHotfixNoticeRev(20200730000000)--2020, 7, 30
-mod:SetMinSyncRevision(20200730000000)
+mod:SetHotfixNoticeRev(20200815000000)--2020, 8, 15
+mod:SetMinSyncRevision(20200815000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
@@ -27,8 +27,7 @@ mod:RegisterEventsInCombat(
 
 --TODO, handling of mythic Sinseeker buffs by detecting which hound buffs it currently has (by using phase probably)
 --TODO, energy tracker on nameplates for https://shadowlands.wowhead.com/spell=335303/unyielding
---TODO, watch for final behavior of timers. in first test pulls boss timers changed/reset on dog deaths, on second half of testing, they didn't.
---TODO, add icons to auto mark Pierced Souls that spawn from mythic Sinseeker
+--TODO, continue watching timers, see if lfr and heroic follow same behavior as normal, or mythic.
 --[[
 (ability.id = 335114 or ability.id = 334404 or ability.id = 334971 or ability.id = 334797 or ability.id = 334757 or ability.id = 334852) and type = "begincast"
  or ability.id = 334945 and type = "cast"
@@ -78,11 +77,11 @@ local timerJaggedClawsCD						= mod:NewCDTimer(11, 334971, nil, "Tank", nil, 5, 
 local timerViciousLungeCD						= mod:NewCDTimer(25.7, 334945, nil, nil, nil, 3)
 ----Bargast
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22311))
-local timerRipSoulCD							= mod:NewCDTimer(30.1, 334797, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON..DBM_CORE_L.HEALER_ICON)
+local timerRipSoulCD							= mod:NewCDTimer(30, 334797, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON..DBM_CORE_L.HEALER_ICON)
 local timerShadesofBargastCD					= mod:NewCDTimer(60.1, 334757, nil, nil, nil, 1, nil, DBM_CORE_L.DAMAGE_ICON)--60-63 at least
 ----Hecutis
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22310))
-local timerPetrifyingHowlCD						= mod:NewCDTimer(20.6, 334852, nil, nil, nil, 3)
+local timerPetrifyingHowlCD						= mod:NewCDTimer(20.6, 334852, nil, nil, nil, 3)--20-26
 
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
@@ -127,10 +126,10 @@ function mod:OnCombatStart(delay)
 	self.vb.activeSeekers = 0
 	playerSinSeeker = false
 	timerSpreadshotCD:Start(6-delay)
-	timerSinseekerCD:Start(25.5-delay, 1)
+	timerSinseekerCD:Start(29.7-delay, 1)
 	--Margore on pull on heroic testing, but can this change?
-	timerJaggedClawsCD:Start(10.9-delay)
-	timerViciousLungeCD:Start(18.7-delay)--SUCCESS of debuff, not Command Margore-335119
+	timerJaggedClawsCD:Start(10.1-delay)
+	timerViciousLungeCD:Start(18.4-delay)--SUCCESS of debuff, not Command Margore-335119
 --	if self.Options.NPAuraOnVolatileCorruption then
 --		DBM:FireEvent("BossMod_EnableHostileNameplates")
 --	end
@@ -153,7 +152,10 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 335114 then
 		self.vb.sinSeekerCount = self.vb.sinSeekerCount + 1
-		timerSinseekerCD:Start(self.vb.phase == 4 and 34.1 or 49, self.vb.sinSeekerCount+1)
+		--Mythic, Dog1: 49, Dog2: 60, Dog3: 50, dogs dead: 39.9
+		--Normal, Dog1: 49, Dog2: 60, Dog3: 60, dogs dead: 29.9
+		local timer = self:IsMythic() and (self.vb.phase == 4 and 39.9 or self.vb.phase == 2 and 60.2 or 49) or (self.vb.phase == 4 and 29.9 or self.vb.phase == 1 and 49 or 60.2)
+		timerSinseekerCD:Start(timer, self.vb.sinSeekerCount+1)
 		if self.vb.phase == 3 and self:IsMythic() then
 			updateRangeFrame(self, true)--Force show during cast so it's up a little early
 		end
@@ -293,29 +295,55 @@ function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 165067 then--margore
 		self.vb.phase = 2
+		timerSpreadshotCD:Stop()--Boss stops using this rest of fight? Might be a bug
 		timerJaggedClawsCD:Stop()
 		timerViciousLungeCD:Stop()
 		--Start Next Dog. Move if order changes or is variable
 		timerRipSoulCD:Start(15.6)
 		timerShadesofBargastCD:Start(23.4)
-		--Boss also adjusts timers, but only in first half of test pulls
---		timerSinseekerCD:Stop()
---		timerSinseekerCD:Start(28.5, self.vb.sinSeekerCount+1)
+		if self:IsMythic() then
+			--Timer is increased from 50 to 60 during bargast phase and this DOES INCLUDE existing timer
+			local elapsed, total = timerSinseekerCD:GetTime(self.vb.sinSeekerCount+1)
+			timerSinseekerCD:Update(elapsed, total+10, self.vb.sinSeekerCount+1)
+		else--Because why be consistent. On normal, boss reset timer for this
+			timerSinseekerCD:Stop()
+			timerSinseekerCD:Start(37.3, self.vb.sinSeekerCount+1)
+		end
 	elseif cid == 169457 then--bargast
 		self.vb.phase = 3
 		timerRipSoulCD:Stop()
 		timerShadesofBargastCD:Stop()
 		--Start Next Dog. Move if order changes or is variable
 		timerPetrifyingHowlCD:Start(20)
-		--Boss also adjusts timers, but only in first half of test pulls
---		timerSinseekerCD:Stop()
---		timerSinseekerCD:Start(23.7, self.vb.sinSeekerCount+1)
+		--Timer is decreased from 60 to 50, but NOT existing timer. If that changes, simply uncomment code
+		if self:IsMythic() then
+			--local elapsed, total = timerSinseekerCD:GetTime(self.vb.sinSeekerCount+1)
+			--if remaining > 10 then
+			--	timerSinseekerCD:Update(elapsed, total-10, self.vb.sinSeekerCount+1)
+			--else
+			--	timerSinseekerCD:Stop()
+			--end
+		else--Because why be consistent. On normal, boss reset timer for this
+			timerSinseekerCD:Stop()
+			timerSinseekerCD:Start(35.1, self.vb.sinSeekerCount+1)
+		end
 	elseif cid == 169458 then--hecutis
 		self.vb.phase = 4
 		timerPetrifyingHowlCD:Stop()
-		--Boss also adjusts timers, but only in first half of test pulls
---		timerSinseekerCD:Stop()
---		timerSinseekerCD:Start(38.7, self.vb.sinSeekerCount+1)
+		if self:IsMythic() then
+			--Timer is decreased from 50 to 40, INCLUDING existing timer, but only on mythic?
+			local elapsed, total = timerSinseekerCD:GetTime(self.vb.sinSeekerCount+1)
+			local remaining = total-elapsed
+			if remaining > 10 then
+				timerSinseekerCD:Update(elapsed, total-10, self.vb.sinSeekerCount+1)
+			else
+				timerSinseekerCD:Stop()
+			end
+		else
+			--Because why be consistent. On normal, boss just sets timer to a completely new value
+			timerSinseekerCD:Stop()
+			timerSinseekerCD:Start(15.7, self.vb.sinSeekerCount+1)
+		end
 	end
 end
 
