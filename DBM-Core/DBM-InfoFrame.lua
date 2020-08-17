@@ -18,8 +18,7 @@ local RAID_CLASS_COLORS = _G["CUSTOM_CLASS_COLORS"] or RAID_CLASS_COLORS-- for P
 --------------
 local infoFrame = DBM.InfoFrame
 local frame, initializeDropdown, currentMapId, currentEvent, createFrame
-local maxLines, modLines, maxCols, modCols = 5, 5, 1, 1
-local linesUpdate = false
+local maxLines, modLines, maxCols, modCols, prevLines = 5, 5, 1, 1, 0
 local sortMethod = 1--1 Default, 2 SortAsc, 3 GroupId
 local lines, sortedLines, icons, value = {}, {}, {}, {}
 local playerName = UnitName("player")
@@ -37,7 +36,7 @@ do
 	end
 
 	local function setLines(_, line)
-		linesUpdate = true
+		prevLines = 0
 		DBM.Options.InfoFrameLines = line
 		if line ~= 0 then
 			maxLines = line
@@ -47,7 +46,7 @@ do
 	end
 
 	local function setCols(_, col)
-		linesUpdate = true
+		prevLines = 0
 		DBM.Options.InfoFrameCols = col
 		if col ~= 0 then
 			maxCols = col
@@ -765,12 +764,12 @@ local function updateTest3()
 	end
 	if test3Counter < 40 then
 		local count = 0
-		for k, v in pairs(test2Table) do
+		for k, _ in pairs(test2Table) do
 			if count > 40 - test3Counter then
 				break
 			end
 			count = count + 1
-			lines[k] = v
+			lines[k] = mrandom(1, 10) * 10
 		end
 		test3Counter = test3Counter + 1
 	end
@@ -921,12 +920,15 @@ local function onUpdate(frame, table)
 	end
 	local maxWidth1, maxWidth2 = {}, {}
 	local linesPerRow = mmin(maxLines, mfloor(linesShown / maxCols + 0.99))
+	local shouldUpdate = prevLines ~= linesShown
 	for i = 1, linesShown do
-		if linesUpdate then
+		if shouldUpdate then
 			infoFrame:AlignLine(i * 2 - 1, linesPerRow * 2)
 			infoFrame:AlignLine(i * 2, linesPerRow * 2)
 		end
 		local m = mfloor(i / linesPerRow + 0.99)
+		frame.lines[i * 2 - 1]:SetWidth(0) -- Hack here, because the string width doesn't calculate properly.
+		frame.lines[i * 2]:SetWidth(0)
 		maxWidth1[m] = mmax(maxWidth1[m] or 0, frame.lines[i * 2 - 1]:GetStringWidth())
 		maxWidth2[m] = mmax(maxWidth2[m] or 0, frame.lines[i * 2]:GetStringWidth())
 	end
@@ -948,7 +950,7 @@ local function onUpdate(frame, table)
 	end
 	frame:SetSize(width, (linesPerRow * 12) + 12)
 	frame:Show()
-	linesUpdate = false
+	prevLines = linesShown
 end
 
 ---------------
@@ -960,7 +962,7 @@ function infoFrame:Show(modMaxLines, event, ...)
 		error("Invalid event: " .. event or "nil")
 		return
 	end
-	linesUpdate = true
+	prevLines = 0
 	currentMapId = select(4, UnitPosition("player"))
 	modLines = modMaxLines
 	if DBM.Options.InfoFrameLines and DBM.Options.InfoFrameLines ~= 0 then
