@@ -9,9 +9,9 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 325258 327646 326171",
-	"SPELL_CAST_SUCCESS 325725 324698 326171 327426 334970",
+	"SPELL_CAST_SUCCESS 325725 324698 326171 327426",
 	"SPELL_AURA_APPLIED 325725",
-	"SPELL_AURA_REMOVED 325725",
+	"SPELL_AURA_REMOVED 325725 334970",
 	"UNIT_DIED"
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
@@ -38,17 +38,19 @@ local specWarnDeathgate				= mod:NewSpecialWarningMoveTo(324698, nil, nil, nil, 
 --Stage 2: Shattered Reality
 
 --Stage 1: The Master of Death
-local timerMasterofDeathCD			= mod:NewAITimer(15.8, 325258, nil, nil, nil, 3)
-local timerCosmicArtificeCD			= mod:NewAITimer(13, 325725, nil, nil, nil, 3, nil, DBM_CORE_L.MAGIC_ICON)
-local timerSoulcrusherCD			= mod:NewAITimer(13, 327646, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)
+local timerMasterofDeathCD			= mod:NewCDTimer(19.4, 325258, nil, nil, nil, 3)
+local timerCosmicArtificeCD			= mod:NewCDTimer(19.5, 325725, nil, nil, nil, 3, nil, DBM_CORE_L.MAGIC_ICON)
+local timerSoulcrusherCD			= mod:NewCDTimer(17.8, 327646, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)
+local timerShatterRealityCD			= mod:NewCDTimer(25.3, 325258, nil, nil, nil, 2, nil, DBM_CORE_L.DEADLY_ICON)
 --Stage 2: Shattered Reality
 
 mod.vb.addsLeft = 3
 
 function mod:OnCombatStart(delay)
-	timerMasterofDeathCD:Start(1-delay)
-	timerCosmicArtificeCD:Start(1-delay)
-	timerSoulcrusherCD:Start(1-delay)
+	timerCosmicArtificeCD:Start(4.1-delay)--SUCCESS
+	timerSoulcrusherCD:Start(6.3-delay)
+	timerMasterofDeathCD:Start(9.5-delay)
+	timerShatterRealityCD:Start(25.3)
 end
 
 function mod:SPELL_CAST_START(args)
@@ -77,10 +79,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 		specWarnDeathgate:Show(args.spellName)
 	elseif spellId == 326171 then--Shattered Reality ending (Phase 2 begin)
 		timerCosmicArtificeCD:Start(2)
-	elseif spellId == 334970 then--Phase 2 end?
-		timerMasterofDeathCD:Start(2)
-		timerCosmicArtificeCD:Start(2)
-		timerSoulcrusherCD:Start(2)
 	end
 end
 
@@ -104,6 +102,11 @@ function mod:SPELL_AURA_REMOVED(args)
 		if args:IsPlayer() then
 			yellCosmicArtificeFades:Cancel()
 		end
+	elseif spellId == 334970 then--Coalescing
+		timerCosmicArtificeCD:Start(12.2)
+		timerSoulcrusherCD:Start(13.1)
+		timerMasterofDeathCD:Start(18)
+		timerShatterRealityCD:Start(35.2)
 	end
 end
 

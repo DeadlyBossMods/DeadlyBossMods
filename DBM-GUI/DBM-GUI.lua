@@ -490,7 +490,7 @@ do
 			for charname, charTable in pairs(_G[addon.modId:gsub("-", "") .. "_AllSavedVars"] or {}) do
 				for _, optionTable in pairs(charTable) do
 					if type(optionTable) == "table" then
-						for i = 0, 3 do
+						for i = 0, 4 do
 							if optionTable[i] then
 								tinsert(modProfileDropdown, {
 									text	= (i == 0 and charname .. " (" .. ALL.. ")") or charname .. " (" .. SPECIALIZATION .. i .. "-" .. (charTable["talent" .. i] or "") .. ")",

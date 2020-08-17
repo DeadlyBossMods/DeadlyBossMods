@@ -9,7 +9,6 @@ local num_units = 0
 local playerName, playerGUID = UnitName("player"), UnitGUID("player")--Cache these, they never change
 local GetNamePlateForUnit, GetNamePlates = C_NamePlate.GetNamePlateForUnit, C_NamePlate.GetNamePlates
 local twipe, floor = table.wipe, math.floor
-local DEFAULT_LINE_COLOR = {1,0,0,1}
 
 --------------------
 --  Create Frame  --
@@ -80,25 +79,6 @@ do
                 -floor(total_width/2),0)
         end
     end
-    local function AuraFrame_CreateLine(frame)
-        local line = UIParent:CreateLine(nil,'OVERLAY')
-
-        line.GetPoint = function() return end
-        line:SetThickness(4)
-        line:Hide()
-        frame.line = line
-
-        return line
-    end
-    local function AuraFrame_ShowLine(frame,parent_icon,color)
-        local line = frame.line or frame:CreateLine()
-
-        line.parent_icon = parent_icon
-        line:SetColorTexture(unpack(color))
-        line:SetStartPoint('CENTER',UIParent)
-        line:SetEndPoint('BOTTOM',frame.parent)
-        line:Show()
-    end
     local function AuraFrame_AddAura(frame,aura_tbl)
         if not frame.icons then
             frame.icons = {}
@@ -111,10 +91,6 @@ do
         icon:SetTexture(aura_tbl.texture)
         icon:Show()
 
-        if aura_tbl.line then
-            frame:ShowLine(icon,aura_tbl.lineColor or DEFAULT_LINE_COLOR)
-        end
-
         frame.texture_index[aura_tbl.texture] = icon
         frame:ArrangeIcons()
     end
@@ -126,10 +102,6 @@ do
         if not icon then return end
 
         icon:Hide()
-        if frame.line and frame.line.parent_icon == icon then
-            frame.line.parent_icon = nil
-            frame.line:Hide()
-        end
         frame.texture_index[texture] = nil
 
         if not batch then
@@ -149,8 +121,6 @@ do
         CreateIcon = AuraFrame_CreateIcon,
         GetIcon = AuraFrame_GetIcon,
         ArrangeIcons = AuraFrame_ArrangeIcons,
-        CreateLine = AuraFrame_CreateLine,
-        ShowLine = AuraFrame_ShowLine,
         AddAura = AuraFrame_AddAura,
         RemoveAura = AuraFrame_RemoveAura,
         RemoveAll = AuraFrame_RemoveAll,
@@ -226,7 +196,6 @@ end)
 --  Functions  --
 -----------------
 --/run DBM:FireEvent("BossMod_EnableHostileNameplates")
---/run DBM.Nameplate:Show(true, UnitGUID("target"), 1459, nil, nil, nil, true, {1, 1, 0.5, 1})--Mage Buff, easy to find
 --/run DBM.Nameplate:Show(false, GetUnitName("target", true), 227723)--Mana tracking, easy to find in Dalaran
 --/run DBM.Nameplate:Hide(true, nil, nil, nil, true)
 --/run DBM.Nameplate:Hide(true, UnitGUID("target"), 227723)
@@ -239,11 +208,8 @@ function nameplateFrame:SupportedNPMod()
 end
 
 --isGUID: guid or name (bool)
---addLine true or false/nil, if present, tells it to create a line between player and nameplate aura
 --ie, anchored to UIParent Center (ie player is in center) and to bottom of nameplate aura.
---Line will be handled entirely by aura, no need for second object/functions. When aura hides, line hides.
---Maybe additional arg for line color (since not all environments are equal. might want a red line in a blue room and a blue line in a red room, etc
-function nameplateFrame:Show(isGUID, unit, spellId, texture, duration, desaturate, addLine, lineColor)
+function nameplateFrame:Show(isGUID, unit, spellId, texture, duration, desaturate)
     -- nameplate icons are disabled;
     if DBM.Options.DontShowNameplateIcons then return end
 
@@ -255,7 +221,7 @@ function nameplateFrame:Show(isGUID, unit, spellId, texture, duration, desaturat
 
     -- Supported by nameplate mod, passing to their handler;
     if self:SupportedNPMod() then
-        DBM:FireEvent("BossMod_ShowNameplateAura", isGUID, unit, currentTexture, duration, desaturate, addLine, lineColor)
+        DBM:FireEvent("BossMod_ShowNameplateAura", isGUID, unit, currentTexture, duration, desaturate)
         DBM:Debug("DBM.Nameplate Found supported NP mod, only sending Show callbacks", 3)
         return
     end
@@ -273,9 +239,7 @@ function nameplateFrame:Show(isGUID, unit, spellId, texture, duration, desaturat
     end
 
     tinsert(units[unit], {
-        texture = currentTexture,
-        line = addLine,
-        lineColor = lineColor
+        texture = currentTexture
     })
 
     -- find frame for this unit;
