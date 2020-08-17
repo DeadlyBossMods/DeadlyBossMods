@@ -140,21 +140,6 @@ function PanelPrototype:CreateEditBox(text, value, width, height)
 	textbox.mytype = "textbox"
 	textbox:SetSize(width or 100, height or 20)
 	textbox:SetAutoFocus(false)
-	textbox.backdropInfo = {
-		bgFile		= "Interface\\Tooltips\\UI-Tooltip-Background", -- 137056
-		edgeFile	= "Interface\\Tooltips\\UI-Tooltip-Border", -- 137057
-		tile		= true,
-		tileSize	= 16,
-		edgeSize	= 16,
-		insets		= { left = 3, right = 3, top = 5, bottom = 3 }
-	}
-	if not DBM:IsAlpha() then
-		textbox:SetBackdrop(textbox.backdropInfo)
-	else
-		textbox:ApplyBackdrop()
-	end
-	textbox:SetBackdropColor(0.1, 0.1, 0.1, 0.6)
-	textbox:SetBackdropBorderColor(0.4, 0.4, 0.4)
 	textbox:SetScript("OnEscapePressed", function(self)
 		self:ClearFocus()
 	end)
