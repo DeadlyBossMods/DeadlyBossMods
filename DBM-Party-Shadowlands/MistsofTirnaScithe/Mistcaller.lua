@@ -68,7 +68,7 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 336499 then
 		self.vb.addIcon = 1
 		warnGuessingGame:Show()
-	elseif spellId == 321834 then
+	elseif spellId == 321834 and self:AntiSpam(8, 1) then
 		specWarnDodgeBall:Show()
 		specWarnDodgeBall:Play("farfromline")
 		timerDodgeBallCD:Start()
