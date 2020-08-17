@@ -396,7 +396,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		if args:IsPlayer() then
 			yellScarletLetterFades:Cancel()
 		end
-	elseif spellId == 331637 then
+	elseif spellId == 331636 or spellId == 331637 then
 		if args:IsPlayer() then
 			self:Unschedule(darkRecitalYellRepeater)
 		end
@@ -458,6 +458,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 --		self:BossUnitTargetScanner(uId, "TacticalAdvanceTarget", 2.5)
 		--Scan very hard and very fast, and absolutely ignore tank
 		local guid = UnitGUID(uId)
-		self:BossTargetScanner(guid, "TacticalAdvanceTarget", 0.01, 12, true, nil, nil, nil, true)
+		self:BossTargetScanner(guid, "TacticalAdvanceTarget", 0.05, 12, true, nil, nil, nil, true, nil, nil, nil, nil, true)
 	end
 end

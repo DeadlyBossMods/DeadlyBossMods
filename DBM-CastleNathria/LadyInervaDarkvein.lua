@@ -12,7 +12,7 @@ mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 325379 342321 332665 331550 334017 339521 341621",
+	"SPELL_CAST_START 342321 331550 334017 339521 341621 342320 342322 342280 342281 342282 341623 341625",
 --	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED 325382 325936 324983 332664 335396 339525 340477 340452",
 	"SPELL_AURA_APPLIED_DOSE 325382",
@@ -31,20 +31,20 @@ mod:RegisterEventsInCombat(
 --TODO, if container fill timers work, maybe support doing it with infoframe instead
 --TODO, fix initial timers using a valid transcriptor log that resets boss and repulls boss to cleanup the bad first pull data from bugged ES event
 --[[
---Sadly, most of timers not in combat log
-(ability.id = 325379 or ability.id = 332665 or ability.id = 342321 or ability.id = 342280 or ability.id = 341621) and type = "begincast"
+(ability.id = 342321 or ability.id = 342280 or ability.id = 342281 or ability.id = 342282 or ability.id = 341621 or ability.id = 342320 or ability.id = 342322 or ability.id = 341623 or ability.id = 341625) and type = "begincast"
  or ability.id = 324983 and type = "applydebuff"
  or (ability.id = 331550 or ability.id = 334017 or ability.id = 339521) and type = "begincast"
 --]]
+--TODO, same approach and margock, make it so warnings show which rank it is
 local warnWarpedDesires							= mod:NewStackAnnounce(325382, 2, nil, "Tank|Healer")
 local warnSharedCognition						= mod:NewTargetNoFilterAnnounce(325936, 4, nil, "Healer")
 local warnChangeofHeart							= mod:NewTargetNoFilterAnnounce(340452, 3)
 local warnBottledAnima							= mod:NewSpellAnnounce(325769, 2)
 local warnSharedSuffering						= mod:NewTargetNoFilterAnnounce(324983, 3)
-local warnConcentrateAnima						= mod:NewTargetNoFilterAnnounce(332664, 3)
+local warnConcentrateAnima						= mod:NewTargetNoFilterAnnounce(342321, 3)
 local warnCondemnTank							= mod:NewCastAnnounce(334017, 3, nil, nil, "Tank")
 
-local specWarnExposeDesires						= mod:NewSpecialWarningDefensive(325379, false, nil, nil, 1, 2)--Optional warning that the cast is happening toward you
+local specWarnExposeDesires						= mod:NewSpecialWarningDefensive(341621, false, nil, nil, 1, 2)--Optional warning that the cast is happening toward you
 local specWarnWarpedDesires						= mod:NewSpecialWarningTaunt(325382, false, nil, 2, 1, 2)
 local specWarnHiddenDesire						= mod:NewSpecialWarningYou(335396, nil, nil, nil, 1, 2)
 local specWarnHiddenDesireTaunt					= mod:NewSpecialWarningTaunt(335396, nil, nil, nil, 1, 2)
@@ -53,22 +53,22 @@ local specWarnChangeofHeart						= mod:NewSpecialWarningMoveAway(340452, nil, ni
 local yellChangeofHeartFades					= mod:NewFadesYell(340452)--^^
 local specWarnSharedSuffering					= mod:NewSpecialWarningMoveTo(324983, nil, nil, nil, 1, 2)
 local yellSharedSuffering						= mod:NewShortYell(324983)
-local specWarnConcentrateAnima					= mod:NewSpecialWarningMoveAway(332664, nil, nil, nil, 1, 2)--Rank 1-2
-local yellConcentrateAnimaFades					= mod:NewShortFadesYell(332664)--^^
+local specWarnConcentrateAnima					= mod:NewSpecialWarningMoveAway(342321, nil, nil, nil, 1, 2)--Rank 1-2
+local yellConcentrateAnimaFades					= mod:NewShortFadesYell(342321)--^^
 local specWarnGTFO								= mod:NewSpecialWarningGTFO(325713, nil, nil, nil, 1, 8)
 --Anima Constructs
 local specWarnCondemn							= mod:NewSpecialWarningInterrupt(331550, "HasInterrupt", nil, nil, 1, 2)--Don't really want to hard interrupt warning for something with 10 second cast, this is opt in
 
 --mod:AddTimerLine(BOSS)
-local timerDesiresContainer						= mod:NewTimer(120, "timerDesiresContainer", 325379, false, "timerContainers")
-local timerBottledContainer						= mod:NewTimer(120, "timerBottledContainer", 325769, false, "timerContainers")
+local timerDesiresContainer						= mod:NewTimer(120, "timerDesiresContainer", 341621, false, "timerContainers")
+local timerBottledContainer						= mod:NewTimer(120, "timerBottledContainer", 342280, false, "timerContainers")
 local timerSinsContainer						= mod:NewTimer(120, "timerSinsContainer", 325064, false, "timerContainers")
-local timerConcentrateContainer					= mod:NewTimer(120, "timerConcentrateContainer", 332665, false, "timerContainers")
+local timerConcentrateContainer					= mod:NewTimer(120, "timerConcentrateContainer", 342321, false, "timerContainers")
 local timerFocusContainerCD						= mod:NewCDTimer(100, "ej22424", nil, nil, nil, 6, 331456)
-local timerExposedDesiresCD						= mod:NewCDTimer(8.5, 325379, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)--8.5-25 because yeah, boss spell queuing+CD even changing when higher rank
-local timerBottledAnimaCD						= mod:NewCDTimer(10.8, 325769, nil, nil, nil, 3)--10-36
+local timerExposedDesiresCD						= mod:NewCDTimer(8.5, 341621, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)--8.5-25 because yeah, boss spell queuing+CD even changing when higher rank
+local timerBottledAnimaCD						= mod:NewCDTimer(10.8, 342280, nil, nil, nil, 3)--10-36
 local timerSinsandSufferingCD					= mod:NewCDTimer(44.3, 325064, nil, nil, nil, 3)
-local timerConcentratedAnimaCD					= mod:NewCDTimer(35.4, 332665, nil, nil, nil, 1, nil, nil, nil, 1, 3)--Technically targetted(3) bar type as well, but since bar is both, and 2 other bars are already 3s, 1 makes more sense
+local timerConcentratedAnimaCD					= mod:NewCDTimer(35.4, 342321, nil, nil, nil, 1, nil, nil, nil, 1, 3)--Technically targetted(3) bar type as well, but since bar is both, and 2 other bars are already 3s, 1 makes more sense
 local timerChangeofHeart						= mod:NewTargetTimer(4, 340452, nil, nil, nil, 5, nil, DBM_CORE_L.HEALER_ICON)
 
 --local berserkTimer							= mod:NewBerserkTimer(600)
@@ -222,18 +222,21 @@ end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 325379 or spellId == 341621 then
+	if spellId == 341621 or spellId == 341623 or spellId == 341625 then--Rank 1, Rank 2, Rank 3
 		--1 Expose Desires (tank), 2 Bottled Anima (bouncing bottles), 3 Sins and Suffering (links), 4 Concentrate Anima (adds)
 		timerExposedDesiresCD:Start(self.vb.containerActive == 1 and 8.2 or 10.6)--Possibly 8, 10, and 13
 		if self:IsTanking("player", "boss1", nil, true) then
 			specWarnExposeDesires:Show()
 			specWarnExposeDesires:Play("defensive")
 		end
-	elseif spellId == 342321 or spellId == 332665 then
+	elseif spellId == 342320 or spellId == 342321 or spellId == 342322 then--Rank 1, Rank 2, Rank 3
 		self.vb.addIcon = 8
 		--1 Expose Desires (tank), 2 Bottled Anima (bouncing bottles), 3 Sins and Suffering (links), 4 Concentrate Anima (adds)
 		timerConcentratedAnimaCD:Start(self.vb.containerActive == 4 and 42.8 or 62.3)
-	elseif spellId == 331550 or spellId == 339521 then--Conjured Manifestation
+	elseif spellId == 342280 or spellId == 342281 or spellId == 342282 then--Rank 1, Rank 2, Rank 3
+		warnBottledAnima:Show()
+		timerBottledAnimaCD:Start(self.vb.containerActive == 2 and 17.1 or 30)
+	elseif spellId == 331550 or spellId == 339521 then--Conjured Manifestation casting Condemn
 		if not castsPerGUID[args.sourceGUID] then
 			castsPerGUID[args.sourceGUID] = 0
 			if self.Options.SetIconOnAdds and self.vb.addIcon > 3 then--Only use up to 5 icons
@@ -360,10 +363,7 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 --TODO, maybe these scripts run, if so detecting ranks could be cleaner
 --Concentrate Anima: Rank 1 326258, Rank 2 325922, rank 3 325923
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 325774 then--Bottled Anima
-		warnBottledAnima:Show()
-		timerBottledAnimaCD:Start(self.vb.containerActive == 2 and 17.1 or 30)
-	elseif spellId == 325064 then--Sins and Suffering
+	if spellId == 325064 then--Sins and Suffering
 		self.vb.sufferingIcon = 1
 		--1 Expose Desires (tank), 2 Bottled Anima (bouncing bottles), 3 Sins and Suffering (links), 4 Concentrate Anima (adds)
 		timerSinsandSufferingCD:Start(self.vb.containerActive == 3 and 32.4 or 53.4)
