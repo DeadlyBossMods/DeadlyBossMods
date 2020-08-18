@@ -61,7 +61,7 @@ function frame:ClearSelection()
 end
 
 local function resize(frame, first)
-	local frameHeight, prevElement = 20, nil
+	local frameHeight = 20
 	for _, child in ipairs({ frame:GetChildren() }) do
 		if child.mytype == "area" then
 			if first then
@@ -106,7 +106,6 @@ local function resize(frame, first)
 				child:SetHeight(neededHeight)
 			end
 			frameHeight = frameHeight + child:GetHeight() + 20
-			prevElement = child
 		elseif child.myheight then
 			frameHeight = frameHeight + child.myheight
 		end
