@@ -7,8 +7,8 @@ mod:SetEncounterID(2402)
 mod:SetUsedIcons(1)
 mod.onlyHighest = true--Instructs DBM health tracking to literally only store highest value seen during fight, even if it drops below that
 mod.noBossDeathKill = true--Instructs mod to ignore 165759 deaths, since goal is to heal kael, not kill him
-mod:SetHotfixNoticeRev(20200726000000)--2020, 7, 26
-mod:SetMinSyncRevision(20200726000000)
+mod:SetHotfixNoticeRev(20200817000000)--2020, 8, 17
+mod:SetMinSyncRevision(20200817000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
@@ -17,7 +17,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 325877 329509 329518 328885 325440 325506 333002 326455 337865",
 	"SPELL_CAST_SUCCESS 326583 325665 181113",
 	"SPELL_SUMMON 329565 326075",
-	"SPELL_AURA_APPLIED 326456 328659 341254 328731 325442 333145 326078 332871 326583 328479 323402 337859",
+	"SPELL_AURA_APPLIED 326456 328659 341254 328731 325442 333145 326078 332871 326583 328479 323402 337859 335581",
 	"SPELL_AURA_APPLIED_DOSE 326456 325442 326078",
 	"SPELL_AURA_REMOVED 328731 326078 328479 323402 337859",
 	"SPELL_PERIODIC_DAMAGE 328579",
@@ -29,15 +29,15 @@ mod:RegisterEventsInCombat(
 --TODO, adjust tank stacks for two swap mechanics
 --TODO, Switch Ember Blast to UnitTargetScanner for max scan speed/efficiency, if shade has boss unit ID and isn't already targetting victim when cast starts
 --TODO, adjust ember blast warning to reduce number told to soak it if it's not conventional to just tell everyone but the tanks to do it
---TODO, figure out which spellId is the tank only one for Blazing Surge and just use primary target instead of target scanning
 --TODO, essence tracking of energy for Cultists?
 --TODO, dispel warnings for Vulgar brand (333002) based on difficulty (magic non mythic, curse mythic)?
 --TODO, improved infoframe with https://shadowlands.wowhead.com/spell=339251/drained-soul tracking
 --TODO, auto mark essence spawns? friendly nameplates?
---TODO, Add Spawn Warnings for remaining adds if clean ways can be done to do so. Vile adds already added
+--TODO, Keep an eye on add spawns, if blizzard leaves 3 of the add types missing from combat log on mythic, scheduling will have to be added
 --TODO, add nameplate aura for assassins fixate/attack?
 --[[
 ability.id = 181113 or ability.id = 323402 or target.id = 168973 and type = "death" or ability.id = 337859 and (type = "applydebuff" or type = "removedebuff")
+ or ability.id = 181113
 (source.type = "NPC" and source.firstSeen = timestamp) or (target.type = "NPC" and target.firstSeen = timestamp)
 --]]
 --Shade of Kael'thas
@@ -128,6 +128,7 @@ mod:AddSetIconOption("SetIconOnEmberBlast", 325877, true, false, {1})
 mod:AddNamePlateOption("NPAuraOnPhoenixEmbers", 328731)
 mod:AddNamePlateOption("NPAuraOnPhoenixFixate", 328479)
 
+mod.vb.addMode = 0--No adds spawning, 1-Adds Spawning from Darithos Tables, 2-Adds spawning from Shade table
 mod.vb.addCount = 0
 mod.vb.healerOrbCount = 0
 mod.vb.shadeActive = false
@@ -141,18 +142,87 @@ local infusersBoon = DBM:GetSpellInfo(326078)
 local seenAdds = {}
 local castsPerGUID = {}
 local infuserTargets = {}
---Perfect timers, if shade is never let out
-local addTimers = {--Aug 14
-	--Bleakwing Assassin
-	[167566] = {64.5, 63, 31.9},
-	--Vile Occultist
-	[165763] = {105},
-	--Soul Infuser
-	[165762] = {44.5},
-	--Pestering Fiend
-	[168700] = {44.5, 20, 20, 20, 20, 30},
-	--Rockbound Vanquisher
-	[165764] = {44.5, 45, 44.3},
+--Perfect timers, executed from Darithos dying
+local difficultyName = "None"
+local addTimers = {
+	[0] = {--Not actually a thing, but if it becomes one (in case blizzard tries to counter anything degenerate like keeping Darithos alive to disable mode 1 add spawns
+		["easy"] = {
+			--Bleakwing Assassin
+			[167566] = {},
+			--Vile Occultist
+			[165763] = {},--Unknown, Not enough data for first one
+			--Soul Infuser
+			[165762] = {},
+			--Pestering Fiend
+			[168700] = {},
+			--Rockbound Vanquisher
+			[165764] = {},
+		},
+		["hard"] = {--Mythic testing timers
+			--Bleakwing Assassin
+			[167566] = {},
+			--Vile Occultist
+			[165763] = {},
+			--Soul Infuser
+			[165762] = {},
+			--Pestering Fiend
+			[168700] = {},
+			--Rockbound Vanquisher
+			[165764] = {},
+		},
+	},
+	[1] = {--Post Darithos Death Adds
+		["easy"] = {--Normal testing timers
+			--Bleakwing Assassin
+			[167566] = {8, 80},
+			--Vile Occultist
+			[165763] = {},--Unknown, Not enough data for first one
+			--Soul Infuser
+			[165762] = {58},
+			--Pestering Fiend
+			[168700] = {38, 50},
+			--Rockbound Vanquisher
+			[165764] = {8, 75},
+		},
+		["hard"] = {--Mythic testing timers
+			--Bleakwing Assassin
+			[167566] = {28, 63, 31.9},
+			--Vile Occultist
+			[165763] = {70},
+			--Soul Infuser
+			[165762] = {8},
+			--Pestering Fiend
+			[168700] = {8, 20, 20, 20, 20, 30},
+			--Rockbound Vanquisher
+			[165764] = {8, 45, 44.3},
+		},
+	},
+	[2] = {--Post Shade Departure Adds
+		["easy"] = {--Normal testing timers
+			--Bleakwing Assassin
+			[167566] = {4},
+			--Vile Occultist
+			[165763] = {103.5},
+			--Soul Infuser
+			[165762] = {33.5, 70},
+			--Pestering Fiend
+			[168700] = {4, 30},
+			--Rockbound Vanquisher
+			[165764] = {4, 75, 75},
+		},
+		["hard"] = {--Mythic testing timers
+			--Bleakwing Assassin
+			[167566] = {23.6, 39.9, 25.1},
+			--Vile Occultist
+			[165763] = {64.1},
+			--Soul Infuser
+			[165762] = {4, 100},--iffy because encounter spawn was disabled so this data was collected from damage
+			--Pestering Fiend
+			[168700] = {4, 27, 65},--iffy because encounter spawn was disabled so this data was collected from damage
+			--Rockbound Vanquisher
+			[165764] = {4, 44.9, 45},
+		},
+	},
 }
 
 function mod:EmberBlastTarget(targetname, uId, bossuid, scanningTime)
@@ -221,6 +291,7 @@ do
 end
 
 function mod:OnCombatStart(delay)
+	self.vb.addMode = 0
 	self.vb.addCount = 0
 	self.vb.healerOrbCount = 0
 	self.vb.assassinCount = 0
@@ -241,6 +312,15 @@ function mod:OnCombatStart(delay)
 	if self.Options.NPAuraOnPhoenixEmbers or self.Options.NPAuraOnPhoenixFixate then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
+	if self:IsMythic() then
+		difficultyName = "hard"
+	elseif self:IsHeroic() then
+		difficultyName = "hard"
+	elseif self:IsNormal() then
+		difficultyName = "easy"
+	else
+		difficultyName = "easy"
+	end
 end
 
 function mod:OnCombatEnd()
@@ -255,6 +335,18 @@ function mod:OnCombatEnd()
 	end
 	if self.Options.NPAuraOnPhoenixEmbers or self.Options.NPAuraOnPhoenixFixate then
 		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
+	end
+end
+
+function mod:OnTimerRecovery()
+	if self:IsMythic() then
+		difficultyName = "hard"
+	elseif self:IsHeroic() then
+		difficultyName = "hard"
+	elseif self:IsNormal() then
+		difficultyName = "easy"
+	else
+		difficultyName = "easy"
 	end
 end
 
@@ -300,37 +392,37 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnSoulInfusion:Show()
 	elseif spellId == 181113 then--Encounter Spawn
 		local cid = self:GetCIDFromGUID(args.sourceGUID)
-		if self:AntiSpam(5, cid) then
+		if self:AntiSpam(8, cid) then
 			if cid == 165764 then--Rockbound Vanquisher
 				self.vb.vanquisherCount = self.vb.vanquisherCount + 1
 				warnVanquisher:Show(self.vb.vanquisherCount)
-				local timer = addTimers[cid][self.vb.vanquisherCount+1]
-				if timer and not self.vb.shadeActive then
+				local timer = addTimers[self.vb.addMode][difficultyName][cid][self.vb.vanquisherCount+1]
+				if timer then
 					timerVanquisherCD:Start(timer, self.vb.vanquisherCount+1)
 				end
 			elseif cid == 167566 then--bleakwing-assassin
 				self.vb.assassinCount = self.vb.assassinCount + 1
-				local timer = addTimers[cid][self.vb.assassinCount+1]
-				if timer and not self.vb.shadeActive then
+				local timer = addTimers[self.vb.addMode][difficultyName][cid][self.vb.assassinCount+1]
+				if timer then
 					timerBleakwingAssassinCD:Start(timer, self.vb.assassinCount+1)
 				end
 			elseif cid == 165763 then--vile-occultist
 				self.vb.occultistCount = self.vb.occultistCount + 1
 				warnVileOccultists:Show(self.vb.occultistCount)
-				local timer = addTimers[cid][self.vb.occultistCount+1]
-				if timer and not self.vb.shadeActive then
+				local timer = addTimers[self.vb.addMode][difficultyName][cid][self.vb.occultistCount+1]
+				if timer then
 					timerVileOccultistCD:Start(timer, self.vb.occultistCount+1)
 				end
 			elseif cid == 165762 then
 				self.vb.infuserCount = self.vb.infuserCount + 1
-				local timer = addTimers[cid][self.vb.infuserCount+1]
-				if timer and not self.vb.shadeActive then
+				local timer = addTimers[self.vb.addMode][difficultyName][cid][self.vb.infuserCount+1]
+				if timer then
 					timerSoulInfuserCD:Start(timer, self.vb.infuserCount+1)
 				end
 			elseif cid == 168700 then
 				self.vb.fiendCount = self.vb.fiendCount + 1
-				local timer = addTimers[cid][self.vb.fiendCount+1]
-				if timer and not self.vb.shadeActive then
+				local timer = addTimers[self.vb.addMode][difficultyName][cid][self.vb.fiendCount+1]
+				if timer then
 					timerPesteringFiendCD:Start(timer, self.vb.fiendCount+1)
 				end
 --			elseif cid == 168962 then--Reborn Phoenix
@@ -442,18 +534,20 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerFieryStrikeCD:Start(14)
 		timerEmberBlastCD:Start(20.1)
 		timerBlazingSurgeCD:Start(28.8)
-		--Adds
-		--Pretty sure timers roll over from pre guild phase, like they just paused and here they resume
---		timerVanquisherCD:Start(3.3, 1)
---		timerSoulInfuserCD:Start(8, 1)
---		timerPesteringFiendCD:Start(8, 1)
---		timerBleakwingAssassinCD:Start(28, 1)
---		timerVileOccultistCD:Start(70, 1)
 	elseif spellId == 337859 then
 		self.vb.shieldActive = true
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:SetHeader(args.spellName)
 			DBM.InfoFrame:Show(2, "enemyabsorb", nil, args.amount, "boss1")
+		end
+	elseif spellId == 335581 then
+		if self:AntiSpam(8, 165763) then--Backup Vile Occultist spawn detection since blizzard may hide Encounter Spawn
+			self.vb.occultistCount = self.vb.occultistCount + 1
+			warnVileOccultists:Show(self.vb.occultistCount)
+			local timer = addTimers[self.vb.addMode][difficultyName][165763][self.vb.occultistCount+1]
+			if timer then
+				timerVileOccultistCD:Start(timer, self.vb.occultistCount+1)
+			end
 		end
 	end
 end
@@ -472,12 +566,29 @@ function mod:SPELL_AURA_REMOVED(args)
 			DBM.Nameplate:Hide(true, args.sourceGUID, spellId)
 		end
 	elseif spellId == 323402 then--Reflection of Guilt (Shade Leaving)
-		--self.vb.shadeActive = false--Purposely disabled for now, to prevent most add code running for now
+		self.vb.shadeActive = false--Purposely disabled for now, to prevent most add code running for now
+		self.vb.addMode = 2
+		self.vb.assassinCount = 0
+		self.vb.occultistCount = 0
+		self.vb.infuserCount = 0
+		self.vb.fiendCount = 0
+		self.vb.vanquisherCount = 0
 		timerEmberBlastCD:Stop()
 		timerBlazingSurgeCD:Stop()
 		timerFieryStrikeCD:Stop()
-		--TODO, some data supports this but still needs more thorough vetting
---		timerSoulInfuserCD:Start(10)
+		if self:IsEasy() then--TODO, verify lfr same as normal
+			timerBleakwingAssassinCD:Start(4, 1)
+			timerVanquisherCD:Start(4, 1)
+			timerPesteringFiendCD:Start(4, 1)
+			timerSoulInfuserCD:Start(33.5, 1)
+			timerVileOccultistCD:Start(103.5, 1)
+		else--TODO, verify heroic same as mythic
+			timerVanquisherCD:Start(4, 1)
+			timerSoulInfuserCD:Start(4, 1)
+			timerPesteringFiendCD:Start(4, 1)
+			timerBleakwingAssassinCD:Start(23.6, 1)
+			timerVileOccultistCD:Start(64.1, 1)
+		end
 	elseif spellId == 337859 then
 		self.vb.shieldActive = false
 		specWarnUnleashedPyroclasm:Show(args.destName)
@@ -496,14 +607,25 @@ end
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 168973 then--High Torturer Darithos
+		self.vb.addMode = 1
 		timerGreaterCastigationCD:Stop()
-		if not self.vb.shadeActive then
-			timerVanquisherCD:Start(8, 1)
-			timerSoulInfuserCD:Start(8, 1)
-			timerPesteringFiendCD:Start(8, 1)
-			timerBleakwingAssassinCD:Start(28, 1)
-			timerVileOccultistCD:Start(70, 1)
-		end
+		--Currently this is broken on encounter scripts
+		--Darithos Adds script starts even if shade is out if darithos dies after shade comes out
+		--if they fix this, just uncomment
+		--if not self.vb.shadeActive then
+			if self:IsEasy() then--Seems to differentiate the adds
+				timerBleakwingAssassinCD:Start(8, 1)--Come earlier on easy
+				timerVanquisherCD:Start(8, 1)
+				timerPesteringFiendCD:Start(38, 1)
+				timerSoulInfuserCD:Start(58, 1)
+			else
+				timerVanquisherCD:Start(8, 1)
+				timerSoulInfuserCD:Start(8, 1)
+				timerPesteringFiendCD:Start(8, 1)
+				timerBleakwingAssassinCD:Start(28, 1)
+				timerVileOccultistCD:Start(70, 1)
+			end
+		--end
 	elseif cid == 165764 then--Rockbound Vanquisher
 		timerVanquishingStrikeCD:Stop(args.destGUID)
 		--timerConcussiveSmashCD:Stop(castsPerGUID[args.destGUID]+1, args.destGUID)
