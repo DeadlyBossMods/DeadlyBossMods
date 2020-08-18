@@ -21,6 +21,7 @@
 ## X-DBM-Mod-MinExpansion: 8
 localization.en.lua
 localization.kr.lua
+localization.tw.lua
 TheNecroticWake\Blightbone.lua
 TheNecroticWake\Amarth.lua
 TheNecroticWake\SurgeonStitchflesh.lua
