@@ -14,7 +14,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 328857 328921 340047 330711",
 	"SPELL_CAST_SUCCESS 328857",
-	"SPELL_AURA_APPLIED 328897 329370 342077",
+	"SPELL_AURA_APPLIED 328897 329370 342077 341684",
 	"SPELL_AURA_APPLIED_DOSE 328897",
 	"SPELL_AURA_REMOVED 329370 328921 342077 328897",
 	"SPELL_AURA_REMOVED_DOSE 328897",
@@ -25,6 +25,7 @@ mod:RegisterEventsInCombat(
 )
 
 --TODO, need fresh transcriptor log to verify icon resetting/timer event for Scent for Blood
+--TODO, icons or auras for 341684?
 --[[
 (ability.id = 328857 or ability.id = 328921 or ability.id = 340047 or ability.id = 330711) and type = "begincast"
  or (ability.id = 342074) and type = "cast"
@@ -37,6 +38,7 @@ local warnScentofBlood							= mod:NewTargetAnnounce(342077, 3)
 local warnDeadlyDescent							= mod:NewTargetNoFilterAnnounce(329370, 4)
 local warnBloodgorgeOver						= mod:NewEndAnnounce(328921, 1)
 local warnSonarShriek							= mod:NewCastAnnounce(340047, 2)
+local warnBloodLantern							= mod:NewTargetNoFilterAnnounce(341684, 2)--Mythic
 
 --Stage One - Thirst for Blood
 local specWarnExsanguinated						= mod:NewSpecialWarningStack(328897, nil, 2, nil, nil, 1, 6)
@@ -189,6 +191,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:SetIcon(args.destName, self.vb.scentIcon)
 		end
 		self.vb.scentIcon = self.vb.scentIcon + 1
+	elseif spellId == 341684 then
+		warnBloodLantern:Show(args.destName)
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -224,6 +228,8 @@ function mod:SPELL_AURA_REMOVED(args)
 		if args:IsPlayer() then
 			playerDebuff = false
 		end
+--	elseif spellId == 341684 then
+
 	end
 end
 
