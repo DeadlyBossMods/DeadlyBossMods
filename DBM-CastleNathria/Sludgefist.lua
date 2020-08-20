@@ -36,7 +36,7 @@ local specWarnHeedlessCharge					= mod:NewSpecialWarningSoon(331212, nil, nil, n
 local yellHatefulGaze							= mod:NewShortYell(331209)
 local yellHatefulGazeFades						= mod:NewShortFadesYell(331209)
 local specWarnChainLink							= mod:NewSpecialWarningYou(335491, nil, nil, nil, 1, 2)
-local yellChainLink								= mod:NewIconRepeatYell(335300, DBM_CORE_L.AUTO_YELL_ANNOUNCE_TEXT.shortyell, false)
+local yellChainLink								= mod:NewIconRepeatYell(335300, DBM_CORE_L.AUTO_YELL_ANNOUNCE_TEXT.shortyell)
 local specWarnChainSlam							= mod:NewSpecialWarningYou(335470, nil, nil, nil, 1, 2)
 local yellChainSlam								= mod:NewShortYell(335470, nil, nil, nil, "YELL")
 local yellChainSlamFades						= mod:NewShortFadesYell(335470, nil, nil, nil, "YELL")
@@ -72,9 +72,12 @@ local ChainLinkTargetOne, ChainLinkTargetTwo = {}, {}
 local playerName = UnitName("player")
 local SiesmicTimers = {18.4, 25.9, 29.3, 12.9, 25.5, 30.5, 12.6, 25.9, 30.6}
 
-local function ChainLinkYellRepeater(self, text)
+local function ChainLinkYellRepeater(self, text, runTimes)
 	yellChainLink:Yell(text)
-	self:Schedule(2, ChainLinkYellRepeater, self, text)
+	runTimes = runTimes + 1
+	if runTimes < 4 then
+		self:Schedule(2, ChainLinkYellRepeater, self, text, runTimes)
+	end
 end
 
 function mod:OnCombatStart(delay)
@@ -99,9 +102,6 @@ function mod:OnCombatStart(delay)
 			DBM.InfoFrame:SetHeader(DBM_CORE_L.NO_DEBUFF:format(DBM:GetSpellInfo(342410)))
 			DBM.InfoFrame:Show(5, "playergooddebuff", 342410)--TODO, change number when columns work again
 		end
-	end
-	if self.Options.NPAuraOnHaunting then
-		DBM:FireEvent("BossMod_EnableFriendlyNameplates")
 	end
 --	if self.Options.RangeFrame then
 --		DBM.RangeCheck:Show(4)
@@ -199,7 +199,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			if playerIsInPair then
 				self:Unschedule(ChainLinkYellRepeater)
 				if type(icon) == "number" then icon = DBM_CORE_L.AUTO_YELL_CUSTOM_POSITION:format(icon, "") end
-				self:Schedule(2, ChainLinkYellRepeater, self, icon)
+				self:Schedule(2, ChainLinkYellRepeater, self, icon, 0)
 				yellChainLink:Yell(icon)
 			end
 		end

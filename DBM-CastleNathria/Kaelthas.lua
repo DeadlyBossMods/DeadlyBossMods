@@ -32,7 +32,7 @@ mod:RegisterEventsInCombat(
 --TODO, essence tracking of energy for Cultists?
 --TODO, dispel warnings for Vulgar brand (333002) based on difficulty (magic non mythic, curse mythic)?
 --TODO, improved infoframe with https://shadowlands.wowhead.com/spell=339251/drained-soul tracking
---TODO, auto mark essence spawns? friendly nameplates?
+--TODO, auto mark essence spawns?
 --TODO, Keep an eye on add spawns, if blizzard leaves 3 of the add types missing from combat log on mythic, scheduling will have to be added
 --TODO, add nameplate aura for assassins fixate/attack?
 --[[

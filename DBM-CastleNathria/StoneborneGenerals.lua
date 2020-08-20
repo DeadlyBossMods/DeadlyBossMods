@@ -1,3 +1,4 @@
+if 2 == 2 then return end--Basically disable the entire mod for now. mod has to be COMPLETELY redone, and I don't have access to dungeon journal updates at this time.
 local mod	= DBM:NewMod(2425, "DBM-CastleNathria", nil, 1190)
 local L		= mod:GetLocalizedStrings()
 

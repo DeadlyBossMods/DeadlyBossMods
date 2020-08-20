@@ -76,7 +76,7 @@ local yellScarletLetterFades					= mod:NewShortFadesYell(331706)--One boss dead
 local specWarnEvasiveLunge						= mod:NewSpecialWarningSpell(327497, "Tank", nil, nil, 1, 2)
 local specWarnWaltzofBlood						= mod:NewSpecialWarningDodge(327616, nil, nil, nil, 2, 2)
 local specWarnDarkRecital						= mod:NewSpecialWarningMoveTo(331634, nil, nil, nil, 1, 2)--One boss dead
-local yellDarkRecitalRepeater					= mod:NewIconRepeatYell(331634, DBM_CORE_L.AUTO_YELL_ANNOUNCE_TEXT.shortyell)--One boss dead (TODO, remove custom yell text if less than 16 targets)
+local yellDarkRecitalRepeater					= mod:NewIconRepeatYell(331634, DBM_CORE_L.AUTO_YELL_ANNOUNCE_TEXT.shortyell)--One boss dead
 --Intermission
 local specWarnDanseMacabre						= mod:NewSpecialWarningSpell(331005, nil, nil, nil, 3, 2)
 local specWarnDancingFever						= mod:NewSpecialWarningMoveAway(342457, nil, nil, nil, 1, 2, 4)
@@ -114,7 +114,7 @@ local timerDancingFoolsCD						= mod:NewCDTimer(30.7, 330964, nil, nil, nil, 1)
 --mod:AddSetIconOption("SetIconOnMuttering", 310358, true, false, {2, 3, 4, 5, 6, 7, 8})
 mod:AddNamePlateOption("NPAuraOnFixate", 330967)
 mod:AddNamePlateOption("NPAuraOnShield", 335775)
-mod:AddNamePlateOption("NPAuraOnFever", 342457)
+--mod:AddNamePlateOption("NPAuraOnFever", 342457)
 
 mod.vb.phase = 1
 local darkRecitalTargets = {}
@@ -137,9 +137,12 @@ local function warndarkRecitalTargets(self)
 	table.wipe(darkRecitalTargets)
 end
 
-local function darkRecitalYellRepeater(self, text)
+local function darkRecitalYellRepeater(self, text, runTimes)
 	yellDarkRecitalRepeater:Yell(text)
-	self:Schedule(2, darkRecitalYellRepeater, self, text)
+--	runTimes = runTimes + 1
+--	if runTimes < 4 then--If they fix visual bugs, enable this restriction
+		self:Schedule(2, darkRecitalYellRepeater, self, text, runTimes)
+--	end
 end
 
 function mod:OnCombatStart(delay)
@@ -157,9 +160,9 @@ function mod:OnCombatStart(delay)
 	if self.Options.NPAuraOnFixate or self.Options.NPAuraOnShield then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
-	if self.Options.NPAuraOnFever then
-		DBM:FireEvent("BossMod_EnableFriendlyNameplates")
-	end
+--	if self.Options.NPAuraOnFever then
+--		DBM:FireEvent("BossMod_EnableFriendlyNameplates")
+--	end
 --	if self.Options.RangeFrame then
 --		DBM.RangeCheck:Show(4)
 --	end
@@ -173,8 +176,8 @@ function mod:OnCombatEnd()
 --	if self.Options.RangeFrame then
 --		DBM.RangeCheck:Hide()
 --	end
-	if self.Options.NPAuraOnFixate or self.Options.NPAuraOnShield or self.Options.NPAuraOnFever then
-		DBM.Nameplate:Hide(false, nil, nil, nil, true, self.Options.NPAuraOnFixate or self.Options.NPAuraOnShield, self.Options.NPAuraOnFever)
+	if self.Options.NPAuraOnFixate or self.Options.NPAuraOnShield then
+		DBM.Nameplate:Hide(false, nil, nil, nil, true, true)
 	end
 end
 
@@ -309,7 +312,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			if playerIsInPair then--Only repeat yell on mythic and mythic+
 				self:Unschedule(darkRecitalYellRepeater)
 				if type(icon) == "number" then icon = DBM_CORE_L.AUTO_YELL_CUSTOM_POSITION:format(icon, "") end
-				self:Schedule(2, darkRecitalYellRepeater, self, icon)
+				self:Schedule(2, darkRecitalYellRepeater, self, icon, 0)
 				yellDarkRecitalRepeater:Yell(icon)
 			end
 		end
@@ -379,9 +382,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnDancingFever:Play("runout")
 			yellDancingFever:Yell()
 		end
-		if self.Options.NPAuraOnFever then
-			DBM.Nameplate:Show(true, args.destGUID, spellId, nil, 300)
-		end
+--		if self.Options.NPAuraOnFever then
+--			DBM.Nameplate:Show(true, args.destGUID, spellId, nil, 300)
+--		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -407,10 +410,10 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 330959 and self:AntiSpam(10, 2) then
 		warnDanceOver:Show()
 		--TODO, timer correction if blizzard changes how they work
-	elseif spellId == 342457 or spellId == 342861 or spellId == 342456 then
-		if self.Options.NPAuraOnFever then
-			DBM.Nameplate:Hide(true, args.destGUID, spellId)
-		end
+--	elseif spellId == 342457 or spellId == 342861 or spellId == 342456 then
+--		if self.Options.NPAuraOnFever then
+--			DBM.Nameplate:Hide(true, args.destGUID, spellId)
+--		end
 	end
 end
 
