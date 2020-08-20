@@ -17,9 +17,9 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 325877 329509 329518 328885 325440 325506 333002 326455 337865",
 	"SPELL_CAST_SUCCESS 326583 325665 181113",
 	"SPELL_SUMMON 329565 326075",
-	"SPELL_AURA_APPLIED 326456 328659 341254 328731 325442 333145 326078 332871 326583 328479 323402 337859 335581",
+	"SPELL_AURA_APPLIED 326456 328659 341254 328731 325442 333145 326078 332871 326583 328479 323402 337859 335581 343026",
 	"SPELL_AURA_APPLIED_DOSE 326456 325442 326078",
-	"SPELL_AURA_REMOVED 328731 326078 328479 323402 337859",
+	"SPELL_AURA_REMOVED 328731 326078 328479 323402 337859 343026",
 	"SPELL_PERIODIC_DAMAGE 328579",
 	"SPELL_PERIODIC_MISSED 328579",
 	"UNIT_DIED"
@@ -35,6 +35,7 @@ mod:RegisterEventsInCombat(
 --TODO, auto mark essence spawns?
 --TODO, Keep an eye on add spawns, if blizzard leaves 3 of the add types missing from combat log on mythic, scheduling will have to be added
 --TODO, add nameplate aura for assassins fixate/attack?
+--TODO, are both shields used or no?
 --[[
 ability.id = 181113 or ability.id = 323402 or target.id = 168973 and type = "death" or ability.id = 337859 and (type = "applydebuff" or type = "removedebuff")
  or ability.id = 181113
@@ -123,7 +124,7 @@ local timerPesteringFiendCD						= mod:NewCDCountTimer(70, "ej22082", nil, nil, 
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
 mod:AddRangeFrameOption(6, 328885)
-mod:AddInfoFrameOption(326078, true)
+mod:AddInfoFrameOption(326078, true)--343026
 mod:AddSetIconOption("SetIconOnEmberBlast", 325877, true, false, {1})
 mod:AddNamePlateOption("NPAuraOnPhoenixEmbers", 328731)
 mod:AddNamePlateOption("NPAuraOnPhoenixFixate", 328479)
@@ -534,9 +535,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerFieryStrikeCD:Start(14)
 		timerEmberBlastCD:Start(20.1)
 		timerBlazingSurgeCD:Start(28.8)
-	elseif spellId == 337859 then
+	elseif spellId == 337859 or spellId == 343026 then
 		self.vb.shieldActive = true
-		if self.Options.InfoFrame then
+		if self.Options.InfoFrame and spellId == 343026 then--Show dps one over the healing one
 			DBM.InfoFrame:SetHeader(args.spellName)
 			DBM.InfoFrame:Show(2, "enemyabsorb", nil, args.amount, "boss1")
 		end
@@ -589,11 +590,11 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerBleakwingAssassinCD:Start(23.6, 1)
 			timerVileOccultistCD:Start(64.1, 1)
 		end
-	elseif spellId == 337859 then
+	elseif spellId == 337859 or spellId == 343026 then
 		self.vb.shieldActive = false
 		specWarnUnleashedPyroclasm:Show(args.destName)
 		specWarnUnleashedPyroclasm:Play("kickcast")
-		if self.Options.InfoFrame then
+		if self.Options.InfoFrame and spellId == 343026 then
 			if #infuserTargets > 0 then
 				DBM.InfoFrame:SetHeader(infusersBoon)
 				DBM.InfoFrame:Show(8, "function", updateInfoFrame, false, false)

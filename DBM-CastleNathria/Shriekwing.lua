@@ -14,9 +14,9 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 328857 328921 340047 330711",
 	"SPELL_CAST_SUCCESS 328857",
-	"SPELL_AURA_APPLIED 328897 329370 342077 341684",
+	"SPELL_AURA_APPLIED 328897 342077 341684",
 	"SPELL_AURA_APPLIED_DOSE 328897",
-	"SPELL_AURA_REMOVED 329370 328921 342077 328897",
+	"SPELL_AURA_REMOVED 328921 342077 328897",
 	"SPELL_AURA_REMOVED_DOSE 328897",
 	"SPELL_PERIODIC_DAMAGE 340324",
 	"SPELL_PERIODIC_MISSED 340324",
@@ -35,7 +35,7 @@ mod:RegisterEventsInCombat(
 local warnExsanguinated							= mod:NewStackAnnounce(328897, 2, nil, "Tank|Healer")
 local warnScentofBlood							= mod:NewTargetAnnounce(342077, 3)
 --Stage Two - Terror of Castle Nathria
-local warnDeadlyDescent							= mod:NewTargetNoFilterAnnounce(329370, 4)
+local warnDeadlyDescent							= mod:NewTargetNoFilterAnnounce(343024, 4)
 local warnBloodgorgeOver						= mod:NewEndAnnounce(328921, 1)
 local warnSonarShriek							= mod:NewCastAnnounce(340047, 2)
 local warnBloodLantern							= mod:NewTargetNoFilterAnnounce(341684, 2)--Mythic
@@ -50,10 +50,10 @@ local yellScentofBloodFades						= mod:NewShortFadesYell(342077)
 local specWarnEarsplittingShriek				= mod:NewSpecialWarningMoveTo(330711, nil, nil, nil, 1, 2)
 --Stage Two - Terror of Castle Nathria
 local specWarnBloodgorge						= mod:NewSpecialWarningSpell(328921, nil, nil, nil, 2, 2)
-local specWarnDeadlyDescent						= mod:NewSpecialWarningYou(329370, nil, nil, nil, 1, 2)--1 because you can't do anything about it
-local yellDeadlyDescent							= mod:NewYell(329370)
---local yellDeadlyDescentFades					= mod:NewShortFadesYell(329370)--Re-enable if made 4 seconds again, but as 2 seconds this is useless
-local specWarnDeadlyDescentNear					= mod:NewSpecialWarningClose(329370, nil, nil, nil, 3, 2)--3 because you NEED to get away from them highest priority
+local specWarnDeadlyDescent						= mod:NewSpecialWarningYou(343021, nil, nil, nil, 1, 2)--1 because you can't do anything about it
+local yellDeadlyDescent							= mod:NewYell(343021, nil, false)--Useless with only 1 second to avoid
+--local yellDeadlyDescentFades					= mod:NewShortFadesYell(343021)--Re-enable if made 4 seconds again, but as 2 seconds this is useless
+--local specWarnDeadlyDescentNear					= mod:NewSpecialWarningClose(343021, nil, nil, nil, 3, 2)--3 because you NEED to get away from them highest priority
 local specWarnGTFO								= mod:NewSpecialWarningGTFO(340324, nil, nil, nil, 1, 8)
 
 --Stage One - Thirst for Blood
@@ -66,7 +66,7 @@ local timerEarsplittingShriekCD					= mod:NewCDTimer(44.5, 330711, nil, nil, nil
 local timerSonarShriekCD						= mod:NewCDTimer(7.3, 340047, nil, nil, nil, 3)
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
-mod:AddRangeFrameOption(8, 329370)
+mod:AddRangeFrameOption("8")
 mod:AddInfoFrameOption(328897, true)
 mod:AddSetIconOption("SetIconOnScentofBlood", 342077, true, false, {1, 2})
 --mod:AddNamePlateOption("NPAuraOnVolatileCorruption", 312595)
@@ -167,15 +167,15 @@ function mod:SPELL_AURA_APPLIED(args)
 				warnExsanguinated:Show(args.destName, amount)
 			end
 		end
-	elseif spellId == 329370 then
+	elseif spellId == 343024 then
 		if args:IsPlayer() then
 			specWarnDeadlyDescent:Show()
 			specWarnDeadlyDescent:Play("targetyou")
 			yellDeadlyDescent:Yell()
 --			yellDeadlyDescentFades:Countdown(spellId)
-		elseif self:CheckNearby(12, args.destName) then
-			specWarnDeadlyDescentNear:CombinedShow(0.3, args.destName)
-			specWarnDeadlyDescentNear:ScheduleVoice(0.3, "runaway")
+--		elseif self:CheckNearby(8, args.destName) then
+--			specWarnDeadlyDescentNear:CombinedShow(0.3, args.destName)
+--			specWarnDeadlyDescentNear:ScheduleVoice(0.3, "runaway")
 		else
 			warnDeadlyDescent:CombinedShow(0.3, args.destName)
 		end
@@ -199,7 +199,7 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
-	if spellId == 329370 then
+	if spellId == 343024 then
 --		if args:IsPlayer() then
 --			yellDeadlyDescentFades:Cancel()
 --		end

@@ -71,7 +71,7 @@ end
 
 DBM = {
 	Revision = parseCurseDate("@project-date-integer@"),
-	DisplayVersion = "8.3.32", -- the string that is shown as version
+	DisplayVersion = "8.3.33", -- the string that is shown as version
 	ReleaseRevision = releaseDate(2020, 8, 19) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 }
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
@@ -6697,11 +6697,15 @@ end
 
 --Future proofing EJ_GetSectionInfo compat layer to make it easier updatable.
 function DBM:EJ_GetSectionInfo(sectionID)
-	local info = EJ_GetSectionInfo(sectionID);
-	local flag1, flag2, flag3, flag4;
-	local flags = GetSectionIconFlags(sectionID);
+	local info = EJ_GetSectionInfo(sectionID)
+	if not info then
+		DBM:Debug("|cffff0000Invalid call to EJ_GetSectionInfo for sectionID: |r"..sectionID)
+		return nil
+	end
+	local flag1, flag2, flag3, flag4
+	local flags = GetSectionIconFlags(sectionID)
 	if flags then
-		flag1, flag2, flag3, flag4 = unpack(flags);
+		flag1, flag2, flag3, flag4 = unpack(flags)
 	end
 	return info.title, info.description, info.headerType, info.abilityIcon, info.creatureDisplayID, info.siblingSectionID, info.firstChildSectionID, info.filteredByDifficulty, info.link, info.startsOpen, flag1, flag2, flag3, flag4
 end

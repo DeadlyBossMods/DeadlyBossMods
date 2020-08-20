@@ -116,7 +116,7 @@ mod:AddInfoFrameOption(326699, true)
 mod:AddSetIconOption("SetIconOnNightHunter", 327796, true, false, {1, 2, 3})
 mod:AddSetIconOption("SetIconOnImpale", 329951, true, false, {1, 2, 3})
 mod:AddSetIconOption("SetIconOnFatalFinesse", 332794, true, false, {1, 2, 3})
-mod:AddNamePlateOption("NPAuraOnSpiteful", 338510)
+--mod:AddNamePlateOption("NPAuraOnSpiteful", 338510)
 
 mod.vb.phase = 1
 mod.vb.painCount = 0
@@ -157,9 +157,9 @@ function mod:OnCombatStart(delay)
 	else
 		timerFeedingTimeCD:Start(1-delay)
 	end
-	if self.Options.NPAuraOnSpiteful then
-		DBM:FireEvent("BossMod_EnableHostileNameplates")
-	end
+--	if self.Options.NPAuraOnSpiteful then
+--		DBM:FireEvent("BossMod_EnableHostileNameplates")
+--	end
 --	if self.Options.RangeFrame then
 --		DBM.RangeCheck:Show(4)--For Acid Splash
 --	end
@@ -177,9 +177,9 @@ function mod:OnCombatEnd()
 --	if self.Options.RangeFrame then
 --		DBM.RangeCheck:Hide()
 --	end
-	if self.Options.NPAuraOnSpiteful then
-		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
-	end
+--	if self.Options.NPAuraOnSpiteful then
+--		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
+--	end
 end
 
 function mod:SPELL_CAST_START(args)
