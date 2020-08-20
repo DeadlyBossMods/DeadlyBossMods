@@ -918,8 +918,10 @@ local function onUpdate(frame, table)
 			infoFrame:SetLine(linesShown, icon or leftText, rightText, color.r, color.g, color.b, color2.r, color2.g, color2.b)
 		end
 	end
-	local maxWidth1, maxWidth2 = {}, {}
-	local linesPerRow = mmin(maxLines, mfloor(linesShown / maxCols + 0.99))
+	local maxWidth1, maxWidth2, linesPerRow = {}, {}, 5
+	if linesShown > 5 then
+		linesPerRow = mmin(maxLines, mfloor(linesShown / maxCols + 0.99))
+	end
 	local shouldUpdate = prevLines ~= linesShown
 	for i = 1, linesShown do
 		if shouldUpdate then
@@ -1102,6 +1104,7 @@ function infoFrame:SetLine(lineNum, leftText, rightText, colorR, colorG, colorB,
 	if not frame.lines[lineNum] then
 		frame.lines[lineNum] = frame:CreateFontString("Line" .. lineNum, "OVERLAY", "GameFontNormal")
 		frame.lines[lineNum + 1] = frame:CreateFontString("Line" .. lineNum + 1, "OVERLAY", "GameFontNormal")
+		frame.lines[lineNum + 1]:SetJustifyH("RIGHT")
 	end
 	frame.lines[lineNum]:SetText(leftText)
 	frame.lines[lineNum]:SetTextColor(colorR or 255, colorG or 255, colorB or 255)
