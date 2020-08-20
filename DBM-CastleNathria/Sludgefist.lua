@@ -35,7 +35,7 @@ local specWarnHatefulGaze						= mod:NewSpecialWarningMoveTo(331209, nil, nil, n
 local specWarnHeedlessCharge					= mod:NewSpecialWarningSoon(331212, nil, nil, nil, 2, 2)
 local yellHatefulGaze							= mod:NewShortYell(331209)
 local yellHatefulGazeFades						= mod:NewShortFadesYell(331209)
-local specWarnChainLink							= mod:NewSpecialWarningYou(335491, nil, nil, nil, 1, 2)
+local specWarnChainLink							= mod:NewSpecialWarningYou(335300, nil, nil, nil, 1, 2)
 local yellChainLink								= mod:NewIconRepeatYell(335300, DBM_CORE_L.AUTO_YELL_ANNOUNCE_TEXT.shortyell)
 local specWarnChainSlam							= mod:NewSpecialWarningYou(335470, nil, nil, nil, 1, 2)
 local yellChainSlam								= mod:NewShortYell(335470, nil, nil, nil, "YELL")
@@ -269,7 +269,7 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 --]]
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 335491 then--Chain link
+	if spellId == 335300 then--Chain link
 		table.wipe(ChainLinkTargetOne)
 		table.wipe(ChainLinkTargetTwo)
 		self.vb.linkCount = self.vb.linkCount + 1

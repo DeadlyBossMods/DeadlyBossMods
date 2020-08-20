@@ -33,6 +33,7 @@ mod:RegisterEventsInCombat(
 --[[
 (ability.id = 342321 or ability.id = 342280 or ability.id = 342281 or ability.id = 342282 or ability.id = 341621 or ability.id = 342320 or ability.id = 342322 or ability.id = 341623 or ability.id = 341625) and type = "begincast"
  or ability.id = 324983 and type = "applydebuff"
+ or ability.id = 331844
  or (ability.id = 331550 or ability.id = 334017 or ability.id = 339521) and type = "begincast"
 --]]
 --TODO, same approach and margock, make it so warnings show which rank it is
@@ -64,7 +65,7 @@ local timerDesiresContainer						= mod:NewTimer(120, "timerDesiresContainer", 34
 local timerBottledContainer						= mod:NewTimer(120, "timerBottledContainer", 342280, false, "timerContainers")
 local timerSinsContainer						= mod:NewTimer(120, "timerSinsContainer", 325064, false, "timerContainers")
 local timerConcentrateContainer					= mod:NewTimer(120, "timerConcentrateContainer", 342321, false, "timerContainers")
-local timerFocusContainerCD						= mod:NewCDTimer(100, "ej22424", nil, nil, nil, 6, 331456)
+local timerFocusAnimaCD							= mod:NewCDTimer(100, 331844, nil, nil, nil, 6)
 local timerExposedDesiresCD						= mod:NewCDTimer(8.5, 341621, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)--8.5-25 because yeah, boss spell queuing+CD even changing when higher rank
 local timerBottledAnimaCD						= mod:NewCDTimer(10.8, 342280, nil, nil, nil, 3)--10-36
 local timerSinsandSufferingCD					= mod:NewCDTimer(44.3, 325064, nil, nil, nil, 3)
@@ -182,13 +183,13 @@ function mod:OnCombatStart(delay)
 	self.vb.containerActive = 0
 	table.wipe(castsPerGUID)
 --	if self:IsMythic() then
-		timerFocusContainerCD:Start(3.7-delay)
+		timerFocusAnimaCD:Start(3.7-delay)
 		timerExposedDesiresCD:Start(10.9-delay)
 		timerSinsandSufferingCD:Start(17.6-delay)--23.6
 		timerBottledAnimaCD:Start(35.6-delay)--31.5
 		timerConcentratedAnimaCD:Start(44-delay)--Not cast on normal until near end of fight
 --	else
---		timerFocusContainerCD:Start(3.8-delay)
+--		timerFocusAnimaCD:Start(3.8-delay)
 --		timerExposedDesiresCD:Start(13.9-delay)
 --		timerSinsandSufferingCD:Start(18-delay)
 --		timerBottledAnimaCD:Start(29.3-delay)
@@ -368,7 +369,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		--1 Expose Desires (tank), 2 Bottled Anima (bouncing bottles), 3 Sins and Suffering (links), 4 Concentrate Anima (adds)
 		timerSinsandSufferingCD:Start(self.vb.containerActive == 3 and 32.4 or 53.4)
 	elseif spellId == 338749 then--Disable Container
---		timerFocusContainerCD:Start(99.5)--62-99.5
+--		timerFocusAnimaCD:Start(99.5)--62-99.5
 		--1 Expose Desires (tank), 2 Bottled Anima (bouncing bottles), 3 Sins and Suffering (links), 4 Concentrate Anima (adds)
 		self.vb.containerActive = self.vb.containerActive + 1
 		if self.vb.containerActive == 5 then
