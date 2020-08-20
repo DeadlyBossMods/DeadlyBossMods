@@ -1,6 +1,7 @@
 ## Interface: 80300
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Dungeons (Shadowlands)|r
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0던전 (어둠땅)|r
+## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0隊伍首領-暗影之境|r
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
 ## SavedVariables: DBMPartyShadowlands_AllSavedVars
@@ -13,12 +14,14 @@
 ## X-DBM-Mod-SubCategoriesID: 2286, 2289, 2290, 2287, 2285, 2293, 2291, 2284
 ## X-DBM-Mod-Name: Dungeons (Shadowlands)
 ## X-DBM-Mod-Name-koKR: 던전 (어둠땅)
+## X-DBM-Mod-Name-zhTW: 隊伍首領 (暗影之境)
 ## X-DBM-Mod-Sort: 315
 ## X-DBM-Mod-MapID: 2286, 2289, 2290, 2287, 2285, 2293, 2291, 2284
 ## X-DBM-Mod-MinCoreRevision: 17286
 ## X-DBM-Mod-MinExpansion: 8
 localization.en.lua
 localization.kr.lua
+localization.tw.lua
 TheNecroticWake\Blightbone.lua
 TheNecroticWake\Amarth.lua
 TheNecroticWake\SurgeonStitchflesh.lua

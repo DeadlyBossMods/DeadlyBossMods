@@ -60,87 +60,27 @@ function frame:ClearSelection()
 	end
 end
 
-function frame:DisplayFrame(frame)
-	if select("#", frame:GetChildren()) == 0 then
-		return
-	end
+local function resize(frame, first)
 	local frameHeight = 20
 	for _, child in ipairs({ frame:GetChildren() }) do
 		if child.mytype == "area" then
-			if not child.isStats then
-				local neededHeight = 25
-				for _, child2 in ipairs({ child:GetRegions() }) do
-					if child2.mytype == "textblock" then
-						neededHeight = neededHeight + (child2.myheight or child2:GetStringHeight())
-					end
-				end
-				for _, child2 in ipairs({ child:GetChildren() }) do
-					neededHeight = neededHeight + (child2.myheight or child2:GetHeight())
-				end
-				child:SetHeight(neededHeight)
-			end
-			frameHeight = frameHeight + child:GetHeight() + 20
-		elseif child.myheight then
-			frameHeight = frameHeight + child.myheight
-		end
-	end
-	local changed = DBM_GUI.currentViewing ~= frame
-	if DBM_GUI.currentViewing then
-		DBM_GUI.currentViewing:Hide()
-	end
-	DBM_GUI.currentViewing = frame
-	_G["DBM_GUI_OptionsFramePanelContainerHeaderText"]:SetText(frame.displayName)
-	_G["DBM_GUI_DropDown"]:Hide()
-	local container = _G[self:GetName() .. "PanelContainer"]
-	local mymax = frameHeight - container:GetHeight()
-	if mymax <= 0 then
-		mymax = 0
-	end
-	local FOV = _G[container:GetName() .. "FOV"]
-	FOV:SetScrollChild(frame)
-	FOV:Show()
-	frame:Show()
-	frame:SetWidth(FOV:GetWidth())
-	frame:SetHeight(FOV:GetHeight())
-	local scrollBar = _G[FOV:GetName() .. "ScrollBar"]
-	if mymax > 0 then
-		scrollBar:Show()
-		scrollBar:SetMinMaxValues(0, mymax)
-		if changed then
-			scrollBar:SetValue(0)
-		end
-		for _, child in ipairs({ frame:GetChildren() }) do
-			if child.mytype == "area" then
-				child:SetPoint("TOPRIGHT", scrollBar, "TOPLEFT", -5, 0)
-			end
-		end
-	else
-		scrollBar:Hide()
-		scrollBar:SetValue(0)
-		scrollBar:SetMinMaxValues(0, 0)
-		for _, child in ipairs({ frame:GetChildren() }) do
-			if child.mytype == "area" then
+			if first then
+				child:SetPoint("TOPRIGHT", "DBM_GUI_OptionsFramePanelContainerFOVScrollBar", "TOPLEFT", -5, 0)
+			else
 				child:SetPoint("TOPRIGHT", "DBM_GUI_OptionsFramePanelContainerFOV", "TOPRIGHT", -5, 0)
 			end
-		end
-	end
-	frameHeight = 20
-	for _, child in ipairs({ frame:GetChildren() }) do
-		if child.mytype == "area" then
+			local width = frame:GetWidth() - 30
 			if not child.isStats then
 				local neededHeight, lastObject = 25, nil
 				for _, child2 in ipairs({ child:GetChildren() }) do
 					if child2.mytype == "textblock" then
 						if child2.autowidth then
-							child2:SetWidth(child:GetWidth())
+							child2:SetWidth(width)
 						end
 						neededHeight = neededHeight + (child2.myheight or child2:GetStringHeight())
-					end
-				end
-				for _, child2 in pairs({ child:GetChildren() }) do
-					if child2.mytype == "checkbutton" then
+					elseif child2.mytype == "checkbutton" then
 						local buttonText = _G[child2:GetName() .. "Text"]
-						buttonText:SetWidth(child:GetWidth() - buttonText.widthPad - 57)
+						buttonText:SetWidth(width - buttonText.widthPad - 57)
 						buttonText:SetText(buttonText.text)
 						if not child2.customPoint then
 							if lastObject and lastObject.myheight then
@@ -153,11 +93,11 @@ function frame:DisplayFrame(frame)
 						end
 						lastObject = child2
 					elseif child2.mytype == "line" then
-						child2:SetWidth(child:GetWidth() - 20)
+						child2:SetWidth(width - 20)
 						if lastObject and lastObject.myheight then
 							child2:ClearAllPoints()
 							child2:SetPoint("TOPLEFT", lastObject, "TOPLEFT", 0, -lastObject.myheight)
-							_G[child2:GetName() .. "BG"]:SetWidth(child:GetWidth() - _G[child2:GetName() .. "Text"]:GetWidth() - 25)
+							_G[child2:GetName() .. "BG"]:SetWidth(width - _G[child2:GetName() .. "Text"]:GetWidth() - 25)
 						end
 						lastObject = child2
 					end
@@ -170,15 +110,41 @@ function frame:DisplayFrame(frame)
 			frameHeight = frameHeight + child.myheight
 		end
 	end
-	if scrollBar:IsShown() then
-		local maxVal = frameHeight - container:GetHeight()
-		if maxVal > 0 then
-			scrollBar:SetMinMaxValues(0, maxVal)
-		else
-			scrollBar:Hide()
+	return frameHeight
+end
+
+function frame:DisplayFrame(frame)
+	if select("#", frame:GetChildren()) == 0 then
+		return
+	end
+	local scrollBar = _G["DBM_GUI_OptionsFramePanelContainerFOVScrollBar"]
+	scrollBar:Show()
+	local changed = DBM_GUI.currentViewing ~= frame
+	if DBM_GUI.currentViewing then
+		DBM_GUI.currentViewing:Hide()
+	end
+	DBM_GUI.currentViewing = frame
+	_G["DBM_GUI_OptionsFramePanelContainerHeaderText"]:SetText(frame.displayName)
+	_G["DBM_GUI_DropDown"]:Hide()
+	local FOV = _G["DBM_GUI_OptionsFramePanelContainerFOV"]
+	FOV:SetScrollChild(frame)
+	FOV:Show()
+	frame:Show()
+	frame:SetSize(FOV:GetWidth(), FOV:GetHeight())
+	local mymax = resize(frame, true) - _G["DBM_GUI_OptionsFramePanelContainer"]:GetHeight()
+	if mymax <= 0 then
+		mymax = 0
+	end
+	if mymax > 0 then
+		scrollBar:SetMinMaxValues(0, mymax)
+		if changed then
 			scrollBar:SetValue(0)
-			scrollBar:SetMinMaxValues(0, 0)
 		end
+	else
+		scrollBar:Hide()
+		scrollBar:SetValue(0)
+		scrollBar:SetMinMaxValues(0, 0)
+		resize(frame)
 	end
 	if DBM.Options.EnableModels then
 		local bossPreview = _G["DBM_BossPreview"]

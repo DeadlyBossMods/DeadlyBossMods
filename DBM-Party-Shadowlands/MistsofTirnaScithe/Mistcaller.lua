@@ -18,7 +18,7 @@ mod:RegisterEventsInCombat(
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, timers still a mess, mostly freeze tag. dodge ball and Patty cake seem okish but still a little iffy like there is something more. More data required
+--TODO, timers still a mess, it'll be difficult too fix them until live, because WCL lacks ability to search for non M+ dungeons
 --[[
 (ability.id = 321834 or ability.id = 321873 or ability.id = 321828) and type = "begincast"
  or ability.id = 336499
@@ -35,9 +35,10 @@ local specWarnFixate				= mod:NewSpecialWarningRun(321891, nil, nil, nil, 4, 2)
 local specWarnPattyCake				= mod:NewSpecialWarningInterrupt(321828, nil, nil, nil, 1, 2)
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(257274, nil, nil, nil, 1, 8)
 
-local timerDodgeBallCD				= mod:NewCDTimer(13.3, 321834, nil, nil, nil, 3)--13-16
---local timerFreezeTagCD				= mod:NewCDTimer(21.4, 321873, nil, nil, nil, 3)--21-71.7?
-local timerPattyCakeCD				= mod:NewCDTimer(20.6, 321828, nil, nil, nil, 3)--20-23
+---Seems all timers are 45, including dodge ball, except when it isn't
+local timerDodgeBallCD				= mod:NewCDTimer(16.2, 321834, nil, nil, nil, 3)--16-45
+local timerFreezeTagCD				= mod:NewCDTimer(44.9, 321873, nil, nil, nil, 3)
+local timerPattyCakeCD				= mod:NewCDTimer(45.0, 321828, nil, nil, nil, 3)
 
 mod:AddNamePlateOption("NPAuraOnFixate", 321891)
 mod:AddSetIconOption("SetIconOnAdds", "ej21691", true, true, {1, 2, 3, 4})
@@ -50,7 +51,7 @@ function mod:OnCombatStart(delay)
 	self.vb.addIcon = 1
 	timerDodgeBallCD:Start(8.1-delay)
 	timerPattyCakeCD:Start(13.4-delay)
---	timerFreezeTagCD:Start(18.4-delay)--Sometimes cast is skipped?
+	timerFreezeTagCD:Start(18.4-delay)--Sometimes cast is skipped?
 	if self.Options.NPAuraOnFixate then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
@@ -71,7 +72,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 321834 and self:AntiSpam(8, 1) then
 		specWarnDodgeBall:Show()
 		specWarnDodgeBall:Play("farfromline")
-		timerDodgeBallCD:Start()
+		--timerDodgeBallCD:Start()--Outside of first case, rest are too chaotic
 	elseif spellId == 321873 then
 		warnFreezeTag:Show()
 --		timerFreezeTagCD:Start()

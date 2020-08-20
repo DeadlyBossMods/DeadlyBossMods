@@ -40,7 +40,7 @@ local specWarnTearsoftheForrest			= mod:NewSpecialWarningDodge(323177, nil, nil,
 local specWarnGTFO						= mod:NewSpecialWarningGTFO(323250, nil, nil, nil, 1, 8)
 
 --Phases
---local timerEmbraceDarknessCD			= mod:NewCDTimer(95.449, 323149, nil, nil, nil, 2, nil, DBM_CORE_L.HEALER_ICON)
+--local timerEmbraceDarknessCD			= mod:NewCDTimer(66.7, 323149, nil, nil, nil, 2, nil, DBM_CORE_L.HEALER_ICON)
 --local timerRepulsiveVisageCD			= mod:NewCDTimer(15.8, 328756, nil, nil, nil, 2, nil, DBM_CORE_L.MAGIC_ICON)
 --Droman Oulfarran
 local timerBewilderingPollenCD			= mod:NewCDTimer(20.7, 323137, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON)--20.7-32.7
@@ -49,7 +49,7 @@ local timerDromansWrath					= mod:NewBuffActiveTimer(12, 323059, nil, nil, nil, 
 
 function mod:OnCombatStart(delay)
 	--Not 100% sure boss timers start here or Soul Shackle, Droman's timers def start at soul Shackle
---	timerEmbraceDarknessCD:Start(39.8-delay)--Health triggered?35.891
+--	timerEmbraceDarknessCD:Start(33.3-delay)--Health triggered?
 --	timerRepulsiveVisageCD:Start(44.7-delay)--44.7-46?
 end
 

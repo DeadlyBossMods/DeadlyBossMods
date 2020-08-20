@@ -1,3 +1,4 @@
+if 2 == 2 then return end--Basically disable the entire mod for now. mod has to be COMPLETELY redone, and I don't have access to dungeon journal updates at this time.
 local mod	= DBM:NewMod(2425, "DBM-CastleNathria", nil, 1190)
 local L		= mod:GetLocalizedStrings()
 
@@ -13,7 +14,7 @@ mod:SetMinSyncRevision(20200801000000)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 333387 334765 334929 334498 339690 339728 337741 339398 339164 334009",
+	"SPELL_CAST_START 333387 334765 334929 334498 339690 339728 337741 339398 339164 334009 342256 340043",
 	"SPELL_CAST_SUCCESS 334541 334765 334929",
 	"SPELL_AURA_APPLIED 329636 333913 334765 338156 338153 329808 334541 334616 333377",
 	"SPELL_AURA_APPLIED_DOSE 333913",
@@ -30,6 +31,9 @@ mod:RegisterEventsInCombat(
 --https://shadowlands.wowhead.com/spell=334616/petrified
 --TODO, optimize events for formations to eliminate antispam calls
 --TODO, alternate the Stratagem timers, don't overlap them like AI timers require
+--TODO, verify timer for https://ptr.wowhead.com/spell=340043
+--TODO, stack announces for https://ptr.wowhead.com/spell=340042/punishment if it stacks
+--TODO, https://shadowlands.wowhead.com/spell=342254/wicked-slaughter targeting?
 --[[
 (ability.id = 333387 or ability.id = 334929 or ability.id = 339164 or ability.id = 334009 or ability.id = 334498 or ability.id = 339690 or ability.id = 339728 or ability.id = 337741 or ability.id = 339398) and type = "begincast"
  or (ability.id = 334541 or ability.id = 334765) and type = "cast"
@@ -40,6 +44,7 @@ local warnBasaltForm							= mod:NewTargetNoFilterAnnounce(329636, 2)
 local warnBasaltFormOver						= mod:NewEndAnnounce(329636, 1)
 local warnWickedBlade							= mod:NewTargetNoFilterAnnounce(333376, 4)
 local warnStoneShatterer						= mod:NewTargetNoFilterAnnounce(334765, 4)
+local warnCallShadowForces						= mod:NewSpellAnnounce(342256, 2)
 --General Grashaal
 local warnGraniteForm							= mod:NewTargetNoFilterAnnounce(329808, 2)
 local warnGraniteFormOver						= mod:NewEndAnnounce(329808, 1)
@@ -79,6 +84,7 @@ local timerStoneShattererCD						= mod:NewCDTimer(43.6, 334765, nil, nil, nil, 3
 local timerSerratedSwipeCD						= mod:NewCDTimer(11.1, 334929, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)--12.6-18.1
 local timerOutFlankCD							= mod:NewAITimer(44.3, 338156, nil, nil, nil, 6, nil, DBM_CORE_L.MYTHIC_ICON)--Keep Together
 local timerTightFormationCD						= mod:NewAITimer(44.3, 338153, nil, nil, nil, 6, nil, DBM_CORE_L.MYTHIC_ICON)--Keep Apart
+local timerCallShadowForcesCD					= mod:NewAITimer(28.9, 333387, nil, nil, nil, 1, nil, DBM_CORE_L.MYTHIC_ICON)
 --General Grashaal
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22288))
 local timerReverberatingLeapCD					= mod:NewCDTimer(29.8, 334004, 183611, nil, nil, 3)--Short text "Leap"
@@ -87,6 +93,7 @@ local timerCurseofPetrificationCD				= mod:NewCDTimer(61.8, 334541, nil, nil, ni
 local timerStoneBreakersComboCD					= mod:NewCDTimer(24.6, 339690, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON, nil, 2, 3)--24.6-33.8
 --Adds
 local timerBreathofCorruptionCD					= mod:NewCDTimer(13.5, 337741, nil, nil, nil, 3)--13.5-17
+local timerPunishingBlowCD						= mod:NewAITimer(24.6, 340043, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON)
 
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
@@ -133,6 +140,7 @@ function mod:OnCombatStart(delay)
 	if self:IsMythic() then
 		timerOutFlankCD:Start(1-delay)
 		timerTightFormationCD:Start(1-delay)
+		timerCallShadowForcesCD:Start(1-delay)
 	end
 	--General Grashaal
 	timerReverberatingLeapCD:Start(9.5-delay)
@@ -196,6 +204,11 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 337741 or spellId == 339398 then--337741 confirmed, 339398 unknown, porbably lfr/normal
 		warnBreathofCorruption:Show()
 		timerBreathofCorruptionCD:Start()
+	elseif spellId == 342256 then
+		warnCallShadowForces:Show()
+		timerCallShadowForcesCD:Start()
+	elseif spellId == 340043 then
+		timerPunishingBlowCD:Start(10, args.sourceGUID)
 	end
 end
 
@@ -220,6 +233,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerSerratedSwipeCD:Stop()
 		timerOutFlankCD:Stop()
 		timerTightFormationCD:Stop()
+		timerCallShadowForcesCD:Stop()
 	elseif spellId == 329808 then--40% transition
 		warnGraniteForm:Show(args.destName)
 		--General Grashaal
@@ -297,6 +311,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self:IsMythic() then
 			timerOutFlankCD:Start(2)
 			timerTightFormationCD:Start(2)
+			timerCallShadowForcesCD:Start(2)
 		end
 	elseif spellId == 329808 then--Phase 3
 		self.vb.phase = 3
@@ -380,6 +395,10 @@ function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 172858 then--stone-legion-goliath
 		timerBreathofCorruptionCD:Stop()
+	elseif cid == 173276 then--Stone Legion Commando
+		timerPunishingBlowCD:Stop(args.destGUID)
+	elseif cid == 173280 then--stone-legion-skirmisher
+
 	end
 end
 
