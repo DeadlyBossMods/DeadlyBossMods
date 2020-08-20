@@ -60,9 +60,9 @@ local warnStonewrathExhaust						= mod:NewCastAnnounce(342722, 3)
 --local warnStonegaleEffigy						= mod:NewSpellAnnounce(342985, 3)
 
 --General Kaal
-local specWarnWickedBlade						= mod:NewSpecialWarningYou(333376, nil, nil, nil, 1, 2)
-local yellWickedBlade							= mod:NewShortYell(333376)
-local yellWickedBladeFades						= mod:NewShortFadesYell(333376)
+local specWarnWickedBlade						= mod:NewSpecialWarningYouPos(333376, nil, nil, nil, 1, 2)
+local yellWickedBlade							= mod:NewPosYell(333376)
+local yellWickedBladeFades						= mod:NewIconFadesYell(333376)
 local specWarnHeartRend							= mod:NewSpecialWarningYou(334765, false, nil, nil, 1, 2)
 local specWarnSerratedSwipe						= mod:NewSpecialWarningDefensive(334929, nil, nil, nil, 1, 2)
 --local specWarnLaceration						= mod:NewSpecialWarningStack(333913, nil, 3, nil, nil, 1, 6)
@@ -104,17 +104,17 @@ local timerShatteringBlast						= mod:NewCastTimer(5, 332683, nil, nil, nil, 2)
 
 --mod:AddRangeFrameOption(10, 310277)
 mod:AddInfoFrameOption(333913, true)
-mod:AddSetIconOption("SetIconOnHeartRend", 334765, false, false, {1, 2, 3, 4})
-mod:AddSetIconOption("SetIconOnCrystalize", 339690, true, false, {5})
-mod:AddSetIconOption("SetIconOnMeteor", 342544, true, false, {5})
-mod:AddSetIconOption("SetIconOnWickedBlade", 333387, true, false, {6, 7})--off by default since it relies on 100% boss mod raid
-mod:AddSetIconOption("SetIconOnLeap", 334004, true, false, {8})
+mod:AddSetIconOption("SetIconOnWickedBlade", 333387, true, false, {1, 2})--off by default since it relies on 100% boss mod raid
+mod:AddSetIconOption("SetIconOnCrystalize", 339690, true, false, {3})
+mod:AddSetIconOption("SetIconOnMeteor", 342544, true, false, {3})
+mod:AddSetIconOption("SetIconOnHeartRend", 334765, false, false, {4, 5, 6, 7})
+mod:AddSetIconOption("SetIconOnLeap", 334004, false, false, {8})
 mod:AddNamePlateOption("NPAuraOnVolatileShell", 340037)
 
 local playerName = UnitName("player")
 local LacerationStacks = {}
-mod.vb.HeartIcon = 1
-mod.vb.wickedBladeIcon = 6
+mod.vb.HeartIcon = 4
+mod.vb.wickedBladeIcon = 1
 mod.vb.phase = 1
 
 function mod:LeapTarget(targetname, uId)
@@ -144,14 +144,14 @@ function mod:MeteorTarget(targetname, uId)
 		warnPulverizingMeteor:Show(targetname)
 	end
 	if self.Options.SetIconOnMeteor then
-		self:SetIcon(targetname, 5, 3)--So icon clears 1 second after
+		self:SetIcon(targetname, 3, 3)--So icon clears 1 second after
 	end
 end
 
 function mod:OnCombatStart(delay)
 	table.wipe(LacerationStacks)
-	self.vb.HeartIcon = 1
-	self.vb.wickedBladeIcon = 6
+	self.vb.HeartIcon = 4
+	self.vb.wickedBladeIcon = 1
 	self.vb.phase = 1
 	--General Kaal
 	timerSerratedSwipeCD:Start(1-delay)--START, but next timer is started at SUCCESS
@@ -190,10 +190,10 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 333387 then
-		self.vb.wickedBladeIcon = 6
+		self.vb.wickedBladeIcon = 1
 		timerWickedBladeCD:Start()
 	elseif spellId == 334765 then
-		self.vb.HeartIcon = 1
+		self.vb.HeartIcon = 4
 	elseif spellId == 334929 then
 		if self:IsTanking("player", nil, nil, true, args.sourceGUID) then
 			specWarnSerratedSwipe:Show()
@@ -275,14 +275,15 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.HeartIcon = self.vb.HeartIcon + 1
 	elseif spellId == 333377 and self:AntiSpam(4, args.destName .. "1") then
 		warnWickedBlade:CombinedShow(0.3, args.destName)
+		local icon = self.vb.wickedBladeIcon
 		if args:IsPlayer() then
-			specWarnWickedBlade:Show()
-			specWarnWickedBlade:Play("targetyou")
-			yellWickedBlade:Yell()
-			yellWickedBladeFades:Countdown(4)
+			specWarnWickedBlade:Show(self:IconNumToTexture(icon))
+			specWarnWickedBlade:Play("mm"..icon)
+			yellWickedBlade:Yell(icon, icon, icon)
+			yellWickedBladeFades:Countdown(4, nil, icon)
 		end
 		if self.Options.SetIconOnWickedBlade then
-			self:SetIcon(args.destName, self.vb.wickedBladeIcon, 5)
+			self:SetIcon(args.destName, icon, 5)
 		end
 		self.vb.wickedBladeIcon = self.vb.wickedBladeIcon + 1
 	elseif spellId == 339690 then
@@ -295,7 +296,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnCrystalize:Show(args.destName)
 		end
 		if self.Options.SetIconOnCrystalize then
-			self:SetIcon(args.destName, 5)
+			self:SetIcon(args.destName, 3)
 		end
 	elseif spellId == 342655 then
 		warnVolatileAnimaInfusion:Show(args.destName)
@@ -330,6 +331,11 @@ function mod:SPELL_AURA_REMOVED(args)
 	if spellId == 329636 then--phase 2 (Kael Departing, Grashaal landing)
 		self.vb.phase = 2
 		warnHardenedStoneFormOver:Show()
+		--Stop Kael's timers for ground phase
+		timerWickedBladeCD:Stop()
+		timerHeartRendCD:Stop()
+		timerSerratedSwipeCD:Stop()
+		timerCallShadowForcesCD:Stop()
 		--General Kael (stuff he still casts airborn)
 		timerWickedBladeCD:Start(2)
 		if self:IsMythic() then
@@ -343,6 +349,11 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 329808 then--Phase 3 (Both Generals at once)
 		self.vb.phase = 3
 		warnHardenedStoneFormOver:Show()
+		--Stop/reset Grashaal timers
+		timerReverberatingLeapCD:Stop()
+		timerSeismicUpheavalCD:Stop()
+		timerStoneBreakersComboCD:Stop()
+		timerStoneFistCD:Stop()
 		--General Kaal
 		timerSerratedSwipeCD:Start(3)--START, but next timer is started at SUCCESS
 		timerWickedBladeCD:Start(3)
@@ -393,12 +404,7 @@ function mod:SPELL_AURA_REMOVED_DOSE(args)
 end
 
 function mod:RAID_BOSS_WHISPER(msg)
-	if msg:find("333908") and self:AntiSpam(4, playerName.."1") then
-		specWarnWickedBlade:Show()
-		specWarnWickedBlade:Play("targetyou")
-		yellWickedBlade:Yell()
-		yellWickedBladeFades:Countdown(4)
-	elseif msg:find("334094") and self:AntiSpam(4, playerName.."2") then--Leap Backup (if scan fails)
+	if msg:find("334094") and self:AntiSpam(4, playerName.."2") then--Leap Backup (if scan fails)
 		specWarnReverberatingLeap:Show()
 		specWarnReverberatingLeap:Play("runout")
 		yellReverberatingLeap:Yell()
@@ -410,16 +416,7 @@ function mod:RAID_BOSS_WHISPER(msg)
 end
 
 function mod:OnTranscriptorSync(msg, targetName)
-	if msg:find("333908") and targetName then
-		targetName = Ambiguate(targetName, "none")
-		if self:AntiSpam(4, targetName.."1") then
-			warnWickedBlade:CombinedShow(0.75, targetName)
-			if self.Options.SetIconOnWickedBlade then
-				self:SetIcon(targetName, self.vb.wickedBladeIcon, 5)
-			end
-			self.vb.wickedBladeIcon = self.vb.wickedBladeIcon + 1
-		end
-	elseif msg:find("334094") and targetName then--Leap Backup (if scan fails)
+	if msg:find("334094") and targetName then--Leap Backup (if scan fails)
 		targetName = Ambiguate(targetName, "none")
 		if self:AntiSpam(4, targetName.."2") then--Same antispam as RAID_BOSS_WHISPER on purpose. if player got personal warning they don't need this one
 			warnReverberatingLeap:Show(targetName)
