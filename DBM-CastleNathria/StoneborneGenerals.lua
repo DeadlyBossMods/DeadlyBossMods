@@ -106,7 +106,7 @@ local timerShatteringBlast						= mod:NewCastTimer(5, 332683, nil, nil, nil, 2)
 mod:AddInfoFrameOption(333913, true)
 mod:AddSetIconOption("SetIconOnHeartRend", 334765, false, false, {1, 2, 3, 4})
 mod:AddSetIconOption("SetIconOnCrystalize", 339690, true, false, {5})
-mod:AddSetIconOption("SetIconOnMeteor", 339690, true, false, {5})
+mod:AddSetIconOption("SetIconOnMeteor", 342544, true, false, {5})
 mod:AddSetIconOption("SetIconOnWickedBlade", 333387, false, false, {6, 7})--off by default since it relies on 100% boss mod raid
 mod:AddSetIconOption("SetIconOnLeap", 334004, true, false, {8})
 mod:AddNamePlateOption("NPAuraOnVolatileShell", 340037)

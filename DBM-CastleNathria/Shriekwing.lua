@@ -12,7 +12,7 @@ mod:SetMinSyncRevision(20200815000000)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 328857 328921 340047 330711",
+	"SPELL_CAST_START 328857 328921 340047 330711 343005",
 	"SPELL_CAST_SUCCESS 328857",
 	"SPELL_AURA_APPLIED 328897 342077 341684",
 	"SPELL_AURA_APPLIED_DOSE 328897",
@@ -33,7 +33,7 @@ mod:RegisterEventsInCombat(
 --]]
 --Stage One - Thirst for Blood
 local warnExsanguinated							= mod:NewStackAnnounce(328897, 2, nil, "Tank|Healer")
-local warnScentofBlood							= mod:NewTargetAnnounce(342077, 3)
+local warnEcholocation							= mod:NewTargetAnnounce(342077, 3)
 --Stage Two - Terror of Castle Nathria
 local warnDeadlyDescent							= mod:NewTargetNoFilterAnnounce(343024, 4)
 local warnBloodgorgeOver						= mod:NewEndAnnounce(328921, 1)
@@ -44,23 +44,25 @@ local warnBloodLantern							= mod:NewTargetNoFilterAnnounce(341684, 2)--Mythic
 local specWarnExsanguinated						= mod:NewSpecialWarningStack(328897, nil, 2, nil, nil, 1, 6)
 local specWarnExsanguinatingBite				= mod:NewSpecialWarningDefensive(328857, nil, nil, nil, 1, 2)
 local specWarnExsanguinatingBiteOther			= mod:NewSpecialWarningTaunt(328857, nil, nil, nil, 1, 2)
-local specWarnScentofBlood						= mod:NewSpecialWarningMoveAway(342077, nil, nil, nil, 1, 2)
-local yellScentofBlood							= mod:NewYell(342077)
-local yellScentofBloodFades						= mod:NewShortFadesYell(342077)
+local specWarnEcholocation						= mod:NewSpecialWarningMoveAway(342077, nil, nil, nil, 1, 2)
+local yellEcholocation							= mod:NewYell(342077)
+local yellEcholocationFades						= mod:NewShortFadesYell(342077)
 local specWarnEarsplittingShriek				= mod:NewSpecialWarningMoveTo(330711, nil, nil, nil, 1, 2)
+local specWarnBlindSwipe						= mod:NewSpecialWarningDodge(343005, nil, nil, nil, 1, 2)
 --Stage Two - Terror of Castle Nathria
 local specWarnBloodgorge						= mod:NewSpecialWarningSpell(328921, nil, nil, nil, 2, 2)
 local specWarnDeadlyDescent						= mod:NewSpecialWarningYou(343021, nil, nil, nil, 1, 2)--1 because you can't do anything about it
 local yellDeadlyDescent							= mod:NewYell(343021, nil, false)--Useless with only 1 second to avoid
 --local yellDeadlyDescentFades					= mod:NewShortFadesYell(343021)--Re-enable if made 4 seconds again, but as 2 seconds this is useless
---local specWarnDeadlyDescentNear					= mod:NewSpecialWarningClose(343021, nil, nil, nil, 3, 2)--3 because you NEED to get away from them highest priority
+--local specWarnDeadlyDescentNear				= mod:NewSpecialWarningClose(343021, nil, nil, nil, 3, 2)--3 because you NEED to get away from them highest priority
 local specWarnGTFO								= mod:NewSpecialWarningGTFO(340324, nil, nil, nil, 1, 8)
 
 --Stage One - Thirst for Blood
 --mod:AddTimerLine(BOSS)
 local timerExsanguinatingBiteCD					= mod:NewCDTimer(10, 328857, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)--10-22.9 (too varaible for a countdown by default)
-local timerScentofBloodCD						= mod:NewCDTimer(42.6, 342077, nil, nil, nil, 3, nil, nil, nil, 1, 3)--Seems to be 42.7 without a hitch
+local timerEcholocationCD						= mod:NewCDTimer(42.6, 342077, nil, nil, nil, 3, nil, nil, nil, 1, 3)--Seems to be 42.7 without a hitch
 local timerEarsplittingShriekCD					= mod:NewCDTimer(44.5, 330711, nil, nil, nil, 2)--44.5-47.1
+local timerBlindSwipeCD							= mod:NewAITimer(44.5, 343005, nil, nil, nil, 3)
 --Stage Two - Terror of Castle Nathria
 --local timerBloodgorge							= mod:NewBuffActiveTimer(47.5, 328921, nil, nil, nil, 6)--43.4-47.5, more to it than this? or just fact blizzards energy code always proves to be dogshit
 local timerSonarShriekCD						= mod:NewCDTimer(7.3, 340047, nil, nil, nil, 3)
@@ -68,20 +70,21 @@ local timerSonarShriekCD						= mod:NewCDTimer(7.3, 340047, nil, nil, nil, 3)
 
 mod:AddRangeFrameOption("8")
 mod:AddInfoFrameOption(328897, true)
-mod:AddSetIconOption("SetIconOnScentofBlood", 342077, true, false, {1, 2})
+mod:AddSetIconOption("SetIconOnEcholocation", 342077, true, false, {1, 2})
 --mod:AddNamePlateOption("NPAuraOnVolatileCorruption", 312595)
 
 local ExsanguinatedStacks = {}
 local playerDebuff = false
-mod.vb.scentIcon = 1
+mod.vb.EchoIcon = 1
 
 function mod:OnCombatStart(delay)
 	table.wipe(ExsanguinatedStacks)
 	playerDebuff = false
-	self.vb.scentIcon = 1
+	self.vb.EchoIcon = 1
 	timerExsanguinatingBiteCD:Start(6.7-delay)
-	timerScentofBloodCD:Start(19.2-delay)
+	timerEcholocationCD:Start(19.2-delay)
 	timerEarsplittingShriekCD:Start(20.5-delay)
+	timerBlindSwipeCD:Start(1-delay)
 --	if self:IsMythic() then
 
 --	end
@@ -121,7 +124,8 @@ function mod:SPELL_CAST_START(args)
 		specWarnBloodgorge:Play("phasechange")
 		timerExsanguinatingBiteCD:Stop()
 		timerEarsplittingShriekCD:Stop()
-		timerScentofBloodCD:Stop()
+		timerEcholocationCD:Stop()
+		timerBlindSwipeCD:Stop()
 		timerSonarShriekCD:Start(19.4)
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(8)
@@ -133,6 +137,10 @@ function mod:SPELL_CAST_START(args)
 		specWarnEarsplittingShriek:Show(DBM_CORE_L.BREAK_LOS)
 		specWarnEarsplittingShriek:Play("findshelter")
 		timerEarsplittingShriekCD:Start()
+	elseif spellId == 343005 then
+		specWarnBlindSwipe:Show()
+		specWarnBlindSwipe:Play("shockwave")
+		timerBlindSwipeCD:Start()
 	end
 end
 
@@ -180,17 +188,17 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnDeadlyDescent:CombinedShow(0.3, args.destName)
 		end
 	elseif spellId == 342077 then
-		warnScentofBlood:CombinedShow(0.3, args.destName)
+		warnEcholocation:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
-			specWarnScentofBlood:Show()
-			specWarnScentofBlood:Play("runout")
-			yellScentofBlood:Yell()
-			yellScentofBloodFades:Countdown(spellId)
+			specWarnEcholocation:Show()
+			specWarnEcholocation:Play("runout")
+			yellEcholocation:Yell()
+			yellEcholocationFades:Countdown(spellId)
 		end
-		if self.Options.SetIconOnScentofBlood then
-			self:SetIcon(args.destName, self.vb.scentIcon)
+		if self.Options.SetIconOnEcholocation then
+			self:SetIcon(args.destName, self.vb.EchoIcon)
 		end
-		self.vb.scentIcon = self.vb.scentIcon + 1
+		self.vb.EchoIcon = self.vb.EchoIcon + 1
 	elseif spellId == 341684 then
 		warnBloodLantern:Show(args.destName)
 	end
@@ -208,8 +216,9 @@ function mod:SPELL_AURA_REMOVED(args)
 		warnBloodgorgeOver:Show()
 		--Looks same as pull timers
 		timerExsanguinatingBiteCD:Start(6)
-		timerScentofBloodCD:Start(18.3)
+		timerEcholocationCD:Start(18.3)
 		timerEarsplittingShriekCD:Start(20.6)
+		timerBlindSwipeCD:Start(2)
 --		if self:IsMythic() then
 
 --		end
@@ -218,7 +227,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif spellId == 342077 then
 		if args:IsPlayer() then
-			yellScentofBloodFades:Cancel()
+			yellEcholocationFades:Cancel()
 		end
 	elseif spellId == 328897 then
 		ExsanguinatedStacks[args.destName] = nil
@@ -260,14 +269,14 @@ do
 		if hasDebuff then
 			local name = DBM:GetUnitFullName(uId)
 			if UnitIsUnit(uId, "player") then
-				specWarnScentofBlood:Show()
-				specWarnScentofBlood:Play("runout")
-				yellScentofBlood:Yell()
-				yellScentofBloodFades:Countdown(8)
+				specWarnEcholocation:Show()
+				specWarnEcholocation:Play("runout")
+				yellEcholocation:Yell()
+				yellEcholocationFades:Countdown(8)
 			else
-				warnScentofBlood:Show(name)
+				warnEcholocation:Show(name)
 			end
-			if self.Options.SetIconOnScentofBlood then
+			if self.Options.SetIconOnEcholocation then
 				self:SetIcon(name, 1, 8)
 			end
 			self:UnregisterShortTermEvents()
@@ -275,9 +284,9 @@ do
 	end--]]
 
 	function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-		if spellId == 342074 then--Dark Descent
-			self.vb.scentIcon = 1
-			timerScentofBloodCD:Start()
+		if spellId == 342074 then
+			self.vb.EchoIcon = 1
+			timerEcholocationCD:Start()
 			--self:RegisterShortTermEvents(
 			--	"UNIT_AURA_UNFILTERED"
 			--)
