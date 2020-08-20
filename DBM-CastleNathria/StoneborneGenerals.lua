@@ -61,8 +61,8 @@ local warnStonewrathExhaust						= mod:NewCastAnnounce(342722, 3)
 
 --General Kaal
 local specWarnWickedBlade						= mod:NewSpecialWarningYou(333376, nil, nil, nil, 1, 2)
-local yellWickedBlade							= mod:NewYell(333376)
-local yellWickedBladeFades						= mod:NewFadesYell(333376)
+local yellWickedBlade							= mod:NewShortYell(333376)
+local yellWickedBladeFades						= mod:NewShortFadesYell(333376)
 local specWarnHeartRend							= mod:NewSpecialWarningYou(334765, false, nil, nil, 1, 2)
 local specWarnSerratedSwipe						= mod:NewSpecialWarningDefensive(334929, nil, nil, nil, 1, 2)
 --local specWarnLaceration						= mod:NewSpecialWarningStack(333913, nil, 3, nil, nil, 1, 6)
@@ -73,10 +73,10 @@ local yellReverberatingLeap						= mod:NewYell(334004, 183611)--Short text "Leap
 local yellReverberatingLeapFades				= mod:NewFadesYell(334004, 183611)--Short text "Leap"
 local specWarnSeismicUpheaval					= mod:NewSpecialWarningDodge(334498, nil, nil, nil, 2, 2)
 local specWarnCrystalize						= mod:NewSpecialWarningYou(339690, nil, nil, nil, 1, 2)
-local yellCrystalize							= mod:NewYell(339690)
-local yellCrystalizeFades						= mod:NewFadesYell(339690)
+local yellCrystalize							= mod:NewYell(339690, nil, nil, nil, "YELL")
+local yellCrystalizeFades						= mod:NewFadesYell(339690, nil, nil, nil, "YELL")
 local specWarnMeteor							= mod:NewSpecialWarningYou(342544, nil, nil, nil, 1, 2)
-local yellMeteor								= mod:NewYell(342544)
+local yellMeteor								= mod:NewYell(342544, nil, nil, nil, "YELL")
 local specWarnStoneFist							= mod:NewSpecialWarningDefensive(342425, nil, nil, nil, 1, 2)
 local specWarnStoneFistTaunt					= mod:NewSpecialWarningTaunt(342425, nil, nil, nil, 1, 2)
 --Adds/Intermissions
@@ -88,7 +88,7 @@ mod:AddTimerLine(DBM:EJ_GetSectionInfo(22284))
 local timerWickedBladeCD						= mod:NewAITimer(28.9, 333387, nil, nil, nil, 3)
 local timerHeartRendCD							= mod:NewAITimer(43.6, 334765, nil, nil, nil, 3, nil, DBM_CORE_L.DEADLY_ICON)
 local timerSerratedSwipeCD						= mod:NewAITimer(11.1, 334929, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)--12.6-18.1
-local timerCallShadowForcesCD					= mod:NewAITimer(28.9, 333387, nil, nil, nil, 1, nil, DBM_CORE_L.MYTHIC_ICON)
+local timerCallShadowForcesCD					= mod:NewAITimer(28.9, 342256, nil, nil, nil, 1, nil, DBM_CORE_L.MYTHIC_ICON)
 --General Grashaal
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22288))
 local timerReverberatingLeapCD					= mod:NewAITimer(29.8, 334004, 183611, nil, nil, 3)--Short text "Leap"
