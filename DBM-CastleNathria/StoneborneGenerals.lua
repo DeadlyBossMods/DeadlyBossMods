@@ -37,8 +37,8 @@ mod:RegisterEventsInCombat(
 --TODO, target scan/yell for https://ptr.wowhead.com/spell=343086/ricocheting-shuriken ?
 --TODO, is https://ptr.wowhead.com/spell=342425/stone-fist stacked or always swap at 1 in proper situation?
 --[[
-(ability.id = 333387 or ability.id = 334929 or ability.id = 339164 or ability.id = 334009 or ability.id = 334498 or ability.id = 339690 or ability.id = 342544) and type = "begincast"
- or (ability.id = 334765) and type = "cast"
+(ability.id = 333387 or ability.id = 334929 or ability.id = 339164 or ability.id = 334009 or ability.id = 334498 or ability.id = 342544) and type = "begincast"
+ or (ability.id = 334765 or ability.id = 339690) and type = "cast"
  or ability.id = 329636 or ability.id = 329808
  --]]
  --General
@@ -107,7 +107,7 @@ mod:AddInfoFrameOption(333913, true)
 mod:AddSetIconOption("SetIconOnHeartRend", 334765, false, false, {1, 2, 3, 4})
 mod:AddSetIconOption("SetIconOnCrystalize", 339690, true, false, {5})
 mod:AddSetIconOption("SetIconOnMeteor", 342544, true, false, {5})
-mod:AddSetIconOption("SetIconOnWickedBlade", 333387, false, false, {6, 7})--off by default since it relies on 100% boss mod raid
+mod:AddSetIconOption("SetIconOnWickedBlade", 333387, true, false, {6, 7})--off by default since it relies on 100% boss mod raid
 mod:AddSetIconOption("SetIconOnLeap", 334004, true, false, {8})
 mod:AddNamePlateOption("NPAuraOnVolatileShell", 340037)
 
@@ -206,8 +206,6 @@ function mod:SPELL_CAST_START(args)
 		specWarnSeismicUpheaval:Show()
 		specWarnSeismicUpheaval:Play("watchstep")
 		timerSeismicUpheavalCD:Start()
-	elseif spellId == 339690 then
-		timerStoneBreakersComboCD:Start()
 	elseif spellId == 342544 then
 		--warnPulverizingMeteor:Show()
 		self:BossTargetScanner(args.sourceGUID, "MeteorTarget", 0.05, 12)
@@ -237,6 +235,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerHeartRendCD:Start()
 	elseif spellId == 334929 then--Boss stutter casts this often
 		timerSerratedSwipeCD:Start()
+	elseif spellId == 339690 then
+		timerStoneBreakersComboCD:Start()
 	end
 end
 
@@ -245,19 +245,19 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 329636 then--50% transition for Kaal
 		warnHardenedStoneForm:Show(args.destName)
 		--General Kaal
-		timerWickedBladeCD:Stop()
-		timerHeartRendCD:Stop()
-		timerSerratedSwipeCD:Stop()
-		timerCallShadowForcesCD:Stop()
+--		timerWickedBladeCD:Stop()
+--		timerHeartRendCD:Stop()
+--		timerSerratedSwipeCD:Stop()
+--		timerCallShadowForcesCD:Stop()
 		--Ability Grashaal still uses when in air
 		timerStoneBreakersComboCD:Stop()
 	elseif spellId == 329808 then--50% transition for Grashaal
 		warnHardenedStoneForm:Show(args.destName)
 		--General Grashaal
-		timerReverberatingLeapCD:Stop()
-		timerSeismicUpheavalCD:Stop()
-		timerStoneBreakersComboCD:Stop()
-		timerStoneFistCD:Stop()
+--		timerReverberatingLeapCD:Stop()
+--		timerSeismicUpheavalCD:Stop()
+--		timerStoneBreakersComboCD:Stop()
+--		timerStoneFistCD:Stop()
 	elseif spellId == 333913 then
 		local amount = args.amount or 1
 		LacerationStacks[args.destName] = amount
