@@ -119,11 +119,12 @@ mod:AddNamePlateOption("NPAuraOnShield", 335775)
 
 mod.vb.phase = 1
 local darkRecitalTargets = {}
+local playerName = UnitName("player")
 
 function mod:TacticalAdvanceTarget(targetname, uId)
 	if not targetname then return end
 	if self:AntiSpam(3, targetname) then--Antispam to lock out redundant later warning from firing if this one succeeds
-		if targetname == UnitName("player") then
+		if targetname == playerName then
 			specWarnTacticalAdvance:Show()
 			specWarnTacticalAdvance:Play("targetyou")
 			yellTacticalAdvance:Yell()
@@ -457,10 +458,10 @@ end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 --]]
 
---"<193.47 17:22:02> [UNIT_SPELLCAST_START] Lord Stavros(Scottal) - Dark Recital - 1.75s [[boss2:Cast-3-2084-2296-19793-331634-00133851F8:331634]]", -- [4205]
+--"<193.47 17:22:02> [UNIT_SPELLCAST_START] Baroness Frieda(Dumbassdwarf) - Scarlet Letter - 2s [[boss1:Cast-3-2084-2296-19793-331704-0012B851F8:331704]]", -- [4201]
 --"<193.47 17:22:02> [DBM_Debug] boss1 changed targets to Nickptwo#nil", -- [4207]
 function mod:UNIT_SPELLCAST_START(uId, _, spellId)
-	if spellId == 331634 then
+	if spellId == 331704 then
 		self:BossUnitTargetScanner(uId, "ScarletTarget", 1)
 	end
 end
