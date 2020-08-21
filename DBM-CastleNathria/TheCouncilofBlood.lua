@@ -13,14 +13,15 @@ mod:SetBossHPInfoToHighest()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 328334 334948 330965 330978 327497 327052",
-	"SPELL_CAST_SUCCESS 335777 331704 331634 330959 334948",
+	"SPELL_CAST_START 328334 334948 330965 330978 327497 327052 331704",
+	"SPELL_CAST_SUCCESS 335777 331634 330959 334948",
 	"SPELL_AURA_APPLIED 330967 327773 331706 331636 331637 332535 335775 342457 342861 342456",
 	"SPELL_AURA_APPLIED_DOSE 327773 332535",
 	"SPELL_AURA_REMOVED 330967 331706 331636 331637 335775 330959 342457 342861 342456",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 	"UNIT_DIED",
+	"UNIT_SPELLCAST_START boss1 boss2 boss3",
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3"
 )
 
@@ -32,8 +33,8 @@ mod:RegisterEventsInCombat(
 --TODO, Handling of boss timers with dance. Currently they just mass queue up and don't reset, pause or anything, resulting in bosses chaining abilities after dance.
 --		As such, keep an eye on this changing, if it doesn't, just add "keep" to all timers to show they are all queued up. if it changes, update timers to either reset, or pause
 --[[
-(ability.id = 328334 or ability.id = 334948 or ability.id = 330965 or ability.id = 330978 or ability.id = 327497 or ability.id = 327052 or ability.id = 327465) and type = "begincast"
- or (ability.id = 335777 or ability.id = 331704 or ability.id = 331634 or ability.id = 334948) and type = "cast"
+(ability.id = 328334 or ability.id = 334948 or ability.id = 331704 or ability.id = 330965 or ability.id = 330978 or ability.id = 327497 or ability.id = 327052 or ability.id = 327465) and type = "begincast"
+ or (ability.id = 335777 or ability.id = 331634 or ability.id = 334948) and type = "cast"
  or ability.id = 332535 or ability.id = 330959
  or (ability.id = 330964 or ability.id = 335773) and type = "cast"
  or (target.id = 166971 or target.id = 166969 or target.id = 166970) and type = "death"
@@ -70,8 +71,8 @@ local specWarnDrainEssence						= mod:NewSpecialWarningStack(327773, nil, 25, ni
 local specWarnDrainEssenceTaunt					= mod:NewSpecialWarningTaunt(327773, nil, nil, nil, 1, 2)
 local specWarnAnimaFountain						= mod:NewSpecialWarningDodge(327475, nil, nil, nil, 2, 2)
 local specWarnScarletLetter						= mod:NewSpecialWarningYou(331706, nil, nil, nil, 1, 2)--One boss dead
-local yellScarletLetter							= mod:NewYell(331706)--One boss dead
-local yellScarletLetterFades					= mod:NewShortFadesYell(331706)--One boss dead
+local yellScarletLetter							= mod:NewYell(331706, nil, nil, nil, "YELL")--One boss dead
+local yellScarletLetterFades					= mod:NewShortFadesYell(331706, nil, nil, nil, "YELL")--One boss dead
 --Lord Stavros
 local specWarnEvasiveLunge						= mod:NewSpecialWarningSpell(327497, "Tank", nil, nil, 1, 2)
 local specWarnWaltzofBlood						= mod:NewSpecialWarningDodge(327616, nil, nil, nil, 2, 2)
@@ -130,6 +131,20 @@ function mod:TacticalAdvanceTarget(targetname, uId)
 			warnTacticalAdvance:Show(targetname)
 		end
 	end
+end
+
+function mod:ScarletTarget(targetname, uId)
+	if not targetname then return end
+	if targetname == playerName then
+		specWarnScarletLetter:Show()
+		specWarnScarletLetter:Play("targetyou")
+		yellScarletLetter:Yell()
+	else
+		warnScarletLetter:Show(targetname)
+	end
+--	if self.Options.SetIconOnScarlet then
+--		self:SetIcon(targetname, 8, 5)--So icon clears 1 second after blast
+--	end
 end
 
 local function warndarkRecitalTargets(self)
@@ -222,6 +237,8 @@ function mod:SPELL_CAST_START(args)
 --		else
 			--Probably used less often by after image? Just coding this so it can be applyed fast
 --		end
+	elseif spellId == 331704 then
+		timerScarletLetterCD:Start()
 	end
 end
 
@@ -230,8 +247,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if spellId == 335777 then
 		warnUnyieldingShield:Show()
 		timerUnyieldingShieldCD:Start()
-	elseif spellId == 331704 then
-		timerScarletLetterCD:Start()
 	elseif spellId == 331634 then
 --		if args:GetSrcCreatureID() == 166970 then--Main boss
 			timerDarkRecitalCD:Start()
@@ -278,12 +293,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 331706 then
 		if args:IsPlayer() then
-			specWarnScarletLetter:Show()
-			specWarnScarletLetter:Play("targetyou")
-			yellScarletLetter:Yell()
+			--Still only want to schedule countdown yell here, if it actually gets applied
 			yellScarletLetterFades:Countdown(spellId)
-		else
-			warnScarletLetter:Show(args.destName)
 		end
 	elseif spellId == 331636 or spellId == 331637 then
 		--Pair offs actually work by 331636 paired with 331637 in each set, but combat log order also works
@@ -339,7 +350,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				--timerScarletLetterCD:Stop()
 				--timerDrainEssenceCD:Start(3)
 				--timerAnimaFountainCD:Start(3)
-				--timerScarletLetterCD:Start(3)--SUCCESS
+				--timerScarletLetterCD:Start(3)--START
 				timerDredgerServantsCD:Start(16.8)
 			elseif cid == 166970 then--Lord Stavros
 				--timerEvasiveLungeCD:Stop()
@@ -362,7 +373,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				--timerAnimaFountainCD:Stop()
 				--timerDrainEssenceCD:Start(2)
 				--timerAnimaFountainCD:Start(2)
-				timerScarletLetterCD:Start(5.5)--5.5-7.5
+				timerScarletLetterCD:Start(3.5)--3.5-5.5
 			elseif cid == 166970 then--Lord Stavros
 				--timerEvasiveLungeCD:Stop()
 				--timerWaltzofBloodCD:Stop()
@@ -445,6 +456,14 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spell
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 --]]
+
+--"<193.47 17:22:02> [UNIT_SPELLCAST_START] Lord Stavros(Scottal) - Dark Recital - 1.75s [[boss2:Cast-3-2084-2296-19793-331634-00133851F8:331634]]", -- [4205]
+--"<193.47 17:22:02> [DBM_Debug] boss1 changed targets to Nickptwo#nil", -- [4207]
+function mod:UNIT_SPELLCAST_START(uId, _, spellId)
+	if spellId == 331634 then
+		self:BossUnitTargetScanner(uId, "ScarletTarget", 1)
+	end
+end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 327724 then--Waltz of Blood
