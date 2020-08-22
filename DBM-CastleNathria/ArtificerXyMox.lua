@@ -167,18 +167,34 @@ function mod:SPELL_CAST_START(args)
 		timerHyperlightSparkCD:Start()
 	elseif spellId == 327887 then--First Spirits cast (Crystal of Phantasms)
 		warnSpirits:Show()
+		if self.vb.phase < 1 then--In case boss doesn't cast 342310, which happens in rare cases
+			self.vb.phase = 1
+			self.vb.lastRotation = 1
+			timerDimensionalTearCD:Stop()
+		end
 	elseif spellId == 340758 then--Fleeting Spirits 2nd+ cast
 --		self.vb.lastRotation = 1--0 rift, 1 ghosts, 2 roots, 3 annihilate
 --		timerDimensionalTearCD:Start(20.2)
 	elseif spellId == 329770 then--Root of Extinction first cast
 		warnSeedsofExtinction:Show()
+		if self.vb.phase < 2 then--In case boss doesn't cast 342310, which happens in rare cases
+			self.vb.phase = 2
+			self.vb.lastRotation = 2
+			timerDimensionalTearCD:Stop()
+			timerFleetingSpiritsCD:Stop()
+		end
 	elseif spellId == 340788 then--Roots of Extinction casts 2+
 --		self.vb.lastRotation = 2--0 rift, 1 ghosts, 2 roots, 3 annihilate
 --		timerDimensionalTearCD:Start(20.2)
 	elseif spellId == 329834 then--Roots cast itself, for warning
 		warnSeedsofExtinction:Show()
---	elseif spellId == 328880 then--Phase Change 3 (Edge of Annihilation)
-
+	elseif spellId == 328880 then--Phase Change 3 (Edge of Annihilation)
+		if self.vb.phase < 3 then--In case boss doesn't cast 342310, which happens in rare cases
+			self.vb.phase = 3
+			self.vb.lastRotation = 3
+			timerDimensionalTearCD:Stop()
+			timerSeedsofExtinctionCD:Stop()
+		end
 	elseif spellId == 328789 then--Annihilate 2+ cast by boss, for timer handling
 --		self.vb.lastRotation = 3--0 rift, 1 ghosts, 2 roots, 3 annihilate
 --		timerDimensionalTearCD:Start(20.2)
