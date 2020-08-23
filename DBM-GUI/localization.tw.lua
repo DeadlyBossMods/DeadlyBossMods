@@ -6,7 +6,7 @@ L.MainFrame	= "Deadly Boss Mods"
 
 L.TranslationByPrefix		= "翻譯:"
 L.TranslationBy 				= "三皈依@暗影之月 & Imbav@聖光之願"
-L.Website					= "拜訪討論/支援論壇:|cFF73C2FBwww.deadlybossmods.com|r 請在推特上關注@deadlybossmods或@MysticalOS"
+L.Website					= "拜訪討論/支援論壇:|cFF73C2Fhttps://discord.gg/DF5mffk|r. 請在推特上關注@deadlybossmods或@MysticalOS"
 L.WebsiteButton				= "論壇"
 
 L.OTabBosses	            = "模組"
@@ -357,7 +357,7 @@ L.Area_AutoLogging			= "自動記錄選項"
 L.AutologBosses				= "自動使用暴雪戰鬥日誌記錄地城/團隊戰鬥"
 L.AdvancedAutologBosses		= "自動使用Transcriptor紀錄地城/團隊戰鬥"
 L.RecordOnlyBosses			= "只記錄首領的戰鬥 (排除所有小怪。請於首領開打前使用 /dbm pull 以獲取數據)"
-L.LogOnlyNonTrivial			= "只記錄重要內容 (排除隨機團隊/隨機地城/事件/舊資料片副本)"
+L.LogOnlyNonTrivial			= "只記錄重要內容 (普通或更難的當前內容團隊副本 & 傳奇+ 地下城)"
 --
 L.Area_3rdParty				= "協力插件選項"
 L.ShowBBOnCombatStart		= "戰鬥開始時顯示BigBrother(檢查團隊 增益/精煉UI)"
