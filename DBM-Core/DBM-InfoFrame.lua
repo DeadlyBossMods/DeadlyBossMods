@@ -840,7 +840,7 @@ local function onUpdate(frame, table)
 			frame:Hide()
 			return
 		elseif leftText and type(leftText) ~= "string" then
-			tostring(leftText)
+			leftText = tostring(leftText)
 		end
 		local rightText = lines[leftText]
 		local extra, extraName = ssplit("*", leftText) -- Find just unit name, if extra info had to be added to make unique
@@ -906,6 +906,7 @@ local function onUpdate(frame, table)
 				end
 			else
 				color = NORMAL_FONT_COLOR
+				leftText = extraName or leftText
 			end
 			if unitId2 then -- Check right text
 				local _, class = UnitClass(unitId2)
