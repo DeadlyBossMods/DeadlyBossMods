@@ -14,12 +14,12 @@ mod:RegisterEvents(
 
 --TODO, maybe auto icon marking/tracking of slimes summoned via 327598
 local warnBeckonSlime					= mod:NewCastAnnounce(327581, 2, 6)--Cast 3 seconds, plus 3 seconds til slime appears
+local warnFungistorm					= mod:NewSpellAnnounce(328177, 3, nil, "Healer")
 --local warnDuelistDash					= mod:NewTargetNoFilterAnnounce(274400, 4)
 
 --local yellRicochetingThrow				= mod:NewYell(272402)
 local specWarnWonderGrow					= mod:NewSpecialWarningInterrupt(328016, "HasInterrupt", nil, nil, 1, 2)
 local specWarnWonderGrowDispel				= mod:NewSpecialWarningDispel(328015, "MagicDispeller", nil, nil, 1, 2)
-local specWarnFungistorm					= mod:NewSpecialWarningDodge(328177, nil, nil, nil, 2, 2)
 --local specWarnGTFO						= mod:NewSpecialWarningGTFO(257274, nil, nil, nil, 1, 8)
 
 --Antispam IDs for this mod: 1 run away, 2 dodge, 3 dispel, 4 incoming damage, 5 you/role, 6 misc
@@ -38,9 +38,8 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 328016 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnWonderGrow:Show(args.sourceName)
 		specWarnWonderGrow:Play("kickcast")
-	elseif spellId == 328177 and self:AntiSpam(3, 2) then
-		specWarnFungistorm:Show()
-		specWarnFungistorm:Play("watchstep")
+	elseif spellId == 328177 and self:AntiSpam(3, 4) then
+		warnFungistorm:Show()
 	elseif spellId == 327581 and self:AntiSpam(3, 6) then
 		warnBeckonSlime:Show()
 --	elseif spellId == 272402 then
