@@ -8,7 +8,7 @@ mod:SetEncounterID(2356)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_AURA_APPLIED 325424",
+	"SPELL_AURA_APPLIED 334485",
 	"SPELL_CAST_START 324205",
 	"SPELL_CAST_SUCCESS 324148"
 --	"SPELL_PERIODIC_DAMAGE",
@@ -20,39 +20,26 @@ mod:RegisterEventsInCombat(
 --local warnBlackPowder				= mod:NewTargetAnnounce(257314, 4)
 
 local specWarnDarkStride			= mod:NewSpecialWarningTaunt(324148, nil, nil, nil, 1, 2)
-local specWarnAnimaflash			= mod:NewSpecialWarningDodge(324205, nil, nil, nil, 2, 2)
-local yellAnimaflash				= mod:NewYell(324205)
-local specWarnReabsorbAnima			= mod:NewSpecialWarningDodge(325424, nil, nil, nil, 2, 2)
+local specWarnBlindingFlash			= mod:NewSpecialWarningDodge(324205, nil, nil, nil, 2, 2)
+local specWarnRecharge				= mod:NewSpecialWarningDodge(334485, nil, nil, nil, 2, 2)
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(257274, nil, nil, nil, 1, 8)
 
-local timerDarkStrideCD				= mod:NewAITimer(13, 324148, nil, nil, nil, 3, nil, DBM_CORE_L.TANK_ICON)
-local timerAnimaflashCD				= mod:NewAITimer(15.8, 324205, nil, nil, nil, 3)
-local timerReabsorbAnimaCD			= mod:NewAITimer(15.8, 325424, nil, nil, nil, 6)
-
-function mod:FlashTarget(targetname, uId)
-	if not targetname then return end
-	if targetname == UnitName("player") then
-		yellAnimaflash:Yell()
-	end
-	DBM:AddMsg("FlashTarget returned: "..targetname.." Report if accurate or inaccurate to DBM Author")
-end
+local timerDarkStrideCD				= mod:NewCDTimer(17, 324148, nil, nil, nil, 3, nil, DBM_CORE_L.TANK_ICON)
+local timerBlindingFlashCD			= mod:NewCDTimer(21.8, 324205, nil, nil, nil, 3)
+local timerRechargeCD				= mod:NewCDTimer(15.8, 334485, nil, nil, nil, 6)
 
 function mod:OnCombatStart(delay)
-	timerDarkStrideCD:Start(1-delay)
-	timerAnimaflashCD:Start(1-delay)
-	timerReabsorbAnimaCD:Start(1-delay)
+	timerDarkStrideCD:Start(8.4-delay)
+	timerBlindingFlashCD:Start(12-delay)
+	timerRechargeCD:Start(39.9-delay)
 end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 324205 then
-		specWarnAnimaflash:Show()
-		specWarnAnimaflash:Play("shockwave")
-		timerAnimaflashCD:Start()
-		self:ScheduleMethod(0.1, "BossTargetScanner", args.sourceGUID, "FlashTarget", 0.1, 6)
---	elseif spellId == 257397 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
---		specWarnHealingBalm:Show(args.sourceName)
---		specWarnHealingBalm:Play("kickcast")
+		specWarnBlindingFlash:Show()
+		specWarnBlindingFlash:Play("shockwave")
+		timerBlindingFlashCD:Start()
 	end
 end
 
@@ -67,11 +54,14 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 325424 then
-		specWarnReabsorbAnima:Show()
-		specWarnReabsorbAnima:Play("watchstep")
-		timerReabsorbAnimaCD:Start()
-		--Possibly reset anima flash and darkstride timers?
+	if spellId == 334485 then
+		specWarnRecharge:Show()
+		specWarnRecharge:Play("watchstep")
+--		timerRechargeCD:Start()--Need more data, longer pull
+		timerDarkStrideCD:Stop()
+		timerBlindingFlashCD:Stop()
+		timerDarkStrideCD:Start(12.1)
+		timerBlindingFlashCD:Start(14.7)
 	end
 end
 

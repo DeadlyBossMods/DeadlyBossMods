@@ -366,7 +366,7 @@ L.Area_AutoLogging			= "Auto Logging Options"
 L.AutologBosses				= "Automatically record dungeons/raids using blizzard combat log"
 L.AdvancedAutologBosses		= "Automatically record dungeons/raids with Transcriptor"
 L.RecordOnlyBosses			= "Only record Bosses (Excludes all trash. Use '/dbm pull' before bosses to capture pre pull pots &amp; ENCOUNTER_START)"
-L.LogOnlyNonTrivial			= "Only record non trivial content (normal or harder current content raids & Mythic+ Dungeons)"
+L.LogOnlyNonTrivial			= "Only record non trivial content (normal or harder current content raids &amp; Mythic+ Dungeons)"
 --
 L.Area_3rdParty				= "3rd Party Addon Options"
 L.ShowBBOnCombatStart		= "Perform Big Brother buff check on combat start"
