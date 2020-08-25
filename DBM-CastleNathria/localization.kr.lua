@@ -30,7 +30,12 @@ L:SetOptionLocalization({
 ---------------------------
 --  Artificer Xy'Mox --
 ---------------------------
---L= DBM:GetModLocalization(2418)
+L= DBM:GetModLocalization(2418)
+
+L:SetMiscLocalization({
+	Phase2			= "The anticipation to use this relic is killing me! Though, it will more likely kill you.",
+	Phase3			= "I hope this wondrous item is as lethal as it looks!",
+})
 
 ---------------------------
 --  Sun King's Salvation/Kael'thas --
@@ -40,7 +45,18 @@ L:SetOptionLocalization({
 ---------------------------
 --  Lady Inerva Darkvein --
 ---------------------------
---L= DBM:GetModLocalization(2420)
+L= DBM:GetModLocalization(2420)
+
+L:SetTimerLocalization{
+	timerDesiresContainer		= "욕망 용기 가득참",
+	timerBottledContainer		= "령 용기 가득참",
+	timerSinsContainer			= "죄악 용기 가득참",
+	timerConcentrateContainer	= "Concentrate 용기 가득참"
+}
+
+L:SetOptionLocalization({
+	timerContainers				= "용기가 채워지고 있는 상황과 가득찰때까지 남은 시간을 표시하는 타이머 보기"
+})
 
 ---------------------------
 --  The Council of Blood --
@@ -60,7 +76,12 @@ L:SetOptionLocalization({
 ---------------------------
 --  Sire Denathrius --
 ---------------------------
---L= DBM:GetModLocalization(2424)
+L= DBM:GetModLocalization(2424)
+
+L:SetMiscLocalization({
+	CrimsonSpawn	= "Crimson Cabalists answer the call of Denathrius."
+})
+
 
 -------------
 --  Trash  --
