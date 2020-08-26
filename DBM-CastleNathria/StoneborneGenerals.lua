@@ -6,15 +6,16 @@ mod:SetCreatureID(168112, 168113)
 mod:SetEncounterID(2417)
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
 mod:SetBossHPInfoToHighest()
-mod:SetHotfixNoticeRev(20200820000000)--2020, 8, 20
-mod:SetMinSyncRevision(20200820000000)
+mod:SetHotfixNoticeRev(20200825000000)--2020, 8, 25
+mod:SetMinSyncRevision(20200825000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 333387 334765 334929 334498 339690 342544 339164 334009 342256 340043 342722 332683 342425",
-	"SPELL_CAST_SUCCESS 334765 334929",
+	"SPELL_CAST_SUCCESS 334765 334929 342732",
+	"SPELL_SUMMON 342255",
 	"SPELL_AURA_APPLIED 329636 333913 334765 338156 338153 329808 333377 339690 342655 340037 343273 342425 336212",
 	"SPELL_AURA_APPLIED_DOSE 333913",
 	"SPELL_AURA_REMOVED 329636 333913 334765 329808 333377 339690 340037",
@@ -23,23 +24,27 @@ mod:RegisterEventsInCombat(
 --	"SPELL_PERIODIC_MISSED",
 	"UNIT_DIED",
 	"RAID_BOSS_WHISPER",
-	"UNIT_SPELLCAST_SUCCEEDED boss3 boss4 boss5",
+--	"UNIT_SPELLCAST_SUCCEEDED boss3 boss4 boss5 arena1 arena2 arena3",--Adds can use any of these
 	"UNIT_SPELLCAST_START boss1 boss2"
 )
 
+--TODO, review more of timers with some bug fixes to fight as well as just a better version of transcriptor recording it.
 --TODO, Target scan meteor target, if it's not same target as crystalize
 --TODO, add https://ptr.wowhead.com/spell=343060/stone-spike when Grashaal is in air?
 --TODO, add https://ptr.wowhead.com/spell=336231/cluster-bombardment for adds?
---TODO, verify timer for https://ptr.wowhead.com/spell=340043
+--TODO, verify timer for https://ptr.wowhead.com/spell=340043 . it was never used on mythic?
 --TODO, stack announces for https://ptr.wowhead.com/spell=340042/punishment if it stacks
 --TODO, https://shadowlands.wowhead.com/spell=342254/wicked-slaughter targeting?
 --TODO, https://ptr.wowhead.com/spell=342985/stonegale-effigy needs announcing probably, but what event?
 --TODO, target scan/yell for https://ptr.wowhead.com/spell=343086/ricocheting-shuriken ?
 --TODO, is https://ptr.wowhead.com/spell=342425/stone-fist stacked or always swap at 1 in proper situation?
 --[[
-(ability.id = 333387 or ability.id = 334929 or ability.id = 339164 or ability.id = 334009 or ability.id = 334498 or ability.id = 342544) and type = "begincast"
+(ability.id = 333387 or ability.id = 334929 or ability.id = 339164 or ability.id = 334009 or ability.id = 334498 or ability.id = 342544 or ability.id = 342256 or ability.id = 342425 or ability.id = 332683) and type = "begincast"
  or (ability.id = 334765 or ability.id = 339690) and type = "cast"
- or ability.id = 329636 or ability.id = 329808
+ or ability.id = 329636 or ability.id = 329808 or ability.id = 342255
+ or (target.id = 168112 or target.id = 168113 or target.id = 172858) and type = "death"
+ or (ability.id = 340043 or ability.id = 332683) and type = "begincast"
+ or ability.id = 342732 and type = "cast"
  --]]
  --General
 local warnHardenedStoneForm						= mod:NewTargetNoFilterAnnounce(329636, 2)
@@ -54,6 +59,7 @@ local warnReverberatingLeap						= mod:NewTargetNoFilterAnnounce(334004, 3)
 local warnCrystalize							= mod:NewTargetNoFilterAnnounce(339690, 2)
 local warnPulverizingMeteor						= mod:NewTargetNoFilterAnnounce(342544, 4)
 --Adds
+local warnStoneLegionGoliath					= mod:NewSpellAnnounce("ej22705", 2, 343273)
 local warnVolatileAnimaInfusion					= mod:NewTargetNoFilterAnnounce(342655, 2, nil, false)
 local warnRavenousFeast							= mod:NewTargetNoFilterAnnounce(343273, 3)
 local warnStonewrathExhaust						= mod:NewCastAnnounce(342722, 3)
@@ -85,19 +91,20 @@ local specWarnShatteringBlast					= mod:NewSpecialWarningSpell(332683, nil, nil,
 
 --General Kaal
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22284))
-local timerWickedBladeCD						= mod:NewAITimer(28.9, 333387, nil, nil, nil, 3)
-local timerHeartRendCD							= mod:NewAITimer(43.6, 334765, nil, nil, nil, 3, nil, DBM_CORE_L.DEADLY_ICON)
-local timerSerratedSwipeCD						= mod:NewAITimer(11.1, 334929, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)--12.6-18.1
-local timerCallShadowForcesCD					= mod:NewAITimer(28.9, 342256, nil, nil, nil, 1, nil, DBM_CORE_L.MYTHIC_ICON)
+local timerWickedBladeCD						= mod:NewCDTimer(28.9, 333387, nil, nil, nil, 3)--28.9-44
+local timerHeartRendCD							= mod:NewCDTimer(40.1, 334765, nil, nil, nil, 3, nil, DBM_CORE_L.DEADLY_ICON)--40-52
+local timerSerratedSwipeCD						= mod:NewCDTimer(13.4, 334929, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)--13.4-18.6
+local timerCallShadowForcesCD					= mod:NewCDTimer(61.6, 342256, nil, nil, nil, 1, nil, DBM_CORE_L.MYTHIC_ICON)
 --General Grashaal
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22288))
-local timerReverberatingLeapCD					= mod:NewAITimer(29.8, 334004, 183611, nil, nil, 3)--Short text "Leap"
-local timerSeismicUpheavalCD					= mod:NewAITimer(28.3, 334498, nil, nil, nil, 3)--28.3-32
-local timerStoneBreakersComboCD					= mod:NewAITimer(24.6, 339690, nil, nil, nil, 5, nil, nil, nil, 2, 3)--24.6-33.8
-local timerStoneFistCD							= mod:NewAITimer(11.1, 342425, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)
+--All of his timers are 30-40 it appears with exception of combo/crystalize obviously
+local timerReverberatingLeapCD					= mod:NewCDTimer(31.1, 334004, 183611, nil, nil, 3, nil, nil, nil, 1, 3)--31.1-40, Short text "Leap"
+local timerSeismicUpheavalCD					= mod:NewCDTimer(30.1, 334498, nil, nil, nil, 3)--28.3-32
+local timerStoneBreakersComboCD					= mod:NewCDTimer(54.6, 339690, nil, nil, nil, 5, nil, nil, nil, 2, 3)--54-60
+local timerStoneFistCD							= mod:NewCDTimer(30.3, 342425, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)
 --Adds
 local timerPunishingBlowCD						= mod:NewAITimer(24.6, 340043, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON)
-local timerRavenousFeastCD						= mod:NewAITimer(24.6, 343273, nil, nil, nil, 3)
+--local timerRavenousFeastCD					= mod:NewCDTimer(50, 343273, nil, nil, nil, 3)--Kind of all over the place right now (50-60)
 local timerShatteringBlast						= mod:NewCastTimer(5, 332683, nil, nil, nil, 2)
 
 --local berserkTimer							= mod:NewBerserkTimer(600)
@@ -154,14 +161,14 @@ function mod:OnCombatStart(delay)
 	self.vb.wickedBladeIcon = 1
 	self.vb.phase = 1
 	--General Kaal
-	timerSerratedSwipeCD:Start(1-delay)--START, but next timer is started at SUCCESS
-	timerWickedBladeCD:Start(1-delay)
-	timerHeartRendCD:Start(1-delay)--SUCCESS
+	timerSerratedSwipeCD:Start(7.3-delay)--START, but next timer is started at SUCCESS
+	timerWickedBladeCD:Start(16.6-delay)
+	timerHeartRendCD:Start(33.2-delay)--SUCCESS
 	if self:IsMythic() then
-		timerCallShadowForcesCD:Start(1-delay)
+		timerCallShadowForcesCD:Start(10.5-delay)
 	end
 	--General Grashaal Air ability
-	timerStoneBreakersComboCD:Start(1-delay)
+	timerStoneBreakersComboCD:Start(37.3-delay)--Crystalize
 	if self.Options.NPAuraOnVolatileShell then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
@@ -220,6 +227,29 @@ function mod:SPELL_CAST_START(args)
 		specWarnShatteringBlast:Show()
 		specWarnShatteringBlast:Play("carefly")
 		timerShatteringBlast:Start()
+		--Start INCOMING boss timers here, that seems to be how it's scripted.
+		self.vb.phase = self.vb.phase + 1
+		if self.vb.phase == 2 then
+			--Seems first set of adds is spawned instantly Shattering Blast cast
+--			if self:IsMythic() then
+--				timerCallShadowForcesCD:Start(2)
+--			end
+			--General Grashaal
+			--Boss continues timer for crystalize/combo from air phase, it doesn't start here
+			--just spell queued depending on overlap with Grashaal resuming other stuff
+			timerStoneFistCD:Start(11.7)--11.7-20.9?
+			timerReverberatingLeapCD:Start(12.7)--12.7-14.7
+			timerSeismicUpheavalCD:Start(30.7)
+		else--Stage 3 (Both Generals at once)
+			--General Kaal returning
+			timerSerratedSwipeCD:Start(5.5)--START, but next timer is started at SUCCESS
+			timerHeartRendCD:Start(16.2)--SUCCESS
+			timerWickedBladeCD:Start(34.2)
+			--Kael also resumes summing adds on mythic once intermission 2 is over
+			if self:IsMythic() then
+				timerCallShadowForcesCD:Start(8)
+			end
+		end
 	elseif spellId == 342425 then
 		timerStoneFistCD:Start()
 		if self:IsTanking("player", nil, nil, true, args.sourceGUID) then
@@ -237,27 +267,29 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerSerratedSwipeCD:Start()
 	elseif spellId == 339690 then
 		timerStoneBreakersComboCD:Start()
+--	elseif spellId == 342732 then
+--		timerRavenousFeastCD:Start()
+	end
+end
+
+function mod:SPELL_SUMMON(args)
+	local spellId = args.spellId
+	if spellId == 342255 then--Summon Reinforcements
+		local cid = self:GetCIDFromGUID(args.destGUID)
+		if cid == 172858 then--stone-legion-goliath
+			warnStoneLegionGoliath:Show()
+			--if self:IsHard() then
+			--	timerRavenousFeastCD:Start(33.2)
+			--end
+		end
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 329636 then--50% transition for Kaal
+	if spellId == 329636 or spellId == 329808 then--50% transition for Kaal/50% transition for Grashaal
 		warnHardenedStoneForm:Show(args.destName)
-		--General Kaal
---		timerWickedBladeCD:Stop()
---		timerHeartRendCD:Stop()
---		timerSerratedSwipeCD:Stop()
---		timerCallShadowForcesCD:Stop()
-		--Ability Grashaal still uses when in air
-		timerStoneBreakersComboCD:Stop()
-	elseif spellId == 329808 then--50% transition for Grashaal
-		warnHardenedStoneForm:Show(args.destName)
-		--General Grashaal
---		timerReverberatingLeapCD:Stop()
---		timerSeismicUpheavalCD:Stop()
---		timerStoneBreakersComboCD:Stop()
---		timerStoneFistCD:Stop()
+		timerCallShadowForcesCD:Stop()--The only timer that stops here is this one, rest continue on until boss leaves
 	elseif spellId == 333913 then
 		local amount = args.amount or 1
 		LacerationStacks[args.destName] = amount
@@ -313,9 +345,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			DBM.Nameplate:Show(true, args.destGUID, spellId, nil, 6)
 		end
 	elseif spellId == 343273 then
-		if self:AntiSpam(3, 2) then
-			timerRavenousFeastCD:Start()
-		end
 		warnRavenousFeast:CombinedShow(0.3, args.destName)--Combined in case it'll clobber everyone near them too
 	elseif spellId == 342425 and not args:IsPlayer() and not DBM:UnitDebuff("player", spellId) then
 		specWarnStoneFistTaunt:Show(args.destName)
@@ -329,43 +358,17 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 329636 then--phase 2 (Kael Departing, Grashaal landing)
-		self.vb.phase = 2
 		warnHardenedStoneFormOver:Show()
-		--Stop Kael's timers for ground phase
+		--Stop Outgoing boss (Kael) timers here
 		timerWickedBladeCD:Stop()
 		timerHeartRendCD:Stop()
 		timerSerratedSwipeCD:Stop()
-		timerCallShadowForcesCD:Stop()
-		--General Kael (stuff he still casts airborn)
-		timerWickedBladeCD:Start(2)
-		if self:IsMythic() then
-			timerCallShadowForcesCD:Start(2)
-		end
-		--General Grashaal
-		timerReverberatingLeapCD:Start(2)
-		timerStoneBreakersComboCD:Start(2)
-		timerSeismicUpheavalCD:Start(2)
-		timerStoneFistCD:Start(2)
-	elseif spellId == 329808 then--Phase 3 (Both Generals at once)
-		self.vb.phase = 3
+		--Start Outgoing boss (Kael) (stuff he still casts airborn) here as well
+		timerWickedBladeCD:Start(26.7)
+	elseif spellId == 329808 then
 		warnHardenedStoneFormOver:Show()
-		--Stop/reset Grashaal timers
-		timerReverberatingLeapCD:Stop()
-		timerSeismicUpheavalCD:Stop()
-		timerStoneBreakersComboCD:Stop()
-		timerStoneFistCD:Stop()
-		--General Kaal
-		timerSerratedSwipeCD:Start(3)--START, but next timer is started at SUCCESS
-		timerWickedBladeCD:Start(3)
-		timerHeartRendCD:Start(3)--SUCCESS
-		if self:IsMythic() then
-			timerCallShadowForcesCD:Start(3)
-		end
-		--General Grashaal
-		timerReverberatingLeapCD:Start(3)
-		timerStoneBreakersComboCD:Start(3)
-		timerSeismicUpheavalCD:Start(3)
-		timerStoneFistCD:Start(3)
+		--No timer action should be needed here.
+		--Shattering started incoming bosses timers and boss already active doesn't reset timers
 	elseif spellId == 333913 then
 		LacerationStacks[args.destName] = nil
 		if self.Options.InfoFrame then
@@ -430,7 +433,7 @@ end
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 172858 then--stone-legion-goliath
-		timerRavenousFeastCD:Stop()
+--		timerRavenousFeastCD:Stop()
 	elseif cid == 173276 then--Stone Legion Commando
 		timerPunishingBlowCD:Stop(args.destGUID)
 --	elseif cid == 173280 then--stone-legion-skirmisher
@@ -457,16 +460,6 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spell
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 --]]
-
---"<60.93 16:11:09> [UNIT_SPELLCAST_SUCCEEDED] Stone Legion Goliath(??) -Anchor Here- [[boss3:Cast-3-2084-2296-21431-45313-0013A47ADB:45313]]", -- [3631]
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 45313 then--Anchor Here
-		--Start Goliath timers here
-		if self:IsHard() then
-			timerRavenousFeastCD:Start(1)
-		end
-	end
-end
 
 --"<10.92 16:10:19> [UNIT_SPELLCAST_START] General Grashaal(Lightea) - Reverberating Leap - 5.2s [[boss2:Cast-3-2084-2296-21431-334009-0026A47AA9:334009]]", -- [614]
 --"<10.92 16:10:19> [CLEU] SPELL_CAST_START#Creature-0-2084-2296-21431-168113-0000247A6F#General Grashaal##nil#334009#Reverberating Leap#nil#nil", -- [616]
