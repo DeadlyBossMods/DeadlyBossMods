@@ -2758,7 +2758,7 @@ do
 --				DBM:AddMsg(L.SILENTMODE_IS .. (DBM.Options.SilentMode and "ON" or "OFF"))
 --			else
 				DBM:LoadGUI()
-			end
+--			end
 		end
 
 		function dataBroker.OnTooltipShow(GameTooltip)
