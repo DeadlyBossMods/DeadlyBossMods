@@ -81,7 +81,25 @@ L:SetGeneralLocalization({
 -----------------------
 -- Tred'ova --
 -----------------------
---L= DBM:GetModLocalization(2405)
+L= DBM:GetModLocalization(2405)
+
+L:SetWarningLocalization({
+	specWarnParasiticInfester	= "당신에게 Parasitic Infester"
+})
+
+L:SetTimerLocalization{
+	timerParasiticInfesterCD	= "~Infester"
+}
+
+L:SetOptionLocalization({
+	specWarnParasiticInfester	= "당신이 Parasitic Infester 대상이면 특수 알림 보기",
+	timerParasiticInfesterCD	= "Parasitic Infester 타이머 바 보기",
+	yellParasiticInfester		= "Parasitic Infester 대상일 때 말풍선으로 알리기"
+})
+
+L:SetMiscLocalization({
+	Infester					= "Infester"
+})
 
 ---------
 --Trash--
@@ -130,7 +148,11 @@ L:SetGeneralLocalization({
 -----------------------
 -- Kin-Tara --
 -----------------------
---L= DBM:GetModLocalization(2399)
+L= DBM:GetModLocalization(2399)
+
+L:SetMiscLocalization({
+	Flight	= "하늘을 두려워 하라!"
+})
 
 -----------------------
 -- Ventunax --
@@ -145,7 +167,11 @@ L:SetGeneralLocalization({
 -----------------------
 -- Devos, Paragon of Doubt --
 -----------------------
---L= DBM:GetModLocalization(2412)
+L= DBM:GetModLocalization(2412)
+
+L:SetMiscLocalization({
+	RunThrough	= "이 창이 네 심장을 꿰뚫을 것이다!"
+})
 
 ---------
 --Trash--
