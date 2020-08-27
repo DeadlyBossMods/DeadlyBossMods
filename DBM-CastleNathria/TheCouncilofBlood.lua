@@ -6,8 +6,8 @@ mod:SetCreatureID(166971, 166969, 166970)--Castellan Niklaus, Baroness Frieda, L
 mod:SetEncounterID(2412)
 mod:SetBossHPInfoToHighest()
 --mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
---mod:SetHotfixNoticeRev(20200112000000)--2020, 1, 12
---mod:SetMinSyncRevision(20190716000000)
+mod:SetHotfixNoticeRev(20200827000000)--2020, 8, 27
+mod:SetMinSyncRevision(20200827000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
@@ -15,9 +15,9 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 328334 334948 330965 330978 327497 327052 331704",
 	"SPELL_CAST_SUCCESS 335777 331634 330959 334948",
-	"SPELL_AURA_APPLIED 330967 327773 331706 331636 331637 332535 335775 342457 342861 342456",
+	"SPELL_AURA_APPLIED 330967 327773 331706 331636 331637 332535 335775 342859",
 	"SPELL_AURA_APPLIED_DOSE 327773 332535",
-	"SPELL_AURA_REMOVED 330967 331706 331636 331637 335775 330959 342457 342861 342456",
+	"SPELL_AURA_REMOVED 330967 331706 331636 331637 335775 330959",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 	"UNIT_DIED",
@@ -28,8 +28,6 @@ mod:RegisterEventsInCombat(
 --TODO, upgrade Cadre to special warning for melee/everyone based on where they spawn?
 --TODO, tune the tank stack warning for drain essence
 --TODO, dance helper?
---TODO, refine dancing fever, it was a last minute hotfix after all
---TODO, refine dark recital with nameplate auras instead, and have icons off by default?
 --TODO, Handling of boss timers with dance. Currently they just mass queue up and don't reset, pause or anything, resulting in bosses chaining abilities after dance.
 --		As such, keep an eye on this changing, if it doesn't, just add "keep" to all timers to show they are all queued up. if it changes, update timers to either reset, or pause
 --[[
@@ -54,7 +52,7 @@ local warnDarkRecital							= mod:NewTargetNoFilterAnnounce(331634, 3)
 local warnDancingFools							= mod:NewSpellAnnounce(330964, 2)--Two bosses dead
 --Intermission
 local warnDanceOver								= mod:NewEndAnnounce(330959, 2)
-local warnDancingFever							= mod:NewTargetAnnounce(342457, 3)
+local warnDancingFever							= mod:NewTargetAnnounce(342859, 3)
 
 --General
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(327475, nil, nil, nil, 1, 8)
@@ -80,20 +78,20 @@ local specWarnDarkRecital						= mod:NewSpecialWarningMoveTo(331634, nil, nil, n
 local yellDarkRecitalRepeater					= mod:NewIconRepeatYell(331634, DBM_CORE_L.AUTO_YELL_ANNOUNCE_TEXT.shortyell)--One boss dead
 --Intermission
 local specWarnDanseMacabre						= mod:NewSpecialWarningSpell(331005, nil, nil, nil, 3, 2)
-local specWarnDancingFever						= mod:NewSpecialWarningMoveAway(342457, nil, nil, nil, 1, 2, 4)
-local yellDancingFever							= mod:NewYell(342457, nil, false)--Off by default do to potential to spam when spread, going to dry run nameplate auras for this
+local specWarnDancingFever						= mod:NewSpecialWarningMoveAway(342859, nil, nil, nil, 1, 2, 4)
+local yellDancingFever							= mod:NewYell(342859, nil, false)--Off by default do to potential to spam when spread, going to dry run nameplate auras for this
 
 --Castellan Niklaus
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22147))
 local timerTacticalAdvanceCD					= mod:NewCDTimer(4, 328334, nil, nil, nil, 3)--Continues on Mythic after death
 local timerUnyieldingShieldCD					= mod:NewCDTimer(18.2, 335777, nil, nil, nil, 5, nil, DBM_CORE_L.DAMAGE_ICON)
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22201))
-local timerUnstoppableChargeCD					= mod:NewCDTimer(15.9, 334948, nil, nil, nil, 3)
+local timerUnstoppableChargeCD					= mod:NewCDTimer(19.4, 334948, nil, nil, nil, 3)
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22199))
-local timerCastellansCadreCD					= mod:NewCDTimer(27.1, 330965, nil, nil, nil, 1)
+local timerCastellansCadreCD					= mod:NewCDTimer(26.7, 330965, nil, nil, nil, 1)
 --Baroness Frieda
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22148))
-local timerDrainEssenceCD						= mod:NewCDTimer(22, 327052, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)--, nil, 2, 3
+local timerDrainEssenceCD						= mod:NewCDTimer(22, 327052, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)
 local timerAnimaFountainCD						= mod:NewCDTimer(32.1, 327475, nil, nil, nil, 3)--Continues on Mythic after death
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22202))
 local timerScarletLetterCD						= mod:NewCDTimer(30.5, 331706, nil, nil, nil, 3)
@@ -101,12 +99,12 @@ mod:AddTimerLine(DBM:EJ_GetSectionInfo(22205))
 local timerDredgerServantsCD					= mod:NewCDTimer(32.9, 330978, nil, nil, nil, 1)--32-37
 --Lord Stavros
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22149))
-local timerEvasiveLungeCD						= mod:NewCDTimer(13.5, 327497, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)--13.5-17.1
+local timerEvasiveLungeCD						= mod:NewCDTimer(14.6, 327497, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)--14.6-17.1
 local timerWaltzofBloodCD						= mod:NewCDTimer(21.8, 327616, nil, nil, nil, 3)--21.8-23.5
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22203))
-local timerDarkRecitalCD						= mod:NewCDTimer(22, 331634, nil, nil, nil, 3)--Continues on Mythic after death
+local timerDarkRecitalCD						= mod:NewCDTimer(21.9, 331634, nil, nil, nil, 3)--Continues on Mythic after death
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22206))
-local timerDancingFoolsCD						= mod:NewCDTimer(30.7, 330964, nil, nil, nil, 1)
+local timerDancingFoolsCD						= mod:NewCDTimer(30.3, 330964, nil, nil, nil, 1)
 
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
@@ -115,7 +113,6 @@ local timerDancingFoolsCD						= mod:NewCDTimer(30.7, 330964, nil, nil, nil, 1)
 --mod:AddSetIconOption("SetIconOnMuttering", 310358, true, false, {2, 3, 4, 5, 6, 7, 8})
 mod:AddNamePlateOption("NPAuraOnFixate", 330967)
 mod:AddNamePlateOption("NPAuraOnShield", 335775)
---mod:AddNamePlateOption("NPAuraOnFever", 342457)
 
 mod.vb.phase = 1
 local darkRecitalTargets = {}
@@ -166,19 +163,16 @@ function mod:OnCombatStart(delay)
 	table.wipe(darkRecitalTargets)
 	--Castellan Niklaus
 	timerTacticalAdvanceCD:Start(4.3-delay)
-	timerUnyieldingShieldCD:Start(15.1-delay)
+	timerUnyieldingShieldCD:Start(14.7-delay)
 	--Baroness Frieda
 	timerDrainEssenceCD:Start(6.9-delay)
-	timerAnimaFountainCD:Start(15.5-delay)
+	timerAnimaFountainCD:Start(25.5-delay)
 	--Lord Stavros
 	timerEvasiveLungeCD:Start(10.6-delay)
 	timerWaltzofBloodCD:Start(16.6-delay)
 	if self.Options.NPAuraOnFixate or self.Options.NPAuraOnShield then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
---	if self.Options.NPAuraOnFever then
---		DBM:FireEvent("BossMod_EnableFriendlyNameplates")
---	end
 --	if self.Options.RangeFrame then
 --		DBM.RangeCheck:Show(4)
 --	end
@@ -200,11 +194,7 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 328334 then
---		if args:GetSrcCreatureID() == 166971 then--Main boss
-			timerTacticalAdvanceCD:Start()
---		else
-			--Probably used less often by after image? Just coding this so it can be applyed fast
---		end
+		timerTacticalAdvanceCD:Start()--Same for live boss and after image
 	elseif spellId == 334948 then
 		if self:IsTanking("player", nil, nil, true, args.sourceGUID) then
 			specWarnUnstoppableCharge:Show()
@@ -233,11 +223,11 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 327465 then
 		specWarnAnimaFountain:Show()
 		specWarnAnimaFountain:Play("watchstep")
---		if args:GetSrcCreatureID() == 166969 then--Main boss
-			timerAnimaFountainCD:Start()
---		else
-			--Probably used less often by after image? Just coding this so it can be applyed fast
---		end
+		if args:GetSrcCreatureID() == 166969 then--Main boss
+			timerAnimaFountainCD:Start(32.1)
+		else
+			timerAnimaFountainCD:Start(42.1)
+		end
 	elseif spellId == 331704 then
 		timerScarletLetterCD:Start()
 	end
@@ -249,11 +239,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnUnyieldingShield:Show()
 		timerUnyieldingShieldCD:Start()
 	elseif spellId == 331634 then
---		if args:GetSrcCreatureID() == 166970 then--Main boss
-			timerDarkRecitalCD:Start()
---		else
-			--Probably used less often by after image? Just coding this so it can be applyed fast
---		end
+		if args:GetSrcCreatureID() == 166970 then--Main boss
+			timerDarkRecitalCD:Start(21.9)
+		else
+			timerDarkRecitalCD:Start(36.8)
+		end
 	elseif spellId == 330959 and self:AntiSpam(10, 1) then
 		specWarnDanseMacabre:Show()
 		specWarnDanseMacabre:Play("specialsoon")
@@ -387,16 +377,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.NPAuraOnShield then
 			DBM.Nameplate:Show(true, args.destGUID, spellId)
 		end
-	elseif spellId == 342457 or spellId == 342861 or spellId == 342456 then
-		warnDancingFever:CombinedShow(1, args.destName)
+	elseif spellId == 342859 then
+		warnDancingFever:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			specWarnDancingFever:Show()
 			specWarnDancingFever:Play("runout")
 			yellDancingFever:Yell()
 		end
---		if self.Options.NPAuraOnFever then
---			DBM.Nameplate:Show(true, args.destGUID, spellId, nil, 300)
---		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -422,10 +409,6 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 330959 and self:AntiSpam(10, 2) then
 		warnDanceOver:Show()
 		--TODO, timer correction if blizzard changes how they work
---	elseif spellId == 342457 or spellId == 342861 or spellId == 342456 then
---		if self.Options.NPAuraOnFever then
---			DBM.Nameplate:Hide(true, args.destGUID, spellId)
---		end
 	end
 end
 
@@ -437,14 +420,23 @@ function mod:UNIT_DIED(args)
 		timerTacticalAdvanceCD:Stop()
 		timerUnyieldingShieldCD:Stop()
 		timerUnstoppableChargeCD:Stop()
+		if self:IsMythic() then
+			timerTacticalAdvanceCD:Start(4)
+		end
 	elseif cid == 166969 then--Baroness Frieda
 		timerDrainEssenceCD:Stop()
 		timerAnimaFountainCD:Stop()
+		if self:IsMythic() then
+			timerAnimaFountainCD:Start(10)
+		end
 	elseif cid == 166970 then--Lord Stavros
 		timerEvasiveLungeCD:Stop()
 		timerWaltzofBloodCD:Stop()
 		timerDarkRecitalCD:Stop()
 		timerDancingFoolsCD:Stop()
+		if self:IsMythic() then
+			timerDarkRecitalCD:Start(6.8)--SUCCESS
+		end
 	end
 end
 
@@ -479,7 +471,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 --	"<4.69 17:23:17> [UNIT_SPELLCAST_START] Castellan Niklaus(Vampssou) - Tactical Advance - 2.5s [[boss1:Cast-3-2084-2296-29487-328334-0001A33A45:328334]]", -- [62]
 	elseif spellId == 330961 then
 --		self:BossUnitTargetScanner(uId, "TacticalAdvanceTarget", 2.5)
-		--Scan very hard and very fast, and absolutely ignore tank
+		--Scan very hard and very fast, and absolutely ignore tank and dummy targets
 		local guid = UnitGUID(uId)
 		self:BossTargetScanner(guid, "TacticalAdvanceTarget", 0.05, 12, true, nil, nil, nil, true, nil, nil, nil, nil, true)
 	end
