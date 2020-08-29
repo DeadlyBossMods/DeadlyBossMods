@@ -5,6 +5,7 @@
 ## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0隊伍首領-決戰艾澤拉斯|r
 ## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf05人小队-争霸艾泽拉斯|r
 ## Title-itIT:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Gruppo-BfA|r
+## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Подземелья (BfA)|r
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
 ## SavedVariables: DBMPartyBfA_AllSavedVars
@@ -23,6 +24,7 @@
 ## X-DBM-Mod-Name-zhTW: 隊伍首領 (決戰艾澤拉斯)
 ## X-DBM-Mod-Name-zhCN: 5人小队 (争霸艾泽拉斯)
 ## X-DBM-Mod-Name-itiT: Gruppo (BfA)
+## X-DBM-Mod-Name-ruRU: Подземелья (BfA)
 ## X-DBM-Mod-Sort: 415
 ## X-DBM-Mod-MapID: 1763, 1754, 1762, 1864, 1822, 1877, 1594, 1841, 1771, 1862, 2097
 ## X-DBM-Mod-MinCoreRevision: 17286
@@ -34,6 +36,7 @@ localization.cn.lua
 localization.es.lua
 localization.tw.lua
 localization.it.lua
+localization.ru.lua
 AtalDazar\Alunza.lua
 AtalDazar\Volkaal.lua
 AtalDazar\Rezan.lua
