@@ -32,7 +32,7 @@ local Fonts = DBM_GUI:MixinSharedMedia3("font", {
 	}
 })
 
-local FontDropDown = raidwarnoptions:CreateDropdown(L.Warn_FontType, Fonts, "DBM", "WarningFont", function(value)
+local FontDropDown = raidwarnoptions:CreateDropdown(L.FontType, Fonts, "DBM", "WarningFont", function(value)
 	DBM.Options.WarningFont = value
 	DBM:UpdateWarningOptions()
 	DBM:AddWarning(CL.MOVE_WARNING_MESSAGE)
@@ -67,7 +67,7 @@ local FontStyles = {
 	}
 }
 
-local FontStyleDropDown = raidwarnoptions:CreateDropdown(L.Warn_FontStyle, FontStyles, "DBM", "WarningFontStyle", function(value)
+local FontStyleDropDown = raidwarnoptions:CreateDropdown(L.FontStyle, FontStyles, "DBM", "WarningFontStyle", function(value)
 	DBM.Options.WarningFontStyle = value
 	DBM:UpdateWarningOptions()
 	DBM:AddWarning(CL.MOVE_WARNING_MESSAGE)
@@ -75,7 +75,7 @@ end)
 FontStyleDropDown:SetPoint("TOPLEFT", FontDropDown, "BOTTOMLEFT", 0, -10)
 
 -- RaidWarn Font Shadow
-local FontShadow = raidwarnoptions:CreateCheckButton(L.Warn_FontShadow, nil, nil, "WarningFontShadow")
+local FontShadow = raidwarnoptions:CreateCheckButton(L.FontShadow, nil, nil, "WarningFontShadow")
 FontShadow:SetScript("OnClick", function()
 	DBM.Options.WarningFontShadow = not DBM.Options.WarningFontShadow
 	DBM:UpdateWarningOptions()
@@ -109,7 +109,7 @@ end)
 RaidWarnSoundDropDown:SetPoint("TOPLEFT", FontStyleDropDown, "BOTTOMLEFT", 0, -10)
 
 -- RaidWarn Font Size
-local fontSizeSlider = raidwarnoptions:CreateSlider(L.Warn_FontSize, 8, 60, 1, 200)
+local fontSizeSlider = raidwarnoptions:CreateSlider(L.FontSize, 8, 60, 1, 200)
 fontSizeSlider:SetPoint("TOPLEFT", FontDropDown, "TOPLEFT", 20, -130)
 fontSizeSlider:SetValue(DBM.Options.WarningFontSize)
 fontSizeSlider:HookScript("OnValueChanged", function(self)
@@ -132,7 +132,9 @@ local movemebutton = raidwarnoptions:CreateButton(L.MoveMe, 100, 16)
 movemebutton:SetPoint("TOPRIGHT", raidwarnoptions.frame, "TOPRIGHT", -2, -4)
 movemebutton:SetNormalFontObject(GameFontNormalSmall)
 movemebutton:SetHighlightFontObject(GameFontNormalSmall)
-movemebutton:SetScript("OnClick", function() DBM:MoveWarning() end)
+movemebutton:SetScript("OnClick", function()
+	DBM:MoveWarning()
+end)
 
 local resetbutton = raidwarnoptions:CreateButton(L.SpecWarn_ResetMe, 120, 16)
 resetbutton:SetPoint("BOTTOMRIGHT", raidwarnoptions.frame, "BOTTOMRIGHT", -2, 4)
