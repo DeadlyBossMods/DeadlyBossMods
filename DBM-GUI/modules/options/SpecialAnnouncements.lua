@@ -11,17 +11,15 @@ local check4 = specArea:CreateCheckButton(L.SWarnNameInNote, true, nil, "SWarnNa
 local check5 = specArea:CreateCheckButton(L.SpecialWarningIcon, true, nil, "SpecialWarningIcon")
 local check6 = specArea:CreateCheckButton(L.ShortTextSpellname, true, nil, "SpecialWarningShortText")
 
-local movemebutton = specArea:CreateButton(L.MoveMe, 120, 16)
+local movemebutton = specArea:CreateButton(L.SpecWarn_MoveMe, 120, 16)
 movemebutton:SetPoint("TOPRIGHT", specArea.frame, "TOPRIGHT", -2, -4)
 movemebutton:SetNormalFontObject(GameFontNormalSmall)
 movemebutton:SetHighlightFontObject(GameFontNormalSmall)
-movemebutton:SetScript("OnClick", function()
-	DBM:MoveSpecialWarning()
-end)
+movemebutton:SetScript("OnClick", function() DBM:MoveSpecialWarning() end)
 
 local color0 = specArea:CreateColorSelect(64)
 color0:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 20, -200)
-local color0text = specArea:CreateText(L.FontColor, 80)
+local color0text = specArea:CreateText(L.SpecWarn_FontColor, 80)
 color0text:SetPoint("BOTTOM", color0, "TOP", 5, 4)
 local color0reset = specArea:CreateButton(L.Reset, 64, 10, nil, GameFontNormalSmall)
 color0reset:SetPoint("TOP", color0, "BOTTOM", 5, -10)
@@ -61,7 +59,7 @@ local Fonts = DBM_GUI:MixinSharedMedia3("font", {
 	}
 })
 
-local FontDropDown = specArea:CreateDropdown(L.FontType, Fonts, "DBM", "SpecialWarningFont", function(value)
+local FontDropDown = specArea:CreateDropdown(L.SpecWarn_FontType, Fonts, "DBM", "SpecialWarningFont", function(value)
 	DBM.Options.SpecialWarningFont = value
 	DBM:UpdateSpecialWarningOptions()
 	DBM:ShowTestSpecialWarning(nil, 1)
@@ -96,7 +94,7 @@ local FontStyles = {
 	}
 }
 
-local FontStyleDropDown = specArea:CreateDropdown(L.FontStyle, FontStyles, "DBM", "SpecialWarningFontStyle", function(value)
+local FontStyleDropDown = specArea:CreateDropdown(L.Warn_FontStyle, FontStyles, "DBM", "SpecialWarningFontStyle", function(value)
 	DBM.Options.SpecialWarningFontStyle = value
 	DBM:UpdateSpecialWarningOptions()
 	DBM:ShowTestSpecialWarning(nil, 1)
@@ -104,7 +102,7 @@ end)
 FontStyleDropDown:SetPoint("LEFT", FontDropDown, "RIGHT", 25, 0)
 FontStyleDropDown.myheight = 0
 
-local FontShadow = specArea:CreateCheckButton(L.FontShadow, nil, nil, "SpecialWarningFontShadow")
+local FontShadow = specArea:CreateCheckButton(L.Warn_FontShadow, nil, nil, "SpecialWarningFontShadow")
 FontShadow:SetScript("OnClick", function()
 	DBM.Options.SpecialWarningFontShadow = not DBM.Options.SpecialWarningFontShadow
 	DBM:UpdateSpecialWarningOptions()
@@ -112,7 +110,7 @@ FontShadow:SetScript("OnClick", function()
 end)
 FontShadow:SetPoint("LEFT", FontStyleDropDown, "RIGHT", -35, 25)
 
-local fontSizeSlider = specArea:CreateSlider(L.FontSize, 8, 60, 1, 150)
+local fontSizeSlider = specArea:CreateSlider(L.SpecWarn_FontSize, 8, 60, 1, 150)
 fontSizeSlider:SetPoint("TOPLEFT", FontDropDown, "TOPLEFT", 20, -45)
 fontSizeSlider:SetValue(DBM.Options.SpecialWarningFontSize2)
 fontSizeSlider:HookScript("OnValueChanged", function(self)

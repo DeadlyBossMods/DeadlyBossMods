@@ -34,7 +34,6 @@ globals = {
 	"DBM_GUI_L",
 	"DBM_GUI",
 	"DBM_GUI_Frame",
-	"DBM_GUI_Frames",
 	"DBM_OPTION_SPACER",
 	"DBM",
 	"DBT",

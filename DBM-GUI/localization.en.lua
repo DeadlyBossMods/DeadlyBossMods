@@ -17,7 +17,6 @@ L.OTabOptions	= GAMEOPTIONS_MENU
 L.OTabAbout		= "About"
 
 L.TabCategory_Options	 	= "General Options"
-L.TabCategory_Frames		= "Frames"
 L.TabCategory_SHADOWLANDS	= EXPANSION_NAME8 or "Shadowlands"
 L.TabCategory_BFA	 		= EXPANSION_NAME7
 L.TabCategory_LEG	 		= EXPANSION_NAME6
@@ -101,6 +100,10 @@ L.WarningIconLeft 			= "Show icon on left side"
 L.WarningIconRight 			= "Show icon on right side"
 L.WarningIconChat 			= "Show icons in chat frame"
 L.WarningAlphabetical		= "Sort names alphabetically"
+L.Warn_FontType				= "Select font"
+L.Warn_FontStyle			= "Font flags"
+L.Warn_FontShadow			= "Shadow"
+L.Warn_FontSize				= "Font size: %d"
 L.Warn_Duration				= "Announcement duration: %0.1f sec"
 L.None						= "None"
 L.Random					= "Random"
@@ -119,6 +122,10 @@ L.SWarnNameInNote			= "Use Type 5 options if a special announce note contains yo
 L.SpecialWarningIcon		= "Show icons on special announcements"
 L.ShortTextSpellname		= "Use shorter spellname text (when available)"
 L.SpecWarn_FlashFrameRepeat	= "Flash %d times(s)"
+L.SpecWarn_Font				= "Font used for special announcements"
+L.SpecWarn_FontSize			= "Font size: %d"
+L.SpecWarn_FontColor		= "Font color"
+L.SpecWarn_FontType			= "Select font"
 L.SpecWarn_Flash			= "Flash screen"
 L.SpecWarn_FlashRepeat		= "Repeat Flash"
 L.SpecWarn_FlashColor		= "Flash color %d"
@@ -160,6 +167,8 @@ L.BarDBM					= "Classic (existing small bar slides to Enlarged anchor)"
 L.BarSimple					= "Simple (small bar disappears and new large bar created)"
 L.BarStartColor				= "Start color"
 L.BarEndColor 				= "End color"
+L.Bar_Font					= "Font used for bars"
+L.Bar_FontSize				= "Font size: %d"
 L.Bar_Height				= "Bar Height: %d"
 L.Slider_BarOffSetX 		= "Offset X: %d"
 L.Slider_BarOffSetY 		= "Offset Y: %d"
@@ -391,21 +400,5 @@ L.SelectModProfileCopySound	= "Copy just sound setting from"
 L.SelectModProfileCopyNote	= "Copy just note setting from"
 L.SelectModProfileDelete	= "Delete mod settings for"
 
--- Tab: InfoFrame
-L.Panel_InfoFrame			= "InfoFrame"
-
--- Tab: Range
-L.Panel_Range				= "Range"
-
 -- Misc
-L.Area_General				= "General"
-L.Area_Position				= "Position"
-L.Area_Style				= "Style"
-
-L.FontSize					= "Font size: %d"
-L.FontStyle					= "Font flags"
-L.FontColor					= "Font color"
-L.FontShadow				= "Font Shadow"
-L.FontType					= "Select font"
-
 L.FontHeight	= 16
