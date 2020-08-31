@@ -63,4 +63,4 @@ modules\options\Profile.lua
 
 modules\options\frames\Frames.lua
 modules\options\frames\InfoFrame.lua
-#modules\options\frames\Radar.lua
+#modules\options\frames\Range.lua

@@ -394,8 +394,8 @@ L.SelectModProfileDelete	= "Delete mod settings for"
 -- Tab: InfoFrame
 L.Panel_InfoFrame			= "InfoFrame"
 
--- Tab: Radar
-L.Panel_Radar				= "Range"
+-- Tab: Range
+L.Panel_Range				= "Range"
 
 -- Misc
 L.Area_General				= "General"
