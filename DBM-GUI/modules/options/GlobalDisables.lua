@@ -16,8 +16,6 @@ spamTimers:CreateCheckButton(L.SpamBlockNoCountdowns, true, nil, "DontPlayCountd
 
 local spamMisc = spamPanel:CreateArea(L.Area_SpamFilter_Misc)
 spamMisc:CreateCheckButton(L.SpamBlockNoSetIcon, true, nil, "DontSetIcons")
-spamMisc:CreateCheckButton(L.SpamBlockNoRangeFrame, true, nil, "DontShowRangeFrame")
-spamMisc:CreateCheckButton(L.SpamBlockNoInfoFrame, true, nil, "DontShowInfoFrame")
 spamMisc:CreateCheckButton(L.SpamBlockNoHudMap, true, nil, "DontShowHudMap2")
 spamMisc:CreateCheckButton(L.SpamBlockNoNameplate, true, nil, "DontShowNameplateIcons")
 spamMisc:CreateCheckButton(L.SpamBlockNoYells, true, nil, "DontSendYells")
