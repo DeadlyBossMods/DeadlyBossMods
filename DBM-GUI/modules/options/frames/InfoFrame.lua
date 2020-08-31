@@ -42,11 +42,11 @@ local lines = {
 	}
 }
 
-local lines = general:CreateDropdown(CL.INFOFRAME_SETLINES, lines, "DBM", "InfoFrameLines", function(value)
+local linesDropdown = general:CreateDropdown(CL.INFOFRAME_SETLINES, lines, "DBM", "InfoFrameLines", function(value)
 	DBM.Options.InfoFrameLines = value
 	DBM.InfoFrame:UpdateStyle()
 end)
-lines:SetPoint("TOPLEFT", showSelf, "BOTTOMLEFT", 0, -10)
+linesDropdown:SetPoint("TOPLEFT", showSelf, "BOTTOMLEFT", 0, -10)
 
 local columns = {
 	{
@@ -75,11 +75,11 @@ local columns = {
 	}
 }
 
-local columns = general:CreateDropdown(CL.INFOFRAME_SETCOLS, columns, "DBM", "InfoFrameLines", function(value)
+local columnsDropdown = general:CreateDropdown(CL.INFOFRAME_SETCOLS, columns, "DBM", "InfoFrameLines", function(value)
 	DBM.Options.InfoFrameCols = value
 	DBM.InfoFrame:UpdateStyle()
 end)
-columns:SetPoint("TOPLEFT", lines, "BOTTOMLEFT", 0, -10)
+columnsDropdown:SetPoint("TOPLEFT", lines, "BOTTOMLEFT", 0, -10)
 
 --local position = panel:CreateArea(L.Area_Position)
 
