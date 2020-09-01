@@ -79,7 +79,7 @@ local columnsDropdown = general:CreateDropdown(CL.INFOFRAME_SETCOLS, columns, "D
 	DBM.Options.InfoFrameCols = value
 	DBM.InfoFrame:UpdateStyle()
 end)
-columnsDropdown:SetPoint("TOPLEFT", lines, "BOTTOMLEFT", 0, -10)
+columnsDropdown:SetPoint("TOPLEFT", linesDropdown, "BOTTOMLEFT", 0, -10)
 
 --local position = panel:CreateArea(L.Area_Position)
 
