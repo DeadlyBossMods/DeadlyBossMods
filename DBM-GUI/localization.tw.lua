@@ -142,6 +142,9 @@ L.RoleSpecAlert				= "當你加入團隊時拾取專精不符合你目前專精�
 L.CheckGear					= "開怪時顯示裝備警告訊息 (當你裝備的裝備等級低於包包裡40等以上或主手武器沒有裝備時顯示警告訊息)"
 L.WorldBossAlert			= "當你的工會成員或是朋友可能在你的伺服器上開戰世界首領時顯示警告訊息(如果發送者是被戰復的會不準確)"
 
+L.Area_BugAlerts			= "錯誤回報警報選項"
+L.BadTimerAlert				= "當DBM檢測到計時器錯誤且至少有2秒不正確時顯示聊天訊息"
+
 -- Tab: Barsetup
 L.BarSetup   				= "計時條"
 L.BarTexture 				= "計時條材質"
