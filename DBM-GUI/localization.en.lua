@@ -159,6 +159,9 @@ L.RoleSpecAlert				= "Show alert message on raid join when your loot spec does n
 L.CheckGear					= "Show gear alert message during pull (when your equipped ilvl is much lower than bag ilvl (40+) or main weapon is not equipped)"
 L.WorldBossAlert			= "Show alert message when world bosses might have been engaged on your realm by guildies or friends (inaccurate if sender is CRZed)"
 
+L.Area_BugAlerts			= "Bug Reporting Alert Options"
+L.BadTimerAlert				= "Show chat message when DBM detects a bad timer with at least 2 seconds of incorrectness"
+
 -- Tab: Barsetup
 L.BarSetup					= "Timers"
 L.BarTexture				= "Bar texture"

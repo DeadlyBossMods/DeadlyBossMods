@@ -4,97 +4,98 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(164451, 164463, 164461)--Dessia, Paceran, Sathel
 mod:SetEncounterID(2391)
+mod:SetBossHPInfoToHighest()
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_AURA_APPLIED 320069 324085 320105 320248 320272 320293",
-	"SPELL_CAST_START 320063 320094 320164 320269 320281",
-	"SPELL_CAST_SUCCESS 320069 320180 320272",
+	"SPELL_CAST_START 320063",
+	"SPELL_CAST_SUCCESS 320069 320272 320248 333231 333222 320063 333540",
+	"SPELL_AURA_APPLIED 320069 324085 320272 320293 333231 333540 333222",
 	"SPELL_PERIODIC_DAMAGE 320180",
-	"SPELL_PERIODIC_MISSED 320180"
---	"UNIT_SPELLCAST_SUCCEEDED boss1"
+	"SPELL_PERIODIC_MISSED 320180",
+	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3"
 )
 
---TODO, is enrage on a timer or just used at low health
---TODO, why does fungal bloom have a DPS icon
+--[[
+ability.id = 320063 and type = "begincast"
+ or (ability.id = 320069 or ability.id = 320272 or ability.id = 333222 or ability.id = 320248 or ability.id = 333231 or ability.id = 333540) and type = "cast"
+ or (ability.id = 324085 or ability.id = 320293) and (type = "applybuff" or type = "applydebuff")
+ or (target.id = 164451 or target.id = 164463 or target.id = 164461) and type = "death"
+--]]
 --Dessia the Decapitator
---
-local warnMortalStrike				= mod:NewTargetNoFilterAnnounce(320069, 3, nil, "Tank|Healer")
-local warnEnrage					= mod:NewTargetNoFilterAnnounce(324085, 3)
-local warnInspiration				= mod:NewTargetNoFilterAnnounce(320105, 3)
+local warnSlam							= mod:NewSpellAnnounce(320063, 3, nil, "Tank")
+local warnMortalStrike					= mod:NewTargetNoFilterAnnounce(320069, 3, nil, "Tank|Healer")
+local warnEnrage						= mod:NewTargetNoFilterAnnounce(324085, 3)
 --Paceran the Virulent
-local warnGeneticAlteration			= mod:NewTargetNoFilterAnnounce(320248, 3, nil, "RemoveMagic")
+local warnGeneticAlteration				= mod:NewSpellAnnounce(320248, 2)--Goes on everyone
 --Sathel the Accursed
+local warnSearingDeath					= mod:NewTargetAnnounce(333231, 3)
+local warnOnewithDeath					= mod:NewTargetNoFilterAnnounce(320293, 3)
+--Xira the Underhanded
+local warnOpportunityStrikes			= mod:NewTargetNoFilterAnnounce(333540, 4)
 
 --Dessia the Decapitator
-local specWarnSlam					= mod:NewSpecialWarningDefensive(320063, "Tank", nil, nil, 1, 2)
-local specWarnEnrage				= mod:NewSpecialWarningDispel(324085, "RemoveEnrage", nil, nil, 1, 2)
-local specWarnVortex				= mod:NewSpecialWarningRun(320094, "Melee", nil, nil, 4, 2)
+local specWarnSlam						= mod:NewSpecialWarningDefensive(320063, false, nil, 2, 1, 2)--Cast very often, let this be an opt in
+local specWarnEnrage					= mod:NewSpecialWarningDispel(324085, "RemoveEnrage", nil, nil, 1, 2)
 --Paceran the Virulent
-local specWarnGTFO					= mod:NewSpecialWarningGTFO(320180, nil, nil, nil, 1, 8)
-local specWarnFungalbloom			= mod:NewSpecialWarningDodge(320164, nil, nil, nil, 2, 2)
+local specWarnGTFO						= mod:NewSpecialWarningGTFO(320180, nil, nil, nil, 1, 8)
 --Sathel the Accursed
-local specWarnPainSpike				= mod:NewSpecialWarningInterrupt(320269, false, nil, nil, 1, 2)
-local specWarnSpectralTransference	= mod:NewSpecialWarningDispel(320272, "MagicDispeller", nil, nil, 1, 2)
-local specWarnMassTransference		= mod:NewSpecialWarningSpell(320281, nil, nil, nil, 2, 2)
-local specWarnOneWithDeath			= mod:NewSpecialWarningDispel(320293, "ImmunityDispeller", nil, nil, 1, 2)
+local specWarnSearingDeath				= mod:NewSpecialWarningMoveAway(333231, nil, nil, nil, 1, 2)
+local yellSearingDeath					= mod:NewYell(333231)
+local specWarnSpectralTransference		= mod:NewSpecialWarningDispel(320272, "MagicDispeller", nil, nil, 1, 2)
 
 --Dessia the Decapitator
-local timerMortalStrikeCD				= mod:NewAITimer(13, 320069, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)
-local timerSlamCD						= mod:NewAITimer(13, 320063, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)
+local timerMortalStrikeCD				= mod:NewCDTimer(21.8, 320069, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)--21.8-32.7
+local timerSlamCD						= mod:NewCDTimer(7.4, 320063, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)--7.4-10.9
 --Paceran the Virulent
-local timerNoxiousSporeCD				= mod:NewAITimer(15.8, 320180, nil, nil, nil, 3)
-local timerFungalBloomCD				= mod:NewAITimer(15.8, 320164, nil, nil, nil, 3, nil, DBM_CORE_L.DEADLY_ICON..DBM_CORE_L.DAMAGE_ICON)
+local timerNoxiousSporeCD				= mod:NewCDTimer(16.1, 320180, nil, nil, nil, 3)
 --Sathel the Accursed
-local timerPainSpikeCD					= mod:NewAITimer(15.8, 320269, nil, nil, nil, 4, nil, DBM_CORE_L.INTERRUPT_ICON)
-local timerSpectralTransferenceCD		= mod:NewAITimer(15.8, 320272, nil, nil, nil, 5, nil, DBM_CORE_L.MAGIC_ICON)
+local timerSearingDeathCD				= mod:NewCDTimer(11.7, 333231, nil, nil, nil, 3)--11.7-24
+local timerSpectralTransferenceCD		= mod:NewCDTimer(14.8, 320272, nil, nil, nil, 5, nil, DBM_CORE_L.MAGIC_ICON)--15-24
+--Xira the Underhanded
+--local timerOpportunityStrikesCD			= mod:NewCDTimer(60, 333540, nil, nil, nil, 3, nil, DBM_CORE_L.MYTHIC_ICON)
 
 function mod:OnCombatStart(delay)
 	--Dessia
-	timerMortalStrikeCD:Start(1-delay)
-	timerSlamCD:Start(1-delay)
+	timerSlamCD:Start(9.4-delay)
+	timerMortalStrikeCD:Start(22.6-delay)--SUCCESS (Health based?), 22-26 from some data but 2nd cast gets worse 21-32 variance in logs
 	--Paceran
-	timerNoxiousSporeCD:Start(1-delay)
-	timerFungalBloomCD:Start(1-delay)
+	timerNoxiousSporeCD:Start(17.7-delay)
 	--Sathel
-	timerPainSpikeCD:Start(1-delay)
-	timerSpectralTransferenceCD:Start(1-delay)
+	timerSearingDeathCD:Start(10.2-delay)--SUCCESS
+	timerSpectralTransferenceCD:Start(10.5-delay)--SUCCESS
+--	if self:IsDifficulty("challenge5") then
+--		timerOpportunityStrikesCD:Start(61.4-delay)--SUCCESS
+--	end
 end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 320063 then
-		specWarnSlam:Show()
-		specWarnSlam:Play("defensive")
-		timerSlamCD:Start()
-	elseif spellId == 320094 then
-		specWarnVortex:Show()
-		specWarnVortex:Play("justrun")
-	elseif spellId == 320164 then
-		specWarnFungalbloom:Show()
-		specWarnFungalbloom:Play("watchstep")
-		timerFungalBloomCD:Start()
-	elseif spellId == 320269 then
-		timerPainSpikeCD:Start()
-		if self:CheckInterruptFilter(args.sourceGUID, false, true) then
-			specWarnPainSpike:Show(args.sourceName)
-			specWarnPainSpike:Play("kickcast")
+	if spellId == 320063 and self:AntiSpam(4, 1) then--Boss can stutter cast this (self interrupt and start cast over)
+		if self.Options.SpecWarn320063defensive2 then
+			specWarnSlam:Show()
+			specWarnSlam:Play("defensive")
+		else
+			warnSlam:Show()
 		end
-	elseif spellId == 320281 then
-		specWarnMassTransference:Show()
-		specWarnMassTransference:Play("aesoon")
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 320069 then
-		timerMortalStrikeCD:Start()
-	elseif spellId == 320180 then
-		timerNoxiousSporeCD:Start()
-	elseif spellId == 320272 then
+--		timerMortalStrikeCD:Start()
+	elseif spellId == 320272 or spellId == 333222 then--Seems to have two spellIds in older logs but may be fixed in newer ones
 		timerSpectralTransferenceCD:Start()
+	elseif spellId == 320248 then
+		warnGeneticAlteration:Show()
+	elseif spellId == 333231 then
+		timerSearingDeathCD:Start()
+	elseif spellId == 320063 then
+		timerSlamCD:Start(6.4)--Started in success do to stutter casting, cast time removed from CD
+--	elseif spellId == 333540 then
+--		timerOpportunityStrikesCD:Start()--Not seen more than once during a pull, rarely even see it once
 	end
 end
 
@@ -108,16 +109,21 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			warnEnrage:Show(args.destName)
 		end
-	elseif spellId == 320105 then
-		warnInspiration:CombinedShow(0.3, args.destName)
-	elseif spellId == 320248 then
-		warnGeneticAlteration:CombinedShow(0.3, args.destName)
-	elseif spellId == 320272 then
-		specWarnSpectralTransference:CombinedShow(0.3, args.destName)--Combined because of Mass Transference
-		specWarnSpectralTransference:ScheduleVoice(0.3, "dispelboss")
+	elseif spellId == 320272 or spellId == 333222 then--Seems to have two spellIds in older logs but may be fixed in newer ones
+		specWarnSpectralTransference:Show(args.destName)--Combined because of Mass Transference
+		specWarnSpectralTransference:Play("dispelboss")
 	elseif spellId == 320293 then
-		specWarnOneWithDeath:Show(args.destName)
-		specWarnOneWithDeath:Play("dispelboss")
+		warnOnewithDeath:Show(args.destName)
+	elseif spellId == 333231 then
+		if args:IsPlayer() then
+			specWarnSearingDeath:Show()
+			specWarnSearingDeath:Play("runout")
+			yellSearingDeath:Yell()
+		else
+			warnSearingDeath:Show(args.destName)
+		end
+	elseif spellId == 333540 then
+		warnOpportunityStrikes:Show(args.destName)
 	end
 end
 
@@ -136,17 +142,16 @@ function mod:UNIT_DIED(args)
 		timerSlamCD:Stop()
 	elseif cid == 164463 then--Paceran the Virulent
 		timerNoxiousSporeCD:Stop()
-		timerFungalBloomCD:Stop()
 	elseif cid == 164461 then--Sathel the Accursed
-		timerPainSpikeCD:Stop()
 		timerSpectralTransferenceCD:Stop()
+		timerSearingDeathCD:Stop()
 	end
 end
 
---[[
+--"<48.53 02:10:59> [UNIT_SPELLCAST_SUCCEEDED] Paceran the Virulent(??) -Noxious Spore- [[boss3:Cast-3-2084-2293-25939-324118-000024A504:324118]]
+--"<52.18 02:11:03> [CLEU] SPELL_AURA_APPLIED#Creature-0-2084-2293-25939-164463-000024A49F#Paceran the Virulent#Player-970-004E060B#Viterratwo-TheMaw#320180#Noxious Spore#DEBUFF#nil", -- [579]
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 257453  then
-
+	if spellId == 324118  then--Noxious Spore (spawn event)
+		timerNoxiousSporeCD:Start()
 	end
 end
---]]
