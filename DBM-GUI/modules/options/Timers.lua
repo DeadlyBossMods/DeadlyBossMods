@@ -595,7 +595,7 @@ local Fonts = DBM_GUI:MixinSharedMedia3("font", {
 	}
 })
 
-local FontDropDown = BarSetup:CreateDropdown(L.Bar_Font, Fonts, "DBT", "Font", function(value)
+local FontDropDown = BarSetup:CreateDropdown(L.FontType, Fonts, "DBT", "Font", function(value)
 	DBM.Bars:SetOption("Font", value)
 end)
 FontDropDown:SetPoint("TOPLEFT", TextureDropDown, "BOTTOMLEFT", 0, -10)
@@ -628,7 +628,7 @@ local FontFlags = {
 	}
 }
 
-local FontFlagDropDown = BarSetup:CreateDropdown(L.Warn_FontStyle, FontFlags, "DBT", "FontFlag",
+local FontFlagDropDown = BarSetup:CreateDropdown(L.FontStyle, FontFlags, "DBT", "FontFlag",
 	function(value)
 		DBM.Bars:SetOption("FontFlag", value)
 	end)
@@ -666,7 +666,7 @@ local function resetDBTValueToDefault(slider, option)
 	slider:SetValue(DBM.Bars:GetOption(option))
 end
 
-local FontSizeSlider = BarSetup:CreateSlider(L.Bar_FontSize, 7, 18, 1)
+local FontSizeSlider = BarSetup:CreateSlider(L.FontSize, 7, 18, 1)
 FontSizeSlider:SetPoint("TOPLEFT", BarSetup.frame, "TOPLEFT", 20, -180)
 FontSizeSlider:SetValue(DBM.Bars:GetOption("FontSize"))
 FontSizeSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("FontSize"))

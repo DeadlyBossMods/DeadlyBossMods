@@ -228,7 +228,7 @@ function DBM_GUI:CreateDropdown(title, values, vartype, var, callfunc, width, he
 	local dropdownText = _G[dropdown:GetName() .. "Text"]
 	if not width then
 		width = 120
-		if title ~= L.Warn_FontType and title ~= L.Warn_FontStyle and title ~= L.Bar_Font then
+		if title ~= L.FontType and title ~= L.FontStyle and title ~= L.FontShadow then
 			for _, v in ipairs(values) do
 				dropdownText:SetText(v.text)
 				width = mmax(width, dropdownText:GetStringWidth())
