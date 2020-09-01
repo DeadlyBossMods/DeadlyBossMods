@@ -682,7 +682,7 @@ DisableBarFade.myheight = 50 -- Extra padding because right buttons are offset f
 
 local BarBehaviors = BarSetupPanel:CreateArea(L.AreaTitle_Behavior)
 
-local DecimalSlider = BarBehaviors:CreateSlider(L.Bar_Decimal, 5, 60, 1)
+local DecimalSlider = BarBehaviors:CreateSlider(L.Bar_Decimal, 1, 60, 1)
 DecimalSlider:SetPoint("TOPLEFT", BarBehaviors.frame, "TOPLEFT", 20, -25)
 DecimalSlider:SetValue(DBM.Bars:GetOption("TDecimal"))
 DecimalSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("TDecimal"))
