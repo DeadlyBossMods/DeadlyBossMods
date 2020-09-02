@@ -60,3 +60,7 @@ modules\options\HideBlizzard.lua
 modules\options\Privacy.lua
 modules\options\ExtraFeatures.lua
 modules\options\Profile.lua
+
+modules\options\frames\Frames.lua
+modules\options\frames\InfoFrame.lua
+#modules\options\frames\Range.lua

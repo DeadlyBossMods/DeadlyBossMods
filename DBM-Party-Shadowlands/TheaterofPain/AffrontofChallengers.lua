@@ -11,7 +11,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 320063",
 	"SPELL_CAST_SUCCESS 320069 320272 320248 333231 333222 320063 333540",
-	"SPELL_AURA_APPLIED 320069 324085 320272 320293 333231 333540 333222",
+	"SPELL_AURA_APPLIED 320069 324085 320272 320293 333231 333540 333222 326892",
 	"SPELL_PERIODIC_DAMAGE 320180",
 	"SPELL_PERIODIC_MISSED 320180",
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3"
@@ -27,6 +27,7 @@ ability.id = 320063 and type = "begincast"
 local warnSlam							= mod:NewSpellAnnounce(320063, 3, nil, "Tank")
 local warnMortalStrike					= mod:NewTargetNoFilterAnnounce(320069, 3, nil, "Tank|Healer")
 local warnEnrage						= mod:NewTargetNoFilterAnnounce(324085, 3)
+local warnFixate						= mod:NewTargetNoFilterAnnounce(326892, 2)
 --Paceran the Virulent
 local warnGeneticAlteration				= mod:NewSpellAnnounce(320248, 2)--Goes on everyone
 --Sathel the Accursed
@@ -38,6 +39,7 @@ local warnOpportunityStrikes			= mod:NewTargetNoFilterAnnounce(333540, 4)
 --Dessia the Decapitator
 local specWarnSlam						= mod:NewSpecialWarningDefensive(320063, false, nil, 2, 1, 2)--Cast very often, let this be an opt in
 local specWarnEnrage					= mod:NewSpecialWarningDispel(324085, "RemoveEnrage", nil, nil, 1, 2)
+local specWarnFixate					= mod:NewSpecialWarningYou(326892, nil, nil, nil, 1, 2)
 --Paceran the Virulent
 local specWarnGTFO						= mod:NewSpecialWarningGTFO(320180, nil, nil, nil, 1, 8)
 --Sathel the Accursed
@@ -124,6 +126,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 333540 then
 		warnOpportunityStrikes:Show(args.destName)
+	elseif spellId == 326892 and args:IsDestTypePlayer() then
+		if args:IsPlayer() then
+			specWarnFixate:Show()
+			specWarnFixate:Play("targetyou")
+		else
+			warnFixate:Show(args.destName)
+		end
 	end
 end
 
