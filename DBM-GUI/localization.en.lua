@@ -154,6 +154,7 @@ L.WorldBossAlert			= "Show alert message when world bosses might have been engag
 
 L.Area_BugAlerts			= "Bug Reporting Alert Options"
 L.BadTimerAlert				= "Show chat message when DBM detects a bad timer with at least 2 seconds of incorrectness"
+L.BadIDAlert				= "Show chat message when DBM detects an invalid spell or journal ID in use"
 
 -- Tab: Barsetup
 L.BarSetup					= "Timers"
