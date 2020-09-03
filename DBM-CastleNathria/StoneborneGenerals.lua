@@ -59,7 +59,7 @@ local warnReverberatingLeap						= mod:NewTargetNoFilterAnnounce(334004, 3)
 local warnCrystalize							= mod:NewTargetNoFilterAnnounce(339690, 2)
 local warnPulverizingMeteor						= mod:NewTargetNoFilterAnnounce(342544, 4)
 --Adds
-local warnStoneLegionGoliath					= mod:NewSpellAnnounce("ej22705", 2, 343273)
+local warnStoneLegionGoliath					= mod:NewSpellAnnounce("ej22764", 2, 343273)
 local warnVolatileAnimaInfusion					= mod:NewTargetNoFilterAnnounce(342655, 2, nil, false)
 local warnRavenousFeast							= mod:NewTargetNoFilterAnnounce(343273, 3)
 local warnStonewrathExhaust						= mod:NewCastAnnounce(342722, 3)

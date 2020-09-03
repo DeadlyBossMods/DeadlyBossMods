@@ -316,6 +316,7 @@ DBM.DefaultOptions = {
 	CheckGear = true,
 	WorldBossAlert = false,
 	BadTimerAlert = false,
+	BadIDAlert = false,
 	AutoAcceptFriendInvite = false,
 	AutoAcceptGuildInvite = false,
 	FakeBWVersion = false,
@@ -6703,7 +6704,11 @@ end
 function DBM:EJ_GetSectionInfo(sectionID)
 	local info = EJ_GetSectionInfo(sectionID)
 	if not info then
-		DBM:Debug("|cffff0000Invalid call to EJ_GetSectionInfo for sectionID: |r"..sectionID)
+		if DBM.Options.BadIDAlert then
+			AddMsg("|cffff0000Invalid call to EJ_GetSectionInfo for sectionID: |r"..sectionID..". Please report this bug")
+		else
+			DBM:Debug("|cffff0000Invalid call to EJ_GetSectionInfo for sectionID: |r"..sectionID)
+		end
 		return nil
 	end
 	local flag1, flag2, flag3, flag4
@@ -6718,7 +6723,11 @@ end
 function DBM:GetSpellInfo(spellId)
 	local name, rank, icon, castingTime, minRange, maxRange, returnedSpellId  = GetSpellInfo(spellId)
 	if not returnedSpellId then--Bad request all together
-		DBM:Debug("|cffff0000Invalid call to GetSpellInfo for spellID: |r"..spellId)
+		if DBM.Options.BadIDAlert then
+			AddMsg("|cffff0000Invalid call to GetSpellInfo for spellID: |r"..spellId..". Please report this bug")
+		else
+			DBM:Debug("|cffff0000Invalid call to GetSpellInfo for spellID: |r"..spellId)
+		end
 		return nil
 	else--Good request, return now
 		return name, rank, icon, castingTime, minRange, maxRange, returnedSpellId
@@ -10503,7 +10512,7 @@ do
 							ttext = ttext.."("..self.id..")"
 							if bar.timer > 0.2 then
 								if DBM.Options.BadTimerAlert and bar.timer >= 2 then--If greater than 2 seconds off, report this out of debug mode to all users
-									AddMsg("Timer "..ttext.. " refreshed before expired. Remaining time is : "..remaining..". Please report this bug", 2)
+									AddMsg("Timer "..ttext.. " refreshed before expired. Remaining time is : "..remaining..". Please report this bug")
 								else
 									DBM:Debug("Timer "..ttext.. " refreshed before expired. Remaining time is : "..remaining, 2)
 								end
@@ -10576,7 +10585,7 @@ do
 						ttext = ttext.."("..self.id..")"
 						if bar.timer > 0.2 then
 							if DBM.Options.BadTimerAlert and bar.timer >= 2 then--If greater than 2 seconds off, report this out of debug mode to all users
-								AddMsg("Timer "..ttext.. " refreshed before expired. Remaining time is : "..remaining..". Please report this bug", 2)
+								AddMsg("Timer "..ttext.. " refreshed before expired. Remaining time is : "..remaining..". Please report this bug")
 							else
 								DBM:Debug("Timer "..ttext.. " refreshed before expired. Remaining time is : "..remaining, 2)
 							end

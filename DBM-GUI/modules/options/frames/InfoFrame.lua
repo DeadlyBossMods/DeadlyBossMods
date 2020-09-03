@@ -39,6 +39,10 @@ local lines = {
 	{
 		text	= CL.INFOFRAME_LINES_TO:format(20),
 		value	= 20
+	},
+	{
+		text	= CL.INFOFRAME_LINES_TO:format(30),
+		value	= 30
 	}
 }
 
@@ -72,6 +76,10 @@ local columns = {
 	{
 		text	= CL.INFOFRAME_COLS_TO:format(5),
 		value	= 5
+	},
+	{
+		text	= CL.INFOFRAME_COLS_TO:format(6),
+		value	= 6
 	}
 }
 
