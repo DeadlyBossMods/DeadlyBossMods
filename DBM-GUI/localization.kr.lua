@@ -15,6 +15,7 @@ L.OTabPlugins	= "핵심 플러그인"
 L.OTabAbout		= "소개"
 
 L.TabCategory_Options		= "일반 설정"
+L.TabCategory_Frames		= "창 설정"
 L.TabCategory_OTHER			= "기타 모드"
 
 L.BossModLoaded 			= "%s 통계"
@@ -145,6 +146,10 @@ L.AutoRespond 				= "전투중 귓속말 자동 응답"
 L.WhisperStats 				= "귓속말 응답에 처치/전멸 통계 포함"
 L.DisableStatusWhisper 		= "전체 파티/공격대의 귓속말 응답을 끕니다. (파티/공대장 권한 필요) 일반/영웅/신화 레이드 및 신화+ 던전에만 적용됩니다"
 L.DisableGuildStatus 		= "길드에 진행 상황 알림 메시지를 전송하지 않습니다. (파티/공대장 권한 필요)"
+
+L.Area_BugAlerts			= "버그 제보 알림 설정"
+L.BadTimerAlert				= "DBM이 최소 2초 이상 맞지 않는 불량 타이머를 감지했을 때 채팅창에 메시지 표시"
+L.BadIDAlert				= "DBM에 쓰이는 주문이나 도감 ID가 잘못됐을 때 채팅창에 메시지 표시"
 
 -- Tab: Barsetup
 L.BarSetup  				= "타이머"
@@ -382,8 +387,19 @@ L.SelectModProfileCopySound	= "음성 설정만 복사"
 L.SelectModProfileCopyNote	= "메모 설정만 복사"
 L.SelectModProfileDelete	= "모드 설정 삭제"
 
+-- Tab: InfoFrame
+L.Panel_InfoFrame			= "정보 창"
+
+-- Tab: Range
+L.Panel_Range				= "거리 창"
+
 -- Misc
-L.FontType					= "글꼴"
-L.FontStyle					= "글꼴 속성"
+L.Area_General				= "일반"
+L.Area_Position				= "위치"
+L.Area_Style				= "속성"
+
+L.FontSize				= "글꼴 크기: %d"
+L.FontStyle				= "글꼴 속성"
+L.FontColor			= "글꼴 색상"
 L.FontShadow				= "그림자"
-L.FontSize					= "글꼴 크기: %d"
+L.FontType				= "글꼴 선택"
