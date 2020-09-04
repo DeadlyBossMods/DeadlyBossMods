@@ -8,8 +8,8 @@ mod:SetEncounterID(2404)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 324079 323608 324449 324589",
-	"SPELL_CAST_SUCCESS 323685",
+	"SPELL_CAST_START 324079 323608 324589 323683 339573",
+	"SPELL_CAST_SUCCESS 324449",
 	"SPELL_AURA_APPLIED 324449",
 	"SPELL_AURA_REMOVED 324449"
 --	"SPELL_PERIODIC_DAMAGE",
@@ -19,6 +19,10 @@ mod:RegisterEventsInCombat(
 
 --TODO, interrupt Cd long enough to justify timers for up to 5 adds at once?
 --https://shadowlands.wowhead.com/npc=166524/deathwalker
+--[[
+(ability.id = 324079 or ability.id = 323608 or ability.id = 323683 or ability.id = 339550 or ability.id = 339706) and type = "begincast"
+ or (ability.id = 324449) and type = "cast"
+--]]
 local warnDeathGrasp				= mod:NewTargetNoFilterAnnounce(323831, 4)
 
 local specWarnReapingScythe			= mod:NewSpecialWarningDefensive(324079, "Tank", nil, nil, 1, 2)
@@ -26,20 +30,26 @@ local specWarnDarkDevastation		= mod:NewSpecialWarningDodge(323608, nil, nil, ni
 local specWarnManifestDeath			= mod:NewSpecialWarningMoveAway(324449, nil, nil, nil, 1, 2)
 local yellManifestDeath				= mod:NewShortYell(324449)--Everyone gets, so short yell (no player names)
 local yellManifestDeathFades		= mod:NewShortFadesYell(324449)
-local specWarnSoulBolt				= mod:NewSpecialWarningInterrupt(324589, "HasInterrupt", nil, nil, 1, 2)
+local specWarnDeathBolt				= mod:NewSpecialWarningInterrupt(324589, "HasInterrupt", nil, nil, 1, 2)
 local specWarnGraspingRift			= mod:NewSpecialWarningRun(323685, nil, nil, nil, 4, 2)
---local specWarnGTFO					= mod:NewSpecialWarningGTFO(257274, nil, nil, nil, 1, 8)
+--local specWarnGTFO				= mod:NewSpecialWarningGTFO(257274, nil, nil, nil, 1, 8)
 
-local timerReapingScytheCD			= mod:NewAITimer(15.8, 324079, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)
-local timerDarkDevastationCD		= mod:NewAITimer(15.8, 323608, nil, nil, nil, 3)
-local timerManifesstDeathCD			= mod:NewAITimer(15.8, 324449, nil, nil, nil, 3)
-local timerGraspingriftCD			= mod:NewAITimer(15.8, 323685, nil, nil, nil, 3)
+local timerReapingScytheCD			= mod:NewCDTimer(17, 324079, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)
+local timerDarkDevastationCD		= mod:NewCDTimer(23.1, 323608, nil, nil, nil, 3)
+local timerManifesstDeathCD			= mod:NewCDTimer(46.1, 324449, nil, nil, nil, 3)
+local timerGraspingriftCD			= mod:NewCDTimer(25.5, 323685, nil, nil, nil, 3)
+
+local timerEchoofBattleCD			= mod:NewCDTimer(25.5, 339550, nil, nil, nil, 3, nil, DBM_CORE_L.MYTHIC_ICON)--25.5-30.3
+local timerGhostlyChargeCD			= mod:NewCDTimer(24.2, 339706, nil, nil, nil, 3, nil, DBM_CORE_L.MYTHIC_ICON)--24.2-31.6
+
+mod.vb.phase = 1
 
 function mod:OnCombatStart(delay)
-	timerReapingScytheCD:Start(1-delay)
-	timerDarkDevastationCD:Start(1-delay)
-	timerManifesstDeathCD:Start(1-delay)
-	timerGraspingriftCD:Start(1-delay)
+	self.vb.phase = 1
+	timerReapingScytheCD:Start(8.1-delay)
+	timerDarkDevastationCD:Start(15.7-delay)
+	timerGraspingriftCD:Start(22.7-delay)
+	timerManifesstDeathCD:Start(23.9-delay)
 end
 
 function mod:SPELL_CAST_START(args)
@@ -52,20 +62,37 @@ function mod:SPELL_CAST_START(args)
 		specWarnDarkDevastation:Show()
 		specWarnDarkDevastation:Play("farfromline")
 		timerDarkDevastationCD:Start()
-	elseif spellId == 324449 then
-		timerManifesstDeathCD:Start()
 	elseif spellId == 324589 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
-		specWarnSoulBolt:Show(args.sourceName)
-		specWarnSoulBolt:Play("kickcast")
+		specWarnDeathBolt:Show(args.sourceName)
+		specWarnDeathBolt:Play("kickcast")
+	elseif spellId == 323683 then
+		specWarnGraspingRift:Show()
+		specWarnGraspingRift:Play("justrun")
+		timerGraspingriftCD:Start()
+	elseif spellId == 339550 then
+		timerEchoofBattleCD:Start()
+	elseif spellId == 339706 then
+		timerGhostlyChargeCD:Start()
+	elseif spellId == 339573 then--Phase 2 activation
+		self.vb.phase = 2
+		timerReapingScytheCD:Stop()
+		timerDarkDevastationCD:Stop()
+		timerGraspingriftCD:Stop()
+		timerManifesstDeathCD:Stop()
+
+		timerEchoofBattleCD:Start(7)
+		timerReapingScytheCD:Start(10.9)
+		timerGhostlyChargeCD:Start(17)
+		timerDarkDevastationCD:Start(18.2)
+		timerGraspingriftCD:Start(25.5)
+		timerManifesstDeathCD:Start(26.7)
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 323685 then
-		specWarnGraspingRift:Show()
-		specWarnGraspingRift:Play("justrun")
-		timerGraspingriftCD:Start()
+	if spellId == 324449 then
+		timerManifesstDeathCD:Start()
 	end
 end
 
