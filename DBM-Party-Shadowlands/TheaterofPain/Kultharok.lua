@@ -21,7 +21,7 @@ mod:RegisterEventsInCombat(
 --[[
 (ability.id = 319521 or ability.id = 319626 or ability.id = 319589) and type = "cast"
 --]]
-local warnPossession				= mod:NewTargetAnnounce(333567, 2)
+local warnDrawSoul					= mod:NewTargetAnnounce(319521, 2)
 local warnPhantasmalParasite		= mod:NewTargetNoFilterAnnounce(319626, 3, nil, "Healer|RemoveMagic")
 local warnPossession				= mod:NewTargetNoFilterAnnounce(333567, 4)
 
@@ -72,6 +72,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnDrawSoul:Show()
 			specWarnDrawSoul:Play("justrun")
 			--yellDrawSoul:Yell()
+		else
+			warnDrawSoul:Show(args.destName)
 		end
 	elseif spellId == 319416 then
 		if args:IsPlayer() then
