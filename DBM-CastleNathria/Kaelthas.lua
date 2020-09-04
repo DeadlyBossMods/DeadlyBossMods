@@ -96,7 +96,7 @@ mod:AddTimerLine(DBM:EJ_GetSectionInfo(21966))
 local timerFieryStrikeCD						= mod:NewCDTimer(6.7, 326455, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)--6.7-13.5
 local timerEmberBlastCD							= mod:NewCDTimer(20.8, 325877, nil, nil, nil, 3)
 local timerBlazingSurgeCD						= mod:NewCDTimer(20.1, 329509, nil, nil, nil, 3)
---local timerRebornPhoenixCD					= mod:NewAITimer(44.3, "ej22090", nil, nil, nil, 1, 328659, DBM_CORE_L.DAMAGE_ICON)--Cast only once whole fight and not timer based
+--local timerRebornPhoenixCD					= mod:NewCDTimer(44.3, "ej22090", nil, nil, nil, 1, 328659, DBM_CORE_L.DAMAGE_ICON)--Cast only once whole fight and not timer based
 --High Torturor Darithos
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22089))
 local timerGreaterCastigationCD					= mod:NewNextTimer(8.8, 328885, nil, nil, nil, 3)
@@ -109,11 +109,11 @@ local timerVanquishingStrikeCD					= mod:NewCDTimer(5.5, 325440, nil, "Tank", ni
 ----Bleakwing Assassin
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(21993))
 local timerBleakwingAssassinCD					= mod:NewCDCountTimer(80, "ej21993", nil, nil, nil, 1, 326583, DBM_CORE_L.DAMAGE_ICON)
---local timerCrimsonFuryCD						= mod:NewAITimer(44.3, 326583, nil, false, nil, 3)--Too many to track via normal bars, this needs nameplate bars/icon
+--local timerCrimsonFuryCD						= mod:NewCDTimer(44.3, 326583, nil, false, nil, 3)--Too many to track via normal bars, this needs nameplate bars/icon
 ----Vile Occultist
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(21952))
 local timerVileOccultistCD						= mod:NewCDCountTimer(10, "ej21952", nil, nil, nil, 1, 329565, DBM_CORE_L.DAMAGE_ICON)
---local timerVulgarBrandCD						= mod:NewAITimer(44.3, 333002, nil, nil, nil, 3)--TODO, give it a relative icon based on difficulty (Magic/Curse)
+--local timerVulgarBrandCD						= mod:NewCDTimer(44.3, 333002, nil, nil, nil, 3)--TODO, give it a relative icon based on difficulty (Magic/Curse)
 ----Soul Infuser
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(21953))
 local timerSoulInfuserCD						= mod:NewCDCountTimer(10, "ej21953", nil, nil, nil, 1, 325665, DBM_CORE_L.DAMAGE_ICON)
