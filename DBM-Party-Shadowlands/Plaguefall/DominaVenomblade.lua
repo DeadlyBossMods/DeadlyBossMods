@@ -35,7 +35,7 @@ local specWarnCytotoxicSlash		= mod:NewSpecialWarningDispel(325552, "RemovePoiso
 local specWarnCytotoxicSlashTank	= mod:NewSpecialWarningDefensive(325552, nil, nil, nil, 1, 2)
 --local specWarnGTFO				= mod:NewSpecialWarningGTFO(257274, nil, nil, nil, 1, 8)
 
---local timerShadowcloneCD			= mod:NewAITimer(13, 325457, nil, nil, nil, 6)
+--local timerShadowcloneCD			= mod:NewCDTimer(13, 325457, nil, nil, nil, 6)
 local timerBroodAssassinsCD			= mod:NewCDTimer(36.4, 332313, nil, nil, nil, 1)
 local timerAmbushCD					= mod:NewCDTimer(20.6, 325245, nil, nil, nil, 3)--20-23
 local timerSolitaryPrey				= mod:NewBuffFadesTimer(6, 336258, nil, nil, nil, 5)

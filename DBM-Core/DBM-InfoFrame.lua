@@ -1182,10 +1182,16 @@ end
 
 function infoFrame:SetLines(lines)
 	modLines = lines
+	if DBM.Options.InfoFrameLines == 0 then
+		maxLines = lines
+	end
 end
 
 function infoFrame:SetColumns(columns)
 	modCols = columns
+	if DBM.Options.InfoFrameCols == 0 then
+		maxCols = columns
+	end
 end
 
 function infoFrame:IsShown()

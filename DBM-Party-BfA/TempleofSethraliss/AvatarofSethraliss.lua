@@ -27,7 +27,7 @@ local specWarnRainofToads			= mod:NewSpecialWarningSpell(269688, nil, nil, nil, 
 local specWarnPlague				= mod:NewSpecialWarningDispel(269686, "RemoveDisease", nil, nil, 1, 2)
 local specWarnSnakeCharm			= mod:NewSpecialWarningDispel(268008, "Healer", nil, nil, 1, 2)
 
---local timerRainofToadsCD			= mod:NewAITimer(20, 269688, nil, nil, nil, 1)--More work needed
+--local timerRainofToadsCD			= mod:NewCDTimer(20, 269688, nil, nil, nil, 1)--More work needed
 local timerPlague					= mod:NewTargetTimer(10, 269686, nil, "RemoveDisease", nil, 5, nil, DBM_CORE_L.DISEASE_ICON)
 local timerPulseCD					= mod:NewCDTimer(15, 268024, nil, "Healer", nil, 5, nil, DBM_CORE_L.HEALER_ICON)
 --local timerLifeForce				= mod:NewBuffActiveTimer(20, 274149, nil, nil, nil, 6, nil, DBM_CORE_L.HEALER_ICON)

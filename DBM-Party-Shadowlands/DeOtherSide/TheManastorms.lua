@@ -9,23 +9,27 @@ mod:SetBossHPInfoToHighest()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 320008 320787 320142 320168 321061 320132 320823",
-	"SPELL_CAST_SUCCESS 323877 320132",
-	"SPELL_AURA_APPLIED 320786 320147 323877",
+	"SPELL_CAST_START 320008 320787 320141 320168 321061 320132 320823",
+	"SPELL_CAST_SUCCESS 324047 320132",
+	"SPELL_AURA_APPLIED 320786 320147 323877 342905",
 	"SPELL_AURA_APPLIED_DOSE 320786 320147",
-	"SPELL_AURA_REMOVED 320786",
-	"SPELL_AURA_REMOVED_DOSE 320786",
+	"SPELL_AURA_REMOVED 320786 342905",
+	"SPELL_AURA_REMOVED_DOSE 320786"
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 --	"UNIT_DIED"
-	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2"
+--	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2"
 )
 
---TODO, find event for their phase changes, probably a dialog UNIT event, so timers can be updated and variables reset.
 --TODO, find a good stack count to warn for soaking.
 --TODO, timer for any of buzz saws or warnings for them? It just seems like something that is spammed so for now they are excluded
 --TODO, review some of normal warnings if they need to be special
 --TODO, shadowfury has splash damage and stun, so figure out how to direct ONE player to hit millificent with it, not all of them
+--[[
+(ability.id = 320787 or ability.id = 320132 or ability.id = 320823 or ability.id = 320141 or ability.id = 321061) and type = "begincast"
+ or ability.id = 324047 and type = "cast"
+ or ability.id = 342905
+--]]
 --Stage One: Millhouse's Magics
 local warnSummonPowerCrystal		= mod:NewSpellAnnounce(320787, 3)
 local warnThrowBuzzSaw				= mod:NewSpellAnnounce(320168, 3, nil, false)
@@ -35,7 +39,7 @@ local warnBleeding					= mod:NewStackAnnounce(320147, 2, nil, "Tank|Healer")
 
 --Stage One: Millhouse's Magics
 --local specWarnVulnerabilityStack	= mod:NewSpecialWarningStack(320786, nil, 12, nil, nil, 1, 6)
-local specWarnDoom					= mod:NewSpecialWarningSpell(320142, nil, 226243, nil, 2, 2, 4)--Mythic only
+local specWarnDoom					= mod:NewSpecialWarningSpell(320141, nil, 226243, nil, 2, 2, 4)--Mythic only
 local specWarnFrostbolt				= mod:NewSpecialWarningInterruptCount(320008, "HasInterrupt", nil, nil, 1, 2)
 local specWarnBleeding				= mod:NewSpecialWarningStack(320147, nil, 12, nil, nil, 1, 6)
 local specWarnLaser					= mod:NewSpecialWarningMoveTo(323877, nil, 143444, nil, 2, 8, 4)--Mythic only
@@ -48,32 +52,33 @@ local specWarnShadowfury			= mod:NewSpecialWarningMoveTo(320132, nil, nil, nil, 
 --General
 local timerPhaseCD						= mod:NewPhaseTimer(30)
 --Stage One: Millhouse's Magics
-local timerSummonPowerCrystalCD			= mod:NewCDTimer(7.4, 320787, nil, nil, nil, 5)
-local timerDoomCD						= mod:NewAITimer(15.8, 320142, 226243, nil, nil, 2, nil, DBM_CORE_L.DEADLY_ICON)--Shortname Doom!!!
-local timerLaserCD						= mod:NewAITimer(15.8, 323877, 143444, nil, nil, 2, nil, DBM_CORE_L.DEADLY_ICON)--Shortname Laser
+local timerSummonPowerCrystalCD			= mod:NewNextTimer(7.4, 320787, nil, nil, nil, 5)
+local timerDoomCD						= mod:NewNextTimer(15.8, 320141, 226243, nil, nil, 2, nil, DBM_CORE_L.DEADLY_ICON)--Shortname Doom!!!
+local timerLaserCD						= mod:NewNextCountTimer(15, 323877, 143444, nil, nil, 2, nil, DBM_CORE_L.DEADLY_ICON)--Shortname Laser
 --Stage Two: Millificent's Gadgets
---local timerMechanicalBombSquirrelCD		= mod:NewAITimer(13, 320825, nil, nil, nil, 3)
-local timerExperimentalSquirrelBombCD	= mod:NewCDTimer(8, 320823, nil, nil, nil, 5)
-local timerAerialRocketChickenCD		= mod:NewAITimer(13, 321061, 45255, nil, nil, 3)--Shortname Rocket Chicken
-local timerShadowfuryCD					= mod:NewAITimer(13, 320132, nil, nil, nil, 3)
+--local timerMechanicalBombSquirrelCD	= mod:NewCDTimer(13, 320825, nil, nil, nil, 3)
+local timerExperimentalSquirrelBombCD	= mod:NewNextTimer(8, 320823, nil, nil, nil, 5)
+local timerAerialRocketChickenCD		= mod:NewNextTimer(13, 321061, 45255, nil, nil, 3)--Shortname Rocket Chicken
+local timerShadowfuryCD					= mod:NewNextCountTimer(13, 320132, nil, nil, nil, 3)
 
 mod:AddInfoFrameOption(320786, true)
 mod:AddRangeFrameOption(8, 320132)
 
 local millHouse, millificent = DBM:EJ_GetSectionInfo(22027), DBM:EJ_GetSectionInfo(22031)
 local VulnerabilityStacks = {}
+mod.vb.furyCount = 0
+mod.vb.laserCount = 0
 mod.vb.interruptCount = 0
 mod.vb.activeBoss = 1--1-Millhouse, 2-Millificent
 
 function mod:OnCombatStart(delay)
 	table.wipe(VulnerabilityStacks)
-	self.vb.interruptCount = 0
 	self.vb.activeBoss = 1
+	--First timers triggered on chilled heart event
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(320786))
 		DBM.InfoFrame:Show(5, "table", VulnerabilityStacks, 1)
 	end
-	DBM:AddMsg("This fights phase changes aren't worked out yet so AI timers won't be able to predictively handle them yet")
 end
 
 function mod:OnCombatEnd()
@@ -109,9 +114,10 @@ function mod:SPELL_CAST_START(args)
 				specWarnFrostbolt:Play("kickcast")
 			end
 		end
-	elseif spellId == 320142 then
+	elseif spellId == 320141 then
 		specWarnDoom:Show()
 		specWarnDoom:Play("aesoon")
+--		timerDoomCD:Start()--Not cast more than once per rotation
 	elseif spellId == 320168 then
 		warnThrowBuzzSaw:Show()
 --	elseif spellId == 320825 and self:AntiSpam(5, 3) then
@@ -120,10 +126,13 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 321061 then
 		specWarnAerialRocketChicken:Show()
 		specWarnAerialRocketChicken:Play("watchstep")
+--		timerAerialRocketChickenCD:Start()--Not cast more than once per rotation
 	elseif spellId == 320132 then
+		self.vb.furyCount = self.vb.furyCount + 1
 		specWarnShadowfury:Show(millificent)
 		specWarnShadowfury:Play("behindboss")
-		timerShadowfuryCD:Start()
+		local timer = self.vb.furyCount == 1 and 12.9 or self.vb.furyCount == 2 and 9.9 or 5.9--5.9 repeating after 3 casts
+		timerShadowfuryCD:Start(timer, self.vb.furyCount+1)
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(8)
 		end
@@ -134,8 +143,10 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 323877 then
-		timerLaserCD:Start()
+	if spellId == 324047 then
+		self.vb.laserCount = self.vb.laserCount
+		local timer = self.vb.laserCount == 1 and 15 or self.vb.laserCount == 2 and 12 or 8--8 is guessed based on pattern of other boss
+		timerLaserCD:Start(timer, self.vb.laserCount+1)
 	elseif spellId == 320132 then
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Hide()
@@ -170,6 +181,21 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnLaser:Show(millHouse)
 			specWarnLaser:Play("behindboss")
 		end
+	elseif spellId == 342905 then--Millhouse activating
+		self.vb.activeBoss = 1
+		self.vb.laserCount = 0
+		self.vb.interruptCount = 0
+		timerExperimentalSquirrelBombCD:Stop()
+		timerAerialRocketChickenCD:Stop()
+		timerShadowfuryCD:Stop()
+		timerSummonPowerCrystalCD:Start(7)
+		if self:IsMythic() then
+			timerLaserCD:Start(20, 1)
+			timerDoomCD:Start(43.5)
+			--timerPhaseCD:Start(51.2)--Boss pushes when hit with other bosses ability 3x, this is roughly 51-52 if you don't screw up
+		else
+			timerPhaseCD:Start(30)--Non mythic is just timer, no shadowfury or lasers to push boss
+		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -180,6 +206,22 @@ function mod:SPELL_AURA_REMOVED(args)
 		VulnerabilityStacks[args.destName] = nil
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:UpdateTable(VulnerabilityStacks)
+		end
+	elseif spellId == 342905 then--Millhouse Leaving
+		self.vb.activeBoss = 2
+		self.vb.furyCount = 0
+		self.vb.interruptCount = 0
+		timerSummonPowerCrystalCD:Stop()
+		timerDoomCD:Stop()
+		timerLaserCD:Stop()
+		timerExperimentalSquirrelBombCD:Start(6.5)
+		if self:IsMythic() then
+			timerShadowfuryCD:Start(18.2, 1)
+			timerAerialRocketChickenCD:Start(41)
+			--timerPhaseCD:Start(51.2)--Boss pushes when hit with other bosses ability 3x, this is roughly 51-52 if you don't screw up
+		else
+			--On non mythic they swap on a timer, on mythic they seem to swap based on pushing phase with damage? saw pushes between 52.8 and 65
+			timerPhaseCD:Start(30)
 		end
 	end
 end
@@ -205,34 +247,38 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 164561 then
+	if cid == 164555 then
+
+	elseif cid == 164556 then
 
 	end
 end
---]]
 
+--No longer needed now that chilled heart was added to combat log. Keeping around as backup just in case though
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 326684 then--Teleport (unique spell for Millhouse leaving)
+	if self.vb.activeBoss == 1 and (spellId == 326804 or spellId == 326684) then--Teleport (326684) no longer seems used, using Millificent's returning rocket jump ID (326804) instead
 		self.vb.activeBoss = 2
 		timerSummonPowerCrystalCD:Stop()
 		timerDoomCD:Stop()
 		timerLaserCD:Stop()
 		timerExperimentalSquirrelBombCD:Start(6)
 		if self:IsMythic() then
-			timerAerialRocketChickenCD:Start(2)
-			timerShadowfuryCD:Start(2)
+			timerShadowfuryCD:Start(17.6)
+			timerAerialRocketChickenCD:Start(40.5)
 		end
 		timerPhaseCD:Start(30)
-	elseif spellId == 326799 then--Rocket Jump (unique spell for Millificent leaving) (not to be confused with 326804)
+	elseif self.vb.activeBoss == 2 and spellId == 326799 then--Rocket Jump (unique spell for Millificent leaving) (not to be confused with 326804)
 		self.vb.activeBoss = 1
 		timerExperimentalSquirrelBombCD:Stop()
 		timerAerialRocketChickenCD:Stop()
 		timerShadowfuryCD:Stop()
 		timerSummonPowerCrystalCD:Start(7)
 		if self:IsMythic() then
-			timerDoomCD:Start(1)
-			timerLaserCD:Start(1)
+			timerLaserCD:Start(18.8)
+			timerDoomCD:Start(42.3)
 		end
 		timerPhaseCD:Start(30)
 	end
 end
+--]]
+

@@ -53,7 +53,6 @@ local timerGaleForceCD				= mod:NewCDTimer(16.4, 263776, nil, nil, nil, 3, nil, 
 local timerArcingBladeCD			= mod:NewCDTimer(13.4, 263234, nil, nil, nil, 5, nil, DBM_CORE_L.HEROIC_ICON)
 local timerCycloneStrikeCD			= mod:NewCDTimer(14.6, 263573, nil, nil, nil, 3, nil, DBM_CORE_L.DEADLY_ICON)
 ----Lighting
-local timerPearlofThunderCD			= mod:NewAITimer(13, 263365, nil, nil, nil, 2, nil, DBM_CORE_L.DEADLY_ICON)
 local timerArcDashCD				= mod:NewCDTimer(23, 263424, nil, nil, nil, 3)
 
 mod:AddRangeFrameOption("8")
@@ -108,7 +107,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		if cid == 133379 then--Adderis
 			timerArcingBladeCD:Stop()
 			timerCycloneStrikeCD:Stop()
-			timerPearlofThunderCD:Start(2)
 			--timerArcDashCD:Start(11.2)
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Show(8)
@@ -144,7 +142,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		local cid = self:GetCIDFromGUID(args.destGUID)
 		--Start wind timers and stop lightning
 		if cid == 133379 then--Adderis
-			timerPearlofThunderCD:Stop()
 			--timerArcDashCD:Stop()
 			--timerCycloneStrikeCD:Start(2)
 			if not self:IsNormal() then
@@ -187,7 +184,6 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 263365 then
 		specWarnPearlofThunder:Show()
 		specWarnPearlofThunder:Play("justrun")
-		timerPearlofThunderCD:Start()
 	end
 end
 
@@ -203,7 +199,6 @@ end
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 133379 then--Adderis
-		timerPearlofThunderCD:Stop()
 		timerArcDashCD:Stop()
 		timerCycloneStrikeCD:Stop()
 		timerArcingBladeCD:Stop()

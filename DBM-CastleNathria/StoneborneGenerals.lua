@@ -103,7 +103,7 @@ local timerSeismicUpheavalCD					= mod:NewCDTimer(30.1, 334498, nil, nil, nil, 3
 local timerStoneBreakersComboCD					= mod:NewCDTimer(54.6, 339690, nil, nil, nil, 5, nil, nil, nil, 2, 3)--54-60
 local timerStoneFistCD							= mod:NewCDTimer(30.3, 342425, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)
 --Adds
-local timerPunishingBlowCD						= mod:NewAITimer(24.6, 340043, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON)
+local timerPunishingBlowCD						= mod:NewAITimer(24.6, 340043, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON)--Was never cast, FIXME
 --local timerRavenousFeastCD					= mod:NewCDTimer(50, 343273, nil, nil, nil, 3)--Kind of all over the place right now (50-60)
 local timerShatteringBlast						= mod:NewCastTimer(5, 332683, nil, nil, nil, 2)
 

@@ -43,7 +43,7 @@ local timerBloodBarrierCD			= mod:NewCDTimer(15.8, 322773, nil, nil, nil, 6)
 local timerCorruptedBloodCD			= mod:NewCDTimer(36.4, 322746, nil, nil, nil, 3)
 local timerPiercingBarbCD			= mod:NewCDTimer(9.7, 322736, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)
 --Son of Hakkar:
---local timerDevotedSacrificeCD		= mod:NewAITimer(46, 332329, nil, nil, nil, 1)
+--local timerDevotedSacrificeCD		= mod:NewCDTimer(46, 332329, nil, nil, nil, 1)
 
 mod:AddRangeFrameOption(8, 322746)--Spell is 7, but can't do 7 in api
 mod:AddNamePlateOption("NPAuraOnFixate", 328987)
