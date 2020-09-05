@@ -53,7 +53,7 @@ local timerTappedKegCD				= mod:NewNextTimer(22.3, 272884, nil, nil, nil, 5)
 ----Hostile
 local timerGrapeShotCD				= mod:NewNextTimer(30.3, 258381, nil, nil, nil, 3, nil, DBM_CORE_L.DEADLY_ICON)
 ----Friendly
-local timerChainShotCD				= mod:NewAITimer(29.1, 272902, nil, nil, nil, 5)
+local timerChainShotCD				= mod:NewNextTimer(15.8, 272902, nil, nil, nil, 5)
 --Jolly
 ----Hostile
 local timerCuttingSurgeCD			= mod:NewCDTimer(22.7, 267522, nil, nil, nil, 3)
@@ -97,7 +97,7 @@ local function scanCaptains(self, isPull, delay)
 					elseif cid == 126847 then--Raoul
 						timerTappedKegCD:Start(12.2-delay)
 					else--Eudora
-						timerChainShotCD:Start(1-delay)
+						timerChainShotCD:Start(4.2-delay)
 					end
 				end
 			end

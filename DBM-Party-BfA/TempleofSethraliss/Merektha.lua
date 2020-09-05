@@ -8,10 +8,9 @@ mod:SetEncounterID(2125)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
+	"SPELL_CAST_START 272657 263914 264239 264233",
 	"SPELL_AURA_APPLIED 267050 263957 263958",
 	"SPELL_AURA_REMOVED 267050",
-	"SPELL_CAST_START 272657 263914 264239 264233",
-	"SPELL_CAST_SUCCESS 263957",
 	"SPELL_PERIODIC_DAMAGE 263927",
 	"SPELL_PERIODIC_MISSED 263927",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
@@ -32,10 +31,8 @@ local specWarnKnotofSnakesYou		= mod:NewSpecialWarningYou(263958, nil, nil, nil,
 local yellKnotofSnakes				= mod:NewYell(263958)
 local specWarnGTFO					= mod:NewSpecialWarningGTFO(263927, nil, nil, nil, 1, 8)
 
-local timerHadotoxinCD				= mod:NewAITimer(13, 263957, nil, "Tank|Healer|RemovePoison", nil, 5, nil, DBM_CORE_L.TANK_ICON..DBM_CORE_L.POISON_ICON)
 local timerNoxiousBreathCD			= mod:NewCDTimer(89.3, 272657, nil, nil, nil, 3)
---local timerBlindingSandCD			= mod:NewCDTimer(51, 263914, nil, nil, nil, 2)
---local timerHatchCD					= mod:NewCDTimer(43.9, 264239, nil, nil, nil, 1)--even need a CD bar or just cast bar?
+local timerHatch					= mod:NewCastTimer(35, 264239, nil, nil, nil, 1)--even need a CD bar or just cast bar?
 --local timerBurrowCD					= mod:NewCDTimer(13, 264206, nil, nil, nil, 6)--Health based apparently
 --local timerBurrowEnds				= mod:NewBuffActiveTimer(13, 264206, nil, nil, nil, 6)
 
@@ -43,7 +40,6 @@ mod:AddNamePlateOption("NPAuraOnObscured", 267050)
 
 
 function mod:OnCombatStart(delay)
-	timerHadotoxinCD:Start(1-delay)
 	timerNoxiousBreathCD:Start(6-delay)
 	--timerBurrowCD:Start(15.2-delay)
 	if self.Options.NPAuraOnObscured then
@@ -99,16 +95,9 @@ function mod:SPELL_CAST_START(args)
 	elseif (spellId == 264239 or spellId == 264233) then--Hatch
 		if self:AntiSpam(3, 1) then
 			warnHatch:Show()--Cast instantly when burrow ends
-			--timerBlindingSandCD:Start(6)
+			timerHatch:Start()
 			--timerBurrowCD:Start(18)
 		end
-	end
-end
-
-function mod:SPELL_CAST_SUCCESS(args)
-	local spellId = args.spellId
-	if spellId == 263957 then
-		timerHadotoxinCD:Start()
 	end
 end
 
@@ -122,9 +111,7 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(_, _, spellId)
 	if spellId == 264172 then--Summon (cast when he burrows)
-		timerHadotoxinCD:Stop()
 		timerNoxiousBreathCD:Stop()
-		--timerBlindingSandCD:Stop()
 		warnBurrow:Show()
 		warnBurrow:Play("phasechange")
 	end
