@@ -1183,7 +1183,7 @@ end
 function infoFrame:SetLines(lines)
 	modLines = lines
 	if DBM.Options.InfoFrameLines == 0 then
-		maxRows = columns
+		maxLines = lines
 	end
 end
 
