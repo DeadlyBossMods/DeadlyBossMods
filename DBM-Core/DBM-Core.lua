@@ -7033,6 +7033,9 @@ do
 		end
 		return alive
 	end
+	function DBM:NumRealAlivePlayers()
+		return getNumRealAlivePlayers()
+	end
 
 	-- sender is a presenceId for real id messages, a character name otherwise
 	local function onWhisper(msg, sender, isRealIdMessage)
