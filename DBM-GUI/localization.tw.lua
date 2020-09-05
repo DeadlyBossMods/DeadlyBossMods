@@ -144,6 +144,7 @@ L.WorldBossAlert			= "當你的公會成員或是朋友可能在你的伺服器�
 
 L.Area_BugAlerts			= "錯誤回報警報選項"
 L.BadTimerAlert				= "當DBM檢測到計時器錯誤且至少有2秒不正確時顯示聊天訊息"
+L.BadIDAlert				= "當DBM檢測到使用的是無效法術或紀錄ID時顯示聊天訊息"
 
 -- Tab: Barsetup
 L.BarSetup   				= "計時條"
@@ -286,8 +287,8 @@ L.DontShowFarWarnings		= "不發送距離過遠的事件提示/計時器"
 L.StripServerName			= "隱藏警告、計時器、距離檢測以及資訊框架的玩家伺服器名稱"
 L.FilterVoidFormSay			= "在虛空型態時不要發送圖示/倒數計時聊天喊話(仍會發送標準聊天喊話)"
 
-L.Area_SpecFilter			= "專精過濾選項"
-L.FilterTankSpec			= "非坦克專精時過濾掉坦克專精的特定警告 (註:不建議玩家關閉此選項因大多數的坦克嘲諷警告都是預設開啟。)"
+L.Area_SpecFilter			= "角色職責過濾選項"
+L.FilterTankSpec			= "非坦克角色職責時過濾掉坦克專精的特定警告 (註:不建議玩家關閉此選項因大多數的坦克嘲諷警告都是預設開啟。)"
 L.FilterInterruptsHeader	= "過濾可中斷技能的警告基於以下行為偏好。"
 L.FilterInterrupts			= "如果施法者不是你的目標/專注目標(總是)。"
 L.FilterInterrupts2			= "如果施法者不是你的目標/專注目標(總是)或中斷在冷卻中(只適用首領)"
@@ -384,10 +385,21 @@ L.SelectModProfileCopySound	= "只複製音效設定"
 L.SelectModProfileCopyNote	= "只複製註記設定"
 L.SelectModProfileDelete	= "刪除模組設定"
 
+-- Tab: InfoFrame
+L.Panel_InfoFrame			= "訊息框架"
+
+-- Tab: Range
+L.Panel_Range				= "距離"
+
 -- Misc
-L.FontType					= "選擇字型"
-L.FontStyle					= "字型風格"
-L.FontShadow				= "陰影"
+L.Area_General				= "一般"
+L.Area_Position				= "位置"
+L.Area_Style				= "風格"
+
 L.FontSize					= "字型大小:%d"
+L.FontStyle					= "字型風格"
+L.FontColor					= "文字顏色"
+L.FontShadow				= "陰影"
+L.FontType					= "選擇字型"
 
 L.FontHeight	= 18
