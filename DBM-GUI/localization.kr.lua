@@ -148,8 +148,8 @@ L.DisableStatusWhisper 		= "전체 파티/공격대의 귓속말 응답을 끕�
 L.DisableGuildStatus 		= "길드에 진행 상황 알림 메시지를 전송하지 않습니다. (파티/공대장 권한 필요)"
 
 L.Area_BugAlerts			= "버그 제보 알림 설정"
-L.BadTimerAlert				= "DBM이 최소 2초 이상 맞지 않는 불량 타이머를 감지했을 때 채팅창에 메시지 표시"
-L.BadIDAlert				= "DBM에 쓰이는 주문이나 도감 ID가 잘못됐을 때 채팅창에 메시지 표시"
+L.BadTimerAlert				= "DBM이 최소 1초 이상 맞지 않는 불량 타이머를 감지했을 때 대화창에 메시지 표시"
+L.BadIDAlert				= "DBM에 쓰이는 주문이나 도감 ID가 잘못됐을 때 대화창에 메시지 표시"
 
 -- Tab: Barsetup
 L.BarSetup  				= "타이머"
@@ -218,7 +218,7 @@ L.BarColorByType			= "종류별 색상"
 L.NoBarFade					= "시작/종료시 색상 변화를 그라데이션 효과 대신 작은/큰 바 색을 사용"
 L.BarInlineIcons			= "바 안쪽에 아이콘 사용"
 L.ShortTimerText			= "짧은 타이머 텍스트 사용 (사용 가능할 때만)"
-L.StripTimerText			= "타이머 텍스트에 쿨타임/다음 삭제"
+L.StripTimerText			= "타이머 텍스트에 쿨타임/다음 글자 삭제"
 L.KeepBar					= "스킬 시전 전까지 타이머 작동 중단"
 L.KeepBar2					= "(모드에서 지원할 경우에만)"
 L.FadeBar					= "사정거리 밖의 스킬에 대한 타이머 바 숨김"
@@ -396,7 +396,7 @@ L.Panel_Range				= "거리 창"
 -- Misc
 L.Area_General				= "일반"
 L.Area_Position				= "위치"
-L.Area_Style				= "속성"
+L.Area_Style				= "외형"
 
 L.FontSize				= "글꼴 크기: %d"
 L.FontStyle				= "글꼴 속성"
