@@ -101,7 +101,7 @@ function DBM:GetTOC()
 end
 
 function DBM:IsAlpha()
-	return DBM:GetTOC() >= 90000 -- 9.x.x
+	return self:GetTOC() >= 90000 -- 9.x.x
 end
 
 -- dual profile setup
@@ -1265,12 +1265,12 @@ do
 		if activeVP ~= "None" then
 			if not self.VoiceVersions[activeVP] or (self.VoiceVersions[activeVP] and self.VoiceVersions[activeVP] == 0) then--A voice pack is selected that does not belong
 				voiceSessionDisabled = true
-				AddMsg(DBM, L.VOICE_MISSING)
+				AddMsg(self, L.VOICE_MISSING)
 			end
 		else
 			if self.Options.ShowReminders and #self.Voices > 1 then
 				--At least one voice pack installed but activeVP set to "None"
-				AddMsg(DBM, L.VOICE_DISABLED)
+				AddMsg(self, L.VOICE_DISABLED)
 			end
 		end
 		--Check if any of countdown sounds are using missing voice pack
@@ -1288,15 +1288,15 @@ do
 			end
 		end
 		if not found1 then
-			AddMsg(DBM, L.VOICE_COUNT_MISSING:format(1, self.DefaultOptions.CountdownVoice))
+			AddMsg(self, L.VOICE_COUNT_MISSING:format(1, self.DefaultOptions.CountdownVoice))
 			self.Options.CountdownVoice = self.DefaultOptions.CountdownVoice
 		end
 		if not found2 then
-			AddMsg(DBM, L.VOICE_COUNT_MISSING:format(2, self.DefaultOptions.CountdownVoice2))
+			AddMsg(self, L.VOICE_COUNT_MISSING:format(2, self.DefaultOptions.CountdownVoice2))
 			self.Options.CountdownVoice2 = self.DefaultOptions.CountdownVoice2
 		end
 		if not found3 then
-			AddMsg(DBM, L.VOICE_COUNT_MISSING:format(3, self.DefaultOptions.CountdownVoice3))
+			AddMsg(self, L.VOICE_COUNT_MISSING:format(3, self.DefaultOptions.CountdownVoice3))
 			self.Options.CountdownVoice3 = self.DefaultOptions.CountdownVoice3
 		end
 		self:BuildVoiceCountdownCache()
@@ -1500,7 +1500,7 @@ do
 						if loaded and insertFunction then
 							insertFunction()
 						else
-							DBM:Debug(addonName.." failed to load at time CountPack function "..voiceGlobal.."ran", 2)
+							self:Debug(addonName.." failed to load at time CountPack function "..voiceGlobal.."ran", 2)
 						end
 					end
 				end
@@ -1514,7 +1514,7 @@ do
 						if loaded and insertFunction then
 							insertFunction()
 						else
-							DBM:Debug(addonName.." failed to load at time VictoryPack function "..victoryGlobal.." ran", 2)
+							self:Debug(addonName.." failed to load at time VictoryPack function "..victoryGlobal.." ran", 2)
 						end
 					end
 				end
@@ -1528,7 +1528,7 @@ do
 						if loaded and insertFunction then
 							insertFunction()
 						else
-							DBM:Debug(addonName.." failed to load at time DefeatPack function "..defeatGlobal.." ran", 2)
+							self:Debug(addonName.." failed to load at time DefeatPack function "..defeatGlobal.." ran", 2)
 						end
 					end
 				end
@@ -1542,7 +1542,7 @@ do
 						if loaded and insertFunction then
 							insertFunction()
 						else
-							DBM:Debug(addonName.." failed to load at time MusicPack function "..musicGlobal.." ran", 2)
+							self:Debug(addonName.." failed to load at time MusicPack function "..musicGlobal.." ran", 2)
 						end
 					end
 				end
@@ -2707,7 +2707,7 @@ do
 			return
 		end
 		if not dbmIsEnabled then
-			DBM:AddMsg(L.UPDATEREMINDER_DISABLE)
+			self:AddMsg(L.UPDATEREMINDER_DISABLE)
 			return
 		end
 		local firstLoad = false
@@ -3058,7 +3058,7 @@ do
 	--Shortens name but custom so we add * to off realmers instead of stripping it entirely like Ambiguate does
 	--Technically GetUnitName without "true" can be used to shorten name to "name (*)" but "name*" is even shorter which is why we do this
 	function DBM:GetShortServerName(name)
-		if not DBM.Options.StripServerName then return name end--If strip is disabled, just return name
+		if not self.Options.StripServerName then return name end--If strip is disabled, just return name
 		local shortName, serverName = string.split("-", name)
 		if serverName and serverName ~= playerRealm then
 			return shortName.."*"
@@ -3231,9 +3231,9 @@ function DBM:CheckNearby(range, targetname)
 	if not targetname and DBM.RangeCheck:GetDistanceAll(range) then
 		return true--No target name means check if anyone is near self, period
 	else
-		local uId = DBM:GetRaidUnitId(targetname)
+		local uId = self:GetRaidUnitId(targetname)
 		if uId and not UnitIsUnit("player", uId) then
-			local inRange = DBM.RangeCheck:GetDistance(uId)
+			local inRange = self.RangeCheck:GetDistance(uId)
 			if inRange and inRange < range+0.5 then
 				return true
 			end
@@ -3268,11 +3268,11 @@ function DBM:LoadModOptions(modId, inCombat, first)
 	local savedOptions = _G[savedVarsName][fullname] or {}
 	local savedStats = _G[savedStatsName] or {}
 	local existId = {}
-	for _, id in ipairs(DBM.ModLists[modId]) do
+	for _, id in ipairs(self.ModLists[modId]) do
 		existId[id] = true
 		-- init
 		if not savedOptions[id] then savedOptions[id] = {} end
-		local mod = DBM:GetModByName(id)
+		local mod = self:GetModByName(id)
 		-- migrate old option
 		if _G[oldSavedVarsName] and _G[oldSavedVarsName][id] then
 			self:Debug("LoadModOptions: Found old options, importing", 2)
@@ -3310,7 +3310,7 @@ function DBM:LoadModOptions(modId, inCombat, first)
 			if not inCombat then
 				for option, _ in pairs(savedOptions[id][profileNum]) do
 					if type(option) == "number" then
-						DBM:Debug("|cffff0000Everybody knows shit's fucked: |r"..option)
+						self:Debug("|cffff0000Everybody knows shit's fucked: |r"..option)
 					end
 					if (mod.DefaultOptions[option] == nil) and not (option:find("talent") or option:find("FastestClear") or option:find("CVAR") or option:find("RestoreSetting")) then
 						savedOptions[id][profileNum][option] = nil
@@ -3938,12 +3938,12 @@ do
 			if self.Options.RestoreSettingMusic then
 				SetCVar("Sound_EnableMusic", self.Options.RestoreSettingMusic)
 				self.Options.RestoreSettingMusic = nil
-				DBM:Debug("Restoring Sound_EnableMusic CVAR")
+				self:Debug("Restoring Sound_EnableMusic CVAR")
 			end
 			if self.Options.musicPlaying then--Primarily so DBM doesn't call StopMusic unless DBM is one that started it. We don't want to screw with other addons
 				StopMusic()
 				self.Options.musicPlaying = nil
-				DBM:Debug("Stopping music")
+				self:Debug("Stopping music")
 			end
 			fireEvent("DBM_MusicStop", "ZoneOrCombatEndTransition")
 			return
@@ -3972,7 +3972,7 @@ do
 			if path ~= "MISSING" then
 				PlayMusic(path)
 				self.Options.musicPlaying = true
-				DBM:Debug("Starting Dungeon music with file: "..path)
+				self:Debug("Starting Dungeon music with file: "..path)
 			end
 		end
 	end
@@ -4014,15 +4014,15 @@ do
 		if self.Options.ShowReminders then
 			self:CheckAvailableMods()
 		end
-		if DBM:HasMapRestrictions() then
-			DBM.Arrow:Hide()
-			DBM.HudMap:Disable()
-			if DBM.RangeCheck:IsRadarShown() then
-				DBM.RangeCheck:Hide(true)
+		if self:HasMapRestrictions() then
+			self.Arrow:Hide()
+			self.HudMap:Disable()
+			if self.RangeCheck:IsRadarShown() then
+				self.RangeCheck:Hide(true)
 			end
 		end
 		-- Auto Logging for entire zone if record only bosses is off
-		if not DBM.Options.RecordOnlyBosses then
+		if not self.Options.RecordOnlyBosses then
 			if LastInstanceType == "raid" or LastInstanceType == "party" then
 				self:StartLogging(0, nil)
 			else
@@ -4041,11 +4041,11 @@ do
 		self:Schedule(1, SecondaryLoadCheck, self)--Now delayed by one second to work around an issue on 8.x where spec info isn't available yet on reloadui
 		self:TransitionToDungeonBGM(false, true)
 		self:Schedule(5, SecondaryLoadCheck, self)
-		if DBM:HasMapRestrictions() then
-			DBM.Arrow:Hide()
-			DBM.HudMap:Disable()
-			if DBM.RangeCheck:IsRadarShown() then
-				DBM.RangeCheck:Hide(true)
+		if self:HasMapRestrictions() then
+			self.Arrow:Hide()
+			self.HudMap:Disable()
+			if self.RangeCheck:IsRadarShown() then
+				self.RangeCheck:Hide(true)
 			end
 		end
 	end
@@ -6138,7 +6138,7 @@ do
 					if path ~= "MISSING" then
 						PlayMusic(path)
 						self.Options.musicPlaying = true
-						DBM:Debug("Starting combat music with file: "..path)
+						self:Debug("Starting combat music with file: "..path)
 					end
 				end
 			else
@@ -6647,7 +6647,7 @@ do
 	local function playSound(self, path, ignoreSFX, validate)
 		local soundSetting = self.Options.UseSoundChannel
 		if type(path) == "number" then
-			DBM:Debug("PlaySound playing with media "..path, 3)
+			self:Debug("PlaySound playing with media "..path, 3)
 			if soundSetting == "Dialog" then
 				PlaySound(path, "Dialog", false)
 			elseif ignoreSFX or soundSetting == "Master" then
@@ -6662,22 +6662,22 @@ do
 				if not LSMMediaCacheBuilt then buildLSMFileCache() end
 				if not sharedMediaFileCache[path] and not path:find("DBM") then
 					--This uses debug print because it has potential to cause mid fight spam
-					DBM:Debug("PlaySoundFile failed do to missing media at "..path..". To fix this, re-add missing sound or change setting using this sound to a different sound.")
+					self:Debug("PlaySoundFile failed do to missing media at "..path..". To fix this, re-add missing sound or change setting using this sound to a different sound.")
 					return
 				end
 				--Validate Event packs
 				if not _G["DBMVPSoundEventsPack"] and path:find("DBM-SoundEventsPack") then
 					--This uses actual user print because these events only occure at start or end of instance or fight.
-					AddMsg("PlaySoundFile failed do to missing media at "..path..". To fix this, re-add/enable DBM-SoundEventsPack or change setting using this sound to a different sound.")
+					AddMsg(self, "PlaySoundFile failed do to missing media at "..path..". To fix this, re-add/enable DBM-SoundEventsPack or change setting using this sound to a different sound.")
 					return
 				end
 				if not _G["DBMVPSMGPack"] and path:find("DBM-SMGEventsPack") then
 					--This uses actual user print because these events only occure at start or end of instance or fight.
-					AddMsg("PlaySoundFile failed do to missing media at "..path..". To fix this, re-add/enable DBM-SMGEventsPack or change setting using this sound to a different sound.")
+					AddMsg(self, "PlaySoundFile failed do to missing media at "..path..". To fix this, re-add/enable DBM-SMGEventsPack or change setting using this sound to a different sound.")
 					return
 				end
 			end
-			DBM:Debug("PlaySoundFile playing with media "..path, 3)
+			self:Debug("PlaySoundFile playing with media "..path, 3)
 			if soundSetting == "Dialog" then
 				PlaySoundFile(path, "Dialog")
 			elseif ignoreSFX or soundSetting == "Master" then
@@ -6704,10 +6704,10 @@ end
 function DBM:EJ_GetSectionInfo(sectionID)
 	local info = EJ_GetSectionInfo(sectionID)
 	if not info then
-		if DBM.Options.BadIDAlert then
-			AddMsg("|cffff0000Invalid call to EJ_GetSectionInfo for sectionID: |r"..sectionID..". Please report this bug")
+		if self.Options.BadIDAlert then
+			self:AddMsg("|cffff0000Invalid call to EJ_GetSectionInfo for sectionID: |r"..sectionID..". Please report this bug")
 		else
-			DBM:Debug("|cffff0000Invalid call to EJ_GetSectionInfo for sectionID: |r"..sectionID)
+			self:Debug("|cffff0000Invalid call to EJ_GetSectionInfo for sectionID: |r"..sectionID)
 		end
 		return nil
 	end
@@ -6723,10 +6723,10 @@ end
 function DBM:GetSpellInfo(spellId)
 	local name, rank, icon, castingTime, minRange, maxRange, returnedSpellId  = GetSpellInfo(spellId)
 	if not returnedSpellId then--Bad request all together
-		if DBM.Options.BadIDAlert then
-			AddMsg("|cffff0000Invalid call to GetSpellInfo for spellID: |r"..spellId..". Please report this bug")
+		if self.Options.BadIDAlert then
+			self:AddMsg("|cffff0000Invalid call to GetSpellInfo for spellID: |r"..spellId..". Please report this bug")
 		else
-			DBM:Debug("|cffff0000Invalid call to GetSpellInfo for spellID: |r"..spellId)
+			self:Debug("|cffff0000Invalid call to GetSpellInfo for spellID: |r"..spellId)
 		end
 		return nil
 	else--Good request, return now
@@ -6981,12 +6981,12 @@ do
 		if self.Options.RestoreSettingSFX then
 			SetCVar("Sound_EnableSFX", 1)
 			self.Options.RestoreSettingSFX = nil
-			DBM:Debug("Restoring Sound_EnableSFX CVAR")
+			self:Debug("Restoring Sound_EnableSFX CVAR")
 		end
 		if self.Options.RestoreSettingQuestTooltips then
 			SetCVar("showQuestTrackingTooltips", self.Options.RestoreSettingQuestTooltips)
 			self.Options.RestoreSettingQuestTooltips = nil
-			DBM:Debug("Restoring showQuestTrackingTooltips CVAR")
+			self:Debug("Restoring showQuestTrackingTooltips CVAR")
 		end
 		--RestoreSettingMusic doens't need restoring here, since zone change transition will handle it
 	end
@@ -7152,7 +7152,7 @@ do
 			if self.Options.RestoreSettingQuestTooltips then
 				SetCVar("showQuestTrackingTooltips", self.Options.RestoreSettingQuestTooltips)
 				self.Options.RestoreSettingQuestTooltips = nil
-				DBM:Debug("Restoring Quest Tooltip CVAR")
+				self:Debug("Restoring Quest Tooltip CVAR")
 			end
 			if (self.Options.HideBossEmoteFrame2 or custom) and not testBuild then
 				EnableEvent(RaidBossEmoteFrame, "RAID_BOSS_EMOTE")
@@ -7435,21 +7435,21 @@ do
 	}
 	function DBM:PLAY_MOVIE(id)
 		if id and not neverFilter[id] then
-			DBM:Debug("PLAY_MOVIE fired for ID: "..id, 2)
+			self:Debug("PLAY_MOVIE fired for ID: "..id, 2)
 			local isInstance, instanceType = IsInInstance()
-			if not isInstance or C_Garrison:IsOnGarrisonMap() or instanceType == "scenario" or DBM.Options.MovieFilter2 == "Never" or DBM.Options.MovieFilter2 == "OnlyFight" and not IsEncounterInProgress() then return end
-			if DBM.Options.MovieFilter2 == "Block" or (self.Options.MovieFilter2 == "AfterFirst" or self.Options.MovieFilter2 == "OnlyFight") and DBM.Options.MoviesSeen[id] then
+			if not isInstance or C_Garrison:IsOnGarrisonMap() or instanceType == "scenario" or self.Options.MovieFilter2 == "Never" or self.Options.MovieFilter2 == "OnlyFight" and not IsEncounterInProgress() then return end
+			if self.Options.MovieFilter2 == "Block" or (self.Options.MovieFilter2 == "AfterFirst" or self.Options.MovieFilter2 == "OnlyFight") and self.Options.MoviesSeen[id] then
 				MovieFrame:Hide()--can only just hide movie frame safely now, which means can't stop audio anymore :\
-				DBM:AddMsg(L.MOVIE_SKIPPED)
+				self:AddMsg(L.MOVIE_SKIPPED)
 			else
-				DBM.Options.MoviesSeen[id] = true
+				self.Options.MoviesSeen[id] = true
 			end
 		end
 	end
 
 	function DBM:CINEMATIC_START()
 		self:Debug("CINEMATIC_START fired", 2)
-		DBM.HudMap:SupressCanvas()
+		self.HudMap:SupressCanvas()
 		local isInstance, instanceType = IsInInstance()
 		if not isInstance or C_Garrison:IsOnGarrisonMap() or instanceType == "scenario" or self.Options.MovieFilter2 == "Never" or DBM.Options.MovieFilter2 == "OnlyFight" and not IsEncounterInProgress() then return end
 		local currentMapID = C_Map.GetBestMapForUnit("player")
@@ -7464,7 +7464,7 @@ do
 	end
 	function DBM:CINEMATIC_STOP()
 		self:Debug("CINEMATIC_STOP fired", 2)
-		DBM.HudMap:UnSupressCanvas()
+		self.HudMap:UnSupressCanvas()
 	end
 end
 
@@ -9781,8 +9781,8 @@ do
 			else
 				moving = true
 				anchorFrame:Show()
-				DBM:AddSpecialWarning(L.MOVE_SPECIAL_WARNING_TEXT)
-				DBM:AddSpecialWarning(L.MOVE_SPECIAL_WARNING_TEXT)
+				self:AddSpecialWarning(L.MOVE_SPECIAL_WARNING_TEXT)
+				self:AddSpecialWarning(L.MOVE_SPECIAL_WARNING_TEXT)
 				self:Schedule(15, moveEnd, self)
 				self.Bars:CreateBar(15, L.MOVE_SPECIAL_WARNING_BAR, 237538)
 				frame:Show()
@@ -10515,7 +10515,7 @@ do
 							ttext = ttext.."("..self.id..")"
 							if bar.timer > 0.2 then
 								if DBM.Options.BadTimerAlert and bar.timer > 1 then--If greater than 1 seconds off, report this out of debug mode to all users
-									AddMsg("Timer "..ttext.. " refreshed before expired. Remaining time is : "..remaining..". Please report this bug")
+									DBM:AddMsg("Timer "..ttext.. " refreshed before expired. Remaining time is : "..remaining..". Please report this bug")
 								else
 									DBM:Debug("Timer "..ttext.. " refreshed before expired. Remaining time is : "..remaining, 2)
 								end
@@ -10588,7 +10588,7 @@ do
 						ttext = ttext.."("..self.id..")"
 						if bar.timer > 0.2 then
 							if DBM.Options.BadTimerAlert and bar.timer > 1 then--If greater than 1 seconds off, report this out of debug mode to all users
-								AddMsg("Timer "..ttext.. " refreshed before expired. Remaining time is : "..remaining..". Please report this bug")
+								DBM:AddMsg("Timer "..ttext.. " refreshed before expired. Remaining time is : "..remaining..". Please report this bug")
 							else
 								DBM:Debug("Timer "..ttext.. " refreshed before expired. Remaining time is : "..remaining, 2)
 							end
