@@ -396,10 +396,16 @@ L.SelectModProfileCopyNote	= "Copy just note setting from"
 L.SelectModProfileDelete	= "Delete mod settings for"
 
 -- Tab: InfoFrame
-L.Panel_InfoFrame			= "InfoFrame"
+L.Panel_InfoFrame			= "Info"
 
 -- Tab: Range
 L.Panel_Range				= "Range"
+
+-- Tab: Nameplate
+L.Panel_Nameplates			= "Nameplates"
+L.UseNameplateHandoff		= "Hand off nameplate aura requests to supported nameplate addons (KuiNameplates, Threat Plates, Plater) instead of handling internally. This is recommended option as it allows more advanted features and configuration to be done via nameplate addon"
+L.Area_NPStyle				= "Style (Note: Only configures style when DBM is handling nampelates.)"
+L.NPAuraSize				= "Aura Pixel size (squared): %d"
 
 -- Misc
 L.Area_General				= "General"

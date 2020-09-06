@@ -24,7 +24,7 @@ local CreateAuraFrame
 do
     local function AuraFrame_CreateIcon(frame)
         local icon = DBMNameplateFrame:CreateTexture(nil,'BACKGROUND',nil,0)
-        icon:SetSize(40,40)
+        icon:SetSize(DBM.Options.NPAuraSize, DBM.Options.NPAuraSize)
         icon:Hide()
 
         tinsert(frame.icons,icon)
@@ -203,6 +203,7 @@ end)
 
 --Add more nameplate mods as they gain support
 function nameplateFrame:SupportedNPMod()
+	if not DBM.Options.UseNameplateHandoff then return false end
     if _G["KuiNameplates"] or _G["TidyPlatesThreatDBM"] or _G["Plater"] then return true end
     return false
 end
