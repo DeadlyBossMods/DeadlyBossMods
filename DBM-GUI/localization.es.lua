@@ -349,6 +349,7 @@ L.SelectModProfileDelete	= "Borrar configuración de"
 -- Misc
 L.FontType					= "Fuente"
 L.FontStyle					= "Contorno"
+L.FontColor					= "Texto"
 L.FontShadow				= "Sombra"
 L.FontSize					= "Tamaño: %d"
 

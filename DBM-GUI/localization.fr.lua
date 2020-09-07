@@ -296,6 +296,7 @@ L.SelectModProfileDelete	= "Supprimer les réglages pour"
 -- Misc
 L.FontType					= "Choisir une police"
 L.FontStyle					= "Contours de la police"
+L.FontColor					= "Couleur du texte"
 L.FontShadow				= "Ombre"
 L.FontSize					= "Taille de la police: %d"
 

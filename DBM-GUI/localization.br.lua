@@ -272,6 +272,7 @@ L.SelectModProfileDelete	= "apaga as opções da mod de"
 -- Misc
 L.FontType					= "Escolha fonte"
 L.FontStyle					= "Bandeira de fonte (flags)"
+L.FontColor					= "Cor da fonte"
 L.FontShadow				= "Sombra da fonte"
 L.FontSize					= "Tamanho da fonte: %d"
 

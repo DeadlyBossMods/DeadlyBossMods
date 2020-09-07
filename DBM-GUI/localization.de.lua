@@ -332,6 +332,7 @@ L.SelectModProfileDelete	= "Lösche Mod-Einstellungen für"
 -- Misc
 L.FontType					= "Schriftart"
 L.FontStyle					= "Schriftstil"
+L.FontColor					= "Schriftfarbe"
 L.FontShadow				= "Schatten"
 L.FontSize					= "Schriftgröße: %d"
 

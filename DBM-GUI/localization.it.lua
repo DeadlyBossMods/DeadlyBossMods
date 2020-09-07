@@ -359,6 +359,7 @@ L.SelectModProfileDelete	= "Elimina impostazioni mod"
 -- Misc
 L.FontType					= "Seleziona carattere"
 L.FontStyle					= "Stile carattere"
+L.FontColor					= "Colore carattere"
 L.FontShadow				= "Ombre"
 L.FontSize					= "Dimensioni carattere: %d"
 
