@@ -184,7 +184,6 @@ L.SpecWarn_FlashColor		= "Destello %d"
 L.SpecWarn_FlashDur			= "Duración: %0.1f s"
 L.SpecWarn_FlashAlpha		= "Transparencia: %0.1f"
 L.SpecWarn_DemoButton		= "Mostrar ejemplo"
-L.SpecWarn_MoveMe			= "Posición"
 L.SpecWarn_ResetMe			= "Restaurar valores por defecto"
 
 -- Tab: Spoken Alerts Frame

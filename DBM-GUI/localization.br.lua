@@ -159,7 +159,6 @@ L.SpecWarn_FlashColor		= "Cor pisca"
 L.SpecWarn_FlashDur			= "Duração da piscada: %0.1f"
 L.SpecWarn_FlashAlpha		= "Alfa da piscada: %0.1f"
 L.SpecWarn_DemoButton		= "Mostrar exemplo"
-L.SpecWarn_MoveMe			= "Definir posição"
 L.SpecWarn_ResetMe			= "Redefinir padrões"
 
 -- Tab: Spoken Alerts Frame

@@ -58,8 +58,9 @@ L.Statistic_Incompletes		= "Incompletes:"--For scenarios, TODO, figure out a cle
 L.Statistic_BestKill		= "Best Victory:"
 L.Statistic_BestRank		= "Best Rank:"--Maybe not get used, not sure yet, localize anyways
 
+-- Tab: General Options
 L.TabCategory_Options	 	= "General Options"
--- Tab: Core & GUI
+-- Panel: Core & GUI
 L.Core_GUI 					= "Core & GUI"
 L.General 					= "General DBM Core Options"
 L.EnableMiniMapIcon			= "Show minimap button"
@@ -85,7 +86,7 @@ L.Button_ResetWindowSize	= "Reset GUI window size"
 L.Editbox_WindowWidth		= "GUI window width"
 L.Editbox_WindowHeight		= "GUI window height"
 
--- Tab: Extra Features
+-- Panel: Extra Features
 L.Panel_ExtraFeatures		= "Extra Features"
 
 L.Area_SoundAlerts			= "Sound/Flash Alert Options"
@@ -116,7 +117,7 @@ L.Area_Advanced				= "Advanced Options"
 L.FakeBW					= "Pretend to be BigWigs in version checks instead of DBM (Useful for guilds that force using BigWigs)"
 L.AITimer					= "Automatically generate timers for never before seen fights using DBM's built in timer AI (Useful for pulling a test boss for the very first time such as beta or PTR). Recommended to always leave this turned ON"
 
--- Tab: Profiles
+-- Panel: Profiles
 L.Panel_Profile				= "Profiles"
 L.Area_CreateProfile		= "Profile Creation for DBM Core Options"
 L.EnterProfileName			= "Enter profile name"
@@ -138,8 +139,9 @@ L.SelectModProfileCopySound	= "Copy just sound setting from"
 L.SelectModProfileCopyNote	= "Copy just note setting from"
 L.SelectModProfileDelete	= "Delete mod settings for"
 
+-- Tab: Alerts
 L.TabCategory_Alerts	 	= "Alerts"
--- Tab: Raidwarning
+-- Panel: Raidwarning
 L.Tab_RaidWarning 			= "Announcements"
 L.RaidWarning_Header		= "Announce Options"
 L.RaidWarnColors 			= "Announce Colors"
@@ -164,7 +166,7 @@ L.MonochromeOutline			= "Monochrome outline"
 L.MonochromeThickOutline	= "Monochrome thick outline"
 L.RaidWarnSound				= "Play sound on raid announcement"
 
--- Tab: Spec Warn Frame
+-- Panel: Spec Warn Frame
 L.Panel_SpecWarnFrame		= "Special Announcements"
 L.Area_SpecWarn				= "Special Announce Options"
 L.SpecWarn_ClassColor		= "Use class coloring for special announcements"
@@ -179,7 +181,6 @@ L.SpecWarn_FlashColor		= "Flash color %d"
 L.SpecWarn_FlashDur			= "Flash duration: %0.1f"
 L.SpecWarn_FlashAlpha		= "Flash alpha: %0.1f"
 L.SpecWarn_DemoButton		= "Show example"
-L.SpecWarn_MoveMe			= "Set position"
 L.SpecWarn_ResetMe			= "Reset to defaults"
 L.SpecialWarnSoundOption	= "Set default sound"
 L.SpecialWarnHeader1		= "Type 1: Set options for normal priority announcements affecting you or your actions"
@@ -188,7 +189,7 @@ L.SpecialWarnHeader3		= "Type 3: Set options for HIGH priority announcements"
 L.SpecialWarnHeader4		= "Type 4: Set options for HIGH priority run away special announcements"
 L.SpecialWarnHeader5		= "Type 5: Set options for announcements with notes containing your player name"
 
--- Tab: Generalwarnings
+-- Panel: Generalwarnings
 L.Tab_GeneralMessages 		= "Chatframe Messages"
 L.CoreMessages				= "Core Message Options"
 L.ShowPizzaMessage 			= "Show timer broadcast messages in chat frame"
@@ -210,7 +211,7 @@ L.Area_BugAlerts			= "Bug Reporting Alert Options"
 L.BadTimerAlert				= "Show chat message when DBM detects a bad timer with at least 1 second of incorrectness"
 L.BadIDAlert				= "Show chat message when DBM detects an invalid spell or journal ID in use"
 
--- Tab: Spoken Alerts Frame
+-- Panel: Spoken Alerts Frame
 L.Panel_SpokenAlerts		= "Spoken Alerts"
 L.Area_VoiceSelection		= "Voice Selections"
 L.CountdownVoice			= "Set primary voice for count sounds"
@@ -232,7 +233,7 @@ L.BrowseOtherVPs			= "|cFF73C2FBhttps://www.curseforge.com/wow/addons/search?sea
 L.Area_BrowseOtherCT		= "Browse countdown packs on curse"
 L.BrowseOtherCTs			= "|cFF73C2FBhttps://www.curseforge.com/wow/addons/search?search=dbm+count+pack|r"
 
--- Tab: Event Sounds
+-- Panel: Event Sounds
 L.Panel_EventSounds			= "Event Sounds"
 L.Area_SoundSelection		= "Sound Selections (scroll selection menus with mouse wheel)"
 L.EventVictorySound			= "Set sound played for encounter victory"

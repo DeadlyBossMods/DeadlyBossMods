@@ -178,7 +178,6 @@ L.SpecWarn_FlashColor		= "Цвет мигания"
 L.SpecWarn_FlashDur			= "Длительности мигания: %0.1f"
 L.SpecWarn_FlashAlpha		= "Прозрачность мигания: %0.1f"
 L.SpecWarn_DemoButton		= "Показать пример"
-L.SpecWarn_MoveMe			= "Расположение"
 L.SpecWarn_ResetMe			= "Восстановить умолчания"
 
 -- Tab: Spoken Alerts Frame

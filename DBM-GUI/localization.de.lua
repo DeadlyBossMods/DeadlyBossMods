@@ -173,7 +173,6 @@ L.SpecWarn_FlashColor		= "Blinkfarbe %d"
 L.SpecWarn_FlashDur			= "Blinkdauer: %0.1f"
 L.SpecWarn_FlashAlpha		= "Blinkalpha: %0.1f"
 L.SpecWarn_DemoButton		= "Zeige Beispiel"
-L.SpecWarn_MoveMe			= "Positionieren"
 L.SpecWarn_ResetMe			= "Zurücksetzen"
 
 -- Tab: Spoken Alerts Frame
