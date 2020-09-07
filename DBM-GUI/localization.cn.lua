@@ -378,6 +378,7 @@ L.SelectModProfileDelete	= "删除Boss模块设置："
 -- Misc
 L.FontType					= "选择字体"
 L.FontStyle					= "选择样式"
+L.FontColor					= "字体颜色"
 L.FontShadow				= "阴影"
 L.FontSize					= "字体大小: %d"
 
