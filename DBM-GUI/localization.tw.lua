@@ -147,7 +147,7 @@ L.BadTimerAlert				= "當DBM檢測到計時器錯誤且至少有2秒不正確時
 L.BadIDAlert				= "當DBM檢測到使用的是無效法術或紀錄ID時顯示聊天訊息"
 
 -- Tab: Barsetup
-L.BarSetup   				= "計時條"
+L.TabCategory_Timers		= "計時條"
 L.BarTexture 				= "計時條材質"
 L.BarStyle					= "計時條動作"
 L.BarDBM					= "經典 (現有的小計時條滑到大條的錨點)"

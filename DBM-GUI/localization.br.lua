@@ -121,7 +121,7 @@ L.AutoRespond 				= "Responder automaticamente a sussurros durante a luta"
 L.WhisperStats 				= "Incluir estatísticas de derrotas/vitórias nas respostas a sussurros"
 
 -- Tab: Barsetup
-L.BarSetup   				= "Configurações da barra"
+L.TabCategory_Timers		= "Configurações da barra"
 L.BarTexture 				= "Textura da barra"
 L.BarStyle					= "Estilo da barra"
 L.BarDBM					= "DBM"

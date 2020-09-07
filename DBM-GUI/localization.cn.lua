@@ -119,7 +119,7 @@ L.DisableStatusWhisper 		= "屏蔽全团成员的status私聊(需要团长权限
 L.DisableGuildStatus 		= "屏蔽通报团队进度信息到公会(需要团长权限)。"
 
 -- Tab: Barsetup
-L.BarSetup   				= "计时条设置"
+L.TabCategory_Timers		= "计时条设置"
 L.BarTexture 				= "计时条材质"
 L.BarStyle					= "计时条样式"
 L.BarDBM					= "DBM(有动画)"

@@ -103,7 +103,7 @@ L.DisableStatusWhisper 		= "Desactivar susurros automáticos de estado de encuen
 L.DisableGuildStatus 		= "Desactivar mensajes de hermandad de estado de encuentro del grupo o banda para todos los jugadores (requiere ser el líder)."
 
 -- Tab: Barsetup
-L.BarSetup					= "Configuración de barras"
+L.TabCategory_Timers		= "Configuración de barras"
 L.BarTexture				= "Textura de barras"
 L.BarStyle					= "Estilo de barras"
 L.BarDBM					= "DBM (con animaciones)"
