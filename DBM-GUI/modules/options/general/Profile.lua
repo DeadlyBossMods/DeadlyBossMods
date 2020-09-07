@@ -3,7 +3,7 @@ local L = DBM_GUI_L
 local dbm_profilePanel_create, dbm_profilePanel_refresh
 local profileDropdown = {}
 
-local profilePanel			= DBM_GUI_Frame:CreateNewPanel(L.Panel_Profile, "option")
+local profilePanel			= DBM_GUI.Cat_General:CreateNewPanel(L.Panel_Profile, "option")
 
 local createProfileArea		= profilePanel:CreateArea(L.Area_CreateProfile)
 local createTextbox			= createProfileArea:CreateEditBox(L.EnterProfileName, "", 175)

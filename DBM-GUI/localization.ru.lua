@@ -109,7 +109,7 @@ L.DisableStatusWhisper 		= "Отключить ответы на запрос с
 L.DisableGuildStatus 		= "Отключить отправку гильдии сообщений о прогрессе для всей группы (требуется лидер группы)."
 
 -- Tab: Barsetup
-L.BarSetup   				= "Настройки индикатора"
+L.TabCategory_Timers		= "Настройки индикатора"
 L.BarTexture 				= "Текстура индикатора"
 L.BarStyle					= "Стиль индикатора"
 L.BarDBM					= "DBM"

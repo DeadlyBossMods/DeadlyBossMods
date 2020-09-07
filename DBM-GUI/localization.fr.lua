@@ -106,7 +106,7 @@ L.WhisperStats 				= "Inclure les victoires/défaites dans les réponses"
 L.DisableStatusWhisper 		= "Désactiver les chuchotements de statut pour le groupe entier (requiert Chef de groupe). S'appplique seulement aux raids normaux/heroïques/mythiques et aux donjons défis/mythiques."
 
 -- Tab: Barsetup
-L.BarSetup					= "Config. des barres"
+L.TabCategory_Timers		= "Config. des barres"
 L.BarTexture				= "Texture des barres"
 L.BarStyle					= "Style des barres"
 L.BarDBM					= "DBM (animations)"

@@ -116,7 +116,7 @@ L.DisableStatusWhisper 		= "Disabilita sussurri stato per il gruppo (richiede Ca
 L.DisableGuildStatus 		= "Disabilita messaggi di progresso alla gilda per il gruppo (richiede Capoincursione)."
 
 -- Tab: Barsetup
-L.BarSetup   				= "Impostazioni barre"
+L.TabCategory_Timers		= "Impostazioni barre"
 L.BarTexture 				= "Texture barre"
 L.BarStyle					= "Stile barre"
 L.BarDBM					= "DBM (animate)"

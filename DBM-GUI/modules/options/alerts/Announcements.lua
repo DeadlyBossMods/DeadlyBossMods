@@ -1,7 +1,7 @@
 local L		= DBM_GUI_L
 local CL	= DBM_CORE_L
 
-local RaidWarningPanel = DBM_GUI_Frame:CreateNewPanel(L.Tab_RaidWarning, "option")
+local RaidWarningPanel = DBM_GUI.Cat_Alerts:CreateNewPanel(L.Tab_RaidWarning, "option")
 
 local raidwarnoptions = RaidWarningPanel:CreateArea(L.RaidWarning_Header)
 

@@ -1,6 +1,6 @@
 local L = DBM_GUI_L
 
-local spokenAlertsPanel = DBM_GUI_Frame:CreateNewPanel(L.Panel_SpokenAlerts, "option")
+local spokenAlertsPanel = DBM_GUI.Cat_Alerts:CreateNewPanel(L.Panel_SpokenAlerts, "option")
 
 local spokenGeneralArea = spokenAlertsPanel:CreateArea(L.Area_VoiceSelection)
 

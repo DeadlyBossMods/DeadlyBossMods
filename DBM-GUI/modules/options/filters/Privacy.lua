@@ -1,5 +1,5 @@
 local L = DBM_GUI_L
-local privacyPanel = DBM_GUI_Frame:CreateNewPanel(L.Tab_Privacy, "option")
+local privacyPanel = DBM_GUI.Cat_Filters:CreateNewPanel(L.Tab_Privacy, "option")
 
 local privacyWhispersArea = privacyPanel:CreateArea(L.Area_WhisperMessages)
 privacyWhispersArea:CreateCheckButton(L.AutoRespond, true, nil, "AutoRespond")

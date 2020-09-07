@@ -1,6 +1,6 @@
 local L = DBM_GUI_L
 
-local hideBlizzPanel = DBM_GUI_Frame:CreateNewPanel(L.Panel_HideBlizzard, "option")
+local hideBlizzPanel = DBM_GUI.Cat_Filters:CreateNewPanel(L.Panel_HideBlizzard, "option")
 local hideBlizzArea = hideBlizzPanel:CreateArea(L.Area_HideBlizzard)
 
 hideBlizzArea:CreateCheckButton(L.HideBossEmoteFrame, true, nil, "HideBossEmoteFrame2")

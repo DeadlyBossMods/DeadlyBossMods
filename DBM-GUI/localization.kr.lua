@@ -152,7 +152,7 @@ L.BadTimerAlert				= "DBM이 최소 1초 이상 맞지 않는 불량 타이머�
 L.BadIDAlert				= "DBM에 쓰이는 주문이나 도감 ID가 잘못됐을 때 대화창에 메시지 표시"
 
 -- Tab: Barsetup
-L.BarSetup  				= "타이머"
+L.TabCategory_Timers		= "타이머"
 L.BarTexture 				= "바 텍스쳐"
 L.BarStyle 					= "바 작동 방식"
 L.BarDBM					= "Classic (처음 생긴 바가 확대 표시될 위치로 스르륵 이동)"

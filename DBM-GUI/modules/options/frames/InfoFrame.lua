@@ -3,7 +3,7 @@ local DBM = DBM
 
 local GameFontNormalSmall = GameFontNormalSmall
 
-local panel = DBM_GUI_Frames:CreateNewPanel(L.Panel_InfoFrame, "option")
+local panel = DBM_GUI.Cat_Frames:CreateNewPanel(L.Panel_InfoFrame, "option")
 
 local general = panel:CreateArea(L.Area_General)
 

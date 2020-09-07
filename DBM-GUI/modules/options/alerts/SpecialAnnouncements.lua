@@ -1,6 +1,6 @@
 local L = DBM_GUI_L
 
-local specPanel = DBM_GUI_Frame:CreateNewPanel(L.Panel_SpecWarnFrame, "option")
+local specPanel = DBM_GUI.Cat_Alerts:CreateNewPanel(L.Panel_SpecWarnFrame, "option")
 
 local specArea = specPanel:CreateArea(L.Area_SpecWarn)
 
