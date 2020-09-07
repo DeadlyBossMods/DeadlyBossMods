@@ -1,6 +1,6 @@
 local L = DBM_GUI_L
 
-local BarSetupPanel = DBM_GUI.CatTimers:CreateNewPanel(L.Panel_Behavior, "option")
+local BarSetupPanel = DBM_GUI.Cat_Timers:CreateNewPanel(L.Panel_Behavior, "option")
 
 local BarBehaviors = BarSetupPanel:CreateArea(L.AreaTitle_Behavior)
 

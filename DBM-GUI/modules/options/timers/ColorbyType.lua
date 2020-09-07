@@ -1,6 +1,6 @@
 local L = DBM_GUI_L
 
-local BarSetupPanel = DBM_GUI.CatTimers:CreateNewPanel(L.Panel_ColorByType, "option")
+local BarSetupPanel = DBM_GUI.Cat_Timers:CreateNewPanel(L.Panel_ColorByType, "option")
 
 local BarColors = BarSetupPanel:CreateArea(L.AreaTitle_BarColors)
 local movemebutton = BarColors:CreateButton(L.MoveMe, 100, 16)

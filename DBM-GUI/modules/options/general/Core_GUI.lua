@@ -1,6 +1,6 @@
 local L = DBM_GUI_L
 
-local coreoptions = DBM_GUI.CatGeneral:CreateNewPanel(L.Core_GUI, "option")
+local coreoptions = DBM_GUI.Cat_General:CreateNewPanel(L.Core_GUI, "option")
 
 local generaloptions = coreoptions:CreateArea(L.General)
 
