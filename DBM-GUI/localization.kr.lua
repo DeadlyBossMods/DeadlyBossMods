@@ -47,8 +47,9 @@ L.Statistic_Incompletes		= "미완료:"
 L.Statistic_BestKill		= "최고 승리 기록:"
 L.Statistic_BestRank		= "최고 등급:"--Maybe not get used, not sure yet, localize anyways
 
+-- Tab: General Options
 L.TabCategory_Options		= "일반 설정"
--- Tab: Core & GUI
+-- Panel: Core & GUI
 L.Core_GUI 					= "핵심 모드와 GUI"
 L.General 					= "일반 설정"
 L.EnableMiniMapIcon			= "미니맵 버튼 표시"
@@ -74,7 +75,7 @@ L.Button_ResetWindowSize	= "설정 창 크기 초기화"
 L.Editbox_WindowWidth		= "설정 창 너비"
 L.Editbox_WindowHeight		= "설정 창 높이"
 
--- Tab: Extra Features
+-- Panel: Extra Features
 L.Panel_ExtraFeatures		= "기타 기능"
 
 L.Area_SoundAlerts			= "효과음/점멸 알림 설정"
@@ -105,7 +106,7 @@ L.Area_Advanced				= "고급 설정"
 L.FakeBW					= "DBM 대신 BigWigs 사용자로 위장하기 (BigWigs 사용을 강제하는 공격대에서 유용)"
 L.AITimer					= "DBM 내장 인공지능 타이머를 사용하여 처음 하는 전투의 타이머를 자동으로 생성합니다. (베타나 테스트 서버에서 보스 테스트시 유용) 이 옵션은 항상 켜놓는걸 권장합니다."
 
--- Tab: Profiles
+-- Panel: Profiles
 L.Panel_Profile				= "프로필"
 L.Area_CreateProfile		= "DBM Core 프로필 생성"
 L.EnterProfileName			= "프로필 이름 입력"
@@ -127,8 +128,9 @@ L.SelectModProfileCopySound	= "음성 설정만 복사"
 L.SelectModProfileCopyNote	= "메모 설정만 복사"
 L.SelectModProfileDelete	= "모드 설정 삭제"
 
-L.TabCategory_Alerts	 	= "경보 설정"
--- Tab: Raidwarning
+-- Tab: Alerts
+L.TabCategory_Alerts	 	= "경고"
+-- Panel: Raidwarning
 L.Tab_RaidWarning 			= "알림"
 L.RaidWarning_Header		= "알림 설정"
 L.RaidWarnColors 			= "알림 색상"
@@ -153,7 +155,7 @@ L.MonochromeOutline			= "단색 외곽선"
 L.MonochromeThickOutline	= "단색 두꺼운 외곽선"
 L.RaidWarnSound				= "레이드 알림에 효과음 재생"
 
--- Tab: Spec Warn Frame
+-- Panel: Spec Warn Frame
 L.Panel_SpecWarnFrame		= "특수 알림"
 L.Area_SpecWarn				= "특수 알림 설정"
 L.SpecWarn_ClassColor		= "특수 알림에 직업 색상 사용"
@@ -168,6 +170,7 @@ L.SpecWarn_FlashColor		= "점멸 색상 %d"
 L.SpecWarn_FlashDur			= "점멸 지속시간: %0.1f"
 L.SpecWarn_FlashAlpha		= "점멸 투명도: %0.1f"
 L.SpecWarn_DemoButton		= "예제 보기"
+L.SpecWarn_MoveMe			= "위치 설정"
 L.SpecWarn_ResetMe			= "기본값으로 초기화"
 L.SpecialWarnSoundOption	= "기본 효과음 설정"
 L.SpecialWarnHeader1		= "종류 1: 당신이 뭔가 걸렸거나 취해야 할 행동에 대한 보통 수준 알림 설정 세트"
@@ -176,7 +179,7 @@ L.SpecialWarnHeader3		= "종류 3: 최우선 알림 설정 세트"
 L.SpecialWarnHeader4		= "종류 4: 최우선 도망 특수 알림 설정 세트"
 L.SpecialWarnHeader5		= "종류 5: 메모에 당신의 이름이 있을 때 알림 설정 세트"
 
--- Tab: Generalwarnings
+-- Panel: Generalwarnings
 L.Tab_GeneralMessages 		= "대화창 메시지"
 L.CoreMessages				= "기본 메시지 설정"
 L.ShowPizzaMessage 			= "대화창에 전송받은 타이머 표시"
@@ -204,7 +207,7 @@ L.Area_BugAlerts			= "버그 제보 알림 설정"
 L.BadTimerAlert				= "DBM이 최소 1초 이상 맞지 않는 불량 타이머를 감지했을 때 대화창에 메시지 표시"
 L.BadIDAlert				= "DBM에 쓰이는 주문이나 도감 ID가 잘못됐을 때 대화창에 메시지 표시"
 
--- Tab: Spoken Alerts Frame
+-- Panel: Spoken Alerts Frame
 L.Panel_SpokenAlerts		= "음성 경고"
 L.Area_VoiceSelection		= "음성 선택"
 L.CountdownVoice			= "1순위 초읽기 음성 설정"
@@ -223,7 +226,7 @@ L.Area_GetVEM				= "VEM 음성팩 받기"
 L.Area_BrowseOtherVP		= "Curse에 올라와있는 다른 음성팩 보기"
 L.Area_BrowseOtherCT		= "Curse에 올라와있는 카운트다운 팩 보기"
 
--- Tab: Event Sounds
+-- Panel: Event Sounds
 L.Panel_EventSounds			= "이벤트 효과음"
 L.Area_SoundSelection		= "효과음 선택 (마우스 휠로 스크롤)"
 L.EventVictorySound			= "보스를 잡았을 때 재생할 효과음 설정"
@@ -238,7 +241,7 @@ L.EventFilterDungMythicMusic= "신화/신화+ 난이도에선 던전 배경음�
 L.EventFilterMythicMusic	= "신화/신화+ 난이도에선 보스 전투 배경음을 재생하지 않음"
 
 -- Tab: Timers
-L.TabCategory_Timers		= "타이머 설정"
+L.TabCategory_Timers		= "타이머"
 -- Panel: Color by Type
 L.Panel_ColorByType	 		= "종류별 색상"
 L.AreaTitle_BarColors		= "타이머 종류별 바 색상"
@@ -393,7 +396,7 @@ L.DisableGuildStatus 		= "동기화된 길드에게 레이드 진도 알림 메�
 L.EnableWBSharing 			= "길드와 같이 필드 보스 전투를 시작/처치시 같은 서버에 있는 배틀넷 친구에게 공유합니다."
 
 -- Tab: Frames & Integrations
-L.TabCategory_Frames		= "창 및 통합 기능 설정"
+L.TabCategory_Frames		= "창 및 통합 기능"
 -- Panel: InfoFrame
 L.Panel_InfoFrame			= "정보 창"
 
