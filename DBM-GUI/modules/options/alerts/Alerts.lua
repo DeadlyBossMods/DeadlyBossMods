@@ -15,9 +15,9 @@ AlertsArea2.frame:SetScript("OnMouseUp", function()
 end)
 
 local AlertsArea3		= DBM_GUI.Cat_Alerts:CreateArea(L.Area_SpecAnnounceNotes)
-AlertsArea3:CreateText("|cFF73C2FBhttps://github.com/DeadlyBossMods/DeadlyBossMods/wiki/%5BGuide%5D-DBM-&-Voicepacks|r", nil, true, nil, "LEFT")
+AlertsArea3:CreateText("|cFF73C2FBhttps://github.com/DeadlyBossMods/DeadlyBossMods/wiki/%5BGuide%5D-Notes|r", nil, true, nil, "LEFT")
 AlertsArea3.frame:SetScript("OnMouseUp", function()
-	DBM:ShowUpdateReminder(nil, nil, L.Area_SpecAnnounceNotes, "https://github.com/DeadlyBossMods/DeadlyBossMods/wiki/%5BGuide%5D-DBM-&-Voicepacks")
+	DBM:ShowUpdateReminder(nil, nil, L.Area_SpecAnnounceNotes, "https://github.com/DeadlyBossMods/DeadlyBossMods/wiki/%5BGuide%5D-Notes")
 end)
 
 local AlertsArea4		= DBM_GUI.Cat_Alerts:CreateArea(L.Area_VoicePackInfo)
