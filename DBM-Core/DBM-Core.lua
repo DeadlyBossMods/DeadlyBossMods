@@ -3217,7 +3217,7 @@ function DBM:GetUnitIdFromGUID(cidOrGuid, bossOnly)
 	end
 	--Didn't find valid unitID from boss units, scan raid targets
 	if not returnUnitID and not bossOnly then
-		for uId in self:GetGroupMembers() do
+		for uId in DBM:GetGroupMembers() do--Do not use self on this function, because self might be bossModPrototype
 			local unitId = uId .. "target"
 			local bossGUID = UnitGUID(unitId)
 			local cid = self:GetCIDFromGUID(cidOrGuid)
@@ -3230,12 +3230,12 @@ function DBM:GetUnitIdFromGUID(cidOrGuid, bossOnly)
 end
 
 function DBM:CheckNearby(range, targetname)
-	if not targetname and self.RangeCheck:GetDistanceAll(range) then
+	if not targetname and DBM.RangeCheck:GetDistanceAll(range) then--Do not use self on this function, because self might be bossModPrototype
 		return true--No target name means check if anyone is near self, period
 	else
-		local uId = self:GetRaidUnitId(targetname)
+		local uId = DBM:GetRaidUnitId(targetname)--Do not use self on this function, because self might be bossModPrototype
 		if uId and not UnitIsUnit("player", uId) then
-			local inRange = self.RangeCheck:GetDistance(uId)
+			local inRange = DBM.RangeCheck:GetDistance(uId)--Do not use self on this function, because self might be bossModPrototype
 			if inRange and inRange < range+0.5 then
 				return true
 			end
