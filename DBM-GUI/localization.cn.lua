@@ -23,7 +23,6 @@ L.OTabPlugins	            = "插件"
 L.OTabOptions	            = "选项"
 L.OTabAbout		            = "关于"
 
-L.TabCategory_Options 		= "综合设置"
 L.TabCategory_OTHER    		= "其它"
 
 L.BossModLoaded 			= "%s状态"

@@ -13,14 +13,6 @@ L.OTabBosses	= "Boss"
 L.OTabOptions	= "Opzioni"
 
 L.TabCategory_Options	 	= "Opzioni Generali"
--- L.TabCategory_BFA	 		= EXPANSION_NAME7 or "Battle for Azeroth"
--- L.TabCategory_LEG	 		= EXPANSION_NAME6
--- L.TabCategory_WOD	 		= EXPANSION_NAME5
--- L.TabCategory_MOP	 		= EXPANSION_NAME4
--- L.TabCategory_CATA	 		= EXPANSION_NAME3
--- L.TabCategory_WOTLK 		= EXPANSION_NAME2
--- L.TabCategory_BC 			= EXPANSION_NAME1
--- L.TabCategory_CLASSIC		= EXPANSION_NAME0
 L.TabCategory_OTHER    		= "Altre Mod"
 
 L.BossModLoaded 			= "%s statistiche"
