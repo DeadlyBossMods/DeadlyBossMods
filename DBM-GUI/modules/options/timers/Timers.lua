@@ -1,4 +1,6 @@
-DBM_GUI.Cat_Timers = DBM_GUI:CreateNewPanel(DBM_GUI_L.TabCategory_Timers, "option")
+local L		= DBM_GUI_L
+
+DBM_GUI.Cat_Timers = DBM_GUI:CreateNewPanel(L.TabCategory_Timers, "option")
 
 local TimersArea1		= DBM_GUI.Cat_Timers:CreateArea(L.Area_BasicSetup)
 TimersArea1:CreateText("|cFF73C2FBhttps://github.com/DeadlyBossMods/DeadlyBossMods/wiki/%5BNew-User-Guide%5D-Initial-Setup-Tips|r", nil, true, nil, "LEFT")

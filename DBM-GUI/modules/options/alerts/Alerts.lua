@@ -1,4 +1,6 @@
-DBM_GUI.Cat_Alerts = DBM_GUI:CreateNewPanel(DBM_GUI_L.TabCategory_Alerts, "option")
+local L		= DBM_GUI_L
+
+DBM_GUI.Cat_Alerts = DBM_GUI:CreateNewPanel(L.TabCategory_Alerts, "option")
 
 local AlertsArea1		= DBM_GUI.Cat_Alerts:CreateArea(L.Area_BasicSetup)
 AlertsArea1:CreateText("|cFF73C2FBhttps://github.com/DeadlyBossMods/DeadlyBossMods/wiki/%5BNew-User-Guide%5D-Initial-Setup-Tips|r", nil, true, nil, "LEFT")
