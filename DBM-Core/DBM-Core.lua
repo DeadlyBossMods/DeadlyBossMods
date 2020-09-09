@@ -4609,7 +4609,7 @@ do
 	end
 
 	syncHandlers["GH"] = function(sender)
-		if DBM.HighestRelease >= DBM.ReleaseRevision then--Do not send version to guild if it's not up to date, since this is only used for update notifcation
+		if DBM.ReleaseRevision >= DBM.HighestRelease then--Do not send version to guild if it's not up to date, since this is only used for update notifcation
 			DBM:Unschedule(SendVersion, true)
 			--Throttle so we don't needlessly send tons of comms
 			--For every 50 players online, DBM has an increasingly lower chance of replying to a version check request. This is because only 3 people actually need to reply
