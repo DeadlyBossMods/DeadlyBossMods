@@ -49,6 +49,9 @@ L.Statistic_BestRank		= "최고 등급:"--Maybe not get used, not sure yet, loca
 
 -- Tab: General Options
 L.TabCategory_Options		= "일반 설정"
+L.Area_BasicSetup			= "DBM 초기 설정 팁"
+L.Area_ModulesForYou		= "나에게 맞는 DBM 모듈은 어떤게 있을까?"
+L.Area_ProfilesSetup		= "DBM 프로필 사용법 가이드"
 -- Panel: Core & GUI
 L.Core_GUI 					= "핵심 모드와 GUI"
 L.General 					= "일반 설정"
@@ -130,6 +133,9 @@ L.SelectModProfileDelete	= "모드 설정 삭제"
 
 -- Tab: Alerts
 L.TabCategory_Alerts	 	= "경고"
+L.Area_SpecAnnounceConfig	= "특수 경고 외형과 효과음 설정 가이드"
+L.Area_SpecAnnounceNotes	= "특수 경고 메모 기능 가이드"
+L.Area_VoicePackInfo		= "DBM 음성팩 정보"
 -- Panel: Raidwarning
 L.Tab_RaidWarning 			= "알림"
 L.RaidWarning_Header		= "알림 설정"
@@ -242,6 +248,7 @@ L.EventFilterMythicMusic	= "신화/신화+ 난이도에선 보스 전투 배경�
 
 -- Tab: Timers
 L.TabCategory_Timers		= "타이머"
+L.Area_ColorBytype			= "종류별 바 색상 가이드"
 -- Panel: Color by Type
 L.Panel_ColorByType	 		= "종류별 색상"
 L.AreaTitle_BarColors		= "타이머 종류별 바 색상"
@@ -318,6 +325,8 @@ L.FadeBar					= "사정거리 밖의 스킬에 대한 타이머 바 숨김"
 
 -- Tab: Global Disables & Filters
 L.TabCategory_Filters	 	= "기능 끄기 및 필터"
+L.Area_DBMFiltersSetup		= "DBM 기능 필터 가이드"
+L.Area_BlizzFiltersSetup	= "블리자드 기능 필터 가이드"
 -- Panel: DBM Features
 L.Panel_SpamFilter			= "DBM 기능"
 L.Area_SpamFilter_Anounces	= "알림 관련 기능 끄기 및 필터 설정"
@@ -397,6 +406,7 @@ L.EnableWBSharing 			= "길드와 같이 필드 보스 전투를 시작/처치�
 
 -- Tab: Frames & Integrations
 L.TabCategory_Frames		= "창 및 통합 기능"
+L.Area_NamelateInfo			= "DBM 이름표 오라 정보"
 -- Panel: InfoFrame
 L.Panel_InfoFrame			= "정보 창"
 
