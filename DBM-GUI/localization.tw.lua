@@ -5,7 +5,7 @@ local L = DBM_GUI_L
 L.MainFrame	= "Deadly Boss Mods"
 
 L.TranslationByPrefix		= "翻譯:"
-L.TranslationBy 				= "三皈依@暗影之月 & Imbav@聖光之願"
+L.TranslationBy 			= "三皈依@暗影之月 & Imbav@聖光之願"
 L.Website					= "拜訪討論/支援論壇:|cFF73C2Fhttps://discord.gg/DF5mffk|r. 請在推特上關注@deadlybossmods或@MysticalOS"
 L.WebsiteButton				= "論壇"
 
@@ -51,6 +51,9 @@ L.Statistic_BestRank		= "最佳排名："
 
 -- Tab: General Options
 L.TabCategory_Options	 	= "一般選項"
+L.Area_BasicSetup			= "初始DBM設置提示"
+L.Area_ModulesForYou		= "哪些DBM模組適合您？"
+L.Area_ProfilesSetup		= "DBM配置檔使用指南"
 -- Panel: Core & GUI
 L.Core_GUI 					= "核心 & 圖形界面"
 L.General 					= "一般DBM核心選項"
@@ -132,6 +135,9 @@ L.SelectModProfileDelete	= "刪除模組設定"
 
 -- Tab: Alerts
 L.TabCategory_Alerts	 	= "警告"
+L.Area_SpecAnnounceConfig	= "特別警告視覺和聲音指南"
+L.Area_SpecAnnounceNotes	= "特別警告註記指南"
+L.Area_VoicePackInfo		= "有關DBM語音包的訊息"
 -- Panel: Raidwarning
 L.Tab_RaidWarning 			= "警告"
 L.RaidWarning_Header		= "警告選項"
@@ -199,7 +205,7 @@ L.CheckGear					= "開怪時顯示裝備警告訊息 (當你裝備的裝備等�
 L.WorldBossAlert			= "當你的公會成員或是朋友可能在你的伺服器上開戰世界首領時顯示警告訊息(如果發送者是被戰復的會不準確)"
 
 L.Area_BugAlerts			= "錯誤回報警報選項"
-L.BadTimerAlert				= "當DBM檢測到計時器錯誤且至少有2秒不正確時顯示聊天訊息"
+L.BadTimerAlert				= "當DBM檢測到計時器錯誤且至少有1秒不正確時顯示聊天訊息"
 L.BadIDAlert				= "當DBM檢測到使用的是無效法術或紀錄ID時顯示聊天訊息"
 
 -- Panel: Spoken Alerts Frame
@@ -240,6 +246,7 @@ L.EventFilterMythicMusic	= "不要在傳奇/傳奇+難度播放戰鬥音樂"
 
 -- Tab: Timers
 L.TabCategory_Timers		= "計時條"
+L.Area_ColorBytype			= "各類型上色指南"
 -- Panel: Color by Type
 L.Panel_ColorByType	 		= "各類型顏色"
 L.AreaTitle_BarColors		= "根據計時器類型上色"
@@ -316,6 +323,8 @@ L.FadeBar					= "淡出已超出距離技能的計時器"
 
 -- Tab: Global Disables & Filters
 L.TabCategory_Filters	 	= "全局禁用及過濾"
+L.Area_DBMFiltersSetup		= "DBM過濾器指南"
+L.Area_BlizzFiltersSetup	= "暴雪過濾器指南"
 -- Panel: DBM Features
 L.Panel_SpamFilter			= "DBM特性"
 L.Area_SpamFilter_Anounces	= "全局警告禁用及過濾選項"
@@ -395,6 +404,7 @@ L.EnableWBSharing 			= "當同個伺服器的公會與戰網好友開怪/擊敗�
 
 -- Tab: Frames & Integrations
 L.TabCategory_Frames		= "框架 & 整合"
+L.Area_NamelateInfo			= "DBM名條光環資訊"
 -- Panel: InfoFrame
 L.Panel_InfoFrame			= "訊息框架"
 

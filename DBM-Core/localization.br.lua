@@ -131,14 +131,12 @@ L.VOICE_MISSING						= "Você tinha um pacote de vozes DBM selecionado que não 
 L.VOICE_COUNT_MISSING				= "Voz de contagem regressiva %d esta selecionada para um pacote de voz que não pode ser encontrado. Foi restaurada a configuração padrão."
 
 L.UPDATEREMINDER_HEADER				= "Sua versão do Deadly Boss Mods está desatualizada.\n A versão %s (%s) está disponível para baixar no site da curse, WoWI ou aqui:"
-L.UPDATEREMINDER_HEADER_ALPHA		= "A sua versão alpha do DBM está desatualizada.\n Você esta pelo menos %d versões de testes para trás. É recomendado que os usuários do DBM utilizem a versão mais recente do alpha ou a mais recente das versões estáveis. Versões alphas desatualizadas podem resultar em faltas de algumas funcionalidades ou totalmente inoperante."
 L.UPDATEREMINDER_FOOTER				= "Pressione Ctrl+C para copiar o link de download para a área de transferência."
 L.UPDATEREMINDER_FOOTER_GENERIC		= "Pressione Ctrl+C para copiar o link de download para a área de transferência."
 L.UPDATEREMINDER_DISABLE			= "AVISO: O seu DBM foi desativado por estar drasticamente desatualizado (pelo menos %d revisões), atualize para utilizar novamente. Isso garante que versões antigas ou códigos incompatíveis não arruínem à experiência de jogo para você ou para os membros da raid."
 L.UPDATEREMINDER_HOTFIX				= "A sua versão do DBM contem temporizadores ou avisos incorretos para este chefe. Isso foi corrigido em uma versão mais recente ( ou alpha caso não exista versão estável mais recente disponível)"
 L.UPDATEREMINDER_HOTFIX_ALPHA		= L.UPDATEREMINDER_HOTFIX--TEMP, FIX ME!
 L.UPDATEREMINDER_MAJORPATCH			= "AVISO: O seu DBM foi desativado por estar drasticamente desatualizado (pelo menos %d revisões), atualize para utilizar novamente. Isso garante que versões antigas ou códigos incompatíveis não arruínem à experiência de jogo para você ou para os membros da raid. Certifique-se de baixar a versão mais recente em deadlybossmods.com ou curse o mais breve possível."
-L.UPDATEREMINDER_TESTVERSION		= "AVISO: Você esta usando uma versão do DBM que não foi criada para esta versão do jogo. Por favor, certifique-se de baixar a versão correta em deadlybossmods.com ou curse."
 L.VEM								= "AVISO: Você esta usando DBM e Voice Encounter Mods. DBM não funcionara corretamente nesta configuração e portanto não será carregada."
 L.OUTDATEDPROFILES						= "AVISO: DBM-Profiles não é compatível com esta versão de DBM. Deve ser removida antes de DBM continuar para evitar conflitos."
 L.UPDATE_REQUIRES_RELAUNCH			= "AVISO: Esta versão de DBM não funcionara corretamente até que você recomece o jogo por completo. Esta atualização contem novos arquivos ou mudanças no .toc que não podem ser carregadas via ReloadUI. Você pode encontrar funcionalidades quebradas ou erros caso continue sem recomeçar o jogo por completo."

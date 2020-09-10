@@ -2,7 +2,7 @@
 -- yleaf(yaroot@gmail.com)
 -- sunlcy@NGA
 -- Mini Dragon(projecteurs@gmail.com)
--- Last update: 2020/05/22
+-- Last update: 2020/09/09
 
 if GetLocale() ~= "zhCN" then return end
 if not DBM_GUI_L then DBM_GUI_L = {} end
@@ -58,13 +58,16 @@ L.Statistic_BestRank		= "最佳排名:"
 
 -- Tab: General Options
 L.TabCategory_Options	 	= "常规设置"
+L.Area_BasicSetup			= "初始 DBM 设置提示"
+L.Area_ModulesForYou		= "哪些 DBM 模块适合您？"
+L.Area_ProfilesSetup		= "DBM 配置文件指南"
 -- Panel: Core & GUI
 L.Core_GUI 					= "DBM核心设置"
 L.General 					= "DBM核心综合设置"
 L.EnableMiniMapIcon			= "显示小地图按钮"
 L.UseSoundChannel			= "设置DBM使用的声道"
-L.UseMasterChannel			= "主声道。"
-L.UseDialogChannel			= "对话声道。"
+L.UseMasterChannel			= "主声道"
+L.UseDialogChannel			= "对话声道"
 L.UseSFXChannel				= "音效声道"
 L.Latency_Text				= "设定团队之间DBM最高延迟阈值：%d"
 
@@ -86,7 +89,6 @@ L.Editbox_WindowHeight		= "高度"
 
 -- Panel: Extra Features
 L.Panel_ExtraFeatures		= "其他功能"
-
 L.Area_SoundAlerts			= "语音/闪烁警报选项"
 L.LFDEnhance				= "当发起角色检查或随机团队/战场就绪时，在主声道播放准备音效(即使关闭了音效而且很大声！)并闪烁图标"
 L.WorldBossNearAlert		= "当世界附近的Boss进入战斗时播放准备音效(覆盖单独BOSS设置)并闪烁图标"
@@ -102,7 +104,7 @@ L.Area_AutoLogging			= "自动战斗日志选项"
 L.AutologBosses				= "自动采用官方格式记录日志。"
 L.AdvancedAutologBosses		= "自动采用 Transcriptor 记录日志"
 L.RecordOnlyBosses			= "只记录团队BOSS数据 (不记录其他数据，使用 /dbm pull 可提前记录并使得记录更准确，如提前偷药水或是召唤大军。)"
-L.LogOnlyNonTrivial			= "只记录团队Boss，而不记录随机团队，5人本，场景战役。"
+L.LogOnlyNonTrivial			= "只记录团队Boss，而不记录随机团队/5人本/场景战役"
 --
 L.Area_3rdParty				= "第三方插件选项"
 L.ShowBBOnCombatStart		= "战斗开始时使用Big Brother的buff检测"
@@ -138,6 +140,9 @@ L.SelectModProfileDelete	= "删除 Boss 模块设置："
 
 -- Tab: Alerts
 L.TabCategory_Alerts	 	= "警报"
+L.Area_SpecAnnounceConfig	= "特殊警报提示和声音指南"
+L.Area_SpecAnnounceNotes	= "特殊警报自定义指南"
+L.Area_VoicePackInfo		= "所有 DBM 语音包信息"
 -- Panel: Raidwarning
 L.Tab_RaidWarning 			= "团队警报"
 L.RaidWarning_Header		= "团队警报设置"
@@ -196,8 +201,8 @@ L.ShowReminders				= "显示建议消息，缺少的模块和需要修补程序�
 L.CombatMessages			= "战斗信息设置"
 L.ShowEngageMessage 		= "在聊天窗口中显示开战信息"
 L.ShowDefeatMessage 		= "在聊天窗口中显示击杀信息"
-L.ShowGuildMessages 		= "在聊天窗口中显示公会开战，击杀，灭团信息"
-L.ShowGuildMessagesPlus		= "在聊天窗口中显示公会中的M+以上难度的开战，击杀，灭团信息(需要团队选项)"
+L.ShowGuildMessages 		= "在聊天窗口中显示公会开战/击杀/灭团信息"
+L.ShowGuildMessagesPlus		= "在聊天窗口中显示公会中的M+以上难度的开战/击杀/灭团信息(需要团队选项)"
 
 
 L.Area_ChatAlerts			= "其他警报选项"
@@ -247,6 +252,7 @@ L.EventFilterMythicMusic	= "不要在M/M+难度下播放战斗音乐"
 
 -- Tab: Timers
 L.TabCategory_Timers		= "计时条"
+L.Area_ColorBytype			= "计时条分类着色指南"
 -- Panel: Color by Type
 L.Panel_ColorByType	 		= "计时条分类着色"
 L.AreaTitle_BarColors		= "计时条颜色"
@@ -323,6 +329,8 @@ L.FadeBar					= "隐藏超出技能范围的计时条"
 
 -- Tab: Global Disables & Filters
 L.TabCategory_Filters	 	= "禁用及过滤选项"
+L.Area_DBMFiltersSetup		= "DBM 信息过滤指南"
+L.Area_BlizzFiltersSetup	= "暴雪信息过滤指南"
 -- Panel: DBM Features
 L.Panel_SpamFilter			= "DBM 全局过滤选项"
 L.Area_SpamFilter_Anounces	= "警报过滤选项"
@@ -402,6 +410,7 @@ L.DisableGuildStatus 		= "屏蔽通报团队进度信息到公会(需要团长�
 
 -- Tab: Frames & Integrations
 L.TabCategory_Frames		= "框体及其它"
+L.Area_NamelateInfo			= "DBM 姓名板光环信息"
 -- Panel: InfoFrame
 L.Panel_InfoFrame			= "信息框"
 
