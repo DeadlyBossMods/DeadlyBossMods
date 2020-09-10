@@ -48,10 +48,10 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(2420)
 
 L:SetTimerLocalization{
-	timerDesiresContainer		= "욕망 용기 가득참",
-	timerBottledContainer		= "령 용기 가득참",
-	timerSinsContainer			= "죄악 용기 가득참",
-	timerConcentrateContainer	= "Concentrate 용기 가득참"
+	timerDesiresContainer		= "욕망의 용기 가득참",
+	timerBottledContainer		= "병에 담긴 용기 가득참",
+	timerSinsContainer			= "죄악의 용기 가득참",
+	timerConcentrateContainer	= "농축된 용기 가득참"
 }
 
 L:SetOptionLocalization({
