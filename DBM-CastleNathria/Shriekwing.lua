@@ -36,7 +36,7 @@ local warnExsanguinated							= mod:NewStackAnnounce(328897, 2, nil, "Tank|Heale
 local warnEcholocation							= mod:NewTargetAnnounce(342077, 3)
 --Stage Two - Terror of Castle Nathria
 local warnDeadlyDescent							= mod:NewTargetNoFilterAnnounce(343024, 4)
-local warnBloodgorgeOver						= mod:NewEndAnnounce(328921, 1)
+local warnBloodshroudOver						= mod:NewEndAnnounce(328921, 1)
 local warnSonarShriek							= mod:NewCastAnnounce(340047, 2)
 local warnBloodLantern							= mod:NewTargetNoFilterAnnounce(341684, 1)--Mythic
 
@@ -51,7 +51,7 @@ local specWarnEarsplittingShriek				= mod:NewSpecialWarningMoveTo(330711, nil, n
 local specWarnBlindSwipe						= mod:NewSpecialWarningDefensive(343005, "Tank", nil, nil, 1, 2)
 local specWarnEchoingScreech					= mod:NewSpecialWarningDodge(342863, nil, nil, nil, 2, 2)
 --Stage Two - Terror of Castle Nathria
-local specWarnBloodgorge						= mod:NewSpecialWarningSpell(328921, nil, nil, nil, 2, 2)
+local specWarnBloodshroud						= mod:NewSpecialWarningSpell(328921, nil, nil, nil, 2, 2)
 local specWarnDeadlyDescent						= mod:NewSpecialWarningYou(343021, nil, nil, nil, 1, 2)--1 because you can't do anything about it
 local yellDeadlyDescent							= mod:NewYell(343021, nil, false)--Useless with only 1 second to avoid
 --local yellDeadlyDescentFades					= mod:NewShortFadesYell(343021)--Re-enable if made 4 seconds again, but as 2 seconds this is useless
@@ -65,9 +65,9 @@ local timerEcholocationCD						= mod:NewCDTimer(42.6, 342077, nil, nil, nil, 3, 
 local timerEarsplittingShriekCD					= mod:NewCDTimer(34, 330711, nil, nil, nil, 2)
 local timerBlindSwipeCD							= mod:NewCDTimer(42.6, 343005, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON)
 local timerEchoingScreechCD						= mod:NewCDTimer(42.9, 342863, nil, nil, nil, 3)
-local timerBloodgorgeCD							= mod:NewCDTimer(100, 328921, nil, nil, nil, 6)--100-103
+local timerBloodshroudCD						= mod:NewCDTimer(100, 328921, nil, nil, nil, 6)--100-103
 --Stage Two - Terror of Castle Nathria
---local timerBloodgorge							= mod:NewBuffActiveTimer(47.5, 328921, nil, nil, nil, 6)--43.4-47.5, more to it than this? or just fact blizzards energy code always proves to be dogshit
+--local timerBloodshroud						= mod:NewBuffActiveTimer(47.5, 328921, nil, nil, nil, 6)--43.4-47.5, more to it than this? or just fact blizzards energy code always proves to be dogshit
 local timerSonarShriekCD						= mod:NewCDTimer(7.3, 340047, nil, nil, nil, 3)
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
@@ -89,7 +89,7 @@ function mod:OnCombatStart(delay)
 	timerEarsplittingShriekCD:Start(12-delay)
 	timerBlindSwipeCD:Start(20.9-delay)
 	timerEchoingScreechCD:Start(28-delay)
-	timerBloodgorgeCD:Start(100-delay)
+	timerBloodshroudCD:Start(100-delay)
 --	if self.Options.NPAuraOnVolatileCorruption then
 --		DBM:FireEvent("BossMod_EnableHostileNameplates")
 --	end
@@ -122,8 +122,8 @@ function mod:SPELL_CAST_START(args)
 		end
 		timerExsanguinatingBiteCD:Start()
 	elseif spellId == 328921 then
-		specWarnBloodgorge:Show()
-		specWarnBloodgorge:Play("phasechange")
+		specWarnBloodshroud:Show()
+		specWarnBloodshroud:Play("phasechange")
 		timerExsanguinatingBiteCD:Stop()
 		timerEarsplittingShriekCD:Stop()
 		timerEcholocationCD:Stop()
@@ -216,16 +216,16 @@ function mod:SPELL_AURA_REMOVED(args)
 --		if args:IsPlayer() then
 --			yellDeadlyDescentFades:Cancel()
 --		end
-	elseif spellId == 328921 then--Bloodgorge removed
+	elseif spellId == 328921 then--Bloodshroud removed
 		timerSonarShriekCD:Stop()
-		warnBloodgorgeOver:Show()
+		warnBloodshroudOver:Show()
 		--Looks same as pull timers
 		timerExsanguinatingBiteCD:Start(6)
 		timerEcholocationCD:Start(18.3)
 		timerEarsplittingShriekCD:Start(12)
 		timerBlindSwipeCD:Start(20)
 		timerEchoingScreechCD:Start(28)
-		timerBloodgorgeCD:Start(100)
+		timerBloodshroudCD:Start(100)
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Hide()
 		end

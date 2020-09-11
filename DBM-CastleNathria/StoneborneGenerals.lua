@@ -13,7 +13,7 @@ mod:SetMinSyncRevision(20200825000000)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 333387 334765 334929 334498 339690 342544 339164 334009 342256 340043 342722 332683 342425",
+	"SPELL_CAST_START 333387 334765 334929 334498 339690 342544 342256 340043 342722 332683 342425 344496",
 	"SPELL_CAST_SUCCESS 334765 334929 342732",
 	"SPELL_SUMMON 342255",
 	"SPELL_AURA_APPLIED 329636 333913 334765 338156 338153 329808 333377 339690 342655 340037 343273 342425 336212",
@@ -38,8 +38,9 @@ mod:RegisterEventsInCombat(
 --TODO, https://ptr.wowhead.com/spell=342985/stonegale-effigy needs announcing probably, but what event?
 --TODO, target scan/yell for https://ptr.wowhead.com/spell=343086/ricocheting-shuriken ?
 --TODO, is https://ptr.wowhead.com/spell=342425/stone-fist stacked or always swap at 1 in proper situation?
+--TODO, heart rend is renamed to Soul Crusher in journal, but spell data not renamed yet. Apply rename when it happens.
 --[[
-(ability.id = 333387 or ability.id = 334929 or ability.id = 339164 or ability.id = 334009 or ability.id = 334498 or ability.id = 342544 or ability.id = 342256 or ability.id = 342425 or ability.id = 332683) and type = "begincast"
+(ability.id = 333387 or ability.id = 334929 or ability.id = 344496 or ability.id = 334498 or ability.id = 342544 or ability.id = 342256 or ability.id = 342425 or ability.id = 332683) and type = "begincast"
  or (ability.id = 334765 or ability.id = 339690) and type = "cast"
  or ability.id = 329636 or ability.id = 329808 or ability.id = 342255
  or (target.id = 168112 or target.id = 168113 or target.id = 172858) and type = "death"
@@ -55,7 +56,7 @@ local warnWickedBlade							= mod:NewTargetNoFilterAnnounce(333376, 4)
 local warnHeartRend								= mod:NewTargetNoFilterAnnounce(334765, 4)
 local warnCallShadowForces						= mod:NewSpellAnnounce(342256, 2)
 --General Grashaal
-local warnReverberatingLeap						= mod:NewTargetNoFilterAnnounce(334004, 3)
+local warnReverberatingEruption					= mod:NewTargetNoFilterAnnounce(344496, 3)
 local warnCrystalize							= mod:NewTargetNoFilterAnnounce(339690, 2)
 local warnPulverizingMeteor						= mod:NewTargetNoFilterAnnounce(342544, 4)
 --Adds
@@ -74,9 +75,9 @@ local specWarnSerratedSwipe						= mod:NewSpecialWarningDefensive(334929, nil, n
 --local specWarnLaceration						= mod:NewSpecialWarningStack(333913, nil, 3, nil, nil, 1, 6)
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(270290, nil, nil, nil, 1, 8)
 --General Grashaal
-local specWarnReverberatingLeap					= mod:NewSpecialWarningMoveAway(334004, nil, nil, nil, 1, 2)
-local yellReverberatingLeap						= mod:NewYell(334004, 183611)--Short text "Leap"
-local yellReverberatingLeapFades				= mod:NewFadesYell(334004, 183611)--Short text "Leap"
+local specWarnReverberatingEruption				= mod:NewSpecialWarningYou(344496, nil, nil, nil, 1, 2)
+local yellReverberatingEruption					= mod:NewYell(344496, 138658)--Short text "Eruption"
+local yellReverberatingEruptionFades			= mod:NewFadesYell(344496, 138658)--Short text "Eruption"
 local specWarnSeismicUpheaval					= mod:NewSpecialWarningDodge(334498, nil, nil, nil, 2, 2)
 local specWarnCrystalize						= mod:NewSpecialWarningYou(339690, nil, nil, nil, 1, 2)
 local yellCrystalize							= mod:NewYell(339690, nil, nil, nil, "YELL")
@@ -98,7 +99,7 @@ local timerCallShadowForcesCD					= mod:NewCDTimer(61.6, 342256, nil, nil, nil, 
 --General Grashaal
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22288))
 --All of his timers are 30-40 it appears with exception of combo/crystalize obviously
-local timerReverberatingLeapCD					= mod:NewCDTimer(31.1, 334004, 183611, nil, nil, 3, nil, nil, nil, 1, 3)--31.1-40, Short text "Leap"
+local timerReverberatingEruptionCD				= mod:NewAITimer(31.1, 344496, 138658, nil, nil, 3, nil, nil, nil, 1, 3)--31.1-40, Short text "Eruption"
 local timerSeismicUpheavalCD					= mod:NewCDTimer(30.1, 334498, nil, nil, nil, 3)--28.3-32
 local timerStoneBreakersComboCD					= mod:NewCDTimer(54.6, 339690, nil, nil, nil, 5, nil, nil, nil, 2, 3)--54-60
 local timerStoneFistCD							= mod:NewCDTimer(30.3, 342425, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)
@@ -115,7 +116,7 @@ mod:AddSetIconOption("SetIconOnWickedBlade", 333387, true, false, {1, 2})--off b
 mod:AddSetIconOption("SetIconOnCrystalize", 339690, true, false, {3})
 mod:AddSetIconOption("SetIconOnMeteor", 342544, true, false, {3})
 mod:AddSetIconOption("SetIconOnHeartRend", 334765, false, false, {4, 5, 6, 7})
-mod:AddSetIconOption("SetIconOnLeap", 334004, false, false, {8})
+mod:AddSetIconOption("SetIconOnLeap", 344496, false, false, {8})
 mod:AddNamePlateOption("NPAuraOnVolatileShell", 340037)
 
 local playerName = UnitName("player")
@@ -124,16 +125,16 @@ mod.vb.HeartIcon = 4
 mod.vb.wickedBladeIcon = 1
 mod.vb.phase = 1
 
-function mod:LeapTarget(targetname, uId)
+function mod:EruptionTarget(targetname, uId)
 	if not targetname then return end
 	if self:AntiSpam(4, targetname.."2") then
 		if targetname == playerName then
-			specWarnReverberatingLeap:Show()
-			specWarnReverberatingLeap:Play("runout")
-			yellReverberatingLeap:Yell()
-			yellReverberatingLeapFades:Countdown(3.97)--This scan method doesn't support scanningTime, but should be about right
+			specWarnReverberatingEruption:Show()
+			specWarnReverberatingEruption:Play("runout")
+			yellReverberatingEruption:Yell()
+			yellReverberatingEruptionFades:Countdown(3.97)--This scan method doesn't support scanningTime, but should be about right
 		else
-			warnReverberatingLeap:Show(targetname)
+			warnReverberatingEruption:Show(targetname)
 		end
 		if self.Options.SetIconOnLeap then
 			self:SetIcon(targetname, 8, 5)--So icon clears 1 second after blast
@@ -206,9 +207,9 @@ function mod:SPELL_CAST_START(args)
 			specWarnSerratedSwipe:Show()
 			specWarnSerratedSwipe:Play("defensive")
 		end
-	elseif spellId == 339164 or spellId == 334009 then--LFR/Normal, Heroic/Mythic
-		timerReverberatingLeapCD:Start()
-		--self:BossTargetScanner(args.sourceGUID, "LeapTarget", 0.01, 12)
+	elseif spellId == 344496 then
+		timerReverberatingEruptionCD:Start()
+		--self:BossTargetScanner(args.sourceGUID, "EruptionTarget", 0.01, 12)
 	elseif spellId == 334498 then
 		specWarnSeismicUpheaval:Show()
 		specWarnSeismicUpheaval:Play("watchstep")
@@ -238,7 +239,7 @@ function mod:SPELL_CAST_START(args)
 			--Boss continues timer for crystalize/combo from air phase, it doesn't start here
 			--just spell queued depending on overlap with Grashaal resuming other stuff
 			timerStoneFistCD:Start(11.7)--11.7-20.9?
-			timerReverberatingLeapCD:Start(12.7)--12.7-14.7
+			timerReverberatingEruptionCD:Start(2)--12.7-14.7
 			timerSeismicUpheavalCD:Start(30.7)
 		else--Stage 3 (Both Generals at once)
 			--General Kaal returning
@@ -407,11 +408,11 @@ function mod:SPELL_AURA_REMOVED_DOSE(args)
 end
 
 function mod:RAID_BOSS_WHISPER(msg)
-	if msg:find("334094") and self:AntiSpam(4, playerName.."2") then--Leap Backup (if scan fails)
-		specWarnReverberatingLeap:Show()
-		specWarnReverberatingLeap:Play("runout")
-		yellReverberatingLeap:Yell()
-		yellReverberatingLeapFades:Countdown(3.5)--A good 0.5 sec slower
+	if msg:find("344496") and self:AntiSpam(4, playerName.."2") then--Eruption Backup (if scan fails)
+		specWarnReverberatingEruption:Show()
+		specWarnReverberatingEruption:Play("runout")
+		yellReverberatingEruption:Yell()
+		yellReverberatingEruptionFades:Countdown(3.5)--A good 0.5 sec slower
 		if self.Options.SetIconOnLeap then
 			self:SetIcon(playerName, 8, 4.5)--So icon clears 1 second after
 		end
@@ -419,10 +420,10 @@ function mod:RAID_BOSS_WHISPER(msg)
 end
 
 function mod:OnTranscriptorSync(msg, targetName)
-	if msg:find("334094") and targetName then--Leap Backup (if scan fails)
+	if msg:find("344496") and targetName then--Eruption Backup (if scan fails)
 		targetName = Ambiguate(targetName, "none")
 		if self:AntiSpam(4, targetName.."2") then--Same antispam as RAID_BOSS_WHISPER on purpose. if player got personal warning they don't need this one
-			warnReverberatingLeap:Show(targetName)
+			warnReverberatingEruption:Show(targetName)
 			if self.Options.SetIconOnLeap then
 				self:SetIcon(targetName, 8, 4.5)--So icon clears 1 second after
 			end
@@ -444,7 +445,7 @@ function mod:UNIT_DIED(args)
 		timerSerratedSwipeCD:Stop()
 		timerCallShadowForcesCD:Stop()
 	elseif cid == 168113 then--Grashaal
-		timerReverberatingLeapCD:Stop()
+		timerReverberatingEruptionCD:Stop()
 		timerSeismicUpheavalCD:Stop()
 		timerStoneBreakersComboCD:Stop()
 		timerStoneFistCD:Stop()
@@ -466,7 +467,7 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 --"<10.94 16:10:19> [DBM_Debug] boss2 changed targets to Kngflyven#nil", -- [618]
 --"<11.38 16:10:19> [CHAT_MSG_ADDON] RAID_BOSS_WHISPER_SYNC#|TInterface\\Icons\\INV_ElementalEarth2.blp:20|t%s targets you with |cFFFF0000|Hspell:334094|h[Reverberating Leap]|h|r!#Kngflyven-TheMaw", -- [661]
 function mod:UNIT_SPELLCAST_START(uId, _, spellId)
-	if spellId == 339164 or spellId == 334009 then
-		self:BossUnitTargetScanner(uId, "LeapTarget", 1)
+	if spellId == 344496 then
+		self:BossUnitTargetScanner(uId, "EruptionTarget", 1)
 	end
 end
