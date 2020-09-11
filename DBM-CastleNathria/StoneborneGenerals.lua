@@ -6,8 +6,8 @@ mod:SetCreatureID(168112, 168113)
 mod:SetEncounterID(2417)
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
 mod:SetBossHPInfoToHighest()
-mod:SetHotfixNoticeRev(20200825000000)--2020, 8, 25
-mod:SetMinSyncRevision(20200825000000)
+mod:SetHotfixNoticeRev(20200911000000)--2020, 9, 11
+mod:SetMinSyncRevision(20200911000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
@@ -15,7 +15,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 333387 334765 334929 334498 339690 342544 342256 340043 342722 332683 342425 344496",
 	"SPELL_CAST_SUCCESS 334765 334929 342732",
-	"SPELL_SUMMON 342255",
+	"SPELL_SUMMON 342255 342257",
 	"SPELL_AURA_APPLIED 329636 333913 334765 338156 338153 329808 333377 339690 342655 340037 343273 342425 336212",
 	"SPELL_AURA_APPLIED_DOSE 333913",
 	"SPELL_AURA_REMOVED 329636 333913 334765 329808 333377 339690 340037",
@@ -115,8 +115,9 @@ mod:AddInfoFrameOption(333913, true)
 mod:AddSetIconOption("SetIconOnWickedBlade", 333387, true, false, {1, 2})--off by default since it relies on 100% boss mod raid
 mod:AddSetIconOption("SetIconOnCrystalize", 339690, true, false, {3})
 mod:AddSetIconOption("SetIconOnMeteor", 342544, true, false, {3})
+mod:AddSetIconOption("SetIconOnLeap", 344496, false, false, {4})
 mod:AddSetIconOption("SetIconOnHeartRend", 334765, false, false, {4, 5, 6, 7})
-mod:AddSetIconOption("SetIconOnLeap", 344496, false, false, {8})
+mod:AddSetIconOption("SetIconOnShadowForces", 342256, true, true, {6, 7, 8})
 mod:AddNamePlateOption("NPAuraOnVolatileShell", 340037)
 
 local playerName = UnitName("player")
@@ -124,6 +125,7 @@ local LacerationStacks = {}
 mod.vb.HeartIcon = 4
 mod.vb.wickedBladeIcon = 1
 mod.vb.phase = 1
+mod.vb.addIcon = 8
 
 function mod:EruptionTarget(targetname, uId)
 	if not targetname then return end
@@ -137,7 +139,7 @@ function mod:EruptionTarget(targetname, uId)
 			warnReverberatingEruption:Show(targetname)
 		end
 		if self.Options.SetIconOnLeap then
-			self:SetIcon(targetname, 8, 5)--So icon clears 1 second after blast
+			self:SetIcon(targetname, 4, 5)--So icon clears 1 second after blast
 		end
 	end
 end
@@ -161,6 +163,7 @@ function mod:OnCombatStart(delay)
 	self.vb.HeartIcon = 4
 	self.vb.wickedBladeIcon = 1
 	self.vb.phase = 1
+	self.vb.addIcon = 8
 	--General Kaal
 	timerSerratedSwipeCD:Start(7.3-delay)--START, but next timer is started at SUCCESS
 	timerWickedBladeCD:Start(16.6-delay)
@@ -283,6 +286,11 @@ function mod:SPELL_SUMMON(args)
 			--	timerRavenousFeastCD:Start(33.2)
 			--end
 		end
+	elseif spellId == 342257 then
+		if self.Options.SetIconOnShadowForces then--Only use up to 5 icons
+			self:ScanForMobs(args.destGUID, 2, self.vb.addIcon, 1, 0.2, 12)
+		end
+		self.vb.addIcon = self.vb.addIcon - 1
 	end
 end
 
@@ -414,7 +422,7 @@ function mod:RAID_BOSS_WHISPER(msg)
 		yellReverberatingEruption:Yell()
 		yellReverberatingEruptionFades:Countdown(3.5)--A good 0.5 sec slower
 		if self.Options.SetIconOnLeap then
-			self:SetIcon(playerName, 8, 4.5)--So icon clears 1 second after
+			self:SetIcon(playerName, 4, 4.5)--So icon clears 1 second after
 		end
 	end
 end
@@ -425,7 +433,7 @@ function mod:OnTranscriptorSync(msg, targetName)
 		if self:AntiSpam(4, targetName.."2") then--Same antispam as RAID_BOSS_WHISPER on purpose. if player got personal warning they don't need this one
 			warnReverberatingEruption:Show(targetName)
 			if self.Options.SetIconOnLeap then
-				self:SetIcon(targetName, 8, 4.5)--So icon clears 1 second after
+				self:SetIcon(targetName, 4, 4.5)--So icon clears 1 second after
 			end
 		end
 	end
