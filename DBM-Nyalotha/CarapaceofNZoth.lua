@@ -431,7 +431,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 315954 then
 		local amount = args.amount or 1
-		if amount >= 3 then
+		if (self:IsMythic() and amount >= 2) or amount >= 3 then
 			if args:IsPlayer() then
 				specWarnBlackScar:Show(amount)
 				specWarnBlackScar:Play("stackhigh")
