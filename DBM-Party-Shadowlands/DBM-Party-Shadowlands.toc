@@ -9,8 +9,7 @@
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Type: PARTY
 ## X-DBM-Mod-Category: SHADOWLANDS
-## X-DBM-Mod-Has-Challenge: 1
-## X-DBM-Mod-Has-Mythic : 1
+## X-DBM-StatTypes: normal,heroic,mythic,challenge
 ## X-DBM-Mod-SubCategoriesID: 2286, 2289, 2290, 2287, 2285, 2293, 2291, 2284
 ## X-DBM-Mod-Name: Dungeons (Shadowlands)
 ## X-DBM-Mod-Name-koKR: 던전 (어둠땅)

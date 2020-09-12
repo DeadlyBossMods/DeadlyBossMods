@@ -11,7 +11,7 @@
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Type: RAID
 ## X-DBM-Mod-Category: BFA
-## X-DBM-Mod-Has-Single-Format: 1
+## X-DBM-StatTypes: normal
 ## X-DBM-Mod-SubCategoriesID: 1643, 1642, 1943, 2105, 1718, 1779
 ## X-DBM-Mod-Name: Azeroth (BfA)
 ## X-DBM-Mod-Name-koKR: 아제로스 (격아)
