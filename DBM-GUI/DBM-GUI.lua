@@ -521,7 +521,7 @@ do
 	function DBM_GUI:UpdateModList()
 		for _, addon in ipairs(DBM.AddOns) do
 			if not category[addon.category] then
-				category[addon.category] = DBM_GUI:CreateNewCategory(L["TabCategory_" .. addon.category:upper()] or L.TabCategory_OTHER, nil, addon.category:upper() == expansions[GetExpansionLevel()])
+				category[addon.category] = DBM_GUI:CreateNewPanel(L["TabCategory_" .. addon.category:upper()] or L.TabCategory_OTHER, nil, addon.category:upper() == expansions[GetExpansionLevel()])
 			end
 
 			if not addon.panel then
