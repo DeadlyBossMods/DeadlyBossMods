@@ -396,11 +396,14 @@ do
 		local ptext = panel:CreateText(L.BossModLoaded:format(subtab and addon.subTabs[subtab] or addon.name), nil, nil, GameFontNormal)
 		ptext:SetPoint("TOPLEFT", panel.frame, "TOPLEFT", 10, modProfileArea and -165 or -10)
 
-		local singleline = 0
-		local doubleline = 0
+		local singleLine, doubleLine, noHeaderLine = 0, 0, 0
 		local area = panel:CreateArea()
 		area.frame.isStats = true
 		area.frame:SetPoint("TOPLEFT", 10, modProfileArea and -180 or -25)
+
+		local statOrder = {
+			"lfr", "normal", "normal25", "heroic", "heroic25", "mythic", "challenge", "timewalker"
+		}
 
 		for _, mod in ipairs(DBM.Mods) do
 			if mod.modId == addon.modId and (not subtab or subtab == mod.subTab) and not mod.isTrashMod and not mod.noStatistics then
@@ -467,17 +470,25 @@ do
 
 				local statTypes = {
 					lfr			= PLAYER_DIFFICULTY3,
-					normal		= mod.addon.minExpansion < 6 and RAID_DIFFICULTY1 or PLAYER_DIFFICULTY1,
+					normal		= mod.addon.minExpansion < 5 and RAID_DIFFICULTY1 or PLAYER_DIFFICULTY1,
 					normal25	= RAID_DIFFICULTY2,
-					heroic		= mod.addon.minExpansion < 6 and RAID_DIFFICULTY3 or PLAYER_DIFFICULTY2,
+					heroic		= mod.addon.minExpansion < 5 and RAID_DIFFICULTY3 or PLAYER_DIFFICULTY2,
 					heroic25	= RAID_DIFFICULTY4,
 					mythic		= PLAYER_DIFFICULTY6,
 					challenge	= mod.addon.minExpansion < 6 and CHALLENGE_MODE or (PLAYER_DIFFICULTY6 .. "+"),
 					timewalker	= PLAYER_DIFFICULTY_TIMEWALKER
 				}
+				if (mod.addon.type == "PARTY" or mod.addon.type == "SCENARIO") or -- Fixes dungeons being labled incorrectly
+					(mod.addon.type == "RAID" and statSplit["timewalker"]) or -- Fixes raids with timewalker being labled incorrectly
+					(mod.addon.modId == "DBM-SiegeOfOrgrimmarV2") then -- Fixes SoO being labled incorrectly
+					statTypes.normal = PLAYER_DIFFICULTY1
+					statTypes.heroic = PLAYER_DIFFICULTY2
+				end
+
+
 				local lastArea = 0
 
-				for statType, statTitle in pairs(statTypes) do
+				for _, statType in ipairs(statOrder) do
 					if statSplit[statType] then
 						if statType == "lfr" then
 							statType = "lfr25" -- Because Myst stores stats weird
@@ -487,7 +498,7 @@ do
 						end
 						lastArea = lastArea + 1
 						local section = sections[lastArea]
-						section.header:SetText(statTitle)
+						section.header:SetText(statTypes[statType])
 						area.frame:HookScript("OnShow", function()
 							local kills, pulls, bestRank, bestTime = mod.stats[statType .. "Kills"] or 0, mod.stats[statType .. "Pulls"] or 0, mod.stats[statType .. "BestRank"] or 0, mod.stats[statType .. "BestTime"]
 							section.value1:SetText(kills)
@@ -500,18 +511,19 @@ do
 						end)
 					end
 				end
-				Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10 - (L.FontHeight * 6 * singleline) - (L.FontHeight * 10 * doubleline))
-				if statCount < 4 then
-					if statCount == 1 then
-						sections[1].header:Hide()
-						sections[1].text1:SetPoint("TOPLEFT", Title, "BOTTOMLEFT", 20, -5)
-					end
-					singleline = singleline + 1
+				Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10 - (L.FontHeight * 5 * noHeaderLine) - (L.FontHeight * 6 * singleLine) - (L.FontHeight * 10 * doubleLine))
+				if statCount == 1 then
+					sections[1].header:Hide()
+					sections[1].text1:SetPoint("TOPLEFT", Title, "BOTTOMLEFT", 20, -5)
+					noHeaderLine = noHeaderLine + 1
+					area.frame:SetHeight(area.frame:GetHeight() + L.FontHeight * 5)
+				elseif statCount < 4 then
+					singleLine = singleLine + 1
+					area.frame:SetHeight(area.frame:GetHeight() + L.FontHeight * 6)
 				else
-					doubleline = doubleline + 1
+					doubleLine = doubleLine + 1
+					area.frame:SetHeight(area.frame:GetHeight() + L.FontHeight * 10)
 				end
-
-				area.frame:SetHeight(area.frame:GetHeight() + L.FontHeight * (statCount < 4 and 6 or 10))
 			end
 		end
 		_G["DBM_GUI_OptionsFrame"]:DisplayFrame(panel.frame)
