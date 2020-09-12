@@ -26,11 +26,14 @@ function PanelPrototype:SetMyOwnHeight() -- TODO: remove in 9.x
 	DBM:Debug(self.frame:GetName() .. " is calling a deprecated function SetMyOwnHeight")
 end
 
-function PanelPrototype:CreateCreatureModelFrame(width, height, creatureid)
+function PanelPrototype:CreateCreatureModelFrame(width, height, creatureid, scale)
 	local model = CreateFrame("PlayerModel", "DBM_GUI_Option_" .. self:GetNewID(), self.frame)
 	model.mytype = "modelframe"
 	model:SetSize(width or 100, height or 200)
 	model:SetCreature(tonumber(creatureid) or 448) -- Hogger!!! he kills all of you
+	if scale then
+		model:SetModelScale(scale)
+	end
 	self:SetLastObj(model)
 	return model
 end
