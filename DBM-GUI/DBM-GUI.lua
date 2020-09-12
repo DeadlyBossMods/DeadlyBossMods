@@ -290,13 +290,6 @@ function DBM_GUI:CreateBossModPanel(mod)
 end
 
 do
-	local function OnShowGetStats(bossid, statsType, sections)
-		return function(self)
-			local mod = DBM:GetModByName(bossid)
-			local stats = mod.stats
-		end
-	end
-
 	local function CreateBossModTab(addon, panel, subtab)
 		if not panel then
 			error("Panel is nil", 2)
