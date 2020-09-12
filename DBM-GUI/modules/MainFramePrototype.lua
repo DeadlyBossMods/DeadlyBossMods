@@ -9,7 +9,7 @@ function frame:UpdateMenuFrame()
 	if not listFrame.buttons then
 		return
 	end
-	local displayedElements = self.tab and DBM_GUI.frameTypes[self.tab]:GetVisibleTabs() or {}
+	local displayedElements = self.tab and DBM_GUI.tabs[self.tab]:GetVisibleTabs() or {}
 	local bigList = mfloor((listFrame:GetHeight() - 8) / 18)
 	if #displayedElements > bigList then
 		_G[listFrame:GetName() .. "List"]:Show()
@@ -27,27 +27,33 @@ function frame:UpdateMenuFrame()
 			button:Hide()
 			button:SetHeight(-1)
 		else
-			button:Show()
-			button:SetHeight(18)
-			button.element = element
-			button.text:SetPoint("LEFT", 12 + 8 * element.depth, 2)
-			button.toggle:SetPoint("LEFT", 8 * element.depth - 2, 1)
-			button:SetNormalFontObject(element.depth > 2 and GameFontHighlightSmall or element.depth == 2 and GameFontNormalSmall or GameFontNormal)
-			button:SetHighlightFontObject(element.depth > 2 and GameFontHighlightSmall or element.depth == 2 and GameFontNormalSmall or GameFontNormal)
-			if element.Buttons and #element.Buttons > 0 then
-				button.toggle:SetNormalTexture(element.showSub and 130821 or 130838) -- "Interface\\Buttons\\UI-MinusButton-UP", "Interface\\Buttons\\UI-PlusButton-UP"
-				button.toggle:SetPushedTexture(element.showSub and 130820 or 130836) -- "Interface\\Buttons\\UI-MinusButton-DOWN", "Interface\\Buttons\\UI-PlusButton-DOWN"
-				button.toggle:Show()
-			else
-				button.toggle:Hide()
-			end
-			button.text:SetText(element.name)
-			button.text:Show()
-			if self.selection == element then
+			self:DisplayButton(button, element.frame)
+			if (self.tab and self.tabs[self.tab].selection) == element.frame then
 				button:LockHighlight()
 			end
 		end
 	end
+end
+
+function frame:DisplayButton(button, element)
+	button:Show()
+	button:SetHeight(18)
+	button.element = element
+	button.text:ClearAllPoints()
+	button.text:SetPoint("LEFT", 12 + 8 * element.depth, 2)
+	button.toggle:ClearAllPoints()
+	button.toggle:SetPoint("LEFT", 8 * element.depth - 2, 1)
+	button:SetNormalFontObject(element.depth > 2 and GameFontHighlightSmall or element.depth == 2 and GameFontNormalSmall or GameFontNormal)
+	button:SetHighlightFontObject(element.depth > 2 and GameFontHighlightSmall or element.depth == 2 and GameFontNormalSmall or GameFontNormal)
+	if element.haschilds then
+		button.toggle:SetNormalTexture(element.showSub and 130821 or 130838) -- "Interface\\Buttons\\UI-MinusButton-UP", "Interface\\Buttons\\UI-PlusButton-UP"
+		button.toggle:SetPushedTexture(element.showSub and 130820 or 130836) -- "Interface\\Buttons\\UI-MinusButton-DOWN", "Interface\\Buttons\\UI-PlusButton-DOWN"
+		button.toggle:Show()
+	else
+		button.toggle:Hide()
+	end
+	button.text:SetText(element.displayName)
+	button.text:Show()
 end
 
 function frame:ClearSelection()

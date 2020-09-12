@@ -1,7 +1,7 @@
 local L = DBM_GUI_L
 
 DBM_GUI = {
-	frameTypes = {}
+	tabs = {}
 }
 
 local next, type, pairs, strsplit, tonumber, tostring, ipairs, tinsert, tsort, mfloor = next, type, pairs, strsplit, tonumber, tostring, ipairs, table.insert, table.sort, math.floor
@@ -442,6 +442,7 @@ do
 						section.header:SetPoint("TOPLEFT", Title, "BOTTOMLEFT", 20, -5)
 					elseif i == 4 then
 						section.header:SetPoint("TOPLEFT", sections[1].text3, "BOTTOMLEFT", -20, -5)
+					else
 						section.header:SetPoint("LEFT", sections[i - 1].header, "LEFT", 150, 0)
 					end
 					section.text1:SetPoint("TOPLEFT", section.header, "BOTTOMLEFT", 20, -5)
@@ -453,7 +454,7 @@ do
 					section.header.OldSetText = section.header.SetText
 					section.header.SetText = function(self, text)
 						self:OldSetText(text)
-						section.header:Show()
+						self:Show()
 						section.text1:Show()
 						section.text2:Show()
 						section.text3:Show()
@@ -464,7 +465,6 @@ do
 					sections[i] = section
 				end
 
-				local lastArea = 0
 				local statTypes = {
 					lfr			= PLAYER_DIFFICULTY3,
 					normal		= mod.addon.minExpansion < 6 and RAID_DIFFICULTY1 or PLAYER_DIFFICULTY1,
@@ -475,6 +475,8 @@ do
 					challenge	= mod.addon.minExpansion < 6 and CHALLENGE_MODE or (PLAYER_DIFFICULTY6 .. "+"),
 					timewalker	= PLAYER_DIFFICULTY_TIMEWALKER
 				}
+				local lastArea = 0
+
 				for statType, statTitle in pairs(statTypes) do
 					if statSplit[statType] then
 						if statType == "lfr" then

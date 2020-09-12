@@ -87,7 +87,7 @@ function DBM_GUI:CreateNewFauxScrollFrameList()
 	}, {
 		__index = ListFrameButtonsPrototype
 	})
-	DBM_GUI.frameTypes[#DBM_GUI.frameTypes + 1] = mt
+	self.tabs[#self.tabs + 1] = mt
 	return mt
 end
 
