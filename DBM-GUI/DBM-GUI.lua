@@ -504,6 +504,7 @@ do
 				if statCount < 4 then
 					if statCount == 1 then
 						sections[1].header:Hide()
+						sections[1].text1:SetPoint("TOPLEFT", Title, "BOTTOMLEFT", 20, -5)
 					end
 					singleline = singleline + 1
 				else
