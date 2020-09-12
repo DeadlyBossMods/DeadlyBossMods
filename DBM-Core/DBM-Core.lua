@@ -1358,13 +1358,13 @@ do
 			if GetAddOnEnableState(playerName, "DBM-SpellTimers") >= 1 then
 				local version = GetAddOnMetadata("DBM-SpellTimers", "Version") or "r0"
 				version = tonumber(string.sub(version, 2, 4)) or 0
-				if version < 122 then
+				if version < 122 and not self.Options.Debug then
 					self:Disable(true)
 					self:Schedule(15, infniteLoopNotice, self, L.OUTDATEDSPELLTIMERS)
 					return
 				end
 			end
-			if GetAddOnEnableState(playerName, "DBM-RaidLeadTools") >= 1 then
+			if GetAddOnEnableState(playerName, "DBM-RaidLeadTools") >= 1 and not self.Options.Debug then
 				self:Disable(true)
 				self:Schedule(15, infniteLoopNotice, self, L.OUTDATEDRLT)
 				return
@@ -1415,17 +1415,17 @@ do
 								sort			= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Sort") or mhuge) or mhuge,
 								type			= GetAddOnMetadata(i, "X-DBM-Mod-Type") or "OTHER",
 								category		= GetAddOnMetadata(i, "X-DBM-Mod-Category") or "Other",
-								optionsTab		= GetAddOnMetadata(i, "X-DBM-Mod-OptionsTab"),
+								statTypes		= GetAddOnMetadata(i, "X-DBM-StatTypes") or "",
 								name			= GetAddOnMetadata(i, "X-DBM-Mod-Name") or GetRealZoneText(tonumber(mapIdTable[1])) or L.UNKNOWN,
 								mapId			= mapIdTable,
 								subTabs			= GetAddOnMetadata(i, "X-DBM-Mod-SubCategoriesID") and {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-SubCategoriesID"))} or GetAddOnMetadata(i, "X-DBM-Mod-SubCategories") and {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-SubCategories"))},
-								oneFormat		= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Has-Single-Format") or 0) == 1,
-								hasLFR			= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Has-LFR") or 0) == 1,
-								hasChallenge	= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Has-Challenge") or 0) == 1,
-								noHeroic		= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-No-Heroic") or 0) == 1,
+								oneFormat		= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Has-Single-Format") or 0) == 1, -- Deprecated
+								hasLFR			= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Has-LFR") or 0) == 1, -- Deprecated
+								hasChallenge	= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Has-Challenge") or 0) == 1, -- Deprecated
+								noHeroic		= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-No-Heroic") or 0) == 1, -- Deprecated
+								hasMythic		= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Has-Mythic") or 0) == 1, -- Deprecated
+								hasTimeWalker	= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Has-TimeWalker") or 0) == 1, -- Deprecated
 								noStatistics	= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-No-Statistics") or 0) == 1,
-								hasMythic		= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Has-Mythic") or 0) == 1,
-								hasTimeWalker	= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Has-TimeWalker") or 0) == 1,
 								isWorldBoss		= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-World-Boss") or 0) == 1,
 								isExpedition	= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Expedition") or 0) == 1,
 								minRevision		= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-MinCoreRevision") or 0),
@@ -1480,16 +1480,18 @@ do
 					if checkEntry(bannedMods, addonName) then
 						AddMsg(self, "The mod " .. addonName .. " is deprecated and will not be available. Please remove the folder " .. addonName .. " from your Interface" .. (IsWindowsClient() and "\\" or "/") .. "AddOns folder to get rid of this message. Check for an updated version of " .. addonName .. " that is compatible with your game version.")
 					else
-						local voiceValue = GetAddOnMetadata(i, "X-DBM-Voice-ShortName")
-						local voiceVersion = tonumber(GetAddOnMetadata(i, "X-DBM-Voice-Version") or 0)
-						if voiceVersion > 0 then--Do not insert voice version 0 into THIS table. 0 should be used by voice packs that insert only countdown
-							tinsert(self.Voices, { text = GetAddOnMetadata(i, "X-DBM-Voice-Name"), value = voiceValue })
-						end
-						self.VoiceVersions[voiceValue] = voiceVersion
-						self:Schedule(10, self.CheckVoicePackVersion, self, voiceValue)--Still at 1 since the count sounds won't break any mods or affect filter. V2 if support countsound path
-						if GetAddOnMetadata(i, "X-DBM-Voice-HasCount") then--Supports adding countdown options, insert new countdown into table
-							tinsert(self.Counts, { text = GetAddOnMetadata(i, "X-DBM-Voice-Name"), value = "VP:"..voiceValue, path = "Interface\\AddOns\\DBM-VP"..voiceValue.."\\count\\", max = 10})
-						end
+						C_TimerAfter(0.01, function()
+							local voiceValue = GetAddOnMetadata(i, "X-DBM-Voice-ShortName")
+							local voiceVersion = tonumber(GetAddOnMetadata(i, "X-DBM-Voice-Version") or 0)
+							if voiceVersion > 0 then--Do not insert voice version 0 into THIS table. 0 should be used by voice packs that insert only countdown
+								tinsert(self.Voices, { text = GetAddOnMetadata(i, "X-DBM-Voice-Name"), value = voiceValue })
+							end
+							self.VoiceVersions[voiceValue] = voiceVersion
+							self:Schedule(10, self.CheckVoicePackVersion, self, voiceValue)--Still at 1 since the count sounds won't break any mods or affect filter. V2 if support countsound path
+							if GetAddOnMetadata(i, "X-DBM-Voice-HasCount") then--Supports adding countdown options, insert new countdown into table
+								tinsert(self.Counts, { text = GetAddOnMetadata(i, "X-DBM-Voice-Name"), value = "VP:"..voiceValue, path = "Interface\\AddOns\\DBM-VP"..voiceValue.."\\count\\", max = 10})
+							end
+						end)
 					end
 				end
 				if GetAddOnMetadata(i, "X-DBM-CountPack") and enabled ~= 0 then
@@ -1497,13 +1499,15 @@ do
 						AddMsg(self, "The mod " .. addonName .. " is deprecated and will not be available. Please remove the folder " .. addonName .. " from your Interface" .. (IsWindowsClient() and "\\" or "/") .. "AddOns folder to get rid of this message. Check for an updated version of " .. addonName .. " that is compatible with your game version.")
 					else
 						local loaded = LoadAddOn(addonName)
-						local voiceGlobal = GetAddOnMetadata(i, "X-DBM-CountPack-GlobalName")
-						local insertFunction = _G[voiceGlobal]
-						if loaded and insertFunction then
-							insertFunction()
-						else
-							self:Debug(addonName.." failed to load at time CountPack function "..voiceGlobal.."ran", 2)
-						end
+						C_TimerAfter(0.01, function()
+							local voiceGlobal = GetAddOnMetadata(i, "X-DBM-CountPack-GlobalName")
+							local insertFunction = _G[voiceGlobal]
+							if loaded and insertFunction then
+								insertFunction()
+							else
+								self:Debug(addonName.." failed to load at time CountPack function "..voiceGlobal.."ran", 2)
+							end
+						end)
 					end
 				end
 				if GetAddOnMetadata(i, "X-DBM-VictoryPack") and enabled ~= 0 then
@@ -1511,13 +1515,15 @@ do
 						AddMsg(self, "The mod " .. addonName .. " is deprecated and will not be available. Please remove the folder " .. addonName .. " from your Interface" .. (IsWindowsClient() and "\\" or "/") .. "AddOns folder to get rid of this message. Check for an updated version of " .. addonName .. " that is compatible with your game version.")
 					else
 						local loaded = LoadAddOn(addonName)
-						local victoryGlobal = GetAddOnMetadata(i, "X-DBM-VictoryPack-GlobalName")
-						local insertFunction = _G[victoryGlobal]
-						if loaded and insertFunction then
-							insertFunction()
-						else
-							self:Debug(addonName.." failed to load at time VictoryPack function "..victoryGlobal.." ran", 2)
-						end
+						C_TimerAfter(0.01, function()
+							local victoryGlobal = GetAddOnMetadata(i, "X-DBM-VictoryPack-GlobalName")
+							local insertFunction = _G[victoryGlobal]
+							if loaded and insertFunction then
+								insertFunction()
+							else
+								self:Debug(addonName.." failed to load at time VictoryPack function "..victoryGlobal.." ran", 2)
+							end
+						end)
 					end
 				end
 				if GetAddOnMetadata(i, "X-DBM-DefeatPack") and enabled ~= 0 then
@@ -1525,13 +1531,15 @@ do
 						AddMsg(self, "The mod " .. addonName .. " is deprecated and will not be available. Please remove the folder " .. addonName .. " from your Interface" .. (IsWindowsClient() and "\\" or "/") .. "AddOns folder to get rid of this message. Check for an updated version of " .. addonName .. " that is compatible with your game version.")
 					else
 						local loaded = LoadAddOn(addonName)
-						local defeatGlobal = GetAddOnMetadata(i, "X-DBM-DefeatPack-GlobalName")
-						local insertFunction = _G[defeatGlobal]
-						if loaded and insertFunction then
-							insertFunction()
-						else
-							self:Debug(addonName.." failed to load at time DefeatPack function "..defeatGlobal.." ran", 2)
-						end
+						C_TimerAfter(0.01, function()
+							local defeatGlobal = GetAddOnMetadata(i, "X-DBM-DefeatPack-GlobalName")
+							local insertFunction = _G[defeatGlobal]
+							if loaded and insertFunction then
+								insertFunction()
+							else
+								self:Debug(addonName.." failed to load at time DefeatPack function "..defeatGlobal.." ran", 2)
+							end
+						end)
 					end
 				end
 				if GetAddOnMetadata(i, "X-DBM-MusicPack") and enabled ~= 0 then
@@ -1539,13 +1547,15 @@ do
 						AddMsg(self, "The mod " .. addonName .. " is deprecated and will not be available. Please remove the folder " .. addonName .. " from your Interface" .. (IsWindowsClient() and "\\" or "/") .. "AddOns folder to get rid of this message. Check for an updated version of " .. addonName .. " that is compatible with your game version.")
 					else
 						local loaded = LoadAddOn(addonName)
-						local musicGlobal = GetAddOnMetadata(i, "X-DBM-MusicPack-GlobalName")
-						local insertFunction = _G[musicGlobal]
-						if loaded and insertFunction then
-							insertFunction()
-						else
-							self:Debug(addonName.." failed to load at time MusicPack function "..musicGlobal.." ran", 2)
-						end
+						C_TimerAfter(0.01, function()
+							local musicGlobal = GetAddOnMetadata(i, "X-DBM-MusicPack-GlobalName")
+							local insertFunction = _G[musicGlobal]
+							if loaded and insertFunction then
+								insertFunction()
+							else
+								self:Debug(addonName.." failed to load at time MusicPack function "..musicGlobal.." ran", 2)
+							end
+						end)
 					end
 				end
 			end
@@ -2691,12 +2701,12 @@ do
 		if GetAddOnEnableState(playerName, "DBM-SpellTimers") >= 1 then
 			local version = GetAddOnMetadata("DBM-SpellTimers", "Version") or "r0"
 			version = tonumber(string.sub(version, 2, 4)) or 0
-			if version < 122 then
+			if version < 122 and not self.Options.Debug then
 				self:AddMsg(L.OUTDATEDSPELLTIMERS)
 				return
 			end
 		end
-		if GetAddOnEnableState(playerName, "DBM-RaidLeadTools") >= 1 then
+		if GetAddOnEnableState(playerName, "DBM-RaidLeadTools") >= 1 and not self.Options.Debug then
 			self:AddMsg(L.OUTDATEDRLT)
 			return
 		end
@@ -12192,8 +12202,8 @@ function bossModPrototype:SetModelRotation(r)
 	self.modelRotation = r
 end
 
-function bossModPrototype:SetModelMoveSpeed(v)
-	self.modelMoveSpeed = v
+function bossModPrototype:SetModelSequence(v)
+	self.modelSequence = v
 end
 
 function bossModPrototype:SetModelID(id)
@@ -12203,14 +12213,6 @@ end
 function bossModPrototype:SetModelSound(long, short)--PlaySoundFile prototype for model viewer, long is long sound, short is a short clip, configurable in UI, both sound paths defined in boss mods.
 	self.modelSoundLong = long
 	self.modelSoundShort = short
-end
-
-function bossModPrototype:EnableModel()
-	self.modelEnabled = true
-end
-
-function bossModPrototype:DisableModel()
-	self.modelEnabled = nil
 end
 
 --------------------

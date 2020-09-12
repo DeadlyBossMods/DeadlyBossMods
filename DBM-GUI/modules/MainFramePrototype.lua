@@ -23,35 +23,31 @@ function frame:UpdateMenuFrame()
 		button:SetWidth(bigList and 185 or 209)
 		button:UnlockHighlight()
 		local element = displayedElements[i + (listFrame.offset or 0)]
-		if not element or i > bigList then
+		if not element or i > bigList or element.initial then
 			button:Hide()
+			button:SetHeight(-1)
 		else
-			self:DisplayButton(button, element.frame)
-			if (self.tab and self.tabs[self.tab].selection) == element.frame then
+			button:Show()
+			button:SetHeight(18)
+			button.element = element
+			button.text:SetPoint("LEFT", 12 + 8 * element.depth, 2)
+			button.toggle:SetPoint("LEFT", 8 * element.depth - 2, 1)
+			button:SetNormalFontObject(element.depth > 2 and GameFontHighlightSmall or element.depth == 2 and GameFontNormalSmall or GameFontNormal)
+			button:SetHighlightFontObject(element.depth > 2 and GameFontHighlightSmall or element.depth == 2 and GameFontNormalSmall or GameFontNormal)
+			if element.Buttons and #element.Buttons > 0 then
+				button.toggle:SetNormalTexture(element.showSub and 130821 or 130838) -- "Interface\\Buttons\\UI-MinusButton-UP", "Interface\\Buttons\\UI-PlusButton-UP"
+				button.toggle:SetPushedTexture(element.showSub and 130820 or 130836) -- "Interface\\Buttons\\UI-MinusButton-DOWN", "Interface\\Buttons\\UI-PlusButton-DOWN"
+				button.toggle:Show()
+			else
+				button.toggle:Hide()
+			end
+			button.text:SetText(element.name)
+			button.text:Show()
+			if self.selection == element then
 				button:LockHighlight()
 			end
 		end
 	end
-end
-
-function frame:DisplayButton(button, element)
-	button:Show()
-	button.element = element
-	button.text:ClearAllPoints()
-	button.text:SetPoint("LEFT", 12 + 8 * element.depth, 2)
-	button.toggle:ClearAllPoints()
-	button.toggle:SetPoint("LEFT", 8 * element.depth - 2, 1)
-	button:SetNormalFontObject(element.depth > 2 and GameFontHighlightSmall or element.depth == 2 and GameFontNormalSmall or GameFontNormal)
-	button:SetHighlightFontObject(element.depth > 2 and GameFontHighlightSmall or element.depth == 2 and GameFontNormalSmall or GameFontNormal)
-	if element.haschilds then
-		button.toggle:SetNormalTexture(element.showSub and 130821 or 130838) -- "Interface\\Buttons\\UI-MinusButton-UP", "Interface\\Buttons\\UI-PlusButton-UP"
-		button.toggle:SetPushedTexture(element.showSub and 130820 or 130836) -- "Interface\\Buttons\\UI-MinusButton-DOWN", "Interface\\Buttons\\UI-PlusButton-DOWN"
-		button.toggle:Show()
-	else
-		button.toggle:Hide()
-	end
-	button.text:SetText(element.displayName)
-	button.text:Show()
 end
 
 function frame:ClearSelection()
@@ -124,13 +120,12 @@ function frame:DisplayFrame(frame)
 		DBM_GUI.currentViewing:Hide()
 	end
 	DBM_GUI.currentViewing = frame
-	_G["DBM_GUI_OptionsFramePanelContainerHeaderText"]:SetText(frame.displayName)
 	_G["DBM_GUI_DropDown"]:Hide()
 	local FOV = _G["DBM_GUI_OptionsFramePanelContainerFOV"]
 	FOV:SetScrollChild(frame)
 	FOV:Show()
 	frame:Show()
-	frame:SetSize(FOV:GetWidth(), FOV:GetHeight())
+	frame:SetSize(FOV:GetSize())
 	local mymax = resize(frame, true) - _G["DBM_GUI_OptionsFramePanelContainer"]:GetHeight()
 	if mymax <= 0 then
 		mymax = 0
@@ -149,12 +144,12 @@ function frame:DisplayFrame(frame)
 	if DBM.Options.EnableModels then
 		local bossPreview = _G["DBM_BossPreview"]
 		if not bossPreview then
-			local mobstyle = CreateFrame("PlayerModel", "DBM_BossPreview", _G["DBM_GUI_OptionsFramePanelContainer"])
-			mobstyle:SetPoint("BOTTOMRIGHT", "DBM_GUI_OptionsFramePanelContainer", "BOTTOMRIGHT", -5, 5)
-			mobstyle:SetSize(300, 230)
-			mobstyle:SetPortraitZoom(0.4)
-			mobstyle:SetRotation(0)
-			mobstyle:SetClampRectInsets(0, 0, 24, 0)
+			bossPreview = CreateFrame("PlayerModel", "DBM_BossPreview", _G["DBM_GUI_OptionsFramePanelContainer"])
+			bossPreview:SetPoint("BOTTOMRIGHT", "DBM_GUI_OptionsFramePanelContainer", "BOTTOMRIGHT", -5, 5)
+			bossPreview:SetSize(300, 230)
+			bossPreview:SetPortraitZoom(0.4)
+			bossPreview:SetRotation(0)
+			bossPreview:SetClampRectInsets(0, 0, 24, 0)
 		end
 		bossPreview.enabled = false
 		bossPreview:Hide()
@@ -164,7 +159,16 @@ function frame:DisplayFrame(frame)
 				bossPreview:Show()
 				bossPreview:ClearModel()
 				bossPreview:SetDisplayInfo(mod.modelId or 0)
-				bossPreview:SetSequence(4)
+				if mod.modelScale then
+					bossPreview:SetModelScale(mod.modelScale)
+				end
+				if mod.modelOffsetX then
+					bossPreview:SetPosition(mod.modelOffsetX, mod.modelOffsetY, mod.modelOffsetZ)
+				end
+				if mod.modelRotation then
+					bossPreview:SetFacing(mod.modelRotation)
+				end
+				bossPreview:SetSequence(mod.modelSequence or 4)
 				if mod.modelSoundShort and DBM.Options.ModelSoundValue == "Short" then
 					DBM:PlaySoundFile(mod.modelSoundShort)
 				elseif mod.modelSoundLong and DBM.Options.ModelSoundValue == "Long" then
@@ -218,11 +222,33 @@ end
 function frame:ShowTab(tab)
 	self.tab = tab
 	self:UpdateMenuFrame()
-	for i = 1, #self.tabs do
+	for i = 1, #DBM_GUI.tabs do
 		if i == tab then
-			self:SelectTab(i)
+			_G["DBM_GUI_OptionsFrameTab" .. i .. "Left"]:Hide()
+			_G["DBM_GUI_OptionsFrameTab" .. i .. "Middle"]:Hide()
+			_G["DBM_GUI_OptionsFrameTab" .. i .. "Right"]:Hide()
+			_G["DBM_GUI_OptionsFrameTab" .. i .. "LeftDisabled"]:Show()
+			_G["DBM_GUI_OptionsFrameTab" .. i .. "MiddleDisabled"]:Show()
+			_G["DBM_GUI_OptionsFrameTab" .. i .. "RightDisabled"]:Show()
+			for _, panel in ipairs(DBM_GUI.tabs[i].Buttons) do
+				if panel.initial then
+					self:DisplayFrame(panel.frame)
+					return
+				end
+			end
 		else
-			self:DeselectTab(i)
+			_G["DBM_GUI_OptionsFrameTab" .. i .. "Left"]:Show()
+			_G["DBM_GUI_OptionsFrameTab" .. i .. "Middle"]:Show()
+			_G["DBM_GUI_OptionsFrameTab" .. i .. "Right"]:Show()
+			_G["DBM_GUI_OptionsFrameTab" .. i .. "LeftDisabled"]:Hide()
+			_G["DBM_GUI_OptionsFrameTab" .. i .. "MiddleDisabled"]:Hide()
+			_G["DBM_GUI_OptionsFrameTab" .. i .. "RightDisabled"]:Hide()
+			for _, panel in ipairs(DBM_GUI.tabs[i].Buttons) do
+				if panel.initial then
+					panel.frame:Hide()
+					return
+				end
+			end
 		end
 	end
 end
