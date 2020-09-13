@@ -10751,8 +10751,8 @@ do
 			for i = #self.startedTimers, 1, -1 do
 				if self.startedTimers[i] == id then
 					local guid
-					for i = 1, select("#", ...) do
-						local v = select(i, ...)
+					for j = 1, select("#", ...) do
+						local v = select(j, ...)
 						if DBM:IsCreatureGUID(v) then--Then scan them for a mob guid
 							guid = v--If found, guid will be passed in DBM_TimerStart callback
 						end
