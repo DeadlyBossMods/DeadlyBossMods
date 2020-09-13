@@ -95,17 +95,17 @@ mod:AddTimerLine(DBM:EJ_GetSectionInfo(22284))
 local timerWickedBladeCD						= mod:NewCDTimer(28.9, 333387, nil, nil, nil, 3)--28.9-44
 local timerHeartRendCD							= mod:NewCDTimer(40.1, 334765, nil, nil, nil, 3, nil, DBM_CORE_L.DEADLY_ICON)--40-52
 local timerSerratedSwipeCD						= mod:NewCDTimer(13.4, 334929, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)--13.4-18.6
-local timerCallShadowForcesCD					= mod:NewCDTimer(61.6, 342256, nil, nil, nil, 1, nil, DBM_CORE_L.MYTHIC_ICON)
+local timerCallShadowForcesCD					= mod:NewCDTimer(47.5, 342256, nil, nil, nil, 1, nil, DBM_CORE_L.MYTHIC_ICON)
 --General Grashaal
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22288))
 --All of his timers are 30-40 it appears with exception of combo/crystalize obviously
-local timerReverberatingEruptionCD				= mod:NewAITimer(31.1, 344496, 138658, nil, nil, 3, nil, nil, nil, 1, 3)--31.1-40, Short text "Eruption"
+local timerReverberatingEruptionCD				= mod:NewCDTimer(30, 344496, 138658, nil, nil, 3, nil, nil, nil, 1, 3)--31.1-40, Short text "Eruption"
 local timerSeismicUpheavalCD					= mod:NewCDTimer(30.1, 334498, nil, nil, nil, 3)--28.3-32
-local timerStoneBreakersComboCD					= mod:NewCDTimer(54.6, 339690, nil, nil, nil, 5, nil, nil, nil, 2, 3)--54-60
-local timerStoneFistCD							= mod:NewCDTimer(30.3, 342425, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)
+local timerStoneBreakersComboCD					= mod:NewCDTimer(53.5, 339690, nil, nil, nil, 5, nil, nil, nil, 2, 3)--53.5-60
+local timerStoneFistCD							= mod:NewCDTimer(35.1, 342425, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)
 --Adds
 local timerPunishingBlowCD						= mod:NewAITimer(24.6, 340043, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON)--Was never cast, FIXME
---local timerRavenousFeastCD					= mod:NewCDTimer(50, 343273, nil, nil, nil, 3)--Kind of all over the place right now (50-60)
+--local timerRavenousFeastCD					= mod:NewCDTimer(22.7, 343273, nil, nil, nil, 3)--Kind of all over the place right now (50-60)
 local timerShatteringBlast						= mod:NewCastTimer(5, 332683, nil, nil, nil, 2)
 
 --local berserkTimer							= mod:NewBerserkTimer(600)
@@ -114,9 +114,8 @@ local timerShatteringBlast						= mod:NewCastTimer(5, 332683, nil, nil, nil, 2)
 mod:AddInfoFrameOption(333913, true)
 mod:AddSetIconOption("SetIconOnWickedBlade", 333387, true, false, {1, 2})--off by default since it relies on 100% boss mod raid
 mod:AddSetIconOption("SetIconOnCrystalize", 339690, true, false, {3})
-mod:AddSetIconOption("SetIconOnMeteor", 342544, true, false, {3})
-mod:AddSetIconOption("SetIconOnLeap", 344496, false, false, {4})
-mod:AddSetIconOption("SetIconOnHeartRend", 334765, false, false, {4, 5, 6, 7})
+mod:AddSetIconOption("SetIconOnEruption", 344496, true, false, {4})
+mod:AddSetIconOption("SetIconOnHeartRend", 334765, false, false, {4, 5, 6, 7})--Off by default, conflicts with two other icon options
 mod:AddSetIconOption("SetIconOnShadowForces", 342256, true, true, {6, 7, 8})
 mod:AddNamePlateOption("NPAuraOnVolatileShell", 340037)
 
@@ -138,7 +137,7 @@ function mod:EruptionTarget(targetname, uId)
 		else
 			warnReverberatingEruption:Show(targetname)
 		end
-		if self.Options.SetIconOnLeap then
+		if self.Options.SetIconOnEruption then
 			self:SetIcon(targetname, 4, 5)--So icon clears 1 second after blast
 		end
 	end
@@ -152,9 +151,6 @@ function mod:MeteorTarget(targetname, uId)
 		yellMeteor:Yell()
 	else
 		warnPulverizingMeteor:Show(targetname)
-	end
-	if self.Options.SetIconOnMeteor then
-		self:SetIcon(targetname, 3, 3)--So icon clears 1 second after
 	end
 end
 
@@ -242,7 +238,7 @@ function mod:SPELL_CAST_START(args)
 			--Boss continues timer for crystalize/combo from air phase, it doesn't start here
 			--just spell queued depending on overlap with Grashaal resuming other stuff
 			timerStoneFistCD:Start(11.7)--11.7-20.9?
-			timerReverberatingEruptionCD:Start(2)--12.7-14.7
+			timerReverberatingEruptionCD:Start(23.4)--12.7-14.7
 			timerSeismicUpheavalCD:Start(30.7)
 		else--Stage 3 (Both Generals at once)
 			--General Kaal returning
@@ -268,7 +264,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if spellId == 334765 then
 		timerHeartRendCD:Start()
 	elseif spellId == 334929 then--Boss stutter casts this often
-		timerSerratedSwipeCD:Start()
+		timerSerratedSwipeCD:Start(12)--13.5 - 1.5
 	elseif spellId == 339690 then
 		timerStoneBreakersComboCD:Start()
 --	elseif spellId == 342732 then
@@ -421,7 +417,7 @@ function mod:RAID_BOSS_WHISPER(msg)
 		specWarnReverberatingEruption:Play("runout")
 		yellReverberatingEruption:Yell()
 		yellReverberatingEruptionFades:Countdown(3.5)--A good 0.5 sec slower
-		if self.Options.SetIconOnLeap then
+		if self.Options.SetIconOnEruption then
 			self:SetIcon(playerName, 4, 4.5)--So icon clears 1 second after
 		end
 	end
@@ -432,7 +428,7 @@ function mod:OnTranscriptorSync(msg, targetName)
 		targetName = Ambiguate(targetName, "none")
 		if self:AntiSpam(4, targetName.."2") then--Same antispam as RAID_BOSS_WHISPER on purpose. if player got personal warning they don't need this one
 			warnReverberatingEruption:Show(targetName)
-			if self.Options.SetIconOnLeap then
+			if self.Options.SetIconOnEruption then
 				self:SetIcon(targetName, 4, 4.5)--So icon clears 1 second after
 			end
 		end
