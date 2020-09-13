@@ -3178,18 +3178,27 @@ end
 --Player/Item
 ----<type>:<realmID>:<dbID>
 function DBM:GetCIDFromGUID(guid)
-	local type, _, playerdbID, _, _, cid, _ = strsplit("-", guid or "")
-	if type and (type == "Creature" or type == "Vehicle" or type == "Pet") then
+	local guidType, _, playerdbID, _, _, cid, _ = strsplit("-", guid or "")
+	if guidType and (guidType == "Creature" or guidType == "Vehicle" or guidType == "Pet") then
 		return tonumber(cid)
-	elseif type and (type == "Player" or type == "Item") then
+	elseif type and (guidType == "Player" or guidType == "Item") then
 		return tonumber(playerdbID)
 	end
 	return 0
 end
 
+function DBM:IsNonPlayableGUID(guid)
+	if type(guid) == "number" then return false end
+	local guidType = strsplit("-", guid or "")
+	if guidType and (guidType == "Creature" or guidType == "Vehicle" or guidType == "NPC") then--To determine, add pet or not?
+		return true
+	end
+	return false
+end
+
 function DBM:IsCreatureGUID(guid)
-	local type = strsplit("-", guid or "")
-	if type and (type == "Creature" or type == "Vehicle") then--To determine, add pet or not?
+	local guidType = strsplit("-", guid or "")
+	if guidType and (guidType == "Creature" or guidType == "Vehicle") then--To determine, add pet or not?
 		return true
 	end
 	return false
@@ -10641,7 +10650,7 @@ do
 			if select("#", ...) > 0 then--If timer has args
 				for i = 1, select("#", ...) do
 					local v = select(i, ...)
-					if DBM:IsCreatureGUID(v) then--Then scan them for a mob guid
+					if DBM:IsNonPlayableGUID(v) then--Then scan them for a mob guid
 						guid = v--If found, guid will be passed in DBM_TimerStart callback
 					end
 				end
@@ -10753,7 +10762,7 @@ do
 					local guid
 					for j = 1, select("#", ...) do
 						local v = select(j, ...)
-						if DBM:IsCreatureGUID(v) then--Then scan them for a mob guid
+						if DBM:IsNonPlayableGUID(v) then--Then scan them for a mob guid
 							guid = v--If found, guid will be passed in DBM_TimerStart callback
 						end
 					end
