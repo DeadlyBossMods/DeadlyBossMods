@@ -14,8 +14,8 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 333387 334765 334929 334498 339690 342544 342256 340043 342722 332683 342425 344496",
-	"SPELL_CAST_SUCCESS 334765 334929 342732",
-	"SPELL_SUMMON 342255 342257",
+	"SPELL_CAST_SUCCESS 334765 334929 342732 342253 342985",
+	"SPELL_SUMMON 342255 342257 342258 342259",
 	"SPELL_AURA_APPLIED 329636 333913 334765 338156 338153 329808 333377 339690 342655 340037 343273 342425 336212",
 	"SPELL_AURA_APPLIED_DOSE 333913",
 	"SPELL_AURA_REMOVED 329636 333913 334765 329808 333377 339690 340037",
@@ -24,25 +24,18 @@ mod:RegisterEventsInCombat(
 --	"SPELL_PERIODIC_MISSED",
 	"UNIT_DIED",
 	"RAID_BOSS_WHISPER",
---	"UNIT_SPELLCAST_SUCCEEDED boss3 boss4 boss5 arena1 arena2 arena3",--Adds can use any of these
 	"UNIT_SPELLCAST_START boss1 boss2"
 )
 
---TODO, review more of timers with some bug fixes to fight as well as just a better version of transcriptor recording it.
---TODO, Target scan meteor target, if it's not same target as crystalize
---TODO, add https://ptr.wowhead.com/spell=343060/stone-spike when Grashaal is in air?
---TODO, add https://ptr.wowhead.com/spell=336231/cluster-bombardment for adds?
---TODO, verify timer for https://ptr.wowhead.com/spell=340043 . it was never used on mythic?
---TODO, stack announces for https://ptr.wowhead.com/spell=340042/punishment if it stacks
---TODO, https://shadowlands.wowhead.com/spell=342254/wicked-slaughter targeting?
---TODO, https://ptr.wowhead.com/spell=342985/stonegale-effigy needs announcing probably, but what event?
---TODO, target scan/yell for https://ptr.wowhead.com/spell=343086/ricocheting-shuriken ?
---TODO, is https://ptr.wowhead.com/spell=342425/stone-fist stacked or always swap at 1 in proper situation?
+--TODO, review more of timers with some bug fixes to fight as well as just a better version of transcriptor recording it., especailly P3 timers after intermission 2
+--TODO, verify timer for https://ptr.wowhead.com/spell=340043 . it was never used?
+--TODO, stack announces for https://ptr.wowhead.com/spell=340042/punishment?
 --TODO, heart rend is renamed to Soul Crusher in journal, but spell data not renamed yet. Apply rename when it happens.
+--TODO, find a way to move timers for Adds to nameplate bars, otherwise they are far less useful and will only feel like spam. They'll be extremely useful on NPs though
 --[[
 (ability.id = 333387 or ability.id = 334929 or ability.id = 344496 or ability.id = 334498 or ability.id = 342544 or ability.id = 342256 or ability.id = 342425 or ability.id = 332683) and type = "begincast"
- or (ability.id = 334765 or ability.id = 339690) and type = "cast"
- or ability.id = 329636 or ability.id = 329808 or ability.id = 342255
+ or (ability.id = 334765 or ability.id = 339690 or ability.id = 342253) and type = "cast"
+ or ability.id = 329636 or ability.id = 329808 or ability.id = 342255 or ability.id = 342257 or ability.id = 342258 or ability.id = 342259
  or (target.id = 168112 or target.id = 168113 or target.id = 172858) and type = "death"
  or (ability.id = 340043 or ability.id = 332683) and type = "begincast"
  or ability.id = 342732 and type = "cast"
@@ -64,7 +57,8 @@ local warnStoneLegionGoliath					= mod:NewSpellAnnounce("ej22764", 2, 343273)
 local warnVolatileAnimaInfusion					= mod:NewTargetNoFilterAnnounce(342655, 2, nil, false)
 local warnRavenousFeast							= mod:NewTargetNoFilterAnnounce(343273, 3)
 local warnStonewrathExhaust						= mod:NewCastAnnounce(342722, 3)
---local warnStonegaleEffigy						= mod:NewSpellAnnounce(342985, 3)
+local warnWickedSlaughter						= mod:NewTargetNoFilterAnnounce(342253, 2, nil, "Tank")--So tanks know where adds went
+local warnStonegaleEffigy						= mod:NewSpellAnnounce(342985, 3)
 
 --General Kaal
 local specWarnWickedBlade						= mod:NewSpecialWarningYouPos(333376, nil, nil, nil, 1, 2)
@@ -98,15 +92,17 @@ local timerSerratedSwipeCD						= mod:NewCDTimer(13.4, 334929, nil, "Tank", nil,
 local timerCallShadowForcesCD					= mod:NewCDTimer(47.5, 342256, nil, nil, nil, 1, nil, DBM_CORE_L.MYTHIC_ICON)
 --General Grashaal
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22288))
---All of his timers are 30-40 it appears with exception of combo/crystalize obviously
 local timerReverberatingEruptionCD				= mod:NewCDTimer(30, 344496, 138658, nil, nil, 3, nil, nil, nil, 1, 3)--31.1-40, Short text "Eruption"
 local timerSeismicUpheavalCD					= mod:NewCDTimer(30.1, 334498, nil, nil, nil, 3)--28.3-32
 local timerStoneBreakersComboCD					= mod:NewCDTimer(53.5, 339690, nil, nil, nil, 5, nil, nil, nil, 2, 3)--53.5-60
 local timerStoneFistCD							= mod:NewCDTimer(35.1, 342425, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)
---Adds
-local timerPunishingBlowCD						= mod:NewAITimer(24.6, 340043, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON)--Was never cast, FIXME
---local timerRavenousFeastCD					= mod:NewCDTimer(22.7, 343273, nil, nil, nil, 3)--Kind of all over the place right now (50-60)
+--Phasing
 local timerShatteringBlast						= mod:NewCastTimer(5, 332683, nil, nil, nil, 2)
+--Adds
+mod:AddTimerLine(DBM_CORE_L.ADDS)
+local timerPunishingBlowCD						= mod:NewAITimer(24.6, 340043, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON)--Was never cast, FIXME
+local timerRavenousFeastCD						= mod:NewCDTimer(22.7, 343273, nil, nil, nil, 3)--Kind of all over the place right now 23-30)
+local timerWickedSlaughterCD					= mod:NewCDTimer(10.9, 342253, nil, "Tank", nil, 3, nil, DBM_CORE_L.MYTHIC_ICON)
 
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
@@ -124,7 +120,6 @@ local LacerationStacks = {}
 mod.vb.HeartIcon = 4
 mod.vb.wickedBladeIcon = 1
 mod.vb.phase = 1
-mod.vb.addIcon = 8
 
 function mod:EruptionTarget(targetname, uId)
 	if not targetname then return end
@@ -159,7 +154,6 @@ function mod:OnCombatStart(delay)
 	self.vb.HeartIcon = 4
 	self.vb.wickedBladeIcon = 1
 	self.vb.phase = 1
-	self.vb.addIcon = 8
 	--General Kaal
 	timerSerratedSwipeCD:Start(7.3-delay)--START, but next timer is started at SUCCESS
 	timerWickedBladeCD:Start(16.6-delay)
@@ -172,9 +166,6 @@ function mod:OnCombatStart(delay)
 	if self.Options.NPAuraOnVolatileShell then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
---	if self.Options.RangeFrame then
---		DBM.RangeCheck:Show(4)--For Acid Splash
---	end
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(333913))
 		DBM.InfoFrame:Show(10, "table", LacerationStacks, 1)
@@ -186,9 +177,6 @@ function mod:OnCombatEnd()
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
 	end
---	if self.Options.RangeFrame then
---		DBM.RangeCheck:Hide()
---	end
 	if self.Options.NPAuraOnVolatileShell then
 		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
 	end
@@ -214,7 +202,6 @@ function mod:SPELL_CAST_START(args)
 		specWarnSeismicUpheaval:Play("watchstep")
 		timerSeismicUpheavalCD:Start()
 	elseif spellId == 342544 then
-		--warnPulverizingMeteor:Show()
 		self:BossTargetScanner(args.sourceGUID, "MeteorTarget", 0.05, 12)
 	elseif spellId == 342256 then
 		warnCallShadowForces:Show()
@@ -230,18 +217,19 @@ function mod:SPELL_CAST_START(args)
 		--Start INCOMING boss timers here, that seems to be how it's scripted.
 		self.vb.phase = self.vb.phase + 1
 		if self.vb.phase == 2 then
-			--Seems first set of adds is spawned instantly Shattering Blast cast
---			if self:IsMythic() then
---				timerCallShadowForcesCD:Start(2)
---			end
 			--General Grashaal
 			--Boss continues timer for crystalize/combo from air phase, it doesn't start here
 			--just spell queued depending on overlap with Grashaal resuming other stuff
-			timerStoneFistCD:Start(11.7)--11.7-20.9?
-			timerReverberatingEruptionCD:Start(23.4)--12.7-14.7
-			timerSeismicUpheavalCD:Start(30.7)
+			timerStoneFistCD:Start(11.7)--11.7-39.4
+			timerReverberatingEruptionCD:Start(11.1)--11-23.27
+			timerSeismicUpheavalCD:Start(30.9)--30.9-39.3
+			--Kael also resumes summing adds on mythic once intermission 1 is over, but it's pretty instant
+--			if self:IsMythic() then
+--				timerCallShadowForcesCD:Start(0)--0-5
+--			end
 		else--Stage 3 (Both Generals at once)
 			--General Kaal returning
+			--These probably need redoing
 			timerSerratedSwipeCD:Start(5.5)--START, but next timer is started at SUCCESS
 			timerHeartRendCD:Start(16.2)--SUCCESS
 			timerWickedBladeCD:Start(34.2)
@@ -267,8 +255,13 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerSerratedSwipeCD:Start(12)--13.5 - 1.5
 	elseif spellId == 339690 then
 		timerStoneBreakersComboCD:Start()
---	elseif spellId == 342732 then
---		timerRavenousFeastCD:Start()
+	elseif spellId == 342732 then
+		timerRavenousFeastCD:Start(30, args.sourceGUID)
+	elseif spellId == 342253 then
+		warnWickedSlaughter:CombinedShow(1.5, args.destName)--Needs to allow at least 1.5 to combine targets
+		timerWickedSlaughterCD:Start(11, args.sourceGUID)
+	elseif spellId == 342985 and self:AntiSpam(3, 3) then
+		warnStonegaleEffigy:Show()
 	end
 end
 
@@ -278,15 +271,16 @@ function mod:SPELL_SUMMON(args)
 		local cid = self:GetCIDFromGUID(args.destGUID)
 		if cid == 172858 then--stone-legion-goliath
 			warnStoneLegionGoliath:Show()
-			--if self:IsHard() then
-			--	timerRavenousFeastCD:Start(33.2)
-			--end
+			if self:IsHard() then
+				timerRavenousFeastCD:Start(33.2, args.destGUID)
+			end
 		end
-	elseif spellId == 342257 then
-		if self.Options.SetIconOnShadowForces then--Only use up to 5 icons
-			self:ScanForMobs(args.destGUID, 2, self.vb.addIcon, 1, 0.2, 12)
+	elseif spellId == 342257 or spellId == 342258 or spellId == 342259 then
+		if self.Options.SetIconOnShadowForces then
+			local icon = spellId == 342257 and 8 or spellId == 342258 and 7 or 6
+			self:ScanForMobs(args.destGUID, 2, icon, 1, 0.2, 12)
 		end
-		self.vb.addIcon = self.vb.addIcon - 1
+		timerWickedSlaughterCD:Start(10.6, args.destGUID)
 	end
 end
 
@@ -342,16 +336,12 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnVolatileStoneShell:Show()
 			specWarnVolatileStoneShell:Play("targetchange")
 		end
---		if self.Options.InfoFrame then--Will only work if it has a valid boss unit ID, so hold off for now
---			DBM.InfoFrame:SetHeader(args.spellName)
---			DBM.InfoFrame:Show(2, "enemyabsorb", nil, args.amount, "boss1")
---		end
 		if self.Options.NPAuraOnVolatileShell then
 			DBM.Nameplate:Show(true, args.destGUID, spellId, nil, 6)
 		end
 	elseif spellId == 343273 then
 		warnRavenousFeast:CombinedShow(0.3, args.destName)--Combined in case it'll clobber everyone near them too
-	elseif spellId == 342425 and not args:IsPlayer() and not DBM:UnitDebuff("player", spellId) then
+	elseif spellId == 342425 and not args:IsPlayer() then
 		specWarnStoneFistTaunt:Show(args.destName)
 		specWarnStoneFistTaunt:Play("tauntboss")
 	elseif spellId == 336212 then
@@ -369,10 +359,10 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerHeartRendCD:Stop()
 		timerSerratedSwipeCD:Stop()
 		--Start Outgoing boss (Kael) (stuff he still casts airborn) here as well
-		timerWickedBladeCD:Start(26.7)
+		timerWickedBladeCD:Start(26.2)
 	elseif spellId == 329808 then
 		warnHardenedStoneFormOver:Show()
-		--No timer action should be needed here.
+		--No timer action should be needed here, boss doesn't leave.
 		--Shattering started incoming bosses timers and boss already active doesn't reset timers
 	elseif spellId == 333913 then
 		LacerationStacks[args.destName] = nil
@@ -391,10 +381,6 @@ function mod:SPELL_AURA_REMOVED(args)
 			self:SetIcon(args.destName, 0)
 		end
 	elseif spellId == 340037 then
---		if self.Options.InfoFrame then
---			DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(333913))
---			DBM.InfoFrame:Show(10, "table", LacerationStacks, 1)
---		end
 		if self.Options.NPAuraOnVolatileShell then
 			DBM.Nameplate:Hide(true, args.destGUID, spellId)
 		end
@@ -438,11 +424,11 @@ end
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 172858 then--stone-legion-goliath
---		timerRavenousFeastCD:Stop()
+		timerRavenousFeastCD:Stop(args.destGUID)
 	elseif cid == 173276 then--Stone Legion Commando
 		timerPunishingBlowCD:Stop(args.destGUID)
---	elseif cid == 173280 then--stone-legion-skirmisher
-
+	elseif cid == 173280 then--stone-legion-skirmisher
+		timerWickedSlaughterCD:Stop(args.destGUID)
 	elseif cid == 168112 then--Kaal
 		timerWickedBladeCD:Stop()
 		timerHeartRendCD:Stop()
