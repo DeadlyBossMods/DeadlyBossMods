@@ -10636,7 +10636,17 @@ do
 			--Keep: true or nil, whether or not to keep bar on screen when it expires (if true, timer should be retained until an actual TimerStop occurs or a new TimerStart with same barId happens (in which case you replace bar with new one)
 			--fade: true or nil, whether or not to fade a bar (set alpha to usersetting/2)
 			--spellName: Sent so users can use a spell name instead of spellId, if they choose. Mostly to be more classic wow friendly, spellID is still preferred method (even for classic)
-			fireEvent("DBM_TimerStart", id, msg, timer, self.icon, self.type, self.spellId, colorId, self.mod.id, self.keep, self.fade, self.name)
+			--MobGUID if it could be parsed out of args
+			local guid
+			if select("#", ...) > 0 then--If timer has args
+				for i = 1, select("#", ...) do
+					local v = select(i, ...)
+					if DBM:IsCreatureGUID(v) then--Then scan them for a mob guid
+						guid = v--If found, guid will be passed in DBM_TimerStart callback
+					end
+				end
+			end
+			fireEvent("DBM_TimerStart", id, msg, timer, self.icon, self.type, self.spellId, colorId, self.mod.id, self.keep, self.fade, self.name, guid)
 			tinsert(self.startedTimers, id)
 			if not self.keep then--Don't ever remove startedTimers on a schedule, if it's a keep timer
 				self.mod:Unschedule(removeEntry, self.startedTimers, id)
@@ -10740,7 +10750,14 @@ do
 			local id = self.id..pformat((("\t%s"):rep(select("#", ...))), ...)
 			for i = #self.startedTimers, 1, -1 do
 				if self.startedTimers[i] == id then
-					fireEvent("DBM_TimerStop", id)
+					local guid
+					for i = 1, select("#", ...) do
+						local v = select(i, ...)
+						if DBM:IsCreatureGUID(v) then--Then scan them for a mob guid
+							guid = v--If found, guid will be passed in DBM_TimerStart callback
+						end
+					end
+					fireEvent("DBM_TimerStop", id, guid)
 					DBM.Bars:CancelBar(id)
 					DBM:Unschedule(playCountSound, id)--Unschedule countdown by timerId
 					tremove(self.startedTimers, i)
