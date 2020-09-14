@@ -421,8 +421,6 @@ function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 172858 then--stone-legion-goliath
 		timerRavenousFeastCD:Stop(args.destGUID)
-	elseif cid == 173276 then--Stone Legion Commando
-		timerPunishingBlowCD:Stop(args.destGUID)
 	elseif cid == 173280 then--stone-legion-skirmisher
 		timerWickedSlaughterCD:Stop(args.destGUID)
 	elseif cid == 168112 then--Kaal
