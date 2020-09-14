@@ -13,7 +13,7 @@ mod:SetMinSyncRevision(20200911000000)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 333387 334765 334929 334498 339690 342544 342256 340043 342722 332683 342425 344496",
+	"SPELL_CAST_START 333387 334765 334929 334498 339690 342544 342256 342722 332683 342425 344496",
 	"SPELL_CAST_SUCCESS 334765 334929 342732 342253 342985",
 	"SPELL_SUMMON 342255 342257 342258 342259",
 	"SPELL_AURA_APPLIED 329636 333913 334765 338156 338153 329808 333377 339690 342655 340037 343273 342425 336212",
@@ -28,7 +28,6 @@ mod:RegisterEventsInCombat(
 )
 
 --TODO, review more of timers with some bug fixes to fight as well as just a better version of transcriptor recording it., especailly P3 timers after intermission 2
---TODO, verify timer for https://ptr.wowhead.com/spell=340043 . it was never used?
 --TODO, stack announces for https://ptr.wowhead.com/spell=340042/punishment?
 --TODO, heart rend is renamed to Soul Crusher in journal, but spell data not renamed yet. Apply rename when it happens.
 --TODO, find a way to move timers for Adds to nameplate bars, otherwise they are far less useful and will only feel like spam. They'll be extremely useful on NPs though
@@ -100,7 +99,6 @@ local timerStoneFistCD							= mod:NewCDTimer(35.1, 342425, nil, "Tank", nil, 5,
 local timerShatteringBlast						= mod:NewCastTimer(5, 332683, nil, nil, nil, 2)
 --Adds
 mod:AddTimerLine(DBM_CORE_L.ADDS)
-local timerPunishingBlowCD						= mod:NewAITimer(24.6, 340043, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON)--Was never cast, FIXME
 local timerRavenousFeastCD						= mod:NewCDTimer(22.7, 343273, nil, nil, nil, 3)--Kind of all over the place right now 23-30)
 local timerWickedSlaughterCD					= mod:NewCDTimer(10.9, 342253, nil, "Tank", nil, 3, nil, DBM_CORE_L.MYTHIC_ICON)
 
@@ -206,8 +204,6 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 342256 then
 		warnCallShadowForces:Show()
 		timerCallShadowForcesCD:Start()
-	elseif spellId == 340043 then
-		timerPunishingBlowCD:Start(10, args.sourceGUID)
 	elseif spellId == 342722 then
 		warnStonewrathExhaust:Show()
 	elseif spellId == 332683 then
