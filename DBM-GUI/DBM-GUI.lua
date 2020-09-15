@@ -469,7 +469,7 @@ do
 				end
 
 				local statTypes = {
-					lfr			= PLAYER_DIFFICULTY3,
+					lfr25		= PLAYER_DIFFICULTY3,
 					normal		= mod.addon.minExpansion < 5 and RAID_DIFFICULTY1 or PLAYER_DIFFICULTY1,
 					normal25	= RAID_DIFFICULTY2,
 					heroic		= mod.addon.minExpansion < 5 and RAID_DIFFICULTY3 or PLAYER_DIFFICULTY2,
