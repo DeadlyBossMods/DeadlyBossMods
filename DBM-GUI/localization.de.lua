@@ -6,7 +6,7 @@ L.MainFrame = "Deadly Boss Mods"
 
 L.TranslationByPrefix		= "Übersetzt von "
 L.TranslationBy 			= "Ebmor@EU-Malorne"
-L.Website					= "Besuche uns auf Discord: |cFF73C2FBhttps://discord.gg/DF5mffk|r. Folge auf Twitter: @deadlybossmods oder @MysticalOS"
+L.Website					= "Besuche uns auf Discord: |cFF73C2FBhttps://discord.gg/deadlybossmods|r. Folge auf Twitter: @deadlybossmods oder @MysticalOS"
 L.WebsiteButton				= "Webseite"
 
 L.OTabBosses	= "Bosse"
