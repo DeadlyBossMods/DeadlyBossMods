@@ -8,9 +8,9 @@ mod:SetEncounterID(2361)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
---	"SPELL_AURA_APPLIED",
 	"SPELL_CAST_START 322554",
-	"SPELL_CAST_SUCCESS 322574",
+--	"SPELL_CAST_SUCCESS 322574",
+	"SPELL_AURA_APPLIED 323548",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 	"UNIT_DIED"
@@ -19,15 +19,15 @@ mod:RegisterEventsInCombat(
 
 --TODO, warn for https://shadowlands.wowhead.com/spell=328494/sintouched-anima spawns?
 --TODO, figure ot how Castigate works to more accurately warn it
-local warnCastigate				= mod:NewCastAnnounce(322554, 4)
+local warnCastigate					= mod:NewCastAnnounce(322554, 4)
 
 local specWarnCastigate				= mod:NewSpecialWarningMoveAway(322554, nil, nil, nil, 1, 2)
 --local yellCastigate				= mod:NewYell(322554)
 local specWarnCoalesceManifestation	= mod:NewSpecialWarningSwitch(322574, "-Healer", nil, nil, 1, 2)
 --local specWarnGTFO				= mod:NewSpecialWarningGTFO(257274, nil, nil, nil, 1, 8)
 
-local timerCastigateCD				= mod:NewAITimer(13, 322554, nil, nil, nil, 3)
-local timerCoalesceManifestationCD	= mod:NewAITimer(15.8, 322574, nil, nil, nil, 1, nil, DBM_CORE_L.DAMAGE_ICON)
+local timerCastigateCD				= mod:NewNextTimer(20.7, 322554, nil, nil, nil, 3)
+local timerCoalesceManifestationCD	= mod:NewNextTimer(15.8, 322574, nil, nil, nil, 1, nil, DBM_CORE_L.DAMAGE_ICON)
 
 mod:AddRangeFrameOption(8, 322554)
 mod:AddNamePlateOption("NPAuraOnEnergy", 323548)
@@ -38,7 +38,7 @@ local unitTracked = {}
 function mod:OnCombatStart(delay)
 	self.vb.AddsActive = 0
 	table.wipe(unitTracked)
-	timerCastigateCD:Start(1-delay)
+	timerCastigateCD:Start(4.8-delay)
 	timerCoalesceManifestationCD:Start(1-delay)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(8)
@@ -62,12 +62,13 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 322554 then
 		warnCastigate:Show()
 		timerCastigateCD:Start()
+		timerCoalesceManifestationCD:Start(6)
 	end
 end
 
-function mod:SPELL_CAST_SUCCESS(args)
+function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 322574 then
+	if spellId == 323548 then
 		self.vb.AddsActive = self.vb.AddsActive + 1
 		specWarnCoalesceManifestation:Show()
 		specWarnCoalesceManifestation:Play("killmob")
@@ -111,15 +112,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 		end
 	end
 end
-
---[[
-function mod:SPELL_AURA_APPLIED(args)
-	local spellId = args.spellId
-	if spellId == 194966 then
-
-	end
-end
---]]
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
