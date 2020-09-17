@@ -716,8 +716,8 @@ do
 						rangeCheck:Hide(true)
 						return
 					end
-					dot.x = -(x - playerX)
-					dot.y = -(y - playerY)
+					dot.y = -(x - playerX)
+					dot.x = -(y - playerY)
 					dot.range = range
 					setDot(i, sinTheta, cosTheta)
 				end
