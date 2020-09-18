@@ -266,8 +266,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 			local timer
 			if self:IsMythic() then
 				timer = (self.vb.phase == 3) and 15.2 or (self.vb.phase == 2) and 18.4 or 20.8--Phase 3 not confirmed yet
-			elseif self:IsHard() then
-				timer = (self.vb.phase == 3) and 26.7 or (self.vb.phase == 2) and 22.2 or (self.vb.phase == 2.5) and 42.2 or 21
+			elseif self:IsHeroic() then
+				timer = (self.vb.phase == 3) and 26.7 or (self.vb.phase == 2) and 20.2 or (self.vb.phase == 2.5) and 42.2 or 21
 			elseif self:IsNormal() then
 				timer = (self.vb.phase == 3) and 33.7 or (self.vb.phase == 2) and 22.6 or (self.vb.phase == 2.5) and 47.5 or 26.2
 			else--LFR
@@ -289,8 +289,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 					timer = 4.3
 				end
 			end
-		elseif self:IsHard() then
-			timer = (self.vb.phase == 2.5) and 22.2 or (self.vb.phase == 2) and 33.3 or 24
+		elseif self:IsHeroic() then
+			timer = (self.vb.phase == 2.5) and 22.2 or (self.vb.phase == 2) and 32.1 or 24
 		elseif self:IsNormal() then
 			timer = (self.vb.phase == 2.5) and 24.9 or (self.vb.phase == 2) and 37.4 or 30
 		else--LFR
