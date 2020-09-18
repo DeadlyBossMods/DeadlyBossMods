@@ -17,7 +17,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 325877 329509 329518 328885 325440 325506 333002 326455 337865",
 	"SPELL_CAST_SUCCESS 326583 325665 181113",
 	"SPELL_SUMMON 329565 326075",
-	"SPELL_AURA_APPLIED 326456 328659 341254 328731 325442 333145 326078 332871 326583 328479 323402 337859 335581 343026",
+	"SPELL_AURA_APPLIED 326456 328659 341254 328731 325442 333145 326078 332871 326583 328479 323402 337859 335581 343026 341473",
 	"SPELL_AURA_APPLIED_DOSE 326456 325442 326078",
 	"SPELL_AURA_REMOVED 328731 326078 328479 323402 337859 343026",
 	"SPELL_PERIODIC_DAMAGE 328579",
@@ -53,7 +53,7 @@ local warnConcussiveSmash						= mod:NewCountAnnounce(325506, 3)
 ----Assassin
 local warnAssassin								= mod:NewCountAnnounce("ej21993", 2, 326583)
 local warnReturnToStone							= mod:NewTargetNoFilterAnnounce(333145, 4, nil, "-Healer")
-local warnCrimsonFury							= mod:NewTargetAnnounce(326583, 3)
+local warnCrimsonFury							= mod:NewTargetAnnounce(341473, 3)
 --Vile Occultist
 local warnVileOccultists						= mod:NewCountAnnounce("ej21952", 2, 329565)
 local warnSummonEssenceFont						= mod:NewSpellAnnounce(329565, 2, nil, "Healer")
@@ -83,8 +83,8 @@ local specWarnGreaterCastigation				= mod:NewSpecialWarningMoveAway(328885, nil,
 local specWarnVanquished						= mod:NewSpecialWarningStack(325442, nil, 18, nil, nil, 1, 6)
 local specWarnVanquishedTaunt					= mod:NewSpecialWarningTaunt(325442, nil, nil, nil, 1, 2)
 --Assassin
-local specWarnCrimsonFury						= mod:NewSpecialWarningMoveAway(326583, nil, nil, nil, 1, 2)
-local yellCrimsonFury							= mod:NewYell(326583)
+local specWarnCrimsonFury						= mod:NewSpecialWarningMoveAway(341473, nil, nil, nil, 1, 2)
+local yellCrimsonFury							= mod:NewYell(341473)
 --Vile Occultist
 local specWarnVulgarBrand						= mod:NewSpecialWarningInterrupt(333002, "HasInterrupt", nil, nil, 1, 2)
 --Phoenix
@@ -109,7 +109,7 @@ local timerVanquishingStrikeCD					= mod:NewCDTimer(5.5, 325440, nil, "Tank", ni
 ----Bleakwing Assassin
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(21993))
 local timerBleakwingAssassinCD					= mod:NewCDCountTimer(80, "ej21993", nil, nil, nil, 1, 326583, DBM_CORE_L.DAMAGE_ICON)
---local timerCrimsonFuryCD						= mod:NewCDTimer(44.3, 326583, nil, false, nil, 3)--Too many to track via normal bars, this needs nameplate bars/icon
+--local timerCrimsonFuryCD						= mod:NewCDTimer(44.3, 341473, nil, false, nil, 3)--Too many to track via normal bars, this needs nameplate bars/icon
 ----Vile Occultist
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(21952))
 local timerVileOccultistCD						= mod:NewCDCountTimer(10, "ej21952", nil, nil, nil, 1, 329565, DBM_CORE_L.DAMAGE_ICON)
@@ -504,7 +504,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 332871 and args:IsPlayer() then
 		specWarnGreaterCastigation:Show()
 		specWarnGreaterCastigation:Play("scatter")
-	elseif spellId == 326583 then
+	elseif spellId == 326583 or spellId == 341473 then
 		warnCrimsonFury:CombinedShow(0.5, args.destName)
 		if args:IsPlayer() and self:AntiSpam(3, 8) then
 			specWarnCrimsonFury:Show()

@@ -1358,13 +1358,13 @@ do
 			if GetAddOnEnableState(playerName, "DBM-SpellTimers") >= 1 then
 				local version = GetAddOnMetadata("DBM-SpellTimers", "Version") or "r0"
 				version = tonumber(string.sub(version, 2, 4)) or 0
-				if version < 122 and not self.Options.Debug then
+				if version < 122 and not self.Options.DebugMode then
 					self:Disable(true)
 					self:Schedule(15, infniteLoopNotice, self, L.OUTDATEDSPELLTIMERS)
 					return
 				end
 			end
-			if GetAddOnEnableState(playerName, "DBM-RaidLeadTools") >= 1 and not self.Options.Debug then
+			if GetAddOnEnableState(playerName, "DBM-RaidLeadTools") >= 1 and not self.Options.DebugMode then
 				self:Disable(true)
 				self:Schedule(15, infniteLoopNotice, self, L.OUTDATEDRLT)
 				return
@@ -2701,12 +2701,12 @@ do
 		if GetAddOnEnableState(playerName, "DBM-SpellTimers") >= 1 then
 			local version = GetAddOnMetadata("DBM-SpellTimers", "Version") or "r0"
 			version = tonumber(string.sub(version, 2, 4)) or 0
-			if version < 122 and not self.Options.Debug then
+			if version < 122 and not self.Options.DebugMode then
 				self:AddMsg(L.OUTDATEDSPELLTIMERS)
 				return
 			end
 		end
-		if GetAddOnEnableState(playerName, "DBM-RaidLeadTools") >= 1 and not self.Options.Debug then
+		if GetAddOnEnableState(playerName, "DBM-RaidLeadTools") >= 1 and not self.Options.DebugMode then
 			self:AddMsg(L.OUTDATEDRLT)
 			return
 		end
