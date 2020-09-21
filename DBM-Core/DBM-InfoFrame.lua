@@ -984,7 +984,7 @@ local function onUpdate(frame, table)
 	if linesShown > linesPerRow then
 		height = height + (linesPerRow * size)
 	else
-		height = height + (linesShown * size)
+		height = height + (mmin(linesShown, maxLines)* size)
 	end
 	frame:SetSize(width, height)
 	frame:Show()
