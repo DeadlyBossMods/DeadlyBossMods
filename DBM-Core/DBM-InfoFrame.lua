@@ -980,7 +980,13 @@ local function onUpdate(frame, table)
 	if width == 0 then
 		width = 105
 	end
-	frame:SetSize(width, (linesPerRow * size) + size)
+	local height = size
+	if linesShown > linesPerRow then
+		height = height + (linesPerRow * size)
+	else
+		height = height + (linesShown * size)
+	end
+	frame:SetSize(width, height)
 	frame:Show()
 	prevLines = linesShown
 end
