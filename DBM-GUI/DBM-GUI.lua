@@ -140,6 +140,10 @@ do
 			DBM:AddMsg("Missing required libraries to import.")
 			return
 		end
+		if whereToSave == nil then
+			DBM:AddMsg("Missing save location.")
+			return
+		end
 		local success, deserialized = LibSerialize:Deserialize(LibDeflate:DecompressDeflate(LibDeflate:DecodeForPrint(import)))
 		if not success then
 			DBM:AddMsg("Failed to deserialize")

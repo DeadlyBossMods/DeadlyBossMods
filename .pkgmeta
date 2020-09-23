@@ -11,10 +11,10 @@ externals:
   DBM-Core/Libs/LibStub: https://repos.wowace.com/wow/libstub/trunk
   DBM-Core/Libs/LibDeflate:
     url: https://github.com/SafeteeWoW/LibDeflate
-    tag: 1.0.2-release
+    tag: latest
   DBM-Core/Libs/LibSerialize:
     url: https://github.com/rossnichols/LibSerialize
-    tag: v1.1.0
+    tag: latest
 
 enable-nolib-creation: no
 
