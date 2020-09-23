@@ -197,7 +197,7 @@ do
 
 	--[[
 	Example:
-	local export = DBM_GUI:ExportProfile(DBM_AllSavedOptions[DBM_UsedProfile])
+	DBM_GUI:ExportProfile(DBM_AllSavedOptions[DBM_UsedProfile])
 
 	DBM_AllSavedOptions[DBM_UsedProfile] = DBM_GUI:ImportProfile(export)
 	--]]
