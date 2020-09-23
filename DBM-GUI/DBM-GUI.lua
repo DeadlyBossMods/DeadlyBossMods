@@ -146,8 +146,8 @@ do
 		popupFrame:Hide()
 		popupFrame.text = ""
 
-		local input = CreateFrame("EditBox", nil, popupFrame, DBM:IsAlpha() and "BackdropTemplate")
-		input.backdropInfo = {
+		local backdrop = CreateFrame("Frame", nil, popupFrame, DBM:IsAlpha() and "BackdropTemplate")
+		backdrop.backdropInfo = {
 			bgFile		= "Interface\\ChatFrame\\ChatFrameBackground",
 			edgeFile	= "Interface\\Tooltips\\UI-Tooltip-Border",
 			tile		= true,
@@ -156,16 +156,23 @@ do
 			insets		= { left = 3, right = 3, top = 5, bottom = 3 }
 		}
 		if DBM:IsAlpha() then
-			input:ApplyBackdrop()
+			backdrop:ApplyBackdrop()
 		else
-			input:SetBackdrop(input.backdropInfo)
+			backdrop:SetBackdrop(backdrop.backdropInfo)
 		end
-		input:SetBackdropColor(0.1, 0.1, 0.1, 0.6)
-		input:SetBackdropBorderColor(0.4, 0.4, 0.4)
+		backdrop:SetBackdropColor(0.1, 0.1, 0.1, 0.6)
+		backdrop:SetBackdropBorderColor(0.4, 0.4, 0.4)
+		backdrop:SetPoint("TOPLEFT", 15, -15)
+		backdrop:SetPoint("BOTTOMRIGHT", -40, 40)
+
+		local scrollFrame = CreateFrame("ScrollFrame", nil, popupFrame, "UIPanelScrollFrameTemplate")
+		scrollFrame:SetPoint("TOPLEFT", 15, -22)
+		scrollFrame:SetPoint("BOTTOMRIGHT", -40, 45)
+
+		local input = CreateFrame("EditBox", nil, scrollFrame)
 		input:SetTextInsets(7, 7, 7, 7)
 		input:SetFontObject(ChatFontNormal)
-		input:SetPoint("TOPLEFT", 15, -15)
-		input:SetPoint("BOTTOMRIGHT", -15, 40)
+		input:SetWidth(452) -- 482, 457
 		input:SetMultiLine(true)
 		input:EnableMouse(true)
 		input:SetAutoFocus(false)
@@ -178,6 +185,7 @@ do
 		end)
 		input:HighlightText()
 		input:SetFocus()
+		scrollFrame:SetScrollChild(input)
 
 		local close = CreateFrame("Button", nil, popupFrame, "UIPanelButtonTemplate")
 		close:SetPoint("BOTTOMRIGHT", -13, 13)
