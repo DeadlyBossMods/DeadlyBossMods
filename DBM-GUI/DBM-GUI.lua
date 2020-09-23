@@ -170,7 +170,7 @@ do
 		scrollFrame:SetPoint("BOTTOMRIGHT", -40, 45)
 
 		local input = CreateFrame("EditBox", nil, scrollFrame)
-		input:SetTextInsets(7, 7, 7, 7)
+		input:SetTextInsets(7, 7, 3, 3)
 		input:SetFontObject(ChatFontNormal)
 		input:SetWidth(452) -- 482, 457
 		input:SetMultiLine(true)
