@@ -147,8 +147,12 @@ do
 		local success, deserialized = LibSerialize:Deserialize(LibDeflate:DecompressDeflate(LibDeflate:DecodeForPrint(import)))
 		if not success then
 			DBM:AddMsg("Failed to deserialize")
+			return
 		else
 			whereToSave = deserialized
+			if whereToSave then
+				-- NOOP
+			end
 		end
 	end
 end
