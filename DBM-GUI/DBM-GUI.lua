@@ -124,7 +124,7 @@ do
 	Example:
 	local export = DBM_GUI:ExportProfile(DBM_AllSavedOptions[DBM_UsedProfile])
 
-	local DBM_AllSavedOptions[DBM_UsedProfile] = DBM_GUI:ImportProfile(export)
+	DBM_AllSavedOptions[DBM_UsedProfile] = DBM_GUI:ImportProfile(export)
 	--]]
 
 	function DBM_GUI:ExportProfile(export)
