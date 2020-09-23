@@ -124,7 +124,7 @@ do
 	Example:
 	local export = DBM_GUI:ExportProfile(DBM_AllSavedOptions[DBM_UsedProfile])
 
-	DBM_GUI:ImportProfile(export, DBM_AllSavedOptions[DBM_UsedProfile])
+	local DBM_AllSavedOptions[DBM_UsedProfile] = DBM_GUI:ImportProfile(export)
 	--]]
 
 	function DBM_GUI:ExportProfile(export)
@@ -135,13 +135,9 @@ do
 		return LibDeflate:EncodeForPrint(LibDeflate:CompressDeflate(LibSerialize:Serialize(export), {level = 9}))
 	end
 
-	function DBM_GUI:ImportProfile(import, whereToSave)
+	function DBM_GUI:ImportProfile(import)
 		if not canWeWork then
 			DBM:AddMsg("Missing required libraries to import.")
-			return
-		end
-		if whereToSave == nil then
-			DBM:AddMsg("Missing save location.")
 			return
 		end
 		local success, deserialized = LibSerialize:Deserialize(LibDeflate:DecompressDeflate(LibDeflate:DecodeForPrint(import)))
@@ -149,10 +145,7 @@ do
 			DBM:AddMsg("Failed to deserialize")
 			return
 		else
-			whereToSave = deserialized
-			if whereToSave then
-				-- NOOP
-			end
+			return deserialized
 		end
 	end
 end
