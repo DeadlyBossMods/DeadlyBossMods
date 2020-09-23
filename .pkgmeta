@@ -9,6 +9,12 @@ externals:
   DBM-Core/Libs/LibLatency: https://repos.wowace.com/wow/liblatency/trunk/LibLatency
   DBM-Core/Libs/LibSharedMedia-3.0: https://repos.wowace.com/wow/libsharedmedia-3-0/trunk/LibSharedMedia-3.0
   DBM-Core/Libs/LibStub: https://repos.wowace.com/wow/libstub/trunk
+  DBM-Core/Libs/LibDeflate:
+    url: https://github.com/SafeteeWoW/LibDeflate
+    tag: 1.0.2-release
+  DBM-Core/Libs/LibSerialize:
+    url: https://github.com/rossnichols/LibSerialize
+    tag: v1.1.0
 
 enable-nolib-creation: no
 

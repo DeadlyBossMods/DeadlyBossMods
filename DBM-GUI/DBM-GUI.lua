@@ -115,6 +115,41 @@ do
 end
 
 do
+	local LibSerialize = LibStub("LibSerialize")
+	local LibDeflate = LibStub("LibDeflate")
+
+	local canWeWork = LibStub and LibStub("LibDeflate", true) and LibStub("LibSerialize", true)
+
+	--[[
+	Example:
+	local export = DBM_GUI:ExportProfile(DBM_AllSavedOptions[DBM_UsedProfile])
+
+	local import = DBM_GUI:ImportProfile(export, DBM_AllSavedOptions[DBM_UsedProfile])
+	--]]
+
+	function DBM_GUI:ExportProfile(export)
+		if not canWeWork then
+			DBM:AddMsg("Missing required libraries to export.")
+			return
+		end
+		return LibDeflate:EncodeForPrint(LibDeflate:CompressDeflate(LibSerialize:Serialize(export), {level = 9}))
+	end
+
+	function DBM_GUI:ImportProfile(import, whereToSave)
+		if not canWeWork then
+			DBM:AddMsg("Missing required libraries to import.")
+			return
+		end
+		local success, deserialized = LibSerialize:Deserialize(LibDeflate:DecompressDeflate(LibDeflate:DecodeForPrint(import)))
+		if not success then
+			DBM:AddMsg("Failed to deserialize")
+		else
+			whereToSave = deserialized
+		end
+	end
+end
+
+do
 	local framecount = 0
 
 	function DBM_GUI:GetNewID()
