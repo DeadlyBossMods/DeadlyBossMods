@@ -71,6 +71,7 @@ L.MPROFILE_DELETE_SELF_ERROR	= "Impossible de supprimer les paramètres du mod a
 L.MPROFILE_DELETE_S_ERROR	= "La source est corrompue. Les paramètres n'ont pas été supprimés ou supprimés partiellement. Echec de la suppression."
 
 L.NOTE_SHARE_SUCCESS			= "%s a partagé sa note pour %s"
+L.NOTE_SHARE_LINK			= "Cliquez ici pour ouvrir les notes"
 L.NOTE_SHARE_FAIL			= "%s a essayé de partager un texte de note pour %s. Malheureusement, le mod associé avec cette note n'est pas installé ou activé. Si vous avez besoin de celle-ci, Assurez vous d'avoir activé le mod pour lequel cette note est destinée."
 
 L.NOTEHEADER					= "Entrez votre texte de note ici pour %s. Entourer le nom d'un joueur avec >< affichera la couleur associée. Pour les alertes vaec des notes multiples, séparez les par '/'"

@@ -91,6 +91,7 @@ L.MPROFILE_DELETE_SELF_ERROR	= "不能刪除使用中的模組設定。"
 L.MPROFILE_DELETE_S_ERROR		= "配置檔來源已經損毀，設定不能被刪除或是部分刪除，刪除已失敗。"
 
 L.NOTE_SHARE_SUCCESS			= "%s已分享他的%s的註記"
+L.NOTE_SHARE_LINK				= "點擊這裡打開註記"
 L.NOTE_SHARE_FAIL				= "%s嘗試與你分享%s的註記。模組相關的技能沒有安裝或是載入。請確定你載入此模組並請求他們在分享一次。"
 
 L.NOTEHEADER					= "為%s輸入你的註記。在><插入腳色名稱可套用職業顏色。多個註記請使用'/'分開"

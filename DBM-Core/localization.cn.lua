@@ -96,7 +96,8 @@ L.MPROFILE_DELETE_SUCCESS	= "%s(%d专精)的模块设置已经被删除."
 L.MPROFILE_DELETE_SELF_ERROR	= "无法删除一个正在使用的模块配置文件."
 L.MPROFILE_DELETE_S_ERROR	= "删除的源出错. 配置文件可能被篡改."
 
-L.NOTE_SHARE_SUCCESS			= "%s向你分享了他的%s的自定义注记"
+L.NOTE_SHARE_SUCCESS		= "%s向你分享了他的%s的自定义注记"
+L.NOTE_SHARE_LINK			= "点击这里打开注记"
 L.NOTE_SHARE_FAIL			= "%s想向你分享他的%s的自定义注记，但是相关的副本模块并没有被安装或被加载。如果你需要这个注记，请确保相关模块被正确加载，然后请小伙伴再向你分享一次。"
 
 L.NOTEHEADER					= "在此输入你针对%s的注记。在 >< 中插入玩家名字会被按职业着色。例子:'我种>下一棵<种子'。这个牧师会被染色成白色。多字符串请用 / 隔开。"
