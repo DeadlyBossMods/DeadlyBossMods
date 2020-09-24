@@ -2716,7 +2716,7 @@ do
 		text:SetWidth(470)
 		text:SetWordWrap(true)
 		text:SetPoint("TOP", popup, "TOP", 0, -15)
-		text:SetText(DBM_PIZZA_CONFIRM_IGNORE:format(ignore))
+		text:SetText(L.PIZZA_CONFIRM_IGNORE:format(ignore))
 
 		local accept = CreateFrame("Button", nil, popup)
 		accept:SetNormalTexture(130763)--"Interface\\Buttons\\UI-DialogBox-Button-Up"
