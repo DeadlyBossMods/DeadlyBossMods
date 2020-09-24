@@ -299,7 +299,9 @@ do
 		local frame, frame2, textPad
 		if modvar then -- Special warning, has modvar for sound and note
 			if isTimer then
-				frame = self:CreateDropdown(nil, tcolors, mod, modvar .. "TColor", nil, 20, 25, button)
+				frame = self:CreateDropdown(nil, tcolors, mod, modvar .. "TColor", function(value)
+					mod.Options[modvar .. "TColor"] = value
+				end, 20, 25, button)
 				frame2 = self:CreateDropdown(nil, cvoice, mod, modvar .. "CVoice", function(value)
 					mod.Options[modvar.."CVoice"] = value
 					if type(value) == "string" then
@@ -313,7 +315,7 @@ do
 				textPad = 35
 			else
 				frame = self:CreateDropdown(nil, sounds, mod, modvar .. "SWSound", function(value)
-					mod.Options[modvar.."SWSound"] = value
+					mod.Options[modvar .. "SWSound"] = value
 					DBM:PlaySpecialWarningSound(value)
 				end, 20, 25, button)
 				frame:ClearAllPoints()
