@@ -228,6 +228,8 @@ function mod:SPELL_AURA_REMOVED(args)
 --		end
 	elseif spellId == 328921 then--Bloodshroud removed
 		timerSonarShriekCD:Stop()
+		timerEchoingSonar:Stop()
+		timerSonarShriek:Stop()
 		warnBloodshroudOver:Show()
 		--Looks same as pull timers
 		timerExsanguinatingBiteCD:Start(8.1)
