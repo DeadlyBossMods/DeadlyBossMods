@@ -13,7 +13,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 328857 340047 330711 343005 342863",
-	"SPELL_CAST_SUCCESS 328857",
+	"SPELL_CAST_SUCCESS 328857 329362",
 	"SPELL_AURA_APPLIED 328897 342077 341684 328921",
 	"SPELL_AURA_APPLIED_DOSE 328897",
 	"SPELL_AURA_REMOVED 328921 342077 328897",
@@ -39,7 +39,9 @@ local warnEcholocation							= mod:NewTargetAnnounce(342077, 3)
 local warnDeadlyDescent							= mod:NewTargetNoFilterAnnounce(343024, 4)
 local warnBloodshroudOver						= mod:NewEndAnnounce(328921, 1)
 local warnSonarShriek							= mod:NewCastAnnounce(340047, 2)
+local warnEchoingSonar							= mod:NewCastAnnounce(329362, 2, 6)
 local warnBloodLantern							= mod:NewTargetNoFilterAnnounce(341684, 1)--Mythic
+
 
 --Stage One - Thirst for Blood
 local specWarnExsanguinated						= mod:NewSpecialWarningStack(328897, nil, 2, nil, nil, 1, 6)
@@ -71,6 +73,7 @@ local timerBloodshroudCD						= mod:NewCDTimer(112, 328921, nil, nil, nil, 6)--1
 --local timerBloodshroud						= mod:NewBuffActiveTimer(47.5, 328921, nil, nil, nil, 6)--43.4-47.5, more to it than this? or just fact blizzards energy code always proves to be dogshit
 local timerSonarShriekCD						= mod:NewCDTimer(8.5, 340047, nil, nil, nil, 3)
 local timerSonarShriek							= mod:NewCastTimer(4, 340047, nil, false, nil, 5)--For users to see cast bar if boss remains untargetable in intermission
+local timerEchoingSonar							= mod:NewCastTimer(6, 329362, nil, false, nil, 5)
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
 mod:AddRangeFrameOption("8")
@@ -148,6 +151,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 			specWarnExsanguinatingBiteOther:Show(args.destName)
 			specWarnExsanguinatingBiteOther:Play("tauntboss")
 		end
+	elseif spellId == 329362 then
+		warnEchoingSonar:Show()
+		timerEchoingSonar:Start()
 	end
 end
 
