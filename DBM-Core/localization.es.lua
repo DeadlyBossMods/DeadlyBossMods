@@ -89,6 +89,7 @@ L.MPROFILE_DELETE_SELF_ERROR	= "No se puede borrar una configuración que está 
 L.MPROFILE_DELETE_S_ERROR	= "La configuración de origen está corrupta. Es posible que la configuración se haya borrado a medias o haya fallado por completo."
 
 L.NOTE_SHARE_SUCCESS			= "%s está compartiendo su nota para %s."
+L.NOTE_SHARE_LINK			= "Haz clic aquí para abrir la nota"
 L.NOTE_SHARE_FAIL			= "%s está intentando compartir su nota para %s. Sin embargo, el módulo asociado con esta facultad no está instalado o cargado. Si necesitas esta nota, asegúrate de que tienes el módulo asociado cargado y pídele que vuelva a compartirla."
 
 L.NOTEHEADER					= "Introduce tu nota para %s. Los nombres de jugador entre '>' y '<' se mostrarán con el color de su clase. Para alertas con varias notas, sepáralas con '/'."

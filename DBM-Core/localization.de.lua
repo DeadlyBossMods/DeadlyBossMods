@@ -88,6 +88,7 @@ L.MPROFILE_DELETE_SELF_ERROR	= "Die derzeit genutzten Mod-Einstellungen können 
 L.MPROFILE_DELETE_S_ERROR	= "Quelle korrupt. Die Einstellungen wurden nicht oder unvollständig gelöscht. Löschen fehlgeschlagen."
 
 L.NOTE_SHARE_SUCCESS			= "%s hat die Notiz für %s geteilt."
+L.NOTE_SHARE_LINK			= "Hier klicken um die Notiz zu öffnen"
 L.NOTE_SHARE_FAIL			= "%s hat versucht eine Notiz mit dir für %s zu teilen. Ein Mod für diese Fähigkeit ist jedoch nicht installiert oder nicht geladen. Falls du diese Notiz benötigst, solltest du sicherstellen, dass du das entsprechende Mod geladen hast und erneut um Teilung der Notiz bitten."
 
 L.NOTEHEADER					= "Gib deine Notiz für %s hier ein. Umschließe Spielernamen mit >< für Klassenfarben. Trenne Notizen mit '/' bei Alarmen mit mehreren Notizen."

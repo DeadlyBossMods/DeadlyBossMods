@@ -106,7 +106,7 @@ local timerWickedSlaughterCD					= mod:NewCDTimer(10.9, 342253, nil, "Tank", nil
 
 --mod:AddRangeFrameOption(10, 310277)
 mod:AddInfoFrameOption(333913, true)
-mod:AddSetIconOption("SetIconOnWickedBlade", 333387, true, false, {1, 2})--off by default since it relies on 100% boss mod raid
+mod:AddSetIconOption("SetIconOnWickedBlade", 333387, true, false, {1, 2})
 mod:AddSetIconOption("SetIconOnCrystalize", 339690, true, false, {3})
 mod:AddSetIconOption("SetIconOnEruption", 344496, true, false, {4})
 mod:AddSetIconOption("SetIconOnHeartRend", 334765, false, false, {4, 5, 6, 7})--Off by default, conflicts with two other icon options
