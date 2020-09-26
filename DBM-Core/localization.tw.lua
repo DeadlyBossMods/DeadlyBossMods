@@ -3,8 +3,8 @@ if not DBM_CORE_L then DBM_CORE_L = {} end
 
 local L = DBM_CORE_L
 
-L.HOW_TO_USE_MOD							= "歡迎使用"..L.DBM.."。在聊天頻道輸入 /dbm 打開設定開始設定。你可以載入特定區域後為任何首領設定你喜歡的特別設置。DBM會在設定你的職業天賦的預設值，但有些選項可能需要調整。"
-L.SILENT_REMINDER								= "提醒："..L.DBM.."正處於無聲模式。"
+L.HOW_TO_USE_MOD				= "歡迎使用"..L.DBM.."。在聊天頻道輸入 /dbm 打開設定開始設定。你可以載入特定區域後為任何首領設定你喜歡的特別設置。DBM會在設定你的職業天賦的預設值，但有些選項可能需要調整。"
+L.SILENT_REMINDER				= "提醒："..L.DBM.."正處於無聲模式。"
 
 L.LOAD_MOD_ERROR				= "載入%s模組時發生錯誤：%s"
 L.LOAD_MOD_SUCCESS				= "成功載入%s模組。更多選項例如自訂警告音效或是個人提醒註記請輸入/dbm或/dbm help。"
@@ -177,7 +177,7 @@ L.UPDATEREMINDER_FOOTER_GENERIC		= "按下" .. (IsMacClient() and "Cmd-C" or "Ct
 L.UPDATEREMINDER_DISABLE			= "警告:  你的DBM版本已大幅度的過期，DBM已被強制關閉並且無法使用直到更新為止。這是為了確保舊而不相容的程式碼不會對你而團隊夥伴造成低落的遊戲體驗。"
 L.UPDATEREMINDER_HOTFIX				= "你的DBM版本會在這首領戰鬥有不準確的計時器或警告。這問題已被修正在新版正式版(或是更新到最新的測試版。)"
 L.UPDATEREMINDER_HOTFIX_ALPHA		= "您的DBM版本在此首領戰有些已知問題，將會在未來的正式版修正 (或是最新的測試版)"
-L.UPDATEREMINDER_MAJORPATCH			= "警告: 你的DBM已經過期，DBM已被禁用直到你更新至最新版，因為遊戲大改版。為了不讓舊的程式碼拖累遊戲體驗。請至deadlybossmods.com或是curse下載最新版本的DBM。"
+L.UPDATEREMINDER_MAJORPATCH			= "警告: 你的DBM已經過期，DBM已被禁用直到你更新至最新版，因為遊戲大改版。為了不讓舊的程式碼拖累遊戲體驗。請至curse/Twitch、WoWI或是GitHub發佈頁下載最新版本的DBM。"
 L.VEM								= "警告: 你同時使用DBM和VEM。DBM將停用而無法執行。"
 L.OUTDATEDPROFILES					= "警告: DBM-Profiles不相容此版本DBM。請移除避免衝突。"
 L.OUTDATEDSPELLTIMERS				= "警告：DBM-SpellTimers破壞了" .. L.DBM .. ".必須要移除" .. L.DBM .. "才能正常運作。"
@@ -619,12 +619,10 @@ L.DUR_HEADER					= ""..L.DEADLY_BOSS_MODS.." - 裝備耐久度結果"
 L.DUR_ENTRY						= "%s:耐久度[%d百分比]/裝備損壞[%s]"
 L.LAG_FOOTER					= "無回應:%s"
 
-
 --LDB
-L.LDB_TOOLTIP_HELP1					= "點擊開啟" .. L.DBM
-L.LDB_TOOLTIP_HELP2					= "Alt-右鍵點擊以切換無聲模式"
-L.SILENTMODE_IS                     = "無聲模式是 "
-L.LDB_LOAD_MODS			= "載入首領模組"
-L.LDB_CAT_OTHER			= "其他首領模組"
-L.LDB_CAT_GENERAL		= "一般"
-L.LDB_ENABLE_BOSS_MOD	= "啟用首領模組"
+L.LDB_TOOLTIP_HELP1				= "點擊開啟" .. L.DBM
+L.SILENTMODE_IS                 = "無聲模式是 "
+L.LDB_LOAD_MODS					= "載入首領模組"
+L.LDB_CAT_OTHER					= "其他首領模組"
+L.LDB_CAT_GENERAL				= "一般"
+L.LDB_ENABLE_BOSS_MOD			= "啟用首領模組"
