@@ -624,6 +624,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerIcefallCD:Start(30.2, 1)
 		timerSiegebreakerCD:Start(40.3, 1)
 		if self:IsMythic() and self:AntiSpam(10, 10) then--Antispam to ignore applied from howling winds right at end of 1.5
+			timerHowlingWindsCD:Stop()
 			timerHowlingWindsCD:Start(68.1, self.vb.howlingWindsCast+1)
 		end
 	elseif spellId == 288219 then
