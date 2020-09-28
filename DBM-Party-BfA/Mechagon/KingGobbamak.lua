@@ -36,7 +36,7 @@ local timerRumbleCD					= mod:NewCDTimer(51, 297261, nil, nil, nil, 2, nil, DBM_
 
 function mod:OnCombatStart(delay)
 	timerRumbleCD:Start(8.3-delay)
-	timerChargedSmashCD:Start(24.7-delay)
+	timerChargedSmashCD:Start(21.8-delay)
 	--timerGetEmCD:Start(1-delay)
 end
 
