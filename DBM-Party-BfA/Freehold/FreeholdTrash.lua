@@ -42,9 +42,11 @@ local specWarnGTFO						= mod:NewSpecialWarningGTFO(257274, nil, nil, nil, 1, 8)
 
 function mod:RicochetingTarget(targetname)
 	if not targetname then return end
-	warnRicochetingThrow:Show(targetname)
-	if targetname == UnitName("player") then
-		yellRicochetingThrow:Yell()
+	if self:AntiSpam(3, targetname) then
+		warnRicochetingThrow:CombinedShow(0.5, targetname)
+		if targetname == UnitName("player") then
+			yellRicochetingThrow:Yell()
+		end
 	end
 end
 
