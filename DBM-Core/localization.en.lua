@@ -280,6 +280,8 @@ L.TIMER_USAGE						= {
 L.ERROR_NO_PERMISSION				= "You don't have the required permission to do this."
 
 --Common Locals
+L.NONE								= "None"
+L.RANDOM							= "Random"
 L.NEXT								= "Next %s"
 L.COOLDOWN							= "%s CD"
 L.UNKNOWN							= "Unknown"--UNKNOWN which is "Unknown" (does u vs U matter?)
