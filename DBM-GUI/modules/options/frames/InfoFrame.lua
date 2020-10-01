@@ -95,7 +95,7 @@ local style = panel:CreateArea(L.Area_Style)
 
 local Fonts = DBM_GUI:MixinSharedMedia3("font", {
 	{
-		text	= "Default",
+		text	= DEFAULT,
 		value	= "standardFont"
 	},
 	{

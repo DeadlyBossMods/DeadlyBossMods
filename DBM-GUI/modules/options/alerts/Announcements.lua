@@ -15,7 +15,7 @@ local check6 = raidwarnoptions:CreateCheckButton(L.ShortTextSpellname, true, nil
 -- RaidWarn Font
 local Fonts = DBM_GUI:MixinSharedMedia3("font", {
 	{
-		text	= "Default",
+		text	= DEFAULT,
 		value	= "standardFont"
 	},
 	{
