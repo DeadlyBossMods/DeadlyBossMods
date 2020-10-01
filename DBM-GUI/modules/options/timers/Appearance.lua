@@ -102,7 +102,7 @@ StyleDropDown.myheight = 0
 
 local Textures = DBM_GUI:MixinSharedMedia3("statusbar", {
 	{
-		text	= "Default",
+		text	= DEFAULT,
 		value	= "Interface\\AddOns\\DBM-DefaultSkin\\textures\\default.blp"
 	},
 	{
@@ -131,7 +131,7 @@ TextureDropDown.myheight = 0
 
 local Fonts = DBM_GUI:MixinSharedMedia3("font", {
 	{
-		text	= "Default",
+		text	= DEFAULT,
 		value	= "standardFont"
 	},
 	{

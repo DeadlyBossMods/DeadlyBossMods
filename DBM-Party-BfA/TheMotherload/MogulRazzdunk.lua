@@ -37,7 +37,7 @@ local yellHeartseeker				= mod:NewYell(262515)
 
 --Stage One: Big Guns
 local timerGatlingGunCD				= mod:NewCDTimer(20.1, 260280, nil, nil, nil, 3)
-local timerHomingMissileCD			= mod:NewCDTimer(22, 260811, nil, nil, nil, 3)
+local timerHomingMissileCD			= mod:NewCDTimer(21, 260811, nil, nil, nil, 3)
 --Stage Two: Drill
 local timerDrillSmashCD				= mod:NewCDTimer(8.4, 271456, nil, nil, nil, 3)--8.4--9.9
 

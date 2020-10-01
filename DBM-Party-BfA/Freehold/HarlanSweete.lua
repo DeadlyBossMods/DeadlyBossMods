@@ -37,8 +37,8 @@ mod.vb.phase = 1
 function mod:OnCombatStart(delay)
 	self.vb.phase = 1
 	timerSwiftwindSaberCD:Start(10.4-delay)
+	timerAvastyeCD:Start(10.7-delay)
 	timerCannonBarrageCD:Start(20-delay)
-	timerAvastyeCD:Start(31.6-delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
@@ -86,7 +86,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 257316 then
 		if self.vb.phase == 1 then
-			timerAvastyeCD:Start(20.5)
+			timerAvastyeCD:Start(10.1)
 		elseif self.vb.phase == 2 then
 			timerAvastyeCD:Start(24)
 		else

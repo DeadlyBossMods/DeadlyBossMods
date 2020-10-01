@@ -47,7 +47,7 @@ local specWarnPearlofThunder		= mod:NewSpecialWarningRun(263365, nil, nil, nil, 
 local timerConductionCD				= mod:NewCDTimer(13, 263371, nil, nil, nil, 3)--NYI
 local timerStaticShockCD			= mod:NewCDTimer(13, 263257, nil, nil, nil, 2, nil, DBM_CORE_L.HEALER_ICON)
 ----Wind
-local timerGaleForceCD				= mod:NewCDTimer(16.4, 263776, nil, nil, nil, 3, nil, DBM_CORE_L.HEROIC_ICON)
+local timerGaleForceCD				= mod:NewCDTimer(14.5, 263776, nil, nil, nil, 3, nil, DBM_CORE_L.HEROIC_ICON)
 --Adderis
 ----Wind
 local timerArcingBladeCD			= mod:NewCDTimer(13.4, 263234, nil, nil, nil, 5, nil, DBM_CORE_L.HEROIC_ICON)
@@ -117,7 +117,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			if not self:IsNormal() then
 				--No Doubt wrong
 				timerGaleForceCD:Stop()
-				timerGaleForceCD:Start(26.7)
+				timerGaleForceCD:Start(26)
 			end
 		end
 	elseif spellId == 263371 then

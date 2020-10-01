@@ -45,6 +45,8 @@ L.Reset 					= "Reset"
 
 L.Enable  					= ENABLE
 L.Disable					= DISABLE
+L.None						= "None"
+L.Random					= "Random"
 
 L.NoSound					= "No sound"
 

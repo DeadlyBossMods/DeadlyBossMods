@@ -90,7 +90,7 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 257582 then
+	if spellId == 257582 and self:AntiSpam(3.5, args.destName) then
 		warnRagingGaze:CombinedShow(0.5, args.destName)--In case two adds are up
 		if args:IsPlayer() and self:AntiSpam(3.5, 2) then
 			specWarnRagingGaze:Show()

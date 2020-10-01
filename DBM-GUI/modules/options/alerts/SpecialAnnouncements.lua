@@ -44,7 +44,7 @@ color0.myheight = 74
 
 local Fonts = DBM_GUI:MixinSharedMedia3("font", {
 	{
-		text	= "Default",
+		text	= DEFAULT,
 		value	= "standardFont"
 	},
 	{
