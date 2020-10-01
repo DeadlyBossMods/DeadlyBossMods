@@ -269,6 +269,8 @@ L.TIMER_USAGE	= {
 L.ERROR_NO_PERMISSION		= "無權進行此操作。"
 
 --Common Locals
+L.None						= "無"
+L.Random					= "隨機"
 L.NEXT						= "下一次%s"
 L.COOLDOWN					= "%s冷卻"
 L.UNKNOWN					= "未知"
