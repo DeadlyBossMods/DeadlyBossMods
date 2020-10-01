@@ -9303,7 +9303,7 @@ do
 					if not noStrip then
 						local name = cap
 						local playerClass = DBM:GetRaidClass(name)
-						if playerClass then
+						if playerClass ~= "UNKNOWN" then
 							cap = DBM:GetShortServerName(cap)--Only run realm strip function if class color was valid (IE it's an actual playername)
 						end
 						local playerColor = RAID_CLASS_COLORS[playerClass] or color
@@ -9925,7 +9925,7 @@ do
 		if not noStrip then
 			local name = cap
 			local playerClass = DBM:GetRaidClass(name)
-			if playerClass then
+			if playerClass ~= "UNKNOWN" then
 				cap = DBM:GetShortServerName(cap)--Only run strip code on valid player classes
 				if DBM.Options.SWarnClassColor then
 					local playerColor = RAID_CLASS_COLORS[playerClass]

@@ -29,7 +29,7 @@ local specWarnGTFO					= mod:NewSpecialWarningGTFO(265914, nil, nil, nil, 1, 8)
 
 local timerTailThrashCD				= mod:NewCDTimer(16.6, 265910, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON..DBM_CORE_L.DEADLY_ICON)
 local timerSpitGoldCD				= mod:NewCDTimer(10.9, 265773, nil, nil, nil, 3)
-local timerLucreCallCD				= mod:NewCDTimer(38.8, 265923, nil, nil, nil, 3)
+local timerLucreCallCD				= mod:NewCDTimer(37.6, 265923, nil, nil, nil, 3)
 local timerSerpentineCD				= mod:NewCDTimer(21.8, 265781, nil, nil, nil, 2)
 
 function mod:OnCombatStart(delay)
@@ -74,10 +74,10 @@ function mod:SPELL_CAST_START(args)
 			specWarnLucreCallTank:Play("moveboss")
 		end
 		timerLucreCallCD:Start()--Probably wrong, didn't get to log this far, but guessed similar to pull on 3x gold rule
-		if timerSpitGoldCD:GetRemaining() < 6 then
+		if timerSpitGoldCD:GetRemaining() < 3.6 then
 			local elapsed, total = timerSpitGoldCD:GetTime()
-			local extend = 6 - (total-elapsed)
-			DBM:Debug("timerWaveofCorruptionCD extended by: "..extend, 2)
+			local extend = 3.6 - (total-elapsed)
+			DBM:Debug("timerSpitGoldCD extended by: "..extend, 2)
 			timerSpitGoldCD:Stop()
 			timerSpitGoldCD:Update(elapsed, total+extend)
 		end
