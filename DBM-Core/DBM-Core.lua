@@ -151,7 +151,6 @@ DBM.DefaultOptions = {
 	EventSoundEngage2 = "None",
 	EventSoundMusic = "None",
 	EventSoundDungeonBGM = "None",
-	EventSoundMusicCombined = false,
 	EventDungMusicMythicFilter = true,
 	EventMusicMythicFilter = true,
 	Enabled = true,
@@ -365,16 +364,6 @@ DBM.Defeat = {
 	{text = "Yogg-Saron: Laugh",value = 15757, length=4},--"Sound\\Creature\\YoggSaron\\UR_YoggSaron_Slay01.ogg"
 }
 --Music uses file data IDs
-DBM.Music = {--Contains all music media, period
-	{text = L.NONE,value  = "None"},
-	{text = L.RANDOM,value  = "Random"},
-	{text = "Anduin Part 1 B",value = 1417242, length=140},--"sound\\music\\Legion\\MUS_70_AnduinPt1_B.mp3" Soundkit: 68230
-	{text = "Anduin Part 2 B",value = 1417248, length=111},--"sound\\music\\Legion\\MUS_70_AnduinPt2_B.mp3" Soundkit: 68230
-	{text = "Bronze Jam",value = 350021, length=116},--"Sound\\Music\\ZoneMusic\\IcecrownRaid\\IR_BronzeJam.mp3" Soundkit: 118800
-	{text = "Invincible",value = 1100052, length=197},--"Sound\\Music\\Draenor\\MUS_Invincible.mp3" Soundkit: 49536
-	{text = "Nightsong",value = 441705, length=160},--"Sound\\Music\\cataclysm\\MUS_NightElves_GU01.mp3" Soundkit: 71181
-	{text = "Ulduar: Titan Orchestra",value = 298910, length=102},--"Sound\\Music\\ZoneMusic\\UlduarRaidInt\\UR_TitanOrchestraIntro.mp3" Soundkit: 15873
-}
 DBM.DungeonMusic = {--Filtered list of media assigned to dungeon/raid background music catagory
 	{text = L.NONE,value  = "None"},
 	{text = L.RANDOM,value  = "Random"},
@@ -536,7 +525,7 @@ local GetInstanceInfo = GetInstanceInfo
 local GetSpecialization, GetSpecializationInfo, GetSpecializationInfoByID = GetSpecialization, GetSpecializationInfo, GetSpecializationInfoByID
 local UnitDetailedThreatSituation = UnitDetailedThreatSituation
 local UnitIsGroupLeader, UnitIsGroupAssistant = UnitIsGroupLeader, UnitIsGroupAssistant
-local PlaySoundFile, PlaySound = PlaySoundFile, PlaySound
+local PlaySoundFile, PlaySound, PlayMusic = PlaySoundFile, PlaySound, PlayMusic
 local Ambiguate = Ambiguate
 local C_TimerNewTicker, C_TimerAfter = C_Timer.NewTicker, C_Timer.After
 local IsQuestFlaggedCompleted = C_QuestLog.IsQuestFlaggedCompleted
@@ -4097,10 +4086,8 @@ do
 			end
 			local path = "MISSING"
 			if self.Options.EventSoundDungeonBGM == "Random" then
-				local usedTable = self.Options.EventSoundMusicCombined and DBM.Music or DBM.DungeonMusic
-				if #usedTable >= 3 then
-					local random = fastrandom(3, #usedTable)
-					path = usedTable[random].value
+				if #DBM.DungeonMusic >= 3 then
+					path = DBM.DungeonMusic[fastrandom(3, #DBM.DungeonMusic)].value
 				end
 			else
 				path = self.Options.EventSoundDungeonBGM
@@ -6249,10 +6236,8 @@ do
 					end
 					local path = "MISSING"
 					if self.Options.EventSoundMusic == "Random" then
-						local usedTable = self.Options.EventSoundMusicCombined and DBM.Music or DBM.BattleMusic
-						if #usedTable >= 3 then
-							local random = fastrandom(3, #usedTable)
-							path = usedTable[random].value
+						if #DBM.BattleMusic >= 3 then
+							path = DBM.BattleMusic[fastrandom(3, #DBM.BattleMusic)].value
 						end
 					else
 						path = self.Options.EventSoundMusic
@@ -6382,8 +6367,7 @@ do
 					if self.Options.EventSoundWipe and self.Options.EventSoundWipe ~= "None" and self.Options.EventSoundWipe ~= "" then
 						if self.Options.EventSoundWipe == "Random" then
 							if #self.Defeat >= 3 then
-								local random = fastrandom(3, #self.Defeat)
-								self:PlaySoundFile(DBM.Defeat[random].value)
+								self:PlaySoundFile(DBM.Defeat[fastrandom(3, #self.Defeat)].value)
 							end
 						else
 							self:PlaySoundFile(self.Options.EventSoundWipe, nil, true)
@@ -6509,8 +6493,7 @@ do
 				if self.Options.EventSoundVictory2 and self.Options.EventSoundVictory2 ~= "None" and self.Options.EventSoundVictory2 ~= "" then
 					if self.Options.EventSoundVictory2 == "Random" then
 						if #self.Victory >= 3 then
-							local random = fastrandom(3, #self.Victory)
-							self:PlaySoundFile(self.Victory[random].value)
+							self:PlaySoundFile(self.Victory[fastrandom(3, #self.Victory)].value)
 						end
 					else
 						self:PlaySoundFile(self.Options.EventSoundVictory2, nil, true)

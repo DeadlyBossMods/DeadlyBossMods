@@ -11,13 +11,13 @@ local LibStub, DBM, DBM_GUI, DBM_OPTION_SPACER = _G["LibStub"], DBM, DBM_GUI, DB
 
 do
 	local soundsRegistered = false
+	local LSM = LibStub and LibStub("LibSharedMedia-3.0", true)
 
 	function DBM_GUI:MixinSharedMedia3(mediatype, mediatable)
-		if not LibStub or not LibStub("LibSharedMedia-3.0", true) then
+		if not LSM then
 			return mediatable
 		end
 		if not soundsRegistered then
-			local LSM = LibStub("LibSharedMedia-3.0")
 			soundsRegistered = true
 			-- Embedded Sound Clip media
 			LSM:Register("sound", "AirHorn (DBM)", [[Interface\AddOns\DBM-Core\sounds\AirHorn.ogg]])
@@ -37,7 +37,7 @@ do
 		end
 		-- Sort LibSharedMedia keys alphabetically (case-insensitive)
 		local keytable = {}
-		for k in next, LibStub("LibSharedMedia-3.0", true):HashTable(mediatype) do
+		for k in next, LSM:HashTable(mediatype) do
 			tinsert(keytable, k)
 		end
 		tsort(keytable, function(a, b)
@@ -50,13 +50,13 @@ do
 				result[i].texture = true
 			elseif mediatype == "font" then
 				result[i].font = true
-			elseif mediatype == "sound" or mediatype == "music" then
+			elseif mediatype == "sound" then
 				result[i].sound = true
 			end
 		end
 		for i = 1, #keytable do
-			if (mediatype ~= "sound" and mediatype ~= "music") or (keytable[i] ~= "None" and keytable[i] ~= "NPCScan") then
-				local v = LibStub("LibSharedMedia-3.0", true):HashTable(mediatype)[keytable[i]]
+			if mediatype ~= "sound" or (keytable[i] ~= "None" and keytable[i] ~= "NPCScan") then
+				local v = LSM:HashTable(mediatype)[keytable[i]]
 				-- Filter duplicates
 				local insertme = true
 				for _, v2 in next, result do
@@ -75,7 +75,7 @@ do
 					elseif mediatype == "font" then
 						ins.font = true
 					-- Only insert paths from addons folder, ignore file data ID, since there is no clean way to handle supporitng both FDID and soundkit at same time
-					elseif (mediatype == "sound" or mediatype == "music") and type(v) == "string" and v:lower():find("addons") then
+					elseif mediatype == "sound" and type(v) == "string" and v:lower():find("addons") then
 						ins.sound = true
 					end
 					if ins.texture or ins.font or ins.sound then
