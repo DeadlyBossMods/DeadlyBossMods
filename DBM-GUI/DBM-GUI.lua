@@ -30,13 +30,9 @@ do
 			LSM:Register("sound", "Blakbyrd Alert 2", [[Interface\AddOns\DBM-Core\sounds\BlakbyrdAlerts\Alert2.ogg]])
 			LSM:Register("sound", "Blakbyrd Alert 3", [[Interface\AddOns\DBM-Core\sounds\BlakbyrdAlerts\Alert3.ogg]])
 			-- User Media
-			for i = 1, 9 do
-				if DBM.Options.CustomSounds >= i then
-					LSM:Register("sound", "DBM: Custom 1", "Interface\\AddOns\\DBM-CustomSounds\\Custom" .. i .. ".ogg")
-					LSM:Register("music", "DBM: Custom 1", "Interface\\AddOns\\DBM-CustomSounds\\Custom" .. i .. ".ogg")
-				else
-					break
-				end
+			for i = 1, DBM.Options.CustomSounds do
+				LSM:Register("sound", "DBM: Custom 1", "Interface\\AddOns\\DBM-CustomSounds\\Custom" .. i .. ".ogg")
+				LSM:Register("music", "DBM: Custom 1", "Interface\\AddOns\\DBM-CustomSounds\\Custom" .. i .. ".ogg")
 			end
 		end
 		-- Sort LibSharedMedia keys alphabetically (case-insensitive)
