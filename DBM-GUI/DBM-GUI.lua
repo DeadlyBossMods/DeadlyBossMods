@@ -30,34 +30,12 @@ do
 			LSM:Register("sound", "Blakbyrd Alert 2", [[Interface\AddOns\DBM-Core\sounds\BlakbyrdAlerts\Alert2.ogg]])
 			LSM:Register("sound", "Blakbyrd Alert 3", [[Interface\AddOns\DBM-Core\sounds\BlakbyrdAlerts\Alert3.ogg]])
 			-- User Media
-			if DBM.Options.CustomSounds >= 1 then
-				LSM:Register("sound", "DBM: Custom 1", [[Interface\AddOns\DBM-CustomSounds\Custom1.ogg]])
-			end
-			if DBM.Options.CustomSounds >= 2 then
-				LSM:Register("sound", "DBM: Custom 2", [[Interface\AddOns\DBM-CustomSounds\Custom2.ogg]])
-			end
-			if DBM.Options.CustomSounds >= 3 then
-				LSM:Register("sound", "DBM: Custom 3", [[Interface\AddOns\DBM-CustomSounds\Custom3.ogg]])
-			end
-			if DBM.Options.CustomSounds >= 4 then
-				LSM:Register("sound", "DBM: Custom 4", [[Interface\AddOns\DBM-CustomSounds\Custom4.ogg]])
-			end
-			if DBM.Options.CustomSounds >= 5 then
-				LSM:Register("sound", "DBM: Custom 5", [[Interface\AddOns\DBM-CustomSounds\Custom5.ogg]])
-			end
-			if DBM.Options.CustomSounds >= 6 then
-				LSM:Register("sound", "DBM: Custom 6", [[Interface\AddOns\DBM-CustomSounds\Custom6.ogg]])
-			end
-			if DBM.Options.CustomSounds >= 7 then
-				LSM:Register("sound", "DBM: Custom 7", [[Interface\AddOns\DBM-CustomSounds\Custom7.ogg]])
-			end
-			if DBM.Options.CustomSounds >= 8 then
-				LSM:Register("sound", "DBM: Custom 8", [[Interface\AddOns\DBM-CustomSounds\Custom8.ogg]])
-			end
-			if DBM.Options.CustomSounds >= 9 then
-				LSM:Register("sound", "DBM: Custom 9", [[Interface\AddOns\DBM-CustomSounds\Custom9.ogg]])
-				if DBM.Options.CustomSounds > 9 then
-					DBM.Options.CustomSounds = 9
+			for i = 1, 9 do
+				if DBM.Options.CustomSounds >= i then
+					LSM:Register("sound", "DBM: Custom 1", "Interface\\AddOns\\DBM-CustomSounds\\Custom" .. i .. ".ogg")
+					LSM:Register("music", "DBM: Custom 1", "Interface\\AddOns\\DBM-CustomSounds\\Custom" .. i .. ".ogg")
+				else
+					break
 				end
 			end
 		end
@@ -76,12 +54,12 @@ do
 				result[i].texture = true
 			elseif mediatype == "font" then
 				result[i].font = true
-			elseif mediatype == "sound" then
+			elseif mediatype == "sound" or mediatype == "music" then
 				result[i].sound = true
 			end
 		end
 		for i = 1, #keytable do
-			if mediatype ~= "sound" or (keytable[i] ~= "None" and keytable[i] ~= "NPCScan") then
+			if (mediatype ~= "sound" and mediatype ~= "music") or (keytable[i] ~= "None" and keytable[i] ~= "NPCScan") then
 				local v = LibStub("LibSharedMedia-3.0", true):HashTable(mediatype)[keytable[i]]
 				-- Filter duplicates
 				local insertme = true
@@ -101,7 +79,7 @@ do
 					elseif mediatype == "font" then
 						ins.font = true
 					-- Only insert paths from addons folder, ignore file data ID, since there is no clean way to handle supporitng both FDID and soundkit at same time
-					elseif mediatype == "sound" and type(v) == "string" and v:lower():find("addons") then
+					elseif (mediatype == "sound" or mediatype == "music") and type(v) == "string" and v:lower():find("addons") then
 						ins.sound = true
 					end
 					if ins.texture or ins.font or ins.sound then
