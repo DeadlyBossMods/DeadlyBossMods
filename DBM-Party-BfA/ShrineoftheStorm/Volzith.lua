@@ -37,10 +37,10 @@ end
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 267444 then
+		timerYawningGateCD:Start(3)
 		if not self:IsNormal() then
 			timerCalltheAbyssCD:Start(5.5)
 		end
-		timerYawningGateCD:Start(16.3)
 		timerGraspCD:Start()
 	end
 end

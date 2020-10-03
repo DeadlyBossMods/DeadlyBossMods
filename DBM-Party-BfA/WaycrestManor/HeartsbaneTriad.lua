@@ -126,12 +126,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		if cid == 135360 or cid == 131825 then--Sister Briar
 			timerJaggedNettlesCD:Start(7.7)--CAST START
 		elseif cid == 135358 or cid == 131823 then--Sister Malady
-			timerSoulManipulationCD:Start(11.3)--CAST SUCCESS
-		elseif cid == 135359 or cid == 131824 then--Sister Solena
 			timerUnstableRunicMarkCD:Start(10.5)--CAST SUCCESS
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Show(6)
 			end
+		elseif cid == 135359 or cid == 131824 then--Sister Solena
+			timerSoulManipulationCD:Start(11.3)--CAST SUCCESS
 		end
 	elseif spellId == 260703 then
 		warnUnstableMark:CombinedShow(0.3, args.destName)
@@ -158,12 +158,12 @@ function mod:SPELL_AURA_REMOVED(args)
 		if cid == 135360 or cid == 131825 then--Sister Briar
 			timerJaggedNettlesCD:Stop()
 		elseif cid == 135358 or cid == 131823 then--Sister Malady
-			timerSoulManipulationCD:Stop()
-		elseif cid == 135359 or cid == 131824 then--Sister Solena
 			timerUnstableRunicMarkCD:Stop()
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Hide()
 			end
+		elseif cid == 135359 or cid == 131824 then--Sister Solena
+			timerSoulManipulationCD:Stop()
 		end
 	elseif spellId == 268088 then
 		warnAuraofDreadOver:Show()
