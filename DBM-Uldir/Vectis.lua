@@ -39,6 +39,7 @@ local warnImmunoSupp						= mod:NewCountAnnounce(265206, 3)
 local specWarnEvolvingAffliction			= mod:NewSpecialWarningStack(265178, nil, 2, nil, nil, 1, 6)
 local specWarnEvolvingAfflictionOther		= mod:NewSpecialWarningTaunt(265178, nil, nil, nil, 1, 2)
 local specWarnOmegaVector					= mod:NewSpecialWarningYouPos(265129, nil, nil, nil, 1, 2)
+local specWarnOmegaVectorAlt				= mod:NewSpecialWarningYou(265129, nil, nil, nil, 1, 2)--Duplicate, just to avoid the unknown personal alerts
 local yellOmegaVector						= mod:NewPosYell(265129)
 local yellOmegaVectorNoIcon					= mod:NewYell(265129)
 local yellOmegaVectorFades					= mod:NewIconFadesYell(265129)
@@ -63,7 +64,7 @@ local timerGestateCD						= mod:NewNextTimer(25.5, 265212, nil, nil, nil, 3, nil
 local timerContagionCD						= mod:NewNextCountTimer(23, 267242, nil, nil, nil, 2, nil, DBM_CORE_L.DEADLY_ICON, nil, mod:IsHealer() and 2, 3)
 local timerLiquefyCD						= mod:NewNextTimer(90.9, 265217, nil, nil, nil, 6, nil, nil, nil, 3, 3)
 local timerplagueBombCD						= mod:NewCDCountTimer(11.4, 266459, nil, nil, nil, 5)--11.4 or 12.2, not sure which one blizz decided on, find out later
-local timerImmunoSuppCD						= mod:NewCDCountTimer(25.5, 265206, nil, nil, nil, 5, nil, DBM_CORE_L.HEALER_ICON)
+local timerImmunoSuppCD						= mod:NewCDCountTimer("d25.5", 265206, nil, nil, nil, 5, nil, DBM_CORE_L.HEALER_ICON)
 
 --local berserkTimer						= mod:NewBerserkTimer(600)
 
@@ -112,8 +113,8 @@ local function delayedIconCheck(self)
 			yellOmegaVectorFades:Countdown(remaining-0.3, 3, currentIcon)
 		end
 	else--Didn't find an icon
-		specWarnOmegaVector:Show(DBM_CORE_L.UNKNOWN)
-		specWarnOmegaVector:Play("targetyou")
+		specWarnOmegaVectorAlt:Show(DBM_CORE_L.UNKNOWN)
+		specWarnOmegaVectorAlt:Play("targetyou")
 		yellOmegaVectorNoIcon:Yell()
 		if expireTime then
 			local remaining = expireTime-GetTime()
