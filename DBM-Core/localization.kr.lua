@@ -266,6 +266,8 @@ L.TIMER_USAGE	= {
 L.ERROR_NO_PERMISSION				= "이 명령어를 실행하기 위한 권한을 가지고 있지 않습니다."
 
 --Common Locals
+L.NONE						= "없음"
+L.RANDOM					= "무작위"
 L.NEXT						= "다음 %s"
 L.COOLDOWN					= "%s 쿨타임"
 L.UNKNOWN					= "알 수 없음"--UNKNOWN
