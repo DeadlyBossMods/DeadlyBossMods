@@ -154,7 +154,7 @@ L:SetGeneralLocalization({
 L= DBM:GetModLocalization(2399)
 
 L:SetMiscLocalization({
-	Flight	= "Your doom takes flight!"
+	Flight	= "畏惧天空吧！"
 })
 
 -----------------------
