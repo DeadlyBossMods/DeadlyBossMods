@@ -112,12 +112,16 @@ function mod:SPELL_CAST_START(args)
 	if args.spellId == 134740 then
 		warnVolatileFlames:Show()
 		timerVolatileFlamesCD:Start()
+		if not brawlersMod:PlayerFighting() then
+			timerVolatileFlamesCD:SetSTFade(true)
+		end
 	elseif args.spellId == 133607 then
 		timerFireLineCD:Start()--First one is 9-10 seconds after combat start
 		if brawlersMod:PlayerFighting() then
 			specWarnFireLine:Show()
 		else
 			warnFireLine:Show()
+			timerFireLineCD:SetSTFade(true)
 		end
 	elseif args.spellId == 134777 then
 		timerDevastatingThrustCD:Start()--First one is 7-8 seconds after combat start
@@ -125,6 +129,7 @@ function mod:SPELL_CAST_START(args)
 			specWarnDevastatingThrust:Show()
 		else
 			warnDevastatingThrust:Show()
+			timerDevastatingThrustCD:SetSTFade(true)
 		end
 	elseif args.spellId == 135621 then
 --		timerStaticChargeCD:Start()
@@ -132,6 +137,7 @@ function mod:SPELL_CAST_START(args)
 			specWarnStaticCharge:Show(args.sourceName)
 		else
 			warnStaticCharge:Show()
+			--timerStaticChargeCD:SetSTFade(true)
 		end
 	elseif args.spellId == 133346 then
 		timerDarkZoneCD:Start()
@@ -139,16 +145,21 @@ function mod:SPELL_CAST_START(args)
 			specWarnDarkZone:Show()
 		else
 			warnDarkZone:Show()
+			timerDarkZoneCD:SetSTFade(true)
 		end
 	elseif args.spellId == 134743 then
 		warnEarthSeed:Show()
 		timerEarthSeedCD:Start()
+		if not brawlersMod:PlayerFighting() then
+			timerEarthSeedCD:SetSTFade(true)
+		end
 	elseif args.spellId == 133286 then
 		timerHeatedPokersCD:Start()
 		if brawlersMod:PlayerFighting() then
 			specWarnHeatedPokers:Show()
 		else
 			warnHeatedPokers:Show()
+			timerHeatedPokersCD:SetSTFade(true)
 		end
 	elseif args.spellId == 39945 then
 		timerChainLightningCD:Start()
@@ -156,6 +167,7 @@ function mod:SPELL_CAST_START(args)
 			specWarnChainLightning:Show(args.sourceName)
 		else
 			warnChainLightning:Show()
+			timerChainLightningCD:SetSTFade(true)
 		end
 	elseif args.spellId == 141104 then
 		if brawlersMod:PlayerFighting() then
@@ -169,6 +181,7 @@ function mod:SPELL_CAST_START(args)
 			specWarnRainDance:Show()
 		else
 			warnRainDance:Show()
+			timerRainDanceCD:SetSTFade(true)
 		end
 	elseif args.spellId == 124935 then
 		timerTorrentCD:Start()
@@ -176,6 +189,7 @@ function mod:SPELL_CAST_START(args)
 			specWarnTorrent:Show(args.sourceName)
 		else
 			warnTorrent:Show()
+			timerTorrentCD:SetSTFade(true)
 		end
 	elseif args.spellId == 134795 then
 		timerShriekCD:Start()
@@ -183,6 +197,7 @@ function mod:SPELL_CAST_START(args)
 			warnDisorientingShriek:Show(args.sourceName)
 		else
 			warnDisorientingShriek:Show()
+			timerShriekCD:SetSTFade(true)
 		end
 	elseif args.spellId == 125212 then
 		timerShadowboltCD:Start()
@@ -190,6 +205,7 @@ function mod:SPELL_CAST_START(args)
 			specWarnShadowbolt:Show()
 		else
 			warnShadowbolt:Show()
+			timerShadowboltCD:SetSTFade(true)
 		end
 	elseif args.spellId == 133465 then
 		timerGhostCD:Start()
@@ -197,6 +213,7 @@ function mod:SPELL_CAST_START(args)
 			specWarnGhost:Show()
 		else
 			warnGhost:Show()
+			timerGhostCD:SetSTFade(true)
 		end
 	elseif args.spellId == 133017 then
 		remainingMines = remainingMines - 1
@@ -206,22 +223,31 @@ function mod:SPELL_CAST_START(args)
 		warnBlindStrike:Show()
 		timerSwiftStrikeCD:Start()
 		timerBlindCleaveD:Start()
+		if not brawlersMod:PlayerFighting() then
+			timerSwiftStrikeCD:SetSTFade(true)
+			timerBlindCleaveD:SetSTFade(true)
+		end
 	elseif args.spellId == 246121 then
 		swiftStrike = swiftStrike + 1
 		warnSwiftStrike:Show(swiftStrike)
 		if swiftStrike < 4 then
 			timerSwiftStrikeCD:Start()
 		end
-		if brawlersMod:PlayerFighting() and self.Options.SpeakOutStrikes then
-			DBM:PlayCountSound(swiftStrike)
+		if brawlersMod:PlayerFighting() then
+			if self.Options.SpeakOutStrikes then
+				DBM:PlayCountSound(swiftStrike)
+			end
+		else
+			timerSwiftStrikeCD:SetSTFade(true)
 		end
 	elseif args.spellId == 246127 then
+		timerBlindStrikeCD:Start()
 		if brawlersMod:PlayerFighting() then
 			specWarnBlindCleave:Show()
 		else
 		    warnBlindCleave:Show()
+		    timerBlindStrikeCD:SetSTFade(true)
 		end
-		timerBlindStrikeCD:Start()
 	elseif args.spellId == 133212 then
 		warnRockets:Show()
 		timerRockets:Schedule(4)
@@ -243,6 +269,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			specWarnEvilGlare:Show()
 		else
 			warnEvilGlare:Show()
+			--timerEvilGlareCD:SetSTFade(true)
 		end
 	elseif args.spellId == 140894 then
 		if brawlersMod:PlayerFighting() then
@@ -263,6 +290,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			specWarnShadowTorch:Play("farfromline")
 		else
 			warnShadowTorch:Show()
+			timerShadowTorchCD:SetSTFade(true)
 		end
 	end
 end
@@ -376,5 +404,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 133253 and self:AntiSpam() then
 		warnCharging:Show()
 		timerChargingCD:Start()
+		if not brawlersMod:PlayerFighting() then
+			timerChargingCD:SetSTFade(true)
+		end
 	end
 end
