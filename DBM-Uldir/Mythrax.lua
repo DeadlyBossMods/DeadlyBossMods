@@ -58,7 +58,7 @@ local specWarnMindFlay					= mod:NewSpecialWarningInterrupt(274019, "HasInterrup
 
 mod:AddTimerLine(SCENARIO_STAGE:format(1))
 local timerEssenceShearCD				= mod:NewNextSourceTimer(19.5, 274693, 41032, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON, nil, 2, 3)--Short Text "Shear", All timers generlaly 20 but 19.9 can happen and DBM has to use lost known time
-local timerObliterationBlastCD			= mod:NewNextSourceTimer(14.9", 273538, 158259, nil, nil, 3)--Short Text "Blast"
+local timerObliterationBlastCD			= mod:NewNextSourceTimer(14.9, 273538, 158259, nil, nil, 3)--Short Text "Blast"
 local timerOblivionSphereCD				= mod:NewNextCountTimer(14.9, 272407, nil, nil, nil, 3, nil, nil, nil, 1, 3)
 local timerImminentRuinCD				= mod:NewNextCountTimer(14.9, 272536, 139074, nil, nil, 3, nil, nil, nil, not mod:IsTank() and 3, 3)--Short Text "Ruin"
 local timerLivingWeaponCD				= mod:NewNextTimer(60.5, 276922, nil, nil, nil, 1, nil, DBM_CORE_L.MYTHIC_ICON)--Mythic
