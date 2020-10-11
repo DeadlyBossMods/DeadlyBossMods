@@ -232,7 +232,7 @@ L:SetGeneralLocalization({
 --L= DBM:GetModLocalization(2409)
 
 -----------------------
--- Dealer G'exa --
+-- Dealer Xy'exa --
 -----------------------
 --L= DBM:GetModLocalization(2398)
 

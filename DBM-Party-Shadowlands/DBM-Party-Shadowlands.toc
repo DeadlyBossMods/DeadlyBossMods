@@ -56,7 +56,7 @@ TheaterofPain\Mordretha.lua
 TheaterofPain\TheaterofPainTrash.lua
 DeOtherSide\Hakkar.lua
 DeOtherSide\TheManastorms.lua
-DeOtherSide\DealerGexa.lua
+DeOtherSide\DealerXyexa.lua
 DeOtherSide\Muehzala.lua
 DeOtherSide\DeOtherSideTrash.lua
 SanguineDepths\Kryxis.lua
