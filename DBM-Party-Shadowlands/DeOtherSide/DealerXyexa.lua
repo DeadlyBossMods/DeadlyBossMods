@@ -51,7 +51,8 @@ function mod:OnCombatStart(delay)
 	timerLocalizedExplosiveCD:Start(9.6-delay)
 	timerDisplacedBlastwaveCD:Start(11.1-delay)
 	timerExplosiveContrivanceCD:Start(31.6-delay)
-	if self:IsDifficulty("challenge5") then
+--	if self:IsDifficulty("challenge5") then
+	if self:IsMythic() then--TODO, verify
 		timerArcaneLightningCD:Start(7.2)
 	end
 end
