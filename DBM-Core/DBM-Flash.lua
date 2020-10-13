@@ -12,16 +12,12 @@ local frame, duration, elapsed, totalRepeat
 --------------------
 --  Create Frame  --
 --------------------
-frame = CreateFrame("Frame", "DBMFlash", UIParent, DBM:IsAlpha() and "BackdropTemplate")
+frame = CreateFrame("Frame", "DBMFlash", UIParent, "BackdropTemplate")
 frame:Hide()
 frame.backdropInfo = {
 	bgFile	= "Interface\\Tooltips\\UI-Tooltip-Background" -- 137056
 }
-if DBM:IsAlpha() then
-	frame:ApplyBackdrop()
-else
-	frame:SetBackdrop(frame.backdropInfo)
-end
+frame:ApplyBackdrop()
 frame:SetAllPoints(UIParent)
 frame:SetFrameStrata("BACKGROUND")
 frame:Hide()

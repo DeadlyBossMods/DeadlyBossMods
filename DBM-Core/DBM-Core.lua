@@ -71,8 +71,8 @@ end
 
 DBM = {
 	Revision = parseCurseDate("@project-date-integer@"),
-	DisplayVersion = "9.0 alpha", -- the string that is shown as version
-	ReleaseRevision = releaseDate(2020, 9, 10) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	DisplayVersion = "9.0", -- the string that is shown as version
+	ReleaseRevision = releaseDate(2020, 10, 13) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 }
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
@@ -100,8 +100,8 @@ function DBM:GetTOC()
 	return wowTOC, testBuild, wowVersionString, wowBuild
 end
 
-function DBM:IsAlpha()
-	return self:GetTOC() >= 90000 -- 9.x.x
+function DBM:IsDev()
+	return self:GetTOC() >= 90100 -- 9.1.x
 end
 
 -- dual profile setup
@@ -2691,7 +2691,7 @@ do
 	local ignore, cancel
 	local popuplevel = 0
 	local function showPopupConfirmIgnore(ignore, cancel)
-		local popup = CreateFrame("Frame", "DBMHyperLinks", UIParent, DBM:IsAlpha() and "BackdropTemplate")
+		local popup = CreateFrame("Frame", "DBMHyperLinks", UIParent, "BackdropTemplate")
 		popup.backdropInfo = {
 			bgFile		= "Interface\\DialogFrame\\UI-DialogBox-Background-Dark", -- 312922
 			edgeFile	= "Interface\\DialogFrame\\UI-DialogBox-Border", -- 131072
@@ -2700,11 +2700,7 @@ do
 			edgeSize	= 16,
 			insets		= { left = 1, right = 1, top = 1, bottom = 1 }
 		}
-		if not DBM:IsAlpha() then
-			popup:SetBackdrop(popup.backdropInfo)
-		else
-			popup:ApplyBackdrop()
-		end
+		popup:ApplyBackdrop()
 		popup:SetSize(500, 80)
 		popup:SetPoint("TOP", UIParent, "TOP", 0, -200)
 		popup:SetFrameStrata("DIALOG")
@@ -4806,7 +4802,7 @@ do
 		local accessList = {}
 		local savedSender
 
-		local inspopup = CreateFrame("Frame", "DBMPopupLockout", UIParent, DBM:IsAlpha() and "BackdropTemplate")
+		local inspopup = CreateFrame("Frame", "DBMPopupLockout", UIParent, "BackdropTemplate")
 		inspopup.backdropInfo = {
 			bgFile		= "Interface\\DialogFrame\\UI-DialogBox-Background-Dark", -- 312922
 			edgeFile	= "Interface\\DialogFrame\\UI-DialogBox-Border", -- 131072
@@ -4815,11 +4811,7 @@ do
 			edgeSize	= 16,
 			insets		= { left = 1, right = 1, top = 1, bottom = 1 }
 		}
-		if not DBM:IsAlpha() then
-			inspopup:SetBackdrop(inspopup.backdropInfo)
-		else
-			inspopup:ApplyBackdrop()
-		end
+		inspopup:ApplyBackdrop()
 		inspopup:SetSize(500, 120)
 		inspopup:SetPoint("TOP", UIParent, "TOP", 0, -200)
 		inspopup:SetFrameStrata("DIALOG")
@@ -5349,7 +5341,7 @@ do
 	local frame, fontstring, fontstringFooter, editBox, urlText
 
 	local function createFrame()
-		frame = CreateFrame("Frame", "DBMUpdateReminder", UIParent, DBM:IsAlpha() and "BackdropTemplate")
+		frame = CreateFrame("Frame", "DBMUpdateReminder", UIParent, "BackdropTemplate")
 		frame:SetFrameStrata("FULLSCREEN_DIALOG") -- yes, this isn't a fullscreen dialog, but I want it to be in front of other DIALOG frames (like DBM GUI which might open this frame...)
 		frame:SetWidth(430)
 		frame:SetHeight(140)
@@ -5362,11 +5354,7 @@ do
 			edgeSize	= 32,
 			insets		= { left = 11, right = 12, top = 12, bottom = 11 },
 		}
-		if not DBM:IsAlpha() then
-			frame:SetBackdrop(frame.backdropInfo)
-		else
-			frame:ApplyBackdrop()
-		end
+		frame:ApplyBackdrop()
 		fontstring = frame:CreateFontString(nil, "ARTWORK", "GameFontNormal")
 		fontstring:SetWidth(410)
 		fontstring:SetHeight(0)
@@ -5451,7 +5439,7 @@ do
 	local frame, fontstring, fontstringFooter, editBox, button3
 
 	local function createFrame()
-		frame = CreateFrame("Frame", "DBMNotesEditor", UIParent, DBM:IsAlpha() and "BackdropTemplate")
+		frame = CreateFrame("Frame", "DBMNotesEditor", UIParent, "BackdropTemplate")
 		frame:SetFrameStrata("FULLSCREEN_DIALOG") -- yes, this isn't a fullscreen dialog, but I want it to be in front of other DIALOG frames (like DBM GUI which might open this frame...)
 		frame:SetWidth(430)
 		frame:SetHeight(140)
@@ -5464,11 +5452,7 @@ do
 			edgeSize	= 32,
 			insets		= { left = 11, right = 12, top = 12, bottom = 11 }
 		}
-		if not DBM:IsAlpha() then
-			frame:SetBackdrop(frame.backdropInfo)
-		else
-			frame:ApplyBackdrop()
-		end
+		frame:ApplyBackdrop()
 		fontstring = frame:CreateFontString(nil, "ARTWORK", "GameFontNormal")
 		fontstring:SetWidth(410)
 		fontstring:SetHeight(0)
@@ -8456,7 +8440,7 @@ do
 			["RangedDps"] = true,
 			["Physical"] = true,
 			["HasInterrupt"] = true,
-			--["RemoveEnrage"] = true,--TODO: Enable in 9.0
+			["RemoveEnrage"] = true,
 		},
 		[255] = {	--Survival Hunter (Legion+)
 			["Dps"] = true,
