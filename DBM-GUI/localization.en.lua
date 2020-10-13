@@ -16,7 +16,7 @@ L.OTabPlugins	= "Core Plugins"
 L.OTabOptions	= GAMEOPTIONS_MENU
 L.OTabAbout		= "About"
 
-L.TabCategory_SHADOWLANDS	= EXPANSION_NAME8 or "Shadowlands"
+L.TabCategory_SHADOWLANDS	= EXPANSION_NAME8
 L.TabCategory_BFA	 		= EXPANSION_NAME7
 L.TabCategory_LEG	 		= EXPANSION_NAME6
 L.TabCategory_WOD	 		= EXPANSION_NAME5

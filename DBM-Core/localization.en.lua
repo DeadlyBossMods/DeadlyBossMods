@@ -687,7 +687,7 @@ L.SILENTMODE_IS						= "SilentMode is "
 
 L.LDB_LOAD_MODS						= "Load boss mods"
 
-L.LDB_CAT_SL						= EXPANSION_NAME8 or "Shadowlands"
+L.LDB_CAT_SL						= EXPANSION_NAME8
 L.LDB_CAT_BFA						= EXPANSION_NAME7
 L.LDB_CAT_LEG						= EXPANSION_NAME6
 L.LDB_CAT_WOD						= EXPANSION_NAME5
