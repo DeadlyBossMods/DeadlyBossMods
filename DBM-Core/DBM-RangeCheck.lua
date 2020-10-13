@@ -12,15 +12,6 @@ local mainFrame = CreateFrame("Frame")
 local textFrame, radarFrame, updateIcon, updateRangeFrame, initializeDropdown
 local RAID_CLASS_COLORS = _G["CUSTOM_CLASS_COLORS"] or RAID_CLASS_COLORS -- For Phanx' Class Colors
 
---retail/beta compat
-local UnitInPhase = _G["UnitInPhase"] or function(unit)
-	local reason = UnitPhaseReason(unit)--9.x replacement for UnitinPhase
-	if reason then--Any reason, means they are out of phase
-		return false
-	end
-	return true
-end
-
 -- Function for automatically converting inputed ranges from old mods to be ones that have valid item/api checks
 local function setCompatibleRestrictedRange(range)
 	if range <= 4 then
@@ -678,7 +669,7 @@ do
 			local uId = unitList[i]
 			local dot = radarFrame.dots[i]
 			local mapId = GetBestMapForUnit(uId) or 0
-			if UnitExists(uId) and playerMapId == mapId and not UnitIsUnit(uId, "player") and not UnitIsDeadOrGhost(uId) and UnitIsConnected(uId) and UnitInPhase(uId) and (not filter or filter(uId)) then
+			if UnitExists(uId) and playerMapId == mapId and not UnitIsUnit(uId, "player") and not UnitIsDeadOrGhost(uId) and UnitIsConnected(uId) and not UnitPhaseReason(uId) and (not filter or filter(uId)) then
 				local range = restricted and itsBCAgain(uId, activeRange) or UnitDistanceSquared(uId) ^ 0.5
 				local inRange = false
 				if range < activeRange + 0.5 then
@@ -798,7 +789,7 @@ do
 	function getDistanceBetweenAll(checkrange)
 		local range
 		for uId in DBM:GetGroupMembers() do
-			if UnitExists(uId) and not UnitIsUnit(uId, "player") and not UnitIsDeadOrGhost(uId) and UnitIsConnected(uId) and UnitInPhase(uId) then
+			if UnitExists(uId) and not UnitIsUnit(uId, "player") and not UnitIsDeadOrGhost(uId) and UnitIsConnected(uId) and not UnitPhaseReason(uId) then
 				range = DBM:HasMapRestrictions() and itsBCAgain(uId, checkrange) or UnitDistanceSquared(uId) * 0.5
 				if checkrange < (range + 0.5) then
 					return true
