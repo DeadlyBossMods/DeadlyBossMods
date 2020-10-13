@@ -39,7 +39,7 @@ function mod:OnCombatStart(delay)
 	timerSelfTrimmingHedgeCD:Start(3.4-delay)
 	timerPlantCD:Start(5.9-delay)
 	timerDiscomBombCD:Start(8.3-delay)
-	timerFlameCannonCD:Start(13.1-delay)
+	timerFlameCannonCD:Start(12.1-delay)
 end
 
 function mod:SPELL_CAST_START(args)
