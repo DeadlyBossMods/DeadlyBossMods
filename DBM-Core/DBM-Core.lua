@@ -7010,27 +7010,18 @@ do
 	function DBM:SendPVPTimers(target)
 		self:Debug("SendPVPTimers requested by "..target, 2)
 		local spamForTarget = spamProtection[target] or 0
+		local time = GetTime()
 		-- just try to clean up the table, that should keep the hash table at max. 4 entries or something :)
 		for k, v in pairs(spamProtection) do
-			if GetTime() - v >= 1 then
+			if time - v >= 1 then
 				spamProtection[k] = nil
 			end
 		end
-		if GetTime() - spamForTarget < 1 then -- just to prevent players from flooding this on purpose
+		if time - spamForTarget < 1 then -- just to prevent players from flooding this on purpose
 			return
 		end
-		spamProtection[target] = GetTime()
-		local mod
-		--Acquire correct pvp mod for zone we are in
-		if LastInstanceMapID == 529 or LastInstanceMapID == 1681 or LastInstanceMapID == 2107 or LastInstanceMapID == 2177 then--Arathi
-			mod = self:GetModByName("z2107")
-		elseif LastInstanceMapID == 30 or LastInstanceMapID == 2197 then--Alteract Valley
-			mod = self:GetModByName("z30")
-		elseif LastInstanceMapID == 566 or LastInstanceMapID == 968 then--Eye of the Storm
-			mod = self:GetModByName("z566")
-		else--Any other BG we can just use current MapID as mod ID
-			mod = self:GetModByName("z"..tostring(LastInstanceMapID))
-		end
+		spamProtection[target] = time
+		local mod = self:GetModByName("PvPGeneral")
 		if mod then
 			self:SendTimerInfo(mod, target)
 		end
