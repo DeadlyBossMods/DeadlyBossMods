@@ -24,6 +24,7 @@ localization.en.lua
 localization.kr.lua
 localization.tw.lua
 localization.cn.lua
+localization.es.lua
 TheNecroticWake\Blightbone.lua
 TheNecroticWake\Amarth.lua
 TheNecroticWake\SurgeonStitchflesh.lua

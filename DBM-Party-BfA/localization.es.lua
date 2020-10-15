@@ -168,7 +168,7 @@ L:SetGeneralLocalization({
 L= DBM:GetModLocalization(2336)
 
 L:SetMiscLocalization({
-	openingRP		= "TRANSLATE ME"
+	openingRP		= "¡Esto sí que es una anomalía estadística! ¡Nuestros visitantes siguen con vida!"
 })
 
 ---------
