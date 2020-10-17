@@ -227,7 +227,7 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 346692 then
-		warnUnyieldingShield:Show()
+		warnDutifulAttendant:Show()
 		timerDutifulAttendantCD:Start()
 	elseif spellId == 331634 then
 		if args:GetSrcCreatureID() == 166970 then--Main boss
