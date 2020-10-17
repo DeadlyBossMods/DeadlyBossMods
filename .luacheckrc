@@ -1622,6 +1622,7 @@ globals = {
 	"DropItemOnUnit",
 	"DungeonAppearsInRandomLFD",
 	"DungeonUsesTerrainMap",
+	"FreeTimerTrackerTimer",
 	"EJ_ClearSearch",
 	"EJ_EndSearch",
 	"EJ_GetCreatureInfo",
