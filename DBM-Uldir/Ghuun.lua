@@ -500,7 +500,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				yellDarkPurpose:Yell()
 			end
 			if self.Options.NPAuraOnFixate then
-				DBM.Nameplate:Show(true, args.sourceGUID, spellId, nil, nil, nil, true, {0.5, 0, 0.55, 0.75})
+				DBM.Nameplate:Show(true, args.sourceGUID, spellId)
 			end
 		end
 	elseif spellId == 275204 then
