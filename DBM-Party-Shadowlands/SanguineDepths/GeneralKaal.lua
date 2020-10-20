@@ -28,6 +28,7 @@ local warnShiningRadiance			= mod:NewTargetNoFilterAnnounce(324086, 1)
 local specWarnWickedRush			= mod:NewSpecialWarningMoveAway(323845, nil, nil, nil, 1, 2)
 local yellWickedRush				= mod:NewYell(323845)
 local yellWickedRushFades			= mod:NewShortFadesYell(323845)
+local yellShiningRadiance			= mod:NewYell(324086, nil, nil, nil, "YELL")
 local specWarnPiercingBlur			= mod:NewSpecialWarningDodge(323810, nil, nil, nil, 2, 2)
 local specWarnGloomSquall			= mod:NewSpecialWarningSpell(322903, nil, nil, nil, 3, 2)
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(257274, nil, nil, nil, 1, 8)
@@ -71,6 +72,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerWickedRushCD:Start(self.vb.rushCast == 2 and 20.7 or 15.8)
 	elseif spellId == 324086 then
 		warnShiningRadiance:Show(args.sourceName)
+		if args:IsPlayerSource() then
+			yellShiningRadiance:Yell()
+		end
 	end
 end
 
