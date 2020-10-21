@@ -111,7 +111,7 @@ local timerVanquishingStrikeCD					= mod:NewCDTimer(5.5, 325440, nil, "Tank", ni
 ----Bleakwing Assassin
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(21993))
 local timerBleakwingAssassinCD					= mod:NewCDCountTimer(80, "ej21993", nil, nil, nil, 1, 326583, DBM_CORE_L.DAMAGE_ICON)
---local timerCrimsonFuryCD						= mod:NewCDTimer(44.3, 341473, nil, false, nil, 3)--Too many to track via normal bars, this needs nameplate bars/icon
+--local timerCrimsonFuryCD						= mod:NewCDTimer(44.3, 341473, nil, false, nil, 3, nil, DBM_CORE_L.BLEED_ICON)--Too many to track via normal bars, this needs nameplate bars/icon
 ----Vile Occultist
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(21952))
 local timerVileOccultistCD						= mod:NewCDCountTimer(10, "ej21952", nil, nil, nil, 1, 329565, DBM_CORE_L.DAMAGE_ICON)

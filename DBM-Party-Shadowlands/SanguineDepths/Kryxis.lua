@@ -9,8 +9,8 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 --	"SPELL_AURA_APPLIED",
-	"SPELL_CAST_START 319650 319654 319685 319713",
---	"SPELL_CAST_SUCCESS",
+	"SPELL_CAST_START 319650 319685 319713",
+	"SPELL_CAST_SUCCESS 319654",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 	"CHAT_MSG_RAID_BOSS_EMOTE"
@@ -20,6 +20,10 @@ mod:RegisterEventsInCombat(
 --TODO, maybe track https://shadowlands.wowhead.com/spell=319657/essence-surge when stack rage is known, adding now has potential to be spammy
 --TODO, tweak interrupt count for Hungering Drain to reset at appropriate count when cast frequency known?
 --TODO, verify Juggernaut detection. It's pretty safe to assume though they copied/pasted it from Kings Rest Council, because it's literally same mechanic, no reason not to reuse code
+--[[
+(ability.id = 319650 or ability.id = 319685 or ability.id = 319713) and type = "begincast"
+ or ability.id = 319654 and type = "cast"
+ --]]
 --local warnBlackPowder				= mod:NewTargetAnnounce(257314, 4)
 
 local specWarnViciousHeadbutt		= mod:NewSpecialWarningDefensive(319650, "Tank", nil, nil, 1, 2)
@@ -31,31 +35,58 @@ local yellJuggernautRushFades		= mod:NewShortFadesYell(319713)
 local specWarnJuggernautRushSoak	= mod:NewSpecialWarningMoveTo(319713, nil, nil, nil, 1, 2)
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(257274, nil, nil, nil, 1, 8)
 
-local timerViciousHeadbuttCD		= mod:NewAITimer(13, 319650, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON)
-local timerHungeringDrainCD			= mod:NewAITimer(15.8, 319654, nil, nil, nil, 4, nil, DBM_CORE_L.INTERRUPT_ICON)
-local timerSeveringSmashCD			= mod:NewAITimer(15.8, 319685, nil, nil, nil, 6)
-local timerJuggernautRushCD			= mod:NewAITimer(15.8, 319713, nil, nil, nil, 3)
+local timerViciousHeadbuttCD		= mod:NewCDTimer(19.4, 319650, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON)--19.4 unless delayed by other abilities
+local timerHungeringDrainCD			= mod:NewCDTimer(19.4, 319654, nil, nil, nil, 4, nil, DBM_CORE_L.INTERRUPT_ICON)
+local timerSeveringSmashCD			= mod:NewCDTimer(40.1, 319685, nil, nil, nil, 6)
+local timerJuggernautRushCD			= mod:NewCDTimer(18.2, 319713, nil, nil, nil, 3)
 
 mod:AddSetIconOption("SetIconOnJuggernaut", 319713, true, false, {1})
 
 mod.vb.interruptCount = 0
+mod.vb.headbuttCount = 0
 
 function mod:OnCombatStart(delay)
 	self.vb.interruptCount = 0
-	timerViciousHeadbuttCD:Start(1-delay)
-	timerHungeringDrainCD:Start(1-delay)
-	timerSeveringSmashCD:Start(1-delay)
-	timerJuggernautRushCD:Start(1-delay)
+	self.vb.headbuttCount = 0
+	timerViciousHeadbuttCD:Start(5.9-delay)
+	timerHungeringDrainCD:Start(10.7-delay)
+	timerJuggernautRushCD:Start(15.6-delay)
+	timerSeveringSmashCD:Start(43.6-delay)
 end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 319650 then
+		self.vb.headbuttCount = self.vb.headbuttCount + 1
 		specWarnViciousHeadbutt:Show()
 		specWarnViciousHeadbutt:Play("defensive")
-		timerViciousHeadbuttCD:Start()
-	elseif spellId == 319654 then
-		timerHungeringDrainCD:Start()
+		if timerSeveringSmashCD:GetRemaining() >= 19.4 then
+			timerViciousHeadbuttCD:Start()
+		end
+	elseif spellId == 319685 then
+		specWarnSeveringSmash:Show()
+		specWarnSeveringSmash:Play("specialsoon")
+		timerSeveringSmashCD:Start()
+		--Severing Smash resets other timers
+		timerViciousHeadbuttCD:Stop()
+		timerHungeringDrainCD:Stop()
+		timerJuggernautRushCD:Stop()
+		timerViciousHeadbuttCD:Start(12)
+		timerHungeringDrainCD:Start(17)
+		timerJuggernautRushCD:Start(21.8)
+	elseif spellId == 319713 then
+		if timerSeveringSmashCD:GetRemaining() >= 18.2 then
+			timerJuggernautRushCD:Start()
+		end
+	end
+end
+
+function mod:SPELL_CAST_SUCCESS(args)
+	local spellId = args.spellId
+	if spellId == 319654 then
+		if timerSeveringSmashCD:GetRemaining() >= 19.4 then
+			timerHungeringDrainCD:Start()
+		end
 		self.vb.interruptCount = self.vb.interruptCount + 1
 		if self:CheckInterruptFilter(args.sourceGUID, false, true) then
 			local count = self.vb.interruptCount
@@ -74,23 +105,10 @@ function mod:SPELL_CAST_START(args)
 				specWarnHungeringDrain:Play("kickcast")
 			end
 		end
-	elseif spellId == 319685 then
-		specWarnSeveringSmash:Show()
-		specWarnSeveringSmash:Play("specialsoon")
-		timerSeveringSmashCD:Start()
-	elseif spellId == 319713 then
-		timerJuggernautRushCD:Start()
 	end
 end
 
 --[[
-function mod:SPELL_CAST_SUCCESS(args)
-	local spellId = args.spellId
-	if spellId == 257316 then
-
-	end
-end
-
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 194966 then
