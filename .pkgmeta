@@ -22,6 +22,7 @@ move-folders:
   DBM-Core/DBM-Party-BfA: DBM-Party-BfA
   DBM-Core/DBM-Party-Shadowlands: DBM-Party-Shadowlands
   DBM-Core/DBM-Azeroth-BfA: DBM-Azeroth-BfA
+  DBM-Core/DBM-Shadowlands: DBM-Shadowlands
   DBM-Core/DBM-Uldir: DBM-Uldir
   DBM-Core/DBM-CrucibleofStorms: DBM-CrucibleofStorms
   DBM-Core/DBM-ZuldazarRaid: DBM-ZuldazarRaid
