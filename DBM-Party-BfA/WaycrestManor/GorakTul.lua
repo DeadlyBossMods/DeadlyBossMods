@@ -30,7 +30,7 @@ mod:AddRangeFrameOption(6, 266225)--Range guessed, can't find spell data for it
 
 function mod:OnCombatStart(delay)
 	timerSummonSlaverCD:Start(2.5-delay)
-	timerDarkenedLightningCD:Start(8-delay)
+	timerDarkenedLightningCD:Start(6.1-delay)
 	timerDreadEssenceCD:Start(25-delay)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(6)

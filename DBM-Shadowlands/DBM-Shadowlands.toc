@@ -1,0 +1,22 @@
+## Interface: 90001
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Shadowlands|r
+## Author: MysticalOS
+## LoadOnDemand: 1
+## RequiredDeps: DBM-Core
+## SavedVariables: DBMShadowlands_AllSavedVars
+## SavedVariablesPerCharacter: DBMShadowlands_SavedStats
+## X-DBM-Mod: 1
+## X-DBM-Mod-Type: RAID
+## X-DBM-Mod-Category: SHADOWLANDS
+## X-DBM-StatTypes: normal
+## X-DBM-Mod-World-Boss: 1
+## X-DBM-Mod-Sort: 310
+## X-DBM-Mod-MapID: 2222
+## X-DBM-Mod-LoadCID: 167524,173104,167527,167526
+## X-DBM-Mod-MinCoreRevision: 17286
+## X-DBM-Mod-MinExpansion: 8
+localization.en.lua
+Valinor.lua
+Mortanis.lua
+Oranomonos.lua
+Nurgash.lua

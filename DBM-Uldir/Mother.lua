@@ -269,6 +269,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		local time = self:IsMythic() and 123 or 180
 		if cid == 136429 then
 			self.vb.phase = 1
+			timerCleansingFlameCD:Stop(1)
 			timerCleansingFlameCD:Start(time, 1)
 		elseif cid == 137022 then
 			self.vb.phase = 2

@@ -213,7 +213,7 @@ function mod:SPELL_CAST_START(args)
 		else
 			warnVoidEchoes:Show(self.vb.echoesCast)
 		end
-		timerVoidEchoesCD:Start(9.7, self.vb.echoesCast+1)
+		timerVoidEchoesCD:Start(8.4, self.vb.echoesCast+1)
 	elseif spellId == 273944 then
 		if not castsPerGUID[args.sourceGUID] then
 			castsPerGUID[args.sourceGUID] = 0
@@ -256,7 +256,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		specWarnLivingWeapon:Show()
 		specWarnLivingWeapon:Play("bigmob")
 		timerVoidEchoesCD:Start(2.5, 1)
-		timerObliterationBlastCD:Start(16.5, DBM_CORE_L.ADD)
+		timerObliterationBlastCD:Start(6.8, DBM_CORE_L.ADD)
 		timerLivingWeaponCD:Start(60)
 	elseif spellId == 272404 then
 		self.vb.sphereCast = self.vb.sphereCast + 1

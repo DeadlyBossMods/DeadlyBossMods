@@ -1,3 +1,4 @@
+if GetLocale() ~= "esES" and GetLocale() ~= "esMX" then return end
 local L
 
 -----------------------
@@ -29,7 +30,7 @@ local L
 L = DBM:GetModLocalization("NecroticWakeTrash")
 
 L:SetGeneralLocalization({
-	name =	"Necrotic Wake Trash"
+	name =	"Enemigos menores"
 })
 
 -----------------------
@@ -61,7 +62,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("PlaguefallTrash")
 
 L:SetGeneralLocalization({
-	name =	"Plaguefall Trash"
+	name =	"Enemigos menores"
 })
 
 -----------------------
@@ -83,21 +84,21 @@ L:SetGeneralLocalization({
 L= DBM:GetModLocalization(2405)
 
 L:SetWarningLocalization({
-	specWarnParasiticInfester	= "Parasitic Infester on YOU"
+	specWarnParasiticInfester	= "Infestador parasitario en ti"
 })
 
 L:SetTimerLocalization{
-	timerParasiticInfesterCD	= "~Infester"
+	timerParasiticInfesterCD	= "~Infestador parasitario"
 }
 
 L:SetOptionLocalization({
-	specWarnParasiticInfester	= "Show special warning when you are affected by Parasitic Infester",
-	timerParasiticInfesterCD	= "Show timer for Parasitic Infester",
-	yellParasiticInfester		= "Yell when you are affected by Parasitic Infester"
+	specWarnParasiticInfester	= "Mostrar aviso especial cuando te afecte Infestador parasitario",
+	timerParasiticInfesterCD	= "Mostrar temporizador para Infestador parasitario",
+	yellParasiticInfester		= "Gritar cuando te afecte Infestador parasitario"
 })
 
 L:SetMiscLocalization({
-	Infester					= "Infester"
+	Infester					= "Infestador"
 })
 
 ---------
@@ -106,7 +107,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("TirnaScitheTrash")
 
 L:SetGeneralLocalization({
-	name =	"Tirna Scithe Trash"--Or MOTS Trash?
+	name =	"Enemigos menores"--Or MOTS Trash?
 })
 
 -----------------------
@@ -138,7 +139,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("AtonementTrash")
 
 L:SetGeneralLocalization({
-	name =	"Halls of Atonement Trash"--HoA Trash?
+	name =	"Enemigos menores"--HoA Trash?
 })
 
 -----------------------
@@ -150,7 +151,7 @@ L:SetGeneralLocalization({
 L= DBM:GetModLocalization(2399)
 
 L:SetMiscLocalization({
-	Flight	= "Your doom takes flight!"
+	Flight	= "¡Tu fin alza el vuelo!"
 })
 
 -----------------------
@@ -169,7 +170,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(2412)
 
 L:SetMiscLocalization({
-	RunThrough	= "This spear shall pierce your heart!"
+	RunThrough	= "¡Esta lanza os atravesará el corazón!"
 })
 
 ---------
@@ -178,7 +179,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("SpiresofAscensionTrash")
 
 L:SetGeneralLocalization({
-	name =	"Spires of Ascension Trash"--SoA Trash?
+	name =	"Enemigos menores"--SoA Trash?
 })
 
 -----------------------
@@ -215,7 +216,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("TheaterofPainTrash")
 
 L:SetGeneralLocalization({
-	name =	"Theater of Pain Trash"
+	name =	"Enemigos menores"
 })
 
 -----------------------
@@ -247,7 +248,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("DeOtherSideTrash")
 
 L:SetGeneralLocalization({
-	name =	"De Other Side Trash"
+	name =	"Enemigos menores"
 })
 
 -----------------------
@@ -279,5 +280,5 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("SanguineDepthsTrash")
 
 L:SetGeneralLocalization({
-	name =	"Sanguine Depths Trash"
+	name =	"Enemigos menores"
 })
