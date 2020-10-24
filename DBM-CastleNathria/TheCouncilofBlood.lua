@@ -6,20 +6,20 @@ mod:SetCreatureID(166971, 166969, 166970)--Castellan Niklaus, Baroness Frieda, L
 mod:SetEncounterID(2412)
 mod:SetBossHPInfoToHighest()
 --mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
-mod:SetHotfixNoticeRev(20201016000000)--2020, 10, 16
+mod:SetHotfixNoticeRev(20201024000000)--2020, 10, 24
 mod:SetMinSyncRevision(20201016000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 328334 330965 330978 327497 327052 346690 337110 346657 346681 346303",
+	"SPELL_CAST_START 328334 330965 330978 327497 327052 346690 337110 346657 346681 346303 346790",
 	"SPELL_CAST_SUCCESS 346692 331634 330959 346657 346303",
 	"SPELL_AURA_APPLIED 330967 327773 331636 331637 332535 346694 342859 346690",
 	"SPELL_AURA_APPLIED_DOSE 327773 332535 346690",
 	"SPELL_AURA_REMOVED 330967 331636 331637 346694 330959",
---	"SPELL_PERIODIC_DAMAGE",
---	"SPELL_PERIODIC_MISSED",
+	"SPELL_PERIODIC_DAMAGE 346945",
+	"SPELL_PERIODIC_MISSED 346945",
 	"UNIT_DIED",
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3"
 )
@@ -29,6 +29,7 @@ mod:RegisterEventsInCombat(
 --TODO, upgrade Cadre to special warning for melee/everyone based on where they spawn?
 --TODO, tune the tank stack warning for drain essence
 --TODO, dance helper?
+--TODO, Soul Spikes mid spikes swap, similar to the mid combo swap of Zek'vhoz?
 --TODO, Handling of boss timers with dance. Currently they just mass queue up and don't reset, pause or anything, resulting in bosses chaining abilities after dance.
 --		As such, keep an eye on this changing, if it doesn't, just add "keep" to all timers to show they are all queued up. if it changes, update timers to either reset, or pause
 --[[
@@ -42,8 +43,10 @@ mod:RegisterEventsInCombat(
 local warnDualistsRiposte						= mod:NewStackAnnounce(346690, 2, nil, "Tank|Healer")
 local warnDutifulAttendant						= mod:NewSpellAnnounce(346692, 2)
 local warnDredgerServants						= mod:NewSpellAnnounce(330978, 2)--One boss dead
+----Adds
 local warnCastellansCadre						= mod:NewSpellAnnounce(330965, 2)--Two bosses dead
 local warnFixate								= mod:NewTargetAnnounce(330967, 3)--Two bosses dead
+local warnSintouchedBlade						= mod:NewSpellAnnounce(346790, 4)
 ----Mythic
 local warnTacticalAdvance						= mod:NewTargetAnnounce(328334, 3)--Cast every 4 seconds, this is definitely staying a filtered target warning
 --Baroness Frieda
@@ -59,7 +62,7 @@ local warnDanceOver								= mod:NewEndAnnounce(330959, 2)
 local warnDancingFever							= mod:NewTargetAnnounce(342859, 3)
 
 --General
---local specWarnGTFO							= mod:NewSpecialWarningGTFO(327475, nil, nil, nil, 1, 8)
+local specWarnGTFO								= mod:NewSpecialWarningGTFO(346945, nil, nil, nil, 1, 8)
 --Castellan Niklaus
 local specWarnDualistsRiposte					= mod:NewSpecialWarningStack(346690, nil, 2, nil, nil, 1, 2)
 local specWarnDualistsRiposteTaunt				= mod:NewSpecialWarningTaunt(346690, nil, nil, nil, 1, 2)
@@ -92,6 +95,7 @@ mod:AddTimerLine(DBM:EJ_GetSectionInfo(22201))--One is dead
 local timerDredgerServantsCD					= mod:NewAITimer(32.9, 330978, nil, nil, nil, 1)--32-37
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22199))--Two are dead
 local timerCastellansCadreCD					= mod:NewAITimer(26.7, 330965, nil, nil, nil, 1)
+--local timerSintouchedBladeCD						= mod:NewNextCountTimer(12.1, 308872, nil, nil, nil, 5)
 ----After Image (Mythic)
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22431))
 local timerTacticalAdvanceCD					= mod:NewCDTimer(4, 328334, nil, nil, nil, 3, nil, DBM_CORE_L.MYTHIC_ICON)--Continues on Mythic after death
@@ -127,6 +131,7 @@ mod:AddNamePlateOption("NPAuraOnUproar", 346303)
 mod.vb.phase = 1
 local darkRecitalTargets = {}
 local playerName = UnitName("player")
+local castsPerGUID = {}
 
 function mod:TacticalAdvanceTarget(targetname, uId)
 	if not targetname then return end
@@ -157,6 +162,7 @@ end
 function mod:OnCombatStart(delay)
 	self.vb.phase = 1
 	table.wipe(darkRecitalTargets)
+	table.wipe(castsPerGUID)
 	--Castellan Niklaus
 	timerDualistsRiposteCD:Start(1-delay)
 	timerDutifulAttendantCD:Start(1-delay)
@@ -173,6 +179,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnCombatEnd()
+	table.wipe(castsPerGUID)
 --	if self.Options.InfoFrame then
 --		DBM.InfoFrame:Hide()
 --	end
@@ -219,8 +226,17 @@ function mod:SPELL_CAST_START(args)
 		timerSoulSpikesCD:Start()
 	elseif spellId == 346303 then
 		if self.Options.NPAuraOnUproar then
-			DBM.Nameplate:Show(true, args.sourceGUID, spellId, nil, 3)
+			DBM.Nameplate:Show(true, args.sourceGUID, spellId, nil, 15)
 		end
+	elseif spellId == 346790 then
+		if not castsPerGUID[args.sourceGUID] then
+			castsPerGUID[args.sourceGUID] = 0
+		end
+		castsPerGUID[args.sourceGUID] = castsPerGUID[args.sourceGUID] + 1
+--		local addnumber, count = self.vb.darkManifestationCount, castsPerGUID[args.sourceGUID]
+		local count = castsPerGUID[args.sourceGUID]
+		warnSintouchedBlade:Show(count)--addnumber.."-"..
+--		timerSintouchedBladeCD:Start(12.1, count+1, args.sourceGUID)
 	end
 end
 
@@ -450,15 +466,13 @@ function mod:UNIT_DIED(args)
 	end
 end
 
---[[
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
-	if spellId == 270290 and destGUID == UnitGUID("player") and self:AntiSpam(2, 3) then
+	if spellId == 346945 and destGUID == UnitGUID("player") and self:AntiSpam(2, 3) then
 		specWarnGTFO:Show(spellName)
 		specWarnGTFO:Play("watchfeet")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
---]]
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 327724 then--Waltz of Blood
