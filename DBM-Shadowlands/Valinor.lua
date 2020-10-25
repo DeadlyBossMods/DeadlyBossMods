@@ -49,7 +49,7 @@ function mod:EmberBlastTarget(targetname, uId, bossuid, scanningTime)
 	if not targetname then return end
 	if targetname == UnitName("player") then
 		specWarnChargedAnimaBlast:Show()
-		specWarnEmberBlast:Play("runout")
+		specWarnChargedAnimaBlast:Play("runout")
 		yellChargedAnimaBlast:Yell()
 		yellChargedAnimaBlastFades:Countdown(4-scanningTime)
 	elseif self:CheckNearby(8, targetname) then
