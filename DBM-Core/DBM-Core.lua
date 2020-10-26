@@ -4183,7 +4183,7 @@ do
 		end
 	end
 
-	function DBM:LOADING_SCREEN_ENABLED()
+--[[	function DBM:LOADING_SCREEN_ENABLED()
 		--TimerTracker Cleanup, required to work around logic code blizzard put into TimerTracker for /countdown timers
 		--TimerTracker is hard coded that if a type 3 timer exists, to give it prio over type 1 and type 2. This causes the M+ timer not to show, even if only like 0.01 sec was left on the /countdown
 		--We want to avoid situations where players start a 10 second timer, but click keystone with fractions of a second left, preventing them from seeing the M+ timer
@@ -4195,7 +4195,7 @@ do
 				end
 			end
 		end
-	end
+	end--]]
 
 	function DBM:LoadModsOnDemand(checkTable, checkValue)
 		self:Debug("LoadModsOnDemand fired")
@@ -4536,7 +4536,7 @@ do
 		if not DBM.Options.DontShowPT2 then--and DBM.Bars:GetBar(L.TIMER_PULL)
 			dummyMod.timer:Stop()
 		end
-		local timerTrackerRunning = false
+--[[		local timerTrackerRunning = false
 		if not DBM.Options.DontShowPTCountdownText then
 			for _, tttimer in pairs(TimerTracker.timerList) do
 				if not tttimer.isFree then--Timer event running
@@ -4547,14 +4547,14 @@ do
 					end
 				end
 			end
-		end
+		end--]]
 		dummyMod.text:Cancel()
 		if timer == 0 then return end--"/dbm pull 0" will strictly be used to cancel the pull timer (which is why we let above part of code run but not below)
 		DBM:FlashClientIcon()
 		if not DBM.Options.DontShowPT2 then
 			dummyMod.timer:Start(timer, L.TIMER_PULL)
 		end
-		if not DBM.Options.DontShowPTCountdownText then
+--[[		if not DBM.Options.DontShowPTCountdownText then
 			if not timerTrackerRunning then--if a TimerTracker event is running not started by DBM, block creating one of our own (object gets buggy if it has 2+ events running)
 				--Start A TimerTracker timer using the new countdown type 3 type (ie what C_PartyInfo.DoCountdown triggers, but without sending it to entire group)
 				TimerTracker_OnEvent(TimerTracker, "START_TIMER", 3, timer, timer)
@@ -4570,7 +4570,7 @@ do
 					end
 				end
 			end
-		end
+		end--]]
 		if not DBM.Options.DontShowPTText then
 			if target then
 				dummyMod.text:Show(L.ANNOUNCE_PULL_TARGET:format(target, timer, sender))
@@ -6220,12 +6220,14 @@ do
 				if dummyMod then--stop pull timer
 					dummyMod.text:Cancel()
 					dummyMod.timer:Stop()
-					for _, tttimer in pairs(TimerTracker.timerList) do
-						if tttimer.type == 3 and not tttimer.isFree then
-							FreeTimerTrackerTimer(tttimer)
-							break
+					--[[if not DBM.Options.DontShowPTCountdownText then
+						for _, tttimer in pairs(TimerTracker.timerList) do
+							if tttimer.type == 3 and not tttimer.isFree then
+								FreeTimerTrackerTimer(tttimer)
+								break
+							end
 						end
-					end
+					end--]]
 				end
 				local bigWigs = _G["BigWigs"]
 				if bigWigs and bigWigs.db.profile.raidicon and not self.Options.DontSetIcons and self:GetRaidRank() > 0 then--Both DBM and bigwigs have raid icon marking turned on.
