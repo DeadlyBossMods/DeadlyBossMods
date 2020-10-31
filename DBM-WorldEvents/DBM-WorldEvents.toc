@@ -42,7 +42,7 @@
 ## X-DBM-Mod-Name-itIT: Eventi Mondiali
 ## X-DBM-Mod-MapID: 230,189,33,547,1004,1,0,1704,1705,1706,1707,2235
 ## X-DBM-Mod-Sort: 454
-## X-DBM-Mod-LoadCID: 55003,54499,15467,15466,49687,15664,23558,27215,23486,24710,24484,153931
+## X-DBM-Mod-LoadCID: 55003,54499,15467,15466,49687,15664,23558,27215,23486,24710,24484,153931,167749,121820,121818,121911,121912,121913,121821
 ## X-DBM-Mod-MinCoreRevision: 12473
 localization.en.lua
 localization.ru.lua
@@ -62,6 +62,13 @@ Holidays\Brew.lua
 Holidays\HeadlessHorseman.lua
 Holidays\Greench.lua
 Quests\Plants.lua
-TwentyFifthEvent\BurningCrusade.lua
-TwentyFifthEvent\WotLK.lua
-TwentyFifthEvent\Cataclysm.lua
+Events\TwentyFifthEvent\BurningCrusade.lua
+Events\TwentyFifthEvent\WotLK.lua
+Events\TwentyFifthEvent\Cataclysm.lua
+Events\Azeroth\KazzakClassic.lua
+Events\Azeroth\Azuregos.lua
+Events\Azeroth\Taerar.lua
+Events\Azeroth\Ysondre.lua
+Events\Azeroth\Lethon.lua
+Events\Azeroth\Emeriss.lua
+Events\Azeroth\Doomwalker.lua
