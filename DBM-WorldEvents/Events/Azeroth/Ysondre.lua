@@ -22,16 +22,16 @@ local warningLightningWave		= mod:NewSpellAnnounce(243610, 3)
 local specWarnSleepingFog		= mod:NewSpecialWarningDodge(243399, nil, nil, nil, 2, 2)
 
 local timerNoxiousBreathCD		= mod:NewCDTimer(19.4, 243401, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)--Iffy
-local timerSleepingFogCD		= mod:NewCDTimer(16.0, 243399, nil, nil, nil, 3)
+local timerSleepingFogCD		= mod:NewCDTimer(14.7, 243399, nil, nil, nil, 3)
 local timerLightningWaveCD		= mod:NewCDTimer(12.3, 243610, nil, nil, nil, 3)
 
 --mod:AddReadyCheckOption(48620, false)
 
 function mod:OnCombatStart(delay, yellTriggered)
 	if yellTriggered then
+		timerLightningWaveCD:Start(5.9-delay)--Iffy
 		timerNoxiousBreathCD:Start(11.9-delay)
 		timerSleepingFogCD:Start(18.4-delay)
-		timerLightningWaveCD:Start(53-delay)--Iffy
 	end
 end
 
