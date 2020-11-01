@@ -405,14 +405,18 @@ end
 --  Create the frame  --
 ------------------------
 local function createTextFrame()
-	textFrame = CreateFrame("Frame", "DBMRangeCheck", UIParent, "BackdropTemplate")
+	textFrame = CreateFrame("Frame", "DBMRangeCheck", UIParent, DBM:IsShadowlands() and "BackdropTemplate")
 	textFrame:SetFrameStrata("DIALOG")
 	textFrame.backdropInfo = {
 		bgFile		= "Interface\\DialogFrame\\UI-DialogBox-Background",--131071
 		tile		= true,
 		tileSize	= 16
 	}
-	textFrame:ApplyBackdrop()
+	if not DBM:IsShadowlands() then
+		textFrame:SetBackdrop(textFrame.backdropInfo)
+	else
+		textFrame:ApplyBackdrop()
+	end
 	textFrame:SetPoint(DBM.Options.RangeFramePoint, UIParent, DBM.Options.RangeFramePoint, DBM.Options.RangeFrameX, DBM.Options.RangeFrameY)
 	textFrame:SetSize(128, 12)
 	textFrame:SetClampedToScreen(true)
