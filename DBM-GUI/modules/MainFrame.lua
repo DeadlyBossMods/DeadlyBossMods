@@ -283,6 +283,6 @@ frameContainerScrollBarBackdrop.backdropInfo = {
 if DBM:IsShadowlands() then
 	frameContainerScrollBarBackdrop:ApplyBackdrop()
 else
-	frameContainerScrollBarBackdrop:SetBackdrop(frameContainer.backdropInfo)
+	frameContainerScrollBarBackdrop:SetBackdrop(frameContainerScrollBarBackdrop.backdropInfo)
 end
 frameContainerScrollBarBackdrop:SetBackdropBorderColor(0.6, 0.6, 0.6, 0.6)

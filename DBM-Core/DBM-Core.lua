@@ -4823,7 +4823,7 @@ do
 			insets		= { left = 1, right = 1, top = 1, bottom = 1 }
 		}
 		if not DBM:IsShadowlands() then
-			inspopup:SetBackdrop(popup.backdropInfo)
+			inspopup:SetBackdrop(inspopup.backdropInfo)
 		else
 			inspopup:ApplyBackdrop()
 		end
@@ -5370,7 +5370,7 @@ do
 			insets		= { left = 11, right = 12, top = 12, bottom = 11 },
 		}
 		if not DBM:IsShadowlands() then
-			frame:SetBackdrop(popup.backdropInfo)
+			frame:SetBackdrop(frame.backdropInfo)
 		else
 			frame:ApplyBackdrop()
 		end
@@ -5472,7 +5472,7 @@ do
 			insets		= { left = 11, right = 12, top = 12, bottom = 11 }
 		}
 		if not DBM:IsShadowlands() then
-			frame:SetBackdrop(popup.backdropInfo)
+			frame:SetBackdrop(frame.backdropInfo)
 		else
 			frame:ApplyBackdrop()
 		end
