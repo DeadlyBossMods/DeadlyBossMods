@@ -2,7 +2,7 @@ local select, ipairs, mfloor, mmax = select, pairs, math.floor, math.max
 local CreateFrame, GameFontHighlightSmall, GameFontNormalSmall, GameFontNormal = CreateFrame, GameFontHighlightSmall, GameFontNormalSmall, GameFontNormal
 local DBM, DBM_GUI = DBM, DBM_GUI
 
-local frame = CreateFrame("Frame", "DBM_GUI_OptionsFrame", UIParent, "BackdropTemplate")
+local frame = CreateFrame("Frame", "DBM_GUI_OptionsFrame", UIParent, DBM:IsShadowlands() and "BackdropTemplate")
 
 function frame:UpdateMenuFrame()
 	local listFrame = _G["DBM_GUI_OptionsFrameList"]

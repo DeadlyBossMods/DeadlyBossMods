@@ -227,7 +227,7 @@ end
 --  Create the frame  --
 ------------------------
 function createFrame()
-	frame = CreateFrame("Frame", "DBMInfoFrame", UIParent, "BackdropTemplate")
+	frame = CreateFrame("Frame", "DBMInfoFrame", UIParent, DBM:IsShadowlands() and "BackdropTemplate")
 	frame:Hide()
 	frame:SetFrameStrata("DIALOG")
 	frame.backdropInfo = {
@@ -235,7 +235,11 @@ function createFrame()
 		tile		= true,
 		tileSize	= 16
 	}
-	frame:ApplyBackdrop()
+	if not DBM:IsShadowlands() then
+		frame:SetBackdrop(frame.backdropInfo)
+	else
+		frame:ApplyBackdrop()
+	end
 	frame:SetPoint(DBM.Options.InfoFramePoint, UIParent, DBM.Options.InfoFramePoint, DBM.Options.InfoFrameX, DBM.Options.InfoFrameY)
 	frame:SetSize(10, 10)
 	frame:SetClampedToScreen(true)

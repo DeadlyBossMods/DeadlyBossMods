@@ -23,7 +23,7 @@ local specWarnSleepingFog		= mod:NewSpecialWarningDodge(243399, nil, nil, nil, 2
 
 local timerNoxiousBreathCD		= mod:NewCDTimer(19.4, 243401, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)--Iffy
 local timerSleepingFogCD		= mod:NewCDTimer(16.0, 243399, nil, nil, nil, 3)
-local timerLightningWaveCD		= mod:NewCDTimer(13.4, 243610, nil, nil, nil, 3)
+local timerLightningWaveCD		= mod:NewCDTimer(12.3, 243610, nil, nil, nil, 3)
 
 --mod:AddReadyCheckOption(48620, false)
 
