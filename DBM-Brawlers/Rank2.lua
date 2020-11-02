@@ -25,7 +25,7 @@ local timerColdCrashCD			= mod:NewCDTimer(13.4, 283199, nil, nil, nil, 2, nil, D
 
 mod:AddBoolOption("SetIconOnBlat", true)--Blat
 
-local brawlersMod = DBM:GetModByName("Brawlers")
+local brawlersMod = DBM:GetModByName("BrawlersGeneral")
 local blatGUID = 0
 local GetRaidTargetIndex = GetRaidTargetIndex
 

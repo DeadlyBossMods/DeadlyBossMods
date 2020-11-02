@@ -5813,6 +5813,7 @@ do
 		for i = #inCombat, 1, -1 do
 			local v = inCombat[i]
 			if not v.combatInfo then return end
+			if v.noBKDetection then return end
 			if v.multiEncounterPullDetection then
 				for _, eId in ipairs(v.multiEncounterPullDetection) do
 					if encounterID == eId then
@@ -11821,6 +11822,9 @@ function bossModPrototype:RegisterCombat(cType, ...)
 	if self.noEEDetection then
 		info.noEEDetection = self.noEEDetection
 	end
+	if self.noBKDetection then
+		info.noBKDetection = self.noBKDetection
+	end
 	if self.noFriendlyEngagement then
 		info.noFriendlyEngagement = self.noFriendlyEngagement
 	end
@@ -11924,6 +11928,13 @@ function bossModPrototype:DisableEEKillDetection()
 	self.noEEDetection = true
 	if self.combatInfo then
 		self.combatInfo.noEEDetection = true
+	end
+end
+
+function bossModPrototype:DisableBKKillDetection()
+	self.noBKDetection = true
+	if self.combatInfo then
+		self.combatInfo.noBKDetection = true
 	end
 end
 

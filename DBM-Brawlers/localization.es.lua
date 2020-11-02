@@ -4,7 +4,7 @@ local L
 -----------------
 -- Camorristas --
 -----------------
-L= DBM:GetModLocalization("Brawlers")
+L= DBM:GetModLocalization("BrawlersGeneral")
 
 L:SetGeneralLocalization({
 	name = "Opciones generales"

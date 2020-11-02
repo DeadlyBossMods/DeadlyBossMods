@@ -53,7 +53,7 @@ local timerConsumeEssenceCD			= mod:NewCDTimer(22.3, 294665, nil, nil, nil, 4, n
 
 mod:AddBoolOption("ArrowOnBoxing")--Ro-Shambo
 
-local brawlersMod = DBM:GetModByName("Brawlers")
+local brawlersMod = DBM:GetModByName("BrawlersGeneral")
 local lastRPS = DBM_CORE_L.UNKNOWN
 
 --"<39.8 01:37:33> [CHAT_MSG_RAID_BOSS_EMOTE] CHAT_MSG_RAID_BOSS_EMOTE#|TInterface\\Icons\\inv_inscription_scroll.blp:20|t %s Chooses |cFFFF0000Paper|r! You |cFF00FF00Win|r!#Ro-Shambo
