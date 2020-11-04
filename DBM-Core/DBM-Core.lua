@@ -10676,8 +10676,13 @@ do
 		end
 	end
 
-	function DBM:PlaySpecialWarningSound(soundId)
-		local sound = DBM:IsTrivial() and DBM.Options.DontPlayTrivialSpecialWarningSound and self.Options.RaidWarningSound or type(soundId) == "number" and self.Options["SpecialWarningSound" .. (soundId == 1 and "" or soundId)] or soundId or self.Options.SpecialWarningSound
+	function DBM:PlaySpecialWarningSound(soundId, force)
+		local sound
+		if not force and DBM:IsTrivial() and DBM.Options.DontPlayTrivialSpecialWarningSound then
+			sound = self.Options.RaidWarningSound
+		else
+			sound = type(soundId) == "number" and self.Options["SpecialWarningSound" .. (soundId == 1 and "" or soundId)] or soundId or self.Options.SpecialWarningSound
+		end
 		self:PlaySoundFile(sound, nil, true)
 	end
 
@@ -10685,7 +10690,7 @@ do
 		frame:SetFrameStrata("HIGH")
 	end
 
-	function DBM:ShowTestSpecialWarning(text, number, noSound)
+	function DBM:ShowTestSpecialWarning(text, number, noSound, force)
 		if moving then
 			return
 		end
@@ -10694,7 +10699,7 @@ do
 		self:Unschedule(testWarningEnd)
 		self:Schedule(self.Options.SpecialWarningDuration2 * 1.3, testWarningEnd)
 		if number and not noSound then
-			self:PlaySpecialWarningSound(number)
+			self:PlaySpecialWarningSound(number, force)
 		end
 		if number and DBM.Options["SpecialWarningFlash"..number] then
 			local flashColor = self.Options["SpecialWarningFlashCol"..number]
