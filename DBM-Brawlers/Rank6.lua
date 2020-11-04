@@ -29,7 +29,7 @@ local timerBetterStrongerFasterCD	= mod:NewCDTimer(20, 142795)--Mecha-Bruce
 local timerStasisBeamCD				= mod:NewCDTimer(19.4, 142769, nil, nil, nil, 3)--Mecha-Bruce
 local timerDisrobingStrikeCD		= mod:NewCDTimer(8.4, 282081, nil, nil, nil, 4, nil, DBM_CORE_L.INTERRUPT_ICON)--Robe-Robber Robert
 
-local brawlersMod = DBM:GetModByName("Brawlers")
+local brawlersMod = DBM:GetModByName("BrawlersGeneral")
 
 function mod:SPELL_CAST_START(args)
 	if not brawlersMod.Options.SpectatorMode and not brawlersMod:PlayerFighting() then return end--Spectator mode is disabled, do nothing.

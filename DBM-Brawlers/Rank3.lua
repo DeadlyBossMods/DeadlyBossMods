@@ -27,7 +27,7 @@ local specWarnDivineCircle			= mod:NewSpecialWarningDodge(142585)--Ahoo'ru
 local timerShotgunRoarCD			= mod:NewCDTimer(9.9, 234489, nil, nil, nil, 3)--Oso
 local timerDivineCircleCD			= mod:NewCDTimer(26.7, 142585)--Insufficent data to say if accurate with certainty --Ahoo'ru
 
-local brawlersMod = DBM:GetModByName("Brawlers")
+local brawlersMod = DBM:GetModByName("BrawlersGeneral")
 
 function mod:SPELL_CAST_START(args)
 	if not brawlersMod.Options.SpectatorMode and not brawlersMod:PlayerFighting() then return end--Spectator mode is disabled, do nothing.

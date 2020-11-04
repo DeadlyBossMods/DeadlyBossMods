@@ -20,7 +20,7 @@ local specWarnHippoFixate	= mod:NewSpecialWarningRun(229593)--Senya
 --local timerMooseRunCD		= mod:NewAITimer(17, 228855, nil, nil, nil, 3)--Grief Warden
 --local timerHippoFixateCD	= mod:NewAITimer(17, 229593, nil, nil, nil, 3)--Senya
 
-local brawlersMod = DBM:GetModByName("Brawlers")
+local brawlersMod = DBM:GetModByName("BrawlersGeneral")
 
 function mod:SPELL_AURA_APPLIED(args)
 	if not brawlersMod.Options.SpectatorMode and not brawlersMod:PlayerFighting() then return end

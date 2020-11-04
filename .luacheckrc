@@ -944,6 +944,8 @@ globals = {
 	"C_PetJournal.SetSearchFilter",
 	"C_PetJournal.SummonPetByGUID",
 	"C_PetJournal.SummonRandomPet",
+	"C_PlayerInfo",
+	"C_PlayerInfo.IsPlayerInChromieTime",
 	"C_ProductChoice",
 	"C_ProductChoice.GetChoices",
 	"C_ProductChoice.GetNumSuppressed",

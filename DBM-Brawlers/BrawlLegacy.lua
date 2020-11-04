@@ -104,7 +104,7 @@ local timerRockets					= mod:NewBuffActiveTimer(9, 133212, nil, nil, nil, 3)--Ma
 
 mod:AddBoolOption("SpeakOutStrikes", true)--Blind Hero
 
-local brawlersMod = DBM:GetModByName("Brawlers")
+local brawlersMod = DBM:GetModByName("BrawlersGeneral")
 local remainingMines = 8
 local swiftStrike = 0
 function mod:SPELL_CAST_START(args)

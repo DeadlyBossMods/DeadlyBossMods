@@ -6,7 +6,7 @@ local L
 --------------
 -- Brawlers --
 --------------
-L= DBM:GetModLocalization("Brigões")
+L= DBM:GetModLocalization("BrawlersGeneral")
 
 L:SetGeneralLocalization({
 	name = "Brigões: Geral"
