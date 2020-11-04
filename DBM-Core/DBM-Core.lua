@@ -280,6 +280,7 @@ DBM.DefaultOptions = {
 	DontShowSpecialWarningText = false,
 	DontShowSpecialWarningFlash = false,
 	DontPlaySpecialWarningSound = false,
+	DontPlayTrivialSpecialWarningSound = true,
 	DontShowBossTimers = false,
 	DontShowUserTimers = false,
 	DontShowFarWarnings = true,
@@ -3407,6 +3408,27 @@ function DBM:CheckNearby(range, targetname)
 			if inRange and inRange < range+0.5 then
 				return true
 			end
+		end
+	end
+	return false
+end
+
+function DBM:IsTrivial(customLevel)
+	--if timewalking or chromie time, it's always non trivial content
+	if C_PlayerInfo.IsPlayerInChromieTime() or difficultyIndex == 24 or difficultyIndex == 33 then
+		return false
+	end
+	--if custom level passed, we always hard check that level for trivial vs non trivial
+	if customLevel then--Custom level parameter
+		if playerLevel >= customLevel then
+			return true
+		end
+	else
+		--First, auto bail and return non trivial if it's an instancce not in table to prevent nil error
+		if not instanceDifficultyBylevel[LastInstanceMapID] then return false end
+		--Content is trivial if player level is 10 higher than content involved
+		if (playerLevel+10) >= instanceDifficultyBylevel[LastInstanceMapID][1] then
+			return true
 		end
 	end
 	return false
@@ -7925,26 +7947,6 @@ function bossModPrototype:IsScenario()
 	return false
 end
 
-function bossModPrototype:IsTrivial(customLevel)
-	--if timewalking or chromie time, it's always non trivial content
-	if C_PlayerInfo.IsPlayerInChromieTime() or difficultyIndex == 24 or difficultyIndex == 33 then
-		return false
-	end
-	--if custom level passed, we always hard check that level for trivial vs non trivial
-	if customLevel then--Custom level parameter
-		if playerLevel >= customLevel then
-			return true
-		end
-	else
-		--First, auto bail and return non trivial if it's an instancce not in table to prevent nil error
-		if not instanceDifficultyBylevel[LastInstanceMapID] then return false end
-		if (playerLevel+10) >= instanceDifficultyBylevel[LastInstanceMapID][1] then
-			return true
-		end
-	end
-	return false
-end
-
 function bossModPrototype:IsValidWarning(sourceGUID, customunitID)
 	if customunitID then
 		if UnitExists(customunitID) and UnitGUID(customunitID) == sourceGUID and UnitAffectingCombat(customunitID) then return true end
@@ -8027,6 +8029,7 @@ bossModPrototype.GetCIDFromGUID = DBM.GetCIDFromGUID
 bossModPrototype.IsCreatureGUID = DBM.IsCreatureGUID
 bossModPrototype.GetUnitIdFromGUID = DBM.GetUnitIdFromGUID
 bossModPrototype.CheckNearby = DBM.CheckNearby
+bossModPrototype.IsTrivial = DBM.IsTrivial
 
 do
 	local bossTargetuIds = {
@@ -10674,7 +10677,7 @@ do
 	end
 
 	function DBM:PlaySpecialWarningSound(soundId)
-		local sound = type(soundId) == "number" and self.Options["SpecialWarningSound" .. (soundId == 1 and "" or soundId)] or soundId or self.Options.SpecialWarningSound
+		local sound = DBM:IsTrivial() and DBM.Options.DontPlayTrivialSpecialWarningSound and self.Options.RaidWarningSound or type(soundId) == "number" and self.Options["SpecialWarningSound" .. (soundId == 1 and "" or soundId)] or soundId or self.Options.SpecialWarningSound
 		self:PlaySoundFile(sound, nil, true)
 	end
 
