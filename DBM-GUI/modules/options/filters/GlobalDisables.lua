@@ -8,6 +8,7 @@ spamAnnounces:CreateCheckButton(L.SpamBlockNoShowTgtAnnounce, true, nil, "DontSh
 spamAnnounces:CreateCheckButton(L.SpamBlockNoSpecWarnText, true, nil, "DontShowSpecialWarningText")
 spamAnnounces:CreateCheckButton(L.SpamBlockNoSpecWarnFlash, true, nil, "DontShowSpecialWarningFlash")
 spamAnnounces:CreateCheckButton(L.SpamBlockNoSpecWarnSound, true, nil, "DontPlaySpecialWarningSound")
+spamAnnounces:CreateCheckButton(L.SpamBlockNoTrivialSpecWarnSound, true, nil, "DontPlayTrivialSpecialWarningSound")
 
 local spamTimers = spamPanel:CreateArea(L.Area_SpamFilter_Timers)
 spamTimers:CreateCheckButton(L.SpamBlockNoShowTimers, true, nil, "DontShowBossTimers")
