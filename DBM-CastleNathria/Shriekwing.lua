@@ -12,7 +12,7 @@ mod:SetMinSyncRevision(20200815000000)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 328857 340047 330711 343005 342863",
+	"SPELL_CAST_START 328857 345936 330711 343005 342863",
 	"SPELL_CAST_SUCCESS 328857 329362",
 	"SPELL_AURA_APPLIED 328897 342077 341684 328921",
 	"SPELL_AURA_APPLIED_DOSE 328897",
@@ -27,7 +27,7 @@ mod:RegisterEventsInCombat(
 --TODO, need fresh transcriptor log to verify icon resetting/timer event for Scent for Blood
 --TODO, icons or auras for 341684?
 --[[
-(ability.id = 328857 or ability.id = 340047 or ability.id = 330711 or ability.id = 342863 or ability.id = 343005) and type = "begincast"
+(ability.id = 328857 or ability.id = 345936 or ability.id = 330711 or ability.id = 342863 or ability.id = 343005) and type = "begincast"
  or (ability.id = 342074) and type = "cast"
  or ability.id = 328921
  or ability.id = 342077 and type = "applydebuff"
@@ -38,7 +38,7 @@ local warnEcholocation							= mod:NewTargetAnnounce(342077, 3)
 --Stage Two - Terror of Castle Nathria
 local warnDeadlyDescent							= mod:NewTargetNoFilterAnnounce(343024, 4)
 local warnBloodshroudOver						= mod:NewEndAnnounce(328921, 1)
-local warnSonarShriek							= mod:NewCastAnnounce(340047, 2)
+local warnEarsplittingShriek					= mod:NewCastAnnounce(345936, 2)
 local warnEchoingSonar							= mod:NewCastAnnounce(329362, 2, 6)
 local warnBloodLantern							= mod:NewTargetNoFilterAnnounce(341684, 1)--Mythic
 
@@ -71,8 +71,8 @@ local timerEchoingScreechCD						= mod:NewCDTimer(48, 342863, nil, nil, nil, 3)
 local timerBloodshroudCD						= mod:NewCDTimer(112, 328921, nil, nil, nil, 6)--100-103
 --Stage Two - Terror of Castle Nathria
 --local timerBloodshroud						= mod:NewBuffActiveTimer(47.5, 328921, nil, nil, nil, 6)--43.4-47.5, more to it than this? or just fact blizzards energy code always proves to be dogshit
-local timerSonarShriekCD						= mod:NewCDTimer(8.5, 340047, nil, nil, nil, 3)
-local timerSonarShriek							= mod:NewCastTimer(4, 340047, nil, false, nil, 5)--For users to see cast bar if boss remains untargetable in intermission
+local timerEarsplittingShriekCD						= mod:NewCDTimer(8.5, 345936, nil, nil, nil, 3)
+local timerEarsplittingShriek							= mod:NewCastTimer(4, 345936, nil, false, nil, 5)--For users to see cast bar if boss remains untargetable in intermission
 local timerEchoingSonar							= mod:NewCastTimer(6, 329362, nil, false, nil, 5)
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
@@ -126,10 +126,10 @@ function mod:SPELL_CAST_START(args)
 			specWarnExsanguinatingBite:Play("defensive")
 		end
 		timerExsanguinatingBiteCD:Start()
-	elseif spellId == 340047 then
-		warnSonarShriek:Show()
-		timerSonarShriekCD:Start()
-		timerSonarShriek:Start()
+	elseif spellId == 345936 then
+		warnEarsplittingShriek:Show()
+		timerEarsplittingShriekCD:Start()
+		timerEarsplittingShriek:Start()
 	elseif spellId == 330711 then
 		specWarnBloodcurdlingShriek:Show(DBM_CORE_L.BREAK_LOS)
 		specWarnBloodcurdlingShriek:Play("findshelter")
@@ -212,7 +212,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerBloodcurdlingShriekCD:Stop()
 		timerEcholocationCD:Stop()
 		timerBlindSwipeCD:Stop()
-		timerSonarShriekCD:Start(19.4)
+		timerEarsplittingShriekCD:Start(19.4)
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(8)
 		end
@@ -227,9 +227,9 @@ function mod:SPELL_AURA_REMOVED(args)
 --			yellDeadlyDescentFades:Cancel()
 --		end
 	elseif spellId == 328921 then--Bloodshroud removed
-		timerSonarShriekCD:Stop()
+		timerEarsplittingShriekCD:Stop()
 		timerEchoingSonar:Stop()
-		timerSonarShriek:Stop()
+		timerEarsplittingShriek:Stop()
 		warnBloodshroudOver:Show()
 		--Looks same as pull timers
 		timerExsanguinatingBiteCD:Start(8.1)

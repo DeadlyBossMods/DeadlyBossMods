@@ -13,8 +13,8 @@ mod:SetMinSyncRevision(20200911000000)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 333387 334765 334929 334498 339690 342544 342256 342722 332683 342425 344496",
-	"SPELL_CAST_SUCCESS 334765 334929 342732 342253 342985",
+	"SPELL_CAST_START 333387 334765 334929 334498 342544 342256 342722 332683 342425 344496",
+	"SPELL_CAST_SUCCESS 334765 334929 342732 342253 342985 339690",
 	"SPELL_SUMMON 342255 342257 342258 342259",
 	"SPELL_AURA_APPLIED 329636 333913 334765 338156 338153 329808 333377 339690 342655 340037 343273 342425 336212",
 	"SPELL_AURA_APPLIED_DOSE 333913",
@@ -93,7 +93,7 @@ local timerCallShadowForcesCD					= mod:NewCDTimer(47.5, 342256, nil, nil, nil, 
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22288))
 local timerReverberatingEruptionCD				= mod:NewCDTimer(30, 344496, 138658, nil, nil, 3, nil, nil, nil, 1, 3)--31.1-40, Short text "Eruption"
 local timerSeismicUpheavalCD					= mod:NewCDTimer(30.1, 334498, nil, nil, nil, 3)--28.3-32
-local timerStoneBreakersComboCD					= mod:NewCDTimer(53.5, 339690, nil, nil, nil, 5, nil, nil, nil, 2, 3)--53.5-60
+local timerCrystalizeCD							= mod:NewCDTimer(53.5, 339690, nil, nil, nil, 5, nil, nil, nil, 2, 3)--53.5-60
 local timerStoneFistCD							= mod:NewCDTimer(35.1, 342425, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)
 --Phasing
 local timerShatteringBlast						= mod:NewCastTimer(5, 332683, nil, nil, nil, 2)
@@ -153,6 +153,7 @@ function mod:OnCombatStart(delay)
 	self.vb.wickedBladeIcon = 1
 	self.vb.phase = 1
 	--General Kaal
+	--Summons a goliath instantly on pull now, no timer needed for this
 	timerSerratedSwipeCD:Start(7.3-delay)--START, but next timer is started at SUCCESS
 	timerWickedBladeCD:Start(16.6-delay)
 	timerHeartRendCD:Start(33.2-delay)--SUCCESS
@@ -160,7 +161,7 @@ function mod:OnCombatStart(delay)
 		timerCallShadowForcesCD:Start(10.5-delay)
 	end
 	--General Grashaal Air ability
-	timerStoneBreakersComboCD:Start(37.3-delay)--Crystalize
+	timerCrystalizeCD:Start(36.4-delay)
 	if self.Options.NPAuraOnVolatileShell then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
@@ -250,7 +251,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 334929 then--Boss stutter casts this often
 		timerSerratedSwipeCD:Start(12)--13.5 - 1.5
 	elseif spellId == 339690 then
-		timerStoneBreakersComboCD:Start()
+		timerCrystalizeCD:Start()
 	elseif spellId == 342732 then
 		timerRavenousFeastCD:Start(30, args.sourceGUID)
 	elseif spellId == 342253 then
@@ -268,7 +269,7 @@ function mod:SPELL_SUMMON(args)
 		if cid == 172858 then--stone-legion-goliath
 			warnStoneLegionGoliath:Show()
 			if self:IsHard() then
-				timerRavenousFeastCD:Start(33.2, args.destGUID)
+				timerRavenousFeastCD:Start(31.4, args.destGUID)
 			end
 		end
 	elseif spellId == 342257 or spellId == 342258 or spellId == 342259 then
@@ -431,7 +432,7 @@ function mod:UNIT_DIED(args)
 	elseif cid == 168113 then--Grashaal
 		timerReverberatingEruptionCD:Stop()
 		timerSeismicUpheavalCD:Stop()
-		timerStoneBreakersComboCD:Stop()
+		timerCrystalizeCD:Stop()
 		timerStoneFistCD:Stop()
 	end
 end

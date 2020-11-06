@@ -7405,7 +7405,13 @@ function DBM:Debug(text, level)
 		local frame = _G[tostring(DBM.Options.ChatFrame)]
 		frame = frame and frame:IsShown() and frame or DEFAULT_CHAT_FRAME
 		frame:AddMessage("|cffff7d0aDBM Debug:|r "..text, 1, 1, 1)
+		--Debug mode is on, respect users debug logging level for callbacks
 		fireEvent("DBM_Debug", text, level)
+	else--Debug mode is off
+		--But we still want to generate callbacks for level 1 and 2 events
+		if (level or 1) < 3 then
+			fireEvent("DBM_Debug", text, level)
+		end
 	end
 end
 

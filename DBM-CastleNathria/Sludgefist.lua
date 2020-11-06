@@ -14,7 +14,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 332318",
 	"SPELL_CAST_SUCCESS 332687",
-	"SPELL_AURA_APPLIED 331209 331314 342419 342420 335470 341294 340817",
+	"SPELL_AURA_APPLIED 331209 331314 342419 342420 335470 340817",
 	"SPELL_AURA_REMOVED 331209 331314 342419 342420 340817",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
@@ -29,7 +29,7 @@ local warnHatefulGaze							= mod:NewTargetNoFilterAnnounce(331209, 4)
 local warnStunnedImpact							= mod:NewTargetNoFilterAnnounce(331314, 1)
 local warnChainLink								= mod:NewTargetAnnounce(342419, 3)--Targetting debuff
 local warnChainSlam								= mod:NewTargetNoFilterAnnounce(164407, 3)
-local warnVengefulRage							= mod:NewTargetNoFilterAnnounce(341294, 4)
+--local warnVengefulRage							= mod:NewTargetNoFilterAnnounce(341294, 4)
 
 local specWarnHatefulGaze						= mod:NewSpecialWarningMoveTo(331209, nil, nil, nil, 3, 2)
 local specWarnHeedlessCharge					= mod:NewSpecialWarningSoon(331212, nil, nil, nil, 2, 2)
@@ -58,7 +58,7 @@ local timerSiesmicShiftCD						= mod:NewCDCountTimer(34, 340817, nil, nil, nil, 
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
 mod:AddRangeFrameOption(5, 340817)
-mod:AddInfoFrameOption(342410, true)
+--mod:AddInfoFrameOption(342410, true)
 mod:AddSetIconOption("SetIconGaze", 331209, true, false, {1})
 
 mod.vb.gazeCount = 0
@@ -98,10 +98,10 @@ function mod:OnCombatStart(delay)
 	if self:IsMythic() then
 		self.vb.shiftCount = 0
 		timerSiesmicShiftCD:Start(18.4, 1)
-		if self.Options.InfoFrame then
-			DBM.InfoFrame:SetHeader(DBM_CORE_L.NO_DEBUFF:format(DBM:GetSpellInfo(342410)))
-			DBM.InfoFrame:Show(5, "playergooddebuff", 342410)--TODO, change number when columns work again
-		end
+--		if self.Options.InfoFrame then
+--			DBM.InfoFrame:SetHeader(DBM_CORE_L.NO_DEBUFF:format(DBM:GetSpellInfo(342410)))
+--			DBM.InfoFrame:Show(5, "playergooddebuff", 342410)--TODO, change number when columns work again
+--		end
 	end
 --	if self.Options.RangeFrame then
 --		DBM.RangeCheck:Show(4)
@@ -214,8 +214,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			warnChainSlam:Show(args.destName)
 		end
-	elseif spellId == 341294 then
-		warnVengefulRage:Show(args.destName)
+--	elseif spellId == 341294 then
+--		warnVengefulRage:Show(args.destName)
 	elseif spellId == 340817 then
 		if self:AntiSpam(8, 9) then
 			self.vb.shiftCount = self.vb.shiftCount + 1
