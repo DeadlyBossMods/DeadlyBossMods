@@ -13,10 +13,10 @@ mod:SetMinSyncRevision(20201028000000)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 330965 330978 327497 327052 346690 337110 346657 346681 346303 346790",
-	"SPELL_CAST_SUCCESS 346692 331634 330959 346657 346303",
+	"SPELL_CAST_START 330965 330978 327497 327052 346690 337110 346657 346681 346303 346790 346698",
+	"SPELL_CAST_SUCCESS 331634 330959 346657 346303",
 	"SPELL_AURA_APPLIED 330967 331636 331637 332535 346694 347350 346690",
-	"SPELL_AURA_APPLIED_DOSE 332535 346690 347350",
+	"SPELL_AURA_APPLIED_DOSE 332535 346690",
 	"SPELL_AURA_REMOVED 330967 331636 331637 346694 330959 347350",
 	"SPELL_AURA_REMOVED_DOSE 347350",
 	"SPELL_PERIODIC_DAMAGE 346945",
@@ -34,15 +34,15 @@ mod:RegisterEventsInCombat(
 --TODO, Handling of boss timers with dance. Currently they just mass queue up and don't reset, pause or anything, resulting in bosses chaining abilities after dance.
 --		As such, keep an eye on this changing, if it doesn't, just add "keep" to all timers to show they are all queued up. if it changes, update timers to either reset, or pause
 --[[
-(ability.id = 330965 or ability.id = 330978 or ability.id = 327497 or ability.id = 327052 or ability.id = 337110 or ability.id = 346657 or ability.id = 346681) and type = "begincast"
- or (ability.id = 346692 or ability.id = 331634) and type = "cast"
+(ability.id = 330965 or ability.id = 330978 or ability.id = 327497 or ability.id = 327052 or ability.id = 337110 or ability.id = 346657 or ability.id = 346681 or ability.id = 346698 or ability.id = 346690) and type = "begincast"
+ or (ability.id = 331634) and type = "cast"
  or ability.id = 332535 or ability.id = 330959
  or (ability.id = 330964 or ability.id = 335773) and type = "cast"
  or (target.id = 166971 or target.id = 166969 or target.id = 166970) and type = "death"
  --]]
 --Castellan Niklaus
 local warnDualistsRiposte						= mod:NewStackAnnounce(346690, 2, nil, "Tank|Healer")
-local warnDutifulAttendant						= mod:NewSpellAnnounce(346692, 2)
+local warnDutifulAttendant						= mod:NewSpellAnnounce(346698, 2)
 local warnDredgerServants						= mod:NewSpellAnnounce(330978, 2)--One boss dead
 ----Adds
 local warnCastellansCadre						= mod:NewSpellAnnounce(330965, 2)--Two bosses dead
@@ -57,7 +57,7 @@ local warnDarkRecital							= mod:NewTargetNoFilterAnnounce(331634, 3)
 local warnDancingFools							= mod:NewSpellAnnounce(330964, 2)--Two bosses dead
 --Intermission
 local warnDanceOver								= mod:NewEndAnnounce(330959, 2)
-local warnDancingFever							= mod:NewSpellAnnounce(347350, 4)
+local warnDancingFever							= mod:NewTargetNoFilterAnnounce(347350, 4)
 
 --General
 local specWarnGTFO								= mod:NewSpecialWarningGTFO(346945, nil, nil, nil, 1, 8)
@@ -75,13 +75,13 @@ local specWarnDarkRecital						= mod:NewSpecialWarningMoveTo(331634, nil, nil, n
 local yellDarkRecitalRepeater					= mod:NewIconRepeatYell(331634, DBM_CORE_L.AUTO_YELL_ANNOUNCE_TEXT.shortyell)--One boss dead
 local specWarnWaltzofBlood						= mod:NewSpecialWarningDodge(327616, nil, nil, nil, 2, 2)
 --Intermission
-local specWarnDanseMacabre						= mod:NewSpecialWarningSpell(331005, nil, nil, nil, 3, 2)
+local specWarnDanseMacabre						= mod:NewSpecialWarningSpell(328495, nil, nil, nil, 3, 2)
 local yellDancingFever							= mod:NewYell(347350, nil, false)--Off by default do to potential to spam when spread, going to dry run nameplate auras for this
 
 --Castellan Niklaus
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22147))--2 baseline abilities
 local timerDualistsRiposteCD					= mod:NewAITimer(22, 346690, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)
-local timerDutifulAttendantCD					= mod:NewAITimer(18.2, 346692, nil, nil, nil, 5, nil, DBM_CORE_L.DAMAGE_ICON)--Used after death on Mythic
+local timerDutifulAttendantCD					= mod:NewAITimer(18.2, 346698, nil, nil, nil, 5, nil, DBM_CORE_L.DAMAGE_ICON)--Used after death on Mythic
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22201))--One is dead
 local timerDredgerServantsCD					= mod:NewAITimer(32.9, 330978, nil, nil, nil, 1)--32-37
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22199))--Two are dead
@@ -90,7 +90,7 @@ local timerCastellansCadreCD					= mod:NewAITimer(26.7, 330965, nil, nil, nil, 1
 --Baroness Frieda
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22148))--2 baseline abilities
 local timerDrainEssenceCD						= mod:NewCDTimer(22, 327052, nil, nil, nil, 5, nil, DBM_CORE_L.HEALER_ICON)
-local timerDreadboltVolleyCD					= mod:NewAITimer(22, 337110, nil, nil, nil, 2, nil, DBM_CORE_L.MAGIC_ICON)
+local timerDreadboltVolleyCD					= mod:NewCDTimer(20, 337110, nil, nil, nil, 2, nil, DBM_CORE_L.MAGIC_ICON)
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22202))--One is dead
 local timerPridefulEruptionCD					= mod:NewAITimer(30.5, 346657, nil, nil, nil, 3)
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22205))--Two are dead
@@ -114,6 +114,7 @@ mod:AddNamePlateOption("NPAuraOnShield", 346694)
 mod:AddNamePlateOption("NPAuraOnUproar", 346303)
 
 mod.vb.phase = 1
+mod.vb.feversActive = 0
 local darkRecitalTargets = {}
 local playerName = UnitName("player")
 local castsPerGUID = {}
@@ -137,12 +138,13 @@ function mod:OnCombatStart(delay)
 	table.wipe(darkRecitalTargets)
 	table.wipe(castsPerGUID)
 	table.wipe(FeverStacks)
+	self.vb.feversActive = 0
 	--Castellan Niklaus
-	timerDualistsRiposteCD:Start(1-delay)
-	timerDutifulAttendantCD:Start(1-delay)
+	timerDutifulAttendantCD:Start(6.5-delay)
+	timerDualistsRiposteCD:Start(16.5-delay)
 	--Baroness Frieda
 	timerDrainEssenceCD:Start(6.9-delay)
-	timerDreadboltVolleyCD:Start(1-delay)
+	timerDreadboltVolleyCD:Start(5-delay)
 	--Lord Stavros
 	timerEvasiveLungeCD:Start(10.6-delay)
 	timerWaltzofBloodCD:Start(16.6-delay)
@@ -181,7 +183,7 @@ function mod:SPELL_CAST_START(args)
 		timerDrainEssenceCD:Start()
 	elseif spellId == 346690 then
 		timerDualistsRiposteCD:Start()
-	elseif spellId == 337110 then
+	elseif spellId == 337110 and self:AntiSpam(12, 4) then--Cast in sets of 2 or 3
 		warnDreadboltVolley:Show()
 		timerDreadboltVolleyCD:Start()
 	elseif spellId == 346657 then
@@ -205,15 +207,15 @@ function mod:SPELL_CAST_START(args)
 		local count = castsPerGUID[args.sourceGUID]
 		warnSintouchedBlade:Show(count)--addnumber.."-"..
 --		timerSintouchedBladeCD:Start(12.1, count+1, args.sourceGUID)
+	elseif spellId == 346698 then
+		warnDutifulAttendant:Show()
+		timerDutifulAttendantCD:Start()
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 346692 then
-		warnDutifulAttendant:Show()
-		timerDutifulAttendantCD:Start()
-	elseif spellId == 331634 then
+	if spellId == 331634 then
 		if args:GetSrcCreatureID() == 166970 then--Main boss
 			timerDarkRecitalCD:Start(21.9)
 		else
@@ -352,11 +354,12 @@ function mod:SPELL_AURA_APPLIED(args)
 			DBM.Nameplate:Show(true, args.destGUID, spellId)
 		end
 	elseif spellId == 347350 then
+		self.vb.feversActive = self.vb.feversActive + 1
+		warnDancingFever:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			yellDancingFever:Countdown(spellId)
 		end
-		local amount = args.amount or 1
-		FeverStacks[args.destName] = amount
+		FeverStacks[args.destName] = 3
 		if self.Options.InfoFrame then
 			if not DBM.Infoframe:IsShown() then
 				DBM.InfoFrame:SetHeader(args.spellName)
@@ -387,12 +390,13 @@ function mod:SPELL_AURA_REMOVED(args)
 		warnDanceOver:Show()
 		--TODO, timer correction if blizzard changes how they work
 	elseif spellId == 347350 then
+		self.vb.feversActive = self.vb.feversActive - 1
 		if args:IsPlayer() then
 			yellDancingFever:Cancel()
 		end
 		FeverStacks[args.destName] = nil
 		if self.Options.InfoFrame then
-			if #FeverStacks > 0 then
+			if self.vb.feversActive > 0 then
 				DBM.InfoFrame:UpdateTable(FeverStacks)
 			else
 				DBM.InfoFrame:Hide()
@@ -427,7 +431,7 @@ function mod:UNIT_DIED(args)
 		timerDreadboltVolleyCD:Stop()
 		timerPridefulEruptionCD:Stop()
 		if self:IsMythic() then
-			timerDreadboltVolleyCD:Start(4)
+			timerDreadboltVolleyCD:Start(20)
 		end
 	elseif cid == 166970 then--Lord Stavros
 		timerEvasiveLungeCD:Stop()
