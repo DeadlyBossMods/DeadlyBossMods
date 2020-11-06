@@ -7400,12 +7400,12 @@ end
 AddMsg = DBM.AddMsg
 
 function DBM:Debug(text, level)
+	fireEvent("DBM_Debug", text, level)
 	if not self.Options or not self.Options.DebugMode then return end
 	if (level or 1) <= DBM.Options.DebugLevel then
 		local frame = _G[tostring(DBM.Options.ChatFrame)]
 		frame = frame and frame:IsShown() and frame or DEFAULT_CHAT_FRAME
 		frame:AddMessage("|cffff7d0aDBM Debug:|r "..text, 1, 1, 1)
-		fireEvent("DBM_Debug", text, level)
 	end
 end
 
