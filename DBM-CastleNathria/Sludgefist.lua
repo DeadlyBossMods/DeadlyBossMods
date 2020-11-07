@@ -177,7 +177,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 342420 then--spellId == 342419 or
 		--Combat log order is all 342419 first, then all 342420
 		--Update, both spell Ids now have source and des names, so can just ignore one spell Id entirely and apply source/dest to check for pairs
-		ChainLinkTargets[#ChainLinkTargetOne + 1] = args.sourceName
+		ChainLinkTargets[#ChainLinkTargets + 1] = args.sourceName
 --		warnChainLink:CombinedShow(0.3, args.destName)
 		local icon = #ChainLinkTargets--Generate icon on the evens, because then we can divide it by 2 to assign raid icon to that pair
 		local playerIsInPair = false
