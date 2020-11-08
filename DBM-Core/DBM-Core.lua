@@ -3427,7 +3427,7 @@ function DBM:IsTrivial(customLevel)
 		--First, auto bail and return non trivial if it's an instancce not in table to prevent nil error
 		if not instanceDifficultyBylevel[LastInstanceMapID] then return false end
 		--Content is trivial if player level is 10 higher than content involved
-		if (playerLevel+10) >= instanceDifficultyBylevel[LastInstanceMapID][1] then
+		if playerLevel >= (instanceDifficultyBylevel[LastInstanceMapID][1]+10) then
 			return true
 		end
 	end
@@ -6921,11 +6921,15 @@ end
 function DBM:GetSpellInfo(spellId)
 	local name, rank, icon, castingTime, minRange, maxRange, returnedSpellId  = GetSpellInfo(spellId)
 	if not returnedSpellId then--Bad request all together
-		if spellId > 4 then
-			if self.Options.BadIDAlert then
-				self:AddMsg("|cffff0000Invalid call to GetSpellInfo for spellID: |r"..spellId..". Please report this bug")
-			else
-				self:Debug("|cffff0000Invalid call to GetSpellInfo for spellID: |r"..spellId)
+		if type(spellId) == "string" then
+			self:Debug("|cffff0000Invalid call to GetSpellInfo for spellID: |r"..spellId.." as a string!")
+		else
+			if spellId > 4 then
+				if self.Options.BadIDAlert then
+					self:AddMsg("|cffff0000Invalid call to GetSpellInfo for spellID: |r"..spellId..". Please report this bug")
+				else
+					self:Debug("|cffff0000Invalid call to GetSpellInfo for spellID: |r"..spellId)
+				end
 			end
 		end
 		return nil
