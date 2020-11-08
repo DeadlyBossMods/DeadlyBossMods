@@ -236,7 +236,7 @@ function mod:SPELL_CAST_START(args)
 		if args:GetSrcCreatureID() == 166971 then--Main boss
 			timerDutifulAttendantCD:Start(44.9)
 		else
-			timerDutifulAttendantCD:Start(36.2)--36.2-37-6
+			timerDutifulAttendantCD:Start(self.vb.phase == 2 and 44.9 or 36.2)--This might also be true of regular boss too
 			timerDutifulAttendantCD:UpdateInline(DBM_CORE_L.MYTHIC_ICON)
 		end
 	elseif spellId == 346800 then
