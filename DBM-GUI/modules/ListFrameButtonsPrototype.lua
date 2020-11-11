@@ -10,8 +10,8 @@ function ListFrameButtonsPrototype:CreateCategory(frame, parent)
 	elseif not frame.name then
 		DBM:AddMsg("Failed to create category - frame.name is missing")
 		return false
-	elseif self:IsPresent(frame.displayName) then
-		DBM:AddMsg("Frame (" .. frame.displayName .. ") already exists")
+	elseif self:IsPresent(frame.name) then
+		DBM:AddMsg("Frame (" .. frame.name .. ") already exists")
 		return false
 	end
 	frame.depth = parent and self:GetDepth(parent) or 1
@@ -25,7 +25,7 @@ end
 
 function ListFrameButtonsPrototype:IsPresent(name)
 	for _, v in ipairs(self.Buttons) do
-		if v.frame.displayName == name then
+		if v.frame.name == name then
 			return true
 		end
 	end
