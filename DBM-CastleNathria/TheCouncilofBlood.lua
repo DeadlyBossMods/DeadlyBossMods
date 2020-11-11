@@ -93,7 +93,7 @@ local timerDrainEssenceCD						= mod:NewCDTimer(22.5, 346654, nil, nil, nil, 5, 
 local timerDreadboltVolleyCD					= mod:NewCDTimer(20, 337110, nil, nil, nil, 2, nil, DBM_CORE_L.MAGIC_ICON)
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22202))--One is dead
 local timerPridefulEruptionCD					= mod:NewCDTimer(25, 346657, nil, nil, nil, 3)
-mod:AddTimerLine(DBM:EJ_GetSectionInfo(22205))--Two are dead
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(22945))--Two are dead
 local timerSoulSpikesCD							= mod:NewAITimer(19.4, 346681, nil, nil, nil, 3)
 --Lord Stavros
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22149))--2 baseline abilities
