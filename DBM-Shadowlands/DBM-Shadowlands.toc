@@ -1,5 +1,5 @@
 ## Interface: 90001
-## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Shadowlands|r
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0World Bosses (Shadowlands)|r
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0어둠땅|r
 ## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0暗影之境|r
 ## Author: MysticalOS
@@ -11,6 +11,7 @@
 ## X-DBM-Mod-Type: RAID
 ## X-DBM-Mod-Category: SHADOWLANDS
 ## X-DBM-StatTypes: normal
+## X-DBM-Mod-Name: Word Bosses (SL)
 ## X-DBM-Mod-World-Boss: 1
 ## X-DBM-Mod-Sort: 310
 ## X-DBM-Mod-MapID: 2222

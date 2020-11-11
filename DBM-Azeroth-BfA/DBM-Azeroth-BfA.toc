@@ -1,5 +1,5 @@
 ## Interface: 90001
-## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Azeroth (BfA)|r
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0World Bosses (BfA)|r
 ## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Azeroth (BfA)|r
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0아제로스 (격아)|r
 ## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0艾澤拉斯 (決戰艾澤拉斯)|r
@@ -13,7 +13,7 @@
 ## X-DBM-Mod-Category: BFA
 ## X-DBM-StatTypes: normal
 ## X-DBM-Mod-SubCategoriesID: 1643, 1642, 1943, 2105, 1718, 1779
-## X-DBM-Mod-Name: Azeroth (BfA)
+## X-DBM-Mod-Name: World Bosses (BfA)
 ## X-DBM-Mod-Name-koKR: 아제로스 (격아)
 ## X-DBM-Mod-Name-zhTW: 艾澤拉斯 (決戰艾澤拉斯)
 ## X-DBM-Mod-World-Boss: 1
