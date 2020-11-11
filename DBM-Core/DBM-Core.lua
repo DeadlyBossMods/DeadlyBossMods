@@ -493,6 +493,7 @@ local bannedMods = { -- a list of "banned" (meaning they are replaced by another
 	"DBM-KulTiras",--Merged to DBM-Azeroth-BfA
 	"DBM-Zandalar",--Merged to DBM-Azeroth-BfA
 	"DBM-Azeroth",--Merged into DBM-Core events mod.
+	"DBM-Argus",--Merged into DBM-BrokenIsles mod
 }
 
 --[InstanceID]={level,zoneType}
