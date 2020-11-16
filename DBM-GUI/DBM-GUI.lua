@@ -1,7 +1,8 @@
 local L = DBM_GUI_L
 
 DBM_GUI = {
-	tabs = {}
+	tabs	= {},
+	panels	= {}
 }
 
 local next, type, pairs, strsplit, tonumber, tostring, ipairs, tinsert, tsort, mfloor = next, type, pairs, strsplit, tonumber, tostring, ipairs, table.insert, table.sort, math.floor
@@ -141,23 +142,6 @@ function DBM_GUI:ShowHide(forceshow)
 			self:UpdateModList()
 			optionsFrame:Show()
 		end
-	end
-end
-
-do
-	local frames = {}
-
-	function DBM_GUI:AddFrame(name)
-		tinsert(frames, name)
-	end
-
-	function DBM_GUI:IsPresent(name)
-		for _, v in ipairs(frames) do
-			if v == name then
-				return true
-			end
-		end
-		return false
 	end
 end
 

@@ -1,89 +1,74 @@
 local setmetatable, type, ipairs, tinsert = setmetatable, type, ipairs, table.insert
 local DBM, DBM_GUI = DBM, DBM_GUI
 
-local ListFrameButtonsPrototype = {}
-
-function ListFrameButtonsPrototype:CreateCategory(frame, parent)
-	if not type(frame) == "table" then
-		DBM:AddMsg("Failed to create category - frame is not a table")
-		return false
-	elseif not frame.name then
-		DBM:AddMsg("Failed to create category - frame.name is missing")
-		return false
-	elseif self:IsPresent(frame.name) then
-		DBM:AddMsg("Frame (" .. frame.name .. ") already exists")
-		return false
-	end
-	frame.depth = parent and self:GetDepth(parent) or 1
-	self:SetParentHasChilds(parent)
-	tinsert(self.Buttons, {
-		frame	= frame,
-		parent	= parent
-	})
-	return #self.Buttons
-end
-
-function ListFrameButtonsPrototype:IsPresent(name)
-	for _, v in ipairs(self.Buttons) do
-		if v.frame.name == name then
-			return true
-		end
-	end
-	return false
-end
-
-function ListFrameButtonsPrototype:GetDepth(name, depth)
+local function GetDepth(self, parentID, depth) -- Called internally
 	depth = depth or 1
-	for _, v in ipairs(self.Buttons) do
-		if v.frame.name == name then
-			if v.parent == nil then
+	for _, v in ipairs(self.buttons) do
+		if v.frame.ID == parentID then
+			if not v.parentID then
 				return depth + 1
 			else
-				depth = depth + self:GetDepth(v.parent, depth)
+				depth = depth + GetDepth(self, v.parentID, depth)
 			end
 		end
 	end
 	return depth
 end
 
-function ListFrameButtonsPrototype:SetParentHasChilds(parent)
-	if not parent then
+local function GetVisibleSubTabs(self, parentID, tabs)
+	for _, v in ipairs(self.buttons) do
+		if v.parentID == parentID then
+			tinsert(tabs, v)
+			if v.frame.showSub then
+				GetVisibleSubTabs(self, v.frame.ID, tabs)
+			end
+		end
+	end
+end
+
+local function SetParentHasChilds(self, parentID)
+	if not parentID then
 		return
 	end
-	for _, v in ipairs(self.Buttons) do
-		if v.frame.name == parent then
+	for _, v in ipairs(self.buttons) do
+		if v.frame.ID == parentID then
 			v.frame.haschilds = true
 		end
 	end
 end
 
+local ListFrameButtonsPrototype = {}
+
+function ListFrameButtonsPrototype:CreateCategory(frame, parentID)
+	if not type(frame) == "table" then
+		DBM:AddMsg("Failed to create category - frame is not a table")
+		return false
+	end
+	frame.depth = parentID and GetDepth(self, parentID) or 1
+	SetParentHasChilds(self, parentID)
+	tinsert(self.buttons, {
+		frame		= frame,
+		parentID	= parentID
+	})
+	return #self.buttons
+end
+
 function ListFrameButtonsPrototype:GetVisibleTabs()
 	local tabs = {}
-	for _, v in ipairs(self.Buttons) do
-		if v.parent == nil then
+	for _, v in ipairs(self.buttons) do
+		if not v.parentID then
 			tinsert(tabs, v)
 			if v.frame.showSub then
-				self:GetVisibleSubTabs(v.frame.name, tabs)
+				GetVisibleSubTabs(self, v.frame.ID, tabs)
 			end
 		end
 	end
 	return tabs
 end
 
-function ListFrameButtonsPrototype:GetVisibleSubTabs(parent, tabs)
-	for _, v in ipairs(self.Buttons) do
-		if v.parent == parent then
-			tinsert(tabs, v)
-			if v.frame.showSub then
-				self:GetVisibleSubTabs(v.frame.name, tabs)
-			end
-		end
-	end
-end
-
 function DBM_GUI:CreateNewFauxScrollFrameList()
 	local mt = setmetatable({
-		Buttons = {}
+		buttons = {}
 	}, {
 		__index = ListFrameButtonsPrototype
 	})
