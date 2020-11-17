@@ -34,7 +34,7 @@ local specWarnUnrulyremains					= mod:NewSpecialWarningDodgeCount(339239, nil, n
 local timerFrenzyCD							= mod:NewAITimer(82.0, 338847, nil, nil, nil, 5, nil, DBM_CORE_L.ENRAGE_ICON)
 local timerScreamingSkullCD					= mod:NewAITimer(82.0, 338851, nil, nil, nil, 3, nil, DBM_CORE_L.DEADLY_ICON)
 local timerBoneCleaveCD						= mod:NewAITimer(82.0, 338846, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)
-local timerUnrulyRemainsCD					= mod:NewCDTimer(82.0, 339239, nil, nil, nil, 3)
+local timerUnrulyRemainsCD					= mod:NewAITimer(82.0, 339239, nil, nil, nil, 3)
 
 mod:AddSetIconOption("SetIconOnSkull", 338851, true, false, {1})
 
