@@ -456,7 +456,7 @@ function DBM_GUI:CreateNewPanel(frameName, frameType, showSub, sortID, displayNa
 	panel:SetSize(container:GetWidth(), container:GetHeight())
 	panel:SetPoint("TOPLEFT", "DBM_GUI_OptionsFramePanelContainer", "TOPLEFT")
 	panel.displayName = displayName or frameName
-	panel.showSub = showSub or false
+	panel.showSub = showSub or showSub == nil
 	panel:Hide()
 	if frameType == "option" then
 		frameType = 2
