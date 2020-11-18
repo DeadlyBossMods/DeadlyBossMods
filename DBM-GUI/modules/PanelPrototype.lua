@@ -18,14 +18,6 @@ function PanelPrototype:SetLastObj(obj)
 	self.lastobject = obj
 end
 
-function PanelPrototype:AutoSetDimension() -- TODO: Remove in 9.x
-	DBM:Debug(self.frame:GetName() .. " is calling a deprecated function AutoSetDimension")
-end
-
-function PanelPrototype:SetMyOwnHeight() -- TODO: remove in 9.x
-	DBM:Debug(self.frame:GetName() .. " is calling a deprecated function SetMyOwnHeight")
-end
-
 function PanelPrototype:CreateCreatureModelFrame(width, height, creatureid, scale)
 	local model = CreateFrame("PlayerModel", "DBM_GUI_Option_" .. self:GetNewID(), self.frame)
 	model.mytype = "modelframe"
@@ -456,50 +448,27 @@ function PanelPrototype:CreateArea(name)
 	})
 end
 
-function PanelPrototype:Rename(newname)
-	self.frame.name = newname
-end
-
-function PanelPrototype:Destroy()
-	tremove(DBM_GUI.tabs[self.frame.frameType], self.frame.categoryid)
-	tremove(self.parent.panels, self.frame.panelid)
-	self.frame:Hide()
-end
-
-do
-	local myid = 100
-
-	function DBM_GUI:CreateNewPanel(frameName, frameType, showSub, sortID, displayName)
-		local panel = CreateFrame("Frame", "DBM_GUI_Option_" .. self:GetNewID(), _G["DBM_GUI_OptionsFramePanelContainer"])
-		panel.mytype = "panel"
-		panel.sortID = self:GetCurrentID()
-		local container = _G["DBM_GUI_OptionsFramePanelContainer"]
-		panel:SetSize(container:GetWidth(), container:GetHeight())
-		panel:SetPoint("TOPLEFT", "DBM_GUI_OptionsFramePanelContainer", "TOPLEFT")
-		panel.name = frameName
-		panel.displayName = displayName or frameName
-		panel.showSub = showSub or showSub == nil
-		if sortID or 0 > 0 then
-			panel.sortid = sortID
-		else
-			myid = myid + 1
-			panel.sortid = myid
-		end
-		panel:Hide()
-		if frameType == "option" then
-			frameType = 2
-		end
-		panel.categoryid = self.tabs[frameType or 1]:CreateCategory(panel, self and self.frame and self.frame.name)
-		panel.frameType = frameType
-		PanelPrototype:SetLastObj(panel)
-		self.panels = self.panels or {}
-		tinsert(self.panels, {
-			frame	= panel,
-			parent	= self
-		})
-		panel.panelid = #self.panels
-		return setmetatable(self.panels[#self.panels], {
-			__index = PanelPrototype
-		})
+function DBM_GUI:CreateNewPanel(frameName, frameType, showSub, sortID, displayName)
+	local panel = CreateFrame("Frame", "DBM_GUI_Option_" .. self:GetNewID(), _G["DBM_GUI_OptionsFramePanelContainer"])
+	panel.mytype = "panel"
+	panel.ID = self:GetCurrentID()
+	local container = _G["DBM_GUI_OptionsFramePanelContainer"]
+	panel:SetSize(container:GetWidth(), container:GetHeight())
+	panel:SetPoint("TOPLEFT", "DBM_GUI_OptionsFramePanelContainer", "TOPLEFT")
+	panel.displayName = displayName or frameName
+	panel.showSub = showSub or showSub == nil
+	panel:Hide()
+	if frameType == "option" then
+		frameType = 2
 	end
+	self.tabs[frameType or 1]:CreateCategory(panel, self and self.frame and self.frame.ID)
+	PanelPrototype:SetLastObj(panel)
+	tinsert(self.panels, {
+		frame	= panel,
+		parent	= self
+	})
+	panel.panelid = #self.panels
+	return setmetatable(self.panels[#self.panels], {
+		__index = PanelPrototype
+	})
 end

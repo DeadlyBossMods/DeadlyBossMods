@@ -5,8 +5,8 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(164407)
 mod:SetEncounterID(2399)
 mod:SetUsedIcons(1)
-mod:SetHotfixNoticeRev(20200813000000)--2020, 8, 13
-mod:SetMinSyncRevision(20200813000000)
+mod:SetHotfixNoticeRev(20201114000000)--2020, 11, 14
+mod:SetMinSyncRevision(20201114000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
@@ -18,13 +18,20 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_REMOVED 331209 331314 342419 342420 340817",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
+	"SPELL_ENERGIZE 346269",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, this straght up needs an updateAllTimers function like archimonde to be perfect.
---Timers delaying other timers, some abilities being skipped entirely if coming off cd during stun or another ability cast
---The timers COULD be perfected, I'm just not sure it's worth the effort to. Not an end boss, or even a hard one.
+--TODO, this straght up needs an updateAllTimers function like archimonde to be perfect, especially around hateful gaze/impact stun
+--The timers COULD be perfected, I'm just not sure it's worth the effort to since the variations are all predictable (based around spell queuing or delayed by impact stun)
 --I'll return to perfecting timers if things don't change on live and can analylize dozens more logs to verify patterns
+--[[
+(ability.id = 332318) and type = "begincast"
+ or ability.id = 332687 and type = "cast"
+ or (ability.id = 335470 or ability.id = 335470 or ability.id = 331209) and type = "applydebuff"
+ or ability.id = 346269 or ability.id = 331314
+ or (ability.id = 342420 or ability.id = 340817) and type = "applydebuff"
+--]]
 local warnHatefulGaze							= mod:NewTargetNoFilterAnnounce(331209, 4)
 local warnStunnedImpact							= mod:NewTargetNoFilterAnnounce(331314, 1)
 --local warnChainLink								= mod:NewTargetAnnounce(342419, 3)--Targetting debuff
@@ -46,14 +53,15 @@ local specWarnFallingRubble						= mod:NewSpecialWarningDodge(332572, nil, nil, 
 local specWarnSiesmicShift						= mod:NewSpecialWarningMoveAway(340817, nil, nil, nil, 2, 2, 4)
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(270290, nil, nil, nil, 1, 8)
 
-local timerHatefulGazeCD						= mod:NewCDCountTimer(69.0, 331209, nil, nil, nil, 3, nil, DBM_CORE_L.IMPORTANT_ICON, nil, 1, 4)
+--All timers outside of stun and gaze will use keep arg so timers remain visible if they come off CD during gaze stun
+local timerHatefulGazeCD						= mod:NewCDCountTimer(68.1, 331209, nil, nil, nil, 3, nil, DBM_CORE_L.IMPORTANT_ICON, nil, 1, 4)
 local timerStunnedImpact						= mod:NewTargetTimer(12, 331314, nil, nil, nil, 5, nil, DBM_CORE_L.DAMAGE_ICON)
-local timerChainLinkCD							= mod:NewCDCountTimer(68.1, 335300, nil, nil, nil, 3)
-local timerChainSlamCD							= mod:NewCDCountTimer(34, 335354, nil, nil, nil, 3)
-local timerDestructiveStompCD					= mod:NewCDCountTimer(44.3, 332318, nil, nil, nil, 3)
-local timerFallingRubbleCD						= mod:NewCDCountTimer(67.8, 332572, nil, nil, nil, 3)
-local timerColossalRoarCD						= mod:NewCDCountTimer(44.3, 332687, nil, nil, nil, 2)
-local timerSiesmicShiftCD						= mod:NewCDCountTimer(34, 340817, nil, nil, nil, 3, nil, DBM_CORE_L.MYTHIC_ICON)--Mythic
+local timerChainLinkCD							= mod:NewCDCountTimer(68.1, 335300, nil, nil, nil, 3, nil, nil, true)
+local timerChainSlamCD							= mod:NewCDCountTimer(68.9, 335354, nil, nil, nil, 3, nil, nil, true)
+local timerDestructiveStompCD					= mod:NewCDCountTimer(44.3, 332318, nil, nil, nil, 3, nil, nil, true)
+local timerFallingRubbleCD						= mod:NewCDCountTimer(67.8, 332572, nil, nil, nil, 3, nil, nil, true)
+local timerColossalRoarCD						= mod:NewCDCountTimer(44.3, 332687, nil, nil, nil, 2, nil, nil, true)--30 and 36 alternating with slight variation, unless a gaze stun that's off schedule (do to mythci energy gain) messes up rotation
+local timerSiesmicShiftCD						= mod:NewCDCountTimer(34, 340817, nil, nil, nil, 3, nil, DBM_CORE_L.MYTHIC_ICON, true)--Mythic
 
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
@@ -65,12 +73,12 @@ mod.vb.gazeCount = 0
 mod.vb.stompCount = 0
 mod.vb.roarCount = 0
 mod.vb.linkCount = 0
-mod.vb.chainSlaimCount = 0
+mod.vb.chainSlamCount = 0
 mod.vb.rubbleCount = 0
 mod.vb.shiftCount = 0
 local ChainLinkTargets = {}
 local playerName = UnitName("player")
-local SiesmicTimers = {18.4, 25.9, 29.3, 12.9, 25.5, 30.5, 12.6, 25.9, 30.6}
+local SiesmicTimers = {18.4, 25.5, 29.3, 12.9, 25.5, 30.2, 12.6, 25.5, 30.1, 13.6}
 
 local function ChainLinkYellRepeater(self, text, runTimes)
 	yellChainLink:Yell(text)
@@ -85,22 +93,18 @@ function mod:OnCombatStart(delay)
 	self.vb.stompCount = 0
 	self.vb.roarCount = 0
 	self.vb.linkCount = 0
-	self.vb.chainSlaimCount = 0
+	self.vb.chainSlamCount = 0
 	self.vb.rubbleCount = 0
 	table.wipe(ChainLinkTargets)
 	timerChainLinkCD:Start(4.7-delay, 1)
-	timerFallingRubbleCD:Start(13.2-delay, 1)
+	timerFallingRubbleCD:Start(12.5-delay, 1)
 	timerDestructiveStompCD:Start(18.3-delay, 1)
 --	timerColossalRoarCD:Start(1-delay)--Cast instantly on pull
-	timerChainSlamCD:Start(34-delay, 1)
-	timerHatefulGazeCD:Start(50.9-delay, 1)
+	timerChainSlamCD:Start(28.3-delay, 1)
+	timerHatefulGazeCD:Start(50.1-delay, 1)
 	if self:IsMythic() then
 		self.vb.shiftCount = 0
 		timerSiesmicShiftCD:Start(18.4, 1)
---		if self.Options.InfoFrame then
---			DBM.InfoFrame:SetHeader(DBM_CORE_L.NO_DEBUFF:format(DBM:GetSpellInfo(342410)))
---			DBM.InfoFrame:Show(5, "playergooddebuff", 342410)--TODO, change number when columns work again
---		end
 	end
 --	if self.Options.RangeFrame then
 --		DBM.RangeCheck:Show(4)
@@ -109,9 +113,9 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnCombatEnd()
-	if self.Options.InfoFrame then
-		DBM.InfoFrame:Hide()
-	end
+--	if self.Options.InfoFrame then
+--		DBM.InfoFrame:Hide()
+--	end
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
@@ -127,8 +131,8 @@ function mod:SPELL_CAST_START(args)
 		--pull:22.4, 23.3, 44.2, 23.1, 45.5, 22.0, 45.3, 22.1"
 		--pull:27.0, 22.1, 44.6, 22.1, 44.2, 22.1, 47.1, 22.6, 45.2, 23.1"
 		--Mythic
-		--pull:18.3, 26.0, 43.0, 25.8, 43.2, 25.9", -- [2]
-		if self.vb.stompCount == 1 or (self.vb.stompCount % 2 == 0) then
+		--pull:18.6, 25.5, 43.4, 25.5, 43.8, 25.5, 43.7", -- [2]
+		if self.vb.stompCount % 2 == 0 then
 			timerDestructiveStompCD:Start(43, self.vb.stompCount+1)
 		else
 			timerDestructiveStompCD:Start(25, self.vb.stompCount+1)
@@ -203,8 +207,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellChainLink:Yell(icon)
 		end
 	elseif spellId == 335470 then
-		self.vb.chainSlaimCount = self.vb.chainSlaimCount + 1
-		--timerChainSlamCD:Start(nil, self.vb.chainSlaimCount+1)
+		self.vb.chainSlamCount = self.vb.chainSlamCount + 1
+		--timerChainSlamCD:Start(nil, self.vb.chainSlamCount+1)
 		if args:IsPlayer() then
 			specWarnChainSlam:Show()
 			specWarnChainSlam:Play("targetyou")
@@ -267,15 +271,25 @@ end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 --]]
 
+function mod:SPELL_ENERGIZE(_, _, _, _, _, _, _, _, spellId, _, _, amount)
+	if spellId == 346269 then
+		timerHatefulGazeCD:Stop()--Boss immediately full energy so terminate timer/countdown immediately
+		--TODO, also adjust other timers instead of just using KeepTime?
+		--Might be annoying work to do for something that shouldn't happen in a properly executed fight
+	end
+end
+
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 335300 then--Chain link
 		table.wipe(ChainLinkTargets)
 		self.vb.linkCount = self.vb.linkCount + 1
-		timerChainLinkCD:Start(68.1, self.vb.linkCount+1)
+		timerChainLinkCD:Start(67.7, self.vb.linkCount+1)--67.7-69.1
 	elseif spellId == 341193 then--or spellId == 341103
 		self.vb.rubbleCount = self.vb.rubbleCount + 1
 		specWarnFallingRubble:Show(self.vb.rubbleCount)
 		specWarnFallingRubble:Play("watchstep")
 		timerFallingRubbleCD:Start(67.8, self.vb.rubbleCount+1)
+	elseif spellId == 335354 then--Chain Slam
+		timerChainSlamCD:Start(68.9)
 	end
 end

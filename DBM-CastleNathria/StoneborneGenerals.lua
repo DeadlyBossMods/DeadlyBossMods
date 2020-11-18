@@ -334,7 +334,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnVolatileStoneShell:Play("targetchange")
 		end
 		if self.Options.NPAuraOnVolatileShell then
-			DBM.Nameplate:Show(true, args.destGUID, spellId, nil, 6)
+			DBM.Nameplate:Show(true, args.destGUID, spellId, nil, 4)
 		end
 	elseif spellId == 343273 then
 		warnRavenousFeast:CombinedShow(0.3, args.destName)--Combined in case it'll clobber everyone near them too

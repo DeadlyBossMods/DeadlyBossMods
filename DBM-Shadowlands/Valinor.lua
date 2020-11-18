@@ -31,8 +31,6 @@ local specWarnMarkofPenitence				= mod:NewSpecialWarningStack(327255, nil, 3, ni
 local specWarnMarkofPenitenceTaunt			= mod:NewSpecialWarningTaunt(327255, nil, nil, nil, 1, 2)
 local specWarnLysoniasCall					= mod:NewSpecialWarningYou(339278, nil, nil, nil, 1, 2)
 local specWarnChargedAnimaBlast				= mod:NewSpecialWarningMoveAway(327262, nil, nil, nil, 3, 2)
-local yellChargedAnimaBlast					= mod:NewYell(327262)
-local yellChargedAnimaBlastFades			= mod:NewFadesYell(327262)
 local specWarnChargedAnimaBlastNear			= mod:NewSpecialWarningClose(327262, nil, nil, nil, 3, 2)
 
 local timerVentAnimaCD						= mod:NewAITimer(82.0, 327256, nil, nil, nil, 2, nil, DBM_CORE_L.HEALER_ICON)
@@ -50,8 +48,6 @@ function mod:EmberBlastTarget(targetname, uId, bossuid, scanningTime)
 	if targetname == UnitName("player") then
 		specWarnChargedAnimaBlast:Show()
 		specWarnChargedAnimaBlast:Play("runout")
-		yellChargedAnimaBlast:Yell()
-		yellChargedAnimaBlastFades:Countdown(4-scanningTime)
 	elseif self:CheckNearby(8, targetname) then
 		specWarnChargedAnimaBlastNear:Show(targetname)
 		specWarnChargedAnimaBlastNear:Play("runaway")

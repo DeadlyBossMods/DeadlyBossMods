@@ -9,6 +9,7 @@
 
 ## Old Content mods are split into multiple packages
 Older content is split into multiple addons to reduce mod update size. These are often far less updated as DBM Core packages and are better as optional extra packages. You can get them here:
+* [Battle for Azeroth Mods](https://www.curseforge.com/wow/addons/deadly-boss-mods-dbm-bfa)
 * [Legion Raid Mods](https://curseforge.com/wow/addons/deadly-boss-mods-dbm-legion)
 * [Warlords of Draenor Raid Mods](https://curseforge.com/wow/addons/deadly-boss-mods-wod)
 * [Mists of Pandaria Raid Mods](https://curseforge.com/wow/addons/deadly-boss-mods-mop)

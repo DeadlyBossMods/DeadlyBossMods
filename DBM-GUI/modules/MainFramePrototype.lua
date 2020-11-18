@@ -23,7 +23,7 @@ function frame:UpdateMenuFrame()
 		button:SetWidth(bigList and 185 or 209)
 		button:UnlockHighlight()
 		local element = displayedElements[i + (listFrame.offset or 0)]
-		if not element or i > bigList or element.initial then
+		if not element or i > bigList then
 			button:Hide()
 			button:SetHeight(-1)
 		else
@@ -236,12 +236,6 @@ function frame:ShowTab(tab)
 			_G["DBM_GUI_OptionsFrameTab" .. i .. "LeftDisabled"]:Show()
 			_G["DBM_GUI_OptionsFrameTab" .. i .. "MiddleDisabled"]:Show()
 			_G["DBM_GUI_OptionsFrameTab" .. i .. "RightDisabled"]:Show()
-			for _, panel in ipairs(DBM_GUI.tabs[i].Buttons) do
-				if panel.initial then
-					self:DisplayFrame(panel.frame)
-					return
-				end
-			end
 		else
 			_G["DBM_GUI_OptionsFrameTab" .. i .. "Left"]:Show()
 			_G["DBM_GUI_OptionsFrameTab" .. i .. "Middle"]:Show()
@@ -249,12 +243,6 @@ function frame:ShowTab(tab)
 			_G["DBM_GUI_OptionsFrameTab" .. i .. "LeftDisabled"]:Hide()
 			_G["DBM_GUI_OptionsFrameTab" .. i .. "MiddleDisabled"]:Hide()
 			_G["DBM_GUI_OptionsFrameTab" .. i .. "RightDisabled"]:Hide()
-			for _, panel in ipairs(DBM_GUI.tabs[i].Buttons) do
-				if panel.initial then
-					panel.frame:Hide()
-					return
-				end
-			end
 		end
 	end
 end
