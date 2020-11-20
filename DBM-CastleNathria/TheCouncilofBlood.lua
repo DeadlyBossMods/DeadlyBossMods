@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(166971, 166969, 166970)--Castellan Niklaus, Baroness Frieda, Lord Stavros
 mod:SetEncounterID(2412)
 mod:SetBossHPInfoToHighest()
---mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
+mod:SetUsedIcons(8)
 mod:SetHotfixNoticeRev(20201107000000)--2020, 11, 07
 mod:SetMinSyncRevision(20201107000000)
 --mod.respawnTime = 29
@@ -108,7 +108,7 @@ local timerDancingFoolsCD						= mod:NewCDTimer(30.3, 330964, nil, nil, nil, 1)
 
 mod:AddRangeFrameOption(8, 346657)
 mod:AddInfoFrameOption(347350, true)
---mod:AddSetIconOption("SetIconOnMuttering", 310358, true, false, {2, 3, 4, 5, 6, 7, 8})
+mod:AddSetIconOption("SetIconOnDancingFools", 346826, true, false, {8})
 mod:AddNamePlateOption("NPAuraOnFixate", 330967)
 mod:AddNamePlateOption("NPAuraOnShield", 346694)
 mod:AddNamePlateOption("NPAuraOnUproar", 346303)
@@ -163,6 +163,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnCombatEnd()
+	self:UnregisterShortTermEvents()
 	table.wipe(castsPerGUID)
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
@@ -568,5 +569,28 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 346826 then--Dancing Fools
 		warnDancingFools:Show()
 		timerDancingFoolsCD:Start(30.7)
+		if self.Options.SetIconOnDancingFools then
+			self:RegisterShortTermEvents(
+				"NAME_PLATE_UNIT_ADDED",
+				"FORBIDDEN_NAME_PLATE_UNIT_ADDED"
+			)
+		end
 	end
 end
+
+--This assumes the real one is only one with nameplate. Based on video it appears so
+--But that doesn't mean other units don't have nameplates that blizzard just adjusted z axis on so it's off the screen.
+function mod:NAME_PLATE_UNIT_ADDED(unit)
+	if unit then
+		local guid = UnitGUID(unit)
+		if not guid then return end
+		local cid = self:GetCIDFromGUID(guid)
+		if cid == 176026 then
+			if not GetRaidTargetIndex(unit) then
+				SetRaidTarget(unit, 8)
+			end
+			self:UnregisterShortTermEvents()
+		end
+	end
+end
+mod.FORBIDDEN_NAME_PLATE_UNIT_ADDED = mod.NAME_PLATE_UNIT_ADDED
