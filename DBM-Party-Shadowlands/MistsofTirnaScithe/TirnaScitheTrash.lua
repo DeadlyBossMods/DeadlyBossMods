@@ -122,7 +122,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			specWarnVolatileAcid:Play("runout")
 			yellVolatileAcid:Yell()
 		else
-			warnVolatileAcid:Show(targetname)
+			warnVolatileAcid:Show(args.destName)
 		end
 	end
 end
