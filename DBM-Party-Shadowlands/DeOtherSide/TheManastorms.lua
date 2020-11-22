@@ -52,12 +52,12 @@ local specWarnShadowfury			= mod:NewSpecialWarningMoveTo(320132, nil, nil, nil, 
 --General
 local timerPhaseCD						= mod:NewPhaseTimer(30)
 --Stage One: Millhouse's Magics
-local timerSummonPowerCrystalCD			= mod:NewNextTimer(7.4, 320787, nil, nil, nil, 5)
+local timerSummonPowerCrystalCD			= mod:NewCDTimer(7.4, 320787, nil, nil, nil, 5)--Usually 8 (sometimes a cast is skipped if it perfectly lines up with a laser, do to this variation
 local timerDoomCD						= mod:NewNextTimer(15.8, 320141, 226243, nil, nil, 2, nil, DBM_CORE_L.DEADLY_ICON)--Shortname Doom!!!
 local timerLaserCD						= mod:NewNextCountTimer(15, 323877, 143444, nil, nil, 2, nil, DBM_CORE_L.DEADLY_ICON)--Shortname Laser
 --Stage Two: Millificent's Gadgets
 --local timerMechanicalBombSquirrelCD	= mod:NewCDTimer(13, 320825, nil, nil, nil, 3)
-local timerExperimentalSquirrelBombCD	= mod:NewNextTimer(8, 320823, nil, nil, nil, 5)
+local timerExperimentalSquirrelBombCD	= mod:NewCDTimer(7.9, 320823, nil, nil, nil, 5)
 local timerAerialRocketChickenCD		= mod:NewNextTimer(13, 321061, 45255, nil, nil, 3)--Shortname Rocket Chicken
 local timerShadowfuryCD					= mod:NewNextCountTimer(13, 320132, nil, nil, nil, 3)
 
@@ -131,7 +131,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.furyCount = self.vb.furyCount + 1
 		specWarnShadowfury:Show(millificent)
 		specWarnShadowfury:Play("behindboss")
-		local timer = self.vb.furyCount == 1 and 12.9 or self.vb.furyCount == 2 and 9.9 or 5.9--5.9 repeating after 3 casts
+		local timer = self.vb.furyCount == 1 and 15 or self.vb.furyCount == 2 and 11 or 8--8 is guessed, since these timers were nerfed to match milhouse
 		timerShadowfuryCD:Start(timer, self.vb.furyCount+1)
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(8)
@@ -188,10 +188,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerExperimentalSquirrelBombCD:Stop()
 		timerAerialRocketChickenCD:Stop()
 		timerShadowfuryCD:Stop()
-		timerSummonPowerCrystalCD:Start(7)
+		timerSummonPowerCrystalCD:Start(9)
 		if self:IsMythic() then
-			timerLaserCD:Start(20, 1)
-			timerDoomCD:Start(43.5)
+			timerLaserCD:Start(22, 1)
+			timerDoomCD:Start(45.5)
 			--timerPhaseCD:Start(51.2)--Boss pushes when hit with other bosses ability 3x, this is roughly 51-52 if you don't screw up
 		else
 			timerPhaseCD:Start(30)--Non mythic is just timer, no shadowfury or lasers to push boss
@@ -214,10 +214,10 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerSummonPowerCrystalCD:Stop()
 		timerDoomCD:Stop()
 		timerLaserCD:Stop()
-		timerExperimentalSquirrelBombCD:Start(6.5)
+		timerExperimentalSquirrelBombCD:Start(8.5)
 		if self:IsMythic() then
-			timerShadowfuryCD:Start(18.2, 1)
-			timerAerialRocketChickenCD:Start(41)
+			timerShadowfuryCD:Start(18, 1)
+			timerAerialRocketChickenCD:Start(43)
 			--timerPhaseCD:Start(51.2)--Boss pushes when hit with other bosses ability 3x, this is roughly 51-52 if you don't screw up
 		else
 			--On non mythic they swap on a timer, on mythic they seem to swap based on pushing phase with damage? saw pushes between 52.8 and 65

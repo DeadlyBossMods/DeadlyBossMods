@@ -9,7 +9,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 323064 322736 332329",
-	"SPELL_CAST_SUCCESS 322746",
+	"SPELL_CAST_SUCCESS 323166",
 	"SPELL_AURA_APPLIED 322773 322746 328987",
 	"SPELL_AURA_REMOVED 322773 322746",
 	"SPELL_PERIODIC_DAMAGE 323569",
@@ -20,6 +20,11 @@ mod:RegisterEventsInCombat(
 
 --TODO, blood barrier probably has a CD before it goes back up
 --TODO, longer pull with more timers
+--[[
+(ability.id = 322736) and type = "begincast"
+ or (ability.id = 322746 or ability.id = 323166) and type = "cast"
+ or (ability.id = 322773) and (type = "applybuff" or type = "removebuff")
+--]]
 --Hakkar the Soulflayer
 local warnBloodBarrier				= mod:NewTargetNoFilterAnnounce(322773, 2)
 local warnBloodBarrierEnded			= mod:NewEndAnnounce(322773, 1)
@@ -38,10 +43,10 @@ local specWarnGTFO					= mod:NewSpecialWarningGTFO(323569, nil, nil, nil, 1, 8)
 local specWarnZealous				= mod:NewSpecialWarningRun(328987, nil, nil, nil, 4, 2)
 
 --Hakkar the Soulflayer
-local timerBloodBarrierCD			= mod:NewCDTimer(15.8, 322773, nil, nil, nil, 6)
+local timerBloodBarrierCD			= mod:NewCDTimer(29.1, 322773, nil, nil, nil, 6)
 --local timerBloodBarrageCD			= mod:NewCDTimer(13, 323064, nil, nil, nil, 4, nil, DBM_CORE_L.INTERRUPT_ICON)
-local timerCorruptedBloodCD			= mod:NewCDTimer(36.4, 322746, nil, nil, nil, 3)
-local timerPiercingBarbCD			= mod:NewCDTimer(9.7, 322736, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)
+local timerCorruptedBloodCD			= mod:NewCDTimer(17.1, 322746, nil, nil, nil, 3)--17.1-26 (probably delayed by long blood barriers
+local timerPiercingBarbCD			= mod:NewCDTimer(8.9, 322736, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)--8.9-22.7 (blood barrier delays
 --Son of Hakkar:
 --local timerDevotedSacrificeCD		= mod:NewCDTimer(46, 332329, nil, nil, nil, 1)
 
@@ -63,9 +68,9 @@ end
 
 function mod:OnCombatStart(delay)
 	self.vb.barrierActive = false
-	timerCorruptedBloodCD:Start(5.5-delay)--SUCCESS
-	timerPiercingBarbCD:Start(7.2-delay)
-	timerBloodBarrierCD:Start(22.5-delay)--SUCCESS
+	timerCorruptedBloodCD:Start(8.5-delay)--SUCCESS
+	timerPiercingBarbCD:Start(10.1-delay)
+	timerBloodBarrierCD:Start(26.5-delay)--SUCCESS
 --	timerBloodBarrageCD:Start(22.5-delay)--It's cast instantly on barrier application, redundant timer
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(8)
@@ -103,7 +108,7 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 322746 then
+	if spellId == 323166 then
 		timerCorruptedBloodCD:Start()
 	end
 end
@@ -115,6 +120,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerPiercingBarbCD:Stop()
 		timerCorruptedBloodCD:Stop()
 		warnBloodBarrier:Show(args.destName)
+		timerBloodBarrierCD:Start()--Doesn't matter how long it's up for/when it goes down, cd starts immediately on use
 	elseif spellId == 322746 then
 		if args:IsPlayer() then
 			specWarnCorruptedBlood:Show()
@@ -144,9 +150,9 @@ function mod:SPELL_AURA_REMOVED(args)
 	if spellId == 322773 then
 		self.vb.barrierActive = false
 		warnBloodBarrierEnded:Show()
-		timerPiercingBarbCD:Start(7.4)
-		timerCorruptedBloodCD:Start(11.8)
-		--timerBloodBarrierCD:Start()
+		--Both used within 2-3 seconds of barrier going down in most logs. it's possible the timers pause from previous phase though and resume on barrier fall
+--		timerPiercingBarbCD:Start(2.4)
+--		timerCorruptedBloodCD:Start(11.8)
 	elseif spellId == 328987 then
 		if args:IsPlayer() then
 			if self.Options.NPAuraOnFixate then

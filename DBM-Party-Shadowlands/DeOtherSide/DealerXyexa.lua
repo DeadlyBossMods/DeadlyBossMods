@@ -38,18 +38,18 @@ local yellLocalizedExplosiveFades	= mod:NewShortFadesYell(321948)
 local yellArcaneLightning			= mod:NewYell(323687)
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(257274, nil, nil, nil, 1, 8)
 
-local timerDisplacementTrapCD		= mod:NewNextTimer(10.9, 319619, nil, nil, nil, 3)
-local timerDisplacedBlastwaveCD		= mod:NewCDTimer(10.1, 320326, nil, nil, nil, 3)--10-15
+local timerDisplacementTrapCD		= mod:NewCDTimer(17, 319619, nil, nil, nil, 3)--17-19.4
+local timerDisplacedBlastwaveCD		= mod:NewCDTimer(17, 320326, nil, nil, nil, 3)--17-19.4
 local timerExplosiveContrivanceCD	= mod:NewCDTimer(35.1, 320230, 201291, nil, nil, 2, nil, DBM_CORE_L.DEADLY_ICON)--"Explosion" shortname
 local timerLocalizedExplosiveCD		= mod:NewCDTimer(35.1, 321948, 188104, nil, nil, 3, nil, DBM_CORE_L.DEADLY_ICON)--"Localized Explosion" shortname
-local timerArcaneLightningCD		= mod:NewCDTimer(7.2, 323687, nil, nil, nil, 3, nil, DBM_CORE_L.MYTHIC_ICON)--Only cast once
+local timerArcaneLightningCD		= mod:NewCDTimer(9, 323687, nil, nil, nil, 3, nil, DBM_CORE_L.MYTHIC_ICON)--Only cast once, then just bounces every 9 seconds
 
 local trapName = DBM:GetSpellInfo(319619)
 
 function mod:OnCombatStart(delay)
-	timerDisplacementTrapCD:Start(6.1-delay)
-	timerLocalizedExplosiveCD:Start(9.6-delay)
-	timerDisplacedBlastwaveCD:Start(11.1-delay)
+	timerDisplacementTrapCD:Start(4.5-delay)
+	timerDisplacedBlastwaveCD:Start(9.4-delay)
+	timerLocalizedExplosiveCD:Start(14.3-delay)
 	timerExplosiveContrivanceCD:Start(31.6-delay)
 --	if self:IsDifficulty("challenge5") then
 	if self:IsMythic() then--TODO, verify

@@ -21,6 +21,12 @@ mod:RegisterEventsInCombat(
 --TODO, might use 324698 (Deathgate) instead of Shatter Reality for Phase 2 trigger
 --TODO, do anything with https://shadowlands.wowhead.com/spell=335000/stellar-cloud ? I suspect it's just a mechanic for going too far out
 --TODO, restart phase 1 timers when Phase 2 phases end
+--[[
+(ability.id = 325258 or ability.id = 327646 or ability.id = 326171) and type = "begincast"
+ or (ability.id = 325725 or ability.id = 326171) and type = "cast"
+ or ability.id = 334970 and type = "removebuff"
+ or type = "death" and target.id = 168326
+--]]
 --Stage 1: The Master of Death
 local warnCosmicArtifice			= mod:NewTargetAnnounce(325725, 3)
 local warnShatterReality			= mod:NewCastAnnounce(326171, 4)
@@ -38,19 +44,23 @@ local specWarnDeathgate				= mod:NewSpecialWarningMoveTo(324698, nil, nil, nil, 
 --Stage 2: Shattered Reality
 
 --Stage 1: The Master of Death
-local timerMasterofDeathCD			= mod:NewCDTimer(19.4, 325258, nil, nil, nil, 3)
-local timerCosmicArtificeCD			= mod:NewCDTimer(19.5, 325725, nil, nil, nil, 3, nil, DBM_CORE_L.MAGIC_ICON)
-local timerSoulcrusherCD			= mod:NewCDTimer(17.8, 327646, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)
+local timerMasterofDeathCD			= mod:NewCDTimer(32.8, 325258, nil, nil, nil, 3)
+local timerCosmicArtificeCD			= mod:NewCDCountTimer(19.5, 325725, nil, nil, nil, 3, nil, DBM_CORE_L.MAGIC_ICON)
+local timerSoulcrusherCD			= mod:NewCDCountTimer(17.8, 327646, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)
 local timerShatterRealityCD			= mod:NewCDTimer(25.3, 325258, nil, nil, nil, 2, nil, DBM_CORE_L.DEADLY_ICON)
 --Stage 2: Shattered Reality
 
 mod.vb.addsLeft = 3
+mod.vb.cosmicCount = 0
+mod.vb.soulCount = 0
 
 function mod:OnCombatStart(delay)
-	timerCosmicArtificeCD:Start(4.1-delay)--SUCCESS
-	timerSoulcrusherCD:Start(6.3-delay)
+	self.vb.cosmicCount = 0
+	self.vb.soulCount = 0
+	timerCosmicArtificeCD:Start(3.7-delay, 1)--SUCCESS
+	timerSoulcrusherCD:Start(6.2-delay, 1)
 	timerMasterofDeathCD:Start(9.5-delay)
-	timerShatterRealityCD:Start(25.3)
+	timerShatterRealityCD:Start(60)
 end
 
 function mod:SPELL_CAST_START(args)
@@ -60,9 +70,14 @@ function mod:SPELL_CAST_START(args)
 		specWarnMasterofDeath:Play("watchwave")
 		timerMasterofDeathCD:Start()
 	elseif spellId == 327646 then
+		self.vb.soulCount = self.vb.soulCount + 1
 		specWarnSoulcrusher:Show()
 		specWarnSoulcrusher:Play("defensive")
-		timerSoulcrusherCD:Start()
+		if self.vb.soulCount % 2 == 0 then
+			timerSoulcrusherCD:Start(10, self.vb.soulCount+1)
+		else
+			timerSoulcrusherCD:Start(20, self.vb.soulCount+1)
+		end
 	elseif spellId == 326171 then--Phase 1 End and big aoe
 		timerMasterofDeathCD:Stop()
 		timerCosmicArtificeCD:Stop()
@@ -74,11 +89,17 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 325725 then
-		timerCosmicArtificeCD:Start()
+		self.vb.cosmicCount = self.vb.cosmicCount + 1
+		if self.vb.cosmicCount % 2 == 0 then
+			timerCosmicArtificeCD:Start(10, self.vb.cosmicCount+1)
+		else
+			timerCosmicArtificeCD:Start(25, self.vb.cosmicCount+1)
+		end
 	elseif spellId == 324698 then--Deathgate finished
 		specWarnDeathgate:Show(args.spellName)
-	elseif spellId == 326171 then--Shattered Reality ending (Phase 2 begin)
-		timerCosmicArtificeCD:Start(2)
+---	elseif spellId == 326171 then--Shattered Reality ending (Phase 2 begin)
+--		self.vb.cosmicCount = 0
+--		timerCosmicArtificeCD:Start(2, 1)
 	end
 end
 
@@ -103,10 +124,12 @@ function mod:SPELL_AURA_REMOVED(args)
 			yellCosmicArtificeFades:Cancel()
 		end
 	elseif spellId == 334970 then--Coalescing
-		timerCosmicArtificeCD:Start(12.2)
-		timerSoulcrusherCD:Start(13.1)
-		timerMasterofDeathCD:Start(18)
-		timerShatterRealityCD:Start(35.2)
+		self.vb.cosmicCount = 0
+		self.vb.soulCount = 0
+		timerCosmicArtificeCD:Start(19.6, 1)
+		timerSoulcrusherCD:Start(21.8, 1)
+		timerMasterofDeathCD:Start(25.4)
+		timerShatterRealityCD:Start(76.4)
 	end
 end
 
@@ -114,7 +137,9 @@ function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 168326 then--Shattered Visage
 		self.vb.addsLeft = self.vb.addsLeft - 1
-		warnAddsRemaining:Show(self.vb.addsLeft)
+		if self.vb.addsLeft >= 0 then--Apparently possible too kill more than 3?
+			warnAddsRemaining:Show(self.vb.addsLeft)
+		end
 	end
 end
 
