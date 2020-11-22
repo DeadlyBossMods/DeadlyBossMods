@@ -38,16 +38,16 @@ local specWarnDarkExile				= mod:NewSpecialWarningYou(321894, nil, nil, nil, 1, 
 local timerCometStormCD				= mod:NewCDTimer(24.2, 320772, nil, nil, nil, 3)
 local timerIceboundAegisCD			= mod:NewCDTimer(24.2, 321754, nil, nil, nil, 5, nil, DBM_CORE_L.DAMAGE_ICON)
 local timerFrozenBindsCD			= mod:NewCDTimer(24.2, 323730, nil, nil, nil, 3, nil, DBM_CORE_L.MAGIC_ICON)
-local timerDarkExileCD				= mod:NewCDTimer(44.9, 321894, nil, nil, nil, 3)
+local timerDarkExileCD				= mod:NewCDTimer(37.6, 321894, nil, nil, nil, 3)--37-40+
 local timerDarkExile				= mod:NewTargetTimer(50, 321894, nil, nil, nil, 5)
 
 mod:AddInfoFrameOption(321754, true)
 
 function mod:OnCombatStart(delay)
 	timerFrozenBindsCD:Start(8.9-delay)--SUCCESS
-	timerIceboundAegisCD:Start(11.7-delay)
-	timerCometStormCD:Start(16.5-delay)
-	timerDarkExileCD:Start(28.2-delay)--SUCCESS
+	timerIceboundAegisCD:Start(13.2-delay)--may still be 11.7
+	timerCometStormCD:Start(16.5-delay)--16.5-17.2
+	timerDarkExileCD:Start(26.5-delay)--SUCCESS--26-30
 end
 
 function mod:OnCombatEnd()
@@ -62,9 +62,6 @@ function mod:SPELL_CAST_START(args)
 		specWarnCometStorm:Show()
 		specWarnCometStorm:Play("watchstep")
 		timerCometStormCD:Start()
---	elseif spellId == 257397 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
---		specWarnHealingBalm:Show(args.sourceName)
---		specWarnHealingBalm:Play("kickcast")
 	end
 end
 
