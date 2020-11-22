@@ -13,7 +13,6 @@ mod:RegisterEvents(
 )
 
 --All warnings/recommendations drycoded from https://www.wowhead.com/guides/de-other-side-shadowlands-dungeon-strategy-guide
---No spellIds were verified from logs/data, and as such may need fixing.
 --Notable Ring Trash
 local warnUndyingRage					= mod:NewTargetNoFilterAnnounce(333227, 4, nil, "Tank|Healer")
 local warnEnragedMask					= mod:NewSpellAnnounce(342869, 2)
@@ -27,7 +26,7 @@ local specWarnUndyingRage				= mod:NewSpecialWarningDispel(333227, "RemoveEnrage
 --Notable Hakkar Trash
 local specWarnBladestorm				= mod:NewSpecialWarningRun(332671, "Melee", nil, nil, 2, 2)
 local specWarnRenew						= mod:NewSpecialWarningInterrupt(257397, "HasInterrupt", nil, nil, 1, 2)
-local specWarnRenewDispel				= mod:NewSpecialWarningDispel(333227, "RemoveMagic", nil, nil, 1, 2)
+local specWarnRenewDispel				= mod:NewSpecialWarningDispel(333227, "MagicDispeller", nil, nil, 1, 2)
 local specWarnHeal						= mod:NewSpecialWarningInterrupt(332706, "HasInterrupt", nil, nil, 1, 2)
 local specWarnHealingwave				= mod:NewSpecialWarningInterrupt(332612, "HasInterrupt", nil, nil, 1, 2)
 --Notable The Manastorms Trash
@@ -88,7 +87,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			warnUndyingRage:Show(args.destName)
 		end
-	elseif spellId == 332666 and args:IsDestTypePlayer() and self:CheckDispelFilter() and self:AntiSpam(3, 5) then
+	elseif spellId == 332666 and args:IsDestTypeHostile() and self:AntiSpam(3, 5) then
 		specWarnRenewDispel:Show(args.destName)
 		specWarnRenewDispel:Play("helpdispel")
 	elseif spellId == 334493 and args:IsPlayer() then

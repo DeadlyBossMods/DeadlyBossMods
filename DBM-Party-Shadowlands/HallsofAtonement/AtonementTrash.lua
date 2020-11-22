@@ -33,7 +33,7 @@ local specWarnTurntoStone				= mod:NewSpecialWarningInterrupt(326607, "HasInterr
 function mod:SPELL_CAST_START(args)
 	if not self.Options.Enabled then return end
 	local spellId = args.spellId
-	if spellId == 326409 and self:AntiSpam(3, 6) then
+	if spellId == 326409 and self:AntiSpam(3, 4) then
 		warnThrash:Show()
 	elseif spellId == 326450 and self:AntiSpam(3, 6) then
 		warnLoyalBeasts:Show()
