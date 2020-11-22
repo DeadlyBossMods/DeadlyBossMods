@@ -37,7 +37,7 @@ local specWarnPattyCake				= mod:NewSpecialWarningInterrupt(321828, nil, nil, ni
 
 local timerDodgeBallCD				= mod:NewCDTimer(14.6, 321834, nil, nil, nil, 3)--14.6-18
 local timerFreezeTagCD				= mod:NewCDTimer(21.9, 321873, nil, nil, nil, 3)
---local timerPattyCakeCD				= mod:NewCDTimer(45.0, 321828, nil, nil, nil, 3)--Unknown new timer, maybe not timer anymore?
+local timerPattyCakeCD				= mod:NewCDTimer(20.6, 321828, nil, nil, nil, 3)--20-26
 
 mod:AddNamePlateOption("NPAuraOnFixate", 321891)
 mod:AddSetIconOption("SetIconOnAdds", "ej21691", true, true, {1, 2, 3, 4})
@@ -49,7 +49,7 @@ function mod:OnCombatStart(delay)
 	table.wipe(seenAdds)
 	self.vb.addIcon = 1
 	timerDodgeBallCD:Start(8.1-delay)
---	timerPattyCakeCD:Start(13.4-delay)
+	timerPattyCakeCD:Start(13.4-delay)
 	timerFreezeTagCD:Start(18.4-delay)--Sometimes cast is skipped?
 	if self.Options.NPAuraOnFixate then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
