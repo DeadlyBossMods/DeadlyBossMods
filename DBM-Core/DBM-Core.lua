@@ -714,7 +714,7 @@ local function sendLoggedSync(prefix, msg)
 		elseif IsInGroup(1) then
 			C_ChatInfo.SendAddonMessageLogged("D4", prefix .. "\t" .. msg, "PARTY")
 		else--for solo raid
-			C_ChatInfo.SendAddonMessageLogged("D4", prefix .. "\t" .. msg, "WHISPER", playerName)
+			handleSync("SOLO", playerName, prefix, strsplit("\t", msg))
 		end
 	end
 end
@@ -726,6 +726,8 @@ local function SendWorldSync(self, prefix, msg, noBNet)
 		SendAddonMessage("D4", prefix.."\t"..msg, "RAID")
 	elseif IsInGroup(1) then
 		SendAddonMessage("D4", prefix.."\t"..msg, "PARTY")
+	else--for solo raid
+		handleSync("SOLO", playerName, prefix, strsplit("\t", msg))
 	end
 	if IsInGuild() then
 		SendAddonMessage("D4", prefix.."\t"..msg, "GUILD")--Even guild syncs send realm so we can keep antispam the same across realid as well.
