@@ -8,7 +8,7 @@ mod:SetEncounterID(2359)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 322814 322999 323943 322921",
+	"SPELL_CAST_START 334625 322999 323943 322921",
 	"SPELL_CAST_SUCCESS 322818 322893 322908",
 	"SPELL_AURA_APPLIED 322818",
 --	"SPELL_PERIODIC_DAMAGE 322817",
@@ -17,10 +17,13 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
+--[[
+(ability.id = 322999 or ability.id = 323943 or ability.id = 334625) and type = "begincast"
+ or (ability.id = 322818 or ability.id = 322893 or ability.id = 322908) and type = "cast"
+ --]]
 --General
 local warnPhase						= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
 --Stage 1
-local warnSeedoftheAbyss			= mod:NewSpellAnnounce(322814, 4)
 local warnLostConfidence			= mod:NewTargetNoFilterAnnounce(322818, 2)
 local warnRunThrough				= mod:NewTargetNoFilterAnnounce(323943, 3)
 --Stage 2
@@ -29,6 +32,7 @@ local warnBackdraft					= mod:NewSpellAnnounce(322908, 4)
 local warnSpear						= mod:NewSpellAnnounce(322921, 1)
 
 --Stage 1
+local specWarnAbyssalDetonation		= mod:NewSpecialWarningMoveTo(334625, nil, nil, nil, 3, 2)
 local specWarnLostConfidence		= mod:NewSpecialWarningMoveAway(322818, nil, nil, nil, 1, 2)
 local yellLostConfidence			= mod:NewYell(322818)
 local specWarnRunThrough			= mod:NewSpecialWarningMoveAway(323943, nil, nil, nil, 1, 2)
@@ -37,17 +41,19 @@ local specWarnRunThroughNear		= mod:NewSpecialWarningClose(323943, nil, nil, nil
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(322817, nil, nil, nil, 1, 8)
 
 --Stage 1
-local timerSeedoftheAbyssCD			= mod:NewNextTimer(20.6, 322814, nil, nil, nil, 3)
-local timerLostConfidenceCD			= mod:NewCDTimer(13, 322818, nil, nil, nil, 3, nil, DBM_CORE_L.MAGIC_ICON..DBM_CORE_L.HEALER_ICON)
-local timerRunThroughCD				= mod:NewNextTimer(10.9, 323943, nil, nil, nil, 3)
+local timerAbyssalDetonationCD		= mod:NewCDTimer(20.6, 334625, nil, nil, nil, 2, nil, DBM_CORE_L.DEADLY_ICON)
+local timerLostConfidenceCD			= mod:NewCDTimer(31.6, 322818, nil, nil, nil, 3, nil, DBM_CORE_L.MAGIC_ICON..DBM_CORE_L.HEALER_ICON)
+local timerRunThroughCD				= mod:NewCDTimer(14.3, 323943, nil, nil, nil, 3)--14.3-20.6
 --Stage 2
 local timerSlipstreamCD				= mod:NewNextTimer(18.2, 322893, nil, nil, nil, 2)
 local timerBackdraftCD				= mod:NewNextTimer(18.2, 322908, nil, nil, nil, 2)
 
+local shelter = DBM:GetSpellInfo(335806)
+
 function mod:OnCombatStart(delay)
-	timerSeedoftheAbyssCD:Start(8.4-delay)
 	timerRunThroughCD:Start(12-delay)
-	timerLostConfidenceCD:Start(18.4-delay)--SUCCESS
+	timerAbyssalDetonationCD:Start(20.1-delay)
+	timerLostConfidenceCD:Start(24.6-delay)--SUCCESS
 end
 
 --function mod:OnCombatEnd()
@@ -56,13 +62,14 @@ end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 322814 then
-		warnSeedoftheAbyss:Show()
-		timerSeedoftheAbyssCD:Start()
+	if spellId == 334625 then
+		specWarnAbyssalDetonation:Show(shelter)
+		specWarnAbyssalDetonation:Play("findshelter")
+		timerAbyssalDetonationCD:Start()
 	elseif spellId == 322999 then--Stage 2
 		warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(2))
 		warnPhase:Play("phasechange")
-		timerSeedoftheAbyssCD:Stop()
+		timerAbyssalDetonationCD:Stop()
 		timerLostConfidenceCD:Stop()
 		timerRunThroughCD:Stop()
 		timerSlipstreamCD:Start(10)
@@ -143,9 +150,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		warnPhase:Play("phasechange")
 		timerSlipstreamCD:Stop()
 		timerBackdraftCD:Stop()
-		--Timers seem same as pull, minus 0.4
-		timerSeedoftheAbyssCD:Start(8)
+		--Timers seem same as pull, minus 0.4 (give or take, because of landing time)
 		timerRunThroughCD:Start(11.6)
-		timerLostConfidenceCD:Start(18)--SUCCESS
+		timerAbyssalDetonationCD:Start(19.7)
+		timerLostConfidenceCD:Start(24.2)--SUCCESS
 	end
 end
