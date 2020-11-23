@@ -19,6 +19,10 @@ mod:RegisterEventsInCombat(
 
 --TODO, warn for https://shadowlands.wowhead.com/spell=328494/sintouched-anima spawns?
 --TODO, figure ot how Castigate works to more accurately warn it
+--[[
+ability.id = 322554 and type = "begincast"
+ or ability.id = 323548 and type = "applydebuff"
+--]]
 local warnCastigate					= mod:NewCastAnnounce(322554, 4)
 
 local specWarnCastigate				= mod:NewSpecialWarningMoveAway(322554, nil, nil, nil, 1, 2)
@@ -26,8 +30,8 @@ local specWarnCastigate				= mod:NewSpecialWarningMoveAway(322554, nil, nil, nil
 local specWarnCoalesceManifestation	= mod:NewSpecialWarningSwitch(322574, "-Healer", nil, nil, 1, 2)
 --local specWarnGTFO				= mod:NewSpecialWarningGTFO(257274, nil, nil, nil, 1, 8)
 
-local timerCastigateCD				= mod:NewNextTimer(20.7, 322554, nil, nil, nil, 3)
-local timerCoalesceManifestationCD	= mod:NewNextTimer(15.8, 322574, nil, nil, nil, 1, nil, DBM_CORE_L.DAMAGE_ICON)
+local timerCastigateCD				= mod:NewNextTimer(20.6, 322554, nil, nil, nil, 3)
+local timerCoalesceManifestationCD	= mod:NewCDTimer(29.5, 322574, nil, nil, nil, 1, nil, DBM_CORE_L.DAMAGE_ICON)--30 with a standard variationn of 1
 
 mod:AddRangeFrameOption(8, 322554)
 mod:AddNamePlateOption("NPAuraOnEnergy", 323548)
@@ -38,8 +42,8 @@ local unitTracked = {}
 function mod:OnCombatStart(delay)
 	self.vb.AddsActive = 0
 	table.wipe(unitTracked)
-	timerCastigateCD:Start(4.8-delay)
-	timerCoalesceManifestationCD:Start(1-delay)
+	timerCastigateCD:Start(3.7-delay)
+	timerCoalesceManifestationCD:Start(14.6-delay)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(8)
 	end

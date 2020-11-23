@@ -36,17 +36,17 @@ local specWarnCytotoxicSlashTank	= mod:NewSpecialWarningDefensive(325552, nil, n
 --local specWarnGTFO				= mod:NewSpecialWarningGTFO(257274, nil, nil, nil, 1, 8)
 
 --local timerShadowcloneCD			= mod:NewCDTimer(13, 325457, nil, nil, nil, 6)
-local timerBroodAssassinsCD			= mod:NewCDTimer(36.4, 332313, nil, nil, nil, 1)
-local timerAmbushCD					= mod:NewCDTimer(20.6, 325245, nil, nil, nil, 3)--20-23
+local timerBroodAssassinsCD			= mod:NewCDTimer(35.2, 332313, nil, nil, nil, 1)
+local timerAmbushCD					= mod:NewCDTimer(19.4, 325245, nil, nil, nil, 3)--19.4-23
 local timerSolitaryPrey				= mod:NewBuffFadesTimer(6, 336258, nil, nil, nil, 5)
 local timerCytotoxicSlashCD			= mod:NewCDTimer(20.6, 325552, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON)--20-23
 
 mod:AddRangeFrameOption(5, 325245)
 
 function mod:OnCombatStart(delay)
-	timerAmbushCD:Start(11-delay)
-	timerBroodAssassinsCD:Start(17.1-delay)
-	timerCytotoxicSlashCD:Start(5-delay)--START
+	timerAmbushCD:Start(6.1-delay)
+	timerCytotoxicSlashCD:Start(9.7-delay)--START
+	timerBroodAssassinsCD:Start(17.8-delay)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(5)
 	end

@@ -34,40 +34,52 @@ local specWarnBeckonSlime			= mod:NewSpecialWarningSwitch(327608, "-Healer", nil
 --local specWarnHealingBalm			= mod:NewSpecialWarningInterrupt(257397, "HasInterrupt", nil, nil, 1, 2)
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(257274, nil, nil, nil, 1, 8)
 
-local timerPlaguestompCD			= mod:NewCDTimer(15.8, 324527, nil, nil, nil, 3)--38.8, 19.4
-local timerBeckonSlimeCD			= mod:NewCDTimer(54.2, 327608, nil, nil, nil, 1, nil, DBM_CORE_L.DAMAGE_ICON)--54-55
-local timerBeckonSlime				= mod:NewCastTimer(9, 327608, nil, nil, nil, 5, nil, DBM_CORE_L.DAMAGE_ICON)
-local timerSlimeWaveCD				= mod:NewCDTimer(10.5, 324667, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)
+local timerPlaguestompCD			= mod:NewNextTimer(15.8, 324527, nil, nil, nil, 3)--38.8, 19.4
+local timerBeckonSlimeCD			= mod:NewCDTimer(49.8, 327608, nil, nil, nil, 1, nil, DBM_CORE_L.DAMAGE_ICON)--50-55
+local timerBeckonSlime				= mod:NewCastTimer(7, 327608, nil, nil, nil, 5, nil, DBM_CORE_L.DAMAGE_ICON)
+local timerSlimeWaveCD				= mod:NewNextTimer(10.5, 324667, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)
+local timerSpecialCD				= mod:NewNextSpecialTimer(40)
+
+mod.vb.specialCast = 0
 
 function mod:OnCombatStart(delay)
-	timerPlaguestompCD:Start(11-delay)
-	timerSlimeWaveCD:Start(19-delay)
+	self.vb.specialCast = 0
+	timerSpecialCD:Start(8.3)--First spell can be either Plaguestomp or slime wave
 	timerBeckonSlimeCD:Start(25-delay)
 end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 324527 then
+		self.vb.lastCast = self.vb.specialCast + 1
 		warnPlaguestomp:Show()
 --		specWarnPlaguestomp:Show()
 --		specWarnPlaguestomp:Play("shockwave")
-		timerPlaguestompCD:Start()
+		if self.vb.specialCast == 1 or self.vb.specialCast == 2 then--First means opposite in 7 seconds
+			timerSlimeWaveCD:Start(7)
+		end
 	elseif spellId == 324667 then
+		self.vb.specialCast = self.vb.specialCast + 1
 		warnSlimeWave:Show()
-		timerSlimeWaveCD:Start()
+		if self.vb.specialCast == 1 or self.vb.specialCast == 3 then--First and third means opposite in 7 seconds
+			timerPlaguestompCD:Start(7)
+		elseif self.vb.specialCast == 2 then--Second being slime wave means next is another slime wave in 11
+			timerSlimeWaveCD:Start(11)
+		end
 	end
 end
 
 --25.595	Globgrog casts Beckon Slime
 --25.595	Globgrog begins casting Beckon Slime
 --30.601	Globgrog casts Beckon Slime
---34.612	Living Slime Stalker 1 summons Slimy Morsel 1 with Beckon Slime
+--32.612	Living Slime Stalker 1 summons Slimy Morsel 1 with Beckon Slime
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 324459 then--Precast event
 		warnBeckonSlime:Show()
-		timerBeckonSlime:Start(9)
+		timerBeckonSlime:Start(7)
 		timerBeckonSlimeCD:Start()
+		timerSpecialCD:Stop()
 		timerSlimeWaveCD:Stop()
 		timerPlaguestompCD:Stop()
 	elseif spellId == 324490 then--Summon finish event, which is still good 4 seconds before attackable
@@ -77,9 +89,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 		else
 			specWarnBeckonSlime:Play("killmob")
 		end
-		--Likely not right place to do this but seems somewhat accurate for now
-		timerPlaguestompCD:Start(18)
-		timerSlimeWaveCD:Start(25)
+		--Resets the sequence for slime wave/plaguestomp
+		self.vb.specialCast = 0
+		timerSpecialCD:Start(18)--Which means one is cast (slime or plague seems to be toss up)
 	end
 end
 

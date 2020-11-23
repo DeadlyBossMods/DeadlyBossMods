@@ -8,9 +8,9 @@ mod:SetEncounterID(2360)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
---	"SPELL_AURA_APPLIED",
 	"SPELL_CAST_START 319650 319685 319713",
 	"SPELL_CAST_SUCCESS 319654",
+--	"SPELL_AURA_APPLIED",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 	"CHAT_MSG_RAID_BOSS_EMOTE"
@@ -19,7 +19,6 @@ mod:RegisterEventsInCombat(
 
 --TODO, maybe track https://shadowlands.wowhead.com/spell=319657/essence-surge when stack rage is known, adding now has potential to be spammy
 --TODO, tweak interrupt count for Hungering Drain to reset at appropriate count when cast frequency known?
---TODO, verify Juggernaut detection. It's pretty safe to assume though they copied/pasted it from Kings Rest Council, because it's literally same mechanic, no reason not to reuse code
 --[[
 (ability.id = 319650 or ability.id = 319685 or ability.id = 319713) and type = "begincast"
  or ability.id = 319654 and type = "cast"
@@ -35,7 +34,7 @@ local yellJuggernautRushFades		= mod:NewShortFadesYell(319713)
 local specWarnJuggernautRushSoak	= mod:NewSpecialWarningMoveTo(319713, nil, nil, nil, 1, 2)
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(257274, nil, nil, nil, 1, 8)
 
-local timerViciousHeadbuttCD		= mod:NewCDTimer(19.4, 319650, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON)--19.4 unless delayed by other abilities
+local timerViciousHeadbuttCD		= mod:NewCDTimer(18.2, 319650, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON)--18.2 unless delayed by other abilities
 local timerHungeringDrainCD			= mod:NewCDTimer(19.4, 319654, nil, nil, nil, 4, nil, DBM_CORE_L.INTERRUPT_ICON)
 local timerSeveringSmashCD			= mod:NewCDTimer(40.1, 319685, nil, nil, nil, 6)
 local timerJuggernautRushCD			= mod:NewCDTimer(18.2, 319713, nil, nil, nil, 3)
@@ -50,8 +49,8 @@ function mod:OnCombatStart(delay)
 	self.vb.headbuttCount = 0
 	timerViciousHeadbuttCD:Start(5.9-delay)
 	timerHungeringDrainCD:Start(10.7-delay)
-	timerJuggernautRushCD:Start(15.6-delay)
-	timerSeveringSmashCD:Start(43.6-delay)
+	timerJuggernautRushCD:Start(15.5-delay)
+	timerSeveringSmashCD:Start(34.2-delay)
 end
 
 function mod:SPELL_CAST_START(args)
@@ -60,7 +59,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.headbuttCount = self.vb.headbuttCount + 1
 		specWarnViciousHeadbutt:Show()
 		specWarnViciousHeadbutt:Play("defensive")
-		if timerSeveringSmashCD:GetRemaining() >= 19.4 then
+		if timerSeveringSmashCD:GetRemaining() >= 18.2 then
 			timerViciousHeadbuttCD:Start()
 		end
 	elseif spellId == 319685 then

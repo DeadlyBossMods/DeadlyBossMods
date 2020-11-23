@@ -44,9 +44,9 @@ local specWarnPestilenceSurge		= mod:NewSpecialWarningSwitch(332617, "Dps", nil,
 --Ooze
 local specWarnCorrosiveGunk			= mod:NewSpecialWarningDispel(319070, "RemoveDisease", nil, nil, 1, 2)
 
-local timerSlimeLungeCD				= mod:NewCDTimer(40, 329217, nil, nil, nil, 3)
-local timerSlimeInjectionCD			= mod:NewCDTimer(44.5, 329110, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON)
-local timerPestilenceSurgeCD		= mod:NewCDTimer(44.9, 332617, nil, nil, nil, 1, nil, DBM_CORE_L.DAMAGE_ICON)
+local timerSlimeLungeCD				= mod:NewCDTimer(37.4, 329217, nil, nil, nil, 3)
+local timerSlimeInjectionCD			= mod:NewCDTimer(17, 329110, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON)--usually massively delayed by slime lunge
+--local timerPestilenceSurgeCD		= mod:NewCDTimer(38.1, 332617, nil, nil, nil, 1, nil, DBM_CORE_L.DAMAGE_ICON)--Too unreliable, 30-80, sometimes not even cast at all
 local timerVirulentExplosion		= mod:NewCastTimer(30, 321406, nil, nil, nil, 2, nil, DBM_CORE_L.DEADLY_ICON)--no CD, health based trigger
 
 mod:AddRangeFrameOption(5, 321935)
@@ -56,9 +56,9 @@ mod.vb.lungeCount = 0
 function mod:OnCombatStart(delay)
 	self.vb.lungeCount = 0
 	--TODO, fine tune start timers, they are approximations using first MELEE swing of boss since WCL lacked proper start event for encounter
-	timerSlimeInjectionCD:Start(9-delay)
-	timerPestilenceSurgeCD:Start(34-delay)
-	timerSlimeLungeCD:Start(44-delay)
+	timerSlimeInjectionCD:Start(12-delay)
+	timerSlimeLungeCD:Start(33.2-delay)
+--	timerPestilenceSurgeCD:Start(40-delay)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(5)
 	end
@@ -83,7 +83,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 332617 then
 		specWarnPestilenceSurge:Show()
 		specWarnPestilenceSurge:Play("killmob")
-		timerPestilenceSurgeCD:Start()
+--		timerPestilenceSurgeCD:Start()
 	elseif spellId == 321406 then
 		specWarnVirulentExplosion:Show()
 		specWarnVirulentExplosion:Play("aesoon")
@@ -99,7 +99,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if self.vb.lungeCount == 1 then
 			specWarnSlimeLunge:Show()
 			specWarnSlimeLunge:Play("watchstep")
-			timerSlimeLungeCD:Start(40)
+			timerSlimeLungeCD:Start(37.6)
 		else
 			warnSlimeLunge:Show(self.vb.lungeCount)
 			if self.vb.lungeCount == 3 then self.vb.lungeCount = 0 end

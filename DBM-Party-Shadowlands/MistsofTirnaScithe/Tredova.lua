@@ -11,6 +11,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 322550 322614 337235 337249 337255",
 	"SPELL_CAST_SUCCESS 322614 322654",
+	"SPELL_INTERRUPT",
 	"SPELL_AURA_APPLIED 322527 331172 322648 322563",
 	"SPELL_AURA_REMOVED 322450 322527 331172 322648",
 	"SPELL_PERIODIC_DAMAGE 326309",
@@ -18,7 +19,7 @@ mod:RegisterEventsInCombat(
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---Timers can't be fixed until transcriptor log, without boss energy can't start mark prey timer up mid fight or update CD on other abilities cast more often at higher energy
+--Timers can't be fixed until numerous transcriptor logs, without boss energy can't start mark prey timer up mid fight or update CD on other abilities cast more often at higher energy
 --[[
 ability.id = 322550 and type = "begincast"
  or (ability.id = 322614 or ability.id = 322654 or ability.id = 322563) and type = "cast"
@@ -35,13 +36,14 @@ local yellMindLink					= mod:NewYell(322648)
 local specWarnMarkthePrey			= mod:NewSpecialWarningYou(322563, nil, nil, nil, 1, 2)
 local specWarnAcidExpulsion			= mod:NewSpecialWarningDodge(322654, nil, nil, nil, 2, 2)
 local specWarnParasiticInfester		= mod:NewSpecialWarning("specWarnParasiticInfester", nil, nil, nil, 1, 2, 4, 337235)
+local specWarnParasiticInfesterKick	= mod:NewSpecialWarning("specWarnParasiticInfesterKick", nil, nil, nil, 1, 2, 4, 337235)
 local yellParasiticInfester			= mod:NewYell(337235, L.Infester, true, "yellParasiticInfester")
 local specWarnGTFO					= mod:NewSpecialWarningGTFO(326309, nil, nil, nil, 1, 8)
 
-local timerAcceleratedIncubationCD	= mod:NewCDTimer(25.5, 322550, nil, nil, nil, 1, nil, nil, true)--25 unless spell queued
-local timerMindLinkCD				= mod:NewCDTimer(15.8, 322614, nil, nil, nil, 3, nil, nil, true)--18 unless spell queued, will also not be cast at all if previous link isn't gone
-local timerAcidExpulsionCD			= mod:NewCDTimer(15, 322654, nil, nil, nil, 3, nil, nil, true)--15 unless spell queued
-local timerParasiticInfesterCD		= mod:NewTimer(21.9, "timerParasiticInfesterCD", 337235, nil, nil, 1, DBM_CORE_L.MYTHIC_ICON, true)
+local timerAcceleratedIncubationCD	= mod:NewCDTimer(34, 322550, nil, nil, nil, 1, nil, nil, true)--34-43?
+local timerMindLinkCD				= mod:NewCDTimer(15.4, 322614, nil, nil, nil, 3, nil, nil, true)--15-19, still not cast if everyone already affected by it.
+local timerAcidExpulsionCD			= mod:NewCDTimer(19.4, 322654, nil, nil, nil, 3, nil, nil, true)--19-26
+local timerParasiticInfesterCD		= mod:NewTimer(23, "timerParasiticInfesterCD", 337235, nil, nil, 4, DBM_CORE_L.MYTHIC_ICON..DBM_CORE_L.INTERRUPT_ICON, true)--23-26.3
 
 mod:AddInfoFrameOption(322527, true)
 mod:AddSetIconOption("SetIconOnMindLink", 296944, true, false, {1, 2, 3, 4, 5})
@@ -61,11 +63,11 @@ end
 function mod:OnCombatStart(delay)
 	self.vb.mindLinkIcon = 1
 	self.vb.firstPray = false
-	timerMindLinkCD:Start(15-delay)
-	timerAcidExpulsionCD:Start(10-delay)
-	timerAcceleratedIncubationCD:Start(20.7-delay)
+	timerAcidExpulsionCD:Start(8-delay)
+	timerMindLinkCD:Start(18.1-delay)
+	timerAcceleratedIncubationCD:Start(45.2-delay)
 	if self:IsMythic() then
-		timerParasiticInfesterCD:Start(26.3-delay)
+		timerParasiticInfesterCD:Start(12-delay)
 	end
 end
 
@@ -86,6 +88,10 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 337235 or spellId == 337249 or spellId == 337255 then
 		self:ScheduleMethod(0.2, "BossTargetScanner", args.sourceGUID, "InfesterTarget", 0.1, 8)
 		timerParasiticInfesterCD:Start()
+		if self:CheckInterruptFilter(args.sourceGUID, false, true) then
+			specWarnParasiticInfesterKick:Show(args.sourceName)
+			specWarnParasiticInfesterKick:Play("kickcast")
+		end
 	end
 end
 
@@ -98,6 +104,12 @@ function mod:SPELL_CAST_SUCCESS(args)
 		specWarnAcidExpulsion:Show()
 		specWarnAcidExpulsion:Play("watchstep")
 		timerAcidExpulsionCD:Start()
+	end
+end
+
+function mod:SPELL_INTERRUPT(args)
+	if type(args.extraSpellId) == "number" and (args.extraSpellId == 337235 or args.extraSpellId == 337249 or args.extraSpellId == 337255) then
+		self:UnscheduleMethod("BossTargetScanner")
 	end
 end
 

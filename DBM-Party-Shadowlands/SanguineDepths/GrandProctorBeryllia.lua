@@ -28,7 +28,7 @@ local specWarnEndlessTorment		= mod:NewSpecialWarningMoveAway(326039, nil, nil, 
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(257274, nil, nil, nil, 1, 8)
 
 local timerIronSpikesCD				= mod:NewCDTimer(31.6, 325254, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)--Change to next if the custom rule for 2nd cast works out good
-local timerRiteofSupremacyCD		= mod:NewNextTimer(38.8, 325360, nil, nil, nil, 2, nil, DBM_CORE_L.DEADLY_ICON)
+local timerRiteofSupremacyCD		= mod:NewNextTimer(38.6, 325360, nil, nil, nil, 2, nil, DBM_CORE_L.DEADLY_ICON)
 local timerRiteofSupremacy			= mod:NewCastTimer(10, 325360, nil, nil, nil, 5, nil, DBM_CORE_L.DEADLY_ICON)
 local timerEndlessTormentCD			= mod:NewNextTimer(38.8, 326039, nil, nil, nil, 2)
 
@@ -58,7 +58,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.spikesCast = self.vb.spikesCast + 1
 		specWarnIronSpikes:Show()
 		specWarnIronSpikes:Play("defensive")
-		timerIronSpikesCD:Start(self.vb.spikesCast == 1 and 31.6 or 38.8)
+		timerIronSpikesCD:Start(self.vb.spikesCast == 1 and 31.6 or 37.9)
 	elseif spellId == 325360 then
 		warnRiteofSupremacy:Show()
 		timerRiteofSupremacy:Start()

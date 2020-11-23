@@ -27,7 +27,7 @@ mod:RegisterEventsInCombat(
 --]]
 local warnSummonCreation			= mod:NewSpellAnnounce(320358, 2)
 local warnMutilate					= mod:NewCastAnnounce(320376, 4, nil, nil, "Tank|Healer")--Upgrade to special warning if needed
-local warnCleaveFlesh				= mod:NewSpellAnnounce(334488, 3, nil, "Tank|Healer")
+local warnSeverFlesh				= mod:NewSpellAnnounce(334488, 3, nil, "Tank|Healer")
 local warnEscape					= mod:NewCastAnnounce(320359, 3)
 local warnEmbalmingIchor			= mod:NewTargetNoFilterAnnounce(327664, 3)
 local warnMeatHook					= mod:NewTargetNoFilterAnnounce(322681, 3)
@@ -41,12 +41,13 @@ local yellMeatHookFades				= mod:NewShortFadesYell(322681)
 --local specWarnHealingBalm			= mod:NewSpecialWarningInterrupt(257397, "HasInterrupt", nil, nil, 1, 2)
 local specWarnGTFO					= mod:NewSpecialWarningGTFO(320366, nil, nil, nil, 1, 8)
 
-local timerSummonCreationCD			= mod:NewCDTimer(13, 320358, nil, nil, nil, 1)
-local timerEmbalmingIchorCD			= mod:NewCDTimer(15.8, 327664, nil, nil, nil, 3)
-local timerMeatHookCD				= mod:NewCDTimer(18, 322681, nil, nil, nil, 3)
-local timerCleaveFleshCD			= mod:NewCDTimer(9.7, 334488, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)
+--local timerSummonCreationCD			= mod:NewCDTimer(13, 320358, nil, nil, nil, 1)
+local timerEmbalmingIchorCD			= mod:NewCDTimer(15.8, 327664, nil, nil, nil, 3)--Might be 18 now
+local timerSeverFleshCD				= mod:NewCDTimer(9.7, 334488, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)
 local timerEscape					= mod:NewCastTimer(30, 320359, nil, nil, nil, 6)
+--Add
 local timerMutilateCD				= mod:NewCDTimer(11, 320376, nil, nil, nil, 3)
+local timerMeatHookCD				= mod:NewCDTimer(18, 322681, nil, nil, nil, 3)
 --local timerStichNeedleCD			= mod:NewCDTimer(15.8, 320200, nil, nil, nil, 5, nil, DBM_CORE_L.HEALER_ICON)--Basically spammed
 
 function mod:IchorTarget(targetname, uId)
@@ -58,12 +59,12 @@ function mod:IchorTarget(targetname, uId)
 	else
 		warnEmbalmingIchor:Show(targetname)
 	end
-	DBM:AddMsg("IchorTarget returned: "..targetname.." Report if accurate or inaccurate to DBM Author")
 end
 
 function mod:OnCombatStart(delay)
 --	timerSummonCreationCD:Start(1-delay)--START
 	timerEmbalmingIchorCD:Start(9.7-delay)
+	timerMeatHookCD:Start(10.6-delay)--The add that's already alive on pull
 --	timerStichNeedleCD:Start(1-delay)--SUCCESS
 end
 
@@ -78,8 +79,8 @@ function mod:SPELL_CAST_START(args)
 		self:ScheduleMethod(0.1, "BossTargetScanner", args.sourceGUID, "IchorTarget", 0.1, 6)
 		timerEmbalmingIchorCD:Start()
 	elseif spellId == 334488 then
-		warnCleaveFlesh:Show()
-		timerCleaveFleshCD:Start()
+		warnSeverFlesh:Show()
+		timerSeverFleshCD:Start()
 	end
 end
 
@@ -88,11 +89,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if spellId == 320359 then
 		warnEscape:Show()
 		timerEscape:Stop()--Escaped early?
-		timerCleaveFleshCD:Stop()
+		timerSeverFleshCD:Stop()
 --		timerSummonCreationCD:Start(2.5)--1-3 seconds after escaping
---		timerEmbalmingIchorCD:Start(8.5)--8-11
+		timerEmbalmingIchorCD:Start(10.9)--8-11
 	elseif spellId == 322681 then
-		timerMeatHookCD:Start(18, args.sourceGUID)
+		timerMeatHookCD:Start(15, args.sourceGUID)
 	elseif spellId == 320376 then
 		timerMutilateCD:Start(10, args.sourceGUID)
 	end
@@ -112,11 +113,11 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnMeatHook:Show(args.destName)
 		end
 	elseif spellId == 322548 then--Boss getting meat hooked
-		timerSummonCreationCD:Stop()
+--		timerSummonCreationCD:Stop()
 		timerEmbalmingIchorCD:Stop()
 		warnMeatHook:Show(args.destName)
 		timerEscape:Start(30)
-		timerCleaveFleshCD:Start(6)
+		timerSeverFleshCD:Start(6)
 	end
 end
 

@@ -17,7 +17,6 @@ mod:RegisterEventsInCombat(
 )
 
 --TODO, which interrupt is priority?
---TODO, target scan breath? is emote faster than spell event?
 --[[
 (ability.id = 321247 or ability.id = 333488) and type = "begincast"
  or (ability.id = 321226 or ability.id = 320012) and type = "cast"
@@ -34,17 +33,17 @@ local specWarnUnholyFrenzyTank		= mod:NewSpecialWarningDefensive(320012, "Tank",
 local specWarnFrostboltVolley		= mod:NewSpecialWarningInterrupt(322493, "HasInterrupt", nil, nil, 1, 2)--Mythic and above, normal/heroic uses regular frostbolts
 --local specWarnGTFO				= mod:NewSpecialWarningGTFO(257274, nil, nil, nil, 1, 8)
 
-local timerLandoftheDeadCD			= mod:NewCDTimer(44.8, 321226, nil, nil, nil, 1, nil, DBM_CORE_L.DAMAGE_ICON)
-local timerFinalHarvestCD			= mod:NewCDTimer(44.8, 321247, nil, nil, nil, 2)
-local timerNecroticBreathCD			= mod:NewCDTimer(44.8, 333493, nil, nil, nil, 3)
-local timerUnholyFrenzyCD			= mod:NewCDTimer(44.8, 320012, nil, nil, nil, 5, nil, DBM_CORE_L.ENRAGE_ICON..DBM_CORE_L.TANK_ICON)
+local timerLandoftheDeadCD			= mod:NewCDTimer(43.7, 321226, nil, nil, nil, 1, nil, DBM_CORE_L.DAMAGE_ICON)--43.7-48.4
+local timerFinalHarvestCD			= mod:NewCDTimer(43.7, 321247, nil, nil, nil, 2)--43.7-48.4
+local timerNecroticBreathCD			= mod:NewCDTimer(43.7, 333493, nil, nil, nil, 3)--43.7-48.4
+local timerUnholyFrenzyCD			= mod:NewCDTimer(43.7, 320012, nil, nil, nil, 5, nil, DBM_CORE_L.ENRAGE_ICON..DBM_CORE_L.TANK_ICON)--43.7-48.4
 
 function mod:OnCombatStart(delay)
 	--TODO, fine tune start times, started from first melee swing not ENCOUNTER_START
 	timerUnholyFrenzyCD:Start(6-delay)--SUCCESS
-	timerLandoftheDeadCD:Start(12.1-delay)--SUCCESS
-	timerNecroticBreathCD:Start(29.6-delay)
-	timerFinalHarvestCD:Start(40-delay)
+	timerLandoftheDeadCD:Start(8.6-delay)--SUCCESS
+	timerNecroticBreathCD:Start(29.4-delay)
+	timerFinalHarvestCD:Start(38.6-delay)
 end
 
 function mod:SPELL_CAST_START(args)
