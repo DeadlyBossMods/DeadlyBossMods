@@ -152,7 +152,8 @@ L:SetGeneralLocalization({
 L= DBM:GetModLocalization(2399)
 
 L:SetMiscLocalization({
-	Flight	= "Your doom takes flight!"
+	Flight	= "Your doom takes flight!",
+	Flight2	= "Fear the skies!"
 })
 
 -----------------------

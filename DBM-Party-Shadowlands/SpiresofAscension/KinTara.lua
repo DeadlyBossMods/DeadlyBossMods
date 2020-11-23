@@ -17,15 +17,17 @@ mod:RegisterEventsInCombat(
 	"SPELL_PERIODIC_MISSED 317626",
 	"UNIT_DIED",
 	"CHAT_MSG_MONSTER_YELL",
-	"CHAT_MSG_RAID_BOSS_EMOTE",
-	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2"
+	"CHAT_MSG_RAID_BOSS_EMOTE"
+--	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2"
 )
 
---TODO, Detecting flight is kind of shit, may be better to use scheduling than yell trigger, if precise timing can be figured out from better logs
+--TODO, Verify new and improved flight detection
+--TODO, the entire enrage mechanic seems to be gone? All logs havev bosses die together and none of enraged abilities ever used
 --[[
 (ability.id = 321009 or ability.id = 320966 or ability.id = 317623) and type = "begincast"
  or ability.id = 323636 and type = "cast"
- or ability.id = 323828
+ or ability.id = 323828 or ability.id = 331249
+ or (target.id = 162059 or target.id = 163077 or target.id = 174212) and type = "death"
  or (ability.id = 324368 or ability.id = 317661) and type = "begincast"
 --]]
 --Kin-Tara
@@ -33,7 +35,7 @@ local warnChargedSpear				= mod:NewTargetNoFilterAnnounce(321009, 4)
 
 --Kin-Tara
 local specWarnOverheadSlash			= mod:NewSpecialWarningSoak(320866, "Tank", nil, nil, 1, 2)
-local specWarnDarkLance				= mod:NewSpecialWarningInterrupt(317661, "HasInterrupt", nil, nil, 1, 2)
+local specWarnDarkLance				= mod:NewSpecialWarningInterrupt(327481, "HasInterrupt", nil, nil, 1, 2)
 local specWarnChargedSpear			= mod:NewSpecialWarningMoveAway(321009, nil, nil, nil, 1, 2)
 local yellChargedSpear				= mod:NewYell(321009)
 local specWarnChargedSpearNear		= mod:NewSpecialWarningClose(321009, nil, nil, nil, 1, 2)
@@ -41,7 +43,8 @@ local specWarnChargedSpearNear		= mod:NewSpecialWarningClose(321009, nil, nil, n
 local specWarnGTFO					= mod:NewSpecialWarningGTFO(317626, nil, nil, nil, 1, 8)
 
 --Kin-Tara
-mod:AddTimerLine(DBM:EJ_GetSectionInfo(21637))
+local KinTara = DBM:EJ_GetSectionInfo(21637)
+mod:AddTimerLine(KinTara)
 local timerOverheadSlashCD			= mod:NewCDTimer(8.5, 320866, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON)--8.5-11
 local timerFlightCD					= mod:NewCDTimer(145, 313606, nil, nil, nil, 6)
 local timerChargedSpearCD			= mod:NewCDTimer(15.8, 321009, nil, nil, nil, 3, nil, DBM_CORE_L.DEADLY_ICON)
@@ -61,6 +64,11 @@ function mod:OnCombatStart(delay)
 	--Kin-Tara
 	timerOverheadSlashCD:Start(8.5-delay)
 	timerFlightCD:Start(30.5-delay)
+	DBM:AddMsg("Note, Kin-Tara flight detection on this is using experimental code, report if phase change detection doesn't look functional")
+end
+
+function mod:OnCombatEnd()
+	self:UnregisterShortTermEvents()
 end
 
 function mod:SPELL_CAST_START(args)
@@ -68,6 +76,7 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 320966 then
 		if self.vb.flightActive then
 			self.vb.flightActive = false
+			self:UnregisterShortTermEvents()
 		end
 		specWarnOverheadSlash:Show()--Will be moved to fire earlier with timers
 		specWarnOverheadSlash:Play("gathershare")
@@ -75,6 +84,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 327481 then
 		if self.vb.flightActive then
 			self.vb.flightActive = false
+			self:UnregisterShortTermEvents()
 		end
 		if self:CheckInterruptFilter(args.sourceGUID, false, true) then
 			specWarnDarkLance:Show(args.sourceName)
@@ -110,13 +120,28 @@ function mod:SPELL_AURA_APPLIED(args)
 	end
 end
 
+--Yell possibly using bosses name possible, or yell using string, and on mythic and above deep connection can be used foor flight detection
 --"<246.11 02:57:42> [CHAT_MSG_MONSTER_YELL] Your doom takes flight!#Kin-Tara###Kin-Tara##0#0##0#251#nil#0#false#false#false#false", -- [2110]
-function mod:CHAT_MSG_MONSTER_YELL(msg)
-	if msg == L.Flight or msg:find(L.Flight) then
-		self:SendSync("Flight")
+--"<227.02 19:43:08> [CLEU] SPELL_AURA_REMOVED#Creature-0-2085-2285-7016-163077-000026CDCA#Azules#Creature-0-2085-2285-7016-162059-000026CDCA#Kin-Tara#331249#Deep Connection#DEBUFF#nil", -- [2470]
+--"<227.24 19:43:08> [CHAT_MSG_MONSTER_YELL] Fear the skies!#Kin-Tara###Kin-Tara##0#0##0#67#nil#0#false#false#false#false", -- [2475]
+function mod:CHAT_MSG_MONSTER_YELL(msg, _, _, _, targetname)
+	if targetname == KinTara then--I believe only time she target herself in a yell is flight yell
+--	if msg == L.Flight or msg:find(L.Flight) or msg == L.Flight2 or msg:find(L.Flight2) then--Backup solution ready to apply if more data reveals she can yell at herself other times
+--		self:SendSync("Flight")
+		self.vb.flightActive = true
+		self.vb.spearCount = 0
+		timerOverheadSlashCD:Stop()
+		timerChargedSpearCD:Stop()
+		timerChargedSpearCD:Start(3.6, 1)
+		--Only reliable way to detect air phase ending on non mythic
+		--Mythic can use Deep Connection but this mod has to encompass normal/heroic as well
+		self:RegisterShortTermEvents(
+			"UNIT_POWER_UPDATE boss1"
+		)
 	end
 end
 
+--[[
 function mod:OnSync(msg)
 	if not self:IsInCombat() then return end
 	if msg == "Flight" then
@@ -125,10 +150,14 @@ function mod:OnSync(msg)
 		timerOverheadSlashCD:Stop()
 		timerChargedSpearCD:Stop()
 		timerChargedSpearCD:Start(3.6, 1)
-		timerOverheadSlashCD:Start(22.8)
-		timerFlightCD:Start(145)--Gross estimate trying to use approx events in combat log. This needs a dogshit pull in dungeon with transcriptor to improve
+		--Only reliable way to detect air phase ending on non mythic
+		--Mythic can use Deep Connection but this mod has to encompass normal/heroic as well
+		self:RegisterShortTermEvents(
+			"UNIT_POWER_UPDATE boss1"
+		)
 	end
 end
+--]]
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, targetname)
 	if msg:find("spell:321009") then
@@ -175,8 +204,20 @@ function mod:UNIT_DIED(args)
 	end
 end
 
+--[[
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 321088 then--Charged Spear
-		timerChargedSpearCD:Start()
+--		timerChargedSpearCD:Start()
+	end
+end
+--]]
+
+function mod:UNIT_POWER_UPDATE()
+	local bossPower = UnitPower("boss1")--Get Boss Power
+	if self.vb.flightActive and bossPower == 0 then--Boss does a hard energy reset to 0 when she lands (flight phase ends)
+		self.vb.flightActive = false
+		self:UnregisterShortTermEvents()
+		timerOverheadSlashCD:Start(8.4)
+		timerFlightCD:Start(30.4)
 	end
 end
