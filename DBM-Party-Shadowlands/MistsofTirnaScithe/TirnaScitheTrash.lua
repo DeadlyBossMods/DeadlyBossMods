@@ -40,7 +40,7 @@ local specWarnAnimaInjection			= mod:NewSpecialWarningDispel(325224, "RemoveMagi
 local specWarnPoisonousSecretions		= mod:NewSpecialWarningDodge(340304, nil, nil, nil, 2, 2)
 local specWarnTongueLashing				= mod:NewSpecialWarningDodge(340300, nil, nil, nil, 2, 2)
 local specWarnRadiantBreath				= mod:NewSpecialWarningDodge(340160, nil, nil, nil, 2, 2)
-local specWarnPoolOfRadiance			= mod:NewSpecialWarningMove(340189, "Tank", nil, nil, 1, 2)
+local specWarnPoolOfRadiance			= mod:NewSpecialWarningMove(340189, "Tank", nil, nil, 1, 10)
 --Notable Tred'ova Trash
 local specWarnStimulateResistance		= mod:NewSpecialWarningInterrupt(326046, "HasInterrupt", nil, nil, 1, 2)
 local specWarnStimulateResistanceDispel	= mod:NewSpecialWarningDispel(326046, "MagicDispeller", nil, nil, 1, 2)
@@ -107,7 +107,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnRadiantBreath:Play("watchstep")
 	elseif spellId == 340189 then--No Antispam, not to be throttled against other types
 		specWarnPoolOfRadiance:Show()
-		specWarnPoolOfRadiance:Play("moveboss")
+		specWarnPoolOfRadiance:Play("mobout")
 	elseif spellId == 325418 then
 		self:ScheduleMethod(0.1, "BossTargetScanner", args.sourceGUID, "CrushingLeap", 0.1, 4)
 	end
