@@ -153,7 +153,7 @@ L:SetGeneralLocalization({
 L= DBM:GetModLocalization(2399)
 
 L:SetMiscLocalization({
-	Flight	= "하늘을 두려워 하라!"
+	Flight	= "죽음의 날갯짓을 맞이해라!"
 })
 
 -----------------------
@@ -172,7 +172,8 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(2412)
 
 L:SetMiscLocalization({
-	RunThrough	= "이 창이 네 심장을 꿰뚫을 것이다!"
+	RunThrough	= "이 창이 네 심장을 꿰뚫을 것이다!",
+	Flight2		= "하늘을 두려워 하라!"
 })
 
 ---------
