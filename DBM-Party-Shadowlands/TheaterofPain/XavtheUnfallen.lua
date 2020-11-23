@@ -33,29 +33,50 @@ local specWarnBloodandGlory			= mod:NewSpecialWarningYou(320102, nil, nil, nil, 
 local specWarnOppressiveBanner		= mod:NewSpecialWarningSwitch(331618, nil, nil, nil, 1, 2)
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(257274, nil, nil, nil, 1, 8)
 
-local timerBrutalComboCD			= mod:NewCDTimer(30.3, 320644, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON)
-local timerMightofMaldraxxusCD		= mod:NewCDTimer(15.8, 320050, nil, nil, nil, 6, nil, DBM_CORE_L.DEADLY_ICON)
-local timerBloodandGloryCD			= mod:NewCDTimer(70.7, 320102, nil, nil, nil, 3, nil, DBM_CORE_L.DAMAGE_ICON)
-local timerOppressiveBannerCD		= mod:NewCDTimer(30.3, 331618, nil, nil, nil, 1, nil, DBM_CORE_L.DAMAGE_ICON)
+local timerBrutalComboCD			= mod:NewCDCountTimer(15.8, 320644, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON)--Sequenced timer
+local timerMightofMaldraxxusCD		= mod:NewCDCountTimer(15.8, 320050, nil, nil, nil, 6, nil, DBM_CORE_L.DEADLY_ICON)
+local timerBloodandGloryCD			= mod:NewCDCountTimer(70.5, 320102, nil, nil, nil, 3, nil, DBM_CORE_L.DAMAGE_ICON)
+local timerOppressiveBannerCD		= mod:NewCDCountTimer(30.3, 331618, nil, nil, nil, 1, nil, DBM_CORE_L.DAMAGE_ICON)
 
 mod.vb.MightCount = 0
 mod.vb.MightCastCount = 0
+mod.vb.brutalComboCount = 0
+mod.vb.bloodCount = 0
+mod.vb.bannerCount = 0
+
+local allTimers = {
+	--Combo
+	[320644] = {6.0, 30.4, 15.8, 26.8, 30.4},
+	--Might
+	[320050] = {16.9, 40.1, 30.4, 35.2},
+	--Blood
+--	[320102] = {34.0, 70.5},
+	--Banner
+--	[331618] = {10.8, 30.3, 35.3, 30.4, 35.1},
+}
 
 function mod:OnCombatStart(delay)
 	self.vb.MightCount = 0
 	self.vb.MightCastCount = 0
-	timerBrutalComboCD:Start(5.8-delay)
-	timerOppressiveBannerCD:Start(10.7-delay)
-	timerMightofMaldraxxusCD:Start(17.1-delay)
-	timerBloodandGloryCD:Start(33.9-delay)--SUCCESS
+	self.vb.brutalComboCount = 0
+	self.vb.bloodCount = 0
+	self.vb.bannerCount = 0
+	timerBrutalComboCD:Start(5.8-delay, 1)
+	timerOppressiveBannerCD:Start(10.7-delay, 1)
+	timerMightofMaldraxxusCD:Start(17.1-delay, 1)
+	timerBloodandGloryCD:Start(33.9-delay, 1)--SUCCESS
 end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 320644 then
+		self.vb.brutalComboCount = self.vb.brutalComboCount + 1
 		specWarnBrutalCombo:Show()
 		specWarnBrutalCombo:Play("defensive")
-		timerBrutalComboCD:Start()
+		local timer = allTimers[spellId][self.vb.brutalComboCount+1]
+		if timer then
+			timerBrutalComboCD:Start(timer, self.vb.brutalComboCount+1)
+		end
 	elseif spellId == 317231 then
 		self.vb.MightCount = self.vb.MightCount + 1
 		warnCrushingSlam:Show(self.vb.MightCount)
@@ -80,17 +101,22 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.MightCastCount = self.vb.MightCastCount + 1
 		specWarnMightofMaldraxxus:Show()
 		specWarnMightofMaldraxxus:Play("watchstep")
-		if self.vb.MightCastCount % 2 == 0 then
-			timerMightofMaldraxxusCD:Start(30.3)--always 30
-		else
-			timerMightofMaldraxxusCD:Start(self.vb.MightCastCount == 1 and 40 or 35)--35-40
+		local timer = allTimers[spellId][self.vb.MightCastCount+1]
+		if timer then
+			timerMightofMaldraxxusCD:Start(timer, self.vb.MightCastCount+1)
 		end
 	elseif spellId == 320114 and self:AntiSpam(5, 1) then
-		timerBloodandGloryCD:Start()
+		self.vb.bloodCount = self.vb.bloodCount + 1
+		timerBloodandGloryCD:Start(70.5, self.vb.bloodCount+1)
 	elseif spellId == 331618 then
+		self.vb.bannerCount = self.vb.bannerCount + 1
 		specWarnOppressiveBanner:Show()
 		specWarnOppressiveBanner:Play("attacktotem")--Technically banner, but better than "kill mob"
-		timerOppressiveBannerCD:Start()
+		if self.vb.bannerCount % 2 == 0 then
+			timerOppressiveBannerCD:Start(35, self.vb.bannerCount+1)
+		else
+			timerOppressiveBannerCD:Start(30, self.vb.bannerCount+1)
+		end
 	end
 end
 

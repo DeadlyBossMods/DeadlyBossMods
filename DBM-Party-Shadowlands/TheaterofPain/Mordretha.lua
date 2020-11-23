@@ -20,7 +20,7 @@ mod:RegisterEventsInCombat(
 --TODO, interrupt Cd long enough to justify timers for up to 5 adds at once?
 --https://shadowlands.wowhead.com/npc=166524/deathwalker
 --[[
-(ability.id = 324079 or ability.id = 323608 or ability.id = 323683 or ability.id = 339550 or ability.id = 339706) and type = "begincast"
+(ability.id = 324079 or ability.id = 323608 or ability.id = 323683 or ability.id = 339550 or ability.id = 339706 or ability.id = 339573) and type = "begincast"
  or (ability.id = 324449) and type = "cast"
 --]]
 local warnDeathGrasp				= mod:NewTargetNoFilterAnnounce(323831, 4)
@@ -35,11 +35,11 @@ local specWarnGraspingRift			= mod:NewSpecialWarningRun(323685, nil, nil, nil, 4
 --local specWarnGTFO				= mod:NewSpecialWarningGTFO(257274, nil, nil, nil, 1, 8)
 
 local timerReapingScytheCD			= mod:NewCDTimer(17, 324079, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)
-local timerDarkDevastationCD		= mod:NewCDTimer(23.1, 323608, nil, nil, nil, 3)
-local timerManifesstDeathCD			= mod:NewCDTimer(46.1, 324449, nil, nil, nil, 3)
-local timerGraspingriftCD			= mod:NewCDTimer(25.5, 323685, nil, nil, nil, 3)
+local timerDarkDevastationCD		= mod:NewCDTimer(21.9, 323608, nil, nil, nil, 3)--21.9-26.8
+local timerManifesstDeathCD			= mod:NewCDTimer(46.1, 324449, nil, nil, nil, 3)--46.1-52.2
+local timerGraspingriftCD			= mod:NewCDTimer(30.4, 323685, nil, nil, nil, 3)
 
-local timerEchoofBattleCD			= mod:NewCDTimer(25.5, 339550, nil, nil, nil, 3, nil, DBM_CORE_L.MYTHIC_ICON)--25.5-30.3
+local timerEchoofBattleCD			= mod:NewCDTimer(23.5, 339550, nil, nil, nil, 3, nil, DBM_CORE_L.MYTHIC_ICON)--23.5-30.3
 local timerGhostlyChargeCD			= mod:NewCDTimer(24.2, 339706, nil, nil, nil, 3, nil, DBM_CORE_L.MYTHIC_ICON)--24.2-31.6
 
 mod.vb.phase = 1
@@ -69,11 +69,11 @@ function mod:SPELL_CAST_START(args)
 		specWarnGraspingRift:Show()
 		specWarnGraspingRift:Play("justrun")
 		timerGraspingriftCD:Start()
-	elseif spellId == 339550 then
+	elseif spellId == 339550 and self:AntiSpam(3, 1) then
 		timerEchoofBattleCD:Start()
-	elseif spellId == 339706 then
+	elseif spellId == 339706 and self:AntiSpam(3, 2) then
 		timerGhostlyChargeCD:Start()
-	elseif spellId == 339573 then--Phase 2 activation
+	elseif spellId == 339573 then--Echos of Carnage, Phase 2 activation
 		self.vb.phase = 2
 		timerReapingScytheCD:Stop()
 		timerDarkDevastationCD:Stop()
@@ -81,7 +81,7 @@ function mod:SPELL_CAST_START(args)
 		timerManifesstDeathCD:Stop()
 
 		timerEchoofBattleCD:Start(7)
-		timerReapingScytheCD:Start(10.9)
+		timerReapingScytheCD:Start(10.8)
 		timerGhostlyChargeCD:Start(17)
 		timerDarkDevastationCD:Start(18.2)
 		timerGraspingriftCD:Start(25.5)
@@ -121,7 +121,7 @@ end
 
 --[[
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
-	if spellId == 309991 and destGUID == UnitGUID("player") and self:AntiSpam(2, 2) then
+	if spellId == 309991 and destGUID == UnitGUID("player") and self:AntiSpam(2, 3) then
 		specWarnGTFO:Show(spellName)
 		specWarnGTFO:Play("watchfeet")
 	end

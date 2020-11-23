@@ -29,7 +29,7 @@ local warnVolatileAcid					= mod:NewTargetAnnounce(325418, 3)
 local specWarnSoulSplit					= mod:NewSpecialWarningDispel(322557, "RemoveMagic", nil, nil, 1, 2)
 local specWarnHarvestEssence			= mod:NewSpecialWarningInterrupt(322938, "HasInterrupt", nil, nil, 1, 2)
 local specWarnBewilderingPollen			= mod:NewSpecialWarningDodge(321968, "Tank", nil, nil, 1, 2)
-local specWarnOvergrowth				= mod:NewSpecialWarningMoveTo(322486, nil, nil, nil, 1, 2)--TODO, switch to version 11 and change voice to movemelee
+local specWarnOvergrowth				= mod:NewSpecialWarningMoveTo(322486, nil, nil, nil, 1, 11)
 local specWarnBrambleBurst				= mod:NewSpecialWarningDodge(324923, nil, nil, nil, 2, 2)
 --Notable Mistcaller Trash
 local specWarnNourishtheForest			= mod:NewSpecialWarningInterrupt(324914, "HasInterrupt", nil, nil, 1, 2)
@@ -145,7 +145,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 322486 then
 		if args:IsPlayer() then
 			specWarnOvergrowth:Show()
-			specWarnOvergrowth:Play("movecenter")--Eh most accurate way to say move into melee for now, TODO, switch to movemelee
+			specWarnOvergrowth:Play("movemelee")--Eh most accurate way to say move into melee for now, TODO, switch to movemelee
 		else
 			warnOvergrowth:Show(args.destName)
 		end
