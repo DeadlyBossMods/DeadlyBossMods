@@ -2,7 +2,7 @@ local mod	= DBM:NewMod(2407, "DBM-Party-Shadowlands", 8, 1189)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
-mod:SetCreatureID(168112)
+mod:SetCreatureID(162099)
 mod:SetEncounterID(2363)
 
 mod:RegisterCombat("combat")
@@ -30,22 +30,24 @@ local yellWickedRush				= mod:NewYell(323845)
 local yellWickedRushFades			= mod:NewShortFadesYell(323845)
 local yellShiningRadiance			= mod:NewYell(324086, nil, nil, nil, "YELL")
 local specWarnPiercingBlur			= mod:NewSpecialWarningDodge(323810, nil, nil, nil, 2, 2)
-local specWarnGloomSquall			= mod:NewSpecialWarningSpell(322903, nil, nil, nil, 3, 2)
+local specWarnGloomSquall			= mod:NewSpecialWarningMoveTo(322903, nil, nil, nil, 3, 2)--Trash version, boss version is 324103
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(257274, nil, nil, nil, 1, 8)
 
 local timerWickedRushCD				= mod:NewCDTimer(15.8, 323845, nil, nil, nil, 3)--5.7, 15.8, 20.7, 15.8
-local timerPiercingBlurCD			= mod:NewCDTimer(9.7, 323810, nil, nil, nil, 3)--10.6, 9.7, 20.7, 9.7, 9.7
-local timerGloomSquallCD			= mod:NewCDTimer(38.9, 322903, nil, nil, nil, 2, nil, DBM_CORE_L.IMPORTANT_ICON)
+local timerPiercingBlurCD			= mod:NewCDTimer(17, 323810, nil, nil, nil, 3)--17-25.4
+local timerGloomSquallCD			= mod:NewCDTimer(37.7, 322903, nil, nil, nil, 2, nil, DBM_CORE_L.IMPORTANT_ICON)
+--local timerShiningRadiance			= mod:NewCDTimer(35, 324086, nil, nil, nil, 5)
 
 mod.vb.rushCast = 0
 mod.vb.blurCast = 1
+local shelter = DBM:GetSpellInfo(324086)
 
 function mod:OnCombatStart(delay)
 	self.vb.rushCast = 0
 	self.vb.blurCast = 1--Sequence starts 1 on engage, only 1 cast
 	timerWickedRushCD:Start(5.7-delay)
 	timerPiercingBlurCD:Start(10.6-delay)
-	timerGloomSquallCD:Start(35.1-delay)
+	timerGloomSquallCD:Start(34.5-delay)
 end
 
 function mod:SPELL_CAST_START(args)
@@ -59,8 +61,8 @@ function mod:SPELL_CAST_START(args)
 		--Each ability cast twice between glooms, then sequence starts over
 		self.vb.rushCast = 0
 		self.vb.blurCast = 0
-		specWarnGloomSquall:Show()
-		specWarnGloomSquall:Play("carefly")
+		specWarnGloomSquall:Show(shelter)
+		specWarnGloomSquall:Play("findshelter")
 		timerGloomSquallCD:Start()
 	end
 end
@@ -69,9 +71,10 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 323845 then
 		self.vb.rushCast = self.vb.rushCast + 1
-		timerWickedRushCD:Start(self.vb.rushCast == 2 and 20.7 or 15.8)
+		timerWickedRushCD:Start(self.vb.rushCast == 2 and 19.2 or 15.8)
 	elseif spellId == 324086 then
 		warnShiningRadiance:Show(args.sourceName)
+--		timerShiningRadiance:Start()
 		if args:IsPlayerSource() then
 			yellShiningRadiance:Yell()
 		end
