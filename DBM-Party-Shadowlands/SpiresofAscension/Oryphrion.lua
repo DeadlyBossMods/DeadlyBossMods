@@ -91,7 +91,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 334053 then
 		timerPurifyingBlastCD:Start()
 		--Intentionally not using UNIT_TARGET scanner, boss doesn't fire a UNIT_TARGET event during this
-		self:ScheduleMethod(0.1, "BossTargetScanner", guid, "BlastTarget", 0.1, 10)
+		self:ScheduleMethod(0.1, "BossTargetScanner", args.sourceGUID, "BlastTarget", 0.1, 10)
 	end
 end
 

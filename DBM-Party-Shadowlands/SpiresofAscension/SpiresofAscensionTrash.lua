@@ -61,7 +61,7 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	if not self.Options.Enabled then return end
 	local spellId = args.spellId
-	if spellid == 317936 and elf:AntiSpam(3, 5) then
+	if spellId == 317936 and self:AntiSpam(3, 5) then
 		specWarnForswornDoctrineDispel:Show(args.destName)
 		specWarnForswornDoctrineDispel:Play("helpdispel")
 	elseif spellId == 317963 and args:IsDestTypePlayer() and self:CheckDispelFilter() and self:AntiSpam(3, 5) then
