@@ -83,7 +83,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 332617 then
 		specWarnPestilenceSurge:Show()
 		specWarnPestilenceSurge:Play("killmob")
-		timerPestilenceSurgeCD:Start()
+--		timerPestilenceSurgeCD:Start()
 	elseif spellId == 321406 then
 		specWarnVirulentExplosion:Show()
 		specWarnVirulentExplosion:Play("aesoon")
