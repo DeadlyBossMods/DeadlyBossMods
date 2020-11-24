@@ -49,12 +49,12 @@ local specWarnSpectralTransference		= mod:NewSpecialWarningDispel(320272, "Magic
 
 --Dessia the Decapitator
 local timerMortalStrikeCD				= mod:NewCDTimer(21.8, 320069, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)--21.8-32.7
-local timerSlamCD						= mod:NewCDTimer(7.4, 320063, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)--7.4-10.9
+local timerSlamCD						= mod:NewCDTimer(7.3, 320063, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)--7.3-10.9
 --Paceran the Virulent
-local timerNoxiousSporeCD				= mod:NewCDTimer(16.1, 320180, nil, nil, nil, 3)
+local timerNoxiousSporeCD				= mod:NewCDTimer(15.8, 320180, nil, nil, nil, 3)
 --Sathel the Accursed
 local timerSearingDeathCD				= mod:NewCDTimer(11.7, 333231, nil, nil, nil, 3)--11.7-24
-local timerSpectralTransferenceCD		= mod:NewCDTimer(14.8, 320272, nil, nil, nil, 5, nil, DBM_CORE_L.MAGIC_ICON)--15-24
+local timerSpectralTransferenceCD		= mod:NewCDTimer(13.4, 320272, nil, nil, nil, 5, nil, DBM_CORE_L.MAGIC_ICON)--13.4-57
 --Xira the Underhanded
 --local timerOpportunityStrikesCD			= mod:NewCDTimer(60, 333540, nil, nil, nil, 3, nil, DBM_CORE_L.MYTHIC_ICON)
 
@@ -65,10 +65,10 @@ function mod:OnCombatStart(delay)
 	--Paceran
 	timerNoxiousSporeCD:Start(17.7-delay)
 	--Sathel
-	timerSearingDeathCD:Start(10.2-delay)--SUCCESS
-	timerSpectralTransferenceCD:Start(10.5-delay)--SUCCESS
---	if self:IsDifficulty("challenge5") then
---		timerOpportunityStrikesCD:Start(61.4-delay)--SUCCESS
+	timerSearingDeathCD:Start(10.2-delay)--SUCCESS 10-15
+	timerSpectralTransferenceCD:Start(10.5-delay)--SUCCESS 10-13
+--	if self:IsMythic() then
+--		timerOpportunityStrikesCD:Start(61.4-delay)--SUCCESS 61-80?
 --	end
 end
 
@@ -160,7 +160,7 @@ end
 --"<48.53 02:10:59> [UNIT_SPELLCAST_SUCCEEDED] Paceran the Virulent(??) -Noxious Spore- [[boss3:Cast-3-2084-2293-25939-324118-000024A504:324118]]
 --"<52.18 02:11:03> [CLEU] SPELL_AURA_APPLIED#Creature-0-2084-2293-25939-164463-000024A49F#Paceran the Virulent#Player-970-004E060B#Viterratwo-TheMaw#320180#Noxious Spore#DEBUFF#nil", -- [579]
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 324118  then--Noxious Spore (spawn event)
+	if spellId == 324118 then--Noxious Spore (spawn event)
 		timerNoxiousSporeCD:Start()
 	end
 end

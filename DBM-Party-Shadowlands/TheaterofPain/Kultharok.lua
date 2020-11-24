@@ -16,7 +16,6 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, is PhantasmalParasite actually dispelable?
 --TODO, Spectral Reach (319669) needed?
 --[[
 (ability.id = 319521 or ability.id = 319626 or ability.id = 319589) and type = "cast"
@@ -30,18 +29,19 @@ local specWarnDrawSoul				= mod:NewSpecialWarningRun(319521, nil, nil, nil, 4, 2
 local specWarnTornSoul				= mod:NewSpecialWarningYou(319416, nil, nil, nil, 1, 2)--expel Soul debuff
 --local yellTornSoul				= mod:NewYell(319416)
 local specWarnPhantasmalParasite	= mod:NewSpecialWarningMoveAway(319626, nil, nil, nil, 1, 2)
+local specWarnPhantasmalParasiteDPL	= mod:NewSpecialWarningDispel(319626, "RemoveMagic", nil, nil, 1, 2)
 local yellPhantasmalParasite		= mod:NewYell(319626)
 local specWarnGraspingHands			= mod:NewSpecialWarningDodge(319589, nil, nil, nil, 2, 2)
 --local specWarnGTFO				= mod:NewSpecialWarningGTFO(257274, nil, nil, nil, 1, 8)
 
 local timerDrawSoulCD				= mod:NewCDTimer(20.5, 319521, nil, nil, nil, 3, nil, DBM_CORE_L.DAMAGE_ICON)
-local timerPhantasmalParasiteCD		= mod:NewCDTimer(25.5, 319626, nil, nil, nil, 3, nil, DBM_CORE_L.HEALER_ICON)--DBM_CORE_L.MAGIC_ICON tooltip shows it dispelable, journal does not
+local timerPhantasmalParasiteCD		= mod:NewCDTimer(25.5, 319626, nil, nil, nil, 3, nil, DBM_CORE_L.HEALER_ICON..DBM_CORE_L.MAGIC_ICON)
 local timerGraspingHandsCD			= mod:NewCDTimer(25.5, 319589, nil, nil, nil, 3)
 
 function mod:OnCombatStart(delay)
-	timerPhantasmalParasiteCD:Start(3.6-delay)--SUCCESS
-	timerGraspingHandsCD:Start(8.5-delay)--SUCCESS
-	timerDrawSoulCD:Start(15.8-delay)
+	timerPhantasmalParasiteCD:Start(3.3-delay)--SUCCESS
+	timerGraspingHandsCD:Start(8.2-delay)--SUCCESS
+	timerDrawSoulCD:Start(15.5-delay)
 end
 
 --[[
@@ -82,9 +82,17 @@ function mod:SPELL_AURA_APPLIED(args)
 			--yellTornSoul:Yell()
 		end
 	elseif spellId == 319626 then
+		local dispelWarned = false
+		if self.Options.SpecWarn319626dispel and args:IsDestTypePlayer() and self:CheckDispelFilter() then
+			specWarnPhantasmalParasiteDPL:Show(args.destName)
+			specWarnPhantasmalParasiteDPL:Play("helpdispel")
+			dispelWarned = true
+		end
 		if args:IsPlayer() then
-			specWarnPhantasmalParasite:Show()
-			specWarnPhantasmalParasite:Play("runout")
+			if not dispelWarned then--If player is a dispeller, they may have already gotten alert to dispel themselves
+				specWarnPhantasmalParasite:Show()
+				specWarnPhantasmalParasite:Play("runout")
+			end
 			yellPhantasmalParasite:Yell()
 		else
 			warnPhantasmalParasite:CombinedShow(0.3, args.destName)
