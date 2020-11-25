@@ -65,7 +65,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 332084 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnSelfCleaningCycle:Show(args.sourceName)
 		specWarnSelfCleaningCycle:Play("kickcast")
-	elseif spellId == 332671 and self:AntiSpam(4, 2) then
+	elseif spellId == 331927 and self:AntiSpam(4, 2) then
 		specWarnHaywire:Show(DBM_CORE_L.BREAK_LOS)
 		specWarnHaywire:Play("findshelter")
 	elseif spellId == 332156 and self:AntiSpam(5, 1) then
