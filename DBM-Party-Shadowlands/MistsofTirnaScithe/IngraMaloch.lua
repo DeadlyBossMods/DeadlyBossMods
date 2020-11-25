@@ -35,7 +35,7 @@ local specWarnEmbraceDarkness			= mod:NewSpecialWarningSpell(323149, nil, nil, n
 local specWarnRepulsiveVisage			= mod:NewSpecialWarningSpell(328756, nil, nil, nil, 2, 2)
 --Droman Oulfarran
 local specWarnBewilderingPollen			= mod:NewSpecialWarningDodge(323137, "Tank", nil, nil, 1, 2)
-local specWarnBewilderingPollenDispel	= mod:NewSpecialWarningDispel(323137, "RemoveMagic", nil, nil, 1, 2)
+local specWarnBewilderingPollenDispel	= mod:NewSpecialWarningDispel(323137, false, nil, 2, 1, 2)--Off by default
 local specWarnTearsoftheForrest			= mod:NewSpecialWarningDodge(323177, nil, nil, nil, 2, 2)
 local specWarnGTFO						= mod:NewSpecialWarningGTFO(323250, nil, nil, nil, 1, 8)
 
@@ -124,7 +124,7 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
-	if spellId == 323250 and destGUID == UnitGUID("player") and self:AntiSpam(2, 2) then
+	if spellId == 323250 and destGUID == UnitGUID("player") and self:AntiSpam(3, 2) then
 		specWarnGTFO:Show(spellName)
 		specWarnGTFO:Play("watchfeet")
 	end
