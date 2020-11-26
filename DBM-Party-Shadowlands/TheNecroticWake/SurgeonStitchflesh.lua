@@ -50,6 +50,8 @@ local timerMutilateCD				= mod:NewCDTimer(11, 320376, nil, nil, nil, 3)
 local timerMeatHookCD				= mod:NewCDTimer(18, 322681, nil, nil, nil, 3)
 --local timerStichNeedleCD			= mod:NewCDTimer(15.8, 320200, nil, nil, nil, 5, nil, DBM_CORE_L.HEALER_ICON)--Basically spammed
 
+mod.vb.bossDown = false
+
 function mod:IchorTarget(targetname, uId)
 	if not targetname then return end
 	if targetname == UnitName("player") then
@@ -62,6 +64,7 @@ function mod:IchorTarget(targetname, uId)
 end
 
 function mod:OnCombatStart(delay)
+	self.vb.bossDown = false
 --	timerSummonCreationCD:Start(1-delay)--START
 	timerEmbalmingIchorCD:Start(9.7-delay)
 	timerMeatHookCD:Start(10.6-delay)--The add that's already alive on pull
@@ -87,6 +90,7 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 320359 then
+		self.vb.bossDown = false
 		warnEscape:Show()
 		timerEscape:Stop()--Escaped early?
 		timerSeverFleshCD:Stop()
@@ -112,7 +116,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			warnMeatHook:Show(args.destName)
 		end
-	elseif spellId == 322548 then--Boss getting meat hooked
+	elseif spellId == 322548 and not self.vb.bossDown then--Boss getting meat hooked
+		self.vb.bossDown = true
 --		timerSummonCreationCD:Stop()
 		timerEmbalmingIchorCD:Stop()
 		warnMeatHook:Show(args.destName)
