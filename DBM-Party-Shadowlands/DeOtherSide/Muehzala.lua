@@ -11,8 +11,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 325258 327646 326171",
 	"SPELL_CAST_SUCCESS 325725 324698 326171 327426",
 	"SPELL_AURA_APPLIED 325725",
-	"SPELL_AURA_REMOVED 325725 334970",
-	"UNIT_DIED"
+	"SPELL_AURA_REMOVED 325725 334970"
+--	"UNIT_DIED"
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
@@ -31,7 +31,7 @@ mod:RegisterEventsInCombat(
 local warnCosmicArtifice			= mod:NewTargetAnnounce(325725, 3)
 local warnShatterReality			= mod:NewCastAnnounce(326171, 4)
 --Stage 2: Shattered Reality
-local warnAddsRemaining				= mod:NewAddsLeftAnnounce("ej22186", 2, 264049)--A nice shackle icon
+--local warnAddsRemaining				= mod:NewAddsLeftAnnounce("ej22186", 2, 264049)--A nice shackle icon
 
 --Stage 1: The Master of Death
 local specWarnMasterofDeath			= mod:NewSpecialWarningDodge(325258, nil, nil, nil, 2, 2)
@@ -50,7 +50,7 @@ local timerSoulcrusherCD			= mod:NewCDCountTimer(17.8, 327646, nil, "Tank|Healer
 local timerShatterRealityCD			= mod:NewCDTimer(25.3, 325258, nil, nil, nil, 2, nil, DBM_CORE_L.DEADLY_ICON)
 --Stage 2: Shattered Reality
 
-mod.vb.addsLeft = 3
+--mod.vb.addsLeft = 3
 mod.vb.cosmicCount = 0
 mod.vb.soulCount = 0
 
@@ -133,6 +133,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
+--[[
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 168326 then--Shattered Visage
@@ -143,7 +144,6 @@ function mod:UNIT_DIED(args)
 	end
 end
 
---[[
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
 	if spellId == 309991 and destGUID == UnitGUID("player") and self:AntiSpam(2, 2) then
 		specWarnGTFO:Show(spellName)

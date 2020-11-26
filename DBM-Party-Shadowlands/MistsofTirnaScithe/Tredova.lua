@@ -29,7 +29,7 @@ ability.id = 322550 and type = "begincast"
 local warnMarkthePrey				= mod:NewTargetNoFilterAnnounce(322563, 3)
 
 local specWarnConsumption			= mod:NewSpecialWarningDodge(322450, nil, nil, nil, 2, 2)
-local specWarnConsumptionKick		= mod:NewSpecialWarningInterrupt(322450, "HasInterrupt", nil, nil, 2, 2)
+local specWarnConsumptionKick		= mod:NewSpecialWarningInterrupt(322450, "HasInterrupt", nil, 2, 1, 2)
 local specWarnAcceleratedIncubation	= mod:NewSpecialWarningSwitch(322550, "Dps", nil, nil, 1, 2)
 local specWarnMindLink				= mod:NewSpecialWarningMoveAway(322648, nil, nil, nil, 1, 11)
 local yellMindLink					= mod:NewYell(322648)
