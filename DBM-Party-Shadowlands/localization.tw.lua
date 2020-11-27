@@ -84,17 +84,19 @@ L:SetGeneralLocalization({
 --L= DBM:GetModLocalization(2405)
 
 L:SetWarningLocalization({
-	specWarnParasiticInfester	= "蟲子寄生你"
+	specWarnParasiticInfester		= "蟲子寄生你",
+	specWarnParasiticInfesterKick	= "蟲子寄生 - 快打斷！"
 })
 
 L:SetTimerLocalization{
-	timerParasiticInfesterCD	= "~寄生"
+	timerParasiticInfesterCD		= "~寄生"
 }
 
 L:SetOptionLocalization({
-	specWarnParasiticInfester	= "受蟲子寄生時顯示特別警告",
-	timerParasiticInfesterCD	= "顯示蟲子寄生的計時器",
-	yellParasiticInfester		= "當您受到蟲子寄生時大喊"
+	specWarnParasiticInfester		= "受蟲子寄生時顯示特別警告",
+	specWarnParasiticInfesterKick	= "顯示蟲子寄生打斷的特別警告",
+	timerParasiticInfesterCD		= "顯示蟲子寄生的計時器",
+	yellParasiticInfester			= "當您受到蟲子寄生時大喊"
 })
 
 L:SetMiscLocalization({
@@ -150,6 +152,11 @@ L:SetGeneralLocalization({
 -----------------------
 --L= DBM:GetModLocalization(2399)
 
+L:SetMiscLocalization({
+	--Flight	= "你們無處可逃！",
+	Flight	= "恐怖來自天空！"
+})
+
 -----------------------
 -- Ventunax --
 -----------------------
@@ -163,7 +170,11 @@ L:SetGeneralLocalization({
 -----------------------
 -- Devos, Paragon of Doubt --
 -----------------------
---L= DBM:GetModLocalization(2412)
+L= DBM:GetModLocalization(2412)
+
+L:SetMiscLocalization({
+	RunThrough	= "我要用這柄長矛刺穿你的心臟！"
+})
 
 ---------
 --Trash--
