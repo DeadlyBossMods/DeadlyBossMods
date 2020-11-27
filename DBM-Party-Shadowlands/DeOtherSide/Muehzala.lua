@@ -47,7 +47,7 @@ local specWarnDeathgate				= mod:NewSpecialWarningMoveTo(324698, nil, nil, nil, 
 local timerMasterofDeathCD			= mod:NewCDTimer(32.8, 325258, nil, nil, nil, 3)
 local timerCosmicArtificeCD			= mod:NewCDCountTimer(19.5, 325725, nil, nil, nil, 3, nil, DBM_CORE_L.MAGIC_ICON)
 local timerSoulcrusherCD			= mod:NewCDCountTimer(17.8, 327646, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)
-local timerShatterRealityCD			= mod:NewCDTimer(25.3, 325258, nil, nil, nil, 2, nil, DBM_CORE_L.DEADLY_ICON)
+local timerShatterRealityCD			= mod:NewCDTimer(25.3, 326171, nil, nil, nil, 2, nil, DBM_CORE_L.DEADLY_ICON)
 --Stage 2: Shattered Reality
 
 --mod.vb.addsLeft = 3
@@ -58,7 +58,7 @@ function mod:OnCombatStart(delay)
 	self.vb.cosmicCount = 0
 	self.vb.soulCount = 0
 	timerCosmicArtificeCD:Start(3.7-delay, 1)--SUCCESS
-	timerSoulcrusherCD:Start(6.2-delay, 1)
+	timerSoulcrusherCD:Start(5.9-delay, 1)
 	timerMasterofDeathCD:Start(9.5-delay)
 	timerShatterRealityCD:Start(60)
 end
@@ -93,7 +93,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if self.vb.cosmicCount % 2 == 0 then
 			timerCosmicArtificeCD:Start(10, self.vb.cosmicCount+1)
 		else
-			timerCosmicArtificeCD:Start(25, self.vb.cosmicCount+1)
+			timerCosmicArtificeCD:Start(20, self.vb.cosmicCount+1)
 		end
 	elseif spellId == 324698 then--Deathgate finished
 		specWarnDeathgate:Show(args.spellName)

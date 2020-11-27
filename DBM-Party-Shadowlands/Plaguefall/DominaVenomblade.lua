@@ -44,9 +44,9 @@ local timerCytotoxicSlashCD			= mod:NewCDTimer(20.6, 325552, nil, nil, nil, 5, n
 mod:AddRangeFrameOption(5, 325245)
 
 function mod:OnCombatStart(delay)
-	timerAmbushCD:Start(6.1-delay)
-	timerCytotoxicSlashCD:Start(9.7-delay)--START
-	timerBroodAssassinsCD:Start(17.8-delay)
+	timerAmbushCD:Start(6.1-delay)--9.1?
+	timerCytotoxicSlashCD:Start(3.1-delay)--START
+	timerBroodAssassinsCD:Start(15.2-delay)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(5)
 	end

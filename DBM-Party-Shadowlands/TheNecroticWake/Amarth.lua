@@ -33,10 +33,10 @@ local specWarnUnholyFrenzyTank		= mod:NewSpecialWarningDefensive(320012, "Tank",
 local specWarnFrostboltVolley		= mod:NewSpecialWarningInterrupt(322493, "HasInterrupt", nil, nil, 1, 2)--Mythic and above, normal/heroic uses regular frostbolts
 --local specWarnGTFO				= mod:NewSpecialWarningGTFO(257274, nil, nil, nil, 1, 8)
 
-local timerLandoftheDeadCD			= mod:NewCDTimer(43.7, 321226, nil, nil, nil, 1, nil, DBM_CORE_L.DAMAGE_ICON)--43.7-48.4
-local timerFinalHarvestCD			= mod:NewCDTimer(43.7, 321247, nil, nil, nil, 2)--43.7-48.4
-local timerNecroticBreathCD			= mod:NewCDTimer(43.7, 333493, nil, nil, nil, 3)--43.7-48.4
-local timerUnholyFrenzyCD			= mod:NewCDTimer(43.7, 320012, nil, nil, nil, 5, nil, DBM_CORE_L.ENRAGE_ICON..DBM_CORE_L.TANK_ICON)--43.7-48.4
+local timerLandoftheDeadCD			= mod:NewCDTimer(41.2, 321226, nil, nil, nil, 1, nil, DBM_CORE_L.DAMAGE_ICON)--41.2-48.4
+local timerFinalHarvestCD			= mod:NewCDTimer(41.2, 321247, nil, nil, nil, 2)--41.2-48.4
+local timerNecroticBreathCD			= mod:NewCDTimer(41.2, 333493, nil, nil, nil, 3)--41.2-48.4
+local timerUnholyFrenzyCD			= mod:NewCDTimer(41.2, 320012, nil, nil, nil, 5, nil, DBM_CORE_L.ENRAGE_ICON..DBM_CORE_L.TANK_ICON)--41.2-48.4
 
 function mod:OnCombatStart(delay)
 	--TODO, fine tune start times, started from first melee swing not ENCOUNTER_START

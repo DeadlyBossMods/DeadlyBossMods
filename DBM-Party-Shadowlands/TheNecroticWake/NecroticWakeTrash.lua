@@ -40,7 +40,7 @@ local specWarnReapingWinds					= mod:NewSpecialWarningRun(324372, nil, nil, nil,
 local specWarnGoresplatter					= mod:NewSpecialWarningInterrupt(338353, false, nil, nil, 1, 2)--Off by default since enemy has two casts and this is lower priority one
 local specWarnGoresplatterDispel			= mod:NewSpecialWarningDispel(338353, "RemoveDisease", nil, nil, 1, 2)
 --Unknown
-local specWarnSpineCrush					= mod:NewSpecialWarningDodge(324293, nil, nil, nil, 2, 2)--Not sure where these spawn, not in guide, but I still feel warning worth having
+local specWarnSpineCrush					= mod:NewSpecialWarningDodge(327240, nil, nil, nil, 2, 2)--Not sure where these spawn, not in guide, but I still feel warning worth having
 
 --Antispam IDs for this mod: 1 run away, 2 dodge, 3 dispel, 4 incoming damage, 5 you/role, 6 misc
 
