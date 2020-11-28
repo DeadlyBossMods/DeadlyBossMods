@@ -8848,7 +8848,7 @@ do
 			--Inspect throttle exists, so have to do it this way
 			if (class == "DRUID" or class == "SHAMAN" or class == "PALADIN") then
 				local powerType = UnitPowerType(uId)
-				local powerMax = UnitPowerMax(uId)
+				local unitMaxPower = UnitPowerMax(uId)
 				--Hunters are now all flagged ranged because it's no longer possible to tell a survival hunter from marksman. neither will be using a pet and both have 100 focus.
 				--Druids without lunar poewr or 50k mana are either feral or guardian
 				--Shamans without maelstrom and 50k mana can only be enhancement
