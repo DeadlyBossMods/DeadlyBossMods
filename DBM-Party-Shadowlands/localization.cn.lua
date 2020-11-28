@@ -87,7 +87,8 @@ L:SetGeneralLocalization({
 --L= DBM:GetModLocalization(2405)
 
 L:SetWarningLocalization({
-	specWarnParasiticInfester	= "你被虫子寄生"
+	specWarnParasiticInfester	= "你中了寄生平静",
+	specWarnParasiticInfesterKick	= "寄生平静 - 快打断"
 })
 
 L:SetTimerLocalization{
@@ -95,9 +96,10 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization({
-	specWarnParasiticInfester	= "当你受到寄生感染时显示特别警告",
+	specWarnParasiticInfester	= "当你受到寄生平静时显示特别警告",
+	specWarnParasiticInfesterKick	= "需要打断寄生平静时显示特殊警告",
 	timerParasiticInfesterCD	= "显示寄生计时器",
-	yellParasiticInfester		= "当受到寄生感染时大喊"
+	yellParasiticInfester		= "当受到平静感染时大喊"
 })
 
 L:SetMiscLocalization({
@@ -154,7 +156,8 @@ L:SetGeneralLocalization({
 L= DBM:GetModLocalization(2399)
 
 L:SetMiscLocalization({
-	Flight	= "畏惧天空吧！"
+	Flight	= "抬头看看你们的末日！",
+	Flight2	= "畏惧天空吧！"
 })
 
 -----------------------
