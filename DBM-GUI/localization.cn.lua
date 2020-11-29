@@ -30,13 +30,13 @@ L.BossModLoad_now 			= [[该模块尚未启动。
 当你进入相应副本时其会自动加载。
 你也可以点击开启模块按钮手动启动该模块。]]
 
-L.PosX 						= 'X坐标'
-L.PosY 						= 'Y坐标'
+L.PosX 						= "X坐标"
+L.PosY 						= "Y坐标"
 
-L.MoveMe					= '移动我'
-L.Button_OK 				= '确定'
-L.Button_Cancel 			= '取消'
-L.Button_LoadMod 			= '加载模块'
+L.MoveMe					= "移动我"
+L.Button_OK 				= "确定"
+L.Button_Cancel 			= "取消"
+L.Button_LoadMod 			= "加载模块"
 L.Mod_Enabled				= "开启模块"
 L.Mod_Reset					= "恢复默认设置"
 L.Reset 					= "重置"

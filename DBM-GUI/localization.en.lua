@@ -32,13 +32,13 @@ L.BossModLoad_now 			= [[This boss mod is not loaded.
 It will be loaded when you enter the instance.
 You can also click the button to load the mod manually.]]
 
-L.PosX						= 'Position X'
-L.PosY						= 'Position Y'
+L.PosX						= "Position X"
+L.PosY						= "Position Y"
 
-L.MoveMe 					= 'Move me'
-L.Button_OK 				= 'OK'
-L.Button_Cancel 			= 'Cancel'
-L.Button_LoadMod 			= 'Load AddOn'
+L.MoveMe 					= "Move me"
+L.Button_OK 				= "OK"
+L.Button_Cancel 			= "Cancel"
+L.Button_LoadMod 			= "Load AddOn"
 L.Mod_Enabled				= "Enable boss mod"
 L.Mod_Reset					= "Load default options"
 L.Reset 					= "Reset"
@@ -76,6 +76,7 @@ L.Latency_Text				= "Set max latency sync threshold: %d"
 L.Button_RangeFrame			= "Show/hide range frame"
 L.Button_InfoFrame			= "Show/hide info frame"
 L.Button_TestBars			= "Start test bars"
+L.Button_MoveBars			= "Move bars"
 L.Button_ResetInfoRange		= "Reset Info/Range frames"
 
 L.ModelOptions				= "3D Model Viewer Options"
@@ -85,6 +86,7 @@ L.ModelSoundShort			= SHORT
 L.ModelSoundLong			= TOAST_DURATION_LONG
 
 L.ResizeOptions			 	= "Resize Options"
+L.ResizeInfo				= "You can resize the GUI by clicking the bottom-right corner, and dragging."
 L.Button_ResetWindowSize	= "Reset GUI window size"
 L.Editbox_WindowWidth		= "GUI window width"
 L.Editbox_WindowHeight		= "GUI window height"

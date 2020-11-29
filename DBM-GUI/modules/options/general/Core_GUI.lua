@@ -51,15 +51,21 @@ bminfo:SetScript("OnClick", function()
 	end
 end)
 
-local bmtestmode = generaloptions:CreateButton(L.Button_TestBars, 150, 30)
+local bmtestmode = generaloptions:CreateButton(L.Button_TestBars, 120, 30)
 bmtestmode.myheight = 0
-bmtestmode:SetPoint("LEFT", bminfo, "RIGHT", 2, 0)
+bmtestmode:SetPoint("TOP", bmrange, "BOTTOM", 2, 0)
 bmtestmode:SetScript("OnClick", function()
 	DBM:DemoMode()
 end)
 
+local moveme = generaloptions:CreateButton(L.Button_MoveBars, 120, 30)
+moveme:SetPoint("LEFT", bmtestmode, "RIGHT", 2, 0)
+moveme:SetScript("OnClick", function()
+	DBM.Bars:ShowMovableBar()
+end)
+
 local latencySlider = generaloptions:CreateSlider(L.Latency_Text, 50, 750, 5, 210)
-latencySlider:SetPoint("BOTTOMLEFT", bmrange, "BOTTOMLEFT", 10, -40)
+latencySlider:SetPoint("BOTTOMLEFT", bmrange, "BOTTOMLEFT", 10, -70)
 latencySlider:SetValue(DBM.Options.LatencyThreshold)
 latencySlider:HookScript("OnValueChanged", function(self)
 	DBM.Options.LatencyThreshold = self:GetValue()
@@ -108,6 +114,8 @@ ModelSoundDropDown:SetPoint("TOPLEFT", modelarea.frame, "TOPLEFT", 0, -50)
 
 local resizeOptions = coreoptions:CreateArea(L.ResizeOptions)
 
+resizeOptions:CreateText(L.ResizeInfo, nil, true)
+
 local optionsFrame = _G["DBM_GUI_OptionsFrame"]
 
 local resetbutton2 = resizeOptions:CreateButton(L.Button_ResetWindowSize, 120, 16)
@@ -123,7 +131,7 @@ end)
 local minWidth, minHeight = optionsFrame:GetMinResize()
 
 local resizeWidth = resizeOptions:CreateEditBox(L.Editbox_WindowWidth, math.floor(DBM.Options.GUIWidth * 10 ^ 2 + 0.5) / 10 ^ 2)
-resizeWidth:SetPoint("TOPLEFT", 30, -25)
+resizeWidth:SetPoint("TOPLEFT", 20, -40)
 resizeWidth:SetScript("OnChar", function(self)
 	self:SetText(self:GetText():gsub("[^%.%d]", ""))
 end)
@@ -141,7 +149,7 @@ resizeWidth:SetScript("OnEnterPressed", function(self)
 end)
 
 local resizeHeight = resizeOptions:CreateEditBox(L.Editbox_WindowHeight, math.floor(DBM.Options.GUIHeight * 10 ^ 2 + 0.5) / 10 ^ 2)
-resizeHeight.myheight = 0
+resizeHeight.myheight = 10
 resizeHeight:SetPoint("LEFT", resizeWidth, "RIGHT", 40, 0)
 resizeHeight:SetScript("OnChar", function(self)
 	self:SetText(self:GetText():gsub("[^%.%d]", ""))

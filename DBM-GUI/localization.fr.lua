@@ -17,13 +17,13 @@ L.BossModLoad_now 			= [[Ce boss mod n'est pas chargé.
 Il le sera une fois que vous serez dans l'instance.
 Vous pouvez aussi cliquer sur le bouton pour le charger manuellement.]]
 
-L.PosX						= 'Position en X'
-L.PosY						= 'Position en Y'
+L.PosX						= "Position en X"
+L.PosY						= "Position en Y"
 
-L.MoveMe 					= 'Déplacez-moi'
-L.Button_OK 				= 'OK'
-L.Button_Cancel 			= 'Annuler'
-L.Button_LoadMod 			= 'Charger l\'AddOn'
+L.MoveMe 					= "Déplacez-moi"
+L.Button_OK 				= "OK"
+L.Button_Cancel 			= "Annuler"
+L.Button_LoadMod 			= "Charger l\'AddOn"
 L.Mod_Enabled				= "Activer ce module"
 L.Mod_Reset					= "Charger les options par défaut"
 L.Reset 					= "Réinit."
