@@ -46,7 +46,7 @@ L:SetMiscLocalization({
 	BazzelIgnored5	= "¡Viene fuego!",
 	BazzelIgnored6	= "Sigamos en marcha.",
 	BazzelIgnored7	= "Vale, vale. Tenemos una línea ahí, sabes.",
-	
+    --Ranks
 	Rank1			= "Rango 1",
 	Rank2			= "Rango 2",
 	Rank3			= "Rango 3",
