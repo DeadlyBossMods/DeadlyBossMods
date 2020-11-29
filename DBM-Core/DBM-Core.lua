@@ -7962,7 +7962,8 @@ function bossModPrototype:IsScenario()
 	return false
 end
 
-function bossModPrototype:IsValidWarning(sourceGUID, customunitID)
+function bossModPrototype:IsValidWarning(sourceGUID, customunitID, loose)
+	if loose and InCombatLockdown() and GetNumGroupMembers() < 2 then return true end--In a loose check, this basically just checks if we're in combat, important for solo runs of torghast to not gimp mod too much
 	if customunitID then
 		if UnitExists(customunitID) and UnitGUID(customunitID) == sourceGUID and UnitAffectingCombat(customunitID) then return true end
 	else
