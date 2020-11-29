@@ -21,13 +21,13 @@ L.BossModLoad_now 			= [[Модуль для этих боссов не загр
 Он будет загружен сразу после входа в подземелье.
 Также вы можете нажать кнопку, чтобы загрузить модуль вручную.]]
 
-L.PosX						= 'Позиция X'
-L.PosY						= 'Позиция Y'
+L.PosX						= "Позиция X"
+L.PosY						= "Позиция Y"
 
-L.MoveMe 					= 'Передвинь меня'
-L.Button_OK 				= 'OK'
-L.Button_Cancel 			= 'Отмена'
-L.Button_LoadMod			= 'Загрузить модуль'
+L.MoveMe 					= "Передвинь меня"
+L.Button_OK 				= "OK"
+L.Button_Cancel 			= "Отмена"
+L.Button_LoadMod			= "Загрузить модуль"
 L.Mod_Enabled				= "Включить модуль"
 L.Mod_Reset					= "Сброс настроек"
 L.Reset 					= "Сброс"

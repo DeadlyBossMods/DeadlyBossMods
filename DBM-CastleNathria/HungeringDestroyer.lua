@@ -72,6 +72,7 @@ local playerEssenceSap, playerVolatile = false, false
 mod.vb.volatileIcon = 5
 mod.vb.volatileCast = 2
 mod.vb.miasmaCount = 0
+mod.vb.miasmaIcon = 2--Starting at 2 because 1 is reserved for melee
 mod.vb.expungeCount = 0
 mod.vb.consumeCount = 0
 mod.vb.desolateCount = 0
@@ -162,6 +163,7 @@ function mod:OnCombatStart(delay)
 	self.vb.consumeCount = 0
 	self.vb.desolateCount = 0
 	self.vb.miasmaCount = 0
+	self.vb.miasmaIcon = 2
 	timerGluttonousMiasmaCD:Start(3-delay, 1)--3-6?
 	if self:IsEasy() then
 		timerOverwhelmCD:Start(6.2-delay)
@@ -281,12 +283,22 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self:AntiSpam(10, 3) then
 			table.wipe(GluttonousTargets)
 			self.vb.miasmaCount = self.vb.miasmaCount + 1
+			self.vb.miasmaIcon = 2
 			timerGluttonousMiasmaCD:Start(23.8, self.vb.miasmaCount+1)--Same in all difficulties
 		end
 		if not tContains(GluttonousTargets, args.destName) then
 			table.insert(GluttonousTargets, args.destName)
 		end
-		local icon = #GluttonousTargets
+		local icon
+		local uId = DBM:GetRaidUnitId(args.destName)
+		if self:IsMelee(uId, true) then
+			icon = 1
+			DBM:Debug("Melee Miasma found: "..args.destName, 2)
+		else
+			icon = self.vb.miasmaIcon
+			self.vb.miasmaIcon = self.vb.miasmaIcon + 1
+			DBM:Debug("Ranged Miasma found: "..args.destName, 2)
+		end
 		if args:IsPlayer() then
 			specWarnGluttonousMiasma:Show(self:IconNumToTexture(icon))
 			specWarnGluttonousMiasma:Play("mm"..icon)--or "targetyou"

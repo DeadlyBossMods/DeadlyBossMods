@@ -7962,7 +7962,8 @@ function bossModPrototype:IsScenario()
 	return false
 end
 
-function bossModPrototype:IsValidWarning(sourceGUID, customunitID)
+function bossModPrototype:IsValidWarning(sourceGUID, customunitID, loose)
+	if loose and InCombatLockdown() and GetNumGroupMembers() < 2 then return true end--In a loose check, this basically just checks if we're in combat, important for solo runs of torghast to not gimp mod too much
 	if customunitID then
 		if UnitExists(customunitID) and UnitGUID(customunitID) == sourceGUID and UnitAffectingCombat(customunitID) then return true end
 	else
@@ -8807,19 +8808,22 @@ do
 	function bossModPrototype:IsMeleeDps(uId)
 		if uId then--This version includes ONLY melee dps
 			local role = UnitGroupRolesAssigned(uId)
-			if role == "HEALER" or role == "TANK" then--Auto filter healer from dps check
+			if role == "HEALER" or role == "TANK" then--Auto filter healer/tank from dps check
 				return false
 			end
 			local _, class = UnitClass(uId)
-			if class == "WARRIOR" or class == "ROGUE" or class == "DEATHKNIGHT" then
+			if class == "WARRIOR" or class == "ROGUE" or class == "DEATHKNIGHT" or class == "DEMONHUNTER" then
 				return true
 			end
 			--Inspect throttle exists, so have to do it this way
-			if class == "DRUID" or class == "SHAMAN" or class == "PALADIN" or class == "MONK" or class == "HUNTER" then
+			if class == "DRUID" or class == "SHAMAN" or class == "PALADIN" or class == "MONK" then
 				local unitMaxPower = UnitPowerMax(uId)
-				--Mark and beast have 120 base focus, survival has 100 base focus. Not sure if this is best way to do it or if it breaks with talent/artifact weapon
-				--Elemental shaman have 100 unit power base, while enhancement have 150 power base, so a shaman with > 150 but less tha 35000 is the melee one
-				if (unitMaxPower < 101 and class == "HUNTER") or (unitMaxPower >= 150 and class == "SHAMAN" and unitMaxPower < 35000) or unitMaxPower < 35000 then
+				local powerType = UnitPowerType(uId)
+				--Healers all have 50k mana at 60, dps have 10k mana, plus healers still filtered by role check too
+				--Tanks are already filtered out by role check
+				--Maelstrom and Lunar power filtered out because they'd also return less than 11000 power (they'd both be 100)
+				--feral druids, enhance shamans, windwalker monks, ret paladins should all be caught by less than 11000 power checks after filters
+				if powerType ~= 11 and powerType ~= 8 and unitMaxPower < 11000 then--Maelstrom and Lunar power filters
 					return true
 				end
 			end
@@ -8835,15 +8839,22 @@ do
 		end
 	end
 
-	function bossModPrototype:IsMelee(uId)
+	function bossModPrototype:IsMelee(uId, mechanical)--mechanical arg means the check is asking if boss mechanics consider them melee (even if they aren't, such as holy paladin/mistweaver monks)
 		if uId then--This version includes monk healers as melee and tanks as melee
 			local _, class = UnitClass(uId)
-			if class == "WARRIOR" or class == "ROGUE" or class == "DEATHKNIGHT" or class == "MONK" then
+			--In mechanical check, ALL paladins are melee so don't need anything fancy, as for rest of classes here, same deal
+			if class == "WARRIOR" or class == "ROGUE" or class == "DEATHKNIGHT" or class == "MONK" or class == "DEMONHUNTER" or (mechanical and class == "PALADIN") then
 				return true
 			end
 			--Inspect throttle exists, so have to do it this way
-			if class == "DRUID" or class == "SHAMAN" or class == "PALADIN" then
-				if UnitPowerMax(uId) < 35000 then
+			if (class == "DRUID" or class == "SHAMAN" or class == "PALADIN") then
+				local powerType = UnitPowerType(uId)
+				local unitMaxPower = UnitPowerMax(uId)
+				--Hunters are now all flagged ranged because it's no longer possible to tell a survival hunter from marksman. neither will be using a pet and both have 100 focus.
+				--Druids without lunar poewr or 50k mana are either feral or guardian
+				--Shamans without maelstrom and 50k mana can only be enhancement
+				--Paladins without 50k mana can only be prot or ret
+				if powerType ~= 11 and powerType ~= 8 and unitMaxPower < 11000 then--Maelstrom and Lunar power filters
 					return true
 				end
 			end

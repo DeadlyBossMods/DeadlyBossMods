@@ -75,6 +75,7 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if not self.Options.Enabled then return end
+	if not self:IsValidWarning(args.sourceGUID) then return end--Filter all casts done by mobs in combat with npcs/other mobs.
 	local spellId = args.spellId
 	if spellId == 321968 and self:AntiSpam(3, 2) then
 		specWarnBewilderingPollen:Show()
@@ -149,13 +150,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			warnOvergrowth:Show(args.destName)
 		end
-	elseif spellId == 322557 and args:IsDestTypeHostile() and self:AntiSpam(3, 5) then
+	elseif spellId == 322557 and self:IsValidWarning(args.destGUID) and args:IsDestTypeHostile() and self:AntiSpam(3, 5) then
 		specWarnNourishtheForestDispel:Show(args.destName)
 		specWarnNourishtheForestDispel:Play("helpdispel")
-	elseif spellId == 324776 and args:IsDestTypeHostile() and self:AntiSpam(3, 5) then
+	elseif spellId == 324776 and self:IsValidWarning(args.destGUID) and args:IsDestTypeHostile() and self:AntiSpam(3, 5) then
 		specWarnBramblethornCoatDispel:Show(args.destName)
 		specWarnBramblethornCoatDispel:Play("helpdispel")
-	elseif spellId == 326046 and args:IsDestTypeHostile() and self:AntiSpam(3, 5) then
+	elseif spellId == 326046 and self:IsValidWarning(args.destGUID) and args:IsDestTypeHostile() and self:AntiSpam(3, 5) then
 		specWarnStimulateResistanceDispel:Show(args.destName)
 		specWarnStimulateResistanceDispel:Play("helpdispel")
 	elseif spellId == 340288 and args:IsDestTypePlayer() then

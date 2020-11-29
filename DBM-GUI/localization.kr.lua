@@ -21,13 +21,13 @@ L.BossModLoad_now 			= [[보스 모드가 로딩되지 않았습니다.
 해당 인스턴스에 진입하면 로딩됩니다.
 아래 버튼을 클릭해서 모드를 직접 로딩할 수도 있습니다.]]
 
-L.PosX						= '위치 X'
-L.PosY						= '위치 Y'
+L.PosX						= "위치 X"
+L.PosY						= "위치 Y"
 
-L.MoveMe 					= '위치 이동'
-L.Button_OK					= '확인'
-L.Button_Cancel				= '취소'
-L.Button_LoadMod			= '애드온 로드'
+L.MoveMe 					= "위치 이동"
+L.Button_OK					= "확인"
+L.Button_Cancel				= "취소"
+L.Button_LoadMod			= "애드온 로드"
 L.Mod_Enabled				= "보스 모드 활성화"
 L.Mod_Reset					= "설정 기본값 로드"
 L.Reset						= "초기화"
