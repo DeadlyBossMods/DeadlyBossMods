@@ -75,7 +75,7 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(2424)
 
 L:SetMiscLocalization({
-	CrimsonSpawn	= "Los Cabalistas Carmesí acuden a la llamada de Denathrius."
+	CrimsonSpawn	= "Crimson Cabalists answer the call of Denathrius."
 })
 
 
