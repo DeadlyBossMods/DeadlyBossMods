@@ -45,9 +45,9 @@ L= DBM:GetModLocalization(2420)
 
 L:SetTimerLocalization{
 	timerDesiresContainer		= "Deseo lleno",
-	timerBottledContainer		= "Ánima embotellada lleno",
+	timerBottledContainer		= "Ánima embotellada llena",
 	timerSinsContainer			= "Pecado lleno",
-	timerConcentrateContainer	= "Ánima concentrada lleno"
+	timerConcentrateContainer	= "Ánima concentrada llena"
 }
 
 L:SetOptionLocalization({
@@ -75,7 +75,7 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(2424)
 
 L:SetMiscLocalization({
-	CrimsonSpawn	= "Crimson Cabalists answer the call of Denathrius."
+	CrimsonSpawn	= "Los Cabalistas Carmesí acuden a la llamada de Denathrius."
 })
 
 
