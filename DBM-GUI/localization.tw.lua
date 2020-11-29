@@ -23,13 +23,13 @@ L.BossModLoad_now 			= [[該模組尚未載入。
 當你進入相應副本時其會自動載入。
 你也可以點擊該按鈕手動載入該模組。]]
 
-L.PosX						= 'X座標'
-L.PosY						= 'Y座標'
+L.PosX						= "X座標"
+L.PosY						= "Y座標"
 
-L.MoveMe 					= '移動'
-L.Button_OK 				= '確定'
-L.Button_Cancel 			= '取消'
-L.Button_LoadMod 			= '載入模組'
+L.MoveMe 					= "移動"
+L.Button_OK 				= "確定"
+L.Button_Cancel 			= "取消"
+L.Button_LoadMod 			= "載入模組"
 L.Mod_Enabled				= "啟用首領模組"
 L.Mod_Reset					= "讀取預設值"
 L.Reset 					= "重置"

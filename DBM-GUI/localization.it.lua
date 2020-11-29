@@ -20,13 +20,13 @@ L.BossModLoad_now 			= [[Boss Mod non caricata.
 Verrà caricata all'entrata dell'istanza.
 Puoi cliccare il pulsante per forzarne il caricamento.]]
 
-L.PosX						= 'Posizione X'
-L.PosY						= 'Posizione Y'
+L.PosX						= "Posizione X"
+L.PosY						= "Posizione Y"
 
-L.MoveMe 					= 'Spostami'
-L.Button_OK 				= 'OK'
-L.Button_Cancel 			= 'Annulla'
-L.Button_LoadMod 			= 'Carica AddOn'
+L.MoveMe 					= "Spostami"
+L.Button_OK 				= "OK"
+L.Button_Cancel 			= "Annulla"
+L.Button_LoadMod 			= "Carica AddOn"
 L.Mod_Enabled				= "Abilita boss mod"
 L.Mod_Reset					= "Ripristina predefiniti"
 L.Reset 					= "Resetta"

@@ -26,13 +26,13 @@ L.BossModLoad_now 			= [[Esse módulo não está carregado.
 Ele será carregado quando você entrar na instância.
 Você também pode clicar no botão para carregar o módulo manualmente.]]
 
-L.PosX						= 'Posição X'
-L.PosY						= 'Posição Y'
+L.PosX						= "Posição X"
+L.PosY						= "Posição Y"
 
-L.MoveMe 					= 'Mova-me'
-L.Button_OK 				= 'OK'
-L.Button_Cancel 			= 'Cancelar'
-L.Button_LoadMod 			= 'Carregar AddOn'
+L.MoveMe 					= "Mova-me"
+L.Button_OK 				= "OK"
+L.Button_Cancel 			= "Cancelar"
+L.Button_LoadMod 			= "Carregar AddOn"
 L.Mod_Enabled				= "Habilitar módulo"
 L.Mod_Reset					= "Carregar opções padrão"
 L.Reset 					= "Resetar"
@@ -188,7 +188,7 @@ L.SpamBlockNoInfoFrame		= "Não exibir quadro de informação"
 L.SpamBlockNoHudMap			= "Não mostrar mapas HudMap (heads up display Map)"
 L.SpamBlockNoCountdowns		= "Não tocar sons de contagem regressiva"
 L.SpamBlockNoIconRestore	= "Não guardar estado dos ícones e restaura-los ao fim do combate"
-L.SpamBlockNoRangeRestore	= "Não restaurar o quadro de distancia para o estado anterior ( show/hide ) quando a mod pedir hide'"
+L.SpamBlockNoRangeRestore	= "Não restaurar o quadro de distancia para o estado anterior ( show/hide ) quando a mod pedir 'hide'"
 
 
 -- Tab: Spam Filter
