@@ -53,13 +53,13 @@ end)
 
 local bmtestmode = generaloptions:CreateButton(L.Button_TestBars, 120, 30)
 bmtestmode.myheight = 0
-bmtestmode:SetPoint("LEFT", bminfo, "RIGHT", 2, 0)
+bmtestmode:SetPoint("TOP", bmrange, "BOTTOM", 2, 0)
 bmtestmode:SetScript("OnClick", function()
 	DBM:DemoMode()
 end)
 
 local moveme = generaloptions:CreateButton(L.Button_MoveBars, 120, 30)
-moveme:SetPoint("TOP", bminfo, "BOTTOM", 2, 0)
+moveme:SetPoint("LEFT", bmtestmode, "RIGHT", 2, 0)
 moveme:SetScript("OnClick", function()
 	DBM.Bars:ShowMovableBar()
 end)
