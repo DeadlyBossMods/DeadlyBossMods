@@ -31,22 +31,22 @@ L:SetMiscLocalization({
 	Bizmo			= "Bizmo",--Alliance
 	Bazzelflange	= "Jefa Zumbarriel",--Horde
 	--Alliance pre-berserk
-	BizmoIgnored	= "No tenemos toda la noche. ¡Date prisa!",
-	BizmoIgnored2	= "¿Hueles humo?",
-	BizmoIgnored3	= "Ya es hora de que esto sea una lucha.",
+	BizmoIgnored	= "We Don't have all night. Hurry it up already!", --WIP
+	BizmoIgnored2	= "Do you smell smoke?", --WIP
+	BizmoIgnored3	= "I think it's about time to call this fight.", --WIP
 	BizmoIgnored4	= "¿Es cosa mía o está subiendo la temperatura?",
-	BizmoIgnored5	= "¡Se acerca el fuego!",
-	BizmoIgnored6	= "Creo que ya hemos visto suficiente, ¿verdad?",
-	BizmoIgnored7	= "Tenemos una lista repleta de gente que quiere luchar, sabes.",
+	BizmoIgnored5	= "The fire's coming!", --WIP
+	BizmoIgnored6	= "I think we've seen just about enough of this. Am I right?", --WIP
+	BizmoIgnored7	= "We've got a whole list of people who want to fight, you know.", --WIP
 	--Horde pre-berserk
-	BazzelIgnored	= "¡Agh, chicos! ¡Espabilar de una vez!",
-	BazzelIgnored2	= "Oh oh... huelo humo...",
-	BazzelIgnored3	= "¡Queda poco tiempo!",
-	BazzelIgnored4	= "¿No hace demasiado calor aquí?",
-	BazzelIgnored5	= "¡Viene fuego!",
-	BazzelIgnored6	= "Sigamos en marcha.",
-	BazzelIgnored7	= "Vale, vale. Tenemos una línea ahí, sabes.",
-    --Ranks
+	BazzelIgnored	= "Sheesh, guys! Hurry it up already!", --WIP
+	BazzelIgnored2	= "Uh oh... I smell smoke...", --WIP
+	BazzelIgnored3	= "Time's almost up!", --WIP
+	BazzelIgnored4	= "Is it gettin' hot in here?", --WIP
+	BazzelIgnored5	= "Fire's comin'!", --WIP
+	BazzelIgnored6	= "Let's keep it movin' in there!", --WIP
+	BazzelIgnored7	= "Alright, alright. We've got a line going out here, you know.", --WIP
+	--I wish there was a better way to do this....so much localizing. :(
 	Rank1			= "Rango 1",
 	Rank2			= "Rango 2",
 	Rank3			= "Rango 3",
