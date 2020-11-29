@@ -31,7 +31,7 @@ L:SetMiscLocalization({
 	Bizmo			= "Bizmo",--Alliance
 	Bazzelflange	= "Jefa Zumbarriel",--Horde
 	--Alliance pre-berserk
-	BizmoIgnored	= "No tenemos toda la noche. ¡Date prisa!,
+	BizmoIgnored	= "No tenemos toda la noche. ¡Date prisa!",
 	BizmoIgnored2	= "¿Hueles humo?",
 	BizmoIgnored3	= "Ya es hora de que esto sea una lucha.",
 	BizmoIgnored4	= "¿Es cosa mía o está subiendo la temperatura?",
