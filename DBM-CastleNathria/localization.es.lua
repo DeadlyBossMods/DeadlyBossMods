@@ -27,9 +27,9 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(2418)
 
 L:SetMiscLocalization({
-	Phase2			= "The anticipation to use this relic is killing me! Though, it will more likely kill you.",
-	Phase2Demonic	= "Lok zennshinagas xi ril zila refir il rethule no Rakkas az alar alar archim maev shi ",--Boss has Curse of Tongues
-	Phase3			= "I hope this wondrous item is as lethal as it looks!",
+	Phase2			= "¡El uso anticipado de esta reliquia me está matando! Sin embargo, es probable que te mate.",
+	Phase2Demonic	= "Lok zennshinagas xi ril zila refir il rethule no Rakkas az alar alar archim maev shi ",--Boss has Curse of Tongues - Lengua Maldita
+	Phase3			= "¡Espero que este maravilloso objeto sea igual de letal de lo que parece!",
 	Phase3Demonic	= "X ante zila romathis alar il re thorje re az modas "--Boss has Curse of Tongues
 })
 
@@ -45,13 +45,13 @@ L= DBM:GetModLocalization(2420)
 
 L:SetTimerLocalization{
 	timerDesiresContainer		= "Deseo lleno",
-	timerBottledContainer		= "Ánima embotellada lleno",
+	timerBottledContainer		= "Ánima embotellada llena",
 	timerSinsContainer			= "Pecado lleno",
-	timerConcentrateContainer	= "Ánima concentrada lleno"
+	timerConcentrateContainer	= "Ánima concentrada llena"
 }
 
 L:SetOptionLocalization({
-	timerContainers				= "Mostrar temporizadores con el tiempo restante para que se llenen los contenedores"
+	timerContainers				= "Mostrar el tiempo restante para que se llenen los contenedores"
 })
 
 ---------------------------
@@ -75,7 +75,7 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(2424)
 
 L:SetMiscLocalization({
-	CrimsonSpawn	= "Crimson Cabalists answer the call of Denathrius."
+	CrimsonSpawn	= "Los Cabalistas Carmesí acuden a la llamada de Denathrius."
 })
 
 
@@ -85,5 +85,5 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("CastleNathriaTrash")
 
 L:SetGeneralLocalization({
-	name =	"Enemigos menores"
+	name =	"Enemigos del mapa"
 })
