@@ -45,9 +45,9 @@ L= DBM:GetModLocalization(2420)
 
 L:SetTimerLocalization{
 	timerDesiresContainer		= "Deseo lleno",
-	timerBottledContainer		= "Ánima embotellada lleno",
+	timerBottledContainer		= "Ánima embotellada llena",
 	timerSinsContainer			= "Pecado lleno",
-	timerConcentrateContainer	= "Ánima concentrada lleno"
+	timerConcentrateContainer	= "Ánima concentrada llena"
 }
 
 L:SetOptionLocalization({
