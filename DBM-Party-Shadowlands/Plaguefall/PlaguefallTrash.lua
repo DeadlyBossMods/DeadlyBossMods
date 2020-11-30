@@ -55,6 +55,7 @@ mod.vb.metaCast = 0--Disconnects or reloads or leaving/entering the zone when it
 
 function mod:SPELL_CAST_START(args)
 	if not self.Options.Enabled then return end
+	if not self:IsValidWarning(args.sourceGUID) then return end--Filter all casts done by mobs in combat with npcs/other mobs.
 	local spellId = args.spellId
 	if spellId == 328016 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
 		specWarnWonderGrow:Show(args.sourceName)
@@ -91,7 +92,7 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	if not self.Options.Enabled then return end
 	local spellId = args.spellId
-	if spellId == 328015 then
+	if spellId == 328015 and self:IsValidWarning(args.destGUID) then
 		specWarnWonderGrowDispel:CombinedShow(1, args.destName)
 		specWarnWonderGrowDispel:ScheduleVoice(1, "dispelboss")
 	elseif spellId == 320072 and args:IsPlayer() and self:AntiSpam(3, 1) then
@@ -100,12 +101,12 @@ function mod:SPELL_AURA_APPLIED(args)
 --	elseif spellId == 328015 and args:IsDestTypePlayer() and self:CheckDispelFilter() and self:AntiSpam(3, 5) then
 --		specWarnBestialWrath:Show(args.destName)
 --		specWarnBestialWrath:Play("helpdispel")
-	elseif spellId == 320103 then
+	elseif spellId == 320103 then--This may need valid warning filter too not sure yet
 		self.vb.metaCast = self.vb.metaCast + 1
 		if self.vb.metaCast == 1 then
 			timerMetamorphosis:Start()
 		end
-	elseif spellId == 336451 and args:IsDestTypeHostile() and self:AntiSpam(3, 5) then
+	elseif spellId == 336451 and self:IsValidWarning(args.destGUID) and args:IsDestTypeHostile() and self:AntiSpam(3, 5) then
 		specWarnBulwarkofMaldraxxus:Show()
 		specWarnBulwarkofMaldraxxus:Play("mobout")
 	end
