@@ -124,7 +124,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 				specWarnJuggernautRush:Show()
 				specWarnJuggernautRush:Play("targetyou")
 				yellJuggernautRush:Yell()
-				yellJuggernautRushFades:Countdown(5)
+				yellJuggernautRushFades:Countdown(4)
 			else
 				specWarnJuggernautRushSoak:Show(targetname)
 				specWarnJuggernautRushSoak:Play("gathershare")
