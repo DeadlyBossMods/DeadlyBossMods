@@ -33,7 +33,7 @@ L.LOOT_SPEC_REMINDER			= "La tua spec è %s. Il bottino selezionato è %s."
 
 L.BIGWIGS_ICON_CONFLICT		= "DBM ha rilevato l'abilitazione delle icone incursioni sia in BigWigs che in DBM. Disabilita le icone in uno dei due per evitare conflitti"
 
-L.MOD_AVAILABLE				= "%s è disponibile per questa ziona. E' possibile scaricare la mod da Curse/Twitch, WoWI o deadlybossmods.com"
+L.MOD_AVAILABLE				= "%s è disponibile per questa ziona. E' possibile scaricare la mod da Curse, WoWI o deadlybossmods.com"
 
 L.COMBAT_STARTED				= "%s ingaggiato. Buona fortuna e Divertiti! :)"
 L.COMBAT_STARTED_IN_PROGRESS	= "Ingaggiato combattimento in corso contro %s. Buona fortuna e Divertiti! :)"
@@ -168,14 +168,14 @@ L.VOICE_DISABLED				= "Hai almeno un pacchetto vocale DBM installato ma nessuno 
 L.VOICE_COUNT_MISSING		= "Conto alla rovescia %d è impostato su un pacchetto vocale/conteggio non trovato. E' stato reimportato all'opzione predefinita: %s."
 L.BIG_WIGS						= "BigWigs"
 
-L.UPDATEREMINDER_HEADER		= "La tua versione di Deadly Boss Mods e' obsoleta.\n La Versione %s (%s) e' disponibile per il download su Curse/Twitch, WoWI o da deadlybossmods.com"
+L.UPDATEREMINDER_HEADER		= "La tua versione di Deadly Boss Mods e' obsoleta.\n La Versione %s (%s) e' disponibile per il download su Curse, WoWI o da deadlybossmods.com"
 L.UPDATEREMINDER_FOOTER		= "Premi " .. (IsMacClient() and "Cmd-C" or "Ctrl-C")  .. " per copiare il link di download negli appunti."
 L.UPDATEREMINDER_FOOTER_GENERIC		= "Premi " .. (IsMacClient() and "Cmd-C" or "Ctrl-C")  .. " per copiare il link negli appunti."
 
 L.UPDATEREMINDER_DISABLE			= "AVVISO: A causa della notevole obsolescenza, Deadly Boss Mods è stato forzatamente disabilitato e non può essere utilizzato fino all'aggiornamento. Questo per assicurarsi che vecchio e incompatibile codice non causi problemi a te e al tuo gruppo."
 L.UPDATEREMINDER_HOTFIX			= "La versione DBM in uso ha problemi con il combattimento di questo boss che sono stati corretti con l'ultima versione aggiornata"
 L.UPDATEREMINDER_HOTFIX_ALPHA	= "La versione DBM in uso ha problemi con il combattimento di questo boss che sono stati corretti con la prossima versione in arrivo (o nella versione alfa)"
-L.UPDATEREMINDER_MAJORPATCH		= "AVVISO: Data l'obsolescenza di Deadly Boss Mods, DBM è stato disabilitato fino ad aggiornamento, trattandosi di una patch maggiore. Questo è per assicurarsi che il vecchio e incompatibile codice non causi problemi a te o al tuo gruppo. Assicurati di scaricare una nuova versione da deadlybossmods.com, Curse/Twitch o WoWI il prima possibile."
+L.UPDATEREMINDER_MAJORPATCH		= "AVVISO: Data l'obsolescenza di Deadly Boss Mods, DBM è stato disabilitato fino ad aggiornamento, trattandosi di una patch maggiore. Questo è per assicurarsi che il vecchio e incompatibile codice non causi problemi a te o al tuo gruppo. Assicurati di scaricare una nuova versione da deadlybossmods.com, Curse o WoWI il prima possibile."
 L.VEM							= "AVVISO: Stai eseguento sia Deadly Boss Mods che Voice Encounter Mods. DBM non funzionerà con questa configurazione e quindi non verrà caricato."
 L.OUTDATEDPROFILES					= "AVVISO: DBM-Profiles è incompatibile con questa versione di DBM. Deve essere rimosso per utilizzare DBM, per evitare conflitti."
 L.DPMCORE						= "AVVISO: Deadly PvP mods è discontinuato e incompatibile con questa versione di DBM. Deve essere rimosso per utilizzare DBM, per evitare conflitti."
