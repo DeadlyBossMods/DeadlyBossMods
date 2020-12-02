@@ -62,8 +62,9 @@ do
 			end
 		end
 		-- Sort LibSharedMedia keys alphabetically (case-insensitive)
+		local hashtable = LibStub("LibSharedMedia-3.0", true):HashTable(mediatype)
 		local keytable = {}
-		for k in next, LibStub("LibSharedMedia-3.0", true):HashTable(mediatype) do
+		for k in next, hashtable do
 			tinsert(keytable, k)
 		end
 		tsort(keytable, function(a, b)
@@ -82,7 +83,7 @@ do
 		end
 		for i = 1, #keytable do
 			if mediatype ~= "sound" or (keytable[i] ~= "None" and keytable[i] ~= "NPCScan") then
-				local v = LibStub("LibSharedMedia-3.0", true):HashTable(mediatype)[keytable[i]]
+				local v = hashtable[keytable[i]]
 				-- Filter duplicates
 				local insertme = true
 				for _, v2 in next, result do

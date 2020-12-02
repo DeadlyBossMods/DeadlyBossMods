@@ -1,6 +1,6 @@
 local L = DBM_GUI_L
 
-local dbm_profilePanel_create, dbm_profilePanel_refresh
+local Create, Refresh
 local profileDropdown = {}
 
 local profilePanel			= DBM_GUI.Cat_General:CreateNewPanel(L.Panel_Profile, "option")
@@ -10,20 +10,20 @@ local createTextbox			= createProfileArea:CreateEditBox(L.EnterProfileName, "", 
 createTextbox:SetMaxLetters(17)
 createTextbox:SetPoint("TOPLEFT", 30, -25)
 createTextbox:SetScript("OnEnterPressed", function()
-	dbm_profilePanel_create()
+	Create()
 end)
 
 local createButton			= createProfileArea:CreateButton(L.CreateProfile)
 createButton:SetPoint("LEFT", createTextbox, "RIGHT", 10, 0)
 createButton:SetScript("OnClick", function()
-	dbm_profilePanel_create()
+	Create()
 end)
 
 local applyProfileArea		= profilePanel:CreateArea(L.Area_ApplyProfile)
 local applyProfile			= applyProfileArea:CreateDropdown(L.SelectProfileToApply, profileDropdown, nil, nil, function(value)
 	DBM_UsedProfile = value
 	DBM:ApplyProfile(value)
-	dbm_profilePanel_refresh()
+	Refresh()
 end)
 applyProfile:SetPoint("TOPLEFT", 0, -20)
 applyProfile:SetScript("OnShow", function()
@@ -33,7 +33,7 @@ end)
 local copyProfileArea		= profilePanel:CreateArea(L.Area_CopyProfile)
 local copyProfile			= copyProfileArea:CreateDropdown(L.SelectProfileToCopy, profileDropdown, nil, nil, function(value)
 	DBM:CopyProfile(value)
-	C_Timer.After(0.05, dbm_profilePanel_refresh)
+	C_Timer.After(0.05, Refresh)
 end)
 copyProfile:SetPoint("TOPLEFT", 0, -20)
 copyProfile:SetScript("OnShow", function()
@@ -45,7 +45,7 @@ end)
 local deleteProfileArea		= profilePanel:CreateArea(L.Area_DeleteProfile)
 local deleteProfile			= deleteProfileArea:CreateDropdown(L.SelectProfileToDelete, profileDropdown, nil, nil, function(value)
 	DBM:DeleteProfile(value)
-	C_Timer.After(0.05, dbm_profilePanel_refresh)
+	C_Timer.After(0.05, Refresh)
 end)
 deleteProfile:SetPoint("TOPLEFT", 0, -20)
 deleteProfile:SetScript("OnShow", function()
@@ -62,7 +62,10 @@ dualProfile:SetScript("OnClick", function()
 end)
 dualProfile:SetChecked(DBM_UseDualProfile)
 
-function dbm_profilePanel_create()
+-- Start profiles
+-- End profiles
+
+function Create()
 	if createTextbox:GetText() then
 		local text = createTextbox:GetText()
 		text = text:gsub(" ", "")
@@ -70,12 +73,12 @@ function dbm_profilePanel_create()
 			DBM:CreateProfile(createTextbox:GetText())
 			createTextbox:SetText("")
 			createTextbox:ClearFocus()
-			dbm_profilePanel_refresh()
+			Refresh()
 		end
 	end
 end
 
-function dbm_profilePanel_refresh()
+function Refresh()
 	table.wipe(profileDropdown)
 	for name, _ in pairs(DBM_AllSavedOptions) do
 		table.insert(profileDropdown, {
@@ -87,4 +90,4 @@ function dbm_profilePanel_refresh()
 	copyProfile:GetScript("OnShow")()
 	deleteProfile:GetScript("OnShow")()
 end
-dbm_profilePanel_refresh()
+Refresh()
