@@ -43,7 +43,7 @@ L.LOOT_SPEC_REMINDER				= "Your current spec is %s. Your current loot choice is 
 
 L.BIGWIGS_ICON_CONFLICT				= L.DBM .. " has detected that you have raid icons turned on in both BigWigs and " .. L.DBM .. ". Please disable icons in one of them to avoid conflicts"
 
-L.MOD_AVAILABLE						= "%s is available for this zone. You can find download on Curse/Twitch or WoWI"
+L.MOD_AVAILABLE						= "%s is available for this zone. You can find download on Curse or WoWI"
 
 L.COMBAT_STARTED					= "%s engaged. Good luck and have fun! :)"
 L.COMBAT_STARTED_IN_PROGRESS		= "Engaged an in progress fight against %s. Good luck and have fun! :)"
@@ -174,20 +174,20 @@ L.VERSIONCHECK_ENTRY_TWO			= "%s: %s (%s) & %s (%s)"--Two Boss mods
 L.VERSIONCHECK_ENTRY_NO_DBM			= "%s: No boss mod installed"
 L.VERSIONCHECK_FOOTER				= "Found %d player(s) with " .. L.DBM .. " & %d player(s) with Bigwigs"
 L.VERSIONCHECK_OUTDATED				= "Following %d player(s) have outdated boss mod version: %s"
-L.YOUR_VERSION_OUTDATED     		= "Your version of " .. L.DEADLY_BOSS_MODS .. " is out-of-date. Please download the latest version through Curse/Twitch, WoWI, or from the GitHub Releases page."
+L.YOUR_VERSION_OUTDATED     		= "Your version of " .. L.DEADLY_BOSS_MODS .. " is out-of-date. Please download the latest version through Curse, WoWI, or from the GitHub Releases page."
 L.VOICE_PACK_OUTDATED				= "Your selected " .. L.DBM .. " voice pack is missing some sounds supported by " .. L.DBM .. ". Some warning sounds will still play default sounds. Please download a newer version of voice pack or contact pack author for an update that contains missing audio"
 L.VOICE_MISSING						= "You have a " .. L.DBM .. " voice pack selected that could not be found. If this is an error, make sure your voice pack is properly installed and enabled in addons."
 L.VOICE_DISABLED					= "You currently have at least one " .. L.DBM .. " voice pack installed but none enabled. If you intend to use a voice pack, make sure it's chosen in 'Spoken Alerts', else uninstall unused voice packs to hide this message"
 L.VOICE_COUNT_MISSING				= "Countdown voice %d is set to a voice/count pack that could not be found. It has been reset to default setting: %s."
 L.BIG_WIGS							= "BigWigs"
 
-L.UPDATEREMINDER_HEADER				= "Your version of " .. L.DEADLY_BOSS_MODS.. " is out-of-date.\n Version %s (%s) is available for download through Curse/Twitch, WoWI, or from GitHub Releases page"
+L.UPDATEREMINDER_HEADER				= "Your version of " .. L.DEADLY_BOSS_MODS.. " is out-of-date.\n Version %s (%s) is available for download through Curse, WoWI, or from GitHub Releases page"
 L.UPDATEREMINDER_FOOTER				= "Press " .. (IsMacClient() and "Cmd-C" or "Ctrl-C")  ..  " to copy the download link to your clipboard."
 L.UPDATEREMINDER_FOOTER_GENERIC		= "Press " .. (IsMacClient() and "Cmd-C" or "Ctrl-C")  ..  " to copy the link to your clipboard."
 L.UPDATEREMINDER_DISABLE			= "WARNING: Due to your " .. L.DEADLY_BOSS_MODS.. " being too out of date, it has been force disabled and cannot be used until updated. This is to ensure outdated or incompatible mods do not cause poor play experience for yourself or fellow group members."
 L.UPDATEREMINDER_HOTFIX				= L.DBM .. " version you are on has known issues during this boss encounter that are corrected if you update to latest release"
 L.UPDATEREMINDER_HOTFIX_ALPHA		= L.DBM .. " version you are on has known issues during this boss encounter that are corrected in an upcoming release (or latest alpha version)"
-L.UPDATEREMINDER_MAJORPATCH			= "WARNING: Due to your " .. L.DEADLY_BOSS_MODS.. " being out of date, " .. L.DBM .. " has been disabled until updated, since this is a major game patch. This is to ensure old and incompatible code doesn't cause poor play experience for yourself or fellow group members. Make sure you download a newer version from Curse/Twitch, WoWI, or from GitHub Releases page as soon as possible."
+L.UPDATEREMINDER_MAJORPATCH			= "WARNING: Due to your " .. L.DEADLY_BOSS_MODS.. " being out of date, " .. L.DBM .. " has been disabled until updated, since this is a major game patch. This is to ensure old and incompatible code doesn't cause poor play experience for yourself or fellow group members. Make sure you download a newer version from Curse, WoWI, or from GitHub Releases page as soon as possible."
 L.VEM								= "WARNING: You are running both " .. L.DEADLY_BOSS_MODS.. " and Voice Encounter Mods. DBM will not run in this configuration and therefore will not be loaded."
 L.OUTDATEDPROFILES					= "WARNING: DBM-Profiles not compatible with this version of " .. L.DBM .. ". It must be removed before DBM can proceed, to avoid conflict."
 L.OUTDATEDSPELLTIMERS				= "WARNING: DBM-SpellTimers breaks " .. L.DBM .. " and must be disabled for " .. L.DBM .. " to function properly."

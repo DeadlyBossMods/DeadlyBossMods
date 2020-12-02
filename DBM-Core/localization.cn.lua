@@ -169,13 +169,13 @@ L.VERSIONCHECK_ENTRY_TWO		= "%s: %s (r%d) & %s (r%d)"--Two Boss mods
 L.VERSIONCHECK_ENTRY_NO_DBM	= "%s：未安装" .. L.DBM
 L.VERSIONCHECK_FOOTER		= "团队中有%d名成员正在使用" .. L.DBM .. "， %d名成员正在使用Bigwigs"
 L.VERSIONCHECK_OUTDATED		= "下列%d名玩家的" .. L.DBM .. "版本已经过期:%s"
-L.YOUR_VERSION_OUTDATED		= "你的 " .. L.DEADLY_BOSS_MODS .. " 已经过期。请访问Curse/Twitch, WOWI, 或者或者GitHub Releases页面下载到新版本。"
+L.YOUR_VERSION_OUTDATED		= "你的 " .. L.DEADLY_BOSS_MODS .. " 已经过期。请访问Curse, WOWI, 或者或者GitHub Releases页面下载到新版本。"
 L.VOICE_PACK_OUTDATED		= "你当前使用的" .. L.DBM .. "语音包已经过期。有些特殊警告的屏蔽（当心，毁灭）已被禁用。请下载最新语音包，或联系语音包作者更新。"
 L.VOICE_MISSING				=  L.DBM .. "找不到你当前选择的语音包。语音包选项已经被设置成'None'。请确保你的语音包被正确安装和启用。"
 L.VOICE_DISABLED				= "你安装了语音包但是没有启动它。请在选项中的语音报警菜单中开启语音包。如果不需要语音报警请卸载语音包。"
 L.VOICE_COUNT_MISSING		= "在 %d 语音包中找不到倒计时语音。倒计时已恢复为默认值"
 
-L.UPDATEREMINDER_HEADER			= "您的 " .. L.DEADLY_BOSS_MODS .. " 版本已过期。\n您可以在Curse/Twitch, WOWI, 或者到GitHub Releases页面下载到新版本：%s（%s）。如果您使用整合包，请使用更新器更新。"
+L.UPDATEREMINDER_HEADER			= "您的 " .. L.DEADLY_BOSS_MODS .. " 版本已过期。\n您可以在Curse, WOWI, 或者到GitHub Releases页面下载到新版本：%s（%s）。如果您使用整合包，请使用更新器更新。"
 L.UPDATEREMINDER_FOOTER			= "按下 " .. (IsMacClient() and "Cmd-C" or "Ctrl-C") .. "复制下载地址到剪切板。"
 L.UPDATEREMINDER_FOOTER_GENERIC	= "按下 " .. (IsMacClient() and "Cmd-C" or "Ctrl-C") .. "复制链接到剪切板。"
 L.UPDATEREMINDER_DISABLE			= "警告：你的 " .. L.DEADLY_BOSS_MODS .. " 已经过期太久，它已被强制禁用，直到你更新。这是为了确保它不会导致你或其他团队成员出错。"
