@@ -13,8 +13,8 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 326707 326851 327227 328117 329181 333932",
-	"SPELL_CAST_SUCCESS 327039 327796 339196 329943 330042 326005",
-	"SPELL_AURA_APPLIED 326699 338510 327039 327796 327992 329906 332585 332794 329951",
+	"SPELL_CAST_SUCCESS 327039 327796 339196 329943 330042 326005 329205",
+	"SPELL_AURA_APPLIED 326699 338510 327039 327796 327992 329906 332585 332794 329951 329205",
 	"SPELL_AURA_APPLIED_DOSE 326699 329906 332585",
 	"SPELL_AURA_REMOVED 326699 338510 327039 327796 328117 332794 329951",
 	"SPELL_AURA_REMOVED_DOSE 326699",
@@ -50,6 +50,8 @@ local warnImpale								= mod:NewTargetAnnounce(329951, 2)
 --Stage Three: Indignation
 local warnScorn									= mod:NewStackAnnounce(332585, 2, nil, "Tank|Healer")
 local warnFatalFinesse							= mod:NewTargetNoFilterAnnounce(332794, 2)
+--Mythic?
+local warnBalefulResonance						= mod:NewTargetNoFilterAnnounce(329205, 2)
 
 --Stage One: Sinners Be Cleansed
 local specWarnCleansingPain						= mod:NewSpecialWarningCount(326707, nil, nil, nil, 2, 2)
@@ -85,6 +87,10 @@ local specWarnShatteringPain					= mod:NewSpecialWarningCount(332619, nil, nil, 
 local specWarnFatalfFinesse						= mod:NewSpecialWarningMoveAway(332794, nil, nil, nil, 1, 2)
 local yellFatalfFinesse							= mod:NewPosYell(332794)
 local yellFatalfFinesseFades					= mod:NewIconFadesYell(332794)
+--Mythic Phase?
+local specWarnBalefulResonance					= mod:NewSpecialWarningMoveAway(329205, nil, nil, nil, 1, 2, 4)--Mythic?
+local yellBalefulResonance						= mod:NewYell(329205)--Mythic?
+local yellBalefulResonanceFades					= mod:NewFadesYell(329205)--Mythic?
 
 --Stage One: Sinners Be Cleansed
 --mod:AddTimerLine(BOSS)
@@ -107,7 +113,9 @@ local timerCommandMassacreCD					= mod:NewCDCountTimer(47.4, 330042, nil, nil, n
 --Stage Three: Indignation
 local timerShatteringPainCD						= mod:NewCDTimer(23.1, 332619, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON)
 local timerFatalFitnesseCD						= mod:NewCDTimer(22, 332794, nil, nil, nil, 3)
---local timerSinisterReflectionCD					= mod:NewAITimer(44.3, 333979, nil, nil, nil, 3, nil, DBM_CORE_L.DEADLY_ICON)
+--local timerSinisterReflectionCD				= mod:NewAITimer(44.3, 333979, nil, nil, nil, 3, nil, DBM_CORE_L.DEADLY_ICON)
+mod:AddTimerLine(PLAYER_DIFFICULTY6)
+local timerBalefulResonanceCD					= mod:NewAITimer(22, 329205, nil, nil, nil, 3)
 
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
@@ -285,6 +293,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 		specWarnCommandMassacre:Show(self.vb.MassacreCount)
 		specWarnCommandMassacre:Play("watchstep")--Perhaps farfromline?
 		timerCommandRavageCD:Start(40, self.vb.RavageCount+1)
+	elseif spellId == 329205 then
+		timerBalefulResonanceCD:Start()
 	end
 end
 
@@ -420,6 +430,15 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:SetIcon(args.destName, icon)
 		end
 		self.vb.DebuffIcon = self.vb.DebuffIcon + 1
+	elseif spellId == 329205 then
+		if args:IsPlayer() then
+			specWarnBalefulResonance:Show()
+			specWarnBalefulResonance:Play("runout")
+			yellBalefulResonance:Yell()
+			yellBalefulResonanceFades:Countdown(spellId)
+		else
+			warnBalefulResonance:Show(args.destName)
+		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
