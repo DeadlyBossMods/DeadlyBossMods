@@ -67,6 +67,7 @@ L.Latency_Text				= "設定最高延遲同步門檻:%d"
 L.Button_RangeFrame			= "顯示/隱藏距離監視器"
 L.Button_InfoFrame			= "顯示/隱藏訊息框架"
 L.Button_TestBars			= "測試計時條"
+L.Button_MoveBars			= "移動計時條"
 L.Button_ResetInfoRange		= "重置訊息/距離監視器"
 
 L.ModelOptions				= "3D模型預覽選項"
@@ -76,6 +77,7 @@ L.ModelSoundShort			= SHORT
 L.ModelSoundLong			= TOAST_DURATION_LONG
 
 L.ResizeOptions			 	= "尺寸調整選項"
+L.ResizeInfo				= "您可以通過點擊右下角並拖動來調整GUI的大小。"
 L.Button_ResetWindowSize	= "重設GUI視窗大小"
 L.Editbox_WindowWidth		= "GUI視窗寬度"
 L.Editbox_WindowHeight		= "GUI視窗高度"
