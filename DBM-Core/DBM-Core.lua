@@ -7254,6 +7254,7 @@ do
 				mod = not v.isCustomMod and v
 			end
 			mod = mod or inCombat[1]
+			if mod.noStatistics then return end
 			if IsInScenarioGroup() and not mod.soloChallenge then return end--status not really useful on scenario mods since there is no way to report progress as a percent. We just ignore it.
 			local hp = mod.highesthealth and mod:GetHighestBossHealth() or mod:GetLowestBossHealth()
 			local hpText = mod.CustomHealthUpdate and mod:CustomHealthUpdate() or hp and ("%d%%"):format(hp) or L.UNKNOWN
@@ -7274,6 +7275,7 @@ do
 				mod = not v.isCustomMod and v
 			end
 			mod = mod or inCombat[1]
+			if mod.noStatistics then return end
 			local hp = mod.highesthealth and mod:GetHighestBossHealth() or mod:GetLowestBossHealth()
 			local hpText = mod.CustomHealthUpdate and mod:CustomHealthUpdate() or hp and ("%d%%"):format(hp) or L.UNKNOWN
 			if mod.vb.phase then
