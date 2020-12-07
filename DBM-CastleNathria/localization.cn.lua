@@ -1,4 +1,4 @@
---Mini Dragon <流浪者酒馆-Brilla@金色平原> 20200920
+--Mini Dragon <流浪者酒馆-Brilla@金色平原> 20201207
 --夏一可，暴雪娱乐
 
 if GetLocale() ~= "zhCN" then return end
