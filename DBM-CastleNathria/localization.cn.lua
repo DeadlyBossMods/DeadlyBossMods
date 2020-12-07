@@ -1,4 +1,4 @@
---Mini Dragon <流浪者酒馆-Brilla@金色平原> 20200920
+--Mini Dragon <流浪者酒馆-Brilla@金色平原> 20201207
 --夏一可，暴雪娱乐
 
 if GetLocale() ~= "zhCN" then return end
@@ -30,9 +30,9 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(2418)
 
 L:SetMiscLocalization({
-	Phase2			= "The anticipation to use this relic is killing me! Though, it will more likely kill you.",
+	Phase2			= "我一直想玩玩这件圣物，都快想疯了！而你们的死，可以填补我多年的空虚。",
 	Phase2Demonic	= "Lok zennshinagas xi ril zila refir il rethule no Rakkas az alar alar archim maev shi ",--Boss has Curse of Tongues
-	Phase3			= "I hope this wondrous item is as lethal as it looks!",
+	Phase3			= "如此美妙的东西，如果没有杀伤力就太可惜了！",
 	Phase3Demonic	= "X ante zila romathis alar il re thorje re az modas "--Boss has Curse of Tongues
 })
 
@@ -78,7 +78,7 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(2424)
 
 L:SetMiscLocalization({
-	CrimsonSpawn	= "Crimson Cabalists answer the call of Denathrius."
+	CrimsonSpawn	= "赤红秘法师"--响应了德纳修斯大帝的号召
 })
 
 
