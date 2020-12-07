@@ -10,6 +10,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 144546 144590 144602 144702",
+	"SPELL_CAST_SUCCESS 144546",
 	"SPELL_AURA_APPLIED 144590"
 )
 
@@ -39,7 +40,6 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 144546 then
-		timerLeapCD:Start()
 		self:BossTargetScanner(71992, "LeapTarget", 0.05, 16)
 	elseif spellId == 144590 then
 		specWarnMoonfangCurse:Show()
@@ -51,6 +51,13 @@ function mod:SPELL_CAST_START(args)
 		specWarnTears:Show()
 		specWarnTears:Play("aesoon")
 		timerMoonfangsTearCD:Start()
+	end
+end
+
+function mod:SPELL_CAST_SUCCESS(args)
+	local spellId = args.spellId
+	if spellId == 144546 then
+		timerLeapCD:Start(11)--12-1
 	end
 end
 

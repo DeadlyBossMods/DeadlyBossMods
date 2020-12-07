@@ -101,7 +101,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnLostConfidence:Play("runout")
 			yellLostConfidence:Yell()
 		else
-			warnLostConfidence:Show(args.destName)
+			warnLostConfidence:CombinedShow(0.3, args.destName)
 		end
 	end
 end

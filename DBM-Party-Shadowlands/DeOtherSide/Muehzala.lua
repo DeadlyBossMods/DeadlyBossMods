@@ -112,7 +112,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellCosmicArtifice:Yell()
 			yellCosmicArtificeFades:Countdown(spellId)
 		else
-			warnCosmicArtifice:Show(args.destName)
+			warnCosmicArtifice:CombinedShow(1, args.destName)
 		end
 	end
 end

@@ -34,7 +34,7 @@ mod:RegisterEventsInCombat(
 local warnChargedSpear				= mod:NewTargetNoFilterAnnounce(321009, 4)
 
 --Kin-Tara
-local specWarnOverheadSlash			= mod:NewSpecialWarningSoak(320866, "Tank", nil, nil, 1, 2)
+local specWarnOverheadSlash			= mod:NewSpecialWarningDefensive(320966, "Tank", nil, nil, 1, 2)
 local specWarnDarkLance				= mod:NewSpecialWarningInterrupt(327481, "HasInterrupt", nil, nil, 1, 2)
 local specWarnChargedSpear			= mod:NewSpecialWarningMoveAway(321009, nil, nil, nil, 1, 2)
 local yellChargedSpear				= mod:NewYell(321009)
@@ -45,7 +45,7 @@ local specWarnGTFO					= mod:NewSpecialWarningGTFO(317626, nil, nil, nil, 1, 8)
 --Kin-Tara
 local KinTara = DBM:EJ_GetSectionInfo(21637)
 mod:AddTimerLine(KinTara)
-local timerOverheadSlashCD			= mod:NewCDTimer(8.5, 320866, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON)--8.5-11
+local timerOverheadSlashCD			= mod:NewCDTimer(6.3, 320966, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON)--6.3-11
 local timerFlightCD					= mod:NewCDTimer(145, 313606, nil, nil, nil, 6)
 local timerChargedSpearCD			= mod:NewCDTimer(15.8, 321009, nil, nil, nil, 3, nil, DBM_CORE_L.DEADLY_ICON)
 --Azules
@@ -62,7 +62,7 @@ function mod:OnCombatStart(delay)
 	self.vb.spearCount = 0
 	self.vb.flightActive = false
 	--Kin-Tara
-	timerOverheadSlashCD:Start(8.5-delay)
+	timerOverheadSlashCD:Start(8.3-delay)
 	timerFlightCD:Start(30.5-delay)
 	DBM:AddMsg("Note, Kin-Tara flight detection on this is using experimental code, report if phase change detection doesn't look functional")
 end

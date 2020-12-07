@@ -26,7 +26,7 @@ local specWarnLandoftheDead			= mod:NewSpecialWarningSwitch(321226, "-Healer", n
 local specWarnFinalHarvest			= mod:NewSpecialWarningDodge(321247, nil, nil, nil, 2, 2)
 local specWarnNecroticBreath		= mod:NewSpecialWarningDodge(333493, nil, nil, nil, 2, 2)
 --local yellNecroticBreath			= mod:NewYell(333493)
-local specWarnNecroticBolt			= mod:NewSpecialWarningInterrupt(320170, "HasInterrupt", nil, nil, 1, 2)--Every 5 seconds, so might change default
+local specWarnNecroticBolt			= mod:NewSpecialWarningInterrupt(320170, false, nil, 2, 1, 2)--Every 5 seconds, so off by default
 local specWarnUnholyFrenzy			= mod:NewSpecialWarningDispel(320012, "RemoveEnrage", nil, nil, 1, 2)
 local specWarnUnholyFrenzyTank		= mod:NewSpecialWarningDefensive(320012, "Tank", nil, nil, 1, 2)
 --Reanimated Mage
