@@ -78,7 +78,7 @@ local timerChangeofHeart						= mod:NewTargetTimer(4, 340452, nil, nil, nil, 5, 
 mod:AddBoolOption("timerContainers", true, "timer", nil, 6)
 --mod:AddInfoFrameOption(325225, true)
 mod:AddSetIconOption("SetIconOnSharedSuffering", 324983, true, false, {1, 2, 3})
-mod:AddSetIconOption("SetIconOnAdds", "ej21227", true, true, {5, 6, 7, 8})
+mod:AddSetIconOption("SetIconOnAdds", "ej22618", true, true, {5, 6, 7, 8})
 --mod:AddNamePlateOption("NPAuraOnVolatileCorruption", 312595)
 
 mod.vb.sufferingIcon = 1
@@ -309,7 +309,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnConcentrateAnima:Show()
 			specWarnConcentrateAnima:Play("runout")
-			yellConcentrateAnimaFades:CountdownSay(spellId)--SAY (white letters for avoid)
+			yellConcentrateAnimaFades:Countdown(spellId)
 		end
 	elseif spellId == 335396 then
 		if args:IsPlayer() then

@@ -108,7 +108,7 @@ local timerDancingFoolsCD						= mod:NewCDTimer(30.3, 330964, nil, nil, nil, 1)
 
 mod:AddRangeFrameOption(8, 346657)
 mod:AddInfoFrameOption(347350, true)
-mod:AddSetIconOption("SetIconOnDancingFools", 346826, true, false, {8})
+mod:AddSetIconOption("SetIconOnDancingFools", 346826, true, false, {8})--Attempts to set icon only on killable one, not yet tested
 mod:AddNamePlateOption("NPAuraOnFixate", 330967)
 mod:AddNamePlateOption("NPAuraOnShield", 346694)
 mod:AddNamePlateOption("NPAuraOnUproar", 346303)
