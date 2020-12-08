@@ -62,8 +62,19 @@ dualProfile:SetScript("OnClick", function()
 end)
 dualProfile:SetChecked(DBM_UseDualProfile)
 
--- Start profiles
--- End profiles
+local importExportProfilesArea = profilePanel:CreateArea(L.Area_ImportExportProfile)
+importExportProfilesArea:CreateText(L.ImportExportInfo, nil, true)
+local exportProfile = importExportProfilesArea:CreateButton(L.ButtonExportProfile, 120, 20, function()
+	DBM_GUI:CreateExportProfile(DBM.Options)
+end)
+exportProfile:SetPoint("TOPLEFT", 12, -20)
+local importProfile = importExportProfilesArea:CreateButton(L.ButtonImportProfile, 120, 20, function()
+	DBM_GUI:CreateImportProfile(function(importTable)
+		print("We got an import table.")
+	end)
+end)
+importProfile.myheight = 0
+importProfile:SetPoint("LEFT", exportProfile, "RIGHT", 2, 0)
 
 function Create()
 	if createTextbox:GetText() then
