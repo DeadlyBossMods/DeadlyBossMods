@@ -64,6 +64,7 @@ L.Latency_Text				= "Latencia máxima para sincronización: %d"
 L.Button_RangeFrame			= "Mostrar/ocultar\nmarco de distancia"
 L.Button_InfoFrame			= "Mostrar/ocultar\nmarco de información"
 L.Button_TestBars			= "Comprobar barras"
+L.Button_MoveBars			= "Posición barras"
 L.Button_ResetInfoRange		= "Restaurar posiciones por defecto"
 
 L.ModelOptions				= "Opciones del visualizador de modelos 3D"
