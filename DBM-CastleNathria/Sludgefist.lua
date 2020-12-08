@@ -14,7 +14,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 332318",
 	"SPELL_CAST_SUCCESS 332687",
-	"SPELL_AURA_APPLIED 331209 331314 342420 335470 340817",
+	"SPELL_AURA_APPLIED 331209 331314 342420 335470 340817 341250",
 	"SPELL_AURA_REMOVED 331209 331314 342419 342420 340817",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
@@ -36,7 +36,7 @@ local warnHatefulGaze							= mod:NewTargetNoFilterAnnounce(331209, 4)
 local warnStunnedImpact							= mod:NewTargetNoFilterAnnounce(331314, 1)
 --local warnChainLink								= mod:NewTargetAnnounce(342419, 3)--Targetting debuff
 local warnChainSlam								= mod:NewTargetNoFilterAnnounce(164407, 3)
---local warnVengefulRage							= mod:NewTargetNoFilterAnnounce(341294, 4)
+local warnGruesomeRage							= mod:NewTargetNoFilterAnnounce(341250, 4)
 
 local specWarnHatefulGaze						= mod:NewSpecialWarningMoveTo(331209, nil, nil, nil, 3, 2)
 local specWarnHeedlessCharge					= mod:NewSpecialWarningSoon(331212, nil, nil, nil, 2, 2)
@@ -217,8 +217,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			warnChainSlam:Show(args.destName)
 		end
---	elseif spellId == 341294 then
---		warnVengefulRage:Show(args.destName)
+	elseif spellId == 341250 then
+		warnGruesomeRage:Show(args.destName)
 	elseif spellId == 340817 then
 		if self:AntiSpam(8, 9) then
 			self.vb.shiftCount = self.vb.shiftCount + 1
