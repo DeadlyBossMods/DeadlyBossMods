@@ -445,15 +445,11 @@ local function createTextFrame()
 	end)
 
 	local text = textFrame:CreateFontString(nil, "OVERLAY", "GameTooltipText")
-	text:SetSize(128, 15)
+	text:SetWidth(128)
+	text:SetHeight(15)
 	text:SetPoint("BOTTOMLEFT", textFrame, "TOPLEFT")
 	text:SetTextColor(1, 1, 1, 1)
 	text:Show()
-	local oldSetText = text.SetText
-	text.SetText = function(self, text)
-		self:OldSetText(text)
-		self:SetWidth(0) -- Set the text width to 0, so the system can auto-calculate the size
-	end
 	textFrame.text = text
 
 	local inRangeText = textFrame:CreateFontString(nil, "OVERLAY", "GameTooltipText")
