@@ -6,8 +6,8 @@ mod:SetCreatureID(166971, 166969, 166970)--Castellan Niklaus, Baroness Frieda, L
 mod:SetEncounterID(2412)
 mod:SetBossHPInfoToHighest()
 mod:SetUsedIcons(8)
-mod:SetHotfixNoticeRev(20201107000000)--2020, 11, 07
-mod:SetMinSyncRevision(20201107000000)
+mod:SetHotfixNoticeRev(20201208000000)--2020, 12, 08
+mod:SetMinSyncRevision(20201208000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
