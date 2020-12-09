@@ -122,6 +122,9 @@ local timerSoulInfuserCD						= mod:NewCDCountTimer(10, "ej21953", nil, nil, nil
 ----Pestering Fiend
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22082))
 local timerPesteringFiendCD						= mod:NewCDCountTimer(70, "ej22082", nil, nil, nil, 1, 328254, DBM_CORE_L.DAMAGE_ICON)
+----Reborn Phoenix
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(22090))
+local timerPhoenixRespawn						= mod:NewCastTimer(20, 328731, nil, nil, nil, 1)
 
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
@@ -492,8 +495,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 328731 then
 		if self.Options.NPAuraOnPhoenixEmbers then
-			DBM.Nameplate:Show(true, args.sourceGUID, spellId, nil, 20)
+			DBM.Nameplate:Show(true, args.destGUID, spellId, nil, 20)
 		end
+		timerPhoenixRespawn:Start(20, args.destGUID)
 	elseif spellId == 333145 and self:AntiSpam(5, args.destName) then
 		warnReturnToStone:Show(args.destName)
 	elseif spellId == 326078 then
@@ -567,6 +571,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.NPAuraOnPhoenixEmbers then
 			DBM.Nameplate:Hide(true, args.destGUID, spellId)
 		end
+		timerPhoenixRespawn:Stop(args.destGUID)
 	elseif spellId == 326078 then
 		infuserTargets[args.destName] = nil
 	elseif spellId == 328479 then

@@ -88,7 +88,7 @@ local timerPetrifyingHowlCD						= mod:NewCDTimer(20.6, 334852, nil, nil, nil, 3
 mod:AddRangeFrameOption("5/6/10")
 --mod:AddInfoFrameOption(308377, true)
 mod:AddSetIconOption("SetIconOnSinSeeker", 335114, true, false, {1, 2, 3})--335111 335112 335113
---mod:AddSetIconOption("SetIconOnPierceSoul", 338609, true, true, {6, 7, 8})
+mod:AddSetIconOption("SetIconOnShades", 334757, true, true, {4, 5})
 --mod:AddNamePlateOption("NPAuraOnVolatileCorruption", 312595)
 
 mod.vb.phase = 1
@@ -174,6 +174,9 @@ function mod:SPELL_CAST_START(args)
 		specWarnShadesofBargast:Show()
 		specWarnShadesofBargast:Play("killmob")
 		timerShadesofBargastCD:Start()
+		if self.Options.SetIconOnShades then
+			self:ScanForMobs(171557, 1, 4, 2, 0.2, 15)--Start at 4 ascending up
+		end
 	elseif spellId == 334852 then
 		timerPetrifyingHowlCD:Start()
 	end
@@ -228,7 +231,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellViciousLungeFades:Countdown(spellId)
 			updateRangeFrame(self)
 		else
-			warnViciousLunge:Show(args.destname)
+			warnViciousLunge:Show(args.destName)
 		end
 	elseif spellId == 334852 then
 		warnPetrifyingHowl:CombinedShow(0.3, args.destName)

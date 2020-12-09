@@ -42,7 +42,7 @@ local specWarnEssenceSap						= mod:NewSpecialWarningStack(334755, false, 8, nil
 local specWarnConsume							= mod:NewSpecialWarningRun(334522, nil, nil, nil, 4, 2)
 local specWarnExpunge							= mod:NewSpecialWarningMoveAway(329725, nil, nil, nil, 1, 2)
 local specWarnVolatileEjection					= mod:NewSpecialWarningYou(334266, nil, nil, nil, 1, 2)
-local yellVolatileEjection						= mod:NewYell(334266)--Change to NewPosYell if it's ever added to combat log, can't be trusted as icon yell when relying on syncing
+local yellVolatileEjection						= mod:NewYell(334266, 202046)--ShortText "Beam". Change to NewPosYell if it's ever added to combat log, can't be trusted as icon yell when relying on syncing
 local specWarnGrowingHunger						= mod:NewSpecialWarningCount(332295, nil, DBM_CORE_L.AUTO_SPEC_WARN_OPTIONS.stack:format(12, 332295), nil, 1, 2)
 local specWarnGrowingHungerOther				= mod:NewSpecialWarningTaunt(332295, nil, nil, nil, 1, 2)
 local specWarnOverwhelm							= mod:NewSpecialWarningDefensive(329774, "Tank", nil, nil, 1, 2)
@@ -52,7 +52,7 @@ local specWarnOverwhelm							= mod:NewSpecialWarningDefensive(329774, "Tank", n
 local timerGluttonousMiasmaCD					= mod:NewCDCountTimer(23.8, 329298, nil, nil, nil, 3, nil, nil, nil, 1, 3)
 local timerConsumeCD							= mod:NewNextCountTimer(119.8, 334522, nil, nil, nil, 2)
 local timerExpungeCD							= mod:NewNextCountTimer(44.3, 329725, nil, nil, nil, 3)
-local timerVolatileEjectionCD					= mod:NewNextCountTimer(35.9, 334266, nil, nil, nil, 3)
+local timerVolatileEjectionCD					= mod:NewNextCountTimer(35.9, 334266, nil, nil, nil, 3)--maybe short this text too? 202046 for Beam
 local timerDesolateCD							= mod:NewNextCountTimer(59.8, 329455, nil, nil, nil, 2, nil, DBM_CORE_L.HEALER_ICON)
 local timerOverwhelmCD							= mod:NewCDTimer(11.9, 329774, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON, nil, 2, 3)
 
@@ -393,7 +393,7 @@ function mod:SPELL_DAMAGE(_, _, _, _, _, _, _, _, spellId)
 			local timer = self:IsEasy() and 55 or 43
 			specWarnExpunge:Schedule(timer)
 			specWarnExpunge:ScheduleVoice(timer, "scatter")
-			timerExpungeCD:StarT(timer, self.vb.expungeCount+1)
+			timerExpungeCD:Start(timer, self.vb.expungeCount+1)
 		else
 			--Actual timers are +5, but since we trigger off damage, have to make adjustment
 			local timer = self:IsEasy() and 40 or 30.8
