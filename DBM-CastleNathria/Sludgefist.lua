@@ -43,7 +43,7 @@ local specWarnHeedlessCharge					= mod:NewSpecialWarningSoon(331212, nil, nil, n
 local yellHatefulGaze							= mod:NewShortYell(331209)
 local yellHatefulGazeFades						= mod:NewShortFadesYell(331209)
 local specWarnChainLink							= mod:NewSpecialWarningYou(335300, nil, nil, nil, 1, 2)
-local yellChainLink								= mod:NewIconRepeatYell(335300, DBM_CORE_L.AUTO_YELL_ANNOUNCE_TEXT.shortyell)
+local yellChainLink								= mod:NewIconRepeatYell(335300, DBM_CORE_L.AUTO_YELL_ANNOUNCE_TEXT.shortyell, false, 2)
 local specWarnChainSlam							= mod:NewSpecialWarningYou(335470, nil, nil, nil, 1, 2)
 local yellChainSlam								= mod:NewShortYell(335470, nil, nil, nil, "YELL")
 local yellChainSlamFades						= mod:NewShortFadesYell(335470, nil, nil, nil, "YELL")
@@ -83,7 +83,7 @@ local SiesmicTimers = {18.4, 25.5, 29.3, 12.9, 25.5, 30.2, 12.6, 25.5, 30.1, 13.
 local function ChainLinkYellRepeater(self, text, runTimes)
 	yellChainLink:Yell(text)
 	runTimes = runTimes + 1
-	if runTimes < 4 then
+	if runTimes < 3 then
 		self:Schedule(2, ChainLinkYellRepeater, self, text, runTimes)
 	end
 end
