@@ -457,8 +457,7 @@ local function createTextFrame()
 	textFrame.text = text
 
 	local inRangeText = textFrame:CreateFontString(nil, "OVERLAY", "GameTooltipText")
-	inRangeText:SetWidth(128)
-	inRangeText:SetHeight(15)
+	inRangeText:SetSize(128, 15)
 	inRangeText:SetPoint("TOPLEFT", textFrame, "BOTTOMLEFT")
 	inRangeText:SetTextColor(1, 1, 1, 1)
 	inRangeText:Hide()
@@ -529,16 +528,14 @@ local function createRadarFrame()
 	player:SetPoint("CENTER")
 
 	local text = radarFrame:CreateFontString(nil, "OVERLAY", "GameTooltipText")
-	text:SetWidth(128)
-	text:SetHeight(15)
+	text:SetSize(128, 15)
 	text:SetPoint("BOTTOMLEFT", radarFrame, "TOPLEFT")
 	text:SetTextColor(1, 1, 1, 1)
 	text:Show()
 	radarFrame.text = text
 
 	local inRangeText = radarFrame:CreateFontString(nil, "OVERLAY", "GameTooltipText")
-	inRangeText:SetWidth(128)
-	inRangeText:SetHeight(15)
+	inRangeText:SetSize(128, 15)
 	inRangeText:SetPoint("TOPLEFT", radarFrame, "BOTTOMLEFT")
 	inRangeText:SetTextColor(1, 1, 1, 1)
 	inRangeText:Hide()
