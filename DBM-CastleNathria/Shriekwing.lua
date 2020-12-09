@@ -128,7 +128,7 @@ function mod:SPELL_CAST_START(args)
 		end
 		timerExsanguinatingBiteCD:Start()
 	elseif spellId == 345936 then
-		if self.Optios.SpecWarn345936moveto then
+		if self.Options.SpecWarn345936moveto then
 			specWarnEarsplittingShriek:Show(DBM_CORE_L.BREAK_LOS)
 			specWarnEarsplittingShriek:Play("findshelter")
 		else
