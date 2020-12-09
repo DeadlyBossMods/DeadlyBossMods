@@ -94,9 +94,9 @@ local yellEyeOnTarget							= mod:NewYell(328479, nil, false)
 
 --Shade of Kael'thas
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(21966))
-local timerFieryStrikeCD						= mod:NewCDTimer(6.7, 326455, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)--6.7-13.5 (7.4? lowest now?)
-local timerEmberBlastCD							= mod:NewCDTimer(24.4, 325877, nil, nil, nil, 3)--not 20 anymore?
-local timerBlazingSurgeCD						= mod:NewCDTimer(19.5, 329509, nil, nil, nil, 3)
+local timerFieryStrikeCD						= mod:NewCDTimer(6.7, 326455, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)--6.7-13.5 (9.4? lowest now?)
+local timerEmberBlastCD							= mod:NewCDTimer(20.6, 325877, nil, nil, nil, 3)--20 again? or is it just 24 on mythic and 20 on heroic
+local timerBlazingSurgeCD						= mod:NewCDTimer(19.4, 329509, nil, nil, nil, 3)
 local timerCloakofFlamesCD						= mod:NewNextTimer(60, 337859, nil, nil, nil, 5)
 --local timerRebornPhoenixCD					= mod:NewCDTimer(44.3, "ej22090", nil, nil, nil, 1, 328659, DBM_CORE_L.DAMAGE_ICON)--Cast only once whole fight and not timer based
 --High Torturor Darithos
@@ -106,7 +106,7 @@ local timerGreaterCastigationCD					= mod:NewNextTimer(15.8, 328885, nil, nil, n
 ----Rockbound Vanquisher
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(21954))
 local timerVanquisherCD							= mod:NewCDCountTimer(80, "ej21954", nil, nil, nil, 1, 325440, DBM_CORE_L.DAMAGE_ICON)
-local timerVanquishingStrikeCD					= mod:NewCDTimer(5.5, 325440, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)--5.5-9
+local timerVanquishingStrikeCD					= mod:NewCDTimer(5.5, 325440, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)--5.5-9 (6.1 now?)
 --local timerConcussiveSmashCD					= mod:NewNextCountTimer(12.1, 325506, nil, nil, nil, 5)
 ----Bleakwing Assassin
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(21993))
@@ -360,7 +360,7 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 325877 then
-		timerEmberBlastCD:Start()
+		timerEmberBlastCD:Start(self:IsMythic() and 24.4 or 20.6)--Verify mythic still 24
 		self:BossTargetScanner(args.sourceGUID, "EmberBlastTarget", 0.2, 13)--Scans for 2.6 of 5.0 second cast, will adjust later
 	elseif spellId == 329509 or spellId == 329518 then
 		warnBlazingSurge:Show()
