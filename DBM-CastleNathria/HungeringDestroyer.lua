@@ -393,7 +393,7 @@ function mod:SPELL_DAMAGE(_, _, _, _, _, _, _, _, spellId)
 			local timer = self:IsEasy() and 55 or 43
 			specWarnExpunge:Schedule(timer)
 			specWarnExpunge:ScheduleVoice(timer, "scatter")
-			timerExpungeCD:StarT(timer, self.vb.expungeCount+1)
+			timerExpungeCD:Start(timer, self.vb.expungeCount+1)
 		else
 			--Actual timers are +5, but since we trigger off damage, have to make adjustment
 			local timer = self:IsEasy() and 40 or 30.8

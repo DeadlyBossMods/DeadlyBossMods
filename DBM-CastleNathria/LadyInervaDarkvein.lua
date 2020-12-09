@@ -381,7 +381,8 @@ end
 function mod:UPDATE_UI_WIDGET(table)
 	local id = table.widgetID
 	if not containerProgress[id] then return end
-	local widgetInfo = C_UIWidgetManager.GetIconAndTextWidgetVisualizationInfo(id)
+	local widgetInfo = C_UIWidgetManager.GetStatusBarWidgetVisualizationInfo(id)
+	if not widgetInfo then return end
 	local value = widgetInfo.barValue
 	if not value then return end
 	containerProgress[id][1] = value

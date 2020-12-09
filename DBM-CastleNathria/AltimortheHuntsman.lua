@@ -231,7 +231,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellViciousLungeFades:Countdown(spellId)
 			updateRangeFrame(self)
 		else
-			warnViciousLunge:Show(args.destname)
+			warnViciousLunge:Show(args.destName)
 		end
 	elseif spellId == 334852 then
 		warnPetrifyingHowl:CombinedShow(0.3, args.destName)

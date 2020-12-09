@@ -55,6 +55,7 @@ local specWarnBlindSwipe						= mod:NewSpecialWarningDefensive(343005, "Tank", n
 local specWarnEchoingScreech					= mod:NewSpecialWarningDodge(342863, nil, nil, nil, 2, 2)
 --Stage Two - Terror of Castle Nathria
 local specWarnBloodshroud						= mod:NewSpecialWarningSpell(328921, nil, nil, nil, 2, 2)
+local specWarnEarsplittingShriek				= mod:NewSpecialWarningMoveTo(345936, nil, nil, nil, 1, 2)
 local specWarnDeadlyDescent						= mod:NewSpecialWarningYou(343021, nil, nil, nil, 1, 2)--1 because you can't do anything about it
 local yellDeadlyDescent							= mod:NewYell(343021, nil, false)--Useless with only 1 second to avoid
 --local yellDeadlyDescentFades					= mod:NewShortFadesYell(343021)--Re-enable if made 4 seconds again, but as 2 seconds this is useless
@@ -71,8 +72,8 @@ local timerEchoingScreechCD						= mod:NewCDTimer(48, 342863, nil, nil, nil, 3)
 local timerBloodshroudCD						= mod:NewCDTimer(112, 328921, nil, nil, nil, 6)--100-103
 --Stage Two - Terror of Castle Nathria
 --local timerBloodshroud						= mod:NewBuffActiveTimer(47.5, 328921, nil, nil, nil, 6)--43.4-47.5, more to it than this? or just fact blizzards energy code always proves to be dogshit
-local timerEarsplittingShriekCD						= mod:NewCDTimer(8.5, 345936, nil, nil, nil, 3)
-local timerEarsplittingShriek							= mod:NewCastTimer(4, 345936, nil, false, nil, 5)--For users to see cast bar if boss remains untargetable in intermission
+local timerEarsplittingShriekCD					= mod:NewCDTimer(8.5, 345936, nil, nil, nil, 3)
+local timerEarsplittingShriek					= mod:NewCastTimer(4, 345936, nil, false, nil, 5)--For users to see cast bar if boss remains untargetable in intermission
 local timerEchoingSonar							= mod:NewCastTimer(6, 329362, nil, false, nil, 5)
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
@@ -127,7 +128,12 @@ function mod:SPELL_CAST_START(args)
 		end
 		timerExsanguinatingBiteCD:Start()
 	elseif spellId == 345936 then
-		warnEarsplittingShriek:Show()
+		if self.Optios.SpecWarn345936moveto then
+			specWarnEarsplittingShriek:Show(DBM_CORE_L.BREAK_LOS)
+			specWarnEarsplittingShriek:Play("findshelter")
+		else
+			warnEarsplittingShriek:Show()
+		end
 		timerEarsplittingShriekCD:Start()
 		timerEarsplittingShriek:Start()
 	elseif spellId == 330711 then
