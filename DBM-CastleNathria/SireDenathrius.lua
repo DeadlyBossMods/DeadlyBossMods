@@ -162,14 +162,6 @@ local Timers = {
 		[332794] = {17.5, 48.0, 6.0, 21.0, 27.0, 19.0, 26.0, 21.0, 40.0}
 	}
 }
---"Hand of Destruction-330613-npc:167406 = pull:216.2, 41.3, 40.1, 35.2, 90.0, 31.6", -- [3]
---"Hand of Destruction-330613-npc:167406 = pull:216.4, 41.3, 40.1, 80.2, 89.9, 31.6", -- [3]
---"Hand of Destruction-330613-npc:167406 = pull:216.4, 41.3, 40.0, 57.1, 38.8, 89.8", -- [3]
---"Hand of Destruction-330613-npc:167406 = pull:232.3, 40.9, 40.5, 57.6, 27.3", -- [3]
---"Hand of Destruction-330613-npc:167406 = pull:222.4, 41.3, 40.1, 56.4, 22.4", -- [3]
---"Hand of Destruction-330613-npc:167406 = pull:226.1, 41.3, 40.1, 56.5", -- [3]
---"Hand of Destruction-330613-npc:167406 = pull:221.2, 41.3, 40.0, 69.3", -- [3]
---"Hand of Destruction-330613-npc:167406 = pull:217.4, 41.3, 40.1, 57.1", -- [3]
 
 function mod:OnCombatStart(delay)
 	table.wipe(SinStacks)
@@ -596,7 +588,7 @@ function mod:OnSync(msg)
 		warnCrimsonCabalists:Show(self.vb.addCount)
 		local timer = Timers[self.vb.phase][12345][self.vb.addCount+1]
 		if timer then
-			timerCrimsonCabalistsCD:Start(timer, self.vb.addCount+)
+			timerCrimsonCabalistsCD:Start(timer, self.vb.addCount+1)
 		end
 	end
 end
