@@ -33,8 +33,8 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(2418)
 
 L:SetMiscLocalization({
-	Phase2			= "The anticipation to use this relic is killing me! Though, it will more likely kill you.",
-	Phase3			= "I hope this wondrous item is as lethal as it looks!",
+	Phase2			= "이 유물을 써 보고 싶어서 숨이 멎을 뻔했답니다! 뭐, 당신네는 진짜로 멎겠지만.",
+	Phase3			= "보기만큼 치명적인 물건이어야 할 텐데!",
 })
 
 ---------------------------
