@@ -5,14 +5,14 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(167406)
 mod:SetEncounterID(2407)
 mod:SetUsedIcons(1, 2, 3)
-mod:SetHotfixNoticeRev(20200808000000)--2020, 8, 8
-mod:SetMinSyncRevision(20200808000000)
+mod:SetHotfixNoticeRev(20201210000000)--2020, 12, 10
+mod:SetMinSyncRevision(20201210000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 326707 326851 327227 328117 329181",
+	"SPELL_CAST_START 326707 326851 327227 328117 329181 333932",
 	"SPELL_CAST_SUCCESS 327039 327796 329943 339196 330042 326005 332849 333980 329205 332619",
 	"SPELL_AURA_APPLIED 326699 338510 327039 327796 327992 329906 332585 329951 332794 329205 329181",
 	"SPELL_AURA_APPLIED_DOSE 326699 329906 332585",
@@ -246,14 +246,14 @@ function mod:SPELL_CAST_START(args)
 		specWarnWrackingPain:Play("shockwave")
 		--"Wracking Pain-329181-npc:167406 = pull:197.3, 19.5, 20.6, 19.5, 20.8, 19.5, 20.6, 19.4, 20.6", -- [10]
 		timerWrackingPainCD:Start(self.vb.painCount % 2 == 0 and 20.6 or 19.4, self.vb.painCount+1)
---	elseif spellId == 333932 and self:AntiSpam(10, 10) then
---		self.vb.HandCount = self.vb.HandCount + 1
---		specWarnHandofDestruction:Show()
---		specWarnHandofDestruction:Play("justrun")
---		local timer = Timers[self.vb.phase][spellId][self.vb.HandCount+1] or 41.2--Or part may not be accurate
---		if timer then
---			timerHandofDestructionCD:Start(timer, self.vb.HandCount+1)
---		end
+	elseif spellId == 333932 and self:AntiSpam(10, 10) then
+		self.vb.HandCount = self.vb.HandCount + 1
+		specWarnHandofDestruction:Show()
+		specWarnHandofDestruction:Play("justrun")
+		local timer = Timers[self.vb.phase][spellId][self.vb.HandCount+1] or 41.2--Or part may not be accurate
+		if timer then
+			timerHandofDestructionCD:Start(timer, self.vb.HandCount+1)
+		end
 --	elseif spellId == 337785 then--Echo Cleansing Pain
 --		specWarnCleansingPain:Show(0)
 --		specWarnCleansingPain:Play("shockwave")
@@ -580,10 +580,10 @@ end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	--1 second faster than SPELL_CAST_START
-	if spellId == 330613 then--Script Activating to cast Hand of Destruction
+	if spellId == 330613 and self:AntiSpam(10, 10) then--Script Activating to cast Hand of Destruction
 		if not P3Transition then--We can't let a cast that slips through during Indignation screw up counts/timers
 			self.vb.HandCount = self.vb.HandCount + 1
-			local timer = Timers[self.vb.phase][spellId][self.vb.HandCount+1]
+			local timer = Timers[self.vb.phase][333932][self.vb.HandCount+1]
 			if timer then
 				timerHandofDestructionCD:Start(timer, self.vb.HandCount+1)
 			end
