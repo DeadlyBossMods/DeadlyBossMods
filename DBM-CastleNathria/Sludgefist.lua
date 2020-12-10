@@ -200,6 +200,16 @@ function mod:SPELL_AURA_APPLIED(args)
 				icon = "(°,,°)"
 			elseif icon == 10 then
 				icon = "(•_•)"
+			elseif icon == 11 then
+				icon = "(ಥ﹏ಥ)"
+			elseif icon == 12 then
+				icon = "¯(ツ)"
+			elseif icon == 13 then
+				icon = "ʕ•ᴥ•ʔ"
+			elseif icon == 14 then
+				icon = "ಠ_ಠ"
+			elseif icon == 15 then
+				icon = "(͡°͜°)"
 			end
 			self:Unschedule(ChainLinkYellRepeater)
 			if type(icon) == "number" then icon = DBM_CORE_L.AUTO_YELL_CUSTOM_POSITION:format(icon, "") end

@@ -13,7 +13,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 334522 329758 334266 329455 329774",
---	"SPELL_CAST_SUCCESS 329298",
+	"SPELL_CAST_SUCCESS 329774",
 	"SPELL_AURA_APPLIED 329298 334755 334228 332295",
 	"SPELL_AURA_APPLIED_DOSE 334755 332295",
 	"SPELL_AURA_REMOVED 329298 334755 334228",
@@ -43,9 +43,10 @@ local specWarnConsume							= mod:NewSpecialWarningRun(334522, nil, nil, nil, 4,
 local specWarnExpunge							= mod:NewSpecialWarningMoveAway(329725, nil, nil, nil, 1, 2)
 local specWarnVolatileEjection					= mod:NewSpecialWarningYou(334266, nil, nil, nil, 1, 2)
 local yellVolatileEjection						= mod:NewYell(334266, 202046)--ShortText "Beam". Change to NewPosYell if it's ever added to combat log, can't be trusted as icon yell when relying on syncing
-local specWarnGrowingHunger						= mod:NewSpecialWarningCount(332295, nil, DBM_CORE_L.AUTO_SPEC_WARN_OPTIONS.stack:format(12, 332295), nil, 1, 2)
+local specWarnGrowingHunger						= mod:NewSpecialWarningCount(332295, nil, DBM_CORE_L.AUTO_SPEC_WARN_OPTIONS.stack:format(6, 332295), nil, 1, 2)
 local specWarnGrowingHungerOther				= mod:NewSpecialWarningTaunt(332295, nil, nil, nil, 1, 2)
 local specWarnOverwhelm							= mod:NewSpecialWarningDefensive(329774, "Tank", nil, nil, 1, 2)
+local specWarnOverwhelmTaunt					= mod:NewSpecialWarningTaunt(329774, nil, nil, nil, 1, 2)
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(270290, nil, nil, nil, 1, 8)
 
 --mod:AddTimerLine(BOSS)
@@ -283,14 +284,15 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
---[[
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 329298 and self:AntiSpam(5, 1) then
---		timerGluttonousMiasmaCD:Start()
+	if spellId == 329774 then
+		if not args:IsPlayer() then
+			specWarnOverwhelmTaunt:Show()
+			specWarnOverwhelmTaunt:Play("tauntboss")
+		end
 	end
 end
---]]
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
@@ -347,7 +349,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 332295 then
 		local amount = args.amount or 1
-		if amount >= 12 and self:AntiSpam(4, 2) then
+		if amount >= 6 and self:AntiSpam(4, 2) then
 			if self:IsTanking("player", "boss1", nil, true) then
 				specWarnGrowingHunger:Show(amount)
 				specWarnGrowingHunger:Play("changemt")

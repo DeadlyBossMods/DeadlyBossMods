@@ -14,7 +14,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 326707 326851 327227 328117 329181",
 	"SPELL_CAST_SUCCESS 327039 327796 329943 339196 330042 326005 332849 333980 329205 332619",
-	"SPELL_AURA_APPLIED 326699 338510 327039 327796 327992 329906 332585 329951 332794 329205",
+	"SPELL_AURA_APPLIED 326699 338510 327039 327796 327992 329906 332585 329951 332794 329205 329181",
 	"SPELL_AURA_APPLIED_DOSE 326699 329906 332585",
 	"SPELL_AURA_REMOVED 326699 338510 327039 327796 328117 329951 332794",
 	"SPELL_AURA_REMOVED_DOSE 326699",
@@ -77,17 +77,18 @@ local specWarnMarchofthePenitent				= mod:NewSpecialWarningSpell(328117, nil, ni
 ----Crimson Cabalist and horsemen
 local specWarnCrescendo							= mod:NewSpecialWarningDodge(336162, false, nil, nil, 2, 2)
 ----Remornia
-local specWarnCarnage							= mod:NewSpecialWarningStack(329906, nil, 12, nil, nil, 1, 6)
+local specWarnCarnage							= mod:NewSpecialWarningStack(329906, nil, 6, nil, nil, 1, 6)
 local specWarnCarnageOther						= mod:NewSpecialWarningTaunt(329906, nil, nil, nil, 1, 6)
 local specWarnImpale							= mod:NewSpecialWarningMoveAway(329951, nil, nil, nil, 1, 2)
 local yellImpale								= mod:NewPosYell(329951)
 local yellImpaleFades							= mod:NewIconFadesYell(329951)
 ----Sire Denathrius
-local specWarnWrackingPain						= mod:NewSpecialWarningDodge(329181, "Tank", nil, nil, 1, 2)--Change to defensive if it can't be dodged
+local specWarnWrackingPain						= mod:NewSpecialWarningDefensive(329181, "Tank", nil, nil, 1, 2)--Change to defensive if it can't be dodged
+local specWarnWrackingPainTaunt					= mod:NewSpecialWarningTaunt(329181, nil, nil, nil, 1, 2)
 local specWarnHandofDestruction					= mod:NewSpecialWarningRun(333932, nil, nil, nil, 4, 2)
 local specWarnCommandMassacre					= mod:NewSpecialWarningDodgeCount(330042, nil, nil, nil, 2, 2)
 --Stage Three: Indignation
-local specWarnScorn								= mod:NewSpecialWarningStack(332585, nil, 12, nil, nil, 1, 6)
+local specWarnScorn								= mod:NewSpecialWarningStack(332585, nil, 6, nil, nil, 1, 6)
 local specWarnScorneOther						= mod:NewSpecialWarningTaunt(332585, nil, nil, nil, 1, 6)
 local specWarnShatteringPain					= mod:NewSpecialWarningCount(332619, nil, nil, nil, 2, 2)
 local specWarnFatalfFinesse						= mod:NewSpecialWarningMoveAway(332794, nil, nil, nil, 1, 2)
@@ -396,7 +397,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 329906 then
 		local amount = args.amount or 1
 		if (amount % 3 == 0) then
-			if amount >= 12 then
+			if amount >= 6 then
 				if args:IsPlayer() then
 					specWarnCarnage:Show(amount)
 					specWarnCarnage:Play("stackhigh")
@@ -417,7 +418,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 332585 then
 		local amount = args.amount or 1
 		if (amount % 3 == 0) then
-			if amount >= 12 then
+			if amount >= 6 then
 				if args:IsPlayer() then
 					specWarnScorn:Show(amount)
 					specWarnScorn:Play("stackhigh")
@@ -477,6 +478,11 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellBalefulResonanceFades:Countdown(spellId)
 		else
 			warnBalefulResonance:Show(args.destName)
+		end
+	elseif spellId == 329181 then
+		if not args:IsPlayer() then
+			specWarnWrackingPainTaunt:Show(args.destName)
+			specWarnWrackingPainTaunt:Play("tauntboss")
 		end
 	end
 end

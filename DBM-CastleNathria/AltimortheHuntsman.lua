@@ -52,7 +52,7 @@ local yellSinseekerFades						= mod:NewIconFadesYell(335114)
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(270290, nil, nil, nil, 1, 8)
 --Hunting Gargon
 ----Margore
-local specWarnJaggedClaws						= mod:NewSpecialWarningStack(334971, nil, 5, nil, nil, 1, 6)
+local specWarnJaggedClaws						= mod:NewSpecialWarningStack(334971, nil, 2, nil, nil, 1, 6)
 local specWarnJaggedClawsTaunt					= mod:NewSpecialWarningTaunt(334971, nil, nil, nil, 1, 2)
 local specWarnViciousLunge						= mod:NewSpecialWarningYou(334945, nil, nil, nil, 3, 2)
 local yellViciousLunge							= mod:NewYell(334945, nil, nil, nil, "YELL")
@@ -214,7 +214,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			--if self:IsHard() and self.Options.TauntBehavior == "TwoHardThreeEasy" or self.Options.TauntBehavior == "TwoAlways" then
 			--	tauntStack = 2
 			--end
-			if amount >= 5 then
+			if amount >= 2 then
 				if args:IsPlayer() then
 					specWarnJaggedClaws:Show(amount)
 					specWarnJaggedClaws:Play("stackhigh")
