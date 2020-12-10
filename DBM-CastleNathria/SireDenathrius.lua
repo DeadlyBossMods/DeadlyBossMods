@@ -22,7 +22,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_PERIODIC_MISSED 327992",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
 	"UNIT_DIED",
-	"UNIT_SPELLCAST_SUCCEEDED boss1"
+	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5"
 )
 
 --TODO, any reason to track https://shadowlands.wowhead.com/spell=328839 ? gained each ravage cast
