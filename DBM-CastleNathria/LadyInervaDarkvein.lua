@@ -84,6 +84,7 @@ mod:AddSetIconOption("SetIconOnAdds", "ej22618", true, true, {5, 6, 7, 8})
 mod.vb.sufferingIcon = 1
 mod.vb.addIcon = 8
 mod.vb.containerActive = 0
+mod.vb.firstContainer = true
 local castsPerGUID = {}
 local playerName = UnitName("player")
 local containerProgress = {
@@ -114,30 +115,30 @@ Notes:
 2. Only super clear thing is the empowered container is always shorter CD, but still many variationsn to explain
 
 --Heroic
-"Bottled Anima-325774-npc:165521 = pull:29.4, 34.0, 19.6, 26.8, 10.8, 14.9, 18.3, 17.4, 18.3, 33.7, 36.9, 36.5", -- [2]
-"Bottled Anima-325774-npc:165521 = pull:29.3, 34.1, 19.6, 21.1, 17.9, 14.7, 18.4, 17.4, 17.9, 28.8, 38.3, 38.3", -- [2]
+"Bottled Anima-325774-npc:165521 = pull:19.4, 44.2, 40.9, 19.4, 30.7, 19.4, 31.6, 36.1, 37.6, 35.2, 48.6", -- [2]
+"Bottled Anima-325774-npc:165521 = pull:33.9, 43.7, 35.3, 25.5, 24.3, 18.3, 42.5, 43.8, 41.3, 35.2, 47.4", -- [2]
 --Mythic
 "Bottled Anima-325774-npc:165521 = pull:35.9, 32.5, 32.4, 18.3, 33.1, 27.3, 37.8, 31.9, 34.3, 42.7", -- [2]
 "Bottled Anima-325774-npc:165521 = pull:35.9, 34.8, 26.4, 22.1, 31.9, 24.4, 38.1, 56.6, 32.5", -- [2]
 "Bottled Anima-325774-npc:165521 = pull:35.6, 32.6, 32.2, 18.8, 27.8, 17.1, 46.2, 41.5", -- [2]
 
 --Heroic
-"Concentrate Anima-332665-npc:165521 = pull:54.6, 35.4, 36.6, 35.7, 35.4, 41.4, 37.7, 35.3", -- [1]
-"Concentrate Anima-332665-npc:165521 = pull:54.6, 35.4, 37.8, 35.5, 73.1, 37.8, 35.8", -- [1]
+"Concentrated Anima-332665-npc:165521 = pull:69.1, 60.7, 60.8, 68.1, 72.9, 51.0", -- [3]
+"Concentrated Anima-332665-npc:165521 = pull:54.7, 61.2, 95.5, 74.2, 40.1", -- [3]
 --Mythic
 "Concentrate Anima-332665-npc:165521 = pull:44.0, 62.3, 100.4, 74.8, 42.8", -- [1]
 "Concentrate Anima-332665-npc:165521 = pull:44.0, 65.1, 98.0, 73.7", -- [1]
 "Concentrate Anima-332665-npc:165521 = pull:44.2, 62.3, 74.9, 62.3, 64.7", -- [1]
 
 --Heroic
-"Hidden Desire-335322-npc:171801 = pull:13.9, 9.4, 8.5, 8.9, 9.3, 8.9, 9.7, 8.2, 9.8, 8.5, 17.1, 10.9, 11.0, 11.0, 11.7, 10.6, 13.4, 11.0, 25.2, 15.0, 13.4, 13.4, 13.4, 15.4, 12.6", -- [5]
-"Hidden Desire-335322-npc:171801 = pull:13.9, 9.7, 9.8, 8.5, 9.3, 8.5, 9.8, 9.8, 8.6, 19.9, 11.8, 12.2, 11.0, 11.0, 13.2, 11.2, 11.0, 24.4, 14.6, 13.8, 13.0, 13.5, 13.0, 13.0", -- [5]
+"Expose Desires-325379-npc:165521 = pull:12.1, 9.8, 9.7, 8.6, 9.7, 9.7, 8.5, 11.0, 12.1, 10.9, 11.2, 13.1, 13.3, 11.3, 10.9, 10.5, 12.1, 13.8, 15.4, 13.4, 13.4, 12.5, 14.2, 4.9, 15.8, 14.6, 14.6, 13.4, 13.4, 13.4", -- [7]
+"Expose Desires-325379-npc:165521 = pull:26.6, 9.7, 9.8, 8.5, 9.7, 8.5, 9.7, 9.7, 11.0, 12.2, 10.9, 10.9, 10.9, 10.9, 11.0, 13.4, 10.9, 12.1, 13.4, 13.3, 13.4, 14.6, 13.4, 12.2, 14.6, 13.4, 13.4, 13.4, 13.4, 14.6, 15.8, 12.2",
 --Mythic
 "Expose Desires-325379-npc:165521 = pull:12.4, 8.6, 9.7, 8.6, 8.7, 9.8, 14.8, 10.8, 11.0, 11.0, 11.2, 11.0, 12.3, 12.2, 18.3, 13.5, 13.4, 13.4, 12.2, 13.5, 13.5, 13.4, 13.5, 12.2, 14.7, 12.2, 19.5, 13.5", -- [3]
 
 --Heroic
-"Sins and Suffering-325064-npc:165521 = pull:18.0, 26.8, 26.5, 40.2, 33.0, 35.3, 29.3, 17.4, 19.5, 19.1, 18.3", -- [13]
-"Sins and Suffering-325064-npc:165521 = pull:18.9, 26.8, 26.8, 26.9, 43.9, 35.7, 33.8, 17.5, 18.3, 19.5, 18.2", -- [18]
+"Sins and Suffering-325064-npc:165521 = pull:43.6, 51.0, 51.0, 62.0, 35.3, 35.3, 37.6, 51.0", -- [24]
+"Sins and Suffering-325064-npc:165521 = pull:29.1, 58.4, 50.2, 51.0, 36.0, 35.3, 35.6, 50.7", -- [23]
 --Mythic
 "Sins and Suffering-325064-npc:165521 = pull:18.1, 60.6, 53.9, 62.4, 32.4, 52.6, 53.2", -- [19]
 "Sins and Suffering-325064-npc:165521 = pull:17.6, 65.1, 53.2, 53.9, 37.3, 33.9, 41.3", -- [13]
@@ -181,20 +182,22 @@ function mod:OnCombatStart(delay)
 	containerProgress[2401][2] = 0
 	containerProgress[2401][3] = 0
 	self.vb.containerActive = 0
+	self.vb.firstContainer = true
 	table.wipe(castsPerGUID)
---	if self:IsMythic() then
-		timerFocusAnimaCD:Start(3.7-delay)
+	if self:IsMythic() then
+		timerFocusAnimaCD:Start(3.8-delay)
 		timerExposedDesiresCD:Start(10.9-delay)
 		timerSinsandSufferingCD:Start(17.6-delay)--23.6
 		timerBottledAnimaCD:Start(35.6-delay)--31.5
 		timerConcentratedAnimaCD:Start(44-delay)--Not cast on normal until near end of fight
---	else
---		timerFocusAnimaCD:Start(3.8-delay)
---		timerExposedDesiresCD:Start(13.9-delay)
---		timerSinsandSufferingCD:Start(18-delay)
---		timerBottledAnimaCD:Start(29.3-delay)
---		timerConcentratedAnimaCD:Start(54.6-delay)
---	end
+	else
+		--Initials still highly variable
+		timerFocusAnimaCD:Start(3.5-delay)--3.5-18?
+		timerExposedDesiresCD:Start(12.1-delay)
+		timerSinsandSufferingCD:Start(29.1-delay)
+		timerBottledAnimaCD:Start(19.4-delay)
+		timerConcentratedAnimaCD:Start(54.7-delay)
+	end
 --	if self.Options.NPAuraOnVolatileCorruption then
 --		DBM:FireEvent("BossMod_EnableHostileNameplates")
 --	end
@@ -225,7 +228,7 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 341621 or spellId == 341623 or spellId == 341625 then--Rank 1, Rank 2, Rank 3
 		--1 Expose Desires (tank), 2 Bottled Anima (bouncing bottles), 3 Sins and Suffering (links), 4 Concentrate Anima (adds)
-		timerExposedDesiresCD:Start(self.vb.containerActive == 1 and 8.2 or 10.6)--Possibly 8, 10, and 13
+		timerExposedDesiresCD:Start(self.vb.containerActive == 1 and 8.2 or 10.6)
 		if self:IsTanking("player", "boss1", nil, true) then
 			specWarnExposeDesires:Show()
 			specWarnExposeDesires:Play("defensive")
@@ -233,7 +236,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 342320 or spellId == 342321 or spellId == 342322 then--Rank 1, Rank 2, Rank 3
 		self.vb.addIcon = 8
 		--1 Expose Desires (tank), 2 Bottled Anima (bouncing bottles), 3 Sins and Suffering (links), 4 Concentrate Anima (adds)
-		timerConcentratedAnimaCD:Start(self.vb.containerActive == 4 and 42.8 or 62.3)
+		timerConcentratedAnimaCD:Start(self.vb.containerActive == 4 and 40 or 60.7)
 	elseif spellId == 342280 or spellId == 342281 or spellId == 342282 then--Rank 1, Rank 2, Rank 3
 		warnBottledAnima:Show()
 		timerBottledAnimaCD:Start(self.vb.containerActive == 2 and 17.1 or 30)
@@ -367,9 +370,14 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 325064 then--Sins and Suffering
 		self.vb.sufferingIcon = 1
 		--1 Expose Desires (tank), 2 Bottled Anima (bouncing bottles), 3 Sins and Suffering (links), 4 Concentrate Anima (adds)
-		timerSinsandSufferingCD:Start(self.vb.containerActive == 3 and 32.4 or 53.4)
+		timerSinsandSufferingCD:Start(self.vb.containerActive == 3 and 35 or 50)
 	elseif spellId == 338749 then--Disable Container
---		timerFocusAnimaCD:Start(99.5)--62-99.5
+		if self.vb.firstContainer then
+			self.vb.firstContainer = false
+--			timerFocusAnimaCD:Start(82)--Because of boss energy starting on engage but first disable happening 18 seconds into fight
+		else
+--			timerFocusAnimaCD:Start(99.5)--62-99.5
+		end
 		--1 Expose Desires (tank), 2 Bottled Anima (bouncing bottles), 3 Sins and Suffering (links), 4 Concentrate Anima (adds)
 		self.vb.containerActive = self.vb.containerActive + 1
 		if self.vb.containerActive == 5 then
