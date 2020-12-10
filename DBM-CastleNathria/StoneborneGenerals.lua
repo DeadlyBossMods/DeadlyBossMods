@@ -60,6 +60,7 @@ local warnWickedSlaughter						= mod:NewTargetNoFilterAnnounce(342253, 2, nil, "
 local warnStonegaleEffigy						= mod:NewSpellAnnounce(342985, 3)
 
 --General Kaal
+local specWarnWickedBladeCast					= mod:NewSpecialWarningSpell(333376, false, nil, nil, 2, 2)
 local specWarnWickedBlade						= mod:NewSpecialWarningYouPos(333376, nil, nil, nil, 1, 2)
 local yellWickedBlade							= mod:NewPosYell(333376)
 local yellWickedBladeFades						= mod:NewIconFadesYell(333376)
@@ -85,16 +86,16 @@ local specWarnShatteringBlast					= mod:NewSpecialWarningSpell(332683, nil, nil,
 
 --General Kaal
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22284))
-local timerWickedBladeCD						= mod:NewCDTimer(28.5, 333387, nil, nil, nil, 3)--28.5-44
-local timerHeartRendCD							= mod:NewCDTimer(40.1, 334765, nil, nil, nil, 3, nil, DBM_CORE_L.DEADLY_ICON)--40-52
+local timerWickedBladeCD						= mod:NewCDTimer(28.3, 333387, nil, nil, nil, 3, nil, nil, true)--28.5-44
+local timerHeartRendCD							= mod:NewCDTimer(38.9, 334765, nil, nil, nil, 3, nil, DBM_CORE_L.DEADLY_ICON)--40-52
 local timerSerratedSwipeCD						= mod:NewCDTimer(21.9, 334929, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)--13.4-18.6
 local timerCallShadowForcesCD					= mod:NewCDTimer(52, 342256, nil, nil, nil, 1, nil, DBM_CORE_L.MYTHIC_ICON)
 --General Grashaal
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22288))
-local timerReverberatingEruptionCD				= mod:NewCDTimer(30, 344496, 138658, nil, nil, 3, nil, nil, nil, 1, 3)--31.1-40, Short text "Eruption"
-local timerSeismicUpheavalCD					= mod:NewCDTimer(32, 334498, nil, nil, nil, 3)--32-46
-local timerCrystalizeCD							= mod:NewCDTimer(53.5, 339690, nil, nil, nil, 5, nil, nil, nil, 2, 3)--53.5-60
-local timerStoneFistCD							= mod:NewCDTimer(19.1, 342425, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)
+local timerReverberatingEruptionCD				= mod:NewCDTimer(29.3, 344496, 138658, nil, nil, 3, nil, nil, true, 1, 3)--31.1-40, Short text "Eruption"
+local timerSeismicUpheavalCD					= mod:NewCDTimer(25.1, 334498, nil, nil, nil, 3, nil, nil, true)--25.1-46
+local timerCrystalizeCD							= mod:NewCDTimer(52, 339690, nil, nil, nil, 5, nil, nil, true, 2, 3)--52-60
+local timerStoneFistCD							= mod:NewCDTimer(19.1, 342425, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)--Not using keep value for now, it's not as variable as other spells (or as immortant)
 --Phasing
 local timerShatteringBlast						= mod:NewCastTimer(5, 332683, nil, nil, nil, 2)
 --Adds
@@ -161,7 +162,7 @@ function mod:OnCombatStart(delay)
 		timerCallShadowForcesCD:Start(10.5-delay)
 	end
 	--General Grashaal Air ability
-	timerCrystalizeCD:Start(33.7-delay)
+	timerCrystalizeCD:Start(23.1-delay)
 	if self.Options.NPAuraOnVolatileShell then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
@@ -179,11 +180,14 @@ function mod:OnCombatEnd()
 	if self.Options.NPAuraOnVolatileShell then
 		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
 	end
+	DBM:AddMsg("This boss has some pretty bad spell queuing that can cause huge timer variance such as 25-46s variations. This is why many of timers stay on screen when timer expires and then shows how long the spell has been queued (with negative number)")
 end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 333387 then
+		specWarnWickedBladeCast:Show()
+		specWarnWickedBladeCast:Play("specialsoon")
 		self.vb.wickedBladeIcon = 1
 		timerWickedBladeCD:Start()
 	elseif spellId == 334765 then
@@ -218,10 +222,12 @@ function mod:SPELL_CAST_START(args)
 			--General Grashaal
 			--Boss continues timer for crystalize/combo from air phase, it doesn't start here
 			--just spell queued depending on overlap with Grashaal resuming other stuff
+			--These 3 abilities are cast in a random order.
+			--probably a bit more work to do to detect possible combos and then start one initial timer and start 2nd and 3rd after seeing what first ability is
 			timerStoneFistCD:Start(10.7)--10.7-39.4
 			timerReverberatingEruptionCD:Start(11.1)--11-23.27 (13.7)
-			timerSeismicUpheavalCD:Start(30.9)--30.9-39.3 (41.7)
-			--Kael also resumes summing adds on mythic once intermission 1 is over, but it's pretty instant
+			timerSeismicUpheavalCD:Start(30.9)--30.9-44.3 (41.7)
+			--Kael also resumes summoning adds on mythic once intermission 1 is over, but it's pretty instant
 --			if self:IsMythic() then
 --				timerCallShadowForcesCD:Start(0)--0-5
 --			end
@@ -229,8 +235,8 @@ function mod:SPELL_CAST_START(args)
 			--General Kaal returning
 			--These probably need redoing
 			timerSerratedSwipeCD:Start(5.5)--START, but next timer is started at SUCCESS
-			timerHeartRendCD:Start(16.2)--SUCCESS
-			timerWickedBladeCD:Start(34.2)
+			timerHeartRendCD:Start(7.5)--SUCCESS
+			timerWickedBladeCD:Start(32.2)
 			--Kael also resumes summing adds on mythic once intermission 2 is over
 			if self:IsMythic() then
 				timerCallShadowForcesCD:Start(8)
@@ -357,7 +363,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerHeartRendCD:Stop()
 		timerSerratedSwipeCD:Stop()
 		--Start Outgoing boss (Kael) (stuff he still casts airborn) here as well
-		timerWickedBladeCD:Start(26.2)--(28.6)
+		timerWickedBladeCD:Start(20.3)
 	elseif spellId == 329808 then--Grashaal stone form ending.
 		warnHardenedStoneFormOver:Show()
 		--No timer action should be needed here, boss doesn't leave.

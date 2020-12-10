@@ -290,6 +290,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		specWarnFallingRubble:Play("watchstep")
 		timerFallingRubbleCD:Start(67.8, self.vb.rubbleCount+1)
 	elseif spellId == 335354 then--Chain Slam
-		timerChainSlamCD:Start(68.9)
+		self.vb.chainSlamCount = self.vb.chainSlamCount + 1
+		timerChainSlamCD:Start(68.9, self.vb.chainSlamCount+1)
 	end
 end
