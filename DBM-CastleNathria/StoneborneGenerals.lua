@@ -60,6 +60,7 @@ local warnWickedSlaughter						= mod:NewTargetNoFilterAnnounce(342253, 2, nil, "
 local warnStonegaleEffigy						= mod:NewSpellAnnounce(342985, 3)
 
 --General Kaal
+local specWarnWickedBladeCast					= mod:NewSpecialWarningSpell(333376, false, nil, nil, 2, 2)
 local specWarnWickedBlade						= mod:NewSpecialWarningYouPos(333376, nil, nil, nil, 1, 2)
 local yellWickedBlade							= mod:NewPosYell(333376)
 local yellWickedBladeFades						= mod:NewIconFadesYell(333376)
@@ -85,8 +86,8 @@ local specWarnShatteringBlast					= mod:NewSpecialWarningSpell(332683, nil, nil,
 
 --General Kaal
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22284))
-local timerWickedBladeCD						= mod:NewCDTimer(28.5, 333387, nil, nil, nil, 3)--28.5-44
-local timerHeartRendCD							= mod:NewCDTimer(40.1, 334765, nil, nil, nil, 3, nil, DBM_CORE_L.DEADLY_ICON)--40-52
+local timerWickedBladeCD						= mod:NewCDTimer(28.3, 333387, nil, nil, nil, 3)--28.5-44
+local timerHeartRendCD							= mod:NewCDTimer(38.9, 334765, nil, nil, nil, 3, nil, DBM_CORE_L.DEADLY_ICON)--40-52
 local timerSerratedSwipeCD						= mod:NewCDTimer(21.9, 334929, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)--13.4-18.6
 local timerCallShadowForcesCD					= mod:NewCDTimer(52, 342256, nil, nil, nil, 1, nil, DBM_CORE_L.MYTHIC_ICON)
 --General Grashaal
@@ -184,6 +185,8 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 333387 then
+		specWarnWickedBladeCast:Show()
+		specWarnWickedBladeCast:Play("specialsoon")
 		self.vb.wickedBladeIcon = 1
 		timerWickedBladeCD:Start()
 	elseif spellId == 334765 then

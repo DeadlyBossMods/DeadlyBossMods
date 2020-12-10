@@ -141,15 +141,18 @@ mod.vb.HandCount = 0
 mod.vb.addCount = 0
 mod.vb.DebuffCount = 0
 mod.vb.DebuffIcon = 1
+local P3Transition = false
 local SinStacks = {}
 local Timers = {
 	[1] = {
 		--Night Hunter
-		[327796] = {12.3, 25.8, 30.0, 28.0, 30.0, 28.0},
+		[327796] = {12.3, 25, 30, 28, 30, 28},
+		--Cleansing Pain (P1)
+		[326707] = {5.9, 24.4, 32.8, 25.6, 32.8, 25.5},
 	},
 	[2] = {
 		--Impale
-		[329943] = {27.5, 30.0, 23.0, 26.0, 19.0, 21.0, 29.0, 14.0},
+		[329943] = {27.5, 26, 27, 23, 32, 18, 39},
 		--Hand of Destruction P2
 		[333932] = {47.6, 40.9, 40, 57},
 		--Adds P2
@@ -159,7 +162,9 @@ local Timers = {
 		--Hand of Destruction P3
 		[333932] = {27.6, 88, 31.7, 47.5},
 		--Fatal Finesse P3
-		[332794] = {17.5, 48.0, 6.0, 21.0, 27.0, 19.0, 26.0, 21.0, 40.0}
+		[332794] = {17.5, 48, 6, 21, 27, 19, 26, 21, 40}
+		--Cleansing Pain (P3 Mythic)
+		[326707] = {},
 	}
 }
 
@@ -173,6 +178,7 @@ function mod:OnCombatStart(delay)
 	self.vb.addCount = 0
 	self.vb.DebuffCount = 0
 	self.vb.DebuffIcon = 1
+	P3Transition = false
 	timerCleansingPainCD:Start(6-delay, 1)
 	timerBloodPriceCD:Start(22.3-delay)
 	timerCommandRavageCD:Start(50.5-delay, 1)
@@ -212,8 +218,10 @@ function mod:SPELL_CAST_START(args)
 		self.vb.painCount = self.vb.painCount + 1
 		specWarnCleansingPain:Show(self.vb.painCount)
 		specWarnCleansingPain:Play("shockwave")
-		--"Cleansing Pain-326707-npc:167406 = pull:6.3, 24.6, 32.5, 25.7, 33.1, 24.4", -- [2]
-		timerCleansingPainCD:Start(self.vb.painCount % 2 == 0 and 32.5 or 24.4, self.vb.painCount+1)--Alternates because Ravage delays every other cast
+		local timer = Timers[self.vb.phase][spellId][self.vb.painCount+1]
+		if timer then--Use scripted timer but if running out of script fall back to the 32/24 alternation
+			timerCleansingPainCD:Start(timer or self.vb.painCount % 2 == 0 and 32.5 or 24.4, self.vb.painCount+1)
+		end
 	elseif spellId == 326851 then
 		warnBloodPrice:Show()
 		timerBloodPriceCD:Start()
@@ -567,13 +575,17 @@ end
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	--1 second faster than SPELL_CAST_START
 	if spellId == 330613 then--Script Activating to cast Hand of Destruction
-		self.vb.HandCount = self.vb.HandCount + 1
+		if not P3Transition then--We can't let a cast that slips through during Indignation screw up counts/timers
+			self.vb.HandCount = self.vb.HandCount + 1
+			local timer = Timers[self.vb.phase][spellId][self.vb.HandCount+1]
+			if timer then
+				timerHandofDestructionCD:Start(timer, self.vb.HandCount+1)
+			end
+		end
 		specWarnHandofDestruction:Show()
 		specWarnHandofDestruction:Play("justrun")
-		local timer = Timers[self.vb.phase][spellId][self.vb.HandCount+1]
-		if timer then
-			timerHandofDestructionCD:Start(timer, self.vb.HandCount+1)
-		end
+	elseif spellId == 332749 and P3Transition then
+		P3Transition = false
 --	elseif spellId == 330939 and self.vb.phase == 3 then--Sinister Reflection
 
 --	elseif spellId == 330885 then--Remornia P3 Transition (not currently needed, Insigniation works just fine)
