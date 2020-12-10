@@ -461,20 +461,20 @@ function mod:SPELL_CAST_SUCCESS(args)
 				self.vb.vanquisherCount = self.vb.vanquisherCount + 1
 				warnVanquisher:Show(self.vb.vanquisherCount)
 				local timer = addTimers[self.vb.addMode][difficultyName][cid][self.vb.vanquisherCount+1]
-				if timer then
+				if timer and timer > 5 then
 					timerVanquisherCD:Start(timer, self.vb.vanquisherCount+1)
 				end
 			elseif cid == 167566 then--bleakwing-assassin
 				self.vb.assassinCount = self.vb.assassinCount + 1
 				local timer = addTimers[self.vb.addMode][difficultyName][cid][self.vb.assassinCount+1]
-				if timer then
+				if timer and timer > 5 then
 					timerBleakwingAssassinCD:Start(timer, self.vb.assassinCount+1)
 				end
 			elseif cid == 165763 then--vile-occultist
 				self.vb.occultistCount = self.vb.occultistCount + 1
 				warnVileOccultists:Show(self.vb.occultistCount)
 				local timer = addTimers[self.vb.addMode][difficultyName][cid][self.vb.occultistCount+1]
-				if timer then
+				if timer and timer > 5 then
 					timerVileOccultistCD:Start(timer, self.vb.occultistCount+1)
 				end
 			elseif cid == 165762 then
@@ -486,7 +486,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			elseif cid == 168700 then
 				self.vb.fiendCount = self.vb.fiendCount + 1
 				local timer = addTimers[self.vb.addMode][difficultyName][cid][self.vb.fiendCount+1]
-				if timer then
+				if timer and timer > 5 then
 					timerPesteringFiendCD:Start(timer, self.vb.fiendCount+1)
 				end
 --			elseif cid == 168962 then--Reborn Phoenix
@@ -614,7 +614,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			self.vb.occultistCount = self.vb.occultistCount + 1
 			warnVileOccultists:Show(self.vb.occultistCount)
 			local timer = addTimers[self.vb.addMode][difficultyName][165763][self.vb.occultistCount+1]
-			if timer then
+			if timer and timer > 5 then
 				timerVileOccultistCD:Start(timer, self.vb.occultistCount+1)
 			end
 		end
@@ -740,32 +740,32 @@ function mod:OnSync(msg, cid)
 				self.vb.vanquisherCount = self.vb.vanquisherCount + 1
 				warnVanquisher:Show(self.vb.vanquisherCount)
 				local timer = addTimers[self.vb.addMode][difficultyName][cid][self.vb.vanquisherCount+1]
-				if timer then
+				if timer and timer > 5 then
 					timerVanquisherCD:Start(timer, self.vb.vanquisherCount+1)
 				end
 			elseif cid == 167566 then--bleakwing-assassin
 				self.vb.assassinCount = self.vb.assassinCount + 1
 				local timer = addTimers[self.vb.addMode][difficultyName][cid][self.vb.assassinCount+1]
-				if timer then
+				if timer and timer > 5 then
 					timerBleakwingAssassinCD:Start(timer, self.vb.assassinCount+1)
 				end
 			elseif cid == 165763 then--vile-occultist
 				self.vb.occultistCount = self.vb.occultistCount + 1
 				warnVileOccultists:Show(self.vb.occultistCount)
 				local timer = addTimers[self.vb.addMode][difficultyName][cid][self.vb.occultistCount+1]
-				if timer then
+				if timer and timer > 5 then
 					timerVileOccultistCD:Start(timer, self.vb.occultistCount+1)
 				end
 			elseif cid == 165762 then
 				self.vb.infuserCount = self.vb.infuserCount + 1
 				local timer = addTimers[self.vb.addMode][difficultyName][cid][self.vb.infuserCount+1]
-				if timer then
+				if timer and timer > 5 then
 					timerSoulInfuserCD:Start(timer, self.vb.infuserCount+1)
 				end
 			elseif cid == 168700 then
 				self.vb.fiendCount = self.vb.fiendCount + 1
 				local timer = addTimers[self.vb.addMode][difficultyName][cid][self.vb.fiendCount+1]
-				if timer then
+				if timer and timer > 5 then
 					timerPesteringFiendCD:Start(timer, self.vb.fiendCount+1)
 				end
 --			elseif cid == 168962 then--Reborn Phoenix
