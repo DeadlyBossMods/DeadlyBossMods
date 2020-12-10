@@ -139,7 +139,7 @@ local Timers = {
 		--Impale
 		[329943] = {27.5, 30.0, 23.0, 26.0, 19.0, 21.0, 29.0, 14.0},
 		--Hand of Destruction P2
-		[333932] = {47.7, 41.2, 43.8},
+		[333932] = {47.6, 41.2, 40.1, 35.1, 89.9, 31.6},--47.7, 41.2, 43.8
 	},
 	[3] = {
 		--Hand of Destruction P3
@@ -221,8 +221,14 @@ function mod:SPELL_CAST_START(args)
 		specWarnWrackingPain:Play("shockwave")
 		--"Wracking Pain-329181-npc:167406 = pull:197.3, 19.5, 20.6, 19.5, 20.8, 19.5, 20.6, 19.4, 20.6", -- [10]
 		timerWrackingPainCD:Start(self.vb.painCount % 2 == 0 and 20.6 or 19.4, self.vb.painCount+1)
---	elseif spellId == 333932 then
-
+	elseif spellId == 333932 and self:AntiSpam(10, 10) then
+		self.vb.HandCount = self.vb.HandCount + 1
+		specWarnHandofDestruction:Show()
+		specWarnHandofDestruction:Play("justrun")
+		local timer = Timers[self.vb.phase][spellId][self.vb.HandCount+1] or 41.2--Or part may not be accurate
+		if timer then
+			timerHandofDestructionCD:Start(timer, self.vb.HandCount+1)
+		end
 	elseif spellId == 332619 then
 		self.vb.painCount = self.vb.painCount + 1
 		specWarnShatteringPain:Show(self.vb.painCount)
@@ -471,7 +477,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(2))
 		warnPhase:Play("ptwo")
 		--Remornia
-		timerImpaleCD:Start(27.5)
+		timerImpaleCD:Start(27.5, 1)
 		--Denathrius
 		timerWrackingPainCD:Start(21.1, 1)
 		timerCrimsonCabalistsCD:Start(24.6)
@@ -534,7 +540,7 @@ end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	--1 second faster than SPELL_CAST_START
-	if spellId == 330613 then--Script Activating to cast Hand of Destruction
+	if spellId == 330613 and self:AntiSpam(10, 10) then--Script Activating to cast Hand of Destruction
 		self.vb.HandCount = self.vb.HandCount + 1
 		specWarnHandofDestruction:Show()
 		specWarnHandofDestruction:Play("justrun")
