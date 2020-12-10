@@ -5,14 +5,14 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(164406)
 mod:SetEncounterID(2398)
 mod:SetUsedIcons(1, 2, 3)
-mod:SetHotfixNoticeRev(20200911000000)--2020, 9, 11
+mod:SetHotfixNoticeRev(20201209000000)--2020, 12, 9
 mod:SetMinSyncRevision(20200815000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 328857 345936 330711 343005 342863",
+	"SPELL_CAST_START 328857 345936 330711 343005 342863 345397",
 	"SPELL_CAST_SUCCESS 328857 329362",
 	"SPELL_AURA_APPLIED 328897 342077 341684 328921",
 	"SPELL_AURA_APPLIED_DOSE 328897",
@@ -26,8 +26,9 @@ mod:RegisterEventsInCombat(
 
 --TODO, need fresh transcriptor log to verify icon resetting/timer event for Scent for Blood
 --TODO, icons or auras for 341684?
+--TODO, add mor counts to abilities/timers
 --[[
-(ability.id = 328857 or ability.id = 345936 or ability.id = 330711 or ability.id = 342863 or ability.id = 343005) and type = "begincast"
+(ability.id = 328857 or ability.id = 345936 or ability.id = 330711 or ability.id = 342863 or ability.id = 343005 or ability.id = 345397) and type = "begincast"
  or (ability.id = 342074) and type = "cast"
  or ability.id = 328921
  or ability.id = 342077 and type = "applydebuff"
@@ -35,6 +36,7 @@ mod:RegisterEventsInCombat(
 --Stage One - Thirst for Blood
 local warnExsanguinated							= mod:NewStackAnnounce(328897, 2, nil, "Tank|Healer")
 local warnEcholocation							= mod:NewTargetAnnounce(342077, 3)
+local warnWaveofBlood							= mod:NewCountAnnounce(345397, 3)
 --Stage Two - Terror of Castle Nathria
 local warnDeadlyDescent							= mod:NewTargetNoFilterAnnounce(343024, 4)
 local warnBloodshroudOver						= mod:NewEndAnnounce(328921, 1)
@@ -50,12 +52,11 @@ local specWarnExsanguinatingBiteOther			= mod:NewSpecialWarningTaunt(328857, nil
 local specWarnEcholocation						= mod:NewSpecialWarningMoveAway(342077, nil, nil, nil, 1, 2)
 local yellEcholocation							= mod:NewPosYell(342077)
 local yellEcholocationFades						= mod:NewIconFadesYell(342077)
-local specWarnBloodcurdlingShriek				= mod:NewSpecialWarningMoveTo(330711, nil, nil, nil, 1, 2)
+local specWarnEarsplittingShriek				= mod:NewSpecialWarningMoveTo(330711, nil, nil, nil, 1, 2)
 local specWarnBlindSwipe						= mod:NewSpecialWarningDefensive(343005, "Tank", nil, nil, 1, 2)
 local specWarnEchoingScreech					= mod:NewSpecialWarningDodge(342863, nil, nil, nil, 2, 2)
 --Stage Two - Terror of Castle Nathria
 local specWarnBloodshroud						= mod:NewSpecialWarningSpell(328921, nil, nil, nil, 2, 2)
-local specWarnEarsplittingShriek				= mod:NewSpecialWarningMoveTo(345936, nil, nil, nil, 1, 2)
 local specWarnDeadlyDescent						= mod:NewSpecialWarningYou(343021, nil, nil, nil, 1, 2)--1 because you can't do anything about it
 local yellDeadlyDescent							= mod:NewYell(343021, nil, false)--Useless with only 1 second to avoid
 --local yellDeadlyDescentFades					= mod:NewShortFadesYell(343021)--Re-enable if made 4 seconds again, but as 2 seconds this is useless
@@ -66,13 +67,13 @@ local specWarnGTFO								= mod:NewSpecialWarningGTFO(340324, nil, nil, nil, 1, 
 --mod:AddTimerLine(BOSS)
 local timerExsanguinatingBiteCD					= mod:NewCDTimer(18.2, 328857, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)--10-22.9 (too varaible for a countdown by default)
 local timerEcholocationCD						= mod:NewCDTimer(23, 342077, nil, nil, nil, 3, nil, nil, nil, 1, 3)--Seems to be 42.7 without a hitch
-local timerBloodcurdlingShriekCD				= mod:NewCDTimer(47.4, 330711, nil, nil, nil, 2)
+local timerEarsplittingShriekCD					= mod:NewCDTimer(47.4, 330711, nil, nil, nil, 2)
+local timerWaveofBloodCD						= mod:NewCDCountTimer(24.8, 345397, nil, nil, nil, 2, nil, DBM_CORE_L.HEALER_ICON)
 local timerBlindSwipeCD							= mod:NewCDTimer(44.4, 343005, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON)
 local timerEchoingScreechCD						= mod:NewCDTimer(48, 342863, nil, nil, nil, 3)
 local timerBloodshroudCD						= mod:NewCDTimer(112, 328921, nil, nil, nil, 6)--100-103
 --Stage Two - Terror of Castle Nathria
 --local timerBloodshroud						= mod:NewBuffActiveTimer(47.5, 328921, nil, nil, nil, 6)--43.4-47.5, more to it than this? or just fact blizzards energy code always proves to be dogshit
-local timerEarsplittingShriekCD					= mod:NewCDTimer(8.5, 345936, nil, nil, nil, 3)
 local timerEarsplittingShriek					= mod:NewCastTimer(4, 345936, nil, false, nil, 5)--For users to see cast bar if boss remains untargetable in intermission
 local timerEchoingSonar							= mod:NewCastTimer(6, 329362, nil, false, nil, 5)
 --local berserkTimer							= mod:NewBerserkTimer(600)
@@ -85,16 +86,19 @@ mod:AddSetIconOption("SetIconOnEcholocation", 342077, true, false, {1, 2, 3})
 local ExsanguinatedStacks = {}
 local playerDebuff = false
 mod.vb.EchoIcon = 1
+mod.vb.waveCount = 0
 
 function mod:OnCombatStart(delay)
 	table.wipe(ExsanguinatedStacks)
 	playerDebuff = false
 	self.vb.EchoIcon = 1
+	self.vb.waveCount = 0
 	timerExsanguinatingBiteCD:Start(8.1-delay)
+	timerWaveofBloodCD:Start(13-delay, 1)
 	timerEcholocationCD:Start(14.2-delay)
 	timerBlindSwipeCD:Start(20.3-delay)
 	timerEchoingScreechCD:Start(28-delay)
-	timerBloodcurdlingShriekCD:Start(48.3-delay)
+	timerEarsplittingShriekCD:Start(48.3-delay)
 	timerBloodshroudCD:Start(112-delay)
 --	if self.Options.NPAuraOnVolatileCorruption then
 --		DBM:FireEvent("BossMod_EnableHostileNameplates")
@@ -127,19 +131,15 @@ function mod:SPELL_CAST_START(args)
 			specWarnExsanguinatingBite:Play("defensive")
 		end
 		timerExsanguinatingBiteCD:Start()
-	elseif spellId == 345936 then
-		if self.Optios.SpecWarn345936moveto then
+	elseif spellId == 330711 or spellId == 345936  then--Phase 1/Phase 2
+		if self.Options.SpecWarn330711moveto then
 			specWarnEarsplittingShriek:Show(DBM_CORE_L.BREAK_LOS)
 			specWarnEarsplittingShriek:Play("findshelter")
 		else
 			warnEarsplittingShriek:Show()
 		end
-		timerEarsplittingShriekCD:Start()
-		timerEarsplittingShriek:Start()
-	elseif spellId == 330711 then
-		specWarnBloodcurdlingShriek:Show(DBM_CORE_L.BREAK_LOS)
-		specWarnBloodcurdlingShriek:Play("findshelter")
-		timerBloodcurdlingShriekCD:Start()
+		timerEarsplittingShriekCD:Start(spellId == 330711 and 47.4 or 8.5)
+		timerEarsplittingShriek:Start(spellId == 330711 and 6 or 4)
 	elseif spellId == 343005 then
 		specWarnBlindSwipe:Show()
 		specWarnBlindSwipe:Play("shockwave")
@@ -147,6 +147,10 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 342863 then
 		specWarnEchoingScreech:Show()
 		specWarnEchoingScreech:Play("defensive")
+	elseif spellId == 345397 then
+		self.vb.waveCount = self.vb.waveCount + 1
+		warnWaveofBlood:Show(self.vb.waveCount)
+		timerWaveofBloodCD:Start(24.8, self.vb.waveCount+1)
 	end
 end
 
@@ -215,9 +219,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnBloodshroud:Show()
 		specWarnBloodshroud:Play("phasechange")
 		timerExsanguinatingBiteCD:Stop()
-		timerBloodcurdlingShriekCD:Stop()
+		timerEarsplittingShriekCD:Stop()
 		timerEcholocationCD:Stop()
 		timerBlindSwipeCD:Stop()
+		timerWaveofBloodCD:Stop()
 		timerEarsplittingShriekCD:Start(19.4)
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(8)
@@ -233,16 +238,18 @@ function mod:SPELL_AURA_REMOVED(args)
 --			yellDeadlyDescentFades:Cancel()
 --		end
 	elseif spellId == 328921 then--Bloodshroud removed
+		self.vb.waveCount = 0
 		timerEarsplittingShriekCD:Stop()
 		timerEchoingSonar:Stop()
 		timerEarsplittingShriek:Stop()
 		warnBloodshroudOver:Show()
 		--Looks same as pull timers
 		timerExsanguinatingBiteCD:Start(8.1)
+		timerWaveofBloodCD:Start(12, 1)
 		timerEcholocationCD:Start(14.2)
 		timerBlindSwipeCD:Start(20.3)
 		timerEchoingScreechCD:Start(28)
-		timerBloodcurdlingShriekCD:Start(48.3)
+		timerEarsplittingShriekCD:Start(48.3)
 		timerBloodshroudCD:Start(112)
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Hide()

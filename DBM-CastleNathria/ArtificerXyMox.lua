@@ -74,6 +74,7 @@ mod:AddSetIconOption("SetIconOnTear", 328437, true, false, {1, 2})
 
 mod.vb.phase = 0
 mod.vb.spartCount = 0
+mod.vb.tearIcon = 1
 mod.vb.annihilationCount = 0
 mod.vb.lastRotation = 0--0 tear, 1 ghosts, 2 roots, 3 annihilate, 4 Second tear, 5 Empty
 mod.vb.unleashCount = 0
@@ -83,6 +84,7 @@ mod.vb.hyperInProgress = false
 function mod:OnCombatStart(delay)
 	self.vb.phase = 0
 	self.vb.spartCount = 0
+	self.vb.tearIcon = 1
 	self.vb.annihilationCount = 0
 	self.vb.lastRotation = 1--Technically Tear is first in any phase, followed by activator, but neither are part of Spell Rotation script, so variable is set accordingly for that
 	self.vb.unleashCount = 0
@@ -114,6 +116,7 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 328437 or spellId == 342310 then
+		self.vb.tearIcon = 1
 		if spellId == 328437 then--One scripted to rotator
 			--Attempts to correct situation where either annihilation OR tear can come after annihilation relic activation
 			if self.vb.p3FirstCast == 0 then
@@ -257,7 +260,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 328448 or spellId == 328468 then
 		warnDimensionalTear:CombinedShow(1, args.destName)
-		local icon = 328448 and 1 or 2--This is better way to do it, but needs confirmation of combat log using both events first
+		local icon = self.vb.tearIcon
 		if args:IsPlayer() then
 			specWarnDimensionalTear:Show(self:IconNumToTexture(icon))
 			specWarnDimensionalTear:Play("mm"..icon)
@@ -267,6 +270,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.SetIconOnTear then
 			self:SetIcon(args.destName, icon)
 		end
+		self.vb.tearIcon = self.vb.tearIcon + 1
 	elseif spellId == 325236 then
 		if args:IsPlayer() then
 			specWarnGlyphofDestruction:Show()
