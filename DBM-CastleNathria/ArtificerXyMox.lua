@@ -90,7 +90,7 @@ function mod:OnCombatStart(delay)
 	self.vb.unleashCount = 0
 	self.vb.p3FirstCast = 0--1- Tear, 2 - Annihilate
 	self.vb.hyperInProgress = false
-	timerHyperlightSparkCD:Start(5.7-delay)
+	timerHyperlightSparkCD:Start(5-delay)
 	if self:IsHard() then
 		timerStasisTrapCD:Start(10.5-delay)
 	end
