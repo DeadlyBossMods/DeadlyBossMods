@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod(2424, "DBM-CastleNathria", nil, 1190)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision("@file-date-integer@")
+mod:SetRevision(20201210000000)--"@file-date-integer@"
 mod:SetCreatureID(167406)
 mod:SetEncounterID(2407)
 mod:SetUsedIcons(1, 2, 3)
@@ -176,6 +176,7 @@ function mod:OnCombatStart(delay)
 	self.vb.RavageCount = 0
 	self.vb.MassacreCount = 0
 	self.vb.ImpaleCount = 0
+	self.vb.HandCount = 0
 	self.vb.addCount = 0
 	self.vb.DebuffCount = 0
 	self.vb.DebuffIcon = 1
@@ -295,6 +296,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.RavageCount = 0
 		self.vb.MassacreCount = 0
 		self.vb.DebuffCount = 0
+		self.vb.HandCount = 0
 		warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(3))
 		warnPhase:Play("pthree")
 		--Remornia
@@ -306,7 +308,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerCrimsonCabalistsCD:Stop()
 		timerShatteringPainCD:Start(13.3, 1)--SUCCESS
 		timerFatalFitnesseCD:Start(17.4, 1)--SUCCESS/APPLIED
-		timerHandofDestructionCD:Start(27.6, self.vb.HandCount+1)--27-29
+		timerHandofDestructionCD:Start(27.6, 1)--27-29
 --		timerBloodPriceCD:Start(3)
 --		timerSinisterReflectionCD:Start(40.8)
 		timerCommandRavageCD:Start(50, 1)--Seems ravage always first Reflection
