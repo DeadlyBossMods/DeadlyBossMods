@@ -205,13 +205,13 @@ local addTimers = {
 		},
 		["heroic"] = {--Heroic Timers from Dec 9th
 			--Bleakwing Assassin
-			[167566] = {28, 90},
+			[167566] = {28, 90, 30, 30},
 			--Vile Occultist
-			[165763] = {28, 90},
+			[165763] = {28, 90, 90},
 			--Soul Infuser
 			[165762] = {88, 30},
-			--Pestering Fiend (TODO, something off about this one)
-			[168700] = {58, 30},
+			--Pestering Fiend
+			[168700] = {58, 30, 120},
 			--Rockbound Vanquisher
 			[165764] = {8, 65},
 		},
@@ -243,15 +243,15 @@ local addTimers = {
 		},
 		["heroic"] = {
 			--Bleakwing Assassin
-			[167566] = {23.5, 60, 30, 40},
+			[167566] = {23.4, 60, 30, 40, 50, 30},
 			--Vile Occultist
-			[165763] = {133.5},
+			[165763] = {113.5, 70},
 			--Soul Infuser
 			[165762] = {60, 50},--Iff, no spawn event, just first seen event
 			--Pestering Fiend
-			[168700] = {23.5, 30, 30, 70},--They still spawn sometimes with no spawn event, the two 30s were picked up by damage
+			[168700] = {23.5, 30, 30, 30, 70, 30, 30},--They still spawn sometimes with no spawn event, the two 30s were picked up by damage
 			--Rockbound Vanquisher
-			[165764] = {3.5, 65, 65},
+			[165764] = {3.5, 65, 65, 65, 15},
 		},
 		["mythic"] = {--Mythic testing timers Sept 25th
 			--Bleakwing Assassin
@@ -398,6 +398,7 @@ function mod:OnCombatEnd()
 	if self.Options.NPAuraOnPhoenixEmbers or self.Options.NPAuraOnPhoenixFixate then
 		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
 	end
+	DBM:AddMsg("Add timer accuracy may stil suffer greatly until blizzard fixes bugs with adds inconsistently firing events when spawning, especially soul infusers")
 end
 
 function mod:OnTimerRecovery()
