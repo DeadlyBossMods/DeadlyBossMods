@@ -223,9 +223,8 @@ function mod:SPELL_CAST_START(args)
 		specWarnCleansingPain:Show(self.vb.painCount)
 		specWarnCleansingPain:Play("shockwave")
 		local timer = Timers[self.vb.phase][spellId][self.vb.painCount+1]
-		if timer then--Use scripted timer but if running out of script fall back to the 32/24 alternation
-			timerCleansingPainCD:Start(timer or self.vb.painCount % 2 == 0 and 32.5 or 24.4, self.vb.painCount+1)
-		end
+		--Use scripted timer but if running out of script fall back to the 32/24 alternation
+		timerCleansingPainCD:Start(timer or self.vb.painCount % 2 == 0 and 32.5 or 24.4, self.vb.painCount+1)
 	elseif spellId == 326851 then
 		self.vb.priceCount = self.vb.priceCount + 1
 		warnBloodPrice:Show(self.vb.priceCount)
