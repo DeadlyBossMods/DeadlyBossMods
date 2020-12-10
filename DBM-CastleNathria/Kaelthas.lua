@@ -189,6 +189,7 @@ local addTimers = {
 			--Rockbound Vanquisher
 			[165764] = {8, 60, 60},
 		},
+	},
 	[1] = {--Initial add sets started when Darithos dies
 		["easy"] = {--Normal timers from Dec 9th
 			--Bleakwing Assassin
