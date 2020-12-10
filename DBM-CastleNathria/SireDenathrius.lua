@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod(2424, "DBM-CastleNathria", nil, 1190)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(20201210000000)--"@file-date-integer@"
+mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(167406)
 mod:SetEncounterID(2407)
 mod:SetUsedIcons(1, 2, 3)
@@ -42,7 +42,7 @@ mod:RegisterEventsInCombat(
 --General
 local warnPhase									= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
 --Stage One: Sinners Be Cleansed
-local warnBloodPrice							= mod:NewSpellAnnounce(326851, 4)
+local warnBloodPrice							= mod:NewCountAnnounce(326851, 4)
 local warnFeedingTime							= mod:NewTargetAnnounce(327039, 2)--On this difficulty you don't need to help soak it so don't really NEED to know who it's on
 local warnNightHunter							= mod:NewTargetNoFilterAnnounce(327796, 4)--General announce, if target special warning not enabled
 --Stage Two: The Crimson Chorus
@@ -102,7 +102,7 @@ local yellBalefulResonanceFades					= mod:NewFadesYell(329205)--Mythic?
 --Stage One: Sinners Be Cleansed
 --mod:AddTimerLine(BOSS)
 local timerCleansingPainCD						= mod:NewNextCountTimer(16.6, 326707, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON, nil, 2, 3)
-local timerBloodPriceCD							= mod:NewCDTimer(57.3, 326851, nil, nil, nil, 2, nil, DBM_CORE_L.HEALER_ICON)
+local timerBloodPriceCD							= mod:NewCDCountTimer(57.3, 326851, nil, nil, nil, 2, nil, DBM_CORE_L.HEALER_ICON)
 local timerFeedingTimeCD						= mod:NewAITimer(44.3, 327039, nil, nil, nil, 3)--Normal/LFR
 local timerNightHunterCD						= mod:NewNextCountTimer(44.3, 327796, nil, nil, nil, 3, nil, DBM_CORE_L.HEROIC_ICON)--Heroic/mythic
 local timerCommandRavageCD						= mod:NewCDCountTimer(57.2, 327227, 327122, nil, nil, 2, nil, DBM_CORE_L.DEADLY_ICON, nil, 1, 4)--ShortName "Ravage" (the actual cast)
@@ -134,6 +134,7 @@ mod:AddSetIconOption("SetIconOnFatalFinesse", 332794, true, false, {1, 2, 3})
 --mod:AddNamePlateOption("NPAuraOnSpiteful", 338510)
 
 mod.vb.phase = 1
+mod.vb.priceCount = 0
 mod.vb.painCount = 0
 mod.vb.RavageCount = 0
 mod.vb.MassacreCount = 0
@@ -172,6 +173,7 @@ local Timers = {
 function mod:OnCombatStart(delay)
 	table.wipe(SinStacks)
 	self.vb.phase = 1
+	self.vb.priceCount = 0
 	self.vb.painCount = 0
 	self.vb.RavageCount = 0
 	self.vb.MassacreCount = 0
@@ -182,7 +184,7 @@ function mod:OnCombatStart(delay)
 	self.vb.DebuffIcon = 1
 	P3Transition = false
 	timerCleansingPainCD:Start(6-delay, 1)
-	timerBloodPriceCD:Start(22.3-delay)
+	timerBloodPriceCD:Start(22.3-delay, 1)
 	timerCommandRavageCD:Start(50.5-delay, 1)
 	if self:IsHard() then
 		timerNightHunterCD:Start(12.1-delay, 1)
@@ -225,8 +227,9 @@ function mod:SPELL_CAST_START(args)
 			timerCleansingPainCD:Start(timer or self.vb.painCount % 2 == 0 and 32.5 or 24.4, self.vb.painCount+1)
 		end
 	elseif spellId == 326851 then
-		warnBloodPrice:Show()
-		timerBloodPriceCD:Start()
+		self.vb.priceCount = self.vb.priceCount + 1
+		warnBloodPrice:Show(self.vb.priceCount)
+		timerBloodPriceCD:Start(nil, self.vb.priceCount+1)
 	elseif spellId == 327227 then
 		self.vb.RavageCount = self.vb.RavageCount + 1
 		specWarnCommandRavage:Show(self.vb.RavageCount)
@@ -283,8 +286,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 			timerImpaleCD:Start(timer, self.vb.ImpaleCount+1)
 		end
 	elseif spellId == 339196 and self.vb.phase == 3 then
-		warnBloodPrice:Show()
-		timerBloodPriceCD:Start()
+		self.vb.priceCount = self.vb.priceCount + 1
+		warnBloodPrice:Show(self.vb.priceCount)
+		timerBloodPriceCD:Start(nil, self.vb.priceCount+1)
 	elseif spellId == 330042 then
 		self.vb.MassacreCount = self.vb.MassacreCount + 1
 		specWarnCommandMassacre:Show(self.vb.MassacreCount)
@@ -292,6 +296,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerCommandMassacreCD:Start(47.4, self.vb.MassacreCount+1)
 	elseif spellId == 326005 then
 		self.vb.phase = 3
+		self.vb.priceCount = 0
 		self.vb.painCount = 0--reused for shattering pain
 		self.vb.RavageCount = 0
 		self.vb.MassacreCount = 0
