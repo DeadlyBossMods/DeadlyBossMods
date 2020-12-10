@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(164267)
 mod:SetEncounterID(2386)
 
-mod:RegisterCombat("combat")
+mod:RegisterCombat("combat"
 
 mod:RegisterEventsInCombat(
 --	"SPELL_AURA_APPLIED",
