@@ -10,12 +10,12 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED 339525 339607 339528",
 	"SPELL_AURA_APPLIED_DOSE 339528",
 	"SPELL_AURA_REMOVED 339525"
-)
+
 
 --TODO, icon mark shared suffering? Maybe when they fix ENCOUNTER_START, for now I don't want to risk trash mod messing with a boss mods icon marking
 --Lady's Trash, minus bottled anima, which will need a unit event to detect it looks like
 local warnConcentrateAnima					= mod:NewTargetNoFilterAnnounce(339525, 3)
-local warnSharedSuffering					= mod:NewTargetNoFilterAnnounce(339607, 3)
+local warnSharedSuffering					= mod:NewTargetNoFilterAnnounce(339607, 3
 local warnWarpedDesires						= mod:NewStackAnnounce(339528, 2, nil, "Tank|Healer")
 
 local specWarnConcentrateAnima				= mod:NewSpecialWarningMoveAway(310780, nil, nil, nil, 1, 2)
