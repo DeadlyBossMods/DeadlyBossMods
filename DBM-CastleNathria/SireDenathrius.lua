@@ -144,7 +144,7 @@ mod.vb.addCount = 0
 mod.vb.DebuffCount = 0
 mod.vb.DebuffIcon = 1
 local P3Transition = false
-local SinStacks = {}
+local SinStacks, stage2Adds, deadAdds = {}, {}, {}
 local Timers = {
 	[1] = {
 		--Night Hunter
@@ -170,8 +170,43 @@ local Timers = {
 	}
 }
 
+local updateInfoFrame
+do
+	local addName = DBM:EJ_GetSectionInfo(22131)
+	local twipe, tsort = table.wipe, table.sort
+	local lines = {}
+	local sortedLines = {}
+	local function addLine(key, value)
+		-- sort by insertion order
+		lines[key] = value
+		sortedLines[#sortedLines + 1] = key
+	end
+	updateInfoFrame = function()
+		twipe(lines)
+		twipe(sortedLines)
+		for uId in DBM:GetGroupMembers() do
+			if uId then
+				local targetuId = uId.."target"
+				local guid = UnitGUID(targetuId)
+				if guid and (mod:GetCIDFromGUID(guid) == 169196) and not deadAdds[guid] then--Crimson Cabalist
+					stage2Adds[guid] = math.floor(UnitHealth(targetuId) / UnitHealthMax(targetuId) * 100)
+				end
+			end
+		end
+		--Now, show tentacle data after it's been updated from player processing
+		local nLines = 0
+		for _, health in pairs(stage2Adds) do
+			nLines = nLines + 1
+			addLine(addName .. " " .. nLines, health .. '%')
+		end
+		return lines, sortedLines
+	end
+end
+
 function mod:OnCombatStart(delay)
 	table.wipe(SinStacks)
+	table.wipe(stage2Adds)
+	table.wipe(deadAdds)
 	self.vb.phase = 1
 	self.vb.priceCount = 0
 	self.vb.painCount = 0
@@ -316,6 +351,14 @@ function mod:SPELL_CAST_SUCCESS(args)
 --		timerBloodPriceCD:Start(3)
 --		timerSinisterReflectionCD:Start(40.8)
 		timerCommandRavageCD:Start(50, 1)--Seems ravage always first Reflection
+		if self.Options.InfoFrame then
+			if self:IsMythic() then--Restore stack tracker, debuff returns in stage 3 mythic
+				DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(326699))
+				DBM.InfoFrame:Show(self:IsHard() and 30 or 10, "table", SinStacks, 1)--Show everyone on heroic+, filter down to 10 on normal/lfr
+			else
+				DBM.InfoFrame:Hide()--Nothing to show it for on non mythic
+			end
+		end
 	elseif spellId == 332849 then--Reflection: Ravage
 		self.vb.RavageCount = self.vb.RavageCount + 1
 		specWarnCommandRavage:Show(self.vb.RavageCount)
@@ -529,6 +572,11 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerWrackingPainCD:Start(21.1, 1)
 		timerHandofDestructionCD:Start(46.6, 1)
 		timerCommandMassacreCD:Start(64.9, 1)
+		if self.Options.InfoFrame then
+			DBM.InfoFrame:SetHeader(DBM_CORE_L.ADDS)
+			DBM.InfoFrame:Show(10, "function", updateInfoFrame, false, false)
+			DBM.InfoFrame:SetColumns(1)
+		end
 	elseif spellId == 329951 then
 		if args:IsPlayer() then
 			yellImpaleFades:Cancel()
@@ -558,12 +606,16 @@ end
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 169196 and self:AntiSpam(3, 3) then--crimson-cabalist
-		if self.Options.SpecWarn336162dodge then
-			specWarnCrescendo:Show()
-			specWarnCrescendo:Play("watchstep")
-		else
-			warnCrescendo:Show()
+	if cid == 169196 then--crimson-cabalist
+		stage2Adds[args.destGUID] = nil
+		deadAdds[args.destGUID] = true
+		if self:AntiSpam(3, 3) then
+			if self.Options.SpecWarn336162dodge then
+				specWarnCrescendo:Show()
+				specWarnCrescendo:Play("watchstep")
+			else
+				warnCrescendo:Show()
+			end
 		end
 	elseif cid == 169855 then--Remornia
 		timerImpaleCD:Stop()
