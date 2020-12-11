@@ -354,7 +354,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if self.Options.InfoFrame then
 			if self:IsMythic() then--Restore stack tracker, debuff returns in stage 3 mythic
 				DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(326699))
-				DBM.InfoFrame:Show(20, "table", SinStacks, 1)--Show everyone on heroic+, filter down to 10 on normal/lfr
+				DBM.InfoFrame:Show(20, "table", SinStacks, 1)
 			else
 				DBM.InfoFrame:Hide()--Nothing to show it for on non mythic
 			end
