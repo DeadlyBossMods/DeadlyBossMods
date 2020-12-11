@@ -38,6 +38,6 @@ jobs:
       - name: Send Status to Discord
         uses: nebularg/actions-discord-webhook@v1
         with:
-          WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK }}
+          webhook_url: ${{ secrets.WEBHOOK_URL }}
           status: ${{ job.status }}
-        if: always()
+        if: failure()
