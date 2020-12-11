@@ -449,7 +449,7 @@ local function createTextFrame()
 	text:SetPoint("BOTTOMLEFT", textFrame, "TOPLEFT")
 	text:SetTextColor(1, 1, 1, 1)
 	text:Show()
-	text.oldSetText = text.SetText
+	text.OldSetText = text.SetText
 	text.SetText = function(self, text)
 		self:OldSetText(text)
 		self:SetWidth(0) -- Set the text width to 0, so the system can auto-calculate the size
