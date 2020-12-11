@@ -6,7 +6,7 @@ mod:SetCreatureID(71992)
 --mod:SetModelID(328)
 mod:DisableWBEngageSync()
 
-mod:RegisterCombat("combat")
+mod:RegisterCombat("combat"
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 144546 144590 144602 144702",
