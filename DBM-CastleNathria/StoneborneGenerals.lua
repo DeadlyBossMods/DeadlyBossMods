@@ -368,6 +368,12 @@ function mod:SPELL_AURA_REMOVED(args)
 		warnHardenedStoneFormOver:Show()
 		--No timer action should be needed here, boss doesn't leave.
 		--Shattering started incoming bosses timers and boss already active doesn't reset timers
+		--If crystalize was off CD going into this phase, the CD is reset.
+		--But if crystalize was still ticking down it's CD, it's NOT reset
+		if timerCrystalizeCD:GetRemaining() <= 0 then
+			timerCrystalizeCD:Stop()
+			timerCrystalizeCD:Start()
+		end
 	elseif spellId == 333913 then
 		LacerationStacks[args.destName] = nil
 		if self.Options.InfoFrame then

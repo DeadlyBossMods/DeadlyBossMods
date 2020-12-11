@@ -5,16 +5,16 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(167406)
 mod:SetEncounterID(2407)
 mod:SetUsedIcons(1, 2, 3)
-mod:SetHotfixNoticeRev(20200808000000)--2020, 8, 8
-mod:SetMinSyncRevision(20200808000000)
+mod:SetHotfixNoticeRev(20201210000000)--2020, 12, 10
+mod:SetMinSyncRevision(20201210000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 326707 326851 327227 328117 329181",
+	"SPELL_CAST_START 326707 326851 327227 328117 329181 333932",
 	"SPELL_CAST_SUCCESS 327039 327796 329943 339196 330042 326005 332849 333980 329205 332619",
-	"SPELL_AURA_APPLIED 326699 338510 327039 327796 327992 329906 332585 329951 332794 329205",
+	"SPELL_AURA_APPLIED 326699 338510 327039 327796 327992 329906 332585 329951 332794 329205 329181",
 	"SPELL_AURA_APPLIED_DOSE 326699 329906 332585",
 	"SPELL_AURA_REMOVED 326699 338510 327039 327796 328117 329951 332794",
 	"SPELL_AURA_REMOVED_DOSE 326699",
@@ -22,7 +22,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_PERIODIC_MISSED 327992",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
 	"UNIT_DIED",
-	"UNIT_SPELLCAST_SUCCEEDED boss1"
+	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5"
 )
 
 --TODO, any reason to track https://shadowlands.wowhead.com/spell=328839 ? gained each ravage cast
@@ -42,7 +42,7 @@ mod:RegisterEventsInCombat(
 --General
 local warnPhase									= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
 --Stage One: Sinners Be Cleansed
-local warnBloodPrice							= mod:NewSpellAnnounce(326851, 4)
+local warnBloodPrice							= mod:NewCountAnnounce(326851, 4)
 local warnFeedingTime							= mod:NewTargetAnnounce(327039, 2)--On this difficulty you don't need to help soak it so don't really NEED to know who it's on
 local warnNightHunter							= mod:NewTargetNoFilterAnnounce(327796, 4)--General announce, if target special warning not enabled
 --Stage Two: The Crimson Chorus
@@ -77,17 +77,18 @@ local specWarnMarchofthePenitent				= mod:NewSpecialWarningSpell(328117, nil, ni
 ----Crimson Cabalist and horsemen
 local specWarnCrescendo							= mod:NewSpecialWarningDodge(336162, false, nil, nil, 2, 2)
 ----Remornia
-local specWarnCarnage							= mod:NewSpecialWarningStack(329906, nil, 12, nil, nil, 1, 6)
+local specWarnCarnage							= mod:NewSpecialWarningStack(329906, nil, 6, nil, nil, 1, 6)
 local specWarnCarnageOther						= mod:NewSpecialWarningTaunt(329906, nil, nil, nil, 1, 6)
 local specWarnImpale							= mod:NewSpecialWarningMoveAway(329951, nil, nil, nil, 1, 2)
 local yellImpale								= mod:NewPosYell(329951)
 local yellImpaleFades							= mod:NewIconFadesYell(329951)
 ----Sire Denathrius
-local specWarnWrackingPain						= mod:NewSpecialWarningDodge(329181, "Tank", nil, nil, 1, 2)--Change to defensive if it can't be dodged
+local specWarnWrackingPain						= mod:NewSpecialWarningDefensive(329181, "Tank", nil, nil, 1, 2)--Change to defensive if it can't be dodged
+local specWarnWrackingPainTaunt					= mod:NewSpecialWarningTaunt(329181, nil, nil, nil, 1, 2)
 local specWarnHandofDestruction					= mod:NewSpecialWarningRun(333932, nil, nil, nil, 4, 2)
 local specWarnCommandMassacre					= mod:NewSpecialWarningDodgeCount(330042, nil, nil, nil, 2, 2)
 --Stage Three: Indignation
-local specWarnScorn								= mod:NewSpecialWarningStack(332585, nil, 12, nil, nil, 1, 6)
+local specWarnScorn								= mod:NewSpecialWarningStack(332585, nil, 6, nil, nil, 1, 6)
 local specWarnScorneOther						= mod:NewSpecialWarningTaunt(332585, nil, nil, nil, 1, 6)
 local specWarnShatteringPain					= mod:NewSpecialWarningCount(332619, nil, nil, nil, 2, 2)
 local specWarnFatalfFinesse						= mod:NewSpecialWarningMoveAway(332794, nil, nil, nil, 1, 2)
@@ -101,7 +102,7 @@ local yellBalefulResonanceFades					= mod:NewFadesYell(329205)--Mythic?
 --Stage One: Sinners Be Cleansed
 --mod:AddTimerLine(BOSS)
 local timerCleansingPainCD						= mod:NewNextCountTimer(16.6, 326707, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON, nil, 2, 3)
-local timerBloodPriceCD							= mod:NewCDTimer(57.3, 326851, nil, nil, nil, 2, nil, DBM_CORE_L.HEALER_ICON)
+local timerBloodPriceCD							= mod:NewCDCountTimer(57.3, 326851, nil, nil, nil, 2, nil, DBM_CORE_L.HEALER_ICON)
 local timerFeedingTimeCD						= mod:NewAITimer(44.3, 327039, nil, nil, nil, 3)--Normal/LFR
 local timerNightHunterCD						= mod:NewNextCountTimer(44.3, 327796, nil, nil, nil, 3, nil, DBM_CORE_L.HEROIC_ICON)--Heroic/mythic
 local timerCommandRavageCD						= mod:NewCDCountTimer(57.2, 327227, 327122, nil, nil, 2, nil, DBM_CORE_L.DEADLY_ICON, nil, 1, 4)--ShortName "Ravage" (the actual cast)
@@ -133,6 +134,7 @@ mod:AddSetIconOption("SetIconOnFatalFinesse", 332794, true, false, {1, 2, 3})
 --mod:AddNamePlateOption("NPAuraOnSpiteful", 338510)
 
 mod.vb.phase = 1
+mod.vb.priceCount = 0
 mod.vb.painCount = 0
 mod.vb.RavageCount = 0
 mod.vb.MassacreCount = 0
@@ -142,7 +144,7 @@ mod.vb.addCount = 0
 mod.vb.DebuffCount = 0
 mod.vb.DebuffIcon = 1
 local P3Transition = false
-local SinStacks = {}
+local SinStacks, stage2Adds, deadAdds = {}, {}, {}
 local Timers = {
 	[1] = {
 		--Night Hunter
@@ -168,19 +170,56 @@ local Timers = {
 	}
 }
 
+local updateInfoFrame
+do
+	local addName = DBM:EJ_GetSectionInfo(22131)
+	local twipe, tsort = table.wipe, table.sort
+	local lines = {}
+	local sortedLines = {}
+	local function addLine(key, value)
+		-- sort by insertion order
+		lines[key] = value
+		sortedLines[#sortedLines + 1] = key
+	end
+	updateInfoFrame = function()
+		twipe(lines)
+		twipe(sortedLines)
+		for uId in DBM:GetGroupMembers() do
+			if uId then
+				local targetuId = uId.."target"
+				local guid = UnitGUID(targetuId)
+				if guid and (mod:GetCIDFromGUID(guid) == 169196) and not deadAdds[guid] then--Crimson Cabalist
+					stage2Adds[guid] = math.floor(UnitHealth(targetuId) / UnitHealthMax(targetuId) * 100)
+				end
+			end
+		end
+		--Now, show tentacle data after it's been updated from player processing
+		local nLines = 0
+		for _, health in pairs(stage2Adds) do
+			nLines = nLines + 1
+			addLine(addName .. " " .. nLines, health .. '%')
+		end
+		return lines, sortedLines
+	end
+end
+
 function mod:OnCombatStart(delay)
 	table.wipe(SinStacks)
+	table.wipe(stage2Adds)
+	table.wipe(deadAdds)
 	self.vb.phase = 1
+	self.vb.priceCount = 0
 	self.vb.painCount = 0
 	self.vb.RavageCount = 0
 	self.vb.MassacreCount = 0
 	self.vb.ImpaleCount = 0
+	self.vb.HandCount = 0
 	self.vb.addCount = 0
 	self.vb.DebuffCount = 0
 	self.vb.DebuffIcon = 1
 	P3Transition = false
 	timerCleansingPainCD:Start(6-delay, 1)
-	timerBloodPriceCD:Start(22.3-delay)
+	timerBloodPriceCD:Start(22.3-delay, 1)
 	timerCommandRavageCD:Start(50.5-delay, 1)
 	if self:IsHard() then
 		timerNightHunterCD:Start(12.1-delay, 1)
@@ -201,9 +240,9 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnCombatEnd()
---	if self.Options.InfoFrame then
---		DBM.InfoFrame:Hide()
---	end
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:Hide()
+	end
 --	if self.Options.RangeFrame then
 --		DBM.RangeCheck:Hide()
 --	end
@@ -219,12 +258,12 @@ function mod:SPELL_CAST_START(args)
 		specWarnCleansingPain:Show(self.vb.painCount)
 		specWarnCleansingPain:Play("shockwave")
 		local timer = Timers[self.vb.phase][spellId][self.vb.painCount+1]
-		if timer then--Use scripted timer but if running out of script fall back to the 32/24 alternation
-			timerCleansingPainCD:Start(timer or self.vb.painCount % 2 == 0 and 32.5 or 24.4, self.vb.painCount+1)
-		end
+		--Use scripted timer but if running out of script fall back to the 32/24 alternation
+		timerCleansingPainCD:Start(timer or self.vb.painCount % 2 == 0 and 32.5 or 24.4, self.vb.painCount+1)
 	elseif spellId == 326851 then
-		warnBloodPrice:Show()
-		timerBloodPriceCD:Start()
+		self.vb.priceCount = self.vb.priceCount + 1
+		warnBloodPrice:Show(self.vb.priceCount)
+		timerBloodPriceCD:Start(nil, self.vb.priceCount+1)
 	elseif spellId == 327227 then
 		self.vb.RavageCount = self.vb.RavageCount + 1
 		specWarnCommandRavage:Show(self.vb.RavageCount)
@@ -245,14 +284,14 @@ function mod:SPELL_CAST_START(args)
 		specWarnWrackingPain:Play("shockwave")
 		--"Wracking Pain-329181-npc:167406 = pull:197.3, 19.5, 20.6, 19.5, 20.8, 19.5, 20.6, 19.4, 20.6", -- [10]
 		timerWrackingPainCD:Start(self.vb.painCount % 2 == 0 and 20.6 or 19.4, self.vb.painCount+1)
---	elseif spellId == 333932 and self:AntiSpam(10, 10) then
---		self.vb.HandCount = self.vb.HandCount + 1
---		specWarnHandofDestruction:Show()
---		specWarnHandofDestruction:Play("justrun")
---		local timer = Timers[self.vb.phase][spellId][self.vb.HandCount+1] or 41.2--Or part may not be accurate
---		if timer then
---			timerHandofDestructionCD:Start(timer, self.vb.HandCount+1)
---		end
+	elseif spellId == 333932 and self:AntiSpam(10, 10) then
+		self.vb.HandCount = self.vb.HandCount + 1
+		specWarnHandofDestruction:Show()
+		specWarnHandofDestruction:Play("justrun")
+		local timer = Timers[self.vb.phase][spellId][self.vb.HandCount+1] or 41.2--Or part may not be accurate
+		if timer then
+			timerHandofDestructionCD:Start(timer, self.vb.HandCount+1)
+		end
 --	elseif spellId == 337785 then--Echo Cleansing Pain
 --		specWarnCleansingPain:Show(0)
 --		specWarnCleansingPain:Play("shockwave")
@@ -281,8 +320,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 			timerImpaleCD:Start(timer, self.vb.ImpaleCount+1)
 		end
 	elseif spellId == 339196 and self.vb.phase == 3 then
-		warnBloodPrice:Show()
-		timerBloodPriceCD:Start()
+		self.vb.priceCount = self.vb.priceCount + 1
+		warnBloodPrice:Show(self.vb.priceCount)
+		timerBloodPriceCD:Start(nil, self.vb.priceCount+1)
 	elseif spellId == 330042 then
 		self.vb.MassacreCount = self.vb.MassacreCount + 1
 		specWarnCommandMassacre:Show(self.vb.MassacreCount)
@@ -290,10 +330,12 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerCommandMassacreCD:Start(47.4, self.vb.MassacreCount+1)
 	elseif spellId == 326005 then
 		self.vb.phase = 3
+		self.vb.priceCount = 0
 		self.vb.painCount = 0--reused for shattering pain
 		self.vb.RavageCount = 0
 		self.vb.MassacreCount = 0
 		self.vb.DebuffCount = 0
+		self.vb.HandCount = 0
 		warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(3))
 		warnPhase:Play("pthree")
 		--Remornia
@@ -305,10 +347,18 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerCrimsonCabalistsCD:Stop()
 		timerShatteringPainCD:Start(13.3, 1)--SUCCESS
 		timerFatalFitnesseCD:Start(17.4, 1)--SUCCESS/APPLIED
-		timerHandofDestructionCD:Start(27.6, self.vb.HandCount+1)--27-29
+		timerHandofDestructionCD:Start(27.6, 1)--27-29
 --		timerBloodPriceCD:Start(3)
 --		timerSinisterReflectionCD:Start(40.8)
 		timerCommandRavageCD:Start(50, 1)--Seems ravage always first Reflection
+		if self.Options.InfoFrame then
+			if self:IsMythic() then--Restore stack tracker, debuff returns in stage 3 mythic
+				DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(326699))
+				DBM.InfoFrame:Show(20, "table", SinStacks, 1)
+			else
+				DBM.InfoFrame:Hide()--Nothing to show it for on non mythic
+			end
+		end
 	elseif spellId == 332849 then--Reflection: Ravage
 		self.vb.RavageCount = self.vb.RavageCount + 1
 		specWarnCommandRavage:Show(self.vb.RavageCount)
@@ -396,7 +446,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 329906 then
 		local amount = args.amount or 1
 		if (amount % 3 == 0) then
-			if amount >= 12 then
+			if amount >= 6 then
 				if args:IsPlayer() then
 					specWarnCarnage:Show(amount)
 					specWarnCarnage:Play("stackhigh")
@@ -417,7 +467,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 332585 then
 		local amount = args.amount or 1
 		if (amount % 3 == 0) then
-			if amount >= 12 then
+			if amount >= 6 then
 				if args:IsPlayer() then
 					specWarnScorn:Show(amount)
 					specWarnScorn:Play("stackhigh")
@@ -478,6 +528,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			warnBalefulResonance:Show(args.destName)
 		end
+	elseif spellId == 329181 then
+		if not args:IsPlayer() then
+			specWarnWrackingPainTaunt:Show(args.destName)
+			specWarnWrackingPainTaunt:Play("tauntboss")
+		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -517,6 +572,11 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerWrackingPainCD:Start(21.1, 1)
 		timerHandofDestructionCD:Start(46.6, 1)
 		timerCommandMassacreCD:Start(64.9, 1)
+		if self.Options.InfoFrame then
+			DBM.InfoFrame:SetHeader(DBM_CORE_L.ADDS)
+			DBM.InfoFrame:Show(10, "function", updateInfoFrame, false, false)
+			DBM.InfoFrame:SetColumns(1)
+		end
 	elseif spellId == 329951 then
 		if args:IsPlayer() then
 			yellImpaleFades:Cancel()
@@ -546,12 +606,16 @@ end
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 169196 and self:AntiSpam(3, 3) then--crimson-cabalist
-		if self.Options.SpecWarn336162dodge then
-			specWarnCrescendo:Show()
-			specWarnCrescendo:Play("watchstep")
-		else
-			warnCrescendo:Show()
+	if cid == 169196 then--crimson-cabalist
+		stage2Adds[args.destGUID] = nil
+		deadAdds[args.destGUID] = true
+		if self:AntiSpam(3, 3) then
+			if self.Options.SpecWarn336162dodge then
+				specWarnCrescendo:Show()
+				specWarnCrescendo:Play("watchstep")
+			else
+				warnCrescendo:Show()
+			end
 		end
 	elseif cid == 169855 then--Remornia
 		timerImpaleCD:Stop()
@@ -574,10 +638,10 @@ end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	--1 second faster than SPELL_CAST_START
-	if spellId == 330613 then--Script Activating to cast Hand of Destruction
+	if spellId == 330613 and self:AntiSpam(10, 10) then--Script Activating to cast Hand of Destruction
 		if not P3Transition then--We can't let a cast that slips through during Indignation screw up counts/timers
 			self.vb.HandCount = self.vb.HandCount + 1
-			local timer = Timers[self.vb.phase][spellId][self.vb.HandCount+1]
+			local timer = Timers[self.vb.phase][333932][self.vb.HandCount+1]
 			if timer then
 				timerHandofDestructionCD:Start(timer, self.vb.HandCount+1)
 			end

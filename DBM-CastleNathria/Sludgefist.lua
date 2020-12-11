@@ -54,12 +54,12 @@ local specWarnSiesmicShift						= mod:NewSpecialWarningMoveAway(340817, nil, nil
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(270290, nil, nil, nil, 1, 8)
 
 --All timers outside of stun and gaze will use keep arg so timers remain visible if they come off CD during gaze stun
-local timerHatefulGazeCD						= mod:NewCDCountTimer(68.1, 331209, nil, nil, nil, 3, nil, DBM_CORE_L.IMPORTANT_ICON, nil, 1, 4)
+local timerHatefulGazeCD						= mod:NewCDCountTimer(68.9, 331209, nil, nil, nil, 3, nil, DBM_CORE_L.IMPORTANT_ICON, nil, 1, 4)
 local timerStunnedImpact						= mod:NewTargetTimer(12, 331314, nil, nil, nil, 5, nil, DBM_CORE_L.DAMAGE_ICON)
-local timerChainLinkCD							= mod:NewCDCountTimer(68.1, 335300, nil, nil, nil, 3, nil, nil, true)
+local timerChainLinkCD							= mod:NewCDCountTimer(68.9, 335300, nil, nil, nil, 3, nil, nil, true)
 local timerChainSlamCD							= mod:NewCDCountTimer(68.9, 335354, nil, nil, nil, 3, nil, nil, true)
 local timerDestructiveStompCD					= mod:NewCDCountTimer(44.3, 332318, nil, nil, nil, 3, nil, nil, true)
-local timerFallingRubbleCD						= mod:NewCDCountTimer(67.8, 332572, nil, nil, nil, 3, nil, nil, true)
+local timerFallingRubbleCD						= mod:NewCDCountTimer(68.9, 332572, nil, nil, nil, 3, nil, nil, true)
 local timerColossalRoarCD						= mod:NewCDCountTimer(44.3, 332687, nil, nil, nil, 2, nil, nil, true)--30 and 36 alternating with slight variation, unless a gaze stun that's off schedule (do to mythci energy gain) messes up rotation
 local timerSiesmicShiftCD						= mod:NewCDCountTimer(34, 340817, nil, nil, nil, 3, nil, DBM_CORE_L.MYTHIC_ICON, true)--Mythic
 
@@ -98,7 +98,7 @@ function mod:OnCombatStart(delay)
 	table.wipe(ChainLinkTargets)
 	timerChainLinkCD:Start(4.7-delay, 1)
 	timerFallingRubbleCD:Start(12.5-delay, 1)
-	timerDestructiveStompCD:Start(18.3-delay, 1)
+	timerDestructiveStompCD:Start(18.2-delay, 1)
 --	timerColossalRoarCD:Start(1-delay)--Cast instantly on pull
 	timerChainSlamCD:Start(28.3-delay, 1)
 	timerHatefulGazeCD:Start(50.1-delay, 1)
@@ -128,8 +128,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnDestructiveStomp:Show()
 		specWarnDestructiveStomp:Play("justrun")
 		--Heroic
-		--pull:22.4, 23.3, 44.2, 23.1, 45.5, 22.0, 45.3, 22.1"
-		--pull:27.0, 22.1, 44.6, 22.1, 44.2, 22.1, 47.1, 22.6, 45.2, 23.1"
+		--pull:18.2, 25.9, 44.6, 25.5, 44.9, 25.5, 45.0, 25.3, 44.0", -- [2]
 		--Mythic
 		--pull:18.6, 25.5, 43.4, 25.5, 43.8, 25.5, 43.7", -- [2]
 		if self.vb.stompCount % 2 == 0 then
@@ -195,11 +194,21 @@ function mod:SPELL_AURA_APPLIED(args)
 			playerIsInPair = true
 		end
 		if playerIsInPair then
-			--On mythic, two pairs won't have an icon available, so we just assign it SOMETHING
+			--need to account for up to 30 people (15 pairs)
 			if icon == 9 then
 				icon = "(°,,°)"
 			elseif icon == 10 then
 				icon = "(•_•)"
+			elseif icon == 11 then
+				icon = "(ಥ﹏ಥ)"
+			elseif icon == 12 then
+				icon = "¯(ツ)"
+			elseif icon == 13 then
+				icon = "ʕ•ᴥ•ʔ"
+			elseif icon == 14 then
+				icon = "ಠ_ಠ"
+			elseif icon == 15 then
+				icon = "(͡°͜°)"
 			end
 			self:Unschedule(ChainLinkYellRepeater)
 			if type(icon) == "number" then icon = DBM_CORE_L.AUTO_YELL_CUSTOM_POSITION:format(icon, "") end

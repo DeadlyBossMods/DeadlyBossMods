@@ -445,16 +445,19 @@ local function createTextFrame()
 	end)
 
 	local text = textFrame:CreateFontString(nil, "OVERLAY", "GameTooltipText")
-	text:SetWidth(128)
-	text:SetHeight(15)
+	text:SetSize(128, 15)
 	text:SetPoint("BOTTOMLEFT", textFrame, "TOPLEFT")
 	text:SetTextColor(1, 1, 1, 1)
 	text:Show()
+	text.OldSetText = text.SetText
+	text.SetText = function(self, text)
+		self:OldSetText(text)
+		self:SetWidth(0) -- Set the text width to 0, so the system can auto-calculate the size
+	end
 	textFrame.text = text
 
 	local inRangeText = textFrame:CreateFontString(nil, "OVERLAY", "GameTooltipText")
-	inRangeText:SetWidth(128)
-	inRangeText:SetHeight(15)
+	inRangeText:SetSize(128, 15)
 	inRangeText:SetPoint("TOPLEFT", textFrame, "BOTTOMLEFT")
 	inRangeText:SetTextColor(1, 1, 1, 1)
 	inRangeText:Hide()
@@ -525,16 +528,14 @@ local function createRadarFrame()
 	player:SetPoint("CENTER")
 
 	local text = radarFrame:CreateFontString(nil, "OVERLAY", "GameTooltipText")
-	text:SetWidth(128)
-	text:SetHeight(15)
+	text:SetSize(128, 15)
 	text:SetPoint("BOTTOMLEFT", radarFrame, "TOPLEFT")
 	text:SetTextColor(1, 1, 1, 1)
 	text:Show()
 	radarFrame.text = text
 
 	local inRangeText = radarFrame:CreateFontString(nil, "OVERLAY", "GameTooltipText")
-	inRangeText:SetWidth(128)
-	inRangeText:SetHeight(15)
+	inRangeText:SetSize(128, 15)
 	inRangeText:SetPoint("TOPLEFT", radarFrame, "BOTTOMLEFT")
 	inRangeText:SetTextColor(1, 1, 1, 1)
 	inRangeText:Hide()

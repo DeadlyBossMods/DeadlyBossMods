@@ -68,7 +68,7 @@ local warnEyeOnTarget							= mod:NewTargetAnnounce(328479, 2)
 
 --Shade of Kael'thas
 local specWarnShadeSpawned						= mod:NewSpecialWarningSwitch("ej21966", nil, nil, nil, 1, 2)
-local specWarnBurningRemnants					= mod:NewSpecialWarningStack(326456, nil, 18, nil, nil, 1, 6)
+local specWarnBurningRemnants					= mod:NewSpecialWarningStack(326456, nil, 3, nil, nil, 1, 6)
 local specWarnBurningRemnantsTaunt				= mod:NewSpecialWarningTaunt(326456, nil, nil, nil, 1, 2)
 local specWarnEmberBlast						= mod:NewSpecialWarningMoveTo(325877, false, nil, nil, 1, 2)--Opt in as needed
 local yellEmberBlast							= mod:NewYell(325877, nil, nil, nil, "YELL")
@@ -82,7 +82,7 @@ local specWarnUnleashedPyroclasm				= mod:NewSpecialWarningInterrupt(337865, nil
 local specWarnGreaterCastigation				= mod:NewSpecialWarningMoveAway(328885, nil, nil, nil, 1, 2)
 --Adds
 ----Rockbound Vanquisher
-local specWarnVanquished						= mod:NewSpecialWarningStack(325442, nil, 18, nil, nil, 1, 6)
+local specWarnVanquished						= mod:NewSpecialWarningStack(325442, nil, 3, nil, nil, 1, 6)
 local specWarnVanquishedTaunt					= mod:NewSpecialWarningTaunt(325442, nil, nil, nil, 1, 2)
 --Assassin
 local specWarnCrimsonFury						= mod:NewSpecialWarningMoveAway(341473, nil, nil, nil, 1, 2)
@@ -512,7 +512,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 326456 then
 		local amount = args.amount or 1
 		if amount % 3 == 0 then
-			if amount >= 18 then--FIXME
+			if amount >= 3 then
 				if args:IsPlayer() then
 					specWarnBurningRemnants:Show(amount)
 					specWarnBurningRemnants:Play("stackhigh")
@@ -530,7 +530,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 325442 then
 		local amount = args.amount or 1
-		if amount >= 18 then--FIXME
+		if amount >= 3 then
 			if args:IsPlayer() then
 				specWarnVanquished:Show(amount)
 				specWarnVanquished:Play("stackhigh")
