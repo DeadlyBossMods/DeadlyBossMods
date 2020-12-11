@@ -78,6 +78,7 @@ mod.vb.expungeCount = 0
 mod.vb.consumeCount = 0
 mod.vb.desolateCount = 0
 mod.vb.overwhelmCast = 0
+mod.vb.meleeFound = false
 
 local updateInfoFrame
 do
@@ -167,6 +168,7 @@ function mod:OnCombatStart(delay)
 	self.vb.overwhelmCast = 0
 	self.vb.miasmaCount = 0
 	self.vb.miasmaIcon = 2
+	self.vb.meleeFound = false
 	timerGluttonousMiasmaCD:Start(3-delay, 1)--Always same
 	if self:IsEasy() then--TODO, Confirm LFR
 		timerOverwhelmCD:Start(5.2-delay, 1)
@@ -301,6 +303,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			table.wipe(GluttonousTargets)
 			self.vb.miasmaCount = self.vb.miasmaCount + 1
 			self.vb.miasmaIcon = 2
+			self.vb.meleeFound = false
 			timerGluttonousMiasmaCD:Start(23.8, self.vb.miasmaCount+1)--Same in all difficulties
 		end
 		if not tContains(GluttonousTargets, args.destName) then
@@ -308,13 +311,14 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		local icon
 		local uId = DBM:GetRaidUnitId(args.destName)
-		if self:IsMelee(uId, true) then
+		if self:IsMelee(uId, true) and not self.vb.meleeFound then
 			icon = 1
-			DBM:Debug("Melee Miasma found: "..args.destName, 2)
+			self.vb.meleeFound = true--Some sets can have more than 1 melee, this makes sure star isn't assigned to multiple
+			DBM:Debug("First Melee Miasma found: "..args.destName, 2)
 		else
-			icon = self.vb.miasmaIcon
+			icon = self.vb.miasmaIcon < 5 and self.vb.miasmaIcon or 1--If icon is 5 then were no melee in this wave at all, force assign star to the final ranged
 			self.vb.miasmaIcon = self.vb.miasmaIcon + 1
-			DBM:Debug("Ranged Miasma found: "..args.destName, 2)
+			DBM:Debug("Ranged/Second Melee Miasma found: "..args.destName, 2)
 		end
 		if args:IsPlayer() then
 			specWarnGluttonousMiasma:Show(self:IconNumToTexture(icon))
