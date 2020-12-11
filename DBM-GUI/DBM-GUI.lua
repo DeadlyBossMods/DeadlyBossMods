@@ -18,7 +18,7 @@ do
 			return mediatable
 		end
 		if not soundsRegistered then
-			local LSM = LibStub("LibSharedMedia-3.0")
+			local LSM = LibStub("LibSharedMedia-3.0"
 			soundsRegistered = true
 			-- Embedded Sound Clip media
 			LSM:Register("sound", "AirHorn (DBM)", [[Interface\AddOns\DBM-Core\sounds\AirHorn.ogg]])
