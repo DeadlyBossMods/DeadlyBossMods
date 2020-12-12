@@ -8831,11 +8831,12 @@ do
 			if class == "DRUID" or class == "SHAMAN" or class == "PALADIN" or class == "MONK" then
 				local unitMaxPower = UnitPowerMax(uId)
 				local powerType = UnitPowerType(uId)
+				local altPowerType = UnitPower(uId, 8)--Additional check for balance druids shapeshifted into bear/cat but may still have > 0 lunar power
 				--Healers all have 50k mana at 60, dps have 10k mana, plus healers still filtered by role check too
 				--Tanks are already filtered out by role check
 				--Maelstrom and Lunar power filtered out because they'd also return less than 11000 power (they'd both be 100)
 				--feral druids, enhance shamans, windwalker monks, ret paladins should all be caught by less than 11000 power checks after filters
-				if powerType ~= 11 and powerType ~= 8 and unitMaxPower < 11000 then--Maelstrom and Lunar power filters
+				if powerType ~= 11 and powerType ~= 8 and altPowerType == 0 and unitMaxPower < 11000 then--Maelstrom and Lunar power filters
 					return true
 				end
 			end
@@ -8862,11 +8863,12 @@ do
 			if (class == "DRUID" or class == "SHAMAN" or class == "PALADIN") then
 				local powerType = UnitPowerType(uId)
 				local unitMaxPower = UnitPowerMax(uId)
+				local altPowerType = UnitPower(uId, 8)--Additional check for balance druids shapeshifted into bear/cat but may still have > 0 lunar power
 				--Hunters are now all flagged ranged because it's no longer possible to tell a survival hunter from marksman. neither will be using a pet and both have 100 focus.
 				--Druids without lunar poewr or 50k mana are either feral or guardian
 				--Shamans without maelstrom and 50k mana can only be enhancement
 				--Paladins without 50k mana can only be prot or ret
-				if powerType ~= 11 and powerType ~= 8 and unitMaxPower < 11000 then--Maelstrom and Lunar power filters
+				if powerType ~= 11 and powerType ~= 8 and altPowerType == 0 and unitMaxPower < 11000 then--Maelstrom and Lunar power filters
 					return true
 				end
 			end
