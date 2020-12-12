@@ -9074,7 +9074,7 @@ function DBM:GetBossHP(cIdOrGUID, onlyHighest)
 	if (self:GetCIDFromGUID(guid) == cIdOrGUID or guid == cIdOrGUID) and UnitHealthMax(uId) ~= 0 then
 		if bossHealth[cIdOrGUID] and (UnitHealth(uId) == 0 and not UnitIsDead(uId)) then return bossHealth[cIdOrGUID], uId, UnitName(uId) end--Return last non 0 value if value is 0, since it's last valid value we had.
 		local hp = UnitHealth(uId) / UnitHealthMax(uId) * 100
-		if not onlyHighest or onlyHighest and hp > bossHealth[cIdOrGUID] then
+		if not onlyHighest or onlyHighest and hp > (bossHealth[cIdOrGUID] or 0) then
 			bossHealth[cIdOrGUID] = hp
 		end
 		return hp, uId, UnitName(uId)
@@ -9082,7 +9082,7 @@ function DBM:GetBossHP(cIdOrGUID, onlyHighest)
 	elseif (self:GetCIDFromGUID(UnitGUID("focus")) == cIdOrGUID or UnitGUID("focus") == cIdOrGUID) and UnitHealthMax("focus") ~= 0 then
 		if bossHealth[cIdOrGUID] and (UnitHealth("focus") == 0  and not UnitIsDead("focus")) then return bossHealth[cIdOrGUID], "focus", UnitName("focus") end--Return last non 0 value if value is 0, since it's last valid value we had.
 		local hp = UnitHealth("focus") / UnitHealthMax("focus") * 100
-		if not onlyHighest or onlyHighest and hp > bossHealth[cIdOrGUID] then
+		if not onlyHighest or onlyHighest and hp > (bossHealth[cIdOrGUID] or 0) then
 			bossHealth[cIdOrGUID] = hp
 		end
 		return hp, "focus", UnitName("focus")
@@ -9094,7 +9094,7 @@ function DBM:GetBossHP(cIdOrGUID, onlyHighest)
 			if (self:GetCIDFromGUID(bossguid) == cIdOrGUID or bossguid == cIdOrGUID) and UnitHealthMax(unitID) ~= 0 then
 				if bossHealth[cIdOrGUID] and (UnitHealth(unitID) == 0 and not UnitIsDead(unitID)) then return bossHealth[cIdOrGUID], unitID, UnitName(unitID) end--Return last non 0 value if value is 0, since it's last valid value we had.
 				local hp = UnitHealth(unitID) / UnitHealthMax(unitID) * 100
-				if not onlyHighest or onlyHighest and hp > bossHealth[cIdOrGUID] then
+				if not onlyHighest or onlyHighest and hp > (bossHealth[cIdOrGUID] or 0) then
 					bossHealth[cIdOrGUID] = hp
 				end
 				bossHealthuIdCache[cIdOrGUID] = unitID
@@ -9109,7 +9109,7 @@ function DBM:GetBossHP(cIdOrGUID, onlyHighest)
 			if (self:GetCIDFromGUID(bossguid) == cIdOrGUID or bossguid == cIdOrGUID) and UnitHealthMax(unitId) ~= 0 then
 				if bossHealth[cIdOrGUID] and (UnitHealth(unitId) == 0 and not UnitIsDead(unitId)) then return bossHealth[cIdOrGUID], unitId, UnitName(unitId) end--Return last non 0 value if value is 0, since it's last valid value we had.
 				local hp = UnitHealth(unitId) / UnitHealthMax(unitId) * 100
-				if not onlyHighest or onlyHighest and hp > bossHealth[cIdOrGUID] then
+				if not onlyHighest or onlyHighest and hp > (bossHealth[cIdOrGUID] or 0) then
 					bossHealth[cIdOrGUID] = hp
 				end
 				bossHealthuIdCache[cIdOrGUID] = unitId
