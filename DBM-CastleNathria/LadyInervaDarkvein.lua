@@ -52,6 +52,7 @@ local specWarnHiddenDesireTaunt					= mod:NewSpecialWarningTaunt(335396, nil, ni
 local yellHiddenDesire							= mod:NewYell(335396, nil, false)--Remove?
 local specWarnChangeofHeart						= mod:NewSpecialWarningMoveAway(340452, nil, nil, nil, 3, 2)--Triggered by rank 3 Exposed Desires
 local yellChangeofHeartFades					= mod:NewFadesYell(340452)--^^
+local specWarnBottledAnima						= mod:NewSpecialWarningSoak(325769, false, nil, nil, 1, 2)--Optional special warning to configure sound etc if you are soaking these
 local specWarnSharedSuffering					= mod:NewSpecialWarningMoveTo(324983, nil, nil, nil, 1, 2)
 local yellSharedSuffering						= mod:NewShortYell(324983)
 local specWarnConcentrateAnima					= mod:NewSpecialWarningMoveAway(342321, nil, nil, nil, 1, 2)--Rank 1-2
@@ -61,10 +62,10 @@ local specWarnGTFO								= mod:NewSpecialWarningGTFO(325713, nil, nil, nil, 1, 
 local specWarnCondemn							= mod:NewSpecialWarningInterrupt(331550, "HasInterrupt", nil, nil, 1, 2)--Don't really want to hard interrupt warning for something with 10 second cast, this is opt in
 
 --mod:AddTimerLine(BOSS)
-local timerDesiresContainer						= mod:NewTimer(120, "timerDesiresContainer", 341621, false, "timerContainers")
-local timerBottledContainer						= mod:NewTimer(120, "timerBottledContainer", 342280, false, "timerContainers")
-local timerSinsContainer						= mod:NewTimer(120, "timerSinsContainer", 325064, false, "timerContainers")
-local timerConcentrateContainer					= mod:NewTimer(120, "timerConcentrateContainer", 342321, false, "timerContainers")
+local timerDesiresContainer						= mod:NewTimer(120, "timerDesiresContainer", 341621, false, "timerContainers2")
+local timerBottledContainer						= mod:NewTimer(120, "timerBottledContainer", 342280, false, "timerContainers2")
+local timerSinsContainer						= mod:NewTimer(120, "timerSinsContainer", 325064, false, "timerContainers2")
+local timerConcentrateContainer					= mod:NewTimer(120, "timerConcentrateContainer", 342321, false, "timerContainers2")
 local timerFocusAnimaCD							= mod:NewCDTimer(100, 331844, nil, nil, nil, 6)
 local timerExposedDesiresCD						= mod:NewCDTimer(8.5, 341621, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)--8.5-25 because yeah, boss spell queuing+CD even changing when higher rank
 local timerBottledAnimaCD						= mod:NewCDTimer(10.8, 342280, nil, nil, nil, 3)--10-36
@@ -75,7 +76,7 @@ local timerChangeofHeart						= mod:NewTargetTimer(4, 340452, nil, nil, nil, 5, 
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
 --mod:AddRangeFrameOption(10, 310277)
-mod:AddBoolOption("timerContainers", true, "timer", nil, 6)
+mod:AddBoolOption("timerContainers2", false, "timer", nil, 6)
 --mod:AddInfoFrameOption(325225, true)
 mod:AddSetIconOption("SetIconOnSharedSuffering", 324983, true, false, {1, 2, 3})
 mod:AddSetIconOption("SetIconOnAdds", "ej22618", true, true, {5, 6, 7, 8})
@@ -238,7 +239,12 @@ function mod:SPELL_CAST_START(args)
 		--1 Expose Desires (tank), 2 Bottled Anima (bouncing bottles), 3 Sins and Suffering (links), 4 Concentrate Anima (adds)
 		timerConcentratedAnimaCD:Start(self.vb.containerActive == 4 and 40 or 60.7)
 	elseif spellId == 342280 or spellId == 342281 or spellId == 342282 then--Rank 1, Rank 2, Rank 3
-		warnBottledAnima:Show()
+		if self.Options.SpecWarn325769moveto then
+			specWarnBottledAnima:Show()
+			specWarnBottledAnima:Play("helpsoak")
+		else
+			warnBottledAnima:Show()
+		end
 		timerBottledAnimaCD:Start(self.vb.containerActive == 2 and 17.1 or 30)
 	elseif spellId == 331550 or spellId == 339521 then--Conjured Manifestation casting Condemn
 		if not castsPerGUID[args.sourceGUID] then
@@ -394,7 +400,7 @@ function mod:UPDATE_UI_WIDGET(table)
 	local value = widgetInfo.barValue
 	if not value then return end
 	containerProgress[id][1] = value
-	if self.Options.timerContainers then
+	if self.Options.timerContainers2 then
 		if value ~= containerProgress[id][2] then--Make sure value isn't same as previous value, if it is there is nothing to do
 			local energyRate = containerProgress[id][1] - containerProgress[id][2]--Current progress minus previous progress
 			if containerProgress[id][3] ~= energyRate then--Energy rate has changed, we don't want to perform below operations if energy rate is the same

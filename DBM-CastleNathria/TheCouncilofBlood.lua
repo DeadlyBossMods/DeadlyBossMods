@@ -405,6 +405,9 @@ function mod:SPELL_CAST_START(args)
 			timerDutifulAttendantCD:Start(self.vb.phase == 2 and 44.9 or 36.2)--Mythic only, and yes two diff timers in last test
 			timerDutifulAttendantCD:UpdateInline(DBM_CORE_L.MYTHIC_ICON)
 		end
+		if self.Options.SetIconOnDutiful then
+			self:ScanForMobs(175992, 2, 8, 1, 0.2, 10)
+		end
 	elseif spellId == 346800 then
 		specWarnWaltzofBlood:Show()
 		specWarnWaltzofBlood:Play("watchstep")

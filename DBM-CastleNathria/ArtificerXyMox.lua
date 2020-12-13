@@ -15,7 +15,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 328437 335013 325399 327887 329770 328789 340758 329834 328880 342310 340788 342854 329107 340807",
 	"SPELL_CAST_SUCCESS 325361 326271 325399",
 	"SPELL_AURA_APPLIED 328448 328468 325236 327902 327414",
-	"SPELL_AURA_REMOVED 328448 328468",
+	"SPELL_AURA_REMOVED 328448 328468 325236",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
@@ -55,6 +55,7 @@ local specWarnEdgeofAnnihilation					= mod:NewSpecialWarningRun(328789, nil, 307
 mod:AddTimerLine(BOSS)
 local timerDimensionalTearCD						= mod:NewCDTimer(25, 328437, nil, nil, nil, 3, nil, nil, true)
 local timerGlyphofDestructionCD						= mod:NewCDTimer(36.4, 325361, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)--27.9-58.6 for now
+local timerGlyphofDestruction						= mod:NewTargetTimer(4, 325361, nil, "Tank|Healer", nil, 2, nil, DBM_CORE_L.TANK_ICON)
 local timerStasisTrapCD								= mod:NewCDTimer(30.3, 326271, nil, nil, nil, 3)--30, except when it's reset by phase changes
 local timerRiftBlastCD								= mod:NewCDTimer(36, 335013, nil, nil, nil, 3)--36.3 except when it's reset by phase changes
 local timerHyperlightSparkCD						= mod:NewCDTimer(15.8, 325399, nil, nil, nil, 2, nil, DBM_CORE_L.HEALER_ICON)--15.8 except when it's heavily spell queued
@@ -281,6 +282,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnGlyphofDestructionTaunt:Show(args.destName)
 			specWarnGlyphofDestructionTaunt:Play("tauntboss")
 		end
+		timerGlyphofDestruction:Start(args.destName)
 	elseif spellId == 327902 then
 		warnFixate:CombinedShow(0.5, args.destName)
 		if args:IsPlayer() then
@@ -302,6 +304,11 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.SetIconOnTear then
 			self:SetIcon(args.destName, 0)
 		end
+	elseif spellId == 325236 then
+		if args:IsPlayer() then
+			yellGlyphofDestructionFades:Cancel(spellId)
+		end
+		timerGlyphofDestruction:Stop(args.destName)
 	end
 end
 

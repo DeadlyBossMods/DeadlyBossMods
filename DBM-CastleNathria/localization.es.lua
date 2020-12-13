@@ -51,7 +51,7 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization({
-	timerContainers				= "Mostrar temporizadores con el tiempo restante para que se llenen los contenedores"
+	timerContainers2			= "Mostrar temporizadores con el tiempo restante para que se llenen los contenedores"
 })
 
 ---------------------------
