@@ -41,6 +41,7 @@ local yellGluttonousMiasma						= mod:NewPosYell(329298, DBM_CORE_L.AUTO_YELL_CU
 local specWarnEssenceSap						= mod:NewSpecialWarningStack(334755, false, 8, nil, 2, 1, 6)--Mythic, spammy, opt in
 local specWarnConsume							= mod:NewSpecialWarningRun(334522, nil, nil, nil, 4, 2)
 local specWarnExpunge							= mod:NewSpecialWarningMoveAway(329725, nil, nil, nil, 1, 2)
+local specWarnVolatileEjectionPerWarn			= mod:NewSpecialWarningSoon(334266, false, nil, nil, 2, 2)--Optional prewarn special warning, for the cast (before you know the targets)
 local specWarnVolatileEjection					= mod:NewSpecialWarningYou(334266, nil, nil, nil, 1, 2)
 local yellVolatileEjection						= mod:NewYell(334266, 202046)--ShortText "Beam". Change to NewPosYell if it's ever added to combat log, can't be trusted as icon yell when relying on syncing
 local specWarnGrowingHunger						= mod:NewSpecialWarningCount(332295, nil, DBM_CORE_L.AUTO_SPEC_WARN_OPTIONS.stack:format(6, 332295), nil, 1, 2)
@@ -256,6 +257,8 @@ function mod:SPELL_CAST_START(args)
 		--10.0, 36.0, 36.0, 24.0, 36.0, 36.0, 24.0, 36.0, 36.0, 24.0", -- [4]--NEW
 		--Normal, LFR?
 		--Same pattern slowed down slightly
+		specWarnVolatileEjectionPerWarn:Show()
+		specWarnVolatileEjectionPerWarn:Play("specialsoon")
 		if self.vb.volatileCast % 3 == 0 then
 			timerVolatileEjectionCD:Start(self:IsEasy() and 25.3 or 24, self.vb.volatileCast+1)--Minus isn't a bug, the counter is off by 2 for perfect timers
 		else
