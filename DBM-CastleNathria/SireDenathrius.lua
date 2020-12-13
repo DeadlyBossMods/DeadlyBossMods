@@ -65,7 +65,7 @@ local specWarnFeedingTime						= mod:NewSpecialWarningMoveAway(327039, nil, nil,
 local yellFeedingTime							= mod:NewYell(327039)--Normal/LFR
 local yellFeedingTimeFades						= mod:NewFadesYell(327039)--Normal/LFR
 local specWarnNightHunter						= mod:NewSpecialWarningYouPos(327796, nil, nil, nil, 1, 2, 3)--Heroic/Mythic
-local yellNightHunter							= mod:NewPosYell(327796)--Heroic/Mythic (not red on purpose, you do NOT want to be anywhere near victim, you want to soak the line before victim)
+local yellNightHunter							= mod:NewPosYell(327796, DBM_CORE_L.AUTO_YELL_CUSTOM_POSITION3)--Heroic/Mythic (not red on purpose, you do NOT want to be anywhere near victim, you want to soak the line before victim)
 local yellNightHunterFades						= mod:NewIconFadesYell(327796)--Heroic/Mythic (not red on purpose, you do NOT want to be anywhere near victim, you want to soak the line before victim)
 local specWarnNightHunterTarget					= mod:NewSpecialWarningTarget(327796, false, nil, nil, 1, 2, 3)--Opt in, for people who are assigned to this soak
 local specWarnCommandRavage						= mod:NewSpecialWarningCount(327227, nil, nil, nil, 2, 2)
@@ -80,7 +80,7 @@ local specWarnCrescendo							= mod:NewSpecialWarningDodge(336162, false, nil, n
 local specWarnCarnage							= mod:NewSpecialWarningStack(329906, nil, 6, nil, nil, 1, 6)
 local specWarnCarnageOther						= mod:NewSpecialWarningTaunt(329906, nil, nil, nil, 1, 6)
 local specWarnImpale							= mod:NewSpecialWarningMoveAway(329951, nil, nil, nil, 1, 2)
-local yellImpale								= mod:NewPosYell(329951)
+local yellImpale								= mod:NewPosYell(329951, DBM_CORE_L.AUTO_YELL_CUSTOM_POSITION3)
 local yellImpaleFades							= mod:NewIconFadesYell(329951)
 ----Sire Denathrius
 local specWarnWrackingPain						= mod:NewSpecialWarningDefensive(329181, "Tank", nil, nil, 1, 2)--Change to defensive if it can't be dodged
@@ -92,7 +92,7 @@ local specWarnScorn								= mod:NewSpecialWarningStack(332585, nil, 6, nil, nil
 local specWarnScorneOther						= mod:NewSpecialWarningTaunt(332585, nil, nil, nil, 1, 6)
 local specWarnShatteringPain					= mod:NewSpecialWarningCount(332619, nil, nil, nil, 2, 2)
 local specWarnFatalfFinesse						= mod:NewSpecialWarningMoveAway(332794, nil, nil, nil, 1, 2)
-local yellFatalfFinesse							= mod:NewPosYell(332794)
+local yellFatalfFinesse							= mod:NewPosYell(332794, DBM_CORE_L.AUTO_YELL_CUSTOM_POSITION3)
 local yellFatalfFinesseFades					= mod:NewIconFadesYell(332794)
 --Mythic Phase?
 local specWarnBalefulResonance					= mod:NewSpecialWarningMoveAway(329205, nil, nil, nil, 1, 2, 4)--Mythic?
@@ -420,7 +420,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			--Now show your warnings
 			specWarnNightHunter:Show(self:IconNumToTexture(icon))
 			specWarnNightHunter:Play("mm"..icon)
-			yellNightHunter:Yell(icon, icon, icon)
+			yellNightHunter:Yell(icon, args.spellName, icon)
 			yellNightHunterFades:Countdown(spellId, nil, icon)
 		elseif self.Options.SpecWarn327796target then
 			--Don't show special warning if you're one of victims
@@ -491,7 +491,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnImpale:Show()
 			specWarnImpale:Play("runout")
-			yellImpale:Yell(icon, icon, icon)
+			yellImpale:Yell(icon, args.spellName, icon)
 			yellImpaleFades:Countdown(spellId, nil, icon)
 		end
 		if self.Options.SetIconOnImpale then
@@ -512,7 +512,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnFatalfFinesse:Show()
 			specWarnFatalfFinesse:Play("runout")
-			yellFatalfFinesse:Yell(icon, icon, icon)
+			yellFatalfFinesse:Yell(icon, args.spellName, icon)
 			yellFatalfFinesseFades:Countdown(spellId, nil, icon)
 		end
 		if self.Options.SetIconOnFatalFinesse then
