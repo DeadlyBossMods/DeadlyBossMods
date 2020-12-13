@@ -91,7 +91,7 @@ function mod:SPELL_SUMMON(args)
 			if self.Options.SetIconOnAdds then--Only use up to 5 icons
 				self:ScanForMobs(args.destGUID, 2, self.vb.iconCount, 1, 0.2, 12, "SetIconOnAdds")
 			end
-			self.vb.iconCount - self.vb.iconCount - 1
+			self.vb.iconCount = self.vb.iconCount - 1
 			if self.vb.iconCount == 0 then
 				self.vb.iconCount = 8
 			end
