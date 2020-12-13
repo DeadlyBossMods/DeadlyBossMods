@@ -35,7 +35,7 @@ mod:RegisterEventsInCombat(
 local warnHatefulGaze							= mod:NewTargetNoFilterAnnounce(331209, 4)
 local warnStunnedImpact							= mod:NewTargetNoFilterAnnounce(331314, 1)
 --local warnChainLink								= mod:NewTargetAnnounce(342419, 3)--Targetting debuff
-local warnChainSlam								= mod:NewTargetNoFilterAnnounce(164407, 3)
+local warnChainSlam								= mod:NewTargetNoFilterAnnounce(335470, 3)
 local warnGruesomeRage							= mod:NewTargetNoFilterAnnounce(341250, 4)
 
 local specWarnHatefulGaze						= mod:NewSpecialWarningMoveTo(331209, nil, nil, nil, 3, 2)
@@ -202,7 +202,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			elseif icon == 11 then
 				icon = "(ಥ﹏ಥ)"
 			elseif icon == 12 then
-				icon = "¯(ツ)"
+				icon = "(ツ)"
 			elseif icon == 13 then
 				icon = "ʕ•ᴥ•ʔ"
 			elseif icon == 14 then

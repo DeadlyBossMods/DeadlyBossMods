@@ -187,7 +187,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnShadesofBargast:Play("killmob")
 		timerShadesofBargastCD:Start()
 		if self.Options.SetIconOnShades then
-			self:ScanForMobs(171557, 1, 4, 2, 0.2, 15)--Start at 4 ascending up
+			self:ScanForMobs(171557, 1, 4, 2, 0.2, 15, "SetIconOnShades")--Start at 4 ascending up
 		end
 	elseif spellId == 334852 then
 		timerPetrifyingHowlCD:Start()

@@ -250,7 +250,7 @@ function mod:SPELL_CAST_START(args)
 		if not castsPerGUID[args.sourceGUID] then
 			castsPerGUID[args.sourceGUID] = 0
 			if self.Options.SetIconOnAdds and self.vb.addIcon > 3 then--Only use up to 5 icons
-				self:ScanForMobs(args.sourceGUID, 2, self.vb.addIcon, 1, 0.2, 12)
+				self:ScanForMobs(args.sourceGUID, 2, self.vb.addIcon, 1, 0.2, 12, "SetIconOnAdds")
 			end
 			self.vb.addIcon = self.vb.addIcon - 1
 		end
