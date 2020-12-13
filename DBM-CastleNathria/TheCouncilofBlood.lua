@@ -51,6 +51,7 @@ local warnFixate								= mod:NewTargetAnnounce(330967, 3)--Two bosses dead
 local warnSintouchedBlade						= mod:NewSpellAnnounce(346790, 4)
 --Baroness Frieda
 local warnDreadboltVolley						= mod:NewCountAnnounce(337110, 2)
+local warnDrainEssence							= mod:NewCountAnnounce(346654, 3, nil, "Healer")
 --Lord Stavros
 local warnDarkRecital							= mod:NewTargetNoFilterAnnounce(331634, 3)
 local warnDancingFools							= mod:NewSpellAnnounce(330964, 2)--Two bosses dead
@@ -84,7 +85,7 @@ local timerDutifulAttendantCD					= mod:NewCDTimer(44.9, 346698, nil, nil, nil, 
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22201))--One is dead
 local timerDredgerServantsCD					= mod:NewCDTimer(44.3, 330978, nil, nil, nil, 1)--Iffy on verification
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22199))--Two are dead
-local timerCastellansCadreCD					= mod:NewAITimer(26.7, 330965, nil, nil, nil, 1)
+local timerCastellansCadreCD					= mod:NewCDTimer(26.7, 330965, nil, nil, nil, 1)
 --local timerSintouchedBladeCD						= mod:NewNextCountTimer(12.1, 308872, nil, nil, nil, 5)
 --Baroness Frieda
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22148))--2 baseline abilities
@@ -107,6 +108,7 @@ local timerDancingFoolsCD						= mod:NewCDTimer(30.3, 330964, nil, nil, nil, 1)
 
 mod:AddRangeFrameOption(8, 346657)
 mod:AddInfoFrameOption(347350, true)
+mod:AddSetIconOption("SetIconOnDutiful", 346698, true, false, {8})
 mod:AddSetIconOption("SetIconOnDancingFools", 346826, true, false, {8})--Attempts to set icon only on killable one, not yet tested
 mod:AddNamePlateOption("NPAuraOnFixate", 330967)
 mod:AddNamePlateOption("NPAuraOnShield", 346694)
@@ -115,6 +117,7 @@ mod:AddNamePlateOption("NPAuraOnUproar", 346303)
 mod.vb.phase = 1
 mod.vb.feversActive = 0
 mod.vb.volleyCast = 0
+mod.vb.drainCount = 0
 mod.vb.nikDead = false
 mod.vb.friedaDead = false
 mod.vb.stavrosDead = false
@@ -246,6 +249,7 @@ function mod:OnCombatStart(delay)
 	self.vb.phase = 1
 	self.vb.feversActive = 0
 	self.vb.volleyCast = 1
+	self.vb.drainCount = 0
 	self.vb.nikDead = false
 	self.vb.friedaDead = false
 	self.vb.stavrosDead = false
@@ -335,6 +339,8 @@ function mod:SPELL_CAST_START(args)
 			timerEvasiveLungeCD:Start(timer)
 		end
 	elseif spellId == 346654 then
+		self.vb.drainCount = self.vb.drainCount + 1
+		warnDrainEssence:Show(self.vb.drainCount)
 		local timer = allTimers[difficultyName][spellId][self.vb.phase]
 		if timer then
 			timerDrainEssenceCD:Start(timer)
@@ -398,6 +404,9 @@ function mod:SPELL_CAST_START(args)
 		else
 			timerDutifulAttendantCD:Start(self.vb.phase == 2 and 44.9 or 36.2)--Mythic only, and yes two diff timers in last test
 			timerDutifulAttendantCD:UpdateInline(DBM_CORE_L.MYTHIC_ICON)
+		end
+		if self.Options.SetIconOnDutiful then
+			self:ScanForMobs(175992, 2, 8, 1, 0.2, 10)
 		end
 	elseif spellId == 346800 then
 		specWarnWaltzofBlood:Show()

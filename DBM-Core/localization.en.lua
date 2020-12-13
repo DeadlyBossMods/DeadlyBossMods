@@ -575,6 +575,7 @@ L.AUTO_YELL_ANNOUNCE_TEXT = {
 }
 L.AUTO_YELL_CUSTOM_POSITION			= "{rt%d}%s"--Doesn't need translating. Has no strings
 L.AUTO_YELL_CUSTOM_POSITION2		= "{rt%d}%s{rt%d}"--Doesn't need translating. Has no strings
+L.AUTO_YELL_CUSTOM_POSITION3		= "{rt%d}%s %%s"--Doesn't need translating. Has no strings
 L.AUTO_YELL_CUSTOM_FADE				= "%s faded"
 L.AUTO_HUD_OPTION_TEXT				= "Show HudMap for $spell:%s (Retired)"
 L.AUTO_HUD_OPTION_TEXT_MULTI		= "Show HudMap for various mechanics (Retired)"
