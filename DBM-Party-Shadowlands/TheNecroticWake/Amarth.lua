@@ -4,13 +4,15 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(163157)--162692?
 mod:SetEncounterID(2388)
+mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 320012",
 	"SPELL_CAST_START 322493 321247 320170 333488",
-	"SPELL_CAST_SUCCESS 321226 320012"
+	"SPELL_CAST_SUCCESS 321226 320012",
+	"SPELL_SUMMON 333627"
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
@@ -38,8 +40,13 @@ local timerFinalHarvestCD			= mod:NewCDTimer(41.2, 321247, nil, nil, nil, 2)--41
 local timerNecroticBreathCD			= mod:NewCDTimer(41.2, 333493, nil, nil, nil, 3)--41.2-48.4
 local timerUnholyFrenzyCD			= mod:NewCDTimer(41.2, 320012, nil, nil, nil, 5, nil, DBM_CORE_L.ENRAGE_ICON..DBM_CORE_L.TANK_ICON)--41.2-48.4
 
+mod:AddSetIconOption("SetIconOnAdds", 321226, true, true, {1, 2, 3, 4, 5, 6, 7, 8})
+
+mod.vb.iconCount = 8
+
 function mod:OnCombatStart(delay)
 	--TODO, fine tune start times, started from first melee swing not ENCOUNTER_START
+	self.vb.iconCount = 8
 	timerUnholyFrenzyCD:Start(6-delay)--SUCCESS
 	timerLandoftheDeadCD:Start(8.6-delay)--SUCCESS
 	timerNecroticBreathCD:Start(29.4-delay)
@@ -73,6 +80,22 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerLandoftheDeadCD:Start()
 	elseif spellId == 320012 then
 		timerUnholyFrenzyCD:Start()
+	end
+end
+
+function mod:SPELL_SUMMON(args)
+	local spellId = args.spellId
+	if spellId == 333627 then
+		local cid = self:GetCIDFromGUID(args.destGUID)
+		if cid == 164414 then--Auto mark mages
+			if self.Options.SetIconOnAdds then--Only use up to 5 icons
+				self:ScanForMobs(args.destGUID, 2, self.vb.iconCount, 1, 0.2, 12, "SetIconOnAdds")
+			end
+			self.vb.iconCount = self.vb.iconCount - 1
+			if self.vb.iconCount == 0 then
+				self.vb.iconCount = 8
+			end
+		end
 	end
 end
 

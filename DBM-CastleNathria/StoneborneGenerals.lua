@@ -260,7 +260,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 339690 then
 		timerCrystalizeCD:Start()
 	elseif spellId == 342732 then
-		timerRavenousFeastCD:Start(30, args.sourceGUID)
+		timerRavenousFeastCD:Start(18.6, args.sourceGUID)
 	elseif spellId == 342253 then
 		warnWickedSlaughter:CombinedShow(1.5, args.destName)--Needs to allow at least 1.5 to combine targets
 		timerWickedSlaughterCD:Start(10.9, args.sourceGUID)
@@ -276,13 +276,13 @@ function mod:SPELL_SUMMON(args)
 		if cid == 172858 then--stone-legion-goliath
 			warnStoneLegionGoliath:Show()
 			if self:IsHard() then
-				timerRavenousFeastCD:Start(31.4, args.destGUID)
+				timerRavenousFeastCD:Start(27.6, args.destGUID)
 			end
 		end
 	elseif spellId == 342257 or spellId == 342258 or spellId == 342259 then
 		if self.Options.SetIconOnShadowForces then
 			local icon = spellId == 342257 and 8 or spellId == 342258 and 7 or 6
-			self:ScanForMobs(args.destGUID, 2, icon, 1, 0.2, 12)
+			self:ScanForMobs(args.destGUID, 2, icon, 1, 0.2, 12, "SetIconOnShadowForces")
 		end
 		timerWickedSlaughterCD:Start(10.6, args.destGUID)
 	end

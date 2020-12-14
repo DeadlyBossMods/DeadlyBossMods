@@ -108,8 +108,8 @@ local timerDancingFoolsCD						= mod:NewCDTimer(30.3, 330964, nil, nil, nil, 1)
 
 mod:AddRangeFrameOption(8, 346657)
 mod:AddInfoFrameOption(347350, true)
-mod:AddSetIconOption("SetIconOnDutiful", 346698, true, false, {8})
-mod:AddSetIconOption("SetIconOnDancingFools", 346826, true, false, {8})--Attempts to set icon only on killable one, not yet tested
+mod:AddSetIconOption("SetIconOnDutiful", 346698, true, true, {8})
+mod:AddSetIconOption("SetIconOnDancingFools", 346826, true, true, {8})--Attempts to set icon only on killable one, not yet tested
 mod:AddNamePlateOption("NPAuraOnFixate", 330967)
 mod:AddNamePlateOption("NPAuraOnShield", 346694)
 mod:AddNamePlateOption("NPAuraOnUproar", 346303)
@@ -406,7 +406,7 @@ function mod:SPELL_CAST_START(args)
 			timerDutifulAttendantCD:UpdateInline(DBM_CORE_L.MYTHIC_ICON)
 		end
 		if self.Options.SetIconOnDutiful then
-			self:ScanForMobs(175992, 2, 8, 1, 0.2, 10)
+			self:ScanForMobs(175992, 2, 8, 1, 0.2, 10, "SetIconOnDutiful")--creatureID, iconSetMethod, mobIcon, maxIcon, scanInterval, scanningTime, optionName
 		end
 	elseif spellId == 346800 then
 		specWarnWaltzofBlood:Show()

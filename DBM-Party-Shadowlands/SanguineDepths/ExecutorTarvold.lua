@@ -23,10 +23,10 @@ mod:RegisterEventsInCombat(
 ability.id = 322554 and type = "begincast"
  or ability.id = 323548 and type = "applydebuff"
 --]]
-local warnCastigate					= mod:NewCastAnnounce(322554, 4)
+local warnCastigate					= mod:NewTargetNoFilterAnnounce(322554, 4)
 
 local specWarnCastigate				= mod:NewSpecialWarningMoveAway(322554, nil, nil, nil, 1, 2)
---local yellCastigate				= mod:NewYell(322554)
+local yellCastigate					= mod:NewYell(322554)
 local specWarnCoalesceManifestation	= mod:NewSpecialWarningSwitch(322574, "-Healer", nil, nil, 1, 2)
 --local specWarnGTFO				= mod:NewSpecialWarningGTFO(257274, nil, nil, nil, 1, 8)
 
@@ -38,6 +38,17 @@ mod:AddNamePlateOption("NPAuraOnEnergy", 323548)
 
 mod.vb.AddsActive = 0
 local unitTracked = {}
+
+function mod:CastigateTarget(targetname, uId, bossuid, scanningTime)
+	if not targetname then return end
+	if targetname == UnitName("player") then
+		specWarnCastigate:Show()
+		specWarnCastigate:Play("targetyou")
+		yellCastigate:Yell()
+	else
+		warnCastigate:Show(targetname)
+	end
+end
 
 function mod:OnCombatStart(delay)
 	self.vb.AddsActive = 0
@@ -64,8 +75,8 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 322554 then
-		warnCastigate:Show()
 		timerCastigateCD:Start()
+		self:BossTargetScanner(args.sourceGUID, "CastigateTarget", 0.1, 8)
 	end
 end
 
