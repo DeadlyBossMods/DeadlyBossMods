@@ -154,7 +154,7 @@ L:SetGeneralLocalization({
 
 L:SetMiscLocalization({
 	Flight	= "末日從天而降！",
-	Flight	= "恐怖來自天空！"
+	Flight2	= "恐怖來自天空！"
 })
 
 -----------------------
