@@ -141,7 +141,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("AtonementTrash")
 
 L:SetGeneralLocalization({
-	name =	"贖罪之殿小怪"--HoA Trash?
+	name =	"贖罪之殿小怪"
 })
 
 -----------------------
@@ -153,8 +153,8 @@ L:SetGeneralLocalization({
 --L= DBM:GetModLocalization(2399)
 
 L:SetMiscLocalization({
-	--Flight	= "你們無處可逃！",
-	Flight	= "恐怖來自天空！"
+	Flight	= "末日從天而降！",
+	Flight2	= "恐怖來自天空！"
 })
 
 -----------------------
