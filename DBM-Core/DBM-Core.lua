@@ -12350,7 +12350,8 @@ do
 		end
 	end
 
-	function bossModPrototype:GetIcon(uId)
+	function bossModPrototype:GetIcon(uIdOrTarget)
+		local uId = DBM:GetRaidUnitId(uIdOrTarget) or uIdOrTarget
 		return UnitExists(uId) and GetRaidTargetIndex(uId)
 	end
 

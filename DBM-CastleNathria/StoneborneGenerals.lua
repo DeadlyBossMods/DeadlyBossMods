@@ -69,7 +69,7 @@ local specWarnSerratedSwipe						= mod:NewSpecialWarningDefensive(334929, nil, n
 --local specWarnLaceration						= mod:NewSpecialWarningStack(333913, nil, 3, nil, nil, 1, 6)
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(270290, nil, nil, nil, 1, 8)
 --General Grashaal
-local specWarnReverberatingEruption				= mod:NewSpecialWarningYou(344496, nil, nil, nil, 1, 2)
+local specWarnReverberatingEruption				= mod:NewSpecialWarningYou(344496, nil, 138658, nil, 1, 2)
 local yellReverberatingEruption					= mod:NewYell(344496, 138658)--Short text "Eruption"
 local yellReverberatingEruptionFades			= mod:NewFadesYell(344496, 138658)--Short text "Eruption"
 local specWarnSeismicUpheaval					= mod:NewSpecialWarningDodge(334498, nil, nil, nil, 2, 2)
@@ -180,7 +180,6 @@ function mod:OnCombatEnd()
 	if self.Options.NPAuraOnVolatileShell then
 		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
 	end
-	DBM:AddMsg("This boss has some pretty bad spell queuing that can cause huge timer variance such as 25-46s variations. This is why many of timers stay on screen when timer expires and then shows how long the spell has been queued (with negative number)")
 end
 
 function mod:SPELL_CAST_START(args)
