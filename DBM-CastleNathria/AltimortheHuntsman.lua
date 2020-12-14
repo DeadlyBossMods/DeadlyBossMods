@@ -59,7 +59,7 @@ local yellViciousLunge							= mod:NewYell(334945, nil, nil, nil, "YELL")
 local yellViciousLungeFades						= mod:NewFadesYell(334945, nil, nil, nil, "YELL")
 ----Bargast
 local specWarnRipSoul							= mod:NewSpecialWarningDefensive(334797, nil, nil, nil, 1, 2)
-local specWarnRipSoulHealer						= mod:NewSpecialWarningSwitch(334797, "Healer", nil, nil, 1, 2)
+local specWarnRipSoulHealer						= mod:NewSpecialWarningTarget(334797, "Healer", nil, nil, 1, 2)
 local specWarnShadesofBargast					= mod:NewSpecialWarningSwitch(334757, "Dps", nil, nil, 1, 2)
 ----Hecutis
 local specWarnPetrifyingHowl					= mod:NewSpecialWarningMoveAway(334852, nil, nil, nil, 1, 2)
@@ -199,7 +199,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if spellId == 334945 then--First event with target information, it's where we sync timers to
 		timerViciousLungeCD:Start()
 	elseif spellId == 334797 then
-		specWarnRipSoulHealer:Show()
+		specWarnRipSoulHealer:Show(args.destName)
 		specWarnRipSoulHealer:Play("healfull")
 	end
 end
