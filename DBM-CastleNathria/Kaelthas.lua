@@ -36,7 +36,7 @@ mod:RegisterEventsInCombat(
 --TODO, add nameplate aura for assassins fixate/attack?
 --[[
 (ability.id = 325877 or ability.id = 329509 or ability.id = 329518 or ability.id = 328885) and type = "begincast"
-ability.id = 181113 or ability.id = 323402 or target.id = 168973 and type = "death" or (ability.id = 343026 or ability.id = 337859) and (type = "applydebuff" or type = "removedebuff" or type = "applybuff" or type = "removebuff")
+ or ability.id = 181113 or ability.id = 323402 or target.id = 168973 and type = "death" or (ability.id = 343026 or ability.id = 337859) and (type = "applydebuff" or type = "removedebuff" or type = "applybuff" or type = "removebuff")
  or ability.id = 325665 and type = "cast"
  or ability.id = 328885 and type = "begincast"
  or ability.id = 181113
@@ -103,7 +103,7 @@ mod:AddTimerLine(DBM:EJ_GetSectionInfo(21966))
 local timerFieryStrikeCD						= mod:NewCDTimer(8.5, 326455, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)
 local timerEmberBlastCD							= mod:NewCDTimer(20.6, 325877, nil, nil, nil, 3)--20 again? or is it just 24 on mythic and 20 on heroic
 local timerBlazingSurgeCD						= mod:NewCDTimer(19.4, 329509, nil, nil, nil, 3)
-local timerCloakofFlamesCD						= mod:NewNextTimer(60, 337859, nil, nil, nil, 5)
+local timerCloakofFlamesCD						= mod:NewNextTimer(30, 337859, nil, nil, nil, 5, nil, DBM_CORE_L.MYTHIC_ICON)
 --local timerRebornPhoenixCD					= mod:NewCDTimer(44.3, "ej22090", nil, nil, nil, 1, 328659, DBM_CORE_L.DAMAGE_ICON)--Cast only once whole fight and not timer based
 --High Torturor Darithos
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22089))
@@ -641,7 +641,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			timerCloakofFlamesCD:Start(39)
 		end
 	elseif spellId == 337859 or spellId == 343026 then
-		timerCloakofFlamesCD:Start(60)
+		timerCloakofFlamesCD:Start(30)
 		self.vb.cloakActive = true
 		if self.Options.InfoFrame then--Show dps one over the healing one
 			DBM.InfoFrame:SetHeader(args.spellName)
