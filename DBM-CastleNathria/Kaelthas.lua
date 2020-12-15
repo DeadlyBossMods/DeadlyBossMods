@@ -103,7 +103,7 @@ mod:AddTimerLine(DBM:EJ_GetSectionInfo(21966))
 local timerFieryStrikeCD						= mod:NewCDTimer(8.5, 326455, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)
 local timerEmberBlastCD							= mod:NewCDTimer(20.6, 325877, nil, nil, nil, 3)--20 again? or is it just 24 on mythic and 20 on heroic
 local timerBlazingSurgeCD						= mod:NewCDTimer(19.4, 329509, nil, nil, nil, 3)
-local timerCloakofFlamesCD						= mod:NewNextTimer(30, 337859, nil, nil, nil, 5, nil, DBM_CORE_L.MYTHIC_ICON)
+local timerCloakofFlamesCD						= mod:NewNextCountTimer(30, 337859, nil, nil, nil, 5, nil, DBM_CORE_L.MYTHIC_ICON)
 --local timerRebornPhoenixCD					= mod:NewCDTimer(44.3, "ej22090", nil, nil, nil, 1, 328659, DBM_CORE_L.DAMAGE_ICON)--Cast only once whole fight and not timer based
 --High Torturor Darithos
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22089))
@@ -146,6 +146,7 @@ mod.vb.addCount = 0
 mod.vb.healerOrbCount = 0
 mod.vb.shadeActive = false
 mod.vb.cloakActive = false
+mod.vb.cloakCount = 0
 mod.vb.assassinCount = 0
 mod.vb.occultistCount = 0
 mod.vb.infuserCount = 0
@@ -345,6 +346,16 @@ local function setForcedAddSpawns(self)
 	self.vb.addMode = 1
 end
 
+local function expectedInfuser(self)
+	self.vb.infuserCount = self.vb.infuserCount + 1
+	local timer = addTimers[self.vb.addMode][difficultyName][165762][self.vb.infuserCount+1]
+	if timer then
+		timerSoulInfuserCD:Start(timer-10, self.vb.infuserCount+1)
+		self:Unschedule(expectedInfuser)
+		self:Schedule(timer, expectedInfuser, self)
+	end
+end
+
 function mod:OnCombatStart(delay)
 	self.vb.addMode = 0
 	self.vb.addCount = 0
@@ -356,6 +367,7 @@ function mod:OnCombatStart(delay)
 	self.vb.vanquisherCount = 0
 	self.vb.shadeActive = false
 	self.vb.cloakActive = false
+	self.vb.cloakCount = 0
 	table.wipe(seenAdds)
 	table.wipe(castsPerGUID)
 	table.wipe(infuserTargets)
@@ -373,10 +385,12 @@ function mod:OnCombatStart(delay)
 		difficultyName = "mythic"
 		timerVanquisherCD:Start(50, 1)
 		timerSoulInfuserCD:Start(75, 1)
+		self:Unschedule(expectedInfuser)
+		self:Schedule(85, expectedInfuser, self)
 --		timerPesteringFiendCD:Start(100, 1)
 		timerBleakwingAssassinCD:Start(110, 1)
 		timerVileOccultistCD:Start(110, 1)
-		timerCloakofFlamesCD:Start(80)--IFFY
+		timerCloakofFlamesCD:Start(80, 1)--IFFY
 	elseif self:IsHeroic() then
 		difficultyName = "heroic"
 		timerVanquisherCD:Start(50, 1)
@@ -384,6 +398,8 @@ function mod:OnCombatStart(delay)
 		timerVileOccultistCD:Start(70, 1)
 		timerPesteringFiendCD:Start(100, 1)
 		timerSoulInfuserCD:Start(130, 1)
+		self:Unschedule(expectedInfuser)
+		self:Schedule(140, expectedInfuser, self)
 	elseif self:IsNormal() then
 		difficultyName = "easy"
 		timerVanquisherCD:Start(50, 1)
@@ -391,6 +407,8 @@ function mod:OnCombatStart(delay)
 		timerPesteringFiendCD:Start(70, 1)
 		timerVileOccultistCD:Start(105, 1)
 		timerSoulInfuserCD:Start(185, 1)
+		self:Unschedule(expectedInfuser)
+		self:Schedule(195, expectedInfuser, self)
 	else
 		difficultyName = "easy"
 	end
@@ -507,6 +525,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 				local timer = addTimers[self.vb.addMode][difficultyName][cid][self.vb.infuserCount+1]
 				if timer then
 					timerSoulInfuserCD:Start(timer, self.vb.infuserCount+1)
+					self:Unschedule(expectedInfuser)
+					self:Schedule(timer+10, expectedInfuser, self)
 				end
 			elseif cid == 168700 then
 				self.vb.fiendCount = self.vb.fiendCount + 1
@@ -627,7 +647,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 323402 and self:AntiSpam(3, 7) then--Reflection of Guilt (Shade Coming out)
 		self.vb.shadeActive = true
+		self.vb.cloakCount = 0
 		timerSoulInfuserCD:Stop()
+		self:Unschedule(expectedInfuser)
 		timerPesteringFiendCD:Stop()
 		timerBleakwingAssassinCD:Stop()
 		timerVileOccultistCD:Stop()
@@ -638,10 +660,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerEmberBlastCD:Start(20.1)
 		timerBlazingSurgeCD:Start(28.8)
 		if self:IsMythic() then
-			timerCloakofFlamesCD:Start(39)
+			timerCloakofFlamesCD:Start(39, 1)
 		end
 	elseif spellId == 337859 or spellId == 343026 then
-		timerCloakofFlamesCD:Start(spellId == 337859 and 60 or 30)
+		self.vb.cloakCount = self.vb.cloakCount + 1
+		timerCloakofFlamesCD:Start(spellId == 337859 and 60 or 30, self.vb.cloakCount+1)
 		self.vb.cloakActive = true
 		if self.Options.InfoFrame then--Show dps one over the healing one
 			DBM.InfoFrame:SetHeader(args.spellName)
@@ -681,6 +704,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.infuserCount = 0
 		self.vb.fiendCount = 0
 		self.vb.vanquisherCount = 0
+		self.vb.cloakCount = 0
 		timerEmberBlastCD:Stop()
 		timerBlazingSurgeCD:Stop()
 		timerFieryStrikeCD:Stop()
@@ -689,27 +713,35 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerBleakwingAssassinCD:Start(23.3, 1)
 			timerVileOccultistCD:Start(23.3, 1)
 			timerSoulInfuserCD:Start(90, 1)
+			self:Unschedule(expectedInfuser)
+			self:Schedule(100, expectedInfuser, self)
 			--timerPesteringFiendCD:Start(4, 1)--None seem to spawn anymore after shades?
 			if self:IsMythic() then
-				timerCloakofFlamesCD:Start(34.1)
+				timerCloakofFlamesCD:Start(34.1, 1)
 			end
 		elseif self:IsHeroic() then
 			timerVanquisherCD:Start(3.5, 1)
 			timerBleakwingAssassinCD:Start(23.5, 1)
 			timerPesteringFiendCD:Start(23.5, 1)
 			timerSoulInfuserCD:Start(60, 1)
+			self:Unschedule(expectedInfuser)
+			self:Schedule(70, expectedInfuser, self)
 			timerVileOccultistCD:Start(133.5, 1)
 		else--Normal and LFR combined for now until verify they are different
 			timerVanquisherCD:Start(3.5, 1)
 			timerSoulInfuserCD:Start(24.2, 1)
+			self:Unschedule(expectedInfuser)
+			self:Schedule(34.2, expectedInfuser, self)
 			timerBleakwingAssassinCD:Start(58.7, 1)
 			timerPesteringFiendCD:Start(58.7, 1)
 			timerVileOccultistCD:Start(94.2, 1)
 		end
 	elseif spellId == 337859 or spellId == 343026 then
 		self.vb.cloakActive = false
-		specWarnUnleashedPyroclasm:Show(args.destName)
-		specWarnUnleashedPyroclasm:Play("kickcast")
+		if spellId == 343026 then
+			specWarnUnleashedPyroclasm:Show(args.destName)
+			specWarnUnleashedPyroclasm:Play("kickcast")
+		end
 		if self.Options.InfoFrame and spellId == 343026 then
 			if #infuserTargets > 0 then
 				DBM.InfoFrame:SetHeader(infusersBoon)
@@ -730,6 +762,7 @@ function mod:UNIT_DIED(args)
 			self.vb.addMode = 1
 			timerVanquisherCD:Stop()
 			timerSoulInfuserCD:Stop()
+			self:Unschedule(expectedInfuser)
 			timerPesteringFiendCD:Stop()
 			timerBleakwingAssassinCD:Stop()
 			timerVileOccultistCD:Stop()
@@ -737,22 +770,25 @@ function mod:UNIT_DIED(args)
 			if self:IsMythic() then
 				timerVanquisherCD:Start(8, 1)
 				timerSoulInfuserCD:Start(35, 1)
+				self:Schedule(45, expectedInfuser, self)
 				--timerPesteringFiendCD:Start(58, 1)
 				timerBleakwingAssassinCD:Start(60, 1)
 				timerVileOccultistCD:Start(68, 1)
-				timerCloakofFlamesCD:Start(38)--Mythic Only
+				timerCloakofFlamesCD:Start(38, 1)--Mythic Only
 			elseif self:IsHeroic() then
 				timerVanquisherCD:Start(30, 1)
 				timerBleakwingAssassinCD:Start(50, 1)--Come earlier on easy
 				timerVileOccultistCD:Start(50, 1)
 				timerPesteringFiendCD:Start(80, 1)
 				timerSoulInfuserCD:Start(110, 1)
+				self:Schedule(120, expectedInfuser, self)
 			else--TODO, verify normal and LFR share timers
 				timerVanquisherCD:Start(50, 1)
 				timerBleakwingAssassinCD:Start(70, 1)--Come earlier on easy
 				timerPesteringFiendCD:Start(70, 1)
 				timerVileOccultistCD:Start(105, 1)
 				timerSoulInfuserCD:Start(185, 1)
+				self:Schedule(195, expectedInfuser, self)
 			end
 		end
 	elseif cid == 165764 then--Rockbound Vanquisher
@@ -809,6 +845,8 @@ function mod:OnSync(msg, guid)
 				local timer = addTimers[self.vb.addMode][difficultyName][cid][self.vb.infuserCount+1]
 				if timer and timer > 5 then
 					timerSoulInfuserCD:Start(timer, self.vb.infuserCount+1)
+					self:Unschedule(expectedInfuser)
+					self:Schedule(timer+10, expectedInfuser, self)
 				end
 			elseif cid == 168700 then
 				self.vb.fiendCount = self.vb.fiendCount + 1
