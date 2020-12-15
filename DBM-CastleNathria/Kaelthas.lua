@@ -342,7 +342,7 @@ do
 end
 
 local function setForcedAddSpawns(self)
-
+	self.vb.addMode = 1
 end
 
 function mod:OnCombatStart(delay)
@@ -368,6 +368,7 @@ function mod:OnCombatStart(delay)
 	if self.Options.NPAuraOnPhoenixFixate then--self.Options.NPAuraOnPhoenixEmbers
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
+	self:Schedule(42, setForcedAddSpawns, self)
 	if self:IsMythic() then
 		difficultyName = "mythic"
 		timerVanquisherCD:Start(50, 1)
