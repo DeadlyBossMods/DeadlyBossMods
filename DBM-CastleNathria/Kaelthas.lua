@@ -641,7 +641,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			timerCloakofFlamesCD:Start(39)
 		end
 	elseif spellId == 337859 or spellId == 343026 then
-		timerCloakofFlamesCD:Start(30)
+		timerCloakofFlamesCD:Start(spellId == 337859 and 60 or 30)
 		self.vb.cloakActive = true
 		if self.Options.InfoFrame then--Show dps one over the healing one
 			DBM.InfoFrame:SetHeader(args.spellName)
