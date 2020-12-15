@@ -5,8 +5,8 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(166644)
 mod:SetEncounterID(2405)
 mod:SetUsedIcons(1, 2)
-mod:SetHotfixNoticeRev(20200822000000)--2020, 8, 22
-mod:SetMinSyncRevision(20200822000000)
+mod:SetHotfixNoticeRev(20201214000000)--2020, 12, 14
+mod:SetMinSyncRevision(20201214000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
@@ -29,18 +29,18 @@ mod:RegisterEventsInCombat(
  or (ability.id = 326271 or ability.id = 325361) and type = "cast"
 --]]
 local warnPhase										= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
-local warnDimensionalTear							= mod:NewTargetNoFilterAnnounce(328437, 3)
+local warnDimensionalTear							= mod:NewTargetNoFilterAnnounce(328437, 3, nil, nil, 327770)
 local warnHyperlightSpark							= mod:NewCountAnnounce(325399, 2, nil, false, 2)
 --Sire Denathrius' Private Collection
-local warnSpirits									= mod:NewSpellAnnounce(340758, 3)
+local warnSpirits									= mod:NewSpellAnnounce(340758, 3, nil, nil, 263222)
 local warnFixate									= mod:NewTargetAnnounce(327902, 3)
 local warnPossession								= mod:NewTargetNoFilterAnnounce(327414, 4)
-local warnSeedsofExtinction							= mod:NewSpellAnnounce(329834, 3, nil, nil, 130924)--Shortname "Root"
+local warnSeedsofExtinction							= mod:NewSpellAnnounce(329834, 3, nil, nil, 205446)--Shortname "Planting Seeds"
 local warnUnleashPower								= mod:NewCountAnnounce(342854, 4)
 
-local specWarnDimensionalTear						= mod:NewSpecialWarningYouPos(328437, nil, nil, nil, 1, 2)
-local yellDimensionalTear							= mod:NewPosYell(328437)
-local yellDimensionalTearFades						= mod:NewIconFadesYell(328437)
+local specWarnDimensionalTear						= mod:NewSpecialWarningYouPos(328437, 327770, nil, nil, 1, 2)
+local yellDimensionalTear							= mod:NewPosYell(328437, 327770)
+local yellDimensionalTearFades						= mod:NewIconFadesYell(328437, 327770)
 local specWarnGlyphofDestruction					= mod:NewSpecialWarningMoveAway(325361, nil, nil, nil, 1, 2)
 local yellGlyphofDestruction						= mod:NewYell(325361)
 local yellGlyphofDestructionFades					= mod:NewShortFadesYell(325361)
@@ -53,7 +53,7 @@ local specWarnEdgeofAnnihilation					= mod:NewSpecialWarningRun(328789, nil, 307
 --local specWarnGTFO								= mod:NewSpecialWarningGTFO(270290, nil, nil, nil, 1, 8)
 
 mod:AddTimerLine(BOSS)
-local timerDimensionalTearCD						= mod:NewCDTimer(25, 328437, nil, nil, nil, 3, nil, nil, true)
+local timerDimensionalTearCD						= mod:NewCDTimer(25, 328437, 327770, nil, nil, 3, nil, nil, true)
 local timerGlyphofDestructionCD						= mod:NewCDTimer(36.4, 325361, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)--27.9-58.6 for now
 local timerGlyphofDestruction						= mod:NewTargetTimer(4, 325361, nil, nil, 2, 2, nil, DBM_CORE_L.TANK_ICON)
 local timerStasisTrapCD								= mod:NewCDTimer(30.3, 326271, nil, nil, nil, 3)--30, except when it's reset by phase changes
@@ -61,11 +61,11 @@ local timerRiftBlastCD								= mod:NewCDTimer(36, 335013, nil, nil, nil, 3)--36
 local timerHyperlightSparkCD						= mod:NewCDTimer(15.8, 325399, nil, nil, nil, 2, nil, DBM_CORE_L.HEALER_ICON)--15.8 except when it's heavily spell queued
 --Sire Denathrius' Private Collection
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22119))
-local timerFleetingSpiritsCD						= mod:NewCDTimer(40.8, 340758, nil, nil, nil, 3)--40.8-46
-local timerSeedsofExtinctionCD						= mod:NewCDTimer(43.7, 329770, 130924, nil, nil, 5)--43-49. Shortname "Root"
+local timerFleetingSpiritsCD						= mod:NewCDTimer(40.8, 340758, 263222, nil, nil, 3)--40.8-46
+local timerSeedsofExtinctionCD						= mod:NewCDTimer(43.7, 329770, 205446, nil, nil, 5)--43-49. Shortname "Planting Seeds"
 local timerExtinction								= mod:NewCastTimer(16, 329107, nil, nil, nil, 2, nil, DBM_CORE_L.DEADLY_ICON)
 local timerEdgeofAnnihilationCD						= mod:NewCDTimer(44.3, 328789, 307421, nil, nil, 2, nil, DBM_CORE_L.DEADLY_ICON)--Shortname "Annihilation"
-local timerEdgeofAnnihilation						= mod:NewCastTimer(10, 328789, nil, nil, nil, 2, nil, DBM_CORE_L.DEADLY_ICON)
+local timerEdgeofAnnihilation						= mod:NewCastTimer(10, 328789, 307421, nil, nil, 5, nil, DBM_CORE_L.DEADLY_ICON)
 local timerUnleashPowerCD							= mod:NewCDCountTimer(40.8, 342854, nil, nil, nil, 5, nil, DBM_CORE_L.MYTHIC_ICON..DBM_CORE_L.DEADLY_ICON)
 
 --local berserkTimer								= mod:NewBerserkTimer(600)
@@ -78,19 +78,19 @@ mod.vb.phase = 0
 mod.vb.spartCount = 0
 mod.vb.tearIcon = 1
 mod.vb.annihilationCount = 0
-mod.vb.lastRotation = 0--0 tear, 1 ghosts, 2 roots, 3 annihilate, 4 Second tear, 5 Empty
+--mod.vb.lastRotation = 0--0 tear, 1 ghosts, 2 roots, 3 annihilate, 4 Second tear, 5 Empty
 mod.vb.unleashCount = 0
-mod.vb.p3FirstCast = 0--1- Tear, 2 - Annihilate
+--mod.vb.p3FirstCast = 0--1- Tear, 2 - Annihilate
 mod.vb.hyperInProgress = false
 
 function mod:OnCombatStart(delay)
-	self.vb.phase = 0
+	self.vb.phase = 1
 	self.vb.spartCount = 0
 	self.vb.tearIcon = 1
 	self.vb.annihilationCount = 0
-	self.vb.lastRotation = 1--Technically Tear is first in any phase, followed by activator, but neither are part of Spell Rotation script, so variable is set accordingly for that
+--	self.vb.lastRotation = 1--Technically Tear is first in any phase, followed by activator, but neither are part of Spell Rotation script, so variable is set accordingly for that
 	self.vb.unleashCount = 0
-	self.vb.p3FirstCast = 0--1- Tear, 2 - Annihilate
+--	self.vb.p3FirstCast = 0--1- Tear, 2 - Annihilate
 	self.vb.hyperInProgress = false
 	timerHyperlightSparkCD:Start(5-delay)
 	if self:IsHard() then
@@ -120,29 +120,30 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 328437 or spellId == 342310 then
 		self.vb.tearIcon = 1
 		if spellId == 328437 then--One scripted to rotator
-			--Attempts to correct situation where either annihilation OR tear can come after annihilation relic activation
-			if self.vb.p3FirstCast == 0 then
-				self.vb.p3FirstCast = 2
-				self.vb.lastRotation = 0
-			end
 			if self.vb.phase == 1 then
-				self.vb.lastRotation = 0
+--				self.vb.lastRotation = 0
 				timerFleetingSpiritsCD:Start(20.2)
 			elseif self.vb.phase == 2 then
-				self.vb.lastRotation = 0
+--				self.vb.lastRotation = 0
 				timerSeedsofExtinctionCD:Start(self:IsMythic() and 25 or 20.2)
 			else--Phase 3
 				if self:IsMythic() then
 					timerUnleashPowerCD:Start(35, self.vb.unleashCount+1)
 				else
-					--Unique 20sec Spell Rotation in this phase (Annihilate, Tear, Empty, Tear, repeat)
-					if self.vb.lastRotation == 3 then--Last cast Annihilate
-						self.vb.lastRotation = 0--Which means this cast is Tear 1
-						timerDimensionalTearCD:Start(40.4)--Which means next cast is tear 2
-					else--Last cast was Tear 1
-						self.vb.lastRotation = 4--This cast is Tear 2
-						timerEdgeofAnnihilationCD:Start(20.2)--Which means next cast begins cycle again at Annihilate
-					end
+					--Attempts to correct situation where either annihilation OR tear can come after annihilation relic activation
+--					if self.vb.p3FirstCast == 0 then
+--						self.vb.p3FirstCast = 2
+--						self.vb.lastRotation = 0
+--					end
+					--Unique 20sec Spell Rotation in this phase (Annihilate, Tear, Empty, Tear, repeat), OBSOLETE
+					--Alternates between 2 psells on 25sec rotation now, NEW
+--					if self.vb.lastRotation == 3 then--Last cast Annihilate
+--						self.vb.lastRotation = 0--Which means this cast is Tear 1
+						timerDimensionalTearCD:Start(25)--(26.75) Which means next cast is tear 2
+--					else--Last cast was Tear 1
+--						self.vb.lastRotation = 4--This cast is Tear 2
+--						timerEdgeofAnnihilationCD:Start(20.2)--Which means next cast begins cycle again at Annihilate
+--					end
 				end
 			end
 		else--If boss is casting 342310 he's transitioning into a new phase and spawning initial rifts for that phase
@@ -160,23 +161,24 @@ function mod:SPELL_CAST_START(args)
 		warnHyperlightSpark:Show(self.vb.spartCount)
 		timerHyperlightSparkCD:Start()
 		self.vb.hyperInProgress = true
-	elseif spellId == 327887 then--First Spirits cast (Crystal of Phantasms)
-		warnSpirits:Show()
-		timerDimensionalTearCD:Start(self:IsMythic() and 33.6)--Timer for first tear after activation. Activations don't fire spell rotator
-	elseif spellId == 340758 then--Fleeting Spirits 2nd+ cast (but only in phase 1, phase 2 and 3 mythic don't fire this event)
-		self.vb.lastRotation = 1--0 rift, 1 ghosts, 2 roots, 3 annihilate
-		timerDimensionalTearCD:Start(20.2)
+--	elseif spellId == 327887 then--First Spirits cast (Crystal of Phantasms)
+	--	warnSpirits:Show()
+	--	timerDimensionalTearCD:Start(25)--Timer for first tear after activation. Activations don't fire spell rotator
+--	elseif spellId == 340758 then--Fleeting Spirits 2nd+ cast (but only in phase 1, phase 2 and 3 mythic don't fire this event)
+--		self.vb.lastRotation = 1--0 rift, 1 ghosts, 2 roots, 3 annihilate
+--		timerDimensionalTearCD:Start(20.2)
 	elseif spellId == 329770 then--Root of Extinction first cast
 		warnSeedsofExtinction:Show()
 		if self.vb.phase < 2 then--In case user playing in language with unlocalized phase 2 yell
 			self.vb.phase = 2
-			self.vb.lastRotation = 2
+--			self.vb.lastRotation = 2
 			timerDimensionalTearCD:Stop()
 			timerFleetingSpiritsCD:Stop()
 		end
-		timerDimensionalTearCD:Start(34)--Timer for first tear after activation. Activations don't fire spell rotator
+		--timerDimensionalTearCD:Start(34)--Timer for first tear after activation. Activations don't fire spell rotator
+		timerSeedsofExtinctionCD:Start(27.6)--Now cast twice in a row?
 	elseif spellId == 340788 then--Roots of Extinction casts 2+
-		self.vb.lastRotation = 2--0 rift, 1 ghosts, 2 roots, 3 annihilate
+--		self.vb.lastRotation = 2--0 rift, 1 ghosts, 2 roots, 3 annihilate
 		timerDimensionalTearCD:Start(self:IsMythic() and 25 or 20.2)
 	elseif spellId == 329834 then--Roots cast itself, for warning
 		warnSeedsofExtinction:Show()
@@ -185,33 +187,28 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 328880 then--Phase Change 3 (Edge of Annihilation)
 		if self.vb.phase < 3 then--In case boss doesn't cast 342310, which happens in rare cases
 			self.vb.phase = 3
-			self.vb.lastRotation = 3
-			self.vb.p3FirstCast = 0--1- Tear, 2 - Annihilate
+--			self.vb.lastRotation = 3
+--			self.vb.p3FirstCast = 0--1- Tear, 2 - Annihilate
 			timerDimensionalTearCD:Stop()
 			timerSeedsofExtinctionCD:Stop()
 		end
 		--TODO, monitor for blizzard having fixed this issue https://us.forums.blizzard.com/en/wow/t/feedback-mythic-artificer-xymox/617893/5
-		--Normal is always annihilation first, but mythic can be either Unleash OR tear first. if it's actually annihilation next it's a wipe
+		--Mythic could be either Unleash OR tear first. if it's actually annihilation next it's a wipe
 		if self:IsMythic() then
-			timerUnleashPowerCD:Start(30, 2)
-			timerDimensionalTearCD:Start(30)
-		else
-			timerEdgeofAnnihilationCD:Start(30)
-			timerDimensionalTearCD:Start(30)--Timer for first tear after activation. Activations don't fire spell rotator
-		end
-		if self:IsMythic() then
-			self.vb.unleashCount = 1
 			warnUnleashPower:Show(1)
 			timerEdgeofAnnihilationCD:Start(7.7)
 			timerSeedsofExtinctionCD:Start(11.4)
 			timerFleetingSpiritsCD:Start(13.6)
+			timerDimensionalTearCD:Start(30)
+		else
+			timerDimensionalTearCD:Start(35.2)
 		end
 	elseif spellId == 340807 then--Annihilate 2+ cast by boss, for timer handling
-		if self.vb.p3FirstCast == 0 then
-			self.vb.p3FirstCast = 2
-		end
-		self.vb.lastRotation = 3--0 rift, 1 ghosts, 2 roots, 3 annihilate
-		timerDimensionalTearCD:Start(20.2)
+--		if self.vb.p3FirstCast == 0 then
+--			self.vb.p3FirstCast = 2
+--		end
+--		self.vb.lastRotation = 3--0 rift, 1 ghosts, 2 roots, 3 annihilate
+		timerDimensionalTearCD:Start(25)
 	elseif spellId == 328789 then--Script for the actual annihilate, where warning handling is done
 		self.vb.annihilationCount = self.vb.annihilationCount + 1
 		specWarnEdgeofAnnihilation:Show(self.vb.annihilationCount)
@@ -219,9 +216,9 @@ function mod:SPELL_CAST_START(args)
 		specWarnEdgeofAnnihilation:ScheduleVoice(2, "keepmove")
 		timerEdgeofAnnihilation:Start()
 	elseif spellId == 342854 then--Unleash Power, cast in mythic phase 3 to activate all relics at once (replaces 340807 which is not cast on mythic)
-		if self.vb.p3FirstCast == 0 then
-			self.vb.p3FirstCast = 2
-		end
+--		if self.vb.p3FirstCast == 0 then
+--			self.vb.p3FirstCast = 2
+--		end
 		self.vb.unleashCount = self.vb.unleashCount + 1
 		warnUnleashPower:Show(self.vb.unleashCount)
 		--Unleash Power 1: Spirits, delay, Seeds+Annihilation
@@ -328,6 +325,10 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	if msg:find("spell:327887") then
 		warnSpirits:Show()
+		if self.vb.phase == 1 then
+--			self.vb.lastRotation = 1--0 rift, 1 ghosts, 2 roots, 3 annihilate
+			timerDimensionalTearCD:Start(20.2)
+		end
 	end
 end
 
@@ -343,7 +344,7 @@ function mod:OnSync(msg)
 	if not self:IsInCombat() then return end
 	if msg == "Phase2" then
 		self.vb.phase = 2
-		self.vb.lastRotation = 2--Technically Tear is first in any phase, followed by activator, but neither are part of Spell Rotation script, so variable is set accordingly for that
+--		self.vb.lastRotation = 2--Technically Tear is first in any phase, followed by activator, but neither are part of Spell Rotation script, so variable is set accordingly for that
 		warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(2))
 		warnPhase:Play("ptwo")
 		timerStasisTrapCD:Stop()
@@ -365,8 +366,8 @@ function mod:OnSync(msg)
 		timerGlyphofDestructionCD:Start(27.8)--SUCCESS
 	elseif msg == "Phase3" then
 		self.vb.phase = 3
-		self.vb.lastRotation = 3--Technically Tear is first in any phase, followed by activator, but neither are part of Spell Rotation script, so variable is set accordingly for that
-		self.vb.p3FirstCast = 0--1- Tear, 2 - Annihilate
+--		self.vb.lastRotation = 3--Technically Tear is first in any phase, followed by activator, but neither are part of Spell Rotation script, so variable is set accordingly for that
+--		self.vb.p3FirstCast = 0--1- Tear, 2 - Annihilate
 		warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(3))
 		warnPhase:Play("pthree")
 		timerStasisTrapCD:Stop()
@@ -384,7 +385,7 @@ function mod:OnSync(msg)
 		timerStasisTrapCD:Start(10.7)
 		timerDimensionalTearCD:Start(14.4)
 		timerRiftBlastCD:Start(45.9)
-		timerGlyphofDestructionCD:Start(55)--SUCCESS
+		timerGlyphofDestructionCD:Start(53.5)--SUCCESS
 		if self:IsMythic() then
 			timerUnleashPowerCD:Start(20, 1)--Tecnically time til Edge of Annihilation, but it activates all 3 like Unleash Power does
 		else

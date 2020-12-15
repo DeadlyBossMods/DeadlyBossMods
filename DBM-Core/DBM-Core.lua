@@ -71,8 +71,8 @@ end
 
 DBM = {
 	Revision = parseCurseDate("@project-date-integer@"),
-	DisplayVersion = "9.0.9 alpha", -- the string that is shown as version
-	ReleaseRevision = releaseDate(2020, 12, 10) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	DisplayVersion = "9.0.10 alpha", -- the string that is shown as version
+	ReleaseRevision = releaseDate(2020, 12, 14) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 }
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
@@ -476,7 +476,7 @@ local dataBroker
 local voiceSessionDisabled = false
 local handleSync
 
-local fakeBWVersion, fakeBWHash = 189, "b652876"--189.0
+local fakeBWVersion, fakeBWHash = 193, "ad86060"--189.0
 local bwVersionResponseString = "V^%d^%s"
 local enableIcons = true -- set to false when a raid leader or a promoted player has a newer version of DBM
 
@@ -12350,7 +12350,8 @@ do
 		end
 	end
 
-	function bossModPrototype:GetIcon(uId)
+	function bossModPrototype:GetIcon(uIdOrTarget)
+		local uId = DBM:GetRaidUnitId(uIdOrTarget) or uIdOrTarget
 		return UnitExists(uId) and GetRaidTargetIndex(uId)
 	end
 

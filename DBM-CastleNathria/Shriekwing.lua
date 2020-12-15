@@ -47,14 +47,14 @@ local warnBloodLantern							= mod:NewTargetNoFilterAnnounce(341684, 1)--Mythic
 
 --Stage One - Thirst for Blood
 local specWarnExsanguinated						= mod:NewSpecialWarningStack(328897, nil, 2, nil, nil, 1, 6)
-local specWarnExsanguinatingBite				= mod:NewSpecialWarningDefensive(328857, nil, nil, nil, 1, 2)
-local specWarnExsanguinatingBiteOther			= mod:NewSpecialWarningTaunt(328857, nil, nil, nil, 1, 2)
+local specWarnExsanguinatingBite				= mod:NewSpecialWarningDefensive(328857, nil, 17253, nil, 1, 2)
+local specWarnExsanguinatingBiteOther			= mod:NewSpecialWarningTaunt(328857, nil, 17253, nil, 1, 2)
 local specWarnEcholocation						= mod:NewSpecialWarningMoveAway(342077, nil, nil, nil, 1, 2)
 local yellEcholocation							= mod:NewPosYell(342077)
 local yellEcholocationFades						= mod:NewIconFadesYell(342077)
-local specWarnEarsplittingShriek				= mod:NewSpecialWarningMoveTo(330711, nil, nil, nil, 1, 2)
+local specWarnEarsplittingShriek				= mod:NewSpecialWarningMoveTo(330711, nil, 251719, nil, 1, 2)
 local specWarnBlindSwipe						= mod:NewSpecialWarningDefensive(343005, "Tank", nil, nil, 1, 2)
-local specWarnEchoingScreech					= mod:NewSpecialWarningDodge(342863, nil, nil, nil, 2, 2)
+local specWarnEchoingScreech					= mod:NewSpecialWarningDodge(342863, nil, 252538, nil, 2, 2)
 --Stage Two - Terror of Castle Nathria
 local specWarnBloodshroud						= mod:NewSpecialWarningSpell(328921, nil, nil, nil, 2, 2)
 local specWarnDeadlyDescent						= mod:NewSpecialWarningYou(343021, nil, nil, nil, 1, 2)--1 because you can't do anything about it
@@ -65,16 +65,16 @@ local specWarnGTFO								= mod:NewSpecialWarningGTFO(340324, nil, nil, nil, 1, 
 
 --Stage One - Thirst for Blood
 --mod:AddTimerLine(BOSS)
-local timerExsanguinatingBiteCD					= mod:NewCDTimer(18.2, 328857, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)--10-22.9 (too varaible for a countdown by default)
+local timerExsanguinatingBiteCD					= mod:NewCDTimer(18.2, 328857, 17253, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)--10-22.9 (too varaible for a countdown by default)
 local timerEcholocationCD						= mod:NewCDTimer(23, 342077, nil, nil, nil, 3, nil, nil, nil, 1, 3)--Seems to be 42.7 without a hitch
-local timerEarsplittingShriekCD					= mod:NewCDTimer(47.4, 330711, nil, nil, nil, 2)
+local timerEarsplittingShriekCD					= mod:NewCDTimer(47.4, 330711, 251719, nil, nil, 2)--Shortname "Shriek"
 local timerWaveofBloodCD						= mod:NewCDCountTimer(24.8, 345397, nil, nil, nil, 2, nil, DBM_CORE_L.HEALER_ICON)
 local timerBlindSwipeCD							= mod:NewCDTimer(44.4, 343005, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON)
-local timerEchoingScreechCD						= mod:NewCDTimer(48, 342863, nil, nil, nil, 3)
+local timerEchoingScreechCD						= mod:NewCDTimer(48, 342863, 252538, nil, nil, 3)
 local timerBloodshroudCD						= mod:NewCDTimer(112, 328921, nil, nil, nil, 6)--100-103
 --Stage Two - Terror of Castle Nathria
 --local timerBloodshroud						= mod:NewBuffActiveTimer(47.5, 328921, nil, nil, nil, 6)--43.4-47.5, more to it than this? or just fact blizzards energy code always proves to be dogshit
-local timerEarsplittingShriek					= mod:NewCastTimer(4, 345936, nil, false, nil, 5)--For users to see cast bar if boss remains untargetable in intermission
+local timerEarsplittingShriek					= mod:NewCastTimer(4, 345936, 251719, false, nil, 5)--For users to see cast bar if boss remains untargetable in intermission
 local timerEchoingSonar							= mod:NewCastTimer(6, 329362, nil, false, nil, 5)
 --local berserkTimer							= mod:NewBerserkTimer(600)
 

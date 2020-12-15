@@ -5,8 +5,8 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(164261)
 mod:SetEncounterID(2383)
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
-mod:SetHotfixNoticeRev(20201211000000)--2020, 12, 11
-mod:SetMinSyncRevision(20201211000000)
+mod:SetHotfixNoticeRev(20201214000000)--2020, 12, 14
+mod:SetMinSyncRevision(20201214000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
@@ -33,17 +33,17 @@ mod:RegisterEventsInCombat(
 (ability.id = 334522 or ability.id = 334266 or ability.id = 329455 or ability.id = 329774) and type = "begincast"
  or ability.id = 329298 and type = "applydebuff"
 --]]
-local warnGluttonousMiasma						= mod:NewTargetNoFilterAnnounce(329298, 4)
-local warnVolatileEjection						= mod:NewTargetNoFilterAnnounce(334266, 4)
+local warnGluttonousMiasma						= mod:NewTargetNoFilterAnnounce(329298, 4, nil, nil, 212238)
+local warnVolatileEjection						= mod:NewTargetNoFilterAnnounce(334266, 4, nil, nil, 202046)
 
-local specWarnGluttonousMiasma					= mod:NewSpecialWarningYouPos(329298, nil, nil, nil, 1, 2)
+local specWarnGluttonousMiasma					= mod:NewSpecialWarningYouPos(329298, nil, 212238, nil, 1, 2)
 local yellGluttonousMiasma						= mod:NewPosYell(329298, DBM_CORE_L.AUTO_YELL_CUSTOM_POSITION2, false, 2)
 local specWarnEssenceSap						= mod:NewSpecialWarningStack(334755, false, 8, nil, 2, 1, 6)--Mythic, spammy, opt in
 local specWarnConsume							= mod:NewSpecialWarningRun(334522, nil, nil, nil, 4, 2)
 local specWarnExpunge							= mod:NewSpecialWarningMoveAway(329725, nil, nil, nil, 1, 2)
-local specWarnVolatileEjectionPerWarn			= mod:NewSpecialWarningSoon(334266, false, nil, nil, 2, 2)--Optional prewarn special warning, for the cast (before you know the targets)
-local specWarnVolatileEjection					= mod:NewSpecialWarningYou(334266, nil, nil, nil, 1, 2)
-local yellVolatileEjection						= mod:NewYell(334266, 202046)--ShortText "Beam". Change to NewPosYell if it's ever added to combat log, can't be trusted as icon yell when relying on syncing
+local specWarnVolatileEjectionPerWarn			= mod:NewSpecialWarningSoon(334266, false, 202046, nil, 2, 2)--Optional prewarn special warning, for the cast (before you know the targets)
+local specWarnVolatileEjection					= mod:NewSpecialWarningYou(334266, nil, 202046, nil, 1, 2)
+local yellVolatileEjection						= mod:NewYell(334266, 202046)--ShortText "beam". Change to NewPosYell if it's ever added to combat log, can't be trusted as icon yell when relying on syncing
 local specWarnGrowingHunger						= mod:NewSpecialWarningCount(332295, nil, DBM_CORE_L.AUTO_SPEC_WARN_OPTIONS.stack:format(6, 332295), nil, 1, 2)
 local specWarnGrowingHungerOther				= mod:NewSpecialWarningTaunt(332295, nil, nil, nil, 1, 2)
 local specWarnOverwhelm							= mod:NewSpecialWarningDefensive(329774, "Tank", nil, nil, 1, 2)
@@ -51,10 +51,10 @@ local specWarnOverwhelmTaunt					= mod:NewSpecialWarningTaunt(329774, nil, nil, 
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(270290, nil, nil, nil, 1, 8)
 
 --mod:AddTimerLine(BOSS)
-local timerGluttonousMiasmaCD					= mod:NewCDCountTimer(23.8, 329298, nil, nil, nil, 3, nil, nil, nil, 1, 3)
+local timerGluttonousMiasmaCD					= mod:NewCDCountTimer(23.8, 329298, 212238, nil, nil, 3, nil, nil, nil, 1, 3)--Short text, Miasma
 local timerConsumeCD							= mod:NewNextCountTimer(119.8, 334522, nil, nil, nil, 2)
 local timerExpungeCD							= mod:NewNextCountTimer(44.3, 329725, nil, nil, nil, 3)
-local timerVolatileEjectionCD					= mod:NewNextCountTimer(35.9, 334266, nil, nil, nil, 3)--maybe short this text too? 202046 for Beam
+local timerVolatileEjectionCD					= mod:NewNextCountTimer(35.9, 334266, 202046, nil, nil, 3)--maybe short this text too? 202046 for beam
 local timerDesolateCD							= mod:NewNextCountTimer(59.8, 329455, nil, nil, nil, 2, nil, DBM_CORE_L.HEALER_ICON)
 local timerOverwhelmCD							= mod:NewNextCountTimer(11.9, 329774, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON, nil, 2, 3)
 
@@ -71,6 +71,7 @@ mod:AddBoolOption("ShowTimeNotStacks", false)
 local GluttonousTargets = {}
 local essenceSapStacks = {}
 local playerEssenceSap, playerVolatile = false, false
+local miasmaShortName = DBM:GetSpellInfo(212238)
 mod.vb.volatileIcon = 5
 mod.vb.volatileCast = 0
 mod.vb.miasmaCount = 0
@@ -326,7 +327,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnGluttonousMiasma:Show(self:IconNumToTexture(icon))
 			specWarnGluttonousMiasma:Play("mm"..icon)--or "targetyou"
-			yellGluttonousMiasma:Yell(icon, args.spellName, icon)
+			yellGluttonousMiasma:Yell(icon, miasmaShortName, icon)
 		else
 			warnGluttonousMiasma:CombinedShow(0.3, args.destName)
 		end
@@ -399,7 +400,10 @@ function mod:OnTranscriptorSync(msg, targetName)
 		if self:AntiSpam(4, targetName) then
 			warnVolatileEjection:CombinedShow(0.75, targetName)
 			if self.Options.SetIconOnVolatileEjection2 then
-				self:SetIcon(targetName, self.vb.volatileIcon, 5)
+				local oldIcon = self:GetIcon(targetName) or 0
+				if oldIcon == 0 then--Do not change a miasma icon under any circomstance
+					self:SetIcon(targetName, self.vb.volatileIcon, 5)
+				end
 			end
 			self.vb.volatileIcon = self.vb.volatileIcon + 1
 		end
