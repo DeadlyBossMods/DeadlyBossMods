@@ -4,7 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(165759)
 mod:SetEncounterID(2402)
-mod:SetUsedIcons(1)
+mod:SetUsedIcons(1, 2, 3, 4, 5)
 mod.onlyHighest = true--Instructs DBM health tracking to literally only store highest value seen during fight, even if it drops below that
 mod.noBossDeathKill = true--Instructs mod to ignore 165759 deaths, since goal is to heal kael, not kill him
 mod:SetHotfixNoticeRev(20201214000000)--2020, 12, 14
@@ -43,6 +43,8 @@ ability.id = 181113 or ability.id = 323402 or target.id = 168973 and type = "dea
  or ability.id = 335581 and type = "applybuff"
  or (source.type = "NPC" and source.firstSeen = timestamp) or (target.type = "NPC" and target.firstSeen = timestamp)
  or (abililty.id = 326455 or ability.id = 326455 or ability.id = 325506) and type = "begincast"
+
+ ability.id = 328659 or ability.id == 341254 or ability.id = 328731 and (type = "applybuff" or type = "removebuff")
 --]]
 --Shade of Kael'thas
 local warnFeiryStrike							= mod:NewCastAnnounce(326455, 2, nil, nil, "Melee")
@@ -135,7 +137,8 @@ local timerPhoenixRespawn						= mod:NewCastTimer(20, 328731, nil, nil, nil, 1)
 mod:AddRangeFrameOption(6, 328885)
 mod:AddInfoFrameOption(326078, true)--343026
 mod:AddSetIconOption("SetIconOnEmberBlast", 325877, true, false, {1})
-mod:AddNamePlateOption("NPAuraOnPhoenixEmbers", 328731)
+mod:AddSetIconOption("SetIconOnBirdo", 328731, true, true, {2, 3, 4, 5})
+--mod:AddNamePlateOption("NPAuraOnPhoenixEmbers", 328731)
 mod:AddNamePlateOption("NPAuraOnPhoenixFixate", 328479)
 
 mod.vb.addMode = 0--No adds spawning, 1-Adds Spawning from Darithos Tables, 2-Adds spawning from Shade table
@@ -152,6 +155,7 @@ local infusersBoon = DBM:GetSpellInfo(326078)
 local seenAdds = {}
 local castsPerGUID = {}
 local infuserTargets = {}
+local birdoTracker = {}
 --Perfect timers, executed from Darithos dying
 local difficultyName = "None"
 local addTimers = {
@@ -355,12 +359,13 @@ function mod:OnCombatStart(delay)
 	table.wipe(seenAdds)
 	table.wipe(castsPerGUID)
 	table.wipe(infuserTargets)
+	table.wipe(birdoTracker)
 	timerGreaterCastigationCD:Start(5.8)
 --	berserkTimer:Start(-delay)--Confirmed normal and heroic
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(6)
 	end
-	if self.Options.NPAuraOnPhoenixEmbers or self.Options.NPAuraOnPhoenixFixate then
+	if self.Options.NPAuraOnPhoenixFixate then--self.Options.NPAuraOnPhoenixEmbers
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
 	if self:IsMythic() then
@@ -400,7 +405,7 @@ function mod:OnCombatEnd(wipe, isSecondRun)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
-	if self.Options.NPAuraOnPhoenixEmbers or self.Options.NPAuraOnPhoenixFixate then
+	if self.Options.NPAuraOnPhoenixFixate then--self.Options.NPAuraOnPhoenixEmbers or
 		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
 	end
 	if not isSecondRun then
@@ -564,15 +569,28 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			warnVanquished:Show(args.destName, amount)
 		end
-	elseif (spellId == 328659 or spellId == 341254) and not seenAdds[args.destGUID] then--Smoldering Plumage
-		seenAdds[args.destGUID] = true
+	elseif (spellId == 328659 or spellId == 341254) then
 		if self:AntiSpam(10, 1) then--In case more than one spawn at once
 			warnRebornPhoenix:Show()
 		end
-	elseif spellId == 328731 then
-		if self.Options.NPAuraOnPhoenixEmbers then
-			DBM.Nameplate:Show(true, args.destGUID, spellId, nil, 20)
+		--Table store guids for birdo as they spawn so we can strictly assign raid icons to them by GUID
+		if not tContains(birdoTracker, args.destGUID)
+			birdoTracker[#birdoTracker+1] = args.destGUID
 		end
+		--Scan runs even if we don't store it as a new bird, because the icon needs to be restored when bird rezes
+		if self.Options.SetIconOnBirdo then
+			for i = 1, #birdoTracker do
+				if i == 9 then return end--More birds than we have icons
+				if birdoTracker[i] == args.destGUID then
+					self:ScanForMobs(args.destGUID, 2, i+1, 1, 0.2, 10, "SetIconOnBirdo")
+					break
+				end
+			end
+		end
+	elseif spellId == 328731 then
+--		if self.Options.NPAuraOnPhoenixEmbers then
+--			DBM.Nameplate:Show(true, args.destGUID, spellId, nil, 20)
+--		end
 		timerPhoenixRespawn:Start(20, args.destGUID)
 	elseif spellId == 333145 and self:AntiSpam(5, args.destName) then
 		warnReturnToStone:Show(args.destName)
@@ -644,9 +662,9 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 328731 then
-		if self.Options.NPAuraOnPhoenixEmbers then
-			DBM.Nameplate:Hide(true, args.destGUID, spellId)
-		end
+--		if self.Options.NPAuraOnPhoenixEmbers then
+--			DBM.Nameplate:Hide(true, args.destGUID, spellId)
+--		end
 		timerPhoenixRespawn:Stop(args.destGUID)
 	elseif spellId == 326078 then
 		infuserTargets[args.destName] = nil
