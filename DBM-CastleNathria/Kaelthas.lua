@@ -574,7 +574,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnRebornPhoenix:Show()
 		end
 		--Table store guids for birdo as they spawn so we can strictly assign raid icons to them by GUID
-		if not tContains(birdoTracker, args.destGUID)
+		if not tContains(birdoTracker, args.destGUID) then
 			birdoTracker[#birdoTracker+1] = args.destGUID
 		end
 		--Scan runs even if we don't store it as a new bird, because the icon needs to be restored when bird rezes
