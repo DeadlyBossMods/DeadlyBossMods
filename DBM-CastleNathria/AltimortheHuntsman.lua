@@ -378,6 +378,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		if self.vb.phase == 2 then
 			--Start Next Dog. Move if order changes or is variable
 			--timerSpreadshotCD:Start()--Used instantly
+			timerSinseekerCD:Stop()
 			timerRipSoulCD:Start(10)
 			timerShadesofBargastCD:Start(17.5)
 			timerSinseekerCD:Start(31.8, self.vb.sinSeekerCount+1)
