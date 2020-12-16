@@ -42,6 +42,7 @@ L.Button_LoadMod 			= "Load AddOn"
 L.Mod_Enabled				= "Enable boss mod"
 L.Mod_Reset					= "Load default options"
 L.Reset 					= "Reset"
+L.Import					= "Import"
 
 L.Enable  					= ENABLE
 L.Disable					= DISABLE
@@ -143,6 +144,11 @@ L.SelectModProfileCopy		= "Copy all settings from"
 L.SelectModProfileCopySound	= "Copy just sound setting from"
 L.SelectModProfileCopyNote	= "Copy just note setting from"
 L.SelectModProfileDelete	= "Delete mod settings for"
+
+L.Area_ImportExportProfile	= "Import/Export profiles"
+L.ImportExportInfo			= "Importing will overwrite your current profile, do at your own risk."
+L.ButtonImportProfile		= "Import profile"
+L.ButtonExportProfile		= "Export profile"
 
 -- Tab: Alerts
 L.TabCategory_Alerts	 	= "Alerts"

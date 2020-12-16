@@ -6,8 +6,8 @@ DBM_GUI = {
 }
 
 local next, type, pairs, strsplit, tonumber, tostring, ipairs, tinsert, tsort, mfloor = next, type, pairs, strsplit, tonumber, tostring, ipairs, table.insert, table.sort, math.floor
-local C_Timer, GetExpansionLevel, IsAddOnLoaded, GameFontNormal, GameFontNormalSmall, GameFontHighlight, GameFontHighlightSmall = C_Timer, GetExpansionLevel, IsAddOnLoaded, GameFontNormal, GameFontNormalSmall, GameFontHighlight, GameFontHighlightSmall
-local RAID_DIFFICULTY1, RAID_DIFFICULTY2, RAID_DIFFICULTY3, RAID_DIFFICULTY4, PLAYER_DIFFICULTY1, PLAYER_DIFFICULTY2, PLAYER_DIFFICULTY3, PLAYER_DIFFICULTY6, PLAYER_DIFFICULTY_TIMEWALKER, CHALLENGE_MODE, ALL, SPECIALIZATION = RAID_DIFFICULTY1, RAID_DIFFICULTY2, RAID_DIFFICULTY3, RAID_DIFFICULTY4, PLAYER_DIFFICULTY1, PLAYER_DIFFICULTY2, PLAYER_DIFFICULTY3, PLAYER_DIFFICULTY6, PLAYER_DIFFICULTY_TIMEWALKER, CHALLENGE_MODE, ALL, SPECIALIZATION
+local CreateFrame, C_Timer, GetExpansionLevel, IsAddOnLoaded, GameFontNormal, GameFontNormalSmall, GameFontHighlight, GameFontHighlightSmall, ChatFontNormal, UIParent = CreateFrame, C_Timer, GetExpansionLevel, IsAddOnLoaded, GameFontNormal, GameFontNormalSmall, GameFontHighlight, GameFontHighlightSmall, ChatFontNormal, UIParent
+local RAID_DIFFICULTY1, RAID_DIFFICULTY2, RAID_DIFFICULTY3, RAID_DIFFICULTY4, PLAYER_DIFFICULTY1, PLAYER_DIFFICULTY2, PLAYER_DIFFICULTY3, PLAYER_DIFFICULTY6, PLAYER_DIFFICULTY_TIMEWALKER, CHALLENGE_MODE, ALL, CLOSE, SPECIALIZATION = RAID_DIFFICULTY1, RAID_DIFFICULTY2, RAID_DIFFICULTY3, RAID_DIFFICULTY4, PLAYER_DIFFICULTY1, PLAYER_DIFFICULTY2, PLAYER_DIFFICULTY3, PLAYER_DIFFICULTY6, PLAYER_DIFFICULTY_TIMEWALKER, CHALLENGE_MODE, ALL, CLOSE, SPECIALIZATION
 local LibStub, DBM, DBM_GUI, DBM_OPTION_SPACER = _G["LibStub"], DBM, DBM_GUI, DBM_OPTION_SPACER
 
 do
@@ -63,8 +63,9 @@ do
 			end
 		end
 		-- Sort LibSharedMedia keys alphabetically (case-insensitive)
+		local hashtable = LibStub("LibSharedMedia-3.0", true):HashTable(mediatype)
 		local keytable = {}
-		for k in next, LibStub("LibSharedMedia-3.0", true):HashTable(mediatype) do
+		for k in next, hashtable do
 			tinsert(keytable, k)
 		end
 		tsort(keytable, function(a, b)
@@ -83,7 +84,7 @@ do
 		end
 		for i = 1, #keytable do
 			if mediatype ~= "sound" or (keytable[i] ~= "None" and keytable[i] ~= "NPCScan") then
-				local v = LibStub("LibSharedMedia-3.0", true):HashTable(mediatype)[keytable[i]]
+				local v = hashtable[keytable[i]]
 				-- Filter duplicates
 				local insertme = true
 				for _, v2 in next, result do
@@ -112,6 +113,151 @@ do
 			end
 		end
 		return result
+	end
+end
+
+do
+	local LibSerialize = LibStub("LibSerialize")
+	local LibDeflate = LibStub("LibDeflate")
+
+	local canWeWork = LibStub and LibStub("LibDeflate", true) and LibStub("LibSerialize", true)
+	local popupFrame
+
+	local function createPopupFrame()
+		popupFrame = CreateFrame("Frame", nil, UIParent, DBM:IsAlpha() and "BackdropTemplate")
+		popupFrame:SetFrameStrata("DIALOG")
+		popupFrame:SetFrameLevel(popupFrame:GetFrameLevel() + 10)
+		popupFrame:SetSize(512, 512)
+		popupFrame:SetPoint("CENTER")
+		popupFrame.backdropInfo = {
+			bgFile		= "Interface\\DialogFrame\\UI-DialogBox-Background", -- 131071
+			edgeFile	= "Interface\\DialogFrame\\UI-DialogBox-Border", -- 131072
+			tile		= true,
+			tileSize	= 32,
+			edgeSize	= 32,
+			insets		= { left = 8, right = 8, top = 8, bottom = 8 }
+		}
+		if DBM:IsAlpha() then
+			popupFrame:ApplyBackdrop()
+		else
+			popupFrame:SetBackdrop(popupFrame.backdropInfo)
+		end
+		popupFrame:SetMovable(true)
+		popupFrame:EnableMouse(true)
+		popupFrame:RegisterForDrag("LeftButton")
+		popupFrame:SetScript("OnDragStart", popupFrame.StartMoving)
+		popupFrame:SetScript("OnDragStop", popupFrame.StopMovingOrSizing)
+		popupFrame:Hide()
+		popupFrame.text = ""
+
+		local backdrop = CreateFrame("Frame", nil, popupFrame, DBM:IsAlpha() and "BackdropTemplate")
+		backdrop.backdropInfo = {
+			bgFile		= "Interface\\ChatFrame\\ChatFrameBackground",
+			edgeFile	= "Interface\\Tooltips\\UI-Tooltip-Border",
+			tile		= true,
+			tileSize	= 16,
+			edgeSize	= 16,
+			insets		= { left = 3, right = 3, top = 5, bottom = 3 }
+		}
+		if DBM:IsAlpha() then
+			backdrop:ApplyBackdrop()
+		else
+			backdrop:SetBackdrop(backdrop.backdropInfo)
+		end
+		backdrop:SetBackdropColor(0.1, 0.1, 0.1, 0.6)
+		backdrop:SetBackdropBorderColor(0.4, 0.4, 0.4)
+		backdrop:SetPoint("TOPLEFT", 15, -15)
+		backdrop:SetPoint("BOTTOMRIGHT", -40, 40)
+
+		local scrollFrame = CreateFrame("ScrollFrame", "TestScrollFrame", popupFrame, "UIPanelScrollFrameTemplate")
+		scrollFrame:SetPoint("TOPLEFT", 15, -22)
+		scrollFrame:SetPoint("BOTTOMRIGHT", -40, 45)
+
+		local input = CreateFrame("EditBox", "TestEditBox", scrollFrame)
+		input:SetTextInsets(7, 7, 3, 3)
+		input:SetFontObject(ChatFontNormal)
+		input:SetMultiLine(true)
+		input:EnableMouse(true)
+		input:SetAutoFocus(false)
+		input:SetMaxBytes(nil)
+		input:SetScript("OnMouseUp", input.HighlightText)
+		input:SetScript("OnEscapePressed", input.ClearFocus)
+		input:HighlightText()
+		input:SetFocus()
+		scrollFrame:SetScrollChild(input)
+		input:ClearAllPoints()
+		input:SetPoint("TOPLEFT", scrollFrame, "TOPLEFT")
+		input:SetPoint("BOTTOMRIGHT", scrollFrame, "BOTTOMRIGHT")
+
+		local import = CreateFrame("Button", nil, popupFrame, "UIPanelButtonTemplate")
+		import:SetPoint("BOTTOMRIGHT", -120, 13)
+		import:SetFrameLevel(import:GetFrameLevel() + 1)
+		import:SetSize(100, 20)
+		import:SetText(L.Import)
+		import:SetScript("OnClick", function()
+			if popupFrame:VerifyImport(input:GetText()) then
+				input:ClearFocus()
+				popupFrame:Hide()
+			end
+		end)
+		popupFrame.import = import
+
+		local close = CreateFrame("Button", nil, popupFrame, "UIPanelButtonTemplate")
+		close:SetPoint("LEFT", import, "RIGHT", 5, 0)
+		close:SetFrameLevel(close:GetFrameLevel() + 1)
+		close:SetSize(100, 20)
+		close:SetText(CLOSE)
+		close:SetScript("OnClick", function()
+			input:ClearFocus()
+			popupFrame:Hide()
+		end)
+
+		input:SetScript("OnChar", function()
+			if not import:IsShown() then
+				input:SetText(popupFrame.text)
+				input:HighlightText()
+			end
+		end)
+
+		function popupFrame:SetText(text)
+			input:SetText(text)
+			self.text = text
+		end
+	end
+
+	function DBM_GUI:CreateExportProfile(export)
+		if not canWeWork then
+			DBM:AddMsg("Missing required libraries to export.")
+			return
+		end
+		if not popupFrame then
+			createPopupFrame()
+		end
+		popupFrame.import:Hide()
+		popupFrame:SetText(LibDeflate:EncodeForPrint(LibDeflate:CompressDeflate(LibSerialize:Serialize(export), {level = 9})))
+		popupFrame:Show()
+	end
+
+	function DBM_GUI:CreateImportProfile(importFunc)
+		if not canWeWork then
+			DBM:AddMsg("Missing required libraries to export.")
+			return
+		end
+		if not popupFrame then
+			createPopupFrame()
+		end
+		function popupFrame:VerifyImport(import)
+			local success, deserialized = LibSerialize:Deserialize(LibDeflate:DecompressDeflate(LibDeflate:DecodeForPrint(import)))
+			if not success then
+				DBM:AddMsg("Failed to deserialize")
+				return false
+			end
+			importFunc(deserialized)
+			return true
+		end
+		popupFrame.import:Show()
+		popupFrame:SetText("")
+		popupFrame:Show()
 	end
 end
 
