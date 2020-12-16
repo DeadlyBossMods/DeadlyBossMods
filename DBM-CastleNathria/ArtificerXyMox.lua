@@ -329,7 +329,6 @@ function mod:OnSync(msg)
 	if not self:IsInCombat() then return end
 	if msg == "Phase2" then
 		self.vb.phase = 2
---		self.vb.lastRotation = 2--Technically Tear is first in any phase, followed by activator, but neither are part of Spell Rotation script, so variable is set accordingly for that
 		warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(2))
 		warnPhase:Play("ptwo")
 		timerStasisTrapCD:Stop()
