@@ -249,9 +249,10 @@ do
 			local success, deserialized = LibSerialize:Deserialize(LibDeflate:DecompressDeflate(LibDeflate:DecodeForPrint(import)))
 			if not success then
 				DBM:AddMsg("Failed to deserialize")
-				return
+				return false
 			end
 			importFunc(deserialized)
+			return true
 		end
 		popupFrame.import:Show()
 		popupFrame:SetText("")

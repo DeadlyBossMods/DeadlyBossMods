@@ -66,8 +66,10 @@ end)
 dualProfile:SetChecked(DBM_UseDualProfile)
 
 local function actuallyImport(importTable)
-	DBM.Options = importTable.DBM
+	DBM.Options = importTable.DBM -- Cached options
+	DBM_AllSavedOptions[_G["DBM_UsedProfile"]] = importTable.DBM
 	DBT_AllPersistentOptions[_G["DBM_UsedProfile"]] = importTable.DBT
+	DBM:AddMsg("Profile imported.")
 end
 
 StaticPopupDialogs["IMPORTPROFILE_ERROR"] = {
