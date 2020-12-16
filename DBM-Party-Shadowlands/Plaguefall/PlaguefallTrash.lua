@@ -7,7 +7,7 @@ mod:SetRevision("@file-date-integer@")
 mod.isTrashMod = true
 
 mod:RegisterEvents(
-	"SPELL_CAST_START 328016 328177 327584 327581 330403 327233 328986 318949 319070 328395 328338",
+	"SPELL_CAST_START 328016 328177 327584 327581 330403 327233 328986 318949 319070 328338",
 --	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED 328015 320072 320103",
 	"SPELL_AURA_REMOVED 320103"
@@ -20,7 +20,6 @@ local warnBeckonSlime					= mod:NewCastAnnounce(327581, 2, 6)--Cast 3 seconds, p
 --Notable Doctor Ickus Trash
 local warnViolentDetonation				= mod:NewCastAnnounce(328986, 3)
 --Notable Domina Venomblade
---local warnVenompiercer					= mod:NewCastAnnounce(328395, 3)
 
 --General
 local specWarnGTFO						= mod:NewSpecialWarningGTFO(320072, nil, nil, nil, 1, 8)
@@ -33,7 +32,6 @@ local specWarCorrosiveGunk				= mod:NewSpecialWarningInterrupt(319070, false, ni
 --Notable Domina Venomblade
 local specWarnBulwarkofMaldraxxus		= mod:NewSpecialWarningMove(336451, "Tank", nil, nil, 1, 10)
 --Notable Margrave Stradama Trash
-local specWarnVenompiercer				= mod:NewSpecialWarningDodge(328395, "Tank", nil, nil, 1, 2)
 local specWarnCallVenomfang				= mod:NewSpecialWarningInterrupt(328338, "HasInterrupt", nil, nil, 1, 2)
 --Unknown
 local specWarnWonderGrow				= mod:NewSpecialWarningInterrupt(328016, "HasInterrupt", nil, nil, 1, 2)
@@ -81,9 +79,6 @@ function mod:SPELL_CAST_START(args)
 		specWarnFesteringBelch:Play("shockwave")
 	elseif spellId == 328986 and self:AntiSpam(3, 6) then
 		warnViolentDetonation:Show()
-	elseif spellId == 328395 and self:AntiSpam(3, 2) then
-		specWarnVenompiercer:Show()
-		specWarnVenompiercer:Play("shockwave")
 --	elseif spellId == 272402 then
 --		self:ScheduleMethod(0.1, "BossTargetScanner", args.sourceGUID, "RicochetingTarget", 0.1, 4)
 	end
