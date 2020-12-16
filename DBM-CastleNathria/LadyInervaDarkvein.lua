@@ -66,7 +66,7 @@ local timerDesiresContainer						= mod:NewTimer(120, "timerDesiresContainer", 34
 local timerBottledContainer						= mod:NewTimer(120, "timerBottledContainer", 342280, false, "timerContainers2")
 local timerSinsContainer						= mod:NewTimer(120, "timerSinsContainer", 325064, false, "timerContainers2")
 local timerConcentrateContainer					= mod:NewTimer(120, "timerConcentrateContainer", 342321, false, "timerContainers2")
-local timerFocusAnimaCD							= mod:NewCDTimer(100, 331844, nil, nil, nil, 6)
+--local timerFocusAnimaCD							= mod:NewCDTimer(100, 331844, nil, nil, nil, 6)
 local timerExposedDesiresCD						= mod:NewCDTimer(8.5, 341621, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)--8.5-25 because yeah, boss spell queuing+CD even changing when higher rank
 local timerBottledAnimaCD						= mod:NewCDTimer(10.8, 342280, nil, nil, nil, 3)--10-36
 local timerSinsandSufferingCD					= mod:NewCDTimer(44.3, 325064, 202046, nil, nil, 3)--ShortName "Beams"
@@ -86,6 +86,7 @@ mod.vb.sufferingIcon = 1
 mod.vb.addIcon = 8
 mod.vb.containerActive = 0
 mod.vb.firstContainer = true
+mod.vb.ConcentratedCount = 0
 local castsPerGUID = {}
 local playerName = UnitName("player")
 local containerProgress = {
@@ -183,21 +184,22 @@ function mod:OnCombatStart(delay)
 	containerProgress[2401][2] = 0
 	containerProgress[2401][3] = 0
 	self.vb.containerActive = 0
+	self.vb.ConcentratedCount = 0
 	self.vb.firstContainer = true
 	table.wipe(castsPerGUID)
 	if self:IsMythic() then
-		timerFocusAnimaCD:Start(3.8-delay)
+--		timerFocusAnimaCD:Start(3.8-delay)
 		timerExposedDesiresCD:Start(10.9-delay)
-		timerSinsandSufferingCD:Start(17.6-delay)--23.6
-		timerBottledAnimaCD:Start(35.6-delay)--31.5
-		timerConcentratedAnimaCD:Start(44-delay)--Not cast on normal until near end of fight
+		timerSinsandSufferingCD:Start(16.3-delay)
+		timerBottledAnimaCD:Start(31.5-delay)
+		timerConcentratedAnimaCD:Start(44-delay)
 	else
 		--Initials still highly variable
-		timerFocusAnimaCD:Start(3.5-delay)--3.5-18?
+--		timerFocusAnimaCD:Start(3.5-delay)--3.5-18?
 		timerExposedDesiresCD:Start(12.1-delay)
 		timerSinsandSufferingCD:Start(29.1-delay)
 		timerBottledAnimaCD:Start(19.4-delay)
-		timerConcentratedAnimaCD:Start(54.7-delay)
+		timerConcentratedAnimaCD:Start(54.7-delay)--Not cast on normal until near end of fight?
 	end
 --	if self.Options.NPAuraOnVolatileCorruption then
 --		DBM:FireEvent("BossMod_EnableHostileNameplates")
@@ -236,6 +238,7 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 342320 or spellId == 342321 or spellId == 342322 then--Rank 1, Rank 2, Rank 3
 		self.vb.addIcon = 8
+		self.vb.ConcentratedCount = self.vb.ConcentratedCount + 1
 		--1 Expose Desires (tank), 2 Bottled Anima (bouncing bottles), 3 Sins and Suffering (links), 4 Concentrate Anima (adds)
 		timerConcentratedAnimaCD:Start(self.vb.containerActive == 4 and 40 or 60.7)
 	elseif spellId == 342280 or spellId == 342281 or spellId == 342282 then--Rank 1, Rank 2, Rank 3
@@ -245,7 +248,7 @@ function mod:SPELL_CAST_START(args)
 		else
 			warnBottledAnima:Show()
 		end
-		timerBottledAnimaCD:Start(self.vb.containerActive == 2 and 17.1 or 30)
+		timerBottledAnimaCD:Start(self.vb.containerActive == 2 and 15.8 or 30)
 	elseif spellId == 331550 or spellId == 339521 then--Conjured Manifestation casting Condemn
 		if not castsPerGUID[args.sourceGUID] then
 			castsPerGUID[args.sourceGUID] = 0
@@ -373,10 +376,10 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 --TODO, maybe these scripts run, if so detecting ranks could be cleaner
 --Concentrate Anima: Rank 1 326258, Rank 2 325922, rank 3 325923
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 325064 then--Sins and Suffering
+	if spellId == 325064 then--Sins and Suffering (parent ID, not one of 3 specific IDs)
 		self.vb.sufferingIcon = 1
 		--1 Expose Desires (tank), 2 Bottled Anima (bouncing bottles), 3 Sins and Suffering (links), 4 Concentrate Anima (adds)
-		timerSinsandSufferingCD:Start(self.vb.containerActive == 3 and 35 or 50)
+		timerSinsandSufferingCD:Start(self.vb.containerActive == 3 and 30 or 50)
 	elseif spellId == 338749 then--Disable Container
 		if self.vb.firstContainer then
 			self.vb.firstContainer = false
@@ -386,6 +389,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		end
 		--1 Expose Desires (tank), 2 Bottled Anima (bouncing bottles), 3 Sins and Suffering (links), 4 Concentrate Anima (adds)
 		self.vb.containerActive = self.vb.containerActive + 1
+		if self.vb.containerActive == 2 and self.vb.ConcentratedCount == 2 then
+			timerConcentratedAnimaCD:AddTime(25)--Don't ask me why this happens, it just does.
+		end
 		if self.vb.containerActive == 5 then
 			self.vb.containerActive = 1
 		end
