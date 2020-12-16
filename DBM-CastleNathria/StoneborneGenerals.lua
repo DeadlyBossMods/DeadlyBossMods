@@ -119,6 +119,7 @@ local LacerationStacks = {}
 mod.vb.HeartIcon = 4
 mod.vb.wickedBladeIcon = 1
 mod.vb.phase = 1
+mod.vb.upHeavalCount = 0
 
 function mod:EruptionTarget(targetname, uId)
 	if not targetname then return end
@@ -153,6 +154,7 @@ function mod:OnCombatStart(delay)
 	self.vb.HeartIcon = 4
 	self.vb.wickedBladeIcon = 1
 	self.vb.phase = 1
+	self.vb.upHeavalCount = 0
 	--General Kaal
 	--Summons a goliath instantly on pull now, no timer needed for this
 	timerSerratedSwipeCD:Start(8.2-delay)--START, but next timer is started at SUCCESS
@@ -201,9 +203,10 @@ function mod:SPELL_CAST_START(args)
 		timerReverberatingEruptionCD:Start()
 		--self:BossTargetScanner(args.sourceGUID, "EruptionTarget", 0.01, 12)
 	elseif spellId == 334498 then
+		self.vb.upHeavalCount = self.vb.upHeavalCount + 1
 		specWarnSeismicUpheaval:Show()
 		specWarnSeismicUpheaval:Play("watchstep")
-		timerSeismicUpheavalCD:Start()
+		timerSeismicUpheavalCD:Start(25.1)--usually averages around 30-40, but yes it goes this low
 	elseif spellId == 342544 then
 		self:BossTargetScanner(args.sourceGUID, "MeteorTarget", 0.05, 12)
 	elseif spellId == 342256 then
@@ -217,6 +220,7 @@ function mod:SPELL_CAST_START(args)
 		timerShatteringBlast:Start()
 		--Start INCOMING boss timers here, that seems to be how it's scripted.
 		self.vb.phase = self.vb.phase + 1
+		self.vb.upHeavalCount = 0
 		if self.vb.phase == 2 then
 			--General Grashaal
 			--Boss continues timer for crystalize/combo from air phase, it doesn't start here
@@ -240,6 +244,8 @@ function mod:SPELL_CAST_START(args)
 			if self:IsMythic() then
 				timerCallShadowForcesCD:Start(8)
 			end
+			--General Grashaal
+			timerSeismicUpheavalCD:Start(8.8)--8.8-27 because why be consistent
 		end
 	elseif spellId == 342425 then
 		timerStoneFistCD:Start()
@@ -292,6 +298,9 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 329636 or spellId == 329808 then--50% transition for Kaal/50% transition for Grashaal
 		warnHardenedStoneForm:Show(args.destName)
 		timerCallShadowForcesCD:Stop()--The only timer that stops here is this one, rest continue on until boss leaves
+		if spellId == 329808 then--Grashaal seems to stop casting this while stoned
+			timerSeismicUpheavalCD:Stop()
+		end
 	elseif spellId == 333913 then
 		local amount = args.amount or 1
 		LacerationStacks[args.destName] = amount
