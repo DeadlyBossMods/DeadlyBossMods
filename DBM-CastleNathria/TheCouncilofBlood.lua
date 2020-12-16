@@ -22,10 +22,11 @@ mod:RegisterEventsInCombat(
 	"SPELL_PERIODIC_DAMAGE 346945",
 	"SPELL_PERIODIC_MISSED 346945",
 	"UNIT_DIED",
-	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3"
+	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3",
+	"CHAT_MSG_RAID_BOSS_EMOTE"
 )
 
---TODO, upgrade Dreadbolt volley to special warning if important enough
+--TODO, upgrade Dreadbolt volley to interrupt count special warning with more data
 --TODO, upgrade Cadre to special warning for melee/everyone based on where they spawn?
 --TODO, Soul Spikes mid spikes swap, similar to the mid combo swap of Zek'vhoz?
 --TODO, continue reviewing timers, especially rechecking mythic and any guessed timers or timers that may have changed since last testing
@@ -90,7 +91,7 @@ local timerCastellansCadreCD					= mod:NewCDTimer(26.7, 330965, nil, nil, nil, 1
 --Baroness Frieda
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22148))--2 baseline abilities
 local timerDrainEssenceCD						= mod:NewCDTimer(22.5, 346654, nil, nil, nil, 5, nil, DBM_CORE_L.HEALER_ICON)
---local timerDreadboltVolleyCD					= mod:NewCDTimer(20, 337110, nil, nil, nil, 2, nil, DBM_CORE_L.MAGIC_ICON)
+local timerDreadboltVolleyCD					= mod:NewCDTimer(45, 337110, nil, nil, nil, 2, nil, DBM_CORE_L.MYTHIC_ICON)--Only for after image
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22202))--One is dead
 local timerPridefulEruptionCD					= mod:NewCDTimer(25, 346657, 138658, nil, nil, 3)
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22945))--Two are dead
@@ -103,6 +104,9 @@ mod:AddTimerLine(DBM:EJ_GetSectionInfo(22203))--One is dead
 local timerWaltzofBloodCD						= mod:NewCDTimer(21.8, 327616, nil, nil, nil, 3)
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22206))--Two are dead
 local timerDancingFoolsCD						= mod:NewCDTimer(30.3, 330964, nil, nil, nil, 1)
+--Mythic
+mod:AddTimerLine(PLAYER_DIFFICULTY6)
+local timerDancingFeverCD						= mod:NewCDTimer(60, 347350, nil, nil, nil, 3)
 
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
@@ -222,11 +226,15 @@ local allTimers = {
 		[346657] = {0, 60, 35.7},--Guessed based on math differential, but both could be wrong.
 		--Soul Spikes (P3+)
 		[346762] = {0, 0, 35.7},--Guessed based on math differential, but both could be wrong
+		--Dreadbolt Volley (Dead)
+		[337110] = {0, 44.9, 37.5},
 
 		--Evasive Lunge
-		[327497] = {18.7, 14.9, 7.5},
+		[327497] = {18.7, 14.9, 10},
 		--Dark Recital (Living)
-		[331634] = {44.9, 60, 30},--Nani? 30 on mythhic but only 22 on heroic? this has probably changed, it's probably 15-18 now
+		[331634] = {44.9, 60, 20},
+		--Dark Recital (Dead)
+		[331635] = {0, 0, 36.9},
 		--Waltz of Blood (P2+)
 		[346800] = {0, 60, 60},
 		--Dancing Fools (P3+)
@@ -259,6 +267,7 @@ function mod:OnCombatStart(delay)
 	table.wipe(FeverStacks)
 	if self:IsMythic() then
 		difficultyName = "mythic"
+		timerDancingFeverCD:Start(5-delay)
 		--Castellan Niklaus
 		timerDutifulAttendantCD:Start(6.5-delay)
 		timerDualistsRiposteCD:Start(16.5-delay)
@@ -427,8 +436,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 			if timer then
 				timerDarkRecitalCD:Start(timer)
 			end
-		else
-			timerDarkRecitalCD:Start(43.9)--Unknown if P3 is same, but 43.9 confirmed for P2
+		else--173053
+			local timer = allTimers[difficultyName][331635][self.vb.phase]
+			if timer then
+				timerDarkRecitalCD:Start(timer)
+			end
 			timerDarkRecitalCD:UpdateInline(DBM_CORE_L.MYTHIC_ICON)
 		end
 	elseif spellId == 330959 and self:AntiSpam(10, 1) then
@@ -440,6 +452,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		danceDurationFix = GetTime()
 		--Over adds time to all timers just to keep them from expiring
 		--This is then corrected later after knowing exact time of dance
+		timerDancingFeverCD:Stop()
 		if not self.vb.nikDead then
 			timerDutifulAttendantCD:AddTime(50)--Alive and dead ability
 			timerDualistsRiposteCD:AddTime(50)
@@ -570,18 +583,19 @@ function mod:SPELL_AURA_APPLIED(args)
 					timerDutifulAttendantCD:Start(19.1)--Confirmed
 				end
 			else
-				timerDualistsRiposteCD:Start(self:IsMythic() and 8.2 or 9.2)--Mythic Unknown, completely guessed
-				timerCastellansCadreCD:Start(self:IsMythic() and 9 or 13.5)--Mythic Unknown, completely guessed
-				timerDutifulAttendantCD:Start(self:IsMythic() and 15 or 22.1)--Mythic Unknown, completely guessed
+				timerDredgerServantsCD:Start(self:IsMythic() and 4.4 or 5)--Verify heroic
+				timerDualistsRiposteCD:Start(self:IsMythic() and 8.2 or 9.2)
+				timerCastellansCadreCD:Start(self:IsMythic() and 11.9 or 13.5)
+				timerDutifulAttendantCD:Start(self:IsMythic() and 19.5 or 22.1)
 			end
 			--Baroness Frieda
 			timerDrainEssenceCD:Stop()
 --			timerDreadboltVolleyCD:Stop()
 			timerPridefulEruptionCD:Stop()
 			if self.vb.friedaDead then
-				--if self:IsMythic() then
-					--timerDreadboltVolleyCD:Start(38.2)--Confirmed
-				--end
+				if self:IsMythic() then
+					timerDreadboltVolleyCD:Start(25)--Might be because she cast it on transition though, needs recheck
+				end
 			else
 				--timerDreadboltVolleyCD:Start(1)--Used near imediately
 				timerDrainEssenceCD:Start(self:IsMythic() and 5 or 6.4)--Mythic unknown, completely guessed
@@ -593,18 +607,19 @@ function mod:SPELL_AURA_APPLIED(args)
 			timerWaltzofBloodCD:Stop()
 			timerDarkRecitalCD:Stop()
 			if self.vb.stavrosDead then
-				--if self:IsMythic() then
-					--timerDarkRecitalCD:Start(5)--Unknown
-				--end
+				if self:IsMythic() then
+					timerDarkRecitalCD:Start(37.7)
+				end
 			else
-				timerDarkRecitalCD:Start(self:IsMythic() and 5 or 8.2)
-				timerEvasiveLungeCD:Start(self:IsMythic() and 7 or 12.1)
-				timerDancingFoolsCD:Start(self:IsMythic() and 25.7 or 20.7)--Verified by logs, so mythic probably changed
+				timerDarkRecitalCD:Start(self:IsMythic() and 7.4 or 8.2)
+				timerEvasiveLungeCD:Start(self:IsMythic() and 10.7 or 12.1)
+				timerDancingFoolsCD:Start(self:IsMythic() and 18.2 or 20.7)
 				timerWaltzofBloodCD:Start(self:IsMythic() and 54.4 or 62.1)--START
 			end
 		else--One Dead (332535)
 			self.vb.phase = 2
 			--Castellan Niklaus
+			timerDredgerServantsCD:Stop()
 			timerDualistsRiposteCD:Stop()
 			timerDutifulAttendantCD:Stop()
 			if self.vb.nikDead then
@@ -612,21 +627,22 @@ function mod:SPELL_AURA_APPLIED(args)
 					--timerDutifulAttendantCD:Start(34.4)--Unknown
 				--end
 			else
+				timerDredgerServantsCD:Start(self:IsMythic() and 4.4 or 13.5)
 				timerDualistsRiposteCD:Start(self:IsMythic() and 8.2 or 9.2)
-				timerDredgerServantsCD:Start(self:IsMythic() and 12 or 13.5)
-				timerDutifulAttendantCD:Start(self:IsMythic() and 34.4 or 5)--Mythic probably changed, this is just weird
+				timerDutifulAttendantCD:Start(self:IsMythic() and 34.4 or 5)--Mythic confirmed, this is just weird that heroic is way different
 			end
 			--Baroness Frieda
 			timerDrainEssenceCD:Stop()
 --			timerDreadboltVolleyCD:Stop()
 			if self.vb.friedaDead then
---				if self:IsMythic() then
---					timerDreadboltVolleyCD:Start(17.2)
---				end
+				if self:IsMythic() then
+					timerDreadboltVolleyCD:Start(13.4)
+				end
 			else
+				--Still needs correcting with live mythic
 --				timerDreadboltVolleyCD:Start(1.3)--Used like 1 second after
 				timerDrainEssenceCD:Start(self:IsMythic() and 5 or 6.4)--Unknown on mythic, completely guessed
-				timerPridefulEruptionCD:Start(self:IsMythic() and 18.2 or 35)--Unknown on mythic, completely guessed
+				timerPridefulEruptionCD:Start(self:IsMythic() and 27.3 or 35)--Unknown on mythic, completely guessed
 			end
 			--Lord Stavros
 			timerEvasiveLungeCD:Stop()
@@ -636,9 +652,9 @@ function mod:SPELL_AURA_APPLIED(args)
 				--	timerDarkRecitalCD:Start(26.6)--Unknown
 				--end
 			else
-				timerDarkRecitalCD:Start(self:IsMythic() and 6 or 25.3)
-				timerEvasiveLungeCD:Start(self:IsMythic() and 6.9 or 7.9)
-				timerWaltzofBloodCD:Start(self:IsMythic() and 27 or 30.7)--START
+				timerEvasiveLungeCD:Start(self:IsMythic() and 7 or 7.9)
+				timerDarkRecitalCD:Start(self:IsMythic() and 22.4 or 25.3)
+				timerWaltzofBloodCD:Start(self:IsMythic() and 26.9 or 30.7)--START
 			end
 		end
 	elseif spellId == 346694 then
@@ -659,6 +675,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			else
 				DBM.InfoFrame:UpdateTable(FeverStacks)
 			end
+		end
+		if self:AntiSpam(5, 6) then
+			timerDancingFeverCD:Start()
 		end
 	end
 end
@@ -727,6 +746,9 @@ function mod:SPELL_AURA_REMOVED(args)
 				timerDarkRecitalCD:RemoveTime(adjustment)
 			end
 		end
+		--if self:IsMythic() then
+		--	timerDancingFeverCD:Start(5.5)
+		--end
 	elseif spellId == 347350 then
 		self.vb.feversActive = self.vb.feversActive - 1
 		if args:IsPlayer() then
@@ -800,6 +822,15 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 				"NAME_PLATE_UNIT_ADDED",
 				"FORBIDDEN_NAME_PLATE_UNIT_ADDED"
 			)
+		end
+	end
+end
+
+function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
+	if msg:find("spell:337110") then
+		local timer = allTimers[difficultyName][337110][self.vb.phase]
+		if timer then
+			timerDreadboltVolleyCD:Start(timer)
 		end
 	end
 end
