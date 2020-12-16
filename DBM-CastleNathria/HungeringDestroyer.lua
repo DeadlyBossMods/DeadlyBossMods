@@ -58,7 +58,7 @@ local timerVolatileEjectionCD					= mod:NewNextCountTimer(35.9, 334266, 202046, 
 local timerDesolateCD							= mod:NewNextCountTimer(59.8, 329455, nil, nil, nil, 2, nil, DBM_CORE_L.HEALER_ICON)
 local timerOverwhelmCD							= mod:NewNextCountTimer(11.9, 329774, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON, nil, 2, 3)
 
---local berserkTimer							= mod:NewBerserkTimer(600)
+local berserkTimer								= mod:NewBerserkTimer(600)
 
 --mod:AddRangeFrameOption(10, 310277)
 mod:AddSetIconOption("SetIconOnGluttonousMiasma", 329298, true, false, {1, 2, 3, 4})
@@ -184,6 +184,9 @@ function mod:OnCombatStart(delay)
 		timerDesolateCD:Start(22-delay, 1)
 		timerExpungeCD:Start(33-delay, 1)
 		timerConsumeCD:Start(89-delay, 1)
+		if self:IsMythic() then
+			berserkTimer:Start(420-delay)
+		end
 	end
 --	if self.Options.NPAuraOnVolatileCorruption then
 --		DBM:FireEvent("BossMod_EnableHostileNameplates")
