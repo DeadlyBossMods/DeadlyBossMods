@@ -124,7 +124,7 @@ do
 	local popupFrame
 
 	local function createPopupFrame()
-		popupFrame = CreateFrame("Frame", nil, UIParent, DBM:IsAlpha() and "BackdropTemplate")
+		popupFrame = CreateFrame("Frame", nil, UIParent, DBM:IsShadowlands() and "BackdropTemplate")
 		popupFrame:SetFrameStrata("DIALOG")
 		popupFrame:SetFrameLevel(popupFrame:GetFrameLevel() + 10)
 		popupFrame:SetSize(512, 512)
