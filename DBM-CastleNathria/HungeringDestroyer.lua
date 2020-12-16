@@ -365,7 +365,8 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnGrowingHunger:Show(amount)
 				specWarnGrowingHunger:Play("changemt")
 			else
-				specWarnGrowingHungerOther:Show(args.destName)
+				local targetName = self:GetBossTarget(164261)
+				specWarnGrowingHungerOther:Show(targetName)
 				specWarnGrowingHungerOther:Play("tauntboss")
 			end
 		end
