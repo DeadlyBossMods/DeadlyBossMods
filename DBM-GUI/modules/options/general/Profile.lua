@@ -69,6 +69,12 @@ local function actuallyImport(importTable)
 	DBM.Options = importTable.DBM -- Cached options
 	DBM_AllSavedOptions[_G["DBM_UsedProfile"]] = importTable.DBM
 	DBT_AllPersistentOptions[_G["DBM_UsedProfile"]] = importTable.DBT
+	DBM_MinimapIcon = importTable.minimap
+	if importTable.minimap.hide then
+		LibStub("LibDBIcon-1.0"):Hide("DBM")
+	else
+		LibStub("LibDBIcon-1.0"):Show("DBM")
+	end
 	DBM:AddMsg("Profile imported.")
 end
 
@@ -92,8 +98,9 @@ local importExportProfilesArea = profilePanel:CreateArea(L.Area_ImportExportProf
 importExportProfilesArea:CreateText(L.ImportExportInfo, nil, true)
 local exportProfile = importExportProfilesArea:CreateButton(L.ButtonExportProfile, 120, 20, function()
 	DBM_GUI:CreateExportProfile({
-		DBM = DBM.Options,
-		DBT = DBT_AllPersistentOptions[_G["DBM_UsedProfile"]]
+		DBM		= DBM.Options,
+		DBT		= DBT_AllPersistentOptions[_G["DBM_UsedProfile"]],
+		minimap	= DBM_MinimapIcon
 	})
 end)
 exportProfile:SetPoint("TOPLEFT", 12, -20)
