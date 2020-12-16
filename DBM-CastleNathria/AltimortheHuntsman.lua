@@ -378,44 +378,23 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		if self.vb.phase == 2 then
 			--Start Next Dog. Move if order changes or is variable
 			--timerSpreadshotCD:Start()--Used instantly
+			timerSinseekerCD:Stop()
 			timerRipSoulCD:Start(10)
 			timerShadesofBargastCD:Start(17.5)
-			if self:IsMythic() then--Behavir may no longer be valid
-				--Timer is increased from 50 to 60 during bargast phase and this DOES INCLUDE existing timer
-				local elapsed, total = timerSinseekerCD:GetTime(self.vb.sinSeekerCount+1)
-				timerSinseekerCD:Update(elapsed, total+10, self.vb.sinSeekerCount+1)
-			else--New timer starts
-				timerSinseekerCD:Stop()
-				--Transition window behavior not observed here yet, need to run into it before enabling
-				--if transitionwindow == 2 then--Cast within transition window
-				--	timerSinseekerCD:Start(60, self.vb.sinSeekerCount+1)
-				--else
-					timerSinseekerCD:Start(31.8, self.vb.sinSeekerCount+1)
-				--end
-			end
+			timerSinseekerCD:Start(31.8, self.vb.sinSeekerCount+1)
 			transitionwindow = 0
 		elseif self.vb.phase == 3 then
 			--Start Next Dog. Move if order changes or is variable
 			timerSpreadshotCD:Start(6.3)
 			timerPetrifyingHowlCD:Start(15.1)
-			if self:IsMythic() then
-				--Timer is decreased from 60 to 50, but NOT existing timer. If that changes, simply uncomment code
-				--local elapsed, total = timerSinseekerCD:GetTime(self.vb.sinSeekerCount+1)
-				--if remaining > 10 then
-				--	timerSinseekerCD:Update(elapsed, total-10, self.vb.sinSeekerCount+1)
-				--else
-				--	timerSinseekerCD:Stop()
-				--end
-			else--New timer starts
-				timerSinseekerCD:Stop()
-				if transitionwindow == 2 then--Cast within transition window
-					--It was cast going into phase change, which causes it to incurr it's full 50 second cd on this event
-					timerSinseekerCD:Start(50, self.vb.sinSeekerCount+1)
-				else
-					timerSinseekerCD:Start(30, self.vb.sinSeekerCount+1)--Need fresh transcriptor log to verify this
-				end
-				transitionwindow = 0
+			timerSinseekerCD:Stop()
+			if transitionwindow == 2 then--Cast within transition window
+				--It was cast going into phase change, which causes it to incurr it's full 50 second cd on this event
+				timerSinseekerCD:Start(50, self.vb.sinSeekerCount+1)
+			else
+				timerSinseekerCD:Start(30, self.vb.sinSeekerCount+1)--Need fresh transcriptor log to verify this
 			end
+			transitionwindow = 0
 		end
 	end
 end

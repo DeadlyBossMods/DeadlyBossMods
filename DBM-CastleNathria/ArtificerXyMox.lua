@@ -53,7 +53,7 @@ local specWarnEdgeofAnnihilation					= mod:NewSpecialWarningRun(328789, nil, 307
 --local specWarnGTFO								= mod:NewSpecialWarningGTFO(270290, nil, nil, nil, 1, 8)
 
 mod:AddTimerLine(BOSS)
-local timerDimensionalTearCD						= mod:NewCDTimer(25, 328437, 327770, nil, nil, 3, nil, nil, true)
+local timerDimensionalTearCD						= mod:NewCDTimer(25, 328437, 327770, nil, nil, 3)
 local timerGlyphofDestructionCD						= mod:NewCDTimer(36.4, 325361, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)--27.9-58.6 for now
 local timerGlyphofDestruction						= mod:NewTargetTimer(4, 325361, nil, nil, 2, 2, nil, DBM_CORE_L.TANK_ICON)
 local timerStasisTrapCD								= mod:NewCDTimer(30.3, 326271, nil, nil, nil, 3)--30, except when it's reset by phase changes
@@ -66,7 +66,7 @@ local timerSeedsofExtinctionCD						= mod:NewCDTimer(43.7, 329770, 205446, nil, 
 local timerExtinction								= mod:NewCastTimer(16, 329107, nil, nil, nil, 2, nil, DBM_CORE_L.DEADLY_ICON)
 local timerEdgeofAnnihilationCD						= mod:NewCDTimer(44.3, 328789, 307421, nil, nil, 2, nil, DBM_CORE_L.DEADLY_ICON)--Shortname "Annihilation"
 local timerEdgeofAnnihilation						= mod:NewCastTimer(10, 328789, 307421, nil, nil, 5, nil, DBM_CORE_L.DEADLY_ICON)
-local timerUnleashPowerCD							= mod:NewCDCountTimer(40.8, 342854, nil, nil, nil, 5, nil, DBM_CORE_L.MYTHIC_ICON..DBM_CORE_L.DEADLY_ICON)
+local timerUnleashPowerCD							= mod:NewCDTimer(40.8, 342854, nil, nil, nil, 5, nil, DBM_CORE_L.MYTHIC_ICON..DBM_CORE_L.DEADLY_ICON)
 
 --local berserkTimer								= mod:NewBerserkTimer(600)
 
@@ -128,7 +128,7 @@ function mod:SPELL_CAST_START(args)
 				timerSeedsofExtinctionCD:Start(self:IsMythic() and 25 or 20.2)
 			else--Phase 3
 				if self:IsMythic() then
-					timerUnleashPowerCD:Start(35, self.vb.unleashCount+1)
+					timerUnleashPowerCD:Start(35)
 				else
 					--Attempts to correct situation where either annihilation OR tear can come after annihilation relic activation
 --					if self.vb.p3FirstCast == 0 then
@@ -168,19 +168,18 @@ function mod:SPELL_CAST_START(args)
 --		self.vb.lastRotation = 1--0 rift, 1 ghosts, 2 roots, 3 annihilate
 --		timerDimensionalTearCD:Start(20.2)
 	elseif spellId == 329770 then--Root of Extinction first cast
-		warnSeedsofExtinction:Show()
+--		warnSeedsofExtinction:Show()
 		if self.vb.phase < 2 then--In case user playing in language with unlocalized phase 2 yell
 			self.vb.phase = 2
 --			self.vb.lastRotation = 2
 			timerDimensionalTearCD:Stop()
 			timerFleetingSpiritsCD:Stop()
 		end
-		--timerDimensionalTearCD:Start(34)--Timer for first tear after activation. Activations don't fire spell rotator
-		timerSeedsofExtinctionCD:Start(27.6)--Now cast twice in a row?
-	elseif spellId == 340788 then--Roots of Extinction casts 2+
+		timerDimensionalTearCD:Start(33.5)
+	elseif spellId == 340788 then--Seeds of Extinction casts 2+ (the one rotator is linked to)
 --		self.vb.lastRotation = 2--0 rift, 1 ghosts, 2 roots, 3 annihilate
-		timerDimensionalTearCD:Start(self:IsMythic() and 25 or 20.2)
-	elseif spellId == 329834 then--Roots cast itself, for warning
+		timerDimensionalTearCD:Start(self:IsMythic() and 25 or 20)
+	elseif spellId == 329834 then--Seeds cast itself, for warnings
 		warnSeedsofExtinction:Show()
 	elseif spellId == 329107 and self:AntiSpam(3, 1) then--Seeds Extinction Cast
 		timerExtinction:Start()
@@ -361,8 +360,8 @@ function mod:OnSync(msg)
 		end
 		timerStasisTrapCD:Start(10.7)
 		timerDimensionalTearCD:Start(14)
-		timerSeedsofExtinctionCD:Start(20)--Timer for actual seeds cast, not relic activation. Minus 14 when using CLEU to verify on WCL
 		timerRiftBlastCD:Start(20)
+		timerSeedsofExtinctionCD:Start(21.6)
 		timerGlyphofDestructionCD:Start(27.8)--SUCCESS
 	elseif msg == "Phase3" then
 		self.vb.phase = 3
@@ -387,7 +386,7 @@ function mod:OnSync(msg)
 		timerRiftBlastCD:Start(45.9)
 		timerGlyphofDestructionCD:Start(53.5)--SUCCESS
 		if self:IsMythic() then
-			timerUnleashPowerCD:Start(20, 1)--Tecnically time til Edge of Annihilation, but it activates all 3 like Unleash Power does
+			timerUnleashPowerCD:Start(20)--Time until phase 3 activation edge of annihilation spell
 		else
 			timerEdgeofAnnihilationCD:Start(27)--Time until actual annihilation cast, not edge of annihilation
 		end

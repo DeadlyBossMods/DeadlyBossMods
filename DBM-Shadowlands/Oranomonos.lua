@@ -16,7 +16,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED_DOSE 338852"
 )
 
---Assuming Withered winds is spammed so warning itself is disabled for now
+--Assuming withered winds isn't in combat log, and unit events not worth using outdoors unless it's important
 --TODO adjust stack counts
 local warnStoneStomp						= mod:NewSpellAnnounce(339040, 3)
 local warnImplant							= mod:NewStackAnnounce(338852, 2, nil, "Tank")
@@ -28,11 +28,11 @@ local specWarnRegrowth						= mod:NewSpecialWarningInterrupt(338857, "HasInterru
 local specWarnDirgeoftheFallenSanctum		= mod:NewSpecialWarningSpell(338856, nil, nil, nil, 2, 2)
 local specWarnSeedsofSorrow					= mod:NewSpecialWarningRun(338855, nil, nil, nil, 4, 2)
 
-local timerWitheredWindsCD					= mod:NewAITimer(82.0, 339040, nil, nil, nil, 3)
-local timerImplantCD						= mod:NewAITimer(82.0, 338852, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON)--, nil, 1, 5
+--local timerWitheredWindsCD					= mod:NewCDTimer(24.7, 339040, nil, nil, nil, 3)
+local timerImplantCD						= mod:NewCDTimer(42.9, 338852, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON)--, nil, 1, 5
 local timerRegrowthCD						= mod:NewAITimer(82.0, 339040, nil, "HasInterrupt", nil, 4, nil, DBM_CORE_L.INTERRUPT_ICON)
-local timerRapidGrowthCD					= mod:NewAITimer(82.0, 338853, nil, nil, nil, 3, nil, DBM_CORE_L.MAGIC_ICON)
-local timerSeedsofSorrowCD					= mod:NewAITimer(82.0, 338855, nil, nil, nil, 2, nil, DBM_CORE_L.DEADLY_ICON)
+local timerRapidGrowthCD					= mod:NewCDTimer(25.1, 338853, nil, nil, nil, 3, nil, DBM_CORE_L.MAGIC_ICON)
+local timerSeedsofSorrowCD					= mod:NewCDTimer(59.9, 338855, nil, nil, nil, 2, nil, DBM_CORE_L.DEADLY_ICON)
 
 function mod:OnCombatStart(delay, yellTriggered)
 	if yellTriggered then
@@ -67,7 +67,7 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 339040 then
-		timerWitheredWindsCD:Start()
+--		timerWitheredWindsCD:Start()
 	elseif spellId == 338853 then
 		timerRapidGrowthCD:Start()
 	end
