@@ -5,8 +5,8 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(167406)
 mod:SetEncounterID(2407)
 mod:SetUsedIcons(1, 2, 3)
-mod:SetHotfixNoticeRev(20201214000000)--2020, 12, 14
-mod:SetMinSyncRevision(20201214000000)
+mod:SetHotfixNoticeRev(20201216000000)--2020, 12, 16
+mod:SetMinSyncRevision(20201216000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
@@ -550,7 +550,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		self.vb.DebuffIcon = self.vb.DebuffIcon + 1
 	elseif spellId == 332794 then
-		if self:AntiSpam(10, 4) then
+		if self:AntiSpam(4, 4) then
 			self.vb.DebuffIcon = 1
 			self.vb.DebuffCount = self.vb.DebuffCount + 1
 			local timer = Timers[self.vb.phase][spellId][self.vb.DebuffCount+1]

@@ -191,7 +191,7 @@ function mod:SPELL_CAST_START(args)
 			self:ScanForMobs(171557, 1, 4, 2, 0.2, 15, "SetIconOnShades")--Start at 4 ascending up
 		end
 	elseif spellId == 334852 then
-		timerPetrifyingHowlCD:Start(self:IsMythic() and 30 or 20)
+		timerPetrifyingHowlCD:Start(self:IsMythic() and 30 or 20.6)
 	end
 end
 
