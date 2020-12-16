@@ -550,7 +550,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		self.vb.DebuffIcon = self.vb.DebuffIcon + 1
 	elseif spellId == 332794 then
-		if self:AntiSpam(10, 4) then
+		if self:AntiSpam(4, 4) then
 			self.vb.DebuffIcon = 1
 			self.vb.DebuffCount = self.vb.DebuffCount + 1
 			local timer = Timers[self.vb.phase][spellId][self.vb.DebuffCount+1]
