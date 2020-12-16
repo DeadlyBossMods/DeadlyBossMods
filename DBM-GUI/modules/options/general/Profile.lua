@@ -2,6 +2,7 @@ local L = DBM_GUI_L
 
 local DBM = DBM
 local type, ipairs, tinsert = type, ipairs, table.insert
+local LibStub = _G["LibStub"]
 
 local Create, Refresh
 local profileDropdown = {}
