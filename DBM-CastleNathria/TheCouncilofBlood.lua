@@ -257,7 +257,6 @@ end
 local function phaseChange(self, adjustment)
 	--Bump phase and stop all timers since regardless of kills, phase changes reset anyone that's still up
 	self.vb.phase = self.vb.phase + 1
-	local cid = self:GetCIDFromGUID(args.destGUID)
 	if self.vb.phase == 3 then--Two Dead
 		--Castellan Niklaus
 		timerDualistsRiposteCD:Stop()

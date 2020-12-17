@@ -180,7 +180,7 @@ function mod:OnCombatStart(delay)
 		specWarnExpunge:Schedule(37.1)
 		specWarnExpunge:ScheduleVoice(37.1, "scatter")
 		timerConsumeCD:Start(98.9-delay, 1)
-	if self:IsNormal() then--TODO, Confirm LFR
+	elseif self:IsNormal() then
 		timerOverwhelmCD:Start(5.2-delay, 1)
 		timerVolatileEjectionCD:Start(10.5-delay, 1)
 		timerDesolateCD:Start(23.2-delay, 1)
