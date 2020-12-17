@@ -288,9 +288,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 325382 then
 		local amount = args.amount or 1
 		warnWarpedDesires:Show(args.destName, amount)
-		if args:IsPlayer() then
-			--Nothing
-		else
+		if not args:IsPlayer() and amount >= 2 then
 			specWarnWarpedDesires:Show(args.destName)
 			specWarnWarpedDesires:Play("tauntboss")
 		end

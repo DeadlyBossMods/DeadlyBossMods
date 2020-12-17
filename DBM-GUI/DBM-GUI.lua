@@ -124,7 +124,7 @@ do
 	local popupFrame
 
 	local function createPopupFrame()
-		popupFrame = CreateFrame("Frame", nil, UIParent, DBM:IsAlpha() and "BackdropTemplate")
+		popupFrame = CreateFrame("Frame", nil, UIParent, DBM:IsShadowlands() and "BackdropTemplate")
 		popupFrame:SetFrameStrata("DIALOG")
 		popupFrame:SetFrameLevel(popupFrame:GetFrameLevel() + 10)
 		popupFrame:SetSize(512, 512)
@@ -137,7 +137,7 @@ do
 			edgeSize	= 32,
 			insets		= { left = 8, right = 8, top = 8, bottom = 8 }
 		}
-		if DBM:IsAlpha() then
+		if DBM:IsShadowlands() then
 			popupFrame:ApplyBackdrop()
 		else
 			popupFrame:SetBackdrop(popupFrame.backdropInfo)
@@ -150,7 +150,7 @@ do
 		popupFrame:Hide()
 		popupFrame.text = ""
 
-		local backdrop = CreateFrame("Frame", nil, popupFrame, DBM:IsAlpha() and "BackdropTemplate")
+		local backdrop = CreateFrame("Frame", nil, popupFrame, DBM:IsShadowlands() and "BackdropTemplate")
 		backdrop.backdropInfo = {
 			bgFile		= "Interface\\ChatFrame\\ChatFrameBackground",
 			edgeFile	= "Interface\\Tooltips\\UI-Tooltip-Border",
@@ -159,7 +159,7 @@ do
 			edgeSize	= 16,
 			insets		= { left = 3, right = 3, top = 5, bottom = 3 }
 		}
-		if DBM:IsAlpha() then
+		if DBM:IsShadowlands() then
 			backdrop:ApplyBackdrop()
 		else
 			backdrop:SetBackdrop(backdrop.backdropInfo)
@@ -188,6 +188,7 @@ do
 		input:ClearAllPoints()
 		input:SetPoint("TOPLEFT", scrollFrame, "TOPLEFT")
 		input:SetPoint("BOTTOMRIGHT", scrollFrame, "BOTTOMRIGHT")
+		input:SetWidth(452)
 
 		local import = CreateFrame("Button", nil, popupFrame, "UIPanelButtonTemplate")
 		import:SetPoint("BOTTOMRIGHT", -120, 13)

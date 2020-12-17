@@ -16,6 +16,10 @@ externals:
     url: https://github.com/rossnichols/LibSerialize
     tag: latest
 
+ignore:
+  - DBM-Core/Libs/LibDeflate/docs
+  - DBM-Core/Libs/LibDeflate/examples
+
 enable-nolib-creation: no
 
 move-folders:

@@ -65,12 +65,12 @@ local specWarnGTFO								= mod:NewSpecialWarningGTFO(340324, nil, nil, nil, 1, 
 
 --Stage One - Thirst for Blood
 --mod:AddTimerLine(BOSS)
-local timerExsanguinatingBiteCD					= mod:NewCDTimer(18.2, 328857, 17253, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)--10-22.9 (too varaible for a countdown by default)
+local timerExsanguinatingBiteCD					= mod:NewCDTimer(17.8, 328857, 17253, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)--10-22.9 (too varaible for a countdown by default)
 local timerEcholocationCD						= mod:NewCDTimer(23, 342077, nil, nil, nil, 3, nil, nil, nil, 1, 3)--Seems to be 42.7 without a hitch
-local timerEarsplittingShriekCD					= mod:NewCDTimer(47.4, 330711, 251719, nil, nil, 2)--Shortname "Shriek"
-local timerWaveofBloodCD						= mod:NewCDCountTimer(24.8, 345397, nil, nil, nil, 2, nil, DBM_CORE_L.HEALER_ICON)
+local timerEarsplittingShriekCD					= mod:NewCDTimer(47.1, 330711, 251719, nil, nil, 2)--Shortname "Shriek"
+local timerWaveofBloodCD						= mod:NewCDCountTimer(24.8, 345397, nil, nil, nil, 2, nil, DBM_CORE_L.HEALER_ICON)--24-30
 local timerBlindSwipeCD							= mod:NewCDTimer(44.4, 343005, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON)
-local timerEchoingScreechCD						= mod:NewCDTimer(48, 342863, 252538, nil, nil, 3)
+local timerEchoingScreechCD						= mod:NewCDTimer(48, 342863, 252538, nil, nil, 3, nil, DBM_CORE_L.HEROIC_ICON)
 local timerBloodshroudCD						= mod:NewCDTimer(112, 328921, nil, nil, nil, 6)--100-103
 --Stage Two - Terror of Castle Nathria
 --local timerBloodshroud						= mod:NewBuffActiveTimer(47.5, 328921, nil, nil, nil, 6)--43.4-47.5, more to it than this? or just fact blizzards energy code always proves to be dogshit
@@ -94,10 +94,12 @@ function mod:OnCombatStart(delay)
 	self.vb.EchoIcon = 1
 	self.vb.waveCount = 0
 	timerExsanguinatingBiteCD:Start(8.1-delay)
-	timerWaveofBloodCD:Start(13-delay, 1)
+	timerWaveofBloodCD:Start(12.5-delay, 1)
 	timerEcholocationCD:Start(14.2-delay)
 	timerBlindSwipeCD:Start(20.3-delay)
-	timerEchoingScreechCD:Start(28-delay)
+	if not self:IsEasy() then
+		timerEchoingScreechCD:Start(28-delay)
+	end
 	timerEarsplittingShriekCD:Start(48.3-delay)
 	timerBloodshroudCD:Start(112-delay)
 --	if self.Options.NPAuraOnVolatileCorruption then
@@ -201,7 +203,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnDeadlyDescent:CombinedShow(0.3, args.destName)
 		end
 	elseif spellId == 342077 then
-		warnEcholocation:CombinedShow(0.3, args.destName)
+		warnEcholocation:CombinedShow(0.5, args.destName)
 		local icon = self.vb.EchoIcon
 		if args:IsPlayer() then
 			specWarnEcholocation:Show()
@@ -223,7 +225,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerEcholocationCD:Stop()
 		timerBlindSwipeCD:Stop()
 		timerWaveofBloodCD:Stop()
-		timerEarsplittingShriekCD:Start(19.4)
+		timerEarsplittingShriekCD:Start(13.4)
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(8)
 		end
@@ -248,7 +250,9 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerWaveofBloodCD:Start(12, 1)
 		timerEcholocationCD:Start(14.2)
 		timerBlindSwipeCD:Start(20.3)
-		timerEchoingScreechCD:Start(28)
+		if not self:IsEasy() then
+			timerEchoingScreechCD:Start(28)
+		end
 		timerEarsplittingShriekCD:Start(48.3)
 		timerBloodshroudCD:Start(112)
 		if self.Options.RangeFrame then
