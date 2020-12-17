@@ -45,7 +45,7 @@ local warnSharedSuffering						= mod:NewTargetNoFilterAnnounce(324983, 3)
 local warnConcentrateAnima						= mod:NewTargetNoFilterAnnounce(342321, 3)
 local warnCondemnTank							= mod:NewCastAnnounce(334017, 3, nil, nil, "Tank")
 
-local specWarnExposeDesires		f				= mod:NewSpecialWarningDefensive(341621, false, nil, nil, 1, 2)--Optional warning that the cast is happening toward you
+local specWarnExposeDesires						= mod:NewSpecialWarningDefensive(341621, false, nil, nil, 1, 2)--Optional warning that the cast is happening toward you
 local specWarnWarpedDesires						= mod:NewSpecialWarningTaunt(325382, false, nil, 2, 1, 2)
 local specWarnHiddenDesire						= mod:NewSpecialWarningYou(335396, nil, nil, nil, 1, 2)
 local specWarnHiddenDesireTaunt					= mod:NewSpecialWarningTaunt(335396, nil, nil, nil, 1, 2)
