@@ -243,7 +243,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			if timer then
 				timerSiesmicShiftCD:Start(timer, self.vb.shiftCount+1)
 				local timerAfter = SiesmicTimers[self.vb.shiftCount+2]
-				if not timerAFter then--Disable timer keeping if we're out of timer data beind THIS timer
+				if not timerAfter then--Disable timer keeping if we're out of timer data beind THIS timer
 					timerSiesmicShiftCD:SetSTKeep(false, self.vb.shiftCount+1)
 				end
 			end
