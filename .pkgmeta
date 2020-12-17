@@ -18,6 +18,7 @@ externals:
 
 ignore:
   - DBM-Core/Libs/LibDeflate/docs
+  - DBM-Core/Libs/LibDeflate/examples
 
 enable-nolib-creation: no
 
