@@ -188,6 +188,7 @@ do
 		input:ClearAllPoints()
 		input:SetPoint("TOPLEFT", scrollFrame, "TOPLEFT")
 		input:SetPoint("BOTTOMRIGHT", scrollFrame, "BOTTOMRIGHT")
+		input:SetWidth(452)
 
 		local import = CreateFrame("Button", nil, popupFrame, "UIPanelButtonTemplate")
 		import:SetPoint("BOTTOMRIGHT", -120, 13)
