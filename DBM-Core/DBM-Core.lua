@@ -6862,7 +6862,7 @@ do
 			return false
 		end
 		-- Validate audio packs
-		if not validateCache[path] then
+--[[	if not validateCache[path] then
 			local splitTable = {}
 			for split in string.gmatch(path, "[^\\]+") do
 				tinsert(splitTable, split)
@@ -6879,6 +6879,16 @@ do
 				-- This uses actual user print because these events only occure at start or end of instance or fight.
 				AddMsg(self, "PlaySoundFile failed do to missing media at " .. path .. ". To fix this, re-add/enable " .. validateCache[path].AddOn .. " or change setting using this sound to a different sound.")
 			end
+			return false
+		end--]]
+		if not _G["DBMVPSoundEventsPack"] and path:find("DBM-SoundEventsPack") then
+			--This uses actual user print because these events only occure at start or end of instance or fight.
+			AddMsg(self, "PlaySoundFile failed do to missing media at "..path..". To fix this, re-add/enable DBM-SoundEventsPack or change setting using this sound to a different sound.")
+			return false
+		end
+		if not _G["DBMVPSMGPack"] and path:find("DBM-SMGEventsPack") then
+			--This uses actual user print because these events only occure at start or end of instance or fight.
+			AddMsg(self, "PlaySoundFile failed do to missing media at "..path..". To fix this, re-add/enable DBM-SMGEventsPack or change setting using this sound to a different sound.")
 			return false
 		end
 		return true
@@ -11072,6 +11082,21 @@ do
 					playCountdown(id, bar.timer, bar.countdown, bar.countdownMax)--timerId, timer, voice, count
 					DBM:Debug("Re-enabling a countdown on bar ID: "..id.." after a SetSTFade disable call")
 				end
+			end
+		end
+	end
+
+	function timerPrototype:SetSTKeep(keepOn, ...)
+		local id = self.id..pformat((("\t%s"):rep(select("#", ...))), ...)
+		local bar = DBM.Bars:GetBar(id)
+		if bar then
+			if keepOn and not bar.keep then
+				bar.keep = true--Set bar object metatable, which is copied from timer metatable at bar start only
+				bar:ApplyStyle()
+			elseif not keepOn and bar.keep then
+				fireEvent("DBM_TimerFadeUpdate", id, self.spellId, self.mod.id, nil)
+				bar.keep = false
+				bar:ApplyStyle()
 			end
 		end
 	end
