@@ -6,8 +6,8 @@ mod:SetCreatureID(166971, 166969, 166970)--Castellan Niklaus, Baroness Frieda, L
 mod:SetEncounterID(2412)
 mod:SetBossHPInfoToHighest()
 mod:SetUsedIcons(8)
-mod:SetHotfixNoticeRev(20201214000000)--2020, 12, 08
-mod:SetMinSyncRevision(20201214000000)
+mod:SetHotfixNoticeRev(20201217000000)--2020, 12, 17
+mod:SetMinSyncRevision(20201217000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
@@ -252,6 +252,94 @@ local function darkRecitalYellRepeater(self, text, runTimes)
 --	if runTimes < 4 then--If they fix visual bugs, enable this restriction
 		self:Schedule(2, darkRecitalYellRepeater, self, text, runTimes)
 --	end
+end
+
+local function phaseChange(self, adjustment)
+	--Bump phase and stop all timers since regardless of kills, phase changes reset anyone that's still up
+	self.vb.phase = self.vb.phase + 1
+	local cid = self:GetCIDFromGUID(args.destGUID)
+	if self.vb.phase == 3 then--Two Dead
+		--Castellan Niklaus
+		timerDualistsRiposteCD:Stop()
+		timerDutifulAttendantCD:Stop()
+		if self.vb.nikDead then
+			if self:IsMythic() then
+				timerDutifulAttendantCD:Start(19.1-adjustment)--Confirmed
+			end
+		else
+			timerDredgerServantsCD:Start((self:IsMythic() and 4.4 or 5)-adjustment)--Verify heroic
+			timerDualistsRiposteCD:Start((self:IsMythic() and 8.2 or 9.2)-adjustment)
+			timerCastellansCadreCD:Start((self:IsMythic() and 11.9 or 13.5)-adjustment)
+			timerDutifulAttendantCD:Start((self:IsMythic() and 19.5 or 22.1)-adjustment)
+		end
+		--Baroness Frieda
+		timerDrainEssenceCD:Stop()
+--		timerDreadboltVolleyCD:Stop()
+		timerPridefulEruptionCD:Stop()
+		if self.vb.friedaDead then
+			if self:IsMythic() then
+				timerDreadboltVolleyCD:Start(25-adjustment)--Might be because she cast it on transition though, needs recheck
+			end
+		else
+			--timerDreadboltVolleyCD:Start(1)--Used near imediately
+			timerDrainEssenceCD:Start((self:IsMythic() and 5 or 6.4)-adjustment)--Mythic unknown, completely guessed
+			timerPridefulEruptionCD:Start((self:IsMythic() and 17 or 20)-adjustment)--Unknown on mythic, completely guessed
+			timerSoulSpikesCD:Start((self:IsMythic() and 28 or 32.1)-adjustment)--Mythic unknown, completely guessed
+		end
+		--Lord Stavros
+		timerEvasiveLungeCD:Stop()
+		timerWaltzofBloodCD:Stop()
+		timerDarkRecitalCD:Stop()
+		if self.vb.stavrosDead then
+			if self:IsMythic() then
+				timerDarkRecitalCD:Start(37.7-adjustment)
+			end
+		else
+			timerDarkRecitalCD:Start((self:IsMythic() and 7.4 or 8.2)-adjustment)
+			timerEvasiveLungeCD:Start((self:IsMythic() and 10.7 or 12.1)-adjustment)
+			timerDancingFoolsCD:Start((self:IsMythic() and 18.2 or 20.7)-adjustment)
+			timerWaltzofBloodCD:Start((self:IsMythic() and 54.4 or 62.1)-adjustment)--START
+		end
+	else--One Dead (Phase 2)
+		--Castellan Niklaus
+		timerDredgerServantsCD:Stop()
+		timerDualistsRiposteCD:Stop()
+		timerDutifulAttendantCD:Stop()
+		if self.vb.nikDead then
+			--if self:IsMythic() then
+				--timerDutifulAttendantCD:Start(34.4-adjustment)--Unknown
+			--end
+		else
+			timerDredgerServantsCD:Start((self:IsMythic() and 4.4 or 13.5)-adjustment)
+			timerDualistsRiposteCD:Start((self:IsMythic() and 8.2 or 9.2)-adjustment)
+			timerDutifulAttendantCD:Start((self:IsMythic() and 34.4 or 5)-adjustment)--Mythic confirmed, this is just weird that heroic is way different
+		end
+		--Baroness Frieda
+		timerDrainEssenceCD:Stop()
+--		timerDreadboltVolleyCD:Stop()
+		if self.vb.friedaDead then
+			if self:IsMythic() then
+				timerDreadboltVolleyCD:Start(13.4-adjustment)
+			end
+		else
+			--Still needs correcting with live mythic
+--			timerDreadboltVolleyCD:Start(1.3)--Used like 1 second after
+			timerDrainEssenceCD:Start((self:IsMythic() and 5 or 6.4)-adjustment)--Unknown on mythic, completely guessed
+			timerPridefulEruptionCD:Start((self:IsMythic() and 27.3 or 35)-adjustment)--Unknown on mythic, completely guessed
+		end
+		--Lord Stavros
+		timerEvasiveLungeCD:Stop()
+		timerDarkRecitalCD:Stop()
+		if self.vb.stavrosDead then
+			--if self:IsMythic() then
+			--	timerDarkRecitalCD:Start(26.6-adjustment)--Unknown
+			--end
+		else
+			timerEvasiveLungeCD:Start((self:IsMythic() and 7 or 7.9)-adjustment)
+			timerDarkRecitalCD:Start((self:IsMythic() and 22.4 or 25.3)-adjustment)
+			timerWaltzofBloodCD:Start((self:IsMythic() and 26.9 or 30.7)-adjustment)--START
+		end
+	end
 end
 
 function mod:OnCombatStart(delay)
@@ -568,95 +656,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 	elseif (spellId == 332535 or spellId == 346709) and self:AntiSpam(30, spellId) then--Infused/Empowered
-		--Bump phase and stop all timers since regardless of kills, phase changes reset anyone that's still up
---		self.vb.phase = self.vb.phase + 1
-		local cid = self:GetCIDFromGUID(args.destGUID)
-		--As of last test, abilities don't reset when empowerment gains, only new ability starts
-		--This is subject to change like anything, so commented timers won't be deleted until end of beta, to be certain
-		if spellId == 346709 then--Two Dead
-			self.vb.phase = 3
-			--Castellan Niklaus
-			timerDualistsRiposteCD:Stop()
-			timerDutifulAttendantCD:Stop()
-			if self.vb.nikDead then
-				if self:IsMythic() then
-					timerDutifulAttendantCD:Start(19.1)--Confirmed
-				end
-			else
-				timerDredgerServantsCD:Start(self:IsMythic() and 4.4 or 5)--Verify heroic
-				timerDualistsRiposteCD:Start(self:IsMythic() and 8.2 or 9.2)
-				timerCastellansCadreCD:Start(self:IsMythic() and 11.9 or 13.5)
-				timerDutifulAttendantCD:Start(self:IsMythic() and 19.5 or 22.1)
-			end
-			--Baroness Frieda
-			timerDrainEssenceCD:Stop()
---			timerDreadboltVolleyCD:Stop()
-			timerPridefulEruptionCD:Stop()
-			if self.vb.friedaDead then
-				if self:IsMythic() then
-					timerDreadboltVolleyCD:Start(25)--Might be because she cast it on transition though, needs recheck
-				end
-			else
-				--timerDreadboltVolleyCD:Start(1)--Used near imediately
-				timerDrainEssenceCD:Start(self:IsMythic() and 5 or 6.4)--Mythic unknown, completely guessed
-				timerPridefulEruptionCD:Start(self:IsMythic() and 17 or 20)--Unknown on mythic, completely guessed
-				timerSoulSpikesCD:Start(self:IsMythic() and 28 or 32.1)--Mythic unknown, completely guessed
-			end
-			--Lord Stavros
-			timerEvasiveLungeCD:Stop()
-			timerWaltzofBloodCD:Stop()
-			timerDarkRecitalCD:Stop()
-			if self.vb.stavrosDead then
-				if self:IsMythic() then
-					timerDarkRecitalCD:Start(37.7)
-				end
-			else
-				timerDarkRecitalCD:Start(self:IsMythic() and 7.4 or 8.2)
-				timerEvasiveLungeCD:Start(self:IsMythic() and 10.7 or 12.1)
-				timerDancingFoolsCD:Start(self:IsMythic() and 18.2 or 20.7)
-				timerWaltzofBloodCD:Start(self:IsMythic() and 54.4 or 62.1)--START
-			end
-		else--One Dead (332535)
-			self.vb.phase = 2
-			--Castellan Niklaus
-			timerDredgerServantsCD:Stop()
-			timerDualistsRiposteCD:Stop()
-			timerDutifulAttendantCD:Stop()
-			if self.vb.nikDead then
-				--if self:IsMythic() then
-					--timerDutifulAttendantCD:Start(34.4)--Unknown
-				--end
-			else
-				timerDredgerServantsCD:Start(self:IsMythic() and 4.4 or 13.5)
-				timerDualistsRiposteCD:Start(self:IsMythic() and 8.2 or 9.2)
-				timerDutifulAttendantCD:Start(self:IsMythic() and 34.4 or 5)--Mythic confirmed, this is just weird that heroic is way different
-			end
-			--Baroness Frieda
-			timerDrainEssenceCD:Stop()
---			timerDreadboltVolleyCD:Stop()
-			if self.vb.friedaDead then
-				if self:IsMythic() then
-					timerDreadboltVolleyCD:Start(13.4)
-				end
-			else
-				--Still needs correcting with live mythic
---				timerDreadboltVolleyCD:Start(1.3)--Used like 1 second after
-				timerDrainEssenceCD:Start(self:IsMythic() and 5 or 6.4)--Unknown on mythic, completely guessed
-				timerPridefulEruptionCD:Start(self:IsMythic() and 27.3 or 35)--Unknown on mythic, completely guessed
-			end
-			--Lord Stavros
-			timerEvasiveLungeCD:Stop()
-			timerDarkRecitalCD:Stop()
-			if self.vb.stavrosDead then
-				--if self:IsMythic() then
-				--	timerDarkRecitalCD:Start(26.6)--Unknown
-				--end
-			else
-				timerEvasiveLungeCD:Start(self:IsMythic() and 7 or 7.9)
-				timerDarkRecitalCD:Start(self:IsMythic() and 22.4 or 25.3)
-				timerWaltzofBloodCD:Start(self:IsMythic() and 26.9 or 30.7)--START
-			end
-		end
+		self:Unschedule(phaseChange)
+		phaseChange(self, 0)--true phase change, more accurate timers, but sometimes missing from combat log
 	elseif spellId == 346694 then
 		if self.Options.NPAuraOnShield then
 			DBM.Nameplate:Show(true, args.destGUID, spellId)
@@ -784,17 +785,32 @@ function mod:UNIT_DIED(args)
 		timerDualistsRiposteCD:Stop()
 		timerDutifulAttendantCD:Stop()
 		timerDredgerServantsCD:Stop()
+		--Less accurate phase change, but backup if the true phase change infusion/empowerment events are missing
+		if self.vb.phase < 3 then
+			self:Unschedule(phaseChange)
+			self:Schedule(5, phaseChange, self, 2)
+		end
 	elseif cid == 166969 then--Baroness Frieda
 		self.vb.friedaDead = true
 		timerDrainEssenceCD:Stop()
 --		timerDreadboltVolleyCD:Stop()
 		timerPridefulEruptionCD:Stop()
+		--Less accurate phase change, but backup if the true phase change infusion/empowerment events are missing
+		if self.vb.phase < 3 then
+			self:Unschedule(phaseChange)
+			self:Schedule(5, phaseChange, self, 2)
+		end
 	elseif cid == 166970 then--Lord Stavros
 		self.vb.stavrosDead = true
 		timerEvasiveLungeCD:Stop()
 		timerWaltzofBloodCD:Stop()
 		timerDarkRecitalCD:Stop()
 		timerDancingFoolsCD:Stop()
+		--Less accurate phase change, but backup if the true phase change infusion/empowerment events are missing
+		if self.vb.phase < 3 then
+			self:Unschedule(phaseChange)
+			self:Schedule(5, phaseChange, self, 2)
+		end
 	elseif cid == 168406 then--Waltzing Venthyr
 		if self.Options.NPAuraOnUproar then
 			DBM.Nameplate:Hide(true, args.destGUID, 346303)

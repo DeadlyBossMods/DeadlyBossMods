@@ -12,7 +12,7 @@ mod:SetMinSyncRevision(20201214000000)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 334522 329758 334266 329455 329774",
+	"SPELL_CAST_START 334522 329758 334266 329455 329774 338621",
 	"SPELL_CAST_SUCCESS 329774",
 	"SPELL_AURA_APPLIED 329298 334755 334228 332295",
 	"SPELL_AURA_APPLIED_DOSE 334755 332295",
@@ -30,7 +30,7 @@ mod:RegisterEventsInCombat(
 --TODO, better way to detect expunge? It needs to be added to combat log
 --TODO, choose what infoframe tracks, sap, or volatile. volatile will be new default sine it's useful to more difficulties. This is on hold until it's in combat log though
 --[[
-(ability.id = 334522 or ability.id = 334266 or ability.id = 329455 or ability.id = 329774) and type = "begincast"
+(ability.id = 334522 or ability.id = 334266 or ability.id = 329455 or ability.id = 329774 or ability.id = 338621) and type = "begincast"
  or ability.id = 329298 and type = "applydebuff"
 --]]
 local warnGluttonousMiasma						= mod:NewTargetNoFilterAnnounce(329298, 4, nil, nil, 212238)
@@ -172,17 +172,29 @@ function mod:OnCombatStart(delay)
 	self.vb.miasmaIcon = 2
 	self.vb.meleeFound = false
 	timerGluttonousMiasmaCD:Start(3-delay, 1)--Always same
-	if self:IsEasy() then--TODO, Confirm LFR
+	if self:IsLFR() then
+		timerOverwhelmCD:Start(5.5-delay, 1)
+		timerVolatileEjectionCD:Start(11.1-delay, 1)
+		timerDesolateCD:Start(24.4-delay, 1)
+		timerExpungeCD:Start(37.1-delay, 1)
+		specWarnExpunge:Schedule(37.1)
+		specWarnExpunge:ScheduleVoice(37.1, "scatter")
+		timerConsumeCD:Start(98.9-delay, 1)
+	if self:IsNormal() then--TODO, Confirm LFR
 		timerOverwhelmCD:Start(5.2-delay, 1)
-		timerVolatileEjectionCD:Start(10.5-delay, 1)--12.4 LFR?
-		timerDesolateCD:Start(23.2-delay, 1)--27.5 LFR?
-		timerExpungeCD:Start(34.7-delay, 1)--41 LFR?
+		timerVolatileEjectionCD:Start(10.5-delay, 1)
+		timerDesolateCD:Start(23.2-delay, 1)
+		timerExpungeCD:Start(34.7-delay, 1)
+		specWarnExpunge:Schedule(34.7)
+		specWarnExpunge:ScheduleVoice(34.7, "scatter")
 		timerConsumeCD:Start(93-delay, 1)
 	else
 		timerOverwhelmCD:Start(5-delay, 1)
 		timerVolatileEjectionCD:Start(10.1-delay, 1)
 		timerDesolateCD:Start(22-delay, 1)
 		timerExpungeCD:Start(33-delay, 1)
+		specWarnExpunge:Schedule(33)
+		specWarnExpunge:ScheduleVoice(33, "scatter")
 		timerConsumeCD:Start(89-delay, 1)
 		if self:IsMythic() then
 			berserkTimer:Start(420-delay)
@@ -253,7 +265,7 @@ function mod:SPELL_CAST_START(args)
 		timerConsumeCD:Start(self:IsEasy() and 101 or 96, self.vb.consumeCount+1)
 --	elseif spellId == 329758 then
 --		timerExpungeCD:Start()
-	elseif spellId == 334266 then
+	elseif spellId == 338621 or spellId == 334266 then--LFR, everything else
 		self.vb.volatileIcon = 5
 		self.vb.volatileCast = self.vb.volatileCast + 1
 		--Heroic, Mythic
@@ -264,18 +276,18 @@ function mod:SPELL_CAST_START(args)
 		specWarnVolatileEjectionPerWarn:Show()
 		specWarnVolatileEjectionPerWarn:Play("specialsoon")
 		if self.vb.volatileCast % 3 == 0 then
-			timerVolatileEjectionCD:Start(self:IsEasy() and 25.3 or 24, self.vb.volatileCast+1)--Minus isn't a bug, the counter is off by 2 for perfect timers
+			timerVolatileEjectionCD:Start(self:IsLFR() and 27.8 or self:IsNormal() and 25.3 or 24, self.vb.volatileCast+1)--Minus isn't a bug, the counter is off by 2 for perfect timers
 		else
-			timerVolatileEjectionCD:Start(self:IsEasy() and 37.8 or 35.9, self.vb.volatileCast+1)--Minus isn't a bug, the counter is off by 2 for perfect timers
+			timerVolatileEjectionCD:Start(self:IsLFR() and 38.9 or self:IsNormal() and 37.8 or 35.9, self.vb.volatileCast+1)--Minus isn't a bug, the counter is off by 2 for perfect timers
 		end
 	elseif spellId == 329455 then
 		--Heroic, mythic?
 		--22.0, 36.0, 60.0, 36.0, 60.0, 36.0, 60.0", -- [2]
 		self.vb.desolateCount = self.vb.desolateCount + 1
 		if self.vb.desolateCount % 2 == 0 then
-			timerDesolateCD:Start(self:IsEasy() and 63.1 or 60, self.vb.desolateCount+1)
+			timerDesolateCD:Start(self:IsLFR() and 66.6 or self:IsNormal() and 63.1 or 60, self.vb.desolateCount+1)
 		else
-			timerDesolateCD:Start(self:IsEasy() and 37.8 or 36, self.vb.desolateCount+1)
+			timerDesolateCD:Start(self:IsLFR() and 40 or self:IsNormal() and 37.8 or 36, self.vb.desolateCount+1)
 		end
 	elseif spellId == 329774 then
 		self.vb.overwhelmCast = self.vb.overwhelmCast + 1
@@ -286,9 +298,9 @@ function mod:SPELL_CAST_START(args)
 		--Heroic (7, 14, 21, so every 7th cast, next is doubled)
 		--5.0, 12.0, 12.0, 12.0, 12.0, 12.0, 12.0, 24.0, 12.0, 12.0, 12.0, 12.0, 12.0, 12.0, 24.0, 12.0, 12.0, 12.0, 12.0, 12.0, 12.0, 24.0, 12.0, 12.0
 		if self.vb.overwhelmCast % 7 == 0 then
-			timerOverwhelmCD:Start(self:IsEasy() and 25.2 or 24, self.vb.overwhelmCast+1)
+			timerOverwhelmCD:Start(self:IsLFR() and 26.6 or self:IsNormal() and 25.2 or 24, self.vb.overwhelmCast+1)
 		else
-			timerOverwhelmCD:Start(self:IsEasy() and 12.6 or 11.9, self.vb.overwhelmCast+1)
+			timerOverwhelmCD:Start(self:IsLFR() and 13.3 or self:IsNormal() and 12.6 or 11.9, self.vb.overwhelmCast+1)
 		end
 	end
 end
@@ -421,13 +433,13 @@ function mod:SPELL_DAMAGE(_, _, _, _, _, _, _, _, spellId)
 		specWarnExpunge:CancelVoice()
 		if (self.vb.expungeCount) % 2 == 0 then
 			--Actual timers are +5, but since we trigger off damage, have to make adjustment
-			local timer = self:IsEasy() and 58.1 or 54.9
+			local timer = self:IsLFR() and 61.6 or self:IsNormal() and 58.1 or 54.9
 			specWarnExpunge:Schedule(timer)
 			specWarnExpunge:ScheduleVoice(timer, "scatter")
 			timerExpungeCD:Start(timer, self.vb.expungeCount+1)
 		else
 			--Actual timers are +5, but since we trigger off damage, have to make adjustment
-			local timer = self:IsEasy() and 32.9 or 30.8
+			local timer = self:IsLFR() and 34.9 or self:IsNormal() and 32.9 or 30.8
 			specWarnExpunge:Schedule(timer)
 			specWarnExpunge:ScheduleVoice(timer, "scatter")
 			timerExpungeCD:Start(timer, self.vb.expungeCount+1)
