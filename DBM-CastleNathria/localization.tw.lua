@@ -27,9 +27,9 @@ L:SetOptionLocalization({
 --L= DBM:GetModLocalization(2418)
 
 L:SetMiscLocalization({
-	--Phase2			= "The anticipation to use this relic is killing me! Though, it will more likely kill you.",
+	Phase2			= "我想使用這個聖物想得要死，不過死的應該是你。",
 	Phase2Demonic	= "Lok zennshinagas xi ril zila refir il rethule no Rakkas az alar alar archim maev shi ",--Boss has Curse of Tongues
-	--Phase3			= "I hope this wondrous item is as lethal as it looks!",
+	Phase3			= "希望這個神奇的聖物跟它看起來一樣致命！",
 	Phase3Demonic	= "X ante zila romathis alar il re thorje re az modas "--Boss has Curse of Tongues
 })
 
@@ -75,7 +75,7 @@ L:SetOptionLocalization({
 --L= DBM:GetModLocalization(2424)
 
 L:SetMiscLocalization({
-	--CrimsonSpawn	= "Crimson Cabalists answer the call of Denathrius."
+	CrimsonSpawn	= "赤紅秘術師回應了戴納瑟斯的召喚。"
 })
 
 -------------
