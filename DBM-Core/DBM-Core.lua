@@ -6846,7 +6846,7 @@ do
 		LSMMediaCacheBuilt = true
 	end
 
-	function DBM:ValidateSound(path, log)
+	function DBM:ValidateSound(path, log, ignoreCustom)
 		-- Validate LibSharedMedia
 		if not LSMMediaCacheBuilt then
 			buildLSMFileCache()
@@ -6864,7 +6864,7 @@ do
 			for split in string.gmatch(path, "[^\\/]+") do -- Matches \ and / as path delimiters (incl. more than one)
 				tinsert(splitTable, split)
 			end
-			if #splitTable >= 3 and splitTable[1]:lower() == "interface" and splitTable[2]:lower() == "addons" then -- We're an addon sound
+			if #splitTable >= 3 and splitTable[1]:lower() == "interface" and splitTable[2]:lower() == "addons" and (not ignoreCustom and splitTable[3]:lower() == "dbm-customsounds") then -- We're an addon sound
 				validateCache[path] = {
 					exists = IsAddOnLoaded(splitTable[3]),
 					AddOn = splitTable[3]
@@ -6901,7 +6901,7 @@ do
 			end
 			fireEvent("DBM_PlaySound", path)
 		else
-			if validate and not self:ValidateSound(path, true) then
+			if validate and not self:ValidateSound(path, true, true) then
 				return
 			end
 			self:Debug("PlaySoundFile playing with media " .. path, 3)
