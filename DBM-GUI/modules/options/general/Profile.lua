@@ -79,22 +79,6 @@ local function actuallyImport(importTable)
 	DBM:AddMsg("Profile imported.")
 end
 
-StaticPopupDialogs["IMPORTPROFILE_ERROR"] = {
-	text = "There are one or more errors importing this profile. Please see the chat for more information. Would you like to continue and reset found errors to default?",
-	button1 = "Import and fix",
-	button2 = "No",
-	OnAccept = function(self)
-		for _, soundSetting in ipairs(self.errors) do
-			self.importTable.DBM[soundSetting] = DBM.DefaultOptions[soundSetting]
-		end
-		actuallyImport(self.importTable)
-	end,
-	timeout = 0,
-	whileDead = true,
-	hideOnEscape = true,
-	preferredIndex = 3,
-}
-
 local importExportProfilesArea = profilePanel:CreateArea(L.Area_ImportExportProfile)
 importExportProfilesArea:CreateText(L.ImportExportInfo, nil, true)
 local exportProfile = importExportProfilesArea:CreateButton(L.ButtonExportProfile, 120, 20, function()
@@ -122,7 +106,7 @@ local importProfile = importExportProfilesArea:CreateButton(L.ButtonImportProfil
 			"EventSoundWipe", "EventSoundEngage2", "EventSoundMusic", "EventSoundDungeonBGM", "RangeFrameSound1", "RangeFrameSound2"
 		}) do
 			local activeSound = importTable.DBM[soundSetting]
-			if type(activeSound) == "string" and activeSound ~= "None" and activeSound ~= "none" and not DBM:ValidateSound(activeSound, true) then
+			if type(activeSound) == "string" and activeSound:lower() ~= "none" and not DBM:ValidateSound(activeSound, true) then
 				tinsert(errors, soundSetting)
 			end
 		end
@@ -130,8 +114,12 @@ local importProfile = importExportProfilesArea:CreateButton(L.ButtonImportProfil
 		if #errors > 0 then
 			local popup = StaticPopup_Show("IMPORTPROFILE_ERROR")
 			if popup then
-				popup.importTable = importTable
-				popup.errors = errors
+				popup.importFunc = function()
+					for _, soundSetting in ipairs(errors) do
+						importTable.DBM[soundSetting] = DBM.DefaultOptions[soundSetting]
+					end
+					actuallyImport(importTable)
+				end
 			end
 		else
 			actuallyImport(importTable)

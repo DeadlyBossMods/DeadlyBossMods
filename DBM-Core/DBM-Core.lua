@@ -6853,8 +6853,12 @@ do
 		end
 		if not sharedMediaFileCache[path] and not path:find("DBM") then
 			if log then
-				-- This uses debug print because it has potential to cause mid fight spam
-				self:Debug("PlaySoundFile failed do to missing media at " .. path .. ". To fix this, re-add missing sound or change setting using this sound to a different sound.")
+				if ignoreCustom then
+					-- This uses debug print because it has potential to cause mid fight spam
+					self:Debug("PlaySoundFile failed do to missing media at " .. path .. ". To fix this, re-add missing sound or change setting using this sound to a different sound.")
+				else
+					AddMsg(self, "PlaySoundFile failed do to missing media at " .. path .. ". To fix this, re-add missing sound or change setting using this sound to a different sound.")
+				end
 			end
 			return false
 		end
