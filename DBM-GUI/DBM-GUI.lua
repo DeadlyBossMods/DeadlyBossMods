@@ -9,6 +9,20 @@ local next, type, pairs, strsplit, tonumber, tostring, ipairs, tinsert, tsort, m
 local CreateFrame, C_Timer, GetExpansionLevel, IsAddOnLoaded, GameFontNormal, GameFontNormalSmall, GameFontHighlight, GameFontHighlightSmall, ChatFontNormal, UIParent = CreateFrame, C_Timer, GetExpansionLevel, IsAddOnLoaded, GameFontNormal, GameFontNormalSmall, GameFontHighlight, GameFontHighlightSmall, ChatFontNormal, UIParent
 local RAID_DIFFICULTY1, RAID_DIFFICULTY2, RAID_DIFFICULTY3, RAID_DIFFICULTY4, PLAYER_DIFFICULTY1, PLAYER_DIFFICULTY2, PLAYER_DIFFICULTY3, PLAYER_DIFFICULTY6, PLAYER_DIFFICULTY_TIMEWALKER, CHALLENGE_MODE, ALL, CLOSE, SPECIALIZATION = RAID_DIFFICULTY1, RAID_DIFFICULTY2, RAID_DIFFICULTY3, RAID_DIFFICULTY4, PLAYER_DIFFICULTY1, PLAYER_DIFFICULTY2, PLAYER_DIFFICULTY3, PLAYER_DIFFICULTY6, PLAYER_DIFFICULTY_TIMEWALKER, CHALLENGE_MODE, ALL, CLOSE, SPECIALIZATION
 local LibStub, DBM, DBM_GUI, DBM_OPTION_SPACER = _G["LibStub"], DBM, DBM_GUI, DBM_OPTION_SPACER
+local playerName, realmName, playerLevel = UnitName("player"), GetRealmName(), UnitLevel("player")
+
+StaticPopupDialogs["IMPORTPROFILE_ERROR"] = {
+	text = "There are one or more errors importing this profile. Please see the chat for more information. Would you like to continue and reset found errors to default?",
+	button1 = "Import and fix",
+	button2 = "No",
+	OnAccept = function(self)
+		self.importFunc()
+	end,
+	timeout = 0,
+	whileDead = true,
+	hideOnEscape = true,
+	preferredIndex = 3,
+}
 
 do
 	local soundsRegistered = false
@@ -518,6 +532,65 @@ do
 				copyModNoteProfile:GetScript("OnShow")()
 				deleteModProfile:GetScript("OnShow")()
 			end
+
+			-- Start import/export
+			local function actuallyImport(importTable)
+				local profileID = playerLevel > 9 and DBM_UseDualProfile and (GetSpecialization() or 1) or 0
+				for _, id in ipairs(DBM.ModLists[addon.modId]) do
+					_G[addon.modId:gsub("-", "") .. "_AllSavedVars"][playerName .. "-" .. realmName][id][profileID] = importTable[id]
+					DBM:GetModByName(id).Options = importTable[id]
+				end
+				DBM:AddMsg("Profile imported.")
+			end
+
+			local importExportProfilesArea = panel:CreateArea(L.Area_ImportExportProfile)
+			importExportProfilesArea:CreateText(L.ImportExportInfo, nil, true)
+			local exportProfile = importExportProfilesArea:CreateButton(L.ButtonExportProfile, 120, 20, function()
+				local exportProfile = {}
+				local profileID = playerLevel > 9 and DBM_UseDualProfile and (GetSpecialization() or 1) or 0
+				for _, id in ipairs(DBM.ModLists[addon.modId]) do
+					exportProfile[id] = _G[addon.modId:gsub("-", "") .. "_AllSavedVars"][playerName .. "-" .. realmName][id][profileID]
+				end
+				DBM_GUI:CreateExportProfile(exportProfile)
+			end)
+			exportProfile:SetPoint("TOPLEFT", 12, -20)
+			local importProfile = importExportProfilesArea:CreateButton(L.ButtonImportProfile, 120, 20, function()
+				DBM_GUI:CreateImportProfile(function(importTable)
+					local errors = {}
+					for id, table in pairs(importTable) do
+						-- Check if sound packs are missing
+						for settingName, settingValue in pairs(table) do
+							local ending = settingName:sub(-6):lower()
+							if ending == "cvoice" or ending == "wsound" then -- CVoice or SWSound (s is ignored so we only have to sub once)
+								if type(settingValue) == "string" and settingValue:lower() ~= "none" and not DBM:ValidateSound(settingValue, true) then
+									tinsert(errors, id .. "-" .. settingName)
+								end
+							end
+						end
+					end
+					-- Create popup confirming if they wish to continue (and therefor resetting to default)
+					if #errors > 0 then
+						local popup = StaticPopup_Show("IMPORTPROFILE_ERROR")
+						if popup then
+							popup.importFunc = function()
+								local modOptions = {}
+								for _, soundSetting in ipairs(errors) do
+									local modID, settingName = soundSetting:match("([^-]+)-([^-]+)")
+									if not modOptions[modID] then
+										modOptions[modID] = DBM:GetModByName(modID).DefaultOptions
+									end
+									importTable[modID][settingName] = modOptions[modID][settingName]
+								end
+								actuallyImport(importTable)
+							end
+						end
+					else
+						actuallyImport(importTable)
+					end
+				end)
+			end)
+			importProfile.myheight = 0
+			importProfile:SetPoint("LEFT", exportProfile, "RIGHT", 2, 0)
 		end
 
 		if addon.noStatistics then
@@ -525,12 +598,12 @@ do
 		end
 
 		local ptext = panel:CreateText(L.BossModLoaded:format(subtab and addon.subTabs[subtab] or addon.name), nil, nil, GameFontNormal)
-		ptext:SetPoint("TOPLEFT", panel.frame, "TOPLEFT", 10, modProfileArea and -165 or -10)
+		ptext:SetPoint("TOPLEFT", panel.frame, "TOPLEFT", 10, modProfileArea and -235 or -10)
 
 		local singleLine, doubleLine, noHeaderLine = 0, 0, 0
 		local area = panel:CreateArea()
 		area.frame.isStats = true
-		area.frame:SetPoint("TOPLEFT", 10, modProfileArea and -180 or -25)
+		area.frame:SetPoint("TOPLEFT", 10, modProfileArea and -250 or -25)
 
 		local statOrder = {
 			"lfr", "normal", "normal25", "heroic", "heroic25", "mythic", "challenge", "timewalker"
