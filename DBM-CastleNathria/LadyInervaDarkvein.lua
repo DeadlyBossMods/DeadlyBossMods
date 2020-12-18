@@ -304,7 +304,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 325936 then
 		warnSharedCognition:CombinedShow(0.3, args.destName)
 	elseif spellId == 324983 then
-		if self:AntiSpam(4, targetName.."1") then--Still announce using combat log any targets that didn't send a sync already
+		if self:AntiSpam(4, args.destName.."1") then--Still announce using combat log any targets that didn't send a sync already
 			warnSharedSuffering:CombinedShow(0.3, args.destName)
 		end
 --		if args:IsPlayer() then

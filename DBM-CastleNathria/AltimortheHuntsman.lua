@@ -340,7 +340,7 @@ function mod:UNIT_DIED(args)
 			--New timer starts
 			timerSinseekerCD:Stop()
 			timerSinseekerCD:Start(6.2, self.vb.sinSeekerCount+1)
-		--end
+		end
 	end
 end
 
