@@ -33,6 +33,7 @@ L.Button_LoadMod 			= "載入模組"
 L.Mod_Enabled				= "啟用首領模組"
 L.Mod_Reset					= "讀取預設值"
 L.Reset 					= "重置"
+L.Import					= "匯入"
 
 L.Enable  					= "啟用"
 L.Disable					= "停用"
@@ -134,6 +135,11 @@ L.SelectModProfileCopy		= "複製所有設定"
 L.SelectModProfileCopySound	= "只複製音效設定"
 L.SelectModProfileCopyNote	= "只複製註記設定"
 L.SelectModProfileDelete	= "刪除模組設定"
+
+L.Area_ImportExportProfile	= "匯入/匯出 設定檔"
+L.ImportExportInfo			= "匯入會覆寫您當前的設定檔，後果請自負。"
+L.ButtonImportProfile		= "匯入設定檔"
+L.ButtonExportProfile		= "匯出設定檔"
 
 -- Tab: Alerts
 L.TabCategory_Alerts	 	= "警告"
