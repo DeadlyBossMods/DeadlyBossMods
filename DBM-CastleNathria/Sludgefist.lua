@@ -32,10 +32,10 @@ mod:RegisterEventsInCombat(
  or ability.id = 346269 or ability.id = 331314
  or (ability.id = 342420 or ability.id = 340817) and type = "applydebuff"
 --]]
-local warnHatefulGaze							= mod:NewTargetNoFilterAnnounce(331209, 4)
+local warnHatefulGaze							= mod:NewTargetCountAnnounce(331209, 4, nil, nil, nil, nil, nil, nil, true)
 local warnStunnedImpact							= mod:NewTargetNoFilterAnnounce(331314, 1)
 --local warnChainLink								= mod:NewTargetAnnounce(342419, 3)--Targetting debuff
-local warnChainSlam								= mod:NewTargetNoFilterAnnounce(335470, 3)
+local warnChainSlam								= mod:NewTargetCountAnnounce(335470, 3, nil, nil, nil, nil, nil, nil, true)
 local warnGruesomeRage							= mod:NewTargetNoFilterAnnounce(341250, 4)
 
 local specWarnHatefulGaze						= mod:NewSpecialWarningMoveTo(331209, nil, nil, nil, 3, 2)
@@ -172,7 +172,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			specWarnHeedlessCharge:Show()
 			specWarnHeedlessCharge:Play("farfromline")
-			warnHatefulGaze:Show(args.destName)
+			warnHatefulGaze:Show(self.vb.gazeCount, args.destName)
 		end
 		if self.Options.SetIconGaze then
 			self:SetIcon(args.destName, 1)
@@ -232,7 +232,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnChainSlamPartner:Show(args.destName)
 			specWarnChainSlamPartner:Play("gathershare")
 		else
-			warnChainSlam:Show(args.destName)
+			warnChainSlam:Show(self.vb.chainSlamCount, args.destName)
 		end
 	elseif spellId == 341250 then
 		warnGruesomeRage:Show(args.destName)
