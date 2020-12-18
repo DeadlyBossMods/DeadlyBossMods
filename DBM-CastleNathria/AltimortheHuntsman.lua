@@ -328,14 +328,15 @@ function mod:UNIT_DIED(args)
 		warnPhase:Play("pfour")
 		if self:IsMythic() then--TODO, this still needs review
 			--Timer is decreased from 50 to 40, INCLUDING existing timer, but only on mythic?
-			local elapsed, total = timerSinseekerCD:GetTime(self.vb.sinSeekerCount+1)
+			--[[local elapsed, total = timerSinseekerCD:GetTime(self.vb.sinSeekerCount+1)
 			local remaining = total-elapsed
 			if remaining > 10 then
 				timerSinseekerCD:Update(elapsed, total-10, self.vb.sinSeekerCount+1)
 			else
 				timerSinseekerCD:Stop()
-			end
-		else
+			end--]]
+			timerSinseekerCD:Stop()--Bugged on mythic, boss just stops using it
+		else--]]
 			--New timer starts
 			timerSinseekerCD:Stop()
 			timerSinseekerCD:Start(6.2, self.vb.sinSeekerCount+1)
