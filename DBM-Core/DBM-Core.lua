@@ -71,7 +71,7 @@ end
 
 DBM = {
 	Revision = parseCurseDate("@project-date-integer@"),
-	DisplayVersion = "9.0.11", -- the string that is shown as version
+	DisplayVersion = "9.0.12 alpha", -- the string that is shown as version
 	ReleaseRevision = releaseDate(2020, 12, 17) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 }
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
@@ -200,7 +200,6 @@ DBM.DefaultOptions = {
 	HideObjectivesFrame = true,
 	HideGarrisonToasts = true,
 	HideGuildChallengeUpdates = true,
-	HideQuestTooltips = true,
 	HideTooltips = false,
 	DisableSFX = false,
 	EnableModels = true,
@@ -6187,7 +6186,6 @@ do
 				end
 				if self.Options.DisableSFX and GetCVar("Sound_EnableSFX") == "1" then
 					SetCVar("Sound_EnableSFX", 0)
-					self.Options.RestoreSettingSFX = true
 				end
 				--boss health info scheduler
 				if mod.CustomHealthUpdate then
@@ -6622,9 +6620,8 @@ do
 					tooltipsHidden = false
 					GameTooltip:SetScript("OnShow", GameTooltip.Show)
 				end
-				if self.Options.RestoreSettingSFX then
+				if self.Options.DisableSFX then
 					SetCVar("Sound_EnableSFX", 1)
-					self.Options.RestoreSettingSFX = nil
 				end
 				--cache table
 				twipe(autoRespondSpam)
@@ -6849,7 +6846,7 @@ do
 		LSMMediaCacheBuilt = true
 	end
 
-	function DBM:ValidateSound(path, log)
+	function DBM:ValidateSound(path, log, ignoreCustom)
 		-- Validate LibSharedMedia
 		if not LSMMediaCacheBuilt then
 			buildLSMFileCache()
@@ -6864,17 +6861,21 @@ do
 		-- Validate audio packs
 		if not validateCache[path] then
 			local splitTable = {}
-			for split in string.gmatch(path, "[^\\]+") do
+			for split in string.gmatch(path, "[^\\/]+") do -- Matches \ and / as path delimiters (incl. more than one)
 				tinsert(splitTable, split)
 			end
-			if splitTable[1] == "Interface" and splitTable[2] == "AddOns" then -- We're an addon sound
+			if #splitTable >= 3 and splitTable[1]:lower() == "interface" and splitTable[2]:lower() == "addons" and (not ignoreCustom or splitTable[3]:lower() == "dbm-customsounds") then -- We're an addon sound
 				validateCache[path] = {
 					exists = IsAddOnLoaded(splitTable[3]),
 					AddOn = splitTable[3]
 				}
+			else
+				validateCache[path] = {
+					exists = true
+				}
 			end
 		end
-		if validateCache[path].exists == false then
+		if validateCache[path] and not validateCache[path].exists then
 			if log then
 				-- This uses actual user print because these events only occure at start or end of instance or fight.
 				AddMsg(self, "PlaySoundFile failed do to missing media at " .. path .. ". To fix this, re-add/enable " .. validateCache[path].AddOn .. " or change setting using this sound to a different sound.")
@@ -6900,7 +6901,7 @@ do
 			end
 			fireEvent("DBM_PlaySound", path)
 		else
-			if validate and not self:ValidateSound(path, true) then
+			if validate and not self:ValidateSound(path, true, true) then
 				return
 			end
 			self:Debug("PlaySoundFile playing with media " .. path, 3)
@@ -7199,15 +7200,9 @@ do
 			end
 		end
 		--Check if any previous changed cvars were not restored and restore them
-		if self.Options.RestoreSettingSFX then
+		if 	self.Options.DisableSFX then
 			SetCVar("Sound_EnableSFX", 1)
-			self.Options.RestoreSettingSFX = nil
 			self:Debug("Restoring Sound_EnableSFX CVAR")
-		end
-		if self.Options.RestoreSettingQuestTooltips then
-			SetCVar("showQuestTrackingTooltips", self.Options.RestoreSettingQuestTooltips)
-			self.Options.RestoreSettingQuestTooltips = nil
-			self:Debug("Restoring showQuestTrackingTooltips CVAR")
 		end
 		--RestoreSettingMusic doens't need restoring here, since zone change transition will handle it
 	end
@@ -7350,14 +7345,6 @@ do
 	end
 	function DBM:HideBlizzardEvents(toggle, custom)
 		if toggle == 1 then
-			if self.Options.HideQuestTooltips then
-				self.Options.RestoreSettingQuestTooltips = tonumber(GetCVar("showQuestTrackingTooltips")) or 1
-				if self.Options.RestoreSettingQuestTooltips == 1 then
-					SetCVar("showQuestTrackingTooltips", 0)
-				else
-					self.Options.RestoreSettingQuestTooltips = nil--Don't actually need it
-				end
-			end
 			if (self.Options.HideBossEmoteFrame2 or custom) and not testBuild then
 				DisableEvent(RaidBossEmoteFrame, "RAID_BOSS_EMOTE")
 				DisableEvent(RaidBossEmoteFrame, "RAID_BOSS_WHISPER")
@@ -7372,11 +7359,6 @@ do
 				DisableEvent(AlertFrame, "GUILD_CHALLENGE_COMPLETED")
 			end
 		elseif toggle == 0 then
-			if self.Options.RestoreSettingQuestTooltips then
-				SetCVar("showQuestTrackingTooltips", self.Options.RestoreSettingQuestTooltips)
-				self.Options.RestoreSettingQuestTooltips = nil
-				self:Debug("Restoring Quest Tooltip CVAR")
-			end
 			if (self.Options.HideBossEmoteFrame2 or custom) and not testBuild then
 				EnableEvent(RaidBossEmoteFrame, "RAID_BOSS_EMOTE")
 				EnableEvent(RaidBossEmoteFrame, "RAID_BOSS_WHISPER")
@@ -11072,6 +11054,21 @@ do
 					playCountdown(id, bar.timer, bar.countdown, bar.countdownMax)--timerId, timer, voice, count
 					DBM:Debug("Re-enabling a countdown on bar ID: "..id.." after a SetSTFade disable call")
 				end
+			end
+		end
+	end
+
+	function timerPrototype:SetSTKeep(keepOn, ...)
+		local id = self.id..pformat((("\t%s"):rep(select("#", ...))), ...)
+		local bar = DBM.Bars:GetBar(id)
+		if bar then
+			if keepOn and not bar.keep then
+				bar.keep = true--Set bar object metatable, which is copied from timer metatable at bar start only
+				bar:ApplyStyle()
+			elseif not keepOn and bar.keep then
+				fireEvent("DBM_TimerFadeUpdate", id, self.spellId, self.mod.id, nil)
+				bar.keep = false
+				bar:ApplyStyle()
 			end
 		end
 	end
