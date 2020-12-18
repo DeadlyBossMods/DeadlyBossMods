@@ -6859,33 +6859,27 @@ do
 			return false
 		end
 		-- Validate audio packs
---[[	if not validateCache[path] then
+		if not validateCache[path] then
 			local splitTable = {}
-			for split in string.gmatch(path, "[^\\]+") do
+			for split in string.gmatch(path, "[^\\/]+") do -- Matches \ and / as path delimiters (incl. more than one)
 				tinsert(splitTable, split)
 			end
-			if splitTable[1] == "Interface" and splitTable[2] == "AddOns" then -- We're an addon sound
+			if #splitTable >= 3 and splitTable[1]:lower() == "interface" and splitTable[2]:lower() == "addons" then -- We're an addon sound
 				validateCache[path] = {
 					exists = IsAddOnLoaded(splitTable[3]),
 					AddOn = splitTable[3]
 				}
+			else
+				validateCache[path] = {
+					exists = true
+				}
 			end
 		end
-		if validateCache[path].exists == false then
+		if validateCache[path] and not validateCache[path].exists then
 			if log then
 				-- This uses actual user print because these events only occure at start or end of instance or fight.
 				AddMsg(self, "PlaySoundFile failed do to missing media at " .. path .. ". To fix this, re-add/enable " .. validateCache[path].AddOn .. " or change setting using this sound to a different sound.")
 			end
-			return false
-		end--]]
-		if not _G["DBMVPSoundEventsPack"] and path:find("DBM-SoundEventsPack") then
-			--This uses actual user print because these events only occure at start or end of instance or fight.
-			AddMsg(self, "PlaySoundFile failed do to missing media at "..path..". To fix this, re-add/enable DBM-SoundEventsPack or change setting using this sound to a different sound.")
-			return false
-		end
-		if not _G["DBMVPSMGPack"] and path:find("DBM-SMGEventsPack") then
-			--This uses actual user print because these events only occure at start or end of instance or fight.
-			AddMsg(self, "PlaySoundFile failed do to missing media at "..path..". To fix this, re-add/enable DBM-SMGEventsPack or change setting using this sound to a different sound.")
 			return false
 		end
 		return true
