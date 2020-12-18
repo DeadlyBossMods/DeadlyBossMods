@@ -6867,7 +6867,7 @@ do
 			for split in string.gmatch(path, "[^\\/]+") do -- Matches \ and / as path delimiters (incl. more than one)
 				tinsert(splitTable, split)
 			end
-			if #splitTable >= 3 and splitTable[1] == "Interface" and splitTable[2] == "AddOns" then -- We're an addon sound
+			if #splitTable >= 3 and splitTable[1]:lower() == "interface" and splitTable[2]:lower() == "addons" then -- We're an addon sound
 				validateCache[path] = {
 					exists = IsAddOnLoaded(splitTable[3]),
 					AddOn = splitTable[3]
