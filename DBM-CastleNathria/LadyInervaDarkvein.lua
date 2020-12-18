@@ -19,12 +19,12 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_REMOVED 340452 332664 324983 339525 340477",
 	"SPELL_PERIODIC_DAMAGE 325713",
 	"SPELL_PERIODIC_MISSED 325713",
+	"RAID_BOSS_WHISPER",
 --	"UNIT_DIED"
 	"UNIT_SPELLCAST_SUCCEEDED boss1",
 	"UPDATE_UI_WIDGET"
 )
 
---TODO, also figure out optimized tank swap priority
 --TODO, add pre debuff if blizz adds it for shared suffering
 --TODO, rework timers further since they are still hardly that accurate and blizz will no doubt change power rates again.
 --TODO, does https://shadowlands.wowhead.com/spell=331573/unconscionable-guilt need anything? doesn't say it stacks
@@ -304,12 +304,14 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 325936 then
 		warnSharedCognition:CombinedShow(0.3, args.destName)
 	elseif spellId == 324983 then
-		warnSharedSuffering:CombinedShow(0.3, args.destName)
-		if args:IsPlayer() then
-			specWarnSharedSuffering:Show()
-			specWarnSharedSuffering:Play("targetyou")
-			yellSharedSuffering:Yell()
+		if self:AntiSpam(4, targetName.."1") then--Still announce using combat log any targets that didn't send a sync already
+			warnSharedSuffering:CombinedShow(0.3, args.destName)
 		end
+--		if args:IsPlayer() then
+--			specWarnSharedSuffering:Show()
+--			specWarnSharedSuffering:Play("targetyou")
+--			yellSharedSuffering:Yell()
+--		end
 		if self.Options.SetIconOnSharedSuffering and self.vb.sufferingIcon < 4 then--Icons for this are nice, but reserve 5 of them for adds
 			self:SetIcon(args.destName, self.vb.sufferingIcon)
 		end
@@ -370,6 +372,23 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spell
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
+
+function mod:RAID_BOSS_WHISPER(msg)
+	if msg:find("324983") then
+		specWarnSharedSuffering:Show()
+		specWarnSharedSuffering:Play("targetyou")
+		yellSharedSuffering:Yell()
+	end
+end
+
+function mod:OnTranscriptorSync(msg, targetName)
+	if msg:find("324983") and targetName then
+		targetName = Ambiguate(targetName, "none")
+		if self:AntiSpam(4, targetName.."1") then
+			warnSharedSuffering:Show(targetName)
+		end
+	end
+end
 
 --TODO, maybe these scripts run, if so detecting ranks could be cleaner
 --Concentrate Anima: Rank 1 326258, Rank 2 325922, rank 3 325923

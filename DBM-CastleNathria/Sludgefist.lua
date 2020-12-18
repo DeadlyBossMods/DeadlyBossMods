@@ -5,8 +5,8 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(164407)
 mod:SetEncounterID(2399)
 mod:SetUsedIcons(1)
-mod:SetHotfixNoticeRev(20201114000000)--2020, 11, 14
-mod:SetMinSyncRevision(20201114000000)
+mod:SetHotfixNoticeRev(20201117000000)--2020, 11, 17
+mod:SetMinSyncRevision(20201117000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
@@ -42,7 +42,7 @@ local specWarnHatefulGaze						= mod:NewSpecialWarningMoveTo(331209, nil, nil, n
 local specWarnHeedlessCharge					= mod:NewSpecialWarningSoon(331212, nil, nil, nil, 2, 2)
 local yellHatefulGaze							= mod:NewShortYell(331209)
 local yellHatefulGazeFades						= mod:NewShortFadesYell(331209)
-local specWarnChainLink							= mod:NewSpecialWarningYou(335300, nil, nil, nil, 1, 2)
+local specWarnChainLink							= mod:NewSpecialWarningMoveTo(335300, nil, nil, nil, 1, 2)
 local yellChainLink								= mod:NewIconRepeatYell(335300, DBM_CORE_L.AUTO_YELL_ANNOUNCE_TEXT.shortyell, false, 2)
 local specWarnChainSlam							= mod:NewSpecialWarningYou(335470, nil, nil, nil, 1, 2)
 local specWarnChainSlamPartner					= mod:NewSpecialWarningTarget(335470, nil, nil, nil, 1, 2)
@@ -80,8 +80,8 @@ mod.vb.shiftCount = 0
 local ChainLinkTargets = {}
 local playerName = UnitName("player")
 local playerPartner = nil
-local SiesmicTimers = {18.4, 25.5, 29.3, 12.9, 25.5, 30.2, 12.6, 25.5, 30.1, 13.6}
-
+local SiesmicTimers = {18.1, 25.4, 29.3, 12.3, 25.5, 30.1, 12.6, 25.5, 30.1, 12.3, 25.4, 30.1, 13.5, 25.5, 28.8}
+--								   30.1				       13.5        31.3
 local function ChainLinkYellRepeater(self, text, runTimes)
 	yellChainLink:Yell(text)
 	runTimes = runTimes + 1
@@ -107,7 +107,7 @@ function mod:OnCombatStart(delay)
 	timerHatefulGazeCD:Start(50.1-delay, 1)
 	if self:IsMythic() then
 		self.vb.shiftCount = 0
-		timerSiesmicShiftCD:Start(18.4, 1)
+		timerSiesmicShiftCD:Start(18.1, 1)
 	end
 --	if self.Options.RangeFrame then
 --		DBM.RangeCheck:Show(4)
