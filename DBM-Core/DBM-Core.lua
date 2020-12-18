@@ -6867,10 +6867,14 @@ do
 			for split in string.gmatch(path, "[^\\]+") do
 				tinsert(splitTable, split)
 			end
-			if splitTable[1] == "Interface" and splitTable[2] == "AddOns" then -- We're an addon sound
+			if #splitTable >= 3 and splitTable[1] == "Interface" and splitTable[2] == "AddOns" then -- We're an addon sound
 				validateCache[path] = {
 					exists = IsAddOnLoaded(splitTable[3]),
 					AddOn = splitTable[3]
+				}
+			else
+				validateCache[path] = {
+					exists = true
 				}
 			end
 		end
