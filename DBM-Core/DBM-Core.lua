@@ -6864,7 +6864,7 @@ do
 		-- Validate audio packs
 		if not validateCache[path] then
 			local splitTable = {}
-			for split in string.gmatch(path, "[^\\\/]+") do -- Matches \ and / as path delimiters (incl. more than one)
+			for split in string.gmatch(path, "[^\\/]+") do -- Matches \ and / as path delimiters (incl. more than one)
 				tinsert(splitTable, split)
 			end
 			if #splitTable >= 3 and splitTable[1] == "Interface" and splitTable[2] == "AddOns" then -- We're an addon sound
