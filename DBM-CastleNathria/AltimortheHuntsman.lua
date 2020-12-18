@@ -164,7 +164,7 @@ function mod:SPELL_CAST_START(args)
 		--Mythic, Dog1: 49, Dog2: 60, Dog3: 50, dogs dead: 39.9
 		--Normal, Dog1: 50-51, Dog2: 60-61, Dog3: 50-51, dogs dead: 24.3
 
-		local timer = self:IsMythic() and (self.vb.phase == 4 and 39.9 or self.vb.phase == 2 and 60.2 or 49) or (self.vb.phase == 4 and 24.3 or 50)--self.vb.phase == 2 and 61.1 or
+		local timer = self:IsMythic() and (self.vb.phase == 4 and 39.9 or 60.2) or (self.vb.phase == 4 and 24.3 or 50)--self.vb.phase == 2 and 61.1 or
 		timerSinseekerCD:Start(timer, self.vb.sinSeekerCount+1)
 		if self.vb.phase == 3 and self:IsMythic() then
 			updateRangeFrame(self, true)--Force show during cast so it's up a little early
