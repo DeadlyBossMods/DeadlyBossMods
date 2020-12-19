@@ -49,6 +49,7 @@ localization.br.lua
 DBM-Core.lua
 
 modules\Locale.lua
+modules\Mod.lua
 
 DBM-Arrow.lua
 DBM-Flash.lua
