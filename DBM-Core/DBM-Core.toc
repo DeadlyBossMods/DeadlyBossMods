@@ -45,7 +45,11 @@ localization.tw.lua
 localization.kr.lua
 localization.es.lua
 localization.br.lua
+
 DBM-Core.lua
+
+modules\Locale.lua
+
 DBM-Arrow.lua
 DBM-Flash.lua
 DBM-RangeCheck.lua
