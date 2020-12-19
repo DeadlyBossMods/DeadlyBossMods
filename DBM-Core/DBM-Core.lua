@@ -82,12 +82,16 @@ if not DBM.Revision then
 	DBM.Revision = DBM.ReleaseRevision
 end
 
-function DBM:ShowRealDate(curseDate)
-	return showRealDate(curseDate)
+function DBM:ShowRealDate(...)
+	return showRealDate(...)
 end
 
-function DBM:ReleaseDate(year, month, day, hour, minute, second)
-	return releaseDate(year, month, day, hour, minute, second)
+function DBM:ReleaseDate(...)
+	return releaseDate(...)
+end
+
+function DBM:ParseCurseDate(...)
+	return parseCurseDate(...)
 end
 
 local wowVersionString, wowBuild, _, wowTOC = GetBuildInfo()

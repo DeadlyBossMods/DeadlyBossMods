@@ -1,7 +1,7 @@
 local DBM, L = DBM, DBM_CORE_L
 
-local	error, geterrorhandler, ipairs, pairs, select, setmetatable, strjoin, strsplit, tonumber, tostring, tostringall, type =
-		error, geterrorhandler, ipairs, pairs, select, setmetatable, strjoin, strsplit, tonumber, tostring, tostringall, type
+local	error, geterrorhandler, ipairs, pairs, select, setmetatable, strjoin, strsplit, tonumber, tostring, tostringall, type, unpack =
+		error, geterrorhandler, ipairs, pairs, select, setmetatable, strjoin, strsplit, tonumber, tostring, tostringall, type, unpack
 local	GetAchievementInfo, GetAchievementLink, GetNetStats, GetNumGroupMembers, GetNumSubgroupMembers, GetPartyAssignment, GetRaidTargetIndex, GetSpecializationInfoByID, GetSpellCooldown, GetSpellTexture, GetTime, InCombatLockdown, IsInGroup, IsInRaid, IsItemInRange, SendChatMessage, SetRaidTarget, UnitAffectingCombat, UnitCastingInfo, UnitChannelInfo, UnitClass, UnitDetailedThreatSituation, UnitExists, UnitGroupRolesAssigned, UnitGUID, UnitHealth, UnitHealthMax, UnitIsDead, UnitIsDeadOrGhost, UnitIsEnemy, UnitIsUnit, UnitIsPlayer, UnitName, UnitPlayerOrPetInRaid, UnitPower, UnitPowerMax, UnitPowerType =
 		GetAchievementInfo, GetAchievementLink, GetNetStats, GetNumGroupMembers, GetNumSubgroupMembers, GetPartyAssignment, GetRaidTargetIndex, GetSpecializationInfoByID, GetSpellCooldown, GetSpellTexture, GetTime, InCombatLockdown, IsInGroup, IsInRaid, IsItemInRange, SendChatMessage, SetRaidTarget, UnitAffectingCombat, UnitCastingInfo, UnitChannelInfo, UnitClass, UnitDetailedThreatSituation, UnitExists, UnitGroupRolesAssigned, UnitGUID, UnitHealth, UnitHealthMax, UnitIsDead, UnitIsDeadOrGhost, UnitIsEnemy, UnitIsUnit, UnitIsPlayer, UnitName, UnitPlayerOrPetInRaid, UnitPower, UnitPowerMax, UnitPowerType
 local mfloor, ssplit, ssub, tconcat, tinsert, tremove, tsort, twipe = math.floor, string.split, string.sub, table.concat, table.insert, table.remove, table.sort, table.wipe
@@ -24,25 +24,6 @@ else
 	standardFont = "Fonts\\FRIZQT__.TTF"
 end
 local RAID_CLASS_COLORS = _G["CUSTOM_CLASS_COLORS"] or RAID_CLASS_COLORS-- for Phanx' Class Colors
-
-local function releaseDate(year, month, day, hour, minute, second)
-	hour = hour or 0
-	minute = minute or 0
-	second = second or 0
-	return second + minute * 10^2 + hour * 10^4 + day * 10^6 + month * 10^8 + year * 10^10
-end
-
-local function parseCurseDate(date)
-	date = tostring(date)
-	if #date == 13 then
-		-- support for broken curse timestamps: leading 0 in hours is missing...
-		date = date:sub(1, 8) .. "0" .. date:sub(9, #date)
-	end
-	local year, month, day, hour, minute, second = tonumber(date:sub(1, 4)), tonumber(date:sub(5, 6)), tonumber(date:sub(7, 8)), tonumber(date:sub(9, 10)), tonumber(date:sub(11, 12)), tonumber(date:sub(13, 14))
-	if year and month and day and hour and minute and second then
-		return releaseDate(year, month, day, hour, minute, second)
-	end
-end
 
 local function stripServerName(cap)
 	return DBM:GetShortServerName(cap:sub(2, -2))
@@ -4580,7 +4561,7 @@ function bossModPrototype:ReceiveSync(event, sender, revision, ...)
 end
 
 function bossModPrototype:SetRevision(revision)
-	revision = parseCurseDate(revision or "")
+	revision = DBM:ParseCurseDate(revision or "")
 	if not revision or revision == "@project-date-integer@" then
 		-- bad revision: either forgot the svn keyword or using github
 		revision = DBM.Revision
@@ -4590,11 +4571,11 @@ end
 
 --Either treat it as a valid number, or a curse string that needs to be made into a valid number
 function bossModPrototype:SetMinSyncRevision(revision)
-	self.minSyncRevision = (type(revision or "") == "number") and revision or parseCurseDate(revision)
+	self.minSyncRevision = (type(revision or "") == "number") and revision or DBM:ParseCurseDate(revision)
 end
 
 function bossModPrototype:SetHotfixNoticeRev(revision)
-	self.hotfixNoticeRev = (type(revision or "") == "number") and revision or parseCurseDate(revision)
+	self.hotfixNoticeRev = (type(revision or "") == "number") and revision or DBM:ParseCurseDate(revision)
 end
 
 -----------------
