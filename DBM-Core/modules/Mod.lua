@@ -1,7 +1,10 @@
 local DBM, L = DBM, DBM_CORE_L
 
-local error, ipairs, select, setmetatable, tonumber, tostring, type = error, ipairs, select, setmetatable, tonumber, tostring, type
-local ssplit, ssub, tconcat, tinsert, tremove, tsort, twipe = string.split, string.sub, table.concat, table.insert, table.remove, table.sort, table.wipe
+local	error, geterrorhandler, ipairs, pairs, select, setmetatable, strjoin, strsplit, tonumber, tostring, tostringall, type =
+		error, geterrorhandler, ipairs, pairs, select, setmetatable, strjoin, strsplit, tonumber, tostring, tostringall, type
+local	GetAchievementInfo, GetAchievementLink, GetNetStats, GetNumGroupMembers, GetNumSubgroupMembers, GetPartyAssignment, GetRaidTargetIndex, GetSpecializationInfoByID, GetSpellCooldown, GetSpellTexture, GetTime, InCombatLockdown, IsInGroup, IsInRaid, IsItemInRange, SendChatMessage, SetRaidTarget, UnitAffectingCombat, UnitCastingInfo, UnitChannelInfo, UnitClass, UnitDetailedThreatSituation, UnitExists, UnitGroupRolesAssigned, UnitGUID, UnitHealth, UnitHealthMax, UnitIsDead, UnitIsDeadOrGhost, UnitIsEnemy, UnitIsUnit, UnitIsPlayer, UnitName, UnitPlayerOrPetInRaid, UnitPower, UnitPowerMax, UnitPowerType =
+		GetAchievementInfo, GetAchievementLink, GetNetStats, GetNumGroupMembers, GetNumSubgroupMembers, GetPartyAssignment, GetRaidTargetIndex, GetSpecializationInfoByID, GetSpellCooldown, GetSpellTexture, GetTime, InCombatLockdown, IsInGroup, IsInRaid, IsItemInRange, SendChatMessage, SetRaidTarget, UnitAffectingCombat, UnitCastingInfo, UnitChannelInfo, UnitClass, UnitDetailedThreatSituation, UnitExists, UnitGroupRolesAssigned, UnitGUID, UnitHealth, UnitHealthMax, UnitIsDead, UnitIsDeadOrGhost, UnitIsEnemy, UnitIsUnit, UnitIsPlayer, UnitName, UnitPlayerOrPetInRaid, UnitPower, UnitPowerMax, UnitPowerType
+local mfloor, ssplit, ssub, tconcat, tinsert, tremove, tsort, twipe = math.floor, string.split, string.sub, table.concat, table.insert, table.remove, table.sort, table.wipe
 local C_TimerNewTicker = C_Timer.NewTicker
 
 local playerName = UnitName("player")
@@ -20,6 +23,7 @@ elseif LOCALE_ruRU then
 else
 	standardFont = "Fonts\\FRIZQT__.TTF"
 end
+local RAID_CLASS_COLORS = _G["CUSTOM_CLASS_COLORS"] or RAID_CLASS_COLORS-- for Phanx' Class Colors
 
 local function releaseDate(year, month, day, hour, minute, second)
 	hour = hour or 0
@@ -48,7 +52,7 @@ local function scheduleRepeat(time, spellId, func, mod, self, ...)
 	--Loops until debuff is gone
 	if DBM:UnitAura("player", spellId) then--GetPlayerAuraBySpellID
 		func(...)--Probably not going to work, this is going to need to get a lot more hacky
-		DBM:Schedule(time or 2, scheduleRepeat, time, spellId, func, mod, self, ...)
+		DBM:ModSchedule(time or 2, scheduleRepeat, time, spellId, func, mod, self, ...)
 	end
 end
 
@@ -59,7 +63,7 @@ local function scheduleCountdown(time, numAnnounces, func, mod, self, ...)
 		--In event time is < numbmer of announces (ie 2 second time, with 3 announces)
 		local validTime = time - i
 		if validTime >= 1 then
-			DBM:Schedule(validTime, func, mod, self, i, ...)
+			DBM:ModSchedule(validTime, func, mod, self, i, ...)
 		end
 	end
 end
@@ -90,7 +94,7 @@ do
 	-- note: doesn't handle cases like %%%s correctly at the moment (should become %unknown, but becomes %%s)
 	-- also, the end of the format directive is not detected in all cases, but handles everything that occurs in our boss mods ;)
 	--> not suitable for general-purpose use, just for our warnings and timers (where an argument like a spell-target might be nil due to missing target information from unreliable detection methods)
-	local function replace(cap1, cap2)
+	local function replace(cap1)
 		return cap1 == "%" and L.UNKNOWN
 	end
 
@@ -103,6 +107,8 @@ end
 local bossModPrototype = {}
 
 do
+	local	EJ_GetCreatureInfo, EJ_GetEncounterInfo, GetDungeonInfo, GetRealZoneText =
+			EJ_GetCreatureInfo, EJ_GetEncounterInfo, GetDungeonInfo, GetRealZoneText
 	local modsById = setmetatable({}, {__mode = "v"})
 	local mt = {__index = bossModPrototype}
 
@@ -250,7 +256,7 @@ function bossModPrototype:SetUsedIcons(...)
 end
 
 function bossModPrototype:RegisterOnUpdateHandler(func, interval)
-	DBM.StartScheduler()
+	DBM:StartScheduler()
 	if type(func) ~= "function" then return end
 	self.elapsed = 0
 	self.updateInterval = interval or 0
@@ -1601,6 +1607,9 @@ bossModPrototype.GetBossHP = DBM.GetBossHP
 --  Announce Object  --
 -----------------------
 do
+	local CreateFrame = CreateFrame
+	local UIParent = UIParent
+
 	local frame = CreateFrame("Frame", "DBMWarning", UIParent)
 	local font1u = CreateFrame("Frame", "DBMWarning1Updater", UIParent)
 	local font2u = CreateFrame("Frame", "DBMWarning2Updater", UIParent)
@@ -1983,12 +1992,12 @@ do
 				end
 			end
 		end
-		DBM:Unschedule(self.Show, self.mod, self)
-		DBM:Schedule(delay or 0.5, self.Show, self.mod, self, ...)
+		DBM:ModUnschedule(self.Show, self.mod, self)
+		DBM:ModSchedule(delay or 0.5, self.Show, self.mod, self, ...)
 	end
 
 	function announcePrototype:Schedule(t, ...)
-		return DBM:Schedule(t, self.Show, self.mod, self, ...)
+		return DBM:ModSchedule(t, self.Show, self.mod, self, ...)
 	end
 
 	function announcePrototype:Countdown(time, numAnnounces, ...)
@@ -1996,7 +2005,7 @@ do
 	end
 
 	function announcePrototype:Cancel(...)
-		return DBM:Unschedule(self.Show, self.mod, self, ...)
+		return DBM:ModUnschedule(self.Show, self.mod, self, ...)
 	end
 
 	function announcePrototype:Play(name, customPath)
@@ -2015,19 +2024,19 @@ do
 
 	function announcePrototype:ScheduleVoice(t, ...)
 		if DBM.voiceSessionDisabled or DBM.Options.ChosenVoicePack == "None" then return end
-		DBM:Unschedule(self.Play, self.mod, self)--Allow ScheduleVoice to be used in same way as CombinedShow
-		return DBM:Schedule(t, self.Play, self.mod, self, ...)
+		DBM:ModUnschedule(self.Play, self.mod, self)--Allow ScheduleVoice to be used in same way as CombinedShow
+		return DBM:ModSchedule(t, self.Play, self.mod, self, ...)
 	end
 
 	--Object Permits scheduling voice multiple times for same object
 	function announcePrototype:ScheduleVoiceOverLap(t, ...)
 		if DBM.voiceSessionDisabled or DBM.Options.ChosenVoicePack == "None" then return end
-		return DBM:Schedule(t, self.Play, self.mod, self, ...)
+		return DBM:ModSchedule(t, self.Play, self.mod, self, ...)
 	end
 
 	function announcePrototype:CancelVoice(...)
 		if DBM.voiceSessionDisabled or DBM.Options.ChosenVoicePack == "None" then return end
-		return DBM:Unschedule(self.Play, self.mod, self, ...)
+		return DBM:ModUnschedule(self.Play, self.mod, self, ...)
 	end
 
 	-- old constructor (no auto-localize)
@@ -2299,7 +2308,7 @@ do
 	end
 
 	function yellPrototype:Schedule(t, ...)
-		return DBM:Schedule(t, self.Yell, self.mod, self, ...)
+		return DBM:ModSchedule(t, self.Yell, self.mod, self, ...)
 	end
 
 	--Standard schedule object to schedule a say/yell based on what's defined in object
@@ -2333,7 +2342,7 @@ do
 	end
 
 	function yellPrototype:Cancel(...)
-		return DBM:Unschedule(self.Yell, self.mod, self, ...)
+		return DBM:ModUnschedule(self.Yell, self.mod, self, ...)
 	end
 
 	function bossModPrototype:NewYell(...)
@@ -2381,6 +2390,9 @@ end
 --  Special Warning Object  --
 ------------------------------
 do
+	local CreateFrame = CreateFrame
+	local UIParent = UIParent
+
 	local frame = CreateFrame("Frame", "DBMSpecialWarning", UIParent)
 	local font1 = frame:CreateFontString("DBMSpecialWarning1", "OVERLAY", "ZoneTextFont")
 	font1:SetWidth(1024)
@@ -2738,17 +2750,17 @@ do
 				end
 			end
 		end
-		DBM:Unschedule(self.Show, self.mod, self)
-		DBM:Schedule(delay or 0.5, self.Show, self.mod, self, ...)
+		DBM:ModUnschedule(self.Show, self.mod, self)
+		DBM:ModSchedule(delay or 0.5, self.Show, self.mod, self, ...)
 	end
 
 	function specialWarningPrototype:DelayedShow(delay, ...)
-		DBM:Unschedule(self.Show, self.mod, self, ...)
-		DBM:Schedule(delay or 0.5, self.Show, self.mod, self, ...)
+		DBM:ModUnschedule(self.Show, self.mod, self, ...)
+		DBM:ModSchedule(delay or 0.5, self.Show, self.mod, self, ...)
 	end
 
 	function specialWarningPrototype:Schedule(t, ...)
-		return DBM:Schedule(t, self.Show, self.mod, self, ...)
+		return DBM:ModSchedule(t, self.Show, self.mod, self, ...)
 	end
 
 	function specialWarningPrototype:Countdown(time, numAnnounces, ...)
@@ -2756,7 +2768,7 @@ do
 	end
 
 	function specialWarningPrototype:Cancel(t, ...)
-		return DBM:Unschedule(self.Show, self.mod, self, ...)
+		return DBM:ModUnschedule(self.Show, self.mod, self, ...)
 	end
 
 	function specialWarningPrototype:Play(name, customPath)
@@ -2775,19 +2787,19 @@ do
 
 	function specialWarningPrototype:ScheduleVoice(t, ...)
 		if DBM.voiceSessionDisabled or DBM.Options.ChosenVoicePack == "None" then return end
-		DBM:Unschedule(self.Play, self.mod, self)--Allow ScheduleVoice to be used in same way as CombinedShow
-		return DBM:Schedule(t, self.Play, self.mod, self, ...)
+		DBM:ModUnschedule(self.Play, self.mod, self)--Allow ScheduleVoice to be used in same way as CombinedShow
+		return DBM:ModSchedule(t, self.Play, self.mod, self, ...)
 	end
 
 	--Object Permits scheduling voice multiple times for same object
 	function specialWarningPrototype:ScheduleVoiceOverLap(t, ...)
 		if DBM.voiceSessionDisabled or DBM.Options.ChosenVoicePack == "None" then return end
-		return DBM:Schedule(t, self.Play, self.mod, self, ...)
+		return DBM:ModSchedule(t, self.Play, self.mod, self, ...)
 	end
 
 	function specialWarningPrototype:CancelVoice(...)
 		if DBM.voiceSessionDisabled or DBM.Options.ChosenVoicePack == "None" then return end
-		return DBM:Unschedule(self.Play, self.mod, self, ...)
+		return DBM:ModUnschedule(self.Play, self.mod, self, ...)
 	end
 
 	function bossModPrototype:NewSpecialWarning(text, optionDefault, optionName, optionVersion, runSound, hasVoice, difficulty, texture)
@@ -3149,7 +3161,7 @@ do
 		frame:SetFrameStrata("HIGH")
 	end
 
-	function DBM:ShowTestSpecialWarning(text, number, noSound, force)
+	function DBM:ShowTestSpecialWarning(_, number, noSound, force)
 		if moving then
 			return
 		end
@@ -3209,7 +3221,7 @@ do
 		timer = timer or 10
 		count = count or 5
 		voice = voice or 1
-		if timer <= count then count = floor(timer) end
+		if timer <= count then count = mfloor(timer) end
 		if not countpath1 or not countpath2 or not countpath3 then
 			DBM:Debug("Voice cache not built at time of playCountdown. On fly caching.", 3)
 			DBM:BuildVoiceCountdownCache()
@@ -3491,17 +3503,17 @@ do
 	end
 
 	function timerPrototype:DelayedStart(delay, ...)
-		DBM:Unschedule(self.Start, self.mod, self, ...)
-		DBM:Schedule(delay or 0.5, self.Start, self.mod, self, ...)
+		DBM:ModUnschedule(self.Start, self.mod, self, ...)
+		DBM:ModSchedule(delay or 0.5, self.Start, self.mod, self, ...)
 	end
 	timerPrototype.DelayedShow = timerPrototype.DelayedStart
 
 	function timerPrototype:Schedule(t, ...)
-		return DBM:Schedule(t, self.Start, self.mod, self, ...)
+		return DBM:ModSchedule(t, self.Start, self.mod, self, ...)
 	end
 
 	function timerPrototype:Unschedule(...)
-		return DBM:Unschedule(self.Start, self.mod, self, ...)
+		return DBM:ModUnschedule(self.Start, self.mod, self, ...)
 	end
 
 	--TODO, figure out why this function doesn't properly stop count timers when calling stop without count on count timers
@@ -4589,11 +4601,11 @@ end
 --  Scheduler  --
 -----------------
 function bossModPrototype:Schedule(t, f, ...)
-	return DBM:Schedule(t, f, self, ...)
+	return DBM:ModSchedule(t, f, self, ...)
 end
 
 function bossModPrototype:Unschedule(f, ...)
-	return DBM:Unschedule(f, self, ...)
+	return DBM:ModUnschedule(f, self, ...)
 end
 
 function bossModPrototype:ScheduleMethod(t, method, ...)
@@ -4816,11 +4828,13 @@ do
 		return false
 	end
 
-	local mobUids = {"mouseover", "target", "boss1", "boss2", "boss3", "boss4", "boss5",
+	local mobUids = {
+		"mouseover", "target", "boss1", "boss2", "boss3", "boss4", "boss5",
 		"nameplate1", "nameplate2", "nameplate3", "nameplate4", "nameplate5", "nameplate6", "nameplate7", "nameplate8", "nameplate9", "nameplate10",
 		"nameplate11", "nameplate12", "nameplate13", "nameplate14", "nameplate15", "nameplate16", "nameplate17", "nameplate18", "nameplate19", "nameplate20",
 		"nameplate21", "nameplate22", "nameplate23", "nameplate24", "nameplate25", "nameplate26", "nameplate27", "nameplate28", "nameplate29", "nameplate30",
-		"nameplate31", "nameplate32", "nameplate33", "nameplate34", "nameplate35", "nameplate36", "nameplate37", "nameplate38", "nameplate39", "nameplate40"}
+		"nameplate31", "nameplate32", "nameplate33", "nameplate34", "nameplate35", "nameplate36", "nameplate37", "nameplate38", "nameplate39", "nameplate40"
+	}
 	function bossModPrototype:ScanForMobs(creatureID, iconSetMethod, mobIcon, maxIcon, scanInterval, scanningTime, optionName, isFriendly, secondCreatureID, skipMarked)
 		if not optionName then optionName = self.findFastestComputer[1] end
 		if DBM.canSetIcons[optionName] then

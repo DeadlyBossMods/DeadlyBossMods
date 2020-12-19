@@ -386,7 +386,6 @@ DBM_OPTION_SPACER = newproxy(false)
 --------------
 --  Locals  --
 --------------
-local bossModPrototype = {}
 local usedProfile = "Default"
 local dbmIsEnabled = true
 local lastCombatStarted = GetTime()
@@ -404,10 +403,8 @@ local chatPrefixShort = "<DBM> "
 --local ver = ("%s (%s)"):format(DBM.DisplayVersion, tostring(DBM.Revision))
 local mainFrame = CreateFrame("Frame", "DBMMainFrame")
 local newerVersionPerson = {}
-local newerRevisionPerson = {}
 local combatInitialized = false
 local healthCombatInitialized = false
-local pformat
 local schedulerFrame = CreateFrame("Frame", "DBMScheduler")
 schedulerFrame:Hide()
 local schedule
@@ -546,8 +543,8 @@ local IsInRaid, IsInGroup, IsInInstance = IsInRaid, IsInGroup, IsInInstance
 local UnitAffectingCombat, InCombatLockdown, IsFalling, IsEncounterInProgress, UnitPlayerOrPetInRaid, UnitPlayerOrPetInParty = UnitAffectingCombat, InCombatLockdown, IsFalling, IsEncounterInProgress, UnitPlayerOrPetInRaid, UnitPlayerOrPetInParty
 local UnitGUID, UnitHealth, UnitHealthMax, UnitBuff, UnitDebuff, UnitAura = UnitGUID, UnitHealth, UnitHealthMax, UnitBuff, UnitDebuff, UnitAura
 local UnitExists, UnitIsDead, UnitIsFriend, UnitIsUnit = UnitExists, UnitIsDead, UnitIsFriend, UnitIsUnit
-local GetSpellInfo, GetDungeonInfo, GetSpellTexture, GetSpellCooldown = GetSpellInfo, GetDungeonInfo, GetSpellTexture, GetSpellCooldown
-local EJ_GetEncounterInfo, EJ_GetCreatureInfo = EJ_GetEncounterInfo, EJ_GetCreatureInfo
+local GetSpellInfo, GetDungeonInfo = GetSpellInfo, GetDungeonInfo
+local EJ_GetEncounterInfo = EJ_GetEncounterInfo
 local EJ_GetSectionInfo, GetSectionIconFlags
 if C_EncounterJournal then
 	EJ_GetSectionInfo, GetSectionIconFlags = C_EncounterJournal.GetSectionInfo, C_EncounterJournal.GetSectionIconFlags
@@ -781,7 +778,6 @@ local function sendWhisper(target, msg)
 		return true
 	end
 end
-local BNSendWhisper = sendWhisper
 
 --------------
 --  Events  --
@@ -1923,6 +1919,14 @@ do
 	end
 end
 
+function DBM:ModSchedule(...)
+	return schedule(...)
+end
+
+function DBM:ModUnschedule(...)
+	return unschedule(...)
+end
+
 function DBM:Schedule(t, f, ...)
 	if type(f) ~= "function" then
 		error("usage: DBM:Schedule(time, func, [args...])", 2)
@@ -2860,7 +2864,7 @@ end
 ----------------------
 do
 	--Old LDB Functions
-	local frame = CreateFrame("Frame", "DBMLDBFrame")
+	CreateFrame("Frame", "DBMLDBFrame")
 
 	--New LDB Object
 	if LibStub("LibDataBroker-1.1", true) then
