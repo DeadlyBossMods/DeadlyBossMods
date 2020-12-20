@@ -71,7 +71,11 @@ L:SetOptionLocalization({
 ---------------------------
 --  Stoneborne Generals --
 ---------------------------
---L= DBM:GetModLocalization(2425)
+L= DBM:GetModLocalization(2425)
+
+L:SetOptionLocalization({
+	ExperimentalTimerCorrection	= "다른 스킬에 의해 대기중인 스킬의 타이머를 자동으로 조정"
+})
 
 ---------------------------
 --  Sire Denathrius --
