@@ -562,7 +562,7 @@ do
 						for settingName, settingValue in pairs(table) do
 							local ending = settingName:sub(-6):lower()
 							if ending == "cvoice" or ending == "wsound" then -- CVoice or SWSound (s is ignored so we only have to sub once)
-								if type(settingValue) == "string" and settingValue:lower() ~= "none" and not DBM:ValidateSound(settingValue, true) then
+								if type(settingValue) == "string" and settingValue:lower() ~= "none" and not DBM:ValidateSound(settingValue, true, true) then
 									tinsert(errors, id .. "-" .. settingName)
 								end
 							end

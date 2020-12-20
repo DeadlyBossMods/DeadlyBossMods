@@ -152,7 +152,7 @@ function frame:DisplayFrame(frame)
 		if not bossPreview then
 			bossPreview = CreateFrame("PlayerModel", "DBM_BossPreview", _G["DBM_GUI_OptionsFramePanelContainer"])
 			bossPreview:SetPoint("BOTTOMRIGHT", "DBM_GUI_OptionsFramePanelContainer", "BOTTOMRIGHT", -5, 5)
-			bossPreview:SetSize(300, 230)
+			bossPreview:SetSize(300, 300)
 			bossPreview:SetPortraitZoom(0.4)
 			bossPreview:SetRotation(0)
 			bossPreview:SetClampRectInsets(0, 0, 24, 0)

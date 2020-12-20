@@ -23,7 +23,7 @@ ability.id = 324205 and type = "begincast"
  --]]
 --local warnBlackPowder				= mod:NewTargetAnnounce(257314, 4)
 
-local specWarnDarkStride			= mod:NewSpecialWarningTaunt(324148, nil, nil, nil, 1, 2)
+--local specWarnDarkStride			= mod:NewSpecialWarningTaunt(324148, nil, nil, nil, 1, 2)
 local specWarnBlindingFlash			= mod:NewSpecialWarningDodge(324205, nil, nil, nil, 2, 2)
 local specWarnRecharge				= mod:NewSpecialWarningDodge(334485, nil, nil, nil, 2, 2)
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(257274, nil, nil, nil, 1, 8)
@@ -50,8 +50,8 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 324148 then
-		specWarnDarkStride:Show(args.destName or "Unknown")
-		specWarnDarkStride:Play("tauntboss")
+--		specWarnDarkStride:Show(args.destName or "Unknown")
+--		specWarnDarkStride:Play("tauntboss")
 		timerDarkStrideCD:Start()
 	end
 end

@@ -65,6 +65,7 @@ local specWarnGTFO								= mod:NewSpecialWarningGTFO(346945, nil, nil, nil, 1, 
 --Castellan Niklaus
 local specWarnDualistsRiposte					= mod:NewSpecialWarningStack(346690, nil, 2, nil, nil, 1, 2)
 local specWarnDualistsRiposteTaunt				= mod:NewSpecialWarningTaunt(346690, nil, nil, nil, 1, 2)
+local specWarnDutifulAttendant					= mod:NewSpecialWarningSwitch(346698, "Dps", nil, nil, 1, 2)
 local specWarnFixate							= mod:NewSpecialWarningRun(330967, nil, nil, nil, 4, 2)--Two bosses dead
 ----Mythic
 --local specWarnMindFlay						= mod:NewSpecialWarningInterrupt(310552, "HasInterrupt", nil, nil, 1, 2)
@@ -75,6 +76,7 @@ local specWarnEvasiveLunge						= mod:NewSpecialWarningDodge(327497, nil, 219588
 local specWarnDarkRecital						= mod:NewSpecialWarningMoveTo(331634, nil, nil, nil, 1, 2)--One boss dead
 local yellDarkRecitalRepeater					= mod:NewIconRepeatYell(331634, DBM_CORE_L.AUTO_YELL_ANNOUNCE_TEXT.shortyell)--One boss dead
 local specWarnWaltzofBlood						= mod:NewSpecialWarningDodge(327616, nil, nil, nil, 2, 2)
+local specWarnDancingFools						= mod:NewSpecialWarningSwitch(330964, "Dps", nil, nil, 1, 2)
 --Intermission
 local specWarnDanseMacabre						= mod:NewSpecialWarningSpell(328495, nil, nil, nil, 3, 2)
 local yellDancingFever							= mod:NewYell(347350, nil, false)--Off by default do to potential to spam when spread, going to dry run nameplate auras for this
@@ -492,7 +494,12 @@ function mod:SPELL_CAST_START(args)
 		warnSintouchedBlade:Show(count)--addnumber.."-"..
 --		timerSintouchedBladeCD:Start(12.1, count+1, args.sourceGUID)
 	elseif spellId == 346698 then
-		warnDutifulAttendant:Show()
+		if self.Options.SpecWarn346698switch then
+			specWarnDutifulAttendant:Show()
+			specWarnDutifulAttendant:Play("killmob")
+		else
+			warnDutifulAttendant:Show()
+		end
 		if args:GetSrcCreatureID() == 166971 then--Main boss
 			local timer = allTimers[difficultyName][spellId][self.vb.phase]
 			if timer then
@@ -827,7 +834,12 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 346826 then--Dancing Fools
-		warnDancingFools:Show()
+		if self.Options.SpecWarn330964switch then
+			specWarnDancingFools:Show()
+			specWarnDancingFools:Play("killmob")
+		else
+			warnDancingFools:Show()
+		end
 		local timer = allTimers[difficultyName][spellId][self.vb.phase]
 		if timer then
 			timerDancingFoolsCD:Start(timer)

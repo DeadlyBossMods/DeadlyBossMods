@@ -28,7 +28,7 @@ local warnThrowCleaver						= mod:NewCastAnnounce(323496, 2)
 --local specWarnGTFO						= mod:NewSpecialWarningGTFO(257274, nil, nil, nil, 1, 8)
 --Notable Blightbone Trash
 local specWarnClingingDarkness				= mod:NewSpecialWarningDispel(323347, false, nil, nil, 1, 2)--Opt it for now, since dispel timing is less black and white
-local specWarnDrainFluids					= mod:NewSpecialWarningInterrupt(334748, "HasInterrupt", nil, nil, 1, 2)
+local specWarnDrainFluids					= mod:NewSpecialWarningInterrupt(334748, false, nil, 2, 1, 2)--Based on feedback. it's too spammy to be on by default
 --Notable Amarth Trash
 local specWarnNecroticBolt					= mod:NewSpecialWarningInterrupt(320462, "HasInterrupt", nil, nil, 1, 2)
 local specWarnRaspingScream					= mod:NewSpecialWarningInterrupt(324293, "HasInterrupt", nil, nil, 1, 2)

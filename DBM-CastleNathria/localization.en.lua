@@ -66,7 +66,11 @@ L:SetOptionLocalization({
 ---------------------------
 --  Stoneborne Generals --
 ---------------------------
---L= DBM:GetModLocalization(2425)
+L= DBM:GetModLocalization(2425)
+
+L:SetOptionLocalization({
+	ExperimentalTimerCorrection	= "Automatically adjust timers when abilities get spell queued by other abilities"
+})
 
 ---------------------------
 --  Sire Denathrius --
