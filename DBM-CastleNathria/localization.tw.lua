@@ -67,7 +67,11 @@ L:SetOptionLocalization({
 ---------------------------
 --  Stoneborne Generals --
 ---------------------------
---L= DBM:GetModLocalization(2425)
+L= DBM:GetModLocalization(2425)
+
+L:SetOptionLocalization({
+	ExperimentalTimerCorrection	= "在其他技能將法術排入佇列時自動調整計時器"
+})
 
 ---------------------------
 --  Sire Denathrius --
@@ -75,7 +79,7 @@ L:SetOptionLocalization({
 --L= DBM:GetModLocalization(2424)
 
 L:SetMiscLocalization({
-	CrimsonSpawn	= "赤紅秘術師回應了戴納瑟斯的召喚。"
+	CrimsonSpawn	= "赤紅秘術師回應了戴納瑟斯的呼喚。"
 })
 
 -------------
