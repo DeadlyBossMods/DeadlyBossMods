@@ -106,7 +106,7 @@ local importProfile = importExportProfilesArea:CreateButton(L.ButtonImportProfil
 			"EventSoundWipe", "EventSoundEngage2", "EventSoundMusic", "EventSoundDungeonBGM", "RangeFrameSound1", "RangeFrameSound2"
 		}) do
 			local activeSound = importTable.DBM[soundSetting]
-			if type(activeSound) == "string" and activeSound:lower() ~= "none" and not DBM:ValidateSound(activeSound, true) then
+			if type(activeSound) == "string" and activeSound:lower() ~= "none" and not DBM:ValidateSound(activeSound, true, true) then
 				tinsert(errors, soundSetting)
 			end
 		end
