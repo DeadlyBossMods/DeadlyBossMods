@@ -5,8 +5,8 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(165066)
 mod:SetEncounterID(2418)
 mod:SetUsedIcons(1, 2, 3)
-mod:SetHotfixNoticeRev(20201216000000)--2020, 12, 16
-mod:SetMinSyncRevision(20201216000000)
+mod:SetHotfixNoticeRev(20201219000000)--2020, 12, 19
+mod:SetMinSyncRevision(20201219000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
@@ -164,7 +164,7 @@ function mod:SPELL_CAST_START(args)
 		--Mythic, Dog1: 49, Dog2: 60, Dog3: 50, dogs dead: 39.9
 		--Normal, Dog1: 50-51, Dog2: 60-61, Dog3: 50-51, dogs dead: 24.3
 
-		local timer = self:IsMythic() and (self.vb.phase == 4 and 39.9 or 60.2) or (self.vb.phase == 4 and 24.3 or 50)--self.vb.phase == 2 and 61.1 or
+		local timer = self:IsMythic() and (self.vb.phase == 4 and 25 or 60.2) or (self.vb.phase == 4 and 24.3 or 50)--self.vb.phase == 2 and 61.1 or
 		timerSinseekerCD:Start(timer, self.vb.sinSeekerCount+1)
 		if self.vb.phase == 3 and self:IsMythic() then
 			updateRangeFrame(self, true)--Force show during cast so it's up a little early
@@ -326,21 +326,9 @@ function mod:UNIT_DIED(args)
 		self.vb.phase = 4
 		warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(4))
 		warnPhase:Play("pfour")
-		if self:IsMythic() then--TODO, this still needs review
-			--Timer is decreased from 50 to 40, INCLUDING existing timer, but only on mythic?
-			--[[local elapsed, total = timerSinseekerCD:GetTime(self.vb.sinSeekerCount+1)
-			local remaining = total-elapsed
-			if remaining > 10 then
-				timerSinseekerCD:Update(elapsed, total-10, self.vb.sinSeekerCount+1)
-			else
-				timerSinseekerCD:Stop()
-			end--]]
-			timerSinseekerCD:Stop()--Bugged on mythic, boss just stops using it
-		else--]]
-			--New timer starts
-			timerSinseekerCD:Stop()
-			timerSinseekerCD:Start(6.2, self.vb.sinSeekerCount+1)
-		end
+		--New timer starts, except when it doesn't and it just casts 60 seconds after phase 3 version
+		timerSinseekerCD:Stop()
+		timerSinseekerCD:Start(6.2, self.vb.sinSeekerCount+1)
 	end
 end
 
