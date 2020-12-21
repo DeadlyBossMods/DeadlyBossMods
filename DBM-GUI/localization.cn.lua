@@ -1,8 +1,7 @@
 -- Diablohu(diablohudream@gmail.com)
 -- yleaf(yaroot@gmail.com)
 -- sunlcy@NGA
--- Mini Dragon(projecteurs@gmail.com)
--- Last update: 2020/12/07
+-- Mini Dragon <流浪者酒馆-Brilla@金色平原> 20201221
 
 if GetLocale() ~= "zhCN" then return end
 if not DBM_GUI_L then DBM_GUI_L = {} end
@@ -40,6 +39,7 @@ L.Button_LoadMod 			= "加载模块"
 L.Mod_Enabled				= "开启模块"
 L.Mod_Reset					= "恢复默认设置"
 L.Reset 					= "重置"
+L.Import					= "导入"
 
 L.Enable  					= "开启"
 L.Disable					= "关闭"
@@ -139,6 +139,11 @@ L.SelectModProfileCopy		= "复制所有选项："
 L.SelectModProfileCopySound	= "只复制声音选项："
 L.SelectModProfileCopyNote	= "只复制自定义注记："
 L.SelectModProfileDelete	= "删除 Boss 模块设置："
+
+L.Area_ImportExportProfile	= "导入导出配置"
+L.ImportExportInfo			= "导入会覆盖你当前的配置，请小心使用"
+L.ButtonImportProfile		= "导入配置"
+L.ButtonExportProfile		= "导出配置"
 
 -- Tab: Alerts
 L.TabCategory_Alerts	 	= "警报"
@@ -393,7 +398,7 @@ L.HideGarrisonUpdates		= "Boss 战斗中隐藏要塞队列完成提示"
 L.HideGuildChallengeUpdates	= "Boss 战斗中隐藏公会挑战成功信息"
 L.HideQuestTooltips			= "Boss 战斗中隐藏鼠标提示窗体中的任务进度"
 L.HideTooltips				= "Boss 战斗中完全隐藏鼠标提示窗体"
-L.DisableSFX				= "Boss 战斗中关闭音效"
+L.DisableSFX				= "Boss 战斗中关闭音效(注意：如果你开启了这个选项，即使你在战斗开始时已关闭音效，战斗接叔后音效也会被开启)"
 L.DisableCinematics			= "自动跳过游戏内过场动画"
 L.OnlyFight					= "只有在战斗中，每部动画播放了一次之后跳过"
 L.AfterFirst				= "仅第一次播放"
