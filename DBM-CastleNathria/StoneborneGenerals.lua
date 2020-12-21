@@ -6,17 +6,17 @@ mod:SetCreatureID(168112, 168113)
 mod:SetEncounterID(2417)
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
 mod:SetBossHPInfoToHighest()
-mod:SetHotfixNoticeRev(20201120000000)--2020, 11, 20
-mod:SetMinSyncRevision(20201120000000)
---mod.respawnTime = 29
+mod:SetHotfixNoticeRev(20201220000000)--2020, 12, 20
+mod:SetMinSyncRevision(20201220000000)
+mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 333387 334765 334929 334498 342544 342256 342722 332683 342425 344496",
-	"SPELL_CAST_SUCCESS 334765 334929 342732 342253 342985 339690",
+	"SPELL_CAST_SUCCESS 334765 334929 342732 342253 342985 339690 342425",
 	"SPELL_SUMMON 342255 342257 342258 342259",
-	"SPELL_AURA_APPLIED 329636 333913 334765 338156 338153 329808 333377 339690 342655 340037 343273 342425 336212",
+	"SPELL_AURA_APPLIED 329636 333913 334765 338156 338153 329808 333377 339690 342655 340037 342425 336212",
 	"SPELL_AURA_APPLIED_DOSE 333913",
 	"SPELL_AURA_REMOVED 329636 333913 334765 329808 333377 339690 340037",
 	"SPELL_AURA_REMOVED_DOSE 333913",
@@ -32,8 +32,8 @@ mod:RegisterEventsInCombat(
 --TODO, heart rend is renamed to Soul Crusher in journal, but spell data not renamed yet. Apply rename when it happens.
 --TODO, find a way to move timers for Adds to nameplate bars, otherwise they are far less useful and will only feel like spam. They'll be extremely useful on NPs though
 --[[
-(ability.id = 333387 or ability.id = 334929 or ability.id = 344496 or ability.id = 334498 or ability.id = 342544 or ability.id = 342256 or ability.id = 342425 or ability.id = 332683) and type = "begincast"
- or (ability.id = 334765 or ability.id = 339690 or ability.id = 342253) and type = "cast"
+(ability.id = 334765 or ability.id = 333387 or ability.id = 334929 or ability.id = 344496 or ability.id = 334498 or ability.id = 342544 or ability.id = 342256 or ability.id = 342425 or ability.id = 332683) and type = "begincast"
+ or (ability.id = 339690 or ability.id = 342253) and type = "cast"
  or ability.id = 329636 or ability.id = 329808 or ability.id = 342255 or ability.id = 342257 or ability.id = 342258 or ability.id = 342259
  or (target.id = 168112 or target.id = 168113 or target.id = 172858) and type = "death"
  or (ability.id = 340043 or ability.id = 332683) and type = "begincast"
@@ -44,26 +44,27 @@ local warnHardenedStoneForm						= mod:NewTargetNoFilterAnnounce(329636, 2)
 local warnHardenedStoneFormOver					= mod:NewEndAnnounce(329636, 1)
 local warnSoldiersOath							= mod:NewTargetNoFilterAnnounce(336212, 4)
 --General Kaal
-local warnWickedBlade							= mod:NewTargetNoFilterAnnounce(333376, 4)
-local warnHeartRend								= mod:NewTargetNoFilterAnnounce(334765, 4)
-local warnCallShadowForces						= mod:NewSpellAnnounce(342256, 2)
+local warnWickedBlade							= mod:NewTargetCountAnnounce(333376, 4, nil, nil, nil, nil, nil, nil, true)
+local warnHeartRend								= mod:NewTargetCountAnnounce(334765, 4, nil, "Healer", 2, nil, nil, nil, true)
+local warnCallShadowForces						= mod:NewCountAnnounce(342256, 2)
 --General Grashaal
-local warnReverberatingEruption					= mod:NewTargetNoFilterAnnounce(344496, 3)
-local warnCrystalize							= mod:NewTargetNoFilterAnnounce(339690, 2)
-local warnPulverizingMeteor						= mod:NewTargetNoFilterAnnounce(342544, 4)
+local warnReverberatingEruption					= mod:NewTargetCountAnnounce(344496, 3, nil, nil, nil, nil, nil, nil, true)
+local warnCrystalize							= mod:NewTargetCountAnnounce(339690, 2, nil, nil, nil, nil, nil, nil, true)
+local warnPulverizingMeteor						= mod:NewTargetCountAnnounce(342544, 4, nil, nil, nil, nil, nil, nil, true)
 --Adds
 local warnStoneLegionGoliath					= mod:NewSpellAnnounce("ej22764", 2, 343273)
 local warnVolatileAnimaInfusion					= mod:NewTargetNoFilterAnnounce(342655, 2, nil, false)
-local warnRavenousFeast							= mod:NewTargetNoFilterAnnounce(343273, 3)
+local warnRavenousFeast							= mod:NewTargetCountAnnounce(343273, 3, nil, nil, nil, nil, nil, nil, true)
 local warnStonewrathExhaust						= mod:NewCastAnnounce(342722, 3)
 local warnWickedSlaughter						= mod:NewTargetNoFilterAnnounce(342253, 2, nil, "Tank")--So tanks know where adds went
 local warnStonegaleEffigy						= mod:NewSpellAnnounce(342985, 3)
 
 --General Kaal
-local specWarnWickedBladeCast					= mod:NewSpecialWarningSpell(333376, false, nil, nil, 2, 2)
+local specWarnWickedBladeCast					= mod:NewSpecialWarningCount(333376, false, nil, nil, 2, 2)
 local specWarnWickedBlade						= mod:NewSpecialWarningYouPos(333376, nil, nil, nil, 1, 2)
 local yellWickedBlade							= mod:NewPosYell(333376)
 local yellWickedBladeFades						= mod:NewIconFadesYell(333376)
+local specWarnHeartRendCast						= mod:NewSpecialWarningCount(334765, false, nil, nil, 1, 2)
 local specWarnHeartRend							= mod:NewSpecialWarningYou(334765, false, nil, nil, 1, 2)
 local specWarnSerratedSwipe						= mod:NewSpecialWarningDefensive(334929, nil, nil, nil, 1, 2)
 --local specWarnLaceration						= mod:NewSpecialWarningStack(333913, nil, 3, nil, nil, 1, 6)
@@ -72,8 +73,10 @@ local specWarnSerratedSwipe						= mod:NewSpecialWarningDefensive(334929, nil, n
 local specWarnReverberatingEruption				= mod:NewSpecialWarningYou(344496, nil, 138658, nil, 1, 2)
 local yellReverberatingEruption					= mod:NewYell(344496, 138658)--Short text "Eruption"
 local yellReverberatingEruptionFades			= mod:NewFadesYell(344496, 138658)--Short text "Eruption"
+local specWarnEchoingAnnihilation				= mod:NewSpecialWarningMoveTo(344721, false, nil, nil, 1, 2, 4)--Off by default since strats may vary. Auto asigns reverb soak by remember which one you spawned
 local specWarnSeismicUpheaval					= mod:NewSpecialWarningDodge(334498, nil, nil, nil, 2, 2)
 local specWarnCrystalize						= mod:NewSpecialWarningYou(339690, nil, nil, nil, 1, 2)
+local specWarnCrystalizeTarget					= mod:NewSpecialWarningMoveTo(339690, false, nil, nil, 1, 2)
 local yellCrystalize							= mod:NewYell(339690, nil, nil, nil, "YELL")
 local yellCrystalizeFades						= mod:NewFadesYell(339690, nil, nil, nil, "YELL")
 local specWarnMeteor							= mod:NewSpecialWarningYou(342544, nil, nil, nil, 1, 2)
@@ -86,40 +89,124 @@ local specWarnShatteringBlast					= mod:NewSpecialWarningSpell(332683, nil, nil,
 
 --General Kaal
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22284))
-local timerWickedBladeCD						= mod:NewCDTimer(28.3, 333387, nil, nil, nil, 3, nil, nil, true)--28.5-44
-local timerHeartRendCD							= mod:NewCDTimer(38.9, 334765, nil, nil, nil, 3, nil, DBM_CORE_L.DEADLY_ICON)--40-52
-local timerSerratedSwipeCD						= mod:NewCDTimer(21.9, 334929, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)--13.4-18.6
-local timerCallShadowForcesCD					= mod:NewCDTimer(52, 342256, nil, nil, nil, 1, nil, DBM_CORE_L.MYTHIC_ICON)
+local timerWickedBladeCD						= mod:NewCDCountTimer(30, 333387, nil, nil, nil, 3, nil, nil, true)--30 unless ICDed
+local timerHeartRendCD							= mod:NewCDCountTimer(42.4, 334765, nil, nil, nil, 3, nil, DBM_CORE_L.DEADLY_ICON, true)--42.4 unless ICDed
+local timerSerratedSwipeCD						= mod:NewCDCountTimer(21.8, 334929, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON, true)
+local timerCallShadowForcesCD					= mod:NewCDCountTimer(52, 342256, nil, nil, nil, 1, nil, DBM_CORE_L.MYTHIC_ICON)
 --General Grashaal
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22288))
-local timerReverberatingEruptionCD				= mod:NewCDTimer(29.3, 344496, 138658, nil, nil, 3, nil, nil, true, 1, 3)--31.1-40, Short text "Eruption"
-local timerSeismicUpheavalCD					= mod:NewCDTimer(25.1, 334498, nil, nil, nil, 3, nil, nil, true)--25.1-46
-local timerCrystalizeCD							= mod:NewCDTimer(52, 339690, nil, nil, nil, 5, nil, nil, true, 2, 3)--52-60
-local timerStoneFistCD							= mod:NewCDTimer(19.1, 342425, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)--Not using keep value for now, it's not as variable as other spells (or as immortant)
+local timerReverberatingEruptionCD				= mod:NewCDCountTimer(30, 344496, 138658, nil, nil, 3, nil, nil, true, 1, 3)--Short text "Eruption"
+local timerSeismicUpheavalCD					= mod:NewCDCountTimer(25.1, 334498, nil, nil, nil, 3, nil, nil, true)
+local timerCrystalizeCD							= mod:NewCDCountTimer(55, 339690, nil, nil, nil, 5, nil, nil, true, 2, 3)--55 on mythic, 50 on non mythic
+local timerStoneFistCD							= mod:NewCDCountTimer(18, 342425, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON, true)
 --Phasing
 local timerShatteringBlast						= mod:NewCastTimer(5, 332683, nil, nil, nil, 2)
 --Adds
 mod:AddTimerLine(DBM_CORE_L.ADDS)
-local timerRavenousFeastCD						= mod:NewCDTimer(22.7, 343273, nil, nil, nil, 3)--Kind of all over the place right now 23-30)
-local timerWickedSlaughterCD					= mod:NewCDTimer(10.9, 342253, nil, "Tank", nil, 3, nil, DBM_CORE_L.MYTHIC_ICON)
+local timerRavenousFeastCD						= mod:NewCDCountTimer(18.6, 343273, nil, nil, nil, 3)--Kind of all over the place right now 23-30)
+local timerWickedSlaughterCD					= mod:NewCDTimer(8.5, 342253, nil, "Tank|Healer", nil, 3, nil, DBM_CORE_L.MYTHIC_ICON)
 
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
 --mod:AddRangeFrameOption(10, 310277)
 mod:AddInfoFrameOption(333913, true)
-mod:AddSetIconOption("SetIconOnWickedBlade", 333387, true, false, {1, 2})
-mod:AddSetIconOption("SetIconOnCrystalize", 339690, true, false, {3})
-mod:AddSetIconOption("SetIconOnEruption", 344496, true, false, {4})
-mod:AddSetIconOption("SetIconOnHeartRend", 334765, false, false, {4, 5, 6, 7})--Off by default, conflicts with two other icon options
+mod:AddSetIconOption("SetIconOnHeartRend", 334765, true, false, {1, 2, 3, 4})--On by default since it's most important mechanic to manage outside of shadow forces
+mod:AddSetIconOption("SetIconOnWickedBlade2", 333387, false, false, {1, 2})--Off by default since it conflicts with heart rend
+mod:AddSetIconOption("SetIconOnEruption2", 344496, false, false, {4})--Off by default since it conflicts with heart rend
+mod:AddSetIconOption("SetIconOnCrystalize", 339690, true, false, {5})
 mod:AddSetIconOption("SetIconOnShadowForces", 342256, true, true, {6, 7, 8})
 mod:AddNamePlateOption("NPAuraOnVolatileShell", 340037)
+mod:AddBoolOption("ExperimentalTimerCorrection", true)
 
 local playerName = UnitName("player")
 local LacerationStacks = {}
-mod.vb.HeartIcon = 4
-mod.vb.wickedBladeIcon = 1
+local castsPerGUID = {}
+local playerEruption = 0--Players eruption and the numbber that was theres
 mod.vb.phase = 1
+mod.vb.HeartIcon = 1
+mod.vb.wickedBladeIcon = 1
+mod.vb.bladeCount = 0
+mod.vb.heartCount = 0
+mod.vb.swipeCount = 0
+mod.vb.forcesCount = 0
+mod.vb.eruptionCount = 0
 mod.vb.upHeavalCount = 0
+mod.vb.crystalCount = 0
+mod.vb.fistCount = 0
+mod.vb.shieldUp = false
+
+--Seismic Upheavel triggers an 8 second ICD
+--Crystalize triggers an 8 second ICD
+--Reverberating Eruption triggers an 8 second ICD
+--Wicked blade triggers a 6 second ICD on all but swipe, which then only imposes 5
+--Heart rend triggers 2.4 second ICD
+--Stone fist triggers 3-3.5 second ICD
+--Serrated swipe triggers 2.4 second ICD
+--Shattering Blast triggers 12 second ICD first time, and 5.4 second ICD the second time
+--Exclusions:
+--1-Heart rend DC not extended by crystalize most of time
+--2-To prevent swipe from altering it's OWN CD since it's started in success and not start (where timer update is)
+--3-To prevent stone fist from altering it's OWN CD since it's started in success and not start (where timer update is)
+local function updateAllTimers(self, ICD, exclusion)
+	if not self.Options.ExperimentalTimerCorrection then return end
+	DBM:Debug("updateAllTimers running", 3)
+	exclusion = exclusion or 0
+	--All phase abilities
+	if timerCrystalizeCD:GetRemaining(self.vb.crystalCount+1) < ICD then
+		local elapsed, total = timerCrystalizeCD:GetTime(self.vb.crystalCount+1)
+		local extend = ICD - (total-elapsed)
+		DBM:Debug("timerCrystalizeCD extended by: "..extend, 2)
+		timerCrystalizeCD:Stop()
+		timerCrystalizeCD:Update(elapsed, total+extend, self.vb.crystalCount+1)
+	end
+	if timerWickedBladeCD:GetRemaining(self.vb.bladeCount+1) < ICD then
+		local elapsed, total = timerWickedBladeCD:GetTime(self.vb.bladeCount+1)
+		local extend = ICD - (total-elapsed)
+		DBM:Debug("timerWickedBladeCD extended by: "..extend, 2)
+		timerWickedBladeCD:Stop()
+		timerWickedBladeCD:Update(elapsed, total+extend, self.vb.bladeCount+1)
+	end
+	local phase = self.vb.phase
+	if phase == 1 or phase == 3 then
+		if exclusion ~= 1 and timerHeartRendCD:GetRemaining(self.vb.heartCount+1) < ICD then
+			local elapsed, total = timerHeartRendCD:GetTime(self.vb.heartCount+1)
+			local extend = ICD - (total-elapsed)
+			DBM:Debug("timerHeartRendCD extended by: "..extend, 2)
+			timerHeartRendCD:Stop()
+			timerHeartRendCD:Update(elapsed, total+extend, self.vb.heartCount+1)
+		end
+		if exclusion ~= 2 and timerSerratedSwipeCD:GetRemaining(self.vb.swipeCount+1) < ICD then
+			local elapsed, total = timerSerratedSwipeCD:GetTime(self.vb.swipeCount+1)
+			local extend = ICD - (total-elapsed) - 1--Whatever ICD is, this ability specifically is that ICD minus 1
+			DBM:Debug("timerSerratedSwipeCD extended by: "..extend, 2)
+			timerSerratedSwipeCD:Stop()
+			timerSerratedSwipeCD:Update(elapsed, total+extend, self.vb.swipeCount+1)
+		end
+	end
+	if phase == 2 or phase == 3 then
+		if timerReverberatingEruptionCD:GetRemaining(self.vb.eruptionCount+1) < ICD then
+			local elapsed, total = timerReverberatingEruptionCD:GetTime(self.vb.eruptionCount+1)
+			local extend = ICD - (total-elapsed)
+			DBM:Debug("timerReverberatingEruptionCD extended by: "..extend, 2)
+			timerReverberatingEruptionCD:Stop()
+			timerReverberatingEruptionCD:Update(elapsed, total+extend, self.vb.eruptionCount+1)
+		end
+		if not self.vb.shieldUp and timerSeismicUpheavalCD:GetRemaining(self.vb.upHeavalCount+1) < ICD then
+			local elapsed, total = timerSeismicUpheavalCD:GetTime(self.vb.upHeavalCount+1)
+			local extend = ICD - (total-elapsed)
+			DBM:Debug("timerSeismicUpheavalCD extended by: "..extend, 2)
+			timerSeismicUpheavalCD:Stop()
+			timerSeismicUpheavalCD:Update(elapsed, total+extend, self.vb.upHeavalCount+1)
+		end
+		if exclusion ~= 3 and timerStoneFistCD:GetRemaining(self.vb.fistCount+1) < ICD then
+			local elapsed, total = timerStoneFistCD:GetTime(self.vb.fistCount+1)
+			local extend = ICD - (total-elapsed)
+			DBM:Debug("timerStoneFistCD extended by: "..extend, 2)
+			timerStoneFistCD:Stop()
+			timerStoneFistCD:Update(elapsed, total+extend, self.vb.fistCount+1)
+		end
+	end
+end
 
 function mod:EruptionTarget(targetname, uId)
 	if not targetname then return end
@@ -130,9 +217,9 @@ function mod:EruptionTarget(targetname, uId)
 			yellReverberatingEruption:Yell()
 			yellReverberatingEruptionFades:Countdown(3.97)--This scan method doesn't support scanningTime, but should be about right
 		else
-			warnReverberatingEruption:Show(targetname)
+			warnReverberatingEruption:Show(self.vb.eruptionCount, targetname)
 		end
-		if self.Options.SetIconOnEruption then
+		if self.Options.SetIconOnEruption2 then
 			self:SetIcon(targetname, 4, 5)--So icon clears 1 second after blast
 		end
 	end
@@ -145,26 +232,45 @@ function mod:MeteorTarget(targetname, uId)
 		specWarnMeteor:Play("runout")
 		yellMeteor:Yell()
 	else
-		warnPulverizingMeteor:Show(targetname)
+		warnPulverizingMeteor:Show(self.vb.crystalCount, targetname)
 	end
 end
 
 function mod:OnCombatStart(delay)
 	table.wipe(LacerationStacks)
-	self.vb.HeartIcon = 4
+	table.wipe(castsPerGUID)
+	playerEruption = 0
+	self.vb.HeartIcon = 1
 	self.vb.wickedBladeIcon = 1
 	self.vb.phase = 1
+	self.vb.bladeCount = 0
+	self.vb.heartCount = 0
+	self.vb.swipeCount = 0
+	self.vb.forcesCount = 0
+	self.vb.eruptionCount = 0
 	self.vb.upHeavalCount = 0
-	--General Kaal
+	self.vb.crystalCount = 0
+	self.vb.fistCount = 0
+	self.vb.shieldUp = false
 	--Summons a goliath instantly on pull now, no timer needed for this
-	timerSerratedSwipeCD:Start(8.2-delay)--START, but next timer is started at SUCCESS
-	timerWickedBladeCD:Start(16.6-delay)
-	timerHeartRendCD:Start(30.9-delay)--SUCCESS
 	if self:IsMythic() then
-		timerCallShadowForcesCD:Start(10.5-delay)
+		--Blizz made timers more consistent on mythic, but said "screw everyone else"
+		--General Kaal
+		timerSerratedSwipeCD:Start(8.1-delay, 1)--START, but next timer is started at SUCCESS
+		timerCallShadowForcesCD:Start(10.5-delay, 1)
+		timerWickedBladeCD:Start(18-delay, 1)--16.8-21
+		timerHeartRendCD:Start(33.6-delay, 1)--START
+		--General Grashaal Air ability
+		timerCrystalizeCD:Start(32.5-delay, 1)
+	else
+		--Everyone else still gets crappy less consistent timers
+		--General Kaal
+		timerSerratedSwipeCD:Start(8.2-delay, 1)--START, but next timer is started at SUCCESS
+		timerWickedBladeCD:Start(16.6-delay, 1)--16.8-21
+		timerHeartRendCD:Start(28.9-delay, 1)--START
+		--General Grashaal Air ability
+		timerCrystalizeCD:Start(23.1-delay, 1)
 	end
-	--General Grashaal Air ability
-	timerCrystalizeCD:Start(23.1-delay)
 	if self.Options.NPAuraOnVolatileShell then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
@@ -176,6 +282,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnCombatEnd()
+	table.wipe(castsPerGUID)
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
 	end
@@ -187,68 +294,93 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 333387 then
-		specWarnWickedBladeCast:Show()
+		self.vb.bladeCount = self.vb.bladeCount + 1
+		specWarnWickedBladeCast:Show(self.vb.bladeCount)
 		specWarnWickedBladeCast:Play("specialsoon")
 		self.vb.wickedBladeIcon = 1
-		timerWickedBladeCD:Start()
+		timerWickedBladeCD:Start(nil, self.vb.bladeCount+1)
+		updateAllTimers(self, 6)
 	elseif spellId == 334765 then
-		self.vb.HeartIcon = 4
+		self.vb.HeartIcon = 1
+		self.vb.heartCount = self.vb.heartCount + 1
+		specWarnHeartRendCast:Show(self.vb.heartCount)
+		specWarnHeartRendCast:Play("specialsoon")
+		timerHeartRendCD:Start(nil, self.vb.heartCount+1)
+		updateAllTimers(self, 2.4)
 	elseif spellId == 334929 then
 		if self:IsTanking("player", nil, nil, true, args.sourceGUID) then
 			specWarnSerratedSwipe:Show()
 			specWarnSerratedSwipe:Play("defensive")
 		end
+		updateAllTimers(self, 2.4, 2)
 	elseif spellId == 344496 then
 		--"Reverberating Eruption-344496-npc:168113 = pull:252.3, 40.0, 40.0, 32.1, 40.0, Intermission/22.5, 9.6/32.1, 31.9, 28.1", -- [6]
-		timerReverberatingEruptionCD:Start()
+		self.vb.eruptionCount = self.vb.eruptionCount + 1
+		timerReverberatingEruptionCD:Start(nil, self.vb.eruptionCount+1)
+		if self:IsMythic() and playerEruption > 0 then
+			specWarnEchoingAnnihilation:Show(self:IconNumToTexture(playerEruption))
+			specWarnEchoingAnnihilation:Play("helpsoak")
+		end
+		updateAllTimers(self, 8)
 		--self:BossTargetScanner(args.sourceGUID, "EruptionTarget", 0.01, 12)
 	elseif spellId == 334498 then
 		self.vb.upHeavalCount = self.vb.upHeavalCount + 1
-		specWarnSeismicUpheaval:Show()
+		specWarnSeismicUpheaval:Show(self.vb.upHeavalCount)
 		specWarnSeismicUpheaval:Play("watchstep")
-		timerSeismicUpheavalCD:Start(25.1)--usually averages around 30-40, but yes it goes this low
+		if not self.vb.shieldUp then
+			timerSeismicUpheavalCD:Start(nil, self.vb.upHeavalCount+1)--usually averages around 30-40, but yes it goes this low as 25.1 when not spell queued to death
+		end
+		updateAllTimers(self, 8)
 	elseif spellId == 342544 then
 		self:BossTargetScanner(args.sourceGUID, "MeteorTarget", 0.05, 12)
 	elseif spellId == 342256 then
-		warnCallShadowForces:Show()
-		timerCallShadowForcesCD:Start()
+		self.vb.forcesCount = self.vb.forcesCount + 1
+		warnCallShadowForces:Show(self.vb.forcesCount)
+		if not self.vb.shieldUp then
+			timerCallShadowForcesCD:Start(nil, self.vb.forcesCount+1)
+		end
 	elseif spellId == 342722 then
 		warnStonewrathExhaust:Show()
 	elseif spellId == 332683 then
+		self.vb.shieldUp = false--Technically not accurate but it's how fight is scripted
 		specWarnShatteringBlast:Show()
 		specWarnShatteringBlast:Play("carefly")
 		timerShatteringBlast:Start()
 		--Start INCOMING boss timers here, that seems to be how it's scripted.
 		self.vb.phase = self.vb.phase + 1
 		self.vb.upHeavalCount = 0
+		self.vb.forcesCount = 0
 		if self.vb.phase == 2 then
 			--General Grashaal
 			--Boss continues timer for crystalize/combo from air phase, it doesn't start here
 			--just spell queued depending on overlap with Grashaal resuming other stuff
 			--These 3 abilities are cast in a random order.
 			--probably a bit more work to do to detect possible combos and then start one initial timer and start 2nd and 3rd after seeing what first ability is
-			timerStoneFistCD:Start(10.7)--10.7-39.4
-			timerReverberatingEruptionCD:Start(11.1)--11-23.27 (13.7)
-			timerSeismicUpheavalCD:Start(30.9)--30.9-44.3 (41.7)
+			timerStoneFistCD:Start(10.7, 1)--10.7-39.4 (11.3, 21.8, 29.6, 22.4, 12.2)
+			timerReverberatingEruptionCD:Start(11.1, 1)--11-23.27 (11.9, 14.5, 31.9, 12.9, 15.2)
+			timerSeismicUpheavalCD:Start(19.5, 1)--19.5-51.7 (19.9, 22.6, 43, 51.7, 29.8)
 			--Kael also resumes summoning adds on mythic once intermission 1 is over, but it's pretty instant
 --			if self:IsMythic() then
---				timerCallShadowForcesCD:Start(0)--0-5
+--				timerCallShadowForcesCD:Start(0, 1)--0-5
 --			end
+			updateAllTimers(self, 11.9)
 		else--Stage 3 (Both Generals at once)
+			self.vb.heartCount = 0
 			--General Kaal returning
 			--These probably need redoing
-			timerSerratedSwipeCD:Start(5.5)--START, but next timer is started at SUCCESS
-			timerHeartRendCD:Start(7.5)--SUCCESS
-			timerWickedBladeCD:Start(32.2)
+			timerSerratedSwipeCD:Start(5.3, 1)--START (could be heart first)
+			timerHeartRendCD:Start(5.3, 1)--START (could e swipe first)
+--			timerWickedBladeCD:Start(32.2, self.vb.bladeCount+1)--(41.8)
 			--Kael also resumes summing adds on mythic once intermission 2 is over
 			if self:IsMythic() then
-				timerCallShadowForcesCD:Start(8)
+				timerCallShadowForcesCD:Start(8, 1)--8-15
 			end
 			--General Grashaal
-			timerSeismicUpheavalCD:Start(8.8)--8.8-27 because why be consistent
+			timerSeismicUpheavalCD:Start(8.8, self.vb.upHeavalCount+1)--Could be even lower, as usual it's spell queued behind everything else often time
+			updateAllTimers(self, 5.3)--This may not be true on non mythic
 		end
 	elseif spellId == 342425 then
-		timerStoneFistCD:Start()
+		updateAllTimers(self, 3, 3)
 		if self:IsTanking("player", nil, nil, true, args.sourceGUID) then
 			specWarnStoneFist:Show()
 			specWarnStoneFist:Play("defensive")
@@ -258,19 +390,29 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 334765 then
-		timerHeartRendCD:Start()
-	elseif spellId == 334929 then--Boss stutter casts this often
-		timerSerratedSwipeCD:Start(20.4)--21.9 - 1.5
+	if spellId == 334929 then--Boss stutter casts this often
+		self.vb.swipeCount = self.vb.swipeCount + 1
+		timerSerratedSwipeCD:Start(20.4, self.vb.swipeCount+1)--21.9 - 1.5
 	elseif spellId == 339690 then
-		timerCrystalizeCD:Start()
+		self.vb.crystalCount = self.vb.crystalCount + 1
+		timerCrystalizeCD:Start(self:IsMythic() and 55 or 50, self.vb.crystalCount+1)
+		updateAllTimers(self, 8, 1)
 	elseif spellId == 342732 then
-		timerRavenousFeastCD:Start(18.6, args.sourceGUID)
+		if not castsPerGUID[args.sourceGUID] then
+			castsPerGUID[args.sourceGUID] = 0
+		end
+		castsPerGUID[args.sourceGUID] = castsPerGUID[args.sourceGUID] + 1
+		local count = castsPerGUID[args.sourceGUID]
+		warnRavenousFeast:Show(count, args.destName)
+		timerRavenousFeastCD:Start(18.6, count+1, args.sourceGUID)
 	elseif spellId == 342253 then
 		warnWickedSlaughter:CombinedShow(1.5, args.destName)--Needs to allow at least 1.5 to combine targets
-		timerWickedSlaughterCD:Start(10.9, args.sourceGUID)
+		timerWickedSlaughterCD:Start(8.5, args.sourceGUID)
 	elseif spellId == 342985 and self:AntiSpam(3, 3) then
 		warnStonegaleEffigy:Show()
+	elseif spellId == 342425 then
+		self.vb.fistCount = self.vb.fistCount + 1
+		timerStoneFistCD:Start(15.5, self.vb.fistCount+1)--18-2.5
 	end
 end
 
@@ -281,7 +423,7 @@ function mod:SPELL_SUMMON(args)
 		if cid == 172858 then--stone-legion-goliath
 			warnStoneLegionGoliath:Show()
 			if self:IsHard() then
-				timerRavenousFeastCD:Start(27.6, args.destGUID)
+				timerRavenousFeastCD:Start(27.6, 1, args.destGUID)
 			end
 		end
 	elseif spellId == 342257 or spellId == 342258 or spellId == 342259 then
@@ -289,13 +431,14 @@ function mod:SPELL_SUMMON(args)
 			local icon = spellId == 342257 and 8 or spellId == 342258 and 7 or 6
 			self:ScanForMobs(args.destGUID, 2, icon, 1, 0.2, 12, "SetIconOnShadowForces")
 		end
-		timerWickedSlaughterCD:Start(10.6, args.destGUID)
+		timerWickedSlaughterCD:Start(6.1, args.destGUID)
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 329636 or spellId == 329808 then--50% transition for Kaal/50% transition for Grashaal
+		self.vb.shieldUp = true
 		warnHardenedStoneForm:Show(args.destName)
 		timerCallShadowForcesCD:Stop()--The only timer that stops here is this one, rest continue on until boss leaves
 		if spellId == 329808 then--Grashaal seems to stop casting this while stoned
@@ -316,8 +459,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:SetIcon(args.destName, self.vb.HeartIcon)
 		end
 		self.vb.HeartIcon = self.vb.HeartIcon + 1
+		warnHeartRend:CombinedShow(0.3, self.vb.heartCount, args.destName)
 	elseif spellId == 333377 and self:AntiSpam(4, args.destName .. "1") then
-		warnWickedBlade:CombinedShow(0.3, args.destName)
+		warnWickedBlade:CombinedShow(0.3, self.vb.bladeCount, args.destName)
 		local icon = self.vb.wickedBladeIcon
 		if args:IsPlayer() then
 			specWarnWickedBlade:Show(self:IconNumToTexture(icon))
@@ -325,7 +469,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellWickedBlade:Yell(icon, icon, icon)
 			yellWickedBladeFades:Countdown(4, nil, icon)
 		end
-		if self.Options.SetIconOnWickedBlade then
+		if self.Options.SetIconOnWickedBlade2 then
 			self:SetIcon(args.destName, icon, 5)
 		end
 		self.vb.wickedBladeIcon = self.vb.wickedBladeIcon + 1
@@ -335,11 +479,14 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnCrystalize:Play("targetyou")
 			yellCrystalize:Yell()
 			yellCrystalizeFades:Countdown(spellId)
+		elseif self.Options.SpecWarn339690moveto and DBM:UnitDebuff("player", 333913) then
+			specWarnCrystalizeTarget:Show(args.destName)
+			specWarnCrystalizeTarget:Play("gathershare")
 		else
-			warnCrystalize:Show(args.destName)
+			warnCrystalize:Show(self.vb.crystalCount, args.destName)
 		end
 		if self.Options.SetIconOnCrystalize then
-			self:SetIcon(args.destName, 3)
+			self:SetIcon(args.destName, 5)
 		end
 	elseif spellId == 342655 then
 		warnVolatileAnimaInfusion:Show(args.destName)
@@ -351,8 +498,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.NPAuraOnVolatileShell then
 			DBM.Nameplate:Show(true, args.destGUID, spellId, nil, 4)
 		end
-	elseif spellId == 343273 then
-		warnRavenousFeast:CombinedShow(0.3, args.destName)--Combined in case it'll clobber everyone near them too
 	elseif spellId == 342425 and not args:IsPlayer() then
 		specWarnStoneFistTaunt:Show(args.destName)
 		specWarnStoneFistTaunt:Play("tauntboss")
@@ -364,23 +509,21 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
-	if spellId == 329636 then--phase 2 (Kael Departing, Grashaal landing)
+	if spellId == 329636 or spellId == 329808 then--phase 2 (Kael Departing, Grashaal landing)
 		warnHardenedStoneFormOver:Show()
-		--Stop Outgoing boss (Kael) timers here
-		timerWickedBladeCD:Stop()
-		timerHeartRendCD:Stop()
-		timerSerratedSwipeCD:Stop()
-		--Start Outgoing boss (Kael) (stuff he still casts airborn) here as well
-		timerWickedBladeCD:Start(20.3)
-	elseif spellId == 329808 then--Grashaal stone form ending.
-		warnHardenedStoneFormOver:Show()
-		--No timer action should be needed here, boss doesn't leave.
-		--Shattering started incoming bosses timers and boss already active doesn't reset timers
+		if spellId == 329636 then
+			--Stop Outgoing boss (Kael) timers here
+--			timerWickedBladeCD:Stop()
+			timerHeartRendCD:Stop()
+			timerSerratedSwipeCD:Stop()
+			--Start Outgoing boss (Kael) (stuff he still casts airborn) here as well
+--			timerWickedBladeCD:Start(20.3, self.vb.bladeCount+1)
+		end
 		--If crystalize was off CD going into this phase, the CD is reset.
 		--But if crystalize was still ticking down it's CD, it's NOT reset
-		if timerCrystalizeCD:GetRemaining() <= 0 then
+		if timerCrystalizeCD:GetRemaining(self.vb.crystalCount+1) <= 0 then
 			timerCrystalizeCD:Stop()
-			timerCrystalizeCD:Start()
+			timerCrystalizeCD:Start(self:IsMythic() and 55 or 50, self.vb.crystalCount+1)
 		end
 	elseif spellId == 333913 then
 		LacerationStacks[args.destName] = nil
@@ -421,7 +564,8 @@ function mod:RAID_BOSS_WHISPER(msg)
 		specWarnReverberatingEruption:Play("runout")
 		yellReverberatingEruption:Yell()
 		yellReverberatingEruptionFades:Countdown(3.5)--A good 0.5 sec slower
-		if self.Options.SetIconOnEruption then
+		playerEruption = self.vb.eruptionCount
+		if self.Options.SetIconOnEruption2 then
 			self:SetIcon(playerName, 4, 4.5)--So icon clears 1 second after
 		end
 	end
@@ -432,7 +576,7 @@ function mod:OnTranscriptorSync(msg, targetName)
 		targetName = Ambiguate(targetName, "none")
 		if self:AntiSpam(4, targetName.."2") then--Same antispam as RAID_BOSS_WHISPER on purpose. if player got personal warning they don't need this one
 			warnReverberatingEruption:Show(targetName)
-			if self.Options.SetIconOnEruption then
+			if self.Options.SetIconOnEruption2 then
 				self:SetIcon(targetName, 4, 4.5)--So icon clears 1 second after
 			end
 		end
@@ -442,7 +586,8 @@ end
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 172858 then--stone-legion-goliath
-		timerRavenousFeastCD:Stop(args.destGUID)
+		timerRavenousFeastCD:Stop(castsPerGUID[args.sourceGUID], args.destGUID)
+		timerRavenousFeastCD:Stop(castsPerGUID[args.sourceGUID]+1, args.destGUID)
 	elseif cid == 173280 then--stone-legion-skirmisher
 		timerWickedSlaughterCD:Stop(args.destGUID)
 	elseif cid == 168112 then--Kaal
