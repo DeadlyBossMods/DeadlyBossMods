@@ -106,7 +106,7 @@ mod:AddTimerLine(DBM_CORE_L.ADDS)
 local timerRavenousFeastCD						= mod:NewCDCountTimer(18.6, 343273, nil, nil, nil, 3)--Kind of all over the place right now 23-30)
 local timerWickedSlaughterCD					= mod:NewCDTimer(8.5, 342253, nil, "Tank|Healer", nil, 3, nil, DBM_CORE_L.MYTHIC_ICON)
 
---local berserkTimer							= mod:NewBerserkTimer(600)
+local berserkTimer								= mod:NewBerserkTimer(600)
 
 --mod:AddRangeFrameOption(10, 310277)
 mod:AddInfoFrameOption(333913, true)
@@ -262,6 +262,7 @@ function mod:OnCombatStart(delay)
 		timerHeartRendCD:Start(33.6-delay, 1)--START
 		--General Grashaal Air ability
 		timerCrystalizeCD:Start(32.5-delay, 1)
+		berserkTimer:Start(720)
 	else
 		--Everyone else still gets crappy less consistent timers
 		--General Kaal
@@ -270,6 +271,7 @@ function mod:OnCombatStart(delay)
 		timerHeartRendCD:Start(28.9-delay, 1)--START
 		--General Grashaal Air ability
 		timerCrystalizeCD:Start(23.1-delay, 1)
+		berserkTimer:Start(840)
 	end
 	if self.Options.NPAuraOnVolatileShell then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
