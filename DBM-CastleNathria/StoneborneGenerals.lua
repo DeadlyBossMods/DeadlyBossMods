@@ -52,7 +52,7 @@ local warnReverberatingEruption					= mod:NewTargetCountAnnounce(344496, 3, nil,
 local warnCrystalize							= mod:NewTargetCountAnnounce(339690, 2, nil, nil, nil, nil, nil, nil, true)
 local warnPulverizingMeteor						= mod:NewTargetCountAnnounce(342544, 4, nil, nil, nil, nil, nil, nil, true)
 --Adds
-local warnStoneLegionGoliath					= mod:NewSpellAnnounce("ej22764", 2, 343273)
+local warnStoneLegionGoliath					= mod:NewSpellAnnounce("ej22777", 2, 343273)
 local warnVolatileAnimaInfusion					= mod:NewTargetNoFilterAnnounce(342655, 2, nil, false)
 local warnRavenousFeast							= mod:NewTargetCountAnnounce(343273, 3, nil, nil, nil, nil, nil, nil, true)
 local warnStonewrathExhaust						= mod:NewCastAnnounce(342722, 3)
