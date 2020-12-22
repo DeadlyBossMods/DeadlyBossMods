@@ -753,9 +753,9 @@ function mod:SPELL_AURA_REMOVED(args)
 				timerDarkRecitalCD:RemoveTime(adjustment)
 			end
 		end
-		--if self:IsMythic() then
-		--	timerDancingFeverCD:Start(5.5)
-		--end
+		if self:IsMythic() then
+			timerDancingFeverCD:Start(5.5)
+		end
 	elseif spellId == 347350 then
 		self.vb.feversActive = self.vb.feversActive - 1
 		if args:IsPlayer() then
