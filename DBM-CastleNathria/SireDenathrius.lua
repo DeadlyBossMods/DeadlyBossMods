@@ -14,7 +14,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 326707 326851 327227 328117 329181 333932 344776 327507",
 	"SPELL_CAST_SUCCESS 327039 327796 329943 339196 330042 326005 332849 333980 329205 332619",
-	"SPELL_AURA_APPLIED 326699 338510 327039 327796 327992 329906 332585 329951 332794 329205 329181",
+	"SPELL_AURA_APPLIED 326699 338510 327039 327796 327992 329906 332585 329951 332794 329205 329181 344313",
 	"SPELL_AURA_APPLIED_DOSE 326699 329906 332585 338683 338685 338687 338689",
 	"SPELL_AURA_REMOVED 326699 338510 327039 327796 328117 329951 332794",
 	"SPELL_AURA_REMOVED_DOSE 326699",
@@ -47,6 +47,7 @@ local warnNightHunter							= mod:NewTargetNoFilterAnnounce(327796, 4)--General 
 ----Crimson Cabalist and horsemen
 local warnCrimsonCabalists						= mod:NewSpellAnnounce("ej22131", 2, 329711)
 local warnCrescendo								= mod:NewSpellAnnounce(336162, 3)
+local warnBalefulShadows						= mod:NewSpellAnnounce(344313, 3)
 ----Remornia
 local warnCarnage								= mod:NewStackAnnounce(329906, 2, nil, "Tank|Healer")
 local warnImpale								= mod:NewTargetAnnounce(329951, 2)
@@ -75,10 +76,10 @@ local specWarnMarchofthePenitent				= mod:NewSpecialWarningSpell(328117, nil, ni
 ----Crimson Cabalist and horsemen
 local specWarnCrescendo							= mod:NewSpecialWarningDodge(336162, false, nil, nil, 2, 2)
 ----Horseman
-local specWarnSinsear							= mod:NewSpecialWarningStack(338683, nil, 8, nil, nil, 1, 6, 4)
-local specWarnEvershade							= mod:NewSpecialWarningStack(338685, nil, 8, nil, nil, 1, 6, 4)
-local specWarnDuskhollow						= mod:NewSpecialWarningStack(338687, nil, 8, nil, nil, 1, 6, 4)
-local specWarnGloomveil							= mod:NewSpecialWarningStack(338689, nil, 8, nil, nil, 1, 6, 4)
+--local specWarnSinsear							= mod:NewSpecialWarningStack(338683, nil, 8, nil, nil, 1, 6, 4)
+--local specWarnEvershade							= mod:NewSpecialWarningStack(338685, nil, 8, nil, nil, 1, 6, 4)
+--local specWarnDuskhollow						= mod:NewSpecialWarningStack(338687, nil, 8, nil, nil, 1, 6, 4)
+--local specWarnGloomveil							= mod:NewSpecialWarningStack(338689, nil, 8, nil, nil, 1, 6, 4)
 local specWarnVengefulWail						= mod:NewSpecialWarningInterruptCount(344776, "HasInterrupt", nil, nil, 1, 2, 4)
 ----Remornia
 local specWarnCarnage							= mod:NewSpecialWarningStack(329906, nil, 6, nil, nil, 1, 6)
@@ -138,6 +139,7 @@ mod:AddInfoFrameOption(326699, true)
 mod:AddSetIconOption("SetIconOnNightHunter", 327796, true, false, {1, 2, 3})
 mod:AddSetIconOption("SetIconOnImpale", 329951, true, false, {1, 2, 3})
 mod:AddSetIconOption("SetIconOnFatalFinesse", 332794, true, false, {1, 2, 3})
+mod:AddSetIconOption("SetIconOnBalefulShadows", 344313, true, false, {7, 8})
 --mod:AddNamePlateOption("NPAuraOnSpiteful", 338510)
 
 mod.vb.phase = 1
@@ -151,34 +153,60 @@ mod.vb.addCount = 0
 mod.vb.shardsRemaining = 4
 mod.vb.DebuffCount = 0
 mod.vb.DebuffIcon = 1
+mod.vb.addIcon = 8
 local P3Transition = false
 local SinStacks, stage2Adds, deadAdds = {}, {}, {}
 local castsPerGUID = {}
+local difficultyName = "None"
 local Timers = {
-	[1] = {
-		--Feeding Time
-		[327039] = {20, 35, 35, 25, 35},
-		--Night Hunter
-		[327796] = {12.3, 25, 30, 28, 30, 28},
-		--Cleansing Pain (P1)
-		[326707] = {5.9, 24.4, 32.8, 25.6, 32.8, 25.5},
+	["nonmythic"] = {
+		[1] = {
+			--Feeding Time (Normal, LFR)
+			[327039] = {20, 35, 35, 25, 35},
+			--Night Hunter (Heroic)
+			[327796] = {12.3, 24.9, 30, 28, 30, 28},--Heroic
+			--Cleansing Pain (P1)
+			[326707] = {5.8, 24.4, 32.8, 24.5, 32.7, 24.3},
+		},
+		[2] = {
+			--Impale
+			[329943] = {27.5, 26, 27, 23, 32, 18, 39},
+			--Hand of Destruction P2
+			[333932] = {47.6, 40.9, 40, 57},
+			--Adds P2
+			[12345] = {9.7, 85, 55},
+		},
+		[3] = {
+			--Hand of Destruction P3
+			[333932] = {27.6, 88, 31.7, 47.5},
+			--Fatal Finesse P3
+			[332794] = {17.5, 48, 6, 21, 27, 19, 26, 21, 40},
+		}
 	},
-	[2] = {
-		--Impale
-		[329943] = {27.5, 26, 27, 23, 32, 18, 39},
-		--Hand of Destruction P2
-		[333932] = {47.6, 40.9, 40, 57},
-		--Adds P2
-		[12345] = {9.7, 85, 55},
+	["mythic"] = {
+		[1] = {
+			--Night Hunter
+			[327796] = {14, 24.9, 32.9, 24.8, 32.9, 24.9},
+			--Cleansing Pain (P1)
+			[326707] = {5.8, 24.4, 32.8, 24.5, 32.7, 24.3},
+		},
+		[2] = {
+			--Impale
+			[329943] = {27.5, 26, 27, 23, 32, 18, 39},
+			--Hand of Destruction P2
+			[333932] = {47.6, 40.9, 40, 57},
+			--Adds P2
+			[12345] = {9.7, 85, 55},
+		},
+		[3] = {
+			--Hand of Destruction P3
+			[333932] = {27.6, 88, 31.7, 47.5},
+			--Fatal Finesse P3
+			[332794] = {17.5, 48, 6, 21, 27, 19, 26, 21, 40},
+			--Cleansing Pain (P3 Mythic)
+			[326707] = {},
+		}
 	},
-	[3] = {
-		--Hand of Destruction P3
-		[333932] = {27.6, 88, 31.7, 47.5},
-		--Fatal Finesse P3
-		[332794] = {17.5, 48, 6, 21, 27, 19, 26, 21, 40},
-		--Cleansing Pain (P3 Mythic)
-		[326707] = {},
-	}
 }
 
 local updateInfoFrame
@@ -231,13 +259,21 @@ function mod:OnCombatStart(delay)
 	self.vb.DebuffCount = 0
 	self.vb.DebuffIcon = 1
 	P3Transition = false
-	timerCleansingPainCD:Start(6-delay, 1)
-	timerBloodPriceCD:Start(22.3-delay, 1)
-	timerCommandRavageCD:Start(50.5-delay, 1)
-	if self:IsHard() then
-		timerNightHunterCD:Start(12.1-delay, 1)
+	--Same on all difficulties
+	timerCleansingPainCD:Start(5.8-delay, 1)--5.8-6.3
+	timerBloodPriceCD:Start(22.3-delay, 1)--22-24
+	timerCommandRavageCD:Start(50.2-delay, 1)--50-51
+	--Where timers diverge
+	if self:IsMythic() then
+		difficultyName = "mythic"
+		timerNightHunterCD:Start(14-delay, 1)--14+
 	else
-		timerFeedingTimeCD:Start(20-delay, 1)
+		if self:IsHeroic() then
+			timerNightHunterCD:Start(12.1-delay, 1)--12+
+		else
+			timerFeedingTimeCD:Start(20-delay, 1)
+		end
+		difficultyName = "nonmythic"
 	end
 --	if self.Options.NPAuraOnSpiteful then
 --		DBM:FireEvent("BossMod_EnableHostileNameplates")
@@ -264,13 +300,21 @@ function mod:OnCombatEnd()
 --	end
 end
 
+function mod:OnTimerRecovery()
+	if self:IsMythic() then
+		difficultyName = "mythic"
+	else
+		difficultyName = "nonmythic"
+	end
+end
+
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 326707 then--Sire Cleansing Pain
 		self.vb.painCount = self.vb.painCount + 1
 		specWarnCleansingPain:Show(self.vb.painCount)
 		specWarnCleansingPain:Play("shockwave")
-		local timer = Timers[self.vb.phase][spellId][self.vb.painCount+1]
+		local timer = Timers[difficultyName][self.vb.phase][spellId][self.vb.painCount+1]
 		--Use scripted timer but if running out of script fall back to the 32/24 alternation
 		timerCleansingPainCD:Start(timer or self.vb.painCount % 2 == 0 and 32.5 or 24.4, self.vb.painCount+1)
 	elseif spellId == 326851 then
@@ -301,13 +345,17 @@ function mod:SPELL_CAST_START(args)
 		self.vb.HandCount = self.vb.HandCount + 1
 		specWarnHandofDestruction:Show()
 		specWarnHandofDestruction:Play("justrun")
-		local timer = Timers[self.vb.phase][spellId][self.vb.HandCount+1] or 41.2--Or part may not be accurate
+		local timer = Timers[difficultyName][self.vb.phase][spellId][self.vb.HandCount+1] or 41.2--Or part may not be accurate
 		if timer then
 			timerHandofDestructionCD:Start(timer, self.vb.HandCount+1)
 		end
 	elseif spellId == 344776 then
 		if not castsPerGUID[args.sourceGUID] then
 			castsPerGUID[args.sourceGUID] = 0
+			if self.Options.SetIconOnBalefulShadows and self.vb.addIcon > 3 then--Only use up to 5 icons
+				self:ScanForMobs(args.sourceGUID, 2, self.vb.addIcon, 1, 0.2, 12, "SetIconOnBalefulShadows")
+			end
+			self.vb.addIcon = self.vb.addIcon - 1
 		end
 		castsPerGUID[args.sourceGUID] = castsPerGUID[args.sourceGUID] + 1
 		local count = castsPerGUID[args.sourceGUID]
@@ -343,21 +391,21 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 327039 then
 --		self.vb.DebuffCount = self.vb.DebuffCount + 1
---		local timer = Timers[self.vb.phase][spellId][self.vb.DebuffCount+1]
+--		local timer = Timers[difficultyName][self.vb.phase][spellId][self.vb.DebuffCount+1]
 --		if timer then
 --			timerFeedingTimeCD:Start(timer, self.vb.DebuffCount+1)
 --		end
 	elseif spellId == 327796 and self:AntiSpam(5, 1) then
 		self.vb.DebuffIcon = 1
 		self.vb.DebuffCount = self.vb.DebuffCount + 1
-		local timer = Timers[self.vb.phase][spellId][self.vb.DebuffCount+1]
+		local timer = Timers[difficultyName][self.vb.phase][spellId][self.vb.DebuffCount+1]
 		if timer then
 			timerNightHunterCD:Start(timer, self.vb.DebuffCount+1)
 		end
 	elseif spellId == 329943 then
 		self.vb.DebuffIcon = 1
 		self.vb.ImpaleCount = self.vb.ImpaleCount + 1
-		local timer = Timers[self.vb.phase][spellId][self.vb.ImpaleCount+1]
+		local timer = Timers[difficultyName][self.vb.phase][spellId][self.vb.ImpaleCount+1]
 		if timer then
 			timerImpaleCD:Start(timer, self.vb.ImpaleCount+1)
 		end
@@ -457,7 +505,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if self:AntiSpam(5, 1) then--Cast event isn't in combat log, hava to use debuffs
 			self.vb.DebuffCount = self.vb.DebuffCount + 1
-			local timer = Timers[self.vb.phase][spellId][self.vb.DebuffCount+1]
+			local timer = Timers[difficultyName][self.vb.phase][spellId][self.vb.DebuffCount+1]
 			if timer then
 				timerFeedingTimeCD:Start(timer, self.vb.DebuffCount+1)
 			end
@@ -553,7 +601,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self:AntiSpam(4, 4) then
 			self.vb.DebuffIcon = 1
 			self.vb.DebuffCount = self.vb.DebuffCount + 1
-			local timer = Timers[self.vb.phase][spellId][self.vb.DebuffCount+1]
+			local timer = Timers[difficultyName][self.vb.phase][spellId][self.vb.DebuffCount+1]
 			if timer then
 				timerFatalFitnesseCD:Start(timer, self.vb.DebuffCount+1)
 			end
@@ -584,31 +632,33 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnWrackingPainTaunt:Show(args.destName)
 			specWarnWrackingPainTaunt:Play("tauntboss")
 		end
-
-	elseif spellId == 338683 then
+	elseif spellId == 344313 then
+		self.vb.addIcon = 8
+		warnBalefulShadows:Show()
+--[[	elseif spellId == 338683 then
 		local amount = args.amount or 1
 		if amount % 4 == 0 and amount >= 8 then
-			specWarnSinsear:Show(args.spellName, args.amount)
+			specWarnSinsear:Show(amount)
 			specWarnSinsear:Play("stackhigh")
 		end
 	elseif spellId == 338685 then
 		local amount = args.amount or 1
 		if amount % 4 == 0 and amount >= 8 then
-			specWarnEvershade:Show(args.spellName, args.amount)
+			specWarnEvershade:Show(amount)
 			specWarnEvershade:Play("stackhigh")
 		end
 	elseif spellId == 338687 then
 		local amount = args.amount or 1
 		if amount % 4 == 0 and amount >= 8 then
-			specWarnDuskhollow:Show(args.spellName, args.amount)
+			specWarnDuskhollow:Show(amount)
 			specWarnDuskhollow:Play("stackhigh")
 		end
 	elseif spellId == 338689 then
 		local amount = args.amount or 1
 		if amount % 4 == 0 and amount >= 8 then
-			specWarnGloomveil:Show(args.spellName, args.amount)
+			specWarnGloomveil:Show(amount)
 			specWarnGloomveil:Play("stackhigh")
-		end
+		end--]]
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -635,7 +685,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.SetIconOnNightHunter then
 			self:SetIcon(args.destName, 0)
 		end
-	elseif spellId == 328117 then--March of the Penitent
+	elseif spellId == 328117 and not self:IsInCombat() then--March of the Penitent
 		self.vb.phase = 2
 		self.vb.painCount = 0
 		self.vb.DebuffCount = 0
@@ -724,7 +774,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 330613 and self:AntiSpam(10, 10) then--Script Activating to cast Hand of Destruction
 		if not P3Transition then--We can't let a cast that slips through during Indignation screw up counts/timers
 			self.vb.HandCount = self.vb.HandCount + 1
-			local timer = Timers[self.vb.phase][333932][self.vb.HandCount+1]
+			local timer = Timers[difficultyName][self.vb.phase][333932][self.vb.HandCount+1]
 			if timer then
 				timerHandofDestructionCD:Start(timer, self.vb.HandCount+1)
 			end
@@ -745,7 +795,7 @@ function mod:OnSync(msg)
 	if msg == "CrimsonSpawn" then
 		self.vb.addCount = self.vb.addCount + 1
 		warnCrimsonCabalists:Show(self.vb.addCount)
-		local timer = Timers[self.vb.phase][12345][self.vb.addCount+1]
+		local timer = Timers[difficultyName][self.vb.phase][12345][self.vb.addCount+1]
 		if timer then
 			timerCrimsonCabalistsCD:Start(timer, self.vb.addCount+1)
 		end
