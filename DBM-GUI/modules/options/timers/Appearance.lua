@@ -233,6 +233,22 @@ local DisableBarFade = BarSetup:CreateCheckButton(L.NoBarFade, false, nil, nil, 
 DisableBarFade:SetPoint("TOPLEFT", BarHeightSlider, "BOTTOMLEFT", 0, -50)
 DisableBarFade.myheight = 50 -- Extra padding because right buttons are offset from sliders
 
+local skins = {}
+for id, skin in pairs(DBM.Bars:GetSkins()) do
+	table.insert(skins, {
+		text	= skin.name,
+		value	= id
+	})
+end
+if #skins > 1 then
+	local BarSkin = BarSetup:CreateDropdown(L.BarSkin, skins, "DBT", "Skin", function(value)
+		DBM.Bars:SetOption("Skin", value)
+		DBM.Bars:SetSkin(value)
+	end, 210)
+	BarSkin:SetPoint("TOPLEFT", DisableBarFade, "BOTTOMLEFT", -20, -10)
+	BarSkin.myheight = 45
+end
+
 local BarSetupSmall = BarSetupPanel:CreateArea(L.AreaTitle_BarSetupSmall)
 
 local smalldummybar = DBM.Bars:CreateDummyBar(nil, nil, SMALL)
