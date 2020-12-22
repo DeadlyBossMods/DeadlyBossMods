@@ -130,7 +130,7 @@ function mod:SPELL_CAST_START(args)
 					self.vb.p3FirstCast = 1
 				end
 				if self:IsMythic() then
-					timerUnleashPowerCD:Start(35)
+					timerUnleashPowerCD:Start(40)
 				else
 					timerDimensionalTearCD:Start(25)--(26.75) Which means next cast is tear 2
 				end
@@ -179,6 +179,7 @@ function mod:SPELL_CAST_START(args)
 		--TODO, monitor for blizzard having fixed this issue https://us.forums.blizzard.com/en/wow/t/feedback-mythic-artificer-xymox/617893/5
 		--Mythic could be either Unleash OR tear first. if it's actually annihilation next it's a wipe
 		if self:IsMythic() then
+			self.vb.unleashCount = 1
 			warnUnleashPower:Show(1)
 			timerEdgeofAnnihilationCD:Start(7.7)
 			timerSeedsofExtinctionCD:Start(11.4)
@@ -207,7 +208,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.unleashCount = self.vb.unleashCount + 1
 		warnUnleashPower:Show(self.vb.unleashCount)
 		--Unleash Power 1: Spirits, delay, Seeds+Annihilation
-		timerDimensionalTearCD:Start(35)
+		timerDimensionalTearCD:Start(40)
 		--Starts at 2 because first tri is actually activated on Annihilationn relic activation
 		if self.vb.unleashCount == 2 then
 			timerFleetingSpiritsCD:Start(3)
@@ -218,11 +219,11 @@ function mod:SPELL_CAST_START(args)
 			timerEdgeofAnnihilationCD:Start(3)
 			timerFleetingSpiritsCD:Start(6)
 			timerSeedsofExtinctionCD:Start(13)
-		--Unleash Power 3: Unknown
+		--Unleash Power 3: Seeds, unknown, unknown
 		elseif self.vb.unleashCount == 4 then
-		--	timerSeedsofExtinctionCD:Start(3)
-		--	timerEdgeofAnnihilationCD:Start(3)
-		--	timerFleetingSpiritsCD:Start(13)
+			timerSeedsofExtinctionCD:Start(3)
+			timerEdgeofAnnihilationCD:Start(11)
+			--timerFleetingSpiritsCD:Start(13)--Unknown
 		end
 	end
 end
