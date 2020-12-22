@@ -13,7 +13,7 @@ mod.respawnTime = 29
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 333387 334765 334929 334498 342544 342256 342722 332683 342425 344496",
+	"SPELL_CAST_START 333387 334765 334929 334498 342544 342256 342722 332683 342425 344496 344230",
 	"SPELL_CAST_SUCCESS 334765 334929 342732 342253 342985 339690 342425",
 	"SPELL_SUMMON 342255 342257 342258 342259",
 	"SPELL_AURA_APPLIED 329636 333913 334765 338156 338153 329808 333377 339690 342655 340037 342425 336212",
@@ -32,7 +32,7 @@ mod:RegisterEventsInCombat(
 --TODO, heart rend is renamed to Soul Crusher in journal, but spell data not renamed yet. Apply rename when it happens.
 --TODO, find a way to move timers for Adds to nameplate bars, otherwise they are far less useful and will only feel like spam. They'll be extremely useful on NPs though
 --[[
-(ability.id = 334765 or ability.id = 333387 or ability.id = 334929 or ability.id = 344496 or ability.id = 334498 or ability.id = 342544 or ability.id = 342256 or ability.id = 342425 or ability.id = 332683) and type = "begincast"
+(ability.id = 334765 or ability.id = 333387 or ability.id = 334929 or ability.id = 344496 or ability.id = 334498 or ability.id = 342544 or ability.id = 342256 or ability.id = 342425 or ability.id = 332683 or ability.id = 344230) and type = "begincast"
  or (ability.id = 339690 or ability.id = 342253) and type = "cast"
  or ability.id = 329636 or ability.id = 329808 or ability.id = 342255 or ability.id = 342257 or ability.id = 342258 or ability.id = 342259
  or (target.id = 168112 or target.id = 168113 or target.id = 172858) and type = "death"
@@ -295,7 +295,7 @@ end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 333387 then
+	if spellId == 333387 or spellId == 344230 then
 		self.vb.bladeCount = self.vb.bladeCount + 1
 		specWarnWickedBladeCast:Show(self.vb.bladeCount)
 		specWarnWickedBladeCast:Play("specialsoon")
@@ -462,7 +462,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		self.vb.HeartIcon = self.vb.HeartIcon + 1
 		warnHeartRend:CombinedShow(0.3, self.vb.heartCount, args.destName)
-	elseif spellId == 333377 and self:AntiSpam(4, args.destName .. "1") then
+	elseif spellId == 333377 then
 		warnWickedBlade:CombinedShow(0.3, self.vb.bladeCount, args.destName)
 		local icon = self.vb.wickedBladeIcon
 		if args:IsPlayer() then
