@@ -6868,7 +6868,7 @@ do
 			for split in string.gmatch(path, "[^\\/]+") do -- Matches \ and / as path delimiters (incl. more than one)
 				tinsert(splitTable, split)
 			end
-			if splitTable[3]:lower() == "dbm-customsounds" then
+			if #splitTable >= 3 and splitTable[3]:lower() == "dbm-customsounds" then
 				validateCache[path] = {
 					exists = ignoreCustom or false
 				}
