@@ -685,7 +685,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.SetIconOnNightHunter then
 			self:SetIcon(args.destName, 0)
 		end
-	elseif spellId == 328117 and not self:IsInCombat() then--March of the Penitent
+	elseif spellId == 328117 and self:IsInCombat() then--March of the Penitent
 		self.vb.phase = 2
 		self.vb.painCount = 0
 		self.vb.DebuffCount = 0
