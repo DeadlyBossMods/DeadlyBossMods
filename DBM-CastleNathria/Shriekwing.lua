@@ -148,7 +148,7 @@ function mod:SPELL_CAST_START(args)
 		timerBlindSwipeCD:Start()
 	elseif spellId == 342863 then
 		specWarnEchoingScreech:Show()
-		specWarnEchoingScreech:Play("defensive")
+		specWarnEchoingScreech:Play("watchstep")--Maybe shockwave?
 	elseif spellId == 345397 then
 		self.vb.waveCount = self.vb.waveCount + 1
 		warnWaveofBlood:Show(self.vb.waveCount)
