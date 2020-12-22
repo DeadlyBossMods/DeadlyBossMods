@@ -5,8 +5,8 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(164406)
 mod:SetEncounterID(2398)
 mod:SetUsedIcons(1, 2, 3)
-mod:SetHotfixNoticeRev(20201209000000)--2020, 12, 9
-mod:SetMinSyncRevision(20200815000000)
+mod:SetHotfixNoticeRev(20201222000000)--2020, 12, 22
+mod:SetMinSyncRevision(20201222000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
@@ -149,6 +149,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 342863 then
 		specWarnEchoingScreech:Show()
 		specWarnEchoingScreech:Play("watchstep")--Maybe shockwave?
+		timerEchoingScreechCD:Start()
 	elseif spellId == 345397 then
 		self.vb.waveCount = self.vb.waveCount + 1
 		warnWaveofBlood:Show(self.vb.waveCount)
@@ -225,6 +226,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerEcholocationCD:Stop()
 		timerBlindSwipeCD:Stop()
 		timerWaveofBloodCD:Stop()
+		timerEchoingScreechCD:Stop()
 		timerEarsplittingShriekCD:Start(13.4)
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(8)

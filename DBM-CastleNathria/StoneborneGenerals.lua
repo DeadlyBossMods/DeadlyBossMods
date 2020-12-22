@@ -6,7 +6,7 @@ mod:SetCreatureID(168112, 168113)
 mod:SetEncounterID(2417)
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
 mod:SetBossHPInfoToHighest()
-mod:SetHotfixNoticeRev(20201220000000)--2020, 12, 20
+mod:SetHotfixNoticeRev(20201222000000)--2020, 12, 22
 mod:SetMinSyncRevision(20201220000000)
 mod.respawnTime = 29
 
