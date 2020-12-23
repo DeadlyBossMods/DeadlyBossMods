@@ -159,6 +159,9 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 331209 then
 		self.vb.gazeCount = self.vb.gazeCount + 1
 		timerHatefulGazeCD:Start(67.3, self.vb.gazeCount+1)
+		if self.Options.SetIconGaze then
+			self:SetIcon(args.destName, 1)
+		end
 		if args:IsPlayer() then
 			specWarnHatefulGaze:Show(DBM_CORE_L.PILLAR)
 			specWarnHatefulGaze:Play("targetyou")
@@ -168,9 +171,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnHeedlessCharge:Show()
 			specWarnHeedlessCharge:Play("farfromline")
 			warnHatefulGaze:Show(self.vb.gazeCount, args.destName)
-		end
-		if self.Options.SetIconGaze then
-			self:SetIcon(args.destName, 1)
 		end
 	elseif spellId == 331314 then
 		warnStunnedImpact:Show(args.destName)

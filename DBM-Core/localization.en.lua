@@ -570,14 +570,13 @@ L.AUTO_YELL_ANNOUNCE_TEXT = {
 	shortfade						= "%%d",
 	iconfade						= "{rt%%2$d}%%1$d",
 	position 						= "%s %%s on {rt%%d}" ..UnitName("player").. "{rt%%d}",
-	shortposition 					= "{rt%d}%s %%d",--Icon, Spellname/playername, number
+	shortposition 					= "{rt%%1$d}%s %%2$d",--Icon, Spellname, number
 	combo							= "%s and %%s",--Spell name (from option, plus spellname given in arg)
 	repeatplayer					= UnitName("player"),--Doesn't need translation, it's just player name spam
 	repeaticon						= "{rt%%2$d}"--Doesn't need translation. It's just icon spam
 }
 L.AUTO_YELL_CUSTOM_POSITION			= "{rt%d}%s"--Doesn't need translating. Has no strings (Used in niche situations such as icon repeat yells)
 L.AUTO_YELL_CUSTOM_POSITION2		= "{rt%d}%s{rt%d}"--Doesn't need translating. Has no strings (Deprecated, will be removed soon)
-L.AUTO_YELL_CUSTOM_POSITION3		= "{rt%d}%s %d"--Doesn't need translating. Has no strings (Deprecated, will be removed soon)
 L.AUTO_YELL_CUSTOM_FADE				= "%s faded"
 L.AUTO_HUD_OPTION_TEXT				= "Show HudMap for $spell:%s (Retired)"
 L.AUTO_HUD_OPTION_TEXT_MULTI		= "Show HudMap for various mechanics (Retired)"

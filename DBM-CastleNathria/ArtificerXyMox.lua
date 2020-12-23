@@ -245,17 +245,17 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 328448 or spellId == 328468 then
-		warnDimensionalTear:CombinedShow(1, args.destName)
 		local icon = self.vb.tearIcon
+		if self.Options.SetIconOnTear then
+			self:SetIcon(args.destName, icon)
+		end
 		if args:IsPlayer() then
 			specWarnDimensionalTear:Show(self:IconNumToTexture(icon))
 			specWarnDimensionalTear:Play("mm"..icon)
 			yellDimensionalTear:Yell(icon, icon, icon)
 			yellDimensionalTearFades:Countdown(spellId, nil, icon)
 		end
-		if self.Options.SetIconOnTear then
-			self:SetIcon(args.destName, icon)
-		end
+		warnDimensionalTear:CombinedShow(1, args.destName)
 		self.vb.tearIcon = self.vb.tearIcon + 1
 	elseif spellId == 325236 then
 		if args:IsPlayer() then

@@ -257,18 +257,18 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 335111 or spellId == 335112 or spellId == 335113 then
 		self.vb.activeSeekers = self.vb.activeSeekers + 1
-		warnSinseeker:CombinedShow(spellId == 335113 and 0.1 or 2.5, args.destName)
 		local icon = spellId == 335111 and 1 or spellId == 335112 and 2 or spellId == 335113 and 3
+		if self.Options.SetIconOnSinSeeker then
+			self:SetIcon(args.destName, icon)
+		end
 		if args:IsPlayer() then
 			playerSinSeeker = true
 			specWarnSinseeker:Show(self:IconNumToTexture(icon))
 			specWarnSinseeker:Play("mm"..icon)
-			yellSinseeker:Yell(icon, args.spellName, icon)
+			yellSinseeker:Yell(icon, icon)
 			yellSinseekerFades:Countdown(spellId, nil, icon)
 		end
-		if self.Options.SetIconOnSinSeeker then
-			self:SetIcon(args.destName, icon)
-		end
+		warnSinseeker:CombinedShow(spellId == 335113 and 0.1 or 2.5, args.destName)
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED

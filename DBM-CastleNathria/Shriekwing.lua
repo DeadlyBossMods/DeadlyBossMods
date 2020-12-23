@@ -204,17 +204,17 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnDeadlyDescent:CombinedShow(0.3, args.destName)
 		end
 	elseif spellId == 342077 then
-		warnEcholocation:CombinedShow(0.5, args.destName)
 		local icon = self.vb.EchoIcon
+		if self.Options.SetIconOnEcholocation then
+			self:SetIcon(args.destName, self.vb.EchoIcon)
+		end
 		if args:IsPlayer() then
 			specWarnEcholocation:Show()
 			specWarnEcholocation:Play("runout")
 			yellEcholocation:Yell(icon, icon, icon)
 			yellEcholocationFades:Countdown(spellId, nil, icon)
 		end
-		if self.Options.SetIconOnEcholocation then
-			self:SetIcon(args.destName, self.vb.EchoIcon)
-		end
+		warnEcholocation:CombinedShow(0.5, args.destName)
 		self.vb.EchoIcon = self.vb.EchoIcon + 1
 	elseif spellId == 341684 then
 		warnBloodLantern:Show(args.destName)
