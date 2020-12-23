@@ -303,18 +303,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerChangeofHeart:Start(args.destName)
 	elseif spellId == 325936 then
 		warnSharedCognition:CombinedShow(0.3, args.destName)
-	elseif spellId == 324983 then
-		if self:AntiSpam(4, args.destName.."1") then--Still announce using combat log any targets that didn't send a sync already
-			warnSharedSuffering:CombinedShow(0.3, args.destName)
-		end
---		if args:IsPlayer() then
---			specWarnSharedSuffering:Show()
---			specWarnSharedSuffering:Play("targetyou")
---			yellSharedSuffering:Yell()
---		end
+	elseif spellId == 324983 and self:AntiSpam(4, args.destName.."1") then
 		if self.Options.SetIconOnSharedSuffering and self.vb.sufferingIcon < 4 then--Icons for this are nice, but reserve 5 of them for adds
 			self:SetIcon(args.destName, self.vb.sufferingIcon)
 		end
+		warnSharedSuffering:CombinedShow(0.3, args.destName)
 		self.vb.sufferingIcon = self.vb.sufferingIcon + 1
 	elseif spellId == 332664 or spellId == 340477 or spellId == 339525 then--332664 was used on heroic testing, 340477 and 332664 both occured on mythic, not seen 339525 yet
 		warnConcentrateAnima:CombinedShow(0.3, args.destName)
@@ -385,7 +378,11 @@ function mod:OnTranscriptorSync(msg, targetName)
 	if msg:find("324983") and targetName then
 		targetName = Ambiguate(targetName, "none")
 		if self:AntiSpam(4, targetName.."1") then
+			if self.Options.SetIconOnSharedSuffering and self.vb.sufferingIcon < 4 then--Icons for this are nice, but reserve 5 of them for adds
+				self:SetIcon(targetName, self.vb.sufferingIcon)
+			end
 			warnSharedSuffering:CombinedShow(0.3, targetName)
+			self.vb.sufferingIcon = self.vb.sufferingIcon + 1
 		end
 	end
 end

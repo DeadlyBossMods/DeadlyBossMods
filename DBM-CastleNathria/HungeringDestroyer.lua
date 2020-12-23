@@ -338,15 +338,15 @@ function mod:SPELL_AURA_APPLIED(args)
 			self.vb.miasmaIcon = self.vb.miasmaIcon + 1
 			DBM:Debug("Ranged/Second Melee Miasma found: "..args.destName, 2)
 		end
+		if self.Options.SetIconOnGluttonousMiasma then
+			self:SetIcon(args.destName, icon)
+		end
 		if args:IsPlayer() then
 			specWarnGluttonousMiasma:Show(self:IconNumToTexture(icon))
 			specWarnGluttonousMiasma:Play("mm"..icon)--or "targetyou"
 			yellGluttonousMiasma:Yell(icon, icon)
 		else
 			warnGluttonousMiasma:CombinedShow(0.3, args.destName)
-		end
-		if self.Options.SetIconOnGluttonousMiasma then
-			self:SetIcon(args.destName, icon)
 		end
 	elseif spellId == 334755 then
 		local amount = args.amount or 1
@@ -413,13 +413,13 @@ function mod:OnTranscriptorSync(msg, targetName)
 	if msg:find("334064") and targetName then
 		targetName = Ambiguate(targetName, "none")
 		if self:AntiSpam(4, targetName) then
-			warnVolatileEjection:CombinedShow(0.75, targetName)
 			if self.Options.SetIconOnVolatileEjection2 then
 				local oldIcon = self:GetIcon(targetName) or 0
 				if oldIcon == 0 then--Do not change a miasma icon under any circomstance
 					self:SetIcon(targetName, self.vb.volatileIcon, 5)
 				end
 			end
+			warnVolatileEjection:CombinedShow(0.75, targetName)
 			self.vb.volatileIcon = self.vb.volatileIcon + 1
 		end
 	end
