@@ -48,7 +48,7 @@ local warnPetrifyingHowl						= mod:NewTargetAnnounce(334852, 3, nil, nil, 13524
 
 --Huntsman Altimor
 local specWarnSinseeker							= mod:NewSpecialWarningYouPos(335114, nil, nil, nil, 3, 2)
-local yellSinseeker								= mod:NewPosYell(335114, DBM_CORE_L.AUTO_YELL_CUSTOM_POSITION3)
+local yellSinseeker								= mod:NewShortPosYell(335114)
 local yellSinseekerFades						= mod:NewIconFadesYell(335114)
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(270290, nil, nil, nil, 1, 8)
 --Hunting Gargon

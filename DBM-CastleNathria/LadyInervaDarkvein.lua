@@ -385,7 +385,7 @@ function mod:OnTranscriptorSync(msg, targetName)
 	if msg:find("324983") and targetName then
 		targetName = Ambiguate(targetName, "none")
 		if self:AntiSpam(4, targetName.."1") then
-			warnSharedSuffering:Show(targetName)
+			warnSharedSuffering:CombinedShow(0.3, targetName)
 		end
 	end
 end

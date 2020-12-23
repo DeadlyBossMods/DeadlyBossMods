@@ -58,10 +58,10 @@ local specWarnSiesmicShift						= mod:NewSpecialWarningMoveAway(340817, nil, nil
 local timerHatefulGazeCD						= mod:NewCDCountTimer(68.9, 331209, nil, nil, nil, 3, nil, DBM_CORE_L.IMPORTANT_ICON, nil, 1, 4)
 local timerStunnedImpact						= mod:NewBuffActiveTimer(12, 331314, nil, nil, nil, 5, nil, DBM_CORE_L.DAMAGE_ICON)
 local timerChainLinkCD							= mod:NewCDCountTimer(68.9, 335300, nil, nil, nil, 3, nil, nil, true)
-local timerChainSlamCD							= mod:NewCDCountTimer(68.9, 335354, nil, nil, nil, 3, nil, nil, true)
+local timerChainSlamCD							= mod:NewCDCountTimer(68.9, 335354, nil, nil, nil, 3, nil, DBM_CORE_L.HEROIC_ICON, true)
 local timerDestructiveStompCD					= mod:NewCDCountTimer(44.3, 332318, 247733, nil, nil, 3, nil, nil, true)
 local timerFallingRubbleCD						= mod:NewCDCountTimer(68.9, 332572, nil, nil, nil, 3, nil, nil, true)
-local timerColossalRoarCD						= mod:NewCDCountTimer(44.3, 332687, 226056, nil, nil, 2, nil, nil, true)--30 and 36 alternating with slight variation, unless a gaze stun that's off schedule (do to mythci energy gain) messes up rotation
+local timerColossalRoarCD						= mod:NewCDCountTimer(31.9, 332687, 226056, nil, nil, 2, nil, nil, true)
 local timerSiesmicShiftCD						= mod:NewCDCountTimer(34, 340817, nil, nil, nil, 3, nil, DBM_CORE_L.MYTHIC_ICON, true)--Mythic
 
 --local berserkTimer							= mod:NewBerserkTimer(600)
@@ -103,11 +103,13 @@ function mod:OnCombatStart(delay)
 	timerFallingRubbleCD:Start(12.5-delay, 1)
 	timerDestructiveStompCD:Start(18.2-delay, 1)
 --	timerColossalRoarCD:Start(1-delay)--Cast instantly on pull
-	timerChainSlamCD:Start(28.3-delay, 1)
 	timerHatefulGazeCD:Start(50.1-delay, 1)
-	if self:IsMythic() then
-		self.vb.shiftCount = 0
-		timerSiesmicShiftCD:Start(18.1, 1)
+	if self:IsHard() then
+		timerChainSlamCD:Start(28.3-delay, 1)
+		if self:IsMythic() then
+			self.vb.shiftCount = 0
+			timerSiesmicShiftCD:Start(18.1, 1)
+		end
 	end
 --	if self.Options.RangeFrame then
 --		DBM.RangeCheck:Show(4)
@@ -148,14 +150,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.roarCount = self.vb.roarCount + 1
 		specWarnColossalRoar:Show()
 		specWarnColossalRoar:Play("aesoon")
-		--"Colossal Roar-332687-npc:164407 = pull:0.0, 30.3, 37.0, 30.8, 36.1, 30.2, 36.8, 30.4, 38.9, 30.6, 30.9", -- [2]
-		--"Colossal Roar-332687-npc:164407 = pull:0.0, 30.9, 37.9, 30.3, 38.8", -- [2]
-		if self.vb.roarCount < 10 and (self.vb.roarCount % 2 == 0) then
-			--Logic almost works, except when it doesn't
-			timerColossalRoarCD:Start(36.8, self.vb.roarCount+1)
-		else
-			timerColossalRoarCD:Start(30.2, self.vb.roarCount+1)
-		end
+		timerColossalRoarCD:Start(31.9, self.vb.roarCount+1)
 	end
 end
 
@@ -233,6 +228,14 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnChainSlamPartner:Play("gathershare")
 		else
 			warnChainSlam:Show(self.vb.chainSlamCount, args.destName)
+		end
+		--Chain slam always extends Colossal Roar by a very precise amount
+		if timerColossalRoarCD:GetRemaining(self.vb.roarCount+1) < 7.25 then
+			local elapsed, total = timerColossalRoarCD:GetTime(self.vb.roarCount+1)
+			local extend = 7.25 - (total-elapsed)
+			DBM:Debug("timerColossalRoarCD extended by: "..extend, 2)
+			timerColossalRoarCD:Stop()
+			timerColossalRoarCD:Update(elapsed, total+extend, self.vb.roarCount+1)
 		end
 	elseif spellId == 341250 then
 		warnGruesomeRage:Show(args.destName)

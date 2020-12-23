@@ -337,6 +337,7 @@ L.StripTimerText			= "Strip CD/Next out of timers"
 L.KeepBar					= "Keep timer active until ability cast"
 L.KeepBar2					= "(when supported by mod)"
 L.FadeBar					= "Fade timers for out of range abilities"
+L.BarSkin					= "Bar skin"
 
 -- Tab: Global Disables & Filters
 L.TabCategory_Filters	 	= "Global Disables & Filters"

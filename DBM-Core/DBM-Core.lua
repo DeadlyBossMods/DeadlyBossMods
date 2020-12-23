@@ -6868,7 +6868,11 @@ do
 			for split in string.gmatch(path, "[^\\/]+") do -- Matches \ and / as path delimiters (incl. more than one)
 				tinsert(splitTable, split)
 			end
-			if #splitTable >= 3 and splitTable[1]:lower() == "interface" and splitTable[2]:lower() == "addons" and (not ignoreCustom or splitTable[3]:lower() == "dbm-customsounds") then -- We're an addon sound
+			if #splitTable >= 3 and splitTable[3]:lower() == "dbm-customsounds" then
+				validateCache[path] = {
+					exists = ignoreCustom or false
+				}
+			elseif #splitTable >= 3 and splitTable[1]:lower() == "interface" and splitTable[2]:lower() == "addons" then -- We're an addon sound
 				validateCache[path] = {
 					exists = IsAddOnLoaded(splitTable[3]),
 					AddOn = splitTable[3]
@@ -9949,6 +9953,10 @@ do
 
 	function bossModPrototype:NewPosYell(...)
 		return newYell(self, "position", ...)
+	end
+
+	function bossModPrototype:NewShortPosYell(...)
+		return newYell(self, "shortposition", ...)
 	end
 
 	function bossModPrototype:NewComboYell(...)
