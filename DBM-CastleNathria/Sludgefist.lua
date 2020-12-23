@@ -58,7 +58,7 @@ local specWarnSiesmicShift						= mod:NewSpecialWarningMoveAway(340817, nil, nil
 local timerHatefulGazeCD						= mod:NewCDCountTimer(68.9, 331209, nil, nil, nil, 3, nil, DBM_CORE_L.IMPORTANT_ICON, nil, 1, 4)
 local timerStunnedImpact						= mod:NewBuffActiveTimer(12, 331314, nil, nil, nil, 5, nil, DBM_CORE_L.DAMAGE_ICON)
 local timerChainLinkCD							= mod:NewCDCountTimer(68.9, 335300, nil, nil, nil, 3, nil, nil, true)
-local timerChainSlamCD							= mod:NewCDCountTimer(68.9, 335354, nil, nil, nil, 3, nil, nil, true)
+local timerChainSlamCD							= mod:NewCDCountTimer(68.9, 335354, nil, nil, nil, 3, nil, DBM_CORE_L.HEROIC_ICON, true)
 local timerDestructiveStompCD					= mod:NewCDCountTimer(44.3, 332318, 247733, nil, nil, 3, nil, nil, true)
 local timerFallingRubbleCD						= mod:NewCDCountTimer(68.9, 332572, nil, nil, nil, 3, nil, nil, true)
 local timerColossalRoarCD						= mod:NewCDCountTimer(31.9, 332687, 226056, nil, nil, 2, nil, nil, true)
@@ -103,11 +103,13 @@ function mod:OnCombatStart(delay)
 	timerFallingRubbleCD:Start(12.5-delay, 1)
 	timerDestructiveStompCD:Start(18.2-delay, 1)
 --	timerColossalRoarCD:Start(1-delay)--Cast instantly on pull
-	timerChainSlamCD:Start(28.3-delay, 1)
 	timerHatefulGazeCD:Start(50.1-delay, 1)
-	if self:IsMythic() then
-		self.vb.shiftCount = 0
-		timerSiesmicShiftCD:Start(18.1, 1)
+	if self:IsHard() then
+		timerChainSlamCD:Start(28.3-delay, 1)
+		if self:IsMythic() then
+			self.vb.shiftCount = 0
+			timerSiesmicShiftCD:Start(18.1, 1)
+		end
 	end
 --	if self.Options.RangeFrame then
 --		DBM.RangeCheck:Show(4)
