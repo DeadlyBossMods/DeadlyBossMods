@@ -263,7 +263,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			playerSinSeeker = true
 			specWarnSinseeker:Show(self:IconNumToTexture(icon))
 			specWarnSinseeker:Play("mm"..icon)
-			yellSinseeker:Yell(icon, args.spellName, icon)
+			yellSinseeker:Yell(icon, icon)
 			yellSinseekerFades:Countdown(spellId, nil, icon)
 		end
 		if self.Options.SetIconOnSinSeeker then

@@ -37,7 +37,7 @@ local warnGluttonousMiasma						= mod:NewTargetNoFilterAnnounce(329298, 4, nil, 
 local warnVolatileEjection						= mod:NewTargetNoFilterAnnounce(334266, 4, nil, nil, 202046)
 
 local specWarnGluttonousMiasma					= mod:NewSpecialWarningYouPos(329298, nil, 212238, nil, 1, 2)
-local yellGluttonousMiasma						= mod:NewShortPosYell(329298, nil, false, 2)
+local yellGluttonousMiasma						= mod:NewShortPosYell(329298, 212238, false, 2)
 local specWarnEssenceSap						= mod:NewSpecialWarningStack(334755, false, 8, nil, 2, 1, 6)--Mythic, spammy, opt in
 local specWarnConsume							= mod:NewSpecialWarningRun(334522, nil, nil, nil, 4, 2)
 local specWarnExpunge							= mod:NewSpecialWarningMoveAway(329725, nil, nil, nil, 1, 2)
@@ -71,7 +71,6 @@ mod:AddBoolOption("ShowTimeNotStacks", false)
 local GluttonousTargets = {}
 local essenceSapStacks = {}
 local playerEssenceSap, playerVolatile = false, false
-local miasmaShortName = DBM:GetSpellInfo(212238)
 mod.vb.volatileIcon = 5
 mod.vb.volatileCast = 0
 mod.vb.miasmaCount = 0
@@ -342,7 +341,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnGluttonousMiasma:Show(self:IconNumToTexture(icon))
 			specWarnGluttonousMiasma:Play("mm"..icon)--or "targetyou"
-			yellGluttonousMiasma:Yell(icon, miasmaShortName, icon)
+			yellGluttonousMiasma:Yell(icon, icon)
 		else
 			warnGluttonousMiasma:CombinedShow(0.3, args.destName)
 		end
