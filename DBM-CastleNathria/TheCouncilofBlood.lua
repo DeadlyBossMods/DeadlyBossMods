@@ -37,6 +37,7 @@ mod:RegisterEventsInCombat(
  or ability.id = 332535 or ability.id = 330959 or ability.id = 332538 or abiity.id = 331918 or ability.id = 346709
  or (ability.id = 330964 or ability.id = 335773) and type = "cast"
  or (target.id = 166971 or target.id = 166969 or target.id = 166970) and type = "death"
+ or ability.id = 347350 and type = "applydebuff"
  or ability.id = 346303 and type = "begincast"
  --]]
  --https://www.warcraftlogs.com/reports/MFwzxfRcthN4C9mX#fight=36&view=events&pins=2%24Off%24%23244F4B%24expression%24(ability.id%20%3D%20330965%20or%20ability.id%20%3D%20330978%20or%20ability.id%20%3D%20327497%20or%20ability.id%20%3D%20346654%20or%20ability.id%20%3D%20337110%20or%20ability.id%20%3D%20346657%20or%20ability.id%20%3D%20346681%20or%20ability.id%20%3D%20346698%20or%20ability.id%20%3D%20346690%20or%20ability.id%20%3D%20346800)%20and%20type%20%3D%20%22begincast%22%20%20or%20(ability.id%20%3D%20331634)%20and%20type%20%3D%20%22cast%22%20%20or%20ability.id%20%3D%20332535%20or%20ability.id%20%3D%20330959%20or%20ability.id%20%3D%20332538%20or%20abiity.id%20%3D%20331918%20or%20ability.id%20%3D%20346709%20%20or%20(ability.id%20%3D%20330964%20or%20ability.id%20%3D%20335773)%20and%20type%20%3D%20%22cast%22%20%20or%20(target.id%20%3D%20166971%20or%20target.id%20%3D%20166969%20or%20target.id%20%3D%20166970)%20and%20type%20%3D%20%22death%22%20%20or%20ability.id%20%3D%20346303%20and%20type%20%3D%20%22begincast%22
@@ -674,6 +675,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			yellDancingFever:Countdown(spellId)
 		end
+		if self:AntiSpam(5, 6) then
+			timerDancingFeverCD:Start()
+		end
 		FeverStacks[args.destName] = 3
 		if self.Options.InfoFrame then
 			if not DBM.Infoframe:IsShown() then
@@ -682,9 +686,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			else
 				DBM.InfoFrame:UpdateTable(FeverStacks)
 			end
-		end
-		if self:AntiSpam(5, 6) then
-			timerDancingFeverCD:Start()
 		end
 	end
 end
