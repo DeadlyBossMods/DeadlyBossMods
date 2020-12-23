@@ -66,6 +66,7 @@ L.Latency_Text				= "동기화 신호를 보낼 최대 지연시간 설정: %d"
 L.Button_RangeFrame			= "거리 창 표시/숨기기"
 L.Button_InfoFrame			= "정보 창 표시/숨기기"
 L.Button_TestBars			= "테스트 바 시작"
+L.Button_MoveBars			= "바 이동"
 L.Button_ResetInfoRange		= "정보/거리 창 위치 초기화"
 
 L.ModelOptions				= "3D 모델 뷰어 설정"
@@ -75,6 +76,7 @@ L.ModelSoundShort			= "짧은 효과음"
 L.ModelSoundLong			= "긴 효과음"
 
 L.ResizeOptions			 	= "설정 창 크기 설정"
+L.ResizeInfo				= "우측 하단 모서리를 클릭 후 드래그하면 설정 창 크기를 조절할 수 있습니다."
 L.Button_ResetWindowSize	= "설정 창 크기 초기화"
 L.Editbox_WindowWidth		= "설정 창 너비"
 L.Editbox_WindowHeight		= "설정 창 높이"
@@ -328,6 +330,7 @@ L.StripTimerText			= "타이머 텍스트에 쿨타임/다음 글자 삭제"
 L.KeepBar					= "스킬 시전 전까지 타이머 작동 중단"
 L.KeepBar2					= "(모드에서 지원할 경우에만)"
 L.FadeBar					= "사정거리 밖의 스킬에 대한 타이머 바 숨김"
+L.BarSkin					= "바 스킨"
 
 -- Tab: Global Disables & Filters
 L.TabCategory_Filters	 	= "기능 끄기 및 필터"
