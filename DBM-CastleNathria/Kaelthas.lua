@@ -278,7 +278,7 @@ local addTimers = {
 
 function mod:EmberBlastTarget(targetname, uId, bossuid, scanningTime)
 	if not targetname then return end
-	local debuffTimer - self:IsMythic() and 3 or 5
+	local debuffTimer = self:IsMythic() and 3 or 5
 	if targetname == UnitName("player") then
 		specWarnEmberBlast:Show(DBM_CORE_L.ALLIES)
 		specWarnEmberBlast:Play("gathershare")
