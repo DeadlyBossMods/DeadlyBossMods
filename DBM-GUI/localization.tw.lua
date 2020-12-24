@@ -328,6 +328,7 @@ L.StripTimerText			= "剝離 冷卻/下次 計時器"
 L.KeepBar					= "保持計時器啟用直到技能施放"
 L.KeepBar2					= "(當有支援的模組時)"
 L.FadeBar					= "隱藏已超出距離技能的計時器"
+L.BarSkin					= "計時條外觀"
 
 -- Tab: Global Disables & Filters
 L.TabCategory_Filters	 	= "全局禁用及過濾"
