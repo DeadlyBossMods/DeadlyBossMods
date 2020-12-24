@@ -278,11 +278,12 @@ local addTimers = {
 
 function mod:EmberBlastTarget(targetname, uId, bossuid, scanningTime)
 	if not targetname then return end
+	local debuffTimer = self:IsMythic() and 3 or 5
 	if targetname == UnitName("player") then
 		specWarnEmberBlast:Show(DBM_CORE_L.ALLIES)
 		specWarnEmberBlast:Play("gathershare")
 		yellEmberBlast:Yell()
-		yellEmberBlastFades:Countdown(5-scanningTime)
+		yellEmberBlastFades:Countdown(debuffTimer-scanningTime)
 	elseif self.Options.SpecWarn325877moveto then
 		specWarnEmberBlast:Show(targetname)
 		specWarnEmberBlast:Play("gathershare")
@@ -290,7 +291,7 @@ function mod:EmberBlastTarget(targetname, uId, bossuid, scanningTime)
 		warnEmberBlast:Show(targetname)
 	end
 	if self.Options.SetIconOnEmberBlast then
-		self:SetIcon(targetname, 1, 6-scanningTime)--So icon clears 1 second after blast
+		self:SetIcon(targetname, 1, debuffTimer-scanningTime)--So icon clears 1 second after blast
 	end
 end
 

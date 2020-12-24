@@ -71,7 +71,7 @@ end
 
 DBM = {
 	Revision = parseCurseDate("@project-date-integer@"),
-	DisplayVersion = "9.0.14 alpha", -- the string that is shown as version
+	DisplayVersion = "9.0.15 alpha", -- the string that is shown as version
 	ReleaseRevision = releaseDate(2020, 12, 23) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 }
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
@@ -3176,7 +3176,11 @@ do
 	end
 
 	function DBM:GetRaidClass(name)
-		return (raid[name] and raid[name].class) or "UNKNOWN", raid[name].id and GetRaidTargetIndex(raid[name].id) or 0
+		if raid[name] then
+			return raid[name].class or "UNKNOWN", raid[name].id and GetRaidTargetIndex(raid[name].id) or 0
+		else
+			return "UNKNOWN", 0
+		end
 	end
 
 	function DBM:GetRaidUnitId(name)

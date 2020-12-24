@@ -127,14 +127,14 @@ function mod:SPELL_AURA_APPLIED(args)
 			DBM.InfoFrame:Show(2, "enemyabsorb", nil, args.amount, "boss1")
 		end
 	elseif spellId == 331172 or spellId == 322648 then
+		if self.Options.SetIconOnMindLink then
+			--Always set Star on parent link
+			self:SetIcon(args.destName, spellId == 322648 and 1 or self.vb.mindLinkIcon)
+		end
 		if args:IsPlayer() then
 			specWarnMindLink:Show()
 			specWarnMindLink:Play("lineapart")
 			yellMindLink:Yell()
-		end
-		if self.Options.SetIconOnMindLink then
-			--Always set Star on parent link
-			self:SetIcon(args.destName, spellId == 322648 and 1 or self.vb.mindLinkIcon)
 		end
 		if spellId == 331172 then
 			self.vb.mindLinkIcon = self.vb.mindLinkIcon + 1
