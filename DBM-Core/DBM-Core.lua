@@ -5802,8 +5802,10 @@ do
 		if dbmIsEnabled and combatInfo[LastInstanceMapID] then
 			self:Debug("INSTANCE_ENCOUNTER_ENGAGE_UNIT event fired for zoneId"..LastInstanceMapID, 3)
 			for _, v in ipairs(combatInfo[LastInstanceMapID]) do
-				if v.type:find("combat") and isBossEngaged(v.multiMobPullDetection or v.mob) then
-					self:StartCombat(v.mod, 0, "IEEU")
+				if not v.noIEEUDetection then
+					if v.type:find("combat") and isBossEngaged(v.multiMobPullDetection or v.mob) then
+						self:StartCombat(v.mod, 0, "IEEU")
+					end
 				end
 			end
 		end
@@ -11961,6 +11963,9 @@ function bossModPrototype:RegisterCombat(cType, ...)
 	if self.noBKDetection then
 		info.noBKDetection = self.noBKDetection
 	end
+	if self.noIEEUDetection then
+		info.noIEEUDetection = self.noIEEUDetection
+	end
 	if self.noFriendlyEngagement then
 		info.noFriendlyEngagement = self.noFriendlyEngagement
 	end
@@ -12071,6 +12076,13 @@ function bossModPrototype:DisableBKKillDetection()
 	self.noBKDetection = true
 	if self.combatInfo then
 		self.combatInfo.noBKDetection = true
+	end
+end
+
+function bossModPrototype:DisableIEEUCombatDetection()
+	self.noIEEUDetection = true
+	if self.combatInfo then
+		self.combatInfo.noIEEUDetection = true
 	end
 end
 
