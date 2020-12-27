@@ -4,11 +4,12 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(165759)
 mod:SetEncounterID(2402)
+mod:DisableIEEUCombatDetection()
 mod:SetUsedIcons(1, 2, 3, 4, 5)
 mod.onlyHighest = true--Instructs DBM health tracking to literally only store highest value seen during fight, even if it drops below that
 mod.noBossDeathKill = true--Instructs mod to ignore 165759 deaths, since goal is to heal kael, not kill him
-mod:SetHotfixNoticeRev(20201214000000)--2020, 12, 14
-mod:SetMinSyncRevision(20201214000000)
+mod:SetHotfixNoticeRev(20201226000000)--2020, 12, 26
+mod:SetMinSyncRevision(20201226000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
