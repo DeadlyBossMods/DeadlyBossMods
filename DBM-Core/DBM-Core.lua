@@ -1387,12 +1387,12 @@ do
 			end
 			if GetAddOnEnableState(playerName, "VEM-Core") >= 1 then
 				self:Disable(true)
-				C_TimerAfter(15, function() AddMsg(self, L.VEM) end)
+				self:Schedule(15, infniteLoopNotice, self, L.VEM)
 				return
 			end
 			if GetAddOnEnableState(playerName, "DBM-Profiles") >= 1 then
 				self:Disable(true)
-				C_TimerAfter(15, function() AddMsg(self, L.OUTDATEDPROFILES) end)
+				self:Schedule(15, infniteLoopNotice, self, L.OUTDATEDPROFILES)
 				return
 			end
 			if GetAddOnEnableState(playerName, "DBM-SpellTimers") >= 1 then
@@ -1411,7 +1411,7 @@ do
 			end
 			if GetAddOnEnableState(playerName, "DPMCore") >= 1 then
 				self:Disable(true)
-				C_TimerAfter(15, function() AddMsg(self, L.DPMCORE) end)
+				self:Schedule(15, infniteLoopNotice, self, L.DPMCORE)
 				return
 			end
 			if GetAddOnEnableState(playerName, "DBM-VictorySound") >= 1 then
