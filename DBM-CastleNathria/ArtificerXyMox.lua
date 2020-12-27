@@ -78,6 +78,7 @@ mod.vb.phase = 0
 mod.vb.spartCount = 0
 mod.vb.tearIcon = 1
 mod.vb.annihilationCount = 0
+mod.vb.destructionCount = 0
 --mod.vb.lastRotation = 0--0 tear, 1 ghosts, 2 roots, 3 annihilate, 4 Second tear, 5 Empty
 mod.vb.unleashCount = 0
 mod.vb.p3FirstCast = 0--1- Tear, 2 - Annihilate
@@ -88,6 +89,7 @@ function mod:OnCombatStart(delay)
 	self.vb.spartCount = 0
 	self.vb.tearIcon = 1
 	self.vb.annihilationCount = 0
+	self.vb.destructionCount = 0
 --	self.vb.lastRotation = 1--Technically Tear is first in any phase, followed by activator, but neither are part of Spell Rotation script, so variable is set accordingly for that
 	self.vb.unleashCount = 0
 	self.vb.p3FirstCast = 0--1- Tear, 2 - Annihilate
@@ -231,7 +233,8 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 325361 then
-		timerGlyphofDestructionCD:Start()
+		self.vb.destructionCount = self.vb.destructionCount + 1
+		timerGlyphofDestructionCD:Start(nil, self.vb.destructionCount+1)
 	elseif spellId == 326271 and self:IsHard() then
 		--Even fires in all difficulties even though it doesn't do anything on normal/LFR
 		specWarnStasisTrap:Show()
@@ -259,7 +262,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.tearIcon = self.vb.tearIcon + 1
 	elseif spellId == 325236 then
 		if args:IsPlayer() then
-			specWarnGlyphofDestruction:Show()
+			specWarnGlyphofDestruction:Show(self.vb.destructionCount)
 			specWarnGlyphofDestruction:Play("runout")
 			yellGlyphofDestruction:Yell()
 			yellGlyphofDestructionFades:Countdown(spellId)
