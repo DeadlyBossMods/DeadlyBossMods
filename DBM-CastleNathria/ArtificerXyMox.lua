@@ -101,7 +101,7 @@ function mod:OnCombatStart(delay)
 	timerDimensionalTearCD:Start(14)
 	timerRiftBlastCD:Start(20.3-delay)
 	timerFleetingSpiritsCD:Start(25)
-	timerGlyphofDestructionCD:Start(31.6-delay)--SUCCESS
+	timerGlyphofDestructionCD:Start(31.6-delay, 1)--SUCCESS
 --	if self.Options.RangeFrame then
 --		DBM.RangeCheck:Show(4)
 --	end
