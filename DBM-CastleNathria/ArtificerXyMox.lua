@@ -351,7 +351,7 @@ function mod:OnSync(msg)
 		timerDimensionalTearCD:Start(14)
 		timerRiftBlastCD:Start(20)
 		timerSeedsofExtinctionCD:Start(21.6)
-		timerGlyphofDestructionCD:Start(27.8)--SUCCESS
+		timerGlyphofDestructionCD:Start(27.8, self.vb.destructionCount+1)--SUCCESS
 	elseif msg == "Phase3" then
 		self.vb.phase = 3
 		self.vb.p3FirstCast = 0--1- Tear, 2 - Annihilate/Unleashed
@@ -372,7 +372,7 @@ function mod:OnSync(msg)
 		timerStasisTrapCD:Start(10.7)
 		timerDimensionalTearCD:Start(14.4)
 		timerRiftBlastCD:Start(45.9)
-		timerGlyphofDestructionCD:Start(53.5)--SUCCESS
+		timerGlyphofDestructionCD:Start(53.5, self.vb.destructionCount+1)--SUCCESS
 		if self:IsMythic() then
 			timerUnleashPowerCD:Start(20)--Time until phase 3 activation edge of annihilation spell
 		else
