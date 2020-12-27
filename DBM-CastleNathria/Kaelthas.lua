@@ -78,7 +78,7 @@ local specWarnBurningRemnants					= mod:NewSpecialWarningStack(326456, nil, 3, n
 local specWarnBurningRemnantsTaunt				= mod:NewSpecialWarningTaunt(326456, nil, nil, nil, 1, 2)
 local specWarnEmberBlast						= mod:NewSpecialWarningMoveTo(325877, false, nil, nil, 1, 2)--Opt in as needed
 local yellEmberBlast							= mod:NewYell(325877, nil, nil, nil, "YELL")
---local yellEmberBlastFades						= mod:NewFadesYell(325877, nil, nil, nil, "YELL")
+local yellEmberBlastFades						= mod:NewFadesYell(325877, nil, nil, nil, "YELL")
 local specWarnBlazingSurge						= mod:NewSpecialWarningDodge(329509, nil, nil, nil, 2, 2)
 --local yellBlazingSurge							= mod:NewYell(329509)
 local specWarnGTFO								= mod:NewSpecialWarningGTFO(328579, nil, nil, nil, 1, 8)
@@ -279,12 +279,12 @@ local addTimers = {
 
 function mod:EmberBlastTarget(targetname, uId, bossuid, scanningTime)
 	if not targetname then return end
---	local debuffTimer = self:IsHard() and 3 or 5
+	local debuffTimer = self:IsLFR() and 5 or 3
 	if targetname == UnitName("player") then
 		specWarnEmberBlast:Show(DBM_CORE_L.ALLIES)
 		specWarnEmberBlast:Play("gathershare")
 		yellEmberBlast:Yell()
---		yellEmberBlastFades:Countdown(debuffTimer-scanningTime)
+		yellEmberBlastFades:Countdown(debuffTimer-scanningTime)
 	elseif self.Options.SpecWarn325877moveto then
 		specWarnEmberBlast:Show(targetname)
 		specWarnEmberBlast:Play("gathershare")
@@ -292,7 +292,7 @@ function mod:EmberBlastTarget(targetname, uId, bossuid, scanningTime)
 		warnEmberBlast:Show(targetname)
 	end
 	if self.Options.SetIconOnEmberBlast then
-		self:SetIcon(targetname, 1, 6-scanningTime)--So icon clears 1-3 second after blast
+		self:SetIcon(targetname, 1, debuffTimer-scanningTime+1)--So icon clears 1-3 second after blast
 	end
 end
 
