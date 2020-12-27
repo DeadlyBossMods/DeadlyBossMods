@@ -292,7 +292,7 @@ function mod:EmberBlastTarget(targetname, uId, bossuid, scanningTime)
 		warnEmberBlast:Show(targetname)
 	end
 	if self.Options.SetIconOnEmberBlast then
-		self:SetIcon(targetname, 1, debuffTimer-scanningTime)--So icon clears 1 second after blast
+		self:SetIcon(targetname, 1, 6-scanningTime)--So icon clears 1-3 second after blast
 	end
 end
 
