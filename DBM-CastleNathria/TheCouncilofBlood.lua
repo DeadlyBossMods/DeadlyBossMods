@@ -79,7 +79,7 @@ local yellDarkRecitalRepeater					= mod:NewIconRepeatYell(331634, DBM_CORE_L.AUT
 local specWarnWaltzofBlood						= mod:NewSpecialWarningDodge(327616, nil, nil, nil, 2, 2)
 local specWarnDancingFools						= mod:NewSpecialWarningSwitch(330964, "Dps", nil, nil, 1, 2)
 --Intermission
-local specWarnDanseMacabre						= mod:NewSpecialWarningSpell(328495, nil, nil, nil, 3, 2)
+local specWarnDanseMacabre						= mod:NewSpecialWarningSpell(328495, nil, nil, 2, 2, 2)
 local yellDancingFever							= mod:NewYell(347350, nil, false)--Off by default do to potential to spam when spread, going to dry run nameplate auras for this
 
 --Castellan Niklaus
