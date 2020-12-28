@@ -95,9 +95,9 @@ local timerSerratedSwipeCD						= mod:NewCDCountTimer(21.8, 334929, nil, "Tank|H
 local timerCallShadowForcesCD					= mod:NewCDCountTimer(52, 342256, nil, nil, nil, 1, nil, DBM_CORE_L.MYTHIC_ICON)
 --General Grashaal
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22288))
-local timerReverberatingEruptionCD				= mod:NewCDCountTimer(30, 344496, 138658, nil, nil, 3, nil, nil, true, 1, 3)--Short text "Eruption"
+local timerReverberatingEruptionCD				= mod:NewCDCountTimer(30, 344496, 138658, nil, 2, 3, nil, nil, true, 1)--Short text "Eruption"
 local timerSeismicUpheavalCD					= mod:NewCDCountTimer(25.1, 334498, nil, nil, nil, 3, nil, nil, true)
-local timerCrystalizeCD							= mod:NewCDCountTimer(55, 339690, nil, nil, nil, 5, nil, nil, true, 2, 3)--55 on mythic, 50 on non mythic
+local timerCrystalizeCD							= mod:NewCDCountTimer(55, 339690, nil, nil, 2, 5, nil, nil, true, 2)--55 on mythic, 50 on non mythic
 local timerStoneFistCD							= mod:NewCDCountTimer(18, 342425, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON, true)
 --Phasing
 local timerShatteringBlast						= mod:NewCastTimer(5, 332683, nil, nil, nil, 2)

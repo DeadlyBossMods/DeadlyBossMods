@@ -54,7 +54,7 @@ local specWarnEdgeofAnnihilation					= mod:NewSpecialWarningRun(328789, nil, 307
 
 mod:AddTimerLine(BOSS)
 local timerDimensionalTearCD						= mod:NewCDTimer(25, 328437, 327770, nil, nil, 3)
-local timerGlyphofDestructionCD						= mod:NewCDTimer(36.4, 325361, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)--27.9-58.6 for now
+local timerGlyphofDestructionCD						= mod:NewCDCountTimer(36.4, 325361, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)--27.9-58.6 for now
 local timerGlyphofDestruction						= mod:NewTargetTimer(4, 325361, nil, nil, 2, 2, nil, DBM_CORE_L.TANK_ICON)
 local timerStasisTrapCD								= mod:NewCDTimer(30.3, 326271, nil, nil, nil, 3)--30, except when it's reset by phase changes
 local timerRiftBlastCD								= mod:NewCDTimer(36, 335013, nil, nil, nil, 3)--36.3 except when it's reset by phase changes
@@ -78,6 +78,7 @@ mod.vb.phase = 0
 mod.vb.spartCount = 0
 mod.vb.tearIcon = 1
 mod.vb.annihilationCount = 0
+mod.vb.destructionCount = 0
 --mod.vb.lastRotation = 0--0 tear, 1 ghosts, 2 roots, 3 annihilate, 4 Second tear, 5 Empty
 mod.vb.unleashCount = 0
 mod.vb.p3FirstCast = 0--1- Tear, 2 - Annihilate
@@ -88,6 +89,7 @@ function mod:OnCombatStart(delay)
 	self.vb.spartCount = 0
 	self.vb.tearIcon = 1
 	self.vb.annihilationCount = 0
+	self.vb.destructionCount = 0
 --	self.vb.lastRotation = 1--Technically Tear is first in any phase, followed by activator, but neither are part of Spell Rotation script, so variable is set accordingly for that
 	self.vb.unleashCount = 0
 	self.vb.p3FirstCast = 0--1- Tear, 2 - Annihilate
@@ -99,7 +101,7 @@ function mod:OnCombatStart(delay)
 	timerDimensionalTearCD:Start(14)
 	timerRiftBlastCD:Start(20.3-delay)
 	timerFleetingSpiritsCD:Start(25)
-	timerGlyphofDestructionCD:Start(31.6-delay)--SUCCESS
+	timerGlyphofDestructionCD:Start(31.6-delay, 1)--SUCCESS
 --	if self.Options.RangeFrame then
 --		DBM.RangeCheck:Show(4)
 --	end
@@ -231,7 +233,8 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 325361 then
-		timerGlyphofDestructionCD:Start()
+		self.vb.destructionCount = self.vb.destructionCount + 1
+		timerGlyphofDestructionCD:Start(nil, self.vb.destructionCount+1)
 	elseif spellId == 326271 and self:IsHard() then
 		--Even fires in all difficulties even though it doesn't do anything on normal/LFR
 		specWarnStasisTrap:Show()
@@ -259,7 +262,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.tearIcon = self.vb.tearIcon + 1
 	elseif spellId == 325236 then
 		if args:IsPlayer() then
-			specWarnGlyphofDestruction:Show()
+			specWarnGlyphofDestruction:Show(self.vb.destructionCount)
 			specWarnGlyphofDestruction:Play("runout")
 			yellGlyphofDestruction:Yell()
 			yellGlyphofDestructionFades:Countdown(spellId)
@@ -348,7 +351,7 @@ function mod:OnSync(msg)
 		timerDimensionalTearCD:Start(14)
 		timerRiftBlastCD:Start(20)
 		timerSeedsofExtinctionCD:Start(21.6)
-		timerGlyphofDestructionCD:Start(27.8)--SUCCESS
+		timerGlyphofDestructionCD:Start(27.8, self.vb.destructionCount+1)--SUCCESS
 	elseif msg == "Phase3" then
 		self.vb.phase = 3
 		self.vb.p3FirstCast = 0--1- Tear, 2 - Annihilate/Unleashed
@@ -369,7 +372,7 @@ function mod:OnSync(msg)
 		timerStasisTrapCD:Start(10.7)
 		timerDimensionalTearCD:Start(14.4)
 		timerRiftBlastCD:Start(45.9)
-		timerGlyphofDestructionCD:Start(53.5)--SUCCESS
+		timerGlyphofDestructionCD:Start(53.5, self.vb.destructionCount+1)--SUCCESS
 		if self:IsMythic() then
 			timerUnleashPowerCD:Start(20)--Time until phase 3 activation edge of annihilation spell
 		else
