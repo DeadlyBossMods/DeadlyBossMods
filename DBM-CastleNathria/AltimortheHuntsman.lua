@@ -366,31 +366,33 @@ end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 334504 then--Huntsman's Bond (only boss1 is registered so dog casts SHOULD be ignored)
-		self.vb.phase = self.vb.phase + 1
-		if self.vb.phase == 2 then
-			warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(2))
-			warnPhase:Play("ptwo")
-			--Start Next Dog. Move if order changes or is variable
-			--timerSpreadshotCD:Start()--Used instantly
-			timerSinseekerCD:Stop()
-			timerRipSoulCD:Start(10)
-			timerShadesofBargastCD:Start(17.5)
-			timerSinseekerCD:Start(31.8, self.vb.sinSeekerCount+1)
-			transitionwindow = 0
-		elseif self.vb.phase == 3 then
-			warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(3))
-			warnPhase:Play("pthree")
-			--Start Next Dog. Move if order changes or is variable
-			timerSpreadshotCD:Start(6.3)
-			timerPetrifyingHowlCD:Start(15.1)
-			timerSinseekerCD:Stop()
-			if transitionwindow == 2 then--Cast within transition window
-				--It was cast going into phase change, which causes it to incurr it's full 50 second cd on this event
-				timerSinseekerCD:Start(50, self.vb.sinSeekerCount+1)
-			else
-				timerSinseekerCD:Start(30, self.vb.sinSeekerCount+1)--Need fresh transcriptor log to verify this
+		if self:GetUnitCreatureId(uId) == 165066 then
+			self.vb.phase = self.vb.phase + 1
+			if self.vb.phase == 2 then
+				warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(2))
+				warnPhase:Play("ptwo")
+				--Start Next Dog. Move if order changes or is variable
+				--timerSpreadshotCD:Start()--Used instantly
+				timerSinseekerCD:Stop()
+				timerRipSoulCD:Start(10)
+				timerShadesofBargastCD:Start(17.5)
+				timerSinseekerCD:Start(31.8, self.vb.sinSeekerCount+1)
+				transitionwindow = 0
+			elseif self.vb.phase == 3 then
+				warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(3))
+				warnPhase:Play("pthree")
+				--Start Next Dog. Move if order changes or is variable
+				timerSpreadshotCD:Start(6.3)
+				timerPetrifyingHowlCD:Start(15.1)
+				timerSinseekerCD:Stop()
+				if transitionwindow == 2 then--Cast within transition window
+					--It was cast going into phase change, which causes it to incurr it's full 50 second cd on this event
+					timerSinseekerCD:Start(50, self.vb.sinSeekerCount+1)
+				else
+					timerSinseekerCD:Start(30, self.vb.sinSeekerCount+1)--Need fresh transcriptor log to verify this
+				end
+				transitionwindow = 0
 			end
-			transitionwindow = 0
 		end
 	end
 end

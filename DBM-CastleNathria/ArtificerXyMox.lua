@@ -270,7 +270,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnGlyphofDestructionTaunt:Show(args.destName)
 			specWarnGlyphofDestructionTaunt:Play("tauntboss")
 		end
-		timerGlyphofDestruction:Start(args.destName)
+		timerGlyphofDestruction:Start(self:IsEasy() and 8 or 4, args.destName)
 	elseif spellId == 327902 then
 		warnFixate:CombinedShow(0.5, args.destName)
 		if args:IsPlayer() then
