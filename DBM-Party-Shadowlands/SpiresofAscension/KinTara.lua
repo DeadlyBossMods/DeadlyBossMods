@@ -64,7 +64,6 @@ function mod:OnCombatStart(delay)
 	--Kin-Tara
 	timerOverheadSlashCD:Start(8.3-delay)
 	timerFlightCD:Start(30.5-delay)
-	DBM:AddMsg("Note, Kin-Tara flight detection on this is using experimental code, report if phase change detection doesn't look functional")
 end
 
 function mod:OnCombatEnd()
@@ -79,7 +78,7 @@ function mod:SPELL_CAST_START(args)
 			self:UnregisterShortTermEvents()
 		end
 		specWarnOverheadSlash:Show()--Will be moved to fire earlier with timers
-		specWarnOverheadSlash:Play("gathershare")
+		specWarnOverheadSlash:Play("defensive")
 		timerOverheadSlashCD:Start()
 	elseif spellId == 327481 then
 		if self.vb.flightActive then
