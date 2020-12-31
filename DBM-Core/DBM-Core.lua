@@ -4147,7 +4147,7 @@ do
 		end
 	end
 	function DBM:TransitionToDungeonBGM(force, cleanup)
-		if cleanup then--Runs on zone change (first load delay) and combat end
+		if cleanup then--Runs on zone change/cinematic Start (first load delay) and combat end
 			self:Unschedule(self.TransitionToDungeonBGM)
 			if self.Options.RestoreSettingMusic then
 				SetCVar("Sound_EnableMusic", self.Options.RestoreSettingMusic)
@@ -6333,8 +6333,8 @@ do
 				if self.Options.EventSoundEngage2 and self.Options.EventSoundEngage2 ~= "" and self.Options.EventSoundEngage2 ~= "None" then
 					self:PlaySoundFile(self.Options.EventSoundEngage2, nil, true)
 				end
-				fireEvent("DBM_MusicStart", "BossEncounter")
-				if self.Options.EventSoundMusic and self.Options.EventSoundMusic ~= "None" and self.Options.EventSoundMusic ~= "" and not (self.Options.EventMusicMythicFilter and (savedDifficulty == "mythic" or savedDifficulty == "challenge")) then
+				if self.Options.EventSoundMusic and self.Options.EventSoundMusic ~= "None" and self.Options.EventSoundMusic ~= "" and not (self.Options.EventMusicMythicFilter and (savedDifficulty == "mythic" or savedDifficulty == "challenge")) and not mod.noStatistics then
+					fireEvent("DBM_MusicStart", "BossEncounter")
 					if not self.Options.RestoreSettingMusic then
 						self.Options.RestoreSettingMusic = tonumber(GetCVar("Sound_EnableMusic")) or 1
 						if self.Options.RestoreSettingMusic == 0 then
@@ -6345,7 +6345,7 @@ do
 					end
 					local path = "MISSING"
 					if self.Options.EventSoundMusic == "Random" then
-						local usedTable = self.Options.EventSoundMusicCombined and DBM.Music or DBM.BattleMusic
+						local usedTable = self.Options.EventSoundMusicCombined and DBM.Music or mod.inScenario and DBM.DungeonMusic or DBM.BattleMusic
 						if #usedTable >= 3 then
 							local random = fastrandom(3, #usedTable)
 							path = usedTable[random].value
@@ -7676,6 +7676,7 @@ do
 				self.Options.MoviesSeen[id] = true
 			end
 		end
+		self:TransitionToDungeonBGM(false, true)
 	end
 
 	function DBM:CINEMATIC_START()
@@ -7692,6 +7693,7 @@ do
 		else
 			self.Options.MoviesSeen[currentMapID..currentSubZone] = true
 		end
+		self:TransitionToDungeonBGM(false, true)
 	end
 	function DBM:CINEMATIC_STOP()
 		self:Debug("CINEMATIC_STOP fired", 2)
