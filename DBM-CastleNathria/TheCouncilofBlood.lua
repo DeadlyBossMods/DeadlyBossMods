@@ -680,7 +680,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		FeverStacks[args.destName] = 3
 		if self.Options.InfoFrame then
-			if not DBM.Infoframe:IsShown() then
+			if not DBM.InfoFrame:IsShown() then
 				DBM.InfoFrame:SetHeader(args.spellName)
 				DBM.InfoFrame:Show(20, "table", FeverStacks, 1)
 			else
