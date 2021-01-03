@@ -61,7 +61,7 @@ local yellViciousLungeFades						= mod:NewFadesYell(334945, 262783, nil, nil, "Y
 ----Bargast
 local specWarnRipSoul							= mod:NewSpecialWarningDefensive(334797, nil, nil, nil, 1, 2)
 local specWarnRipSoulHealer						= mod:NewSpecialWarningTarget(334797, "Healer", nil, nil, 1, 2)
-local specWarnShadesofBargast					= mod:NewSpecialWarningSwitch(334757, "Dps", nil, nil, 1, 2)
+local specWarnShadesofBargast					= mod:NewSpecialWarningSwitch(334757, false, nil, 2, 1, 2)
 ----Hecutis
 local specWarnPetrifyingHowl					= mod:NewSpecialWarningMoveAway(334852, nil, nil, nil, 1, 2)
 local yellPetrifyingHowl						= mod:NewYell(334852, 135241)--Shortname "Howl"
@@ -185,7 +185,7 @@ function mod:SPELL_CAST_START(args)
 		timerRipSoulCD:Start()
 	elseif spellId == 334757 then
 		specWarnShadesofBargast:Show()
-		specWarnShadesofBargast:Play("killmob")
+		specWarnShadesofBargast:Play("targetchange")
 		timerShadesofBargastCD:Start()
 		if self.Options.SetIconOnShades then
 			self:ScanForMobs(171557, 1, 4, 2, 0.2, 15, "SetIconOnShades")--Start at 4 ascending up
