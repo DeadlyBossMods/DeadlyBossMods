@@ -59,7 +59,7 @@ local specWarnConcentrateAnima					= mod:NewSpecialWarningMoveAway(342321, nil, 
 local yellConcentrateAnimaFades					= mod:NewShortFadesYell(342321)--^^
 local specWarnGTFO								= mod:NewSpecialWarningGTFO(325713, nil, nil, nil, 1, 8)
 --Anima Constructs
-local specWarnCondemn							= mod:NewSpecialWarningInterruptCount(331550, "HasInterrupt", nil, nil, 1, 2)--Don't really want to hard interrupt warning for something with 10 second cast, this is opt in
+local specWarnCondemn							= mod:NewSpecialWarningInterruptCount(331550, false, nil, 2, 1, 2)--Don't really want to hard interrupt warning for something with 10 second cast, this is opt in
 
 --mod:AddTimerLine(BOSS)
 local timerDesiresContainer						= mod:NewTimer(120, "timerDesiresContainer", 341621, false, "timerContainers2")
