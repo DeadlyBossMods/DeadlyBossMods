@@ -11,11 +11,12 @@ mod:SetReCombatTime(20)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 327274 327280",
+	"SPELL_CAST_START 327274 327280 327262",
 	"SPELL_CAST_SUCCESS 327256 327255 339278",
 	"SPELL_AURA_APPLIED 327255 339278",
 	"SPELL_AURA_APPLIED_DOSE 327255",
-	"SPELL_AURA_REMOVED 327280"
+	"SPELL_AURA_REMOVED 327280",
+	"CHAT_MSG_RAID_BOSS_EMOTE"
 )
 
 --TODO, verify swap stacks count for Mark, don't know it's CD so can't assess yet
@@ -42,22 +43,6 @@ local timerChargedAnimaBlastCD				= mod:NewAITimer(82.0, 327262, nil, nil, nil, 
 
 mod:AddRangeFrameOption(10, 327262)--TODO, update range if it's too big or too small
 mod:AddSetIconOption("SetIconOnAnimaBlast", 327262, true, false, {8})
-
-function mod:EmberBlastTarget(targetname, uId, bossuid, scanningTime)
-	if not targetname then return end
-	if targetname == UnitName("player") then
-		specWarnChargedAnimaBlast:Show()
-		specWarnChargedAnimaBlast:Play("runout")
-	elseif self:CheckNearby(8, targetname) then
-		specWarnChargedAnimaBlastNear:Show(targetname)
-		specWarnChargedAnimaBlastNear:Play("runaway")
-	else
-		warnChargedAnimaBlast:Show(targetname)
-	end
-	if self.Options.SetIconOnAnimaBlast then
-		self:SetIcon(targetname, 8, 4-scanningTime)--So icon clears 1 second after blast
-	end
-end
 
 function mod:OnCombatStart(delay, yellTriggered)
 	if yellTriggered then
@@ -92,7 +77,6 @@ function mod:SPELL_CAST_START(args)
 		timerRechargeAnima:Start()
 	elseif spellId == 327262 then
 		timerChargedAnimaBlastCD:Start()
-		self:BossTargetScanner(args.sourceGUID, "EmberBlastTarget", 0.15, 13)--Scans for 1.95 of 4.0 second cast, will adjust later
 	end
 end
 
@@ -152,5 +136,27 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerMarkofPenitenceCD:Start(2)
 		timerLysoniasCallCD:Start(2)--Iffy, this might be something boss actually does during recharge
 		timerChargedAnimaBlastCD:Start(2)
+	end
+end
+
+--"<54.60 11:04:21> [UNIT_SPELLCAST_START] Valinor(Zulrager) - Charged Anima Blast - 4s [[nameplate6:Cast-3-3883-2222-64-327262-0000EF4805:327262]]", -- [5166]
+--"<54.61 11:04:21> [CLEU] SPELL_CAST_START#Creature-0-3883-2222-64-167524-00006F44AB#Valinor##nil#327262#Charged Anima Blast#nil#nil", -- [5168]
+--"<54.72 11:04:21> [UNIT_TARGET] nameplate6#Valinor#Target: Disclaimz#TargetOfTarget: Valinor", -- [5175]
+--"<54.96 11:04:21> [CHAT_MSG_RAID_BOSS_EMOTE] |TInterface\\Icons\\Spell_AnimaBastion_Beam.blp:20|t Valinor targets Disclaimz with a |cFFFF0000|Hspell:327262|h[Charged Anima Blast]|h|r!#Valinor###
+function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
+	if msg:find("spell:327262") then
+		local targetname = DBM:GetUnitFullName(target)
+		if targetname == UnitName("player") then
+			specWarnChargedAnimaBlast:Show()
+			specWarnChargedAnimaBlast:Play("runout")
+		elseif self:CheckNearby(8, targetname) then
+			specWarnChargedAnimaBlastNear:Show(targetname)
+			specWarnChargedAnimaBlastNear:Play("runaway")
+		else
+			warnChargedAnimaBlast:Show(targetname)
+		end
+		if self.Options.SetIconOnAnimaBlast then
+			self:SetIcon(targetname, 8, 5)--Icon clears 1 second after blast
+		end
 	end
 end

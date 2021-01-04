@@ -5,8 +5,8 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(165066)
 mod:SetEncounterID(2418)
 mod:SetUsedIcons(1, 2, 3)
-mod:SetHotfixNoticeRev(20201219000000)--2020, 12, 19
-mod:SetMinSyncRevision(20201219000000)
+mod:SetHotfixNoticeRev(20210103000000)--2021, 01, 03
+mod:SetMinSyncRevision(20210103000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
@@ -61,7 +61,7 @@ local yellViciousLungeFades						= mod:NewFadesYell(334945, 262783, nil, nil, "Y
 ----Bargast
 local specWarnRipSoul							= mod:NewSpecialWarningDefensive(334797, nil, nil, nil, 1, 2)
 local specWarnRipSoulHealer						= mod:NewSpecialWarningTarget(334797, "Healer", nil, nil, 1, 2)
-local specWarnShadesofBargast					= mod:NewSpecialWarningSwitch(334757, "Dps", nil, nil, 1, 2)
+local specWarnShadesofBargast					= mod:NewSpecialWarningSwitch(334757, false, nil, 2, 1, 2)
 ----Hecutis
 local specWarnPetrifyingHowl					= mod:NewSpecialWarningMoveAway(334852, nil, nil, nil, 1, 2)
 local yellPetrifyingHowl						= mod:NewYell(334852, 135241)--Shortname "Howl"
@@ -128,6 +128,44 @@ do
 	end
 end
 
+local function updateAllTimers(self)
+	DBM:Debug("updateAllTimers running", 3)
+	--All phase abilities
+	if timerSpreadshotCD:GetRemaining() < 9.7 then
+		local elapsed, total = timerSpreadshotCD:GetTime()
+		local extend = 9.7 - (total-elapsed)
+		DBM:Debug("timerSpreadshotCD extended by: "..extend, 2)
+		timerSpreadshotCD:Stop()
+		timerSpreadshotCD:Update(elapsed, total+extend)
+	end
+	local phase = self.vb.phase
+	if phase == 1 then
+		if timerJaggedClawsCD:GetRemaining() < 9.7 then
+			local elapsed, total = timerJaggedClawsCD:GetTime()
+			local extend = 9.7 - (total-elapsed)
+			DBM:Debug("timerJaggedClawsCD extended by: "..extend, 2)
+			timerJaggedClawsCD:Stop()
+			timerJaggedClawsCD:Update(elapsed, total+extend)
+		end
+	elseif phase == 2 then
+		if timerRipSoulCD:GetRemaining() < 8.5 then
+			local elapsed, total = timerRipSoulCD:GetTime()
+			local extend = 8.5 - (total-elapsed)
+			DBM:Debug("timerRipSoulCD extended by: "..extend, 2)
+			timerRipSoulCD:Stop()
+			timerRipSoulCD:Update(elapsed, total+extend)
+		end
+	elseif phase == 3 then
+		if timerPetrifyingHowlCD:GetRemaining() < 9.7 then
+			local elapsed, total = timerPetrifyingHowlCD:GetTime()
+			local extend = 9.7 - (total-elapsed)
+			DBM:Debug("timerPetrifyingHowlCD extended by: "..extend, 2)
+			timerPetrifyingHowlCD:Stop()
+			timerPetrifyingHowlCD:Update(elapsed, total+extend)
+		end
+	end
+end
+
 function mod:OnCombatStart(delay)
 	transitionwindow = 0
 	self.vb.phase = 1
@@ -172,6 +210,7 @@ function mod:SPELL_CAST_START(args)
 		if transitionwindow == 1 then
 			transitionwindow = 2
 		end
+		updateAllTimers(self)
 	elseif spellId == 334404 and self.vb.phase < 4 then--It's no longer every 6 seconds in P4, it's every 3.7, that's too much spam for any warning
 		warnSpreadshot:Show()
 		timerSpreadshotCD:Start(12)--More work required to determin causes of longer ones
@@ -185,13 +224,16 @@ function mod:SPELL_CAST_START(args)
 		timerRipSoulCD:Start()
 	elseif spellId == 334757 then
 		specWarnShadesofBargast:Show()
-		specWarnShadesofBargast:Play("killmob")
+		specWarnShadesofBargast:Play("targetchange")
 		timerShadesofBargastCD:Start()
 		if self.Options.SetIconOnShades then
 			self:ScanForMobs(171557, 1, 4, 2, 0.2, 15, "SetIconOnShades")--Start at 4 ascending up
 		end
+		timerSpreadshotCD:Stop()--At very least halts timer, not sure what restart time is since sinseeker restart will automatically alter it anyways
 	elseif spellId == 334852 then
 		timerPetrifyingHowlCD:Start(self:IsMythic() and 30 or 20.6)
+		timerSpreadshotCD:Stop()
+		timerSpreadshotCD:Start(14.3)--Resets spreadshot to 14.3
 	end
 end
 
@@ -199,6 +241,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 334945 then--First event with target information, it's where we sync timers to
 		timerViciousLungeCD:Start()
+		timerSpreadshotCD:Stop()
+		timerSpreadshotCD:Start()--Resets bosses spreadshot timer
 	elseif spellId == 334797 then
 		specWarnRipSoulHealer:Show(args.destName)
 		specWarnRipSoulHealer:Play("healfull")
