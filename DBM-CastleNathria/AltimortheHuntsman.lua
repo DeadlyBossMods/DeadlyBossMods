@@ -242,7 +242,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if spellId == 334945 then--First event with target information, it's where we sync timers to
 		timerViciousLungeCD:Start()
 		timerSpreadshotCD:Stop()
-		timerSpreadshotCD:Start--Resets bosses spreadshot timer
+		timerSpreadshotCD:Start()--Resets bosses spreadshot timer
 	elseif spellId == 334797 then
 		specWarnRipSoulHealer:Show(args.destName)
 		specWarnRipSoulHealer:Play("healfull")
