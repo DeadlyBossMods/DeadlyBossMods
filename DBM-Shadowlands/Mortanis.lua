@@ -26,7 +26,7 @@ local warnBoneCleave						= mod:NewSpellAnnounce(338846, 3, nil, "Tank|Healer")
 
 --local specWarnSpineClaw						= mod:NewSpecialWarningDodge(338848, nil, nil, nil, 1, 2)
 local specWarnFrenzy						= mod:NewSpecialWarningDispel(338847, "RemoveEnrage", nil, nil, 1, 2)
-local specWarnScreamingSkull				= mod:NewSpecialWarningMoveTo(338851, nil, nil, nil, 1, 2)
+local specWarnScreamingSkull				= mod:NewSpecialWarningMoveTo(338851, nil, nil, 2, 1, 2)
 local specWarnUnrulyremains					= mod:NewSpecialWarningDodge(338849, nil, nil, nil, 2, 2)
 
 local timerSpineCrawlCD						= mod:NewCDTimer(22, 338848, nil, nil, nil, 3)
