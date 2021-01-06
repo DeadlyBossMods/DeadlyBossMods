@@ -780,7 +780,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			self:Schedule(70, expectedInfuser, self)
 			timerVileOccultistCD:Start(133.5, 1)
 			self:Schedule(143.5, expectedVile, self)
-		elseif self:IsNormal()--Normal
+		elseif self:IsNormal() then--Normal
 			timerVanquisherCD:Start(3.5, 1)
 			timerSoulInfuserCD:Start(24.2, 1)
 			self:Schedule(34.2, expectedInfuser, self)
