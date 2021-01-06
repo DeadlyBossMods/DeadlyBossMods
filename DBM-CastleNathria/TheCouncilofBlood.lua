@@ -6,8 +6,8 @@ mod:SetCreatureID(166971, 166969, 166970)--Castellan Niklaus, Baroness Frieda, L
 mod:SetEncounterID(2412)
 mod:SetBossHPInfoToHighest()
 mod:SetUsedIcons(8)
-mod:SetHotfixNoticeRev(20201217000000)--2020, 12, 17
-mod:SetMinSyncRevision(20201217000000)
+mod:SetHotfixNoticeRev(20210105000000)--2021, 01, 05
+mod:SetMinSyncRevision(20210105000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
@@ -40,9 +40,14 @@ mod:RegisterEventsInCombat(
  or ability.id = 347350 and type = "applydebuff"
  or ability.id = 346303 and type = "begincast"
  --]]
+ --I Forgot
  --https://www.warcraftlogs.com/reports/MFwzxfRcthN4C9mX#fight=36&view=events&pins=2%24Off%24%23244F4B%24expression%24(ability.id%20%3D%20330965%20or%20ability.id%20%3D%20330978%20or%20ability.id%20%3D%20327497%20or%20ability.id%20%3D%20346654%20or%20ability.id%20%3D%20337110%20or%20ability.id%20%3D%20346657%20or%20ability.id%20%3D%20346681%20or%20ability.id%20%3D%20346698%20or%20ability.id%20%3D%20346690%20or%20ability.id%20%3D%20346800)%20and%20type%20%3D%20%22begincast%22%20%20or%20(ability.id%20%3D%20331634)%20and%20type%20%3D%20%22cast%22%20%20or%20ability.id%20%3D%20332535%20or%20ability.id%20%3D%20330959%20or%20ability.id%20%3D%20332538%20or%20abiity.id%20%3D%20331918%20or%20ability.id%20%3D%20346709%20%20or%20(ability.id%20%3D%20330964%20or%20ability.id%20%3D%20335773)%20and%20type%20%3D%20%22cast%22%20%20or%20(target.id%20%3D%20166971%20or%20target.id%20%3D%20166969%20or%20target.id%20%3D%20166970)%20and%20type%20%3D%20%22death%22%20%20or%20ability.id%20%3D%20346303%20and%20type%20%3D%20%22begincast%22
  --https://www.warcraftlogs.com/reports/L8wWqHKkFmBPgTCQ#fight=16&view=events&pins=2%24Off%24%23244F4B%24expression%24(ability.id%20%3D%20330965%20or%20ability.id%20%3D%20330978%20or%20ability.id%20%3D%20327497%20or%20ability.id%20%3D%20346654%20or%20ability.id%20%3D%20337110%20or%20ability.id%20%3D%20346657%20or%20ability.id%20%3D%20346762%20or%20ability.id%20%3D%20346698%20or%20ability.id%20%3D%20346690%20or%20ability.id%20%3D%20346800)%20and%20type%20%3D%20%22begincast%22%0A%20or%20(ability.id%20%3D%20331634)%20and%20type%20%3D%20%22cast%22%0A%20or%20ability.id%20%3D%20332535%20or%20ability.id%20%3D%20330959%20or%20ability.id%20%3D%20332538%20or%20abiity.id%20%3D%20331918%20or%20ability.id%20%3D%20346709%0A%20or%20(ability.id%20%3D%20330964%20or%20ability.id%20%3D%20335773)%20and%20type%20%3D%20%22cast%22%0A%20or%20(target.id%20%3D%20166971%20or%20target.id%20%3D%20166969%20or%20target.id%20%3D%20166970)%20and%20type%20%3D%20%22death%22%20%20or%20ability.id%20%3D%20346303%20and%20type%20%3D%20%22begincast%22
  --https://www.warcraftlogs.com/reports/94ydxX23tR8Phcfj#fight=26&view=events&pins=2%24Off%24%23244F4B%24expression%24(ability.id%20%3D%20330965%20or%20ability.id%20%3D%20330978%20or%20ability.id%20%3D%20327497%20or%20ability.id%20%3D%20346654%20or%20ability.id%20%3D%20337110%20or%20ability.id%20%3D%20346657%20or%20ability.id%20%3D%20346681%20or%20ability.id%20%3D%20346698%20or%20ability.id%20%3D%20346690%20or%20ability.id%20%3D%20346800)%20and%20type%20%3D%20%22begincast%22%20%20or%20(ability.id%20%3D%20331634)%20and%20type%20%3D%20%22cast%22%20%20or%20ability.id%20%3D%20332535%20or%20ability.id%20%3D%20330959%20or%20ability.id%20%3D%20332538%20or%20abiity.id%20%3D%20331918%20or%20ability.id%20%3D%20346709%20%20or%20(ability.id%20%3D%20330964%20or%20ability.id%20%3D%20335773)%20and%20type%20%3D%20%22cast%22%20%20or%20(target.id%20%3D%20166971%20or%20target.id%20%3D%20166969%20or%20target.id%20%3D%20166970)%20and%20type%20%3D%20%22death%22%20%20or%20ability.id%20%3D%20346303%20and%20type%20%3D%20%22begincast%22
+--LFR
+--https://www.warcraftlogs.com/reports/ahyp8WPMnFcA96Vg#fight=last&view=events&pins=2%24Off%24%23244F4B%24expression%24(ability.id%20%3D%20330965%20or%20ability.id%20%3D%20330978%20or%20ability.id%20%3D%20327497%20or%20ability.id%20%3D%20346654%20or%20ability.id%20%3D%20337110%20or%20ability.id%20%3D%20346657%20or%20ability.id%20%3D%20346762%20or%20ability.id%20%3D%20346698%20or%20ability.id%20%3D%20346690%20or%20ability.id%20%3D%20346800)%20and%20type%20%3D%20%22begincast%22%20%20or%20(ability.id%20%3D%20331634)%20and%20type%20%3D%20%22cast%22%20%20or%20ability.id%20%3D%20332535%20or%20ability.id%20%3D%20330959%20or%20ability.id%20%3D%20332538%20or%20abiity.id%20%3D%20331918%20or%20ability.id%20%3D%20346709%20%20or%20(ability.id%20%3D%20330964%20or%20ability.id%20%3D%20335773)%20and%20type%20%3D%20%22cast%22%20%20or%20(target.id%20%3D%20166971%20or%20target.id%20%3D%20166969%20or%20target.id%20%3D%20166970)%20and%20type%20%3D%20%22death%22%20%20or%20ability.id%20%3D%20347350%20and%20type%20%3D%20%22applydebuff%22%20%20or%20ability.id%20%3D%20346303%20and%20type%20%3D%20%22begincast%22
+--https://www.warcraftlogs.com/reports/cNrfpg1XZt89Aa4R#fight=last&view=events&pins=2%24Off%24%23244F4B%24expression%24(ability.id%20%3D%20330965%20or%20ability.id%20%3D%20330978%20or%20ability.id%20%3D%20327497%20or%20ability.id%20%3D%20346654%20or%20ability.id%20%3D%20337110%20or%20ability.id%20%3D%20346657%20or%20ability.id%20%3D%20346762%20or%20ability.id%20%3D%20346698%20or%20ability.id%20%3D%20346690%20or%20ability.id%20%3D%20346800)%20and%20type%20%3D%20%22begincast%22%20%20or%20(ability.id%20%3D%20331634)%20and%20type%20%3D%20%22cast%22%20%20or%20ability.id%20%3D%20332535%20or%20ability.id%20%3D%20330959%20or%20ability.id%20%3D%20332538%20or%20abiity.id%20%3D%20331918%20or%20ability.id%20%3D%20346709%20%20or%20(ability.id%20%3D%20330964%20or%20ability.id%20%3D%20335773)%20and%20type%20%3D%20%22cast%22%20%20or%20(target.id%20%3D%20166971%20or%20target.id%20%3D%20166969%20or%20target.id%20%3D%20166970)%20and%20type%20%3D%20%22death%22%20%20or%20ability.id%20%3D%20347350%20and%20type%20%3D%20%22applydebuff%22%20%20or%20ability.id%20%3D%20346303%20and%20type%20%3D%20%22begincast%22
+--https://www.warcraftlogs.com/reports/zHM8mJ4hxX6TaVdG#fight=9&view=events&pins=2%24Off%24%23244F4B%24expression%24(ability.id%20%3D%20330965%20or%20ability.id%20%3D%20330978%20or%20ability.id%20%3D%20327497%20or%20ability.id%20%3D%20346654%20or%20ability.id%20%3D%20337110%20or%20ability.id%20%3D%20346657%20or%20ability.id%20%3D%20346762%20or%20ability.id%20%3D%20346698%20or%20ability.id%20%3D%20346690%20or%20ability.id%20%3D%20346800)%20and%20type%20%3D%20%22begincast%22%20%20or%20(ability.id%20%3D%20331634)%20and%20type%20%3D%20%22cast%22%20%20or%20ability.id%20%3D%20332535%20or%20ability.id%20%3D%20330959%20or%20ability.id%20%3D%20332538%20or%20abiity.id%20%3D%20331918%20or%20ability.id%20%3D%20346709%20%20or%20(ability.id%20%3D%20330964%20or%20ability.id%20%3D%20335773)%20and%20type%20%3D%20%22cast%22%20%20or%20(target.id%20%3D%20166971%20or%20target.id%20%3D%20166969%20or%20target.id%20%3D%20166970)%20and%20type%20%3D%20%22death%22%20%20or%20ability.id%20%3D%20347350%20and%20type%20%3D%20%22applydebuff%22%20%20or%20ability.id%20%3D%20346303%20and%20type%20%3D%20%22begincast%22
 --Castellan Niklaus
 local warnDualistsRiposte						= mod:NewStackAnnounce(346690, 2, nil, "Tank|Healer")
 local warnDutifulAttendant						= mod:NewSpellAnnounce(346698, 2)
@@ -135,31 +140,31 @@ local castsPerGUID = {}
 local FeverStacks = {}
 local difficultyName = "None"
 local allTimers = {
-	["lfr"] = {--Unknown, drycoded to match normal and heroic for now
+	["lfr"] = {--LFR definitely differs from everything else
 		--Duelist Riposte
-		[346690] = {21.4, 17.1, 11.4},
+		[346690] = {25, 20, 10},
 		--Dutiful Attendant
-		[346698] = {51.4, 51.4, 25.6},
+		[346698] = {60, 60, 29.9},
 		--Dreger Servants (P2+)
-		[330978] = {0, 51.4, 51.4},
+		[330978] = {0, 60, 60},
 		--Castellan's Cadre (P3+)
-		[330965] = {0, 0, 51.4},
+		[330965] = {0, 0, 60},
 
 		--Drain Essence
-		[346654] = {25.7, 19.9, 41.3},
+		[346654] = {29.9, 23.3, 48.3},
 		--Prideful Eruption (P2+)
-		[346657] = {0, 65, 40.9},
+		[346657] = {0, 43.3, 48.3},
 		--Soul Spikes (P3+)
-		[346762] = {0, 0, 40.9},
+		[346762] = {0, 0, 48.3},
 
 		--Evasive Lunge
-		[327497] = {21.4, 17.1, 11.4},
+		[327497] = {25, 19.6, 13.3},--Phase 2 lunge can get in a bugged state and spam every 10 seconds in rare cases
 		--Dark Recital
-		[331634] = {51.4, 68.1, 22.8},
+		[331634] = {60, 80, 26.6},
 		--Waltz of Blood (P2+)
-		[346800] = {0, 68.1, 68.1},
+		[346800] = {0, 80, 110},
 		--Dancing Fools (P3+)
-		[346826] = {0, 0, 68.1},
+		[346826] = {0, 0, 110},
 	},
 	["normal"] = {--Heroic and Normal same, for now, but separated for time being in case this changes
 		--Duelist Riposte
@@ -269,10 +274,10 @@ local function phaseChange(self, adjustment)
 				timerDutifulAttendantCD:Start(19.1-adjustment)--Confirmed
 			end
 		else
-			timerDredgerServantsCD:Start((self:IsMythic() and 4.4 or 5)-adjustment)--Verify heroic
-			timerDualistsRiposteCD:Start((self:IsMythic() and 8.2 or 9.2)-adjustment)
-			timerCastellansCadreCD:Start((self:IsMythic() and 11.9 or 13.5)-adjustment)
-			timerDutifulAttendantCD:Start((self:IsMythic() and 19.5 or 22.1)-adjustment)
+			timerDredgerServantsCD:Start((self:IsMythic() and 4.4 or self:IsLFR() and 5.7 or 5)-adjustment)--Verify heroic
+			timerDualistsRiposteCD:Start((self:IsMythic() and 8.2 or self:IsLFR() and 10.7 or 9.2)-adjustment)
+			timerCastellansCadreCD:Start((self:IsMythic() and 11.9 or self:IsLFR() and 15.7 or 13.5)-adjustment)
+			timerDutifulAttendantCD:Start((self:IsMythic() and 19.5 or self:IsLFR() and 25.7 or 22.1)-adjustment)
 		end
 		--Baroness Frieda
 		timerDrainEssenceCD:Stop()
@@ -283,10 +288,10 @@ local function phaseChange(self, adjustment)
 				timerDreadboltVolleyCD:Start(25-adjustment)--Might be because she cast it on transition though, needs recheck
 			end
 		else
-			--timerDreadboltVolleyCD:Start(1)--Used near imediately
-			timerDrainEssenceCD:Start((self:IsMythic() and 5 or 6.4)-adjustment)--Mythic unknown, completely guessed
-			timerPridefulEruptionCD:Start((self:IsMythic() and 17 or 20)-adjustment)--Unknown on mythic, completely guessed
-			timerSoulSpikesCD:Start((self:IsMythic() and 28 or 32.1)-adjustment)--Mythic unknown, completely guessed
+			--timerDreadboltVolleyCD:Start(1)--Used near imediately, except on LFR which has a massive delay of about 25 seconds
+			timerDrainEssenceCD:Start((self:IsMythic() and 5 or self:IsLFR() and 7.4 or 6.4)-adjustment)--Mythic unknown, completely guessed
+			timerPridefulEruptionCD:Start((self:IsMythic() and 17 or self:IsLFR() and 24.1 or 20)-adjustment)--Unknown on mythic, completely guessed
+			timerSoulSpikesCD:Start((self:IsMythic() and 28 or self:IsLFR() and 37.4 or 32.1)-adjustment)--Mythic unknown, completely guessed
 		end
 		--Lord Stavros
 		timerEvasiveLungeCD:Stop()
@@ -297,10 +302,10 @@ local function phaseChange(self, adjustment)
 				timerDarkRecitalCD:Start(37.7-adjustment)
 			end
 		else
-			timerDarkRecitalCD:Start((self:IsMythic() and 7.4 or 8.2)-adjustment)
-			timerEvasiveLungeCD:Start((self:IsMythic() and 10.7 or 12.1)-adjustment)
-			timerDancingFoolsCD:Start((self:IsMythic() and 18.2 or 20.7)-adjustment)
-			timerWaltzofBloodCD:Start((self:IsMythic() and 54.4 or 62.1)-adjustment)--START
+			timerDarkRecitalCD:Start((self:IsMythic() and 7.4 or self:IsLFR() and 9.1 or 8.2)-adjustment)
+			timerEvasiveLungeCD:Start((self:IsMythic() and 10.7 or self:IsLFR() and 14 or 12.1)-adjustment)
+			timerDancingFoolsCD:Start((self:IsMythic() and 18.2 or self:IsLFR() and 24 or 20.7)-adjustment)
+			timerWaltzofBloodCD:Start((self:IsMythic() and 54.4 or self:IsLFR() and 44.4 or 62.1)-adjustment)--START (LFR iffy, dance correction makes murky)
 		end
 	else--One Dead (Phase 2)
 		--Castellan Niklaus
@@ -312,9 +317,9 @@ local function phaseChange(self, adjustment)
 				--timerDutifulAttendantCD:Start(34.4-adjustment)--Unknown
 			--end
 		else
-			timerDredgerServantsCD:Start((self:IsMythic() and 4.4 or 13.5)-adjustment)
-			timerDualistsRiposteCD:Start((self:IsMythic() and 8.2 or 9.2)-adjustment)
-			timerDutifulAttendantCD:Start((self:IsMythic() and 34.4 or 5)-adjustment)--Mythic confirmed, this is just weird that heroic is way different
+			timerDredgerServantsCD:Start((self:IsMythic() and 4.4 or self:IsLFR() and 5.7 or 13.5)-adjustment)
+			timerDualistsRiposteCD:Start((self:IsMythic() and 8.2 or self:IsLFR() and 10.7 or 9.2)-adjustment)
+			timerDutifulAttendantCD:Start((self:IsMythic() and 34.4 or self:IsLFR() and 45.7 or 5)-adjustment)--Mythic confirmed, this is just weird that heroic is way different
 		end
 		--Baroness Frieda
 		timerDrainEssenceCD:Stop()
@@ -325,9 +330,9 @@ local function phaseChange(self, adjustment)
 			end
 		else
 			--Still needs correcting with live mythic
---			timerDreadboltVolleyCD:Start(1.3)--Used like 1 second after
-			timerDrainEssenceCD:Start((self:IsMythic() and 5 or 6.4)-adjustment)--Unknown on mythic, completely guessed
-			timerPridefulEruptionCD:Start((self:IsMythic() and 27.3 or 35)-adjustment)--Unknown on mythic, completely guessed
+--			timerDreadboltVolleyCD:Start(1.3)--Used like 1 second after except on LFR
+			timerDrainEssenceCD:Start((self:IsMythic() and 5 or self:IsLFR() and 7.4 or 6.4)-adjustment)--Unknown on mythic, completely guessed
+			timerPridefulEruptionCD:Start((self:IsMythic() and 27.3 or self:IsLFR() and 40.7 or 35)-adjustment)--Unknown on mythic, completely guessed
 		end
 		--Lord Stavros
 		timerEvasiveLungeCD:Stop()
@@ -337,9 +342,9 @@ local function phaseChange(self, adjustment)
 			--	timerDarkRecitalCD:Start(26.6-adjustment)--Unknown
 			--end
 		else
-			timerEvasiveLungeCD:Start((self:IsMythic() and 7 or 7.9)-adjustment)
-			timerDarkRecitalCD:Start((self:IsMythic() and 22.4 or 25.3)-adjustment)
-			timerWaltzofBloodCD:Start((self:IsMythic() and 26.9 or 30.7)-adjustment)--START
+			timerEvasiveLungeCD:Start((self:IsMythic() and 7 or self:IsLFR() and 10.7 or 7.9)-adjustment)
+			timerDarkRecitalCD:Start((self:IsMythic() and 22.4 or self:IsLFR() and 17.5 or 25.3)-adjustment)
+			timerWaltzofBloodCD:Start((self:IsMythic() and 26.9 or self:IsLFR() and 35.7 or 30.7)-adjustment)--START
 		end
 	end
 end
@@ -367,14 +372,8 @@ function mod:OnCombatStart(delay)
 		--Lord Stavros
 		timerEvasiveLungeCD:Start(8.4-delay)
 		timerDarkRecitalCD:Start(22.9-delay)
-	else--TODO, verify LFR and more sampling on normal vs heroic
-		if self:IsHeroic() then
-			difficultyName = "heroic"
-		elseif self:IsNormal() then
-			difficultyName = "normal"
-		else
-			difficultyName = "lfr"
-		end
+	elseif self:IsHeroic() then
+		difficultyName = "heroic"
 		--Castellan Niklaus
 		timerDutifulAttendantCD:Start(7.3-delay)
 		timerDualistsRiposteCD:Start(18.4-delay)
@@ -384,6 +383,29 @@ function mod:OnCombatStart(delay)
 		--Lord Stavros
 		timerEvasiveLungeCD:Start(8.4-delay)--Not changed?
 		timerDarkRecitalCD:Start(24.5-delay)
+	elseif self:IsNormal() then--CURRENTLY SAME AS HEROIC, which may be wrong
+		difficultyName = "normal"
+		--TODO, FIXME?
+		--Castellan Niklaus
+		timerDutifulAttendantCD:Start(7.3-delay)
+		timerDualistsRiposteCD:Start(18.4-delay)
+		--Baroness Frieda
+--		timerDreadboltVolleyCD:Start(5.5-delay)
+		timerDrainEssenceCD:Start(15.5-delay)
+		--Lord Stavros
+		timerEvasiveLungeCD:Start(8.4-delay)--Not changed?
+		timerDarkRecitalCD:Start(24.5-delay)
+	else
+		difficultyName = "lfr"
+		--Castellan Niklaus
+		timerDutifulAttendantCD:Start(7.7-delay)
+		timerDualistsRiposteCD:Start(21-delay)
+		--Baroness Frieda
+--		timerDreadboltVolleyCD:Start(6-delay)
+		timerDrainEssenceCD:Start(17.7-delay)
+		--Lord Stavros
+		timerEvasiveLungeCD:Start(9.4-delay)
+		timerDarkRecitalCD:Start(29.5-delay)
 	end
 	if self.Options.NPAuraOnFixate or self.Options.NPAuraOnShield or self.Options.NPAuraOnUproar then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")

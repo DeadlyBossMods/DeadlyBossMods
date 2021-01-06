@@ -4,12 +4,12 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(165759)
 mod:SetEncounterID(2402)
-mod:DisableIEEUCombatDetection()
+mod:DisableIEEUCombatDetection()--kael gets stuck on boss frames well after encounter has ended, therefor must not re-engage boss off this bug
 mod:SetUsedIcons(1, 2, 3, 4, 5)
 mod.onlyHighest = true--Instructs DBM health tracking to literally only store highest value seen during fight, even if it drops below that
 mod.noBossDeathKill = true--Instructs mod to ignore 165759 deaths, since goal is to heal kael, not kill him
-mod:SetHotfixNoticeRev(20201226000000)--2020, 12, 26
-mod:SetMinSyncRevision(20201226000000)
+mod:SetHotfixNoticeRev(20210105000000)--2021, 01, 05
+mod:SetMinSyncRevision(20210105000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
@@ -33,7 +33,7 @@ mod:RegisterEventsInCombat(
 --TODO, dispel warnings for Vulgar brand (333002) based on difficulty (magic non mythic, curse mythic)?
 --TODO, improved infoframe with https://shadowlands.wowhead.com/spell=339251/drained-soul tracking
 --TODO, auto mark essence spawns?
---TODO, Keep an eye on add spawns, if blizzard leaves 3 of the add types missing from combat log on mythic, scheduling will have to be added
+--TODO, Keep an eye on add spawns, if blizzard leaves 3 of the add types missing from combat log, scheduling will have to be added
 --TODO, add nameplate aura for assassins fixate/attack?
 --[[
 (ability.id = 325877 or ability.id = 329509 or ability.id = 329518 or ability.id = 328885) and type = "begincast"
@@ -161,8 +161,20 @@ local birdoTracker = {}
 --Perfect timers, executed from Darithos dying
 local difficultyName = "None"
 local addTimers = {
-	[0] = {
-		["easy"] = {
+	[0] = {--Initial add sets from engage (if Darithos doesn't die within 42 seconds of fight)
+		["lfr"] = {
+			--Bleakwing Assassin
+			[167566] = {70, 60, 80},
+			--Vile Occultist
+			[165763] = {100, 150},
+			--Soul Infuser
+			[165762] = {170, 70},
+			--Pestering Fiend
+			[168700] = {70, 60, 40, 40},
+			--Rockbound Vanquisher
+			[165764] = {50, 70, 70, 78},
+		},
+		["normal"] = {
 			--Bleakwing Assassin
 			[167566] = {70, 70, 70, 78},
 			--Vile Occultist
@@ -200,7 +212,19 @@ local addTimers = {
 		},
 	},
 	[1] = {--Initial add sets started when Darithos dies
-		["easy"] = {--Normal timers from Dec 9th
+		["lfr"] = {--lfr timers from Jan 5th
+			--Bleakwing Assassin
+			[167566] = {28, 60, 80},
+			--Vile Occultist
+			[165763] = {58, 150},
+			--Soul Infuser
+			[165762] = {128, 70},
+			--Pestering Fiend
+			[168700] = {28, 60, 40, 40},
+			--Rockbound Vanquisher
+			[165764] = {8, 70, 70, 78},
+		},
+		["normal"] = {--Normal timers from Dec 9th
 			--Bleakwing Assassin
 			[167566] = {28, 70, 70, 78},
 			--Vile Occultist
@@ -224,7 +248,7 @@ local addTimers = {
 			--Rockbound Vanquisher
 			[165764] = {8, 65},
 		},
-		["mythic"] = {--Mythic testing timers Sept 25th
+		["mythic"] = {--Mythic testing timers Sept 25th (timers are iterally unfixable since NO ONE IN WORLD will ever see them again usnig limits strat)
 			--Bleakwing Assassin
 			[167566] = {68, 30, 30, 95, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5},--5 repeating after
 			--Vile Occultist
@@ -238,7 +262,19 @@ local addTimers = {
 		},
 	},
 	[2] = {--Post Shade Departure Adds
-		["easy"] = {--Normal timers from Dec 9th
+		["lfr"] = {--LFR timers from Jan 5th (initial sets can come up to 3 seconds later, earliest clearly intended CDs used)
+			--Bleakwing Assassin
+			[167566] = {20, 60, 80},
+			--Vile Occultist
+			[165763] = {50, 140},
+			--Soul Infuser
+			[165762] = {110, 80},--80 iffy, could be 70 or 75
+			--Pestering Fiend
+			[168700] = {20, 60, 40, 40},
+			--Rockbound Vanquisher
+			[165764] = {3, 70, 70},
+		},
+		["normal"] = {--Normal timers from Dec 9th
 			--Bleakwing Assassin
 			[167566] = {58.7, 70, 65, 75, 70},
 			--Vile Occultist
@@ -296,19 +332,6 @@ function mod:EmberBlastTarget(targetname, uId, bossuid, scanningTime)
 	end
 end
 
---[[
-function mod:BlazingSurgeTarget(targetname, uId, bossuid, scanningTime)
-	if not targetname then return end
-	if targetname == UnitName("player") then
-		specWarnBlazingSurge:Show()
-		specWarnBlazingSurge:Play("runout")
-		yellBlazingSurge:Yell()
-	else
-		warnBlazingSurge:Show(targetname)
-	end
-end
---]]
-
 local updateInfoFrame
 do
 	local floor = math.floor
@@ -348,10 +371,20 @@ local function setForcedAddSpawns(self)
 	self.vb.addMode = 1
 end
 
+local function expectedVile(self)
+	self.vb.occultistCount = self.vb.occultistCount + 1
+	local timer = addTimers[self.vb.addMode][difficultyName][165763][self.vb.occultistCount+1]
+	if timer and not self.vb.shadeActive then
+		timerVileOccultistCD:Start(timer-10, self.vb.occultistCount+1)
+		self:Unschedule(expectedVile)
+		self:Schedule(timer, expectedVile, self)
+	end
+end
+
 local function expectedInfuser(self)
 	self.vb.infuserCount = self.vb.infuserCount + 1
 	local timer = addTimers[self.vb.addMode][difficultyName][165762][self.vb.infuserCount+1]
-	if timer then
+	if timer and not self.vb.shadeActive then
 		timerSoulInfuserCD:Start(timer-10, self.vb.infuserCount+1)
 		self:Unschedule(expectedInfuser)
 		self:Schedule(timer, expectedInfuser, self)
@@ -383,36 +416,49 @@ function mod:OnCombatStart(delay)
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
 	self:Schedule(42, setForcedAddSpawns, self)
+	--Same on all
+	timerVanquisherCD:Start(50, 1)
 	if self:IsMythic() then
 		difficultyName = "mythic"
-		timerVanquisherCD:Start(50, 1)
 		timerSoulInfuserCD:Start(75, 1)
 		self:Unschedule(expectedInfuser)
 		self:Schedule(85, expectedInfuser, self)
 --		timerPesteringFiendCD:Start(100, 1)
 		timerBleakwingAssassinCD:Start(110, 1)
 		timerVileOccultistCD:Start(110, 1)
+		self:Unschedule(expectedVile)
+		self:Schedule(120, expectedVile, self)
 		timerCloakofFlamesCD:Start(80, 1)--IFFY
 	elseif self:IsHeroic() then
 		difficultyName = "heroic"
-		timerVanquisherCD:Start(50, 1)
 		timerBleakwingAssassinCD:Start(70, 1)
 		timerVileOccultistCD:Start(70, 1)
+		self:Unschedule(expectedVile)
+		self:Schedule(80, expectedVile, self)
 		timerPesteringFiendCD:Start(100, 1)
 		timerSoulInfuserCD:Start(130, 1)
 		self:Unschedule(expectedInfuser)
 		self:Schedule(140, expectedInfuser, self)
 	elseif self:IsNormal() then
-		difficultyName = "easy"
-		timerVanquisherCD:Start(50, 1)
+		difficultyName = "normal"
 		timerBleakwingAssassinCD:Start(70, 1)
 		timerPesteringFiendCD:Start(70, 1)
 		timerVileOccultistCD:Start(105, 1)
+		self:Unschedule(expectedVile)
+		self:Schedule(115, expectedVile, self)
 		timerSoulInfuserCD:Start(185, 1)
 		self:Unschedule(expectedInfuser)
 		self:Schedule(195, expectedInfuser, self)
 	else
-		difficultyName = "easy"
+		difficultyName = "lfr"
+		timerBleakwingAssassinCD:Start(70, 1)
+		timerPesteringFiendCD:Start(70, 1)
+		timerVileOccultistCD:Start(100, 1)
+		self:Unschedule(expectedVile)
+		self:Schedule(110, expectedVile, self)
+		timerSoulInfuserCD:Start(170, 1)
+		self:Unschedule(expectedInfuser)
+		self:Schedule(180, expectedInfuser, self)
 	end
 end
 
@@ -440,9 +486,9 @@ function mod:OnTimerRecovery()
 	elseif self:IsHeroic() then
 		difficultyName = "heroic"
 	elseif self:IsNormal() then
-		difficultyName = "easy"
+		difficultyName = "normal"
 	else
-		difficultyName = "easy"
+		difficultyName = "lfr"
 	end
 end
 
@@ -521,6 +567,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 				local timer = addTimers[self.vb.addMode][difficultyName][cid][self.vb.occultistCount+1]
 				if timer and timer > 5 then
 					timerVileOccultistCD:Start(timer, self.vb.occultistCount+1)
+					self:Unschedule(expectedVile)
+					self:Schedule(timer+10, expectedVile, self)
 				end
 			elseif cid == 165762 then
 				self.vb.infuserCount = self.vb.infuserCount + 1
@@ -652,6 +700,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.cloakCount = 0
 		timerSoulInfuserCD:Stop()
 		self:Unschedule(expectedInfuser)
+		self:Unschedule(expectedVile)
 		timerPesteringFiendCD:Stop()
 		timerBleakwingAssassinCD:Stop()
 		timerVileOccultistCD:Stop()
@@ -710,12 +759,14 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerEmberBlastCD:Stop()
 		timerBlazingSurgeCD:Stop()
 		timerFieryStrikeCD:Stop()
+		self:Unschedule(expectedVile)
+		self:Unschedule(expectedInfuser)
 		if self:IsMythic() then
 			timerVanquisherCD:Start(3.5, 1)
 			timerBleakwingAssassinCD:Start(23.3, 1)
 			timerVileOccultistCD:Start(23.3, 1)
+			self:Schedule(33.3, expectedVile, self)
 			timerSoulInfuserCD:Start(90, 1)
-			self:Unschedule(expectedInfuser)
 			self:Schedule(100, expectedInfuser, self)
 			--timerPesteringFiendCD:Start(4, 1)--None seem to spawn anymore after shades?
 			if self:IsMythic() then
@@ -726,17 +777,25 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerBleakwingAssassinCD:Start(23.5, 1)
 			timerPesteringFiendCD:Start(23.5, 1)
 			timerSoulInfuserCD:Start(60, 1)
-			self:Unschedule(expectedInfuser)
 			self:Schedule(70, expectedInfuser, self)
 			timerVileOccultistCD:Start(133.5, 1)
-		else--Normal and LFR combined for now until verify they are different
+			self:Schedule(143.5, expectedVile, self)
+		elseif self:IsNormal()--Normal
 			timerVanquisherCD:Start(3.5, 1)
 			timerSoulInfuserCD:Start(24.2, 1)
-			self:Unschedule(expectedInfuser)
 			self:Schedule(34.2, expectedInfuser, self)
 			timerBleakwingAssassinCD:Start(58.7, 1)
 			timerPesteringFiendCD:Start(58.7, 1)
 			timerVileOccultistCD:Start(94.2, 1)
+			self:Schedule(104.2, expectedVile, self)
+		else--LFR
+			timerVanquisherCD:Start(3, 1)
+			timerBleakwingAssassinCD:Start(20, 1)
+			timerPesteringFiendCD:Start(20, 1)
+			timerVileOccultistCD:Start(50, 1)
+			self:Schedule(60, expectedVile, self)
+			timerSoulInfuserCD:Start(110, 1)
+			self:Schedule(120, expectedInfuser, self)
 		end
 	elseif spellId == 337859 or spellId == 343026 then
 		self.vb.cloakActive = false
@@ -769,28 +828,41 @@ function mod:UNIT_DIED(args)
 			timerBleakwingAssassinCD:Stop()
 			timerVileOccultistCD:Stop()
 			timerCloakofFlamesCD:Stop()
+			self:Unschedule(expectedInfuser)
+			self:Unschedule(expectedVile)
 			if self:IsMythic() then
 				timerVanquisherCD:Start(8, 1)
-				timerSoulInfuserCD:Start(35, 1)
-				self:Schedule(45, expectedInfuser, self)
+				timerSoulInfuserCD:Start(32, 1)
+				self:Schedule(42, expectedInfuser, self)
 				--timerPesteringFiendCD:Start(58, 1)
-				timerBleakwingAssassinCD:Start(60, 1)
+				timerBleakwingAssassinCD:Start(68, 1)
 				timerVileOccultistCD:Start(68, 1)
+				self:Schedule(78, expectedVile, self)
 				timerCloakofFlamesCD:Start(38, 1)--Mythic Only
 			elseif self:IsHeroic() then
-				timerVanquisherCD:Start(30, 1)
-				timerBleakwingAssassinCD:Start(50, 1)--Come earlier on easy
-				timerVileOccultistCD:Start(50, 1)
-				timerPesteringFiendCD:Start(80, 1)
-				timerSoulInfuserCD:Start(110, 1)
-				self:Schedule(120, expectedInfuser, self)
-			else--TODO, verify normal and LFR share timers
-				timerVanquisherCD:Start(50, 1)
-				timerBleakwingAssassinCD:Start(70, 1)--Come earlier on easy
-				timerPesteringFiendCD:Start(70, 1)
-				timerVileOccultistCD:Start(105, 1)
-				timerSoulInfuserCD:Start(185, 1)
-				self:Schedule(195, expectedInfuser, self)
+				timerVanquisherCD:Start(8, 1)
+				timerBleakwingAssassinCD:Start(28, 1)
+				timerVileOccultistCD:Start(28, 1)
+				self:Schedule(38, expectedVile, self)
+				timerPesteringFiendCD:Start(58, 1)
+				timerSoulInfuserCD:Start(88, 1)
+				self:Schedule(98, expectedInfuser, self)
+			elseif self:IsNormal() then
+				timerVanquisherCD:Start(8, 1)
+				timerBleakwingAssassinCD:Start(28, 1)
+				timerPesteringFiendCD:Start(28, 1)
+				timerVileOccultistCD:Start(63, 1)
+				self:Schedule(73, expectedVile, self)
+				timerSoulInfuserCD:Start(133, 1)
+				self:Schedule(143, expectedInfuser, self)
+			else--LFR
+				timerVanquisherCD:Start(8, 1)
+				timerBleakwingAssassinCD:Start(28, 1)
+				timerPesteringFiendCD:Start(28, 1)
+				timerVileOccultistCD:Start(58, 1)
+				self:Schedule(68, expectedVile, self)
+				timerSoulInfuserCD:Start(128, 1)
+				self:Schedule(138, expectedInfuser, self)
 			end
 		end
 	elseif cid == 165764 then--Rockbound Vanquisher
@@ -841,6 +913,8 @@ function mod:OnSync(msg, guid)
 				local timer = addTimers[self.vb.addMode][difficultyName][cid][self.vb.occultistCount+1]
 				if timer and timer > 5 then
 					timerVileOccultistCD:Start(timer, self.vb.occultistCount+1)
+					self:Unschedule(expectedVile)
+					self:Schedule(timer+10, expectedVile, self)
 				end
 			elseif cid == 165762 then
 				self.vb.infuserCount = self.vb.infuserCount + 1
