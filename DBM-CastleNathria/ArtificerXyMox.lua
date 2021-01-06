@@ -134,7 +134,7 @@ function mod:SPELL_CAST_START(args)
 				if self:IsMythic() then
 					timerUnleashPowerCD:Start(40)
 				else
-					timerDimensionalTearCD:Start(25)--(26.75) Which means next cast is tear 2
+					timerDimensionalTearCD:Start(25)--(26.75)
 				end
 			end
 		else--If boss is casting 342310 he's transitioning into a new phase and spawning initial rifts for that phase
@@ -166,7 +166,7 @@ function mod:SPELL_CAST_START(args)
 		end
 		timerDimensionalTearCD:Start(33.5)
 	elseif spellId == 340788 then--Seeds of Extinction casts 2+ (the one rotator is linked to)
-		timerDimensionalTearCD:Start(self:IsMythic() and 25 or 20)
+		timerDimensionalTearCD:Start(self:IsMythic() and 25 or 20.2)
 	elseif spellId == 329834 then--Seeds cast itself, for warnings
 		warnSeedsofExtinction:Show()
 	elseif spellId == 329107 and self:AntiSpam(3, 1) then--Seeds Extinction Cast
@@ -195,7 +195,7 @@ function mod:SPELL_CAST_START(args)
 			self.vb.p3FirstCast = 2
 			DBM:AddMsg("This is very likely a bugged pull. This may cause you to wipe. Refer to https://us.forums.blizzard.com/en/wow/t/feedback-mythic-artificer-xymox/617893/5")
 		end
-		timerDimensionalTearCD:Start(25)
+		timerDimensionalTearCD:Start(25.2)
 	elseif spellId == 328789 then--Script for the actual annihilate, where warning handling is done
 		self.vb.annihilationCount = self.vb.annihilationCount + 1
 		specWarnEdgeofAnnihilation:Show(self.vb.annihilationCount)
