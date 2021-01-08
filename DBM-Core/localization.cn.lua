@@ -1,8 +1,7 @@
 -- L.Core
 -- Diablohu(diablohudream@gmail.com)
 -- yleaf(yaroot@gmail.com)
--- Mini Dragon(projecteurs@gmail.com)
--- Last update: 2020/02/07
+-- Mini Dragon(projecteurs@gmail.com) <流浪者酒馆-Brilla@金色平原> 20210108
 
 if GetLocale() ~= "zhCN" then return end
 if not DBM_CORE_L then DBM_CORE_L = {} end
@@ -512,7 +511,8 @@ L.AUTO_YELL_OPTION_TEXT.count		= "当你受到$spell:%s影响时大喊（带倒�
 L.AUTO_YELL_OPTION_TEXT.fade			= "当你身上的$spell:%s即将消失时大喊（带倒数和技能名称）"
 L.AUTO_YELL_OPTION_TEXT.shortfade	= "当你身上的$spell:%s即将消失时大喊（带倒数）"
 L.AUTO_YELL_OPTION_TEXT.iconfade		= "当你身上的$spell:%s即将消失时大喊（带倒数和标记）"
-L.AUTO_YELL_OPTION_TEXT.position		= "当你受到$spell:%s影响时大喊（带位置）"
+L.AUTO_YELL_OPTION_TEXT.position		= "当你受到$spell:%s影响时大喊（带位置和名字）"
+L.AUTO_YELL_OPTION_TEXT.shortposition	= "当你受到$spell:%s影响时大喊（带位置）"
 L.AUTO_YELL_OPTION_TEXT.combo		= "当你受到$spell:%s影响时大喊（带一个自定义文本）"
 --
 L.AUTO_YELL_ANNOUNCE_TEXT.shortyell	= "%s"
@@ -522,6 +522,7 @@ L.AUTO_YELL_ANNOUNCE_TEXT.fade		= "%s 剩%%d秒"
 L.AUTO_YELL_ANNOUNCE_TEXT.shortfade	= "%%d秒"
 L.AUTO_YELL_ANNOUNCE_TEXT.iconfade	= "{rt%%2$d}%%1$d秒"
 L.AUTO_YELL_ANNOUNCE_TEXT.position	= UnitName("player").. " ({rt%%3$d})中了%1$s (%%1$s - {rt%%2$d})"
+L.AUTO_YELL_ANNOUNCE_TEXT.shortposition	= "{rt%%1$d}%s, %%2$d" --Icon, Spellname, number
 L.AUTO_YELL_ANNOUNCE_TEXT.combo		= "%s, %%s"
 
 --
