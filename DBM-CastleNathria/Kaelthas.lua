@@ -867,7 +867,7 @@ function mod:UNIT_DIED(args)
 		end
 	elseif cid == 165764 then--Rockbound Vanquisher
 		timerVanquishingStrikeCD:Stop(args.destGUID)
-		timerConcussiveSmashCD:Stop(castsPerGUID[args.destGUID]+1, args.destGUID)
+		timerConcussiveSmashCD:Stop((castsPerGUID[args.destGUID] or 0)+1, args.destGUID)
 --	elseif cid == 167566 then--bleakwing-assassin
 --		timerCrimsonFuryCD:Stop(args.destGUID)
 --	elseif cid == 165763 then--vile-occultist
