@@ -1,7 +1,7 @@
 -- Diablohu(diablohudream@gmail.com)
 -- yleaf(yaroot@gmail.com)
 -- sunlcy@NGA
--- Mini Dragon <流浪者酒馆-Brilla@金色平原> 20201221
+-- Mini Dragon <流浪者酒馆-Brilla@金色平原> 20210108
 
 if GetLocale() ~= "zhCN" then return end
 if not DBM_GUI_L then DBM_GUI_L = {} end
@@ -333,6 +333,7 @@ L.StripTimerText			= "分离 CD/下一次 计时条"
 L.KeepBar					= "保持计时条显示直到技能被释放"
 L.KeepBar2					= "(当被模组支持时)"
 L.FadeBar					= "隐藏超出技能范围的计时条"
+L.BarSkin					= "计时条外观"
 
 -- Tab: Global Disables & Filters
 L.TabCategory_Filters	 	= "禁用及过滤选项"
