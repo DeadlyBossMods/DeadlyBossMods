@@ -308,7 +308,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 329774 then
 		if not args:IsPlayer() then
-			specWarnOverwhelmTaunt:Show()
+			specWarnOverwhelmTaunt:Show(args.destName)
 			specWarnOverwhelmTaunt:Play("tauntboss")
 		end
 	end

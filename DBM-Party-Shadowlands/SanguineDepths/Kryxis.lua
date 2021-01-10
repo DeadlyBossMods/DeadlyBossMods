@@ -36,7 +36,7 @@ local specWarnJuggernautRushSoak	= mod:NewSpecialWarningMoveTo(319713, nil, nil,
 
 local timerViciousHeadbuttCD		= mod:NewCDTimer(18.2, 319650, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON)--18.2 unless delayed by other abilities
 local timerHungeringDrainCD			= mod:NewCDTimer(19.4, 319654, nil, nil, nil, 4, nil, DBM_CORE_L.INTERRUPT_ICON)
-local timerSeveringSmashCD			= mod:NewCDTimer(40.1, 319685, nil, nil, nil, 6)
+local timerSeveringSmashCD			= mod:NewCDTimer(38.9, 319685, nil, nil, nil, 6)
 local timerJuggernautRushCD			= mod:NewCDTimer(18.2, 319713, nil, nil, nil, 3)
 
 mod:AddSetIconOption("SetIconOnJuggernaut", 319713, true, false, {1})
