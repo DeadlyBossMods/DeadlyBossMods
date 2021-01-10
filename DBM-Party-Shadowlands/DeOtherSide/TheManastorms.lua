@@ -46,7 +46,7 @@ local specWarnLaser					= mod:NewSpecialWarningMoveTo(323877, nil, 143444, nil, 
 local yellLaser						= mod:NewYell(323877)
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(257274, nil, nil, nil, 1, 8)
 --Stage Two: Millificent's Gadgets
-local specWarnAerialRocketChicken	= mod:NewSpecialWarningDodge(321061, nil, 45255, nil, 2, 2, 4)--Mythic only
+local specWarnAerialRocketChicken	= mod:NewSpecialWarningDefensive(321061, nil, 45255, nil, 2, 2, 4)--Mythic only
 local specWarnShadowfury			= mod:NewSpecialWarningMoveTo(320132, nil, nil, nil, 2, 8, 4)--Mythic only
 
 --General
@@ -125,7 +125,7 @@ function mod:SPELL_CAST_START(args)
 --		timerMechanicalBombSquirrelCD:Start()
 	elseif spellId == 321061 then
 		specWarnAerialRocketChicken:Show()
-		specWarnAerialRocketChicken:Play("watchstep")
+		specWarnAerialRocketChicken:Play("defensive")
 --		timerAerialRocketChickenCD:Start()--Not cast more than once per rotation
 	elseif spellId == 320132 then
 		self.vb.furyCount = self.vb.furyCount + 1
