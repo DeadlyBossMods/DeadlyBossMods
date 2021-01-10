@@ -34,7 +34,7 @@ local specWarnGloomSquall			= mod:NewSpecialWarningMoveTo(322903, nil, nil, nil,
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(257274, nil, nil, nil, 1, 8)
 
 local timerWickedRushCD				= mod:NewCDTimer(15.8, 323845, nil, nil, nil, 3)--5.7, 15.8, 20.7, 15.8
-local timerPiercingBlurCD			= mod:NewCDTimer(17, 323810, nil, nil, nil, 3)--17-25.4
+local timerPiercingBlurCD			= mod:NewCDTimer(9.3, 323810, nil, nil, nil, 3)--9.3 now? (17-25.4 old)
 local timerGloomSquallCD			= mod:NewCDTimer(37.7, 322903, nil, nil, nil, 2, nil, DBM_CORE_L.IMPORTANT_ICON)
 --local timerShiningRadiance			= mod:NewCDTimer(35, 324086, nil, nil, nil, 5)
 
@@ -56,7 +56,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.blurCast = self.vb.blurCast + 1
 		specWarnPiercingBlur:Show()
 		specWarnPiercingBlur:Play("watchstep")
-		timerPiercingBlurCD:Start(self.vb.blurCast == 2 and 20.7 or 9.7)
+		timerPiercingBlurCD:Start()
 	elseif spellId == 322903 then
 		--Each ability cast twice between glooms, then sequence starts over
 		self.vb.rushCast = 0
