@@ -4444,7 +4444,7 @@ end
 
 do
 	local function checkForActualPull()
-		if DBM.Options.RecordOnlyBosses and #inCombat == 0 then
+		if (DBM.Options.RecordOnlyBosses and #inCombat == 0) or difficultyIndex ~= 8 then
 			DBM:StopLogging()
 		end
 	end
@@ -4664,9 +4664,7 @@ do
 				dummyMod.text:Schedule(timer, L.ANNOUNCE_PULL_NOW)
 			end
 		end
-		if DBM.Options.RecordOnlyBosses then
-			DBM:StartLogging(timer, checkForActualPull)--Start logging here to catch pre pots.
-		end
+		DBM:StartLogging(timer, checkForActualPull)--Start logging here to catch pre pots.
 		if DBM.Options.CheckGear then
 			local bagilvl, equippedilvl = GetAverageItemLevel()
 			local difference = bagilvl - equippedilvl
