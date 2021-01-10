@@ -4664,7 +4664,9 @@ do
 				dummyMod.text:Schedule(timer, L.ANNOUNCE_PULL_NOW)
 			end
 		end
-		DBM:StartLogging(timer, checkForActualPull)--Start logging here to catch pre pots.
+		if DBM.Options.RecordOnlyBosses or difficultyIndex == 23 then
+			DBM:StartLogging(timer, checkForActualPull)--Start logging here to catch pre pots.
+		end
 		if DBM.Options.CheckGear then
 			local bagilvl, equippedilvl = GetAverageItemLevel()
 			local difference = bagilvl - equippedilvl
