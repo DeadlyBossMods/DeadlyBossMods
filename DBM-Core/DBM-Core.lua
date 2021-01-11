@@ -1643,7 +1643,7 @@ do
 				"LOADING_SCREEN_DISABLED",
 				"LOADING_SCREEN_ENABLED",
 				"SCENARIO_COMPLETED",
-				"CHALLENGE_MODE_RESET",
+				"CHALLENGE_MODE_RESET"
 			)
 			if RolePollPopup:IsEventRegistered("ROLE_POLL_BEGIN") then
 				RolePollPopup:UnregisterEvent("ROLE_POLL_BEGIN")
