@@ -4269,7 +4269,7 @@ do
 
 	function DBM:CHALLENGE_MODE_RESET()
 		if not self.Options.RecordOnlyBosses then
-			self:StartLogging(0, nil)
+			self:StartLogging(0, nil, true)
 		end
 	end
 
@@ -6714,9 +6714,9 @@ do
 		return false
 	end
 
-	function DBM:StartLogging(timer, checkFunc)
+	function DBM:StartLogging(timer, checkFunc, force)
 		self:Unschedule(DBM.StopLogging)
-		if self.Options.LogOnlyNonTrivial and ((LastInstanceType ~= "raid" and difficultyIndex ~= 8) or IsPartyLFG() or not isCurrentContent()) then return end
+		if not force and self.Options.LogOnlyNonTrivial and ((LastInstanceType ~= "raid" and difficultyIndex ~= 8) or IsPartyLFG() or not isCurrentContent()) then return end
 		if self.Options.AutologBosses then
 			if not LoggingCombat() then
 				autoLog = true
