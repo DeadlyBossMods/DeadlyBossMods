@@ -1642,7 +1642,8 @@ do
 				"PARTY_INVITE_REQUEST",
 				"LOADING_SCREEN_DISABLED",
 				"LOADING_SCREEN_ENABLED",
-				"SCENARIO_COMPLETED"
+				"SCENARIO_COMPLETED",
+				"CHALLENGE_MODE_RESET",
 			)
 			if RolePollPopup:IsEventRegistered("ROLE_POLL_BEGIN") then
 				RolePollPopup:UnregisterEvent("ROLE_POLL_BEGIN")
@@ -4266,6 +4267,12 @@ do
 		end
 	end
 
+	function DBM:CHALLENGE_MODE_RESET()
+		if not self.Options.RecordOnlyBosses then
+			self:StartLogging(0, nil)
+		end
+	end
+
 	function DBM:LOADING_SCREEN_ENABLED()
 		--TimerTracker Cleanup, required to work around logic code blizzard put into TimerTracker for /countdown timers
 		--TimerTracker is hard coded that if a type 3 timer exists, to give it prio over type 1 and type 2. This causes the M+ timer not to show, even if only like 0.01 sec was left on the /countdown
@@ -4444,7 +4451,7 @@ end
 
 do
 	local function checkForActualPull()
-		if (DBM.Options.RecordOnlyBosses and #inCombat == 0) or difficultyIndex ~= 8 then
+		if DBM.Options.RecordOnlyBosses and #inCombat == 0 then
 			DBM:StopLogging()
 		end
 	end
@@ -4664,7 +4671,7 @@ do
 				dummyMod.text:Schedule(timer, L.ANNOUNCE_PULL_NOW)
 			end
 		end
-		if DBM.Options.RecordOnlyBosses or difficultyIndex == 23 then
+		if DBM.Options.RecordOnlyBosses then
 			DBM:StartLogging(timer, checkForActualPull)--Start logging here to catch pre pots.
 		end
 		if DBM.Options.CheckGear then
