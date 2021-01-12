@@ -1114,8 +1114,11 @@ function barPrototype:Update(elapsed)
 		else
 			newY = self.moveOffsetY + (-barOptions[isEnlarged and "HugeBarYOffset" or "BarYOffset"] - self.moveOffsetY) * (melapsed / 0.5)
 		end
-		frame:ClearAllPoints()
-		frame:SetPoint(self.movePoint, self.moveAnchor, self.moveRelPoint, newX, newY)
+		local _, anchorPoint = self.moveAnchor:GetPoint(1)
+		if anchorPoint ~= frame then -- Prevent a possible dependency loop issue... Just ignore and leave as be.
+			frame:ClearAllPoints()
+			frame:SetPoint(self.movePoint, self.moveAnchor, self.moveRelPoint, newX, newY)
+		end
 	elseif isMoving == "move" then
 		barIsAnimating = false
 		self.moving = nil
