@@ -95,7 +95,7 @@ local yellFatalfFinesseFades					= mod:NewIconFadesYell(332794)
 local specWarnSinisterReflection				= mod:NewSpecialWarningCount(333979, nil, nil, nil, 2, 2, 4)--Both Massacre and Ravage at same time
 
 --Stage One: Sinners Be Cleansed
---mod:AddTimerLine(BOSS)
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(22016))
 local timerCleansingPainCD						= mod:NewNextCountTimer(16.6, 326707, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON, nil, 2, 3)
 local timerBloodPriceCD							= mod:NewCDCountTimer(57.3, 326851, nil, nil, nil, 2, nil, DBM_CORE_L.HEALER_ICON)
 local timerFeedingTimeCD						= mod:NewCDCountTimer(44.3, 327039, nil, nil, nil, 3)--Normal/LFR
@@ -104,6 +104,7 @@ local timerCommandRavageCD						= mod:NewCDCountTimer(57.2, 327227, 327122, nil,
 --Intermission: March of the Penitent
 local timerNextPhase							= mod:NewPhaseTimer(16.5, 328117, nil, nil, nil, 6, nil, nil, nil, 1, 4)
 --Stage Two: The Crimson Chorus
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(22059))
 ----Crimson Cabalist and horsemen
 local timerCrimsonCabalistsCD					= mod:NewNextCountTimer(44.3, "ej22131", nil, nil, nil, 1, 329711)
 ----Remornia
@@ -113,6 +114,7 @@ local timerWrackingPainCD						= mod:NewCDCountTimer(16.6, 329181, nil, nil, nil
 local timerHandofDestructionCD					= mod:NewCDCountTimer(44.3, 333932, nil, nil, nil, 2)
 local timerCommandMassacreCD					= mod:NewCDCountTimer(49.8, 330042, 330137, nil, nil, 3, nil, DBM_CORE_L.DEADLY_ICON)--Mythic 41-45, Heroic 47.4-51
 --Stage Three: Indignation
+mod:AddTimerLine(DBM:EJ_GetSectionInfo(22195))
 local timerShatteringPainCD						= mod:NewCDCountTimer(23.1, 332619, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON)
 local timerFatalFitnesseCD						= mod:NewCDCountTimer(22, 332794, nil, nil, nil, 3)
 local timerSinisterReflectionCD					= mod:NewCDCountTimer(60, 333979, nil, nil, nil, 3, nil, DBM_CORE_L.DEADLY_ICON)--Used on mythic, Massacre and Ravage combined

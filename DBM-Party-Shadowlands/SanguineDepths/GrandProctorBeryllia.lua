@@ -21,6 +21,7 @@ mod:RegisterEventsInCombat(
 --]]
 --TODO, more info needed, like how many people can get protection and how much, and how to show it, infoframe?
 --TODO, fine tune range frame to not show when endless torment isn't being cast
+--TODO, more timer data verification
 local warnRiteofSupremacy			= mod:NewCastAnnounce(325360, 4)
 
 local specWarnIronSpikes			= mod:NewSpecialWarningDefensive(325254, nil, nil, nil, 1, 2)
@@ -35,9 +36,16 @@ local timerEndlessTormentCD			= mod:NewNextTimer(38.8, 326039, nil, nil, nil, 2)
 mod:AddRangeFrameOption(6, 325885)
 
 mod.vb.spikesCast = 0
+mod.vb.tormentCast = 0
+mod.vb.riteCast = 0
+local tormentTimers = {24.2, 11.3, 32.7, 39.7, 11.3, 31.1}
+local spikesTimers = {3.5, 44.1, 32.7, 50.6}
+local riteTimers = {11, 42.9, 40, 42.5}
 
 function mod:OnCombatStart(delay)
 	self.vb.spikesCast = 0
+	self.vb.tormentCast = 0
+	self.vb.riteCast = 0
 	timerIronSpikesCD:Start(3.5-delay)
 	timerRiteofSupremacyCD:Start(11-delay)
 	timerEndlessTormentCD:Start(24.2-delay)
@@ -58,15 +66,20 @@ function mod:SPELL_CAST_START(args)
 		self.vb.spikesCast = self.vb.spikesCast + 1
 		specWarnIronSpikes:Show()
 		specWarnIronSpikes:Play("defensive")
-		timerIronSpikesCD:Start(self.vb.spikesCast == 1 and 31.6 or 37.9)
+		local timer = spikesTimers[self.vb.spikesCast+1] or 32.7
+		timerIronSpikesCD:Start(timer)
 	elseif spellId == 325360 then
+		self.vb.riteCast = self.vb.riteCast + 1
 		warnRiteofSupremacy:Show()
 		timerRiteofSupremacy:Start()
-		timerRiteofSupremacyCD:Start()
+		local timer = riteTimers[self.vb.riteCast+1] or 40
+		timerRiteofSupremacyCD:Start(timer)
 	elseif spellId == 326039 then
+		self.vb.tormentCast = self.vb.tormentCast + 1
 		specWarnEndlessTorment:Show()
 		specWarnEndlessTorment:Play("range5")
-		timerEndlessTormentCD:Start()
+		local timer = tormentTimers[self.vb.tormentCast+1] or 11.3
+		timerEndlessTormentCD:Start(timer)
 	end
 end
 

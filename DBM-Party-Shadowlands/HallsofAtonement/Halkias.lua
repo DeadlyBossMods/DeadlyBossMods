@@ -8,20 +8,20 @@ mod:SetEncounterID(2401)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_AURA_APPLIED 322977",
 	"SPELL_CAST_START 322936 322711",
 	"SPELL_CAST_SUCCESS 322943",
+	"SPELL_AURA_APPLIED 322977",
 	"SPELL_PERIODIC_DAMAGE 323001",
 	"SPELL_PERIODIC_MISSED 323001"
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
 --TODO, Target scan Heave Debris? it's instant cast, maybe it has an emote?
---TODO, timers on fight seem utterly useless, need a lot more combat data to find out what's going on
---TODO, fights timers are really all over place, might be health based or some other unknown factor
+--Sinlight visions deleted?
+--Not entirely convinced refracted sinlight is a timer (and not health based)
 --[[
-(ability.id = 322936 or ability.id = 322711) and type = "begincast"
- or (ability.id = 322943 or ability.id = 322977) and type = "cast"
+(ability.id = 322936 or ability.id = 322711 or ability.id = 322977) and type = "begincast"
+ or (ability.id = 322943) and type = "cast"
  or ability.id = 322977 and type = "applydebuff"
 --]]
 local warnHeaveDebris				= mod:NewSpellAnnounce(322943, 3)
@@ -31,23 +31,18 @@ local specWarnRefractedSinlight		= mod:NewSpecialWarningDodge(322711, nil, nil, 
 local specWarnSinlightVisions		= mod:NewSpecialWarningDispel(322977, "RemoveMagic", nil, nil, 1, 2)
 local specWarnGTFO					= mod:NewSpecialWarningGTFO(323001, nil, nil, nil, 1, 8)
 
---local timerCrumblingSlamCD		= mod:NewCDTimer(12.1, 322936, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON)--12.1 except when massively delayed
-local timerHeaveDebrisCD			= mod:NewCDTimer(12.1, 322943, nil, nil, nil, 3)--12.1 except when somewhat delayed, doesn't have massivevs that slam does
-local timerRefractedSinlightD		= mod:NewCDTimer(49.7, 322711, nil, nil, nil, 3, nil, DBM_CORE_L.DEADLY_ICON)--49.7--51
+local timerCrumblingSlamCD			= mod:NewCDTimer(12.1, 322936, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON)--12.1 except after refracted sinlight
+local timerHeaveDebrisCD			= mod:NewCDTimer(12.1, 322943, nil, nil, nil, 3)--12.1 except after refracted sinlight
+local timerRefractedSinlightD		= mod:NewCDTimer(45, 322711, nil, nil, nil, 3, nil, DBM_CORE_L.DEADLY_ICON)--45--51
 --local timerSinlightVisionsCD		= mod:NewCDTimer(23, 322977, nil, nil, nil, 3, nil, DBM_CORE_L.MAGIC_ICON)--23-27
 
---Slam Data, more data needed
---4.7, 13.3, 34, 17
---4.1, 14.5, 37.6, 12.1
---4.6, 14.6, 34.4, 13.0, 34.0
---4.1, 13.4, 12.1, 27.9, 12.2
 --"Sinlight Visions-339237-npc:165408 = pull:5.0, 5.0, 20.0, 5.0, 15.0, 20.0
 
 function mod:OnCombatStart(delay)
---	timerCrumblingSlamCD:Start(4.1-delay)
+	timerCrumblingSlamCD:Start(4-delay)
 --	timerSinlightVisionsCD:Start(5-delay)--SUCCESS
 	timerHeaveDebrisCD:Start(14.6-delay)--SUCCESS
-	timerRefractedSinlightD:Start(29.6-delay)
+	timerRefractedSinlightD:Start(29.6-delay)--Iffy
 end
 
 function mod:SPELL_CAST_START(args)
@@ -60,6 +55,10 @@ function mod:SPELL_CAST_START(args)
 		specWarnRefractedSinlight:Show()
 		specWarnRefractedSinlight:Play("watchstep")
 		timerRefractedSinlightD:Start()
+		timerCrumblingSlamCD:Stop()
+		timerHeaveDebrisCD:Stop()
+		timerHeaveDebrisCD:Start(17)
+		timerCrumblingSlamCD:Start(22)
 	end
 end
 

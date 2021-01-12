@@ -46,9 +46,9 @@ local warnConcentrateAnima						= mod:NewTargetNoFilterAnnounce(342321, 3)
 local warnCondemnTank							= mod:NewCastAnnounce(334017, 3, nil, nil, "Tank")
 
 local specWarnExposeDesires						= mod:NewSpecialWarningDefensive(341621, false, nil, nil, 1, 2)--Optional warning that the cast is happening toward you
-local specWarnWarpedDesires						= mod:NewSpecialWarningTaunt(325382, false, nil, 2, 1, 2)
+local specWarnWarpedDesires						= mod:NewSpecialWarningTaunt(325382, nil, nil, 3, 1, 2)
 local specWarnHiddenDesire						= mod:NewSpecialWarningYou(335396, nil, nil, nil, 1, 2)
-local specWarnHiddenDesireTaunt					= mod:NewSpecialWarningTaunt(335396, nil, nil, nil, 1, 2)
+local specWarnHiddenDesireTaunt					= mod:NewSpecialWarningTaunt(335396, false, nil, 2, 1, 2)
 local yellHiddenDesire							= mod:NewYell(335396, nil, false)--Remove?
 local specWarnChangeofHeart						= mod:NewSpecialWarningMoveAway(340452, nil, nil, nil, 3, 2)--Triggered by rank 3 Exposed Desires
 local yellChangeofHeartFades					= mod:NewFadesYell(340452)--^^
@@ -287,10 +287,11 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 325382 then
 		local amount = args.amount or 1
-		warnWarpedDesires:Show(args.destName, amount)
-		if not args:IsPlayer() and amount >= 2 then
+		if args:GetSrcCreatureID() == 165521 and not args:IsPlayer() and amount >= 2 and not DBM:UnitDebuff("player", spellId) then
 			specWarnWarpedDesires:Show(args.destName)
 			specWarnWarpedDesires:Play("tauntboss")
+		else
+			warnWarpedDesires:Show(args.destName, amount)
 		end
 	elseif spellId == 340452 then
 		if args:IsPlayer() then

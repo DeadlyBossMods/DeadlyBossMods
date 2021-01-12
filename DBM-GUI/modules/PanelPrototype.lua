@@ -293,7 +293,7 @@ do
 			if isTimer then
 				frame = self:CreateDropdown(nil, tcolors, mod, modvar .. "TColor", function(value)
 					mod.Options[modvar .. "TColor"] = value
-				end, 20, 25, button)
+				end, 22, 25, button)
 				frame2 = self:CreateDropdown(nil, cvoice, mod, modvar .. "CVoice", function(value)
 					mod.Options[modvar.."CVoice"] = value
 					if type(value) == "string" then
@@ -301,15 +301,15 @@ do
 					elseif value > 0 then
 						DBM:PlayCountSound(1, value == 3 and DBM.Options.CountdownVoice3 or value == 2 and DBM.Options.CountdownVoice2 or DBM.Options.CountdownVoice)
 					end
-				end, 20, 25, button)
+				end, 22, 25, button)
 				frame:SetPoint("LEFT", button, "RIGHT", -20, 2)
 				frame2:SetPoint("LEFT", frame, "RIGHT", 18, 0)
-				textPad = 35
+				textPad = 37
 			else
 				frame = self:CreateDropdown(nil, sounds, mod, modvar .. "SWSound", function(value)
 					mod.Options[modvar .. "SWSound"] = value
 					DBM:PlaySpecialWarningSound(value)
-				end, 20, 25, button)
+				end, 22, 25, button)
 				frame:ClearAllPoints()
 				frame:SetPoint("LEFT", button, "RIGHT", -20, 2)
 				if mod.Options[modvar .. "SWNote"] then -- Mod has note, insert note hack
