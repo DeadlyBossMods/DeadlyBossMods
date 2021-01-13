@@ -379,6 +379,16 @@ function mod:TestRemove(amount)
 	timerDancingFoolsCD:RemoveTime(amount)
 end
 
+--/run DBM:GetModByName(2426):SmallTestAdd(10)
+function mod:SmallTestAdd(amount)
+	timerDutifulAttendantCD:AddTime(amount)
+end
+
+--/run DBM:GetModByName(2426):SmallTestRemove(10)
+function mod:SmallTestRemove(amount)
+	timerDutifulAttendantCD:RemoveTime(amount)
+end
+
 function mod:OnCombatStart(delay)
 	self.vb.phase = 1
 	self.vb.feversActive = 0
