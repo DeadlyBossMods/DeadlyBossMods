@@ -11276,7 +11276,6 @@ do
 							if (type(countVoice) == "string" or countVoice > 0) then
 								DBM:Unschedule(playCountSound, id)
 								if not bar.fade then--Don't start countdown voice if it's faded bar
-									local newRemaining = (total+extendAmount) - elapsed
 									if newRemaining > 2 then
 										playCountdown(id, newRemaining, countVoice, bar.countdownMax)--timerId, timer, voice, count
 										DBM:Debug("Updating a countdown after a timer RemoveTime call for timer ID:"..id)
