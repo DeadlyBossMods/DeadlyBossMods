@@ -11060,10 +11060,7 @@ do
 				fireEvent("DBM_TimerFadeUpdate", id, self.spellId, self.mod.id, true)--Timer ID, spellId, modId, true/nil (new callback only needed if we update an existing timers fade, self.fade is passed in timer start object for new timers)
 				bar.fade = true--Set bar object metatable, which is copied from timer metatable at bar start only
 				bar:ApplyStyle()
-				if bar.countdown then--Cancel countdown, because we just enabled a bar fade
-					DBM:Unschedule(playCountSound, id)
-					DBM:Debug("Disabling a countdown on bar ID: "..id.." after a SetFade enable call")
-				end
+				DBM:Unschedule(playCountSound, id)--Don't even need to check option, it's faster cpu wise to just unschedule countdown either way
 			end
 		elseif not fadeOn and self.fade then
 			self.fade = nil--set timer object metatable, which will make sure next bar started does NOT use fade
@@ -11074,10 +11071,13 @@ do
 				fireEvent("DBM_TimerFadeUpdate", id, self.spellId, self.mod.id, nil)--Timer ID, spellId, modId, true/nil (new callback only needed if we update an existing timers fade, self.fade is passed in timer start object for new timers)
 				bar.fade = nil--Set bar object metatable, which is copied from timer metatable at bar start only
 				bar:ApplyStyle()
-				if bar.countdown then--Unfading bar, start countdown
-					DBM:Unschedule(playCountSound, id)
-					playCountdown(id, bar.timer, bar.countdown, bar.countdownMax)--timerId, timer, voice, count
-					DBM:Debug("Re-enabling a countdown on bar ID: "..id.." after a SetFade disable call")
+				if self.option then
+					local countVoice = self.mod.Options[self.option .. "CVoice"] or 0
+					if (type(countVoice) == "string" or countVoice > 0) then--Unfading bar, start countdown
+						DBM:Unschedule(playCountSound, id)
+						playCountdown(id, bar.timer, countVoice, bar.countdownMax)--timerId, timer, voice, count
+						DBM:Debug("Re-enabling a countdown on bar ID: "..id.." after a SetFade disable call")
+					end
 				end
 			end
 		end
@@ -11094,18 +11094,18 @@ do
 				fireEvent("DBM_TimerFadeUpdate", id, self.spellId, self.mod.id, true)--Timer ID, spellId, modId, true/nil (new callback only needed if we update an existing timers fade, self.fade is passed in timer start object for new timers)
 				bar.fade = true--Set bar object metatable, which is copied from timer metatable at bar start only
 				bar:ApplyStyle()
-				if bar.countdown then--Cancel countdown, because we just enabled a bar fade
-					DBM:Unschedule(playCountSound, id)
-					DBM:Debug("Disabling a countdown on bar ID: "..id.." after a SetSTFade enable call")
-				end
+				DBM:Unschedule(playCountSound, id)
 			elseif not fadeOn and bar.fade then
 				fireEvent("DBM_TimerFadeUpdate", id, self.spellId, self.mod.id, nil)
 				bar.fade = false
 				bar:ApplyStyle()
-				if bar.countdown then--Unfading bar, start countdown
-					DBM:Unschedule(playCountSound, id)
-					playCountdown(id, bar.timer, bar.countdown, bar.countdownMax)--timerId, timer, voice, count
-					DBM:Debug("Re-enabling a countdown on bar ID: "..id.." after a SetSTFade disable call")
+				if self.option then
+					local countVoice = self.mod.Options[self.option .. "CVoice"] or 0
+					if (type(countVoice) == "string" or countVoice > 0) then--Unfading bar, start countdown
+						DBM:Unschedule(playCountSound, id)
+						playCountdown(id, bar.timer, countVoice, bar.countdownMax)--timerId, timer, voice, count
+						DBM:Debug("Re-enabling a countdown on bar ID: "..id.." after a SetSTFade disable call")
+					end
 				end
 			end
 		end
@@ -11215,11 +11215,17 @@ do
 		local id = self.id..pformat((("\t%s"):rep(select("#", ...))), ...)
 		local bar = DBM.Bars:GetBar(id)
 		fireEvent("DBM_TimerUpdate", id, elapsed, totalTime)
-		if bar and bar.countdown and bar.countdown > 0 then
-			DBM:Unschedule(playCountSound, id)
-			if not bar.fade then--Don't start countdown voice if it's faded bar
-				playCountdown(id, totalTime-elapsed, bar.countdown, bar.countdownMax)--timerId, timer, voice, count
-				DBM:Debug("Updating a countdown after a timer Update call for timer ID:"..id)
+		if bar and self.option then
+			local countVoice = self.mod.Options[self.option .. "CVoice"] or 0
+			if (type(countVoice) == "string" or countVoice > 0) then
+				DBM:Unschedule(playCountSound, id)
+				if not bar.fade then--Don't start countdown voice if it's faded bar
+					local newRemaining = totalTime-elapsed
+					if newRemaining > 2 then
+						playCountdown(id, newRemaining, countVoice, bar.countdownMax)--timerId, timer, voice, count
+						DBM:Debug("Updating a countdown after a timer Update call for timer ID:"..id)
+					end
+				end
 			end
 		end
 		return DBM.Bars:UpdateBar(id, elapsed, totalTime)
@@ -11235,12 +11241,15 @@ do
 			if bar then
 				local elapsed, total = (bar.totalTime - bar.timer), bar.totalTime
 				if elapsed and total then
-					if bar.countdown then
-						DBM:Unschedule(playCountSound, id)
-						if not bar.fade then--Don't start countdown voice if it's faded bar
-							local newRemaining = (total+extendAmount) - elapsed
-							playCountdown(id, newRemaining, bar.countdown, bar.countdownMax)--timerId, timer, voice, count
-							DBM:Debug("Updating a countdown after a timer AddTime call for timer ID:"..id)
+					if self.option then
+						local countVoice = self.mod.Options[self.option .. "CVoice"] or 0
+						if (type(countVoice) == "string" or countVoice > 0) then
+							DBM:Unschedule(playCountSound, id)
+							if not bar.fade then--Don't start countdown voice if it's faded bar
+								local newRemaining = (total+extendAmount) - elapsed
+								playCountdown(id, newRemaining, countVoice, bar.countdownMax)--timerId, timer, voice, count
+								DBM:Debug("Updating a countdown after a timer AddTime call for timer ID:"..id)
+							end
 						end
 					end
 					fireEvent("DBM_TimerUpdate", id, elapsed, total+extendAmount)
@@ -11262,19 +11271,23 @@ do
 				if elapsed and total then
 					local newRemaining = (total-reduceAmount) - elapsed
 					if newRemaining > 0 then
-						if bar.countdown and newRemaining > 2 then
-							DBM:Unschedule(playCountSound, id)
-							if not bar.fade then--Don't start countdown voice if it's faded bar
-								playCountdown(id, newRemaining, bar.countdown, bar.countdownMax)--timerId, timer, voice, count
-								DBM:Debug("Updating a countdown after a timer RemoveTime call for timer ID:"..id)
+						if self.option and newRemaining > 2 then
+							local countVoice = self.mod.Options[self.option .. "CVoice"] or 0
+							if (type(countVoice) == "string" or countVoice > 0) then
+								DBM:Unschedule(playCountSound, id)
+								if not bar.fade then--Don't start countdown voice if it's faded bar
+									local newRemaining = (total+extendAmount) - elapsed
+									if newRemaining > 2 then
+										playCountdown(id, newRemaining, countVoice, bar.countdownMax)--timerId, timer, voice, count
+										DBM:Debug("Updating a countdown after a timer RemoveTime call for timer ID:"..id)
+									end
+								end
 							end
 						end
 						fireEvent("DBM_TimerUpdate", id, elapsed, total-reduceAmount)
 						return DBM.Bars:UpdateBar(id, elapsed, total-reduceAmount)
 					else--New remaining less than 0
-						if bar.countdown then
-							DBM:Unschedule(playCountSound, id)
-						end
+						DBM:Unschedule(playCountSound, id)
 						fireEvent("DBM_TimerStop", id)
 						return DBM.Bars:CancelBar(id)
 					end
