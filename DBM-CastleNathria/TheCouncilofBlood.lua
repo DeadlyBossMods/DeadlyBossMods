@@ -349,6 +349,36 @@ local function phaseChange(self, adjustment)
 	end
 end
 
+--/run DBM:GetModByName(2426):TestAdd(10)
+function mod:TestAdd(amount)
+	timerDutifulAttendantCD:AddTime(amount)
+	timerDualistsRiposteCD:AddTime(amount)
+	timerDredgerServantsCD:AddTime(amount)
+	timerCastellansCadreCD:AddTime(amount)
+	timerDrainEssenceCD:AddTime(amount)
+	timerSoulSpikesCD:AddTime(amount)
+	timerSoulSpikesCD:AddTime(amount)
+	timerDarkRecitalCD:AddTime(amount)
+	timerEvasiveLungeCD:AddTime(amount)
+	timerWaltzofBloodCD:AddTime(amount)
+	timerDancingFoolsCD:AddTime(amount)
+end
+
+--/run DBM:GetModByName(2426):TestRemove(10)
+function mod:TestRemove(amount)
+	timerDutifulAttendantCD:RemoveTime(amount)
+	timerDualistsRiposteCD:RemoveTime(amount)
+	timerDredgerServantsCD:RemoveTime(amount)
+	timerCastellansCadreCD:RemoveTime(amount)
+	timerDrainEssenceCD:RemoveTime(amount)
+	timerSoulSpikesCD:RemoveTime(amount)
+	timerSoulSpikesCD:RemoveTime(amount)
+	timerDarkRecitalCD:RemoveTime(amount)
+	timerEvasiveLungeCD:RemoveTime(amount)
+	timerWaltzofBloodCD:RemoveTime(amount)
+	timerDancingFoolsCD:RemoveTime(amount)
+end
+
 function mod:OnCombatStart(delay)
 	self.vb.phase = 1
 	self.vb.feversActive = 0
