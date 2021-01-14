@@ -956,6 +956,7 @@ function barPrototype:SetElapsed(elapsed)
 		local group = self.enlarged and self.owner.hugeBars or self.owner.smallBars
 		group:Remove(self)
 		group:Append(self)
+		DBM:Debug("No reset condition running, just bar sorting", 2)
 	end
 	self:Update(0)
 end

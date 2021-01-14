@@ -6,8 +6,8 @@ mod:SetCreatureID(166971, 166969, 166970)--Castellan Niklaus, Baroness Frieda, L
 mod:SetEncounterID(2412)
 mod:SetBossHPInfoToHighest()
 mod:SetUsedIcons(8)
-mod:SetHotfixNoticeRev(20210105000000)--2021, 01, 05
-mod:SetMinSyncRevision(20210105000000)
+mod:SetHotfixNoticeRev(20210113000000)--2021, 01, 13
+mod:SetMinSyncRevision(20210113000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
@@ -349,6 +349,44 @@ local function phaseChange(self, adjustment)
 	end
 end
 
+--/run DBM:GetModByName(2426):TestAdd(10)
+function mod:TestAdd(amount)
+	timerDutifulAttendantCD:AddTime(amount)
+	timerDualistsRiposteCD:AddTime(amount)
+	timerDredgerServantsCD:AddTime(amount)
+	timerCastellansCadreCD:AddTime(amount)
+	timerDrainEssenceCD:AddTime(amount)
+	timerSoulSpikesCD:AddTime(amount)
+	timerDarkRecitalCD:AddTime(amount)
+	timerEvasiveLungeCD:AddTime(amount)
+	timerWaltzofBloodCD:AddTime(amount)
+	timerDancingFoolsCD:AddTime(amount)
+end
+
+--/run DBM:GetModByName(2426):TestRemove(10)
+function mod:TestRemove(amount)
+	timerDutifulAttendantCD:RemoveTime(amount)
+	timerDualistsRiposteCD:RemoveTime(amount)
+	timerDredgerServantsCD:RemoveTime(amount)
+	timerCastellansCadreCD:RemoveTime(amount)
+	timerDrainEssenceCD:RemoveTime(amount)
+	timerSoulSpikesCD:RemoveTime(amount)
+	timerDarkRecitalCD:RemoveTime(amount)
+	timerEvasiveLungeCD:RemoveTime(amount)
+	timerWaltzofBloodCD:RemoveTime(amount)
+	timerDancingFoolsCD:RemoveTime(amount)
+end
+
+--/run DBM:GetModByName(2426):SmallTestAdd(10)
+function mod:SmallTestAdd(amount)
+	timerDutifulAttendantCD:AddTime(amount)
+end
+
+--/run DBM:GetModByName(2426):SmallTestRemove(10)
+function mod:SmallTestRemove(amount)
+	timerDutifulAttendantCD:RemoveTime(amount)
+end
+
 function mod:OnCombatStart(delay)
 	self.vb.phase = 1
 	self.vb.feversActive = 0
@@ -589,7 +627,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 --			timerDreadboltVolleyCD:AddTime(50)
 			timerDrainEssenceCD:AddTime(50)
 			if self.vb.phase >= 2 then--1 Dead
-				timerSoulSpikesCD:AddTime(50)
+				timerPridefulEruptionCD:AddTime(50)
 			end
 			if self.vb.phase >= 3 then--2 Dead
 				timerSoulSpikesCD:AddTime(50)
@@ -751,7 +789,7 @@ function mod:SPELL_AURA_REMOVED(args)
 --			timerDreadboltVolleyCD:RemoveTime(adjustment)
 			timerDrainEssenceCD:RemoveTime(adjustment)
 			if self.vb.phase >= 2 then--1 Dead
-				timerSoulSpikesCD:RemoveTime(adjustment)
+				timerPridefulEruptionCD:RemoveTime(adjustment)
 			end
 			if self.vb.phase >= 3 then--2 Dead
 				timerSoulSpikesCD:RemoveTime(adjustment)
