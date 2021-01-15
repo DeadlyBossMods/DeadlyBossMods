@@ -76,6 +76,7 @@ local specWarnFixate							= mod:NewSpecialWarningRun(330967, nil, nil, nil, 4, 
 ----Mythic
 --local specWarnMindFlay						= mod:NewSpecialWarningInterrupt(310552, "HasInterrupt", nil, nil, 1, 2)
 --Baroness Frieda
+local specWarnDreadboltVolley					= mod:NewSpecialWarningInterruptCount(337110, false, nil, nil, 1, 2)
 local specWarnPridefulEruption					= mod:NewSpecialWarningMoveAway(346657, nil, 138658, nil, 2, 2)--One boss dead
 --Lord Stavros
 local specWarnEvasiveLunge						= mod:NewSpecialWarningDodge(327497, nil, 219588, nil, 2, 2)
@@ -515,7 +516,21 @@ function mod:SPELL_CAST_START(args)
 			self.vb.volleyCast = 0
 		end
 		self.vb.volleyCast = self.vb.volleyCast + 1
-		warnDreadboltVolley:Show(self.vb.volleyCast)
+		local count = self.vb.volleyCast
+		if self.Options.SpecWarn337110interruptcount then
+			specWarnDreadboltVolley:Show(count)
+			if count == 1 then
+				specWarnDreadboltVolley:Play("kick1r")
+			elseif count == 2 then
+				specWarnDreadboltVolley:Play("kick2r")
+			elseif count == 3 then
+				specWarnDreadboltVolley:Play("kick3r")
+			else--fallback, shouldn't happen but never know
+				specWarnDreadboltVolley:Play("kickcast")
+			end
+		else
+			warnDreadboltVolley:Show(count)
+		end
 --		if args:GetSrcCreatureID() == 166969 then--Main boss
 --			local timer = self.vb.volleyCast == 3 and 12 or 4
 			--Phase 2 always 12, phase 1 is 4 between 3 set then 12 til next set
