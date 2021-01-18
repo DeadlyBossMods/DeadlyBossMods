@@ -218,8 +218,9 @@ local Timers = {
 
 local updateInfoFrame
 do
+	local DBM = DBM
 	local addName = DBM:EJ_GetSectionInfo(22131)
-	local twipe, tsort, floor = table.wipe, table.sort, math.floor
+	local pairs, twipe, tsort, mfloor = pairs, table.wipe, table.sort, math.floor
 	local UnitGUID, UnitName = UnitGUID, UnitName
 	local UnitHealth, UnitHealthMax = UnitHealth, UnitHealthMax
 	local lines = {}
@@ -241,7 +242,7 @@ do
 				if guid then
 					local cid = mod:GetCIDFromGUID(guid)
 					if (cid == 173163 or cid == 173162 or cid == 173164 or cid == 173161) and not deadAdds[guid] then--Horseman
-						stage2Adds[guid] = floor(UnitHealth(targetuId) / UnitHealthMax(targetuId) * 100)
+						stage2Adds[guid] = mfloor(UnitHealth(targetuId) / UnitHealthMax(targetuId) * 100)
 						local name = UnitName(targetuId)
 						if not horsemanAdded[name] then
 							addLine(name, stage2Adds[guid] .. '%')
@@ -249,7 +250,7 @@ do
 						end
 					end
 					if cid == 169196 and not deadAdds[guid] then--Crimson Cabalis
-						stage2Adds[guid] = floor(UnitHealth(targetuId) / UnitHealthMax(targetuId) * 100)
+						stage2Adds[guid] = mfloor(UnitHealth(targetuId) / UnitHealthMax(targetuId) * 100)
 					end
 				end
 			end
