@@ -71,7 +71,6 @@ mod:AddBoolOption("ShowTimeNotStacks", false)
 local GluttonousTargets = {}
 local essenceSapStacks = {}
 local playerEssenceSap, playerVolatile = false, false
-local currentMapId = 0
 mod.vb.volatileIcon = 5
 mod.vb.volatileCast = 0
 mod.vb.miasmaCount = 0
@@ -134,7 +133,7 @@ do
 				--More performance friendly check that just returns all player stacks (the default option)
 				for uId in DBM:GetGroupMembers() do
 					local _, _, _, mapId = UnitPosition(uId)
-					if not (UnitGroupRolesAssigned(uId) == "TANK" or GetPartyAssignment("MAINTANK", uId, 1) or UnitIsDeadOrGhost(uId)) and mapId == currentMapId  then--Exclude tanks and dead and people not in zone
+					if not (UnitGroupRolesAssigned(uId) == "TANK" or GetPartyAssignment("MAINTANK", uId, 1) or UnitIsDeadOrGhost(uId)) and mapId == 2296 then--Exclude tanks and dead and people not in zone
 						local unitName = DBM:GetUnitFullName(uId)
 						tempLines[unitName] = essenceSapStacks[unitName] or 0
 						tempLinesSorted[#tempLinesSorted + 1] = unitName
@@ -156,7 +155,6 @@ do
 end
 
 function mod:OnCombatStart(delay)
-	currentMapId = select(4, UnitPosition("player"))
 	playerEssenceSap = false
 	table.wipe(GluttonousTargets)
 	table.wipe(essenceSapStacks)
