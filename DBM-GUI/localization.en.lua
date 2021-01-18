@@ -113,9 +113,6 @@ L.AdvancedAutologBosses		= "Automatically record dungeons/raids with Transcripto
 L.RecordOnlyBosses			= "Only record Bosses (Excludes all trash. Use '/dbm pull' before bosses to capture pre pull pots &amp; ENCOUNTER_START)"
 L.LogOnlyNonTrivial			= "Only record non trivial content (normal or harder current content raids &amp; Mythic+ Dungeons)"
 --
-L.Area_3rdParty				= "3rd Party Addon Options"
-L.ShowBBOnCombatStart		= "Perform Big Brother buff check on combat start"
-L.BigBrotherAnnounceToRaid	= "Announce Big Brother results to raid"
 L.Area_Invite				= "Invite Options"
 L.AutoAcceptFriendInvite	= "Automatically accept group invites from friends"
 L.AutoAcceptGuildInvite		= "Automatically accept group invites from guild members"

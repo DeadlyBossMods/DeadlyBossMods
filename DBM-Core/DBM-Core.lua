@@ -179,7 +179,6 @@ DBM.DefaultOptions = {
 	SWarningAlphabetical = true,
 	SWarnNameInNote = true,
 	CustomSounds = 0,
-	ShowBigBrotherOnCombatStart = false,
 	FilterTankSpec = true,
 	FilterInterrupt2 = "TandFandBossCooldown",
 	FilterInterruptNoteName = false,
@@ -302,7 +301,6 @@ DBM.DefaultOptions = {
 	DontShowPTNoID = false,
 	PTCountThreshold2 = 5,
 	LatencyThreshold = 250,
-	BigBrotherAnnounceToRaid = false,
 	SettingsMessageShown = false,
 	ForumsMessageShown = false,
 	AlwaysShowSpeedKillTimer2 = false,
@@ -6289,15 +6287,6 @@ do
 					end
 					if self.Options.DisableStatusWhisper and (difficultyIndex == 8 or difficultyIndex == 14 or difficultyIndex == 15 or difficultyIndex == 16) then
 						sendSync("DSW")
-					end
-				end
-				--show bigbrother check
-				local bigBrother = _G["BigBrother"]
-				if self.Options.ShowBigBrotherOnCombatStart and bigBrother and type(bigBrother.ConsumableCheck) == "function" then
-					if self.Options.BigBrotherAnnounceToRaid then
-						bigBrother:ConsumableCheck("RAID")
-					else
-						bigBrother:ConsumableCheck("SELF")
 					end
 				end
 				--show enage message

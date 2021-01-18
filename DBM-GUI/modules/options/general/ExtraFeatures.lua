@@ -22,14 +22,6 @@ end
 bossLoggingArea:CreateCheckButton(L.RecordOnlyBosses, true, nil, "RecordOnlyBosses")
 bossLoggingArea:CreateCheckButton(L.LogOnlyNonTrivial, true, nil, "LogOnlyNonTrivial")
 
-local thirdPartyArea
-local bigBrother = _G["BigBrother"]
-if bigBrother and type(bigBrother.ConsumableCheck) == "function" then
-	thirdPartyArea			= extraFeaturesPanel:CreateArea(L.Area_3rdParty)
-	thirdPartyArea:CreateCheckButton(L.ShowBBOnCombatStart, true, nil, "ShowBigBrotherOnCombatStart")
-	thirdPartyArea:CreateCheckButton(L.BigBrotherAnnounceToRaid, true, nil, "BigBrotherAnnounceToRaid")
-end
-
 local inviteArea			= extraFeaturesPanel:CreateArea(L.Area_Invite)
 inviteArea:CreateCheckButton(L.AutoAcceptFriendInvite, true, nil, "AutoAcceptFriendInvite")
 inviteArea:CreateCheckButton(L.AutoAcceptGuildInvite, true, nil, "AutoAcceptGuildInvite")
