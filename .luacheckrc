@@ -12,6 +12,7 @@ ignore = {
 	"211/CL", -- Unused local variable "CL"
 	"212", -- Unused argument
 	"43.", -- Shadowing an upvalue, an upvalue argument, an upvalue loop variable.
+--    "431", -- shadowing upvalue
 	"542", -- An empty if branch
 }
 globals = {
