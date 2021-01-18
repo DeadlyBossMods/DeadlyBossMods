@@ -656,15 +656,12 @@ local function checkForSafeSender(sender, checkFriends, checkGuild, filterRaid, 
 			end
 		end
 		--Check if it's a non bnet friend
-		local nf = C_FriendList.GetNumFriends()
-		for i = 1, nf do
-			local toonName = C_FriendList.GetFriendInfo(i)
-			if toonName == sender then
-				if filterRaid and DBM:GetRaidUnitId(toonName) then--Person is in raid group and filter raid enabled
-					return false--just set sender as unsafe
-				else
-					return true
-				end
+		local friendInfo = C_FriendList.GetFriendInfo(sender)
+		if friendInfo then
+			if filterRaid and DBM:GetRaidUnitId(friendInfo.name) then--Person is in raid group and filter raid enabled
+				return false--just set sender as unsafe
+			else
+				return true
 			end
 		end
 	end
