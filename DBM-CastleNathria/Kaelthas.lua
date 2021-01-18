@@ -334,17 +334,18 @@ end
 
 local updateInfoFrame
 do
-	local floor = math.floor
-	local lines = {}
-	local sortedLines = {}
+	local DBM = DBM
+	local GetTime = GetTime
+	local mfloor, twipe = math.floor, table.wipe
+	local lines, sortedLines = {}, {}
 	local function addLine(key, value)
 		-- sort by insertion order
 		lines[key] = value
 		sortedLines[#sortedLines + 1] = key
 	end
 	updateInfoFrame = function()
-		table.wipe(lines)
-		table.wipe(sortedLines)
+		twipe(lines)
+		twipe(sortedLines)
 		--Infuser's Boon targets
 		if #infuserTargets > 0 then
 --			addLine("---"..infusersBoon.."---")
@@ -354,9 +355,7 @@ do
 				if uId then
 					local _, _, infuserCount, _, _, infuserExpireTime = DBM:UnitDebuff(uId, 326078)
 					if infuserExpireTime then--Has count, show count and infuser remaining
-						local infuserRemaining = infuserExpireTime-GetTime()
-						local count = infuserCount or 1
-						addLine(i.."*"..name, count.."-"..floor(infuserRemaining))
+						addLine(i.."*"..name, (infuserCount or 1).."-"..mfloor(infuserExpireTime-GetTime()))
 					end
 				end
 			end
