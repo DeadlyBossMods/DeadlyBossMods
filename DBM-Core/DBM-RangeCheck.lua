@@ -558,7 +558,7 @@ end
 ----------------
 do
 	local UnitExists, UnitIsUnit, UnitIsDeadOrGhost, UnitIsConnected, GetPlayerFacing, UnitClass, IsInRaid, GetNumGroupMembers, GetRaidTargetIndex, GetBestMapForUnit = UnitExists, UnitIsUnit, UnitIsDeadOrGhost, UnitIsConnected, GetPlayerFacing, UnitClass, IsInRaid, GetNumGroupMembers, GetRaidTargetIndex, C_Map.GetBestMapForUnit
-	local max, sin, cos, pi2 = math.max, math.sin, math.cos, math.pi * 2
+	local max, min, sin, cos, pi2 = math.max, math.min, math.sin, math.cos, math.pi * 2
 	local circleColor, rotation, pixelsperyard, activeDots, prevRange, prevThreshold, prevNumClosePlayer, prevclosestRange, prevColor, prevType = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 	local unitList = {}
 	local BLIP_TEX_COORDS = {

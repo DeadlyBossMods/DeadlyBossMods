@@ -83,11 +83,10 @@ mod.vb.meleeFound = false
 
 local updateInfoFrame
 do
-	local twipe, tsort = table.wipe, table.sort
-	local lines = {}
-	local tempLines = {}
-	local tempLinesSorted = {}
-	local sortedLines = {}
+	local DBM = DBM
+	local GetPartyAssignment, GetTime, UnitGroupRolesAssigned, UnitIsDeadOrGhost, UnitPosition = GetPartyAssignment, GetTime, UnitGroupRolesAssigned, UnitIsDeadOrGhost, UnitPosition
+	local ipairs, mfloor, twipe, tsort = ipairs, math.floor, table.wipe, table.sort
+	local lines, tempLines, tempLinesSorted, sortedLines = {}, {}, {}, {}
 	local function sortFuncAsc(a, b) return tempLines[a] < tempLines[b] end
 	local function sortFuncDesc(a, b) return tempLines[a] > tempLines[b] end
 	local function addLine(key, value)
@@ -104,15 +103,13 @@ do
 		if playerEssenceSap then
 			local spellName, _, currentStack, _, _, expireTime = DBM:UnitDebuff("player", 334755)
 			if spellName and currentStack and expireTime then
-				local remaining = expireTime-GetTime()
-				addLine(spellName.." ("..currentStack..")", math.floor(remaining))
+				addLine(spellName.." ("..currentStack..")", mfloor(expireTime-GetTime()))
 			end
 		end
 		if playerVolatile then
 			local spellName2, _, _, _, _, expireTime2 = DBM:UnitDebuff("player", 334228)
 			if spellName2 and expireTime2 then
-				local remaining2 = expireTime2-GetTime()
-				addLine(spellName2, math.floor(remaining2))
+				addLine(spellName2, mfloor(expireTime2-GetTime()))
 			end
 		end
 		--Add entire raids Essence Sap players on Mythic
@@ -124,8 +121,7 @@ do
 						local unitName = DBM:GetUnitFullName(uId)
 						local spellName3, _, _, _, _, expireTime3 = DBM:UnitDebuff(uId, 334755)
 						if spellName3 and expireTime3 then
-							local remaining3 = expireTime3-GetTime()
-							tempLines[unitName] = math.floor(remaining3)
+							tempLines[unitName] = mfloor(expireTime3-GetTime())
 							tempLinesSorted[#tempLinesSorted + 1] = unitName
 						else
 							tempLines[unitName] = 0
@@ -136,7 +132,8 @@ do
 			else
 				--More performance friendly check that just returns all player stacks (the default option)
 				for uId in DBM:GetGroupMembers() do
-					if not (UnitGroupRolesAssigned(uId) == "TANK" or GetPartyAssignment("MAINTANK", uId, 1) or UnitIsDeadOrGhost(uId)) then--Exclude tanks and dead
+					local _, _, _, mapId = UnitPosition(uId)
+					if not (UnitGroupRolesAssigned(uId) == "TANK" or GetPartyAssignment("MAINTANK", uId, 1) or UnitIsDeadOrGhost(uId)) and mapId == 2296 then--Exclude tanks and dead and people not in zone
 						local unitName = DBM:GetUnitFullName(uId)
 						tempLines[unitName] = essenceSapStacks[unitName] or 0
 						tempLinesSorted[#tempLinesSorted + 1] = unitName

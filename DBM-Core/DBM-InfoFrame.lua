@@ -875,42 +875,45 @@ local function onUpdate(frame, table)
 		local icon = icons[extraName or leftText] and icons[extraName or leftText] .. leftText
 		if friendlyEvents[currentEvent] then
 			local unitId = DBM:GetRaidUnitId(DBM:GetUnitFullName(extraName or leftText)) or "player"--Prevent nil logical error
-			if unitId and select(4, UnitPosition(unitId)) == currentMapId then
-				local _, class = UnitClass(unitId)
-				if class then
-					color = RAID_CLASS_COLORS[class]
-					if DBM.Options.StripServerName then -- StripServerName option is checked here, even though it's checked in GetShortServerName function, because we have to apply custom 3rd column hack reconstruction
-						local shortName = DBM:GetShortServerName(extraName or leftText)
-						if extraName then -- 3 column hack is present, we need to reconstruct leftText with shortened name
-							leftText = extra.."*"..shortName
-						else -- LeftText is name, just replace it with shortname
-							leftText = shortName
-						end
-					end
-				end
-				linesShown = linesShown + 1
-				if unitId and UnitIsUnit(unitId, "player") then -- It's player.
-					if currentEvent == "health" or currentEvent == "playerpower" or currentEvent == "playerabsorb" or currentEvent == "playerbuff" or currentEvent == "playergooddebuff" or currentEvent == "playerbaddebuff" or currentEvent == "playerdebuffremaining" or currentEvent == "playerdebuffstacks" or currentEvent == "playerbuffremaining" or currentEvent == "playertargets" or currentEvent == "playeraggro" then--Red
-						infoFrame:SetLine(linesShown, icon or leftText, rightText, 255, 0, 0, 255, 255, 255)
-					else -- Green
-						infoFrame:SetLine(linesShown, icon or leftText, rightText, 0, 255, 0, 255, 255, 255)
-					end
-				else -- It's not player, do nothing special with it. Ordinary class colored text.
-					if currentEvent == "playerdebuffremaining" or currentEvent == "playerbuffremaining" then
-						local numberValue = tonumber(rightText)
-						if numberValue < 6 then
-							infoFrame:SetLine(linesShown, icon or leftText, rightText, color.r, color.g, color.b, 255, 0, 0)--Red
-						elseif numberValue < 11 then
-							infoFrame:SetLine(linesShown, icon or leftText, rightText, color.r, color.g, color.b, 255, 127.5, 0)--Orange
-						else
-							if numberValue == 9000 then -- Out of range players
-								infoFrame:SetLine(linesShown, icon or leftText, SPELL_FAILED_OUT_OF_RANGE, color.r, color.g, color.b, 255, 0, 0)--Red
-							else
-								infoFrame:SetLine(linesShown, icon or leftText, rightText, color.r, color.g, color.b, 255, 255, 255)--White
+			if unitId then
+				local _, _, _, mapId = UnitPosition(unitId)
+				if mapId == currentMapId then
+					local _, class = UnitClass(unitId)
+					if class then
+						color = RAID_CLASS_COLORS[class]
+						if DBM.Options.StripServerName then -- StripServerName option is checked here, even though it's checked in GetShortServerName function, because we have to apply custom 3rd column hack reconstruction
+							local shortName = DBM:GetShortServerName(extraName or leftText)
+							if extraName then -- 3 column hack is present, we need to reconstruct leftText with shortened name
+								leftText = extra.."*"..shortName
+							else -- LeftText is name, just replace it with shortname
+								leftText = shortName
 							end
 						end
-					else
-						infoFrame:SetLine(linesShown, icon or leftText, rightText, color.r, color.g, color.b, 255, 255, 255)
+					end
+					linesShown = linesShown + 1
+					if unitId and UnitIsUnit(unitId, "player") then -- It's player.
+						if currentEvent == "health" or currentEvent == "playerpower" or currentEvent == "playerabsorb" or currentEvent == "playerbuff" or currentEvent == "playergooddebuff" or currentEvent == "playerbaddebuff" or currentEvent == "playerdebuffremaining" or currentEvent == "playerdebuffstacks" or currentEvent == "playerbuffremaining" or currentEvent == "playertargets" or currentEvent == "playeraggro" then--Red
+							infoFrame:SetLine(linesShown, icon or leftText, rightText, 255, 0, 0, 255, 255, 255)
+						else -- Green
+							infoFrame:SetLine(linesShown, icon or leftText, rightText, 0, 255, 0, 255, 255, 255)
+						end
+					else -- It's not player, do nothing special with it. Ordinary class colored text.
+						if currentEvent == "playerdebuffremaining" or currentEvent == "playerbuffremaining" then
+							local numberValue = tonumber(rightText)
+							if numberValue < 6 then
+								infoFrame:SetLine(linesShown, icon or leftText, rightText, color.r, color.g, color.b, 255, 0, 0)--Red
+							elseif numberValue < 11 then
+								infoFrame:SetLine(linesShown, icon or leftText, rightText, color.r, color.g, color.b, 255, 127.5, 0)--Orange
+							else
+								if numberValue == 9000 then -- Out of range players
+									infoFrame:SetLine(linesShown, icon or leftText, SPELL_FAILED_OUT_OF_RANGE, color.r, color.g, color.b, 255, 0, 0)--Red
+								else
+									infoFrame:SetLine(linesShown, icon or leftText, rightText, color.r, color.g, color.b, 255, 255, 255)--White
+								end
+							end
+						else
+							infoFrame:SetLine(linesShown, icon or leftText, rightText, color.r, color.g, color.b, 255, 255, 255)
+						end
 					end
 				end
 			end

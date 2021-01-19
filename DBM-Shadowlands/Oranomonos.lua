@@ -13,7 +13,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 338852 338857 338856 338855",
 	"SPELL_CAST_SUCCESS 339040 338853",
 	"SPELL_AURA_APPLIED 338852 338853",
-	"SPELL_AURA_APPLIED_DOSE 338852"
+	"SPELL_AURA_APPLIED_DOSE 338852",
+	"SPELL_AURA_REMOVED 338856"
 )
 
 --Assuming withered winds isn't in combat log, and unit events not worth using outdoors unless it's important
@@ -29,16 +30,15 @@ local specWarnDirgeoftheFallenSanctum		= mod:NewSpecialWarningSpell(338856, nil,
 local specWarnSeedsofSorrow					= mod:NewSpecialWarningRun(338855, nil, nil, nil, 4, 2)
 
 --local timerWitheredWindsCD					= mod:NewCDTimer(24.7, 339040, nil, nil, nil, 3)
-local timerImplantCD						= mod:NewCDTimer(42.9, 338852, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON)--, nil, 1, 5
-local timerRegrowthCD						= mod:NewAITimer(82.0, 339040, nil, "HasInterrupt", nil, 4, nil, DBM_CORE_L.INTERRUPT_ICON)
-local timerRapidGrowthCD					= mod:NewCDTimer(25.1, 338853, nil, nil, nil, 3, nil, DBM_CORE_L.MAGIC_ICON)
+local timerImplantCD						= mod:NewCDTimer(12.3, 338852, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON)
+local timerRegrowthCD						= mod:NewCDTimer(82.0, 339040, nil, "HasInterrupt", nil, 4, nil, DBM_CORE_L.INTERRUPT_ICON)
+local timerRapidGrowthCD					= mod:NewCDTimer(15.9, 338853, nil, nil, nil, 3, nil, DBM_CORE_L.MAGIC_ICON)
 local timerSeedsofSorrowCD					= mod:NewCDTimer(59.9, 338855, nil, nil, nil, 2, nil, DBM_CORE_L.DEADLY_ICON)
 
 function mod:OnCombatStart(delay, yellTriggered)
 	if yellTriggered then
 		--timerWitheredWindsCD:Start(1)
 		--timerImplantCD:Start(1)
-		--timerRegrowthCD:Start(1)
 		--timerRapidGrowthCD:Start(1)--SUCCESS
 		--timerSeedsofSorrowCD:Start(1)
 	end
@@ -49,7 +49,6 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 338852 then
 		timerImplantCD:Start()
 	elseif spellId == 338857 then
-		timerRegrowthCD:Start()
 		if self:CheckInterruptFilter(args.sourceGUID, false, true) then
 			specWarnRegrowth:Show(args.sourceName)
 			specWarnRegrowth:Play("kickcast")
@@ -57,6 +56,8 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 338856 then
 		specWarnDirgeoftheFallenSanctum:Show()
 		specWarnDirgeoftheFallenSanctum:Play("aesoon")
+		timerImplantCD:Stop()
+		timerRapidGrowthCD:Stop()
 	elseif spellId == 338855 then
 		specWarnSeedsofSorrow:Show()
 		specWarnSeedsofSorrow:Play("justrun")
@@ -99,3 +100,13 @@ function mod:SPELL_AURA_APPLIED(args)
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
+
+function mod:SPELL_AURA_REMOVED(args)
+	local spellId = args.spellId
+	if spellId == 338856 then
+		timerRegrowthCD:Start(4)
+		--timerSeedsofSorrowCD:Start(9.2)--Could be this, instead of a 60-67 second timer from last cast
+		timerRapidGrowthCD:Start(19.5)
+		timerImplantCD:Start(29.5)
+	end
+end
