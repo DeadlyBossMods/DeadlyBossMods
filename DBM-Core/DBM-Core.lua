@@ -10770,7 +10770,7 @@ do
 
 	function DBM:PlaySpecialWarningSound(soundId, force)
 		local sound
-		if not force and DBM:IsTrivial() and DBM.Options.DontPlayTrivialSpecialWarningSound then
+		if not force and self:IsTrivial() and self.Options.DontPlayTrivialSpecialWarningSound then
 			sound = self.Options.RaidWarningSound
 		else
 			sound = type(soundId) == "number" and self.Options["SpecialWarningSound" .. (soundId == 1 and "" or soundId)] or soundId or self.Options.SpecialWarningSound
@@ -10794,6 +10794,7 @@ do
 			self:PlaySpecialWarningSound(number, force)
 		end
 		if number and DBM.Options["SpecialWarningFlash"..number] then
+			if not force and self:IsTrivial() and self.Options.DontPlayTrivialSpecialWarningSound then return end--No flash if trivial
 			local flashColor = self.Options["SpecialWarningFlashCol"..number]
 			local repeatCount = self.Options["SpecialWarningFlashCount"..number] or 1
 			self.Flash:Show(flashColor[1], flashColor[2], flashColor[3], self.Options["SpecialWarningFlashDura"..number], self.Options["SpecialWarningFlashAlph"..number], repeatCount-1)
