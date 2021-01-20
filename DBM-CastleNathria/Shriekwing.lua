@@ -14,13 +14,12 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 328857 345936 330711 343005 342863 345397",
 	"SPELL_CAST_SUCCESS 328857 329362",
-	"SPELL_AURA_APPLIED 328897 342077 341684 328921",
+	"SPELL_AURA_APPLIED 328897 342077 341684 328921 343024",
 	"SPELL_AURA_APPLIED_DOSE 328897",
 	"SPELL_AURA_REMOVED 328921 342077 328897",
 	"SPELL_AURA_REMOVED_DOSE 328897",
 	"SPELL_PERIODIC_DAMAGE 340324",
 	"SPELL_PERIODIC_MISSED 340324",
---	"UNIT_DIED",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
@@ -59,8 +58,6 @@ local specWarnEchoingScreech					= mod:NewSpecialWarningDodge(342863, nil, 25253
 local specWarnBloodshroud						= mod:NewSpecialWarningSpell(328921, nil, nil, nil, 2, 2)
 local specWarnDeadlyDescent						= mod:NewSpecialWarningYou(343021, nil, nil, nil, 1, 2)--1 because you can't do anything about it
 local yellDeadlyDescent							= mod:NewYell(343021, nil, false)--Useless with only 1 second to avoid
---local yellDeadlyDescentFades					= mod:NewShortFadesYell(343021)--Re-enable if made 4 seconds again, but as 2 seconds this is useless
---local specWarnDeadlyDescentNear				= mod:NewSpecialWarningClose(343021, nil, nil, nil, 3, 2)--3 because you NEED to get away from them highest priority
 local specWarnGTFO								= mod:NewSpecialWarningGTFO(340324, nil, nil, nil, 1, 8)
 
 --Stage One - Thirst for Blood
@@ -81,7 +78,6 @@ local timerEchoingSonar							= mod:NewCastTimer(6, 329362, nil, false, nil, 5)
 mod:AddRangeFrameOption("8")
 mod:AddInfoFrameOption(328897, true)
 mod:AddSetIconOption("SetIconOnEcholocation", 342077, true, false, {1, 2, 3})
---mod:AddNamePlateOption("NPAuraOnVolatileCorruption", 312595)
 
 local ExsanguinatedStacks = {}
 local playerDebuff = false
@@ -94,7 +90,7 @@ function mod:OnCombatStart(delay)
 	self.vb.EchoIcon = 1
 	self.vb.waveCount = 0
 	timerExsanguinatingBiteCD:Start(8.1-delay)
-	timerWaveofBloodCD:Start(12.5-delay, 1)
+	timerWaveofBloodCD:Start(12-delay, 1)
 	timerEcholocationCD:Start(14.2-delay)
 	timerBlindSwipeCD:Start(20.3-delay)
 	if not self:IsEasy() then
@@ -102,9 +98,6 @@ function mod:OnCombatStart(delay)
 	end
 	timerEarsplittingShriekCD:Start(48.3-delay)
 	timerBloodshroudCD:Start(112-delay)
---	if self.Options.NPAuraOnVolatileCorruption then
---		DBM:FireEvent("BossMod_EnableHostileNameplates")
---	end
 --	berserkTimer:Start(-delay)
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(328897))
@@ -113,16 +106,12 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnCombatEnd()
-	self:UnregisterShortTermEvents()
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
 	end
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
---	if self.Options.NPAuraOnVolatileCorruption then
---		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
---	end
 end
 
 function mod:SPELL_CAST_START(args)
@@ -196,10 +185,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnDeadlyDescent:Show()
 			specWarnDeadlyDescent:Play("targetyou")
 			yellDeadlyDescent:Yell()
---			yellDeadlyDescentFades:Countdown(spellId)
---		elseif self:CheckNearby(8, args.destName) then
---			specWarnDeadlyDescentNear:CombinedShow(0.3, args.destName)
---			specWarnDeadlyDescentNear:ScheduleVoice(0.3, "runaway")
 		else
 			warnDeadlyDescent:CombinedShow(0.3, args.destName)
 		end
@@ -237,11 +222,7 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
-	if spellId == 343024 then
---		if args:IsPlayer() then
---			yellDeadlyDescentFades:Cancel()
---		end
-	elseif spellId == 328921 then--Bloodshroud removed
+	if spellId == 328921 then--Bloodshroud removed
 		self.vb.waveCount = 0
 		timerEarsplittingShriekCD:Stop()
 		timerEchoingSonar:Stop()
@@ -275,8 +256,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		if args:IsPlayer() then
 			playerDebuff = false
 		end
---	elseif spellId == 341684 then
-
 	end
 end
 
@@ -298,36 +277,9 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spell
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
-do
---[[
-	--For good measure, not sure if right spellId of debuff so using spellname lookup instead
-	local spellName = DBM:GetSpellInfo(342077)
-	function mod:UNIT_AURA_UNFILTERED(uId)
-		local hasDebuff = DBM:UnitDebuff(uId, spellName)
-		if hasDebuff then
-			local name = DBM:GetUnitFullName(uId)
-			if UnitIsUnit(uId, "player") then
-				specWarnEcholocation:Show()
-				specWarnEcholocation:Play("runout")
-				yellEcholocation:Yell()
-				yellEcholocationFades:Countdown(8)
-			else
-				warnEcholocation:Show(name)
-			end
-			if self.Options.SetIconOnEcholocation then
-				self:SetIcon(name, 1, 8)
-			end
-			self:UnregisterShortTermEvents()
-		end
-	end--]]
-
-	function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-		if spellId == 342074 then
-			self.vb.EchoIcon = 1
-			timerEcholocationCD:Start()
-			--self:RegisterShortTermEvents(
-			--	"UNIT_AURA_UNFILTERED"
-			--)
-		end
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
+	if spellId == 342074 then
+		self.vb.EchoIcon = 1
+		timerEcholocationCD:Start()
 	end
 end
