@@ -33,8 +33,8 @@ local timerBlindingFlashCD			= mod:NewCDTimer(21.8, 324205, nil, nil, nil, 3)
 local timerRechargeCD				= mod:NewCDTimer(15.8, 334485, nil, nil, nil, 6)
 
 function mod:OnCombatStart(delay)
-	timerDarkStrideCD:Start(11.2-delay)
-	timerBlindingFlashCD:Start(16-delay)
+	timerDarkStrideCD:Start(10.1-delay)
+	timerBlindingFlashCD:Start(15.7-delay)
 	timerRechargeCD:Start(44.9-delay)--SUCCESS/APPLIED
 end
 

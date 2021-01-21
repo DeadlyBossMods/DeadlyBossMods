@@ -350,7 +350,7 @@ local function phaseChange(self, adjustment)
 	end
 end
 
---/run DBM:GetModByName(2426):TestRestart(10)
+--/run DBM:GetModByName(2426):TestRestart(20)
 function mod:TestRestart(amount)
 	timerDutifulAttendantCD:Start(amount)
 	timerDualistsRiposteCD:Start(amount)

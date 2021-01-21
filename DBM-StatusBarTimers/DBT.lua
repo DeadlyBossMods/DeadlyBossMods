@@ -887,7 +887,7 @@ function DBT:UpdateBar(id, elapsed, totalTime)
 	for bar in self:GetBarIterator() do
 		if id == bar.id then
 			bar:SetTimer(totalTime or bar.totalTime)
-			bar:SetElapsed(elapsed or self.totalTime - self.timer, true)
+			bar:SetElapsed(elapsed or self.totalTime - self.timer)
 			return true
 		end
 	end
@@ -938,7 +938,7 @@ function barPrototype:Resume()
 	self.paused = nil
 end
 
-function barPrototype:SetElapsed(elapsed, force)
+function barPrototype:SetElapsed(elapsed)
 	self.timer = self.totalTime - elapsed
 	local enlargeTime = self.owner.options.EnlargeBarTime or 11
 	--Bar was large, or moving (animating from the small to large bar anchor) at time this was called
@@ -948,15 +948,14 @@ function barPrototype:SetElapsed(elapsed, force)
 		DBM:Debug("ResetAnimations firing for a a bar :Update() call that is shrinking a bar", 2)
 	--Bar was small, or moving from small to large when time was removed
 	--Also force reset animation but this time move it from small anchor into large one
-	elseif force and ((not self.enlarged or self.moving == "enlarge") and (self.timer <= enlargeTime)) then
+	elseif (not self.enlarged or self.moving == "enlarge") and (self.timer <= enlargeTime) then
 		self:ResetAnimations(true)
 		DBM:Debug("ResetAnimations firing for a a bar :Update() call that is enlarging a bar", 2)
 	--Not even I'm 100% sure what this part is, tied to bar sorting obviouosly but what's this actually do?
-	elseif self.owner.options.Sort and self.moving ~= "enlarge" then
+	elseif self.owner.options.Sort and self.moving ~= "enlarge" and self.moving ~= "move" then
 		local group = self.enlarged and self.owner.hugeBars or self.owner.smallBars
 		group:Remove(self)
 		group:Append(self)
-		DBM:Debug("No reset condition running, just bar sorting", 2)
 	end
 	self:Update(0)
 end
