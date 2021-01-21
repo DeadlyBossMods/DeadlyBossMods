@@ -952,11 +952,10 @@ function barPrototype:SetElapsed(elapsed)
 		self:ResetAnimations(true)
 		DBM:Debug("ResetAnimations firing for a a bar :Update() call that is enlarging a bar", 2)
 	--Not even I'm 100% sure what this part is, tied to bar sorting obviouosly but what's this actually do?
-	elseif self.owner.options.Sort and self.moving ~= "enlarge" then
+	elseif self.owner.options.Sort and self.moving ~= "enlarge" and self.moving ~= "move" then
 		local group = self.enlarged and self.owner.hugeBars or self.owner.smallBars
 		group:Remove(self)
 		group:Append(self)
-		DBM:Debug("No reset condition running, just bar sorting", 2)
 	end
 	self:Update(0)
 end

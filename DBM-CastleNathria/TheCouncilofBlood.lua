@@ -350,6 +350,20 @@ local function phaseChange(self, adjustment)
 	end
 end
 
+--/run DBM:GetModByName(2426):TestRestart(20)
+function mod:TestRestart(amount)
+	timerDutifulAttendantCD:Start(amount)
+	timerDualistsRiposteCD:Start(amount)
+	timerDredgerServantsCD:Start(amount)
+	timerCastellansCadreCD:Start(amount)
+	timerDrainEssenceCD:Start(amount)
+	timerSoulSpikesCD:Start(amount)
+	timerDarkRecitalCD:Start(amount)
+	timerEvasiveLungeCD:Start(amount)
+	timerWaltzofBloodCD:Start(amount)
+	timerDancingFoolsCD:Start(amount)
+end
+
 --/run DBM:GetModByName(2426):TestAdd(10)
 function mod:TestAdd(amount)
 	timerDutifulAttendantCD:AddTime(amount)
