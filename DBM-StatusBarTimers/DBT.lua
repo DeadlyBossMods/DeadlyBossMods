@@ -887,7 +887,7 @@ function DBT:UpdateBar(id, elapsed, totalTime)
 	for bar in self:GetBarIterator() do
 		if id == bar.id then
 			bar:SetTimer(totalTime or bar.totalTime)
-			bar:SetElapsed(elapsed or self.totalTime - self.timer)
+			bar:SetElapsed(elapsed or self.totalTime - self.timer, true)
 			return true
 		end
 	end
@@ -938,7 +938,7 @@ function barPrototype:Resume()
 	self.paused = nil
 end
 
-function barPrototype:SetElapsed(elapsed)
+function barPrototype:SetElapsed(elapsed, force)
 	self.timer = self.totalTime - elapsed
 	local enlargeTime = self.owner.options.EnlargeBarTime or 11
 	--Bar was large, or moving (animating from the small to large bar anchor) at time this was called
@@ -948,7 +948,7 @@ function barPrototype:SetElapsed(elapsed)
 		DBM:Debug("ResetAnimations firing for a a bar :Update() call that is shrinking a bar", 2)
 	--Bar was small, or moving from small to large when time was removed
 	--Also force reset animation but this time move it from small anchor into large one
-	elseif (not self.enlarged or self.moving == "enlarge") and (self.timer <= enlargeTime) then
+	elseif force and ((not self.enlarged or self.moving == "enlarge") and (self.timer <= enlargeTime)) then
 		self:ResetAnimations(true)
 		DBM:Debug("ResetAnimations firing for a a bar :Update() call that is enlarging a bar", 2)
 	--Not even I'm 100% sure what this part is, tied to bar sorting obviouosly but what's this actually do?
