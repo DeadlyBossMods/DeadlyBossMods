@@ -41,7 +41,7 @@ local timerRefractedSinlightD		= mod:NewCDTimer(45, 322711, nil, nil, nil, 3, ni
 function mod:OnCombatStart(delay)
 	timerCrumblingSlamCD:Start(4-delay)
 --	timerSinlightVisionsCD:Start(5-delay)--SUCCESS
-	timerHeaveDebrisCD:Start(14.6-delay)--SUCCESS
+	timerHeaveDebrisCD:Start(13.5-delay)--SUCCESS
 	timerRefractedSinlightD:Start(29.6-delay)--Iffy
 end
 

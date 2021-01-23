@@ -188,7 +188,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerExperimentalSquirrelBombCD:Stop()
 		timerAerialRocketChickenCD:Stop()
 		timerShadowfuryCD:Stop()
-		timerSummonPowerCrystalCD:Start(9)
+		timerSummonPowerCrystalCD:Start(5.9)
 		if self:IsMythic() then
 			timerLaserCD:Start(22, 1)
 			timerDoomCD:Start(45.5)

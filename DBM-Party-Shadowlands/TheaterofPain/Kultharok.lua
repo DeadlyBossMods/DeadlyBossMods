@@ -36,7 +36,7 @@ local specWarnGraspingHands			= mod:NewSpecialWarningDodge(319589, nil, nil, nil
 
 local timerDrawSoulCD				= mod:NewCDTimer(20.5, 319521, nil, nil, nil, 3, nil, DBM_CORE_L.DAMAGE_ICON)
 local timerPhantasmalParasiteCD		= mod:NewCDTimer(25.5, 319626, nil, nil, nil, 3, nil, DBM_CORE_L.HEALER_ICON..DBM_CORE_L.MAGIC_ICON)
-local timerGraspingHandsCD			= mod:NewCDTimer(25.5, 319589, nil, nil, nil, 3)
+local timerGraspingHandsCD			= mod:NewCDTimer(20.6, 319589, nil, nil, nil, 3)
 
 function mod:OnCombatStart(delay)
 	timerPhantasmalParasiteCD:Start(3.3-delay)--SUCCESS
