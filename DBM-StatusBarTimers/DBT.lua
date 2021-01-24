@@ -914,7 +914,7 @@ end
 function barPrototype:ResetAnimations(makeBig)
 	self:RemoveFromList()--Remove bar completely
 	self.moving = nil--Reset moving status
-	if makeBig then--Make bar big
+	if obj:GetOption("HugeBarsEnabled") and makeBig then--Make bar big
 		self.enlarged = true
 		self.owner.hugeBars:Append(self)
 	else--Or make bar small
