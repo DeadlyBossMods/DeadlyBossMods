@@ -44,7 +44,7 @@ end
 
 function mod:OnCombatStart(delay)
 	timerCrunchCD:Start(5-delay)
-	timerHeavingRetchCD:Start(11-delay)
+	timerHeavingRetchCD:Start(10.6-delay)
 	timerFetidGasCD:Start(22-delay)
 end
 

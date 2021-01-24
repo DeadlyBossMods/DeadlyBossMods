@@ -29,7 +29,7 @@ local specWarnEndlessTorment		= mod:NewSpecialWarningMoveAway(326039, nil, nil, 
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(257274, nil, nil, nil, 1, 8)
 
 local timerIronSpikesCD				= mod:NewCDTimer(31.6, 325254, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)--Change to next if the custom rule for 2nd cast works out good
-local timerRiteofSupremacyCD		= mod:NewNextTimer(38.6, 325360, nil, nil, nil, 2, nil, DBM_CORE_L.DEADLY_ICON)
+local timerRiteofSupremacyCD		= mod:NewNextCountTimer(34.5, 325360, nil, nil, nil, 2, nil, DBM_CORE_L.DEADLY_ICON)
 local timerRiteofSupremacy			= mod:NewCastTimer(10, 325360, nil, nil, nil, 5, nil, DBM_CORE_L.DEADLY_ICON)
 local timerEndlessTormentCD			= mod:NewNextTimer(38.8, 326039, nil, nil, nil, 2)
 
@@ -40,14 +40,14 @@ mod.vb.tormentCast = 0
 mod.vb.riteCast = 0
 local tormentTimers = {24.2, 11.3, 32.7, 39.7, 11.3, 31.1}
 local spikesTimers = {3.5, 44.1, 32.7, 50.6}
-local riteTimers = {11, 42.9, 40, 42.5}
+local riteTimers = {11, 38.9, 40, 42.5}
 
 function mod:OnCombatStart(delay)
 	self.vb.spikesCast = 0
 	self.vb.tormentCast = 0
 	self.vb.riteCast = 0
 	timerIronSpikesCD:Start(3.5-delay)
-	timerRiteofSupremacyCD:Start(11-delay)
+	timerRiteofSupremacyCD:Start(11-delay, 1)
 	timerEndlessTormentCD:Start(24.2-delay)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(6)
@@ -72,8 +72,8 @@ function mod:SPELL_CAST_START(args)
 		self.vb.riteCast = self.vb.riteCast + 1
 		warnRiteofSupremacy:Show()
 		timerRiteofSupremacy:Start()
-		local timer = riteTimers[self.vb.riteCast+1] or 40
-		timerRiteofSupremacyCD:Start(timer)
+		local timer = riteTimers[self.vb.riteCast+1] or 38.9
+		timerRiteofSupremacyCD:Start(timer, self.vb.riteCast + 1)
 	elseif spellId == 326039 then
 		self.vb.tormentCast = self.vb.tormentCast + 1
 		specWarnEndlessTorment:Show()

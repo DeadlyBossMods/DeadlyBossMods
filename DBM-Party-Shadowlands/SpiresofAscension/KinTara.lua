@@ -219,7 +219,7 @@ function mod:UNIT_POWER_UPDATE()
 	if self.vb.flightActive and bossPower == 0 then--Boss does a hard energy reset to 0 when she lands (flight phase ends)
 		self.vb.flightActive = false
 		self:UnregisterShortTermEvents()
-		timerOverheadSlashCD:Start(8.4)
+		timerOverheadSlashCD:Start(7.2)
 		timerFlightCD:Start(30.4)
 	end
 end

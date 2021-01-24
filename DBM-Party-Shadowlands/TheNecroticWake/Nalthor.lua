@@ -45,7 +45,7 @@ mod:AddInfoFrameOption(321754, true)
 
 function mod:OnCombatStart(delay)
 	timerFrozenBindsCD:Start(8.9-delay)--SUCCESS
-	timerIceboundAegisCD:Start(13.2-delay)--may still be 11.7
+	timerIceboundAegisCD:Start(11.7-delay)--11.7-14
 	timerCometStormCD:Start(16.5-delay)--16.5-17.2
 	timerDarkExileCD:Start(26.5-delay)--SUCCESS--26-30
 end

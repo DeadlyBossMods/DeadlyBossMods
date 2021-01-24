@@ -131,9 +131,9 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.cosmicCount = 0
 		self.vb.soulCount = 0
 		timerCoalescing:Stop()
+		timerMasterofDeathCD:Start(15.6)
 		timerCosmicArtificeCD:Start(19.6, 1)
 		timerSoulcrusherCD:Start(21.8, 1)
-		timerMasterofDeathCD:Start(25.4)
 		timerShatterRealityCD:Start(76.4)
 	end
 end

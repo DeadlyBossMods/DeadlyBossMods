@@ -28,7 +28,7 @@ local specWarnBlindingFlash			= mod:NewSpecialWarningDodge(324205, nil, nil, nil
 local specWarnRecharge				= mod:NewSpecialWarningDodge(334485, nil, nil, nil, 2, 2)
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(257274, nil, nil, nil, 1, 8)
 
-local timerDarkStrideCD				= mod:NewCDTimer(18.1, 324148, nil, nil, nil, 3, nil, DBM_CORE_L.TANK_ICON)
+local timerDarkStrideCD				= mod:NewCDTimer(17, 324148, nil, nil, nil, 3, nil, DBM_CORE_L.TANK_ICON)
 local timerBlindingFlashCD			= mod:NewCDTimer(21.8, 324205, nil, nil, nil, 3)
 local timerRechargeCD				= mod:NewCDTimer(15.8, 334485, nil, nil, nil, 6)
 
