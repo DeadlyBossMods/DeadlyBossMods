@@ -50,6 +50,7 @@ function mod:OnCombatStart(delay)
 --	if self:IsMythic() then
 --		timerPlagueCrashCD:Start(14.4)
 --	end
+	DBM:AddMsg("Infectious rain timer will be wrong until updated post hotfixes")
 end
 
 function mod:OnCombatEnd()
