@@ -469,7 +469,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		castsPerGUID[args.sourceGUID] = castsPerGUID[args.sourceGUID] + 1
 		local count = castsPerGUID[args.sourceGUID]
 		warnRavenousFeast:Show(count, args.destName)
-		timerRavenousFeastCD:Start(Self:IsMythic() and 24.6 or 18.6, count+1, args.sourceGUID)
+		timerRavenousFeastCD:Start(self:IsMythic() and 24.6 or 18.6, count+1, args.sourceGUID)
 	elseif spellId == 342253 then
 		warnWickedSlaughter:CombinedShow(1.5, args.destName)--Needs to allow at least 1.5 to combine targets
 		timerWickedSlaughterCD:Start(8.5, args.sourceGUID)
