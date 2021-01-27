@@ -6,8 +6,8 @@ mod:SetCreatureID(168112, 168113)
 mod:SetEncounterID(2417)
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
 mod:SetBossHPInfoToHighest()
-mod:SetHotfixNoticeRev(20210119000000)--2021, 01, 19
-mod:SetMinSyncRevision(20210119000000)
+mod:SetHotfixNoticeRev(20210126000000)--2021, 01, 26
+mod:SetMinSyncRevision(20210126000000)
 mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
@@ -146,7 +146,7 @@ mod.vb.grashDead = false
 --Crystalize triggers an 8 second ICD
 --Reverberating Eruption triggers an 8 second ICD/ Leap is inconclusive but probably same
 --Wicked blade triggers a 6 second ICD on all but swipe, which then only imposes 5
---Heart rend triggers 2.4 second ICD
+--Heart rend triggers 2.3 second ICD
 --Stone fist triggers 3-3.5 second ICD
 --Serrated swipe triggers 2.4 second ICD
 --Shattering Blast triggers 12 second ICD first time, and 5.4 second ICD the second time
@@ -154,6 +154,8 @@ mod.vb.grashDead = false
 --1-Heart rend DC not extended by crystalize most of time
 --2-To prevent swipe from altering it's OWN CD since it's started in success and not start (where timer update is)
 --3-To prevent stone fist from altering it's OWN CD since it's started in success and not start (where timer update is)
+--TODO, maybe one day even smarter code it for spell queue order below
+--Crystallize > tank abilities> wicked blade> eruption>seismic upheaval
 local function updateAllTimers(self, ICD, exclusion)
 	if not self.Options.ExperimentalTimerCorrection then return end
 	DBM:Debug("updateAllTimers running", 3)
@@ -298,9 +300,9 @@ function mod:OnCombatStart(delay)
 	else
 		--Everyone else still gets crappy less consistent timers
 		--General Kaal
-		timerSerratedSwipeCD:Start(8.2-delay, 1)--START, but next timer is started at SUCCESS
+		timerSerratedSwipeCD:Start(8.1-delay, 1)--START, but next timer is started at SUCCESS
 		timerWickedBladeCD:Start(16.6-delay, 1)--16.8-21
-		timerHeartRendCD:Start(28.9-delay, 1)--START
+		timerHeartRendCD:Start(28.9-delay, 1)--START 28-30
 		--General Grashaal Air ability
 		timerCrystalizeCD:Start(23.1-delay, 1)
 		berserkTimer:Start(840)
@@ -313,7 +315,6 @@ function mod:OnCombatStart(delay)
 		DBM.InfoFrame:Show(10, "table", LacerationStacks, 1)
 	end
 --	berserkTimer:Start(-delay)--Confirmed normal and heroic
-	DBM:AddMsg("With reset, timers had SIGNIFICANT CHANGES. Expect many to be wrong until updated")
 end
 
 function mod:OnCombatEnd()
@@ -341,7 +342,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnHeartRendCast:Show(self.vb.heartCount)
 		specWarnHeartRendCast:Play("specialsoon")
 		timerHeartRendCD:Start(nil, self.vb.heartCount+1)
-		updateAllTimers(self, 2.4)
+		updateAllTimers(self, 2.3)
 	elseif spellId == 334929 then
 		if self:IsTanking("player", nil, nil, true, args.sourceGUID) then
 			specWarnSerratedSwipe:Show()
@@ -391,58 +392,48 @@ function mod:SPELL_CAST_START(args)
 		self.vb.upHeavalCount = 0--always resets since boss stops casting it while shielded, so even between phase 2 and 3 there is a long break
 		self.vb.forcesCount = 0
 		if self.vb.phase == 2 then
-			--WIP
-			--Stop Kaal timers here or when his sheld shatters like before?
---			timerSerratedSwipeCD:Stop()
---			timerWickedBladeCD:Stop()
---			timerHeartRendCD:Stop()
+			--Kaal's Wicked Blade timer is tied to shield 100%
 			--Start initial Grashal timers and reset crystalize timer
 			--Old ones in place for now but may be hanged
-			timerCrystalizeCD:Stop()
---			timerCrystalizeCD:Start(32.5, self.vb.crystalCount+1)
-			timerStoneFistCD:Start(10.7, 1)--10.7-39.4 (11.3, 21.8, 29.6, 22.4, 12.2)
+			timerCrystalizeCD:Stop()--Chance this doesn't happen here but at shield
+			timerCrystalizeCD:Start(19.7, self.vb.crystalCount+1)--19.7-20.7
+			timerStoneFistCD:Start(26.4, 1)--26.4-27.7
 			if self:IsLFR() then
-				timerReverberatingLeapCD:Start(11.1, 1)
+				timerReverberatingLeapCD:Start(29.4, 1)--Assumed for now
 			else
-				timerReverberatingEruptionCD:Start(11.1, 1)--11-23.27 (11.9, 14.5, 31.9, 12.9, 15.2)
+				timerReverberatingEruptionCD:Start(29.4, 1)--29.4-38.2
 			end
-			timerSeismicUpheavalCD:Start(19.5, 1)--19.5-51.7 (19.9, 22.6, 43, 51.7, 29.8)
+			timerSeismicUpheavalCD:Start(50.2, 1)--19.5-51.7 (19.9, 22.6, 43, 51.7, 29.8)
 			--Kael also resumes summoning adds on mythic once intermission 1 is over, but it's pretty instant
 --			if self:IsMythic() then
 --				timerCallShadowForcesCD:Start(0, 1)--0-5
 --			end
---			updateAllTimers(self, 11.9)--This likely no longer happens
-			DBM:AddMsg("Timers resetting, timers unknown")
 		else--Stage 3 (Both Generals at once)
 			self.vb.heartCount = 0
 			self.vb.swipeCount = 0
 			--General Kaal returning
-			--These probably need redoing
-			timerWickedBladeCD:Stop()--This timer likely now resets when he lands
+			--Kaal's Wicked Blade timer is tied to shield 100%
 			timerSerratedSwipeCD:Start(5.3, 1)--START (could be heart first)
 			timerHeartRendCD:Start(5.3, 1)--START (could e swipe first)
---			timerWickedBladeCD:Start(32.2, self.vb.bladeCount+1)--TODO, figure out the new
 			--Kael also resumes summing adds on mythic once intermission 2 is over
-			if self:IsMythic() then
-				timerCallShadowForcesCD:Start(8, 1)--8-15
-			end
+--			if self:IsMythic() then
+--				timerCallShadowForcesCD:Start(8, 1)--8-15
+--			end
 			--General Grashaal
 			--Restart timers
 			timerCrystalizeCD:Stop()
 			timerStoneFistCD:Stop()
 			timerReverberatingLeapCD:Stop()
 			timerReverberatingEruptionCD:Stop()
-			--timerStoneFistCD:Start(30, self.vb.fistCount+1)
-			--timerCrystalizeCD:Start(32.5, self.vb.crystalCount+1)
-			--if self:IsLFR() then
-			--	timerReverberatingLeapCD:Start(11.1, self.vb.eruptionCount+1)
-			--else
-			--	timerReverberatingEruptionCD:Start(11.1, self.vb.eruptionCount+1)
-			--end
+			timerCrystalizeCD:Start(12.4, self.vb.crystalCount+1)--12.4-12.7
+			timerStoneFistCD:Start(20.9, self.vb.fistCount+1)--20.9-21.2
+			if self:IsLFR() then
+				timerReverberatingLeapCD:Start(30.7, self.vb.eruptionCount+1)--Guessed
+			else
+				timerReverberatingEruptionCD:Start(30.7, self.vb.eruptionCount+1)--30.7-30.9
+			end
 			--Re-enable Upheaval
-			timerSeismicUpheavalCD:Start(8.8, 1)--Could be even lower, as usual it's spell queued behind everything else often time
---			updateAllTimers(self, 5)--This may not be true on non mythic
-			DBM:AddMsg("Timers resetting, timers unknown")
+			timerSeismicUpheavalCD:Start(44, 1)--44-44.2
 		end
 	elseif spellId == 342425 then
 		updateAllTimers(self, 3, 3)
@@ -469,7 +460,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		castsPerGUID[args.sourceGUID] = castsPerGUID[args.sourceGUID] + 1
 		local count = castsPerGUID[args.sourceGUID]
 		warnRavenousFeast:Show(count, args.destName)
-		timerRavenousFeastCD:Start(self:IsMythic() and 24.6 or 18.6, count+1, args.sourceGUID)
+		timerRavenousFeastCD:Start(self:IsMythic() and 24.6 or 18.2, count+1, args.sourceGUID)
 	elseif spellId == 342253 then
 		warnWickedSlaughter:CombinedShow(1.5, args.destName)--Needs to allow at least 1.5 to combine targets
 		timerWickedSlaughterCD:Start(8.5, args.sourceGUID)
@@ -576,13 +567,15 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 329636 or spellId == 329808 then--phase 2 (Kael Departing, Grashaal landing)
 		warnHardenedStoneFormOver:Show()
+		timerWickedBladeCD:Stop()--Probably stops--resets now
 		if spellId == 329636 then
 			--Stop Outgoing boss (Kael) timers here
-			timerWickedBladeCD:Stop()--Probably stops--resets now
 			timerHeartRendCD:Stop()
 			timerSerratedSwipeCD:Stop()
 			--Start Outgoing boss (Kael) (stuff he still casts airborn) here as well
---			timerWickedBladeCD:Start(20.3, self.vb.bladeCount+1)--TODO, re-add
+			timerWickedBladeCD:Start(25.7, self.vb.bladeCount+1)--TODO, Needs more data and fixing, 25.7-32 spell queue seems off
+		else
+			timerWickedBladeCD:Start(19.6, self.vb.bladeCount+1)
 		end
 		--If crystalize was off CD going into this phase, the CD is reset.
 		--But if crystalize was still ticking down it's CD, it's NOT reset
