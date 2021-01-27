@@ -47,7 +47,7 @@ local specWarnCorrosiveGunk			= mod:NewSpecialWarningDispel(319070, "RemoveDisea
 local timerSlimeLungeCD				= mod:NewCDTimer(37.4, 329217, nil, nil, nil, 3)
 local timerSlimeInjectionCD			= mod:NewCDTimer(17, 329110, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON)--usually massively delayed by slime lunge
 --local timerPestilenceSurgeCD		= mod:NewCDTimer(38.1, 332617, nil, nil, nil, 1, nil, DBM_CORE_L.DAMAGE_ICON)--Too unreliable, 30-80, sometimes not even cast at all
-local timerVirulentExplosion		= mod:NewCastTimer(30, 321406, nil, nil, nil, 2, nil, DBM_CORE_L.DEADLY_ICON)--no CD, health based trigger
+--local timerVirulentExplosion		= mod:NewCastTimer(30, 321406, nil, nil, nil, 2, nil, DBM_CORE_L.DEADLY_ICON)--no CD, health based trigger
 
 mod:AddRangeFrameOption(5, 321935)
 
@@ -56,7 +56,7 @@ mod.vb.lungeCount = 0
 function mod:OnCombatStart(delay)
 	self.vb.lungeCount = 0
 	--TODO, fine tune start timers, they are approximations using first MELEE swing of boss since WCL lacked proper start event for encounter
-	timerSlimeInjectionCD:Start(12-delay)
+	timerSlimeInjectionCD:Start(10.9-delay)
 	timerSlimeLungeCD:Start(33.2-delay)
 --	timerPestilenceSurgeCD:Start(40-delay)
 	if self.Options.RangeFrame then
@@ -87,7 +87,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 321406 then
 		specWarnVirulentExplosion:Show()
 		specWarnVirulentExplosion:Play("aesoon")
-		timerVirulentExplosion:Start()
+--		timerVirulentExplosion:Start()
 	end
 end
 

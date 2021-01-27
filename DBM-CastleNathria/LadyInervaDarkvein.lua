@@ -5,8 +5,8 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(165521)
 mod:SetEncounterID(2406)
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
-mod:SetHotfixNoticeRev(20201214000000)--2020, 12, 14
---mod:SetMinSyncRevision(20200816000000)--2020, 8, 16
+mod:SetHotfixNoticeRev(20210126000000)--2021, 01, 26
+mod:SetMinSyncRevision(20210126000000)--2020, 8, 16
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
@@ -85,7 +85,6 @@ mod:AddSetIconOption("SetIconOnAdds", "ej22618", true, true, {5, 6, 7, 8})
 mod.vb.sufferingIcon = 1
 mod.vb.addIcon = 8
 mod.vb.containerActive = 0
-mod.vb.firstContainer = true
 mod.vb.ConcentratedCount = 0
 local castsPerGUID = {}
 local playerName = UnitName("player")
@@ -185,7 +184,6 @@ function mod:OnCombatStart(delay)
 	containerProgress[2401][3] = 0
 	self.vb.containerActive = 0
 	self.vb.ConcentratedCount = 0
-	self.vb.firstContainer = true
 	table.wipe(castsPerGUID)
 	if self:IsMythic() then
 --		timerFocusAnimaCD:Start(3.8-delay)
@@ -395,21 +393,17 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		self.vb.sufferingIcon = 1
 		--1 Expose Desires (tank), 2 Bottled Anima (bouncing bottles), 3 Sins and Suffering (links), 4 Concentrate Anima (adds)
 		timerSinsandSufferingCD:Start(self.vb.containerActive == 3 and 30 or 50)
-	elseif spellId == 338749 then--Disable Container
-		if self.vb.firstContainer then
-			self.vb.firstContainer = false
---			timerFocusAnimaCD:Start(82)--Because of boss energy starting on engage but first disable happening 18 seconds into fight
-		else
---			timerFocusAnimaCD:Start(99.5)--62-99.5
-		end
-		--1 Expose Desires (tank), 2 Bottled Anima (bouncing bottles), 3 Sins and Suffering (links), 4 Concentrate Anima (adds)
-		self.vb.containerActive = self.vb.containerActive + 1
-		if self.vb.containerActive == 2 and self.vb.ConcentratedCount == 2 then
+	elseif spellId == 331844 then -- Expose Desires
+		self.vb.containerActive = 1
+	elseif spellId == 331870 then -- Bottled Anima
+		self.vb.containerActive = 2
+		if self.vb.ConcentratedCount == 2 then
 			timerConcentratedAnimaCD:AddTime(25)--Don't ask me why this happens, it just does.
 		end
-		if self.vb.containerActive == 5 then
-			self.vb.containerActive = 1
-		end
+	elseif spellId == 331872 then -- Sins and Suffering (links)
+		self.vb.containerActive = 3
+	elseif spellId == 331873 then -- Concentrate Anima (adds)
+		self.vb.containerActive = 4
 	end
 end
 

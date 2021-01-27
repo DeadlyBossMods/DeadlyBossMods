@@ -5,8 +5,8 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(165066)
 mod:SetEncounterID(2418)
 mod:SetUsedIcons(1, 2, 3)
-mod:SetHotfixNoticeRev(20210103000000)--2021, 01, 03
-mod:SetMinSyncRevision(20210103000000)
+mod:SetHotfixNoticeRev(20210126000000)--2021, 01, 03
+mod:SetMinSyncRevision(20210126000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
@@ -131,9 +131,9 @@ end
 local function updateAllTimers(self)
 	DBM:Debug("updateAllTimers running", 3)
 	--All phase abilities
-	if timerSpreadshotCD:GetRemaining() < 9.7 then
+	if timerSpreadshotCD:GetRemaining() < 8.6 then
 		local elapsed, total = timerSpreadshotCD:GetTime()
-		local extend = 9.7 - (total-elapsed)
+		local extend = 8.6 - (total-elapsed)
 		DBM:Debug("timerSpreadshotCD extended by: "..extend, 2)
 		timerSpreadshotCD:Stop()
 		timerSpreadshotCD:Update(elapsed, total+extend)
@@ -427,13 +427,13 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 				warnPhase:Play("pthree")
 				--Start Next Dog. Move if order changes or is variable
 				timerSpreadshotCD:Start(6.3)
-				timerPetrifyingHowlCD:Start(15.1)
+				timerPetrifyingHowlCD:Start(13.9)
 				timerSinseekerCD:Stop()
 				if transitionwindow == 2 then--Cast within transition window
 					--It was cast going into phase change, which causes it to incurr it's full 50 second cd on this event
 					timerSinseekerCD:Start(50, self.vb.sinSeekerCount+1)
 				else
-					timerSinseekerCD:Start(30, self.vb.sinSeekerCount+1)--Need fresh transcriptor log to verify this
+					timerSinseekerCD:Start(28.3, self.vb.sinSeekerCount+1)--Need fresh transcriptor log to verify this
 				end
 				transitionwindow = 0
 			end

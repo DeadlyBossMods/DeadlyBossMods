@@ -31,7 +31,7 @@ local specWarnPlagueCrash			= mod:NewSpecialWarningDodge(322473, nil, nil, nil, 
 --local specWarnGTFO				= mod:NewSpecialWarningGTFO(257274, nil, nil, nil, 1, 8)
 
 local timerMalignantGrowthCD		= mod:NewCDTimer(20.6, 322304, nil, nil, nil, 1, nil, DBM_CORE_L.TANK_ICON .. DBM_CORE_L.DAMAGE_ICON)
-local timerInfectiousRainCD			= mod:NewCDTimer(17, 322232, nil, nil, nil, 3)
+local timerInfectiousRainCD			= mod:NewCDTimer(26.7, 322232, nil, nil, nil, 3)
 --local timerPlagueCrashCD			= mod:NewCDTimer(17, 322475, nil, nil, nil, 3)
 local timerSinkPhase				= mod:NewPhaseTimer(27)
 --Tentacle Add
@@ -46,7 +46,7 @@ function mod:OnCombatStart(delay)
 	self.vb.sinkPhase = false
 	self.vb.sinkPhaseCount = 0
 	timerMalignantGrowthCD:Start(5.6-delay)
-	timerInfectiousRainCD:Start(15.4-delay)
+	timerInfectiousRainCD:Start(19.1-delay)
 --	if self:IsMythic() then
 --		timerPlagueCrashCD:Start(14.4)
 --	end
@@ -139,7 +139,7 @@ function mod:UNIT_TARGETABLE_CHANGED(uId)
 		self.vb.sinkPhase = false
 		if self.vb.sinkPhaseCount == 1 then
 			timerMalignantGrowthCD:Start(5.6)
-			timerInfectiousRainCD:Start(15.4)
+			timerInfectiousRainCD:Start(19.1)
 		else--2
 			timerInfectiousRainCD:Start(6)
 		end
