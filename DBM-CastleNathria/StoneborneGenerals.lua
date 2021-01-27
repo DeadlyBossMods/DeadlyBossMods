@@ -394,14 +394,13 @@ function mod:SPELL_CAST_START(args)
 		if self.vb.phase == 2 then
 			--Kaal's Wicked Blade timer is tied to shield 100%
 			--Start initial Grashal timers and reset crystalize timer
-			--Old ones in place for now but may be hanged
 			timerCrystalizeCD:Stop()--Chance this doesn't happen here but at shield
 			timerCrystalizeCD:Start(19.7, self.vb.crystalCount+1)--19.7-20.7
-			timerStoneFistCD:Start(26.4, 1)--26.4-27.7
+			timerStoneFistCD:Start(26.4, 1)--26.4-28.1
 			if self:IsLFR() then
 				timerReverberatingLeapCD:Start(29.4, 1)--Assumed for now
 			else
-				timerReverberatingEruptionCD:Start(29.4, 1)--29.4-38.2
+				timerReverberatingEruptionCD:Start(29.4, 1)--29.4-38.2 (it's basically either 29 or 38 based on if wicked blade happens first
 			end
 			timerSeismicUpheavalCD:Start(50.2, 1)--19.5-51.7 (19.9, 22.6, 43, 51.7, 29.8)
 			--Kael also resumes summoning adds on mythic once intermission 1 is over, but it's pretty instant
@@ -413,11 +412,11 @@ function mod:SPELL_CAST_START(args)
 			self.vb.swipeCount = 0
 			--General Kaal returning
 			--Kaal's Wicked Blade timer is tied to shield 100%
-			timerSerratedSwipeCD:Start(5.3, 1)--START (could be heart first)
-			timerHeartRendCD:Start(5.3, 1)--START (could e swipe first)
+			timerSerratedSwipeCD:Start(13.8, 1)--START 13.8-14.1
+			timerHeartRendCD:Start(35.8, 1)--START 35.8-38.2
 			--Kael also resumes summing adds on mythic once intermission 2 is over
 --			if self:IsMythic() then
---				timerCallShadowForcesCD:Start(8, 1)--8-15
+--				timerCallShadowForcesCD:Start(8, 1)--8-16.6
 --			end
 			--General Grashaal
 			--Restart timers
@@ -433,7 +432,7 @@ function mod:SPELL_CAST_START(args)
 				timerReverberatingEruptionCD:Start(30.7, self.vb.eruptionCount+1)--30.7-30.9
 			end
 			--Re-enable Upheaval
-			timerSeismicUpheavalCD:Start(44, 1)--44-44.2
+			timerSeismicUpheavalCD:Start(44, 1)--44-44.4
 		end
 	elseif spellId == 342425 then
 		updateAllTimers(self, 3, 3)
