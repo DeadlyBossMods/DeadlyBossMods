@@ -393,7 +393,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		self.vb.sufferingIcon = 1
 		--1 Expose Desires (tank), 2 Bottled Anima (bouncing bottles), 3 Sins and Suffering (links), 4 Concentrate Anima (adds)
 		timerSinsandSufferingCD:Start(self.vb.containerActive == 3 and 30 or 50)
-	if spellId == 331844 then -- Expose Desires
+	elseif spellId == 331844 then -- Expose Desires
 		self.vb.containerActive = 1
 	elseif spellId == 331870 then -- Bottled Anima
 		self.vb.containerActive = 2
