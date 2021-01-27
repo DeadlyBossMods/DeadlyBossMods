@@ -304,6 +304,8 @@ L.AutologBosses				= "Автоматически записывать бои с 
 L.AdvancedAutologBosses		= "Автоматически записывать бои с боссами используя Transcriptor"
 L.LogOnlyNonTrivial			= "Записывать только бои с рейдовыми боссами (искл. Поиск Рейдов/5 ппл/сценарии)"
 --
+L.Area_3rdParty				= "Параметры аддонов третих лиц"
+--L.oRA3AnnounceConsumables	= "Announce oRA3 consumables check on combat start"
 L.Area_Invite				= "Параметры приглашений"
 L.AutoAcceptFriendInvite	= "Автоматически принимать приглашения в группу от друзей"
 L.AutoAcceptGuildInvite		= "Автоматически принимать приглашения в группу от согильдийцев"

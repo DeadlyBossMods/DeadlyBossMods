@@ -104,6 +104,8 @@ L.AdvancedAutologBosses		= "自動使用Transcriptor紀錄地城/團隊戰鬥"
 L.RecordOnlyBosses			= "只記錄首領的戰鬥 (排除所有小怪。請於首領開打前使用 /dbm pull 以獲取數據)"
 L.LogOnlyNonTrivial			= "只記錄重要內容 (普通或更難的當前內容團隊副本 & 傳奇+ 地下城)"
 --
+L.Area_3rdParty				= "協力插件選項"
+--L.oRA3AnnounceConsumables	= "Announce oRA3 consumables check on combat start"
 L.Area_Invite				= "邀請選項"
 L.AutoAcceptFriendInvite	= "自動接受來自朋友的隊伍邀請"
 L.AutoAcceptGuildInvite		= "自動接受來自公會成員的隊伍邀請"

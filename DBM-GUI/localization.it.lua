@@ -316,6 +316,8 @@ L.AutologBosses				= "Registra automaticamente gli incontri log con il registro 
 L.AdvancedAutologBosses		= "Regostra automaticamente gli scontri boss con Transcriptor"
 L.LogOnlyNonTrivial			= "Registra gli scontri boss incursione solo dell'espansione attuale (esclude Ricerca Incursioni/gruppo/scenari/vecchi contenuti)"
 --
+L.Area_3rdParty				= "Opzioni di Terze Parti"
+--L.oRA3AnnounceConsumables	= "Announce oRA3 consumables check on combat start"
 L.Area_Invite				= "Opzioni Invito"
 L.AutoAcceptFriendInvite	= "Accetta automaticamente inviti gruppo da parte di amici"
 L.AutoAcceptGuildInvite		= "Accetta automaticamente inviti gruppo da parte di gildani"

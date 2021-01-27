@@ -97,6 +97,8 @@ L.AdvancedAutologBosses		= "Registrar encuentros automáticamente con Transcript
 L.RecordOnlyBosses			= "Registrar solo encuentros de jefe (excluye todos los combates contra enemigos que no son jefes; usa '/dbm pull' antes de un jefe para registrar el uso previo de pociones)"
 L.LogOnlyNonTrivial			= "Registrar solo el contenido importante (excluye el buscador de bandas, las mazmorras, las gestas y todo el contenido antiguo)"
 --
+L.Area_3rdParty				= "Opciones de addons de terceros"
+--L.oRA3AnnounceConsumables	= "Announce oRA3 consumables check on combat start"
 L.Area_Invite				= "Opciones de invitación"
 L.AutoAcceptFriendInvite	= "Aceptar automáticamente invitaciones a grupos de amigos"
 L.AutoAcceptGuildInvite		= "Aceptar automáticamente invitaciones a grupos de miembros de la hermandad"

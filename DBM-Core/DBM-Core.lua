@@ -301,6 +301,7 @@ DBM.DefaultOptions = {
 	DontShowPTNoID = false,
 	PTCountThreshold2 = 5,
 	LatencyThreshold = 250,
+	oRA3AnnounceConsumables = false,
 	SettingsMessageShown = false,
 	ForumsMessageShown = false,
 	AlwaysShowSpeedKillTimer2 = false,
@@ -6289,7 +6290,16 @@ do
 						sendSync("DSW")
 					end
 				end
-				--show enage message
+				if self.Options.oRA3AnnounceConsumables and _G["oRA3Frame"] then
+					local oRA3 = LibStub("AceAddon-3.0"):GetAddon("oRA3", true)
+					if oRA3 then
+						local consumables = oRA3:GetModule("Consumables", true)
+						if consumables then
+							consumables:OutputResults()
+						end
+					end
+				end
+				--show engage message
 				if self.Options.ShowEngageMessage and not mod.noStatistics then
 					if mod.ignoreBestkill and (savedDifficulty == "worldboss") then--Should only be true on in progress field bosses, not in progress raid bosses we did timer recovery on.
 						self:AddMsg(L.COMBAT_STARTED_IN_PROGRESS:format(difficultyText..name))

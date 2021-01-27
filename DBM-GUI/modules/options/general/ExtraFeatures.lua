@@ -22,6 +22,11 @@ end
 bossLoggingArea:CreateCheckButton(L.RecordOnlyBosses, true, nil, "RecordOnlyBosses")
 bossLoggingArea:CreateCheckButton(L.LogOnlyNonTrivial, true, nil, "LogOnlyNonTrivial")
 
+if _G["oRA3Frame"] then
+	local thirdPartyArea = extraFeaturesPanel:CreateArea(L.Area_3rdParty)
+	thirdPartyArea:CreateCheckButton(L.oRA3AnnounceConsumables, true, nil, "oRA3AnnounceConsumables")
+end
+
 local inviteArea			= extraFeaturesPanel:CreateArea(L.Area_Invite)
 inviteArea:CreateCheckButton(L.AutoAcceptFriendInvite, true, nil, "AutoAcceptFriendInvite")
 inviteArea:CreateCheckButton(L.AutoAcceptGuildInvite, true, nil, "AutoAcceptGuildInvite")
