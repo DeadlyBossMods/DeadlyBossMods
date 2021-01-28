@@ -665,7 +665,7 @@ function mod:UNIT_DIED(args)
 		timerRavenousFeastCD:Stop((castsPerGUID[args.sourceGUID] or 0)+1, args.destGUID)
 	elseif cid == 173280 then--stone-legion-skirmisher
 		timerWickedSlaughterCD:Stop(args.destGUID)
-	elseifif cid == 168112 and not self.vb.kaalDead then--Kaal
+	elseif cid == 168112 and not self.vb.kaalDead then--Kaal
 		self.vb.kaalDead = true
 		timerWickedBladeCD:Stop()
 		timerHeartRendCD:Stop()
