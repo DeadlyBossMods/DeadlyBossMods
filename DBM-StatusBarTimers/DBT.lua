@@ -1533,11 +1533,11 @@ function barPrototype:MoveToNextPosition()
 	end
 	local newX = self.frame:GetRight() - self.frame:GetWidth()/2
 	local newY = self.frame:GetTop()
-	if self.owner.options.BarStyle ~= "NoAnim" then
-		self.frame:ClearAllPoints()
-		self.frame:SetPoint(self.movePoint, newAnchor, self.moveRelPoint, -(newX - oldX), -(newY - oldY))
-		self.moving = "move"
-	end
+--	if self.owner.options.BarStyle ~= "NoAnim" then
+--		self.frame:ClearAllPoints()
+--		self.frame:SetPoint(self.movePoint, newAnchor, self.moveRelPoint, -(newX - oldX), -(newY - oldY))
+--		self.moving = "move"
+--	end
 	self.moveAnchor = newAnchor
 	self.moveOffsetX = -(newX - oldX)
 	self.moveOffsetY = -(newY - oldY)
@@ -1564,7 +1564,8 @@ function barPrototype:Enlarge()
 	local newY = self.frame:GetTop()
 	self.frame:ClearAllPoints()
 	self.frame:SetPoint("TOP", newAnchor, "BOTTOM", -(newX - oldX), -(newY - oldY))
-	self.moving = self.owner.options.BarStyle == "NoAnim" and "nextEnlarge" or "enlarge"
+--	self.moving = self.owner.options.BarStyle == "NoAnim" and "nextEnlarge" or "enlarge"
+	self.moving = "nextEnlarge"
 	self.moveAnchor = newAnchor
 	self.moveOffsetX = -(newX - oldX)
 	self.moveOffsetY = -(newY - oldY)
