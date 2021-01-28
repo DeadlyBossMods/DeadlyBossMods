@@ -103,8 +103,7 @@ L.RecordOnlyBosses			= "보스만 기록 (모든 일반몹은 제외됩니다. �
 L.LogOnlyNonTrivial			= "주요 콘텐츠만 기록 (최신 확장팩 일반 이상 레이드와 신화+ 던전)"
 --
 L.Area_3rdParty				= "써드파티 애드온 설정"
-L.ShowBBOnCombatStart		= "전투 시작시 Big Brother 버프 검사 실행"
-L.BigBrotherAnnounceToRaid	= "Big Brother 버프 검사 결과를 공격대에 알림"
+--L.oRA3AnnounceConsumables	= "Announce oRA3 consumables check on combat start"
 L.Area_Invite				= "초대 설정"
 L.AutoAcceptFriendInvite	= "친구의 파티/공격대 초대 자동 수락"
 L.AutoAcceptGuildInvite		= "길드원의 파티/공격대 초대 자동 수락"
