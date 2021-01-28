@@ -34,7 +34,7 @@ local specWarnLysoniasCall					= mod:NewSpecialWarningYou(339278, nil, nil, nil,
 local specWarnChargedAnimaBlast				= mod:NewSpecialWarningMoveAway(327262, nil, nil, nil, 3, 2)
 local specWarnChargedAnimaBlastNear			= mod:NewSpecialWarningClose(327262, nil, nil, nil, 3, 2)
 
-local timerVentAnimaCD						= mod:NewAITimer(82.0, 327256, nil, nil, nil, 2, nil, DBM_CORE_L.HEALER_ICON)
+local timerVentAnimaCD						= mod:NewAITimer(11.6, 327256, nil, nil, nil, 2, nil, DBM_CORE_L.HEALER_ICON)
 local timerUnleashedAnimaCD					= mod:NewAITimer(82.0, 327274, nil, nil, nil, 3)
 local timerRechargeAnima					= mod:NewBuffActiveTimer(30, 327274, nil, nil, nil, 6)
 local timerMarkofPenitenceCD				= mod:NewAITimer(82.0, 327255, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)
@@ -145,7 +145,7 @@ end
 --"<54.96 11:04:21> [CHAT_MSG_RAID_BOSS_EMOTE] |TInterface\\Icons\\Spell_AnimaBastion_Beam.blp:20|t Valinor targets Disclaimz with a |cFFFF0000|Hspell:327262|h[Charged Anima Blast]|h|r!#Valinor###
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 	if msg:find("spell:327262") then
-		local targetname = DBM:GetUnitFullName(target)
+		local targetname = DBM:GetUnitFullName(target) or target--For people not in group, GetUnitFullName fails so need to at least use blizz provided target as backup
 		if targetname == UnitName("player") then
 			specWarnChargedAnimaBlast:Show()
 			specWarnChargedAnimaBlast:Play("runout")

@@ -262,8 +262,7 @@ L.AdvancedAutologBosses		= "Automatiquement enregistrer le combat contre un boss
 L.LogOnlyNonTrivial			= "N'enregistrer que les combats contre un boss (exclus RdR/dongeon/scenario)"
 --
 L.Area_3rdParty				= "Options des Addons tiers"
-L.ShowBBOnCombatStart		= "Effectuer la vérification des buffs de Big Brother au début des combats"
-L.BigBrotherAnnounceToRaid	= "Annoncer les résultats de Big Brother au raid"
+--L.oRA3AnnounceConsumables	= "Announce oRA3 consumables check on combat start"
 L.Area_Invite				= "Options des invitations"
 L.AutoAcceptFriendInvite	= "Accepter les invitations venant d'un ami automatiquement"
 L.AutoAcceptGuildInvite		= "Accepter les invitations venant d'un membre de la guilde automatiquement"

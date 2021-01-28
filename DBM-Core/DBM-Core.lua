@@ -71,7 +71,7 @@ end
 
 DBM = {
 	Revision = parseCurseDate("@project-date-integer@"),
-	DisplayVersion = "9.0.19", -- the string that is shown as version
+	DisplayVersion = "9.0.20 alpha", -- the string that is shown as version
 	ReleaseRevision = releaseDate(2021, 1, 27) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 }
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
@@ -179,7 +179,6 @@ DBM.DefaultOptions = {
 	SWarningAlphabetical = true,
 	SWarnNameInNote = true,
 	CustomSounds = 0,
-	ShowBigBrotherOnCombatStart = false,
 	FilterTankSpec = true,
 	FilterInterrupt2 = "TandFandBossCooldown",
 	FilterInterruptNoteName = false,
@@ -302,7 +301,7 @@ DBM.DefaultOptions = {
 	DontShowPTNoID = false,
 	PTCountThreshold2 = 5,
 	LatencyThreshold = 250,
-	BigBrotherAnnounceToRaid = false,
+	oRA3AnnounceConsumables = false,
 	SettingsMessageShown = false,
 	ForumsMessageShown = false,
 	AlwaysShowSpeedKillTimer2 = false,
@@ -6291,16 +6290,16 @@ do
 						sendSync("DSW")
 					end
 				end
-				--show bigbrother check
-				local bigBrother = _G["BigBrother"]
-				if self.Options.ShowBigBrotherOnCombatStart and bigBrother and type(bigBrother.ConsumableCheck) == "function" then
-					if self.Options.BigBrotherAnnounceToRaid then
-						bigBrother:ConsumableCheck("RAID")
-					else
-						bigBrother:ConsumableCheck("SELF")
+				if self.Options.oRA3AnnounceConsumables and _G["oRA3Frame"] then
+					local oRA3 = LibStub("AceAddon-3.0"):GetAddon("oRA3", true)
+					if oRA3 then
+						local consumables = oRA3:GetModule("Consumables", true)
+						if consumables then
+							consumables:OutputResults()
+						end
 					end
 				end
-				--show enage message
+				--show engage message
 				if self.Options.ShowEngageMessage and not mod.noStatistics then
 					if mod.ignoreBestkill and (savedDifficulty == "worldboss") then--Should only be true on in progress field bosses, not in progress raid bosses we did timer recovery on.
 						self:AddMsg(L.COMBAT_STARTED_IN_PROGRESS:format(difficultyText..name))
