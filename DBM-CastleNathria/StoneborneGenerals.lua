@@ -6,7 +6,7 @@ mod:SetCreatureID(168112, 168113)
 mod:SetEncounterID(2417)
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
 mod:SetBossHPInfoToHighest()
-mod:SetHotfixNoticeRev(20210126000000)--2021, 01, 26
+mod:SetHotfixNoticeRev(20210128000000)--2021, 01, 28
 mod:SetMinSyncRevision(20210126000000)
 mod.respawnTime = 29
 
@@ -24,7 +24,8 @@ mod:RegisterEventsInCombat(
 --	"SPELL_PERIODIC_MISSED",
 	"UNIT_DIED",
 	"RAID_BOSS_WHISPER",
-	"UNIT_SPELLCAST_START boss1 boss2"
+	"UNIT_SPELLCAST_START boss1 boss2",
+	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2"
 )
 
 --TODO, review more of timers with some bug fixes to fight as well as just a better version of transcriptor recording it., especailly P3 timers after intermission 2
@@ -154,6 +155,7 @@ mod.vb.grashDead = false
 --1-Heart rend DC not extended by crystalize most of time
 --2-To prevent swipe from altering it's OWN CD since it's started in success and not start (where timer update is)
 --3-To prevent stone fist from altering it's OWN CD since it's started in success and not start (where timer update is)
+--4-Heart rend is not extended by LFR version Reverberation
 --TODO, maybe one day even smarter code it for spell queue order below
 --Crystallize > tank abilities> wicked blade> eruption>seismic upheaval
 local function updateAllTimers(self, ICD, exclusion)
@@ -177,7 +179,7 @@ local function updateAllTimers(self, ICD, exclusion)
 	end
 	local phase = self.vb.phase
 	if not self.vb.kaalDead and (phase == 1 or phase == 3) then
-		if exclusion ~= 1 and timerHeartRendCD:GetRemaining(self.vb.heartCount+1) < ICD then
+		if exclusion ~= 1 and exclusion ~= 4 and timerHeartRendCD:GetRemaining(self.vb.heartCount+1) < ICD then
 			local elapsed, total = timerHeartRendCD:GetTime(self.vb.heartCount+1)
 			local extend = ICD - (total-elapsed)
 			DBM:Debug("timerHeartRendCD extended by: "..extend, 2)
@@ -362,7 +364,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 334009 then--Leap (LFR)
 		self.vb.eruptionCount = self.vb.eruptionCount + 1
 		timerReverberatingLeapCD:Start(nil, self.vb.eruptionCount+1)
-		updateAllTimers(self, 8)
+		updateAllTimers(self, 8, 4)
 		--self:BossTargetScanner(args.sourceGUID, "EruptionTarget", 0.01, 12)
 	elseif spellId == 334498 then
 		self.vb.upHeavalCount = self.vb.upHeavalCount + 1
@@ -395,7 +397,7 @@ function mod:SPELL_CAST_START(args)
 			--Kaal's Wicked Blade timer is tied to shield 100%
 			--Start initial Grashal timers and reset crystalize timer
 			timerCrystalizeCD:Stop()--Chance this doesn't happen here but at shield
-			timerCrystalizeCD:Start(19.7, self.vb.crystalCount+1)--19.7-20.7
+			timerCrystalizeCD:Start(18.5, self.vb.crystalCount+1)--18.5-20.7
 			timerStoneFistCD:Start(26.4, 1)--26.4-28.1
 			if self:IsLFR() then
 				timerReverberatingLeapCD:Start(29.4, 1)--Assumed for now
@@ -572,7 +574,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerHeartRendCD:Stop()
 			timerSerratedSwipeCD:Stop()
 			--Start Outgoing boss (Kael) (stuff he still casts airborn) here as well
-			timerWickedBladeCD:Start(25.7, self.vb.bladeCount+1)--TODO, Needs more data and fixing, 25.7-32 spell queue seems off
+			timerWickedBladeCD:Start(25.5, self.vb.bladeCount+1)--TODO, Needs more data and fixing, 25.7-32 spell queue seems off
 		else
 			timerWickedBladeCD:Start(19.6, self.vb.bladeCount+1)
 		end
@@ -663,13 +665,14 @@ function mod:UNIT_DIED(args)
 		timerRavenousFeastCD:Stop((castsPerGUID[args.sourceGUID] or 0)+1, args.destGUID)
 	elseif cid == 173280 then--stone-legion-skirmisher
 		timerWickedSlaughterCD:Stop(args.destGUID)
-	elseif cid == 168112 then--Kaal
+	elseif cid == 168112 and not self.vb.kaalDead then--Kaal
 		self.vb.kaalDead = true
 		timerWickedBladeCD:Stop()
 		timerHeartRendCD:Stop()
 		timerSerratedSwipeCD:Stop()
 		timerCallShadowForcesCD:Stop()
-	elseif cid == 168113 then--Grashaal
+		timerCrystalizeCD:Stop()--Yes this stops on kaal death too, because his death causes grashaal to recast it immediately
+	elseif cid == 168113 and not self.vb.grashDead then--Grashaal
 		self.vb.grashDead = true
 		timerReverberatingEruptionCD:Stop()
 		timerReverberatingLeapCD:Stop()
@@ -688,7 +691,6 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spell
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 --]]
-
 --"<10.92 16:10:19> [UNIT_SPELLCAST_START] General Grashaal(Lightea) - Reverberating Leap - 5.2s [[boss2:Cast-3-2084-2296-21431-334009-0026A47AA9:334009]]", -- [614]
 --"<10.92 16:10:19> [CLEU] SPELL_CAST_START#Creature-0-2084-2296-21431-168113-0000247A6F#General Grashaal##nil#334009#Reverberating Leap#nil#nil", -- [616]
 --"<10.94 16:10:19> [DBM_Debug] boss2 changed targets to Kngflyven#nil", -- [618]
@@ -696,5 +698,26 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 function mod:UNIT_SPELLCAST_START(uId, _, spellId)
 	if spellId == 344496 or spellId == 334009 then
 		self:BossUnitTargetScanner(uId, "EruptionTarget", 1)
+	end
+end
+
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
+	if spellId == 343288 then
+		local cid = self:GetUnitCreatureId(uId)
+		if cid == 168112 and not self.vb.kaalDead then--Kaal
+			self.vb.kaalDead = true
+			timerWickedBladeCD:Stop()
+			timerHeartRendCD:Stop()
+			timerSerratedSwipeCD:Stop()
+			timerCallShadowForcesCD:Stop()
+			timerCrystalizeCD:Stop()--Yes this stops on kaal death too, because his death causes grashaal to recast it immediately
+		elseif cid == 168113 and not self.vb.grashDead then--Grashaal
+			self.vb.grashDead = true
+			timerReverberatingEruptionCD:Stop()
+			timerReverberatingLeapCD:Stop()
+			timerSeismicUpheavalCD:Stop()
+			timerCrystalizeCD:Stop()
+			timerStoneFistCD:Stop()
+		end
 	end
 end

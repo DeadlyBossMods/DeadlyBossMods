@@ -101,9 +101,9 @@ function mod:OnCombatStart(delay)
 	table.wipe(ChainLinkTargets)
 	--Roar cast instantly on pull, no timer needed
 	if self:IsLFR() then
-		timerFallingRubbleCD:Start(12.5-delay, 1)--Unknown, not in combat log
-		timerDestructiveStompCD:Start(19.1-delay, 1)
-		timerHatefulGazeCD:Start(51.9-delay, 1)
+		timerFallingRubbleCD:Start(12.1-delay, 1)--Unknown, not in combat log
+		timerDestructiveStompCD:Start(18.5-delay, 1)
+		timerHatefulGazeCD:Start(51.3-delay, 1)
 	else
 		timerChainLinkCD:Start(4.7-delay, 1)
 		timerFallingRubbleCD:Start(12.5-delay, 1)
@@ -137,7 +137,7 @@ function mod:SPELL_CAST_START(args)
 		--Mythic
 		--pull:18.6, 25.5, 43.4, 25.5, 43.8, 25.5, 43.7", -- [2]
 		if self.vb.stompCount % 2 == 0 then
-			timerDestructiveStompCD:Start(self:IsLFR() and 44.8 or 43, self.vb.stompCount+1)
+			timerDestructiveStompCD:Start(43, self.vb.stompCount+1)
 		else
 			timerDestructiveStompCD:Start(25, self.vb.stompCount+1)--LFR is only about .5 seconds slower, so not worth nitpick
 		end
@@ -150,7 +150,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.roarCount = self.vb.roarCount + 1
 		specWarnColossalRoar:Show()
 		specWarnColossalRoar:Play("aesoon")
-		timerColossalRoarCD:Start(self:IsLFR() and 36 or 31.9, self.vb.roarCount+1)
+		timerColossalRoarCD:Start(self:IsLFR() and 33.2 or 31.9, self.vb.roarCount+1)
 	end
 end
 

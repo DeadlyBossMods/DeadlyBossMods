@@ -56,7 +56,7 @@ mod.vb.lungeCount = 0
 function mod:OnCombatStart(delay)
 	self.vb.lungeCount = 0
 	--TODO, fine tune start timers, they are approximations using first MELEE swing of boss since WCL lacked proper start event for encounter
-	timerSlimeInjectionCD:Start(10.9-delay)
+	timerSlimeInjectionCD:Start(9.7-delay)--Too much variation on initial timer, if it acts up again it's being deleted
 	timerSlimeLungeCD:Start(33.2-delay)
 --	timerPestilenceSurgeCD:Start(40-delay)
 	if self.Options.RangeFrame then
