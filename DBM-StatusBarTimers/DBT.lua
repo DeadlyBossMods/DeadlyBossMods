@@ -945,17 +945,18 @@ function barPrototype:SetElapsed(elapsed)
 	--Force reset animation and move it back to the small anchor since time was added to bar
 	if (self.enlarged or self.moving == "enlarge") and not (self.timer <= enlargeTime) then
 		self:ResetAnimations()
-		DBM:Debug("ResetAnimations firing for a a bar :Update() call that is shrinking a bar", 2)
+		DBM:Debug("ResetAnimations firing with a value of "..elapsed.." for a a bar :Update() call that is shrinking a bar", 2)
 	--Bar was small, or moving from small to large when time was removed
 	--Also force reset animation but this time move it from small anchor into large one
 	elseif (not self.enlarged or self.moving == "enlarge") and (self.timer <= enlargeTime) then
 		self:ResetAnimations(true)
-		DBM:Debug("ResetAnimations firing for a a bar :Update() call that is enlarging a bar", 2)
+		DBM:Debug("ResetAnimations firing with a value of "..elapsed.." for a a bar" :Update() call that is enlarging a bar", 2)
 	--Not even I'm 100% sure what this part is, tied to bar sorting obviouosly but what's this actually do?
 	elseif self.owner.options.Sort and self.moving ~= "enlarge" and self.moving ~= "move" then
 		local group = self.enlarged and self.owner.hugeBars or self.owner.smallBars
 		group:Remove(self)
 		group:Append(self)
+		DBM:Debug("ResetAnimations firing with a value of "..elapsed.." for a a bar :Update() call that is sorting bars", 3)
 	end
 	self:Update(0)
 end
