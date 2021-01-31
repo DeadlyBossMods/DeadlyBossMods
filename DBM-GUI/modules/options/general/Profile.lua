@@ -111,7 +111,6 @@ local importProfile = importExportProfilesArea:CreateButton(L.ButtonImportProfil
 			if not DBM.VoiceVersions[activeVP] or (DBM.VoiceVersions[activeVP] and DBM.VoiceVersions[activeVP] == 0) then
 				DBM:AddMsg(L.VOICE_MISSING)
 				tinsert(errors, "ChosenVoicePack")
-				print("ChosenVoicePack")
 			end
 		end
 		-- Check if sound packs are missing
