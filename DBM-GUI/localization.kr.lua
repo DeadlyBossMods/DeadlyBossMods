@@ -103,7 +103,7 @@ L.RecordOnlyBosses			= "보스만 기록 (모든 일반몹은 제외됩니다. �
 L.LogOnlyNonTrivial			= "주요 콘텐츠만 기록 (최신 확장팩 일반 이상 레이드와 신화+ 던전)"
 --
 L.Area_3rdParty				= "써드파티 애드온 설정"
---L.oRA3AnnounceConsumables	= "Announce oRA3 consumables check on combat start"
+L.oRA3AnnounceConsumables	= "전투 시작시 oRA3 버프 검사 알림"
 L.Area_Invite				= "초대 설정"
 L.AutoAcceptFriendInvite	= "친구의 파티/공격대 초대 자동 수락"
 L.AutoAcceptGuildInvite		= "길드원의 파티/공격대 초대 자동 수락"
@@ -343,7 +343,7 @@ L.SpamBlockNoShowTgtAnnounce = "대상 관련 알림 및 효과음만 재생 안
 L.SpamBlockNoSpecWarnText	= "특수 알림 텍스트 표시 안함"
 L.SpamBlockNoSpecWarnFlash	= "특수 알림에 화면 점멸 사용 안함"
 L.SpamBlockNoSpecWarnSound	= "특수 알림 효과음 재생 안함 (음성 경고 메뉴에서 설정했다면 음성팩은 계속 작동)"
-L.SpamBlockNoTrivialSpecWarnSound	= "현재 레벨에 맞는 콘텐츠 이외에는 특수 알림 효과음 재생 안함 (대신 사용자가 선택한 정규 알림 효과음 재생)"
+L.SpamBlockNoTrivialSpecWarnSound	= "현재 레벨에 맞는 콘텐츠 이외에는 특수 알림 효과음 재생이나 화면 점멸 효과 사용 안함 (대신 사용자가 선택한 정규 알림 효과음 재생)"
 
 L.Area_SpamFilter_Timers	= "타이머 관련 기능 끄기 및 필터 설정"
 L.SpamBlockNoShowTimers		= "모드 타이머 표시 안함 (보스 모드/도전모드/파티찾기/재생성)"
