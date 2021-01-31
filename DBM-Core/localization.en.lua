@@ -278,6 +278,7 @@ L.TIMER_USAGE						= {
 }
 
 L.ERROR_NO_PERMISSION				= "You don't have the required permission to do this."
+L.TIME_TOO_SHORT					= "Pull timer must be longer than 3 seconds."
 
 --Common Locals
 L.NONE								= "None"
