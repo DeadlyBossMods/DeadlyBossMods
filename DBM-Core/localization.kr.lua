@@ -264,6 +264,7 @@ L.TIMER_USAGE	= {
 }
 
 L.ERROR_NO_PERMISSION				= "이 명령어를 실행하기 위한 권한을 가지고 있지 않습니다."
+L.TIME_TOO_SHORT					= "풀링 타이머는 3초 이상으로 설정해야 합니다."
 
 --Common Locals
 L.NONE						= "없음"
