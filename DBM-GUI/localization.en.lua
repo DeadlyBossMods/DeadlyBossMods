@@ -149,6 +149,8 @@ L.ImportExportInfo			= "Importing will overwrite your current profile, do at you
 L.ButtonImportProfile		= "Import profile"
 L.ButtonExportProfile		= "Export profile"
 
+L.ImportErrorOn				= "Custom sounds missing for setting: %s"
+
 -- Tab: Alerts
 L.TabCategory_Alerts	 	= "Alerts"
 L.Area_SpecAnnounceConfig	= "Special Announce visuals and sound guide"

@@ -89,6 +89,19 @@ local exportProfile = importExportProfilesArea:CreateButton(L.ButtonExportProfil
 	})
 end)
 exportProfile:SetPoint("TOPLEFT", 12, -20)
+local localeTable = {
+	RaidWarningSound		= "RaidWarnSound",
+	SpecialWarningSound		= "SpecialWarnSoundOption",
+	SpecialWarningSound2	= "SpecialWarnSoundOption",
+	SpecialWarningSound3	= "SpecialWarnSoundOption",
+	SpecialWarningSound4	= "SpecialWarnSoundOption",
+	SpecialWarningSound5	= "SpecialWarnSoundOption",
+	EventSoundVictory2		= "EventVictorySound",
+	EventSoundWipe			= "EventWipeSound",
+	EventSoundEngage2		= "EventEngageSound",
+	EventSoundMusic			= "EventEngageMusic",
+	EventSoundDungeonBGM	= "EventDungeonMusic"
+}
 local importProfile = importExportProfilesArea:CreateButton(L.ButtonImportProfile, 120, 20, function()
 	DBM_GUI:CreateImportProfile(function(importTable)
 		local errors = {}
@@ -102,11 +115,12 @@ local importProfile = importExportProfilesArea:CreateButton(L.ButtonImportProfil
 		end
 		-- Check if sound packs are missing
 		for _, soundSetting in ipairs({
-			"RaidWarningSound", "SpecialWarningSound", "SpecialWarningSound3", "SpecialWarningSound4", "SpecialWarningSound5", "EventSoundVictory2",
+			"RaidWarningSound", "SpecialWarningSound", "SpecialWarningSound2", "SpecialWarningSound3", "SpecialWarningSound4", "SpecialWarningSound5", "EventSoundVictory2",
 			"EventSoundWipe", "EventSoundEngage2", "EventSoundMusic", "EventSoundDungeonBGM", "RangeFrameSound1", "RangeFrameSound2"
 		}) do
 			local activeSound = importTable.DBM[soundSetting]
 			if type(activeSound) == "string" and activeSound:lower() ~= "none" and not DBM:ValidateSound(activeSound, true, true) then
+				DBM:AddMsg(L.ImportErrorOn:format(L[localeTable[soundSetting]] or soundSetting))
 				tinsert(errors, soundSetting)
 			end
 		end
