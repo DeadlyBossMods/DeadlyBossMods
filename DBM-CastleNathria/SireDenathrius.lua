@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(167406)
 mod:SetEncounterID(2407)
 mod:SetUsedIcons(1, 2, 3, 4, 7, 8)
-mod:SetHotfixNoticeRev(20201227000000)--2020, 12, 27
+mod:SetHotfixNoticeRev(20210202000000)--2021, 02, 02
 mod:SetMinSyncRevision(20201227000000)
 mod.respawnTime = 29
 
@@ -148,20 +148,20 @@ local difficultyName = "None"
 local playerGUID = UnitGUID("player")
 local selfInMirror = false
 local Timers = {
-	["normal"] = {
+	["normal"] = {--Normal and LFR use same timers
 		[1] = {
 			--Feeding Time (Normal, LFR)
-			[327039] = {20, 35, 35, 25, 35, 25},
+			[327039] = {15, 35, 35, 25, 35, 25},
 			--Cleansing Pain (P1)
-			[326707] = {5.8, 26.7, 32.8, 26.7, 33.9, 26.7},
+			[326707] = {5.8, 26.7, 32.8, 26.7, 32.7, 26.7},
 		},
 		[2] = {
 			--Impale (Seems same as heroic)
-			[329943] = {27.5, 25.9, 27, 23, 32, 18, 39, 35},
+			[329943] = {27.5, 25.9, 27, 23, 31.9, 18, 39, 35},
 			--Hand of Destruction P2 (Seems same as heroic)
 			[333932] = {47.6, 40.9, 40, 57, 19.7},
 			--Adds P2 (Different from heroic)
-			[12345] = {9.7, 85, 75},
+			[12345] = {9.7, 84.5, 75},--75-79 for that last set?
 		},
 		[3] = {--Totally different from heroic
 			--Hand of Destruction P3
@@ -179,7 +179,7 @@ local Timers = {
 		},
 		[2] = {
 			--Impale
-			[329943] = {27.5, 25.9, 27, 23, 32, 18, 39, 35},
+			[329943] = {27.5, 25.9, 27, 23, 31.9, 18, 39, 35},
 			--Hand of Destruction P2
 			[333932] = {47.6, 40.9, 40, 57, 19.7},
 			--Adds P2
@@ -285,7 +285,7 @@ function mod:OnCombatStart(delay)
 	--Same on all difficulties
 	timerCleansingPainCD:Start(5.8-delay, 1)--5.8-6.3
 	timerBloodPriceCD:Start(22.3-delay, 1)--22-24
-	timerCommandRavageCD:Start(self:IsEasy() and 53.2 or 50.2-delay, 1)--50-51
+	timerCommandRavageCD:Start(self:IsEasy() and 52.2 or 50.2-delay, 1)--50-51
 	--Where timers diverge
 	if self:IsMythic() then
 		difficultyName = "mythic"
@@ -299,7 +299,7 @@ function mod:OnCombatStart(delay)
 		else
 			difficultyName = "normal"
 			expectedStacks = 4
-			timerFeedingTimeCD:Start(20-delay, 1)
+			timerFeedingTimeCD:Start(15-delay, 1)
 		end
 	end
 --	berserkTimer:Start(-delay)--Confirmed normal and heroic
@@ -459,7 +459,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			timerShatteringPainCD:Start(13.3, 1)--SUCCESS
 			timerFatalFitnesseCD:Start(17.4, 1)--SUCCESS/APPLIED
 			if self:IsEasy() then
-				timerCommandMassacreCD:Start(50, 1)--Seems massacre always first Reflection
+				timerCommandMassacreCD:Start(49.7, 1)--Seems massacre always first Reflection
 				timerHandofDestructionCD:Start(71.6, 1)
 			else
 				timerHandofDestructionCD:Start(27.6, 1)--27-29
