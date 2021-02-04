@@ -26,6 +26,7 @@ localization.kr.lua
 localization.tw.lua
 localization.cn.lua
 localization.es.lua
+localization.ru.lua
 Shriekwing.lua
 AltimortheHuntsman.lua
 Kaelthas.lua
