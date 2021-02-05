@@ -150,13 +150,12 @@ mod.vb.grashDead = false
 --Heart rend triggers 2.3 second ICD
 --Stone fist triggers 3-3.5 second ICD
 --Serrated swipe triggers 2.4 second ICD
---Shattering Blast triggers 12 second ICD first time, and 5.4 second ICD the second time
 --Exclusions:
 --1-Heart rend DC not extended by crystalize most of time
 --2-To prevent swipe from altering it's OWN CD since it's started in success and not start (where timer update is)
 --3-To prevent stone fist from altering it's OWN CD since it's started in success and not start (where timer update is)
---4-Heart rend is not extended by LFR version Reverberation
---TODO, maybe one day even smarter code it for spell queue order below
+--4-Heart rend is not extended by LFR version Reverberation (or anything else?)
+--5-Heart rend in general seems ot have half ICD of everything else when ICD is triggered
 --Crystallize > tank abilities> wicked blade> eruption>seismic upheaval
 local function updateAllTimers(self, ICD, exclusion)
 	if not self.Options.ExperimentalTimerCorrection then return end
@@ -179,9 +178,9 @@ local function updateAllTimers(self, ICD, exclusion)
 	end
 	local phase = self.vb.phase
 	if not self.vb.kaalDead and (phase == 1 or phase == 3) then
-		if exclusion ~= 1 and exclusion ~= 4 and timerHeartRendCD:GetRemaining(self.vb.heartCount+1) < ICD then
+		if exclusion ~= 1 and exclusion ~= 4 and timerHeartRendCD:GetRemaining(self.vb.heartCount+1) < (ICD/2) then
 			local elapsed, total = timerHeartRendCD:GetTime(self.vb.heartCount+1)
-			local extend = ICD - (total-elapsed)
+			local extend = (ICD/2) - (total-elapsed)
 			DBM:Debug("timerHeartRendCD extended by: "..extend, 2)
 			timerHeartRendCD:Stop()
 			timerHeartRendCD:Update(elapsed, total+extend, self.vb.heartCount+1)
@@ -429,9 +428,9 @@ function mod:SPELL_CAST_START(args)
 			timerCrystalizeCD:Start(12.4, self.vb.crystalCount+1)--12.4-12.7
 			timerStoneFistCD:Start(20.9, self.vb.fistCount+1)--20.9-21.2
 			if self:IsLFR() then
-				timerReverberatingLeapCD:Start(30.7, self.vb.eruptionCount+1)--Guessed
+				timerReverberatingLeapCD:Start(25.2, self.vb.eruptionCount+1)--Guessed
 			else
-				timerReverberatingEruptionCD:Start(30.7, self.vb.eruptionCount+1)--30.7-30.9
+				timerReverberatingEruptionCD:Start(25.2, self.vb.eruptionCount+1)--25.2-30.9
 			end
 			--Re-enable Upheaval
 			timerSeismicUpheavalCD:Start(44, 1)--44-44.4
