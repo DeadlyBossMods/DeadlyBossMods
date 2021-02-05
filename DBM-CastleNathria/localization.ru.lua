@@ -27,9 +27,9 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(2418)
 
 L:SetMiscLocalization({
-	Phase2			= "The anticipation to use this relic is killing me! Though, it will more likely kill you.",
+	Phase2			= "Что же делает эта штука? Любопытно до смерти. Правда, умрете, скорее всего, вы.#Изобретатель Зи'Мокс",
 	Phase2Demonic	= "Lok zennshinagas xi ril zila refir il rethule no Rakkas az alar alar archim maev shi ",--Boss has Curse of Tongues
-	Phase3			= "I hope this wondrous item is as lethal as it looks!",
+	Phase3			= "Надеюсь, эта вещица не только выглядит опасной!",
 	Phase3Demonic	= "X ante zila romathis alar il re thorje re az modas "--Boss has Curse of Tongues
 })
 

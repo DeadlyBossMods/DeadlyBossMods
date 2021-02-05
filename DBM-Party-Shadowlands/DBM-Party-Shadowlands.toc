@@ -5,6 +5,7 @@
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0던전 (어둠땅)|r
 ## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0隊伍首領-暗影之境|r
 ## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf05人小队-暗影国度|r
+## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Групповые подземелья (SL)|r
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
 ## SavedVariables: DBMPartyShadowlands_AllSavedVars
@@ -20,6 +21,7 @@
 ## X-DBM-Mod-Name-koKR: 던전 (어둠땅)
 ## X-DBM-Mod-Name-zhTW: 隊伍首領 (暗影之境)
 ## X-DBM-Mod-Name-zhCN: 5人小队（暗影国度）
+## X-DBM-Mod-Name-ruRU: Групповые подземелья (SL)
 ## X-DBM-Mod-Sort: 315
 ## X-DBM-Mod-MapID: 2286, 2289, 2290, 2287, 2285, 2293, 2291, 2284
 ## X-DBM-Mod-MinCoreRevision: 17286

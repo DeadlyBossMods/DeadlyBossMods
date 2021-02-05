@@ -45,7 +45,7 @@ mod:RegisterEventsInCombat(
  or (source.type = "NPC" and source.firstSeen = timestamp) or (target.type = "NPC" and target.firstSeen = timestamp)
  or (abililty.id = 326455 or ability.id = 326455 or ability.id = 325506) and type = "begincast"
 
- ability.id = 328659 or ability.id == 341254 or ability.id = 328731 and (type = "applybuff" or type = "removebuff")
+ or ability.id = 328659 or ability.id == 341254 or ability.id = 328731 and (type = "applybuff" or type = "removebuff")
 --]]
 --Shade of Kael'thas
 local warnFeiryStrike							= mod:NewCastAnnounce(326455, 2, nil, nil, "Melee")

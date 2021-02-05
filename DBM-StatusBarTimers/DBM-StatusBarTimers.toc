@@ -1,4 +1,4 @@
-﻿## Interface: 90002
+## Interface: 90002
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FFStatus Bar Timers (REQUIRED)|r
 ## Title-esES:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FFTemporizadores de Estado (REQUERIDO)|r
 ## Title-esMX:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FFTemporizadores de Estado (REQUERIDO)|r
@@ -6,6 +6,7 @@
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FF상태 바 타이머 (필수)|r
 ## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FF狀態條計時器|r
 ## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FF状态条计时器|r
+## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FFТаймеры (ОБЯЗАТЕЛЬНО)|r
 ## Notes: DBM - status bar timer library
 ## Notes-esES: DBM - librería de temporizadores de estado
 ## Notes-esMX: DBM - librería de temporizadores de estado
@@ -13,6 +14,7 @@
 ## Notes-koKR: DBM - 상태 바 타이머 라이브러리
 ## Notes-zhTW: DBM 狀態條計時器函式庫
 ## Notes-zhCN: DBM 状态条计时器函数库
+## Notes-ruRU: DBM - библиотека таймеров
 ## SavedVariables: DBT_AllPersistentOptions
 ## LoadOnDemand: 0
 ## DefaultState: enabled
