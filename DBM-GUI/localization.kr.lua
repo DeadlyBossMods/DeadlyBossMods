@@ -138,6 +138,8 @@ L.ImportExportInfo			= "가져오기를 하면 현재 프로필 설정에 덮어
 L.ButtonImportProfile		= "프로필 가져오기"
 L.ButtonExportProfile		= "프로필 내보내기"
 
+L.ImportErrorOn				= "프로필 설정에 빠져있는 사용자 지정 효과음: %s"
+
 -- Tab: Alerts
 L.TabCategory_Alerts	 	= "경고"
 L.Area_SpecAnnounceConfig	= "특수 경고 외형과 효과음 설정 가이드"
