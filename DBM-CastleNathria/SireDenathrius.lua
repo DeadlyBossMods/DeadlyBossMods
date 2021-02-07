@@ -144,7 +144,7 @@ local expectedStacks = 6
 local P3Transition = false
 local SinStacks, stage2Adds, deadAdds = {}, {}, {}
 local castsPerGUID = {}
-local difficultyName = "None"
+local difficultyName = "normal"
 local playerGUID = UnitGUID("player")
 local selfInMirror = false
 local Timers = {
@@ -168,6 +168,8 @@ local Timers = {
 			[333932] = {72.6, 76.4, 94.7},
 			--Fatal Finesse P3
 			[332794] = {17.4, 24, 24.9, 29, 22, 34, 22, 26, 32},
+			--Adds P2 (There are none in phase 3 but sometimes message can trigger after p2 trigger, this stops nil error)
+			[12345] = {},
 		}
 	},
 	["heroic"] = {
@@ -190,6 +192,8 @@ local Timers = {
 			[333932] = {27.6, 88, 31.7, 47.5},
 			--Fatal Finesse P3
 			[332794] = {17.4, 48, 6, 21, 27, 19, 26, 21, 40},
+			--Adds P2 (There are none in phase 3 but sometimes message can trigger after p2 trigger, this stops nil error)
+			[12345] = {},
 		}
 	},
 	["mythic"] = {
@@ -212,6 +216,8 @@ local Timers = {
 			[332794] = {27, 21.9, 25, 25, 38.9, 33, 12, 12},
 			--Shattering Pain Pain
 			[332619] = {12.8, 25.4, 21.7, 24.2, 24.2, 25.4, 21.8, 23, 25.5},
+			--Adds P2 (There are none in phase 3 but sometimes message can trigger after p2 trigger, this stops nil error)
+			[12345] = {},
 		}
 	},
 }
