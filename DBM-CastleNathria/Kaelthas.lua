@@ -475,7 +475,7 @@ function mod:OnCombatEnd(wipe, isSecondRun)
 		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
 	end
 	if not isSecondRun then
-		DBM:AddMsg("Add timer accuracy may stil suffer greatly until blizzard fixes bugs with adds inconsistently firing events when spawning, especially soul infusers")
+		DBM:AddMsg("Add timer accuracy may still suffer greatly until blizzard fixes bugs with adds inconsistently firing events when spawning, especially soul infusers")
 	end
 end
 
