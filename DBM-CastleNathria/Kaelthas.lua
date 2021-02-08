@@ -461,7 +461,7 @@ function mod:OnCombatStart(delay)
 	end
 end
 
-function mod:OnCombatEnd(wipe, isSecondRun)
+function mod:OnCombatEnd(wipe)
 	table.wipe(seenAdds)
 	table.wipe(castsPerGUID)
 	table.wipe(infuserTargets)
@@ -473,9 +473,6 @@ function mod:OnCombatEnd(wipe, isSecondRun)
 	end
 	if self.Options.NPAuraOnPhoenixFixate then--self.Options.NPAuraOnPhoenixEmbers or
 		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
-	end
-	if not isSecondRun then
-		DBM:AddMsg("Add timer accuracy may still suffer greatly until blizzard fixes bugs with adds inconsistently firing events when spawning, especially soul infusers")
 	end
 end
 
