@@ -752,7 +752,7 @@ function mod:UNIT_DIED(args)
 	if cid == 169196 or cid == 173163 or cid == 173162 or cid == 173164 or cid == 173161 then--crimson-cabalist and all 4 horseman
 		stage2Adds[args.destGUID] = nil
 		deadAdds[args.destGUID] = true
-		if self:AntiSpam(3, 3) then
+		if self:IsHard() and self:AntiSpam(3, 3) then
 			if self.Options.SpecWarn336162dodge then
 				specWarnCrescendo:Show()
 				specWarnCrescendo:Play("watchstep")
