@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(166644)
 mod:SetEncounterID(2405)
 mod:SetUsedIcons(1, 2)
-mod:SetHotfixNoticeRev(20201214000000)--2020, 12, 14
+mod:SetHotfixNoticeRev(20210214000000)--2021, 02, 14
 mod:SetMinSyncRevision(20201214000000)
 --mod.respawnTime = 29
 
@@ -13,20 +13,20 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 328437 335013 325399 327887 329770 328789 340758 329834 328880 342310 340788 342854 329107 340807",
-	"SPELL_CAST_SUCCESS 325361 326271 325399",
+	"SPELL_CAST_SUCCESS 325361 326271 325399 181089",
 	"SPELL_AURA_APPLIED 328448 328468 325236 327902 327414",
 	"SPELL_AURA_REMOVED 328448 328468 325236",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
-	"CHAT_MSG_RAID_BOSS_EMOTE",
-	"CHAT_MSG_MONSTER_YELL"
+	"CHAT_MSG_RAID_BOSS_EMOTE"
+--	"CHAT_MSG_MONSTER_YELL"
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
 --TODO, add https://shadowlands.wowhead.com/spell=340842/soul-singe ?
 --[[
 (ability.id = 328437 or ability.id = 335013 or ability.id = 325399 or ability.id = 327887 or ability.id = 340758 or ability.id = 329770 or ability.id = 329834 or ability.id = 328880 or ability.id = 328789 or ability.id = 342310 or ability.id = 340807 or ability.id = 340788 or ability.id = 342854) and type = "begincast"
- or (ability.id = 326271 or ability.id = 325361) and type = "cast"
+ or (ability.id = 326271 or ability.id = 325361 or ability.id = 181089) and type = "cast"
 --]]
 local warnPhase										= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 2)
 local warnDimensionalTear							= mod:NewTargetNoFilterAnnounce(328437, 3, nil, nil, 327770)
@@ -242,6 +242,58 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerStasisTrapCD:Start()
 	elseif spellId == 325399 then
 		self.vb.hyperInProgress = false
+	elseif spellId == 181089 then
+		self.vb.phase = self.vb.phase + 1
+		if self.vb.phase == 2 then
+			warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(2))
+			warnPhase:Play("ptwo")
+			timerStasisTrapCD:Stop()
+			timerRiftBlastCD:Stop()
+			timerHyperlightSparkCD:Stop()
+			timerGlyphofDestructionCD:Stop()--Glyph is auto cast on transition yells, in addition starts a custom non 36 timer for first one in each phase
+			timerFleetingSpiritsCD:Stop()
+			timerDimensionalTearCD:Stop()
+			--If hyper is in progress, boss actually finishes it and the phase change CD isn't triggered
+			if not self.vb.hyperInProgress then
+				timerHyperlightSparkCD:Start(5.5)--5.5-6
+			else--When this happens, it doesn't get recast for a full minute
+				timerHyperlightSparkCD:Start(60)
+			end
+			timerDimensionalTearCD:Start(14)
+			timerRiftBlastCD:Start(20)
+			timerSeedsofExtinctionCD:Start(21.6)
+			timerGlyphofDestructionCD:Start(27.8, self.vb.destructionCount+1)--SUCCESS
+			if self:IsHard() then
+				timerStasisTrapCD:Start(10.7)
+			end
+		elseif self.vb.phase == 3 then
+			self.vb.p3FirstCast = 0--1- Tear, 2 - Annihilate/Unleashed
+			warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(3))
+			warnPhase:Play("pthree")
+			timerStasisTrapCD:Stop()
+			timerRiftBlastCD:Stop()
+			timerHyperlightSparkCD:Stop()
+			timerGlyphofDestructionCD:Stop()--Glyph is auto cast on transition yells, in addition starts a custom non 36 timer for first one in each phase
+			timerSeedsofExtinctionCD:Stop()
+			timerDimensionalTearCD:Stop()
+			--If hyper is in progress, boss actually finishes it and the phase change CD isn't triggered
+			if not self.vb.hyperInProgress then
+				timerHyperlightSparkCD:Start(5.5)--5.5-7
+			else--When this happens, it doesn't get recast for a full minute
+				timerHyperlightSparkCD:Start(60)
+			end
+			timerDimensionalTearCD:Start(14.4)
+			timerRiftBlastCD:Start(45.9)
+			timerGlyphofDestructionCD:Start(53.5, self.vb.destructionCount+1)--SUCCESS
+			if self:IsHard() then
+				timerStasisTrapCD:Start(10.7)
+			end
+			if self:IsMythic() then
+				timerUnleashPowerCD:Start(20)--Time until phase 3 activation edge of annihilation spell
+			else
+				timerEdgeofAnnihilationCD:Start(27)--Time until actual annihilation cast, not edge of annihilation
+			end
+		end
 	end
 end
 
@@ -321,6 +373,8 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	end
 end
 
+--[[
+--Will be removed if encounter event methods seem to be glitch free
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.Phase2 or msg:find(L.Phase2) or msg == L.Phase2Demonic or msg:find(L.Phase2Demonic) then
 		self:SendSync("Phase2")
@@ -381,64 +435,6 @@ function mod:OnSync(msg)
 			timerUnleashPowerCD:Start(20)--Time until phase 3 activation edge of annihilation spell
 		else
 			timerEdgeofAnnihilationCD:Start(27)--Time until actual annihilation cast, not edge of annihilation
-		end
-	end
-end
-
---Use if combat log methods fail or get removed from visiblity
---This is a bit more convoluted but should be functional, esspecially if blizzard fixes order bug on phase 3 mythic
---[[
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 342297 then--Broker Curator Phase 1 Spell Rotator
-		if self.vb.lastRotation == 0 then--Last cast was tear
-			self.vb.lastRotation = 1--Which means this cast is Spirits
-			timerDimensionalTearCD:Start(20.2)--Which means next cast is tear
-		else--Last cast was spirits
-			self.vb.lastRotation = 0--Which means this cast is tear
-			timerFleetingSpiritsCD:Start(20.2)--Which means next cast is spirits
-		end
-	elseif spellId == 342379 then--Broker Curator Phase 2 Spell Rotator
-		if self:IsMythic() then
-			if self.vb.lastRotation == 0 then--Last cast as tear
-				self.vb.lastRotation = 2--Which means this cast is seeds
-				timerDimensionalTearCD:Start(25)--Which means next cast is tear
-			else--Last cast was seeds
-				self.vb.lastRotation = 0--Which means this cast is tear
-				timerSeedsofExtinctionCD:Start(25)--Which means next cast is seeds
-			end
-		else
-			if self.vb.lastRotation == 0 then--Last cast as tear
-				self.vb.lastRotation = 2--Which means this cast is seeds
-				timerDimensionalTearCD:Start(20.2)--Which means next cast is tear
-			else--Last cast was seeds
-				self.vb.lastRotation = 0--Which means this cast is tear
-				timerSeedsofExtinctionCD:Start(20.2)--Which means next cast is seeds
-			end
-		end
-	elseif spellId == 342380 then--Broker Curator Phase 3 Spell Rotator
-		if self:IsMythic() then
-			if self.vb.lastRotation == 0 then--Last cast as tear
-				self.vb.lastRotation = 3--Which means this cast is Unleashed Power
-				timerDimensionalTearCD:Start(35.3)--Which means next cast is tear
-			else--Last cast was seeds
-				self.vb.lastRotation = 0--Which means this cast is tear
-				timerUnleashPowerCD:Start(35.3, self.vb.unleashCount+2)--Which means next cast is all 3
-			end
-		else
-			--Unique Rotation in this phase on non mythic: Annihilate, Tear, Empty, Tear, repeat
-			if self.vb.lastRotation == 3 then--Last cast Annihilate
-				self.vb.lastRotation = 0--Which means this cast is Tear 1
-				timerDimensionalTearCD:Start(40.4)--Which means next real cast is tear 2
-			elseif self.vb.lastRotation == 0 then--Last cast was Tear 1
-				self.vb.lastRotation = 5--This cast is empty
-				--Start no timer
-			elseif self.vb.lastRotation == 5 then--Last cast was Empty
-				self.vb.lastRotation = 4--This cast is Tear 2
-				timerEdgeofAnnihilationCD:Start(20.2)--Which means next cast begins cycle again at Annihilate
-			elseif self.vb.lastRotation == 4 then--Last cast was Tear 2
-				self.vb.lastRotation = 3--Which means this cast is Annihilate
-				timerDimensionalTearCD:Start(20.4)--Which means next cast is tear 1
-			end
 		end
 	end
 end
