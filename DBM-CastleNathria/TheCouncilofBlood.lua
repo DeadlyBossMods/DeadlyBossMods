@@ -6,8 +6,8 @@ mod:SetCreatureID(166971, 166969, 166970)--Castellan Niklaus, Baroness Frieda, L
 mod:SetEncounterID(2412)
 mod:SetBossHPInfoToHighest()
 mod:SetUsedIcons(8)
-mod:SetHotfixNoticeRev(20210205000000)--2021, 02, 05
-mod:SetMinSyncRevision(20210205000000)
+mod:SetHotfixNoticeRev(20210216000000)--2021, 02, 16
+mod:SetMinSyncRevision(20210216000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
@@ -265,6 +265,8 @@ end
 
 local function phaseChange(self, adjustment)
 	--Bump phase and stop all timers since regardless of kills, phase changes reset anyone that's still up
+	local bossesDead = (self.vb.nikDead and 1 or 0) or (self.vb.friedaDead and 1 or 0) or (self.vb.stavrosDead and 1 or 0)
+	if (bossesDead+1) == self.vb.phase then return end--Somehow phaseChange ran more than once for same phase change, force abort
 	self.vb.phase = self.vb.phase + 1
 	if adjustment > 0 then
 		DBM:AddMsg("Some timers may be incorrect this phase. This usually happens when Infusion/Empowered buff misses remaining boss, causing timers not to correctly reset")
