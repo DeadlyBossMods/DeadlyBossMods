@@ -115,7 +115,7 @@ mod:AddTimerLine(DBM:EJ_GetSectionInfo(22206))--Two are dead
 local timerDancingFoolsCD						= mod:NewCDTimer(30.3, 330964, nil, nil, nil, 1)
 --Mythic
 mod:AddTimerLine(PLAYER_DIFFICULTY6)
-local timerDancingFeverCD						= mod:NewCDTimer(60, 347350, nil, nil, nil, 3)
+local timerDancingFeverCD						= mod:NewCDCountTimer(60, 347350, nil, nil, nil, 3)
 
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
@@ -131,6 +131,7 @@ mod.vb.phase = 1
 mod.vb.feversActive = 0
 mod.vb.volleyCast = 0
 mod.vb.drainCount = 0
+mod.vb.feverCast = 0
 mod.vb.nikDead = false
 mod.vb.friedaDead = false
 mod.vb.stavrosDead = false
@@ -412,6 +413,7 @@ function mod:OnCombatStart(delay)
 	self.vb.feversActive = 0
 	self.vb.volleyCast = 1
 	self.vb.drainCount = 0
+	self.vb.feverCast = 0
 	self.vb.nikDead = false
 	self.vb.friedaDead = false
 	self.vb.stavrosDead = false
@@ -420,7 +422,7 @@ function mod:OnCombatStart(delay)
 	table.wipe(FeverStacks)
 	if self:IsMythic() then
 		difficultyName = "mythic"
-		timerDancingFeverCD:Start(5-delay)
+		timerDancingFeverCD:Start(5-delay, 1)
 		--Castellan Niklaus
 		timerDutifulAttendantCD:Start(6.5-delay)
 		timerDualistsRiposteCD:Start(16.5-delay)
@@ -770,7 +772,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellDancingFever:Countdown(spellId)
 		end
 		if self:AntiSpam(5, 6) then
-			timerDancingFeverCD:Start()
+			self.vb.feverCast = self.vb.feverCast + 1
+			timerDancingFeverCD:Start(60, self.vb.feverCast+1)
 		end
 		FeverStacks[args.destName] = 3
 		if self.Options.InfoFrame then
@@ -849,7 +852,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			end
 		end
 		if self:IsMythic() then
-			timerDancingFeverCD:Start(5.5)
+			timerDancingFeverCD:Start(5.5, self.vb.feverCast+1)
 		end
 	elseif spellId == 347350 then
 		self.vb.feversActive = self.vb.feversActive - 1
