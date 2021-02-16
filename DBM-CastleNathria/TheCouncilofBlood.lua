@@ -754,7 +754,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				yellDarkRecitalRepeater:Yell(icon)
 			end
 		end
-	elseif (spellId == 332535 or spellId == 346709 or spellId == 346706) and self:AntiSpam(30, spellId) then--Infused/Empowered
+	elseif (spellId == 332535 or spellId == 346709 or spellId == 346706) and self:AntiSpam(30, spellId == 346709 and 7 or 8) then--Infused/Empowered
 		self:Unschedule(phaseChange)
 		phaseChange(self, 0)--true phase change, more accurate timers, but sometimes missing from combat log
 	elseif spellId == 346694 then
@@ -885,8 +885,8 @@ function mod:UNIT_DIED(args)
 		timerDutifulAttendantCD:Stop()
 		timerDredgerServantsCD:Stop()
 		--Less accurate phase change, but backup if the true phase change infusion/empowerment events are missing
+		self:Unschedule(phaseChange)
 		if self.vb.phase < 3 then
-			self:Unschedule(phaseChange)
 			self:Schedule(5, phaseChange, self, 2)
 		end
 	elseif cid == 166969 then--Baroness Frieda
@@ -895,8 +895,8 @@ function mod:UNIT_DIED(args)
 --		timerDreadboltVolleyCD:Stop()
 		timerPridefulEruptionCD:Stop()
 		--Less accurate phase change, but backup if the true phase change infusion/empowerment events are missing
+		self:Unschedule(phaseChange)
 		if self.vb.phase < 3 then
-			self:Unschedule(phaseChange)
 			self:Schedule(5, phaseChange, self, 2)
 		end
 	elseif cid == 166970 then--Lord Stavros
@@ -906,8 +906,8 @@ function mod:UNIT_DIED(args)
 		timerDarkRecitalCD:Stop()
 		timerDancingFoolsCD:Stop()
 		--Less accurate phase change, but backup if the true phase change infusion/empowerment events are missing
+		self:Unschedule(phaseChange)
 		if self.vb.phase < 3 then
-			self:Unschedule(phaseChange)
 			self:Schedule(5, phaseChange, self, 2)
 		end
 	elseif cid == 168406 then--Waltzing Venthyr
