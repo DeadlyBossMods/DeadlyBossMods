@@ -15,7 +15,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 330965 330978 327497 346654 346690 337110 346657 346762 346303 346790 346698 346800 331634",
 	"SPELL_CAST_SUCCESS 330959 346657 346303 347376",
-	"SPELL_AURA_APPLIED 330967 331636 331637 332535 346694 347350 346690 346709 346706",
+	"SPELL_AURA_APPLIED 330967 331636 331637 332535 346694 347350 346690 346709",
 	"SPELL_AURA_APPLIED_DOSE 332535 346690",
 	"SPELL_AURA_REMOVED 330967 331636 331637 346694 330959 347350",
 	"SPELL_AURA_REMOVED_DOSE 347350",
@@ -242,7 +242,7 @@ local allTimers = {
 		--Evasive Lunge
 		[327497] = {18.7, 14.9, 10},
 		--Dark Recital (Living)
-		[331634] = {44.9, 60, 20},
+		[331634] = {44.9, 59.9, 20},
 		--Dark Recital (Dead)
 		[331635] = {0, 0, 36.9},
 		--Waltz of Blood (P2+)
@@ -539,8 +539,8 @@ function mod:SPELL_CAST_START(args)
 			local timer = allTimers[difficultyName][331635][self.vb.phase]
 			if timer then
 				timerDarkRecitalCD:Start(timer)
+				timerDarkRecitalCD:UpdateInline(DBM_CORE_L.MYTHIC_ICON)
 			end
-			timerDarkRecitalCD:UpdateInline(DBM_CORE_L.MYTHIC_ICON)
 		end
 	elseif spellId == 330965 then
 		warnCastellansCadre:Show()
@@ -786,7 +786,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				yellDarkRecitalRepeater:Yell(icon)
 			end
 		end
-	elseif (spellId == 332535 or spellId == 346709 or spellId == 346706) and self:AntiSpam(30, spellId == 346709 and 7 or 8) then--Infused/Empowered
+	elseif (spellId == 332535 or spellId == 346709) and self:AntiSpam(30, spellId == 346709 and 7 or 8) then--Infused/Empowered
 		self:Unschedule(phaseChange)
 		phaseChange(self, 0)--true phase change, more accurate timers, but sometimes missing from combat log
 	elseif spellId == 346694 then
