@@ -1604,11 +1604,13 @@ end
 do
 	local function onUpdate(self, elapsed)
 		if self.obj then
-			self.obj.curTime = GetTime()
-			self.obj.delta = self.obj.curTime - self.obj.lastUpdate
-			if barIsAnimating and self.obj.delta >= 0.01 or self.obj.delta >= 0.04 then
-				self.obj.lastUpdate = self.obj.curTime
-				self.obj:Update(self.obj.delta)
+			if not self.obj.paused then
+				self.obj.curTime = GetTime()
+				self.obj.delta = self.obj.curTime - self.obj.lastUpdate
+				if barIsAnimating and self.obj.delta >= 0.01 or self.obj.delta >= 0.04 then
+					self.obj.lastUpdate = self.obj.curTime
+					self.obj:Update(self.obj.delta)
+				end
 			end
 		else
 			-- This should *never* happen; .obj is only set to nil when calling :Hide() and :Show() is only called in a function that also sets .obj

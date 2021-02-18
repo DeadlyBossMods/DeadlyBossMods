@@ -13,8 +13,8 @@ mod:SetMinSyncRevision(20210216000000)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 330965 330978 327497 346654 346690 337110 346657 346762 346303 346790 346698 346800",
-	"SPELL_CAST_SUCCESS 331634 330959 346657 346303",
+	"SPELL_CAST_START 330965 330978 327497 346654 346690 337110 346657 346762 346303 346790 346698 346800 331634",
+	"SPELL_CAST_SUCCESS 330959 346657 346303 347376",
 	"SPELL_AURA_APPLIED 330967 331636 331637 332535 346694 347350 346690 346709 346706",
 	"SPELL_AURA_APPLIED_DOSE 332535 346690",
 	"SPELL_AURA_REMOVED 330967 331636 331637 346694 330959 347350",
@@ -32,13 +32,13 @@ mod:RegisterEventsInCombat(
 --TODO, continue reviewing timers, especially rechecking mythic and any guessed timers or timers that may have changed since last testing
 --TODO, rework and reenable the volley timer eventually. It needs a lot of work since it's sequenced by phase and difficulty and alive vs dead. Real damn mess, Lower Priority
 --[[
-(ability.id = 330965 or ability.id = 330978 or ability.id = 327497 or ability.id = 346654 or ability.id = 337110 or ability.id = 346657 or ability.id = 346762 or ability.id = 346698 or ability.id = 346690 or ability.id = 346800) and type = "begincast"
- or (ability.id = 331634) and type = "cast"
+(ability.id = 330965 or ability.id = 330978 or ability.id = 327497 or ability.id = 346654 or ability.id = 337110 or ability.id = 346657 or ability.id = 346762 or ability.id = 346698 or ability.id = 346690 or ability.id = 346800 or ability.id = 331634) and type = "begincast"
  or ability.id = 332535 or ability.id = 330959 or ability.id = 332538 or abiity.id = 331918 or ability.id = 346709 or ability.id = 346706
  or (ability.id = 330964 or ability.id = 335773) and type = "cast"
  or (target.id = 166971 or target.id = 166969 or target.id = 166970) and type = "death"
  or ability.id = 347350 and type = "applydebuff"
  or ability.id = 346303 and type = "begincast"
+ or (ability.id = 347376) and type = "cast"
  --]]
  --I Forgot
  --https://www.warcraftlogs.com/reports/MFwzxfRcthN4C9mX#fight=36&view=events&pins=2%24Off%24%23244F4B%24expression%24(ability.id%20%3D%20330965%20or%20ability.id%20%3D%20330978%20or%20ability.id%20%3D%20327497%20or%20ability.id%20%3D%20346654%20or%20ability.id%20%3D%20337110%20or%20ability.id%20%3D%20346657%20or%20ability.id%20%3D%20346681%20or%20ability.id%20%3D%20346698%20or%20ability.id%20%3D%20346690%20or%20ability.id%20%3D%20346800)%20and%20type%20%3D%20%22begincast%22%20%20or%20(ability.id%20%3D%20331634)%20and%20type%20%3D%20%22cast%22%20%20or%20ability.id%20%3D%20332535%20or%20ability.id%20%3D%20330959%20or%20ability.id%20%3D%20332538%20or%20abiity.id%20%3D%20331918%20or%20ability.id%20%3D%20346709%20%20or%20(ability.id%20%3D%20330964%20or%20ability.id%20%3D%20335773)%20and%20type%20%3D%20%22cast%22%20%20or%20(target.id%20%3D%20166971%20or%20target.id%20%3D%20166969%20or%20target.id%20%3D%20166970)%20and%20type%20%3D%20%22death%22%20%20or%20ability.id%20%3D%20346303%20and%20type%20%3D%20%22begincast%22
@@ -306,10 +306,10 @@ local function phaseChange(self, adjustment)
 		timerDarkRecitalCD:Stop()
 		if self.vb.stavrosDead then
 			if self:IsMythic() then
-				timerDarkRecitalCD:Start(37.7-adjustment)
+				timerDarkRecitalCD:Start(35.9-adjustment)
 			end
 		else
-			timerDarkRecitalCD:Start((self:IsMythic() and 7.4 or self:IsLFR() and 9.1 or 8.2)-adjustment)
+			timerDarkRecitalCD:Start((self:IsMythic() and 5.6 or self:IsLFR() and 7.3 or 6.4)-adjustment)
 			timerEvasiveLungeCD:Start((self:IsMythic() and 10.7 or self:IsLFR() and 14 or 12.1)-adjustment)
 			timerDancingFoolsCD:Start((self:IsMythic() and 18.2 or self:IsLFR() and 24 or 20.7)-adjustment)
 			timerWaltzofBloodCD:Start((self:IsMythic() and 54.4 or self:IsLFR() and 44.4 or 62.1)-adjustment)--START (LFR iffy, dance correction makes murky)
@@ -350,7 +350,7 @@ local function phaseChange(self, adjustment)
 			--end
 		else
 			timerEvasiveLungeCD:Start((self:IsMythic() and 7 or self:IsLFR() and 10.7 or 7.9)-adjustment)
-			timerDarkRecitalCD:Start((self:IsMythic() and 22.4 or self:IsLFR() and 17.5 or 25.3)-adjustment)
+			timerDarkRecitalCD:Start((self:IsMythic() and 20.6 or self:IsLFR() and 15.7 or 23.5)-adjustment)
 			timerWaltzofBloodCD:Start((self:IsMythic() and 26.9 or self:IsLFR() and 35.7 or 30.7)-adjustment)--START
 		end
 	end
@@ -408,6 +408,34 @@ function mod:SmallTestRemove(amount)
 	timerDutifulAttendantCD:RemoveTime(amount)
 end
 
+--/run DBM:GetModByName(2426):TestPause()
+function mod:TestPause()
+	timerDutifulAttendantCD:Pause()
+	timerDualistsRiposteCD:Pause()
+	timerDredgerServantsCD:Pause()
+	timerCastellansCadreCD:Pause()
+	timerDrainEssenceCD:Pause()
+	timerSoulSpikesCD:Pause()
+	timerDarkRecitalCD:Pause()
+	timerEvasiveLungeCD:Pause()
+	timerWaltzofBloodCD:Pause()
+	timerDancingFoolsCD:Pause()
+end
+
+--/run DBM:GetModByName(2426):TestResume()
+function mod:TestResume()
+	timerDutifulAttendantCD:Resume()
+	timerDualistsRiposteCD:Resume()
+	timerDredgerServantsCD:Resume()
+	timerCastellansCadreCD:Resume()
+	timerDrainEssenceCD:Resume()
+	timerSoulSpikesCD:Resume()
+	timerDarkRecitalCD:Resume()
+	timerEvasiveLungeCD:Resume()
+	timerWaltzofBloodCD:Resume()
+	timerDancingFoolsCD:Resume()
+end
+
 function mod:OnCombatStart(delay)
 	self.vb.phase = 1
 	self.vb.feversActive = 0
@@ -431,7 +459,7 @@ function mod:OnCombatStart(delay)
 		timerDrainEssenceCD:Start(13.6-delay)
 		--Lord Stavros
 		timerEvasiveLungeCD:Start(8.4-delay)
-		timerDarkRecitalCD:Start(22.9-delay)
+		timerDarkRecitalCD:Start(21.1-delay)
 	elseif self:IsHeroic() then
 		difficultyName = "heroic"
 		--Castellan Niklaus
@@ -442,7 +470,7 @@ function mod:OnCombatStart(delay)
 		timerDrainEssenceCD:Start(15.5-delay)
 		--Lord Stavros
 		timerEvasiveLungeCD:Start(8.4-delay)--Not changed?
-		timerDarkRecitalCD:Start(24.5-delay)
+		timerDarkRecitalCD:Start(22.7-delay)
 	elseif self:IsNormal() then--CURRENTLY SAME AS HEROIC, which may be wrong
 		difficultyName = "normal"
 		--TODO, FIXME?
@@ -454,7 +482,7 @@ function mod:OnCombatStart(delay)
 		timerDrainEssenceCD:Start(15.5-delay)
 		--Lord Stavros
 		timerEvasiveLungeCD:Start(8.4-delay)--Not changed?
-		timerDarkRecitalCD:Start(24.5-delay)
+		timerDarkRecitalCD:Start(22.7-delay)
 	else
 		difficultyName = "lfr"
 		--Castellan Niklaus
@@ -465,7 +493,7 @@ function mod:OnCombatStart(delay)
 		timerDrainEssenceCD:Start(17.7-delay)
 		--Lord Stavros
 		timerEvasiveLungeCD:Start(9.4-delay)
-		timerDarkRecitalCD:Start(29.5-delay)
+		timerDarkRecitalCD:Start(27.7-delay)
 	end
 	if self.Options.NPAuraOnFixate or self.Options.NPAuraOnShield or self.Options.NPAuraOnUproar then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
@@ -501,7 +529,20 @@ end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 330965 then
+	if spellId == 331634 then
+		if args:GetSrcCreatureID() == 166970 then--Main boss
+			local timer = allTimers[difficultyName][spellId][self.vb.phase]
+			if timer then
+				timerDarkRecitalCD:Start(timer)
+			end
+		else--173053
+			local timer = allTimers[difficultyName][331635][self.vb.phase]
+			if timer then
+				timerDarkRecitalCD:Start(timer)
+			end
+			timerDarkRecitalCD:UpdateInline(DBM_CORE_L.MYTHIC_ICON)
+		end
+	elseif spellId == 330965 then
 		warnCastellansCadre:Show()
 		local timer = allTimers[difficultyName][spellId][self.vb.phase]
 		if timer then
@@ -621,20 +662,7 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 331634 then
-		if args:GetSrcCreatureID() == 166970 then--Main boss
-			local timer = allTimers[difficultyName][spellId][self.vb.phase]
-			if timer then
-				timerDarkRecitalCD:Start(timer)
-			end
-		else--173053
-			local timer = allTimers[difficultyName][331635][self.vb.phase]
-			if timer then
-				timerDarkRecitalCD:Start(timer)
-			end
-			timerDarkRecitalCD:UpdateInline(DBM_CORE_L.MYTHIC_ICON)
-		end
-	elseif spellId == 330959 and self:AntiSpam(10, 1) then
+	if (spellId == 347376 or spellId == 330959) and self:AntiSpam(10, 1) then
 		specWarnDanseMacabre:Show()
 		specWarnDanseMacabre:Play("specialsoon")
 		--Automatic timer extending.
