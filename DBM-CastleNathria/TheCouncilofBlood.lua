@@ -135,7 +135,7 @@ mod.vb.feverCast = 0
 mod.vb.nikDead = false
 mod.vb.friedaDead = false
 mod.vb.stavrosDead = false
-local danceDurationFix = 0
+--local danceDurationFix = 0
 local darkRecitalTargets = {}
 local playerName = UnitName("player")
 local castsPerGUID = {}
@@ -668,52 +668,52 @@ function mod:SPELL_CAST_SUCCESS(args)
 		--Automatic timer extending.
 		--After many rounds of testing blizzard finally listened to feedback and suspends active CD timers during dance
 		--Castellan Niklaus
-		danceDurationFix = GetTime()
+--		danceDurationFix = GetTime()
 		--Over adds time to all timers just to keep them from expiring
 		--This is then corrected later after knowing exact time of dance
 		timerDancingFeverCD:Stop()
 		if not self.vb.nikDead then
-			timerDutifulAttendantCD:AddTime(50)--Alive and dead ability
-			timerDualistsRiposteCD:AddTime(50)
+			timerDutifulAttendantCD:Pause()--Alive and dead ability
+			timerDualistsRiposteCD:Pause()
 			if self.vb.phase >= 2 then--1 Dead
-				timerDredgerServantsCD:AddTime(50)
+				timerDredgerServantsCD:Pause()
 			end
 			if self.vb.phase >= 3 then--1 Dead
-				timerCastellansCadreCD:AddTime(50)
+				timerCastellansCadreCD:Pause()
 			end
 		else
 			if self:IsMythic() then
-				timerDutifulAttendantCD:AddTime(50)
+				timerDutifulAttendantCD:Pause()
 			end
 		end
 		--Baroness Frieda
 		if not self.vb.friedaDead then
---			timerDreadboltVolleyCD:AddTime(50)
-			timerDrainEssenceCD:AddTime(50)
+--			timerDreadboltVolleyCD:Pause()
+			timerDrainEssenceCD:Pause()
 			if self.vb.phase >= 2 then--1 Dead
-				timerPridefulEruptionCD:AddTime(50)
+				timerPridefulEruptionCD:Pause()
 			end
 			if self.vb.phase >= 3 then--2 Dead
-				timerSoulSpikesCD:AddTime(50)
+				timerSoulSpikesCD:Pause()
 			end
 		else
 --			if self:IsMythic() then
---				timerDreadboltVolleyCD:AddTime(50)
+--				timerDreadboltVolleyCD:Pause()
 --			end
 		end
 		--Lord Stavros
 		if not self.vb.stavrosDead then
-			timerDarkRecitalCD:AddTime(50)
-			timerEvasiveLungeCD:AddTime(50)
+			timerDarkRecitalCD:Pause()
+			timerEvasiveLungeCD:Pause()
 			if self.vb.phase >= 2 then--1 Dead
-				timerWaltzofBloodCD:AddTime(50)
+				timerWaltzofBloodCD:Pause()
 			end
 			if self.vb.phase >= 3 then--1 Dead
-				timerDancingFoolsCD:AddTime(50)
+				timerDancingFoolsCD:Pause()
 			end
 		else
 			if self:IsMythic() then
-				timerDarkRecitalCD:AddTime(50)
+				timerDarkRecitalCD:Pause()
 			end
 		end
 	elseif spellId == 346657 then
@@ -833,50 +833,50 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 330959 and self:AntiSpam(10, 2) then
 		warnDanceOver:Show()
 		--Hack to remove the over timing of dance phases
-		local danceDuration = GetTime() - danceDurationFix
-		local adjustment = 50-danceDuration
+--		local danceDuration = GetTime() - danceDurationFix--Remove after testing of pause/resume
+--		local adjustment = 50-danceDuration--Remove after testing of pause/resume
 		if not self.vb.nikDead then
-			timerDutifulAttendantCD:RemoveTime(adjustment)--Alive and dead ability
-			timerDualistsRiposteCD:RemoveTime(adjustment)
+			timerDutifulAttendantCD:Resume()--Alive and dead ability
+			timerDualistsRiposteCD:Resume()
 			if self.vb.phase >= 2 then--1 Dead
-				timerDredgerServantsCD:RemoveTime(adjustment)
+				timerDredgerServantsCD:Resume()
 			end
 			if self.vb.phase >= 3 then--1 Dead
-				timerCastellansCadreCD:RemoveTime(adjustment)
+				timerCastellansCadreCD:Resume()
 			end
 		else
 			if self:IsMythic() then
-				timerDutifulAttendantCD:RemoveTime(adjustment)
+				timerDutifulAttendantCD:Resume()
 			end
 		end
 		--Baroness Frieda
 		if not self.vb.friedaDead then
---			timerDreadboltVolleyCD:RemoveTime(adjustment)
-			timerDrainEssenceCD:RemoveTime(adjustment)
+--			timerDreadboltVolleyCD:Resume()
+			timerDrainEssenceCD:Resume()
 			if self.vb.phase >= 2 then--1 Dead
-				timerPridefulEruptionCD:RemoveTime(adjustment)
+				timerPridefulEruptionCD:Resume()
 			end
 			if self.vb.phase >= 3 then--2 Dead
-				timerSoulSpikesCD:RemoveTime(adjustment)
+				timerSoulSpikesCD:Resume()
 			end
 		else
 --			if self:IsMythic() then
---				timerDreadboltVolleyCD:RemoveTime(adjustment)
+--				timerDreadboltVolleyCD:Resume()
 --			end
 		end
 		--Lord Stavros
 		if not self.vb.stavrosDead then
-			timerDarkRecitalCD:RemoveTime(adjustment)
-			timerEvasiveLungeCD:RemoveTime(adjustment)
+			timerDarkRecitalCD:Resume()
+			timerEvasiveLungeCD:Resume()
 			if self.vb.phase >= 2 then--1 Dead
-				timerWaltzofBloodCD:RemoveTime(adjustment)
+				timerWaltzofBloodCD:Resume()
 			end
 			if self.vb.phase >= 3 then--1 Dead
-				timerDancingFoolsCD:RemoveTime(adjustment)
+				timerDancingFoolsCD:Resume()
 			end
 		else
 			if self:IsMythic() then
-				timerDarkRecitalCD:RemoveTime(adjustment)
+				timerDarkRecitalCD:Resume()
 			end
 		end
 		if self:IsMythic() then
