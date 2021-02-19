@@ -11299,8 +11299,8 @@ do
 		local id = self.id..pformat((("\t%s"):rep(select("#", ...))), ...)
 		local bar = DBM.Bars:GetBar(id)
 		if bar then
-			return bar:Pause()
 			fireEvent("DBM_TimerPause", id)
+			return bar:Pause()
 		end
 	end
 
@@ -11308,8 +11308,8 @@ do
 		local id = self.id..pformat((("\t%s"):rep(select("#", ...))), ...)
 		local bar = DBM.Bars:GetBar(id)
 		if bar then
-			return bar:Resume()
 			fireEvent("DBM_TimerResume", id)
+			return bar:Resume()
 		end
 	end
 
