@@ -266,7 +266,7 @@ end
 
 local function phaseChange(self, adjustment)
 	--Bump phase and stop all timers since regardless of kills, phase changes reset anyone that's still up
-	local bossesDead = (self.vb.nikDead and 1 or 0) or (self.vb.friedaDead and 1 or 0) or (self.vb.stavrosDead and 1 or 0)
+	local bossesDead = (self.vb.nikDead and 1 or 0) + (self.vb.friedaDead and 1 or 0) + (self.vb.stavrosDead and 1 or 0)
 	if (bossesDead+1) == self.vb.phase then return end--Somehow phaseChange ran more than once for same phase change, force abort
 	self.vb.phase = self.vb.phase + 1
 	if adjustment > 0 then
