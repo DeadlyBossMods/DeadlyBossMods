@@ -183,7 +183,7 @@ function mod:SPELL_CAST_START(args)
 		if self:IsMythic() then
 			self.vb.unleashCount = 1
 			warnUnleashPower:Show(1)
-			timerEdgeofAnnihilationCD:Start(7.7)
+			timerEdgeofAnnihilationCD:Start(7.2)
 			timerSeedsofExtinctionCD:Start(11.4)
 			timerFleetingSpiritsCD:Start(13.6)
 			timerDimensionalTearCD:Start(30)--Or Unleashed power
