@@ -11300,6 +11300,7 @@ do
 		local bar = DBM.Bars:GetBar(id)
 		if bar then
 			return bar:Pause()
+			fireEvent("DBM_TimerPause", id)
 		end
 	end
 
@@ -11308,6 +11309,7 @@ do
 		local bar = DBM.Bars:GetBar(id)
 		if bar then
 			return bar:Resume()
+			fireEvent("DBM_TimerResume", id)
 		end
 	end
 
