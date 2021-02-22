@@ -722,13 +722,14 @@ end
 -----------------------
 do
 	local fCounter = 1
+	local dontBreakOurBars = math.random(1, 100000)
 	local function createBarFrame(self)
 		local frame
 		if unusedBars[#unusedBars] then
 			frame = unusedBars[#unusedBars]
 			unusedBars[#unusedBars] = nil
 		else
-			frame = CreateFrame("Frame", "DBT_Bar_"..fCounter, self.mainAnchor, self.options.Template)
+			frame = CreateFrame("Frame", "DBT_"..dontBreakOurBars.."_"..fCounter, self.mainAnchor, self.options.Template)
 			setupHandlers(frame)
 			fCounter = fCounter + 1
 		end
