@@ -5337,14 +5337,11 @@ do
 	end
 
 	whisperSyncHandlers["TR"] = function(sender, mod, timeLeft, totalTime, id, paused, ...)
-		if paused then--Convert sync string to expected bool value
-			paused == "1" and true or false
-		end
 		mod = DBM:GetModByName(mod or "")
 		timeLeft = tonumber(timeLeft or 0)
 		totalTime = tonumber(totalTime or 0)
 		if mod and timeLeft and timeLeft > 0 and totalTime and totalTime > 0 and id then
-			DBM:ReceiveTimerInfo(sender, mod, timeLeft, totalTime, id, paused, ...)
+			DBM:ReceiveTimerInfo(sender, mod, timeLeft, totalTime, id, paused and paused == "1" and true or false, ...)
 		end
 	end
 
