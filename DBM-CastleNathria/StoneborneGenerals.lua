@@ -114,7 +114,6 @@ local timerWickedSlaughterCD					= mod:NewCDTimer(8.5, 342253, nil, "Tank|Healer
 
 local berserkTimer								= mod:NewBerserkTimer(600)
 
---mod:AddRangeFrameOption(10, 310277)
 mod:AddInfoFrameOption(333913, true)
 mod:AddSetIconOption("SetIconOnHeartRend", 334765, true, false, {1, 2, 3, 4})--On by default since it's most important mechanic to manage outside of shadow forces
 mod:AddSetIconOption("SetIconOnWickedBlade2", 333387, false, false, {1, 2})--Off by default since it conflicts with heart rend
