@@ -21,7 +21,6 @@ mod:RegisterEventsInCombat(
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 	"UNIT_DIED",
---	"RAID_BOSS_WHISPER"
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
@@ -87,10 +86,8 @@ local timerPetrifyingHowlCD						= mod:NewCDTimer(20.6, 334852, 135241, nil, nil
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
 mod:AddRangeFrameOption("5/6/10")
---mod:AddInfoFrameOption(308377, true)
 mod:AddSetIconOption("SetIconOnSinSeeker", 335114, true, false, {1, 2, 3})--335111 335112 335113
 mod:AddSetIconOption("SetIconOnShades", 334757, true, true, {4, 5})
---mod:AddNamePlateOption("NPAuraOnVolatileCorruption", 312595)
 
 mod.vb.phase = 1
 mod.vb.sinSeekerCount = 0
@@ -177,22 +174,13 @@ function mod:OnCombatStart(delay)
 	--Margore on pull on heroic testing, but can this change?
 	timerJaggedClawsCD:Start(10.1-delay)
 	timerViciousLungeCD:Start(18.1-delay)--SUCCESS of debuff, not Command Margore-335119
---	if self.Options.NPAuraOnVolatileCorruption then
---		DBM:FireEvent("BossMod_EnableHostileNameplates")
---	end
 --	berserkTimer:Start(-delay)--Confirmed normal and heroic
 end
 
 function mod:OnCombatEnd()
---	if self.Options.InfoFrame then
---		DBM.InfoFrame:Hide()
---	end
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
---	if self.Options.NPAuraOnVolatileCorruption then
---		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
---	end
 end
 
 function mod:SPELL_CAST_START(args)
@@ -201,7 +189,6 @@ function mod:SPELL_CAST_START(args)
 		self.vb.sinSeekerCount = self.vb.sinSeekerCount + 1
 		--Mythic, Dog1: 49, Dog2: 60, Dog3: 50, dogs dead: 39.9
 		--Normal, Dog1: 50-51, Dog2: 60-61, Dog3: 50-51, dogs dead: 24.3
-
 		local timer = self:IsMythic() and (self.vb.phase == 4 and 25 or 60.2) or (self.vb.phase == 4 and 24.3 or 50)--self.vb.phase == 2 and 61.1 or
 		timerSinseekerCD:Start(timer, self.vb.sinSeekerCount+1)
 		if self.vb.phase == 3 and self:IsMythic() then
@@ -384,28 +371,6 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spell
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
-
---Hacky, but works super well
---Not currently needed though since targetting info in combat log, IF that ever changes, backup method
-function mod:RAID_BOSS_WHISPER(msg)
-	msg = msg:lower()
-	if msg:find("ability_hunter_assassinate2") then
-		specWarnSinseeker:Show()
-		specWarnSinseeker:Play("runout")
-		yellSinseeker:Yell()
-		yellSinseekerFades:Countdown(4)
-	end
-end
-
-function mod:OnTranscriptorSync(msg, targetName)
-	msg = msg:lower()
-	if msg:find("ability_hunter_assassinate2") and targetName then
-		targetName = Ambiguate(targetName, "none")
-		if self:AntiSpam(4, targetName) then
-			warnSinseeker:CombinedShow(0.75, targetName)
-		end
-	end
-end
 --]]
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)

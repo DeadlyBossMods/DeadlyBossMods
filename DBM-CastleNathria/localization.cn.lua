@@ -27,14 +27,7 @@ L:SetOptionLocalization({
 ---------------------------
 --  Artificer Xy'Mox --
 ---------------------------
-L= DBM:GetModLocalization(2418)
-
-L:SetMiscLocalization({
-	Phase2			= "我一直想玩玩这件圣物，都快想疯了！而你们的死，可以填补我多年的空虚。",
-	Phase2Demonic	= "Lok zennshinagas xi ril zila refir il rethule no Rakkas az alar alar archim maev shi ",--Boss has Curse of Tongues
-	Phase3			= "如此美妙的东西，如果没有杀伤力就太可惜了！",
-	Phase3Demonic	= "X ante zila romathis alar il re thorje re az modas "--Boss has Curse of Tongues
-})
+--L= DBM:GetModLocalization(2418)
 
 ---------------------------
 --  Sun King's Salvation/Kael'thas --

@@ -139,7 +139,6 @@ mod:AddRangeFrameOption(6, 328885)
 mod:AddInfoFrameOption(326078, true)--343026
 mod:AddSetIconOption("SetIconOnEmberBlast", 325877, true, false, {1})
 mod:AddSetIconOption("SetIconOnBirdo", 328731, true, true, {2, 3, 4, 5})
---mod:AddNamePlateOption("NPAuraOnPhoenixEmbers", 328731)
 mod:AddNamePlateOption("NPAuraOnPhoenixFixate", 328479)
 
 mod.vb.addMode = 0--No adds spawning, 1-Adds Spawning from Darithos Tables, 2-Adds spawning from Shade table
@@ -411,7 +410,7 @@ function mod:OnCombatStart(delay)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(6)
 	end
-	if self.Options.NPAuraOnPhoenixFixate then--self.Options.NPAuraOnPhoenixEmbers
+	if self.Options.NPAuraOnPhoenixFixate then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
 	self:Schedule(42, setForcedAddSpawns, self)
@@ -471,7 +470,7 @@ function mod:OnCombatEnd(wipe)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
-	if self.Options.NPAuraOnPhoenixFixate then--self.Options.NPAuraOnPhoenixEmbers or
+	if self.Options.NPAuraOnPhoenixFixate then
 		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
 	end
 end
@@ -655,9 +654,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 	elseif spellId == 328731 then
---		if self.Options.NPAuraOnPhoenixEmbers then
---			DBM.Nameplate:Show(true, args.destGUID, spellId, nil, 20)
---		end
 		timerPhoenixRespawn:Start(20, args.destGUID)
 	elseif spellId == 333145 and self:AntiSpam(5, args.destName) then
 		warnReturnToStone:Show(args.destName)
@@ -733,9 +729,6 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 328731 then
---		if self.Options.NPAuraOnPhoenixEmbers then
---			DBM.Nameplate:Hide(true, args.destGUID, spellId)
---		end
 		timerPhoenixRespawn:Stop(args.destGUID)
 	elseif spellId == 326078 then
 		infuserTargets[args.destName] = nil

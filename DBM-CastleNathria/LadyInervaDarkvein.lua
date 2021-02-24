@@ -75,12 +75,9 @@ local timerChangeofHeart						= mod:NewTargetTimer(4, 340452, nil, nil, nil, 5, 
 
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
---mod:AddRangeFrameOption(10, 310277)
 mod:AddBoolOption("timerContainers2", false, "timer", nil, 6)
---mod:AddInfoFrameOption(325225, true)
 mod:AddSetIconOption("SetIconOnSharedSuffering", 324983, true, false, {1, 2, 3})
 mod:AddSetIconOption("SetIconOnAdds", "ej22618", true, true, {5, 6, 7, 8})
---mod:AddNamePlateOption("NPAuraOnVolatileCorruption", 312595)
 
 mod.vb.sufferingIcon = 1
 mod.vb.addIcon = 8
@@ -199,30 +196,11 @@ function mod:OnCombatStart(delay)
 		timerBottledAnimaCD:Start(19.4-delay)
 		timerConcentratedAnimaCD:Start(54.7-delay)--Not cast on normal until near end of fight?
 	end
---	if self.Options.NPAuraOnVolatileCorruption then
---		DBM:FireEvent("BossMod_EnableHostileNameplates")
---	end
---	if self.Options.InfoFrame then
---		DBM.InfoFrame:SetHeader(DBM_CORE_L.INFOFRAME_POWER)
---		DBM.InfoFrame:Show(3, "enemypower")--TODO, add right power type
---	end
---	if self.Options.RangeFrame then
---		DBM.RangeCheck:Show(4)--For Acid Splash
---	end
 --	berserkTimer:Start(-delay)--Confirmed normal and heroic
 end
 
 function mod:OnCombatEnd()
 	table.wipe(castsPerGUID)
---	if self.Options.InfoFrame then
---		DBM.InfoFrame:Hide()
---	end
---	if self.Options.RangeFrame then
---		DBM.RangeCheck:Hide()
---	end
---	if self.Options.NPAuraOnVolatileCorruption then
---		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
---	end
 end
 
 function mod:SPELL_CAST_START(args)
