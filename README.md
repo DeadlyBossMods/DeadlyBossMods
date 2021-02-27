@@ -4,7 +4,7 @@
 [![Patreon](https://media.forgecdn.net/attachments/76/25/patreon-medium-button.png)](https://www.patreon.com/deadlybossmods)
 
 # Deadly Boss Mods
-### [Supporter Benefits](https://www.deadlybossmods.com/forum/viewtopic.php?f=7&t=428#p1180)
+### [Supporter Benefits](https://github.com/DeadlyBossMods/DeadlyBossMods/wiki/DBM-Supporter-Benefits-Info)
 ### [Some basic DBM setup/advanced features guides](https://github.com/DeadlyBossMods/DeadlyBossMods/wiki)
 
 ## Old Content mods are split into multiple packages
@@ -46,8 +46,8 @@ Older content is split into multiple addons to reduce mod update size. These are
 * [Search for more](https://curseforge.com/wow/addons/search?search=dbm+voice)
 
 ## Getting too many updates of DBM per day?
-Multiple alpha versions can get pushed to Curse on an average day, these versions may contain important new features or bug fixes for the bleeding edge raid content... These versions are tagged as alpha, so they will not be downloaded by default. Set your Twitch client to update to alpha if you want these latest versions (but they may contain bugs, downloads tagged as "Beta" or "Release" are more stable and released less frequently)
-Right click on DBM itself in Twitch client addon list and set to preferred release type to control update frequency.
+Multiple alpha versions can get pushed to Curse on an average day, these versions may contain important new features or bug fixes for the bleeding edge raid content... These versions are tagged as alpha, so they will not be downloaded by default. Set your addon client to update to alpha if you want these latest versions (but they may contain bugs, downloads tagged as "Beta" or "Release" are more stable and released less frequently)
+Right click on DBM itself in addon client list and set to preferred release type to control update frequency.
 
 ## Features
 * Mods for raid, dungeon, special event and Brawlers Guild
