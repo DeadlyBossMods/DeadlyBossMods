@@ -4,7 +4,7 @@
 [![Patreon](https://media.forgecdn.net/attachments/76/25/patreon-medium-button.png)](https://www.patreon.com/deadlybossmods)
 
 # Deadly Boss Mods
-### [Supporter Benefits](https://www.deadlybossmods.com/forum/viewtopic.php?f=7&t=428#p1180)
+### [Supporter Benefits](https://github.com/DeadlyBossMods/DeadlyBossMods/wiki/DBM-Supporter-Benefits-Info)
 ### [Some basic DBM setup/advanced features guides](https://github.com/DeadlyBossMods/DeadlyBossMods/wiki)
 
 ## Old Content mods are split into multiple packages
