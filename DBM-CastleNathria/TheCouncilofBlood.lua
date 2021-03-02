@@ -408,6 +408,11 @@ function mod:SmallTestRemove(amount)
 	timerDutifulAttendantCD:RemoveTime(amount)
 end
 
+--/run DBM:GetModByName(2426):SmallTestRestart(30)
+function mod:SmallTestRestart(amount)
+	timerDutifulAttendantCD:Start(amount)
+end
+
 --/run DBM:GetModByName(2426):TestPause()
 function mod:TestPause()
 	timerDutifulAttendantCD:Pause()
