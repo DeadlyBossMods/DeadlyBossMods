@@ -16,7 +16,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS 329774",
 	"SPELL_AURA_APPLIED 329298 334755 334228 332295 329725 334064",
 	"SPELL_AURA_APPLIED_DOSE 334755 332295",
-	"SPELL_AURA_REMOVED 329298 334755 334228",
+	"SPELL_AURA_REMOVED 329298 334755 334228"
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 --	"UNIT_DIED",
@@ -167,24 +167,18 @@ function mod:OnCombatStart(delay)
 		timerVolatileEjectionCD:Start(11.1-delay, 1)
 		timerDesolateCD:Start(24.4-delay, 1)
 		timerExpungeCD:Start(37.1-delay, 1)
-		specWarnExpunge:Schedule(37.1)
-		specWarnExpunge:ScheduleVoice(37.1, "scatter")
 		timerConsumeCD:Start(98.9-delay, 1)
 	elseif self:IsNormal() then
 		timerOverwhelmCD:Start(5.2-delay, 1)
 		timerVolatileEjectionCD:Start(10.5-delay, 1)
 		timerDesolateCD:Start(23.2-delay, 1)
 		timerExpungeCD:Start(34.7-delay, 1)
-		specWarnExpunge:Schedule(34.7)
-		specWarnExpunge:ScheduleVoice(34.7, "scatter")
 		timerConsumeCD:Start(93-delay, 1)
 	else
 		timerOverwhelmCD:Start(5-delay, 1)
 		timerVolatileEjectionCD:Start(10.1-delay, 1)
 		timerDesolateCD:Start(22-delay, 1)
 		timerExpungeCD:Start(32-delay, 1)
-		specWarnExpunge:Schedule(22)
-		specWarnExpunge:ScheduleVoice(22, "scatter")
 		timerConsumeCD:Start(89-delay, 1)
 		if self:IsMythic() then
 			berserkTimer:Start(420-delay)
