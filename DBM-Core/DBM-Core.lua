@@ -578,7 +578,7 @@ local Ambiguate = Ambiguate
 local C_TimerNewTicker, C_TimerAfter = C_Timer.NewTicker, C_Timer.After
 local IsQuestFlaggedCompleted = C_QuestLog.IsQuestFlaggedCompleted
 
-local SendAddonMessage = C_ChatInfo.SendAddonMessage
+local SendAddonMessage, SendAddonMessageLogged = C_ChatInfo.SendAddonMessage, C_ChatInfo.SendAddonMessageLogged
 
 local RAID_CLASS_COLORS = _G["CUSTOM_CLASS_COLORS"] or RAID_CLASS_COLORS-- for Phanx' Class Colors
 
@@ -704,12 +704,12 @@ end
 local function sendLoggedSync(prefix, msg)
 	msg = msg or ""
 	if IsInGroup(2) and IsInInstance() then--For BGs, LFR and LFG (we also check IsInInstance() so if you're in queue but fighting something outside like a world boss, it'll sync in "RAID" instead)
-		C_ChatInfo.SendAddonMessageLogged("D4", prefix .. "\t" .. msg, "INSTANCE_CHAT")
+		SendAddonMessageLogged"D4", prefix .. "\t" .. msg, "INSTANCE_CHAT")
 	else
 		if IsInRaid() then
-			C_ChatInfo.SendAddonMessageLogged("D4", prefix .. "\t" .. msg, "RAID")
+			SendAddonMessageLogged("D4", prefix .. "\t" .. msg, "RAID")
 		elseif IsInGroup(1) then
-			C_ChatInfo.SendAddonMessageLogged("D4", prefix .. "\t" .. msg, "PARTY")
+			SendAddonMessageLogged("D4", prefix .. "\t" .. msg, "PARTY")
 		else--for solo raid
 			handleSync("SOLO", playerName, prefix, strsplit("\t", msg))
 		end
@@ -2686,7 +2686,7 @@ do
 
 	local ignore = {}
 	--Standard Pizza Timer
-	function DBM:CreatePizzaTimer(time, text, broadcast, sender, loop, terminate, whisper)
+	function DBM:CreatePizzaTimer(time, text, broadcast, sender, loop, terminate, whisperTarget)
 		if terminate or time == 0 then
 			self:Unschedule(loopTimer)
 			self.Bars:CancelBar(text)
@@ -2703,8 +2703,13 @@ do
 		self.Bars:CreateBar(time, text, 237538)
 		fireEvent("DBM_TimerStart", "DBMPizzaTimer", text, time, "237538", "pizzatimer", nil, 0)
 		if broadcast then
-			--no dbm function uses whisper for pizza timers, but this allows weak aura creators or other modders to use the pizza timer object unicast via whisper instead of spamming group sync channels
-			sendLoggedSync(whisper and "UW" or "U", ("%s\t%s"):format(time, text))
+			if whisperTarget then
+				--no dbm function uses whisper for pizza timers
+				--this allows weak aura creators or other modders to use the pizza timer object unicast via whisper instead of spamming group sync channels
+				SendAddonMessageLogged("D4", ("UW\t%s\t%s"):format(time, text), "WHISPER", whisperTarget)
+			else
+				sendLoggedSync("U", ("%s\t%s"):format(time, text))
+			end
 		end
 		if sender then self:ShowPizzaInfo(text, sender) end
 		if loop then
