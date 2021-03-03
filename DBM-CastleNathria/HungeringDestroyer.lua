@@ -14,14 +14,11 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 334522 329758 334266 329455 329774 338621",
 	"SPELL_CAST_SUCCESS 329774",
-	"SPELL_AURA_APPLIED 329298 334755 334228 332295",
+	"SPELL_AURA_APPLIED 329298 334755 334228 332295 329725 334064",
 	"SPELL_AURA_APPLIED_DOSE 334755 332295",
 	"SPELL_AURA_REMOVED 329298 334755 334228",
-	"SPELL_DAMAGE 329742",
-	"SPELL_MISSED 329742",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
-	"RAID_BOSS_WHISPER"
 --	"UNIT_DIED",
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
@@ -62,7 +59,7 @@ local berserkTimer								= mod:NewBerserkTimer(600)
 
 --mod:AddRangeFrameOption(10, 310277)
 mod:AddSetIconOption("SetIconOnGluttonousMiasma", 329298, true, false, {1, 2, 3, 4})
-mod:AddSetIconOption("SetIconOnVolatileEjection2", 334266, true, false, {5, 6, 7, 8})--Will still break if people missing BW/DBM, but it's too important to have off by default
+mod:AddSetIconOption("SetIconOnVolatileEjection2", 334266, true, false, {5, 6, 7, 8})
 mod:AddInfoFrameOption(334755, true)
 mod:AddBoolOption("SortDesc", false)
 mod:AddBoolOption("ShowTimeNotStacks", false)
@@ -185,9 +182,9 @@ function mod:OnCombatStart(delay)
 		timerOverwhelmCD:Start(5-delay, 1)
 		timerVolatileEjectionCD:Start(10.1-delay, 1)
 		timerDesolateCD:Start(22-delay, 1)
-		timerExpungeCD:Start(33-delay, 1)
-		specWarnExpunge:Schedule(33)
-		specWarnExpunge:ScheduleVoice(33, "scatter")
+		timerExpungeCD:Start(32-delay, 1)
+		specWarnExpunge:Schedule(22)
+		specWarnExpunge:ScheduleVoice(22, "scatter")
 		timerConsumeCD:Start(89-delay, 1)
 		if self:IsMythic() then
 			berserkTimer:Start(420-delay)
@@ -342,11 +339,6 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnEssenceSap:Play("stackhigh")
 			end
 		end
---	elseif spellId == 329725 then
---		if args:IsPlayer() then
---			specWarnExpunge:Show()
---			specWarnExpunge:Play("scatter")
---		end
 	elseif spellId == 334228 then
 		if args:IsPlayer() then
 			playerVolatile = true
@@ -363,6 +355,31 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnGrowingHungerOther:Play("tauntboss")
 			end
 		end
+	elseif spellId == 329725 and self:AntiSpam(10, 5) then
+		self.vb.expungeCount = self.vb.expungeCount + 1
+		specWarnExpunge:Show()
+		specWarnExpunge:Play("scatter")
+		if (self.vb.expungeCount) % 2 == 0 then
+			local timer = self:IsLFR() and 66.6 or self:IsNormal() and 63.1 or 59.9
+			timerExpungeCD:Start(timer, self.vb.expungeCount+1)
+		else
+			local timer = self:IsLFR() and 39.9 or self:IsNormal() and 37.9 or 35.8
+			timerExpungeCD:Start(timer, self.vb.expungeCount+1)
+		end
+	elseif spellId == 334064 then
+		if args:IsPlayer() then
+			specWarnVolatileEjection:Show()
+			specWarnVolatileEjection:Play("targetyou")
+			yellVolatileEjection:Yell()
+		end
+		if self.Options.SetIconOnVolatileEjection2 then
+			local oldIcon = self:GetIcon(args.destName) or 0
+			if oldIcon == 0 then--Do not change a miasma icon under any circomstance
+				self:SetIcon(args.destName, self.vb.volatileIcon, 5)
+			end
+		end
+		warnVolatileEjection:CombinedShow(0.75, args.destName)
+		self.vb.volatileIcon = self.vb.volatileIcon + 1
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -382,52 +399,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	end
 end
-
-function mod:RAID_BOSS_WHISPER(msg)
-	if msg:find("334064") then
-		specWarnVolatileEjection:Show()
-		specWarnVolatileEjection:Play("targetyou")
-		yellVolatileEjection:Yell()
-	end
-end
-
-function mod:OnTranscriptorSync(msg, targetName)
-	if msg:find("334064") and targetName then
-		targetName = Ambiguate(targetName, "none")
-		if self:AntiSpam(4, targetName) then
-			if self.Options.SetIconOnVolatileEjection2 then
-				local oldIcon = self:GetIcon(targetName) or 0
-				if oldIcon == 0 then--Do not change a miasma icon under any circomstance
-					self:SetIcon(targetName, self.vb.volatileIcon, 5)
-				end
-			end
-			warnVolatileEjection:CombinedShow(0.75, targetName)
-			self.vb.volatileIcon = self.vb.volatileIcon + 1
-		end
-	end
-end
-
-function mod:SPELL_DAMAGE(_, _, _, _, _, _, _, _, spellId)
-	if spellId == 329742 and self:AntiSpam(10, 5) then
-		self.vb.expungeCount = self.vb.expungeCount + 1
-		specWarnExpunge:Cancel()
-		specWarnExpunge:CancelVoice()
-		if (self.vb.expungeCount) % 2 == 0 then
-			--Actual timers are +5, but since we trigger off damage, have to make adjustment
-			local timer = self:IsLFR() and 61.6 or self:IsNormal() and 58.1 or 54.9
-			specWarnExpunge:Schedule(timer)
-			specWarnExpunge:ScheduleVoice(timer, "scatter")
-			timerExpungeCD:Start(timer, self.vb.expungeCount+1)
-		else
-			--Actual timers are +5, but since we trigger off damage, have to make adjustment
-			local timer = self:IsLFR() and 34.9 or self:IsNormal() and 32.9 or 30.8
-			specWarnExpunge:Schedule(timer)
-			specWarnExpunge:ScheduleVoice(timer, "scatter")
-			timerExpungeCD:Start(timer, self.vb.expungeCount+1)
-		end
-	end
-end
-mod.SPELL_MISSED = mod.SPELL_DAMAGE
 
 --[[
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
