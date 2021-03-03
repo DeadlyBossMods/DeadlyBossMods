@@ -704,7 +704,7 @@ end
 local function sendLoggedSync(prefix, msg)
 	msg = msg or ""
 	if IsInGroup(2) and IsInInstance() then--For BGs, LFR and LFG (we also check IsInInstance() so if you're in queue but fighting something outside like a world boss, it'll sync in "RAID" instead)
-		SendAddonMessageLogged"D4", prefix .. "\t" .. msg, "INSTANCE_CHAT")
+		SendAddonMessageLogged("D4", prefix .. "\t" .. msg, "INSTANCE_CHAT")
 	else
 		if IsInRaid() then
 			SendAddonMessageLogged("D4", prefix .. "\t" .. msg, "RAID")
