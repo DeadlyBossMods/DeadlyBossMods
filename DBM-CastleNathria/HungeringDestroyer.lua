@@ -16,7 +16,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS 329774",
 	"SPELL_AURA_APPLIED 329298 334755 334228 332295 329725 334064",
 	"SPELL_AURA_APPLIED_DOSE 334755 332295",
-	"SPELL_AURA_REMOVED 329298 334755 334228"
+	"SPELL_AURA_REMOVED 329298 334755 334228",
+	"RAID_BOSS_WHISPER"
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 --	"UNIT_DIED",
@@ -361,19 +362,21 @@ function mod:SPELL_AURA_APPLIED(args)
 			timerExpungeCD:Start(timer, self.vb.expungeCount+1)
 		end
 	elseif spellId == 334064 then
-		if args:IsPlayer() then
-			specWarnVolatileEjection:Show()
-			specWarnVolatileEjection:Play("targetyou")
-			yellVolatileEjection:Yell()
-		end
-		if self.Options.SetIconOnVolatileEjection2 then
-			local oldIcon = self:GetIcon(args.destName) or 0
-			if oldIcon == 0 then--Do not change a miasma icon under any circomstance
-				self:SetIcon(args.destName, self.vb.volatileIcon, 5)
+--		if args:IsPlayer() then
+--			specWarnVolatileEjection:Show()
+--			specWarnVolatileEjection:Play("targetyou")
+--			yellVolatileEjection:Yell()
+--		end
+		if self:AntiSpam(4, args.destName) then
+			if self.Options.SetIconOnVolatileEjection2 then
+				local oldIcon = self:GetIcon(args.destName) or 0
+				if oldIcon == 0 then--Do not change a miasma icon under any circomstance
+					self:SetIcon(args.destName, self.vb.volatileIcon, 5)
+				end
 			end
+			warnVolatileEjection:CombinedShow(0.75, args.destName)
+			self.vb.volatileIcon = self.vb.volatileIcon + 1
 		end
-		warnVolatileEjection:CombinedShow(0.75, args.destName)
-		self.vb.volatileIcon = self.vb.volatileIcon + 1
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -390,6 +393,30 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 334228 then
 		if args:IsPlayer() then
 			playerVolatile = false
+		end
+	end
+end
+
+function mod:RAID_BOSS_WHISPER(msg)
+	if msg:find("334064") then
+		specWarnVolatileEjection:Show()
+		specWarnVolatileEjection:Play("targetyou")
+		yellVolatileEjection:Yell()
+	end
+end
+
+function mod:OnTranscriptorSync(msg, targetName)
+	if msg:find("334064") and targetName then
+		targetName = Ambiguate(targetName, "none")
+		if self:AntiSpam(4, targetName) then
+			if self.Options.SetIconOnVolatileEjection2 then
+				local oldIcon = self:GetIcon(targetName) or 0
+				if oldIcon == 0 then--Do not change a miasma icon under any circomstance
+					self:SetIcon(targetName, self.vb.volatileIcon, 5)
+				end
+			end
+			warnVolatileEjection:CombinedShow(0.75, targetName)
+			self.vb.volatileIcon = self.vb.volatileIcon + 1
 		end
 	end
 end
