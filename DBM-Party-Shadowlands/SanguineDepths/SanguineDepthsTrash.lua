@@ -7,9 +7,10 @@ mod:SetRevision("@file-date-integer@")
 mod.isTrashMod = true
 
 mod:RegisterEvents(
-	"SPELL_CAST_START 320991 321038 324103",
+	"SPELL_CAST_START 320991 321038 324103 326827",
 	"SPELL_CAST_SUCCESS 324086",
-	"SPELL_AURA_APPLIED 334673 321038 324089 324086"
+	"SPELL_AURA_APPLIED 334673 321038 324089 324086",
+	"SPELL_AURA_REMOVED 326827"
 )
 
 --https://www.wowhead.com/guides/sanguine-depths-shadowlands-dungeon-strategy-guide
@@ -18,6 +19,7 @@ mod:RegisterEvents(
 --General
 local warnZralisEssence						= mod:NewTargetNoFilterAnnounce(324089, 1)
 local warnShiningRadiance					= mod:NewTargetNoFilterAnnounce(324086, 1)
+local warnDreadBindings						= mod:NewFadesAnnounce(326827, 1)
 
 --General
 --local specWarnGTFO						= mod:NewSpecialWarningGTFO(257274, nil, nil, nil, 1, 8)
@@ -30,6 +32,8 @@ local specWarnWrackSoulDispel				= mod:NewSpecialWarningDispel(321038, "RemoveMa
 --Notable General Kaal Trash
 local specWarnGloomSquall					= mod:NewSpecialWarningMoveTo(324103, nil, nil, nil, 3, 2)--Boss version, trash version is 322903
 local yellShiningRadiance					= mod:NewYell(324086, nil, nil, nil, "YELL")
+--Unknown, user request
+local specWarnDreadBindings					= mod:NewSpecialWarningRun(326827, nil, nil, nil, 4, 2)
 
 --local timerShiningRadiance					= mod:NewCDTimer(35, 324086, nil, nil, nil, 5)
 
@@ -49,6 +53,9 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 324103 then
 		specWarnGloomSquall:Show(shelter)
 		specWarnGloomSquall:Play("findshelter")
+	elseif spellId == 326827 then
+		specWarnDreadBindings:Show()
+		specWarnDreadBindings:Play("justrun")
 	end
 end
 
@@ -75,5 +82,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnWrackSoulDispel:Play("helpdispel")
 	elseif spellId == 324089 then
 		warnZralisEssence:Show(args.destName)
+	end
+end
+
+function mod:SPELL_AURA_REMOVED(args)
+	if not self.Options.Enabled then return end
+	local spellId = args.spellId
+	if spellId == 326827 and args:IsPlayer() then
+		warnDreadBindings:Show()
 	end
 end
