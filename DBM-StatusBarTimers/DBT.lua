@@ -337,8 +337,6 @@ do
 end
 
 do
-	local DBM, DBM_CORE_L = DBM, DBM_CORE_L
-
 	function DBT:New()
 		local obj = setmetatable(
 			{
@@ -458,7 +456,6 @@ do
 end
 
 do
-	local DBM, DBM_CORE_L = DBM, DBM_CORE_L
 	local oldInfoFrameLocked, oldRangeFrameLocked
 
 	local function moveEnd(self)
