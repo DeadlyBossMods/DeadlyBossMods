@@ -373,7 +373,7 @@ do
 		end
 		DBT_AllPersistentOptions[DBM_UsedProfile][id] = DBT_AllPersistentOptions[DBM_UsedProfile][id] or {}
 		self:AddDefaultOptions(DBT_AllPersistentOptions[DBM_UsedProfile][id], self.DefaultOptions)
-		DBT.Options = DBT_AllPersistentOptions[DBM_UsedProfile][id] -- Uses DBT directly, as self reflects DBM.Bars
+		self.Options = DBT_AllPersistentOptions[DBM_UsedProfile][id] -- Uses DBT directly, as self reflects DBM.Bars
 		self:Rearrange()
 		-- Fix font if it's nil or set to any of standard font values
 		if not self.Options.Font or (self.Options.Font == "Fonts\\2002.TTF" or self.Options.Font == "Fonts\\ARKai_T.ttf" or self.Options.Font == "Fonts\\blei00d.TTF" or self.Options.Font == "Fonts\\FRIZQT___CYR.TTF" or self.Options.Font == "Fonts\\FRIZQT__.TTF") then
@@ -396,7 +396,7 @@ do
 		end
 		DBT_AllPersistentOptions[DBM_UsedProfile][name] = DBT_AllPersistentOptions[DBM_UsedProfile][name] or {}
 		self:AddDefaultOptions(DBT_AllPersistentOptions[DBM_UsedProfile][name], self.DefaultOptions)
-		DBT.Options = DBT_AllPersistentOptions[DBM_UsedProfile][name] -- Uses DBT directly, as self reflects DBM.Bars
+		self.Options = DBT_AllPersistentOptions[DBM_UsedProfile][name] -- Uses DBT directly, as self reflects DBM.Bars
 		self:Rearrange()
 		DBM:AddMsg(DBM_CORE_L.PROFILE_CREATED:format(name))
 	end
@@ -408,7 +408,7 @@ do
 			return
 		end
 		self:AddDefaultOptions(DBT_AllPersistentOptions[DBM_UsedProfile][name], self.DefaultOptions)
-		DBT.Options = DBT_AllPersistentOptions[DBM_UsedProfile][name] -- Uses DBT directly, as self reflects DBM.Bars
+		self.Options = DBT_AllPersistentOptions[DBM_UsedProfile][name] -- Uses DBT directly, as self reflects DBM.Bars
 		self:Rearrange()
 		DBM:AddMsg(DBM_CORE_L.PROFILE_APPLIED:format(name))
 	end
@@ -432,7 +432,7 @@ do
 		end
 		DBT_AllPersistentOptions[DBM_UsedProfile][id] = DBT_AllPersistentOptions[name][id] or {}
 		self:AddDefaultOptions(DBT_AllPersistentOptions[DBM_UsedProfile][id], self.DefaultOptions)
-		DBT.Options = DBT_AllPersistentOptions[_G["DBM_UsedProfile"]][id] -- Uses DBT directly, as self reflects DBM.Bars
+		self.Options = DBT_AllPersistentOptions[_G["DBM_UsedProfile"]][id] -- Uses DBT directly, as self reflects DBM.Bars
 		self:Rearrange()
 		if not hasPrinted then
 			DBM:AddMsg(DBM_CORE_L.PROFILE_COPIED:format(name))

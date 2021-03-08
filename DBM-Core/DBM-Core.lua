@@ -2878,6 +2878,10 @@ do
 		end
 		local firstLoad = false
 		if not IsAddOnLoaded("DBM-GUI") then
+			--Hack to fix first loadoptions failing to work
+			if not DBT.Options then
+				self.Bars:LoadOptions("DBM")
+			end
 			local enabled = GetAddOnEnableState(playerName, "DBM-GUI")
 			if enabled == 0 then
 				EnableAddOn("DBM-GUI")
