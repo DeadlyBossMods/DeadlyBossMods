@@ -1125,7 +1125,27 @@ function barPrototype:AnimateEnlarge(elapsed)
 	end
 end
 
---TEMP to avoid lua errors
-function DBT:RegisterSkin()
-	DBM:AddMsg("DBM-DefaultSkin no longer used, please remove")
+--TEMP to avoid lua errors as users migrate
+do
+	local skins = {}
+	function DBT:RegisterSkin(id)
+		if id:sub(0, 4) == "DBM-" then
+			id = id:sub(5)
+		end
+		local obj = skins[id]
+		if not obj then
+			error("unknown skin id; the id must be equal to the addon's name (with the DBM- prefix being optional)", 2)
+		end
+		obj.loaded = true
+		obj.defaults = {}
+		DBM:AddMsg("DBM-DefaultSkin no longer used, please remove")
+		return {}
+	end
+
+	function DBT:SetSkin(id)
+		local skin = skins[id]
+		if not skin then
+			error("skin " .. id .. " doesn't exist", 2)
+		end
+	end
 end
