@@ -20,6 +20,7 @@
 ## X-Website: http://www.deadlybossmods.com
 ## X-Curse-Project-ID: 3358
 ## X-WoWI-ID: 8814
+## X-Wago-ID: qv633o6b
 ## Version: @project-version@
 
 #@no-lib-strip@
