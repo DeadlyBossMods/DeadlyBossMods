@@ -380,7 +380,7 @@ do
 		end
 		--Migrate texture from default skin to internal
 		if self.Options.Texture == "Interface\\AddOns\\DBM-DefaultSkin\\textures\\default.blp" then
-			self.Options.Texture == "Interface\\AddOns\\DBM-StatusBarTimers\\textures\\default.blp"
+			self.Options.Texture = "Interface\\AddOns\\DBM-StatusBarTimers\\textures\\default.blp"
 		end
 	end
 
