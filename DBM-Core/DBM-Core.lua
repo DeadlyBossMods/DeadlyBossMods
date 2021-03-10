@@ -495,6 +495,7 @@ local bannedMods = { -- a list of "banned" (meaning they are replaced by another
 	"DBM-Argus",--Merged into DBM-BrokenIsles mod
 	"DBM-GarrisonInvasions",--Merged into DBM-Draenor mod
 	"DBM-Azeroth-BfA",--renamed to DBM-BfA
+	"DBM-BattlefieldBarrens",--Apparently people are still running this
 }
 
 --[InstanceID]={level,zoneType}
