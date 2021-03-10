@@ -592,12 +592,14 @@ function DBT:SetAnnounceHook(f)
 end
 
 function DBT:UpdateBars()
-	tsort(largeBars, function(x, y)
-		if DBT.Options.ExpandUpwardsLarge then
-			return x.timer > y.timer
-		end
-		return x.timer < y.timer
-	end)
+	if self.Options.Sort then
+		tsort(largeBars, function(x, y)
+			if DBT.Options.ExpandUpwardsLarge then
+				return x.timer > y.timer
+			end
+			return x.timer < y.timer
+		end)
+	end
 	for i, bar in ipairs(largeBars) do
 		local offset = i * ((DBT.Options.Height * DBT.Options.HugeScale) + DBT.Options.HugeBarYOffset)
 		bar.frame:ClearAllPoints()
@@ -607,12 +609,14 @@ function DBT:UpdateBars()
 			bar.frame:SetPoint("TOP", bar.owner.secAnchor, "TOP", DBT.Options.HugeBarXOffset, -offset)
 		end
 	end
-	tsort(smallBars, function(x, y)
-		if DBT.Options.ExpandUpwards then
-			return x.timer > y.timer
-		end
-		return x.timer < y.timer
-	end)
+	if self.Options.Sort then
+		tsort(smallBars, function(x, y)
+			if DBT.Options.ExpandUpwards then
+				return x.timer > y.timer
+			end
+			return x.timer < y.timer
+		end)
+	end
 	for i, bar in ipairs(smallBars) do
 		local offset = i * ((DBT.Options.Height * DBT.Options.Scale) + DBT.Options.BarYOffset)
 		bar.frame:ClearAllPoints()
@@ -698,12 +702,6 @@ function barPrototype:SetElapsed(elapsed)
 	elseif (not self.enlarged or self.moving == "enlarge") and (self.timer <= enlargeTime) then
 		self:ResetAnimations(true)
 		DBM:Debug("ResetAnimations firing with a value of "..elapsed.." for a bar :Update() call that is enlarging a bar", 2)
-	--Not even I'm 100% sure what this part is, tied to bar sorting obviouosly but what's this actually do?
-	elseif DBM.Options.DebugMode and DBT.Options.Sort and self.moving ~= "enlarge" and self.moving ~= "move" then--Sorting restricted to debug mode right now while broken
-		tinsert(self.enlarged and largeBars or smallBars, self)
-		tDeleteItem(self.enlarged and smallBars or largeBars, self)
-		DBT:UpdateBars()
-		DBM:Debug("ResetAnimations firing with a value of "..elapsed.." for a bar :Update() call that is sorting bars", 3)
 	end
 	self:Update(0)
 end
