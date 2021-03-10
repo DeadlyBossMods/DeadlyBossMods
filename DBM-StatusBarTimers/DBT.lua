@@ -156,7 +156,7 @@ local function stringFromTimer(t)
 	end
 end
 
-local pairs, next, type, tinsert = pairs, next, type, table.insert
+local pairs, next, type, tinsert, tsort = pairs, next, type, table.insert, table.sort
 
 do
 	local CreateFrame, GetTime, IsShiftKeyDown = CreateFrame, GetTime, IsShiftKeyDown
@@ -386,7 +386,7 @@ do
 
 	function DBT:CreateProfile(name)
 		if not name or name == "" or name:find(" ") then
-			self:AddMsg(L.PROFILE_CREATE_ERROR)
+			self:AddMsg(DBM_CORE_L.PROFILE_CREATE_ERROR)
 			return
 		end
 		local DBM_UsedProfile = DBM_UsedProfile
@@ -592,7 +592,7 @@ function DBT:SetAnnounceHook(f)
 end
 
 function DBT:UpdateBars()
-	sort(largeBars, function(x, y)
+	tsort(largeBars, function(x, y)
 		if DBT.Options.ExpandUpwardsLarge then
 			return x.timer > y.timer
 		end
@@ -607,7 +607,7 @@ function DBT:UpdateBars()
 			bar.frame:SetPoint("TOP", bar.owner.secAnchor, "TOP", DBT.Options.HugeBarXOffset, -offset)
 		end
 	end
-	sort(smallBars, function(x, y)
+	tsort(smallBars, function(x, y)
 		if DBT.Options.ExpandUpwards then
 			return x.timer > y.timer
 		end
