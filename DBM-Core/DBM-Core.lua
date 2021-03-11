@@ -1423,6 +1423,7 @@ do
 				C_TimerAfter(15, function() AddMsg(self, L.DBMLOOTREMINDER) end)
 			end
 			self.Bars:LoadOptions("DBM")
+			DBM.Bars.options = DBT.Options--TEMP cloaning, since WeakAuras is directly calling DBM.Bars.options and spam errors if it's missing
 			self.Arrow:LoadPosition()
 			-- LibDBIcon setup
 			if type(DBM_MinimapIcon) ~= "table" then
