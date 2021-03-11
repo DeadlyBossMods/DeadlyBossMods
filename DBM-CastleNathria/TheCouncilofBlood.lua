@@ -784,7 +784,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnDarkRecital:Play("gather")
 				playerIsInPair = true
 			end
-			if playerIsInPair then--Only repeat yell on mythic and mythic+
+			if playerIsInPair then--Only repeat yell on mythic and mythic
 				self:Unschedule(darkRecitalYellRepeater)
 				if type(icon) == "number" then icon = DBM_CORE_L.AUTO_YELL_CUSTOM_POSITION:format(icon, "") end
 				self:Schedule(2, darkRecitalYellRepeater, self, icon, 0)

@@ -495,6 +495,7 @@ local bannedMods = { -- a list of "banned" (meaning they are replaced by another
 	"DBM-Argus",--Merged into DBM-BrokenIsles mod
 	"DBM-GarrisonInvasions",--Merged into DBM-Draenor mod
 	"DBM-Azeroth-BfA",--renamed to DBM-BfA
+	"DBM-BattlefieldBarrens",--Apparently people are still running this
 }
 
 --[InstanceID]={level,zoneType}
@@ -1422,6 +1423,7 @@ do
 				C_TimerAfter(15, function() AddMsg(self, L.DBMLOOTREMINDER) end)
 			end
 			self.Bars:LoadOptions("DBM")
+			DBM.Bars.options = DBT.Options--TEMP cloaning, since WeakAuras is directly calling DBM.Bars.options and spam errors if it's missing
 			self.Arrow:LoadPosition()
 			-- LibDBIcon setup
 			if type(DBM_MinimapIcon) ~= "table" then
@@ -2038,7 +2040,7 @@ function DBM:CopyProfile(name)
 	self:AddDefaultOptions(DBM_AllSavedOptions[usedProfile], self.DefaultOptions)
 	self.Options = DBM_AllSavedOptions[usedProfile]
 	-- rearrange position
-	self.Bars:CopyProfile(name, "DBM")
+	self.Bars:CopyProfile(name, "DBM", true)
 	self:RepositionFrames()
 	self:AddMsg(L.PROFILE_COPIED:format(name))
 end
@@ -11638,7 +11640,7 @@ do
 				self.name = spellName
 			end
 		end
-		if L.AUTO_TIMER_TEXTS[timerType.."short"] and DBM.Bars:GetOption("StripCDText") then
+		if L.AUTO_TIMER_TEXTS[timerType.."short"] and DBT.Options.StripCDText then
 			return pformat(L.AUTO_TIMER_TEXTS[timerType.."short"], spellName)
 		else
 			return pformat(L.AUTO_TIMER_TEXTS[timerType], spellName)
