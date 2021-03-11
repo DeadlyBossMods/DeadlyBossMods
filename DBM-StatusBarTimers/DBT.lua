@@ -259,6 +259,7 @@ do
 		if newBar then -- update an existing bar
 			newBar.lastUpdate = GetTime()
 			newBar.huge = huge or nil
+			newBar.paused = nil
 			newBar:SetTimer(timer) -- this can kill the timer and the timer methods don't like dead timers
 			if newBar.dead then return end
 			newBar:SetElapsed(0) -- same
@@ -569,6 +570,7 @@ end
 function DBT:CancelBar(id)
 	for bar in self:GetBarIterator() do
 		if id == bar.id then
+			bar.paused = nil
 			bar:Cancel()
 			return true
 		end
@@ -680,9 +682,7 @@ function barPrototype:Pause()
 	self.ftimer = nil
 	self:Update(0)
 	self.paused = true
-	if self.moving == "enlarge" then
-		self:ResetAnimations()
-	end
+	self:ResetAnimations()
 end
 
 function barPrototype:Resume()
@@ -754,6 +754,8 @@ function barPrototype:Update(elapsed)
 	local timer = _G[frame_name.."BarTimer"]
 	local obj = self.owner
 	self.timer = self.timer - elapsed
+	local paused = self.paused
+	self.timer = self.timer - (paused and 0 or elapsed)
 	local timerValue = self.timer
 	local totaltimeValue = self.totalTime
 	local barOptions = DBT.Options
@@ -764,7 +766,7 @@ function barPrototype:Update(elapsed)
 	local colorCount = self.colorType
 	local enlargeHack = self.dummyEnlarge or colorCount == 7 and barOptions.Bar7ForceLarge
 	local enlargeTime = barOptions.EnlargeBarTime or 11
-	local isEnlarged = self.enlarged
+	local isEnlarged = self.enlarged and not paused
 	local fillUpBars = isEnlarged and barOptions.FillUpLargeBars or not isEnlarged and barOptions.FillUpBars
 	local ExpandUpwards = isEnlarged and barOptions.ExpandUpwardsLarge or not isEnlarged and barOptions.ExpandUpwards
 	if barOptions.DynamicColor and not self.color then
@@ -824,7 +826,7 @@ function barPrototype:Update(elapsed)
 	elseif isFadingIn then
 		self.fadingIn = nil
 	end
-	if timerValue <= 7.75 and not self.flashing and barOptions.FlashBar then
+	if timerValue <= 7.75 and not self.flashing and barOptions.FlashBar and not paused then
 		self.flashing = true
 		self.ftimer = 0
 	elseif self.flashing and timerValue > 7.75 then
@@ -897,7 +899,7 @@ function barPrototype:Update(elapsed)
 		self:ApplyStyle()
 	end
 	DBT:UpdateBars()
-	if (timerValue <= enlargeTime) and not self.small and not isEnlarged and isMoving ~= "enlarge" and DBT.Options.HugeBarsEnabled then
+	if not paused and (timerValue <= enlargeTime) and not self.small and not isEnlarged and isMoving ~= "enlarge" and DBT.Options.HugeBarsEnabled then
 		self:RemoveFromList()
 		self:Enlarge()
 	end
