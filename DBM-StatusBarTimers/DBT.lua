@@ -1157,29 +1157,7 @@ do
 		if not skin then
 			error("skin " .. id .. " doesn't exist", 2)
 		end
---[[		-- changing the skin cancels all timers; this is much easier than creating new frames for all currently running timers
-			-- This just fails and I can't see why so disabling this and just blocking setting skins with timers active instead
-		for bar in self:GetBarIterator() do
-			bar:Cancel()
-		end--]]
-		self:SetOption("Skin", id)
-		-- throw away old bars (note: there is no way to re-use them as the new skin uses a different XML template)
-		-- note: this doesn't update dummy bars (and can't do it by design); anyone who has a dummy bar for preview purposes (i.e. the GUI) must create new bars (e.g. in a callback)
 		unusedBars = {}
-		-- apply default options from the skin and reset all other options
-		for k, v in pairs(options) do
-			if k ~= "TimerPoint" and k ~= "TimerX" and k ~= "TimerY" -- do not reset the position
-				and k ~= "HugeTimerPoint" and k ~= "HugeTimerX" and k ~= "HugeTimerY"
-				and k ~= "Skin" then -- do not reset the skin we just set
-				-- A custom skin might have some settings as false, so need to check explicitly for nil.
-				-- skin.defaults will be nil if there isn't a skin (e.g. DefaultSkin) loaded, so check for that too.
-				if skin.defaults and skin.defaults[k] ~= nil then
-					self:SetOption(k, skin.defaults[k])
-				else
-					self:SetOption(k, v.default)
-				end
-			end
-		end
 	end
 
 	for i = 1, GetNumAddOns() do
