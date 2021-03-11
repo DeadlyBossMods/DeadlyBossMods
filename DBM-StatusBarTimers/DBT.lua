@@ -1139,7 +1139,7 @@ do
 		obj.loaded = true
 		obj.defaults = {}
 		DBM:AddMsg("DBM-DefaultSkin no longer used, please remove")
-		return {}
+		return obj
 	end
 
 	function DBT:SetSkin(id)
