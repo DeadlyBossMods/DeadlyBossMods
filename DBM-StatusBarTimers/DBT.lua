@@ -1128,7 +1128,18 @@ end
 --TEMP to avoid lua errors as users migrate
 do
 	local skins = {}
+	local textures = {}
+	local fonts = {}
+
+	local skin = {}
+	skin.__index = skin
+
 	function DBT:RegisterSkin(id)
+		if id == "DefaultSkin" then
+			DBM:AddMsg("DBM-DefaultSkin no longer used, please remove")
+			DBM:AddMsg("DBM-DefaultSkin no longer used, please remove")
+			DBM:AddMsg("DBM-DefaultSkin no longer used, please remove")
+		end
 		if id:sub(0, 4) == "DBM-" then
 			id = id:sub(5)
 		end
@@ -1138,7 +1149,6 @@ do
 		end
 		obj.loaded = true
 		obj.defaults = {}
-		DBM:AddMsg("DBM-DefaultSkin no longer used, please remove")
 		return obj
 	end
 
@@ -1147,5 +1157,75 @@ do
 		if not skin then
 			error("skin " .. id .. " doesn't exist", 2)
 		end
+--[[		-- changing the skin cancels all timers; this is much easier than creating new frames for all currently running timers
+			-- This just fails and I can't see why so disabling this and just blocking setting skins with timers active instead
+		for bar in self:GetBarIterator() do
+			bar:Cancel()
+		end--]]
+		self:SetOption("Skin", id)
+		-- throw away old bars (note: there is no way to re-use them as the new skin uses a different XML template)
+		-- note: this doesn't update dummy bars (and can't do it by design); anyone who has a dummy bar for preview purposes (i.e. the GUI) must create new bars (e.g. in a callback)
+		unusedBars = {}
+		-- apply default options from the skin and reset all other options
+		for k, v in pairs(options) do
+			if k ~= "TimerPoint" and k ~= "TimerX" and k ~= "TimerY" -- do not reset the position
+				and k ~= "HugeTimerPoint" and k ~= "HugeTimerX" and k ~= "HugeTimerY"
+				and k ~= "Skin" then -- do not reset the skin we just set
+				-- A custom skin might have some settings as false, so need to check explicitly for nil.
+				-- skin.defaults will be nil if there isn't a skin (e.g. DefaultSkin) loaded, so check for that too.
+				if skin.defaults and skin.defaults[k] ~= nil then
+					self:SetOption(k, skin.defaults[k])
+				else
+					self:SetOption(k, v.default)
+				end
+			end
+		end
+	end
+
+	for i = 1, GetNumAddOns() do
+		if GetAddOnMetadata(i, "X-DBM-Timer-Skin") then
+			-- load basic skin data
+			local id = GetAddOnInfo(i)
+			if id:sub(0, 4) == "DBM-" then
+				id = id:sub(5)
+			end
+			local name = GetAddOnMetadata(i, "X-DBM-Timer-Skin-Name")
+			skins[id] = setmetatable({
+				name = name
+			}, skin)
+
+			-- load textures and fonts that might be embedded in this skin (to make them available to other skins)
+			local skinTextures = { strsplit(",", GetAddOnMetadata(i, "X-DBM-Timer-Skin-Textures") or "") }
+			local skinTextureNames = { strsplit(",", GetAddOnMetadata(i, "X-DBM-Timer-Skin-Texture-Names") or "") }
+			if #skinTextures ~= #skinTextureNames then
+				geterrorhandler()(id .. ": toc file defines " .. #skinTextures .. " textures but " .. #skinTextureNames .. " names for textures")
+			else
+				for j = 1, #skinTextures do
+					textures[skinTextureNames[j]:trim()] = skinTextures[j]:trim()
+				end
+			end
+			local skinFonts = { strsplit(",", GetAddOnMetadata(i, "X-DBM-Timer-Skin-Fonts") or "") }
+			local skinFontNames = { strsplit(",", GetAddOnMetadata(i, "X-DBM-Timer-Skin-Font-Names") or "") }
+			if #skinFonts ~= #skinFontNames then
+				geterrorhandler()(id .. ": toc file defines " .. #skinFonts .. " fonts but " .. #skinFontNames .. " names for fonts")
+			else
+				for j = 1, #skinFonts do
+					fonts[skinFontNames[j]:trim()] = skinFonts[j]:trim()
+				end
+			end
+
+		end
+	end
+
+	function DBT:GetSkins()
+		return skins
+	end
+
+	function DBT:GetTextures()
+		return textures
+	end
+
+	function DBT:GetFonts()
+		return fonts
 	end
 end
