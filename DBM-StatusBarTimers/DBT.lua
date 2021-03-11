@@ -594,7 +594,7 @@ function DBT:SetAnnounceHook(f)
 end
 
 function DBT:UpdateBars()
-	if self.Options.Sort then
+	if DBM.Options.DebugMode and self.Options.Sort then
 		tsort(largeBars, function(x, y)
 			if DBT.Options.ExpandUpwardsLarge then
 				return x.timer > y.timer
@@ -611,7 +611,7 @@ function DBT:UpdateBars()
 			bar.frame:SetPoint("TOP", bar.owner.secAnchor, "TOP", DBT.Options.HugeBarXOffset, -offset)
 		end
 	end
-	if self.Options.Sort then
+	if DBM.Options.DebugMode and self.Options.Sort then
 		tsort(smallBars, function(x, y)
 			if DBT.Options.ExpandUpwards then
 				return x.timer > y.timer
@@ -753,7 +753,6 @@ function barPrototype:Update(elapsed)
 	local spark = _G[frame_name.."BarSpark"]
 	local timer = _G[frame_name.."BarTimer"]
 	local obj = self.owner
-	self.timer = self.timer - elapsed
 	local paused = self.paused
 	self.timer = self.timer - (paused and 0 or elapsed)
 	local timerValue = self.timer
