@@ -100,8 +100,11 @@ function DBM:GetTOC()
 	return wowTOC, testBuild, wowVersionString, wowBuild
 end
 
-function DBM:IsShadowlands()
-	return self:GetTOC() >= 90001 -- 9.0.x
+do
+	local isShadowlandsClient = BackdropTemplateMixin and true or false
+	function DBM:IsShadowlands()
+		return isShadowlandsClient
+	end
 end
 
 -- dual profile setup
