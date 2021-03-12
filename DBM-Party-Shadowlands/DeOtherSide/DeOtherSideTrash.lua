@@ -25,8 +25,8 @@ local specWarnRage						= mod:NewSpecialWarningSpell(333787, "Healer", nil, nil,
 local specWarnUndyingRage				= mod:NewSpecialWarningDispel(333227, "RemoveEnrage", nil, nil, 1, 2)
 --Notable Hakkar Trash
 local specWarnBladestorm				= mod:NewSpecialWarningRun(332671, "Melee", nil, nil, 2, 2)
-local specWarnRenew						= mod:NewSpecialWarningInterrupt(257397, "HasInterrupt", nil, nil, 1, 2)
-local specWarnRenewDispel				= mod:NewSpecialWarningDispel(333227, "MagicDispeller", nil, nil, 1, 2)
+local specWarnRenew						= mod:NewSpecialWarningInterrupt(332666, "HasInterrupt", nil, nil, 1, 2)
+local specWarnRenewDispel				= mod:NewSpecialWarningDispel(332666, "MagicDispeller", nil, nil, 1, 2)
 local specWarnHeal						= mod:NewSpecialWarningInterrupt(332706, "HasInterrupt", nil, nil, 1, 2)
 local specWarnHealingwave				= mod:NewSpecialWarningInterrupt(332612, "HasInterrupt", nil, nil, 1, 2)
 --Notable The Manastorms Trash
