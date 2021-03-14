@@ -1065,8 +1065,7 @@ function barPrototype:MoveToNextPosition()
 	end
 	local newX = self.frame:GetRight() - self.frame:GetWidth()/2
 	local newY = self.frame:GetTop()
-	--TEMP disabled until animations less buggy
-	if DBM.Options.DebugMode and DBT.Options.BarStyle ~= "NoAnim" then
+	if DBT.Options.BarStyle ~= "NoAnim" then
 		self.frame:ClearAllPoints()
 		self.frame:SetPoint(self.movePoint, newAnchor, self.moveRelPoint, -(newX - oldX), -(newY - oldY))
 		self.moving = "move"
@@ -1096,7 +1095,7 @@ function barPrototype:Enlarge()
 	local newY = self.frame:GetTop()
 	self.frame:ClearAllPoints()
 	self.frame:SetPoint("TOP", self.owner.mainAnchor, "BOTTOM", -(newX - oldX), -(newY - oldY))
-	self.moving = DBM.Options.DebugMode and DBT.Options.BarStyle == "NoAnim" and "nextEnlarge" or "enlarge"--Temp resticted to debug mode during testing
+	self.moving = DBT.Options.BarStyle == "NoAnim" and "nextEnlarge" or "enlarge"--Temp resticted to debug mode during testing
 	self.moveAnchor = self.owner.mainAnchor
 	self.moveOffsetX = -(newX - oldX)
 	self.moveOffsetY = -(newY - oldY)
