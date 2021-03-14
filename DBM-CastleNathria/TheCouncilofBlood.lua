@@ -598,16 +598,6 @@ function mod:SPELL_CAST_START(args)
 		else
 			warnDreadboltVolley:Show(count)
 		end
---		if args:GetSrcCreatureID() == 166969 then--Main boss
---			local timer = self.vb.volleyCast == 3 and 12 or 4
-			--Phase 2 always 12, phase 1 is 4 between 3 set then 12 til next set
---			timerDreadboltVolleyCD:Start(self.vb.phase == 1 and timer or self.vb.phase == 2 and 12)
---		else
-			--When dead, it's set of 3, 3.5 apart then 30 or 35 between sets, based on which phase it is
---			local timer = self.vb.phase == 2 and 35 or 30
---			timerDreadboltVolleyCD:Start(self.vb.volleyCast == 3 and timer or 3.25)
---			timerDreadboltVolleyCD:UpdateInline(DBM_CORE_L.MYTHIC_ICON)
---		end
 	elseif spellId == 346657 then
 		specWarnPridefulEruption:Show()
 		specWarnPridefulEruption:Play("scatter")
