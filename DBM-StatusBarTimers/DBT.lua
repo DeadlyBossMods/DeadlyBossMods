@@ -328,7 +328,7 @@ do
 			newBar:SetText(id)
 			newBar:SetIcon(icon)
 			self.bars[newBar] = true
-			self:UpdateBars()
+			self:UpdateBars(true)
 			newBar:ApplyStyle()
 			newBar:Update(0)
 		end
@@ -501,7 +501,7 @@ function DBT:SetOption(option, value)
 					bar.enlarged = true
 					bar.moving = nil
 					tinsert(largeBars, bar)
-					self:UpdateBars()
+					self:UpdateBars(true)
 					bar:ApplyStyle()
 				else
 					bar.moving = nil
@@ -512,7 +512,7 @@ function DBT:SetOption(option, value)
 		updateClickThrough(self, value)
 	end
 	self.Options[option] = value
-	self:UpdateBars()
+	self:UpdateBars(true)
 	self:ApplyStyle()
 end
 
@@ -593,8 +593,8 @@ function DBT:SetAnnounceHook(f)
 	self.announceHook = f
 end
 
-function DBT:UpdateBars()
-	if DBM.Options.DebugMode and self.Options.Sort then
+function DBT:UpdateBars(sortBars)
+	if sortBars and self.Options.Sort then
 		tsort(largeBars, function(x, y)
 			if DBT.Options.ExpandUpwardsLarge then
 				return x.timer > y.timer
@@ -611,7 +611,7 @@ function DBT:UpdateBars()
 			bar.frame:SetPoint("TOP", bar.owner.secAnchor, "TOP", DBT.Options.HugeBarXOffset, -offset)
 		end
 	end
-	if DBM.Options.DebugMode and self.Options.Sort then
+	if sortBars and self.Options.Sort then
 		tsort(smallBars, function(x, y)
 			if DBT.Options.ExpandUpwards then
 				return x.timer > y.timer
@@ -673,7 +673,6 @@ function barPrototype:ResetAnimations(makeBig)
 		self.enlarged = nil
 		tinsert(smallBars, self)
 	end
-	DBT:UpdateBars()
 	self:ApplyStyle()--Apply changes
 end
 
@@ -682,11 +681,13 @@ function barPrototype:Pause()
 	self.ftimer = nil
 	self:Update(0)
 	self.paused = true
-	self:ResetAnimations()
+	self:ResetAnimations()--Forces paused bar into small bars so they don't clutter huge bars anchor
+	DBT:UpdateBars(true)
 end
 
 function barPrototype:Resume()
 	self.paused = nil
+	DBT:UpdateBars(true)
 end
 
 function barPrototype:SetElapsed(elapsed)
@@ -704,6 +705,7 @@ function barPrototype:SetElapsed(elapsed)
 		DBM:Debug("ResetAnimations firing with a value of "..elapsed.." for a bar :Update() call that is enlarging a bar", 2)
 	end
 	self:Update(0)
+	DBT:UpdateBars(true)
 end
 
 function barPrototype:SetText(text, inlineIcon)
