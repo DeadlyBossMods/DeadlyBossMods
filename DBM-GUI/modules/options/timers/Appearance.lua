@@ -237,7 +237,7 @@ DisableBarFade.myheight = 50 -- Extra padding because right buttons are offset f
 --[[
 Temporarily disabled while skinning system is being worked on.
 local skins = {}
-for id, skin in pairs(DBM.Bars:GetSkins()) do
+for id, skin in pairs(DBT:GetSkins()) do
 	table.insert(skins, {
 		text	= skin.name,
 		value	= id
@@ -245,8 +245,7 @@ for id, skin in pairs(DBM.Bars:GetSkins()) do
 end
 if #skins > 1 then
 	local BarSkin = BarSetup:CreateDropdown(L.BarSkin, skins, "DBT", "Skin", function(value)
-		DBM.Bars:SetOption("Skin", value)
-		DBM.Bars:SetSkin(value)
+		DBT:SetSkin(value)
 	end, 210)
 	BarSkin:SetPoint("TOPLEFT", DisableBarFade, "BOTTOMLEFT", -20, -10)
 	BarSkin.myheight = 45

@@ -331,7 +331,7 @@ DBM.DefaultOptions = {
 	SilentMode = false,
 }
 
-DBM.Bars = DBT:New()
+DBM.Bars = DBT -- TODO: Can we migrate to just using DBT?
 DBM.Mods = {}
 DBM.ModLists = {}
 DBM.Counts = {
