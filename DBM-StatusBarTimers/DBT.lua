@@ -1,4 +1,6 @@
-DBT = {}
+DBT = {
+	bars = {}
+}
 local DBT = DBT
 
 local standardFont
