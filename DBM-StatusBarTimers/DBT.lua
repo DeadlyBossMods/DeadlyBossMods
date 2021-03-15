@@ -231,8 +231,13 @@ do
 			name:SetPoint("RIGHT", timer, "LEFT", -7, 0)
 			name:SetWordWrap(false)
 			name:SetJustifyH("LEFT")
-			local icon = bar:CreateTexture("$parentIcon", "OVERLAY")
-			icon:SetSize(20, 20)
+			local icon1 = bar:CreateTexture("$parentIcon1", "OVERLAY")
+			icon1:SetPoint("RIGHT", bar, "LEFT")
+			icon1:SetSize(20, 20)
+			local icon2 = bar:CreateTexture("$parentIcon2", "OVERLAY")
+			icon2:SetPoint("LEFT", bar, "RIGHT")
+			icon2:SetSize(20, 20)
+
 			fCounter = fCounter + 1
 		end
 		frame:EnableMouse(not self.Options.ClickThrough or self.movable)
@@ -687,7 +692,9 @@ function barPrototype:SetText(text, inlineIcon)
 end
 
 function barPrototype:SetIcon(icon)
-	_G[self.frame:GetName() .. "BarIcon"]:SetTexture(icon)
+	local frame_name = self.frame:GetName()
+	_G[frame_name.."BarIcon1"]:SetTexture(icon)
+	_G[frame_name.."BarIcon2"]:SetTexture(icon)
 end
 
 function barPrototype:SetColor(color)
@@ -905,7 +912,8 @@ function barPrototype:ApplyStyle()
 	local frame_name = frame:GetName()
 	local bar = _G[frame_name.."Bar"]
 	local spark = _G[frame_name.."BarSpark"]
-	local icon = _G[frame_name.."BarIcon"]
+	local icon1 = _G[frame_name.."BarIcon1"]
+	local icon2 = _G[frame_name.."BarIcon2"]
 	local name = _G[frame_name.."BarName"]
 	local timer = _G[frame_name.."BarTimer"]
 	local barOptions = DBT.Options
@@ -948,13 +956,8 @@ function barPrototype:ApplyStyle()
 	local barHeight, barWidth, barHugeWidth = barOptions.Height, barOptions.Width, barOptions.HugeWidth
 	name:SetTextColor(barTextColorRed, barTextColorGreen, barTextColorBlue)
 	timer:SetTextColor(barTextColorRed, barTextColorGreen, barTextColorBlue)
-	if barOptions.IconLeft then
-		icon:SetPoint("RIGHT", bar, "LEFT")
-	elseif barOptions.IconRight then
-		icon:SetPoint("LEFT", bar, "RIGHT")
-	else
-		icon:Hide()
-	end
+	if barOptions.IconLeft then icon1:Show() else icon1:Hide() end
+	if barOptions.IconRight then icon2:Show() else icon2:Hide() end
 	if enlarged then
 		bar:SetWidth(barHugeWidth)
 		bar:SetHeight(barHeight)
@@ -976,7 +979,8 @@ function barPrototype:ApplyStyle()
 	end
 	if barOptions.IconLocked then
 		frame:SetSize(enlarged and barHugeWidth or barWidth, barHeight)
-		icon:SetSize(barHeight, barHeight)
+		icon1:SetSize(barHeight, barHeight)
+		icon2:SetSize(barHeight, barHeight)
 	end
 	self.frame:Show()
 	if sparkEnabled then
