@@ -4,6 +4,13 @@ local DBT = DBT
 local BarSetupPanel = DBM_GUI.Cat_Timers:CreateNewPanel(L.Panel_Appearance, "option")
 
 local BarSetup = BarSetupPanel:CreateArea(L.AreaTitle_BarSetup)
+local movemebutton = BarSetup:CreateButton(L.MoveMe, 100, 16)
+movemebutton:SetPoint("TOPRIGHT", BarSetup.frame, "TOPRIGHT", -2, -4)
+movemebutton:SetNormalFontObject(GameFontNormalSmall)
+movemebutton:SetHighlightFontObject(GameFontNormalSmall)
+movemebutton:SetScript("OnClick", function()
+	DBM.Bars:ShowMovableBar()
+end)
 
 local color1 = BarSetup:CreateColorSelect(64)
 local color2 = BarSetup:CreateColorSelect(64)

@@ -3,6 +3,13 @@ local L = DBM_GUI_L
 local BarSetupPanel = DBM_GUI.Cat_Timers:CreateNewPanel(L.Panel_Behavior, "option")
 
 local BarBehaviors = BarSetupPanel:CreateArea(L.AreaTitle_Behavior)
+local movemebutton = BarBehaviors:CreateButton(L.MoveMe, 100, 16)
+movemebutton:SetPoint("TOPRIGHT", BarBehaviors.frame, "TOPRIGHT", -2, -4)
+movemebutton:SetNormalFontObject(GameFontNormalSmall)
+movemebutton:SetHighlightFontObject(GameFontNormalSmall)
+movemebutton:SetScript("OnClick", function()
+	DBM.Bars:ShowMovableBar()
+end)
 
 -- Functions for bar setup
 local function createDBTOnValueChangedHandler(option)
