@@ -1072,7 +1072,7 @@ end
 function barPrototype:AnimateEnlarge(elapsed)
 	self.moveElapsed = self.moveElapsed + elapsed
 	local melapsed = self.moveElapsed
-	if melapsed < 1 then
+	if DBM.Options.DebugMode and melapsed < 1 then
 		local newX = self.moveOffsetX + (DBT.Options.HugeBarXOffset - self.moveOffsetX) * (melapsed / 1)
 		local newY = self.moveOffsetY + (DBT.Options.HugeBarYOffset - self.moveOffsetY) * (melapsed / 1)
 		local newWidth = DBT.Options.Width + (DBT.Options.HugeWidth - DBT.Options.Width) * (melapsed / 1)
