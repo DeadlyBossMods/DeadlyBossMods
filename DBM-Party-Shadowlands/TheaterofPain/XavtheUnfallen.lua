@@ -46,9 +46,9 @@ mod.vb.bannerCount = 0
 
 local allTimers = {
 	--Combo
-	[320644] = {6.0, 30.4, 15.8, 26.8, 30.4},
+	[320644] = {6.0, 30.4, 15.8, 26.8}, -- Then 30.4, 35.2, repeating...
 	--Might
-	[320050] = {16.9, 40.1, 30.4, 35.2},
+	[320050] = {16.9, 40.1, 30.4, 35.2}, -- Then 30.4, 35.2, repeating...
 	--Blood
 --	[320102] = {34.0, 70.5},
 	--Banner
@@ -73,10 +73,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.brutalComboCount = self.vb.brutalComboCount + 1
 		specWarnBrutalCombo:Show()
 		specWarnBrutalCombo:Play("defensive")
-		local timer = allTimers[spellId][self.vb.brutalComboCount+1]
-		if timer then
-			timerBrutalComboCD:Start(timer, self.vb.brutalComboCount+1)
-		end
+		timerBrutalComboCD:Start(allTimers[spellId][self.vb.brutalComboCount+1] or (self.vb.brutalComboCount % 2 == 1 and 30.4 or 35.2), self.vb.brutalComboCount+1)
 	elseif spellId == 317231 then
 		self.vb.MightCount = self.vb.MightCount + 1
 		warnCrushingSlam:Show(self.vb.MightCount)
@@ -103,7 +100,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		specWarnMightofMaldraxxus:Play("watchstep")
 		local timer = allTimers[spellId][self.vb.MightCastCount+1]
 		if timer then
-			timerMightofMaldraxxusCD:Start(timer, self.vb.MightCastCount+1)
+			timerMightofMaldraxxusCD:Start(allTimers[spellId][self.vb.MightCastCount+1] or (self.vb.MightCastCount % 2 == 1 and 30.4 or 35.2), self.vb.MightCastCount+1)
 		end
 	elseif spellId == 320114 and self:AntiSpam(5, 1) then
 		self.vb.bloodCount = self.vb.bloodCount + 1
