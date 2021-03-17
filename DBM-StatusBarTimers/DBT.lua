@@ -495,7 +495,7 @@ do
 		elseif option == "ClickThrough" then
 			updateClickThrough(self, value)
 		end
-		self.Options[option] = value -- Uses DBT directly, as self reflects DBM.Bars
+		self.Options[option] = value
 		if not noUpdate then
 			self:UpdateBars(true)
 			self:ApplyStyle()
@@ -578,12 +578,11 @@ function DBT:UpdateBars(sortBars)
 	if sortBars and self.Options.Sort then
 		tsort(largeBars, function(x, y)
 			if self.Options.ExpandUpwardsLarge then
-				return x.timer > y.timer
+				return x.timer < y.timer
 			end
-			return x.timer < y.timer
+			return x.timer > y.timer
 		end)
 	end
-	-- TODO: Scaling is bugging offset
 	for i, bar in ipairs(largeBars) do
 		local offset = i * (self.Options.Height + self.Options.HugeBarYOffset)
 		bar.frame:ClearAllPoints()
@@ -596,9 +595,9 @@ function DBT:UpdateBars(sortBars)
 	if sortBars and self.Options.Sort then
 		tsort(smallBars, function(x, y)
 			if self.Options.ExpandUpwards then
-				return x.timer > y.timer
+				return x.timer < y.timer
 			end
-			return x.timer < y.timer
+			return x.timer > y.timer
 		end)
 	end
 	for i, bar in ipairs(smallBars) do
