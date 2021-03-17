@@ -76,6 +76,7 @@ local function actuallyImport(importTable)
 	else
 		LibStub("LibDBIcon-1.0"):Show("DBM")
 	end
+	DBT:SetOption("Skin", DBT.Options.Skin) -- Forces a hard update on bars.
 	DBM:AddMsg("Profile imported.")
 end
 
