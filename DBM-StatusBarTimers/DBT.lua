@@ -380,7 +380,7 @@ do
 		DBM:AddMsg(DBM_CORE_L.PROFILE_CREATED:format(name))
 	end
 
-	function DBT:ApplyProfile(name)
+	function DBT:ApplyProfile(name, hasPrinted)
 		local DBM_UsedProfile = DBM_UsedProfile
 		if not name or not DBM_AllSavedOptions[DBM_UsedProfile][name] then
 			DBM:AddMsg(DBM_CORE_L.PROFILE_APPLY_ERROR:format(name or DBM_CORE_L.UNKNOWN))
@@ -389,7 +389,9 @@ do
 		self:AddDefaultOptions(DBT_AllPersistentOptions[DBM_UsedProfile][name], self.DefaultOptions)
 		self.Options = DBT_AllPersistentOptions[DBM_UsedProfile][name]
 		self:Rearrange()
-		DBM:AddMsg(DBM_CORE_L.PROFILE_APPLIED:format(name))
+		if not hasPrinted then
+			DBM:AddMsg(DBM_CORE_L.PROFILE_APPLIED:format(name))
+		end
 	end
 
 	function DBT:CopyProfile(name, id, hasPrinted)
@@ -493,7 +495,7 @@ do
 		elseif option == "ClickThrough" then
 			updateClickThrough(self, value)
 		end
-		self.Options[option] = value -- Uses DBT directly, as self reflects DBM.Bars
+		self.Options[option] = value
 		if not noUpdate then
 			self:UpdateBars(true)
 			self:ApplyStyle()
@@ -576,12 +578,11 @@ function DBT:UpdateBars(sortBars)
 	if sortBars and self.Options.Sort then
 		tsort(largeBars, function(x, y)
 			if self.Options.ExpandUpwardsLarge then
-				return x.timer > y.timer
+				return x.timer < y.timer
 			end
-			return x.timer < y.timer
+			return x.timer > y.timer
 		end)
 	end
-	-- TODO: Scaling is bugging offset
 	for i, bar in ipairs(largeBars) do
 		local offset = i * (self.Options.Height + self.Options.HugeBarYOffset)
 		bar.frame:ClearAllPoints()
@@ -594,9 +595,9 @@ function DBT:UpdateBars(sortBars)
 	if sortBars and self.Options.Sort then
 		tsort(smallBars, function(x, y)
 			if self.Options.ExpandUpwards then
-				return x.timer > y.timer
+				return x.timer < y.timer
 			end
-			return x.timer < y.timer
+			return x.timer > y.timer
 		end)
 	end
 	for i, bar in ipairs(smallBars) do
@@ -1124,6 +1125,10 @@ do
 			error("Skin '" .. id .. "' doesn't exist", 2)
 		end
 		unusedBars = {}
+		if not DBM_AllSavedOptions[DBM_UsedProfile][id] then
+			DBT_AllPersistentOptions[DBM_UsedProfile][id] = DBT_AllPersistentOptions[DBM_UsedProfile]["DBM"]
+		end
+		self:ApplyProfile(id, true)
 		for option, value in pairs(skin.Options) do
 			self:SetOption(option, value, true)
 		end
