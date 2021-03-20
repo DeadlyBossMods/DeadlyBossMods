@@ -12,7 +12,7 @@ movemebutton:SetScript("OnClick", function()
 	DBM.Bars:ShowMovableBar()
 end)
 
-local testmebutton = BarSetup:CreateButton(L.Button_TestBars, 100, 16)
+local testmebutton = BarColors:CreateButton(L.Button_TestBars, 100, 16)
 testmebutton:SetPoint("BOTTOMRIGHT", BarColors.frame, "BOTTOMRIGHT", -2, 4)
 testmebutton:SetNormalFontObject(GameFontNormalSmall)
 testmebutton:SetHighlightFontObject(GameFontNormalSmall)
