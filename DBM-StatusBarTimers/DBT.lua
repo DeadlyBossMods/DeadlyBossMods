@@ -1104,7 +1104,10 @@ do
 
 	function DBT:RegisterSkin(id)
 		if id == "DefaultSkin" then
-			error("DBM-DefaultSkin no longer used, please remove", 2)
+			DBM:AddMsg("DBM-DefaultSkin no longer used, please remove")
+			DBM:AddMsg("DBM-DefaultSkin no longer used, please remove")
+			DBM:AddMsg("DBM-DefaultSkin no longer used, please remove")
+			return {}
 		end
 		if skins[id] then
 			error("Skin '" .. id .. "' is already registered.", 2)
