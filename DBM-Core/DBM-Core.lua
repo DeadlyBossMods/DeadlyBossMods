@@ -2696,6 +2696,16 @@ do
 			self:Unschedule(loopTimer)
 			self.Bars:CancelBar(text)
 			fireEvent("DBM_TimerStop", "DBMPizzaTimer")
+			-- Fire cancelation of pizza timer
+			if broadcast then
+				text = text:sub(1, 16)
+				text = text:gsub("%%t", UnitName("target") or "<no target>")
+				if whisperTarget then
+					C_ChatInfo.SendAddonMessageLogged("D4", ("UW\t0\t%s"):format(text), "WHISPER", whisperTarget)
+				else
+					sendLoggedSync("U", ("0\t%s"):format(text))
+				end
+			end
 			return
 		end
 		if sender and ignore[sender] then return end
