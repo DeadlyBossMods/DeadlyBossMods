@@ -64,7 +64,7 @@ local Fonts = DBM_GUI:MixinSharedMedia3("font", {
 local FontDropDown = specArea:CreateDropdown(L.FontType, Fonts, "DBM", "SpecialWarningFont", function(value)
 	DBM.Options.SpecialWarningFont = value
 	DBM:UpdateSpecialWarningOptions()
-	DBM:ShowTestSpecialWarning(nil, 1)
+	DBM:ShowTestSpecialWarning(nil, 1, nil, true)
 end)
 FontDropDown:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 95, -198)
 FontDropDown.myheight = 0
