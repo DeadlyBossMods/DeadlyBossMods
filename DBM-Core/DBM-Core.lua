@@ -2178,7 +2178,7 @@ do
 		elseif cmd == "ver2" or cmd == "version2" then
 			DBM:ShowVersions(true)
 		elseif cmd == "unlock" or cmd == "move" then
-			DBM.Bars:ShowMovableBar()
+			DBT:ShowMovableBar()
 		elseif cmd == "help2" then
 			for _, v in ipairs(L.SLASHCMD_HELP2) do DBM:AddMsg(v) end
 		elseif cmd == "help" then
@@ -2784,7 +2784,7 @@ do
 		accept:SetHighlightTexture(130762, "ADD")--"Interface\\Buttons\\UI-DialogBox-Button-Highlight"
 		accept:SetSize(128, 35)
 		accept:SetPoint("BOTTOM", popup, "BOTTOM", -75, 0)
-		accept:SetScript("OnClick", function(f) DBM:AddToPizzaIgnore(ignore) DBM.Bars:CancelBar(cancel) f:GetParent():Hide() end)
+		accept:SetScript("OnClick", function(f) DBM:AddToPizzaIgnore(ignore) DBT:CancelBar(cancel) f:GetParent():Hide() end)
 
 		local atext = accept:CreateFontString()
 		atext:SetFontObject(ChatFontNormal)
@@ -2812,7 +2812,7 @@ do
 			return
 		end
 		if arg1 == "cancel" then
-			DBM.Bars:CancelBar(link:match("DBM:cancel:(.+):nil$"))
+			DBT:CancelBar(link:match("DBM:cancel:(.+):nil$"))
 		elseif arg1 == "ignore" then
 			cancel = link:match("DBM:ignore:(.+):[^%s:]+$")
 			ignore = link:match(":([^:]+)$")
@@ -4644,7 +4644,7 @@ do
 			dummyMod.timer = dummyMod:NewTimer(20, "%s", "132349", nil, nil, 0, nil, nil, DBM.Options.DontPlayPTCountdown and 0 or 1, threshold)
 		end
 		--Cancel any existing pull timers before creating new ones, we don't want double countdowns or mismatching blizz countdown text (cause you can't call another one if one is in progress)
-		if not DBM.Options.DontShowPT2 then--and DBM.Bars:GetBar(L.TIMER_PULL)
+		if not DBM.Options.DontShowPT2 then--and DBT:GetBar(L.TIMER_PULL)
 			dummyMod.timer:Stop()
 		end
 		local timerTrackerRunning = false
@@ -4725,7 +4725,7 @@ do
 				dummyMod2.timer = dummyMod2:NewTimer(20, L.TIMER_BREAK, "237538", nil, nil, 0, nil, nil, DBM.Options.DontPlayPTCountdown and 0 or 1, threshold)
 			end
 			--Cancel any existing break timers before creating new ones, we don't want double countdowns or mismatching blizz countdown text (cause you can't call another one if one is in progress)
-			if not DBM.Options.DontShowPT2 then--and DBM.Bars:GetBar(L.TIMER_BREAK)
+			if not DBM.Options.DontShowPT2 then--and DBT:GetBar(L.TIMER_BREAK)
 				dummyMod2.timer:Stop()
 			end
 			dummyMod2.text:Cancel()
@@ -4773,7 +4773,7 @@ do
 		if timer > 3600 then return end
 		DBM:Unschedule(DBM.RequestTimers)--IF we got BTR3 sync, then we know immediately RequestTimers was successful, so abort others
 		if #inCombat >= 1 then return end
-		if DBM.Bars:GetBar(L.TIMER_BREAK) then return end--Already recovered. Prevent duplicate recovery
+		if DBT:GetBar(L.TIMER_BREAK) then return end--Already recovered. Prevent duplicate recovery
 		breakTimerStart(DBM, timer, sender)
 	end
 
@@ -7557,7 +7557,7 @@ do
 	end
 end
 
-DBM.Bars:SetAnnounceHook(function(bar)
+DBT:SetAnnounceHook(function(bar)
 	local prefix
 	if bar.color and bar.color.r == 1 and bar.color.g == 0 and bar.color.b == 0 then
 		prefix = L.HORDE or FACTION_HORDE
@@ -10928,7 +10928,7 @@ do
 			if self.type and (self.type == "cdcount" or self.type == "nextcount") and not self.allowdouble then--remove previous timer.
 				for i = #self.startedTimers, 1, -1 do
 					if DBM.Options.BadTimerAlert or DBM.Options.DebugMode and DBM.Options.DebugLevel > 1 then
-						local bar = DBM.Bars:GetBar(self.startedTimers[i])
+						local bar = DBT:GetBar(self.startedTimers[i])
 						if bar then
 							local remaining = ("%.1f"):format(bar.timer)
 							local ttext = _G[bar.frame:GetName().."BarName"]:GetText() or ""
@@ -10944,7 +10944,7 @@ do
 							end
 						end
 					end
-					DBM.Bars:CancelBar(self.startedTimers[i])
+					DBT:CancelBar(self.startedTimers[i])
 					fireEvent("DBM_TimerStop", self.startedTimers[i])
 					self.startedTimers[i] = nil
 				end
@@ -10986,7 +10986,7 @@ do
 				else--AI timer passed with 4 or less is indicating phase change, with timer as phase number
 					if self["phase"..timer.."CastTimer"] and type(self["phase"..timer.."CastTimer"]) == "number" then
 						--Check if timer is shorter than previous learned first timer by scanning remaining time on existing bar
-						local bar = DBM.Bars:GetBar(id)
+						local bar = DBT:GetBar(id)
 						if bar then
 							local remaining = ("%.1f"):format(bar.timer)
 							if bar.timer > 0.2 then
@@ -11003,7 +11003,7 @@ do
 			end
 			if DBM.Options.BadTimerAlert or DBM.Options.DebugMode and DBM.Options.DebugLevel > 1 then
 				if not self.type or (self.type ~= "target" and self.type ~= "active" and self.type ~= "fades" and self.type ~= "ai") then
-					local bar = DBM.Bars:GetBar(id)
+					local bar = DBT:GetBar(id)
 					if bar then
 						local remaining = ("%.1f"):format(bar.timer)
 						local ttext = _G[bar.frame:GetName().."BarName"]:GetText() or ""
@@ -11033,7 +11033,7 @@ do
 					playCountdown(id, timer, countVoice, countVoiceMax)--timerId, timer, voice, count
 				end
 			end
-			local bar = DBM.Bars:CreateBar(timer, id, self.icon, nil, nil, nil, nil, colorId, nil, self.keep, self.fade, countVoice, countVoiceMax)
+			local bar = DBT:CreateBar(timer, id, self.icon, nil, nil, nil, nil, colorId, nil, self.keep, self.fade, countVoice, countVoiceMax)
 			if not bar then
 				return false, "error" -- creating the timer failed somehow, maybe hit the hard-coded timer limit of 15
 			end
@@ -11091,7 +11091,7 @@ do
 			self.fade = true--set timer object metatable, which will make sure next bar started uses fade
 			--Find and Update an existing bar that's already started
 			local id = self.id..pformat((("\t%s"):rep(select("#", ...))), ...)
-			local bar = DBM.Bars:GetBar(id)
+			local bar = DBT:GetBar(id)
 			if bar and not bar.fade then
 				fireEvent("DBM_TimerFadeUpdate", id, self.spellId, self.mod.id, true)--Timer ID, spellId, modId, true/nil (new callback only needed if we update an existing timers fade, self.fade is passed in timer start object for new timers)
 				bar.fade = true--Set bar object metatable, which is copied from timer metatable at bar start only
@@ -11102,7 +11102,7 @@ do
 			self.fade = nil--set timer object metatable, which will make sure next bar started does NOT use fade
 			--Find and Update an existing bar that's already started
 			local id = self.id..pformat((("\t%s"):rep(select("#", ...))), ...)
-			local bar = DBM.Bars:GetBar(id)
+			local bar = DBT:GetBar(id)
 			if bar and bar.fade then
 				fireEvent("DBM_TimerFadeUpdate", id, self.spellId, self.mod.id, nil)--Timer ID, spellId, modId, true/nil (new callback only needed if we update an existing timers fade, self.fade is passed in timer start object for new timers)
 				bar.fade = nil--Set bar object metatable, which is copied from timer metatable at bar start only
@@ -11124,7 +11124,7 @@ do
 	--As such it also only needs fadeOn. fadeoff isn't needed since this temp alter never affects newly started bars
 	function timerPrototype:SetSTFade(fadeOn, ...)
 		local id = self.id..pformat((("\t%s"):rep(select("#", ...))), ...)
-		local bar = DBM.Bars:GetBar(id)
+		local bar = DBT:GetBar(id)
 		if bar then
 			if fadeOn and not bar.fade then
 				fireEvent("DBM_TimerFadeUpdate", id, self.spellId, self.mod.id, true)--Timer ID, spellId, modId, true/nil (new callback only needed if we update an existing timers fade, self.fade is passed in timer start object for new timers)
@@ -11149,7 +11149,7 @@ do
 
 	function timerPrototype:SetSTKeep(keepOn, ...)
 		local id = self.id..pformat((("\t%s"):rep(select("#", ...))), ...)
-		local bar = DBM.Bars:GetBar(id)
+		local bar = DBT:GetBar(id)
 		if bar then
 			if keepOn and not bar.keep then
 				bar.keep = true--Set bar object metatable, which is copied from timer metatable at bar start only
@@ -11181,7 +11181,7 @@ do
 		if select("#", ...) == 0 then
 			for i = #self.startedTimers, 1, -1 do
 				fireEvent("DBM_TimerStop", self.startedTimers[i])
-				DBM.Bars:CancelBar(self.startedTimers[i])
+				DBT:CancelBar(self.startedTimers[i])
 				DBM:Unschedule(playCountSound, self.startedTimers[i])--Unschedule countdown by timerId
 				self.startedTimers[i] = nil
 			end
@@ -11197,7 +11197,7 @@ do
 						end
 					end
 					fireEvent("DBM_TimerStop", id, guid)
-					DBM.Bars:CancelBar(id)
+					DBT:CancelBar(id)
 					DBM:Unschedule(playCountSound, id)--Unschedule countdown by timerId
 					tremove(self.startedTimers, i)
 				end
@@ -11223,19 +11223,19 @@ do
 
 	function timerPrototype:GetTime(...)
 		local id = self.id..pformat((("\t%s"):rep(select("#", ...))), ...)
-		local bar = DBM.Bars:GetBar(id)
+		local bar = DBT:GetBar(id)
 		return bar and (bar.totalTime - bar.timer) or 0, (bar and bar.totalTime) or 0
 	end
 
 	function timerPrototype:GetRemaining(...)
 		local id = self.id..pformat((("\t%s"):rep(select("#", ...))), ...)
-		local bar = DBM.Bars:GetBar(id)
+		local bar = DBT:GetBar(id)
 		return bar and bar.timer or 0
 	end
 
 	function timerPrototype:IsStarted(...)
 		local id = self.id..pformat((("\t%s"):rep(select("#", ...))), ...)
-		local bar = DBM.Bars:GetBar(id)
+		local bar = DBT:GetBar(id)
 		return bar and true
 	end
 
@@ -11249,7 +11249,7 @@ do
 			self:Start(totalTime, ...)
 		end
 		local id = self.id..pformat((("\t%s"):rep(select("#", ...))), ...)
-		local bar = DBM.Bars:GetBar(id)
+		local bar = DBT:GetBar(id)
 		fireEvent("DBM_TimerUpdate", id, elapsed, totalTime)
 		if bar and self.option then
 			local countVoice = self.mod.Options[self.option .. "CVoice"] or 0
@@ -11264,7 +11264,7 @@ do
 				end
 			end
 		end
-		return DBM.Bars:UpdateBar(id, elapsed, totalTime)
+		return DBT:UpdateBar(id, elapsed, totalTime)
 	end
 
 	function timerPrototype:AddTime(extendAmount, ...)
@@ -11273,7 +11273,7 @@ do
 			return self:Start(extendAmount, ...)
 		else
 			local id = self.id..pformat((("\t%s"):rep(select("#", ...))), ...)
-			local bar = DBM.Bars:GetBar(id)
+			local bar = DBT:GetBar(id)
 			if bar then
 				local elapsed, total = (bar.totalTime - bar.timer), bar.totalTime
 				if elapsed and total then
@@ -11289,7 +11289,7 @@ do
 						end
 					end
 					fireEvent("DBM_TimerUpdate", id, elapsed, total+extendAmount)
-					return DBM.Bars:UpdateBar(id, elapsed, total+extendAmount)
+					return DBT:UpdateBar(id, elapsed, total+extendAmount)
 				end
 			end
 		end
@@ -11301,7 +11301,7 @@ do
 			return--Do nothing
 		else
 			local id = self.id..pformat((("\t%s"):rep(select("#", ...))), ...)
-			local bar = DBM.Bars:GetBar(id)
+			local bar = DBT:GetBar(id)
 			if bar then
 				local elapsed, total = (bar.totalTime - bar.timer), bar.totalTime
 				if elapsed and total then
@@ -11320,11 +11320,11 @@ do
 							end
 						end
 						fireEvent("DBM_TimerUpdate", id, elapsed, total-reduceAmount)
-						return DBM.Bars:UpdateBar(id, elapsed, total-reduceAmount)
+						return DBT:UpdateBar(id, elapsed, total-reduceAmount)
 					else--New remaining less than 0
 						DBM:Unschedule(playCountSound, id)
 						fireEvent("DBM_TimerStop", id)
-						return DBM.Bars:CancelBar(id)
+						return DBT:CancelBar(id)
 					end
 				end
 			end
@@ -11333,7 +11333,7 @@ do
 
 	function timerPrototype:Pause(...)
 		local id = self.id..pformat((("\t%s"):rep(select("#", ...))), ...)
-		local bar = DBM.Bars:GetBar(id)
+		local bar = DBT:GetBar(id)
 		if bar then
 			fireEvent("DBM_TimerPause", id)
 			return bar:Pause()
@@ -11342,7 +11342,7 @@ do
 
 	function timerPrototype:Resume(...)
 		local id = self.id..pformat((("\t%s"):rep(select("#", ...))), ...)
-		local bar = DBM.Bars:GetBar(id)
+		local bar = DBT:GetBar(id)
 		if bar then
 			fireEvent("DBM_TimerResume", id)
 			return bar:Resume()
@@ -11351,7 +11351,7 @@ do
 
 	function timerPrototype:UpdateIcon(icon, ...)
 		local id = self.id..pformat((("\t%s"):rep(select("#", ...))), ...)
-		local bar = DBM.Bars:GetBar(id)
+		local bar = DBT:GetBar(id)
 		if bar then
 			return bar:SetIcon((type(icon) == "string" and icon:match("ej%d+") and select(4, DBM:EJ_GetSectionInfo(string.sub(icon, 3))) ~= "" and select(4, DBM:EJ_GetSectionInfo(string.sub(icon, 3)))) or (type(icon) == "number" and GetSpellTexture(icon)) or tonumber(icon) or 136116)
 		end
@@ -11359,7 +11359,7 @@ do
 
 	function timerPrototype:UpdateInline(newInline, ...)
 		local id = self.id..pformat((("\t%s"):rep(select("#", ...))), ...)
-		local bar = DBM.Bars:GetBar(id)
+		local bar = DBT:GetBar(id)
 		if bar then
 			local ttext = _G[bar.frame:GetName().."BarName"]:GetText() or ""
 			return bar:SetText(ttext, newInline or self.inlineIcon)
@@ -11368,7 +11368,7 @@ do
 
 	function timerPrototype:UpdateName(name, ...)
 		local id = self.id..pformat((("\t%s"):rep(select("#", ...))), ...)
-		local bar = DBM.Bars:GetBar(id)
+		local bar = DBT:GetBar(id)
 		if bar then
 			return bar:SetText(name, self.inlineIcon)
 		end
@@ -11376,7 +11376,7 @@ do
 
 	function timerPrototype:SetColor(c, ...)
 		local id = self.id..pformat((("\t%s"):rep(select("#", ...))), ...)
-		local bar = DBM.Bars:GetBar(id)
+		local bar = DBT:GetBar(id)
 		if bar then
 			return bar:SetColor(c)
 		end
@@ -11384,7 +11384,7 @@ do
 
 	function timerPrototype:DisableEnlarge(...)
 		local id = self.id..pformat((("\t%s"):rep(select("#", ...))), ...)
-		local bar = DBM.Bars:GetBar(id)
+		local bar = DBT:GetBar(id)
 		if bar then
 			bar.small = true
 		end
