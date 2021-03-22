@@ -2697,9 +2697,9 @@ do
 			self.Bars:CancelBar(text)
 			fireEvent("DBM_TimerStop", "DBMPizzaTimer")
 			-- Fire cancelation of pizza timer
-			text = text:sub(1, 16)
-			text = text:gsub("%%t", UnitName("target") or "<no target>")
 			if broadcast then
+				text = text:sub(1, 16)
+				text = text:gsub("%%t", UnitName("target") or "<no target>")
 				if whisperTarget then
 					C_ChatInfo.SendAddonMessageLogged("D4", ("UW\t0\t%s"):format(text), "WHISPER", whisperTarget)
 				else
