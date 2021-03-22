@@ -9,7 +9,7 @@ movemebutton:SetPoint("TOPRIGHT", BarSetup.frame, "TOPRIGHT", -2, -4)
 movemebutton:SetNormalFontObject(GameFontNormalSmall)
 movemebutton:SetHighlightFontObject(GameFontNormalSmall)
 movemebutton:SetScript("OnClick", function()
-	DBM.Bars:ShowMovableBar()
+	DBT:ShowMovableBar()
 end)
 
 local testmebutton = BarSetup:CreateButton(L.Button_TestBars, 100, 16)
@@ -49,19 +49,19 @@ color1text:SetTextColor(DBT.Options.StartColorR, DBT.Options.StartColorG, DBT.Op
 color2:SetColorRGB(DBT.Options.EndColorR, DBT.Options.EndColorG, DBT.Options.EndColorB)
 color2text:SetTextColor(DBT.Options.EndColorR, DBT.Options.EndColorG, DBT.Options.EndColorB)
 color1:SetScript("OnColorSelect", function(self)
-	DBM.Bars:SetOption("StartColorR", select(1, self:GetColorRGB()))
-	DBM.Bars:SetOption("StartColorG", select(2, self:GetColorRGB()))
-	DBM.Bars:SetOption("StartColorB", select(3, self:GetColorRGB()))
+	DBT:SetOption("StartColorR", select(1, self:GetColorRGB()))
+	DBT:SetOption("StartColorG", select(2, self:GetColorRGB()))
+	DBT:SetOption("StartColorB", select(3, self:GetColorRGB()))
 	color1text:SetTextColor(self:GetColorRGB())
 end)
 color2:SetScript("OnColorSelect", function(self)
-	DBM.Bars:SetOption("EndColorR", select(1, self:GetColorRGB()))
-	DBM.Bars:SetOption("EndColorG", select(2, self:GetColorRGB()))
-	DBM.Bars:SetOption("EndColorB", select(3, self:GetColorRGB()))
+	DBT:SetOption("EndColorR", select(1, self:GetColorRGB()))
+	DBT:SetOption("EndColorG", select(2, self:GetColorRGB()))
+	DBT:SetOption("EndColorB", select(3, self:GetColorRGB()))
 	color2text:SetTextColor(self:GetColorRGB())
 end)
 
-local maindummybar = DBM.Bars:CreateDummyBar(nil, nil, SMALL)
+local maindummybar = DBT:CreateDummyBar(nil, nil, SMALL)
 maindummybar.frame:SetParent(BarSetup.frame)
 maindummybar.frame:SetPoint("TOP", color2text, "LEFT", 10, 60)
 maindummybar.frame:SetScript("OnUpdate", function(_, elapsed)
@@ -79,7 +79,7 @@ do
 end
 maindummybar:ApplyStyle()
 
-local maindummybarHuge = DBM.Bars:CreateDummyBar(nil, nil, LARGE)
+local maindummybarHuge = DBT:CreateDummyBar(nil, nil, LARGE)
 maindummybarHuge.frame:SetParent(BarSetup.frame)
 maindummybarHuge.frame:SetPoint("TOP", color2text, "LEFT", 10, 35)
 maindummybarHuge.frame:SetScript("OnUpdate", function(_, elapsed)
@@ -111,7 +111,7 @@ local Styles = {
 }
 
 local StyleDropDown = BarSetup:CreateDropdown(L.BarStyle, Styles, "DBT", "BarStyle", function(value)
-	DBM.Bars:SetOption("BarStyle", value)
+	DBT:SetOption("BarStyle", value)
 end, 210)
 StyleDropDown:SetPoint("TOPLEFT", BarSetup.frame, "TOPLEFT", 210, -25)
 StyleDropDown.myheight = 0
@@ -140,7 +140,7 @@ local Textures = DBM_GUI:MixinSharedMedia3("statusbar", {
 })
 
 local TextureDropDown = BarSetup:CreateDropdown(L.BarTexture, Textures, "DBT", "Texture", function(value)
-	DBM.Bars:SetOption("Texture", value)
+	DBT:SetOption("Texture", value)
 end)
 TextureDropDown:SetPoint("TOPLEFT", StyleDropDown, "BOTTOMLEFT", 0, -10)
 TextureDropDown.myheight = 0
@@ -165,7 +165,7 @@ local Fonts = DBM_GUI:MixinSharedMedia3("font", {
 })
 
 local FontDropDown = BarSetup:CreateDropdown(L.FontType, Fonts, "DBT", "Font", function(value)
-	DBM.Bars:SetOption("Font", value)
+	DBT:SetOption("Font", value)
 end)
 FontDropDown:SetPoint("TOPLEFT", TextureDropDown, "BOTTOMLEFT", 0, -10)
 FontDropDown.myheight = 0
@@ -199,7 +199,7 @@ local FontFlags = {
 
 local FontFlagDropDown = BarSetup:CreateDropdown(L.FontStyle, FontFlags, "DBT", "FontFlag",
 	function(value)
-		DBM.Bars:SetOption("FontFlag", value)
+		DBT:SetOption("FontFlag", value)
 	end)
 FontFlagDropDown:SetPoint("TOPLEFT", FontDropDown, "BOTTOMLEFT", 0, -10)
 FontFlagDropDown.myheight = 0
@@ -225,13 +225,13 @@ InlineIcons:SetPoint("LEFT", ColorBars, "LEFT", 130, 0)
 -- Functions for bar setup
 local function createDBTOnValueChangedHandler(option)
 	return function(self)
-		DBM.Bars:SetOption(option, self:GetValue())
+		DBT:SetOption(option, self:GetValue())
 		self:SetValue(DBT.Options[option])
 	end
 end
 
 local function resetDBTValueToDefault(slider, option)
-	DBM.Bars:SetOption(option, DBT.DefaultOptions[option])
+	DBT:SetOption(option, DBT.DefaultOptions[option])
 	slider:SetValue(DBT.Options[option])
 end
 
@@ -269,7 +269,7 @@ end
 
 local BarSetupSmall = BarSetupPanel:CreateArea(L.AreaTitle_BarSetupSmall)
 
-local smalldummybar = DBM.Bars:CreateDummyBar(nil, nil, SMALL)
+local smalldummybar = DBT:CreateDummyBar(nil, nil, SMALL)
 smalldummybar.frame:SetParent(BarSetupSmall.frame)
 smalldummybar.frame:SetPoint("BOTTOM", BarSetupSmall.frame, "TOP", 0, -35)
 smalldummybar.frame:SetScript("OnUpdate", function(_, elapsed)
@@ -303,7 +303,7 @@ BarOffsetXSlider:SetValue(DBT.Options.BarXOffset)
 BarOffsetXSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("BarXOffset"))
 BarOffsetXSlider.myheight = 0
 
-local BarOffsetYSlider = BarSetupSmall:CreateSlider(L.Slider_BarOffSetY, -5, 35, 1, 120)
+local BarOffsetYSlider = BarSetupSmall:CreateSlider(L.Slider_BarOffSetY, -50, 50, 1, 120)
 BarOffsetYSlider:SetPoint("TOPLEFT", BarOffsetXSlider, "BOTTOMLEFT", 0, -10)
 BarOffsetYSlider:SetValue(DBT.Options.BarYOffset)
 BarOffsetYSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("BarYOffset"))
@@ -325,7 +325,7 @@ local BarSetupHuge = BarSetupPanel:CreateArea(L.AreaTitle_BarSetupHuge)
 
 BarSetupHuge:CreateCheckButton(L.EnableHugeBar, true, nil, nil, "HugeBarsEnabled")
 
-local hugedummybar = DBM.Bars:CreateDummyBar(nil, nil, LARGE)
+local hugedummybar = DBT:CreateDummyBar(nil, nil, LARGE)
 hugedummybar.frame:SetParent(BarSetupHuge.frame)
 hugedummybar.frame:SetPoint("BOTTOM", BarSetupHuge.frame, "TOP", 0, -50)
 hugedummybar.frame:SetScript("OnUpdate", function(_, elapsed)
@@ -362,7 +362,7 @@ HugeBarOffsetXSlider:SetValue(DBT.Options.HugeBarXOffset)
 HugeBarOffsetXSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("HugeBarXOffset"))
 HugeBarOffsetXSlider.myheight = 0
 
-local HugeBarOffsetYSlider = BarSetupHuge:CreateSlider(L.Slider_BarOffSetY, -5, 35, 1, 120)
+local HugeBarOffsetYSlider = BarSetupHuge:CreateSlider(L.Slider_BarOffSetY, -50, 50, 1, 120)
 HugeBarOffsetYSlider:SetPoint("TOPLEFT", HugeBarOffsetXSlider, "BOTTOMLEFT", 0, -10)
 HugeBarOffsetYSlider:SetValue(DBT.Options.HugeBarYOffset)
 HugeBarOffsetYSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("HugeBarYOffset"))

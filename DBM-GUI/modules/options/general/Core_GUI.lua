@@ -61,7 +61,7 @@ end)
 local moveme = generaloptions:CreateButton(L.Button_MoveBars, 120, 30)
 moveme:SetPoint("LEFT", bmtestmode, "RIGHT", 2, 0)
 moveme:SetScript("OnClick", function()
-	DBM.Bars:ShowMovableBar()
+	DBT:ShowMovableBar()
 end)
 
 local latencySlider = generaloptions:CreateSlider(L.Latency_Text, 50, 750, 5, 210)
