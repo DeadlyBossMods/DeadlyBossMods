@@ -360,41 +360,50 @@ do
 		end
 	end
 
-	function DBT:CreateProfile(name)
-		if not name or name == "" or name:find(" ") then
+	function DBT:CreateProfile(id)
+		if not id or id == "" or id:find(" ") then
 			self:AddMsg(DBM_CORE_L.PROFILE_CREATE_ERROR)
 			return
 		end
 		local DBM_UsedProfile = DBM_UsedProfile
-		if DBT_AllPersistentOptions[DBM_UsedProfile][name] then
-			DBM:AddMsg(DBM_CORE_L.PROFILE_CREATE_ERROR_D:format(name))
-			return
+		if not DBT_AllPersistentOptions then
+			DBT_AllPersistentOptions = {}
 		end
 		if not DBT_AllPersistentOptions[DBM_UsedProfile] then
 			DBT_AllPersistentOptions[DBM_UsedProfile] = {}
 		end
-		DBT_AllPersistentOptions[DBM_UsedProfile][name] = DBT_AllPersistentOptions[DBM_UsedProfile][name] or {}
-		self:AddDefaultOptions(DBT_AllPersistentOptions[DBM_UsedProfile][name], self.DefaultOptions)
-		self.Options = DBT_AllPersistentOptions[DBM_UsedProfile][name]
-		self:Rearrange()
-		DBM:AddMsg(DBM_CORE_L.PROFILE_CREATED:format(name))
-	end
-
-	function DBT:ApplyProfile(name, hasPrinted)
-		local DBM_UsedProfile = DBM_UsedProfile
-		if not name or not DBM_AllSavedOptions[DBM_UsedProfile][name] then
-			DBM:AddMsg(DBM_CORE_L.PROFILE_APPLY_ERROR:format(name or DBM_CORE_L.UNKNOWN))
+		if DBT_AllPersistentOptions[DBM_UsedProfile][id] then
+			DBM:AddMsg(DBM_CORE_L.PROFILE_CREATE_ERROR_D:format(id))
 			return
 		end
-		self:AddDefaultOptions(DBT_AllPersistentOptions[DBM_UsedProfile][name], self.DefaultOptions)
-		self.Options = DBT_AllPersistentOptions[DBM_UsedProfile][name]
+		DBT_AllPersistentOptions[DBM_UsedProfile][id] = DBT_AllPersistentOptions[DBM_UsedProfile][id] or {}
+		self:AddDefaultOptions(DBT_AllPersistentOptions[DBM_UsedProfile][id], self.DefaultOptions)
+		self.Options = DBT_AllPersistentOptions[DBM_UsedProfile][id]
+		self:Rearrange()
+		DBM:AddMsg(DBM_CORE_L.PROFILE_CREATED:format(id))
+	end
+
+	function DBT:ApplyProfile(id, hasPrinted)
+		if not DBT_AllPersistentOptions then
+			DBT_AllPersistentOptions = {}
+		end
+		local DBM_UsedProfile = DBM_UsedProfile
+		if not id or not DBM_AllSavedOptions[DBM_UsedProfile] or not DBM_AllSavedOptions[DBM_UsedProfile][id] then
+			DBM:AddMsg(DBM_CORE_L.PROFILE_APPLY_ERROR:format(id or DBM_CORE_L.UNKNOWN))
+			return
+		end
+		self:AddDefaultOptions(DBT_AllPersistentOptions[DBM_UsedProfile][id], self.DefaultOptions)
+		self.Options = DBT_AllPersistentOptions[DBM_UsedProfile][id]
 		self:Rearrange()
 		if not hasPrinted then
-			DBM:AddMsg(DBM_CORE_L.PROFILE_APPLIED:format(name))
+			DBM:AddMsg(DBM_CORE_L.PROFILE_APPLIED:format(id))
 		end
 	end
 
 	function DBT:CopyProfile(name, id, hasPrinted)
+		if not DBT_AllPersistentOptions then
+			DBT_AllPersistentOptions = {}
+		end
 		local DBM_UsedProfile = DBM_UsedProfile
 		if not hasPrinted then
 			if not name or not DBM_AllSavedOptions[name] then
@@ -413,7 +422,7 @@ do
 		end
 		DBT_AllPersistentOptions[DBM_UsedProfile][id] = DBT_AllPersistentOptions[name][id] or {}
 		self:AddDefaultOptions(DBT_AllPersistentOptions[DBM_UsedProfile][id], self.DefaultOptions)
-		self.Options = DBT_AllPersistentOptions[_G["DBM_UsedProfile"]][id]
+		self.Options = DBT_AllPersistentOptions[DBM_UsedProfile][id]
 		self:Rearrange()
 		if not hasPrinted then
 			DBM:AddMsg(DBM_CORE_L.PROFILE_COPIED:format(name))
@@ -421,6 +430,9 @@ do
 	end
 
 	function DBT:DeleteProfile(name, id)
+		if not DBT_AllPersistentOptions then
+			DBT_AllPersistentOptions = {}
+		end
 		if name == "Default" or not DBT_AllPersistentOptions[name] then
 			return
 		end
