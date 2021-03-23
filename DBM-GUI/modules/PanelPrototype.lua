@@ -407,10 +407,10 @@ do
 		end
 		if dbtvar then
 			button:SetScript("OnShow", function(self)
-				button:SetChecked(DBM.Bars.Options[dbtvar])
+				button:SetChecked(DBT.Options[dbtvar])
 			end)
 			button:SetScript("OnClick", function(self)
-				DBM.Bars:SetOption(dbtvar, not DBM.Bars.Options[dbtvar])
+				DBT:SetOption(dbtvar, not DBT.Options[dbtvar])
 			end)
 		end
 		if globalvar and _G[globalvar] ~= nil then

@@ -859,7 +859,7 @@ function barPrototype:Update(elapsed)
 			newY = self.moveOffsetY + (-barOptions[isEnlarged and "HugeBarYOffset" or "BarYOffset"] - self.moveOffsetY) * (melapsed / 0.5)
 		end
 		frame:ClearAllPoints()
-		frame:SetPoint(self.movePoint, self.moveAnchor, self.moveRelPoint, newX, newY)
+		frame:SetPoint(self.movePoint, self.moveAnchor, self.movePoint, newX, newY)
 	elseif isMoving == "move" then
 		barIsAnimating = false
 		self.moving = nil
@@ -1028,11 +1028,9 @@ function barPrototype:MoveToNextPosition()
 	self.frame:ClearAllPoints()
 	if ExpandUpwards then
 		self.movePoint = "BOTTOM"
-		self.moveRelPoint = "TOP"
 		self.frame:SetPoint("BOTTOM", newAnchor, "BOTTOM", DBT.Options[Enlarged and "HugeBarXOffset" or "BarXOffset"], DBT.Options[Enlarged and "HugeBarYOffset" or "BarYOffset"])
 	else
 		self.movePoint = "TOP"
-		self.moveRelPoint = "BOTTOM"
 		self.frame:SetPoint("TOP", newAnchor, "TOP", DBT.Options[Enlarged and "HugeBarXOffset" or "BarXOffset"], -DBT.Options[Enlarged and "HugeBarYOffset" or "BarYOffset"])
 	end
 	local newX = self.frame:GetRight() - self.frame:GetWidth()/2
@@ -1056,17 +1054,15 @@ function barPrototype:Enlarge()
 	self.frame:ClearAllPoints()
 	if ExpandUpwards then
 		self.movePoint = "BOTTOM"
-		self.moveRelPoint = "TOP"
-		self.frame:SetPoint("BOTTOM", smallBarsAnchor, "BOTTOM", DBT.Options[Enlarged and "HugeBarXOffset" or "BarXOffset"], DBT.Options[Enlarged and "HugeBarYOffset" or "BarYOffset"])
+		self.frame:SetPoint("BOTTOM", largeBarsAnchor, "BOTTOM", DBT.Options[Enlarged and "HugeBarXOffset" or "BarXOffset"], DBT.Options[Enlarged and "HugeBarYOffset" or "BarYOffset"])
 	else
 		self.movePoint = "TOP"
-		self.moveRelPoint = "BOTTOM"
-		self.frame:SetPoint("TOP", smallBarsAnchor, "TOP", DBT.Options[Enlarged and "HugeBarXOffset" or "BarXOffset"], -DBT.Options[Enlarged and "HugeBarYOffset" or "BarYOffset"])
+		self.frame:SetPoint("TOP", largeBarsAnchor, "TOP", DBT.Options[Enlarged and "HugeBarXOffset" or "BarXOffset"], -DBT.Options[Enlarged and "HugeBarYOffset" or "BarYOffset"])
 	end
 	local newX = self.frame:GetRight() - self.frame:GetWidth()/2
 	local newY = self.frame:GetTop()
 	self.frame:ClearAllPoints()
-	self.frame:SetPoint("TOP", smallBarsAnchor, "BOTTOM", -(newX - oldX), -(newY - oldY))
+	self.frame:SetPoint("TOP", largeBarsAnchor, "BOTTOM", -(newX - oldX), -(newY - oldY))
 	self.moving = DBT.Options.BarStyle == "NoAnim" and "nextEnlarge" or "enlarge"
 	self.moveAnchor = largeBarsAnchor
 	self.moveOffsetX = -(newX - oldX)
@@ -1077,13 +1073,13 @@ end
 function barPrototype:AnimateEnlarge(elapsed)
 	self.moveElapsed = self.moveElapsed + elapsed
 	local melapsed = self.moveElapsed
-	if DBM.Options.DebugMode and melapsed < 1 then
+	if melapsed < 1 then
 		local newX = self.moveOffsetX + (DBT.Options.HugeBarXOffset - self.moveOffsetX) * (melapsed / 1)
 		local newY = self.moveOffsetY + (DBT.Options.HugeBarYOffset - self.moveOffsetY) * (melapsed / 1)
 		local newWidth = DBT.Options.Width + (DBT.Options.HugeWidth - DBT.Options.Width) * (melapsed / 1)
 		local newScale = DBT.Options.Scale + (DBT.Options.HugeScale - DBT.Options.Scale) * (melapsed / 1)
 		self.frame:ClearAllPoints()
-		self.frame:SetPoint(self.movePoint, self.moveAnchor, self.moveRelPoint, newX, newY)
+		self.frame:SetPoint(self.movePoint, self.moveAnchor, self.movePoint, newX, newY)
 		self.frame:SetScale(newScale)
 		self.frame:SetWidth(newWidth)
 		_G[self.frame:GetName().."Bar"]:SetWidth(newWidth)
