@@ -1437,8 +1437,8 @@ do
 			end
 			local soundChannels = tonumber(GetCVar("Sound_NumChannels")) or 24--if set to 24, may return nil, Defaults usually do
 			--If this messes with your fps, stop raiding with a toaster. It's only fix for addon sound ducking.
-			if soundChannels < 128 then
-				SetCVar("Sound_NumChannels", 128)
+			if soundChannels < 64 then
+				SetCVar("Sound_NumChannels", 64)
 			end
 			self.AddOns = {}
 			self.Voices = { {text = "None",value  = "None"}, }--Create voice table, with default "None" value
