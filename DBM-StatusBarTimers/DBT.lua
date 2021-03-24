@@ -1136,8 +1136,15 @@ do
 			error("Skin '" .. id .. "' doesn't exist", 2)
 		end
 		unusedBars = {}
-		if not DBM_AllSavedOptions[DBM_UsedProfile][id] then
-			DBT_AllPersistentOptions[DBM_UsedProfile][id] = DBT_AllPersistentOptions[DBM_UsedProfile]["DBM"]
+		local DBM_UsedProfile = DBM_UsedProfile
+		if not DBT_AllPersistentOptions then
+			DBT_AllPersistentOptions = {}
+		end
+		if not DBT_AllPersistentOptions[DBM_UsedProfile] then
+			DBT_AllPersistentOptions[DBM_UsedProfile] = {}
+		end
+		if not DBT_AllPersistentOptions[DBM_UsedProfile][id] then
+			DBT_AllPersistentOptions[DBM_UsedProfile][id] = DBT_AllPersistentOptions[DBM_UsedProfile].DBM
 		end
 		self:ApplyProfile(id, true)
 		for option, value in pairs(skin.Options) do
