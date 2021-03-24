@@ -107,7 +107,7 @@ DBT.DefaultOptions = {
 	FontSize = 10,
 	FlashBar = false,
 	Spark = true,
-	Sort = true,--"None", "ShortestToAnchor", "LongestToAnchor"
+	Sort = "Sort",
 	ColorByType = true,
 	NoBarFade = false,
 	InlineIcons = true,
@@ -358,6 +358,10 @@ do
 		if self.Options.Texture == "Interface\\AddOns\\DBM-DefaultSkin\\textures\\default.blp" then
 			self.Options.Texture = self.DefaultOptions.Texture
 		end
+		-- Migrate sort
+		if self.Options.Sort == true then
+			self.Options.Sort = "Sort"
+		end
 	end
 
 	function DBT:CreateProfile(id)
@@ -587,39 +591,27 @@ function DBT:SetAnnounceHook(f)
 end
 
 function DBT:UpdateBars(sortBars)
-	if sortBars and self.Options.Sort then
+	if sortBars and self.Options.Sort ~= "None" then
 		tsort(largeBars, function(x, y)
-			if self.Options.ExpandUpwardsLarge then
+			if self.Options.Sort == "Invert" then
+				return x.timer < y.timer
+			end
+			return x.timer > y.timer
+		end)
+		tsort(smallBars, function(x, y)
+			if self.Options.Sort == "Invert" then
 				return x.timer < y.timer
 			end
 			return x.timer > y.timer
 		end)
 	end
 	for i, bar in ipairs(largeBars) do
-		local offset = i * (self.Options.Height + self.Options.HugeBarYOffset)
 		bar.frame:ClearAllPoints()
-		if self.Options.ExpandUpwardsLarge then
-			bar.frame:SetPoint("BOTTOM", largeBarsAnchor, "BOTTOM", self.Options.HugeBarXOffset, offset)
-		else
-			bar.frame:SetPoint("TOP", largeBarsAnchor, "TOP", self.Options.HugeBarXOffset, -offset)
-		end
-	end
-	if sortBars and self.Options.Sort then
-		tsort(smallBars, function(x, y)
-			if self.Options.ExpandUpwards then
-				return x.timer < y.timer
-			end
-			return x.timer > y.timer
-		end)
+		bar.frame:SetPoint("TOP", largeBarsAnchor, "TOP", i * self.Options.HugeBarXOffset, (i * (self.Options.Height + self.Options.HugeBarYOffset)) * (self.Options.ExpandUpwardsLarge and 1 or -1))
 	end
 	for i, bar in ipairs(smallBars) do
-		local offset = i * (self.Options.Height + self.Options.BarYOffset)
 		bar.frame:ClearAllPoints()
-		if self.Options.ExpandUpwards then
-			bar.frame:SetPoint("BOTTOM", smallBarsAnchor, "BOTTOM", self.Options.BarXOffset, offset)
-		else
-			bar.frame:SetPoint("TOP", smallBarsAnchor, "TOP", self.Options.BarXOffset, -offset)
-		end
+		bar.frame:SetPoint("TOP", smallBarsAnchor, "TOP", i * self.Options.BarXOffset, (i * (self.Options.Height + self.Options.BarYOffset)) * (self.Options.ExpandUpwards and 1 or -1))
 	end
 end
 
