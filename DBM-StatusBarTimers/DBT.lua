@@ -607,7 +607,7 @@ function DBT:UpdateBars(sortBars)
 	end
 	for i, bar in ipairs(largeBars) do
 		bar.frame:ClearAllPoints()
-		bar.frame:SetPoint("TOP", largeBarsAnchor, "TOP", i * self.Options.HugeBarXOffset, (i * (self.Options.Height + self.Options.HugeBarYOffset)) * (self.Options.ExpandUpwards and 1 or -1))
+		bar.frame:SetPoint("TOP", largeBarsAnchor, "TOP", i * self.Options.HugeBarXOffset, (i * (self.Options.Height + self.Options.HugeBarYOffset)) * (self.Options.ExpandUpwardsLarge and 1 or -1))
 	end
 	for i, bar in ipairs(smallBars) do
 		bar.frame:ClearAllPoints()
