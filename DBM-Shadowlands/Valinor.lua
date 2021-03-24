@@ -67,6 +67,7 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 327274 then
 		specWarnUnleashedAnima:Show()
+		specWarnUnleashedAnima:Play("watchstep")
 		timerUnleashedAnimaCD:Start()
 	elseif spellId == 327280 then--Recharge Anima
 		timerVentAnimaCD:Stop()
