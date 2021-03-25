@@ -694,12 +694,11 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 	elseif spellId == 325873 then
-		local debuffTimer = self:IsLFR() and 5 or 3
 		if args:IsPlayer() then
 			specWarnEmberBlast:Show(DBM_CORE_L.ALLIES)
 			specWarnEmberBlast:Play("gathershare")
 			yellEmberBlast:Yell()
-			yellEmberBlastFades:Countdown(debuffTimer-scanningTime)
+			yellEmberBlastFades:Countdown(self:IsLFR() and 5 or 3)
 		elseif self.Options.SpecWarn325877moveto then
 			specWarnEmberBlast:Show(args.destName)
 			specWarnEmberBlast:Play("gathershare")
