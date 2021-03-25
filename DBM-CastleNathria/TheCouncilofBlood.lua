@@ -246,7 +246,7 @@ local allTimers = {
 		--Dark Recital (Living)
 		[331634] = {44.9, 59.9, 20},
 		--Dark Recital (Dead)
-		[331635] = {0, 0, 36.9},
+		[331635] = {0, 60, 36.9},
 		--Waltz of Blood (P2+)
 		[346800] = {0, 60, 60},
 		--Dancing Fools (P3+)
