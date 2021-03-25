@@ -14,7 +14,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 326707 326851 327227 328117 329181 333932 344776",
 	"SPELL_CAST_SUCCESS 327796 329943 339196 330042 326005 332849 333980 332619 329181 333979",
-	"SPELL_AURA_APPLIED 326699 338510 327039 327796 327992 329906 332585 329951 332794 329181 344313 338738",
+	"SPELL_AURA_APPLIED 326699 338510 327039 327796 327992 329906 332585 329951 332794 329181 344313 338738 181089",
 	"SPELL_AURA_APPLIED_DOSE 326699 329906 332585",
 	"SPELL_AURA_REMOVED 326699 338510 327039 327796 328117 329951 332794 338738",
 	"SPELL_AURA_REMOVED_DOSE 326699",
@@ -161,7 +161,7 @@ local Timers = {
 			--Hand of Destruction P2 (Seems same as heroic)
 			[333932] = {47.6, 40.9, 40, 57, 19.7},
 			--Adds P2 (Different from heroic)
-			[12345] = {9.7, 84.5, 75},--75-79 for that last set?
+			[181089] = {9.7, 84.5, 75},--75-79 for that last set?
 		},
 		[3] = {--Totally different from heroic
 			--Hand of Destruction P3
@@ -169,7 +169,7 @@ local Timers = {
 			--Fatal Finesse P3
 			[332794] = {17.4, 24, 24.9, 29, 22, 34, 22, 26, 32},
 			--Adds P2 (There are none in phase 3 but sometimes message can trigger after p2 trigger, this stops nil error)
-			[12345] = {},
+			[181089] = {},
 		}
 	},
 	["heroic"] = {
@@ -185,7 +185,7 @@ local Timers = {
 			--Hand of Destruction P2
 			[333932] = {47.6, 40.9, 40, 57, 19.7},
 			--Adds P2
-			[12345] = {9.7, 85, 55},
+			[181089] = {9.7, 85, 55},
 		},
 		[3] = {
 			--Hand of Destruction P3
@@ -193,7 +193,7 @@ local Timers = {
 			--Fatal Finesse P3
 			[332794] = {17.4, 48, 6, 21, 27, 19, 26, 21, 40},
 			--Adds P2 (There are none in phase 3 but sometimes message can trigger after p2 trigger, this stops nil error)
-			[12345] = {},
+			[181089] = {},
 		}
 	},
 	["mythic"] = {
@@ -209,7 +209,7 @@ local Timers = {
 			--Hand of Destruction P2
 			[333932] = {44.2, 32.3, 39.7, 44.7, 44.8},
 			--Adds P2
-			[12345] = {9.6, 75, 55},
+			[181089] = {9.6, 75, 54.9},
 		},
 		[3] = {
 			--Fatal Finesse P3
@@ -217,7 +217,7 @@ local Timers = {
 			--Shattering Pain Pain
 			[332619] = {12.8, 25.4, 21.7, 24.2, 24.2, 25.4, 21.8, 23, 25.5},
 			--Adds P2 (There are none in phase 3 but sometimes message can trigger after p2 trigger, this stops nil error)
-			[12345] = {},
+			[181089] = {},
 		}
 	},
 }
@@ -661,6 +661,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args.sourceGUID == playerGUID then
 			selfInMirror = false
 		end
+	elseif spellId == 181089 then--Encounter Event
+		self.vb.addCount = self.vb.addCount + 1
+		warnCrimsonCabalists:Show(self.vb.addCount)
+		local timer = Timers[difficultyName][self.vb.phase][181089][self.vb.addCount+1]
+		if timer then
+			timerCrimsonCabalistsCD:Start(timer, self.vb.addCount+1)
+		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -775,12 +782,6 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spell
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
-function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
-	if msg == L.CrimsonSpawn or msg:find(L.CrimsonSpawn) then
-		self:SendSync("CrimsonSpawn")
-	end
-end
-
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	--1 second faster than SPELL_CAST_START
 	if spellId == 330613 and self:AntiSpam(10, 10) then--Script Activating to cast Hand of Destruction
@@ -795,17 +796,5 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		specWarnHandofDestruction:Play("justrun")
 	elseif spellId == 332749 and P3Transition then
 		P3Transition = false
-	end
-end
-
-function mod:OnSync(msg)
-	if not self:IsInCombat() then return end
-	if msg == "CrimsonSpawn" then
-		self.vb.addCount = self.vb.addCount + 1
-		warnCrimsonCabalists:Show(self.vb.addCount)
-		local timer = Timers[difficultyName][self.vb.phase][12345][self.vb.addCount+1]
-		if timer then
-			timerCrimsonCabalistsCD:Start(timer, self.vb.addCount+1)
-		end
 	end
 end

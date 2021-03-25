@@ -75,12 +75,7 @@ L:SetOptionLocalization({
 ---------------------------
 --  Sire Denathrius --
 ---------------------------
-L= DBM:GetModLocalization(2424)
-
-L:SetMiscLocalization({
-	CrimsonSpawn	= "진홍의 밀사가 데나트리우스 대영주의 부름에 응합니다."
-})
-
+--L= DBM:GetModLocalization(2424)
 
 -------------
 --  Trash  --

@@ -74,12 +74,7 @@ L:SetOptionLocalization({
 ---------------------------
 --  Sire Denathrius --
 ---------------------------
-L= DBM:GetModLocalization(2424)
-
-L:SetMiscLocalization({
-	CrimsonSpawn	= "赤红秘法师回应了德纳修斯的召唤。"
-})
-
+--L= DBM:GetModLocalization(2424)
 
 -------------
 --  Trash  --

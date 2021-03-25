@@ -71,10 +71,6 @@ L:SetOptionLocalization({
 ---------------------------
 --L= DBM:GetModLocalization(2424)
 
-L:SetMiscLocalization({
-	CrimsonSpawn	= "赤紅秘術師回應了戴納瑟斯的呼喚。"
-})
-
 -------------
 --  Trash  --
 -------------
