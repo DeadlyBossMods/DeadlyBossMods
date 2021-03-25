@@ -18,23 +18,14 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 325877 329509 329518 328885 325440 325506 333002 326455 337865",
 	"SPELL_CAST_SUCCESS 326583 325665 181113",
 	"SPELL_SUMMON 329565 326075",
-	"SPELL_AURA_APPLIED 326456 328659 341254 328731 325442 333145 326078 332871 326583 328479 323402 337859 335581 343026 341473",
+	"SPELL_AURA_APPLIED 326456 328659 341254 328731 325442 333145 326078 332871 326583 328479 323402 337859 335581 343026 341473 325873",
 	"SPELL_AURA_APPLIED_DOSE 326456 325442 326078",
-	"SPELL_AURA_REMOVED 328731 326078 328479 323402 337859 343026",
+	"SPELL_AURA_REMOVED 328731 326078 328479 323402 337859 343026 325873",
 	"SPELL_PERIODIC_DAMAGE 328579",
 	"SPELL_PERIODIC_MISSED 328579",
 	"UNIT_DIED"
---	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, Switch Ember Blast to UnitTargetScanner for max scan speed/efficiency, if shade has boss unit ID and isn't already targetting victim when cast starts
---TODO, adjust ember blast warning to reduce number told to soak it if it's not conventional to just tell everyone but the tanks to do it
---TODO, essence tracking of energy for Cultists?
---TODO, dispel warnings for Vulgar brand (333002) based on difficulty (magic non mythic, curse mythic)?
---TODO, improved infoframe with https://shadowlands.wowhead.com/spell=339251/drained-soul tracking
---TODO, auto mark essence spawns?
---TODO, Keep an eye on add spawns, if blizzard leaves 3 of the add types missing from combat log, scheduling will have to be added
---TODO, add nameplate aura for assassins fixate/attack?
 --[[
 (ability.id = 325877 or ability.id = 329509 or ability.id = 329518 or ability.id = 328885) and type = "begincast"
  or ability.id = 181113 or ability.id = 323402 or target.id = 168973 and type = "death" or (ability.id = 343026 or ability.id = 337859) and (type = "applydebuff" or type = "removedebuff" or type = "applybuff" or type = "removebuff")
@@ -312,25 +303,6 @@ local addTimers = {
 	},
 }
 
-function mod:EmberBlastTarget(targetname, uId, bossuid, scanningTime)
-	if not targetname then return end
-	local debuffTimer = self:IsLFR() and 5 or 3
-	if targetname == UnitName("player") then
-		specWarnEmberBlast:Show(DBM_CORE_L.ALLIES)
-		specWarnEmberBlast:Play("gathershare")
-		yellEmberBlast:Yell()
-		yellEmberBlastFades:Countdown(debuffTimer-scanningTime)
-	elseif self.Options.SpecWarn325877moveto then
-		specWarnEmberBlast:Show(targetname)
-		specWarnEmberBlast:Play("gathershare")
-	else
-		warnEmberBlast:Show(targetname)
-	end
-	if self.Options.SetIconOnEmberBlast then
-		self:SetIcon(targetname, 1, debuffTimer-scanningTime+1)--So icon clears 1-3 second after blast
-	end
-end
-
 local updateInfoFrame
 do
 	local DBM = DBM
@@ -491,7 +463,6 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 325877 then
 		timerEmberBlastCD:Start(self:IsMythic() and 24.4 or 20.6)--Verify mythic still 24
-		self:BossTargetScanner(args.sourceGUID, "EmberBlastTarget", 0.2, 13)--Scans for 2.6 of 5.0 second cast, will adjust later
 	elseif spellId == 329509 or spellId == 329518 then
 		specWarnBlazingSurge:Show()
 		specWarnBlazingSurge:Play("shockwave")
@@ -722,6 +693,22 @@ function mod:SPELL_AURA_APPLIED(args)
 				timerVileOccultistCD:Start(timer, self.vb.occultistCount+1)
 			end
 		end
+	elseif spellId == 325873 then
+		local debuffTimer = self:IsLFR() and 5 or 3
+		if args:IsPlayer() then
+			specWarnEmberBlast:Show(DBM_CORE_L.ALLIES)
+			specWarnEmberBlast:Play("gathershare")
+			yellEmberBlast:Yell()
+			yellEmberBlastFades:Countdown(debuffTimer-scanningTime)
+		elseif self.Options.SpecWarn325877moveto then
+			specWarnEmberBlast:Show(args.destName)
+			specWarnEmberBlast:Play("gathershare")
+		else
+			warnEmberBlast:Show(args.destName)
+		end
+		if self.Options.SetIconOnEmberBlast then
+			self:SetIcon(args.destName, 1)
+		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -799,6 +786,13 @@ function mod:SPELL_AURA_REMOVED(args)
 			else
 				DBM.InfoFrame:Hide()
 			end
+		end
+	elseif spellId == 325873 then
+		if args:IsPlayer() then
+			yellEmberBlastFades:Cancel()
+		end
+		if self.Options.SetIconOnEmberBlast then
+			self:SetIcon(args.destName, 0)
 		end
 	end
 end
@@ -919,18 +913,7 @@ function mod:OnSync(msg, guid)
 				if timer and timer > 5 then
 					timerPesteringFiendCD:Start(timer, self.vb.fiendCount+1)
 				end
---			elseif cid == 168962 then--Reborn Phoenix
-
 			end
 		end
 	end
 end
-
---[[
---https://shadowlands.wowhead.com/spell=336658/reborn-phoenix-exit
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 336658 then
-
-	end
-end
---]]
