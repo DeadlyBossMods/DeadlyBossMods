@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(166971, 166969, 166970)--Castellan Niklaus, Baroness Frieda, Lord Stavros
 mod:SetEncounterID(2412)
 mod:SetBossHPInfoToHighest()
-mod:SetUsedIcons(8)
+mod:SetUsedIcons(8,6)
 mod:SetHotfixNoticeRev(20210216000000)--2021, 02, 16
 mod:SetMinSyncRevision(20210216000000)
 --mod.respawnTime = 29
@@ -123,6 +123,7 @@ local timerDancingFeverCD						= mod:NewCDCountTimer(60, 347350, nil, nil, nil, 
 mod:AddRangeFrameOption(8, 346657)
 mod:AddInfoFrameOption(347350, true)
 mod:AddSetIconOption("SetIconOnDutiful", 346698, true, true, {8})
+mod:AddSetIconOption("SetIconOnImage", 337110, true, true, {6})
 mod:AddSetIconOption("SetIconOnDancingFools", 346826, true, true, {8})--Attempts to set icon only on killable one, not yet tested
 mod:AddNamePlateOption("NPAuraOnFixate", 330967)
 mod:AddNamePlateOption("NPAuraOnShield", 346694)
@@ -245,7 +246,7 @@ local allTimers = {
 		--Dark Recital (Living)
 		[331634] = {44.9, 59.9, 20},
 		--Dark Recital (Dead)
-		[331635] = {0, 0, 36.9},
+		[331635] = {0, 60, 36.9},
 		--Waltz of Blood (P2+)
 		[346800] = {0, 60, 60},
 		--Dancing Fools (P3+)
@@ -981,6 +982,9 @@ end
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 	if msg:find("spell:337110") then
+		if self.Options.SetIconOnImage  then
+			self:ScanForMobs(172803, 2, 6, 1, 0.2, 10, "SetIconOnImage")--creatureID, iconSetMethod, mobIcon, maxIcon, scanInterval, scanningTime, optionName
+		end
 		local timer = allTimers[difficultyName][337110][self.vb.phase]
 		if timer then
 			timerDreadboltVolleyCD:Start(timer)

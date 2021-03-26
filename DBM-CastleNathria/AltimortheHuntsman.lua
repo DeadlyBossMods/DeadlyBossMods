@@ -14,14 +14,14 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 335114 334404 334971 334797 334757 334852",
 	"SPELL_CAST_SUCCESS 334945 334797",
-	"SPELL_AURA_APPLIED 334971 334860 334945 334852 335111 335112 335113",
+	"SPELL_AURA_APPLIED 334971 334860 334945 334852 335111 335112 335113 334504",
 	"SPELL_AURA_APPLIED_DOSE 334971 334860",
 	"SPELL_AURA_REMOVED 334945 334860 334852 335111 335112 335113",
 	"SPELL_AURA_REMOVED_DOSE 334860",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
-	"UNIT_DIED",
-	"UNIT_SPELLCAST_SUCCEEDED boss1"
+	"UNIT_DIED"
+--	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
 --TODO, handling of mythic Sinseeker buffs by detecting which hound buffs it currently has (by using phase probably)
@@ -300,6 +300,35 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellSinseekerFades:Countdown(spellId, nil, icon)
 		end
 		warnSinseeker:CombinedShow(spellId == 335113 and 0.1 or 2.5, args.destName)
+	elseif spellId == 334504 then
+		local cid = self:GetCIDFromGUID(args.sourceGUID)
+		if cid == 169457 then--Bargast
+			self.vb.phase = 2
+			warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(2))
+			warnPhase:Play("ptwo")
+			--Start Next Dog
+			--timerSpreadshotCD:Start()--Used instantly
+			timerSinseekerCD:Stop()
+			timerRipSoulCD:Start(10)
+			timerShadesofBargastCD:Start(17.5)
+			timerSinseekerCD:Start(31.8, self.vb.sinSeekerCount+1)
+			transitionwindow = 0
+		elseif cid == 169457 then--Bargast
+			self.vb.phase = 3
+			warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(3))
+			warnPhase:Play("pthree")
+			--Start Next Dog
+			timerSpreadshotCD:Start(6.3)
+			timerPetrifyingHowlCD:Start(13.9)
+			timerSinseekerCD:Stop()
+			if transitionwindow == 2 then--Cast within transition window
+				--It was cast going into phase change, which causes it to incurr it's full 50 second cd on this event
+				timerSinseekerCD:Start(50, self.vb.sinSeekerCount+1)
+			else
+				timerSinseekerCD:Start(28.3, self.vb.sinSeekerCount+1)--Need fresh transcriptor log to verify this
+			end
+			transitionwindow = 0
+		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -371,7 +400,6 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spell
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
---]]
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 334504 then--Huntsman's Bond (only boss1 is registered so dog casts SHOULD be ignored)
@@ -405,3 +433,4 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		end
 	end
 end
+--]]

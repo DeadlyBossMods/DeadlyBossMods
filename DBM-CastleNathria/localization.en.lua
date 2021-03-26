@@ -68,12 +68,7 @@ L:SetOptionLocalization({
 ---------------------------
 --  Sire Denathrius --
 ---------------------------
-L= DBM:GetModLocalization(2424)
-
-L:SetMiscLocalization({
-	CrimsonSpawn	= "Crimson Cabalists answer the call of Denathrius."
-})
-
+--L= DBM:GetModLocalization(2424)
 
 -------------
 --  Trash  --
