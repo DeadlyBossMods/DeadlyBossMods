@@ -308,7 +308,7 @@ do
 			else
 				frame = self:CreateDropdown(nil, sounds, mod, modvar .. "SWSound", function(value)
 					mod.Options[modvar .. "SWSound"] = value
-					DBM:PlaySpecialWarningSound(value)
+					DBM:PlaySpecialWarningSound(value, true)
 				end, 22, 25, button)
 				frame:ClearAllPoints()
 				frame:SetPoint("LEFT", button, "RIGHT", -20, 2)
