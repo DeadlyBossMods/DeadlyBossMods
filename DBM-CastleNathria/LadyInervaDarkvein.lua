@@ -347,7 +347,7 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
 function mod:RAID_BOSS_WHISPER(msg)
 	if msg:find("324983") then
-		specWarnSharedSuffering:Show(self.vb.sufferingCount+1)
+		specWarnSharedSuffering:Show(self.vb.sufferingCount)
 		specWarnSharedSuffering:Play("targetyou")
 		yellSharedSuffering:Yell()
 	end
@@ -362,7 +362,6 @@ function mod:OnTranscriptorSync(msg, targetName)
 			end
 			warnSharedSuffering:CombinedShow(0.3, targetName)
 			self.vb.sufferingIcon = self.vb.sufferingIcon + 1
-			self.vb.sufferingCount = self.vb.sufferingCount + 1
 		end
 	end
 end
@@ -372,8 +371,9 @@ end
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 325064 then--Sins and Suffering (parent ID, not one of 3 specific IDs)
 		self.vb.sufferingIcon = 1
+		self.vb.sufferingCount = self.vb.sufferingCount + 1
 		--1 Expose Desires (tank), 2 Bottled Anima (bouncing bottles), 3 Sins and Suffering (links), 4 Concentrate Anima (adds)
-		timerSinsandSufferingCD:Start(self.vb.containerActive == 3 and 30 or 50)
+		timerSinsandSufferingCD:Start(self.vb.containerActive == 3 and 30 or 50, self.vb.sufferingCount+1)
 	elseif spellId == 331844 then -- Expose Desires
 		self.vb.containerActive = 1
 	elseif spellId == 331870 then -- Bottled Anima
