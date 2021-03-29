@@ -69,7 +69,7 @@ local timerConcentrateContainer					= mod:NewTimer(120, "timerConcentrateContain
 --local timerFocusAnimaCD							= mod:NewCDTimer(100, 331844, nil, nil, nil, 6)
 local timerExposedDesiresCD						= mod:NewCDTimer(8.5, 341621, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON, true)--8.5-25 because yeah, boss spell queuing+CD even changing when higher rank
 local timerBottledAnimaCD						= mod:NewCDTimer(10.8, 342280, nil, nil, nil, 3, nil, nil, true)--10-36
-local timerSinsandSufferingCD					= mod:NewCDTimer(44.3, 325064, 202046, nil, nil, 3, nil, nil, true)--ShortName "Beams"
+local timerSinsandSufferingCD					= mod:NewCDCountTimer(44.3, 325064, 202046, nil, nil, 3, nil, nil, true)--ShortName "Beams"
 local timerConcentratedAnimaCD					= mod:NewCDCountTimer(35.4, 342321, nil, nil, 2, 1, nil, nil, true, 1)--Technically targetted(3) bar type as well, but since bar is both, and 2 other bars are already 3s, 1 makes more sense
 local timerChangeofHeart						= mod:NewTargetTimer(4, 340452, nil, nil, nil, 5, nil, DBM_CORE_L.HEALER_ICON)
 
@@ -187,14 +187,14 @@ function mod:OnCombatStart(delay)
 	if self:IsMythic() then
 --		timerFocusAnimaCD:Start(3.8-delay)
 		timerExposedDesiresCD:Start(10.9-delay)
-		timerSinsandSufferingCD:Start(16.3-delay)
+		timerSinsandSufferingCD:Start(16.3-delay, 1)
 		timerBottledAnimaCD:Start(31.5-delay)
 		timerConcentratedAnimaCD:Start(44-delay, 1)
 	else
 		--Initials still highly variable
 --		timerFocusAnimaCD:Start(3.5-delay)--3.5-18?
 		timerExposedDesiresCD:Start(12.1-delay)
-		timerSinsandSufferingCD:Start(29.1-delay)
+		timerSinsandSufferingCD:Start(29.1-delay, 1)
 		timerBottledAnimaCD:Start(19.4-delay)
 		timerConcentratedAnimaCD:Start(54.7-delay, 1)--Not cast on normal until near end of fight?
 	end
