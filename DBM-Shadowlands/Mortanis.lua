@@ -11,13 +11,12 @@ mod:SetUsedIcons(1)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 338848 338846 338847 339122",
+	"SPELL_CAST_START 338848 338846 338847",
 	"SPELL_CAST_SUCCESS 338851 338849",
 	"SPELL_AURA_APPLIED 338850 338847 338851",
-	"SPELL_AURA_REMOVED 338850 338851"
+	"SPELL_AURA_REMOVED 338851"
 )
 
---TODO, activate two CD code for self.vb.crawlReduced when times known
 --TODO, see if Screaming Skull can be target scanned to warn meteor target even faster
 --TODO, anything else?
 local warnFrenzy							= mod:NewTargetNoFilterAnnounce(338847, 3, nil, "Tank|Healer|RemoveEnrage")
@@ -29,15 +28,13 @@ local specWarnFrenzy						= mod:NewSpecialWarningDispel(338847, "RemoveEnrage", 
 local specWarnScreamingSkull				= mod:NewSpecialWarningMoveTo(338851, nil, nil, 2, 1, 2)
 local specWarnUnrulyremains					= mod:NewSpecialWarningDodge(338849, nil, nil, nil, 2, 2)
 
-local timerSpineCrawlCD						= mod:NewCDTimer(22, 338848, nil, nil, nil, 3)
-local timerFrenzyCD							= mod:NewCDTimer(40.7, 338847, nil, nil, nil, 5, nil, DBM_CORE_L.ENRAGE_ICON)
-local timerScreamingSkullCD					= mod:NewAITimer(82.0, 338851, nil, nil, nil, 3, nil, DBM_CORE_L.DEADLY_ICON)
+local timerSpineCrawlCD						= mod:NewCDTimer(21.6, 338848, nil, nil, nil, 3)
+local timerFrenzyCD							= mod:NewCDTimer(33.2, 338847, nil, nil, nil, 5, nil, DBM_CORE_L.ENRAGE_ICON)
+local timerScreamingSkullCD					= mod:NewCDTimer(31.6, 338851, nil, nil, nil, 3, nil, DBM_CORE_L.DEADLY_ICON)
 local timerBoneCleaveCD						= mod:NewCDTimer(12.3, 338846, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)
 local timerUnrulyRemainsCD					= mod:NewCDTimer(15.6, 338849, nil, nil, nil, 3)--15.6-20
 
 mod:AddSetIconOption("SetIconOnSkull", 338851, true, false, {1})
-
-mod.vb.crawlReduced = false
 
 --Ugly, but only accurate way to do it
 local function checkBuff(self)
@@ -82,11 +79,6 @@ local function checkBuff(self)
 end
 
 function mod:OnCombatStart(delay, yellTriggered)
-	if checkBuff(self) then
-		self.vb.crawlReduced = true
-	else
-		self.vb.crawlReduced = false
-	end
 	if yellTriggered then
 		--timerSpineCrawlCD:Start(1)
 		--timerFrenzyCD:Start(8)--SUCCESS
@@ -100,9 +92,9 @@ end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 338848 or spellId == 339122 then
+	if spellId == 338848 then
 --		self:ScheduleMethod(0.1, "BossTargetScanner", args.sourceGUID, "RetchTarget", 0.1, 6)
-		timerSpineCrawlCD:Start(spellId == 338848 and 22 or 2.6)
+		timerSpineCrawlCD:Start(22)
 	elseif spellId == 338846 then
 		warnBoneCleave:Show()
 		timerBoneCleaveCD:Start()
@@ -129,7 +121,7 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 338850 then
-		self.vb.crawlReduced = true
+		timerSpineCrawlCD:Stop()
 	elseif spellId == 338847 then
 		if self.Options.SpecWarn338847dispel then
 			specWarnFrenzy:Show(args.destName)
@@ -152,9 +144,7 @@ end
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
-	if spellId == 338850 then
-		self.vb.crawlReduced = false
-	elseif spellId == 338851 and self.Options.SetIconOnSkull then
+	if spellId == 338851 and self.Options.SetIconOnSkull then
 		self:SetIcon(args.destName, 0)
 	end
 end
