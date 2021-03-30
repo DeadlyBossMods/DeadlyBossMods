@@ -123,7 +123,7 @@ local timerDancingFeverCD						= mod:NewCDCountTimer(60, 347350, nil, nil, nil, 
 mod:AddRangeFrameOption(8, 346657)
 mod:AddInfoFrameOption(347350, true)
 mod:AddSetIconOption("SetIconOnDutiful", 346698, true, true, {8})
-mod:AddSetIconOption("SetIconOnImage", 337110, true, true, {6})
+mod:AddSetIconOption("SetIconOnImage", "ej22433", true, true, {6})
 mod:AddSetIconOption("SetIconOnDancingFools", 346826, true, true, {8})--Attempts to set icon only on killable one, not yet tested
 mod:AddNamePlateOption("NPAuraOnFixate", 330967)
 mod:AddNamePlateOption("NPAuraOnShield", 346694)

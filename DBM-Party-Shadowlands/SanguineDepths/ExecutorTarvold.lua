@@ -10,15 +10,13 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 322554",
 --	"SPELL_CAST_SUCCESS 322574",
-	"SPELL_AURA_APPLIED 323548",
+	"SPELL_AURA_APPLIED 323548 328494",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 	"UNIT_DIED"
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, warn for https://shadowlands.wowhead.com/spell=328494/sintouched-anima spawns?
---TODO, figure ot how Castigate works to more accurately warn it
 --[[
 ability.id = 322554 and type = "begincast"
  or ability.id = 323548 and type = "applydebuff"
@@ -28,6 +26,7 @@ local warnCastigate					= mod:NewTargetNoFilterAnnounce(322554, 4)
 local specWarnCastigate				= mod:NewSpecialWarningMoveAway(322554, nil, nil, nil, 1, 2)
 local yellCastigate					= mod:NewYell(322554)
 local specWarnCoalesceManifestation	= mod:NewSpecialWarningSwitch(322574, "-Healer", nil, nil, 1, 2)
+local specWarnSintouchedAnima		= mod:NewSpecialWarningDispel(328494, "RemoveCurse", nil, nil, 1, 2)
 --local specWarnGTFO				= mod:NewSpecialWarningGTFO(257274, nil, nil, nil, 1, 8)
 
 local timerCastigateCD				= mod:NewNextTimer(20.5, 322554, nil, nil, nil, 3)
@@ -124,6 +123,9 @@ function mod:SPELL_AURA_APPLIED(args)
 				end
 			end, 1)
 		end
+	elseif spellId == 328494 and args:IsDestTypePlayer() and self:CheckDispelFilter() then
+		specWarnSintouchedAnima:Show(args.destName)
+		specWarnSintouchedAnima:Play("helpdispel")
 	end
 end
 
