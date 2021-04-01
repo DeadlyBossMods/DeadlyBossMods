@@ -51,6 +51,7 @@ globals = {
 	"strsplit",
 	"tContains",
 	"tDeleteItem",
+	"tIndexOf",
 	"tinsert",
 	"tostringall",
 	"tremove",
