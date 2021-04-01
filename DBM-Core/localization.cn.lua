@@ -614,7 +614,4 @@ L.SILENTMODE_IS     = "静音模式为："
 
 L.LDB_LOAD_MODS		= "载入首领模块"
 
-L.LDB_CAT_OTHER		= "其他首领"
-
-L.LDB_CAT_GENERAL		= "常规"
 L.LDB_ENABLE_BOSS_MOD	= "启用首领模块"

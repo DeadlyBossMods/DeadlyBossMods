@@ -628,7 +628,4 @@ L.SILENTMODE_IS						= "Тихий режим "
 
 L.LDB_LOAD_MODS						= "Загрузить босс"
 
-L.LDB_CAT_OTHER						= "Другие босс моды"
-
-L.LDB_CAT_GENERAL					= "Общие"
 L.LDB_ENABLE_BOSS_MOD				= "Включить босс мод"
