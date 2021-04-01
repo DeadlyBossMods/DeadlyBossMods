@@ -887,12 +887,13 @@ function barPrototype:Update(elapsed)
 		isEnlarged = true
 		tinsert(largeBars, self)
 		self:ApplyStyle()
+		DBT:UpdateBars(true)
 	end
-	DBT:UpdateBars()
 	if not paused and (timerValue <= enlargeTime) and not self.small and not isEnlarged and isMoving ~= "enlarge" and DBT.Options.HugeBarsEnabled then
 		self:RemoveFromList()
 		self:Enlarge()
 	end
+	DBT:UpdateBars()
 end
 
 function barPrototype:RemoveFromList()
@@ -1091,7 +1092,7 @@ function barPrototype:AnimateEnlarge(elapsed)
 		self.moving = nil
 		self.enlarged = true
 		tinsert(largeBars, self)
-		DBT:UpdateBars()
+		DBT:UpdateBars(true)
 		self:ApplyStyle()
 	end
 end
