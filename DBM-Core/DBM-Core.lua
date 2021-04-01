@@ -1380,7 +1380,7 @@ do
 			end
 			onLoadCallbacks = nil
 			loadOptions(self)
-			if WOW_PROJECT_ID == WOW_PROJECT_CLASSIC then
+			if WOW_PROJECT_ID ~= WOW_PROJECT_MAINLINE then
 				self:Disable(true)
 				self:Schedule(15, infniteLoopNotice, self, L.RETAIL_ONLY)
 				return
