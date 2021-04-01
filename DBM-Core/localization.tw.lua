@@ -628,6 +628,4 @@ L.LAG_FOOTER					= "無回應:%s"
 L.LDB_TOOLTIP_HELP1				= "點擊開啟" .. L.DBM
 L.SILENTMODE_IS                 = "無聲模式是 "
 L.LDB_LOAD_MODS					= "載入首領模組"
-L.LDB_CAT_OTHER					= "其他首領模組"
-L.LDB_CAT_GENERAL				= "一般"
 L.LDB_ENABLE_BOSS_MOD			= "啟用首領模組"

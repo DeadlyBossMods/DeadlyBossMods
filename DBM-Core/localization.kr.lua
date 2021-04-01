@@ -606,7 +606,4 @@ L.SILENTMODE_IS					= "조용함 모드 "
 
 L.LDB_LOAD_MODS		= "보스 모드 로드"
 
-L.LDB_CAT_OTHER		= "그 외 보스 모드"
-
-L.LDB_CAT_GENERAL		= "일반"
 L.LDB_ENABLE_BOSS_MOD	= "보스 모드 사용"
