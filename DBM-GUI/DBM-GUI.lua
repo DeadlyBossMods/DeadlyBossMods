@@ -736,14 +736,13 @@ do
 	local category = {}
 	local subTabId = 0
 	local expansions = {
-		[0] = "CLASSIC",
-		"BC", "WotLK", "CATA", "MOP", "WOD", "LEG", "BFA", "SHADOWLANDS"
+		"CLASSIC", "BC", "WOTLK", "CATA", "MOP", "WOD", "LEG", "BFA", "SHADOWLANDS"
 	}
 
 	function DBM_GUI:UpdateModList()
 		for _, addon in ipairs(DBM.AddOns) do
 			if not category[addon.category] then
-				category[addon.category] = DBM_GUI:CreateNewPanel(L["TabCategory_" .. addon.category:upper()] or L.TabCategory_OTHER, nil, addon.category:upper() == expansions[GetExpansionLevel()])
+				category[addon.category] = DBM_GUI:CreateNewPanel(_G["EXPANSION_NAME" .. (tIndexOf(expansions, addon.category:upper()) or 99) - 1] or L.TabCategory_OTHER, nil, addon.category:upper() == expansions[GetExpansionLevel() + 1])
 			end
 
 			if not addon.panel then

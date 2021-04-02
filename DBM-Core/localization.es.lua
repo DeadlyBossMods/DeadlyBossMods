@@ -630,7 +630,4 @@ L.LDB_TOOLTIP_HELP2	= "Clic derecho para el menú de configuración"
 
 L.LDB_LOAD_MODS		= "Cargar módulo"
 
-L.LDB_CAT_OTHER		= "Otros módulos"
-
-L.LDB_CAT_GENERAL		= "General"
 L.LDB_ENABLE_BOSS_MOD	= "Habilitar módulo"

@@ -51,6 +51,7 @@ globals = {
 	"strsplit",
 	"tContains",
 	"tDeleteItem",
+	"tIndexOf",
 	"tinsert",
 	"tostringall",
 	"tremove",
@@ -129,7 +130,7 @@ globals = {
 	"TAXIROUTE_LINEFACTOR",
 	"TAXIROUTE_LINEFACTOR_2",
 	"TOAST_DURATION_LONG",
-	"WOW_PROJECT_CLASSIC",
+	"WOW_PROJECT_MAINLINE",
 	"WOW_PROJECT_ID",
 	"YES",
 
