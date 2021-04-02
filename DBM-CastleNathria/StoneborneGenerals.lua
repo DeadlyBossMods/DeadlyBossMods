@@ -616,7 +616,7 @@ function mod:SPELL_AURA_REMOVED_DOSE(args)
 end
 
 function mod:RAID_BOSS_WHISPER(msg)
-	if msg:find("344496") and self:AntiSpam(4, playerName.."2") then--Eruption Backup (if scan fails)
+	if (msg:find("344496") or msg:find("344500")) and self:AntiSpam(4, playerName.."2") then--Eruption Backup (if scan fails)
 		if self.Options.SetIconOnEruption2 then
 			self:SetIcon(playerName, 4, 4.5)--So icon clears 1 second after
 		end
@@ -638,7 +638,7 @@ function mod:RAID_BOSS_WHISPER(msg)
 end
 
 function mod:OnTranscriptorSync(msg, targetName)
-	if msg:find("344496") and targetName then--Eruption Backup (if scan fails)
+	if (msg:find("344496") or msg:find("344500")) and targetName then--Eruption Backup (if scan fails)
 		targetName = Ambiguate(targetName, "none")
 		if self:AntiSpam(4, targetName.."2") then--Same antispam as RAID_BOSS_WHISPER on purpose. if player got personal warning they don't need this one
 			if self.Options.SetIconOnEruption2 then
