@@ -1,4 +1,4 @@
-﻿if GetLocale() ~= "frFR" then return end
+if GetLocale() ~= "frFR" then return end
 if not DBM_CORE_L then DBM_CORE_L = {} end
 
 local L = DBM_CORE_L

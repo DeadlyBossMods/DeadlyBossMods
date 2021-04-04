@@ -1,4 +1,4 @@
-﻿-- Diablohu(diablohudream@gmail.com)
+-- Diablohu(diablohudream@gmail.com)
 -- yleaf(yaroot@gmail.com)
 -- Mini_Dragon(projecteurs@gmail.com)
 -- Yike Xia
