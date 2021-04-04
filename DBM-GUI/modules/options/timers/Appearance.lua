@@ -197,10 +197,9 @@ local FontFlags = {
 	}
 }
 
-local FontFlagDropDown = BarSetup:CreateDropdown(L.FontStyle, FontFlags, "DBT", "FontFlag",
-	function(value)
-		DBT:SetOption("FontFlag", value)
-	end)
+local FontFlagDropDown = BarSetup:CreateDropdown(L.FontStyle, FontFlags, "DBT", "FontFlag", function(value)
+	DBT:SetOption("FontFlag", value)
+end)
 FontFlagDropDown:SetPoint("TOPLEFT", FontDropDown, "BOTTOMLEFT", 0, -10)
 FontFlagDropDown.myheight = 0
 
@@ -267,6 +266,21 @@ if #skins > 1 then
 end
 ]]--
 
+local Sorts = {
+	{
+		text	= "None",
+		value	= "None"
+	},
+	{
+		text	= "Highest at top",
+		value	= "Sort"
+	},
+	{
+		text	= "Lowest at top",
+		value	= "Invert"
+	}
+}
+
 local BarSetupSmall = BarSetupPanel:CreateArea(L.AreaTitle_BarSetupSmall)
 
 local smalldummybar = DBT:CreateDummyBar(nil, nil, SMALL)
@@ -308,6 +322,11 @@ BarOffsetYSlider:SetPoint("TOPLEFT", BarOffsetXSlider, "BOTTOMLEFT", 0, -10)
 BarOffsetYSlider:SetValue(DBT.Options.BarYOffset)
 BarOffsetYSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("BarYOffset"))
 BarOffsetYSlider.myheight = 0
+
+local SortDropDown = BarSetupSmall:CreateDropdown(L.BarSort, Sorts, "DBT", "Sort", function(value)
+	DBT:SetOption("Sort", value)
+end)
+SortDropDown:SetPoint("TOPLEFT", AlphaSlider, "BOTTOMLEFT", -20, -25)
 
 local barResetbutton = BarSetupSmall:CreateButton(L.SpecWarn_ResetMe, 120, 16)
 barResetbutton:SetPoint("BOTTOMRIGHT", BarSetupSmall.frame, "BOTTOMRIGHT", -2, 4)
@@ -367,6 +386,11 @@ HugeBarOffsetYSlider:SetPoint("TOPLEFT", HugeBarOffsetXSlider, "BOTTOMLEFT", 0, 
 HugeBarOffsetYSlider:SetValue(DBT.Options.HugeBarYOffset)
 HugeBarOffsetYSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("HugeBarYOffset"))
 HugeBarOffsetYSlider.myheight = 0
+
+local SortDropDownLarge = BarSetupHuge:CreateDropdown(L.BarSort, Sorts, "DBT", "HugeSort", function(value)
+	DBT:SetOption("HugeSort", value)
+end)
+SortDropDownLarge:SetPoint("TOPLEFT", HugeAlphaSlider, "BOTTOMLEFT", -20, -25)
 
 local hugeBarResetbutton = BarSetupHuge:CreateButton(L.SpecWarn_ResetMe, 120, 16)
 hugeBarResetbutton:SetPoint("BOTTOMRIGHT", BarSetupHuge.frame, "BOTTOMRIGHT", -2, 4)

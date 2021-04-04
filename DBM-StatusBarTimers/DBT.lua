@@ -85,6 +85,7 @@ DBT.DefaultOptions = {
 	ExpandUpwards = false,
 	FillUpBars = true,
 	TimerPoint = "TOPRIGHT",
+	Sort = "Sort",
 	-- Huge bar
 	EnlargeBarTime = 11,
 	HugeBarXOffset = 0,
@@ -98,6 +99,7 @@ DBT.DefaultOptions = {
 	FillUpLargeBars = true,
 	HugeBarsEnabled = true,
 	HugeTimerPoint = "CENTER",
+	HugeSort = "Sort",
 	-- Misc
 	Height = 20,
 	TextColorR = 1,
@@ -107,7 +109,6 @@ DBT.DefaultOptions = {
 	FontSize = 10,
 	FlashBar = false,
 	Spark = true,
-	Sort = "Sort",
 	ColorByType = true,
 	NoBarFade = false,
 	InlineIcons = true,
@@ -593,7 +594,7 @@ end
 function DBT:UpdateBars(sortBars)
 	if sortBars and self.Options.Sort ~= "None" then
 		tsort(largeBars, function(x, y)
-			if self.Options.Sort == "Invert" then
+			if self.Options.HugeSort == "Invert" then
 				return x.timer < y.timer
 			end
 			return x.timer > y.timer
