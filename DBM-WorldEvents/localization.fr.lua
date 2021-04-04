@@ -1,4 +1,4 @@
-﻿-- Last update: 12/20/2012 (20/12/2012 in french format)
+-- Last update: 12/20/2012 (20/12/2012 in french format)
 -- By Edoz (stephanelc35@msn.com)
 if GetLocale() ~= "frFR" then return end
 local L

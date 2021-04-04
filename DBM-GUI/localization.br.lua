@@ -1,4 +1,4 @@
-﻿if GetLocale() ~= "ptBR" then return end
+if GetLocale() ~= "ptBR" then return end
 
 if not DBM_GUI_L then DBM_GUI_L = {} end
 
