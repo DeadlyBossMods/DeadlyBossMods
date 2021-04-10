@@ -8654,6 +8654,7 @@ do
 			["RangedDps"] = true,
 			["Physical"] = true,
 			["HasInterrupt"] = true,
+			["MagicDispeller"] = true,
 			["RemoveEnrage"] = true,
 		},
 		[254] = {	--Markmanship Hunter Hunter
@@ -8662,6 +8663,7 @@ do
 			["RangedDps"] = true,
 			["Physical"] = true,
 			["HasInterrupt"] = true,
+			["MagicDispeller"] = true,
 			["RemoveEnrage"] = true,
 		},
 		[255] = {	--Survival Hunter (Legion+)
@@ -8670,6 +8672,7 @@ do
 			["MeleeDps"] = true,
 			["Physical"] = true,
 			["HasInterrupt"] = true,
+			["MagicDispeller"] = true,
 			["RemoveEnrage"] = true,
 		},
 		[1448] = {	--Initial Hunter (used in exiles reach tutorial mode). Treated as hybrid. Utility disabled because that'd require checking tutorial progress
