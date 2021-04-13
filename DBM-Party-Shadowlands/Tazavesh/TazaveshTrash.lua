@@ -29,8 +29,8 @@ function mod:SPELL_CAST_START(args)
 	if not self.Options.Enabled then return end
 	local spellId = args.spellId
 	if spellId == 324293 and self:CheckInterruptFilter(args.sourceGUID, false, true) then
-		specWarnRaspingScream:Show(args.sourceName)
-		specWarnRaspingScream:Play("kickcast")
+--		specWarnRaspingScream:Show(args.sourceName)
+--		specWarnRaspingScream:Play("kickcast")
 	end
 end
 
