@@ -1,0 +1,29 @@
+## Interface: 90100
+## X-Min-Interface: 90100
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Sanctum of Domination|r
+## Author: MysticalOS
+## LoadOnDemand: 1
+## RequiredDeps: DBM-Core
+## SavedVariables: DBMSantumOfDomination_AllSavedVars
+## SavedVariablesPerCharacter: DBMSantumOfDomination_SavedStats
+## X-DBM-Mod: 1
+## X-DBM-Mod-Type: RAID
+## X-DBM-Mod-Category: SHADOWLANDS
+## X-DBM-StatTypes: lfr,normal,heroic,mythic
+## X-DBM-Mod-Name: Sanctum of Domination
+## X-DBM-Mod-Sort: 307
+## X-DBM-Mod-MapID: 2450
+## X-DBM-Mod-MinCoreRevision: 17286
+## X-DBM-Mod-MinExpansion: 8
+localization.en.lua
+TheTarragrue.lua
+TheEyeoftheJailer.lua
+TheNine.lua
+RemnantofNerzhul.lua
+SoulrenderDormazain.lua
+PainsmithRaznal.lua
+GuardianoftheFirstOnes.lua
+FatescribeRohKalo.lua
+KelThuzad.lua
+SylvanasWindrunner.lua
+SanctumofDomTrash.lua

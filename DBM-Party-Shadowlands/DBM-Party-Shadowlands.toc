@@ -14,7 +14,7 @@
 ## X-DBM-Mod-Type: PARTY
 ## X-DBM-Mod-Category: SHADOWLANDS
 ## X-DBM-StatTypes: normal,heroic,mythic,challenge
-## X-DBM-Mod-SubCategoriesID: 2286, 2289, 2290, 2287, 2285, 2293, 2291, 2284
+## X-DBM-Mod-SubCategoriesID: 2286, 2289, 2290, 2287, 2285, 2293, 2291, 2284, 2441
 ## X-DBM-Mod-Name: Dungeons (Shadowlands)
 ## X-DBM-Mod-Name-esES: Mazmorras (Shadowlands)
 ## X-DBM-Mod-Name-esMX: Mazmorras (Shadowlands)
@@ -23,7 +23,7 @@
 ## X-DBM-Mod-Name-zhCN: 5人小队（暗影国度）
 ## X-DBM-Mod-Name-ruRU: Групповые подземелья (SL)
 ## X-DBM-Mod-Sort: 315
-## X-DBM-Mod-MapID: 2286, 2289, 2290, 2287, 2285, 2293, 2291, 2284
+## X-DBM-Mod-MapID: 2286, 2289, 2290, 2287, 2285, 2293, 2291, 2284, 2441
 ## X-DBM-Mod-MinCoreRevision: 17286
 ## X-DBM-Mod-MinExpansion: 8
 localization.en.lua
@@ -71,3 +71,12 @@ SanguineDepths\ExecutorTarvold.lua
 SanguineDepths\GrandProctorBeryllia.lua
 SanguineDepths\GeneralKaal.lua
 SanguineDepths\SanguineDepthsTrash.lua
+Tazavesh\ZophextheSentinel.lua
+Tazavesh\TheBazaar.lua
+Tazavesh\MailroomMayhem.lua
+Tazavesh\AumyzaOasis.lua
+Tazavesh\Soazmi.lua
+Tazavesh\Hylbrande.lua
+Tazavesh\TimecapnHooktail.lua
+Tazavesh\Soleah.lua
+Tazavesh\TazaveshTrash.lua
