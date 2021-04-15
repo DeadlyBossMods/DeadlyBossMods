@@ -467,7 +467,6 @@ function mod:SPELL_CAST_START(args)
 		specWarnBlazingSurge:Show()
 		specWarnBlazingSurge:Play("shockwave")
 		timerBlazingSurgeCD:Start()
-		--self:BossTargetScanner(args.sourceGUID, "BlazingSurgeTarget", 0.1, 12)
 	elseif spellId == 328885 then
 		timerGreaterCastigationCD:Start()
 	elseif spellId == 325440 then
