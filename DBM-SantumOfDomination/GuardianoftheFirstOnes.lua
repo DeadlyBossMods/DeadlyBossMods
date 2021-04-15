@@ -62,16 +62,18 @@ mod.vb.coreActive = false
 
 local updateInfoFrame
 do
-	local lines = {}
-	local sortedLines = {}
+	local DBM, DBM_CORE_L = DBM, DBM_CORE_L
+	local UnitPower, UnitPowerMax, UnitName = UnitPower, UnitPowerMax, UnitName
+	local twipe = table.wipe
+	local lines, sortedLines = {}, {}
 	local function addLine(key, value)
 		-- sort by insertion order
 		lines[key] = value
 		sortedLines[#sortedLines + 1] = key
 	end
 	updateInfoFrame = function()
-		table.wipe(lines)
-		table.wipe(sortedLines)
+		twipe(lines)
+		twipe(sortedLines)
 		--Boss Power
 		local currentPower, maxPower = UnitPower("boss1"), UnitPowerMax("boss1")
 		if maxPower and maxPower ~= 0 then
