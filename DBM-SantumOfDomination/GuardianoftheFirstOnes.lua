@@ -81,7 +81,7 @@ do
 		end
 		--Player safety status
 		if mod.vb.coreActive then
-			addLine(radiantEnergy, DBM_CORE_L.NOTSAFE))
+			addLine(radiantEnergy, DBM_CORE_L.NOTSAFE)
 			for uId in DBM:GetGroupMembers() do
 				local unitName = DBM:GetUnitFullName(uId)
 				if not playersSafe[unitName] then
