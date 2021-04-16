@@ -27,6 +27,7 @@ mod:RegisterEventsInCombat(
 --TODO, are meltdowns just a wipe or a mechanic to deal with?
 --TODO, verify target scanning
 local warnThreatNeutralization					= mod:NewTargetNoFilterAnnounce(350496, 2)
+local warnFormSentry							= mod:NewCountAnnounce(352660, 2)
 
 --Cores
 local specWarnRadiantEnergy						= mod:NewSpecialWarningMoveTo(350455, nil, nil, nil, 1, 2)
@@ -37,7 +38,6 @@ local specWarnShatter							= mod:NewSpecialWarningDefensive(350732, nil, nil, n
 local specWarnObliterate						= mod:NewSpecialWarningTaunt(350734, nil, nil, nil, 1, 2)
 local specWarnDisintegration					= mod:NewSpecialWarningDodge(352833, nil, nil, nil, 2, 2)
 local yellDisintegration						= mod:NewYell(352833)
-local specWarnFormSentry						= mod:NewSpecialWarningSwitch(352660, "Dps", nil, nil, 1, 2)
 local specWarnThreatNeutralization				= mod:NewSpecialWarningMoveAway(350496, nil, nil, nil, 1, 2)
 local yellThreatNeutralization					= mod:NewYell(350496)
 local yellThreatNeutralizationFades				= mod:NewShortFadesYell(350496)
@@ -59,6 +59,7 @@ local radiantEnergy = DBM:GetSpellInfo(352394)
 local playerSafe = false
 local playersSafe = {}
 mod.vb.coreActive = false
+mod.vb.sentryCount = 0
 
 local updateInfoFrame
 do
@@ -111,9 +112,10 @@ end
 
 function mod:OnCombatStart(delay)
 	playerSafe = false
+	self.vb.sentryCount = 0
 	timerEliminationPatternCD:Start(1-delay)
 	timerDisintegrationCD:Start(1-delay)
-	timerFormSentryCD:Start(1-delay)
+	timerFormSentryCD:Start(1-delay, 1)
 	timerThreatNeutralizationCD:Start(1-delay)
 	--Infoframe setup
 	for uId in DBM:GetGroupMembers() do
@@ -174,11 +176,11 @@ function mod:SPELL_CAST_START(args)
 		timerDisintegrationCD:Start()
 		self:BossTargetScanner(args.sourceGUID, "DisintegrationTarget", 0.1, 12, true, nil, nil, nil, true)
 	elseif spellId == 352660 then
-		specWarnFormSentry:Show()
-		specWarnFormSentry:Play("killmob")
-		timerFormSentryCD:Start()
+		self.vb.sentryCount = self.vb.sentryCount + 1
+		warnFormSentry:Show(self.vb.sentryCount)
+		timerFormSentryCD:Start(nil, self.vb.sentryCount+1)
 	elseif spellId == 350496 then
-		timerThreatNeutralizationCD:start()
+		timerThreatNeutralizationCD:Start()
 	end
 end
 
@@ -195,6 +197,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 352385 then--Energizing Link
 		self.vb.coreActive = true
+		playersSafe[args.destName] = true
 		if not playerSafe then
 			specWarnRadiantEnergy:Show(radiantEnergy)
 			specWarnRadiantEnergy:Play("findshelter")
@@ -227,6 +230,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	if spellId == 352385 then--Energizing Link
 		self.vb.coreActive = false
 	elseif spellId == 352394 then
+		playersSafe[args.destName] = nil
 		if args:IsPlayer() then
 			playerSafe = false
 		end

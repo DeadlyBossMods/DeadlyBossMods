@@ -54,7 +54,7 @@ local timerHungeringMistCD							= mod:NewAITimer(23, 347671, nil, nil, nil, 1)
 --local timerRemnantofForgottenTormentsCD			= mod:NewAITimer(23, 347671, nil, nil, nil, 6, nil, DBM_CORE_L.HEROIC_ICON)
 local timerGraspofDeathCD							= mod:NewAITimer(23, 347668, nil, nil, nil, 4, nil, DBM_CORE_L.INTERRUPT_ICON)
 
---local berserkTimer							= mod:NewBerserkTimer(600)
+local berserkTimer									= mod:NewBerserkTimer(600)
 
 mod:AddRangeFrameOption(6, 347283)
 --mod:AddInfoFrameOption(328897, true)
@@ -66,7 +66,7 @@ function mod:OnCombatStart(delay)
 	timerPedatorsHowlCD:Start(1-delay)
 	timerHungeringMistCD:Start(1-delay)
 	timerGraspofDeathCD:Start(1-delay)
---	berserkTimer:Start(-delay)
+	berserkTimer:Start(420-delay)
 --	if self.Options.InfoFrame then
 --		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(328897))
 --		DBM.InfoFrame:Show(10, "table", ExsanguinatedStacks, 1)
