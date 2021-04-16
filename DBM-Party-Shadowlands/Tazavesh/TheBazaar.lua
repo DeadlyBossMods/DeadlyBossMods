@@ -110,10 +110,10 @@ function mod:SPELL_AURA_APPLIED(args)
 			DBM.InfoFrame:SetHeader(args.spellName)
 			DBM.InfoFrame:Show(2, "enemyabsorb", nil, args.amount, bossUnitID)
 		end
-	elseif spellid == 349954 then
+	elseif spellId == 349954 then
 		specWarnPurificationProtocol:CombinedShow(0.3, args.destName)
 		specWarnPurificationProtocol:ScheduleVoice(0.3, "helpdispel")
-	elseif spellid == 350101 then
+	elseif spellId == 350101 then
 		if args:IsPlayer() then
 			yellGraspoftheDead:Yell()
 		else
