@@ -1,6 +1,6 @@
 ## Interface: 90005
 ## X-Min-Interface: 90005
-## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0CastleNathria|r
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Castle Nathria|r
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0나스리아 성채|r
 ## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0納撒亞城|r
 ## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0纳斯利亚堡|r
@@ -14,11 +14,6 @@
 ## X-DBM-Mod-Type: RAID
 ## X-DBM-Mod-Category: SHADOWLANDS
 ## X-DBM-StatTypes: lfr,normal,heroic,mythic
-## X-DBM-Mod-Name: Castle Nathria
-## X-DBM-Mod-Name-koKR: 나스리아 성채
-## X-DBM-Mod-Name-zhTW: 納撒亞城
-## X-DBM-Mod-Name-zhCN: 纳斯利亚堡
-## X-DBM-Mod-Name-ruRU: Замок Нафрия
 ## X-DBM-Mod-Sort: 308
 ## X-DBM-Mod-MapID: 2296
 ## X-DBM-Mod-MinCoreRevision: 17286
