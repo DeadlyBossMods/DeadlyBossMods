@@ -2,10 +2,10 @@ local mod	= DBM:NewMod(2446, "DBM-SanctumOfDomination", nil, 1193)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
---mod:SetCreatureID(164406)
+mod:SetCreatureID(175731)
 mod:SetEncounterID(2436)
---mod:SetUsedIcons(1, 2, 3)
---mod:SetHotfixNoticeRev(20201222000000)
+mod:SetUsedIcons(1, 2, 3)
+mod:SetHotfixNoticeRev(20200417000000)--2021-04-17
 --mod:SetMinSyncRevision(20201222000000)
 --mod.respawnTime = 29
 
@@ -13,19 +13,24 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 352589 352538 350732 352833 352660 350496",
---	"SPELL_CAST_SUCCESS",
+	"SPELL_CAST_SUCCESS 350496",
 	"SPELL_AURA_APPLIED 352385 352394 350734 350496",
 --	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 352385 352394 350496",
---	"SPELL_PERIODIC_DAMAGE",
---	"SPELL_PERIODIC_MISSED",
+	"SPELL_PERIODIC_DAMAGE 350455",
+	"SPELL_PERIODIC_MISSED 350455",
 --	"UNIT_DIED"
-	"RAID_BOSS_WHISPER"
+	"CHAT_MSG_MONSTER_YELL"
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, are meltdowns just a wipe or a mechanic to deal with?
---TODO, verify target scanning
+--[[
+(ability.id = 352589 or ability.id = 352538 or ability.id = 350732 or ability.id = 352833 or ability.id = 352660 or ability.id = 350496) and type = "begincast"
+ or ability.id = 352385 and (type = "applybuff" or type = "removebuff")
+--]]
+--TODO, do people really need a timer for purging protocol? it's based on bosses energy depletion rate (which is exactly 1 energy per second and visible on infoframe)
+--In other words, infoframe energy tracker IS the timer, and his energy is constantly going up and down based on core strategy, timer would need aggressive updates from UNIT_POWER
+local warnDisintegration						= mod:NewTargetNoFilterAnnounce(352833, 3)
 local warnThreatNeutralization					= mod:NewTargetNoFilterAnnounce(350496, 2)
 local warnFormSentry							= mod:NewCountAnnounce(352660, 2)
 
@@ -33,33 +38,36 @@ local warnFormSentry							= mod:NewCountAnnounce(352660, 2)
 local specWarnRadiantEnergy						= mod:NewSpecialWarningMoveTo(350455, nil, nil, nil, 1, 2)
 local specWarnMeltdown							= mod:NewSpecialWarningRun(352589, nil, nil, nil, 4, 2)--Change to appropriate text and priority
 --Guardian
-local specWarnPurgingProtocol					= mod:NewSpecialWarningSpell(352538, nil, nil, nil, 2, 2)
+local specWarnPurgingProtocol					= mod:NewSpecialWarningCount(352538, nil, nil, nil, 2, 2)
 local specWarnShatter							= mod:NewSpecialWarningDefensive(350732, nil, nil, nil, 1, 2)
 local specWarnObliterate						= mod:NewSpecialWarningTaunt(350734, nil, nil, nil, 1, 2)
-local specWarnDisintegration					= mod:NewSpecialWarningDodge(352833, nil, nil, nil, 2, 2)
+local specWarnDisintegration					= mod:NewSpecialWarningDodgeCount(352833, nil, nil, nil, 2, 2)
 local yellDisintegration						= mod:NewYell(352833)
 local specWarnThreatNeutralization				= mod:NewSpecialWarningMoveAway(350496, nil, nil, nil, 1, 2)
-local yellThreatNeutralization					= mod:NewYell(350496)
-local yellThreatNeutralizationFades				= mod:NewShortFadesYell(350496)
---local specWarnGTFO							= mod:NewSpecialWarningGTFO(340324, nil, nil, nil, 1, 8)
+local yellThreatNeutralization					= mod:NewShortPosYell(350496)
+local yellThreatNeutralizationFades				= mod:NewIconFadesYell(350496)
+local specWarnGTFO								= mod:NewSpecialWarningGTFO(340324, nil, nil, nil, 1, 8)
 
 --mod:AddTimerLine(BOSS)
-local timerEliminationPatternCD					= mod:NewAITimer(17.8, 350735, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)
-local timerDisintegrationCD						= mod:NewAITimer(23, 352833, nil, nil, nil, 3)
-local timerFormSentryCD							= mod:NewAITimer(23, 352660, nil, nil, nil, 1)
-local timerThreatNeutralizationCD				= mod:NewAITimer(23, 350496, nil, nil, nil, 3)
+local timerEliminationPatternCD					= mod:NewCDTimer(27.6, 350735, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)
+local timerDisintegrationCD						= mod:NewCDCountTimer(25.6, 352833, nil, nil, nil, 3)
+local timerFormSentryCD							= mod:NewCDCountTimer(25.6, 352660, nil, nil, nil, 1)
+local timerThreatNeutralizationCD				= mod:NewCDTimer(30.2, 350496, nil, nil, nil, 3)--31.7 but cast time taken off
 
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
---mod:AddRangeFrameOption("8")
+mod:AddRangeFrameOption(10, 350496)
 mod:AddInfoFrameOption(352394, true)
---mod:AddSetIconOption("SetIconOnEcholocation", 342077, true, false, {1, 2, 3})
+mod:AddSetIconOption("SetIconOnThreat", 350496, true, false, {1, 2, 3})
 
 local radiantEnergy = DBM:GetSpellInfo(352394)
 local playerSafe = false
 local playersSafe = {}
 mod.vb.coreActive = false
 mod.vb.sentryCount = 0
+mod.vb.beamCount = 0
+mod.vb.protocolCount = 0
+mod.vb.threatIcon = 1
 
 local updateInfoFrame
 do
@@ -96,28 +104,16 @@ do
 	end
 end
 
-function mod:DisintegrationTarget(targetname)
-	if not targetname then return end
-	if targetname == UnitName("player") then
---		specWarnDisintegration:Show()
---		specWarnDisintegration:Play("runout")
-		yellDisintegration:Yell()
---	else
---		warnEyeBeam:Show(self.vb.eyeCount, targetname)
-	end
---	if self.Options.SetIconOnEyeBeam then
---		self:SetIcon(targetname, 1, 5)
---	end
-end
-
 function mod:OnCombatStart(delay)
 	playerSafe = false
 	self.vb.sentryCount = 0
-	timerEliminationPatternCD:Start(1-delay)
-	timerDisintegrationCD:Start(1-delay)
-	timerFormSentryCD:Start(1-delay, 1)
-	timerThreatNeutralizationCD:Start(1-delay)
-	--Infoframe setup
+	self.vb.beamCount = 0
+	self.vb.protocolCount = 0
+	timerFormSentryCD:Start(5.8-delay, 1)
+	timerDisintegrationCD:Start(15.6-delay)
+	timerEliminationPatternCD:Start(25.3-delay)
+	timerThreatNeutralizationCD:Start(38.9-delay)
+	--Infoframe setup (might not be needed)
 	for uId in DBM:GetGroupMembers() do
 		if DBM:UnitDebuff(uId, 352394) then
 			local unitName = DBM:GetUnitFullName(uId)
@@ -139,9 +135,9 @@ function mod:OnCombatEnd()
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
 	end
---	if self.Options.RangeFrame then
---		DBM.RangeCheck:Hide()
---	end
+	if self.Options.RangeFrame then
+		DBM.RangeCheck:Hide()
+	end
 end
 
 function mod:OnTimerRecovery()
@@ -162,7 +158,8 @@ function mod:SPELL_CAST_START(args)
 		specWarnMeltdown:Show()
 		specWarnMeltdown:Play("justrun")
 	elseif spellId == 352538 then
-		specWarnPurgingProtocol:Show()
+		self.vb.protocolCount = self.vb.protocolCount + 1
+		specWarnPurgingProtocol:Show(self.vb.protocolCount)
 		specWarnPurgingProtocol:Play("aesoon")
 	elseif spellId == 350732 then
 		timerEliminationPatternCD:Start()
@@ -171,39 +168,39 @@ function mod:SPELL_CAST_START(args)
 			specWarnShatter:Play("defensive")
 		end
 	elseif spellId == 352833 then
-		specWarnDisintegration:Show()
-		specWarnDisintegration:Play("laserrun")
-		timerDisintegrationCD:Start()
-		self:BossTargetScanner(args.sourceGUID, "DisintegrationTarget", 0.1, 12, true, nil, nil, nil, true)
+		self.vb.beamCount = self.vb.beamCount + 1
+		specWarnDisintegration:Show(self.vb.beamCount)
+		specWarnDisintegration:Play("farfromline")
+		timerDisintegrationCD:Start(nil, self.vb.beamCount+1)
 	elseif spellId == 352660 then
 		self.vb.sentryCount = self.vb.sentryCount + 1
 		warnFormSentry:Show(self.vb.sentryCount)
 		timerFormSentryCD:Start(nil, self.vb.sentryCount+1)
 	elseif spellId == 350496 then
+		self.vb.threatIcon = 1
 		timerThreatNeutralizationCD:Start()
 	end
 end
 
---[[
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 328857 then
-
+	if spellId == 350496 then
+		timerThreatNeutralizationCD:Start()--Work around a bug with stutter casting
 	end
 end
---]]
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 352385 then--Energizing Link
 		self.vb.coreActive = true
-		playersSafe[args.destName] = true
+		self.vb.protocolCount = 0
 		if not playerSafe then
 			specWarnRadiantEnergy:Show(radiantEnergy)
 			specWarnRadiantEnergy:Play("findshelter")
 		end
 		--TODO, timer stuff here?
 	elseif spellId == 352394 then
+		playersSafe[args.destName] = true
 		if args:IsPlayer() then
 			playerSafe = true
 		end
@@ -214,13 +211,21 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnObliterate:Play("tauntboss")
 		end
 	elseif spellId == 350496 then
-		warnThreatNeutralization:CombinedShow(0.3, args.destName)
+		local icon = self.vb.threatIcon
+		if self.Options.SetIconOnThreat then
+			self:SetIcon(args.destName, icon)
+		end
 		if args:IsPlayer() then
 			specWarnThreatNeutralization:Show()
 			specWarnThreatNeutralization:Play("runout")
-			yellThreatNeutralization:Yell()
-			yellThreatNeutralizationFades:Countdown(spellId)
+			yellThreatNeutralization:Yell(icon, icon)
+			yellThreatNeutralizationFades:Countdown(spellId, nil, icon)
+			if self.Options.RangeFrame then
+				DBM.RangeCheck:Show(10)
+			end
 		end
+		warnThreatNeutralization:CombinedShow(0.3, args.destName)
+		self.vb.threatIcon = self.vb.threatIcon + 1
 	end
 end
 --mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -237,19 +242,42 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 350496 then
 		if args:IsPlayer() then
 			yellThreatNeutralizationFades:Cancel()
+			if self.Options.RangeFrame then
+				DBM.RangeCheck:Hide()
+			end
 		end
 	end
 end
 
---[[
+--"<1155.70 23:16:13> [CHAT_MSG_MONSTER_YELL] Dissection!#Guardian of the First Ones###Champssh##0#0##0#282#nil#0#false#false#false#false", -- [14127]
+function mod:CHAT_MSG_MONSTER_YELL(msg, _, _, _, targetName)
+	if msg == L.Dissection or msg:find(L.Dissection) then
+		self:SendSync("Dissection", targetName)
+	end
+end
+
+function mod:OnSync(msg, target)
+	if not self:IsInCombat() then return end
+	if msg == "Dissection" then
+		local targetName = DBM:GetUnitFullName(target) or target
+		if targetName then
+			warnDisintegration:Show(targetName)--Everyone needs to dodge it so everyone gets special warning. this is just informative message
+			if targetName == UnitName("player") then
+				yellDisintegration:Yell()
+			end
+		end
+	end
+end
+
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
-	if spellId == 340324 and destGUID == UnitGUID("player") and not playerDebuff and self:AntiSpam(2, 2) then
+	if spellId == 350455 and destGUID == UnitGUID("player") and not playerSafe and self:AntiSpam(2, 3) then
 		specWarnGTFO:Show(spellName)
 		specWarnGTFO:Play("watchfeet")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
+--[[
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 342074 then
 
