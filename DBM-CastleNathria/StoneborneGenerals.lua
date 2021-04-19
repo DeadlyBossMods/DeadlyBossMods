@@ -316,7 +316,7 @@ function mod:OnCombatStart(delay)
 		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(333913))
 		DBM.InfoFrame:Show(10, "table", LacerationStacks, 1)
 	end
-	if UnitIsGroupLeader("player") then self:SendSync(self.Options.BladeMarking)
+	if UnitIsGroupLeader("player") then self:SendSync(self.Options.BladeMarking) end
 --	berserkTimer:Start(-delay)--Confirmed normal and heroic
 end
 
