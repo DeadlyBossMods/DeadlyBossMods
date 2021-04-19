@@ -62,7 +62,14 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(2425)
 
 L:SetOptionLocalization({
-	ExperimentalTimerCorrection	= "Automatically adjust timers when abilities get spell queued by other abilities"
+	ExperimentalTimerCorrection	= "Automatically adjust timers when abilities get spell queued by other abilities".
+	BladeMarking				= "Set Wicked Blade yell behavior for raid (If raid leader, overrides raid)",
+	SetOne						= "(|TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:0:16:0:16|t) (|TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:16:32:0:16|t)",
+	SetTwo						= "(|TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:16:32:0:16|t) (|TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:32:48:0:16|t)"
+})
+
+L:SetMiscLocalization({
+	DBMConfigMsg	= "Wicked Blade icons configuration set to %s to match raid leaders configuration."
 })
 
 ---------------------------
