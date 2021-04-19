@@ -122,6 +122,7 @@ mod:AddSetIconOption("SetIconOnCrystalize", 339690, true, false, {5})
 mod:AddSetIconOption("SetIconOnShadowForces", 342256, true, true, {6, 7, 8})
 mod:AddNamePlateOption("NPAuraOnVolatileShell", 340037)
 mod:AddBoolOption("ExperimentalTimerCorrection", true)
+mod:AddDropdownOption("BladeMarking", {"SetOne", "SetTwo"}, "SetOne", "misc")--SetTwo is BW default
 
 local playerName = UnitName("player")
 local LacerationStacks = {}
@@ -273,7 +274,7 @@ function mod:OnCombatStart(delay)
 	table.wipe(castsPerGUID)
 	playerEruption = 0
 	self.vb.HeartIcon = 1
-	self.vb.wickedBladeIcon = 1
+	self.vb.wickedBladeIcon = self.Options.BladeMarking == "SetOne" and 1 or 2
 	self.vb.phase = 1
 	self.vb.bladeCount = 0
 	self.vb.heartCount = 0
@@ -314,6 +315,7 @@ function mod:OnCombatStart(delay)
 		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(333913))
 		DBM.InfoFrame:Show(10, "table", LacerationStacks, 1)
 	end
+	if UnitIsGroupLeader("player") then self:SendSync(self.Options.BladeMarking)
 --	berserkTimer:Start(-delay)--Confirmed normal and heroic
 end
 
@@ -717,5 +719,16 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 			timerCrystalizeCD:Stop()
 			timerStoneFistCD:Stop()
 		end
+	end
+end
+
+do
+	--Delayed function just to make absolute sure RL sync overrides user settings after OnCombatStart functions run
+	local function UpdateYellIcons(self, msg)
+		self.vb.wickedBladeIcon = msg == "SetOne" and 1 or 2
+	end
+
+	function mod:OnSync(msg)
+		self:Schedule(3, UpdateYellIcons, self, msg)
 	end
 end
