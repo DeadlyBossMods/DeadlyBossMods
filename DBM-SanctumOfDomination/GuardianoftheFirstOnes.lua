@@ -245,6 +245,9 @@ function mod:SPELL_AURA_REMOVED(args)
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Hide()
 			end
+			if self.Options.SetIconOnThreat then
+				self:SetIcon(args.destName, 0)
+			end
 		end
 	end
 end
