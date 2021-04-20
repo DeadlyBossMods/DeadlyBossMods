@@ -4,19 +4,11 @@ local L
 ---------------------------
 --  The Tarragrue --
 ---------------------------
---L= DBM:GetModLocalization(2435)
+L= DBM:GetModLocalization(2435)
 
---L:SetTimerLocalization{
-
---}
-
---L:SetOptionLocalization({
-
---})
-
---L:SetMiscLocalization({
-
---})
+L:SetMiscLocalization({
+	Remnant	= "잔재"
+})
 
 ---------------------------
 --  The Eye of the Jailer --
@@ -46,7 +38,11 @@ local L
 ---------------------------
 --  Guardian of the First Ones --
 ---------------------------
---L= DBM:GetModLocalization(2446)
+L= DBM:GetModLocalization(2446)
+
+L:SetMiscLocalization({
+	Dissection	= "Dissection!"
+})
 
 ---------------------------
 --  Fatescribe Roh-Kalo --

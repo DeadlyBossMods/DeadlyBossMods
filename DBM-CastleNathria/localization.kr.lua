@@ -69,7 +69,14 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(2425)
 
 L:SetOptionLocalization({
-	ExperimentalTimerCorrection	= "다른 스킬에 의해 대기중인 스킬의 타이머를 자동으로 조정"
+	ExperimentalTimerCorrection	= "다른 스킬에 의해 대기중인 스킬의 타이머를 자동으로 조정",
+	BladeMarking				= "징표 설정 방식 (공대장일 경우 공격대 전체에 적용됨)",
+	SetOne						= "DBM 기본값",
+	SetTwo						= "BigWigs 기본값"
+})
+
+L:SetMiscLocalization({
+	DBMConfigMsg	= "공대장의 설정에 맞추기 위해 징표 설정 방식을 %s으로 설정합니다."
 })
 
 ---------------------------
