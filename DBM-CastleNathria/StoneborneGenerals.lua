@@ -122,7 +122,9 @@ mod:AddSetIconOption("SetIconOnCrystalize", 339690, true, false, {5})
 mod:AddSetIconOption("SetIconOnShadowForces", 342256, true, true, {6, 7, 8})
 mod:AddNamePlateOption("NPAuraOnVolatileShell", 340037)
 mod:AddBoolOption("ExperimentalTimerCorrection", true)
+mod:AddDropdownOption("BladeMarking", {"SetOne", "SetTwo"}, "SetOne", "misc")--SetTwo is BW default
 
+local markingSet = "SetOne"
 local playerName = UnitName("player")
 local LacerationStacks = {}
 local castsPerGUID = {}
@@ -273,7 +275,7 @@ function mod:OnCombatStart(delay)
 	table.wipe(castsPerGUID)
 	playerEruption = 0
 	self.vb.HeartIcon = 1
-	self.vb.wickedBladeIcon = 1
+	self.vb.wickedBladeIcon = self.Options.BladeMarking == "SetOne" and 1 or 2
 	self.vb.phase = 1
 	self.vb.bladeCount = 0
 	self.vb.heartCount = 0
@@ -314,6 +316,7 @@ function mod:OnCombatStart(delay)
 		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(333913))
 		DBM.InfoFrame:Show(10, "table", LacerationStacks, 1)
 	end
+	if UnitIsGroupLeader("player") then self:SendSync(self.Options.BladeMarking) end
 --	berserkTimer:Start(-delay)--Confirmed normal and heroic
 end
 
@@ -333,7 +336,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.bladeCount = self.vb.bladeCount + 1
 		specWarnWickedBladeCast:Show(self.vb.bladeCount)
 		specWarnWickedBladeCast:Play("specialsoon")
-		self.vb.wickedBladeIcon = 1
+		self.vb.wickedBladeIcon = markingSet == "SetOne" and 1 or 2
 		timerWickedBladeCD:Start(nil, self.vb.bladeCount+1)
 		updateAllTimers(self, 6)
 	elseif spellId == 334765 then
@@ -483,7 +486,7 @@ function mod:SPELL_SUMMON(args)
 		end
 	elseif spellId == 342257 or spellId == 342258 or spellId == 342259 then
 		if self.Options.SetIconOnShadowForces then
-			local icon = spellId == 342257 and 8 or spellId == 342258 and 7 or 6
+			local icon = spellId == 342257 and (markingSet == "SetOne" and 8 or 6) or spellId == 342258 and 7 or (markingSet == "SetOne" and 6 or 8)
 			self:ScanForMobs(args.destGUID, 2, icon, 1, 0.2, 12, "SetIconOnShadowForces")
 		end
 		timerWickedSlaughterCD:Start(6.1, args.destGUID)
@@ -530,7 +533,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.wickedBladeIcon = self.vb.wickedBladeIcon + 1
 	elseif spellId == 339690 then
 		if self.Options.SetIconOnCrystalize then
-			self:SetIcon(args.destName, 5)
+			self:SetIcon(args.destName, markingSet == "SetOne" and 5 or 1)
 		end
 		if args:IsPlayer() then
 			specWarnCrystalize:Show()
@@ -717,5 +720,17 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 			timerCrystalizeCD:Stop()
 			timerStoneFistCD:Stop()
 		end
+	end
+end
+
+do
+	--Delayed function just to make absolute sure RL sync overrides user settings after OnCombatStart functions run
+	local function UpdateYellIcons(self, msg)
+		markingSet = msg
+		self.vb.wickedBladeIcon = msg == "SetOne" and 1 or 2
+	end
+
+	function mod:OnSync(msg)
+		self:Schedule(3, UpdateYellIcons, self, msg)
 	end
 end

@@ -62,7 +62,14 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(2425)
 
 L:SetOptionLocalization({
-	ExperimentalTimerCorrection	= "Automatically adjust timers when abilities get spell queued by other abilities"
+	ExperimentalTimerCorrection	= "Automatically adjust timers when abilities get spell queued by other abilities",
+	BladeMarking				= "Set marking behavior for raid (If raid leader, overrides raid)",
+	SetOne						= "DBM Default",
+	SetTwo						= "BigWigs Default"
+})
+
+L:SetMiscLocalization({
+	DBMConfigMsg	= "Marking icons configuration set to %s to match raid leaders configuration."
 })
 
 ---------------------------
