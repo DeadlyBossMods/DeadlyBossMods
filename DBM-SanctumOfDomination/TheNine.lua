@@ -204,7 +204,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.valkCount = self.vb.valkCount + 1
 		warnCalloftheValkyr:Show(self.vb.valkCount)
 		timerCalloftheValkyrCD:Start()
-	elseif spellid == 352744 or spellId == 350541 then
+	elseif spellId == 352744 or spellId == 350541 then
 		self.vb.fragmentsIcon = 1
 		timerFragmentsofDestinyCD:Start()
 	elseif spellId == 350482 then
@@ -286,7 +286,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellArthurasCrushingGaze:Yell()
 			yellArthurasCrushingGazeFades:Countdown(spellId)
 		else
-			warnArthurasCrushingGaze:Show(targetname)
+			warnArthurasCrushingGaze:Show(args.destName)
 		end
 	elseif spellId == 350542 then
 		local icon = self.vb.fragmentsIcon
