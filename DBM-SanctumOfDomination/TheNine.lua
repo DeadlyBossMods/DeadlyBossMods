@@ -15,7 +15,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 350202 350342 350339 350365 350283 350385 350467 352744 350541 350482 350687",
 	"SPELL_CAST_SUCCESS 350286 350184 351399",
 	"SPELL_AURA_APPLIED 350202 350157 350109 351139 350039 350542",
-	"SPELL_AURA_APPLIED_DOSE 350202",
+	"SPELL_AURA_APPLIED_DOSE 350202 350542",
 	"SPELL_AURA_REMOVED 350157 350109 351139 350039 350542",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
@@ -47,7 +47,9 @@ local warnCalloftheValkyr						= mod:NewCountAnnounce(350467, 3)
 local warnAnnhyldesBrightAegis					= mod:NewTargetNoFilterAnnounce(350157, 2)
 local warnBrynjasMournfulDirge					= mod:NewTargetNoFilterAnnounce(350109, 2)
 local warnArthurasCrushingGaze					= mod:NewTargetNoFilterAnnounce(350039, 3)
-local warnFragmentsofDestiny					= mod:NewTargetNoFilterAnnounce(350542, 4)
+local warnFragmentsofDestiny					= mod:NewTargetNoFilterAnnounce(350542, 3)
+local warnFragmentsofDestinyStack				= mod:NewCountAnnounce(350542, 2)
+local warnUnendingStrike						= mod:NewStackAnnounce(350202, 2, nil, "Tank|Healer")
 --Stage Two: The First of the Mawsworn
 local warnPierceSoul							= mod:NewStackAnnounce(350475, 2, nil, "Tank|Healer")
 local warnResentment							= mod:NewCountAnnounce(351399, 3)
@@ -290,16 +292,24 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 350542 then
 		local icon = self.vb.fragmentsIcon
-		if self.Options.SetIconOnFragments then
-			self:SetIcon(args.destName, icon)
+		local amount = args.amount or 1
+		if args:IsSrcTypeHostile() and amount == 1 then--Initial application from boss only
+			if self.Options.SetIconOnFragments then
+				self:SetIcon(args.destName, icon)
+			end
+			if args:IsPlayer() then
+				specWarnFragmentsofDestiny:Show()
+				specWarnFragmentsofDestiny:Play("targetyou")
+				yellFragmentsofDestiny:Yell()--icon, icon
+			end
+			warnFragmentsofDestiny:CombinedShow(0.3, args.destName)
+			self.vb.fragmentsIcon = self.vb.fragmentsIcon + 1
+		else
+			--TODO, icon movement code moving source persons icon to dest person if combat log is cooperative
+			if args:IsPlayer() then
+				warnFragmentsofDestinyStack:Show(amount)
+			end
 		end
-		if args:IsPlayer() then
-			specWarnFragmentsofDestiny:Show()
-			specWarnFragmentsofDestiny:Play("targetyou")
-			yellFragmentsofDestiny:Yell()--icon, icon
-		end
-		warnFragmentsofDestiny:CombinedShow(0.3, args.destName)
-		self.vb.fragmentsIcon = self.vb.fragmentsIcon + 1
 	elseif spellId == 350482 then
 		warnLinkEssence:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
