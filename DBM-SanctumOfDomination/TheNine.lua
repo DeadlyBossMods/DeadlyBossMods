@@ -49,7 +49,6 @@ local warnBrynjasMournfulDirge					= mod:NewTargetNoFilterAnnounce(350109, 2)
 local warnArthurasCrushingGaze					= mod:NewTargetNoFilterAnnounce(350039, 3)
 local warnFragmentsofDestiny					= mod:NewTargetNoFilterAnnounce(350542, 3)
 local warnFragmentsofDestinyStack				= mod:NewCountAnnounce(350542, 2)
-local warnUnendingStrike						= mod:NewStackAnnounce(350202, 2, nil, "Tank|Healer")
 --Stage Two: The First of the Mawsworn
 local warnPierceSoul							= mod:NewStackAnnounce(350475, 2, nil, "Tank|Healer")
 local warnResentment							= mod:NewCountAnnounce(351399, 3)
