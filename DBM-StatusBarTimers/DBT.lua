@@ -608,11 +608,11 @@ function DBT:UpdateBars(sortBars)
 	end
 	for i, bar in ipairs(largeBars) do
 		bar.frame:ClearAllPoints()
-		bar.frame:SetPoint("TOP", largeBarsAnchor, "TOP", i * self.Options.HugeBarXOffset, (i * (self.Options.Height + self.Options.HugeBarYOffset)) * (self.Options.ExpandUpwardsLarge and 1 or -1))
+		bar.frame:SetPoint("TOP", largeBarsAnchor, "TOP", (i - 1) * self.Options.HugeBarXOffset, ((i - 1) * (self.Options.Height + self.Options.HugeBarYOffset)) * (self.Options.ExpandUpwardsLarge and 1 or -1))
 	end
 	for i, bar in ipairs(smallBars) do
 		bar.frame:ClearAllPoints()
-		bar.frame:SetPoint("TOP", smallBarsAnchor, "TOP", i * self.Options.BarXOffset, (i * (self.Options.Height + self.Options.BarYOffset)) * (self.Options.ExpandUpwards and 1 or -1))
+		bar.frame:SetPoint("TOP", smallBarsAnchor, "TOP", (i - 1) * self.Options.BarXOffset, ((i - 1) * (self.Options.Height + self.Options.BarYOffset)) * (self.Options.ExpandUpwards and 1 or -1))
 	end
 end
 
