@@ -12,7 +12,7 @@ mod:SetEncounterID(2432)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 350518 349889 349891 353332 350096 350691",
+	"SPELL_CAST_START 350518 349889 349891 353332",--350096 350691
 	"SPELL_CAST_SUCCESS 350469",
 	"SPELL_SUMMON 349908",
 	"SPELL_AURA_APPLIED 350075 350469 349890 350097",
@@ -27,6 +27,7 @@ mod:RegisterEventsInCombat(
 --https://ptr.wowhead.com/npc=177268/helm-of-blight / https://ptr.wowhead.com/npc=177287/malicious-gauntlet
 --TODO, more tank stuff with suffering and blight like finding target, marking, swapping, etc
 --TODO, https://ptr.wowhead.com/spell=350337/blight?
+--TODO< when armor is knocked off, abilities that armor casts stops being cast (except for mythic difficulty) So detect knockoffs and stop/update timers
 --TODO, detect phase/armor changes
 local warnOrbofTorment							= mod:NewCountAnnounce(349908, 2)
 local warnEternalTorment						= mod:NewFadesAnnounce(350075, 1)
@@ -52,14 +53,14 @@ local yellAgonyFades							= mod:NewFadesYell(350097)
 
 --mod:AddTimerLine(BOSS)
 local timerOrbofTormentCD						= mod:NewAITimer(23, 349908, nil, nil, nil, 1)
-local timerCurseofMalevolenceCD					= mod:NewAITimer(17.8, 350469, nil, nil, nil, 3, nil, DBM_CORE_L.CURSE_ICON)
+local timerMalevolenceCD						= mod:NewAITimer(17.8, 350469, nil, nil, nil, 3, nil, DBM_CORE_L.CURSE_ICON)
 local timerSufferingCD							= mod:NewAITimer(17.8, 349889, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)
 --Helm of Blight
 local timerBlightCD								= mod:NewAITimer(17.8, 349891, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON, nil, 1, 3)
 --Malicious Gauntlets
 local timerGraspofMaliceCD						= mod:NewAITimer(23, 353332, nil, nil, nil, 3)
 --Pauldrons of Agony
-local timerBurstofAgonyCD						= mod:NewAITimer(23, 350096, nil, nil, nil, 3)
+--local timerBurstofAgonyCD						= mod:NewAITimer(23, 350096, nil, nil, nil, 3)
 
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
@@ -78,11 +79,11 @@ function mod:OnCombatStart(delay)
 	self.vb.unrelentingCount = 0
 	self.vb.malevolenceCount = 0
 	timerOrbofTormentCD:Start(1-delay)
-	timerCurseofMalevolenceCD:Start(1-delay)
+	timerMalevolenceCD:Start(1-delay)
 	timerSufferingCD:Start(1-delay)
 	timerBlightCD:start(1-delay)
 	timerGraspofMaliceCD:Start(1-delay)--Probably doesn't start here
-	timerBurstofAgonyCD:Start(1-delay)--probably doesn't start here
+--	timerBurstofAgonyCD:Start(1-delay)--probably doesn't start here
 --	berserkTimer:Start(-delay)
 --	if self.Options.InfoFrame then
 --		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(328897))
@@ -118,8 +119,8 @@ function mod:SPELL_CAST_START(args)
 		specWarnGraspofMalice:Show()
 		specWarnGraspofMalice:Play("watchstep")
 		timerGraspofMaliceCD:Start()
-	elseif spellId == 350096 or spellId == 350691 then--Mythic/Heroic likely and normal/LFR likely
-		timerBurstofAgonyCD:Start()
+--	elseif spellId == 350096 or spellId == 350691 then--Mythic/Heroic likely and normal/LFR likely
+--		timerBurstofAgonyCD:Start()
 	end
 end
 
@@ -128,7 +129,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if spellId == 350469 then
 		self.vb.malevolenceIcon = 1
 		self.vb.malevolenceCount = self.vb.malevolenceCount + 1
-		timerCurseofMalevolenceCD:Start()
+		timerMalevolenceCD:Start()
 	end
 end
 
