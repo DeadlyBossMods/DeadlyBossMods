@@ -171,6 +171,8 @@ globals = {
 	"C_EncounterJournal.GetSectionInfo",
 	"C_FriendList.GetFriendInfo",
 	"C_Garrison.IsOnGarrisonMap",
+	"C_LFGInfo",
+	"C_LFGInfo.GetDungeonInfo",
 	"C_Map.GetBestMapForUnit",
 	"C_Map.GetMapInfo",
 	"C_Map.GetPlayerMapPosition",
