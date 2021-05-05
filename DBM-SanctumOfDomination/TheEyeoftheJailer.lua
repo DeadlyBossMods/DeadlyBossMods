@@ -41,7 +41,7 @@ local warnPhase										= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil
 local warnPiercingLens								= mod:NewCastAnnounce(350803, 2)
 local warnDraggingChains							= mod:NewCastAnnounce(349979, 2)
 local warnAssailingLance							= mod:NewCastAnnounce(348074, 4)
-local warnHopelessLethargy							= mod:NewTargetAnnounce(350604, 2)
+local warnHopelessLethargy							= mod:NewTargetAnnounce(350604, 2)--Mythic
 --Stage Two: Double Vision
 local warnDesolationBeam							= mod:NewTargetNoFilterAnnounce(350847, 2)
 local warnShatteredSoul								= mod:NewTargetAnnounce(350034, 2)
@@ -55,7 +55,7 @@ local warnImmediateExtermination					= mod:NewCountAnnounce(348969, 2)
 local specWarnDeathlink								= mod:NewSpecialWarningDefensive(350828, nil, nil, nil, 3, 2)
 local specWarnDeathlinkTaunt						= mod:NewSpecialWarningTaunt(351143, nil, nil, nil, 1, 2)
 local specWarnDraggingChains						= mod:NewSpecialWarningSpell(349979, nil, nil, nil, 1, 2)
-local specWarnHopelessLethargy						= mod:NewSpecialWarningMoveAway(350604, nil, nil, nil, 1, 2)
+local specWarnHopelessLethargy						= mod:NewSpecialWarningMoveAway(350604, nil, nil, nil, 1, 2, 4)--Mythic
 local yellHopelessLethargy							= mod:NewYell(350604)
 --local specWarnGTFO								= mod:NewSpecialWarningGTFO(340324, nil, nil, nil, 1, 8)
 --Stage Two: Double Vision
@@ -65,7 +65,7 @@ local yellDesolationBeam							= mod:NewYell(350847)
 local yellDesolationBeamFades						= mod:NewShortFadesYell(350847)
 local specWarnShatteredSoul							= mod:NewSpecialWarningYou(354004, nil, nil, nil, 1, 2)--Debuff of Soul Shatter
 local specWarnSlothfulCorruption					= mod:NewSpecialWarningYou(350713, nil, nil, nil, 1, 2)
-local yellScornandIre								= mod:NewIconRepeatYell(355232)
+local yellScornandIre								= mod:NewIconRepeatYell(355232)--Mythic
 
 local specWarnAnnihilatingGlare						= mod:NewSpecialWarningDodge(350764, nil, nil, nil, 3, 2)
 
@@ -75,7 +75,7 @@ local timerPiercingLenseCD						= mod:NewAITimer(17.8, 350803, nil, "Tank|Healer
 local timerDeathlinkCD							= mod:NewAITimer(17.8, 350828, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.DEADLY_ICON..DBM_CORE_L.TANK_ICON)
 --local timerStygianAbductorCD					= mod:NewAITimer(23, 346767, nil, nil, nil, 3, nil, nil, nil, 1, 3)--Not actual spellID, but compatible one
 local timerAssailingLanceCD						= mod:NewAITimer(17.8, 348074, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.DEADLY_ICON..DBM_CORE_L.TANK_ICON)
-local timerHopelessLethargyCD					= mod:NewAITimer(23, 350604, nil, nil, nil, 3)
+local timerHopelessLethargyCD					= mod:NewAITimer(23, 350604, nil, nil, nil, 3, nil, DBM_CORE_L.MYTHIC_ICON)
 --Stage Two: Double Vision
 local timerTitanticDeathGazeCD					= mod:NewAITimer(23, 349028, nil, nil, nil, 2, nil, DBM_CORE_L.HEALER_ICON)
 local timerDesolationBeamCD						= mod:NewAITimer(23, 350847, nil, nil, nil, 3, nil, DBM_CORE_L.DEADLY_ICON)
@@ -120,7 +120,9 @@ function mod:OnCombatStart(delay)
 	timerPiercingLenseCD:Start(1-delay)
 	timerDeathlinkCD:Start(1-delay)
 --	timerStygianAbductorCD:Start(1-delay)
-	timerHopelessLethargyCD:Start(1-delay)
+	if self:IsMythic() then
+		timerHopelessLethargyCD:Start(1-delay)
+	end
 --	berserkTimer:Start(-delay)
 --	if self.Options.InfoFrame then
 --		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(328897))
@@ -151,6 +153,8 @@ function mod:SPELL_CAST_START(args)
 		end
 		if args:GetSrcCreatureID() == 179128 then--Main boss
 			timerPiercingLenseCD:Start()
+		--else--Deathseeker Eyes
+			--timerPiercingLenseCD:Start()
 		end
 	elseif spellId == 350828 then
 		if self:IsTanking("player", nil, nil, true, args.sourceGUID) then
@@ -270,7 +274,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			timerSoulShatterCD:Start(3)
 			timerAnnihilatingGlareCD:Start(3)
 			--timerStygianAbductorCD:Start(3)
-			timerHopelessLethargyCD:Start(3)
+			if self:IsMythic() then
+				timerHopelessLethargyCD:Start(3)
+			end
 		end
 		if args:IsPlayer() then
 			warnImmediateExtermination:Show(args.amount or 1)

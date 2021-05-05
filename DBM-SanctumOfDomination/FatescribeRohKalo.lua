@@ -25,7 +25,7 @@ mod:RegisterEventsInCombat(
 
 --TODO, fix Mythic grim stuff
 --TODO, figure out energy rate of Burden so a timer can be placed on nameplate aura
---TODO, hardcode https://ptr.wowhead.com/spell=353603/probe-fate instead of just scheduling secondary voice warning on destinyswap?
+--TODO, hardcode https://ptr.wowhead.com/spell=353603/diviners-probe instead of just scheduling secondary voice warning on destinyswap?
 --TODO fated and other triggers probably wrong
 --TODO, loom timers for rotations and what nots
 --TODO, https://ptr.wowhead.com/spell=354964/runic-affinity for mythic phase 2

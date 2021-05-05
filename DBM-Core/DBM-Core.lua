@@ -71,8 +71,8 @@ end
 
 DBM = {
 	Revision = parseCurseDate("@project-date-integer@"),
-	DisplayVersion = "9.0.27 alpha", -- the string that is shown as version
-	ReleaseRevision = releaseDate(2021, 4, 21) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	DisplayVersion = "9.0.27", -- the string that is shown as version
+	ReleaseRevision = releaseDate(2021, 5, 5) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 }
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
@@ -7003,6 +7003,7 @@ function DBM:EJ_GetSectionInfo(sectionID)
 end
 
 --Handle new spell name requesting with wrapper, to make api changes easier to handle
+--Keep an eye on C_SpellBook.GetSpellInfo, but don't use it YET as direction of existing GetSpellInfo isn't finalized yet
 function DBM:GetSpellInfo(spellId)
 	local name, rank, icon, castingTime, minRange, maxRange, returnedSpellId  = GetSpellInfo(spellId)
 	if not returnedSpellId then--Bad request all together
