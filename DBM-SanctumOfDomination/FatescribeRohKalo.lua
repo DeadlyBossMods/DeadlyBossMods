@@ -25,7 +25,7 @@ mod:RegisterEventsInCombat(
 
 --TODO, fix Mythic grim stuff
 --TODO, figure out energy rate of Burden so a timer can be placed on nameplate aura
---TODO, hardcode https://ptr.wowhead.com/spell=353603/probe-fate instead of just scheduling secondary voice warning on destinyswap?
+--TODO, hardcode https://ptr.wowhead.com/spell=353603/diviners-probe instead of just scheduling secondary voice warning on destinyswap?
 --TODO fated and other triggers probably wrong
 --TODO, loom timers for rotations and what nots
 --TODO, https://ptr.wowhead.com/spell=354964/runic-affinity for mythic phase 2
@@ -119,7 +119,7 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 351680 then
 		timerHeroicDestinyCD:Start()
-	elseif spellId == 350554 then
+	elseif spellId == 350554 then--Two sub cast IDs, but one primary?
 		timerCallofEternityCD:Start()
 	elseif (spellId == 350421 or spellId == 353426 or spellId == 350169) and self:AntiSpam(5, 2) then
 		specWarnFatedConjunction:Show()

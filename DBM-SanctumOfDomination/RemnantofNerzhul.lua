@@ -2,7 +2,7 @@ local mod	= DBM:NewMod(2444, "DBM-SanctumOfDomination", nil, 1193)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
---mod:SetCreatureID(164406)--https://ptr.wowhead.com/npc=163523/animated-armor probably
+mod:SetCreatureID(175729)
 mod:SetEncounterID(2432)
 --mod:SetUsedIcons(1, 2, 3)
 --mod:SetHotfixNoticeRev(20201222000000)
@@ -12,12 +12,12 @@ mod:SetEncounterID(2432)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 350518 349889 349891 353332",--350096 350691
+	"SPELL_CAST_START 350518 349889 353332 351066",--350096 350691
 	"SPELL_CAST_SUCCESS 350469",
 	"SPELL_SUMMON 349908",
-	"SPELL_AURA_APPLIED 350075 350469 349890 350097",
+	"SPELL_AURA_APPLIED 350075 350469 349890 350097 349889",
 --	"SPELL_AURA_APPLIED_DOSE",
-	"SPELL_AURA_REMOVED 350075 350469 350097",
+	"SPELL_AURA_REMOVED 350075 350469 350097 349889",
 	"SPELL_PERIODIC_DAMAGE 350489",
 	"SPELL_PERIODIC_MISSED 350489"
 --	"UNIT_DIED"
@@ -33,33 +33,28 @@ local warnOrbofTorment							= mod:NewCountAnnounce(349908, 2)
 local warnEternalTorment						= mod:NewFadesAnnounce(350075, 1)
 local warnUnrelentingTorment					= mod:NewCountAnnounce(341684, 4)
 local warnMalevolence							= mod:NewTargetNoFilterAnnounce(350469, 3)
---Helm of Blight
 --local warnBlight								= mod:NewTargetNoFilterAnnounce(349890, 3)
---Pauldrons of Agony
 local warnAgony									= mod:NewTargetAnnounce(350097, 3)
+local warnShatter								= mod:NewTargetNoFilterAnnounce(351066, 1)
 
 local specWarnMalevolence						= mod:NewSpecialWarningYouPos(350469, nil, nil, nil, 1, 2)
 local yellMalevolence							= mod:NewShortPosYell(350469)
 local yellMalevolenceFades						= mod:NewIconFadesYell(350469)
+local specWarnBlight							= mod:NewSpecialWarningMoveTo(349889, nil, nil, nil, 1, 2)
+local yellBlight								= mod:NewYell(349889, nil, false)--Not as useful as fades
+local yellBlightFades							= mod:NewFadesYell(349889)
+local specWarnBlightSwap						= mod:NewSpecialWarningTaunt(349889, nil, nil, nil, 1, 2)
 local specWarnGTFO								= mod:NewSpecialWarningGTFO(350489, nil, nil, nil, 1, 8)
---Helm of Blight
-----Tank warnings and shit
---Malicious Gauntlets
-local specWarnGraspofMalice						= mod:NewSpecialWarningDodge(353332, nil, nil, nil, 2, 2)
---Pauldrons of Agony
+local specWarnGraspofMalice						= mod:NewSpecialWarningDodge(353332, nil, nil, nil, 2, 2)--Malicious Gauntlet
 local specWarnAgony								= mod:NewSpecialWarningMoveAway(350097, nil, nil, nil, 1, 2)
 local yellAgony									= mod:NewYell(350097)
 local yellAgonyFades							= mod:NewFadesYell(350097)
 
 --mod:AddTimerLine(BOSS)
 local timerOrbofTormentCD						= mod:NewAITimer(23, 349908, nil, nil, nil, 1)
-local timerMalevolenceCD						= mod:NewAITimer(17.8, 350469, nil, nil, nil, 3, nil, DBM_CORE_L.CURSE_ICON)
-local timerSufferingCD							= mod:NewAITimer(17.8, 349889, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)
---Helm of Blight
-local timerBlightCD								= mod:NewAITimer(17.8, 349891, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON, nil, 1, 3)
---Malicious Gauntlets
-local timerGraspofMaliceCD						= mod:NewAITimer(23, 353332, nil, nil, nil, 3)
---Pauldrons of Agony
+local timerMalevolenceCD						= mod:NewAITimer(17.8, 350469, nil, nil, nil, 3, nil, DBM_CORE_L.CURSE_ICON)--Rattlecage of Agony
+local timerBlightCD								= mod:NewAITimer(17.8, 349889, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON, nil, 1, 3)--Helm of Suffering (casts suffering not blight technically)
+local timerGraspofMaliceCD						= mod:NewAITimer(23, 353332, nil, nil, nil, 3)--Malicious Gauntlet
 --local timerBurstofAgonyCD						= mod:NewAITimer(23, 350096, nil, nil, nil, 3)
 
 --local berserkTimer							= mod:NewBerserkTimer(600)
@@ -80,7 +75,6 @@ function mod:OnCombatStart(delay)
 	self.vb.malevolenceCount = 0
 	timerOrbofTormentCD:Start(1-delay)
 	timerMalevolenceCD:Start(1-delay)
-	timerSufferingCD:Start(1-delay)
 	timerBlightCD:start(1-delay)
 	timerGraspofMaliceCD:Start(1-delay)--Probably doesn't start here
 --	timerBurstofAgonyCD:Start(1-delay)--probably doesn't start here
@@ -111,9 +105,7 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 350518 then
 		self.vb.unrelentingCount = self.vb.unrelentingCount + 1
 		warnUnrelentingTorment:Show(self.vb.unrelentingCount)
-	elseif spellId == 349889 then
-		timerSufferingCD:Start()
-	elseif spellId == 349891 then--or 350894
+	elseif spellId == 349889 then--or 350894
 		timerBlightCD:Start()
 	elseif spellId == 353332 then
 		specWarnGraspofMalice:Show()
@@ -121,6 +113,18 @@ function mod:SPELL_CAST_START(args)
 		timerGraspofMaliceCD:Start()
 --	elseif spellId == 350096 or spellId == 350691 then--Mythic/Heroic likely and normal/LFR likely
 --		timerBurstofAgonyCD:Start()
+	elseif spellId == 351066 then--Shatter (detecting armor falling off)
+		warnShatter:Show(args.sourceName)
+		if self:IsMythic() then return end--TODO, i doubt timers actually keep going on mythic, probably reset
+		--Probably some phase stuff like detecting caster and stopping bars for that armor piece
+		local cid = self:GetCIDFromGUID(args.sourceGUID)
+		if cid == 177289 then--https://ptr.wowhead.com/npc=177289/rattlecage-of-agony
+			timerMalevolenceCD:Stop()
+		elseif cid == 177268 then--https://ptr.wowhead.com/npc=177268/helm-of-suffering
+--			timerBlightCD:Stop()
+		elseif cid == 177287 then--https://ptr.wowhead.com/npc=177287/malicious-gauntlet
+			timerGraspofMaliceCD:Stop()
+		end
 	end
 end
 
@@ -171,6 +175,16 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellAgony:Yell()
 			yellAgonyFades:Countdown(spellId)
 		end
+	elseif spellId == 349889 then
+		if args:IsPlayer() then
+			specWarnBlight:Show(DBM_CORE_L.ORB)
+			specWarnBlight:Play("targetyou")--or orbrun.ogg?
+			yellBlight:Yell()
+			yellBlightFades:Countdown(spellId)
+		else
+			specWarnBlightSwap:Show(args.destName)
+			specWarnBlightSwap:Play("tauntboss")
+		end
 	end
 end
 --mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -195,6 +209,10 @@ function mod:SPELL_AURA_REMOVED(args)
 		if args:IsPlayer() then
 			yellAgonyFades:Cancel()
 		end
+	elseif spellId == 349889 then
+		if args:IsPlayer() then
+			yellBlightFades:Cancel()
+		end
 	end
 end
 
@@ -207,6 +225,17 @@ end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
 --[[
+function mod:UNIT_DIED(args)
+	local cid = self:GetCIDFromGUID(args.destGUID)
+	if cid == 177289 then--https://ptr.wowhead.com/npc=177289/rattlecage-of-agony
+
+	elseif cid == 177268 then--https://ptr.wowhead.com/npc=177268/helm-of-suffering
+
+	elseif cid == 177287 then--https://ptr.wowhead.com/npc=177287/malicious-gauntlet
+
+	end
+end
+
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 342074 then
 

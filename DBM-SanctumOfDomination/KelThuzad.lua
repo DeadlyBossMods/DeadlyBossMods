@@ -16,9 +16,9 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 348071 348428 346459 352999 347291 352997 348756 353000 352293 349799 355127 352379 355055 352355 352348",
 	"SPELL_CAST_SUCCESS 355136 352293",
-	"SPELL_AURA_APPLIED 354198 352530 348978 347292 347518 347454",
+	"SPELL_AURA_APPLIED 354198 352530 348978 347292 347518 347454 355948",
 	"SPELL_AURA_APPLIED_DOSE 348978",
-	"SPELL_AURA_REMOVED 354198 348978 347292",
+	"SPELL_AURA_REMOVED 354198 348978 347292 355948",
 	"SPELL_SUMMON 352096 352094 352092",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
@@ -94,6 +94,7 @@ local timerFreezingBlastCD							= mod:NewAITimer(23, 352379, nil, nil, nil, 3)
 --mod:AddRangeFrameOption("8")
 mod:AddInfoFrameOption(354206, true)
 mod:AddSetIconOption("SetIconOnEcho", 347291, true, false, {1, 2, 3})
+mod:AddNamePlateOption("NPAuraOnNecroticEmpowerment", 355948)
 
 mod.vb.echoIcon = 1
 mod.vb.phase = 1
@@ -123,6 +124,9 @@ function mod:OnCombatStart(delay)
 		DBM.InfoFrame:SetHeader(DBM_CORE_L.INFOFRAME_POWER)
 		DBM.InfoFrame:Show(3, "enemypower", 2)
 	end
+	if self.Options.NPAuraOnNecroticEmpowerment then
+		DBM:FireEvent("BossMod_EnableHostileNameplates")
+	end
 end
 
 function mod:OnCombatEnd()
@@ -132,6 +136,9 @@ function mod:OnCombatEnd()
 --	if self.Options.RangeFrame then
 --		DBM.RangeCheck:Hide()
 --	end
+	if self.Options.NPAuraOnNecroticEmpowerment then
+		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
+	end
 end
 
 function mod:SPELL_CAST_START(args)
@@ -188,7 +195,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 352355 then
 		specWarnNecroticObliteration:Show()
 		specWarnNecroticObliteration:Play("justrun")
-	elseif spellId == 352348 then
+	elseif spellId == 352348 then--Onsalught of the Damned
 		self.vb.phase = 3
 		--Stop P2 stuff that may have carried over
 		timerHowlingBlizzardCD:Stop()
@@ -284,6 +291,10 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif (spellId == 347518 or spellId == 347454) and args:IsPlayer() and not DBM:UnitDebuff("player", 347292) then--Walked into someone elses silence field
 		specWarnOblivionsEchoNear:Show(args.sourceName)
 		specWarnOblivionsEchoNear:Play("runaway")
+	elseif spellId == 355948 then
+		if self.Options.NPAuraOnNecroticEmpowerment then
+			DBM.Nameplate:Show(true, args.sourceGUID, spellId)
+		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -295,6 +306,10 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 347292 then
 		if self.Options.SetIconOnFragments then
 			self:SetIcon(args.destName, 0)
+		end
+	elseif spellId == 355948 then
+		if self.Options.NPAuraOnNecroticEmpowerment then
+			DBM.Nameplate:Hide(true, args.sourceGUID, spellId)
 		end
 	end
 end
