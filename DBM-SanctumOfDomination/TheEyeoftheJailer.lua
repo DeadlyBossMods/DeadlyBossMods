@@ -12,7 +12,7 @@ mod:SetEncounterID(2433)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 350803 350828 349979 348074 348117 349030 349031 350847 350816 350764",
+	"SPELL_CAST_START 350803 350828 349979 348074 348117 349030 349031 350847 350816 350764 355914",
 	"SPELL_CAST_SUCCESS 350604 350028 350713",
 	"SPELL_AURA_APPLIED 351143 350604 354004 350034 351825 350713 348969",
 	"SPELL_AURA_APPLIED_DOSE 348969",
@@ -193,7 +193,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnTitanicDeathGaze:Show()
 		specWarnTitanicDeathGaze:Play("aesoon")
 		timerTitanticDeathGazeCD:Start()
-	elseif spellId == 350847 then
+	elseif spellId == 350847 or spellId == 355914 then
 		timerDesolationBeamCD:Start()
 		self:ScheduleMethod(0.2, "BossTargetScanner", args.sourceGUID, "DesolationBeam", 0.2, 8, true)
 	elseif spellId == 350816 and self:AntiSpam(3, 1) then--TODO, remove antispam if they don't cast it at same time

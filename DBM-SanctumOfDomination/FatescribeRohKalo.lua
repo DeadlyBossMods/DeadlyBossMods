@@ -119,7 +119,7 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 351680 then
 		timerHeroicDestinyCD:Start()
-	elseif spellId == 350554 then
+	elseif spellId == 350554 then--Two sub cast IDs, but one primary?
 		timerCallofEternityCD:Start()
 	elseif (spellId == 350421 or spellId == 353426 or spellId == 350169) and self:AntiSpam(5, 2) then
 		specWarnFatedConjunction:Show()
