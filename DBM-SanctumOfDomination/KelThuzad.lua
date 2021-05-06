@@ -4,7 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision("@file-date-integer@")
 --mod:SetCreatureID(164406)
 mod:SetEncounterID(2422)
-mod:SetUsedIcons(1, 2, 3)
+mod:SetUsedIcons(1, 2, 3, 4)
 mod:SetBossHPInfoToHighest()
 mod.noBossDeathKill = true--Instructs mod to ignore 158328 deaths, since it dies multiple times
 --mod:SetHotfixNoticeRev(20201222000000)
@@ -50,6 +50,7 @@ local warnAbom										= mod:NewSpellAnnounce("ej23424", 2, 352092)
 local warnDemolish									= mod:NewCastAnnounce(349799, 2)
 ----Remnant of Kel'Thuzad
 local warnShadowFissure								= mod:NewSpellAnnounce(355136, 3)
+local warnFreezingBlast								= mod:NewCountAnnounce(352379, 3)
 
 --Stage One: Chains and Ice
 local specWarnHowlingBlizzard						= mod:NewSpecialWarningDodge(354198, nil, nil, nil, 2, 2)
@@ -57,9 +58,9 @@ local specWarnDarkEvocation							= mod:NewSpecialWarningSpell(352530, nil, nil,
 local specWarnSoulFracture							= mod:NewSpecialWarningDefensive(348071, nil, nil, nil, 1, 2)
 local specWarnGlacialWrath							= mod:NewSpecialWarningSwitch(346459, "Dps", nil, nil, 1, 2)
 local specWarnOblivionsEcho							= mod:NewSpecialWarningMoveAway(347292, nil, nil, nil, 1, 2)
-local yellOblivionsEcho								= mod:NewYell(347292)
+local yellOblivionsEcho								= mod:NewShortPosYell(347292)
 local specWarnOblivionsEchoNear						= mod:NewSpecialWarningClose(347518, nil, nil, nil, 1, 2)
-local specWarnFrostBlast							= mod:NewSpecialWarningMoveAway(348756, nil, nil, nil, 1, 2)
+local specWarnFrostBlast							= mod:NewSpecialWarningMoveTo(348756, nil, nil, nil, 1, 2)
 local yellFrostBlast								= mod:NewYell(348756, nil, nil, nil, "YELL")
 --local yellFrostBlastFades							= mod:NewShortFadesYell(348756, nil, nil, nil, "YELL")
 --Stage Two: The Phylactery Opens
@@ -93,17 +94,18 @@ local timerFreezingBlastCD							= mod:NewAITimer(23, 352379, nil, nil, nil, 3)
 
 --mod:AddRangeFrameOption("8")
 mod:AddInfoFrameOption(354206, true)
-mod:AddSetIconOption("SetIconOnEcho", 347291, true, false, {1, 2, 3})
+mod:AddSetIconOption("SetIconOnEcho", 347291, true, false, {1, 2, 3, 4})
 mod:AddNamePlateOption("NPAuraOnNecroticEmpowerment", 355948)
 
 mod.vb.echoIcon = 1
 mod.vb.phase = 1
+mod.vb.freezingBlastCount = 0
 
 function mod:FrostBlast(targetname, uId, bossuid, scanningTime)
 	if not targetname then return end
 	if targetname == UnitName("player") then
-		specWarnFrostBlast:Show()
-		specWarnFrostBlast:Play("targetyou")
+		specWarnFrostBlast:Show(DBM_CORE_L.ALLIES)
+		specWarnFrostBlast:Play("gathershare")
 		yellFrostBlast:Yell()
 	else
 		warnFrostBlast:Show(targetname)
@@ -113,6 +115,7 @@ end
 function mod:OnCombatStart(delay)
 	self.vb.echoIcon = 1
 	self.vb.phase = 1
+	self.vb.freezingBlastCount = 0
 	timerHowlingBlizzardCD:Start(1-delay)
 	timerDarkEvocationCD:Start(1-delay)
 	timerSoulFractureCD:Start(1-delay)
@@ -159,9 +162,10 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 348756 or spellId == 353000 then
 		timerFrostBlastCD:Start()
 		self:ScheduleMethod(0.2, "BossTargetScanner", args.sourceGUID, "FrostBlast", 0.1, 8, true)
-	elseif spellId == 352293 then
+	elseif spellId == 352293 then--Necrotic Destruction
 		--Stop KT timers
 		self.vb.phase = 2
+		self.vb.freezingBlastCount = 0
 		timerHowlingBlizzardCD:Stop()
 		timerDarkEvocationCD:Stop()
 		timerSoulFractureCD:Stop()
@@ -186,8 +190,13 @@ function mod:SPELL_CAST_START(args)
 		specWarnFoulWinds:Play("keepmove")
 		timerFoulWindsCD:Start()
 	elseif spellId == 352379 then
-		specWarnFreezingBlast:Show()
-		specWarnFreezingBlast:Play("shockwave")
+		self.vb.freezingBlastCount = self.vb.freezingBlastCount + 1
+		if self.vb.freezingBlastCount == 1 then
+			specWarnFreezingBlast:Show()
+			specWarnFreezingBlast:Play("shockwave")
+		else
+			warnFreezingBlast:Show(self.vb.freezingBlastCount)
+		end
 		timerFreezingBlastCD:Start()
 	elseif spellId == 355055 then
 		specWarnGlacialWinds:Show()
@@ -235,11 +244,11 @@ function mod:SPELL_SUMMON(args)
 	local spellId = args.spellId
 	--https://ptr.wowhead.com/npc=176703/frostbound-devoted / https://ptr.wowhead.com/npc=176974/soul-reaver / https://ptr.wowhead.com/npc=176973/unstoppable-abomination
 	if spellId == 352096 or spellId == 352094 or spellId == 352092 then
-		if spellId == 252096 then
+		if spellId == 252096 and self:AntiSpam(3, 3) then
 			warnFrostboundDevoted:Show()
-		elseif spellId == 352094 then
+		elseif spellId == 352094 and self:AntiSpam(3, 4) then
 			warnSoulReaver:Show()
-		elseif spellId == 352092 then
+		elseif spellId == 352092 and self:AntiSpam(3, 5) then
 			warnAbom:Show()
 		end
 		--timerMarchoftheForsakenCD:Start()
@@ -278,13 +287,13 @@ function mod:SPELL_AURA_APPLIED(args)
 --		end
 	elseif spellId == 347292 then
 		local icon = self.vb.echoIcon
-		if self.Options.SetIconOnFragments then
+		if self.Options.SetIconOnEcho then
 			self:SetIcon(args.destName, icon)
 		end
 		if args:IsPlayer() then
 			specWarnOblivionsEcho:Show()
 			specWarnOblivionsEcho:Play("runout")
-			yellOblivionsEcho:Yell()--icon, icon
+			yellOblivionsEcho:Yell(icon, icon)
 		end
 		warnOblivionsEcho:CombinedShow(0.3, args.destName)
 		self.vb.echoIcon = self.vb.echoIcon + 1
@@ -304,7 +313,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	if spellId == 354198 then
 		timerHowlingBlizzard:Stop()
 	elseif spellId == 347292 then
-		if self.Options.SetIconOnFragments then
+		if self.Options.SetIconOnEcho then
 			self:SetIcon(args.destName, 0)
 		end
 	elseif spellId == 355948 then

@@ -4693,7 +4693,7 @@ do
 		if DBM.Options.RecordOnlyBosses then
 			DBM:StartLogging(timer, checkForActualPull)--Start logging here to catch pre pots.
 		end
-		if DBM.Options.CheckGear then
+		if DBM.Options.CheckGear and not testBuild then
 			local bagilvl, equippedilvl = GetAverageItemLevel()
 			local difference = bagilvl - equippedilvl
 			local weapon = GetInventoryItemLink("player", 16)
