@@ -191,7 +191,7 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	elseif spellId == 350650 or spellId == 351773 or spellId == 354055 then--Reg adds, reg adds, Mythic Adds (351773 heroic confirmed)
+	if spellId == 350650 or spellId == 351773 or spellId == 354055 then--Reg adds, reg adds, Mythic Adds (351773 heroic confirmed)
 		warnDefiance:CombinedShow(0.5, args.destName)
 		if self.Options.NPAuraOnDefiance then
 			DBM.Nameplate:Show(true, args.sourceGUID, spellId)
