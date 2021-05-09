@@ -257,7 +257,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif spellId == 350415 then--Warmonger Shackles
 		timerHellscream:Stop()
-		warnShacklesRemaining:(0)
+		warnShacklesRemaining:Show(0)
 	end
 end
 
