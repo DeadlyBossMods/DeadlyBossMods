@@ -13,32 +13,33 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 351680 350554 350421 353426 350169 351969",
-	"SPELL_CAST_SUCCESS 350355 353149 353150",
-	"SPELL_AURA_APPLIED 354365 351680 353432 353931 350568 353195 353428",
+	"SPELL_CAST_SUCCESS 350355",
+	"SPELL_AURA_APPLIED 354365 351680 353432 353931 350568 353195 353428 351969",
 --	"SPELL_AURA_APPLIED_DOSE",
-	"SPELL_AURA_REMOVED 354365 351680 350568 353195 353428",
+	"SPELL_AURA_REMOVED 354365 351680 350568 353195 353428 351969",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 --	"UNIT_DIED"
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, fix Mythic grim stuff
---TODO, figure out energy rate of Burden so a timer can be placed on nameplate aura
---TODO, hardcode https://ptr.wowhead.com/spell=353603/diviners-probe instead of just scheduling secondary voice warning on destinyswap?
---TODO fated and other triggers probably wrong
---TODO, loom timers for rotations and what nots
+--TODO, figure out how fates alter timers, it's not pause, it's not reset, sometimes either works but never consistently
 --TODO, https://ptr.wowhead.com/spell=354964/runic-affinity for mythic phase 2
 --TODO, https://ptr.wowhead.com/spell=354966/unstable-accretion trackingn for mythic phase 2
 --TODO, other phase 2 stuff? it's mostly just passive stuff like adds and dodgables
+--[[
+(ability.id = 350421 or ability.id = 351680 or ability.id = 351969 or ability.id = 350554) and type = "begincast"
+ or ability.id = 353195 or ability.id = 351969
+ or (ability.id = 353931 or ability.id = 353195) and type = "applydebuff"
+ --]]
 --Stage One: Scrying Fate
 local warnGrimPortent							= mod:NewTargetNoFilterAnnounce(354365, 4)--Mythic
 local warnTwistFate								= mod:NewTargetNoFilterAnnounce(353931, 2, nil, "RemoveMagic")
 local warnCallofEternity						= mod:NewTargetAnnounce(350568, 4)
 --Stage Two: Defying Destiny
-local warnRealignmentClockwise					= mod:NewSpellAnnounce(353149, 2)
-local warnRealignmentCounterclock				= mod:NewSpellAnnounce(353150, 2)
+
 --Stage Three: Fated Terminus
+local warnExtemporaneousFate					= mod:NewSoonAnnounce(353195, 3)
 
 --Stage One: Scrying Fate
 local specWarnGrimPortent						= mod:NewSpecialWarningYouPos(354365, nil, nil, nil, 1, 2, 4)--Mythic
@@ -62,16 +63,16 @@ local specWarnExtemporaneousFate				= mod:NewSpecialWarningSpell(353195, nil, ni
 
 --mod:AddTimerLine(BOSS)
 --Stage One: Scrying Fate
-local timerGrimPortentCD						= mod:NewAITimer(17.8, 354365, nil, nil, nil, 3, nil, DBM_CORE_L.MYTHIC_ICON)
-local timerHeroicDestinyCD						= mod:NewAITimer(17.8, 351680, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)
-local timerTwistFateCD							= mod:NewAITimer(17.8, 353931, nil, "RemoveMagic", nil, 5, nil, DBM_CORE_L.MAGIC_ICON)
-local timerFatedConjunctionCD					= mod:NewAITimer(23, 350355, nil, nil, nil, 3, nil, DBM_CORE_L.DEADLY_ICON, nil, 1, 3)
-local timerCallofEternityCD						= mod:NewAITimer(17.8, 350554, nil, nil, nil, 3)
+local timerGrimPortentCD						= mod:NewAITimer(20, 354365, nil, nil, nil, 3, nil, DBM_CORE_L.MYTHIC_ICON)
+local timerHeroicDestinyCD						= mod:NewCDTimer(39.2, 351680, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)--39-41
+local timerTwistFateCD							= mod:NewCDTimer(48.7, 353931, nil, "RemoveMagic", nil, 5, nil, DBM_CORE_L.MAGIC_ICON)
+local timerFatedConjunctionCD					= mod:NewCDTimer(59.7, 350355, nil, nil, nil, 3, nil, DBM_CORE_L.DEADLY_ICON, nil, 1, 3)
+local timerCallofEternityCD						= mod:NewCDTimer(37.9, 350554, nil, nil, nil, 3)
 --Stage Two: Defying Destiny
-local timerRealignFateCD						= mod:NewAITimer(17.8, 351969, nil, nil, nil, 6)
+--local timerRealignFateCD						= mod:NewAITimer(17.8, 351969, nil, nil, nil, 6)
 local timerDarkestDestiny						= mod:NewCastTimer(40, 353122, nil, nil, nil, 2, nil, DBM_CORE_L.DEADLY_ICON)
 --Stage Three: Fated Terminus Desperate
-local timerExtemporaneousFateCD					= mod:NewAITimer(17.8, 353195, nil, nil, nil, 6)
+local timerExtemporaneousFateCD					= mod:NewCDTimer(39.0, 353195, nil, nil, nil, 6)
 
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
@@ -86,10 +87,10 @@ mod.vb.phase = 1
 function mod:OnCombatStart(delay)
 	self.vb.DebuffIcon = 1
 	self.vb.phase = 1
-	timerHeroicDestinyCD:Start(1-delay)
-	timerTwistFateCD:Start(1-delay)
-	timerFatedConjunctionCD:Start(1-delay)
-	timerCallofEternityCD:Start(1-delay)
+--	timerHeroicDestinyCD:Start(1-delay)--UNKNOWN, dps too high to see this before fate phase
+	timerTwistFateCD:Start(4.5-delay)
+	timerFatedConjunctionCD:Start(13.2-delay)
+	timerCallofEternityCD:Start(24.2-delay)
 --	berserkTimer:Start(-delay)
 	if self:IsMythic() then
 		timerGrimPortentCD:Start(1-delay)
@@ -121,27 +122,30 @@ function mod:SPELL_CAST_START(args)
 		timerHeroicDestinyCD:Start()
 	elseif spellId == 350554 then--Two sub cast IDs, but one primary?
 		timerCallofEternityCD:Start()
-	elseif (spellId == 350421 or spellId == 353426 or spellId == 350169) and self:AntiSpam(5, 2) then
+	elseif (spellId == 350421 or spellId == 353426 or spellId == 350169) then--350421 confiremd, others unknown
 		specWarnFatedConjunction:Show()
 		specWarnFatedConjunction:Play("watchstep")
 		timerFatedConjunctionCD:Start()
 	elseif spellId == 351969 then
 		specWarnRealignFate:Show()
 		specWarnRealignFate:Play("specialsoon")
-		timerExtemporaneousFateCD:Start()
+		timerHeroicDestinyCD:Stop()
+		--No idea how timers work, can't figure it out
+--		timerTwistFateCD:Stop()
+--		timerFatedConjunctionCD:Stop()
+--		timerCallofEternityCD:Stop()
+--		timerGrimPortentCD:Stop()
 	end
 end
 
+--[[
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 353931 then
 		timerTwistFateCD:Start()
-	elseif spellId == 353149 then
-		warnRealignmentClockwise:Show()
-	elseif spellId == 353150 then
-		warnRealignmentCounterclock:Show()
 	end
 end
+--]]
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
@@ -197,12 +201,17 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellCallofEternity:Yell()
 			yellCallofEternityFades:Countdown(spellId)
 		end
-	elseif spellId == 353195 then
+	elseif spellId == 353195 then--Extemporaneous Fate
 		specWarnExtemporaneousFate:Show()
 		specWarnExtemporaneousFate:Play("specialsoon")--"157060" if they just happen to be yellow
-		timerDarkestDestiny:Start()
 		timerExtemporaneousFateCD:Start()
-	elseif spellId == 353428 then
+		timerDarkestDestiny:Start(30)
+		--No idea how timers work, can't figure it out
+--		timerHeroicDestinyCD:Stop()
+--		timerTwistFateCD:Stop()
+--		timerTwistFateCD:Start(11.6)
+--		timerHeroicDestinyCD:Start(26.1)
+	elseif spellId == 353428 or spellId == 351969 then--Realign Fate, 351969 is incorrect spellID and blizz might fix it later to use 353428
 		timerDarkestDestiny:Start()
 	end
 end
@@ -224,18 +233,18 @@ function mod:SPELL_AURA_REMOVED(args)
 				DBM.Nameplate:Show(true, args.sourceGUID, spellId)
 			end
 		end
-	elseif spellId == 353195 then
+	elseif spellId == 353195 then--Extemporaneous Fate
 		timerDarkestDestiny:Stop()
-	elseif spellId == 353428 then
+	elseif spellId == 353428 or spellId == 351969 then--Realign Fate, 351969 is incorrect spellID and blizz might fix it later to use 353428
 		timerDarkestDestiny:Stop()
-	end
-end
-
-function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
-	if msg:find("spell:350355") and self:AntiSpam(10, 2) then
-		specWarnFatedConjunction:Show()
-		specWarnFatedConjunction:Play("watchstep")
-		timerFatedConjunctionCD:Start()
+		--No idea how timers work, can't figure it out
+--		timerTwistFateCD:Start(7.3)
+--		timerFatedConjunctionCD:Start(15.7)
+--		timerCallofEternityCD:Start(26.6)
+--		timerHeroicDestinyCD:Start(37.6)
+--		if self:IsMythic() then
+--			timerGrimPortentCD:Start(2)
+--		end
 	end
 end
 
@@ -249,22 +258,12 @@ end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 --]]
 
-local tempSpell = DBM:GetSpellInfo(352075)
+--"<1445.83 22:22:30> [UNIT_SPELLCAST_SUCCEEDED] Fatescribe Roh-Kalo(Shazzul) -Extemporaneous Fate- [[boss1:Cast-3-2012-2450-10555-353193-000195A188:353193]]", -- [28166]
+--"<1453.06 22:22:37> [CHAT_MSG_RAID_BOSS_EMOTE] |TInterface\\ICONS\\Achievement_GuildPerk_WorkingOvertime_Rank2.blp:20|t Fatescribe Roh-Kalo is creating an |cFFFF0000|Hspell:353195|h[Extemporaneous Fate]|h|r!#Fatescribe Roh-Kalo###Fatescribe Roh-Kalo##0#0##0#572#nil#0#false#false#false#false", -- [28352]
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	local spellName = DBM:GetSpellInfo(spellId)
-	if spellName and self.vb.phase == 1 and spellName == tempSpell then--TEMP, use spellID when known which of 20 it is
-		timerHeroicDestinyCD:Stop()
-		timerTwistFateCD:Stop()
-		timerFatedConjunctionCD:Stop()
-		timerCallofEternityCD:Stop()
-		timerGrimPortentCD:Stop()
-		timerRealignFateCD:Start(2)
---	elseif spellName and self.vb.phase == 1 and spellName == tempSpell then--Do phase 3 shit
---		timerRealignFateCD:Stop()
---		timerExtemporaneousFateCD:Start(3)
---		timerHeroicDestinyCD:Start(3)
---		timerTwistFateCD:Start(3)
---		timerFatedConjunctionCD:Start(3)
---		timerCallofEternityCD:Start(3)
+	if spellId == 353193 then--Extemporaneous Fate (precast)
+		warnExtemporaneousFate:Show()
+	elseif spellId == 354265 then--Twist Fate
+		timerTwistFateCD:Start()
 	end
 end
