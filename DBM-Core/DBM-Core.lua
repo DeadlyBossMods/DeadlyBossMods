@@ -6786,10 +6786,32 @@ do
 	end
 end
 
-function DBM:SetCurrentSpecInfo()
-	currentSpecGroup = GetSpecialization() or 1
-	currentSpecID, currentSpecName = GetSpecializationInfo(currentSpecGroup)--give temp first spec id for non-specialization char. no one should use dbm with no specialization, below level 10, should not need dbm.
-	currentSpecID = tonumber(currentSpecID)
+do
+	--In event api fails to pull any data at all, just assign classes to their initial template roles from exiles reach
+	local fallbackClassToRole = {
+		["MAGE"] = 1449,
+		["PALADIN"] = 1451,
+		["WARRIOR"] = 1446,
+		["DRUID"] = 1447,
+		["DEATHKNIGHT"] = 1455,
+		["HUNTER"] = 1448,
+		["PRIEST"] = 1452,
+		["ROGUE"] = 1453,
+		["SHAMAN"] = 1444,
+		["WARLOCK"] = 1454,
+		["MONK"] = 1450,
+		["DEMONHUNTER"] = 1456,
+	}
+
+	function DBM:SetCurrentSpecInfo()
+		currentSpecGroup = GetSpecialization() or 1
+		if GetSpecializationInfo(currentSpecGroup) then
+			currentSpecID, currentSpecName = GetSpecializationInfo(currentSpecGroup)--give temp first spec id for non-specialization char. no one should use dbm with no specialization, below level 10, should not need dbm.
+			currentSpecID = tonumber(currentSpecID)
+		else
+			currentSpecID, currentSpecName = fallbackClassToRole[playerClass], playerClass
+		end
+	end
 end
 
 --TODO C_IslandsQueue.GetIslandDifficultyInfo(), if 38-40 don't work
