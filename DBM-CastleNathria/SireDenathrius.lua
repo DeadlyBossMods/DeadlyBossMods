@@ -138,7 +138,7 @@ mod.vb.HandCount = 0
 mod.vb.addCount = 0
 mod.vb.DebuffCount = 0
 mod.vb.DebuffIcon = 1
-mod.vb.addIcon = 8
+--mod.vb.addIcon = 8
 mod.vb.painCasting = false
 local expectedStacks = 6
 local P3Transition = false
@@ -382,10 +382,10 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 344776 then
 		if not castsPerGUID[args.sourceGUID] then
 			castsPerGUID[args.sourceGUID] = 0
-			if self.Options.SetIconOnBalefulShadows and self.vb.addIcon > 3 then--Only use up to 5 icons
-				self:ScanForMobs(args.sourceGUID, 2, self.vb.addIcon, 1, 0.2, 12, "SetIconOnBalefulShadows")
-			end
-			self.vb.addIcon = self.vb.addIcon - 1
+--			if self.Options.SetIconOnBalefulShadows and self.vb.addIcon > 3 then--Only use up to 5 icons
+--				self:ScanForMobs(args.sourceGUID, 2, self.vb.addIcon, 1, 0.2, 12, "SetIconOnBalefulShadows")
+--			end
+--			self.vb.addIcon = self.vb.addIcon - 1
 		end
 		castsPerGUID[args.sourceGUID] = castsPerGUID[args.sourceGUID] + 1
 		local count = castsPerGUID[args.sourceGUID]
@@ -561,10 +561,8 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnNightHunterTarget:CombinedShow(0.5, args.destName)
 				specWarnNightHunterTarget:ScheduleVoice(0.5, "helpsoak")
 			end
-		else
-			warnNightHunter:Cancel()
-			warnNightHunter:CombinedShow(0.5, args.destName)
 		end
+		warnNightHunter:CombinedShow(0.5, args.destName)
 		self.vb.DebuffIcon = self.vb.DebuffIcon + 1
 		if self.vb.DebuffIcon > 8 then
 			self.vb.DebuffIcon = 1
@@ -655,7 +653,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnWrackingPainTaunt:Play("tauntboss")
 		end
 	elseif spellId == 344313 then
-		self.vb.addIcon = 8
+--		self.vb.addIcon = 8
 		warnBalefulShadows:Show()
 	elseif spellId == 338738 then--Infinity's Toll being applied (Players leaving mind)
 		if args.sourceGUID == playerGUID then
@@ -667,6 +665,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		local timer = Timers[difficultyName][self.vb.phase][181089][self.vb.addCount+1]
 		if timer then
 			timerCrimsonCabalistsCD:Start(timer, self.vb.addCount+1)
+		end
+		if self.Options.SetIconOnBalefulShadows then--Only use up to 5 icons
+			self:ScanForMobs(175205, 0, 8, 2, 0.2, 12, "SetIconOnBalefulShadows")
 		end
 	end
 end
