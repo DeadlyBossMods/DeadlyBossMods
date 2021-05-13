@@ -370,23 +370,23 @@ function mod:SPELL_AURA_APPLIED(args)
 			local bossPower = UnitPower("boss1")
 			--Blizzard CD: 109.8, Evo CD: 86.2
 			if bossPower then
-				if bossPower == 80 then--JW Data
+				if bossPower == 80 then--TODO, FIXME
 					timerFrostBlastCD:Start(85)--Speculation
 --					timerHowlingBlizzardCD:Update(0, 109.8)
 --					timerDarkEvocationCD:Update(0, 86.2)
-   				elseif bossPower == 60 then--LOG coded
-   					timerFrostBlastCD:Start(42)--Confirmed
+				elseif bossPower == 60 then--LOG coded
+					timerFrostBlastCD:Start(42)--Confirmed
 					timerHowlingBlizzardCD:Update(63.3, 109.8)
 					timerDarkEvocationCD:Update(75, 86.2)
 				elseif bossPower == 40 then--LOG coded
 					timerFrostBlastCD:Start(85)--Confirmed
 					timerHowlingBlizzardCD:Update(88.6, 109.8)
 					timerDarkEvocationCD:Update(0, 88.3)--88-90 confirmed two times, even when dark evo bug happens
-				elseif bossPower == 20 then
+				elseif bossPower == 20 then--TODO, FIXME
 					timerFrostBlastCD:Start(85)--Speculation
 --					timerHowlingBlizzardCD:Update(98.3, 109.8)
 --					timerDarkEvocationCD:Update(39.7, 86.2)
-				else--100/0
+				else--100/0--TODO, FIXME
 					timerFrostBlastCD:Start(85)--Speculation
 --					timerHowlingBlizzardCD:Update(0, 109.8)
 --					timerDarkEvocationCD:Update(0, 86.2)
@@ -465,7 +465,7 @@ function mod:UNIT_POWER_UPDATE()
 		if bossPower == 80 then
 			timerHowlingBlizzardCD:Update(34, 109.8)
 			timerDarkEvocationCD:Update(53, 86.2)
-   		elseif bossPower == 60 then
+		elseif bossPower == 60 then
 			timerHowlingBlizzardCD:Update(43.7, 109.8)
 			timerDarkEvocationCD:Update(62.8, 86.2)
 		elseif bossPower == 40 then
