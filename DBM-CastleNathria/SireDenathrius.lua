@@ -564,10 +564,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		warnNightHunter:CombinedShow(0.5, args.destName)
 		self.vb.DebuffIcon = self.vb.DebuffIcon + 1
-		if self.vb.DebuffIcon > 8 then
-			self.vb.DebuffIcon = 1
-			DBM:AddMsg("Cast event for Night Hunter is wrong, doing backup icon reset")
-		end
 	elseif spellId == 327992 and args:IsPlayer() and self:AntiSpam(2, 2) then
 		specWarnGTFO:Show(args.spellName)
 		specWarnGTFO:Play("watchfeet")
