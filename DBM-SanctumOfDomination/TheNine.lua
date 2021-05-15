@@ -99,7 +99,7 @@ local timerResentmentCD							= mod:NewCDCountTimer(7.6, 355294, nil, nil, nil, 
 local timerLinkEssenceCD						= mod:NewCDCountTimer(37.7, 350482, nil, nil, nil, 3, nil, DBM_CORE_L.HEROIC_ICON)
 local timerWordofRecallCD						= mod:NewCDCountTimer(74.4, 350687, nil, nil, nil, 2, nil, DBM_CORE_L.HEROIC_ICON)
 
---local berserkTimer							= mod:NewBerserkTimer(600)
+local berserkTimer								= mod:NewBerserkTimer(600)
 
 --mod:AddRangeFrameOption("8")
 mod:AddInfoFrameOption(350365, true)
@@ -429,6 +429,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 			timerLinkEssenceCD:Start(22, 1)
 --			timerWordofRecallCD:Start(2, 1)--Cast instantly on phasing
 		end
+		berserkTimer:Start(602)--Can delay couple seconds if boss is casting when timer expires.
 	end
 end
 
