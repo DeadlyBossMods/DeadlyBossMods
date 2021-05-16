@@ -55,7 +55,7 @@ local timerOverpowerCD								= mod:NewCDCountTimer(27.9, 346985, nil, "Tank|Hea
 local timerChainsofEternityCD						= mod:NewCDCountTimer(28.1, 347269, nil, nil, nil, 3, nil, nil, nil, 1, 3)
 local timerPedatorsHowlCD							= mod:NewCDCountTimer(25.5, 347283, nil, nil, nil, 3, nil, DBM_CORE_L.MAGIC_ICON)
 local timerHungeringMistCD							= mod:NewNextCountTimer(95.1, 347679, nil, nil, nil, 6, nil, DBM_CORE_L.DEADLY_ICON)
-local timerRemnantofForgottenTormentsCD				= mod:NewCDCountTimer(30.5, 352368, L.Remnant, nil, nil, 2, nil, DBM_CORE_L.HEROIC_ICON)
+local timerRemnantofForgottenTormentsCD				= mod:NewCDCountTimer(30.4, 352368, L.Remnant, nil, nil, 2, nil, DBM_CORE_L.HEROIC_ICON)
 local timerGraspofDeathCD							= mod:NewCDCountTimer(27.8, 347668, nil, nil, nil, 4, nil, DBM_CORE_L.INTERRUPT_ICON)
 local timerFuryoftheAgesCD							= mod:NewCDCountTimer(46.2, 347490, nil, "Tank|RemoveEnrage", nil, 5, nil, DBM_CORE_L.ENRAGE_ICON)
 
@@ -81,12 +81,21 @@ function mod:OnCombatStart(delay)
 	self.vb.chainsCount = 0
 	self.vb.overpowerCount = 0
 	self.vb.furyCount = 0
-	timerPedatorsHowlCD:Start(3.4-delay, 1)
-	timerGraspofDeathCD:Start(6-delay, 1)
-	timerOverpowerCD:Start(12.2-delay, 1)
-	timerChainsofEternityCD:Start(16.9-delay, 1)
-	timerHungeringMistCD:Start(24.4-delay, 1)
-	berserkTimer:Start(420-delay)
+	if self:IsMythic() then--Mythic verified, recheck heroic for changes
+		timerPedatorsHowlCD:Start(5.1-delay, 1)
+		timerGraspofDeathCD:Start(7.6-delay, 1)
+		timerOverpowerCD:Start(10-delay, 1)
+		timerChainsofEternityCD:Start(13.6-delay, 1)
+		timerHungeringMistCD:Start(24.2-delay, 1)
+	--	berserkTimer:Start(420-delay)
+	else--Heroic verified
+		timerPedatorsHowlCD:Start(3.4-delay, 1)
+		timerGraspofDeathCD:Start(6-delay, 1)
+		timerOverpowerCD:Start(12.2-delay, 1)
+		timerChainsofEternityCD:Start(16.9-delay, 1)
+		timerHungeringMistCD:Start(24.4-delay, 1)
+		berserkTimer:Start(420-delay)
+	end
 --	if self.Options.InfoFrame then
 --		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(328897))
 --		DBM.InfoFrame:Show(10, "table", ExsanguinatedStacks, 1)
@@ -124,7 +133,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 347668 then
 		self.vb.graspCount = self.vb.graspCount + 1
 		--Second cast of fight is fluke, two very fast then rest of fight about 28 sec between casts except ones delayed by mist
-		local timer = self.vb.graspCount == 1 and 13.9 or 27.8
+		local timer = self.vb.graspCount == 1 and 13.7 or 27
 		if timerHungeringMistCD:GetRemaining(self.vb.mistCount+1) >= timer then
 			timerGraspofDeathCD:Start(timer, self.vb.graspCount+1)--27.8
 		end
@@ -135,7 +144,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 350280 then
 		self.vb.chainsCount = self.vb.chainsCount + 1
 		if timerHungeringMistCD:GetRemaining(self.vb.mistCount+1) >= 28.1 then
-			timerChainsofEternityCD:Start(nil, self.vb.chainsCount+1)--28.1
+			timerChainsofEternityCD:Start(nil, self.vb.chainsCount+1)--28.1--29.2
 		end
 	elseif spellId == 347490 then
 		self.vb.furyCount = self.vb.furyCount + 1
@@ -147,12 +156,21 @@ function mod:SPELL_CAST_START(args)
 		specWarnHungeringMist:Show()
 		specWarnHungeringMist:Play("watchstep")
 		--Start timers for after
-		timerPedatorsHowlCD:Start(21.9, self.vb.howlcount+1)
-		timerOverpowerCD:Start(25.5, self.vb.overpowerCount+1)
-		timerGraspofDeathCD:Start(28, self.vb.graspCount+1)
-		timerRemnantofForgottenTormentsCD:Start(30.4, self.vb.remnantcount+1)--Activation, not pre warning for emote
-		timerFuryoftheAgesCD:Start(32.9, self.vb.furyCount+1)
-		timerChainsofEternityCD:Start(57.2, self.vb.chainsCount+1)
+		if self:IsMythic() then
+			timerPedatorsHowlCD:Start(21.1, self.vb.howlcount+1)
+			timerOverpowerCD:Start(25.5, self.vb.overpowerCount+1)
+			timerGraspofDeathCD:Start(28, self.vb.graspCount+1)
+			timerRemnantofForgottenTormentsCD:Start(28.3, self.vb.remnantcount+1)--Activation, not pre warning for emote
+			timerFuryoftheAgesCD:Start(32.8, self.vb.furyCount+1)
+			timerChainsofEternityCD:Start(58.3, self.vb.chainsCount+1)
+		else--Most likely the same, but recheck heroic and other modes later
+			timerPedatorsHowlCD:Start(21.1, self.vb.howlcount+1)
+			timerOverpowerCD:Start(25.5, self.vb.overpowerCount+1)
+			timerGraspofDeathCD:Start(28, self.vb.graspCount+1)
+			timerRemnantofForgottenTormentsCD:Start(30.4, self.vb.remnantcount+1)--Activation, not pre warning for emote
+			timerFuryoftheAgesCD:Start(32.9, self.vb.furyCount+1)
+			timerChainsofEternityCD:Start(57.2, self.vb.chainsCount+1)
+		end
 		timerHungeringMistCD:Start(95, self.vb.mistCount+1)
 	end
 end
@@ -163,8 +181,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnForgottenTorments:Show()
 	elseif args:IsSpellID(352382, 352389, 352398) then--Upper Reaches' Might/Mort'regar's Echoes/Soulforge Heat
 		self.vb.remnantcount = self.vb.remnantcount + 1
-		if timerHungeringMistCD:GetRemaining(self.vb.mistCount+1) >= 30.5 then
-			timerRemnantofForgottenTormentsCD:Start(nil, self.vb.remnantcount+1)--30.5 Timer syncs to when they actually happen
+		if timerHungeringMistCD:GetRemaining(self.vb.mistCount+1) >= 30.4 then
+			timerRemnantofForgottenTormentsCD:Start(nil, self.vb.remnantcount+1)--30.3 Timer syncs to when they actually happen
 		end
 		if spellId == 352382 then
 			warnUpperReachesMight:Show(self.vb.remnantcount)
@@ -207,6 +225,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnFuryoftheAges:Play("enrage")
 	elseif spellId == 347369 then
 		warnTheJailersGaze:Show(args.destName)
+		timerPedatorsHowlCD:Stop()
+		timerOverpowerCD:Stop()
+		timerGraspofDeathCD:Stop()
+		timerRemnantofForgottenTormentsCD:Stop()--Activation, not pre warning for emote
+		timerFuryoftheAgesCD:Stop()
+		timerChainsofEternityCD:Stop()
+		timerHungeringMistCD:Stop()
 	elseif spellId == 347274 then
 		if args:IsPlayer() then
 			specWarnEternalRuin:Show()
