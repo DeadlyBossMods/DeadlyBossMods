@@ -72,7 +72,7 @@ SanguineDepths\GrandProctorBeryllia.lua
 SanguineDepths\GeneralKaal.lua
 SanguineDepths\SanguineDepthsTrash.lua
 Tazavesh\ZophextheSentinel.lua
-Tazavesh\TheBazaar.lua
+Tazavesh\TheMenagerie.lua
 Tazavesh\MailroomMayhem.lua
 Tazavesh\AumyzaOasis.lua
 Tazavesh\Soazmi.lua
