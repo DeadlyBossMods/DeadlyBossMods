@@ -145,7 +145,7 @@ function mod:OnCombatStart(delay)
 	if self:IsMythic() then--Journal says mythic, but it's been wrong on earlier testing, leaving this here for now
 --		timerFragmentsofDestinyCD:Start(1-delay, 1)
 	end
---	berserkTimer:Start(-delay)
+	berserkTimer:Start(300-delay)--Phase 1
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(DBM_CORE_L.INFOFRAME_POWER)
 		DBM.InfoFrame:Show(3, "enemypower", 2)
@@ -429,7 +429,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 			timerLinkEssenceCD:Start(22, 1)
 --			timerWordofRecallCD:Start(2, 1)--Cast instantly on phasing
 		end
-		berserkTimer:Start(602)--Can delay couple seconds if boss is casting when timer expires.
+		berserkTimer:Cancel()
+		berserkTimer:Start(602)--Phase 2
 	end
 end
 
