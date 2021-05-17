@@ -38,7 +38,7 @@ local specWarnGraspoftheDead		= mod:NewSpecialWarningSwitch(350101, "-Healer", n
 local yellGraspoftheDead			= mod:NewYell(350101, nil, nil, nil, "YELL")
 --local specWarnGTFO				= mod:NewSpecialWarningGTFO(320366, nil, nil, nil, 1, 8)
 
---Alcruuxxxx
+--Alcruux
 local timerGripofHungerCD			= mod:NewAITimer(11, 349663, nil, nil, nil, 2)
 local timerGrandconsumptionCD		= mod:NewAITimer(11, 349797, nil, nil, nil, 3)
 --Achillite
