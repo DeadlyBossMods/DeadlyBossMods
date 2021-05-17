@@ -13,7 +13,11 @@ L:SetMiscLocalization({
 ---------------------------
 --  The Eye of the Jailer --
 ---------------------------
---L= DBM:GetModLocalization(2442)
+L= DBM:GetModLocalization(2442)
+
+L:SetOptionLocalization({
+	ContinueRepeating	= "Scorn과 Ire 디버프에 걸리면 끝날때까지 지정된 공격대 징표 말풍선 알림"
+})
 
 ---------------------------
 --  The Nine --
