@@ -294,7 +294,7 @@ L:SetGeneralLocalization({
 --L= DBM:GetModLocalization(2437)
 
 -----------------------
--- The Bazaar --
+-- The Menagerie --
 -----------------------
 --L= DBM:GetModLocalization(2454)
 
