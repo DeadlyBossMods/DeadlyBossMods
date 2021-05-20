@@ -78,6 +78,7 @@ DBT.DefaultOptions = {
 	BarXOffset = 0,
 	BarYOffset = 0,
 	Width = 183,
+	Height = 20,
 	Alpha = 0.8,
 	Scale = 0.9,
 	TimerX = -223,
@@ -91,6 +92,7 @@ DBT.DefaultOptions = {
 	HugeBarXOffset = 0,
 	HugeBarYOffset = 0,
 	HugeWidth = 200,
+	HugeHeight = 20,
 	HugeAlpha = 1,
 	HugeScale = 1.03,
 	HugeTimerX = 0,
@@ -101,7 +103,6 @@ DBT.DefaultOptions = {
 	HugeTimerPoint = "CENTER",
 	HugeSort = "Sort",
 	-- Misc
-	Height = 20,
 	TextColorR = 1,
 	TextColorG = 1,
 	TextColorB = 1,
@@ -608,7 +609,7 @@ function DBT:UpdateBars(sortBars)
 	end
 	for i, bar in ipairs(largeBars) do
 		bar.frame:ClearAllPoints()
-		bar.frame:SetPoint("TOP", largeBarsAnchor, "TOP", (i - 1) * self.Options.HugeBarXOffset, ((i - 1) * (self.Options.Height + self.Options.HugeBarYOffset)) * (self.Options.ExpandUpwardsLarge and 1 or -1))
+		bar.frame:SetPoint("TOP", largeBarsAnchor, "TOP", (i - 1) * self.Options.HugeBarXOffset, ((i - 1) * (self.Options.HugeHeight + self.Options.HugeBarYOffset)) * (self.Options.ExpandUpwardsLarge and 1 or -1))
 	end
 	for i, bar in ipairs(smallBars) do
 		bar.frame:ClearAllPoints()
@@ -826,7 +827,7 @@ function barPrototype:Update(elapsed)
 	end
 	if sparkEnabled then
 		spark:ClearAllPoints()
-		spark:SetSize(12, barOptions.Height * 3)
+		spark:SetSize(12, barOptions[isEnlarged and 'HugeHeight' or 'Height'] * 3)
 		spark:SetPoint("CENTER", bar, "LEFT", bar:GetValue() * bar:GetWidth(), -1)
 	else
 		spark:SetAlpha(0)
@@ -960,14 +961,13 @@ function barPrototype:ApplyStyle()
 		end
 	end
 	local barTextColorRed, barTextColorGreen, barTextColorBlue = barOptions.TextColorR, barOptions.TextColorG, barOptions.TextColorB
-	local barHeight, barWidth, barHugeWidth = barOptions.Height, barOptions.Width, barOptions.HugeWidth
+	local barHeight, barHugeHeight, barWidth, barHugeWidth = barOptions.Height, barOptions.HugeHeight, barOptions.Width, barOptions.HugeWidth
 	name:SetTextColor(barTextColorRed, barTextColorGreen, barTextColorBlue)
 	timer:SetTextColor(barTextColorRed, barTextColorGreen, barTextColorBlue)
 	if barOptions.IconLeft then icon1:Show() else icon1:Hide() end
 	if barOptions.IconRight then icon2:Show() else icon2:Hide() end
 	if enlarged then
-		bar:SetWidth(barHugeWidth)
-		bar:SetHeight(barHeight)
+		bar:SetSize(barHugeWidth, barHugeHeight)
 		frame:SetScale(barOptions.HugeScale)
 		if barOptions.FadeBars and self.fade then
 			frame:SetAlpha(barOptions.HugeAlpha / 2)
@@ -975,8 +975,7 @@ function barPrototype:ApplyStyle()
 			frame:SetAlpha(barOptions.HugeAlpha)
 		end
 	else
-		bar:SetWidth(barWidth)
-		bar:SetHeight(barHeight)
+		bar:SetSize(barWidth, barHeight)
 		frame:SetScale(barOptions.Scale)
 		if barOptions.FadeBars and self.fade and barOptions.Alpha ~= 0 then
 			frame:SetAlpha(barOptions.Alpha / 2)
@@ -985,9 +984,10 @@ function barPrototype:ApplyStyle()
 		end
 	end
 	if barOptions.IconLocked then
-		frame:SetSize(enlarged and barHugeWidth or barWidth, barHeight)
-		icon1:SetSize(barHeight, barHeight)
-		icon2:SetSize(barHeight, barHeight)
+		local sizeHeight = enlarged and barHugeHeight or barHeight
+		frame:SetSize(enlarged and barHugeWidth or barWidth, sizeHeight)
+		icon1:SetSize(sizeHeight, sizeHeight)
+		icon2:SetSize(sizeHeight, sizeHeight)
 	end
 	self.frame:Show()
 	if sparkEnabled then
