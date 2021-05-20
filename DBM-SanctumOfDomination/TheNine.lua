@@ -74,7 +74,7 @@ local yellArthurasCrushingGaze					= mod:NewYell(350039, nil, nil, nil, "YELL")
 local yellArthurasCrushingGazeFades				= mod:NewShortFadesYell(350039, nil, nil, nil, "YELL")
 ------End Valks
 local specWarnFragmentsofDestiny				= mod:NewSpecialWarningMoveAway(350542, nil, nil, nil, 1, 2)
-local yellFragmentsofDestiny					= mod:NewShortYell(350542)--TODO, probably change to icon/numbered yell system based on icon/combatlog order
+local yellFragmentsofDestiny					= mod:NewShortPosYell(350542)--TODO, probably change to icon/numbered yell system based on icon/combatlog order
 --Stage Two: The First of the Mawsworn
 local specWarnPierceSoul						= mod:NewSpecialWarningStack(350475, nil, 4, nil, nil, 1, 6)
 local specWarnPierceSoulTaunt					= mod:NewSpecialWarningTaunt(350475, nil, nil, nil, 1, 2)
@@ -349,18 +349,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 350542 then
 		local amount = args.amount or 1
-		if amount == 1 then--Initial application from boss only
-			if args:IsPlayer() then
-				specWarnFragmentsofDestiny:Show()
-				specWarnFragmentsofDestiny:Play("targetyou")
-				yellFragmentsofDestiny:Yell()--icon, icon
-			end
-			warnFragmentsofDestiny:CombinedShow(0.3, args.destName)
-		else
-			if args:IsPlayer() then
-				warnFragmentsofDestinyStack:Show(amount)
-			end
-		end
 		local icon = 0
 		for i = 1, expectedDebuffs do
 			if not fragmentTargets[i] then--Not yet assigned!
@@ -374,6 +362,18 @@ function mod:SPELL_AURA_APPLIED(args)
 					end
 				end
 				break
+			end
+		end
+		if amount == 1 then--Initial application from boss only
+			if args:IsPlayer() then
+				specWarnFragmentsofDestiny:Show(self:IconNumToTexture(icon))
+				specWarnFragmentsofDestiny:Play("targetyou")
+				yellFragmentsofDestiny:Yell(icon, icon)
+			end
+			warnFragmentsofDestiny:CombinedShow(0.3, args.destName)
+		else
+			if args:IsPlayer() then
+				warnFragmentsofDestinyStack:Show(amount)
 			end
 		end
 		if DBM.InfoFrame:IsShown() then
