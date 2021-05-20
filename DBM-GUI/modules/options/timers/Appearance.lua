@@ -122,7 +122,7 @@ local Textures = DBM_GUI:MixinSharedMedia3("statusbar", {
 		value	= "Interface\\AddOns\\DBM-StatusBarTimers\\textures\\default.blp"
 	},
 	{
-		text	= "Blizzad",
+		text	= "Blizzard",
 		value	= "Interface\\PaperDollInfoFrame\\UI-Character-Skills-Bar" -- 136570
 	},
 	{
