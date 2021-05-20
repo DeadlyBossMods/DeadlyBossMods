@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(175726)--Skyja (TODO, add other 2 and set health to highest?)
 mod:SetEncounterID(2429)
 mod:SetUsedIcons(8, 7, 6, 4, 3, 2, 1)
-mod:SetHotfixNoticeRev(20210520000000)--2021-05-13
+mod:SetHotfixNoticeRev(20210520000000)--2021-05-20
 mod:SetMinSyncRevision(20210520000000)
 --mod.respawnTime = 29
 
@@ -17,7 +17,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 350202 350158 350109 351139 350039 350542 350184 350483",
 	"SPELL_AURA_APPLIED_DOSE 350202 350542",
 	"SPELL_AURA_REMOVED 350158 350109 351139 350039 350542 350184 350483",
-	"SPELL_AURA_REMOVED_DOSE 350542",
+--	"SPELL_AURA_REMOVED_DOSE 350542",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 	"UNIT_DIED",
@@ -412,26 +412,27 @@ function mod:SPELL_AURA_REMOVED(args)
 			yellArthurasCrushingGazeFades:Cancel()
 		end
 	elseif spellId == 350542 then
-		local oneRemoved = false
+--		local oneRemoved = false
+		--Combat log doesn't fire for each dose, removed removes ALL stacks
 		for i = 1, expectedDebuffs do
 			if fragmentTargets[i] and fragmentTargets[i] == args.destName then--Found assignment matching this units name
-				if not oneRemoved then
+--				if not oneRemoved then
 					fragmentTargets[i] = false--remove first assignment we find
-					oneRemoved = true
-					local uId = DBM:GetRaidUnitId(args.destName)
-					local stillDebuffed = DBM:UnitDebuff(uId, spellId)--Check for remaining debuffs
-					if not stillDebuffed then--Terminate loop and remove icon if enabled
+--					oneRemoved = true
+--					local uId = DBM:GetRaidUnitId(args.destName)
+--					local stillDebuffed = DBM:UnitDebuff(uId, spellId)--Check for remaining debuffs
+--					if not stillDebuffed then--Terminate loop and remove icon if enabled
 						if self.Options.SetIconOnFragments then
 							self:SetIcon(args.destName, 0)
 						end
-						break--Break loop, nothing further to do
-					end
-				else
-					if self.Options.SetIconOnFragments then
-						self:SetIcon(args.destName, i)
-						break--Break loop, Icon updated to next
-					end
-				end
+--						break--Break loop, nothing further to do
+--					end
+--				else
+--					if self.Options.SetIconOnFragments then
+--						self:SetIcon(args.destName, i)
+--						break--Break loop, Icon updated to next
+--					end
+--				end
 			end
 		end
 		if DBM.InfoFrame:IsShown() then
@@ -443,7 +444,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	end
 end
-mod.SPELL_AURA_REMOVED_DOSE = mod.SPELL_AURA_REMOVED
+--mod.SPELL_AURA_REMOVED_DOSE = mod.SPELL_AURA_REMOVED
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
