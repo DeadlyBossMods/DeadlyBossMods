@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(175727)
 mod:SetEncounterID(2434)
 mod:SetUsedIcons(1, 2, 3, 4)
---mod:SetHotfixNoticeRev(20201222000000)
+mod:SetHotfixNoticeRev(20210520000000)--2021-05-20
 --mod:SetMinSyncRevision(20201222000000)
 --mod.respawnTime = 29
 
@@ -30,6 +30,7 @@ mod:RegisterEventsInCombat(
 --TODO, https://ptr.wowhead.com/spell=354231/soul-manacles tracking in some way?, depends how important it is (how many players are affected by it late fight)
 --TODO, do more with rendered soul? https://ptr.wowhead.com/spell=351229/rendered-soul
 --TODO, do anything with Vessle of Torment?
+--TODO, keep eye on timers. sequencing doesn't work. this may need SLG treatment if fight merits it. It's kind of an easy fight though so it may not be worth the effort
 --[[
 (ability.id = 350648 or ability.id = 350422 or ability.id = 350615 or ability.id = 350411 or ability.id = 350415) and type = "begincast"
  or ability.id = 349985 and type = "cast"
@@ -59,10 +60,10 @@ local specWarnWarmongerShackles				= mod:NewSpecialWarningSwitch(348985, nil, ni
 --local specWarnGTFO						= mod:NewSpecialWarningGTFO(340324, nil, nil, nil, 1, 8)
 
 --mod:AddTimerLine(BOSS)
-local timerTormentCD						= mod:NewCDTimer(45, 352158, nil, nil, nil, 3)--Ability is reset by encore
-local timerEncoreofTormentCD				= mod:NewCDTimer(161, 349985, nil, nil, nil, 3)--Tied to bosses energy cycle
-local timerSpawnMawswornCD					= mod:NewCDTimer(59.5, 350615, nil, nil, nil, 1)--Ability is reset by encore
-local timerBrandofTormentCD					= mod:NewNextCountTimer(17, 350648, nil, nil, nil, 3)--Secondary ability cast in 3s after each spawn mawsworn
+local timerTormentCD						= mod:NewCDTimer(35, 352158, nil, nil, nil, 3, nil, nil, true)--Ability is reset by encore
+local timerEncoreofTormentCD				= mod:NewCDTimer(160.9, 349985, nil, nil, nil, 3, nil, nil, true)--Tied to bosses energy cycle
+local timerSpawnMawswornCD					= mod:NewCDTimer(57.5, 350615, nil, nil, nil, 1, nil, nil, true)--Ability is reset by encore
+local timerBrandofTormentCD					= mod:NewCDCountTimer(17, 350648, nil, nil, nil, 3)--Secondary ability cast in 3s after each spawn mawsworn
 local timerRuinbladeCD						= mod:NewCDTimer(32.9, 350422, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)--Ability is reset by encore
 local timerShacklesCD						= mod:NewCDTimer(161, 350415, nil, nil, nil, 6)--Tied to bosses energy cycle
 --Hellscream
@@ -78,6 +79,51 @@ mod:AddNamePlateOption("NPAuraOnDefiance", 350650)
 mod:AddNamePlateOption("NPAuraOnTormented", 350649)
 
 local castsPerGUID = {}
+local difficultyName = "normal"
+--"Warmonger's Shackles-350415-npc:175727 = pull:35.3, 134.0, 64.4, 62.0", -- [6]
+--TODO, sequencing is NOT the final answer. This may be temporary. there is a better way.
+--What's known
+--Encore resets timers
+--Shackles probably affects timers in some way but can't determine it since the affect is more than just "resets on applied/removed"
+--However, duration of the phase DOES matter yet the timers don't pause either
+local allTimers = {
+	["lfr"] = {
+		--Shackles
+		[350415] = {},
+		--Torment
+		[349873] = {},
+		--Encore of Torment
+		[349985] = {130.5, 160.9, 164.6},--Copied from heroic/mythic but assumed same
+	},
+	["normal"] = {
+		--Shackles
+		[350415] = {},
+		--Torment
+		[349873] = {},
+		--Encore of Torment
+		[349985] = {130.5, 160.9, 164.6},--Copied from heroic/mythic but assumed same
+	},
+	["heroic"] = {
+		--Shackles
+		[350415] = {78.4, 161, 64.4, 62},--Heroic Testing
+		--Torment
+		[349873] = {18.2, 45.2, 68.1, 46.3, 43.7, 62.0},
+				  --12.2, 45.1, 45.3, 74.3, 45.1, 45.4",--This is literally why sequencing doesn't work accurately
+		--Encore of Torment
+		[349985] = {130.5, 160.9, 164.6},
+	},
+	["mythic"] = {
+		--Shackles
+		[350415] = {53, 166, 46.8, 118.4, 41.5, 67},
+		--Torment
+		[349873] = {11.8, 49.7, 45.2, 64.4, 35.4, 43.1, 35.4, 54.7, 32.9, 36.0, 30.5, 63.3},
+				  --12.1, 45.1, 45.7, 74.2, 45.1, 46.0, 67.4--This is literally why sequencing doesn't work accurately
+		--Encore of Torment
+		[349985] = {130.5, 160.9, 164.6},
+				  --130.2, 169.3, 164.6
+	},
+}
+mod.vb.shacklesCount = 0
 mod.vb.brandIcon = 1
 mod.vb.mawswornSpawn = 0
 mod.vb.mawswornIcon = 8
@@ -89,14 +135,14 @@ mod.vb.brandCount = 0
 
 function mod:OnCombatStart(delay)
 	table.wipe(castsPerGUID)
+	self.vb.shacklesCount = 0
 	self.vb.brandIcon = 1
 	self.vb.mawswornSpawn = 0
 	self.vb.mawswornIcon = 8
 	self.vb.brandCount = 0
 	timerRuinbladeCD:Start(8.1-delay)
 	timerTormentCD:Start(11.8-delay)
-	timerShacklesCD:Start(78.7-delay)
-	timerEncoreofTormentCD:Start(131.2-delay)--IFFY
+	timerEncoreofTormentCD:Start(130.5-delay)
 --	berserkTimer:Start(-delay)
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(DBM_CORE_L.INFOFRAME_POWER)
@@ -104,6 +150,21 @@ function mod:OnCombatStart(delay)
 	end
 	if self.Options.NPAuraOnDefiance or self.Options.NPAuraOnTormented then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
+	end
+	if self:IsMythic() then
+		difficultyName = "mythic"
+		timerShacklesCD:Start(53-delay, 1)
+	else
+		if self:IsHeroic() then
+			difficultyName = "heroic"
+			timerShacklesCD:Start(78.4-delay, 1)
+		elseif self:IsNormal() then
+			difficultyName = "normal"
+			timerShacklesCD:Start(78.4-delay, 1)
+		else--LFR
+			difficultyName = "lfr"
+			timerShacklesCD:Start(78.4-delay, 1)
+		end
 	end
 end
 
@@ -116,6 +177,18 @@ function mod:OnCombatEnd()
 --	end
 	if self.Options.NPAuraOnDefiance or self.Options.NPAuraOnTormented then
 		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
+	end
+end
+
+function mod:OnTimerRecovery()
+	if self:IsMythic() then
+		difficultyName = "mythic"
+	elseif self:IsHeroic() then
+		difficultyName = "heroic"
+	elseif self:IsNormal() then
+		difficultyName = "normal"
+	else
+		difficultyName = "lfr"
 	end
 end
 
@@ -160,17 +233,21 @@ function mod:SPELL_CAST_START(args)
 		self.vb.brandCount = 0
 		self.vb.mawswornSpawn = self.vb.mawswornSpawn + 1
 		warnSpawnMawsworn:Show(self.vb.mawswornSpawn)
-		timerSpawnMawswornCD:Start()
+		timerSpawnMawswornCD:Start(self:IsMythic() and 47.7 or 57.5)
 		if self.Options.SetIconOnMawsworn then--This icon method may be faster than GUID matching, but also risks being slower and less consistent if marker has nameplates off
 			self:ScanForMobs(177594, 0, 8, 4, 0.2, 12, "SetIconOnMawsworn")
 		end
 		timerBrandofTormentCD:Start(6, 1)
 	elseif spellId == 350411 then--Hellscream
-		timerHellscream:Start(self:IsEasy() and 50 or 35)--Heroic known, other difficulties not yet
+		timerHellscream:Start(self:IsHerioc() and 35 or self:IsMythic() and 25 or 50)--Heroic and mythic known, other difficulties not yet
 	elseif spellId == 350415 then--Warmonger Shackles
-		specWarnWarmongerShackles:Show()
+		self.vb.shacklesCount = self.vb.shacklesCount + 1
+		specWarnWarmongerShackles:Show(self.vb.shacklesCount)
 		specWarnWarmongerShackles:Play("targetchange")
-		timerShacklesCD:Start()
+		local timer = allTimers[difficultyName][spellId][self.vb.shacklesCount+1]
+		if timer then
+			timerShacklesCD:Start(timer, self.vb.shacklesCount+1)
+		end
 	end
 end
 
@@ -184,14 +261,14 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerTormentCD:Stop()
 		timerRuinbladeCD:Stop()
 		timerRuinbladeCD:Start(38.9)
-		timerTormentCD:Start(42.5)--42-45 after encore
-		timerSpawnMawswornCD:Start(55)--55-60 after an encore
+		timerTormentCD:Start(41.3)--42-45 after encore
+		timerSpawnMawswornCD:Start(53.7)--53.7-60 after an encore
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 350650 or spellId == 351773 or spellId == 354055 then--Reg adds, reg adds, Mythic Adds (351773 heroic confirmed)
+	if spellId == 350650 or spellId == 351773 or spellId == 354055 then--Reg adds, reg adds, Mythic Adds (351773 heroic confirmed, 354055 mythic confirmed)
 		warnDefiance:CombinedShow(0.5, args.destName)
 		if self.Options.NPAuraOnDefiance then
 			DBM.Nameplate:Show(true, args.sourceGUID, spellId)
@@ -291,6 +368,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 349873 then--Torment (Script Activation)
 		specWarnTorment:Show()
 		specWarnTorment:Play("watchstep")
-		timerTormentCD:Start()
+		timerTormentCD:Start(self:IsMythic() and 30 or 45)--Mythic can be anywhere between 30-49 outside of the encore reset
 	end
 end

@@ -122,7 +122,7 @@ local Textures = DBM_GUI:MixinSharedMedia3("statusbar", {
 		value	= "Interface\\AddOns\\DBM-StatusBarTimers\\textures\\default.blp"
 	},
 	{
-		text	= "Blizzad",
+		text	= "Blizzard",
 		value	= "Interface\\PaperDollInfoFrame\\UI-Character-Skills-Bar" -- 136570
 	},
 	{
@@ -239,14 +239,9 @@ FontSizeSlider:SetPoint("TOPLEFT", BarSetup.frame, "TOPLEFT", 20, -180)
 FontSizeSlider:SetValue(DBT.Options.FontSize)
 FontSizeSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("FontSize"))
 
-local BarHeightSlider = BarSetup:CreateSlider(L.Bar_Height, 10, 35, 1)
-BarHeightSlider:SetPoint("TOPLEFT", BarSetup.frame, "TOPLEFT", 20, -220)
-BarHeightSlider:SetValue(DBT.Options.Height)
-BarHeightSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("Height"))
-
 local DisableBarFade = BarSetup:CreateCheckButton(L.NoBarFade, false, nil, nil, "NoBarFade")
-DisableBarFade:SetPoint("TOPLEFT", BarHeightSlider, "BOTTOMLEFT", 0, -50)
-DisableBarFade.myheight = 50 -- Extra padding because right buttons are offset from sliders
+DisableBarFade:SetPoint("TOPLEFT", FontSizeSlider, "BOTTOMLEFT", 0, -85)
+DisableBarFade.myheight = 75 -- Extra padding because right buttons are offset from sliders
 
 --[[
 Temporarily disabled while skinning system is being worked on.
@@ -301,15 +296,20 @@ BarWidthSlider:SetPoint("TOPLEFT", BarSetupSmall.frame, "TOPLEFT", 20, -90)
 BarWidthSlider:SetValue(DBT.Options.Width)
 BarWidthSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("Width"))
 
+local BarHeightSlider = BarSetupSmall:CreateSlider(L.Bar_Height, 10, 35, 1, 310)
+BarHeightSlider:SetPoint("TOPLEFT", BarWidthSlider, "BOTTOMLEFT", 0, -10)
+BarHeightSlider:SetValue(DBT.Options.Height)
+BarHeightSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("Height"))
+
 local BarScaleSlider = BarSetupSmall:CreateSlider(L.Slider_BarScale, 0.75, 2, 0.05, 310)
-BarScaleSlider:SetPoint("TOPLEFT", BarWidthSlider, "BOTTOMLEFT", 0, -10)
+BarScaleSlider:SetPoint("TOPLEFT", BarHeightSlider, "BOTTOMLEFT", 0, -10)
 BarScaleSlider:SetValue(DBT.Options.Scale)
 BarScaleSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("Scale"))
 
-local AlphaSlider = BarSetupSmall:CreateSlider(L.Bar_Alpha, 0, 1, 0.1)
-AlphaSlider:SetPoint("TOPLEFT", BarScaleSlider, "BOTTOMLEFT", 0, -10)
-AlphaSlider:SetValue(DBT.Options.Alpha)
-AlphaSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("Alpha"))
+local SortDropDown = BarSetupSmall:CreateDropdown(L.BarSort, Sorts, "DBT", "Sort", function(value)
+	DBT:SetOption("Sort", value)
+end)
+SortDropDown:SetPoint("TOPLEFT", BarScaleSlider, "BOTTOMLEFT", -20, -25)
 
 local BarOffsetXSlider = BarSetupSmall:CreateSlider(L.Slider_BarOffSetX, -50, 50, 1, 120)
 BarOffsetXSlider:SetPoint("TOPLEFT", BarSetupSmall.frame, "TOPLEFT", 350, -90)
@@ -317,16 +317,17 @@ BarOffsetXSlider:SetValue(DBT.Options.BarXOffset)
 BarOffsetXSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("BarXOffset"))
 BarOffsetXSlider.myheight = 0
 
-local BarOffsetYSlider = BarSetupSmall:CreateSlider(L.Slider_BarOffSetY, -50, 50, 1, 120)
+local BarOffsetYSlider = BarSetupSmall:CreateSlider(L.Slider_BarOffSetY, -5, 35, 1, 120)
 BarOffsetYSlider:SetPoint("TOPLEFT", BarOffsetXSlider, "BOTTOMLEFT", 0, -10)
 BarOffsetYSlider:SetValue(DBT.Options.BarYOffset)
 BarOffsetYSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("BarYOffset"))
 BarOffsetYSlider.myheight = 0
 
-local SortDropDown = BarSetupSmall:CreateDropdown(L.BarSort, Sorts, "DBT", "Sort", function(value)
-	DBT:SetOption("Sort", value)
-end)
-SortDropDown:SetPoint("TOPLEFT", AlphaSlider, "BOTTOMLEFT", -20, -25)
+local AlphaSlider = BarSetupSmall:CreateSlider(L.Bar_Alpha, 0, 1, 0.1, 120)
+AlphaSlider:SetPoint("TOPLEFT", BarOffsetYSlider, "BOTTOMLEFT", 0, -10)
+AlphaSlider:SetValue(DBT.Options.Alpha)
+AlphaSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("Alpha"))
+AlphaSlider.myheight = 0
 
 local barResetbutton = BarSetupSmall:CreateButton(L.SpecWarn_ResetMe, 120, 16)
 barResetbutton:SetPoint("BOTTOMRIGHT", BarSetupSmall.frame, "BOTTOMRIGHT", -2, 4)
@@ -334,6 +335,7 @@ barResetbutton:SetNormalFontObject(GameFontNormalSmall)
 barResetbutton:SetHighlightFontObject(GameFontNormalSmall)
 barResetbutton:SetScript("OnClick", function()
 	resetDBTValueToDefault(BarWidthSlider, "Width")
+	resetDBTValueToDefault(BarHeightSlider, "Height")
 	resetDBTValueToDefault(BarScaleSlider, "Scale")
 	resetDBTValueToDefault(BarOffsetXSlider, "BarXOffset")
 	resetDBTValueToDefault(BarOffsetYSlider, "BarYOffset")
@@ -365,15 +367,20 @@ HugeBarWidthSlider:SetPoint("TOPLEFT", BarSetupHuge.frame, "TOPLEFT", 20, -105)
 HugeBarWidthSlider:SetValue(DBT.Options.HugeWidth)
 HugeBarWidthSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("HugeWidth"))
 
+local HugeBarHeightSlider = BarSetupHuge:CreateSlider(L.Bar_Height, 10, 35, 1, 310)
+HugeBarHeightSlider:SetPoint("TOPLEFT", HugeBarWidthSlider, "BOTTOMLEFT", 0, -10)
+HugeBarHeightSlider:SetValue(DBT.Options.HugeHeight)
+HugeBarHeightSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("HugeHeight"))
+
 local HugeBarScaleSlider = BarSetupHuge:CreateSlider(L.Slider_BarScale, 0.75, 2, 0.05, 310)
-HugeBarScaleSlider:SetPoint("TOPLEFT", HugeBarWidthSlider, "BOTTOMLEFT", 0, -10)
+HugeBarScaleSlider:SetPoint("TOPLEFT", HugeBarHeightSlider, "BOTTOMLEFT", 0, -10)
 HugeBarScaleSlider:SetValue(DBT.Options.HugeScale)
 HugeBarScaleSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("HugeScale"))
 
-local HugeAlphaSlider = BarSetupHuge:CreateSlider(L.Bar_Alpha, 0.1, 1, 0.1)
-HugeAlphaSlider:SetPoint("TOPLEFT", HugeBarScaleSlider, "BOTTOMLEFT", 0, -10)
-HugeAlphaSlider:SetValue(DBT.Options.HugeAlpha)
-HugeAlphaSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("HugeAlpha"))
+local SortDropDownLarge = BarSetupHuge:CreateDropdown(L.BarSort, Sorts, "DBT", "HugeSort", function(value)
+	DBT:SetOption("HugeSort", value)
+end)
+SortDropDownLarge:SetPoint("TOPLEFT", HugeBarScaleSlider, "BOTTOMLEFT", -20, -25)
 
 local HugeBarOffsetXSlider = BarSetupHuge:CreateSlider(L.Slider_BarOffSetX, -50, 50, 1, 120)
 HugeBarOffsetXSlider:SetPoint("TOPLEFT", BarSetupHuge.frame, "TOPLEFT", 350, -105)
@@ -381,16 +388,17 @@ HugeBarOffsetXSlider:SetValue(DBT.Options.HugeBarXOffset)
 HugeBarOffsetXSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("HugeBarXOffset"))
 HugeBarOffsetXSlider.myheight = 0
 
-local HugeBarOffsetYSlider = BarSetupHuge:CreateSlider(L.Slider_BarOffSetY, -50, 50, 1, 120)
+local HugeBarOffsetYSlider = BarSetupHuge:CreateSlider(L.Slider_BarOffSetY, -5, 35, 1, 120)
 HugeBarOffsetYSlider:SetPoint("TOPLEFT", HugeBarOffsetXSlider, "BOTTOMLEFT", 0, -10)
 HugeBarOffsetYSlider:SetValue(DBT.Options.HugeBarYOffset)
 HugeBarOffsetYSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("HugeBarYOffset"))
 HugeBarOffsetYSlider.myheight = 0
 
-local SortDropDownLarge = BarSetupHuge:CreateDropdown(L.BarSort, Sorts, "DBT", "HugeSort", function(value)
-	DBT:SetOption("HugeSort", value)
-end)
-SortDropDownLarge:SetPoint("TOPLEFT", HugeAlphaSlider, "BOTTOMLEFT", -20, -25)
+local HugeAlphaSlider = BarSetupHuge:CreateSlider(L.Bar_Alpha, 0.1, 1, 0.1, 120)
+HugeAlphaSlider:SetPoint("TOPLEFT", HugeBarOffsetYSlider, "BOTTOMLEFT", 0, -10)
+HugeAlphaSlider:SetValue(DBT.Options.HugeAlpha)
+HugeAlphaSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("HugeAlpha"))
+HugeAlphaSlider.myheight = 0
 
 local hugeBarResetbutton = BarSetupHuge:CreateButton(L.SpecWarn_ResetMe, 120, 16)
 hugeBarResetbutton:SetPoint("BOTTOMRIGHT", BarSetupHuge.frame, "BOTTOMRIGHT", -2, 4)
@@ -398,6 +406,7 @@ hugeBarResetbutton:SetNormalFontObject(GameFontNormalSmall)
 hugeBarResetbutton:SetHighlightFontObject(GameFontNormalSmall)
 hugeBarResetbutton:SetScript("OnClick", function()
 	resetDBTValueToDefault(HugeBarWidthSlider, "HugeWidth")
+	resetDBTValueToDefault(HugeBarHeightSlider, "HugeHeight")
 	resetDBTValueToDefault(HugeBarScaleSlider, "HugeScale")
 	resetDBTValueToDefault(HugeBarOffsetXSlider, "HugeBarXOffset")
 	resetDBTValueToDefault(HugeBarOffsetYSlider, "HugeBarYOffset")

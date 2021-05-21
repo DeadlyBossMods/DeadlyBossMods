@@ -25,7 +25,8 @@ L= DBM:GetModLocalization(2439)
 
 L:SetMiscLocalization({
 	AgathaBlade		= "Fall before my blade!",
-	AradneStrike	= "You are all outmatched!"
+	AradneStrike	= "You are all outmatched!",
+	Fragment		= "Fragment "--Space is intentional, leave a space to add a number after it
 })
 
 ---------------------------

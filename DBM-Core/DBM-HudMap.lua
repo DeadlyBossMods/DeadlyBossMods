@@ -777,10 +777,12 @@ do
 			if not self.alwaysShow then
 				local distance
 				local px, py = mod:GetUnitPosition("player")
-				distance, x, y = self:Distance(px, py, true)
-				if distance > 200 then
-					self:Hide()
-					return
+				if px and py then
+					distance, x, y = self:Distance(px, py, true)
+					if distance > 200 then
+						self:Hide()
+						return
+					end
 				end
 			else
 				x, y = self:Location()
