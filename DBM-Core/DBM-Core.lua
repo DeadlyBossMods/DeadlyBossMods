@@ -12622,7 +12622,7 @@ do
 							addsIconSet[scanID] = nil
 							return
 						end
-					elseif guid2 and (guid2 == creatureID or cid2 == creatureID or cid2 == secondCreatureID) and not addsGUIDs[guid2] then
+					elseif guid2 and ((guid2 == creatureID) or (cid2 == creatureID) or (cid2 == secondCreatureID)) and not addsGUIDs[guid2] then
 						DBM:Debug("Match found, SHOULD be setting icon", 2)
 						if iconSetMethod == 2 then
 							SetRaidTarget(unitid2, mobIcon)
@@ -12678,7 +12678,7 @@ do
 							addsIconSet[scanID] = nil
 							return
 						end
-					elseif guid and (guid == creatureID or cid == creatureID or cid == secondCreatureID) and not addsGUIDs[guid] then
+					elseif guid and ((guid == creatureID) or (cid == creatureID) or (cid == secondCreatureID)) and not addsGUIDs[guid] then
 						DBM:Debug("Match found, SHOULD be setting icon", 2)
 						if iconSetMethod == 2 then
 							SetRaidTarget(unitid, mobIcon)
