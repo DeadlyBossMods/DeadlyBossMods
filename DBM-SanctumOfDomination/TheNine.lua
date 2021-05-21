@@ -356,8 +356,8 @@ function mod:SPELL_AURA_APPLIED(args)
 				fragmentTargets[i] = args.destName--Assign player name for infoframe even if they already have icon
 				if self.Options.SetIconOnFragments then--Now do icon stuff, if enabled
 					local uId = DBM:GetRaidUnitId(args.destName)
-					local currentIcon = GetRaidTargetIndex(uId) or 0
-					if currentIcon == 0 then--Don't set new icon if target already has one, this person is just taking on additional stacks
+					local currentIcon = GetRaidTargetIndex(uId) or 9--We want to set "no icon" as max index for below logic
+					if currentIcon > i then--Automatically set lowest icon index on target, meaning star favored over circle, circle favored over triangle, etc.
 						self:SetIcon(args.destName, i)
 					end
 				end
