@@ -14,10 +14,10 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 355123 351066 351067 351073 350469",--350096 350691 350518
 --	"SPELL_CAST_SUCCESS",
---	"SPELL_SUMMON 349908",
-	"SPELL_AURA_APPLIED 350337 350469 349890",--350097
+	"SPELL_SUMMON 349908",
+	"SPELL_AURA_APPLIED 355790 350469 349890 355790",--350097
 --	"SPELL_AURA_APPLIED_DOSE",
-	"SPELL_AURA_REMOVED 350337 350469",--350097
+	"SPELL_AURA_REMOVED 355790 350469 355790",--350097
 	"SPELL_PERIODIC_DAMAGE 350489",
 	"SPELL_PERIODIC_MISSED 350489",
 --	"UNIT_DIED"
@@ -28,10 +28,11 @@ mod:RegisterEventsInCombat(
 --TODO, Orb of Torment's Unrelenting Torment cast removed? Same with Burst of Agony?
 --[[
 (ability.id = 349889 or ability.id = 355123 or ability.id = 351066 or ability.id = 351067 or ability.id = 351073 or ability.id = 350469 or ability.id = 350894) and type = "begincast"
+ or ability.id = 349908
  or (source.type = "NPC" and source.firstSeen = timestamp) or (target.type = "NPC" and target.firstSeen = timestamp)
 --]]
 local warnOrbofTorment							= mod:NewCountAnnounce(349908, 2)
-local warnOrbSuffering							= mod:NewFadesAnnounce(350337, 1)
+local warnOrbEternalTorment						= mod:NewFadesAnnounce(355790, 1)
 --local warnUnrelentingTorment					= mod:NewCountAnnounce(350518, 4)
 local warnMalevolence							= mod:NewTargetNoFilterAnnounce(350469, 3)
 --local warnSuffering							= mod:NewTargetNoFilterAnnounce(349890, 3)
@@ -63,9 +64,11 @@ local timerGraspofMaliceCD						= mod:NewCDTimer(20.7, 355123, nil, nil, nil, 3)
 --mod:AddRangeFrameOption("8")
 mod:AddInfoFrameOption(349890, true)
 mod:AddSetIconOption("SetIconOnMalevolence", 350469, true, false, {1, 2, 3})
-mod:AddNamePlateOption("NPAuraOnOrbSuffering", 350337)
+mod:AddSetIconOption("SetIconOnOrbs", 321226, true, true, {7, 8})
+mod:AddNamePlateOption("NPAuraOnOrbEternalTorment", 355790)
 
 mod.vb.orbCount = 0
+mod.vb.iconCount = 8
 mod.vb.unrelentingCount = 0
 mod.vb.malevolenceCount = 0
 mod.vb.malevolenceIcon = 1
@@ -73,6 +76,7 @@ mod.vb.shatterCount = 0
 
 function mod:OnCombatStart(delay)
 	self.vb.orbCount = 0
+	self.vb.iconCount = 8
 	self.vb.unrelentingCount = 0
 	self.vb.malevolenceCount = 0
 	self.vb.shatterCount = 0
@@ -86,7 +90,7 @@ function mod:OnCombatStart(delay)
 --		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(328897))
 --		DBM.InfoFrame:Show(10, "table", ExsanguinatedStacks, 1)
 --	end
-	if self.Options.NPAuraOnOrbSuffering then
+	if self.Options.NPAuraOnOrbEternalTorment then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
 end
@@ -98,7 +102,7 @@ function mod:OnCombatEnd()
 --	if self.Options.RangeFrame then
 --		DBM.RangeCheck:Hide()
 --	end
-	if self.Options.NPAuraOnOrbSuffering then
+	if self.Options.NPAuraOnOrbEternalTorment then
 		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
 	end
 end
@@ -144,21 +148,28 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerMalevolenceCD:Start()
 	end
 end
+--]]
 
-function mod:SPELL_CAST_SUMMON(args)
+function mod:SPELL_SUMMON(args)
 	local spellId = args.spellId
-	if spellId == 349908 and self:AntiSpam(3, 1) then
-		self.vb.orbCount = self.vb.orbCount + 1
-		warnOrbofTorment:Show(self.vb.orbCount)
-		timerOrbofTormentCD:Start()
+	if spellId == 349908 then
+		if self:AntiSpam(3, 1) then
+			self.vb.iconCount = 8
+			self.vb.orbCount = self.vb.orbCount + 1
+			warnOrbofTorment:Show(self.vb.orbCount)
+			timerOrbofTormentCD:Start()
+		end
+		if self.Options.SetIconOnOrbs then
+			self:ScanForMobs(args.destGUID, 2, self.vb.iconCount, 1, 0.2, 12, "SetIconOnOrbs")
+		end
+		self.vb.iconCount = self.vb.iconCount - 1
 	end
 end
---]]
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 350337 then
-		if self.Options.NPAuraOnOrbSuffering then
+	if spellId == 355790 then
+		if self.Options.NPAuraOnOrbEternalTorment then
 			DBM.Nameplate:Show(true, args.sourceGUID, spellId, nil, 20)
 		end
 	elseif spellId == 350469 then
@@ -200,12 +211,12 @@ end
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
-	if spellId == 350337 then
-		if self.Options.NPAuraOnOrbSuffering then
+	if spellId == 355790 then
+		if self.Options.NPAuraOnOrbEternalTorment then
 			DBM.Nameplate:Hide(true, args.sourceGUID, spellId)
 		end
 		if self:AntiSpam(3, 2) then
-			warnOrbSuffering:Show()
+			warnOrbEternalTorment:Show()
 		end
 	elseif spellId == 350469 then
 		if args:IsPlayer() then
@@ -248,9 +259,10 @@ end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 350676 then--Orb of Torment
-		self.vb.orbCount = self.vb.orbCount + 1
-		warnOrbofTorment:Show(self.vb.orbCount)
-		timerOrbofTormentCD:Start()
+--		self.vb.iconCount = 8
+--		self.vb.orbCount = self.vb.orbCount + 1
+--		warnOrbofTorment:Show(self.vb.orbCount)
+--		timerOrbofTormentCD:Start()
 	end
 end
 
