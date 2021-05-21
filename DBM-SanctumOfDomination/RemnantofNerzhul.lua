@@ -12,12 +12,12 @@ mod:SetEncounterID(2432)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 349889 355123 351066 351067 351073 350469",--350096 350691 350518
+	"SPELL_CAST_START 355123 351066 351067 351073 350469",--350096 350691 350518
 --	"SPELL_CAST_SUCCESS",
 --	"SPELL_SUMMON 349908",
-	"SPELL_AURA_APPLIED 350337 350469 349890 349889",--350097
+	"SPELL_AURA_APPLIED 350337 350469 349890",--350097
 --	"SPELL_AURA_APPLIED_DOSE",
-	"SPELL_AURA_REMOVED 350337 350469 349889",--350097
+	"SPELL_AURA_REMOVED 350337 350469",--350097
 	"SPELL_PERIODIC_DAMAGE 350489",
 	"SPELL_PERIODIC_MISSED 350489",
 --	"UNIT_DIED"
@@ -27,24 +27,24 @@ mod:RegisterEventsInCombat(
 --TODO, Fix timers if possible, right now they are near useless since they are all HIGHLY variable with no pattern as to why (no evidence shows shatter affects them)
 --TODO, Orb of Torment's Unrelenting Torment cast removed? Same with Burst of Agony?
 --[[
-(ability.id = 349889 or ability.id = 355123 or ability.id = 351066 or ability.id = 351067 or ability.id = 351073 or ability.id = 350469) and type = "begincast"
+(ability.id = 349889 or ability.id = 355123 or ability.id = 351066 or ability.id = 351067 or ability.id = 351073 or ability.id = 350469 or ability.id = 350894) and type = "begincast"
  or (source.type = "NPC" and source.firstSeen = timestamp) or (target.type = "NPC" and target.firstSeen = timestamp)
 --]]
 local warnOrbofTorment							= mod:NewCountAnnounce(349908, 2)
 local warnOrbSuffering							= mod:NewFadesAnnounce(350337, 1)
 --local warnUnrelentingTorment					= mod:NewCountAnnounce(350518, 4)
 local warnMalevolence							= mod:NewTargetNoFilterAnnounce(350469, 3)
---local warnBlight								= mod:NewTargetNoFilterAnnounce(349890, 3)
+--local warnSuffering							= mod:NewTargetNoFilterAnnounce(349890, 3)
 --local warnAgony								= mod:NewTargetAnnounce(350097, 3)
 local warnShatter								= mod:NewCountAnnounce(351066, 1)
 
 local specWarnMalevolence						= mod:NewSpecialWarningYouPos(350469, nil, nil, nil, 1, 2)
 local yellMalevolence							= mod:NewShortPosYell(350469)
 local yellMalevolenceFades						= mod:NewIconFadesYell(350469)
-local specWarnBlight							= mod:NewSpecialWarningMoveTo(349889, nil, nil, nil, 1, 2)
-local yellBlight								= mod:NewYell(349889, nil, false)--Not as useful as fades
-local yellBlightFades							= mod:NewFadesYell(349889)
-local specWarnBlightSwap						= mod:NewSpecialWarningTaunt(349889, nil, nil, nil, 1, 2)
+local specWarnSuffering							= mod:NewSpecialWarningMoveTo(350894, nil, nil, nil, 1, 2)
+local yellSuffering								= mod:NewYell(350894, nil, false)--Not as useful as fades
+local yellSufferingFades						= mod:NewFadesYell(350894)
+local specWarnSufferingSwap						= mod:NewSpecialWarningTaunt(350894, nil, nil, nil, 1, 2)
 local specWarnGTFO								= mod:NewSpecialWarningGTFO(350489, nil, nil, nil, 1, 8)
 local specWarnGraspofMalice						= mod:NewSpecialWarningDodge(355123, nil, nil, nil, 2, 2)--Malicious Gauntlet
 --local specWarnAgony							= mod:NewSpecialWarningMoveAway(350097, nil, nil, nil, 1, 2)
@@ -54,7 +54,7 @@ local specWarnGraspofMalice						= mod:NewSpecialWarningDodge(355123, nil, nil, 
 --mod:AddTimerLine(BOSS)
 local timerOrbofTormentCD						= mod:NewCDTimer(31.7, 349908, nil, nil, nil, 1)--31-60, kind of worthless timer
 local timerMalevolenceCD						= mod:NewCDTimer(21.2, 350469, nil, nil, nil, 3, nil, DBM_CORE_L.CURSE_ICON)--Rattlecage of Agony
-local timerBlightCD								= mod:NewCDTimer(15.8, 349889, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON, nil, mod:IsTank() and 2, 3)--Helm of Suffering (casts suffering not blight technically)
+local timerSufferingCD							= mod:NewCDTimer(19.5, 350894, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON, nil, mod:IsTank() and 2, 3)--Helm of Suffering (casts suffering not Suffering technically)
 local timerGraspofMaliceCD						= mod:NewCDTimer(20.7, 355123, nil, nil, nil, 3)--Malicious Gauntlet
 --local timerBurstofAgonyCD						= mod:NewAITimer(23, 350096, nil, nil, nil, 3)
 
@@ -78,8 +78,8 @@ function mod:OnCombatStart(delay)
 	self.vb.shatterCount = 0
 	timerOrbofTormentCD:Start(12-delay)
 	timerGraspofMaliceCD:Start(21.3-delay)--Probably doesn't start here
+	timerSufferingCD:Start(23-delay)
 	timerMalevolenceCD:Start(36.5-delay)
-	timerBlightCD:start(37.7-delay)
 --	timerBurstofAgonyCD:Start(1-delay)--probably doesn't start here
 --	berserkTimer:Start(-delay)
 --	if self.Options.InfoFrame then
@@ -105,8 +105,17 @@ end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 349889 then--or 350894
-		timerBlightCD:Start()
+	if spellId == 350894 then
+		if self:IsTanking("player", nil, nil, true, args.sourceGUID) then
+			specWarnSuffering:Show(DBM_CORE_L.ORB)
+			specWarnSuffering:Play("targetyou")--or orbrun.ogg?
+			yellSuffering:Yell()
+			yellSufferingFades:Countdown(3)
+--		else
+--			specWarnSufferingSwap:Show(args.destName)
+--			specWarnSufferingSwap:Play("tauntboss")
+		end
+		timerSufferingCD:Start()
 	elseif spellId == 355123 then
 		specWarnGraspofMalice:Show()
 		specWarnGraspofMalice:Play("watchstep")
@@ -166,7 +175,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnMalevolence:CombinedShow(0.3, args.destName)
 		self.vb.malevolenceIcon = self.vb.malevolenceIcon + 1
 --	elseif spellId == 349890 then
---		warnBlight:Show(args.destName)
+--		warnSuffering:Show(args.destName)
 --[[	elseif spellId == 350097 then
 		warnAgony:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
@@ -174,17 +183,17 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnAgony:Play("runout")
 			yellAgony:Yell()
 			yellAgonyFades:Countdown(spellId)
-		end--]]
-	elseif spellId == 349889 then
-		if args:IsPlayer() then
-			specWarnBlight:Show(DBM_CORE_L.ORB)
-			specWarnBlight:Play("targetyou")--or orbrun.ogg?
-			yellBlight:Yell()
-			yellBlightFades:Countdown(spellId)
-		else
-			specWarnBlightSwap:Show(args.destName)
-			specWarnBlightSwap:Play("tauntboss")
 		end
+	elseif spellId == 350894 then
+		if args:IsPlayer() then
+			specWarnSuffering:Show(DBM_CORE_L.ORB)
+			specWarnSuffering:Play("targetyou")--or orbrun.ogg?
+			yellSuffering:Yell()
+			yellSufferingFades:Countdown(spellId)
+		else
+			specWarnSufferingSwap:Show(args.destName)
+			specWarnSufferingSwap:Play("tauntboss")
+		end--]]
 	end
 end
 --mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -209,10 +218,10 @@ function mod:SPELL_AURA_REMOVED(args)
 --		if args:IsPlayer() then
 --			yellAgonyFades:Cancel()
 --		end
-	elseif spellId == 349889 then
-		if args:IsPlayer() then
-			yellBlightFades:Cancel()
-		end
+--	elseif spellId == 350894 then
+--		if args:IsPlayer() then
+--			yellSufferingFades:Cancel()
+--		end
 	end
 end
 
