@@ -2,8 +2,8 @@ DBM_CORE_L = {}
 
 local L = DBM_CORE_L
 
-L.DEADLY_BOSS_MODS					= "Deadly Boss Mods"
-L.DBM								= "DBM"
+L.DEADLY_BOSS_MODS					= "Deadly Boss Mods" -- NO TRANSLATE
+L.DBM								= "DBM" -- NO TRANSLATE
 
 if C_DateAndTime and C_DateAndTime.GetCurrentCalendarTime then
 	local dateTable = C_DateAndTime.GetCurrentCalendarTime()
@@ -207,7 +207,7 @@ L.PIZZA_SYNC_INFO					= "|Hplayer:%1$s|h[%1$s]|h sent you a " .. L.DBM .. " time
 L.PIZZA_CONFIRM_IGNORE				= "Do you really want to ignore " .. L.DBM .. " timers from %s for this session?"
 L.PIZZA_ERROR_USAGE					= "Usage: /dbm [broadcast] timer <time> <text>. <time> must be 3 or greater."
 
-L.MINIMAP_TOOLTIP_HEADER			= L.DEADLY_BOSS_MODS--Technically redundant
+L.MINIMAP_TOOLTIP_HEADER			= L.DEADLY_BOSS_MODS --Technically redundant
 L.MINIMAP_TOOLTIP_FOOTER			= "Hold shift and drag to move"
 
 L.RANGECHECK_HEADER					= "Range Check (%dy)"
@@ -659,30 +659,30 @@ L.DUR_ENTRY							= "%s: Durability [%d percent] / Gear broken [%s]"
 L.LAG_FOOTER						= "No Response: %s"
 
 --Role Icons
-L.TANK_ICON							= "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:20:20:0:0:255:66:6:21:7:27|t"
-L.DAMAGE_ICON						= "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:20:20:0:0:255:66:39:55:7:27|t"
-L.HEALER_ICON						= "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:20:20:0:0:255:66:70:86:7:27|t"
+L.TANK_ICON							= "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:20:20:0:0:255:66:6:21:7:27|t" -- NO TRANSLATE
+L.DAMAGE_ICON						= "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:20:20:0:0:255:66:39:55:7:27|t" -- NO TRANSLATE
+L.HEALER_ICON						= "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:20:20:0:0:255:66:70:86:7:27|t" -- NO TRANSLATE
 
-L.TANK_ICON_SMALL					= "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:12:12:0:0:255:66:6:21:7:27|t"
-L.DAMAGE_ICON_SMALL					= "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:12:12:0:0:255:66:39:55:7:27|t"
-L.HEALER_ICON_SMALL					= "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:12:12:0:0:255:66:70:86:7:27|t"
+L.TANK_ICON_SMALL					= "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:12:12:0:0:255:66:6:21:7:27|t" -- NO TRANSLATE
+L.DAMAGE_ICON_SMALL					= "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:12:12:0:0:255:66:39:55:7:27|t" -- NO TRANSLATE
+L.HEALER_ICON_SMALL					= "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:12:12:0:0:255:66:70:86:7:27|t" -- NO TRANSLATE
 --Importance Icons
-L.HEROIC_ICON						= "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:22:22:0:0:255:66:102:118:7:27|t"
-L.DEADLY_ICON						= "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:22:22:0:0:255:66:133:153:7:27|t"
-L.IMPORTANT_ICON					= "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:20:20:0:0:255:66:168:182:7:27|t"
-L.MYTHIC_ICON						= "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:22:22:0:0:255:66:133:153:40:58|t"
+L.HEROIC_ICON						= "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:22:22:0:0:255:66:102:118:7:27|t" -- NO TRANSLATE
+L.DEADLY_ICON						= "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:22:22:0:0:255:66:133:153:7:27|t" -- NO TRANSLATE
+L.IMPORTANT_ICON					= "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:20:20:0:0:255:66:168:182:7:27|t" -- NO TRANSLATE
+L.MYTHIC_ICON						= "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:22:22:0:0:255:66:133:153:40:58|t" -- NO TRANSLATE
 
-L.HEROIC_ICON_SMALL					= "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:14:14:0:0:255:66:102:118:7:27|t"
-L.DEADLY_ICON_SMALL					= "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:14:14:0:0:255:66:133:153:7:27|t"
-L.IMPORTANT_ICON_SMALL				= "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:12:12:0:0:255:66:168:182:7:27|t"
+L.HEROIC_ICON_SMALL					= "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:14:14:0:0:255:66:102:118:7:27|t" -- NO TRANSLATE
+L.DEADLY_ICON_SMALL					= "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:14:14:0:0:255:66:133:153:7:27|t" -- NO TRANSLATE
+L.IMPORTANT_ICON_SMALL				= "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:12:12:0:0:255:66:168:182:7:27|t" -- NO TRANSLATE
 --Type Icons
-L.INTERRUPT_ICON					= "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:20:20:0:0:255:66:198:214:7:27|t"
-L.MAGIC_ICON						= "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:20:20:0:0:255:66:229:247:7:27|t"
-L.CURSE_ICON						= "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:20:20:0:0:255:66:6:21:40:58|t"
-L.POISON_ICON						= "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:20:20:0:0:255:66:39:55:40:58|t"
-L.DISEASE_ICON						= "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:20:20:0:0:255:66:70:86:40:58|t"
-L.ENRAGE_ICON						= "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:20:20:0:0:255:66:102:118:40:58|t"
-L.BLEED_ICON						= "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:20:20:0:0:255:66:168:182:40:58|t"
+L.INTERRUPT_ICON					= "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:20:20:0:0:255:66:198:214:7:27|t" -- NO TRANSLATE
+L.MAGIC_ICON						= "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:20:20:0:0:255:66:229:247:7:27|t" -- NO TRANSLATE
+L.CURSE_ICON						= "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:20:20:0:0:255:66:6:21:40:58|t" -- NO TRANSLATE
+L.POISON_ICON						= "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:20:20:0:0:255:66:39:55:40:58|t" -- NO TRANSLATE
+L.DISEASE_ICON						= "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:20:20:0:0:255:66:70:86:40:58|t" -- NO TRANSLATE
+L.ENRAGE_ICON						= "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:20:20:0:0:255:66:102:118:40:58|t" -- NO TRANSLATE
+L.BLEED_ICON						= "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:20:20:0:0:255:66:168:182:40:58|t" -- NO TRANSLATE
 
 --LDB
 L.LDB_TOOLTIP_HELP1					= "Click to open " .. L.DBM
