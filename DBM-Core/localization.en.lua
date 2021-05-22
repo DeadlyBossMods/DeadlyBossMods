@@ -2,8 +2,8 @@ DBM_CORE_L = {}
 
 local L = DBM_CORE_L
 
-L.DEADLY_BOSS_MODS					= "Deadly Boss Mods"
-L.DBM								= "DBM"
+L.DEADLY_BOSS_MODS					= "Deadly Boss Mods" -- NO TRANSLATE
+L.DBM								= "DBM" -- NO TRANSLATE
 
 if C_DateAndTime and C_DateAndTime.GetCurrentCalendarTime then
 	local dateTable = C_DateAndTime.GetCurrentCalendarTime()
