@@ -12,8 +12,8 @@ mod:SetHotfixNoticeRev(20200417000000)--2021-04-17
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 352589 352538 350732 352833 352660 350496",
-	"SPELL_CAST_SUCCESS 350496",
+	"SPELL_CAST_START 352589 352538 350732 352833 352660 356090",
+--	"SPELL_CAST_SUCCESS 350496",
 	"SPELL_AURA_APPLIED 352385 352394 350734 350496",
 --	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 352385 352394 350496",
@@ -25,7 +25,7 @@ mod:RegisterEventsInCombat(
 )
 
 --[[
-(ability.id = 352589 or ability.id = 352538 or ability.id = 350732 or ability.id = 352833 or ability.id = 352660 or ability.id = 350496) and type = "begincast"
+(ability.id = 352589 or ability.id = 352538 or ability.id = 350732 or ability.id = 352833 or ability.id = 352660 or ability.id = 356090) and type = "begincast"
  or ability.id = 352385 and (type = "applybuff" or type = "removebuff")
 --]]
 --TODO, do people really need a timer for purging protocol? it's based on bosses energy depletion rate (which is exactly 1 energy per second and visible on infoframe)
@@ -176,18 +176,21 @@ function mod:SPELL_CAST_START(args)
 		self.vb.sentryCount = self.vb.sentryCount + 1
 		warnFormSentry:Show(self.vb.sentryCount)
 		timerFormSentryCD:Start(nil, self.vb.sentryCount+1)
-	elseif spellId == 350496 then
+	elseif spellId == 356090 then
 		self.vb.threatIcon = 1
 		timerThreatNeutralizationCD:Start()
 	end
 end
 
+--[[
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 350496 then
+		self.vb.threatIcon = 1
 		timerThreatNeutralizationCD:Start()--Work around a bug with stutter casting
 	end
 end
+--]]
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
