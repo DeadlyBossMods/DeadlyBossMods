@@ -12,11 +12,11 @@ mod:SetHotfixNoticeRev(20200417000000)--2021-04-17
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 352589 352538 350732 352833 352660 356090",
+	"SPELL_CAST_START 352589 352538 350732 352833 352660 356090 355352 350734",
 --	"SPELL_CAST_SUCCESS 350496",
-	"SPELL_AURA_APPLIED 352385 352394 350734 350496",
+	"SPELL_AURA_APPLIED 352385 352394 350734 350496",--350534
 --	"SPELL_AURA_APPLIED_DOSE",
-	"SPELL_AURA_REMOVED 352385 352394 350496",
+	"SPELL_AURA_REMOVED 352385 352394 350496 350534",
 	"SPELL_PERIODIC_DAMAGE 350455",
 	"SPELL_PERIODIC_MISSED 350455",
 --	"UNIT_DIED"
@@ -25,22 +25,25 @@ mod:RegisterEventsInCombat(
 )
 
 --[[
-(ability.id = 352589 or ability.id = 352538 or ability.id = 350732 or ability.id = 352833 or ability.id = 352660 or ability.id = 356090) and type = "begincast"
- or ability.id = 352385 and (type = "applybuff" or type = "removebuff")
+(ability.id = 352589 or ability.id = 352538 or ability.id = 350732 or ability.id = 352833 or ability.id = 352660 or ability.id = 356090 or ability.id = 355352 or ability.id = 350734) and type = "begincast"
+ or (ability.id = 352385 or ability.id = 350534) and (type = "applybuff" or type = "removebuff")
 --]]
+--TODO, fix timers more based around energy or energizing link, whichever one is confirmed to truly affect stuff like Sunder having massive delays
 --TODO, do people really need a timer for purging protocol? it's based on bosses energy depletion rate (which is exactly 1 energy per second and visible on infoframe)
 --In other words, infoframe energy tracker IS the timer, and his energy is constantly going up and down based on core strategy, timer would need aggressive updates from UNIT_POWER
 local warnDisintegration						= mod:NewTargetNoFilterAnnounce(352833, 3)
 local warnThreatNeutralization					= mod:NewTargetNoFilterAnnounce(350496, 2)
 local warnFormSentry							= mod:NewCountAnnounce(352660, 2)
+local warnObliterate							= mod:NewCountAnnounce(355352, 2)
 
 --Cores
 local specWarnRadiantEnergy						= mod:NewSpecialWarningMoveTo(350455, nil, nil, nil, 1, 2)
 local specWarnMeltdown							= mod:NewSpecialWarningRun(352589, nil, nil, nil, 4, 2)--Change to appropriate text and priority
 --Guardian
 local specWarnPurgingProtocol					= mod:NewSpecialWarningCount(352538, nil, nil, nil, 2, 2)
-local specWarnShatter							= mod:NewSpecialWarningDefensive(350732, nil, nil, nil, 1, 2)
+local specWarnSunder							= mod:NewSpecialWarningDefensive(350732, nil, nil, nil, 1, 2)
 local specWarnObliterate						= mod:NewSpecialWarningTaunt(350734, nil, nil, nil, 1, 2)
+local specWarnObliterateCount					= mod:NewSpecialWarningCount(350734, false, nil, nil, 1, 2)
 local specWarnDisintegration					= mod:NewSpecialWarningDodgeCount(352833, nil, nil, nil, 2, 2)
 local yellDisintegration						= mod:NewYell(352833)
 local specWarnThreatNeutralization				= mod:NewSpecialWarningMoveAway(350496, nil, nil, nil, 1, 2)
@@ -49,9 +52,9 @@ local yellThreatNeutralizationFades				= mod:NewIconFadesYell(350496)
 local specWarnGTFO								= mod:NewSpecialWarningGTFO(340324, nil, nil, nil, 1, 8)
 
 --mod:AddTimerLine(BOSS)
-local timerEliminationPatternCD					= mod:NewCDTimer(27.6, 350735, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)
-local timerDisintegrationCD						= mod:NewCDCountTimer(25.6, 352833, nil, nil, nil, 3)
-local timerFormSentryCD							= mod:NewCDCountTimer(25.6, 352660, nil, nil, nil, 1)
+local timerEliminationPatternCD					= mod:NewCDCountTimer(31.6, 350735, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)--31.656--33 now?
+local timerDisintegrationCD						= mod:NewCDCountTimer(25.6, 352833, nil, nil, nil, 3)--, nil, nil, true
+local timerFormSentryCD							= mod:NewCDCountTimer(25.6, 352660, nil, nil, nil, 1)--29.2-45 on mythic
 local timerThreatNeutralizationCD				= mod:NewCDTimer(30.2, 350496, nil, nil, nil, 3)--31.7 but cast time taken off
 
 --local berserkTimer							= mod:NewBerserkTimer(600)
@@ -68,6 +71,7 @@ mod.vb.sentryCount = 0
 mod.vb.beamCount = 0
 mod.vb.protocolCount = 0
 mod.vb.threatIcon = 1
+mod.vb.patternCount = 0
 
 local updateInfoFrame
 do
@@ -109,10 +113,12 @@ function mod:OnCombatStart(delay)
 	self.vb.sentryCount = 0
 	self.vb.beamCount = 0
 	self.vb.protocolCount = 0
+	self.vb.patternCount = 0
 	timerFormSentryCD:Start(5.8-delay, 1)
-	timerDisintegrationCD:Start(15.6-delay)
-	timerEliminationPatternCD:Start(25.3-delay)
-	timerThreatNeutralizationCD:Start(38.9-delay)
+	timerDisintegrationCD:Start(15.6-delay, 1)
+	timerEliminationPatternCD:Start(25.3-delay, 1)
+	timerThreatNeutralizationCD:Start(self:IsMythic() and 8.3 or 38.9-delay)
+	DBM:AddMsg("Experimental bar pausing in effect to try and make timers work better. It's WIP")
 	--Infoframe setup (might not be needed)
 	for uId in DBM:GetGroupMembers() do
 		if DBM:UnitDebuff(uId, 352394) then
@@ -161,11 +167,20 @@ function mod:SPELL_CAST_START(args)
 		self.vb.protocolCount = self.vb.protocolCount + 1
 		specWarnPurgingProtocol:Show(self.vb.protocolCount)
 		specWarnPurgingProtocol:Play("aesoon")
+		if self.vb.protocolCount == 1 then
+			--Pause timers, not 100% accurate but a bit more accurate than sequencing or doing nothing.
+			--Done here because pausing on aura gain mathed worse than pausing here
+			timerFormSentryCD:Pause(self.vb.sentryCount+1)
+			timerThreatNeutralizationCD:Pause()
+			timerEliminationPatternCD:Pause(self.vb.patternCount+1)
+			timerDisintegrationCD:Pause(self.vb.beamCount+1)
+		end
 	elseif spellId == 350732 then
-		timerEliminationPatternCD:Start()
+		self.vb.patternCount = self.vb.patternCount + 1
+		timerEliminationPatternCD:Start(nil, self.vb.patternCount+1)
 		if self:IsTanking("player", nil, nil, true, args.sourceGUID) then
-			specWarnShatter:Show()
-			specWarnShatter:Play("defensive")
+			specWarnSunder:Show()
+			specWarnSunder:Play("defensive")
 		end
 	elseif spellId == 352833 then
 		self.vb.beamCount = self.vb.beamCount + 1
@@ -179,6 +194,12 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 356090 then
 		self.vb.threatIcon = 1
 		timerThreatNeutralizationCD:Start()
+	elseif spellId == 355352 or spellId == 350734 then--Mythic, Heroic
+		if self.Options.SpecWarn355352count then
+			specWarnObliterateCount:Show(self.vb.patternCount)
+		else
+			warnObliterate:Show(self.vb.patternCount)
+		end
 	end
 end
 
@@ -201,7 +222,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnRadiantEnergy:Show(radiantEnergy)
 			specWarnRadiantEnergy:Play("findshelter")
 		end
-		--TODO, timer stuff here?
 	elseif spellId == 352394 then
 		playersSafe[args.destName] = true
 		if args:IsPlayer() then
@@ -229,6 +249,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		warnThreatNeutralization:CombinedShow(0.3, args.destName)
 		self.vb.threatIcon = self.vb.threatIcon + 1
+--	elseif spellId == 350534 then--Purging Protocol Activating
+--		timerFormSentryCD:Pause(self.vb.sentryCount+1)
+--		timerThreatNeutralizationCD:Pause()
+--		timerEliminationPatternCD:Pause(self.vb.patternCount+1)
+--		timerDisintegrationCD:Pause(self.vb.beamCount+1)
 	end
 end
 --mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -237,6 +262,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 352385 then--Energizing Link
 		self.vb.coreActive = false
+--		timerEliminationPatternCD:Start(12.5, self.vb.patternCount+1)--10 on heroic?
 	elseif spellId == 352394 then
 		playersSafe[args.destName] = nil
 		if args:IsPlayer() then
@@ -252,12 +278,19 @@ function mod:SPELL_AURA_REMOVED(args)
 				self:SetIcon(args.destName, 0)
 			end
 		end
+	elseif spellId == 350534 then--Purging Protocol disabling
+		--Resume timers, not 100% accurate but a bit more accurate than sequencing or doing nothing.
+		timerFormSentryCD:Resume(self.vb.sentryCount+1)
+		timerThreatNeutralizationCD:Resume()
+		timerEliminationPatternCD:Resume(self.vb.patternCount+1)
+		timerDisintegrationCD:Resume(self.vb.beamCount+1)
 	end
 end
 
 --"<1155.70 23:16:13> [CHAT_MSG_MONSTER_YELL] Dissection!#Guardian of the First Ones###Champssh##0#0##0#282#nil#0#false#false#false#false", -- [14127]
+--"<25.44 22:36:58> [CHAT_MSG_MONSTER_YELL] Dismantle.#Guardian of the First Ones###Tadorz##0#0##0#1980#nil#0#false#false#false#false", -- [305]
 function mod:CHAT_MSG_MONSTER_YELL(msg, _, _, _, targetName)
-	if msg == L.Dissection or msg:find(L.Dissection) then
+	if msg == L.Dissection or msg:find(L.Dissection) or msg == L.Dismantle or msg:find(L.Dismantle) then
 		self:SendSync("Dissection", targetName)
 	end
 end
