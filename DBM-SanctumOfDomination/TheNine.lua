@@ -12,7 +12,7 @@ mod:SetMinSyncRevision(20210520000000)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 350202 350342 350339 350365 350283 350385 350467 352744 350541 350482 350687 350475 355294",
+	"SPELL_CAST_START 350202 350342 350339 350365 350283 350385 350467 352744 350541 350482 350687 350475 355294 352756 352752",
 	"SPELL_CAST_SUCCESS 350286",
 	"SPELL_AURA_APPLIED 350202 350158 350109 351139 350039 350542 350184 350483",
 	"SPELL_AURA_APPLIED_DOSE 350202 350542",
@@ -30,6 +30,10 @@ mod:RegisterEventsInCombat(
 --TODO, marking anything else??
 --TODO, fix fragment marking somehow, it's kind of a mess with no way to tell intiail applications from hops
 --TODO, figure out fancy shit for the raid icons for player jumps, if jump has sourcename then pull icons from sourcename and move same icon to dest name in same action (unless they already have an icon)
+--[[
+(ability.id = 350202 or ability.id = 350342 or ability.id = 350365 or ability.id = 352756 or ability.id = 350385 or ability.id = 352752 or ability.id = 350467 or ability.id = 352744 or ability.id = 350541 or ability.id = 350482 or ability.id = 350687 or ability.id = 350475 or ability.id = 355294) and type = "begincast"
+ or ability.id = 350286 and type = "cast"
+--]]
 --Stage One: The Unending Voice
 ----Kyra, The Unending
 local warnUnendingStrike						= mod:NewStackAnnounce(350202, 2, nil, "Tank|Healer")
@@ -86,7 +90,7 @@ local specWarnWordofRecall						= mod:NewSpecialWarningSpell(350687, nil, nil, n
 --Stage One: The Unending Voice
 ----Kyra, The Unending
 local timerUnendingStrikeCD						= mod:NewCDTimer(6.7, 350202, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)--6.7-14.7
-local timerFormlessMassCD						= mod:NewCDCountTimer(47.4, 350342, nil, nil, nil, 1, nil, DBM_CORE_L.DAMAGE_ICON)
+local timerFormlessMassCD						= mod:NewCDCountTimer(47.3, 350342, nil, nil, nil, 1, nil, DBM_CORE_L.DAMAGE_ICON)
 local timerWingsofRageCD						= mod:NewCDCountTimer(72.9, 350365, nil, nil, nil, 2)
 ----Signe, The Voice
 local timerSongofDissolutionCD					= mod:NewCDCountTimer(19.4, 350286, nil, nil, nil, 4, nil, DBM_CORE_L.INTERRUPT_ICON)--19.4-25.5 (unless delayed massivley by another channel)
@@ -168,12 +172,12 @@ function mod:OnCombatStart(delay)
 	timerFormlessMassCD:Start(12-delay, 1)
 	timerWingsofRageCD:Start(47.6-delay, 1)
 	--Signe
-	timerSongofDissolutionCD:Start(18.3-delay, 1)
+	timerSongofDissolutionCD:Start(17.4-delay, 1)
 	timerReverberatingRefrainCD:Start(71.7-delay, 1)--71.7-76
 	--Skyja
 	timerCalloftheValkyrCD:Start(14.1-delay, 1)--14.1
 	if self:IsMythic() then--Journal says mythic, but it's been wrong on earlier testing, leaving this here for now
---		timerFragmentsofDestinyCD:Start(1-delay, 1)
+		timerFragmentsofDestinyCD:Start(4.5-delay, 1)
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:SetHeader(OVERVIEW)
 			DBM.InfoFrame:Show(5, "function", updateInfoFrame, false, true, true)
@@ -236,7 +240,7 @@ function mod:SPELL_CAST_START(args)
 				specWarnSiphonVitality:Play("kickcast")
 			end
 		end
-	elseif spellId == 350365 then
+	elseif spellId == 350365 or spellId == 352756 then
 		self.vb.wingCount = self.vb.wingCount + 1
 		specWarnWingsofRage:Show()
 		specWarnWingsofRage:Play("justrun")
@@ -246,7 +250,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 350283 and self:CheckInterruptFilter(args.sourceGUID, false, false) then
 		specWarnSoulfulBlast:Show(args.sourceName)
 		specWarnSoulfulBlast:Play("kickcast")
-	elseif spellId == 350385 then
+	elseif spellId == 350385 or spellId == 352752 then
 		self.vb.refrainCount = self.vb.refrainCount + 1
 		specWarnReverberatingRefrain:Show(args.sourceName)
 		specWarnReverberatingRefrain:Play("findshelter")
@@ -259,7 +263,8 @@ function mod:SPELL_CAST_START(args)
 		timerCalloftheValkyrCD:Start(nil, self.vb.valkCount+1)
 	elseif spellId == 352744 or spellId == 350541 then
 		self.vb.fragmentCount = self.vb.fragmentCount + 1
-		timerFragmentsofDestinyCD:Start(nil, self.vb.fragmentCount+1)
+		local timer = self:IsMythic() and (self.vb.phase == 1 and 34.3 or 37.3) or 47.3
+		timerFragmentsofDestinyCD:Start(timer, self.vb.fragmentCount+1)
 	elseif spellId == 350482 then
 		self.vb.linkEssence = self.vb.linkEssence + 1
 		timerLinkEssenceCD:Start(nil, self.vb.linkEssence+1)
