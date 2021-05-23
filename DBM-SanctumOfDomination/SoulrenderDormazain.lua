@@ -239,7 +239,7 @@ function mod:SPELL_CAST_START(args)
 		end
 		timerBrandofTormentCD:Start(6, 1)
 	elseif spellId == 350411 then--Hellscream
-		timerHellscream:Start(self:IsHerioc() and 35 or self:IsMythic() and 25 or 50)--Heroic and mythic known, other difficulties not yet
+		timerHellscream:Start(self:IsHeroic() and 35 or self:IsMythic() and 25 or 50)--Heroic and mythic known, other difficulties not yet
 	elseif spellId == 350415 then--Warmonger Shackles
 		self.vb.shacklesCount = self.vb.shacklesCount + 1
 		specWarnWarmongerShackles:Show(self.vb.shacklesCount)

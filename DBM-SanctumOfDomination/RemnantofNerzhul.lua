@@ -19,9 +19,9 @@ mod:RegisterEventsInCombat(
 --	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 355790 350469 355790",--350097
 	"SPELL_PERIODIC_DAMAGE 350489",
-	"SPELL_PERIODIC_MISSED 350489",
+	"SPELL_PERIODIC_MISSED 350489"
 --	"UNIT_DIED"
-	"UNIT_SPELLCAST_SUCCEEDED boss1"
+--	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
 --TODO, Fix timers if possible, right now they are near useless since they are all HIGHLY variable with no pattern as to why (no evidence shows shatter affects them)
@@ -29,6 +29,7 @@ mod:RegisterEventsInCombat(
 --[[
 (ability.id = 349889 or ability.id = 355123 or ability.id = 351066 or ability.id = 351067 or ability.id = 351073 or ability.id = 350469 or ability.id = 350894) and type = "begincast"
  or ability.id = 349908
+ or (ability.id = 350694 or ability.id = 349891 or ability.id = 355166) and type = "begincast"
  or (source.type = "NPC" and source.firstSeen = timestamp) or (target.type = "NPC" and target.firstSeen = timestamp)
 --]]
 local warnOrbofTorment							= mod:NewCountAnnounce(349908, 2)
@@ -53,10 +54,10 @@ local specWarnGraspofMalice						= mod:NewSpecialWarningDodge(355123, nil, nil, 
 --local yellAgonyFades							= mod:NewFadesYell(350097)
 
 --mod:AddTimerLine(BOSS)
-local timerOrbofTormentCD						= mod:NewCDTimer(31.7, 349908, nil, nil, nil, 1)--31-60, kind of worthless timer
-local timerMalevolenceCD						= mod:NewCDTimer(21.2, 350469, nil, nil, nil, 3, nil, DBM_CORE_L.CURSE_ICON)--Rattlecage of Agony
-local timerSufferingCD							= mod:NewCDTimer(19.5, 350894, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON, nil, mod:IsTank() and 2, 3)--Helm of Suffering (casts suffering not Suffering technically)
-local timerGraspofMaliceCD						= mod:NewCDTimer(20.7, 355123, nil, nil, nil, 3)--Malicious Gauntlet
+local timerOrbofTormentCD						= mod:NewCDTimer(35.4, 349908, nil, nil, nil, 1, nil, nil, true)--31-60, kind of worthless timer
+local timerMalevolenceCD						= mod:NewCDTimer(31.7, 350469, nil, nil, nil, 3, nil, DBM_CORE_L.CURSE_ICON, true)--Rattlecage of Agony
+local timerSufferingCD							= mod:NewCDTimer(19.5, 350894, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON, true, mod:IsTank() and 2, 3)--Helm of Suffering
+local timerGraspofMaliceCD						= mod:NewCDTimer(20.7, 355123, nil, nil, nil, 3, nil, nil, true)--Malicious Gauntlet
 --local timerBurstofAgonyCD						= mod:NewAITimer(23, 350096, nil, nil, nil, 3)
 
 --local berserkTimer							= mod:NewBerserkTimer(600)
@@ -80,10 +81,10 @@ function mod:OnCombatStart(delay)
 	self.vb.unrelentingCount = 0
 	self.vb.malevolenceCount = 0
 	self.vb.shatterCount = 0
-	timerOrbofTormentCD:Start(12-delay)
-	timerGraspofMaliceCD:Start(21.3-delay)--Probably doesn't start here
-	timerSufferingCD:Start(23-delay)
-	timerMalevolenceCD:Start(36.5-delay)
+	timerOrbofTormentCD:Start(15-delay)
+	timerSufferingCD:Start(20.5-delay)
+	timerMalevolenceCD:Start(26.5-delay)
+	timerGraspofMaliceCD:Start(40-delay)--Probably doesn't start here
 --	timerBurstofAgonyCD:Start(1-delay)--probably doesn't start here
 --	berserkTimer:Start(-delay)
 --	if self.Options.InfoFrame then
@@ -255,7 +256,6 @@ function mod:UNIT_DIED(args)
 
 	end
 end
---]]
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 350676 then--Orb of Torment
@@ -265,4 +265,4 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 --		timerOrbofTormentCD:Start()
 	end
 end
-
+--]]

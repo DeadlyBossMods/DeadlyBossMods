@@ -50,7 +50,8 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(2446)
 
 L:SetMiscLocalization({
-	Dissection	= "Dissection!"
+	Dissection	= "Dissection!",
+	Dismantle	= "Dismantle"
 })
 
 ---------------------------
