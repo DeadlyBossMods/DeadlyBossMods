@@ -167,7 +167,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.protocolCount = self.vb.protocolCount + 1
 		specWarnPurgingProtocol:Show(self.vb.protocolCount)
 		specWarnPurgingProtocol:Play("aesoon")
-		if self.vb.protocolCount = 1 then
+		if self.vb.protocolCount == 1 then
 			--Pause timers, not 100% accurate but a bit more accurate than sequencing or doing nothing.
 			--Done here because pausing on aura gain mathed worse than pausing here
 			timerFormSentryCD:Pause(self.vb.sentryCount+1)
