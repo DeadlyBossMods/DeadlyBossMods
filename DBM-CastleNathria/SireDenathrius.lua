@@ -663,7 +663,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			timerCrimsonCabalistsCD:Start(timer, self.vb.addCount+1)
 		end
 		if self.Options.SetIconOnBalefulShadows then--Only use up to 5 icons
-			self:ScanForMobs(175205, 0, 8, 2, 0.2, 12, "SetIconOnBalefulShadows")
+			self:ScanForMobs(175205, 0, 8, 2, 0.2, 25, "SetIconOnBalefulShadows")
 		end
 	end
 end
