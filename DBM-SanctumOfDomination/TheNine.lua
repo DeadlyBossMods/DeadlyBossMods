@@ -33,6 +33,7 @@ mod:RegisterEventsInCombat(
 --[[
 (ability.id = 350202 or ability.id = 350342 or ability.id = 350365 or ability.id = 352756 or ability.id = 350385 or ability.id = 352752 or ability.id = 350467 or ability.id = 352744 or ability.id = 350541 or ability.id = 350482 or ability.id = 350687 or ability.id = 350475 or ability.id = 355294) and type = "begincast"
  or ability.id = 350286 and type = "cast"
+ or (target.id = 177095 or target.id = 177094) and type = "death"
 --]]
 --Stage One: The Unending Voice
 ----Kyra, The Unending
@@ -244,9 +245,9 @@ function mod:SPELL_CAST_START(args)
 		self.vb.wingCount = self.vb.wingCount + 1
 		specWarnWingsofRage:Show()
 		specWarnWingsofRage:Play("justrun")
-		if self.vb.valksDead == 11 or self.vb.valksDead == 12 then
-			timerWingsofRageCD:Start(nil, self.vb.wingCount+1)
-		end
+--		if self.vb.valksDead == 11 or self.vb.valksDead == 12 then
+			timerWingsofRageCD:Start(spellId == 350365 and 72.9 or 70.4, self.vb.wingCount+1)--TODO, maybe phase one is also 70 but just not very often? it's super rare in phase 2 as well.
+--		end
 	elseif spellId == 350283 and self:CheckInterruptFilter(args.sourceGUID, false, false) then
 		specWarnSoulfulBlast:Show(args.sourceName)
 		specWarnSoulfulBlast:Play("kickcast")
@@ -254,9 +255,9 @@ function mod:SPELL_CAST_START(args)
 		self.vb.refrainCount = self.vb.refrainCount + 1
 		specWarnReverberatingRefrain:Show(args.sourceName)
 		specWarnReverberatingRefrain:Play("findshelter")
-		if self.vb.valksDead == 11 or self.vb.valksDead == 21 then
-			timerReverberatingRefrainCD:Start(nil, self.vb.refrainCount+1)
-		end
+--		if self.vb.valksDead == 11 or self.vb.valksDead == 21 then
+			timerReverberatingRefrainCD:Start(spellId == 350385 and 74.2 or 71.8, self.vb.refrainCount+1)
+--		end
 	elseif spellId == 350467 then
 		self.vb.valkCount = self.vb.valkCount + 1
 		warnCalloftheValkyr:Show(self.vb.valkCount)
@@ -506,8 +507,13 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 				DBM.InfoFrame:SetHeader(OVERVIEW)
 				DBM.InfoFrame:Show(5, "function", updateInfoFrame, false, true, true)
 			end
+			--TODO, actually spend time figuring out how to start timers when valks die if it's phase 2
+--			if self:IsMythic() then
+--				timerWingsofRageCD:Start()
+--				timerReverberatingRefrainCD:Start()
+--			end
 		end
-		berserkTimer:Cancel()
+		berserkTimer:Cancel()--Tecnically not accurate, Phase 1 berserk stops when both valks die. TODO, separate object
 		berserkTimer:Start(602)--Phase 2
 	end
 end
