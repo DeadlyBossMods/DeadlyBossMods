@@ -16,13 +16,19 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(2442)
 
 L:SetOptionLocalization({
-	ContinueRepeating	= "Scorn과 Ire 디버프에 걸리면 끝날때까지 지정된 공격대 징표 말풍선 알림"
+	ContinueRepeating	= "경멸과 분노 디버프에 걸리면 끝날때까지 지정된 공격대 징표 말풍선 알림"
 })
 
 ---------------------------
 --  The Nine --
 ---------------------------
---L= DBM:GetModLocalization(2439)
+L= DBM:GetModLocalization(2439)
+
+L:SetMiscLocalization({
+	AgathaBlade		= "내 칼날 앞에 쓰러져라!",
+	AradneStrike	= "상대조차 안 되는군!",
+	Fragment		= "조각 "--Space is intentional, leave a space to add a number after it
+})
 
 ---------------------------
 --  Remnant of Ner'zhul --
@@ -45,7 +51,8 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(2446)
 
 L:SetMiscLocalization({
-	Dissection	= "Dissection!"
+	Dissection	= "해부를 시작합니다!",
+	Dismantle	= "분해 실시!"
 })
 
 ---------------------------
