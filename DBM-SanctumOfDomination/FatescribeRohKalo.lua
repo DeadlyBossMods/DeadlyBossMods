@@ -14,7 +14,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 351680 350554 350421 353426 350169 351969",
 	"SPELL_CAST_SUCCESS 350355",
-	"SPELL_AURA_APPLIED 354365 351680 353432 353931 350568 353195 353428 351969",
+	"SPELL_AURA_APPLIED 354365 351680 353432 353931 350568 353195 353428 351969 354964",
 --	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 354365 351680 350568 353195 353428 351969",
 --	"SPELL_PERIODIC_DAMAGE",
@@ -23,7 +23,6 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, https://ptr.wowhead.com/spell=354964/runic-affinity for mythic phase 2
 --TODO, https://ptr.wowhead.com/spell=354966/unstable-accretion trackingn for mythic phase 2
 --TODO, other phase 2 stuff? it's mostly just passive stuff like adds and dodgables
 --[[
@@ -36,7 +35,7 @@ local warnGrimPortent							= mod:NewTargetNoFilterAnnounce(354365, 4)--Mythic
 local warnTwistFate								= mod:NewTargetNoFilterAnnounce(353931, 2, nil, "RemoveMagic")
 local warnCallofEternity						= mod:NewTargetAnnounce(350568, 4)
 --Stage Two: Defying Destiny
-
+local warnRunicAffinity							= mod:NewTargetNoFilterAnnounce(354964, 4)--Mythic
 --Stage Three: Fated Terminus
 local warnExtemporaneousFate					= mod:NewSoonAnnounce(353195, 3)
 
@@ -56,6 +55,7 @@ local yellCallofEternity						= mod:NewShortYell(350568)
 local yellCallofEternityFades					= mod:NewShortFadesYell(350568)
 --Stage Two: Defying Destiny
 local specWarnRealignFate						= mod:NewSpecialWarningCount(351969, nil, nil, nil, 2, 2)
+local specWarnRunicAffinity						= mod:NewSpecialWarningYou(354964, nil, nil, nil, 2, 2, 4)
 --Stage Three: Fated Terminus Desperate
 local specWarnExtemporaneousFate				= mod:NewSpecialWarningSpell(353195, nil, nil, nil, 2, 2)
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(340324, nil, nil, nil, 1, 8)
@@ -212,6 +212,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerDarkestDestiny:Start(30)
 	elseif spellId == 353428 or spellId == 351969 then--Realign Fate, 351969 is incorrect spellID and blizz might fix it later to use 353428
 		timerDarkestDestiny:Start()
+	elseif spellId == 354964 then
+		warnRunicAffinity:CombinedShow(0.3, args.destName)
+		if args:IsPlayer() then
+			specWarnRunicAffinity:Show()
+			specWarnRunicAffinity:Play("targetyou")
+		end
 	end
 end
 --mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
