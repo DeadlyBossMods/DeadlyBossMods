@@ -12,14 +12,14 @@ mod:SetMinSyncRevision(20210513000000)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
---	"SPELL_CAST_START",
+	"SPELL_CAST_START 357735",
 	"SPELL_CAST_SUCCESS 348508 355568 355778 352052 348456 355504 355534",
 	"SPELL_AURA_APPLIED 348508 355568 355778 355786 348456 355505 355525",
 --	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 348508 355568 355778 355786 348456 355505 355525",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
---	"UNIT_DIED"
+	"UNIT_DIED",
 	"UNIT_AURA_UNFILTERED",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
@@ -66,6 +66,7 @@ local timerForgeWeapon							= mod:NewCastTimer(48, 355525, nil, nil, nil, 6)
 --mod:AddRangeFrameOption("8")
 mod:AddInfoFrameOption(355786, true)
 mod:AddSetIconOption("SetIconOnChains", 355505, true, false, {1, 2, 3, 4, 5, 6})
+mod:AddNamePlateOption("NPAuraOnFinalScream", 357735)
 
 mod.vb.phase = 1
 mod.vb.ChainsIcon = 1
@@ -140,6 +141,9 @@ function mod:OnCombatStart(delay)
 		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(355786))
 		DBM.InfoFrame:Show(20, "function", updateInfoFrame, false, false)
 	end
+	if self.Options.NPAuraOnFinalScream then
+		DBM:FireEvent("BossMod_EnableHostileNameplates")
+	end
 end
 
 function mod:OnCombatEnd()
@@ -149,12 +153,17 @@ function mod:OnCombatEnd()
 --	if self.Options.RangeFrame then
 --		DBM.RangeCheck:Hide()
 --	end
+	if self.Options.NPAuraOnFinalScream then
+		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
+	end
 end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 328857 then
-
+	if spellId == 357735 then
+		if self.Options.NPAuraOnFinalScream then
+			DBM.Nameplate:Show(true, args.sourceGUID, spellId, nil, 5)
+		end
 	end
 end
 
@@ -359,6 +368,15 @@ do
 				local remaining = expireTime4-GetTime()
 				yellFlameclaspTrapFades:Countdown(remaining)
 			end
+		end
+	end
+end
+
+function mod:UNIT_DIED(args)
+	local cid = self:GetCIDFromGUID(args.destGUID)
+	if cid == 179847 then--Shadowsteel Ember
+		if self.Options.NPAuraOnFinalScream then
+			DBM.Nameplate:Hide(true, args.destGUID, 357735)
 		end
 	end
 end

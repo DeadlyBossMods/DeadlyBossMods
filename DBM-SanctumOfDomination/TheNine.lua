@@ -28,8 +28,7 @@ mod:RegisterEventsInCombat(
 --TODO, tank swap stacks
 --TODO, how many formless mass spawn in higher difficulties? Find out total needed icons
 --TODO, marking anything else??
---TODO, fix fragment marking somehow, it's kind of a mess with no way to tell intiail applications from hops
---TODO, figure out fancy shit for the raid icons for player jumps, if jump has sourcename then pull icons from sourcename and move same icon to dest name in same action (unless they already have an icon)
+--TODO, mythic timer updates when I have more patience to actually resolve how they update on phase 2 transition. It'd be nice if phase 2 was actually in combat log
 --[[
 (ability.id = 350202 or ability.id = 350342 or ability.id = 350365 or ability.id = 352756 or ability.id = 350385 or ability.id = 352752 or ability.id = 350467 or ability.id = 352744 or ability.id = 350541 or ability.id = 350482 or ability.id = 350687 or ability.id = 350475 or ability.id = 355294) and type = "begincast"
  or ability.id = 350286 and type = "cast"
@@ -216,13 +215,13 @@ function mod:SPELL_CAST_START(args)
 			self:ScanForMobs(177407, 0, 8, 2, 0.2, 12, "SetIconOnFormlessMass")
 		end
 	elseif spellId == 350339 then
---		if not castsPerGUID[args.sourceGUID] then
---			castsPerGUID[args.sourceGUID] = 0
+		if not castsPerGUID[args.sourceGUID] then
+			castsPerGUID[args.sourceGUID] = 0
 --			if self.Options.SetIconOnFormlessMass and self.vb.addIcon > 3 then--Only use up to 5 icons
 --				self:ScanForMobs(args.sourceGUID, 2, self.vb.addIcon, 1, 0.2, 12, "SetIconOnFormlessMass")
 --			end
 --			self.vb.addIcon = self.vb.addIcon - 1
---		end
+		end
 		castsPerGUID[args.sourceGUID] = castsPerGUID[args.sourceGUID] + 1
 		local count = castsPerGUID[args.sourceGUID]
 		if self:CheckInterruptFilter(args.sourceGUID, false, false) then

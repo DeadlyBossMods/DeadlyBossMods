@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(175730)
 mod:SetEncounterID(2431)
 mod:SetUsedIcons(1, 2, 3)
---mod:SetHotfixNoticeRev(20201222000000)
+mod:SetHotfixNoticeRev(20210526000000)--2021-05-26
 --mod:SetMinSyncRevision(20201222000000)
 --mod.respawnTime = 29
 
@@ -14,7 +14,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 351680 350554 350421 353426 350169 351969",
 	"SPELL_CAST_SUCCESS 350355",
-	"SPELL_AURA_APPLIED 354365 351680 353432 353931 350568 353195 353428 351969",
+	"SPELL_AURA_APPLIED 354365 351680 353432 353931 350568 353195 353428 351969 354964",
 --	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 354365 351680 350568 353195 353428 351969",
 --	"SPELL_PERIODIC_DAMAGE",
@@ -23,8 +23,6 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, figure out how fates alter timers, it's not pause, it's not reset, sometimes either works but never consistently
---TODO, https://ptr.wowhead.com/spell=354964/runic-affinity for mythic phase 2
 --TODO, https://ptr.wowhead.com/spell=354966/unstable-accretion trackingn for mythic phase 2
 --TODO, other phase 2 stuff? it's mostly just passive stuff like adds and dodgables
 --[[
@@ -37,7 +35,7 @@ local warnGrimPortent							= mod:NewTargetNoFilterAnnounce(354365, 4)--Mythic
 local warnTwistFate								= mod:NewTargetNoFilterAnnounce(353931, 2, nil, "RemoveMagic")
 local warnCallofEternity						= mod:NewTargetAnnounce(350568, 4)
 --Stage Two: Defying Destiny
-
+local warnRunicAffinity							= mod:NewTargetNoFilterAnnounce(354964, 4)--Mythic
 --Stage Three: Fated Terminus
 local warnExtemporaneousFate					= mod:NewSoonAnnounce(353195, 3)
 
@@ -56,7 +54,8 @@ local specWarnCallofEternity					= mod:NewSpecialWarningMoveAway(350568, nil, ni
 local yellCallofEternity						= mod:NewShortYell(350568)
 local yellCallofEternityFades					= mod:NewShortFadesYell(350568)
 --Stage Two: Defying Destiny
-local specWarnRealignFate						= mod:NewSpecialWarningSpell(351969, nil, nil, nil, 2, 2)
+local specWarnRealignFate						= mod:NewSpecialWarningCount(351969, nil, nil, nil, 2, 2)
+local specWarnRunicAffinity						= mod:NewSpecialWarningYou(354964, nil, nil, nil, 2, 2, 4)
 --Stage Three: Fated Terminus Desperate
 local specWarnExtemporaneousFate				= mod:NewSpecialWarningSpell(353195, nil, nil, nil, 2, 2)
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(340324, nil, nil, nil, 1, 8)
@@ -83,14 +82,16 @@ mod:AddNamePlateOption("NPAuraOnBurdenofDestiny", 353432, true)
 
 mod.vb.DebuffIcon = 1
 mod.vb.phase = 1
+mod.vb.fateCount = 0
 
 function mod:OnCombatStart(delay)
 	self.vb.DebuffIcon = 1
 	self.vb.phase = 1
---	timerHeroicDestinyCD:Start(1-delay)--UNKNOWN, dps too high to see this before fate phase
+	self.vb.fateCount = 0
 	timerTwistFateCD:Start(4.5-delay)
-	timerFatedConjunctionCD:Start(13.2-delay)
-	timerCallofEternityCD:Start(24.2-delay)
+	timerFatedConjunctionCD:Start(13.1-delay)
+	timerCallofEternityCD:Start(24-delay)
+	timerHeroicDestinyCD:Start(35-delay)
 --	berserkTimer:Start(-delay)
 	if self:IsMythic() then
 		timerGrimPortentCD:Start(1-delay)
@@ -127,14 +128,15 @@ function mod:SPELL_CAST_START(args)
 		specWarnFatedConjunction:Play("watchstep")
 		timerFatedConjunctionCD:Start()
 	elseif spellId == 351969 then
-		specWarnRealignFate:Show()
+		self.vb.phase = 2
+		self.vb.fateCount = self.vb.fateCount + 1
+		specWarnRealignFate:Show(self.vb.fateCount)
 		specWarnRealignFate:Play("specialsoon")
 		timerHeroicDestinyCD:Stop()
-		--No idea how timers work, can't figure it out
---		timerTwistFateCD:Stop()
---		timerFatedConjunctionCD:Stop()
---		timerCallofEternityCD:Stop()
---		timerGrimPortentCD:Stop()
+		timerTwistFateCD:Stop()
+		timerFatedConjunctionCD:Stop()
+		timerCallofEternityCD:Stop()
+		timerGrimPortentCD:Stop()
 	end
 end
 
@@ -153,21 +155,23 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self:AntiSpam(5, 1) then--TODO: Move to cast event if there is one
 			timerGrimPortentCD:Start()
 		end
-		local icon = self.vb.DebuffIcon
-		if self.Options.SetIconOnGrimPortent then
-			self:SetIcon(args.destName, icon)
-		end
-		if args:IsPlayer() then
-			specWarnGrimPortent:Show(self:IconNumToTexture(icon))
-			specWarnGrimPortent:Play("mm"..icon)
-			yellGrimPortent:Yell(icon, icon)
-			yellGrimPortentFades:Countdown(spellId, nil, icon)
-		end
-		warnGrimPortent:CombinedShow(0.5, args.destName)
-		self.vb.DebuffIcon = self.vb.DebuffIcon + 1
-		if self.vb.DebuffIcon > 8 then
-			self.vb.DebuffIcon = 1
-			DBM:AddMsg("Cast event for Grim Portent is wrong, doing backup icon reset")
+		if args:IsDestTypePlayer() then
+			local icon = self.vb.DebuffIcon
+			if self.Options.SetIconOnGrimPortent then
+				self:SetIcon(args.destName, icon)
+			end
+			if args:IsPlayer() then
+				specWarnGrimPortent:Show(self:IconNumToTexture(icon))
+				specWarnGrimPortent:Play("mm"..icon)
+				yellGrimPortent:Yell(icon, icon)
+				yellGrimPortentFades:Countdown(spellId, nil, icon)
+			end
+			warnGrimPortent:CombinedShow(0.5, args.destName)
+			self.vb.DebuffIcon = self.vb.DebuffIcon + 1
+--			if self.vb.DebuffIcon > 8 then
+--				self.vb.DebuffIcon = 1
+--				DBM:AddMsg("Cast event for Grim Portent is wrong, doing backup icon reset")
+--			end
 		end
 	elseif spellId == 351680 then
 		if args:IsPlayer() then
@@ -206,13 +210,14 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnExtemporaneousFate:Play("specialsoon")--"157060" if they just happen to be yellow
 		timerExtemporaneousFateCD:Start()
 		timerDarkestDestiny:Start(30)
-		--No idea how timers work, can't figure it out
---		timerHeroicDestinyCD:Stop()
---		timerTwistFateCD:Stop()
---		timerTwistFateCD:Start(11.6)
---		timerHeroicDestinyCD:Start(26.1)
 	elseif spellId == 353428 or spellId == 351969 then--Realign Fate, 351969 is incorrect spellID and blizz might fix it later to use 353428
 		timerDarkestDestiny:Start()
+	elseif spellId == 354964 then
+		warnRunicAffinity:CombinedShow(0.3, args.destName)
+		if args:IsPlayer() then
+			specWarnRunicAffinity:Show()
+			specWarnRunicAffinity:Play("targetyou")
+		end
 	end
 end
 --mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -237,14 +242,26 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerDarkestDestiny:Stop()
 	elseif spellId == 353428 or spellId == 351969 then--Realign Fate, 351969 is incorrect spellID and blizz might fix it later to use 353428
 		timerDarkestDestiny:Stop()
-		--No idea how timers work, can't figure it out
---		timerTwistFateCD:Start(7.3)
---		timerFatedConjunctionCD:Start(15.7)
---		timerCallofEternityCD:Start(26.6)
---		timerHeroicDestinyCD:Start(37.6)
---		if self:IsMythic() then
---			timerGrimPortentCD:Start(2)
---		end
+		if self.vb.fateCount < 3 then
+			self.vb.phase = 1
+			timerTwistFateCD:Start(7.3)
+			timerFatedConjunctionCD:Start(15.7)
+			timerCallofEternityCD:Start(26.6)
+			timerHeroicDestinyCD:Start(37.6)
+			if self:IsMythic() then
+				timerGrimPortentCD:Start(2)
+			end
+		else
+			self.vb.phase = 3
+			timerFatedConjunctionCD:Start(8.4)
+			timerCallofEternityCD:Start(10.9)
+			timerHeroicDestinyCD:Start(24.4)
+			timerExtemporaneousFateCD:Start(39.7)
+			timerTwistFateCD:Start(48.9)
+			if self:IsMythic() then
+				timerGrimPortentCD:Start(2)
+			end
+		end
 	end
 end
 
