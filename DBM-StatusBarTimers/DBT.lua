@@ -1117,8 +1117,7 @@ do
 		end
 		local obj = setmetatable({
 			name		= id,
-			loaded		= true, -- @Deprecated
-			defaults	= {}, -- @Deprecated
+			Defaults	= {},
 			Options		= {}
 		}, skin)
 		skins[id] = obj
@@ -1139,7 +1138,10 @@ do
 			DBT_AllPersistentOptions[DBM_UsedProfile] = {}
 		end
 		if not DBT_AllPersistentOptions[DBM_UsedProfile][id] then
-			DBT_AllPersistentOptions[DBM_UsedProfile][id] = DBT_AllPersistentOptions[DBM_UsedProfile].DBM
+			DBT_AllPersistentOptions[DBM_UsedProfile][id] = DBT_AllPersistentOptions[DBM_UsedProfile].DBM or {}
+			for option, value in pairs(skin.Defaults) do
+				DBT_AllPersistentOptions[DBM_UsedProfile][id][option] = value
+			end
 		end
 		self:ApplyProfile(id, true)
 		for option, value in pairs(skin.Options) do
