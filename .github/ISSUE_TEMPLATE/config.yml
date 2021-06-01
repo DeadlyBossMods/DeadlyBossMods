@@ -1,5 +1,8 @@
 blank_issues_enabled: false
 contact_links:
-  - name: Classic?
+  - name: Classic Era?
     url: https://github.com/DeadlyBossMods/DBM-Classic/issues/new/choose
-    about: Is your issue for classic WoW?
+    about: Is your issue for Classic Era WoW?
+  - name: Burning Crusade Classic?
+    url: https://github.com/DeadlyBossMods/DBM-TBC-Classic/issues/new/choose
+    about: Is your issue for Burning Crusade Classic WoW?
