@@ -65,7 +65,7 @@ local timerForgeWeapon							= mod:NewCastTimer(48, 355525, nil, nil, nil, 6)
 
 --mod:AddRangeFrameOption("8")
 mod:AddInfoFrameOption(355786, true)
-mod:AddSetIconOption("SetIconOnChains", 355505, true, false, {1, 2, 3, 4, 5, 6})
+mod:AddSetIconOption("SetIconOnChains", 355505, true, false, {1, 2, 3})
 mod:AddNamePlateOption("NPAuraOnFinalScream", 357735)
 
 mod.vb.phase = 1
@@ -75,7 +75,7 @@ local debuffedPlayers = {}
 
 local updateInfoFrame
 do
-	local twipe, tsort = table.wipe, table.sort
+	local twipe, tsort, mfloor = table.wipe, table.sort, math.floor
 	local lines = {}
 	local tempLines = {}
 	local tempLinesSorted = {}
@@ -112,7 +112,8 @@ do
 				local spellName, _, _, _, _, expires = DBM:UnitDebuff(uId, 355786)
 				if expires then
 					local unitName = DBM:GetUnitFullName(uId)
-					tempLines[unitName] = expires
+					local debuffTime = expires - GetTime()
+					tempLines[unitName] = mfloor(debuffTime)
 					tempLinesSorted[#tempLinesSorted + 1] = unitName
 				end
 			end
@@ -206,10 +207,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		warnShadowsteelChains:CombinedShow(0.5, args.destName)
 		self.vb.ChainsIcon = self.vb.ChainsIcon + 1
-		if self.vb.ChainsIcon > 8 then
-			self.vb.ChainsIcon = 1
-			DBM:AddMsg("Cast event for Chains is wrong, doing backup icon reset")
-		end
 	elseif spellId == 355786 then
 		if not tContains(debuffedPlayers, args.destName) then
 			table.insert(debuffedPlayers, args.destName)
@@ -404,6 +401,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	elseif spellId == 352052 then--Spiked Balls
 		timerSpikedBallsCD:Start()
 	elseif spellId == 355504 then--Shadowsteel Chains
+		self.vb.ChainsIcon = 1
 		timerShadowsteelChainsCD:Start()
 	elseif spellId == 348456 then--Flameclasp Trap
 		timerFlameclaspTrapCD:Start()

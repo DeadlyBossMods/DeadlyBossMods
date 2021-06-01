@@ -17,9 +17,9 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 348071 348428 346459 352999 347291 352997 348756 353000 352293 349799 355127 352379 355055 352355 352348 354198",
 --	"SPELL_CAST_SUCCESS 352293",
 	"SPELL_SUMMON 352096 352094 352092 346469",
-	"SPELL_AURA_APPLIED 352530 348978 347292 347518 347454 355948 353808 348760 352051 355389 357928",
+	"SPELL_AURA_APPLIED 352530 348978 347292 347518 347454 355948 353808 348760 352051 355389 357928 348787",
 	"SPELL_AURA_APPLIED_DOSE 348978 352051",
-	"SPELL_AURA_REMOVED 354198 348978 347292 355948 353808 348760 355389 357928",
+	"SPELL_AURA_REMOVED 354198 348978 347292 355948 353808 348760 355389 357928 348787",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 	"UNIT_DIED"
@@ -28,11 +28,9 @@ mod:RegisterEventsInCombat(
 
 --TODO, is blizzard really 20 sec? does it disable bosses other casts?
 --TODO, track https://ptr.wowhead.com/spell=354289/necrotic-miasma on infoframe?
---TODO, not too spammy to warn to interrupt https://ptr.wowhead.com/spell=352144/banshees-cry sometimes?
---TODO, https://ptr.wowhead.com/spell=336047/freezing-blast used?
---TODO, does Glacial winds have a timer after it activates at 33%?
 --TODO, figure out how to add https://ptr.wowhead.com/spell=354638/deep-freeze
 --TODO, hope for love of god blizzard resets mana on phase changes, otherwise a ton of timers still missing from 20 80 and 100 mana
+--TODO, more Timer work if blizz fixes above, or more hacky shit if they don't :\
 --https://ptr.wowhead.com/spell=348434/soul-exhaustion used in LFR/normal instead of other one?
 --[[
 (ability.id = 348071 or ability.id = 346459 or ability.id = 352999 or ability.id = 347291 or ability.id = 352997 or ability.id = 348756 or ability.id = 353000 or ability.id = 352293 or ability.id = 352379 or ability.id = 355055 or ability.id = 352355 or ability.id = 352348 or ability.id = 354198) and type = "begincast"
@@ -90,7 +88,7 @@ local timerFrostBlastCD								= mod:NewCDTimer(40.1, 348756, nil, nil, nil, 3, 
 --Stage Two: The Phylactery Opens
 local timerNecoticDestruction						= mod:NewCastTimer(23, 352293, nil, nil, nil, 6)
 ----Remnant of Kel'Thuzad
-local timerFoulWindsCD								= mod:NewAITimer(23, 355127, nil, nil, nil, 2, nil, DBM_CORE_L.MYTHIC_ICON)
+local timerFoulWindsCD								= mod:NewCDTimer(12.1, 355127, nil, nil, nil, 2, nil, DBM_CORE_L.MYTHIC_ICON)
 local timerFreezingBlastCD							= mod:NewNextCountTimer(4.9, 352379, nil, nil, nil, 3)
 local timerGlacialWindsCD							= mod:NewNextTimer(13.3, 352379, nil, nil, nil, 3)
 --Stage Three
@@ -112,6 +110,7 @@ mod.vb.spikeIcon = 1
 mod.vb.addIcon = 8
 mod.vb.phase = 1
 mod.vb.freezingBlastCount = 0
+local playerPhased = false
 
 --[[
 function mod:FrostBlast(targetname, uId, bossuid, scanningTime)
@@ -136,6 +135,7 @@ function mod:OnCombatStart(delay)
 	self.vb.addIcon = 8
 	self.vb.phase = 1
 	self.vb.freezingBlastCount = 0
+	playerPhased = false
 	timerSoulFractureCD:Start(5.7-delay)
 	timerOblivionsEchoCD:Start(9.4-delay)
 	timerGlacialWrathCD:Start(19.1-delay)
@@ -204,19 +204,21 @@ function mod:SPELL_CAST_START(args)
 		--Start Remnant timers (may not start here but when he's actually engaged/attacked after entering zone
 		timerFreezingBlastCD:Start(6.8, 1)
 		if self:IsMythic() then
-			timerFoulWindsCD:Start(2)
+			timerFoulWindsCD:Start(6.1)
 		end
 	elseif spellId == 349799 then
 		if self:IsTanking("player", nil, nil, true, args.sourceGUID) then
 			warnDemolish:Show()
 		end
 	elseif spellId == 355127 then
-		specWarnFoulWinds:Show()
-		specWarnFoulWinds:Play("keepmove")
+		if playerPhased then
+			specWarnFoulWinds:Show()
+			specWarnFoulWinds:Play("keepmove")
+		end
 		timerFoulWindsCD:Start()
 	elseif spellId == 352379 then
 		self.vb.freezingBlastCount = self.vb.freezingBlastCount + 1
-		if self.vb.freezingBlastCount == 1 then
+		if not playerPhased and self.vb.freezingBlastCount == 1 then
 			specWarnFreezingBlast:Show()
 			specWarnFreezingBlast:Play("shockwave")
 		else
@@ -224,12 +226,16 @@ function mod:SPELL_CAST_START(args)
 		end
 		timerFreezingBlastCD:Start(4.9, self.vb.freezingBlastCount+1)
 	elseif spellId == 355055 then
-		specWarnGlacialWinds:Show()
-		specWarnGlacialWinds:Play("watchstep")
+		if playerPhased then
+			specWarnGlacialWinds:Show()
+			specWarnGlacialWinds:Play("watchstep")
+		end
 		timerGlacialWindsCD:Start()
 	elseif spellId == 352355 then
-		specWarnNecroticObliteration:Show()
-		specWarnNecroticObliteration:Play("justrun")
+		if playerPhased then
+			specWarnNecroticObliteration:Show()
+			specWarnNecroticObliteration:Play("justrun")
+		end
 		--Stop Remnant timers (may not stop here)
 		timerFreezingBlastCD:Stop()
 		timerFoulWindsCD:Stop()
@@ -238,8 +244,10 @@ function mod:SPELL_CAST_START(args)
 
 		timerOnslaughtoftheDamnedCD:Start()
 	elseif spellId == 354198 then
-		specWarnHowlingBlizzard:Show()
-		specWarnHowlingBlizzard:Play("watchstep")
+		if not playerPhased then
+			specWarnHowlingBlizzard:Show()
+			specWarnHowlingBlizzard:Play("watchstep")
+		end
 		timerHowlingBlizzardCD:Start()
 		timerHowlingBlizzard:Start()--20+3
 	end
@@ -282,7 +290,7 @@ function mod:SPELL_SUMMON(args)
 		if self.Options.SetIconOnGlacialSpike then
 			self:ScanForMobs(args.destGUID, 2, self.vb.spikeIcon, 1, 0.2, 12, "SetIconOnGlacialSpike")
 		end
-		self.vb.spikeIcon = self.vb.spikeIcon - 1
+		self.vb.spikeIcon = self.vb.spikeIcon + 1
 	end
 end
 
@@ -323,7 +331,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		warnOblivionsEcho:CombinedShow(0.3, args.destName)
 		self.vb.echoIcon = self.vb.echoIcon + 1
-	elseif (spellId == 347518 or spellId == 347454) and args:IsPlayer() and not DBM:UnitDebuff("player", 347292) then--Walked into someone elses silence field
+	elseif (spellId == 347518 or spellId == 347454) and args:IsPlayer() and not DBM:UnitDebuff("player", 347292) and self:AntiSpam(3, 6) then--Walked into someone elses silence field
 		specWarnOblivionsEchoNear:Show()
 		specWarnOblivionsEchoNear:Play("runaway")
 	elseif spellId == 355948 then
@@ -374,25 +382,27 @@ function mod:SPELL_AURA_APPLIED(args)
 					timerFrostBlastCD:Start(85)--Speculation
 --					timerHowlingBlizzardCD:Update(0, 109.8)
 --					timerDarkEvocationCD:Update(0, 86.2)
-					DBM:AddMsg("if you are seeing this message, please share your WCL of this pull with DBM Authors with the number '80'")
+					DBM:Debug("HIGH PRIORITY EVENT. This is a 80 mana phase start")--Generating easier to use transcriptor events
 				elseif bossPower == 60 then--LOG coded
 					timerFrostBlastCD:Start(42)--Confirmed
 					timerHowlingBlizzardCD:Update(63.3, 109.8)
 					timerDarkEvocationCD:Update(75, 86.2)
+					DBM:Debug("HIGH PRIORITY EVENT. This is a 60 mana phase start")--Generating easier to use transcriptor events
 				elseif bossPower == 40 then--LOG coded
 					timerFrostBlastCD:Start(85)--Confirmed
 					timerHowlingBlizzardCD:Update(88.6, 109.8)
 					timerDarkEvocationCD:Update(0, 88.3)--88-90 confirmed two times, even when dark evo bug happens
+					DBM:Debug("HIGH PRIORITY EVENT. This is a 40 mana phase start")--Generating easier to use transcriptor events
 				elseif bossPower == 20 then--TODO, FIXME
 					timerFrostBlastCD:Start(85)--Speculation
 --					timerHowlingBlizzardCD:Update(98.3, 109.8)
 --					timerDarkEvocationCD:Update(39.7, 86.2)
-					DBM:AddMsg("if you are seeing this message, please share your WCL of this pull with DBM Authors with the number '20'")
+					DBM:Debug("HIGH PRIORITY EVENT. This is a 20 mana phase start")--Generating easier to use transcriptor events
 				else--100/0--TODO, FIXME
 					timerFrostBlastCD:Start(85)--Speculation
 --					timerHowlingBlizzardCD:Update(0, 109.8)
 --					timerDarkEvocationCD:Update(0, 86.2)
-					DBM:AddMsg("if you are seeing this message, please share your WCL of this pull with DBM Authors with the number '100'")
+					DBM:Debug("HIGH PRIORITY EVENT. This is a 100 mana phase start")--Generating easier to use transcriptor events
 				end
 			end
 		end
@@ -404,6 +414,8 @@ function mod:SPELL_AURA_APPLIED(args)
 				DBM.Nameplate:Show(true, args.sourceGUID, spellId)
 			end
 		end
+	elseif spellId == 348787 and args:IsPlayer() then--Phylactery
+		playerPhased = true
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -434,6 +446,8 @@ function mod:SPELL_AURA_REMOVED(args)
 				DBM.Nameplate:Hide(true, args.sourceGUID, spellId)
 			end
 		end
+	elseif spellId == 348787 and args:IsPlayer() then--Phylactery
+		playerPhased = false
 	end
 end
 

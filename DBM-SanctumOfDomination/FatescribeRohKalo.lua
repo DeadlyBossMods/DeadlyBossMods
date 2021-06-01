@@ -4,15 +4,15 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(175730)
 mod:SetEncounterID(2431)
-mod:SetUsedIcons(1, 2, 3)
-mod:SetHotfixNoticeRev(20210526000000)--2021-05-26
---mod:SetMinSyncRevision(20201222000000)
+mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
+mod:SetHotfixNoticeRev(20210531000000)--2021-05-31
+mod:SetMinSyncRevision(20210531000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 351680 350554 350421 353426 350169 351969",
+	"SPELL_CAST_START 351680 350554 350421 353426 350169 351969 354367",
 	"SPELL_CAST_SUCCESS 350355",
 	"SPELL_AURA_APPLIED 354365 351680 353432 353931 350568 353195 353428 351969 354964",
 --	"SPELL_AURA_APPLIED_DOSE",
@@ -25,8 +25,10 @@ mod:RegisterEventsInCombat(
 
 --TODO, https://ptr.wowhead.com/spell=354966/unstable-accretion trackingn for mythic phase 2
 --TODO, other phase 2 stuff? it's mostly just passive stuff like adds and dodgables
+--TODO, verify UNIT_AURA solution for Re-Align Fate buff no longer being in combat
+--TODO, further mythic timer data for phase 3 and resquence all of heroic timer data with latest in retest if there is one or on live
 --[[
-(ability.id = 350421 or ability.id = 351680 or ability.id = 351969 or ability.id = 350554) and type = "begincast"
+(ability.id = 350421 or ability.id = 351680 or ability.id = 351969 or ability.id = 350554 or ability.id = 354367) and type = "begincast"
  or ability.id = 353195 or ability.id = 351969
  or (ability.id = 353931 or ability.id = 353195) and type = "applydebuff"
  --]]
@@ -62,8 +64,8 @@ local specWarnExtemporaneousFate				= mod:NewSpecialWarningSpell(353195, nil, ni
 
 --mod:AddTimerLine(BOSS)
 --Stage One: Scrying Fate
-local timerGrimPortentCD						= mod:NewAITimer(20, 354365, nil, nil, nil, 3, nil, DBM_CORE_L.MYTHIC_ICON)
-local timerHeroicDestinyCD						= mod:NewCDTimer(39.2, 351680, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)--39-41
+local timerGrimPortentCD						= mod:NewCDTimer(28.8, 354365, nil, nil, nil, 3, nil, DBM_CORE_L.MYTHIC_ICON)--28-46?
+local timerHeroicDestinyCD						= mod:NewCDTimer(37.8, 351680, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)--37.8-41
 local timerTwistFateCD							= mod:NewCDTimer(48.7, 353931, nil, "RemoveMagic", nil, 5, nil, DBM_CORE_L.MAGIC_ICON)
 local timerFatedConjunctionCD					= mod:NewCDTimer(59.7, 350355, nil, nil, nil, 3, nil, DBM_CORE_L.DEADLY_ICON, nil, 1, 3)
 local timerCallofEternityCD						= mod:NewCDTimer(37.9, 350554, nil, nil, nil, 3)
@@ -77,24 +79,124 @@ local timerExtemporaneousFateCD					= mod:NewCDTimer(39.0, 353195, nil, nil, nil
 
 --mod:AddRangeFrameOption("8")
 --mod:AddInfoFrameOption(328897, true)
-mod:AddSetIconOption("SetIconOnGrimPortent", 354365, true, false, {1, 2, 3})
+mod:AddSetIconOption("SetIconOnGrimPortent", 354365, false, false, {1, 2, 3, 4, 5, 6, 7, 8})
 mod:AddNamePlateOption("NPAuraOnBurdenofDestiny", 353432, true)
 
 mod.vb.DebuffIcon = 1
 mod.vb.phase = 1
-mod.vb.fateCount = 0
+mod.vb.realignCount = 0
+mod.vb.twistCount = 0
+mod.vb.eternityCount = 0
+mod.vb.destinyCount = 0
+mod.vb.conjunctionCount = 0
+mod.vb.portentCount = 0
+mod.vb.buffFound = false
+local difficultyName = "normal"
+--Currently non mythic difficulties not using table yet since data not yet built (heroic logs kinda bad because dps too high to get actual sequences)
+local allTimers = {
+	["mythic"] = {
+		[1] = {
+			--Twist Fate
+			[354265] = {5.8, 29.2, 43.8, 36.4, 17.0, 32.9},
+			--Call of Eternity
+			[350554] = {11.8, 41.3, 35.4, 54.8},
+			--Heroic Destiny
+			[351680] = {20.8, 40.1, 39.7, 40.1},
+			--Fated Conjunction
+			[350421] = {22.8, 68.9, 53.5},
+			--Grim Portent
+			[354367] = {43.9, 28.8, 47.3},
+		},
+		[3] = {
+			--Twist Fate
+			[354265] = {},
+			--Call of Eternity
+			[350554] = {},
+			--Heroic Destiny
+			[351680] = {},
+			--Fated Conjunction
+			[350421] = {},
+		}
+	},
+	["heroic"] = {
+		[1] = {--No reliable data, bad transcriptor log AND dps too high for heroic sequencing
+			--Twist Fate
+			[354265] = {4.5},
+			--Call of Eternity
+			[350554] = {24},
+			--Heroic Destiny
+			[351680] = {35},
+			--Fated Conjunction
+			[350421] = {13.1},
+		},
+		[3] = {
+			--Twist Fate
+			[354265] = {},
+			--Call of Eternity
+			[350554] = {},
+			--Heroic Destiny
+			[351680] = {},
+			--Fated Conjunction
+			[350421] = {},
+		}
+	},
+	["normal"] = {
+		[1] = {--No data at all
+			--Twist Fate
+			[354265] = {},
+			--Call of Eternity
+			[350554] = {},
+			--Heroic Destiny
+			[351680] = {},
+			--Fated Conjunction
+			[350421] = {},
+		},
+		[3] = {
+			--Twist Fate
+			[354265] = {},
+			--Call of Eternity
+			[350554] = {},
+			--Heroic Destiny
+			[351680] = {},
+			--Fated Conjunction
+			[350421] = {},
+		}
+	},
+}
 
 function mod:OnCombatStart(delay)
 	self.vb.DebuffIcon = 1
 	self.vb.phase = 1
-	self.vb.fateCount = 0
-	timerTwistFateCD:Start(4.5-delay)
-	timerFatedConjunctionCD:Start(13.1-delay)
-	timerCallofEternityCD:Start(24-delay)
-	timerHeroicDestinyCD:Start(35-delay)
+	self.vb.realignCount = 0
+	self.vb.twistCount = 0
+	self.vb.eternityCount = 0
+	self.vb.destinyCount = 0
+	self.vb.conjunctionCount = 0
+	self.vb.portentCount = 0
+	self.vb.buffFound = false
 --	berserkTimer:Start(-delay)
 	if self:IsMythic() then
-		timerGrimPortentCD:Start(1-delay)
+		difficultyName = "mythic"
+		timerTwistFateCD:Start(5.8-delay, 1)
+		timerCallofEternityCD:Start(13-delay, 1)
+		timerHeroicDestinyCD:Start(20-delay, 1)
+		timerFatedConjunctionCD:Start(22-delay, 1)
+		timerGrimPortentCD:Start(43-delay, 1)
+	else
+		if self:IsHeroic() then
+			difficultyName = "heroic"
+			timerTwistFateCD:Start(4.5-delay, 1)
+			timerFatedConjunctionCD:Start(13.1-delay, 1)
+			timerCallofEternityCD:Start(24-delay, 1)
+			timerHeroicDestinyCD:Start(35-delay, 1)
+		else
+			difficultyName = "normal"
+			--Timers copied from heroic, probably wrong
+			timerTwistFateCD:Start(4.5-delay, 1)
+			timerFatedConjunctionCD:Start(13.1-delay, 1)
+			timerCallofEternityCD:Start(24-delay, 1)
+			timerHeroicDestinyCD:Start(35-delay, 1)
+		end
 	end
 --	if self.Options.InfoFrame then
 --		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(328897))
@@ -106,6 +208,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnCombatEnd()
+	self:UnregisterShortTermEvents()
 --	if self.Options.InfoFrame then
 --		DBM.InfoFrame:Hide()
 --	end
@@ -117,26 +220,59 @@ function mod:OnCombatEnd()
 	end
 end
 
+function mod:OnTimerRecovery()
+	if self:IsMythic() then
+		difficultyName = "mythic"
+	elseif self:IsHeroic() then
+		difficultyName = "heroic"
+	else
+		difficultyName = "normal"
+	end
+end
+
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 351680 then
-		timerHeroicDestinyCD:Start()
+		self.vb.destinyCount = self.vb.destinyCount + 1
+		local timer = self:IsMythic() and allTimers[difficultyName][self.vb.phase][spellId][self.vb.destinyCount+1] or not self:IsMythic() and 37.8
+		if timer then
+			timerHeroicDestinyCD:Start(timer, self.vb.destinyCount+1)
+		end
 	elseif spellId == 350554 then--Two sub cast IDs, but one primary?
-		timerCallofEternityCD:Start()
+		self.vb.eternityCount = self.vb.eternityCount + 1
+		local timer = self:IsMythic() and allTimers[difficultyName][self.vb.phase][spellId][self.vb.eternityCount+1] or not self:IsMythic() and 37.9
+		if timer then
+			timerCallofEternityCD:Start(timer, self.vb.eternityCount+1)
+		end
 	elseif (spellId == 350421 or spellId == 353426 or spellId == 350169) then--350421 confiremd, others unknown
+		self.vb.conjunctionCount = self.vb.conjunctionCount + 1
 		specWarnFatedConjunction:Show()
 		specWarnFatedConjunction:Play("watchstep")
-		timerFatedConjunctionCD:Start()
+		local timer = self:IsMythic() and allTimers[difficultyName][self.vb.phase][spellId][self.vb.conjunctionCount+1] or not self:IsMythic() and 59.7
+		if timer then
+			timerFatedConjunctionCD:Start(timer, self.vb.conjunctionCount+1)
+		end
 	elseif spellId == 351969 then
 		self.vb.phase = 2
-		self.vb.fateCount = self.vb.fateCount + 1
-		specWarnRealignFate:Show(self.vb.fateCount)
+		self.vb.realignCount = self.vb.realignCount + 1
+		specWarnRealignFate:Show(self.vb.realignCount)
 		specWarnRealignFate:Play("specialsoon")
 		timerHeroicDestinyCD:Stop()
 		timerTwistFateCD:Stop()
 		timerFatedConjunctionCD:Stop()
 		timerCallofEternityCD:Stop()
 		timerGrimPortentCD:Stop()
+		self.vb.buffFound = false
+		self:RegisterShortTermEvents(
+			"UNIT_AURA boss1"
+		)
+	elseif spellId == 354367 then
+		self.vb.DebuffIcon = 1
+		self.vb.portentCount = self.vb.portentCount + 1
+		local timer = self:IsMythic() and allTimers[difficultyName][self.vb.phase][spellId][self.vb.portentCount+1] or 59.7
+		if timer then
+			timerGrimPortentCD:Start(timer, self.vb.portentCount+1)
+		end
 	end
 end
 
@@ -152,26 +288,19 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 354365 then
-		if self:AntiSpam(5, 1) then--TODO: Move to cast event if there is one
-			timerGrimPortentCD:Start()
-		end
 		if args:IsDestTypePlayer() then
 			local icon = self.vb.DebuffIcon
-			if self.Options.SetIconOnGrimPortent then
+			if self.Options.SetIconOnGrimPortent and icon < 9 then
 				self:SetIcon(args.destName, icon)
 			end
 			if args:IsPlayer() then
-				specWarnGrimPortent:Show(self:IconNumToTexture(icon))
-				specWarnGrimPortent:Play("mm"..icon)
-				yellGrimPortent:Yell(icon, icon)
-				yellGrimPortentFades:Countdown(spellId, nil, icon)
+				specWarnGrimPortent:Show()
+				specWarnGrimPortent:Play("targetyou")
+				yellGrimPortent:Yell()
+				yellGrimPortentFades:Countdown(spellId)
 			end
 			warnGrimPortent:CombinedShow(0.5, args.destName)
 			self.vb.DebuffIcon = self.vb.DebuffIcon + 1
---			if self.vb.DebuffIcon > 8 then
---				self.vb.DebuffIcon = 1
---				DBM:AddMsg("Cast event for Grim Portent is wrong, doing backup icon reset")
---			end
 		end
 	elseif spellId == 351680 then
 		if args:IsPlayer() then
@@ -240,26 +369,81 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif spellId == 353195 then--Extemporaneous Fate
 		timerDarkestDestiny:Stop()
-	elseif spellId == 353428 or spellId == 351969 then--Realign Fate, 351969 is incorrect spellID and blizz might fix it later to use 353428
+	elseif (spellId == 353428 or spellId == 351969) and self.vb.phase == 2 then--Realign Fate, 351969 is incorrect spellID and blizz might fix it later to use 353428
+		self:UnregisterShortTermEvents()
 		timerDarkestDestiny:Stop()
-		if self.vb.fateCount < 3 then
+		self.vb.twistCount = 0
+		self.vb.eternityCount = 0
+		self.vb.destinyCount = 0
+		self.vb.conjunctionCount = 0
+		self.vb.portentCount = 0
+		if self.vb.realignCount < 3 then
 			self.vb.phase = 1
-			timerTwistFateCD:Start(7.3)
-			timerFatedConjunctionCD:Start(15.7)
-			timerCallofEternityCD:Start(26.6)
-			timerHeroicDestinyCD:Start(37.6)
 			if self:IsMythic() then
-				timerGrimPortentCD:Start(2)
+				--Extrapolated sincce it's same as initial phase 1 but offset a little
+				timerTwistFateCD:Start(8.4, 1)
+				timerCallofEternityCD:Start(15.6, 1)
+				timerHeroicDestinyCD:Start(22.6, 1)
+				timerFatedConjunctionCD:Start(24.6, 1)
+				timerGrimPortentCD:Start(45.6, 1)
+			else
+				timerTwistFateCD:Start(7.3, 1)
+				timerFatedConjunctionCD:Start(15.7, 1)
+				timerCallofEternityCD:Start(26.6, 1)
+				timerHeroicDestinyCD:Start(37.6, 1)
 			end
 		else
 			self.vb.phase = 3
-			timerFatedConjunctionCD:Start(8.4)
-			timerCallofEternityCD:Start(10.9)
-			timerHeroicDestinyCD:Start(24.4)
-			timerExtemporaneousFateCD:Start(39.7)
-			timerTwistFateCD:Start(48.9)
+			timerFatedConjunctionCD:Start(8.4, 1)
+			timerCallofEternityCD:Start(10.9, 1)
+			timerHeroicDestinyCD:Start(24.4, 1)
+			timerExtemporaneousFateCD:Start(39.7, 1)
+			timerTwistFateCD:Start(48.9, 1)
 			if self:IsMythic() then
-				timerGrimPortentCD:Start(2)
+				--timerGrimPortentCD:Start(2, 1)
+			end
+		end
+	end
+end
+
+function mod:UNIT_AURA(uId)
+	if DBM:UnitDebuff("boss1", 353428, 351969) and not self.vb.buffFound then
+		self.vb.buffFound = true
+	elseif not DBM:UnitDebuff("boss1", 353428, 351969) and self.vb.buffFound then--Boss had buff found through unit aura, but it's gone now, phase over
+		self:UnregisterShortTermEvents()
+		self.vb.buffFound = false
+		if self.vb.phase == 2 then
+			timerDarkestDestiny:Stop()
+			self.vb.twistCount = 0
+			self.vb.eternityCount = 0
+			self.vb.destinyCount = 0
+			self.vb.conjunctionCount = 0
+			self.vb.portentCount = 0
+			if self.vb.realignCount < 3 then
+				self.vb.phase = 1
+				if self:IsMythic() then
+					--Extrapolated sincce it's same as initial phase 1 but offset a little
+					timerTwistFateCD:Start(8.4, 1)
+					timerCallofEternityCD:Start(15.6, 1)
+					timerHeroicDestinyCD:Start(22.6, 1)
+					timerFatedConjunctionCD:Start(24.6, 1)
+					timerGrimPortentCD:Start(45.6, 1)
+				else
+					timerTwistFateCD:Start(7.3, 1)
+					timerFatedConjunctionCD:Start(15.7, 1)
+					timerCallofEternityCD:Start(26.6, 1)
+					timerHeroicDestinyCD:Start(37.6, 1)
+				end
+			else
+				self.vb.phase = 3
+				timerFatedConjunctionCD:Start(8.4, 1)
+				timerCallofEternityCD:Start(10.9, 1)
+				timerHeroicDestinyCD:Start(24.4, 1)
+				timerExtemporaneousFateCD:Start(39.7, 1)
+				timerTwistFateCD:Start(48.9, 1)
+				if self:IsMythic() then
+					--timerGrimPortentCD:Start(2, 1)
+				end
 			end
 		end
 	end
@@ -281,6 +465,10 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 353193 then--Extemporaneous Fate (precast)
 		warnExtemporaneousFate:Show()
 	elseif spellId == 354265 then--Twist Fate
-		timerTwistFateCD:Start()
+		self.vb.twistCount = self.vb.twistCount + 1
+		local timer = self:IsMythic() and allTimers[difficultyName][self.vb.phase][spellId][self.vb.twistCount+1] or not self:IsMythic() and 48.7
+		if timer then
+			timerTwistFateCD:Start(timer, self.vb.twistCount+1)
+		end
 	end
 end
