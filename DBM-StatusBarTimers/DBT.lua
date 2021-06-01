@@ -1,5 +1,6 @@
 DBT = {
-	bars = {}
+	bars = {},
+	numBars = 0
 }
 local DBT = DBT
 
@@ -249,7 +250,7 @@ do
 	local mt = {__index = barPrototype}
 
 	function DBT:CreateBar(timer, id, icon, huge, small, color, isDummy, colorType, inlineIcon, keep, fade, countdown, countdownMax)
-		if (not timer or type(timer) == "string" or timer <= 0) or ((self.numBars or 0) >= 15 and not isDummy) then
+		if (not timer or type(timer) == "string" or timer <= 0) or (self.numBars >= 15 and not isDummy) then
 			return
 		end
 		-- Most efficient place to block it, nil colorType instead of checking option every update
@@ -283,7 +284,6 @@ do
 				newBar.id = id
 				newBar.timer = timer
 				newBar.totalTime = timer
-				newBar.owner = self
 				newBar.moving = nil
 				newBar.enlarged = nil
 				newBar.fadingIn = 0
@@ -319,7 +319,7 @@ do
 				}, mt)
 			end
 			newFrame.obj = newBar
-			self.numBars = (self.numBars or 0) + 1
+			self.numBars = self.numBars + 1
 			if ((colorType and colorType == 7 and self.Options.Bar7ForceLarge) or (timer <= (self.Options.EnlargeBarTime or 11) or huge)) and self.Options.HugeBarsEnabled then -- Start enlarged
 				newBar.enlarged = true
 				newBar.huge = true
@@ -745,7 +745,6 @@ function barPrototype:Update(elapsed)
 	local bar = _G[frame_name .. "Bar"]
 	local spark = _G[frame_name .. "BarSpark"]
 	local timer = _G[frame_name .. "BarTimer"]
-	local obj = self.owner
 	local paused = self.paused
 	self.timer = self.timer - (paused and 0 or elapsed)
 	local timerValue = self.timer
@@ -910,10 +909,10 @@ function barPrototype:Cancel()
 	self.frame:Hide()
 	self.frame.obj = nil
 	self:RemoveFromList()
-	self.owner.bars[self] = nil
+	DBT.bars[self] = nil
 	unusedBarObjects[self] = self
 	self.dead = true
-	self.owner.numBars = (self.owner.numBars or 1) - 1
+	DBT.numBars = DBT.numBars - 1
 end
 
 function barPrototype:ApplyStyle()
@@ -1010,8 +1009,8 @@ do
 
 	function barPrototype:Announce()
 		local msg
-		if self.owner.announceHook then
-			msg = self.owner.announceHook(self)
+		if DBT.announceHook then
+			msg = DBT.announceHook(self)
 		end
 		msg = msg or ("%s %d:%02d"):format(tostring(_G[self.frame:GetName().."BarName"]:GetText()):gsub("|T.-|t", ""), mfloor(self.timer / 60), self.timer % 60)
 		local chatWindow = ChatEdit_GetActiveWindow()
@@ -1152,17 +1151,5 @@ do
 
 	function DBT:GetSkins()
 		return skins
-	end
-
-	-- @Deprecated
-	function DBT:GetTextures()
-		DBM:Debug("DBT:GetTextures() is deprecated.")
-		return {}
-	end
-
-	-- @Deprecated
-	function DBT:GetFonts()
-		DBM:Debug("DBT:GetFonts() is deprecated.")
-		return {}
 	end
 end
