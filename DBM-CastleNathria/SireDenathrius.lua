@@ -704,7 +704,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerWrackingPainCD:Start(21.1, 1)
 			timerHandofDestructionCD:Start(44.2, 1)
 			timerCommandMassacreCD:Start(63.7, 1)
-			timerNextPhase:Start(219.4)
+			timerNextPhase:Start(234.4)
 		else
 			--Remornia
 			timerImpaleCD:Start(27.5, 1)
