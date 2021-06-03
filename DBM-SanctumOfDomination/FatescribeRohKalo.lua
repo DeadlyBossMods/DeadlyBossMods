@@ -377,7 +377,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.destinyCount = 0
 		self.vb.conjunctionCount = 0
 		self.vb.portentCount = 0
-		if self.vb.realignCount < 3 then
+		if self.vb.realignCount == 1 then--first cast
 			self.vb.phase = 1
 			if self:IsMythic() then
 				--Extrapolated sincce it's same as initial phase 1 but offset a little
@@ -392,7 +392,7 @@ function mod:SPELL_AURA_REMOVED(args)
 				timerCallofEternityCD:Start(26.6, 1)
 				timerHeroicDestinyCD:Start(37.6, 1)
 			end
-		else
+		else--Second cast
 			self.vb.phase = 3
 			timerFatedConjunctionCD:Start(8.4, 1)
 			timerCallofEternityCD:Start(10.9, 1)
