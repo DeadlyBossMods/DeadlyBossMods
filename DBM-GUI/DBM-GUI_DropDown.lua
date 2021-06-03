@@ -1,6 +1,6 @@
 local L = DBM_GUI_L
 
-local pairs, next, type, ipairs, setmetatable, mmax = pairs, next, type, ipairs, setmetatable, math.max
+local pairs, next, type, ipairs, setmetatable, mfloor, mmax = pairs, next, type, ipairs, setmetatable, math.floor, math.max
 local CreateFrame, GameFontNormalSmall = CreateFrame, GameFontNormalSmall
 local DBM = DBM
 
@@ -40,7 +40,7 @@ tabFrame1List:SetScript("OnVerticalScroll", function(self, offset)
 	scrollbar:SetValue(offset)
 	_G[self:GetName() .. "ScrollBarScrollUpButton"]:SetEnabled(offset ~= 0)
 	_G[self:GetName() .. "ScrollBarScrollDownButton"]:SetEnabled(scrollbar:GetValue() - max ~= 0)
-	tabFrame1.offset = math.floor((offset / 16) + 0.5)
+	tabFrame1.offset = mfloor(offset)
 	tabFrame1:Refresh()
 end)
 if DBM:IsShadowlands() then
@@ -50,27 +50,27 @@ tabFrame1List:SetBackdropBorderColor(0.6, 0.6, 0.6, 0.6)
 
 local tabFrame1ScrollBar = _G[tabFrame1List:GetName() .. "ScrollBar"]
 tabFrame1ScrollBar:SetMinMaxValues(0, 11)
-tabFrame1ScrollBar:SetValueStep(16)
+tabFrame1ScrollBar:SetValueStep(1)
 tabFrame1ScrollBar:SetValue(0)
 
 local scrollUpButton = _G[tabFrame1ScrollBar:GetName() .. "ScrollUpButton"]
 scrollUpButton:SetSize(12, 12)
 scrollUpButton:Disable()
 scrollUpButton:SetScript("OnClick", function(self)
-	self:GetParent():SetValue(self:GetParent():GetValue() - 16)
+	self:GetParent():SetValue(self:GetParent():GetValue() - 1)
 end)
 local scrollDownButton = _G[tabFrame1ScrollBar:GetName() .. "ScrollDownButton"]
 scrollDownButton:SetSize(12, 12)
 scrollDownButton:Enable()
 scrollDownButton:SetScript("OnClick", function(self)
-	self:GetParent():SetValue(self:GetParent():GetValue() + 16)
+	self:GetParent():SetValue(self:GetParent():GetValue() + 1)
 end)
 
 _G[tabFrame1ScrollBar:GetName() .. "ThumbTexture"]:SetSize(12, 16)
 
 tabFrame1:EnableMouseWheel(true)
 tabFrame1:SetScript("OnMouseWheel", function(_, delta)
-	tabFrame1ScrollBar:SetValue(tabFrame1ScrollBar:GetValue() - (delta * 16))
+	tabFrame1ScrollBar:SetValue(tabFrame1ScrollBar:GetValue() - delta)
 end)
 
 local ClickFrame = CreateFrame("Button", nil, UIParent)
@@ -181,7 +181,7 @@ function tabFrame1:Refresh()
 	self:SetHeight(#self.buttons * 16 + 8)
 	if #self.dropdown.values > #self.buttons then
 		tabFrame1List:Show()
-		tabFrame1ScrollBar:SetMinMaxValues(0, valuesWOButtons * 16)
+		tabFrame1ScrollBar:SetMinMaxValues(0, valuesWOButtons)
 	else
 		if #self.dropdown.values < #self.buttons then
 			tabFrame1List:Hide()
