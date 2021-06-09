@@ -14,9 +14,9 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 346985 347283 347668 347679 350280 347490",
 	"SPELL_CAST_SUCCESS 352368 352382 352389 352398",
-	"SPELL_AURA_APPLIED 346986 347269 347283 347490 347369 347274"
---	"SPELL_AURA_APPLIED_DOSE",
---	"SPELL_AURA_REMOVED",
+	"SPELL_AURA_APPLIED 346986 347269 347283 347490 347369 347274 352384 352387 352392",
+	"SPELL_AURA_APPLIED_DOSE 352384 352387 352392"
+--	"SPELL_AURA_REMOVED2"
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 --	"UNIT_DIED"
@@ -29,20 +29,24 @@ mod:RegisterEventsInCombat(
  or (ability.id = 352368 or ability.id = 352382 or ability.id = 352389 or ability.id = 352398) and type = "cast"
 --]]
 local warnChainsofEternity							= mod:NewTargetNoFilterAnnounce(347269, 2)
-local warnEternalRuin								= mod:NewTargetAnnounce(347274, 4)
+local warnAnnihilatingSmash							= mod:NewTargetAnnounce(347274, 4)
 local warnPedatorsHowl								= mod:NewTargetAnnounce(347283, 2)
 local warnForgottenTorments							= mod:NewSoonAnnounce(352368, 2)--When it's soon
 local warnUpperReachesMight							= mod:NewSpellAnnounce(352382, 2)--When it's happening
 local warnMortregarsEchoes							= mod:NewSpellAnnounce(352389, 2)--When it's happening
 local warnSoulforgeHeat								= mod:NewSpellAnnounce(352398, 2)--When it's happening
 local warnTheJailersGaze							= mod:NewTargetNoFilterAnnounce(347369, 4)
+mod:AddBoolOption("warnRemnant", false, "announce")--3 options are combined into 1
+local warnRemantPhysical							= mod:NewCountAnnounce(352384, 2, nil, nil, false)--Physical
+local warnRemantShadow								= mod:NewCountAnnounce(352387, 2, nil, nil, false)--Shadow
+local warnRemnantFire								= mod:NewCountAnnounce(352392, 2, nil, nil, false)--Fire
 
 local specWarnOverpower								= mod:NewSpecialWarningDefensive(346985, nil, nil, nil, 1, 2)
 local specWarnCrushedArmor							= mod:NewSpecialWarningTaunt(346986, nil, nil, nil, 1, 2)
 local specWarnChainsofEternity						= mod:NewSpecialWarningYou(347269, nil, nil, nil, 1, 2)
 local yellChainsofEternity							= mod:NewYell(347269)
 local yellChainsofEternityFades						= mod:NewShortFadesYell(347269)
-local specWarnEternalRuin							= mod:NewSpecialWarningYou(347274, nil, nil, nil, 1, 2)
+local specWarnAnnihilatingSmash						= mod:NewSpecialWarningYou(347274, nil, nil, nil, 1, 2)
 local specWarnPredatorsHowl							= mod:NewSpecialWarningMoveAway(347283, nil, nil, nil, 1, 2)
 local yellPredatorsHowl								= mod:NewYell(347283, nil, false)--Lots of targets, so opt in?
 local specWarnHungeringMist							= mod:NewSpecialWarningDodge(347679, nil, nil, nil, 2, 2)
@@ -62,7 +66,6 @@ local timerFuryoftheAgesCD							= mod:NewCDCountTimer(46.2, 347490, nil, "Tank|
 local berserkTimer									= mod:NewBerserkTimer(600)
 
 mod:AddRangeFrameOption(6, 347283)
---mod:AddInfoFrameOption(328897, true)
 mod:AddSetIconOption("SetIconOnChains", 347269, true, false, {1})
 
 mod.vb.graspCount = 0
@@ -96,19 +99,12 @@ function mod:OnCombatStart(delay)
 		timerHungeringMistCD:Start(24.4-delay, 1)
 		berserkTimer:Start(420-delay)
 	end
---	if self.Options.InfoFrame then
---		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(328897))
---		DBM.InfoFrame:Show(10, "table", ExsanguinatedStacks, 1)
---	end
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(6)
 	end
 end
 
 function mod:OnCombatEnd()
---	if self.Options.InfoFrame then
---		DBM.InfoFrame:Hide()
---	end
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
@@ -234,14 +230,25 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerHungeringMistCD:Stop()
 	elseif spellId == 347274 then
 		if args:IsPlayer() then
-			specWarnEternalRuin:Show()
-			specWarnEternalRuin:Play("targetyou")
+			specWarnAnnihilatingSmash:Show()
+			specWarnAnnihilatingSmash:Play("targetyou")
 		else
-			warnEternalRuin:Show(args.destName)
+			warnAnnihilatingSmash:Show(args.destName)
+		end
+	elseif spellId == 352384 or spellId == 352387 or spellId == 352392 then--Physical, Shadow, Fire
+		if args:IsPlayer() and self.Options.warnRemnant then
+			local amount = args.amount or 1
+			if spellId == 352384 then
+				warnRemantPhysical:Show(amount)
+			elseif spellId == 352387 then
+				warnRemantShadow:Show(amount)
+			elseif spellId == 352392 then
+				warnRemnantFire:Show(amount)
+			end
 		end
 	end
 end
---mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
+mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId

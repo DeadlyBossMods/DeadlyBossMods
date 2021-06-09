@@ -5,6 +5,10 @@ local L
 ---------------------------
 L= DBM:GetModLocalization(2435)
 
+L:SetOptionLocalization({
+	warnRemnant	= "Announce personal Remnant debuff stacks"
+})
+
 L:SetMiscLocalization({
 	Remnant	= "Remnant"
 })

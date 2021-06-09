@@ -73,7 +73,7 @@ local yellFrostBlastFades							= mod:NewShortFadesYell(348756, nil, nil, nil, "
 local specWarnFoulWinds								= mod:NewSpecialWarningSpell(355127, nil, nil, nil, 2, 2, 4)
 local specWarnFreezingBlast							= mod:NewSpecialWarningDodge(352379, nil, nil, nil, 2, 2)
 local specWarnGlacialWinds							= mod:NewSpecialWarningDodge(355055, nil, nil, nil, 2, 2)
-local specWarnNecroticObliteration					= mod:NewSpecialWarningRun(352355, nil, nil, nil, 4, 2)
+local specWarnUndyingWrath							= mod:NewSpecialWarningRun(352355, nil, nil, nil, 4, 2)
 --local specWarnGTFO								= mod:NewSpecialWarningGTFO(340324, nil, nil, nil, 1, 8)
 
 --mod:AddTimerLine(BOSS)
@@ -233,8 +233,8 @@ function mod:SPELL_CAST_START(args)
 		timerGlacialWindsCD:Start()
 	elseif spellId == 352355 then
 		if playerPhased then
-			specWarnNecroticObliteration:Show()
-			specWarnNecroticObliteration:Play("justrun")
+			specWarnUndyingWrath:Show()
+			specWarnUndyingWrath:Play("justrun")
 		end
 		--Stop Remnant timers (may not stop here)
 		timerFreezingBlastCD:Stop()

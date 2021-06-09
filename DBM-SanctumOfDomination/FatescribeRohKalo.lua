@@ -45,10 +45,10 @@ local warnExtemporaneousFate					= mod:NewSoonAnnounce(353195, 3)
 local specWarnGrimPortent						= mod:NewSpecialWarningYouPos(354365, nil, nil, nil, 1, 2, 4)--Mythic
 local yellGrimPortent							= mod:NewShortPosYell(354365)--Mythic
 local yellGrimPortentFades						= mod:NewIconFadesYell(354365)--Mythic
-local specWarnHeroicDestiny						= mod:NewSpecialWarningMoveAway(351680, nil, nil, nil, 1, 2)
-local yellHeroicDestiny							= mod:NewYell(351680)
-local yellHeroicDestinyFades					= mod:NewShortFadesYell(351680)
-local specWarnHeroicDestinySwap					= mod:NewSpecialWarningTaunt(328897, nil, nil, nil, 1, 2)
+local specWarnInvokeDestiny						= mod:NewSpecialWarningMoveAway(351680, nil, nil, nil, 1, 2)
+local yellInvokeDestiny							= mod:NewYell(351680)
+local yellInvokeDestinyFades					= mod:NewShortFadesYell(351680)
+local specWarnInvokeDestinySwap					= mod:NewSpecialWarningTaunt(328897, nil, nil, nil, 1, 2)
 local specWarnBurdenofDestinyYou				= mod:NewSpecialWarningRun(353432, nil, nil, nil, 4, 2)
 local specWarnBurdenofDestiny					= mod:NewSpecialWarningSwitch(353432, "Dps", nil, nil, 1, 2)
 local specWarnFatedConjunction					= mod:NewSpecialWarningDodge(350355, nil, nil, nil, 2, 2)
@@ -65,7 +65,7 @@ local specWarnExtemporaneousFate				= mod:NewSpecialWarningSpell(353195, nil, ni
 --mod:AddTimerLine(BOSS)
 --Stage One: Scrying Fate
 local timerGrimPortentCD						= mod:NewCDTimer(28.8, 354365, nil, nil, nil, 3, nil, DBM_CORE_L.MYTHIC_ICON)--28-46?
-local timerHeroicDestinyCD						= mod:NewCDTimer(37.8, 351680, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)--37.8-41
+local timerInvokeDestinyCD						= mod:NewCDTimer(37.8, 351680, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)--37.8-41
 local timerTwistFateCD							= mod:NewCDTimer(48.7, 353931, nil, "RemoveMagic", nil, 5, nil, DBM_CORE_L.MAGIC_ICON)
 local timerFatedConjunctionCD					= mod:NewCDTimer(59.7, 350355, nil, nil, nil, 3, nil, DBM_CORE_L.DEADLY_ICON, nil, 1, 3)
 local timerCallofEternityCD						= mod:NewCDTimer(37.9, 350554, nil, nil, nil, 3)
@@ -179,7 +179,7 @@ function mod:OnCombatStart(delay)
 		difficultyName = "mythic"
 		timerTwistFateCD:Start(5.8-delay, 1)
 		timerCallofEternityCD:Start(13-delay, 1)
-		timerHeroicDestinyCD:Start(20-delay, 1)
+		timerInvokeDestinyCD:Start(20-delay, 1)
 		timerFatedConjunctionCD:Start(22-delay, 1)
 		timerGrimPortentCD:Start(43-delay, 1)
 	else
@@ -188,14 +188,14 @@ function mod:OnCombatStart(delay)
 			timerTwistFateCD:Start(4.5-delay, 1)
 			timerFatedConjunctionCD:Start(13.1-delay, 1)
 			timerCallofEternityCD:Start(24-delay, 1)
-			timerHeroicDestinyCD:Start(35-delay, 1)
+			timerInvokeDestinyCD:Start(35-delay, 1)
 		else
 			difficultyName = "normal"
 			--Timers copied from heroic, probably wrong
 			timerTwistFateCD:Start(4.5-delay, 1)
 			timerFatedConjunctionCD:Start(13.1-delay, 1)
 			timerCallofEternityCD:Start(24-delay, 1)
-			timerHeroicDestinyCD:Start(35-delay, 1)
+			timerInvokeDestinyCD:Start(35-delay, 1)
 		end
 	end
 --	if self.Options.InfoFrame then
@@ -236,7 +236,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.destinyCount = self.vb.destinyCount + 1
 		local timer = self:IsMythic() and allTimers[difficultyName][self.vb.phase][spellId][self.vb.destinyCount+1] or not self:IsMythic() and 37.8
 		if timer then
-			timerHeroicDestinyCD:Start(timer, self.vb.destinyCount+1)
+			timerInvokeDestinyCD:Start(timer, self.vb.destinyCount+1)
 		end
 	elseif spellId == 350554 then--Two sub cast IDs, but one primary?
 		self.vb.eternityCount = self.vb.eternityCount + 1
@@ -257,7 +257,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.realignCount = self.vb.realignCount + 1
 		specWarnRealignFate:Show(self.vb.realignCount)
 		specWarnRealignFate:Play("specialsoon")
-		timerHeroicDestinyCD:Stop()
+		timerInvokeDestinyCD:Stop()
 		timerTwistFateCD:Stop()
 		timerFatedConjunctionCD:Stop()
 		timerCallofEternityCD:Stop()
@@ -304,14 +304,14 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 351680 then
 		if args:IsPlayer() then
-			specWarnHeroicDestiny:Show()
-			specWarnHeroicDestiny:Play("runout")
-			yellHeroicDestiny:Yell()
-			yellHeroicDestinyFades:Countdown(spellId)
+			specWarnInvokeDestiny:Show()
+			specWarnInvokeDestiny:Play("runout")
+			yellInvokeDestiny:Yell()
+			yellInvokeDestinyFades:Countdown(spellId)
 		else
-			specWarnHeroicDestinySwap:Show(args.destName)
-			specWarnHeroicDestinySwap:Play("tauntboss")
-			specWarnHeroicDestinySwap:ScheduleVoice(1.5, "defensive")
+			specWarnInvokeDestinySwap:Show(args.destName)
+			specWarnInvokeDestinySwap:Play("tauntboss")
+			specWarnInvokeDestinySwap:ScheduleVoice(1.5, "defensive")
 		end
 	elseif spellId == 353432 then
 		if args:IsPlayer() then
@@ -359,7 +359,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif spellId == 351680 then
 		if args:IsPlayer() then
-			yellHeroicDestinyFades:Cancel()
+			yellInvokeDestinyFades:Cancel()
 		end
 	elseif spellId == 353432 then
 		if args:IsPlayer() then
@@ -383,20 +383,20 @@ function mod:SPELL_AURA_REMOVED(args)
 				--Extrapolated sincce it's same as initial phase 1 but offset a little
 				timerTwistFateCD:Start(8.4, 1)
 				timerCallofEternityCD:Start(15.6, 1)
-				timerHeroicDestinyCD:Start(22.6, 1)
+				timerInvokeDestinyCD:Start(22.6, 1)
 				timerFatedConjunctionCD:Start(24.6, 1)
 				timerGrimPortentCD:Start(45.6, 1)
 			else
 				timerTwistFateCD:Start(7.3, 1)
 				timerFatedConjunctionCD:Start(15.7, 1)
 				timerCallofEternityCD:Start(26.6, 1)
-				timerHeroicDestinyCD:Start(37.6, 1)
+				timerInvokeDestinyCD:Start(37.6, 1)
 			end
 		else--Second cast
 			self.vb.phase = 3
 			timerFatedConjunctionCD:Start(8.4, 1)
 			timerCallofEternityCD:Start(10.9, 1)
-			timerHeroicDestinyCD:Start(24.4, 1)
+			timerInvokeDestinyCD:Start(24.4, 1)
 			timerExtemporaneousFateCD:Start(39.7, 1)
 			timerTwistFateCD:Start(48.9, 1)
 			if self:IsMythic() then
@@ -425,20 +425,20 @@ function mod:UNIT_AURA(uId)
 					--Extrapolated sincce it's same as initial phase 1 but offset a little
 					timerTwistFateCD:Start(8.4, 1)
 					timerCallofEternityCD:Start(15.6, 1)
-					timerHeroicDestinyCD:Start(22.6, 1)
+					timerInvokeDestinyCD:Start(22.6, 1)
 					timerFatedConjunctionCD:Start(24.6, 1)
 					timerGrimPortentCD:Start(45.6, 1)
 				else
 					timerTwistFateCD:Start(7.3, 1)
 					timerFatedConjunctionCD:Start(15.7, 1)
 					timerCallofEternityCD:Start(26.6, 1)
-					timerHeroicDestinyCD:Start(37.6, 1)
+					timerInvokeDestinyCD:Start(37.6, 1)
 				end
 			else
 				self.vb.phase = 3
 				timerFatedConjunctionCD:Start(8.4, 1)
 				timerCallofEternityCD:Start(10.9, 1)
-				timerHeroicDestinyCD:Start(24.4, 1)
+				timerInvokeDestinyCD:Start(24.4, 1)
 				timerExtemporaneousFateCD:Start(39.7, 1)
 				timerTwistFateCD:Start(48.9, 1)
 				if self:IsMythic() then
