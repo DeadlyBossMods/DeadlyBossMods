@@ -73,7 +73,7 @@ local yellFrostBlastFades							= mod:NewShortFadesYell(348756, nil, nil, nil, "
 local specWarnFoulWinds								= mod:NewSpecialWarningSpell(355127, nil, nil, nil, 2, 2, 4)
 local specWarnFreezingBlast							= mod:NewSpecialWarningDodge(352379, nil, nil, nil, 2, 2)
 local specWarnGlacialWinds							= mod:NewSpecialWarningDodge(355055, nil, nil, nil, 2, 2)
-local specWarnNecroticObliteration					= mod:NewSpecialWarningRun(352355, nil, nil, nil, 4, 2)
+local specWarnUndyingWrath							= mod:NewSpecialWarningRun(352355, nil, nil, nil, 4, 2)
 --local specWarnGTFO								= mod:NewSpecialWarningGTFO(340324, nil, nil, nil, 1, 8)
 
 --mod:AddTimerLine(BOSS)
@@ -233,8 +233,8 @@ function mod:SPELL_CAST_START(args)
 		timerGlacialWindsCD:Start()
 	elseif spellId == 352355 then
 		if playerPhased then
-			specWarnNecroticObliteration:Show()
-			specWarnNecroticObliteration:Play("justrun")
+			specWarnUndyingWrath:Show()
+			specWarnUndyingWrath:Play("justrun")
 		end
 		--Stop Remnant timers (may not stop here)
 		timerFreezingBlastCD:Stop()
@@ -383,6 +383,7 @@ function mod:SPELL_AURA_APPLIED(args)
 --					timerHowlingBlizzardCD:Update(0, 109.8)
 --					timerDarkEvocationCD:Update(0, 86.2)
 					DBM:Debug("HIGH PRIORITY EVENT. This is a 80 mana phase start")--Generating easier to use transcriptor events
+					DBM:AddMsg("Please share log of THIS pull and say 80. Please know the exact pull when sharing log with DBM author")
 				elseif bossPower == 60 then--LOG coded
 					timerFrostBlastCD:Start(42)--Confirmed
 					timerHowlingBlizzardCD:Update(63.3, 109.8)
@@ -398,11 +399,13 @@ function mod:SPELL_AURA_APPLIED(args)
 --					timerHowlingBlizzardCD:Update(98.3, 109.8)
 --					timerDarkEvocationCD:Update(39.7, 86.2)
 					DBM:Debug("HIGH PRIORITY EVENT. This is a 20 mana phase start")--Generating easier to use transcriptor events
+					DBM:AddMsg("Please share log of THIS pull and say 20. Please know the exact pull when sharing log with DBM author")
 				else--100/0--TODO, FIXME
 					timerFrostBlastCD:Start(85)--Speculation
 --					timerHowlingBlizzardCD:Update(0, 109.8)
 --					timerDarkEvocationCD:Update(0, 86.2)
 					DBM:Debug("HIGH PRIORITY EVENT. This is a 100 mana phase start")--Generating easier to use transcriptor events
+					DBM:AddMsg("Please share log of THIS pull and say 100. Please know the exact pull when sharing log with DBM author")
 				end
 			end
 		end
