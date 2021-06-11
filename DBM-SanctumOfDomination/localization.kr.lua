@@ -6,6 +6,10 @@ local L
 ---------------------------
 L= DBM:GetModLocalization(2435)
 
+L:SetOptionLocalization({
+	warnRemnant	= "자신의 잔재 디버프 중첩 알림"
+})
+
 L:SetMiscLocalization({
 	Remnant	= "잔재"
 })
