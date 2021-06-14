@@ -127,7 +127,6 @@ mod:AddInfoFrameOption(347807, true)
 mod:AddSetIconOption("SetIconOnTerrorOrb", 356023, true, true, {4, 5, 6, 7, 8})--Didn't see any on heroic
 mod:AddNamePlateOption("NPAuraOnEnflame", 351109)--Mawsworn Hopebreaker
 
-mod.vb.phase = 1
 --P1+ variable
 mod.vb.winrunnerCount = 0
 mod.vb.dominationChainsCount = 0
@@ -247,7 +246,7 @@ local allTimers = {--Much of table unused, just templated in case earlier diffic
 function mod:OnCombatStart(delay)
 	table.wipe(BarbedStacks)
 	table.wipe(castsPerGUID)
-	self.vb.phase = 1
+	self:SetStage(1)
 	self.vb.winrunnerCount = 0
 	self.vb.dominationChainsCount = 0
 	self.vb.veilofDarknessCount = 0
@@ -425,7 +424,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 357102 then--Raid Portal: Oribos
 		warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(3))
 		warnPhase:Play("pthree")
-		self.vb.phase = 3
+		self:SetStage(3)
 		self.vb.baneArrowCount = 0
 		self.vb.shadowDaggerCount = 0
 		self.vb.bansheeScreamCount = 0
@@ -504,7 +503,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 350857 and self.vb.phase == 1 then
 		warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(1.5))
 		warnPhase:Play("phasechange")
-		self.vb.phase = 1.5--Intermission to phase 2
+		self:SetStage(1.5)--Intermission to phase 2
 		self.vb.dominationChainsCount = 0
 		self.vb.riveCount = 0
 		timerWindrunnerCD:Stop()
@@ -516,7 +515,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 348146 and self.vb.phase < 2 then
 		warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(2))
 		warnPhase:Play("ptwo")
-		self.vb.phase = 2
+		self:SetStage(2)
 		self.vb.veilofDarknessCount = 0
 		self.vb.icecrownCast = 0
 		self.vb.hauntingWavecount = 0

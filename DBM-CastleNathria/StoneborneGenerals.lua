@@ -129,7 +129,6 @@ local playerName = UnitName("player")
 local LacerationStacks = {}
 local castsPerGUID = {}
 local playerEruption = 0--Players eruption and the numbber that was theres
-mod.vb.phase = 1
 mod.vb.HeartIcon = 1
 mod.vb.wickedBladeIcon = 1
 mod.vb.bladeCount = 0
@@ -276,7 +275,7 @@ function mod:OnCombatStart(delay)
 	playerEruption = 0
 	self.vb.HeartIcon = 1
 	self.vb.wickedBladeIcon = self.Options.BladeMarking == "SetOne" and 1 or 2
-	self.vb.phase = 1
+	self:SetStage(1)
 	self.vb.bladeCount = 0
 	self.vb.heartCount = 0
 	self.vb.swipeCount = 0
@@ -391,7 +390,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnShatteringBlast:Play("carefly")
 		timerShatteringBlast:Start()
 		--Start INCOMING boss timers here, that seems to be how it's scripted.
-		self.vb.phase = self.vb.phase + 1
+		self:SetStage(0)
 		self.vb.upHeavalCount = 0--always resets since boss stops casting it while shielded, so even between phase 2 and 3 there is a long break
 		self.vb.forcesCount = 0
 		if self.vb.phase == 2 then

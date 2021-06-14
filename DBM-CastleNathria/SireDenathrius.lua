@@ -127,7 +127,6 @@ mod:AddSetIconOption("SetIconOnImpale", 329951, true, false, {1, 2, 3, 4})
 mod:AddSetIconOption("SetIconOnFatalFinesse", 332794, true, false, {1, 2, 3})
 mod:AddSetIconOption("SetIconOnBalefulShadows", 344313, false, true, {7, 8})
 
-mod.vb.phase = 1
 mod.vb.priceCount = 0
 mod.vb.painCount = 0
 mod.vb.RavageCount = 0
@@ -274,7 +273,7 @@ function mod:OnCombatStart(delay)
 	table.wipe(stage2Adds)
 	table.wipe(deadAdds)
 	table.wipe(castsPerGUID)
-	self.vb.phase = 1
+	self:SetStage(1)
 	self.vb.priceCount = 0
 	self.vb.painCount = 0
 	self.vb.RavageCount = 0
@@ -352,7 +351,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnCommandRavage:Play("specialsoon")
 		timerCommandRavageCD:Start(self:IsEasy() and 59.5 or 57.3, self.vb.RavageCount+1)
 	elseif spellId == 328117 then--March of the Penitent (first intermission)
-		self.vb.phase = 1.5
+		self:SetStage(1.5)
 		specWarnMarchofthePenitent:Show()
 		timerCleansingPainCD:Stop()
 		timerBloodPriceCD:Stop()
@@ -433,7 +432,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		specWarnCommandMassacre:Play("watchstep")--Perhaps farfromline?
 		timerCommandMassacreCD:Start(self:IsMythic() and 41.4 or 47.4, self.vb.MassacreCount+1)--Mythic 41-45
 	elseif spellId == 326005 then
-		self.vb.phase = 3
+		self:SetStage(3)
 		self.vb.priceCount = 0
 		self.vb.painCount = 0--reused for shattering pain
 		self.vb.RavageCount = 0
@@ -691,7 +690,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			self:SetIcon(args.destName, 0)
 		end
 	elseif spellId == 328117 and self:IsInCombat() then--March of the Penitent
-		self.vb.phase = 2
+		self:SetStage(2)
 		self.vb.painCount = 0
 		self.vb.DebuffCount = 0
 		warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(2))
