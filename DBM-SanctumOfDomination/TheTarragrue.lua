@@ -77,6 +77,7 @@ mod.vb.overpowerCount = 0
 mod.vb.furyCount = 0
 
 function mod:OnCombatStart(delay)
+	self:SetStage(1)
 	self.vb.graspCount = 0
 	self.vb.mistCount = 0
 	self.vb.remnantcount = 0
@@ -220,6 +221,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnFuryoftheAges:Show(args.destName)
 		specWarnFuryoftheAges:Play("enrage")
 	elseif spellId == 347369 then
+		self:SetStage(2)
 		warnTheJailersGaze:Show(args.destName)
 		timerPedatorsHowlCD:Stop()
 		timerOverpowerCD:Stop()

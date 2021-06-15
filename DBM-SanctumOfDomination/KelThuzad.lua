@@ -108,7 +108,6 @@ mod.vb.echoIcon = 1
 mod.vb.wrathIcon = 1
 mod.vb.spikeIcon = 1
 mod.vb.addIcon = 8
-mod.vb.phase = 1
 mod.vb.freezingBlastCount = 0
 local playerPhased = false
 
@@ -133,7 +132,7 @@ function mod:OnCombatStart(delay)
 	self.vb.wrathIcon = 1
 	self.vb.spikeIcon = 1
 	self.vb.addIcon = 8
-	self.vb.phase = 1
+	self:SetStage(1)
 	self.vb.freezingBlastCount = 0
 	playerPhased = false
 	timerSoulFractureCD:Start(5.7-delay)
@@ -190,7 +189,7 @@ function mod:SPELL_CAST_START(args)
 --		self:ScheduleMethod(0.2, "BossTargetScanner", args.sourceGUID, "FrostBlast", 0.1, 10, true, nil, nil, nil, true)
 	elseif spellId == 352293 then--Necrotic Destruction
 		--Stop KT timers
-		self.vb.phase = 2
+		self:SetStage(2)
 		self.vb.addIcon = 8
 		self.vb.freezingBlastCount = 0
 		timerHowlingBlizzardCD:Stop()
@@ -258,7 +257,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 --	if spellId == 352293 then--Necrotic Destruction ended (assumed phase trigger to return to active KT engagement)
 		--Start KT timers
---		self.vb.phase = 1
+--		self:SetStage(1)
 --		timerHowlingBlizzardCD:Start(2)
 --		timerDarkEvocationCD:Start(2)
 --		timerSoulFractureCD:Start(2)
@@ -367,7 +366,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 352051 then--Necrotic Surge
 		if self.vb.phase == 2 then
-			self.vb.phase = 1
+			self:SetStage(1)
 			warnNecroticSurge:Show(args.amount or 1)
 			--Not totally correct, frost blast can supposedly come earlier if boss doesn't come out and cast his mana abilitie right away
 			--These 3 timers may also differ based on boss mana going into phase, they need review
@@ -461,7 +460,7 @@ function mod:UNIT_DIED(args)
 		timerFoulWindsCD:Stop()
 		timerGlacialWindsCD:Stop()
 --		self:UnregisterShortTermEvents()
-		self.vb.phase = 3
+		self:SetStage(3)
 		--Stop P2 stuff that may have carried over
 		timerHowlingBlizzardCD:Stop()
 		timerDarkEvocationCD:Stop()

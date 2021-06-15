@@ -96,7 +96,6 @@ local timerAnnihilatingGlareCD					= mod:NewCDCountTimer(23, 350764, 143444, nil
 mod:AddNamePlateOption("NPAuraOnSharedSuffering", 351825)
 mod:AddBoolOption("ContinueRepeating", false)
 
-mod.vb.phase = 1
 mod.vb.gazeCount = 0
 mod.vb.beamCount = 0
 mod.vb.deathlinkCount = 0
@@ -126,7 +125,7 @@ function mod:DesolationBeam(targetname, uId, bossuid)--scanningTime
 end
 
 function mod:OnCombatStart(delay)
-	self.vb.phase = 1
+	self:SetStage(1)
 	self.vb.gazeCount = 0
 	self.vb.beamCount = 0
 	self.vb.lethargyCount = 0
@@ -206,7 +205,7 @@ function mod:SPELL_CAST_START(args)
 		timerAnnihilatingGlareCD:Start(70, self.vb.glareCount+1)
 	elseif spellId == 348974 then--Immediate Extermination (10sec cast)
 		if self.vb.phase < 3 then
-			self.vb.phase = 3
+			self:SetStage(3)
 			self.vb.lethargyCount = 0
 			self.vb.shatterCount = 0
 			self.vb.deathlinkCount = 0
@@ -291,7 +290,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 348805 then--Stygian Darkshield (Entering Adds phase)
 		timerAnnihilatingGlareCD:Pause(self.vb.glareCount+1)
-		self.vb.phase = 2
+		self:SetStage(2)
 		self.vb.gazeCount = 0--Still used during intermisison
 		self.vb.shatterCount = 0--Still used during intermisison
 		self.vb.beamCount = 0
@@ -324,7 +323,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 348805 then--Stygian Darkshield (Exiting Adds phase)
 		timerAnnihilatingGlareCD:Resume(self.vb.glareCount+1)--Happens regardless of going back into stage 1 or into stage 3
 		if self.vb.phase == 2 then
-			self.vb.phase = 1
+			self:SetStage(1)
 			self.vb.lethargyCount = 0
 			self.vb.shatterCount = 0
 			self.vb.deathlinkCount = 0

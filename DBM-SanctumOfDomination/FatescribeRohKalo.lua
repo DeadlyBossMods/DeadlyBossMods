@@ -83,7 +83,6 @@ mod:AddSetIconOption("SetIconOnGrimPortent", 354365, false, false, {1, 2, 3, 4, 
 mod:AddNamePlateOption("NPAuraOnBurdenofDestiny", 353432, true)
 
 mod.vb.DebuffIcon = 1
-mod.vb.phase = 1
 mod.vb.realignCount = 0
 mod.vb.twistCount = 0
 mod.vb.eternityCount = 0
@@ -166,7 +165,7 @@ local allTimers = {
 
 function mod:OnCombatStart(delay)
 	self.vb.DebuffIcon = 1
-	self.vb.phase = 1
+	self:SetStage(1)
 	self.vb.realignCount = 0
 	self.vb.twistCount = 0
 	self.vb.eternityCount = 0
@@ -253,7 +252,7 @@ function mod:SPELL_CAST_START(args)
 			timerFatedConjunctionCD:Start(timer, self.vb.conjunctionCount+1)
 		end
 	elseif spellId == 351969 then
-		self.vb.phase = 2
+		self:SetStage(2)
 		self.vb.realignCount = self.vb.realignCount + 1
 		specWarnRealignFate:Show(self.vb.realignCount)
 		specWarnRealignFate:Play("specialsoon")
@@ -378,7 +377,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.conjunctionCount = 0
 		self.vb.portentCount = 0
 		if self.vb.realignCount == 1 then--first cast
-			self.vb.phase = 1
+			self:SetStage(1)
 			if self:IsMythic() then
 				--Extrapolated sincce it's same as initial phase 1 but offset a little
 				timerTwistFateCD:Start(8.4, 1)
@@ -393,7 +392,7 @@ function mod:SPELL_AURA_REMOVED(args)
 				timerInvokeDestinyCD:Start(37.6, 1)
 			end
 		else--Second cast
-			self.vb.phase = 3
+			self:SetStage(3)
 			timerFatedConjunctionCD:Start(8.4, 1)
 			timerCallofEternityCD:Start(10.9, 1)
 			timerInvokeDestinyCD:Start(24.4, 1)
@@ -420,7 +419,7 @@ function mod:UNIT_AURA(uId)
 			self.vb.conjunctionCount = 0
 			self.vb.portentCount = 0
 			if self.vb.realignCount < 3 then
-				self.vb.phase = 1
+				self:SetStage(1)
 				if self:IsMythic() then
 					--Extrapolated sincce it's same as initial phase 1 but offset a little
 					timerTwistFateCD:Start(8.4, 1)
@@ -435,7 +434,7 @@ function mod:UNIT_AURA(uId)
 					timerInvokeDestinyCD:Start(37.6, 1)
 				end
 			else
-				self.vb.phase = 3
+				self:SetStage(3)
 				timerFatedConjunctionCD:Start(8.4, 1)
 				timerCallofEternityCD:Start(10.9, 1)
 				timerInvokeDestinyCD:Start(24.4, 1)

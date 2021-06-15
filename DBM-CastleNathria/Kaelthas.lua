@@ -362,6 +362,7 @@ local function expectedInfuser(self)
 end
 
 function mod:OnCombatStart(delay)
+	self:SetStage(1)
 	self.vb.addMode = 0
 	self.vb.addCount = 0
 	self.vb.healerOrbCount = 0
@@ -658,6 +659,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 	elseif spellId == 323402 and self:AntiSpam(3, 7) then--Reflection of Guilt (Shade Coming out)
+		self:SetStage(2)
 		self.vb.shadeActive = true
 		self.vb.cloakCount = 0
 		timerSoulInfuserCD:Stop()
@@ -722,6 +724,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			DBM.Nameplate:Hide(true, args.sourceGUID, spellId)
 		end
 	elseif spellId == 323402 then--Reflection of Guilt (Shade Leaving)
+		self:SetStage(1)
 		self.vb.shadeActive = false
 		self.vb.addMode = 2
 		self.vb.assassinCount = 0

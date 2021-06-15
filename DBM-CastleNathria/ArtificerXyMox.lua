@@ -72,7 +72,6 @@ local timerUnleashPowerCD							= mod:NewCDTimer(40.8, 342854, nil, nil, nil, 5,
 
 mod:AddSetIconOption("SetIconOnTear", 328437, true, false, {1, 2})
 
-mod.vb.phase = 0
 mod.vb.spartCount = 0
 mod.vb.tearIcon = 1
 mod.vb.annihilationCount = 0
@@ -82,7 +81,7 @@ mod.vb.p3FirstCast = 0--1- Tear, 2 - Annihilate
 mod.vb.hyperInProgress = false
 
 function mod:OnCombatStart(delay)
-	self.vb.phase = 1
+	self:SetStage(1)
 	self.vb.spartCount = 0
 	self.vb.tearIcon = 1
 	self.vb.annihilationCount = 0
@@ -144,7 +143,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 329770 then--Root of Extinction first cast
 --		warnSeedsofExtinction:Show()
 		if self.vb.phase < 2 then--In case user playing in language with unlocalized phase 2 yell
-			self.vb.phase = 2
+			self:SetStage(2)
 			timerDimensionalTearCD:Stop()
 			timerFleetingSpiritsCD:Stop()
 		end
@@ -157,7 +156,7 @@ function mod:SPELL_CAST_START(args)
 		timerExtinction:Start()
 	elseif spellId == 328880 then--Phase Change 3 (Edge of Annihilation)
 		if self.vb.phase < 3 then--In case boss doesn't cast 342310, which happens in rare cases
-			self.vb.phase = 3
+			self:SetStage(3)
 			self.vb.p3FirstCast = 0--1- Tear, 2 - Annihilate
 			timerDimensionalTearCD:Stop()
 			timerSeedsofExtinctionCD:Stop()
@@ -227,7 +226,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 325399 then
 		self.vb.hyperInProgress = false
 	elseif spellId == 181089 then
-		self.vb.phase = self.vb.phase + 1
+		self:SetStage(0)
 		if self.vb.phase == 2 then
 			warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(2))
 			warnPhase:Play("ptwo")
