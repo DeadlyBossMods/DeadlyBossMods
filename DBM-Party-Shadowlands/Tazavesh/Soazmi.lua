@@ -84,10 +84,11 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 357189 then
 		local amount = args.amount or 0--amount reported for all (SPELL_AURA_APPLIED_DOSE) but 0 (SPELL_AURA_REMOVED)
-		specWarnDoubleTechnique:Show(args.sourceName, kickCount)
 		if amount == 1 then
+			specWarnDoubleTechnique:Show(args.sourceName, 1)
 			specWarnDoubleTechnique:Play("kick1r")
 		elseif kickCount == 0 then
+			specWarnDoubleTechnique:Show(args.sourceName, 2)
 			specWarnDoubleTechnique:Play("kick2r")
 		end
 	end
