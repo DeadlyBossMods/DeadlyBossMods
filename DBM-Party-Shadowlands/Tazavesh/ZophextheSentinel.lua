@@ -65,7 +65,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnInterrogation:Show()
 			specWarnInterrogation:Play("targetyou")
-			yellInterrogationr:Yell()
+			yellInterrogation:Yell()
 		else
 			specWarnInterrogationOther:Show()
 			specWarnInterrogationOther:Play("targetchange")
