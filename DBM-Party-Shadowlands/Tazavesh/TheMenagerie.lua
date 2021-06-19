@@ -19,14 +19,13 @@ mod:RegisterEventsInCombat(
 )
 
 --TODO, target scan grasp to warn target during cast?
---General
-local warnGluttonousFeast			= mod:NewTargetNoFilterAnnounce(349627, 2)
-
---General
-local specWarnGluttonousFeast		= mod:NewSpecialWarningYou(349627, nil, nil, nil, 1, 2)
-local yellGluttonousFeast			= mod:NewYell(349627)
-local yellGluttonousFeastFades		= mod:NewShortFadesYell(349627)
 --Alcruux
+local warnGluttony					= mod:NewTargetNoFilterAnnounce(349627, 2)
+
+--Alcruux
+local specWarnGluttony				= mod:NewSpecialWarningYou(349627, nil, nil, nil, 1, 2)
+local yellGluttony					= mod:NewYell(349627)
+local yellGluttonyFades				= mod:NewShortFadesYell(349627)
 local specWarnGripofHunger			= mod:NewSpecialWarningRun(349663, nil, nil, nil, 4, 2)
 local specWarnGrandConsumption		= mod:NewSpecialWarningDodge(349663, nil, nil, nil, 2, 2)
 --Achillite
@@ -94,12 +93,12 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 349627 then
 		if args:IsPlayer() then
-			specWarnGluttonousFeast:Show()
-			specWarnGluttonousFeast:Play("targetyou")
-			yellGluttonousFeast:Yell()
-			yellGluttonousFeastFades:Countdown(spellId)
+			specWarnGluttony:Show()
+			specWarnGluttony:Play("targetyou")
+			yellGluttony:Yell()
+			yellGluttonyFades:Countdown(spellId)
 		else
-			warnGluttonousFeast:Show(args.destName)
+			warnGluttony:Show(args.destName)
 		end
 		if self.Options.SetIconOnFeast then
 			self:SetIcon(args.destName, 1)
@@ -127,7 +126,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 349627 then
 		if args:IsPlayer() then
-			yellGluttonousFeastFades:Cancel()
+			yellGluttonyFades:Cancel()
 		end
 		if self.Options.SetIconOnFeast then
 			self:SetIcon(args.destName, 0)
