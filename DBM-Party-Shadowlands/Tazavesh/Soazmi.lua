@@ -87,7 +87,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		if amount == 1 then
 			specWarnDoubleTechnique:Show(args.sourceName, 1)
 			specWarnDoubleTechnique:Play("kick1r")
-		elseif kickCount == 0 then
+		elseif amount == 0 then
 			specWarnDoubleTechnique:Show(args.sourceName, 2)
 			specWarnDoubleTechnique:Play("kick2r")
 		end
