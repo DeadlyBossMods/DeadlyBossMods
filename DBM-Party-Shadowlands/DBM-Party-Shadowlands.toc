@@ -74,7 +74,7 @@ SanguineDepths\SanguineDepthsTrash.lua
 Tazavesh\ZophextheSentinel.lua
 Tazavesh\TheMenagerie.lua
 Tazavesh\MailroomMayhem.lua
-Tazavesh\AumyzaOasis.lua
+Tazavesh\MyzasOasis.lua
 Tazavesh\Soazmi.lua
 Tazavesh\Hylbrande.lua
 Tazavesh\TimecapnHooktail.lua

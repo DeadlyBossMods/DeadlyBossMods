@@ -14,11 +14,13 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_REMOVED 349627 349933",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
-	"UNIT_DIED"
+	"UNIT_DIED",
+	"INSTANCE_ENCOUNTER_ENGAGE_UNIT"
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
 --TODO, target scan grasp to warn target during cast?
+--TODO, find way of detecting hard mode and start engage timers for incoming bosses
 --Alcruux
 local warnGluttony					= mod:NewTargetNoFilterAnnounce(349627, 2)
 
@@ -31,31 +33,42 @@ local specWarnGrandConsumption		= mod:NewSpecialWarningDodge(349663, nil, nil, n
 --Achillite
 local specWarnVentingProtocol		= mod:NewSpecialWarningDodge(349987, nil, nil, nil, 2, 2)
 local specWarnPurificationProtocol	= mod:NewSpecialWarningDispel(349954, "RemoveMagic", nil, nil, 1, 2)
---Last Dude
+--Venza Goldfuse
 local specWarnWhirlingAnnihilation	= mod:NewSpecialWarningRun(350086, nil, nil, nil, 4, 2)
-local specWarnGraspoftheDead		= mod:NewSpecialWarningSwitch(350101, "-Healer", nil, nil, 1, 2)
-local yellGraspoftheDead			= mod:NewYell(350101, nil, nil, nil, "YELL")
+local specWarnChainsofDamnation		= mod:NewSpecialWarningSwitch(350101, "-Healer", nil, nil, 1, 2)
+local yellChainsofDamnation			= mod:NewYell(350101, nil, nil, nil, "YELL")
 --local specWarnGTFO				= mod:NewSpecialWarningGTFO(320366, nil, nil, nil, 1, 8)
 
 --Alcruux
 local timerGripofHungerCD			= mod:NewAITimer(11, 349663, nil, nil, nil, 2)
 local timerGrandconsumptionCD		= mod:NewAITimer(11, 349797, nil, nil, nil, 3)
 --Achillite
+local timerAchilliteCD				= mod:NewNextTimer(11, "ej23231", nil, nil, nil, 1, "132349")
 local timerVentingProtocolCD		= mod:NewAITimer(11, 349987, nil, nil, nil, 3)
 local timerFlagellationProtocolCD	= mod:NewAITimer(11, 349934, nil, nil, nil, 3)
 local timerPurificationProtocolCD	= mod:NewAITimer(15.8, 320200, nil, nil, nil, 3, nil, DBM_CORE_L.MAGIC_ICON)
+--Venza Goldfuse
+local timerVenzaCD					= mod:NewNextTimer(11, "ej23241", nil, nil, nil, 1, "132349")
 local timerWhirlingAnnihilationCD	= mod:NewAITimer(15.8, 350086, nil, nil, nil, 2, nil, DBM_CORE_L.DEADLY_ICON)
-local timerGraspoftheDeadCD			= mod:NewAITimer(11, 350101, nil, nil, nil, 1)
+local timerChainsofDamnationCD		= mod:NewAITimer(11, 350101, nil, nil, nil, 1)
 
 mod:AddSetIconOption("SetIconOnFeast", 349627, true, false, {1})
 mod:AddInfoFrameOption(349933, true)
 
+local activeBossGUIDS = {}
+
 function mod:OnCombatStart(delay)
+	--Alcruux timers
 	timerGripofHungerCD:Start(1-delay)
 	timerGrandconsumptionCD:Start(1-delay)
+	--if hardmode stuff then
+		--timerAchilliteCD:Start(28-delay)
+		--timerVenzaCD:Start(65-delay)
+	--end
 end
 
 function mod:OnCombatEnd()
+	table.wipe(activeBossGUIDS)
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
 	end
@@ -85,7 +98,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnWhirlingAnnihilation:ScheduleVoice(1, "keepmove")
 		timerWhirlingAnnihilationCD:Start()
 	elseif spellId == 350101 then
-		timerGraspoftheDeadCD:Start()
+		timerChainsofDamnationCD:Start()
 	end
 end
 
@@ -114,10 +127,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnPurificationProtocol:ScheduleVoice(0.3, "helpdispel")
 	elseif spellId == 350101 then
 		if args:IsPlayer() then
-			yellGraspoftheDead:Yell()
+			yellChainsofDamnation:Yell()
 		else
-			specWarnGraspoftheDead:Show(args.destName)
-			specWarnGraspoftheDead:Play("killmob")
+			specWarnChainsofDamnation:Show(args.destName)
+			specWarnChainsofDamnation:Play("killmob")
 		end
 	end
 end
@@ -158,7 +171,26 @@ function mod:UNIT_DIED(args)
 		timerPurificationProtocolCD:Stop()
 	elseif cid == 176705 then--Venza Gldfuse
 		timerWhirlingAnnihilationCD:Stop()
-		timerGraspoftheDeadCD:Stop()
+		timerChainsofDamnationCD:Stop()
+	end
+end
+
+function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
+	for i = 1, 5 do
+		local unitID = "boss"..i
+		local unitGUID = UnitGUID(unitID)
+		if UnitExists(unitID) and not activeBossGUIDS[unitGUID] then
+			activeBossGUIDS[unitGUID] = true
+			local cid = self:GetUnitCreatureId(unitID)
+			if cid == 176555 then--Achillite
+				timerVentingProtocolCD:Start(1)
+				timerFlagellationProtocolCD:Start(1)
+				timerPurificationProtocolCD:Start(1)
+			elseif cid == 176705 then--Venza Gldfuse
+				timerWhirlingAnnihilationCD:Start(1)
+				timerChainsofDamnationCD:Start(1)
+			end
+		end
 	end
 end
 
