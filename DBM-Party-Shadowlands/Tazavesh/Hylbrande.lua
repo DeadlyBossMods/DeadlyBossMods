@@ -58,8 +58,8 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 346116 then
 		if self:IsTanking("player", "boss1") then
-			yellEmbalmingIchor:Show()
-			yellEmbalmingIchor:Play("defensive")
+			specWarnShearingSwings:Show()
+			specWarnShearingSwings:Play("defensive")
 		end
 		timerShearingSwingsCD:Start()
 	elseif spellId == 347094 then
