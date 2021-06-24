@@ -20,11 +20,9 @@ mod:RegisterEventsInCombat(
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 	"UNIT_DIED",
-	"UNIT_AURA_UNFILTERED",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, like 90% of this boss is omitted from combat log, limiting mod functionality. Biggest standout is flameclasp trap since it has no alternative for debuffs
 --TODO, verify infoframe usefulness
 --TODO,
 --https://ptr.wowhead.com/spells/uncategorized/name:spike?filter=21;2;90100
@@ -170,15 +168,15 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 348508 then
-		DBM:AddMsg("Rippling Hammer added to combat log, please report to DBM author")
+		timerReverberatingHammerCD:Start()
 	elseif spellId == 355568 then
-		DBM:AddMsg("Cruciform Axe added to combat log, please report to DBM author")
+		timerCruciformAxeCD:Start()
 	elseif spellId == 355778 then
-		DBM:AddMsg("Dualblade Scythe added to combat log, please report to DBM author")
+		timerDualbladeScytheCD:Start()
 	elseif spellId == 352052 then
 		DBM:AddMsg("Spiked Balls added to combat log, please report to DBM author")
 	elseif spellId == 348456 then
-		DBM:AddMsg("Flameclasp Trap added to combat log, please report to DBM author")
+		timerFlameclaspTrapCD:Start()
 	elseif spellId == 355504 then
 		DBM:AddMsg("Shadowsteel Chains added to combat log, please report to DBM author")
 	elseif spellId == 355534 then--Shadowsteel Ember
@@ -212,7 +210,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 355525 then
 		timerForgeWeapon:Start()
---[[elseif spellId == 348508 then
+elseif spellId == 348508 then
 		if args:IsPlayer() then
 			specWarnReverberatingHammer:Show()
 			specWarnReverberatingHammer:Play("runout")
@@ -248,7 +246,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnFlameclaspTrap:Play("runout")
 			yellFlameclaspTrap:Yell()
 			yellFlameclaspTrapFades:Countdown(spellId)
-		end--]]
+		end
 	end
 end
 --mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -294,80 +292,6 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
-do
-	--Gross because of no CLEU events
-	local hasHammer, hasAxe, hasScythe, hasTrap = {}, {}, {}, {}
-	function mod:UNIT_AURA_UNFILTERED(uId)
-		local name = DBM:GetUnitFullName(uId)
-		local hasDebuff, _, _, _, _, expireTime = DBM:UnitDebuff(uId, 348508)
-		if not hasDebuff and hasHammer[name] then
-			hasHammer[name] = nil
-			yellReverberatingHammerFades:Cancel()
-		elseif hasDebuff and not hasHammer[name] then
-			hasHammer[name] = true
-			if UnitIsUnit(uId, "player") then
-				specWarnReverberatingHammer:Show()
-				specWarnReverberatingHammer:Play("runout")
-				yellReverberatingHammer:Yell()
-				local remaining = expireTime-GetTime()
-				yellReverberatingHammerFades:Countdown(remaining)
-			else
-				specWarnReverberatingHammerTaunt:Show(name)
-				specWarnReverberatingHammerTaunt:Play("tauntboss")
-			end
-		end
-		local hasDebuff2, _, _, _, _, expireTime2 = DBM:UnitDebuff(uId, 355568)
-		if not hasDebuff2 and hasAxe[name] then
-			hasAxe[name] = nil
-			yellCruciformAxeFades:Cancel()
-		elseif hasDebuff2 and not hasAxe[name] then
-			hasAxe[name] = true
-			if UnitIsUnit(uId, "player") then
-				specWarnCruciformAxe:Show()
-				specWarnCruciformAxe:Play("runout")
-				yellCruciformAxe:Yell()
-				local remaining = expireTime2-GetTime()
-				yellCruciformAxeFades:Countdown(remaining)
-			else
-				specWarnCruciformAxeTaunt:Show(name)
-				specWarnCruciformAxeTaunt:Play("tauntboss")
-			end
-		end
-		local hasDebuff3, _, _, _, _, expireTime3 = DBM:UnitDebuff(uId, 355778)
-		if not hasDebuff3 and hasScythe[name] then
-			hasScythe[name] = nil
-			yellDualbladeScytheFades:Cancel()
-		elseif hasDebuff3 and not hasScythe[name] then
-			hasScythe[name] = true
-			if UnitIsUnit(uId, "player") then
-				specWarnDualbladeScythe:Show()
-				specWarnDualbladeScythe:Play("runout")
-				yellDualbladeScythe:Yell()
-				local remaining = expireTime3-GetTime()
-				yellDualbladeScytheFades:Countdown(remaining)
-			else
-				specWarnDualbladeScytheTaunt:Show(name)
-				specWarnDualbladeScytheTaunt:Play("tauntboss")
-			end
-		end
-		local hasDebuff4, _, _, _, _, expireTime4 = DBM:UnitDebuff(uId, 355778)
-		if not hasDebuff4 and hasTrap[name] then
-			hasTrap[name] = nil
-			yellFlameclaspTrapFades:Cancel()
-		elseif hasDebuff4 and not hasTrap[name] then
-			hasTrap[name] = true
-			warnFlameclaspTrap:CombinedShow(0.5, name)
-			if UnitIsUnit(uId, "player") then
-				specWarnFlameclaspTrap:Show()
-				specWarnFlameclaspTrap:Play("runout")
-				yellFlameclaspTrap:Yell()
-				local remaining = expireTime4-GetTime()
-				yellFlameclaspTrapFades:Countdown(remaining)
-			end
-		end
-	end
-end
-
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 179847 then--Shadowsteel Ember
@@ -391,19 +315,11 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 --"<67.84 22:36:16> [UNIT_SPELLCAST_SUCCEEDED] Painsmith Raznal(Andybruwu) -[DNT] Upstairs- [[boss1:Cast-3-2012-2450-9254-355555-003A1D8DC1:355555]]", -- [1092]
 --"<70.30 22:36:19> [CLEU] SPELL_AURA_APPLIED#Creature-0-2012-2450-9254-176523-00001D8D02#Painsmith Raznal#Creature-0-2012-2450-9254-176523-00001D8D02#Painsmith Raznal#355525#Forge Weapon#BUFF#nil", -- [1138]
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 348508 then--Rippling Hammer
-		timerReverberatingHammerCD:Start()
-	elseif spellId == 355568 then--Cruciform Axe
-		timerCruciformAxeCD:Start()
-	elseif spellId == 355778 then--Dualblade Scythe
-		timerDualbladeScytheCD:Start()
-	elseif spellId == 352052 then--Spiked Balls
+	if spellId == 352052 then--Spiked Balls
 		timerSpikedBallsCD:Start()
 	elseif spellId == 355504 then--Shadowsteel Chains
 		self.vb.ChainsIcon = 1
 		timerShadowsteelChainsCD:Start()
-	elseif spellId == 348456 then--Flameclasp Trap
-		timerFlameclaspTrapCD:Start()
 	elseif spellId == 355555 then--Upstairs (Boss leaving, faster to stop timers than Forge Weapon)
 		timerReverberatingHammerCD:Stop()
 		timerCruciformAxeCD:Stop()
