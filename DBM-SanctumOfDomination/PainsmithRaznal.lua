@@ -300,6 +300,7 @@ function mod:SPELL_AURA_REMOVED(args)
 				if self:IsHeroic() then
 					timerFlameclaspTrapCD:Start(55.8)
 				end
+			end
 		else--phase 3
 			if self:IsMythic() then
 				timerShadowsteelChainsCD:Start(15)
