@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(176523)
 mod:SetEncounterID(2430)
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6)
-mod:SetHotfixNoticeRev(20210513000000)--2021-05-13
+mod:SetHotfixNoticeRev(20210624000000)--2021-06-24
 mod:SetMinSyncRevision(20210513000000)
 --mod.respawnTime = 29
 
@@ -26,6 +26,13 @@ mod:RegisterEventsInCombat(
 --TODO, verify infoframe usefulness
 --TODO,
 --https://ptr.wowhead.com/spells/uncategorized/name:spike?filter=21;2;90100
+--[[
+ability.id = 357735 and type = "begincast"
+ or (ability.id = 348508 or ability.id = 355568 or ability.id = 355778 or ability.id = 352052 or ability.id = 348456 or ability.id = 355504 or ability.id = 355534) and type = "cast"
+ or ability.id = 355525
+ or ability.id = 355505 and type = "applydebuff"
+ or (source.type = "NPC" and source.firstSeen = timestamp) or (target.type = "NPC" and target.firstSeen = timestamp)
+--]]
 local warnShadowsteelChains						= mod:NewTargetNoFilterAnnounce(355505, 2)
 local warnFlameclaspTrap						= mod:NewTargetNoFilterAnnounce(348456, 2)
 
@@ -52,7 +59,7 @@ local yellShadowsteelChainsFades				= mod:NewIconFadesYell(355505)
 
 --mod:AddTimerLine(BOSS)
 local timerReverberatingHammerCD				= mod:NewCDTimer(32.8, 348508, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON)
-local timerCruciformAxeCD						= mod:NewCDTimer(32.8, 355568, nil, nil, nil, 3)
+local timerCruciformAxeCD						= mod:NewCDTimer(17, 355568, nil, nil, nil, 3)
 local timerDualbladeScytheCD					= mod:NewCDTimer(32.8, 355778, nil, nil, nil, 3)
 local timerSpikedBallsCD						= mod:NewCDTimer(62.1, 352052, nil, nil, nil, 3)
 local timerFlameclaspTrapCD						= mod:NewCDTimer(40.2, 348456, nil, nil, nil, 3, nil, DBM_CORE_L.HEROIC_ICON)
@@ -128,12 +135,17 @@ function mod:OnCombatStart(delay)
 	self:SetStage(1)
 	self.vb.ChainsIcon = 1
 	table.wipe(debuffedPlayers)
-	timerShadowsteelChainsCD:Start(8.7-delay)
-	timerReverberatingHammerCD:Start(16-delay)
-	timerSpikedBallsCD:Start(32.2-delay)
-	if self:IsHard() then
-		timerFlameclaspTrapCD:Start(48.2-delay)
-	end
+	timerShadowsteelChainsCD:Start(8.1-delay)
+	if self:IsMythic() then
+		timerCruciformAxeCD:Start(15-delay)--Axe instead of hammer
+		timerSpikedBallsCD:Start(26.4-delay)
+		timerFlameclaspTrapCD:Start(42.2-delay)
+	else
+		timerReverberatingHammerCD:Start(16-delay)
+		timerSpikedBallsCD:Start(32.2-delay)
+		if self:IsHeroic() then
+			timerFlameclaspTrapCD:Start(48.2-delay)
+		end
 --	berserkTimer:Start(-delay)
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(355786))
@@ -176,7 +188,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 352052 then
 		DBM:AddMsg("Spiked Balls added to combat log, please report to DBM author")
 	elseif spellId == 348456 then
-		timerFlameclaspTrapCD:Start()
+		timerFlameclaspTrapCD:Start(self:IsMythic() and 48.2 or 40.2)--Might just need more data
 	elseif spellId == 355504 then
 		DBM:AddMsg("Shadowsteel Chains added to combat log, please report to DBM author")
 	elseif spellId == 355534 then--Shadowsteel Ember
@@ -210,7 +222,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 355525 then
 		timerForgeWeapon:Start()
-elseif spellId == 348508 then
+	elseif spellId == 348508 then
 		if args:IsPlayer() then
 			specWarnReverberatingHammer:Show()
 			specWarnReverberatingHammer:Play("runout")
@@ -275,18 +287,31 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerForgeWeapon:Stop()
 		self:SetStage(0)
 		if self.vb.phase == 2 then
-			timerShadowsteelChainsCD:Start(15.5)
-			timerCruciformAxeCD:Start(24)
-			timerSpikedBallsCD:Start(40)
-			if self:IsHard() then
-				timerFlameclaspTrapCD:Start(55.8)
-			end
+			if self:IsMythic() then
+				timerShadowsteelChainsCD:Start(15)
+				timerReverberatingHammerCD:Start(23.6)--Hammer on mythic
+				timerSpikedBallsCD:Start(7)
+				timerFlameclaspTrapCD:Start(52.8)
+			else
+				timerShadowsteelChainsCD:Start(15)
+				timerCruciformAxeCD:Start(24)--Axe on heroic (and others?)
+				timerSpikedBallsCD:Start(40)
+				if self:IsHeroic() then
+					timerFlameclaspTrapCD:Start(55.8)
+				end
 		else--phase 3
-			timerShadowsteelChainsCD:Start(15.5)
-			timerDualbladeScytheCD:Start(24)
-			timerSpikedBallsCD:Start(40)
-			if self:IsHard() then
-				timerFlameclaspTrapCD:Start(55.8)
+			if self:IsMythic() then
+				timerShadowsteelChainsCD:Start(15)
+				timerDualbladeScytheCD:Start(24)
+				timerSpikedBallsCD:Start(7)
+				timerFlameclaspTrapCD:Start(52)
+			else
+				timerShadowsteelChainsCD:Start(15)
+				timerDualbladeScytheCD:Start(24)
+				timerSpikedBallsCD:Start(40)
+				if self:IsHeroic() then
+					timerFlameclaspTrapCD:Start(55.8)
+				end
 			end
 		end
 	end
@@ -316,11 +341,12 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 --"<70.30 22:36:19> [CLEU] SPELL_AURA_APPLIED#Creature-0-2012-2450-9254-176523-00001D8D02#Painsmith Raznal#Creature-0-2012-2450-9254-176523-00001D8D02#Painsmith Raznal#355525#Forge Weapon#BUFF#nil", -- [1138]
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 352052 then--Spiked Balls
-		timerSpikedBallsCD:Start()
+		timerSpikedBallsCD:Start(self:IsMythic() and 48.7 or 62.1)--Can be delayed by other casts?
+		--TODO, more stage 2 mythic data, first one is 57.2 consistently, but what about rest?
 	elseif spellId == 355504 then--Shadowsteel Chains
 		self.vb.ChainsIcon = 1
 		timerShadowsteelChainsCD:Start()
-	elseif spellId == 355555 then--Upstairs (Boss leaving, faster to stop timers than Forge Weapon)
+	elseif spellId == 355555 then--Upstairs (Boss leaving, faster to stop timers than Forge Weapon which happens 2 sec later)
 		timerReverberatingHammerCD:Stop()
 		timerCruciformAxeCD:Stop()
 		timerDualbladeScytheCD:Stop()

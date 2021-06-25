@@ -5,18 +5,18 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(175725)
 mod:SetEncounterID(2433)
 --mod:SetUsedIcons(1, 2, 3)
-mod:SetHotfixNoticeRev(20210516000000)--2021-05-16
+mod:SetHotfixNoticeRev(20210624000000)--2021-06-24
 --mod:SetMinSyncRevision(20201222000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 350803 350828 349979 348074 349030 349031 350847 350816 351413 355914 348974 350453",
+	"SPELL_CAST_START 350803 350828 348074 349030 349031 350847 350816 351413 355914 348974 350453",
 	"SPELL_CAST_SUCCESS 350022 351835",
-	"SPELL_AURA_APPLIED 351143 350604 354004 350034 351825 350713 355240 355245 348969 348805",
+	"SPELL_AURA_APPLIED 351143 350604 354004 350034 351825 350713 355240 355245 348969 348805 358609 358610",
 	"SPELL_AURA_APPLIED_DOSE 348969",
-	"SPELL_AURA_REMOVED 351825 348805 355240 355245",
+	"SPELL_AURA_REMOVED 351825 348805 355240 355245 358610",
 --	"SPELL_PERIODIC_DAMAGE 352559",
 --	"SPELL_PERIODIC_MISSED 352559",
 	"UNIT_DIED",
@@ -28,6 +28,8 @@ mod:RegisterEventsInCombat(
 --TODO, more with dragging chains if they need timer or more refined alerts
 --TODO, GTFO the right ID, https://ptr.wowhead.com/spell=352559/jailers-misery or https://ptr.wowhead.com/spell=350809/jailers-misery
 --TODO, more work with https://ptr.wowhead.com/spell=355232/scorn-and-ire ?
+--TODO, remove desolation beam redundancy if there is no longer any speed gain to using target scan
+--TODO, verify changeover to newly exposed pre chains debuff
 --[[
 (ability.id = 350828 or ability.id = 349979 or ability.id = 348117 or ability.id = 349030 or ability.id = 349031 or ability.id = 350847 or ability.id = 355914 or ability.id = 351413 or ability.id = 348974 or ability.id = 350816) and type = "begincast"
  or (ability.id = 350604 or ability.id = 350022 or ability.id = 351835) and type = "cast"
@@ -40,7 +42,7 @@ local warnPhase										= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil
 --Stage One: His Gaze Upon You
 --local warnExsanguinated							= mod:NewStackAnnounce(328897, 2, nil, "Tank|Healer")
 local warnPiercingLens								= mod:NewCastAnnounce(350803, 2, nil, nil, false)--Boss effectively spams this every 1-4 seconds
-local warnDraggingChains							= mod:NewCastAnnounce(349979, 2)
+local warnDraggingChains							= mod:NewTargetNoFilterAnnounce(358609, 2)
 local warnAssailingLance							= mod:NewCastAnnounce(348074, 4)
 local warnHopelessLethargy							= mod:NewTargetNoFilterAnnounce(350604, 2)--Mythic
 --Stage Two: Double Vision
@@ -56,14 +58,15 @@ local warnImmediateExtermination					= mod:NewCountAnnounce(348969, 2)
 --local specWarnExsanguinated						= mod:NewSpecialWarningStack(328897, nil, 2, nil, nil, 1, 6)
 local specWarnDeathlink								= mod:NewSpecialWarningDefensive(350828, nil, nil, nil, 3, 2)
 local specWarnDeathlinkTaunt						= mod:NewSpecialWarningTaunt(351143, nil, nil, nil, 1, 2)
-local specWarnDraggingChains						= mod:NewSpecialWarningSpell(349979, nil, nil, nil, 1, 2)
+local specWarnDraggingChains						= mod:NewSpecialWarningYou(358609, nil, nil, nil, 1, 2)
+local yellDraggingChains							= mod:NewYell(358609)
 local specWarnHopelessLethargy						= mod:NewSpecialWarningMoveAway(350604, nil, nil, nil, 1, 2, 4)--Mythic
 local yellHopelessLethargy							= mod:NewYell(350604)
 --local specWarnGTFO								= mod:NewSpecialWarningGTFO(340324, nil, nil, nil, 1, 8)
 --Stage Two: Double Vision
-local specWarnDesolationBeam						= mod:NewSpecialWarningMoveAway(350847, nil, nil, nil, 1, 2)
-local yellDesolationBeam							= mod:NewYell(350847)
-local yellDesolationBeamFades						= mod:NewShortFadesYell(350847)
+local specWarnDesolationBeam						= mod:NewSpecialWarningMoveAway(358610, nil, nil, nil, 1, 2)
+local yellDesolationBeam							= mod:NewYell(358610)
+local yellDesolationBeamFades						= mod:NewShortFadesYell(358610)
 local specWarnShatteredSoul							= mod:NewSpecialWarningYou(354004, nil, nil, nil, 1, 2)--Debuff of Soul Shatter
 local specWarnSlothfulCorruption					= mod:NewSpecialWarningYou(350713, nil, nil, nil, 1, 2)
 local yellScornandIre								= mod:NewIconRepeatYell(355232)--Mythic
@@ -114,13 +117,15 @@ end
 
 function mod:DesolationBeam(targetname, uId, bossuid)--scanningTime
 	if not targetname then return end
-	if targetname == UnitName("player") then
-		specWarnDesolationBeam:Show()
-		specWarnDesolationBeam:Play("targetyou")
-		yellDesolationBeam:Yell()
-		yellDesolationBeamFades:Countdown(6)
-	else
-		warnDesolationBeam:Show(targetname)
+	if self:AntiSpam(5, targetname) then
+		if targetname == UnitName("player") then
+			specWarnDesolationBeam:Show()
+			specWarnDesolationBeam:Play("targetyou")
+			yellDesolationBeam:Yell()
+			yellDesolationBeamFades:Countdown(6)
+		else
+			warnDesolationBeam:Show(targetname)
+		end
 	end
 end
 
@@ -175,13 +180,6 @@ function mod:SPELL_CAST_START(args)
 			specWarnDeathlink:Play("defensive")
 		end
 		timerDeathlinkCD:Start(nil, self.vb.deathlinkCount+1)
-	elseif spellId == 349979 then
-		if self.Options.SpecWarn349979spell then
-			specWarnDraggingChains:Show()
-			specWarnDraggingChains:Play("specialsoon")
-		else
-			warnDraggingChains:Show()
-		end
 	elseif spellId == 348074 then
 		if self:IsTanking("player", nil, nil, true, args.sourceGUID) then
 			warnAssailingLance:Show()
@@ -288,6 +286,22 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			warnImmediateExtermination:Show(args.amount or 1)
 		end
+	elseif spellId == 358609 then
+		warnDraggingChains:CombinedShow(0.3, args.destName)
+		if args:IsPlayer() then
+			specWarnDraggingChains:Show()
+			specWarnDraggingChains:Play("targetyou")
+			yellDraggingChains:Yell()
+		end
+	elseif spellId == 358610 and self:AntiSpam(5, args.destName) then
+		if args:IsPlayer() then
+			specWarnDesolationBeam:Show()
+			specWarnDesolationBeam:Play("targetyou")
+			yellDesolationBeam:Yell()
+			yellDesolationBeamFades:Countdown(spellId)
+		else
+			warnDesolationBeam:Show(args.destName)
+		end
 	elseif spellId == 348805 then--Stygian Darkshield (Entering Adds phase)
 		timerAnnihilatingGlareCD:Pause(self.vb.glareCount+1)
 		self:SetStage(2)
@@ -301,9 +315,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerSoulShatterCD:Stop()
 		timerHopelessLethargyCD:Stop()
 		--Eye of the Jailer
-		timerDesolationBeamCD:Start(8.4, 1)
-		timerSoulShatterCD:Start(14, 1)
-		timerTitanticDeathGazeCD:Start(18)
+		timerDesolationBeamCD:Start(8.4, 1)--RECHECK ME
+		timerSoulShatterCD:Start(14, 1)--RECHECK ME
+		timerTitanticDeathGazeCD:Start(18)--RECHECK ME
 		--Deathseeker Eyes (are they synced?)
 		timerSpreadingMiseryCD:Start(11.7)--Don't nessesarily sync up first cast, it's approx
 		timerSlothfulCorruptionCD:Start(19.6)--Don't nessesarily sync up first cast, it's approx
@@ -353,6 +367,10 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 355240 or spellId == 355245 then--Scorn
 		if args:IsPlayer() then
 			self:Unschedule(scornandIreYellRepeater)
+		end
+	elseif spellId == 358610 then
+		if args:IsPlayer() then
+			yellDesolationBeamFades:Cancel()
 		end
 	end
 end

@@ -4,8 +4,8 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(175729)
 mod:SetEncounterID(2432)
---mod:SetUsedIcons(1, 2, 3)
---mod:SetHotfixNoticeRev(20201222000000)
+mod:SetUsedIcons(1, 2, 3, 4, 7, 8)
+mod:SetHotfixNoticeRev(20210624000000)--2021-06-24
 --mod:SetMinSyncRevision(20201222000000)
 --mod.respawnTime = 29
 
@@ -36,14 +36,13 @@ local warnOrbofTorment							= mod:NewCountAnnounce(349908, 2)
 local warnOrbEternalTorment						= mod:NewFadesAnnounce(355790, 1)
 --local warnUnrelentingTorment					= mod:NewCountAnnounce(350518, 4)
 local warnMalevolence							= mod:NewTargetNoFilterAnnounce(350469, 3)
---local warnSuffering							= mod:NewTargetNoFilterAnnounce(349890, 3)
---local warnAgony								= mod:NewTargetAnnounce(350097, 3)
 local warnShatter								= mod:NewCountAnnounce(351066, 1)
 
 local specWarnMalevolence						= mod:NewSpecialWarningYouPos(350469, nil, nil, nil, 1, 2)
 local yellMalevolence							= mod:NewShortPosYell(350469)
 local yellMalevolenceFades						= mod:NewIconFadesYell(350469)
-local specWarnSuffering							= mod:NewSpecialWarningMoveTo(350894, nil, nil, nil, 1, 2)
+local specWarnSufferingTank						= mod:NewSpecialWarningMoveTo(350894, nil, nil, nil, 1, 2)--Tank Warning
+local specWarnSuffering							= mod:NewSpecialWarningYou(350894, nil, nil, nil, 1, 2)--Non Tank warning
 local yellSuffering								= mod:NewYell(350894, nil, false)--Not as useful as fades
 local yellSufferingFades						= mod:NewFadesYell(350894)
 local specWarnSufferingSwap						= mod:NewSpecialWarningTaunt(350894, nil, nil, nil, 1, 2)
@@ -64,7 +63,7 @@ local timerGraspofMaliceCD						= mod:NewCDTimer(20.7, 355123, nil, nil, nil, 3,
 
 --mod:AddRangeFrameOption("8")
 mod:AddInfoFrameOption(349890, true)
-mod:AddSetIconOption("SetIconOnMalevolence", 350469, true, false, {1, 2, 3})
+mod:AddSetIconOption("SetIconOnMalevolence", 350469, true, false, {1, 2, 3, 4})
 mod:AddSetIconOption("SetIconOnOrbs", 321226, true, true, {7, 8})
 mod:AddNamePlateOption("NPAuraOnOrbEternalTorment", 355790)
 
@@ -112,13 +111,10 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 350894 then
 		if self:IsTanking("player", nil, nil, true, args.sourceGUID) then
-			specWarnSuffering:Show(DBM_CORE_L.ORB)
-			specWarnSuffering:Play("targetyou")--or orbrun.ogg?
+			specWarnSufferingTank:Show(DBM_CORE_L.ORB)
+			specWarnSufferingTank:Play("targetyou")--or orbrun.ogg?
 			yellSuffering:Yell()
 			yellSufferingFades:Countdown(3)
---		else
---			specWarnSufferingSwap:Show(args.destName)
---			specWarnSufferingSwap:Play("tauntboss")
 		end
 		timerSufferingCD:Start()
 	elseif spellId == 355123 then
@@ -186,26 +182,17 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		warnMalevolence:CombinedShow(0.3, args.destName)
 		self.vb.malevolenceIcon = self.vb.malevolenceIcon + 1
---	elseif spellId == 349890 then
---		warnSuffering:Show(args.destName)
---[[	elseif spellId == 350097 then
-		warnAgony:CombinedShow(0.3, args.destName)
+	elseif spellId == 349890 then
 		if args:IsPlayer() then
-			specWarnAgony:Show()
-			specWarnAgony:Play("runout")
-			yellAgony:Yell()
-			yellAgonyFades:Countdown(spellId)
-		end
-	elseif spellId == 350894 then
-		if args:IsPlayer() then
-			specWarnSuffering:Show(DBM_CORE_L.ORB)
-			specWarnSuffering:Play("targetyou")--or orbrun.ogg?
-			yellSuffering:Yell()
-			yellSufferingFades:Countdown(spellId)
+			specWarnSuffering:Show()
+			specWarnSuffering:Play("targetyou")
 		else
-			specWarnSufferingSwap:Show(args.destName)
-			specWarnSufferingSwap:Play("tauntboss")
-		end--]]
+			local uId = DBM:GetRaidUnitId(args.destName)
+			if self:IsTanking(uId) then
+				specWarnSufferingSwap:Show(args.destName)
+				specWarnSufferingSwap:Play("tauntboss")
+			end
+		end
 	end
 end
 --mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
