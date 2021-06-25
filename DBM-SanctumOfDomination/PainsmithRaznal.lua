@@ -146,6 +146,7 @@ function mod:OnCombatStart(delay)
 		if self:IsHeroic() then
 			timerFlameclaspTrapCD:Start(48.2-delay)
 		end
+	end
 --	berserkTimer:Start(-delay)
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(355786))
