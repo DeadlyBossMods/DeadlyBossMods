@@ -140,7 +140,7 @@ local function showthreat(self)
 	--Now deal with every possible scenario
 	if meleeCount == 3 or meleeCount == 0 then--All melee or all ranged, results same either way
 		if setIcon then
-			self:setIcon(nameOne, 1)
+			self:SetIcon(nameOne, 1)
 		end
 		if playerName == nameOne then
 			specWarnThreatNeutralization:Show()
@@ -152,7 +152,7 @@ local function showthreat(self)
 			end
 		end
 		if setIcon then
-			self:setIcon(nameTwo, 2)
+			self:SetIcon(nameTwo, 2)
 		end
 		if playerName == nameTwo then
 			specWarnThreatNeutralization:Show()
@@ -164,7 +164,7 @@ local function showthreat(self)
 			end
 		end
 		if setIcon then
-			self:setIcon(nameThree, 3)
+			self:SetIcon(nameThree, 3)
 		end
 		if playerName == nameThree then
 			specWarnThreatNeutralization:Show()
@@ -180,7 +180,7 @@ local function showthreat(self)
 		if isMelee[1] then
 			meleeicon = meleeicon + 1
 			if setIcon then
-				self:setIcon(nameOne, meleeicon)
+				self:SetIcon(nameOne, meleeicon)
 			end
 			if playerName == nameOne then
 				specWarnThreatNeutralization:Show()
@@ -193,7 +193,7 @@ local function showthreat(self)
 			end
 		else--Ranged (only one, so icon always 3)
 			if setIcon then
-				self:setIcon(nameOne, 3)
+				self:SetIcon(nameOne, 3)
 			end
 			if playerName == nameOne then
 				specWarnThreatNeutralization:Show()
@@ -208,7 +208,7 @@ local function showthreat(self)
 		if isMelee[2] then
 			meleeicon = meleeicon + 1
 			if setIcon then
-				self:setIcon(nameTwo, meleeicon)
+				self:SetIcon(nameTwo, meleeicon)
 			end
 			if playerName == nameTwo then
 				specWarnThreatNeutralization:Show()
@@ -221,7 +221,7 @@ local function showthreat(self)
 			end
 		else--Ranged (only one, so icon always 3)
 			if setIcon then
-				self:setIcon(nameTwo, 3)
+				self:SetIcon(nameTwo, 3)
 			end
 			if playerName == nameTwo then
 				specWarnThreatNeutralization:Show()
@@ -236,7 +236,7 @@ local function showthreat(self)
 		if isMelee[3] then
 			meleeicon = meleeicon + 1
 			if setIcon then
-				self:setIcon(nameThree, meleeicon)
+				self:SetIcon(nameThree, meleeicon)
 			end
 			if playerName == nameThree then
 				specWarnThreatNeutralization:Show()
@@ -249,7 +249,7 @@ local function showthreat(self)
 			end
 		else--Ranged (only one, so icon always 3)
 			if setIcon then
-				self:setIcon(nameThree, 3)
+				self:SetIcon(nameThree, 3)
 			end
 			if playerName == nameThree then
 				specWarnThreatNeutralization:Show()
@@ -265,7 +265,7 @@ local function showthreat(self)
 		local rangedIcon = 1--In this set we have 1 melee which means up to 2 ranged, icon starts at 1 instead of 0 because of melee reservation
 		if isMelee[1] then--Melee will always be icon 1 in this scenario
 			if setIcon then
-				self:setIcon(nameOne, 1)
+				self:SetIcon(nameOne, 1)
 			end
 			if playerName == nameOne then
 				specWarnThreatNeutralization:Show()
@@ -279,7 +279,7 @@ local function showthreat(self)
 		else--Ranged (only one, so icon always 3)
 			rangedIcon = rangedIcon + 1
 			if setIcon then
-				self:setIcon(nameOne, 3)
+				self:SetIcon(nameOne, 3)
 			end
 			if playerName == nameOne then
 				specWarnThreatNeutralization:Show()
@@ -293,7 +293,7 @@ local function showthreat(self)
 		end
 		if isMelee[2] then--Melee will always be icon 1 in this scenario
 			if setIcon then
-				self:setIcon(nameTwo, 1)
+				self:SetIcon(nameTwo, 1)
 			end
 			if playerName == nameTwo then
 				specWarnThreatNeutralization:Show()
@@ -307,7 +307,7 @@ local function showthreat(self)
 		else--Ranged (only one, so icon always 3)
 			rangedIcon = rangedIcon + 1
 			if setIcon then
-				self:setIcon(nameTwo, 3)
+				self:SetIcon(nameTwo, 3)
 			end
 			if playerName == nameTwo then
 				specWarnThreatNeutralization:Show()
@@ -321,7 +321,7 @@ local function showthreat(self)
 		end
 		if isMelee[3] then--Melee will always be icon 1 in this scenario
 			if setIcon then
-				self:setIcon(nameThree, 1)
+				self:SetIcon(nameThree, 1)
 			end
 			if playerName == nameThree then
 				specWarnThreatNeutralization:Show()
@@ -335,7 +335,7 @@ local function showthreat(self)
 		else--Ranged (only one, so icon always 3)
 			rangedIcon = rangedIcon + 1
 			if setIcon then
-				self:setIcon(nameThree, 3)
+				self:SetIcon(nameThree, 3)
 			end
 			if playerName == nameThree then
 				specWarnThreatNeutralization:Show()
