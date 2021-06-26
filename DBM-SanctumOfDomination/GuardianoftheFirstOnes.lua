@@ -5,15 +5,14 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(175731)
 mod:SetEncounterID(2436)
 mod:SetUsedIcons(1, 2, 3)
-mod:SetHotfixNoticeRev(20200417000000)--2021-04-17
---mod:SetMinSyncRevision(20201222000000)
+mod:SetHotfixNoticeRev(20210625000000)--2021-06-25
+mod:SetMinSyncRevision(20210625000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 352589 352538 350732 352833 352660 356090 355352 350734",
---	"SPELL_CAST_SUCCESS 350496",
 	"SPELL_AURA_APPLIED 352385 352394 350734 350496",--350534
 --	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 352385 352394 350496 350534",
@@ -66,11 +65,11 @@ mod:AddSetIconOption("SetIconOnThreat", 350496, true, false, {1, 2, 3})
 local radiantEnergy = DBM:GetSpellInfo(352394)
 local playerSafe = false
 local playersSafe = {}
+local threatTargets = {}
 mod.vb.coreActive = false
 mod.vb.sentryCount = 0
 mod.vb.beamCount = 0
 mod.vb.protocolCount = 0
-mod.vb.threatIcon = 1
 mod.vb.patternCount = 0
 
 local updateInfoFrame
@@ -106,6 +105,250 @@ do
 		end
 		return lines, sortedLines
 	end
+end
+
+--Ugly as hell, definitely a cleaner logical way of doing it but i'm not smart or patient enough these days
+--Code logic is simple (even though it looks like shit). Prio melee before ranged in icon assignments.
+--1 melee = star, 2 melee = star and circle. 3 melee is same as 3 ranged since at this point we just assign icons in table order.
+--Ranged will get icons 2 and 3 or just 3 after melee got theirs obviously
+local isMelee = {[1] = false,[2] = false,[3] = false,}
+local playerName = UnitName("player")
+local function showthreat(self)
+	local nameOne, nameTwo, nameThree = nil, nil, nil
+	local meleeCount = 0
+	local setIcon = self.Options.SetIconOnThreat
+	for i = 1, #threatTargets do
+		local name = threatTargets[i]
+		local uId = DBM:GetRaidUnitId(name)
+		if not uId then return end--Prevent errors if person leaves group
+		--Identify number of melee and assign them numbers
+		if self:IsMeleeDps(uId) then--Melee
+			meleeCount = meleeCount + 1
+			isMelee[i] = true
+		else
+			isMelee[i] = false
+		end
+		--Now cache names to numbers
+		if i == 1 then
+			nameOne = name
+		elseif i == 2 then
+			nameTwo = name
+		else
+			nameThree = name
+		end
+	end
+	--Now deal with every possible scenario
+	if meleeCount == 3 or meleeCount == 0 then--All melee or all ranged, results same either way
+		if setIcon then
+			self:SetIcon(nameOne, 1)
+		end
+		if playerName == nameOne then
+			specWarnThreatNeutralization:Show()
+			specWarnThreatNeutralization:Play("runout")
+			yellThreatNeutralization:Yell(1, 1)
+			yellThreatNeutralizationFades:Countdown(350496, nil, 1)
+			if self.Options.RangeFrame then
+				DBM.RangeCheck:Show(10)
+			end
+		end
+		if setIcon then
+			self:SetIcon(nameTwo, 2)
+		end
+		if playerName == nameTwo then
+			specWarnThreatNeutralization:Show()
+			specWarnThreatNeutralization:Play("runout")
+			yellThreatNeutralization:Yell(2, 2)
+			yellThreatNeutralizationFades:Countdown(350496, nil, 2)
+			if self.Options.RangeFrame then
+				DBM.RangeCheck:Show(10)
+			end
+		end
+		if setIcon then
+			self:SetIcon(nameThree, 3)
+		end
+		if playerName == nameThree then
+			specWarnThreatNeutralization:Show()
+			specWarnThreatNeutralization:Play("runout")
+			yellThreatNeutralization:Yell(3, 3)
+			yellThreatNeutralizationFades:Countdown(350496, nil, 3)
+			if self.Options.RangeFrame then
+				DBM.RangeCheck:Show(10)
+			end
+		end
+	elseif meleeCount == 2 then--2 melee, 1 ranged
+		local meleeicon = 0--In this set we have only 1 ranged which means up to 2 melee
+		if isMelee[1] then
+			meleeicon = meleeicon + 1
+			if setIcon then
+				self:SetIcon(nameOne, meleeicon)
+			end
+			if playerName == nameOne then
+				specWarnThreatNeutralization:Show()
+				specWarnThreatNeutralization:Play("runout")
+				yellThreatNeutralization:Yell(meleeicon, meleeicon)
+				yellThreatNeutralizationFades:Countdown(350496, nil, meleeicon)
+				if self.Options.RangeFrame then
+					DBM.RangeCheck:Show(10)
+				end
+			end
+		else--Ranged (only one, so icon always 3)
+			if setIcon then
+				self:SetIcon(nameOne, 3)
+			end
+			if playerName == nameOne then
+				specWarnThreatNeutralization:Show()
+				specWarnThreatNeutralization:Play("runout")
+				yellThreatNeutralization:Yell(3, 3)
+				yellThreatNeutralizationFades:Countdown(350496, nil, 3)
+				if self.Options.RangeFrame then
+					DBM.RangeCheck:Show(10)
+				end
+			end
+		end
+		if isMelee[2] then
+			meleeicon = meleeicon + 1
+			if setIcon then
+				self:SetIcon(nameTwo, meleeicon)
+			end
+			if playerName == nameTwo then
+				specWarnThreatNeutralization:Show()
+				specWarnThreatNeutralization:Play("runout")
+				yellThreatNeutralization:Yell(meleeicon, meleeicon)
+				yellThreatNeutralizationFades:Countdown(350496, nil, meleeicon)
+				if self.Options.RangeFrame then
+					DBM.RangeCheck:Show(10)
+				end
+			end
+		else--Ranged (only one, so icon always 3)
+			if setIcon then
+				self:SetIcon(nameTwo, 3)
+			end
+			if playerName == nameTwo then
+				specWarnThreatNeutralization:Show()
+				specWarnThreatNeutralization:Play("runout")
+				yellThreatNeutralization:Yell(3, 3)
+				yellThreatNeutralizationFades:Countdown(350496, nil, 3)
+				if self.Options.RangeFrame then
+					DBM.RangeCheck:Show(10)
+				end
+			end
+		end
+		if isMelee[3] then
+			meleeicon = meleeicon + 1
+			if setIcon then
+				self:SetIcon(nameThree, meleeicon)
+			end
+			if playerName == nameThree then
+				specWarnThreatNeutralization:Show()
+				specWarnThreatNeutralization:Play("runout")
+				yellThreatNeutralization:Yell(meleeicon, meleeicon)
+				yellThreatNeutralizationFades:Countdown(350496, nil, meleeicon)
+				if self.Options.RangeFrame then
+					DBM.RangeCheck:Show(10)
+				end
+			end
+		else--Ranged (only one, so icon always 3)
+			if setIcon then
+				self:SetIcon(nameThree, 3)
+			end
+			if playerName == nameThree then
+				specWarnThreatNeutralization:Show()
+				specWarnThreatNeutralization:Play("runout")
+				yellThreatNeutralization:Yell(3, 3)
+				yellThreatNeutralizationFades:Countdown(350496, nil, 3)
+				if self.Options.RangeFrame then
+					DBM.RangeCheck:Show(10)
+				end
+			end
+		end
+	elseif meleeCount == 1 then
+		local rangedIcon = 1--In this set we have 1 melee which means up to 2 ranged, icon starts at 1 instead of 0 because of melee reservation
+		if isMelee[1] then--Melee will always be icon 1 in this scenario
+			if setIcon then
+				self:SetIcon(nameOne, 1)
+			end
+			if playerName == nameOne then
+				specWarnThreatNeutralization:Show()
+				specWarnThreatNeutralization:Play("runout")
+				yellThreatNeutralization:Yell(1, 1)
+				yellThreatNeutralizationFades:Countdown(350496, nil, 1)
+				if self.Options.RangeFrame then
+					DBM.RangeCheck:Show(10)
+				end
+			end
+		else--Ranged (only one, so icon always 3)
+			rangedIcon = rangedIcon + 1
+			if setIcon then
+				self:SetIcon(nameOne, 3)
+			end
+			if playerName == nameOne then
+				specWarnThreatNeutralization:Show()
+				specWarnThreatNeutralization:Play("runout")
+				yellThreatNeutralization:Yell(rangedIcon, rangedIcon)
+				yellThreatNeutralizationFades:Countdown(350496, nil, rangedIcon)
+				if self.Options.RangeFrame then
+					DBM.RangeCheck:Show(10)
+				end
+			end
+		end
+		if isMelee[2] then--Melee will always be icon 1 in this scenario
+			if setIcon then
+				self:SetIcon(nameTwo, 1)
+			end
+			if playerName == nameTwo then
+				specWarnThreatNeutralization:Show()
+				specWarnThreatNeutralization:Play("runout")
+				yellThreatNeutralization:Yell(1, 1)
+				yellThreatNeutralizationFades:Countdown(350496, nil, 1)
+				if self.Options.RangeFrame then
+					DBM.RangeCheck:Show(10)
+				end
+			end
+		else--Ranged (only one, so icon always 3)
+			rangedIcon = rangedIcon + 1
+			if setIcon then
+				self:SetIcon(nameTwo, 3)
+			end
+			if playerName == nameTwo then
+				specWarnThreatNeutralization:Show()
+				specWarnThreatNeutralization:Play("runout")
+				yellThreatNeutralization:Yell(rangedIcon, rangedIcon)
+				yellThreatNeutralizationFades:Countdown(350496, nil, rangedIcon)
+				if self.Options.RangeFrame then
+					DBM.RangeCheck:Show(10)
+				end
+			end
+		end
+		if isMelee[3] then--Melee will always be icon 1 in this scenario
+			if setIcon then
+				self:SetIcon(nameThree, 1)
+			end
+			if playerName == nameThree then
+				specWarnThreatNeutralization:Show()
+				specWarnThreatNeutralization:Play("runout")
+				yellThreatNeutralization:Yell(1, 1)
+				yellThreatNeutralizationFades:Countdown(350496, nil, 1)
+				if self.Options.RangeFrame then
+					DBM.RangeCheck:Show(10)
+				end
+			end
+		else--Ranged (only one, so icon always 3)
+			rangedIcon = rangedIcon + 1
+			if setIcon then
+				self:SetIcon(nameThree, 3)
+			end
+			if playerName == nameThree then
+				specWarnThreatNeutralization:Show()
+				specWarnThreatNeutralization:Play("runout")
+				yellThreatNeutralization:Yell(rangedIcon, rangedIcon)
+				yellThreatNeutralizationFades:Countdown(350496, nil, rangedIcon)
+				if self.Options.RangeFrame then
+					DBM.RangeCheck:Show(10)
+				end
+			end
+		end
+	end
+	warnThreatNeutralization:Show(table.concat(threatTargets, "<, >"))
 end
 
 function mod:OnCombatStart(delay)
@@ -192,7 +435,8 @@ function mod:SPELL_CAST_START(args)
 		warnFormSentry:Show(self.vb.sentryCount)
 		timerFormSentryCD:Start(nil, self.vb.sentryCount+1)
 	elseif spellId == 356090 then
-		self.vb.threatIcon = 1
+		isMelee = {[1] = false,[2] = false,[3] = false,}
+		table.wipe(threatTargets)
 		timerThreatNeutralizationCD:Start()
 	elseif spellId == 355352 or spellId == 350734 then--Mythic, Heroic
 		if self.Options.SpecWarn355352count then
@@ -202,16 +446,6 @@ function mod:SPELL_CAST_START(args)
 		end
 	end
 end
-
---[[
-function mod:SPELL_CAST_SUCCESS(args)
-	local spellId = args.spellId
-	if spellId == 350496 then
-		self.vb.threatIcon = 1
-		timerThreatNeutralizationCD:Start()--Work around a bug with stutter casting
-	end
-end
---]]
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
@@ -234,21 +468,13 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnObliterate:Play("tauntboss")
 		end
 	elseif spellId == 350496 then
-		local icon = self.vb.threatIcon
-		if self.Options.SetIconOnThreat then
-			self:SetIcon(args.destName, icon)
+		threatTargets[#threatTargets+1] = args.destName
+		self:Unschedule(showthreat)
+		if #threatTargets == 3 then
+			showthreat(self)
+		else
+			self:Schedule(0.5, showthreat, self)
 		end
-		if args:IsPlayer() then
-			specWarnThreatNeutralization:Show()
-			specWarnThreatNeutralization:Play("runout")
-			yellThreatNeutralization:Yell(icon, icon)
-			yellThreatNeutralizationFades:Countdown(spellId, nil, icon)
-			if self.Options.RangeFrame then
-				DBM.RangeCheck:Show(10)
-			end
-		end
-		warnThreatNeutralization:CombinedShow(0.3, args.destName)
-		self.vb.threatIcon = self.vb.threatIcon + 1
 --	elseif spellId == 350534 then--Purging Protocol Activating
 --		timerFormSentryCD:Pause(self.vb.sentryCount+1)
 --		timerThreatNeutralizationCD:Pause()
