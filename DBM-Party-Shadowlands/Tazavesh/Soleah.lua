@@ -9,9 +9,9 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 350796 355922 353635 351124 351119 350875 351096 351646",
-	"SPELL_CAST_SUCCESS 351086"
---	"SPELL_AURA_APPLIED",
---	"SPELL_AURA_REMOVED",
+	"SPELL_CAST_SUCCESS 351086",
+	"SPELL_AURA_APPLIED 357190"
+--	"SPELL_AURA_REMOVED 357190"
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 --	"UNIT_DIED"
@@ -45,6 +45,8 @@ local timerHyperlightJoltCD			= mod:NewAITimer(11, 350875, nil, nil, nil, 3)
 local timerEnergyFragmentationCD	= mod:NewAITimer(11, 351096, nil, nil, nil, 3)
 local timerHyperlightNovaCD			= mod:NewAITimer(11, 351646, nil, nil, nil, 3)
 
+mod:AddInfoFrameOption(357190, true)
+
 mod.vb.hyperlightCount = 0
 mod.vb.starCount = 0
 local castsPerGUID = {}
@@ -57,6 +59,12 @@ function mod:OnCombatStart(delay)
 	timerHyperlightSparkCD:Start(1-delay)
 	timerCollapsingStarCD:Start(1-delay)
 	timerSummonAssassinsCD:Start(1-delay)
+end
+
+function mod:OnCombatEnd()
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:Hide()
+	end
 end
 
 function mod:SPELL_CAST_START(args)
@@ -130,14 +138,17 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
---[[
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 350804 then
-
+	if spellId == 357190 then
+		if self.Options.InfoFrame and not DBM.InfoFrame:IsShown() then
+			DBM.InfoFrame:SetHeader(args.spellName)
+			DBM.InfoFrame:Show(5, "playerbaddebuff", 357190)
+		end
 	end
 end
 
+--[[
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 322681 then
