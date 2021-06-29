@@ -250,7 +250,6 @@ L.SLASHCMD_HELP2				= {
 	"/dbm break <분>: 공격대에 <분> 만큼 지속되는 휴식 타이머를 전송합니다. (승급 권한이 필요합니다. 단축 명령어: break)",
 	"/dbm version: 공대원의 보스 모드 버전 검사를 실시합니다. (단축 명령어: ver)",
 	"/dbm version2: 공대원 보스 모드 버전 검사 및 구버전 사용자에게 귓속말을 보냅니다. (단축 명령어: ver2)",
-	"/dbm lockout: 공대원에게 공격대 귀속 정보를 수집합니다. (단축 명령어: lockouts, ids) (승급 권한 필요)",
 	"/dbm lag: 공격대 지연시간 검사 작업을 실행합니다.",
 	"/dbm durability: 공대원의 내구도 검사를 실시합니다."
 }
@@ -571,24 +570,6 @@ L.SPEED_KILL_TIMER_TEXT	= "최고 승리 기록"
 L.SPEED_CLEAR_TIMER_TEXT	= "최고 완료 기록"
 L.COMBAT_RES_TIMER_TEXT	= "다음 전투 부활 충전"
 L.TIMER_RESPAWN		= "%s 재생성"
-
-
-L.REQ_INSTANCE_ID_PERMISSION		= "%s|1이;가; 당신의 현재 인스턴스 ID와 진행 상태 열람을 요청했습니다.\n해당 정보를 %s에게 전송할까요? 현재 접속한 세션 동안에는 해당 정보의 요청은 항상 받아들여집니다. (예: 재접속 전까지)"
-L.ERROR_NO_RAID					= "이 기능을 사용하려면 공격대에 있어야 합니다."
-L.INSTANCE_INFO_REQUESTED			= "공격대에 공격대 귀속 정보 요청을 전송했습니다.\n사용자들은 데이터를 전송하기에 앞서 권한 승인 여부를 결정하므로 모두의 응답을 받기까지 1분이 소요될 수 있습니다."
-L.INSTANCE_INFO_STATUS_UPDATE		= L.DBM .. " 사용자 %2$d명 중 %1$d명 응답: %3$d명이 데이터 전송, %4$d명이 요청을 거부했습니다. 응답까지 %5$d초 대기중..."
-L.INSTANCE_INFO_ALL_RESPONSES		= "받은 응답 결과"
-L.INSTANCE_INFO_DETAIL_DEBUG		= "전송자: %s, 응답형식: %s, 인스턴스명: %s, 인스턴스ID: %s, 난이도: %d, 인원: %d, 처치수: %s"
-L.INSTANCE_INFO_DETAIL_HEADER		= "%s, 난이도 %s:"
-L.INSTANCE_INFO_DETAIL_INSTANCE	= "    ID %s, 처치 %d: %s"
-L.INSTANCE_INFO_DETAIL_INSTANCE2	= "    처치 %d: %s"
-L.INSTANCE_INFO_NOLOCKOUT			= "공격대 인스턴스에 귀속된 공격대원이 없습니다."
-L.INSTANCE_INFO_STATS_DENIED		= "확인 요청 거부: %s"
-L.INSTANCE_INFO_STATS_AWAY		= "자리 비움: %s"
-L.INSTANCE_INFO_STATS_NO_RESPONSE	= "최근 버전 " .. L.DBM .. " 미설치: %s"
-L.INSTANCE_INFO_RESULTS			= "인스턴스 ID 검사가 끝났습니다. 다른 언어의 WoW 클라이언트를 사용 중인 공격대원이 있다면 같은 인스턴스가 여러개 보일 수 있습니다."
-L.INSTANCE_INFO_SHOW_RESULTS		= "응답 안한 플레이어: %s\n|HDBM:showRaidIdResults|h|cff3588ff[결과 보기]|r|h"
---L.INSTANCE_INFO_SHOW_RESULTS		= "응답 안한 플레이어: %s"
 
 L.LAG_CHECKING				= "공격대의 지연시간 확인중..."
 L.LAG_HEADER					= L.DEADLY_BOSS_MODS .. " - 지연시간 확인 결과"

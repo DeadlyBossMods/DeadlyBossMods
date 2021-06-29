@@ -231,7 +231,6 @@ L.SLASHCMD_HELP2				= {
 	"/dbm break <min>: Schickt einen Pause-Timer für <min> Minuten an alle Schlachzugsmitglieder (nur als Leiter/Assistent).",
 	"/dbm version: Führt eine Boss Mod Versionsprüfung durch (Alias: ver).",
 	"/dbm version2: Führt eine Boss Mod Versionsprüfung durch und flüstert Nutzer mit veralteten Versionen an (Alias: ver2).",
-	"/dbm lockout: Fragt die Schlachtzugsmitglieder nach ihren derzeitigen Instanzsperren (IDs) (nur als Leiter/Assistent) (Aliase: lockouts, ids).",
 	"/dbm lag: Prüft die Latenz im gesamten Schlachtzug.",
 	"/dbm durability: Prüft die Haltbarkeit im gesamten Schlachtzug."
 }
@@ -530,24 +529,6 @@ L.SPEED_KILL_TIMER_TEXT	= "Rekordzeit"
 L.SPEED_CLEAR_TIMER_TEXT	= "Abschlussbestzeit"
 L.COMBAT_RES_TIMER_TEXT	= "Kampfbelebung +"
 L.TIMER_RESPAWN		= "%s Wiedererscheinen"
-
-
-L.REQ_INSTANCE_ID_PERMISSION		= "%s möchte deine aktuellen Instanzsperren (IDs) einsehen.\n Möchtest Du diese Informationen an %s senden? Dieser Spieler wird in der Lage sein, diese Informationen während deiner aktuellen Sitzung abzufragen (also bis du dich neu einloggst)."
-L.ERROR_NO_RAID					= "Du musst dich in einem Schlachtzug befinden um dieses Feature nutzen zu können."
-L.INSTANCE_INFO_REQUESTED			= "Frage den gesamten Schlachtzug nach Instanzsperren (IDs) ab.\nBitte beachte, dass die Spieler nach ihrer Erlaubnis gefragt werden, bevor die Daten an dich gesendet werden. Bis zum Erhalt aller Antworten kann also einige Zeit vergehen."
-L.INSTANCE_INFO_STATUS_UPDATE		= "Antworten von %d Spielern von %d DBM-Nutzern erhalten: %d sendeten Daten, %d haben die Anfrage abgelehnt. Warte %d weitere Sekunden auf Antworten..."
-L.INSTANCE_INFO_ALL_RESPONSES		= "Antworten von allen Mitgliedern des Schlachtzuges erhalten"
-L.INSTANCE_INFO_DETAIL_DEBUG		= "Sender: %s ResultType: %s InstanceName: %s InstanceID: %s Difficulty: %d Size: %d Progress: %s"  -- debug message not translated by intention
-L.INSTANCE_INFO_DETAIL_HEADER		= "%s, Schwierigkeitsgrad %s:"
-L.INSTANCE_INFO_DETAIL_INSTANCE	= "    ID %s, Fortschritt %d: %s"
-L.INSTANCE_INFO_DETAIL_INSTANCE2	= "    Fortschritt %d: %s"
-L.INSTANCE_INFO_NOLOCKOUT			= "In deiner Schlachtzuggruppe sind keine Informationen über Instanzsperren vorhanden."
-L.INSTANCE_INFO_STATS_DENIED		= "Anfrage abgelehnt: %s"
-L.INSTANCE_INFO_STATS_AWAY		= "Abwesend: %s"
-L.INSTANCE_INFO_STATS_NO_RESPONSE	= "Keine aktuelle DBM-Version installiert: %s"
-L.INSTANCE_INFO_RESULTS			= "Ergebnis des Instanzsperren-Scans (IDs). Bitte beachte, dass Instanzen mehrmals angezeigt werden, wenn sich Spieler mit anderssprachigen WoW-Klienten im Schlachtzug befinden."
-L.INSTANCE_INFO_SHOW_RESULTS		= "Spieler die noch nicht geantwortet haben: %s\n|HDBM:showRaidIdResults|h|cff3588ff[Ergebnisse jetzt anzeigen]|r|h"
---L.INSTANCE_INFO_SHOW_RESULTS		= "Spieler die noch nicht geantwortet haben: %s"
 
 L.LAG_CHECKING				= "Prüfe Schlachtzuglatenz..."
 L.LAG_HEADER					= "Deadly Boss Mods - Latenzergebnisse"

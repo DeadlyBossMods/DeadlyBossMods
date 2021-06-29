@@ -2407,14 +2407,6 @@ do
 					DBM:AddMsg(v)
 				end
 			end
-		elseif cmd:sub(1, 7) == "lockout" or cmd:sub(1, 3) == "ids" then
-			if DBM:GetRaidRank(playerName) == 0 then
-				return DBM:AddMsg(L.ERROR_NO_PERMISSION)
-			end
-			if not IsInRaid() then
-				return DBM:AddMsg(L.ERROR_NO_RAID)
-			end
-			DBM:RequestInstanceInfo()
 		elseif cmd:sub(1, 10) == "debuglevel" then
 			local level = tonumber(cmd:sub(11)) or 1
 			if level < 1 or level > 3 then
@@ -2822,8 +2814,6 @@ do
 --			DBM:ShowUpdateReminder(nil, nil, DBM_FORUMS_COPY_URL_DIALOG_NEWS, "https://discord.gg/DF5mffk")
 --		elseif arg1 == "forums" then
 --			DBM:ShowUpdateReminder(nil, nil, DBM_FORUMS_COPY_URL_DIALOG)
-		elseif arg1 == "showRaidIdResults" then
-			DBM:ShowRaidIDRequestResults()
 		elseif arg1 == "noteshare" then
 			local mod = DBM:GetModByName(arg2 or "")
 			if mod then
@@ -4925,431 +4915,109 @@ do
 		end
 	end
 
-	-- beware, ugly and missplaced code ahead
-	-- todo: move this somewhere else
-	do
-		local accessList = {}
-		local savedSender
-
-		local inspopup = CreateFrame("Frame", "DBMPopupLockout", UIParent, DBM:IsShadowlands() and "BackdropTemplate")
-		inspopup.backdropInfo = {
-			bgFile		= "Interface\\DialogFrame\\UI-DialogBox-Background-Dark", -- 312922
-			edgeFile	= "Interface\\DialogFrame\\UI-DialogBox-Border", -- 131072
-			tile		= true,
-			tileSize	= 16,
-			edgeSize	= 16,
-			insets		= { left = 1, right = 1, top = 1, bottom = 1 }
-		}
-		if not DBM:IsShadowlands() then
-			inspopup:SetBackdrop(inspopup.backdropInfo)
-		else
-			inspopup:ApplyBackdrop()
-		end
-		inspopup:SetSize(500, 120)
-		inspopup:SetPoint("TOP", UIParent, "TOP", 0, -200)
-		inspopup:SetFrameStrata("DIALOG")
-
-		local inspopuptext = inspopup:CreateFontString()
-		inspopuptext:SetFontObject(ChatFontNormal)
-		inspopuptext:SetWidth(470)
-		inspopuptext:SetWordWrap(true)
-		inspopuptext:SetPoint("TOP", inspopup, "TOP", 0, -15)
-
-		local buttonaccept = CreateFrame("Button", nil, inspopup)
-		buttonaccept:SetNormalTexture(130763)--"Interface\\Buttons\\UI-DialogBox-Button-Up"
-		buttonaccept:SetPushedTexture(130761)--"Interface\\Buttons\\UI-DialogBox-Button-Down"
-		buttonaccept:SetHighlightTexture(130762, "ADD")--"Interface\\Buttons\\UI-DialogBox-Button-Highlight"
-		buttonaccept:SetSize(128, 35)
-		buttonaccept:SetPoint("BOTTOM", inspopup, "BOTTOM", -75, 0)
-
-		local buttonatext = buttonaccept:CreateFontString()
-		buttonatext:SetFontObject(ChatFontNormal)
-		buttonatext:SetPoint("CENTER", buttonaccept, "CENTER", 0, 5)
-		buttonatext:SetText(YES)
-
-		local buttondecline = CreateFrame("Button", nil, inspopup)
-		buttondecline:SetNormalTexture(130763)--"Interface\\Buttons\\UI-DialogBox-Button-Up"
-		buttondecline:SetPushedTexture(130761)--"Interface\\Buttons\\UI-DialogBox-Button-Down"
-		buttondecline:SetHighlightTexture(130762, "ADD")--"Interface\\Buttons\\UI-DialogBox-Button-Highlight"
-		buttondecline:SetSize(128, 35)
-		buttondecline:SetPoint("BOTTOM", inspopup, "BOTTOM", 75, 0)
-
-		local buttondtext = buttondecline:CreateFontString()
-		buttondtext:SetFontObject(ChatFontNormal)
-		buttondtext:SetPoint("CENTER", buttondecline, "CENTER", 0, 5)
-		buttondtext:SetText(NO)
-
-		inspopup:Hide()
-
-		local function autoDecline(sender, force)
-			inspopup:Hide()
-			savedSender = nil
-			if force then
-				SendAddonMessage("D4", "II\t" .. "denied", "WHISPER", sender)
+	guildSyncHandlers["GCB"] = function(sender, modId, ver, difficulty, difficultyModifier, name)
+		if not DBM.Options.ShowGuildMessages or not difficulty then return end
+		if not ver or not (ver == "3") then return end--Ignore old versions
+		if DBM:AntiSpam(10, "GCB") then
+			if IsInInstance() then return end--Simple filter, if you are inside an instance, just filter it, if not in instance, good to go.
+			difficulty = tonumber(difficulty)
+			if not DBM.Options.ShowGuildMessagesPlus and difficulty == 8 then return end
+			modId = tonumber(modId)
+			local bossName = modId and EJ_GetEncounterInfo(modId) or name or L.UNKNOWN
+			local difficultyName
+			if difficulty == 8 then
+				if difficultyModifier and difficultyModifier ~= 0 then
+					difficultyName = PLAYER_DIFFICULTY6.."+ ("..difficultyModifier..")"
+				else
+					difficultyName = PLAYER_DIFFICULTY6.."+"
+				end
+			elseif difficulty == 16 then
+				difficultyName = PLAYER_DIFFICULTY6
+			elseif difficulty == 15 then
+				difficultyName = PLAYER_DIFFICULTY2
 			else
-				SendAddonMessage("D4", "II\t" .. "timeout", "WHISPER", sender)
+				difficultyName = PLAYER_DIFFICULTY1
 			end
+			DBM:AddMsg(L.GUILD_COMBAT_STARTED:format(difficultyName.."-"..bossName))
 		end
+	end
 
-		local function showPopupInstanceIdPermission(sender)
-			DBM:Unschedule(autoDecline)
-			DBM:Schedule(59, autoDecline, sender)
-			inspopup:Hide()
-			if savedSender ~= sender then
-				if savedSender then
-					autoDecline(savedSender, 1) -- Do not allow multiple popups, so auto decline to previous sender.
-				end
-				savedSender = sender
-			end
-			inspopuptext:SetText(L.REQ_INSTANCE_ID_PERMISSION:format(sender, sender))
-			buttonaccept:SetScript("OnClick", function(f) savedSender = nil DBM:Unschedule(autoDecline) accessList[sender] = true syncHandlers["IR"](sender) f:GetParent():Hide() end)
-			buttondecline:SetScript("OnClick", function(f) autoDecline(sender, 1) end)
-			DBM:PlaySound(850)
-			inspopup:Show()
-		end
-
-		syncHandlers["IR"] = function(sender)
-			if DBM:GetRaidRank(sender) == 0 or sender == playerName then
-				return
-			end
-			accessList = accessList or {}
-			if not accessList[sender] then
-				-- ask for permission
-				showPopupInstanceIdPermission(sender)
-				return
-			end
-			-- okay, send data
-			local sentData = false
-			for i = 1, GetNumSavedInstances() do
-				local name, id, _, difficulty, locked, extended, _, isRaid, maxPlayers, textDiff, _, progress = GetSavedInstanceInfo(i)
-				if (locked or extended) and isRaid then -- only report locked raid instances
-					SendAddonMessage("D4", "II\tData\t" .. name .. "\t" .. id .. "\t" .. difficulty .. "\t" .. maxPlayers .. "\t" .. (progress or 0) .. "\t" .. textDiff, "WHISPER", sender)
-					sentData = true
-				end
-			end
-			if not sentData then
-				-- send something even if there is nothing to report so the receiver is able to tell you apart from someone who just didn't respond...
-				SendAddonMessage("D4", "II\tNoData", "WHISPER", sender)
-			end
-		end
-
-		syncHandlers["IRE"] = function(sender)
-			local popup = inspopup:IsShown()
-			if popup and savedSender == sender then -- found the popup with the correct data
-				savedSender = nil
-				DBM:Unschedule(autoDecline)
-				inspopup:Hide()
-			end
-		end
-
-		guildSyncHandlers["GCB"] = function(sender, modId, ver, difficulty, difficultyModifier, name)
-			if not DBM.Options.ShowGuildMessages or not difficulty then return end
-			if not ver or not (ver == "3") then return end--Ignore old versions
-			if DBM:AntiSpam(10, "GCB") then
-				if IsInInstance() then return end--Simple filter, if you are inside an instance, just filter it, if not in instance, good to go.
-				difficulty = tonumber(difficulty)
-				if not DBM.Options.ShowGuildMessagesPlus and difficulty == 8 then return end
-				modId = tonumber(modId)
-				local bossName = modId and EJ_GetEncounterInfo(modId) or name or L.UNKNOWN
-				local difficultyName
-				if difficulty == 8 then
-					if difficultyModifier and difficultyModifier ~= 0 then
-						difficultyName = PLAYER_DIFFICULTY6.."+ ("..difficultyModifier..")"
-					else
-						difficultyName = PLAYER_DIFFICULTY6.."+"
-					end
-				elseif difficulty == 16 then
-					difficultyName = PLAYER_DIFFICULTY6
-				elseif difficulty == 15 then
-					difficultyName = PLAYER_DIFFICULTY2
+	guildSyncHandlers["GCE"] = function(sender, modId, ver, wipe, time, difficulty, difficultyModifier, name, wipeHP)
+		if not DBM.Options.ShowGuildMessages or not difficulty then return end
+		if not ver or not (ver == "6") then return end--Ignore old versions
+		if DBM:AntiSpam(5, "GCE") then
+			if IsInInstance() then return end--Simple filter, if you are inside an instance, just filter it, if not in instance, good to go.
+			difficulty = tonumber(difficulty)
+			if not DBM.Options.ShowGuildMessagesPlus and difficulty == 8 then return end
+			modId = tonumber(modId)
+			local bossName = modId and EJ_GetEncounterInfo(modId) or name or L.UNKNOWN
+			local difficultyName
+			if difficulty == 8 then
+				if difficultyModifier and difficultyModifier ~= 0 then
+					difficultyName = PLAYER_DIFFICULTY6.."+ ("..difficultyModifier..")"
 				else
-					difficultyName = PLAYER_DIFFICULTY1
+					difficultyName = PLAYER_DIFFICULTY6.."+"
 				end
-				DBM:AddMsg(L.GUILD_COMBAT_STARTED:format(difficultyName.."-"..bossName))
+			elseif difficulty == 16 then
+				difficultyName = PLAYER_DIFFICULTY6
+			elseif difficulty == 15 then
+				difficultyName = PLAYER_DIFFICULTY2
+			else
+				difficultyName = PLAYER_DIFFICULTY1
+			end
+			if wipe == "1" then
+				DBM:AddMsg(L.GUILD_COMBAT_ENDED_AT:format(difficultyName.."-"..bossName, wipeHP, time))
+			else
+				DBM:AddMsg(L.GUILD_BOSS_DOWN:format(difficultyName.."-"..bossName, time))
 			end
 		end
+	end
 
-		guildSyncHandlers["GCE"] = function(sender, modId, ver, wipe, time, difficulty, difficultyModifier, name, wipeHP)
-			if not DBM.Options.ShowGuildMessages or not difficulty then return end
-			if not ver or not (ver == "6") then return end--Ignore old versions
-			if DBM:AntiSpam(5, "GCE") then
-				if IsInInstance() then return end--Simple filter, if you are inside an instance, just filter it, if not in instance, good to go.
-				difficulty = tonumber(difficulty)
-				if not DBM.Options.ShowGuildMessagesPlus and difficulty == 8 then return end
-				modId = tonumber(modId)
-				local bossName = modId and EJ_GetEncounterInfo(modId) or name or L.UNKNOWN
-				local difficultyName
-				if difficulty == 8 then
-					if difficultyModifier and difficultyModifier ~= 0 then
-						difficultyName = PLAYER_DIFFICULTY6.."+ ("..difficultyModifier..")"
-					else
-						difficultyName = PLAYER_DIFFICULTY6.."+"
-					end
-				elseif difficulty == 16 then
-					difficultyName = PLAYER_DIFFICULTY6
-				elseif difficulty == 15 then
-					difficultyName = PLAYER_DIFFICULTY2
-				else
-					difficultyName = PLAYER_DIFFICULTY1
-				end
-				if wipe == "1" then
-					DBM:AddMsg(L.GUILD_COMBAT_ENDED_AT:format(difficultyName.."-"..bossName, wipeHP, time))
-				else
-					DBM:AddMsg(L.GUILD_BOSS_DOWN:format(difficultyName.."-"..bossName, time))
-				end
-			end
+	guildSyncHandlers["WBE"] = function(sender, modId, realm, health, ver, name)
+		if not ver or not (ver == "8") then return end--Ignore old versions
+		if lastBossEngage[modId..realm] and (GetTime() - lastBossEngage[modId..realm] < 30) then return end--We recently got a sync about this boss on this realm, so do nothing.
+		lastBossEngage[modId..realm] = GetTime()
+		if realm == playerRealm and DBM.Options.WorldBossAlert and not IsEncounterInProgress() then
+			modId = tonumber(modId)--If it fails to convert into number, this makes it nil
+			local bossName = modId and EJ_GetEncounterInfo(modId) or name or L.UNKNOWN
+			DBM:AddMsg(L.WORLDBOSS_ENGAGED:format(bossName, floor(health), sender))
 		end
+	end
 
-		guildSyncHandlers["WBE"] = function(sender, modId, realm, health, ver, name)
-			if not ver or not (ver == "8") then return end--Ignore old versions
-			if lastBossEngage[modId..realm] and (GetTime() - lastBossEngage[modId..realm] < 30) then return end--We recently got a sync about this boss on this realm, so do nothing.
-			lastBossEngage[modId..realm] = GetTime()
-			if realm == playerRealm and DBM.Options.WorldBossAlert and not IsEncounterInProgress() then
-				modId = tonumber(modId)--If it fails to convert into number, this makes it nil
-				local bossName = modId and EJ_GetEncounterInfo(modId) or name or L.UNKNOWN
-				DBM:AddMsg(L.WORLDBOSS_ENGAGED:format(bossName, floor(health), sender))
-			end
+	guildSyncHandlers["WBD"] = function(sender, modId, realm, ver, name)
+		if not ver or not (ver == "8") then return end--Ignore old versions
+		if lastBossDefeat[modId..realm] and (GetTime() - lastBossDefeat[modId..realm] < 30) then return end
+		lastBossDefeat[modId..realm] = GetTime()
+		if realm == playerRealm and DBM.Options.WorldBossAlert and not IsEncounterInProgress() then
+			modId = tonumber(modId)--If it fails to convert into number, this makes it nil
+			local bossName = modId and EJ_GetEncounterInfo(modId) or name or L.UNKNOWN
+			DBM:AddMsg(L.WORLDBOSS_DEFEATED:format(bossName, sender))
 		end
+	end
 
-		guildSyncHandlers["WBD"] = function(sender, modId, realm, ver, name)
-			if not ver or not (ver == "8") then return end--Ignore old versions
-			if lastBossDefeat[modId..realm] and (GetTime() - lastBossDefeat[modId..realm] < 30) then return end
-			lastBossDefeat[modId..realm] = GetTime()
-			if realm == playerRealm and DBM.Options.WorldBossAlert and not IsEncounterInProgress() then
-				modId = tonumber(modId)--If it fails to convert into number, this makes it nil
-				local bossName = modId and EJ_GetEncounterInfo(modId) or name or L.UNKNOWN
-				DBM:AddMsg(L.WORLDBOSS_DEFEATED:format(bossName, sender))
-			end
+	whisperSyncHandlers["WBE"] = function(sender, modId, realm, health, ver, name)
+		if not ver or not (ver == "8") then return end--Ignore old versions
+		if lastBossEngage[modId..realm] and (GetTime() - lastBossEngage[modId..realm] < 30) then return end
+		lastBossEngage[modId..realm] = GetTime()
+		if realm == playerRealm and DBM.Options.WorldBossAlert and not IsEncounterInProgress() then
+			local gameAccountInfo = C_BattleNet.GetGameAccountInfoByID(sender)
+			local toonName = gameAccountInfo and gameAccountInfo.characterName or L.UNKNOWN
+			modId = tonumber(modId)--If it fails to convert into number, this makes it nil
+			local bossName = modId and EJ_GetEncounterInfo(modId) or name or L.UNKNOWN
+			DBM:AddMsg(L.WORLDBOSS_ENGAGED:format(bossName, floor(health), toonName))
 		end
+	end
 
-		whisperSyncHandlers["WBE"] = function(sender, modId, realm, health, ver, name)
-			if not ver or not (ver == "8") then return end--Ignore old versions
-			if lastBossEngage[modId..realm] and (GetTime() - lastBossEngage[modId..realm] < 30) then return end
-			lastBossEngage[modId..realm] = GetTime()
-			if realm == playerRealm and DBM.Options.WorldBossAlert and not IsEncounterInProgress() then
-				local gameAccountInfo = C_BattleNet.GetGameAccountInfoByID(sender)
-				local toonName = gameAccountInfo and gameAccountInfo.characterName or L.UNKNOWN
-				modId = tonumber(modId)--If it fails to convert into number, this makes it nil
-				local bossName = modId and EJ_GetEncounterInfo(modId) or name or L.UNKNOWN
-				DBM:AddMsg(L.WORLDBOSS_ENGAGED:format(bossName, floor(health), toonName))
-			end
-		end
-
-		whisperSyncHandlers["WBD"] = function(sender, modId, realm, ver, name)
-			if not ver or not (ver == "8") then return end--Ignore old versions
-			if lastBossDefeat[modId..realm] and (GetTime() - lastBossDefeat[modId..realm] < 30) then return end
-			lastBossDefeat[modId..realm] = GetTime()
-			if realm == playerRealm and DBM.Options.WorldBossAlert and not IsEncounterInProgress() then
-				local gameAccountInfo = C_BattleNet.GetGameAccountInfoByID(sender)
-				local toonName = gameAccountInfo and gameAccountInfo.characterName or L.UNKNOWN
-				modId = tonumber(modId)--If it fails to convert into number, this makes it nil
-				local bossName = modId and EJ_GetEncounterInfo(modId) or name or L.UNKNOWN
-				DBM:AddMsg(L.WORLDBOSS_DEFEATED:format(bossName, toonName))
-			end
-		end
-
-		local lastRequest = 0
-		local numResponses = 0
-		local expectedResponses = 0
-		local allResponded = false
-		local results
-
-		local updateInstanceInfo, showResults
-
-		whisperSyncHandlers["II"] = function(sender, result, name, id, diff, maxPlayers, progress, textDiff)
-			if GetTime() - lastRequest > 62 or not results then
-				return
-			end
-			if not result then
-				return
-			end
-			name = name or L.UNKNOWN
-			id = id or ""
-			diff = tonumber(diff or 0) or 0
-			maxPlayers = tonumber(maxPlayers or 0) or 0
-			progress = tonumber(progress or 0) or 0
-			textDiff = textDiff or ""
-
-			-- count responses
-			if not results.responses[sender] then
-				results.responses[sender] = result
-				numResponses = numResponses + 1
-			end
-
-			-- get localized difficulty text
-			if textDiff ~= "" then
-				results.difftext[diff] = textDiff
-			end
-
-			if result == "Data" then
-				-- got data in that response and not just a "no" or "i'm away"
-				local instanceId = name.." "..maxPlayers.." "..diff -- locale-dependant dungeon ID
-				results.data[instanceId] = results.data[instanceId] or {
-					ids = {}, -- array of all ids of all raid members
-					name = name,
-					diff = diff,
-					maxPlayers = maxPlayers,
-				}
-				if diff == 5 or diff == 6 or diff == 16 then
-					results.data[instanceId].ids[id] = results.data[instanceId].ids[id] or { progress = progress, haveid = true }
-					tinsert(results.data[instanceId].ids[id], sender)
-				else
-					results.data[instanceId].ids[progress] = results.data[instanceId].ids[progress] or { progress = progress }
-					tinsert(results.data[instanceId].ids[progress], sender)
-				end
-			end
-
-			if numResponses >= expectedResponses then -- unlikely, lol
-				DBM:Unschedule(updateInstanceInfo)
-				DBM:Unschedule(showResults)
-				if not allResponded then --Only display message once in case we get for example 4 syncs the last sender
-					DBM:Schedule(0.99, DBM.AddMsg, DBM, L.INSTANCE_INFO_ALL_RESPONSES)
-					allResponded = true
-				end
-				C_TimerAfter(1, showResults) --Delay results so we allow time for same sender to send more than 1 lockout, otherwise, if we get expectedResponses before all data is sent from 1 user, we clip some of their data.
-			end
-		end
-
-		function showResults()
-			local resultCount = 0
-			-- TODO: you could catch some localized instances by observing IDs if there are multiple players with the same instance ID but a different name ;) (not that useful if you are trying to get a fresh instance)
-			DBM:AddMsg(L.INSTANCE_INFO_RESULTS, false)
-			DBM:AddMsg("---", false)
-			for _, v in pairs(results.data) do
-				resultCount = resultCount + 1
-				DBM:AddMsg(L.INSTANCE_INFO_DETAIL_HEADER:format(v.name, (results.difftext[v.diff] or v.diff)), false)
-				for id, r in pairs(v.ids) do
-					if r.haveid then
-						DBM:AddMsg(L.INSTANCE_INFO_DETAIL_INSTANCE:format(id, r.progress, tconcat(r, ", ")), false)
-					else
-						DBM:AddMsg(L.INSTANCE_INFO_DETAIL_INSTANCE2:format(r.progress, tconcat(r, ", ")), false)
-					end
-				end
-				DBM:AddMsg("---", false)
-			end
-			if resultCount == 0 then
-				DBM:AddMsg(L.INSTANCE_INFO_NOLOCKOUT, false)
-			end
-			local denied = {}
-			local away = {}
-			local noResponse = {}
-			for i = 1, GetNumGroupMembers() do
-				if not UnitIsUnit("raid"..i, "player") then
-					tinsert(noResponse, (GetRaidRosterInfo(i)))
-				end
-			end
-			for i, v in pairs(results.responses) do
-				if v == "Data" or v == "NoData" then
-				elseif v == "timeout" then
-					tinsert(away, i)
-				else -- could be "clicked" or "override", in both cases we don't get the data because the dialog requesting it was dismissed
-					tinsert(denied, i)
-				end
-				removeEntry(noResponse, i)
-			end
-			if #denied > 0 then
-				DBM:AddMsg(L.INSTANCE_INFO_STATS_DENIED:format(tconcat(denied, ", ")), false)
-			end
-			if #away > 0 then
-				DBM:AddMsg(L.INSTANCE_INFO_STATS_AWAY:format(tconcat(away, ", ")), false)
-			end
-			if #noResponse > 0 then
-				DBM:AddMsg(L.INSTANCE_INFO_STATS_NO_RESPONSE:format(tconcat(noResponse, ", ")), false)
-			end
-			results = nil
-		end
-
-		-- called when the chat link is clicked
-		function DBM:ShowRaidIDRequestResults()
-			if not results then -- check if we are currently querying raid IDs, results will be nil if we don't
-				return
-			end
-			self:Unschedule(updateInstanceInfo)
-			self:Unschedule(showResults)
-			showResults() -- sets results to nil after the results are displayed, ending the current id request; future incoming data will be discarded
-			sendSync("IRE")
-		end
-
-		local function getResponseStats()
-			local numResponses = 0
-			local sent = 0
-			local denied = 0
-			local away = 0
-			for _, v in pairs(results.responses) do
-				numResponses = numResponses + 1
-				if v == "Data" or v == "NoData" then
-					sent = sent + 1
-				elseif v == "timeout" then
-					away = away + 1
-				else -- could be "clicked" or "override", in both cases we don't get the data because the dialog requesting it was dismissed
-					denied = denied + 1
-				end
-			end
-			return numResponses, sent, denied, away
-		end
-
-		local function getNumDBMUsers() -- without ourselves
-			local r = 0
-			for _, v in pairs(raid) do
-				if v.revision and v.name ~= playerName and UnitIsConnected(v.id) then
-					r = r + 1
-				end
-			end
-			return r
-		end
-
-		function updateInstanceInfo(timeRemaining, dontAddShowResultNowButton)
-			local numResponses, sent, denied, _ = getResponseStats()
-			local dbmUsers = getNumDBMUsers()
-			DBM:AddMsg(L.INSTANCE_INFO_STATUS_UPDATE:format(numResponses, dbmUsers, sent, denied, timeRemaining), false)
-			if not dontAddShowResultNowButton then
-				if dbmUsers - numResponses <= 7 then -- waiting for 7 or less players, show their names and the early result option
-					-- copied from above, todo: implement a smarter way of keeping track of stuff like this
-					local noResponse = {}
-					for i = 1, GetNumGroupMembers() do
-						if not UnitIsUnit("raid"..i, "player") and raid[GetRaidRosterInfo(i)] and raid[GetRaidRosterInfo(i)].revision then -- only show players who actually can respond (== DBM users)
-							tinsert(noResponse, (GetRaidRosterInfo(i)))
-						end
-					end
-					for i, _ in pairs(results.responses) do
-						removeEntry(noResponse, i)
-					end
-
-					--[[
-					-- this looked like the easiest way (for some reason?) to create the player string when writing this code -.-
-					local function dup(...) if select("#", ...) == 0 then return else return ..., ..., dup(select(2, ...)) end end
-					DBM:AddMsg(L.INSTANCE_INFO_SHOW_RESULTS:format(("|Hplayer:%s|h[%s]|h| "):rep(#noResponse):format(dup(unpack(noResponse)))), false)
-					]]
-					-- code that one can actually read
-					for i, v in ipairs(noResponse) do
-						noResponse[i] = ("|Hplayer:%s|h[%s]|h|"):format(v, v)
-					end
-					DBM:AddMsg(L.INSTANCE_INFO_SHOW_RESULTS:format(tconcat(noResponse, ", ")), false)
-				end
-			end
-		end
-
-		function DBM:RequestInstanceInfo()
-			self:AddMsg(L.INSTANCE_INFO_REQUESTED)
-			lastRequest = GetTime()
-			allResponded = false
-			results = {
-				responses = { -- who responded to our request?
-				},
-				data = { -- the actual data
-				},
-				difftext = {
-				}
-			}
-			numResponses = 0
-			expectedResponses = getNumDBMUsers()
-			sendSync("IR")
-			self:Unschedule(updateInstanceInfo)
-			self:Unschedule(showResults)
-			self:Schedule(17, updateInstanceInfo, 45, true)
-			self:Schedule(32, updateInstanceInfo, 30)
-			self:Schedule(48, updateInstanceInfo, 15)
-			C_TimerAfter(62, showResults)
+	whisperSyncHandlers["WBD"] = function(sender, modId, realm, ver, name)
+		if not ver or not (ver == "8") then return end--Ignore old versions
+		if lastBossDefeat[modId..realm] and (GetTime() - lastBossDefeat[modId..realm] < 30) then return end
+		lastBossDefeat[modId..realm] = GetTime()
+		if realm == playerRealm and DBM.Options.WorldBossAlert and not IsEncounterInProgress() then
+			local gameAccountInfo = C_BattleNet.GetGameAccountInfoByID(sender)
+			local toonName = gameAccountInfo and gameAccountInfo.characterName or L.UNKNOWN
+			modId = tonumber(modId)--If it fails to convert into number, this makes it nil
+			local bossName = modId and EJ_GetEncounterInfo(modId) or name or L.UNKNOWN
+			DBM:AddMsg(L.WORLDBOSS_DEFEATED:format(bossName, toonName))
 		end
 	end
 

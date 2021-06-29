@@ -200,7 +200,6 @@ L.SLASHCMD_HELP2				= {
 	"/dbm break <min>: Envoire un timer de pause de <min> minutes au raid (requiert leader/assistant).",
 	"/dbm version: Effectue une vérification de version de DBM (alias: ver).",
 	"/dbm version2: Effectue une vérification de version de DBM qui chuchote aux membres pas à jour (alias: ver2).",
-	"/dbm lockout : demande aux membres du raid leurs verrouillages actuels d'instance de raid (aliases : lockouts, ids) (nécessite d'être chef du raid ou assistant).",
 	"/dbm lag: Effectue une vérification de latence du raid."
 }
 L.TIMER_USAGE	= {
@@ -420,22 +419,6 @@ L.SPEED_KILL_TIMER_TEXT	= "Record à battre"
 L.SPEED_CLEAR_TIMER_TEXT  = "Meilleur clean"
 L.COMBAT_RES_TIMER_TEXT	= "Prochaine charge de rez en combat"
 L.TIMER_RESPAWN		= "%s Réapparition"
-
-L.REQ_INSTANCE_ID_PERMISSION		= "%s a demandé à voir vos IDs d'instance actuels ainsi que leurs progressions.\nSouhaitez-vous envoyer cette information à %s ? Il ou elle pourra demander cette information pendant toute votre session actuelle (c'est-à-dire jusqu'à ce que vous vous reconnectez)."
-L.ERROR_NO_RAID					= "Vous devez être dans un groupe de raid pour utiliser cette fonctionnalité."
-L.INSTANCE_INFO_REQUESTED			= "Requête envoyée pour obtenir les information de verrouillage de raid au groupe de raid.\nVeuillez noter que la permission sera demandée aux utilisateurs avant que les données ne vous soient envoyées, il se peut donc que cela prenne du temps pour recevoir toutes les réponses."
-L.INSTANCE_INFO_STATUS_UPDATE		= "Réception des réponses de %d joueurs sur les %d utilisateurs de DBM : %d ont envoyé les données, %d ont refusé la requête. Attente des autres réponses pendant encore %d secondes..."
-L.INSTANCE_INFO_ALL_RESPONSES		= "Réponses reçues de tous les membres du raid"
-L.INSTANCE_INFO_DETAIL_DEBUG		= "Expéditeur: %s TypeRésultat: %s NomInstance: %s IDInstance: %s Difficulté: %d Taille: %d Progression: %s"
-L.INSTANCE_INFO_DETAIL_HEADER		= "%s, difficulté %s :"
-L.INSTANCE_INFO_DETAIL_INSTANCE	= "    ID %s, progression %d : %s"
-L.INSTANCE_INFO_DETAIL_INSTANCE2	= "    progression %d : %s"
-L.INSTANCE_INFO_NOLOCKOUT			= "Il n'y a pas d'info de verrouillage raid dans votre groupe."
-L.INSTANCE_INFO_STATS_DENIED		= "A refusé la requête : %s"
-L.INSTANCE_INFO_STATS_AWAY		= "Absent: %s"
-L.INSTANCE_INFO_STATS_NO_RESPONSE	= "Sans une version récente de DBM: %s"
-L.INSTANCE_INFO_RESULTS			= "Résultats de l'analyse des IDs d'instance. Notez que les instances peuvent apparaître plusieurs fois si les joueurs de votre raid ont WoW dans différentes langues."
-L.INSTANCE_INFO_SHOW_RESULTS		= "Joueurs qui doivent encore répondre: %s\n|HDBM:showRaidIdResults|h|cff3588ff[Afficher les résultats maintenant]|r|h"
 
 L.LAG_CHECKING               = "Vérification de la latence du raid..."
 L.LAG_HEADER                 = "Deadly Boss Mods - Résultats sur la latence"
