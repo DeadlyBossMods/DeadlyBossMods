@@ -117,7 +117,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 355888 then
 		warnHardLightBaton:Show(args.destName)
- 	elseif spellId == 355915 and args:IsDestTypePlayer() and self:CheckDispelFilter() and self:AntiSpam(3, 5) then
+	elseif spellId == 355915 and args:IsDestTypePlayer() and self:CheckDispelFilter() and self:AntiSpam(3, 5) then
 		specWarnGlyphofRestraint:Show(args.destName)
 		specWarnGlyphofRestraint:Play("helpdispel")
 	elseif spellId == 355980 and not args:IsDestTypePlayer() and self:AntiSpam(3, 5) then
