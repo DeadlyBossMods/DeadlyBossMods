@@ -254,7 +254,6 @@ L.SLASHCMD_HELP2				= {
 	"/dbm break <分钟>: 向所有团队成员发送一个长度为<分钟>的狂暴计时条(需要队长或助理权限)。",
 	"/dbm version: 进行团队范围的" .. L.DBM .. "版本检测(也可使用: ver)",
 	"/dbm version2: 进行团队范围的" .. L.DBM .. "版本检测并密语那些过期版本用户(也可使用: ver2)",
-	"/dbm lockout: 查询团队成员当前的副本锁定状态(副本CD)(也可使用: lockouts, ids)(需要队长或助理权限)。",
 	"/dbm lag: 检测全团网络延时",
 	"/dbm durability: 检测全团装备耐久度"
 }
@@ -580,22 +579,6 @@ L.SPEED_KILL_TIMER_TEXT	= "击杀记录"
 L.SPEED_CLEAR_TIMER_TEXT	= "最速清除"
 L.COMBAT_RES_TIMER_TEXT	= "下一次可用战复"
 L.TIMER_RESPAWN		= "%s 刷新"
-
-L.REQ_INSTANCE_ID_PERMISSION		= "%s请求获取你现在副本的存档ID与进度。是否愿意向&s提交进度？\n\n注意：在接受后，他可以随时查看您当前的进度情况，直到您下线、掉线或重载用户界面。"
-L.ERROR_NO_RAID					= "使用该功能需要身处一个团队中。"
-L.INSTANCE_INFO_REQUESTED			= "已发送团队副本进度查看请求。\n请注意，团员会根据需要选择接受或拒绝该请求。请求时间约一分钟，请等待。"
-L.INSTANCE_INFO_STATUS_UPDATE		= "已收到%d名团员的进度回复（已安装" .. L.DBM .. "的团员有 %d 名）：%d人接受请求，%d人拒绝。生成数据需要约%d秒，请等待。"
-L.INSTANCE_INFO_ALL_RESPONSES		= "所有团员接受请求。"
-L.INSTANCE_INFO_DETAIL_DEBUG		= "发送者：%s 结果类型：%s 副本名：%s 副本ID：%s 难度：%d 规模：%d 进度：%s"
-L.INSTANCE_INFO_DETAIL_HEADER		= "%s，难度%s："
-L.INSTANCE_INFO_DETAIL_INSTANCE	= "    ID %s, 进度%d：%s"
-L.INSTANCE_INFO_DETAIL_INSTANCE2	= "    进度%d：%s"
-L.INSTANCE_INFO_NOLOCKOUT			= "你的团队没有副本进度信息。"
-L.INSTANCE_INFO_STATS_DENIED		= "拒绝请求：%s"
-L.INSTANCE_INFO_STATS_AWAY		= "暂离：%s"
-L.INSTANCE_INFO_STATS_NO_RESPONSE	= "未安装" .. L.DEADLY_BOSS_MODS .. "：%s"
-L.INSTANCE_INFO_RESULTS			= "副本进度扫描结果。" --Note that instances might show up more than once if there are players with localized WoW clients in your raid.
-L.INSTANCE_INFO_SHOW_RESULTS		= "仍未回复的玩家: %s"
 
 L.LAG_CHECKING				= "延时检测请稍后... "
 L.LAG_HEADER					=  L.DEADLY_BOSS_MODS .. " - 延时检测"

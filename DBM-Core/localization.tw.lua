@@ -253,7 +253,6 @@ L.SLASHCMD_HELP2				= {
 	"/dbm break <分鐘>: 開始休息計時器<分鐘>。向所有團隊成員發送一個DBM休息計時器（需要權限）。",
 	"/dbm version: 進行首領插件的版本檢測（也可使用：ver）。",
 	"/dbm version2: 進行首領插件的版本檢測同時也密語提醒過期的使用者（也可使用：ver2）。",
-	"/dbm lockout: 向團隊成員請求他們當前的團隊副本鎖定訊息(鎖定訊息、副本id) (需要權限)。",
 	"/dbm lag: 進行團隊範圍內的網路延遲檢測。",
 	"/dbm durability: 進行團隊範圍內的裝備耐久度檢測。"
 }
@@ -595,24 +594,6 @@ L.SPEED_KILL_TIMER_TEXT		= "勝利紀錄"
 L.SPEED_CLEAR_TIMER_TEXT	= "最佳紀錄"
 L.COMBAT_RES_TIMER_TEXT		= "下一個戰復充能"
 L.TIMER_RESPAWN				= "%s 重生"
-
-
-L.REQ_INSTANCE_ID_PERMISSION		= "%s想要查看你的副本ID和進度鎖定情況。\n你想發送該訊息給%s嗎? 在你的當前進程（除非你下線）他可以一直查閱該訊息。"
-L.ERROR_NO_RAID						= "你必須在一個團隊中才可以使用這個功能。"
-L.INSTANCE_INFO_REQUESTED			= "查看團隊成員的副本鎖定訊息。\n請注意，隊員們將會被詢問是否願意發送資料給你，因此可能需要等待一段時間才能獲得全部的回覆。"
-L.INSTANCE_INFO_STATUS_UPDATE		= "從%d個玩家獲得訊息，來自%d個DBM用戶：%d人發送了資料, %d人拒絕回傳資料。繼續為更多回覆等待%d秒..."
-L.INSTANCE_INFO_ALL_RESPONSES		= "已獲得全部團隊成員的回傳資料"
-L.INSTANCE_INFO_DETAIL_DEBUG		= "發送者:%s 結果類型:%s 副本名:%s 副本ID:%s 難度:%d 大小:%d 進度:%s"
-L.INSTANCE_INFO_DETAIL_HEADER		= "%s, 難度%s:"
-L.INSTANCE_INFO_DETAIL_INSTANCE		= "    ID %s, 進度%d:%s"
-L.INSTANCE_INFO_DETAIL_INSTANCE2	= "    進度%d:%s"
-L.INSTANCE_INFO_NOLOCKOUT			= "你的團隊沒有副本進度資訊。"
-L.INSTANCE_INFO_STATS_DENIED		= "拒絕回傳數據:%s"
-L.INSTANCE_INFO_STATS_AWAY			= "離開:%s"
-L.INSTANCE_INFO_STATS_NO_RESPONSE	= "沒有安裝最新版本的DBM:%s"
-L.INSTANCE_INFO_RESULTS				= "副本ID掃描結果。注意如果團隊中有不同語言版本的魔獸客戶端，那麼同一副本可能會出現不止一次。"
-L.INSTANCE_INFO_SHOW_RESULTS		= "仍未回覆的玩家: %s\n|HDBM:showRaidIdResults|h|cff3588ff[查看結果]|r|h"
---L.INSTANCE_INFO_SHOW_RESULTS		= "仍未回覆的玩家: %s"
 
 L.LAG_CHECKING					= "檢測團隊成員的網路延遲中..."
 L.LAG_HEADER					= ""..L.DEADLY_BOSS_MODS.." - 網路延遲結果"

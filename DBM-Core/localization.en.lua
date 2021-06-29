@@ -264,7 +264,6 @@ L.SLASHCMD_HELP2					= {
 	"/dbm break <min>: Sends a break timer for <min> minutes to the raid (requires promoted. alias: break).",
 	"/dbm version: Performs a boss mod version check (alias: ver).",
 	"/dbm version2: Performs a boss mod version check that also whispers out of date users (alias: ver2).",
-	"/dbm lockout: Asks raid members for their current raid instance lockouts (aliases: lockouts, ids) (requires promoted).",
 	"/dbm lag: Performs a raid-wide latency check.",
 	"/dbm durability: Performs a raid-wide durability check."
 }
@@ -629,24 +628,6 @@ L.SPEED_KILL_TIMER_TEXT				= "Record Victory"
 L.SPEED_CLEAR_TIMER_TEXT			= "Best Clear"
 L.COMBAT_RES_TIMER_TEXT				= "Next CR Charge"
 L.TIMER_RESPAWN						= "%s Respawn"
-
-
-L.REQ_INSTANCE_ID_PERMISSION		= "%s requested to see your current instance IDs and progress.\nDo you want to send this information to %s? He or she will be able to request this information during your current session (i. e. until you relog)."
-L.ERROR_NO_RAID						= "You need to be in a raid group to use this feature."
-L.INSTANCE_INFO_REQUESTED			= "Sent request for raid lockout information to the raid group.\nPlease note that the users will be asked for permission before sending the data to you, so it might take a minute until we get all responses."
-L.INSTANCE_INFO_STATUS_UPDATE		= "Got responses from %d players of %d " .. L.DBM .. " users: %d sent data, %d denied the request. Waiting %d more seconds for responses... "
-L.INSTANCE_INFO_ALL_RESPONSES		= "Received responses from all raid members"
-L.INSTANCE_INFO_DETAIL_DEBUG		= "Sender: %s ResultType: %s InstanceName: %s InstanceID: %s Difficulty: %d Size: %d Progress: %s"
-L.INSTANCE_INFO_DETAIL_HEADER		= "%s, difficulty %s:"
-L.INSTANCE_INFO_DETAIL_INSTANCE		= "    ID %s, progress %d: %s"
-L.INSTANCE_INFO_DETAIL_INSTANCE2	= "    Progress %d: %s"
-L.INSTANCE_INFO_NOLOCKOUT			= "There is no raid lockout information in your raid group."
-L.INSTANCE_INFO_STATS_DENIED		= "Denied the request: %s"
-L.INSTANCE_INFO_STATS_AWAY			= "Away: %s"
-L.INSTANCE_INFO_STATS_NO_RESPONSE	= "No recent " .. L.DBM .. " version installed: %s"
-L.INSTANCE_INFO_RESULTS				= "Instance ID scan results. Note that instances might show up more than once if there are players with localized WoW clients in your raid."
-L.INSTANCE_INFO_SHOW_RESULTS		= "Players yet to respond: %s\n|HDBM:showRaidIdResults|h|cff3588ff[Show results now]|r|h"
---L.INSTANCE_INFO_SHOW_RESULTS		= "Players yet to respond: %s"
 
 L.LAG_CHECKING						= "Checking raid Latency... "
 L.LAG_HEADER						= L.DEADLY_BOSS_MODS.. " - Latency Results"
