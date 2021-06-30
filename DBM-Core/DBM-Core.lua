@@ -71,8 +71,8 @@ end
 
 DBM = {
 	Revision = parseCurseDate("@project-date-integer@"),
-	DisplayVersion = "9.1.0 alpha", -- the string that is shown as version
-	ReleaseRevision = releaseDate(2021, 6, 14) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	DisplayVersion = "9.1.1 alpha", -- the string that is shown as version
+	ReleaseRevision = releaseDate(2021, 6, 29) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 }
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
@@ -7387,8 +7387,8 @@ function DBM:FindScenarioIDs(low, peak, contains)
 	self:AddMsg("-----------------")
 	for i = start, range do
 		local instance = GetDungeonInfo(i)
-		if instance and (not contains or contains and instance:find(contains)) then
-			self:AddMsg(i..": "..instance)
+		if instance and (not contains or contains and instance.name:find(contains)) then
+			self:AddMsg(i..": "..instance.name)
 		end
 	end
 end
@@ -7533,9 +7533,9 @@ do
 			local t = GetDungeonInfo(string.sub(name, 2))
 			if type(nameModifier) == "number" then--do nothing
 			elseif type(nameModifier) == "function" then--custom name modify function
-				t = nameModifier(t or name)
+				t = nameModifier(t and t.name or name)
 			else--default name modify
-				t = string.split(",", t or name)
+				t = string.split(",", t and t.name or name)
 			end
 			obj.localization.general.name = t or name
 		else
