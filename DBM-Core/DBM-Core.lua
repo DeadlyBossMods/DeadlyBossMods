@@ -6714,6 +6714,14 @@ function DBM:EJ_GetSectionInfo(sectionID)
 	return info.title, info.description, info.headerType, info.abilityIcon, info.creatureDisplayID, info.siblingSectionID, info.firstChildSectionID, info.filteredByDifficulty, info.link, info.startsOpen, flag1, flag2, flag3, flag4
 end
 
+function DBM:GetDungeonInfo(id)
+	local temp = GetDungeonInfo(id)
+	if type(temp) == "table" then
+		return temp.name
+	end
+	return temp
+end
+
 --Handle new spell name requesting with wrapper, to make api changes easier to handle
 --Keep an eye on C_SpellBook.GetSpellInfo, but don't use it YET as direction of existing GetSpellInfo isn't finalized yet
 function DBM:GetSpellInfo(spellId)
@@ -7386,7 +7394,7 @@ function DBM:FindScenarioIDs(low, peak, contains)
 	local range = peak or 3000
 	self:AddMsg("-----------------")
 	for i = start, range do
-		local instance = GetDungeonInfo(i)
+		local instance = self:GetDungeonInfo(i)
 		if instance and (not contains or contains and instance:find(contains)) then
 			self:AddMsg(i..": "..instance)
 		end
@@ -7530,7 +7538,7 @@ do
 			end
 			obj.localization.general.name = t or name
 		elseif name:match("d%d+") then
-			local t = GetDungeonInfo(string.sub(name, 2))
+			local t = self:GetDungeonInfo(string.sub(name, 2))
 			if type(nameModifier) == "number" then--do nothing
 			elseif type(nameModifier) == "function" then--custom name modify function
 				t = nameModifier(t or name)
