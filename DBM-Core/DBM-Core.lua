@@ -7387,8 +7387,8 @@ function DBM:FindScenarioIDs(low, peak, contains)
 	self:AddMsg("-----------------")
 	for i = start, range do
 		local instance = GetDungeonInfo(i)
-		if instance and (not contains or contains and instance.name:find(contains)) then
-			self:AddMsg(i..": "..instance.name)
+		if instance and (not contains or contains and instance:find(contains)) then
+			self:AddMsg(i..": "..instance)
 		end
 	end
 end
@@ -7533,9 +7533,9 @@ do
 			local t = GetDungeonInfo(string.sub(name, 2))
 			if type(nameModifier) == "number" then--do nothing
 			elseif type(nameModifier) == "function" then--custom name modify function
-				t = nameModifier(t and t.name or name)
+				t = nameModifier(t or name)
 			else--default name modify
-				t = string.split(",", t and t.name or name)
+				t = string.split(",", t or name)
 			end
 			obj.localization.general.name = t or name
 		else
