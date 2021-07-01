@@ -71,8 +71,8 @@ end
 
 DBM = {
 	Revision = parseCurseDate("@project-date-integer@"),
-	DisplayVersion = "9.1.1 alpha", -- the string that is shown as version
-	ReleaseRevision = releaseDate(2021, 6, 29) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	DisplayVersion = "9.1.2 alpha", -- the string that is shown as version
+	ReleaseRevision = releaseDate(2021, 6, 30) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 }
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
@@ -331,7 +331,6 @@ DBM.DefaultOptions = {
 	SilentMode = false,
 }
 
-DBM.Bars = DBT -- DBM.Bars and DBM.Bars.options compact code will be removed no later than patch 9.1, migrate your addon/weak auras to DBT and DBT.Options respectively
 DBM.Mods = {}
 DBM.ModLists = {}
 DBM.Counts = {
@@ -1425,7 +1424,6 @@ do
 				C_TimerAfter(15, function() AddMsg(self, L.DBMLOOTREMINDER) end)
 			end
 			DBT:LoadOptions("DBM")
-			DBM.Bars.options = DBT.Options--TEMP cloaning, DBM.Bars and DBM.Bars.options compact code will be removed no later than patch 9.1, migrate your addon/weak auras to DBT and DBT.Options respectively
 			self.Arrow:LoadPosition()
 			-- LibDBIcon setup
 			if type(DBM_MinimapIcon) ~= "table" then
@@ -6714,6 +6712,14 @@ function DBM:EJ_GetSectionInfo(sectionID)
 	return info.title, info.description, info.headerType, info.abilityIcon, info.creatureDisplayID, info.siblingSectionID, info.firstChildSectionID, info.filteredByDifficulty, info.link, info.startsOpen, flag1, flag2, flag3, flag4
 end
 
+function DBM:GetDungeonInfo(id)
+	local temp = GetDungeonInfo(id)
+	if type(temp) == "table" then
+		return temp.name
+	end
+	return temp
+end
+
 --Handle new spell name requesting with wrapper, to make api changes easier to handle
 --Keep an eye on C_SpellBook.GetSpellInfo, but don't use it YET as direction of existing GetSpellInfo isn't finalized yet
 function DBM:GetSpellInfo(spellId)
@@ -7386,9 +7392,9 @@ function DBM:FindScenarioIDs(low, peak, contains)
 	local range = peak or 3000
 	self:AddMsg("-----------------")
 	for i = start, range do
-		local instance = GetDungeonInfo(i)
-		if instance and (not contains or contains and instance.name:find(contains)) then
-			self:AddMsg(i..": "..instance.name)
+		local instance = self:GetDungeonInfo(i)
+		if instance and (not contains or contains and instance:find(contains)) then
+			self:AddMsg(i..": "..instance)
 		end
 	end
 end
@@ -7530,12 +7536,12 @@ do
 			end
 			obj.localization.general.name = t or name
 		elseif name:match("d%d+") then
-			local t = GetDungeonInfo(string.sub(name, 2))
+			local t = self:GetDungeonInfo(string.sub(name, 2))
 			if type(nameModifier) == "number" then--do nothing
 			elseif type(nameModifier) == "function" then--custom name modify function
-				t = nameModifier(t and t.name or name)
+				t = nameModifier(t or name)
 			else--default name modify
-				t = string.split(",", t and t.name or name)
+				t = string.split(",", t or name)
 			end
 			obj.localization.general.name = t or name
 		else

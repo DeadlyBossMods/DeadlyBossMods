@@ -10,8 +10,8 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 320063",
-	"SPELL_CAST_SUCCESS 320069 320272 320248 333231 333222 320063",
-	"SPELL_AURA_APPLIED 320069 324085 320272 320293 333231 333222 326892",
+	"SPELL_CAST_SUCCESS 320069 320272 320248 333231 333222 320063 333540",
+	"SPELL_AURA_APPLIED 320069 324085 320272 320293 333231 333222 333540 326892",
 	"SPELL_PERIODIC_DAMAGE 320180",
 	"SPELL_PERIODIC_MISSED 320180",
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3"
@@ -34,7 +34,7 @@ local warnGeneticAlteration				= mod:NewSpellAnnounce(320248, 2)--Goes on everyo
 local warnSearingDeath					= mod:NewTargetAnnounce(333231, 3)
 local warnOnewithDeath					= mod:NewTargetNoFilterAnnounce(320293, 3)
 --Xira the Underhanded
---local warnOpportunityStrikes			= mod:NewTargetNoFilterAnnounce(333540, 4)--May be removed in 9.0.5
+local warnOpportunityStrikes			= mod:NewTargetNoFilterAnnounce(333540, 4)--And re-added in 9.1?
 
 --Dessia the Decapitator
 local specWarnSlam						= mod:NewSpecialWarningDefensive(320063, false, nil, 2, 1, 2)--Cast very often, let this be an opt in
@@ -56,7 +56,7 @@ local timerNoxiousSporeCD				= mod:NewCDTimer(15.8, 320180, nil, nil, nil, 3)
 local timerSearingDeathCD				= mod:NewCDTimer(11.7, 333231, nil, nil, nil, 3)--11.7-24
 local timerSpectralTransferenceCD		= mod:NewCDTimer(13.4, 320272, nil, nil, nil, 5, nil, DBM_CORE_L.MAGIC_ICON)--13.4-57
 --Xira the Underhanded
---local timerOpportunityStrikesCD			= mod:NewCDTimer(60, 333540, nil, nil, nil, 3, nil, DBM_CORE_L.MYTHIC_ICON)--May be removed in 9.0.5
+local timerOpportunityStrikesCD			= mod:NewCDTimer(60, 333540, nil, nil, nil, 3, nil, DBM_CORE_L.MYTHIC_ICON)--And re-added in 9.1?
 
 function mod:OnCombatStart(delay)
 	--Dessia
@@ -67,9 +67,9 @@ function mod:OnCombatStart(delay)
 	--Sathel
 	timerSearingDeathCD:Start(10.2-delay)--SUCCESS 10-15
 	timerSpectralTransferenceCD:Start(10.5-delay)--SUCCESS 10-13
---	if self:IsMythic() then
---		timerOpportunityStrikesCD:Start(61.4-delay)--SUCCESS 61-80?
---	end
+	if self:IsMythic() then
+		timerOpportunityStrikesCD:Start(61.4-delay)--SUCCESS 61-80?
+	end
 end
 
 function mod:SPELL_CAST_START(args)
@@ -96,8 +96,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerSearingDeathCD:Start()
 	elseif spellId == 320063 then
 		timerSlamCD:Start(6.4)--Started in success do to stutter casting, cast time removed from CD
---	elseif spellId == 333540 then
---		timerOpportunityStrikesCD:Start()--Not seen more than once during a pull, rarely even see it once
+	elseif spellId == 333540 then
+		timerOpportunityStrikesCD:Start()--Not seen more than once during a pull, rarely even see it once
 	end
 end
 
@@ -124,8 +124,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			warnSearingDeath:Show(args.destName)
 		end
---	elseif spellId == 333540 then
---		warnOpportunityStrikes:Show(args.destName)
+	elseif spellId == 333540 then
+		warnOpportunityStrikes:Show(args.destName)
 	elseif spellId == 326892 and args:IsDestTypePlayer() then
 		if args:IsPlayer() then
 			specWarnFixate:Show()
