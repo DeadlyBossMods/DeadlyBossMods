@@ -40,14 +40,14 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization{
-	SubmergTimer	= "Sumergir",
+	SubmergeTimer	= "Sumergir",
 	EmergeTimer		= "Volver a la superficie"
 }
 
 L:SetOptionLocalization({
 	Emerged			= "Mostrar aviso cuando Ahune vuelva a la superficie",
 	specWarnAttack	= "Mostrar aviso especial cuando Ahune se vuelva vulnerable",
-	SubmergTimer	= "Mostrar temporizador para cuando Ahune se sumerja",
+	SubmergeTimer	= "Mostrar temporizador para cuando Ahune se sumerja",
 	EmergeTimer		= "Mostrar temporizador para cuando Ahune vuelva a la superficie"
 })
 
