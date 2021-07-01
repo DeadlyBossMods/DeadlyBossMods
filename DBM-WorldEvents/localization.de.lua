@@ -40,14 +40,14 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization{
-	SubmergTimer	= "Abtauchen",
+	SubmergeTimer	= "Abtauchen",
 	EmergeTimer		= "Auftauchen"
 }
 
 L:SetOptionLocalization({
 	Emerged			= "Zeige Warnung, wenn Ahune auftaucht",
 	specWarnAttack	= "Spezialwarnung, wenn Ahune verwundbar wird",
-	SubmergTimer	= "Zeige Zeit bis Abtauchen",
+	SubmergeTimer	= "Zeige Zeit bis Abtauchen",
 	EmergeTimer		= "Zeige Zeit bis Auftauchen"
 })
 

@@ -40,14 +40,14 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	SubmergTimer		= "隱沒",
+	SubmergeTimer		= "隱沒",
 	EmergeTimer			= "現身"
 })
 
 L:SetOptionLocalization({
 	Emerged				= "當艾胡恩現身時顯示警告",
 	specWarnAttack		= "當艾胡恩變得脆弱時顯示特別警告",
-	SubmergTimer		= "為隱沒顯示計時器",
+	SubmergeTimer		= "為隱沒顯示計時器",
 	EmergeTimer			= "為現身顯示計時器"
 })
 

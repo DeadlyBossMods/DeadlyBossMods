@@ -40,14 +40,14 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization{
-	SubmergTimer	= "잠복",
+	SubmergeTimer	= "잠복",
 	EmergeTimer		= "등장"
 }
 
 L:SetOptionLocalization({
 	Emerged			= "등장 경고 보기",
 	specWarnAttack	= "아훈 약화 특별 경고 보기",
-	SubmergTimer	= "잠복 타이머 바 보기",
+	SubmergeTimer	= "잠복 타이머 바 보기",
 	EmergeTimer		= "등장 타이머 바 보기"
 })
 
