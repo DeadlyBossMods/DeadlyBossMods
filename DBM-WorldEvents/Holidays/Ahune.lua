@@ -23,11 +23,13 @@ local timerEmerge				= mod:NewTimer(33.5, "EmergeTimer", "Interface\\AddOns\\DBM
 local timerSubmerge				= mod:NewTimer(92, "SubmergeTimer", "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendBurrow.blp", nil, nil, 6)--Variable, 92-96
 
 function mod:OnCombatStart(delay)
-	timerSubmerge:Start(95-delay)--first is 95, rest are 92
+	if self:AntiSpam(4, 1) then
+		timerSubmerge:Start(95-delay)--first is 95, rest are 92
+	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 45954 and self:AntiSpam(2, 1) then -- Ahunes Shield
+	if args.spellId == 45954 and self:AntiSpam(4, 1) then -- Ahunes Shield
 		warnEmerged:Show()
 		timerSubmerge:Start()
 	end
