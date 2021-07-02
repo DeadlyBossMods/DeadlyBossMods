@@ -46,7 +46,7 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization{
-	SubmergTimer	= "Immerger",
+	SubmergeTimer	= "Immerger",
 	EmergeTimer		= "Emerger",
 	TimerCombat		= "Début du combat dans"
 }
@@ -55,7 +55,7 @@ L:SetOptionLocalization({
 	Submerged		= "Afficher l'alerte lorsque Ahune est immergé",
 	Emerged			= "Afficher l'alerter lorsque Ahune a émergé",
 	specWarnAttack	= "Afficher une alerter spécial lorsque Ahune devient vulnérable",
-	SubmergTimer	= "Afficher le timer pour l'immersion",
+	SubmergeTimer	= "Afficher le timer pour l'immersion",
 	EmergeTimer		= "Afficher le timer pour l'émersion",
 	TimerCombat		= "Afficher le timer du début du combat"
 })

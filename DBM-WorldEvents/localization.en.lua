@@ -39,14 +39,14 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization{
-	SubmergTimer	= "Submerge",
+	SubmergeTimer	= "Submerge",
 	EmergeTimer		= "Emerge"
 }
 
 L:SetOptionLocalization({
 	Emerged			= "Show warning when Ahune emerges",
 	specWarnAttack	= "Show special warning when Ahune becomes vulnerable",
-	SubmergTimer	= "Show timer for submerge",
+	SubmergeTimer	= "Show timer for submerge",
 	EmergeTimer		= "Show timer for emerge"
 })
 
