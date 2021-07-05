@@ -6870,6 +6870,9 @@ do
 				mod.vb[name] = false
 			else
 				mod.vb[name] = value
+				if name == "phase" then
+					mod:SetStage(value)--Fire stage callback for 3rd party mods when stage is recovered
+				end
 			end
 		end
 	end

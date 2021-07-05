@@ -86,7 +86,7 @@ local timerGlacialWrathCD							= mod:NewCDTimer(43.9, 346459, nil, nil, nil, 3,
 local timerOblivionsEchoCD							= mod:NewCDTimer(37, 347291, nil, nil, nil, 3)--37-60?
 local timerFrostBlastCD								= mod:NewCDTimer(40.1, 348756, nil, nil, nil, 3, nil, DBM_CORE_L.MAGIC_ICON)
 --Stage Two: The Phylactery Opens
-local timerNecoticDestruction						= mod:NewCastTimer(23, 352293, nil, nil, nil, 6)
+local timerVengefulDestruction						= mod:NewCastTimer(23, 352293, nil, nil, nil, 6)
 ----Remnant of Kel'Thuzad
 local timerFoulWindsCD								= mod:NewCDTimer(12.1, 355127, nil, nil, nil, 2, nil, DBM_CORE_L.MYTHIC_ICON)
 local timerFreezingBlastCD							= mod:NewNextCountTimer(4.9, 352379, nil, nil, nil, 3)
@@ -187,7 +187,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 348756 or spellId == 353000 then--348756 confirmed heroic
 		timerFrostBlastCD:Start()
 --		self:ScheduleMethod(0.2, "BossTargetScanner", args.sourceGUID, "FrostBlast", 0.1, 10, true, nil, nil, nil, true)
-	elseif spellId == 352293 then--Necrotic Destruction
+	elseif spellId == 352293 then--Vengeful Destruction
 		--Stop KT timers
 		self:SetStage(2)
 		self.vb.addIcon = 8
@@ -199,7 +199,7 @@ function mod:SPELL_CAST_START(args)
 		timerOblivionsEchoCD:Stop()
 		timerFrostBlastCD:Stop()
 		--Start KTs destruction cast timer
-		timerNecoticDestruction:Start()
+		timerVengefulDestruction:Start()
 		--Start Remnant timers (may not start here but when he's actually engaged/attacked after entering zone
 		timerFreezingBlastCD:Start(6.8, 1)
 		if self:IsMythic() then
@@ -255,7 +255,7 @@ end
 --[[
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
---	if spellId == 352293 then--Necrotic Destruction ended (assumed phase trigger to return to active KT engagement)
+--	if spellId == 352293 then--Vengeful Destruction ended (assumed phase trigger to return to active KT engagement)
 		--Start KT timers
 --		self:SetStage(1)
 --		timerHowlingBlizzardCD:Start(2)
