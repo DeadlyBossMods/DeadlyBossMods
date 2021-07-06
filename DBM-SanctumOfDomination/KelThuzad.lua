@@ -165,6 +165,7 @@ function mod:OnCombatEnd()
 	if self.Options.NPAuraOnNecroticEmpowerment or self.Options.NPAuraOnFixate then
 		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
 	end
+	DBM:AddMsg("Timers for this fight are incomplete/inaccurate until a lot more data is collected from various push timings. This data can only be improved with transcriptor logs")
 end
 
 function mod:SPELL_CAST_START(args)
