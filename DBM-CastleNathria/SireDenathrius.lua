@@ -28,6 +28,7 @@ mod:RegisterEventsInCombat(
 --TODO, https://shadowlands.wowhead.com/spell=336008/smoldering-ire need anything special?
 --TODO, verify spellIds for two different blood prices, and make sure there isn't overlap/double triggering for any of them
 --TODO, handling of https://www.wowhead.com/spell=341391/searing-censure 5 second loop timer
+--TODO, likely doing not enough for tank stuff in terms of warnings, probably have to confur with some tanks on best approach
 --[[
 (ability.id = 326707 or ability.id = 326851 or ability.id = 327227 or ability.id = 328117 or ability.id = 329181 or ability.id = 333932) and type = "begincast"
  or (ability.id = 327796 or ability.id = 329943 or ability.id = 339196 or ability.id = 330042 or ability.id = 326005 or ability.id = 332849 or ability.id = 333980 or ability.id = 332619 or ability.id = 327039 or ability.id = 333979) and type = "cast"
@@ -553,14 +554,13 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnNightHunter:Play("mm"..icon)
 			yellNightHunter:Yell(icon, icon)
 			yellNightHunterFades:Countdown(spellId, nil, icon)
-		elseif self.Options.SpecWarn327796target then
+		elseif self.Options.SpecWarn327796target and not DBM:UnitDebuff("player", spellId) then
 			--Don't show special warning if you're one of victims
-			if not DBM:UnitDebuff("player", spellId) then
-				specWarnNightHunterTarget:CombinedShow(0.5, args.destName)
-				specWarnNightHunterTarget:ScheduleVoice(0.5, "helpsoak")
-			end
+			specWarnNightHunterTarget:CombinedShow(0.5, args.destName)
+			specWarnNightHunterTarget:ScheduleVoice(0.5, "helpsoak")
+		else
+			warnNightHunter:CombinedShow(0.5, args.destName)
 		end
-		warnNightHunter:CombinedShow(0.5, args.destName)
 		self.vb.DebuffIcon = self.vb.DebuffIcon + 1
 	elseif spellId == 327992 and args:IsPlayer() and self:AntiSpam(2, 2) then
 		specWarnGTFO:Show(args.spellName)
