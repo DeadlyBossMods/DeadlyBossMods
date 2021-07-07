@@ -495,13 +495,13 @@ function mod:SPELL_AURA_REMOVED(args)
 			playerSafe = false
 		end
 	elseif spellId == 350496 then
+		if self.Options.SetIconOnThreat then
+			self:SetIcon(args.destName, 0)
+		end
 		if args:IsPlayer() then
 			yellThreatNeutralizationFades:Cancel()
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Hide()
-			end
-			if self.Options.SetIconOnThreat then
-				self:SetIcon(args.destName, 0)
 			end
 		end
 	elseif spellId == 350534 then--Purging Protocol disabling

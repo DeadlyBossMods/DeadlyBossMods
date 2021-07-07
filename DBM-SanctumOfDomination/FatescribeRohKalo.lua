@@ -14,7 +14,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 351680 350554 350421 353426 350169 351969 354367",
 	"SPELL_CAST_SUCCESS 350355",
-	"SPELL_AURA_APPLIED 354365 351680 353432 353931 350568 353195 353428 351969 354964",
+	"SPELL_AURA_APPLIED 354365 351680 353432 350568 353195 353428 351969 354964",
 --	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 354365 351680 350568 353195 353428 351969",
 --	"SPELL_PERIODIC_DAMAGE",
@@ -34,7 +34,7 @@ mod:RegisterEventsInCombat(
  --]]
 --Stage One: Scrying Fate
 local warnGrimPortent							= mod:NewTargetNoFilterAnnounce(354365, 4)--Mythic
-local warnTwistFate								= mod:NewTargetNoFilterAnnounce(353931, 2, nil, "RemoveMagic")
+local warnTwistFate								= mod:NewCountAnnounce(353931, 2, nil, "RemoveMagic")
 local warnCallofEternity						= mod:NewTargetAnnounce(350568, 4)
 --Stage Two: Defying Destiny
 local warnRunicAffinity							= mod:NewTargetNoFilterAnnounce(354964, 4)--Mythic
@@ -323,8 +323,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnBurdenofDestiny:Show()
 			specWarnBurdenofDestiny:Play("killmob")
 		end
-	elseif spellId == 353931 then
-		warnTwistFate:CombinedShow(0.3, args.destName)
 	elseif spellId == 350568 then
 		warnCallofEternity:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
@@ -465,6 +463,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		warnExtemporaneousFate:Show()
 	elseif spellId == 354265 then--Twist Fate
 		self.vb.twistCount = self.vb.twistCount + 1
+		warnTwistFate:Show(self.vb.twistCount)
 		local timer = self:IsMythic() and allTimers[difficultyName][self.vb.phase][spellId][self.vb.twistCount+1] or not self:IsMythic() and 48.7
 		if timer then
 			timerTwistFateCD:Start(timer, self.vb.twistCount+1)
