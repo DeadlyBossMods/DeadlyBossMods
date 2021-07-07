@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(175726)--Skyja (TODO, add other 2 and set health to highest?)
 mod:SetEncounterID(2429)
 mod:SetUsedIcons(8, 7, 6, 4, 3, 2, 1)
-mod:SetHotfixNoticeRev(20210520000000)--2021-05-20
+mod:SetHotfixNoticeRev(20210706000000)--2021-07-06
 mod:SetMinSyncRevision(20210520000000)
 --mod.respawnTime = 29
 
@@ -13,7 +13,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 350202 350342 350339 350365 350283 350385 350467 352744 350541 350482 350687 350475 355294 352756 352752",
-	"SPELL_CAST_SUCCESS 350286",
+	"SPELL_CAST_SUCCESS 350286 350745",
 	"SPELL_AURA_APPLIED 350202 350158 350109 351139 350039 350542 350184 350483",
 	"SPELL_AURA_APPLIED_DOSE 350202 350542",
 	"SPELL_AURA_REMOVED 350158 350109 351139 350039 350542 350184 350483",
@@ -21,8 +21,8 @@ mod:RegisterEventsInCombat(
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 	"UNIT_DIED",
-	"CHAT_MSG_MONSTER_YELL",
-	"UNIT_SPELLCAST_SUCCEEDED boss1"
+	"CHAT_MSG_MONSTER_YELL"
+--	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
 --TODO, tank swap stacks
@@ -94,15 +94,15 @@ local timerFormlessMassCD						= mod:NewCDCountTimer(47.3, 350342, nil, nil, nil
 local timerWingsofRageCD						= mod:NewCDCountTimer(72.9, 350365, nil, nil, nil, 2)
 ----Signe, The Voice
 local timerSongofDissolutionCD					= mod:NewCDCountTimer(19.4, 350286, nil, nil, nil, 4, nil, DBM_CORE_L.INTERRUPT_ICON)--19.4-25.5 (unless delayed massivley by another channel)
-local timerReverberatingRefrainCD				= mod:NewCDCountTimer(74.2, 350385, nil, nil, nil, 2)
+local timerReverberatingRefrainCD				= mod:NewCDCountTimer(73.1, 350385, nil, nil, nil, 2)
 ----Skyja, The First
-local timerCalloftheValkyrCD					= mod:NewCDCountTimer(72.9, 350467, nil, nil, nil, 3, nil, nil, nil, 1, 3)
+local timerCalloftheValkyrCD					= mod:NewCDCountTimer(52.3, 350467, nil, nil, nil, 3, nil, nil, nil, 1, 3)
 local timerFragmentsofDestinyCD					= mod:NewCDCountTimer(47.3, 350541, nil, nil, nil, 3, nil, nil, nil, 2, 3)
 --Stage Two: The First of the Mawsworn
 local timerPierceSoulCD							= mod:NewCDTimer(9.7, 350475, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)
-local timerResentmentCD							= mod:NewCDCountTimer(7.6, 355294, nil, nil, nil, 2)--7.6-9.7
-local timerLinkEssenceCD						= mod:NewCDCountTimer(37.7, 350482, nil, nil, nil, 3, nil, DBM_CORE_L.HEROIC_ICON)
-local timerWordofRecallCD						= mod:NewCDCountTimer(74.4, 350687, nil, nil, nil, 2, nil, DBM_CORE_L.HEROIC_ICON)
+local timerResentmentCD							= mod:NewCDCountTimer(21.8, 355294, nil, nil, nil, 2)
+local timerLinkEssenceCD						= mod:NewCDCountTimer(37.6, 350482, nil, nil, nil, 3, nil, DBM_CORE_L.HEROIC_ICON)
+local timerWordofRecallCD						= mod:NewCDCountTimer(72.9, 350687, nil, nil, nil, 2, nil, DBM_CORE_L.HEROIC_ICON)
 
 local berserkTimer								= mod:NewBerserkTimer(600)
 
@@ -167,15 +167,15 @@ function mod:OnCombatStart(delay)
 	self.vb.recallCount = 0
 	self.vb.linkEssence = 0
 	--Kyra
-	timerUnendingStrikeCD:Start(7-delay)
+	timerUnendingStrikeCD:Start(6.8-delay)
 	timerFormlessMassCD:Start(12-delay, 1)
-	timerWingsofRageCD:Start(47.6-delay, 1)
+	timerWingsofRageCD:Start(39.7-delay, 1)
 	--Signe
-	timerSongofDissolutionCD:Start(17.4-delay, 1)
-	timerReverberatingRefrainCD:Start(71.7-delay, 1)--71.7-76
+	timerSongofDissolutionCD:Start(15.4-delay, 1)--15-19
+	timerReverberatingRefrainCD:Start(60.6-delay, 1)--60+
 	--Skyja
-	timerCalloftheValkyrCD:Start(14.1-delay, 1)--14.1
-	if self:IsMythic() then--Journal says mythic, but it's been wrong on earlier testing, leaving this here for now
+	timerCalloftheValkyrCD:Start(11-delay, 1)--11-15
+	if self:IsMythic() then
 		timerFragmentsofDestinyCD:Start(4.5-delay, 1)
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:SetHeader(OVERVIEW)
@@ -203,7 +203,7 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 350202 then
-		timerUnendingStrikeCD:Start()
+		timerUnendingStrikeCD:Start(self:IsEasy() and 12.1 or 6.9)--TODO, mythic might be faster and LFR even slower
 	elseif spellId == 350342 then
 --		self.vb.addIcon = 8
 		self.vb.massCount = self.vb.massCount + 1
@@ -290,6 +290,32 @@ function mod:SPELL_CAST_SUCCESS(args)
 			specWarnSongofDissolution:Show(args.sourceName)
 			specWarnSongofDissolution:Play("kickcast")
 		end
+	elseif spellId == 350745 then--Skyja's Advance
+		self:SetStage(2)
+		--self.vb.fragmentCount = 0
+		timerCalloftheValkyrCD:Stop()
+		timerPierceSoulCD:Start(11.7)
+		timerResentmentCD:Start(30, 1)--30-32
+		timerCalloftheValkyrCD:Start(44, 1)
+		if not self:IsLFR() then--Normal, heroic, mythic
+			timerFragmentsofDestinyCD:Stop()
+			timerFragmentsofDestinyCD:Start(15.4, self.vb.fragmentCount+1)--15-17.4. Heroic and normal confirmed, mythic and LFR?
+			if self:IsHard() then--Heroic and Mythic
+				timerLinkEssenceCD:Start(24.7, 1)
+				timerWordofRecallCD:Start(73.7, 1)
+			end
+			if self.Options.InfoFrame and not self:IsMythic() then--Mechanic starts in phase 2 on heroic, it already started on mythic in phase 1
+				DBM.InfoFrame:SetHeader(OVERVIEW)
+				DBM.InfoFrame:Show(5, "function", updateInfoFrame, false, true, true)
+			end
+			--TODO, actually spend time figuring out how to start timers when valks die AFTER it's phase 2
+--			if self:IsMythic() then
+--				timerWingsofRageCD:Start()
+--				timerReverberatingRefrainCD:Start()
+--			end
+		end
+		berserkTimer:Cancel()--Tecnically not accurate, Phase 1 berserk stops when both valks die. TODO, separate object
+		berserkTimer:Start(602)--Phase 2
 	end
 end
 
@@ -486,33 +512,10 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spell
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
---]]
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 350745 then--Skyja's Advance
-		self:SetStage(2)
-		--self.vb.fragmentCount = 0
-		timerCalloftheValkyrCD:Stop()
-		timerResentmentCD:Start(6.9, 1)
-		timerPierceSoulCD:Start(8.9)
-		timerCalloftheValkyrCD:Start(44, 1)
-		if self:IsHard() then
-			timerFragmentsofDestinyCD:Stop()
-			timerFragmentsofDestinyCD:Start(13.4, self.vb.fragmentCount+1)--Heroic confirmed, but maybe mythic won't reset here?
-			timerLinkEssenceCD:Start(22, 1)
---			timerWordofRecallCD:Start(2, 1)--Cast instantly on phasing so timer will start there
-			if self.Options.InfoFrame and not self:IsMythic() then--Mechanic starts in phase 2 on heroic, it already started on mythic in phase 1
-				DBM.InfoFrame:SetHeader(OVERVIEW)
-				DBM.InfoFrame:Show(5, "function", updateInfoFrame, false, true, true)
-			end
-			--TODO, actually spend time figuring out how to start timers when valks die AFTER it's phase 2
---			if self:IsMythic() then
---				timerWingsofRageCD:Start()
---				timerReverberatingRefrainCD:Start()
---			end
-		end
-		berserkTimer:Cancel()--Tecnically not accurate, Phase 1 berserk stops when both valks die. TODO, separate object
-		berserkTimer:Start(602)--Phase 2
+
 	end
 end
-
+--]]
