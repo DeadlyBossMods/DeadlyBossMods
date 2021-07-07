@@ -332,7 +332,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		if timer then
 			timerExtemporaneousFateCD:Start(timer, self.vb.extemporaneousCount+1)
 		end
-	end
 	elseif spellId == 354964 then
 		warnRunicAffinity:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
