@@ -7,7 +7,7 @@ mod:SetEncounterID(2422)
 mod:SetUsedIcons(1, 2, 3, 4, 6, 7, 8)
 mod:SetBossHPInfoToHighest()--Boss heals at least twice
 mod.noBossDeathKill = true--Instructs mod to ignore 175559 deaths, since it dies multiple times
-mod:SetHotfixNoticeRev(20210512000000)--2021-05-12
+mod:SetHotfixNoticeRev(20210707000000)--2021-07-07
 --mod:SetMinSyncRevision(20201222000000)
 --mod.respawnTime = 29
 
@@ -17,9 +17,9 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 348071 348428 346459 352999 347291 352997 348756 353000 352293 349799 355127 352379 355055 352355 352348 354198",
 --	"SPELL_CAST_SUCCESS 352293",
 	"SPELL_SUMMON 352096 352094 352092 346469",
-	"SPELL_AURA_APPLIED 352530 348978 347292 347518 347454 355948 353808 348760 352051 355389 357928 348787",
+	"SPELL_AURA_APPLIED 352530 348978 347292 347518 347454 355948 353808 348760 352051 355389 348787",
 	"SPELL_AURA_APPLIED_DOSE 348978 352051",
-	"SPELL_AURA_REMOVED 354198 348978 347292 355948 353808 348760 355389 357928 348787",
+	"SPELL_AURA_REMOVED 354198 348978 347292 355948 353808 348760 355389 348787",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 	"UNIT_DIED"
@@ -356,7 +356,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			self.vb.wrathIcon = 1
 			DBM:AddMsg("Cast event for Glacial Wrath is wrong, doing backup icon reset")
 		end
-	elseif spellId == 348760 or spellId == 357928 then--and self:AntiSpam(5, args.destName)
+	elseif spellId == 348760 then--and self:AntiSpam(5, args.destName)
 		if args:IsPlayer() then
 			specWarnFrostBlast:Show(DBM_CORE_L.ALLIES)
 			specWarnFrostBlast:Play("gathershare")
@@ -439,7 +439,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.SetIconOnGlacialWrath then
 			self:SetIcon(args.destName, 0)
 		end
-	elseif spellId == 348760 or spellId == 357928 then
+	elseif spellId == 348760 then
 		if args:IsPlayer() then
 			yellFrostBlastFades:Cancel()
 		end
