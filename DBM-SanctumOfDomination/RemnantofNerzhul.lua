@@ -12,7 +12,7 @@ mod:SetHotfixNoticeRev(20210624000000)--2021-06-24
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 355123 351066 351067 351073 350469",--350096 350691 350518
+	"SPELL_CAST_START 355123 351066 351067 351073 350469 350894",--350096 350691 350518
 --	"SPELL_CAST_SUCCESS",
 	"SPELL_SUMMON 349908",
 	"SPELL_AURA_APPLIED 355790 350469 349890 355790",--350097
@@ -53,9 +53,9 @@ local specWarnGraspofMalice						= mod:NewSpecialWarningDodge(355123, nil, nil, 
 --local yellAgonyFades							= mod:NewFadesYell(350097)
 
 --mod:AddTimerLine(BOSS)
-local timerOrbofTormentCD						= mod:NewCDTimer(35.4, 349908, nil, nil, nil, 1, nil, nil, true)--31-60, kind of worthless timer
-local timerMalevolenceCD						= mod:NewCDTimer(31.7, 350469, nil, nil, nil, 3, nil, DBM_CORE_L.CURSE_ICON, true)--Rattlecage of Agony
-local timerSufferingCD							= mod:NewCDTimer(19.5, 350894, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON, true, mod:IsTank() and 2, 3)--Helm of Suffering
+local timerOrbofTormentCD						= mod:NewCDTimer(35.4, 349908, nil, nil, nil, 1, nil, nil, true)--31-74, kind of worthless timer
+local timerMalevolenceCD						= mod:NewCDTimer(31.7, 350469, nil, nil, nil, 3, nil, DBM_CORE_L.CURSE_ICON, true)--Rattlecage of Agony 31.7--49.7
+local timerSufferingCD							= mod:NewCDTimer(19.4, 350894, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON, true, mod:IsTank() and 2, 3)--Helm of Suffering (19-25)
 local timerGraspofMaliceCD						= mod:NewCDTimer(20.7, 355123, nil, nil, nil, 3, nil, nil, true)--Malicious Gauntlet
 --local timerBurstofAgonyCD						= mod:NewAITimer(23, 350096, nil, nil, nil, 3)
 
@@ -80,11 +80,15 @@ function mod:OnCombatStart(delay)
 	self.vb.unrelentingCount = 0
 	self.vb.malevolenceCount = 0
 	self.vb.shatterCount = 0
-	timerOrbofTormentCD:Start(15-delay)
-	timerSufferingCD:Start(20.5-delay)
-	timerMalevolenceCD:Start(26.5-delay)
-	timerGraspofMaliceCD:Start(40-delay)--Probably doesn't start here
---	timerBurstofAgonyCD:Start(1-delay)--probably doesn't start here
+	timerOrbofTormentCD:Start(13.1-delay)
+	timerSufferingCD:Start(20.4-delay)
+	if self:IsHard() then
+		timerGraspofMaliceCD:Start(38)
+		timerMalevolenceCD:Start(48)
+	else
+		timerMalevolenceCD:Start(33)
+		timerGraspofMaliceCD:Start(66)
+	end
 --	berserkTimer:Start(-delay)
 --	if self.Options.InfoFrame then
 --		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(328897))
@@ -93,6 +97,7 @@ function mod:OnCombatStart(delay)
 	if self.Options.NPAuraOnOrbEternalTorment then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
+	DBM:AddMsg("Ability timings on this fight are extremely volatile so this mods timers are marginally useful at best.")
 end
 
 function mod:OnCombatEnd()
