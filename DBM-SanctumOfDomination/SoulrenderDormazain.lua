@@ -115,7 +115,7 @@ function mod:OnCombatStart(delay)
 	if self.Options.NPAuraOnDefiance or self.Options.NPAuraOnTormented then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
-	DBM:AddMsg("There is no Hellscream/shackles timer because it wouldn't be accurate. If blizz scripts fight better I'll add a timer")
+	DBM:AddMsg("There is no Hellscream/shackles timer because it wouldn't be accurate. If blizz scripts fight better, I'll add a timer")
 end
 
 function mod:OnCombatEnd()

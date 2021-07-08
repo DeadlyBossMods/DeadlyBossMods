@@ -13,14 +13,14 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 352589 352538 350732 352833 352660 356090 355352 350734",
-	"SPELL_AURA_APPLIED 352385 352394 350734 350496",--350534
+	"SPELL_AURA_APPLIED 352385 352394 350734 350496 350732",--350534
 --	"SPELL_AURA_APPLIED_DOSE",
-	"SPELL_AURA_REMOVED 352385 352394 350496 350534",
+	"SPELL_AURA_REMOVED 352385 352394 350496",--350534
 	"SPELL_PERIODIC_DAMAGE 350455",
 	"SPELL_PERIODIC_MISSED 350455",
 --	"UNIT_DIED"
-	"CHAT_MSG_MONSTER_YELL"
---	"UNIT_SPELLCAST_SUCCEEDED boss1"
+	"CHAT_MSG_MONSTER_YELL",
+	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
 --[[
@@ -29,6 +29,7 @@ mod:RegisterEventsInCombat(
 --]]
 --TODO, fix timers more based around energy or energizing link, whichever one is confirmed to truly affect stuff like Sunder having massive delays
 --TODO, do people really need a timer for purging protocol? it's based on bosses energy depletion rate (which is exactly 1 energy per second and visible on infoframe)
+--TODO, if combo is random order on mythic, bust out the aggramar shit
 --In other words, infoframe energy tracker IS the timer, and his energy is constantly going up and down based on core strategy, timer would need aggressive updates from UNIT_POWER
 local warnDisintegration						= mod:NewTargetNoFilterAnnounce(352833, 3)
 local warnThreatNeutralization					= mod:NewTargetNoFilterAnnounce(350496, 2)
@@ -41,6 +42,7 @@ local specWarnMeltdown							= mod:NewSpecialWarningRun(352589, nil, nil, nil, 4
 --Guardian
 local specWarnPurgingProtocol					= mod:NewSpecialWarningCount(352538, nil, nil, nil, 2, 2)
 local specWarnSunder							= mod:NewSpecialWarningDefensive(350732, nil, nil, nil, 1, 2)
+local specWarnSunderTaunt						= mod:NewSpecialWarningTaunt(350732, nil, nil, nil, 1, 2)--Only used on normal/LFR, swaps for heroic and mythic are during Obliterate
 local specWarnObliterate						= mod:NewSpecialWarningTaunt(350734, nil, nil, nil, 1, 2)
 local specWarnObliterateCount					= mod:NewSpecialWarningCount(350734, false, nil, nil, 1, 2)
 local specWarnDisintegration					= mod:NewSpecialWarningDodgeCount(352833, nil, nil, nil, 2, 2)
@@ -51,10 +53,10 @@ local yellThreatNeutralizationFades				= mod:NewIconFadesYell(350496)
 local specWarnGTFO								= mod:NewSpecialWarningGTFO(340324, nil, nil, nil, 1, 8)
 
 --mod:AddTimerLine(BOSS)
-local timerEliminationPatternCD					= mod:NewCDCountTimer(31.6, 350735, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)--31.656--33 now?
-local timerDisintegrationCD						= mod:NewCDCountTimer(25.6, 352833, nil, nil, nil, 3)--, nil, nil, true
-local timerFormSentryCD							= mod:NewCDCountTimer(25.6, 352660, nil, nil, nil, 1)--29.2-45 on mythic
-local timerThreatNeutralizationCD				= mod:NewCDTimer(30.2, 350496, nil, nil, nil, 3)--31.7 but cast time taken off
+local timerEliminationPatternCD					= mod:NewCDCountTimer(31.6, 350735, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON, true)--Time between casts not known, but link reset kinda works
+local timerDisintegrationCD						= mod:NewCDCountTimer(34.6, 352833, nil, nil, nil, 3, nil, nil, true)--Continues whether linked or not
+local timerFormSentryCD							= mod:NewCDCountTimer(72.6, 352660, nil, nil, nil, 1, nil, nil, true)--Time between casts not known, but link reset kinda works
+local timerThreatNeutralizationCD				= mod:NewCDTimer(11.4, 350496, nil, nil, nil, 3, nil, nil, true)--Continues whether linked or not
 
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
@@ -71,6 +73,7 @@ mod.vb.sentryCount = 0
 mod.vb.beamCount = 0
 mod.vb.protocolCount = 0
 mod.vb.patternCount = 0
+mod.vb.comboCount = 0
 
 local updateInfoFrame
 do
@@ -356,12 +359,12 @@ function mod:OnCombatStart(delay)
 	self.vb.sentryCount = 0
 	self.vb.beamCount = 0
 	self.vb.protocolCount = 0
-	self.vb.patternCount = 0
-	timerFormSentryCD:Start(5.8-delay, 1)
-	timerDisintegrationCD:Start(15.6-delay, 1)
+	self.vb.patternCount = 0--which pattern SET it is
+	self.vb.comboCount = 0--Which cast within the pattern set
+	timerFormSentryCD:Start(3.6-delay, 1)
+	timerThreatNeutralizationCD:Start(self:IsMythic() and 8.3 or 10.9-delay)
+	timerDisintegrationCD:Start(15.4-delay, 1)
 	timerEliminationPatternCD:Start(25.3-delay, 1)
-	timerThreatNeutralizationCD:Start(self:IsMythic() and 8.3 or 38.9-delay)
-	DBM:AddMsg("Experimental bar pausing in effect to try and make timers work better. It's WIP")
 	--Infoframe setup (might not be needed)
 	for uId in DBM:GetGroupMembers() do
 		if DBM:UnitDebuff(uId, 352394) then
@@ -410,17 +413,8 @@ function mod:SPELL_CAST_START(args)
 		self.vb.protocolCount = self.vb.protocolCount + 1
 		specWarnPurgingProtocol:Show(self.vb.protocolCount)
 		specWarnPurgingProtocol:Play("aesoon")
-		if self.vb.protocolCount == 1 then
-			--Pause timers, not 100% accurate but a bit more accurate than sequencing or doing nothing.
-			--Done here because pausing on aura gain mathed worse than pausing here
-			timerFormSentryCD:Pause(self.vb.sentryCount+1)
-			timerThreatNeutralizationCD:Pause()
-			timerEliminationPatternCD:Pause(self.vb.patternCount+1)
-			timerDisintegrationCD:Pause(self.vb.beamCount+1)
-		end
 	elseif spellId == 350732 then
-		self.vb.patternCount = self.vb.patternCount + 1
-		timerEliminationPatternCD:Start(nil, self.vb.patternCount+1)
+		self.vb.comboCount = self.vb.comboCount + 1
 		if self:IsTanking("player", nil, nil, true, args.sourceGUID) then
 			specWarnSunder:Show()
 			specWarnSunder:Play("defensive")
@@ -433,16 +427,18 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 352660 then
 		self.vb.sentryCount = self.vb.sentryCount + 1
 		warnFormSentry:Show(self.vb.sentryCount)
-		timerFormSentryCD:Start(nil, self.vb.sentryCount+1)
+--		timerFormSentryCD:Start(nil, self.vb.sentryCount+1)
 	elseif spellId == 356090 then
 		isMelee = {[1] = false,[2] = false,[3] = false,}
 		table.wipe(threatTargets)
 		timerThreatNeutralizationCD:Start()
 	elseif spellId == 355352 or spellId == 350734 then--Mythic, Heroic
+		self.vb.comboCount = self.vb.comboCount + 1
+		local castCount = (self.vb.comboCount == 2) and 1 or 2
 		if self.Options.SpecWarn355352count then
-			specWarnObliterateCount:Show(self.vb.patternCount)
+			specWarnObliterateCount:Show(comboCount)
 		else
-			warnObliterate:Show(self.vb.patternCount)
+			warnObliterate:Show(comboCount)
 		end
 	end
 end
@@ -463,9 +459,15 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 350734 then
 		local uId = DBM:GetRaidUnitId(args.destName)
-		if self:IsTanking(uId) then
+		if self:IsTanking(uId) and not args:IsPlayer() then
 			specWarnObliterate:Show(args.destName)
 			specWarnObliterate:Play("tauntboss")
+		end
+	elseif spellId == 350732 then
+		local uId = DBM:GetRaidUnitId(args.destName)
+		if self:IsTanking(uId) and not args:IsPlayer() and self.vb.comboCount == 2 then--Obviously normal/LFR
+			specWarnSunderTaunt:Show(args.destName)
+			specWarnSunderTaunt:Play("tauntboss")
 		end
 	elseif spellId == 350496 then
 		threatTargets[#threatTargets+1] = args.destName
@@ -475,11 +477,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			self:Schedule(0.5, showthreat, self)
 		end
---	elseif spellId == 350534 then--Purging Protocol Activating
---		timerFormSentryCD:Pause(self.vb.sentryCount+1)
---		timerThreatNeutralizationCD:Pause()
---		timerEliminationPatternCD:Pause(self.vb.patternCount+1)
---		timerDisintegrationCD:Pause(self.vb.beamCount+1)
+	elseif spellId == 350534 then--Purging Protocol Activating
+		timerEliminationPatternCD:Stop()--Still probably not most accurate way of doing it, but probably most reliable one given most strategies
 	end
 end
 --mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -488,7 +487,8 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 352385 then--Energizing Link
 		self.vb.coreActive = false
---		timerEliminationPatternCD:Start(12.5, self.vb.patternCount+1)--10 on heroic?
+		timerFormSentryCD:Start(6.4)
+		timerEliminationPatternCD:Start(17.6, self.vb.patternCount+1)
 	elseif spellId == 352394 then
 		playersSafe[args.destName] = nil
 		if args:IsPlayer() then
@@ -504,12 +504,8 @@ function mod:SPELL_AURA_REMOVED(args)
 				DBM.RangeCheck:Hide()
 			end
 		end
-	elseif spellId == 350534 then--Purging Protocol disabling
-		--Resume timers, not 100% accurate but a bit more accurate than sequencing or doing nothing.
-		timerFormSentryCD:Resume(self.vb.sentryCount+1)
-		timerThreatNeutralizationCD:Resume()
-		timerEliminationPatternCD:Resume(self.vb.patternCount+1)
-		timerDisintegrationCD:Resume(self.vb.beamCount+1)
+--	elseif spellId == 350534 then--Purging Protocol disabling
+
 	end
 end
 
@@ -542,10 +538,11 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spell
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
---[[
+--"<34.94 22:37:08> [UNIT_SPELLCAST_SUCCEEDED] Guardian of the First Ones(Shazzw) -Elimination Pattern- [[boss1:Cast-3-2012-2450-6508-350735-0021A819F4:350735]]", -- [464]
+--"<34.95 22:37:08> [UNIT_SPELLCAST_START] Guardian of the First Ones(Shazzw) - Sunder - 2s [[boss1:Cast-3-2012-2450-6508-350732-00222819F4:350732]]", -- [465]
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 342074 then
-
+	if spellId == 350735 then--Elimination Pattern
+		self.vb.patternCount = self.vb.patternCount + 1
+		timerEliminationPatternCD:Start(nil, self.vb.patternCount+1)
 	end
 end
---]]
