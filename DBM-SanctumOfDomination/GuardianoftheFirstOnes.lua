@@ -436,9 +436,9 @@ function mod:SPELL_CAST_START(args)
 		self.vb.comboCount = self.vb.comboCount + 1
 		local castCount = (self.vb.comboCount == 2) and 1 or 2
 		if self.Options.SpecWarn355352count then
-			specWarnObliterateCount:Show(comboCount)
+			specWarnObliterateCount:Show(castCount)
 		else
-			warnObliterate:Show(comboCount)
+			warnObliterate:Show(castCount)
 		end
 	end
 end
