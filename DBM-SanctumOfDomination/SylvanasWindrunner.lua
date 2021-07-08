@@ -262,15 +262,15 @@ local allTimers = {
 	["heroic"] = {
 		[1] = {
 			--Windrunner
-			[347504] = {},
+			[347504] = {7.2, 52.3, 48.8, 49.2, 52.7},
 			--Ranger's Heartseeker
-			[352663] = {},
+			[352663] = {20.2, 19.1, 17.1, 29.9, 4.8, 32.3, 16.9, 12, 25.9, 24.1},
 			--Domination Chains
-			[349419] = {},
+			[349419] = {23.2, 54.7, 49.6, 54.1},
 			--Wailing Arrow
-			[347609] = {},
+			[347609] = {34.9, 38.3, 30.5, 32.3, 37.9, 31.7},
 			--Veil of Darkness
-			[347726] = {},
+			[347726] = {47.9, 49.4, 49.3, 46.6},
 		},
 --		[1.5] = {
 
@@ -280,21 +280,21 @@ local allTimers = {
 --		},
 		[3] = {
 			--Bane Arrows
-			[354011] = {},
+			[354011] = {43.6, 76.8},
 			--Banshee's Heartseeker
-			[353969] = {},
+			[353969] = {50.8, 21.1, 50, 3, 16.4, 22},
 			--Shadow Dagger
-			[353935] = {},
+			[353935] = {59.7, 78.1},
 			--Banshee Scream
-			[353952] = {},
+			[353952] = {107.9, 48},
 			--Wailing Arrow
-			[347609] = {},
+			[347609] = {88.3, 56.1},
 			--Veil of Darkness
-			[347726] = {},
+			[347726] = {55.9, 61.6},
 			--Banshees Fury (Heroic/Mythic)
-			[354068] = {},
+			[354068] = {31.9, 49.4, 49.6},
 			--Raze
-			[354147] = {},
+			[354147] = {97.3},
 		},
 	},
 	["mythic"] = {
@@ -361,15 +361,17 @@ function mod:OnCombatStart(delay)
 	if self:IsMythic() then
 		difficultyName = "mythic"
 		timerBlackArrowCD:Start(1-delay)
---		timerWindrunnerCD:Start(8.4-delay, 1)
+--		timerWindrunnerCD:Start(7.2-delay, 1)
+--		timerRangersHeartseekerCD:Start(22.5, 1)
 --		timerDominationChainsCD:Start(25.6-delay, 1)
 --		timerVeilofDarknessCD:Start(52.4-delay, 1)--Probably shorter to emote
 	elseif self:IsHeroic() then
 		difficultyName = "heroic"
---		timerWindrunnerCD:Start(8.4-delay, 1)
---		timerDominationChainsCD:Start(25.6-delay, 1)
---		timerWailingArrowCD:Start(37.6-delay, 1)
---		timerVeilofDarknessCD:Start(52.4-delay, 1)--Probably shorter to emote
+		timerWindrunnerCD:Start(7.2-delay, 1)
+		timerRangersHeartseekerCD:Start(20.2, 1)
+		timerDominationChainsCD:Start(23.2-delay, 1)
+		timerWailingArrowCD:Start(34.9-delay, 1)
+		timerVeilofDarknessCD:Start(47.9-delay, 1)--Probably shorter to emote
 	elseif self:IsNormal() then
 		difficultyName = "normal"
 		timerWindrunnerCD:Start(8.4-delay, 1)
@@ -380,6 +382,7 @@ function mod:OnCombatStart(delay)
 	else
 		difficultyName = "lfr"
 --		timerWindrunnerCD:Start(8.4-delay, 1)
+--		timerRangersHeartseekerCD:Start(22.5, 1)
 --		timerDominationChainsCD:Start(25.6-delay, 1)
 --		timerWailingArrowCD:Start(37.6-delay, 1)
 --		timerVeilofDarknessCD:Start(52.4-delay, 1)--Probably shorter to emote
@@ -582,28 +585,28 @@ function mod:SPELL_CAST_START(args)
 --		timerHauntingWaveCD:Stop()
 --		timerVeilofDarknessCD:Stop()
 		if self:IsMythic() then
-			timerBaneArrowsCD:Start(3, 1)
-			timerBansheesHeartseekerCD:Start(59.5, 1)
-			timerShadowDaggerCD:Start(22.2, 1)
-			timerBansheesScreamCD:Start(27.8, 1)
-			timerWailingArrowCD:Start(49, 1)
-			timerVeilofDarknessCD:Start(46, 1)
-			timerBansheesFuryCD:Start(65.6, 1)
-			timerRazeCD:Start(72.6, 1)
+--			timerBansheesFuryCD:Start(31.9, 1)--Heroic+
+--			timerBaneArrowsCD:Start(43.6, 1)
+--			timerBansheesHeartseekerCD:Start(50.8, 1)
+--			timerVeilofDarknessCD:Start(55.9, 1)
+--			timerShadowDaggerCD:Start(59.7, 1)
+--			timerWailingArrowCD:Start(88.3, 1)
+--			timerRazeCD:Start(97.3, 1)
+--			timerBansheesScreamCD:Start(107.9, 1)
 			timerDeathKnivesCD:Start(3)--Mythic Only
 		elseif self:IsHeroic() then
-			timerBaneArrowsCD:Start(3, 1)
-			timerBansheesHeartseekerCD:Start(59.5, 1)
-			timerShadowDaggerCD:Start(22.2, 1)
-			timerBansheesScreamCD:Start(27.8, 1)
-			timerWailingArrowCD:Start(49, 1)
-			timerVeilofDarknessCD:Start(46, 1)
-			timerBansheesFuryCD:Start(65.6, 1)--Heroic+
-			timerRazeCD:Start(72.6, 1)
+			timerBansheesFuryCD:Start(31.9, 1)--Heroic+
+			timerBaneArrowsCD:Start(43.6, 1)
+			timerBansheesHeartseekerCD:Start(50.8, 1)--Flipped on heroic
+			timerVeilofDarknessCD:Start(55.8, 1)--Flipped on heroic
+			timerShadowDaggerCD:Start(59.7, 1)
+			timerWailingArrowCD:Start(88.3, 1)
+			timerRazeCD:Start(97.3, 1)
+			timerBansheesScreamCD:Start(107.9, 1)
 		else--Normal, LFR assumed
 			timerBaneArrowsCD:Start(46.5, 1)
-			timerBansheesHeartseekerCD:Start(59.5, 1)
 			timerVeilofDarknessCD:Start(56.5, 1)
+			timerBansheesHeartseekerCD:Start(59.5, 1)
 			timerShadowDaggerCD:Start(62.5, 1)
 			timerWailingArrowCD:Start(91.7, 1)
 			timerRazeCD:Start(100.8, 1)
