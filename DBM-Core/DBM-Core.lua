@@ -476,7 +476,7 @@ local dataBroker
 local voiceSessionDisabled = false
 local handleSync
 
-local fakeBWVersion, fakeBWHash = 199, "d06bd70"--199.1
+local fakeBWVersion, fakeBWHash = 227, "5438284"--227
 local bwVersionResponseString = "V^%d^%s"
 local enableIcons = true -- set to false when a raid leader or a promoted player has a newer version of DBM
 

@@ -169,7 +169,7 @@ mod.vb.veilofDarknessCount = 0
 mod.vb.wailingArrowCount = 0
 mod.vb.heartseekerCount = 0
 --Intermission (P1.5) variables
-mod.vb.windrunnerActive = false
+mod.vb.windrunnerActive = 0
 mod.vb.riveCount = 0
 --P2+ variables
 mod.vb.addIcon = 8
@@ -339,6 +339,13 @@ local allTimers = {
 	},
 }
 
+--TODO, more than windrunner can delay this
+local function intermissionStart(self, adjust)
+	timerDominationChainsCD:Start(4-adjust, 1)--Practically right away
+	timerRiveCD:Start(13.2-adjust)--Init timer only, for when the spam begins
+	timerNextPhase:Start(55.6-adjust)
+end
+
 function mod:OnCombatStart(delay)
 	table.wipe(BarbedStacks)
 	table.wipe(castsPerGUID)
@@ -350,7 +357,7 @@ function mod:OnCombatStart(delay)
 	self.vb.wailingArrowCount = 0
 	self.vb.heartseekerCount = 0
 	self.vb.addIcon = 8
-	self.vb.windrunnerActive = false
+	self.vb.windrunnerActive = 0
 	if self:IsMythic() then
 		difficultyName = "mythic"
 		timerBlackArrowCD:Start(1-delay)
@@ -640,7 +647,7 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 347504 then
-		self.vb.windrunnerActive = true
+		self.vb.windrunnerActive = 1
 		self.vb.windrunnerCount = self.vb.windrunnerCount + 1
 		specWarnWindrunner:Show(self.vb.windrunnerCount)
 		specWarnWindrunner:Play("specialsoon")
@@ -724,10 +731,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerVeilofDarknessCD:Stop()
 		timerBlackArrowCD:Stop()
 		timerRangersHeartseekerCD:Stop()
-		if not self.vb.windrunnerActive then--If windrunner active on 1.5 change, she delays her casts until it naturally falls off
-			timerDominationChainsCD:Start(4, 1)--Practically right away
-			timerRiveCD:Start(13.2)--Init timer only, for when the spam begins
-			timerNextPhase:Start(55.6)
+		if self.vb.windrunnerActive == 0 then--Only start timers here i windrunner not active
+			intermissionStart(self, 0)
+		elseif self.vb.windrunnerActive == 1 then
+			self.vb.windrunnerActive = 2
 		end
 	elseif spellId == 348146 and self.vb.phase < 2 then
 		warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(2))
@@ -854,7 +861,10 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 347504 then
-		self.vb.windrunnerActive = false
+		if self.vb.windrunnerActive == 2 then--Execute delayed intermission start
+			intermissionStart(self, 1.5)
+		end
+		self.vb.windrunnerActive = 0
 		warnWindrunnerOver:Show()
 	elseif spellId == 347807 then
 		BarbedStacks[args.destName] = nil
