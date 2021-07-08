@@ -292,7 +292,7 @@ local allTimers = {
 			--Veil of Darkness
 			[347726] = {},
 			--Banshees Fury (Heroic/Mythic)
-			[347726] = {},
+			[354068] = {},
 			--Raze
 			[354147] = {},
 		},
@@ -330,7 +330,7 @@ local allTimers = {
 			--Veil of Darkness
 			[347726] = {},
 			--Banshees Fury (Heroic/Mythic)
-			[347726] = {},
+			[354068] = {},
 			--Raze
 			[354147] = {},
 			--Death Knives (Mythic Only)
