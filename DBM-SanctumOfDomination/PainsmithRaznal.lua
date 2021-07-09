@@ -4,7 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(176523)
 mod:SetEncounterID(2430)
-mod:SetUsedIcons(1, 2, 3, 4, 5, 6)
+mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7)
 mod:SetHotfixNoticeRev(20210707000000)--2021-07-07
 mod:SetMinSyncRevision(20210707000000)
 --mod.respawnTime = 29
@@ -49,9 +49,9 @@ local yellDualbladeScythe						= mod:NewShortYell(355778)
 local yellDualbladeScytheFades					= mod:NewShortFadesYell(355778)
 local specWarnDualbladeScytheTaunt				= mod:NewSpecialWarningTaunt(355778, nil, nil, nil, 1, 2)--This might never target tanks, remove if it doesn't
 local specWarnSpikedBalls						= mod:NewSpecialWarningSwitchCount(352052, nil, nil, nil, 1, 2)
-local specWarnFlameclaspTrap					= mod:NewSpecialWarningMoveAway(348456, nil, nil, nil, 1, 2)
-local yellFlameclaspTrap						= mod:NewShortYell(348456)
-local yellFlameclaspTrapFades					= mod:NewShortFadesYell(348456)
+local specWarnFlameclaspTrap					= mod:NewSpecialWarningYouPos(348456, nil, nil, nil, 1, 2)
+local yellFlameclaspTrap						= mod:NewShortPosYell(348456)
+local yellFlameclaspTrapFades					= mod:NewIconFadesYell(348456)
 local specWarnShadowsteelChains					= mod:NewSpecialWarningYouPos(355505, nil, nil, nil, 1, 2)
 local yellShadowsteelChains						= mod:NewShortPosYell(355505)
 local yellShadowsteelChainsFades				= mod:NewIconFadesYell(355505)
@@ -72,9 +72,11 @@ local timerForgeWeapon							= mod:NewCastTimer(48, 355525, nil, nil, nil, 6)
 --mod:AddRangeFrameOption("8")
 mod:AddInfoFrameOption(355786, true)
 mod:AddSetIconOption("SetIconOnChains", 355505, true, false, {1, 2, 3})
+mod:AddSetIconOption("SetIconOnTraps", 348456, true, false, {4, 5, 6, 7})
 mod:AddNamePlateOption("NPAuraOnFinalScream", 357735)
 
 mod.vb.ChainsIcon = 1
+mod.vb.trapsIcon = 4
 mod.vb.weaponCount = 0
 mod.vb.ballsCount = 0
 mod.vb.trapCount = 0
@@ -202,6 +204,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 352052 then
 		DBM:AddMsg("Spiked Balls added to combat log, please report to DBM author")
 	elseif spellId == 348456 then
+		self.vb.trapsIcon = 4
 		self.vb.trapCount = self.vb.trapCount + 1
 		timerFlameclaspTrapCD:Start(self:IsMythic() and 48.2 or 40, self.vb.trapCount+1)--Mythic still 48?
 	elseif spellId == 355504 then
@@ -268,12 +271,18 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnDualbladeScytheTaunt:Play("tauntboss")
 		end
 	elseif spellId == 348456 then
-		if args:IsPlayer() then
-			specWarnFlameclaspTrap:Show()
-			specWarnFlameclaspTrap:Play("runout")
-			yellFlameclaspTrap:Yell()
-			yellFlameclaspTrapFades:Countdown(spellId)
+		local icon = self.vb.trapsIcon
+		if self.Options.SetIconOnTraps then
+			self:SetIcon(args.destName, icon)
 		end
+		if args:IsPlayer() then
+			specWarnFlameclaspTrap:Show(self:IconNumToTexture(icon))
+			specWarnFlameclaspTrap:Play("mm"..icon)
+			yellFlameclaspTrap:Yell(icon, icon)
+			yellFlameclaspTrapFades:Countdown(spellId, nil, icon)
+		end
+		warnFlameclaspTrap:CombinedShow(0.5, args.destName)
+		self.vb.trapsIcon = self.vb.trapsIcon + 1
 	end
 end
 --mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -302,6 +311,9 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 355786 then
 		tDeleteItem(debuffedPlayers, args.destName)
 	elseif spellId == 348456 then
+		if self.Options.SetIconOnTraps then
+			self:SetIcon(args.destName, 0)
+		end
 		if args:IsPlayer() then
 			yellFlameclaspTrapFades:Cancel()
 		end
