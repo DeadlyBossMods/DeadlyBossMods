@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(176523)
 mod:SetEncounterID(2430)
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7)
-mod:SetHotfixNoticeRev(20210707000000)--2021-07-07
+mod:SetHotfixNoticeRev(20210709000000)--2021-07-09
 mod:SetMinSyncRevision(20210707000000)
 --mod.respawnTime = 29
 
@@ -13,10 +13,10 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 357735",
-	"SPELL_CAST_SUCCESS 348508 355568 355778 352052 348456 355504 355534",
+	"SPELL_CAST_SUCCESS 348508 355568 355778 348456 355504 355534",
 	"SPELL_AURA_APPLIED 348508 355568 355778 355786 348456 355505 355525",
 --	"SPELL_AURA_APPLIED_DOSE",
-	"SPELL_AURA_REMOVED 348508 355568 355778 355786 348456 355505 355525",
+	"SPELL_AURA_REMOVED 348508 355568 355778 355786 348456 355505 355525 352052",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 	"UNIT_DIED",
@@ -28,8 +28,8 @@ mod:RegisterEventsInCombat(
 --https://ptr.wowhead.com/spells/uncategorized/name:spike?filter=21;2;90100
 --[[
 ability.id = 357735 and type = "begincast"
- or (ability.id = 348508 or ability.id = 355568 or ability.id = 355778 or ability.id = 352052 or ability.id = 348456 or ability.id = 355504 or ability.id = 355534) and type = "cast"
- or ability.id = 355525
+ or (ability.id = 348508 or ability.id = 355568 or ability.id = 355778 or ability.id = 348456 or ability.id = 355504 or ability.id = 355534) and type = "cast"
+ or ability.id = 355525 or ability.id = 352052
  or ability.id = 355505 and type = "applydebuff"
  or (source.type = "NPC" and source.firstSeen = timestamp) or (target.type = "NPC" and target.firstSeen = timestamp)
 --]]
@@ -154,7 +154,7 @@ function mod:OnCombatStart(delay)
 	else
 		timerShadowsteelChainsCD:Start(10.8-delay, 1)
 		timerCruciformAxeCD:Start(16-delay, 1)
-		timerSpikedBallsCD:Start(28-delay, 1)
+		timerSpikedBallsCD:Start(26.9-delay, 1)
 		if self:IsHeroic() then
 			timerFlameclaspTrapCD:Start(45-delay, 1)
 		end
@@ -201,8 +201,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 355778 then
 		self.vb.weaponCount = self.vb.weaponCount + 1
 		timerDualbladeScytheCD:Start(nil, self.vb.weaponCount+1)
-	elseif spellId == 352052 then
-		DBM:AddMsg("Spiked Balls added to combat log, please report to DBM author")
 	elseif spellId == 348456 then
 		self.vb.trapsIcon = 4
 		self.vb.trapCount = self.vb.trapCount + 1
@@ -354,6 +352,11 @@ function mod:SPELL_AURA_REMOVED(args)
 				end
 			end
 		end
+	elseif spellId == 352052 then
+		self.vb.ballsCount = self.vb.ballsCount + 1
+		specWarnSpikedBalls:Show(self.vb.ballsCount)
+		specWarnSpikedBalls:Play("targetchange")
+		timerSpikedBallsCD:Start(nil, self.vb.ballsCount+1)--Can be delayed by other casts?
 	end
 end
 
@@ -380,12 +383,7 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 --"<67.84 22:36:16> [UNIT_SPELLCAST_SUCCEEDED] Painsmith Raznal(Andybruwu) -[DNT] Upstairs- [[boss1:Cast-3-2012-2450-9254-355555-003A1D8DC1:355555]]", -- [1092]
 --"<70.30 22:36:19> [CLEU] SPELL_AURA_APPLIED#Creature-0-2012-2450-9254-176523-00001D8D02#Painsmith Raznal#Creature-0-2012-2450-9254-176523-00001D8D02#Painsmith Raznal#355525#Forge Weapon#BUFF#nil", -- [1138]
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 352052 then--Spiked Balls
-		self.vb.ballsCount = self.vb.ballsCount + 1
-		specWarnSpikedBalls:Show(self.vb.ballsCount)
-		specWarnSpikedBalls:Play("targetchange")
-		timerSpikedBallsCD:Start(nil, self.vb.ballsCount+1)--Can be delayed by other casts?
-	elseif spellId == 355504 then--Shadowsteel Chains
+	if spellId == 355504 then--Shadowsteel Chains
 		self.vb.ChainsIcon = 1
 		self.vb.chainCount = self.vb.chainCount + 1
 		timerShadowsteelChainsCD:Start(nil, self.vb.chainCount+1)
@@ -396,6 +394,11 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		timerSpikedBallsCD:Stop()
 		timerFlameclaspTrapCD:Stop()
 		timerShadowsteelChainsCD:Stop()
+--	elseif spellId == 352052 then--Spiked Balls
+--		self.vb.ballsCount = self.vb.ballsCount + 1
+--		specWarnSpikedBalls:Show(self.vb.ballsCount)
+--		specWarnSpikedBalls:Play("targetchange")
+--		timerSpikedBallsCD:Start(nil, self.vb.ballsCount+1)--Can be delayed by other casts?
 --	elseif spellId == 356416 then--Weapon Picker (global picker)
 
 	end

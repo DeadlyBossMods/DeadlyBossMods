@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(175732)
 mod:SetEncounterID(2435)
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
-mod:SetHotfixNoticeRev(20210706000000)--2021-07-06
+mod:SetHotfixNoticeRev(20210709000000)--2021-07-09
 mod:SetMinSyncRevision(20210706000000)
 --mod.respawnTime = 29
 
@@ -280,21 +280,21 @@ local allTimers = {
 --		},
 		[3] = {
 			--Bane Arrows
-			[354011] = {43.6, 76.8, 73.6},
+			[354011] = {43.6, 76.8, 73.2, 76.1},
 			--Banshee's Heartseeker
-			[353969] = {50.1, 21.1, 50, 3, 16.4, 21.4, 32.6},
+			[353969] = {50.1, 21.1, 50, 3, 16.4, 21.4, 31.9, 12, 14, 18.3, 31.6},
 			--Shadow Dagger
-			[353935] = {59.7, 78.1},
+			[353935] = {59.7, 78.1, 79.9},
 			--Banshee Scream
-			[353952] = {107.9, 47.4},
+			[353952] = {107.9, 47.4, 54.5, 52},
 			--Wailing Arrow
-			[347609] = {88.3, 3, 3, 50.2, 3, 3},--88.3, 56.1 (did blizz change this since yesterday
+			[347609] = {88.3, 3, 3, 50.2, 3, 3, 47.7, 3, 3, 52},
 			--Veil of Darkness
-			[347726] = {55.9, 61.6, 50.4},
-			--Banshees Fury (Heroic/Mythic)
-			[354068] = {31.9, 49.4, 49.6, 52.6},
+			[347726] = {55.9, 61.6, 50.4, 58},
+			--Banshees Fury (Heroic+)
+			[354068] = {31.9, 49.4, 49.6, 52.6, 47.4, 47.8},
 			--Raze
-			[354147] = {97.3, 73.6},
+			[354147] = {97.3, 73.6, 71.3},
 		},
 	},
 	["mythic"] = {
