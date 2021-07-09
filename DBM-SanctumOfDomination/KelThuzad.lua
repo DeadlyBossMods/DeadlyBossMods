@@ -185,7 +185,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 347291 or spellId == 352997 then--347291 confirmed heroic,
 		self.vb.echoIcon = 1
 		timerOblivionsEchoCD:Start()
-	elseif spellId == 348756 or spellId == 353000 or spellId = 358999 then--348756 P1 358999 P2, 353000 unknown
+	elseif spellId == 348756 or spellId == 353000 or spellId == 358999 then--348756 P1 358999 P2, 353000 unknown
 		timerFrostBlastCD:Start(self.vb.phase == 3 and 13.4 or 40.1)
 --		self:ScheduleMethod(0.2, "BossTargetScanner", args.sourceGUID, "FrostBlast", 0.1, 10, true, nil, nil, nil, true)
 	elseif spellId == 352293 then--Vengeful Destruction
