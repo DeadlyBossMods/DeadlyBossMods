@@ -7,14 +7,14 @@ mod:SetEncounterID(2422)
 mod:SetUsedIcons(1, 2, 3, 4, 6, 7, 8)
 mod:SetBossHPInfoToHighest()--Boss heals at least twice
 mod.noBossDeathKill = true--Instructs mod to ignore 175559 deaths, since it dies multiple times
-mod:SetHotfixNoticeRev(20210707000000)--2021-07-07
---mod:SetMinSyncRevision(20201222000000)
+mod:SetHotfixNoticeRev(20210708000000)--2021-07-08
+mod:SetMinSyncRevision(20210708000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 348071 348428 346459 352999 347291 352997 348756 353000 352293 349799 355127 352379 355055 352355 352348 354198",
+	"SPELL_CAST_START 348071 348428 346459 352999 347291 352997 348756 353000 352293 349799 355127 352379 355055 352355 352348 354198 358999",
 --	"SPELL_CAST_SUCCESS 352293",
 	"SPELL_SUMMON 352096 352094 352092 346469",
 	"SPELL_AURA_APPLIED 352530 348978 347292 347518 347454 355948 353808 348760 352051 355389 348787",
@@ -33,7 +33,7 @@ mod:RegisterEventsInCombat(
 --TODO, more Timer work if blizz fixes above, or more hacky shit if they don't :\
 --https://ptr.wowhead.com/spell=348434/soul-exhaustion used in LFR/normal instead of other one?
 --[[
-(ability.id = 348071 or ability.id = 346459 or ability.id = 352999 or ability.id = 347291 or ability.id = 352997 or ability.id = 348756 or ability.id = 353000 or ability.id = 352293 or ability.id = 352379 or ability.id = 355055 or ability.id = 352355 or ability.id = 352348 or ability.id = 354198) and type = "begincast"
+(ability.id = 348071 or ability.id = 346459 or ability.id = 352999 or ability.id = 347291 or ability.id = 352997 or ability.id = 348756 or ability.id = 353000 or ability.id = 352293 or ability.id = 352379 or ability.id = 355055 or ability.id = 352355 or ability.id = 352348 or ability.id = 354198 or ability.id = 358999) and type = "begincast"
  or ability.id = 352530 or ability.id = 352051
  or (ability.id = 352096 or ability.id = 352094 or ability.id = 352092) and type = "summon"
  or target.id = 176929 and type = "death"
@@ -135,12 +135,12 @@ function mod:OnCombatStart(delay)
 	self:SetStage(1)
 	self.vb.freezingBlastCount = 0
 	playerPhased = false
-	timerSoulFractureCD:Start(5.7-delay)
-	timerOblivionsEchoCD:Start(9.4-delay)
-	timerGlacialWrathCD:Start(19.1-delay)
-	timerFrostBlastCD:Start(43.4-delay)
-	timerDarkEvocationCD:Start(46-delay)
-	timerHowlingBlizzardCD:Start(63-delay)--Surmised from this usually being 17 seconds after dark evocation
+	timerSoulFractureCD:Start(10.8-delay)--10.8-13.7
+	timerOblivionsEchoCD:Start(14.7-delay)--14-18.3
+	timerGlacialWrathCD:Start(24.4-delay)
+	timerFrostBlastCD:Start(45-delay)--45.3-49
+	timerDarkEvocationCD:Start(49-delay)--49-53
+	timerHowlingBlizzardCD:Start(89-delay)--89-94.
 --	berserkTimer:Start(-delay)
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(DBM_CORE_L.INFOFRAME_POWER)
@@ -185,8 +185,8 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 347291 or spellId == 352997 then--347291 confirmed heroic,
 		self.vb.echoIcon = 1
 		timerOblivionsEchoCD:Start()
-	elseif spellId == 348756 or spellId == 353000 then--348756 confirmed heroic
-		timerFrostBlastCD:Start()
+	elseif spellId == 348756 or spellId == 353000 or spellId == 358999 then--348756 P1 358999 P2, 353000 unknown
+		timerFrostBlastCD:Start(self.vb.phase == 3 and 13.4 or 40.1)
 --		self:ScheduleMethod(0.2, "BossTargetScanner", args.sourceGUID, "FrostBlast", 0.1, 10, true, nil, nil, nil, true)
 	elseif spellId == 352293 then--Vengeful Destruction
 		--Stop KT timers
@@ -371,41 +371,42 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnNecroticSurge:Show(args.amount or 1)
 			--Not totally correct, frost blast can supposedly come earlier if boss doesn't come out and cast his mana abilitie right away
 			--These 3 timers may also differ based on boss mana going into phase, they need review
-			timerSoulFractureCD:Start(11.3)
-			timerOblivionsEchoCD:Start(13.1)
-			timerGlacialWrathCD:Start(19)
+			timerSoulFractureCD:Start(10.2)
+			timerOblivionsEchoCD:Start(14.1)--14.1-15.1. Is 14.2 the new low?
+			timerGlacialWrathCD:Start(24.9)--24.9-25.1. Is 24.9 the new low?
 			--Do Mana checks and fix timers based on them
 			local bossPower = UnitPower("boss1")
-			--Blizzard CD: 109.8, Evo CD: 86.2
+			--Blizzard CD: 92.8, Evo CD: ??
 			if bossPower then
 				if bossPower == 80 then--TODO, FIXME
-					timerFrostBlastCD:Start(85)--Speculation
---					timerHowlingBlizzardCD:Update(0, 109.8)
---					timerDarkEvocationCD:Update(0, 86.2)
+--					timerFrostBlastCD:Start(85)--Speculation
+--					timerHowlingBlizzardCD:Start(0)
+--					timerDarkEvocationCD:Start(0)
 					DBM:Debug("HIGH PRIORITY EVENT. This is a 80 mana phase start")--Generating easier to use transcriptor events
-					DBM:AddMsg("Please share log of THIS pull and say 80. Please know the exact pull when sharing log with DBM author")
-				elseif bossPower == 60 then--LOG coded
-					timerFrostBlastCD:Start(42)--Confirmed
-					timerHowlingBlizzardCD:Update(63.3, 109.8)
-					timerDarkEvocationCD:Update(75, 86.2)
+					DBM:AddMsg("Please share log of THIS pull and say 80 and which Necrotic Surge cast. Please know the exact pull when sharing log with DBM author")
+				elseif bossPower == 60 then--PTR LOG coded
+--					timerDarkEvocationCD:Start(11.2)
+--					timerFrostBlastCD:Start(42)
+--					timerHowlingBlizzardCD:Start(46.5)
 					DBM:Debug("HIGH PRIORITY EVENT. This is a 60 mana phase start")--Generating easier to use transcriptor events
-				elseif bossPower == 40 then--LOG coded
-					timerFrostBlastCD:Start(85)--Confirmed
-					timerHowlingBlizzardCD:Update(88.6, 109.8)
-					timerDarkEvocationCD:Update(0, 88.3)--88-90 confirmed two times, even when dark evo bug happens
+					DBM:AddMsg("Please share log of THIS pull and say 60 and which Necrotic Surge cast. Please know the exact pull when sharing log with DBM author")
+				elseif bossPower == 40 then--PTR LOG coded
+--					timerFrostBlastCD:Start(85)
+--					timerHowlingBlizzardCD:Start(21.2)
+--					timerDarkEvocationCD:Start(88.3)
 					DBM:Debug("HIGH PRIORITY EVENT. This is a 40 mana phase start")--Generating easier to use transcriptor events
+					DBM:AddMsg("Please share log of THIS pull and say 40 and which Necrotic Surge cast. Please know the exact pull when sharing log with DBM author")
 				elseif bossPower == 20 then--TODO, FIXME
-					timerFrostBlastCD:Start(85)--Speculation
---					timerHowlingBlizzardCD:Update(98.3, 109.8)
---					timerDarkEvocationCD:Update(39.7, 86.2)
+--					timerFrostBlastCD:Start(85)--Speculation
+--					timerHowlingBlizzardCD:Start(0)
+--					timerDarkEvocationCD:Start(0)
 					DBM:Debug("HIGH PRIORITY EVENT. This is a 20 mana phase start")--Generating easier to use transcriptor events
-					DBM:AddMsg("Please share log of THIS pull and say 20. Please know the exact pull when sharing log with DBM author")
-				else--100/0--TODO, FIXME
-					timerFrostBlastCD:Start(85)--Speculation
---					timerHowlingBlizzardCD:Update(0, 109.8)
---					timerDarkEvocationCD:Update(0, 86.2)
+					DBM:AddMsg("Please share log of THIS pull and say 20 and which Necrotic Surge cast. Please know the exact pull when sharing log with DBM author")
+				else--100/0--Data verified from live normal and heroic KT
+					timerFrostBlastCD:Start(47.1)--47-48.5
+					timerDarkEvocationCD:Start(50.6)--50-52.3
+					timerHowlingBlizzardCD:Start(92.6)
 					DBM:Debug("HIGH PRIORITY EVENT. This is a 100 mana phase start")--Generating easier to use transcriptor events
-					DBM:AddMsg("Please share log of THIS pull and say 100. Please know the exact pull when sharing log with DBM author")
 				end
 			end
 		end
@@ -469,38 +470,12 @@ function mod:UNIT_DIED(args)
 		timerGlacialWrathCD:Stop()
 		timerOblivionsEchoCD:Stop()
 		timerFrostBlastCD:Stop()
-		timerOblivionsEchoCD:Start(5)
-		timerFrostBlastCD:Start(30.6)
-		timerOnslaughtoftheDamnedCD:Start(34.3)
+		timerFrostBlastCD:Start(8.5)
+		timerOnslaughtoftheDamnedCD:Start(45.1)
 	end
 end
 
 --[[
---Constant updates, even this doesn't quite work
-function mod:UNIT_POWER_UPDATE()
-	--Do Mana checks and fix timers based on them
-	local bossPower = UnitPower("boss1")
-	--Blizzard: 109.8, Evo: 86.2
-	if bossPower then
-		if bossPower == 80 then
-			timerHowlingBlizzardCD:Update(34, 109.8)
-			timerDarkEvocationCD:Update(53, 86.2)
-		elseif bossPower == 60 then
-			timerHowlingBlizzardCD:Update(43.7, 109.8)
-			timerDarkEvocationCD:Update(62.8, 86.2)
-		elseif bossPower == 40 then
-			timerHowlingBlizzardCD:Update(0, 109.8)
-			timerDarkEvocationCD:Update(0, 86.2)--Restart timer for next one here
-		elseif bossPower == 20 then
-			timerHowlingBlizzardCD:Update(99.8, 109.8)--10-14 remaining
-			timerDarkEvocationCD:Update(9, 86.2)
-		else--100/0
-			timerHowlingBlizzardCD:Update(0, 109.8)--Restart timer for next one here
-			timerDarkEvocationCD:Update(19, 86.2)
-		end
-	end
-end
-
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
 	if spellId == 340324 and destGUID == UnitGUID("player") and not playerDebuff and self:AntiSpam(2, 2) then
 		specWarnGTFO:Show(spellName)
