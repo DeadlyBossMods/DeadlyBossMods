@@ -298,8 +298,8 @@ local allTimers = {
 --			[347726] = {55.8, 61.6, 50.4, 58},--Pre July 9th hotfixes
 			[347726] = {55.8},--Post July 9th hotfixes
 			--Banshees Fury (Heroic+)
---			[354068] = {31.9, 49.4, 49.6, 52.6, 47.4, 47.8},--Pre July 9th hotfixes
-			[354068] = {31.9, 49.4, 55.7, 57.7, 57.7, 48.8, 59.2, 55.7},--Post July 9th hotfixes
+--			[354068] = {31.1, 49.4, 49.6, 52.6, 47.4, 47.8},--Pre July 9th hotfixes
+			[354068] = {31.1, 49.4, 55.7, 57.7, 57.7, 48.8, 59.2, 55.7},--Post July 9th hotfixes
 			--Raze
 --			[354147] = {97.3, 73.6, 71.3},--Pre July 9th hotfixes
 			[354147] = {115.4, 66.8, 68.6, 93.8},--Post July 9th hotfixes
