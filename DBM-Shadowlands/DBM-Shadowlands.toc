@@ -22,7 +22,7 @@
 ## X-DBM-Mod-World-Boss: 1
 ## X-DBM-Mod-Sort: 310
 ## X-DBM-Mod-MapID: 2222
-## X-DBM-Mod-LoadCID: 167524,167525,167527,167526
+## X-DBM-Mod-LoadCID: 167524,167525,167527,167526,178958
 ## X-DBM-Mod-MinCoreRevision: 17286
 ## X-DBM-Mod-MinExpansion: 8
 localization.en.lua
@@ -30,3 +30,4 @@ Valinor.lua
 Mortanis.lua
 Oranomonos.lua
 Nurgash.lua
+Morgeth.lua

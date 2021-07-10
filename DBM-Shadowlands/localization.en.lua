@@ -19,3 +19,12 @@ local L
 -- Nurgash Muckformed --
 -----------------------
 --L= DBM:GetModLocalization(2433)
+
+-----------------------
+-- Mor'geth, Tormentor of the Damned --
+-----------------------
+L= DBM:GetModLocalization(2456)
+
+L:SetMiscLocalization({
+	Pull	= "Your souls are mine to claim!"
+})
