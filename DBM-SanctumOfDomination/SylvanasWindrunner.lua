@@ -463,7 +463,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnBansheeWail:Show()
 		specWarnBansheeWail:Play("scatter")
 	elseif spellId == 355540 then
-		specWarnRuin:Show()
+		specWarnRuin:Show(args.sourceName)
 		specWarnRuin:Play("kickcast")
 --		timerRuinCD:Start()
 	elseif spellId == 352271 then
