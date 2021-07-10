@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(175732)
 mod:SetEncounterID(2435)
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
-mod:SetHotfixNoticeRev(20210706000000)--2021-07-06
+mod:SetHotfixNoticeRev(20210709000000)--2021-07-09
 mod:SetMinSyncRevision(20210706000000)
 --mod.respawnTime = 29
 
@@ -14,10 +14,10 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 349419 347726 347609 352663 353418 353417 348094 355540 352271 351075 351179 351353 356023 354011 353969 354068 353952 353935 354147 357102 358704 351589 351562 358181",
 	"SPELL_CAST_SUCCESS 351178 358433",
-	"SPELL_AURA_APPLIED 347504 347807 347670 349458 348064 347607 350857 348146 351109 351117 351451 353929 357882 357886 357720 353935 348064 356986 358711 358705 351562 358433",
-	"SPELL_AURA_APPLIED_DOSE 347807 347607 351672",
-	"SPELL_AURA_REMOVED 347504 347807 351109 358711 358705 351562 358433 348064",
-	"SPELL_AURA_REMOVED_DOSE 347807",
+	"SPELL_AURA_APPLIED 347504 347807 347670 349458 348064 347607 350857 348146 351109 351117 351451 353929 357886 357720 353935 348064 356986 358711 358705 351562 358433",
+	"SPELL_AURA_APPLIED_DOSE 347807 347607 351672 353929",
+	"SPELL_AURA_REMOVED 347504 347807 351109 358711 358705 351562 358433 348064 353929",
+	"SPELL_AURA_REMOVED_DOSE 347807 353929",
 	"CHAT_MSG_RAID_BOSS_EMOTE"
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
@@ -87,7 +87,7 @@ local specWarnRage									= mod:NewSpecialWarningRun(358711, nil, nil, nil, 4, 
 --Intermission: A Monument to our Suffering
 local specWarnBansheeWail							= mod:NewSpecialWarningMoveAway(348094, nil, nil, nil, 2, 2)
 --Stage Two: The Banshee Queen
-local specWarnHauntingWave							= mod:NewSpecialWarningDodge(352271, nil, nil, nil, 2, 2)
+local specWarnHauntingWave							= mod:NewSpecialWarningDodgeCount(352271, nil, nil, nil, 2, 2)
 local specWarnRuin									= mod:NewSpecialWarningInterrupt(355540, nil, nil, nil, 3, 2)
 ----Forces of the Maw
 local specWarnLashingStrike							= mod:NewSpecialWarningYou(351179, nil, nil, nil, 1, 2)--Mawforged Souljudge
@@ -106,7 +106,7 @@ local yellExpulsion									= mod:NewShortPosYell(351562)
 local yellExpulsionFades							= mod:NewIconFadesYell(351562)
 local specWarnExpulsionTarget						= mod:NewSpecialWarningTarget(351562, false, nil, nil, 1, 2, 4)
 --Stage Three: The Freedom of Choice
-local specWarnBansheesBane							= mod:NewSpecialWarningYou(353929, nil, nil, nil, 1, 2)
+local specWarnBansheesBane							= mod:NewSpecialWarningStack(353929, nil, 1, nil, nil, 1, 6)
 local specWarnBansheesBaneTaunt						= mod:NewSpecialWarningTaunt(353929, nil, nil, nil, 1, 2)--Let the tank drop bane out by swapping for it
 local specWarnBansheesBaneDispel					= mod:NewSpecialWarningDispel(353929, "RemoveMagic", nil, nil, 3, 2)--Dispel alert during Fury
 local specWarnBansheeScream							= mod:NewSpecialWarningYou(357720, nil, 31295, nil, 1, 2)
@@ -183,7 +183,7 @@ mod.vb.bansheeScreamCount = 0
 mod.vb.bansheesFuryCount = 0
 mod.vb.razeCount = 0
 mod.vb.knivesCount = 0
-local BarbedStacks = {}
+local debuffStacks = {}
 local castsPerGUID = {}
 local difficultyName = "None"
 local allTimers = {
@@ -280,21 +280,21 @@ local allTimers = {
 --		},
 		[3] = {
 			--Bane Arrows
-			[354011] = {43.6, 76.8, 73.6},
+			[354011] = {43.6, 76.8, 73.2, 76.1},
 			--Banshee's Heartseeker
-			[353969] = {50.1, 21.1, 50, 3, 16.4, 21.4, 32.6},
+			[353969] = {50.1, 21.1, 50, 3, 16.4, 21.4, 31.9, 12, 14, 18.3, 31.6},
 			--Shadow Dagger
-			[353935] = {59.7, 78.1},
+			[353935] = {59.7, 78.1, 79.9},
 			--Banshee Scream
-			[353952] = {107.9, 47.4},
+			[353952] = {107.9, 47.4, 54.5, 52},
 			--Wailing Arrow
-			[347609] = {88.3, 3, 3, 50.2, 3, 3},--88.3, 56.1 (did blizz change this since yesterday
+			[347609] = {88.3, 3, 3, 50.2, 3, 3, 47.7, 3, 3, 52},
 			--Veil of Darkness
-			[347726] = {55.9, 61.6, 50.4},
-			--Banshees Fury (Heroic/Mythic)
-			[354068] = {31.9, 49.4, 49.6, 52.6},
+			[347726] = {55.9, 61.6, 50.4, 58},
+			--Banshees Fury (Heroic+)
+			[354068] = {31.9, 49.4, 49.6, 52.6, 47.4, 47.8},
 			--Raze
-			[354147] = {97.3, 73.6},
+			[354147] = {97.3, 73.6, 71.3},
 		},
 	},
 	["mythic"] = {
@@ -347,7 +347,7 @@ local function intermissionStart(self, adjust)
 end
 
 function mod:OnCombatStart(delay)
-	table.wipe(BarbedStacks)
+	table.wipe(debuffStacks)
 	table.wipe(castsPerGUID)
 	self:SetStage(1)
 	self.vb.arrowIcon = 1
@@ -390,7 +390,7 @@ function mod:OnCombatStart(delay)
 --	berserkTimer:Start(-delay)
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(347807))
-		DBM.InfoFrame:Show(10, "table", BarbedStacks, 1)
+		DBM.InfoFrame:Show(10, "table", debuffStacks, 1)
 	end
 	if self.Options.NPAuraOnEnflame or self.Options.NPAuraOnRage then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
@@ -463,7 +463,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnBansheeWail:Show()
 		specWarnBansheeWail:Play("scatter")
 	elseif spellId == 355540 then
-		specWarnRuin:Show()
+		specWarnRuin:Show(args.sourceName)
 		specWarnRuin:Play("kickcast")
 --		timerRuinCD:Start()
 	elseif spellId == 352271 then
@@ -536,7 +536,7 @@ function mod:SPELL_CAST_START(args)
 			timerBansheesFuryCD:Start(timer, self.vb.bansheesFuryCount+1)
 		end
 		for uId in DBM:GetGroupMembers() do
-			if DBM:UnitDebuff(uId, 353929, 357882) then
+			if DBM:UnitDebuff(uId, 353929) then
 				local name = DBM:GetUnitFullName(uId)
 				if self.Options.SpecWarn353929dispel then
 					specWarnBansheesBaneDispel:CombinedShow(0.3, name)
@@ -572,6 +572,7 @@ function mod:SPELL_CAST_START(args)
 		warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(3))
 		warnPhase:Play("pthree")
 		self:SetStage(3)
+		table.wipe(debuffStacks)
 		self.vb.baneArrowCount = 0
 		self.vb.shadowDaggerCount = 0
 		self.vb.bansheeScreamCount = 0
@@ -611,6 +612,10 @@ function mod:SPELL_CAST_START(args)
 			timerWailingArrowCD:Start(91.7, 1)
 			timerRazeCD:Start(100.8, 1)
 			timerBansheesScreamCD:Start(111.3, 1)
+		end
+		if self.Options.InfoFrame then
+			DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(353929))
+			DBM.InfoFrame:Show(10, "table", debuffStacks, 1)
 		end
 	elseif spellId == 351589 then
 		if self:IsTanking("player", nil, nil, nil, args.sourceGUID) then
@@ -660,9 +665,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 347807 then
 		local amount = args.amount or 1
-		BarbedStacks[args.destName] = amount
+		debuffStacks[args.destName] = amount
 		if self.Options.InfoFrame then
-			DBM.InfoFrame:UpdateTable(BarbedStacks)
+			DBM.InfoFrame:UpdateTable(debuffStacks)
 		end
 	elseif spellId == 347670 or spellId == 353935 then
 		warnShadowDagger:CombinedShow(0.3, args.destName)
@@ -753,6 +758,9 @@ function mod:SPELL_AURA_APPLIED(args)
 --		timerRuinCD:Start(63.5)
 --		timerHauntingWaveCD:Start(33.1)
 --		timerVeilofDarknessCD:Start(3, 1)
+		if self.Options.InfoFrame then
+			DBM.InfoFrame:Hide()
+		end
 	elseif spellId == 351109 then
 		if self.Options.NPAuraOnEnflame then
 			DBM.Nameplate:Show(true, args.destGUID, spellId)
@@ -781,11 +789,17 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnFuryOther:Play("tauntboss")
 			end
 		end
-	elseif spellId == 353929 or spellId == 357882 then
+	elseif spellId == 353929 then
+		local amount = args.amount or 1
+		debuffStacks[args.destName] = amount
+		if self.Options.InfoFrame then
+			DBM.InfoFrame:UpdateTable(debuffStacks)
+		end
 		if args:IsPlayer() then
-			specWarnBansheesBane:Show()
-			specWarnBansheesBane:Play("targetyou")
-		else
+			specWarnBansheesBane:Cancel()
+			specWarnBansheesBane:Schedule(0.3, amount)--Aggregate grabbing a bunch within 300ms
+			specWarnBansheesBane:ScheduleVoice(0.3, "targetyou")
+		elseif self:AntiSpam(3, args.destName) then
 			local uId = DBM:GetRaidUnitId(args.destName)
 			if self:IsTanking(uId) then
 				specWarnBansheesBaneTaunt:Show(args.destName)
@@ -869,10 +883,10 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 		self.vb.windrunnerActive = 0
 		warnWindrunnerOver:Show()
-	elseif spellId == 347807 then
-		BarbedStacks[args.destName] = nil
+	elseif spellId == 347807 or spellId == 353929 then
+		debuffStacks[args.destName] = nil
 		if self.Options.InfoFrame then
-			DBM.InfoFrame:UpdateTable(BarbedStacks)
+			DBM.InfoFrame:UpdateTable(debuffStacks)
 		end
 	elseif spellId == 351109 then
 		if self.Options.NPAuraOnEnflame then
@@ -916,10 +930,10 @@ end
 
 function mod:SPELL_AURA_REMOVED_DOSE(args)
 	local spellId = args.spellId
-	if spellId == 347807 then
-		BarbedStacks[args.destName] = args.amount or 1
+	if spellId == 347807 or spellId == 353929 then
+		debuffStacks[args.destName] = args.amount or 1
 		if self.Options.InfoFrame then
-			DBM.InfoFrame:UpdateTable(BarbedStacks)
+			DBM.InfoFrame:UpdateTable(debuffStacks)
 		end
 	end
 end
