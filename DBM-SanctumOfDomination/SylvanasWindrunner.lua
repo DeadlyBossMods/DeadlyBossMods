@@ -5,8 +5,8 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(175732)
 mod:SetEncounterID(2435)
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
-mod:SetHotfixNoticeRev(20210709000000)--2021-07-09
-mod:SetMinSyncRevision(20210709000000)
+mod:SetHotfixNoticeRev(20210710000000)--2021-07-10
+mod:SetMinSyncRevision(20210710000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
@@ -242,21 +242,28 @@ local allTimers = {
 --		[2] = {
 
 --		},
-		[3] = {--TODO, FIXME post JULY 9th Hotfixes
+		[3] = {
 			--Bane Arrows
-			[354011] = {46.5, 80.4, 76.2, 79.3, 78.6},
+--			[354011] = {45.4, 80.4, 76.2, 79.3, 78.6},--Pre July 9th hotfixes
+			[354011] = {45.4, 91.6, 66.3, 98.9, 63.8},--Post July 9th hotfixes
 			--Banshee's Heartseeker
-			[353969] = {59.5, 19, 45.3, 4.5, 30.1, 15.3, 23.5, 32.7, 15.3, 38.5, 9.7, 27.3, 30.1, 14.8, 34.4, 12.6},
+--			[353969] = {59.5, 19, 45.3, 4.5, 30.1, 15.3, 23.5, 32.7, 15.3, 38.5, 9.7, 27.3, 30.1, 14.8, 34.4, 12.6},--Pre July 9th hotfixes
+			[353969] = {59.5, 18.3, 69.1, 57.6, 46.1, 3, 58.3, 8},--Post July 9th hotfixes
 			--Shadow Dagger
-			[353935] = {62.5, 80, 83.6, 76.9, 87.6},
+--			[353935] = {62.5, 80, 83.6, 76.9, 87.6},--Pre July 9th hotfixes
+			[353935] = {62.5, 80.8, 98.9, 61.4},--Post July 9th hotfixes
 			--Banshee Scream
-			[353952] = {111.3, 52.1, 55.7, 55.7, 58.2, 59.8},
+--			[353952] = {111.3, 52.1, 55.7, 55.7, 58.2, 59.8},--Pre July 9th hotfixes
+			[353952] = {127.4, 49.9, 57.5, 59.8, 55.2},--Post July 9th hotfixes
 			--Wailing Arrow
-			[347609] = {91.7, 3, 3, 51.8, 3, 3, 51.7, 3, 3, 52.6, 3, 3, 52.2, 3, 3, 53.3, 3},--Final arrow set was only 2, not 3 casts
+--			[347609] = {91.7, 3, 3, 51.8, 3, 3, 51.6, 3, 3, 52.6, 3, 3, 52.2, 3, 3, 53.3, 3},--Pre July 9th hotfixes
+			[347609] = {91.7, 3, 3, 51.8, 3, 3, 51.6, 3, 3, 115.6, 3, 3},--Post July 9th hotfixes
 			--Veil of Darkness
-			[347726] = {56.5, 64.3, 68.6, 46.5, 62.7, 57.5, 61.9},
+--			[347726] = {56.5, 64.3, 68.6, 46.5, 62.7, 57.5, 61.9},--Pre July 9th hotfixes
+			[347726] = {56.5, 83.9, 56.9, 50.5, 61.3, 62.2},--Post July 9th hotfixes
 			--Raze
-			[354147] = {100.8, 76.1, 78.2, 85.4},
+--			[354147] = {100.8, 76.1, 78.2, 85.4},--Pre July 9th hotfixes
+			[354147] = {118.8, 66, 72.3, 100.4},--Post July 9th hotfixes
 		},
 	},
 	["heroic"] = {
