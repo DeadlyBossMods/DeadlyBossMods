@@ -48,7 +48,7 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 338858 then
 		specWarnIronGolem:Show()
---		timerIronGolemCD:Start()
+		timerIronGolemCD:Start()
 	elseif spellId == 353741 then
 		warnCriesofAnquish:Show()
 		timerCriesofAnquishCD:Start()
@@ -97,7 +97,7 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
-	if (spellId == 356382 or spellId == 353183) and destGUID == UnitGUID("player") and not playerDebuff and self:AntiSpam(2, 3) then
+	if (spellId == 356382 or spellId == 353183) and destGUID == UnitGUID("player") and self:AntiSpam(2, 3) then
 		specWarnGTFO:Show(spellName)
 		specWarnGTFO:Play("watchfeet")
 	end
