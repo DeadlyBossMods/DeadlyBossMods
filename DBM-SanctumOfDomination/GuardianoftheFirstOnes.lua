@@ -279,10 +279,10 @@ local function showthreat(self)
 					DBM.RangeCheck:Show(10)
 				end
 			end
-		else--Ranged (only one, so icon always 3)
+		else
 			rangedIcon = rangedIcon + 1
 			if setIcon then
-				self:SetIcon(nameOne, 3)
+				self:SetIcon(nameOne, rangedIcon)
 			end
 			if playerName == nameOne then
 				specWarnThreatNeutralization:Show()
@@ -307,10 +307,10 @@ local function showthreat(self)
 					DBM.RangeCheck:Show(10)
 				end
 			end
-		else--Ranged (only one, so icon always 3)
+		else
 			rangedIcon = rangedIcon + 1
 			if setIcon then
-				self:SetIcon(nameTwo, 3)
+				self:SetIcon(nameTwo, rangedIcon)
 			end
 			if playerName == nameTwo then
 				specWarnThreatNeutralization:Show()
@@ -335,10 +335,10 @@ local function showthreat(self)
 					DBM.RangeCheck:Show(10)
 				end
 			end
-		else--Ranged (only one, so icon always 3)
+		else
 			rangedIcon = rangedIcon + 1
 			if setIcon then
-				self:SetIcon(nameThree, 3)
+				self:SetIcon(nameThree, rangedIcon)
 			end
 			if playerName == nameThree then
 				specWarnThreatNeutralization:Show()
