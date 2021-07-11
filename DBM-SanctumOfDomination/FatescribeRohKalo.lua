@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(175730)
 mod:SetEncounterID(2431)
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
-mod:SetHotfixNoticeRev(20210706000000)--2021-07-06
+mod:SetHotfixNoticeRev(20210710000000)--2021-07-10
 mod:SetMinSyncRevision(20210706000000)
 --mod.respawnTime = 29
 
@@ -14,9 +14,9 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 351680 350554 350421 353426 350169 354367 354265",
 	"SPELL_CAST_SUCCESS 350355",
-	"SPELL_AURA_APPLIED 354365 351680 353432 350568 353195 354964 357739",
+	"SPELL_AURA_APPLIED 354365 351680 353432 350568 356065 353195 354964 357739",
 --	"SPELL_AURA_APPLIED_DOSE",
-	"SPELL_AURA_REMOVED 354365 351680 350568 353195 357739",
+	"SPELL_AURA_REMOVED 354365 351680 350568 356065 353195 357739",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 --	"UNIT_DIED"
@@ -315,7 +315,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnBurdenofDestiny:Show()
 			specWarnBurdenofDestiny:Play("killmob")
 		end
-	elseif spellId == 350568 then
+	elseif spellId == 350568 or spellId == 356065 then
 		warnCallofEternity:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			specWarnCallofEternity:Show()
@@ -368,6 +368,10 @@ function mod:SPELL_AURA_REMOVED(args)
 			if self.Options.NPAuraOnBurdenofDestiny then
 				DBM.Nameplate:Show(true, args.sourceGUID, spellId)
 			end
+		end
+	elseif spellId == 350568 or spellId == 356065 then
+		if args:IsPlayer() then
+			yellCallofEternityFades:Cancel()
 		end
 	elseif spellId == 353195 then--Extemporaneous Fate
 		timerDarkestDestiny:Stop()
