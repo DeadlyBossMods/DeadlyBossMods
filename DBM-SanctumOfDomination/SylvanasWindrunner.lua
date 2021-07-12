@@ -5,8 +5,8 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(175732)
 mod:SetEncounterID(2435)
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
-mod:SetHotfixNoticeRev(20210710000000)--2021-07-10
-mod:SetMinSyncRevision(20210710000000)
+mod:SetHotfixNoticeRev(20210711000000)--2021-07-11
+mod:SetMinSyncRevision(20210711000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
@@ -244,26 +244,26 @@ local allTimers = {
 --		},
 		[3] = {
 			--Bane Arrows
---			[354011] = {45.4, 80.4, 76.2, 79.3, 78.6},--Pre July 9th hotfixes
-			[354011] = {45.4, 91.6, 66.3, 98.9, 63.8},--Post July 9th hotfixes
+			[354011] = {45.4, 80.4, 76.2, 79.3, 78.6},--Pre July 9th hotfixes
+--			[354011] = {45.4, 91.6, 66.3, 98.9, 63.8},--Post July 9th hotfixes
 			--Banshee's Heartseeker
---			[353969] = {59.5, 19, 45.3, 4.5, 30.1, 15.3, 23.5, 32.7, 15.3, 38.5, 9.7, 27.3, 30.1, 14.8, 34.4, 12.6},--Pre July 9th hotfixes
-			[353969] = {59.5, 18.3, 69.1, 57.6, 46.1, 3, 58.3, 8},--Post July 9th hotfixes
+			[353969] = {59.5, 19, 45.3, 4.5, 30.1, 15.3, 23.5, 32.7, 15.3, 38.5, 9.7, 27.3, 30.1, 14.8, 34.4, 12.6},--Pre July 9th hotfixes
+--			[353969] = {59.5, 18.3, 69.1, 57.6, 46.1, 3, 58.3, 8},--Post July 9th hotfixes
 			--Shadow Dagger
---			[353935] = {62.5, 80, 83.6, 76.9, 87.6},--Pre July 9th hotfixes
-			[353935] = {62.5, 80.8, 98.9, 61.4},--Post July 9th hotfixes
+			[353935] = {62.5, 80, 83.6, 76.9, 87.6},--Pre July 9th hotfixes
+--			[353935] = {62.5, 80.8, 98.9, 61.4},--Post July 9th hotfixes
 			--Banshee Scream
---			[353952] = {111.3, 52.1, 55.7, 55.7, 58.2, 59.8},--Pre July 9th hotfixes
-			[353952] = {127.4, 49.9, 57.5, 59.8, 55.2},--Post July 9th hotfixes
+			[353952] = {111.3, 52.1, 55.7, 55.7, 58.2, 59.8},--Pre July 9th hotfixes
+--			[353952] = {127.4, 49.9, 57.5, 59.8, 55.2},--Post July 9th hotfixes
 			--Wailing Arrow
---			[347609] = {91.7, 3, 3, 51.8, 3, 3, 51.6, 3, 3, 52.6, 3, 3, 52.2, 3, 3, 53.3, 3},--Pre July 9th hotfixes
-			[347609] = {91.7, 3, 3, 51.8, 3, 3, 51.6, 3, 3, 115.6, 3, 3},--Post July 9th hotfixes
+			[347609] = {91.7, 3, 3, 51.8, 3, 3, 51.6, 3, 3, 52.6, 3, 3, 52.2, 3, 3, 53.3, 3},--Pre July 9th hotfixes
+--			[347609] = {91.7, 3, 3, 51.8, 3, 3, 51.6, 3, 3, 115.6, 3, 3},--Post July 9th hotfixes
 			--Veil of Darkness
---			[347726] = {56.5, 64.3, 68.6, 46.5, 62.7, 57.5, 61.9},--Pre July 9th hotfixes
-			[347726] = {56.5, 83.9, 56.9, 50.5, 61.3, 62.2},--Post July 9th hotfixes
+			[347726] = {56.5, 64.3, 68.6, 46.5, 62.7, 57.5, 61.9},--Pre July 9th hotfixes
+--			[347726] = {56.5, 83.9, 56.9, 50.5, 61.3, 62.2},--Post July 9th hotfixes
 			--Raze
---			[354147] = {100.8, 76.1, 78.2, 85.4},--Pre July 9th hotfixes
-			[354147] = {118.8, 66, 72.3, 100.4},--Post July 9th hotfixes
+			[354147] = {100.8, 76.1, 78.2, 85.4},--Pre July 9th hotfixes
+--			[354147] = {118.8, 66, 72.3, 100.4},--Post July 9th hotfixes
 		},
 	},
 	["heroic"] = {
@@ -287,29 +287,29 @@ local allTimers = {
 --		},
 		[3] = {
 			--Bane Arrows
---			[354011] = {43.6, 76.8, 73.2, 76.1},--Pre July 9th hotfixes
-			[354011] = {43.6, 87.5, 97.4, 66.9, 58.2},--Post July 9th hotfixes
+			[354011] = {43.6, 76.8, 73.2, 76.1, 74.5},--Pre July 9th hotfixes
+--			[354011] = {43.6, 87.5, 97.4, 66.9, 58.2},--Post July 9th hotfixes
 			--Banshee's Heartseeker
---			[353969] = {50.1, 21.1, 50, 3, 16.4, 21.4, 31.9, 12, 14, 18.3, 31.6},--Pre July 9th hotfixes
-			[353969] = {50.1, 20.8},--Post July 9th hotfixes
+			[353969] = {50.1, 21.1, 50, 3, 16.4, 21.4, 31.9, 12, 14, 18.3, 31.6, 23.5, 10.2},--Pre July 9th hotfixes
+--			[353969] = {50.1, 20.8},--Post July 9th hotfixes
 			--Shadow Dagger
---			[353935] = {59.7, 78.1, 79.9},--Pre July 9th hotfixes
-			[353935] = {59.7, 84.4, 93.9, 60.4},--Post July 9th hotfixes
+			[353935] = {59.7, 78.1, 79.9, 73.5},--Pre July 9th hotfixes
+--			[353935] = {59.7, 84.4, 93.9, 60.4},--Post July 9th hotfixes
 			--Banshee Scream
---			[353952] = {107.9, 47.4, 54.5, 52},--Pre July 9th hotfixes
-			[353952] = {124, 50.7, 55.8, 57.9, 48.6},--Post July 9th hotfixes
+			[353952] = {107.9, 47.4, 54.5, 52, 54.9},--Pre July 9th hotfixes
+--			[353952] = {124, 50.7, 55.8, 57.9, 48.6},--Post July 9th hotfixes
 			--Wailing Arrow
---			[347609] = {88.3, 3, 3, 50.2, 3, 3, 47.7, 3, 3, 52},--Pre July 9th hotfixes
-			[347609] = {88.3, 3, 3, 53.3, 3, 3, 48.3, 3, 3, 54.4, 3},--Post July 9th hotfixes
+			[347609] = {88.3, 3, 3, 49.8, 3, 3, 47.7, 3, 3, 49, 3, 3, 51.8, 3},--Pre July 9th hotfixes
+--			[347609] = {88.3, 3, 3, 53.3, 3, 3, 48.3, 3, 3, 54.4, 3},--Post July 9th hotfixes
 			--Veil of Darkness
---			[347726] = {55.8, 61.6, 50.4, 58},--Pre July 9th hotfixes
-			[347726] = {55.8},--Post July 9th hotfixes
+			[347726] = {55.8, 61.6, 50.4, 58, 61.9},--Pre July 9th hotfixes
+--			[347726] = {55.8},--Post July 9th hotfixes
 			--Banshees Fury (Heroic+)
---			[354068] = {31.1, 49.4, 49.6, 52.6, 47.4, 47.8},--Pre July 9th hotfixes
-			[354068] = {31.1, 49.4, 55.7, 57.7, 57.7, 48.8, 59.2, 55.7},--Post July 9th hotfixes
+			[354068] = {31.1, 49.4, 49.6, 52.6, 47.4, 47.8, 58},--Pre July 9th hotfixes
+--			[354068] = {31.1, 49.4, 55.7, 57.7, 57.7, 48.8, 59.2, 55.7},--Post July 9th hotfixes
 			--Raze
---			[354147] = {97.3, 73.6, 71.3},--Pre July 9th hotfixes
-			[354147] = {115.4, 66.8, 68.6, 93.8},--Post July 9th hotfixes
+			[354147] = {97.3, 73.6, 71.3, 82},--Pre July 9th hotfixes
+--			[354147] = {115.4, 66.8, 68.6, 93.8},--Post July 9th hotfixes
 		},
 	},
 	["mythic"] = {

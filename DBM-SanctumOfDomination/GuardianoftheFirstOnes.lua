@@ -53,10 +53,10 @@ local yellThreatNeutralizationFades				= mod:NewIconFadesYell(350496)
 local specWarnGTFO								= mod:NewSpecialWarningGTFO(340324, nil, nil, nil, 1, 8)
 
 --mod:AddTimerLine(BOSS)
-local timerEliminationPatternCD					= mod:NewCDCountTimer(31.6, 350735, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON, true)--Time between casts not known, but link reset kinda works
-local timerDisintegrationCD						= mod:NewCDCountTimer(34.6, 352833, nil, nil, nil, 3, nil, nil, true)--Continues whether linked or not
-local timerFormSentryCD							= mod:NewCDCountTimer(72.6, 352660, nil, nil, nil, 1, nil, nil, true)--Time between casts not known, but link reset kinda works
-local timerThreatNeutralizationCD				= mod:NewCDTimer(11.4, 350496, nil, nil, nil, 3, nil, nil, true)--Continues whether linked or not
+local timerEliminationPatternCD					= mod:NewCDCountTimer(31.6, 350735, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)--Time between casts not known, but link reset kinda works
+local timerDisintegrationCD						= mod:NewCDCountTimer(34.6, 352833, nil, nil, nil, 3)--Continues whether linked or not
+local timerFormSentryCD							= mod:NewCDCountTimer(72.6, 352660, nil, nil, nil, 1)--Time between casts not known, but link reset kinda works
+local timerThreatNeutralizationCD				= mod:NewCDCountTimer(11.4, 350496, nil, nil, nil, 3, nil, nil, true)--Continues whether linked or not
 
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
@@ -73,6 +73,7 @@ mod.vb.sentryCount = 0
 mod.vb.beamCount = 0
 mod.vb.protocolCount = 0
 mod.vb.patternCount = 0
+mod.vb.threatCount = 0
 mod.vb.comboCount = 0
 
 local updateInfoFrame
@@ -279,10 +280,10 @@ local function showthreat(self)
 					DBM.RangeCheck:Show(10)
 				end
 			end
-		else--Ranged (only one, so icon always 3)
+		else
 			rangedIcon = rangedIcon + 1
 			if setIcon then
-				self:SetIcon(nameOne, 3)
+				self:SetIcon(nameOne, rangedIcon)
 			end
 			if playerName == nameOne then
 				specWarnThreatNeutralization:Show()
@@ -307,10 +308,10 @@ local function showthreat(self)
 					DBM.RangeCheck:Show(10)
 				end
 			end
-		else--Ranged (only one, so icon always 3)
+		else
 			rangedIcon = rangedIcon + 1
 			if setIcon then
-				self:SetIcon(nameTwo, 3)
+				self:SetIcon(nameTwo, rangedIcon)
 			end
 			if playerName == nameTwo then
 				specWarnThreatNeutralization:Show()
@@ -335,10 +336,10 @@ local function showthreat(self)
 					DBM.RangeCheck:Show(10)
 				end
 			end
-		else--Ranged (only one, so icon always 3)
+		else
 			rangedIcon = rangedIcon + 1
 			if setIcon then
-				self:SetIcon(nameThree, 3)
+				self:SetIcon(nameThree, rangedIcon)
 			end
 			if playerName == nameThree then
 				specWarnThreatNeutralization:Show()
@@ -359,10 +360,11 @@ function mod:OnCombatStart(delay)
 	self.vb.sentryCount = 0
 	self.vb.beamCount = 0
 	self.vb.protocolCount = 0
+	self.vb.threatCount = 0
 	self.vb.patternCount = 0--which pattern SET it is
 	self.vb.comboCount = 0--Which cast within the pattern set
 	timerFormSentryCD:Start(3.6-delay, 1)
-	timerThreatNeutralizationCD:Start(self:IsMythic() and 8.3 or 10.9-delay)
+	timerThreatNeutralizationCD:Start(self:IsMythic() and 8.3 or 10.9-delay, 1)
 	timerDisintegrationCD:Start(15.4-delay, 1)
 	timerEliminationPatternCD:Start(25.3-delay, 1)
 	--Infoframe setup (might not be needed)
@@ -429,9 +431,11 @@ function mod:SPELL_CAST_START(args)
 		warnFormSentry:Show(self.vb.sentryCount)
 --		timerFormSentryCD:Start(nil, self.vb.sentryCount+1)
 	elseif spellId == 356090 then
+		self.vb.threatCount = self.vb.threatCount + 1
 		isMelee = {[1] = false,[2] = false,[3] = false,}
 		table.wipe(threatTargets)
-		timerThreatNeutralizationCD:Start()
+		timerThreatNeutralizationCD:Stop()
+		timerThreatNeutralizationCD:Start(nil, self.vb.threatCount+1)
 	elseif spellId == 355352 or spellId == 350734 then--Mythic, Heroic
 		self.vb.comboCount = self.vb.comboCount + 1
 		local castCount = (self.vb.comboCount == 2) and 1 or 2
@@ -452,6 +456,12 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnRadiantEnergy:Show(radiantEnergy)
 			specWarnRadiantEnergy:Play("findshelter")
 		end
+		timerDisintegrationCD:Stop()
+		timerFormSentryCD:Stop()
+		timerEliminationPatternCD:Stop()
+		timerDisintegrationCD:Start(6)
+		timerFormSentryCD:Start(self:IsEasy() and 11.5 or 18, self.vb.sentryCount+1)
+		timerEliminationPatternCD:Start(28.3, self.vb.patternCount+1)
 	elseif spellId == 352394 then
 		playersSafe[args.destName] = true
 		if args:IsPlayer() then
@@ -487,8 +497,8 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 352385 then--Energizing Link
 		self.vb.coreActive = false
-		timerFormSentryCD:Start(6.4)
-		timerEliminationPatternCD:Start(17.6, self.vb.patternCount+1)
+--		timerFormSentryCD:Start(6.4, self.vb.sentryCount+1)--.4 on normal 6.4 heroic
+--		timerEliminationPatternCD:Start(17.6, self.vb.patternCount+1)
 	elseif spellId == 352394 then
 		playersSafe[args.destName] = nil
 		if args:IsPlayer() then
