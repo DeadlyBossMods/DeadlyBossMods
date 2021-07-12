@@ -355,33 +355,6 @@ local function showthreat(self)
 	warnThreatNeutralization:Show(table.concat(threatTargets, "<, >"))
 end
 
-local allTimers = {
-	["lfr"] = {
-		--Threat
-		[350496] = {},
-		--Disintegration
-		[352833] = {},
-	},
-	["normal"] = {
-		--Threat
-		[350496] = {},
-		--Disintegration
-		[352833] = {},
-	},
-	["heroic"] = {
-		--Threat
-		[350496] = {},
-		--Disintegration
-		[352833] = {},
-	},
-	["mythic"] = {
-		--Threat
-		[350496] = {},
-		--Disintegration
-		[352833] = {},
-	},
-end
-
 function mod:OnCombatStart(delay)
 	playerSafe = false
 	self.vb.sentryCount = 0
