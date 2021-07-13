@@ -692,15 +692,17 @@ function mod:SPELL_CREATE(args)
 			timerRuinCD:Update(32, 34.1, 1)--Just to replace the timer that stop call cancelled for run over timer
 			timerRangersHeartseekerCD:Start(27.6, self.vb.heartseekerCount+1)
 			timerVeilofDarknessCD:Start(30, self.vb.veilofDarknessCount+1)--to EMOTE
-			timerRangersHeartseekerCD:Start(45.2, self.vb.heartseekerCount+1)
-			timerBansheeWailCD:Start(48.2, self.vb.bansheeWailCount+1)
+			if self:IsHard() then--Normal doesn't seem to get second one
+				timerRangersHeartseekerCD:Start(45.2, self.vb.heartseekerCount+1)
+			end
+			timerBansheeWailCD:Start(47, self.vb.bansheeWailCount+1)
 			--TODO, more shit if not pushed?
 		elseif self.vb.bridgeCount == 3 then
 			warnEarthBridge:Show(self.vb.bridgeCount)
 --			timerHauntingWaveCD:Start(1, self.vb.hauntingWavecount+1)--Used too soon to have timer
 			timerVeilofDarknessCD:Start(23.9, self.vb.veilofDarknessCount+1)
 			--TODO, more shit if not pushed?
-		elseif self.vb.bridgeCount == 4 then
+		elseif self.vb.bridgeCount == 4 then--Normal timers are slightly slower but close enough to just use these globally
 			warnIceBridge:Show(self.vb.bridgeCount)
 --			timerHauntingWaveCD:Start(1, self.vb.hauntingWavecount+1)--Used too soon to have timer
 			timerRuinCD:Start(8, self.vb.ruinCount+1)
@@ -713,11 +715,11 @@ function mod:SPELL_CREATE(args)
 			timerHauntingWaveCD:Start(31.7, self.vb.hauntingWavecount+1)
 			timerVeilofDarknessCD:Start(35.7, self.vb.veilofDarknessCount+1)
 			--TODO, more shit if not pushed?
-		elseif self.vb.bridgeCount == 6 then
+		elseif self.vb.bridgeCount == 6 then--This can sometimes clip veil of darkness timer (canceling it)
 			warnEarthBridge:Show(self.vb.bridgeCount)
 			timerRuinCD:Start(7, self.vb.ruinCount+1)
 			timerHauntingWaveCD:Start(25.2, self.vb.hauntingWavecount+1)
-			timerRangersHeartseekerCD:Start(30.6, self.vb.heartseekerCount+1)
+			timerRangersHeartseekerCD:Start(self:IsEasy() and 34.4 or 30.6, self.vb.heartseekerCount+1)
 			timerVeilofDarknessCD:Start(37.9, self.vb.veilofDarknessCount+1)
 			timerBansheeWailCD:Start(45.5, self.vb.bansheeWailCount+1)
 			--TODO, more shit if not pushed?
