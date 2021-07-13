@@ -131,11 +131,11 @@ local allTimers = {
 			--Twist Fate
 			[354265] = {51.4, 48.6, 38.8},
 			--Call of Eternity
-			[350554] = {13.9, 38.6, 38.6},--second one is either 38.8 or 73.1?
+			[350554] = {13.9, 38.6, 38.6, 57.1},--second one is either 38.8 or 73.1?
 			--Invoke Destiny
 			[351680] = {25.6, 44.7, 90},
 			--Fated Conjunction
-			[350421] = {11.1, 50.4, 51.1, 40.1},
+			[350421] = {11.1, 50.4, 51.1, 40.1, 26.7},
 			--Extemporaneous Fate
 			[353195] = {36.7, 46.2, 43.7},--Huge variations, 36-50
 		}
@@ -155,22 +155,22 @@ local allTimers = {
 			--Twist Fate
 			[354265] = {51.4, 48.6, 38.8},
 			--Call of Eternity
-			[350554] = {13.9, 38.6, 38.6},--second one is either 38.8 or 73.1?
+			[350554] = {13.9, 38.6, 73.1, 57.1},--second one is either 38.8 or 73.1? I lost the log it was 38, so leaving 73 for now
 			--Invoke Destiny
 			[351680] = {25.6, 44.7, 90},
 			--Fated Conjunction
-			[350421] = {11.1, 50.4, 51.1, 40.1},
+			[350421] = {11.1, 50.4, 51.1, 40.1, 26.7},
 			--Extemporaneous Fate
-			[353195] = {36.7, 46.2, 43.7},--DIFFERENT FROM HEROIC
+			[353195] = {36.7, 46.2, 43.7},--Huge variations, 36-50
 		}
 	},
 }
 
 --Attempts to fix destiny timer when it's 73.1 instead of 38.6
 --This schedule function will only run if it doesn't come on time, and restart the timer for remainder of 73.1
-local function fixEternity(self)
-	timerCallofEternityCD:Update(50, 73.1, self.vb.eternityCount+1)
-end
+--local function fixEternity(self)
+--	timerCallofEternityCD:Update(50, 73.1, self.vb.eternityCount+1)
+--end
 
 function mod:OnCombatStart(delay)
 	self.vb.DebuffIcon = 1
@@ -209,7 +209,7 @@ function mod:OnCombatStart(delay)
 	if self.Options.NPAuraOnBurdenofDestiny then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
-	DBM:AddMsg("Abilities on this fight can be a little buggy and sometimes skip casts, and cause other abilities to come out of sequence at different times. DBM timers attempt to match the most common scenario of events but sometimes fight will do it's own thing")
+	DBM:AddMsg("Abilities on this fight can be a little buggy and sometimes skip casts/change order. DBM timers attempt to match the most common scenario of events but sometimes fight will do it's own thing")
 end
 
 function mod:OnCombatEnd()
@@ -244,14 +244,14 @@ function mod:SPELL_CAST_START(args)
 			timerInvokeDestinyCD:Start(timer, self.vb.destinyCount+1)
 		end
 	elseif spellId == 350554 then--Two sub cast IDs, but one primary?
-		self:Unschedule(fixEternity)
+--		self:Unschedule(fixEternity)
 		self.vb.eternityCount = self.vb.eternityCount + 1
 		local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.eternityCount+1]
 		if timer then
 			timerCallofEternityCD:Start(timer, self.vb.eternityCount+1)
-			if (self.vb.eternityCount+1) == 2 and self.vb.phase == 3 then
-				self:Schedule(50, fixEternity, self)
-			end
+			--if (self.vb.eternityCount+1) == 2 and self.vb.phase == 3 then
+			--	self:Schedule(50, fixEternity, self)
+			--end
 		end
 	elseif (spellId == 350421 or spellId == 353426 or spellId == 350169) then--350421 confiremd, others unknown
 		self.vb.conjunctionCount = self.vb.conjunctionCount + 1
