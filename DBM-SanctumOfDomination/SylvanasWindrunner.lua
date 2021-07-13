@@ -129,7 +129,7 @@ local timerWailingArrowCD							= mod:NewCDCountTimer(33.9, 347609, nil, "Tank|H
 local timerRangersHeartseekerCD						= mod:NewCDCountTimer(33.9, 352663, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)
 local timerBlackArrowCD								= mod:NewAITimer(33.9, 358704, nil, nil, nil, 3, nil, DBM_CORE_L.MYTHIC_ICON)
 --Intermission: A Monument to our Suffering
-local timerRiveCD									= mod:NewCDCountTimer(48.8, 353418, nil, nil, nil, 3)
+local timerRiveCD									= mod:NewCDTimer(48.8, 353418, nil, nil, nil, 3)
 local timerNextPhase								= mod:NewPhaseTimer(16.5, 348094, nil, nil, nil, 6)
 --Stage Two: The Banshee Queen
 --local timerChannelIceCD								= mod:NewCDCountTimer(48.8, 348148, nil, nil, nil, 6)
