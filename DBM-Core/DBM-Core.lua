@@ -71,8 +71,8 @@ end
 
 DBM = {
 	Revision = parseCurseDate("@project-date-integer@"),
-	DisplayVersion = "9.1.2 alpha", -- the string that is shown as version
-	ReleaseRevision = releaseDate(2021, 6, 30) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	DisplayVersion = "9.1.4 alpha", -- the string that is shown as version
+	ReleaseRevision = releaseDate(2021, 7, 13) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 }
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
@@ -10173,9 +10173,12 @@ do
 		if voiceSessionDisabled or voice == "None" then return end
 		if self.mod:IsEasyDungeon() and self.mod.isTrashMod and DBM.Options.FilterTrashWarnings2 then return end
 		if ((not self.option or self.mod.Options[self.option]) or always) and self.hasVoice <= SWFilterDisabed then
+			local soundId = self.option and self.mod.Options[self.option .. "SWSound"] or self.flash
 			--Filter tank specific voice alerts for non tanks if tank filter enabled
 			--But still allow AlwaysPlayVoice to play as well.
 			if (name == "changemt" or name == "tauntboss") and DBM.Options.FilterTankSpec and not self.mod:IsTank() and not always then return end
+			--Mute VP if SW sound is set to None in the boss mod.
+			if soundId == "None" then return end
 			local path = customPath or "Interface\\AddOns\\DBM-VP"..voice.."\\"..name..".ogg"
 			DBM:PlaySoundFile(path)
 		end

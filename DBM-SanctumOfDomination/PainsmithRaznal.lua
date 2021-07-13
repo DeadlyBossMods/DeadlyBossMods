@@ -14,9 +14,9 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 357735",
 	"SPELL_CAST_SUCCESS 348508 355568 355778 348456 355504 355534",
-	"SPELL_AURA_APPLIED 348508 355568 355778 355786 348456 355505 355525",
+	"SPELL_AURA_APPLIED 348508 355568 355778 355786 348456 355505 355525 352052",
 --	"SPELL_AURA_APPLIED_DOSE",
-	"SPELL_AURA_REMOVED 348508 355568 355778 355786 348456 355505 355525 352052",
+	"SPELL_AURA_REMOVED 348508 355568 355778 355786 348456 355505 355525",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 	"UNIT_DIED",
@@ -149,12 +149,12 @@ function mod:OnCombatStart(delay)
 	if self:IsMythic() then
 		timerShadowsteelChainsCD:Start(8.1-delay, 1)
 		timerCruciformAxeCD:Start(15-delay, 1)
-		timerSpikedBallsCD:Start(26.4-delay, 1)
+		timerSpikedBallsCD:Start(23.4-delay, 1)
 		timerFlameclaspTrapCD:Start(42.2-delay, 1)
 	else
 		timerShadowsteelChainsCD:Start(10.8-delay, 1)
 		timerCruciformAxeCD:Start(16-delay, 1)
-		timerSpikedBallsCD:Start(26.9-delay, 1)
+		timerSpikedBallsCD:Start(23.9-delay, 1)
 		if self:IsHeroic() then
 			timerFlameclaspTrapCD:Start(45-delay, 1)
 		end
@@ -281,6 +281,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		warnFlameclaspTrap:CombinedShow(0.5, args.destName)
 		self.vb.trapsIcon = self.vb.trapsIcon + 1
+	elseif spellId == 352052 then
+		self.vb.ballsCount = self.vb.ballsCount + 1
+		specWarnSpikedBalls:Show(self.vb.ballsCount)
+		specWarnSpikedBalls:Play("targetchange")
+		timerSpikedBallsCD:Start(nil, self.vb.ballsCount+1)--Can be delayed by other casts?
 	end
 end
 --mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -327,12 +332,12 @@ function mod:SPELL_AURA_REMOVED(args)
 			if self:IsMythic() then
 				timerShadowsteelChainsCD:Start(15, 1)
 				timerReverberatingHammerCD:Start(23.6, 1)
-				timerSpikedBallsCD:Start(7, 1)
+				timerSpikedBallsCD:Start(4, 1)
 				timerFlameclaspTrapCD:Start(52.8, 1)
 			else
 				timerShadowsteelChainsCD:Start(10.8, 1)
 				timerReverberatingHammerCD:Start(16.9, 1)
-				timerSpikedBallsCD:Start(27, 1)
+				timerSpikedBallsCD:Start(24, 1)
 				if self:IsHeroic() then
 					timerFlameclaspTrapCD:Start(36.4, 1)
 				end
@@ -341,22 +346,17 @@ function mod:SPELL_AURA_REMOVED(args)
 			if self:IsMythic() then
 				timerShadowsteelChainsCD:Start(15, 1)
 				timerDualbladeScytheCD:Start(24, 1)
-				timerSpikedBallsCD:Start(7, 1)
+				timerSpikedBallsCD:Start(4, 1)
 				timerFlameclaspTrapCD:Start(52, 1)
 			else
 				timerShadowsteelChainsCD:Start(10.8, 1)
 				timerDualbladeScytheCD:Start(16.9, 1)
-				timerSpikedBallsCD:Start(27, 1)
+				timerSpikedBallsCD:Start(24, 1)
 				if self:IsHeroic() then
 					timerFlameclaspTrapCD:Start(36.4, 1)
 				end
 			end
 		end
-	elseif spellId == 352052 then
-		self.vb.ballsCount = self.vb.ballsCount + 1
-		specWarnSpikedBalls:Show(self.vb.ballsCount)
-		specWarnSpikedBalls:Play("targetchange")
-		timerSpikedBallsCD:Start(nil, self.vb.ballsCount+1)--Can be delayed by other casts?
 	end
 end
 
