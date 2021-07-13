@@ -19,9 +19,12 @@
 ## X-DBM-Mod-MapID: 2450
 ## X-DBM-Mod-MinCoreRevision: 17286
 ## X-DBM-Mod-MinExpansion: 8
+
 localization.en.lua
 localization.kr.lua
 localization.cn.lua
+localization.tw.lua
+
 TheTarragrue.lua
 TheEyeoftheJailer.lua
 TheNine.lua
