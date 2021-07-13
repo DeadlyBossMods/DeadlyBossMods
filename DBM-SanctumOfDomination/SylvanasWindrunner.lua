@@ -693,7 +693,7 @@ function mod:SPELL_CREATE(args)
 			timerRangersHeartseekerCD:Start(27.6, self.vb.heartseekerCount+1)
 			timerVeilofDarknessCD:Start(30, self.vb.veilofDarknessCount+1)--to EMOTE
 			if self:IsHard() then--Normal doesn't seem to get second one
-				timerRangersHeartseekerCD:Start(45.2, self.vb.heartseekerCount+1)
+				timerRangersHeartseekerCD:Start(45.2, self.vb.heartseekerCount+2)
 			end
 			timerBansheeWailCD:Start(47, self.vb.bansheeWailCount+1)
 			--TODO, more shit if not pushed?
