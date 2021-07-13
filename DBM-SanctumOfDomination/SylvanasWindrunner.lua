@@ -802,7 +802,7 @@ function mod:SPELL_AURA_APPLIED(args)
 --			end
 --		else
 			warnBansheesMark:Show(args.destName, amount)
---		end
+		end
 	elseif spellId == 350857 and self.vb.phase == 1 then
 		warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(1.5))
 		warnPhase:Play("phasechange")
