@@ -167,7 +167,7 @@ function mod:SPELL_CAST_START(args)
 		warnSpawnMawsworn:Show(self.vb.mawswornSpawn)
 		timerSpawnMawswornCD:Start(self:IsMythic() and 47.7 or 57.5)
 		if self.Options.SetIconOnMawsworn then--This icon method may be faster than GUID matching, but also risks being slower and less consistent if marker has nameplates off
-			self:ScanForMobs(177594, 0, 8, 4, 0.2, 12, "SetIconOnMawsworn")
+			self:ScanForMobs(177594, 0, 8, 4, 0.2, 15, "SetIconOnMawsworn")
 		end
 	elseif spellId == 350411 then--Hellscream
 		timerHellscream:Start(self:IsHeroic() and 35 or self:IsMythic() and 25 or 50)--Heroic and mythic known, other difficulties not yet
