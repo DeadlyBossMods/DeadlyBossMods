@@ -164,7 +164,9 @@ function mod:SPELL_CAST_START(args)
 			timerPedatorsHowlCD:Start(21.1, self.vb.howlcount+1)
 			timerOverpowerCD:Start(25.5, self.vb.overpowerCount+1)
 			timerGraspofDeathCD:Start(28, self.vb.graspCount+1)
-			timerRemnantofForgottenTormentsCD:Start(28.3, self.vb.remnantcount+1)--Activation, not pre warning for emote
+			if self:IsHard() then
+				timerRemnantofForgottenTormentsCD:Start(28.3, self.vb.remnantcount+1)--Activation, not pre warning for emote
+			end
 			timerChainsofEternityCD:Start(31.6, self.vb.chainsCount+1)
 			timerFuryoftheAgesCD:Start(32.8, self.vb.furyCount+1)
 --		end

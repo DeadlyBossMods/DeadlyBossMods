@@ -7,7 +7,7 @@ mod:SetEncounterID(2422)
 mod:SetUsedIcons(1, 2, 3, 4, 6, 7, 8)
 mod:SetBossHPInfoToHighest()--Boss heals at least twice
 mod.noBossDeathKill = true--Instructs mod to ignore 175559 deaths, since it dies multiple times
-mod:SetHotfixNoticeRev(20210708000000)--2021-07-08
+mod:SetHotfixNoticeRev(20210712000000)--2021-07-12
 mod:SetMinSyncRevision(20210708000000)
 --mod.respawnTime = 29
 
@@ -257,14 +257,7 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 --	if spellId == 352293 then--Vengeful Destruction ended (assumed phase trigger to return to active KT engagement)
-		--Start KT timers
---		self:SetStage(1)
---		timerHowlingBlizzardCD:Start(2)
---		timerDarkEvocationCD:Start(2)
---		timerSoulFractureCD:Start(2)
---		timerGlacialWrathCD:Start(2)
---		timerOblivionsEchoCD:Start(2)
---		timerFrostBlastCD:Start(2)
+
 --	end
 end
 --]]
@@ -379,29 +372,27 @@ function mod:SPELL_AURA_APPLIED(args)
 			--Blizzard CD: 92.8, Evo CD: ??
 			if bossPower then
 				if bossPower == 80 then--TODO, FIXME
---					timerFrostBlastCD:Start(85)--Speculation
+--					timerFrostBlastCD:Start(0)
 --					timerHowlingBlizzardCD:Start(0)
 --					timerDarkEvocationCD:Start(0)
 					DBM:Debug("HIGH PRIORITY EVENT. This is a 80 mana phase start")--Generating easier to use transcriptor events
 					DBM:AddMsg("Please share log of THIS pull and say 80 and which Necrotic Surge cast. Please know the exact pull when sharing log with DBM author")
-				elseif bossPower == 60 then--PTR LOG coded
---					timerDarkEvocationCD:Start(11.2)
---					timerFrostBlastCD:Start(42)
---					timerHowlingBlizzardCD:Start(46.5)
+				elseif bossPower == 60 then--TODO, FIXME
+--					timerDarkEvocationCD:Start(0)
+--					timerFrostBlastCD:Start(0)
+--					timerHowlingBlizzardCD:Start(0)
 					DBM:Debug("HIGH PRIORITY EVENT. This is a 60 mana phase start")--Generating easier to use transcriptor events
 					DBM:AddMsg("Please share log of THIS pull and say 60 and which Necrotic Surge cast. Please know the exact pull when sharing log with DBM author")
-				elseif bossPower == 40 then--PTR LOG coded
---					timerFrostBlastCD:Start(85)
---					timerHowlingBlizzardCD:Start(21.2)
---					timerDarkEvocationCD:Start(88.3)
+				elseif bossPower == 40 then--Data verified Heroic KT
+					timerFrostBlastCD:Start(96.7)
+					timerHowlingBlizzardCD:Start(26.2)
+					timerDarkEvocationCD:Start(99.7)
 					DBM:Debug("HIGH PRIORITY EVENT. This is a 40 mana phase start")--Generating easier to use transcriptor events
-					DBM:AddMsg("Please share log of THIS pull and say 40 and which Necrotic Surge cast. Please know the exact pull when sharing log with DBM author")
-				elseif bossPower == 20 then--TODO, FIXME
---					timerFrostBlastCD:Start(85)--Speculation
---					timerHowlingBlizzardCD:Start(0)
---					timerDarkEvocationCD:Start(0)
+				elseif bossPower == 20 then--Data verified Heroic KT
+					timerFrostBlastCD:Start(87)--87-88.3
+					timerHowlingBlizzardCD:Start(16.5)--16.5-17.7
+					timerDarkEvocationCD:Start(90)--90-91.3
 					DBM:Debug("HIGH PRIORITY EVENT. This is a 20 mana phase start")--Generating easier to use transcriptor events
-					DBM:AddMsg("Please share log of THIS pull and say 20 and which Necrotic Surge cast. Please know the exact pull when sharing log with DBM author")
 				else--100/0--Data verified from live normal and heroic KT
 					timerFrostBlastCD:Start(47.1)--47-48.5
 					timerDarkEvocationCD:Start(50.6)--50-52.3
