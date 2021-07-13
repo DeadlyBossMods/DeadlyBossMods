@@ -178,7 +178,7 @@ function mod:SPELL_CAST_START(args)
 		timerSoulFractureCD:Start()
 	elseif spellId == 348428 and self:AntiSpam(3, 1) then
 		warnPiercingWail:Show()
-	elseif spellId == 352999 or spellId == 346459 then--346459 confirmed heroic, 352999 unknown
+	elseif spellId == 352999 or spellId == 346459 then--346459 confirmed heroic/heroic, 352999 unknown
 		self.vb.wrathIcon = 1
 		self.vb.spikeIcon = 1
 		timerGlacialWrathCD:Start()

@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(175730)
 mod:SetEncounterID(2431)
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
-mod:SetHotfixNoticeRev(20210710000000)--2021-07-10
+mod:SetHotfixNoticeRev(20210712000000)--2021-07-12
 mod:SetMinSyncRevision(20210706000000)
 --mod.respawnTime = 29
 
@@ -117,54 +117,60 @@ local allTimers = {
 		}
 	},
 	["heroic"] = {--Same as normal
-		[1] = {
+		[1] = {--Timers after Realign Fate
 			--Twist Fate
-			[354265] = {10.5, 49.2, 75.9, 13.5},
+			[354265] = {10, 49.2, 75.2, 35.2, 10.9},--Last one is 10.9-38.9 for some reason
 			--Call of Eternity
-			[350554] = {30, 38.8, 35.2},
+			[350554] = {29.4, 38.8, 35.1, 44.9, 41.3},
 			--Invoke Destiny
-			[351680] = {40.9, 40.8, 38.7},
+			[351680] = {40.4, 40.8, 38.7, 40},
 			--Fated Conjunction
-			[350421] = {19, 60.4, 26.7, 23.4},
+			[350421] = {18.5, 60.4, 26.7, 23.4, 48.5},
 		},
 		[3] = {
 			--Twist Fate
 			[354265] = {51.4, 48.6, 38.8},
 			--Call of Eternity
-			[350554] = {13.9, 73.1, 38.6},
+			[350554] = {13.9, 38.6, 38.6},--second one is either 38.8 or 73.1?
 			--Invoke Destiny
 			[351680] = {25.6, 44.7, 90},
 			--Fated Conjunction
-			[350421] = {11.4, 50.4, 51.1, 40.1},
+			[350421] = {11.1, 50.4, 51.1, 40.1},
 			--Extemporaneous Fate
-			[353195] = {46.7, 46.2, 43.7},--DIFFERENT FROM NORMAL
+			[353195] = {36.7, 46.2, 43.7},--Huge variations, 36-50
 		}
 	},
 	["normal"] = {--Same as heroic
-		[1] = {
+		[1] = {--Timers after Realign Fate
 			--Twist Fate
-			[354265] = {10.5, 49.2, 75.9, 13.5},
+			[354265] = {10, 49.2, 75.2, 35.2, 10.9},--Last one is 10.9-38.9 for some reason
 			--Call of Eternity
-			[350554] = {30, 38.8, 35.2},
+			[350554] = {29.4, 38.8, 35.1, 44.9, 41.3},
 			--Invoke Destiny
-			[351680] = {40.9, 40.8, 38.7},
+			[351680] = {40.4, 40.8, 38.7, 40},
 			--Fated Conjunction
-			[350421] = {19, 60.4, 26.7, 23.4},
+			[350421] = {18.5, 60.4, 26.7, 23.4, 48.5},
 		},
 		[3] = {
 			--Twist Fate
 			[354265] = {51.4, 48.6, 38.8},
 			--Call of Eternity
-			[350554] = {13.9, 73.1, 38.6},
+			[350554] = {13.9, 38.6, 38.6},--second one is either 38.8 or 73.1?
 			--Invoke Destiny
 			[351680] = {25.6, 44.7, 90},
 			--Fated Conjunction
-			[350421] = {11.4, 50.4, 51.1, 40.1},
+			[350421] = {11.1, 50.4, 51.1, 40.1},
 			--Extemporaneous Fate
-			[353195] = {36.7, 52.6, 50.6},--DIFFERENT FROM HEROIC
+			[353195] = {36.7, 46.2, 43.7},--DIFFERENT FROM HEROIC
 		}
 	},
 }
+
+--Attempts to fix destiny timer when it's 73.1 instead of 38.6
+--This schedule function will only run if it doesn't come on time, and restart the timer for remainder of 73.1
+local function fixEternity(self)
+	timerCallofEternityCD:Update(50, 73.1, self.vb.eternityCount+1)
+end
 
 function mod:OnCombatStart(delay)
 	self.vb.DebuffIcon = 1
@@ -203,6 +209,7 @@ function mod:OnCombatStart(delay)
 	if self.Options.NPAuraOnBurdenofDestiny then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
+	DBM:AddMsg("Abilities on this fight can be a little buggy and sometimes skip casts, and cause other abilities to come out of sequence at different times. DBM timers attempt to match the most common scenario of events but sometimes fight will do it's own thing")
 end
 
 function mod:OnCombatEnd()
@@ -237,10 +244,14 @@ function mod:SPELL_CAST_START(args)
 			timerInvokeDestinyCD:Start(timer, self.vb.destinyCount+1)
 		end
 	elseif spellId == 350554 then--Two sub cast IDs, but one primary?
+		self:Unschedule(fixEternity)
 		self.vb.eternityCount = self.vb.eternityCount + 1
 		local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.eternityCount+1]
 		if timer then
 			timerCallofEternityCD:Start(timer, self.vb.eternityCount+1)
+			if (self.vb.eternityCount+1) == 2 and self.vb.phase == 3 then
+				self:Schedule(50, fixEternity, self)
+			end
 		end
 	elseif (spellId == 350421 or spellId == 353426 or spellId == 350169) then--350421 confiremd, others unknown
 		self.vb.conjunctionCount = self.vb.conjunctionCount + 1
