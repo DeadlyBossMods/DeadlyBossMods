@@ -403,10 +403,10 @@ function mod:SPELL_AURA_REMOVED(args)
 				timerFatedConjunctionCD:Start(24.6, 1)
 				timerGrimPortentCD:Start(45.6, 1)
 			else
-				timerTwistFateCD:Start(10.5, 1)--CAST_START
-				timerFatedConjunctionCD:Start(19, 1)
-				timerCallofEternityCD:Start(30.4, 1)
-				timerInvokeDestinyCD:Start(41.5, 1)
+				timerTwistFateCD:Start(10, 1)--CAST_START
+				timerFatedConjunctionCD:Start(18.5, 1)
+				timerCallofEternityCD:Start(29.4, 1)
+				timerInvokeDestinyCD:Start(40.4, 1)
 			end
 		else--Second cast
 			self:SetStage(3)
@@ -419,7 +419,7 @@ function mod:SPELL_AURA_REMOVED(args)
 				timerTwistFateCD:Start(48.9, 1)
 				--timerGrimPortentCD:Start(2, 1)
 			else
-				timerFatedConjunctionCD:Start(11.4, 1)--11.4-12.1
+				timerFatedConjunctionCD:Start(11.1, 1)--11.4-12.1
 				timerCallofEternityCD:Start(13.9, 1)--13.9-14.5
 				timerInvokeDestinyCD:Start(25.6, 1)
 				timerExtemporaneousFateCD:Start(self:IsHeroic() and 46.7 or 36.7, 1)
