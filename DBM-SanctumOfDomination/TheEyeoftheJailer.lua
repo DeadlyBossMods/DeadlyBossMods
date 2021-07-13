@@ -44,7 +44,7 @@ local warnPhase								= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 
 local warnPiercingLens						= mod:NewCastAnnounce(350803, 2, nil, nil, false)--Boss effectively spams this every 1-4 seconds
 local warnDraggingChains					= mod:NewTargetNoFilterAnnounce(358609, 2)
 local warnAssailingLance					= mod:NewCastAnnounce(348074, 4)
-local warnHopelessLethargy					= mod:NewTargetNoFilterAnnounce(350604, 2)--Mythic
+local warnHopelessLethargy					= mod:NewTargetNoFilterAnnounce(350604, 2, nil, nil, 31589)--Mythic
 --Stage Two: Double Vision
 local warnTitanicDeathGaze					= mod:NewCountAnnounce(349030, 2)
 local warnDesolationBeam					= mod:NewTargetNoFilterAnnounce(350847, 2)
