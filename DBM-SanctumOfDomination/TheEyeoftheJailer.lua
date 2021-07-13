@@ -5,8 +5,8 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(175725)
 mod:SetEncounterID(2433)
 --mod:SetUsedIcons(1, 2, 3)
-mod:SetHotfixNoticeRev(20210706000000)--2021-07-06
-mod:SetMinSyncRevision(20210706000000)
+mod:SetHotfixNoticeRev(20210713000000)--2021-07-13
+mod:SetMinSyncRevision(20210713000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
@@ -44,7 +44,7 @@ local warnPhase								= mod:NewPhaseChangeAnnounce(2, nil, nil, nil, nil, nil, 
 local warnPiercingLens						= mod:NewCastAnnounce(350803, 2, nil, nil, false)--Boss effectively spams this every 1-4 seconds
 local warnDraggingChains					= mod:NewTargetNoFilterAnnounce(358609, 2)
 local warnAssailingLance					= mod:NewCastAnnounce(348074, 4)
-local warnHopelessLethargy					= mod:NewTargetNoFilterAnnounce(350604, 2)--Mythic
+local warnHopelessLethargy					= mod:NewTargetNoFilterAnnounce(350604, 2, nil, nil, 31589)--Mythic
 --Stage Two: Double Vision
 local warnTitanicDeathGaze					= mod:NewCountAnnounce(349030, 2)
 local warnDesolationBeam					= mod:NewTargetNoFilterAnnounce(350847, 2)
@@ -60,8 +60,8 @@ local specWarnDeathlink						= mod:NewSpecialWarningDefensive(350828, nil, nil, 
 local specWarnDeathlinkTaunt				= mod:NewSpecialWarningTaunt(351143, nil, nil, nil, 1, 2)
 local specWarnDraggingChains				= mod:NewSpecialWarningYou(358609, nil, nil, nil, 1, 2)
 local yellDraggingChains					= mod:NewYell(358609)
-local specWarnHopelessLethargy				= mod:NewSpecialWarningMoveAway(350604, nil, nil, nil, 1, 2, 4)--Mythic
-local yellHopelessLethargy					= mod:NewYell(350604)
+local specWarnHopelessLethargy				= mod:NewSpecialWarningMoveAway(350604, nil, 31589, nil, 1, 2, 4)--Mythic
+local yellHopelessLethargy					= mod:NewYell(350604, 31589)
 --local specWarnGTFO						= mod:NewSpecialWarningGTFO(340324, nil, nil, nil, 1, 8)
 --Stage Two: Double Vision
 local specWarnDesolationBeam				= mod:NewSpecialWarningMoveAway(358610, nil, nil, nil, 1, 2)
@@ -76,8 +76,8 @@ local specWarnAnnihilatingGlare				= mod:NewSpecialWarningDodge(350764, nil, 143
 --mod:AddTimerLine(BOSS)
 --Stage One: His Gaze Upon You
 local timerDeathlinkCD						= mod:NewCDCountTimer(10.9, 350828, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.DEADLY_ICON..DBM_CORE_L.TANK_ICON)
-local timerHopelessLethargyCD				= mod:NewCDCountTimer(20.2, 350604, nil, nil, nil, 3, nil, DBM_CORE_L.MYTHIC_ICON)
---local timerFractureSoulCD					= mod:NewCDCountTimer(11, 350022, nil, nil, nil, 3)
+local timerHopelessLethargyCD				= mod:NewCDCountTimer(47.3, 350604, 31589, nil, nil, 3, nil, DBM_CORE_L.MYTHIC_ICON)--Shortname "Slow"
+local timerFractureSoulCD					= mod:NewCDCountTimer(11, 350022, nil, nil, nil, 3)
 --local timerStygianAbductorCD				= mod:NewCDCountTimer(20.6, 346767, nil, nil, nil, 3, nil, nil, nil, 1, 3)--Not actual spellID, but compatible one
 ----Add
 local timerAssailingLanceCD					= mod:NewCDTimer(8.5, 348074, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.DEADLY_ICON..DBM_CORE_L.TANK_ICON)--Add
@@ -89,7 +89,7 @@ local timerScornandIreCD					= mod:NewCDTimer(12.1, 355232, nil, nil, nil, 3, ni
 local timerSlothfulCorruptionCD				= mod:NewCDTimer(23.8, 350713, nil, nil, nil, 3, nil, DBM_CORE_L.MAGIC_ICON)
 local timerSpreadingMiseryCD				= mod:NewCDTimer(12.1, 350816, nil, nil, nil, 3)
 --Stage Three: Immediate Extermination
-local timerAnnihilatingGlareCD				= mod:NewCDCountTimer(23, 350764, 143444, nil, nil, 3)--actual CD between casts unknown
+local timerAnnihilatingGlareCD				= mod:NewCDCountTimer(23, 350764, 143444, nil, nil, 3)--Shortname "Laser"
 
 --local berserkTimer						= mod:NewBerserkTimer(600)
 
@@ -138,12 +138,12 @@ function mod:OnCombatStart(delay)
 	self.vb.deathlinkCount = 0
 	self.vb.abductorCount = 0
 	self.vb.glareCount = 0
-	timerDeathlinkCD:Start(4.6-delay, 1)
---	timerFractureSoulCD:Start(7-delay, 1)
+	timerDeathlinkCD:Start(4.4-delay, 1)
+	timerFractureSoulCD:Start(6.8-delay, 1)
 --	timerStygianAbductorCD:Start(9.7-delay, 1)--UNKNOWN, spawn only in transcriptor
-	timerAnnihilatingGlareCD:Start(25.2-delay, 1)
+	timerAnnihilatingGlareCD:Start(25.1-delay, 1)
 	if self:IsMythic() then
-		timerHopelessLethargyCD:Start(9.4-delay, 1)
+		timerHopelessLethargyCD:Start(9.4-delay, 1)--9-11
 	end
 --	berserkTimer:Start(-delay)
 --	if self.Options.InfoFrame then
@@ -216,13 +216,13 @@ function mod:SPELL_CAST_START(args)
 			timerDeathlinkCD:Stop()
 			timerTitanticDeathGazeCD:Stop()
 			timerDesolationBeamCD:Stop()
---			timerFractureSoulCD:Stop()
+			timerFractureSoulCD:Stop()
 			--Deathseeker Eyes
 			timerSlothfulCorruptionCD:Stop()
 			timerSpreadingMiseryCD:Stop()
 			timerDeathlinkCD:Start(8.2, 1)
---			timerFractureSoulCD:Start(16.3, 1)
-			timerDesolationBeamCD:Start(15.4, 1)
+			timerFractureSoulCD:Start(10.5, 1)--10-13
+			timerDesolationBeamCD:Start(self:IsMythic() and 13.8 or 15.4, 1)--Can be massive delayed for some reason
 			timerAnnihilatingGlareCD:Start(25, self.vb.glareCount+1)
 --			timerStygianAbductorCD:Start(27.7, 1)--VERIFY with trancsriptor
 			if self:IsMythic() then
@@ -237,7 +237,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if spellId == 350022 then
 		--Phase 2 is 15.8-18
 		self.vb.shatterCount = self.vb.shatterCount + 1
---		timerFractureSoulCD:Start(self.vb.phase == 2 and 15 or self.vb.phase == 1 and 10.9, self.vb.shatterCount+1)
+--		timerFractureSoulCD:Start(self.vb.phase == 2 and 9 or self.vb.phase == 1 and 10.1, self.vb.shatterCount+1)
 	elseif spellId == 351835 then
 		timerSlothfulCorruptionCD:Start(nil, args.sourceGUID)--Cast only once?
 	end
@@ -313,17 +313,20 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnPhase:Play("ptwo")
 		timerDeathlinkCD:Stop()
 --		timerStygianAbductorCD:Stop()
---		timerFractureSoulCD:Stop()
+		timerFractureSoulCD:Stop()
 		timerHopelessLethargyCD:Stop()
 		--Eye of the Jailer
-		timerDesolationBeamCD:Start(8.4, 1)
---		timerFractureSoulCD:Start(15.7, 1)--RECHECK ME AGAIN
-		timerTitanticDeathGazeCD:Start(18)
+		timerFractureSoulCD:Start(14, 1)
 		--Deathseeker Eyes (Initial casts are approx, they may be desynced a little)
 		timerSpreadingMiseryCD:Start(14.9)
 		timerSlothfulCorruptionCD:Start(24)
 		if self:IsMythic() then
-			timerScornandIreCD:Start(12)
+			timerScornandIreCD:Start(14)
+			timerDesolationBeamCD:Start(21.1, 1)
+			timerTitanticDeathGazeCD:Start(28.2)
+		else
+			timerDesolationBeamCD:Start(8.4, 1)
+			timerTitanticDeathGazeCD:Start(18)
 		end
 	end
 end
@@ -347,23 +350,23 @@ function mod:SPELL_AURA_REMOVED(args)
 			--Eye of the Jailer
 			timerTitanticDeathGazeCD:Stop()
 			timerDesolationBeamCD:Stop()
---			timerFractureSoulCD:Stop()
+			timerFractureSoulCD:Stop()
 			--Deathseeker Eyes
 			timerSlothfulCorruptionCD:Stop()
 			timerSpreadingMiseryCD:Stop()
 			--Eye of the Jailer
 			if self:IsMythic() then
 				--Pretty much all of these can be delayed by spell queue with one another
-				timerDeathlinkCD:Start(10.4, 1)--Usually 20ish when you get common order
---				timerFractureSoulCD:Start(11.3, 1)--Usually 14ish when you get the common order
+				timerDeathlinkCD:Start(8, 1)
+				timerFractureSoulCD:Start(10.8, 1)
 --				timerStygianAbductorCD:Start(11.7, 1)
-				timerHopelessLethargyCD:Start(11.7, 1)--fairly consistent but with a 1 second variance, and that variance throws chaos into deathlink and souls hatter orders
+				timerHopelessLethargyCD:Start(14.1, 1)
 			else--Non mythic is less likely to run into spell queue issues and be little more consistent without Hopeless Lethargy
 				timerDeathlinkCD:Start(8.9, 1)
 --				timerStygianAbductorCD:Start(15, 1)--VERIFY ME with transcriptor
---				timerFractureSoulCD:Start(11, 1)
+				timerFractureSoulCD:Start(11, 1)
 			end
-			timerAnnihilatingGlareCD:Start(28.9, self.vb.glareCount+1)
+			timerAnnihilatingGlareCD:Start(28.6, self.vb.glareCount+1)
 		end
 	elseif spellId == 355240 or spellId == 355245 then--Scorn
 		if args:IsPlayer() then

@@ -60,7 +60,7 @@ local timerChainsofEternityCD						= mod:NewCDCountTimer(27.9, 347269, nil, nil,
 local timerPedatorsHowlCD							= mod:NewCDCountTimer(25.5, 347283, nil, nil, nil, 3, nil, DBM_CORE_L.MAGIC_ICON)
 local timerHungeringMistCD							= mod:NewNextCountTimer(95.1, 347679, nil, nil, nil, 6, nil, DBM_CORE_L.DEADLY_ICON)
 local timerRemnantofForgottenTormentsCD				= mod:NewCDCountTimer(30.4, 352368, L.Remnant, nil, nil, 2, nil, DBM_CORE_L.HEROIC_ICON)
-local timerGraspofDeathCD							= mod:NewCDCountTimer(27.8, 347668, nil, nil, nil, 4, nil, DBM_CORE_L.INTERRUPT_ICON)
+local timerGraspofDeathCD							= mod:NewCDCountTimer(26.7, 347668, nil, nil, nil, 4, nil, DBM_CORE_L.INTERRUPT_ICON)
 local timerFuryoftheAgesCD							= mod:NewCDCountTimer(36.4, 347490, nil, "Tank|RemoveEnrage", nil, 5, nil, DBM_CORE_L.ENRAGE_ICON)
 
 local berserkTimer									= mod:NewBerserkTimer(600)
@@ -86,10 +86,10 @@ function mod:OnCombatStart(delay)
 	self.vb.overpowerCount = 0
 	self.vb.furyCount = 0
 	if self:IsMythic() then--Mythic PTR timers, need checking on live
-		timerPedatorsHowlCD:Start(5.1-delay, 1)
-		timerGraspofDeathCD:Start(7.6-delay, 1)
+		timerPedatorsHowlCD:Start(5-delay, 1)
+		timerGraspofDeathCD:Start(7-delay, 1)
 		timerOverpowerCD:Start(10-delay, 1)
-		timerChainsofEternityCD:Start(13.6-delay, 1)
+		timerChainsofEternityCD:Start(13.5-delay, 1)
 		timerHungeringMistCD:Start(24.2-delay, 1)
 	--	berserkTimer:Start(420-delay)
 	else--Heroic verified on live, might be same as mythic PTR
