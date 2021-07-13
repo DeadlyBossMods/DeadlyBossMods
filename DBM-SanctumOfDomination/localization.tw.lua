@@ -29,8 +29,8 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(2439)
 
 L:SetMiscLocalization({
-	--AgathaBlade		= "倒在我的劍下吧！",
-	--AradneStrike	= "你們絕無勝算！",
+	AgathaBlade		= "死在我的利刃之下！",
+	AradneStrike	= "你們毫無勝算！",
 	Fragment		= "裂片 "--Space is intentional, leave a space to add a number after it
 })
 
@@ -55,8 +55,8 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(2446)
 
 L:SetMiscLocalization({
-	--Dissection	= "解剖！",
-	Dismantle	= "分解"
+	Dissection	= "分解。",
+	Dismantle	= "瓦解。"
 })
 
 ---------------------------
