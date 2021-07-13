@@ -209,7 +209,7 @@ function mod:OnCombatStart(delay)
 	if self.Options.NPAuraOnBurdenofDestiny then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
-	DBM:AddMsg("Abilities on this fight can be a little buggy and sometimes skip casts/change order. DBM timers attempt to match the most common scenario of events but sometimes fight will do it's own thing")
+	DBM:AddMsg("Abilities on this fight can be volatile and sometimes skip casts/change order. DBM timers attempt to match the most common scenario of events but sometimes fight will do it's own thing")
 end
 
 function mod:OnCombatEnd()

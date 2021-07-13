@@ -5,8 +5,8 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(175727)
 mod:SetEncounterID(2434)
 mod:SetUsedIcons(1, 2, 3, 4)
-mod:SetHotfixNoticeRev(20210706000000)--2021-07-06
---mod:SetMinSyncRevision(20201222000000)
+mod:SetHotfixNoticeRev(20210713000000)--2021-07-13
+mod:SetMinSyncRevision(20210713000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
@@ -41,7 +41,7 @@ mod:RegisterEventsInCombat(
 local warnDefiance							= mod:NewTargetNoFilterAnnounce(350650, 3, nil, false)--Even with 1 second aggregation might be spammy based on add count, plus mythic
 local warnBrandofTorment					= mod:NewTargetNoFilterAnnounce(350647, 3)
 local warnRuinblade							= mod:NewStackAnnounce(350422, 2, nil, "Tank|Healer")
-local warnShacklesRemaining					= mod:NewCountAnnounce(350415, 1)
+local warnShacklesRemaining					= mod:NewCountAnnounce(350415, 1, nil, nil, 298215)
 --Adds
 local warnSpawnMawsworn						= mod:NewCountAnnounce(350615, 3)
 --local warnVesselofTorment					= mod:NewTargetNoFilterAnnounce(350851, 4)--FIXME
@@ -60,12 +60,12 @@ local specWarnWarmongerShackles				= mod:NewSpecialWarningSwitch(348985, nil, ni
 --local specWarnGTFO						= mod:NewSpecialWarningGTFO(340324, nil, nil, nil, 1, 8)
 
 --mod:AddTimerLine(BOSS)
-local timerTormentCD						= mod:NewCDTimer(35, 352158, nil, nil, nil, 3, nil, nil, true)--Ability is reset by eruption
-local timerTormentedEruptionsCD				= mod:NewCDTimer(160.7, 349985, nil, nil, nil, 3, nil, nil, true)--Tied to bosses energy cycle
-local timerSpawnMawswornCD					= mod:NewCDTimer(57.5, 350615, nil, nil, nil, 1, nil, nil, true)--Ability is reset by eruption
+local timerTormentCD						= mod:NewCDCountTimer(35, 352158, nil, nil, nil, 3, nil, nil, true)--Ability is reset by eruption?
+local timerTormentedEruptionsCD				= mod:NewCDCountTimer(160.7, 349985, nil, nil, nil, 3, nil, nil, true)--Tied to bosses energy cycle
+local timerSpawnMawswornCD					= mod:NewCDCountTimer(57.5, 350615, nil, nil, nil, 1, nil, nil, true)--Ability is reset by eruption?
 local timerBrandofTormentCD					= mod:NewCDCountTimer(16, 350648, nil, nil, nil, 3)--Secondary ability cast in 3s after each spawn mawsworn
-local timerRuinbladeCD						= mod:NewCDTimer(32.9, 350422, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)--Ability is reset by eruption
---local timerShacklesCD						= mod:NewCDTimer(161, 350415, nil, nil, nil, 6)--Tied to bosses energy cycle
+local timerRuinbladeCD						= mod:NewCDCountTimer(32.9, 350422, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)--Ability is reset by eruption
+local timerShacklesCD						= mod:NewCDCountTimer(161, 350415, 298215, nil, nil, 6)--Tied to bosses energy cycle
 --Hellscream
 local timerHellscream						= mod:NewCastTimer(35, 350411, nil, nil, nil, 2, nil, DBM_CORE_L.DEADLY_ICON)
 
@@ -79,17 +79,66 @@ mod:AddNamePlateOption("NPAuraOnDefiance", 350650)
 mod:AddNamePlateOption("NPAuraOnTormented", 350649)
 
 local castsPerGUID = {}
---"Warmonger's Shackles-350415-npc:175727 = pull:35.3, 134.0, 64.4, 62.0", -- [6]
---TODO, sequencing is NOT the final answer. This may be temporary. there is a better way.
---What's known
---eruption resets timers
---Shackles probably affects timers in some way but can't determine it since the affect is more than just "resets on applied/removed"
---However, duration of the phase DOES matter yet the timers don't pause either
 mod.vb.shacklesCount = 0
 mod.vb.brandIcon = 1
 mod.vb.mawswornSpawn = 0
 mod.vb.mawswornIcon = 8
 mod.vb.brandCount = 0
+mod.vb.eruptionCount = 0
+mod.vb.ruinbladeCount = 0
+mod.vb.tormentCount = 0
+local difficultyName = "normal"
+--TODO, sequencing is NOT the final answer. This may be temporary. there is a better way.
+--this is lazier method that's accurate enough for most people except the lowest of dps
+--What's known
+--eruption resets timers
+--Shackles probably affects timers in some way but can't determine it since the affect is more than just "resets on applied/removed"
+--Duration of the phase DOES matter yet the timers don't pause either
+--However, the amount of effort to figure out how timers ACTUALLY work is just not worth it anymore.
+--If blizzard wants to design fights with bad timers, then the mods will just have bad timers. We're not paid enough to deal with this crap
+--These timers will only be accurate for the guilds who they are based off of and only until their gear improves
+local allTimers = {
+	["mythic"] = {
+		--Ruinblade
+		[350422] = {8.1, 32.5, 34, 32.7, 48.6, 32.8, 33},
+		--Torment
+		[350554] = {8.1, 51, 48.5, 61.9},
+		--Call Mawsworn
+		[351680] = {24, 57.1, 105.7},
+		--Hellscream
+		[350421] = {55, 164},
+	},
+	["heroic"] = {
+		--Ruinblade
+		[350422] = {8.1, 32.5, 32.9, 42, 52.4, 32.8, 32.8, 37.1, 60, 33.3, 34.6, 85.1},--The ones that aren't 32.5 can vary quite a bit
+		--Torment
+		[350554] = {11.8, 45.5, 45.5, 68.3, 43.9, 44.1, 63, 43.8, 43.9, 70.8},--The high ones can vary 63-82
+		--Call Mawsworn
+		[351680] = {28, 161.5, 60, 94.3, 59, 96.9},
+		--Hellscream
+		[350421] = {80, 161.5, 98.1, 60, 60},--Last one can be massively delayed if group is really bad
+	},
+	["normal"] = {
+		--Ruinblade
+		[350422] = {8.1, 32.5, 32.7, 43.7, 53.4, 32.8, 36.4. 45, 65.6, 32.8, 35.2, 44.9},
+		--Torment
+		[350554] = {14, 46.1, 46.2, 76.5, 46.1. 45, 88.7, 45, 45},
+		--Call Mawsworn
+		[351680] = {28, 165, 181, 150},
+		--Hellscream
+		[350421] = {80, 164.5, 178.8},
+	},
+--	["lfr"] = {
+		--Ruinblade
+--		[350422] = {},
+		--Torment
+--		[350554] = {},
+		--Call Mawsworn
+--		[351680] = {},
+		--Hellscream
+--		[350421] = {},
+--	},
+}
 
 --Assume these won't be exposed forever
 --"<7453.53 00:02:38> [CLEU] SPELL_CAST_SUCCESS#Creature-0-2012-2450-10555-178915-000015B87A#Cosmetic Anima Missile Stalker##nil#353048#Torment Missile C#nil#nil", -- [131256]
@@ -102,11 +151,28 @@ function mod:OnCombatStart(delay)
 	self.vb.mawswornSpawn = 0
 	self.vb.mawswornIcon = 8
 	self.vb.brandCount = 0
-	timerRuinbladeCD:Start(8.1-delay)
-	timerTormentCD:Start(11.8-delay)
-	timerBrandofTormentCD:Start(31.4-delay)
---	timerShacklesCD:Start(78.4-delay, 1)--Probably only one in entirety of fight that's somewhat consistent, but don't want to have timer for first and not rest, only leads to more questions
-	timerTormentedEruptionsCD:Start(130.5-delay)
+	self.vb.eruptionCount = 0
+	self.vb.ruinbladeCount = 0
+	self.vb.tormentCount = 0
+	timerRuinbladeCD:Start(8.1-delay, 1)
+	timerTormentCD:Start(11.8-delay, 1)
+	if self:IsMythic() then
+		difficultyName = "mythic"
+		timerSpawnMawswornCD:Start(24-delay, 1)
+		timerBrandofTormentCD:Start(26.4-delay, 1)
+		timerShacklesCD:Start(55-delay, 1)--Only one that's really consistent the whole fight
+	elseif self:IsHeroic() then
+		difficultyName = "heroic"
+		timerSpawnMawswornCD:Start(28-delay, 1)
+		timerBrandofTormentCD:Start(31.4-delay, 1)
+		timerShacklesCD:Start(80-delay, 1)--Only one that's really consistent the whole fight
+	else
+		difficultyName = "normal"
+		timerSpawnMawswornCD:Start(28-delay, 1)
+		timerBrandofTormentCD:Start(31.4-delay, 1)
+		timerShacklesCD:Start(80-delay, 1)--Only one that's really consistent the whole fight
+	end
+	timerTormentedEruptionsCD:Start(130-delay, 1)--Same across all
 --	berserkTimer:Start(-delay)
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(DBM_CORE_L.INFOFRAME_POWER)
@@ -115,7 +181,7 @@ function mod:OnCombatStart(delay)
 	if self.Options.NPAuraOnDefiance or self.Options.NPAuraOnTormented then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
-	DBM:AddMsg("There is no Hellscream/shackles timer because it wouldn't be accurate. If blizz scripts fight better, I'll add a timer")
+	DBM:AddMsg("Abilities on this fight can be volatile and sometimes skip casts/change order. DBM timers attempt to match the most common scenario of events but sometimes fight will do it's own thing")
 end
 
 function mod:OnCombatEnd()
@@ -127,6 +193,16 @@ function mod:OnCombatEnd()
 --	end
 	if self.Options.NPAuraOnDefiance or self.Options.NPAuraOnTormented then
 		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
+	end
+end
+
+function mod:OnTimerRecovery()
+	if self:IsMythic() then
+		difficultyName = "mythic"
+	elseif self:IsHeroic() then
+		difficultyName = "heroic"
+	else
+		difficultyName = "normal"
 	end
 end
 
@@ -159,13 +235,22 @@ function mod:SPELL_CAST_START(args)
 			end
 		end
 	elseif spellId == 350422 then
-		timerRuinbladeCD:Start()
+		self.vb.ruinbladeCount = self.vb.ruinbladeCount + 1
+--		timerRuinbladeCD:Start(nil, self.vb.ruinbladeCount+1)
+		local timer = allTimers[difficultyName][spellId][self.vb.ruinbladeCount+1]
+		if timer then
+			timerRuinbladeCD:Start(timer, self.vb.ruinbladeCount+1)
+		end
 	elseif spellId == 350615 then
 		self.vb.mawswornIcon = 8
 		self.vb.brandCount = 0
 		self.vb.mawswornSpawn = self.vb.mawswornSpawn + 1
 		warnSpawnMawsworn:Show(self.vb.mawswornSpawn)
-		timerSpawnMawswornCD:Start(self:IsMythic() and 47.7 or 57.5)
+--		timerSpawnMawswornCD:Start(self:IsMythic() and 47.7 or 57.5, self.vb.mawswornSpawn+1)
+		local timer = allTimers[difficultyName][spellId][self.vb.mawswornSpawn+1]
+		if timer then
+			timerSpawnMawswornCD:Start(timer, self.vb.mawswornSpawn+1)
+		end
 		if self.Options.SetIconOnMawsworn then--This icon method may be faster than GUID matching, but also risks being slower and less consistent if marker has nameplates off
 			self:ScanForMobs(177594, 0, 8, 4, 0.2, 15, "SetIconOnMawsworn")
 		end
@@ -176,23 +261,29 @@ function mod:SPELL_CAST_START(args)
 		specWarnWarmongerShackles:Show(self.vb.shacklesCount)
 		specWarnWarmongerShackles:Play("targetchange")
 --		timerShacklesCD:Start(999, self.vb.shacklesCount+1)
+		local timer = allTimers[difficultyName][spellId][self.vb.shacklesCount+1]
+		if timer then
+			timerShacklesCD:Start(timer, self.vb.shacklesCount+1)
+		end
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 349985 then
-		specWarnTormentedEruptions:Show()
+		self.vb.eruptionCount = self.vb.eruptionCount + 1
+		specWarnTormentedEruptions:Show(self.vb.eruptionCount)
 		specWarnTormentedEruptions:Play("watchstep")
-		timerTormentedEruptionsCD:Start()
-		timerSpawnMawswornCD:Stop()
-		timerTormentCD:Stop()
-		timerRuinbladeCD:Stop()
-		timerBrandofTormentCD:Stop()
-		timerBrandofTormentCD:Start(32.8)
-		timerRuinbladeCD:Start(38.9)
-		timerTormentCD:Start(41.3)--42-51 after eruption
-		timerSpawnMawswornCD:Start(53.7)--53.7-60 after an eruption
+		timerTormentedEruptionsCD:Start(nil, self.vb.eruptionCount+1)--160
+--		timerSpawnMawswornCD:Stop()
+--		timerTormentCD:Stop()
+--		timerRuinbladeCD:Stop()
+--		timerBrandofTormentCD:Stop()
+		--Below was an iff alternate to sequencing, but also had flaws
+--		timerBrandofTormentCD:Start(32.8, self.vb.brandCount+1)
+--		timerRuinbladeCD:Start(38.9, self.vb.ruinbladeCount+1)
+--		timerTormentCD:Start(33, self.vb.tormentCount+1)--33-51 after eruption
+--		timerSpawnMawswornCD:Start(53.7, self.vb.mawswornSpawn+1)--53.7-60 after an eruption
 	elseif spellId == 350648 then
 		self.vb.brandIcon = 1
 		self.vb.brandCount = self.vb.brandCount + 1
@@ -300,8 +391,13 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 349873 then--Torment (Script Activation)
+		self.vb.tormentCount = self.vb.tormentCount + 1
 		specWarnTorment:Show()
 		specWarnTorment:Play("watchstep")
-		timerTormentCD:Start(self:IsMythic() and 30 or 45)--Mythic can be anywhere between 30-49 outside of the eruption reset
+--		timerTormentCD:Start(45, self.vb.tormentCount+1)
+		local timer = allTimers[difficultyName][spellId][self.vb.tormentCount+1]
+		if timer then
+			timerTormentCD:Start(timer, self.vb.tormentCount+1)
+		end
 	end
 end
