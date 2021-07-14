@@ -543,7 +543,7 @@ L.AUTO_YELL_ANNOUNCE_TEXT.position 			= UnitName("player").." ({rt%%3$d})中了%
 L.AUTO_YELL_ANNOUNCE_TEXT.shortposition 	= "{rt%%1$d}%s %%2$d"--Icon, Spellname, number
 L.AUTO_YELL_ANNOUNCE_TEXT.combo				= "%s與%%s"--Spell name (from option, plus spellname given in arg)
 L.AUTO_YELL_ANNOUNCE_TEXT.repeatplayer		= UnitName("player")--Doesn't need translation, it's just player name spam
-L.AUTO_YELL_ANNOUNCE_TEXT.repeaticon		= "{rt%%2$d}"
+L.AUTO_YELL_ANNOUNCE_TEXT.repeaticon		= "{rt%%1$d}"
 
 L.AUTO_YELL_CUSTOM_FADE					= "%s已消退"
 L.AUTO_HUD_OPTION_TEXT					= "為$spell:%s顯示HudMap(不再作用)"
