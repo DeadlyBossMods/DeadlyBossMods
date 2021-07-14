@@ -207,7 +207,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.ChainsIcon = 1
 		self.vb.chainCount = self.vb.chainCount + 1
 		--They apply custom rule to only heroic in phase 2 and 3
-		local timer = (self:IsHeroic and self.vb.phase > 1 and 48.9) or 40.1
+		local timer = (self:IsHeroic() and self.vb.phase > 1 and 48.9) or 40.1
 		timerShadowsteelChainsCD:Start(timer, self.vb.chainCount+1)
 	elseif spellId == 355534 then--Shadowsteel Ember
 		timerReverberatingHammerCD:Stop()
@@ -274,7 +274,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self:AntiSpam(5, 1) then
 			self.vb.trapsIcon = 4
 			self.vb.trapCount = self.vb.trapCount + 1
-			local timer = (self:IsHeroic and self.vb.phase > 1 and 47.9) or 40
+			local timer = (self:IsHeroic() and self.vb.phase > 1 and 47.9) or 40
 			timerFlameclaspTrapCD:Start(timer, self.vb.trapCount+1)--Mythic still 47.9?
 		end
 		local icon = self.vb.trapsIcon
@@ -293,7 +293,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.ballsCount = self.vb.ballsCount + 1
 		specWarnSpikedBalls:Show(self.vb.ballsCount)
 		specWarnSpikedBalls:Play("targetchange")
-		local timer = (self:IsHeroic and self.vb.phase > 1 and 47.9) or 40.1
+		local timer = (self:IsHeroic() and self.vb.phase > 1 and 47.9) or 40.1
 		timerSpikedBallsCD:Start(timer, self.vb.ballsCount+1)
 	end
 end
