@@ -12,7 +12,7 @@ mod:SetMinSyncRevision(20210713000000)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 351779 350422 350615 350411 350415",
+	"SPELL_CAST_START 351779 350422 350615 350411",
 	"SPELL_CAST_SUCCESS 349985 350648",
 	"SPELL_AURA_APPLIED 350650 354055 350649 350422 350448 350647 351773",
 	"SPELL_AURA_APPLIED_DOSE 350422 350448",
@@ -106,7 +106,7 @@ local allTimers = {
 		--Call Mawsworn
 		[350615] = {24, 57.1, 105.7},
 		--Hellscream
-		[350421] = {55, 164},
+		[350411] = {55, 164},
 	},
 	["heroic"] = {
 		--Ruinblade
@@ -116,7 +116,7 @@ local allTimers = {
 		--Call Mawsworn
 		[350615] = {28, 161.5, 60, 94.3, 59, 96.9},
 		--Hellscream
-		[350421] = {80, 161.5, 98.1, 60, 60},--Last one can be massively delayed if group is really bad
+		[350411] = {80, 161.5, 98.1, 60, 60},--Last one can be massively delayed if group is really bad
 	},
 	["normal"] = {
 		--Ruinblade
@@ -126,7 +126,7 @@ local allTimers = {
 		--Call Mawsworn
 		[350615] = {28, 165, 181, 150},
 		--Hellscream
-		[350421] = {80, 164.5, 178.8},
+		[350411] = {80, 164.5, 178.8},
 	},
 --	["lfr"] = {
 		--Ruinblade
@@ -254,9 +254,8 @@ function mod:SPELL_CAST_START(args)
 		if self.Options.SetIconOnMawsworn then--This icon method may be faster than GUID matching, but also risks being slower and less consistent if marker has nameplates off
 			self:ScanForMobs(177594, 0, 8, 4, 0.2, 15, "SetIconOnMawsworn")
 		end
-	elseif spellId == 350411 then--Hellscream
+	elseif spellId == 350411 then--Hellscream/Shackles
 		timerHellscream:Start(self:IsHeroic() and 35 or self:IsMythic() and 25 or 50)--Heroic and mythic known, other difficulties not yet
-	elseif spellId == 350415 then--Warmonger Shackles
 		self.vb.shacklesCount = self.vb.shacklesCount + 1
 		specWarnWarmongerShackles:Show(self.vb.shacklesCount)
 		specWarnWarmongerShackles:Play("targetchange")
