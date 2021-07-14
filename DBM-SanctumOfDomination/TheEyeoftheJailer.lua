@@ -107,6 +107,11 @@ mod.vb.shatterCount = 0
 mod.vb.abductorCount = 0
 mod.vb.glareCount = 0
 
+--/run DBM:GetModByName("2442")TestYell(1)
+function mod:TestYell(icon)
+	yellScornandIre:Yell(icon)
+end
+
 local function scornandIreYellRepeater(self, text, runTimes)
 	yellScornandIre:Yell(text)
 	runTimes = runTimes + 1

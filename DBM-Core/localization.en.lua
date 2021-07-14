@@ -573,7 +573,7 @@ L.AUTO_YELL_ANNOUNCE_TEXT = {
 	shortposition 					= "{rt%%1$d}%s %%2$d",--Icon, Spellname, number
 	combo							= "%s and %%s",--Spell name (from option, plus spellname given in arg)
 	repeatplayer					= UnitName("player"),--Doesn't need translation, it's just player name spam
-	repeaticon						= "{rt%%2$d}"--Doesn't need translation. It's just icon spam
+	repeaticon						= "{rt%%1$d}"--Doesn't need translation. It's just icon spam
 }
 L.AUTO_YELL_CUSTOM_POSITION			= "{rt%d}%s"--Doesn't need translating. Has no strings (Used in niche situations such as icon repeat yells)
 L.AUTO_YELL_CUSTOM_POSITION2		= "{rt%d}%s{rt%d}"--Doesn't need translating. Has no strings (Deprecated, will be removed soon)

@@ -48,7 +48,7 @@ local warnPiercingWail								= mod:NewCastAnnounce(348428, 2)
 local warnOblivionsEcho								= mod:NewTargetNoFilterAnnounce(347292, 2)
 local warnFrostBlast								= mod:NewTargetNoFilterAnnounce(348756, 4)
 --Stage Two: The Phylactery Opens
-local warnFrostboundDevoted							= mod:NewSpellAnnounce("ej23422", 2, 352096, false)
+local warnFrostboundDevoted							= mod:NewSpellAnnounce("ej23781", 2, 352096, false)
 local warnSoulReaver								= mod:NewSpellAnnounce("ej23423", 2, 352094)
 local warnAbom										= mod:NewSpellAnnounce("ej23424", 2, 352092)
 local warnDemolish									= mod:NewCastAnnounce(349799, 2)
