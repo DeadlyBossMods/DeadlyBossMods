@@ -81,14 +81,9 @@ function mod:OnCombatStart(delay)
 	self.vb.malevolenceCount = 0
 	self.vb.shatterCount = 0
 	timerOrbofTormentCD:Start(13.1-delay)
-	timerSufferingCD:Start(20.4-delay)
-	if self:IsHard() then
-		timerGraspofMaliceCD:Start(38)
-		timerMalevolenceCD:Start(48)
-	else
-		timerMalevolenceCD:Start(33)
-		timerGraspofMaliceCD:Start(66)
-	end
+	timerSufferingCD:Start(19.4-delay)
+	timerMalevolenceCD:Start(29.7)--29-48
+	timerGraspofMaliceCD:Start(38)--38-66
 --	berserkTimer:Start(-delay)
 --	if self.Options.InfoFrame then
 --		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(328897))
