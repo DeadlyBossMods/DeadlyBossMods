@@ -5,8 +5,8 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(175726)--Skyja (TODO, add other 2 and set health to highest?)
 mod:SetEncounterID(2429)
 mod:SetUsedIcons(8, 7, 6, 4, 3, 2, 1)
-mod:SetHotfixNoticeRev(20210706000000)--2021-07-06
-mod:SetMinSyncRevision(20210520000000)
+mod:SetHotfixNoticeRev(20210713000000)--2021-07-13
+mod:SetMinSyncRevision(20210713000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
@@ -30,7 +30,7 @@ mod:RegisterEventsInCombat(
 --TODO, marking anything else??
 --TODO, mythic timer updates when I have more patience to actually resolve how they update on phase 2 transition. It'd be nice if phase 2 was actually in combat log
 --[[
-(ability.id = 350202 or ability.id = 350342 or ability.id = 350365 or ability.id = 352756 or ability.id = 350385 or ability.id = 352752 or ability.id = 350467 or ability.id = 352744 or ability.id = 350541 or ability.id = 350482 or ability.id = 350687 or ability.id = 350475 or ability.id = 355294) and type = "begincast"
+(ability.id = 350202 or ability.id = 350342 or ability.id = 350365 or ability.id = 352756 or ability.id = 350385 or ability.id = 352752 or ability.id = 350467 or ability.id = 352744 or ability.id = 350541 or ability.id = 350482 or ability.id = 350687 or ability.id = 350475 or ability.id = 355294 or ability.id = 350339) and type = "begincast"
  or (ability.id = 350745 or ability.id = 350286) and type = "cast"
  or (target.id = 177095 or target.id = 177094) and type = "death"
 --]]
@@ -167,14 +167,14 @@ function mod:OnCombatStart(delay)
 	self.vb.recallCount = 0
 	self.vb.linkEssence = 0
 	--Kyra
-	timerUnendingStrikeCD:Start(6.8-delay)
+	timerUnendingStrikeCD:Start(6.3-delay)
 	timerFormlessMassCD:Start(12-delay, 1)
-	timerWingsofRageCD:Start(39.7-delay, 1)
+	timerWingsofRageCD:Start(39.1-delay, 1)
 	--Signe
 	timerSongofDissolutionCD:Start(15.4-delay, 1)--15-19
 	timerReverberatingRefrainCD:Start(60.6-delay, 1)--60+
 	--Skyja
-	timerCalloftheValkyrCD:Start(11-delay, 1)--11-15
+	timerCalloftheValkyrCD:Start(10.4-delay, 1)--10.4-15
 	if self:IsMythic() then
 		timerFragmentsofDestinyCD:Start(4.5-delay, 1)
 		if self.Options.InfoFrame then
@@ -262,7 +262,7 @@ function mod:SPELL_CAST_START(args)
 		timerCalloftheValkyrCD:Start(nil, self.vb.valkCount+1)
 	elseif spellId == 352744 or spellId == 350541 then
 		self.vb.fragmentCount = self.vb.fragmentCount + 1
-		local timer = self:IsMythic() and (self.vb.phase == 1 and 34.3 or 37.3) or 47.3
+		local timer = self:IsMythic() and (self.vb.phase == 1 and 33.2 or 37.3) or 47.3
 		timerFragmentsofDestinyCD:Start(timer, self.vb.fragmentCount+1)
 	elseif spellId == 350482 then
 		self.vb.linkEssence = self.vb.linkEssence + 1
@@ -285,7 +285,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 350286 then
 		self.vb.songCount = self.vb.songCount + 1
-		timerSongofDissolutionCD:Start(nil, self.vb.songCount+1)
+		timerSongofDissolutionCD:Start(self:IsEasy() and 37.6 or 19.4, self.vb.songCount+1)
 		if self:CheckInterruptFilter(args.sourceGUID, false, false) then
 			specWarnSongofDissolution:Show(args.sourceName)
 			specWarnSongofDissolution:Play("kickcast")
@@ -294,25 +294,23 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self:SetStage(2)
 		--self.vb.fragmentCount = 0
 		timerCalloftheValkyrCD:Stop()
-		timerPierceSoulCD:Start(11.7)
-		timerResentmentCD:Start(30, 1)--30-32
-		timerCalloftheValkyrCD:Start(44, 1)
-		if not self:IsLFR() then--Normal, heroic, mythic
-			timerFragmentsofDestinyCD:Stop()
-			timerFragmentsofDestinyCD:Start(15.4, self.vb.fragmentCount+1)--15-17.4. Heroic and normal confirmed, mythic and LFR?
-			if self:IsHard() then--Heroic and Mythic
-				timerLinkEssenceCD:Start(24.7, 1)
-				timerWordofRecallCD:Start(73.7, 1)
-			end
-			if self.Options.InfoFrame and not self:IsMythic() then--Mechanic starts in phase 2 on heroic, it already started on mythic in phase 1
-				DBM.InfoFrame:SetHeader(OVERVIEW)
-				DBM.InfoFrame:Show(5, "function", updateInfoFrame, false, true, true)
-			end
-			--TODO, actually spend time figuring out how to start timers when valks die AFTER it's phase 2
---			if self:IsMythic() then
---				timerWingsofRageCD:Start()
---				timerReverberatingRefrainCD:Start()
---			end
+		timerPierceSoulCD:Start(11.7)--11.7-13.3
+		timerResentmentCD:Start(28.7, 1)--28.7-33.6
+		timerCalloftheValkyrCD:Start(self:IsEasy() and 30 or 42.6, 1)--42.6-44
+		timerFragmentsofDestinyCD:Stop()
+		timerFragmentsofDestinyCD:Start(15.4, self.vb.fragmentCount+1)--15-17.4. Heroic and normal confirmed, mythic and LFR?
+		if self:IsHard() then--Heroic and Mythic
+			timerLinkEssenceCD:Start(24.7, 1)
+			timerWordofRecallCD:Start(72.5, 1)
+		end
+		if self.Options.InfoFrame and not self:IsMythic() then--Mechanic starts in phase 2 on heroic, it already started on mythic in phase 1
+			DBM.InfoFrame:SetHeader(OVERVIEW)
+			DBM.InfoFrame:Show(5, "function", updateInfoFrame, false, true, true)
+		end
+		if self:IsMythic() then
+			--TODO, actually see what happens if they aren't dead by the time these timers expire
+			timerWingsofRageCD:Start(56.7)
+			timerReverberatingRefrainCD:Start(95.7)
 		end
 		berserkTimer:Cancel()--Tecnically not accurate, Phase 1 berserk stops when both valks die. TODO, separate object
 		berserkTimer:Start(602)--Phase 2

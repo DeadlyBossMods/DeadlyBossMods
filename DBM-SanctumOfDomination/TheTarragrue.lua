@@ -153,23 +153,14 @@ function mod:SPELL_CAST_START(args)
 		specWarnHungeringMist:Show()
 		specWarnHungeringMist:Play("watchstep")
 		--Start timers for after
---		if self:IsMythic() then--Likely still same as heroic
---			timerPedatorsHowlCD:Start(21.1, self.vb.howlcount+1)
---			timerOverpowerCD:Start(25.5, self.vb.overpowerCount+1)
---			timerGraspofDeathCD:Start(28, self.vb.graspCount+1)
---			timerRemnantofForgottenTormentsCD:Start(28.3, self.vb.remnantcount+1)--Activation, not pre warning for emote
---			timerFuryoftheAgesCD:Start(32.8, self.vb.furyCount+1)
---			timerChainsofEternityCD:Start(58.3, self.vb.chainsCount+1)
---		else--Most likely the same, but recheck heroic and other modes later
-			timerPedatorsHowlCD:Start(21.1, self.vb.howlcount+1)
-			timerOverpowerCD:Start(25.5, self.vb.overpowerCount+1)
-			timerGraspofDeathCD:Start(28, self.vb.graspCount+1)
-			if self:IsHard() then
-				timerRemnantofForgottenTormentsCD:Start(28.3, self.vb.remnantcount+1)--Activation, not pre warning for emote
-			end
-			timerChainsofEternityCD:Start(31.6, self.vb.chainsCount+1)
-			timerFuryoftheAgesCD:Start(32.8, self.vb.furyCount+1)
---		end
+		timerPedatorsHowlCD:Start(21.1, self.vb.howlcount+1)
+		timerOverpowerCD:Start(24.3, self.vb.overpowerCount+1)
+		timerGraspofDeathCD:Start(26.7, self.vb.graspCount+1)
+		if self:IsHard() then
+			timerRemnantofForgottenTormentsCD:Start(28.3, self.vb.remnantcount+1)--Activation, not pre warning for emote
+		end
+		timerChainsofEternityCD:Start(31.5, self.vb.chainsCount+1)
+		timerFuryoftheAgesCD:Start(32.8, self.vb.furyCount+1)
 		timerHungeringMistCD:Start(95, self.vb.mistCount+1)
 	end
 end

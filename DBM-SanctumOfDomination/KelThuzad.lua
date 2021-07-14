@@ -7,7 +7,7 @@ mod:SetEncounterID(2422)
 mod:SetUsedIcons(1, 2, 3, 4, 6, 7, 8)
 mod:SetBossHPInfoToHighest()--Boss heals at least twice
 mod.noBossDeathKill = true--Instructs mod to ignore 175559 deaths, since it dies multiple times
-mod:SetHotfixNoticeRev(20210712000000)--2021-07-12
+mod:SetHotfixNoticeRev(20210712000000)--2021-07-13
 mod:SetMinSyncRevision(20210708000000)
 --mod.respawnTime = 29
 
@@ -26,11 +26,12 @@ mod:RegisterEventsInCombat(
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, is blizzard really 20 sec? does it disable bosses other casts?
+--TODO, is blizzard really 20 sec? Such disruption to other timers
 --TODO, track https://ptr.wowhead.com/spell=354289/necrotic-miasma on infoframe?
 --TODO, figure out how to add https://ptr.wowhead.com/spell=354638/deep-freeze
---TODO, hope for love of god blizzard resets mana on phase changes, otherwise a ton of timers still missing from 20 80 and 100 mana
+--TODO, hope for love of god blizzard resets mana on phase changes, otherwise a ton of timers still missing
 --TODO, more Timer work if blizz fixes above, or more hacky shit if they don't :\
+--TODO, echo timer can probably be immproved by checking mana when it is cast
 --https://ptr.wowhead.com/spell=348434/soul-exhaustion used in LFR/normal instead of other one?
 --[[
 (ability.id = 348071 or ability.id = 346459 or ability.id = 352999 or ability.id = 347291 or ability.id = 352997 or ability.id = 348756 or ability.id = 353000 or ability.id = 352293 or ability.id = 352379 or ability.id = 355055 or ability.id = 352355 or ability.id = 352348 or ability.id = 354198 or ability.id = 358999) and type = "begincast"
@@ -78,12 +79,12 @@ local specWarnUndyingWrath							= mod:NewSpecialWarningRun(352355, nil, nil, ni
 
 --mod:AddTimerLine(BOSS)
 --Stage One: Chains and Ice
-local timerHowlingBlizzardCD						= mod:NewCDTimer(109.8, 354198, nil, nil, nil, 2)--Boss Mana timer
+local timerHowlingBlizzardCD						= mod:NewCDTimer(114.3, 354198, nil, nil, nil, 2)--Boss Mana timer
 local timerHowlingBlizzard							= mod:NewBuffActiveTimer(23, 354198, nil, nil, nil, 5)
 local timerDarkEvocationCD							= mod:NewCDTimer(86.2, 352530, nil, nil, nil, 3)--Boss Mana timer
-local timerSoulFractureCD							= mod:NewCDTimer(33, 348071, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)
+local timerSoulFractureCD							= mod:NewCDTimer(32.8, 348071, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)
 local timerGlacialWrathCD							= mod:NewCDTimer(43.9, 346459, nil, nil, nil, 3, nil, DBM_CORE_L.DAMAGE_ICON)
-local timerOblivionsEchoCD							= mod:NewCDTimer(37, 347291, nil, nil, nil, 3)--37-60?
+local timerOblivionsEchoCD							= mod:NewCDTimer(37, 347291, nil, nil, nil, 3)--37-60, 48.6 is the good median but it truly depends on dps
 local timerFrostBlastCD								= mod:NewCDTimer(40.1, 348756, nil, nil, nil, 3, nil, DBM_CORE_L.MAGIC_ICON)
 --Stage Two: The Phylactery Opens
 local timerVengefulDestruction						= mod:NewCastTimer(23, 352293, nil, nil, nil, 6)
@@ -135,9 +136,9 @@ function mod:OnCombatStart(delay)
 	self:SetStage(1)
 	self.vb.freezingBlastCount = 0
 	playerPhased = false
-	timerSoulFractureCD:Start(10.8-delay)--10.8-13.7
+	timerSoulFractureCD:Start(10.6-delay)--10.6-13.7
 	timerOblivionsEchoCD:Start(14.7-delay)--14-18.3
-	timerGlacialWrathCD:Start(24.4-delay)
+	timerGlacialWrathCD:Start(24.1-delay)
 	timerFrostBlastCD:Start(45-delay)--45.3-49
 	timerDarkEvocationCD:Start(49-delay)--49-53
 	timerHowlingBlizzardCD:Start(89-delay)--89-94.
@@ -165,7 +166,7 @@ function mod:OnCombatEnd()
 	if self.Options.NPAuraOnNecroticEmpowerment or self.Options.NPAuraOnFixate then
 		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
 	end
-	DBM:AddMsg("Timers for this fight are incomplete/inaccurate until a lot more data is collected from various push timings. This data can only be improved with transcriptor logs")
+	DBM:AddMsg("Timers for this fight are incomplete/inaccurate until a lot more data is collected from various push timings. Transcriptor logs are ideal but WCL with specific pulls/mana counts are helpful too")
 end
 
 function mod:SPELL_CAST_START(args)
@@ -386,14 +387,14 @@ function mod:SPELL_AURA_APPLIED(args)
 				elseif bossPower == 40 then--Data verified Heroic KT
 					timerFrostBlastCD:Start(96.7)
 					timerHowlingBlizzardCD:Start(26.2)
-					timerDarkEvocationCD:Start(99.7)
+					timerDarkEvocationCD:Start(99.7)--Or near instantly, 40 mana situation is possible if he casts it before as well, unless that's what hotfixes fixed?
 					DBM:Debug("HIGH PRIORITY EVENT. This is a 40 mana phase start")--Generating easier to use transcriptor events
 				elseif bossPower == 20 then--Data verified Heroic KT
 					timerFrostBlastCD:Start(87)--87-88.3
 					timerHowlingBlizzardCD:Start(16.5)--16.5-17.7
 					timerDarkEvocationCD:Start(90)--90-91.3
 					DBM:Debug("HIGH PRIORITY EVENT. This is a 20 mana phase start")--Generating easier to use transcriptor events
-				else--100/0--Data verified from live normal and heroic KT
+				else--100/0--Data verified from live normal and heroic KT (similar to a pull)
 					timerFrostBlastCD:Start(47.1)--47-48.5
 					timerDarkEvocationCD:Start(50.6)--50-52.3
 					timerHowlingBlizzardCD:Start(92.6)
@@ -449,11 +450,11 @@ end
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 176929 then--remnant-of-kelthuzad
+		self:SetStage(3)
 		timerFreezingBlastCD:Stop()
 		timerFoulWindsCD:Stop()
 		timerGlacialWindsCD:Stop()
 --		self:UnregisterShortTermEvents()
-		self:SetStage(3)
 		--Stop P2 stuff that may have carried over
 		timerHowlingBlizzardCD:Stop()
 		timerDarkEvocationCD:Stop()

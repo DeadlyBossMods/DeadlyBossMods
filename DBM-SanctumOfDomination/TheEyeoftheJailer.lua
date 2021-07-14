@@ -89,7 +89,7 @@ local timerScornandIreCD					= mod:NewCDTimer(12.1, 355232, nil, nil, nil, 3, ni
 local timerSlothfulCorruptionCD				= mod:NewCDTimer(23.8, 350713, nil, nil, nil, 3, nil, DBM_CORE_L.MAGIC_ICON)
 local timerSpreadingMiseryCD				= mod:NewCDTimer(12.1, 350816, nil, nil, nil, 3)
 --Stage Three: Immediate Extermination
-local timerAnnihilatingGlareCD				= mod:NewCDCountTimer(23, 350764, 143444, nil, nil, 3)--Shortname "Laser"
+local timerAnnihilatingGlareCD				= mod:NewCDCountTimer(47.3, 350764, 143444, nil, nil, 3)--Shortname "Laser"
 
 --local berserkTimer						= mod:NewBerserkTimer(600)
 
@@ -316,10 +316,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerFractureSoulCD:Stop()
 		timerHopelessLethargyCD:Stop()
 		--Eye of the Jailer
-		timerFractureSoulCD:Start(14, 1)
+--		timerFractureSoulCD:Start(14, 1)--Not reliable after all
 		--Deathseeker Eyes (Initial casts are approx, they may be desynced a little)
-		timerSpreadingMiseryCD:Start(14.9)
-		timerSlothfulCorruptionCD:Start(24)
+		if not self:IsLFR() then
+			timerSpreadingMiseryCD:Start(14.9)
+			timerSlothfulCorruptionCD:Start(24)
+		end
 		if self:IsMythic() then
 			timerScornandIreCD:Start(14)
 			timerDesolationBeamCD:Start(21.1, 1)
