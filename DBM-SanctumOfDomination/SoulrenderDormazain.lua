@@ -260,9 +260,9 @@ function mod:SPELL_CAST_START(args)
 		specWarnWarmongerShackles:Show(self.vb.shacklesCount)
 		specWarnWarmongerShackles:Play("targetchange")
 --		timerShacklesCD:Start(999, self.vb.shacklesCount+1)
-		local timer = allTimers[difficultyName][spellId][self.vb.shacklesCount+1]
+		local timer = allTimers[difficultyName][spellId][self.vb.shacklesCount+1] or (self:IsMythic() and 41.5 or 60)
 		if timer then
-			timerShacklesCD:Start(timer, self.vb.shacklesCount+1) or (self:IsMythic() and 41.5 or 60)
+			timerShacklesCD:Start(timer, self.vb.shacklesCount+1)
 		end
 	end
 end
