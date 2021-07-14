@@ -174,7 +174,7 @@ function mod:OnCombatStart(delay)
 	timerSongofDissolutionCD:Start(15.4-delay, 1)--15-19
 	timerReverberatingRefrainCD:Start(60.6-delay, 1)--60+
 	--Skyja
-	timerCalloftheValkyrCD:Start(11-delay, 1)--11-15
+	timerCalloftheValkyrCD:Start(10.4-delay, 1)--10.4-15
 	if self:IsMythic() then
 		timerFragmentsofDestinyCD:Start(4.5-delay, 1)
 		if self.Options.InfoFrame then
@@ -285,7 +285,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 350286 then
 		self.vb.songCount = self.vb.songCount + 1
-		timerSongofDissolutionCD:Start(nil, self.vb.songCount+1)
+		timerSongofDissolutionCD:Start(self:IsEasy() and 37.6 or 19.4, self.vb.songCount+1)
 		if self:CheckInterruptFilter(args.sourceGUID, false, false) then
 			specWarnSongofDissolution:Show(args.sourceName)
 			specWarnSongofDissolution:Play("kickcast")
@@ -295,24 +295,22 @@ function mod:SPELL_CAST_SUCCESS(args)
 		--self.vb.fragmentCount = 0
 		timerCalloftheValkyrCD:Stop()
 		timerPierceSoulCD:Start(11.7)--11.7-13.3
-		timerResentmentCD:Start(30, 1)--30-32
-		timerCalloftheValkyrCD:Start(42.6, 1)--42.6-44
-		if not self:IsLFR() then--Normal, heroic, mythic
-			timerFragmentsofDestinyCD:Stop()
-			timerFragmentsofDestinyCD:Start(15.4, self.vb.fragmentCount+1)--15-17.4. Heroic and normal confirmed, mythic and LFR?
-			if self:IsHard() then--Heroic and Mythic
-				timerLinkEssenceCD:Start(24.7, 1)
-				timerWordofRecallCD:Start(72.5, 1)
-			end
-			if self.Options.InfoFrame and not self:IsMythic() then--Mechanic starts in phase 2 on heroic, it already started on mythic in phase 1
-				DBM.InfoFrame:SetHeader(OVERVIEW)
-				DBM.InfoFrame:Show(5, "function", updateInfoFrame, false, true, true)
-			end
-			if self:IsMythic() then
-				--TODO, actually see what happens if they aren't dead by the time these timers expire
-				timerWingsofRageCD:Start(56.7)
-				timerReverberatingRefrainCD:Start(95.7)
-			end
+		timerResentmentCD:Start(28.7, 1)--28.7-33.6
+		timerCalloftheValkyrCD:Start(self:IsEasy() and 30 or 42.6, 1)--42.6-44
+		timerFragmentsofDestinyCD:Stop()
+		timerFragmentsofDestinyCD:Start(15.4, self.vb.fragmentCount+1)--15-17.4. Heroic and normal confirmed, mythic and LFR?
+		if self:IsHard() then--Heroic and Mythic
+			timerLinkEssenceCD:Start(24.7, 1)
+			timerWordofRecallCD:Start(72.5, 1)
+		end
+		if self.Options.InfoFrame and not self:IsMythic() then--Mechanic starts in phase 2 on heroic, it already started on mythic in phase 1
+			DBM.InfoFrame:SetHeader(OVERVIEW)
+			DBM.InfoFrame:Show(5, "function", updateInfoFrame, false, true, true)
+		end
+		if self:IsMythic() then
+			--TODO, actually see what happens if they aren't dead by the time these timers expire
+			timerWingsofRageCD:Start(56.7)
+			timerReverberatingRefrainCD:Start(95.7)
 		end
 		berserkTimer:Cancel()--Tecnically not accurate, Phase 1 berserk stops when both valks die. TODO, separate object
 		berserkTimer:Start(602)--Phase 2
