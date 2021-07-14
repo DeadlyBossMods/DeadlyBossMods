@@ -5,8 +5,8 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(175727)
 mod:SetEncounterID(2434)
 mod:SetUsedIcons(1, 2, 3, 4)
-mod:SetHotfixNoticeRev(20210713000000)--2021-07-13
-mod:SetMinSyncRevision(20210713000000)
+mod:SetHotfixNoticeRev(20210714000000)--2021-07-14
+mod:SetMinSyncRevision(20210714000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
@@ -100,13 +100,13 @@ local difficultyName = "normal"
 local allTimers = {
 	["mythic"] = {
 		--Ruinblade
-		[350422] = {8.1, 32.5, 34, 32.7, 48.6, 32.8, 33},
+		[350422] = {8.1, 32.5, 33.6, 32.7, 48, 32.8, 32.8, 47.6, 65.1, 55.8, 40.5},
 		--Torment
-		[349873] = {8.1, 51, 48.5, 61.9},
+		[349873] = {12.6, 50.4, 45.3, 61.9, 31.5, 32.6, 30.9, 55.9, 30.6, 33.8. 31.5},
 		--Call Mawsworn
-		[350615] = {24, 57.1, 105.7},
+		[350615] = {24, 57, 102.7, 63.4, 95.4, 57.3},
 		--Hellscream
-		[350411] = {55, 164},
+		[350411] = {55, 163, 42.5, 63.8, 42.2, 41.5},
 	},
 	["heroic"] = {
 		--Ruinblade
@@ -237,7 +237,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 350422 then
 		self.vb.ruinbladeCount = self.vb.ruinbladeCount + 1
 --		timerRuinbladeCD:Start(nil, self.vb.ruinbladeCount+1)
-		local timer = allTimers[difficultyName][spellId][self.vb.ruinbladeCount+1]
+		local timer = allTimers[difficultyName][spellId][self.vb.ruinbladeCount+1] or 32.5
 		if timer then
 			timerRuinbladeCD:Start(timer, self.vb.ruinbladeCount+1)
 		end
@@ -247,7 +247,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.mawswornSpawn = self.vb.mawswornSpawn + 1
 		warnSpawnMawsworn:Show(self.vb.mawswornSpawn)
 --		timerSpawnMawswornCD:Start(self:IsMythic() and 47.7 or 57.5, self.vb.mawswornSpawn+1)
-		local timer = allTimers[difficultyName][spellId][self.vb.mawswornSpawn+1]
+		local timer = allTimers[difficultyName][spellId][self.vb.mawswornSpawn+1] or (self:IsMythic() and 57 or 59)
 		if timer then
 			timerSpawnMawswornCD:Start(timer, self.vb.mawswornSpawn+1)
 		end
@@ -262,7 +262,7 @@ function mod:SPELL_CAST_START(args)
 --		timerShacklesCD:Start(999, self.vb.shacklesCount+1)
 		local timer = allTimers[difficultyName][spellId][self.vb.shacklesCount+1]
 		if timer then
-			timerShacklesCD:Start(timer, self.vb.shacklesCount+1)
+			timerShacklesCD:Start(timer, self.vb.shacklesCount+1) or (self:IsMythic() and 41.5 or 60)
 		end
 	end
 end
@@ -394,7 +394,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		specWarnTorment:Show()
 		specWarnTorment:Play("watchstep")
 --		timerTormentCD:Start(45, self.vb.tormentCount+1)
-		local timer = allTimers[difficultyName][spellId][self.vb.tormentCount+1]
+		local timer = allTimers[difficultyName][spellId][self.vb.tormentCount+1] or (self:IsMythic() and 30.6 or 43)
 		if timer then
 			timerTormentCD:Start(timer, self.vb.tormentCount+1)
 		end
