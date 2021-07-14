@@ -69,7 +69,7 @@ local yellDesolationBeam					= mod:NewYell(358610)
 local yellDesolationBeamFades				= mod:NewShortFadesYell(358610)
 local specWarnShatteredSoul					= mod:NewSpecialWarningYou(354004, nil, nil, nil, 1, 2)--Debuff of Soul Shatter
 local specWarnSlothfulCorruption			= mod:NewSpecialWarningYou(350713, nil, nil, nil, 1, 2)
-local yellScornandIre						= mod:NewIconRepeatYell(355232)--Mythic
+local yellScornandIre						= mod:NewIconRepeatYell(355232, DBM_CORE_L.AUTO_YELL_ANNOUNCE_TEXT.shortyell)--Mythic
 
 local specWarnAnnihilatingGlare				= mod:NewSpecialWarningDodge(350764, nil, 143444, nil, 3, 2)
 
