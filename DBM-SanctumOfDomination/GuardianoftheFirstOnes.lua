@@ -47,9 +47,9 @@ local specWarnObliterate						= mod:NewSpecialWarningTaunt(350734, nil, nil, nil
 local specWarnObliterateCount					= mod:NewSpecialWarningCount(350734, false, nil, nil, 1, 2)
 local specWarnDisintegration					= mod:NewSpecialWarningDodgeCount(352833, nil, 182908, nil, 2, 2)
 local yellDisintegration						= mod:NewYell(352833)
-local specWarnThreatNeutralization				= mod:NewSpecialWarningMoveAway(350496, nil, 167180, nil, 1, 2)
-local yellThreatNeutralization					= mod:NewShortPosYell(350496, 167180)
-local yellThreatNeutralizationFades				= mod:NewIconFadesYell(350496, 167180)
+local specWarnThreatNeutralization				= mod:NewSpecialWarningMoveAway(350496, nil, 37859, nil, 1, 2)
+local yellThreatNeutralization					= mod:NewShortPosYell(350496, 37859)
+local yellThreatNeutralizationFades				= mod:NewIconFadesYell(350496, 37859)
 local specWarnGTFO								= mod:NewSpecialWarningGTFO(340324, nil, nil, nil, 1, 8)
 
 --mod:AddTimerLine(BOSS)
