@@ -5,14 +5,14 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(175727)
 mod:SetEncounterID(2434)
 mod:SetUsedIcons(1, 2, 3, 4)
-mod:SetHotfixNoticeRev(20210713000000)--2021-07-13
-mod:SetMinSyncRevision(20210713000000)
+mod:SetHotfixNoticeRev(20210714000000)--2021-07-14
+mod:SetMinSyncRevision(20210714000000)
 --mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 351779 350422 350615 350411 350415",
+	"SPELL_CAST_START 351779 350422 350615 350411",
 	"SPELL_CAST_SUCCESS 349985 350648",
 	"SPELL_AURA_APPLIED 350650 354055 350649 350422 350448 350647 351773",
 	"SPELL_AURA_APPLIED_DOSE 350422 350448",
@@ -100,39 +100,39 @@ local difficultyName = "normal"
 local allTimers = {
 	["mythic"] = {
 		--Ruinblade
-		[350422] = {8.1, 32.5, 34, 32.7, 48.6, 32.8, 33},
+		[350422] = {8.1, 32.5, 33.6, 32.7, 48, 32.8, 32.8, 47.6, 65.1, 55.8, 40.5},
 		--Torment
-		[350554] = {8.1, 51, 48.5, 61.9},
+		[349873] = {12.6, 50.4, 45.3, 61.9, 31.5, 32.6, 30.9, 55.9, 30.6, 33.8, 31.5},
 		--Call Mawsworn
-		[351680] = {24, 57.1, 105.7},
+		[350615] = {24, 57, 102.4, 63.4, 93.5, 57.3},
 		--Hellscream
-		[350421] = {55, 164},
+		[350411] = {55, 163, 41.9, 63.8, 42, 41.5},
 	},
 	["heroic"] = {
 		--Ruinblade
 		[350422] = {8.1, 32.5, 32.9, 42, 52.4, 32.8, 32.8, 37.1, 60, 33.3, 34.6, 85.1},--The ones that aren't 32.5 can vary quite a bit
 		--Torment
-		[350554] = {11.8, 45.5, 45.5, 68.3, 43.9, 44.1, 63, 43.8, 43.9, 70.8},--The high ones can vary 63-82
+		[349873] = {11.8, 45.5, 45.5, 68.3, 43.9, 44.1, 63, 43.8, 43.9, 70.8},--The high ones can vary 63-82
 		--Call Mawsworn
-		[351680] = {28, 161.5, 60, 94.3, 59, 96.9},
+		[350615] = {28, 161.5, 60, 94.3, 59, 96.9},
 		--Hellscream
-		[350421] = {80, 161.5, 98.1, 60, 60},--Last one can be massively delayed if group is really bad
+		[350411] = {80, 161.5, 98.1, 60, 60},--Last one can be massively delayed if group is really bad
 	},
 	["normal"] = {
 		--Ruinblade
 		[350422] = {8.1, 32.5, 32.7, 43.7, 53.4, 32.8, 36.4, 45, 65.6, 32.8, 35.2, 44.9},
 		--Torment
-		[350554] = {14, 46.1, 46.2, 76.5, 46.1, 45, 88.7, 45, 45},
+		[349873] = {14, 46.1, 46.2, 76.5, 46.1, 45, 88.7, 45, 45},
 		--Call Mawsworn
-		[351680] = {28, 165, 181, 150},
+		[350615] = {28, 165, 181, 150},
 		--Hellscream
-		[350421] = {80, 164.5, 178.8},
+		[350411] = {80, 164.5, 178.8},
 	},
 --	["lfr"] = {
 		--Ruinblade
 --		[350422] = {},
 		--Torment
---		[350554] = {},
+--		[349873] = {},
 		--Call Mawsworn
 --		[351680] = {},
 		--Hellscream
@@ -237,7 +237,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 350422 then
 		self.vb.ruinbladeCount = self.vb.ruinbladeCount + 1
 --		timerRuinbladeCD:Start(nil, self.vb.ruinbladeCount+1)
-		local timer = allTimers[difficultyName][spellId][self.vb.ruinbladeCount+1]
+		local timer = allTimers[difficultyName][spellId][self.vb.ruinbladeCount+1] or 32.5
 		if timer then
 			timerRuinbladeCD:Start(timer, self.vb.ruinbladeCount+1)
 		end
@@ -247,21 +247,20 @@ function mod:SPELL_CAST_START(args)
 		self.vb.mawswornSpawn = self.vb.mawswornSpawn + 1
 		warnSpawnMawsworn:Show(self.vb.mawswornSpawn)
 --		timerSpawnMawswornCD:Start(self:IsMythic() and 47.7 or 57.5, self.vb.mawswornSpawn+1)
-		local timer = allTimers[difficultyName][spellId][self.vb.mawswornSpawn+1]
+		local timer = allTimers[difficultyName][spellId][self.vb.mawswornSpawn+1] or (self:IsMythic() and 57 or 59)
 		if timer then
 			timerSpawnMawswornCD:Start(timer, self.vb.mawswornSpawn+1)
 		end
 		if self.Options.SetIconOnMawsworn then--This icon method may be faster than GUID matching, but also risks being slower and less consistent if marker has nameplates off
 			self:ScanForMobs(177594, 0, 8, 4, 0.2, 15, "SetIconOnMawsworn")
 		end
-	elseif spellId == 350411 then--Hellscream
+	elseif spellId == 350411 then--Hellscream/Shackles
 		timerHellscream:Start(self:IsHeroic() and 35 or self:IsMythic() and 25 or 50)--Heroic and mythic known, other difficulties not yet
-	elseif spellId == 350415 then--Warmonger Shackles
 		self.vb.shacklesCount = self.vb.shacklesCount + 1
 		specWarnWarmongerShackles:Show(self.vb.shacklesCount)
 		specWarnWarmongerShackles:Play("targetchange")
 --		timerShacklesCD:Start(999, self.vb.shacklesCount+1)
-		local timer = allTimers[difficultyName][spellId][self.vb.shacklesCount+1]
+		local timer = allTimers[difficultyName][spellId][self.vb.shacklesCount+1] or (self:IsMythic() and 41.5 or 60)
 		if timer then
 			timerShacklesCD:Start(timer, self.vb.shacklesCount+1)
 		end
@@ -395,7 +394,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		specWarnTorment:Show()
 		specWarnTorment:Play("watchstep")
 --		timerTormentCD:Start(45, self.vb.tormentCount+1)
-		local timer = allTimers[difficultyName][spellId][self.vb.tormentCount+1]
+		local timer = allTimers[difficultyName][spellId][self.vb.tormentCount+1] or (self:IsMythic() and 30.6 or 43)
 		if timer then
 			timerTormentCD:Start(timer, self.vb.tormentCount+1)
 		end
