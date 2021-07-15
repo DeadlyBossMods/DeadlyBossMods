@@ -74,7 +74,7 @@ local yellSpreadingMisery					= mod:NewYell(351827)
 local yellSpreadingMiseryFades				= mod:NewShortFadesYell(351827)
 local yellScornandIre						= mod:NewIconRepeatYell(355232)--Mythic
 
-local specWarnAnnihilatingGlare				= mod:NewSpecialWarningDodge(350764, nil, 143444, nil, 3, 2)
+local specWarnAnnihilatingGlare				= mod:NewSpecialWarningDodge(350764, nil, 182908, nil, 3, 2)
 
 --mod:AddTimerLine(BOSS)
 --Stage One: His Gaze Upon You
@@ -92,7 +92,7 @@ local timerScornandIreCD					= mod:NewCDTimer(12.1, 355232, nil, nil, nil, 3, ni
 local timerSlothfulCorruptionCD				= mod:NewCDTimer(23.8, 350713, nil, nil, nil, 3, nil, DBM_CORE_L.MAGIC_ICON)
 local timerSpreadingMiseryCD				= mod:NewCDTimer(12.1, 350816, nil, nil, nil, 3)
 --Stage Three: Immediate Extermination
-local timerAnnihilatingGlareCD				= mod:NewCDCountTimer(47.3, 350764, 143444, nil, nil, 3)--Shortname "Laser"
+local timerAnnihilatingGlareCD				= mod:NewCDCountTimer(47.3, 350764, 182908, nil, nil, 3)--Shortname "Beam"
 
 --local berserkTimer						= mod:NewBerserkTimer(600)
 

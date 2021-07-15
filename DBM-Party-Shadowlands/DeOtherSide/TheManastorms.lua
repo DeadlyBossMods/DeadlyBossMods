@@ -42,7 +42,7 @@ local warnBleeding					= mod:NewStackAnnounce(320147, 2, nil, "Tank|Healer")
 local specWarnDoom					= mod:NewSpecialWarningSpell(320141, nil, 226243, nil, 2, 2, 4)--Mythic only
 local specWarnFrostbolt				= mod:NewSpecialWarningInterruptCount(320008, "HasInterrupt", nil, nil, 1, 2)
 local specWarnBleeding				= mod:NewSpecialWarningStack(320147, nil, 12, nil, nil, 1, 6)
-local specWarnLaser					= mod:NewSpecialWarningMoveTo(323877, nil, 143444, nil, 2, 8, 4)--Mythic only
+local specWarnLaser					= mod:NewSpecialWarningMoveTo(323877, nil, 182908, nil, 2, 8, 4)--Mythic only
 local yellLaser						= mod:NewYell(323877)
 --local specWarnGTFO					= mod:NewSpecialWarningGTFO(257274, nil, nil, nil, 1, 8)
 --Stage Two: Millificent's Gadgets
@@ -54,7 +54,7 @@ local timerPhaseCD						= mod:NewPhaseTimer(30)
 --Stage One: Millhouse's Magics
 local timerSummonPowerCrystalCD			= mod:NewCDTimer(7.4, 320787, nil, nil, nil, 5)--Usually 8 (sometimes a cast is skipped if it perfectly lines up with a laser, do to this variation
 local timerDoomCD						= mod:NewNextTimer(15.8, 320141, 226243, nil, nil, 2, nil, DBM_CORE_L.DEADLY_ICON)--Shortname Doom!!!
-local timerLaserCD						= mod:NewNextCountTimer(15, 323877, 143444, nil, nil, 2, nil, DBM_CORE_L.DEADLY_ICON)--Shortname Laser
+local timerLaserCD						= mod:NewNextCountTimer(15, 323877, 182908, nil, nil, 2, nil, DBM_CORE_L.DEADLY_ICON)--Shortname Laser
 --Stage Two: Millificent's Gadgets
 --local timerMechanicalBombSquirrelCD	= mod:NewCDTimer(13, 320825, nil, nil, nil, 3)
 local timerExperimentalSquirrelBombCD	= mod:NewCDTimer(7.9, 320823, nil, nil, nil, 5)
