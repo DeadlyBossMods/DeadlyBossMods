@@ -5,38 +5,43 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(175730)
 mod:SetEncounterID(2431)
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
-mod:SetHotfixNoticeRev(20210712000000)--2021-07-12
+mod:SetHotfixNoticeRev(20210716000000)--2021-07-16
 mod:SetMinSyncRevision(20210706000000)
---mod.respawnTime = 29
+mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 351680 350554 350421 353426 350169 354367 354265",
+	"SPELL_CAST_START 351680 350554 350421 353426 350169 354367 354265 357144 353603",
 	"SPELL_CAST_SUCCESS 350355",
 	"SPELL_AURA_APPLIED 354365 351680 353432 350568 356065 353195 354964 357739",
 --	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 354365 351680 350568 356065 353195 357739",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
---	"UNIT_DIED"
+	"UNIT_DIED",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
 --TODO, https://ptr.wowhead.com/spell=354966/unstable-accretion trackingn for mythic phase 2
 --TODO, other phase 2 stuff? it's mostly just passive stuff like adds and dodgables
---TODO, further mythic timer data for phase 3 and resquence all of heroic timer data with latest in retest if there is one or on live
+--TODO, further mythic timer data for phase 1 and all data for phase 3
+--TODO, add cast bars for the double beam casts that don't actually have double casts events
+--TODO, verify add auto marking off IEEU
 --[[
-(ability.id = 350421 or ability.id = 351680 or ability.id = 350554 or ability.id = 354367 or ability.id = 354265) and type = "begincast"
+(ability.id = 350421 or ability.id = 351680 or ability.id = 350554 or ability.id = 354367 or ability.id = 354265 or ability.id = 357144) and type = "begincast"
  or (ability.id = 353195 or ability.id = 357739) and (type = "applybuff" or type = "removebuff")
  or (ability.id = 353195) and type = "applydebuff"
  --]]
 --Stage One: Scrying Fate
+local warnProbe									= mod:NewCastAnnounce(353603, 2)
 local warnGrimPortent							= mod:NewTargetNoFilterAnnounce(354365, 4)--Mythic
 local warnTwistFate								= mod:NewCountAnnounce(353931, 2, nil, "RemoveMagic")
 local warnCallofEternity						= mod:NewTargetAnnounce(350568, 4, nil, nil, 37859)
 --Stage Two: Defying Destiny
 local warnRunicAffinity							= mod:NewTargetNoFilterAnnounce(354964, 4)--Mythic
+----Monstrosity
+local warnDespair								= mod:NewCountAnnounce(357144, 3)
 --Stage Three: Fated Terminus
 local warnExtemporaneousFate					= mod:NewSoonAnnounce(353195, 3)
 
@@ -52,11 +57,14 @@ local specWarnBurdenofDestinyYou				= mod:NewSpecialWarningRun(353432, nil, 2446
 local specWarnBurdenofDestiny					= mod:NewSpecialWarningSwitch(353432, "Dps", nil, nil, 1, 2)
 local specWarnFatedConjunction					= mod:NewSpecialWarningDodge(350355, nil, 207544, nil, 2, 2)
 local specWarnCallofEternity					= mod:NewSpecialWarningMoveAway(350568, nil, 37859, nil, 1, 2)
-local yellCallofEternity						= mod:NewShortYell(350568, 37859)--"Bomb"
-local yellCallofEternityFades					= mod:NewShortFadesYell(350568, 37859)
+local yellCallofEternity						= mod:NewShortPosYell(350568, 37859)--"Bomb"
+local yellCallofEternityFades					= mod:NewIconFadesYell(350568, 37859)
 --Stage Two: Defying Destiny
 local specWarnRealignFate						= mod:NewSpecialWarningCount(351969, nil, nil, nil, 2, 2)
 local specWarnRunicAffinity						= mod:NewSpecialWarningYou(354964, nil, nil, nil, 2, 2, 4)
+----Monstrosity
+local specWarnDespair							= mod:NewSpecialWarningInterruptCount(357144, "HasInterrupt", nil, nil, 1, 2)--Non mythic only
+local specWarnDespairRun						= mod:NewSpecialWarningRun(357144, nil, nil, nil, 4, 2, 4)
 --Stage Three: Fated Terminus Desperate
 local specWarnExtemporaneousFate				= mod:NewSpecialWarningCount(353195, nil, nil, nil, 2, 2)
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(340324, nil, nil, nil, 1, 8)
@@ -64,12 +72,15 @@ local specWarnExtemporaneousFate				= mod:NewSpecialWarningCount(353195, nil, ni
 --mod:AddTimerLine(BOSS)
 --Stage One: Scrying Fate
 local timerGrimPortentCD						= mod:NewCDCountTimer(28.8, 354365, nil, nil, nil, 3, nil, DBM_CORE_L.MYTHIC_ICON)--28-46?
-local timerInvokeDestinyCD						= mod:NewCDCountTimer(37.8, 351680, nil, nil, 2, 1, nil, DBM_CORE_L.TANK_ICON)--37.8-41
-local timerTwistFateCD							= mod:NewCDCountTimer(48.7, 353931, nil, "RemoveMagic", nil, 5, nil, DBM_CORE_L.MAGIC_ICON)
+local timerGrimPortent							= mod:NewBuffFadesTimer(9, 354365, nil, nil, nil, 5, nil, DBM_CORE_L.HEALER_ICON)
+local timerInvokeDestinyCD						= mod:NewCDCountTimer(37.8, 351680, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON)--37.8-41
+local timerInvokeDestiny						= mod:NewAddsCustomTimer(8, 351680, nil, nil, nil, 1, nil, DBM_CORE_L.DAMAGE_ICON)
+local timerTwistFateCD							= mod:NewCDCountTimer(48.7, 353931, nil, nil, 2, 5, nil, DBM_CORE_L.MAGIC_ICON..DBM_CORE_L.HEALER_ICON)
 local timerFatedConjunctionCD					= mod:NewCDCountTimer(59.7, 350355, 207544, nil, nil, 3, nil, DBM_CORE_L.DEADLY_ICON, nil, 1, 3)--"Beams"
+local timerFatedConjunction						= mod:NewCastTimer(6.7, 350355, 207544, nil, nil, 2, nil, DBM_CORE_L.DEADLY_ICON)
 local timerCallofEternityCD						= mod:NewCDCountTimer(37.9, 350554, 167180, nil, nil, 3)--"Bombs"
 --Stage Two: Defying Destiny
---local timerRealignFateCD						= mod:NewAITimer(17.8, 351969, nil, nil, nil, 6)
+local timerDespairCD							= mod:NewCDCountTimer(17, 357144, nil, nil, nil, 4)--Tricky to type, it's interrupt bar in 3/4 difficulties, aoe run out in mythic
 local timerDarkestDestiny						= mod:NewCastTimer(40, 353122, nil, nil, nil, 2, nil, DBM_CORE_L.DEADLY_ICON)
 --Stage Three: Fated Terminus Desperate
 local timerExtemporaneousFateCD					= mod:NewCDCountTimer(39.0, 353195, nil, nil, nil, 6)
@@ -78,9 +89,12 @@ local timerExtemporaneousFateCD					= mod:NewCDCountTimer(39.0, 353195, nil, nil
 
 --mod:AddRangeFrameOption("8")
 --mod:AddInfoFrameOption(328897, true)
+mod:AddSetIconOption("SetIconOnCallofEternity", 350554, true, false, {1, 2, 3, 4, 5})
 mod:AddSetIconOption("SetIconOnGrimPortent", 354365, false, false, {1, 2, 3, 4, 5, 6, 7, 8})
+mod:AddSetIconOption("SetIconOnMonstrosity", "ej23764", true, true, {7, 8})
 mod:AddNamePlateOption("NPAuraOnBurdenofDestiny", 353432, true)
 
+mod.vb.EternityIcon = 1
 mod.vb.DebuffIcon = 1
 mod.vb.realignCount = 0
 mod.vb.twistCount = 0
@@ -89,21 +103,24 @@ mod.vb.destinyCount = 0
 mod.vb.conjunctionCount = 0
 mod.vb.portentCount = 0
 mod.vb.extemporaneousCount = 0
+mod.vb.addIcon = 8
+local grimDebuffs = 0--Local variable for timer canceling only
+local castsPerGUID = {}
 local difficultyName = "normal"
 --Currently non mythic difficulties not using table yet since data not yet built (heroic logs kinda bad because dps too high to get actual sequences)
 local allTimers = {
 	["mythic"] = {
 		[1] = {
 			--Twist Fate
-			[354265] = {5.8, 29.2, 43.8, 36.4, 17.0, 32.9},
+			[354265] = {5.8, 32, 20, 38, 29},--first is 11 the second time around
 			--Call of Eternity
-			[350554] = {11.8, 41.3, 35.4, 54.8},
+			[350554] = {18, 58, 38},--first is 23 the second time around
 			--Invoke Destiny
-			[351680] = {20.8, 40.1, 39.7, 40.1},
+			[351680] = {20, 45, 45},--first is 25 the second time around
 			--Fated Conjunction
-			[350421] = {22.8, 68.9, 53.5},
+			[350421] = {30, 50, 5, 8},--first is 35 the second time around
 			--Grim Portent
-			[354367] = {43.9, 28.8, 47.3},
+			[354367] = {43},--first is 48 the second time around
 		},
 		[3] = {
 			--Twist Fate
@@ -173,6 +190,7 @@ local allTimers = {
 --end
 
 function mod:OnCombatStart(delay)
+	table.wipe(castsPerGUID)
 	self.vb.DebuffIcon = 1
 	self:SetStage(1)
 	self.vb.realignCount = 0
@@ -186,9 +204,9 @@ function mod:OnCombatStart(delay)
 	if self:IsMythic() then
 		difficultyName = "mythic"
 		timerTwistFateCD:Start(5.8-delay, 1)
-		timerCallofEternityCD:Start(13-delay, 1)
+		timerCallofEternityCD:Start(18-delay, 1)
 		timerInvokeDestinyCD:Start(20-delay, 1)
-		timerFatedConjunctionCD:Start(22-delay, 1)
+		timerFatedConjunctionCD:Start(30-delay, 1)
 		timerGrimPortentCD:Start(43-delay, 1)
 	else
 		if self:IsHeroic() then
@@ -213,6 +231,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnCombatEnd()
+	table.wipe(castsPerGUID)
 	self:UnregisterShortTermEvents()
 --	if self.Options.InfoFrame then
 --		DBM.InfoFrame:Hide()
@@ -245,6 +264,7 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 350554 then--Two sub cast IDs, but one primary?
 --		self:Unschedule(fixEternity)
+		self.vb.EternityIcon = 1
 		self.vb.eternityCount = self.vb.eternityCount + 1
 		local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.eternityCount+1]
 		if timer then
@@ -261,7 +281,9 @@ function mod:SPELL_CAST_START(args)
 		if timer then
 			timerFatedConjunctionCD:Start(timer, self.vb.conjunctionCount+1)
 		end
+		timerFatedConjunction:Start()--6.7
 	elseif spellId == 354367 then
+		grimDebuffs = 0
 		self.vb.DebuffIcon = 1
 		self.vb.portentCount = self.vb.portentCount + 1
 		local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.portentCount+1]
@@ -274,6 +296,47 @@ function mod:SPELL_CAST_START(args)
 		local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.twistCount+1]
 		if timer then
 			timerTwistFateCD:Start(timer, self.vb.twistCount+1)
+		end
+	elseif spellId == 357144 then
+		if not castsPerGUID[args.sourceGUID] then--Shouldn't happen, but failsafe
+			castsPerGUID[args.sourceGUID] = 0
+		end
+		castsPerGUID[args.sourceGUID] = castsPerGUID[args.sourceGUID] + 1
+		local count = castsPerGUID[args.sourceGUID]
+		timerDespairCD:Start(17, count, args.sourceGUID)
+		if self:IsMythic() then--Not interruptable on mythic
+			if self:CheckBossDistance(args.destGUID, true, 21519, 23) or self:IsTank() then--23 yards away (mistletoe) or you're a tank, regular warning
+				if self:AntiSpam(3, 1) then
+					warnDespair:Show(count)
+				end
+			else--Special warning
+				if self:AntiSpam(3, 2) then
+					specWarnDespairRun:Show()
+					specWarnDespairRun:Play("justrun")
+				end
+			end
+		else
+			timerDespairCD:UpdateInline(DBM_CORE_L.INTERRUPT_ICON, count, args.sourceGUID)--It's only interruptable in non mythic, add icon there
+			if self:CheckInterruptFilter(args.sourceGUID, false, false) then
+				specWarnDespair:Show(args.sourceName, count)
+				if count == 1 then
+					specWarnDespair:Play("kick1r")
+				elseif count == 2 then
+					specWarnDespair:Play("kick2r")
+				elseif count == 3 then
+					specWarnDespair:Play("kick3r")
+				elseif count == 4 then
+					specWarnDespair:Play("kick4r")
+				elseif count == 5 then
+					specWarnDespair:Play("kick5r")
+				else
+					specWarnDespair:Play("kickcast")
+				end
+			end
+		end
+	elseif spellId == 353603 then
+		if self:IsTanking("player", "boss1", nil, true) then
+			warnProbe:Show()
 		end
 	end
 end
@@ -291,6 +354,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 354365 then
 		if args:IsDestTypePlayer() then
+			grimDebuffs = grimDebuffs + 1
 			local icon = self.vb.DebuffIcon
 			if self.Options.SetIconOnGrimPortent and icon < 9 then
 				self:SetIcon(args.destName, icon)
@@ -303,6 +367,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 			warnGrimPortent:CombinedShow(0.5, args.destName)
 			self.vb.DebuffIcon = self.vb.DebuffIcon + 1
+			timerGrimPortent:Start()
 		end
 	elseif spellId == 351680 then
 		if args:IsPlayer() then
@@ -315,6 +380,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnInvokeDestinySwap:Play("tauntboss")
 			specWarnInvokeDestinySwap:ScheduleVoice(1.5, "defensive")
 		end
+		timerInvokeDestiny:Start(8, self.vb.destinyCount)
 	elseif spellId == 353432 then
 		if args:IsPlayer() then
 			specWarnBurdenofDestinyYou:Show()
@@ -327,13 +393,18 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnBurdenofDestiny:Play("killmob")
 		end
 	elseif spellId == 350568 or spellId == 356065 then
-		warnCallofEternity:CombinedShow(0.3, args.destName)
-		if args:IsPlayer() then
-			specWarnCallofEternity:Show()
-			specWarnCallofEternity:Play("runout")
-			yellCallofEternity:Yell()
-			yellCallofEternityFades:Countdown(spellId)
+		local icon = self.vb.EternityIcon
+		if self.Options.SetIconOnCallofEternity then
+			self:SetIcon(args.destName, icon)
 		end
+		if args:IsPlayer() then
+			specWarnCallofEternity:Show()--self:IconNumToTexture(icon)
+			specWarnCallofEternity:Play("runout")--"mm"..icon
+			yellCallofEternity:Yell(icon, icon)
+			yellCallofEternityFades:Countdown(spellId, nil, icon)
+		end
+		warnCallofEternity:CombinedShow(0.5, args.destName)
+		self.vb.EternityIcon = self.vb.EternityIcon + 1
 	elseif spellId == 353195 then--Extemporaneous Fate
 		self.vb.extemporaneousCount = self.vb.extemporaneousCount + 1
 		specWarnExtemporaneousFate:Show(self.vb.extemporaneousCount)
@@ -351,6 +422,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 357739 then
 		self:SetStage(2)
+		self.vb.addIcon = 8
 		self.vb.realignCount = self.vb.realignCount + 1
 		specWarnRealignFate:Show(self.vb.realignCount)
 		specWarnRealignFate:Play("specialsoon")
@@ -360,6 +432,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerCallofEternityCD:Stop()
 		timerGrimPortentCD:Stop()
 		timerDarkestDestiny:Start()
+		self:RegisterShortTermEvents(
+			"INSTANCE_ENCOUNTER_ENGAGE_UNIT"
+		)
 	end
 end
 --mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -367,13 +442,18 @@ end
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 354365 then
+		grimDebuffs = grimDebuffs - 1
 		if self.Options.SetIconOnGrimPortent then
 			self:SetIcon(args.destName, 0)
+		end
+		if grimDebuffs == 0 then
+			timerGrimPortent:Stop()
 		end
 	elseif spellId == 351680 then
 		if args:IsPlayer() then
 			yellInvokeDestinyFades:Cancel()
 		end
+		timerInvokeDestiny:Stop()
 	elseif spellId == 353432 then
 		if args:IsPlayer() then
 			if self.Options.NPAuraOnBurdenofDestiny then
@@ -384,9 +464,13 @@ function mod:SPELL_AURA_REMOVED(args)
 		if args:IsPlayer() then
 			yellCallofEternityFades:Cancel()
 		end
+		if self.Options.SetIconOnCallofEternity then
+			self:SetIcon(args.destName, 0)
+		end
 	elseif spellId == 353195 then--Extemporaneous Fate
 		timerDarkestDestiny:Stop()
 	elseif (spellId == 357739) and self.vb.phase == 2 then
+		self:UnregisterShortTermEvents()
 		timerDarkestDestiny:Stop()
 		self.vb.twistCount = 0
 		self.vb.eternityCount = 0
@@ -396,12 +480,11 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.vb.realignCount == 1 then--first cast
 			self:SetStage(1)
 			if self:IsMythic() then
-				--Extrapolated sincce it's same as initial phase 1 but offset a little
-				timerTwistFateCD:Start(8.4, 1)
-				timerCallofEternityCD:Start(15.6, 1)
-				timerInvokeDestinyCD:Start(22.6, 1)
-				timerFatedConjunctionCD:Start(24.6, 1)
-				timerGrimPortentCD:Start(45.6, 1)
+				timerTwistFateCD:Start(11, 1)
+				timerCallofEternityCD:Start(23, 1)
+				timerInvokeDestinyCD:Start(25, 1)
+				timerFatedConjunctionCD:Start(30, 1)
+				timerGrimPortentCD:Start(48, 1)
 			else
 				timerTwistFateCD:Start(10, 1)--CAST_START
 				timerFatedConjunctionCD:Start(18.5, 1)
@@ -412,18 +495,50 @@ function mod:SPELL_AURA_REMOVED(args)
 			self:SetStage(3)
 			if self:IsMythic() then
 				--TIMERS NOT UPDATED YET
-				timerFatedConjunctionCD:Start(8.4, 1)
-				timerCallofEternityCD:Start(10.9, 1)
-				timerInvokeDestinyCD:Start(24.4, 1)
-				timerExtemporaneousFateCD:Start(39.7, 1)
-				timerTwistFateCD:Start(48.9, 1)
-				--timerGrimPortentCD:Start(2, 1)
+--				timerFatedConjunctionCD:Start(8.4, 1)
+--				timerCallofEternityCD:Start(10.9, 1)
+--				timerInvokeDestinyCD:Start(24.4, 1)
+--				timerExtemporaneousFateCD:Start(39.7, 1)
+--				timerTwistFateCD:Start(48.9, 1)
+--				timerGrimPortentCD:Start(2, 1)
 			else
 				timerFatedConjunctionCD:Start(11.1, 1)--11.4-12.1
 				timerCallofEternityCD:Start(13.9, 1)--13.9-14.5
 				timerInvokeDestinyCD:Start(25.6, 1)
 				timerExtemporaneousFateCD:Start(self:IsHeroic() and 46.7 or 36.7, 1)
 				timerTwistFateCD:Start(51.4, 1)
+			end
+		end
+	end
+end
+
+function mod:UNIT_DIED(args)
+	local cid = self:GetCIDFromGUID(args.destGUID)
+	if cid == 180323 then--Fatespawn Monstrosity
+		timerDespairCD:Stop(1, args.destGUID)
+		timerDespairCD:Stop(2, args.destGUID)
+		timerDespairCD:Stop(3, args.destGUID)
+		timerDespairCD:Stop(4, args.destGUID)
+		timerDespairCD:Stop(5, args.destGUID)
+	end
+end
+
+function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
+	for i = 1, 5 do
+		local unitID = "boss"..i
+		local unitGUID = UnitGUID(unitID)
+		if UnitExists(unitID) and not castsPerGUID[unitGUID] then
+			castsPerGUID[unitGUID] = 0
+			local cid = self:GetUnitCreatureId(unitID)
+			if cid == 180323 then--Fatespawn Monstrosity
+				--Initial despair timer, with new transcriptor log
+				--timerDespairCD:Start(0, 1, unitGUID)
+				if not GetRaidTargetIndex(unitID) then--Not already marked
+					if self.Options.SetIconOnMonstrosity then
+						SetRaidTarget(unitID, self.vb.addIcon)
+					end
+					self.vb.addIcon = self.vb.addIcon - 1
+				end
 			end
 		end
 	end

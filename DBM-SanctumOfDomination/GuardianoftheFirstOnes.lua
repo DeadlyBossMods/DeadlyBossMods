@@ -7,7 +7,7 @@ mod:SetEncounterID(2436)
 mod:SetUsedIcons(1, 2, 3)
 mod:SetHotfixNoticeRev(20210625000000)--2021-06-25
 mod:SetMinSyncRevision(20210625000000)
---mod.respawnTime = 29
+mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
 
@@ -417,7 +417,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnPurgingProtocol:Play("aesoon")
 	elseif spellId == 350732 then
 		self.vb.comboCount = self.vb.comboCount + 1
-		if self:IsTanking("player", nil, nil, true, args.sourceGUID) then
+		if self:IsTanking("player", "boss1", nil, true) then
 			specWarnSunder:Show()
 			specWarnSunder:Play("defensive")
 		end
