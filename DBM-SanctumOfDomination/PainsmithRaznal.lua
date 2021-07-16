@@ -14,7 +14,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 357735",
 	"SPELL_CAST_SUCCESS 348508 355568 355778 348456 355504 355534",
-	"SPELL_AURA_APPLIED 348508 355568 355778 355786 348456 355505 355525 352052",
+	"SPELL_AURA_APPLIED 348508 355568 355778 355786 348456 355505 355506 355525 352052",
 --	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 348508 355568 355778 355786 348456 355505 355525",
 --	"SPELL_PERIODIC_DAMAGE",
@@ -326,11 +326,12 @@ end
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 355505 then
-		if self.Options.SetIconOnChains then
-			self:SetIcon(args.destName, 0)
-		end
 		if args:IsPlayer() then
 			yellShadowsteelChainsFades:Cancel()
+		end
+	elseif spellId == 355506 then
+		if self.Options.SetIconOnChains then
+			self:SetIcon(args.destName, 0)
 		end
 	elseif spellId == 348508 then
 		if args:IsPlayer() then

@@ -14,9 +14,9 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 350803 350828 348074 349030 349031 350847 350816 351413 355914 348974 350453",
 	"SPELL_CAST_SUCCESS 350022 351835",
-	"SPELL_AURA_APPLIED 351143 350604 354004 350034 351825 350713 355240 355245 348969 348805 358609 358610",
+	"SPELL_AURA_APPLIED 351143 350604 354004 350034 351825 350713 355240 355245 348969 348805 358609 358610 351827",
 	"SPELL_AURA_APPLIED_DOSE 348969",
-	"SPELL_AURA_REMOVED 351825 348805 355240 355245 358610",
+	"SPELL_AURA_REMOVED 351825 348805 355240 355245 358610 351827",
 --	"SPELL_PERIODIC_DAMAGE 352559",
 --	"SPELL_PERIODIC_MISSED 352559",
 	"UNIT_DIED",
@@ -50,7 +50,7 @@ local warnTitanicDeathGaze					= mod:NewCountAnnounce(349030, 2)
 local warnDesolationBeam					= mod:NewTargetNoFilterAnnounce(350847, 2)
 local warnShatteredSoul						= mod:NewTargetAnnounce(350034, 2)
 local warnSlothfulCorruption				= mod:NewTargetNoFilterAnnounce(350713, 2, nil, "RemoveMagic")
-local warnSpreadingMisery					= mod:NewCastAnnounce(350816, 2)
+local warnSpreadingMisery					= mod:NewTargetAnnounce(350816, 2)
 --Stage Three: Immediate Extermination
 local warnImmediateExtermination			= mod:NewCountAnnounce(348969, 2)
 
@@ -69,9 +69,12 @@ local yellDesolationBeam					= mod:NewYell(358610)
 local yellDesolationBeamFades				= mod:NewShortFadesYell(358610)
 local specWarnShatteredSoul					= mod:NewSpecialWarningYou(354004, nil, nil, nil, 1, 2)--Debuff of Soul Shatter
 local specWarnSlothfulCorruption			= mod:NewSpecialWarningYou(350713, nil, nil, nil, 1, 2)
+local specWarnSpreadingMisery				= mod:NewSpecialWarningMoveAway(351827, nil, nil, nil, 1, 2)
+local yellSpreadingMisery					= mod:NewYell(351827)
+local yellSpreadingMiseryFades				= mod:NewShortFadesYell(351827)
 local yellScornandIre						= mod:NewIconRepeatYell(355232)--Mythic
 
-local specWarnAnnihilatingGlare				= mod:NewSpecialWarningDodge(350764, nil, 143444, nil, 3, 2)
+local specWarnAnnihilatingGlare				= mod:NewSpecialWarningDodge(350764, nil, 182908, nil, 3, 2)
 
 --mod:AddTimerLine(BOSS)
 --Stage One: His Gaze Upon You
@@ -89,7 +92,7 @@ local timerScornandIreCD					= mod:NewCDTimer(12.1, 355232, nil, nil, nil, 3, ni
 local timerSlothfulCorruptionCD				= mod:NewCDTimer(23.8, 350713, nil, nil, nil, 3, nil, DBM_CORE_L.MAGIC_ICON)
 local timerSpreadingMiseryCD				= mod:NewCDTimer(12.1, 350816, nil, nil, nil, 3)
 --Stage Three: Immediate Extermination
-local timerAnnihilatingGlareCD				= mod:NewCDCountTimer(47.3, 350764, 143444, nil, nil, 3)--Shortname "Laser"
+local timerAnnihilatingGlareCD				= mod:NewCDCountTimer(47.3, 350764, 182908, nil, nil, 3)--Shortname "Beam"
 
 --local berserkTimer						= mod:NewBerserkTimer(600)
 
@@ -198,9 +201,6 @@ function mod:SPELL_CAST_START(args)
 		self.vb.beamCount = self.vb.beamCount + 1
 		timerDesolationBeamCD:Start(nil, self.vb.beamCount+1)
 	elseif spellId == 350816 then--TODO, remove antispam if they don't cast it at same time
-		if self:AntiSpam(3, 1) then
-			warnSpreadingMisery:Show()
-		end
 		timerSpreadingMiseryCD:Start(nil, args.sourceGUID)
 	elseif spellId == 351413 then
 		self.vb.glareCount = self.vb.glareCount + 1
@@ -308,6 +308,14 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			warnDesolationBeam:Show(args.destName)
 		end
+	elseif spellId == 351827 then
+		if args:IsPlayer() then
+			specWarnSpreadingMisery:Show()
+			specWarnSpreadingMisery:Play("runout")
+			yellSpreadingMisery:Yell()
+			yellSpreadingMiseryFades:Countdown(spellId)
+		end
+		warnSpreadingMisery:CombinedShow(0.3, args.destName)
 	elseif spellId == 348805 then--Stygian Darkshield (Entering Adds phase)
 		timerAnnihilatingGlareCD:Stop()
 		self:SetStage(2)
@@ -382,6 +390,10 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 358610 then
 		if args:IsPlayer() then
 			yellDesolationBeamFades:Cancel()
+		end
+	elseif spellId == 351827 then
+		if args:IsPlayer() then
+			yellSpreadingMiseryFades:Cancel()
 		end
 	end
 end

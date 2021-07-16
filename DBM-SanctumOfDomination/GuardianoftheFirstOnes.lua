@@ -31,8 +31,8 @@ mod:RegisterEventsInCombat(
 --TODO, do people really need a timer for purging protocol? it's based on bosses energy depletion rate (which is exactly 1 energy per second and visible on infoframe)
 --TODO, if combo is random order on mythic, bust out the aggramar shit
 --In other words, infoframe energy tracker IS the timer, and his energy is constantly going up and down based on core strategy, timer would need aggressive updates from UNIT_POWER
-local warnDisintegration						= mod:NewTargetNoFilterAnnounce(352833, 3)
-local warnThreatNeutralization					= mod:NewTargetNoFilterAnnounce(350496, 2)
+local warnDisintegration						= mod:NewTargetNoFilterAnnounce(352833, 3, nil, nil, 182908)
+local warnThreatNeutralization					= mod:NewTargetNoFilterAnnounce(350496, 2, nil, nil, 167180)
 local warnFormSentry							= mod:NewCountAnnounce(352660, 2)
 local warnObliterate							= mod:NewCountAnnounce(355352, 2)
 
@@ -45,18 +45,18 @@ local specWarnSunder							= mod:NewSpecialWarningDefensive(350732, nil, nil, ni
 local specWarnSunderTaunt						= mod:NewSpecialWarningTaunt(350732, nil, nil, nil, 1, 2)--Only used on normal/LFR, swaps for heroic and mythic are during Obliterate
 local specWarnObliterate						= mod:NewSpecialWarningTaunt(350734, nil, nil, nil, 1, 2)
 local specWarnObliterateCount					= mod:NewSpecialWarningCount(350734, false, nil, nil, 1, 2)
-local specWarnDisintegration					= mod:NewSpecialWarningDodgeCount(352833, nil, nil, nil, 2, 2)
+local specWarnDisintegration					= mod:NewSpecialWarningDodgeCount(352833, nil, 182908, nil, 2, 2)
 local yellDisintegration						= mod:NewYell(352833)
-local specWarnThreatNeutralization				= mod:NewSpecialWarningMoveAway(350496, nil, nil, nil, 1, 2)
-local yellThreatNeutralization					= mod:NewShortPosYell(350496)
-local yellThreatNeutralizationFades				= mod:NewIconFadesYell(350496)
+local specWarnThreatNeutralization				= mod:NewSpecialWarningMoveAway(350496, nil, 37859, nil, 1, 2)
+local yellThreatNeutralization					= mod:NewShortPosYell(350496, 37859)
+local yellThreatNeutralizationFades				= mod:NewIconFadesYell(350496, 37859)
 local specWarnGTFO								= mod:NewSpecialWarningGTFO(340324, nil, nil, nil, 1, 8)
 
 --mod:AddTimerLine(BOSS)
-local timerEliminationPatternCD					= mod:NewCDCountTimer(31.6, 350735, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)--Time between casts not known, but link reset kinda works
-local timerDisintegrationCD						= mod:NewCDCountTimer(34.6, 352833, nil, nil, nil, 3)--Continues whether linked or not
+local timerEliminationPatternCD					= mod:NewCDCountTimer(31.6, 350735, 350732, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)--Time between casts not known, but link reset kinda works
+local timerDisintegrationCD						= mod:NewCDCountTimer(34.6, 352833, 182908, nil, nil, 3)--Continues whether linked or not
 local timerFormSentryCD							= mod:NewCDCountTimer(72.6, 352660, nil, nil, nil, 1)--Time between casts not known, but link reset kinda works
-local timerThreatNeutralizationCD				= mod:NewCDCountTimer(11.4, 350496, nil, nil, nil, 3, nil, nil, true)--Continues whether linked or not
+local timerThreatNeutralizationCD				= mod:NewCDCountTimer(11.4, 350496, 167180, nil, nil, 3, nil, nil, true)--Continues whether linked or not
 
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
