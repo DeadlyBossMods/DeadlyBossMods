@@ -14,16 +14,16 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 357735",
 	"SPELL_CAST_SUCCESS 348508 355568 355778 348456 355504 355534",
-	"SPELL_AURA_APPLIED 348508 355568 355778 355786 348456 355505 355506 355525 352052",
+	"SPELL_SUMMON 355536",
+	"SPELL_AURA_APPLIED 348508 355568 355778 348456 355505 355525 352052",
 --	"SPELL_AURA_APPLIED_DOSE",
-	"SPELL_AURA_REMOVED 348508 355568 355778 355786 348456 355505 355525",
+	"SPELL_AURA_REMOVED 348508 355568 355778 348456 355505 355506 355525",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 	"UNIT_DIED",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, verify infoframe usefulness
 --TODO,
 --https://ptr.wowhead.com/spells/uncategorized/name:spike?filter=21;2;90100
 --[[
@@ -38,7 +38,9 @@ local warnHammer								= mod:NewTargetCountAnnounce(348508, 1, nil, nil, 175798
 local warnScythe								= mod:NewTargetCountAnnounce(355778, 1, nil, nil, 327953, nil, nil, nil, true)
 local warnShadowsteelChains						= mod:NewTargetNoFilterAnnounce(355505, 2, nil, nil, 246367)
 local warnFlameclaspTrap						= mod:NewTargetNoFilterAnnounce(348456, 2, nil, nil, 8312)
+--Intermission
 local warnEmbers								= mod:NewCountAnnounce(355534, 2, nil, nil, 264364)
+local warnAddsRemaining							= mod:NewAddsLeftAnnounce(357755, 1)
 
 local specWarnCruciformAxe						= mod:NewSpecialWarningMoveAway(355568, nil, 184055, nil, 1, 2)
 local yellCruciformAxe							= mod:NewShortYell(355568, 184055)
@@ -62,25 +64,26 @@ local yellShadowsteelChainsFades				= mod:NewIconFadesYell(355505, 246367)
 --local specWarnExsanguinatingBite				= mod:NewSpecialWarningDefensive(328857, nil, nil, nil, 1, 2)
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(340324, nil, nil, nil, 1, 8)
 
---mod:AddTimerLine(BOSS)
-local timerCruciformAxeCD						= mod:NewCDCountTimer(19.4, 355568, 184055, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON)--"Axe"
-local timerCruciformAxe							= mod:NewTargetTimer(6, 355568, 184055, nil, nil, 3)--"Axe"
-local timerReverberatingHammerCD				= mod:NewCDCountTimer(19.4, 348508, 175798, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON)--"Hammer"
-local timerReverberatingHammer					= mod:NewTargetTimer(6, 348508, 175798, nil, nil, 3)--"Hammer"
-local timerDualbladeScytheCD					= mod:NewCDCountTimer(19.4, 355778, 327953, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON)--"Scythe"
-local timerDualbladeScythe						= mod:NewTargetTimer(19.4, 355778, 327953, nil, nil, 3)--"Scythe"
-local timerSpikedBallsCD						= mod:NewCDCountTimer(40.1, 352052, nil, nil, nil, 3, nil, DBM_CORE_L.DAMAGE_ICON)
+mod:AddTimerLine(BOSS)
+local timerCruciformAxeCD						= mod:NewCDCountTimer(19.4, 355568, 184055, nil, 2, 5, nil, DBM_CORE_L.TANK_ICON)--"Axe"
+local timerCruciformAxe							= mod:NewTargetTimer(6, 355568, 184055, nil, 2, 5)--"Axe"
+local timerReverberatingHammerCD				= mod:NewCDCountTimer(19.4, 348508, 175798, nil, 2, 5, nil, DBM_CORE_L.TANK_ICON)--"Hammer"
+local timerReverberatingHammer					= mod:NewTargetTimer(6, 348508, 175798, nil, 2, 5)--"Hammer"
+local timerDualbladeScytheCD					= mod:NewCDCountTimer(19.4, 355778, 327953, nil, 2, 5, nil, DBM_CORE_L.TANK_ICON)--"Scythe"
+local timerDualbladeScythe						= mod:NewTargetTimer(19.4, 355778, 327953, nil, 2, 5)--"Scythe"
+local timerSpikedBallsCD						= mod:NewCDCountTimer(40, 352052, nil, nil, 2, 1, nil, DBM_CORE_L.DAMAGE_ICON)
 local timerFlameclaspTrapCD						= mod:NewCDCountTimer(47.9, 348456, 8312, nil, nil, 3, nil, DBM_CORE_L.HEROIC_ICON)--"Trap"
 local timerShadowsteelChainsCD					= mod:NewCDCountTimer(40.1, 355504, 246367, nil, nil, 3)--"Chains"
 --Intermission
+mod:AddTimerLine(DBM_CORE_L.INTERMISSION)
 local timerForgeWeapon							= mod:NewCastTimer(48, 355525, nil, nil, nil, 6)
 local timerEmbersCD								= mod:NewNextCountTimer(5, 355534, 264364, nil, nil, 3)--"Embers"
 local timerAddsCD								= mod:NewAddsTimer(120, 357755, nil, nil, nil, 1, nil, DBM_CORE_L.DAMAGE_ICON)
+local timerFinalScream							= mod:NewCastTimer(15, 357735, nil, nil, nil, 2, nil, DBM_CORE_L.DEADLY_ICON)
 
 --local berserkTimer							= mod:NewBerserkTimer(600)
 
 --mod:AddRangeFrameOption("8")
-mod:AddInfoFrameOption(355786, true)
 mod:AddSetIconOption("SetIconOnChains", 355505, true, false, {1, 2, 3})
 mod:AddSetIconOption("SetIconOnTraps", 348456, true, false, {4, 5, 6, 7})
 mod:AddNamePlateOption("NPAuraOnFinalScream", 357735)
@@ -92,62 +95,7 @@ mod.vb.ballsCount = 0
 mod.vb.trapCount = 0
 mod.vb.chainCount = 0
 mod.vb.emberCount = 0
-
-local debuffedPlayers = {}
-
-local updateInfoFrame
-do
-	local twipe, tsort, mfloor = table.wipe, table.sort, math.floor
-	local lines = {}
-	local tempLines = {}
-	local tempLinesSorted = {}
-	local sortedLines = {}
-	local function sortFuncDesc(a, b) return tempLines[a] > tempLines[b] end
-	local function addLine(key, value)
-		-- sort by insertion order
-		lines[key] = value
-		sortedLines[#sortedLines + 1] = key
-	end
-	updateInfoFrame = function()
-		twipe(lines)
-		twipe(tempLines)
-		twipe(tempLinesSorted)
-		twipe(sortedLines)
-		--Boss Powers first (Change if weapons or other parts don't have power)
-		for i = 1, 5 do
-			local uId = "boss"..i
-			--Primary Power
-			local currentPower, maxPower = UnitPower(uId), UnitPowerMax(uId)
-			if maxPower and maxPower ~= 0 then
-				local adjustedPower = currentPower / maxPower * 100
-				if adjustedPower >= 1 and adjustedPower ~= 100 then--Filter 100 power, to basically eliminate cced Adds
-					addLine(UnitName(uId), currentPower)
-				end
-			end
-		end
-		addLine(" ", " ")--Insert a blank entry to split the two debuffs
-		--Debuffed players (UGLY code)
-		if #debuffedPlayers > 0 then
-			for i=1, #debuffedPlayers do
-				local name = debuffedPlayers[i]
-				local uId = DBM:GetRaidUnitId(name)
-				local spellName, _, _, _, _, expires = DBM:UnitDebuff(uId, 355786)
-				if expires then
-					local unitName = DBM:GetUnitFullName(uId)
-					local debuffTime = expires - GetTime()
-					tempLines[unitName] = mfloor(debuffTime)
-					tempLinesSorted[#tempLinesSorted + 1] = unitName
-				end
-			end
-			--Sort debuffs by longeset remaining then inject into regular table
-			tsort(tempLinesSorted, sortFuncDesc)
-			for _, name in ipairs(tempLinesSorted) do
-				addLine(name, tempLines[name])
-			end
-		end
-		return lines, sortedLines
-	end
-end
+mod.vb.addsRemaining = 0
 
 local function repeatEmbers(self, expected)
 	self.vb.emberCount = self.vb.emberCount + 1
@@ -165,10 +113,9 @@ function mod:OnCombatStart(delay)
 	self.vb.ballsCount = 0
 	self.vb.trapCount = 0
 	self.vb.chainCount = 0
-	table.wipe(debuffedPlayers)
 	if self:IsMythic() then
 		timerShadowsteelChainsCD:Start(8.1-delay, 1)
-		timerCruciformAxeCD:Start(11-delay, 1)
+		timerCruciformAxeCD:Start(10.7-delay, 1)
 		timerSpikedBallsCD:Start(16-delay, 1)
 		timerFlameclaspTrapCD:Start(39-delay, 1)
 	else
@@ -180,19 +127,12 @@ function mod:OnCombatStart(delay)
 		end
 	end
 --	berserkTimer:Start(-delay)
-	if self.Options.InfoFrame then
-		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(355786))
-		DBM.InfoFrame:Show(20, "function", updateInfoFrame, false, false)
-	end
 	if self.Options.NPAuraOnFinalScream then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
 end
 
 function mod:OnCombatEnd()
-	if self.Options.InfoFrame then
-		DBM.InfoFrame:Hide()
-	end
 --	if self.Options.RangeFrame then
 --		DBM.RangeCheck:Hide()
 --	end
@@ -205,7 +145,10 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 357735 then
 		if self.Options.NPAuraOnFinalScream then
-			DBM.Nameplate:Show(true, args.sourceGUID, spellId, nil, 5)
+			DBM.Nameplate:Show(true, args.sourceGUID, spellId, nil, 15)
+		end
+		if self:AntiSpam(5, 1) then
+			timerFinalScream:Start()
 		end
 	end
 end
@@ -214,13 +157,13 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 348508 then
 		self.vb.weaponCount = self.vb.weaponCount + 1
-		timerReverberatingHammerCD:Start(nil, self.vb.weaponCount+1)
+		timerReverberatingHammerCD:Start(self:IsMythic() and 20.1 or 19.4, self.vb.weaponCount+1)
 	elseif spellId == 355568 then
 		self.vb.weaponCount = self.vb.weaponCount + 1
-		timerCruciformAxeCD:Start(nil, self.vb.weaponCount+1)
+		timerCruciformAxeCD:Start(self:IsMythic() and 20.1 or 19.4, self.vb.weaponCount+1)
 	elseif spellId == 355778 then
 		self.vb.weaponCount = self.vb.weaponCount + 1
-		timerDualbladeScytheCD:Start(nil, self.vb.weaponCount+1)
+		timerDualbladeScytheCD:Start(self:IsMythic() and 20.1 or 19.4, self.vb.weaponCount+1)
 	elseif spellId == 348456 then
 		DBM:Debug("Traps added to combat log")
 	elseif spellId == 355504 then
@@ -249,12 +192,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		warnShadowsteelChains:CombinedShow(0.5, args.destName)
 		self.vb.ChainsIcon = self.vb.ChainsIcon + 1
-	elseif spellId == 355786 then
-		if not tContains(debuffedPlayers, args.destName) then
-			table.insert(debuffedPlayers, args.destName)
-		end
-	elseif spellId == 355525 then
-		timerForgeWeapon:Start()
 	elseif spellId == 348508 then
 		if args:IsPlayer() then
 			specWarnReverberatingHammer:Show()
@@ -295,10 +232,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		timerDualbladeScythe:Start(args.destName)
 	elseif spellId == 348456 then
-		if self:AntiSpam(5, 1) then
+		if self:AntiSpam(5, 2) then
 			self.vb.trapsIcon = 4
 			self.vb.trapCount = self.vb.trapCount + 1
-			local timer = (self:IsHeroic() and self.vb.phase > 1 and 47.9) or 40
+			local timer = (self:IsHeroic() and self.vb.phase > 1 and 47.9) or (self:IsMythic() and self.vb.phase == 1 and 53.9 or 37.9) or 40
 			timerFlameclaspTrapCD:Start(timer, self.vb.trapCount+1)
 		end
 		local icon = self.vb.trapsIcon
@@ -319,6 +256,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnSpikedBalls:Play("targetchange")
 		local timer = (self:IsHeroic() and self.vb.phase > 1 and 47.9) or 40.1
 		timerSpikedBallsCD:Start(timer, self.vb.ballsCount+1)
+	elseif spellId == 355525 then
+		self:Unschedule(repeatEmbers)
+		repeatEmbers(self, self:IsMythic() and 9 or 7)
+		timerForgeWeapon:Start()
+		if self:IsMythic() then--Based on vods, may be off slightly
+			timerAddsCD:Start(47)
+		end
 	end
 end
 --mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -348,8 +292,6 @@ function mod:SPELL_AURA_REMOVED(args)
 			yellDualbladeScytheFades:Cancel()
 		end
 		timerDualbladeScythe:Stop(args.destName)
-	elseif spellId == 355786 then
-		tDeleteItem(debuffedPlayers, args.destName)
 	elseif spellId == 348456 then
 		if self.Options.SetIconOnTraps then
 			self:SetIcon(args.destName, 0)
@@ -369,9 +311,9 @@ function mod:SPELL_AURA_REMOVED(args)
 		--But I like having knobs to adjust in place if fight recieves adjustments down the line
 		if self.vb.phase == 2 then
 			if self:IsMythic() then--Timers from video, might be slightly off
-				timerShadowsteelChainsCD:Start(10.9, 1)
+				timerShadowsteelChainsCD:Start(10.8, 1)
 				timerReverberatingHammerCD:Start(16.9, 1)
-				timerSpikedBallsCD:Start(20, 1)
+				timerSpikedBallsCD:Start(19.9, 1)
 				timerFlameclaspTrapCD:Start(38.1, 1)
 			elseif self:IsHeroic() then
 				timerShadowsteelChainsCD:Start(14.7, 1)
@@ -387,9 +329,9 @@ function mod:SPELL_AURA_REMOVED(args)
 			end
 		else--phase 3
 			if self:IsMythic() then--Timers taken from P2, might not be right at all, could't find any clean P3 pulls in vods
-				timerShadowsteelChainsCD:Start(10.9, 1)
+				timerShadowsteelChainsCD:Start(10.8, 1)
 				timerDualbladeScytheCD:Start(16.9, 1)
-				timerSpikedBallsCD:Start(20, 1)
+				timerSpikedBallsCD:Start(19.9, 1)
 				timerFlameclaspTrapCD:Start(38.1, 1)
 			elseif self:IsHeroic() then
 				timerShadowsteelChainsCD:Start(14.6, 1)
@@ -410,6 +352,11 @@ end
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 179847 then--Shadowsteel Ember
+		self.vb.addsRemaining = self.vb.addsRemaining - 1
+		if self.vb.addsRemaining == 0 then
+			warnAddsRemaining:Show(0)
+			timerFinalScream:Stop()
+		end
 		if self.Options.NPAuraOnFinalScream then
 			DBM.Nameplate:Hide(true, args.destGUID, 357735)
 		end
@@ -418,7 +365,7 @@ end
 
 --[[
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
-	if spellId == 340324 and destGUID == UnitGUID("player") and not playerDebuff and self:AntiSpam(2, 2) then
+	if spellId == 340324 and destGUID == UnitGUID("player") and not playerDebuff and self:AntiSpam(2, 3) then
 		specWarnGTFO:Show(spellName)
 		specWarnGTFO:Play("watchfeet")
 	end
@@ -426,23 +373,20 @@ end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 --]]
 
---Faster than combat log or not in combat log events
 --"<67.84 22:36:16> [UNIT_SPELLCAST_SUCCEEDED] Painsmith Raznal(Andybruwu) -[DNT] Upstairs- [[boss1:Cast-3-2012-2450-9254-355555-003A1D8DC1:355555]]", -- [1092]
 --"<70.30 22:36:19> [CLEU] SPELL_AURA_APPLIED#Creature-0-2012-2450-9254-176523-00001D8D02#Painsmith Raznal#Creature-0-2012-2450-9254-176523-00001D8D02#Painsmith Raznal#355525#Forge Weapon#BUFF#nil", -- [1138]
+--"<115.44 11:06:19> [UNIT_SPELLCAST_SUCCEEDED] Painsmith Raznal(Lonecrusader) -[DNT] Upstairs- [[boss1:Cast-3-4253-2450-3280-355555-002F6FFA8B:355555]]", -- [4266]
+--"<119.12 11:06:23> [CLEU] SPELL_AURA_APPLIED#Creature-0-4253-2450-3280-176523-00006FF9BD#Painsmith Raznal#Creature-0-4253-2450-3280-176523-00006FF9BD#Painsmith Raznal#359033#Forge's Flames#BUFF#nil",
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-	if spellId == 355555 then--Upstairs (Boss leaving, faster to stop timers than Forge Weapon which happens 2 sec later)
+	if spellId == 355555 then--Upstairs (Boss leaving, faster to stop timers than Forge Weapon which happens ~2-4 sec later)
 		self.vb.emberCount = 0
+		self.vb.addsRemaining = 0
 		timerReverberatingHammerCD:Stop()
 		timerCruciformAxeCD:Stop()
 		timerDualbladeScytheCD:Stop()
 		timerSpikedBallsCD:Stop()
 		timerFlameclaspTrapCD:Stop()
 		timerShadowsteelChainsCD:Stop()
-		timerEmbersCD:Start(2.5, 1)
-		self:Unschedule(repeatEmbers)
-		self:Schedule(2.5, repeatEmbers, self, self:IsMythic() and 9 or 7)--Based on vods, may be off slightly
-		if self:IsMythic() then--Based on vods, may be off slightly
-			timerAddsCD:Start(49.5)
-		end
+		--Timers started at forge weapon do to variation that can be observed between upstairs and forge weapon start
 	end
 end

@@ -364,7 +364,7 @@ function mod:OnCombatStart(delay)
 	self.vb.patternCount = 0--which pattern SET it is
 	self.vb.comboCount = 0--Which cast within the pattern set
 	timerFormSentryCD:Start(3.6-delay, 1)
-	timerThreatNeutralizationCD:Start(self:IsMythic() and 8.3 or 10.9-delay, 1)
+	timerThreatNeutralizationCD:Start(self:IsMythic() and 8 or 10.9-delay, 1)
 	timerDisintegrationCD:Start(15.4-delay, 1)
 	timerEliminationPatternCD:Start(25.3-delay, 1)
 	--Infoframe setup (might not be needed)
