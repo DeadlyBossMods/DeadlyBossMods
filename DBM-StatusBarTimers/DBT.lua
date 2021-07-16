@@ -1151,6 +1151,19 @@ do
 		self:SetOption("Skin", id) -- Forces an UpdateBars and ApplyStyle
 	end
 
+	function DBT:ResetSkin()
+		local DBM_UsedProfile = DBM_UsedProfile
+		if not DBT_AllPersistentOptions then
+			DBT_AllPersistentOptions = {}
+		end
+		if not DBT_AllPersistentOptions[DBM_UsedProfile] then
+			DBT_AllPersistentOptions[DBM_UsedProfile] = {}
+		end
+		DBT_AllPersistentOptions[DBM_UsedProfile]["DBM"] = self.DefaultOptions
+		self.Options = self.DefaultOptions
+		self:SetOption("Skin", "") -- Forces an UpdateBars and ApplyStyle
+	end
+
 	function DBT:GetSkins()
 		return skins
 	end
