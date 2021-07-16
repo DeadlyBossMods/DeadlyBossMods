@@ -177,6 +177,13 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
+function mod:SPELL_SUMMON(args)
+	local spellId = args.spellId
+	if spellId == 355536 then
+		self.vb.addsRemaining = self.vb.addsRemaining + 1
+	end
+end
+
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 355505 then
@@ -235,7 +242,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self:AntiSpam(5, 2) then
 			self.vb.trapsIcon = 4
 			self.vb.trapCount = self.vb.trapCount + 1
-			local timer = (self:IsHeroic() and self.vb.phase > 1 and 47.9) or (self:IsMythic() and self.vb.phase == 1 and 53.9 or 37.9) or 40
+			local timer = (self:IsHeroic() and self.vb.phase > 1 and 47.9) or (self:IsMythic() and self.vb.phase == 1 and 53.9 or self.vb.phase == 2 and 37.9 or 39.9) or 40
 			timerFlameclaspTrapCD:Start(timer, self.vb.trapCount+1)
 		end
 		local icon = self.vb.trapsIcon
@@ -351,7 +358,7 @@ end
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 179847 then--Shadowsteel Ember
+	if cid == 179847 then--Shadowsteel Horror
 		self.vb.addsRemaining = self.vb.addsRemaining - 1
 		if self.vb.addsRemaining == 0 then
 			warnAddsRemaining:Show(0)
