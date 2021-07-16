@@ -28,10 +28,12 @@ mod:RegisterEventsInCombat(
 --TODO, further mythic timer data for phase 1 and all data for phase 3
 --TODO, add cast bars for the double beam casts that don't actually have double casts events
 --TODO, verify add auto marking off IEEU
+--TODO, finish timerRunicAffinityCD. Need longer P3 pulls. Limits kill was too efficient and all wipes before it didn't get to second rings/affinity
 --[[
 (ability.id = 350421 or ability.id = 351680 or ability.id = 350554 or ability.id = 354367 or ability.id = 354265 or ability.id = 357144) and type = "begincast"
  or (ability.id = 353195 or ability.id = 357739) and (type = "applybuff" or type = "removebuff")
  or (ability.id = 353195) and type = "applydebuff"
+ or ability.id = 354964 and type = "applydebuff"
  --]]
 --Stage One: Scrying Fate
 local warnProbe									= mod:NewCastAnnounce(353603, 2)
@@ -83,6 +85,7 @@ local timerCallofEternityCD						= mod:NewCDCountTimer(37.9, 350554, 167180, nil
 local timerDespairCD							= mod:NewCDCountTimer(17, 357144, nil, nil, nil, 4)--Tricky to type, it's interrupt bar in 3/4 difficulties, aoe run out in mythic
 local timerDarkestDestiny						= mod:NewCastTimer(40, 353122, nil, nil, nil, 2, nil, DBM_CORE_L.DEADLY_ICON)
 --Stage Three: Fated Terminus Desperate
+local timerRunicAffinityCD						= mod:NewCDCountTimer(39.0, 354964, nil, nil, nil, 3)--Used in state 3 only, in stage 1 it happens at same time as rings
 local timerExtemporaneousFateCD					= mod:NewCDCountTimer(39.0, 353195, nil, nil, nil, 6)
 
 --local berserkTimer							= mod:NewBerserkTimer(600)
@@ -102,6 +105,7 @@ mod.vb.eternityCount = 0
 mod.vb.destinyCount = 0
 mod.vb.conjunctionCount = 0
 mod.vb.portentCount = 0
+mod.vb.affinityCount = 0
 mod.vb.extemporaneousCount = 0
 mod.vb.addIcon = 8
 local grimDebuffs = 0--Local variable for timer canceling only
@@ -109,7 +113,7 @@ local castsPerGUID = {}
 local difficultyName = "normal"
 --Currently non mythic difficulties not using table yet since data not yet built (heroic logs kinda bad because dps too high to get actual sequences)
 local allTimers = {
-	["mythic"] = {
+	["mythic"] = {--Timers created from vods in slow motion, expect ~1-2 until logs
 		[1] = {
 			--Twist Fate
 			[354265] = {5.8, 32, 20, 38, 29},--first is 11 the second time around
@@ -121,16 +125,18 @@ local allTimers = {
 			[350421] = {30, 50, 5, 8},--first is 35 the second time around
 			--Grim Portent
 			[354367] = {43},--first is 48 the second time around
-		},
+		},			--, 74?
 		[3] = {
 			--Twist Fate
-			[354265] = {},
+			[354265] = {40, 16, 29},
 			--Call of Eternity
-			[350554] = {},
+			[350554] = {13, 55, 29},
 			--Invoke Destiny
-			[351680] = {},
+			[351680] = {26, 44, 45},
 			--Fated Conjunction
-			[350421] = {},
+			[350421] = {18, 75, 7},
+			--Extemporaneous Fate
+			[353195] = {54},
 		}
 	},
 	["heroic"] = {--Same as normal
@@ -420,6 +426,14 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnRunicAffinity:Show()
 			specWarnRunicAffinity:Play("targetyou")
 		end
+		if self:AntiSpam(5, 3) then
+			self.vb.affinityCount = self.vb.affinityCount + 1
+			--The same timer a Extemporaneous fate, just earlier, offset self handled
+			local timer = allTimers[difficultyName][self.vb.phase][353195][self.vb.affinityCount+1]
+			if timer then
+				timerRunicAffinityCD:Start(timer, self.vb.affinityCount+1)
+			end
+		end
 	elseif spellId == 357739 then
 		self:SetStage(2)
 		self.vb.addIcon = 8
@@ -494,17 +508,19 @@ function mod:SPELL_AURA_REMOVED(args)
 		else--Second cast
 			self:SetStage(3)
 			if self:IsMythic() then
-				--TIMERS NOT UPDATED YET
---				timerFatedConjunctionCD:Start(8.4, 1)
---				timerCallofEternityCD:Start(10.9, 1)
---				timerInvokeDestinyCD:Start(24.4, 1)
---				timerExtemporaneousFateCD:Start(39.7, 1)
---				timerTwistFateCD:Start(48.9, 1)
---				timerGrimPortentCD:Start(2, 1)
+				timerCallofEternityCD:Start(13, 1)
+				timerFatedConjunctionCD:Start(18, 1)
+				timerInvokeDestinyCD:Start(26, 1)
+				timerRunicAffinityCD:Start(39, 1)
+				timerTwistFateCD:Start(40, 1)
+				timerExtemporaneousFateCD:Start(54, 1)--Rings activating
 			else
 				timerFatedConjunctionCD:Start(11.1, 1)--11.4-12.1
 				timerCallofEternityCD:Start(13.9, 1)--13.9-14.5
 				timerInvokeDestinyCD:Start(25.6, 1)
+				if self:IsHeroic() then
+					timerRunicAffinityCD:Start(30, 1)
+				end
 				timerExtemporaneousFateCD:Start(self:IsHeroic() and 46.7 or 36.7, 1)
 				timerTwistFateCD:Start(51.4, 1)
 			end
@@ -546,7 +562,7 @@ end
 
 --[[
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
-	if spellId == 340324 and destGUID == UnitGUID("player") and not playerDebuff and self:AntiSpam(2, 3) then
+	if spellId == 340324 and destGUID == UnitGUID("player") and not playerDebuff and self:AntiSpam(2, 4) then
 		specWarnGTFO:Show(spellName)
 		specWarnGTFO:Play("watchfeet")
 	end

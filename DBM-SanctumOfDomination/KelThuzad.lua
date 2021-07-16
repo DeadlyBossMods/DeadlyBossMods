@@ -9,7 +9,7 @@ mod:SetBossHPInfoToHighest()--Boss heals at least twice
 mod.noBossDeathKill = true--Instructs mod to ignore 175559 deaths, since it dies multiple times
 mod:SetHotfixNoticeRev(20210712000000)--2021-07-13
 mod:SetMinSyncRevision(20210708000000)
---mod.respawnTime = 29
+mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
 
@@ -32,6 +32,7 @@ mod:RegisterEventsInCombat(
 --TODO, hope for love of god blizzard resets mana on phase changes, otherwise a ton of timers still missing
 --TODO, more Timer work if blizz fixes above, or more hacky shit if they don't :\
 --TODO, echo timer can probably be immproved by checking mana when it is cast
+--TODO, nameplate aura that shows X or ✔️ over nameplate when it's ok to kill
 --https://ptr.wowhead.com/spell=348434/soul-exhaustion used in LFR/normal instead of other one?
 --[[
 (ability.id = 348071 or ability.id = 346459 or ability.id = 352999 or ability.id = 347291 or ability.id = 352997 or ability.id = 348756 or ability.id = 353000 or ability.id = 352293 or ability.id = 352379 or ability.id = 355055 or ability.id = 352355 or ability.id = 352348 or ability.id = 354198 or ability.id = 358999) and type = "begincast"
