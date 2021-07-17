@@ -81,11 +81,11 @@ L:SetGeneralLocalization({
 -----------------------
 -- Tred'ova --
 -----------------------
---L= DBM:GetModLocalization(2405)
+L= DBM:GetModLocalization(2405)
 
 L:SetWarningLocalization({
-	specWarnParasiticInfester		= "蟲子寄生你",
-	specWarnParasiticInfesterKick	= "蟲子寄生 - 快打斷！"
+	specWarnParasiticInfester		= "你中了寄生平靜",
+	specWarnParasiticInfesterKick	= "寄生平靜 - 快打斷"
 })
 
 L:SetTimerLocalization{
@@ -93,10 +93,10 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization({
-	specWarnParasiticInfester		= "受蟲子寄生時顯示特別警告",
-	specWarnParasiticInfesterKick	= "顯示蟲子寄生打斷的特別警告",
-	timerParasiticInfesterCD		= "顯示蟲子寄生的計時器",
-	yellParasiticInfester			= "當您受到蟲子寄生時大喊"
+	specWarnParasiticInfester		= "當你受到寄生平靜時顯示特別警告",
+	specWarnParasiticInfesterKick	= "需要打斷寄生平靜時顯示特別警告",
+	timerParasiticInfesterCD		= "顯示寄生計時器",
+	yellParasiticInfester			= "當受到平靜感染時大喊"
 })
 
 L:SetMiscLocalization({
@@ -284,4 +284,56 @@ L = DBM:GetModLocalization("SanguineDepthsTrash")
 
 L:SetGeneralLocalization({
 	name =	"血紅深淵小怪"
+})
+
+-----------------------
+-- <<<Tazavesh, the Veiled Market (1194J/2441M)>>> --
+-----------------------
+-----------------------
+-- Zo'phex the Sentinel --
+-----------------------
+--L= DBM:GetModLocalization(2437)
+
+-----------------------
+-- The Menagerie --
+-----------------------
+--L= DBM:GetModLocalization(2454)
+
+-----------------------
+-- Mailroom Mayhem --
+-----------------------
+--L= DBM:GetModLocalization(2436)
+
+-----------------------
+-- Au'myza's Oasis --
+-----------------------
+--L= DBM:GetModLocalization(2452)
+
+-----------------------
+-- So'azmi --
+-----------------------
+--L= DBM:GetModLocalization(2451)
+
+-----------------------
+-- Hylbrande --
+-----------------------
+--L= DBM:GetModLocalization(2448)
+
+-----------------------
+-- Timecap'n Hooktail --
+-----------------------
+--L= DBM:GetModLocalization(2449)
+
+-----------------------
+-- So'leah --
+-----------------------
+--L= DBM:GetModLocalization(2455)
+
+---------
+--Trash--
+---------
+L = DBM:GetModLocalization("TazaveshTrash")
+
+L:SetGeneralLocalization({
+	name =	"塔札瓦蘇小怪"
 })

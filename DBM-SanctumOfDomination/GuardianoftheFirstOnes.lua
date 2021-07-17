@@ -7,7 +7,7 @@ mod:SetEncounterID(2436)
 mod:SetUsedIcons(1, 2, 3)
 mod:SetHotfixNoticeRev(20210625000000)--2021-06-25
 mod:SetMinSyncRevision(20210625000000)
---mod.respawnTime = 29
+mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
 
@@ -364,7 +364,7 @@ function mod:OnCombatStart(delay)
 	self.vb.patternCount = 0--which pattern SET it is
 	self.vb.comboCount = 0--Which cast within the pattern set
 	timerFormSentryCD:Start(3.6-delay, 1)
-	timerThreatNeutralizationCD:Start(self:IsMythic() and 8.3 or 10.9-delay, 1)
+	timerThreatNeutralizationCD:Start(self:IsMythic() and 8 or 10.9-delay, 1)
 	timerDisintegrationCD:Start(15.4-delay, 1)
 	timerEliminationPatternCD:Start(25.3-delay, 1)
 	--Infoframe setup (might not be needed)
@@ -417,7 +417,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnPurgingProtocol:Play("aesoon")
 	elseif spellId == 350732 then
 		self.vb.comboCount = self.vb.comboCount + 1
-		if self:IsTanking("player", nil, nil, true, args.sourceGUID) then
+		if self:IsTanking("player", "boss1", nil, true) then
 			specWarnSunder:Show()
 			specWarnSunder:Play("defensive")
 		end
