@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(175732)
 mod:SetEncounterID(2435)
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
-mod:SetHotfixNoticeRev(20210712000000)--2021-07-12
+mod:SetHotfixNoticeRev(20210717000000)--2021-07-17
 mod:SetMinSyncRevision(20210712000000)
 --mod.respawnTime = 29
 
@@ -73,6 +73,7 @@ local warnDeathKnives								= mod:NewTargetNoFilterAnnounce(358433, 3)
 --local specWarnGTFO								= mod:NewSpecialWarningGTFO(340324, nil, nil, nil, 1, 8)
 --Stage One: A Cycle of Hatred
 local specWarnWindrunner							= mod:NewSpecialWarningCount(347504, nil, nil, nil, 2, 2)
+local specWarnShadowDagger							= mod:NewSpecialWarningYou(347670, false, nil, nil, 1, 2)
 local specWarnDominationChains						= mod:NewSpecialWarningCount(349419, nil, 298213, nil, 2, 2)
 local specWarnVeilofDarkness						= mod:NewSpecialWarningDodgeCount(347704, nil, 209426, nil, 2, 2)
 local specWarnWailingArrow							= mod:NewSpecialWarningRun(348064, nil, nil, nil, 4, 2)
@@ -290,15 +291,15 @@ local allTimers = {
 	["mythic"] = {
 		[1] = {
 			--Windrunner
-			[347504] = {},
+			[347504] = {8, 57, 56, 57},
 			--Ranger's Heartseeker
-			[352663] = {},
+			[352663] = {20, 17, 25, 17, 23, 4, 31, 20, 3, 8},
 			--Domination Chains
-			[349419] = {},
+			[349419] = {29, 55, 65},
 			--Black Arrow (Replaces Wailing Arrow)
-			[358704] = {},
+			[358704] = {41, 70, 60},--Initial to cast, not pre debuff, may change later
 			--Veil of Darkness
-			[347726] = {},
+			[347726] = {48, 45, 47, 55},
 		},
 		[3] = {
 			--Bane Arrows
@@ -344,11 +345,11 @@ function mod:OnCombatStart(delay)
 	self.vb.windrunnerActive = 0
 	if self:IsMythic() then
 		difficultyName = "mythic"
-		timerBlackArrowCD:Start(1-delay)
---		timerWindrunnerCD:Start(7.2-delay, 1)
---		timerRangersHeartseekerCD:Start(22.5, 1)
---		timerDominationChainsCD:Start(25.6-delay, 1)
---		timerVeilofDarknessCD:Start(52.4-delay, 1)--Probably shorter to emote
+		timerWindrunnerCD:Start(8-delay, 1)
+		timerRangersHeartseekerCD:Start(20, 1)
+		timerDominationChainsCD:Start(29-delay, 1)
+		timerBlackArrowCD:Start(41-delay)
+		timerVeilofDarknessCD:Start(48-delay, 1)--Probably shorter to emote
 	elseif self:IsHeroic() then
 		difficultyName = "heroic"
 		timerWindrunnerCD:Start(7-delay, 1)
@@ -748,6 +749,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 347670 or spellId == 353935 then
 		warnShadowDagger:CombinedShow(0.3, args.destName)
+		if args:IsPlayer() then
+			specWarnShadowDagger:Show()
+			specWarnShadowDagger:Play("targetyou")
+		end
 	elseif spellId == 349458 then
 		warnDominationChains:CombinedShow(0.3, args.destName)
 	elseif spellId == 348064 then
