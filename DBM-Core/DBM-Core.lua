@@ -10439,6 +10439,10 @@ do
 		return newSpecialWarning(self, "soak", text, nil, optionDefault, ...)
 	end
 
+	function bossModPrototype:NewSpecialWarningSoakCount(text, optionDefault, ...)
+		return newSpecialWarning(self, "soakcount", text, nil, optionDefault, ...)
+	end
+
 	function bossModPrototype:NewSpecialWarningJump(text, optionDefault, ...)
 		return newSpecialWarning(self, "jump", text, nil, optionDefault, ...)
 	end
