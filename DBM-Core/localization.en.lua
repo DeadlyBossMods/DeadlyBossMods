@@ -489,6 +489,7 @@ L.AUTO_SPEC_WARN_OPTIONS = {
 -- Auto-generated Timer Localizations
 L.AUTO_TIMER_TEXTS = {
 	target							= "%s: %%s",
+	targetcount						= "%s: %%s (%%s)",
 	cast							= "%s",
 	castshort						= "%s ",--if short timers enabled, cast and next are same timer text, this is a conflict. the space resolves it
 	castcount						= "%s (%%s)",
@@ -526,6 +527,7 @@ L.AUTO_TIMER_TEXTS = {
 
 L.AUTO_TIMER_OPTIONS = {
 	target							= "Show timer for $spell:%s debuff",
+	targetcount						= "Show timer (with count) for $spell:%s debuff",
 	cast							= "Show timer for $spell:%s cast",
 	castcount						= "Show timer (with count) for $spell:%s cast",
 	castsource						= "Show timer (with source) for $spell:%s cast",

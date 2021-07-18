@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(175732)
 mod:SetEncounterID(2435)
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
-mod:SetHotfixNoticeRev(20210717000000)--2021-07-17
+mod:SetHotfixNoticeRev(20210718000000)--2021-07-18
 mod:SetMinSyncRevision(20210712000000)
 mod.respawnTime = 29
 
@@ -37,6 +37,7 @@ mod:RegisterEventsInCombat(
  or (ability.id = 356986 or ability.id = 347504 or ability.id = 350857 or ability.id = 348146) and (type = "begincast" or type = "applydebuff" or type = "applybuff" or type = "removebuff" or type = "removedebuff")
  or (ability.id = 351075 or ability.id = 351117 or ability.id = 351353 or ability.id = 356023 or ability.id = 351589 or ability.id = 351562) and type = "begincast"
  or ability.id = 348148 or ability.id = 348093 or ability.id = 351837 or ability.id = 351838 or ability.id = 351840 or ability.id = 351841
+ or (ability.id = 348064 or ability.id = 358705) and type =  "applydebuff"
 --]]
 
 --General
@@ -46,10 +47,10 @@ local warnWindrunnerOver							= mod:NewEndAnnounce(347504, 2)
 local warnShadowDagger								= mod:NewTargetNoFilterAnnounce(347670, 2, nil, "Healer")
 local warnDominationChains							= mod:NewTargetAnnounce(349458, 2, nil, nil, 298213)--Could be spammy, unknown behavior
 --local warnVeilofDarkness							= mod:NewTargetNoFilterAnnounce(347704, 2, nil, nil, 209426)
-local warnWailingArrow								= mod:NewTargetNoFilterAnnounce(348064, 4)
+local warnWailingArrow								= mod:NewTargetCountAnnounce(348064, 4, nil, nil, nil, nil, nil, nil, true)
 local warnRangersHeartseeker						= mod:NewCountAnnounce(352663, 2, nil, "Tank")
 local warnBansheesMark								= mod:NewStackAnnounce(347607, 2, nil, "Tank|Healer")
-local warnBlackArrow								= mod:NewTargetNoFilterAnnounce(358705, 4)
+local warnBlackArrow								= mod:NewTargetCountAnnounce(358705, 4, nil, nil, nil, nil, nil, nil, true)
 --Intermission: A Monument to our Suffering
 local warnRive										= mod:NewCountAnnounce(353418, 4)--May default off by default depending on feedback
 --Stage Two: The Banshee Queen
@@ -128,9 +129,11 @@ local specWarnMerciless								= mod:NewSpecialWarningSoakCount(358588, false, n
 local timerWindrunnerCD								= mod:NewCDCountTimer(50.3, 347504, nil, nil, nil, 6, nil, nil, nil, 1, 3)
 local timerDominationChainsCD						= mod:NewCDCountTimer(50.7, 349419, 298213, nil, nil, 3)--Shortname Chains
 local timerVeilofDarknessCD							= mod:NewCDCountTimer(48.8, 347726, 209426, nil, nil, 3)--Shortname Darkness
-local timerWailingArrowCD							= mod:NewCDCountTimer(33.9, 347609, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)
+local timerWailingArrowCD							= mod:NewCDCountTimer(33.9, 347609, nil, nil, 2, 3)
+local timerWailingArrow								= mod:NewTargetCountTimer(9, 347609, nil, nil, nil, 5)--6 seconds for pre debuff plus 3 sec cast
 local timerRangersHeartseekerCD						= mod:NewCDCountTimer(33.9, 352663, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)
-local timerBlackArrowCD								= mod:NewAITimer(33.9, 358704, nil, nil, nil, 3, nil, DBM_CORE_L.MYTHIC_ICON)
+local timerBlackArrowCD								= mod:NewCDCountTimer(33.9, 358704, nil, nil, nil, 3, nil, DBM_CORE_L.MYTHIC_ICON)
+local timerBlackArrow								= mod:NewTargetCountTimer(9, 358704, nil, nil, nil, 5, nil, DBM_CORE_L.MYTHIC_ICON)
 --Intermission: A Monument to our Suffering
 local timerRiveCD									= mod:NewCDTimer(48.8, 353418, nil, nil, nil, 3)
 local timerNextPhase								= mod:NewPhaseTimer(16.5, 348094, nil, nil, nil, 6)
@@ -155,6 +158,7 @@ local timerBansheesScreamCD							= mod:NewCDCountTimer(23, 353952, 31295, nil, 
 local timerRazeCD									= mod:NewCDCountTimer(23, 354147, nil, nil, nil, 3, nil, DBM_CORE_L.DEADLY_ICON)
 local timerBansheesBladesCD							= mod:NewCDCountTimer(33.9, 358181, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.MYTHIC_ICON..DBM_CORE_L.TANK_ICON)
 local timerDeathKnivesCD							= mod:NewCDCountTimer(33.9, 358433, nil, nil, nil, 3, nil, DBM_CORE_L.MYTHIC_ICON)
+local timerDeathKnives								= mod:NewBuffFadesTimer(9, 358433, nil, nil, nil, 5, nil, DBM_CORE_L.MYTHIC_ICON)
 local timerMercilessCD								= mod:NewCDCountTimer(33.9, 358588, nil, nil, nil, 3, nil, DBM_CORE_L.MYTHIC_ICON)
 
 --mod:AddRangeFrameOption("8")
@@ -309,25 +313,25 @@ local allTimers = {
 		},
 		[3] = {
 			--Bane Arrows
-			[354011] = {16},
+			[354011] = {16, 94, 100, 93},
 			--Banshee's Heartseeker
-			[353969] = {31, 39, 11},
+			[353969] = {31, 39, 11},--TODO, was hard to see cast bars on streamers UI
 			--Banshee's Blades
-			[358181] = {58},
+			[358181] = {58},--TODO, was hard to see cast bars on streamers UI
 			--Banshee Scream
-			[353952] = {73},
+			[353952] = {73, 111, 112},
 			--Wailing Arrow
-			[347609] = {60},--Cast not pre debuff, probably change later
+			[347609] = {60, 72, 68, 69, 69},--Cast not pre debuff, probably change later
 			--Veil of Darkness
-			[347726] = {24, 60},
+			[347726] = {24, 56, 58, 56, 57, 57, 63},
 			--Banshees Fury (Heroic/Mythic)
-			[354068] = {39},
+			[354068] = {39, 61, 64, 58, 62, 66},
 			--Raze
-			[354147] = {46},
+			[354147] = {46, 105, 106, 104},
 			--Death Knives (Mythic Only)
-			[358433] = {57},
+			[358433] = {67, 58, 51, 55, 54, 55},
 			--Merciless (Mythic Only)
-			[358588] = {23, 21, 22, 21},--Sets are aggregated into one
+			[358588] = {23, 21, 22, 21, 41, 64, 21},--Sets are aggregated into one (incomplete or does mechanic just fizzle out?
 		},
 	},
 }
@@ -626,6 +630,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 				timerDeathKnivesCD:Start(timer, self.vb.knivesCount+1)
 			end
 		end
+		timerDeathKnives:Start()
 	elseif spellId == 358588 and self:AntiSpam(5, 3) then--Aggregated warnings/timers
 		self.vb.merciCount = self.vb.merciCount + 1
 		if self.Options.SpecWarn358588soakcount then
@@ -808,7 +813,8 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnWailingArrowTaunt:Play("tauntboss")
 			end
 		end
-		warnWailingArrow:CombinedShow(0.3, args.destName)
+		warnWailingArrow:Show(self.vb.arrowIcon, args.destName)
+		timerWailingArrow:Start(9, args.destName, self.vb.arrowIcon)
 		self.vb.arrowIcon = self.vb.arrowIcon + 1
 	elseif spellId == 358705 then
 		local icon = self.vb.arrowIcon
@@ -827,7 +833,8 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnBlackArrowTaunt:Play("tauntboss")
 			end
 		end
-		warnBlackArrow:CombinedShow(0.3, args.destName)
+		warnBlackArrow:Show(self.vb.arrowIcon, args.destName)
+		timerBlackArrow:Start(9, args.destName, self.vb.arrowIcon)
 		self.vb.arrowIcon = self.vb.arrowIcon + 1
 	elseif spellId == 347607 then
 		local amount = args.amount or 1
@@ -890,7 +897,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellCrushingDread:Yell()
 		end
 	elseif spellId == 351451 then
-		warnCurseofLthargy:combinedShow(0.3, args.destName)
+		warnCurseofLthargy:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			specWarnCurseofLethargy:Show()
 			specWarnCurseofLethargy:Play("targetyou")
@@ -1019,6 +1026,9 @@ function mod:SPELL_AURA_REMOVED(args)
 		if args:IsPlayer() then
 			yellWailingArrowFades:Cancel()
 		end
+		timerWailingArrow:Stop(args.destName, 1)
+		timerWailingArrow:Stop(args.destName, 2)
+		timerWailingArrow:Stop(args.destName, 3)
 	elseif spellId == 358705 then
 		if self.Options.SetIconOnWailingArrow then
 			self:SetIcon(args.destName, 0)
@@ -1026,6 +1036,9 @@ function mod:SPELL_AURA_REMOVED(args)
 		if args:IsPlayer() then
 			yellBlackArrowFades:Cancel()
 		end
+		timerBlackArrow:Stop(args.destName, 1)
+		timerBlackArrow:Stop(args.destName, 2)
+		timerBlackArrow:Stop(args.destName, 3)
 	elseif spellId == 351562 then
 		if self.Options.SetIconOnExpulsion then
 			self:SetIcon(args.destName, 0)
