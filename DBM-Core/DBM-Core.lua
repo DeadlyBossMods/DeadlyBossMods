@@ -7202,7 +7202,8 @@ AddMsg = DBM.AddMsg
 
 function DBM:Debug(text, level)
 	--But we still want to generate callbacks for level 1 and 2 events
-	if (level or 1) < 3 then
+	local userLevel = self.Options.DebugLevel
+	if userLevel == 3 or (level or 1) < 3 then--Cap debug level to 2 for trannscriptor unless user specifically specifies 3
 		fireEvent("DBM_Debug", text, level)
 	end
 	if not self.Options or not self.Options.DebugMode then return end
