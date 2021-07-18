@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(175730)
 mod:SetEncounterID(2431)
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
-mod:SetHotfixNoticeRev(20210716000000)--2021-07-16
+mod:SetHotfixNoticeRev(20210718000000)--2021-07-18
 mod:SetMinSyncRevision(20210706000000)
 mod.respawnTime = 29
 
@@ -116,27 +116,27 @@ local allTimers = {
 	["mythic"] = {--Timers created from vods in slow motion, expect ~1-2 until logs
 		[1] = {
 			--Twist Fate
-			[354265] = {5.8, 32, 20, 38, 29},--first is 11 the second time around
+			[354265] = {5.8, 31.5, 20, 37.7, 27.9, 18.2},--first is 11 the second time around
 			--Call of Eternity
-			[350554] = {18, 58, 38},--first is 23 the second time around
+			[350554] = {17.8, 57.1, 37.6},--first is 23 the second time around
 			--Invoke Destiny
-			[351680] = {20, 45, 45},--first is 25 the second time around
+			[351680] = {20, 45, 44.9, 34.4},--first is 25 the second time around
 			--Fated Conjunction
-			[350421] = {30, 50, 5, 8},--first is 35 the second time around
+			[350421] = {30, 47.4, 5, 7},--first is 35 the second time around
 			--Grim Portent
-			[354367] = {43},--first is 48 the second time around
-		},			--, 74?
+			[354367] = {43, 75},--first is 48 the second time around
+		},
 		[3] = {
 			--Twist Fate
-			[354265] = {40, 16, 29},
+			[354265] = {40, 16, 29, 46.5},
 			--Call of Eternity
-			[350554] = {13, 55, 29},
+			[350554] = {13, 54.7, 29},
 			--Invoke Destiny
-			[351680] = {26, 44, 45},
+			[351680] = {26, 44, 44.1},
 			--Fated Conjunction
 			[350421] = {18, 75, 7},
 			--Extemporaneous Fate
-			[353195] = {54},
+			[353195] = {54, 89.4},--or 56?
 		}
 	},
 	["heroic"] = {--Same as normal
@@ -210,7 +210,7 @@ function mod:OnCombatStart(delay)
 	if self:IsMythic() then
 		difficultyName = "mythic"
 		timerTwistFateCD:Start(5.8-delay, 1)
-		timerCallofEternityCD:Start(18-delay, 1)
+		timerCallofEternityCD:Start(17.8-delay, 1)
 		timerInvokeDestinyCD:Start(20-delay, 1)
 		timerFatedConjunctionCD:Start(30-delay, 1)
 		timerGrimPortentCD:Start(43-delay, 1)
