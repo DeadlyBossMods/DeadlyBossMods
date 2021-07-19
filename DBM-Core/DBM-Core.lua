@@ -12030,7 +12030,7 @@ end
 
 function bossModPrototype:SetRevision(revision)
 	revision = parseCurseDate(revision or "")
-	if not revision or revision:find("project-date-integer") then
+	if not revision or type(revision) == "string" then
 		-- bad revision: either forgot the svn keyword or using github
 		revision = DBM.Revision
 	end
