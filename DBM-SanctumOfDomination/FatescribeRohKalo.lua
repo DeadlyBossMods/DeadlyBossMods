@@ -426,7 +426,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnRunicAffinity:Show()
 			specWarnRunicAffinity:Play("targetyou")
 		end
-		if self:AntiSpam(5, 3) then
+		if self:AntiSpam(5, 3) and self.vb.phase == 3 then
 			self.vb.affinityCount = self.vb.affinityCount + 1
 			--The same timer a Extemporaneous fate, just earlier, offset self handled
 			local timer = allTimers[difficultyName][self.vb.phase][353195][self.vb.affinityCount+1]

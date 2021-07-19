@@ -27,9 +27,7 @@ mod:RegisterEventsInCombat(
 (ability.id = 352589 or ability.id = 352538 or ability.id = 350732 or ability.id = 352833 or ability.id = 352660 or ability.id = 356090 or ability.id = 355352 or ability.id = 350734) and type = "begincast"
  or (ability.id = 352385 or ability.id = 350534) and (type = "applybuff" or type = "removebuff")
 --]]
---TODO, fix timers more based around energy or energizing link, whichever one is confirmed to truly affect stuff like Sunder having massive delays
 --TODO, do people really need a timer for purging protocol? it's based on bosses energy depletion rate (which is exactly 1 energy per second and visible on infoframe)
---TODO, if combo is random order on mythic, bust out the aggramar shit
 --In other words, infoframe energy tracker IS the timer, and his energy is constantly going up and down based on core strategy, timer would need aggressive updates from UNIT_POWER
 local warnDisintegration						= mod:NewTargetNoFilterAnnounce(352833, 3, nil, nil, 182908)
 local warnThreatNeutralization					= mod:NewTargetNoFilterAnnounce(350496, 2, nil, nil, 167180)
