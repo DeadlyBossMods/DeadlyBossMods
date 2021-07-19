@@ -1053,6 +1053,12 @@ function mod:SPELL_AURA_REMOVED(args)
 		if args:IsPlayer() then
 			yellDeathKnivesFades:Cancel()
 		end
+	elseif spellId == 358711 then
+		if args:IsPlayer() then
+			if self.Options.NPAuraOnRage then
+				DBM.Nameplate:Hide(true, args.sourceGUID, spellId)
+			end
+		end
 	end
 end
 

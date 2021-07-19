@@ -113,7 +113,7 @@ local castsPerGUID = {}
 local difficultyName = "normal"
 --Currently non mythic difficulties not using table yet since data not yet built (heroic logs kinda bad because dps too high to get actual sequences)
 local allTimers = {
-	["mythic"] = {--Timers created from vods in slow motion, expect ~1-2 until logs
+	["mythic"] = {
 		[1] = {
 			--Twist Fate
 			[354265] = {5.8, 31.5, 20, 37.7, 27.9, 18.2},--first is 11 the second time around
