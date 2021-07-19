@@ -78,13 +78,13 @@ local allTimers = {
 	["mythic"] = {
 		[0] = {--Initial
 			--Threat Neutralization
-			[350496] = {8.5, 12.2, 21.8},
+			[356090] = {8.5, 12.2, 21.8},
 			--Disintegration
 			[352833] = {15.6},
 		},
 		[1] = {--Post Link
 			--Threat Neutralization
-			[350496] = {0, 16.5, 29.2, 17},--Threat used immediately coming out of purging protocol
+			[356090] = {0, 16.5, 29.2, 17},--Threat used immediately coming out of purging protocol
 			--Disintegration
 			[352833] = {5.8, 39},
 		},
@@ -92,13 +92,13 @@ local allTimers = {
 	["heroic"] = {
 		[0] = {--Initial
 			--Threat Neutralization
-			[350496] = {10.7, 12.2},
+			[356090] = {10.7, 12.2},
 			--Disintegration
 			[352833] = {15.6},
 		},
 		[1] = {--Post Link
 			--Threat Neutralization
-			[350496] = {0, 12.1, 12.1, 26.7, 12.1},
+			[356090] = {0, 12.1, 12.1, 26.7, 12.1},
 			--Disintegration
 			[352833] = {5.9, 40.1},
 		},
@@ -106,13 +106,13 @@ local allTimers = {
 	["normal"] = {
 		[0] = {--Initial
 			--Threat Neutralization
-			[350496] = {10.7, 11, 23.2},
+			[356090] = {10.7, 11, 23.2},
 			--Disintegration
 			[352833] = {15.6},
 		},
 		[1] = {--Post Link
 			--Threat Neutralization
-			[350496] = {4.5, 12.1, 23, 15.7, 12.1},
+			[356090] = {4.5, 12.1, 23, 15.7, 12.1},
 			--Disintegration
 			[352833] = {18.2, 32.5},
 		},
