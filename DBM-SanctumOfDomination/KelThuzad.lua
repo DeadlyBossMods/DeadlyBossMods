@@ -379,12 +379,11 @@ function mod:SPELL_AURA_APPLIED(args)
 --					timerDarkEvocationCD:Start(0)
 					DBM:Debug("HIGH PRIORITY EVENT. This is a 80 mana phase start")--Generating easier to use transcriptor events
 					DBM:AddMsg("Please share log of THIS pull and say 80 and which Necrotic Surge cast. Please know the exact pull when sharing log with DBM author")
-				elseif bossPower == 60 then--TODO, FIXME
---					timerDarkEvocationCD:Start(0)
---					timerFrostBlastCD:Start(0)
---					timerHowlingBlizzardCD:Start(0)
+				elseif bossPower == 60 then--Data verified normal KT
+					timerDarkEvocationCD:Start(15.5)
+					timerFrostBlastCD:Start(46.8)
+					timerHowlingBlizzardCD:Start(49.8)
 					DBM:Debug("HIGH PRIORITY EVENT. This is a 60 mana phase start")--Generating easier to use transcriptor events
-					DBM:AddMsg("Please share log of THIS pull and say 60 and which Necrotic Surge cast. Please know the exact pull when sharing log with DBM author")
 				elseif bossPower == 40 then--Data verified Heroic KT
 					timerFrostBlastCD:Start(96.7)
 					timerHowlingBlizzardCD:Start(26.2)

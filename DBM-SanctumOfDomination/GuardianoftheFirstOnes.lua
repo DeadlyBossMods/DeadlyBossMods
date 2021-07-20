@@ -27,9 +27,7 @@ mod:RegisterEventsInCombat(
 (ability.id = 352589 or ability.id = 352538 or ability.id = 350732 or ability.id = 352833 or ability.id = 352660 or ability.id = 356090 or ability.id = 355352 or ability.id = 350734) and type = "begincast"
  or (ability.id = 352385 or ability.id = 350534) and (type = "applybuff" or type = "removebuff")
 --]]
---TODO, fix timers more based around energy or energizing link, whichever one is confirmed to truly affect stuff like Sunder having massive delays
 --TODO, do people really need a timer for purging protocol? it's based on bosses energy depletion rate (which is exactly 1 energy per second and visible on infoframe)
---TODO, if combo is random order on mythic, bust out the aggramar shit
 --In other words, infoframe energy tracker IS the timer, and his energy is constantly going up and down based on core strategy, timer would need aggressive updates from UNIT_POWER
 local warnDisintegration						= mod:NewTargetNoFilterAnnounce(352833, 3, nil, nil, 182908)
 local warnThreatNeutralization					= mod:NewTargetNoFilterAnnounce(350496, 2, nil, nil, 167180)
@@ -80,13 +78,13 @@ local allTimers = {
 	["mythic"] = {
 		[0] = {--Initial
 			--Threat Neutralization
-			[350496] = {8.5, 12.2, 21.8},
+			[356090] = {8.5, 12.2, 21.8},
 			--Disintegration
 			[352833] = {15.6},
 		},
 		[1] = {--Post Link
 			--Threat Neutralization
-			[350496] = {0, 16.5, 29.2, 17},--Threat used immediately coming out of purging protocol
+			[356090] = {0, 16.5, 29.2, 17},--Threat used immediately coming out of purging protocol
 			--Disintegration
 			[352833] = {5.8, 39},
 		},
@@ -94,13 +92,13 @@ local allTimers = {
 	["heroic"] = {
 		[0] = {--Initial
 			--Threat Neutralization
-			[350496] = {10.7, 12.2},
+			[356090] = {10.7, 12.2},
 			--Disintegration
 			[352833] = {15.6},
 		},
 		[1] = {--Post Link
 			--Threat Neutralization
-			[350496] = {0, 12.1, 12.1, 26.7, 12.1},
+			[356090] = {0, 12.1, 12.1, 26.7, 12.1},
 			--Disintegration
 			[352833] = {5.9, 40.1},
 		},
@@ -108,13 +106,13 @@ local allTimers = {
 	["normal"] = {
 		[0] = {--Initial
 			--Threat Neutralization
-			[350496] = {10.7, 11, 23.2},
+			[356090] = {10.7, 11, 23.2},
 			--Disintegration
 			[352833] = {15.6},
 		},
 		[1] = {--Post Link
 			--Threat Neutralization
-			[350496] = {4.5, 12.1, 23, 15.7, 12.1},
+			[356090] = {4.5, 12.1, 23, 15.7, 12.1},
 			--Disintegration
 			[352833] = {18.2, 32.5},
 		},
