@@ -4,9 +4,9 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(175732)
 mod:SetEncounterID(2435)
-mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
-mod:SetHotfixNoticeRev(20210718000000)--2021-07-18
-mod:SetMinSyncRevision(20210712000000)
+mod:SetUsedIcons(1, 2, 3)
+mod:SetHotfixNoticeRev(20210720000000)--2021-07-20
+mod:SetMinSyncRevision(20210720000000)
 mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
@@ -17,7 +17,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CREATE 348148 348093 351837 351838 351840 351841",
 	"SPELL_AURA_APPLIED 347504 347807 347670 349458 348064 347607 350857 348146 351109 351117 351451 353929 357886 357720 353935 348064 356986 358711 358705 351562 358433",
 	"SPELL_AURA_APPLIED_DOSE 347807 347607 351672 353929",
-	"SPELL_AURA_REMOVED 347504 347807 351109 358711 358705 351562 358433 348064 353929",
+	"SPELL_AURA_REMOVED 347504 347807 351109 358711 358705 351562 358433 348064 353929 350857",
 	"SPELL_AURA_REMOVED_DOSE 347807 353929",
 	"CHAT_MSG_RAID_BOSS_EMOTE"
 --	"SPELL_PERIODIC_DAMAGE",
@@ -35,9 +35,10 @@ mod:RegisterEventsInCombat(
 (ability.id = 349419 or ability.id = 347609 or ability.id = 352663 or ability.id = 353418 or ability.id = 353417 or ability.id = 348094 or ability.id = 355540 or ability.id = 352271 or ability.id = 354011 or ability.id = 353969 or ability.id = 354068 or ability.id = 353952 or ability.id = 354147 or ability.id = 357102 or ability.id = 347726 or ability.id = 347741 or ability.id = 354142 or ability.id = 353935 or ability.id = 358704 or ability.id = 358181) and type = "begincast"
  or (ability.id = 358433 or ability.id = 357729) and type = "cast"
  or (ability.id = 356986 or ability.id = 347504 or ability.id = 350857 or ability.id = 348146) and (type = "begincast" or type = "applydebuff" or type = "applybuff" or type = "removebuff" or type = "removedebuff")
- or (ability.id = 351075 or ability.id = 351117 or ability.id = 351353 or ability.id = 356023 or ability.id = 351589 or ability.id = 351562) and type = "begincast"
  or ability.id = 348148 or ability.id = 348093 or ability.id = 351837 or ability.id = 351838 or ability.id = 351840 or ability.id = 351841
- or (ability.id = 348064 or ability.id = 358705) and type =  "applydebuff"
+ or (ability.id = 348064 or ability.id = 358705 or ability.id = 347670) and type =  "applydebuff"
+ or ability.id = 355841  or ability.id = 355826
+ or (ability.id = 351075 or ability.id = 351117 or ability.id = 351353 or ability.id = 356023 or ability.id = 351589 or ability.id = 351562) and type = "begincast"
 --]]
 
 --General
@@ -146,8 +147,9 @@ local timerBansheeWailCD							= mod:NewCDCountTimer(48.8, 348094, nil, nil, nil
 local timerWindsofIcecrown							= mod:NewBuffActiveTimer(35, 356986, nil, nil, nil, 5, nil, DBM_CORE_L.DAMAGE_ICON)
 --Unstoppable Force ~9sec cd
 ----Forces of the Maw
---local timerFilthCD								= mod:NewAITimer(33.9, 351589, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.MYTHIC_ICON..DBM_CORE_L.TANK_ICON)
---local timerExpulsionCD							= mod:NewAITimer(48.8, 351562, nil, nil, nil, 3, nil, DBM_CORE_L.MYTHIC_ICON)
+local timerDecrepitOrbsCD							= mod:NewCDTimer(16, 351353, nil, nil, nil, 1)
+local timerFilthCD									= mod:NewCDTimer(13.1, 351589, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.MYTHIC_ICON..DBM_CORE_L.TANK_ICON)
+local timerExpulsionCD								= mod:NewCDTimer(15.8, 351562, nil, nil, nil, 3, nil, DBM_CORE_L.MYTHIC_ICON)
 
 --Stage Three: The Freedom of Choice
 local timerBansheesHeartseekerCD					= mod:NewCDCountTimer(33.9, 353969, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)
@@ -165,7 +167,6 @@ local timerMercilessCD								= mod:NewCDCountTimer(33.9, 358588, nil, nil, nil,
 mod:AddInfoFrameOption(347807, true)
 --Stage 1
 mod:AddSetIconOption("SetIconOnWailingArrow", 347609, true, false, {1, 2, 3})--Applies to both reg and mythic version
-mod:AddSetIconOption("SetIconOnTerrorOrb", 356023, true, true, {4, 5, 6, 7, 8})--Didn't see any on heroic
 --Stage 2
 mod:AddSetIconOption("SetIconOnExpulsion", 351562, true, true, {1, 2, 3})
 --Stage 3
@@ -186,13 +187,13 @@ mod.vb.heartseekerCount = 0
 mod.vb.windrunnerActive = 0
 mod.vb.riveCount = 0
 --P2+ variables
-mod.vb.addIcon = 8
 mod.vb.debuffIcon = 1
 mod.vb.bridgeCount = 0
 mod.vb.icecrownCast = 0
 mod.vb.ruinCount = 0
 mod.vb.hauntingWavecount = 0
 mod.vb.bansheeWailCount = 0
+mod.vb.shroudremovedCount = 0
 --P3+ variables
 mod.vb.baneArrowCount = 0
 mod.vb.shadowDaggerCount = 0
@@ -301,15 +302,15 @@ local allTimers = {
 	["mythic"] = {
 		[1] = {
 			--Windrunner
-			[347504] = {8, 57, 56, 57},
+			[347504] = {6.5, 57, 55.1, 56.2},
 			--Ranger's Heartseeker
 			[352663] = {20, 17, 25, 17, 23, 4, 31, 20, 3, 8},
 			--Domination Chains
-			[349419] = {29, 55, 65},
+			[349419] = {29, 55, 64.1},
 			--Black Arrow (Replaces Wailing Arrow)
-			[358704] = {41, 70, 60},--Initial to cast, not pre debuff, may change later
+			[358704] = {40.6, 63.3, 63.3},--Initial to cast, not pre debuff, may change later
 			--Veil of Darkness
-			[347726] = {48, 45, 47, 55},
+			[347726] = {48, 43.4, 46.5, 52.4},
 		},
 		[3] = {
 			--Bane Arrows
@@ -353,14 +354,13 @@ function mod:OnCombatStart(delay)
 	self.vb.veilofDarknessCount = 0
 	self.vb.wailingArrowCount = 0
 	self.vb.heartseekerCount = 0
-	self.vb.addIcon = 8
 	self.vb.windrunnerActive = 0
 	if self:IsMythic() then
 		difficultyName = "mythic"
-		timerWindrunnerCD:Start(8-delay, 1)
+		timerWindrunnerCD:Start(6.5-delay, 1)
 		timerRangersHeartseekerCD:Start(20, 1)
 		timerDominationChainsCD:Start(29-delay, 1)
-		timerBlackArrowCD:Start(41-delay)
+		timerBlackArrowCD:Start(40.6-delay, 1)
 		timerVeilofDarknessCD:Start(48-delay, 1)--Probably shorter to emote
 	elseif self:IsHeroic() then
 		difficultyName = "heroic"
@@ -448,13 +448,12 @@ function mod:SPELL_CAST_START(args)
 		if self:AntiSpam(15, 1) then
 			self.vb.arrowIcon = 1
 			self.vb.wailingArrowCount = self.vb.wailingArrowCount + 1--Replaces this arrow in stage 1, so might as well use same variable
-			timerBlackArrowCD:Start()--Temp, just to utilize AI timer
---			if self.vb.phase == 1 or self.vb.phase == 3 then
---				local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.wailingArrowCount+1]
---				if timer then
---					timerBlackArrowCD:Start(timer, self.vb.wailingArrowCount+1)
---				end
---			end
+			if self.vb.phase == 1 or self.vb.phase == 3 then
+				local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.wailingArrowCount+1]
+				if timer then
+					timerBlackArrowCD:Start(timer, self.vb.wailingArrowCount+1)
+				end
+			end
 		end
 	elseif spellId == 352663 then
 		self.vb.heartseekerCount = self.vb.heartseekerCount + 1
@@ -480,6 +479,16 @@ function mod:SPELL_CAST_START(args)
 		self.vb.hauntingWavecount = self.vb.hauntingWavecount + 1
 		specWarnHauntingWave:Show(self.vb.hauntingWavecount)
 		specWarnHauntingWave:Play("watchwave")
+		--waves cast in middle of bridge cycles that need independant starts
+		if self:Mythic() then
+			if self.vb.hauntingWavecount == 3 then
+				timerHauntingWaveCD:Start(23, 4)
+			elseif self.vb.hauntingWavecount == 7 then
+				timerHauntingWaveCD:Start(26, 8)
+			end
+		else
+			--DO STUFF
+		end
 	elseif spellId == 351075 then
 		if not castsPerGUID[args.sourceGUID] then
 			castsPerGUID[args.sourceGUID] = 0
@@ -496,15 +505,10 @@ function mod:SPELL_CAST_START(args)
 		end
 		castsPerGUID[args.sourceGUID] = castsPerGUID[args.sourceGUID] + 1
 		warnSummonDecrepitOrbs:Show(castsPerGUID[args.sourceGUID])
+		timerDecrepitOrbsCD:Start()
 	elseif spellId == 356023 then
 		if not castsPerGUID[args.sourceGUID] then
 			castsPerGUID[args.sourceGUID] = 0
-			if self.vb.addIcon < 4 then--Only use up to 5 icons
-				self.vb.addIcon = 8
-			end
-			if self.Options.SetIconOnTerrorOrb then
-				self:ScanForMobs(args.sourceGUID, 2, self.vb.addIcon, 1, 0.2, 12, "SetIconOnTerrorOrb")
-			end
 		end
 		castsPerGUID[args.sourceGUID] = castsPerGUID[args.sourceGUID] + 1
 		local count = castsPerGUID[args.sourceGUID]
@@ -577,6 +581,12 @@ function mod:SPELL_CAST_START(args)
 					timerShadowDaggerCD:Start(timer, self.vb.shadowDaggerCount+1)
 				end
 			end
+		elseif self.vb.phase == 2 then
+			if self:IsMythic() then
+				if self.vb.shadowDaggerCount == 1 then
+					timerShadowDaggerCD:Start(23.1, self.vb.shadowDaggerCount+1)
+				end
+			end
 		end
 	elseif spellId == 354147 then
 		self.vb.razeCount = self.vb.razeCount + 1
@@ -588,17 +598,20 @@ function mod:SPELL_CAST_START(args)
 				timerRazeCD:Start(timer, self.vb.razeCount+1)
 			end
 		end
---	elseif spellId == 357102 then--Raid Portal: Oribos
-		--Old P3 trigger, found to be less accurate than new one
+	elseif spellId == 357102 then--Raid Portal: Oribos
+		--Stop some bars here at least
+		timerVeilofDarknessCD:Stop()
+		timerHauntingWaveCD:Stop()
+		timerBansheeWailCD:Stop()
 	elseif spellId == 351589 then
 		if self:IsTanking("player", nil, nil, nil, args.sourceGUID) then
 			specWarnFilthDefensive:Show()
 			specWarnFilthDefensive:Play("defensive")
 		end
-		--timerFilthCD:Start(12, args.sourceGUID)
+		timerFilthCD:Start()
 	elseif spellId == 351562 then
 		self.vb.debuffIcon = 1
-		--timerExpulsionCD:Start(12, args.sourceGUID)
+		timerExpulsionCD:Start()
 	elseif spellId == 358181 then
 		self.vb.bladesCount = self.vb.bladesCount + 1
 		warnBansheesBlades:Show(self.vb.bladesCount)
@@ -716,8 +729,19 @@ function mod:SPELL_CREATE(args)
 		timerRangersHeartseekerCD:Stop()
 		timerBansheeWailCD:Stop()
 		if self:IsMythic() then
-			--DO STUFF
-			DBM:AddMsg("WIP, send logs if you have them :D")
+			if self.vb.bridgeCount == 2 then--1 and 2 used together at same time roughly
+				timerVeilofDarknessCD:Start(18.7, self.vb.veilofDarknessCount+1)
+				timerHauntingWaveCD:Start(35.7, self.vb.hauntingWavecount+1)
+				timerRuinCD:Start(47, self.vb.ruinCount+1)
+--			elseif self.vb.bridgeCount == 3 then--Or shroud 1
+--				timerShadowDaggerCD:Start(14, self.vb.shadowDaggerCount+1)
+--				timerHauntingWaveCD:Start(17.1, self.vb.hauntingWavecount+1)
+--				timerVeilofDarknessCD:Start(26, self.vb.veilofDarknessCount+1)
+			elseif self.vb.bridgeCount == 6 then--REVIEW
+				timerVeilofDarknessCD:Start(18.8, self.vb.veilofDarknessCount+1)--Review
+				timerHauntingWaveCD:Start(35.4, self.vb.hauntingWavecount+1)
+				timerRuinCD:Start(47, self.vb.ruinCount+1)
+			end
 		else
 			if self.vb.bridgeCount == 1 then
 				warnIceBridge:Show(self.vb.bridgeCount)
@@ -879,6 +903,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.ruinCount = 0
 		self.vb.hauntingWavecount = 0
 		self.vb.bansheeWailCount = 0
+		self.vb.shadowDaggerCount = 0--Used on Mythic
+		self.vb.shroudremovedCount = 0
 		timerRiveCD:Stop()
 		timerDominationChainsCD:Stop()
 		timerNextPhase:Stop()
@@ -1018,7 +1044,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif spellId == 356986 then
 		timerWindsofIcecrown:Stop()
---	elseif spellId == 348146 then
 	elseif spellId == 348064 then
 		if self.Options.SetIconOnWailingArrow then
 			self:SetIcon(args.destName, 0)
@@ -1059,6 +1084,24 @@ function mod:SPELL_AURA_REMOVED(args)
 				DBM.Nameplate:Hide(true, args.sourceGUID, spellId)
 			end
 		end
+	elseif spellId == 350857 and self.vb.phase == 2 then
+		self.vb.shroudremovedCount = self.vb.shroudremovedCount + 1
+		if self:IsMythic() then
+		    if self.vb.shroudremovedCount == 1 then
+				timerShadowDaggerCD:Start(8.5, self.vb.shadowDaggerCount+1)
+				timerHauntingWaveCD:Start(11.5, self.vb.hauntingWavecount+1)
+				timerVeilofDarknessCD:Start(18.5, self.vb.veilofDarknessCount+1)
+				timerBansheeWailCD:Start(42.3, self.vb.bansheeWailCount+1)
+		    elseif self.vb.shroudremovedCount == 2 then
+				--Daggers used near immediately
+				timerHauntingWaveCD:Start(11.4, self.vb.hauntingWavecount+1)
+				timerVeilofDarknessCD:Start(18.5, self.vb.veilofDarknessCount+1)
+				timerBansheeWailCD:Start(42, self.vb.bansheeWailCount+1)
+				timerNextPhase:Start(58) -- Raid Portal: Oribos
+		    end
+		else
+			--DO STUFF?
+		end
 	end
 end
 
@@ -1088,16 +1131,17 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	end
 end
 
---[[
-https://ptr.wowhead.com/npc=177893/mawforged-colossus
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 177893 then--mawforged-colossus
-		timerFilthCD:Stop(args.destGUID)
-		timerExpulsionCD:Stop(args.destGUID)
+	if cid == 177891 then--Mawforged Summoner
+		timerDecrepitOrbsCD:Stop()
+	elseif cid == 177893 then--mawforged-colossus
+		timerFilthCD:Stop()
+		timerExpulsionCD:Stop()
 	end
 end
 
+--[[
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
 	if spellId == 340324 and destGUID == UnitGUID("player") and not playerDebuff and self:AntiSpam(2, 5) then
 		specWarnGTFO:Show(spellName)
@@ -1112,3 +1156,4 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	end
 end
 --]]
+
