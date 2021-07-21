@@ -45,16 +45,17 @@ local warnWindrunnerOver							= mod:NewEndAnnounce(347504, 2)
 local warnShadowDagger								= mod:NewTargetNoFilterAnnounce(347670, 2, nil, "Healer")
 local warnDominationChains							= mod:NewTargetAnnounce(349458, 2, nil, nil, 298213)--Could be spammy, unknown behavior
 --local warnVeilofDarkness							= mod:NewTargetNoFilterAnnounce(347704, 2, nil, nil, 209426)
-local warnWailingArrow								= mod:NewTargetCountAnnounce(348064, 4, nil, nil, nil, nil, nil, nil, true)
+local warnWailingArrow								= mod:NewTargetCountAnnounce(348064, 4, nil, nil, 208407, nil, nil, nil, true)
 local warnRangersHeartseeker						= mod:NewCountAnnounce(352663, 2, nil, "Tank")
 local warnBansheesMark								= mod:NewStackAnnounce(347607, 2, nil, "Tank|Healer")
-local warnBlackArrow								= mod:NewTargetCountAnnounce(358705, 4, nil, nil, nil, nil, nil, nil, true)
+local warnBlackArrow								= mod:NewTargetCountAnnounce(358705, 4, nil, nil, 208407, nil, nil, nil, true)
 --Intermission: A Monument to our Suffering
 local warnRive										= mod:NewCountAnnounce(353418, 4)--May default off by default depending on feedback
 --Stage Two: The Banshee Queen
 local warnIceBridge									= mod:NewCountAnnounce(348148, 2)
 local warnEarthBridge								= mod:NewCountAnnounce(348093, 2)
 local warnWindsofIcecrown							= mod:NewTargetCountAnnounce(356986, 1, nil, nil, nil, nil, nil, nil, true)
+local warnPortal									= mod:NewCastAnnounce(357102, 1)
 ----Forces of the Maw
 local warnUnstoppableForce							= mod:NewCountAnnounce(351075, 2)--Mawsworn Vanguard
 local warnLashingStrike								= mod:NewTargetNoFilterAnnounce(351179, 3)--Mawforged Souljudge
@@ -76,16 +77,16 @@ local specWarnWindrunner							= mod:NewSpecialWarningCount(347504, nil, nil, ni
 local specWarnShadowDagger							= mod:NewSpecialWarningYou(347670, false, nil, nil, 1, 2)
 local specWarnDominationChains						= mod:NewSpecialWarningCount(349419, nil, 298213, nil, 2, 2)
 local specWarnVeilofDarkness						= mod:NewSpecialWarningDodgeCount(347704, nil, 209426, nil, 2, 2)
-local specWarnWailingArrow							= mod:NewSpecialWarningRun(348064, nil, nil, nil, 4, 2)
-local yellWailingArrow								= mod:NewYell(348064)
-local yellWailingArrowFades							= mod:NewShortFadesYell(348064)
+local specWarnWailingArrow							= mod:NewSpecialWarningRun(348064, nil, 208407, nil, 4, 2)
+local yellWailingArrow								= mod:NewShortPosYell(348064, 208407)
+local yellWailingArrowFades							= mod:NewIconFadesYell(348064, 208407)
 local specWarnWailingArrowTaunt						= mod:NewSpecialWarningTaunt(348064, nil, nil, nil, 1, 2)
 --local specWarnBansheesMark						= mod:NewSpecialWarningStack(347607, nil, 3, nil, nil, 1, 2)
 --local specWarnBansheesMarkTaunt					= mod:NewSpecialWarningTaunt(347607, nil, nil, nil, 1, 2)
-local specWarnBlackArrow							= mod:NewSpecialWarningYou(358705, nil, nil, nil, 1, 2, 4)--Is this also on tanks? it doesn't have tank icon
-local yellBlackArrow								= mod:NewYell(358705)
-local yellBlackArrowFades							= mod:NewShortFadesYell(358705)
-local specWarnBlackArrowTaunt						= mod:NewSpecialWarningTaunt(358705, nil, nil, nil, 1, 2)
+local specWarnBlackArrow							= mod:NewSpecialWarningYou(358705, nil, 208407, nil, 1, 2, 4)--Is this also on tanks? it doesn't have tank icon
+local yellBlackArrow								= mod:NewShortPosYell(358705, 208407)
+local yellBlackArrowFades							= mod:NewIconFadesYell(358705, 208407)
+local specWarnBlackArrowTaunt						= mod:NewSpecialWarningTaunt(358705, nil, 208407, nil, 1, 2)
 local specWarnRage									= mod:NewSpecialWarningRun(358711, nil, nil, nil, 4, 2)
 --Intermission: A Monument to our Suffering
 local specWarnBansheeWail							= mod:NewSpecialWarningMoveAwayCount(348094, nil, nil, nil, 2, 2)
@@ -127,11 +128,11 @@ local specWarnMerciless								= mod:NewSpecialWarningSoakCount(358588, false, n
 local timerWindrunnerCD								= mod:NewCDCountTimer(50.3, 347504, nil, nil, nil, 6, nil, nil, nil, 1, 3)
 local timerDominationChainsCD						= mod:NewCDCountTimer(50.7, 349419, 298213, nil, nil, 3)--Shortname Chains
 local timerVeilofDarknessCD							= mod:NewCDCountTimer(48.8, 347726, 209426, nil, nil, 3)--Shortname Darkness
-local timerWailingArrowCD							= mod:NewCDCountTimer(33.9, 347609, nil, nil, 2, 3)
-local timerWailingArrow								= mod:NewTargetCountTimer(9, 347609, nil, nil, nil, 5)--6 seconds for pre debuff plus 3 sec cast
+local timerWailingArrowCD							= mod:NewCDCountTimer(33.9, 347609, 208407, nil, 2, 3)--Shortname Arrow
+local timerWailingArrow								= mod:NewTargetCountTimer(9, 347609, 208407, nil, nil, 5)--6 seconds for pre debuff plus 3 sec cast
 local timerRangersHeartseekerCD						= mod:NewCDCountTimer(33.9, 352663, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)
-local timerBlackArrowCD								= mod:NewCDCountTimer(33.9, 358704, nil, nil, nil, 3, nil, DBM_CORE_L.MYTHIC_ICON)
-local timerBlackArrow								= mod:NewTargetCountTimer(9, 358704, nil, nil, nil, 5, nil, DBM_CORE_L.MYTHIC_ICON)
+local timerBlackArrowCD								= mod:NewCDCountTimer(33.9, 358704, 208407, nil, nil, 3, nil, DBM_CORE_L.MYTHIC_ICON)
+local timerBlackArrow								= mod:NewTargetCountTimer(9, 358704, 208407, nil, nil, 5, nil, DBM_CORE_L.MYTHIC_ICON)
 --Intermission: A Monument to our Suffering
 local timerRiveCD									= mod:NewCDTimer(48.8, 353418, nil, nil, nil, 3)
 local timerNextPhase								= mod:NewPhaseTimer(16.5, 348094, nil, nil, nil, 6)
@@ -142,6 +143,7 @@ local timerRuinCD									= mod:NewCDCountTimer(23, 355540, nil, nil, nil, 4, ni
 local timerHauntingWaveCD							= mod:NewCDCountTimer("d23", 352271, nil, nil, nil, 2)--String timer starting with "d" means "allowDouble"
 local timerBansheeWailCD							= mod:NewCDCountTimer(48.8, 348094, nil, nil, nil, 2)
 local timerWindsofIcecrown							= mod:NewBuffActiveTimer(35, 356986, nil, nil, nil, 5, nil, DBM_CORE_L.DAMAGE_ICON)
+local timerPortal									= mod:NewCastTimer(10, 357102, nil, nil, nil, 6)
 --Unstoppable Force ~9sec cd
 ----Forces of the Maw
 local timerDecrepitOrbsCD							= mod:NewCDTimer(16, 351353, nil, nil, nil, 1)
@@ -154,11 +156,11 @@ local timerShadowDaggerCD							= mod:NewCDCountTimer(23, 353935, nil, nil, nil,
 local timerBaneArrowsCD								= mod:NewCDCountTimer(23, 354011, nil, nil, nil, 3)
 local timerBansheesFuryCD							= mod:NewCDCountTimer(23, 354068, nil, nil, nil, 2)--Short name NOT used since "Fury" also exists on fight
 local timerBansheesScreamCD							= mod:NewCDCountTimer(23, 353952, 31295, nil, nil, 3)
-local timerRazeCD									= mod:NewCDCountTimer(23, 354147, nil, nil, nil, 3, nil, DBM_CORE_L.DEADLY_ICON)
+local timerRazeCD									= mod:NewCDCountTimer(23, 354147, nil, nil, 2, 2, nil, DBM_CORE_L.DEADLY_ICON)
 --local timerBansheesBladesCD							= mod:NewCDCountTimer(33.9, 358181, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.MYTHIC_ICON..DBM_CORE_L.TANK_ICON)
 local timerDeathKnivesCD							= mod:NewCDCountTimer(33.9, 358434, nil, nil, nil, 3, nil, DBM_CORE_L.MYTHIC_ICON)
 local timerDeathKnives								= mod:NewBuffFadesTimer(9, 358434, nil, nil, nil, 5, nil, DBM_CORE_L.MYTHIC_ICON)
-local timerMercilessCD								= mod:NewCDCountTimer(33.9, 358588, nil, nil, nil, 3, nil, DBM_CORE_L.MYTHIC_ICON)
+local timerMercilessCD								= mod:NewCDCountTimer(33.9, 358588, nil, nil, 2, 5, nil, DBM_CORE_L.MYTHIC_ICON)
 
 --mod:AddRangeFrameOption("8")
 mod:AddInfoFrameOption(347807, true)
@@ -338,7 +340,6 @@ local allTimers = {
 local function intermissionStart(self, adjust)
 	timerDominationChainsCD:Start(4-adjust, 1)--Practically right away
 	timerRiveCD:Start(13.2-adjust)--Init timer only, for when the spam begins
-	timerNextPhase:Start(55.6-adjust)
 end
 
 function mod:OnCombatStart(delay)
@@ -464,6 +465,10 @@ function mod:SPELL_CAST_START(args)
 	elseif (spellId == 353418 or spellId == 353417) then--Rive
 		self.vb.riveCount = self.vb.riveCount + 1
 		warnRive:Show(self.vb.riveCount)
+		if self.vb.riveCount == 2 then
+			timerBansheeWailCD:Start(39.5, 1)
+			timerNextPhase:Start(44.3)
+		end
 	elseif spellId == 348094 then
 		self.vb.bansheeWailCount = self.vb.bansheeWailCount + 1
 		specWarnBansheeWail:Show(self.vb.bansheeWailCount)
@@ -480,6 +485,8 @@ function mod:SPELL_CAST_START(args)
 		if self:IsMythic() then
 			if self.vb.hauntingWavecount == 3 then
 				timerHauntingWaveCD:Start(23, 4)
+			elseif self.vb.hauntingWavecount == 4 then
+				timerHauntingWaveCD:Start(17.3, 5)
 			elseif self.vb.hauntingWavecount == 7 then
 				timerHauntingWaveCD:Start(24.7, 8)
 			end
@@ -602,6 +609,8 @@ function mod:SPELL_CAST_START(args)
 		timerVeilofDarknessCD:Stop()
 		timerHauntingWaveCD:Stop()
 		timerBansheeWailCD:Stop()
+		warnPortal:Show()
+		timerPortal:Start()
 	elseif spellId == 351589 then
 		if self:IsTanking("player", nil, nil, nil, args.sourceGUID) then
 			specWarnFilthDefensive:Show()
@@ -635,18 +644,21 @@ function mod:SPELL_CAST_SUCCESS(args)
 		end
 	elseif spellId == 358588 and self:AntiSpam(5, 3) then--Aggregated warnings/timers
 		self.vb.merciCount = self.vb.merciCount + 1
+		local soakCount
+		if self.vb.merciCount == 7 or self.vb.merciCount < 3 then--1 2 and 7
+			soakCount = 1--Three 1 soaks
+		elseif self.vb.merciCount < 7 then--3 4 5 and 6
+			soakCount = 2
+		else--8+
+			soakCount = 4
+		end
 		if self.Options.SpecWarn358588soakcount then
-			specWarnMerciless:Show(self.vb.merciCount)
+			specWarnMerciless:Show(self.vb.merciCount.." ("..soakCount.."x)")
 			specWarnMerciless:Play("helpsoak")
 		else
-			warnMerciless:Show(self.vb.merciCount)
+			warnMerciless:Show(self.vb.merciCount.." ("..soakCount.."x)")
 		end
-		if self.vb.phase == 1 or self.vb.phase == 3 then
-			local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.merciCount+1]
-			if timer then
-				timerMercilessCD:Start(timer, self.vb.merciCount+1)
-			end
-		end
+		timerMercilessCD:Start(self.vb.merciCount < 7 and 21 or 41, self.vb.merciCount+1)
 	elseif spellId == 357729 and self.vb.phase ~= 3 then
 		warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(3))
 		warnPhase:Play("pthree")
@@ -1011,36 +1023,36 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 350857 and self.vb.phase == 2 then
 		self.vb.shroudremovedCount = self.vb.shroudremovedCount + 1
 		if self:IsMythic() then
-		    if self.vb.shroudremovedCount == 1 then
-				timerShadowDaggerCD:Start(8.5, self.vb.shadowDaggerCount+1)
-				timerHauntingWaveCD:Start(11.1, self.vb.hauntingWavecount+1)
-				timerVeilofDarknessCD:Start(18.5, self.vb.veilofDarknessCount+1)
-				timerBansheeWailCD:Start(42.3, self.vb.bansheeWailCount+1)
-		    elseif self.vb.shroudremovedCount == 2 then
-				--Daggers used near immediately
-				timerHauntingWaveCD:Start(11.4, self.vb.hauntingWavecount+1)
-				timerVeilofDarknessCD:Start(18.5, self.vb.veilofDarknessCount+1)
-				timerBansheeWailCD:Start(42, self.vb.bansheeWailCount+1)
-				timerNextPhase:Start(58) -- Raid Portal: Oribos
+		    if self.vb.shroudremovedCount == 1 then--MYTHIC MYTHIC MYTHIC MYTHIC MYTHIC
+				timerShadowDaggerCD:Start(8.5, self.vb.shadowDaggerCount+1)--MYTHIC MYTHIC MYTHIC MYTHIC MYTHIC
+				timerHauntingWaveCD:Start(11.1, self.vb.hauntingWavecount+1)--MYTHIC MYTHIC MYTHIC MYTHIC MYTHIC
+				timerVeilofDarknessCD:Start(18.5, self.vb.veilofDarknessCount+1)--MYTHIC MYTHIC MYTHIC MYTHIC MYTHIC
+				timerBansheeWailCD:Start(42.3, self.vb.bansheeWailCount+1)--MYTHIC MYTHIC MYTHIC MYTHIC MYTHIC
+		    elseif self.vb.shroudremovedCount == 2 then--MYTHIC MYTHIC MYTHIC MYTHIC MYTHIC
+				--Daggers used near immediately--MYTHIC MYTHIC MYTHIC MYTHIC MYTHIC
+--				timerHauntingWaveCD:Start(11.4, self.vb.hauntingWavecount+1)--MYTHIC MYTHIC MYTHIC MYTHIC MYTHIC
+--				timerVeilofDarknessCD:Start(18.5, self.vb.veilofDarknessCount+1)--MYTHIC MYTHIC MYTHIC MYTHIC MYTHIC
+				timerBansheeWailCD:Start(42, self.vb.bansheeWailCount+1)--MYTHIC MYTHIC MYTHIC MYTHIC MYTHIC
+--				timerNextPhase:Start(58) -- Raid Portal: Oribos--MYTHIC MYTHIC MYTHIC MYTHIC MYTHIC
 		    end
 		else
-		    if self.vb.shroudremovedCount == 1 then
-				timerShadowDaggerCD:Start(6.7, self.vb.shadowDaggerCount+1)--6.7-9
-				timerRangersHeartseekerCD:Start(18, self.vb.heartseekerCount+1)
-				timerVeilofDarknessCD:Start(21.1, self.vb.veilofDarknessCount+1)--22.102-21.1
-				if self:IsHeroic() then--Normal doesn't seem to get second one
-					timerRangersHeartseekerCD:Start(36.1, self.vb.heartseekerCount+2)
-				end
-				timerBansheeWailCD:Start(39.1, self.vb.bansheeWailCount+1)
-				timerCallEarthCD:Start(51.3, 3)
-				timerHauntingWaveCD:Start(51.4, self.vb.hauntingWavecount+1)
-		    elseif self.vb.shroudremovedCount == 2 then
-				--Daggers used near immediately (1.5-4)
---				timerHauntingWaveCD:Start(14.5, self.vb.hauntingWavecount+1)--14.5-16.5
-				timerRangersHeartseekerCD:Start(20, self.vb.heartseekerCount+1)--20-22
---				timerVeilofDarknessCD:Start(25.5, self.vb.veilofDarknessCount+1)--This one is more accurate started at bridge
-				timerBansheeWailCD:Start(42, self.vb.bansheeWailCount+1)
-				timerNextPhase:Start(40.1) -- Raid Portal: Oribos
+		    if self.vb.shroudremovedCount == 1 then--THIS IS NOT MYTHIC STOP FUCKING IT UP MYSTICALOS
+				timerShadowDaggerCD:Start(6.7, self.vb.shadowDaggerCount+1)--6.7-9--THIS IS NOT MYTHIC STOP FUCKING IT UP MYSTICALOS
+				timerRangersHeartseekerCD:Start(18, self.vb.heartseekerCount+1)--THIS IS NOT MYTHIC STOP FUCKING IT UP MYSTICALOS
+				timerVeilofDarknessCD:Start(21.1, self.vb.veilofDarknessCount+1)--22.102-21.1--THIS IS NOT MYTHIC STOP FUCKING IT UP MYSTICALOS
+				if self:IsHeroic() then--Normal doesn't seem to get second one--THIS IS NOT MYTHIC STOP FUCKING IT UP MYSTICALOS
+					timerRangersHeartseekerCD:Start(36.1, self.vb.heartseekerCount+2)--THIS IS NOT MYTHIC STOP FUCKING IT UP MYSTICALOS
+				end--THIS IS NOT MYTHIC STOP FUCKING IT UP MYSTICALOS
+				timerBansheeWailCD:Start(39.1, self.vb.bansheeWailCount+1)--THIS IS NOT MYTHIC STOP FUCKING IT UP MYSTICALOS
+				timerCallEarthCD:Start(51.3, 3)--THIS IS NOT MYTHIC STOP FUCKING IT UP MYSTICALOS
+				timerHauntingWaveCD:Start(51.4, self.vb.hauntingWavecount+1)--THIS IS NOT MYTHIC STOP FUCKING IT UP MYSTICALOS
+		    elseif self.vb.shroudremovedCount == 2 then--THIS IS NOT MYTHIC STOP FUCKING IT UP MYSTICALOS
+				--Daggers used near immediately (1.5-4)--THIS IS NOT MYTHIC STOP FUCKING IT UP MYSTICALOS
+--				timerHauntingWaveCD:Start(14.5, self.vb.hauntingWavecount+1)--14.5-16.5--THIS IS NOT MYTHIC STOP FUCKING IT UP MYSTICALOS
+				timerRangersHeartseekerCD:Start(20, self.vb.heartseekerCount+1)--20-22--THIS IS NOT MYTHIC STOP FUCKING IT UP MYSTICALOS
+--				timerVeilofDarknessCD:Start(25.5, self.vb.veilofDarknessCount+1)--This one is more accurate started at bridge 7--THIS IS NOT MYTHIC STOP FUCKING IT UP MYSTICALOS
+				timerBansheeWailCD:Start(42, self.vb.bansheeWailCount+1)--THIS IS NOT MYTHIC STOP FUCKING IT UP MYSTICALOS
+				timerNextPhase:Start(40.1) --40-51 Raid Portal: Oribos--THIS IS NOT MYTHIC STOP FUCKING IT UP MYSTICALOS
 		    end
 		end
 	end
@@ -1060,16 +1072,21 @@ function mod:SPELL_CREATE(args)
 		if self:IsMythic() then
 			if self.vb.bridgeCount == 2 then--1 and 2 used together at same time roughly
 				timerVeilofDarknessCD:Start(18.5, self.vb.veilofDarknessCount+1)
-				timerHauntingWaveCD:Start(35.6, self.vb.hauntingWavecount+1)
+				timerHauntingWaveCD:Start(35.6, self.vb.hauntingWavecount+1)--Wave 2
 				timerRuinCD:Start(47.3, self.vb.ruinCount+1)
 --			elseif self.vb.bridgeCount == 3 then--Or shroud 1
 --				timerShadowDaggerCD:Start(14, self.vb.shadowDaggerCount+1)
 --				timerHauntingWaveCD:Start(17.1, self.vb.hauntingWavecount+1)
 --				timerVeilofDarknessCD:Start(26, self.vb.veilofDarknessCount+1)
-			elseif self.vb.bridgeCount == 6 then--REVIEW
+			elseif self.vb.bridgeCount == 6 then
 				timerVeilofDarknessCD:Start(17.6, self.vb.veilofDarknessCount+1)
-				timerHauntingWaveCD:Start(34.7, self.vb.hauntingWavecount+1)
-				timerRuinCD:Start(47.3, self.vb.ruinCount+1)
+				timerHauntingWaveCD:Start(34.7, self.vb.hauntingWavecount+1)--Wave 6
+				timerRuinCD:Start(46.9, self.vb.ruinCount+1)
+			elseif self.vb.bridgeCount == 7 then--Seems more accurate starting these here than bridge 8 or shroud 2
+				timerHauntingWaveCD:Start(15, self.vb.hauntingWavecount+1)--15-16
+				timerVeilofDarknessCD:Start(23.3, self.vb.veilofDarknessCount+1)
+				timerNextPhase:Start(54.1)
+				--Heartseeker, daggers, and wail still seem  more accurate from shroud 2
 			end
 		else
 			if self.vb.bridgeCount == 1 then
@@ -1175,4 +1192,3 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	end
 end
 --]]
-
