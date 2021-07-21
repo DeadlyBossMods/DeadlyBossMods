@@ -649,7 +649,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			specWarnMerciless:Show(self.vb.merciCount.." ("..soakCount.."x)")
 			specWarnMerciless:Play("helpsoak")
 		else
-			warnMerciless:Show(self.vb.merciCount)
+			warnMerciless:Show(self.vb.merciCount.." ("..soakCount.."x)")
 		end
 		timerMercilessCD:Start(self.vb.merciCount < 7 and 21 or 41, self.vb.merciCount+1)
 	elseif spellId == 357729 and self.vb.phase ~= 3 then
