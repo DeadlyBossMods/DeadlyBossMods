@@ -651,7 +651,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		else
 			warnMerciless:Show(self.vb.merciCount)
 		end
-		timerMercilessCD:Start(self.vb.merciCount <  and 21 or 41, self.vb.merciCount+1)
+		timerMercilessCD:Start(self.vb.merciCount < 7 and 21 or 41, self.vb.merciCount+1)
 	elseif spellId == 357729 and self.vb.phase ~= 3 then
 		warnPhase:Show(DBM_CORE_L.AUTO_ANNOUNCE_TEXTS.stage:format(3))
 		warnPhase:Play("pthree")
