@@ -55,6 +55,7 @@ local warnRive										= mod:NewCountAnnounce(353418, 4)--May default off by de
 local warnIceBridge									= mod:NewCountAnnounce(348148, 2)
 local warnEarthBridge								= mod:NewCountAnnounce(348093, 2)
 local warnWindsofIcecrown							= mod:NewTargetCountAnnounce(356986, 1, nil, nil, nil, nil, nil, nil, true)
+local warnPortal									= mod:NewCastAnnounce(357102, 1)
 ----Forces of the Maw
 local warnUnstoppableForce							= mod:NewCountAnnounce(351075, 2)--Mawsworn Vanguard
 local warnLashingStrike								= mod:NewTargetNoFilterAnnounce(351179, 3)--Mawforged Souljudge
@@ -142,6 +143,7 @@ local timerRuinCD									= mod:NewCDCountTimer(23, 355540, nil, nil, nil, 4, ni
 local timerHauntingWaveCD							= mod:NewCDCountTimer("d23", 352271, nil, nil, nil, 2)--String timer starting with "d" means "allowDouble"
 local timerBansheeWailCD							= mod:NewCDCountTimer(48.8, 348094, nil, nil, nil, 2)
 local timerWindsofIcecrown							= mod:NewBuffActiveTimer(35, 356986, nil, nil, nil, 5, nil, DBM_CORE_L.DAMAGE_ICON)
+local timerPortal									= mod:NewCastTimer(10, 357102, nil, nil, nil, 6)
 --Unstoppable Force ~9sec cd
 ----Forces of the Maw
 local timerDecrepitOrbsCD							= mod:NewCDTimer(16, 351353, nil, nil, nil, 1)
@@ -607,6 +609,8 @@ function mod:SPELL_CAST_START(args)
 		timerVeilofDarknessCD:Stop()
 		timerHauntingWaveCD:Stop()
 		timerBansheeWailCD:Stop()
+		warnPortal:Show()
+		timerPortal:Start()
 	elseif spellId == 351589 then
 		if self:IsTanking("player", nil, nil, nil, args.sourceGUID) then
 			specWarnFilthDefensive:Show()
