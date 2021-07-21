@@ -1016,36 +1016,36 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 350857 and self.vb.phase == 2 then
 		self.vb.shroudremovedCount = self.vb.shroudremovedCount + 1
 		if self:IsMythic() then
-		    if self.vb.shroudremovedCount == 1 then
-				timerShadowDaggerCD:Start(8.5, self.vb.shadowDaggerCount+1)
-				timerHauntingWaveCD:Start(11.1, self.vb.hauntingWavecount+1)
-				timerVeilofDarknessCD:Start(18.5, self.vb.veilofDarknessCount+1)
-				timerBansheeWailCD:Start(42.3, self.vb.bansheeWailCount+1)
-		    elseif self.vb.shroudremovedCount == 2 then
-				--Daggers used near immediately
-				timerHauntingWaveCD:Start(11.4, self.vb.hauntingWavecount+1)
-				timerVeilofDarknessCD:Start(18.5, self.vb.veilofDarknessCount+1)
-				timerBansheeWailCD:Start(42, self.vb.bansheeWailCount+1)
-				timerNextPhase:Start(58) -- Raid Portal: Oribos
+		    if self.vb.shroudremovedCount == 1 then--MYTHIC MYTHIC MYTHIC MYTHIC MYTHIC
+				timerShadowDaggerCD:Start(8.5, self.vb.shadowDaggerCount+1)--MYTHIC MYTHIC MYTHIC MYTHIC MYTHIC
+				timerHauntingWaveCD:Start(11.1, self.vb.hauntingWavecount+1)--MYTHIC MYTHIC MYTHIC MYTHIC MYTHIC
+				timerVeilofDarknessCD:Start(18.5, self.vb.veilofDarknessCount+1)--MYTHIC MYTHIC MYTHIC MYTHIC MYTHIC
+				timerBansheeWailCD:Start(42.3, self.vb.bansheeWailCount+1)--MYTHIC MYTHIC MYTHIC MYTHIC MYTHIC
+		    elseif self.vb.shroudremovedCount == 2 then--MYTHIC MYTHIC MYTHIC MYTHIC MYTHIC
+				--Daggers used near immediately--MYTHIC MYTHIC MYTHIC MYTHIC MYTHIC
+--				timerHauntingWaveCD:Start(11.4, self.vb.hauntingWavecount+1)--MYTHIC MYTHIC MYTHIC MYTHIC MYTHIC
+--				timerVeilofDarknessCD:Start(18.5, self.vb.veilofDarknessCount+1)--MYTHIC MYTHIC MYTHIC MYTHIC MYTHIC
+				timerBansheeWailCD:Start(42, self.vb.bansheeWailCount+1)--MYTHIC MYTHIC MYTHIC MYTHIC MYTHIC
+--				timerNextPhase:Start(58) -- Raid Portal: Oribos--MYTHIC MYTHIC MYTHIC MYTHIC MYTHIC
 		    end
 		else
-		    if self.vb.shroudremovedCount == 1 then
-				timerShadowDaggerCD:Start(6.7, self.vb.shadowDaggerCount+1)--6.7-9
-				timerRangersHeartseekerCD:Start(18, self.vb.heartseekerCount+1)
-				timerVeilofDarknessCD:Start(21.1, self.vb.veilofDarknessCount+1)--22.102-21.1
-				if self:IsHeroic() then--Normal doesn't seem to get second one
-					timerRangersHeartseekerCD:Start(36.1, self.vb.heartseekerCount+2)
-				end
-				timerBansheeWailCD:Start(39.1, self.vb.bansheeWailCount+1)
-				timerCallEarthCD:Start(51.3, 3)
-				timerHauntingWaveCD:Start(51.4, self.vb.hauntingWavecount+1)
-		    elseif self.vb.shroudremovedCount == 2 then
-				--Daggers used near immediately (1.5-4)
---				timerHauntingWaveCD:Start(10.8, self.vb.hauntingWavecount+1)--10.8-16.5 (not very accurate here)
-				timerRangersHeartseekerCD:Start(20, self.vb.heartseekerCount+1)--20-26.9
---				timerVeilofDarknessCD:Start(25.5, self.vb.veilofDarknessCount+1)--This one is more accurate started at bridge 7
-				timerBansheeWailCD:Start(42, self.vb.bansheeWailCount+1)
---				timerNextPhase:Start(40.1) --40-51 Raid Portal: Oribos
+		    if self.vb.shroudremovedCount == 1 then--THIS IS NOT MYTHIC STOP FUCKING IT UP MYSTICALOS
+				timerShadowDaggerCD:Start(6.7, self.vb.shadowDaggerCount+1)--6.7-9--THIS IS NOT MYTHIC STOP FUCKING IT UP MYSTICALOS
+				timerRangersHeartseekerCD:Start(18, self.vb.heartseekerCount+1)--THIS IS NOT MYTHIC STOP FUCKING IT UP MYSTICALOS
+				timerVeilofDarknessCD:Start(21.1, self.vb.veilofDarknessCount+1)--22.102-21.1--THIS IS NOT MYTHIC STOP FUCKING IT UP MYSTICALOS
+				if self:IsHeroic() then--Normal doesn't seem to get second one--THIS IS NOT MYTHIC STOP FUCKING IT UP MYSTICALOS
+					timerRangersHeartseekerCD:Start(36.1, self.vb.heartseekerCount+2)--THIS IS NOT MYTHIC STOP FUCKING IT UP MYSTICALOS
+				end--THIS IS NOT MYTHIC STOP FUCKING IT UP MYSTICALOS
+				timerBansheeWailCD:Start(39.1, self.vb.bansheeWailCount+1)--THIS IS NOT MYTHIC STOP FUCKING IT UP MYSTICALOS
+				timerCallEarthCD:Start(51.3, 3)--THIS IS NOT MYTHIC STOP FUCKING IT UP MYSTICALOS
+				timerHauntingWaveCD:Start(51.4, self.vb.hauntingWavecount+1)--THIS IS NOT MYTHIC STOP FUCKING IT UP MYSTICALOS
+		    elseif self.vb.shroudremovedCount == 2 then--THIS IS NOT MYTHIC STOP FUCKING IT UP MYSTICALOS
+				--Daggers used near immediately (1.5-4)--THIS IS NOT MYTHIC STOP FUCKING IT UP MYSTICALOS
+--				timerHauntingWaveCD:Start(14.5, self.vb.hauntingWavecount+1)--14.5-16.5--THIS IS NOT MYTHIC STOP FUCKING IT UP MYSTICALOS
+				timerRangersHeartseekerCD:Start(20, self.vb.heartseekerCount+1)--20-22--THIS IS NOT MYTHIC STOP FUCKING IT UP MYSTICALOS
+--				timerVeilofDarknessCD:Start(25.5, self.vb.veilofDarknessCount+1)--This one is more accurate started at bridge 7--THIS IS NOT MYTHIC STOP FUCKING IT UP MYSTICALOS
+				timerBansheeWailCD:Start(42, self.vb.bansheeWailCount+1)--THIS IS NOT MYTHIC STOP FUCKING IT UP MYSTICALOS
+				timerNextPhase:Start(40.1) --40-51 Raid Portal: Oribos--THIS IS NOT MYTHIC STOP FUCKING IT UP MYSTICALOS
 		    end
 		end
 	end
