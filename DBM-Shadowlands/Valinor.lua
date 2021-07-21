@@ -6,6 +6,7 @@ mod:SetCreatureID(167524)
 mod:SetEncounterID(2411)
 mod:SetUsedIcons(8)
 mod:SetReCombatTime(20)
+mod:EnableWBEngageSync()--Enable syncing engage in outdoors
 --mod:SetMinSyncRevision(11969)
 
 mod:RegisterCombat("combat")

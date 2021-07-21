@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(175726)--Skyja (TODO, add other 2 and set health to highest?)
 mod:SetEncounterID(2429)
 mod:SetUsedIcons(8, 7, 6, 4, 3, 2, 1)
-mod:SetHotfixNoticeRev(20210713000000)--2021-07-13
+mod:SetHotfixNoticeRev(20210720000000)--2021-07-20
 mod:SetMinSyncRevision(20210713000000)
 --mod.respawnTime = 29
 
@@ -14,21 +14,19 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 350202 350342 350339 350365 350283 350385 350467 352744 350541 350482 350687 350475 355294 352756 352752",
 	"SPELL_CAST_SUCCESS 350286 350745",
-	"SPELL_AURA_APPLIED 350202 350158 350109 351139 350039 350542 350184 350483",
+	"SPELL_AURA_APPLIED 350202 350158 350109 351139 350039 350542 350184 350483 350012 350078",
 	"SPELL_AURA_APPLIED_DOSE 350202 350542",
 	"SPELL_AURA_REMOVED 350158 350109 351139 350039 350542 350184 350483",
 --	"SPELL_AURA_REMOVED_DOSE 350542",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
-	"UNIT_DIED",
-	"CHAT_MSG_MONSTER_YELL"
+	"UNIT_DIED"
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
 --TODO, tank swap stacks
 --TODO, how many formless mass spawn in higher difficulties? Find out total needed icons
 --TODO, marking anything else??
---TODO, mythic timer updates when I have more patience to actually resolve how they update on phase 2 transition. It'd be nice if phase 2 was actually in combat log
 --[[
 (ability.id = 350202 or ability.id = 350342 or ability.id = 350365 or ability.id = 352756 or ability.id = 350385 or ability.id = 352752 or ability.id = 350467 or ability.id = 352744 or ability.id = 350541 or ability.id = 350482 or ability.id = 350687 or ability.id = 350475 or ability.id = 355294 or ability.id = 350339) and type = "begincast"
  or (ability.id = 350745 or ability.id = 350286) and type = "cast"
@@ -421,6 +419,12 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellDaschlasMightyAnvil:Yell()
 			yellDaschlasMightyAnvilFades:Countdown(spellId)
 		end
+	elseif spellId == 350012 then
+		specWarnAgathasEternalblade:Show()
+		specWarnAgathasEternalblade:Play("farfromline")
+	elseif spellId == 350078 then
+		specWarnAradnesFallingStrike:Show()
+		specWarnAradnesFallingStrike:Play("helpsoak")
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -487,18 +491,6 @@ function mod:UNIT_DIED(args)
 		self.vb.valksDead = self.vb.valksDead + 1
 		timerSongofDissolutionCD:Stop()
 		timerReverberatingRefrainCD:Stop()
-	end
-end
-
-function mod:CHAT_MSG_MONSTER_YELL(msg, _, _, _, target)
-	--"<22.56 20:59:16> [CHAT_MSG_MONSTER_YELL] Fall before my blade!#Agatha#####0#0##0#1227#nil#0#false#false#false#false", -- [821]
-	if msg == L.AgathaBlade or msg:find(L.AgathaBlade) then
-		specWarnAgathasEternalblade:Show()
-		specWarnAgathasEternalblade:Play("farfromline")
-	--"<240.03 21:02:54> [CHAT_MSG_MONSTER_YELL] You are all outmatched!#Aradne#####0#0##0#1273#nil#0#false#false#false#false", -- [4657]
-	elseif msg == L.AradneStrike or msg:find(L.AradneStrike) then
-		specWarnAradnesFallingStrike:Show()
-		specWarnAradnesFallingStrike:Play("helpsoak")
 	end
 end
 

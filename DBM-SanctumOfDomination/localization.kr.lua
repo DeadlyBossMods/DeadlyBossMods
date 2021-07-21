@@ -29,8 +29,6 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(2439)
 
 L:SetMiscLocalization({
-	AgathaBlade		= "내 칼날 앞에 쓰러져라!",
-	AradneStrike	= "상대조차 안 되는군!",
 	Fragment		= "조각 "--Space is intentional, leave a space to add a number after it
 })
 

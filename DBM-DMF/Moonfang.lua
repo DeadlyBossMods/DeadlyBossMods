@@ -4,7 +4,6 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(71992)
 --mod:SetModelID(328)
-mod:DisableWBEngageSync()
 
 mod:RegisterCombat("combat")
 
