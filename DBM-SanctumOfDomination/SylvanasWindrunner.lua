@@ -338,7 +338,6 @@ local allTimers = {
 local function intermissionStart(self, adjust)
 	timerDominationChainsCD:Start(4-adjust, 1)--Practically right away
 	timerRiveCD:Start(13.2-adjust)--Init timer only, for when the spam begins
-	timerNextPhase:Start(55.6-adjust)
 end
 
 function mod:OnCombatStart(delay)
@@ -464,6 +463,10 @@ function mod:SPELL_CAST_START(args)
 	elseif (spellId == 353418 or spellId == 353417) then--Rive
 		self.vb.riveCount = self.vb.riveCount + 1
 		warnRive:Show(self.vb.riveCount)
+		if self.vb.riveCount == 2 then
+			timerBansheeWailCD:Start(39.5, 1)
+			timerNextPhase:Start(44.3)
+		end
 	elseif spellId == 348094 then
 		self.vb.bansheeWailCount = self.vb.bansheeWailCount + 1
 		specWarnBansheeWail:Show(self.vb.bansheeWailCount)
