@@ -286,9 +286,11 @@ L.EAST						= "东"
 L.WEST						= "西"
 L.NORTH						= "北"
 L.SOUTH						= "南"
-L.INTERMISSION				= "中场时间"
+L.INTERMISSION				= "转场"
 L.ORB						= "球"
 L.ORBS						= "球"
+L.RING						= "环"
+L.RINGS						= "环"
 L.CHEST						= "奖励宝箱"
 L.NO_DEBUFF					= "没有%s"
 L.ALLY						= "队友"
@@ -458,6 +460,7 @@ L.AUTO_SPEC_WARN_OPTIONS.targetchange	= "特殊警报：需要立刻切换目标
 
 -- Auto-generated Timer Localizations
 L.AUTO_TIMER_TEXTS.target				= "%s: >%%s<"
+L.AUTO_TIMER_TEXTS.targetcount 			= "%s: >%%s< (%%%s)" --???
 L.AUTO_TIMER_TEXTS.cast					= "%s"
 L.AUTO_TIMER_TEXTS.castcount				= "%s (%%s)"
 L.AUTO_TIMER_TEXTS.castsource			= "%s: %%s"
@@ -479,6 +482,7 @@ L.AUTO_TIMER_TEXTS.addscustom			= "小怪 (%%s)"
 L.AUTO_TIMER_TEXTS.roleplay				= GUILD_INTEREST_RP
 
 L.AUTO_TIMER_OPTIONS.target				= "计时条：$spell:%s减益效果持续时间"
+L.AUTO_TIMER_OPTIONS.targetcount		= "计时条：$spell:%s减益效果持续时间(带计数)"
 L.AUTO_TIMER_OPTIONS.cast				= "计时条：$spell:%s施法时间"
 L.AUTO_TIMER_OPTIONS.castcount			= "计时条：$spell:%s施法时间(带计数)"
 L.AUTO_TIMER_OPTIONS.castsource			= "计时条：$spell:%s施法时间(带来源)"
