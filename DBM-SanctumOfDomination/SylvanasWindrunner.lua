@@ -1084,7 +1084,7 @@ function mod:SPELL_CREATE(args)
 				timerRuinCD:Start(46.9, self.vb.ruinCount+1)
 			elseif self.vb.bridgeCount == 7 then--Seems more accurate starting these here than bridge 8 or shroud 2
 				timerHauntingWaveCD:Start(15, self.vb.hauntingWavecount+1)--15-16
-				timerVeilofDarknessCD:Start(25.8, self.vb.veilofDarknessCount+1)
+				timerVeilofDarknessCD:Start(23.3, self.vb.veilofDarknessCount+1)
 				timerNextPhase:Start(54.1)
 				--Heartseeker, daggers, and wail still seem  more accurate from shroud 2
 			end
