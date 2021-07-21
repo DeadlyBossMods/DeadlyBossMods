@@ -641,12 +641,12 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if self.vb.merciCount == 7 or self.vb.merciCount < 3 then--1 2 and 7
 			soakCount = 1--Three 1 soaks
 		elseif self.vb.merciCount < 7 then--3 4 5 and 6
-			soakcount = 2
+			soakCount = 2
 		else--8+
-			soakcount = 4
+			soakCount = 4
 		end
 		if self.Options.SpecWarn358588soakcount then
-			specWarnMerciless:Show(self.vb.merciCount.." ("..soakcount.."x)")
+			specWarnMerciless:Show(self.vb.merciCount.." ("..soakCount.."x)")
 			specWarnMerciless:Play("helpsoak")
 		else
 			warnMerciless:Show(self.vb.merciCount)
