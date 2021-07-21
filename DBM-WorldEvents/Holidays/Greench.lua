@@ -6,7 +6,6 @@ mod:SetCreatureID(54499)
 mod:SetModelID(39021)
 mod:SetReCombatTime(10, 5)
 mod:SetZone(0)--Eastern Kingdoms
-mod:DisableWBEngageSync()
 
 mod:RegisterCombat("combat")
 mod:SetWipeTime(20)
