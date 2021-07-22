@@ -489,7 +489,7 @@ L.AUTO_SPEC_WARN_OPTIONS = {
 -- Auto-generated Timer Localizations
 L.AUTO_TIMER_TEXTS = {
 	target							= "%s: %%s",
-	targetcount						= "%s: %%s (%%s)",
+	targetcount						= "%s (%%2$s): %%1$s",
 	cast							= "%s",
 	castshort						= "%s ",--if short timers enabled, cast and next are same timer text, this is a conflict. the space resolves it
 	castcount						= "%s (%%s)",
@@ -501,7 +501,7 @@ L.AUTO_TIMER_TEXTS = {
 	ai								= "%s AI",
 	cd								= "%s CD",
 	cdshort							= "~%s",
-	cdcount							= "%s CD (%%s)",
+	cdcount							= "%s (%%s) CD",
 	cdcountshort					= "~%s (%%s)",
 	cdsource						= "%s CD: >%%s<",
 	cdsourceshort					= "~%s: >%%s<",

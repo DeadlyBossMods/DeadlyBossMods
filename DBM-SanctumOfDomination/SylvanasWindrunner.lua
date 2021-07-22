@@ -5,14 +5,14 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(175732)
 mod:SetEncounterID(2435)
 mod:SetUsedIcons(1, 2, 3)
-mod:SetHotfixNoticeRev(20210720000000)--2021-07-20
+mod:SetHotfixNoticeRev(20210721000000)--2021-07-21
 mod:SetMinSyncRevision(20210720000000)
 mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 349419 347726 347609 352663 353418 353417 348094 355540 352271 351075 351179 351353 356023 354011 353969 354068 353952 353935 354147 357102 358704 351589 351562 358181",
+	"SPELL_CAST_START 349419 347726 347609 352663 353418 353417 348094 355540 352271 351075 351353 356023 354011 353969 354068 353952 353935 354147 357102 358704 351589 351562 358181 352843 352842",
 	"SPELL_CAST_SUCCESS 351178 357729 358588",
 	"SPELL_CREATE 348148 348093 351837 351838 351840 351841",
 	"SPELL_AURA_APPLIED 347504 347807 347670 349458 348064 347607 350857 348146 351109 351117 351451 353929 357886 357720 353935 348064 356986 358711 358705 351562 358434",
@@ -111,7 +111,7 @@ local yellExpulsionFades							= mod:NewIconFadesYell(351562)
 local specWarnExpulsionTarget						= mod:NewSpecialWarningTarget(351562, false, nil, nil, 1, 2, 4)
 --Stage Three: The Freedom of Choice
 local specWarnBansheesBane							= mod:NewSpecialWarningStack(353929, nil, 1, nil, nil, 1, 6)
-local specWarnBansheesBaneTaunt						= mod:NewSpecialWarningTaunt(353929, nil, nil, nil, 1, 2)--Let the tank drop bane out by swapping for it
+--local specWarnBansheesBaneTaunt						= mod:NewSpecialWarningTaunt(353929, nil, nil, nil, 1, 2)--Let the tank drop bane out by swapping for it
 local specWarnBansheesBaneDispel					= mod:NewSpecialWarningDispel(353929, "RemoveMagic", nil, nil, 3, 2)--Dispel alert during Fury
 local specWarnBansheeScream							= mod:NewSpecialWarningYou(357720, nil, 31295, nil, 1, 2)
 local yellBansheeScream								= mod:NewYell(357720, 31295)
@@ -137,6 +137,8 @@ local timerBlackArrow								= mod:NewTargetCountTimer(9, 358704, 208407, nil, n
 local timerRiveCD									= mod:NewCDTimer(48.8, 353418, nil, nil, nil, 3)
 local timerNextPhase								= mod:NewPhaseTimer(16.5, 348094, nil, nil, nil, 6)
 --Stage Two: The Banshee Queen
+local timerChannelIce								= mod:NewCastTimer(5, 352843, nil, nil, nil, 6)
+local timerCallEarth								= mod:NewCastTimer(5, 352842, nil, nil, nil, 6)
 --local timerChannelIceCD							= mod:NewCDCountTimer(48.8, 348148, nil, nil, nil, 6)
 local timerCallEarthCD								= mod:NewCDCountTimer(48.8, 348093, nil, nil, nil, 6)
 local timerRuinCD									= mod:NewCDCountTimer(23, 355540, nil, nil, nil, 4, nil, DBM_CORE_L.INTERRUPT_ICON)
@@ -327,11 +329,11 @@ local allTimers = {
 			--Banshees Fury (Heroic/Mythic)
 			[354068] = {38.3, 60.8, 64, 58, 62, 66},
 			--Raze
-			[354147] = {45.4, 105, 106, 104},
+			[354147] = {45.4, 105, 106, 104},--Technically on mythic sequence isn't needed, but it's used for code uniformity
 			--Death Knives (Mythic Only)
 			[358434] = {65.7, 54.7, 54.3, 55, 54, 55},
 			--Merciless (Mythic Only)
-			[358588] = {22.8, 21, 21, 21, 21, 21, 21},--Sets are aggregated into one
+--			[358588] = {22.8, 21, 21, 21, 21, 21, 21, 41, 41, 41},--Sets are aggregated into one (currently sequence not used, for obvious reasons)
 		},
 	},
 }
@@ -629,6 +631,10 @@ function mod:SPELL_CAST_START(args)
 --				timerBansheesBladesCD:Start(timer, self.vb.bladesCount+1)
 --			end
 --		end
+	elseif spellId == 352843 then--Channel Ice
+		timerChannelIce:Start()
+	elseif spellId == 352842 then--Call earth
+		timerCallEarth:Start()
 	end
 end
 
@@ -874,12 +880,12 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnBansheesBane:Cancel()
 			specWarnBansheesBane:Schedule(1.5, amount)--Aggregate grabbing a bunch within 300ms
 			specWarnBansheesBane:ScheduleVoice(1.5, "targetyou")
-		elseif self:AntiSpam(3, args.destName) then
-			local uId = DBM:GetRaidUnitId(args.destName)
-			if self:IsTanking(uId) then
-				specWarnBansheesBaneTaunt:Show(args.destName)
-				specWarnBansheesBaneTaunt:Play("tauntboss")
-			end
+--		elseif self:AntiSpam(3, args.destName) then
+--			local uId = DBM:GetRaidUnitId(args.destName)
+--			if self:IsTanking(uId) then
+--				specWarnBansheesBaneTaunt:Show(args.destName)
+--				specWarnBansheesBaneTaunt:Play("tauntboss")
+--			end
 		end
 	elseif spellId == 357720 then
 		warnBansheesScream:CombinedShow(0.3, args.destName)
@@ -1128,7 +1134,7 @@ function mod:SPELL_CREATE(args)
 				timerHauntingWaveCD:Start(31.7, self.vb.hauntingWavecount+1)
 				timerVeilofDarknessCD:Start(35.7, self.vb.veilofDarknessCount+1)--35-37
 				--TODO, more shit if not pushed?
-			elseif self.vb.bridgeCount == 6 then--This can sometimes clip veil of darkness timer (canceling it)
+			elseif self.vb.bridgeCount == 6 then
 				warnEarthBridge:Show(self.vb.bridgeCount)
 				--These timers are more accurate here
 				timerRuinCD:Start(7, self.vb.ruinCount+1)
