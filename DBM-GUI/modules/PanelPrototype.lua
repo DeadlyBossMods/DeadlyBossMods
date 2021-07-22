@@ -362,6 +362,7 @@ do
 					end
 					local x, y = GetCursorPosition()
 					local scale = UIParent:GetEffectiveScale()
+					GameTooltip:ClearAllPoints()
 					GameTooltip:SetPoint("BOTTOMLEFT", nil, "BOTTOMLEFT", (x / scale) + 5, (y / scale) + 2)
 				end)
 				if GetCursorPosition() - self:GetParent():GetCenter() < -100 then
