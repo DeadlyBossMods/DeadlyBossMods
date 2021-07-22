@@ -5,14 +5,14 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(175732)
 mod:SetEncounterID(2435)
 mod:SetUsedIcons(1, 2, 3)
-mod:SetHotfixNoticeRev(20210720000000)--2021-07-20
+mod:SetHotfixNoticeRev(20210721000000)--2021-07-21
 mod:SetMinSyncRevision(20210720000000)
 mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 349419 347726 347609 352663 353418 353417 348094 355540 352271 351075 351353 356023 354011 353969 354068 353952 353935 354147 357102 358704 351589 351562 358181",
+	"SPELL_CAST_START 349419 347726 347609 352663 353418 353417 348094 355540 352271 351075 351353 356023 354011 353969 354068 353952 353935 354147 357102 358704 351589 351562 358181 352843 352842",
 	"SPELL_CAST_SUCCESS 351178 357729 358588",
 	"SPELL_CREATE 348148 348093 351837 351838 351840 351841",
 	"SPELL_AURA_APPLIED 347504 347807 347670 349458 348064 347607 350857 348146 351109 351117 351451 353929 357886 357720 353935 348064 356986 358711 358705 351562 358434",
@@ -137,6 +137,8 @@ local timerBlackArrow								= mod:NewTargetCountTimer(9, 358704, 208407, nil, n
 local timerRiveCD									= mod:NewCDTimer(48.8, 353418, nil, nil, nil, 3)
 local timerNextPhase								= mod:NewPhaseTimer(16.5, 348094, nil, nil, nil, 6)
 --Stage Two: The Banshee Queen
+local timerChannelIce								= mod:NewCastTimer(5, 352843, nil, nil, nil, 6)
+local timerCallEarth								= mod:NewCastTimer(5, 352842, nil, nil, nil, 6)
 --local timerChannelIceCD							= mod:NewCDCountTimer(48.8, 348148, nil, nil, nil, 6)
 local timerCallEarthCD								= mod:NewCDCountTimer(48.8, 348093, nil, nil, nil, 6)
 local timerRuinCD									= mod:NewCDCountTimer(23, 355540, nil, nil, nil, 4, nil, DBM_CORE_L.INTERRUPT_ICON)
@@ -629,6 +631,10 @@ function mod:SPELL_CAST_START(args)
 --				timerBansheesBladesCD:Start(timer, self.vb.bladesCount+1)
 --			end
 --		end
+	elseif spellId == 352843 then--Channel Ice
+		timerChannelIce:Start()
+	elseif spellId == 352842 then--Call earth
+		timerCallEarth:Start()
 	end
 end
 
