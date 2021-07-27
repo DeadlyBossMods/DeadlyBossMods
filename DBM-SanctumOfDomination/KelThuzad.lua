@@ -275,7 +275,7 @@ function mod:SPELL_SUMMON(args)
 				warnSoulReaver:Show()
 			end
 			if self.Options.SetIconOnReaper then
-				self:ScanForMobs(args.destGUID, 2, self.vb.addIcon, 1, 0.2, 12, "SetIconOnReaper")
+				self:ScanForMobs(args.destGUID, 2, self.vb.addIcon, 1, 0.2, 12, "SetIconOnReaper", nil, nil, nil, true)
 			end
 			self.vb.addIcon = self.vb.addIcon - 1
 		elseif spellId == 352092 and self:AntiSpam(3, 5) then
@@ -283,7 +283,7 @@ function mod:SPELL_SUMMON(args)
 		end
 	elseif spellId == 346469 then--Glacial Spikes
 		if self.Options.SetIconOnGlacialSpike then
-			self:ScanForMobs(args.destGUID, 2, self.vb.spikeIcon, 1, 0.2, 12, "SetIconOnGlacialSpike")
+			self:ScanForMobs(args.destGUID, 2, self.vb.spikeIcon, 1, 0.2, 12, "SetIconOnGlacialSpike", nil, nil, nil, true)
 		end
 		self.vb.spikeIcon = self.vb.spikeIcon + 1
 	end

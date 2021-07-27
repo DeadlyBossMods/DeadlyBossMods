@@ -46,6 +46,8 @@ local specWarnGTFO						= mod:NewSpecialWarningGTFO(320180, nil, nil, nil, 1, 8)
 local specWarnSearingDeath				= mod:NewSpecialWarningMoveAway(333231, nil, nil, nil, 1, 2)
 local yellSearingDeath					= mod:NewYell(333231)
 local specWarnSpectralTransference		= mod:NewSpecialWarningDispel(320272, "MagicDispeller", nil, nil, 1, 2)
+--Xira
+local yellOpportunityStrikes			= mod:NewYell(333540)
 
 --Dessia the Decapitator
 local timerMortalStrikeCD				= mod:NewCDTimer(21.8, 320069, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)--21.8-32.7
@@ -126,6 +128,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 333540 then
 		warnOpportunityStrikes:Show(args.destName)
+		if args:IsPlayer() then
+			yellOpportunityStrikes:Yell()
+		end
 	elseif spellId == 326892 and args:IsDestTypePlayer() then
 		if args:IsPlayer() then
 			specWarnFixate:Show()
