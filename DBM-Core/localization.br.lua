@@ -23,7 +23,7 @@ L.LOOT_SPEC_REMINDER				= "A sua especialização atual é %s. A sua escolha atu
 
 L.BIGWIGS_ICON_CONFLICT				= "DBM detectou que você tem ícones habilitados tanto no BigWigs quanto no DBM. Por favor desabilite um dos dois para evitar conflitos com o líder da raid"
 
-L.MOD_AVAILABLE						= "%s esta disponível para este conteúdo. Esta disponível em |HDBM:forums|h|cff3588ffdeadlybossmods.com|r. Está mensagem só será exibida uma vez."
+L.MOD_AVAILABLE						= "%s esta disponível para este conteúdo. Esta disponível em |Hgarrmission:DBM:forums|h|cff3588ffdeadlybossmods.com|r. Está mensagem só será exibida uma vez."
 
 L.COMBAT_STARTED					= "%s na mira. Boa sorte e divirta-se! :)"
 
@@ -145,7 +145,7 @@ L.UPDATEREMINDER_NOTAGAIN			= "Exibir pop-up quando houver uma nova versão disp
 
 L.MOVABLE_BAR						= "Arraste-me!"
 
-L.PIZZA_SYNC_INFO					= "|Hplayer:%1$s|h[%1$s]|h te enviou um cronógrafo do DBM: '%2$s'\n|HDBM:cancel:%2$s:nil|h|cff3588ff[Cancelar esse cronógrafo]|r|h  |HDBM:ignore:%2$s:%1$s|h|cff3588ff[Ignorar cronógrafos de %1$s]|r|h"
+L.PIZZA_SYNC_INFO					= "|Hplayer:%1$s|h[%1$s]|h te enviou um cronógrafo do DBM: '%2$s'\n|Hgarrmission:DBM:cancel:%2$s:nil|h|cff3588ff[Cancelar esse cronógrafo]|r|h  |Hgarrmission:DBM:ignore:%2$s:%1$s|h|cff3588ff[Ignorar cronógrafos de %1$s]|r|h"
 L.PIZZA_CONFIRM_IGNORE				= "Você tem certeza de que realmente deseja ignorar cronógrafos de %s até o fim desta sessão?"
 L.PIZZA_ERROR_USAGE					= "Uso: /dbm [broadcast] timer <tempo> <texto>"
 
@@ -334,18 +334,3 @@ L.ARROW_ERROR_USAGE					= {
 }
 
 L.SPEED_KILL_TIMER_TEXT				= "Vitória em tempo recorde"
-
-L.REQ_INSTANCE_ID_PERMISSION		= "%s solicitou suas IDs de instância e progresso atuais.\nVocê deseja enviar essa informação para %s? Ele(a) poderá requisitar essa informação durante a sessão atual (i. e. até que você reconecte)."
-L.ERROR_NO_RAID						= "Você precisa estar em um grupo de raide para utilizar essa funcionalidade."
-L.INSTANCE_INFO_REQUESTED			= "Enviadas requisições de vínculos de raid para o grupo.\nPor favor, note que a permissão dos usuários será solicitada antes de os dados serem enviados para você, portanto pode levar um minuto para que você receba todas as respostas."
-L.INSTANCE_INFO_STATUS_UPDATE		= "Recebidas respostas de %d jogadores de um total de %d usuários do DBM: %d enviaram os dados, %d negaram a solicitação. Esperando mais %d segundos pelas respostas restantes..."
-L.INSTANCE_INFO_ALL_RESPONSES		= "Recebidas respostas de tosos os membros da raid"
-L.INSTANCE_INFO_DETAIL_DEBUG		= "Sender: %s ResultType: %s InstanceName: %s InstanceID: %s Difficulty: %d Size: %d Progress: %s"
-L.INSTANCE_INFO_DETAIL_HEADER		= "%s, dificuldade %s:"
-L.INSTANCE_INFO_DETAIL_INSTANCE		= "    ID %s, progresso %d: %s"
-L.INSTANCE_INFO_DETAIL_INSTANCE2	= "    progresso %d: %s"
-L.INSTANCE_INFO_STATS_DENIED		= "Negou a solicitação: %s"
-L.INSTANCE_INFO_STATS_AWAY			= "Ausente: %s"
-L.INSTANCE_INFO_STATS_NO_RESPONSE	= "Não possui uma versão recente do DBM instalada: %s"
-L.INSTANCE_INFO_RESULTS				= "Resultados da busca por  IDs de raid. Note que instâncias podem aparecer mais de uma vez, se houver jogadores com clientes de WoW em outra língua."
-L.INSTANCE_INFO_SHOW_RESULTS		= "Jogadores que ainda não responderam: %s\n|HDBM:showRaidIdResults|h|cff3588ff[Exibir resultados agora]|r|h"
