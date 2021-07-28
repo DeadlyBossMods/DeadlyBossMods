@@ -7,7 +7,7 @@ mod:SetEncounterID(2422)
 mod:SetUsedIcons(1, 2, 3, 4, 6, 7, 8)
 mod:SetBossHPInfoToHighest()--Boss heals at least twice
 mod.noBossDeathKill = true--Instructs mod to ignore 175559 deaths, since it dies multiple times
-mod:SetHotfixNoticeRev(20210712000000)--2021-07-13
+mod:SetHotfixNoticeRev(20210727000000)--2021-07-27
 mod:SetMinSyncRevision(20210708000000)
 mod.respawnTime = 29
 
@@ -29,8 +29,6 @@ mod:RegisterEventsInCombat(
 --TODO, is blizzard really 20 sec? Such disruption to other timers
 --TODO, track https://ptr.wowhead.com/spell=354289/necrotic-miasma on infoframe?
 --TODO, figure out how to add https://ptr.wowhead.com/spell=354638/deep-freeze
---TODO, hope for love of god blizzard resets mana on phase changes, otherwise a ton of timers still missing
---TODO, more Timer work if blizz fixes above, or more hacky shit if they don't :\
 --TODO, echo timer can probably be immproved by checking mana when it is cast
 --TODO, nameplate aura that shows X or ✔️ over nameplate when it's ok to kill
 --https://ptr.wowhead.com/spell=348434/soul-exhaustion used in LFR/normal instead of other one?
@@ -151,13 +149,9 @@ function mod:OnCombatStart(delay)
 	if self.Options.NPAuraOnNecroticEmpowerment or self.Options.NPAuraOnFixate then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
---	self:RegisterShortTermEvents(
---		"UNIT_POWER_UPDATE boss1"
---	)
 end
 
 function mod:OnCombatEnd()
---	self:UnregisterShortTermEvents()
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
 	end
@@ -167,7 +161,6 @@ function mod:OnCombatEnd()
 	if self.Options.NPAuraOnNecroticEmpowerment or self.Options.NPAuraOnFixate then
 		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
 	end
-	DBM:AddMsg("Timers for this fight are incomplete/inaccurate until a lot more data is collected from various push timings. Transcriptor logs are ideal but WCL with specific pulls/mana counts are helpful too")
 end
 
 function mod:SPELL_CAST_START(args)
@@ -364,43 +357,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.vb.phase == 2 then
 			self:SetStage(1)
 			warnNecroticSurge:Show(args.amount or 1)
-			--Not totally correct, frost blast can supposedly come earlier if boss doesn't come out and cast his mana abilitie right away
-			--These 3 timers may also differ based on boss mana going into phase, they need review
 			timerSoulFractureCD:Start(10.2)
-			timerOblivionsEchoCD:Start(14.1)--14.1-15.1. Is 14.2 the new low?
+			timerOblivionsEchoCD:Start(14.1)--14.1-15.1.
 			timerGlacialWrathCD:Start(24.9)--24.9-25.1. Is 24.9 the new low?
-			--Do Mana checks and fix timers based on them
-			local bossPower = UnitPower("boss1")
-			--Blizzard CD: 92.8, Evo CD: ??
-			if bossPower then
-				if bossPower == 80 then--TODO, FIXME
---					timerFrostBlastCD:Start(0)
---					timerHowlingBlizzardCD:Start(0)
---					timerDarkEvocationCD:Start(0)
-					DBM:Debug("HIGH PRIORITY EVENT. This is a 80 mana phase start")--Generating easier to use transcriptor events
-					DBM:AddMsg("Please share log of THIS pull and say 80 and which Necrotic Surge cast. Please know the exact pull when sharing log with DBM author")
-				elseif bossPower == 60 then--Data verified normal KT
-					timerDarkEvocationCD:Start(15.5)
-					timerFrostBlastCD:Start(46.8)
-					timerHowlingBlizzardCD:Start(49.8)
-					DBM:Debug("HIGH PRIORITY EVENT. This is a 60 mana phase start")--Generating easier to use transcriptor events
-				elseif bossPower == 40 then--Data verified Heroic KT
-					timerFrostBlastCD:Start(96.7)
-					timerHowlingBlizzardCD:Start(26.2)
-					timerDarkEvocationCD:Start(99.7)--Or near instantly, 40 mana situation is possible if he casts it before as well, unless that's what hotfixes fixed?
-					DBM:Debug("HIGH PRIORITY EVENT. This is a 40 mana phase start")--Generating easier to use transcriptor events
-				elseif bossPower == 20 then--Data verified Heroic KT
-					timerFrostBlastCD:Start(87)--87-88.3
-					timerHowlingBlizzardCD:Start(16.5)--16.5-17.7
-					timerDarkEvocationCD:Start(90)--90-91.3
-					DBM:Debug("HIGH PRIORITY EVENT. This is a 20 mana phase start")--Generating easier to use transcriptor events
-				else--100/0--Data verified from live normal and heroic KT (similar to a pull)
-					timerFrostBlastCD:Start(47.1)--47-48.5
-					timerDarkEvocationCD:Start(50.6)--50-52.3
-					timerHowlingBlizzardCD:Start(92.6)
-					DBM:Debug("HIGH PRIORITY EVENT. This is a 100 mana phase start")--Generating easier to use transcriptor events
-				end
-			end
+			timerFrostBlastCD:Start(47.1)--47-48.5
+			timerDarkEvocationCD:Start(50.6)--50-52.3
+			timerHowlingBlizzardCD:Start(91.9)
 		end
 	elseif spellId == 355389 then
 		if args:IsPlayer() then
