@@ -101,6 +101,13 @@ local function updateAllTimers(self, ICD)
 		timerSufferingCD:Stop()
 		timerSufferingCD:Update(elapsed, total+extend)
 	end
+	if timerGraspofMaliceCD:GetRemaining() < ICD then
+		local elapsed, total = timerGraspofMaliceCD:GetTime()
+		local extend = ICD - (total-elapsed)
+		DBM:Debug("timerGraspofMaliceCD extended by: "..extend, 2)
+		timerGraspofMaliceCD:Stop()
+		timerGraspofMaliceCD:Update(elapsed, total+extend)
+	end
 end
 
 function mod:OnCombatStart(delay)
