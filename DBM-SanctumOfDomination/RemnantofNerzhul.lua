@@ -194,11 +194,11 @@ function mod:SPELL_CAST_START(args)
 					timerOrbofTormentCD:Update(elapsed, total+extend, self.vb.orbCount+1)
 					--Malevolence has 19.6 if grasp ICD was activated but will also likely be pushed to 32.3 if suffering is cast
 					if timerMalevolenceCD:GetRemaining() < 19.6 then
-						local elapsed, total = timerMalevolenceCD:GetTime()
-						local extend = 19.6 - (total-elapsed)
-						DBM:Debug("timerMalevolenceCD extended by: "..extend, 2)
+						local elapsed2, total2 = timerMalevolenceCD:GetTime()
+						local extend2 = 19.6 - (total2-elapsed2)
+						DBM:Debug("timerMalevolenceCD extended by: "..extend2, 2)
 						timerMalevolenceCD:Stop()
-						timerMalevolenceCD:Update(elapsed, total+extend)
+						timerMalevolenceCD:Update(elapsed2, total2+extend2)
 					end
 				else--If orbs aren't first at 8.3 then bombs will be
 					--Malevolence has 8.3 if grasp ICD was activated
@@ -228,11 +228,11 @@ function mod:SPELL_CAST_START(args)
 					timerOrbofTormentCD:Update(elapsed, total+extend, self.vb.orbCount+1)
 					--Malevolence has 19.6 if grasp ICD was activated but will also likely be pushed to 32.3 if suffering is cast
 					if timerMalevolenceCD:GetRemaining() < 19.6 then
-						local elapsed, total = timerMalevolenceCD:GetTime()
-						local extend = 19.6 - (total-elapsed)
-						DBM:Debug("timerMalevolenceCD extended by: "..extend, 2)
+						local elapsed2, total2 = timerMalevolenceCD:GetTime()
+						local extend2 = 19.6 - (total2-elapsed2)
+						DBM:Debug("timerMalevolenceCD extended by: "..extend2, 2)
 						timerMalevolenceCD:Stop()
-						timerMalevolenceCD:Update(elapsed, total+extend)
+						timerMalevolenceCD:Update(elapsed2, total2+extend2)
 					end
 				else--If orbs aren't first at 9.6 then bombs will be
 					--Malevolence has 9.6 if grasp ICD was activated
@@ -265,11 +265,11 @@ function mod:SPELL_CAST_START(args)
 					timerGraspofMaliceCD:Update(elapsed, total+extend)
 					--Malevolence has 18.3 if grasp ICD was activated
 					if timerMalevolenceCD:GetRemaining() < 18.3 then
-						local elapsed, total = timerMalevolenceCD:GetTime()
-						local extend = 18.3 - (total-elapsed)
-						DBM:Debug("timerMalevolenceCD extended by: "..extend, 2)
+						local elapsed2, total2 = timerMalevolenceCD:GetTime()
+						local extend2 = 18.3 - (total2-elapsed2)
+						DBM:Debug("timerMalevolenceCD extended by: "..extend2, 2)
 						timerMalevolenceCD:Stop()
-						timerMalevolenceCD:Update(elapsed, total+extend)
+						timerMalevolenceCD:Update(elapsed2, total2+extend2)
 					end
 				else--
 					--Malevolence 8.3 if grasp ICD wasn't activated
