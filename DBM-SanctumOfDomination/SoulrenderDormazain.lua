@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(175727)
 mod:SetEncounterID(2434)
 mod:SetUsedIcons(1, 2, 3, 4)
-mod:SetHotfixNoticeRev(20210714000000)--2021-07-14
+mod:SetHotfixNoticeRev(20210731000000)--2021-07-31
 mod:SetMinSyncRevision(20210714000000)
 --mod.respawnTime = 29
 
@@ -122,9 +122,9 @@ local allTimers = {
 		--Ruinblade
 		[350422] = {8.1, 32.5, 32.7, 43.7, 53.4, 32.8, 36.4, 45, 65.6, 32.8, 35.2, 44.9},
 		--Torment
-		[349873] = {14, 46.1, 46.2, 76.5, 46.1, 45, 88.7, 45, 45},
+		[349873] = {14, 45.6, 46, 75.2, 46.1, 45, 86.2, 45, 45},
 		--Call Mawsworn
-		[350615] = {28, 165, 181, 150},
+		[350615] = {28, 165, 180.9, 150},
 		--Hellscream
 		[350411] = {80, 164.5, 178.8},
 	},
@@ -273,7 +273,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.eruptionCount = self.vb.eruptionCount + 1
 		specWarnTormentedEruptions:Show(self.vb.eruptionCount)
 		specWarnTormentedEruptions:Play("watchstep")
-		timerTormentedEruptionsCD:Start(nil, self.vb.eruptionCount+1)--160
+		timerTormentedEruptionsCD:Start(self:IsEasy() and 180 or 160, self.vb.eruptionCount+1)--160
 --		timerSpawnMawswornCD:Stop()
 --		timerTormentCD:Stop()
 --		timerRuinbladeCD:Stop()
