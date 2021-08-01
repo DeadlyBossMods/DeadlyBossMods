@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(176523)
 mod:SetEncounterID(2430)
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7)
-mod:SetHotfixNoticeRev(20210715000000)--2021-07-15
+mod:SetHotfixNoticeRev(20210731000000)--2021-07-31
 mod:SetMinSyncRevision(20210715000000)
 mod.respawnTime = 29
 
@@ -121,7 +121,7 @@ function mod:OnCombatStart(delay)
 	else
 		timerShadowsteelChainsCD:Start(10.8-delay, 1)
 		timerCruciformAxeCD:Start(16-delay, 1)
-		timerSpikedBallsCD:Start(23.9-delay, 1)
+		timerSpikedBallsCD:Start(20-delay, 1)
 		if self:IsHeroic() then
 			timerFlameclaspTrapCD:Start(45-delay, 1)
 		end
@@ -170,7 +170,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.ChainsIcon = 1
 		self.vb.chainCount = self.vb.chainCount + 1
 		--They apply custom rule to only heroic in phase 2 and 3
-		local timer = (self:IsHeroic() and self.vb.phase > 1 and 48.9) or 40.1
+		local timer = (not self:IsMythic() and self.vb.phase > 1 and 48.5) or 40.1
 		timerShadowsteelChainsCD:Start(timer, self.vb.chainCount+1)
 	elseif spellId == 355534 then--Shadowsteel Ember
 		DBM:Debug("Embers added to combat log")
@@ -261,7 +261,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.ballsCount = self.vb.ballsCount + 1
 		specWarnSpikedBalls:Show(self.vb.ballsCount)
 		specWarnSpikedBalls:Play("targetchange")
-		local timer = (self:IsHeroic() and self.vb.phase > 1 and 47.9) or 40.1
+		local timer = (not self:IsMythic() and self.vb.phase > 1 and 47.9) or 40.1
 		timerSpikedBallsCD:Start(timer, self.vb.ballsCount+1)
 	elseif spellId == 355525 then
 		self:Unschedule(repeatEmbers)
@@ -322,17 +322,13 @@ function mod:SPELL_AURA_REMOVED(args)
 				timerReverberatingHammerCD:Start(16.9, 1)
 				timerSpikedBallsCD:Start(19.9, 1)
 				timerFlameclaspTrapCD:Start(38.1, 1)
-			elseif self:IsHeroic() then
+			else--Blizz finally synced up all difficulties to be same for non mythic
 				timerShadowsteelChainsCD:Start(14.7, 1)
-				timerReverberatingHammerCD:Start(17.1, 1)
-				timerSpikedBallsCD:Start(26.1, 1)
+				timerReverberatingHammerCD:Start(16.9, 1)
+				timerSpikedBallsCD:Start(26, 1)
 				if self:IsHeroic() then
 					timerFlameclaspTrapCD:Start(48.1, 1)
 				end
-			else
-				timerShadowsteelChainsCD:Start(10.9, 1)
-				timerReverberatingHammerCD:Start(16.9, 1)
-				timerSpikedBallsCD:Start(24.3, 1)
 			end
 		else--phase 3
 			if self:IsMythic() then--Timers taken from P2, might not be right at all, could't find any clean P3 pulls in vods
@@ -340,17 +336,13 @@ function mod:SPELL_AURA_REMOVED(args)
 				timerDualbladeScytheCD:Start(16.9, 1)
 				timerSpikedBallsCD:Start(19.9, 1)
 				timerFlameclaspTrapCD:Start(38.1, 1)
-			elseif self:IsHeroic() then
+			else--Blizz finally synced up all difficulties to be same for non mythic
 				timerShadowsteelChainsCD:Start(14.6, 1)
-				timerDualbladeScytheCD:Start(17.1, 1)
-				timerSpikedBallsCD:Start(26.1, 1)
+				timerDualbladeScytheCD:Start(16.9, 1)
+				timerSpikedBallsCD:Start(26, 1)
 				if self:IsHeroic() then
 					timerFlameclaspTrapCD:Start(48.1, 1)
 				end
-			else
-				timerShadowsteelChainsCD:Start(10.9, 1)
-				timerDualbladeScytheCD:Start(16.9, 1)
-				timerSpikedBallsCD:Start(24.3, 1)
 			end
 		end
 	end
