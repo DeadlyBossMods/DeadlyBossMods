@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(175729)
 mod:SetEncounterID(2432)
 mod:SetUsedIcons(1, 2, 3, 4, 7, 8)
-mod:SetHotfixNoticeRev(20210728000000)--2021-07-28
+mod:SetHotfixNoticeRev(20210731000000)--2021-07-31
 mod:SetMinSyncRevision(20210728000000)
 --mod.respawnTime = 29
 
@@ -77,6 +77,8 @@ mod.vb.shatterCount = 0
 
 --Suffering triggers 12.2 ICD
 --Malevolence triggers 4.9 ICD
+--Grasp triggers 3-3.5 ICD
+--Orb triggers 3-3.5 ICD
 --Shatter triggers it's own ICDs handled in shatter/phase change code
 local function updateAllTimers(self, ICD)
 	DBM:Debug("updateAllTimers running", 2)
@@ -159,6 +161,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnGraspofMalice:Show()
 		specWarnGraspofMalice:Play("watchstep")
 		timerGraspofMaliceCD:Start()
+		updateAllTimers(self, 3.5)
 --	elseif spellId == 350096 or spellId == 350691 then--Mythic/Heroic likely and normal/LFR likely
 --		timerBurstofAgonyCD:Start()
 	elseif spellId == 351066 or spellId == 351067 or spellId == 351073 then--Shatter (Helm of Suffering, Malicious Gauntlets, Rattlecage of Agony)
@@ -182,6 +185,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self:SetStage(0)
 		self.vb.shatterCount = self.vb.shatterCount + 1
 		warnShatter:Show(self.vb.shatterCount)
+		--Doing any of below might not be answer, it might be a simmple of running updateAllTimers() with about a 8.5 ICD
+		--followed by hardcoding spell queue priority in update function
+		--Then letting spell queue take over
 		if self:IsMythic() then
 			if self.vb.phase == 2 then--First shatter
 				--If time is less than 8.5, it's extended to 8.5, if time is greater then CD from previous stage carries over
@@ -305,10 +311,10 @@ function mod:SPELL_CAST_SUCCESS(args)
 						timerMalevolenceCD:Update(elapsed, total+extend, self.vb.malevolenceCount+1)
 					end
 				end
-				--If time is less than 37.7, it's extended to 37.7, if time is greater then CD from previous stage carries over
-				if timerOrbofTormentCD:GetRemaining(self.vb.orbCount+1) < 37.7 then
+				--If time is less than 24.1, it's extended to 24.1, if time is greater then CD from previous stage carries over
+				if timerOrbofTormentCD:GetRemaining(self.vb.orbCount+1) < 24.1 then--Often delayed by suffering spell queue
 					local elapsed, total = timerOrbofTormentCD:GetTime(self.vb.orbCount+1)
-					local extend = 37.7 - (total-elapsed)
+					local extend = 24.1 - (total-elapsed)
 					DBM:Debug("timerOrbofTormentCD extended by: "..extend, 2)
 					timerOrbofTormentCD:Stop()
 					timerOrbofTormentCD:Update(elapsed, total+extend, self.vb.orbCount+1)
@@ -341,26 +347,26 @@ function mod:SPELL_CAST_SUCCESS(args)
 					timerGraspofMaliceCD:Update(elapsed, total+extend)
 				end
 			else--4 Third Shatter
-				--If time is less than 25, it's extended to 25, if time is greater then CD from previous stage carries over
-				if timerOrbofTormentCD:GetRemaining(self.vb.orbCount+1) < 25 then
+				--If time is less than 22.9, it's extended to 25, if time is greater then CD from previous stage carries over
+				if timerOrbofTormentCD:GetRemaining(self.vb.orbCount+1) < 22.9 then
 					local elapsed, total = timerOrbofTormentCD:GetTime(self.vb.orbCount+1)
-					local extend = 25 - (total-elapsed)
+					local extend = 22.9 - (total-elapsed)
 					DBM:Debug("timerOrbofTormentCD extended by: "..extend, 2)
 					timerOrbofTormentCD:Stop()
 					timerOrbofTormentCD:Update(elapsed, total+extend, self.vb.orbCount+1)
 				end
-				--Malevolence 26.6 if grasp ICD wasn't activated
-				if timerMalevolenceCD:GetRemaining(self.vb.malevolenceCount+1) < 26.6 then
+				--Malevolence 26.5 if grasp ICD wasn't activated
+				if timerMalevolenceCD:GetRemaining(self.vb.malevolenceCount+1) < 26.5 then
 					local elapsed, total = timerMalevolenceCD:GetTime(self.vb.malevolenceCount+1)
-					local extend = 26.6 - (total-elapsed)
+					local extend = 26.5 - (total-elapsed)
 					DBM:Debug("timerMalevolenceCD extended by: "..extend, 2)
 					timerMalevolenceCD:Stop()
 					timerMalevolenceCD:Update(elapsed, total+extend, self.vb.malevolenceCount+1)
 				end
-				--If time is less than 47.5, it's extended to 47.5 (may need fine tuning since hard to find log it's not affected by suffering or Malev delay)
-				if timerGraspofMaliceCD:GetRemaining() < 47.5 then
+				--If time is less than 44.8, it's extended to 44.8 (may need fine tuning since hard to find log it's not affected by suffering or Malev delay)
+				if timerGraspofMaliceCD:GetRemaining() < 44.8 then
 					local elapsed, total = timerGraspofMaliceCD:GetTime()
-					local extend = 47.5 - (total-elapsed)
+					local extend = 44.8 - (total-elapsed)
 					DBM:Debug("timerGraspofMaliceCD extended by: "..extend, 2)
 					timerGraspofMaliceCD:Stop()
 					timerGraspofMaliceCD:Update(elapsed, total+extend)
@@ -378,6 +384,7 @@ function mod:SPELL_SUMMON(args)
 			self.vb.orbCount = self.vb.orbCount + 1
 			warnOrbofTorment:Show(self.vb.orbCount)
 			timerOrbofTormentCD:Start(35, self.vb.orbCount+1)
+			updateAllTimers(self, 3.5)
 		end
 		if self.Options.SetIconOnOrbs then
 			self:ScanForMobs(args.destGUID, 2, self.vb.iconCount, 1, 0.2, 12, "SetIconOnOrbs")
