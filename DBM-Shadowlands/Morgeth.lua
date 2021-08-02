@@ -31,9 +31,9 @@ local specWarnGTFO					= mod:NewSpecialWarningGTFO(353183, nil, nil, nil, 1, 8)
 --All timers are delayed when damnation is cast.
 --If anything comes off CD during Damnation, it just queues up and he casts everything queued right away after damn is over
 local timerIronGolemCD				= mod:NewCDTimer(49.7, 356430, nil, nil, nil, 1, nil, DBM_CORE_L.DAMAGE_ICON)--49.7-113.1
-local timerCriesofAnquishCD			= mod:NewCDTimer(11.3, 353741, nil, nil, nil, 3)--11.3-99.1
-local timerTormentCD				= mod:NewCDTimer(9.9, 353800, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)--9.9-44.4
-local timerDamnationCD				= mod:NewCDTimer(54.8, 355456, nil, nil, nil, 3, nil, DBM_CORE_L.DEADLY_ICON)
+local timerCriesofAnquishCD			= mod:NewCDTimer(11, 353741, nil, nil, nil, 3)--11.3-99.1
+local timerTormentCD				= mod:NewCDTimer(9.4, 353800, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)--9.9-44.4
+local timerDamnationCD				= mod:NewCDTimer(53.7, 355456, nil, nil, nil, 3, nil, DBM_CORE_L.DEADLY_ICON)
 local timerDamnation				= mod:NewBuffActiveTimer(32, 355456, nil, nil, nil, 6, nil, DBM_CORE_L.DEADLY_ICON)
 
 function mod:OnCombatStart(delay, yellTriggered)
