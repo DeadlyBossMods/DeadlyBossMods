@@ -416,7 +416,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnExtemporaneousFate:Show(self.vb.extemporaneousCount)
 		specWarnExtemporaneousFate:Play("specialsoon")--"157060" if they just happen to be yellow
 		timerDarkestDestiny:Start(30)
-		local timer = allTimers[difficultyName][self.vb.phase][spellId][self.vb.extemporaneousCount+1]
+		local timer = allTimers[difficultyName][3][spellId][self.vb.extemporaneousCount+1]
 		if timer then
 			timerExtemporaneousFateCD:Start(timer, self.vb.extemporaneousCount+1)
 		end
