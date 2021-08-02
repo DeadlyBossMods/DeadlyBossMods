@@ -18,7 +18,7 @@ mod:RegisterEventsInCombat(
 --	"SPELL_CAST_SUCCESS 352293",
 	"SPELL_SUMMON 352096 352094 352092 346469",
 	"SPELL_AURA_APPLIED 352530 348978 347292 347518 347454 355948 353808 348760 352051 355389 348787",
-	"SPELL_AURA_APPLIED_DOSE 348978 352051",
+	"SPELL_AURA_APPLIED_DOSE 352051",
 	"SPELL_AURA_REMOVED 354198 348978 347292 355948 353808 348760 355389 348787",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
@@ -41,7 +41,7 @@ mod:RegisterEventsInCombat(
 --]]
 --Stage One: Chains and Ice
 local warnNecroticSurge								= mod:NewCountAnnounce(352051, 3)
-local warnSoulExhaustion							= mod:NewStackAnnounce(348978, 2, nil, "Tank|Healer")
+local warnSoulExhaustion							= mod:NewTargetNoFilterAnnounce(348978, 2, nil, "Tank|Healer")
 local warnGlacialWrath								= mod:NewTargetNoFilterAnnounce(353808, 3)
 local warnPiercingWail								= mod:NewCastAnnounce(348428, 2)
 local warnOblivionsEcho								= mod:NewTargetNoFilterAnnounce(347292, 2)
@@ -55,6 +55,8 @@ local warnDemolish									= mod:NewCastAnnounce(349799, 2)
 local warnFreezingBlast								= mod:NewCountAnnounce(352379, 3)
 
 --Stage One: Chains and Ice
+local specWarnSoulExhaustion						= mod:NewSpecialWarningYou(348978, nil, nil, nil, 1, 2)
+local specWarnSoulExhaustionSwap					= mod:NewSpecialWarningTaunt(348978, nil, nil, nil, 1, 2)
 local specWarnHowlingBlizzard						= mod:NewSpecialWarningDodge(354198, nil, nil, nil, 2, 2)
 local specWarnDarkEvocation							= mod:NewSpecialWarningSpell(352530, nil, nil, nil, 2, 2)
 local specWarnCorpseDetonation						= mod:NewSpecialWarningRun(355389, nil, nil, nil, 4, 2)
@@ -82,6 +84,7 @@ local timerHowlingBlizzardCD						= mod:NewCDTimer(114.3, 354198, nil, nil, nil,
 local timerHowlingBlizzard							= mod:NewBuffActiveTimer(23, 354198, nil, nil, nil, 5)
 local timerDarkEvocationCD							= mod:NewCDTimer(86.2, 352530, nil, nil, nil, 3)--Boss Mana timer
 local timerSoulFractureCD							= mod:NewCDTimer(32.8, 348071, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.TANK_ICON)
+local timerSoulExaustion							= mod:NewTargetTimer(60, 348978, nil, "Tank|Healer", nil, 5)
 local timerGlacialWrathCD							= mod:NewCDTimer(43.9, 346459, nil, nil, nil, 3, nil, DBM_CORE_L.DAMAGE_ICON)
 local timerOblivionsEchoCD							= mod:NewCDTimer(37, 347291, nil, nil, nil, 3)--37-60, 48.6 is the good median but it truly depends on dps
 local timerFrostBlastCD								= mod:NewCDTimer(40.1, 348756, nil, nil, nil, 3, nil, DBM_CORE_L.MAGIC_ICON)
@@ -289,24 +292,18 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnDarkEvocation:Play("specialsoon")
 		timerDarkEvocationCD:Start()
 	elseif spellId == 348978 then
-		local amount = args.amount or 1
-		warnSoulExhaustion:Cancel()
-		warnSoulExhaustion:Schedule(1, args.destName, amount)
---		if amount >= 3 then
---			if args:IsPlayer() then
---				specWarnUnendingStrike:Show(amount)
---				specWarnUnendingStrike:Play("stackhigh")
---			else
---				if not UnitIsDeadOrGhost("player") and not DBM:UnitDebuff("player", spellId) then
---					specWarnUnendingStrikeTaunt:Show(args.destName)
---					specWarnUnendingStrikeTaunt:Play("tauntboss")
---				else
---					warnUnendingStrike:Show(args.destName, amount)
---				end
---			end
---		else
---			warnUnendingStrike:Show(args.destName, amount)
---		end
+		if args:IsPlayer() then
+			specWarnSoulExhaustion:Show()
+			specWarnSoulExhaustion:Play("targetyou")
+		else
+			if not UnitIsDeadOrGhost("player") and not DBM:UnitDebuff("player", spellId) then
+				specWarnSoulExhaustionSwap:Show(args.destName)
+				specWarnSoulExhaustionSwap:Play("tauntboss")
+			else
+				warnSoulExhaustion:Show(args.destName)
+			end
+		end
+		timerSoulExaustion:Start(args.destName)
 	elseif spellId == 347292 then--Actual target of Echo, causing the silence field
 		local icon = self.vb.echoIcon
 		if self.Options.SetIconOnEcho then
@@ -406,6 +403,8 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif spellId == 348787 and args:IsPlayer() then--Phylactery
 		playerPhased = false
+	elseif spellId == 348978 then
+		timerSoulExaustion:Stop(args.destName)
 	end
 end
 
