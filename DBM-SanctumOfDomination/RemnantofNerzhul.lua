@@ -63,13 +63,13 @@ local timerGraspofMaliceCD						= mod:NewCDTimer(20.7, 355123, nil, nil, nil, 3,
 local berserkTimer								= mod:NewBerserkTimer(600)
 
 --mod:AddRangeFrameOption("8")
-mod:AddInfoFrameOption(349890, true)
-mod:AddSetIconOption("SetIconOnMalevolence", 350469, true, false, {1, 2, 3, 4})
-mod:AddSetIconOption("SetIconOnOrbs", 321226, true, true, {7, 8})
+--mod:AddInfoFrameOption(349890, true)
+mod:AddSetIconOption("SetIconOnMalevolence", 350469, true, false, {1, 2, 3})
+mod:AddSetIconOption("SetIconOnOrbs", 321226, true, true, {7, 6, 5, 4})
 mod:AddNamePlateOption("NPAuraOnOrbEternalTorment", 355790)
 
 mod.vb.orbCount = 0
-mod.vb.iconCount = 8
+mod.vb.iconCount = 7
 mod.vb.unrelentingCount = 0
 mod.vb.malevolenceCount = 0
 mod.vb.malevolenceIcon = 1
@@ -115,7 +115,7 @@ end
 function mod:OnCombatStart(delay)
 	self:SetStage(1)
 	self.vb.orbCount = 0
-	self.vb.iconCount = 8
+	self.vb.iconCount = 7
 	self.vb.unrelentingCount = 0
 	self.vb.malevolenceCount = 0
 	self.vb.shatterCount = 0
@@ -131,13 +131,12 @@ function mod:OnCombatStart(delay)
 	if self.Options.NPAuraOnOrbEternalTorment then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
-	DBM:AddMsg("Ability timings on this fight now use extremely experimental attempts at timer correction to try and be more accurate. Several conditions may still be missing and cause inaccuracies")
 end
 
 function mod:OnCombatEnd()
-	if self.Options.InfoFrame then
-		DBM.InfoFrame:Hide()
-	end
+--	if self.Options.InfoFrame then
+--		DBM.InfoFrame:Hide()
+--	end
 --	if self.Options.RangeFrame then
 --		DBM.RangeCheck:Hide()
 --	end
@@ -380,7 +379,7 @@ function mod:SPELL_SUMMON(args)
 	local spellId = args.spellId
 	if spellId == 349908 then
 		if self:AntiSpam(5, 1) then
-			self.vb.iconCount = 8
+			self.vb.iconCount = 7
 			self.vb.orbCount = self.vb.orbCount + 1
 			warnOrbofTorment:Show(self.vb.orbCount)
 			timerOrbofTormentCD:Start(35, self.vb.orbCount+1)
@@ -476,7 +475,7 @@ end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 350676 then--Orb of Torment
---		self.vb.iconCount = 8
+--		self.vb.iconCount = 7
 --		self.vb.orbCount = self.vb.orbCount + 1
 --		warnOrbofTorment:Show(self.vb.orbCount)
 --		timerOrbofTormentCD:Start(35, self.vb.orbCount+1)

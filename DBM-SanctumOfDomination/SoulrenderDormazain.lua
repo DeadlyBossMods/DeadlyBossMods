@@ -128,16 +128,6 @@ local allTimers = {
 		--Hellscream
 		[350411] = {80, 164.5, 178.8},
 	},
---	["lfr"] = {
-		--Ruinblade
---		[350422] = {},
-		--Torment
---		[349873] = {},
-		--Call Mawsworn
---		[351680] = {},
-		--Hellscream
---		[350421] = {},
---	},
 }
 
 --Assume these won't be exposed forever
@@ -181,7 +171,7 @@ function mod:OnCombatStart(delay)
 	if self.Options.NPAuraOnDefiance or self.Options.NPAuraOnTormented then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
-	DBM:AddMsg("Abilities on this fight can be volatile and sometimes skip casts/change order. DBM timers attempt to match the most common scenario of events but sometimes fight will do it's own thing")
+--	DBM:AddMsg("Abilities on this fight can be volatile and sometimes skip casts/change order. DBM timers attempt to match the most common scenario of events but sometimes fight will do it's own thing")
 end
 
 function mod:OnCombatEnd()
