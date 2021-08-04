@@ -5,7 +5,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetCreatureID(176523)
 mod:SetEncounterID(2430)
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7)
-mod:SetHotfixNoticeRev(20210731000000)--2021-07-31
+mod:SetHotfixNoticeRev(20210803000000)--2021-08-03
 mod:SetMinSyncRevision(20210715000000)
 mod.respawnTime = 29
 
@@ -265,7 +265,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerSpikedBallsCD:Start(timer, self.vb.ballsCount+1)
 	elseif spellId == 355525 then
 		self:Unschedule(repeatEmbers)
-		repeatEmbers(self, self:IsMythic() and 9 or 7)
+		repeatEmbers(self, self:IsMythic() and 9 or 8)
 		timerForgeWeapon:Start()
 		if self:IsMythic() then--Based on vods, may be off slightly
 			timerAddsCD:Start(47)
