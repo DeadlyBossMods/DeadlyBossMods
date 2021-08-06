@@ -238,16 +238,17 @@ function mod:SPELL_AURA_APPLIED(args)
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId) then
 			local amount = args.amount or 1
-			--local tauntStack = 3
-			--if self:IsHard() and self.Options.TauntBehavior == "TwoHardThreeEasy" or self.Options.TauntBehavior == "TwoAlways" then
-			--	tauntStack = 2
-			--end
 			if amount >= 2 then
 				if args:IsPlayer() then
 					specWarnJaggedClaws:Show(amount)
 					specWarnJaggedClaws:Play("stackhigh")
 				else
-					if not UnitIsDeadOrGhost("player") and not DBM:UnitDebuff("player", spellId) and not self:IsHealer() then--Can't taunt less you've dropped yours off, period.
+					local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", spellId)
+					local remaining
+					if expireTime then
+						remaining = expireTime-GetTime()
+					end
+					if (not remaining or remaining and remaining < 10.9) and not UnitIsDeadOrGhost("player") and not self:IsHealer() then
 						specWarnJaggedClawsTaunt:Show(args.destName)
 						specWarnJaggedClawsTaunt:Play("tauntboss")
 					else

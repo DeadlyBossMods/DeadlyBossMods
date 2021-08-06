@@ -324,7 +324,12 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnUnendingStrike:Show(amount)
 				specWarnUnendingStrike:Play("stackhigh")
 			else
-				if not UnitIsDeadOrGhost("player") and not DBM:UnitDebuff("player", spellId) then
+				local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", spellId)
+				local remaining
+				if expireTime then
+					remaining = expireTime-GetTime()
+				end
+				if (not remaining or remaining and remaining < 6.7) and not UnitIsDeadOrGhost("player") then
 					specWarnUnendingStrikeTaunt:Show(args.destName)
 					specWarnUnendingStrikeTaunt:Play("tauntboss")
 				else
@@ -345,11 +350,11 @@ function mod:SPELL_AURA_APPLIED(args)
 					specWarnPierceSoulTaunt:Show(args.destName)
 					specWarnPierceSoulTaunt:Play("tauntboss")
 				else
-					warnUnendingStrike:Show(args.destName, amount)
+					warnPierceSoul:Show(args.destName, amount)
 				end
 			end
 		else
-			warnUnendingStrike:Show(args.destName, amount)
+			warnPierceSoul:Show(args.destName, amount)
 		end
 	elseif spellId == 350158 then
 		warnAnnhyldesBrightAegis:CombinedShow(0.3, args.destName)
