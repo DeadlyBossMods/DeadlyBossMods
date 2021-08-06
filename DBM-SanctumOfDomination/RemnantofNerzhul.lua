@@ -80,33 +80,68 @@ mod.vb.shatterCount = 0
 --Grasp triggers 3-3.5 ICD
 --Orb triggers 3-3.5 ICD
 --Shatter triggers it's own ICDs handled in shatter/phase change code
+--Spell queue priority: Suffering, Malevolence, Orb, Grasp
 local function updateAllTimers(self, ICD)
 	DBM:Debug("updateAllTimers running", 2)
-	if timerOrbofTormentCD:GetRemaining(self.vb.orbCount+1) < ICD then
-		local elapsed, total = timerOrbofTormentCD:GetTime(self.vb.orbCount+1)
-		local extend = ICD - (total-elapsed)
-		DBM:Debug("timerOrbofTormentCD extended by: "..extend, 2)
-		timerOrbofTormentCD:Stop()
-		timerOrbofTormentCD:Update(elapsed, total+extend, self.vb.orbCount+1)
-	end
-	if timerMalevolenceCD:GetRemaining(self.vb.malevolenceCount+1) < ICD then
-		local elapsed, total = timerMalevolenceCD:GetTime(self.vb.malevolenceCount+1)
-		local extend = ICD - (total-elapsed)
-		DBM:Debug("timerMalevolenceCD extended by: "..extend, 2)
-		timerMalevolenceCD:Stop()
-		timerMalevolenceCD:Update(elapsed, total+extend, self.vb.malevolenceCount+1)
-	end
+	local nextCast = 0
 	if timerSufferingCD:GetRemaining() < ICD then
 		local elapsed, total = timerSufferingCD:GetTime()
 		local extend = ICD - (total-elapsed)
 		DBM:Debug("timerSufferingCD extended by: "..extend, 2)
 		timerSufferingCD:Stop()
 		timerSufferingCD:Update(elapsed, total+extend)
+		if DBM.Options.DebugMode then
+			nextCast = 1--While suffering top of queue priority, it's also not a "next" timer so can't trust enabling this right now
+		end
+	end
+	if timerMalevolenceCD:GetRemaining(self.vb.malevolenceCount+1) < ICD then
+		local elapsed, total = timerMalevolenceCD:GetTime(self.vb.malevolenceCount+1)
+		local extend = ICD - (total-elapsed)
+		if nextCast == 1 then--Previous spells in queue priority are head of it in line, auto adjust
+			extend = extend + 12.2
+			DBM:Debug("timerMalevolenceCD extended by: "..extend.." plus 12.2 for Suffering", 2)
+		else
+			DBM:Debug("timerMalevolenceCD extended by: "..extend, 2)
+			if DBM.Options.DebugMode then
+				nextCast = 2
+			end
+		end
+		timerMalevolenceCD:Stop()
+		timerMalevolenceCD:Update(elapsed, total+extend, self.vb.malevolenceCount+1)
+	end
+	if timerOrbofTormentCD:GetRemaining(self.vb.orbCount+1) < ICD then
+		local elapsed, total = timerOrbofTormentCD:GetTime(self.vb.orbCount+1)
+		local extend = ICD - (total-elapsed)
+		if nextCast == 1 then--Previous spells in queue priority are head of it in line, auto adjust
+			extend = extend + 12.2
+			DBM:Debug("timerOrbofTormentCD extended by: "..extend.." plus 12.2 for Suffering", 2)
+		elseif nextCast == 2 then
+			extend = extend + 4.9
+			DBM:Debug("timerOrbofTormentCD extended by: "..extend.." plus 4.9 for Malevolence", 2)
+		else
+			DBM:Debug("timerOrbofTormentCD extended by: "..extend, 2)
+			if DBM.Options.DebugMode then
+				nextCast = 3
+			end
+		end
+		timerOrbofTormentCD:Stop()
+		timerOrbofTormentCD:Update(elapsed, total+extend, self.vb.orbCount+1)
 	end
 	if timerGraspofMaliceCD:GetRemaining() < ICD then
 		local elapsed, total = timerGraspofMaliceCD:GetTime()
 		local extend = ICD - (total-elapsed)
-		DBM:Debug("timerGraspofMaliceCD extended by: "..extend, 2)
+		if nextCast == 1 then--Previous spells in queue priority are head of it in line, auto adjust
+			extend = extend + 12.2
+			DBM:Debug("timerGraspofMaliceCD extended by: "..extend.." plus 12.2 for Suffering", 2)
+		elseif nextCast == 2 then
+			extend = extend + 4.9
+			DBM:Debug("timerGraspofMaliceCD extended by: "..extend.." plus 4.9 for Malevolence", 2)
+		elseif nextCast == 3 then
+			extend = extend + 3.5
+			DBM:Debug("timerGraspofMaliceCD extended by: "..extend.." plus 3.5 for Orb", 2)
+		else
+			DBM:Debug("timerGraspofMaliceCD extended by: "..extend, 2)
+		end
 		timerGraspofMaliceCD:Stop()
 		timerGraspofMaliceCD:Update(elapsed, total+extend)
 	end

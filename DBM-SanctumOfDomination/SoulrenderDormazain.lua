@@ -51,7 +51,7 @@ local specWarnTorment						= mod:NewSpecialWarningDodge(352158, nil, nil, nil, 2
 local specWarnTormentedEruptions			= mod:NewSpecialWarningDodge(349985, nil, nil, nil, 2, 2)
 local specWarnBrandofTorment				= mod:NewSpecialWarningYou(350647, nil, nil, nil, 1, 2)
 local yellBrandofTorment					= mod:NewYell(350647)
-local specWarnRuinblade						= mod:NewSpecialWarningStack(350422, nil, 2, nil, nil, 1, 6)
+local specWarnRuinblade						= mod:NewSpecialWarningStack(350422, nil, 1, nil, nil, 1, 6)
 local specWarnRuinbladeTaunt				= mod:NewSpecialWarningTaunt(350422, nil, nil, nil, 1, 2)
 --Mawsworn Agonizer
 local specWarnAgonizingSpike				= mod:NewSpecialWarningInterruptCount(351779, "false", nil, nil, 1, 2)--Opt in
@@ -305,12 +305,17 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 350422 or spellId == 350448 then
 		local amount = args.amount or 1
-		if amount >= 2 then
+		if amount >= 1 then
 			if args:IsPlayer() then
 				specWarnRuinblade:Show(amount)
 				specWarnRuinblade:Play("stackhigh")
 			else
-				if not UnitIsDeadOrGhost("player") and not DBM:UnitDebuff("player", spellId) then
+				local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", spellId)
+				local remaining
+				if expireTime then
+					remaining = expireTime-GetTime()
+				end
+				if (not remaining or remaining and remaining < 32.8) and not UnitIsDeadOrGhost("player") then
 					specWarnRuinbladeTaunt:Show(args.destName)
 					specWarnRuinbladeTaunt:Play("tauntboss")
 				else

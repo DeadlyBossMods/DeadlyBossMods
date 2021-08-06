@@ -1,7 +1,7 @@
 -- L.Core
 -- Diablohu(diablohudream@gmail.com)
 -- yleaf(yaroot@gmail.com)
--- Mini Dragon(projecteurs@gmail.com) <流浪者酒馆-Brilla@金色平原> 20210108
+-- Mini Dragon(projecteurs@gmail.com) <流浪者酒馆-Brilla@金色平原> 20210804
 
 if GetLocale() ~= "zhCN" then return end
 if not DBM_CORE_L then DBM_CORE_L = {} end
@@ -190,12 +190,12 @@ L.DPMCORE						= "警告: DBM-PVP已经已经很久没人维护了,并无法兼�
 L.DBMLDB							= "警告: DBM-LDB 已经集成入" .. L.DBM .. "核心。建议在插件目录删掉'DBM-LDB'。"
 L.UPDATE_REQUIRES_RELAUNCH		= "警告: 如果你不完全重启游戏，" .. L.DBM .. "可能会工作不正常。此次更新包含了新的文件，或者toc文件的改变，这是重载界面无法加载的。不重启游戏可能导致作战模块功能错误。"
 L.OUT_OF_DATE_NAG				= "你的" .. L.DBM .. "版本已经过期，新版本针对特定的首领战斗增加新的功能和错误的修复。建议您进行更新来改善您的游戏体验。"
-L.RETAIL_ONLY					= "警告: 你所用的是怀旧服版本的" .. L.DBM .. "。请删掉这个" .. L.DBM .. "并下载正式服的" .. L.DBM .. "。"
+L.RETAIL_ONLY					= "警告: 此版本" .. L.DBM .. "是给正式服使用的。请删掉这个" .. L.DBM .. "并下载怀旧服的" .. L.DBM .. "。"
 
 
 L.MOVABLE_BAR				= "拖动我！"
 
-L.PIZZA_SYNC_INFO					= "|Hplayer:%1$s|h[%1$s]|h向你发送了一个" .. L.DBM .. "计时条"
+L.PIZZA_SYNC_INFO					= "|Hplayer:%1$s|h[%1$s]|h向你发送了一个" .. L.DBM .. " 计时条: '%2$s'\n|Hgarrmission:DBM:cancel:%2$s:nil|h|cff3588ff[取消此倒计时]|r|h |Hgarrmission:DBM:ignore:%2$s:%1$s|h|cff3588ff[忽略来自%1$s的计时条]|r|h"
 L.PIZZA_CONFIRM_IGNORE			= "是否要在该次游戏连接中屏蔽来自%s的计时条？"
 L.PIZZA_ERROR_USAGE				= "命令：/dbm [broadcast] timer <时间（秒）> <文本>"
 
@@ -460,7 +460,7 @@ L.AUTO_SPEC_WARN_OPTIONS.targetchange	= "特殊警报：需要立刻切换目标
 
 -- Auto-generated Timer Localizations
 L.AUTO_TIMER_TEXTS.target				= "%s: >%%s<"
-L.AUTO_TIMER_TEXTS.targetcount 			= "%s: >%%s< (%%%s)" --???
+L.AUTO_TIMER_TEXTS.targetcount 			= "%s: >%%s< (%%s)"
 L.AUTO_TIMER_TEXTS.cast					= "%s"
 L.AUTO_TIMER_TEXTS.castcount				= "%s (%%s)"
 L.AUTO_TIMER_TEXTS.castsource			= "%s: %%s"
