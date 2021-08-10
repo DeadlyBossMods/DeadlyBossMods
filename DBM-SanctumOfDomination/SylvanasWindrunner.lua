@@ -325,7 +325,7 @@ local allTimers = {
 			--Wailing Arrow
 			[347609] = {59.5, 69.5, 68, 69, 69},--Cast not pre debuff
 			--Veil of Darkness
-			[347726] = {23.6, 56, 57.7, 56, 57, 57, 63},
+			[347726] = {23.5, 56, 55, 55, 57, 57, 63},--2nd one can come later (60ish) if she casts tanka ability first)
 			--Banshees Fury (Heroic/Mythic)
 			[354068] = {38.3, 60.8, 64, 58, 62, 66},
 			--Raze
@@ -692,7 +692,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			timerBaneArrowsCD:Start(15.4, 1)
 --			timerBansheesHeartseekerCD:Start(31, 1)
 			timerMercilessCD:Start(22.8, 1)
-			timerVeilofDarknessCD:Start(23.6, 1)
+			timerVeilofDarknessCD:Start(23.5, 1)
 			timerBansheesFuryCD:Start(38.3, 1)--Heroic+
 			timerRazeCD:Start(45.4, 1)
 --			timerBansheesBladesCD:Start(58, 1)--Mythic Only
