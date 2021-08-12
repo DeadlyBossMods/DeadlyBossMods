@@ -1427,7 +1427,9 @@ do
 			self.Arrow:LoadPosition()
 			-- LibDBIcon setup
 			if type(DBM_MinimapIcon) ~= "table" then
-				DBM_MinimapIcon = {}
+				DBM_MinimapIcon = {
+					hide = true
+				}
 			end
 			if LibStub("LibDBIcon-1.0", true) then
 				LibStub("LibDBIcon-1.0"):Register("DBM", dataBroker, DBM_MinimapIcon)
