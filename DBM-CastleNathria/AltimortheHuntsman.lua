@@ -66,7 +66,7 @@ local yellPetrifyingHowlFades					= mod:NewFadesYell(334852, 135241)--Shortname 
 --Huntsman Altimor
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22309))
 local timerSinseekerCD							= mod:NewCDCountTimer(49, 335114, nil, nil, nil, 3)
-local timerSpreadshotCD							= mod:NewCDTimer(12, 334404, nil, nil, nil, 2, nil, DBM_CORE_L.HEALER_ICON)
+local timerSpreadshotCD							= mod:NewCDTimer(11.8, 334404, nil, nil, nil, 2, nil, DBM_CORE_L.HEALER_ICON)
 --Hunting Gargon
 ----Margore
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(22312))
@@ -185,7 +185,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.sinSeekerCount = self.vb.sinSeekerCount + 1
 		--Mythic, Dog1: 49, Dog2: 60, Dog3: 50, dogs dead: 39.9
 		--Normal, Dog1: 50-51, Dog2: 60-61, Dog3: 50-51, dogs dead: 24.3
-		local timer = self:IsMythic() and (self.vb.phase == 4 and 25 or 60.2) or (self.vb.phase == 4 and 24.3 or 50)--self.vb.phase == 2 and 61.1 or
+		local timer = self:IsMythic() and (self.vb.phase == 4 and 25 or 60.2) or (self.vb.phase == 4 and 24.3 or 49.1)--self.vb.phase == 2 and 61.1 or
 		timerSinseekerCD:Start(timer, self.vb.sinSeekerCount+1)
 		if self.vb.phase == 3 and self:IsMythic() then
 			updateRangeFrame(self, true)--Force show during cast so it's up a little early
@@ -196,7 +196,7 @@ function mod:SPELL_CAST_START(args)
 		updateAllTimers(self)
 	elseif spellId == 334404 and self.vb.phase < 4 then--It's no longer every 6 seconds in P4, it's every 3.7, that's too much spam for any warning
 		warnSpreadshot:Show()
-		timerSpreadshotCD:Start(12)--More work required to determin causes of longer ones
+		timerSpreadshotCD:Start(11.8)--More work required to determin causes of longer ones
 	elseif spellId == 334971 then
 		timerJaggedClawsCD:Start()
 	elseif spellId == 334797 then
@@ -222,10 +222,10 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 334945 then--First event with target information, it's where we sync timers to
+	if spellId == 334945 then--Vicious Lunge, First event with target information, it's where we sync timers to
 		timerViciousLungeCD:Start()
 		timerSpreadshotCD:Stop()
-		timerSpreadshotCD:Start()--Resets bosses spreadshot timer
+		timerSpreadshotCD:Start(11.8)--Resets bosses spreadshot timer
 	elseif spellId == 334797 then
 		specWarnRipSoulHealer:Show(args.destName)
 		specWarnRipSoulHealer:Play("healfull")
