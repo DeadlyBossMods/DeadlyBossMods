@@ -367,7 +367,7 @@ function mod:SPELL_CAST_START(args)
 		--"Wracking Pain-329181-npc:167406 = pull:210.1, 18.3, 17.1, 18.3, 18.3, 21.4"
 		if not self.vb.painCasting then
 			self.vb.painCount = self.vb.painCount + 1
-			timerWrackingPainCD:Start(self:IsMythic() and 17 or self.vb.painCount % 2 == 0 and 20.6 or 19.4, self.vb.painCount+1)
+			timerWrackingPainCD:Start(self:IsMythic() and 17 or 19.4, self.vb.painCount+1)
 			self.vb.painCasting = true--Work around a bug where boss stutter casts, but incurrs cd from begin of first cast
 		end
 	elseif spellId == 333932 and self:AntiSpam(10, 10) then
