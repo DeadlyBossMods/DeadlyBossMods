@@ -48,8 +48,8 @@ function mod:OnCombatStart(delay)
 	self.vb.interruptCount = 0
 	self.vb.headbuttCount = 0
 	timerViciousHeadbuttCD:Start(5.9-delay)
-	timerJuggernautRushCD:Start(9.6-delay)
 	timerHungeringDrainCD:Start(10.7-delay)
+	timerJuggernautRushCD:Start(15.5-delay)
 	timerSeveringSmashCD:Start(34.2-delay)
 end
 
