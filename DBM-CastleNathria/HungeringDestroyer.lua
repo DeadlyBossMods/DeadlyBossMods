@@ -167,7 +167,7 @@ function mod:OnCombatStart(delay)
 		timerOverwhelmCD:Start(5.5-delay, 1)
 		timerVolatileEjectionCD:Start(11.1-delay, 1)
 		timerDesolateCD:Start(24.4-delay, 1)
-		timerExpungeCD:Start(37.1-delay, 1)
+		timerExpungeCD:Start(35.5-delay, 1)
 		timerConsumeCD:Start(98.9-delay, 1)
 	elseif self:IsNormal() then
 		timerOverwhelmCD:Start(5.2-delay, 1)
